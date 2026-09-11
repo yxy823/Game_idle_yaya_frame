@@ -1,9 +1,10 @@
 ---
 name: product-audio-sketcher
-version: 1.1
 description: Elicit intent, style, and duration for sound cues, then produce Product-ready audio requirements and stable _placeholder_ filenames. Use for audio, sound effects, or background music; 中文触发：设计音效、补充声音需求、规划背景音乐。
-priority: medium
-called_by: product-change-standardizer
+metadata:
+  version: 1.1
+  priority: medium
+  called_by: product-change-standardizer
 ---
 
 # Product audio sketcher

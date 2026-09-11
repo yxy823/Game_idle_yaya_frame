@@ -1,12 +1,13 @@
 ---
 name: product-init-elicitor
-version: 2.0
 description: Interactively turns a one-line project idea into a structured Product draft when product.md is empty. It elicits and organizes Product intent but does not write files.
-triggers:
-  - Initialize the Product or start a new project from one sentence
-  - 用户说「初始化产品」或「做一个 XXX」
-priority: medium
-called_by: product-change-standardizer
+metadata:
+  version: 2.0
+  triggers:
+    - Initialize the Product or start a new project from one sentence
+    - 用户说「初始化产品」或「做一个 XXX」
+  priority: medium
+  called_by: product-change-standardizer
 ---
 
 # Product initialization elicitor

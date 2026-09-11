@@ -1,6 +1,7 @@
 ---
 name: sync-feature-list
-description: Incrementally synchronize an existing Feature/test ledger with committed Product or Coding Rules changes by analyzing Git diffs. Use for Feature-list updates and realignment, not initial generation. English triggers: sync feature list, update tasks from Product, realign Feature plan. 中文触发：同步 feature-list、更新任务列表、重新对齐 feature-list。
+description: >-
+  Incrementally synchronize an existing Feature/test ledger with committed Product or Coding Rules changes by analyzing Git diffs. Use for Feature-list updates and realignment, not initial generation. English triggers: sync feature list, update tasks from Product, realign Feature plan. 中文触发：同步 feature-list、更新任务列表、重新对齐 feature-list。
 ---
 
 # Synchronize Feature list

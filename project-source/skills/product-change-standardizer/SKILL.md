@@ -1,12 +1,13 @@
 ---
 name: product-change-standardizer
-version: 3.0
 description: The only entry point for Product initialization, requirements, features, UI, audio, and changes to Product intent. Routes elicitation, owns Product writes, and synchronizes the Feature plan before implementation. Implementation defects with already-explicit Product intent route to engineering-change-standardizer instead.
-triggers:
-  - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
-  - User says initialize, improve, optimize, add, remove, fix, adjust, or new requirement
-  - 用户说「做一个 XXX」「改进」「优化」「增加」「删除」「修复」「调整」或「新需求」
-priority: high
+metadata:
+  version: 3.0
+  triggers:
+    - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
+    - User says initialize, improve, optimize, add, remove, fix, adjust, or new requirement
+    - 用户说「做一个 XXX」「改进」「优化」「增加」「删除」「修复」「调整」或「新需求」
+  priority: high
 ---
 
 # Product change standardizer

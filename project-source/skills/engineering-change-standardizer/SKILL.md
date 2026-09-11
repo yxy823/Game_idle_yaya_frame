@@ -1,6 +1,7 @@
 ---
 name: engineering-change-standardizer
-description: The entry point for engineering changes that do not change Product intent: implementation-defect repair, refactoring, and maintenance. It triages Product-vs-implementation responsibility, creates reviewable engineering Features, preserves human control, requires regression coverage for bugs when feasible, and captures reusable bug learnings without silently changing Product or Coding Rules.
+description: >-
+  The entry point for engineering changes that do not change Product intent: implementation-defect repair, refactoring, and maintenance. It triages Product-vs-implementation responsibility, creates reviewable engineering Features, preserves human control, requires regression coverage for bugs when feasible, and captures reusable bug learnings without silently changing Product or Coding Rules.
 ---
 
 # Standardize one engineering change

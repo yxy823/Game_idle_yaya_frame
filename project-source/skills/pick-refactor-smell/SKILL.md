@@ -1,6 +1,7 @@
 ---
 name: pick-refactor-smell
-description: Scan durable Feature notes for unresolved code smells, rank them with the fixed high/medium/low rubric, recommend exactly one candidate, and return the user's choice to engineering-change-standardizer in refactor mode. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
+description: >-
+  Scan durable Feature notes for unresolved code smells, rank them with the fixed high/medium/low rubric, recommend exactly one candidate, and return the user's choice to engineering-change-standardizer in refactor mode. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
 ---
 
 # Pick one refactor smell

@@ -1,12 +1,13 @@
 ---
 name: product-ui-sketcher
-version: 2.0
 description: Turns Product behavior and interaction details into an ASCII wireframe and intent explanation, with an optional standalone HTML and Tailwind visual exploration.
-triggers:
-  - Sketch a Product UI, ASCII wireframe, or optional HTML mockup
-  - 用户要求「UI 线框」「ASCII 界面」或「HTML mockup」
-priority: medium
-called_by: product-change-standardizer
+metadata:
+  version: 2.0
+  triggers:
+    - Sketch a Product UI, ASCII wireframe, or optional HTML mockup
+    - 用户要求「UI 线框」「ASCII 界面」或「HTML mockup」
+  priority: medium
+  called_by: product-change-standardizer
 ---
 
 # Product UI sketcher

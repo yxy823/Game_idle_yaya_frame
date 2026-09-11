@@ -1,12 +1,13 @@
 ---
 name: product-spec-elicitor
-version: 2.0
 description: Elicits only the materially ambiguous parts of a new module, Product modification, Product bug, or cross-module change and returns a structured patch without writing files.
-triggers:
-  - Clarify a new feature, Product modification, Product bug, or cross-module requirement
-  - 用户提出「新功能」「修改需求」「Bug 修复」或「跨模块变更」
-priority: medium
-called_by: product-change-standardizer
+metadata:
+  version: 2.0
+  triggers:
+    - Clarify a new feature, Product modification, Product bug, or cross-module requirement
+    - 用户提出「新功能」「修改需求」「Bug 修复」或「跨模块变更」
+  priority: medium
+  called_by: product-change-standardizer
 ---
 
 # Product specification elicitor

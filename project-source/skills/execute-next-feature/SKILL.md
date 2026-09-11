@@ -1,6 +1,7 @@
 ---
 name: execute-next-feature
-description: Execute exactly one approved Feature through test impact review, TDD/verification, applicable human acceptance, independent smell review, and completion gating. English triggers: execute next feature, implement F0XX, continue feature. 中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
+description: >-
+  Execute exactly one approved Feature through test impact review, TDD/verification, applicable human acceptance, independent smell review, and completion gating. English triggers: execute next feature, implement F0XX, continue feature. 中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
 ---
 
 # Execute next Feature
