@@ -73,9 +73,14 @@ Python static wrapper, static manifest, or static-result registration command.
 
 ```powershell
 # $godot is the configured executable path; run from the project directory.
-& $godot --headless --path . --check-only --script res://path/to/changed_script.gd
-& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output reports/lint.json res://
+& $godot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
+$LASTEXITCODE
+& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output reports/lint.json res:// | Out-Host
+$LASTEXITCODE
 ```
+
+For PowerShell with the Windows GUI executable, the pipeline waits for the process;
+read `$LASTEXITCODE` immediately. An empty exit value is not a successful check.
 
 Parse changed project scripts and necessary dependants according to the actual
 impact. Run the bundled lint CLI on the full `res://` project scope, respecting
