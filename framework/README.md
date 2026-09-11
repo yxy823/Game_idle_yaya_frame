@@ -12,6 +12,7 @@
 | [tests/test_generation.py](tests/test_generation.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
+| tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
 | [review/design-quality.md](review/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/scenario-coverage.md](review/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 
@@ -33,7 +34,7 @@
 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。
 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验
 变成规则、脚本或新机制。项目提示词不要求项目连接或跟随维护源变化。
-本次只静态校对 JSON 与清单；未验证外部工具导入或逐条运行提示词。
+提示词正文及清单做静态核对；不把工具回归当成已逐条运行全部提示词。
 
 ## 复制入口
 

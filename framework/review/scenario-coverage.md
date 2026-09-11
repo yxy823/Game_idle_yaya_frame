@@ -9,7 +9,8 @@
 “人工”表示有意交给使用者，“范围外”表示不属于当前承诺。
 这些标记本身不表示运行通过。本轮未重新生成项目；在用户指定的外部测试项目覆盖修复输入后，
 执行了工具 unittest、真实 Godot lint 契约、直接解析/lint、环境及空白台账检查。
-具体结果和剩余过度设计见 [设计复盘](design-quality.md#继续排查仍然存在的过度设计)。
+当前工具回归为 133 项；真实 gdUnit 正常与负向、解析/lint 已执行。
+各轮结果和删减边界见 [设计复盘](design-quality.md#本轮过度设计的处理)。
 
 编号按职责分组；新增使用组内新编号，删除后保留编号空缺，不为排序改写已有编号。
 提示词清单复用这些编号，不再维护另一套场景 ID。
@@ -37,7 +38,7 @@
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
 | 3.1 | 首次配置或更换机器 | 流程：Agent 核对本机路径、版本、Git 及命令；显式检查环境 | 现有初始化提示词、[环境约定](../../project-source/methodology/05-document-language.md)、[环境检查](../../project-source/tools/checks/check-project-environment.py)；无 Bootstrap 程序 |
-| 3.2 | 配置 incomplete、工具缺失或版本不符 | 代码与流程：说明未就绪，处理具体原因后继续 | 空配置合法；`--require-ready` 检查已配置工具。配置 ready 不等于测试通过 |
+| 3.2 | 配置 incomplete、工具缺失或版本不符 | 代码与流程：说明未就绪，处理具体原因后继续 | 空配置合法；初始化、工具/配置变化或排障时运行 `--require-ready`，日常读取确认路径。ready 不等于测试通过 |
 | 3.3 | 空项目没有业务场景或测试 | 流程与人工：如实报告尚未创建 | 初始 Product 为空，不预设主场景；不编造 Feature、测试或成功报告来填满检查 |
 
 ## 4. 项目任务
@@ -45,8 +46,8 @@
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
 | 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-change-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../project-source/methodology/00-overview.md)；只澄清影响当前决定的内容 |
-| 4.2 | 首次生成或增量同步 Feature/Test Catalog | 流程与代码：generate/sync Skill、Catalog 合并与台账检查 | 保留 Feature ID、演进和引用语义；增量修改不等于整份重置 |
-| 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 或只读 advisor | 从当前记录、必要历史和 Git 差异判断，不通过新增 session 状态续接 |
+| 4.2 | 首次生成或增量同步 Feature/Test Catalog | 流程与代码：generate/sync Skill、Catalog 合并与台账检查 | 显式台账检查统一完整语义，没有宽松/strict 双模式；保留 ID、演进与引用 |
+| 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 或只读 advisor | 从当前记录、必要历史和 Git 差异续接；自然语言汇报，不逐阶段固定发言，不新增 session 状态 |
 | 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
 | 4.5 | Bug、行为保持重构或工程维护 | 流程：engineering-change Skill 区分 Product 意图与实现问题 | 当前任务内修复与独立新任务分别判断；不另建第二套 Bug 状态机 |
 | 4.6 | 接入或替换美术、场景、动画、音频等资源 | 流程：按意图选择 Product 或当前 Feature/工程维护路径 | 资源接入提示词及 agent-rules 资源/场景/资产模块；引用检查与人工体验分开 |
@@ -57,10 +58,10 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/Catalog，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划，Agent 仍判断影响和必要补充 |
+| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/Catalog，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划；同一 runner 的 scope 决定范围，不因维护分类自动 full；Agent 判断实际影响 |
 | 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、导入分支或通过标签 |
-| 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/run_evidence.py`、`lib/gate_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；多层证据仍待合并 |
-| 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/execution_attempts.py`、`lib/gdunit_process.py`；旧通过不能替代较新的未解决失败，不自动清理锁文件或报告 |
+| 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/run_evidence.py`、`lib/gate_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
+| 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
 | 5.5 | 验收方式与独立复审 | 流程：Stage 1 按需求决定，再填写检查项 | 视觉、声音、手感等人工判断使用 manual 并实际验收；全部 AC 可自动验证可用 automated，省略 Stage 5，不伪造接受 |
 | 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
 

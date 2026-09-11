@@ -19,7 +19,7 @@ Game_idle_yaya_frame/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md
     ├── Project_README.md      复制为项目 README.md
     ├── Project_Config.json    项目的初始环境配置
-    ├── skills/                11 项原有 Skill，完整保留
+    ├── skills/                11 项开发 Skill
     ├── methodology/           Skill 使用的流程与文档模板
     ├── agent-rules/           Godot 工程规则
     ├── tools/                 checks/ 检查、testing/ 测试、lib/ 共享实现
@@ -83,6 +83,12 @@ flowchart LR
 测试运行器直接读取当前 Feature/Catalog。脚本解析和 lint 由 Agent 按提示词/Skill
 直接调用 Godot 与插件；静态包装脚本、专用 manifest 和其校验模块已删除。资源导入由 Godot 处理。
 进度、历史和结果说明由 Agent 使用普通项目文件维护。
+
+测试每次只保留一份 `result.json` 加原始报告，删除独立尝试日志/锁、调用清单、
+重复 verdict、进程归属文件与 session 收据。覆盖范围从当前台账和报告即时计算。
+全量使用同一入口的 `--scope full`；不因 maintenance 分类自动升级。
+普通 Feature 复用已确认环境，不重复版本探测；进展使用自然语言汇报，
+不再要求逐阶段单独发言或固定句式。普通操作优先使用函数，有实际需求时才引入 Command。
 
 初始化没有命令包装或 Bootstrap 程序；Agent 按集中管理的提示词配置实际环境。
 报告保留与清理由任务明确判断，不维护另一套所有权和关闭状态。
