@@ -1,0 +1,18 @@
+{
+  "document_language": "zh-CN",
+  "engine": "Godot 4.7",
+  "environment_bootstrap": {
+    "status": "incomplete",
+    "engine_executable": "E:\\GameTools\\Godot\\4.7.1\\Godot_v4.7.1-stable_win64.exe",
+    "engine_version": ""
+  },
+  "full_test_cmd": null,
+  "python_executable": "python",
+  "language": "GDScript",
+  "test_catalog_path": "docs/test-catalog.json",
+  "test_cmd": "",
+  "test_feature_root": "tests/features",
+  "test_framework": "gdunit4",
+  "test_invariant_root": "tests/invariants",
+  "test_unit_root": "tests/unit"
+}

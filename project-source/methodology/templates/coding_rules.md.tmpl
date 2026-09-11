@@ -1,0 +1,216 @@
+# AI-assisted development · Coding Rules
+
+> This file governs the code and collaboration behavior of an AI working in this project. The AI must read it at the beginning of each session and actively follow it when proposing or implementing changes.
+>
+> **Structure:** This file contains the stack-independent collaboration contract and general architecture principles. The root `AGENTS.md` routes repository rules; `agent-rules/00-core/` contains global engineering invariants; and affected specialized `agent-rules/` modules contain concrete semantics.
+
+---
+
+# Part 1 · Collaboration contract
+
+> This part defines how the AI and human work together. It is independent of the technology stack and has the highest priority.
+
+## 1.1 Collaboration discipline
+
+1. **Avoid over-design.** Use the smallest complexity that satisfies current requirements. Do not add unused interfaces, unneeded patterns, or speculative extension points unless the user explicitly requests extensibility.
+2. **Confirm before acting on ambiguity.** When requirements are unclear or have multiple reasonable interpretations, state the current understanding and ask focused questions before writing substantial code.
+3. **Work in small steps.** Keep one change focused on one objective. Do not mix opportunistic refactoring into a bug fix or add behavior during a refactor.
+4. **Prefer consistency over personal improvement.** Existing naming, directory structure, and established patterns are the project standard. Do not replace them merely because another approach appears more elegant.
+5. **Disclose uncertainty honestly.** Mark uncertain APIs, version differences, and platform behavior as needing verification. Never invent an answer.
+6. **A rejected decision stays rejected.** Do not reintroduce a design or code approach the user rejected in a slightly different form.
+7. **Do not expand scope without approval.** Change only what the user and current Feature require. Report unrelated problems and let the user decide whether to address them.
+
+## 1.2 Workflow constraints
+
+- Every Feature implementation must use the complete `execute-next-feature` workflow. Follow the applicable preflight, verification, acceptance and review steps; Stage 5 is omitted for an approved automated acceptance plan.
+- Before the first coding Feature, complete the one-time Project Environment Bootstrap. Normal execution requires `environment_bootstrap.status: ready` and uses only confirmed commands from `docs/methodology-config.json`.
+- Decide acceptance from requirements in Stage 1, then fill the checks. Visual/audio/feel or other human judgment requires `verification.acceptance_mode: manual` and explicit human acceptance. Fully automated AC may use `automated` and omit Stage 5.
+- A Feature that changes Yaya Loop workflow rules follows the committed rules that existed when it started. Newly committed rules govern the next Feature and do not retroactively alter the current Feature's gates.
+- A new modifying task in an ordinary project repository requires a clean worktree. Execute Features on the current Git branch, including `main` or `master`. After all applicable approval, validation, acceptance, and completion Gates pass, stage only task-owned paths or inspected hunks and create the local commit unless the user explicitly requested no commit. Do not automatically push, tag, amend, rebase, reset, modify remotes, use `--no-verify`, or create, switch, merge, or delete branches.
+- Every placeholder must use the `_placeholder_` prefix and be recorded in the Feature notes.
+- Do not start another Feature while the worktree contains unresolved changes.
+
+The Stage 0 exit report must provide a concise Context / Rules Snapshot: principal records and implementation paths read, expected create/modify/delete paths, applicable rule modules, three to six task-relevant constraints with source paths, and planned validation. The Stage 6 independent fresh-context code-smell scan is also mandatory. Before completion, `docs/gate-evidence.json` must contain current-snapshot structured test evidence, human acceptance when manual mode applies, and code-smell evidence with `must_fix: 0`, otherwise the explicit evidence check reports what remains incomplete. The Agent separately runs and assesses direct script parsing and lint; evidence-helper success alone cannot authorize completion. The human-readable report still includes:
+
+```text
+Code smell scan: pass (feature: F0XX, must_fix: 0, suggest: <N>, acceptable: <M>)
+```
+
+## 1.3 Reporting requirements
+
+Every implementation delivery must include:
+
+1. **Change summary:** what changed and why, in one clear sentence.
+2. **Impact:** affected files and modules, with behavioral changes called out explicitly.
+3. **Intentionally omitted work:** anything the user might reasonably expect but that is outside the approved scope.
+4. **Verification guidance:** automated commands and concrete manual checks.
+
+## 1.4 Deviating from these rules
+
+A deviation is allowed only when:
+
+- the user explicitly requests a different approach
+- established project style conflicts with a rule and migration cost is disproportionate
+- a mandatory platform or engine convention conflicts with a general preference
+
+The AI must identify the rule and reason, for example: `This implementation deviates from Coding Rules section X because Y.`
+
+---
+
+# Part 2 · General design and architecture
+
+> These principles are independent of language and engine.
+
+## 2.1 Preferred pattern: Command
+
+> **Prefer a command object for logic that represents doing one thing.** This is one of the methodology's primary organization rules.
+
+### 2.1.1 Core idea
+
+An action often moves from inputs through several intermediate results to one output. A command object makes that process explicit and inspectable.
+
+### 2.1.2 Standard shape
+
+- Use an action-oriented class name such as `RocketMaker`, `DamageCalculator`, `PathFinder`, or `SaveLoader`.
+- Accept inputs in the constructor and store them as instance state.
+- Declare intermediate values in the constructor with empty or default values so the complete process state is visible in one place.
+- Give each intermediate step a small method that computes one value or performs one focused action.
+- Expose one public `do`, `run`, or `execute` method; select one name consistently within the project. It should read as the table of contents for the operation.
+- Other methods generally need no parameters because their inputs are constructor state or earlier intermediate results.
+
+### 2.1.3 Stack-independent example
+
+```text
+class RocketMaker:
+    def __init__(self, blueprint, materials):
+        # Inputs
+        self.blueprint = blueprint
+        self.materials = materials
+
+        # Intermediate results
+        self.validated_materials = None
+        self.assembled_parts = None
+        self.fuel_loaded = None
+
+        # Output
+        self.rocket = None
+
+    def do(self):
+        self._validate_materials()
+        self._assemble_parts()
+        self._load_fuel()
+        self._finalize()
+        return self.rocket
+
+    def _validate_materials(self): ...
+    def _assemble_parts(self): ...
+    def _load_fuel(self): ...
+    def _finalize(self): ...
+```
+
+### 2.1.4 Why this pattern is preferred
+
+- The class name documents the action.
+- The public method exposes the complete sequence without forcing readers to search through the file.
+- Small steps remain readable, testable, and replaceable.
+- Constructor state makes all intermediate values visible.
+- A command naturally supports undo, replay, recording, and AI-controlled execution when those behaviors are actually required.
+
+### 2.1.5 When not to use it
+
+- a trivial pure calculation such as `max(a, b)`
+- a stateless utility with no intermediate values
+- a codebase with a different established convention whose replacement cost is disproportionate
+
+## 2.2 Core architecture principles
+
+- **Separate data from presentation.** Use observers or an event bus so the data layer does not know the presentation layer. Presentation subscribes to state and acts as a projection; core data should run without the UI.
+- **Use an explicit state machine for meaningful state transitions.** An object with three or more states and transition rules should not represent them as scattered booleans or unrelated conditionals.
+- **Keep three logical layers.** Data and rules sit below orchestration and control, which sit below presentation and input. Higher layers call lower layers; lower layers report through events rather than reverse dependencies.
+- **Prefer composition over inheritance.** Build behavior from focused components instead of a large all-purpose base-class hierarchy.
+- **Drive adjustable behavior from data.** Levels, skill values, and entity parameters belong in configuration or data when changing them should not require code changes.
+- **Keep core rules pure.** Decisions, calculations, scoring, and similar domain rules should be callable and testable without an engine or UI.
+- **Pass dependencies explicitly.** Constructor or function parameters make dependencies visible and replaceable in tests.
+- **Keep runtime state serializable.** Core state should be representable as plain data for saves, replay, or remote debugging.
+
+## 2.3 Pattern guide
+
+The AI should recognize these situations and proactively apply the preferred pattern without asking for confirmation each time, unless project conventions or current requirements indicate otherwise.
+
+| Situation | Preferred pattern |
+| --- | --- |
+| An action transforms inputs into an output | Command |
+| Several systems react to one event | Observer or event bus |
+| A character or UI flow has multiple transitions | State machine |
+| User actions need undo, replay, recording, or AI control | Command |
+| Objects are created and destroyed at high frequency | Object pool |
+| An entity combines independent capabilities | Components; use ECS only when its added complexity is justified |
+| Presentation mirrors data | Observer plus immutable snapshots |
+| Cross-module communication chains become too long | Event bus, used sparingly because pervasive events weaken type visibility |
+
+## 2.4 Anti-patterns
+
+- **God Object:** one manager accumulates unrelated systems and responsibilities.
+- **Business logic in UI callbacks:** button handlers directly mutate domain rules that cannot be tested without the UI.
+- **Raw singletons everywhere:** global access hides dependencies and makes tests difficult.
+- **Scattered state:** many booleans replace an explicit state model.
+- **Premature abstraction:** an interface or extension point exists only for an imagined future implementation.
+- **Magic values in logic:** thresholds and tunable values are embedded instead of named or configured.
+- **Long procedural action functions:** a large `process_xxx` function obscures an operation that should be represented as a command.
+
+## 2.5 General code organization
+
+1. Organize by feature rather than file type. A `player/` area containing its data, view, and control code is preferable to distant `models/`, `views/`, and `controllers/` trees.
+2. Keep one core concept per file. Split when cohesion, responsibility, readability, or testability justify it; numeric thresholds belong to the project's machine-readable validation configuration and do not automatically authorize a split.
+3. Keep entry points limited to assembly, dependency injection, and startup.
+4. Centralize adjustable configuration under a focused config or data area.
+5. Do not create miscellaneous dumping grounds such as `utils.py` or `helpers.ts`; name utilities by domain or responsibility.
+
+## 2.6 Error handling
+
+- Distinguish expected failures from exceptional failures. A temporarily unavailable user action may be ignored or explained; corrupted persistent data should produce an explicit error and diagnostic record.
+- Never swallow an exception silently. Log it and explain why continuation is safe when it is intentionally tolerated.
+- Provide a recognizable fallback resource or an actionable error when an image, audio file, or configuration fails to load.
+- Use assertions during development to protect invariants that should never be violated.
+
+## 2.7 Performance defaults
+
+- Measure before optimizing. Do not optimize from intuition alone.
+- Use object pools only for genuinely high-frequency allocation and destruction.
+- Do not sacrifice readability unless measurement identifies the code as a meaningful hotspot.
+
+---
+
+# Part 3 · Project rule sources
+
+> Concrete engine, language, and domain behavior is maintained in the
+> repository's routed rule documents rather than copied into this template.
+
+## 3.1 Repository routing
+
+The project root `AGENTS.md` is the rule router and records the repository
+workflow. It directs the agent to:
+
+- `agent-rules/00-core/` for global engineering invariants and precedence;
+- each affected specialized `agent-rules/<module>/` README for its concrete
+  Godot, GDScript, or domain rules;
+- the concrete documents listed by those READMEs, including each module's
+  always-applicable `validation.md`.
+
+`methodology/` remains the source for Product/Feature workflow, Test Impact
+Review, traceability, human acceptance, and completion gates.
+
+## 3.2 Loading and conflicts
+
+Before editing, read `AGENTS.md`, the Core README, and the README plus routed
+concrete documents for every affected domain. Apply the Core precedence
+protocol and report a real contradiction instead of silently choosing a source.
+
+This template must not create a second concrete-rule tree or copy current
+engine, language, tool, or project status into `docs/coding_rules.md`.
+
+## 3.3 Environment Bootstrap
+
+Environment setup status, observed Godot version, executable paths, and command
+strings are owned by `docs/methodology-config.json`. The workflow reads that
+configuration and does not infer or duplicate its current values here.

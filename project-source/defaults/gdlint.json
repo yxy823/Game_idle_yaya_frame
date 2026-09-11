@@ -1,0 +1,57 @@
+{
+  "metrics": {
+    "file_length": "physical",
+    "function_length": "physical"
+  },
+  "limits": {
+    "file_lines_soft": 400,
+    "file_lines_hard": 600,
+    "function_lines": 40,
+    "function_lines_critical": 70,
+    "max_parameters": 5,
+    "max_nesting": 3,
+    "max_line_length": 100,
+    "cyclomatic_warning": 10,
+    "cyclomatic_critical": 15,
+    "god_class_functions": 20,
+    "god_class_signals": 10,
+    "god_class_exports": 15
+  },
+  "checks": {
+    "file_length": true,
+    "function_length": true,
+    "cyclomatic_complexity": true,
+    "parameters": true,
+    "nesting": true,
+    "long_lines": true,
+    "todo_comments": true,
+    "print_statements": true,
+    "empty_functions": true,
+    "magic_numbers": true,
+    "commented_code": true,
+    "missing_types": true,
+    "missing_return_type": true,
+    "god_class": true,
+    "naming_conventions": true,
+    "unused_variables": true,
+    "unused_parameters": true,
+    "ignore_underscore_prefix": true,
+    "ascii_only": true,
+    "ascii_only_project_wide": false,
+    "strict_limits": true,
+    "sealed": true
+  },
+  "scanning": {
+    "respect_gdignore": true,
+    "scan_addons": false,
+    "respect_ignore_directives": true,
+    "included_addons": [],
+    "excluded_addons": []
+  },
+  "exclude": {
+    "paths": [
+      "addons/",
+      ".godot/"
+    ]
+  }
+}

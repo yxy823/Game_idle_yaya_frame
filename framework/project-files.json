@@ -1,0 +1,86 @@
+[
+  {
+    "source": "project-source/skills",
+    "target": ".agents/skills"
+  },
+  {
+    "source": "project-source/methodology",
+    "target": "methodology"
+  },
+  {
+    "source": "project-source/tools",
+    "target": "tools"
+  },
+  {
+    "source": "project-source/agent-rules",
+    "target": "agent-rules"
+  },
+  {
+    "source": "project-source/addons/gdUnit4",
+    "target": "addons/gdUnit4"
+  },
+  {
+    "source": "project-source/addons/gdscript-linter",
+    "target": "addons/gdscript-linter"
+  },
+  {
+    "source": "project-source/Project_AGENTS.md",
+    "target": "AGENTS.md"
+  },
+  {
+    "source": "project-source/Project_README.md",
+    "target": "README.md"
+  },
+  {
+    "source": "project-source/Project_Config.json",
+    "target": "docs/methodology-config.json"
+  },
+  {
+    "source": "project-source/defaults/.editorconfig",
+    "target": ".editorconfig"
+  },
+  {
+    "source": "project-source/defaults/.gitattributes",
+    "target": ".gitattributes"
+  },
+  {
+    "source": "project-source/defaults/.gitignore",
+    "target": ".gitignore"
+  },
+  {
+    "source": "project-source/defaults/docs",
+    "target": "docs"
+  },
+  {
+    "source": "project-source/defaults/docs/.gdignore",
+    "target": "reports/.gdignore"
+  },
+  {
+    "source": "project-source/methodology/templates/feature-list.json.tmpl",
+    "target": "docs/feature-list.json"
+  },
+  {
+    "source": "project-source/methodology/templates/feature-list-revisions.json.tmpl",
+    "target": "docs/feature-list-revisions.json"
+  },
+  {
+    "source": "project-source/methodology/templates/test-catalog.json.tmpl",
+    "target": "docs/test-catalog.json"
+  },
+  {
+    "source": "project-source/methodology/templates/progress.md.tmpl",
+    "target": "docs/progress.md"
+  },
+  {
+    "source": "project-source/methodology/templates/coding_rules.md.tmpl",
+    "target": "docs/coding_rules.md"
+  },
+  {
+    "source": "project-source/defaults/gdlint.json",
+    "target": "gdlint.json"
+  },
+  {
+    "source": "project-source/defaults/project.godot",
+    "target": "project.godot"
+  }
+]

@@ -1,0 +1,19 @@
+; Project name and startup scene are configured during project setup.
+config_version=5
+
+[application]
+config/name="New Godot Project"
+config/features=PackedStringArray("4.7")
+
+[editor_plugins]
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+
+[gdunit4]
+hooks/session_hooks=Dictionary[String, bool]({
+"res://tools/testing/gdunit_diagnostic_session.gd": true
+})
+report/godot/push_error=true
+report/godot/script_error=true
+report/verbose_orphans=true
+settings/test/flaky_check_enable=false
+settings/test/test_lookup_folder="tests"

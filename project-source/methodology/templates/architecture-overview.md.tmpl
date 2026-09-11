@@ -1,0 +1,34 @@
+# Architecture overview
+
+> Optional, human-owned project map. Explain responsibility and permitted
+> dependencies; generated reference facts do not define architecture authority.
+
+## Modules and responsibility
+
+| Module | Responsibility | Owning boundary | Why this boundary exists |
+| --- | --- | --- | --- |
+
+## Allowed dependency directions
+
+Describe the permitted directions between project-level modules and the reason
+for each constraint. Record deliberate exceptions and their owner. Do not
+require a full class-level graph.
+
+## Complex subsystems
+
+Link a separate `architecture/<subsystem>.md` only when a subsystem needs more
+detail than this overview. Keep the overview at project level.
+
+## Extracted facts
+
+Optional generated facts live separately under `reports/architecture-facts/`.
+Label extractor, source snapshot, scope and limitations. Explicit resource,
+path or type references are evidence of references, not proof of allowed
+dependencies, runtime ownership or architectural intent.
+
+## Maintenance
+
+Update this map when a change alters module responsibility or an allowed
+dependency direction. Ordinary implementation changes do not require a new
+diagram. Resolve conflicts with Product, Coding Rules and approved decisions;
+do not silently replace human intent with generated output.

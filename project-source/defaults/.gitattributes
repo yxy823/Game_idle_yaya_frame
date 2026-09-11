@@ -1,0 +1,107 @@
+# ============================================================
+# Default
+# ============================================================
+# 自动识别文本文件，并默认统一为 LF；Windows 命令脚本在下方单独覆盖
+* text=auto eol=lf
+
+
+# ============================================================
+# Git configuration files
+# ============================================================
+.gitattributes text eol=lf
+.gitignore text eol=lf
+
+
+# ============================================================
+# Source code
+# ============================================================
+*.gd text eol=lf
+*.gdshader text eol=lf
+*.tscn text eol=lf
+*.tres text eol=lf
+*.godot text eol=lf
+*.gdextension text eol=lf
+*.uid text eol=lf
+
+*.py text eol=lf
+*.sh text eol=lf
+*.ps1 text eol=lf
+
+*.js text eol=lf
+*.ts text eol=lf
+*.jsx text eol=lf
+*.tsx text eol=lf
+
+*.html text eol=lf
+*.css text eol=lf
+*.xml text eol=lf
+*.svg text eol=lf
+
+*.scss text eol=lf
+*.svelte text eol=lf
+
+
+# ============================================================
+# Configuration / data / documentation
+# ============================================================
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.cfg text eol=lf
+*.ini text eol=lf
+*.lock text eol=lf
+*.csv text eol=lf
+
+.skill-source text eol=lf
+
+# Preserve the pinned vendor file byte-for-byte while excluding its upstream
+# trailing EOF blank line from Git's whitespace gate.
+addons/gdscript-linter/docs/IGNORE_RULES.md whitespace=-blank-at-eof
+
+
+# ============================================================
+# Environment templates
+# ============================================================
+# 注意：真实 .env 通常应由 .gitignore 忽略；
+# 这里主要用于 .env.example / .env.template 等模板文件。
+.env.example text eol=lf
+*.env.example text eol=lf
+.env.template text eol=lf
+*.env.template text eol=lf
+
+
+# ============================================================
+# Windows command scripts
+# ============================================================
+# bat / cmd 保留 CRLF，更符合 Windows 原生脚本习惯
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+
+# ============================================================
+# Binary files
+# ============================================================
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+
+*.pdf binary
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+
+*.pyc binary
+*.pyd binary
