@@ -19,16 +19,13 @@ Human control is mandatory:
 
 Automated tests never imply human acceptance. Features approved for automated acceptance omit Stage 5; they do not record fictitious human acceptance.
 
-## Stage conversation updates
+## Progress communication
 
-Follow the canonical [Stage conversation updates](../../../methodology/03-execute-loop.md#stage-conversation-updates) contract:
-
-- After every completed Stage (0–8, including applicable Stage 5.5), the agent must immediately send one user-visible conversation message before any next-Stage operation. Never batch updates at the end or fabricate retrospective messages.
-- In the current conversation language, use 1–3 sentences stating the Stage number/name, work actually completed, actual check results, and whether to continue or wait (and for what). Summarize the Stage, not individual tool calls; preserve the existing required snapshots, approval packets, human checklists, and handoff details.
-- Reporting adds no approval checkpoint: Stage 1 presents its packet and waits for approval, then reports completion after explicit approval and before Stage 2 operations. Stage 4 announces whether the approved plan requires Stage 5; Stage 5 reports completion only after explicit acceptance is recorded. Stage 8's final handoff is its completion message and stops. Other Stages report and continue within existing authorization; preserve all existing conditional approvals, including Bug-guardrail promotion.
-- Immediately report `BLOCKED`, failure, or return to an earlier Stage with the current Stage, reason, actual check result, and next action before dependent operations. Do not claim incomplete work is complete.
-- Include the unchanged, untranslated Stage 4 / Stage 6 exact summary line once in that Stage's same message alongside the 1–3 sentences; do not send a duplicate update.
-- Messages do not replace structured Gate evidence or existing Gates. Do not add report files or chat-text/regex gates for these updates.
+Report meaningful progress, actual failures, decisions needed and final handoff in the
+conversation language. Adjacent routine steps may share an update; do not emit a
+message for every Stage or tool action. Keep the approval packet, applicable human
+checklist and final result reviewable. Use natural wording, not fixed evidence strings.
+Updates do not replace actual test results or grant approval.
 
 When this Stage actually executes static/lint, include the canonical compact
 static table: scope/file count, Critical, Warning, Info, process result and
@@ -40,7 +37,7 @@ If reusing a run, identify its run and same content snapshot; prose does not rep
 
 1. Read `docs/feature-list.json`; resume the authorized current Feature/batch, otherwise use the requested Feature or a DAG-eligible `pending` Feature. `tools/checks/check-feature-list.py --eligible` derives eligibility; larger IDs may be prerequisites and IDs only break ties. Do not invent batch authorization.
 2. Run `git status --porcelain` under `agent-rules/00-core/git-worktree-and-commits.md`. Execute on the current branch, including `main` or `master`; do not change branches. A new Feature requires a clean worktree. A resumed Feature may continue only when every dirty path is demonstrably owned by that Feature; stop on unrelated or ambiguous changes.
-3. Run `python -B tools/checks/check-project-environment.py --require-ready`. If the one-time Project Environment Bootstrap is incomplete, stop and route the missing setup through maintenance/project setup; never guess commands. The stack is fixed to Godot 4.7 / GDScript / gdunit4. Incomplete machine setup is legal but does not authorize execution; consult `methodology/00-overview.md`.
+3. Read the confirmed environment configuration. Incomplete Bootstrap blocks coding; never guess commands. Run `python -B tools/checks/check-project-environment.py --require-ready` during initialization, after tool/configuration changes, or when diagnosing an actual invocation failure. Ordinary Features reuse confirmed paths without repeating version discovery.
 4. Load detail, Product source, dependency details, current Progress, complete Coding Rules, `docs/methodology-config.json`, `docs/test-catalog.json` when testing is enabled, and the principal implementation files/directories needed to bound the change. Follow only relevant Progress history links. Read optional Architecture Overview/subsystem maps when responsibility or dependency boundaries matter. Complete Coding Rules means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed installed module applicable to the Feature.
 5. Present a concise Context / Rules Snapshot containing the Feature record path; principal Product and implementation paths read; expected create/modify/delete paths; applicable `agent-rules/**` modules; three to six task-relevant rules with source paths; and principal planned validation. Reference rule sources instead of copying whole documents.
 6. Report ID/title/status/dependencies/source, `affected_components`, stable criterion IDs/text, engineering mode, and the snapshot.
@@ -73,7 +70,7 @@ The affected union also includes active acceptance tests intersecting affected c
 Determine whether full suite is required when:
 
 - an affected catalog component has `full_suite_on_change: true`;
-- project-wide/shared test infrastructure or toolchain changes;
+- infrastructure or toolchain changes have actual project-wide impact; task classification alone is insufficient;
 - dependency upgrade has broad impact;
 - impact cannot be bounded reliably;
 - user requires it.
@@ -97,7 +94,7 @@ After approval:
 4. add new durable acceptance/regression catalog entries with `status: planned`;
 5. add approved component catalog entries when missing, using `unit_test_paths: []` if no unit suite exists;
 6. initialize `docs/gate-evidence.json` with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py initialize --feature F0XX`;
-7. run `python -B tools/checks/check-feature-list.py --strict`.
+7. run `python -B tools/checks/check-feature-list.py`.
 
 ## Stage 3 — baseline + TDD + implementation
 
@@ -124,22 +121,18 @@ Implement the smallest coherent change until the new test passes. Refactor local
 
 ## Stage 4 — automated verification + applicable human checklist
 
-Read the Python/Godot paths, `test_cmd`, and `full_test_cmd` from `docs/methodology-config.json` or the repository's explicit authoritative equivalent. Never invent runner syntax.
+Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or the repository's explicit authoritative equivalent. Never invent runner syntax.
 
 1. Run the configured test runner with `--feature F0XX --scope auto`. It reads the current Feature/Test Catalog, selects and deduplicates tests, and prints selection reasons; no separate plan file is written.
 2. Inspect the selection and actual results. A required full run covers Required/affected subsets once for the same content snapshot; otherwise execute the affected union, which includes Required. Never repeat equivalent runs only to fill separate Gate fields.
 3. Directly run Godot script parsing for changed scripts and necessary dependants, and the bundled lint CLI, following `methodology/gdscript-lint.md`. Read their actual exit codes and output. Required failures block completion. Do not create a wrapper, static manifest, or scripted import step.
 4. For Bug Features verify every approved regression ID is active/passing, or use the explicitly approved manual regression gap.
 5. A required full suite must actually pass; failure, unavailable execution, missed cases or stale evidence block completion.
-6. Import actual evidence with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <manifest.json>`. Counts are derived from verified run/verdict/JUnit and actual case sets; caller-supplied counts and transcript prose cannot authorize PASS.
+6. Import actual evidence with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <result.json>`. Counts are computed from the current selection, result.json and original reports; caller-supplied counts and transcript prose cannot authorize PASS.
 7. Any failure returns to Stage 3.
 8. For `acceptance_mode: manual`, produce instructions from the approved human checks. For `automated`, report the actual automated AC coverage.
 
-Include this exact summary once in the Stage 4 conversation update, before following the approved acceptance route:
-
-```text
-Test verification: pass (feature: F0XX, required: <N>, failed: 0, full_suite: <pass|not_required>)
-```
+Report the actual test scope, failures and result path in ordinary language.
 
 For `manual`, wait for Stage 5. For `automated`, omit Stage 5 and proceed to Stage 5.5 for a Bug or Stage 6 otherwise; report that manual acceptance was not required, not that the user accepted.
 
@@ -171,24 +164,22 @@ Use a fresh context/subagent equivalent. It reads full Coding Rules and changed 
 
 Every `must_fix` must be repaired. After each repair batch confirm the current Feature verification mappings and repeat Stage 4: one required full run, or the affected union including Required, plus static checks. A successful full run covering Required/affected on the same content snapshot satisfies those subsets without duplicate runs. Before completion, verify all required results cover the final repair snapshot and import them again after code/test changes. If repair may alter behavior already human-accepted, return through Stages 3–5.
 
-Append `suggest` items to Feature notes as TODOs. Re-scan until `must_fix` is zero, record the result with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell`, then include this exact summary once in the Stage 6 conversation update, before Stage 7 operations:
-
-```text
-Code smell scan: pass (feature: F0XX, must_fix: 0, suggest: <N>, acceptable: <M>)
-```
+Append `suggest` items to Feature notes as TODOs. Re-scan until `must_fix` is zero,
+record the result with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell`,
+and summarize material findings and remaining work in ordinary language.
 
 ## Stage 7 — completion
 
-Entry requires verified run and code-smell evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. Direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. The human-readable lines above cannot authorize completion by themselves.
+Entry requires verified run and code-smell evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. Direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. A summary alone does not prove execution.
 
 Run:
 
 ```powershell
 python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX
-python -B tools/checks/check-feature-list.py --strict --completion-feature F0XX
+python -B tools/checks/check-feature-list.py --completion-feature F0XX
 ```
 
-Then set status `done` and `completed_at` to current ISO 8601 timestamp. Run strict validation again. Archive the current history once under `docs/progress/<Feature-or-approved-batch>.md`; keep only an index link and current handoff in Progress. Feature notes own durable decisions and TODOs, with links rather than repeated history. Follow `methodology/09-artifact-lifecycle.md`.
+Then set status `done` and `completed_at` to current ISO 8601 timestamp. Validate the final ledger after the status update. Archive the current history once under `docs/progress/<Feature-or-approved-batch>.md`; keep only an index link and current handoff in Progress. Feature notes own durable decisions and TODOs, with links rather than repeated history. Follow `methodology/09-artifact-lifecycle.md`.
 
 Before the local commit:
 

@@ -127,9 +127,6 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     for key in ("test_cmd",):
         if not isinstance(config.get(key), str):
             errors.append(f"{key} must be a string")
-    if config.get("full_test_cmd") is not None and not _nonempty_string(config.get("full_test_cmd")):
-        errors.append("full_test_cmd must be null or a non-empty command string")
-
     bootstrap = config.get("environment_bootstrap")
     if not isinstance(bootstrap, dict):
         return errors + ["environment_bootstrap must be an object"]
@@ -187,16 +184,11 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
         elif not re.match(r"^4\.7\.\d+(?:\.|$)", observed_version):
             errors.append("engine executable must report Godot 4.7.x")
 
-    required_commands = {
-        "primary test runner": config.get("test_cmd"),
-    }
-    if config.get("full_test_cmd") is not None:
-        required_commands["full test runner"] = config["full_test_cmd"]
-    for label, value in required_commands.items():
-        if not _nonempty_string(value):
-            errors.append(f"{label} is not configured")
-        elif not _command_exists(value, repo_root):
-            errors.append(f"{label} executable is unavailable: {_command_head(value)!r}")
+    command = config.get("test_cmd")
+    if not _nonempty_string(command):
+        errors.append("primary test runner is not configured")
+    elif not _command_exists(command, repo_root):
+        errors.append(f"primary test runner executable is unavailable: {_command_head(command)!r}")
 
     return errors
 

@@ -23,7 +23,6 @@ Before rendering any template:
 | `gate-evidence.json.tmpl` | Current-Feature test, human-acceptance, review, Git revision, and working-tree evidence used by the explicit completion check. |
 | `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
 | `coding_rules.md.tmpl` | Stack-independent collaboration and architecture rules, with pointers to the root router and routed project rules. |
-| `run-manifest.json.tmpl` | Actual-run evidence shape; placeholders are not executed results. |
 | `stage8-learning.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |
 | `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps, separate from generated reference facts. |
 
@@ -32,7 +31,6 @@ The authoritative Feature/test field semantics and invariants live in `../02-fea
 Lint metric semantics, the controlled vendor patch and executable contract
 checks are documented in `../gdscript-lint.md`.
 
-`full_test_cmd` may be rendered as JSON `null` when the project has no distinct full-suite command. Do not render the string `"null"`.
 
 Project configuration is stored in `docs/methodology-config.json`.
 Use the templates above when a task needs Product, Feature, test or history records.

@@ -3,14 +3,12 @@ from __future__ import annotations
 from project_context import PROJECT_ROOT
 
 import copy
-import importlib.util
 import json
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest import mock
 
 REPO_ROOT = PROJECT_ROOT
 MERGE_HELPER = (
@@ -68,7 +66,7 @@ class UnitTestPathsTests(unittest.TestCase):
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
         return subprocess.run(
-            [sys.executable, "-B", str(checker), "--strict"],
+            [sys.executable, "-B", str(checker)],
             cwd=self.root, text=True, capture_output=True, check=False,
         )
 
@@ -185,20 +183,11 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(self._strict().returncode, 0)
         # The directory still exists, so filesystem checks retain its selector.
         # The runner's zero-discovery report, modeled below, must fail instead.
-        spec = importlib.util.spec_from_file_location(
-            "unit_catalog_gdunit_runner", REPO_ROOT / "tools/testing/run-gdunit-tests.py"
-        )
-        assert spec is not None and spec.loader is not None
-        runner = importlib.util.module_from_spec(spec)
-        sys.modules[spec.name] = runner
-        self.addCleanup(sys.modules.pop, spec.name, None)
-        # Match direct script invocation without relying on another test's imports.
-        with mock.patch.object(sys, "path", [str(REPO_ROOT), *sys.path]):
-            spec.loader.exec_module(runner)
-        verdict = runner._evaluate_report_root(runner._fixture_xml(tests=0), None)
-        reasons = runner._failure_reasons(verdict, 0, None)
-        self.assertIn("no tests were discovered", reasons)
-        self.assertIn("no tests were executed", reasons)
+        from tools.lib.run_evidence import read_junit_cases
+        report = self.root / "results.xml"
+        report.write_text('<testsuites tests="0" failures="0" skipped="0" flaky="0"/>', encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "zero|no tests|no executed"):
+            read_junit_cases(report)
 
 
 if __name__ == "__main__":

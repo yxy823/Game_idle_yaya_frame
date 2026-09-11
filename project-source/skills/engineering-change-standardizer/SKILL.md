@@ -155,7 +155,7 @@ After approval:
 1. append the Feature to `docs/feature-list.json`;
 2. create the matching `docs/features/F0XX.json` with `affected_components`, stable `ACxx` criteria, and empty execution-time verification mappings;
 3. update `meta.total_features`;
-4. validate all affected JSON and Feature invariants with `python -B tools/checks/check-feature-list.py --strict`;
+4. validate all affected JSON and Feature invariants with `python -B tools/checks/check-feature-list.py`;
 5. do not modify `docs/feature-list-revisions.json`, because no Product/Coding-Rules source synchronization occurred;
 6. inspect `git status --short`, stage only the task-owned Feature-plan paths or inspected hunks, and run `git diff --cached --check`, `git diff --cached --stat`, and the complete `git diff --cached` review;
 7. unless the user explicitly requested no commit, create one local commit without asking again, using `<type>(<scope>): <中文行为摘要>` and a body containing `Work item: docs/features/F0XX.json` plus the meaningful reason/validation summary;

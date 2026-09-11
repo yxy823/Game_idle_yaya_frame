@@ -1,21 +1,19 @@
-"""Verify test-run artifacts rather than accepting caller-supplied pass counts.
+"""Read one run result and its original gdUnit reports.
 
-The manifest is a local audit chain, not a signature against a malicious actor
-who can rewrite the repository and every artifact. The trusted boundary is the
-checked-in wrapper that launches the runner and records its actual outputs.
+These are local execution records, not a signature against an actor who can
+rewrite the project. Current content, actual case coverage and unresolved
+failures matter; duplicated manifests and receipts do not add authority.
 """
-# 实际运行的证据读取端；manifest 是本地可审计引用链，不是对任意改写者的数字签名。
 from __future__ import annotations
 
 import hashlib
 import os
 import re
-import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from tools.lib.gate_evidence import current_snapshot, write_evidence
+from tools.lib.gate_evidence import current_snapshot, utc_now, write_evidence
 from tools.lib.test_selection import execution_selectors, normalized_path, read_json, build_selection
 
 
@@ -206,7 +204,7 @@ def expected_gdunit_cases(root: Path, selectors: list[str]) -> list[dict[str, st
         if not names or not inheritance.is_suite(path):
             continue
         relative = path.relative_to(root).as_posix()
-        expected.extend({"path": relative, "case": name, "source_hash": file_hash(path)} for name in names)
+        expected.extend({"path": relative, "case": name} for name in names)
     return sorted(expected, key=lambda item: (item["path"], item["case"]))
 
 
@@ -245,25 +243,6 @@ def verify_runtime_discovery(path: Path, engine_pid: int, cases: list[dict[str, 
     return [{**case, "method": indexed[case["id"]]["method"]} for case in cases]
 
 
-def owned_engine_pid(ownership_path: Path, discovery_path: Path, launcher_pid: int) -> int:
-    """Bind the engine's identity to processes observed by the wrapper's OS guard."""
-    try:
-        ownership, discovery = read_json(ownership_path), read_json(discovery_path)
-    except ValueError as exc:
-        raise RunEvidenceError(f"missing owned process evidence: {exc}") from exc
-    owned = ownership.get("owned_pids")
-    if (ownership.get("schema_version") != 1 or ownership.get("launcher_pid") != launcher_pid
-            or ownership.get("source") != "windows-job"
-            or not isinstance(owned, list) or not owned
-            or any(type(pid) is not int or pid <= 0 for pid in owned)
-            or launcher_pid not in owned):
-        raise RunEvidenceError("invalid owned process evidence")
-    engine_pid = discovery.get("engine_pid")
-    if type(engine_pid) is not int or engine_pid not in owned:
-        raise RunEvidenceError("discovered engine process was not observed in the owned process scope")
-    return engine_pid
-
-
 def require_coverage(cases: list[dict[str, str]], obligations: list[dict[str, Any]]) -> list[str]:
     covered: set[str] = set()
     for obligation in obligations:
@@ -277,231 +256,162 @@ def require_coverage(cases: list[dict[str, str]], obligations: list[dict[str, An
     return sorted(covered)
 
 
-def artifact_reference(directory: Path, path: Path) -> dict[str, Any]:
-    resolved = path.resolve()
-    if not resolved.is_relative_to(directory.resolve()):
-        raise RunEvidenceError("run artifact must be inside its own run directory")
-    return {"path": resolved.relative_to(directory.resolve()).as_posix(),
-            "sha256": file_hash(resolved), "mtime_ns": resolved.stat().st_mtime_ns}
+def artifact_reference(directory: Path, path: Path) -> dict[str, str]:
+    relative = path.resolve().relative_to(directory.resolve()).as_posix()
+    return {"path": relative, "sha256": file_hash(path)}
 
 
-def write_run_manifest(root: Path, directory: Path, *, feature_id: str, phase: str, scope: str,
-                       snapshot_before: dict[str, str], started_ns: int, command: list[str],
-                       wrapper_exit: int, junit_path: Path | None, expected: list[dict[str, str]]) -> Path:
-    snapshot_after = current_snapshot(root)
-    artifacts = {"verdict": artifact_reference(directory, directory / "verdict.json"),
-                 "invocation": artifact_reference(directory, directory / "invocation.json"),
-                 "engine_log": artifact_reference(directory, directory / "engine.log")}
-    cases = []
-    runtime_discovery = []
-    discovery_path = directory / "discovery.json"
-    if discovery_path.is_file():
-        artifacts["discovery"] = artifact_reference(directory, discovery_path)
-        try:
-            runtime_discovery = read_json(discovery_path).get("cases", [])
-        except ValueError:
-            wrapper_exit = 1
-    ownership_path = directory / "process-ownership.json"
-    if ownership_path.is_file():
-        artifacts["process_ownership"] = artifact_reference(directory, ownership_path)
-    receipt_path = directory / "session-receipt.json"
-    if receipt_path.is_file():
-        artifacts["session_receipt"] = artifact_reference(directory, receipt_path)
-    if junit_path is not None:
-        artifacts["junit"] = artifact_reference(directory, junit_path)
-        diagnostic_path = junit_path.parent / "diagnostics.jsonl"
-        if diagnostic_path.is_file():
-            artifacts["diagnostics"] = artifact_reference(directory, diagnostic_path)
-        try:
-            cases = read_junit_cases(junit_path)
-        except RunEvidenceError:
-            # Preserve invalid evidence as a failed run, never repair its report.
-            wrapper_exit = 1
-    from tools.lib.execution_attempts import run_attempt
-    result = {"schema_version": 4, "run_id": directory.name, "adapter": "gdunit4",
-              "attempt_hash": run_attempt(root, directory)["hash"],
-              "started_ns": started_ns, "finished_ns": time.time_ns(), "command": command,
-              "runner_identity": {"path": str(Path(command[0]).resolve()), "sha256": file_hash(Path(command[0]))},
-              "snapshot_before": snapshot_before, "snapshot_after": snapshot_after,
+def _run_records(root: Path) -> list[dict]:
+    """Read the runner's own result files; no separate journal or lock state."""
+    return [read_json(path) for path in (root / "reports/gdunit-wrapper").glob("run-*/result.json")]
+
+
+def start_run(root: Path, directory: Path, feature_id: str | None,
+              phase: str, scope: str) -> dict:
+    # Persist before setup/launch: an interrupted or failed launch remains visible.
+    records = _run_records(root)
+    result = {"schema_version": 1, "run_id": directory.name,
+              "sequence": 1 + max((item["sequence"] for item in records), default=0),
               "feature_id": feature_id, "phase": phase, "scope": scope,
-              "selectors": [command[index + 1] for index, arg in enumerate(command[:-1]) if arg == "-a"],
-              "declared_cases": expected, "discovered_cases": cases,
-              "runtime_discovery": runtime_discovery,
-              "executed_ids": sorted(case["id"] for case in cases if case["status"] != "skipped"),
-              "wrapper_exit": wrapper_exit, "artifacts": artifacts}
-    path = directory / "manifest.json"
-    write_evidence(path, result)
-    return path
+              "snapshot": current_snapshot(root) if feature_id else None,
+              "started_at": utc_now(), "finished_at": None,
+              "command": [], "selectors": [], "status": "running",
+              "process": None, "errors": [], "artifacts": {}}
+    write_evidence(directory / "result.json", result)
+    return result
 
 
-def _verified_artifact(directory: Path, reference: dict[str, Any]) -> Path:
-    path = (directory / reference["path"]).resolve()
-    if not path.is_relative_to(directory.resolve()) or not path.is_file():
-        raise RunEvidenceError("artifact missing or outside its originating run directory")
-    # File timestamps can be rounded, copied or adjusted independently of the
-    # wrapper clock. They remain audit metadata, never proof of run provenance.
-    if file_hash(path) != reference["sha256"]:
-        raise RunEvidenceError(f"run artifact changed after execution: {path.name}")
-    return path
+def result_reference(root: Path, path: Path) -> dict[str, str]:
+    return artifact_reference(root, path)
 
 
-# 本次进程/session、发现集合、JUnit 引用及哈希共同约束新鲜度，避免依赖低精度 mtime。
-def verify_session_receipt(directory: Path, files: dict[str, Path], engine_pid: int) -> None:
-    """Verify hashes sealed by the actual engine after its reporters completed."""
-    if files.get("session_receipt") != directory / "session-receipt.json":
-        raise RunEvidenceError("actual engine session receipt is missing")
-    try:
-        receipt = read_json(files["session_receipt"])
-    except (ValueError, OSError) as exc:
-        raise RunEvidenceError(f"cannot read actual engine session receipt: {exc}") from exc
-    if (receipt.get("schema_version") != 1 or receipt.get("run_id") != directory.name
-            or receipt.get("engine_pid") != engine_pid or receipt.get("exit_code") != 0):
-        raise RunEvidenceError("engine session receipt belongs to a different or failed run")
-    if receipt.get("invocation_sha256") != file_hash(files["invocation"]):
-        raise RunEvidenceError("engine session receipt does not match this invocation")
-    sealed = receipt.get("artifacts")
-    if not isinstance(sealed, dict) or set(sealed) != {"discovery", "junit", "diagnostics"}:
-        raise RunEvidenceError("engine session receipt has an incomplete artifact set")
-    for name, reference in sealed.items():
-        if (not isinstance(reference, dict) or set(reference) != {"path", "sha256"}
-                or any(not isinstance(value, str) or not value for value in reference.values())):
-            raise RunEvidenceError("malformed engine session artifact receipt")
+def _checked_cases(root: Path, directory: Path, result: dict) -> list[dict]:
+    """Use raw reports once; result.json does not duplicate their case arrays."""
+    process = result.get("process") or {}
+    if process.get("returncode") != 0 or process.get("timed_out") is not False:
+        raise RunEvidenceError("test process failed or timed out")
+    files = {}
+    for name, reference in result["artifacts"].items():
         path = (directory / reference["path"]).resolve()
-        if path != files.get(name) or file_hash(path) != reference["sha256"]:
-            raise RunEvidenceError(f"artifact differs from actual engine session: {name}")
-
-
-def verify_run(root: Path, reference: dict[str, str], selection: dict[str, Any]) -> dict[str, Any]:
-    require_supported_adapter(root)
-    path = (root / reference["path"]).resolve()
-    if not path.is_relative_to((root / "reports").resolve()) or not path.is_file():
-        raise RunEvidenceError("run manifest must exist under repository reports/")
-    if file_hash(path) != reference["sha256"]:
-        raise RunEvidenceError("run manifest changed after recording")
-    manifest = read_json(path)
-    if manifest.get("schema_version") != 4 or manifest.get("adapter") != "gdunit4":
-        raise RunEvidenceError("unsupported run manifest schema/adapter")
-    if manifest.get("feature_id") != selection["feature_id"]:
-        raise RunEvidenceError("run belongs to a different Feature")
-    if manifest.get("phase") != "final":
-        raise RunEvidenceError("baseline runs cannot authorize completion")
-    fingerprint = current_snapshot(root)["working_tree_fingerprint"]
-    if any(manifest[key].get("working_tree_fingerprint") != fingerprint for key in ("snapshot_before", "snapshot_after")):
-        raise RunEvidenceError("source changed before/during/after the recorded run")
-    if manifest["wrapper_exit"] != 0:
-        raise RunEvidenceError("test wrapper did not pass")
-    if manifest["run_id"] != path.parent.name or not isinstance(manifest["started_ns"], int) or not isinstance(manifest["finished_ns"], int):
-        raise RunEvidenceError("invalid run identity/timestamps")
-    if manifest["started_ns"] <= 0 or manifest["finished_ns"] <= 0:
-        raise RunEvidenceError("invalid run timestamps")
-    files = {name: _verified_artifact(path.parent, item)
-             for name, item in manifest["artifacts"].items()}
-    verdict = read_json(files["verdict"])
-    if verdict.get("returncode") != 0 or verdict.get("timed_out") is not False or verdict.get("failure_reasons") != []:
-        raise RunEvidenceError("wrapper verdict records process/timeout/diagnostic failure")
-    if verdict.get("startup_diagnostics") != []:
-        raise RunEvidenceError("wrapper verdict records unexpected diagnostics")
-    invocation = read_json(files["invocation"])
-    if invocation.get("command") != manifest["command"]:
-        raise RunEvidenceError("manifest command differs from actual invocation")
-    if (invocation.get("run_id") != manifest["run_id"]
-            or invocation.get("feature_id") != selection["feature_id"]
-            or invocation.get("working_tree_fingerprint") != fingerprint):
-        raise RunEvidenceError("actual invocation belongs to a different run, selection or snapshot")
-    binary = Path(manifest["command"][0]).resolve()
-    if manifest.get("runner_identity") != {"path": str(binary), "sha256": file_hash(binary)}:
-        raise RunEvidenceError("runner executable changed after verification")
-    selectors = execution_selectors(root, selection, manifest["scope"])
-    if selectors != manifest["selectors"]:
-        raise RunEvidenceError("run selectors differ from planned scope")
-    actual_selectors = [manifest["command"][index + 1] for index, arg in enumerate(manifest["command"][:-1]) if arg == "-a"]
-    if actual_selectors != selectors:
-        raise RunEvidenceError("runner invocation did not consume selected paths")
-    cases = read_junit_cases(files["junit"])
-    if cases != manifest["discovered_cases"]:
-        raise RunEvidenceError("discovered tests differ from actual JUnit testcase set")
-    executed = sorted(case["id"] for case in cases if case["status"] != "skipped")
-    if executed != manifest["executed_ids"]:
-        raise RunEvidenceError("executed test IDs differ from actual JUnit")
+        if not path.is_relative_to(directory.resolve()) or not path.is_file():
+            raise RunEvidenceError("artifact missing or outside its run directory")
+        if file_hash(path) != reference["sha256"]:
+            raise RunEvidenceError(f"run artifact changed after execution: {path.name}")
+        files[name] = path
+    if set(files) != {"junit", "discovery", "diagnostics", "engine_log"}:
+        raise RunEvidenceError("run is missing original test reports")
+    discovery = read_json(files["discovery"])
+    if discovery.get("run_id") != result["run_id"]:
+        raise RunEvidenceError("discovery belongs to a different run")
+    cases = verify_runtime_discovery(files["discovery"], process.get("engine_pid"),
+                                     read_junit_cases(files["junit"]))
     if any(case["status"] != "passed" for case in cases):
         raise RunEvidenceError("run contains failed or skipped tests")
-    discovery_path = files.get("discovery")
-    if discovery_path != path.parent / "discovery.json":
-        raise RunEvidenceError("actual runtime discovery evidence is missing")
-    if files.get("process_ownership") != path.parent / "process-ownership.json":
-        raise RunEvidenceError("actual owned process evidence is missing")
-    engine_pid = owned_engine_pid(files["process_ownership"], discovery_path, verdict.get("pid"))
-    if verdict.get("engine_pid") != engine_pid:
-        raise RunEvidenceError("wrapper verdict has a different actual engine identity")
-    verify_session_receipt(path.parent, files, engine_pid)
-    cases = verify_runtime_discovery(discovery_path, engine_pid, cases)
-    if read_json(discovery_path)["cases"] != manifest["runtime_discovery"]:
-        raise RunEvidenceError("manifest runtime discovery differs from originating runner data")
-    report = verdict.get("report") or {}
-    if report.get("discovered") != len(cases) or report.get("executed") != len(executed):
-        raise RunEvidenceError("wrapper verdict counts disagree with actual JUnit sets")
-    if any(report.get(name) != 0 for name in ("errors", "failures", "orphans", "flaky", "skipped")):
-        raise RunEvidenceError("wrapper verdict records unsuccessful tests")
-    declared = expected_gdunit_cases(root, selectors)
-    if declared != manifest["declared_cases"]:
-        raise RunEvidenceError("declared test inventory changed")
-    require_coverage(cases, declared)
-    # Also require a nonempty actual discovery for every selector, including a
-    # directory that contains no statically recognizable test declarations.
-    require_coverage(cases, [{"path": selector, "case": None} for selector in selectors])
-    from tools.lib.gdunit_diagnostics import DiagnosticEvidenceError, unexpected_diagnostics
-    if files.get("diagnostics") != files["junit"].parent / "diagnostics.jsonl":
-        raise RunEvidenceError("current run diagnostic evidence is missing")
+    require_coverage(cases, expected_gdunit_cases(root, result["selectors"]))
+    require_coverage(cases, [{"path": path, "case": None} for path in result["selectors"]])
+    from tools.lib.gdunit_diagnostics import unexpected_diagnostics
     import json
+    first = json.loads(files["diagnostics"].read_text(encoding="utf-8").splitlines()[0])
+    if first.get("engine_pid") != process.get("engine_pid"):
+        raise RunEvidenceError("diagnostics belong to a different engine process")
+    unexpected = unexpected_diagnostics(files["engine_log"].read_text(encoding="utf-8"), files["junit"])
+    if unexpected:
+        raise RunEvidenceError("unexpected engine diagnostics: " + "; ".join(unexpected))
+    return cases
+
+
+def finish_run(root: Path, directory: Path, result: dict, *,
+               process: dict | None = None, errors: list[str] | None = None,
+               required_test: str | None = None) -> dict:
+    """Finalize the same file even on failure; preserve all raw artifacts."""
+    result["process"] = process
+    result["errors"] = list(errors or [])
+    reports = list(directory.glob("report_*/results.xml"))
+    paths = {"engine_log": directory / "engine.log", "discovery": directory / "discovery.json"}
+    if len(reports) == 1:
+        paths.update(junit=reports[0], diagnostics=reports[0].parent / "diagnostics.jsonl")
+    else:
+        result["errors"].append(f"expected one current JUnit report, found {len(reports)}")
+    result["artifacts"] = {key: artifact_reference(directory, path)
+                           for key, path in paths.items() if path.is_file()}
     try:
-        session_start = json.loads(files["diagnostics"].read_text(encoding="utf-8").splitlines()[0])
-    except (ValueError, IndexError) as exc:
-        raise RunEvidenceError("invalid diagnostic session identity") from exc
-    if not isinstance(session_start, dict) or session_start.get("engine_pid") != engine_pid:
-        raise RunEvidenceError("diagnostic evidence belongs to a different engine process")
-    try:
-        if unexpected_diagnostics(files["engine_log"].read_text(encoding="utf-8"), files["junit"]):
-            raise RunEvidenceError("actual engine log contains unexpected diagnostics")
-    except DiagnosticEvidenceError as exc:
-        raise RunEvidenceError(str(exc)) from exc
-    return manifest
+        if not result["errors"]:
+            cases = _checked_cases(root, directory, result)
+            if required_test:
+                path, separator, case = required_test.rpartition("::")
+                if not separator or not path or not case:
+                    raise RunEvidenceError("required test must use <suite-path>::<test-case>")
+                require_coverage(cases, [{"path": path.removeprefix("res://"), "case": case}])
+        if result["snapshot"] and current_snapshot(root)["working_tree_fingerprint"] != result["snapshot"]["working_tree_fingerprint"]:
+            result["errors"].append("source changed during test execution")
+    except (ValueError, OSError, KeyError, TypeError, IndexError) as error:
+        result["errors"].append(str(error))
+    result["status"] = "failed" if result["errors"] else "passed"
+    result["finished_at"] = utc_now()
+    write_evidence(directory / "result.json", result)
+    return result
 
 
-def manifest_reference(root: Path, path: Path) -> dict[str, str]:
-    resolved = path.resolve()
-    if not resolved.is_relative_to(root.resolve()):
-        raise RunEvidenceError("manifest is outside the repository")
-    return {"path": resolved.relative_to(root.resolve()).as_posix(), "sha256": file_hash(resolved)}
+def verify_run(root: Path, reference: dict[str, str], selection: dict,
+               snapshot: dict) -> tuple[dict, list[dict]]:
+    require_supported_adapter(root)
+    path = (root / reference["path"]).resolve()
+    if not path.is_relative_to((root / "reports/gdunit-wrapper").resolve()) or not path.is_file():
+        raise RunEvidenceError("run result must exist under reports/gdunit-wrapper")
+    if file_hash(path) != reference["sha256"]:
+        raise RunEvidenceError("run result changed after recording")
+    result = read_json(path)
+    if result.get("schema_version") != 1 or result.get("run_id") != path.parent.name:
+        raise RunEvidenceError("invalid run result schema or identity")
+    if result.get("feature_id") != selection["feature_id"] or result.get("phase") != "final":
+        raise RunEvidenceError("run belongs to another Feature or is not final verification")
+    if result.get("snapshot", {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
+        raise RunEvidenceError("source changed after the recorded run")
+    if result.get("status") != "passed" or result.get("errors") != []:
+        raise RunEvidenceError("test run failed or did not finish")
+    if execution_selectors(root, selection, result["scope"]) != result["selectors"]:
+        raise RunEvidenceError("run selectors differ from current required scope")
+    cases = _checked_cases(root, path.parent, result)
+    return result, cases
 
 
-# 从报告工件和计划推导结论；不信任调用者手填的通过数量或 scope 标签。
-def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str, str]]) -> dict[str, Any]:
-    # Selection is computed from current contracts, never imported from a plan file.
+def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs: list[dict]) -> None:
+    # Sequence is local run order, not filesystem timestamp precision. A tie from
+    # concurrent launches never clears a different failed/unfinished run.
+    rank = {"required": 1, "affected": 2, "full": 3}
+    for record in _run_records(root):
+        if (record.get("feature_id") != selection["feature_id"] or record.get("phase") != "final"
+                or record.get("status") == "passed"
+                or (record.get("snapshot") or {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]):
+            continue
+        if not any(run["sequence"] > record["sequence"]
+                   and rank[run["scope"]] >= rank.get(record["scope"], 3)
+                   and all(any(path == target or path.startswith(target.rstrip("/") + "/")
+                               for target in run["selectors"]) for path in record["selectors"])
+                   for run in runs):
+            raise RunEvidenceError("unresolved failed or unfinished test run: " + record["run_id"])
+
+
+def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str, str]]) -> dict:
+    """Compute current obligations and results without persisting derived totals."""
     selection = build_selection(root, feature_id)
     if not references or not isinstance(references, list):
-        raise RunEvidenceError("no real test run manifest was supplied")
-    runs = [verify_run(root, reference, selection) for reference in references]
+        raise RunEvidenceError("no real test run result was supplied")
+    snapshot = current_snapshot(root)
+    verified = [verify_run(root, reference, selection, snapshot) for reference in references]
+    runs = [run for run, _ in verified]
     if len({run["run_id"] for run in runs}) != len(runs):
         raise RunEvidenceError("duplicate run references")
-    from tools.lib.execution_attempts import require_current_tests
-    try:
-        require_current_tests(root, selection, runs)
-    except ValueError as error:
-        raise RunEvidenceError(str(error)) from error
-    combined: dict[str, dict[str, str]] = {}
-    for run in runs:
-        methods = {case["id"]: case["method"] for case in run["runtime_discovery"]}
-        combined.update({case["id"]: {**case, "method": methods[case["id"]]} for case in run["discovered_cases"]})
-    snapshot = current_snapshot(root)
-    common = {**snapshot, "run_ids": sorted(run["run_id"] for run in runs),
-              "recorded_at": str(max(run["finished_ns"] for run in runs))}
+    _require_resolved_failures(root, selection, snapshot, runs)
+    cases = {case["id"]: case for _, records in verified for case in records}
+    common = {**snapshot, "run_ids": sorted(run["run_id"] for run in runs)}
     result = {}
     for name, obligations in (("required_test_set", selection["required"]), ("affected_tests", selection["affected"])):
-        ids = require_coverage(list(combined.values()), obligations)
+        ids = require_coverage(list(cases.values()), obligations)
         result[name] = {"status": "pass", "total": len(ids), "failed": 0, "test_ids": ids, **common}
-    full_runs = [run for run in runs if run["scope"] == "full"]
-    if selection["full_suite"]["required"] and not full_runs:
+    full = any(run["scope"] == "full" for run in runs)
+    if selection["full_suite"]["required"] and not full:
         raise RunEvidenceError("required full-suite escalation has no successful full run")
-    result["full_suite"] = {"status": "pass" if full_runs else "not_required", **common,
+    result["full_suite"] = {"status": "pass" if full else "not_required", **common,
                             "reasons": selection["full_suite"]["reasons"]}
     return result

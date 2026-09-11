@@ -71,12 +71,12 @@ def _initialize(repo_root: Path, feature_id: str) -> int:
 
 # 只导入实际测试结果；脚本解析与 lint 由 Agent 直接执行、阅读原始输出。
 def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
-    from tools.lib.run_evidence import derive_test_evidence, manifest_reference
+    from tools.lib.run_evidence import derive_test_evidence, result_reference
 
     path, data, _snapshot = _load_for_write(repo_root, args.feature)
     data["test_runs"] = []
     try:
-        references = [manifest_reference(repo_root, (repo_root / run).resolve()) for run in args.run]
+        references = [result_reference(repo_root, (repo_root / run).resolve()) for run in args.run]
         derive_test_evidence(repo_root, args.feature, references)
         data["test_runs"] = references
     except (EvidenceError, ValueError, OSError, KeyError, TypeError) as exc:
@@ -139,7 +139,7 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     tests = subparsers.add_parser("record-tests")
     tests.add_argument("--feature", required=True, type=_feature_id)
     tests.add_argument("--run", required=True, action="append", type=Path,
-                       help="Real wrapper manifest; repeat for multiple non-overlapping runs.")
+                       help="Real wrapper result; repeat for multiple non-overlapping runs.")
 
     acceptance = subparsers.add_parser("record-acceptance")
     acceptance.add_argument("--feature", required=True, type=_feature_id)

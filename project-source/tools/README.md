@@ -23,13 +23,13 @@ Catalog 合并属于 `generate-feature-list/scripts/merge_test_catalog.py`。
 ## 调用
 
 `python_executable` 和 `environment_bootstrap.engine_executable` 保存完整路径，
-不包含引号或参数。`test_cmd` 保存带参数命令，`full_test_cmd` 可以为空。
+不包含引号或参数。`test_cmd` 保存测试命令，全量范围由同一入口的 `--scope full` 指定。
 
 ```powershell
 python -B tools/checks/check-project-environment.py --require-ready
-python -B tools/checks/check-feature-list.py --strict
+python -B tools/checks/check-feature-list.py
 python -B tools/testing/run-gdunit-tests.py --godot-binary C:\Godot\Godot.exe --feature F001 --scope auto
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/manifest.json
+python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
 ```
 
 将上述 Python、Godot 换成实际路径；配置 `test_cmd` 时保留测试入口及
@@ -40,6 +40,9 @@ python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py rec
 脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见
 [直接检查说明](../methodology/gdscript-lint.md)。没有静态检查 Python 包装器、
 静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
+
+每次测试只写一份 `result.json`，关联引擎日志、实际发现集合、JUnit 和诊断原件。
+运行中、失败与通过都保存在该文件；完成检查从原件计算覆盖，不维护第二份尝试日志。
 
 ## 结果如何使用
 
@@ -67,7 +70,6 @@ Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检�
 | `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
 | `run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `gate_evidence.py` | 当前源码指纹、测试、适用人工接受和复审结果 |
-| `execution_attempts.py` | 记录测试启动，防止失败或中断后误用旧成功 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 

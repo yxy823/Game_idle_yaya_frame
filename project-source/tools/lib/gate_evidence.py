@@ -11,13 +11,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 EVIDENCE_RELATIVE_PATH = Path("docs/gate-evidence.json")
 EXCLUDED_EXACT_PATHS = {
     "docs/gate-evidence.json",
     "docs/progress.md",
 }
-FULL_SUITE_PASS_STATES = {"pass", "not_required"}
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
 
 
@@ -254,17 +253,6 @@ def _is_non_negative_int(value: Any) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value >= 0
 
 
-def _passing_test_result(result: Any, data: dict[str, Any]) -> bool:
-    return (
-        isinstance(result, dict)
-        and result.get("status") == "pass"
-        and _is_non_negative_int(result.get("total"))
-        and result.get("failed") == 0
-        and bool(result.get("run_ids"))
-        and _matches_snapshot(result, data)
-    )
-
-
 # 检查测试、适用的人工接受和复审；静态检查由 Agent 直接执行并单独核对。
 def validate_completion_evidence(
     repo_root: Path,
@@ -285,30 +273,14 @@ def validate_completion_evidence(
     if data.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
         return False, "working tree changed after verification"
     try:
-        from tools.lib.execution_attempts import journal_path, read_journal
-        attempts_before = read_journal(journal_path(repo_root))
-    except (ValueError, OSError, TypeError, KeyError) as exc:
-        return False, f"test attempt history is invalid: {exc}"
-    try:
         from tools.lib.run_evidence import derive_test_evidence
         from tools.lib.test_selection import acceptance_mode, read_json
         mode = acceptance_mode(read_json(repo_root / f"docs/features/{feature_id}.json"))
-        verified = derive_test_evidence(repo_root, feature_id, data.get("test_runs"))
+        derive_test_evidence(repo_root, feature_id, data.get("test_runs"))
     except (ValueError, OSError, TypeError, KeyError) as exc:
         return False, f"test run evidence is invalid: {exc}"
-    required = verified["required_test_set"]
-    affected = verified["affected_tests"]
-    full_suite = verified["full_suite"]
     acceptance = data.get("human_acceptance")
     smell = data.get("code_smell")
-    if not _passing_test_result(required, data):
-        return False, "Required Test Set has not passed"
-    if not _passing_test_result(affected, data):
-        return False, "affected tests have not passed"
-    if not isinstance(full_suite, dict) or full_suite.get("status") not in FULL_SUITE_PASS_STATES:
-        return False, "full-suite result is neither pass nor not_required"
-    if not _matches_snapshot(full_suite, data):
-        return False, "full-suite decision does not match the current code snapshot"
     # 验收方式是 Stage 1 的需求判断；这里不从空清单或测试通过反推该决定。
     if mode == "manual":
         if not isinstance(acceptance, dict) or acceptance.get("status") != "accepted":
@@ -328,8 +300,6 @@ def validate_completion_evidence(
     if not isinstance(data.get("recorded_at"), str) or not data["recorded_at"]:
         return False, "gate evidence has no execution timestamp"
     try:
-        if attempts_before != read_journal(journal_path(repo_root)):
-            return False, "verification attempt changed during completion validation"
         if current_snapshot(repo_root)["working_tree_fingerprint"] != snapshot["working_tree_fingerprint"]:
             return False, "source changed during completion validation"
     except (EvidenceError, ValueError, OSError) as error:

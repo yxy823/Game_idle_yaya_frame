@@ -27,7 +27,7 @@ and verified read-only Git status/log/diff/show are allowed.
    `methodology/05-document-language.md`. The stack is fixed to Godot 4.7 /
    GDScript / gdunit4; missing tools do not mean the engine is undecided.
 3. When acceptance or completion matters, read the current evidence and the
-   specific linked manifest. Distinguish old PASS, current snapshot and pending
+   specific linked run result. Distinguish old PASS, current snapshot and pending
    human acceptance. Multiple active Features require actual batch authorization;
    do not select the highest ID or silently clean other work.
 4. Use **Canonical task routing** in `methodology/00-overview.md`, then read the

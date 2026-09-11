@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import ctypes
-import json
 import math
 import os
 import subprocess
@@ -121,8 +120,7 @@ def _job_process_ids(api, job) -> set[int]:
 
 # 先暂停创建，再绑定 Job，最后恢复运行，避免子进程在归属建立前逃出管理范围。
 def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float,
-                 ownership: dict, env: dict[str, str] | None = None,
-                 command_line: str | None = None) -> tuple[int, bool, int]:
+                 ownership: dict) -> tuple[int, bool, int]:
     import msvcrt
 
     api = _windows_api()
@@ -130,10 +128,6 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
     _checked(job)
     process = _ProcessInfo()
     assigned = False
-    environment = None
-    if env is not None:
-        block = "\0".join(f"{key}={value}" for key, value in sorted(env.items(), key=lambda item: item[0].upper())) + "\0\0"
-        environment = ctypes.create_unicode_buffer(block)
     try:
         limits = _ExtendedLimits()
         limits.basic.flags = 0x2000  # JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE
@@ -151,9 +145,9 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
                 # Attach before the first instruction: a console launcher cannot
                 # spawn an engine child outside our job during an attach race.
                 _checked(api.CreateProcessW(
-                    command[0], ctypes.create_unicode_buffer(command_line or subprocess.list2cmdline(command)),
-                    None, None, True, 0x08000004 | (0x400 if env is not None else 0),
-                    environment, str(cwd),
+                    command[0], ctypes.create_unicode_buffer(subprocess.list2cmdline(command)),
+                    None, None, True, 0x08000004,
+                    None, str(cwd),
                     ctypes.byref(startup), ctypes.byref(process),
                 ))
             finally:
@@ -200,17 +194,13 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
 
 
 # 返回实际退出与归属记录；超时清理只针对本次 Job，不按 Godot/Python 进程名全局终止。
-def run_owned_process(command: list[str], cwd: Path, log_path: Path, timeout: float,
-                      *, env: dict[str, str] | None = None,
-                      command_line: str | None = None) -> tuple[int, bool, int, str]:
+def run_owned_process(command: list[str], cwd: Path, log_path: Path, timeout: float) -> tuple[int, bool, int, str, tuple[int, ...]]:
     if os.name != "nt":
         raise ValueError("Owned execution supports Windows 11 only")
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("process timeout must be finite and positive")
     # A shared file descriptor cannot fill a pipe or reorder stdout/stderr.
-    ownership = {"schema_version": 1}
+    ownership: dict = {}
     with log_path.open("wb") as output:
-        code, timed_out, pid = _run_windows(command, cwd, output, timeout, ownership, env, command_line)
-    log_path.with_name("process-ownership.json").write_text(
-        json.dumps(ownership, indent=2) + "\n", encoding="utf-8")
-    return code, timed_out, pid, log_path.read_text(encoding="utf-8", errors="replace")
+        code, timed_out, pid = _run_windows(command, cwd, output, timeout, ownership)
+    return code, timed_out, pid, log_path.read_text(encoding="utf-8", errors="replace"), tuple(ownership["owned_pids"])

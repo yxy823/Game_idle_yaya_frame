@@ -156,8 +156,6 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
             add(required, path, None, None, f"component-unit:{component_id}")
         if component["full_suite_on_change"]:
             full_reasons.append(f"component-full-suite:{component_id}")
-    if detail.get("engineering_change") == "maintenance" and detail.get("source") == "infrastructure":
-        full_reasons.append("shared-infrastructure-maintenance")
     for test_id, test in sorted(tests.items()):
         if test["status"] != "active" or not set(test["components"]).intersection(affected_components):
             continue

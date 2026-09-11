@@ -50,7 +50,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 4. Never modify Feature-list files before explicit user confirmation in Stage 3.
 5. Work on the current branch, including `main` or `master`. Follow `agent-rules/00-core/git-worktree-and-commits.md`; a new synchronization task requires a completely clean working tree. Do not automatically create, switch, merge, or delete branches.
 6. Never place an unescaped `"` inside a Feature-list JSON string. Escape it as `\"`, or use natural quotation marks appropriate to `document_language` when they cannot be mistaken for JSON delimiters.
-7. After writing any Feature-list JSON, validate `docs/feature-list.json`, `docs/feature-list-revisions.json`, and every affected `docs/features/F0XX.json` with `python -B -m json.tool <path> > $null`. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py --strict` before reporting success or committing the Feature-plan update.
+7. After writing any Feature-list JSON, validate `docs/feature-list.json`, `docs/feature-list-revisions.json`, and every affected `docs/features/F0XX.json` with `python -B -m json.tool <path> > $null`. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py` before reporting success or committing the Feature-plan update.
 8. IDs represent stable allocation, not execution order. Larger IDs may be prerequisites for older pending work. Validate the real dependency DAG and use `python -B tools/checks/check-feature-list.py --eligible` to select executable pending work. Never encode a required ordering only in notes.
 
 ## Stage 0: preflight and anchor

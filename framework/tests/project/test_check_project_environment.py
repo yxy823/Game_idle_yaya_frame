@@ -31,7 +31,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
         return {
             "document_language": "en",
             "test_cmd": sys.executable,
-            "full_test_cmd": None,
             "test_framework": "gdunit4",
             "engine": "Godot 4.7",
             "language": "GDScript",
@@ -84,14 +83,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
             self._ready_config("4.7.1.stable"), self.repo_root
         )
         self.assertEqual(errors, [])
-
-    def test_configured_full_command_is_checked_but_null_is_optional(self) -> None:
-        config = self._ready_config("4.7.1.stable")
-        config["full_test_cmd"] = '"Missing Folder/runner.exe" --all'
-        with mock.patch.object(check_project_environment, "_read_engine_version",
-                               return_value=("4.7.1.stable", None)):
-            errors = check_project_environment._readiness_errors(config, self.repo_root)
-        self.assertTrue(any("full test runner executable is unavailable" in error for error in errors))
 
     def test_fixed_stack_is_required_even_before_machine_setup(self) -> None:
         for status in ("incomplete", "ready"):

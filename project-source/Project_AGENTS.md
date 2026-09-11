@@ -54,9 +54,10 @@ Before the first coding Feature, complete the one-time Project Environment
 setup in `docs/methodology-config.json`, following the environment configuration
 contract in `methodology/05-document-language.md`.
 This is Agent-led configuration, not a separate Bootstrap program. Normal Feature execution requires
-`environment_bootstrap.status: ready` and must pass
-`python -B tools/checks/check-project-environment.py --require-ready`; it reads the
-confirmed commands instead of rediscovering them per Feature.
+`environment_bootstrap.status: ready` and uses the confirmed commands. Run
+`python -B tools/checks/check-project-environment.py --require-ready` during setup,
+after tool/configuration changes, or when diagnosing actual invocation failures;
+do not repeat version discovery for every Feature.
 
 Feature completion uses `docs/gate-evidence.json`, written through
 `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py`. Run its `validate --feature F0XX`

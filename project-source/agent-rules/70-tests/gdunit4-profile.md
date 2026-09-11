@@ -9,7 +9,7 @@ the installed runner version and executable commands.
 The wrapper invokes the configured Godot executable directly:
 
 ```text
-<godot> --path <project> --debug --ignore-error-breaks --script res://addons/gdUnit4/bin/GdUnitCmdTool.gd -rd <unique-run-directory> -a <target> [-c]
+<godot> --path <project> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <unique-run-directory> -a <target> [-c]
 ```
 
 Godot options precede the script path. This launch does not use the vendor
@@ -21,9 +21,8 @@ seconds). Standard input is closed; stdout and stderr share one ordered log.
 The project-owned process guard confines timeout termination to this invocation
 and its descendants, including the Windows console launcher's engine child.
 
-Each invocation retains `invocation.json`, `engine.log`, `verdict.json`, and any
-current JUnit report under its unique ignored `reports/gdunit-wrapper/run-*`
-directory. Missing, ambiguous, or stale JUnit cannot satisfy a run.
+Each invocation retains one `result.json` plus the original engine log,
+discovery, JUnit and diagnostic reports under `reports/gdunit-wrapper/run-*`. Missing, ambiguous, or stale JUnit cannot satisfy a run.
 
 ## Discovery and verdict
 
@@ -38,8 +37,9 @@ directory. Missing, ambiguous, or stale JUnit cannot satisfy a run.
   `push_error()`, unexpected `push_warning()`, orphans, and flaky results. Zero
   executed tests is not a passing verdict.
 - **[MUST]** Because the current pinned runner's push-error monitor also captures
-  warnings, expected errors or warnings use a scoped, awaited GdUnit
-  expected-diagnostic assertion; do not disable monitoring globally.
+  warnings, expected errors or warnings use a scoped GdUnit
+  expected-diagnostic assertion; await only when that assertion is a coroutine.
+  Do not disable monitoring globally.
 
 For the pinned runner, `STARTED` precedes `before_test()`, and the following
 monitor start clears that hook's diagnostics. Suite `after()` and exit cleanup
@@ -59,8 +59,6 @@ JUnit, nonzero process exit and timeout remain independent failure sources. In
 particular, this pinned JUnit writer omits orphan records, while the runner's
 orphan exit code 101 still makes the wrapper fail.
 
-The wrapper's built-in parser check is
-`python -B tools/testing/run-gdunit-tests.py --self-test`; it does not prove real engine execution.
 ## Coroutine assertions
 
 - **[MUST]** Await GdUnit coroutine assertions. In particular,

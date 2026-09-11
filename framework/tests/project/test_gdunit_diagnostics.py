@@ -112,24 +112,34 @@ class LifecycleEvidenceTests(unittest.TestCase):
         vendor_script = self.root / runner.RUNNER_SCRIPT.removeprefix("res://")
         vendor_script.parent.mkdir(parents=True, exist_ok=True)
         vendor_script.touch()
+        suite = self.root / "tests/example.gd"
+        suite.parent.mkdir(exist_ok=True)
+        suite.write_text("extends GdUnitTestSuite\nfunc test_case():\n\tpass\n", encoding="utf-8")
 
         def process(command: list[str], log: Path, _timeout: float) -> runner.ProcessResult:
             directory = Path(command[command.index("-rd") + 1]) / "report_1"
             directory.mkdir()
-            ET.ElementTree(runner._fixture_xml()).write(directory / "results.xml")
+            (directory / "results.xml").write_text(
+                '<testsuites tests="1" failures="0" skipped="0" flaky="0">'
+                '<testsuite name="example" package="tests" tests="1" errors="0" failures="0" skipped="0" flaky="0">'
+                '<testcase name="test_case"/></testsuite></testsuites>', encoding="utf-8")
+            (directory.parent / "discovery.json").write_text(json.dumps({
+                "schema_version": 1, "run_id": directory.parent.name, "engine_pid": 123,
+                "cases": [{"id": "tests/example.gd::test_case", "path": "tests/example.gd",
+                           "case": "test_case", "method": "test_case"}]}), encoding="utf-8")
             self.report = directory / "results.xml"
             self.evidence = directory / "diagnostics.jsonl"
             events = self._events(RECORD, {"event": "expected", "id": 1}) if scoped else self._events()
             self._write(events)
             log.write_text(output, encoding="utf-8")
-            return runner.ProcessResult(exit_code, timed_out, 123, output)
+            return runner.ProcessResult(exit_code, timed_out, 123, output, (123,))
 
         args = runner._parse_args(["--godot-binary", sys.executable])
         with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
             runner, "_run_process", side_effect=process
         ), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             code = runner._run_tests(args)
-        verdict_path = self.report.parent.parent / "verdict.json"
+        verdict_path = self.report.parent.parent / "result.json"
         return code, json.loads(verdict_path.read_text(encoding="utf-8"))
 
     def test_current_green_junit_does_not_hide_lifecycle_errors(self) -> None:
@@ -138,20 +148,38 @@ class LifecycleEvidenceTests(unittest.TestCase):
             with self.subTest(prefix=prefix):
                 code, verdict = self._replay(prefix + NATIVE)
                 self.assertEqual(code, 1)
-                self.assertEqual(verdict["report"]["errors"], 0)
-                self.assertTrue(verdict["startup_diagnostics"])
+                self.assertEqual(ET.parse(self.report).find("testsuite").attrib["errors"], "0")
+                self.assertTrue(verdict["errors"])
 
     def test_current_scoped_evidence_and_green_junit_pass(self) -> None:
         code, verdict = self._replay(NATIVE, scoped=True)
         self.assertEqual(code, 0)
-        self.assertEqual(verdict["failure_reasons"], [])
+        self.assertEqual(verdict["errors"], [])
 
     def test_green_junit_and_scoped_evidence_never_override_exit_or_timeout(self) -> None:
         for options in ({"exit_code": 7}, {"exit_code": 1, "timed_out": True}):
             with self.subTest(options=options):
                 code, verdict = self._replay(NATIVE, scoped=True, **options)
                 self.assertEqual(code, 1)
-                self.assertTrue(verdict["failure_reasons"])
+                self.assertTrue(verdict["errors"])
+
+
+    def test_missing_discovery_preserves_actual_process_exit(self):
+        script = self.root / runner.RUNNER_SCRIPT.removeprefix("res://")
+        script.parent.mkdir(parents=True)
+        script.touch()
+        def failed_process(command, log, timeout):
+            log.write_text("original startup failure", encoding="utf-8")
+            return runner.ProcessResult(7, False, 123, "original startup failure", (123,))
+        args = runner._parse_args(["--godot-binary", sys.executable])
+        with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
+                runner, "_run_process", side_effect=failed_process):
+            self.assertEqual(runner._run_tests(args), 1)
+        path = next((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        result = json.loads(path.read_text())
+        self.assertEqual(result["process"]["returncode"], 7)
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual((path.parent / "engine.log").read_text(), "original startup failure")
 
 
 if __name__ == "__main__":

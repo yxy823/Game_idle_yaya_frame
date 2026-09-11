@@ -290,7 +290,7 @@ Completed Feature criteria/test IDs and archived completion evidence are histori
 records. Do not rewrite them to simulate current behavior. The active safety net is
 selected from current `active` Catalog records. Normal strict validation accepts
 historical `done` references to traceably retired tests, but current completion must
-pass `python -B tools/checks/check-feature-list.py --strict --completion-feature F0XX`, which
+pass `python -B tools/checks/check-feature-list.py --completion-feature F0XX`, which
 requires that Feature's own mapped automated tests to be active. Completion additionally
 requires actual execution evidence; retirement is never a substitute for passing tests.
 Retired entries without provenance fail validation; do not invent a reason or
@@ -301,14 +301,14 @@ replacement to make them pass.
 ## File 5: `docs/gate-evidence.json`
 
 This repository-owned JSON file holds the current Feature's completion evidence.
-PASS requires a real run manifest, wrapper verdict, JUnit and actual test set matched
+PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched
 against the approved Required/affected/full plan. Caller-supplied pass counts cannot
 create PASS. Test and review evidence must match the current semantic snapshot.
 Production, tests, configuration, Product, Coding Rules, Feature AC/verification and
 Catalog semantics participate in that snapshot. Pure status/completion timestamps,
 Feature notes and Progress/history archival do not invalidate business test evidence.
 
-The current evidence schema is version 6. It keeps real test-run references plus
+The current evidence schema is version 7. It keeps real test-run references plus
 applicable human acceptance and review records. Required/affected/full test
 conclusions are calculated from those artifacts rather than persisted again.
 Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in
@@ -316,7 +316,7 @@ Static checks are executed and assessed directly by the Agent, outside this file
 [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/manifest.json
+python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
 Repeat `--run` when a plan is covered by multiple real runs. An unavailable full
@@ -380,10 +380,10 @@ The final ledger must satisfy all of the following:
 Run the final strict validator from the repository root:
 
 ```powershell
-python -B tools/checks/check-feature-list.py --strict
+python -B tools/checks/check-feature-list.py
 ```
 
-During normal editing, the Agent can update related files together before running the explicit checker. `--strict` checks the final ledger; it is not registered as a per-edit Hook.
+During normal editing, the Agent can update related files together before running the explicit checker. The command always checks the complete ledger; it is not registered as a per-edit Hook.
 
 ## Decomposition rules
 

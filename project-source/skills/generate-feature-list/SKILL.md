@@ -215,7 +215,7 @@ Validate the index, every detail file, the revision log, and the test catalog wi
 
 After all related files have been written, run the cross-file invariant validator:
 
-`python -B tools/checks/check-feature-list.py --strict`
+`python -B tools/checks/check-feature-list.py`
 
 ## Mandatory self-check
 

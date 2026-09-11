@@ -74,7 +74,7 @@ class GdUnitRunnerTests(unittest.TestCase):
         self.assertEqual(args.require_test, "tests/with spaces/test_case.gd::test_case")
 
     def test_timeout_default_override_and_invalid_values(self) -> None:
-        self.assertEqual(runner._parse_args(["--self-test"]).timeout_seconds, 120)
+        self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).timeout_seconds, 120)
         self.assertEqual(runner._positive_seconds("0.25"), 0.25)
         for invalid in ("0", "-1", "nan", "inf", "-inf"):
             with self.subTest(value=invalid), self.assertRaises(argparse.ArgumentTypeError):
@@ -173,16 +173,20 @@ class GdUnitRunnerTests(unittest.TestCase):
         (old / "results.xml").write_text("<testsuites />", encoding="utf-8")
         current = self.root / "new"
         current.mkdir()
-        with self.assertRaisesRegex(runner.VerdictError, "found 0"):
-            runner._locate_report(current)
+        result = runner.start_run(self.root, current, None, "final", "auto")
+        runner.finish_run(self.root, current, result)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("expected one current JUnit report, found 0", result["errors"])
 
     def test_multiple_current_reports_are_rejected(self) -> None:
         for number in (1, 2):
             directory = self.root / f"report_{number}"
             directory.mkdir()
             (directory / "results.xml").write_text("<testsuites />", encoding="utf-8")
-        with self.assertRaisesRegex(runner.VerdictError, "found 2"):
-            runner._locate_report(self.root)
+        result = runner.start_run(self.root, self.root, None, "final", "auto")
+        runner.finish_run(self.root, self.root, result)
+        self.assertEqual(result["status"], "failed")
+        self.assertIn("expected one current JUnit report, found 2", result["errors"])
 
     def test_feature_entry_rejects_other_framework_before_launch(self) -> None:
         subprocess.run(["git", "init", "--template=", str(self.root)], capture_output=True, check=True)
@@ -194,7 +198,7 @@ class GdUnitRunnerTests(unittest.TestCase):
         config.write_text('{"test_framework":"pytest"}', encoding="utf-8")
         args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
         with mock.patch.object(runner, "_run_process") as launch:
-            self.assertEqual(runner._run_tests(args), 2)
+            self.assertEqual(runner._run_tests(args), 1)
         launch.assert_not_called()
 
 

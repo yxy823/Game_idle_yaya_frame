@@ -34,7 +34,6 @@ Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case 
 `docs/methodology-config.json` also owns the stable entrypoints used by `execute-next-feature`:
 
 - `test_cmd`: default automated test command or test-runner entrypoint. The agent may select a narrower test target supported by the project, but must not invent unsupported commands.
-- `full_test_cmd`: optional broader/full regression suite. Use `null` when there is no distinct broader suite.
 - `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.
 - `test_catalog_path`: canonical machine-readable catalog path, normally `docs/test-catalog.json`.
 - `test_unit_root`, `test_feature_root`, `test_invariant_root`: project test-layout roots. These are project conventions consumed by test planning; a test framework may store its own plugin/runtime files elsewhere.
@@ -59,7 +58,7 @@ If that path is unavailable, report the reason; change it only when the user
 requests a new tool location. Keep `engine_version` empty and status incomplete
 until actual setup confirms the environment; a prefilled path is not readiness.
 The top-level stack remains Godot 4.7 / GDScript / gdunit4. Store the Python
-executable in `python_executable` and commands in `test_cmd` and optional `full_test_cmd`.
+executable in `python_executable` and commands in `test_cmd`.
 Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner
 accepts scope arguments; focused and affected scopes do not need separate
 configuration copies. No plugin source/hash inventory, timestamp, working-directory
@@ -85,7 +84,7 @@ initialize Git or claim those checks passed. If setup fails, leave status
 incomplete and report the actual reason in Progress rather than duplicating
 errors into configuration arrays.
 
-`full_test_cmd` may be null when the same runner provides full scope.
+The same runner uses `--scope full` for the configured full test roots.
 A required full suite still needs an actual successful full run. Ready
 configuration proves environment availability only; Stage 4 proves actual
 test and static results. Subsequent Features reuse the configured commands
@@ -137,7 +136,7 @@ The following elements must remain stable English or language-neutral protocol v
 - Conventional Commit types such as `feat`, `fix`, and `docs`
 - Placeholder prefixes such as `_placeholder_`
 - Review severity values `must_fix`, `suggest`, and `acceptable`
-- Structured gate-evidence keys/status values and the human-readable summaries `Test verification: pass` and `Code smell scan: pass`
+- Structured gate-evidence keys/status values; human-readable summaries follow the conversation language
 - Test IDs (`F0XX-ACyy`, `F0XX-RTyy`, `INV-<DOMAIN>-NN`), component IDs, test kinds/status values, and test catalog keys
 - ISO 8601 timestamps and programming-language identifiers
 

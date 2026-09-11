@@ -1,6 +1,6 @@
 # 08 · Test traceability and impact-analysis strategy
 
-> Canonical testing specification for Yaya Loop on Windows 11 / Godot 4.7 / GDScript / gdunit4. 
+> Canonical testing specification for Yaya Loop on Windows 11 / Godot 4.7 / GDScript / gdunit4.
 
 ## Goals
 
@@ -147,7 +147,7 @@ The affected set contains Required plus active acceptance tests intersecting aff
 A full suite is required when any of these is true:
 
 - an affected catalog component has `full_suite_on_change: true`;
-- the change modifies shared project-wide infrastructure or test infrastructure;
+- infrastructure/toolchain changes actually affect the project broadly; a maintenance label alone does not require full;
 - a dependency/toolchain upgrade can affect broad behavior;
 - impact analysis cannot bound the affected components reliably;
 - the user explicitly requires it.
@@ -182,42 +182,47 @@ The adapter executes deduplicated suite/directory selectors supported by the con
 
 The supplemental declaration inventory resolves `GdUnitTestSuite` ancestry through direct inheritance, repository script paths and project `class_name` bases. Non-suite helper methods named `test_*` do not become execution obligations; unresolved base expressions fail closed rather than silently dropping genuine suite coverage.
 
-Full scope covers the existing configured test roots. An absent, unregistered layer contributes no selector; a registered missing suite is an error, and every selected existing root must discover tests. A same-snapshot successful full run can satisfy Required and affected subsets without rerunning them. A necessary full escalation without a successful full manifest remains blocked; a human checklist or hand-entered `approved_unavailable` label cannot turn it into automated PASS.
+Full scope covers the existing configured test roots. An absent, unregistered layer contributes no selector; a registered missing suite is an error, and every selected existing root must discover tests. A same-snapshot successful full run can satisfy Required and affected subsets without rerunning them. A necessary full escalation without a successful full result remains blocked; a human checklist or hand-entered `approved_unavailable` label cannot turn it into automated PASS.
 
 ## Artifact-backed completion and semantic freshness
 
-Each actual wrapper invocation creates an isolated run directory with invocation, engine log, wrapper verdict, actual `discovery.json`, `process-ownership.json`, current JUnit/diagnostics, `session-receipt.json` and `manifest.json`. The run manifest uses schema 4 with a pre-launch `attempt_hash`; older run schemas cannot authorize a new import. It records real command, start/end time, before/after snapshot, Feature ID, phase, scope, selectors, declared/runtime-discovered/executed test identities, process verdict, and artifact hashes and timestamps. Discovery, diagnostics and wrapper verdict must identify the same engine process. The Windows process owner used by the test runner attaches a job before the launcher starts, records observed members, and terminates only that job on timeout/interruption. An engine identity absent from that observed scope fails closed.
+Each invocation creates one isolated `reports/gdunit-wrapper/run-<id>/` directory.
+The runner writes one `result.json` (schema 1) before setup and finalizes that same
+file after execution. It records Feature/phase/scope, selected paths, the real command,
+source fingerprint, process outcome and errors, plus references/hashes for the
+original `engine.log`, `discovery.json`, JUnit and diagnostics. Case identities and
+totals are read from those original reports when needed, not copied into more summaries.
 
-The actual engine writes a session receipt after its reporters and diagnostic session finish, before quitting. It binds this run ID, engine PID, exit code and invocation hash to the exact discovery, JUnit and diagnostics paths/hashes. The invocation in turn binds the Feature ID and source fingerprint. Gate checks these bindings against wrapper/process evidence and current source, as well as the exact discovery/execution sets. A copied old report cannot become current by updating its file timestamp or manifest hash; missing or changed session evidence, source changes and incomplete discoveries invalidate the result.
+The gdUnit extension writes actual expanded discovery with this run ID and engine PID.
+Discovery must match the JUnit cases; source declarations detect omitted suites.
+Native diagnostics cannot be hidden by green JUnit. Windows process ownership is
+checked in memory, and timeout cleanup terminates only the owned process tree.
 
-Filesystem `st_mtime_ns` and wall-clock start/end values are audit metadata, not freshness authority. Gate does not require nanosecond equality or ordering against the start time: timestamp rounding, copying or filesystem precision can change those relations without changing run contents. Neutral regressions exercise two-second timestamp precision, metadata-only changes, stale reports, tampering and normal runs. Do not use sleeps or repeated runs to obtain a favorable timestamp; preserve original failures and repair the binding contract.
+`result.json` starts as running, so startup failures and interruptions remain visible.
+A local sequence computed from existing results orders attempts without depending on
+filesystem timestamp precision. For the same Feature/content, an unresolved final
+failure cannot be hidden by an older success or a later narrower run. Recovery uses a
+later successful run covering the failed scope; preserve the original failure and
+diagnose its cause. Baseline/focused runs do not grant final completion. There is no
+separate journal, execution lock, invocation, verdict, process report or session receipt.
 
-Record completed runs with:
+Record results with:
 
-```text
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/manifest.json
+```powershell
+python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
-Repeat `--run` only when multiple runs are needed to cover the set. One full manifest is sufficient for all covered subsets. The helper and Completion Gate read the current Feature/Catalog, manifest, wrapper verdict, JUnit nodes/counters, executed identities and runtime diagnostic evidence. Counts are derived output; callers cannot submit counts or a pass label to create PASS. A failed import clears the affected run reference. Completion evidence uses schema 6 and stores run references and actual human decisions, without persistent required/affected/full summaries or `gate_status`. Static output is read directly by the Agent, outside this evidence file. Validators calculate those conclusions from current artifacts; there is no cached PASS to synchronize.
+Repeat `--run` only for distinct runs needed to cover the obligations. One full run
+can cover Required/affected. The helper computes coverage from the current Feature,
+Catalog and original reports; caller-provided pass labels or totals cannot create PASS.
+Failed imports clear old references. Completion schema 7 stores references and actual
+acceptance/review decisions; no required/affected/full totals or cached gate status.
+Parsing/lint results are assessed directly by the Agent.
 
-The test runner uses `tools/lib/execution_attempts.py`, one Git-local
-`yaya-verification-attempts.json` and an OS-lifetime execution lease. Each Feature
-test attempt is registered before executable/preflight checks. Only final runs
-authorize completion; baseline and focused/TDD runs remain separate.
-For the same Feature and actual source, a later failed or unfinished final scope
-blocks older PASS references, without a separate plan file to synchronize.
-Referenced successes must cover the current Feature/Catalog selection. A later verified run
-must cover the attempted selectors and scope; affected covers required; full must
-actually cover the complete contract. A narrow pass cannot clear an unresolved
-full attempt. Do not change the phase,
-omit a failing final run or rewrite the journal to hide a failure.
-
-The journal is replaced atomically before launch; ordering does not use mtimes.
-The Windows byte lock is released on process death, so no stale owner file needs
-deletion or PID guessing. Concurrent execution fails immediately. Preserve the
-interrupted record, establish the cause and actual process exit, then run the
-corrected verification. A corrupt journal blocks completion; preserve it and
-recover from trustworthy records/backup, never reset it to revive old evidence.
+Hashes, current-source binding and run identity detect accidental stale reuse or
+altered artifacts. These locally editable records are not an independent security
+signature against someone rewriting all evidence. File mtimes and wall-clock precision
+do not authorize completion. Do not add sleeps or rerun unchanged failures to get green.
 
 `working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Catalog data. Feature AC text, verification (including approved Test Impact), affected components and Catalog selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, run artifacts are exempt. Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose to `docs/progress/*.md` alone never invalidates tests. New or unknown contract fields remain included.
 
@@ -261,9 +266,9 @@ done gate
 
 A pre-existing baseline failure must be reported before implementation. Do not attribute it to the current Feature or silently repair it as scope expansion.
 
-Stage 4 imports verified run manifests into `docs/gate-evidence.json`; Stage 6 records the final code-smell result against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --strict --completion-feature F0XX` checks the completion-specific Feature/Catalog contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
+Stage 4 imports verified run results into `docs/gate-evidence.json`; Stage 6 records the final code-smell result against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Catalog contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
 
-Stage 6 reuses current successful manifests after a review without source or verification changes. If fixes change the snapshot, read the current selection and run its affected scope or one necessary full suite, then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
+Stage 6 reuses current successful run results after a review without source or verification changes. If fixes change the snapshot, read the current selection and run its affected scope or one necessary full suite, then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
 Stage 1 first chooses `verification.acceptance_mode` from the requirement, then
 fills the corresponding checks. Visual presentation, animation, audio/sound/music,

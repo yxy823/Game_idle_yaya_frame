@@ -151,7 +151,7 @@ Engineering Features use the normal Feature/test ledger: stable `ACxx` criteria,
 Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential Feature ID; do not rewrite completed Feature definitions. After user approval and writes, validate:
 
 ```powershell
-python -B tools/checks/check-feature-list.py --strict
+python -B tools/checks/check-feature-list.py
 ```
 
 Then inspect and stage only the new/updated Feature-plan paths, run the required

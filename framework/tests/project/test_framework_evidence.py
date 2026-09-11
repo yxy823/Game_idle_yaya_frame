@@ -62,12 +62,12 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def completion_fixture(self):
-        from tools.lib.run_evidence import manifest_reference
+        from tools.lib.run_evidence import result_reference
         _, test_path = self.run_fixture()
         snapshot = gate_evidence.current_snapshot(self.root)
         data = gate_evidence.empty_evidence("F001", snapshot)
         data.update(recorded_at=gate_evidence.utc_now(),
-                    test_runs=[manifest_reference(self.root, test_path)])
+                    test_runs=[result_reference(self.root, test_path)])
         data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
         gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
         return data
@@ -194,9 +194,9 @@ class FrameworkEvidenceTests(unittest.TestCase):
         return make_run(self.root, scope=scope, skipped=skipped, omit=omit, exit_code=exit_code)
 
     def test_one_full_run_covers_required_and_affected_and_survives_process_commit(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import derive_test_evidence, result_reference
         plan, path = self.run_fixture()
-        refs = [manifest_reference(self.root, path)]
+        refs = [result_reference(self.root, path)]
         derived = derive_test_evidence(self.root, "F001", refs)
         self.assertEqual(derived["required_test_set"]["total"], 2)
         self.assertEqual(derived["full_suite"]["status"], "pass")
@@ -208,54 +208,39 @@ class FrameworkEvidenceTests(unittest.TestCase):
                          derived["required_test_set"]["total"])
 
     def test_missing_tests_skipped_tests_and_nonzero_process_reject_green_labels(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         for args in ({"omit": "test_example"}, {"skipped": True}, {"exit_code": 7}):
             with self.subTest(args=args):
                 plan, path = self.run_fixture(**args)
                 with self.assertRaises(RunEvidenceError):
-                    derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
+                    derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_artifacts_must_stay_current_and_within_the_originating_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
-        reference = manifest_reference(self.root, path)
+        reference = result_reference(self.root, path)
         (path.parent / "report_1/results.xml").write_text("<testsuites/>", encoding="utf-8")
         with self.assertRaisesRegex(RunEvidenceError, "changed after"):
             derive_test_evidence(self.root, "F001", [reference])
 
-    def test_old_junit_reintroduced_with_fresh_metadata_is_rejected(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, manifest_reference
-        _, old_path = self.run_fixture()
-        plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text())
-        report = path.parent / manifest["artifacts"]["junit"]["path"]
-        old_manifest = json.loads(old_path.read_text())
-        old_report = old_path.parent / old_manifest["artifacts"]["junit"]["path"]
-        report.write_bytes(old_report.read_bytes())
-        manifest["artifacts"]["junit"] = artifact_reference(path.parent, report)
-        path.write_text(json.dumps(manifest), encoding="utf-8")
-        with self.assertRaisesRegex(RunEvidenceError, "session"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
-
     def test_low_precision_artifact_times_do_not_reject_current_session(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import derive_test_evidence, result_reference
         plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text())
-        coarse_time = manifest["started_ns"] // 2_000_000_000 * 2_000_000_000
-        for artifact in manifest["artifacts"].values():
+        result = json.loads(path.read_text())
+        coarse_time = 1_000_000_000
+        for artifact in result["artifacts"].values():
             file = path.parent / artifact["path"]
             os.utime(file, ns=(coarse_time, coarse_time))
-            artifact["mtime_ns"] = file.stat().st_mtime_ns
-        path.write_text(json.dumps(manifest), encoding="utf-8")
+        path.write_text(json.dumps(result), encoding="utf-8")
         self.assertEqual(derive_test_evidence(self.root, "F001",
-            [manifest_reference(self.root, path)])["full_suite"]["status"], "pass")
+            [result_reference(self.root, path)])["full_suite"]["status"], "pass")
 
     def test_timestamp_only_changes_do_not_replace_hash_integrity(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
-        reference = manifest_reference(self.root, path)
-        manifest = json.loads(path.read_text())
-        report = path.parent / manifest["artifacts"]["junit"]["path"]
+        reference = result_reference(self.root, path)
+        result = json.loads(path.read_text())
+        report = path.parent / result["artifacts"]["junit"]["path"]
         original_time = report.stat().st_mtime_ns
         os.utime(report, ns=(1_000_000_000, 1_000_000_000))
         self.assertEqual(derive_test_evidence(self.root, "F001",
@@ -266,46 +251,21 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_non_gdunit_configuration_cannot_import_gdunit_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         config = json.loads((self.root / "docs/methodology-config.json").read_text())
         config["test_framework"] = "pytest"
         self.write_json("docs/methodology-config.json", config)
         plan, path = self.run_fixture()
         with self.assertRaisesRegex(RunEvidenceError, "gdunit4"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
-
-    def test_old_session_receipt_cannot_be_relabelled_as_another_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, manifest_reference
-        _, old_path = self.run_fixture()
-        plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text())
-        receipt = path.parent / "session-receipt.json"
-        receipt.write_bytes((old_path.parent / "session-receipt.json").read_bytes())
-        manifest["artifacts"]["session_receipt"] = artifact_reference(path.parent, receipt)
-        path.write_text(json.dumps(manifest), encoding="utf-8")
-        with self.assertRaisesRegex(RunEvidenceError, "different or failed run"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
-
-    def test_missing_receipt_and_clock_adjustments_have_distinct_results(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
-        plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text())
-        manifest["finished_ns"] = manifest["started_ns"] - 10_000_000_000
-        path.write_text(json.dumps(manifest), encoding="utf-8")
-        self.assertEqual(derive_test_evidence(self.root, "F001",
-            [manifest_reference(self.root, path)])["full_suite"]["status"], "pass")
-        del manifest["artifacts"]["session_receipt"]
-        path.write_text(json.dumps(manifest), encoding="utf-8")
-        with self.assertRaisesRegex(RunEvidenceError, "session receipt is missing"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_required_full_escalation_cannot_be_claimed_by_affected_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         self.catalog["components"][0]["full_suite_on_change"] = True
         self.write_json("docs/test-catalog.json", self.catalog)
         plan, path = self.run_fixture(scope="affected")
         with self.assertRaisesRegex(RunEvidenceError, "full-suite"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_unmapped_criterion_cannot_borrow_unrelated_affected_test_pass(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
@@ -331,10 +291,10 @@ class FrameworkEvidenceTests(unittest.TestCase):
             build_selection(self.root, "F001")
 
     def test_code_change_rejects_an_unchanged_green_run(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import derive_test_evidence, result_reference
         from tools.lib.run_evidence import RunEvidenceError
         plan, path = self.run_fixture()
-        reference = manifest_reference(self.root, path)
+        reference = result_reference(self.root, path)
         self.write("game.gd", "extends Node\nvar changed = true\n")
         with self.assertRaisesRegex(RunEvidenceError, "source changed"):
             derive_test_evidence(self.root, "F001", [reference])
@@ -357,14 +317,6 @@ func test_plain():
         cases = expected_gdunit_cases(self.root, ["tests/unit/example.gd"])
         self.assertEqual([case["case"] for case in cases], ["test_plain", "test_static"])
 
-    def test_templates_share_the_actual_empty_and_run_contract(self) -> None:
-        template_root = TOOLS.parent / "methodology/templates"
-        evidence = json.loads((template_root / "gate-evidence.json.tmpl").read_text(encoding="utf-8"))
-        self.assertEqual(evidence, gate_evidence.empty_evidence())
-        plan, path = self.run_fixture()
-        manifest_template = json.loads((template_root / "run-manifest.json.tmpl").read_text(encoding="utf-8"))
-        self.assertEqual(set(manifest_template), set(json.loads(path.read_text(encoding="utf-8"))))
-
     def test_approved_full_obligation_survives_regeneration_without_cli_flag(self) -> None:
         from tools.lib.test_selection import build_selection
         self.detail["verification"]["test_impact"] = {
@@ -375,19 +327,18 @@ func test_plain():
         self.assertIn("Approved shared infrastructure change", plan["full_suite"]["reasons"])
 
     def test_runtime_discovery_cannot_lose_parameterized_cases_in_green_junit(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, manifest_reference
+        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text(encoding="utf-8"))
-        discovered = [{"id": case["id"], "path": case["path"], "case": case["case"], "method": case["case"]}
-                      for case in manifest["discovered_cases"]]
+        result = json.loads(path.read_text(encoding="utf-8"))
+        discovered = json.loads((path.parent / "discovery.json").read_text())["cases"]
         discovered.append({"id": "tests/unit/example.gd::test_example:1 (second)",
                            "path": "tests/unit/example.gd", "case": "test_example:1 (second)", "method": "test_example"})
         discovery = path.parent / "discovery.json"
-        discovery.write_text(json.dumps({"schema_version": 1, "engine_pid": 123, "cases": discovered}), encoding="utf-8")
-        manifest["artifacts"]["discovery"] = artifact_reference(path.parent, discovery)
-        path.write_text(json.dumps(manifest), encoding="utf-8")
+        discovery.write_text(json.dumps({"schema_version": 1, "run_id": path.parent.name, "engine_pid": 123, "cases": discovered}), encoding="utf-8")
+        result["artifacts"]["discovery"] = artifact_reference(path.parent, discovery)
+        path.write_text(json.dumps(result), encoding="utf-8")
         with self.assertRaisesRegex(RunEvidenceError, "discovery"):
-            derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_revision_process_fields_preserve_but_migration_edges_invalidate_snapshot(self) -> None:
         revision = {"schema_version": 2, "revision_log": [{"id": "R001", "revised_at": "before",
@@ -425,28 +376,38 @@ func test_plain():
         with self.assertRaisesRegex(RunEvidenceError, "different engine"):
             verify_runtime_discovery(path, 456, actual)
 
-    def test_console_launcher_allows_only_os_observed_engine_child(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, manifest_reference
-        plan, path = self.run_fixture()
-        manifest = json.loads(path.read_text(encoding="utf-8"))
-        verdict_path = path.parent / "verdict.json"
-        verdict = json.loads(verdict_path.read_text(encoding="utf-8"))
-        verdict.update(pid=456, engine_pid=123)
-        verdict_path.write_text(json.dumps(verdict), encoding="utf-8")
-        manifest["artifacts"]["verdict"] = artifact_reference(path.parent, verdict_path)
-        ownership = path.parent / "process-ownership.json"
-        for owned_pids, passes in (([456, 123], True), ([456], False)):
-            with self.subTest(owned_pids=owned_pids):
-                ownership.write_text(json.dumps({"schema_version": 1, "source": "windows-job",
-                    "launcher_pid": 456, "owned_pids": owned_pids}), encoding="utf-8")
-                manifest["artifacts"]["process_ownership"] = artifact_reference(path.parent, ownership)
-                path.write_text(json.dumps(manifest), encoding="utf-8")
-                if passes:
-                    self.assertEqual(derive_test_evidence(self.root, "F001",
-                        [manifest_reference(self.root, path)])["full_suite"]["status"], "pass")
-                else:
-                    with self.assertRaisesRegex(RunEvidenceError, "owned"):
-                        derive_test_evidence(self.root, "F001", [manifest_reference(self.root, path)])
+
+    def test_maintenance_label_alone_does_not_require_full_suite(self):
+        from tools.lib.test_selection import build_selection
+        self.detail.update(engineering_change="maintenance", source="infrastructure")
+        self.write_json("docs/features/F001.json", self.detail)
+        self.assertFalse(build_selection(self.root, "F001")["full_suite"]["required"])
+
+    def test_relabelled_discovery_from_another_run_is_rejected(self):
+        from tools.lib.run_evidence import artifact_reference, derive_test_evidence, result_reference
+        _, path = self.run_fixture()
+        result = json.loads(path.read_text())
+        discovery_path = path.parent / "discovery.json"
+        discovery = json.loads(discovery_path.read_text())
+        discovery["run_id"] = "run-from-another-session"
+        discovery_path.write_text(json.dumps(discovery), encoding="utf-8")
+        result["artifacts"]["discovery"] = artifact_reference(path.parent, discovery_path)
+        path.write_text(json.dumps(result), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "different run"):
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
+
+    def test_result_tampering_after_recording_is_rejected(self):
+        from tools.lib.run_evidence import derive_test_evidence, result_reference
+        _, path = self.run_fixture()
+        reference = result_reference(self.root, path)
+        path.write_bytes(path.read_bytes() + b"\n")
+        with self.assertRaisesRegex(ValueError, "result changed"):
+            derive_test_evidence(self.root, "F001", [reference])
+
+    def test_gate_template_matches_the_single_completion_record(self):
+        template = json.loads((PROJECT_ROOT / "methodology/templates/gate-evidence.json.tmpl").read_text())
+        self.assertEqual(template, gate_evidence.empty_evidence(None, {"git_revision": None,
+            "working_tree_fingerprint": None}))
 
 
 if __name__ == "__main__":

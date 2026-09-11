@@ -159,7 +159,7 @@ No automatic tool events are registered. The Agent reads Git status and follows
 the current task's Skill. Editing a file or ending a reply does not trigger a
 second workflow.
 
-`tools/checks/check-feature-list.py --strict` validates the ledger, Catalog and
+`tools/checks/check-feature-list.py` validates the ledger, Catalog and
 dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
 
 `tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Catalog and selects tests directly.
@@ -168,14 +168,9 @@ decisions. Its `validate --feature F0XX` command checks completion evidence
 before the Agent records completion. Test, static and acceptance requirements
 remain those of the execution Skill.
 
-Stages 4 and 6 still emit these exact human-readable summaries:
-
-```text
-Test verification: pass (feature: F0XX, required: N, failed: 0, full_suite: pass|not_required)
-Code smell scan: pass (feature: F0XX, must_fix: 0, suggest: N, acceptable: M)
-```
-
-These transcript lines are not machine authorization. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` records the structured source used by explicit completion validation; a completion commit may include the summaries for auditability.
+Report actual verification scope and review findings in ordinary language. Result
+references and explicit decisions are stored by the Skill helper, not parsed from
+conversation summaries.
 
 ## Scope boundary for this personal-project workflow
 

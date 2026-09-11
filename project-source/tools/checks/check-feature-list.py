@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""显式检查 Feature 台账与测试引用；--strict 检查完整一致性。"""
+"""显式检查 Feature 台账与测试引用；检查当前完整一致性。"""
 # 沿用 Skill 中的现有调用路径；不读取工具事件或拦截写入。
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.test_selection import acceptance_mode, SelectionError
 from tools.lib.feature_evolution import (
-    EvolutionError, EvolutionReferenceError, CATALOG_SCHEMA_VERSION, eligible_features,
+    EvolutionError, CATALOG_SCHEMA_VERSION, eligible_features,
     validate_retirement_shape, validate_retirements, validate_revisions,
 )
 
@@ -49,10 +49,6 @@ def _rel(path: Path) -> str:
 
 def _error(message: str) -> None:
     print(f"[FEATURE] ERROR: {message}", file=sys.stderr)
-
-
-def _warning(message: str) -> None:
-    print(f"[FEATURE] WARNING: {message}", file=sys.stderr)
 
 
 def _load_json(path: Path) -> tuple[Any | None, bool]:
@@ -367,7 +363,7 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     return ok, fid, info
 
 
-def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]], strict: bool) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
+def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]]) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
     if data is None:
         _error("docs/test-catalog.json is required")
         return False, {}, set()
@@ -409,7 +405,7 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
         component_ids.add(cid)
         paths_ok, unit_paths = _unique_string_list(comp.get("unit_test_paths"), f"{label}.unit_test_paths")
         ok &= paths_ok
-        if strict and paths_ok:
+        if paths_ok:
             for unit_path in unit_paths:
                 path = REPO_ROOT / unit_path
                 if not (path.is_file() or path.is_dir()):
@@ -464,7 +460,7 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
             if not isinstance(path, str) or not path.strip():
                 _error(f"{label}.path must be non-empty when status is {status}")
                 ok = False
-            elif strict and status == "active" and not (REPO_ROOT / path).exists():
+            elif status == "active" and not (REPO_ROOT / path).exists():
                 _error(f"active test {tid} path does not exist: {path}")
                 ok = False
         if case is not None and (not isinstance(case, str) or not case.strip()):
@@ -516,7 +512,7 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
 
 
 # 聚合索引、详情、Catalog 和演进关系；跨文件规则在这里汇合，避免入口各自判断。
-def _validate_all(strict: bool, completion_feature: str | None = None) -> bool:
+def _validate_all(completion_feature: str | None = None) -> bool:
     ok = True
     index_data, loaded = _load_json(INDEX_FILE)
     ok &= loaded
@@ -530,11 +526,8 @@ def _validate_all(strict: bool, completion_feature: str | None = None) -> bool:
         try:
             revisions = validate_revisions(revisions_data, entries)
         except EvolutionError as exc:
-            if strict or not isinstance(exc, EvolutionReferenceError):
-                _error(str(exc))
-                ok = False
-            else:
-                _warning(str(exc) + "; synchronize cross-file revisions before strict validation")
+            _error(str(exc))
+            ok = False
 
     details: dict[str, dict[str, Any]] = {}
     detail_ids: set[str] = set()
@@ -558,26 +551,20 @@ def _validate_all(strict: bool, completion_feature: str | None = None) -> bool:
     only_detail = sorted(detail_ids - index_ids)
     if only_index or only_detail:
         msg = f"Feature index/detail sets differ (index without detail: {only_index}; detail without index: {only_detail})"
-        if strict:
-            _error(msg)
-            ok = False
-        else:
-            _warning(msg + "; allowed temporarily during multi-file edit")
+        _error(msg)
+        ok = False
 
     catalog_data, loaded = _load_json(TEST_CATALOG_FILE)
     ok &= loaded
-    cat_ok, catalog_tests, component_ids = _validate_test_catalog(catalog_data, entries, details, strict) if loaded else (False, {}, set())
+    cat_ok, catalog_tests, component_ids = _validate_test_catalog(catalog_data, entries, details) if loaded else (False, {}, set())
     ok &= cat_ok
     if cat_ok and index_ok:
         try:
             validate_retirements(catalog_tests, entries, revisions,
                                 {fid: info["automated"] | info["regressions"] for fid, info in details.items()})
         except EvolutionError as exc:
-            if strict or not isinstance(exc, EvolutionReferenceError):
-                _error(str(exc))
-                ok = False
-            else:
-                _warning(str(exc) + "; synchronize cross-file retirement references before strict validation")
+            _error(str(exc))
+            ok = False
     if completion_feature is not None and completion_feature not in entries:
         _error(f"completion Feature {completion_feature} does not exist")
         ok = False
@@ -597,11 +584,8 @@ def _validate_all(strict: bool, completion_feature: str | None = None) -> bool:
         for tid in referenced:
             cat = catalog_tests.get(tid)
             if cat is None:
-                if strict or status == "done":
-                    _error(f"{fid} references test {tid} missing from docs/test-catalog.json")
-                    ok = False
-                else:
-                    _warning(f"{fid} references test {tid} not yet in catalog")
+                _error(f"{fid} references test {tid} missing from docs/test-catalog.json")
+                ok = False
                 continue
             allowed = {"active"} if fid == completion_feature else {"active", "retired"}
             if (status == "done" or fid == completion_feature) and cat.get("status") not in allowed:
@@ -621,7 +605,6 @@ def _validate_all(strict: bool, completion_feature: str | None = None) -> bool:
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT, help="project directory to validate")
-    parser.add_argument("--strict", action="store_true")
     parser.add_argument("--completion-feature", metavar="FXXX", help="require active coverage for this current completion")
     parser.add_argument("--eligible", action="store_true", help="print dependency-eligible pending Feature IDs as JSON")
     return parser.parse_args(list(argv))
@@ -635,14 +618,12 @@ def main() -> int:
     REVISIONS_FILE = REPO_ROOT / "docs/feature-list-revisions.json"
     TEST_CATALOG_FILE = REPO_ROOT / "docs/test-catalog.json"
     DETAILS_DIR = REPO_ROOT / "docs/features"
-    if args.strict or args.completion_feature or args.eligible:
-        if not _validate_all(strict=True, completion_feature=args.completion_feature):
-            return 2
-        if args.eligible:
-            data, _ = _load_json(INDEX_FILE)
-            print(json.dumps(eligible_features({entry["id"]: entry for entry in (data or {}).get("features", [])})))
-        return 0
-    return 0 if _validate_all(strict=False) else 2
+    if not _validate_all(completion_feature=args.completion_feature):
+        return 2
+    if args.eligible:
+        data, _ = _load_json(INDEX_FILE)
+        print(json.dumps(eligible_features({entry["id"]: entry for entry in (data or {}).get("features", [])})))
+    return 0
 
 
 if __name__ == "__main__":

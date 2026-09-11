@@ -23,10 +23,6 @@ class EvolutionError(ValueError):
     """An evolution record cannot establish an unambiguous migration chain."""
 
 
-class EvolutionReferenceError(EvolutionError):
-    """Cross-file state may be temporarily incomplete during an ordered edit."""
-
-
 def _text(value: Any, label: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise EvolutionError(f"{label} must be a non-empty string")
@@ -60,7 +56,7 @@ def _feature_ids(value: Any, label: str, entries: dict[str, dict], *, nonempty: 
     if any(not FEATURE_ID.fullmatch(fid) for fid in ids):
         raise EvolutionError(f"{label} references an invalid Feature ID")
     if any(fid not in entries for fid in ids):
-        raise EvolutionReferenceError(f"{label} references a missing Feature")
+        raise EvolutionError(f"{label} references a missing Feature")
     return ids
 
 
@@ -145,7 +141,7 @@ def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
                 raise EvolutionError(f"{ml} source and replacement IDs must be disjoint")
             if kind in {"split", "merge", "retire"}:
                 if any(entries[fid].get("status") not in {"obsolete", "obsolete_done"} for fid in before):
-                    raise EvolutionReferenceError(f"{ml} must retain superseded entries as obsolete or obsolete_done")
+                    raise EvolutionError(f"{ml} must retain superseded entries as obsolete or obsolete_done")
             for fid in before:
                 graph.setdefault(fid, set()).update(target for target in after if target != fid)
         changed: set[str] = set()
@@ -166,7 +162,7 @@ def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
         revisions[rid] = revision
     for fid, after in latest_dependencies.items():
         if set(entries[fid].get("depends_on", [])) != set(after):
-            raise EvolutionReferenceError(f"latest dependency_changes.after for {fid} differs from current depends_on")
+            raise EvolutionError(f"latest dependency_changes.after for {fid} differs from current depends_on")
     _acyclic(graph, "Feature migration")
     return revisions
 
@@ -224,7 +220,7 @@ def validate_retirements(tests: dict[str, dict], entries: dict[str, dict], revis
         fid = replacement["feature_id"]
         revision = revisions.get(retirement["revision_id"])
         if fid not in entries or not revision:
-            raise EvolutionReferenceError(f"retired test {tid} references missing replacement Feature or version-2 revision")
+            raise EvolutionError(f"retired test {tid} references missing replacement Feature or version-2 revision")
         if not any(retirement["source"] == migration["source"] and fid in migration["to"]
                    and (test.get("source_feature") is None or test["source_feature"] in migration["from"])
                    for migration in revision["migrations"]):
@@ -232,9 +228,9 @@ def validate_retirements(tests: dict[str, dict], entries: dict[str, dict], revis
         for replacement_id in replacement["test_ids"]:
             target = tests.get(replacement_id)
             if not target or target.get("source_feature") != fid:
-                raise EvolutionReferenceError(f"retired test {tid} replacement {replacement_id} is missing or belongs to another Feature")
+                raise EvolutionError(f"retired test {tid} replacement {replacement_id} is missing or belongs to another Feature")
             if replacement_id not in verification_ids.get(fid, set()):
-                raise EvolutionReferenceError(f"retired test {tid} replacement {replacement_id} is not mapped in Feature {fid} verification")
+                raise EvolutionError(f"retired test {tid} replacement {replacement_id} is not mapped in Feature {fid} verification")
             status = target.get("status")
             if status == "planned" and entries[fid].get("status") not in {"pending", "in_progress", "blocked"}:
                 raise EvolutionError(f"retired test {tid} planned replacement cannot cover a completed/obsolete Feature")

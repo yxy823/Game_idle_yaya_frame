@@ -47,7 +47,7 @@ class ExecutablePathContractTests(unittest.TestCase):
         bootstrap = {"status": "ready", "engine_executable": executable,
                      "engine_version": self.version}
         return {"document_language": "en", "python_executable": executable,
-                "test_cmd": command, "full_test_cmd": None,
+                "test_cmd": command,
                 "engine": "Godot 4.7", "language": "GDScript", "test_framework": "gdunit4",
                 "environment_bootstrap": bootstrap}
 

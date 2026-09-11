@@ -15,7 +15,7 @@ TOOLS = (PROJECT_ROOT / "tools")
 sys.path.insert(0, str(PROJECT_ROOT))
 from tools.lib import gate_evidence
 from evidence_fixture import make_run
-from tools.lib.run_evidence import derive_test_evidence, manifest_reference
+from tools.lib.run_evidence import derive_test_evidence, result_reference
 from tools.lib.run_evidence import RunEvidenceError
 
 
@@ -74,7 +74,7 @@ class UnbornRepositoryTests(unittest.TestCase):
         self.plan_fixture()
         plan, manifest = make_run(self.root)
         self.assertEqual("UNBORN", gate_evidence.current_snapshot(self.root)["git_revision"])
-        references = [manifest_reference(self.root, manifest)]
+        references = [result_reference(self.root, manifest)]
         verified = derive_test_evidence(self.root, "F001", references)
         evidence = gate_evidence.empty_evidence("F001", gate_evidence.current_snapshot(self.root))
         evidence.update(test_runs=references, **verified)

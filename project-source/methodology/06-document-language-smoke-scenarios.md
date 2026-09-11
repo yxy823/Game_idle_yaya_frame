@@ -10,7 +10,7 @@ The initially verified document languages are `en` and `zh-CN`. Other BCP 47 tag
 
 ## Stable protocol fixture
 
-The following paired projections describe the same pending Feature. They show language-sensitive fields only, not complete runnable Bootstrap configurations; use the actual project configuration for environment checks. Natural-language values change with `document_language`; keys, enums, IDs, dependencies, paths, timestamps, placeholder prefixes, and completion evidence do not.
+The following paired projections describe the same pending Feature. They show language-sensitive fields only, not complete runnable Bootstrap configurations; use the actual project configuration for environment checks. Natural-language values change with `document_language`; keys, enums, IDs, dependencies, paths, timestamps, placeholder prefixes do not.
 
 <!-- fixture: en -->
 ```json
@@ -18,7 +18,6 @@ The following paired projections describe the same pending Feature. They show la
   "config": {
     "document_language": "en",
     "test_cmd": "",
-    "full_test_cmd": null,
     "test_framework": "gdunit4",
     "test_catalog_path": "docs/test-catalog.json",
     "test_unit_root": "tests/unit",
@@ -46,9 +45,7 @@ The following paired projections describe the same pending Feature. They show la
   },
   "protocol": {
     "detail_path": "docs/features/F900.json",
-    "placeholder": "_placeholder_profile.json",
-    "test_evidence": "Test verification: pass (feature: F900, required: 0, failed: 0, full_suite: not_required)",
-    "completion_evidence": "Code smell scan: pass (feature: F900, must_fix: 0, suggest: 0, acceptable: 0)"
+    "placeholder": "_placeholder_profile.json"
   }
 }
 ```
@@ -59,7 +56,6 @@ The following paired projections describe the same pending Feature. They show la
   "config": {
     "document_language": "zh-CN",
     "test_cmd": "",
-    "full_test_cmd": null,
     "test_framework": "gdunit4",
     "test_catalog_path": "docs/test-catalog.json",
     "test_unit_root": "tests/unit",
@@ -87,9 +83,7 @@ The following paired projections describe the same pending Feature. They show la
   },
   "protocol": {
     "detail_path": "docs/features/F900.json",
-    "placeholder": "_placeholder_profile.json",
-    "test_evidence": "Test verification: pass (feature: F900, required: 0, failed: 0, full_suite: not_required)",
-    "completion_evidence": "Code smell scan: pass (feature: F900, must_fix: 0, suggest: 0, acceptable: 0)"
+    "placeholder": "_placeholder_profile.json"
   }
 }
 ```
@@ -174,5 +168,5 @@ Record which of these checks actually ran; the checklist itself is not execution
 2. English and Chinese fixtures preserve identical machine projections;
 3. Bootstrap and the document-language contract retain confirmation, preservation, and no-silent-translation rules;
 4. every installed Skill preserves stable machine protocol values across document languages; and
-5. test-layout/catalog protocol fields and both completion evidence strings remain stable across document languages; and
+5. test-layout/catalog protocol fields remain stable across document languages; human summaries use natural language; and
 6. repository tests, tool fixtures, and `git diff --check` pass without changing verification command strings.

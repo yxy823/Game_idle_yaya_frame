@@ -13,14 +13,13 @@
 - Never start implementation, infer human acceptance, promote a Bug guardrail, or start the next Feature without the required explicit user decision.
 - Release/publishing/deployment workflow is outside this loop unless explicitly represented as project work.
 
-### Stage conversation updates
+### Progress communication
 
-- After completing each Stage (0–8, including Stage 5.5 when applicable), the agent must immediately send one user-visible conversation message **before any operation belonging to the next Stage**. Do not batch updates, defer them to the final report, or fabricate retrospective messages for completed work.
-- Use the current conversation language and 1–3 sentences to state the Stage number and name, work actually completed, actual check results, and whether execution continues or waits (and for what). Keep this a stage summary, not a tool-by-tool log. Required context snapshots, approval packets, human checklists, and handoff details remain required; the short update summarizes rather than replaces them.
-- Updates add no approval checkpoints. Stage 1 presents its approval packet and reports that approval is pending; only after explicit approval report Stage 1 complete, before Stage 2 operations. Stage 4 reports whether the approved plan requires Stage 5 human acceptance; report Stage 5 complete only after explicit acceptance has been recorded. Stage 8 uses its final handoff message as the completion update and stops. Other Stages report and continue within existing authorization; existing conditional approvals, including Bug-guardrail promotion, remain unchanged.
-- On `BLOCKED`, failure, or a return to an earlier Stage, immediately report the current Stage, reason, actual check result, and next action before dependent operations. Do not describe blocked or incomplete work as completed.
-- Include the unchanged Stage 4 / Stage 6 exact summary line once in that Stage's same message, alongside the 1–3 sentences in the conversation language. Do not emit it as a separate duplicate update; these fixed summary lines remain untranslated.
-- Conversation updates do not replace structured `docs/gate-evidence.json` or any existing approval, acceptance, or Completion Gate. Do not introduce report files or chat-text/regex gates for this requirement.
+Report meaningful progress, failures, decisions needed and the final handoff in the
+conversation language. Combine adjacent routine steps when helpful; no message is
+required at every Stage boundary. Preserve the approval packet, applicable human
+checklist and final results. Natural wording is sufficient; conversation text is
+not a machine protocol, execution proof or substitute for approval.
 
 ### Static-check summary
 
@@ -43,7 +42,7 @@ changes require another run. A conversational table does not replace actual exec
 
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
-3. Run `python -B tools/checks/check-project-environment.py --require-ready`. If it fails, stop and route the missing setup through an explicit maintenance/project-setup change; never guess a command or continue past a blocked Gate.
+3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
 4. Load that Feature detail, its Product source, relevant dependency details, current Progress, complete Coding Rules, test catalog, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read the optional Architecture Overview/subsystem map when the change touches its responsibility or dependency boundaries.
 5. Build a concise snapshot that lists:
    - the current Feature record path;
@@ -131,7 +130,7 @@ After approval:
 7. run:
 
    ```powershell
-   python -B tools/checks/check-feature-list.py --strict
+   python -B tools/checks/check-feature-list.py
    ```
 
 ## Stage 3 · baseline, TDD, and implementation
@@ -181,7 +180,6 @@ Read project commands from `docs/methodology-config.json`:
 
 - confirmed Python/Godot executable paths for direct checks described in `gdscript-lint.md`;
 - `test_cmd`: project test runner entrypoint or documented targeted command;
-- `full_test_cmd`: optional broader/full suite.
 
 Procedure:
 
@@ -195,10 +193,10 @@ Procedure:
 6. Record the actual Required Test Set, affected-test, and full-suite result, including failures:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <run-manifest.json>
+   python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <result.json>
    ```
 
-   `record-tests` validates the supplied test manifests and stores their references.
+   `record-tests` validates the supplied run results and stores their references.
    It neither runs nor validates static checks. The Agent separately assesses direct
    parsing/lint output; a passing evidence helper cannot override a static failure.
    Failed evidence imports clear old test references and preserve original reports.
@@ -207,11 +205,7 @@ Procedure:
 8. Follow the approved acceptance mode. For `manual`, prepare the corresponding
    human checks. For `automated`, report actual automated coverage of every AC.
 
-Before following the approved acceptance route, include this exact human-readable evidence summary once in the Stage 4 conversation update:
-
-```text
-Test verification: pass (feature: F0XX, required: <N>, failed: 0, full_suite: <pass|not_required>)
-```
+Report actual scope, failures and result paths in ordinary language.
 
 For `manual`, wait for Stage 5. For `automated`, omit Stage 5 and go to Stage 5.5
 for a Bug, otherwise Stage 6. Report manual acceptance as not required; do not
@@ -252,7 +246,7 @@ If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` 
 
 ## Stage 6 · independent fresh-context code-smell scan
 
-**Output:** independent structured review, repairs, verification reruns, and exact completion evidence.
+**Output:** independent structured review, repairs, verification reruns, and current results.
 
 The reviewer must be a fresh-context subagent/session or equivalent independent context. It reads the complete Coding Rules and changed files, performs no writes, and returns structured `must_fix`, `suggest`, and `acceptable` findings.
 
@@ -270,11 +264,7 @@ Processing rules:
 
 Do not continue while any required test/static/full-suite check is failing.
 
-Only then include this exact human-readable review summary once in the Stage 6 conversation update, before Stage 7 operations:
-
-```text
-Code smell scan: pass (feature: F0XX, must_fix: 0, suggest: <N>, acceptable: <M>)
-```
+Report material review findings and unresolved work in ordinary language.
 
 ## Stage 7 · mark complete
 
@@ -284,13 +274,13 @@ Code smell scan: pass (feature: F0XX, must_fix: 0, suggest: <N>, acceptable: <M>
 
    ```powershell
    python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX
-   python -B tools/checks/check-feature-list.py --strict --completion-feature F0XX
+   python -B tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 
 2. Record the verified result: transition the Feature to `done` and set
    `completed_at` to the current ISO 8601 timestamp. The status field records
    completion; it does not prove tests, review or human acceptance.
-3. Run `python -B tools/checks/check-feature-list.py --strict` on the final ledger.
+3. Run `python -B tools/checks/check-feature-list.py` on the final ledger.
    These are explicit task commands. There is no tool-event interceptor or
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
