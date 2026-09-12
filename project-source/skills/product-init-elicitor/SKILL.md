@@ -34,15 +34,20 @@ Smoke cases: with `document_language: en` and a Chinese conversation, ask questi
 
 ## Core principles
 
-1. **Ask one question at a time.** Use the available user-input mechanism. Never send ten questions in one message.
+1. **Keep each round small.** Prefer one decision at a time; a few brief, independent questions may share a round. Use the available user-input mechanism.
 2. **Do not make Product decisions for the user.** Durations, audiences, rules, and tradeoffs belong to the user.
-3. **Offer choices and allow a custom answer.** Every question must provide two to four common options plus a user-defined option.
-4. **Ask in dependency order.** Establish the core loop before details and values. Later questions may use earlier answers.
-5. **Do not repeat answered questions.** Extract usable facts from the user's initial description and previous answers.
+3. **Make choices reviewable.** Offer practical options and a recommendation with its reason when useful, while allowing a custom answer. A recommendation is not a user decision.
+4. **Ask in dependency order.** Establish the core loop before details and values. Do not ask dependent questions while their prerequisite is unsettled.
+5. **Find facts before asking.** Reuse the user's description, earlier decisions and relevant existing documents. Inspect implementation only when it can answer a concrete question about current behavior; do not treat it as approved Product intent.
+
+Use the following dimensions as coverage prompts, not question quotas. Reuse
+known answers and stop probing a dimension once its current scope, observable
+outcome and material constraints are clear. Return a reviewable draft after the
+applicable dimensions are covered; leave unrelated future branches for later.
 
 ## Stage 1: Product positioning
 
-Establish the Product skeleton with five to seven questions.
+Establish the Product skeleton by resolving the relevant gaps below.
 
 ### Q1.1 One-line positioning
 
@@ -84,7 +89,7 @@ Ask for the Product-wide audio tone. Useful options include 8-bit, natural ambie
 
 ## Stage 2: Module elicitation
 
-Process modules in confirmed order. Ask roughly eight to twelve questions per module. At the end of every module, show its complete draft and obtain confirmation before continuing, so earlier decisions remain reviewable.
+Process modules in confirmed order and ask only about unresolved, material gaps. At the end of every module, show its complete draft and obtain confirmation before continuing, so earlier decisions remain reviewable.
 
 ### M.1 Module positioning
 

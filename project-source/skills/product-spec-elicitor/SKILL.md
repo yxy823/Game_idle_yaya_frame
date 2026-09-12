@@ -32,11 +32,17 @@ With `document_language: en` and a Chinese conversation, ask in Chinese and retu
 
 ## Core principles
 
-1. Do not ask for information that can be inferred from current Product documents. A safe inferred value may be proposed, but it must be marked as an AI default for user review.
-2. Always ask about decisions that change the core loop, primary user flow, numeric range, or state machine.
-3. Always ask about risks that may break existing behavior, affect a completed Feature, or introduce a new edge case.
-4. Make every question answerable in about 30 seconds. Split complex decisions into focused questions.
+1. Read the relevant Product documents and, when needed, the actual implementation to establish facts before asking. Reuse explicit user decisions. Code establishes current behavior, not intended behavior; surface a contradiction instead of silently choosing either source. Mark a proposed inferred default for review.
+2. Resolve unanswered decisions that materially change the core loop, primary user flow, numeric range, or state machine. Do not re-ask a decision already settled for this scope.
+3. Explain concrete risks to existing behavior or completed Features and clarify the unresolved Product tradeoff. Do not expand the interview to hypothetical future branches.
+4. Ask in dependency order: settle a prerequisite before asking questions whose answers depend on it. A few brief, independent questions may share a round. Keep each answerable in about 30 seconds and offer a recommendation with its reason when useful; a recommendation is not a user decision.
 5. Do not turn a Product bug report into an implementation solution.
+
+Treat the mode-specific questions below as coverage prompts, not a quota or a
+reason to repeat known answers. Once the current scope, observable outcomes and
+material constraints are clear enough for a reviewable patch, return it to the
+standardizer. Keep deferred work outside the patch; do not require every possible
+design branch to be explored first.
 
 ## Input
 
