@@ -130,7 +130,7 @@ Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or t
 5. A required full suite must actually pass; failure, unavailable execution, missed cases or stale evidence block completion.
 6. Import actual evidence with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <result.json>`. Counts are computed from the current selection, result.json and original reports; caller-supplied counts and transcript prose cannot authorize PASS.
 7. Any failure returns to Stage 3.
-8. For `acceptance_mode: manual`, produce instructions from the approved human checks. For `automated`, report the actual automated AC coverage.
+8. For `acceptance_mode: manual`, produce reproducible instructions from the approved human checks: entry scene, starting state, actual input, expected feedback and relevant reset steps. Follow the conditional timing/seed/media guidance in `methodology/03-execute-loop.md` Stage 4; reuse `manual_checks` and Feature notes. For `automated`, report the actual automated AC coverage.
 
 Report the actual test scope, failures and result path in ordinary language.
 

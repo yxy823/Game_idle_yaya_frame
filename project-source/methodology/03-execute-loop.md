@@ -205,6 +205,17 @@ Procedure:
 8. Follow the approved acceptance mode. For `manual`, prepare the corresponding
    human checks. For `automated`, report actual automated coverage of every AC.
 
+For each approved manual check, make the player path reproducible: entry scene,
+starting state, actual input, expected observable feedback, and any reset needed
+to repeat it. Include input order/duration, build/device, parameters or a random
+seed only when they affect the result. Use approved `manual_checks` as the
+contract; put supplemental reproduction details, shared setup, observed feedback
+and optional media links in Feature notes without duplicating the instructions.
+Do not rewrite approved AC or verification mappings while collecting feedback;
+a change in acceptance meaning follows the existing plan-revision route.
+Tie screenshots or logs to the relevant action and observation point; they do
+not establish behavior or human acceptance on their own.
+
 Report actual scope, failures and result paths in ordinary language.
 
 For `manual`, wait for Stage 5. For `automated`, omit Stage 5 and go to Stage 5.5
