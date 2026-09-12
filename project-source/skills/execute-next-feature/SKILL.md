@@ -1,7 +1,7 @@
 ---
 name: execute-next-feature
 description: >-
-  Execute exactly one approved Feature through test impact review, TDD/verification, applicable human acceptance, independent smell review, and completion gating. English triggers: execute next feature, implement F0XX, continue feature. 中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
+  Execute exactly one approved Feature through test impact review, TDD/verification, applicable human acceptance, independent requirements and code-quality review, and completion gating. English triggers: execute next feature, implement F0XX, continue feature. 中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
 ---
 
 # Execute next Feature
@@ -158,19 +158,31 @@ Guardrail: <general prevention principle>
 
 If Guardrail deserves Coding Rules, show exact proposed rule + destination and wait for explicit approval. If it can be machine-enforced as a cross-Feature invariant, propose `INV-<DOMAIN>-NN`; do not create it as scope expansion without approval.
 
-## Stage 6 — independent fresh-context smell review
+## Stage 6 — independent requirements and code-quality review
 
-Use a fresh context/subagent equivalent. It reads full Coding Rules and changed files, performs no writes, and returns `must_fix`, `suggest`, `acceptable` findings with file/rule evidence.
+Use one fresh context/subagent equivalent for the review specified in
+`methodology/03-execute-loop.md` Stage 6. It reads the approved Feature scope
+and AC, relevant Product decisions, full Coding Rules, final diff and changed
+files, original verification results and applicable human feedback. It performs
+no writes and checks requirements first, then code quality; an implementer's
+summary alone proves neither.
+
+Return a concise conclusion for each aspect and one set of `must_fix`,
+`suggest`, `acceptable` findings with criterion/rule and file/evidence
+references. Missing requirements, unintended scope and unsupported verification
+claims belong in this same review. Reuse Feature notes and `record-smell`;
+do not add another review Stage or evidence format. Reuse current successful
+runs unless a concrete unanswered risk or a repair requires verification.
 
 Every `must_fix` must be repaired. After each repair batch confirm the current Feature verification mappings and repeat Stage 4: one required full run, or the affected union including Required, plus static checks. A successful full run covering Required/affected on the same content snapshot satisfies those subsets without duplicate runs. Before completion, verify all required results cover the final repair snapshot and import them again after code/test changes. If repair may alter behavior already human-accepted, return through Stages 3–5.
 
-Append `suggest` items to Feature notes as TODOs. Re-scan until `must_fix` is zero,
+Append `suggest` items to Feature notes as TODOs. Re-review until `must_fix` is zero,
 record the result with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell`,
 and summarize material findings and remaining work in ordinary language.
 
 ## Stage 7 — completion
 
-Entry requires verified run and code-smell evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. Direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. A summary alone does not prove execution.
+Entry requires verified run and Stage 6 review evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. Direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. A summary alone does not prove execution.
 
 Run:
 

@@ -31,7 +31,7 @@
   运行 Existing Safety Net；可自动化的新行为或 Bug regression 按 RED、GREEN、
   refactor 推进。
 - **[MUST]** 自动验证通过不等于 Feature 完成。先按需求确定验收方式；manual 模式须执行 Stage 5，automated 模式省略该步骤。
-  后续 code-smell review 和适用完成检查仍须执行。
+  后续 Stage 6 需求符合性与代码质量审查，以及适用完成检查仍须执行。
 - **[MUST]** runner、selector 和 full-suite 使用项目配置与已支持参数。
   脚本解析和 lint 按 `methodology/gdscript-lint.md` 直接调用 Godot/插件入口，
   不新增包装程序或静态 manifest。

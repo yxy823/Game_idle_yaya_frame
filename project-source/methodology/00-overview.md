@@ -112,7 +112,7 @@ execute-next-feature
    ↓
 implementation → automated verification → human acceptance when required by the approved plan
    ↓
-independent fresh-context smell scan → must_fix: 0
+independent requirements and code-quality review → must_fix: 0
    ↓
 Feature completion gate → done
    ↓
@@ -153,7 +153,7 @@ Stage 5   Explicit human acceptance only for approved manual mode
    ↓
 Stage 5.5 Bug only: capture Root cause / Trigger / Regression / Guardrail
    ↓
-Stage 6   Independent fresh-context smell scan; repair; rerun tests; must_fix: 0
+Stage 6   Independent requirements/quality review; repair and reverify as needed; must_fix: 0
    ↓
 Stage 7   Run explicit completion checks; mark done; stage task-owned changes; local commit; verify status
    ↓

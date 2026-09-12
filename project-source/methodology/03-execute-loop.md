@@ -244,20 +244,42 @@ If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose a
 
 If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` before another Feature starts.
 
-## Stage 6 · independent fresh-context code-smell scan
+## Stage 6 · independent requirements and code-quality review
 
 **Output:** independent structured review, repairs, verification reruns, and current results.
 
-The reviewer must be a fresh-context subagent/session or equivalent independent context. It reads the complete Coding Rules and changed files, performs no writes, and returns structured `must_fix`, `suggest`, and `acceptable` findings.
+The reviewer must be a fresh-context subagent/session or equivalent independent
+context. It performs no writes and reads the current Feature's approved scope
+and AC, relevant Product decisions, complete Coding Rules, actual final diff
+and changed files, and original verification results with applicable human
+feedback. Treat the implementer's summary as claims to check against these
+sources, not as independent evidence.
 
-At minimum inspect: oversized files, duplicated domain knowledge, misplaced type dispatch, magic values, duplicated constants/enums, God Objects, stack-specific anti-patterns, presentation/domain coupling, comments that restate code, and defects that required repeated repair attempts.
+Use one review pass for both questions:
+
+1. **Requirements:** Does the implementation satisfy every current AC, preserve
+   required existing behavior, and stay within approved scope? Check that the
+   cited tests and manual observations actually exercise the claimed behavior.
+   Report missing, stale or inconclusive evidence as a gap; do not invent an
+   acceptance decision or rewrite AC to fit the implementation.
+2. **Code quality:** Inspect oversized files, duplicated domain knowledge,
+   misplaced type dispatch, magic values, duplicated constants/enums, God
+   Objects, stack-specific anti-patterns, presentation/domain coupling,
+   comments that restate code, and defects requiring repeated repair attempts.
+
+Return a short conclusion for each question plus the existing `must_fix`,
+`suggest`, and `acceptable` findings, with criterion/rule and file/evidence
+references. Findings from either question contribute to the same review result.
+Use the existing Feature notes and `record-smell` entry; no second reviewer,
+Stage or evidence format is required. A review alone does not invalidate a
+current successful run; additional verification needs a concrete unanswered risk.
 
 Processing rules:
 
 1. Every `must_fix` is repaired before completion.
 2. After each repair batch, read the current Feature/Catalog selection and follow Stage 4: run one full suite when required, otherwise the affected union including Required, plus direct script parsing and lint. A full run covering those subsets on the same content snapshot needs no separate Required/affected run.
-3. If a smell repair may change behavior already accepted by the user, return to Stage 3 and repeat Stages 4–6, including human acceptance.
-4. Re-scan until `must_fix` is empty.
+3. If a review repair may change behavior already accepted by the user, return to Stage 3 and repeat Stages 4–6, including human acceptance.
+4. Re-review until `must_fix` is empty.
 5. Append each `suggest` to Feature notes with `TODO`; report `acceptable` without turning it into durable debt automatically.
 6. Before completion, verify the final repair snapshot has the actual successful full result required by the approved Feature verification or project Coding Rules. Reuse the covering run from step 2 when its snapshot still matches; later semantic changes require a new run.
 7. After any code/test change, record the rerun Stage 4 results again. Record the final review with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell --feature F0XX --must-fix 0 --suggest <N> --acceptable <M>`.
