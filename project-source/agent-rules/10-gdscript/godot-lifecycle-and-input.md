@@ -47,6 +47,12 @@ func _process(delta: float) -> void:
 
 Remove empty processing callbacks or disable them with `set_process(false)` / `set_physics_process(false)`; an enabled empty callback still runs every frame.
 
+### CharacterBody movement
+
+- **[MUST]** Keep `CharacterBody2D.velocity` in pixels per second and `CharacterBody3D.velocity` in world units per second (normally meters per second). Assign the desired velocity without multiplying it by `delta`: `move_and_slide()` uses the physics step internally. Apply `delta` when integrating acceleration, such as gravity, into velocity. See the Godot 4.7 references for [CharacterBody2D](https://docs.godotengine.org/en/4.7/classes/class_characterbody2d.html) and [CharacterBody3D](https://docs.godotengine.org/en/4.7/classes/class_characterbody3d.html).
+- **[MUST]** Interpret `is_on_floor()` and slide-collision queries as results of the last `move_and_slide()` call. Read after movement when the current step's collisions are required; a check before movement intentionally uses the previous move's result. Read floor/wall normals only when the corresponding contact predicate is true.
+- **[REVIEW]** When changing CharacterBody movement, check displacement over equal simulated time and the timing of floor/wall transitions. Keep the physics tick rate and time scale explicit when comparing runs, so timing differences are not mistaken for a velocity fix.
+
 ## Signals and async
 
 - **[MUST]** Signal connection lifetime follows endpoint ownership. Persistent endpoints must not accumulate duplicate or stale test/runtime subscriptions.
