@@ -46,6 +46,10 @@
 只读复盘、验证与交接按原范围核对并报告，具体边界见
 [通过提示词开始维护](docs/blank-project/maintenance/updating-the-blank-project.md#通过提示词开始维护)。
 
+后续可以直接用口语补充：相关框架工作继续沿用既有原则，最新明确要求只调整对应的目标或限制。
+从评估转入实施、检查范围与输出格式如何沿用，见
+[后续用口语继续](docs/blank-project/maintenance/updating-the-blank-project.md#后续用口语继续)。
+
 任务对话过长或需要换线程时，在原线程选择对应入口：
 
 - 框架维护：`Yaya 框架维护 → 维护与复盘 → 生成新线程交接提示词`，只读当前会话与仓库。
