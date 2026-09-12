@@ -12,6 +12,13 @@ link it from the overview instead of expanding the main file indefinitely.
 Map templates are [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl)
 and [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl).
 
+When a responsibility map is insufficient, the relevant subsystem document may
+trace key runtime flows: trigger, participating modules, state owner and result,
+with the Godot boundary, lifecycle and failure handling that matter. Link actual
+implementation or verification evidence and label proposed/unverified behavior.
+Keep this detail in the subsystem document; no fixed number of flows or diagrams
+is required.
+
 Humans maintain why a boundary exists, who owns a responsibility, which
 dependencies are allowed and why an exception is approved. Implementation
 work updates a map only when those contracts change. Stage 0 reads the relevant
