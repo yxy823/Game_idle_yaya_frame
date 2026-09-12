@@ -25,6 +25,33 @@ work updates a map only when those contracts change. Stage 0 reads the relevant
 map if present; review checks a changed boundary against it. A stale or missing
 optional map is a clarification/review concern, not a fabricated Gate failure.
 
+## Assessing a proposed refactor
+
+Start from an observed maintenance difficulty or the next agreed change. Read
+what callers must know: required call order, validation, errors, state ownership
+and lifetimes all contribute to interface complexity, even with few methods.
+
+As a thought experiment, remove the layer and call its dependencies directly.
+If behavior stays intact and coordination becomes simpler, the layer may be an
+unnecessary forwarder. If its removal spreads validation, ordering, error handling
+or lifecycle knowledge across callers, that responsibility still needs a coherent
+home. Keep or relocate it instead of dissolving it into callers. Fewer files or
+shorter signatures alone do not establish an improvement.
+
+Preserve useful separation between independent game rules and Godot scene
+orchestration. Check Node, Resource, Signal and SceneTree ownership and lifetimes
+before merging boundaries. A short scene owner that cancels pending work or
+manages signal subscriptions may carry a meaningful contract. Introduce a new
+substitution point only for a concrete runtime or testing need; neither hypothetical
+future platforms nor a fixed number of implementations determines its value.
+
+Verify the behavior callers depend on using the existing
+[testing strategy](08-testing-strategy.md): L1 for independent rules, L2 for real
+collaboration and relevant engine behavior. Keep Godot semantics real when they
+are the subject of the test. Merging modules or adding a boundary test does not
+by itself justify deleting existing tests; retain needed scenarios and follow
+the existing test and catalog maintenance rules when retiring redundant cases.
+
 ## Architecture Decision Records
 
 Use an optional ADR for one important technical choice whose tradeoffs affect
