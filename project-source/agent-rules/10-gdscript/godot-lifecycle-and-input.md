@@ -62,6 +62,12 @@ func show_message_for_a_second() -> void:
 	visible = false
 ```
 
+### Animation and audio completion
+
+- **[MUST]** Check the emission conditions before awaiting playback completion. Looping animations do not emit `AnimationMixer.animation_finished`; `AudioStreamPlayer.finished` is not emitted by `stop()` or by leaving the SceneTree during playback. An interruption is not a natural completion. See the Godot 4.7 references for [AnimationMixer](https://docs.godotengine.org/en/4.7/classes/class_animationmixer.html) and [AudioStreamPlayer](https://docs.godotengine.org/en/4.7/classes/class_audiostreamplayer.html).
+- **[MUST]** When gameplay or UI waits for interruptible playback, its owner must also handle cancellation, replacement, and exit paths that the feature permits. Restore temporary state or input access in those paths; cleanup only after a natural-finish `await` is insufficient. If a player is reused, completion must still belong to the current operation before changing its state.
+- **[REVIEW]** For changes to a playback-dependent flow, verify natural completion and the relevant loop/interruption/exit paths, including pending work and state cleanup. Check the resulting gameplay or UI behavior, not only whether the animation or sound stopped.
+
 ## Scene changes and node lifetime
 
 - **[MUST]** Replace the main Scene with `change_scene_to_file()` or `change_scene_to_packed()` deliberately; the old Scene is destroyed except for Autoloads.
