@@ -160,6 +160,11 @@ For every substantively revised `done` Feature, list every Feature whose `depend
 
 ### 2.5 Report the diff
 
+Apply **Requirement coverage review** in `methodology/02-feature-list-schema.md`
+to the changed requirements and actual downstream impacts. Make omissions,
+unresolved choices and remaining test/implementation work visible; a valid
+ledger or recorded source anchor alone does not prove semantic alignment.
+
 Render the report in the current conversation language while preserving these sections:
 
 ```markdown
@@ -188,6 +193,11 @@ Render the report in the current conversation language while preserving these se
 1. Affected Feature: <ID and status>
    Change: <brief explanation>
    Proposed action: <status-dependent action>
+
+### Requirement correspondence and remaining work
+| Source requirement/change | Feature and AC | Test/check action | Gap or next action |
+| --- | --- | --- | --- |
+| <path/section and current meaning> | <existing/proposed IDs and coverage> | <keep/change/add/retire or still to plan> | <unmapped scope, decision or remaining work> |
 
 ### Match with user prior
 <what matched and what the diff revealed unexpectedly>
@@ -419,6 +429,12 @@ Report:
 - counts of added, obsoleted, regression, and source-path-update records;
 - the next executable Feature for the current Product or authorized engineering work, using `python -B tools/checks/check-feature-list.py --eligible` for dependency readiness; otherwise the next Product to revisit after current completion;
 - rollback warnings for obsolete in-progress work and every outstanding regression concern.
+
+Refresh the Stage 2 correspondence with the actual written Feature/AC and test
+relationships. Distinguish plan alignment from pending implementation, test
+creation and verification; keep actionable follow-ups in the owning Feature or
+current Progress. Do not present deferred Products or unresolved current-plan
+gaps as fully synchronized, and do not create a separate coverage/state file.
 
 Do not automatically start another Feature. Wait for the user's instruction.
 

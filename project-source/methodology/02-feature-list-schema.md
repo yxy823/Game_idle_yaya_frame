@@ -445,6 +445,28 @@ Features or rewriting completed history.
 9. `refactor` Features state behavior-preservation evidence.
 10. `maintenance` Features state the technical success condition and compatibility/invariant to preserve.
 
+## Requirement coverage review
+
+In the existing planning or synchronization report, show a small table or clear
+list connecting **source requirement → Feature and AC → test/check action →
+gap or next action**. Initial decomposition covers the current Product's whole
+approved scope; synchronization covers changed requirements and actual downstream
+impacts, including removals. Editorial changes and later unplanned Products need
+only a brief disposition, not placeholder Features or an all-Product audit.
+
+Read the requirement and AC meanings in both directions: find missing behavior,
+unsupported or duplicated scope, and Features too broad to verify independently.
+A source link, matching ID or old `done` status alone does not establish coverage.
+Distinguish existing verification from tests/checks still to be planned or written;
+do not invent test IDs or PASS results to fill the report.
+
+Refresh the report against the files actually written before handoff. Name any
+unmapped requirement, unresolved choice and remaining implementation/verification;
+do not call an incomplete current plan fully synchronized. State approved exclusions
+and deferred scope explicitly. Keep actionable follow-ups in the owning Feature
+or current Progress, with links, not in a separate coverage ledger. Planning
+alignment does not mean the new behavior has been implemented or tested.
+
 ## Ownership
 
 | Operation | Owner | Main files changed |

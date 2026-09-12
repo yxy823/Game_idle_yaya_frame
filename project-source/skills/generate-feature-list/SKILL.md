@@ -254,6 +254,13 @@ Fix every failed check before presenting the generated files as complete.
 
 ## Output sequence
 
+Use **Requirement coverage review** in `methodology/02-feature-list-schema.md`
+within the summary below: connect each current requirement to proposed Feature/AC,
+verification work and any gap. Reuse existing coverage where it still matches;
+new test mappings may remain for execution-time planning. After writing, refresh
+the same summary with actual IDs and remaining work instead of creating another
+report file or repeating the whole Product specification.
+
 1. After reading the needed inputs, give a concise summary naming the current Product, its scope, why it is next, proposed new Features and dependencies, and any material ambiguity. Distinguish newly added work from the existing ledger total; do not estimate later Products' Feature lists.
 2. If any question remains, stop and wait for the user's answer. Do not write JSON.
 3. When there is no unresolved question, prepare the temporary component-candidate JSON and run the merge helper before any Feature-plan write. Continue only after it has either created the absent catalog or validated and merged the existing one without conflict.

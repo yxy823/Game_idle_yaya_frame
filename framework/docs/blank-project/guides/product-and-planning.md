@@ -142,6 +142,10 @@ flowchart LR
 
 ## 规划完成时应能回答
 
+拆分或同步报告用简短表格或清晰列表串起“需求位置与当前含义 → Feature / AC → 测试或人工检查的处理 → 缺口与下一步”。首次拆分核对当前 Product 的完整已确认范围；增量同步只展开本次变化及真实下游影响。双向阅读需求和 AC，查找遗漏、重复和不合适的任务范围，不能只凭来源链接、ID 或旧 `done` 判断已经覆盖。
+
+写入后用实际文件刷新同一份报告。明确哪些只是计划已对齐，哪些实现、测试编写或验证尚未完成；未覆盖的当前需求不能默认为已同步。后续未拆分 Product 和已确认排除的范围简述去向即可，不提前创建任务。可执行的后续事项沿用所属 Feature 或当前 Progress，不新增覆盖台账，也不为补齐报告编造测试 ID。详见 [需求覆盖复核](../../../../project-source/methodology/02-feature-list-schema.md#requirement-coverage-review)。
+
 现在要实现的行为是什么、依据哪个 Product、受影响组件有哪些、前置任务是否完成、AC 怎么检查、有哪些尚未确定的选择。规划完成说明工作可理解，不代表已批准 Stage 1 实现或已经通过验收。
 
 下一步使用 [Feature 开发流程](feature-delivery.md)。字段细节与历史约束以 [Feature schema](../../../../project-source/methodology/02-feature-list-schema.md) 为准。
