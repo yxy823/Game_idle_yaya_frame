@@ -3,11 +3,17 @@
 这里保留文件复制和可显式调用的回归入口。修改不需要任务登记、源码清单续接、
 发布身份、升级计划或专门的哈希状态。
 
+面向空白项目使用者的完整说明见 [空白项目使用手册](docs/blank-project/README.md)。
+修改源材料前先查阅入口与受影响专题，修改后按
+[维护与同步说明](docs/blank-project/maintenance/updating-the-blank-project.md) 更新对应章节。
+手册属于框架，不复制到生成项目。
+
 | 路径 | 职责 |
 | --- | --- |
 | [commands/create_project.py](commands/create_project.py) | 读取相对路径清单，检查目标后复制 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
+| [docs/blank-project/README.md](docs/blank-project/README.md) | 空白项目详细使用手册与维护指引；不复制到项目 |
 | [commands/validate_project.py](commands/validate_project.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
 | [tests/test_generation.py](tests/test_generation.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |

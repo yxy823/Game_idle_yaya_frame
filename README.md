@@ -3,6 +3,11 @@
 这里维护一套 Godot 项目的起始文件和开发 Skill，供 Windows 11 / PowerShell 7 使用。
 目标是减少重复准备工作，让用户与 Coding Agent 持续开发。
 
+完整使用说明见 [空白项目使用手册](framework/docs/blank-project/README.md)：
+按入门、日常开发、配置与工具参考、框架维护分层，覆盖创建、环境准备、需求规划、
+Feature 执行、验收、工程变更、架构与交接、故障排查。
+手册仅保存在框架内，不进入新项目；项目内 README 继续保持简短导航。
+
 ## 文件放在哪里
 
 ```text
@@ -13,6 +18,7 @@ Game_idle_yaya_frame/
 │   ├── commands/              复制入口；按需执行的项目工具回归入口
 │   ├── project-files.json     相对路径复制清单
 │   ├── prompts.json           用户操作提示词，不复制到项目
+│   ├── docs/blank-project/    详细使用手册，不复制到项目
 │   ├── tests/                 复制器与项目工具的回归源码
 │   └── review/                按需复盘的问题清单
 └── project-source/
@@ -98,6 +104,8 @@ flowchart LR
 
 修改 → 按本次任务需要静态检查或实际验证 → 如实交付。没有固定发布流水线。
 维护源使用独立 Git 仓库管理变更，后续不再创建源外备份。
+修改空白项目之前先阅读手册与相关专题，修改后同步受影响说明；具体映射见
+[维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md)。
 静态检查可查看路径、引用、语法和配置。实际项目验证只在明确指定的外部项目中进行；
 只要求静态检查时，不运行生成器、Godot 或测试。
 
