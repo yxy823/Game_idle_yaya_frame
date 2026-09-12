@@ -51,6 +51,7 @@ workflow; they do not maintain an independent lifecycle or approval table.
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
+| Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | New Feature / Product change | `product-change-standardizer` | Define or change Product authority, then incrementally synchronize the plan. |
 | Initial decomposition | `generate-feature-list` | Create the first plan from approved Product and Coding Rules. |
 | Source synchronization | `sync-feature-list` | Trace additions, revisions, splits, merges and dependency/test retirement migrations. |
@@ -70,6 +71,12 @@ short actionable prompt; uncertain, cross-module or migration work gets an
 investigation/planning prompt. Current user authorization takes precedence over
 generic workflow wording, but implementation approval never implies human
 acceptance.
+
+Prototype observations and tentative parameters are not approved Product intent
+or Feature acceptance. Keep the question, observed result, decision and experiment
+file disposition in current Feature notes, or current Progress when no Feature
+exists. Adopting an outcome into formal development returns to the Product or
+engineering entry above; exceeding the experiment budget requires user direction.
 
 ## Project environment and workflow
 
