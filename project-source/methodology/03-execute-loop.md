@@ -43,7 +43,7 @@ changes require another run. A conversational table does not replace actual exec
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
-4. Load that Feature detail, its Product source, relevant dependency details, current Progress, complete Coding Rules, test catalog, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read the optional Architecture Overview/subsystem map when the change touches its responsibility or dependency boundaries.
+4. Load that Feature detail, its Product source, relevant dependency details, current Progress, complete Coding Rules, test catalog, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
 5. Build a concise snapshot that lists:
    - the current Feature record path;
    - the principal Product and implementation paths read;
@@ -261,7 +261,7 @@ If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` 
 
 The reviewer must be a fresh-context subagent/session or equivalent independent
 context. It performs no writes and reads the current Feature's approved scope
-and AC, relevant Product decisions, complete Coding Rules, actual final diff
+and AC, relevant Product and accepted architecture decisions, complete Coding Rules, actual final diff
 and changed files, and original verification results with applicable human
 feedback. Treat the implementer's summary as claims to check against these
 sources, not as independent evidence.
@@ -277,6 +277,7 @@ Use one review pass for both questions:
    misplaced type dispatch, magic values, duplicated constants/enums, God
    Objects, stack-specific anti-patterns, presentation/domain coupling,
    comments that restate code, and defects requiring repeated repair attempts.
+   Check changed boundaries against applicable accepted ADRs and architecture maps.
 
 Return a short conclusion for each question plus the existing `must_fix`,
 `suggest`, and `acceptable` findings, with criterion/rule and file/evidence
@@ -318,7 +319,7 @@ Report material review findings and unresolved work in ordinary language.
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
 4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and Stage 6 TODOs.
-5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own durable decisions/TODOs, not a duplicate of the archive. Pure Markdown archival is excluded from test fingerprints.
+5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
 6. Inspect `git status --short` and classify every path as owned by this Feature. Stop if any path is unrelated or ambiguous.
 7. Stage only this Feature's explicit paths or inspected hunks. Do not use `git add .`, `git add -A`, or broad globs.
 8. Run `git diff --cached --check`, inspect `git diff --cached --stat`, and inspect the complete `git diff --cached`. Remove any unrelated staged content.

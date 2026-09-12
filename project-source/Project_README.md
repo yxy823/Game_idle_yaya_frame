@@ -18,6 +18,7 @@
 | docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
 | docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录 |
 | docs/progress.md、docs/progress/ | 当前进度和必要历史 |
+| docs/architecture.md、docs/architecture/ | 按需使用的架构地图、子系统说明和重要技术决定 ADR，见[架构约定](methodology/10-architecture-overview.md) |
 | docs/coding_rules.md、agent-rules/ | 项目约定与具体 Godot 工程规则 |
 | docs/methodology-config.json | 本机环境与实际检查命令 |
 | methodology/ | 当前 Skill 使用的详细流程和模板 |

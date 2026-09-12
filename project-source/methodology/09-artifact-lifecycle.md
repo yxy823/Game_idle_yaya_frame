@@ -29,8 +29,11 @@ links; do not infer approval, overwrite an existing archive or duplicate older
 history. Use `document_language` for new prose; moving history does not require
 translating it.
 
-Feature notes own durable design decisions, regression links and TODOs. The
-archive owns execution history; Progress owns the present. Link between them,
-and do not paste the same narrative into all three. A pure Progress/archive
-Markdown edit does not invalidate business-test evidence; AC, verification,
-Catalog and source changes still do under the semantic snapshot contract.
+Feature notes own durable local decisions, regression links and TODOs. Important
+cross-Feature technical choices may use an ADR under
+[the architecture convention](10-architecture-overview.md#architecture-decision-records);
+Feature notes link that rationale instead of repeating it. The archive owns
+execution history; Progress owns the present. Link the authoritative records
+without pasting the same narrative into them. A pure Progress/archive Markdown
+edit does not invalidate business-test evidence; AC, verification, Catalog and
+source changes still do under the semantic snapshot contract.

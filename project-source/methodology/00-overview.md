@@ -31,6 +31,7 @@ The project knowledge layer is:
     ├── progress.md                  current state, blockers, decisions, next action and history index
     ├── progress/                    one historical body per Feature or approved batch
     ├── architecture.md             optional human-owned module/dependency overview
+    ├── architecture/               optional subsystem maps and important technical ADRs
     └── methodology-config.json      language, environment, and verification commands
 ```
 
@@ -198,4 +199,4 @@ Release management, store submission, public version announcements, deployment a
 | Engineering change classification and creation | [07-engineering-change.md](./07-engineering-change.md) |
 | Test traceability, TDD, regression/invariant selection | [08-testing-strategy.md](./08-testing-strategy.md) |
 | Reports, explicit cleanup and Progress history | [09-artifact-lifecycle.md](./09-artifact-lifecycle.md) |
-| Optional architecture overview | [10-architecture-overview.md](./10-architecture-overview.md) |
+| Optional architecture overview and ADRs | [10-architecture-overview.md](./10-architecture-overview.md) |
