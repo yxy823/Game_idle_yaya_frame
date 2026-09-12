@@ -92,6 +92,10 @@ Also identify:
 - whether a full suite is required by `full_suite_on_change`, broad infrastructure/toolchain impact, uncertain impact bounds, or explicit user direction;
 - new acceptance/regression test IDs that should be created under TDD;
 - new unit suites to create after approval, without registering future paths;
+- necessary obsolete-test and current-reference cleanup for changed/removed
+  contracts, reading Feature notes and affected test code under
+  [Requirement changes and stale tests](08-testing-strategy.md#requirement-changes-and-stale-tests);
+  include it in the same plan and reuse existing approval for that exact scope;
 - criteria that remain manual-only and why automation is not appropriate.
 
 Do not remove a deterministic Required Test Set item through a runner exclusion, even with an approval note. An approved retirement or catalog correction must change the underlying traceable contract before recomputing the selection.
@@ -174,6 +178,11 @@ When a Stage 1-approved unit suite is created, add its repository-relative file 
 Do not create an implementation commit before the Feature has passed its
 applicable Stage 4-7 Gates. Preserve task ownership throughout the working
 tree so Stage 7 can stage this Feature without absorbing unrelated changes.
+
+Perform the approved test-code and current-reference cleanup with the behavior
+change, following [the stale-test contract](08-testing-strategy.md#requirement-changes-and-stale-tests).
+Catalog retirement alone does not remove executable methods; preserve valid
+shared cases and historical records.
 
 At implementation completion, map changed behavior to every criterion ID.
 
@@ -277,7 +286,11 @@ Use one review pass for both questions:
    required existing behavior, and stay within approved scope? Check that the
    cited tests and manual observations actually exercise the claimed behavior.
    Report missing, stale or inconclusive evidence as a gap; do not invent an
-   acceptance decision or rewrite AC to fit the implementation.
+   acceptance decision or rewrite AC to fit the implementation. For changed or
+   removed contracts, inspect the final diff, affected current references and
+   actual discovery/results for required obsolete-test cleanup and retained valid
+   coverage. Unfinished required cleanup is `must_fix`; Catalog status alone
+   cannot establish completion.
 2. **Code quality:** Inspect oversized files, duplicated domain knowledge,
    misplaced type dispatch, magic values, duplicated constants/enums, God
    Objects, stack-specific anti-patterns, presentation/domain coupling,
@@ -347,7 +360,7 @@ local commits remain on the current branch, including `main` or `master`.
 
 1. If Stage 5.5 changed Coding Rules, report that source synchronization is required. Ask for explicit authorization to run `sync-feature-list`, then stop.
 2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
-3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. Do not automatically start that planning step.
+3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress. Do not automatically start that planning step.
 4. Add one sentence or a few concise learning entries in this existing Stage, using `templates/stage8-learning.md.tmpl`. With no new generalizable learning, explicitly state “No new generalizable learning” (Chinese: “无新增可泛化经验”). Otherwise record trigger, root cause, existing-rule coverage, generalizability and recommended destination: Agent Rule / Methodology / Tooling / Automated Check / Regression. Link an existing Bug-learning note instead of copying it. Do not invent a new rule for every incident. A newly discovered tooling change becomes a separate maintenance task requiring approval; do not expand the completed Feature silently.
 5. Stop. The user decides whether to continue, review, synchronize, or pause.
 

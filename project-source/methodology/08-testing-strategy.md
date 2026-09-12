@@ -287,6 +287,29 @@ When Product behavior changes, old tests are not automatically authoritative. `s
 - new behavior → add new acceptance test IDs;
 - Bug fix → add regression coverage unless deterministic automation is impractical.
 
+Catalog retirement does not remove executable tests: gdUnit discovers methods
+under selected suite/directory paths, including retired cases still in those
+files. Read affected test code as well as Catalog; ordinary unit tests may have
+no logical ID. Use the existing sync report to identify obsolete assertions,
+methods/files, affected current references and the owning Feature. After approval,
+keep necessary cleanup actions in that Feature's `notes`; planning does not edit
+test code or establish that cleanup has happened.
+
+During that Feature's approved implementation, delete or replace superseded
+assertions and update affected active mappings, `unit_test_paths` and current
+requirement/usage references. Remove obsolete empty suites and their registrations
+within the approved scope. Preserve still-valid cases sharing those files and
+unaffected regressions/invariants. Retired Catalog records retain historical
+ID/source/path/case and provenance; completed Feature records and historical
+evidence are not cleanup targets.
+
+Use normal verification and Stage 6 review to inspect the final diff, affected
+references and current discovery/original results. Required cleanup left open
+means that change is not complete; a `retired` label or a TODO alone is insufficient.
+Keep pending work in the owning Feature notes or current Progress, and report
+actual cleanup and remaining work at handoff. Unrelated cleanup stays outside
+scope. No separate cleanup ledger, checker or unconditional full run is needed.
+
 Never change implementation merely to satisfy a test whose underlying Product/Feature contract has been superseded.
 
 ## Bug regression and guardrail promotion

@@ -73,6 +73,11 @@ Apply the existing-suite contract in `methodology/08-testing-strategy.md`: `unit
 
 The affected union also includes active acceptance tests intersecting affected components. Add other related tests only with concrete reasons. A runner exclusion cannot remove a deterministic requirement; approved retirement or catalog correction changes the underlying traceable contract before recomputing the selection. Include any proposed new unit suites in the Stage 1 plan, without registering future paths.
 
+For changed or removed contracts, read the cleanup actions in Feature notes and
+the affected test code under **Requirement changes and stale tests** in
+`methodology/08-testing-strategy.md`. Include necessary test-code and current-reference
+cleanup in this same plan. Existing approval for that exact scope remains valid.
+
 Determine whether full suite is required when:
 
 - an affected catalog component has `full_suite_on_change: true`;
@@ -125,6 +130,10 @@ When creating a Stage 1-approved unit suite, register its repository-relative fi
 
 Implement the smallest coherent change until the new test passes. Refactor locally while preserving behavior. Repeat by criterion. Do not expand Feature scope without user approval.
 
+Perform the approved obsolete-test and reference cleanup with the behavior change.
+Preserve still-valid cases and historical records; Catalog retirement alone leaves
+executable methods in place. Apply the cleanup contract in `methodology/08-testing-strategy.md`.
+
 ## Stage 4 — automated verification + applicable human checklist
 
 Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or the repository's explicit authoritative equivalent. Never invent runner syntax.
@@ -176,7 +185,10 @@ summary alone proves neither.
 Return a concise conclusion for each aspect and one set of `must_fix`,
 `suggest`, `acceptable` findings with criterion/rule and file/evidence
 references. Missing requirements, unintended scope and unsupported verification
-claims belong in this same review. Reuse Feature notes and `record-smell`;
+claims belong in this same review. For contract changes, check the final diff,
+affected current references and actual discovery/results to confirm required old
+assertions were removed or replaced and valid coverage remains. Unfinished
+required cleanup is a `must_fix`, not a completed retirement. Reuse Feature notes and `record-smell`;
 do not add another review Stage or evidence format. Reuse current successful
 runs unless a concrete unanswered risk or a repair requires verification.
 
@@ -213,6 +225,10 @@ Create the eligible local commit on the current branch, including `main` or `mas
 ## Stage 8 — handoff and stop
 
 If Bug learning changed Coding Rules, request explicit authorization to run `sync-feature-list` and stop. Otherwise report completion, verification evidence, the local commit hash (or explicit no-commit exception), post-commit status, TODOs/placeholders, and next work within the current Product.
+
+When test/reference cleanup was required, report what was actually handled and
+any remaining work using existing notes/Progress; do not claim completion from
+Catalog status alone.
 
 Check current Product scope against its Feature sources/statuses. If required
 work remains, identify the next eligible Feature or the actual blocker. Only

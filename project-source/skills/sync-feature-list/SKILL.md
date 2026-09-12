@@ -156,7 +156,13 @@ For a module-file rename, identify every detail whose `source` uses the old path
 
 ### 2.4 Analyze downstream regression and stale-test impact
 
-For every substantively revised `done` Feature, list every Feature whose `depends_on` directly contains that ID and follow relevant downstream effects. Also read `docs/test-catalog.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
+For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-catalog.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
+
+Follow **Requirement changes and stale tests** in
+`methodology/08-testing-strategy.md`: read affected test code, including unit tests
+without Catalog IDs. Include necessary assertion/method/file cleanup, affected
+current references or registrations, and its owning Feature in the same report.
+Retiring Catalog metadata does not remove cases from a selected suite.
 
 ### 2.5 Report the diff
 
@@ -310,6 +316,10 @@ For each dependent Feature identified in Stage 2.4:
   replacement Feature/test IDs and `revision_id`. Preserve its original ID/source
   mapping/path/case and completed evidence. Strict validation accepts this historical
   reference; keeping a wrong assertion active to satisfy old history is prohibited.
+- Record approved test-code and current-reference cleanup in the owning new or
+  unfinished Feature's `notes`, with exact paths/methods and intended action.
+  Leave implementation to `execute-next-feature`; report it as pending until
+  performed and verified. Do not delete historical Feature/Catalog records.
 - Still-valid regression/invariant tests remain active and will be selected later by `execute-next-feature` through component intersection.
 - New Feature additions declare `affected_components`; ordinary new test IDs are
   finalized in `execute-next-feature` Stage 1/2. When an approved retirement needs
@@ -392,7 +402,7 @@ are stable and unique; retirement records refer to this ID, never a free-text no
 - [ ] The last revision entry contains the correct `synced_at_commit`.
 - [ ] `meta.total_features`, index length, and detail-file count are equal.
 - [ ] The index, revision log, test catalog, and every affected detail pass `python -B -m json.tool`.
-- [ ] Confirmed stale-test actions were applied without changing completed Feature history.
+- [ ] Confirmed stale-test metadata changes were applied without changing completed Feature history; necessary code/reference cleanup is assigned to the owning Feature and reported as pending implementation.
 - [ ] Every retirement has validated source/reason/replacement/revision provenance; pending replacement coverage is explicitly reported.
 
 4. Stage and commit only Feature-plan files:
