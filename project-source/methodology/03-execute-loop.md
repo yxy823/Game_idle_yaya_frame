@@ -281,8 +281,15 @@ Use one review pass for both questions:
 
 Return a short conclusion for each question plus the existing `must_fix`,
 `suggest`, and `acceptable` findings, with criterion/rule and file/evidence
-references. Findings from either question contribute to the same review result.
-Use the existing Feature notes and `record-smell` entry; no second reviewer,
+references. Keep the two conclusions separate even when grouping findings by
+severity, and identify the relevant question(s) for each finding. State evidence
+gaps explicitly; one question's conclusion cannot stand in for the other's.
+Findings from either question contribute to the same review result.
+
+Use the existing Feature notes and `record-smell` entry. The command stores
+combined finding counts and snapshot metadata; it neither performs the review
+nor establishes that both questions were examined. Assess that coverage from
+the review conclusions and their supporting references. No second reviewer,
 Stage or evidence format is required. A review alone does not invalidate a
 current successful run; additional verification needs a concrete unanswered risk.
 
