@@ -49,6 +49,39 @@ A module document is more detailed than the overview. A rendered template must r
 | Edge cases | Known cases intentionally deferred to later Features. |
 | Change history | Reverse-chronological record of changes to this module. |
 
+## Product terminology (optional)
+
+Clarify vocabulary when competing names or meanings would change a Product
+decision. Read existing definitions first. If one word describes different
+concepts, distinguish them using familiar names; if several words mean the same
+thing, propose one consistent name. Reuse an already clear definition instead
+of starting a glossary for every task.
+
+Test the distinction with a concrete scenario. For example, when discussing
+inventory, distinguish an item definition, an owned item and a stack only if
+their identity or behavior differs. Whether two items with different modifiers
+can stack exposes a real decision; listing every possible item attribute does
+not. Record any resulting behavior in the flow, data model or AC that owns it.
+
+When implementation exists, compare the relevant code with the stated meaning.
+Surface conflicts with both sources: code describes what happens today and
+cannot silently redefine approved intent. A new meaning remains a proposal
+until the user resolves the material Product choice.
+
+Keep confirmed definitions in the existing positioning or data-model section
+when that is sufficient. Otherwise add a small optional terminology section to
+the owning Product module, or to `product.md` for concepts with no single module
+owner. Other documents link to that definition instead of maintaining copies.
+Each entry needs a name and a short definition; mention an alias or a confused
+neighbor only when it prevents a real misunderstanding. Do not add empty
+terminology sections or a separate context/glossary file.
+
+Elicitors return proposed wording; `product-change-standardizer` alone persists
+it with the approved Product update. Follow `document_language`, preserve stable
+IDs, and do not rename code or migrate saved data merely to align terminology.
+Engine classes, storage formats and implementation decisions remain in code or
+engineering records, not in the terminology section.
+
 ## Module filename rules
 
 - Use a two-digit prefix and a kebab-case ASCII slug, such as `01-pawn-core.md`, `02-map.md`, or `13-mining.md`.

@@ -129,6 +129,14 @@ This workflow performs all writes:
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
 6. **Placeholders:** pass every `_placeholder_` asset path to the Feature synchronization workflow for registration in Feature notes.
 
+If the elicitor returns terminology changes, review them with the affected
+Product behavior and persist confirmed wording in the owning Product document,
+following the **Product terminology** guidance in
+`methodology/01-product-doc-structure.md`. Use an existing section where possible;
+optional `terminology` content becomes a small section only when needed. Keep
+one owning definition and links from other modules. Do not create a separate
+glossary or treat code observations and unconfirmed terms as approved intent.
+
 After the approved Product write, follow
 `agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the
 explicit Product paths, run the cached-diff checks, and create the local Product

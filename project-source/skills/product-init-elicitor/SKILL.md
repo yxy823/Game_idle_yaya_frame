@@ -45,6 +45,12 @@ known answers and stop probing a dimension once its current scope, observable
 outcome and material constraints are clear. Return a reviewable draft after the
 applicable dimensions are covered; leave unrelated future branches for later.
 
+When vocabulary obscures a module's identity, ownership or behavior, use
+`methodology/01-product-doc-structure.md` **Product terminology**. Include needed
+definitions in the positioning/data model, or return optional `terminology`
+content in the overview or owning module draft when a separate section helps.
+Omit it when existing wording is sufficient. The standardizer owns all writes.
+
 ## Stage 1: Product positioning
 
 Establish the Product skeleton by resolving the relevant gaps below.

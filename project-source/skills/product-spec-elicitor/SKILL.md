@@ -44,6 +44,13 @@ material constraints are clear enough for a reviewable patch, return it to the
 standardizer. Keep deferred work outside the patch; do not require every possible
 design branch to be explored first.
 
+When a term has conflicting meanings or hides a Product decision, use
+`methodology/01-product-doc-structure.md` **Product terminology**. Return only
+needed definition changes in the relevant Product section patches; include an
+overview proposal separately when the concept has no single module owner.
+Reuse the agreed terms in flows, data descriptions and AC. Keep implementation
+observations distinct from approved intent, and leave all writes to the standardizer.
+
 ## Input
 
 ```yaml
