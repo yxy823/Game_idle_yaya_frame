@@ -27,8 +27,3 @@ such as `reports/architecture-facts/<run>/`, with lifecycle records.
 Generated output is never the sole architectural authority. A diagram of
 observed references cannot authorize dependencies or establish causal behavior.
 Use a diagram only when it helps explain actual responsibilities or dependencies.
-
-The project generator's `--architecture` option adds only the human-owned
-overview. Subsystem templates remain available for deliberate use. Validation
-checks new-project opt-in/opt-out behavior and that no game-specific modules or
-dependencies appear in the generated source.
