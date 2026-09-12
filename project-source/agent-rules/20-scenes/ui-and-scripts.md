@@ -10,6 +10,14 @@ Respect Control/Container ownership and script/resource compatibility.
 - **[REVIEW]** Repeated per-node theme overrides may indicate a shared Theme/ThemeVariation should own styling; do not duplicate overrides without reason.
 - **[MUST]** UI reparenting must consider anchors, offsets, size flags, mouse/focus behavior, theme propagation, and container ownership.
 
+### Focus and modal dialogs
+
+These rules apply when keyboard/controller focus navigation is part of the approved UI.
+
+- **[MUST]** Give a visible, focusable Control initial focus when the screen or dialog becomes interactive. Define focus neighbors where automatic navigation is ambiguous; pointer hover does not establish keyboard focus. A hidden Control loses focus. See the Godot 4.7 [focus navigation guide](https://docs.godotengine.org/en/4.7/tutorials/ui/gui_navigation.html) and [Control reference](https://docs.godotengine.org/en/4.7/classes/class_control.html).
+- **[MUST]** Keep UI navigation within an active modal dialog. On close or cancel, restore the previous focus owner only if it is still valid, inside the tree, visible, and eligible on the active screen; otherwise use that screen's intended fallback, if any. Use existing dialog focus behavior when it already satisfies this contract.
+- **[REVIEW]** When changing a focus flow, check opening, closing/canceling, reopening, and restoration after the previous target is hidden or removed. Exercise the input modes supported by the project; this rule does not add platform or device support requirements.
+
 ## Scripts
 
 - **[MUST]** An attached script must compile under Godot 4.7 and its base type must be compatible with the Node type.
