@@ -49,7 +49,7 @@ A module document is more detailed than the overview. A rendered template must r
 | Edge cases | Known cases intentionally deferred to later Features. |
 | Change history | Reverse-chronological record of changes to this module. |
 
-## Product terminology (optional)
+## Project terminology and CONTEXT (optional)
 
 Clarify vocabulary when competing names or meanings would change a Product
 decision. Read existing definitions first. If one word describes different
@@ -68,19 +68,38 @@ Surface conflicts with both sources: code describes what happens today and
 cannot silently redefine approved intent. A new meaning remains a proposal
 until the user resolves the material Product choice.
 
-Keep confirmed definitions in the existing positioning or data-model section
-when that is sufficient. Otherwise add a small optional terminology section to
-the owning Product module, or to `product.md` for concepts with no single module
-owner. Other documents link to that definition instead of maintaining copies.
-Each entry needs a name and a short definition; mention an alias or a confused
-neighbor only when it prevents a real misunderstanding. Do not add empty
-terminology sections or a separate context/glossary file.
+Keep a definition local to a Product module when its positioning or data model
+already explains it sufficiently. Use `docs/CONTEXT.md` for confirmed project
+vocabulary needed across modules, Features or conversations. Create it only
+when there is useful content to retain; an empty project does not receive a
+blank glossary. Missing CONTEXT never blocks discussion or development.
 
-Elicitors return proposed wording; `product-change-standardizer` alone persists
-it with the approved Product update. Follow `document_language`, preserve stable
+CONTEXT is a compact vocabulary reference, not another Product specification:
+
+- Begin with a short description of the domain covered when it helps orient
+  the reader, then give each term a name and a one- or two-sentence definition.
+- Explain necessary conceptual relationships, aliases or commonly confused
+  neighbors only when they prevent a real misunderstanding.
+- Link to the owning Product section for detailed rules, flows, values, state
+  transitions and AC. Keep implementation state ownership, Godot classes,
+  storage formats and technical choices in architecture records or code.
+- Keep pending ideas, chat logs, current progress and task-local notes out of
+  CONTEXT. Reuse existing definitions; when moving one here, replace authorized
+  duplicates with links rather than keeping competing copies. Preserve section
+  anchors used by existing Feature sources, leaving a link at the old location.
+
+`project-clarifier` and Product elicitors return proposed wording;
+`product-change-standardizer` alone writes approved Product and CONTEXT content.
+Pure terminology maintenance preserves meaning and behavior: it may clarify a
+name, record an already agreed distinction, or move/link a definition. It does
+not require Product initialization, a new Feature, or Feature synchronization,
+even when a local Product definition or link is edited. If a definition changes
+actual intent or exposes a material unresolved behavior, resolve that decision
+and use the normal Product-change and Feature synchronization route.
+
+Read relevant CONTEXT definitions during clarification, planning, implementation
+and review when the file exists. Follow `document_language`, preserve stable
 IDs, and do not rename code or migrate saved data merely to align terminology.
-Engine classes, storage formats and implementation decisions remain in code or
-engineering records, not in the terminology section.
 
 ## Module filename rules
 

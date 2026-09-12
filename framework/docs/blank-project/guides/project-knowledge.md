@@ -8,7 +8,8 @@
 
 | 信息 | 主要位置 | 其他记录如何使用 |
 | --- | --- | --- |
-| 玩家需要的行为、规则、数值与业务术语 | `docs/product.md`、`docs/product/` | Feature 指向具体来源 |
+| 玩家需要的行为、规则、数值与局部业务定义 | `docs/product.md`、`docs/product/` | Feature 指向具体来源 |
+| 跨模块、Feature 或会话复用的项目术语 | 按需创建的 `docs/CONTEXT.md` | Product、规划、实现和复审读取相关定义并引用，避免重复维护 |
 | 本任务 AC、影响组件、验证计划 | `docs/features/F0XX.json` | Progress 链接当前 Feature |
 | 本任务局部决定、占位资源、Bug 经验、TODO | Feature 的 `notes` | 历史和后续任务引用，避免再抄一遍 |
 | 当前做到了哪里、阻塞、待决定与下一步 | `docs/progress.md` | 新会话先读取 |
@@ -21,6 +22,8 @@
 
 ```mermaid
 flowchart LR
+    V[CONTEXT 项目术语] -. 定义与引用 .-> P
+    V -. 澄清概念 .-> F
     P[Product 行为来源] --> F[Feature 与 AC]
     A[架构地图与 ADR] --> F
     C[Coding Rules 与工程规则] --> F
@@ -34,6 +37,14 @@ flowchart LR
 ```
 
 这张图表示信息关系，不要求每个项目创建全部可选文档。
+
+## 何时维护 CONTEXT
+
+当同一项目中的概念需要反复解释，或在不同模块、Feature 中出现同名异义、异名同义时，使用 `project-clarifier` 通过具体情景澄清。需要保存的已确认定义由 `product-change-standardizer` 按授权写入 `docs/CONTEXT.md`；缺少该文件不阻塞讨论或开发，也不预先放一个空模板。
+
+文件只需简短背景、术语名称和一两句话的定义，按需说明概念关系、别名或易混淆项。例如区分“物品定义”“持有物品”“堆叠”，随后链接到 Product 的实际堆叠规则。已有定义直接复用，移入 CONTEXT 时将范围内的重复定义改为链接。
+
+详细行为、数值和状态转换由 Product 负责；实现状态归属和技术取舍由架构文档负责；待定想法、聊天记录和当前进度不放在 CONTEXT。仅保持含义的术语维护不会触发完整 Product 初始化或 Feature 拆分；实质行为变化仍走需求变更。规范与格式见 [项目术语约定](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology-and-context-optional)。
 
 ## 读取工程规则
 

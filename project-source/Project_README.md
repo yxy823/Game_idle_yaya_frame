@@ -14,8 +14,9 @@
 | 位置 | 内容 |
 | --- | --- |
 | AGENTS.md | 项目规则与 Skill 路由 |
-| .agents/skills/ | 11 项开发 Skill |
+| .agents/skills/ | 12 项开发 Skill |
 | docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
+| docs/CONTEXT.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-and-context-optional) |
 | docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录 |
 | docs/progress.md、docs/progress/ | 当前进度和必要历史 |
 | docs/architecture.md、docs/architecture/ | 按需使用的架构地图、子系统说明和重要技术决定 ADR，见[架构约定](methodology/10-architecture-overview.md) |
@@ -34,6 +35,7 @@
 
 | 任务 | Skill |
 | --- | --- |
+| 讨论想法、澄清概念，或按授权整理术语 | project-clarifier |
 | 产品初始化或改变需求 | product-change-standardizer |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
@@ -49,6 +51,10 @@
 ```mermaid
 flowchart TD
     U[用户任务] --> Q{任务内容}
+    Q -->|讨论或澄清| C[project-clarifier]
+    C --> O[对话结论]
+    C -->|获授权记录术语| T[standardizer 术语维护路线]
+    T --> K[按需更新 CONTEXT 或局部定义]
     Q -->|需求初始化或改变| P[product-change-standardizer]
     P --> I[按需使用 init / spec elicitor]
     I --> V[按需使用 UI / audio sketcher]
@@ -65,6 +71,10 @@ flowchart TD
     F --> X[execute-next-feature]
     X --> R[验证、验收、记录与交接]
 ```
+
+只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/CONTEXT.md`
+有实际内容才创建；由 `product-change-standardizer` 统一写入已确认的定义。
+保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
 
 ## 当前 Feature 流程
 

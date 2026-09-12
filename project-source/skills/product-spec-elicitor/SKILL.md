@@ -32,11 +32,12 @@ With `document_language: en` and a Chinese conversation, ask in Chinese and retu
 
 ## Core principles
 
-1. Read the relevant Product documents and, when needed, the actual implementation to establish facts before asking. Reuse explicit user decisions. Code establishes current behavior, not intended behavior; surface a contradiction instead of silently choosing either source. Mark a proposed inferred default for review.
-2. Resolve unanswered decisions that materially change the core loop, primary user flow, numeric range, or state machine. Do not re-ask a decision already settled for this scope.
-3. Explain concrete risks to existing behavior or completed Features and clarify the unresolved Product tradeoff. Do not expand the interview to hypothetical future branches.
-4. Ask in dependency order: settle a prerequisite before asking questions whose answers depend on it. A few brief, independent questions may share a round. Keep each answerable in about 30 seconds and offer a recommendation with its reason when useful; a recommendation is not a user decision.
-5. Do not turn a Product bug report into an implementation solution.
+Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
+Keep this elicitor's modes and patch contract; do not start the clarifier's
+separate handoff workflow. Reuse confirmed answers supplied by the standardizer.
+Focus on unresolved changes to the core loop, primary flow, numeric range,
+state machine and concrete risks to completed behavior. Mark inferred defaults
+for review. Do not turn a Product bug report into an implementation solution.
 
 Treat the mode-specific questions below as coverage prompts, not a quota or a
 reason to repeat known answers. Once the current scope, observable outcomes and
@@ -45,11 +46,12 @@ standardizer. Keep deferred work outside the patch; do not require every possibl
 design branch to be explored first.
 
 When a term has conflicting meanings or hides a Product decision, use
-`methodology/01-product-doc-structure.md` **Product terminology**. Return only
-needed definition changes in the relevant Product section patches; include an
-overview proposal separately when the concept has no single module owner.
-Reuse the agreed terms in flows, data descriptions and AC. Keep implementation
-observations distinct from approved intent, and leave all writes to the standardizer.
+`methodology/01-product-doc-structure.md` **Project terminology and CONTEXT**.
+Read relevant `docs/CONTEXT.md` definitions when present. Return local definition
+changes in the owning Product patch and any proposed shared CONTEXT wording
+with source links separately. Reuse the agreed terms in flows, data descriptions
+and AC. Keep implementation observations distinct from approved intent, and
+leave all writes to the standardizer.
 
 ## Input
 

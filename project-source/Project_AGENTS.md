@@ -11,7 +11,11 @@ Run needed commands as part of the current task; do not wait for a tool Hook to 
 
 Route work as follows:
 
-- New, changed, missing, or ambiguous Product intent
+- Discussion, design clarification, or project vocabulary to clarify and record
+  -> `$project-clarifier`; discussion alone writes nothing
+  -> approved terminology writes use `$product-change-standardizer`
+
+- Formalize new, changed, missing, or ambiguous Product intent
   -> `$product-change-standardizer`
 
 - Implementation defect where Product intent is already explicit
@@ -45,6 +49,13 @@ Human control is mandatory:
 - automated-only Features omit Stage 5; automated tests never constitute a human acceptance decision;
 - do not promote Bug Guardrails into Coding Rules without explicit approval;
 - always stop at Stage 8 and wait for the user's next decision.
+
+Read relevant definitions in `docs/CONTEXT.md` when it exists during planning,
+implementation and review. It stores optional project vocabulary; Product owns
+behavior, architecture records own implementation choices. Do not require a
+blank CONTEXT or a complete Product for discussion. Meaning-preserving terminology
+maintenance does not create or synchronize Features; see
+`methodology/01-product-doc-structure.md`.
 
 Testing follows `methodology/08-testing-strategy.md`.
 Do not invent test commands, components, Product requirements, or project

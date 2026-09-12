@@ -47,6 +47,11 @@ Complete Feature-plan regeneration does not authorize clearing the independent t
 
 Read every relevant input before planning. Also read test roots/framework from `docs/methodology-config.json`:
 
+Read relevant definitions in `docs/CONTEXT.md` when present and use the agreed
+names consistently. CONTEXT explains vocabulary; Product remains the source
+of behavior and AC. A terminology-only request belongs to the standardizer's
+terminology maintenance route and does not generate a Feature plan.
+
 Use this repository-rule loading path; `docs/coding_rules.md` is not a second router:
 
 ```text

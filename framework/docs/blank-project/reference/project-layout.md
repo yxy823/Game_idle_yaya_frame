@@ -10,7 +10,7 @@
 MyGodotGame/
 ├── AGENTS.md
 ├── README.md
-├── .agents/skills/                  11 项 Skill，含各自脚本或参考资料
+├── .agents/skills/                  12 项 Skill，含各自脚本或参考资料
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
@@ -74,6 +74,7 @@ MyGodotGame/
 
 | 路径 | 建立时机 | 主要内容 |
 | --- | --- | --- |
+| `docs/CONTEXT.md` | 确有需要复用且获准保存的项目术语时 | 简短定义、概念关系和必要 Product 链接；无初始空文件 |
 | `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
 | `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
 | `docs/gate-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用、人工决定与复审结果 |

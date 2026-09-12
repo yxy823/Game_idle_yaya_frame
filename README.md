@@ -25,7 +25,7 @@ Game_idle_yaya_frame/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md
     ├── Project_README.md      复制为项目 README.md
     ├── Project_Config.json    项目的初始环境配置
-    ├── skills/                11 项开发 Skill
+    ├── skills/                12 项开发 Skill
     ├── methodology/           Skill 使用的流程与文档模板
     ├── agent-rules/           Godot 工程规则
     ├── tools/                 checks/ 检查、testing/ 测试、lib/ 共享实现
@@ -76,7 +76,8 @@ flowchart LR
 生成与维护层已经改为直接复制，撤去源外任务登记、发布、升级和来源哈希链。
 框架复盘使用简短问题清单，不计算总分或覆盖率，不产生新的执行门槛。
 
-保留原 11 项 Skill 的开发流程与职责；按已确认的删减同步调用路径和必要步骤。
+当前包含 12 项 Skill；`project-clarifier` 提供轻量讨论与按需术语整理，
+复用现有 Product 写入入口和提问方法，不增加问卷状态或逐轮检查工具。
 保留 Skill 主流程；验收方式在 Stage 1 按需求决定，manual 执行人工验收，automated 省略 Stage 5。
 
 没有自动 Hook 注册、补丁解析或重复终态监听，也没有 `hooks/` 目录。

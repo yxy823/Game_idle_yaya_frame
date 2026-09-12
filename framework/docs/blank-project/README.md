@@ -58,7 +58,7 @@ framework/docs/blank-project/
 │   └── project-knowledge.md             规则、架构、资产、进度与历史
 ├── reference/
 │   ├── project-layout.md                默认目录、复制映射与按需文件
-│   ├── skills.md                        11 项 Skill 和提示词入口
+│   ├── skills.md                        12 项 Skill 和提示词入口
 │   ├── configuration.md                 配置字段、Godot 与 lint 默认值
 │   ├── commands-and-validation.md       命令参数、测试选择和结果解释
 │   └── troubleshooting.md               按现象排查问题
@@ -69,8 +69,8 @@ framework/docs/blank-project/
 ## 这套起点提供什么
 
 - **可独立使用的项目材料**：Godot 项目文件、两个插件、编辑器和 Git 文本约定。
-- **需求到开发的工作方法**：产品梳理、Feature 拆分与增量同步、Bug/重构/维护分类，以及单项任务的执行流程。
-- **可持续读取的项目知识**：Product、Feature、测试 Catalog、当前进度、历史和按需架构记录。
+- **需求到开发的工作方法**：轻量讨论与澄清、产品梳理、Feature 拆分与增量同步、Bug/重构/维护分类，以及单项任务的执行流程。
+- **可持续读取的项目知识**：Product、Feature、测试 Catalog、当前进度、历史，以及按需维护的 CONTEXT 术语与架构记录。
 - **显式检查工具**：环境配置检查、任务台账检查、gdUnit 测试运行与完成依据记录。
 - **按修改领域读取的 Godot 工程规则**：脚本、场景、资源、Shader、项目配置、导出、数据、资产和测试。
 
@@ -83,6 +83,7 @@ framework/docs/blank-project/
 | 名称 | 在本项目中的含义 |
 | --- | --- |
 | Product | 玩家能观察到的目标、规则和行为，回答“做什么” |
+| CONTEXT | 当前项目共用的简短术语定义与概念关系；需要时保存在 `docs/CONTEXT.md` |
 | Feature | 一项可独立理解和验证的完整工作；也可承载 Bug、重构或维护 |
 | AC | Acceptance Criterion，验收条件；在 Feature 内使用稳定的 `AC01` 等 ID |
 | Component | 测试影响分析使用的语义组件，如 `inventory`；不等同于某个文件夹 |

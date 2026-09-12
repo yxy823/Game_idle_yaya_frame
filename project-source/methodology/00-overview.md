@@ -22,6 +22,7 @@ The project knowledge layer is:
 ├── agent-rules/                     repository-specific concrete implementation rules
 └── docs/
     ├── product.md + product/*.md    Product intent: What
+    ├── CONTEXT.md                   optional shared project vocabulary
     ├── feature-list.json            lightweight Feature index: Todo/status
     ├── features/F0XX.json           Feature detail and durable local notes
     ├── feature-list-revisions.json  Product/Coding-Rules synchronization history
@@ -39,6 +40,7 @@ The project knowledge layer is:
 
 | Group | Skills | Responsibility |
 | --- | --- | --- |
+| Clarification | `project-clarifier` | Focused discussion; hand approved terminology to the existing writer only when documentation is requested. |
 | Product | `product-init-elicitor`, `product-change-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
 | Planning | `generate-feature-list`, `sync-feature-list` | Maintain stable Feature IDs, dependency-driven execution and traced incremental source changes. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
@@ -52,6 +54,8 @@ workflow; they do not maintain an independent lifecycle or approval table.
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
+| Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
+| Record or maintain settled project vocabulary | `project-clarifier` → `product-change-standardizer` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | New Feature / Product change | `product-change-standardizer` | Define or change Product authority, then incrementally synchronize the plan. |
 | Initial decomposition | `generate-feature-list` | Create the first plan from approved Product and Coding Rules. |
@@ -92,7 +96,13 @@ Git initialization is a separate explicit action.
 ```text
 User request
    │
-   ├─ Observable Product intent is new, changed, missing, or ambiguous
+   ├─ Discuss or clarify the current idea
+   │      ↓
+   │  project-clarifier → conversation result
+   │      └─ Authorized terminology documentation
+   │            → product-change-standardizer terminology route → STOP
+   │
+   ├─ Formalize new, changed, missing, or ambiguous Product intent
    │      ↓
    │  product-change-standardizer
    │      ↓
@@ -107,7 +117,7 @@ User request
           ↓
       approved engineering Feature
 
-Both paths
+Product and engineering paths
    ↓
 execute-next-feature
    ↓

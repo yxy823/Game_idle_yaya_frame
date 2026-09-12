@@ -8,7 +8,9 @@ Product 保存玩家行为的意图，Feature 保存可逐项交付的工作。�
 
 | 当前情况 | 入口与处理 |
 | --- | --- |
-| `docs/product.md` 为空，只有一句游戏想法 | `product-change-standardizer` 组织 `product-init-elicitor` 梳理定位、核心循环和模块 |
+| 想先讨论想法、概念或方案 | `project-clarifier` 只补问影响当前判断的缺口，默认只在对话中给结论 |
+| 希望记录已确认的项目术语 | `project-clarifier` 澄清后由 `product-change-standardizer` 按授权写定义和链接，纯术语整理不拆 Feature |
+| `docs/product.md` 为空，明确要求整理初始需求 | `product-change-standardizer` 组织 `product-init-elicitor` 梳理定位、核心循环和模块 |
 | 有 Product，需要补充或修改行为 | `product-change-standardizer` 按歧义使用 `product-spec-elicitor` |
 | 需要界面布局或声音需求 | 在 Product 流程中按需使用 UI / audio sketcher |
 | Product 和 Coding Rules 已确认，还没有任务计划 | `generate-feature-list` 首次拆分 |
@@ -19,7 +21,12 @@ Product 保存玩家行为的意图，Feature 保存可逐项交付的工作。�
 
 ```mermaid
 flowchart TD
-    A[游戏想法或需求变化] --> B[product-change-standardizer]
+    A[游戏想法或需求变化] --> Q{本次目标}
+    Q -->|讨论或澄清概念| R[project-clarifier]
+    R --> S[对话结论]
+    R -->|获授权记录术语| T[standardizer 术语维护路线]
+    T --> U[按需更新 CONTEXT 或局部定义]
+    Q -->|形成或修改正式需求| B[product-change-standardizer]
     B --> C{需要澄清什么}
     C -->|从零梳理| D[product-init-elicitor]
     C -->|模块或行为歧义| E[product-spec-elicitor]
@@ -36,6 +43,16 @@ flowchart TD
     L --> M[获批后进入执行流程]
 ```
 
+## 先讨论，按需留下术语
+
+`project-clarifier` 将询问深度与是否写文档分开：问题已经清楚就直接回答，缺一个关键条件就只问那个条件，较大设计才按依赖顺序分几轮。用实际情景检验概念区别；上游决定改变时，只重查受影响的结论。它不维护问卷状态、轮数或评分，也不要求每轮固定格式。
+
+只讨论时不会创建文件，空项目不必先准备 Godot 环境或补完整 Product。需要留下词汇时，沿用已确认的答案和写入授权，由 `product-change-standardizer` 统一落盘。init/spec elicitor 复用同一套提问方法，继续返回各自的 Product 草案或补丁，不再启动一轮独立访谈。
+
+跨模块或 Feature 使用的稳定概念按需放在 `docs/CONTEXT.md`，局部定义已有合适位置时保留原处。每个概念只维护一份定义，其他位置链接过去。具体职责见 [项目知识](project-knowledge.md#何时维护-context)。
+
+仅记录已同意的区别、统一名字或移动定义，且含义和行为不变时，不要求 Product 初始化或 Feature 同步。若定义变化实际改变玩法、数值或验收条件，就先解决产品决定，再按授权更新 Product 并同步任务，不能把它当成纯文字整理。
+
 ## Product 分成总览和模块
 
 `docs/product.md` 让人快速了解整个游戏：定位、目标玩家、当前版本的核心循环、模块列表、依赖、视觉和声音方向、变更历史。详细模块使用 `docs/product/NN-name.md`，保存行为流程、数据含义、状态转换、UI、音频、数值规则、验收条件和暂缓边界。
@@ -44,7 +61,7 @@ flowchart TD
 
 模块文件使用两位编号和 ASCII kebab-case 名称，例如 `01-gathering.md`。已有模块编号保持稳定；新增模块追加可用编号。模块废弃按规范保留可追溯历史，不为重新排序而批量改名。
 
-模板中的必需章节应保留；不适用时说明原因。术语确实影响行为判断时，在所属模块记录简短定义。例如“物品定义”和“玩家持有的一件物品”是否有不同身份，会影响堆叠和存档规则；已经清楚的概念无需另建词典。
+模板中的必需章节应保留；不适用时说明原因。例如“物品定义”和“玩家持有的一件物品”是否有不同身份，会影响堆叠和存档规则。概念定义可引用 CONTEXT，具体堆叠、存档行为仍写入负责的 Product 模块；已有清楚定义不再复制一份。
 
 完整结构见 [Product 规范](../../../../project-source/methodology/01-product-doc-structure.md)。
 

@@ -7,7 +7,7 @@
 ## 当前基线
 
 2026-09-12：原有修复先单独提交为 `af90887`，随后完成本轮结构删减。
-当前保留 11 项 Skill 的用途与主要开发职责，取消固定汇报协议；运行记录合并，
+上述删减保留了原有 11 项 Skill 的用途与主要开发职责，取消固定汇报协议；运行记录合并，
 不恢复 Agent 动作 Hook。实际回归在指定外部测试项目完成，未重新生成项目。
 原有 136 项回归属于 `af90887` 前一轮记录，不能当成本轮结果；
 本轮最终工具回归 133 项通过，实际 Godot 正常/负向运行结果见下文。
@@ -18,7 +18,7 @@
 | 维护源 | 根 AGENTS 约束维护；`framework/` 保存复制工具、提示词和按需复盘材料 |
 | 项目创建 | [create_project.py](../commands/create_project.py) 读取 [project-files.json](../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
-| Skill | 保留 11 项 Skill；专用脚本在对应 Skill 的 `scripts/`，调用路径随工具整理同步 |
+| Skill | 当前 12 项；新增 `project-clarifier` 复用提问方法与 Product 写入入口，按需维护项目 CONTEXT，不增加脚本或问卷状态。专用脚本仍在所属 Skill 的 `scripts/` |
 | 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 六个共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
 | 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/Catalog；没有独立计划命令、计划文件或计划哈希 |

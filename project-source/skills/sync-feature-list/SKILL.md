@@ -34,6 +34,12 @@ With `document_language: en` and a Chinese conversation, discuss the diff in Chi
 
 ## Source documents
 
+Read relevant `docs/CONTEXT.md` definitions when present to interpret the source
+diff consistently. CONTEXT is not a separate behavior source to synchronize:
+substantive intent changes must be expressed in Product. Meaning-preserving
+terminology maintenance alone does not require this workflow; later source
+diffs treat its local definition/link edits as editorial changes.
+
 Synchronization watches:
 
 - `docs/product.md` for Product-wide intent, module inventory, dependencies, and direction;

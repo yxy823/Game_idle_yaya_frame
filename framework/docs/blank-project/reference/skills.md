@@ -2,15 +2,16 @@
 
 [返回手册](../README.md) · 相关：[需求与规划](../guides/product-and-planning.md)、[工程变更](../guides/engineering-changes.md)
 
-当前空白项目包含 11 项 Skill，复制后位于 `.agents/skills/`。它们提供任务方法；项目文件保存长期知识，显式脚本完成必要检查。
+当前空白项目包含 12 项 Skill，复制后位于 `.agents/skills/`。它们提供任务方法；项目文件保存长期知识，显式脚本完成必要检查。
 
-## 11 项 Skill 的职责
+## 12 项 Skill 的职责
 
 下表链接的是框架中的源文件。正式开发时读取目标项目 `.agents/skills/<name>/SKILL.md`，因为生成后的副本可能已经独立修改。
 
 | Skill | 适合的任务 | 主要产物与边界 |
 | --- | --- | --- |
-| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图 | 产品写入的统一入口，组织澄清与 Feature 同步，完成后停止 |
+| [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
+| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | Product 与 CONTEXT 的统一写入入口；实质需求变化同步 Feature，保持含义的术语维护省略规划 |
 | [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
 | [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
@@ -26,6 +27,7 @@
 
 ## 常见组合
 
+- 先想清楚：project-clarifier → 对话结论；有术语落盘授权时交给 standardizer，按需更新 CONTEXT 或局部定义。
 - 新游戏：Product standardizer → 按需 init/spec/UI/audio → 初次 Feature 规划 → 执行获批任务。
 - 改需求：Product standardizer → 增量 sync → 执行受影响的新任务。
 - 修独立 Bug：工程 standardizer 的 bug 模式 → execute → 回归、适用验收与经验。
@@ -45,6 +47,8 @@
 | --- | --- |
 | 创建输出目录 | Godot 项目开发 → 项目初始化 → 创建空白项目 |
 | 确认工具路径与环境 | Godot 项目开发 → 项目初始化 → 准备 Godot 开发环境 |
+| 先讨论，不写文档 | Godot 项目开发 → 需求设计 → 轻量讨论与澄清 |
+| 澄清并保留术语定义 | Godot 项目开发 → 需求设计 → 澄清并记录项目术语 |
 | 测试一个想法 | Godot 项目开发 → 需求设计 → 验证玩法或技术假设 |
 | 开始需求梳理 | Godot 项目开发 → 需求设计 → 从游戏想法整理初始 Product |
 | 改变玩法 | Godot 项目开发 → 需求设计 → 新增功能或调整已有规则 |

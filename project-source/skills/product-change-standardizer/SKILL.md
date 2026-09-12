@@ -1,10 +1,11 @@
 ---
 name: product-change-standardizer
-description: The only entry point for Product initialization, requirements, features, UI, audio, and changes to Product intent. Routes elicitation, owns Product writes, and synchronizes the Feature plan before implementation. Implementation defects with already-explicit Product intent route to engineering-change-standardizer instead.
+description: Owns authorized Product and project terminology writes. Routes Product initialization and behavior changes through elicitation and Feature synchronization; handles meaning-preserving CONTEXT or local terminology edits without creating Features. Discussion alone uses project-clarifier; implementation defects with explicit Product intent use engineering-change-standardizer.
 metadata:
   version: 3.0
   triggers:
     - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
+    - User authorizes recording or updating confirmed project terminology in CONTEXT or Product
     - User says initialize, improve, optimize, add, remove, fix, adjust, or new requirement
     - 用户说「做一个 XXX」「改进」「优化」「增加」「删除」「修复」「调整」或「新需求」
   priority: high
@@ -14,24 +15,58 @@ metadata:
 
 ## Non-negotiable rules
 
-1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product intent.
-2. Every Product change must update Product documents first, synchronize the Feature plan second, and enter implementation only afterward.
-3. This workflow is the only Product writer. Elicitors and sketchers return structured data; this workflow persists it.
+1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product behavior; optional `docs/CONTEXT.md` owns shared vocabulary, not additional behavior.
+2. Every substantive Product change must update Product documents first, synchronize the Feature plan second, and enter implementation only afterward.
+3. This workflow is the only Product and CONTEXT writer. Clarifiers, elicitors and sketchers return proposals; this workflow persists them. Meaning-preserving terminology maintenance follows the separate route below, not Product-change planning.
 4. Product documents describe **what**, not **how**. Keep technology choices and implementation details in Coding Rules, code, or implementation notes.
 5. Never make a Product decision on the user's behalf.
 
 ## Language contract
 
-Before asking for or writing a Product change:
+Before preparing durable Product or CONTEXT wording:
 
 1. Read `docs/methodology-config.json` and resolve `document_language`.
 2. If it is missing or invalid, follow `methodology/05-document-language.md` and obtain confirmation before writing durable content.
 3. Converse in the language the user is currently using.
-4. Render every new or substantively rewritten Product heading and human-readable value in `document_language`.
+4. Render every new or substantively rewritten Product or CONTEXT heading and human-readable value in `document_language`.
 5. Preserve stable paths, ASCII slugs, schema keys, enum values, Skill names, Feature IDs, and other protocol identifiers.
 6. Do not translate existing content merely because configuration was added or conversation language changed. A language migration requires an explicit, scoped plan.
 
 Smoke cases: with `document_language: en` and a Chinese conversation, converse in Chinese but write English Product content; with `document_language: zh-CN` and an English conversation, converse in English but write Simplified Chinese Product content.
+
+## Terminology maintenance route
+
+For an authorized terminology-only request, read
+`methodology/01-product-doc-structure.md`, existing `docs/CONTEXT.md` and only
+the relevant Product/code sources. Reuse definitions and explicit decisions
+already supplied by the user, `project-clarifier` or an elicitor. Do not repeat
+the interview or ask for an approval already given. A discussion-only request
+returns to `project-clarifier` without writing files.
+
+Determine whether the proposed edit preserves meaning and behavior. Recording
+an agreed concept, clarifying a name, or moving/linking an existing definition
+can use this route. If it changes intended behavior, rules, values or AC, or
+reveals a material unresolved Product choice, resolve that choice and use
+Steps 1–7 with the settled answers instead. Code observations alone cannot
+approve a new definition or settle a conflict with Product.
+
+For meaning-preserving edits:
+
+1. Resolve the document language and any remaining ambiguity. Show the concrete
+   wording for approval only when the current authorization does not cover it.
+2. Write the smallest useful definition in its owning Product section or the
+   optional `docs/CONTEXT.md`; update relevant links within the authorized scope.
+   Keep one definition. Do not create an empty CONTEXT or force a complete
+   Product when none exists. Do not run UI/audio elicitation, generate/sync
+   Features or change their history for this edit.
+3. Check the wording against confirmed meanings and preserve existing source
+   links/section anchors when moving definitions. Follow
+   `agent-rules/00-core/git-worktree-and-commits.md`: inspect only the owned
+   documentation diff, run cached-diff checks, and make the local documentation
+   commit unless the user requested no commit. For CONTEXT-only work use
+   `docs(context): <中文术语摘要>`; no new work item is needed.
+4. Report the changed definitions and files, then stop. Steps 1–7 below are for
+   substantive Product changes, not a required continuation of this route.
 
 ## Product structure and templates
 
@@ -61,7 +96,11 @@ Preserve every required section and its semantics. Render human-readable heading
 
 ## Step 1: Confirm Product intent
 
-Restate the requested change in one or two sentences and ask whether to process it as a Product change. This prevents casual discussion from accidentally starting a write workflow.
+Restate the requested change in one or two sentences. Reuse explicit write
+authorization and decisions from the user or `project-clarifier`; do not ask
+again just to enter this workflow. If the request is discussion only, return
+to `project-clarifier`. If the intended write scope remains unclear, clarify
+that scope before persisting content.
 
 ## Step 2: Load state and choose a route
 
@@ -70,6 +109,7 @@ Read:
 - `docs/methodology-config.json`
 - `docs/product.md`, if present
 - all active `docs/product/*.md`, if present
+- relevant definitions in `docs/CONTEXT.md`, if present
 - `docs/feature-list.json`, if present
 
 The lightweight Feature index is sufficient for routing. Do not eagerly load every Feature detail; the selected generation or synchronization workflow loads details as needed.
@@ -100,7 +140,9 @@ For states B through E, run `product-spec-elicitor` with:
 - current content of every affected module
 - the resolved `document_language`
 
-The elicitor asks only questions that materially affect the change and returns a structured patch. It must not write files.
+Pass relevant CONTEXT definitions and already confirmed answers to the elicitor.
+It asks only remaining questions that materially affect the change and returns
+a structured patch. It must not write files or restart a completed interview.
 
 ## Step 4: Complete UI and audio dimensions
 
@@ -130,17 +172,17 @@ This workflow performs all writes:
 6. **Placeholders:** pass every `_placeholder_` asset path to the Feature synchronization workflow for registration in Feature notes.
 
 If the elicitor returns terminology changes, review them with the affected
-Product behavior and persist confirmed wording in the owning Product document,
-following the **Product terminology** guidance in
-`methodology/01-product-doc-structure.md`. Use an existing section where possible;
-optional `terminology` content becomes a small section only when needed. Keep
-one owning definition and links from other modules. Do not create a separate
-glossary or treat code observations and unconfirmed terms as approved intent.
+Product behavior and persist confirmed wording in the owning Product section
+or `docs/CONTEXT.md`, following the **Project terminology and CONTEXT** guidance
+in `methodology/01-product-doc-structure.md`. Keep one owning definition and
+links from relevant modules. Do not treat code observations or unconfirmed
+terms as approved intent. CONTEXT accompanies Product changes; it never replaces
+the Product behavior that Feature planning needs.
 
 After the approved Product write, follow
 `agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the
-explicit Product paths, run the cached-diff checks, and create the local Product
-source commit unless the user explicitly requested no commit. Use
+explicit Product and associated CONTEXT paths, run the cached-diff checks, and
+create the local Product source commit unless the user explicitly requested no commit. Use
 `docs(product): <中文行为摘要>`, omit `Work item` because the downstream Feature
 record does not exist yet, and confirm `git status --short` before Feature
 synchronization.
@@ -171,7 +213,7 @@ Ask whether the Product documents are satisfactory and whether the user wants to
 1. Strip implementation choices from Product intent. Translate a request such as using a particular animation component into its observable transition behavior.
 2. Do not write implementation code, even when the user asks to do it at the same time; finish Product and Feature synchronization first.
 3. Resolve ambiguous Product decisions through the appropriate elicitor.
-4. Never skip Feature generation or synchronization after a Product write.
+4. Never skip Feature generation or synchronization after a substantive Product change. Only the meaning-preserving terminology maintenance route omits planning.
 5. Never silently edit a completed Feature. Create follow-up work or use the synchronization workflow's explicit lifecycle rules.
 6. Require confirmation before deleting modules, invalidating completed behavior, or changing foundational positioning.
 7. Do not let a conversation-language change rewrite or gradually mix durable Product language.
@@ -183,6 +225,6 @@ Ask whether the Product documents are satisfactory and whether the user wants to
 - If a destination module filename already exists, stop and ask whether to merge, choose a new module boundary, or use the next valid number. Never overwrite silently.
 - If a child workflow returns durable prose in the wrong language, do not write it. Re-render it in `document_language` without changing its Product meaning, then show it for confirmation.
 
-Always preserve this order:
+For substantive Product changes, always preserve this order:
 
 **Product documents first → Feature synchronization second → implementation last.**

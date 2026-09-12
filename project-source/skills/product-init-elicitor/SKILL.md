@@ -34,11 +34,11 @@ Smoke cases: with `document_language: en` and a Chinese conversation, ask questi
 
 ## Core principles
 
-1. **Keep each round small.** Prefer one decision at a time; a few brief, independent questions may share a round. Use the available user-input mechanism.
-2. **Do not make Product decisions for the user.** Durations, audiences, rules, and tradeoffs belong to the user.
-3. **Make choices reviewable.** Offer practical options and a recommendation with its reason when useful, while allowing a custom answer. A recommendation is not a user decision.
-4. **Ask in dependency order.** Establish the core loop before details and values. Do not ask dependent questions while their prerequisite is unsettled.
-5. **Find facts before asking.** Reuse the user's description, earlier decisions and relevant existing documents. Inspect implementation only when it can answer a concrete question about current behavior; do not treat it as approved Product intent.
+Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
+Keep this elicitor's Product dimensions and draft contract; do not start the
+clarifier's separate handoff workflow. Reuse confirmed answers supplied by the
+standardizer. Establish the core loop before dependent details and values;
+durations, audiences, rules and material tradeoffs remain the user's decisions.
 
 Use the following dimensions as coverage prompts, not question quotas. Reuse
 known answers and stop probing a dimension once its current scope, observable
@@ -46,10 +46,11 @@ outcome and material constraints are clear. Return a reviewable draft after the
 applicable dimensions are covered; leave unrelated future branches for later.
 
 When vocabulary obscures a module's identity, ownership or behavior, use
-`methodology/01-product-doc-structure.md` **Product terminology**. Include needed
-definitions in the positioning/data model, or return optional `terminology`
-content in the overview or owning module draft when a separate section helps.
-Omit it when existing wording is sufficient. The standardizer owns all writes.
+`methodology/01-product-doc-structure.md` **Project terminology and CONTEXT**.
+Read relevant `docs/CONTEXT.md` definitions when present. Keep sufficient local
+definitions in the positioning/data model; attach any proposed shared CONTEXT
+wording and source links to the draft, distinct from module behavior. Omit the
+proposal when existing wording is sufficient. The standardizer owns all writes.
 
 ## Stage 1: Product positioning
 
