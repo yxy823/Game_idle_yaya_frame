@@ -54,10 +54,24 @@ the existing test and catalog maintenance rules when retiring redundant cases.
 
 ## Architecture Decision Records
 
-Use an optional ADR for one important technical choice whose tradeoffs affect
-multiple Features/modules, constrain the project over time, or are costly to
-reverse. Check related decisions first. Local implementation choices stay in
-Feature notes; ordinary changes and experiments need no ADR by default.
+Consider an optional ADR for an important technical choice that affects multiple
+Features/modules or constrains later work. First read related Feature notes,
+architecture documents and existing ADRs. Reuse and link an explanation that
+already answers the question instead of recording the same rationale again.
+
+Create a separate ADR only when all three conditions hold:
+
+- Reversing the choice would require meaningful migration or rework.
+- A future maintainer could reasonably question the choice because its reasons
+  cannot be recovered from the code alone.
+- Real alternatives were considered, with concrete reasons for accepting some
+  costs and rejecting others.
+
+Repeated discussion is a signal to check whether the rationale is missing or
+hard to find; it does not by itself justify another record. Local implementation
+choices stay in Feature notes. Easily reversible changes and choices with no
+real alternative need no ADR; keep any useful constraint in its existing owning
+document. Do not invent alternatives or migrate historical notes to fill a record.
 
 Use [architecture-decision-record.md.tmpl](templates/architecture-decision-record.md.tmpl)
 at `docs/architecture/adr-NNNN-<slug>.md`. Choose the next unused number by reading
