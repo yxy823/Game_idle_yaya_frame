@@ -82,6 +82,19 @@ length, complexity, and other numeric limits belong to the project's
 machine-readable validation configuration. They are evidence for review, not a
 universal line-count rule or an automatic split authorization.
 
+## Contextual project knowledge
+
+`docs/knowledge/` stores reusable approaches, debugging methods and failure
+lessons from actual project tasks. Its README routes to topic
+indexes and separate entries. Consult relevant notes before choosing an approach,
+then check their conditions against current intent, code and target-version facts.
+Knowledge is evidence, not another source of mandatory engineering rules.
+
+An experience may be useful only in this project's particular conditions and
+still deserve a note. Feature notes keep the original incident and local task
+history; knowledge holds the extracted explanation and links that record. Stable
+prescriptive guidance follows the existing rule-promotion path below.
+
 ## Evolution and rule promotion
 
 Keep concrete framework and language learnings in the appropriate

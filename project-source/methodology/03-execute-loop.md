@@ -49,9 +49,14 @@ existing later plans, and keep engineering repairs within their authorized route
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
 4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, complete Coding Rules, test catalog, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
+   Before proposing an approach or searching external references, consult
+   `docs/knowledge/README.md` and the relevant topic indexes and entries.
+   Check their applicability to this Feature; reuse prior reading on continuation
+   unless scope or evidence changed. An empty or unrelated topic adds no blocker.
 5. Build a concise snapshot that lists:
    - the current Feature record path;
    - the principal Product and implementation paths read;
+   - relevant knowledge entries that informed the approach, when any;
    - files expected to be created, modified, or deleted;
    - applicable `agent-rules/**` modules;
    - three to six task-relevant rules, with source paths, that materially constrain the implementation;
@@ -275,7 +280,7 @@ If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` 
 
 The reviewer must be a fresh-context subagent/session or equivalent independent
 context. It performs no writes and reads the current Feature's approved scope
-and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, complete Coding Rules, actual final diff
+and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, relevant project knowledge, complete Coding Rules, actual final diff
 and changed files, and original verification results with applicable human
 feedback. Treat the implementer's summary as claims to check against these
 sources, not as independent evidence.
@@ -343,7 +348,7 @@ Report material review findings and unresolved work in ordinary language.
    These are explicit task commands. There is no tool-event interceptor or
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
-4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and Stage 6 TODOs.
+4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and Stage 6 TODOs. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
 5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
 6. Inspect `git status --short` and classify every path as owned by this Feature. Stop if any path is unrelated or ambiguous.
 7. Stage only this Feature's explicit paths or inspected hunks. Do not use `git add .`, `git add -A`, or broad globs.
@@ -361,7 +366,7 @@ local commits remain on the current branch, including `main` or `master`.
 1. If Stage 5.5 changed Coding Rules, report that source synchronization is required. Ask for explicit authorization to run `sync-feature-list`, then stop.
 2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
 3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress. Do not automatically start that planning step.
-4. Add one sentence or a few concise learning entries in this existing Stage, using `templates/stage8-learning.md.tmpl`. With no new generalizable learning, explicitly state “No new generalizable learning” (Chinese: “无新增可泛化经验”). Otherwise record trigger, root cause, existing-rule coverage, generalizability and recommended destination: Agent Rule / Methodology / Tooling / Automated Check / Regression. Link an existing Bug-learning note instead of copying it. Do not invent a new rule for every incident. A newly discovered tooling change becomes a separate maintenance task requiring approval; do not expand the completed Feature silently.
+4. Report one sentence or a few concise learning entries in this existing Stage, using `templates/stage8-learning.md.tmpl`. With no new reusable learning, explicitly state “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise report the context, useful approach or root cause, existing coverage, applicability and actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling / Automated Check / Regression. Link knowledge or Bug-learning notes already recorded before the commit instead of copying their bodies or starting post-commit documentation. A project-specific approach can be reusable within the project without becoming a universal rule. Do not invent an entry for every incident. A newly discovered out-of-scope tooling or rule change remains a separate authorized task.
 5. Stop. The user decides whether to continue, review, synchronize, or pause.
 
 ## Exception handling

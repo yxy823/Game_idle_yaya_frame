@@ -19,6 +19,7 @@
 | docs/CONTEXT.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-and-context-optional) |
 | docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录 |
 | docs/progress.md、docs/progress/ | 当前进度和必要历史 |
+| [docs/knowledge/](docs/knowledge/README.md) | 按主题积累实际开发经验、成功做法与失败教训；开始相关任务时优先查阅 |
 | docs/architecture.md、docs/architecture/ | 按需使用的架构地图、子系统说明和重要技术决定 ADR，见[架构约定](methodology/10-architecture-overview.md) |
 | docs/coding_rules.md、agent-rules/ | 项目约定与具体 Godot 工程规则 |
 | docs/methodology-config.json | 本机环境与实际检查命令 |
@@ -27,6 +28,11 @@
 | addons/ | gdUnit4、GDScript linter |
 | gdlint.json | GDScript lint 配置 |
 | project.godot | Godot 项目配置 |
+
+知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题，
+实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。
+初始只有目录说明，实际内容随任务积累。
+经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
 场景、业务源码、资源和测试目录按游戏实际需要组织。Product 初始为空，
 不预设玩法、业务模块、主场景或已完成任务。

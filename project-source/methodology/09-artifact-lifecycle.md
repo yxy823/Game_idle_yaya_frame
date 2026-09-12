@@ -15,6 +15,28 @@ unknown files and unresolved evidence for a later decision. Age, directory name
 and a later successful run do not by themselves authorize removal of a failure
 record. No test runner automatically cleans old reports.
 
+## Project knowledge
+
+`docs/knowledge/README.md` owns the knowledge organization and entry guidance.
+Start with Godot runtime, GDScript, debugging/testing and tools/pipelines topics,
+with indexes and separate Markdown entries for successful approaches and failure
+lessons. Add project-module subtopics when actual content benefits from them.
+These notes are contextual evidence,
+not Product requirements, engineering rules or executable inputs.
+
+Task documentation may extract a useful reusable explanation here, linking its
+Feature, commit, report, test or reference evidence. Feature notes retain the
+original incident and local decisions; avoid copying the full history. Check
+existing coverage before adding an entry, and keep its nearest index useful.
+Pure knowledge Markdown and index edits do not invalidate business-test evidence;
+source, tests, configuration and governing contracts remain semantic inputs.
+Runnable scripts, fixtures and data belong in their normal project directories.
+
+Finalize task-owned entries and index changes before the normal task commit;
+the handoff reports links. A read-only task does not write entries. Missing new
+learning requires no placeholder note. Updating project knowledge does not
+authorize rule promotion or changing another project or the framework.
+
 ## Progress
 
 `docs/progress.md` contains current state, blockers, pending decisions, next

@@ -25,6 +25,7 @@ The project knowledge layer is:
     ├── CONTEXT.md                   optional shared project vocabulary
     ├── feature-list.json            lightweight Feature index: Todo/status
     ├── features/F0XX.json           Feature detail and durable local notes
+    ├── knowledge/                  development experience, with topic indexes and separate entries
     ├── feature-list-revisions.json  Product/Coding-Rules synchronization history
     ├── test-catalog.json            component/test traceability and safety-net index
     ├── gate-evidence.json           current-snapshot Feature completion evidence
@@ -89,6 +90,21 @@ or Feature acceptance. Keep the question, observed result, decision and experime
 file disposition in current Feature notes, or current Progress when no Feature
 exists. Adopting an outcome into formal development returns to the Product or
 engineering entry above; exceeding the experiment budget requires user direction.
+
+## Reuse project knowledge
+
+Before choosing an approach for planning, investigation, development or review,
+consult `docs/knowledge/README.md`, then the relevant topic indexes and experience
+entries. Use project evidence before repeating external research;
+verify its conditions against the current task and target version. This is
+scoped reading, not a requirement to load the whole directory or to accept
+historical notes as rules. Reuse prior reading when continuing unchanged work.
+
+Capture useful task learning in that directory during authorized documentation,
+with one entry per reusable approach or lesson and links to its original
+task evidence. Follow the directory README and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge).
+No matching entry, no new learning, and a read-only task are normal outcomes.
+Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
 
 ## Project environment and workflow
 
@@ -158,7 +174,7 @@ Human control is mandatory and is deliberately not optimized away:
 ```text
 Clean worktree gate (new task) / verify task ownership (resumed task)
    ↓
-Stage 0   Require ready environment; select Feature; load Context / Rules Snapshot
+Stage 0   Require ready environment; select Feature; consult relevant knowledge; load Context / Rules Snapshot
    ↓
 Stage 1   Test Impact Review + resource preflight → explicit human approval
    ↓
@@ -174,7 +190,7 @@ Stage 5.5 Bug only: capture Root cause / Trigger / Regression / Guardrail
    ↓
 Stage 6   Independent requirements/quality review; repair and reverify as needed; must_fix: 0
    ↓
-Stage 7   Run explicit completion checks; mark done; stage task-owned changes; local commit; verify status
+Stage 7   Run completion checks; mark done; finalize useful knowledge; stage task-owned changes; commit; verify status
    ↓
 Stage 8   Report next eligible work and STOP
 ```

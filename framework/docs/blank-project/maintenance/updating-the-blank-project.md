@@ -103,10 +103,13 @@
 已有维护命令从框架根目录调用，使用本机已确认的解释器：
 
 ```powershell
-# 复制器回归会使用临时目录；仅在本次任务需要实际回归时执行。
+# 维护层回归会使用系统临时目录；仅在本次任务需要实际回归时执行。
 & 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B -m unittest discover -s framework/tests -p test_*.py
 $LASTEXITCODE
 ```
+
+上述入口包含复制器回归和知识指纹边界回归；后者只用中立临时 Git 夹具检查
+知识 Markdown 与源码是否参与指纹，不创建游戏，也不替代外部项目工具回归。
 
 ```powershell
 # 替换成用户明确指定的外部验证项目。

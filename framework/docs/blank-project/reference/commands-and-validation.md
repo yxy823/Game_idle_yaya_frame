@@ -148,7 +148,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-生产代码、测试、配置、AC、验证计划和 Catalog 等语义内容改变时需要核对依据是否失效；仅改完成时间、notes 或整理 Progress 历史不自动要求业务测试重跑。完整绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
+生产代码、测试、配置、AC、验证计划和 Catalog 等语义内容改变时需要核对依据是否失效；仅改完成时间、notes、整理 Progress 历史或 `docs/knowledge/` 下的说明性 Markdown 不自动要求业务测试重跑。知识目录只保存实践经验，不承载可执行输入、需求、规则或验收契约；其中非 Markdown 文件仍参与指纹。完整绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
 
 ## 直接脚本解析与 lint
 

@@ -126,6 +126,27 @@ Do not infer installed tools, executable paths or readiness from a template.
 Incomplete Bootstrap means the machine setup is unconfirmed; `--require-ready`
 still blocks Feature execution until actual environment checks succeed.
 
+## Project knowledge
+
+- **[MUST]** At the start of planning, investigation, implementation, debugging
+  or review, consult `docs/knowledge/README.md` and the relevant topic
+  indexes and entries before choosing an approach or repeating external research.
+  Use the current task, module, symptom, API or tool to narrow the reading; do not
+  load every entry. On continuation, reuse prior reading unless scope or evidence
+  changed. Empty topics are normal.
+- **[MUST]** Treat project experience as contextual evidence.
+  Check applicable conditions and current code/version; they do not override
+  user intent, Product, accepted decisions or applicable rules. Report a material
+  discrepancy rather than blindly applying an old workaround.
+- **[MUST]** During authorized task documentation, capture useful successful
+  approaches, debugging methods or failure lessons in the matching
+  `docs/knowledge/` topic, following its README. Update existing entries and
+  indexes where appropriate; keep concrete task history in Feature notes and
+  link it. No new entry is required without useful knowledge. Read-only tasks
+  retain their write boundary; rule changes and cross-project reuse still need
+  their existing authorization. Feature knowledge edits belong before the
+  Stage 7 commit, with Stage 8 reporting links.
+
 ## Agent Rules feedback
 
 - **[MUST]** During Feature, Bug, Refactor, and Maintenance completion, identify

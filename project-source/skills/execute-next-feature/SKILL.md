@@ -45,7 +45,11 @@ repairs and maintenance retain their own authorized routing.
 2. Run `git status --porcelain` under `agent-rules/00-core/git-worktree-and-commits.md`. Execute on the current branch, including `main` or `master`; do not change branches. A new Feature requires a clean worktree. A resumed Feature may continue only when every dirty path is demonstrably owned by that Feature; stop on unrelated or ambiguous changes.
 3. Read the confirmed environment configuration. Incomplete Bootstrap blocks coding; never guess commands. Run `python -B tools/checks/check-project-environment.py --require-ready` during initialization, after tool/configuration changes, or when diagnosing an actual invocation failure. Ordinary Features reuse confirmed paths without repeating version discovery.
 4. Load detail, Product source, relevant definitions in `docs/CONTEXT.md` when present, dependency details, current Progress, complete Coding Rules, `docs/methodology-config.json`, `docs/test-catalog.json` when testing is enabled, and the principal implementation files/directories needed to bound the change. Follow only relevant Progress history links. Read applicable optional architecture maps and ADRs under `methodology/10-architecture-overview.md`, including relevant ADRs when no map exists. Complete Coding Rules means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed installed module applicable to the Feature.
-5. Present a concise Context / Rules Snapshot containing the Feature record path; principal Product and implementation paths read; expected create/modify/delete paths; applicable `agent-rules/**` modules; three to six task-relevant rules with source paths; and principal planned validation. Reference rule sources instead of copying whole documents.
+   Before choosing an approach or searching external material, consult
+   `docs/knowledge/README.md` and the relevant topic indexes and entries.
+   Check their conditions against this Feature; reuse reading on continuation
+   unless scope or evidence changed. Empty topics are normal.
+5. Present a concise Context / Rules Snapshot containing the Feature record path; principal Product and implementation paths read; useful knowledge references when any; expected create/modify/delete paths; applicable `agent-rules/**` modules; three to six task-relevant rules with source paths; and principal planned validation. Reference sources instead of copying whole documents.
 6. Report ID/title/status/dependencies/source, `affected_components`, stable criterion IDs/text, engineering mode, and the snapshot.
 7. Stop on contradictory Product intent, invalid ledger/catalog data, unresolved dependencies, or an unbounded planned file surface.
 
@@ -177,7 +181,7 @@ If Guardrail deserves Coding Rules, show exact proposed rule + destination and w
 
 Use one fresh context/subagent equivalent for the review specified in
 `methodology/03-execute-loop.md` Stage 6. It reads the approved Feature scope
-and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, full Coding Rules, final diff and changed
+and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, relevant project knowledge, full Coding Rules, final diff and changed
 files, original verification results and applicable human feedback. It performs
 no writes and checks requirements first, then code quality; an implementer's
 summary alone proves neither.
@@ -211,6 +215,14 @@ python -B tools/checks/check-feature-list.py --completion-feature F0XX
 
 Then set status `done` and `completed_at` to current ISO 8601 timestamp. Validate the final ledger after the status update. Archive the current history once under `docs/progress/<Feature-or-approved-batch>.md`; keep only an index link and current handoff in Progress. Feature notes own local decisions and TODOs and link important technical ADRs without repeating their rationale or execution history. Follow `methodology/09-artifact-lifecycle.md`.
 
+Before the local commit, finalize useful successful approaches, debugging methods
+and failure lessons in the matching `docs/knowledge/` topic under its README.
+Update existing entries and the nearest index; link original Feature/evidence
+instead of copying history. No new learning requires no entry. Review new prose
+and links; keep runnable helpers and governing contracts in their normal locations.
+Pure knowledge Markdown does not invalidate business-test evidence, while changes
+to source, tests or contracts still require their applicable verification.
+
 Before the local commit:
 
 1. inspect `git status --short` and stop if any path is unrelated or ownership is ambiguous;
@@ -239,9 +251,10 @@ Product's planning automatically.
 
 Within this same Stage add one sentence or a few entries of learning feedback,
 following `methodology/templates/stage8-learning.md.tmpl`. With none, explicitly
-say “No new generalizable learning” (Chinese: “无新增可泛化经验”). Otherwise give
-trigger, root cause, existing-rule coverage, generalizability and recommended
-destination: Agent Rule / Methodology / Tooling / Automated Check / Regression.
-Reference a Bug-learning note rather than duplicating it. Do not automatically
-create rules; a newly identified framework change becomes a separate approved
-maintenance task. This adds no Stage. Stop and wait for the user's decision.
+say “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise give
+context, successful approach or root cause, existing coverage, applicability and
+actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling /
+Automated Check / Regression. Link notes finalized before the commit, without
+copying them or starting new documentation writes at handoff. Project-specific
+reusable methods count. Do not automatically create rules; newly identified
+out-of-scope changes remain separate authorized work. Stop for the user's decision.
