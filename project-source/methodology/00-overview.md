@@ -42,7 +42,7 @@ The project knowledge layer is:
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Focused discussion; hand approved terminology to the existing writer only when documentation is requested. |
 | Product | `product-init-elicitor`, `product-change-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
-| Planning | `generate-feature-list`, `sync-feature-list` | Maintain stable Feature IDs, dependency-driven execution and traced incremental source changes. |
+| Planning | `generate-feature-list`, `sync-feature-list` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, independent review, completion, and handoff. |
 | Guidance | `yaya-next-step-advisor` | Read current state and produce an appropriately scoped prompt for an existing workflow; never execute or grant approval. |
@@ -57,8 +57,8 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
 | Record or maintain settled project vocabulary | `project-clarifier` → `product-change-standardizer` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
-| New Feature / Product change | `product-change-standardizer` | Define or change Product authority, then incrementally synchronize the plan. |
-| Initial decomposition | `generate-feature-list` | Create the first plan from approved Product and Coding Rules. |
+| New Feature / Product change | `product-change-standardizer` | Update Product, handle existing-work impacts, and defer later Products' initial decomposition. |
+| Decompose the current Product | `generate-feature-list` | Append only this Product's plan; finish its required Features before initially decomposing the next Product. |
 | Source synchronization | `sync-feature-list` | Trace additions, revisions, splits, merges and dependency/test retirement migrations. |
 | Continue current Feature | `execute-next-feature` | Resume the actual Stage and existing authorization; “continue” alone does not grant missing approval or acceptance. |
 | Execute eligible planned Feature | `execute-next-feature` | Select by the dependency DAG, present Stage 1 and preserve its approval boundary. |
@@ -70,6 +70,13 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Audit | Read-only inspection | Report evidence, uncertainty and findings; a request for audit does not authorize implementation. |
 | Human Acceptance follow-up | Current Feature Stage 5/6 route | Bind the user's explicit acceptance to the actual reviewed scope and snapshot; do not infer acceptance. |
 | Status query | Read-only state explanation | Report current facts and next legal action; do not start work or call readiness checks merely to answer. |
+
+Product execution order governs the planning horizon: one Product's Features
+are decomposed and completed before the next Product is decomposed. Revisit
+later requirements using actual experience instead of allocating all future
+tasks up front. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning)
+with the existing Product documents and Feature sources/statuses; no extra
+Product queue or planning-state file is needed.
 
 Complexity changes prompt detail, not authorization. Simple known work gets a
 short actionable prompt; uncertain, cross-module or migration work gets an
@@ -106,7 +113,8 @@ User request
    │      ↓
    │  product-change-standardizer
    │      ↓
-   │  Product docs → generate/sync Feature plan
+   │  Product docs → decompose current Product / sync existing-work impacts
+   │                 later Products remain at document level until their turn
    │
    └─ Product intent is already explicit and should stay fixed
           ↓

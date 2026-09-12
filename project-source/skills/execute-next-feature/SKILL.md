@@ -35,6 +35,12 @@ If reusing a run, identify its run and same content snapshot; prose does not rep
 
 ## Stage 0 — select and load
 
+For Product-derived work, apply **Product-by-Product planning** in
+`methodology/02-feature-list-schema.md`: stay with the current Product until
+its required Features are complete. The eligible command checks dependencies,
+not Product sequencing. Preserve any pre-existing later plans; engineering
+repairs and maintenance retain their own authorized routing.
+
 1. Read `docs/feature-list.json`; resume the authorized current Feature/batch, otherwise use the requested Feature or a DAG-eligible `pending` Feature. `tools/checks/check-feature-list.py --eligible` derives eligibility; larger IDs may be prerequisites and IDs only break ties. Do not invent batch authorization.
 2. Run `git status --porcelain` under `agent-rules/00-core/git-worktree-and-commits.md`. Execute on the current branch, including `main` or `master`; do not change branches. A new Feature requires a clean worktree. A resumed Feature may continue only when every dirty path is demonstrably owned by that Feature; stop on unrelated or ambiguous changes.
 3. Read the confirmed environment configuration. Incomplete Bootstrap blocks coding; never guess commands. Run `python -B tools/checks/check-project-environment.py --require-ready` during initialization, after tool/configuration changes, or when diagnosing an actual invocation failure. Ordinary Features reuse confirmed paths without repeating version discovery.
@@ -206,7 +212,14 @@ Create the eligible local commit on the current branch, including `main` or `mas
 
 ## Stage 8 — handoff and stop
 
-If Bug learning changed Coding Rules, request explicit authorization to run `sync-feature-list` and stop. Otherwise report completion, verification evidence, the local commit hash (or explicit no-commit exception), post-commit status, TODOs/placeholders, and first eligible next Feature.
+If Bug learning changed Coding Rules, request explicit authorization to run `sync-feature-list` and stop. Otherwise report completion, verification evidence, the local commit hash (or explicit no-commit exception), post-commit status, TODOs/placeholders, and next work within the current Product.
+
+Check current Product scope against its Feature sources/statuses. If required
+work remains, identify the next eligible Feature or the actual blocker. Only
+after the current Product is complete, recommend revisiting and decomposing the
+next Product with `generate-feature-list` (or reusing its existing plan). Do not
+equate an empty eligible list with Product completion, and do not start the next
+Product's planning automatically.
 
 Within this same Stage add one sentence or a few entries of learning feedback,
 following `methodology/templates/stage8-learning.md.tmpl`. With none, explicitly

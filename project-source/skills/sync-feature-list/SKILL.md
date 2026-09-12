@@ -10,6 +10,12 @@ Run Feature-list synchronization as the seven-stage workflow defined below.
 
 The core method is to identify source changes through Git diffs against a recorded anchor. Never infer historical change merely by comparing the current Product with the current Feature plan.
 
+Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md`.
+Synchronize actual effects on existing work; do not initially decompose a later
+Product just because its document was added or revised. When the next Product
+becomes current, `generate-feature-list` reads its complete current specification
+and appends its plan, even if those source edits predate this workflow's anchor.
+
 ## Language and history contract
 
 Before producing durable Feature content:
@@ -66,7 +72,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 **Output:** a ready environment and an identified comparison anchor.
 
 1. Check `docs/feature-list.json`.
-   - If it does not exist, direct the user to `generate-feature-list` and stop.
+   - If it does not exist or has no Features, direct current Product planning to `generate-feature-list` and stop; do not generate all Product modules.
    - If it exists, read the full index for status, dependency, and count fields. Read `docs/feature-list-revisions.json` when present; on first synchronization it may be absent. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
 2. Check Git.
    - Read and report the current branch; `main` and `master` are valid. Do not change branches.
@@ -124,9 +130,22 @@ A path rename with unchanged content is editorial. A rename plus content change 
 
 Use each detail file's `source` to map additions, revisions, and removals:
 
-- addition → propose one or more new Features;
+- addition to the current/already planned scope → propose needed new Features;
+- addition or revision confined to a later, unplanned Product → leave it at Product-document level and report deferred decomposition;
 - revision → identify every affected Feature ID;
 - removal → identify every affected Feature ID.
+
+Before proposing additions, check whether generation since the anchor already
+incorporated that source change into existing Feature scope/AC. Do not create
+duplicate Features for already covered changes. This checks an observed source
+diff against the plan; it does not replace Git as the source of change history.
+
+Later Product changes can still affect existing behavior through a real shared
+contract. Analyze those affected Features and tests without decomposing the
+later Product as a whole. If the entire diff concerns unplanned later Products
+with no existing-work impact, report the deferred scope and stop without ledger
+or revision-log writes. Mixed diffs handle existing-work impacts normally and
+mention deferred scope in the ordinary report; no new tracking fields are needed.
 
 Consider whether a changed pending scope now needs splitting or merging. Report
 the exact source/replacement IDs, scope boundaries and every downstream dependency
@@ -398,7 +417,7 @@ Report:
 
 - the anchor hash used for analysis;
 - counts of added, obsoleted, regression, and source-path-update records;
-- the next executable Feature from `python -B tools/checks/check-feature-list.py --eligible`, when one exists;
+- the next executable Feature for the current Product or authorized engineering work, using `python -B tools/checks/check-feature-list.py --eligible` for dependency readiness; otherwise the next Product to revisit after current completion;
 - rollback warnings for obsolete in-progress work and every outstanding regression concern.
 
 Do not automatically start another Feature. Wait for the user's instruction.
@@ -408,7 +427,7 @@ Do not automatically start another Feature. Wait for the user's instruction.
 | Condition | Required response |
 |---|---|
 | No anchor can be found | Offer whole-document comparison, disclose reduced precision, and require confirmation |
-| More than about 50% of source lines changed, or more than three module files were added or removed | Pause and recommend smaller synchronizations or explicit `generate-feature-list` regeneration |
+| Source changes are too broad to classify reliably | Narrow the affected scope with the user, preserving current records and Product order; do not recommend full-project regeneration based on file or line counts |
 | Diff and user prior conflict materially | Pause, enumerate mismatches, and ask the user to check for unintended source edits |
 | Product module inventory and actual files differ | Pause, list the discrepancy, and require Product repair rather than guessing |
 | Any index, detail, or revision JSON is invalid, including unescaped quotes | Stop and report the original error; do not auto-repair the data |

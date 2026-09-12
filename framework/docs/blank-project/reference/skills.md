@@ -11,12 +11,12 @@
 | Skill | 适合的任务 | 主要产物与边界 |
 | --- | --- | --- |
 | [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
-| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | Product 与 CONTEXT 的统一写入入口；实质需求变化同步 Feature，保持含义的术语维护省略规划 |
+| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与 CONTEXT，处理对已有任务的影响；初次拆分只针对当前 Product |
 | [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
 | [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
 | [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | Product 音频条目和 `_placeholder_` 文件名，不生成正式音频 |
-| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 首次分解已确认 Product | Feature 索引、详情、修订记录和测试 Catalog；全量替换需明确授权 |
+| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前 Product，包括第一份和后续 Product | 当前 Product 的 Feature 与必要测试关系追加到同一台账；前一 Product 的 Feature 完成后再拆下一份，保留历史 |
 | [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
 | [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、复审、完成记录、本地提交与交接 |
@@ -28,8 +28,8 @@
 ## 常见组合
 
 - 先想清楚：project-clarifier → 对话结论；有术语落盘授权时交给 standardizer，按需更新 CONTEXT 或局部定义。
-- 新游戏：Product standardizer → 按需 init/spec/UI/audio → 初次 Feature 规划 → 执行获批任务。
-- 改需求：Product standardizer → 增量 sync → 执行受影响的新任务。
+- 新游戏：Product standardizer → 按需 init/spec/UI/audio → 只拆当前 Product → 完成它的 Feature → 复核并按授权拆下一 Product。
+- 改需求：Product standardizer → 同步对已有任务的影响；仅后续未拆分 Product 的变化先留在需求文档中。
 - 修独立 Bug：工程 standardizer 的 bug 模式 → execute → 回归、适用验收与经验。
 - 选择重构：pick-refactor-smell → 工程 standardizer 的 refactor 模式 → execute。
 - 当前任务中断：读取 Progress 和原任务 → execute 从真实阶段继续。
@@ -54,7 +54,7 @@
 | 改变玩法 | Godot 项目开发 → 需求设计 → 新增功能或调整已有规则 |
 | 设计界面 | Godot 项目开发 → 需求设计 → 设计界面与交互 |
 | 设计声音 | Godot 项目开发 → 需求设计 → 设计音效与音乐需求 |
-| 首次规划 | Godot 项目开发 → 任务规划 → 首次拆分 Feature 与测试计划 |
+| 拆分第一份或后续当前 Product | Godot 项目开发 → 任务规划 → 拆分当前 Product 的 Feature |
 | 增量同步 | Godot 项目开发 → 任务规划 → 需求变化后同步已有任务 |
 | 了解现状 | Godot 项目开发 → 日常开发 → 判断当前状态与下一步 |
 | 开发任务 | Godot 项目开发 → 日常开发 → 执行指定或下一项 Feature |

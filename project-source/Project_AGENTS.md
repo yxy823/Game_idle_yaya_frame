@@ -28,7 +28,7 @@ Route work as follows:
   logging, performance, or other non-Product engineering work
   -> `$engineering-change-standardizer` in maintenance mode
 
-- Initial Product-to-Feature decomposition
+- Initial decomposition of the current Product (first or subsequent)
   -> `$generate-feature-list`
 
 - Product or Coding Rules changed after the initial Feature plan
@@ -41,6 +41,12 @@ Route work as follows:
   -> `$pick-refactor-smell`
   -> then return the selected candidate to
   `$engineering-change-standardizer`
+
+Plan Products one at a time in their actual execution order. Decompose only the
+current Product into Features; finish its required Features before decomposing
+the next Product. Revisit later requirements when their turn arrives and append
+to the existing ledger. Do not pre-plan all Products or rebuild prior tasks.
+See `methodology/02-feature-list-schema.md` **Product-by-Product planning**.
 
 Human control is mandatory:
 

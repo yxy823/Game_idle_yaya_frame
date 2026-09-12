@@ -1,6 +1,6 @@
 ---
 name: product-change-standardizer
-description: Owns authorized Product and project terminology writes. Routes Product initialization and behavior changes through elicitation and Feature synchronization; handles meaning-preserving CONTEXT or local terminology edits without creating Features. Discussion alone uses project-clarifier; implementation defects with explicit Product intent use engineering-change-standardizer.
+description: Owns authorized Product and project terminology writes. Elicits Product intent, plans the current Product and synchronizes impacts on existing Features; later Products remain at document level. Handles meaning-preserving CONTEXT or local terminology edits without creating Features. Discussion alone uses project-clarifier; implementation defects with explicit Product intent use engineering-change-standardizer.
 metadata:
   version: 3.0
   triggers:
@@ -16,7 +16,7 @@ metadata:
 ## Non-negotiable rules
 
 1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product behavior; optional `docs/CONTEXT.md` owns shared vocabulary, not additional behavior.
-2. Every substantive Product change must update Product documents first, synchronize the Feature plan second, and enter implementation only afterward.
+2. Update Product documents before planning or implementation. Handle effects on existing Features, but initially decompose only the current Product under `methodology/02-feature-list-schema.md` **Product-by-Product planning**; later Products remain unplanned until their turn.
 3. This workflow is the only Product and CONTEXT writer. Clarifiers, elicitors and sketchers return proposals; this workflow persists them. Meaning-preserving terminology maintenance follows the separate route below, not Product-change planning.
 4. Product documents describe **what**, not **how**. Keep technology choices and implementation details in Coding Rules, code, or implementation notes.
 5. Never make a Product decision on the user's behalf.
@@ -169,7 +169,7 @@ This workflow performs all writes:
 3. **Existing module:** edit only the affected sections; preserve unrelated content.
 4. **Overview:** update the module inventory and dependencies when they change.
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
-6. **Placeholders:** pass every `_placeholder_` asset path to the Feature synchronization workflow for registration in Feature notes.
+6. **Placeholders:** pass relevant `_placeholder_` asset paths to the current or affected existing Feature plan. Later, unplanned Products retain their placeholder requirements in Product until decomposition.
 
 If the elicitor returns terminology changes, review them with the affected
 Product behavior and persist confirmed wording in the owning Product section
@@ -191,10 +191,15 @@ Before writing, show destructive or foundational changes for a second confirmati
 
 ## Step 6: Synchronize Features
 
-- For an initialized Product with no real Feature plan, a new module, or a large refactor, run `generate-feature-list`.
-- For a small change to existing Product intent or a Product correction, run `sync-feature-list`. Implementation defects do not reach this step; they belong to `engineering-change-standardizer`.
+- Read the Product execution order and existing Feature sources/statuses using the **Product-by-Product planning** rule. A new module or a large change does not authorize regenerating the project plan.
+- For the current Product without a plan, use `generate-feature-list` to decompose only its approved scope. The first Product may start from an empty ledger; later Products wait until the current Product's required Features are complete and append to the same ledger.
+- For changes affecting already planned or completed behavior, use `sync-feature-list` to handle the actual Feature, dependency and test impacts. Do not use synchronization to pre-plan later Products.
+- For a later Product with no Feature plan and no impact on existing work, finish the Product-document update and report that its Feature decomposition is deferred. Do not call a planning Skill merely because this document changed.
 
-Wait for the selected workflow to finish and inspect its result. Never report synchronization as successful merely because it was invoked. Do not rewrite completed Feature history; create explicit follow-up work when completed behavior must change.
+When a planning workflow is needed, wait for it to finish and inspect its result.
+Never report synchronization as successful merely because it was invoked, or
+describe a deliberately unplanned Product as fully covered. Preserve completed
+Feature history; changed completed behavior creates explicit follow-up work.
 
 ## Step 7: Report and stop
 
@@ -202,7 +207,7 @@ Report:
 
 - Product files created or changed and the intent of each change
 - the confirmed `document_language`
-- Feature synchronization status
+- Feature planning/synchronization result, including which later Products remain unplanned
 - affected Feature states
 - every placeholder resource
 
@@ -213,7 +218,7 @@ Ask whether the Product documents are satisfactory and whether the user wants to
 1. Strip implementation choices from Product intent. Translate a request such as using a particular animation component into its observable transition behavior.
 2. Do not write implementation code, even when the user asks to do it at the same time; finish Product and Feature synchronization first.
 3. Resolve ambiguous Product decisions through the appropriate elicitor.
-4. Never skip Feature generation or synchronization after a substantive Product change. Only the meaning-preserving terminology maintenance route omits planning.
+4. Always assess substantive changes against existing Features. Current Product decomposition and actual impacts on planned work need the appropriate planning route; a later, unplanned Product remains at document level. Meaning-preserving terminology maintenance also omits planning.
 5. Never silently edit a completed Feature. Create follow-up work or use the synchronization workflow's explicit lifecycle rules.
 6. Require confirmation before deleting modules, invalidating completed behavior, or changing foundational positioning.
 7. Do not let a conversation-language change rewrite or gradually mix durable Product language.
@@ -225,6 +230,6 @@ Ask whether the Product documents are satisfactory and whether the user wants to
 - If a destination module filename already exists, stop and ask whether to merge, choose a new module boundary, or use the next valid number. Never overwrite silently.
 - If a child workflow returns durable prose in the wrong language, do not write it. Re-render it in `document_language` without changing its Product meaning, then show it for confirmation.
 
-For substantive Product changes, always preserve this order:
+For substantive Product changes, preserve this order within the authorized scope:
 
-**Product documents first → Feature synchronization second → implementation last.**
+**Product documents first → applicable current-Product planning or existing-Feature synchronization → implementation last.** Later, unplanned Products stop at the document update until their turn.

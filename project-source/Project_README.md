@@ -41,7 +41,7 @@
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
 | 界面线框与可选 HTML 探索 | product-ui-sketcher |
 | 音效、音乐需求与占位文件名 | product-audio-sketcher |
-| 首次拆分 Feature | generate-feature-list |
+| 只拆当前 Product，完成后再拆下一 Product | generate-feature-list |
 | 增量对齐已有 Feature | sync-feature-list |
 | Bug、重构或工程维护 | engineering-change-standardizer |
 | 执行一个已批准 Feature | execute-next-feature |
@@ -59,7 +59,8 @@ flowchart TD
     P --> I[按需使用 init / spec elicitor]
     I --> V[按需使用 UI / audio sketcher]
     V --> D[更新 Product]
-    D --> L[generate-feature-list / sync-feature-list]
+    D -->|当前 Product 或影响已有任务| L[generate-feature-list / sync-feature-list]
+    D -->|仅后续未拆分 Product| B[保留需求，暂不生成 Feature]
     Q -->|Bug / 重构 / 维护| E[engineering-change-standardizer]
     Q -->|选择重构候选| S[pick-refactor-smell]
     S --> E
@@ -75,6 +76,10 @@ flowchart TD
 只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/CONTEXT.md`
 有实际内容才创建；由 `product-change-standardizer` 统一写入已确认的定义。
 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
+
+Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Feature，
+完成它们后再复核并拆下一 Product。计划追加到同一台账，保留历史；
+后续 Product 先保留需求，不提前展开全部任务。见[逐个 Product 规划](methodology/02-feature-list-schema.md#product-by-product-planning)。
 
 ## 当前 Feature 流程
 

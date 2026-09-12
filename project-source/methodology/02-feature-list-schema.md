@@ -385,10 +385,57 @@ python -B tools/checks/check-feature-list.py
 
 During normal editing, the Agent can update related files together before running the explicit checker. The command always checks the complete ledger; it is not registered as a per-edit Hook.
 
+## Product-by-Product planning
+
+Decompose one Product at a time in the actual execution order. In the current
+document layout, the planning unit is one `docs/product/NN-<module>.md` module
+with its currently approved scope. `docs/product.md` provides the overview,
+dependencies and intended order; file numbers are stable identities, not a
+command to execute or plan every module at once.
+
+1. Identify the current Product from the user's request, Product order and
+   existing Feature `source`/status records. Read relevant Progress for context.
+   Resolve an ambiguous scope or unfinished prerequisite before decomposing.
+2. Decompose the current Product's required behavior into complete, verifiable
+   Features. Include only infrastructure needed to deliver that scope; reuse
+   existing infrastructure and completed prerequisite Features. If another
+   Product must be delivered first, correct the order rather than pre-planning
+   both Products.
+3. Leave later Products at the Product-document level. They may already have
+   descriptions, but do not allocate their Feature IDs, detailed Feature AC or test
+   registrations yet. Read them only as needed to understand dependencies.
+4. Finish the current Product's required Features before decomposing the next
+   Product. Check actual Feature completion and outstanding scope: no eligible
+   task, an empty plan, or a Product document marked `done` does not prove
+   implementation is complete. `pending`, `in_progress` and `blocked` work is
+   unfinished; explicitly withdrawn scope follows existing retirement rules.
+5. After completion, revisit the next Product against what was learned and its
+   current requirements, then decompose it under the user's existing planning
+   authorization. Feature delivery still stops at Stage 8; completion alone
+   does not authorize automatically planning or implementing the next Product.
+
+`generate-feature-list` handles the first and each subsequent Product's initial
+decomposition by appending to the same ledger. Allocate IDs after the greatest
+existing ID; preserve previous Features, test Catalog records and revision
+history. If the selected scope already has a plan, reuse it; changed requirements
+use `sync-feature-list` rather than duplicating or regenerating that plan.
+
+`sync-feature-list` still analyzes effects on existing work, including completed
+behavior and real downstream dependencies. Changes to a later, unplanned Product
+do not create Features now. When that Product becomes current, generation reads
+its complete current specification, even if its edits predate the latest sync
+anchor. Do not interpret a global source anchor as proof that every Product has
+been decomposed. `meta.generated_from` names source locations, not coverage.
+
+Use the existing Product order, Feature sources/statuses and ordinary Progress
+notes. Do not add a Product queue, registry, completion flag or duplicate ledger.
+Pre-existing plans remain intact; this rule does not authorize deleting future
+Features or rewriting completed history.
+
 ## Decomposition rules
 
 1. Each Feature is the smallest independently verifiable complete behavior or engineering outcome.
-2. Initial Product plans begin with runnable infrastructure and then follow module/dependency order.
+2. Plan only the current Product under the rule above; reuse or establish the runnable infrastructure it needs, then follow its Feature dependencies.
 3. Final Features are `small` or `medium`; decompose `large` work.
 4. Product-derived Features do not invent behavior absent from Product documents.
 5. Engineering Features preserve Product intent unless a separate Product change has been approved.
@@ -402,7 +449,7 @@ During normal editing, the Agent can update related files together before runnin
 
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
-| Initial Product decomposition | `generate-feature-list` | index, Product-derived details, empty revision log, initial test catalog |
+| Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/catalog, preserve existing history |
 | Product/Coding-Rules synchronization | `sync-feature-list` | index/details + revision log + affected test traceability |
 | Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details; test plan is finalized during execution |
 | Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test catalog, notes, Progress, implementation/test files |

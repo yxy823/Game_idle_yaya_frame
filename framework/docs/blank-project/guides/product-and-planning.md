@@ -13,8 +13,8 @@ Product 保存玩家行为的意图，Feature 保存可逐项交付的工作。�
 | `docs/product.md` 为空，明确要求整理初始需求 | `product-change-standardizer` 组织 `product-init-elicitor` 梳理定位、核心循环和模块 |
 | 有 Product，需要补充或修改行为 | `product-change-standardizer` 按歧义使用 `product-spec-elicitor` |
 | 需要界面布局或声音需求 | 在 Product 流程中按需使用 UI / audio sketcher |
-| Product 和 Coding Rules 已确认，还没有任务计划 | `generate-feature-list` 首次拆分 |
-| 已有 Feature，Product 或 Coding Rules 发生变化 | `sync-feature-list` 增量对齐 |
+| 当前 Product 已确认且尚未拆分；前一 Product 的 Feature 已完成 | `generate-feature-list` 只拆当前 Product，追加到现有台账 |
+| 已有 Feature 受到 Product 或 Coding Rules 变化影响 | `sync-feature-list` 增量对齐，后续未拆分 Product 暂不生成任务 |
 | 产品预期明确，代码表现错误 | [工程变更](engineering-changes.md) 的 Bug 路线 |
 
 已有明确答案不重复询问。仍会改变验收含义的关键选择需要说明并解决，不能把 Agent 的推测写成用户已经批准的行为。
@@ -35,12 +35,17 @@ flowchart TD
     E --> F
     F --> G[按需补充 UI 与音频]
     G --> H[确认后写入 Product]
-    H --> I{已有任务计划}
-    I -->|否| J[generate-feature-list]
-    I -->|是| K[sync-feature-list]
+    H --> I{本次规划范围}
+    I -->|当前 Product 尚未拆分| J[generate-feature-list]
+    I -->|影响已有任务| K[sync-feature-list]
+    I -->|仅后续未拆分 Product| N[保留需求，暂不生成 Feature]
     J --> L[可验证的 Feature 与依赖]
     K --> L
-    L --> M[获批后进入执行流程]
+    L --> M[获批后逐项执行当前 Product 的 Feature]
+    M --> O{当前 Product 已完成}
+    O -->|否| M
+    O -->|是| W[按授权复核下一 Product，再拆分]
+    W --> J
 ```
 
 ## 先讨论，按需留下术语
@@ -75,7 +80,15 @@ flowchart TD
 
 ## Feature 如何拆分
 
-一项 Feature 应是可独立验证的完整行为或工程结果。首次计划先建立必要的可运行基础，再按依赖展开业务；最终工作量使用 `small` 或 `medium`，过大的工作继续拆分。
+**Product 按实际执行顺序逐个拆分，当前 Product 的 Feature 完成后，再拆下一个 Product。** 在现有结构中，以一个 `docs/product/NN-name.md` 模块及其已确认范围为单位。Product 总览说明依赖和推进顺序，文件编号保持稳定，不代替实际执行顺序。
+
+先把当前 Product 拆成所需的完整、可验证 Feature，完成它们后再根据实际结果复核下一 Product 的需求。后续 Product 可以先有描述，但不预分配 Feature ID、Feature 的详细 AC 或测试登记。这样后续调整主要发生在需求文档中，不必同时维护一整批尚未执行的任务。
+
+`generate-feature-list` 用于第一份以及后续每份 Product 的初次拆分。默认空台账可直接开始；已有历史时沿用同一台账，在最大 ID 后追加，保留以前的 Feature、Catalog 和修订记录。当前 Product 已有计划就复用；修改该计划交给 `sync-feature-list`。
+
+一项 Feature 应是可独立验证的完整行为或工程结果。复用已有基础设施，只补当前 Product 必需的可运行基础；最终工作量使用 `small` 或 `medium`，过大的工作继续拆分。若当前 Product 依赖尚未完成的另一 Product，先调整推进顺序，不同时拆出两份完整计划。
+
+判断是否可以进入下一 Product，要核对当前范围、Feature 来源和完成状态。有 `pending`、`in_progress` 或 `blocked` 工作就还未完成；没有可执行候选、没有任务或 Product 文档标为 `done` 都不等于功能已交付。执行流程仍在 Stage 8 交接后停止，下一 Product 的规划沿用用户实际授权。详见 [逐个 Product 规划规则](../../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)。
 
 任务结构分工如下：
 
@@ -97,7 +110,7 @@ flowchart LR
     F004 --> F005
 ```
 
-此图只演示依赖，仓库没有预置这些业务任务。F003 与 F004 依赖就绪也不自动授权并行开发或连续执行。
+此图假设这些工作都属于当前同一个 Product，只演示内部依赖；仓库没有预置这些业务任务。F003 与 F004 依赖就绪也不自动授权并行开发或连续执行。
 
 ## 验收条件和测试 ID
 
@@ -123,7 +136,9 @@ flowchart LR
 
 拆分或合并时同时处理下游依赖、替代任务和测试映射。`obsolete` 表示未完成工作已废弃，`obsolete_done` 保留曾完成但后来被替代的历史；未完成任务不能继续依赖它们。旧测试退役必须有对应需求来源和替代关系，不能仅因为它失败就删掉。
 
-`generate-feature-list` 的全量重建是需要明确范围的替换操作，不能当作普通增量更新使用。已经建立的历史和工程任务不能被首次生成流程顺带抹掉。
+仅修改后续尚未拆分的 Product，且不影响已有任务时，保留文档变化并暂缓拆分。若改变了现有行为依赖的契约，则处理真正受影响的任务和回归；不借同步一次性展开所有 Product。
+
+轮到下一 Product 时，生成入口读取它当时的完整规格。即使其文档修改早于最近一次同步锚点，也不能漏拆；反过来，同步时已被先前规划吸收的变化不重复生成 Feature。历史与已有工程任务始终保留，不使用全量重建来推进下一 Product。
 
 ## 规划完成时应能回答
 

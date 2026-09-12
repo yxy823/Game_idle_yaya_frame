@@ -26,12 +26,18 @@ Write these sections in this order. A document rendered from the canonical templ
 | Target users | Yes | Primary users, usage context, and expected frequency. An MVP may target maintainer self-testing. |
 | Core loop | Yes | A numbered, coherent action sequence for each version such as V0.1 or V0.2. |
 | Module list | Yes | Number, filename, module name, and `draft`, `done`, or `obsolete` status. |
-| Module dependencies | Yes | An ASCII dependency diagram, with cross-cutting modules identified separately. |
+| Module dependencies | Yes | An ASCII dependency diagram and intended Product execution order, with cross-cutting modules identified separately. |
 | Visual direction | Recommended | Palette, typography, and UI tone used as input to UI sketches. |
 | Audio direction | Recommended | Sound-effect and music direction used as input to audio entries. |
 | Change history | Yes | Reverse-chronological date, Product change, and reason. |
 
 ## Standard `product/NN-name.md` sections
+
+The overview may describe later modules without allocating their Features.
+Decompose only the current Product and complete its required Features before
+decomposing the next; see [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning).
+Revisit the next module's scope before planning it. Module-document status and
+file numbers do not establish implementation completion or override dependencies.
 
 A module document is more detailed than the overview. A rendered template must retain its standard headings and explicitly mark inapplicable sections rather than deleting them. Optional additions such as Version evolution may be included when useful, but unrelated concerns must not be collapsed in a way that hides Product behavior.
 

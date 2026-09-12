@@ -40,6 +40,11 @@ changes require another run. A conversational table does not replace actual exec
 
 **Output:** exactly one current Feature and a fixed Context / Rules Snapshot.
 
+For Product-derived work, apply [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning).
+Finish the current Product's required Features before moving to the next
+Product. Dependency eligibility does not establish Product sequencing; preserve
+existing later plans, and keep engineering repairs within their authorized route.
+
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
@@ -341,8 +346,8 @@ local commits remain on the current branch, including `main` or `master`.
 ## Stage 8 · handoff and stop
 
 1. If Stage 5.5 changed Coding Rules, report that source synchronization is required. Ask for explicit authorization to run `sync-feature-list`, then stop.
-2. Otherwise find the first eligible `pending` Feature whose dependencies are `done`.
-3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and next eligible Feature.
+2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
+3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. Do not automatically start that planning step.
 4. Add one sentence or a few concise learning entries in this existing Stage, using `templates/stage8-learning.md.tmpl`. With no new generalizable learning, explicitly state “No new generalizable learning” (Chinese: “无新增可泛化经验”). Otherwise record trigger, root cause, existing-rule coverage, generalizability and recommended destination: Agent Rule / Methodology / Tooling / Automated Check / Regression. Link an existing Bug-learning note instead of copying it. Do not invent a new rule for every incident. A newly discovered tooling change becomes a separate maintenance task requiring approval; do not expand the completed Feature silently.
 5. Stop. The user decides whether to continue, review, synchronize, or pause.
 
