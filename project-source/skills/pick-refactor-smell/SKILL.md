@@ -1,12 +1,12 @@
 ---
 name: pick-refactor-smell
 description: >-
-  Scan durable Feature notes for unresolved code smells, rank valid candidates with the fixed high/medium/low rubric, recommend one when available, and return the user's choice to engineering-change-standardizer in refactor mode. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
+  Compare unresolved code smells recorded in Feature notes, recommend one worthwhile refactor or explain why to defer, and return the user's choice to engineering-change-standardizer. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
 ---
 
 # Pick one refactor smell
 
-Use this three-stage workflow to scan, rank, and select one unresolved code smell from Feature notes, then return the selected problem to `engineering-change-standardizer` so it can become an explicitly approved refactor Feature.
+Use this three-stage workflow to find unresolved code smells in Feature notes, compare their current value and cost, and recommend one when action is worthwhile. Explain when deferring is more useful. A user-selected problem returns to `engineering-change-standardizer` for an explicitly approved engineering task.
 
 ## Language contract
 
@@ -14,7 +14,7 @@ Use this three-stage workflow to scan, rank, and select one unresolved code smel
 2. Use the language of the user's current message for questions, ranking explanations, recommendations, and the transient report.
 3. Preserve every extracted note excerpt verbatim even when it uses another language. Never translate or rewrite historical Feature notes merely for this report.
 4. This selector writes no files. If the downstream refactor later records a durable Feature note, TODO, acceptance record, or Progress entry, that new prose must use `document_language`.
-5. Keep Feature IDs, paths, `TODO`, `suggest`, severity thresholds, numeric scores, commands, and workflow names stable.
+5. Keep Feature IDs, paths, `TODO`, `suggest`, commands, and workflow names stable.
 
 With `document_language: en` and a Chinese conversation, discuss candidates in Chinese, preserve original excerpts, and require any later durable note to be English. With `document_language: zh-CN` and an English conversation, discuss candidates in English and require later durable notes to be Simplified Chinese.
 
@@ -27,8 +27,8 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
 
 ## Global rules
 
-1. Discover and select only. Do not write code, modify files, or commit. After selection, announce the Plan-mode handoff and stop.
-2. Apply the fixed rubric exactly; do not improvise severity.
+1. Discover and select only. Do not write code, modify files, or commit. Report the recommendation or reason to defer, and wait for the user's choice.
+2. Explain relative priority using current evidence, expected benefit, and the cost of a safe change. Do not calculate numeric scores or create priority fields or a separate ledger.
 3. Prefer coverage to a short list. Do not hide important candidates merely to simplify the report.
 4. Do not invoke another Skill. The user's next instruction controls the downstream refactor.
 
@@ -54,90 +54,51 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
    - code file paths named in the note, when any.
 6. If no confirmed unresolved candidate remains, report that result and any unresolved uncertainty in the current conversation language; the user may describe an external observation directly. Stop before Stage 2 without forcing a recommendation or claiming unverified findings were resolved.
 
-## Stage 2: rank with the fixed rubric
+## Stage 2: compare value, impact, and cost
 
 **Entry:** Stage 1 found at least one candidate.
 
-**Output:** candidates grouped and ordered by stable severity.
+**Output:** a reasoned relative order, including candidates better deferred and material evidence gaps.
 
-### High severity — red
+Compare candidates against the user's current goals. Use the evidence needed to explain the order:
 
-A candidate is high when any condition holds:
+- **Current facts:** identify the problem in checked source, call relationships, or actual maintenance records. Distinguish static inference from observed execution; historical notes alone do not establish current runtime behavior.
+- **Consequences of leaving it:** explain any obstruction to an agreed next task, repeated coordinated edits, or other concrete maintenance cost. State unknown frequency or impact honestly. A Feature dependency does not by itself prove that this smell blocks the dependent work.
+- **Smallest complete remedy:** compare leaving the code as it is, a local correction or removal, and a larger structural change when relevant. Identify the expected improvement while preserving accepted behavior; file count and pattern preferences alone do not establish value.
+- **Timing and verification cost:** consider existing tests, change and recovery risk, and actual dependencies. Explain whether acting now is worthwhile or whether the same cleanup fits better with a later related change.
 
-- it affects at least three files, counted from named paths plus concrete impact analysis;
-- notes say it caused a bug, pitfall, or repeated repair, including the stable tokens `BUG`, `bug`, `出过 bug`, `踩坑`, or `修了 N 次`;
-- it blocks at least two pending Features, determined by reverse lookup of index `depends_on`.
+File counts, `BUG` or pitfall keywords, dependency counts, and several notes naming the same file are investigation clues, not automatic priority rules. Do not convert these considerations into weights, thresholds, or a new scoring system.
 
-### Medium severity — yellow
+Findings with the same confirmed cause may share one comparison and smallest remedy; preserve all source Feature IDs, excerpts, and paths. Keep unrelated causes distinct even when they share a file. Explain real dependencies between proposed remedies without treating them as a severity bonus.
 
-When no high condition applies, a candidate is medium when any condition holds:
-
-- it is local to one file but harms maintainability, such as hardcoded constants or an SRP/DRY violation;
-- a rule or pattern is duplicated in two places, including shared constants coupled across files;
-- naming or responsibility is confusing, such as one Boolean controlling two meanings.
-
-### Low severity — green
-
-Every other candidate is low, including:
-
-- style preferences such as dictionary-driven code versus several constants;
-- tiny improvements.
-
-### Ranking adjustments
-
-- Score multiple candidates from the same Feature independently.
-- When candidates from different Features reference the same file, label them `same-file accumulation` and apply it as a high-severity bonus, preserving the original scoring effect.
-- When notes define a strong follow-up chain, list the dependency explicitly.
+If current evidence shows that accepted behavior is broken, separate that defect from behavior-preserving refactor candidates. Point to `engineering-change-standardizer` and the Bug ownership rules in `methodology/07-engineering-change.md`; an old `BUG` marker alone is insufficient. This report neither creates a Bug task nor starts its repair.
 
 ## Stage 3: report, recommend, and stop
 
-**Entry:** Stage 2 ranked the candidates.
+**Entry:** Stage 2 compared the candidates.
 
-**Output:** one report, exactly one recommendation, and a user choice.
+**Output:** one transient report with a recommendation or a reason to defer, plus any material uncertainty or separate Bug finding.
 
-Render localized headings and explanations in the current conversation language while preserving this structure:
+Use a short table or paragraphs in the current conversation language. Give distinct candidates unambiguous references, especially when one Feature has several findings. Keep each candidate traceable to its source Feature, verbatim excerpt, and checked paths; identify all origins when findings were combined. Explain current impact, the smallest useful remedy, and why its timing differs from alternatives. Keep uncertain findings separate from the ordering and explain what evidence could change the judgment.
 
-```markdown
-## Code-smell scan report — N candidates
+Recommend one candidate when its current benefit justifies the change and verification cost. Compare it with the alternatives. If none is worthwhile now, say so and explain why; an unresolved improvement can remain valid without becoming a current task. Do not invent a recommendation or mark deferred or uncertain findings as resolved.
 
-### High severity — M
-1. **F0XX: <title>** | Files: `path`
-   Excerpt: <verbatim excerpt, at most 200 characters>
-   Reason: <the exact rubric condition>
-
-### Medium severity — K
-2. **F0YY: <title>** | Files: `path`
-   Excerpt: <verbatim excerpt>
-   Reason: <the exact rubric condition>
-
-### Low severity — L
-3. **F0ZZ: <title>** | Files: `path`
-   Excerpt: <verbatim excerpt>
-   Reason: <the exact rubric condition>
-
-### Recommendation
-
-Refactor **F0XX: <title>** first.
-Reason: <one comparative sentence explaining why it outranks the other candidates>
-
-Next: route F0XX to `engineering-change-standardizer` in `refactor` mode.
-```
-
-Number continuously across all three severity groups; do not reset numbering. Recommend exactly one of the confirmed unresolved candidates; the empty/uncertain-only case already stops in Stage 1. Its reason must compare the chosen candidate with alternatives rather than merely praise it. Do not enter Plan mode, spawn an Explore agent, edit, or commit; wait for the user's choice.
+After the report, wait for the user's choice. Do not enter Plan mode, spawn an Explore agent, invoke another Skill, edit, or commit. Choosing a candidate alone is not implementation approval; retain any specific additional authorization the user actually supplies.
 
 ## Response routing
 
 | User response | Action |
 |---|---|
-| Selects an ID, item number, or the recommendation | Return that candidate to `engineering-change-standardizer` in `refactor` mode; it must propose a Feature and obtain explicit approval before implementation |
+| Selects an ID, item number, or a refactor recommendation | Return the selected problem, evidence, proposed scope, and existing authorization to `engineering-change-standardizer` in `refactor` mode; implementation requires an explicitly approved scope |
+| Chooses to address a separately reported behavior defect | Return it to `engineering-change-standardizer` for Bug ownership and scope triage; do not label the repair as refactor or start it here |
 | Requests complete notes for F0YY | Read and show `docs/features/F0YY.json` notes verbatim, then ask whether to select it |
 | Requests another scan filtered to category X | Re-run Stages 1–3 with X as the filter |
 | Declines all candidates | Confirm that no refactor will be started and stop |
-| Gives an ambiguous answer | Ask whether to use the single recommendation or choose another candidate; never assume |
+| Gives an ambiguous answer | Ask which candidate or scope the user means; do not assume a choice or manufacture a recommendation |
 
 ## Relationship to other workflows
 
-- This is a selection entry point; the selected candidate returns to `engineering-change-standardizer` in `refactor` mode.
+- This is a selection entry point; a selected refactor returns to `engineering-change-standardizer` in `refactor` mode. Separately reported behavior defects follow its Bug triage rules.
 - Do not invoke `generate-feature-list`, `sync-feature-list`, or `execute-next-feature` directly from this workflow.
 - `engineering-change-standardizer` owns refactor triage and Feature creation; `execute-next-feature` implements only after explicit Feature approval.
 
@@ -148,5 +109,6 @@ Number continuously across all three severity groups; do not reset numbering. Re
 | `docs/features/` is absent | Direct the user to `generate-feature-list` and stop |
 | Any `docs/features/F*.json` is invalid | Report the exact path and parse error; stop until the user repairs it |
 | No confirmed unresolved candidate remains | Report no actionable recorded candidate and any uncertainty, then stop without a recommendation |
-| More than 15 candidates match | Offer high severity plus the top three medium candidates first and follow the user's preference |
-| The user's selection is ambiguous | Ask whether to use the recommendation or another candidate |
+| Valid candidates exist but none is worthwhile now | Explain why deferral is preferable; preserve the findings and do not force a selection |
+| Many candidates match | Lead with the comparative conclusion and summarize the remaining candidates; preserve their source references and material uncertainty without a fixed severity quota |
+| The user's selection is ambiguous | Ask which candidate or scope the user means; do not assume a choice |
