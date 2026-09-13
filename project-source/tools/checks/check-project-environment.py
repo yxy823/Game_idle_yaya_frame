@@ -17,6 +17,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = REPO_ROOT / "docs" / "methodology-config.json"
 UNCONFIGURED = {"", "unconfigured"}
 ENGINE_FIELDS = ("engine_executable", "engine_version")
+# Lexical screening only; full BCP 47 validity and unusual tags remain an Agent check.
+DOCUMENT_LANGUAGE_SHAPE = re.compile(
+    r"(?:[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*|[iIxX](?:-[A-Za-z0-9]{1,8})+)"
+)
 
 
 def _read_config(path: Path) -> dict[str, Any]:
@@ -116,9 +120,12 @@ def _read_engine_version(engine_executable: Path, repo_root: Path) -> tuple[str 
 
 def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     errors: list[str] = []
-    for key in ("document_language",):
-        if not _nonempty_string(config.get(key)):
-            errors.append(f"{key} must be a configured non-empty string")
+    document_language = config.get("document_language")
+    if not _nonempty_string(document_language):
+        errors.append("document_language must be a configured non-empty string")
+    elif DOCUMENT_LANGUAGE_SHAPE.fullmatch(document_language) is None:
+        errors.append("document_language must use a basic ASCII language-tag form such as en or zh-CN; "
+                      "no whitespace, underscores, empty subtags or subtags longer than eight characters")
     try:
         _python_executable(config)
     except ValueError as error:

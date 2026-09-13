@@ -56,6 +56,26 @@ class ProjectEnvironmentTests(unittest.TestCase):
         )
         self.assertEqual(errors, [])
 
+    def test_document_language_accepts_common_and_best_effort_forms_without_normalizing(self) -> None:
+        for tag in ("en", "zh-CN", "zh-Hant-TW", "es-419", "sr-Latn",
+                    "en-US-u-ca-gregory", "x-private", "i-klingon", "EN-us"):
+            with self.subTest(tag=tag):
+                config = self._config("incomplete")
+                config["document_language"] = tag
+                self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
+                self.assertEqual(config["document_language"], tag)
+
+    def test_document_language_rejects_invalid_characters_and_subtag_boundaries(self) -> None:
+        for tag in (None, [], {}, 0, True, "", " ", "unconfigured", "zh_CN",
+                    " zh-CN", "zh-CN ", "zh CN", "zh\tCN", "zh-\nCN", "zh-CN\n",
+                    "-en", "en-", "zh--CN", "zh–CN", "123", "e", "x", "i",
+                    "中文", "éñ", "abcdefghij", "en-abcdefghi", "en-US.UTF-8", "en/US"):
+            with self.subTest(tag=tag):
+                config = self._config("incomplete")
+                config["document_language"] = tag
+                errors = check_project_environment._schema_errors(config, self.repo_root)
+                self.assertTrue(any(error.startswith("document_language") for error in errors), errors)
+
     def test_engine_version_field_is_required(self) -> None:
         config = self._config("incomplete")
         bootstrap = config["environment_bootstrap"]

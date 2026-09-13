@@ -20,7 +20,7 @@ paths and command values there rather than copying a second example here.
 The project stack is Godot 4.7 / GDScript / gdunit4.
 
 
-The value of `document_language` must be a BCP 47 language tag. Initial verified values are:
+The value of `document_language` must be a [BCP 47 language tag](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1). Initial verified values are:
 
 - `en` for English
 - `zh-CN` for Simplified Chinese
@@ -28,6 +28,14 @@ The value of `document_language` must be a BCP 47 language tag. Initial verified
 Other well-formed BCP 47 tags may be used on a best-effort basis, but the agent must disclose that they are not covered by the existing language examples. Yaya Loop's existing `language` field continues to identify the programming language and must not be reused for document language.
 
 Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case script, and uppercase region. Bootstrap preserves the exact value explicitly confirmed by the user and does not silently normalize it. Empty values, whitespace, and underscore forms such as `zh_CN` are invalid and must be confirmed again in a hyphenated form. Private-use, grandfathered, and other unusual tags require explicit confirmation and remain best-effort rather than verified.
+
+The environment checker performs basic lexical screening: an ASCII alphabetic
+primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags;
+hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects
+whitespace, underscores and empty/overlong subtags without normalizing the value.
+This does not validate complete BCP 47 subtag ordering, registry membership or user
+confirmation. The Agent still resolves tag validity and the confirmation requirements
+above before generating durable content; a configuration check does not grant them.
 
 ### Verification command fields
 
