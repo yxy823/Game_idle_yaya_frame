@@ -37,7 +37,7 @@ MyGodotGame/
 │   │   └── tools-pipeline/
 │   ├── feature-list.json           features 为空
 │   ├── feature-list-revisions.json revision_log 为空
-│   ├── test-catalog.json            components 与 tests 为空
+│   ├── test-registry.json            components 与 tests 为空
 │   ├── progress.md                 当前状态模板
 │   └── coding_rules.md             协作与通用架构约定
 └── reports/
@@ -70,7 +70,7 @@ MyGodotGame/
 | `project-source/defaults/project.godot` | `project.godot` |
 | `project-source/methodology/templates/feature-list.json.tmpl` | `docs/feature-list.json` |
 | `project-source/methodology/templates/feature-list-revisions.json.tmpl` | `docs/feature-list-revisions.json` |
-| `project-source/methodology/templates/test-catalog.json.tmpl` | `docs/test-catalog.json` |
+| `project-source/methodology/templates/test-registry.json.tmpl` | `docs/test-registry.json` |
 | `project-source/methodology/templates/progress.md.tmpl` | `docs/progress.md` |
 | `project-source/methodology/templates/coding_rules.md.tmpl` | `docs/coding_rules.md` |
 
@@ -105,7 +105,7 @@ MyGodotGame/
 | `feature-detail.json.tmpl` | 产品 Feature，省略 `engineering_change` |
 | `engineering-feature-detail.json.tmpl` | Bug、重构、维护 Feature |
 | `feature-list.json.tmpl`、`feature-list-revisions.json.tmpl` | 任务索引与源需求演进记录 |
-| `test-catalog.json.tmpl`、`gate-evidence.json.tmpl` | 测试索引与完成依据结构 |
+| `test-registry.json.tmpl`、`gate-evidence.json.tmpl` | 测试索引与完成依据结构 |
 | `progress.md.tmpl`、`stage8-learning.md.tmpl` | 当前交接与任务结束时的简短经验 |
 | `coding_rules.md.tmpl` | 协作约定与通用设计原则 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |
@@ -118,7 +118,7 @@ MyGodotGame/
 `tools/checks/` 放跨任务检查，`tools/testing/` 放真实测试入口，`tools/lib/` 放共享实现。只服务于某个流程的脚本随其 Skill 保存：
 
 - `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` 记录与检查完成依据。
-- `.agents/skills/generate-feature-list/scripts/merge_test_catalog.py` 合并规划阶段的组件 Catalog。
+- `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` 合并规划阶段的组件测试登记表。
 
 这些是直接入口，没有根目录转发脚本，也没有自动工具事件。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。
 

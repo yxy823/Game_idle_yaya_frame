@@ -10,11 +10,11 @@ docs/
 │   ├── F002.json
 │   └── ...
 ├── feature-list-revisions.json
-├── test-catalog.json
+├── test-registry.json
 └── gate-evidence.json
 ```
 
-The Feature index stays lightweight. Durable behavior, stable acceptance-criterion IDs, component impact, verification mapping, engineering classification, and notes live in per-Feature detail files. `docs/test-catalog.json` is the machine-readable index that maps components to reusable tests. Human-readable values use `document_language`; machine protocol fields remain stable.
+The Feature index stays lightweight. Durable behavior, stable acceptance-criterion IDs, component impact, verification mapping, engineering classification, and notes live in per-Feature detail files. `docs/test-registry.json` is the machine-readable index that maps components to reusable tests. Human-readable values use `document_language`; machine protocol fields remain stable.
 
 ## File 1: `docs/feature-list.json`
 
@@ -30,7 +30,6 @@ The Feature index stays lightweight. Durable behavior, stable acceptance-criteri
     "total_features": 2,
     "details_dir": "docs/features/",
     "revisions_file": "docs/feature-list-revisions.json",
-    "test_catalog_file": "docs/test-catalog.json",
     "notes": "Decompose in dependency order and keep each Feature independently verifiable."
   },
   "features": [
@@ -65,7 +64,7 @@ The Feature index stays lightweight. Durable behavior, stable acceptance-criteri
 | `estimated_scope` | Final plan accepts only `small` or `medium`; `large` must be decomposed before finalization. |
 | `completed_at` | Valid ISO 8601 timestamp only for `done` or `obsolete_done`; otherwise `null`. |
 
-`meta.total_features` must equal the number of index entries. `meta.test_catalog_file`, when present, must point to `docs/test-catalog.json`.
+`meta.total_features` must equal the number of index entries. The Test Registry has a fixed project-relative location, `docs/test-registry.json`; the index does not duplicate that path.
 
 IDs record allocation, not execution order. Select pending work whose prerequisites
 are all `done`; use stable ID order only to break ties among eligible Features.
@@ -153,7 +152,7 @@ Engineering Feature:
 | `verification.regression_tests` | Unique regression IDs created by this Feature, normally `F0XX-RTyy`. Empty for non-Bug Features unless explicitly justified. |
 | `verification.manual_regression` | `null` when automated regression exists or no Bug regression applies; otherwise a concrete repeatable manual regression check and reason automation is impractical. |
 | `verification.test_impact` | Optional when no extra test scope is needed; templates include exactly `additional_tests` and `full_suite_reasons`. Stage 2 persists the approved additional scope here before final test execution. This semantic field is part of the snapshot fingerprint. |
-| `verification.test_impact.additional_tests` | Array of `{ "id": "...", "reason": "..." }` with unique Catalog IDs and non-empty reasons. May reference another Feature's test. Referenced tests may be planned during preparation but must be active for current completion. Additional scope does not change test ownership or replace the Feature's own AC/regression mapping. |
+| `verification.test_impact.additional_tests` | Array of `{ "id": "...", "reason": "..." }` with unique Registry IDs and non-empty reasons. May reference another Feature's test. Referenced tests may be planned during preparation but must be active for current completion. Additional scope does not change test ownership or replace the Feature's own AC/regression mapping. |
 | `verification.test_impact.full_suite_reasons` | Unique array of non-empty reasons for approved full-suite escalation beyond automatically derived triggers. An empty array records no additional escalation. |
 | `source` | Precise Product source when a behavioral contract exists; `infrastructure` for technical work with no single Product source. |
 | `notes` | String. Starts empty; later holds durable implementation decisions, placeholders, TODO smell suggestions, deferred edges, and bug learning. |
@@ -163,7 +162,7 @@ Engineering Feature:
 Acceptance-criterion IDs are historical identifiers. Do not renumber criteria on a completed Feature. Product evolution creates a new Feature that changes/supersedes the old behavior.
 
 The runner always reads recorded `test_impact` obligations together with the
-deterministic Catalog scope. Store approved additions and full-suite reasons
+deterministic Registry scope. Store approved additions and full-suite reasons
 in the Feature itself; there is no second plan file or extra-scope command.
 Changing that record requires review of the affected scope and invalidates
 prior snapshot evidence.
@@ -231,7 +230,7 @@ must equal the current index. Feature migration relationships and the actual
 dependency graph are separately acyclic. Old summary arrays can remain for readable
 history; `migrations` and `dependency_changes` are the machine-readable relationships.
 
-## File 4: `docs/test-catalog.json`
+## File 4: `docs/test-registry.json`
 
 ```json
 {
@@ -260,9 +259,9 @@ history; `migrations` and `dependency_changes` are the machine-readable relation
 }
 ```
 
-Catalog semantics are canonicalized in [08-testing-strategy.md](./08-testing-strategy.md). Test IDs are unique. `kind` is `acceptance`, `regression`, or `invariant`; status is `planned`, `active`, or `retired`. Acceptance/regression tests reference a valid source Feature. Invariant tests have `source_feature: null`.
+Registry semantics are canonicalized in [08-testing-strategy.md](./08-testing-strategy.md). Test IDs are unique. `kind` is `acceptance`, `regression`, or `invariant`; status is `planned`, `active`, or `retired`. Acceptance/regression tests reference a valid source Feature. Invariant tests have `source_feature: null`.
 
-Catalog schema version 2 is the only supported format. Every retired entry requires
+Registry schema version 2 is the only supported format. Every retired entry requires
 explicit retirement provenance:
 
 ```json
@@ -301,7 +300,7 @@ authorize rewriting completed Feature history or treating planned replacement te
 
 Completed Feature criteria/test IDs and archived completion evidence are historical
 records. Do not rewrite them to simulate current behavior. The active safety net is
-selected from current `active` Catalog records. Normal strict validation accepts
+selected from current `active` Registry records. Normal strict validation accepts
 historical `done` references to traceably retired tests, but current completion must
 pass `python -B tools/checks/check-feature-list.py --completion-feature F0XX`, which
 requires that Feature's own mapped automated tests to be active. Completion additionally
@@ -321,7 +320,7 @@ obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual hu
 acceptance, review and applicable static checks still apply. Unresolved failed or
 unfinished final runs on the same snapshot still block completion. Test and review evidence must match the current semantic snapshot.
 Production, tests, configuration, Product, Coding Rules, Feature AC/verification and
-Catalog semantics participate in that snapshot. Pure status/completion timestamps,
+Registry semantics participate in that snapshot. Pure status/completion timestamps,
 Feature notes and Progress/history archival do not invalidate business test evidence.
 
 The current evidence schema is version 7. It keeps real test-run references plus
@@ -372,7 +371,7 @@ The `in_progress → done` transition requires the decided acceptance plan to be
 
 The final ledger must satisfy all of the following:
 
-- JSON parses for index, revision log, test catalog, and every `F*.json` detail.
+- JSON parses for index, revision log, test registry, and every `F*.json` detail.
 - Feature IDs match `F\d{3}`, are unique, and are sequential in index order.
 - Index IDs and detail filename stems are exactly one-to-one in final state.
 - Detail `id` equals its filename stem.
@@ -388,9 +387,9 @@ The final ledger must satisfy all of the following:
 - Bug regression test IDs match the owning Feature.
 - `notes` is a string.
 - `engineering_change`, when present, is one of `bug`, `refactor`, `maintenance`.
-- Test-catalog component IDs and test IDs are unique.
-- Test-catalog references resolve to existing Features/components.
-- A historical `done` Feature's tests remain catalogued as active or traceably retired. Current completion requires active mapped automated tests and real matching execution evidence.
+- Test-registry component IDs and test IDs are unique.
+- Test-registry references resolve to existing Features/components.
+- A historical `done` Feature's tests remain registryued as active or traceably retired. Current completion requires active mapped automated tests and real matching execution evidence.
 - Version-2 revisions and test retirements satisfy the migration, source, replacement and dependency-chain rules above.
 
 Run the final strict validator from the repository root:
@@ -432,7 +431,7 @@ command to execute or plan every module at once.
 
 `generate-feature-list` handles the first and each subsequent Product's initial
 decomposition by appending to the same ledger. Allocate IDs after the greatest
-existing ID; preserve previous Features, test Catalog records and revision
+existing ID; preserve previous Features, test Registry records and revision
 history. If the selected scope already has a plan, reuse it; changed requirements
 use `sync-feature-list` rather than duplicating or regenerating that plan.
 
@@ -487,8 +486,8 @@ alignment does not mean the new behavior has been implemented or tested.
 
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
-| Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/catalog, preserve existing history |
+| Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/registry, preserve existing history |
 | Product/Coding-Rules synchronization | `sync-feature-list` | index/details + revision log + needed components and affected test traceability |
 | Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details + needed components; test plan is finalized during execution |
-| Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test catalog, notes, Progress, implementation/test files |
+| Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test registry, notes, Progress, implementation/test files |
 | Smell candidate selection | `pick-refactor-smell` | read-only selection; returns to engineering standardizer |

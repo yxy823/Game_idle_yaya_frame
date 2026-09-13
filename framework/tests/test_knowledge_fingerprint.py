@@ -75,7 +75,7 @@ class KnowledgeFingerprintTests(unittest.TestCase):
             ("docs/features/F001.json", json.dumps({
                 "acceptance_criteria": [{"id": "AC01", "text": "Changed requirement"}]
             })),
-            ("docs/test-catalog.json", '{"tests": [{"id": "changed", "status": "active"}]}'),
+            ("docs/test-registry.json", '{"tests": [{"id": "changed", "status": "active"}]}'),
             ("docs/methodology-config.json", '{"test_cmd": "changed"}'),
         ):
             with self.subTest(name=name):

@@ -33,14 +33,14 @@ class FeatureEvolutionTests(unittest.TestCase):
              "estimated_scope": "small", "completed_at": "2026-01-01T00:00:00Z" if i == 1 else None}
             for i in range(1, 4)
         ]}
-        self.catalog = {"meta": {"schema_version": 2}, "components": [
+        self.registry = {"meta": {"schema_version": 2}, "components": [
             {"id": "inventory", "unit_test_paths": [], "full_suite_on_change": False}
         ], "tests": []}
         for i in range(1, 4):
             fid = f"F{i:03d}"
             path = f"tests/{fid}.gd"
             self.write(path, "extends Node\n")
-            self.catalog["tests"].append({"id": f"{fid}-AC01", "kind": "acceptance",
+            self.registry["tests"].append({"id": f"{fid}-AC01", "kind": "acceptance",
                 "source_feature": fid, "criterion_id": "AC01", "components": ["inventory"],
                 "path": path, "case": "test_contract", "status": "active"})
             self.write(f"docs/features/{fid}.json", {"id": fid, "description": "Contract",
@@ -64,19 +64,19 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def validate(self, completion: str | None = None) -> bool:
         self.write("docs/feature-list.json", self.index)
-        self.write("docs/test-catalog.json", self.catalog)
+        self.write("docs/test-registry.json", self.registry)
         self.write("docs/feature-list-revisions.json", self.revisions)
         with mock.patch.multiple(checker, REPO_ROOT=self.root, INDEX_FILE=self.root / "docs/feature-list.json",
-                DETAILS_DIR=self.root / "docs/features", TEST_CATALOG_FILE=self.root / "docs/test-catalog.json",
+                DETAILS_DIR=self.root / "docs/features", TEST_REGISTRY_FILE=self.root / "docs/test-registry.json",
                 REVISIONS_FILE=self.root / "docs/feature-list-revisions.json"):
             if completion is None:
                 return checker._validate_all()
             return checker._validate_all(completion_feature=completion)
 
     def retire(self) -> None:
-        self.catalog["meta"]["schema_version"] = 2
-        self.catalog["tests"][0]["status"] = "retired"
-        self.catalog["tests"][0]["retirement"] = {"reason": "Product superseded the old assertion",
+        self.registry["meta"]["schema_version"] = 2
+        self.registry["tests"][0]["status"] = "retired"
+        self.registry["tests"][0]["retirement"] = {"reason": "Product superseded the old assertion",
             "source": copy.deepcopy(self.source), "replacement": {"feature_id": "F003", "test_ids": ["F003-AC01"]},
             "revision_id": "rev-contract-01"}
         (self.root / "tests/F001.gd").unlink()
@@ -85,7 +85,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.revisions = {"revision_log": [{"summary": "Old record"}]}
         self.assertFalse(self.validate())
 
-    def test_string_criteria_and_missing_verification_cannot_waive_catalog_checks(self) -> None:
+    def test_string_criteria_and_missing_verification_cannot_waive_registry_checks(self) -> None:
         path = self.root / "docs/features/F001.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
         for field, value in (("acceptance_criteria", ["Unstructured old criterion"]),
@@ -95,7 +95,7 @@ class FeatureEvolutionTests(unittest.TestCase):
                 self.write("docs/features/F001.json", candidate)
                 self.assertFalse(self.validate())
         self.write("docs/features/F001.json", detail)
-        self.catalog["meta"]["schema_version"] = 1
+        self.registry["meta"]["schema_version"] = 1
         self.assertFalse(self.validate())
 
     def test_later_dependency_is_valid_and_determines_eligible_order(self) -> None:
@@ -124,7 +124,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_replacement_may_be_planned_until_its_feature_completes(self) -> None:
         self.retire()
-        self.catalog["tests"][2].update(status="planned", path=None)
+        self.registry["tests"][2].update(status="planned", path=None)
         self.assertTrue(self.validate())
         self.index["features"][2].update(status="done", completed_at="2026-02-02T00:00:00Z")
         self.assertFalse(self.validate())
@@ -132,9 +132,9 @@ class FeatureEvolutionTests(unittest.TestCase):
     def test_unfinished_feature_can_retire_an_ac_removed_by_approved_revision(self) -> None:
         # Current AC01 replaces a removed historical AC02; current IDs remain sequential.
         self.revisions["revision_log"][0]["migrations"][0].update(**{"from": ["F002"], "to": ["F002"]})
-        old = self.catalog["tests"][1]
+        old = self.registry["tests"][1]
         replacement = copy.deepcopy(old) | {"status": "planned", "path": None}
-        self.catalog["tests"].append(replacement)
+        self.registry["tests"].append(replacement)
         old.update(id="F002-AC02", criterion_id="AC02", status="retired", retirement={"reason": "Approved replacement of the unfinished AC",
             "source": copy.deepcopy(self.source), "replacement": {"feature_id": "F002", "test_ids": ["F002-AC01"]},
             "revision_id": "rev-contract-01"})
@@ -154,27 +154,27 @@ class FeatureEvolutionTests(unittest.TestCase):
     def test_current_acceptance_tests_still_require_an_existing_criterion(self) -> None:
         path = self.root / "docs/features/F002.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
-        self.catalog["tests"][1].update(id="F002-AC02", criterion_id="AC02")
+        self.registry["tests"][1].update(id="F002-AC02", criterion_id="AC02")
         detail["acceptance_criteria"][0]["verification"] = {
             "automated_tests": [], "manual_checks": ["Inspect the replacement behavior"]}
         detail["verification"]["acceptance_mode"] = "manual"
         self.write("docs/features/F002.json", detail)
         for status in ("planned", "active"):
             with self.subTest(status=status):
-                self.catalog["tests"][1]["status"] = status
+                self.registry["tests"][1]["status"] = status
                 self.assertFalse(self.validate())
 
     def test_retirement_requires_reason_source_replacement_and_revision(self) -> None:
         self.retire()
-        original = copy.deepcopy(self.catalog["tests"][0]["retirement"])
+        original = copy.deepcopy(self.registry["tests"][0]["retirement"])
         for field in original:
             with self.subTest(field=field):
-                self.catalog["tests"][0]["retirement"] = {k: v for k, v in original.items() if k != field}
+                self.registry["tests"][0]["retirement"] = {k: v for k, v in original.items() if k != field}
                 self.assertFalse(self.validate())
 
     def test_retirement_must_match_revision_and_replacement_ownership(self) -> None:
         self.retire()
-        retirement = self.catalog["tests"][0]["retirement"]
+        retirement = self.registry["tests"][0]["retirement"]
         for replacement in ("F999-AC01", "F002-AC01", "F001-AC01"):
             retirement["replacement"]["test_ids"] = [replacement]
             self.assertFalse(self.validate())
@@ -223,10 +223,10 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_retirement_chains_preserve_history_and_migration_cycles_fail(self) -> None:
         self.retire()
-        old = self.catalog["tests"][0]["retirement"]
-        self.catalog["tests"][2]["status"] = "retired"
-        self.catalog["tests"][2]["retirement"] = copy.deepcopy(old)
-        self.catalog["tests"][2]["retirement"]["replacement"] = {"feature_id": "F002", "test_ids": ["F002-AC01"]}
+        old = self.registry["tests"][0]["retirement"]
+        self.registry["tests"][2]["status"] = "retired"
+        self.registry["tests"][2]["retirement"] = copy.deepcopy(old)
+        self.registry["tests"][2]["retirement"]["replacement"] = {"feature_id": "F002", "test_ids": ["F002-AC01"]}
         migrations = self.revisions["revision_log"][0]["migrations"]
         migrations.append(migrations[0] | {"from": ["F003"], "to": ["F002"]})
         self.assertTrue(self.validate())
@@ -244,22 +244,22 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.revisions["revision_log"][0].pop("schema_version")
         self.assertFalse(self.validate())
         self.revisions = original
-        self.catalog["meta"]["schema_version"] = True
+        self.registry["meta"]["schema_version"] = True
         self.assertFalse(self.validate())
 
     def test_component_merge_preserves_retirement_and_rejects_invalid_chain_atomically(self) -> None:
         self.retire()
         self.assertTrue(self.validate())
-        helper = ROOT / ".agents/skills/generate-feature-list/scripts/merge_test_catalog.py"
+        helper = ROOT / ".agents/skills/generate-feature-list/scripts/merge_test_registry.py"
         self.write("components.json", [])
-        command = [sys.executable, "-B", str(helper), "--catalog", "docs/test-catalog.json", "--components", "components.json"]
-        path = self.root / "docs/test-catalog.json"
+        command = [sys.executable, "-B", str(helper), "--components", "components.json"]
+        path = self.root / "docs/test-registry.json"
         before = path.read_bytes()
         result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(path.read_bytes(), before)
-        self.catalog["tests"][0]["retirement"]["replacement"]["test_ids"] = ["F999-AC01"]
-        self.write("docs/test-catalog.json", self.catalog)
+        self.registry["tests"][0]["retirement"]["replacement"]["test_ids"] = ["F999-AC01"]
+        self.write("docs/test-registry.json", self.registry)
         before = path.read_bytes()
         result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2, result.stderr)
@@ -269,7 +269,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         fresh = self.root / "fresh"
         (fresh / "docs").mkdir(parents=True)
         (fresh / "tools").mkdir()
-        for name in ("feature-list", "feature-list-revisions", "test-catalog"):
+        for name in ("feature-list", "feature-list-revisions", "test-registry"):
             source = ROOT / f"methodology/templates/{name}.json.tmpl"
             (fresh / f"docs/{name}.json").write_bytes(source.read_bytes())
         for relative in ("tools/__init__.py", "tools/lib/__init__.py",
@@ -282,10 +282,10 @@ class FeatureEvolutionTests(unittest.TestCase):
                                 cwd=fresh, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), [])
-        self.assertEqual(json.loads((fresh / "docs/test-catalog.json").read_text())["meta"]["schema_version"], 2)
+        self.assertEqual(json.loads((fresh / "docs/test-registry.json").read_text())["meta"]["schema_version"], 2)
         self.retire()
         self.assertTrue(self.validate())
-        for name in ("feature-list", "feature-list-revisions", "test-catalog"):
+        for name in ("feature-list", "feature-list-revisions", "test-registry"):
             (fresh / f"docs/{name}.json").write_bytes((self.root / f"docs/{name}.json").read_bytes())
         (fresh / "docs/features").mkdir()
         (fresh / "tests").mkdir()
@@ -307,7 +307,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_retiring_unmaterialized_planned_test_does_not_invent_a_path(self) -> None:
         self.retire()
-        self.catalog["tests"][0]["path"] = None
+        self.registry["tests"][0]["path"] = None
         self.assertTrue(self.validate())
 
     def test_engineering_template_has_no_fabricated_bug_diagnosis_for_other_modes(self) -> None:
@@ -353,7 +353,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     # 文档措辞和表格格式由静态审查核对；不把说明文档变成精确字符串协议。
 
-    def test_approved_test_impact_has_typed_unique_scope_and_catalog_references(self) -> None:
+    def test_approved_test_impact_has_typed_unique_scope_and_registry_references(self) -> None:
         path = self.root / "docs/features/F002.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
         valid_impact = {"additional_tests": [{"id": "F003-AC01", "reason": "Restore crosses this independent contract"}],
@@ -378,10 +378,10 @@ class FeatureEvolutionTests(unittest.TestCase):
         detail["verification"]["test_impact"] = {"additional_tests": [{"id": "F003-AC01", "reason": "Related restored state"}],
                                                   "full_suite_reasons": []}
         self.write("docs/features/F002.json", detail)
-        self.catalog["tests"][2].update(status="planned", path=None)
+        self.registry["tests"][2].update(status="planned", path=None)
         self.assertTrue(self.validate())
         self.assertFalse(self.validate(completion="F002"))
-        self.catalog["tests"][2].update(status="active", path="tests/F003.gd")
+        self.registry["tests"][2].update(status="active", path="tests/F003.gd")
         self.assertTrue(self.validate(completion="F002"))
 
     def test_external_extra_scope_cannot_impersonate_replacement_verification(self) -> None:

@@ -21,12 +21,12 @@ $projectGodot = $projectConfig.environment_bootstrap.engine_executable
 | 入口 | 常用参数 | 行为 |
 | --- | --- | --- |
 | `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
-| `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/Catalog/历史和依赖，不修改台账、不运行测试 |
+| `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
 | `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 启动真实 Godot 测试进程，写隔离的运行目录 |
 | `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工/复审记录，或只读展示、校验已有依据 |
-| `.agents/skills/generate-feature-list/scripts/merge_test_catalog.py` | `--catalog`、`--components` | 将批准的组件输入合并到 Catalog；属于规划写操作 |
+| `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
-Catalog 合并应使用 `generate-feature-list` 提供的实际输入结构与约束，不用临时生成的空文件替代历史 Catalog。它不负责生成真实测试或证明测试通过。
+测试登记表合并应使用 `generate-feature-list` 提供的实际输入结构与约束，不用临时生成的空文件替代历史测试登记表。它不负责生成真实测试或证明测试通过。
 
 ## 环境与台账检查
 
@@ -39,7 +39,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-就绪检查细节见 [首次使用](../getting-started/first-use.md)。台账检查读取完整索引、详情、Catalog 和修订关系，检查 ID、字段、引用、路径、依赖与历史规则。`--eligible` 校验后输出依赖已满足的 pending Feature ID 集合，不能代替实现授权。
+就绪检查细节见 [首次使用](../getting-started/first-use.md)。台账检查读取完整索引、详情、测试登记表和修订关系，检查 ID、字段、引用、路径、依赖与历史规则。`--eligible` 校验后输出依赖已满足的 pending Feature ID 集合，不能代替实现授权。
 
 `--completion-feature F001` 额外要求当前待完成任务的直接自动验证映射处于 active 状态。正常历史检查可以接受可追溯退役的旧测试；当前完成不能拿已退役测试替代实际验证。
 
@@ -60,7 +60,7 @@ $LASTEXITCODE
 ```
 
 ```powershell
-# Stage 4：读取当前 Feature/Catalog 和已批准范围。
+# Stage 4：读取当前 Feature/测试登记表和已批准范围。
 & $projectPython -B tools/testing/run-gdunit-tests.py --godot-binary $projectGodot --feature F001 --scope auto
 $LASTEXITCODE
 ```
@@ -150,7 +150,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-生产代码、测试、配置、AC、验证计划和 Catalog 等语义内容改变时需要核对依据是否失效；仅改完成时间、notes、整理 Progress 历史或 `docs/knowledge/` 下的说明性 Markdown 不自动要求业务测试重跑。知识目录只保存实践经验，不承载可执行输入、需求、规则或验收契约；其中非 Markdown 文件仍参与指纹。完整绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
+生产代码、测试、配置、AC、验证计划和测试登记表等语义内容改变时需要核对依据是否失效；仅改完成时间、notes、整理 Progress 历史或 `docs/knowledge/` 下的说明性 Markdown 不自动要求业务测试重跑。知识目录只保存实践经验，不承载可执行输入、需求、规则或验收契约；其中非 Markdown 文件仍参与指纹。完整绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
 
 ## 直接脚本解析与 lint
 

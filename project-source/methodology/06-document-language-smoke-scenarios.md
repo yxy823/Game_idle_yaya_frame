@@ -19,7 +19,6 @@ The following paired projections describe the same pending Feature. They show la
     "document_language": "en",
     "test_cmd": "",
     "test_framework": "gdunit4",
-    "test_catalog_path": "docs/test-catalog.json",
     "test_unit_root": "tests/unit",
     "test_feature_root": "tests/features",
     "test_invariant_root": "tests/invariants",
@@ -57,7 +56,6 @@ The following paired projections describe the same pending Feature. They show la
     "document_language": "zh-CN",
     "test_cmd": "",
     "test_framework": "gdunit4",
-    "test_catalog_path": "docs/test-catalog.json",
     "test_unit_root": "tests/unit",
     "test_feature_root": "tests/features",
     "test_invariant_root": "tests/invariants",
@@ -168,5 +166,5 @@ Record which of these checks actually ran; the checklist itself is not execution
 2. English and Chinese fixtures preserve identical machine projections;
 3. Bootstrap and the document-language contract retain confirmation, preservation, and no-silent-translation rules;
 4. every installed Skill preserves stable machine protocol values across document languages; and
-5. test-layout/catalog protocol fields remain stable across document languages; human summaries use natural language; and
+5. test-layout/registry protocol fields remain stable across document languages; human summaries use natural language; and
 6. repository tests, tool fixtures, and `git diff --check` pass without changing verification command strings.

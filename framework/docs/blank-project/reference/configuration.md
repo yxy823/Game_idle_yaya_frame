@@ -19,12 +19,13 @@
 | `environment_bootstrap.engine_version` | 空字符串 | 填写实际 `Godot --version` 的完整输出，不只填 `4.7` |
 | `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
 | `test_cmd` | 空字符串 | 保存真实 Python 测试入口命令；执行时追加当前 Feature 和 scope |
-| `test_catalog_path` | `docs/test-catalog.json` | 项目测试 Catalog 的标准位置 |
 | `test_unit_root` | `tests/unit` | 组件单元测试根目录约定 |
 | `test_feature_root` | `tests/features` | Feature 验收与相关回归测试根目录约定 |
 | `test_invariant_root` | `tests/invariants` | 跨 Feature 不变量测试根目录约定 |
 
 完整路径和测试命令分别保存，避免把带参数的命令放进可执行文件字段。字段之间的位置关系和实际脚本入口需要核对，不能仅凭 JSON 能解析就认为环境可运行。
+
+测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不再重复保存它的路径。测试文件本身仍按下方测试根目录与登记表中的映射组织。
 
 ## 路径与命令的写法
 

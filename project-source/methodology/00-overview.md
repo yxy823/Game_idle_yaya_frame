@@ -27,7 +27,7 @@ The project knowledge layer is:
     ├── features/F0XX.json           Feature detail and durable local notes
     ├── knowledge/                  development experience, with topic indexes and separate entries
     ├── feature-list-revisions.json  Product/Coding-Rules synchronization history
-    ├── test-catalog.json            component/test traceability and safety-net index
+    ├── test-registry.json            component/test traceability and safety-net index
     ├── gate-evidence.json           current-snapshot Feature completion evidence
     ├── coding_rules.md              collaboration and stack-independent architecture
     ├── progress.md                  current state, blockers, decisions, next action and history index
@@ -178,7 +178,7 @@ Stage 0   Require ready environment; select Feature; consult relevant knowledge;
    ↓
 Stage 1   Test Impact Review + resource preflight → explicit human approval
    ↓
-Stage 2   Mark in_progress; persist approved verification plan/catalog entries
+Stage 2   Mark in_progress; persist approved verification plan/registry entries
    ↓
 Stage 3   Existing Safety Net baseline → TDD RED/GREEN → focused implementation
    ↓
@@ -201,10 +201,10 @@ No automatic tool events are registered. The Agent reads Git status and follows
 the current task's Skill. Editing a file or ending a reply does not trigger a
 second workflow.
 
-`tools/checks/check-feature-list.py` validates the ledger, Catalog and
+`tools/checks/check-feature-list.py` validates the ledger, Registry and
 dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
 
-`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Catalog and selects tests directly.
+`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly.
 `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` records actual results and human
 decisions. Its `validate --feature F0XX` command checks completion evidence
 before the Agent records completion. Test, static and acceptance requirements

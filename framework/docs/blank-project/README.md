@@ -73,7 +73,7 @@ framework/docs/blank-project/
 
 - **可独立使用的项目材料**：Godot 项目文件、两个插件、编辑器和 Git 文本约定。
 - **需求到开发的工作方法**：轻量讨论与澄清、产品梳理、Feature 拆分与增量同步、Bug/重构/维护分类，以及单项任务的执行流程。
-- **可持续读取的项目知识**：Product、Feature、测试 Catalog、当前进度、历史，按主题组织的实践经验索引，以及按需维护的 CONTEXT 术语与架构记录。
+- **可持续读取的项目知识**：Product、Feature、测试测试登记表、当前进度、历史，按主题组织的实践经验索引，以及按需维护的 CONTEXT 术语与架构记录。
 - **显式检查工具**：环境配置检查、任务台账检查、gdUnit 测试运行与完成依据记录。
 - **按修改领域读取的 Godot 工程规则**：脚本、场景、资源、Shader、项目配置、导出、数据、资产和测试。
 
@@ -90,7 +90,7 @@ framework/docs/blank-project/
 | Feature | 一项可独立理解和验证的完整工作；也可承载 Bug、重构或维护 |
 | AC | Acceptance Criterion，验收条件；在 Feature 内使用稳定的 `AC01` 等 ID |
 | Component | 测试影响分析使用的语义组件，如 `inventory`；不等同于某个文件夹 |
-| Test Catalog | 组件、测试逻辑 ID、文件与用例之间的索引 |
+| 测试登记表 | 组件、测试逻辑 ID、文件与用例之间的索引 |
 | Required Test Set | 根据当前 Feature、组件、历史回归、不变量和已批准补充范围计算的必需测试集合 |
 | baseline / final | 修改前已有安全网验证 / 用于本次最终验证的运行阶段 |
 | manual / automated | 按需求选择的人工验收 / 全自动验收方式 |

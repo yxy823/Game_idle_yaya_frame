@@ -56,7 +56,7 @@ class UnbornRepositoryTests(unittest.TestCase):
                    "verification": {"acceptance_mode": "manual", "regression_tests": [], "manual_regression": None}})
         self.write("docs/feature-list.json", {"meta": {"total_features": 1}, "features": [
                    {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.write("docs/test-catalog.json", {"meta": {"schema_version": 2}, "components": [
+        self.write("docs/test-registry.json", {"meta": {"schema_version": 2}, "components": [
                    {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True}],
                    "tests": []})
 

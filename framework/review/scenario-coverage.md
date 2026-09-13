@@ -50,7 +50,7 @@
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
 | 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-change-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../project-source/methodology/00-overview.md)；只澄清影响当前决定的内容 |
-| 4.2 | 逐个 Product 拆分或同步已有 Feature/Test Catalog | 流程与代码：generate 只拆当前 Product 并追加，sync 处理已有任务的实际影响 | 当前 Product 的必要 Feature 完成后再拆下一份；保留 ID、历史与 Catalog，不新增 Product 队列或状态字段 |
+| 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程与代码：generate 只拆当前 Product 并追加，sync 处理已有任务的实际影响 | 当前 Product 的必要 Feature 完成后再拆下一份；保留 ID、历史与测试登记表，不新增 Product 队列或状态字段 |
 | 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 或只读 advisor | 从当前记录、必要历史和 Git 差异续接；自然语言汇报，不逐阶段固定发言，不新增 session 状态 |
 | 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
 | 4.5 | Bug、行为保持重构或工程维护 | 流程：engineering-change Skill 区分 Product 意图与实现问题 | 当前任务内修复与独立新任务分别判断；不另建第二套 Bug 状态机 |
@@ -66,7 +66,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/Catalog，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划；同一 runner 的 scope 决定范围，不因维护分类自动 full；Agent 判断实际影响 |
+| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划；同一 runner 的 scope 决定范围，不因维护分类自动 full；Agent 判断实际影响 |
 | 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、导入分支或通过标签 |
 | 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/run_evidence.py`、`lib/gate_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
 | 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |

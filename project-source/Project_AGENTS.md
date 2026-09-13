@@ -108,7 +108,7 @@ do not ask for the same approval again. Implementation approval never implies
 human acceptance. Preserve actual accepted scope and historical evidence;
 separate historical completion from verification on a migrated snapshot.
 
-The test runner selects tests from the current Feature/Test Catalog directly.
+The test runner selects tests from the current Feature/Test Registry directly.
 Completion evidence is derived from actual current-run discovery, JUnit,
 process/session, hashes and source/Feature bindings. Caller-supplied counts and conversation summaries alone
 cannot authorize completion. Direct script parsing and lint follow

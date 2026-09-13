@@ -38,10 +38,10 @@ Keep these artifact types consistent when adding the current Product's plan:
 | `docs/feature-list.json` | Lightweight index containing `meta` and each Feature's `id`, `title`, `status`, `depends_on`, `estimated_scope`, and `completed_at` |
 | `docs/features/F0XX.json` | One detail file per Feature containing stable criterion IDs, `affected_components`, verification mapping, source, and notes |
 | `docs/feature-list-revisions.json` | Initialize the version-2 empty log only when absent; preserve an existing log unchanged |
-| `docs/test-catalog.json` | Component/test traceability catalog; create it only when absent, otherwise validate and merge without replacing existing records |
+| `docs/test-registry.json` | Component/test traceability registry; create it only when absent, otherwise validate and merge without replacing existing records |
 
 Read the existing index, selected/prerequisite Feature details, revision log and
-Catalog before planning. Append only new index entries and detail files;
+Registry before planning. Append only new index entries and detail files;
 preserve all existing records, IDs and completion history. If a record conflicts
 with the proposed scope, resolve the conflict through the owning workflow,
 without deleting or silently rewriting it. Missing index with orphaned details
@@ -113,7 +113,6 @@ If the Product module inventory and the actual module files differ in number, id
     "total_features": 1,
     "details_dir": "docs/features/",
     "revisions_file": "docs/feature-list-revisions.json",
-    "test_catalog_file": "docs/test-catalog.json",
     "notes": "<decomposition summary in document_language>"
   },
   "features": [
@@ -168,23 +167,26 @@ If the Product module inventory and the actual module files differ in number, id
 ```
 
 
-### Test catalog: `docs/test-catalog.json`
+### Test registry: `docs/test-registry.json`
 
-Create a new empty schema only when `docs/test-catalog.json` does not exist. For a new catalog, initialize `meta.schema_version` to `2`, `components` to an empty array, and `tests` to an empty array before adding generated components. Existing catalogs must use version 2. Reject an unsupported format without rewriting it.
+This is the fixed project-relative location used by the merge helper, checker,
+test selector and completion check. Do not add a configurable path or repeat it
+in Feature-index metadata. Run the merge command from the project root.
 
-When the catalog already exists, read and validate it before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
+Create a new empty schema only when `docs/test-registry.json` does not exist. For a new registry, initialize `meta.schema_version` to `2`, `components` to an empty array, and `tests` to an empty array before adding generated components. Existing registries must use version 2. Reject an unsupported format without rewriting it.
+
+When the registry already exists, read and validate it before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
 
 Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `test_unit_root/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Coding Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
 
 Use the project-owned merge helper from the repository root. The temporary candidate file contains a JSON array of complete component objects, or an object with a `components` array; it must not be committed.
 
 ```powershell
-python -B .agents/skills/generate-feature-list/scripts/merge_test_catalog.py `
-  --catalog docs/test-catalog.json `
+python -B .agents/skills/generate-feature-list/scripts/merge_test_registry.py `
   --components <temporary-component-candidates.json>
 ```
 
-The helper validates schema version, component records, registered unit suite path existence, unique component/test IDs, and test-to-component mappings before writing. Retired entries additionally require valid source/reason/replacement/revision relationships against the adjacent Feature index and revision log, using the shared `tools/lib/feature_evolution.py` contract. A malformed existing catalog, missing registered suite path, duplicate ID, missing component mapping, or non-identical candidate for an existing component is a blocking conflict. It writes only after the complete merge validates and preserves all existing test entries by value. Path existence does not prove test discovery; execution must confirm the registered suite actually runs tests.
+The helper validates schema version, component records, registered unit suite path existence, unique component/test IDs, and test-to-component mappings before writing. Retired entries additionally require valid source/reason/replacement/revision relationships against the adjacent Feature index and revision log, using the shared `tools/lib/feature_evolution.py` contract. A malformed existing registry, missing registered suite path, duplicate ID, missing component mapping, or non-identical candidate for an existing component is a blocking conflict. It writes only after the complete merge validates and preserves all existing test entries by value. Path existence does not prove test discovery; execution must confirm the registered suite actually runs tests.
 
 ```json
 {
@@ -214,11 +216,11 @@ The helper validates schema version, component records, registered unit suite pa
 - `notes`: initialize new detail values to an empty string; preserve existing notes. Store it only in detail files.
 - `engineering_change`: optional detail-only enum reserved for `engineering-change-standardizer`; allowed values are `bug`, `refactor`, and `maintenance`. Product-derived Features created here omit it.
 - `revision_log`: initialize the version-2 empty log only when absent and store it only in `docs/feature-list-revisions.json`. Appending a newly current Product does not reset or advance the source synchronization anchor; it reads that Product's current specification directly.
-- Existing test catalog records are independent durable traceability. Adding a Product's plan may append needed components but may not silently reset, retire, renumber, remap, or delete existing tests.
+- Existing test registry records are independent durable traceability. Adding a Product's plan may append needed components but may not silently reset, retire, renumber, remap, or delete existing tests.
 
 Never place an unescaped `"` inside a JSON string. Escape embedded ASCII double quotes as `\"`, or use natural quotation marks appropriate to `document_language` when they cannot be mistaken for JSON delimiters.
 
-Validate the index, every detail file, the revision log, and the test catalog with:
+Validate the index, every detail file, the revision log, and the test registry with:
 
 `python -B -m json.tool <path> > $null`
 
@@ -239,16 +241,16 @@ Before reporting completion, verify every item:
 - [ ] Feature order reflects Coding Rules such as data/presentation separation and pure core rules.
 - [ ] Every detail `source` resolves to an existing Product module and section, or is exactly `infrastructure`.
 - [ ] Every Feature has stable sequential `ACxx` criterion IDs and non-empty `affected_components`.
-- [ ] Every affected component exists in `docs/test-catalog.json`.
+- [ ] Every affected component exists in `docs/test-registry.json`.
 - [ ] Every referenced dependency ID exists.
 - [ ] New statuses are `pending`, new `completed_at` values are `null`, and new detail `notes` are `""`; all previous Feature records remain unchanged.
 - [ ] A missing revision log is initialized with schema version 2; an existing log and its source anchors remain unchanged.
-- [ ] A new `docs/test-catalog.json` uses schema version 2 and contains every generated component ID; existing current-format records remain intact.
+- [ ] A new `docs/test-registry.json` uses schema version 2 and contains every generated component ID; existing current-format records remain intact.
 - [ ] Components without existing unit suites use `unit_test_paths: []`; every registered unit suite path resolves to an existing repository file or directory.
-- [ ] If the test catalog predated this run, every existing component record, test ID, complete test mapping, and `full_suite_on_change` value is preserved.
+- [ ] If the test registry predated this run, every existing component record, test ID, complete test mapping, and `full_suite_on_change` value is preserved.
 - [ ] Existing history and independent invariants remain intact; any acceptance/regression conflict was reported rather than silently cleared.
 - [ ] The set of index IDs equals the set of `docs/features/F*.json` filename stems and equals `meta.total_features` in count.
-- [ ] The index, every detail file, the revision log, and the test catalog pass JSON parsing without unescaped double quotes.
+- [ ] The index, every detail file, the revision log, and the test registry pass JSON parsing without unescaped double quotes.
 
 Fix every failed check before presenting the generated files as complete.
 
@@ -263,8 +265,8 @@ report file or repeating the whole Product specification.
 
 1. After reading the needed inputs, give a concise summary naming the current Product, its scope, why it is next, proposed new Features and dependencies, and any material ambiguity. Distinguish newly added work from the existing ledger total; do not estimate later Products' Feature lists.
 2. If any question remains, stop and wait for the user's answer. Do not write JSON.
-3. When there is no unresolved question, prepare the temporary component-candidate JSON and run the merge helper before any Feature-plan write. Continue only after it has either created the absent catalog or validated and merged the existing one without conflict.
-4. Append the approved new entries to the index and write only their detail files; create `docs/features/` if necessary. Update index totals/time and its decomposition summary to identify the Product just planned. Initialize the revision log only if absent. Preserve existing Features, metadata unrelated to this addition and all revision history. Do not rewrite the catalog by hand after the helper succeeds.
+3. When there is no unresolved question, prepare the temporary component-candidate JSON and run the merge helper before any Feature-plan write. Continue only after it has either created the absent registry or validated and merged the existing one without conflict.
+4. Append the approved new entries to the index and write only their detail files; create `docs/features/` if necessary. Update index totals/time and its decomposition summary to identify the Product just planned. Initialize the revision log only if absent. Preserve existing Features, metadata unrelated to this addition and all revision history. Do not rewrite the registry by hand after the helper succeeds.
 5. Run the complete self-check and JSON validation.
 6. Follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the explicit generated Feature-plan paths, run all cached-diff checks, and create one local `chore(feature-plan): <中文行为摘要>` commit unless the user explicitly requested no commit. Do not use a broad `docs/features/` staging path, and omit `Work item` because this commit creates the plan rather than implementing one Feature. Confirm `git status --short` afterward.
 7. Only after all checks and the local commit pass, report the added files and first executable Feature for the current Product. State that later Products remain for planning after this Product is complete.

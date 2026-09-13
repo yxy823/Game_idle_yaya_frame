@@ -64,8 +64,8 @@
     "target": "docs/feature-list-revisions.json"
   },
   {
-    "source": "project-source/methodology/templates/test-catalog.json.tmpl",
-    "target": "docs/test-catalog.json"
+    "source": "project-source/methodology/templates/test-registry.json.tmpl",
+    "target": "docs/test-registry.json"
   },
   {
     "source": "project-source/methodology/templates/progress.md.tmpl",

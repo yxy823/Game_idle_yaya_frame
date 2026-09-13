@@ -20,7 +20,7 @@ and verified read-only Git status/log/diff/show are allowed.
 1. Read the project's `AGENTS.md`, `docs/methodology-config.json`, lightweight
    Feature index and current `docs/progress.md`. Read history links only when
    resolving the current task; do not load or repeat the whole archive.
-2. Inspect read-only Git status and the relevant Feature/detail/Product/Catalog
+2. Inspect read-only Git status and the relevant Feature/detail/Product/Registry
    records directly. Configured bootstrap `ready` is a recorded claim, not proof
    that a check was executed in this conversation.
    Interpret incomplete machine setup through `methodology/00-overview.md` and

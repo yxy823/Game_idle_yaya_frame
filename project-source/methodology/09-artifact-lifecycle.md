@@ -57,5 +57,5 @@ cross-Feature technical choices may use an ADR under
 Feature notes link that rationale instead of repeating it. The archive owns
 execution history; Progress owns the present. Link the authoritative records
 without pasting the same narrative into them. A pure Progress/archive Markdown
-edit does not invalidate business-test evidence; AC, verification, Catalog and
+edit does not invalidate business-test evidence; AC, verification, Registry and
 source changes still do under the semantic snapshot contract.

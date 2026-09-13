@@ -1,5 +1,5 @@
-"""Deterministic Test Catalog selection shared by runners and completion gates."""
-# 仅从当前 Feature/Catalog 计算运行选择；不写独立计划、快照或计划哈希。
+"""Deterministic Test Registry selection shared by runners and completion gates."""
+# 仅从当前 Feature/Registry 计算运行选择；不写独立计划、快照或计划哈希。
 from __future__ import annotations
 
 import json
@@ -7,7 +7,7 @@ import re
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from tools.lib.feature_evolution import CATALOG_SCHEMA_VERSION
+from tools.lib.feature_evolution import REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH
 
 
 class SelectionError(ValueError):
@@ -104,12 +104,12 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
     if phase == "final":
         acceptance_mode(detail)
     config = read_json(root / "docs/methodology-config.json")
-    catalog = read_json(root / config.get("test_catalog_path", "docs/test-catalog.json"))
-    if catalog.get("meta", {}).get("schema_version") != CATALOG_SCHEMA_VERSION:
-        raise SelectionError("unsupported Test Catalog schema")
-    components = {item["id"]: item for item in catalog["components"]}
-    tests = {item["id"]: item for item in catalog["tests"]}
-    if len(components) != len(catalog["components"]) or len(tests) != len(catalog["tests"]):
+    registry = read_json(root / TEST_REGISTRY_PATH)
+    if registry.get("meta", {}).get("schema_version") != REGISTRY_SCHEMA_VERSION:
+        raise SelectionError("unsupported Test Registry schema")
+    components = {item["id"]: item for item in registry["components"]}
+    tests = {item["id"]: item for item in registry["tests"]}
+    if len(components) != len(registry["components"]) or len(tests) != len(registry["tests"]):
         raise SelectionError("duplicate component or logical test ID")
     affected_components = sorted(set(detail["affected_components"]))
     if set(affected_components) - components.keys():
@@ -120,7 +120,7 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
     def add(mapping: dict, path: str, case: str | None, logical_id: str | None, reason: str) -> None:
         path = normalized_path(root, path)
         if case is not None and (not isinstance(case, str) or not case.strip()):
-            raise SelectionError("Catalog case must be null or a non-empty string")
+            raise SelectionError("Registry case must be null or a non-empty string")
         item = mapping.setdefault((path, case), {"path": path, "case": case, "logical_ids": [], "reasons": []})
         if logical_id and logical_id not in item["logical_ids"]:
             item["logical_ids"].append(logical_id)
@@ -129,7 +129,7 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
 
     def add_test(mapping: dict, test_id: str, reason: str, *, direct: bool = False) -> None:
         if test_id not in tests:
-            raise SelectionError(f"required test is missing from Catalog: {test_id}")
+            raise SelectionError(f"required test is missing from Registry: {test_id}")
         test = tests[test_id]
         if phase == "baseline" and test["status"] == "planned":
             return

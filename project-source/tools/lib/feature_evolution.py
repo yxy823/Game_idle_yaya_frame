@@ -13,7 +13,8 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-CATALOG_SCHEMA_VERSION = 2
+REGISTRY_SCHEMA_VERSION = 2
+TEST_REGISTRY_PATH = PurePosixPath("docs/test-registry.json")
 FEATURE_ID = re.compile(r"F\d{3}")
 REVISION_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 COMMIT_ID = re.compile(r"[a-fA-F0-9]{7,64}")
@@ -193,7 +194,7 @@ def validate_retirement_shape(test: dict) -> None:
 
 
 def referenced_test_ids(detail: Any) -> set[str]:
-    """Read the canonical mappings, without treating Catalog membership as coverage."""
+    """Read the canonical mappings, without treating Registry membership as coverage."""
     if not isinstance(detail, dict) or not isinstance(detail.get("acceptance_criteria"), list):
         raise EvolutionError("replacement Feature requires acceptance_criteria")
     verification = detail.get("verification")

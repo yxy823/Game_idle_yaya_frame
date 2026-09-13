@@ -11,5 +11,5 @@
 
 ## Raw runtime files
 
-- **[MUST]** Gameplay must not rely on directory enumeration of imported source extensions as authoritative catalog in exported builds.
+- **[MUST]** Gameplay must not rely on directory enumeration of imported source extensions as authoritative registry in exported builds.
 - **[MUST]** Raw FileAccess runtime assets/data follow `41-export-config` packaging rules.

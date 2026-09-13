@@ -8,7 +8,6 @@
   },
   "python_executable": "python",
   "language": "GDScript",
-  "test_catalog_path": "docs/test-catalog.json",
   "test_cmd": "",
   "test_feature_root": "tests/features",
   "test_framework": "gdunit4",

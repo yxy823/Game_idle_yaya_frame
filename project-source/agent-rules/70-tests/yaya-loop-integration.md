@@ -17,7 +17,7 @@
 
 - **[MUST]** Feature acceptance test 使用 Yaya 逻辑 ID `F0XX-ACyy[-NN]`，Bug
   regression test 使用 `F0XX-RTyy`，跨 Feature invariant 使用
-  `INV-<DOMAIN>-NN`；实际路径和 test case 记录在 `docs/test-catalog.json`。
+  `INV-<DOMAIN>-NN`；实际路径和 test case 记录在 `docs/test-registry.json`。
 - **[MUST]** 项目测试按保护对象放在 `tests/unit/`、`tests/features/` 或
   `tests/invariants/`。Regression 是测试来源/类型，不要求独立的
   `tests/regression/`。

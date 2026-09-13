@@ -50,7 +50,7 @@ Verify the behavior callers depend on using the existing
 collaboration and relevant engine behavior. Keep Godot semantics real when they
 are the subject of the test. Merging modules or adding a boundary test does not
 by itself justify deleting existing tests; retain needed scenarios and follow
-the existing test and catalog maintenance rules when retiring redundant cases.
+the existing test and registry maintenance rules when retiring redundant cases.
 
 ## Architecture Decision Records
 

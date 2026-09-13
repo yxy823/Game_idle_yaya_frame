@@ -65,9 +65,9 @@ New canonical Feature details use stable acceptance-criterion IDs:
 
 `affected_components` is a small machine-readable set of stable domain/component IDs such as `inventory`, `save`, `combat`, or `scene_lifecycle`. Use semantic components, not individual file paths.
 
-## `docs/test-catalog.json`
+## `docs/test-registry.json`
 
-The test catalog is the machine-readable bridge from changed components to existing safety-net tests.
+The test registry is the machine-readable bridge from changed components to existing safety-net tests.
 
 ```json
 {
@@ -111,12 +111,12 @@ The test catalog is the machine-readable bridge from changed components to exist
 }
 ```
 
-### Catalog rules
+### Registry rules
 
 - Component IDs are stable `lower_snake_case` identifiers.
 - `unit_test_paths` contain repository-relative paths to existing unit suite files or directories protecting that component and required whenever it is affected. The non-empty examples above assume those suites already exist.
 - A component without unit suites uses `unit_test_paths: []`; never prefill future directories. Propose new unit suites in Stage 1, then register their paths after the approved Stage 3 creation and include them in the Required Test Set.
-- A missing or deleted registered suite path is a catalog error, not an empty safety net. Do not silently filter it out; removing a registration requires an explicit reason and user approval. Merge/strict validation checks path existence; the configured runner must establish actual discovery and execution.
+- A missing or deleted registered suite path is a registry error, not an empty safety net. Do not silently filter it out; removing a registration requires an explicit reason and user approval. Merge/strict validation checks path existence; the configured runner must establish actual discovery and execution.
 - `full_suite_on_change: true` means any Feature touching that component requires the configured full suite before completion.
 - Test `kind` is exactly `acceptance`, `regression`, or `invariant`.
 - `source_feature` is required for acceptance/regression tests and `null` for invariant tests.
@@ -142,11 +142,11 @@ Required Test Set =
 
 An empty `unit_test_paths` array contributes no unit selector and does not trigger an empty targeted run. Every registered suite for an affected component must enter the Required Test Set; a missing path or a targeted run discovering zero tests is an error, not PASS.
 
-The affected set contains Required plus active acceptance tests intersecting affected components. The agent may add related tests from other components when dependency/API analysis shows material impact, recording the exact reason. It may not remove any deterministic requirement. Approved retirement changes the underlying Product/Catalog contract instead of adding a runner exclusion.
+The affected set contains Required plus active acceptance tests intersecting affected components. The agent may add related tests from other components when dependency/API analysis shows material impact, recording the exact reason. It may not remove any deterministic requirement. Approved retirement changes the underlying Product/Registry contract instead of adding a runner exclusion.
 
 A full suite is required when any of these is true:
 
-- an affected catalog component has `full_suite_on_change: true`;
+- an affected registry component has `full_suite_on_change: true`;
 - infrastructure/toolchain changes actually affect the project broadly; a maintenance label alone does not require full;
 - a dependency/toolchain upgrade can affect broad behavior;
 - impact analysis cannot bound the affected components reliably;
@@ -156,7 +156,7 @@ For other local Features, targeted verification is sufficient before applicable 
 
 ## Runtime Test Impact selection
 
-The runner reads the current Feature and Test Catalog through
+The runner reads the current Feature and Test Registry through
 `tools/lib/test_selection.py`. There is no separate plan command, plan file or plan hash.
 
 After Stage 1 approval, Stage 2 stores extra tests and full-suite obligations in
@@ -223,7 +223,7 @@ python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py rec
 
 Repeat `--run` only for distinct runs needed to cover the obligations. One full run
 can cover Required/affected. The helper computes coverage from the current Feature,
-Catalog and original reports; caller-provided pass labels or totals cannot create PASS.
+Registry and original reports; caller-provided pass labels or totals cannot create PASS.
 Failed imports clear old references. Completion schema 7 stores references and actual
 acceptance/review decisions; no required/affected/full totals or cached gate status.
 Parsing/lint results are assessed directly by the Agent.
@@ -233,7 +233,7 @@ altered artifacts. These locally editable records are not an independent securit
 signature against someone rewriting all evidence. File mtimes and wall-clock precision
 do not authorize completion. Do not add sleeps or rerun unchanged failures to get green.
 
-`working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Catalog data. Feature AC text, verification (including approved Test Impact), affected components and Catalog selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, explanatory Markdown under `docs/knowledge/`, and run artifacts are exempt. Knowledge indexes and entries are contextual reference material; they must not own executable inputs, requirements, rules or validation contracts. Non-Markdown files there still participate. Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose or organizing knowledge Markdown alone never invalidates tests. New or unknown contract fields remain included.
+`working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Registry data. Feature AC text, verification (including approved Test Impact), affected components and Registry selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, explanatory Markdown under `docs/knowledge/`, and run artifacts are exempt. Knowledge indexes and entries are contextual reference material; they must not own executable inputs, requirements, rules or validation contracts. Non-Markdown files there still participate. Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose or organizing knowledge Markdown alone never invalidates tests. New or unknown contract fields remain included.
 
 A newly initialized Git working repository can verify before its initial commit.
 Its snapshot records `git_revision: "UNBORN"` only when HEAD names a valid branch
@@ -275,7 +275,7 @@ done gate
 
 A pre-existing baseline failure must be reported before implementation. Do not attribute it to the current Feature or silently repair it as scope expansion.
 
-Stage 4 imports verified run results into `docs/gate-evidence.json` when automated obligations exist; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Catalog contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
+Stage 4 imports verified run results into `docs/gate-evidence.json` when automated obligations exist; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
 
 Stage 6 reuses current successful run results after a review without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
@@ -296,9 +296,9 @@ When Product behavior changes, old tests are not automatically authoritative. `s
 - new behavior → add new acceptance test IDs;
 - Bug fix → add regression coverage unless deterministic automation is impractical.
 
-Catalog retirement does not remove executable tests: gdUnit discovers methods
+Registry retirement does not remove executable tests: gdUnit discovers methods
 under selected suite/directory paths, including retired cases still in those
-files. Read affected test code as well as Catalog; ordinary unit tests may have
+files. Read affected test code as well as Registry; ordinary unit tests may have
 no logical ID. Use the existing sync report to identify obsolete assertions,
 methods/files, affected current references and the owning Feature. After approval,
 keep necessary cleanup actions in that Feature's `notes`; planning does not edit
@@ -308,7 +308,7 @@ During that Feature's approved implementation, delete or replace superseded
 assertions and update affected active mappings, `unit_test_paths` and current
 requirement/usage references. Remove obsolete empty suites and their registrations
 within the approved scope. Preserve still-valid cases sharing those files and
-unaffected regressions/invariants. Retired Catalog records retain historical
+unaffected regressions/invariants. Retired Registry records retain historical
 ID/source/path/case and provenance; completed Feature records and historical
 evidence are not cleanup targets.
 

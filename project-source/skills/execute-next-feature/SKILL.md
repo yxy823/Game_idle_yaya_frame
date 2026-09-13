@@ -44,14 +44,14 @@ repairs and maintenance retain their own authorized routing.
 1. Read `docs/feature-list.json`; resume the authorized current Feature/batch, otherwise use the requested Feature or a DAG-eligible `pending` Feature. `tools/checks/check-feature-list.py --eligible` derives eligibility; larger IDs may be prerequisites and IDs only break ties. Do not invent batch authorization.
 2. Run `git status --porcelain` under `agent-rules/00-core/git-worktree-and-commits.md`. Execute on the current branch, including `main` or `master`; do not change branches. A new Feature requires a clean worktree. A resumed Feature may continue only when every dirty path is demonstrably owned by that Feature; stop on unrelated or ambiguous changes.
 3. Read the confirmed environment configuration. Incomplete Bootstrap blocks coding; never guess commands. Run `python -B tools/checks/check-project-environment.py --require-ready` during initialization, after tool/configuration changes, or when diagnosing an actual invocation failure. Ordinary Features reuse confirmed paths without repeating version discovery.
-4. Load detail, Product source, relevant definitions in `docs/CONTEXT.md` when present, dependency details, current Progress, complete Coding Rules, `docs/methodology-config.json`, `docs/test-catalog.json` when testing is enabled, and the principal implementation files/directories needed to bound the change. Follow only relevant Progress history links. Read applicable optional architecture maps and ADRs under `methodology/10-architecture-overview.md`, including relevant ADRs when no map exists. Complete Coding Rules means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed installed module applicable to the Feature.
+4. Load detail, Product source, relevant definitions in `docs/CONTEXT.md` when present, dependency details, current Progress, complete Coding Rules, `docs/methodology-config.json`, `docs/test-registry.json` when testing is enabled, and the principal implementation files/directories needed to bound the change. Follow only relevant Progress history links. Read applicable optional architecture maps and ADRs under `methodology/10-architecture-overview.md`, including relevant ADRs when no map exists. Complete Coding Rules means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed installed module applicable to the Feature.
    Before choosing an approach or searching external material, consult
    `docs/knowledge/README.md` and the relevant topic indexes and entries.
    Check their conditions against this Feature; reuse reading on continuation
    unless scope or evidence changed. Empty topics are normal.
 5. Present a concise Context / Rules Snapshot containing the Feature record path; principal Product and implementation paths read; useful knowledge references when any; expected create/modify/delete paths; applicable `agent-rules/**` modules; three to six task-relevant rules with source paths; and principal planned validation. Reference sources instead of copying whole documents.
 6. Report ID/title/status/dependencies/source, `affected_components`, stable criterion IDs/text, engineering mode, and the snapshot.
-7. Stop on contradictory Product intent, invalid ledger/catalog data, unresolved dependencies, or an unbounded planned file surface.
+7. Stop on contradictory Product intent, invalid ledger/registry data, unresolved dependencies, or an unbounded planned file surface.
 
 ## Stage 1 — Test Impact Review + preflight + approval
 
@@ -75,7 +75,7 @@ current Feature automated acceptance tests
 
 Apply the existing-suite contract in `methodology/08-testing-strategy.md`: `unit_test_paths: []` contributes no unit selector; every registered suite for an affected component must be included. Missing registered paths or zero-test discovery are errors, not exclusions or PASS. Any removal of a registration requires an explicit reason and user approval.
 
-The affected union also includes active acceptance tests intersecting affected components. Add other related tests only with concrete reasons. A runner exclusion cannot remove a deterministic requirement; approved retirement or catalog correction changes the underlying traceable contract before recomputing the selection. Include any proposed new unit suites in the Stage 1 plan, without registering future paths.
+The affected union also includes active acceptance tests intersecting affected components. Add other related tests only with concrete reasons. A runner exclusion cannot remove a deterministic requirement; approved retirement or registry correction changes the underlying traceable contract before recomputing the selection. Include any proposed new unit suites in the Stage 1 plan, without registering future paths.
 
 For changed or removed contracts, read the cleanup actions in Feature notes and
 the affected test code under **Requirement changes and stale tests** in
@@ -84,7 +84,7 @@ cleanup in this same plan. Existing approval for that exact scope remains valid.
 
 Determine whether full suite is required when:
 
-- an affected catalog component has `full_suite_on_change: true`;
+- an affected registry component has `full_suite_on_change: true`;
 - infrastructure or toolchain changes have actual project-wide impact; task classification alone is insufficient;
 - dependency upgrade has broad impact;
 - impact cannot be bounded reliably;
@@ -106,8 +106,8 @@ After approval:
 1. set status to `in_progress`, `completed_at: null`;
 2. update current Progress with Stage/state, blockers, pending decisions, next legal action and links to plans/evidence; history bodies remain under `docs/progress/`;
 3. persist `verification.acceptance_mode`, criterion `verification` mappings, Feature `verification.regression_tests/manual_regression`, and `verification.test_impact` with approved `additional_tests: [{id, reason}]` and `full_suite_reasons: [reason]`. The runner reads these stored obligations directly; reducing them requires explicit plan revision approval;
-4. add new durable acceptance/regression catalog entries with `status: planned`;
-5. add approved component catalog entries when missing, using `unit_test_paths: []` if no unit suite exists;
+4. add new durable acceptance/regression registry entries with `status: planned`;
+5. add approved component registry entries when missing, using `unit_test_paths: []` if no unit suite exists;
 6. initialize `docs/gate-evidence.json` with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py initialize --feature F0XX`;
 7. run `python -B tools/checks/check-feature-list.py`.
 
@@ -122,7 +122,7 @@ Run the Stage 1 Existing Safety Net before behavior-changing implementation, exc
 For every new machine-verifiable acceptance/regression test:
 
 1. create the test with its approved logical ID;
-2. update catalog `path`, optional `case`, and `status: active`;
+2. update registry `path`, optional `case`, and `status: active`;
 3. run the narrowest supported selector;
 4. verify failure is caused by the intended missing/broken behavior, not bad setup/syntax/environment.
 
@@ -135,14 +135,14 @@ When creating a Stage 1-approved unit suite, register its repository-relative fi
 Implement the smallest coherent change until the new test passes. Refactor locally while preserving behavior. Repeat by criterion. Do not expand Feature scope without user approval.
 
 Perform the approved obsolete-test and reference cleanup with the behavior change.
-Preserve still-valid cases and historical records; Catalog retirement alone leaves
+Preserve still-valid cases and historical records; Registry retirement alone leaves
 executable methods in place. Apply the cleanup contract in `methodology/08-testing-strategy.md`.
 
 ## Stage 4 — automated verification + applicable human checklist
 
 Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or the repository's explicit authoritative equivalent. Never invent runner syntax.
 
-1. Read the current Feature/Test Catalog obligations. When any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It selects and deduplicates tests and prints selection reasons; no separate plan file is written. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit this run and `record-tests`, leaving `test_runs: []`. Report automated verification as `not_required`, never as an empty PASS; manual acceptance, review and applicable static checks remain required.
+1. Read the current Feature/Test Registry obligations. When any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It selects and deduplicates tests and prints selection reasons; no separate plan file is written. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit this run and `record-tests`, leaving `test_runs: []`. Report automated verification as `not_required`, never as an empty PASS; manual acceptance, review and applicable static checks remain required.
 2. Inspect the selection and actual results. A required full run covers Required/affected subsets once for the same content snapshot; otherwise execute the affected union, which includes Required. Never repeat equivalent runs only to fill separate Gate fields.
 3. Directly run Godot script parsing for changed scripts and necessary dependants, and the bundled lint CLI, following `methodology/gdscript-lint.md`. Read their actual exit codes and output. Required failures block completion. Do not create a wrapper, static manifest, or scripted import step.
 4. For Bug Features verify every approved regression ID is active/passing, or use the explicitly approved manual regression gap.
@@ -240,7 +240,7 @@ If Bug learning changed Coding Rules, request explicit authorization to run `syn
 
 When test/reference cleanup was required, report what was actually handled and
 any remaining work using existing notes/Progress; do not claim completion from
-Catalog status alone.
+Registry status alone.
 
 Check current Product scope against its Feature sources/statuses. If required
 work remains, identify the next eligible Feature or the actual blocker. Only

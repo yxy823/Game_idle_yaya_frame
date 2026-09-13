@@ -37,7 +37,7 @@
 
 项目规则还要求此类操作前后比较根目录列表，包括空目录。若出现 `export_templates`、`feature_profiles`、`script_templates`、`text_editor_themes` 等异常目录，先核对是否由本次操作生成且为空，再按现有规则处理；Git 不记录空目录，不能只看 Git 状态判断。此条仅适用于实际执行的编辑器操作。
 
-## Feature、依赖与 Catalog
+## Feature、依赖与测试登记表
 
 | 现象 | 优先核对 |
 | --- | --- |

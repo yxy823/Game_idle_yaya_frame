@@ -16,14 +16,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.test_selection import acceptance_mode, SelectionError
 from tools.lib.feature_evolution import (
-    EvolutionError, CATALOG_SCHEMA_VERSION, eligible_features,
+    EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, eligible_features,
     validate_retirement_shape, validate_retirements, validate_revisions,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 INDEX_FILE = REPO_ROOT / "docs" / "feature-list.json"
 REVISIONS_FILE = REPO_ROOT / "docs" / "feature-list-revisions.json"
-TEST_CATALOG_FILE = REPO_ROOT / "docs" / "test-catalog.json"
+TEST_REGISTRY_FILE = REPO_ROOT / TEST_REGISTRY_PATH
 DETAILS_DIR = REPO_ROOT / "docs" / "features"
 
 ID_RE = re.compile(r"^F(\d{3})$")
@@ -149,10 +149,6 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
         total = meta.get("total_features")
         if not isinstance(total, int) or isinstance(total, bool) or total != len(features):
             _error(f"meta.total_features must equal index count {len(features)}; found {total!r}")
-            ok = False
-        test_catalog_file = meta.get("test_catalog_file")
-        if test_catalog_file is not None and test_catalog_file != "docs/test-catalog.json":
-            _error("meta.test_catalog_file, when present, must be docs/test-catalog.json")
             ok = False
 
     for fid, entry in entries.items():
@@ -363,33 +359,33 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     return ok, fid, info
 
 
-def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]]) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
+def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]]) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
     if data is None:
-        _error("docs/test-catalog.json is required")
+        _error("docs/test-registry.json is required")
         return False, {}, set()
     if not isinstance(data, dict):
-        _error("docs/test-catalog.json root must be an object")
+        _error("docs/test-registry.json root must be an object")
         return False, {}, set()
     ok = True
     meta = data.get("meta")
     if (not isinstance(meta, dict) or type(meta.get("schema_version")) is not int
-            or meta["schema_version"] != CATALOG_SCHEMA_VERSION):
-        _error("docs/test-catalog.json meta.schema_version must be integer 2")
+            or meta["schema_version"] != REGISTRY_SCHEMA_VERSION):
+        _error("docs/test-registry.json meta.schema_version must be integer 2")
         ok = False
     components = data.get("components")
     tests = data.get("tests")
     if not isinstance(components, list):
-        _error("docs/test-catalog.json components must be an array")
+        _error("docs/test-registry.json components must be an array")
         components = []
         ok = False
     if not isinstance(tests, list):
-        _error("docs/test-catalog.json tests must be an array")
+        _error("docs/test-registry.json tests must be an array")
         tests = []
         ok = False
 
     component_ids: set[str] = set()
     for i, comp in enumerate(components):
-        label = f"docs/test-catalog.json components[{i}]"
+        label = f"docs/test-registry.json components[{i}]"
         if not isinstance(comp, dict):
             _error(f"{label} must be an object")
             ok = False
@@ -400,7 +396,7 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
             ok = False
             continue
         if cid in component_ids:
-            _error(f"duplicate test catalog component {cid}")
+            _error(f"duplicate test registry component {cid}")
             ok = False
         component_ids.add(cid)
         paths_ok, unit_paths = _unique_string_list(comp.get("unit_test_paths"), f"{label}.unit_test_paths")
@@ -415,9 +411,9 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
             _error(f"{label}.full_suite_on_change must be boolean")
             ok = False
 
-    catalog_tests: dict[str, dict[str, Any]] = {}
+    registry_tests: dict[str, dict[str, Any]] = {}
     for i, test in enumerate(tests):
-        label = f"docs/test-catalog.json tests[{i}]"
+        label = f"docs/test-registry.json tests[{i}]"
         if not isinstance(test, dict):
             _error(f"{label} must be an object")
             ok = False
@@ -429,10 +425,10 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
             _error(f"{label}.id must be a non-empty string")
             ok = False
             continue
-        if tid in catalog_tests:
+        if tid in registry_tests:
             _error(f"duplicate test id {tid}")
             ok = False
-        catalog_tests[tid] = test
+        registry_tests[tid] = test
         if kind not in ALLOWED_TEST_KIND:
             _error(f"{label}.kind {kind!r} is invalid")
             ok = False
@@ -510,10 +506,10 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
                 _error(f"invariant test {tid} source_feature and criterion_id must be null")
                 ok = False
 
-    return ok, catalog_tests, component_ids
+    return ok, registry_tests, component_ids
 
 
-# 聚合索引、详情、Catalog 和演进关系；跨文件规则在这里汇合，避免入口各自判断。
+# 聚合索引、详情、Registry 和演进关系；跨文件规则在这里汇合，避免入口各自判断。
 def _validate_all(completion_feature: str | None = None) -> bool:
     ok = True
     index_data, loaded = _load_json(INDEX_FILE)
@@ -556,13 +552,13 @@ def _validate_all(completion_feature: str | None = None) -> bool:
         _error(msg)
         ok = False
 
-    catalog_data, loaded = _load_json(TEST_CATALOG_FILE)
+    registry_data, loaded = _load_json(TEST_REGISTRY_FILE)
     ok &= loaded
-    cat_ok, catalog_tests, component_ids = _validate_test_catalog(catalog_data, entries, details) if loaded else (False, {}, set())
+    cat_ok, registry_tests, component_ids = _validate_test_registry(registry_data, entries, details) if loaded else (False, {}, set())
     ok &= cat_ok
     if cat_ok and index_ok:
         try:
-            validate_retirements(catalog_tests, entries, revisions,
+            validate_retirements(registry_tests, entries, revisions,
                                 {fid: info["automated"] | info["regressions"] for fid, info in details.items()})
         except EvolutionError as exc:
             _error(str(exc))
@@ -574,7 +570,7 @@ def _validate_all(completion_feature: str | None = None) -> bool:
     for fid, info in details.items():
         for cid in info["components"]:
             if cid not in component_ids:
-                _error(f"{fid}.affected_components references missing test-catalog component {cid}")
+                _error(f"{fid}.affected_components references missing test-registry component {cid}")
                 ok = False
         status = entries.get(fid, {}).get("status")
         if (status == "done" or fid == completion_feature) and info.get("acceptance_mode") is None:
@@ -584,9 +580,9 @@ def _validate_all(completion_feature: str | None = None) -> bool:
         # of a Feature's own AC/regression mapping used by retirement migrations.
         referenced = set(info["automated"]) | set(info["regressions"]) | set(info["additional_tests"])
         for tid in referenced:
-            cat = catalog_tests.get(tid)
+            cat = registry_tests.get(tid)
             if cat is None:
-                _error(f"{fid} references test {tid} missing from docs/test-catalog.json")
+                _error(f"{fid} references test {tid} missing from docs/test-registry.json")
                 ok = False
                 continue
             allowed = {"active"} if fid == completion_feature else {"active", "retired"}
@@ -613,12 +609,12 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
 
 
 def main() -> int:
-    global REPO_ROOT, INDEX_FILE, REVISIONS_FILE, TEST_CATALOG_FILE, DETAILS_DIR
+    global REPO_ROOT, INDEX_FILE, REVISIONS_FILE, TEST_REGISTRY_FILE, DETAILS_DIR
     args = _parse_args(sys.argv[1:])
     REPO_ROOT = args.repo_root.resolve()
     INDEX_FILE = REPO_ROOT / "docs/feature-list.json"
     REVISIONS_FILE = REPO_ROOT / "docs/feature-list-revisions.json"
-    TEST_CATALOG_FILE = REPO_ROOT / "docs/test-catalog.json"
+    TEST_REGISTRY_FILE = REPO_ROOT / TEST_REGISTRY_PATH
     DETAILS_DIR = REPO_ROOT / "docs/features"
     if not _validate_all(completion_feature=args.completion_feature):
         return 2

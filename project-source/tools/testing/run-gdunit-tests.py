@@ -109,7 +109,7 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser.add_argument("--godot-binary")
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--target", default="tests")
-    selection.add_argument("--feature", help="Read the current Feature/Test Catalog directly")
+    selection.add_argument("--feature", help="Read the current Feature/Test Registry directly")
     parser.add_argument("--phase", choices=("baseline", "final"), default="final")
     parser.add_argument("--scope", choices=("auto", "required", "affected", "full"), default="auto")
     parser.add_argument("--require-test")

@@ -8,7 +8,7 @@
 - Before the first coding Feature, complete the one-time Project Environment Bootstrap defined in [05-document-language.md](./05-document-language.md). Every Stage 0 requires `environment_bootstrap.status: ready`; it reads the confirmed configuration rather than rediscovering commands.
 - Read the complete active Coding Rules before implementation and retain the relevant rule snapshot for the Feature. In this repository that means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed module applicable to the Feature.
 - Follow `agent-rules/00-core/git-worktree-and-commits.md`. A new Feature execution starts from a clean worktree; a resumed Feature may retain only changes demonstrably owned by that same Feature.
-- Read `docs/test-catalog.json` when automated testing is enabled. Testing semantics are defined in [08-testing-strategy.md](./08-testing-strategy.md).
+- Read `docs/test-registry.json` when automated testing is enabled. Testing semantics are defined in [08-testing-strategy.md](./08-testing-strategy.md).
 - Execute and locally commit on the current Git branch, including `main` or `master`, subject to all existing approval, clean-worktree, acceptance, and Completion Gates. Do not automatically create, switch, merge, or delete branches. Never force-push or use `reset --hard`.
 - Never start implementation, infer human acceptance, promote a Bug guardrail, or start the next Feature without the required explicit user decision.
 - Release/publishing/deployment workflow is outside this loop unless explicitly represented as project work.
@@ -48,7 +48,7 @@ existing later plans, and keep engineering repairs within their authorized route
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
-4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, complete Coding Rules, test catalog, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
+4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, complete Coding Rules, test registry, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
    Before proposing an approach or searching external references, consult
    `docs/knowledge/README.md` and the relevant topic indexes and entries.
    Check their applicability to this Feature; reuse prior reading on continuation
@@ -78,7 +78,7 @@ previous PASS records do not make this decision. Null means an undecided draft.
 
 ### 1A. Derive the Required Test Set
 
-Using `affected_components`, criterion verification, and `docs/test-catalog.json`, compute:
+Using `affected_components`, criterion verification, and `docs/test-registry.json`, compute:
 
 ```text
 Required Test Set =
@@ -103,7 +103,7 @@ Also identify:
   include it in the same plan and reuse existing approval for that exact scope;
 - criteria that remain manual-only and why automation is not appropriate.
 
-Do not remove a deterministic Required Test Set item through a runner exclusion, even with an approval note. An approved retirement or catalog correction must change the underlying traceable contract before recomputing the selection.
+Do not remove a deterministic Required Test Set item through a runner exclusion, even with an approval note. An approved retirement or registry correction must change the underlying traceable contract before recomputing the selection.
 
 ### 1B. Resource/dependency preflight
 
@@ -132,9 +132,9 @@ After approval:
 
 1. set the selected index entry to `in_progress`, `completed_at: null`;
 2. update `docs/progress.md` with current Feature/batch and Stage, blockers, pending decisions, next legal action, and links to the approved plan/evidence; keep history bodies in `docs/progress/`;
-3. persist approved `verification.acceptance_mode`, criterion verification mappings, Bug regression IDs, and `verification.test_impact` in the Feature detail. Store additional related tests as `additional_tests: [{"id": "<catalog ID>", "reason": "<approved reason>"}]` and full-suite obligations as `full_suite_reasons: ["<approved reason>"]`. The runner always reads this recorded scope; changing invocation arguments must not shrink approved coverage. Removing an obligation requires an explicit approved plan revision;
-4. register not-yet-created durable acceptance/regression tests in `docs/test-catalog.json` with `status: planned`;
-5. add newly approved component entries to the catalog when required, with `unit_test_paths: []` if no unit suite exists;
+3. persist approved `verification.acceptance_mode`, criterion verification mappings, Bug regression IDs, and `verification.test_impact` in the Feature detail. Store additional related tests as `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]` and full-suite obligations as `full_suite_reasons: ["<approved reason>"]`. The runner always reads this recorded scope; changing invocation arguments must not shrink approved coverage. Removing an obligation requires an explicit approved plan revision;
+4. register not-yet-created durable acceptance/regression tests in `docs/test-registry.json` with `status: planned`;
+5. add newly approved component entries to the registry when required, with `unit_test_paths: []` if no unit suite exists;
 6. initialize the current Feature's structured completion evidence:
 
    ```powershell
@@ -164,7 +164,7 @@ Before writing behavior-changing implementation code:
 For each machine-verifiable new acceptance criterion or Bug regression:
 
 1. create the test using its approved logical ID;
-2. update the matching catalog entry with path/case and `status: active` once the test exists;
+2. update the matching registry entry with path/case and `status: active` once the test exists;
 3. run the narrowest supported selector;
 4. confirm the test fails for the intended missing/broken behavior, not because of syntax, fixture, environment, or unrelated setup failure.
 
@@ -186,7 +186,7 @@ tree so Stage 7 can stage this Feature without absorbing unrelated changes.
 
 Perform the approved test-code and current-reference cleanup with the behavior
 change, following [the stale-test contract](08-testing-strategy.md#requirement-changes-and-stale-tests).
-Catalog retirement alone does not remove executable methods; preserve valid
+Registry retirement alone does not remove executable methods; preserve valid
 shared cases and historical records.
 
 At implementation completion, map changed behavior to every criterion ID.
@@ -202,7 +202,7 @@ Read project commands from `docs/methodology-config.json`:
 
 Procedure:
 
-1. Read the current Feature/Catalog obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks, actual human acceptance and independent review. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
+1. Read the current Feature/Registry obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks, actual human acceptance and independent review. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
 2. Inspect the actual selected scope and test results. If full is required, run one real full suite whose executed set covers Required and affected; do not repeat equivalent runs merely to fill different Gate fields. Otherwise run the affected union, including every Required item.
 3. Directly run Godot script parsing for changed scripts and necessary dependants,
    then the bundled lint CLI as described in `gdscript-lint.md`. Inspect actual
@@ -270,7 +270,7 @@ Do not persist failed debugging guesses, redundant traces, or incidental machine
 
 Evaluate whether the Guardrail is reusable enough for Coding Rules according to [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md). If so, show the exact proposed prescriptive rule and destination, then wait for explicit user approval. Never promote automatically.
 
-If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and catalog entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
+If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and registry entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
 
 If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` before another Feature starts.
 
@@ -294,7 +294,7 @@ Use one review pass for both questions:
    acceptance decision or rewrite AC to fit the implementation. For changed or
    removed contracts, inspect the final diff, affected current references and
    actual discovery/results for required obsolete-test cleanup and retained valid
-   coverage. Unfinished required cleanup is `must_fix`; Catalog status alone
+   coverage. Unfinished required cleanup is `must_fix`; Registry status alone
    cannot establish completion.
 2. **Code quality:** Inspect oversized files, duplicated domain knowledge,
    misplaced type dispatch, magic values, duplicated constants/enums, God
@@ -319,7 +319,7 @@ current successful run; additional verification needs a concrete unanswered risk
 Processing rules:
 
 1. Every `must_fix` is repaired before completion.
-2. After each repair batch, read the current Feature/Catalog selection and repeat the applicable Stage 4 checks, including its no-automated-obligations decision and direct script parsing/lint. A full run covering the required subsets on the same content snapshot needs no separate Required/affected run.
+2. After each repair batch, read the current Feature/Registry selection and repeat the applicable Stage 4 checks, including its no-automated-obligations decision and direct script parsing/lint. A full run covering the required subsets on the same content snapshot needs no separate Required/affected run.
 3. If a review repair may change behavior already accepted by the user, return to Stage 3 and repeat Stages 4–6, including human acceptance.
 4. Re-review until `must_fix` is empty.
 5. Append each `suggest` to Feature notes with `TODO`; report `acceptable` without turning it into durable debt automatically.
@@ -377,7 +377,7 @@ local commits remain on the current branch, including `main` or `master`.
 | Completed dependency materially incomplete | Report gap and obtain user direction. |
 | Implementation needs out-of-scope files/behavior | Explain expansion and obtain approval or create another Feature. |
 | Existing Safety Net fails before implementation | Preserve original error and obtain direction; do not silently absorb unrelated repair. |
-| Test catalog is inconsistent | Stop and repair traceability before using it to choose tests. |
+| Test registry is inconsistent | Stop and repair traceability before using it to choose tests. |
 | Test/command/file/Git operation fails | Preserve original error; use only safe workflow-defined recovery. |
 | Context near exhaustion | Persist current state in Progress before session handoff. |
 | Unrelated work arrives mid-Feature | Classify it separately; do not silently expand current scope. |

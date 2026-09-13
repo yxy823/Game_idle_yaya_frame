@@ -81,7 +81,7 @@ def _is_fingerprint_input(relative_path: str) -> bool:
 def semantic_json(relative_path: str, data: Any) -> Any:
     """Project workflow state is not verification semantics; nested contracts are.
 
-    Deliberately do not recursively drop fields: a Catalog test's status or an
+    Deliberately do not recursively drop fields: a Registry test's status or an
     acceptance criterion's text/verification is part of the active contract.
     Unknown contract fields remain hashed rather than silently becoming exempt.
     """
@@ -95,7 +95,7 @@ def semantic_json(relative_path: str, data: Any) -> Any:
             {key: value for key, value in feature.items() if key not in PROCESS_FIELDS}
             for feature in result.get("features", [])
         ]
-    if relative_path in {"docs/feature-list.json", "docs/test-catalog.json"}:
+    if relative_path in {"docs/feature-list.json", "docs/test-registry.json"}:
         result["meta"] = {key: value for key, value in data.get("meta", {}).items()
                           if key not in PROCESS_FIELDS and not key.endswith("_at")}
     if relative_path == "docs/feature-list-revisions.json":
@@ -122,7 +122,7 @@ def _hash_file(digest: Any, path: Path) -> None:
 def working_tree_fingerprint(repo_root: Path) -> str:
     """Hash tracked and non-ignored untracked content for the current code snapshot.
 
-    Feature/Catalog verification semantics are canonical JSON inputs. Only known
+    Feature/Registry verification semantics are canonical JSON inputs. Only known
     process fields, evidence outputs and Progress/knowledge Markdown are exempt. A Git
     commit is provenance, not an additional invalidation of identical content.
     """
@@ -148,7 +148,7 @@ def working_tree_fingerprint(repo_root: Path) -> str:
         if candidate.is_file():
             digest.update(b"file\0")
             if normalized.startswith("docs/features/") and normalized.endswith(".json") or normalized in {
-                "docs/feature-list.json", "docs/test-catalog.json", "docs/methodology-config.json",
+                "docs/feature-list.json", "docs/test-registry.json", "docs/methodology-config.json",
                 "docs/feature-list-revisions.json",
             }:
                 try:

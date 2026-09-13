@@ -29,13 +29,13 @@ class FrameworkEvidenceTests(unittest.TestCase):
                 "verification": {"automated_tests": ["F001-AC01"], "manual_checks": []}}],
             "verification": {"acceptance_mode": "automated", "regression_tests": [], "manual_regression": None}, "notes": "",
         }
-        self.catalog = {"meta": {"schema_version": 2}, "components": [
+        self.registry = {"meta": {"schema_version": 2}, "components": [
             {"id": "example", "unit_test_paths": ["tests/unit"], "full_suite_on_change": False}],
             "tests": [{"id": "F001-AC01", "kind": "acceptance", "source_feature": "F001",
                 "criterion_id": "AC01", "components": ["example"],
                 "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]}
         self.write_json("docs/features/F001.json", self.detail)
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.write_json("docs/test-registry.json", self.registry)
         self.write_json("docs/feature-list.json", {"meta": {"total_features": 1}, "features": [
             {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
         self.write_json("docs/methodology-config.json", {"test_framework": "gdunit4", "test_unit_root": "tests/unit",
@@ -89,6 +89,20 @@ class FrameworkEvidenceTests(unittest.TestCase):
         gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
         self.assertTrue(gate_evidence.validate_completion_evidence(self.root, "F001")[0])
 
+    def test_test_registry_uses_fixed_path_even_with_obsolete_config(self):
+        from tools.lib.test_selection import build_selection
+        config_path = self.root / "docs/methodology-config.json"
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+        config["test_catalog_path"] = "docs/unused-tests.json"
+        self.write_json("docs/methodology-config.json", config)
+        self.write_json("docs/unused-tests.json", {"meta": {"schema_version": 0}})
+
+        selection = build_selection(self.root, "F001")
+
+        self.assertEqual(selection["selectors"], ["tests/features/acceptance.gd", "tests/unit"])
+        self.assertIn("F001-AC01", [test_id for item in selection["required"]
+                                  for test_id in item["logical_ids"]])
+
     def test_empty_checks_do_not_decide_the_acceptance_mode(self):
         from tools.lib.test_selection import SelectionError, build_selection
         del self.detail["verification"]["acceptance_mode"]
@@ -100,10 +114,10 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.detail["verification"]["acceptance_mode"] = "manual"
         self.detail["acceptance_criteria"][0]["verification"] = {
             "automated_tests": [], "manual_checks": ["Listen to the approved sound"]}
-        self.catalog["components"][0]["unit_test_paths"] = []
-        self.catalog["tests"] = []
+        self.registry["components"][0]["unit_test_paths"] = []
+        self.registry["tests"] = []
         self.write_json("docs/features/F001.json", self.detail)
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.write_json("docs/test-registry.json", self.registry)
 
     def test_manual_without_automated_obligations_still_needs_acceptance_and_review(self):
         from tools.lib.run_evidence import derive_test_evidence
@@ -131,14 +145,14 @@ class FrameworkEvidenceTests(unittest.TestCase):
         for obligation in ("unit", "affected", "full"):
             with self.subTest(obligation=obligation):
                 self.manual_without_automated_obligations()
-                self.catalog["components"][0]["full_suite_on_change"] = obligation == "full"
+                self.registry["components"][0]["full_suite_on_change"] = obligation == "full"
                 if obligation == "unit":
-                    self.catalog["components"][0]["unit_test_paths"] = ["tests/unit"]
+                    self.registry["components"][0]["unit_test_paths"] = ["tests/unit"]
                 elif obligation == "affected":
-                    self.catalog["tests"] = [{"id": "F002-AC01", "kind": "acceptance",
+                    self.registry["tests"] = [{"id": "F002-AC01", "kind": "acceptance",
                         "source_feature": "F002", "criterion_id": "AC01", "components": ["example"],
                         "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]
-                self.write_json("docs/test-catalog.json", self.catalog)
+                self.write_json("docs/test-registry.json", self.registry)
                 with self.assertRaisesRegex(RunEvidenceError, "no real test run"):
                     derive_test_evidence(self.root, "F001", [])
 
@@ -148,8 +162,8 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.manual_without_automated_obligations()
         with self.assertRaisesRegex(SelectionError, "zero test paths"):
             execution_selectors(self.root, build_selection(self.root, "F001"), "affected")
-        self.catalog["components"][0]["unit_test_paths"] = ["tests/missing"]
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["components"][0]["unit_test_paths"] = ["tests/missing"]
+        self.write_json("docs/test-registry.json", self.registry)
         with self.assertRaises(SelectionError):
             derive_test_evidence(self.root, "F001", [])
         self.manual_without_automated_obligations()
@@ -231,8 +245,8 @@ class FrameworkEvidenceTests(unittest.TestCase):
 
     def test_selection_derives_required_and_removes_overlapping_targets(self) -> None:
         from tools.lib.test_selection import build_selection
-        self.catalog["components"][0]["unit_test_paths"].append("tests/unit/example.gd")
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["components"][0]["unit_test_paths"].append("tests/unit/example.gd")
+        self.write_json("docs/test-registry.json", self.registry)
         plan = build_selection(self.root, "F001")
         self.assertEqual(plan["selectors"], ["tests/features/acceptance.gd", "tests/unit"])
         self.assertEqual(len(plan["required"]), 3)
@@ -247,13 +261,13 @@ class FrameworkEvidenceTests(unittest.TestCase):
         with self.assertRaises(SelectionError):
             build_selection(self.root, "F001")
 
-    def test_catalog_full_trigger_and_missing_path_are_not_silently_filtered(self) -> None:
+    def test_registry_full_trigger_and_missing_path_are_not_silently_filtered(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
-        self.catalog["components"][0]["full_suite_on_change"] = True
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["components"][0]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
         self.assertTrue(build_selection(self.root, "F001")["full_suite"]["required"])
-        self.catalog["components"][0]["unit_test_paths"] = ["tests/missing"]
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["components"][0]["unit_test_paths"] = ["tests/missing"]
+        self.write_json("docs/test-registry.json", self.registry)
         with self.assertRaises(SelectionError):
             build_selection(self.root, "F001")
 
@@ -338,8 +352,8 @@ class FrameworkEvidenceTests(unittest.TestCase):
 
     def test_required_full_escalation_cannot_be_claimed_by_affected_run(self) -> None:
         from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
-        self.catalog["components"][0]["full_suite_on_change"] = True
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["components"][0]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
         plan, path = self.run_fixture(scope="affected")
         with self.assertRaisesRegex(RunEvidenceError, "full-suite"):
             derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
@@ -353,15 +367,15 @@ class FrameworkEvidenceTests(unittest.TestCase):
 
     def test_manual_criterion_does_not_allow_a_retired_direct_automated_mapping(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
-        self.catalog["tests"][0]["status"] = "retired"
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["tests"][0]["status"] = "retired"
+        self.write_json("docs/test-registry.json", self.registry)
         with self.assertRaisesRegex(SelectionError, "retired"):
             build_selection(self.root, "F001")
 
     def test_baseline_planned_tests_are_excluded_but_never_final_evidence(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
-        self.catalog["tests"][0].update(status="planned", path="tests/future.gd")
-        self.write_json("docs/test-catalog.json", self.catalog)
+        self.registry["tests"][0].update(status="planned", path="tests/future.gd")
+        self.write_json("docs/test-registry.json", self.registry)
         plan = build_selection(self.root, "F001", phase="baseline")
         self.assertTrue(all(item["path"] != "tests/future.gd" for item in plan["required"]))
         with self.assertRaisesRegex(SelectionError, "planned"):

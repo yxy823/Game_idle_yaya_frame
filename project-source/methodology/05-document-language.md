@@ -35,12 +35,15 @@ Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case 
 
 - `test_cmd`: default automated test command or test-runner entrypoint. The agent may select a narrower test target supported by the project, but must not invent unsupported commands.
 - `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.
-- `test_catalog_path`: canonical machine-readable catalog path, normally `docs/test-catalog.json`.
 - `test_unit_root`, `test_feature_root`, `test_invariant_root`: project test-layout roots. These are project conventions consumed by test planning; a test framework may store its own plugin/runtime files elsewhere.
 - `python_executable`: Complete Python executable path or name used by project tools. It contains no script path or appended arguments; no automatic Hook is registered.
 - `environment_bootstrap`: setup status, actual Godot executable and observed version, as described below.
 
 These values are machine-facing command strings and must not be translated when `document_language` changes. A document-language migration preserves them byte-for-byte unless the user separately changes the project's verification setup.
+
+The Test Registry always lives at `docs/test-registry.json`, relative to the project root.
+Its location is shared by the merger, checker, test selector and completion check;
+it is not a configuration field or duplicated Feature-index metadata.
 
 ### Project Environment Bootstrap
 
@@ -137,7 +140,7 @@ The following elements must remain stable English or language-neutral protocol v
 - Placeholder prefixes such as `_placeholder_`
 - Review severity values `must_fix`, `suggest`, and `acceptable`
 - Structured gate-evidence keys/status values; human-readable summaries follow the conversation language
-- Test IDs (`F0XX-ACyy`, `F0XX-RTyy`, `INV-<DOMAIN>-NN`), component IDs, test kinds/status values, and test catalog keys
+- Test IDs (`F0XX-ACyy`, `F0XX-RTyy`, `INV-<DOMAIN>-NN`), component IDs, test kinds/status values, and test registry keys
 - ISO 8601 timestamps and programming-language identifiers
 
 An agent must translate meaning-bearing prose, not keys, enums, IDs, evidence strings, paths, or identifiers.
@@ -206,7 +209,7 @@ The first international release verifies English and Simplified Chinese project 
 
 - a runtime localization framework or translation service
 - localized copies of canonical workflow sources
-- localized tool error catalogs
+- localized tool error registries
 - automatic translation of an existing project
 - region-specific variants of English
 - verified output for every BCP 47 language tag

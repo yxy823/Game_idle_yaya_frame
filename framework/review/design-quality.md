@@ -21,7 +21,7 @@
 | Skill | 当前 12 项；新增 `project-clarifier` 复用提问方法与 Product 写入入口，按需维护项目 CONTEXT，不增加脚本或问卷状态。专用脚本仍在所属 Skill 的 `scripts/` |
 | 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 六个共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
-| 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/Catalog；没有独立计划命令、计划文件或计划哈希 |
+| 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表；没有独立计划命令、计划文件或计划哈希 |
 | 静态检查 | Agent 按 `methodology/gdscript-lint.md` 直接调用 Godot 解析和插件 CLI；没有包装脚本、专用 manifest 或静态证据注册 |
 | 提示词 | 仅 [prompts.json](../prompts.json) 按框架维护与项目开发两个 Project 保存完整正文，不进入项目；使用清单与正文对应，按需选用 |
 
@@ -50,7 +50,7 @@ gdUnit 的 `GdUnitTestSessionHook` 是测试生命周期扩展，用于关联诊
 
 | 事实 | 当前来源 | 应守住的边界 |
 | --- | --- | --- |
-| 需求、任务与测试关系 | Product、Feature 索引/详情、Test Catalog | 各文件负责产品意图、任务记录或测试映射；不要再复制为独立机器计划 |
+| 需求、任务与测试关系 | Product、Feature 索引/详情、测试登记表 | 各文件负责产品意图、任务记录或测试映射；不要再复制为独立机器计划 |
 | 当前交接与必要历史 | `docs/progress.md`、`docs/progress/`、Feature notes | 普通 Markdown 与链接；不要求机器标记或自动归档 |
 | 本项目环境 | `docs/methodology-config.json` | 记录实际路径和命令；ready 是配置记录，不能冒充本轮检查已通过 |
 | 本次运行事实 | result.json、JUnit、discovery、诊断与引擎日志；解析/lint 的原始输出 | 保留真实执行和必要关联；不能用手填数量、旧文件时间或对话摘要冒充新通过 |
@@ -157,7 +157,7 @@ Godot 4.7.1.stable.official.a13da4feb。
 | 项目工具回归 | 136 项 unittest 通过；含合成报告负向用例与真实 Windows 子进程检查，不冒充完整游戏/gdUnit Feature 实测 |
 | 脚本解析 | 直接 Godot --check-only：三个项目工具 GDScript 均退出 0 |
 | 项目 lint | 插件 CLI 直接检查 3 文件：Critical 0、Warning 0、Info 1；Info 为 Logger 强制八参数的说明 |
-| 环境与台账 | readiness 成功；空白 Feature/Catalog strict 退出 0。没有虚构业务 Feature 或验收记录 |
+| 环境与台账 | readiness 成功；空白 Feature/测试登记表 strict 退出 0。没有虚构业务 Feature 或验收记录 |
 | 未运行 | 新项目生成、下一 Feature、游戏场景启动、完整人工体验验收；本轮不涉及它们 |
 
 首轮 unittest 的 7 项失败来自两组临时夹具漏复制新增依赖，1 项失败来自把变化的

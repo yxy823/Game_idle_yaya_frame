@@ -94,9 +94,9 @@ Stop on material ambiguity rather than converting uncertainty into implementatio
 
 Read `docs/feature-list.json` and relevant detail files. If the Feature plan does not exist, route to `generate-feature-list` first.
 
-Read `docs/test-catalog.json` before proposing affected components. Reuse existing
+Read `docs/test-registry.json` before proposing affected components. Reuse existing
 records and identify any new component entries or conflicts in the proposal, following
-the Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+the Test registry contract in `.agents/skills/generate-feature-list/SKILL.md`.
 
 Propose the smallest Feature that can be implemented and verified in one normal work session. Split any `large` change before writing.
 
@@ -149,7 +149,7 @@ Show the proposed Feature ID, title, mode, dependencies, affected components, st
 After approval:
 
 Before writing the Feature plan, merge any approved new components with the existing
-`.agents/skills/generate-feature-list/scripts/merge_test_catalog.py` command and
+`.agents/skills/generate-feature-list/scripts/merge_test_registry.py` command and
 candidate format from that contract. Preserve existing components/tests and reject
 conflicting existing IDs. New components use `unit_test_paths: []` when no suite
 exists and `full_suite_on_change: false` unless the approved contract requires it;
@@ -207,7 +207,7 @@ Promotion always requires explicit user approval. A rejected promotion leaves th
 - `generate-feature-list`: creates the initial Product-derived plan.
 - `sync-feature-list`: synchronizes committed Product or Coding Rules source changes.
 - `pick-refactor-smell`: selects a recorded refactor candidate, then returns the selection here.
-- `execute-next-feature`: performs Test Impact Review, persists the approved test plan/catalog entries, executes TDD/verification, applicable human acceptance, independent review, completion, and handoff.
+- `execute-next-feature`: performs Test Impact Review, persists the approved test plan/registry entries, executes TDD/verification, applicable human acceptance, independent review, completion, and handoff.
 
 The routing invariant is:
 

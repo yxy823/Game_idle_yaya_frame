@@ -150,13 +150,13 @@ Engineering Features use the normal Feature/test ledger: stable `ACxx` criteria,
 
 Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential Feature ID; do not rewrite completed Feature definitions.
 
-Read the existing Test Catalog when proposing `affected_components`. After approval,
+Read the existing Test Registry when proposing `affected_components`. After approval,
 register missing components before writing/validating the Feature, using the existing
-merge helper and Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+merge helper and Test registry contract in `.agents/skills/generate-feature-list/SKILL.md`.
 Reuse existing records without resetting tests; report conflicting IDs. A component
 without an existing unit suite uses `unit_test_paths: []`, and its full-suite flag
 defaults to false unless the approved contract requires otherwise. Include these
-task-owned Catalog changes in the same Feature-plan commit; test mappings are still
+task-owned Registry changes in the same Feature-plan commit; test mappings are still
 finalized during execution. After the consistent set is written, validate:
 
 ```powershell
@@ -185,7 +185,7 @@ Guardrail: ...
 
 The local record is factual incident knowledge. Link to `bug_diagnosis` or the
 execution archive for detailed evidence instead of copying the incident transcript.
-Regression IDs are also registered in `docs/test-catalog.json`. Coding Rules are
+Regression IDs are also registered in `docs/test-registry.json`. Coding Rules are
 prescriptive global knowledge. If an approved Guardrail becomes machine-verifiable
 across Features, it may also become an `INV-<DOMAIN>-NN` invariant under
 `08-testing-strategy.md`. Check existing rules before recommending a new rule.

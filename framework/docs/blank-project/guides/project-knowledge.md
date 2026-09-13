@@ -29,7 +29,7 @@ flowchart LR
     A[架构地图与 ADR] --> F
     C[Coding Rules 与工程规则] --> F
     K[Knowledge 相关实践经验] -. 适用条件与证据 .-> F
-    F --> T[Test Catalog 与验证]
+    F --> T[测试登记表与验证]
     T --> R[真实报告]
     R --> E[完成依据]
     F --> N[Feature notes 长期局部记录]

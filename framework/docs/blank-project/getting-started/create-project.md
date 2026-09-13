@@ -64,7 +64,7 @@ sequenceDiagram
 | 开发 Skill | `skills/` 成为 `.agents/skills/` |
 | 环境配置 | `Project_Config.json` 成为 `docs/methodology-config.json`，状态仍为 `incomplete` |
 | Product | `docs/product.md` 是空文件 |
-| Feature 与 Catalog | 空索引、空修订记录、空组件与测试集合 |
+| Feature 与测试登记表 | 空索引、空修订记录、空组件与测试集合 |
 | Godot | 显示名称为 `New Godot Project`，未设置主场景 |
 | Git | 创建器不执行 `git init`，没有由它建立的提交 |
 | 实际验证 | 没有执行环境检查、Godot、lint 或测试 |

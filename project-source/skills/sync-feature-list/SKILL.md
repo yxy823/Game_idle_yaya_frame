@@ -35,7 +35,7 @@ With `document_language: en` and a Chinese conversation, discuss the diff in Chi
 |---|---|---|
 | `docs/feature-list.json` | Index: each Feature's `id`, `title`, `status`, `depends_on`, `estimated_scope`, and `completed_at` | Read the full index for scanning; update the index together with corresponding details |
 | `docs/features/F0XX.json` | Detail: stable criteria, `affected_components`, verification mapping, source, notes | Read details on demand; update each affected detail together with the index |
-| `docs/test-catalog.json` | Component/test traceability used for stale-test impact analysis | Read before proposing revisions; update approved new components, replacement test mappings, retirements and path metadata |
+| `docs/test-registry.json` | Component/test traceability used for stale-test impact analysis | Read before proposing revisions; update approved new components, replacement test mappings, retirements and path metadata |
 | `docs/feature-list-revisions.json` | Append-only `revision_log` | Read the last entry for the previous anchor; append one entry in Stage 5 |
 
 ## Source documents
@@ -162,17 +162,17 @@ For a module-file rename, identify every detail whose `source` uses the old path
 
 ### 2.4 Analyze downstream regression and stale-test impact
 
-Compare every proposed `affected_components` ID with the current Catalog. Include
+Compare every proposed `affected_components` ID with the current Registry. Include
 new component records and conflicting existing records in the proposal, using the
-Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+Test registry contract in `.agents/skills/generate-feature-list/SKILL.md`.
 
-For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-catalog.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
+For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
 
 Follow **Requirement changes and stale tests** in
 `methodology/08-testing-strategy.md`: read affected test code, including unit tests
-without Catalog IDs. Include necessary assertion/method/file cleanup, affected
+without Registry IDs. Include necessary assertion/method/file cleanup, affected
 current references or registrations, and its owning Feature in the same report.
-Retiring Catalog metadata does not remove cases from a selected suite.
+Retiring Registry metadata does not remove cases from a selected suite.
 
 ### 2.5 Report the diff
 
@@ -247,8 +247,8 @@ Never enter Stage 4 without explicit confirmation.
 **Output:** a consistent index and affected detail files. Every addition or revision must update the correct sides together.
 
 Before rewriting Features or test retirements, merge approved new components using
-the existing `.agents/skills/generate-feature-list/scripts/merge_test_catalog.py`
-command and candidate format in the Test catalog contract above. Preserve existing
+the existing `.agents/skills/generate-feature-list/scripts/merge_test_registry.py`
+command and candidate format in the Test registry contract above. Preserve existing
 records; conflicting existing IDs must be resolved explicitly, not overwritten.
 Use `unit_test_paths: []` if no suite exists and `full_suite_on_change: false` unless
 the approved contract requires it. Do not invent future paths or commit temporary
@@ -291,7 +291,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 | Current status | Confirmed action |
 |---|---|
-| `pending` | Update detail `description`, `affected_components`, and criterion text/IDs before execution; preserve any still-valid planned verification mapping, explicitly retire superseded planned catalog entries, append a localized timestamped revision note; change index `title` only when affected |
+| `pending` | Update detail `description`, `affected_components`, and criterion text/IDs before execution; preserve any still-valid planned verification mapping, explicitly retire superseded planned registry entries, append a localized timestamped revision note; change index `title` only when affected |
 | `in_progress` | Apply the `pending` action and warn that current implementation may need adjustment |
 | `done` | Do not modify the original index entry or detail. Append a new Feature that revises the implementation for the new Product rule, depends on the original ID, and states the new behavior in its acceptance criteria |
 | `obsolete` or `obsolete_done` | Normally do nothing. If the user wants reactivation, require an explicit decision and append a new Feature |
@@ -338,7 +338,7 @@ For each dependent Feature identified in Stage 2.4:
 - Record approved test-code and current-reference cleanup in the owning new or
   unfinished Feature's `notes`, with exact paths/methods and intended action.
   Leave implementation to `execute-next-feature`; report it as pending until
-  performed and verified. Do not delete historical Feature/Catalog records.
+  performed and verified. Do not delete historical Feature/Registry records.
 - Still-valid regression/invariant tests remain active and will be selected later by `execute-next-feature` through component intersection.
 - New Feature additions declare `affected_components`; ordinary new test IDs are
   finalized in `execute-next-feature` Stage 1/2. When an approved retirement needs
@@ -347,8 +347,8 @@ For each dependent Feature identified in Stage 2.4:
   implementation or imply coverage. The replacement Feature must activate and
   execute them before completion. Retirement without replacement is blocked; a
   removed behavior is verified by the new removal contract.
-- Keep `docs/test-catalog.json` machine-readable; do not use it as a narrative revision log.
-- Catalogs, revision roots and revision entries use schema version 2. Append
+- Keep `docs/test-registry.json` machine-readable; do not use it as a narrative revision log.
+- Registries, revision roots and revision entries use schema version 2. Append
   revisions without rewriting current-format history. Unsupported formats and
   retired records lacking provenance fail validation; do not invent migration data.
 
@@ -427,14 +427,14 @@ are stable and unique; retirement records refer to this ID, never a free-text no
 - [ ] Every non-historical detail `source` resolves to an existing module file and section after renames.
 - [ ] The last revision entry contains the correct `synced_at_commit`.
 - [ ] `meta.total_features`, index length, and detail-file count are equal.
-- [ ] The index, revision log, test catalog, and every affected detail pass `python -B -m json.tool`.
+- [ ] The index, revision log, test registry, and every affected detail pass `python -B -m json.tool`.
 - [ ] Confirmed stale-test metadata changes were applied without changing completed Feature history; necessary code/reference cleanup is assigned to the owning Feature and reported as pending implementation.
 - [ ] Every retirement has validated source/reason/replacement/revision provenance; pending replacement coverage is explicitly reported.
 
 4. Stage and commit only Feature-plan files:
 
 ```text
-git add docs/feature-list.json docs/feature-list-revisions.json docs/test-catalog.json <explicit-affected-detail-paths>
+git add docs/feature-list.json docs/feature-list-revisions.json docs/test-registry.json <explicit-affected-detail-paths>
 git diff --cached --check
 git diff --cached --stat
 git diff --cached
@@ -488,7 +488,7 @@ Do not automatically start another Feature. Wait for the user's instruction.
 
 ## Git boundaries
 
-- Allowed on the current branch, including `main` or `master`: `git diff`, `git log`, staging only the explicit task-owned Feature-plan paths (including affected test-catalog paths), then the synchronization commit and post-commit status check.
+- Allowed on the current branch, including `main` or `master`: `git diff`, `git log`, staging only the explicit task-owned Feature-plan paths (including affected test-registry paths), then the synchronization commit and post-commit status check.
 - This workflow does not switch branches, stash, restore, discard, or absorb dirty-worktree changes; it blocks until the user supplies a clean worktree.
 - Forbidden: push, tag, amend, rebase, reset, remote modification, `--no-verify`, force operations, and automatic branch creation, switching, merging, or deletion.
 
