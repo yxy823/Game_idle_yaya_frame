@@ -51,6 +51,8 @@ $LASTEXITCODE
 
 `test_cmd` 是一整条命令文本，不能用 `& $projectConfig.test_cmd` 把它当作一个可执行文件名。日常调用可按已确认命令展开为独立参数，示例见 [命令参考](commands-and-validation.md)。
 
+Godot 的 `engine_executable` 必须是实际文件路径，可以是绝对路径，也可以相对项目根目录；环境检查和测试运行器使用同一解析方式，不去 PATH 寻找同名安装。`python_executable` 仍支持完整路径或 PATH 中的命令名。路径字段不含额外 shell 引号或参数，带空格和非 ASCII 字符的完整工具路径可保留。
+
 项目输出目录禁止中文或空白，与工具路径字段能否包含空格是两个不同约束。不要把创建器的目录限制误套到所有配置字符串上。
 
 ## 文档语言

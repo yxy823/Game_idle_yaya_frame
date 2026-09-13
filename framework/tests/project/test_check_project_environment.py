@@ -138,6 +138,18 @@ class ProjectEnvironmentTests(unittest.TestCase):
             errors,
         )
 
+    def test_godot_requires_a_file_path_while_python_still_accepts_a_path_command(self) -> None:
+        config = self._ready_config("4.7.1.stable")
+        config["python_executable"] = "python-on-path"
+        config["environment_bootstrap"]["engine_executable"] = "godot-on-path"
+        with mock.patch.object(check_project_environment.shutil, "which", return_value=sys.executable), \
+                mock.patch.object(check_project_environment, "_read_engine_version",
+                                  return_value=("4.7.1.stable", None)) as probe:
+            errors = check_project_environment._readiness_errors(config, self.repo_root)
+        self.assertEqual(len(errors), 1, errors)
+        self.assertIn("engine executable is unavailable", errors[0])
+        probe.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

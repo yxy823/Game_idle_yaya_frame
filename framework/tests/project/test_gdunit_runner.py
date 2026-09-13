@@ -80,6 +80,14 @@ class GdUnitRunnerTests(unittest.TestCase):
             with self.subTest(value=invalid), self.assertRaises(argparse.ArgumentTypeError):
                 runner._positive_seconds(invalid)
 
+    def test_project_relative_engine_path_preserves_spaces_and_unicode(self) -> None:
+        executable = self.root / "engine folder" / "工具.exe"
+        executable.parent.mkdir()
+        executable.touch()
+        args = runner._parse_args(["--godot-binary", executable.relative_to(self.root).as_posix()])
+        command = runner._build_command(args, self.root / "reports")
+        self.assertEqual(command[0], str(executable.resolve()))
+
     def test_stdin_is_closed_and_both_streams_are_collected(self) -> None:
         command = [sys.executable, "-c", (
             "import sys; print('stdout', flush=True); "

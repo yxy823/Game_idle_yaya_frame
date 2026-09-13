@@ -50,7 +50,7 @@ separate setup program.
 
 The `environment_bootstrap` object stores only:
 - `status`: `incomplete` or `ready`;
-- `engine_executable`: complete Godot executable path or name, without shell quotes or arguments;
+- `engine_executable`: complete Godot executable file path, absolute or relative to the project root, without shell quotes or arguments; no PATH lookup;
 - `engine_version`: the exact output observed from `Godot --version`.
 
 Use the user-configured `engine_executable` directly without rediscovering it.

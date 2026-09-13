@@ -167,11 +167,13 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     engine_executable = bootstrap.get("engine_executable")
     if not _nonempty_string(engine_executable):
         errors.append("engine executable is not configured")
-    elif not _executable_exists(engine_executable, repo_root):
-        errors.append(f"engine executable is unavailable: {engine_executable!r}")
+    # The gdUnit runner treats Godot as an absolute/project-relative file path;
+    # readiness must probe that same file instead of accepting a PATH substitute.
+    elif not (repo_root / engine_executable).resolve().is_file():
+        errors.append(f"engine executable is unavailable: {engine_executable!r}; use an absolute or project-relative file path, not PATH lookup")
     elif _nonempty_string(bootstrap.get("engine_version")):
         observed_version, version_error = _read_engine_version(
-            _resolve_executable_path(engine_executable, repo_root),
+            (repo_root / engine_executable).resolve(),
             repo_root,
         )
         if version_error is not None:
