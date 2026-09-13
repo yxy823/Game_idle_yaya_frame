@@ -58,6 +58,9 @@ def _run_tests(args: argparse.Namespace) -> int:
     directory = Path(tempfile.mkdtemp(prefix="run-", dir=report_base))
     print(f"Run result: {directory / 'result.json'}", flush=True)
     result = start_run(REPO_ROOT, directory, args.feature, args.phase, args.scope)
+    if result["status"] == "failed":
+        print("TEST VERDICT: FAIL - " + "; ".join(result["errors"]), file=sys.stderr)
+        return 1
     process = None
     errors = []
     try:

@@ -261,22 +261,42 @@ def artifact_reference(directory: Path, path: Path) -> dict[str, str]:
     return {"path": relative, "sha256": file_hash(path)}
 
 
-def _run_records(root: Path) -> list[dict]:
-    """Read the runner's own result files; no separate journal or lock state."""
-    return [read_json(path) for path in (root / "reports/gdunit-wrapper").glob("run-*/result.json")]
+def _run_records(root: Path) -> tuple[list[dict], list[str]]:
+    """Read usable run headers and report errors without discarding their paths."""
+    records, errors = [], []
+    for path in (root / "reports/gdunit-wrapper").glob("run-*/result.json"):
+        try:
+            record = read_json(path)
+            if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
+                raise RunEvidenceError("unsupported run result schema")
+            if record.get("run_id") != path.parent.name:
+                raise RunEvidenceError("run identity does not match its directory")
+            if type(record.get("sequence")) is not int or record["sequence"] < 1:
+                raise RunEvidenceError("run sequence must be a positive integer")
+            records.append(record)
+        except (ValueError, OSError) as error:
+            errors.append(f"invalid run history {path}: {error}")
+    return records, errors
 
 
 def start_run(root: Path, directory: Path, feature_id: str | None,
               phase: str, scope: str) -> dict:
-    # Persist before setup/launch: an interrupted or failed launch remains visible.
-    records = _run_records(root)
+    # Scan before the first write so this run cannot select itself as history.
+    # Unreadable history blocks execution, but still leaves this attempt visible.
+    started_at = utc_now()
+    records, errors = _run_records(root)
+    snapshot = None
+    try:
+        snapshot = current_snapshot(root) if feature_id else None
+    except (ValueError, OSError) as error:
+        errors.append(str(error))
     result = {"schema_version": 1, "run_id": directory.name,
               "sequence": 1 + max((item["sequence"] for item in records), default=0),
               "feature_id": feature_id, "phase": phase, "scope": scope,
-              "snapshot": current_snapshot(root) if feature_id else None,
-              "started_at": utc_now(), "finished_at": None,
-              "command": [], "selectors": [], "status": "running",
-              "process": None, "errors": [], "artifacts": {}}
+              "snapshot": snapshot,
+              "started_at": started_at, "finished_at": utc_now() if errors else None,
+              "command": [], "selectors": [], "status": "failed" if errors else "running",
+              "process": None, "errors": errors, "artifacts": {}}
     write_evidence(directory / "result.json", result)
     return result
 
@@ -379,7 +399,10 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
     # Sequence is local run order, not filesystem timestamp precision. A tie from
     # concurrent launches never clears a different failed/unfinished run.
     rank = {"required": 1, "affected": 2, "full": 3}
-    for record in _run_records(root):
+    records, errors = _run_records(root)
+    if errors:
+        raise RunEvidenceError("; ".join(errors))
+    for record in records:
         if (record.get("feature_id") != selection["feature_id"] or record.get("phase") != "final"
                 or record.get("status") == "passed"
                 or (record.get("snapshot") or {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]):
