@@ -15,7 +15,7 @@ Use this workflow for code or project-engineering changes whose intended user-vi
 3. This workflow never implements the change. It triages, records one or more engineering Features, then hands off to `execute-next-feature` only with explicit execution authorization. Preserve concrete authorization already supplied in the session; stop if it is missing.
 4. Human control is mandatory. Never infer approval to create the Feature, start implementation, accept verification, promote a bug learning to Coding Rules, or continue to the next Feature.
 5. Do not add release, publishing, deployment, store, changelog, or distribution work unless it is itself the explicit engineering problem supplied by the user.
-6. Before durable writes, follow `agent-rules/00-core/git-worktree-and-commits.md`: independently require a clean worktree for a new project task and keep all later staging limited to task-owned Feature-plan changes. A generic framework defect is handed off to a separate task under the framework source's own AGENTS.md, as described in `methodology/07-engineering-change.md`; this project has no master exception.
+6. Before durable writes, follow `agent-rules/00-core/git-worktree-and-commits.md`: independently require a clean worktree for a new project task and keep all later staging limited to task-owned Feature-plan and component-registration changes.
 
 ## Scope
 
@@ -46,9 +46,10 @@ Read the canonical Bug ownership table and complete repair chain in
   and approvals; do not create a duplicate Feature to hide an unfinished failure.
 - An independent regression of completed behavior creates an approved Bug Feature.
 - A changed expectation routes to Product change.
-- A Framework/Tooling blocker is a separate bounded repair against durable framework
-  source/templates/checkers. Preserve business WIP, and use an explicitly approved
-  isolated worktree/project when needed. Do not fold its paths or evidence into the repair.
+- A project-tooling blocker is a bounded repair in the project-owned source,
+  following `methodology/07-engineering-change.md`. Preserve business WIP and its
+  evidence; use an explicitly approved isolated worktree when needed, and do not
+  fold unrelated business paths or evidence into the repair.
 - Urgency can shorten preparation, never supply missing approval or waive required
   RED/GREEN, affected/full verification, applicable human acceptance, review/gates or the traceable commit.
 
@@ -90,15 +91,6 @@ For `maintenance`, record:
 Stop on material ambiguity rather than converting uncertainty into implementation assumptions.
 
 ## Stage 2: propose an engineering Feature
-
-For the explicitly designated Git-free framework master only, use
-`methodology/07-engineering-change.md` **Git-free framework-master maintenance**.
-Prepare its bounded technical contract and source inventory instead of a game
-Feature. After explicit execution approval, hand off the approved maintenance
-scope with required regression, independent review, acceptance and before/after
-hash checks. This preparation Skill does not implement it. Do not initialize Git,
-populate the empty game ledger, commit in the master or claim its Feature Gate
-passed. Every ordinary project follows the Feature and Git steps below.
 
 Read `docs/feature-list.json` and relevant detail files. If the Feature plan does not exist, route to `generate-feature-list` first.
 
