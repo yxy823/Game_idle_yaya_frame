@@ -1,7 +1,8 @@
 # Yaya Godot 项目起点
 
 这里维护一套 Godot 项目的起始文件和开发 Skill，供 Windows 11 / PowerShell 7 使用。
-目标是减少重复准备工作，让用户与 Coding Agent 持续开发。
+目标是让用户与 Coding Agent 持续开发时需求清楚、任务接得上、修改有验证、结果如实记录。
+Skill 提供方法，项目文件积累知识，Agent 根据任务作工程判断。
 
 完整使用说明见 [空白项目使用手册](framework/docs/blank-project/README.md)：
 按入门、日常开发、配置与工具参考、框架维护分层，覆盖创建、环境准备、需求规划、
@@ -12,7 +13,7 @@ Feature 执行、验收、工程变更、架构与交接、故障排查。
 
 ```text
 Game_idle_yaya_frame/
-├── AGENTS.md                  框架维护原则与设计教训
+├── AGENTS.md                  Agent 维护约定与本地提交
 ├── README.md                  创建方式和维护边界
 ├── framework/
 │   ├── commands/              复制入口；按需执行的项目工具回归入口
