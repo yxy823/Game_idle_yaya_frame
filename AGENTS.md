@@ -2,24 +2,48 @@
 
 本机环境与审批遵循当前生效的个人规则；文本格式以 [.editorconfig](.editorconfig)、[.gitattributes](.gitattributes) 为准。
 
-## 查阅与适用范围
+## 核心决策原则
+
+| 原则 | 必须执行的要求 |
+| --- | --- |
+| 奥卡姆剃刀 | 先比较复用、合并、删除与局部修正；普通文件、现有命令或 Agent 判断已经足够时，不增加脚本、依赖或流程层。 |
+| 第一性原理 | 从当前需求、真实问题和已知约束推导方案，重新判断既有机制是否必要；不把现有实现或历史投入当作必须保留的理由。 |
+| 最小完整修改 | 在本次授权范围内选择能完整解决问题的最小方案，保留必要能力与约束；不以最少行数或最少文件数为目标，也不借修复扩大任务。 |
+
+不以脚本监督 Agent 的每个动作；不得为此增加 Agent 动作 Hook、重复状态、来源哈希清单、收据、评分或发布资格。保留针对实际成果的必要验证。
+
+只面向已确定的 Godot 技术栈，不为其他引擎、平台或旧项目的长期兼容预留机制。
+
+## 维护边界与查阅
 
 | 当前工作 | 执行依据 |
 | --- | --- |
-| 文件放置与项目创建 | 遵循 [根 README](README.md) 的目录职责、复制边界与项目独立性约定。 |
+| 框架维护 | `framework/` 保存维护材料，`project-source/` 保存可复制材料；后者的 `Project_AGENTS.md` 与 Skill 仅作为源材料阅读，不在维护仓库激活项目流程。 |
+| 创建项目 | [创建器](framework/commands/create_project.py) 仅按 [复制清单](framework/project-files.json) 复制和重命名，不附带环境探测、Bootstrap、测试、Git 初始化、来源记录或升级。 |
+| 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与提示词库不进入复制清单或生成项目，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
-| 维护任务提示词 | 遵循 [提示词管理](framework/README.md#提示词) 的存放、分类与使用范围。 |
-| 审核及后续讨论 | 按 [外部结果复核](framework/docs/blank-project/maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)、[会话延续](framework/docs/blank-project/maintenance/updating-the-blank-project.md#后续用口语继续) 区分报告意见、事实证据与实施授权。 |
-| 机制取舍 | 对照 [README 的维护目标](README.md)、[设计判断依据](framework/review/design-quality.md#可重复使用的判断依据) 评估。 |
-| 选择验证 | 检查范围按 [验证范围说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
+| 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。已有具体授权按 [会话延续约定](framework/docs/blank-project/maintenance/updating-the-blank-project.md#后续用口语继续) 沿用，不重复索取。 |
+| 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
-## 修改约定
+## 文件命名与修改
+
+自主命名的文件必须能直接看出用途，并包含必要的所属领域与具体职责，例如 `test-registry.json` 明确表达测试登记表。工具要求的约定文件名和第三方原始名称按各自契约保留。
 
 流程与测试规则以权威规范为唯一正文，其他入口仅保留引用、必要步骤和使用示例；整理文档或文件名不得顺带改变 Skill 行为。
 
-改名应体现领域与职责；调整路径或字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
+调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
 
 在已指定的外部项目运行回归前，核对被测文件是否对应本次修复；需要同步时仅更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
+
+分别记录静态核对、工具回归、真实引擎运行与人工验收的实际结果；失败、未执行和旧版本通过记录不能写成当前修改已通过。
+
+## 提示词维护
+
+所有供用户发送给 Agent 的任务提示词统一维护在 [framework/prompts.json](framework/prompts.json)，覆盖框架维护与实际项目开发；不另建分散的提示词文件，不把提示词正文混入 README、规则或工具说明。
+
+沿用 JSON 顶层数组中的 `Yaya 框架维护`、`Godot 项目开发` 两个 Project，保留 `project`、`categories` 结构，按用途放入对应分类。
+
+新增前先核对已有用途，优先更新或合并同类入口；修改后同步 [提示词使用场景清单](framework/review/scenario-coverage.md#提示词使用场景清单) 与受影响的使用说明。
 
 ## 本地提交
 

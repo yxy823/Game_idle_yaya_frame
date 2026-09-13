@@ -1,7 +1,7 @@
 # 设计复盘
 
 用于判断设计是否值得继续维护，不计算总分，也不作为项目的新增 Gate。
-以奥卡姆剃刀、第一性原理和最小完整修改评估方案，工作目标见 [README.md](../../README.md)。
+评估遵循 [根维护约定的核心决策原则](../../AGENTS.md#核心决策原则)。
 场景责任另见 [scenario-coverage.md](scenario-coverage.md)。
 
 ## 当前基线
