@@ -43,6 +43,7 @@ flowchart LR
 | 命令失败或不知道为什么不能完成 | [故障排查](reference/troubleshooting.md) |
 | 修改空白项目源材料 | 本页 → [维护与同步说明](maintenance/updating-the-blank-project.md) → 受影响专题与实际源文件 |
 | 把框架 ZIP 交给其他模型审核 | [压缩包审核说明](maintenance/updating-the-blank-project.md#把压缩包交给其他模型审核) → 提示词正文与附件 |
+| 用实际小任务验证整个流程 | [动态流程审核说明](maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程) → 指定新建外部项目并执行 |
 
 ## 手册的文件架构
 
