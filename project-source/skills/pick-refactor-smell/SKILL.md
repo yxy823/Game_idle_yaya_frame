@@ -1,7 +1,7 @@
 ---
 name: pick-refactor-smell
 description: >-
-  Scan durable Feature notes for unresolved code smells, rank them with the fixed high/medium/low rubric, recommend exactly one candidate, and return the user's choice to engineering-change-standardizer in refactor mode. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
+  Scan durable Feature notes for unresolved code smells, rank valid candidates with the fixed high/medium/low rubric, recommend one when available, and return the user's choice to engineering-change-standardizer in refactor mode. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
 ---
 
 # Pick one refactor smell
@@ -36,7 +36,7 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
 
 **Entry:** the user invokes this workflow.
 
-**Output:** an unranked candidate list.
+**Output:** an unranked list of confirmed unresolved candidates and any material uncertainty.
 
 1. Check `docs/features/`. If absent, direct the user to `generate-feature-list` and stop.
 2. Read every `docs/features/F*.json` and extract the `notes` field. Read `docs/feature-list.json` for titles, statuses, and reverse dependency analysis.
@@ -46,12 +46,13 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
    - `Code smell` or the Chinese equivalent `代码气味`
    - `refactor` or `重构`
    - `future`, `defer`, `未来`, or `推到`
-4. Record for every candidate:
+4. Read each finding in its full note context before counting or ranking it. Exclude findings explicitly resolved or superseded; follow linked later Features and named current files when needed to confirm the meaning. A completed source Feature alone does not resolve every TODO in its notes. If current validity cannot be established, report the uncertainty separately without ranking or recommending that finding. Preserve historical notes unchanged.
+5. Record for every remaining candidate:
    - Feature ID;
    - concise Feature title from the index;
    - a verbatim excerpt of at most 200 characters;
    - code file paths named in the note, when any.
-5. If no candidate exists, report in the current conversation language that Feature notes contain no unresolved smell and that the user may describe an external observation directly. Stop before Stage 2.
+6. If no confirmed unresolved candidate remains, report that result and any unresolved uncertainty in the current conversation language; the user may describe an external observation directly. Stop before Stage 2 without forcing a recommendation or claiming unverified findings were resolved.
 
 ## Stage 2: rank with the fixed rubric
 
@@ -80,8 +81,7 @@ When no high condition applies, a candidate is medium when any condition holds:
 Every other candidate is low, including:
 
 - style preferences such as dictionary-driven code versus several constants;
-- tiny improvements;
-- findings explicitly resolved or superseded by a later Feature.
+- tiny improvements.
 
 ### Ranking adjustments
 
@@ -123,7 +123,7 @@ Reason: <one comparative sentence explaining why it outranks the other candidate
 Next: route F0XX to `engineering-change-standardizer` in `refactor` mode.
 ```
 
-Number continuously across all three severity groups; do not reset numbering. Provide exactly one recommendation. Its reason must compare the chosen candidate with alternatives rather than merely praise it. Do not enter Plan mode, spawn an Explore agent, edit, or commit; wait for the user's choice.
+Number continuously across all three severity groups; do not reset numbering. Recommend exactly one of the confirmed unresolved candidates; the empty/uncertain-only case already stops in Stage 1. Its reason must compare the chosen candidate with alternatives rather than merely praise it. Do not enter Plan mode, spawn an Explore agent, edit, or commit; wait for the user's choice.
 
 ## Response routing
 
@@ -147,6 +147,6 @@ Number continuously across all three severity groups; do not reset numbering. Pr
 |---|---|
 | `docs/features/` is absent | Direct the user to `generate-feature-list` and stop |
 | Any `docs/features/F*.json` is invalid | Report the exact path and parse error; stop until the user repairs it |
-| No note matches | Report a clean smell backlog and stop |
+| No confirmed unresolved candidate remains | Report no actionable recorded candidate and any uncertainty, then stop without a recommendation |
 | More than 15 candidates match | Offer high severity plus the top three medium candidates first and follow the user's preference |
 | The user's selection is ambiguous | Ask whether to use the recommendation or another candidate |
