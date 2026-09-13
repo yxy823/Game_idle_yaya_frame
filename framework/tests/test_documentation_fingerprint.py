@@ -1,4 +1,4 @@
-"""用中立临时 Git 夹具验证知识文档的指纹边界，不创建或运行游戏项目。"""
+"""用中立临时 Git 夹具验证使用说明、知识文档与验证契约的指纹边界。"""
 
 import importlib.util
 import json
@@ -9,14 +9,14 @@ from pathlib import Path
 
 
 SOURCE = Path(__file__).resolve().parents[2] / "project-source/tools/lib/feature_completion_evidence.py"
-SPEC = importlib.util.spec_from_file_location("knowledge_feature_completion_evidence", SOURCE)
+SPEC = importlib.util.spec_from_file_location("documentation_feature_completion_evidence", SOURCE)
 feature_completion_evidence = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(feature_completion_evidence)
 
 
-class KnowledgeFingerprintTests(unittest.TestCase):
+class DocumentationFingerprintTests(unittest.TestCase):
     def setUp(self):
-        area = tempfile.TemporaryDirectory(prefix="yaya-knowledge-")
+        area = tempfile.TemporaryDirectory(prefix="yaya-documentation-")
         self.addCleanup(area.cleanup)
         self.root = Path(area.name)
         self.git("init", "--quiet")
@@ -36,6 +36,30 @@ class KnowledgeFingerprintTests(unittest.TestCase):
 
     def fingerprint(self):
         return feature_completion_evidence.working_tree_fingerprint(self.root)
+
+    def test_usage_readme_add_edit_remove_and_staging_preserve_source_binding(self):
+        before = self.fingerprint()
+        for name in (
+            "README.md", "scenarios/reset_sequence/README.md", "tools/README.md",
+            "docs/README.md", "docs/guides/readme.md", "modules/counter/ReadMe.md",
+        ):
+            with self.subTest(name=name):
+                readme = self.write(name, "Usage instructions\n")
+                self.assertEqual(before, self.fingerprint())
+                self.git("add", name)
+                self.assertEqual(before, self.fingerprint())
+                readme.write_text("Clarified usage instructions\n", encoding="utf-8")
+                self.assertEqual(before, self.fingerprint())
+                readme.unlink()
+                self.assertEqual(before, self.fingerprint())
+
+    def test_readme_moved_into_product_becomes_verification_input(self):
+        readme = self.write("scenarios/reset_sequence/README.md", "Document text\n")
+        before = self.fingerprint()
+        requirement = self.root / "docs/product/README.md"
+        requirement.parent.mkdir(parents=True)
+        readme.rename(requirement)
+        self.assertNotEqual(before, self.fingerprint())
 
     def test_knowledge_capture_edit_and_reorganization_preserve_source_binding(self):
         before = self.fingerprint()
@@ -70,7 +94,12 @@ class KnowledgeFingerprintTests(unittest.TestCase):
             ("main.gd", "extends Node\nvar changed: bool = true\n"),
             ("tests/example.gd", "extends Node\n"),
             ("docs/product.md", "New required behavior\n"),
+            ("docs/product/README.md", "Required module behavior\n"),
+            ("docs/features/README.md", "Feature contract\n"),
             ("agent-rules/rule.md", "New mandatory contract\n"),
+            ("agent-rules/70-tests/README.md", "Required test rules\n"),
+            ("methodology/templates/README.md", "Required template contract\n"),
+            (".agents/skills/task/README.md", "Required Skill behavior\n"),
             ("docs/knowledge-other/note.md", "Outside the knowledge boundary\n"),
             ("docs/features/F001.json", json.dumps({
                 "acceptance_criteria": [{"id": "AC01", "text": "Changed requirement"}]

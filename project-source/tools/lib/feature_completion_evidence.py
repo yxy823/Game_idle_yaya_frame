@@ -68,11 +68,16 @@ def git_revision(repo_root: Path) -> str:
 
 
 def _is_fingerprint_input(relative_path: str) -> bool:
-    normalized = relative_path.replace("\\", "/").lstrip("./")
+    normalized = relative_path.replace("\\", "/").removeprefix("./")
     if normalized in EXCLUDED_EXACT_PATHS:
         return False
     if normalized.startswith("reports/"):
         return False
+    # 普通 README 只作使用导航；契约目录中的同名文件仍是验证输入。
+    if normalized.rsplit("/", 1)[-1].casefold() == "readme.md":
+        return normalized.casefold().startswith((
+            ".agents/", "agent-rules/", "methodology/", "docs/product/", "docs/features/",
+        ))
     # 经验正文只作参考；可执行文件和需求/规则仍参与验证绑定。
     return not (normalized.startswith(("docs/progress/", "docs/knowledge/")) and normalized.endswith(".md"))
 
@@ -123,8 +128,9 @@ def working_tree_fingerprint(repo_root: Path) -> str:
     """Hash tracked and non-ignored untracked content for the current code snapshot.
 
     Feature/Registry verification semantics are canonical JSON inputs. Only known
-    process fields, evidence outputs and Progress/knowledge Markdown are exempt. A Git
-    commit is provenance, not an additional invalidation of identical content.
+    process fields, evidence outputs, Progress/knowledge Markdown and usage README
+    files outside contract directories are exempt. A Git commit is provenance,
+    not an additional invalidation of identical content.
     """
 
     raw_paths = _run_git(repo_root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")

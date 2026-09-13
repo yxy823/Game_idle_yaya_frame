@@ -154,7 +154,9 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-生产代码、测试、配置、AC、验证计划和测试登记表等语义内容改变时需要核对依据是否失效；仅改完成时间、notes、整理 Progress 历史或 `docs/knowledge/` 下的说明性 Markdown 不自动要求业务测试重跑。知识目录只保存实践经验，不承载可执行输入、需求、规则或验收契约；其中非 Markdown 文件仍参与指纹。完整绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
+生产代码、测试、配置、AC、验证计划和测试登记表等语义内容改变时需要核对依据是否失效；仅改完成时间、notes、整理 Progress 历史、知识 Markdown 或普通使用 `README.md` 不自动要求业务测试重跑。例如，在业务测试通过后补充场景 README，可继续使用同一份有效结果，同时检查说明中的事实、链接和示例。
+
+这不等于排除所有 Markdown：规则、Skill、流程、Product 和 Feature 契约目录中的 README 仍参与验证，知识目录中的非 Markdown 文件也仍参与。使用说明不承载正式需求、规则或可执行输入；确切目录与绑定语义见 [测试规范](../../../../project-source/methodology/08-testing-strategy.md)。
 
 ## 直接脚本解析与 lint
 
