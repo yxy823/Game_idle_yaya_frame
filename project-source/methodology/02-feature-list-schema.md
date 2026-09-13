@@ -286,6 +286,13 @@ Preserve any already-known historical path instead of clearing it. Retirement do
 not automatically remove a runnable test function: implementation must deliberately
 replace/remove superseded assertions so full discovery executes the current contract.
 
+An approved revision of a pending/in-progress Feature may remove an old AC from
+its current detail. A retired acceptance test keeps that historical `criterion_id`
+and test identity without requiring the old AC to remain in the current detail;
+its source Feature and complete retirement/replacement provenance must still validate.
+Planned and active acceptance tests must reference a current AC. This does not
+authorize rewriting completed Feature history or treating planned replacement tests as passed.
+
 Completed Feature criteria/test IDs and archived completion evidence are historical
 records. Do not rewrite them to simulate current behavior. The active safety net is
 selected from current `active` Catalog records. Normal strict validation accepts

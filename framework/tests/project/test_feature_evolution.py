@@ -129,6 +129,41 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.index["features"][2].update(status="done", completed_at="2026-02-02T00:00:00Z")
         self.assertFalse(self.validate())
 
+    def test_unfinished_feature_can_retire_an_ac_removed_by_approved_revision(self) -> None:
+        # Current AC01 replaces a removed historical AC02; current IDs remain sequential.
+        self.revisions["revision_log"][0]["migrations"][0].update(**{"from": ["F002"], "to": ["F002"]})
+        old = self.catalog["tests"][1]
+        replacement = copy.deepcopy(old) | {"status": "planned", "path": None}
+        self.catalog["tests"].append(replacement)
+        old.update(id="F002-AC02", criterion_id="AC02", status="retired", retirement={"reason": "Approved replacement of the unfinished AC",
+            "source": copy.deepcopy(self.source), "replacement": {"feature_id": "F002", "test_ids": ["F002-AC01"]},
+            "revision_id": "rev-contract-01"})
+        for status in ("pending", "in_progress"):
+            with self.subTest(status=status):
+                self.index["features"][1]["status"] = status
+                self.assertTrue(self.validate())
+                self.assertFalse(self.validate(completion="F002"))
+        replacement.update(status="active", path="tests/F002.gd")
+        self.assertTrue(self.validate(completion="F002"))
+        old["criterion_id"] = "AC03"
+        self.assertFalse(self.validate())  # Retirement preserves the old identity contract.
+        old["criterion_id"] = "AC02"
+        old["retirement"]["revision_id"] = "missing-revision"
+        self.assertFalse(self.validate())
+
+    def test_current_acceptance_tests_still_require_an_existing_criterion(self) -> None:
+        path = self.root / "docs/features/F002.json"
+        detail = json.loads(path.read_text(encoding="utf-8"))
+        self.catalog["tests"][1].update(id="F002-AC02", criterion_id="AC02")
+        detail["acceptance_criteria"][0]["verification"] = {
+            "automated_tests": [], "manual_checks": ["Inspect the replacement behavior"]}
+        detail["verification"]["acceptance_mode"] = "manual"
+        self.write("docs/features/F002.json", detail)
+        for status in ("planned", "active"):
+            with self.subTest(status=status):
+                self.catalog["tests"][1]["status"] = status
+                self.assertFalse(self.validate())
+
     def test_retirement_requires_reason_source_replacement_and_revision(self) -> None:
         self.retire()
         original = copy.deepcopy(self.catalog["tests"][0]["retirement"])

@@ -483,7 +483,9 @@ def _validate_test_catalog(data: Any, entries: dict[str, dict[str, Any]], detail
             if m and (m.group(1) != source_feature or m.group(2) != criterion_id):
                 _error(f"acceptance test {tid} id/source_feature/criterion_id disagree")
                 ok = False
-            if source_feature in details and criterion_id not in details[source_feature]["criteria"]:
+            # Retired tests retain historical AC identity after an approved revision;
+            # their provenance/replacement chain is checked by validate_retirements.
+            if status != "retired" and source_feature in details and criterion_id not in details[source_feature]["criteria"]:
                 _error(f"acceptance test {tid} references missing criterion {source_feature}-{criterion_id}")
                 ok = False
         elif kind == "regression":
