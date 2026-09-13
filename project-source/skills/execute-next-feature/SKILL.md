@@ -142,7 +142,7 @@ executable methods in place. Apply the cleanup contract in `methodology/08-testi
 
 Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or the repository's explicit authoritative equivalent. Never invent runner syntax.
 
-1. Run the configured test runner with `--feature F0XX --scope auto`. It reads the current Feature/Test Catalog, selects and deduplicates tests, and prints selection reasons; no separate plan file is written.
+1. Read the current Feature/Test Catalog obligations. When any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It selects and deduplicates tests and prints selection reasons; no separate plan file is written. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit this run and `record-tests`, leaving `test_runs: []`. Report automated verification as `not_required`, never as an empty PASS; manual acceptance, review and applicable static checks remain required.
 2. Inspect the selection and actual results. A required full run covers Required/affected subsets once for the same content snapshot; otherwise execute the affected union, which includes Required. Never repeat equivalent runs only to fill separate Gate fields.
 3. Directly run Godot script parsing for changed scripts and necessary dependants, and the bundled lint CLI, following `methodology/gdscript-lint.md`. Read their actual exit codes and output. Required failures block completion. Do not create a wrapper, static manifest, or scripted import step.
 4. For Bug Features verify every approved regression ID is active/passing, or use the explicitly approved manual regression gap.
@@ -196,7 +196,7 @@ required cleanup is a `must_fix`, not a completed retirement. Reuse Feature note
 do not add another review Stage or evidence format. Reuse current successful
 runs unless a concrete unanswered risk or a repair requires verification.
 
-Every `must_fix` must be repaired. After each repair batch confirm the current Feature verification mappings and repeat Stage 4: one required full run, or the affected union including Required, plus static checks. A successful full run covering Required/affected on the same content snapshot satisfies those subsets without duplicate runs. Before completion, verify all required results cover the final repair snapshot and import them again after code/test changes. If repair may alter behavior already human-accepted, return through Stages 3–5.
+Every `must_fix` must be repaired. After each repair batch confirm the current Feature verification mappings and repeat the applicable Stage 4 checks, including its no-automated-obligations decision. A successful full run covering Required/affected on the same content snapshot satisfies those subsets without duplicate runs. Before completion, verify all required results cover the final repair snapshot and import them again after code/test changes. If repair may alter behavior already human-accepted, return through Stages 3–5.
 
 Append `suggest` items to Feature notes as TODOs. Re-review until `must_fix` is zero,
 record the result with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell`,
@@ -204,7 +204,7 @@ and summarize material findings and remaining work in ordinary language.
 
 ## Stage 7 — completion
 
-Entry requires verified run and Stage 6 review evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. Direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. A summary alone does not prove execution.
+Entry requires verified runs for all current automated obligations (or the Stage 4 `not_required` case) and Stage 6 review evidence matching the current semantic content fingerprint, plus explicit Stage 5 human acceptance when `acceptance_mode` is `manual`. An unresolved failed/unfinished final run on the same snapshot still blocks completion, even with no current automated obligations. Applicable direct script parsing and lint must also have passed; the evidence helper does not assess these checks. Git revision is provenance; pure workflow status/time and Progress archive edits do not require another identical run. A summary alone does not prove execution.
 
 Run:
 

@@ -202,7 +202,7 @@ Read project commands from `docs/methodology-config.json`:
 
 Procedure:
 
-1. Run the configured test runner with `--feature F0XX --scope auto`. It reads the current Feature/Catalog and prints required/affected selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail.
+1. Read the current Feature/Catalog obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks, actual human acceptance and independent review. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
 2. Inspect the actual selected scope and test results. If full is required, run one real full suite whose executed set covers Required and affected; do not repeat equivalent runs merely to fill different Gate fields. Otherwise run the affected union, including every Required item.
 3. Directly run Godot script parsing for changed scripts and necessary dependants,
    then the bundled lint CLI as described in `gdscript-lint.md`. Inspect actual
@@ -319,7 +319,7 @@ current successful run; additional verification needs a concrete unanswered risk
 Processing rules:
 
 1. Every `must_fix` is repaired before completion.
-2. After each repair batch, read the current Feature/Catalog selection and follow Stage 4: run one full suite when required, otherwise the affected union including Required, plus direct script parsing and lint. A full run covering those subsets on the same content snapshot needs no separate Required/affected run.
+2. After each repair batch, read the current Feature/Catalog selection and repeat the applicable Stage 4 checks, including its no-automated-obligations decision and direct script parsing/lint. A full run covering the required subsets on the same content snapshot needs no separate Required/affected run.
 3. If a review repair may change behavior already accepted by the user, return to Stage 3 and repeat Stages 4–6, including human acceptance.
 4. Re-review until `must_fix` is empty.
 5. Append each `suggest` to Feature notes with `TODO`; report `acceptable` without turning it into durable debt automatically.
@@ -332,7 +332,7 @@ Report material review findings and unresolved work in ordinary language.
 
 ## Stage 7 · mark complete
 
-**Entry:** verified Stage 4 run evidence for the current semantic content fingerprint, explicit Stage 5 human acceptance when the approved mode is `manual`, and structured Stage 6 `must_fix: 0` evidence for the same snapshot all exist. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent must also confirm direct parsing/lint passed for the final changes; the evidence helper does not assess static checks.
+**Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Explicit Stage 5 human acceptance when the approved mode is `manual`, and structured Stage 6 `must_fix: 0` evidence must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent must also confirm applicable direct parsing/lint passed for the final changes; the evidence helper does not assess static checks.
 
 1. Run:
 

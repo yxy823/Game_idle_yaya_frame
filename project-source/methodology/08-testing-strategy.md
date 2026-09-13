@@ -186,6 +186,15 @@ Full scope covers the existing configured test roots. An absent, unregistered la
 
 ## Artifact-backed completion and semantic freshness
 
+For a valid `manual` acceptance plan only, when the current Required and affected
+sets are both empty and full suite is not required, no automated run is needed.
+Keep the initialized `test_runs: []`; do not call the runner or `record-tests` just
+to manufacture evidence. The helper derives `not_required`, never an empty PASS.
+Current mappings and registered paths must still be valid; an unresolved failed or
+unfinished final run for the same Feature/snapshot still blocks completion. Record
+actual human acceptance and independent review on the current snapshot, and assess
+applicable static checks. Any automated obligation retains the normal real-run requirement.
+
 Each invocation creates one isolated `reports/gdunit-wrapper/run-<id>/` directory.
 The runner writes one `result.json` (schema 1) before setup and finalizes that same
 file after execution. It records Feature/phase/scope, selected paths, the real command,
@@ -266,9 +275,9 @@ done gate
 
 A pre-existing baseline failure must be reported before implementation. Do not attribute it to the current Feature or silently repair it as scope expansion.
 
-Stage 4 imports verified run results into `docs/gate-evidence.json`; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Catalog contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
+Stage 4 imports verified run results into `docs/gate-evidence.json` when automated obligations exist; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Catalog contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
 
-Stage 6 reuses current successful run results after a review without source or verification changes. If fixes change the snapshot, read the current selection and run its affected scope or one necessary full suite, then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
+Stage 6 reuses current successful run results after a review without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
 Stage 1 first chooses `verification.acceptance_mode` from the requirement, then
 fills the corresponding checks. Visual presentation, animation, audio/sound/music,

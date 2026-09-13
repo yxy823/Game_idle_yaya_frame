@@ -96,6 +96,83 @@ class FrameworkEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(SelectionError, "must be decided"):
             build_selection(self.root, "F001")
 
+    def manual_without_automated_obligations(self):
+        self.detail["verification"]["acceptance_mode"] = "manual"
+        self.detail["acceptance_criteria"][0]["verification"] = {
+            "automated_tests": [], "manual_checks": ["Listen to the approved sound"]}
+        self.catalog["components"][0]["unit_test_paths"] = []
+        self.catalog["tests"] = []
+        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/test-catalog.json", self.catalog)
+
+    def test_manual_without_automated_obligations_still_needs_acceptance_and_review(self):
+        from tools.lib.run_evidence import derive_test_evidence
+        self.manual_without_automated_obligations()
+        derived = derive_test_evidence(self.root, "F001", [])
+        for name in ("required_test_set", "affected_tests", "full_suite"):
+            self.assertEqual(derived[name]["status"], "not_required")
+            self.assertEqual(derived[name]["run_ids"], [])
+        snapshot = gate_evidence.current_snapshot(self.root)
+        data = gate_evidence.empty_evidence("F001", snapshot)
+        data["recorded_at"] = gate_evidence.utc_now()
+        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
+        self.assertIn("human acceptance", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+        data["human_acceptance"].update(status="accepted", **snapshot)
+        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
+        self.assertIn("code-smell", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+        data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
+        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
+        self.assertTrue(gate_evidence.validate_completion_evidence(self.root, "F001")[0])
+        self.write("game.gd", "extends Node\nvar changed = true\n")
+        self.assertIn("changed after verification", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+
+    def test_manual_mode_cannot_skip_any_current_automated_obligation(self):
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence
+        for obligation in ("unit", "affected", "full"):
+            with self.subTest(obligation=obligation):
+                self.manual_without_automated_obligations()
+                self.catalog["components"][0]["full_suite_on_change"] = obligation == "full"
+                if obligation == "unit":
+                    self.catalog["components"][0]["unit_test_paths"] = ["tests/unit"]
+                elif obligation == "affected":
+                    self.catalog["tests"] = [{"id": "F002-AC01", "kind": "acceptance",
+                        "source_feature": "F002", "criterion_id": "AC01", "components": ["example"],
+                        "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]
+                self.write_json("docs/test-catalog.json", self.catalog)
+                with self.assertRaisesRegex(RunEvidenceError, "no real test run"):
+                    derive_test_evidence(self.root, "F001", [])
+
+    def test_no_obligations_does_not_hide_invalid_mapping_or_empty_execution(self):
+        from tools.lib.run_evidence import derive_test_evidence
+        from tools.lib.test_selection import SelectionError, build_selection, execution_selectors
+        self.manual_without_automated_obligations()
+        with self.assertRaisesRegex(SelectionError, "zero test paths"):
+            execution_selectors(self.root, build_selection(self.root, "F001"), "affected")
+        self.catalog["components"][0]["unit_test_paths"] = ["tests/missing"]
+        self.write_json("docs/test-catalog.json", self.catalog)
+        with self.assertRaises(SelectionError):
+            derive_test_evidence(self.root, "F001", [])
+        self.manual_without_automated_obligations()
+        self.detail["verification"]["acceptance_mode"] = "automated"
+        self.write_json("docs/features/F001.json", self.detail)
+        with self.assertRaisesRegex(SelectionError, "automated coverage"):
+            derive_test_evidence(self.root, "F001", [])
+
+    def test_no_obligations_does_not_hide_supplied_or_failed_runs(self):
+        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, start_run
+        self.manual_without_automated_obligations()
+        for references in (None, {}, [{"path": "reports/gdunit-wrapper/missing/result.json", "sha256": "missing"}]):
+            with self.subTest(references=references), self.assertRaises(RunEvidenceError):
+                derive_test_evidence(self.root, "F001", references)
+        directory = self.root / "reports/gdunit-wrapper/run-unfinished"
+        record = start_run(self.root, directory, "F001", "final", "affected")
+        for status in ("running", "failed"):
+            with self.subTest(status=status):
+                record["status"] = status
+                gate_evidence.write_evidence(directory / "result.json", record)
+                with self.assertRaisesRegex(RunEvidenceError, "unresolved failed or unfinished"):
+                    derive_test_evidence(self.root, "F001", [])
+
     def test_declared_mode_and_check_contents_must_agree(self):
         from tools.lib.test_selection import SelectionError, acceptance_mode
         self.detail["verification"]["manual_regression"] = "Inspect existing layout"

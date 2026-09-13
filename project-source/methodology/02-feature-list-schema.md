@@ -292,7 +292,7 @@ selected from current `active` Catalog records. Normal strict validation accepts
 historical `done` references to traceably retired tests, but current completion must
 pass `python -B tools/checks/check-feature-list.py --completion-feature F0XX`, which
 requires that Feature's own mapped automated tests to be active. Completion additionally
-requires actual execution evidence; retirement is never a substitute for passing tests.
+requires actual execution evidence for automated obligations; retirement is never a substitute for passing tests.
 Retired entries without provenance fail validation; do not invent a reason or
 replacement to make them pass.
 
@@ -303,7 +303,10 @@ replacement to make them pass.
 This repository-owned JSON file holds the current Feature's completion evidence.
 PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched
 against the approved Required/affected/full plan. Caller-supplied pass counts cannot
-create PASS. Test and review evidence must match the current semantic snapshot.
+create PASS. A valid manual plan with no Required/affected tests and no full-suite
+obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human
+acceptance, review and applicable static checks still apply. Unresolved failed or
+unfinished final runs on the same snapshot still block completion. Test and review evidence must match the current semantic snapshot.
 Production, tests, configuration, Product, Coding Rules, Feature AC/verification and
 Catalog semantics participate in that snapshot. Pure status/completion timestamps,
 Feature notes and Progress/history archival do not invalidate business test evidence.
@@ -350,7 +353,7 @@ pending ──execute Stage 2──→ in_progress ──Stage 7 after applicabl
 done ──Product evolution removes implemented behavior──→ obsolete_done
 ```
 
-The `in_progress → done` transition requires the decided acceptance plan to be satisfied, explicit Stage 5 human acceptance for manual mode, successful Stage 4 tests and direct static checks, and structured Stage 6 `must_fix: 0` evidence. The Agent runs the explicit evidence check for the current code snapshot and records the actual result.
+The `in_progress → done` transition requires the decided acceptance plan to be satisfied, explicit Stage 5 human acceptance for manual mode, successful applicable Stage 4 tests and direct static checks (or the valid manual/no-automated-obligations case above), and structured Stage 6 `must_fix: 0` evidence. The Agent runs the explicit evidence check for the current code snapshot and records the actual result.
 
 ## Machine invariants
 

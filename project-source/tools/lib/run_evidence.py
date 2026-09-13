@@ -395,7 +395,10 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
 def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str, str]]) -> dict:
     """Compute current obligations and results without persisting derived totals."""
     selection = build_selection(root, feature_id)
-    if not references or not isinstance(references, list):
+    # A valid manual plan can have no automated obligations. It still needs
+    # acceptance/review and must not hide failed runs on the current snapshot.
+    needs_run = bool(selection["required"] or selection["affected"] or selection["full_suite"]["required"])
+    if not isinstance(references, list) or (not references and needs_run):
         raise RunEvidenceError("no real test run result was supplied")
     snapshot = current_snapshot(root)
     verified = [verify_run(root, reference, selection, snapshot) for reference in references]
@@ -408,7 +411,8 @@ def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str,
     result = {}
     for name, obligations in (("required_test_set", selection["required"]), ("affected_tests", selection["affected"])):
         ids = require_coverage(list(cases.values()), obligations)
-        result[name] = {"status": "pass", "total": len(ids), "failed": 0, "test_ids": ids, **common}
+        result[name] = {"status": "pass" if runs else "not_required",
+                        "total": len(ids), "failed": 0, "test_ids": ids, **common}
     full = any(run["scope"] == "full" for run in runs)
     if selection["full_suite"]["required"] and not full:
         raise RunEvidenceError("required full-suite escalation has no successful full run")
