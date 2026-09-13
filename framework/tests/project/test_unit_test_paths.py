@@ -182,7 +182,7 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(self._strict().returncode, 0)
         # The directory still exists, so filesystem checks retain its selector.
         # The runner's zero-discovery report, modeled below, must fail instead.
-        from tools.lib.run_evidence import read_junit_cases
+        from tools.lib.test_run_evidence import read_junit_cases
         report = self.root / "results.xml"
         report.write_text('<testsuites tests="0" failures="0" skipped="0" flaky="0"/>', encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "zero|no tests|no executed"):

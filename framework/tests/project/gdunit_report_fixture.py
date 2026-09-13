@@ -7,7 +7,7 @@ import uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from tools.lib.run_evidence import expected_gdunit_cases, start_run, finish_run
+from tools.lib.test_run_evidence import expected_gdunit_cases, start_run, finish_run
 from tools.lib.test_selection import build_selection, execution_selectors
 
 

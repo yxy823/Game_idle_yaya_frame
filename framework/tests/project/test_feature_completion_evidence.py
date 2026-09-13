@@ -13,8 +13,8 @@ from pathlib import Path
 
 TOOLS = (PROJECT_ROOT / "tools")
 sys.path.insert(0, str(PROJECT_ROOT))
-from tools.lib import gate_evidence
-class FrameworkEvidenceTests(unittest.TestCase):
+from tools.lib import feature_completion_evidence
+class FeatureCompletionEvidenceTests(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory(prefix="yaya-evidence-")
         self.addCleanup(temporary.cleanup)
@@ -62,32 +62,32 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def completion_fixture(self):
-        from tools.lib.run_evidence import result_reference
+        from tools.lib.test_run_evidence import result_reference
         _, test_path = self.run_fixture()
-        snapshot = gate_evidence.current_snapshot(self.root)
-        data = gate_evidence.empty_evidence("F001", snapshot)
-        data.update(recorded_at=gate_evidence.utc_now(),
+        snapshot = feature_completion_evidence.current_snapshot(self.root)
+        data = feature_completion_evidence.empty_evidence("F001", snapshot)
+        data.update(recorded_at=feature_completion_evidence.utc_now(),
                     test_runs=[result_reference(self.root, test_path)])
         data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
         return data
 
     def test_automated_decision_completes_without_fabricating_human_acceptance(self):
         data = self.completion_fixture()
         self.assertEqual(data["human_acceptance"]["status"], "pending")
-        self.assertEqual(gate_evidence.validate_completion_evidence(self.root, "F001")[0], True)
+        self.assertEqual(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0], True)
 
     def test_manual_decision_requires_actual_acceptance(self):
         self.detail["verification"]["acceptance_mode"] = "manual"
         self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = ["Listen to the sound"]
         self.write_json("docs/features/F001.json", self.detail)
         data = self.completion_fixture()
-        valid, message = gate_evidence.validate_completion_evidence(self.root, "F001")
+        valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("human acceptance", message)
-        data["human_acceptance"].update(status="accepted", **gate_evidence.current_snapshot(self.root))
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
-        self.assertTrue(gate_evidence.validate_completion_evidence(self.root, "F001")[0])
+        data["human_acceptance"].update(status="accepted", **feature_completion_evidence.current_snapshot(self.root))
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
 
     def test_test_registry_uses_fixed_path_even_with_obsolete_config(self):
         from tools.lib.test_selection import build_selection
@@ -120,28 +120,28 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.write_json("docs/test-registry.json", self.registry)
 
     def test_manual_without_automated_obligations_still_needs_acceptance_and_review(self):
-        from tools.lib.run_evidence import derive_test_evidence
+        from tools.lib.test_run_evidence import derive_test_evidence
         self.manual_without_automated_obligations()
         derived = derive_test_evidence(self.root, "F001", [])
         for name in ("required_test_set", "affected_tests", "full_suite"):
             self.assertEqual(derived[name]["status"], "not_required")
             self.assertEqual(derived[name]["run_ids"], [])
-        snapshot = gate_evidence.current_snapshot(self.root)
-        data = gate_evidence.empty_evidence("F001", snapshot)
-        data["recorded_at"] = gate_evidence.utc_now()
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
-        self.assertIn("human acceptance", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+        snapshot = feature_completion_evidence.current_snapshot(self.root)
+        data = feature_completion_evidence.empty_evidence("F001", snapshot)
+        data["recorded_at"] = feature_completion_evidence.utc_now()
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertIn("human acceptance", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
         data["human_acceptance"].update(status="accepted", **snapshot)
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
-        self.assertIn("code-smell", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertIn("code-smell", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
         data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
-        self.assertTrue(gate_evidence.validate_completion_evidence(self.root, "F001")[0])
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
         self.write("game.gd", "extends Node\nvar changed = true\n")
-        self.assertIn("changed after verification", gate_evidence.validate_completion_evidence(self.root, "F001")[1])
+        self.assertIn("changed after verification", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
 
     def test_manual_mode_cannot_skip_any_current_automated_obligation(self):
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence
         for obligation in ("unit", "affected", "full"):
             with self.subTest(obligation=obligation):
                 self.manual_without_automated_obligations()
@@ -157,7 +157,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
                     derive_test_evidence(self.root, "F001", [])
 
     def test_no_obligations_does_not_hide_invalid_mapping_or_empty_execution(self):
-        from tools.lib.run_evidence import derive_test_evidence
+        from tools.lib.test_run_evidence import derive_test_evidence
         from tools.lib.test_selection import SelectionError, build_selection, execution_selectors
         self.manual_without_automated_obligations()
         with self.assertRaisesRegex(SelectionError, "zero test paths"):
@@ -173,7 +173,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [])
 
     def test_no_obligations_does_not_hide_supplied_or_failed_runs(self):
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, start_run
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, start_run
         self.manual_without_automated_obligations()
         for references in (None, {}, [{"path": "reports/gdunit-wrapper/missing/result.json", "sha256": "missing"}]):
             with self.subTest(references=references), self.assertRaises(RunEvidenceError):
@@ -183,7 +183,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
         for status in ("running", "failed"):
             with self.subTest(status=status):
                 record["status"] = status
-                gate_evidence.write_evidence(directory / "result.json", record)
+                feature_completion_evidence.write_evidence(directory / "result.json", record)
                 with self.assertRaisesRegex(RunEvidenceError, "unresolved failed or unfinished"):
                     derive_test_evidence(self.root, "F001", [])
 
@@ -203,34 +203,34 @@ class FrameworkEvidenceTests(unittest.TestCase):
         self.detail["verification"]["acceptance_mode"] = "manual"
         self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = ["Inspect the presentation"]
         self.write_json("docs/features/F001.json", self.detail)
-        valid, message = gate_evidence.validate_completion_evidence(self.root, "F001")
+        valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("changed after verification", message)
 
     def test_feature_verification_text_and_mapping_invalidate_snapshot(self) -> None:
-        initial = gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
         self.detail["acceptance_criteria"][0]["text"] = "Changed contract"
         self.write_json("docs/features/F001.json", self.detail)
-        self.assertNotEqual(initial, gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertNotEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_process_fields_notes_and_progress_archive_do_not_invalidate(self) -> None:
-        initial = gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
         self.detail["notes"] = "Archived explanation"
         self.write_json("docs/features/F001.json", self.detail)
         self.write_json("docs/feature-list.json", {"meta": {"total_features": 1, "updated_at": "later"}, "features": [
             {"id": "F001", "status": "done", "depends_on": [], "completed_at": "later"}]})
         self.write("docs/progress/feature-one.md", "Historical evidence pointer\n")
         self.write("docs/progress.md", "Current status\n")
-        self.assertEqual(initial, gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_duplicate_index_paths_from_git_do_not_change_after_staging(self) -> None:
         self.write("new.txt", "new source\n")
-        initial = gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
         self.git("add", "new.txt")
-        self.assertEqual(initial, gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_counts_cannot_authorize_completion(self) -> None:
-        data = gate_evidence.empty_evidence("F001", gate_evidence.current_snapshot(self.root))
+        data = feature_completion_evidence.empty_evidence("F001", feature_completion_evidence.current_snapshot(self.root))
         for key in ("required_test_set", "affected_tests"):
             data[key] = dict(status="pass", total=0, failed=0, git_revision=data["git_revision"],
                 working_tree_fingerprint=data["working_tree_fingerprint"])
@@ -240,8 +240,8 @@ class FrameworkEvidenceTests(unittest.TestCase):
         data["human_acceptance"]["status"] = "accepted"
         data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0)
         data["gate_status"] = "pass"
-        gate_evidence.write_evidence(self.root / "docs/gate-evidence.json", data)
-        self.assertFalse(gate_evidence.validate_completion_evidence(self.root, "F001")[0])
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertFalse(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
 
     def test_selection_derives_required_and_removes_overlapping_targets(self) -> None:
         from tools.lib.test_selection import build_selection
@@ -272,7 +272,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             build_selection(self.root, "F001")
 
     def test_junit_counts_must_match_actual_case_nodes(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, read_junit_cases
+        from tools.lib.test_run_evidence import RunEvidenceError, read_junit_cases
         report = self.write("reports/run/results.xml", '<testsuites tests="4" failures="0" skipped="0" flaky="0">'
             '<testsuite name="example" package="tests/unit" tests="4" errors="0" failures="0" skipped="0" flaky="0">'
             '<testcase name="test_example"/></testsuite></testsuites>')
@@ -281,11 +281,11 @@ class FrameworkEvidenceTests(unittest.TestCase):
 
     def run_fixture(self, *, scope: str = "full", skipped: bool = False,
                     omit: str | None = None, exit_code: int = 0) -> tuple[dict, Path]:
-        from evidence_fixture import make_run
+        from gdunit_report_fixture import make_run
         return make_run(self.root, scope=scope, skipped=skipped, omit=omit, exit_code=exit_code)
 
     def test_one_full_run_covers_required_and_affected_and_survives_process_commit(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         refs = [result_reference(self.root, path)]
         derived = derive_test_evidence(self.root, "F001", refs)
@@ -299,7 +299,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
                          derived["required_test_set"]["total"])
 
     def test_missing_tests_skipped_tests_and_nonzero_process_reject_green_labels(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         for args in ({"omit": "test_example"}, {"skipped": True}, {"exit_code": 7}):
             with self.subTest(args=args):
                 plan, path = self.run_fixture(**args)
@@ -307,7 +307,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
                     derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_artifacts_must_stay_current_and_within_the_originating_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         reference = result_reference(self.root, path)
         (path.parent / "report_1/results.xml").write_text("<testsuites/>", encoding="utf-8")
@@ -315,7 +315,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_low_precision_artifact_times_do_not_reject_current_session(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         result = json.loads(path.read_text())
         coarse_time = 1_000_000_000
@@ -327,7 +327,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             [result_reference(self.root, path)])["full_suite"]["status"], "pass")
 
     def test_timestamp_only_changes_do_not_replace_hash_integrity(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         reference = result_reference(self.root, path)
         result = json.loads(path.read_text())
@@ -342,7 +342,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_non_gdunit_configuration_cannot_import_gdunit_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         config = json.loads((self.root / "docs/methodology-config.json").read_text())
         config["test_framework"] = "pytest"
         self.write_json("docs/methodology-config.json", config)
@@ -351,7 +351,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_required_full_escalation_cannot_be_claimed_by_affected_run(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         self.registry["components"][0]["full_suite_on_change"] = True
         self.write_json("docs/test-registry.json", self.registry)
         plan, path = self.run_fixture(scope="affected")
@@ -382,8 +382,8 @@ class FrameworkEvidenceTests(unittest.TestCase):
             build_selection(self.root, "F001")
 
     def test_code_change_rejects_an_unchanged_green_run(self) -> None:
-        from tools.lib.run_evidence import derive_test_evidence, result_reference
-        from tools.lib.run_evidence import RunEvidenceError
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError
         plan, path = self.run_fixture()
         reference = result_reference(self.root, path)
         self.write("game.gd", "extends Node\nvar changed = true\n")
@@ -391,7 +391,7 @@ class FrameworkEvidenceTests(unittest.TestCase):
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_source_inventory_handles_static_multiline_and_comment_examples(self) -> None:
-        from tools.lib.run_evidence import expected_gdunit_cases
+        from tools.lib.test_run_evidence import expected_gdunit_cases
         self.write("tests/unit/example.gd", '''extends GdUnitTestSuite
 # func test_comment():
 const EXAMPLE = """
@@ -418,7 +418,7 @@ func test_plain():
         self.assertIn("Approved shared infrastructure change", plan["full_suite"]["reasons"])
 
     def test_runtime_discovery_cannot_lose_parameterized_cases_in_green_junit(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         result = json.loads(path.read_text(encoding="utf-8"))
         discovered = json.loads((path.parent / "discovery.json").read_text())["cases"]
@@ -436,13 +436,13 @@ func test_plain():
             "summary": "Original explanation", "migrations": [{"kind": "revise", "from": ["F001"],
                 "to": ["F002"], "source": {"path": "product.md", "anchor_commit": "a" * 40}}]}]}
         self.write_json("docs/feature-list-revisions.json", revision)
-        initial = gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
         revision["revision_log"][0].update(revised_at="after", summary="Archived explanation")
         self.write_json("docs/feature-list-revisions.json", revision)
-        self.assertEqual(initial, gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
         revision["revision_log"][0]["migrations"][0]["to"] = ["F003"]
         self.write_json("docs/feature-list-revisions.json", revision)
-        self.assertNotEqual(initial, gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertNotEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_selection_rejects_malformed_recorded_impact(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
@@ -455,7 +455,7 @@ func test_plain():
                     build_selection(self.root, "F001")
 
     def test_expanded_runtime_cases_share_method_and_require_same_engine(self) -> None:
-        from tools.lib.run_evidence import RunEvidenceError, require_coverage, verify_runtime_discovery
+        from tools.lib.test_run_evidence import RunEvidenceError, require_coverage, verify_runtime_discovery
         records = [{"id": "tests/unit/example.gd::test_example:" + str(index),
             "path": "tests/unit/example.gd", "case": "test_example:" + str(index), "method": "test_example"}
             for index in range(2)]
@@ -475,7 +475,7 @@ func test_plain():
         self.assertFalse(build_selection(self.root, "F001")["full_suite"]["required"])
 
     def test_relabelled_discovery_from_another_run_is_rejected(self):
-        from tools.lib.run_evidence import artifact_reference, derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import artifact_reference, derive_test_evidence, result_reference
         _, path = self.run_fixture()
         result = json.loads(path.read_text())
         discovery_path = path.parent / "discovery.json"
@@ -488,7 +488,7 @@ func test_plain():
             derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_result_tampering_after_recording_is_rejected(self):
-        from tools.lib.run_evidence import derive_test_evidence, result_reference
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
         _, path = self.run_fixture()
         reference = result_reference(self.root, path)
         path.write_bytes(path.read_bytes() + b"\n")
@@ -496,8 +496,8 @@ func test_plain():
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_gate_template_matches_the_single_completion_record(self):
-        template = json.loads((PROJECT_ROOT / "methodology/templates/gate-evidence.json.tmpl").read_text())
-        self.assertEqual(template, gate_evidence.empty_evidence(None, {"git_revision": None,
+        template = json.loads((PROJECT_ROOT / "methodology/templates/feature-completion-evidence.json.tmpl").read_text())
+        self.assertEqual(template, feature_completion_evidence.empty_evidence(None, {"git_revision": None,
             "working_tree_fingerprint": None}))
 
 

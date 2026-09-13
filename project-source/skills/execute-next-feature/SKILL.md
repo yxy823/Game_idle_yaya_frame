@@ -108,7 +108,7 @@ After approval:
 3. persist `verification.acceptance_mode`, criterion `verification` mappings, Feature `verification.regression_tests/manual_regression`, and `verification.test_impact` with approved `additional_tests: [{id, reason}]` and `full_suite_reasons: [reason]`. The runner reads these stored obligations directly; reducing them requires explicit plan revision approval;
 4. add new durable acceptance/regression registry entries with `status: planned`;
 5. add approved component registry entries when missing, using `unit_test_paths: []` if no unit suite exists;
-6. initialize `docs/gate-evidence.json` with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py initialize --feature F0XX`;
+6. initialize `docs/feature-completion-evidence.json` with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py initialize --feature F0XX`;
 7. run `python -B tools/checks/check-feature-list.py`.
 
 ## Stage 3 — baseline + TDD + implementation
@@ -147,7 +147,7 @@ Read the Python/Godot paths, `test_cmd` from `docs/methodology-config.json` or t
 3. Directly run Godot script parsing for changed scripts and necessary dependants, and the bundled lint CLI, following `methodology/gdscript-lint.md`. Read their actual exit codes and output. Required failures block completion. Do not create a wrapper, static manifest, or scripted import step.
 4. For Bug Features verify every approved regression ID is active/passing, or use the explicitly approved manual regression gap.
 5. A required full suite must actually pass; failure, unavailable execution, missed cases or stale evidence block completion.
-6. Import actual evidence with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <result.json>`. Counts are computed from the current selection, result.json and original reports; caller-supplied counts and transcript prose cannot authorize PASS.
+6. Import actual evidence with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run <result.json>`. Counts are computed from the current selection, result.json and original reports; caller-supplied counts and transcript prose cannot authorize PASS.
 7. Any failure returns to Stage 3.
 8. For `acceptance_mode: manual`, produce reproducible instructions from the approved human checks: entry scene, starting state, actual input, expected feedback and relevant reset steps. Follow the conditional timing/seed/media guidance in `methodology/03-execute-loop.md` Stage 4; reuse `manual_checks` and Feature notes. For `automated`, report the actual automated AC coverage.
 
@@ -159,7 +159,7 @@ For `manual`, wait for Stage 5. For `automated`, omit Stage 5 and proceed to Sta
 
 Do not infer success from tests, screenshots, logs, silence, or partial user comments.
 
-- explicit acceptance → record `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-acceptance --feature F0XX --status accepted`; Bug goes to Stage 5.5, other Features to Stage 6;
+- explicit acceptance → record `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-acceptance --feature F0XX --status accepted`; Bug goes to Stage 5.5, other Features to Stage 6;
 - any failure → record `--status rejected`, update Progress, and return to Stage 3;
 - ambiguous response → ask whether any material criterion remains unmet.
 
@@ -199,7 +199,7 @@ runs unless a concrete unanswered risk or a repair requires verification.
 Every `must_fix` must be repaired. After each repair batch confirm the current Feature verification mappings and repeat the applicable Stage 4 checks, including its no-automated-obligations decision. A successful full run covering Required/affected on the same content snapshot satisfies those subsets without duplicate runs. Before completion, verify all required results cover the final repair snapshot and import them again after code/test changes. If repair may alter behavior already human-accepted, return through Stages 3–5.
 
 Append `suggest` items to Feature notes as TODOs. Re-review until `must_fix` is zero,
-record the result with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell`,
+record the result with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-smell`,
 and summarize material findings and remaining work in ordinary language.
 
 ## Stage 7 — completion
@@ -209,7 +209,7 @@ Entry requires verified runs for all current automated obligations (or the Stage
 Run:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX
+python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX
 python -B tools/checks/check-feature-list.py --completion-feature F0XX
 ```
 

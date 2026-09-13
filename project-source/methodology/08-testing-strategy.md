@@ -218,7 +218,7 @@ separate journal, execution lock, invocation, verdict, process report or session
 Record results with:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
 Repeat `--run` only for distinct runs needed to cover the obligations. One full run
@@ -275,7 +275,7 @@ done gate
 
 A pre-existing baseline failure must be reported before implementation. Do not attribute it to the current Feature or silently repair it as scope expansion.
 
-Stage 4 imports verified run results into `docs/gate-evidence.json` when automated obligations exist; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
+Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 6 records the combined requirements/code-quality result through the existing `record-smell` entry against the same semantic snapshot. `.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output; the evidence helper does not prove those checks ran or supply a required human decision.
 
 Stage 6 reuses current successful run results after a review without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 

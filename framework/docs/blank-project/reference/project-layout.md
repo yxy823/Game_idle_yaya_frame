@@ -84,7 +84,7 @@ MyGodotGame/
 | `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
 | `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
 | `docs/knowledge/<主题>/<条目>.md` | 实际任务产生值得复用的做法、排障方法或教训时 | 独立条目、适用条件和证据链接；需要时增加主题层级并更新索引 |
-| `docs/gate-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用、人工决定与复审结果 |
+| `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用、人工决定与复审结果 |
 | `docs/progress/<key>.md` | 一项 Feature 或获批批次需要归档时 | 一份执行历史正文 |
 | `docs/architecture.md` | 需要项目级职责和依赖地图时 | 当前架构导航 |
 | `docs/architecture/<subsystem>.md` | 某个子系统需要展开说明时 | 状态归属、关键运行流程、生命周期与失败处理 |
@@ -105,7 +105,7 @@ MyGodotGame/
 | `feature-detail.json.tmpl` | 产品 Feature，省略 `engineering_change` |
 | `engineering-feature-detail.json.tmpl` | Bug、重构、维护 Feature |
 | `feature-list.json.tmpl`、`feature-list-revisions.json.tmpl` | 任务索引与源需求演进记录 |
-| `test-registry.json.tmpl`、`gate-evidence.json.tmpl` | 测试索引与完成依据结构 |
+| `test-registry.json.tmpl`、`feature-completion-evidence.json.tmpl` | 测试索引与完成依据结构 |
 | `progress.md.tmpl`、`stage8-learning.md.tmpl` | 当前交接与任务结束时的简短经验 |
 | `coding_rules.md.tmpl` | 协作约定与通用设计原则 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |
@@ -117,7 +117,7 @@ MyGodotGame/
 
 `tools/checks/` 放跨任务检查，`tools/testing/` 放真实测试入口，`tools/lib/` 放共享实现。只服务于某个流程的脚本随其 Skill 保存：
 
-- `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` 记录与检查完成依据。
+- `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` 记录与检查完成依据。
 - `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` 合并规划阶段的组件测试登记表。
 
 这些是直接入口，没有根目录转发脚本，也没有自动工具事件。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。

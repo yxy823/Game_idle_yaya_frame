@@ -54,7 +54,7 @@ gdUnit 的 `GdUnitTestSessionHook` 是测试生命周期扩展，用于关联诊
 | 当前交接与必要历史 | `docs/progress.md`、`docs/progress/`、Feature notes | 普通 Markdown 与链接；不要求机器标记或自动归档 |
 | 本项目环境 | `docs/methodology-config.json` | 记录实际路径和命令；ready 是配置记录，不能冒充本轮检查已通过 |
 | 本次运行事实 | result.json、JUnit、discovery、诊断与引擎日志；解析/lint 的原始输出 | 保留真实执行和必要关联；不能用手填数量、旧文件时间或对话摘要冒充新通过 |
-| 完成结果与人工决定 | `docs/gate-evidence.json` 引用实际运行，记录明确验收/复审结论 | 显式校验成果，不监听每次状态编辑 |
+| 完成结果与人工决定 | `docs/feature-completion-evidence.json` 引用实际运行，记录明确验收/复审结论 | 显式校验成果，不监听每次状态编辑 |
 | 失败或中断的测试 | 同一 run 目录中的 result.json，状态为 running/failed | 不另设尝试日志或锁；保留未解决失败，不能选择旧成功将其隐去 |
 
 提示词增加了用户常用任务入口，没有新增流程引擎；正文引用现有 Skill/规则。

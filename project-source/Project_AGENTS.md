@@ -76,8 +76,8 @@ This is Agent-led configuration, not a separate Bootstrap program. Normal Featur
 after tool/configuration changes, or when diagnosing actual invocation failures;
 do not repeat version discovery for every Feature.
 
-Feature completion uses `docs/gate-evidence.json`, written through
-`.agents/skills/execute-next-feature/scripts/write-gate-evidence.py`. Run its `validate --feature F0XX`
+Feature completion uses `docs/feature-completion-evidence.json`, written through
+`.agents/skills/execute-next-feature/scripts/record-feature-completion.py`. Run its `validate --feature F0XX`
 command and the Skill's explicit Feature checks before recording completion.
 The helper checks tests, applicable human acceptance and review. The Agent separately
 runs direct script parsing/lint and assesses their actual results before completion. There is no tool interception, patch-intent parser or Stop listener.

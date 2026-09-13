@@ -122,7 +122,7 @@ flowchart TD
 显式命令执行；编辑文件或结束回复不会触发另一套拦截流程。
 
 例如：`tools/checks/check-feature-list.py` 检查台账，
-`.agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F001` 检查已有完成依据。
+`.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。
 具体命令见
 [tools/README.md](tools/README.md)。
 

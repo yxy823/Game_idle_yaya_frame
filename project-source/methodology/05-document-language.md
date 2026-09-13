@@ -139,7 +139,7 @@ The following elements must remain stable English or language-neutral protocol v
 - Conventional Commit types such as `feat`, `fix`, and `docs`
 - Placeholder prefixes such as `_placeholder_`
 - Review severity values `must_fix`, `suggest`, and `acceptable`
-- Structured gate-evidence keys/status values; human-readable summaries follow the conversation language
+- Structured feature-completion-evidence keys/status values; human-readable summaries follow the conversation language
 - Test IDs (`F0XX-ACyy`, `F0XX-RTyy`, `INV-<DOMAIN>-NN`), component IDs, test kinds/status values, and test registry keys
 - ISO 8601 timestamps and programming-language identifiers
 

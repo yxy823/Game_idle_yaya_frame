@@ -28,7 +28,7 @@ The project knowledge layer is:
     ├── knowledge/                  development experience, with topic indexes and separate entries
     ├── feature-list-revisions.json  Product/Coding-Rules synchronization history
     ├── test-registry.json            component/test traceability and safety-net index
-    ├── gate-evidence.json           current-snapshot Feature completion evidence
+    ├── feature-completion-evidence.json           current-snapshot Feature completion evidence
     ├── coding_rules.md              collaboration and stack-independent architecture
     ├── progress.md                  current state, blockers, decisions, next action and history index
     ├── progress/                    one historical body per Feature or approved batch
@@ -205,7 +205,7 @@ second workflow.
 dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
 
 `tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly.
-`.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` records actual results and human
+`.agents/skills/execute-next-feature/scripts/record-feature-completion.py` records actual results and human
 decisions. Its `validate --feature F0XX` command checks completion evidence
 before the Agent records completion. Test, static and acceptance requirements
 remain those of the execution Skill.

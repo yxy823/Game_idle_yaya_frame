@@ -68,8 +68,8 @@
 | --- | --- | --- | --- |
 | 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划；同一 runner 的 scope 决定范围，不因维护分类自动 full；Agent 判断实际影响 |
 | 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、导入分支或通过标签 |
-| 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/run_evidence.py`、`lib/gate_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
-| 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
+| 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/test_run_evidence.py`、`lib/feature_completion_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
+| 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
 | 5.5 | 验收方式与独立复审 | 流程：Stage 1 决定验收方式，Stage 4 提供可复现步骤，Stage 6 一次审查需求与代码质量 | manual 需真实人工决定；automated 省略 Stage 5；复用 manual_checks、Feature notes 与原有 review 记录，不增加阶段或证据格式 |
 | 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
 

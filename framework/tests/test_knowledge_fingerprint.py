@@ -8,10 +8,10 @@ import unittest
 from pathlib import Path
 
 
-SOURCE = Path(__file__).resolve().parents[2] / "project-source/tools/lib/gate_evidence.py"
-SPEC = importlib.util.spec_from_file_location("knowledge_gate_evidence", SOURCE)
-gate_evidence = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(gate_evidence)
+SOURCE = Path(__file__).resolve().parents[2] / "project-source/tools/lib/feature_completion_evidence.py"
+SPEC = importlib.util.spec_from_file_location("knowledge_feature_completion_evidence", SOURCE)
+feature_completion_evidence = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(feature_completion_evidence)
 
 
 class KnowledgeFingerprintTests(unittest.TestCase):
@@ -35,7 +35,7 @@ class KnowledgeFingerprintTests(unittest.TestCase):
         return path
 
     def fingerprint(self):
-        return gate_evidence.working_tree_fingerprint(self.root)
+        return feature_completion_evidence.working_tree_fingerprint(self.root)
 
     def test_knowledge_capture_edit_and_reorganization_preserve_source_binding(self):
         before = self.fingerprint()

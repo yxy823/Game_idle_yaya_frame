@@ -138,7 +138,7 @@ After approval:
 6. initialize the current Feature's structured completion evidence:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py initialize --feature F0XX
+   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py initialize --feature F0XX
    ```
 
 7. run:
@@ -212,7 +212,7 @@ Procedure:
 6. Record the actual Required Test Set, affected-test, and full-suite result, including failures:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run <result.json>
+   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run <result.json>
    ```
 
    `record-tests` validates the supplied run results and stores their references.
@@ -245,7 +245,7 @@ record an accepted human decision that never occurred.
 
 Wait for the user to report the checklist result.
 
-- Explicit acceptance of all material criteria → record it with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-acceptance --feature F0XX --status accepted`, then continue.
+- Explicit acceptance of all material criteria → record it with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-acceptance --feature F0XX --status accepted`, then continue.
 - Any failure → record `--status rejected`, update Progress, return to Stage 3, repair, then repeat Stage 4 and Stage 5.
 - Ambiguous response → ask whether any criterion remains unmet.
 - A minor deferral is durable only when the user explicitly accepts it and it is recorded in notes.
@@ -324,7 +324,7 @@ Processing rules:
 4. Re-review until `must_fix` is empty.
 5. Append each `suggest` to Feature notes with `TODO`; report `acceptable` without turning it into durable debt automatically.
 6. Before completion, verify the final repair snapshot has the actual successful full result required by the approved Feature verification or project Coding Rules. Reuse the covering run from step 2 when its snapshot still matches; later semantic changes require a new run.
-7. After any code/test change, record the rerun Stage 4 results again. Record the final review with `python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-smell --feature F0XX --must-fix 0 --suggest <N> --acceptable <M>`.
+7. After any code/test change, record the rerun Stage 4 results again. Record the final review with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-smell --feature F0XX --must-fix 0 --suggest <N> --acceptable <M>`.
 
 Do not continue while any required test/static/full-suite check is failing.
 
@@ -337,7 +337,7 @@ Report material review findings and unresolved work in ordinary language.
 1. Run:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F0XX
+   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX
    python -B tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 

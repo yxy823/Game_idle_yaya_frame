@@ -10,7 +10,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(PROJECT_ROOT))
-from tools.lib.run_evidence import (
+from tools.lib.test_run_evidence import (
     RunEvidenceError, expected_gdunit_cases, require_coverage, verify_runtime_discovery,
 )
 

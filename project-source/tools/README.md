@@ -16,7 +16,7 @@ tools/
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对工具与版本 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 
-完成记录属于 `execute-next-feature/scripts/write-gate-evidence.py`；
+完成记录属于 `execute-next-feature/scripts/record-feature-completion.py`；
 测试登记表合并属于 `generate-feature-list/scripts/merge_test_registry.py`。
 它们位于 `.agents/skills/` 对应 Skill 内，不另设转发命令。
 
@@ -29,7 +29,7 @@ tools/
 python -B tools/checks/check-project-environment.py --require-ready
 python -B tools/checks/check-feature-list.py
 python -B tools/testing/run-gdunit-tests.py --godot-binary C:\Godot\Godot.exe --feature F001 --scope auto
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
+python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
 ```
 
 将上述 Python、Godot 换成实际路径；配置 `test_cmd` 时保留测试入口及
@@ -68,8 +68,8 @@ Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检�
 | --- | --- |
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
 | `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
-| `run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
-| `gate_evidence.py` | 当前源码指纹、测试、适用人工接受和复审结果 |
+| `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
+| `feature_completion_evidence.py` | 当前源码指纹、测试、适用人工接受和复审结果 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 

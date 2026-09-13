@@ -23,7 +23,7 @@ $projectGodot = $projectConfig.environment_bootstrap.engine_executable
 | `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
 | `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
 | `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 启动真实 Godot 测试进程，写隔离的运行目录 |
-| `.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工/复审记录，或只读展示、校验已有依据 |
+| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工/复审记录，或只读展示、校验已有依据 |
 | `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
 测试登记表合并应使用 `generate-feature-list` 提供的实际输入结构与约束，不用临时生成的空文件替代历史测试登记表。它不负责生成真实测试或证明测试通过。
@@ -133,7 +133,7 @@ reports/gdunit-wrapper/run-<id>/
 真实报告导入示例：
 
 ```powershell
-& $projectPython -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F001 --run reports/gdunit-wrapper/run-actual-id/result.json
+& $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-actual-id/result.json
 $LASTEXITCODE
 ```
 
@@ -144,7 +144,7 @@ $LASTEXITCODE
 完成检查由两部分配合，Agent 还要单独确认直接静态检查：
 
 ```powershell
-& $projectPython -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py validate --feature F001
+& $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F001
 $LASTEXITCODE
 & $projectPython -B tools/checks/check-feature-list.py --completion-feature F001
 $LASTEXITCODE
@@ -186,4 +186,4 @@ $LASTEXITCODE
 | 完成依据校验通过 | 它负责的测试、人工与复审契约满足 | 脚本解析、lint 或所有目标平台已检查 |
 | 静态检查通过 | 已执行静态范围通过 | 手感、外观、声音和导出质量已接受 |
 
-实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/skills/execute-next-feature/scripts/write-gate-evidence.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/skills/execute-next-feature/scripts/record-feature-completion.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。

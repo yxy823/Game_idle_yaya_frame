@@ -20,7 +20,7 @@ Before rendering any template:
 | `engineering-feature-detail.json.tmpl` | Bug/refactor/maintenance Feature detail with required `engineering_change`. |
 | `feature-list-revisions.json.tmpl` | Versioned Product/Coding-Rules migration log, preserving historical entries and typed evolution relationships. |
 | `test-registry.json.tmpl` | Empty machine-readable component/test traceability registry used by Test Impact Review. |
-| `gate-evidence.json.tmpl` | Current-Feature test, human-acceptance, review, Git revision, and working-tree evidence used by the explicit completion check. |
+| `feature-completion-evidence.json.tmpl` | Current-Feature test, human-acceptance, review, Git revision, and working-tree evidence used by the explicit completion check. |
 | `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
 | `coding_rules.md.tmpl` | Stack-independent collaboration and architecture rules, with pointers to the root router and routed project rules. |
 | `stage8-learning.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |

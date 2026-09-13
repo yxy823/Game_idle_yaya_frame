@@ -11,7 +11,7 @@ docs/
 │   └── ...
 ├── feature-list-revisions.json
 ├── test-registry.json
-└── gate-evidence.json
+└── feature-completion-evidence.json
 ```
 
 The Feature index stays lightweight. Durable behavior, stable acceptance-criterion IDs, component impact, verification mapping, engineering classification, and notes live in per-Feature detail files. `docs/test-registry.json` is the machine-readable index that maps components to reusable tests. Human-readable values use `document_language`; machine protocol fields remain stable.
@@ -310,7 +310,7 @@ replacement to make them pass.
 
 `unit_test_paths` lists repository-relative paths to existing unit suite files or directories; the example assumes the inventory suite exists. Use `[]` when no unit suite exists, and register new suites only after their approved creation. Missing registered paths are validation errors; `planned` applies to test entries, not future unit suite paths.
 
-## File 5: `docs/gate-evidence.json`
+## File 5: `docs/feature-completion-evidence.json`
 
 This repository-owned JSON file holds the current Feature's completion evidence.
 PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched
@@ -327,17 +327,17 @@ The current evidence schema is version 7. It keeps real test-run references plus
 applicable human acceptance and review records. Required/affected/full test
 conclusions are calculated from those artifacts rather than persisted again.
 Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in
-`methodology/templates/gate-evidence.json.tmpl`; the execution contract is in
+`methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in
 [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/write-gate-evidence.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
 Repeat `--run` when a plan is covered by multiple real runs. An unavailable full
 suite is a reported blocker, not a caller-entered PASS.
 
-`.agents/skills/execute-next-feature/scripts/write-gate-evidence.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
+`.agents/skills/execute-next-feature/scripts/record-feature-completion.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
 
 ## Bug learning in notes
 

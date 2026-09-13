@@ -13,7 +13,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from tools.lib.gate_evidence import current_snapshot, utc_now, write_evidence
+from tools.lib.feature_completion_evidence import current_snapshot, utc_now, write_evidence
 from tools.lib.test_selection import execution_selectors, normalized_path, read_json, build_selection
 
 

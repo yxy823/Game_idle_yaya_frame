@@ -13,7 +13,7 @@ from typing import Any, Iterable
 # 脚本在子目录直接启动时，显式加载本项目的共享包。
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 
-from tools.lib.gate_evidence import (
+from tools.lib.feature_completion_evidence import (
     EVIDENCE_RELATIVE_PATH,
     EvidenceError,
     current_snapshot,
@@ -71,7 +71,7 @@ def _initialize(repo_root: Path, feature_id: str) -> int:
 
 # 只导入实际测试结果；脚本解析与 lint 由 Agent 直接执行、阅读原始输出。
 def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
-    from tools.lib.run_evidence import derive_test_evidence, result_reference
+    from tools.lib.test_run_evidence import derive_test_evidence, result_reference
 
     path, data, _snapshot = _load_for_write(repo_root, args.feature)
     data["test_runs"] = []

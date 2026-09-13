@@ -12,9 +12,9 @@ from pathlib import Path
 from typing import Any
 
 SCHEMA_VERSION = 7
-EVIDENCE_RELATIVE_PATH = Path("docs/gate-evidence.json")
+EVIDENCE_RELATIVE_PATH = Path("docs/feature-completion-evidence.json")
 EXCLUDED_EXACT_PATHS = {
-    "docs/gate-evidence.json",
+    "docs/feature-completion-evidence.json",
     "docs/progress.md",
 }
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
@@ -274,7 +274,7 @@ def validate_completion_evidence(
     if data.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
         return False, "working tree changed after verification"
     try:
-        from tools.lib.run_evidence import derive_test_evidence
+        from tools.lib.test_run_evidence import derive_test_evidence
         from tools.lib.test_selection import acceptance_mode, read_json
         mode = acceptance_mode(read_json(repo_root / f"docs/features/{feature_id}.json"))
         derive_test_evidence(repo_root, feature_id, data.get("test_runs"))

@@ -13,10 +13,10 @@ from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.lib.gate_evidence import write_evidence
+from tools.lib.feature_completion_evidence import write_evidence
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
-from tools.lib.run_evidence import start_run, finish_run, require_supported_adapter
+from tools.lib.test_run_evidence import start_run, finish_run, require_supported_adapter
 from tools.lib.test_selection import build_selection, execution_selectors, read_json
 
 REPO_ROOT = Path(__file__).resolve().parents[2]

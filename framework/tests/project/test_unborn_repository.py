@@ -13,10 +13,10 @@ from pathlib import Path
 
 TOOLS = (PROJECT_ROOT / "tools")
 sys.path.insert(0, str(PROJECT_ROOT))
-from tools.lib import gate_evidence
-from evidence_fixture import make_run
-from tools.lib.run_evidence import derive_test_evidence, result_reference
-from tools.lib.run_evidence import RunEvidenceError
+from tools.lib import feature_completion_evidence
+from gdunit_report_fixture import make_run
+from tools.lib.test_run_evidence import derive_test_evidence, result_reference
+from tools.lib.test_run_evidence import RunEvidenceError
 
 
 class UnbornRepositoryTests(unittest.TestCase):
@@ -61,31 +61,31 @@ class UnbornRepositoryTests(unittest.TestCase):
                    "tests": []})
 
     def test_unborn_snapshot_is_explicit_stable_and_hashes_untracked_source(self) -> None:
-        before = gate_evidence.current_snapshot(self.root)
+        before = feature_completion_evidence.current_snapshot(self.root)
         self.assertEqual("UNBORN", before["git_revision"])
-        self.assertEqual(before, gate_evidence.current_snapshot(self.root))
+        self.assertEqual(before, feature_completion_evidence.current_snapshot(self.root))
         self.git("add", ".gitignore", "source.gd")
-        self.assertEqual(before, gate_evidence.current_snapshot(self.root))
+        self.assertEqual(before, feature_completion_evidence.current_snapshot(self.root))
         self.write("source.gd", "extends RefCounted\nvar changed = true\n")
         self.assertNotEqual(before["working_tree_fingerprint"],
-                            gate_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+                            feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_precommit_run_survives_initial_and_process_only_commits_without_granting_acceptance(self) -> None:
         self.plan_fixture()
         plan, manifest = make_run(self.root)
-        self.assertEqual("UNBORN", gate_evidence.current_snapshot(self.root)["git_revision"])
+        self.assertEqual("UNBORN", feature_completion_evidence.current_snapshot(self.root)["git_revision"])
         references = [result_reference(self.root, manifest)]
         verified = derive_test_evidence(self.root, "F001", references)
-        evidence = gate_evidence.empty_evidence("F001", gate_evidence.current_snapshot(self.root))
+        evidence = feature_completion_evidence.empty_evidence("F001", feature_completion_evidence.current_snapshot(self.root))
         evidence.update(test_runs=references, **verified)
-        gate_evidence.write_evidence(self.root / gate_evidence.EVIDENCE_RELATIVE_PATH, evidence)
+        feature_completion_evidence.write_evidence(self.root / feature_completion_evidence.EVIDENCE_RELATIVE_PATH, evidence)
         task_files = [".gitignore", "source.gd", "tests", "docs"]
         self.git("add", *task_files)
         self.git("commit", "-m", "Fixture initial commit after verification")
-        self.assertNotEqual("UNBORN", gate_evidence.git_revision(self.root))
+        self.assertNotEqual("UNBORN", feature_completion_evidence.git_revision(self.root))
         self.assertEqual(verified["required_test_set"]["total"],
                          derive_test_evidence(self.root, "F001", references)["required_test_set"]["total"])
-        accepted, reason = gate_evidence.validate_completion_evidence(self.root, "F001")
+        accepted, reason = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(accepted)
         self.assertIn("explicit human acceptance", reason)
         self.write("docs/progress/bootstrap.md", "Initial verification is archived here.\n")
@@ -94,7 +94,7 @@ class UnbornRepositoryTests(unittest.TestCase):
         after_commit = derive_test_evidence(self.root, "F001", references)
         for scope, result in verified.items():
             # 当前 Git 提交可变化；相同内容下，测试结论、用例与运行引用必须保持。
-            self.assertEqual(after_commit[scope]["git_revision"], gate_evidence.git_revision(self.root))
+            self.assertEqual(after_commit[scope]["git_revision"], feature_completion_evidence.git_revision(self.root))
             self.assertEqual({key: value for key, value in result.items() if key != "git_revision"},
                              {key: value for key, value in after_commit[scope].items() if key != "git_revision"})
         self.write("source.gd", "extends RefCounted\nvar changed = true\n")
@@ -103,22 +103,22 @@ class UnbornRepositoryTests(unittest.TestCase):
 
     def test_non_repository_does_not_receive_unborn_provenance(self) -> None:
         with tempfile.TemporaryDirectory(prefix="yaya-not-repo-") as unrelated:
-            with self.assertRaises(gate_evidence.EvidenceError):
-                gate_evidence.current_snapshot(Path(unrelated))
+            with self.assertRaises(feature_completion_evidence.EvidenceError):
+                feature_completion_evidence.current_snapshot(Path(unrelated))
 
     def test_corrupt_or_dangling_head_is_not_treated_as_a_fresh_repository(self) -> None:
         for content in ("invalid HEAD\n", "f" * 40 + "\n"):
             with self.subTest(content=content):
                 self.write(".git/HEAD", content)
-                with self.assertRaises(gate_evidence.EvidenceError):
-                    gate_evidence.current_snapshot(self.root)
+                with self.assertRaises(feature_completion_evidence.EvidenceError):
+                    feature_completion_evidence.current_snapshot(self.root)
 
     def test_existing_broken_branch_ref_is_not_treated_as_unborn(self) -> None:
         for content in ("not-an-object-id\n", "f" * 40 + "\n"):
             with self.subTest(content=content):
                 self.write(".git/refs/heads/bootstrap", content)
-                with self.assertRaises(gate_evidence.EvidenceError):
-                    gate_evidence.current_snapshot(self.root)
+                with self.assertRaises(feature_completion_evidence.EvidenceError):
+                    feature_completion_evidence.current_snapshot(self.root)
 
 
 if __name__ == "__main__":

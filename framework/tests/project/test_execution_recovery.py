@@ -6,16 +6,16 @@ import sys
 import unittest
 from unittest import mock
 
-import test_framework_evidence as fixtures
-from evidence_fixture import make_run
-from tools.lib.run_evidence import derive_test_evidence, result_reference, start_run
+import test_feature_completion_evidence as fixtures
+from gdunit_report_fixture import make_run
+from tools.lib.test_run_evidence import derive_test_evidence, result_reference, start_run
 
 
 class ExecutionRecoveryTests(unittest.TestCase):
-    setUp = fixtures.FrameworkEvidenceTests.setUp
-    write = fixtures.FrameworkEvidenceTests.write
-    write_json = fixtures.FrameworkEvidenceTests.write_json
-    git = fixtures.FrameworkEvidenceTests.git
+    setUp = fixtures.FeatureCompletionEvidenceTests.setUp
+    write = fixtures.FeatureCompletionEvidenceTests.write
+    write_json = fixtures.FeatureCompletionEvidenceTests.write_json
+    git = fixtures.FeatureCompletionEvidenceTests.git
 
     def derive(self, plan, path):
         return derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
