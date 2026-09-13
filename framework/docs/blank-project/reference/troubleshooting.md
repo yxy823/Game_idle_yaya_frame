@@ -31,6 +31,7 @@
 | Python 路径带参数后无法调用 | 把命令写进可执行文件字段 | 路径单独存放，`-B` 和脚本放在调用参数中 |
 | `test_cmd` 有内容但入口失败 | 引号、JSON 转义、脚本参数或目录不正确 | [配置写法](configuration.md) 和项目根目录 |
 | 环境 ready 后测试仍失败 | 就绪检查不执行测试命令全部逻辑 | 实际运行器输出、发现集合和引擎诊断 |
+| 新项目首次 CLI 测试找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite` | Godot 编辑器可能尚未完成全局类扫描 | 按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 核对并处理；仍失败时追查插件和解析错误，未执行用例的失败不能算业务 RED |
 | PowerShell 中退出码为空 | GUI 程序未按预期等待结束 | 使用直接检查约定的 `Out-Host` 管道并立即读取退出码 |
 
 本机如果 Godot 编辑器检查报 `Could not create editor data directory`、`Could not create editor config directory` 或 `AppData/Roaming/Godot` 访问失败，应按项目 `AGENTS.md` 中已记录的环境权限问题处理。这类编辑器检查走沙箱外审批路径，失败后不继续宣称依赖该检查的验证通过。

@@ -16,6 +16,8 @@ $projectGodot = $projectConfig.environment_bootstrap.engine_executable
 
 在本机，`python_executable` 应是个人规则指定并已确认的完整解释器路径。`F001` 和示例脚本路径都需换成实际存在的任务与文件。每条原生命令后立即读取 `$LASTEXITCODE`；缺失退出码不能当作 0。
 
+新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；配置 ready 不代替这次扫描。
+
 ## 入口与副作用
 
 | 入口 | 常用参数 | 行为 |

@@ -138,5 +138,5 @@ python -B tools/checks/check-project-environment.py --require-ready
 前一条检查配置结构，后一条检查路径、命令入口与实际 Godot 版本。
 它们不配置环境、不运行测试，也不初始化 Git。
 测试使用配置中的实际命令；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。
-资源导入交给 Godot，不另设 Feature 导入步骤。
+首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。
 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。

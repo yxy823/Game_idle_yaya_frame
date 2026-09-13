@@ -20,6 +20,28 @@ tools/
 测试登记表合并属于 `generate-feature-list/scripts/merge_test_registry.py`。
 它们位于 `.agents/skills/` 对应 Skill 内，不另设转发命令。
 
+## 首次 Godot 扫描
+
+适用条件见 [环境配置约定](../methodology/05-document-language.md#project-environment-bootstrap)。
+在已获准的首次 CLI 测试或项目脚本运行前，尚未由编辑器扫描的新项目可在项目根目录执行：
+
+```powershell
+$projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
+$projectGodot = (Resolve-Path -LiteralPath $projectConfig.environment_bootstrap.engine_executable -ErrorAction Stop).Path
+& $projectGodot --headless --editor --path . --quit | Out-Host
+$LASTEXITCODE
+```
+
+按项目 `AGENTS.md` 的本机权限约束执行；`Out-Host` 用于等待 Windows GUI 程序结束。
+读取退出码和扫描、导入诊断，失败时保留原文并停止依赖这次准备的运行。
+正常完成后执行原定测试或脚本；扫描成功本身不证明用例或业务行为通过。
+
+首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。
+没有发现或执行用例的解析失败不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对
+插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。
+生成的 `.import`、`.uid` 与 `.godot` 按现有 [资产规则](../agent-rules/60-assets/README.md)
+和 [引用规则](../agent-rules/00-core/godot-resource-references.md) 处理。
+
 ## 调用
 
 `python_executable` 和 `environment_bootstrap.engine_executable` 保存完整路径，

@@ -75,8 +75,14 @@ accepts scope arguments; focused and affected scopes do not need separate
 configuration copies. No plugin source/hash inventory, timestamp, working-directory
 field or stored blocker list is needed; commands run from the project root.
 
-The Agent confirms the tools and dependencies. Resource import is handled by Godot;
-do not add a separate import step to initialization or every Feature. Record the actual setup process and findings in `reports/initialization.md`.
+The Agent confirms the tools and dependencies. Before the first CLI run that needs
+project scripts in a newly copied project, let the configured Godot editor finish
+its normal resource import and global class scan if this project has not already
+been opened. Follow the [first scan instructions](../tools/README.md#首次-godot-扫描).
+Configuration-only setup may defer this to the authorized first run and must
+report that it was not executed. Reuse completed preparation on later Features;
+do not add an import wrapper or a per-Feature import phase.
+Record the actual setup process and findings in `reports/initialization.md`.
 Append a new entry when that report already exists; preserve earlier failures.
 This is a human-readable task report, not a machine gate or another state file.
 Progress keeps the current result, blockers, next step and report link.
@@ -90,8 +96,8 @@ python -B tools/checks/check-project-environment.py --require-ready
 Without the flag, the checker accepts valid incomplete configuration. With it,
 the checker requires ready status, available Python/Godot paths and command
 entrypoints, and a live Godot 4.7.x version matching the recorded value.
-It does not install dependencies, execute tests, script parsing or lint,
-initialize Git or claim those checks passed. If setup fails, leave status
+It does not prepare editor caches, install dependencies, execute tests, script
+parsing or lint, initialize Git or claim those checks passed. If setup fails, leave status
 incomplete and report the actual reason in Progress rather than duplicating
 errors into configuration arrays.
 
