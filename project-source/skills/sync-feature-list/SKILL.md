@@ -79,11 +79,10 @@ Between synchronizations, module files may be added, deleted, renamed—includin
    - Run `git status --porcelain`. If any staged, unstaged, untracked, deleted, renamed, or conflicted change exists, block this new task and report it. Do not add, stash, restore, discard, or absorb it.
    - Source Markdown must already be committed separately so the diff and next anchor remain meaningful.
 3. Determine the anchor commit.
-   - Prefer `synced_at_commit` from the last `revision_log` entry.
-   - If absent, search Git history for the most recent commit touching `docs/feature-list.json` or `docs/features/`.
-   - If none exists, use the commit where `docs/feature-list.json` first appeared.
-   - If no anchor can be found, explain that the workflow must fall back to whole-document comparison and obtain confirmation before continuing.
-4. Report the current branch, anchor hash/date/subject, and counts grouped by Feature status.
+   - Prefer `synced_at_commit` from the last `revision_log` entry and verify that the commit is available in the current history.
+   - Without a usable recorded anchor, inspect planning commits and their actual Product/Feature contents. Choose a verified source state already reflected in the relevant plan, early enough to include all unsynchronized changes to existing work. Merely touching an index/detail, updating notes/status or adding an engineering Feature does not prove source synchronization; neither does the first appearance of an empty copied index. Later Product planning must not silently advance the baseline for older work.
+   - If no reliable baseline can be established, disclose the missing historical evidence and offer whole-document alignment of current sources and the current plan. Continue that fallback only within explicit authorization; do not ask again if this concrete scope is already approved. An empty diff from an unverified recent commit is not evidence that nothing changed.
+4. Report the current branch, verified anchor hash/date/subject and its source-coverage basis, or the fallback and inspected HEAD; include counts grouped by Feature status.
 
 ## Stage 1: user prior
 
@@ -100,6 +99,13 @@ Ask the user to summarize the source-document change before reading the diff—f
 **Output:** a precise diff report; no files modified.
 
 ### 2.1 Collect the complete diff
+
+For the approved whole-document fallback, read the complete current sources relevant
+to existing work and compare them with the current plan. Report present alignment
+gaps and unknown history, not invented historical additions/removals. Use the report
+title `Current-document alignment (historical baseline unverified; HEAD <hash>)`.
+Skip the unavailable before/after diff below; all scope, impact and Stage 3 approval
+rules still apply, including deferred planning of later Products.
 
 Inspect committed changes from the anchor to `HEAD`. Cover all source paths and enable rename detection for module files:
 
@@ -395,6 +401,13 @@ For each dependent Feature identified in Stage 2.4:
 
 `synced_at_commit` is the next run's anchor and is mandatory. It must identify the committed source-document state analyzed by this synchronization. `source_path_updates` preserves rename traceability, including mappings for immutable completed history.
 
+For an approved whole-document fallback, use the actually inspected HEAD for both
+`anchor_commit` and `synced_at_commit`, and state in the existing `summary` that
+current alignment established this baseline while earlier source history is unknown.
+This records a new comparison point, not a reconstructed historical diff. Migration
+sources must be supported by inspected content; unresolved historical claims stay
+unresolved. Do not invent a commit, add tracking fields or rewrite older revisions.
+
 Use the exact migration cardinalities and retirement fields in
 `methodology/02-feature-list-schema.md`. Empty migrations/dependency changes are
 valid for editorial synchronization. The new entry's source commit is one of its
@@ -465,7 +478,7 @@ Do not automatically start another Feature. Wait for the user's instruction.
 
 | Condition | Required response |
 |---|---|
-| No anchor can be found | Offer whole-document comparison, disclose reduced precision, and require confirmation |
+| No reliable anchor can be established | Offer current whole-document alignment, disclose unknown history, and use explicit scope authorization |
 | Source changes are too broad to classify reliably | Narrow the affected scope with the user, preserving current records and Product order; do not recommend full-project regeneration based on file or line counts |
 | Diff and user prior conflict materially | Pause, enumerate mismatches, and ask the user to check for unintended source edits |
 | Product module inventory and actual files differ | Pause, list the discrepancy, and require Product repair rather than guessing |

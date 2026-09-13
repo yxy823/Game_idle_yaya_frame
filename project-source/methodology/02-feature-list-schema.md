@@ -177,6 +177,12 @@ revision entry use schema version 2; no old-format parsing or automatic migratio
 is provided. Current-format history remains immutable. `engineering-change-standardizer`
 does not append a revision merely for creating an engineering Feature without a source change.
 
+On first synchronization, a Feature-file edit alone is not a source baseline;
+`sync-feature-list` must verify which source state the plan actually absorbed.
+If approved current-document alignment is needed because that history is unknown,
+the existing anchor fields both identify the inspected HEAD and `summary` records
+this limitation. This establishes the next baseline without claiming an earlier diff.
+
 New synchronization records use these fields in addition to the existing summary,
 anchor and human-readable metadata:
 
