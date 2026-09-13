@@ -102,6 +102,10 @@ passed. Every ordinary project follows the Feature and Git steps below.
 
 Read `docs/feature-list.json` and relevant detail files. If the Feature plan does not exist, route to `generate-feature-list` first.
 
+Read `docs/test-catalog.json` before proposing affected components. Reuse existing
+records and identify any new component entries or conflicts in the proposal, following
+the Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+
 Propose the smallest Feature that can be implemented and verified in one normal work session. Split any `large` change before writing.
 
 Use the current Feature/test schema. Engineering Features are append-only and receive the next sequential Feature ID. Add stable `ACxx` acceptance IDs, non-empty `affected_components`, an initially empty criterion verification mapping, top-level `verification`, and `engineering_change` with exactly one value: `bug`, `refactor`, or `maintenance`. Do not rewrite completed Feature descriptions, criterion IDs/text, or historical test mappings.
@@ -152,12 +156,20 @@ Show the proposed Feature ID, title, mode, dependencies, affected components, st
 
 After approval:
 
+Before writing the Feature plan, merge any approved new components with the existing
+`.agents/skills/generate-feature-list/scripts/merge_test_catalog.py` command and
+candidate format from that contract. Preserve existing components/tests and reject
+conflicting existing IDs. New components use `unit_test_paths: []` when no suite
+exists and `full_suite_on_change: false` unless the approved contract requires it;
+do not create a future suite just to register a component. Temporary candidates are
+not committed. Execution-time test mappings remain owned by `execute-next-feature`.
+
 1. append the Feature to `docs/feature-list.json`;
 2. create the matching `docs/features/F0XX.json` with `affected_components`, stable `ACxx` criteria, and empty execution-time verification mappings;
 3. update `meta.total_features`;
 4. validate all affected JSON and Feature invariants with `python -B tools/checks/check-feature-list.py`;
 5. do not modify `docs/feature-list-revisions.json`, because no Product/Coding-Rules source synchronization occurred;
-6. inspect `git status --short`, stage only the task-owned Feature-plan paths or inspected hunks, and run `git diff --cached --check`, `git diff --cached --stat`, and the complete `git diff --cached` review;
+6. inspect `git status --short`, stage only the task-owned Feature-plan and component-registration paths or inspected hunks, and run `git diff --cached --check`, `git diff --cached --stat`, and the complete `git diff --cached` review;
 7. unless the user explicitly requested no commit, create one local commit without asking again, using `<type>(<scope>): <中文行为摘要>` and a body containing `Work item: docs/features/F0XX.json` plus the meaningful reason/validation summary;
 8. run `git status --short` after commit and stop on any unexpected or omitted change. Never push, amend, rebase, reset, change remotes, or use `--no-verify`.
 

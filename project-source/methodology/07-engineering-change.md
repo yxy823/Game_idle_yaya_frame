@@ -54,7 +54,7 @@ propose smallest verifiable engineering Feature
    ↓
 EXPLICIT HUMAN APPROVAL
    ↓
-append index + detail; strict ledger validation
+register needed components; append index + detail; strict ledger validation
    ↓
 handoff; stop if execution approval is still missing
    ↓
@@ -148,7 +148,16 @@ Engineering Features use the normal Feature/test ledger: stable `ACxx` criteria,
 "engineering_change": "bug"
 ```
 
-Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential Feature ID; do not rewrite completed Feature definitions. After user approval and writes, validate:
+Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential Feature ID; do not rewrite completed Feature definitions.
+
+Read the existing Test Catalog when proposing `affected_components`. After approval,
+register missing components before writing/validating the Feature, using the existing
+merge helper and Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+Reuse existing records without resetting tests; report conflicting IDs. A component
+without an existing unit suite uses `unit_test_paths: []`, and its full-suite flag
+defaults to false unless the approved contract requires otherwise. Include these
+task-owned Catalog changes in the same Feature-plan commit; test mappings are still
+finalized during execution. After the consistent set is written, validate:
 
 ```powershell
 python -B tools/checks/check-feature-list.py

@@ -35,7 +35,7 @@ With `document_language: en` and a Chinese conversation, discuss the diff in Chi
 |---|---|---|
 | `docs/feature-list.json` | Index: each Feature's `id`, `title`, `status`, `depends_on`, `estimated_scope`, and `completed_at` | Read the full index for scanning; update the index together with corresponding details |
 | `docs/features/F0XX.json` | Detail: stable criteria, `affected_components`, verification mapping, source, notes | Read details on demand; update each affected detail together with the index |
-| `docs/test-catalog.json` | Component/test traceability used for stale-test impact analysis | Read before proposing revisions; update only confirmed test retirements/path metadata |
+| `docs/test-catalog.json` | Component/test traceability used for stale-test impact analysis | Read before proposing revisions; update approved new components, replacement test mappings, retirements and path metadata |
 | `docs/feature-list-revisions.json` | Append-only `revision_log` | Read the last entry for the previous anchor; append one entry in Stage 5 |
 
 ## Source documents
@@ -156,6 +156,10 @@ For a module-file rename, identify every detail whose `source` uses the old path
 
 ### 2.4 Analyze downstream regression and stale-test impact
 
+Compare every proposed `affected_components` ID with the current Catalog. Include
+new component records and conflicting existing records in the proposal, using the
+Test catalog contract in `.agents/skills/generate-feature-list/SKILL.md`.
+
 For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-catalog.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
 
 Follow **Requirement changes and stale tests** in
@@ -235,6 +239,15 @@ Never enter Stage 4 without explicit confirmation.
 **Entry:** the user confirmed the final Stage 3 report, and source Markdown is committed separately.
 
 **Output:** a consistent index and affected detail files. Every addition or revision must update the correct sides together.
+
+Before rewriting Features or test retirements, merge approved new components using
+the existing `.agents/skills/generate-feature-list/scripts/merge_test_catalog.py`
+command and candidate format in the Test catalog contract above. Preserve existing
+records; conflicting existing IDs must be resolved explicitly, not overwritten.
+Use `unit_test_paths: []` if no suite exists and `full_suite_on_change: false` unless
+the approved contract requires it. Do not invent future paths or commit temporary
+candidates. Then apply the confirmed Feature/replacement-test/retirement changes
+and the Stage 5 revision record before strict cross-file validation.
 
 ### Field ownership
 

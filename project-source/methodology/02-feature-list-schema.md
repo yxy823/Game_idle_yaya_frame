@@ -482,7 +482,7 @@ alignment does not mean the new behavior has been implemented or tested.
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
 | Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/catalog, preserve existing history |
-| Product/Coding-Rules synchronization | `sync-feature-list` | index/details + revision log + affected test traceability |
-| Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details; test plan is finalized during execution |
+| Product/Coding-Rules synchronization | `sync-feature-list` | index/details + revision log + needed components and affected test traceability |
+| Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details + needed components; test plan is finalized during execution |
 | Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test catalog, notes, Progress, implementation/test files |
 | Smell candidate selection | `pick-refactor-smell` | read-only selection; returns to engineering standardizer |
