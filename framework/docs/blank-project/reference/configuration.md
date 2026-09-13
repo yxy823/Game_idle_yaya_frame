@@ -66,6 +66,8 @@ JSON 键、Feature ID、`pending` 等状态、`manual` 等枚举、文件路径�
 
 复制阶段不会把英文模板翻译成中文。后续生成内容遵循已确认的语言与模板结构，不删除不适用章节来缩短模板，也不建立平行的翻译版 Skill 树。详见 [文档语言约定](../../../../project-source/methodology/05-document-language.md)。
 
+用户发送的任务提示词可以使用当前会话语言；其产出的持久项目内容仍遵循 `document_language`，不因此翻译工作流规范或 Skill。
+
 ## Godot 默认配置
 
 实际文件是 [defaults/project.godot](../../../../project-source/defaults/project.godot)。
