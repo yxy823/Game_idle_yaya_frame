@@ -36,6 +36,7 @@ flowchart LR
 | 当前目的 | 阅读顺序 |
 | --- | --- |
 | 第一次创建项目 | [创建项目](getting-started/create-project.md) → [首次使用](getting-started/first-use.md) → [需求与规划](guides/product-and-planning.md) |
+| 将旧框架项目复制到新框架继续开发 | [复制迁移已有项目](getting-started/migrate-existing-project.md) → 核对成果与方案 → 目标内迁移和验证 |
 | 想知道复制后有什么 | [项目目录与文件职责](reference/project-layout.md) → [配置参考](reference/configuration.md) |
 | 准备实现一个任务 | [Skill 导航](reference/skills.md) → [Feature 开发流程](guides/feature-delivery.md) → [命令与验证](reference/commands-and-validation.md) |
 | 修 Bug、重构或做技术调查 | [工程变更与实验](guides/engineering-changes.md) |
@@ -53,7 +54,8 @@ framework/docs/blank-project/
 ├── README.md                            总入口、阅读路线和术语
 ├── getting-started/
 │   ├── create-project.md                创建命令、复制边界与失败处理
-│   └── first-use.md                     环境、项目名称、Git 初始状态
+│   ├── first-use.md                     环境、项目名称、Git 初始状态
+│   └── migrate-existing-project.md      复制旧项目、保留成果与验证续接
 ├── guides/
 │   ├── product-and-planning.md          从想法到 Product 与 Feature
 │   ├── feature-delivery.md              单项任务执行、验收与完成
