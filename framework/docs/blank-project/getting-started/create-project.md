@@ -62,7 +62,7 @@ sequenceDiagram
 | --- | --- |
 | 项目说明与规则 | `Project_README.md`、`Project_AGENTS.md` 分别成为根 `README.md`、`AGENTS.md` |
 | 开发 Skill | `skills/` 成为 `.agents/skills/` |
-| 环境配置 | `Project_Config.json` 成为 `docs/methodology-config.json`，状态仍为 `incomplete` |
+| 环境配置 | `Project_Workflow_Config.json` 成为 `docs/methodology-config.json`，状态仍为 `incomplete` |
 | Product | `docs/product.md` 是空文件 |
 | Feature 与测试登记表 | 空索引、空修订记录、空组件与测试集合 |
 | Godot | 显示名称为 `New Godot Project`，未设置主场景 |
@@ -92,4 +92,4 @@ sequenceDiagram
 
 - [create_project.py](../../../commands/create_project.py)：路径检查、复制顺序与错误返回。
 - [project-files.json](../../../project-files.json)：实际文件选择与重命名。
-- [复制器回归源码](../../../tests/test_generation.py)：已有边界用例；阅读源码不等于已运行回归。
+- [复制器回归源码](../../../tests/test_project_copy.py)：已有边界用例；阅读源码不等于已运行回归。

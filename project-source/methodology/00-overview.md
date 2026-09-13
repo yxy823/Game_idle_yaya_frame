@@ -19,22 +19,22 @@ The project knowledge layer is:
 
 ```text
 <repo>/
-├── agent-rules/                     repository-specific concrete implementation rules
+├── agent-rules/                         repository-specific concrete implementation rules
 └── docs/
-    ├── product.md + product/*.md    Product intent: What
-    ├── CONTEXT.md                   optional shared project vocabulary
-    ├── feature-list.json            lightweight Feature index: Todo/status
-    ├── features/F0XX.json           Feature detail and durable local notes
-    ├── knowledge/                  development experience, with topic indexes and separate entries
-    ├── feature-list-revisions.json  Product/Coding-Rules synchronization history
-    ├── test-registry.json            component/test traceability and safety-net index
-    ├── feature-completion-evidence.json           current-snapshot Feature completion evidence
-    ├── coding_rules.md              collaboration and stack-independent architecture
-    ├── progress.md                  current state, blockers, decisions, next action and history index
-    ├── progress/                    one historical body per Feature or approved batch
-    ├── architecture.md             optional human-owned module/dependency overview
-    ├── architecture/               optional subsystem maps and important technical ADRs
-    └── methodology-config.json      language, environment, and verification commands
+    ├── product.md + product/*.md        Product intent: What
+    ├── CONTEXT.md                       optional shared project vocabulary
+    ├── feature-list.json                lightweight Feature index: Todo/status
+    ├── features/F0XX.json               Feature detail and durable local notes
+    ├── knowledge/                      development experience, with topic indexes and separate entries
+    ├── feature-list-revisions.json      Product/Coding-Rules synchronization history
+    ├── test-registry.json               component/test traceability and safety-net index
+    ├── feature-completion-evidence.json current-snapshot Feature completion evidence
+    ├── coding_rules.md                  collaboration and stack-independent architecture
+    ├── progress.md                      current state, blockers, decisions, next action and history index
+    ├── progress/                        one historical body per Feature or approved batch
+    ├── architecture.md                  optional human-owned module/dependency overview
+    ├── architecture/                    optional subsystem maps and important technical ADRs
+    └── methodology-config.json          language, environment, and verification commands
 ```
 
 ## Skill groups

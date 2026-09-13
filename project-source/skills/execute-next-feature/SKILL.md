@@ -250,7 +250,7 @@ equate an empty eligible list with Product completion, and do not start the next
 Product's planning automatically.
 
 Within this same Stage add one sentence or a few entries of learning feedback,
-following `methodology/templates/stage8-learning.md.tmpl`. With none, explicitly
+following `methodology/templates/feature-learning-summary.md.tmpl`. With none, explicitly
 say “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise give
 context, successful approach or root cause, existing coverage, applicability and
 actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling /

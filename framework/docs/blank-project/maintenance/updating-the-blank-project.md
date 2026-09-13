@@ -150,7 +150,7 @@ $LASTEXITCODE
 
 ```powershell
 # 替换成用户明确指定的外部验证项目。
-& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B framework/commands/validate_project.py --project 'D:\Games\MyGodotGame'
+& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B framework/commands/run_project_tool_tests.py --project 'D:\Games\MyGodotGame'
 $LASTEXITCODE
 ```
 

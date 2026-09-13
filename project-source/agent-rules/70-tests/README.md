@@ -27,5 +27,5 @@ Read:
 - `errors-logs-and-diagnostics.md`
 - `production-isolation.md`
 - `test-selection-and-gates.md`
-- `yaya-loop-integration.md`
+- `feature-test-integration.md`
 - `validation.md`

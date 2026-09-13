@@ -22,15 +22,15 @@ Game_idle_yaya_frame/
 │   ├── tests/                 复制器与项目工具的回归源码
 │   └── review/                按需复盘的问题清单
 └── project-source/
-    ├── Project_AGENTS.md      复制为项目 AGENTS.md
-    ├── Project_README.md      复制为项目 README.md
-    ├── Project_Config.json    项目的初始环境配置
-    ├── skills/                12 项开发 Skill
-    ├── methodology/           Skill 使用的流程与文档模板
-    ├── agent-rules/           Godot 工程规则
-    ├── tools/                 checks/ 检查、testing/ 测试、lib/ 共享实现
-    ├── addons/                gdUnit4 与 GDScript linter
-    └── defaults/              Godot、lint、编辑器和项目文档默认值
+    ├── Project_AGENTS.md             复制为项目 AGENTS.md
+    ├── Project_README.md             复制为项目 README.md
+    ├── Project_Workflow_Config.json  项目的流程、环境与测试配置
+    ├── skills/                      12 项开发 Skill
+    ├── methodology/                 Skill 使用的流程与文档模板
+    ├── agent-rules/                 Godot 工程规则
+    ├── tools/                       checks/ 检查、testing/ 测试、lib/ 共享实现
+    ├── addons/                      gdUnit4 与 GDScript linter
+    └── defaults/                    Godot、lint、编辑器和项目文档默认值
 ```
 
 维护时遵循根 [AGENTS.md](AGENTS.md)。项目级规则源文件采用不同文件名，

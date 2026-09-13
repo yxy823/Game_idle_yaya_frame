@@ -37,7 +37,7 @@ MyGodotGame/
 │   │   └── tools-pipeline/
 │   ├── feature-list.json           features 为空
 │   ├── feature-list-revisions.json revision_log 为空
-│   ├── test-registry.json            components 与 tests 为空
+│   ├── test-registry.json           components 与 tests 为空
 │   ├── progress.md                 当前状态模板
 │   └── coding_rules.md             协作与通用架构约定
 └── reports/
@@ -54,7 +54,7 @@ MyGodotGame/
 | --- | --- |
 | `project-source/Project_AGENTS.md` | `AGENTS.md` |
 | `project-source/Project_README.md` | `README.md` |
-| `project-source/Project_Config.json` | `docs/methodology-config.json` |
+| `project-source/Project_Workflow_Config.json` | `docs/methodology-config.json` |
 | `project-source/skills/` | `.agents/skills/` |
 | `project-source/methodology/` | `methodology/` |
 | `project-source/agent-rules/` | `agent-rules/` |
@@ -106,7 +106,7 @@ MyGodotGame/
 | `engineering-feature-detail.json.tmpl` | Bug、重构、维护 Feature |
 | `feature-list.json.tmpl`、`feature-list-revisions.json.tmpl` | 任务索引与源需求演进记录 |
 | `test-registry.json.tmpl`、`feature-completion-evidence.json.tmpl` | 测试索引与完成依据结构 |
-| `progress.md.tmpl`、`stage8-learning.md.tmpl` | 当前交接与任务结束时的简短经验 |
+| `progress.md.tmpl`、`feature-learning-summary.md.tmpl` | 当前交接与任务结束时的简短经验 |
 | `coding_rules.md.tmpl` | 协作约定与通用设计原则 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |
 | `architecture-decision-record.md.tmpl` | 按需 ADR |

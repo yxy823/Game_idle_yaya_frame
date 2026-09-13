@@ -32,7 +32,7 @@
     "target": "README.md"
   },
   {
-    "source": "project-source/Project_Config.json",
+    "source": "project-source/Project_Workflow_Config.json",
     "target": "docs/methodology-config.json"
   },
   {

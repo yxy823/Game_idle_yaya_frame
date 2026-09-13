@@ -8,7 +8,7 @@ from pathlib import Path
 from framework.commands.create_project import copy_project
 
 
-class GenerationTests(unittest.TestCase):
+class ProjectCopyTests(unittest.TestCase):
     def setUp(self):
         self.area = tempfile.TemporaryDirectory(prefix="project_copy_")
         self.addCleanup(self.area.cleanup)

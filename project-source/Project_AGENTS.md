@@ -173,7 +173,7 @@ When both apply, use workflow and traceability semantics from `methodology/`,
 concrete engine semantics from `agent-rules/`, and report any real contradiction
 instead of silently choosing. For test work, read both
 `agent-rules/70-tests/README.md` and
-`agent-rules/70-tests/yaya-loop-integration.md`.
+`agent-rules/70-tests/feature-test-integration.md`.
 
 This repository targets **Godot 4.7**. This file is the global rule router.
 Detailed engineering rules live under `agent-rules/`.

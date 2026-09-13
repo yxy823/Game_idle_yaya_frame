@@ -23,7 +23,7 @@ Before rendering any template:
 | `feature-completion-evidence.json.tmpl` | Current-Feature test, human-acceptance, review, Git revision, and working-tree evidence used by the explicit completion check. |
 | `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
 | `coding_rules.md.tmpl` | Stack-independent collaboration and architecture rules, with pointers to the root router and routed project rules. |
-| `stage8-learning.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |
+| `feature-learning-summary.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |
 | `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps and relevant subsystem runtime flows, separate from generated reference facts. |
 | `architecture-decision-record.md.tmpl` | Optional rationale for one important technical choice; Feature notes and architecture maps link it without copying its body. |
 

@@ -1,4 +1,4 @@
-# Yaya Loop 测试集成
+# Feature 工作流与 Godot 测试集成
 
 本文件只连接两套规则的职责，不替代本目录中的 Godot 测试实现规则，也不复制
 `methodology/08-testing-strategy.md`。

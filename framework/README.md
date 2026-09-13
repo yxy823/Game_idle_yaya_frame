@@ -14,8 +14,8 @@
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
 | [docs/blank-project/README.md](docs/blank-project/README.md) | 空白项目详细使用手册与维护指引；不复制到项目 |
-| [commands/validate_project.py](commands/validate_project.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
-| [tests/test_generation.py](tests/test_generation.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
+| [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
+| [tests/test_project_copy.py](tests/test_project_copy.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | [tests/test_knowledge_fingerprint.py](tests/test_knowledge_fingerprint.py) | 用中立临时 Git 夹具核对知识 Markdown 与源码的指纹边界 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
@@ -111,7 +111,7 @@ python -B -m unittest discover -s framework/tests -p test_*.py
 项目工具回归：
 
 ```powershell
-python -B framework/commands/validate_project.py --project D:\Games\MyGodotGame
+python -B framework/commands/run_project_tool_tests.py --project D:\Games\MyGodotGame
 ```
 
 后者只运行已有 unittest，不替用户生成或配置项目，不写示例业务台账，

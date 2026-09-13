@@ -6,7 +6,7 @@
 
 ## 环境与流程配置
 
-初始来源是 [Project_Config.json](../../../../project-source/Project_Config.json)。
+初始来源是 [Project_Workflow_Config.json](../../../../project-source/Project_Workflow_Config.json)。
 
 | 字段 | 初始值 | 含义与修改注意事项 |
 | --- | --- | --- |
