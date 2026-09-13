@@ -94,7 +94,7 @@ Critical/Warning/Info counts and any unexecuted checks. Unknown counts are not z
 An unresolved required parse or lint failure prevents completion even when the
 test-evidence helper passes. This is an Agent responsibility, not another state file.
 
-The lint CLI returns 3 for invalid/empty input, 2 for Critical, 1 for Warning,
+The lint CLI returns 3 for invalid/empty input, configuration or JSON output errors, 2 for Critical, 1 for Warning,
 and 0 for clean or Info-only results. Display filters cannot erase the real verdict.
 Magic-number Info is a review signal: inspect whether a named constant improves
 the code; do not rename identifiers or change thresholds to silence a false positive.

@@ -20,7 +20,7 @@ const HtmlReportGenerator = preload("res://addons/gdscript-linter/analyzer/html-
 
 var _target_paths: Array[String] = []  # Multiple paths to analyze
 var _output_format: String = "console"  # "console", "json", "clickable", "html", "github"
-var _output_file: String = ""  # For HTML output
+var _output_file: String = ""  # For JSON or HTML output
 var _no_ignore: bool = false  # Bypass all gdlint:ignore directives
 var _config_path: String = ""  # Custom config file path
 var _severity_filter: String = ""  # Minimum severity: "info", "warning", "critical"
@@ -125,7 +125,7 @@ func _print_help() -> void:
 	print("  --clickable       Shorthand for --format clickable (Godot Output panel format)")
 	print("  --html            Shorthand for --format html (generates HTML report)")
 	print("  --github          Shorthand for --format github (GitHub Actions annotations)")
-	print("  --output, -o <f>  Output file path (for --html, default: code_quality_report.html)")
+	print("  --output, -o <f>  JSON/HTML file (HTML default: code_quality_report.html)")
 	print("  --no-ignore       Bypass all gdlint:ignore directives (show everything)")
 	print("  --path <dir>      Legacy: analyze single path (use positional args instead)")
 	print("  --help, -h        Show this help message")
@@ -144,9 +144,11 @@ func _print_help() -> void:
 	print("  godot --headless --script ... -- --severity critical --check high-complexity,long-function")
 	print("")
 	print("Exit codes:")
-	print("  0 = No issues (or only filtered-out issues)")
+	print("  0 = No issues or Info-only findings")
 	print("  1 = Warnings found")
 	print("  2 = Critical issues found")
+	print("  3 = Invalid/empty input, invalid configuration, or JSON output failure")
+	print("  --severity and --top affect display only; they do not change the exit code.")
 	print("")
 
 func _run_analysis() -> void:

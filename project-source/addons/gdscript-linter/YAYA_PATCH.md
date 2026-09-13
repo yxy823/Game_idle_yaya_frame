@@ -22,6 +22,8 @@ It distinguishes code and physical lines, excludes phantom EOF lines, and export
 function metrics. CLI file/directory inputs are deduplicated; invalid/empty discovery
 fails with exit 3. JSON output can be written to a supplied output path. Filters
 change display only and cannot turn an existing failure into exit 0.
+CLI help documents this verdict behavior, exit 3 for invalid/empty input,
+configuration or JSON output errors, and the JSON/HTML output-path option.
 
 The r1 engine-interface metric treatment covers only a top-level, non-static
 `_log_error` in a script directly extending `Logger`, with eight explicitly typed
