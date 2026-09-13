@@ -73,6 +73,8 @@ $LASTEXITCODE
 
 ## 测试范围怎样计算
 
+Stage 1 的完整测试范围规则见测试规范中的 [Test Impact Review](../../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)。下文用中文说明 Required、affected、full 与命令的对应关系。
+
 ```text
 Required Test Set =
   当前 Feature 的自动验收测试

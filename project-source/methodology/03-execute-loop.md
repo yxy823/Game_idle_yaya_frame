@@ -76,25 +76,24 @@ For other requirements whose AC can all be verified automatically, choose
 automated mappings and applicable manual checks/regressions. Empty lists and
 previous PASS records do not make this decision. Null means an undecided draft.
 
-### 1A. Derive the Required Test Set
+### 1A. Determine the test scope
 
-Using `affected_components`, criterion verification, and `docs/test-registry.json`, compute:
+Read and apply [Test Impact Review](08-testing-strategy.md#test-impact-review) and
+[Runtime Test Impact selection](08-testing-strategy.md#runtime-test-impact-selection).
+These sections define Required, affected, and full scope. Using the current Feature,
+`affected_components`, criterion verification, and `docs/test-registry.json`, derive
+the Required and affected sets, then decide whether full is required. Explain the
+selected scope and reasons in the Stage 1 packet.
 
-```text
-Required Test Set =
-    current Feature automated acceptance tests
-  + current Feature regression tests
-  + unit_test_paths for affected_components
-  + active regression tests intersecting affected_components
-  + active invariant tests intersecting affected_components
-```
-
-Apply the existing-suite contract in [08-testing-strategy.md](./08-testing-strategy.md). Empty `unit_test_paths` contributes no unit selector; each registered suite for an affected component is required. Missing registered paths or zero-test discovery are errors and must not be silently filtered out. Removing a registration requires an explicit reason and user approval.
+Keep affected components' registered suites in scope. Empty `unit_test_paths` adds
+no selector; missing registered paths and zero-test discovery are errors. Removing a registration
+requires an explicit reason and user approval; a runner exclusion cannot remove a
+deterministic requirement. Approved retirement or registry correction must change
+the underlying traceable contract before recomputing the selection.
 
 Also identify:
 
-- related older Feature acceptance tests whose public API/behavior is materially affected;
-- whether a full suite is required by `full_suite_on_change`, broad infrastructure/toolchain impact, uncertain impact bounds, or explicit user direction;
+- additional related tests justified by dependency/API impact, with concrete reasons;
 - new acceptance/regression test IDs that should be created under TDD;
 - new unit suites to create after approval, without registering future paths;
 - necessary obsolete-test and current-reference cleanup for changed/removed
@@ -102,8 +101,6 @@ Also identify:
   [Requirement changes and stale tests](08-testing-strategy.md#requirement-changes-and-stale-tests);
   include it in the same plan and reuse existing approval for that exact scope;
 - criteria that remain manual-only and why automation is not appropriate.
-
-Do not remove a deterministic Required Test Set item through a runner exclusion, even with an approval note. An approved retirement or registry correction must change the underlying traceable contract before recomputing the selection.
 
 ### 1B. Resource/dependency preflight
 

@@ -63,32 +63,23 @@ Then populate the corresponding automated mappings and manual checks/regressions
 Empty check arrays are an output of planning, never the reason to choose a mode.
 A draft may use null until Stage 1 decides; do not infer the choice from existing test results.
 
-Derive the deterministic Required Test Set:
+Read **Test Impact Review** and **Runtime Test Impact selection** in
+`methodology/08-testing-strategy.md` for the scope rules. Apply them to the current
+Feature and `docs/test-registry.json`: derive Required and affected, decide whether
+full is required, and explain the selected scope and reasons in the Stage 1 packet.
+Add related tests only with concrete dependency/API impact reasons.
 
-```text
-current Feature automated acceptance tests
-+ current Feature regression tests
-+ component unit_test_paths
-+ active regression tests intersecting affected_components
-+ active invariant tests intersecting affected_components
-```
-
-Apply the existing-suite contract in `methodology/08-testing-strategy.md`: `unit_test_paths: []` contributes no unit selector; every registered suite for an affected component must be included. Missing registered paths or zero-test discovery are errors, not exclusions or PASS. Any removal of a registration requires an explicit reason and user approval.
-
-The affected union also includes active acceptance tests intersecting affected components. Add other related tests only with concrete reasons. A runner exclusion cannot remove a deterministic requirement; approved retirement or registry correction changes the underlying traceable contract before recomputing the selection. Include any proposed new unit suites in the Stage 1 plan, without registering future paths.
+Keep affected components' registered suites in scope. Empty `unit_test_paths` adds
+no selector; missing registered paths and zero-test discovery are errors. Removing a registration
+requires an explicit reason and user approval; a runner exclusion cannot remove a
+deterministic requirement. Approved retirement or registry correction must change
+the underlying traceable contract before recomputing the selection. Include proposed
+new unit suites in the Stage 1 plan, without registering future paths.
 
 For changed or removed contracts, read the cleanup actions in Feature notes and
 the affected test code under **Requirement changes and stale tests** in
 `methodology/08-testing-strategy.md`. Include necessary test-code and current-reference
 cleanup in this same plan. Existing approval for that exact scope remains valid.
-
-Determine whether full suite is required when:
-
-- an affected registry component has `full_suite_on_change: true`;
-- infrastructure or toolchain changes have actual project-wide impact; task classification alone is insufficient;
-- dependency upgrade has broad impact;
-- impact cannot be bounded reliably;
-- user requires it.
 
 For each criterion propose:
 
