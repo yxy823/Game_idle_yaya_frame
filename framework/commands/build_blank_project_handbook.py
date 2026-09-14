@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[2]
 MANUAL = ROOT / "framework/docs/blank-project"
 OUTPUT = MANUAL / "blank-project-handbook.html"
 TEMPLATE = Path(__file__).with_name("blank-project-handbook-page.html")
+INTERACTIONS = Path(__file__).with_name("blank-project-handbook-interactions.js")
 MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.17.0"
 GROUPS = {
     "": "阅读入口",
@@ -209,10 +210,21 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
                     f'<div class="diagram-canvas">{diagrams[number - 1]}</div></figure>\n')
         language = token.info.strip().split()[0] if token.info.strip() else "text"
         return ('<div class="code-block"><div class="code-toolbar">'
-                f'<span>{escape(language)}</span><button type="button" class="copy-code">复制代码</button>'
+                f'<span>{escape(language)}</span><div class="code-actions">'
+                '<button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button>'
+                '<button type="button" class="copy-code">复制代码</button></div>'
                 f'</div><pre><code>{escape(token.content)}</code></pre></div>\n')
 
+    def heading_close(tokens, index, options, env):
+        tag = tokens[index].tag
+        if tag in {"h2", "h3"}:
+            anchor = escape(tokens[index - 2].attrGet("id"), quote=True)
+            return (f'<button type="button" class="heading-link" data-anchor="{anchor}" '
+                    f'aria-label="复制本小节链接" title="复制本小节链接">#</button></{tag}>\n')
+        return f'</{tag}>\n'
+
     MARKDOWN.renderer.rules["fence"] = fence
+    MARKDOWN.renderer.rules["heading_close"] = heading_close
     MARKDOWN.renderer.rules["table_open"] = lambda *args: '<div class="table-scroll"><table>\n'
     MARKDOWN.renderer.rules["table_close"] = lambda *args: '</table></div>\n'
     articles, navigation = [], []
@@ -220,21 +232,37 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
     for number, doc in enumerate(documents, 1):
         group = doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
         if group != last_group:
-            navigation.append(f'<p class="nav-group">{GROUPS[group]}</p>')
+            navigation.append(f'<p class="nav-group" data-group="{group}">{GROUPS[group]}</p>')
             last_group = group
-        outline = "".join(f'<a href="#{quote(doc.key + "--" + slug)}">{escape(title)}</a>'
-                          for level, title, slug in doc.headings if level == 2)
-        navigation.append(f'<details class="nav-chapter"><summary><a href="#{doc.key}" '
-                          f'data-chapter="{doc.key}"><span>{number:02d}</span>{escape(doc.title)}</a>'
-                          f'</summary><div class="nav-sections">{outline}</div></details>')
+        outline = "".join(f'<a href="#{quote(doc.key + "--" + slug)}" '
+                          f'data-section="{escape(doc.key + "--" + slug)}" data-level="{level}">'
+                          f'{escape(title)}</a>' for level, title, slug in doc.headings if level in {2, 3})
+        navigation.append(f'<div class="nav-chapter" data-group="{group}"><div class="nav-row">'
+                          f'<a href="#{doc.key}" data-chapter="{doc.key}">'
+                          f'<span class="nav-number">{number:02d}</span><span class="nav-title">{escape(doc.title)}</span></a>'
+                          f'<button type="button" class="nav-toggle" aria-expanded="true" '
+                          f'aria-controls="outline-{doc.key}" aria-label="收起{escape(doc.title)}的小节">'
+                          '<span aria-hidden="true">⌄</span></button></div>'
+                          f'<div class="nav-sections" id="outline-{doc.key}">{outline}</div></div>')
+        heading_titles = {slug: title for _, title, slug in doc.headings}
         for token in doc.tokens:
             if token.type == "heading_open":
+                token.attrSet("data-title", heading_titles[token.attrGet("id")])
                 token.attrSet("id", doc.key + "--" + token.attrGet("id"))
         source_path = doc.path.relative_to(MANUAL).as_posix()
-        articles.append(f'<article id="{doc.key}" class="chapter"><div class="chapter-meta">'
+        pager = []
+        for offset, label in ((-1, "← 上一章"), (1, "下一章 →")):
+            target_index = number - 1 + offset
+            if 0 <= target_index < len(documents):
+                target = documents[target_index]
+                pager.append(f'<a href="#{target.key}" class="{"previous" if offset < 0 else "next"}">'
+                             f'<span>{label}</span><strong>{escape(target.title)}</strong></a>')
+        articles.append(f'<article id="{doc.key}" class="chapter" data-number="{number:02d}" '
+                        f'data-title="{escape(doc.title)}"><div class="chapter-meta">'
                         f'<span>{GROUPS[group]} / {number:02d}</span><a class="source-link" '
                         f'href="{quote(source_path)}" title="本章的 Markdown 源文件">Markdown 原文</a></div>\n'
-                        + MARKDOWN.renderer.render(doc.tokens, MARKDOWN.options, {}) + '</article>')
+                        + MARKDOWN.renderer.render(doc.tokens, MARKDOWN.options, {})
+                        + '<nav class="chapter-pager" aria-label="章节翻页">' + "".join(pager) + '</nav></article>')
     return "\n".join(navigation), "\n".join(articles)
 
 
@@ -281,6 +309,7 @@ def main() -> int:
     navigation, body = render_body(documents, diagrams)
     page = TEMPLATE.read_text(encoding="utf-8")
     replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body,
+                    "@@INTERACTIONS@@": INTERACTIONS.read_text(encoding="utf-8"),
                     "@@DOCUMENT_COUNT@@": str(len(documents)), "@@DIAGRAM_COUNT@@": str(len(diagrams))}
     # A single substitution prevents source text from being treated as template syntax.
     page = re.sub("|".join(map(re.escape, replacements)), lambda match: replacements[match[0]], page)

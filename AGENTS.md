@@ -22,6 +22,7 @@
 | 创建项目 | [创建器](framework/commands/create_project.py) 仅按 [复制清单](framework/project-files.json) 复制和重命名，不附带环境探测、Bootstrap、测试、Git 初始化、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与提示词库不进入复制清单或生成项目，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
+| 修改 HTML 手册 | 先查阅 [阅读版交互维护原则](framework/docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则)，按阅读场景修改对应源文件，再生成离线阅读版。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 

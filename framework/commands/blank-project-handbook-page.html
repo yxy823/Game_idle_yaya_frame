@@ -9,8 +9,11 @@
 <style>
 :root { color-scheme: light; --ink: #23382f; --muted: #586b60; --accent: #23634b; --line: #dce3d9; --paper: #fffefa; --canvas: #f2f4ee; --sidebar: 304px; --font-body: 18px; --font-cover: 42px; --font-h1: 34px; --font-h2: 26px; --font-h3: 21px; --font-nav: 15px; --font-subnav: 14px; --font-table: 16px; --font-code: 16px; --font-ui: 14px; --nav-bg: #142f27; --nav-ink: #e6eee7; --nav-muted: #aec2b4; --selection: #d9edc8; }
 * { box-sizing: border-box; }
-html { scroll-padding-top: 90px; }
-body { margin: 0; min-width: 1060px; background: var(--canvas); color: var(--ink); font: 18px/1.85 "Segoe UI", "Microsoft YaHei", sans-serif; }
+html { scroll-padding-top: calc(var(--header-height, 72px) + 16px); scrollbar-gutter: stable; }
+body { --sidebar-space: var(--sidebar); margin: 0; background: var(--canvas); color: var(--ink); font: 18px/1.85 "Segoe UI", "Microsoft YaHei", sans-serif; }
+body.sidebar-collapsed { --sidebar-space: 0px; }
+body:has(dialog[open]), body.drawer-open { overflow: hidden; }
+[hidden] { display: none !important; }
 ::selection { background: var(--selection); color: var(--ink); }
 a { color: var(--accent); text-underline-offset: 4px; text-decoration-thickness: 1px; }
 a:hover { color: #124b3b; }
@@ -19,33 +22,60 @@ a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visibl
 button { min-height: 44px; color: var(--accent); background: var(--paper); border: 1px solid #9cab9b; border-radius: 8px; padding: 7px 15px; font-size: var(--font-ui); transition: background-color 160ms ease, border-color 160ms ease; }
 button:hover { background: #e9f0e3; border-color: #63806b; }
 button:disabled { cursor: default; opacity: .45; }
-.sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); background: var(--nav-bg); color: var(--nav-ink); display: flex; flex-direction: column; z-index: 10; }
-.brand { padding: 32px 24px 26px; border-bottom: 1px solid #345046; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); max-width: calc(100vw - 36px); background: var(--nav-bg); color: var(--nav-ink); display: flex; flex-direction: column; z-index: 20; }
+.sidebar-collapsed .sidebar { transform: translateX(-100%); visibility: hidden; }
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 23px 18px; border-bottom: 1px solid #345046; }
 .brand a { display: flex; align-items: center; gap: 13px; color: var(--nav-ink); text-decoration: none; font-weight: 700; font-size: 23px; letter-spacing: 2px; }
-.brand-mark { display: grid; place-items: center; width: 43px; height: 43px; background: var(--selection); color: var(--nav-bg); border-radius: 11px 11px 3px 11px; font-size: 27px; letter-spacing: 0; }
+.brand-mark { display: grid; flex-shrink: 0; place-items: center; width: 39px; height: 43px; background: var(--selection); color: var(--nav-bg); border-radius: 11px 11px 3px 11px; font-size: 27px; letter-spacing: 0; }
 .brand small { display: block; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 400; letter-spacing: .5px; margin-top: 2px; }
-.sidebar nav { flex: 1; min-height: 0; overflow-y: auto; padding: 6px 15px 24px; scrollbar-width: thin; scrollbar-color: #617e6d transparent; }
+.sidebar nav { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px 15px 24px; scrollbar-width: thin; scrollbar-color: #617e6d transparent; }
+.sidebar-search { padding: 17px 18px 7px; }
+.sidebar-search label { display: block; color: var(--nav-ink); font-size: 14px; margin-bottom: 7px; }
+.search-controls { display: flex; gap: 6px; }
+.search-controls input { min-width: 0; width: 100%; padding: 10px; border: 1px solid #7c9986; border-radius: 7px; background: #203e32; color: #fff; font: 15px "Segoe UI", "Microsoft YaHei", sans-serif; }
+.search-controls input::placeholder { color: #aec2b4; }
+#nav-search-status { min-height: 1.6em; margin: 8px 0 0; color: var(--nav-muted); font-size: 12px; }
+.sidebar button { min-width: 44px; min-height: 44px; background: transparent; border: 1px solid transparent; color: var(--nav-ink); padding: 5px; }
+.sidebar button:hover { background: #345046; }
+.sidebar-search, #close-sidebar, .nav-toggle, .sidebar-toggle, .sidebar-shade { display: none; }
+.js .sidebar-search { display: block; }
+.js #close-sidebar, .js .nav-toggle, .js .sidebar-toggle { display: inline-flex; align-items: center; justify-content: center; }
+.sidebar-shade { position: fixed; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 0; background: #142c2499; z-index: 15; }
+.sidebar-shade:hover { background: #142c2499; }
+.js .sidebar-shade { display: block; }
 .nav-group { margin: 26px 12px 10px; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 600; letter-spacing: 2px; }
 .nav-chapter { margin: 5px 0; }
-.nav-chapter summary { position: relative; list-style: none; border-radius: 8px; cursor: pointer; padding-right: 25px; transition: background-color 160ms ease; }
-.nav-chapter summary::-webkit-details-marker { display: none; }
-.nav-chapter summary::after { content: "›"; position: absolute; top: 8px; right: 10px; color: var(--nav-muted); }
-.nav-chapter[open] summary::after { transform: rotate(90deg); }
-.nav-chapter summary:hover { background: #26463a; }
-.nav-chapter summary:has(a.active) { background: var(--selection); }
-.nav-chapter summary:has(a.active)::after { color: var(--ink); }
-.nav-chapter summary a { display: flex; gap: 12px; min-height: 46px; padding: 10px 11px; color: var(--nav-ink); text-decoration: none; font-size: var(--font-nav); line-height: 1.7; }
-.nav-chapter summary a.active { color: #183c2a; font-weight: 650; }
-.nav-chapter summary a span { color: var(--nav-muted); font: var(--font-ui)/2 ui-monospace, Consolas, monospace; padding-top: 1px; }
-.nav-chapter summary a.active span { color: #476140; }
+.nav-row { display: flex; align-items: flex-start; border-radius: 8px; transition: background-color 160ms ease; }
+.nav-row:hover { background: #26463a; }
+.nav-row:has(a.active) { background: var(--selection); }
+.nav-row a { display: flex; flex: 1; min-width: 0; gap: 10px; min-height: 46px; padding: 10px 9px; color: var(--nav-ink); text-decoration: none; font-size: var(--font-nav); line-height: 1.7; overflow-wrap: anywhere; }
+.nav-row a.active { color: #183c2a; font-weight: 650; }
+.nav-number { color: var(--nav-muted); font: var(--font-ui)/2 ui-monospace, Consolas, monospace; padding-top: 1px; }
+.nav-row a.active .nav-number { color: #476140; }
+.nav-row .nav-toggle { flex: 0 0 44px; margin-top: 2px; }
+.nav-toggle span { transition: transform 160ms ease; }
+.nav-toggle[aria-expanded="false"] span { transform: rotate(-90deg); }
+.nav-row:has(a.active) .nav-toggle { color: #183c2a; }
+.nav-row:has(a.active) .nav-toggle:hover { background: #c6dfb4; }
 .nav-sections { margin: 9px 9px 16px 24px; padding-left: 16px; border-left: 1px solid #617e6d; }
 .nav-sections a { display: block; padding: 7px 0; color: var(--nav-muted); text-decoration: none; font-size: var(--font-subnav); line-height: 1.7; }
 .nav-sections a:hover { color: #fff; }
+.nav-sections a[data-level="3"] { padding-left: 14px; }
+.nav-sections a.active { color: #f0ffd9; font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
 .sidebar :focus-visible { outline-color: #e9c88e; }
 .sidebar-footer { flex-shrink: 0; padding: 17px 24px; border-top: 1px solid #345046; color: var(--nav-muted); font-size: var(--font-ui); }
-.reading-bar { position: sticky; top: 0; min-height: 72px; margin-left: var(--sidebar); padding: 12px 36px; gap: 20px; display: flex; align-items: center; justify-content: space-between; background: var(--canvas); border-bottom: 1px solid var(--line); z-index: 5; font-size: var(--font-ui); color: var(--muted); }
-#current-chapter { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.reading-actions { display: flex; align-items: center; gap: 22px; flex-shrink: 0; }
+.reading-bar { position: sticky; top: 0; min-height: 72px; margin-left: var(--sidebar-space); padding: 10px 28px; gap: 16px; display: flex; align-items: center; justify-content: space-between; background: var(--canvas); border-bottom: 1px solid var(--line); z-index: 5; font-size: var(--font-ui); color: var(--muted); transition: transform 180ms ease; }
+.reading-bar.header-hidden { transform: translateY(-105%); pointer-events: none; }
+.reading-bar:has(:focus-visible) { transform: none; pointer-events: auto; }
+.reading-heading { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 1; }
+.reading-location { min-width: 0; }
+#current-chapter { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#reading-position { display: block; font-size: 12px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.reading-progress { position: absolute; bottom: -1px; left: 0; width: 100%; height: 3px; border: 0; appearance: none; }
+.reading-progress::-webkit-progress-bar { background: var(--line); }
+.reading-progress::-webkit-progress-value { background: #52825b; }
+.reading-progress::-moz-progress-bar { background: #52825b; }
+.reading-actions { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 .reading-actions a { text-decoration: none; white-space: nowrap; }
 .settings-trigger { display: none; align-items: center; gap: 9px; background: var(--paper); }
 .js .settings-trigger { display: inline-flex; }
@@ -53,8 +83,11 @@ button:disabled { cursor: default; opacity: .45; }
 .settings-icon i { position: relative; height: 1.5px; background: currentColor; }
 .settings-icon i::after { content: ""; position: absolute; top: -2px; left: 3px; width: 6px; height: 6px; border: 1.5px solid currentColor; border-radius: 50%; background: var(--paper); }
 .settings-icon i:nth-child(2)::after { left: 10px; }
-main { margin-left: var(--sidebar); padding: 46px 36px 64px; }
-.book { max-width: 1120px; margin: auto; }
+main { margin-left: var(--sidebar-space); padding: 40px clamp(16px, 3vw, 36px) 64px; min-width: 0; }
+.book { max-width: 1120px; margin: auto; overflow-anchor: none; }
+.resume-reading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; padding: 12px 16px; background: #e8f1df; border: 1px solid #a7bc96; border-radius: 9px; }
+#continue-reading { text-align: left; border: 0; background: transparent; overflow-wrap: anywhere; }
+#dismiss-resume { flex-shrink: 0; }
 .cover { padding: 0 8px 38px; }
 .eyebrow { color: var(--accent); font-size: var(--font-ui); letter-spacing: 2.5px; font-weight: 700; }
 .cover h1 { margin: 14px 0; font-size: var(--font-cover); line-height: 1.4; letter-spacing: -1.5px; font-weight: 700; }
@@ -63,13 +96,21 @@ main { margin-left: var(--sidebar); padding: 46px 36px 64px; }
 .cover-meta span { display: inline-flex; align-items: baseline; gap: 8px; }
 .cover-meta strong { color: var(--ink); font: 600 26px/1.2 "Segoe UI", sans-serif; }
 .reading-note { margin-top: 20px !important; font-size: var(--font-ui) !important; line-height: 1.85; }
-.chapter { font-size: var(--font-body); padding: 36px 40px 46px; margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; overflow-wrap: anywhere; }
+.chapter { font-size: var(--font-body); padding: 32px clamp(18px, 3vw, 40px) 40px; margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; overflow-wrap: anywhere; }
 .chapter-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: var(--font-ui); color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
 .chapter-meta a { letter-spacing: 0; }
 .chapter h1 { font-size: var(--font-h1); line-height: 1.5; margin: 25px 0 28px; letter-spacing: -.7px; }
 .chapter h2 { margin: 2em 0 .8em; padding-top: 10px; font-size: var(--font-h2); line-height: 1.6; }
 .chapter h2::before { content: ""; display: inline-block; width: 5px; height: .85em; background: #749a72; margin-right: 12px; border-radius: 3px; vertical-align: -.04em; }
 .chapter h3 { margin: 1.7em 0 .7em; font-size: var(--font-h3); }
+.chapter h2, .chapter h3 { position: relative; padding-right: 48px; }
+.heading-link { display: none; position: absolute; right: 0; top: 0; width: 44px; min-height: 44px; border: 0; padding: 0; font-size: 22px; background: transparent; opacity: 0; }
+.js .heading-link { display: inline-block; }
+h2:hover .heading-link, h3:hover .heading-link, h2:focus-within .heading-link, h3:focus-within .heading-link { opacity: 1; }
+.chapter-pager { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; border-top: 1px solid var(--line); margin-top: 40px; padding-top: 24px; font-size: var(--font-ui); }
+.chapter-pager a { display: flex; flex-direction: column; gap: 6px; text-decoration: none; padding: 8px 0; }
+.chapter-pager .next { grid-column: 2; text-align: right; }
+.chapter-pager strong { color: var(--muted); font-weight: 500; }
 .chapter p { margin: 1em 0; }
 .chapter strong { color: #173f30; font-weight: 650; }
 .chapter ul, .chapter ol { padding-left: 25px; }
@@ -80,10 +121,13 @@ code, pre { font-family: Consolas, "Cascadia Mono", "Microsoft YaHei", monospace
 :not(pre) > code { background: #edf1e9; color: #345945; border-radius: 4px; padding: 2px 5px; font-size: var(--font-code); }
 .code-block { margin: 26px 0; border: 1px solid #d8e2d5; border-radius: 9px; overflow: hidden; }
 .code-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 6px 18px; background: #eaf0e5; color: #4b6244; font-size: var(--font-ui); }
-.copy-code, .expand-diagram { display: none; }
-.js .copy-code, .js .expand-diagram { display: inline-block; }
+.copy-code, .expand-diagram, .toggle-code-wrap { display: none; }
+.js .copy-code, .js .expand-diagram, .js .toggle-code-wrap { display: inline-block; }
+.code-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
+.toggle-code-wrap[aria-pressed="true"] { background: var(--selection); }
 pre { overflow-x: auto; margin: 0; padding: 23px; font-size: var(--font-code); line-height: 1.9; background: #f5f7f0; color: #294432; tab-size: 4; }
 pre code { white-space: pre; }
+.code-wrapped pre code { white-space: pre-wrap; overflow-wrap: anywhere; word-break: normal; }
 .table-scroll { overflow-x: auto; margin: 24px 0; border: 1px solid var(--line); border-radius: 8px; }
 table { width: 100%; border-collapse: collapse; font-size: var(--font-table); line-height: 1.85; }
 th { text-align: left; font-weight: 650; color: #2b4f3d; background: #eaf0e5; }
@@ -96,11 +140,19 @@ tbody tr:hover { background: #f0f5e9; }
 .diagram figcaption { padding: 10px 18px; background: #f0f5e9; color: #4e6445; font-size: var(--font-ui); display: flex; align-items: center; justify-content: space-between; }
 .diagram-canvas { padding: 26px 18px; overflow: auto; }
 .diagram-canvas svg { display: block; margin: auto; height: auto; }
-.diagram-dialog { width: min(1600px, 96vw); max-width: 96vw; padding: 0; border: 1px solid #aaba9e; border-radius: 10px; color: var(--ink); }
+.diagram-dialog { width: min(1600px, 96vw); max-width: 96vw; height: 90vh; max-height: 94vh; padding: 0; overflow: hidden; border: 1px solid #aaba9e; border-radius: 10px; color: var(--ink); }
+.diagram-dialog[open] { display: flex; flex-direction: column; }
 dialog::backdrop { background: #142c245c; }
-.dialog-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px; background: #edf2e7; font-size: var(--font-ui); }
-.diagram-dialog .diagram-canvas { max-height: 78vh; padding: 28px; }
-.diagram-dialog svg { width: max(100%, var(--diagram-width)); max-width: none !important; }
+.dialog-toolbar { display: flex; flex-shrink: 0; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px; padding: 12px 18px; background: #edf2e7; font-size: var(--font-ui); border-bottom: 1px solid var(--line); }
+.diagram-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.diagram-controls button { min-width: 44px; }
+#diagram-scale { min-width: 54px; font-variant-numeric: tabular-nums; text-align: center; }
+.diagram-viewport { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #fff; cursor: grab; touch-action: none; user-select: none; }
+.diagram-viewport:focus-visible { outline-offset: -4px; }
+.diagram-viewport.dragging { cursor: grabbing; }
+.diagram-stage { position: absolute; inset: 0 auto auto 0; transform-origin: 0 0; }
+.diagram-stage svg { display: block; width: 100% !important; height: 100% !important; max-width: none !important; }
+.diagram-help { flex-shrink: 0; margin: 0; padding: 8px 18px; font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); }
 .settings-dialog { position: fixed; inset: 86px 24px auto auto; margin: 0; width: 500px; max-width: calc(100vw - 48px); max-height: calc(100vh - 110px); padding: 0; overflow: hidden; border: 1px solid #b1c0ac; border-radius: 14px; color: var(--ink); background: var(--paper); box-shadow: 0 16px 56px #142c2429; font-size: 16px; }
 .settings-dialog[open] { display: flex; flex-direction: column; }
 .settings-dialog button { font-size: 14px; }
@@ -133,25 +185,44 @@ dialog::backdrop { background: #142c245c; }
 .settings-footer span { color: var(--muted); font-size: 13px; }
 .settings-footer button { flex-shrink: 0; }
 .book-footer { text-align: center; color: var(--muted); font-size: var(--font-ui); margin: 36px 0 10px; }
-.toast { position: fixed; bottom: 25px; left: calc(50% + var(--sidebar) / 2); transform: translateX(-50%); padding: 12px 22px; background: #234b39; color: white; border-radius: 8px; font-size: var(--font-ui); z-index: 30; }
+.toast { position: fixed; bottom: 25px; left: calc(50% + var(--sidebar-space) / 2); max-width: calc(100vw - 36px); transform: translateX(-50%); padding: 12px 22px; background: #234b39; color: white; border-radius: 8px; font-size: var(--font-ui); z-index: 30; }
 .toast:empty { display: none; }
+@media (max-width: 1099px) {
+  body { --sidebar-space: 0px; }
+  .js .sidebar { transform: translateX(-100%); visibility: hidden; }
+  .js .drawer-open .sidebar { transform: none; visibility: visible; }
+  html:not(.js) .sidebar { position: relative; width: 100%; max-width: none; max-height: 65vh; }
+}
+@media (max-width: 700px) {
+  .reading-bar { gap: 8px; padding: 10px 16px; }
+  .reading-actions { gap: 8px; }
+  .reading-actions > a { display: none; }
+  .reading-heading { gap: 8px; }
+  .settings-dialog { inset: 78px 12px auto auto; max-width: calc(100vw - 24px); max-height: calc(100vh - 92px); }
+  .cover h1 { overflow-wrap: anywhere; }
+  .cover-meta { gap: 14px; }
+  .chapter-pager { gap: 14px; }
+}
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
 <body id="handbook-top">
-<aside class="sidebar" aria-label="手册目录">
-  <div class="brand"><a href="#handbook-top"><span class="brand-mark" aria-hidden="true">Y</span><span>YAYA<small>Godot 项目使用手册</small></span></a></div>
+<aside class="sidebar" id="handbook-sidebar" aria-label="手册目录">
+  <div class="brand"><a href="#handbook-top"><span class="brand-mark" aria-hidden="true">Y</span><span>YAYA<small>Godot 项目使用手册</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录">«</button></div>
+  <div class="sidebar-search"><label for="nav-search">查找章节与小节 <span aria-hidden="true">/</span></label><div class="search-controls"><input type="search" id="nav-search" placeholder="例如 lint、Feature、迁移" autocomplete="off" aria-describedby="nav-search-status"><button type="button" id="clear-nav-search" aria-label="清空目录搜索" disabled>×</button></div><p id="nav-search-status" role="status">搜索目录；Ctrl + F 查找正文</p></div>
   <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
-  <div class="sidebar-footer">点击章节跳转 · 点击右侧箭头展开小节</div>
+  <div class="sidebar-footer">标题跳转 · 右侧按钮展开<br>目录跟随正文，手动操作时暂停跟随</div>
 </aside>
-<header class="reading-bar"><span id="current-chapter">使用手册 · 阅读入口</span><div class="reading-actions"><a href="#handbook-top">返回顶部 ↑</a><button type="button" class="settings-trigger" id="open-settings" aria-haspopup="dialog" aria-controls="reading-settings"><span class="settings-icon" aria-hidden="true"><i></i><i></i><i></i></span>阅读设置</button></div></header>
+<button type="button" class="sidebar-shade" id="sidebar-shade" aria-label="关闭目录抽屉" tabindex="-1" hidden></button>
+<header class="reading-bar"><div class="reading-heading"><button type="button" class="sidebar-toggle" id="toggle-sidebar" aria-controls="handbook-sidebar" aria-expanded="true" aria-label="收起目录">目录</button><div class="reading-location"><span id="current-chapter">使用手册 · 阅读入口</span><span id="reading-position">00 / @@DOCUMENT_COUNT@@</span></div></div><div class="reading-actions"><a href="#handbook-top">返回顶部 ↑</a><button type="button" class="settings-trigger" id="open-settings" aria-haspopup="dialog" aria-controls="reading-settings"><span class="settings-icon" aria-hidden="true"><i></i><i></i><i></i></span>阅读设置</button></div><progress class="reading-progress" id="reading-progress" max="100" value="0" aria-label="全文阅读进度"></progress></header>
 <main><div class="book">
+  <div class="resume-reading" id="resume-reading" hidden><button type="button" id="continue-reading">继续上次阅读</button><button type="button" id="dismiss-resume" aria-label="关闭继续阅读提示">×</button></div>
   <section class="cover" aria-label="阅读说明">
     <div class="eyebrow">YAYA FRAMEWORK / DOCUMENTATION</div>
     <h1>空白项目使用手册</h1>
     <p>创建、规划、实现、验证与交接。沿左侧目录查阅，也可以顺着阅读路线，了解一项任务如何完成。</p>
     <div class="cover-meta"><span><strong>@@DOCUMENT_COUNT@@</strong> 篇完整文档</span><span><strong>@@DIAGRAM_COUNT@@</strong> 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
-    <p class="reading-note">使用 Ctrl + F 搜索全文。手册内链接直接跳转；带 ↗ 的链接指向仓库文件，需保留原目录，浏览器可能下载文件或交给编辑器打开。正文由 Markdown 生成。</p>
+    <p class="reading-note">按 / 搜索目录，Ctrl + F 搜索全文；每章末尾可连续翻章。手册内链接直接跳转，带 ↗ 的链接指向仓库文件。正文由 Markdown 生成，源文件需与仓库一起保留。</p>
   </section>
   @@BODY@@
   <footer class="book-footer">Yaya · 空白项目使用手册<br>维护 Markdown 原文，再生成本阅读版。</footer>
@@ -169,236 +240,13 @@ dialog::backdrop { background: #142c245c; }
   <div class="settings-footer"><span id="font-save-status" role="status">设置会保存在此浏览器</span><button type="button" id="reset-font">恢复默认</button></div>
 </dialog>
 <dialog class="diagram-dialog" aria-labelledby="diagram-dialog-title">
-  <div class="dialog-toolbar"><span id="diagram-dialog-title">图表 · 可横向滚动查看细节</span><button type="button" id="close-diagram">关闭 / Esc</button></div>
+  <div class="dialog-toolbar"><span id="diagram-dialog-title">图表查看器</span><div class="diagram-controls" role="group" aria-label="图表缩放"><button type="button" data-diagram-action="fit">适应窗口</button><button type="button" data-diagram-action="actual">100%</button><button type="button" data-diagram-action="out" aria-label="缩小图表">−</button><output id="diagram-scale" aria-live="polite">100%</output><button type="button" data-diagram-action="in" aria-label="放大图表">+</button><button type="button" data-diagram-action="reset">重置</button><button type="button" id="close-diagram">关闭 / Esc</button></div></div>
+  <div class="diagram-viewport" id="diagram-viewport" tabindex="0" role="region" aria-label="图表画布" aria-describedby="diagram-help"><div class="diagram-stage" id="diagram-stage"></div></div>
+  <p class="diagram-help" id="diagram-help">拖拽平移 · Ctrl + 滚轮缩放 · 聚焦画布后，方向键平移、+ / − 缩放、Home 适应窗口</p>
 </dialog>
 <div class="toast" role="status" aria-live="polite"></div>
 <script>
-'use strict';
-document.documentElement.classList.add('js');
-const settingsDialog = document.getElementById('reading-settings');
-const fontSaveStatus = document.getElementById('font-save-status');
-const fontFields = [
-  {key: 'body', label: '正文', group: '正文与标题', min: 14, max: 28},
-  {key: 'cover', label: '封面标题', group: '正文与标题', min: 28, max: 60},
-  {key: 'h1', label: '章节标题 · H1', group: '正文与标题', min: 24, max: 48},
-  {key: 'h2', label: '小节标题 · H2', group: '正文与标题', min: 18, max: 40},
-  {key: 'h3', label: '三级标题 · H3', group: '正文与标题', min: 16, max: 32},
-  {key: 'nav', label: '主目录', group: '目录与界面', min: 13, max: 22},
-  {key: 'subnav', label: '子目录', group: '目录与界面', min: 12, max: 22},
-  {key: 'ui', label: '辅助文字 · 工具栏、按钮、图注', group: '目录与界面', min: 12, max: 20},
-  {key: 'table', label: '表格文字', group: '表格与代码', min: 13, max: 24},
-  {key: 'code', label: '代码块与行内代码', group: '表格与代码', min: 12, max: 24}
-];
-const fontPresets = {
-  compact: {name: '紧凑浏览', sizes: {body: 16, cover: 36, h1: 30, h2: 22, h3: 19, nav: 14, subnav: 13, ui: 13, table: 14, code: 14}},
-  comfortable: {name: '舒适阅读', sizes: {body: 18, cover: 42, h1: 34, h2: 26, h3: 21, nav: 15, subnav: 14, ui: 14, table: 16, code: 16}},
-  large: {name: '大字阅读', sizes: {body: 22, cover: 48, h1: 40, h2: 32, h3: 26, nav: 18, subnav: 17, ui: 16, table: 20, code: 20}}
-};
-const fontStorageKey = 'yaya.handbook.typography';
-const fontSizes = {...fontPresets.comfortable.sizes};
-const fontInputs = {};
-const presetButtons = {};
-let storedFonts;
-try {
-  storedFonts = localStorage.getItem(fontStorageKey);
-} catch {
-  fontSaveStatus.textContent = '浏览器限制保存，设置仅本次有效';
-}
-if (storedFonts) {
-  try {
-    const stored = JSON.parse(storedFonts);
-    for (const field of fontFields) {
-      const size = stored?.[field.key];
-      if (Number.isInteger(size) && size >= field.min && size <= field.max) fontSizes[field.key] = size;
-    }
-  } catch {
-    fontSaveStatus.textContent = '保存的设置无法读取，已恢复默认';
-  }
-}
-function applyTypography(changes, persist = true) {
-  for (const field of fontFields) {
-    const value = changes[field.key];
-    if (value !== undefined && value !== '' && Number.isFinite(Number(value))) {
-      fontSizes[field.key] = Math.min(field.max, Math.max(field.min, Math.round(Number(value))));
-    }
-    const size = fontSizes[field.key];
-    document.documentElement.style.setProperty(`--font-${field.key}`, `${size}px`);
-    fontInputs[field.key].range.value = String(size);
-    fontInputs[field.key].number.value = String(size);
-    fontInputs[field.key].range.setAttribute('aria-valuetext', `${size} 像素`);
-  }
-  let selectedName = '自定义';
-  for (const [key, preset] of Object.entries(fontPresets)) {
-    const selected = fontFields.every(field => fontSizes[field.key] === preset.sizes[field.key]);
-    presetButtons[key].setAttribute('aria-pressed', String(selected));
-    if (selected) selectedName = preset.name;
-  }
-  document.getElementById('active-font-preset').textContent = selectedName;
-  if (persist) {
-    try {
-      localStorage.setItem(fontStorageKey, JSON.stringify(fontSizes));
-      fontSaveStatus.textContent = '当前搭配已保存';
-    } catch {
-      fontSaveStatus.textContent = '浏览器限制保存，设置仅本次有效';
-    }
-  }
-}
-const fontControls = document.getElementById('font-controls');
-const groups = new Map();
-for (const field of fontFields) {
-  if (!groups.has(field.group)) {
-    const group = document.createElement('details');
-    group.className = 'font-group';
-    group.open = groups.size === 0;
-    const summary = document.createElement('summary');
-    summary.textContent = field.group;
-    group.append(summary);
-    groups.set(field.group, group);
-    fontControls.append(group);
-  }
-  const row = document.createElement('div');
-  row.className = 'font-control';
-  const label = document.createElement('label');
-  label.htmlFor = `font-${field.key}`;
-  label.textContent = field.label;
-  const controls = document.createElement('div');
-  controls.className = 'size-controls';
-  const range = document.createElement('input');
-  const number = document.createElement('input');
-  range.type = 'range';
-  range.id = label.htmlFor;
-  number.type = 'number';
-  number.setAttribute('aria-label', `${field.label}字号，单位像素`);
-  for (const input of [range, number]) {
-    input.min = String(field.min);
-    input.max = String(field.max);
-    input.step = '1';
-  }
-  range.addEventListener('input', () => applyTypography({[field.key]: range.value}));
-  number.addEventListener('change', () => applyTypography({[field.key]: number.value}));
-  const unit = document.createElement('span');
-  unit.textContent = 'px';
-  unit.setAttribute('aria-hidden', 'true');
-  controls.append(range, number, unit);
-  row.append(label, controls);
-  groups.get(field.group).append(row);
-  fontInputs[field.key] = {range, number};
-}
-for (const [key, preset] of Object.entries(fontPresets)) {
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.textContent = preset.name;
-  const description = document.createElement('small');
-  description.textContent = `正文 ${preset.sizes.body}px`;
-  button.append(description);
-  button.addEventListener('click', () => applyTypography(preset.sizes));
-  document.getElementById('font-presets').append(button);
-  presetButtons[key] = button;
-}
-applyTypography({}, false);
-document.getElementById('open-settings').addEventListener('click', () => {
-  settingsDialog.showModal();
-  presetButtons.comfortable.focus();
-});
-document.getElementById('close-settings').addEventListener('click', () => settingsDialog.close());
-document.getElementById('reset-font').addEventListener('click', () => applyTypography(fontPresets.comfortable.sizes));
-const chapterLinks = Array.from(document.querySelectorAll('[data-chapter]'));
-const chapters = Array.from(document.querySelectorAll('article.chapter'));
-const currentChapter = document.getElementById('current-chapter');
-let activeChapter = '';
-let scrollScheduled = false;
-function updateCurrentChapter() {
-  const active = chapters.findLast(chapter => chapter.getBoundingClientRect().top <= 110);
-  const key = active ? active.id : '';
-  if (key !== activeChapter) {
-    activeChapter = key;
-    chapterLinks.forEach(link => {
-      const selected = link.dataset.chapter === key;
-      link.classList.toggle('active', selected);
-      if (selected) link.setAttribute('aria-current', 'location');
-      else link.removeAttribute('aria-current');
-    });
-    currentChapter.textContent = active ? active.querySelector('h1').textContent : '使用手册 · 阅读入口';
-  }
-  scrollScheduled = false;
-}
-window.addEventListener('scroll', () => {
-  if (!scrollScheduled) {
-    scrollScheduled = true;
-    requestAnimationFrame(updateCurrentChapter);
-  }
-}, {passive: true});
-function revealLinkedChapter() {
-  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-  const article = target && target.closest('article.chapter');
-  if (article) {
-    const link = chapterLinks.find(item => item.dataset.chapter === article.id);
-    if (link) link.closest('details').open = true;
-  }
-  updateCurrentChapter();
-}
-window.addEventListener('hashchange', revealLinkedChapter);
-revealLinkedChapter();
-
-const toast = document.querySelector('.toast');
-let toastTimer;
-function message(text) {
-  clearTimeout(toastTimer);
-  toast.textContent = text;
-  toastTimer = setTimeout(() => { toast.textContent = ''; }, 3500);
-}
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    // Local file pages may deny Clipboard API access; try the browser's copy command.
-    const input = document.createElement('textarea');
-    input.value = text;
-    input.style.cssText = 'position:fixed;left:-10000px;top:0';
-    document.body.append(input);
-    input.select();
-    let copied = false;
-    try { copied = document.execCommand('copy'); } catch { copied = false; }
-    input.remove();
-    return copied;
-  }
-}
-document.querySelectorAll('.copy-code').forEach(button => {
-  button.addEventListener('click', async () => {
-    const code = button.closest('.code-block').querySelector('code');
-    const copied = await copyText(code.textContent);
-    if (!copied) {
-      const range = document.createRange();
-      range.selectNodeContents(code);
-      const selection = window.getSelection();
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-    message(copied ? '代码已复制' : '浏览器未允许自动复制，已选中代码，请按 Ctrl + C');
-  });
-});
-
-const dialog = document.querySelector('.diagram-dialog');
-let expandedCanvas = null;
-let originalFigure = null;
-document.querySelectorAll('.expand-diagram').forEach(button => {
-  button.addEventListener('click', () => {
-    originalFigure = button.closest('.diagram');
-    expandedCanvas = originalFigure.querySelector('.diagram-canvas');
-    const svg = expandedCanvas.querySelector('svg');
-    expandedCanvas.style.setProperty('--diagram-width', `${svg.viewBox.baseVal.width}px`);
-    // Move the SVG temporarily; copying it would duplicate marker and label IDs.
-    dialog.append(expandedCanvas);
-    dialog.showModal();
-  });
-});
-document.getElementById('close-diagram').addEventListener('click', () => dialog.close());
-dialog.addEventListener('close', () => {
-  if (expandedCanvas && originalFigure) originalFigure.append(expandedCanvas);
-  expandedCanvas = null;
-  originalFigure = null;
-});
+@@INTERACTIONS@@
 </script>
 </body>
 </html>

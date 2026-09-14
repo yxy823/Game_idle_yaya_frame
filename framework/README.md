@@ -16,7 +16,7 @@
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
 | [docs/blank-project/README.md](docs/blank-project/README.md) | 空白项目详细使用手册与维护指引；不复制到项目 |
-| [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 从手册 Markdown 与 [页面模板](commands/blank-project-handbook-page.html) 生成包含 SVG 图表的单文件 HTML |
+| [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 将手册 Markdown、[页面模板](commands/blank-project-handbook-page.html)、[交互源文件](commands/blank-project-handbook-interactions.js) 与 SVG 图表内嵌为单文件 HTML |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
 | [tests/test_project_copy.py](tests/test_project_copy.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | [tests/test_documentation_fingerprint.py](tests/test_documentation_fingerprint.py) | 用中立临时 Git 夹具核对使用 README、知识 Markdown 与验证契约的指纹边界 |
