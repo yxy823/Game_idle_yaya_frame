@@ -21,6 +21,7 @@ Before rendering any template:
 | `feature-list-revisions.json.tmpl` | Versioned Product/Coding-Rules migration log, preserving historical entries and typed evolution relationships. |
 | `test-registry.json.tmpl` | Empty machine-readable component/test traceability registry used by Test Impact Review. |
 | `feature-completion-evidence.json.tmpl` | Current-Feature test and applicable human-acceptance evidence, with Git revision and working-tree fingerprint; no review counts. |
+| `manual-acceptance-checklist.json.tmpl` | Pending manual checks expanded from one Feature; preparation and returned results follow [the file contract](../manual-acceptance-files.md). |
 | `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
 | `coding_rules.md.tmpl` | Stack-independent collaboration and architecture rules, with pointers to the root router and routed project rules. |
 | `feature-learning-summary.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |

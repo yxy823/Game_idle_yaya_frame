@@ -302,7 +302,8 @@ fills the corresponding checks. Visual presentation, animation, audio/sound/musi
 game feel and other human judgment require `manual`; requirements whose AC can all
 be checked automatically may use `automated`. Empty lists or existing PASS results
 never decide the mode. Automated mode omits Stage 5 without recording fake human
-acceptance; manual mode still requires the user’s explicit decision.
+acceptance; manual mode still requires the user's actual file submission or
+explicit conversational decision under [Manual acceptance files](manual-acceptance-files.md).
 
 ## Requirement changes and stale tests
 

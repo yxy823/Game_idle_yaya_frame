@@ -224,16 +224,12 @@ Procedure:
 8. Follow the approved acceptance mode. For `manual`, prepare the corresponding
    human checks. For `automated`, report actual automated coverage of every AC.
 
-For each approved manual check, make the player path reproducible: entry scene,
-starting state, actual input, expected observable feedback, and any reset needed
-to repeat it. Include input order/duration, build/device, parameters or a random
-seed only when they affect the result. Use approved `manual_checks` as the
-contract; put supplemental reproduction details, shared setup, observed feedback
-and optional media links in Feature notes without duplicating the instructions.
-Do not rewrite approved AC or verification mappings while collecting feedback;
-a change in acceptance meaning follows the existing plan-revision route.
-Tie screenshots or logs to the relevant action and observation point; they do
-not establish behavior or human acceptance on their own.
+For `manual`, expand the approved checks and applicable regression into a pending
+JSON checklist, bind it to final content and provide its path to the user under
+[Manual acceptance files](manual-acceptance-files.md). That contract owns fields,
+reproducible steps, result import, snapshot matching and the conversation fallback.
+Notes link the checklist and supporting observations instead of duplicating steps.
+Screenshots/logs supplement the relevant action; they do not establish acceptance.
 
 Report actual scope, failures and result paths in ordinary language.
 
@@ -243,10 +239,13 @@ record an accepted human decision that never occurred.
 
 ## Stage 5 · explicit human acceptance (manual mode only)
 
-Wait for the user to report the checklist result.
+Receive the user's actual result file or explicit conversational decision under
+[Manual acceptance files](manual-acceptance-files.md). A valid, fully passed
+submission accepts its corresponding scope without another confirmation phrase.
 
-- Explicit acceptance of all material criteria → record it with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-acceptance --feature F0XX --status accepted`, then continue.
-- Any failure → record `--status rejected`, update Progress, return to Stage 3, repair, then repeat Stage 4 and Stage 5.
+- Accepted result → record via the applicable file or conversation route, then continue.
+- Any failure → record rejection, update Progress, return to Stage 3 and repair within existing authorization, then repeat applicable Stage 4 and Stage 5 verification.
+- Pending cases → retain incomplete acceptance and report what remains; do not treat partial execution as a pass.
 - Ambiguous response → ask whether any criterion remains unmet.
 - A minor deferral is durable only when the user explicitly accepts it and it is recorded in notes.
 

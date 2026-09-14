@@ -981,8 +981,12 @@ $LASTEXITCODE
 <p>只有有效的 manual 计划确实没有 Required、affected 或全量测试义务时，才省略自动运行和 <code>record-tests</code>，保留初始化的 <code>test_runs: []</code>，说明自动测试为 <code>not_required</code>。这不表示“空测试通过”：人工验收和适用的静态检查仍需完成，当前内容上的失败或未完成运行也不能被省略操作掩盖。已登记但缺失的测试路径仍是错误。</p>
 <h2 id="doc-framework--docs--blank-project--guides--feature-delivery--人工验收应如何操作" data-title="人工验收应如何操作">人工验收应如何操作<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--人工验收应如何操作" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>人工步骤围绕批准的 AC 展开：入口场景、起始状态、实际输入、预期反馈和必要重置。输入时长、设备、随机种子或参数会影响结果时再说明。</p>
+<p>默认由 Agent 按 <a href="../../../project-source/methodology/manual-acceptance-files.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">人工验收文件契约</a> 将当前 Feature 的人工检查与必要回归展开为 JSON 清单，调用 <code>prepare-manual</code> 绑定最终内容后，向你提供可点击的文件路径。清单放在 <code>reports/manual-acceptance/</code> 下，正文只在清单维护，Feature notes 留下决定与链接。</p>
+<p>清单和结果使用相同结构，初始状态为 <code>pending</code>，你实际验证后填写 <code>passed</code> 或 <code>failed</code>，在 <code>comment</code> 写观察或问题，并返回单独的结果 JSON。文件之外如何操作由你决定，项目只约定数据格式。完整字段、模板和命令见上述契约。</p>
 <p>例如检查一个已实现的面板重开行为，应写清进入哪个场景、如何打开和关闭面板、何时切场景、再次打开时应看到什么，以及如何从初始状态重做。截图可以标明观察位置，但不单独证明操作链成立或用户已经接受。</p>
-<p>用户明确接受当前范围后才能登记 <code>accepted</code>；验收失败登记 <code>rejected</code> 并修复。反馈改变了需求含义时，回到对应 Product/计划修订路线，不悄悄改 AC 迎合结果。automated 模式省略 Stage 5，也不写入虚构的人工接受。</p>
+<p>你提交的有效结果中所有必需项均为 <code>passed</code>，且范围、版本和反馈一致，即表示明确接受该范围，不再要求重复说“验收通过”。任何失败登记 <code>rejected</code>，仍有未执行项则保持 <code>pending</code>。也可直接在对话中明确报告当前范围的接受或拒绝，无需再补一份结果文件；有歧义时只澄清具体问题。</p>
+<p>Agent 先读实际反馈，再导入清单与结果；工具按用例 ID 对照定义和覆盖，保留原验收快照，完成前重读原件。文件缺失、旧版本结果或改变预期不能当作当前通过；结果记录成功也不等于 Feature 完成。报告保存和普通使用说明变化不会自动使业务测试失效。复验保留仍需引用的旧失败原件，不覆盖原清单。</p>
+<p>失败按已有授权修复；反馈改变了需求含义时，回到对应 Product/计划修订路线，不悄悄改 AC 迎合结果，也不把注释中的建议当作新增实施授权。automated 模式省略 Stage 5，不生成空人工清单或虚构接受。</p>
 <h2 id="doc-framework--docs--blank-project--guides--feature-delivery--按需独立评审与再次验证" data-title="按需独立评审与再次验证">按需独立评审与再次验证<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--按需独立评审与再次验证" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>独立评审默认不启动，也不在每项 Feature 完成时例行询问。你可以通过“Godot 项目开发 → 验证与收尾 → 独立审查指定修改”选择单项、多个 Feature、提交范围或明确差异，并说明评审时机。多项评审核对当前合并成果及直接受影响的调用者，输出一份报告，不逐项重复审查整套内容。日常实现仍由作者核对 AC、范围、规则和最终差异，不另建自查阶段或报告。</p>
 <p>可以等选定 Feature 完成并提交后再集中评审，之前各项无需停留在未完成状态；明确要求“评审后再继续”时，Agent 遵守该顺序。具体授权沿用原会话，不另建队列、开关或待评审状态。</p>
@@ -1551,6 +1555,11 @@ $LASTEXITCODE
 <td>每次显式测试运行时</td>
 <td><code>result.json</code>、日志、发现集合及原始测试报告</td>
 </tr>
+<tr>
+<td><code>reports/manual-acceptance/F001/</code> 等</td>
+<td>manual Feature 准备验收时</td>
+<td>分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件</td>
+</tr>
 </tbody>
 </table></div>
 <p>游戏源码、场景、资源和素材源文件按游戏实际模块组织。项目规则目录中的 <code>10-gdscript</code>、<code>20-scenes</code> 等数字是规则导航，不要求业务目录也按文件类型分组。</p>
@@ -1582,6 +1591,10 @@ $LASTEXITCODE
 <tr>
 <td><code>test-registry.json.tmpl</code>、<code>feature-completion-evidence.json.tmpl</code></td>
 <td>测试索引与完成依据结构</td>
+</tr>
+<tr>
+<td><code>manual-acceptance-checklist.json.tmpl</code></td>
+<td>单 Feature 人工清单与结果共用结构，按需填写后绑定版本</td>
 </tr>
 <tr>
 <td><code>progress.md.tmpl</code>、<code>feature-learning-summary.md.tmpl</code></td>
@@ -2194,6 +2207,14 @@ affected = Required + 与影响组件相交的 active 验收测试
 <td>导入真实 final Feature 运行；必要时重复 <code>--run</code> 覆盖不同运行</td>
 </tr>
 <tr>
+<td><code>prepare-manual --feature F001 --checklist &lt;清单.json&gt;</code></td>
+<td>检查 Agent 编写的 pending 清单并绑定最终内容；已绑定清单不能重新绑定</td>
+</tr>
+<tr>
+<td><code>record-acceptance --feature F001 --checklist &lt;清单.json&gt; --result &lt;结果.json&gt;</code></td>
+<td>读取用户真实结果，与原清单和当前内容对照；记录 accepted、rejected 或 pending</td>
+</tr>
+<tr>
 <td><code>record-acceptance --feature F001 --status accepted</code></td>
 <td>manual 模式下，用户已经明确接受当前范围之后</td>
 </tr>
@@ -2211,6 +2232,8 @@ affected = Required + 与影响组件相交的 active 验收测试
 </tr>
 </tbody>
 </table></div>
+<p>人工文件均保留在 <code>reports/manual-acceptance/</code>，输入/结果格式和命令示例见
+<a href="../../../project-source/methodology/manual-acceptance-files.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">人工验收文件契约</a>。<code>--result</code> 与 <code>--checklist</code> 配对，不能与口头决定的 <code>--status</code> 混用。有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，<code>pending</code>、<code>rejected</code> 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。</p>
 <p>真实报告导入示例：</p>
 <div class="code-block"><div class="code-toolbar"><span>powershell</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code>&amp; $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-actual-id/result.json
 $LASTEXITCODE
@@ -2844,8 +2867,8 @@ $LASTEXITCODE
 &amp; &#x27;C:\Users\89523\anaconda3\envs\codex-python\python.exe&#x27; -B -m unittest discover -s framework/tests -p test_*.py
 $LASTEXITCODE
 </code></pre></div>
-<p>上述入口包含复制器回归和文档指纹边界回归；后者只用中立临时 Git 夹具检查
-使用 README、知识 Markdown 与验证契约是否参与指纹，不创建游戏，也不替代外部项目工具回归。</p>
+<p>上述入口包含复制器、文档指纹边界和人工验收文件契约回归；后两者只用中立临时 Git 夹具检查
+使用说明与验证契约的指纹边界、清单覆盖、结果往返及版本匹配，不创建游戏，也不替代外部项目工具回归或真实人工体验。</p>
 <div class="code-block"><div class="code-toolbar"><span>powershell</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code># 替换成用户明确指定的外部验证项目。
 &amp; &#x27;C:\Users\89523\anaconda3\envs\codex-python\python.exe&#x27; -B framework/commands/run_project_tool_tests.py --project &#x27;D:\Games\MyGodotGame&#x27;
 $LASTEXITCODE

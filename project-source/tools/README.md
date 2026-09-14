@@ -89,6 +89,10 @@ flowchart TD
 Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检查失败不能宣称完成。
 失败报告和未完成任务需要的历史保留，不用旧成功掩盖后来失败。
 
+人工验收的清单准备、JSON 结果读取与口头反馈沿用完成记录入口，格式及确切命令见
+[人工验收文件契约](../methodology/manual-acceptance-files.md)。命令成功只表示记录成功，
+结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
+
 ## 内部实现
 
 | 文件 | 职责 |
@@ -97,6 +101,7 @@ Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检�
 | `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `feature_completion_evidence.py` | 当前源码指纹、真实测试依据和适用人工接受；不记录复审计数 |
+| `manual_acceptance.py` | 人工清单覆盖与快照绑定、逐项结果对照和原件复核 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 

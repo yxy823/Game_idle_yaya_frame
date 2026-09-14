@@ -281,6 +281,20 @@ def validate_completion_evidence(
             return False, "explicit human acceptance is not recorded"
         if not _matches_snapshot(acceptance, data):
             return False, "human acceptance does not match the current code snapshot"
+        if "source" in acceptance:
+            # 文件结果保留原件，完成时重读；口头决定不虚构文件来源。
+            try:
+                from tools.lib.manual_acceptance import read_result
+                source = acceptance["source"]
+                if not isinstance(source, dict) or set(source) != {"checklist", "result"}:
+                    raise EvidenceError("manual source requires checklist and result paths")
+                if any(not isinstance(value, str) or not value for value in source.values()):
+                    raise EvidenceError("manual source paths must be nonempty strings")
+                decision = read_result(repo_root, feature_id, Path(source["checklist"]), Path(source["result"]), snapshot)
+                if decision["status"] != "accepted":
+                    raise EvidenceError("manual result is no longer fully passed")
+            except (EvidenceError, ValueError, OSError, KeyError, TypeError) as exc:
+                return False, f"manual result evidence is invalid: {exc}"
     if not isinstance(data.get("recorded_at"), str) or not data["recorded_at"]:
         return False, "gate evidence has no execution timestamp"
     try:

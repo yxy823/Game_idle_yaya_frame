@@ -20,6 +20,7 @@
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
 | [tests/test_project_copy.py](tests/test_project_copy.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | [tests/test_documentation_fingerprint.py](tests/test_documentation_fingerprint.py) | 用中立临时 Git 夹具核对使用 README、知识 Markdown 与验证契约的指纹边界 |
+| [tests/test_manual_acceptance_files.py](tests/test_manual_acceptance_files.py) | 中立 Git 夹具验证人工清单、逐项文件结果、快照匹配与口头入口，不执行游戏或人工体验 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
 | tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
@@ -105,13 +106,13 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 ## 按需检查
 
-维护层回归（复制器与文档指纹边界）：
+维护层回归（复制器、文档指纹与人工验收文件契约）：
 
 ```powershell
 python -B -m unittest discover -s framework/tests -p test_*.py
 ```
 
-这些回归使用系统临时目录。文档指纹检查只建立中立 Git 夹具，不创建游戏或运行项目测试。
+这些回归使用系统临时目录。文档指纹和人工文件检查只建立中立 Git 夹具，不创建游戏或运行引擎测试；合成验收结果不证明真实人工体验。
 
 项目工具回归：
 

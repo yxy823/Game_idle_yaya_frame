@@ -94,6 +94,7 @@ MyGodotGame/
 | `tests/invariants/` | 确实需要跨 Feature 不变量测试时 | 可执行的通用约束 |
 | `reports/initialization.md` | 环境准备时 | 实际初始化过程与结果 |
 | `reports/gdunit-wrapper/run-<id>/` | 每次显式测试运行时 | `result.json`、日志、发现集合及原始测试报告 |
+| `reports/manual-acceptance/F001/` 等 | manual Feature 准备验收时 | 分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件 |
 
 游戏源码、场景、资源和素材源文件按游戏实际模块组织。项目规则目录中的 `10-gdscript`、`20-scenes` 等数字是规则导航，不要求业务目录也按文件类型分组。
 
@@ -106,6 +107,7 @@ MyGodotGame/
 | `engineering-feature-detail.json.tmpl` | Bug、重构、维护 Feature |
 | `feature-list.json.tmpl`、`feature-list-revisions.json.tmpl` | 任务索引与源需求演进记录 |
 | `test-registry.json.tmpl`、`feature-completion-evidence.json.tmpl` | 测试索引与完成依据结构 |
+| `manual-acceptance-checklist.json.tmpl` | 单 Feature 人工清单与结果共用结构，按需填写后绑定版本 |
 | `progress.md.tmpl`、`feature-learning-summary.md.tmpl` | 当前交接与任务结束时的简短经验 |
 | `coding_rules.md.tmpl` | 协作约定与通用设计原则 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |

@@ -82,13 +82,16 @@ def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
 
 # 接受来源由明确人工决定提供；测试通过或 Agent 总结不能自行变成人工接受。
 def _record_acceptance(repo_root: Path, args: argparse.Namespace) -> int:
+    from tools.lib.manual_acceptance import read_result
+
     path, data, snapshot = _load_for_write(repo_root, args.feature)
-    data["human_acceptance"] = {
-        "status": args.status,
-        "recorded_at": utc_now(),
-        **_result_snapshot(snapshot),
-    }
+    if args.result:
+        decision = read_result(repo_root, args.feature, args.checklist, args.result, snapshot)
+    else:
+        decision = {"status": args.status, **_result_snapshot(snapshot)}
+    data["human_acceptance"] = {**decision, "recorded_at": utc_now()}
     _save(path, data)
+    print(f"Human acceptance recorded: {decision['status']}; this is not Feature completion.")
     return 0
 
 
@@ -114,6 +117,11 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     initialize = subparsers.add_parser("initialize")
     initialize.add_argument("--feature", required=True, type=_feature_id)
 
+    prepare = subparsers.add_parser("prepare-manual")
+    prepare.add_argument("--feature", required=True, type=_feature_id)
+    prepare.add_argument("--checklist", required=True, type=Path,
+                         help="Agent-authored pending checklist under reports/manual-acceptance.")
+
     tests = subparsers.add_parser("record-tests")
     tests.add_argument("--feature", required=True, type=_feature_id)
     tests.add_argument("--run", required=True, action="append", type=Path,
@@ -121,14 +129,20 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
 
     acceptance = subparsers.add_parser("record-acceptance")
     acceptance.add_argument("--feature", required=True, type=_feature_id)
-    acceptance.add_argument("--status", required=True, choices=("accepted", "rejected"))
+    decision = acceptance.add_mutually_exclusive_group(required=True)
+    decision.add_argument("--status", choices=("accepted", "rejected"), help="Explicit conversational decision.")
+    decision.add_argument("--result", type=Path, help="User-submitted manual result JSON.")
+    acceptance.add_argument("--checklist", type=Path, help="Unchanged original checklist for --result.")
 
     show = subparsers.add_parser("show")
     show.add_argument("--feature", required=True, type=_feature_id)
 
     validate = subparsers.add_parser("validate")
     validate.add_argument("--feature", required=True, type=_feature_id)
-    return parser.parse_args(list(argv))
+    args = parser.parse_args(list(argv))
+    if args.command == "record-acceptance" and bool(args.result) != bool(args.checklist):
+        parser.error("--result and --checklist must be supplied together; --status cannot use --checklist")
+    return args
 
 
 def main() -> int:
@@ -137,6 +151,11 @@ def main() -> int:
     try:
         if args.command == "initialize":
             return _initialize(repo_root, args.feature)
+        if args.command == "prepare-manual":
+            from tools.lib.manual_acceptance import prepare_checklist
+            path = prepare_checklist(repo_root, args.feature, args.checklist)
+            print(f"Manual checklist prepared: {path}")
+            return 0
         if args.command == "record-tests":
             return _record_tests(repo_root, args)
         if args.command == "record-acceptance":

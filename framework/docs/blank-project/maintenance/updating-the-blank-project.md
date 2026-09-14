@@ -188,8 +188,8 @@ python -B framework/commands/build_blank_project_handbook.py --browser 'C:\Progr
 $LASTEXITCODE
 ```
 
-上述入口包含复制器回归和文档指纹边界回归；后者只用中立临时 Git 夹具检查
-使用 README、知识 Markdown 与验证契约是否参与指纹，不创建游戏，也不替代外部项目工具回归。
+上述入口包含复制器、文档指纹边界和人工验收文件契约回归；后两者只用中立临时 Git 夹具检查
+使用说明与验证契约的指纹边界、清单覆盖、结果往返及版本匹配，不创建游戏，也不替代外部项目工具回归或真实人工体验。
 
 ```powershell
 # 替换成用户明确指定的外部验证项目。

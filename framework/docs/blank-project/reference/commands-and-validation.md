@@ -130,10 +130,15 @@ reports/gdunit-wrapper/run-<id>/
 | --- | --- |
 | `initialize --feature F001` | Stage 2 初始化当前 Feature 依据；会写入当前记录，不作为失败恢复按钮 |
 | `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；必要时重复 `--run` 覆盖不同运行 |
+| `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定清单不能重新绑定 |
+| `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户真实结果，与原清单和当前内容对照；记录 accepted、rejected 或 pending |
 | `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已经明确接受当前范围之后 |
 | `record-acceptance --feature F001 --status rejected` | 记录真实拒绝与后续修复需要 |
 | `show --feature F001` | 只读查看已有记录 |
 | `validate --feature F001` | 检查当前内容对应的完成依据 |
+
+人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见
+[人工验收文件契约](../../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，`pending`、`rejected` 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。
 
 真实报告导入示例：
 
