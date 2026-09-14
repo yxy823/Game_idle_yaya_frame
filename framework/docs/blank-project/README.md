@@ -2,6 +2,8 @@
 
 这份手册说明 Yaya 空白项目包含什么、如何开始开发、怎样组织需求与代码、如何验证和交接，以及框架维护者应在哪里修改源材料。面向使用这套起始文件的用户和维护框架的 Coding Agent。
 
+**桌面阅读：打开 [HTML 使用手册](blank-project-handbook.html)**。所有章节和图表保存在这一个文件内，可离线查看、点击目录跳转、用 Ctrl + F 搜索全文和复制代码。Markdown 是正文维护来源；更新方法见 [生成离线阅读版](maintenance/updating-the-blank-project.md#生成离线阅读版)。
+
 手册保存在 `framework/docs/blank-project/`，仅属于框架维护目录，**不进入新项目**。新项目仍使用简明的 [Project_README.md](../../../project-source/Project_README.md) 作为入口，并携带自身的规则、Skill、方法说明和工具。生成后的项目可以独立开发，不需要访问本手册或框架目录。
 
 ## 先理解三个对象
@@ -52,6 +54,7 @@ flowchart LR
 ```text
 framework/docs/blank-project/
 ├── README.md                            总入口、阅读路线和术语
+├── blank-project-handbook.html           由 Markdown 生成的桌面离线阅读版
 ├── getting-started/
 │   ├── create-project.md                创建命令、复制边界与失败处理
 │   ├── first-use.md                     环境、项目名称、Git 初始状态
@@ -75,7 +78,7 @@ framework/docs/blank-project/
 
 - **可独立使用的项目材料**：Godot 项目文件、两个插件、编辑器和 Git 文本约定。
 - **需求到开发的工作方法**：轻量讨论与澄清、产品梳理、Feature 拆分与增量同步、Bug/重构/维护分类，以及单项任务的执行流程。
-- **可持续读取的项目知识**：Product、Feature、测试测试登记表、当前进度、历史，按主题组织的实践经验索引，以及按需维护的 CONTEXT 术语与架构记录。
+- **可持续读取的项目知识**：Product、Feature、测试登记表、当前进度、历史，按主题组织的实践经验索引，以及按需维护的 CONTEXT 术语与架构记录。
 - **显式检查工具**：环境配置检查、任务台账检查、gdUnit 测试运行与完成依据记录。
 - **按修改领域读取的 Godot 工程规则**：脚本、场景、资源、Shader、项目配置、导出、数据、资产和测试。
 

@@ -1,9 +1,11 @@
 # 维护工具
 
-这里保留文件复制和可显式调用的回归入口。修改不需要任务登记、源码清单续接、
+这里保留文件复制、手册生成和可显式调用的回归入口。修改不需要任务登记、源码清单续接、
 发布身份、升级计划或专门的哈希状态。
 
 面向空白项目使用者的完整说明见 [空白项目使用手册](docs/blank-project/README.md)。
+桌面浏览器可直接打开 [离线 HTML 阅读版](docs/blank-project/blank-project-handbook.html)，
+生成命令和依赖见 [生成离线阅读版](docs/blank-project/maintenance/updating-the-blank-project.md#生成离线阅读版)。
 修改源材料前先查阅入口与受影响专题，修改后按
 [维护与同步说明](docs/blank-project/maintenance/updating-the-blank-project.md) 更新对应章节。
 手册属于框架，不复制到生成项目。
@@ -14,6 +16,7 @@
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
 | [docs/blank-project/README.md](docs/blank-project/README.md) | 空白项目详细使用手册与维护指引；不复制到项目 |
+| [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 从手册 Markdown 与 [页面模板](commands/blank-project-handbook-page.html) 生成包含 SVG 图表的单文件 HTML |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
 | [tests/test_project_copy.py](tests/test_project_copy.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
 | [tests/test_documentation_fingerprint.py](tests/test_documentation_fingerprint.py) | 用中立临时 Git 夹具核对使用 README、知识 Markdown 与验证契约的指纹边界 |
@@ -122,10 +125,13 @@ python -B framework/commands/run_project_tool_tests.py --project D:\Games\MyGodo
 
 本轮用户只要求静态审查时，上述命令均不执行。
 
-## 为什么保留这两个脚本
+## 这些维护入口各自负责什么
 
 从第一性原理看，创建项目需要“按确定清单搬运文件”，一个脚本即可完成；
 不需要版本管理、发布判定或跨项目同步来支撑复制。
+
+手册生成器负责重复的格式转换、链接重写和图表内嵌，正文仍由 Markdown 维护；
+生成文件可直接离线阅读，不需要网站服务，也不承担项目创建或验证职责。
 
 项目工具仍有独立回归源码，维护者需要明确指定被测项目。验证入口只承担传递路径、
 执行回归和返回退出码的重复操作，不决定当前任务是否必须运行它。

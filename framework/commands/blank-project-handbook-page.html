@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>空白 Godot 项目使用手册 · Yaya</title>
+<!-- Generated from framework/docs/blank-project/*.md. Edit the Markdown sources and rebuild. -->
+<style>
+:root { color-scheme: light; --ink: #243d36; --muted: #66796f; --accent: #236c56; --line: #dce5dc; --paper: #fffefa; --sidebar: 286px; }
+* { box-sizing: border-box; }
+html { scroll-padding-top: 78px; }
+body { margin: 0; min-width: 1060px; background: #f3f5ef; color: var(--ink); font: 16px/1.8 "Segoe UI", "Microsoft YaHei", sans-serif; }
+a { color: var(--accent); text-underline-offset: 4px; text-decoration-thickness: 1px; }
+a:hover { color: #124b3b; }
+button { font: inherit; cursor: pointer; }
+a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #bd8f3d; outline-offset: 3px; }
+button { color: var(--accent); background: #fffefa; border: 1px solid #ccdacf; border-radius: 6px; padding: 4px 12px; font-size: 13px; }
+button:hover { background: #eaf2e9; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); background: #edf1e8; border-right: 1px solid var(--line); display: flex; flex-direction: column; z-index: 10; }
+.brand { padding: 30px 24px 22px; border-bottom: 1px solid var(--line); }
+.brand a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 24px; letter-spacing: 2px; }
+.brand small { display: block; color: var(--muted); font-size: 12px; letter-spacing: 1px; margin-top: 3px; }
+.sidebar nav { overflow-y: auto; padding: 8px 16px 30px; scrollbar-width: thin; }
+.nav-group { margin: 23px 10px 8px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 2px; }
+.nav-chapter { margin: 3px 0; }
+.nav-chapter summary { position: relative; list-style: none; border-radius: 7px; cursor: pointer; padding-right: 20px; }
+.nav-chapter summary::-webkit-details-marker { display: none; }
+.nav-chapter summary::after { content: "›"; position: absolute; top: 6px; right: 6px; color: var(--muted); }
+.nav-chapter[open] summary::after { transform: rotate(90deg); }
+.nav-chapter summary:has(a.active) { background: #dce9da; }
+.nav-chapter summary a { display: flex; gap: 10px; padding: 7px 8px; color: #3c5146; text-decoration: none; font-size: 13px; line-height: 1.65; }
+.nav-chapter summary a.active { color: #145139; font-weight: 650; }
+.nav-chapter summary a span { color: #7c8e7d; font: 11px/2 ui-monospace, Consolas, monospace; padding-top: 1px; }
+.nav-sections { margin: 4px 6px 10px 20px; padding-left: 12px; border-left: 1px solid #c8d7c7; }
+.nav-sections a { display: block; padding: 4px 0; color: var(--muted); text-decoration: none; font-size: 12px; line-height: 1.6; }
+.nav-sections a:hover { color: var(--accent); }
+.sidebar-footer { padding: 13px 24px; margin-top: auto; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
+.reading-bar { position: sticky; top: 0; height: 52px; margin-left: var(--sidebar); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; background: #f3f5eff5; border-bottom: 1px solid var(--line); z-index: 5; font-size: 12px; color: var(--muted); }
+.reading-bar a { text-decoration: none; }
+main { margin-left: var(--sidebar); padding: 50px 40px 70px; }
+.book { max-width: 1100px; margin: auto; }
+.cover { padding: 10px 10px 42px; }
+.eyebrow { color: var(--accent); font-size: 12px; letter-spacing: 3px; font-weight: 700; }
+.cover h1 { margin: 13px 0 12px; font-size: 38px; line-height: 1.35; letter-spacing: -1px; font-weight: 700; }
+.cover p { max-width: 720px; color: var(--muted); margin: 0; }
+.cover-meta { display: flex; gap: 10px; margin-top: 23px; font-size: 12px; }
+.cover-meta span { padding: 4px 12px; border: 1px solid #cedbca; border-radius: 20px; background: #e9efe3; }
+.reading-note { margin-top: 23px !important; font-size: 12px; }
+.chapter { padding: 38px 42px 42px; margin-bottom: 30px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 3px 10px #203c3504; overflow-wrap: anywhere; }
+.chapter-meta { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 17px; }
+.chapter-meta a { letter-spacing: 0; }
+.chapter h1 { font-size: 29px; line-height: 1.45; margin: 24px 0 26px; letter-spacing: -.5px; }
+.chapter h2 { margin: 42px 0 17px; padding-top: 8px; font-size: 23px; line-height: 1.5; }
+.chapter h2::before { content: ""; display: inline-block; width: 4px; height: 20px; background: #749a72; margin-right: 12px; border-radius: 2px; vertical-align: -2px; }
+.chapter h3 { margin: 30px 0 13px; font-size: 18px; }
+.chapter p { margin: 15px 0; }
+.chapter strong { color: #173f30; font-weight: 650; }
+.chapter ul, .chapter ol { padding-left: 25px; }
+.chapter li { padding-left: 4px; margin: 10px 0; }
+.chapter blockquote { margin: 24px 0; padding: 1px 22px; border-left: 3px solid #9bb486; background: #f0f4e8; color: #496044; }
+code, pre { font-family: Consolas, "Cascadia Mono", "Microsoft YaHei", monospace; }
+:not(pre) > code { background: #edf1e9; color: #345945; border-radius: 4px; padding: 2px 5px; font-size: .86em; }
+.code-block { margin: 23px 0; border: 1px solid #d8e2d5; border-radius: 8px; overflow: hidden; }
+.code-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; padding: 5px 14px; background: #eaf0e5; color: #5f7358; font-size: 11px; }
+.copy-code, .expand-diagram { display: none; }
+.js .copy-code, .js .expand-diagram { display: inline-block; }
+pre { overflow-x: auto; margin: 0; padding: 20px; font-size: 13px; line-height: 1.85; background: #f5f7f0; color: #294432; tab-size: 4; }
+pre code { white-space: pre; }
+.table-scroll { overflow-x: auto; margin: 22px 0; border: 1px solid var(--line); border-radius: 7px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.75; }
+th { text-align: left; font-weight: 650; color: #2b4f3d; background: #eaf0e5; }
+th, td { padding: 12px 14px; vertical-align: top; border-bottom: 1px solid var(--line); min-width: 120px; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:nth-child(even) { background: #f8faf5; }
+tbody tr:hover { background: #f0f5e9; }
+td code { font-size: 12px; }
+.source-link::after { content: " ↗"; font-size: .8em; color: #8a9c81; text-decoration: none; }
+.diagram { border: 1px solid #d7e2d2; border-radius: 8px; margin: 25px 0; overflow: hidden; background: #fff; }
+.diagram figcaption { padding: 9px 15px; background: #f0f5e9; color: #5e7455; font-size: 11px; display: flex; align-items: center; justify-content: space-between; }
+.diagram-canvas { padding: 22px 14px; overflow: auto; }
+.diagram-canvas svg { display: block; margin: auto; height: auto; }
+.diagram-dialog { width: min(1600px, 96vw); max-width: 96vw; padding: 0; border: 1px solid #aaba9e; border-radius: 10px; color: var(--ink); }
+.diagram-dialog::backdrop { background: #152c24aa; }
+.dialog-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 13px 20px; background: #edf2e7; font-size: 13px; }
+.diagram-dialog .diagram-canvas { max-height: 78vh; padding: 28px; }
+.diagram-dialog svg { width: max(100%, var(--diagram-width)); max-width: none !important; }
+.book-footer { text-align: center; color: var(--muted); font-size: 12px; margin: 36px 0 10px; }
+.toast { position: fixed; bottom: 25px; left: calc(50% + 143px); transform: translateX(-50%); padding: 10px 20px; background: #234b39; color: white; border-radius: 7px; font-size: 13px; z-index: 30; }
+.toast:empty { display: none; }
+</style>
+</head>
+<body id="handbook-top">
+<aside class="sidebar" aria-label="手册目录">
+  <div class="brand"><a href="#handbook-top">YAYA<span aria-hidden="true"> /</span></a><small>空白 Godot 项目 · 使用手册</small></div>
+  <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
+  <div class="sidebar-footer">点击章节跳转 · 点击右侧箭头展开小节</div>
+</aside>
+<header class="reading-bar"><span id="current-chapter">使用手册 · 阅读入口</span><a href="#handbook-top">返回顶部 ↑</a></header>
+<main><div class="book">
+  <section class="cover" aria-label="阅读说明">
+    <div class="eyebrow">YAYA FRAMEWORK / HANDBOOK</div>
+    <h1>从空白项目，到持续开发。</h1>
+    <p>创建、规划、实现、验证与交接。沿左侧目录查阅，也可以顺着阅读路线，了解一项任务如何完成。</p>
+    <div class="cover-meta"><span>@@DOCUMENT_COUNT@@ 篇完整文档</span><span>@@DIAGRAM_COUNT@@ 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
+    <p class="reading-note">使用 Ctrl + F 搜索全文。手册内链接直接跳转；带 ↗ 的链接指向仓库文件，需保留原目录，浏览器可能下载文件或交给编辑器打开。正文由 Markdown 生成。</p>
+  </section>
+  @@BODY@@
+  <footer class="book-footer">Yaya · 空白项目使用手册<br>维护 Markdown 原文，再生成本阅读版。</footer>
+</div></main>
+<dialog class="diagram-dialog" aria-labelledby="diagram-dialog-title">
+  <div class="dialog-toolbar"><span id="diagram-dialog-title">图表 · 可横向滚动查看细节</span><button type="button" id="close-diagram">关闭 / Esc</button></div>
+</dialog>
+<div class="toast" role="status" aria-live="polite"></div>
+<script>
+'use strict';
+document.documentElement.classList.add('js');
+const chapterLinks = Array.from(document.querySelectorAll('[data-chapter]'));
+const chapters = Array.from(document.querySelectorAll('article.chapter'));
+const currentChapter = document.getElementById('current-chapter');
+let activeChapter = '';
+let scrollScheduled = false;
+function updateCurrentChapter() {
+  const active = chapters.findLast(chapter => chapter.getBoundingClientRect().top <= 110);
+  const key = active ? active.id : '';
+  if (key !== activeChapter) {
+    activeChapter = key;
+    chapterLinks.forEach(link => {
+      const selected = link.dataset.chapter === key;
+      link.classList.toggle('active', selected);
+      if (selected) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    currentChapter.textContent = active ? active.querySelector('h1').textContent : '使用手册 · 阅读入口';
+  }
+  scrollScheduled = false;
+}
+window.addEventListener('scroll', () => {
+  if (!scrollScheduled) {
+    scrollScheduled = true;
+    requestAnimationFrame(updateCurrentChapter);
+  }
+}, {passive: true});
+function revealLinkedChapter() {
+  const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  const article = target && target.closest('article.chapter');
+  if (article) {
+    const link = chapterLinks.find(item => item.dataset.chapter === article.id);
+    if (link) link.closest('details').open = true;
+  }
+  updateCurrentChapter();
+}
+window.addEventListener('hashchange', revealLinkedChapter);
+revealLinkedChapter();
+
+const toast = document.querySelector('.toast');
+let toastTimer;
+function message(text) {
+  clearTimeout(toastTimer);
+  toast.textContent = text;
+  toastTimer = setTimeout(() => { toast.textContent = ''; }, 3500);
+}
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // Local file pages may deny Clipboard API access; try the browser's copy command.
+    const input = document.createElement('textarea');
+    input.value = text;
+    input.style.cssText = 'position:fixed;left:-10000px;top:0';
+    document.body.append(input);
+    input.select();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { copied = false; }
+    input.remove();
+    return copied;
+  }
+}
+document.querySelectorAll('.copy-code').forEach(button => {
+  button.addEventListener('click', async () => {
+    const code = button.closest('.code-block').querySelector('code');
+    const copied = await copyText(code.textContent);
+    if (!copied) {
+      const range = document.createRange();
+      range.selectNodeContents(code);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    message(copied ? '代码已复制' : '浏览器未允许自动复制，已选中代码，请按 Ctrl + C');
+  });
+});
+
+const dialog = document.querySelector('.diagram-dialog');
+let expandedCanvas = null;
+let originalFigure = null;
+document.querySelectorAll('.expand-diagram').forEach(button => {
+  button.addEventListener('click', () => {
+    originalFigure = button.closest('.diagram');
+    expandedCanvas = originalFigure.querySelector('.diagram-canvas');
+    const svg = expandedCanvas.querySelector('svg');
+    expandedCanvas.style.setProperty('--diagram-width', `${svg.viewBox.baseVal.width}px`);
+    // Move the SVG temporarily; copying it would duplicate marker and label IDs.
+    dialog.append(expandedCanvas);
+    dialog.showModal();
+  });
+});
+document.getElementById('close-diagram').addEventListener('click', () => dialog.close());
+dialog.addEventListener('close', () => {
+  if (expandedCanvas && originalFigure) originalFigure.append(expandedCanvas);
+  expandedCanvas = null;
+  originalFigure = null;
+});
+</script>
+</body>
+</html>

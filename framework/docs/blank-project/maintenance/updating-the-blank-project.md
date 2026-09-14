@@ -119,6 +119,22 @@
 
 仅内部实现调整、使用契约完全不变时，核对相关说明仍适用即可，无需制造无意义的文档差异。涉及用户可见使用方式的修改，应在本次提交中同步完成说明。
 
+## 生成离线阅读版
+
+[HTML 使用手册](../blank-project-handbook.html) 汇总本目录内的全部 Markdown 正文，供桌面浏览器离线阅读。双击文件即可打开；左侧目录和正文中的手册链接直接跳转到对应章节，Ctrl + F 搜索整本手册，代码支持复制，图表支持展开。带 ↗ 的链接指向仓库源文件：保留原目录时可定位文件，浏览器也可能下载它或交给编辑器打开；单独分享 HTML 时，这些源文件不随正文打包。
+
+正文只维护 Markdown，页面样式和交互维护在 [HTML 模板](../../../commands/blank-project-handbook-page.html)，由 [生成器](../../../commands/build_blank_project_handbook.py) 统一输出阅读版，不直接手改生成文件。正文或模板变化后，从框架根目录运行：
+
+```powershell
+python -B framework/commands/build_blank_project_handbook.py --browser 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
+```
+
+`python` 应指向本机已确认的解释器，`--browser` 替换为实际安装的 Edge 或 Chromium 可执行文件。构建环境需要 Python 的 `markdown-it-py`（当前使用 4.0.0）、Node.js 和 npx；缺少 Markdown 依赖时可在所选 Python 环境中安装 `markdown-it-py==4.0.0`。生成器通过 npx 调用固定版本 `@mermaid-js/mermaid-cli@11.17.0`，首次需要访问 npm 获取构建依赖，之后可复用缓存。它使用指定浏览器渲染 SVG，不下载额外浏览器。
+
+生成器按入口阅读路线组织章节，并纳入目录内其他 Markdown；新增一级分组时需在生成器中补充分组名称。构建会检查文档链接、标题锚点和 HTML 内部 ID，将 Mermaid 实际渲染为内嵌 SVG；失败以非零退出码报告，成功输出 `framework/docs/blank-project/blank-project-handbook.html`。正文、样式、交互和图表都在单文件中，阅读时不需要 Python、Node.js、网络或本地服务。
+
+生成后把受影响的 Markdown、页面模板或生成器与生成的 HTML 一起提交。静态检查和图表渲染不等于浏览器排版、点击与复制已人工验收；页面可由使用者手动检查。本阅读版沿用手册的初始化排除边界，无需创建验证游戏。
+
 ## 保持初始化边界
 
 本手册全部文件放在 `framework/docs/blank-project/`，不要加入 `project-files.json`，也不要复制或移动到 `project-source/`。不增加“先复制再删除手册”的动作。
