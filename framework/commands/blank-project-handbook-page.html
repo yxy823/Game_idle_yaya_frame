@@ -7,107 +7,167 @@
 <title>空白 Godot 项目使用手册 · Yaya</title>
 <!-- Generated from framework/docs/blank-project/*.md. Edit the Markdown sources and rebuild. -->
 <style>
-:root { color-scheme: light; --ink: #243d36; --muted: #66796f; --accent: #236c56; --line: #dce5dc; --paper: #fffefa; --sidebar: 286px; }
+:root { color-scheme: light; --ink: #23382f; --muted: #586b60; --accent: #23634b; --line: #dce3d9; --paper: #fffefa; --canvas: #f2f4ee; --sidebar: 304px; --font-body: 18px; --font-cover: 42px; --font-h1: 34px; --font-h2: 26px; --font-h3: 21px; --font-nav: 15px; --font-subnav: 14px; --font-table: 16px; --font-code: 16px; --font-ui: 14px; --nav-bg: #142f27; --nav-ink: #e6eee7; --nav-muted: #aec2b4; --selection: #d9edc8; }
 * { box-sizing: border-box; }
-html { scroll-padding-top: 78px; }
-body { margin: 0; min-width: 1060px; background: #f3f5ef; color: var(--ink); font: 16px/1.8 "Segoe UI", "Microsoft YaHei", sans-serif; }
+html { scroll-padding-top: 90px; }
+body { margin: 0; min-width: 1060px; background: var(--canvas); color: var(--ink); font: 18px/1.85 "Segoe UI", "Microsoft YaHei", sans-serif; }
+::selection { background: var(--selection); color: var(--ink); }
 a { color: var(--accent); text-underline-offset: 4px; text-decoration-thickness: 1px; }
 a:hover { color: #124b3b; }
 button { font: inherit; cursor: pointer; }
-a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px solid #bd8f3d; outline-offset: 3px; }
-button { color: var(--accent); background: #fffefa; border: 1px solid #ccdacf; border-radius: 6px; padding: 4px 12px; font-size: 13px; }
-button:hover { background: #eaf2e9; }
-.sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); background: #edf1e8; border-right: 1px solid var(--line); display: flex; flex-direction: column; z-index: 10; }
-.brand { padding: 30px 24px 22px; border-bottom: 1px solid var(--line); }
-.brand a { color: var(--ink); text-decoration: none; font-weight: 700; font-size: 24px; letter-spacing: 2px; }
-.brand small { display: block; color: var(--muted); font-size: 12px; letter-spacing: 1px; margin-top: 3px; }
-.sidebar nav { overflow-y: auto; padding: 8px 16px 30px; scrollbar-width: thin; }
-.nav-group { margin: 23px 10px 8px; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 2px; }
-.nav-chapter { margin: 3px 0; }
-.nav-chapter summary { position: relative; list-style: none; border-radius: 7px; cursor: pointer; padding-right: 20px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid #a86c23; outline-offset: 4px; }
+button { min-height: 44px; color: var(--accent); background: var(--paper); border: 1px solid #9cab9b; border-radius: 8px; padding: 7px 15px; font-size: var(--font-ui); transition: background-color 160ms ease, border-color 160ms ease; }
+button:hover { background: #e9f0e3; border-color: #63806b; }
+button:disabled { cursor: default; opacity: .45; }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); background: var(--nav-bg); color: var(--nav-ink); display: flex; flex-direction: column; z-index: 10; }
+.brand { padding: 32px 24px 26px; border-bottom: 1px solid #345046; }
+.brand a { display: flex; align-items: center; gap: 13px; color: var(--nav-ink); text-decoration: none; font-weight: 700; font-size: 23px; letter-spacing: 2px; }
+.brand-mark { display: grid; place-items: center; width: 43px; height: 43px; background: var(--selection); color: var(--nav-bg); border-radius: 11px 11px 3px 11px; font-size: 27px; letter-spacing: 0; }
+.brand small { display: block; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 400; letter-spacing: .5px; margin-top: 2px; }
+.sidebar nav { flex: 1; min-height: 0; overflow-y: auto; padding: 6px 15px 24px; scrollbar-width: thin; scrollbar-color: #617e6d transparent; }
+.nav-group { margin: 26px 12px 10px; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 600; letter-spacing: 2px; }
+.nav-chapter { margin: 5px 0; }
+.nav-chapter summary { position: relative; list-style: none; border-radius: 8px; cursor: pointer; padding-right: 25px; transition: background-color 160ms ease; }
 .nav-chapter summary::-webkit-details-marker { display: none; }
-.nav-chapter summary::after { content: "›"; position: absolute; top: 6px; right: 6px; color: var(--muted); }
+.nav-chapter summary::after { content: "›"; position: absolute; top: 8px; right: 10px; color: var(--nav-muted); }
 .nav-chapter[open] summary::after { transform: rotate(90deg); }
-.nav-chapter summary:has(a.active) { background: #dce9da; }
-.nav-chapter summary a { display: flex; gap: 10px; padding: 7px 8px; color: #3c5146; text-decoration: none; font-size: 13px; line-height: 1.65; }
-.nav-chapter summary a.active { color: #145139; font-weight: 650; }
-.nav-chapter summary a span { color: #7c8e7d; font: 11px/2 ui-monospace, Consolas, monospace; padding-top: 1px; }
-.nav-sections { margin: 4px 6px 10px 20px; padding-left: 12px; border-left: 1px solid #c8d7c7; }
-.nav-sections a { display: block; padding: 4px 0; color: var(--muted); text-decoration: none; font-size: 12px; line-height: 1.6; }
-.nav-sections a:hover { color: var(--accent); }
-.sidebar-footer { padding: 13px 24px; margin-top: auto; border-top: 1px solid var(--line); color: var(--muted); font-size: 11px; }
-.reading-bar { position: sticky; top: 0; height: 52px; margin-left: var(--sidebar); padding: 0 40px; display: flex; align-items: center; justify-content: space-between; background: #f3f5eff5; border-bottom: 1px solid var(--line); z-index: 5; font-size: 12px; color: var(--muted); }
-.reading-bar a { text-decoration: none; }
-main { margin-left: var(--sidebar); padding: 50px 40px 70px; }
-.book { max-width: 1100px; margin: auto; }
-.cover { padding: 10px 10px 42px; }
-.eyebrow { color: var(--accent); font-size: 12px; letter-spacing: 3px; font-weight: 700; }
-.cover h1 { margin: 13px 0 12px; font-size: 38px; line-height: 1.35; letter-spacing: -1px; font-weight: 700; }
-.cover p { max-width: 720px; color: var(--muted); margin: 0; }
-.cover-meta { display: flex; gap: 10px; margin-top: 23px; font-size: 12px; }
-.cover-meta span { padding: 4px 12px; border: 1px solid #cedbca; border-radius: 20px; background: #e9efe3; }
-.reading-note { margin-top: 23px !important; font-size: 12px; }
-.chapter { padding: 38px 42px 42px; margin-bottom: 30px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 3px 10px #203c3504; overflow-wrap: anywhere; }
-.chapter-meta { display: flex; align-items: center; justify-content: space-between; font-size: 11px; color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 17px; }
+.nav-chapter summary:hover { background: #26463a; }
+.nav-chapter summary:has(a.active) { background: var(--selection); }
+.nav-chapter summary:has(a.active)::after { color: var(--ink); }
+.nav-chapter summary a { display: flex; gap: 12px; min-height: 46px; padding: 10px 11px; color: var(--nav-ink); text-decoration: none; font-size: var(--font-nav); line-height: 1.7; }
+.nav-chapter summary a.active { color: #183c2a; font-weight: 650; }
+.nav-chapter summary a span { color: var(--nav-muted); font: var(--font-ui)/2 ui-monospace, Consolas, monospace; padding-top: 1px; }
+.nav-chapter summary a.active span { color: #476140; }
+.nav-sections { margin: 9px 9px 16px 24px; padding-left: 16px; border-left: 1px solid #617e6d; }
+.nav-sections a { display: block; padding: 7px 0; color: var(--nav-muted); text-decoration: none; font-size: var(--font-subnav); line-height: 1.7; }
+.nav-sections a:hover { color: #fff; }
+.sidebar :focus-visible { outline-color: #e9c88e; }
+.sidebar-footer { flex-shrink: 0; padding: 17px 24px; border-top: 1px solid #345046; color: var(--nav-muted); font-size: var(--font-ui); }
+.reading-bar { position: sticky; top: 0; min-height: 72px; margin-left: var(--sidebar); padding: 12px 36px; gap: 20px; display: flex; align-items: center; justify-content: space-between; background: var(--canvas); border-bottom: 1px solid var(--line); z-index: 5; font-size: var(--font-ui); color: var(--muted); }
+#current-chapter { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.reading-actions { display: flex; align-items: center; gap: 22px; flex-shrink: 0; }
+.reading-actions a { text-decoration: none; white-space: nowrap; }
+.settings-trigger { display: none; align-items: center; gap: 9px; background: var(--paper); }
+.js .settings-trigger { display: inline-flex; }
+.settings-icon { display: grid; gap: 4px; width: 17px; }
+.settings-icon i { position: relative; height: 1.5px; background: currentColor; }
+.settings-icon i::after { content: ""; position: absolute; top: -2px; left: 3px; width: 6px; height: 6px; border: 1.5px solid currentColor; border-radius: 50%; background: var(--paper); }
+.settings-icon i:nth-child(2)::after { left: 10px; }
+main { margin-left: var(--sidebar); padding: 46px 36px 64px; }
+.book { max-width: 1120px; margin: auto; }
+.cover { padding: 0 8px 38px; }
+.eyebrow { color: var(--accent); font-size: var(--font-ui); letter-spacing: 2.5px; font-weight: 700; }
+.cover h1 { margin: 14px 0; font-size: var(--font-cover); line-height: 1.4; letter-spacing: -1.5px; font-weight: 700; }
+.cover p { max-width: 850px; color: var(--muted); margin: 0; font-size: var(--font-body); }
+.cover-meta { display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: baseline; margin-top: 28px; padding: 22px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: var(--font-ui); color: var(--muted); }
+.cover-meta span { display: inline-flex; align-items: baseline; gap: 8px; }
+.cover-meta strong { color: var(--ink); font: 600 26px/1.2 "Segoe UI", sans-serif; }
+.reading-note { margin-top: 20px !important; font-size: var(--font-ui) !important; line-height: 1.85; }
+.chapter { font-size: var(--font-body); padding: 36px 40px 46px; margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; overflow-wrap: anywhere; }
+.chapter-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: var(--font-ui); color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
 .chapter-meta a { letter-spacing: 0; }
-.chapter h1 { font-size: 29px; line-height: 1.45; margin: 24px 0 26px; letter-spacing: -.5px; }
-.chapter h2 { margin: 42px 0 17px; padding-top: 8px; font-size: 23px; line-height: 1.5; }
-.chapter h2::before { content: ""; display: inline-block; width: 4px; height: 20px; background: #749a72; margin-right: 12px; border-radius: 2px; vertical-align: -2px; }
-.chapter h3 { margin: 30px 0 13px; font-size: 18px; }
-.chapter p { margin: 15px 0; }
+.chapter h1 { font-size: var(--font-h1); line-height: 1.5; margin: 25px 0 28px; letter-spacing: -.7px; }
+.chapter h2 { margin: 2em 0 .8em; padding-top: 10px; font-size: var(--font-h2); line-height: 1.6; }
+.chapter h2::before { content: ""; display: inline-block; width: 5px; height: .85em; background: #749a72; margin-right: 12px; border-radius: 3px; vertical-align: -.04em; }
+.chapter h3 { margin: 1.7em 0 .7em; font-size: var(--font-h3); }
+.chapter p { margin: 1em 0; }
 .chapter strong { color: #173f30; font-weight: 650; }
 .chapter ul, .chapter ol { padding-left: 25px; }
-.chapter li { padding-left: 4px; margin: 10px 0; }
-.chapter blockquote { margin: 24px 0; padding: 1px 22px; border-left: 3px solid #9bb486; background: #f0f4e8; color: #496044; }
+.chapter li { padding-left: 5px; margin: .65em 0; }
+.chapter li::marker { color: #547750; }
+.chapter blockquote { margin: 26px 0; padding: 1px 24px; border-left: 3px solid #799864; background: #f0f4e8; color: #3e5637; }
 code, pre { font-family: Consolas, "Cascadia Mono", "Microsoft YaHei", monospace; }
-:not(pre) > code { background: #edf1e9; color: #345945; border-radius: 4px; padding: 2px 5px; font-size: .86em; }
-.code-block { margin: 23px 0; border: 1px solid #d8e2d5; border-radius: 8px; overflow: hidden; }
-.code-toolbar { display: flex; align-items: center; justify-content: space-between; min-height: 38px; padding: 5px 14px; background: #eaf0e5; color: #5f7358; font-size: 11px; }
+:not(pre) > code { background: #edf1e9; color: #345945; border-radius: 4px; padding: 2px 5px; font-size: var(--font-code); }
+.code-block { margin: 26px 0; border: 1px solid #d8e2d5; border-radius: 9px; overflow: hidden; }
+.code-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 52px; padding: 6px 18px; background: #eaf0e5; color: #4b6244; font-size: var(--font-ui); }
 .copy-code, .expand-diagram { display: none; }
 .js .copy-code, .js .expand-diagram { display: inline-block; }
-pre { overflow-x: auto; margin: 0; padding: 20px; font-size: 13px; line-height: 1.85; background: #f5f7f0; color: #294432; tab-size: 4; }
+pre { overflow-x: auto; margin: 0; padding: 23px; font-size: var(--font-code); line-height: 1.9; background: #f5f7f0; color: #294432; tab-size: 4; }
 pre code { white-space: pre; }
-.table-scroll { overflow-x: auto; margin: 22px 0; border: 1px solid var(--line); border-radius: 7px; }
-table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.75; }
+.table-scroll { overflow-x: auto; margin: 24px 0; border: 1px solid var(--line); border-radius: 8px; }
+table { width: 100%; border-collapse: collapse; font-size: var(--font-table); line-height: 1.85; }
 th { text-align: left; font-weight: 650; color: #2b4f3d; background: #eaf0e5; }
-th, td { padding: 12px 14px; vertical-align: top; border-bottom: 1px solid var(--line); min-width: 120px; }
+th, td { padding: 15px 17px; vertical-align: top; border-bottom: 1px solid var(--line); min-width: 140px; }
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:nth-child(even) { background: #f8faf5; }
 tbody tr:hover { background: #f0f5e9; }
-td code { font-size: 12px; }
-.source-link::after { content: " ↗"; font-size: .8em; color: #8a9c81; text-decoration: none; }
-.diagram { border: 1px solid #d7e2d2; border-radius: 8px; margin: 25px 0; overflow: hidden; background: #fff; }
-.diagram figcaption { padding: 9px 15px; background: #f0f5e9; color: #5e7455; font-size: 11px; display: flex; align-items: center; justify-content: space-between; }
-.diagram-canvas { padding: 22px 14px; overflow: auto; }
+.source-link::after { content: " ↗"; font-size: .8em; color: var(--muted); text-decoration: none; }
+.diagram { border: 1px solid #d7e2d2; border-radius: 9px; margin: 28px 0; overflow: hidden; background: #fff; }
+.diagram figcaption { padding: 10px 18px; background: #f0f5e9; color: #4e6445; font-size: var(--font-ui); display: flex; align-items: center; justify-content: space-between; }
+.diagram-canvas { padding: 26px 18px; overflow: auto; }
 .diagram-canvas svg { display: block; margin: auto; height: auto; }
 .diagram-dialog { width: min(1600px, 96vw); max-width: 96vw; padding: 0; border: 1px solid #aaba9e; border-radius: 10px; color: var(--ink); }
-.diagram-dialog::backdrop { background: #152c24aa; }
-.dialog-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 13px 20px; background: #edf2e7; font-size: 13px; }
+dialog::backdrop { background: #142c245c; }
+.dialog-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 20px; background: #edf2e7; font-size: var(--font-ui); }
 .diagram-dialog .diagram-canvas { max-height: 78vh; padding: 28px; }
 .diagram-dialog svg { width: max(100%, var(--diagram-width)); max-width: none !important; }
-.book-footer { text-align: center; color: var(--muted); font-size: 12px; margin: 36px 0 10px; }
-.toast { position: fixed; bottom: 25px; left: calc(50% + 143px); transform: translateX(-50%); padding: 10px 20px; background: #234b39; color: white; border-radius: 7px; font-size: 13px; z-index: 30; }
+.settings-dialog { position: fixed; inset: 86px 24px auto auto; margin: 0; width: 500px; max-width: calc(100vw - 48px); max-height: calc(100vh - 110px); padding: 0; overflow: hidden; border: 1px solid #b1c0ac; border-radius: 14px; color: var(--ink); background: var(--paper); box-shadow: 0 16px 56px #142c2429; font-size: 16px; }
+.settings-dialog[open] { display: flex; flex-direction: column; }
+.settings-dialog button { font-size: 14px; }
+.settings-heading { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 16px; padding: 23px 26px 20px; border-bottom: 1px solid var(--line); }
+.settings-heading h2 { margin: 0; font-size: 23px; line-height: 1.5; }
+.settings-heading p { margin: 4px 0 0; font-size: 14px; color: var(--muted); }
+.settings-dialog .close-settings { min-width: 44px; padding: 4px; font-size: 24px; line-height: 1; }
+.settings-content { min-height: 0; overflow-y: auto; padding: 22px 26px; }
+.preset-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; font-size: 15px; margin-bottom: 12px; }
+#active-font-preset { color: var(--accent); font-size: 13px; }
+.font-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.font-presets button { padding: 12px 6px; }
+.font-presets button[aria-pressed="true"] { background: var(--selection); border-color: var(--accent); color: #183c2a; box-shadow: inset 0 0 0 1px var(--accent); }
+.font-presets small { display: block; color: var(--muted); font-size: 12px; margin-top: 4px; }
+.settings-hint { font-size: 13px; color: var(--muted); margin: 12px 0 20px; }
+.font-group { border-top: 1px solid var(--line); }
+.font-group summary { padding: 15px 0; cursor: pointer; font-size: 15px; font-weight: 600; }
+.font-control { margin: 0 0 14px; }
+.font-control label { display: block; font-size: 14px; line-height: 1.6; }
+.size-controls { display: flex; align-items: center; gap: 15px; margin-top: 3px; }
+.size-controls input[type="range"] { flex: 1; min-width: 0; height: 44px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.size-controls input[type="number"] { width: 72px; min-height: 44px; padding: 6px 8px; border: 1px solid #9cab9b; border-radius: 7px; background: var(--paper); color: var(--ink); font: 15px "Segoe UI", sans-serif; }
+.size-controls span { font-size: 13px; color: var(--muted); }
+.font-preview { border: 1px solid var(--line); border-radius: 9px; padding: 18px 20px; margin-top: 18px; background: var(--canvas); overflow-wrap: anywhere; }
+.font-preview small { display: block; color: var(--muted); font-size: 12px; margin-bottom: 8px; letter-spacing: 1px; }
+.font-preview h3 { font-size: var(--font-h2); line-height: 1.5; margin: 0 0 10px; }
+.font-preview p { font-size: var(--font-body); line-height: 1.85; margin: 0; }
+.font-preview code { display: inline-block; margin-top: 12px; }
+.settings-footer { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 26px; border-top: 1px solid var(--line); }
+.settings-footer span { color: var(--muted); font-size: 13px; }
+.settings-footer button { flex-shrink: 0; }
+.book-footer { text-align: center; color: var(--muted); font-size: var(--font-ui); margin: 36px 0 10px; }
+.toast { position: fixed; bottom: 25px; left: calc(50% + var(--sidebar) / 2); transform: translateX(-50%); padding: 12px 22px; background: #234b39; color: white; border-radius: 8px; font-size: var(--font-ui); z-index: 30; }
 .toast:empty { display: none; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
 <body id="handbook-top">
 <aside class="sidebar" aria-label="手册目录">
-  <div class="brand"><a href="#handbook-top">YAYA<span aria-hidden="true"> /</span></a><small>空白 Godot 项目 · 使用手册</small></div>
+  <div class="brand"><a href="#handbook-top"><span class="brand-mark" aria-hidden="true">Y</span><span>YAYA<small>Godot 项目使用手册</small></span></a></div>
   <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
   <div class="sidebar-footer">点击章节跳转 · 点击右侧箭头展开小节</div>
 </aside>
-<header class="reading-bar"><span id="current-chapter">使用手册 · 阅读入口</span><a href="#handbook-top">返回顶部 ↑</a></header>
+<header class="reading-bar"><span id="current-chapter">使用手册 · 阅读入口</span><div class="reading-actions"><a href="#handbook-top">返回顶部 ↑</a><button type="button" class="settings-trigger" id="open-settings" aria-haspopup="dialog" aria-controls="reading-settings"><span class="settings-icon" aria-hidden="true"><i></i><i></i><i></i></span>阅读设置</button></div></header>
 <main><div class="book">
   <section class="cover" aria-label="阅读说明">
-    <div class="eyebrow">YAYA FRAMEWORK / HANDBOOK</div>
-    <h1>从空白项目，到持续开发。</h1>
+    <div class="eyebrow">YAYA FRAMEWORK / DOCUMENTATION</div>
+    <h1>空白项目使用手册</h1>
     <p>创建、规划、实现、验证与交接。沿左侧目录查阅，也可以顺着阅读路线，了解一项任务如何完成。</p>
-    <div class="cover-meta"><span>@@DOCUMENT_COUNT@@ 篇完整文档</span><span>@@DIAGRAM_COUNT@@ 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
+    <div class="cover-meta"><span><strong>@@DOCUMENT_COUNT@@</strong> 篇完整文档</span><span><strong>@@DIAGRAM_COUNT@@</strong> 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
     <p class="reading-note">使用 Ctrl + F 搜索全文。手册内链接直接跳转；带 ↗ 的链接指向仓库文件，需保留原目录，浏览器可能下载文件或交给编辑器打开。正文由 Markdown 生成。</p>
   </section>
   @@BODY@@
   <footer class="book-footer">Yaya · 空白项目使用手册<br>维护 Markdown 原文，再生成本阅读版。</footer>
 </div></main>
+<dialog class="settings-dialog" id="reading-settings" aria-labelledby="reading-settings-title">
+  <div class="settings-heading"><div><h2 id="reading-settings-title">阅读设置</h2><p>先选一组搭配，再按分区微调。</p></div><button type="button" class="close-settings" id="close-settings" aria-label="关闭阅读设置">×</button></div>
+  <div class="settings-content">
+    <div class="preset-heading"><strong id="font-presets-label">整体字号预设</strong><span id="active-font-preset" role="status">舒适阅读</span></div>
+    <div class="font-presets" id="font-presets" role="group" aria-labelledby="font-presets-label"></div>
+    <p class="settings-hint">选择预设会替换全部分区字号；每一项仍可独立微调，页面即时更新。</p>
+    <div id="font-controls"></div>
+    <div class="font-preview"><small>局部预览 · 其余分区在页面中同步更新</small><h3>把想法变成可用的成果</h3><p>从清晰的需求开始，逐步完成规划、实现与验证。</p><code>docs/features/F001.json</code></div>
+    <p class="settings-hint">图表内部文字随整张图缩放，请通过“展开图表”查看细节。</p>
+  </div>
+  <div class="settings-footer"><span id="font-save-status" role="status">设置会保存在此浏览器</span><button type="button" id="reset-font">恢复默认</button></div>
+</dialog>
 <dialog class="diagram-dialog" aria-labelledby="diagram-dialog-title">
   <div class="dialog-toolbar"><span id="diagram-dialog-title">图表 · 可横向滚动查看细节</span><button type="button" id="close-diagram">关闭 / Esc</button></div>
 </dialog>
@@ -115,6 +175,133 @@ td code { font-size: 12px; }
 <script>
 'use strict';
 document.documentElement.classList.add('js');
+const settingsDialog = document.getElementById('reading-settings');
+const fontSaveStatus = document.getElementById('font-save-status');
+const fontFields = [
+  {key: 'body', label: '正文', group: '正文与标题', min: 14, max: 28},
+  {key: 'cover', label: '封面标题', group: '正文与标题', min: 28, max: 60},
+  {key: 'h1', label: '章节标题 · H1', group: '正文与标题', min: 24, max: 48},
+  {key: 'h2', label: '小节标题 · H2', group: '正文与标题', min: 18, max: 40},
+  {key: 'h3', label: '三级标题 · H3', group: '正文与标题', min: 16, max: 32},
+  {key: 'nav', label: '主目录', group: '目录与界面', min: 13, max: 22},
+  {key: 'subnav', label: '子目录', group: '目录与界面', min: 12, max: 22},
+  {key: 'ui', label: '辅助文字 · 工具栏、按钮、图注', group: '目录与界面', min: 12, max: 20},
+  {key: 'table', label: '表格文字', group: '表格与代码', min: 13, max: 24},
+  {key: 'code', label: '代码块与行内代码', group: '表格与代码', min: 12, max: 24}
+];
+const fontPresets = {
+  compact: {name: '紧凑浏览', sizes: {body: 16, cover: 36, h1: 30, h2: 22, h3: 19, nav: 14, subnav: 13, ui: 13, table: 14, code: 14}},
+  comfortable: {name: '舒适阅读', sizes: {body: 18, cover: 42, h1: 34, h2: 26, h3: 21, nav: 15, subnav: 14, ui: 14, table: 16, code: 16}},
+  large: {name: '大字阅读', sizes: {body: 22, cover: 48, h1: 40, h2: 32, h3: 26, nav: 18, subnav: 17, ui: 16, table: 20, code: 20}}
+};
+const fontStorageKey = 'yaya.handbook.typography';
+const fontSizes = {...fontPresets.comfortable.sizes};
+const fontInputs = {};
+const presetButtons = {};
+let storedFonts;
+try {
+  storedFonts = localStorage.getItem(fontStorageKey);
+} catch {
+  fontSaveStatus.textContent = '浏览器限制保存，设置仅本次有效';
+}
+if (storedFonts) {
+  try {
+    const stored = JSON.parse(storedFonts);
+    for (const field of fontFields) {
+      const size = stored?.[field.key];
+      if (Number.isInteger(size) && size >= field.min && size <= field.max) fontSizes[field.key] = size;
+    }
+  } catch {
+    fontSaveStatus.textContent = '保存的设置无法读取，已恢复默认';
+  }
+}
+function applyTypography(changes, persist = true) {
+  for (const field of fontFields) {
+    const value = changes[field.key];
+    if (value !== undefined && value !== '' && Number.isFinite(Number(value))) {
+      fontSizes[field.key] = Math.min(field.max, Math.max(field.min, Math.round(Number(value))));
+    }
+    const size = fontSizes[field.key];
+    document.documentElement.style.setProperty(`--font-${field.key}`, `${size}px`);
+    fontInputs[field.key].range.value = String(size);
+    fontInputs[field.key].number.value = String(size);
+    fontInputs[field.key].range.setAttribute('aria-valuetext', `${size} 像素`);
+  }
+  let selectedName = '自定义';
+  for (const [key, preset] of Object.entries(fontPresets)) {
+    const selected = fontFields.every(field => fontSizes[field.key] === preset.sizes[field.key]);
+    presetButtons[key].setAttribute('aria-pressed', String(selected));
+    if (selected) selectedName = preset.name;
+  }
+  document.getElementById('active-font-preset').textContent = selectedName;
+  if (persist) {
+    try {
+      localStorage.setItem(fontStorageKey, JSON.stringify(fontSizes));
+      fontSaveStatus.textContent = '当前搭配已保存';
+    } catch {
+      fontSaveStatus.textContent = '浏览器限制保存，设置仅本次有效';
+    }
+  }
+}
+const fontControls = document.getElementById('font-controls');
+const groups = new Map();
+for (const field of fontFields) {
+  if (!groups.has(field.group)) {
+    const group = document.createElement('details');
+    group.className = 'font-group';
+    group.open = groups.size === 0;
+    const summary = document.createElement('summary');
+    summary.textContent = field.group;
+    group.append(summary);
+    groups.set(field.group, group);
+    fontControls.append(group);
+  }
+  const row = document.createElement('div');
+  row.className = 'font-control';
+  const label = document.createElement('label');
+  label.htmlFor = `font-${field.key}`;
+  label.textContent = field.label;
+  const controls = document.createElement('div');
+  controls.className = 'size-controls';
+  const range = document.createElement('input');
+  const number = document.createElement('input');
+  range.type = 'range';
+  range.id = label.htmlFor;
+  number.type = 'number';
+  number.setAttribute('aria-label', `${field.label}字号，单位像素`);
+  for (const input of [range, number]) {
+    input.min = String(field.min);
+    input.max = String(field.max);
+    input.step = '1';
+  }
+  range.addEventListener('input', () => applyTypography({[field.key]: range.value}));
+  number.addEventListener('change', () => applyTypography({[field.key]: number.value}));
+  const unit = document.createElement('span');
+  unit.textContent = 'px';
+  unit.setAttribute('aria-hidden', 'true');
+  controls.append(range, number, unit);
+  row.append(label, controls);
+  groups.get(field.group).append(row);
+  fontInputs[field.key] = {range, number};
+}
+for (const [key, preset] of Object.entries(fontPresets)) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = preset.name;
+  const description = document.createElement('small');
+  description.textContent = `正文 ${preset.sizes.body}px`;
+  button.append(description);
+  button.addEventListener('click', () => applyTypography(preset.sizes));
+  document.getElementById('font-presets').append(button);
+  presetButtons[key] = button;
+}
+applyTypography({}, false);
+document.getElementById('open-settings').addEventListener('click', () => {
+  settingsDialog.showModal();
+  presetButtons.comfortable.focus();
+});
+document.getElementById('close-settings').addEventListener('click', () => settingsDialog.close());
+document.getElementById('reset-font').addEventListener('click', () => applyTypography(fontPresets.comfortable.sizes));
 const chapterLinks = Array.from(document.querySelectorAll('[data-chapter]'));
 const chapters = Array.from(document.querySelectorAll('article.chapter'));
 const currentChapter = document.getElementById('current-chapter');
