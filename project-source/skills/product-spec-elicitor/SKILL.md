@@ -106,7 +106,7 @@ Use these mandatory checks:
 | A new interactive element | Ask its observable behavior and whether it needs audio feedback |
 | UI layout changes | Return `trigger_ui_sketcher` |
 | Audio requirements change | Return `trigger_audio_sketcher` |
-| Existing behavior is deleted | Require a second confirmation and inspect effects on completed Features |
+| Existing behavior is deleted | Inspect effects on completed Features; reuse approval covering those effects or ask for the missing decision |
 
 ## Mode C: `bug_fix`
 

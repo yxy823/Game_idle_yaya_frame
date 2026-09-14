@@ -270,6 +270,6 @@ report file or repeating the whole Product specification.
 5. Run the complete self-check and JSON validation.
 6. Follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the explicit generated Feature-plan paths, run all cached-diff checks, and create one local `chore(feature-plan): <中文行为摘要>` commit unless the user explicitly requested no commit. Do not use a broad `docs/features/` staging path, and omit `Work item` because this commit creates the plan rather than implementing one Feature. Confirm `git status --short` afterward.
 7. Only after all checks and the local commit pass, report the added files and first executable Feature for the current Product. State that later Products remain for planning after this Product is complete.
-8. Stop without implementing a Feature or decomposing the next Product. Execution belongs to `execute-next-feature`.
+8. Return the plan to the calling workflow. If implementation is already explicitly authorized, continue through `execute-next-feature`; otherwise stop at this planning result. Preserve Product order; this Skill does not implement Features or decompose later Products merely because planning succeeded.
 
 Acceptance planning follows `methodology/02-feature-list-schema.md`: decide from the requirement before filling checks. Visual/audio/feel or other human judgment requires manual acceptance; fully automated AC may use automated acceptance. Leave `verification.acceptance_mode: null` only while undecided, and resolve it in execute Stage 1. Empty check arrays do not decide the mode.

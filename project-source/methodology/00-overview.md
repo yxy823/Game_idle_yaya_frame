@@ -151,7 +151,7 @@ independent requirements and code-quality review → must_fix: 0
    ↓
 Feature completion gate → done
    ↓
-handoff and STOP for the user's next decision
+handoff → continue within existing authorization, otherwise STOP
 ```
 
 A reported bug must be classified before any Product edit:
@@ -161,13 +161,14 @@ A reported bug must be classified before any Product edit:
 
 ## Delivery control points
 
-Human control is mandatory and is deliberately not optimized away:
+Apply [Authorization and continuation](03-execute-loop.md#authorization-and-continuation)
+at these control points; reuse decisions that already cover the concrete action:
 
 1. A proposed Product or engineering change must be approved before durable planning writes that require approval.
 2. `execute-next-feature` Stage 1 requires explicit approval before implementation begins.
 3. Stage 1 decides acceptance from the requirement. Visual/audio/game-feel or other human judgment requires manual mode and Stage 5; fully automated AC may use automated mode and omit Stage 5. Empty checks do not make this decision.
 4. Bug Guardrail promotion into Coding Rules requires explicit approval.
-5. Stage 8 stops. The user decides whether to synchronize changed rules, execute the next Feature, review more broadly, or pause.
+5. Stage 8 reports completion and continues only within the user's remaining authorization. Stop at the requested scope boundary or a missing decision.
 
 ## Stage 0–8 delivery loop
 
@@ -192,7 +193,7 @@ Stage 6   Independent requirements/quality review; repair and reverify as needed
    ↓
 Stage 7   Run completion checks; mark done; finalize useful knowledge; stage task-owned changes; commit; verify status
    ↓
-Stage 8   Report next eligible work and STOP
+Stage 8   Report results; continue authorized next work or stop at the scope/decision boundary
 ```
 
 ## Explicit project checks

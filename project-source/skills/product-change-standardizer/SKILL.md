@@ -187,7 +187,11 @@ create the local Product source commit unless the user explicitly requested no c
 record does not exist yet, and confirm `git status --short` before Feature
 synchronization.
 
-Before writing, show destructive or foundational changes for a second confirmation. This includes deleting or obsoleting a module, changing the target audience or core loop, or invalidating completed Product behavior.
+Before writing destructive or foundational changes, show their concrete impact
+and verify that it is explicitly approved. This includes deleting or obsoleting
+a module, changing the target audience or core loop, or invalidating completed
+Product behavior. Reuse that approval when already given; ask only about an
+unapproved effect or material change.
 
 ## Step 6: Synchronize Features
 
@@ -201,7 +205,7 @@ Never report synchronization as successful merely because it was invoked, or
 describe a deliberately unplanned Product as fully covered. Preserve completed
 Feature history; changed completed behavior creates explicit follow-up work.
 
-## Step 7: Report and stop
+## Step 7: Report and hand off
 
 Report:
 
@@ -211,12 +215,16 @@ Report:
 - affected Feature states
 - every placeholder resource
 
-Ask whether the Product documents are satisfactory and whether the user wants to start `execute-next-feature`. Do not implement code or start execution inside this workflow.
+Report unresolved Product decisions, if any. Return the completed documents and
+plan to the calling workflow; when concrete execution authorization is already
+present, continue through `execute-next-feature`. Otherwise stop at the requested
+documentation/planning result or ask for the missing decision. This Skill owns
+Product writing, while the execution Skill owns implementation and its Gates.
 
 ## Boundaries
 
 1. Strip implementation choices from Product intent. Translate a request such as using a particular animation component into its observable transition behavior.
-2. Do not write implementation code, even when the user asks to do it at the same time; finish Product and Feature synchronization first.
+2. Complete Product and applicable Feature planning/synchronization before handing implementation to `execute-next-feature`; preserve any already authorized end-to-end scope.
 3. Resolve ambiguous Product decisions through the appropriate elicitor.
 4. Always assess substantive changes against existing Features. Current Product decomposition and actual impacts on planned work need the appropriate planning route; a later, unplanned Product remains at document level. Meaning-preserving terminology maintenance also omits planning.
 5. Never silently edit a completed Feature. Create follow-up work or use the synchronization workflow's explicit lifecycle rules.

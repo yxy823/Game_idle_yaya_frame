@@ -426,8 +426,8 @@ command to execute or plan every module at once.
    unfinished; explicitly withdrawn scope follows existing retirement rules.
 5. After completion, revisit the next Product against what was learned and its
    current requirements, then decompose it under the user's existing planning
-   authorization. Feature delivery still stops at Stage 8; completion alone
-   does not authorize automatically planning or implementing the next Product.
+   authorization. Stage 8 follows [Authorization and continuation](03-execute-loop.md#authorization-and-continuation);
+   completion alone does not authorize planning or implementing the next Product.
 
 `generate-feature-list` handles the first and each subsequent Product's initial
 decomposition by appending to the same ledger. Allocate IDs after the greatest

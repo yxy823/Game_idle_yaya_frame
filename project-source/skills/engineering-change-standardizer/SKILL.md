@@ -144,7 +144,7 @@ Feature notes and Progress. Completion requires a diagnosis and confirmed root c
 
 ## Stage 3: human approval and write
 
-Show the proposed Feature ID, title, mode, dependencies, affected components, stable acceptance criteria, expected files/area, and regression-test obligation. Wait for explicit user approval.
+Show the proposed Feature ID, title, mode, dependencies, affected components, stable acceptance criteria, expected files/area, and regression-test obligation. Reuse explicit approval covering the proposal; wait only for missing decisions or material changes.
 
 After approval:
 

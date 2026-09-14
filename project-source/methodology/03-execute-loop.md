@@ -1,6 +1,6 @@
 # 03 · Stage 0–8 `execute-next-feature` loop
 
-> Canonical delivery specification for one Feature. `execute-next-feature` implements this workflow. Stage 1 approval and the final handoff stop are mandatory; Stage 5 applies only to the approved manual acceptance mode. Automated testing is subordinate evidence, never an autonomous completion authority.
+> Canonical delivery specification for one Feature. `execute-next-feature` implements this workflow. Stage 1 requires approval; Stage 8 hands off according to the remaining authorization. Stage 5 applies only to the approved manual acceptance mode. Automated testing is subordinate evidence, never an autonomous completion authority.
 
 ## Shared contracts
 
@@ -12,6 +12,15 @@
 - Execute and locally commit on the current Git branch, including `main` or `master`, subject to all existing approval, clean-worktree, acceptance, and Completion Gates. Do not automatically create, switch, merge, or delete branches. Never force-push or use `reset --hard`.
 - Never start implementation, infer human acceptance, promote a Bug guardrail, or start the next Feature without the required explicit user decision.
 - Release/publishing/deployment workflow is outside this loop unless explicitly represented as project work.
+
+### Authorization and continuation
+
+Reuse concrete user decisions across Skills, Stages and turns. Present the relevant
+plan and check that its actions, verification and scope are covered; ask only for
+a missing decision or a material change. A Skill's return ends that procedure,
+not an already authorized end-to-end task. Complete each Feature's applicable
+verification, independent review and commit before continuing an authorized batch.
+Authorization to implement never supplies a missing human acceptance result.
 
 ### Progress communication
 
@@ -119,7 +128,9 @@ Present one concise packet containing:
 - acceptance mode, its reason, and corresponding verification items;
 - full-suite decision and reason.
 
-Ask for explicit approval to begin this Feature.
+Reuse explicit approval already covering this packet; otherwise ask for the
+missing decision to begin this Feature. Show material changes for approval
+without asking again about unchanged, already approved actions.
 
 No approval → no implementation and no durable test-plan mutation.
 
@@ -269,7 +280,8 @@ Evaluate whether the Guardrail is reusable enough for Coding Rules according to 
 
 If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and registry entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
 
-If a Coding Rule is approved, Stage 8 must stop and require `sync-feature-list` before another Feature starts.
+If a Coding Rule is approved, Stage 8 requires `sync-feature-list` before another
+Feature starts; use existing synchronization authorization or obtain the missing decision.
 
 ## Stage 6 · independent requirements and code-quality review
 
@@ -358,13 +370,17 @@ Do not push, tag, amend, rebase, reset, modify remotes, use `--no-verify`, merge
 create, switch, or delete branches automatically. Feature execution and eligible
 local commits remain on the current branch, including `main` or `master`.
 
-## Stage 8 · handoff and stop
+## Stage 8 · handoff and authorized continuation
 
-1. If Stage 5.5 changed Coding Rules, report that source synchronization is required. Ask for explicit authorization to run `sync-feature-list`, then stop.
+1. If Stage 5.5 changed Coding Rules, report and complete the required `sync-feature-list` before starting another Feature when that synchronization is authorized. Otherwise request the missing authorization and stop.
 2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
-3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress. Do not automatically start that planning step.
+3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress.
 4. Report one sentence or a few concise learning entries in this existing Stage, using `templates/feature-learning-summary.md.tmpl`. With no new reusable learning, explicitly state “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise report the context, useful approach or root cause, existing coverage, applicability and actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling / Automated Check / Regression. Link knowledge or Bug-learning notes already recorded before the commit instead of copying their bodies or starting post-commit documentation. A project-specific approach can be reusable within the project without becoming a universal rule. Do not invent an entry for every incident. A newly discovered out-of-scope tooling or rule change remains a separate authorized task.
-5. Stop. The user decides whether to continue, review, synchronize, or pause.
+5. Continue the next step only when it is within concrete existing authorization
+   and its prerequisites are satisfied. Preserve Product order and each Feature's
+   approval, acceptance and completion requirements. If the requested scope is
+   complete, the user requested a pause, or a necessary decision is missing, stop
+   and identify that boundary. Eligibility or completion alone grants no new scope.
 
 ## Exception handling
 

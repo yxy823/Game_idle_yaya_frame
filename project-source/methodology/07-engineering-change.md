@@ -100,7 +100,8 @@ Applicable human acceptance, independent review, the Completion Gate and a local
 traceable commit finish the repair under `03-execute-loop.md` and
 `08-testing-strategy.md`. A review repair that changes accepted behavior returns
 through verification and applicable human acceptance. Stage 8 then reports brief reusable
-learning and stops for the user's next decision.
+learning and follows the remaining user authorization under the execution loop's
+handoff contract.
 
 ## Bug Feature contract
 
@@ -198,7 +199,7 @@ Propose promotion of only the generalized `Guardrail` when at least one is true:
 - the defect recurred or needed repeated repair attempts;
 - tests cannot fully enforce it.
 
-Promotion requires explicit human approval. A rejected promotion leaves the local Bug note untouched. An approved promotion changes Coding Rules and therefore requires `sync-feature-list` before another Feature begins; that synchronization also requires the normal human review/approval flow.
+Promotion requires explicit human approval. A rejected promotion leaves the local Bug note untouched. An approved promotion changes Coding Rules and therefore requires `sync-feature-list` before another Feature begins; reuse approval covering the concrete synchronization actions, or obtain the missing decision.
 
 ## Explicit exclusions
 

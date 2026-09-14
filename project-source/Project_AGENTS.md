@@ -54,7 +54,7 @@ Human control is mandatory:
 - decide acceptance from requirements in Stage 1; visual/audio/game-feel or other human judgment requires manual acceptance;
 - automated-only Features omit Stage 5; automated tests never constitute a human acceptance decision;
 - do not promote Bug Guardrails into Coding Rules without explicit approval;
-- always stop at Stage 8 and wait for the user's next decision.
+- at Stage 8, continue only within existing concrete authorization; stop when the requested scope is complete or a necessary decision is missing.
 
 Read relevant definitions in `docs/CONTEXT.md` when it exists during planning,
 implementation and review. It stores optional project vocabulary; Product owns

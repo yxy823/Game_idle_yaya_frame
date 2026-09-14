@@ -59,7 +59,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 1. Identify source changes from Git diff, not AI inference, so every update remains precise and traceable.
 2. Preserve allocated IDs and completed history. Pending work is a living plan: incrementally add, revise, split, merge, retire and reconnect dependencies from approved source changes. Removal changes status to `obsolete` or `obsolete_done`; revision of a `done` Feature creates a new Feature.
 3. Never modify a `done` Feature's `id`, `description`, or `acceptance_criteria`. Do not revise its implemented behavior in place; use the status-specific new-Feature rules below. The only other permitted changes are the explicit removal status and note updates or source-path correction defined in Stage 4.
-4. Never modify Feature-list files before explicit user confirmation in Stage 3.
+4. Stage 3 must establish explicit approval of the concrete actions before Feature-list writes; reuse approval already covering those actions.
 5. Work on the current branch, including `main` or `master`. Follow `agent-rules/00-core/git-worktree-and-commits.md`; a new synchronization task requires a completely clean working tree. Do not automatically create, switch, merge, or delete branches.
 6. Never place an unescaped `"` inside a Feature-list JSON string. Escape it as `\"`, or use natural quotation marks appropriate to `document_language` when they cannot be mistaken for JSON delimiters.
 7. After writing any Feature-list JSON, validate `docs/feature-list.json`, `docs/feature-list-revisions.json`, and every affected `docs/features/F0XX.json` with `python -B -m json.tool <path> > $null`. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py` before reporting success or committing the Feature-plan update.
@@ -224,7 +224,7 @@ Render the report in the current conversation language while preserving these se
 
 ### 2.6 Stop before writing
 
-Stage 2 only reports. Do not modify any file before Stage 3 confirmation.
+Stage 2 only reports. Stage 3 must establish approval before any write.
 
 ## Stage 3: user review and decision
 
@@ -232,17 +232,15 @@ Stage 2 only reports. Do not modify any file before Stage 3 confirmation.
 
 **Output:** an explicit decision for every proposed change.
 
-Offer three choices:
-
-1. Confirm all proposed actions and proceed.
-2. Adjust named actions; revise the report and ask for confirmation again.
-3. Cancel synchronization; stop without modifying files.
-
-Never enter Stage 4 without explicit confirmation.
+Compare the report's concrete actions with existing user approval. Continue to
+Stage 4 when all actions are covered. If scope, retirement, dependencies or other
+material choices remain unapproved, ask only about those choices; retain approval
+for unchanged actions when revising the report. A cancellation stops writes.
+General intent, silence or the report itself does not supply missing approval.
 
 ## Stage 4: apply confirmed changes
 
-**Entry:** the user confirmed the final Stage 3 report, and source Markdown is committed separately.
+**Entry:** Stage 3 established approval of the final actions, and source Markdown is committed separately.
 
 **Output:** a consistent index and affected detail files. Every addition or revision must update the correct sides together.
 
@@ -472,7 +470,9 @@ creation and verification; keep actionable follow-ups in the owning Feature or
 current Progress. Do not present deferred Products or unresolved current-plan
 gaps as fully synchronized, and do not create a separate coverage/state file.
 
-Do not automatically start another Feature. Wait for the user's instruction.
+Return the synchronized plan and remaining work to the calling workflow. Continue
+through the appropriate Skill when that work is already explicitly authorized;
+otherwise stop at the requested planning result or the missing decision.
 
 ## Exception handling
 
@@ -482,9 +482,9 @@ Do not automatically start another Feature. Wait for the user's instruction.
 | Source changes are too broad to classify reliably | Narrow the affected scope with the user, preserving current records and Product order; do not recommend full-project regeneration based on file or line counts |
 | Diff and user prior conflict materially | Pause, enumerate mismatches, and ask the user to check for unintended source edits |
 | Product module inventory and actual files differ | Pause, list the discrepancy, and require Product repair rather than guessing |
-| Any index, detail, or revision JSON is invalid, including unescaped quotes | Stop and report the original error; do not auto-repair the data |
-| Stage 4 fails while writing | Stop and explain that recovery requires explicit user authorization; do not run restore automatically |
-| Any Git command fails | Stop and report the original error; do not attempt automatic repair |
+| Pre-existing index, detail, or revision data is invalid | Report the original error and resolve the repair scope; do not invent missing history or change unrelated data |
+| This task introduces invalid JSON or an incomplete authorized write | Inspect the actual partial result, correct task-owned errors within the approved actions, and rerun the relevant validation; stop if ownership or the correct recovery is uncertain |
+| A file or Git operation fails | Preserve the error and classify it; correct a task-owned invocation error or use permitted recovery, but do not bypass a permission denial, reset/restore history, discard work, or expand scope |
 
 ## Git boundaries
 
@@ -501,11 +501,11 @@ Stage 1: optional user prior
     ↓
 Stage 2: Git-diff analysis and report
     ↓
-Stage 3: explicit user decision ── rejected or adjusted → revise Stage 2 report
+Stage 3: establish explicit approval ── unresolved or adjusted → revise Stage 2 report
     ↓
 Stage 4: apply confirmed index/detail changes
     ↓
 Stage 5: update metadata and revision log, validate, commit
     ↓
-Stage 6: summarize and wait
+Stage 6: summarize → return to authorized work or stop
 ```

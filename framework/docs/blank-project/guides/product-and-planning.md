@@ -17,7 +17,7 @@ Product 保存玩家行为的意图，Feature 保存可逐项交付的工作。�
 | 已有 Feature 受到 Product 或 Coding Rules 变化影响 | `sync-feature-list` 增量对齐，后续未拆分 Product 暂不生成任务 |
 | 产品预期明确，代码表现错误 | [工程变更](engineering-changes.md) 的 Bug 路线 |
 
-已有明确答案不重复询问。仍会改变验收含义的关键选择需要说明并解决，不能把 Agent 的推测写成用户已经批准的行为。
+已有明确答案不重复询问。仍会改变验收含义的关键选择需要说明并解决，不能把 Agent 的推测写成用户已经批准的行为。Product、拆分和同步 Skill 完成本职工作后返回调用流程；已有具体授权覆盖实现时继续进入执行 Skill，只要求文档或规划时交付对应结果后结束。
 
 ```mermaid
 flowchart TD
@@ -88,7 +88,7 @@ flowchart TD
 
 一项 Feature 应是可独立验证的完整行为或工程结果。复用已有基础设施，只补当前 Product 必需的可运行基础；最终工作量使用 `small` 或 `medium`，过大的工作继续拆分。若当前 Product 依赖尚未完成的另一 Product，先调整推进顺序，不同时拆出两份完整计划。
 
-判断是否可以进入下一 Product，要核对当前范围、Feature 来源和完成状态。有 `pending`、`in_progress` 或 `blocked` 工作就还未完成；没有可执行候选、没有任务或 Product 文档标为 `done` 都不等于功能已交付。执行流程仍在 Stage 8 交接后停止，下一 Product 的规划沿用用户实际授权。详见 [逐个 Product 规划规则](../../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)。
+判断是否可以进入下一 Product，要核对当前范围、Feature 来源和完成状态。有 `pending`、`in_progress` 或 `blocked` 工作就还未完成；没有可执行候选、没有任务或 Product 文档标为 `done` 都不等于功能已交付。Stage 8 依据剩余具体授权决定续接或停止，下一 Product 的规划同样需要实际授权。详见 [逐个 Product 规划规则](../../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)。
 
 任务结构分工如下：
 
@@ -140,7 +140,7 @@ flowchart LR
 
 首次同步不能直接用“最近修改 Feature 的提交”作为需求基线。例如先规划、后改 Product、再整理 notes，最后一次 notes 提交并未吸收前面的需求变化。应核对实际规划提交和对应源内容；复制空台账的提交也不等于规划完成。无法可靠恢复基线时，在明确授权下比较当前完整源文档和计划，说明历史未知；使用现有修订字段记录当前 HEAD 作为新基线，不虚构历史差异。
 
-同步新增组件时，先按已批准方案复用现有合并入口登记组件，再更新 Feature、替代测试、退役关系和修订记录，最后对完整集合做台账检查。无套件组件使用空路径数组；保留原有组件和测试，不能重置测试登记表或覆盖同名冲突来让检查通过。
+同步新增组件时，先按已批准方案复用现有合并入口登记组件，再更新 Feature、替代测试、退役关系和修订记录，最后对完整集合做台账检查。无套件组件使用空路径数组；保留原有组件和测试，不能重置测试登记表或覆盖同名冲突来让检查通过。本次写入引入的格式错误或未完成写入，核对实际结果后在原授权内修正并复查；已有数据损坏、未知归属或权限拒绝按其真实边界处理，不借恢复操作丢弃历史。
 
 对于已完成行为，新的实质需求通常建立新的 Feature；保留旧任务的历史 AC、测试 ID 和完成事实。不要重写旧记录，让它看起来从一开始就实现了新行为。
 

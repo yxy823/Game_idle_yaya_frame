@@ -15,7 +15,7 @@ Human control is mandatory:
 - Stage 1 explicit approval before implementation;
 - Stage 5 explicit human acceptance when the approved acceptance mode is manual;
 - explicit approval before promoting Bug guardrails to Coding Rules;
-- Stage 8 stop so the user decides the next action.
+- Stage 8 handoff and continuation within existing concrete authorization.
 
 Automated tests never imply human acceptance. Features approved for automated acceptance omit Stage 5; they do not record fictitious human acceptance.
 
@@ -88,7 +88,7 @@ For each criterion propose:
 
 For Bug Features propose at least one `F0XX-RTyy` regression test unless automation is genuinely impractical; otherwise state an explicit repeatable manual regression and the concrete reason.
 
-Present one approval packet containing Feature scope, affected components, the Context / Rules Snapshot, Existing Safety Net, new TDD tests, acceptance mode with its reason, corresponding checks, and full-suite decision. The packet must make clear what was read, which rules apply, what will change, and how it will be validated. Wait for explicit approval. Do not write implementation or durable test-plan data before approval.
+Present one approval packet containing Feature scope, affected components, the Context / Rules Snapshot, Existing Safety Net, new TDD tests, acceptance mode with its reason, corresponding checks, and full-suite decision. The packet must make clear what was read, which rules apply, what will change, and how it will be validated. Reuse explicit approval covering that packet; wait only for missing decisions or material changes. Do not write implementation or durable test-plan data before approval.
 
 ## Stage 2 — mark in progress and persist approved verification plan
 
@@ -225,9 +225,9 @@ Before the local commit:
 
 Create the eligible local commit on the current branch, including `main` or `master`, only after the Gates above pass. Do not automatically push, tag, amend, rebase, reset, modify remotes, use `--no-verify`, or create, switch, merge, or delete branches.
 
-## Stage 8 — handoff and stop
+## Stage 8 — handoff and authorized continuation
 
-If Bug learning changed Coding Rules, request explicit authorization to run `sync-feature-list` and stop. Otherwise report completion, verification evidence, the local commit hash (or explicit no-commit exception), post-commit status, TODOs/placeholders, and next work within the current Product.
+If Bug learning changed Coding Rules, complete the required `sync-feature-list` within existing authorization before another Feature; otherwise request the missing decision and stop. Report completion, verification evidence, the local commit hash (or explicit no-commit exception), post-commit status, TODOs/placeholders, and next work within the current Product.
 
 When test/reference cleanup was required, report what was actually handled and
 any remaining work using existing notes/Progress; do not claim completion from
@@ -248,4 +248,6 @@ actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling /
 Automated Check / Regression. Link notes finalized before the commit, without
 copying them or starting new documentation writes at handoff. Project-specific
 reusable methods count. Do not automatically create rules; newly identified
-out-of-scope changes remain separate authorized work. Stop for the user's decision.
+out-of-scope changes remain separate authorized work. Follow the execution
+specification's Authorization and continuation contract: continue the remaining
+approved scope, or stop at its completion, a requested pause or a missing decision.
