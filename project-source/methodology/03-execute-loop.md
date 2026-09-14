@@ -17,7 +17,8 @@ Reuse concrete user decisions across Skills, Stages and turns. Present the relev
 plan and check that its actions, verification and scope are covered; ask only for
 a missing decision or a material change. A Skill's return ends that procedure,
 not an already authorized end-to-end task. Complete each Feature's applicable
-verification, independent review and commit before continuing an authorized batch.
+verification, acceptance and commit before continuing an authorized batch;
+independent review follows the user's chosen scope and timing under Stage 6.
 Authorization to implement never supplies a missing human acceptance result.
 
 ### Progress communication
@@ -201,7 +202,7 @@ Read project commands from `docs/methodology-config.json`:
 
 Procedure:
 
-1. Read the current Feature/Registry obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks, actual human acceptance and independent review. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
+1. Read the current Feature/Registry obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks and actual human acceptance. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
 2. Inspect the actual selected scope and test results. If full is required, run one real full suite whose executed set covers Required and affected; do not repeat equivalent runs merely to fill different Gate fields. Otherwise run the affected union, including every Required item.
 3. Directly run Godot script parsing for changed scripts and necessary dependants,
    then the bundled lint CLI as described in `gdscript-lint.md`. Inspect actual
@@ -274,16 +275,34 @@ If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose a
 If a Coding Rule is approved, Stage 8 requires `sync-feature-list` before another
 Feature starts; use existing synchronization authorization or obtain the missing decision.
 
-## Stage 6 · independent requirements and code-quality review
+## Stage 6 · optional independent requirements and code-quality review
 
-**Output:** independent structured review, repairs, verification reruns, and current results.
+**Trigger:** an explicit user request for independent review. Otherwise continue
+to Stage 7 without a review record or a routine confirmation question. The author
+still checks the final diff against AC, scope and applicable rules; this needs
+no separate self-review Stage or report.
+
+The user chooses one Feature, several named Features, a commit range or an
+explicit diff, and when to review it. A review after several completed Features
+uses the same procedure independently of their delivery loops; it does not hold
+each Feature open. If the user requires review before completion or continuation,
+honor that condition under the existing authorization contract. An Agent may
+recommend review for a concrete concern, but cannot start it without that request.
+Do not add per-Feature review switches, pending-review states or a review queue.
+
+**Output:** findings for the selected combined scope, with evidence and limits.
 
 The reviewer must be a fresh-context subagent/session or equivalent independent
-context. It performs no writes and reads the current Feature's approved scope
-and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, relevant project knowledge, applicable Coding Rules, actual final diff
+context. If unavailable, report the independence limitation; do not call the
+author's check independent review. It performs no writes and reads the selected
+Features' approved scope and AC, relevant Product, existing CONTEXT definitions
+and accepted architecture decisions, relevant project knowledge, applicable
+Coding Rules, actual final diff, directly affected callers
 and changed files, and original verification results with applicable human
 feedback. Treat the implementer's summary as claims to check against these
-sources, not as independent evidence.
+sources, not as independent evidence. Establish the compared commits or working
+diff and current combined behavior; avoid repeating a full pass for each Feature
+or expanding to unrelated project history.
 
 Use one review pass for both questions:
 
@@ -309,30 +328,28 @@ severity, and identify the relevant question(s) for each finding. State evidence
 gaps explicitly; one question's conclusion cannot stand in for the other's.
 Findings from either question contribute to the same review result.
 
-Use the existing Feature notes and `record-smell` entry. The command stores
-combined finding counts and snapshot metadata; it neither performs the review
-nor establishes that both questions were examined. Assess that coverage from
-the review conclusions and their supporting references. No second reviewer,
-Stage or evidence format is required. A review alone does not invalidate a
-current successful run; additional verification needs a concrete unanswered risk.
+Deliver one report in the conversation, or at the user's specified report path.
+Map shared findings to all affected Features without duplicating the explanation.
+Review-only work stops after findings; severity labels do not authorize repairs.
+Evaluate the problem and proposed remedy separately before implementing the
+user-selected scope. Reuse authorization that already covers a specific repair.
 
-Processing rules:
+For an unfinished Feature, confirmed in-scope defects return to Stage 3. For
+completed Features, preserve completed history and follow the existing engineering
+change route. Verify the affected repair and any invalidated Stage 4 evidence;
+renew human acceptance when accepted behavior changes. Re-review only when the
+requested review condition or a concrete unresolved finding requires it.
+Do not continue past a confirmed completion-blocking defect or failed required
+check merely because review is optional.
 
-1. Every `must_fix` is repaired before completion.
-2. After each repair batch, read the current Feature/Registry selection and repeat the applicable Stage 4 checks, including its no-automated-obligations decision and direct script parsing/lint. A full run covering the required subsets on the same content snapshot needs no separate Required/affected run.
-3. If a review repair may change behavior already accepted by the user, return to Stage 3 and repeat Stages 4–6, including human acceptance.
-4. Re-review until `must_fix` is empty.
-5. Append each `suggest` to Feature notes with `TODO`; report `acceptable` without turning it into durable debt automatically.
-6. Before completion, verify the final repair snapshot has the actual successful full result required by the approved Feature verification or project Coding Rules. Reuse the covering run from step 2 when its snapshot still matches; later semantic changes require a new run.
-7. After any code/test change, record the rerun Stage 4 results again. Record the final review with `python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-smell --feature F0XX --must-fix 0 --suggest <N> --acceptable <M>`.
-
-Do not continue while any required test/static/full-suite check is failing.
-
-Report material review findings and unresolved work in ordinary language.
+Record only accepted, useful follow-ups in existing Feature notes; a `suggest`
+does not automatically create a TODO or task. No review counts belong in the
+completion evidence. A read-only review does not invalidate a current successful
+run; further execution needs an authorized, concrete verification need.
 
 ## Stage 7 · mark complete
 
-**Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Explicit Stage 5 human acceptance when the approved mode is `manual`, and structured Stage 6 `must_fix: 0` evidence must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent must also confirm applicable direct parsing/lint passed for the final changes; the evidence helper does not assess static checks.
+**Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Required test evidence and explicit Stage 5 human acceptance for `manual` must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent checks the final diff against AC and scope, confirms applicable direct parsing/lint passed, and satisfies any explicit user review condition. The evidence helper checks tests and applicable human acceptance; it does not assess static checks, perform review or decide whether a user condition is satisfied.
 
 1. Run:
 
@@ -348,9 +365,9 @@ Report material review findings and unresolved work in ordinary language.
    These are explicit task commands. There is no tool-event interceptor or
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
-4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and Stage 6 TODOs. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
+4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and accepted follow-ups. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
 5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
-6. Confirm applicable Stage 4/6 evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
+6. Confirm applicable test/acceptance evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
 7. Follow `agent-rules/00-core/git-worktree-and-commits.md` for task ownership, explicit staging, complete cached-diff checks, the eligible local commit and post-commit status. Use the Feature ID as scope and `Work item: docs/features/F0XX.json` in the body. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
 
 ## Stage 8 · handoff and authorized continuation

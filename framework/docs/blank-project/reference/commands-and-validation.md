@@ -25,7 +25,7 @@ $projectGodot = $projectConfig.environment_bootstrap.engine_executable
 | `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
 | `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
 | `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 启动真实 Godot 测试进程，写隔离的运行目录 |
-| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工/复审记录，或只读展示、校验已有依据 |
+| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
 | `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
 测试登记表合并应使用 `generate-feature-list` 提供的实际输入结构与约束，不用临时生成的空文件替代历史测试登记表。它不负责生成真实测试或证明测试通过。
@@ -132,7 +132,6 @@ reports/gdunit-wrapper/run-<id>/
 | `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；必要时重复 `--run` 覆盖不同运行 |
 | `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已经明确接受当前范围之后 |
 | `record-acceptance --feature F001 --status rejected` | 记录真实拒绝与后续修复需要 |
-| `record-smell --feature F001 --must-fix N --suggest N --acceptable N` | 实际完成独立需求/代码复审之后；计数来自复审 |
 | `show --feature F001` | 只读查看已有记录 |
 | `validate --feature F001` | 检查当前内容对应的完成依据 |
 
@@ -145,9 +144,11 @@ $LASTEXITCODE
 
 把 `run-actual-id` 换成刚才输出的目录。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。`record-tests` 失败会清除旧测试引用并保留原始报告，不能改写结果文件绕过失败。
 
-若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`，保留 `initialize` 生成的 `test_runs: []`。后续仍按真实结果记录人工接受和复审，再运行完成检查；工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败都会阻止这个分支，不能用重新初始化消除失败。
+若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`，保留 `initialize` 生成的 `test_runs: []`。后续仍按真实结果记录人工接受，再运行完成检查；工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败都会阻止这个分支，不能用重新初始化消除失败。
 
-完成检查由两部分配合，Agent 还要单独确认直接静态检查：
+当前完成依据采用 schema 8，移除逐 Feature 的复审计数和 `record-smell` 命令。旧记录保留其历史含义，不改写成当前通过；新任务按当前模板初始化。独立评审范围和时机由执行流程承接用户选择，不新增评审状态字段。
+
+完成检查由两部分配合，Agent 还要单独确认直接静态检查与用户指定的评审条件：
 
 ```powershell
 & $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F001
@@ -191,7 +192,7 @@ $LASTEXITCODE
 | 配置就绪 | 实际环境检查通过 | 游戏或测试通过 |
 | 台账通过 | 数据结构、引用和依赖满足该检查 | AC 已实现 |
 | focused 通过 | 指定套件在本次运行成功 | 最终 Required/affected/full 已满足 |
-| 完成依据校验通过 | 它负责的测试、人工与复审契约满足 | 脚本解析、lint 或所有目标平台已检查 |
+| 完成依据校验通过 | 它负责的测试与适用人工接受契约满足 | 脚本解析、lint、独立评审或所有目标平台已检查 |
 | 静态检查通过 | 已执行静态范围通过 | 手感、外观、声音和导出质量已接受 |
 
 实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/skills/execute-next-feature/scripts/record-feature-completion.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。

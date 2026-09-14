@@ -9,7 +9,7 @@
 | Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` and the calling Skill's `scripts/` |
 | Product behavior or project terminology | `methodology/01-product-doc-structure.md`; optional `docs/CONTEXT.md` owns vocabulary, not behavior |
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
-| Execute a Feature, approvals, independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
+| Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
 | Rule responsibilities, interpretation or promotion | `methodology/04-coding-rules-4-layers.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
 | Document language or initial environment configuration | `methodology/05-document-language.md` |
 | Bug, refactor or maintenance | `methodology/07-engineering-change.md` |

@@ -19,7 +19,7 @@
 | [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前 Product，包括第一份和后续 Product | 当前 Product 的 Feature 与必要测试关系追加到同一台账；前一 Product 的 Feature 完成后再拆下一份，保留历史 |
 | [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
-| [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、复审、完成记录、本地提交与交接 |
+| [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
 | [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
 | [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
 
@@ -70,7 +70,7 @@ Skill 保留本职操作步骤和独有工具用法，阶段流程、字段契�
 | 性能工作 | Godot 项目开发 → 资源、性能与数据 → 定位并优化性能 |
 | 数据迁移 | Godot 项目开发 → 资源、性能与数据 → 调整存档或迁移项目数据 |
 | 补充验证 | Godot 项目开发 → 验证与收尾 → 单独验证某次变更 |
-| 单独复审 | Godot 项目开发 → 验证与收尾 → 独立审查指定修改 |
+| 指定单项或多项合并评审 | Godot 项目开发 → 验证与收尾 → 独立审查指定修改 |
 | 人工反馈 | Godot 项目开发 → 验证与收尾 → 整理人工验收与反馈 |
 | 进度整理与新线程交接 | Godot 项目开发 → 验证与收尾 → 整理进度与任务交接 |
 | 总结可复用经验 | Godot 项目开发 → 经验沉淀 → 阶段性总结与复用脚本沉淀 |

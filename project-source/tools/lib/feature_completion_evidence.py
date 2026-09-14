@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 EVIDENCE_RELATIVE_PATH = Path("docs/feature-completion-evidence.json")
 EXCLUDED_EXACT_PATHS = {
     "docs/feature-completion-evidence.json",
@@ -198,14 +198,6 @@ def empty_evidence(feature_id: str | None = None, snapshot: dict[str, str] | Non
             "recorded_at": None,
             **result_snapshot,
         },
-        "code_smell": {
-            "status": "not_run",
-            "must_fix": None,
-            "suggest": None,
-            "acceptable": None,
-            "recorded_at": None,
-            **result_snapshot,
-        },
     }
 
 
@@ -256,11 +248,7 @@ def _matches_snapshot(result: Any, data: dict[str, Any]) -> bool:
     )
 
 
-def _is_non_negative_int(value: Any) -> bool:
-    return isinstance(value, int) and not isinstance(value, bool) and value >= 0
-
-
-# 检查测试、适用的人工接受和复审；静态检查由 Agent 直接执行并单独核对。
+# 检查测试与适用的人工接受；静态检查和用户指定的评审条件由 Agent 单独核对。
 def validate_completion_evidence(
     repo_root: Path,
     feature_id: str,
@@ -287,23 +275,12 @@ def validate_completion_evidence(
     except (ValueError, OSError, TypeError, KeyError) as exc:
         return False, f"test run evidence is invalid: {exc}"
     acceptance = data.get("human_acceptance")
-    smell = data.get("code_smell")
     # 验收方式是 Stage 1 的需求判断；这里不从空清单或测试通过反推该决定。
     if mode == "manual":
         if not isinstance(acceptance, dict) or acceptance.get("status") != "accepted":
             return False, "explicit human acceptance is not recorded"
         if not _matches_snapshot(acceptance, data):
             return False, "human acceptance does not match the current code snapshot"
-    if (
-        not isinstance(smell, dict)
-        or smell.get("status") != "pass"
-        or smell.get("must_fix") != 0
-        or not _is_non_negative_int(smell.get("suggest"))
-        or not _is_non_negative_int(smell.get("acceptable"))
-    ):
-        return False, "code-smell review has unresolved MUST-FIX findings"
-    if not _matches_snapshot(smell, data):
-        return False, "code-smell evidence does not match the current code snapshot"
     if not isinstance(data.get("recorded_at"), str) or not data["recorded_at"]:
         return False, "gate evidence has no execution timestamp"
     try:
@@ -311,4 +288,4 @@ def validate_completion_evidence(
             return False, "source changed during completion validation"
     except (EvidenceError, ValueError, OSError) as error:
         return False, str(error)
-    return True, "test/acceptance/review evidence matches the current snapshot; direct static checks are assessed separately"
+    return True, "test/acceptance evidence matches the current snapshot; direct static checks and requested review conditions are assessed separately"

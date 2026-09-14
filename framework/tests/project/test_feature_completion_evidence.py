@@ -68,14 +68,20 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data = feature_completion_evidence.empty_evidence("F001", snapshot)
         data.update(recorded_at=feature_completion_evidence.utc_now(),
                     test_runs=[result_reference(self.root, test_path)])
-        data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
         feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
         return data
 
-    def test_automated_decision_completes_without_fabricating_human_acceptance(self):
+    def test_automated_completion_needs_no_review_or_fabricated_human_acceptance(self):
         data = self.completion_fixture()
         self.assertEqual(data["human_acceptance"]["status"], "pending")
+        self.assertNotIn("code_smell", data)
         self.assertEqual(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0], True)
+        result = subprocess.run(
+            [sys.executable, "-B", str(PROJECT_ROOT / ".agents/skills/execute-next-feature/scripts/record-feature-completion.py"),
+             "--repo-root", str(self.root), "validate", "--feature", "F001"],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_manual_decision_requires_actual_acceptance(self):
         self.detail["verification"]["acceptance_mode"] = "manual"
@@ -88,6 +94,17 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data["human_acceptance"].update(status="accepted", **feature_completion_evidence.current_snapshot(self.root))
         feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+
+    def test_manual_acceptance_must_still_cover_current_content_without_review(self):
+        self.detail["verification"]["acceptance_mode"] = "manual"
+        self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = ["Listen to the sound"]
+        self.write_json("docs/features/F001.json", self.detail)
+        data = self.completion_fixture()
+        data["human_acceptance"].update(status="accepted", working_tree_fingerprint="sha256:old-content")
+        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
+        self.assertFalse(valid)
+        self.assertIn("human acceptance does not match", message)
 
     def test_test_registry_uses_fixed_path_even_with_obsolete_config(self):
         from tools.lib.test_selection import build_selection
@@ -119,7 +136,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write_json("docs/features/F001.json", self.detail)
         self.write_json("docs/test-registry.json", self.registry)
 
-    def test_manual_without_automated_obligations_still_needs_acceptance_and_review(self):
+    def test_manual_without_automated_obligations_needs_acceptance_but_no_review(self):
         from tools.lib.test_run_evidence import derive_test_evidence
         self.manual_without_automated_obligations()
         derived = derive_test_evidence(self.root, "F001", [])
@@ -133,9 +150,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertIn("human acceptance", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
         data["human_acceptance"].update(status="accepted", **snapshot)
         feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
-        self.assertIn("code-smell", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
-        data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0, **snapshot)
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        self.assertNotIn("code_smell", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
         self.write("game.gd", "extends Node\nvar changed = true\n")
         self.assertIn("changed after verification", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
@@ -234,11 +249,9 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         for key in ("required_test_set", "affected_tests"):
             data[key] = dict(status="pass", total=0, failed=0, git_revision=data["git_revision"],
                 working_tree_fingerprint=data["working_tree_fingerprint"])
-        for key in ("human_acceptance", "code_smell"):
-            data[key].update(git_revision=data["git_revision"], working_tree_fingerprint=data["working_tree_fingerprint"])
+        data["human_acceptance"].update(git_revision=data["git_revision"], working_tree_fingerprint=data["working_tree_fingerprint"])
         data["full_suite"] = {"status": "pass"}
         data["human_acceptance"]["status"] = "accepted"
-        data["code_smell"].update(status="pass", must_fix=0, suggest=0, acceptable=0)
         data["gate_status"] = "pass"
         feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
         self.assertFalse(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])

@@ -419,7 +419,7 @@ def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str,
     """Compute current obligations and results without persisting derived totals."""
     selection = build_selection(root, feature_id)
     # A valid manual plan can have no automated obligations. It still needs
-    # acceptance/review and must not hide failed runs on the current snapshot.
+    # human acceptance and must not hide failed runs on the current snapshot.
     needs_run = bool(selection["required"] or selection["affected"] or selection["full_suite"]["required"])
     if not isinstance(references, list) or (not references and needs_run):
         raise RunEvidenceError("no real test run result was supplied")

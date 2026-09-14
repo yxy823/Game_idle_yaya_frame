@@ -326,14 +326,14 @@ PASS requires a real result.json, original JUnit/discovery/diagnostics and actua
 against the approved Required/affected/full plan. Caller-supplied pass counts cannot
 create PASS. A valid manual plan with no Required/affected tests and no full-suite
 obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human
-acceptance, review and applicable static checks still apply. Unresolved failed or
-unfinished final runs on the same snapshot still block completion. Test and review evidence must match the current semantic snapshot.
+acceptance and applicable static checks still apply. Unresolved failed or
+unfinished final runs on the same snapshot still block completion. Test and applicable human acceptance evidence must match the current semantic snapshot.
 Production, tests, configuration, Product, Coding Rules, Feature AC/verification and
 Registry semantics participate in that snapshot. Pure status/completion timestamps,
 Feature notes and Progress/history archival do not invalidate business test evidence.
 
-The current evidence schema is version 7. It keeps real test-run references plus
-applicable human acceptance and review records. Required/affected/full test
+The current evidence schema is version 8. It keeps real test-run references plus
+applicable human acceptance. Required/affected/full test
 conclusions are calculated from those artifacts rather than persisted again.
 Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in
 `methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in
@@ -365,7 +365,7 @@ Do not store dead-end debugging transcripts or transient guesses.
 ## Status transitions
 
 ```text
-pending ──execute Stage 2──→ in_progress ──Stage 7 after applicable acceptance + review──→ done
+pending ──execute Stage 2──→ in_progress ──Stage 7 after applicable completion checks──→ done
    │                              │
    │                              └──explicitly abandoned──→ pending
    ├──source synchronization retires work──→ obsolete
@@ -374,7 +374,7 @@ pending ──execute Stage 2──→ in_progress ──Stage 7 after applicabl
 done ──Product evolution removes implemented behavior──→ obsolete_done
 ```
 
-The `in_progress → done` transition requires the decided acceptance plan to be satisfied, explicit Stage 5 human acceptance for manual mode, successful applicable Stage 4 tests and direct static checks (or the valid manual/no-automated-obligations case above), and structured Stage 6 `must_fix: 0` evidence. The Agent runs the explicit evidence check for the current code snapshot and records the actual result.
+The `in_progress → done` transition follows Stage 7 of [the execution loop](03-execute-loop.md): satisfy the decided acceptance plan, applicable tests and direct static checks, and any explicit user review condition. Independent review is optional under Stage 6; the completion record contains no review counts. The Agent runs the explicit evidence check for the current code snapshot and records the actual result.
 
 ## Machine invariants
 

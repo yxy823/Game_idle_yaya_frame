@@ -96,7 +96,7 @@ framework/docs/blank-project/
 | Required Test Set | 根据当前 Feature、组件、历史回归、不变量和已批准补充范围计算的必需测试集合 |
 | baseline / final | 修改前已有安全网验证 / 用于本次最终验证的运行阶段 |
 | manual / automated | 按需求选择的人工验收 / 全自动验收方式 |
-| Gate evidence | 真实测试报告引用、适用的人工决定和复审记录；不等同于所有检查结果 |
+| Gate evidence | 真实测试报告引用与适用的人工决定；不记录评审计数，也不等同于所有检查结果 |
 | Progress | 当前状态、阻塞、待决定事项、下一步及历史索引 |
 | ADR | 一项重要技术选择的原因和取舍记录；按需建立 |
 | Bootstrap | 在现有文档中指首次环境准备；当前没有独立 Bootstrap 程序 |

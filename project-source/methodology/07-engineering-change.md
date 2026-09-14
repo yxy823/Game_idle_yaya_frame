@@ -29,7 +29,7 @@ requirements merely to describe a tooling defect.
 | Independent regression of previously completed behavior | Create an approved `bug` Feature through this workflow, retaining original completed history. |
 | User wants a different observable behavior | `product-change-standardizer`, even if the user calls it a bug. |
 | Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
-| Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, human acceptance when the approved mode is manual, review/gates and a traceable commit remain required. Urgency is not a waiver. |
+| Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
 
 Routing a current-Feature defect back to execution does not by itself authorize a
 new scope. Report material scope changes for approval. For a new independent task,
@@ -82,7 +82,8 @@ Discovery
 → GREEN
 → affected tests / required full suite
 → Human Acceptance when required by the approved plan
-→ Review / Completion Gate
+→ Independent review only when requested at this point
+→ Completion Gate
 → Commit
 ```
 
@@ -96,7 +97,7 @@ GREEN for the regression, then execute the planned affected set and necessary fu
 suite. Reuse a real full run only when its snapshot and actual coverage cover the
 subsets. No hand-entered count can stand in for execution evidence.
 
-Applicable human acceptance, independent review, the Completion Gate and a local
+Applicable human acceptance, user-requested independent review, the Completion Gate and a local
 traceable commit finish the repair under `03-execute-loop.md` and
 `08-testing-strategy.md`. A review repair that changes accepted behavior returns
 through verification and applicable human acceptance. Stage 8 then reports brief reusable

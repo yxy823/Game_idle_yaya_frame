@@ -35,13 +35,6 @@ def _feature_id(value: str) -> str:
     return normalized
 
 
-def _non_negative(value: str) -> int:
-    parsed = int(value)
-    if parsed < 0:
-        raise argparse.ArgumentTypeError("count must be non-negative")
-    return parsed
-
-
 def _result_snapshot(snapshot: dict[str, str]) -> dict[str, str]:
     return {
         "git_revision": snapshot["git_revision"],
@@ -99,21 +92,6 @@ def _record_acceptance(repo_root: Path, args: argparse.Namespace) -> int:
     return 0
 
 
-# 这里只保存独立复审结论及来源，不在记录动作内假装完成了一次复审。
-def _record_smell(repo_root: Path, args: argparse.Namespace) -> int:
-    path, data, snapshot = _load_for_write(repo_root, args.feature)
-    data["code_smell"] = {
-        "status": "pass" if args.must_fix == 0 else "fail",
-        "must_fix": args.must_fix,
-        "suggest": args.suggest,
-        "acceptable": args.acceptable,
-        "recorded_at": utc_now(),
-        **_result_snapshot(snapshot),
-    }
-    _save(path, data)
-    return 0
-
-
 def _validate(repo_root: Path, feature_id: str) -> int:
     valid, message = validate_completion_evidence(repo_root, feature_id)
     print(f"Structured completion evidence: {'PASS' if valid else 'NOT READY'} - {message}")
@@ -145,12 +123,6 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     acceptance.add_argument("--feature", required=True, type=_feature_id)
     acceptance.add_argument("--status", required=True, choices=("accepted", "rejected"))
 
-    smell = subparsers.add_parser("record-smell")
-    smell.add_argument("--feature", required=True, type=_feature_id)
-    smell.add_argument("--must-fix", required=True, type=_non_negative)
-    smell.add_argument("--suggest", required=True, type=_non_negative)
-    smell.add_argument("--acceptable", required=True, type=_non_negative)
-
     show = subparsers.add_parser("show")
     show.add_argument("--feature", required=True, type=_feature_id)
 
@@ -169,8 +141,6 @@ def main() -> int:
             return _record_tests(repo_root, args)
         if args.command == "record-acceptance":
             return _record_acceptance(repo_root, args)
-        if args.command == "record-smell":
-            return _record_smell(repo_root, args)
         if args.command == "validate":
             return _validate(repo_root, args.feature)
         return _show(repo_root, args.feature)

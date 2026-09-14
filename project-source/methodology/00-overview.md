@@ -45,7 +45,7 @@ The project knowledge layer is:
 | Product | `product-init-elicitor`, `product-change-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
 | Planning | `generate-feature-list`, `sync-feature-list` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
-| Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, independent review, completion, and handoff. |
+| Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
 | Guidance | `yaya-next-step-advisor` | Explain current state; provide a scoped continuation prompt when needed, without executing or granting approval. |
 
 ## Canonical task routing
@@ -147,7 +147,7 @@ execute-next-feature
    ↓
 implementation → automated verification → human acceptance when required by the approved plan
    ↓
-independent requirements and code-quality review → must_fix: 0
+optional independent review when requested at this point; otherwise proceed
    ↓
 Feature completion gate → done
    ↓
@@ -189,7 +189,7 @@ Stage 5   Explicit human acceptance only for approved manual mode
    ↓
 Stage 5.5 Bug only: capture Root cause / Trigger / Regression / Guardrail
    ↓
-Stage 6   Independent requirements/quality review; repair and reverify as needed; must_fix: 0
+Stage 6   Optional user-requested review; may instead review several completed Features together
    ↓
 Stage 7   Run completion checks; mark done; finalize useful knowledge; stage task-owned changes; commit; verify status
    ↓

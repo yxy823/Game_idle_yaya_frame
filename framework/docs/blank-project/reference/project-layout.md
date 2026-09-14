@@ -84,7 +84,7 @@ MyGodotGame/
 | `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
 | `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
 | `docs/knowledge/<主题>/<条目>.md` | 实际任务产生值得复用的做法、排障方法或教训时 | 独立条目、适用条件和证据链接；需要时增加主题层级并更新索引 |
-| `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用、人工决定与复审结果 |
+| `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用与适用人工决定；不记录复审计数 |
 | `docs/progress/<key>.md` | 一项 Feature 或获批批次需要归档时 | 一份执行历史正文 |
 | `docs/architecture.md` | 需要项目级职责和依赖地图时 | 当前架构导航 |
 | `docs/architecture/<subsystem>.md` | 某个子系统需要展开说明时 | 状态归属、关键运行流程、生命周期与失败处理 |

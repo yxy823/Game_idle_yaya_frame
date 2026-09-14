@@ -77,10 +77,11 @@ flowchart TD
     A[Feature 与测试登记表] --> B[gdUnit 测试入口]
     B --> C[真实测试报告]
     C --> D[Skill 记录并核对测试证据]
-    E[适用的人工验收与独立复审] --> D
+    E[适用的人工验收] --> D
     F[Agent 直接执行脚本解析和 lint] --> G[读取退出码和原始报告]
     D --> H[Agent 综合全部适用检查]
     G --> H
+    R[用户指定的评审条件] --> H
     H --> I[通过后记录完成]
 ```
 
@@ -95,7 +96,7 @@ Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检�
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
 | `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
-| `feature_completion_evidence.py` | 当前源码指纹、测试、适用人工接受和复审结果 |
+| `feature_completion_evidence.py` | 当前源码指纹、真实测试依据和适用人工接受；不记录复审计数 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 
