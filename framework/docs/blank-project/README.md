@@ -1,10 +1,10 @@
 # 空白 Godot 项目使用手册
 
-这份手册说明 Yaya 空白项目包含什么、如何开始开发、怎样组织需求与代码、如何验证和交接，以及框架维护者应在哪里修改源材料。面向使用这套起始文件的用户和维护框架的 Coding Agent。
+本手册说明空白 Godot 项目的创建、需求整理、任务规划、开发验收与维护。先按当前材料选择入口，再查对应专题；命令、字段和文件职责集中在参考页。
 
-**桌面阅读：打开 [HTML 使用手册](blank-project-handbook.html)**。所有章节和图表保存在这一个文件内，可离线查看、点击目录跳转、用 Ctrl + F 搜索全文和复制代码。Markdown 是正文维护来源；更新方法见 [生成离线阅读版](maintenance/updating-the-blank-project.md#生成离线阅读版)。
+**[打开 HTML 使用手册](blank-project-handbook.html)**：单文件离线阅读，支持目录检索、章节跳转、图表缩放和分区字号设置。HTML 是 Markdown 的生成快照，打开时不读取 MD；正文只改 Markdown，再按 [生成说明](maintenance/updating-the-blank-project.md#生成离线阅读版) 更新 HTML。
 
-手册保存在 `framework/docs/blank-project/`，仅属于框架维护目录，**不进入新项目**。新项目仍使用简明的 [Project_README.md](../../../project-source/Project_README.md) 作为入口，并携带自身的规则、Skill、方法说明和工具。生成后的项目可以独立开发，不需要访问本手册或框架目录。
+手册与集中提示词留在框架，**不进入新项目**。生成项目以自身 `README.md` 为入口，携带独立的规则、Skill、规范和工具，不依赖框架目录。
 
 ## 先理解三个对象
 
@@ -38,6 +38,7 @@ flowchart LR
 | 当前目的 | 阅读顺序 |
 | --- | --- |
 | 第一次创建项目 | [创建项目](getting-started/create-project.md) → [首次使用](getting-started/first-use.md) → [需求与规划](guides/product-and-planning.md) |
+| 已有空文件夹和外部 GDD | [判断目录状态](getting-started/create-project.md#准备目标位置) → [接入已有 GDD](guides/product-and-planning.md#接入已有-gdd)；已由框架生成的项目跳过复制 |
 | 将旧框架项目复制到新框架继续开发 | [复制迁移已有项目](getting-started/migrate-existing-project.md) → 核对成果与方案 → 目标内迁移和验证 |
 | 想知道复制后有什么 | [项目目录与文件职责](reference/project-layout.md) → [配置参考](reference/configuration.md) |
 | 准备实现一个任务 | [Skill 导航](reference/skills.md) → [Feature 开发流程](guides/feature-delivery.md) → [命令与验证](reference/commands-and-validation.md) |
@@ -60,7 +61,7 @@ framework/docs/blank-project/
 │   ├── first-use.md                     环境、项目名称、Git 初始状态
 │   └── migrate-existing-project.md      复制旧项目、保留成果与验证续接
 ├── guides/
-│   ├── product-and-planning.md          从想法到 Product 与 Feature
+│   ├── product-and-planning.md          想法或 GDD → Product → Feature
 │   ├── feature-delivery.md              单项任务执行、验收与完成
 │   ├── engineering-changes.md           Bug、重构、维护与实验
 │   └── project-knowledge.md             规则、架构、资产、进度与历史
@@ -76,21 +77,28 @@ framework/docs/blank-project/
 
 ## 这套起点提供什么
 
-- **可独立使用的项目材料**：Godot 项目文件、两个插件、编辑器和 Git 文本约定。
-- **需求到开发的工作方法**：轻量讨论与澄清、产品梳理、Feature 拆分与增量同步、Bug/重构/维护分类，以及单项任务的执行流程。
-- **可持续读取的项目知识**：Product、Feature、测试登记表、当前进度、历史，按主题组织的实践经验索引，以及按需维护的 CONTEXT 术语与架构记录。
-- **显式检查工具**：环境配置检查、任务台账检查、gdUnit 测试运行与完成依据记录。
-- **按修改领域读取的 Godot 工程规则**：脚本、场景、资源、Shader、项目配置、导出、数据、资产和测试。
+复制结果包含 Godot 项目与插件、规则与 Skill、文档模板和检查工具；不包含主场景、玩法实现或业务测试。Product、Feature 与测试索引从空内容开始，架构记录、术语和经验条目按实际需要建立。文件位置见 [目录参考](reference/project-layout.md)，初始值见 [配置参考](reference/configuration.md)。
 
-初始内容没有预制玩法、角色、存档系统、主场景或业务测试；`docs/knowledge/` 初始只有分类说明和索引，实际经验随任务积累，使用方式见[项目知识](guides/project-knowledge.md#优先查阅与积累项目知识)。`New Godot Project` 是显示名称默认值；引擎路径是待核实配置。创建成功、环境就绪、测试通过、人工接受和任务完成分别描述不同事实。
+当前目标环境为 Windows 11、PowerShell 7、Godot 4.7、GDScript、gdunit4，维护命令使用 Python 3.12+；目标项目仍须核实本机工具与路径。
 
-当前源材料面向 Windows 11 / PowerShell 7 / Godot 4.7 / GDScript / gdunit4，维护命令使用已确认的 Python 3.12+。这些是本仓库的目标和配置约定，不表示每台机器都已经安装工具，也不构成对其他平台或版本的验证声明。
+## 从需求到交付的文件关系
+
+| 层次 | 文件或材料 | 作用与下一步 |
+| --- | --- | --- |
+| 设计输入 | 想法、外部 GDD、已确认的讨论 | 提供需求来源；整理为项目 Product，不按原文件名直接视为现行规格 |
+| 正式需求 | `docs/product.md`、`docs/product/NN-name.md` | 总览确定核心循环与模块关系，模块规格定义行为；每次只拆当前模块 |
+| 开发计划 | `docs/feature-list.json`、`docs/features/F0XX.json` | 索引保存任务状态与依赖，详情保存范围、AC 和验证计划 |
+| 验证与完成 | `docs/test-registry.json`、`reports/`、`docs/feature-completion-evidence.json` | 登记表定位测试，报告保存实际结果，完成依据引用结果与适用人工决定 |
+| 续接与复用 | `docs/progress.md`、`docs/progress/`、`docs/knowledge/` | 分别保存当前交接、执行历史和可复用经验，不替代需求与任务详情 |
+
+这些文件分别描述需求、计划、结果和当前进度。Product 写完不等于 Feature 已实现；测试通过也不替代适用的人工验收。完整文件职责见 [项目目录与文件职责](reference/project-layout.md)。
 
 ## 常用术语
 
 | 名称 | 在本项目中的含义 |
 | --- | --- |
-| Product | 玩家能观察到的目标、规则和行为，回答“做什么” |
+| GDD | Game Design Document，游戏设计文档；在此作为整理正式 Product 的输入材料 |
+| Product | 正式需求体系；“逐个 Product 推进”具体指按模块文档及其已确认范围规划和交付 |
 | CONTEXT | 当前项目共用的简短术语定义与概念关系；需要时保存在 `docs/CONTEXT.md` |
 | Feature | 一项可独立理解和验证的完整工作；也可承载 Bug、重构或维护 |
 | AC | Acceptance Criterion，验收条件；在 Feature 内使用稳定的 `AC01` 等 ID |

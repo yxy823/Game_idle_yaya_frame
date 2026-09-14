@@ -2,15 +2,13 @@
 
 [返回手册](../README.md) · 相关：[目录参考](../reference/project-layout.md)、[工程变更](engineering-changes.md)
 
-项目文件让下一次接手的人理解需求、当前任务和重要决定。每类内容放在一个负责它的地方，其他文件用链接连接，避免同一段历史到处复制。
+本页说明开发过程中哪些信息值得保留、应写在哪里，以及如何交给下一次任务使用。需求与计划的结构见 [文件职责参考](../reference/project-layout.md#文档与执行文件如何配合)；这里重点区分当前进度、任务历史、局部决定与可复用知识。
 
 ## 信息应该放在哪里
 
 | 信息 | 主要位置 | 其他记录如何使用 |
 | --- | --- | --- |
-| 玩家需要的行为、规则、数值与局部业务定义 | `docs/product.md`、`docs/product/` | Feature 指向具体来源 |
 | 跨模块、Feature 或会话复用的项目术语 | 按需创建的 `docs/CONTEXT.md` | Product、规划、实现和复审读取相关定义并引用，避免重复维护 |
-| 本任务 AC、影响组件、验证计划 | `docs/features/F0XX.json` | Progress 链接当前 Feature |
 | 本任务局部决定、占位资源、Bug 经验、TODO | Feature 的 `notes` | 历史和后续任务引用，避免再抄一遍 |
 | 可复用的成功做法、排障方法与失败教训 | `docs/knowledge/`，按主题分层 | 任务开始时优先查阅相关条目，条目链接原任务与证据 |
 | 当前做到了哪里、阻塞、待决定与下一步 | `docs/progress.md` | 新会话先读取 |
@@ -18,7 +16,6 @@
 | 当前模块、状态归属、依赖方向 | `docs/architecture.md`、子系统文档 | 执行与复审读取相关部分 |
 | 重要技术选择的原因与取舍 | `docs/architecture/adr-NNNN-<slug>.md` | 架构地图与 Feature 链接该决定 |
 | 可复用工程约束 | `docs/coding_rules.md`、`agent-rules/` | 读取现有规则，新增按明确授权处理 |
-| 实际工具路径和命令 | `docs/methodology-config.json` | 其他说明只链接配置 |
 | 本次真实执行输出 | `reports/` | 完成依据和任务记录引用原件 |
 
 ```mermaid
@@ -43,7 +40,7 @@ flowchart LR
 
 ## 优先查阅与积累项目知识
 
-新项目携带 [知识目录入口](../../../../project-source/defaults/docs/knowledge/README.md) 和主题索引，初始没有实际经验条目。目录吸收外部材料按主题积累经验的思路，正文和流程按当前项目重新编写：
+新项目只携带 [知识目录入口](../../../../project-source/defaults/docs/knowledge/README.md) 与主题索引，实际经验随任务积累：
 
 ```text
 docs/knowledge/

@@ -2,7 +2,14 @@
 
 [返回手册](../README.md) · 前一步：[创建项目](create-project.md) · 下一步：[需求与规划](../guides/product-and-planning.md)
 
-复制后的项目具备开发材料，机器工具和游戏内容仍待确认。首次环境准备只解决“当前项目如何调用工具”，具体玩法和业务 Feature 另行处理。
+本页负责复制完成后的环境与 Git 准备。结果是目标项目具有经过核实的工具配置和真实准备记录；需求整理见 [Product 指南](../guides/product-and-planning.md)，已有设计文档可直接使用 [GDD 入口](../guides/product-and-planning.md#接入已有-gdd)。
+
+| 操作 | 产物或结果 | 与下一步的关系 |
+| --- | --- | --- |
+| 打开目标项目，核对工具、语言和命令 | 填写 `docs/methodology-config.json`，设置 ready 后通过就绪检查 | 正式开发复用该配置 |
+| 按初始化授权处理 Git | 已有仓库保持原状态；允许初始化时建立本地仓库 | 默认环境准备提示词不提交，初始基线按后续明确授权处理 |
+| 记录实际准备结果 | `reports/initialization.md` 保存过程，`docs/progress.md` 链接结果与剩余事项 | 支持续接，不证明游戏行为已通过测试 |
+| 在首次获授权的项目命令前完成 Godot 扫描 | 生成引擎所需缓存与导入结果 | 仅做配置时可留到首次运行；不是每项 Feature 的固定步骤 |
 
 ## 打开正确的工作目录
 
@@ -79,11 +86,8 @@ $LASTEXITCODE
 
 报告应能让下一次接手的人确认：项目位置和工具版本、修改了什么、执行过哪些命令、每项结果证明什么、哪些未执行、实际问题与处理、最终 Git 状态和剩余工作。初始化报告供人阅读，不是另一个机器门禁。
 
-环境准备完成后停止，由用户决定是否整理 Product、处理初始基线或开展明确的实验。已经批准的事项沿用原授权，不必再次征求同一决定。
+仅使用环境准备提示词时，交付准备结果后结束；已有具体后续授权则继续其范围。准备完成后通常先处理初始基线，再从 [想法或 GDD 整理 Product](../guides/product-and-planning.md)；只讨论设计可以提前进行。
 
 ## 对应源文件
 
-- [环境配置约定](../../../../project-source/methodology/05-document-language.md#project-environment-bootstrap)。
-- [环境检查器](../../../../project-source/tools/checks/check-project-environment.py)。
-- [当前初始化提示词](../../../prompts.json)：准确的动作与 Git 授权范围。
-- [项目规则源文件](../../../../project-source/Project_AGENTS.md)：后续开发与本机编辑器检查约束。
+[环境配置约定](../../../../project-source/methodology/05-document-language.md#project-environment-bootstrap) 定义准备要求，[环境检查器](../../../../project-source/tools/checks/check-project-environment.py) 定义实际检查，[初始化提示词](../../../prompts.json) 限定当前动作与 Git 授权，[项目规则](../../../../project-source/Project_AGENTS.md) 约束后续开发。

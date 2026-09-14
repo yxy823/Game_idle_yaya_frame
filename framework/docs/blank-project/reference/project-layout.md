@@ -2,7 +2,29 @@
 
 [返回手册](../README.md) · 相关：[配置参考](configuration.md)、[项目知识与交接](../guides/project-knowledge.md)
 
-本页按当前复制清单描述初始文件，再列出开发期间按需创建的内容。树中省略插件内部文件，目录存在不代表已编写业务内容或完成验证。
+本页回答“哪个文件负责什么、何时出现、从哪里复制”。先看职责表，再查初始目录与复制映射；开发步骤见对应指南，字段与命令见参考页。
+
+## 文档与执行文件如何配合
+
+以下路径均相对生成项目根目录。规则约束操作，Skill 执行流程，项目文档保存需求与计划，报告提供实际结果；模板只提供结构。
+
+| 文件或目录 | 负责的内容 | 与其他文件的关系 |
+| --- | --- | --- |
+| `README.md` | 项目自身使用入口 | 简短导航，不承载完整流程或框架维护手册 |
+| `AGENTS.md`、`agent-rules/` | 任务路由与按领域读取的工程约束 | Agent 根据修改范围选择规则；不保存任务进度 |
+| `methodology/`、`.agents/skills/` | 阶段、字段等规范；执行相应任务的方法 | Skill 引用规范，按授权读取和更新项目成果 |
+| `methodology/templates/` | 文档与 JSON 的结构模板 | 按需生成实例；不是待执行任务或第二份业务正文 |
+| `docs/methodology-config.json` | 当前项目工具路径、文档语言和测试命令 | 由环境准备核实，供项目工具与 Skill 读取 |
+| `docs/product.md`、`docs/product/` | 全局需求总览与模块规格 | 接收想法或 GDD 的有效内容，为 Feature 提供行为来源 |
+| `docs/feature-list.json` | 任务 ID、状态、依赖和详情定位 | 用于选择任务；具体需求和验证安排进入详情 |
+| `docs/features/F0XX.json` | 当前任务范围、来源、组件、AC、验证计划和 notes | 连接 Product 与实现；执行过程由 Progress 续接 |
+| `docs/test-registry.json` | 组件、逻辑测试 ID、实际套件和用例映射 | 根据 Feature 影响范围选择测试，不保存测试通过结论 |
+| `docs/feature-list-revisions.json` | 需求变化对计划的同步关系与历史 | 支持后续增量处理，不替代 Product 内容或 Git 历史 |
+| `reports/`、`docs/feature-completion-evidence.json` | 原始测试与人工验收文件；完成依据引用 | 原件证明实际结果，依据记录关联当前 Feature 与适用内容 |
+| `docs/progress.md`、`docs/progress/` | 当前停点与交接；归档执行历史 | 链接任务、决定与报告，不重复维护任务状态全集 |
+| `docs/CONTEXT.md`、`docs/architecture.md`、`docs/architecture/`、`docs/knowledge/` | 共享术语、架构决定、可复用经验 | 按需积累并链接所属需求或任务，具体用途见 [项目知识](../guides/project-knowledge.md) |
+
+外部 GDD 是输入材料，默认不在初始目录内；接入方式见 [已有 GDD](../guides/product-and-planning.md#接入已有-gdd)。正式需求、任务计划和运行报告各有归属，不能通过修改使用说明来替代它们。
 
 ## 刚复制完成的目录
 
@@ -44,7 +66,7 @@ MyGodotGame/
     └── .gdignore
 ```
 
-`.git/`、`.godot/`、游戏场景和业务测试都不由复制器创建。配置中的 `tests/unit` 等值是后续目录约定，不表示这些目录已经存在。
+树中省略插件内部文件。`.git/`、`.godot/`、游戏场景和业务测试不由复制器创建；配置中的 `tests/unit` 等值是后续目录约定。
 
 ## 源材料到项目的映射
 
@@ -117,10 +139,13 @@ MyGodotGame/
 
 ## 工具为什么分成几处
 
-`tools/checks/` 放跨任务检查，`tools/testing/` 放真实测试入口，`tools/lib/` 放共享实现。只服务于某个流程的脚本随其 Skill 保存：
-
-- `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` 记录与检查完成依据。
-- `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` 合并规划阶段的组件测试登记表。
+| 位置 | 职责 |
+| --- | --- |
+| `tools/checks/` | 跨任务的环境和台账检查 |
+| `tools/testing/` | 真实测试入口与引擎扩展 |
+| `tools/lib/` | 工具共享实现 |
+| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 执行流程专用的完成依据记录与检查 |
+| `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | 规划流程专用的组件登记合并 |
 
 这些是直接入口，没有根目录转发脚本，也没有自动工具事件。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。
 
