@@ -88,7 +88,7 @@ Do not manufacture Product, Features or ADRs to conclude a conversation.
 
 ## Reuse inside Product elicitation
 
-`product-init-elicitor` and `product-spec-elicitor` reuse only the shared
+`product-init-elicitor`, `product-spec-elicitor` and `product-audio-sketcher` reuse the shared
 questioning method above while retaining their Product-specific draft/patch
 contracts. They return to their existing caller. Reading this method does not
 start another clarification workflow or call the standardizer recursively.

@@ -16,18 +16,18 @@ Product just because its document was added or revised. When the next Product
 becomes current, `generate-feature-list` reads its complete current specification
 and appends its plan, even if those source edits predate this workflow's anchor.
 
-## Language and history contract
+## Shared contracts
 
-Before producing durable Feature content:
+Use the artifact schemas, Product order and evolution invariants in
+`methodology/02-feature-list-schema.md`. Apply
+`methodology/05-document-language.md` for new durable prose; preserve completed
+history and original evidence instead of translating them. Resolve
+`document_language` from confirmed configuration.
 
-1. Read `document_language` from `docs/methodology-config.json`.
-2. Resolve missing, invalid, or migration-sensitive configuration through `methodology/05-document-language.md` before writing Feature or revision files.
-3. Use the language of the user's current message for conversation, questions, and the transient diff report.
-4. Write every newly created or substantively revised Feature title, description, acceptance criterion, human-readable `source` fragment, note, revision `user_intent`, and revision `summary` in `document_language`.
-5. Do not translate or rewrite existing completed history solely because its language differs from `document_language`. A `done` Feature is a historical record and changes only through the explicit new-Feature rules below.
-6. Keep JSON keys, enum values, Feature IDs, dependency IDs, paths, commit hashes, timestamps, commands, evidence, and revision structure language-neutral and exactly as specified here.
-
-With `document_language: en` and a Chinese conversation, discuss the diff in Chinese while writing new durable Feature prose in English. With `document_language: zh-CN` and an English conversation, discuss the diff in English while writing new durable Feature prose in Simplified Chinese. Existing completed prose remains unchanged in either case.
+Git preflight, resumed-task ownership and commit mechanics follow
+`agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the
+source comparison, approval and synchronized plan; use relevant rule sections
+through project `AGENTS.md` when interpreting a changed engineering contract.
 
 ## Ledger structure
 
@@ -53,16 +53,6 @@ Synchronization watches:
 - `docs/coding_rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
 
 Between synchronizations, module files may be added, deleted, renamed—including numeric-prefix changes—or modified. The diff analysis must handle all four cases.
-
-## Global invariants
-
-1. Identify source changes from Git diff, not AI inference, so every update remains precise and traceable.
-2. Preserve allocated IDs and completed history. Pending work is a living plan: incrementally add, revise, split, merge, retire and reconnect dependencies from approved source changes. Removal changes status to `obsolete` or `obsolete_done`; revision of a `done` Feature creates a new Feature.
-3. Never modify a `done` Feature's `id`, `description`, or `acceptance_criteria`. Do not revise its implemented behavior in place; use the status-specific new-Feature rules below. The only other permitted changes are the explicit removal status and note updates or source-path correction defined in Stage 4.
-4. Stage 3 must establish explicit approval of the concrete actions before Feature-list writes; reuse approval already covering those actions.
-5. Work on the current branch, including `main` or `master`. Follow `agent-rules/00-core/git-worktree-and-commits.md`; a new synchronization task requires a completely clean working tree. Do not automatically create, switch, merge, or delete branches.
-6. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py` before reporting success or committing the Feature-plan update. It includes JSON parsing; use a separate syntax check only to diagnose a specific error.
-7. IDs represent stable allocation, not execution order. Larger IDs may be prerequisites for older pending work. Validate the real dependency DAG and use `python -B tools/checks/check-feature-list.py --eligible` to select executable pending work. Never encode a required ordering only in notes.
 
 ## Stage 0: preflight and anchor
 
@@ -183,46 +173,16 @@ to the changed requirements and actual downstream impacts. Make omissions,
 unresolved choices and remaining test/implementation work visible; a valid
 ledger or recorded source anchor alone does not prove semantic alignment.
 
-Render the report in the current conversation language while preserving these sections:
+Report in the current conversation language. Include the verified anchor or
+explicit fallback, editorial changes, old-to-new source paths, substantive
+additions/revisions/removals with affected IDs/statuses and proposed actions,
+actual downstream/test impacts, material differences from supplied user intent,
+and unresolved decisions. Omit empty categories.
 
-```markdown
-## Diff report based on anchor `<hash>`
-
-### Editorial adjustments — no Feature change
-- <wording, formatting, typo, or pure rename>
-
-### Source-path corrections
-- `<old path>` → `<new path>`: affected Features <IDs>
-
-### Substantive changes
-
-#### Additions — N
-1. Source: <path and section>
-   Change: <brief explanation>
-   Proposed action: add Feature <title>, depends on <IDs>
-
-#### Revisions — N
-1. Affected Feature: <ID and status>
-   Change: <brief explanation>
-   Proposed action: <status-dependent action>
-   Downstream impact: <dependent Features that may need regression>
-
-#### Removals — N
-1. Affected Feature: <ID and status>
-   Change: <brief explanation>
-   Proposed action: <status-dependent action>
-
-### Requirement correspondence and remaining work
-| Source requirement/change | Feature and AC | Test/check action | Gap or next action |
-| --- | --- | --- | --- |
-| <path/section and current meaning> | <existing/proposed IDs and coverage> | <keep/change/add/retire or still to plan> | <unmapped scope, decision or remaining work> |
-
-### Match with user prior
-<what matched and what the diff revealed unexpectedly>
-
-### Decisions required
-- <each unresolved choice>
-```
+Use the canonical correspondence format:
+**source requirement/change → Feature and AC → test/check action → gap or next action**.
+Keep one reviewable report; do not copy the full Product or create a second
+coverage artifact.
 
 ### 2.6 Stop before writing
 
@@ -255,26 +215,20 @@ the approved contract requires it. Do not invent future paths or commit temporar
 candidates. Then apply the confirmed Feature/replacement-test/retirement changes
 and the Stage 5 revision record before strict cross-file validation.
 
-### Field ownership
+### Schema and history
 
-| Field | Location |
-|---|---|
-| `id` | index and detail |
-| `title`, `status`, `depends_on`, `estimated_scope`, `completed_at` | index only |
-| `description`, `affected_components`, `acceptance_criteria`, `verification`, `source`, `notes` | detail only |
-| `engineering_change` | optional detail only; owned by `engineering-change-standardizer` |
+Use the index/detail field ownership and initial planning values in
+`methodology/02-feature-list-schema.md`. The actions below specify what may
+change; they do not redefine field shapes or authorize rewriting completed
+behavior.
 
 ### Additions
 
-- Append `{id, title, status, depends_on, estimated_scope, completed_at}` to the index and create the matching detail with `affected_components`, stable `ACxx` criterion objects, empty execution-time verification mappings, `source`, and `notes`.
-- Use the next never-used ID after the highest historical ID. Never reuse an ID left by an obsolete Feature.
-- Initialize `status` to `pending`, `completed_at` to `null`, and detail `notes` to `""`.
-- When a Feature expands a capability supplied by a `done` Feature, say so in its description.
-- Point `source` to the precise module path and section.
-- Write all new human-readable values in `document_language`.
-- Product/Coding-Rules synchronization additions omit `engineering_change` unless the new Feature is explicitly being created through `engineering-change-standardizer`.
-
-When an existing detail contains `engineering_change`, preserve that field unchanged during source-path correction, note updates, status transitions, and any permitted pending/in-progress revision. Product synchronization must not silently reclassify an engineering Feature.
+Append new index entries and matching details with never-used IDs and canonical
+initial values. Make the source section precise and explain when new behavior
+extends a completed capability. Product-derived additions omit
+`engineering_change`; preserve that field on existing engineering Features
+during source correction, notes, status changes or permitted pending revisions.
 
 ### Removals
 
@@ -361,46 +315,12 @@ to rerun a dependent Feature's valid tests.
 
 **Output:** updated metadata, one appended revision entry, validation evidence, and a Git commit.
 
-1. Update `meta.total_features` and set `meta.generated_at` to the synchronization timestamp. Keep `meta.generated_from` exactly:
-
-```json
-["docs/product.md", "docs/product/**/*.md", "docs/coding_rules.md"]
-```
-
-2. Append this stable object to `docs/feature-list-revisions.json`; do not write it into index metadata:
-
-```json
-{
-  "schema_version": 2,
-  "revision_id": "<unique-stable-revision-id>",
-  "revised_at": "<ISO 8601 timestamp>",
-  "synced_at_commit": "<HEAD source-document commit hash>",
-  "anchor_commit": "<comparison anchor commit hash>",
-  "user_intent": "<localized Stage 1 prior, or null>",
-  "summary": "<localized one-sentence revision summary>",
-  "added": ["F0XX", "F0YY"],
-  "obsoleted": ["F0AA"],
-  "revised_via_new_feature": [
-    {"original": "F0BB", "regression": "F0CC"}
-  ],
-  "source_path_updates": [
-    {"feature": "F005", "from": "product/02-foo.md", "to": "product/03-foo.md"}
-  ],
-  "depends_on_warnings": ["F0DD", "F0EE"],
-  "migrations": [
-    {
-      "kind": "revise",
-      "from": ["F0BB"],
-      "to": ["F0CC"],
-      "reason": "<localized approved contract-change reason>",
-      "source": {"path": "docs/product/02-module.md#section", "anchor_commit": "<source commit>"}
-    }
-  ],
-  "dependency_changes": [
-    {"feature": "F0DD", "before": ["F0BB"], "after": ["F0CC"]}
-  ]
-}
-```
+1. Update index totals/time and append one version-2 revision under **File 3** in
+   `methodology/02-feature-list-schema.md`. Preserve the canonical
+   `meta.generated_from`; do not put the revision into index metadata.
+   Record actual changes in the canonical readable summary fields where
+   applicable; typed migrations/dependency changes carry the
+   machine-readable relationships.
 
 `synced_at_commit` is the next run's anchor and is mandatory. It must identify the committed source-document state analyzed by this synchronization. `source_path_updates` preserves rename traceability, including mappings for immutable completed history.
 
@@ -417,35 +337,24 @@ valid for editorial synchronization. The new entry's source commit is one of its
 `anchor_commit` or `synced_at_commit`; verify the actual source diff. Revision IDs
 are stable and unique; retirement records refer to this ID, never a free-text note.
 
-3. Run the cross-file checker specified in Global invariants on the completed
-set. Then review the actual diff against the approved actions: preserve historical
+2. Run `python -B tools/checks/check-feature-list.py` on the completed set.
+It includes JSON parsing; a separate syntax check is only for diagnosing an error.
+Then review the actual diff against the approved actions: preserve historical
 IDs and completed definitions, confirm source sections and the inspected source
 anchor, and check that dependencies express real prerequisites. Confirm required
 test-code/reference cleanup and downstream verification belong to the responsible
 Feature, with unfinished implementation and replacement coverage clearly reported.
 Correct task-owned errors under Exception handling before committing.
 
-4. Stage and commit only Feature-plan files:
+3. Follow the Core Git contract for explicit staging of the task-owned index,
+   affected details, Registry and revision log; complete cached-diff checks and
+   create the eligible local `chore(feature-plan): <中文行为摘要>` commit unless
+   the user requested no commit. Summarize the verified anchor, material plan
+   changes and actual validation in its body, then check post-commit status.
 
-```text
-git add docs/feature-list.json docs/feature-list-revisions.json docs/test-registry.json <explicit-affected-detail-paths>
-git diff --cached --check
-git diff --cached --stat
-git diff --cached
-git commit -m "chore(feature-plan): 同步已提交的 Product 与 Coding Rules 变更
-
-Anchor: <short anchor hash>
-Added: <N> features
-Obsoleted: <N> features
-Revised via new feature: <N> features
-
-<localized one-sentence summary>"
-git status --short
-```
-
-Source changes must be in a separate earlier commit. If an uncommitted source change is discovered despite Stage 0, stop without modifying or staging it; synchronization resumes only from a clean worktree so `synced_at_commit` identifies the analyzed source state.
-
-5. Never push.
+Source changes belong in a separate earlier commit. If an uncommitted source
+change appears after preflight, preserve it and stop dependent synchronization;
+the next anchor must identify the actually analyzed committed source state.
 
 ## Stage 6: handoff
 
@@ -481,12 +390,6 @@ otherwise stop at the requested planning result or the missing decision.
 | Pre-existing index, detail, or revision data is invalid | Report the original error and resolve the repair scope; do not invent missing history or change unrelated data |
 | This task introduces invalid JSON or an incomplete authorized write | Inspect the actual partial result, correct task-owned errors within the approved actions, and rerun the relevant validation; stop if ownership or the correct recovery is uncertain |
 | A file or Git operation fails | Preserve the error and classify it; correct a task-owned invocation error or use permitted recovery, but do not bypass a permission denial, reset/restore history, discard work, or expand scope |
-
-## Git boundaries
-
-- Allowed on the current branch, including `main` or `master`: `git diff`, `git log`, staging only the explicit task-owned Feature-plan paths (including affected test-registry paths), then the synchronization commit and post-commit status check.
-- This workflow does not switch branches, stash, restore, discard, or absorb dirty-worktree changes; it blocks until the user supplies a clean worktree.
-- Forbidden: push, tag, amend, rebase, reset, remote modification, `--no-verify`, force operations, and automatic branch creation, switching, merging, or deletion.
 
 ## Workflow map
 

@@ -10,13 +10,10 @@ Use this three-stage workflow to find unresolved code smells in Feature notes, c
 
 ## Language contract
 
-1. Read `document_language` from `docs/methodology-config.json`. Resolve missing, invalid, or migration-sensitive configuration through `methodology/05-document-language.md` before proposing durable project notes.
-2. Use the language of the user's current message for questions, ranking explanations, recommendations, and the transient report.
-3. Preserve every extracted note excerpt verbatim even when it uses another language. Never translate or rewrite historical Feature notes merely for this report.
-4. This selector writes no files. If the downstream refactor later records a durable Feature note, TODO, acceptance record, or Progress entry, that new prose must use `document_language`.
-5. Keep Feature IDs, paths, `TODO`, `suggest`, commands, and workflow names stable.
-
-With `document_language: en` and a Chinese conversation, discuss candidates in Chinese, preserve original excerpts, and require any later durable note to be English. With `document_language: zh-CN` and an English conversation, discuss candidates in English and require later durable notes to be Simplified Chinese.
+This read-only report uses the conversation language and preserves extracted
+note excerpts verbatim. It does not require document-language setup. The writer
+of any subsequently authorized durable note follows
+`methodology/05-document-language.md`.
 
 ## Scope
 

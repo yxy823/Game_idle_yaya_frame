@@ -1,6 +1,6 @@
 # 00 Core Rules
 
-Core rules apply across file types. Read this README for every task, then load the concrete Core documents that match the change.
+Core rules apply across file types. Use this router for modifications or relevant engineering decisions, then read only the concrete documents and sections that match the task. Reuse already loaded, unchanged rules during continuation; ordinary status or vocabulary discussion does not require loading engineering rules.
 
 | Document | Read when |
 |---|---|

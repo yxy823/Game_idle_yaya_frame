@@ -20,15 +20,11 @@ Unlike `product-init-elicitor`, which covers every Product dimension, this workf
 
 ## Language contract
 
-Before returning a patch:
-
-1. Read `document_language` from `docs/methodology-config.json`, or accept the value already resolved and passed by `product-change-standardizer`.
-2. Resolve missing, invalid, or migration-sensitive configuration through `methodology/05-document-language.md` before producing durable content.
-3. Ask transient questions in the language the user is currently using.
-4. Write human-readable patch content, explanations, recommendations, and section labels in `document_language`.
-5. Keep keys and enum-like values such as `mode`, `operation`, `source`, `needs_review`, Feature IDs, paths, and trigger operations unchanged.
-
-With `document_language: en` and a Chinese conversation, ask in Chinese and return English patch prose. With `document_language: zh-CN` and an English conversation, ask in English and return Simplified Chinese patch prose.
+Apply `methodology/05-document-language.md` to the returned patch. Reuse the
+confirmed `document_language` from `product-change-standardizer`, or resolve it
+from project configuration. Patch prose and section labels use that language;
+`mode`, `operation`, `source`, trigger operations and other protocol values remain
+as defined below.
 
 ## Core principles
 

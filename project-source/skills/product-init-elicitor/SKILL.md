@@ -20,17 +20,9 @@ Do not write files. Return one structured draft to `product-change-standardizer`
 
 ## Language contract
 
-Before producing any structured draft:
-
-1. Read `document_language` from `docs/methodology-config.json`.
-2. If the field is missing, invalid, or would require an unapproved language migration, stop and resolve it through `methodology/05-document-language.md`.
-3. Ask transient questions in the language the user is currently using.
-4. Write every human-readable value in the returned draft in `document_language`.
-5. Keep identifiers, ASCII slugs, paths, and schema keys stable and language-neutral.
-
-A change in conversation language must never change `document_language`.
-
-Smoke cases: with `document_language: en` and a Chinese conversation, ask questions in Chinese but return English draft values; with `document_language: zh-CN` and an English conversation, ask questions in English but return Simplified Chinese draft values.
+Apply `methodology/05-document-language.md` before returning a structured draft.
+Use confirmed `document_language` from the caller or project configuration for
+human-readable draft values; keep the output keys and module identifiers stable.
 
 ## Core principles
 

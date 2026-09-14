@@ -207,6 +207,15 @@ anchor and human-readable metadata:
 }
 ```
 
+Existing readable revision summaries use the following fields alongside the
+typed relationships; preserve their shapes when synchronization updates them.
+
+| Summary field | Shape |
+| --- | --- |
+| `added`, `obsoleted`, `depends_on_warnings` | Arrays of affected Feature IDs |
+| `revised_via_new_feature` | Array of `{ "original": "F0XX", "regression": "F0YY" }` |
+| `source_path_updates` | Array of `{ "feature": "F0XX", "from": "product/old-path.md", "to": "product/new-path.md" }` |
+
 `revision_id` is unique and uses letters/digits/dot/dash/underscore. Each migration
 requires exactly `kind`, `from`, `to`, `reason`, and `source`; all Feature references
 must exist. `source` has exactly repository-relative `path` (optional `#section`)

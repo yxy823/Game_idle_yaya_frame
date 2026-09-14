@@ -20,16 +20,10 @@ The durable Product artifact is the ASCII wireframe plus its intent and interact
 
 ## Language contract
 
-Before producing output:
-
-1. Read `document_language` from `docs/methodology-config.json`, or accept the confirmed value passed by `product-change-standardizer`.
-2. Resolve missing, invalid, or migration-sensitive configuration through `methodology/05-document-language.md` before producing durable content.
-3. Ask transient questions in the language the user is currently using.
-4. Write wireframe labels, interaction tables, intent explanations, HTML-visible text, comments, and `notes_for_standardizer` in `document_language`.
-5. Set the optional HTML document's `lang` attribute to the confirmed BCP 47 `document_language` value.
-6. Keep ASCII symbols, YAML keys, HTML paths, module slugs, state identifiers, and interaction-marker syntax stable.
-
-With `document_language: en` and a Chinese conversation, discuss in Chinese but produce English UI prose. With `document_language: zh-CN` and an English conversation, discuss in English but produce Simplified Chinese UI prose.
+Apply `methodology/05-document-language.md` to wireframe labels, interaction
+notes and returned HTML prose. Reuse confirmed `document_language` from the
+caller or resolve it from project configuration. Set optional HTML `lang` to
+that BCP 47 value; ASCII/interaction syntax and protocol keys remain stable.
 
 ## Core principles
 
@@ -158,15 +152,6 @@ Possible tone mappings are implementation examples for the mockup only:
 - minimal and cool: `bg-slate-*` or `bg-neutral-*`
 - retro pixel: `font-mono` and high contrast
 - cyberpunk: `bg-zinc-900` with restrained neon accents
-
-## Common traps
-
-1. Do not decorate the ASCII wireframe; simple boxes and bullets are enough.
-2. Do not put color descriptions inside ASCII. Explain visual intent separately.
-3. Do not invent pixel widths or spacing values in Product documents.
-4. Do not turn the optional HTML into a complete application.
-5. List state differences instead of drawing many nearly identical wireframes.
-6. Never use more than one primary CTA marker in one interface state.
 
 ## Return structure
 

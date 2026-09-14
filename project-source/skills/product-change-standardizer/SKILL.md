@@ -23,16 +23,10 @@ metadata:
 
 ## Language contract
 
-Before preparing durable Product or CONTEXT wording:
-
-1. Read `docs/methodology-config.json` and resolve `document_language`.
-2. If it is missing or invalid, follow `methodology/05-document-language.md` and obtain confirmation before writing durable content.
-3. Converse in the language the user is currently using.
-4. Render every new or substantively rewritten Product or CONTEXT heading and human-readable value in `document_language`.
-5. Preserve stable paths, ASCII slugs, schema keys, enum values, Skill names, Feature IDs, and other protocol identifiers.
-6. Do not translate existing content merely because configuration was added or conversation language changed. A language migration requires an explicit, scoped plan.
-
-Smoke cases: with `document_language: en` and a Chinese conversation, converse in Chinese but write English Product content; with `document_language: zh-CN` and an English conversation, converse in English but write Simplified Chinese Product content.
+Apply `methodology/05-document-language.md` before preparing durable Product or
+CONTEXT wording. Resolve `document_language` from project configuration and pass
+the confirmed value to any elicitor/sketcher; preserve protocol identifiers and
+existing history. Language migration follows that contract within explicit scope.
 
 ## Terminology maintenance route
 
@@ -108,11 +102,14 @@ Read:
 
 - `docs/methodology-config.json`
 - `docs/product.md`, if present
-- all active `docs/product/*.md`, if present
+- affected `docs/product/*.md` sections and shared/dependency contracts identified from the overview and requested change, if present
 - relevant definitions in `docs/CONTEXT.md`, if present
 - `docs/feature-list.json`, if present
 
-The lightweight Feature index is sufficient for routing. Do not eagerly load every Feature detail; the selected generation or synchronization workflow loads details as needed.
+The overview and lightweight Feature index are sufficient for initial routing.
+Expand reading along actual dependencies or unresolved references; do not load
+all active modules or Feature details for a local change. The selected planning
+workflow loads the additional details it needs.
 
 Choose exactly one route:
 
@@ -235,7 +232,7 @@ Product writing, while the execution Skill owns implementation and its Gates.
 - If the user rejects an elicitor draft, do not persist it; return to the elicitor for focused clarification.
 - If Feature synchronization fails, report the failure and do not leave Product and Feature state presented as aligned. Offer a reviewable repair or Git rollback; never perform a destructive rollback automatically.
 - If a destination module filename already exists, stop and ask whether to merge, choose a new module boundary, or use the next valid number. Never overwrite silently.
-- If a child workflow returns durable prose in the wrong language, do not write it. Re-render it in `document_language` without changing its Product meaning, then show it for confirmation.
+- If a child workflow returns durable prose in the wrong language, re-render it in `document_language` before writing. Preserve approved meaning and reuse existing authorization; ask only if the correction introduces a material meaning choice.
 
 For substantive Product changes, preserve this order within the authorized scope:
 

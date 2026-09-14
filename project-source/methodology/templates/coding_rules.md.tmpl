@@ -1,6 +1,6 @@
 # AI-assisted development · Coding Rules
 
-> This file governs the code and collaboration behavior of an AI working in this project. The AI must read it at the beginning of each session and actively follow it when proposing or implementing changes.
+> Read the applicable collaboration and architecture sections when planning or implementing engineering work. Reuse unchanged reading on continuation under the project `AGENTS.md` router.
 >
 > **Structure:** This file contains the stack-independent collaboration contract and general architecture principles. The root `AGENTS.md` routes repository rules; `agent-rules/00-core/` contains global engineering invariants; and affected specialized `agent-rules/` modules contain concrete semantics.
 
@@ -8,7 +8,7 @@
 
 # Part 1 · Collaboration contract
 
-> This part defines how the AI and human work together. It is independent of the technology stack and has the highest priority.
+> This part defines stack-independent collaboration. Rule authority and conflicts follow `methodology/04-coding-rules-4-layers.md` and the Core precedence protocol.
 
 ## 1.1 Collaboration discipline
 
@@ -22,24 +22,27 @@
 
 ## 1.2 Workflow constraints
 
-- Every Feature implementation must use the complete `execute-next-feature` workflow. Follow the applicable preflight, verification, acceptance and review steps; Stage 5 is omitted for an approved automated acceptance plan.
-- Before the first coding Feature, complete the one-time Project Environment Bootstrap. Normal execution requires `environment_bootstrap.status: ready` and uses only confirmed commands from `docs/methodology-config.json`.
-- Decide acceptance from requirements in Stage 1, then fill the checks. Visual/audio/feel or other human judgment requires `verification.acceptance_mode: manual` and explicit human acceptance. Fully automated AC may use `automated` and omit Stage 5.
-- A Feature that changes Yaya Loop workflow rules follows the committed rules that existed when it started. Newly committed rules govern the next Feature and do not retroactively alter the current Feature's gates.
-- A new modifying task in an ordinary project repository requires a clean worktree. Execute Features on the current Git branch, including `main` or `master`. After all applicable approval, validation, acceptance, and completion Gates pass, stage only task-owned paths or inspected hunks and create the local commit unless the user explicitly requested no commit. Do not automatically push, tag, amend, rebase, reset, modify remotes, use `--no-verify`, or create, switch, merge, or delete branches.
-- Every placeholder must use the `_placeholder_` prefix and be recorded in the Feature notes.
-- Do not start another Feature while the worktree contains unresolved changes.
+Feature implementation uses `execute-next-feature` and the canonical
+`methodology/03-execute-loop.md`. That specification owns the Context / Rules
+Snapshot, authorization and continuation, acceptance, independent review,
+verification and completion. Environment preparation follows
+`methodology/05-document-language.md`; test semantics follow
+`methodology/08-testing-strategy.md`. Do not maintain competing Stage instructions here.
 
-The Stage 0 exit report must provide a concise Context / Rules Snapshot: principal records and implementation paths read, expected create/modify/delete paths, applicable rule modules, three to six task-relevant constraints with source paths, and planned validation. Stage 6 requires one independent fresh-context review of requirements and code quality, following `methodology/03-execute-loop.md`. Before completion, `docs/feature-completion-evidence.json` must contain current-snapshot evidence for all automated obligations, human acceptance when manual mode applies, and the combined Stage 6 result with `must_fix: 0` through the existing `record-smell` entry, otherwise the explicit evidence check reports what remains incomplete. Only the valid manual/no-automated-obligations case in Stage 4 keeps `test_runs: []` and derives `not_required`; it does not bypass acceptance, review or unresolved failures. The Agent separately runs and assesses applicable direct script parsing and lint; evidence-helper success alone cannot authorize completion. Report the review findings in ordinary language; no exact completion phrase is required.
+Git preflight, clean-worktree and task ownership, staging and eligible local
+commits follow `agent-rules/00-core/git-worktree-and-commits.md`.
+
+A Feature changing workflow rules follows the committed rules that existed when
+it started. Newly committed rules govern the next Feature and do not
+retroactively alter the current Feature's gates.
+
+Every placeholder uses the `_placeholder_` prefix and is recorded in Feature notes.
 
 ## 1.3 Reporting requirements
 
-Every implementation delivery must include:
-
-1. **Change summary:** what changed and why, in one clear sentence.
-2. **Impact:** affected files and modules, with behavioral changes called out explicitly.
-3. **Intentionally omitted work:** anything the user might reasonably expect but that is outside the approved scope.
-4. **Verification guidance:** automated commands and concrete manual checks.
+Follow `agent-rules/00-core/completion-and-reporting.md` and the owning workflow's
+handoff. Explain material changes, actual verification and expected work left
+outside scope; include manual instructions only when applicable.
 
 ## 1.4 Deviating from these rules
 
@@ -139,17 +142,17 @@ workflow. It directs the agent to:
 - `agent-rules/00-core/` for global engineering invariants and precedence;
 - each affected specialized `agent-rules/<module>/` README for its concrete
   Godot, GDScript, or domain rules;
-- the concrete documents listed by those READMEs, including each module's
-  always-applicable `validation.md`.
+- the sections matching those READMEs' topic conditions, including each affected
+  module's `validation.md`.
 
 `methodology/` remains the source for Product/Feature workflow, Test Impact
 Review, traceability, human acceptance, and completion gates.
 
 ## 3.2 Loading and conflicts
 
-Before editing, read `AGENTS.md`, the Core README, and the README plus routed
-concrete documents for every affected domain. Apply the Core precedence
-protocol and report a real contradiction instead of silently choosing a source.
+Use the reading route above and `methodology/04-coding-rules-4-layers.md`.
+Apply the Core precedence protocol to real conflicts; do not load unrelated
+topics or treat a general preference as permission to weaken a mandatory rule.
 
 This template must not create a second concrete-rule tree or copy current
 engine, language, tool, or project status into `docs/coding_rules.md`.

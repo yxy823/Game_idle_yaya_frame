@@ -45,16 +45,19 @@ authoritative configuration or routed rule documents.
 An agent loads the applicable rules in this order:
 
 1. Read the root `AGENTS.md` and identify the affected domains.
-2. Read `agent-rules/00-core/README.md` and its routed concrete documents.
-3. Read each affected specialized module README and every concrete document it
-   routes for the change. A module's `validation.md` is applied whenever that
-   module is affected.
+2. Use `agent-rules/00-core/README.md` to select the concrete documents and sections
+   relevant to the current decision or change.
+3. Read each affected specialized module README and follow its topic conditions.
+   Load applicable sections, not every document in the module. A module's
+   `validation.md` is applied whenever that module is affected.
 4. Apply the core precedence protocol. A specialized rule may refine behavior
    inside its delegated scope, but may not silently weaken a core invariant.
 5. Report a real contradiction instead of selecting one source silently.
 
-The README files are the routing authority for concrete documents. File names
-alone are not a substitute for an explicit Read list.
+The README files are the routing authority for concrete documents. Reuse already
+read, unchanged rules on continuation; load additional sections when scope or
+evidence changes. This limits reading, not the applicability of requirements.
+Status queries and terminology discussion do not automatically load engine rules.
 
 ## Stack-independent architecture
 

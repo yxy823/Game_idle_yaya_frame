@@ -55,9 +55,10 @@ rules. These rules apply to every task that may modify repository files.
 - **[MUST]** Before committing, run `git diff --cached --check`, inspect
   `git diff --cached --stat`, and inspect the complete `git diff --cached`.
   Remove unrelated staged paths or hunks before continuing.
-- **[MUST]** Run every validation applicable to the final staged change. Do
-  not commit an obvious intermediate state or claim that an unexecuted Gate
-  passed.
+- **[MUST]** Confirm every applicable validation route covers the final staged
+  change. Reuse still-valid results under the owning workflow's evidence rules;
+  run missing or invalidated checks. Do not commit an obvious intermediate state
+  or claim that an unexecuted Gate passed.
 
 ## Local commits
 

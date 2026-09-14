@@ -6,11 +6,9 @@
 
 - Read `docs/methodology-config.json` before durable writes. Conversation uses the user's current language; durable prose uses `document_language`.
 - Before the first coding Feature, complete the one-time Project Environment Bootstrap defined in [05-document-language.md](./05-document-language.md). Every Stage 0 requires `environment_bootstrap.status: ready`; it reads the confirmed configuration rather than rediscovering commands.
-- Read the complete active Coding Rules before implementation and retain the relevant rule snapshot for the Feature. In this repository that means `docs/coding_rules.md`, `agent-rules/00-core/README.md`, and every routed module applicable to the Feature.
+- Read the applicable active Coding Rules through `AGENTS.md` and [the rule-loading contract](04-coding-rules-4-layers.md#rule-loading), including relevant `docs/coding_rules.md` constraints. Retain the Feature's task-relevant snapshot; complete applicability does not require loading unrelated sections or rereading unchanged sources.
 - Follow `agent-rules/00-core/git-worktree-and-commits.md`. A new Feature execution starts from a clean worktree; a resumed Feature may retain only changes demonstrably owned by that same Feature.
 - Read `docs/test-registry.json` when automated testing is enabled. Testing semantics are defined in [08-testing-strategy.md](./08-testing-strategy.md).
-- Execute and locally commit on the current Git branch, including `main` or `master`, subject to all existing approval, clean-worktree, acceptance, and Completion Gates. Do not automatically create, switch, merge, or delete branches. Never force-push or use `reset --hard`.
-- Never start implementation, infer human acceptance, promote a Bug guardrail, or start the next Feature without the required explicit user decision.
 - Release/publishing/deployment workflow is outside this loop unless explicitly represented as project work.
 
 ### Authorization and continuation
@@ -47,7 +45,7 @@ changes require another run. A conversational table does not replace actual exec
 
 ## Stage 0 · select and load context
 
-**Output:** exactly one current Feature and a fixed Context / Rules Snapshot.
+**Output:** exactly one current Feature and the context needed for its approval packet.
 
 For Product-derived work, apply [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning).
 Finish the current Product's required Features before moving to the next
@@ -57,20 +55,13 @@ existing later plans, and keep engineering repairs within their authorized route
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
-4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, complete Coding Rules, test registry, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
+4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, applicable Coding Rules, test registry, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
    Before proposing an approach or searching external references, consult
    `docs/knowledge/README.md` and the relevant topic indexes and entries.
    Check their applicability to this Feature; reuse prior reading on continuation
    unless scope or evidence changed. An empty or unrelated topic adds no blocker.
-5. Build a concise snapshot that lists:
-   - the current Feature record path;
-   - the principal Product and implementation paths read;
-   - relevant knowledge entries that informed the approach, when any;
-   - files expected to be created, modified, or deleted;
-   - applicable `agent-rules/**` modules;
-   - three to six task-relevant rules, with source paths, that materially constrain the implementation;
-   - the principal planned validation.
-6. Report Feature ID/title, status, dependencies, source, stable acceptance-criterion IDs/text, `affected_components`, engineering mode if present, and the snapshot. Reference rules; do not reproduce entire rule documents.
+5. Prepare a concise Context / Rules Snapshot: the Feature record, principal Product/implementation paths read, useful knowledge references, planned create/modify/delete paths, applicable rule modules and materially constraining rules with source paths, plus planned validation. There is no rule-count quota.
+6. Present this snapshot once in the Stage 1 packet alongside Feature identity/status, dependencies, source, stable criteria, affected components and engineering mode when present. On continuation, reference it and show only material changes; do not reproduce the same packet at every Stage.
 7. Stop on contradictory acceptance criteria, invalid dependencies, unresolved Product intent, broken test-traceability data, or an unbounded planned file surface.
 
 ## Stage 1 · Test Impact Review, resource preflight, and explicit approval
@@ -122,7 +113,7 @@ Also identify:
 Present one concise packet containing:
 
 - Feature scope and affected components;
-- the Stage 0 Context / Rules Snapshot: records and implementation paths read, applicable rule modules, three to six key constraints, and planned create/modify/delete paths;
+- the Context / Rules Snapshot prepared in Stage 0;
 - Existing Safety Net to run before changes;
 - new TDD acceptance/regression tests and unit suites to create;
 - acceptance mode, its reason, and corresponding verification items;
@@ -276,7 +267,7 @@ Guardrail: <general principle preventing the same defect class>
 
 Do not persist failed debugging guesses, redundant traces, or incidental machine-local failures.
 
-Evaluate whether the Guardrail is reusable enough for Coding Rules according to [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md). If so, show the exact proposed prescriptive rule and destination, then wait for explicit user approval. Never promote automatically.
+Evaluate whether the Guardrail is reusable enough for Coding Rules according to [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md). If so, show the exact proposed prescriptive rule and destination and establish explicit approval under Authorization and continuation. Never promote automatically.
 
 If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and registry entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
 
@@ -289,7 +280,7 @@ Feature starts; use existing synchronization authorization or obtain the missing
 
 The reviewer must be a fresh-context subagent/session or equivalent independent
 context. It performs no writes and reads the current Feature's approved scope
-and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, relevant project knowledge, complete Coding Rules, actual final diff
+and AC, relevant Product, existing CONTEXT definitions and accepted architecture decisions, relevant project knowledge, applicable Coding Rules, actual final diff
 and changed files, and original verification results with applicable human
 feedback. Treat the implementer's summary as claims to check against these
 sources, not as independent evidence.
@@ -359,16 +350,8 @@ Report material review findings and unresolved work in ordinary language.
    invalidate the evidence, finish the relevant verification before delivery.
 4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and Stage 6 TODOs. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
 5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
-6. Inspect `git status --short` and classify every path as owned by this Feature. Stop if any path is unrelated or ambiguous.
-7. Stage only this Feature's explicit paths or inspected hunks. Do not use `git add .`, `git add -A`, or broad globs.
-8. Run `git diff --cached --check`, inspect `git diff --cached --stat`, and inspect the complete `git diff --cached`. Remove any unrelated staged content.
-9. Run every validation applicable to the final staged change. Existing Stage 4/6 evidence remains valid only under the structured snapshot rules; rerun any invalidated Gate rather than relying on prose.
-10. Unless the user explicitly requested no commit, create one local commit without another confirmation. Use `<type>(<scope>): <中文行为摘要>`; use the Feature ID as scope and include `Work item: docs/features/F0XX.json` in the body. A non-trivial body summarizes the change, reason, meaningful implementation decisions, and principal validation.
-11. Run `git status --short` after the commit and confirm no task change was omitted and no unexpected file was generated. Correct a committed mistake with a new commit, never `--amend`.
-
-Do not push, tag, amend, rebase, reset, modify remotes, use `--no-verify`, merge,
-create, switch, or delete branches automatically. Feature execution and eligible
-local commits remain on the current branch, including `main` or `master`.
+6. Confirm applicable Stage 4/6 evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
+7. Follow `agent-rules/00-core/git-worktree-and-commits.md` for task ownership, explicit staging, complete cached-diff checks, the eligible local commit and post-commit status. Use the Feature ID as scope and `Work item: docs/features/F0XX.json` in the body. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
 
 ## Stage 8 · handoff and authorized continuation
 

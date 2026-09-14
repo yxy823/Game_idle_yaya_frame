@@ -6,13 +6,13 @@
 
 ## 开始前读取什么
 
-Agent 读取当前项目 Git 状态、Progress、Feature 索引与详情、相关 Product、完整 Coding Rules、环境配置和受影响工程规则。已有 `docs/CONTEXT.md` 时读取相关概念定义，已有架构地图或相关 ADR 时一并查看，核对实际代码和需要修改的路径。Stage 6 复审也读取这些相关定义，检查命名与含义是否一致。
+Agent 读取当前项目 Git 状态、Progress、Feature 索引与详情、相关 Product、适用 Coding Rules、环境配置和受影响工程规则。由各模块 README 按主题选择相关章节，不把一种文件类型等同于整目录必读。已有 `docs/CONTEXT.md` 时读取相关概念定义，已有架构地图或相关 ADR 时一并查看，核对实际代码和需要修改的路径。Stage 6 复审也读取这些相关定义，检查命名与含义是否一致。
 
 提出方案或查外部资料前，优先从 `docs/knowledge/README.md` 进入相关主题，读取适用于本任务的经验条目并核对条件。Stage 6 也参考相关知识；继续原任务时复用已读内容，不重复通读目录。初始索引为空或没有相关经验时正常继续。
 
 新修改任务按项目规则要求干净工作区；继续当前任务时，按真实差异确认任务归属。保留无关文件，不通过自动 stash、删除或恢复解决归属问题。环境须已准备，普通任务复用确认过的命令。
 
-Stage 0 的结果应让用户看懂：当前任务、读过的关键资料、相关约束、计划修改范围，以及将做哪些验证。它不需要重复粘贴全部规则。
+Stage 0 准备当前任务、关键资料、实际约束、修改范围和验证的简短快照，在 Stage 1 方案中展示一次，不限定规则条数。继续任务时引用已有快照，仅补充实质变化。
 
 Product 开发保持逐个推进：先完成当前 Product 所需的 Feature，再复核并拆分下一 Product。Stage 8 说明当前 Product 的剩余任务或真实阻塞，按已有授权衔接后续执行或下一 Product 的规划。`--eligible` 只说明依赖就绪，没有候选不能直接判定 Product 已完成。已有后续计划保留，工程修复仍按其实际授权处理。
 
@@ -54,7 +54,7 @@ flowchart TD
     N -->|否| E[结束或等待必要决定]
 ```
 
-流程详细行为由 [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) 与 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 定义。本手册不增加阶段、固定发言句式或另一套状态表。
+流程详细行为由 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 统一定义，[execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) 提供操作入口与按需参考。本手册不增加阶段、固定发言句式或另一套状态表。
 
 ## Stage 1 为什么先决定验收方式
 
