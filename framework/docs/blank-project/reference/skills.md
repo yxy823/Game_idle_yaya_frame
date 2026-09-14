@@ -4,41 +4,6 @@
 
 本页用于选择任务入口。提示词表达本次目标与授权，Skill 提供执行方法，`methodology/` 定义流程和数据契约。当前项目携带 12 项 Skill，位于 `.agents/skills/`；集中提示词留在框架，用户取出正文后在对应工作目录发送。
 
-## 12 项 Skill 的职责
-
-下表链接的是框架中的源文件。正式开发时读取目标项目 `.agents/skills/<name>/SKILL.md`，因为生成后的副本可能已经独立修改。
-
-| Skill | 适合的任务 | 主要产物与边界 |
-| --- | --- | --- |
-| [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
-| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与 CONTEXT，处理对已有任务的影响；初次拆分只针对当前 Product |
-| [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
-| [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
-| [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
-| [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | Product 音频条目和 `_placeholder_` 文件名，不生成正式音频 |
-| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前 Product，包括第一份和后续 Product | 当前 Product 的 Feature 与必要测试关系追加到同一台账；前一 Product 的 Feature 完成后再拆下一份，保留历史 |
-| [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
-| [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
-| [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
-| [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
-| [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
-
-项目规则与 [方法总览](../../../../project-source/methodology/00-overview.md) 负责完整路由。不要因用户问“当前进度”就执行环境探测或测试；也不要把明确实现请求降级成只提供下一步建议。
-
-Skill 保留本职操作步骤和独有工具用法，阶段流程、字段契约与语言规则分别引用对应权威规范。按任务读取相关章节，沿用仍有效的上下文；局部需求先从 Product 总览定位受影响模块和共享约定，再按实际依赖展开。工程规则由模块 README 按主题路由，例如单元测试不会自动要求读取场景测试和输入测试专题。
-
-## 常见组合
-
-- 先想清楚：project-clarifier → 对话结论；有术语落盘授权时交给 standardizer，按需更新 CONTEXT 或局部定义。
-- 新游戏：Product standardizer → 按需 init/spec/UI/audio → 只拆当前 Product → 完成它的 Feature → 复核并按授权拆下一 Product。
-- 改需求：Product standardizer → 同步对已有任务的影响；仅后续未拆分 Product 的变化先留在需求文档中。
-- 修独立 Bug：工程 standardizer 的 bug 模式 → execute → 回归、适用验收与经验。
-- 选择重构：pick-refactor-smell → 工程 standardizer 的 refactor 模式 → execute。
-- 当前任务中断：读取 Progress 和原任务 → execute 从真实阶段继续。
-- 只读调查：按明确问题读取资料并报告；调查本身不自动进入实现。
-
-这些组合用于理解职责，不要求每个任务机械调用所有 Skill。当前用户明确范围和已有具体授权优先，重要未决问题仍需解决。init/spec/audio 只补问材料中缺失且影响决定的内容，不设模块、AC 或问答数量下限；UI 草图和 HTML 探索按实际需要选择。
-
 ## 从哪里取得操作提示词
 
 所有可供用户发送给 Agent 的正式操作提示词都在 [framework/prompts.json](../../../prompts.json)。顶层包含“Yaya 框架维护”和“Godot 项目开发”两个 Project，保留 `project`、`categories` 结构；分类下的叶子键是提示词名，字符串值是完整正文。
@@ -57,7 +22,7 @@ Skill 保留本职操作步骤和独有工具用法，阶段流程、字段契�
 | 改变玩法 | Godot 项目开发 → 需求设计 → 新增功能或调整已有规则 |
 | 设计界面 | Godot 项目开发 → 需求设计 → 设计界面与交互 |
 | 设计声音 | Godot 项目开发 → 需求设计 → 设计音效与音乐需求 |
-| 拆分第一份或后续当前 Product | Godot 项目开发 → 任务规划 → 拆分当前 Product 的 Feature |
+| 拆分当前模块的任务 | Godot 项目开发 → 任务规划 → 拆分当前 Product 的 Feature |
 | 增量同步 | Godot 项目开发 → 任务规划 → 需求变化后同步已有任务 |
 | 了解现状 | Godot 项目开发 → 日常开发 → 判断当前状态与下一步 |
 | 开发任务 | Godot 项目开发 → 日常开发 → 执行指定或下一项 Feature |
@@ -80,6 +45,43 @@ Skill 保留本职操作步骤和独有工具用法，阶段流程、字段契�
 框架维护入口位于“Yaya 框架维护”，涵盖设计、修改、审核、验证与交接。查找对应入口及输入、产物和只读/实施边界，统一见 [维护提示词说明](../maintenance/updating-the-blank-project.md#通过提示词开始维护)。项目换线程的具体步骤见 [任务交接](../guides/project-knowledge.md#换到新线程继续)。
 
 手册中的名称用于定位提示词，实际授权以当前 JSON 正文和用户请求为准；已有 GDD 的读取、归属和后续规划见 [GDD 接入说明](../guides/product-and-planning.md#接入已有-gdd)。
+
+## 常见组合
+
+| 你要完成的工作 | 操作关系 |
+| --- | --- |
+| 先想清楚 | 讨论并形成结论；需要保存已确认术语时，由需求整理入口写入 |
+| 开始新游戏 | 整理需求，按需澄清界面与声音，拆分并交付当前模块；详细路线见 [需求指南](../guides/product-and-planning.md) |
+| 改需求 | 更新正式需求，处理对已有任务的影响；后续未拆分模块先保留需求变化 |
+| 修独立 Bug | 诊断与工程任务规划，然后实现、回归和适用验收 |
+| 选择重构 | 只读比较候选，确定范围后进入工程规划与执行 |
+| 继续中断任务 | 核对 Progress、原任务和实际差异，从真实阶段继续 |
+| 只读调查 | 回答明确问题并提供证据，不自动进入实现 |
+
+Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，只补问影响决定的缺口。界面草图与 HTML 探索按实际需要选择，具体名称可查下方职责表。
+
+## 12 项 Skill 的职责
+
+下表链接的是框架中的源文件。正式开发时读取目标项目 `.agents/skills/<name>/SKILL.md`，因为生成后的副本可能已经独立修改。
+
+| Skill | 适合的任务 | 主要产物与边界 |
+| --- | --- | --- |
+| [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
+| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与 CONTEXT，处理对已有任务的影响；初次拆分只针对当前模块 |
+| [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
+| [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
+| [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
+| [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | Product 音频条目和 `_placeholder_` 文件名，不生成正式音频 |
+| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 将当前模块任务与必要测试关系追加到现有记录，保留历史；前一模块完成后再拆下一模块 |
+| [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
+| [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
+| [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
+| [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
+| [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
+
+项目规则与 [方法总览](../../../../project-source/methodology/00-overview.md) 负责完整路由。不要因用户问“当前进度”就执行环境探测或测试；也不要把明确实现请求降级成只提供下一步建议。
+
+Skill 保留本职操作步骤和独有工具用法，阶段流程、字段契约与语言规则分别引用对应权威规范。按任务读取相关章节，沿用仍有效的上下文；局部需求先从 Product 总览定位受影响模块和共享约定，再按实际依赖展开。工程规则由模块 README 按主题路由，例如单元测试不会自动要求读取场景测试和输入测试专题。
 
 ## Skill 未被自动识别时
 

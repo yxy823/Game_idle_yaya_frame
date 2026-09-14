@@ -25,7 +25,7 @@
 
 诊断至少让人看懂：实际发生什么、原本应发生什么、预期依据在哪里，以及最短复现步骤。根因未确认时明确保留未知；不能把最先想到的解释当成已证实事实。
 
-`bug_diagnosis` 非空时使用现有结构保存 `actual`、`expected`、`source`、`reproduction`、`root_cause`。当前完成时，非空诊断中的根因必须已经确认。完整字段约束见 [Feature schema](../../../../project-source/methodology/02-feature-list-schema.md)。
+需要保存诊断时，Agent 在 `bug_diagnosis` 中记录实际行为、预期、来源、复现方法和根因。将 Feature 标记为完成前，已有 Bug 诊断记录必须包含已确认的根因；字段定义见 [Feature 规范](../../../../project-source/methodology/02-feature-list-schema.md)。
 
 适合自动验证的 Bug 建立 `F0XX-RTyy` 回归测试。无法合理自动化时，说明具体原因并给出可重复的人工回归路径。回归关注原始触发条件和错误结果，不仅证明修复后的某条代码执行过。
 

@@ -2,6 +2,8 @@
 
 [返回手册](../README.md) · [创建空白项目](create-project.md)
 
+**已有旧项目时阅读本章。** 新建项目直接进入 [需求与规划](../guides/product-and-planning.md)；只有外部 GDD、尚无旧实现和任务时，使用 [GDD 接入说明](../guides/product-and-planning.md#接入已有-gdd)。
+
 已有代码、Product、Feature 或进行中任务的旧项目，使用 [集中提示词](../../../prompts.json) 中的“Godot 项目开发 → 项目初始化 → 复制并迁移旧框架项目”。这是由 Agent 按具体方案完成的一次性接入，创建器仍只负责空白复制。
 
 ## 输入与执行位置

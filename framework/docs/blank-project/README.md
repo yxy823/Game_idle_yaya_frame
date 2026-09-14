@@ -1,10 +1,73 @@
 # 空白 Godot 项目使用手册
 
-本手册说明空白 Godot 项目的创建、需求整理、任务规划、开发验收与维护。先按当前材料选择入口，再查对应专题；命令、字段和文件职责集中在参考页。
+这份手册帮助你从空目录、游戏想法或已有 GDD 开始，使用 Coding Agent 整理需求、规划任务、实现并验收游戏功能。
 
-**[打开 HTML 使用手册](blank-project-handbook.html)**：单文件离线阅读，支持目录检索、章节跳转、图表缩放和分区字号设置。HTML 是 Markdown 的生成快照，打开时不读取 MD；正文只改 Markdown，再按 [生成说明](maintenance/updating-the-blank-project.md#生成离线阅读版) 更新 HTML。
+**[打开 HTML 阅读版](blank-project-handbook.html)**。它包含全部手册正文与图表，可离线阅读；独立阅读包不包含完整提示词、项目工具和源规范。实际操作需要完整框架或生成项目中的对应文件，带 ↗ 的链接用于定位这些材料。
 
-手册与集中提示词留在框架，**不进入新项目**。生成项目以自身 `README.md` 为入口，携带独立的规则、Skill、规范和工具，不依赖框架目录。
+## 这套起点提供什么
+
+创建后，你会得到 Godot 项目文件与插件、Agent 规则和 Skill、需求与任务模板、检查工具。玩法代码、主场景和业务测试由后续任务建立；初始 Product 和任务索引为空。
+
+当前目标环境为 Windows 11、PowerShell 7、Godot 4.7、GDScript、gdunit4，维护命令使用 Python 3.12+。创建器只复制文件，Agent 随后在目标项目核实工具并准备开发环境。
+
+## 第一次使用路线
+
+1. **[创建空白项目](getting-started/create-project.md)**：你指定外部空目录，Agent 按清单复制材料；已生成框架项目时跳过这一步。
+2. **[准备首次使用](getting-started/first-use.md)**：你提供必要的项目选择，Agent 核实工具、记录配置与实际准备结果，并按授权处理初始 Git 基线。
+3. **[整理需求与计划](guides/product-and-planning.md)**：你提供想法或 GDD，Agent 整理 Product 总览与模块需求，只澄清关键缺口，再拆分当前模块的 Feature。
+4. **[开发与验收 Feature](guides/feature-delivery.md)**：你确认具体方案与适用的人工结果，Agent 完成实现、验证和提交；已有具体授权可以连续推进。
+
+只想讨论设计时，可以从需求指南开始；已有完整材料无需重新口述。下一章表示全书阅读顺序，各页的“本任务下一步”表示当前工作应进入的操作。
+
+## 先认识需求与任务
+
+以“玩家点击按钮收集资源”为例：Product 总览说明这项玩法在整款游戏中的作用，模块需求明确数量和交互规则，Feature 则安排一项可实现、可验证的工作。
+
+| 名称 | 用来判断什么 |
+| --- | --- |
+| GDD | 已有游戏设计输入中，哪些意图和规则需要纳入本项目？ |
+| Product 总览 | 游戏的核心循环是什么，模块之间如何配合？ |
+| 模块需求 | 当前模块应该表现出哪些行为，哪些内容暂不做？ |
+| Feature | 本次要交付什么，依赖哪些任务？ |
+| AC（验收条件） | 用哪些可观察结果判断这项任务达到预期？ |
+
+文档中的“逐个 Product 推进”指按模块交付：可以先保留整款游戏的设计，再逐个拆分并完成模块任务。计划文件只描述待做工作，实际结果由测试报告和适用的人工验收记录证明。
+
+## 从哪里开始读
+
+| 当前目的 | 阅读顺序 |
+| --- | --- |
+| 已有空文件夹和外部 GDD | [判断目录状态](getting-started/create-project.md#准备目标位置) → [接入已有 GDD](guides/product-and-planning.md#接入已有-gdd)；已由框架生成的项目跳过复制 |
+| 修 Bug、重构或做技术调查 | [工程变更与实验](guides/engineering-changes.md) |
+| 中断后继续、补架构说明或整理历史 | [项目知识与交接](guides/project-knowledge.md) |
+| 将旧框架项目复制到新框架继续开发 | [复制迁移已有项目](getting-started/migrate-existing-project.md) → 核对成果与方案 → 目标内迁移和验证 |
+| 想知道复制后有什么 | [项目目录与文件职责](reference/project-layout.md) → [配置参考](reference/configuration.md) |
+| 准备实现一个任务 | [Skill 导航](reference/skills.md) → [Feature 开发流程](guides/feature-delivery.md) → [命令与验证](reference/commands-and-validation.md) |
+| 命令失败或不知道为什么不能完成 | [故障排查](reference/troubleshooting.md) |
+| 修改空白项目源材料 | 本页 → [维护与同步说明](maintenance/updating-the-blank-project.md) → 受影响专题与实际源文件 |
+| 把框架 ZIP 交给其他模型审核 | [压缩包审核说明](maintenance/updating-the-blank-project.md#把压缩包交给其他模型审核) → 提示词正文与附件 |
+| 用实际小任务验证整个流程 | [动态流程审核说明](maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程) → 指定新建外部项目并执行 |
+| 收到外部报告，先讨论哪些意见值得采用 | [外部结果复核说明](maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍) → 对照当前文件分析，再决定修改 |
+| 从实际项目转发 Codex 输出，判断框架是否需要改进 | [开发反馈复盘说明](maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架) → 核对证据与归属，再讨论最小修改 |
+
+## HTML 阅读操作
+
+| 要做什么 | 操作 |
+| --- | --- |
+| 查找内容 | 按 `/` 聚焦目录搜索，Enter 跳到匹配项；Ctrl + F 搜索正文。章节标题跳转，右侧按钮展开小节。 |
+| 连续阅读 | 顶栏显示当前位置与进度，每章末尾可翻章；目录跟随正文，手动操作目录时暂停自动跟随。 |
+| 调整阅读空间 | “目录”按钮收起侧栏；窄窗口使用覆盖式抽屉，跳转、点击遮罩或按 Esc 可关闭。 |
+| 调整字号 | “阅读设置”提供紧凑、舒适、大字三组预设；展开分组可独立调整正文、标题、目录、辅助文字、表格与代码。 |
+| 查看代码与图表 | 代码可复制或切换视觉换行；“展开图表”后可适应窗口、100% 显示、缩放、重置和拖拽平移。 |
+| 保存位置 | 标题旁 `#` 复制小节链接；下次打开可点击“继续上次阅读”恢复到所记锚点。 |
+
+字号默认采用“舒适阅读”，正文 18px。选择预设会替换所有分区数值，单项调整后可形成自定义搭配；滑块即时预览，数字框按 Enter 或离开输入框生效，“恢复默认”回到舒适阅读。字号变化尽量保持当前阅读锚点，图表内部文字通过整图缩放查看。
+
+图表支持 Ctrl + 滚轮缩放；聚焦画布后可用方向键平移、`+`/`−` 缩放、Home 适应窗口。设置和图表弹窗均可点击遮罩或按 Esc 关闭。顶栏向下滚动时收起、向上滚动时出现，顶部、头部焦点或弹窗期间保留显示。
+
+偏好与阅读位置只保存在当前浏览器，不写回 Markdown；存储不可用时界面会提示仅本次有效。目录过滤、视觉换行不会删改正文或复制内容。本地小节链接要求接收方能访问同一路径；单独分享 HTML 不会附带 ↗ 指向的文件。
+
+HTML 是生成时的完整快照，打开时不会读取 MD 更新。正文只维护 Markdown，修改后按 [生成说明](maintenance/updating-the-blank-project.md#生成离线阅读版) 重新构建。
 
 ## 先理解三个对象
 
@@ -31,56 +94,7 @@ flowchart LR
     D --> W[逐项开发与验证]
 ```
 
-箭头表示创建和使用关系；框架后续修改不会自动传入已创建的项目。
-
-## 从哪里开始读
-
-| 当前目的 | 阅读顺序 |
-| --- | --- |
-| 第一次创建项目 | [创建项目](getting-started/create-project.md) → [首次使用](getting-started/first-use.md) → [需求与规划](guides/product-and-planning.md) |
-| 已有空文件夹和外部 GDD | [判断目录状态](getting-started/create-project.md#准备目标位置) → [接入已有 GDD](guides/product-and-planning.md#接入已有-gdd)；已由框架生成的项目跳过复制 |
-| 将旧框架项目复制到新框架继续开发 | [复制迁移已有项目](getting-started/migrate-existing-project.md) → 核对成果与方案 → 目标内迁移和验证 |
-| 想知道复制后有什么 | [项目目录与文件职责](reference/project-layout.md) → [配置参考](reference/configuration.md) |
-| 准备实现一个任务 | [Skill 导航](reference/skills.md) → [Feature 开发流程](guides/feature-delivery.md) → [命令与验证](reference/commands-and-validation.md) |
-| 修 Bug、重构或做技术调查 | [工程变更与实验](guides/engineering-changes.md) |
-| 中断后继续、补架构说明或整理历史 | [项目知识与交接](guides/project-knowledge.md) |
-| 命令失败或不知道为什么不能完成 | [故障排查](reference/troubleshooting.md) |
-| 修改空白项目源材料 | 本页 → [维护与同步说明](maintenance/updating-the-blank-project.md) → 受影响专题与实际源文件 |
-| 把框架 ZIP 交给其他模型审核 | [压缩包审核说明](maintenance/updating-the-blank-project.md#把压缩包交给其他模型审核) → 提示词正文与附件 |
-| 用实际小任务验证整个流程 | [动态流程审核说明](maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程) → 指定新建外部项目并执行 |
-| 收到外部报告，先讨论哪些意见值得采用 | [外部结果复核说明](maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍) → 对照当前文件分析，再决定修改 |
-| 从实际项目转发 Codex 输出，判断框架是否需要改进 | [开发反馈复盘说明](maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架) → 核对证据与归属，再讨论最小修改 |
-
-## 手册的文件架构
-
-```text
-framework/docs/blank-project/
-├── README.md                            总入口、阅读路线和术语
-├── blank-project-handbook.html           由 Markdown 生成的桌面离线阅读版
-├── getting-started/
-│   ├── create-project.md                创建命令、复制边界与失败处理
-│   ├── first-use.md                     环境、项目名称、Git 初始状态
-│   └── migrate-existing-project.md      复制旧项目、保留成果与验证续接
-├── guides/
-│   ├── product-and-planning.md          想法或 GDD → Product → Feature
-│   ├── feature-delivery.md              单项任务执行、验收与完成
-│   ├── engineering-changes.md           Bug、重构、维护与实验
-│   └── project-knowledge.md             规则、架构、资产、进度与历史
-├── reference/
-│   ├── project-layout.md                默认目录、复制映射与按需文件
-│   ├── skills.md                        12 项 Skill 和提示词入口
-│   ├── configuration.md                 配置字段、Godot 与 lint 默认值
-│   ├── commands-and-validation.md       命令参数、测试选择和结果解释
-│   └── troubleshooting.md               按现象排查问题
-└── maintenance/
-    └── updating-the-blank-project.md     源材料修改、文档同步与验证范围
-```
-
-## 这套起点提供什么
-
-复制结果包含 Godot 项目与插件、规则与 Skill、文档模板和检查工具；不包含主场景、玩法实现或业务测试。Product、Feature 与测试索引从空内容开始，架构记录、术语和经验条目按实际需要建立。文件位置见 [目录参考](reference/project-layout.md)，初始值见 [配置参考](reference/configuration.md)。
-
-当前目标环境为 Windows 11、PowerShell 7、Godot 4.7、GDScript、gdunit4，维护命令使用 Python 3.12+；目标项目仍须核实本机工具与路径。
+箭头表示创建和使用关系；框架后续修改不会自动传入已创建的项目。手册与集中提示词留在框架，生成项目使用自身 README、规范与工具独立开发。
 
 ## 从需求到交付的文件关系
 
@@ -108,10 +122,35 @@ framework/docs/blank-project/
 | Required Test Set | 根据当前 Feature、组件、历史回归、不变量和已批准补充范围计算的必需测试集合 |
 | baseline / final | 修改前已有安全网验证 / 用于本次最终验证的运行阶段 |
 | manual / automated | 按需求选择的人工验收 / 全自动验收方式 |
-| Gate evidence | 真实测试报告引用与适用的人工决定；不记录评审计数，也不等同于所有检查结果 |
+| Gate evidence | 当前 Feature 的真实测试报告引用与适用人工决定，用于完成检查 |
 | Progress | 当前状态、阻塞、待决定事项、下一步及历史索引 |
 | ADR | 一项重要技术选择的原因和取舍记录；按需建立 |
 | Bootstrap | 在现有文档中指首次环境准备；当前没有独立 Bootstrap 程序 |
+
+## 手册的文件架构
+
+```text
+framework/docs/blank-project/
+├── README.md                            总入口、阅读路线和术语
+├── blank-project-handbook.html           由 Markdown 生成的桌面离线阅读版
+├── getting-started/
+│   ├── create-project.md                创建命令、复制边界与失败处理
+│   ├── first-use.md                     环境、项目名称、Git 初始状态
+│   └── migrate-existing-project.md      复制旧项目、保留成果与验证续接
+├── guides/
+│   ├── product-and-planning.md          想法或 GDD → Product → Feature
+│   ├── feature-delivery.md              单项任务执行、验收与完成
+│   ├── engineering-changes.md           Bug、重构、维护与实验
+│   └── project-knowledge.md             规则、架构、资产、进度与历史
+├── reference/
+│   ├── project-layout.md                默认目录、复制映射与按需文件
+│   ├── skills.md                        12 项 Skill 和提示词入口
+│   ├── configuration.md                 配置字段、Godot 与 lint 默认值
+│   ├── commands-and-validation.md       命令参数、测试选择和结果解释
+│   └── troubleshooting.md               按现象排查问题
+└── maintenance/
+    └── updating-the-blank-project.md     源材料修改、文档同步与验证范围
+```
 
 ## 使用约定与内容依据
 

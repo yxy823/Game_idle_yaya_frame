@@ -1,23 +1,23 @@
 # 首次使用与环境准备
 
-[返回手册](../README.md) · 前一步：[创建项目](create-project.md) · 下一步：[需求与规划](../guides/product-and-planning.md)
+[返回手册](../README.md) · 前一步：[创建项目](create-project.md) · 本任务下一步：[需求与规划](../guides/product-and-planning.md)
 
-本页负责复制完成后的环境与 Git 准备。结果是目标项目具有经过核实的工具配置和真实准备记录；需求整理见 [Product 指南](../guides/product-and-planning.md)，已有设计文档可直接使用 [GDD 入口](../guides/product-and-planning.md#接入已有-gdd)。
+复制完成后，你在目标项目中向 Agent 发送“准备 Godot 开发环境”提示词，并提供项目名称、文档语言或工具位置等尚未确定的选择。Agent 核实配置、记录真实准备结果，之后即可按授权进入需求整理与开发。已有设计文档可直接使用 [GDD 入口](../guides/product-and-planning.md#接入已有-gdd)。
 
 | 操作 | 产物或结果 | 与下一步的关系 |
 | --- | --- | --- |
-| 打开目标项目，核对工具、语言和命令 | 填写 `docs/methodology-config.json`，设置 ready 后通过就绪检查 | 正式开发复用该配置 |
-| 按初始化授权处理 Git | 已有仓库保持原状态；允许初始化时建立本地仓库 | 默认环境准备提示词不提交，初始基线按后续明确授权处理 |
-| 记录实际准备结果 | `reports/initialization.md` 保存过程，`docs/progress.md` 链接结果与剩余事项 | 支持续接，不证明游戏行为已通过测试 |
-| 在首次获授权的项目命令前完成 Godot 扫描 | 生成引擎所需缓存与导入结果 | 仅做配置时可留到首次运行；不是每项 Feature 的固定步骤 |
+| 你在目标项目发送准备请求，Agent 核对工具与选择 | 填写 `docs/methodology-config.json`，完成就绪检查 | 正式开发复用该配置 |
+| Agent 按初始化授权处理 Git | 保留已有仓库，或建立本地仓库 | 默认提示词不提交，初始基线另按授权处理 |
+| Agent 记录准备结果 | 初始化报告与 Progress 中的续接说明 | 记录实际准备范围，不表示游戏已验证 |
+| Agent 在首次获授权的项目命令前完成 Godot 扫描 | 引擎所需的类缓存与导入结果 | 仅做配置时可留到首次运行 |
 
 ## 打开正确的工作目录
 
-将 Coding Agent 的工作目录切换到生成后的项目。先读取该项目自己的 `AGENTS.md`、`README.md`、`docs/methodology-config.json` 和 `docs/progress.md`，再按任务需要加载 Skill 和规则。
+你将 Coding Agent 的工作目录切换到生成项目。Agent 先读取项目自己的 `AGENTS.md`、`README.md`、`docs/methodology-config.json` 和 `docs/progress.md`，再按任务加载 Skill 与规则。
 
 不要在 `project-source/` 中打开业务开发任务。那里文件名和目录尚处于复制前形态，例如 Skill 位于 `skills/`，配置也不在项目最终位置。
 
-从 [集中提示词](../../../prompts.json) 的“Godot 项目开发 → 项目初始化 → 准备 Godot 开发环境”选取当前正文，在目标项目中使用。手册只解释其行为，提示词正文仍由 JSON 单独维护。
+从完整框架的 [集中提示词](../../../prompts.json) 中选择“Godot 项目开发 → 项目初始化 → 准备 Godot 开发环境”，填写后在目标项目发送。只有独立阅读包时，需要另取该提示词正文；生成项目运行时不依赖框架目录。
 
 ## 环境准备需要确认的内容
 
@@ -38,9 +38,9 @@ Godot 配置按绝对路径或相对项目根目录的文件路径解析，不�
 
 ## 配置就绪的判定
 
-先核对实际工具和命令，填写真实配置，再将 `environment_bootstrap.status` 设为 `ready` 并运行就绪检查。如果失败，保持或恢复 `incomplete`，将原因记录到 Progress 和初始化报告。
+Agent 核对工具与命令、填写真实配置，将 `environment_bootstrap.status` 设为 `ready` 后运行就绪检查。失败时恢复或保持 `incomplete`，在 Progress 与初始化报告记录原因。
 
-在目标项目根目录，本机可这样调用：
+以下是 Agent 在目标项目根目录使用的检查命令；普通检查与就绪检查的结果含义见表格：
 
 ```powershell
 & 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B tools/checks/check-project-environment.py
@@ -76,15 +76,17 @@ $LASTEXITCODE
 
 配置 ready 不会生成 Godot 的全局类缓存或导入资源。新项目尚未在编辑器中打开时，直接运行 CLI 测试可能报找不到 `GdUnitTestCIRunner`；此时用例尚未执行，不能当作业务测试 RED。
 
-在首次获授权的 CLI 测试或项目脚本运行前，让配置中的 Godot 正常完成一次编辑器扫描，具体命令、退出码和失败处理见 [项目工具的首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描)。已正常打开过的项目复用已有准备；仍有解析或导入错误时按实际错误排查。
+Agent 在首次获授权的命令行测试或项目脚本运行前，让配置中的 Godot 完成一次编辑器扫描，确认进程结束并检查退出码和解析、导入错误。已正常打开过的项目可复用已有准备；失败时按实际错误排查。
 
-仅配置环境、尚不运行项目命令的初始化可以把扫描留到首次运行时，在初始化报告中注明尚未执行。扫描遵守项目 `AGENTS.md` 的本机沙箱与审批约束；它不属于创建器的复制职责，也不增加导入包装程序、业务测试或每个 Feature 的固定阶段。生成文件按项目现有资产和引用规则处理，不把 `.import`、`.uid` 与 `.godot` 一律视为可删除缓存。
+仅核对配置时可以暂不扫描，Agent 在初始化报告中注明未执行；实际扫描遵守项目 `AGENTS.md` 的权限与审批约束。完整命令见 [项目工具的首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描)，独立阅读包用户应在完整框架或生成项目的 `tools/README.md` 查阅。
+
+生成文件按项目资产与引用规则处理，不能把 `.import`、`.uid` 与 `.godot` 都当作可删除缓存。
 
 ## 初始化报告和下一步
 
-实际过程写入 `reports/initialization.md`；已有报告时追加，保留发生过的失败。`docs/progress.md` 只保留当前结果、阻塞、下一步和报告链接。
+Agent 将实际过程写入 `reports/initialization.md`，已有报告追加并保留失败；`docs/progress.md` 保存当前结果、阻塞、下一步和报告链接。
 
-报告应能让下一次接手的人确认：项目位置和工具版本、修改了什么、执行过哪些命令、每项结果证明什么、哪些未执行、实际问题与处理、最终 Git 状态和剩余工作。初始化报告供人阅读，不是另一个机器门禁。
+你查看报告中的工具版本、修改、命令结果、未执行项和 Git 状态，便可判断准备是否完成以及剩余问题。后续 Agent 也从这些记录续接。
 
 仅使用环境准备提示词时，交付准备结果后结束；已有具体后续授权则继续其范围。准备完成后通常先处理初始基线，再从 [想法或 GDD 整理 Product](../guides/product-and-planning.md)；只讨论设计可以提前进行。
 

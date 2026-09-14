@@ -85,7 +85,7 @@ def child_tokens(document: Document):
 def load_documents() -> list[Document]:
     documents = {path.resolve(): parse_document(path) for path in MANUAL.rglob("*.md")}
     entry = documents[(MANUAL / "README.md").resolve()]
-    # Reuse the reading routes in README; discover unlisted pages as well.
+    # README owns the reading order; directory labels must not interrupt it.
     linked_order = [entry.path.resolve()]
     for token in child_tokens(entry):
         if token.type == "link_open":
@@ -100,8 +100,7 @@ def load_documents() -> list[Document]:
         group = doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
         if group not in GROUPS:
             raise ValueError(f"新章节分组需要在生成器中命名：{group}")
-    return sorted(result, key=lambda doc: list(GROUPS).index(
-        doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")))
+    return result
 
 
 def rewrite_links(documents: list[Document]) -> int:
@@ -229,15 +228,18 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
     MARKDOWN.renderer.rules["table_close"] = lambda *args: '</table></div>\n'
     articles, navigation = [], []
     last_group = None
+    navigation_group = ""
     for number, doc in enumerate(documents, 1):
         group = doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
         if group != last_group:
-            navigation.append(f'<p class="nav-group" data-group="{group}">{GROUPS[group]}</p>')
+            # A topic can recur later in the reading order; filter each run separately.
+            navigation_group = f"{group}-{number:02d}"
+            navigation.append(f'<p class="nav-group" data-group="{navigation_group}">{GROUPS[group]}</p>')
             last_group = group
         outline = "".join(f'<a href="#{quote(doc.key + "--" + slug)}" '
                           f'data-section="{escape(doc.key + "--" + slug)}" data-level="{level}">'
                           f'{escape(title)}</a>' for level, title, slug in doc.headings if level in {2, 3})
-        navigation.append(f'<div class="nav-chapter" data-group="{group}"><div class="nav-row">'
+        navigation.append(f'<div class="nav-chapter" data-group="{navigation_group}"><div class="nav-row">'
                           f'<a href="#{doc.key}" data-chapter="{doc.key}">'
                           f'<span class="nav-number">{number:02d}</span><span class="nav-title">{escape(doc.title)}</span></a>'
                           f'<button type="button" class="nav-toggle" aria-expanded="true" '
