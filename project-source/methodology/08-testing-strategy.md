@@ -144,6 +144,12 @@ An empty `unit_test_paths` array contributes no unit selector and does not trigg
 
 The affected set contains Required plus active acceptance tests intersecting affected components. The agent may add related tests from other components when dependency/API analysis shows material impact, recording the exact reason. It may not remove any deterministic requirement. Approved retirement changes the underlying Product/Registry contract instead of adding a runner exclusion.
 
+Ordinary downstream regression belongs to the Feature implementing the change.
+Carry the affected behavior and coverage gaps from its notes into Stage 1; use
+existing component selection or approved additional tests without changing their
+ownership. Repeating valid tests alone does not require another Feature. Separate
+implementation, repair or an independently agreed deliverable may justify one.
+
 A full suite is required when any of these is true:
 
 - an affected registry component has `full_suite_on_change: true`;

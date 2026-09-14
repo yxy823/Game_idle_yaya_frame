@@ -218,41 +218,25 @@ The helper validates schema version, component records, registered unit suite pa
 - `revision_log`: initialize the version-2 empty log only when absent and store it only in `docs/feature-list-revisions.json`. Appending a newly current Product does not reset or advance the source synchronization anchor; it reads that Product's current specification directly.
 - Existing test registry records are independent durable traceability. Adding a Product's plan may append needed components but may not silently reset, retire, renumber, remap, or delete existing tests.
 
-Never place an unescaped `"` inside a JSON string. Escape embedded ASCII double quotes as `\"`, or use natural quotation marks appropriate to `document_language` when they cannot be mistaken for JSON delimiters.
+## Validation and semantic review
 
-Validate the index, every detail file, the revision log, and the test registry with:
-
-`python -B -m json.tool <path> > $null`
-
-After all related files have been written, run the cross-file invariant validator:
+After all related files are consistent, run:
 
 `python -B tools/checks/check-feature-list.py`
 
-## Mandatory self-check
+This checks JSON parsing and cross-file invariants together. Use a separate
+syntax check only to diagnose an individual error. The Agent still reviews
+what the checker cannot establish:
 
-Before reporting completion, verify every item:
+- The chosen Product is current and unplanned; its required scope is covered
+  without duplicate infrastructure, excluded behavior or premature later plans.
+- Sources name the actual requirement sections; dependencies reflect real
+  prerequisites and applicable architecture constraints.
+- New records use the schema's initial planning values, and the actual diff
+  preserves previous Features, revision anchors, Registry records and independent
+  invariants except for approved component additions.
 
-- [ ] Exactly one current Product is being decomposed; the preceding Product's required Features are complete, and the chosen scope has not already been planned.
-- [ ] Required runnable infrastructure exists or is included without duplicating the existing foundation.
-- [ ] The dependency graph is acyclic, all prerequisites exist, and pending eligibility follows dependencies rather than numeric ID order.
-- [ ] No final `estimated_scope` is `large`.
-- [ ] Every required behavior of the current Product has Feature coverage; later Products have received no new Features or test registrations.
-- [ ] No explicitly excluded or deliberately unhandled behavior appears in the plan.
-- [ ] Feature order reflects Coding Rules such as data/presentation separation and pure core rules.
-- [ ] Every detail `source` resolves to an existing Product module and section, or is exactly `infrastructure`.
-- [ ] Every Feature has stable sequential `ACxx` criterion IDs and non-empty `affected_components`.
-- [ ] Every affected component exists in `docs/test-registry.json`.
-- [ ] Every referenced dependency ID exists.
-- [ ] New statuses are `pending`, new `completed_at` values are `null`, and new detail `notes` are `""`; all previous Feature records remain unchanged.
-- [ ] A missing revision log is initialized with schema version 2; an existing log and its source anchors remain unchanged.
-- [ ] A new `docs/test-registry.json` uses schema version 2 and contains every generated component ID; existing current-format records remain intact.
-- [ ] Components without existing unit suites use `unit_test_paths: []`; every registered unit suite path resolves to an existing repository file or directory.
-- [ ] If the test registry predated this run, every existing component record, test ID, complete test mapping, and `full_suite_on_change` value is preserved.
-- [ ] Existing history and independent invariants remain intact; any acceptance/regression conflict was reported rather than silently cleared.
-- [ ] The set of index IDs equals the set of `docs/features/F*.json` filename stems and equals `meta.total_features` in count.
-- [ ] The index, every detail file, the revision log, and the test registry pass JSON parsing without unescaped double quotes.
-
-Fix every failed check before presenting the generated files as complete.
+Resolve failed validation or a material semantic gap before reporting completion.
 
 ## Output sequence
 
@@ -267,7 +251,7 @@ report file or repeating the whole Product specification.
 2. If any question remains, stop and wait for the user's answer. Do not write JSON.
 3. When there is no unresolved question, prepare the temporary component-candidate JSON and run the merge helper before any Feature-plan write. Continue only after it has either created the absent registry or validated and merged the existing one without conflict.
 4. Append the approved new entries to the index and write only their detail files; create `docs/features/` if necessary. Update index totals/time and its decomposition summary to identify the Product just planned. Initialize the revision log only if absent. Preserve existing Features, metadata unrelated to this addition and all revision history. Do not rewrite the registry by hand after the helper succeeds.
-5. Run the complete self-check and JSON validation.
+5. Complete the validation and semantic review above.
 6. Follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the explicit generated Feature-plan paths, run all cached-diff checks, and create one local `chore(feature-plan): <中文行为摘要>` commit unless the user explicitly requested no commit. Do not use a broad `docs/features/` staging path, and omit `Work item` because this commit creates the plan rather than implementing one Feature. Confirm `git status --short` afterward.
 7. Only after all checks and the local commit pass, report the added files and first executable Feature for the current Product. State that later Products remain for planning after this Product is complete.
 8. Return the plan to the calling workflow. If implementation is already explicitly authorized, continue through `execute-next-feature`; otherwise stop at this planning result. Preserve Product order; this Skill does not implement Features or decompose later Products merely because planning succeeded.

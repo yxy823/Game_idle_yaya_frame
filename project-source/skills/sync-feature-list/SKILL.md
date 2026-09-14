@@ -61,9 +61,8 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 3. Never modify a `done` Feature's `id`, `description`, or `acceptance_criteria`. Do not revise its implemented behavior in place; use the status-specific new-Feature rules below. The only other permitted changes are the explicit removal status and note updates or source-path correction defined in Stage 4.
 4. Stage 3 must establish explicit approval of the concrete actions before Feature-list writes; reuse approval already covering those actions.
 5. Work on the current branch, including `main` or `master`. Follow `agent-rules/00-core/git-worktree-and-commits.md`; a new synchronization task requires a completely clean working tree. Do not automatically create, switch, merge, or delete branches.
-6. Never place an unescaped `"` inside a Feature-list JSON string. Escape it as `\"`, or use natural quotation marks appropriate to `document_language` when they cannot be mistaken for JSON delimiters.
-7. After writing any Feature-list JSON, validate `docs/feature-list.json`, `docs/feature-list-revisions.json`, and every affected `docs/features/F0XX.json` with `python -B -m json.tool <path> > $null`. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py` before reporting success or committing the Feature-plan update.
-8. IDs represent stable allocation, not execution order. Larger IDs may be prerequisites for older pending work. Validate the real dependency DAG and use `python -B tools/checks/check-feature-list.py --eligible` to select executable pending work. Never encode a required ordering only in notes.
+6. After the synchronized set is complete, run `python -B tools/checks/check-feature-list.py` before reporting success or committing the Feature-plan update. It includes JSON parsing; use a separate syntax check only to diagnose a specific error.
+7. IDs represent stable allocation, not execution order. Larger IDs may be prerequisites for older pending work. Validate the real dependency DAG and use `python -B tools/checks/check-feature-list.py --eligible` to select executable pending work. Never encode a required ordering only in notes.
 
 ## Stage 0: preflight and anchor
 
@@ -321,10 +320,13 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 ### Downstream regression
 
-For each dependent Feature identified in Stage 2.4:
-
-- when regression is required, append a Feature named for verifying the dependent behavior after the new revision Feature and depend on that revision Feature;
-- when regression is declined, record the confirmed dependent IDs in the new revision Feature's `notes`.
+Assign ordinary downstream verification to the Feature implementing this change,
+using **Test Impact Review** in `methodology/08-testing-strategy.md`.
+Record the affected behavior, existing tests or manual checks, and any coverage
+gap in that Feature's notes for Stage 1. Preserve existing test ownership; required
+checks cannot be declined through a note. Create another Feature only for a
+separate implementation, repair or independently agreed deliverable, not merely
+to rerun a dependent Feature's valid tests.
 
 
 ### Test traceability updates
@@ -415,22 +417,13 @@ valid for editorial synchronization. The new entry's source commit is one of its
 `anchor_commit` or `synced_at_commit`; verify the actual source diff. Revision IDs
 are stable and unique; retirement records refer to this ID, never a free-text note.
 
-3. Complete this self-check; return to Stage 4 if any item fails:
-
-- [ ] No Feature entry or detail file was physically deleted.
-- [ ] No `done` Feature's `id`, `description`, or `acceptance_criteria` was modified; any removal status/note update or source-path correction matches the explicit Stage 4 rules.
-- [ ] Index IDs and `docs/features/F*.json` filename stems match one to one.
-- [ ] Every new ID was never used before.
-- [ ] Every `depends_on` ID exists.
-- [ ] Larger-ID prerequisites are retained when required; execution and migration graphs are acyclic.
-- [ ] Every split/merge preserves original IDs and completed history; downstream pending dependencies point to actual replacements.
-- [ ] No dependency points to `obsolete` or `obsolete_done`; any unavoidable case was raised before writing.
-- [ ] Every non-historical detail `source` resolves to an existing module file and section after renames.
-- [ ] The last revision entry contains the correct `synced_at_commit`.
-- [ ] `meta.total_features`, index length, and detail-file count are equal.
-- [ ] The index, revision log, test registry, and every affected detail pass `python -B -m json.tool`.
-- [ ] Confirmed stale-test metadata changes were applied without changing completed Feature history; necessary code/reference cleanup is assigned to the owning Feature and reported as pending implementation.
-- [ ] Every retirement has validated source/reason/replacement/revision provenance; pending replacement coverage is explicitly reported.
+3. Run the cross-file checker specified in Global invariants on the completed
+set. Then review the actual diff against the approved actions: preserve historical
+IDs and completed definitions, confirm source sections and the inspected source
+anchor, and check that dependencies express real prerequisites. Confirm required
+test-code/reference cleanup and downstream verification belong to the responsible
+Feature, with unfinished implementation and replacement coverage clearly reported.
+Correct task-owned errors under Exception handling before committing.
 
 4. Stage and commit only Feature-plan files:
 
