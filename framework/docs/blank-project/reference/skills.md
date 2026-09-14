@@ -21,7 +21,7 @@
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
 | [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、复审、完成记录、本地提交与交接 |
 | [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
-| [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 只读现状并撰写适合现有流程的提示词；不运行检查或授予批准 |
+| [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
 
 项目规则与 [方法总览](../../../../project-source/methodology/00-overview.md) 负责完整路由。不要因用户问“当前进度”就执行环境探测或测试；也不要把明确实现请求降级成只提供下一步建议。
 
@@ -35,7 +35,7 @@
 - 当前任务中断：读取 Progress 和原任务 → execute 从真实阶段继续。
 - 只读调查：按明确问题读取资料并报告；调查本身不自动进入实现。
 
-这些组合用于理解职责，不要求每个任务机械调用所有 Skill。当前用户明确范围和已有具体授权优先，重要未决问题仍需解决。
+这些组合用于理解职责，不要求每个任务机械调用所有 Skill。当前用户明确范围和已有具体授权优先，重要未决问题仍需解决。init/spec/audio 只补问材料中缺失且影响决定的内容，不设模块、AC 或问答数量下限；UI 草图和 HTML 探索按实际需要选择。
 
 ## 从哪里取得操作提示词
 

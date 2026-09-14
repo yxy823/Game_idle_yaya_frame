@@ -73,12 +73,12 @@ Keys, `mode` values, module IDs, and module slugs remain stable. Natural-languag
 Run a compact version of Product initialization and ask only:
 
 1. Module positioning in one sentence.
-2. One to three typical functional flows.
+2. Typical functional flows needed to explain the agreed behavior.
 3. Dependencies on and from existing modules.
 4. Whether the module has three or more states, and the states and transitions when it does.
 5. UI placement: full screen, embedded in an existing module, floating panel, or a custom arrangement.
 6. Primary tunable parameters and defaults.
-7. Three to five AI-proposed acceptance criteria for user confirmation or revision.
+7. Observable acceptance criteria covering the agreed behavior without duplication or a target count.
 
 Do not re-ask edge cases, Product-wide visual direction, or Product-wide audio direction. Propose common edge cases for later review and inherit established Product-wide directions. Delegate wireframes and complete audio entries to the corresponding sketchers.
 
@@ -91,12 +91,13 @@ if the change clearly does not affect another section:
     if the user's description is sufficient:
         draft the patch without another question and mark it for confirmation
     else:
-        ask one to three questions about only the ambiguous points
+        ask only about material ambiguous points
 else:
     disclose the affected sections and ask whether to change them together
 ```
 
-Use these mandatory checks:
+Check the following effects against the supplied facts and approved decisions;
+ask only where a material answer is missing. These are not mandatory questions.
 
 | Change | Required clarification or action |
 | --- | --- |
@@ -104,8 +105,8 @@ Use these mandatory checks:
 | A new state | Ask for transition conditions and UI representation |
 | A numeric default changes | Ask whether only the default or also the valid range changes |
 | A new interactive element | Ask its observable behavior and whether it needs audio feedback |
-| UI layout changes | Return `trigger_ui_sketcher` |
-| Audio requirements change | Return `trigger_audio_sketcher` |
+| UI layout changes | Return `trigger_ui_sketcher` when layout/interaction needs clarification or a sketch is requested |
+| Audio requirements change | Return `trigger_audio_sketcher` when sound requirements need design or clarification |
 | Existing behavior is deleted | Inspect effects on completed Features; reuse approval covering those effects or ask for the missing decision |
 
 ## Mode C: `bug_fix`

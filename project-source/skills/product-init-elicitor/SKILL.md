@@ -66,7 +66,7 @@ Ask who uses the Product and in what context. For a Pomodoro example, options mi
 
 ### Q1.3 Core loop
 
-Ask for the smallest useful or playable loop. Follow up once or twice when needed until a typical use can be described in three to five coherent steps.
+Establish the smallest useful or playable loop; follow up only until its actions and observable outcome are clear.
 
 ### Q1.4 Differentiation
 
@@ -74,7 +74,7 @@ Ask what must distinguish this Product from common alternatives. Use the answer 
 
 ### Q1.5 Initial module list
 
-Propose three to seven modules based on the preceding answers, using two-digit ASCII identifiers and kebab-case slugs. Ask the user to confirm, remove, add, or rename modules. After confirmation, move to Stage 2.
+Propose only the modules needed for the agreed scope, using two-digit ASCII identifiers and kebab-case slugs. A single module is valid. Reuse confirmed boundaries; ask about unresolved responsibilities or dependencies before Stage 2.
 
 Example:
 
@@ -96,7 +96,9 @@ Ask for the Product-wide audio tone. Useful options include 8-bit, natural ambie
 
 ## Stage 2: Module elicitation
 
-Process modules in confirmed order and ask only about unresolved, material gaps. At the end of every module, show its complete draft and obtain confirmation before continuing, so earlier decisions remain reviewable.
+Process modules in confirmed order and ask only about unresolved, material gaps.
+Keep one reviewable draft; show changed or undecided parts when feedback is
+needed, and reuse approved content without reprinting and reconfirming every module.
 
 ### M.1 Module positioning
 
@@ -104,7 +106,7 @@ Ask for the module's role in one sentence. Skip this if Stage 1 already establis
 
 ### M.2 Functional flow
 
-Ask what a user can do in the module and capture one to three typical flows.
+Capture the user flows needed to explain the agreed behavior.
 
 ### M.3 Data model
 
@@ -140,7 +142,7 @@ Identify configurable values, defaults, and valid ranges.
 
 ### M.11 Acceptance criteria
 
-Propose three to seven observable, verifiable statements and ask the user to confirm or revise them. These criteria guide later implementation, so do not accept subjective wording.
+Propose the observable, verifiable criteria needed to cover the agreed behavior without duplication. Reuse approved criteria and resolve material choices; do not add criteria to reach a target count or accept subjective wording.
 
 ### M.12 Edge cases
 
@@ -201,8 +203,8 @@ ASCII wireframes and complete audio entries are outside this workflow's output. 
 
 ## Common traps
 
-1. Do not elicit more than seven modules at once. For a larger Product, finish the three to five MVP modules and record the rest for a later version.
+1. Bound a larger Product to its agreed playable scope; keep deferred modules at a useful outline until their turn.
 2. Do not spend excessive time debating names. Propose a usable name and let the user change it.
 3. Never omit edge cases; they prevent predictable implementation failures.
 4. If the user says anything is acceptable, propose a concrete default, clearly disclose that it is an AI proposal, and allow correction.
-5. Show a complete draft after every module so the user can catch missing or conflicting intent.
+5. Return the consolidated draft with unresolved decisions visible; previously approved sections do not need another confirmation.

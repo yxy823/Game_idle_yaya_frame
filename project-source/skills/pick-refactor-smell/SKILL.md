@@ -29,7 +29,7 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
 
 1. Discover and select only. Do not write code, modify files, or commit. Report the recommendation or reason to defer, and wait for the user's choice.
 2. Explain relative priority using current evidence, expected benefit, and the cost of a safe change. Do not calculate numeric scores or create priority fields or a separate ledger.
-3. Prefer coverage to a short list. Do not hide important candidates merely to simplify the report.
+3. Cover the requested scope without hiding important candidates merely to shorten the report; do not expand a filtered request into a whole-project scan.
 4. Do not invoke another Skill. The user's next instruction controls the downstream refactor.
 
 ## Stage 1: scan
@@ -38,8 +38,8 @@ With `document_language: en` and a Chinese conversation, discuss candidates in C
 
 **Output:** an unranked list of confirmed unresolved candidates and any material uncertainty.
 
-1. Check `docs/features/`. If absent, direct the user to `generate-feature-list` and stop.
-2. Read every `docs/features/F*.json` and extract the `notes` field. Read `docs/feature-list.json` for titles, statuses, and reverse dependency analysis.
+1. Check `docs/features/`. If absent, report that there are no recorded Feature candidates and stop; selection does not require creating a plan.
+2. Read `docs/feature-list.json` for titles, statuses and dependencies. Apply any requested Feature filter before loading details, then read the selected details' `notes`. A category filter selects matching findings within that scope; a project-wide category search may need all notes. Follow other details only to resolve a candidate's current validity or real dependency, not to broaden the scan.
 3. Split notes by line or sentence and extract any paragraph containing at least one stable marker:
    - `TODO`
    - `suggest`
@@ -106,8 +106,8 @@ After the report, wait for the user's choice. Do not enter Plan mode, spawn an E
 
 | Condition | Required response |
 |---|---|
-| `docs/features/` is absent | Direct the user to `generate-feature-list` and stop |
-| Any `docs/features/F*.json` is invalid | Report the exact path and parse error; stop until the user repairs it |
+| `docs/features/` is absent | Report no recorded Feature candidates and stop |
+| A record needed for the requested scan is invalid | Report its exact path, parse error and affected conclusion; do not repair it in this read-only workflow |
 | No confirmed unresolved candidate remains | Report no actionable recorded candidate and any uncertainty, then stop without a recommendation |
 | Valid candidates exist but none is worthwhile now | Explain why deferral is preferable; preserve the findings and do not force a selection |
 | Many candidates match | Lead with the comparative conclusion and summarize the remaining candidates; preserve their source references and material uncertainty without a fixed severity quota |

@@ -46,7 +46,7 @@ The project knowledge layer is:
 | Planning | `generate-feature-list`, `sync-feature-list` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, independent review, completion, and handoff. |
-| Guidance | `yaya-next-step-advisor` | Read current state and produce an appropriately scoped prompt for an existing workflow; never execute or grant approval. |
+| Guidance | `yaya-next-step-advisor` | Explain current state; provide a scoped continuation prompt when needed, without executing or granting approval. |
 
 ## Canonical task routing
 

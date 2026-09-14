@@ -16,7 +16,7 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Framework Gate blocks business WIP | Isolated framework maintenance, reusable source/template/negative-test fix, preserve business work. |
 | Audit only | Read-only finding/report prompt; no source writes or automatically created Bug. |
 | Human says a specific tested revision is accepted | Follow up on that exact scope/snapshot; do not accept another version or Feature. |
-| Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS. |
+| Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS or unnecessary continuation prompt. |
 | Simple bounded next action | Short prompt; avoid copying the entire workflow. |
 | Cross-module migration with uncertain inputs | Investigation/planning prompt with evidence gaps and validation obligations. |
 | Emergency Bug | Shorter preparation is possible; required regression/affected checks, applicable human acceptance and traceable commit remain. |
@@ -24,6 +24,7 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Dirty tree contains another task | Report ownership conflict; do not stash, delete, overwrite or silently commit it. |
 
 For every case, verify that advice reads current project facts, refers to the
-existing destination workflow, gives one suitable prompt and performs no writes.
+existing destination workflow when routing is needed, supplies a prompt only for
+a handoff/next-action need, and performs no writes.
 Record any observed misrouting as a focused regression case; do not claim these
 expectations themselves are executed end-to-end tests.

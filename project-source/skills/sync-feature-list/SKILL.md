@@ -90,7 +90,10 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 
 **Output:** an optional statement of the user's main intent for this synchronization.
 
-Ask the user to summarize the source-document change before reading the diff—for example, a new module, a revised scoring rule, or new pause-screen copy. Explain that this helps distinguish semantic changes from editorial changes. If the user asks you to inspect the diff without a prior, continue without one. Store the answer for Stage 2 and the durable revision entry.
+Reuse the user's supplied change description when present; otherwise continue
+directly to the diff with no prior. Ask only if inspected changes leave a material
+intent ambiguity. Store an actual supplied answer for Stage 2 and the revision
+entry, or use `user_intent: null`; do not invent a user statement from the diff.
 
 ## Stage 2: Git-diff analysis
 

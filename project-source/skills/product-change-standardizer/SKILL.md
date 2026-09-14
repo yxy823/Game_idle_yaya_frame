@@ -133,7 +133,7 @@ Before choosing the route, distinguish Product change from implementation defect
 
 For initialization, run `product-init-elicitor` with the user's short description. It returns a complete overview and module draft, while UI wireframes and complete audio entries may remain pending.
 
-For states B through E, run `product-spec-elicitor` with:
+For states B through E with material gaps, run `product-spec-elicitor` with:
 
 - the change description
 - the selected mode
@@ -143,22 +143,21 @@ For states B through E, run `product-spec-elicitor` with:
 Pass relevant CONTEXT definitions and already confirmed answers to the elicitor.
 It asks only remaining questions that materially affect the change and returns
 a structured patch. It must not write files or restart a completed interview.
+When the supplied facts and decisions already define the change, prepare that
+patch directly without invoking another interview.
 
 ## Step 4: Complete UI and audio dimensions
 
-For every new or changed UI area:
+Read the existing UI/audio requirements and reuse established decisions.
 
-1. Run `product-ui-sketcher` with its Product behavior and interactions.
-2. Receive an ASCII wireframe and intent statement.
-3. Ask whether to create an optional standalone HTML and Tailwind exploration under `docs/ui-mockups/`.
+| Need | Action |
+| --- | --- |
+| Layout or interaction needs clarification, or a sketch is requested | Use `product-ui-sketcher` for an ASCII wireframe and intent; a simple copy/value change with settled interaction needs no new sketch |
+| HTML/Tailwind exploration is requested or has an agreed purpose | Use the sketcher's optional exploration; do not add a routine question about HTML to every UI edit |
+| Sound requirements need design or clarification | Use `product-audio-sketcher` with known trigger, style and duration; reuse complete entries and its stable placeholder naming |
 
-For every new or changed audio area:
-
-1. Run `product-audio-sketcher` with its functional flow.
-2. Obtain trigger, style, duration, and other required Product details.
-3. Assign recognizable `_placeholder_*.wav` names when final assets do not exist.
-
-These child workflows follow the same conversation and document-language boundary. Until their canonical sources are migrated, pass `document_language` explicitly and reject durable output in the wrong language.
+Pass the resolved `document_language` and confirmed facts to any child workflow.
+These are Product requirements; implementation and actual human acceptance remain separate.
 
 ## Step 5: Write Product documents
 

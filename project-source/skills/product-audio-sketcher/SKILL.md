@@ -1,6 +1,6 @@
 ---
 name: product-audio-sketcher
-description: Elicit intent, style, and duration for sound cues, then produce Product-ready audio requirements and stable _placeholder_ filenames. Use for audio, sound effects, or background music; 中文触发：设计音效、补充声音需求、规划背景音乐。
+description: Define or clarify Product requirements for sound effects and background music, including intent, style, duration and placeholder names. Use for audio requirement design, not playback implementation or debugging; 中文触发：设计声音需求、规划音效或音乐。
 metadata:
   version: 1.1
   priority: medium
@@ -32,7 +32,7 @@ Examples:
 1. **Do not pretend to generate audio.** Produce requirements only.
 2. **Describe intent, not waveforms.** Prefer “a gentle sense of starting” to oscillator frequencies or other implementation parameters.
 3. **Give every entry a placeholder filename.** Use the stable `_placeholder_` conventions below.
-4. **Keep elicitation focused.** Ask only two to four key questions for each sound, one question at a time.
+4. **Keep elicitation focused.** Reuse confirmed answers and ask only about material gaps; related sounds can share established requirements.
 5. **Do not require a reference sound.** A reference is useful when available, but its absence must not block progress.
 
 ## Input
@@ -58,30 +58,34 @@ Input prose may be in any language. Do not translate stable identifiers unless a
 
 ## Elicitation sequence
 
-Run this sequence for each trigger. Ask one question, wait for the answer, then continue. Ask two to four questions in total for that sound.
+Use the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method)
+to fill only unresolved requirements. The dimensions below are a coverage guide,
+not a question sequence or quota. Reuse caller-provided intent, duration and
+project tone; group independent gaps and shared sound decisions when useful.
+When the requirements are already clear, produce the entries without another question.
 
-### Q1: intent — required
+### Intent — required information
 
-Ask what feeling or product purpose the sound should convey. Offer three or four common choices plus a custom option. For a timer-start sound, suitable choices include a gentle beginning, a ceremonial “begin work” cue, a nearly imperceptible confirmation, and a custom intent.
+When intent is unresolved, ask what feeling or product purpose the sound should convey. Offer relevant alternatives when helpful; a timer-start sound might mark a gentle beginning, a ceremonial start or nearly imperceptible confirmation.
 
-### Q2: duration — required
+### Duration — required information
 
-Offer these exact duration bands:
+When duration is unresolved, these bands can help elicit a concrete duration or narrow range:
 
 - very short: `<0.3s`, for immediate feedback;
 - short: `0.3–1s`, with enough time for a musical character;
 - medium: `1–3s`, with enough time to convey emotion;
 - long: `>3s`, reserved for exceptional events.
 
-### Q3: style — conditional
+### Style — conditional
 
 Reuse the project's established audio tone by default. Ask about style only when the sound must clearly differ from other sounds or the change request implies an exception. When needed, offer the established project tone as the recommended choice, natural ambience, electronic synthesis, 8-bit retro, acoustic instruments, and a custom style.
 
-### Q4: reference — optional
+### Reference — optional
 
-Ask whether the user has a sound from a game, application, film, or other source in mind. Make it explicit that they may skip this question.
+Use references the user supplies. Ask for one only when it would resolve a material ambiguity; absence of a reference is not a blocker.
 
-### Q5: boundary behavior — conditional
+### Boundary behavior — conditional
 
 Ask only when the trigger has a meaningful boundary case:
 
