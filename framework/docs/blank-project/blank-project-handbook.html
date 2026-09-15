@@ -1659,7 +1659,9 @@ Work item: docs/features/F012.json
 <p>占位内容使用 <code>_placeholder_</code> 前缀，并在当前 Feature notes 说明用途、替换方式和未完成的验收。替换素材时核对引用、UID/路径与实际场景；外观、声音、动画和手感仍按需求保留人工验收。</p>
 <p>数据格式改变时核对已有内容和加载方，再决定版本、迁移与兼容范围。资产来源和许可证按现有规则记录。工具生成的输出不应成为可复用脚本或重要项目决定的唯一副本。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--报告保留与清理" data-title="报告保留与清理">报告保留与清理<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--报告保留与清理" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
+<p>准备运行时按 <a href="#doc-framework--docs--blank-project--reference--project-layout--%E5%BC%80%E5%8F%91%E4%B8%AD%E6%8C%89%E9%9C%80%E5%87%BA%E7%8E%B0%E7%9A%84%E5%86%85%E5%AE%B9">目录参考</a> 选择产物位置：保留工具和流程的固定路径，自定义结果按任务归组，验证副本与辅助材料进入临时工作区。临时材料沿用现有生命周期规则；需要跨任务或交接保留时，在已有 Feature notes 或 Progress 中说明用途及可结束保留的条件，例如待验收完成或排障结束。可复用工具和夹具回到正常源码目录。</p>
 <p>当前验证、人工验收、未解决失败或后续工作需要的报告继续保留。默认报告不进入 Git，因此代码提交不保证另一台机器拥有报告原件。需要跨目录或跨机器交接时说明实际可用证据，缺失原件不能靠提交说明补成通过。</p>
+<p>已有目录的整理须同时核对生成命令、读取脚本和当前证据链接，不能只移动文件。<code>scratch</code> 名称不表示内容可以删除，其中仍被验收或失败调查使用的工程与证据同样需要保留。</p>
 <p>清理报告是明确的维护动作：读取拟处理目录和当前引用，只清理已理解且获授权的输出。目录较旧、后面有成功运行、文件未被 Git 跟踪，都不自动授权删除。测试运行器不会自动清理旧报告，也不需要额外的保留登记表。</p>
 <p>依据：<a href="../../../project-source/methodology/09-artifact-lifecycle.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">历史与报告规范</a>、<a href="../../../project-source/methodology/10-architecture-overview.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">架构与 ADR 规范</a>。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--读取工程规则" data-title="读取工程规则">读取工程规则<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--读取工程规则" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
@@ -2072,8 +2074,19 @@ Work item: docs/features/F012.json
 <td>manual Feature 准备验收时</td>
 <td>分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件</td>
 </tr>
+<tr>
+<td><code>reports/&lt;任务&gt;/</code>，如 <code>reports/F001/</code></td>
+<td>自定义验证产生结果时</td>
+<td>按 Feature ID 或有意义的维护任务名归组日志、结果和截图；需要区分多次运行时再设子目录</td>
+</tr>
+<tr>
+<td><code>reports/scratch/&lt;任务&gt;/</code></td>
+<td>需要临时工作区时</td>
+<td>隔离验证工程及其缓存、临时探针、参考源码片段和命令辅助文件；按用途与生命周期保留</td>
+</tr>
 </tbody>
 </table></div>
+<p>工具或流程已约定的报告路径继续沿用；上表后两项用于自定义产物，按需创建。工具支持指定输出位置时，将需保留的结果放入任务报告目录，与临时输入分开；证据仍在验证副本内时保留所需工作区并链接原件。存放与清理约定见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8A%A5%E5%91%8A%E4%BF%9D%E7%95%99%E4%B8%8E%E6%B8%85%E7%90%86">报告保留与清理</a>。</p>
 <p>游戏源码、场景、资源和素材源文件按游戏实际模块组织。项目规则目录中的 <code>10-gdscript</code>、<code>20-scenes</code> 等数字是规则导航，不要求业务目录也按文件类型分组。</p>
 <h2 id="doc-framework--docs--blank-project--reference--project-layout--模板怎么使用" data-title="模板怎么使用">模板怎么使用<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--project-layout--模板怎么使用" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <div class="table-scroll"><table>

@@ -14,7 +14,7 @@
 | Document language or initial environment configuration | `methodology/05-document-language.md` |
 | Bug, refactor or maintenance | `methodology/07-engineering-change.md` |
 | Test impact, current-run evidence or completion helper use | `methodology/08-testing-strategy.md`; direct parsing/lint commands are in `methodology/gdscript-lint.md` |
-| Progress, history and report cleanup | `methodology/09-artifact-lifecycle.md` |
+| Report organization, temporary workspaces, Progress, history or cleanup | `methodology/09-artifact-lifecycle.md` |
 | Optional architecture map and ADRs | `methodology/10-architecture-overview.md` |
 
 These entries are task routes, not a mandatory reading sequence. Follow the

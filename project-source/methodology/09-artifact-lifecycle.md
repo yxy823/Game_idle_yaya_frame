@@ -5,6 +5,27 @@ execution output; they are not the only copy of reusable tools or project decisi
 
 ## Reports and cleanup
 
+Choose output locations when preparing a run or temporary workspace:
+
+| Artifact | Location and responsibility |
+| --- | --- |
+| Tool or workflow-defined reports | Keep their existing paths, including `reports/gdunit-wrapper/run-<id>/`, `reports/manual-acceptance/` and `reports/initialization.md`. Their readers and evidence references depend on those contracts. |
+| Custom logs, results and screenshots | Group under `reports/<task>/`, using the Feature ID or a descriptive maintenance key. Add run subdirectories when needed to preserve distinct attempts; avoid scattering custom files or per-run directories at the report root. |
+| Temporary projects, probes, reference-source excerpts and command-support files | Use `reports/scratch/<task>/`, with separate attempt directories as needed. Keep each copied project and its generated caches inside that workspace; copy only the inputs needed for the check. |
+
+Create these directories only when needed. Where a tool supports output paths,
+save retained results in the task report directory separately from scratch inputs.
+When evidence remains embedded in a scratch project, retain the required workspace
+and link the actual evidence location. A scratch path alone does not establish
+that its contents are disposable.
+
+Apply the [temporary-file lifecycle rule](../agent-rules/00-core/third-party-generated-and-temporary-files.md#temporary-backup-and-scratch)
+when creating scratch material. If it must survive the task or handoff, record its
+purpose and release condition in existing Feature notes or Progress, such as
+completion of a pending acceptance or investigation. Keep reusable tools and
+fixtures in their normal source directories. Changing an existing output layout
+requires checking its producers, readers and current evidence links together.
+
 Retain reports needed by current verification, acceptance, unresolved failures
 or follow-up work. Link the relevant paths from the Feature or Progress record;
 do not maintain a separate ownership ledger, hold file or retention state.
