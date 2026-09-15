@@ -28,6 +28,22 @@ CONTEXT wording. Resolve `document_language` from project configuration and pass
 the confirmed value to any elicitor/sketcher; preserve protocol identifiers and
 existing history. Language migration follows that contract within explicit scope.
 
+## Existing implementation route
+
+When asked to formalize already implemented behavior, compare the specified
+files, relevant history and user decisions with any existing Product. Separate
+confirmed intent, observed behavior, experiments/placeholders and unresolved
+choices; only confirmed intent becomes Product. Reuse settled answers instead
+of repeating a full elicitation. Record the present formalization in Product
+change history without inventing earlier approval or copying code structure.
+
+Use the normal Product writing procedure for missing or changed intent within
+the authorized scope. When Product already covers the requested behavior, reuse
+it and proceed to Steps 6–7 for missing planning and handoff. Apply **Adopting
+existing implementation** in `methodology/02-feature-list-schema.md`; diagnose
+implementation gaps against the owning Feature, without rewriting Product to
+justify defects. Git ownership still follows the existing preflight contract.
+
 ## Terminology maintenance route
 
 For an authorized terminology-only request, read

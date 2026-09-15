@@ -12,6 +12,11 @@ review** and the index/detail/revision/Registry contracts in
 `methodology/02-feature-list-schema.md`. This Skill owns the planning procedure
 and component merge below; it does not maintain another schema.
 
+When the requested scope already has implementation but lacks Feature records,
+also apply **Adopting existing implementation** in that specification. Reuse
+the actual implementation and tests in the proposal; planning does not mark
+the adopted work complete.
+
 Apply `methodology/05-document-language.md` before durable prose. Resolve
 `document_language` from confirmed configuration; preserve existing history.
 Before durable writes, apply the preflight and ownership contract in

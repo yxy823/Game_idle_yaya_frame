@@ -267,6 +267,10 @@ When the approved acceptance mode is manual, human acceptance remains separate, 
 
 When `docs/methodology-config.json` enables automated testing, the normal Feature flow is:
 
+For behavior implemented before formal recording, apply [Delivery of existing implementation](03-execute-loop.md#delivery-of-existing-implementation)
+to distinguish present verification from unavailable historical baseline/RED
+evidence. New behavior changes and repairs still follow the normal TDD flow below.
+
 ```text
 Test Impact Review
         ↓

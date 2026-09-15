@@ -456,6 +456,35 @@ notes. Do not add a Product queue, registry, completion flag or duplicate ledger
 Pre-existing plans remain intact; this rule does not authorize deleting future
 Features or rewriting completed history.
 
+## Adopting existing implementation
+
+When implementation predates its Product or Feature records, first use
+`product-change-standardizer` to establish confirmed Product intent. Existing
+code is evidence of current behavior, not automatic approval of that behavior.
+Then apply Product-by-Product planning to the requested current module; existing
+implementation does not waive prerequisite completion or expand the planning
+horizon. Later modules may retain Product descriptions without Feature allocation.
+
+Reuse an existing Feature covering the outcome. If no record covers it, create
+ordinary Product-derived Features around independently verifiable outcomes,
+not hypothetical historical coding steps or one Feature per source file.
+Derive AC from confirmed intent and map each to the existing implementation,
+usable tests and remaining gaps in the normal requirement coverage review.
+Do not weaken AC to fit a defect or create duplicate work just to rerun tests.
+
+New records use the canonical initial planning values: `pending` and
+`completed_at: null`. In their existing `notes`, state that implementation
+predates formal recording, link verified files/commits and decisions, and name
+remaining implementation or verification. Missing history stays unknown; do not
+invent prior Features, approvals, RED runs or acceptance dates. Preserve existing
+completed records and evidence under the normal evolution rules.
+
+Documentation-only work stops after the authorized Product/plan writes and
+their required checks and commits; report implemented scope separately from
+formal completion. Authorized delivery uses [Delivery of existing implementation](03-execute-loop.md#delivery-of-existing-implementation)
+to verify and finish from the current state. No extra status, adoption ledger
+or evidence format is needed.
+
 ## Decomposition rules
 
 1. Each Feature is the smallest independently verifiable complete behavior or engineering outcome.

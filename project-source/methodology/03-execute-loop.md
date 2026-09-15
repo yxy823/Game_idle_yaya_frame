@@ -35,6 +35,40 @@ Feature change across all its commits and remaining working-tree changes, not
 only the latest commit or uncommitted diff. Use the verified pre-implementation
 Git state and task-owned history; do not introduce a separate commit ledger.
 
+### Delivery of existing implementation
+
+For implementation adopted under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation),
+use Stages 0–2 to confirm the current contract, actual implementation coverage,
+remaining work, acceptance mode and Test Impact Review, then persist the approved
+plan and initialize completion evidence. Reuse concrete authorization; a request
+to document existing work alone does not authorize execution or repairs. Git
+ownership and environment requirements remain those of the shared contracts.
+
+In Stage 3, reuse behavior already satisfying the confirmed AC. Map suitable
+existing tests through the Registry; add missing checks against intended behavior
+and meaningful boundaries, not merely assertions that mirror the implementation.
+For unchanged adopted behavior, a new test may pass immediately: record it as
+present verification, not historical TDD. Do not undo working behavior to create
+a RED run or reconstruct a missing pre-implementation baseline. Before any new
+behavior change or repair, apply the normal baseline and TDD contract to that
+remaining work; failures found during adoption remain real gaps, not permission
+to weaken the contract or broaden repairs.
+
+For scope review, use verified original changes when available and inspect the
+current implementation against every adopted AC. If the original baseline cannot
+be recovered, disclose that limit and review the relevant current implementation
+and its direct callers; an empty documentation-only diff proves no behavior.
+The adoption-time snapshot establishes current evidence, not a claim about the
+original development process.
+
+Complete applicable Stages 4–7 with evidence covering the current Product,
+Feature/Registry contract and implementation. Prior results must satisfy the
+existing snapshot and coverage rules; historical claims or notes cannot replace
+them. Required human acceptance and explicit review conditions still apply.
+Set `done` and `completed_at` only when Stage 7 succeeds, using the actual current
+completion time. Keep any verified earlier implementation date in notes; never
+backdate formal completion or replay already satisfied implementation steps.
+
 ### Progress communication
 
 Report meaningful progress, failures, decisions needed and the final handoff in the
