@@ -300,7 +300,7 @@ run final affected or necessary full scope + static checks
         ↓
 Stage 5 explicit human acceptance (only for the approved manual mode)
         ↓
-requirements and code-quality review + reverify repairs or concrete evidence gaps
+Stage 6 independent review only when requested; otherwise continue to done gate
         ↓
 done gate
 ```
@@ -309,7 +309,7 @@ A pre-existing baseline failure must be reported before implementation. Do not a
 
 Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 5 records actual human acceptance when required. `.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output and any explicit user review condition under the execution loop. The evidence helper does not prove static checks or review ran, or supply a required human decision.
 
-A requested Stage 6 review reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
+A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-requirements-and-code-quality-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
 Stage 1 first chooses `verification.acceptance_mode` from the requirement, then
 fills the corresponding checks. Visual presentation, animation, audio/sound/music,
