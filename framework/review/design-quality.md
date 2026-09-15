@@ -23,7 +23,7 @@
 | 项目创建 | [create_project.py](../commands/create_project.py) 读取 [project-files.json](../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
 | Skill | 当前 12 项；新增 `project-clarifier` 复用提问方法与 Product 写入入口，按需维护项目 CONTEXT，不增加脚本或问卷状态。专用脚本仍在所属 Skill 的 `scripts/` |
-| 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 六个共享实现模块 |
+| 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
 | 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表；没有独立计划命令、计划文件或计划哈希 |
 | 静态检查 | Agent 按 `methodology/gdscript-lint.md` 直接调用 Godot 解析和插件 CLI；没有包装脚本、专用 manifest 或静态证据注册 |
