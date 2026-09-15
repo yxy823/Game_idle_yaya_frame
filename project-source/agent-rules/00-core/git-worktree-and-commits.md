@@ -97,8 +97,9 @@ rules. These rules apply to every task that may modify repository files.
   `Work item: <relative-path>` pointing to its Feature detail record,
   for example `Work item: docs/features/F012.json`. Keep the subject specific to
   this commit's change instead of repeating only the overall Feature title.
-  Before Feature completion, briefly state remaining implementation or acceptance
-  work; do not describe a partial delivery as the whole Feature being complete.
+  Remaining work belongs in Feature/Progress records, not a required commit-body
+  section. Mention a limitation only when it affects understanding or using this
+  change; do not describe a partial delivery as the whole Feature being complete.
   Tasks without a single owning Feature omit these fields rather than inventing
   a name/path or pointing at implementation artifacts.
 - **[MUST]** After committing, run `git status --short` and confirm there are no
@@ -120,7 +121,6 @@ Feature: 增加背包物品管理
 内容：入库前检查剩余容量，超量时返回失败并保持原有物品数量。
 原因：避免容量不足时部分写入，导致调用方无法判断实际入库结果。
 验证：容量边界与失败后数量不变的测试通过；相关解析和 lint 通过。
-剩余：背包界面接入与人工验收尚未完成。
 
 Work item: docs/features/F012.json
 ```

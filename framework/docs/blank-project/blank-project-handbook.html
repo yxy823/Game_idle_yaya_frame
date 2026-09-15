@@ -1197,10 +1197,10 @@ $LASTEXITCODE
 <h3 id="doc-framework--docs--blank-project--guides--feature-delivery--自动分批提交" data-title="自动分批提交">自动分批提交<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--自动分批提交" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
 <p>Agent 在开发过程中，每完成一个可独立理解且通过相关验证的逻辑变更，就自动创建本地提交，无需再次询问。同一个 Feature 可以有多个提交，后续提交可以依赖前面已提交的成果；简单任务一次提交即可。不按时间、文件数量或固定次数拆分，必须一起实现和验证的改动放在同一批。</p>
 <p>每批提交后的版本应保持可用，包含所需代码、测试、资源和记录；不能依赖留在工作区而未提交的配套修改，也不提交失败的 RED 测试。验证按本批变更及受影响行为选择，最终仍须完成整个 Feature 的验证与适用人工验收。</p>
-<p>人工验收尚未完成时，可以提交已经验证的完整逻辑变更，并明确剩余事项；你明确要求“验收或评审后才能提交”时遵守该条件。中途提交保持 Feature 为 <code>in_progress</code>，只有 Stage 7 检查通过才记为 <code>done</code>。工作区干净不代表任务完成，Agent 应继续已授权的剩余工作。</p>
+<p>人工验收尚未完成时，可以提交已经验证的完整逻辑变更；你明确要求“验收或评审后才能提交”时遵守该条件。中途提交保持 Feature 为 <code>in_progress</code>，只有 Stage 7 检查通过才记为 <code>done</code>。工作区干净不代表任务完成，Agent 应继续已授权的剩余工作。</p>
 <p>项目默认在当前分支提交本任务明确路径或检查过的差异块，提交前查看暂存区完整差异和检查结果；用户要求不提交时遵守该要求。最终审查覆盖该 Feature 的全部提交和剩余差异，Stage 7 提交剩余实现与完成记录，Stage 8 汇报提交列表或经核实的范围。提交后再次核对状态，不自动 push 或改写历史。</p>
 <h3 id="doc-framework--docs--blank-project--guides--feature-delivery--提交文本" data-title="提交文本">提交文本<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--提交文本" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
-<p>Feature 提交标题采用 <code>&lt;type&gt;(F0XX): &lt;本批中文行为摘要&gt;</code>；正文的 <code>Feature:</code> 使用 <code>docs/feature-list.json</code> 中对应任务的真实 <code>title</code>，<code>Work item:</code> 指向详情文件。非简单修改说明本批内容、原因、关键取舍和实际验证，未完成的 Feature 简述剩余工作。除两个身份字段外，不强制正文栏目或条数，简单修改省略重复说明；没有单一所属 Feature 的任务不虚构名称和路径。</p>
+<p>Feature 提交标题采用 <code>&lt;type&gt;(F0XX): &lt;本批中文行为摘要&gt;</code>；正文的 <code>Feature:</code> 使用 <code>docs/feature-list.json</code> 中对应任务的真实 <code>title</code>，<code>Work item:</code> 指向详情文件。非简单修改说明本批内容、原因、关键取舍和实际验证。剩余工作由 Feature 与 Progress 管理，提交正文不要求重复；只有影响理解或使用本次修改的限制才按需说明。除两个身份字段外，不强制正文栏目或条数，简单修改省略重复说明；没有单一所属 Feature 的任务不虚构名称和路径。</p>
 <p>以下是格式示例，不表示已经执行这些测试：</p>
 <div class="code-block"><div class="code-toolbar"><span>text</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code>feat(F012): 增加背包容量检查并拒绝超量入库
 
@@ -1209,7 +1209,6 @@ Feature: 增加背包物品管理
 内容：入库前检查剩余容量，超量时返回失败并保持原有物品数量。
 原因：避免容量不足时部分写入，导致调用方无法判断实际入库结果。
 验证：容量边界与失败后数量不变的测试通过；相关解析和 lint 通过。
-剩余：背包界面接入与人工验收尚未完成。
 
 Work item: docs/features/F012.json
 </code></pre></div>
