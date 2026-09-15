@@ -93,7 +93,7 @@ docs/
     └── <exploration>.html
 ```
 
-Module filenames use a two-digit dependency-ordered prefix and a kebab-case ASCII slug. Never renumber an established module.
+Follow **Module filename rules** in `methodology/01-product-doc-structure.md` for stable module identities and filenames.
 
 Before writing Product documents, read:
 
@@ -177,7 +177,7 @@ These are Product requirements; implementation and actual human acceptance remai
 This workflow performs all writes:
 
 1. **Initialization:** render the canonical overview and module templates into `document_language`.
-2. **New module:** create `docs/product/NN-<slug>.md` with the next valid dependency-ordered number.
+2. **New module:** create `docs/product/NN-<slug>.md` with the next available module number.
 3. **Existing module:** edit only the affected sections; preserve unrelated content.
 4. **Overview:** update the module inventory and dependencies when they change.
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.

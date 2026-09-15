@@ -110,8 +110,8 @@ IDs, and do not rename code or migrate saved data merely to align terminology.
 ## Module filename rules
 
 - Use a two-digit prefix and a kebab-case ASCII slug, such as `01-pawn-core.md`, `02-map.md`, or `13-mining.md`.
-- Order numbers by module dependency: a module must appear before modules that depend on it.
-- Once assigned, module numbers must not be reordered. New modules use the next available number.
+- Numbers are stable identities, not execution order. Initial allocation may follow known dependencies; planning and execution follow the overview's current dependencies and intended order.
+- Once assigned, module numbers must not be reordered. New modules use the next available number, including a new prerequisite of an existing module.
 - An obsolete module must be renamed with the `_obsolete-` prefix rather than deleted, preserving traceability.
 
 ## Version convention
