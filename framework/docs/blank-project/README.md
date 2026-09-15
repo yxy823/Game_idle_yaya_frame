@@ -41,6 +41,7 @@
 | 修 Bug、重构或做技术调查 | [工程变更与实验](guides/engineering-changes.md) |
 | 中断后继续、补架构说明或整理历史 | [项目知识与交接](guides/project-knowledge.md) |
 | 将旧框架项目复制到新框架继续开发 | [复制迁移已有项目](getting-started/migrate-existing-project.md) → 核对成果与方案 → 目标内迁移和验证 |
+| 保留项目数据，在当前项目直接替换框架 | [原地替换项目框架](guides/engineering-changes.md#原地替换项目框架) → 必要差异审核 → 替换、最小适配与一次提交 |
 | 想知道复制后有什么 | [项目目录与文件职责](reference/project-layout.md) → [配置参考](reference/configuration.md) |
 | 准备实现一个任务 | [Skill 导航](reference/skills.md) → [Feature 开发流程](guides/feature-delivery.md) → [命令与验证](reference/commands-and-validation.md) |
 | 命令失败或不知道为什么不能完成 | [故障排查](reference/troubleshooting.md) |
