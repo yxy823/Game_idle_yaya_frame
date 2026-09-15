@@ -21,6 +21,20 @@ verification, acceptance and commit before continuing an authorized batch;
 independent review follows the user's chosen scope and timing under Stage 6.
 Authorization to implement never supplies a missing human acceptance result.
 
+### Incremental commits and whole-Feature review
+
+One Feature may contain several validated logical commits under
+`agent-rules/00-core/git-worktree-and-commits.md`. Such commits retain
+`in_progress` and `completed_at: null`; only Stage 7 establishes completion.
+A clean worktree after a commit is not a reason to skip remaining work or start
+another Feature. Resume using the existing Feature/Progress records and Git
+history, including already committed work as well as current differences.
+
+Whenever this loop calls for the final diff or scope review, inspect the combined
+Feature change across all its commits and remaining working-tree changes, not
+only the latest commit or uncommitted diff. Use the verified pre-implementation
+Git state and task-owned history; do not introduce a separate commit ledger.
+
 ### Progress communication
 
 Report meaningful progress, failures, decisions needed and the final handoff in the
@@ -180,9 +194,19 @@ When a Stage 1-approved unit suite is created, add its repository-relative file 
 4. repeat for the remaining criteria;
 5. preserve accepted Product behavior outside scope.
 
-Do not create an implementation commit before the Feature has passed its
-applicable Stage 4-7 Gates. Preserve task ownership throughout the working
-tree so Stage 7 can stage this Feature without absorbing unrelated changes.
+As a coherent logical change becomes usable, run its relevant tests and direct
+parsing/lint or other applicable checks, then commit it automatically under the
+Core Git rules. Include supporting tests, resources and record updates needed
+to keep that committed snapshot consistent. Narrow validation must cover this
+change and its affected existing behavior; it does not replace the whole-Feature
+obligations in Stage 4. Do not split a change that can only work or be verified
+together, or commit a failing RED state.
+
+Pending Feature-level human acceptance does not prevent a validated logical
+commit, unless the user explicitly made acceptance/review a condition for that
+commit. A failure or missing prerequisite for this logical change still blocks
+its commit. Keep current progress and remaining work in the existing records;
+continue authorized implementation and all applicable Stage 4-7 requirements.
 
 Perform the approved test-code and current-reference cleanup with the behavior
 change, following [the stale-test contract](08-testing-strategy.md#requirement-changes-and-stale-tests).
@@ -367,13 +391,13 @@ run; further execution needs an authorized, concrete verification need.
 4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and accepted follow-ups. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
 5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
 6. Confirm applicable test/acceptance evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
-7. Follow `agent-rules/00-core/git-worktree-and-commits.md` for task ownership, explicit staging, complete cached-diff checks, the eligible local commit and post-commit status. Use the Feature ID as scope and `Work item: docs/features/F0XX.json` in the body. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
+7. Follow `agent-rules/00-core/git-worktree-and-commits.md` to commit the remaining validated implementation and completion records, with its Feature identity, staging and post-commit checks. Earlier logical commits remain part of this Feature's delivery; do not squash them or create an empty commit merely to mark a Stage. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
 
 ## Stage 8 · handoff and authorized continuation
 
 1. If Stage 5.5 changed Coding Rules, report and complete the required `sync-feature-list` before starting another Feature when that synchronization is authorized. Otherwise request the missing authorization and stop.
 2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
-3. Report the completed Feature, relevant implementation/test changes, verification evidence, local commit hash (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress.
+3. Report the completed Feature, relevant implementation/test changes, verification evidence, its local commit hashes or verified commit range (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress.
 4. Report one sentence or a few concise learning entries in this existing Stage, using `templates/feature-learning-summary.md.tmpl`. With no new reusable learning, explicitly state “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise report the context, useful approach or root cause, existing coverage, applicability and actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling / Automated Check / Regression. Link knowledge or Bug-learning notes already recorded before the commit instead of copying their bodies or starting post-commit documentation. A project-specific approach can be reusable within the project without becoming a universal rule. Do not invent an entry for every incident. A newly discovered out-of-scope tooling or rule change remains a separate authorized task.
 5. Continue the next step only when it is within concrete existing authorization
    and its prerequisites are satisfied. Preserve Product order and each Feature's

@@ -2,16 +2,17 @@
 
 Completion reports state outcomes and evidence, not private step-by-step reasoning.
 
-## Commit eligibility boundary
+## Completion and local commits
 
 - **[MUST]** The applicable completion workflow and Completion Gate determine
   **when** the current task has satisfied its required approval, validation,
-  acceptance, and completion conditions and is therefore eligible to commit.
-- **[MUST]** An unresolved completion blocker means no commit is permitted. The
-  completion layer must not describe a blocked task as commit-eligible.
-- **[MUST]** After eligibility is established, delegate staging, commit
-  construction, message format, prohibited operations, and post-commit checks
-  to `git-worktree-and-commits.md`; do not duplicate those mechanics here.
+  acceptance, and completion conditions and may be reported complete.
+- **[MUST]** An unresolved completion blocker prevents marking the task complete.
+  Validated logical changes may still be committed under the owning workflow;
+  report remaining work and applicable human acceptance truthfully.
+- **[MUST]** Delegate logical commit boundaries, staging, message format,
+  prohibited operations and post-commit checks to `git-worktree-and-commits.md`;
+  do not duplicate those mechanics here.
 
 ## Required report content
 

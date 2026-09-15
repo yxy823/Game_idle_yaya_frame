@@ -79,7 +79,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 6.1 | 记录完成与本地提交 | 流程与代码：Skill 调用专用 evidence 脚本和台账检查，再按授权提交 | [execute Skill](../../project-source/skills/execute-next-feature/SKILL.md)；`done` 字段不补足缺失结果，不靠监听 patch 放行 |
+| 6.1 | 按逻辑分批提交与记录完成 | 流程与代码：Agent 自动提交通过相关验证的完整逻辑变更；Stage 7 调用 evidence 脚本和台账检查后记录完成并收尾提交 | [执行规范](../../project-source/methodology/03-execute-loop.md)、[Git 规则](../../project-source/agent-rules/00-core/git-worktree-and-commits.md)；提交注明 Feature 名称与本批内容，全量审查涵盖各批差异；中途提交不代表 `done` 或人工验收通过，不靠监听 patch 放行 |
 | 6.2 | 整理 Progress、必要历史或旧报告，并按需交给新线程 | 流程与人工：普通 Markdown、链接、明确清理范围及可复制的交接提示词 | [历史与报告](../../project-source/methodology/09-artifact-lifecycle.md)；交接整理现有记录，不授权清理未知文件，不新增状态文件或自动投递 |
 | 6.3 | 完成后交接，决定下一项 | 流程：Stage 8 报告事实和必要经验，按剩余具体授权续接 | 范围完成、要求暂停或缺少必要决定时停止；不以完成或依赖就绪推定授权，不把每个问题升级成规则 |
 | 6.4 | 项目/阶段/Feature 完成后总结经验与复用脚本 | 流程：优先查知识索引与相关条目，从实际记录提炼成功做法、排障方法和教训，再按授权最小固化 | 分层知识目录、阶段总结提示词、既有历史约定与 maintenance 路径；更新对应主题索引，链接原任务，不要求每次新增条目、规则或工具 |

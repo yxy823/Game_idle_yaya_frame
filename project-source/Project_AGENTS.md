@@ -37,7 +37,8 @@ failures; ordinary Features reuse confirmed commands without version discovery.
 
 Every modifying task follows
 `agent-rules/00-core/git-worktree-and-commits.md`, including its clean-worktree
-preflight, resumed-task ownership, staging and eligible local-commit requirements.
+preflight, resumed-task ownership, automatic commits of validated logical changes
+and Feature identification in commit messages.
 Implementation approval and actual human acceptance remain distinct under the
 execute loop; automated results cannot supply a missing human decision.
 
