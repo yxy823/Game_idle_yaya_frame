@@ -43,6 +43,26 @@ def copy_project(source: Path, output: Path) -> int:
             raise FileNotFoundError(origin)
         copies.append((origin, destination))
 
+    # 展开实际写入路径；目录可合并，文件不得被重复写入或占据目录位置。
+    targets: dict[Path, bool] = {}
+
+    def claim(path: Path, is_directory: bool) -> None:
+        if path in targets and not (targets[path] and is_directory):
+            raise ValueError(f"Copy target conflict: {path.relative_to(output)}")
+        targets[path] = is_directory
+        for parent in path.parents:
+            if not parent.is_relative_to(output):
+                break
+            if parent in targets and not targets[parent]:
+                raise ValueError(f"Copy target conflict: {parent.relative_to(output)}")
+            targets[parent] = True
+
+    for origin, destination in copies:
+        claim(destination, origin.is_dir())
+        if origin.is_dir():
+            for child in origin.rglob("*"):
+                claim(destination / child.relative_to(origin), child.is_dir())
+
     # 只复制清单明确指定的文件或目录，不渲染内容，也不附加身份或状态文件。
     output.mkdir(parents=True, exist_ok=True)
     for origin, destination in copies:

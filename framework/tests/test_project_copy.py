@@ -72,6 +72,43 @@ class ProjectCopyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             copy_project(self.source, self.source / "project")
 
+    def test_conflicting_targets_fail_before_writing_in_either_order(self):
+        file_source = "project-source/Project_AGENTS.md"
+        directory_source = "project-source/skills/example"
+        conflicts = [
+            [(file_source, "rules.md"), (file_source, "rules.md")],
+            [(file_source, "rules.md"), (file_source, "RULES.md")],
+            [(file_source, "docs"), (file_source, "docs/rules.md")],
+            [(file_source, "docs"), (directory_source, "docs")],
+            [(directory_source, "docs"), (file_source, "docs/SKILL.md")],
+            [(directory_source, "docs"), (directory_source, "docs")],
+        ]
+        output = self.base / "project"
+        for pair in conflicts:
+            for ordered in (pair, list(reversed(pair))):
+                with self.subTest(entries=ordered):
+                    self.entries = [{"source": source, "target": target}
+                                    for source, target in ordered]
+                    self.save_manifest()
+                    with self.assertRaisesRegex(ValueError, "Copy target conflict"):
+                        copy_project(self.source, output)
+                    self.assertFalse(output.exists())
+
+    def test_directory_merge_and_separate_children_are_allowed(self):
+        (self.source / "project-source/defaults").mkdir()
+        (self.source / "project-source/defaults/product.md").write_text("Product", encoding="utf-8")
+        self.entries = [
+            {"source": "project-source/Project_AGENTS.md", "target": "docs/rules.md"},
+            {"source": "project-source/defaults", "target": "docs"},
+            {"source": "project-source/skills/example", "target": "docs"},
+        ]
+        self.save_manifest()
+        output = self.base / "project"
+        copy_project(self.source, output)
+        self.assertEqual({path.name for path in (output / "docs").iterdir()},
+                         {"rules.md", "product.md", "SKILL.md"})
+        self.assertEqual((output / "docs/rules.md").read_text(encoding="utf-8"), "Project rules")
+
 
 if __name__ == "__main__":
     unittest.main()
