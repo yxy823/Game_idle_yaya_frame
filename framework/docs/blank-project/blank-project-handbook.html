@@ -111,7 +111,6 @@ main { margin-left: var(--sidebar-space); padding: 40px clamp(16px, 3vw, 36px) 6
 .chapter { font-size: var(--font-body); padding: 32px clamp(18px, 3vw, 40px) 40px; margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; overflow-wrap: anywhere; }
 .chapter-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: var(--font-ui); color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
 .chapter-meta a { letter-spacing: 0; }
-.source-actions { display: inline-flex; flex-wrap: wrap; gap: 8px 16px; }
 .chapter h1 { font-size: var(--font-h1); line-height: 1.5; margin: 25px 0 28px; letter-spacing: -.7px; }
 .chapter h2 { margin: 2em 0 .8em; padding-top: 10px; font-size: var(--font-h2); line-height: 1.6; }
 .chapter h2::before { content: ""; display: inline-block; width: 5px; height: .85em; background: var(--accent); margin-right: 12px; border-radius: 3px; vertical-align: -.04em; }
@@ -530,13 +529,8 @@ dialog::backdrop { background: var(--backdrop); }
 <td>保存位置</td>
 <td>标题旁 <code>#</code> 复制小节链接；下次打开可点击“继续上次阅读”恢复到所记锚点。</td>
 </tr>
-<tr>
-<td>用 Typora 打开原文</td>
-<td>Windows 本地阅读时，每章顶部提供“Typora 打开”；需要本机先配置 <code>yaya-md</code> 协议，浏览器可能请求确认。未配置时仍可使用“Markdown 原文”。</td>
-</tr>
 </tbody>
 </table></div>
-<p>Typora 打开配置只作用于当前 Windows 用户，只接受配置时指定手册目录内已有的 Markdown 文件；不改变 <code>.md</code> 默认应用，也不随 HTML 复制到其他电脑。移动手册或 Typora 后需更新本机配置，撤销时使用本机配置附带的卸载脚本。</p>
 <p>字号默认采用“舒适阅读”，正文 18px。选择预设会替换所有分区数值，单项调整后可形成自定义搭配；滑块即时预览，数字框按 Enter 或离开输入框生效，“恢复默认”回到舒适阅读。字号变化尽量保持当前阅读锚点，图表内部文字通过整图缩放查看。</p>
 <p>图表支持 Ctrl + 滚轮缩放；聚焦画布后可用方向键平移、<code>+</code>/<code>−</code> 缩放、Home 适应窗口。设置和图表弹窗均可点击遮罩或按 Esc 关闭。顶栏向下滚动时收起、向上滚动时出现，顶部、头部焦点或弹窗期间保留显示。</p>
 <p>偏好与阅读位置只保存在当前浏览器，不写回 Markdown；存储不可用时界面会提示仅本次有效。目录过滤、视觉换行不会删改正文或复制内容。本地小节链接要求接收方能访问同一路径；单独分享 HTML 不会附带 ↗ 指向的文件。</p>
@@ -3464,20 +3458,6 @@ function decodeAnchor(hash) {
 }
 
 document.documentElement.classList.add('js');
-// Native opening is optional; ordinary source links remain usable without local setup.
-if (location.protocol === 'file:' && /Win/.test(navigator.platform)) {
-  for (const source of document.querySelectorAll('.chapter-meta a.source-link')) {
-    const target = new URL(source.href);
-    const nativeLink = document.createElement('a');
-    nativeLink.href = 'yaya-md://open/?file=' + encodeURIComponent(target.href);
-    nativeLink.textContent = 'Typora 打开';
-    nativeLink.title = '需完成本机 Typora 打开配置；浏览器可能请求确认';
-    const actions = document.createElement('span');
-    actions.className = 'source-actions';
-    source.replaceWith(actions);
-    actions.append(source, nativeLink);
-  }
-}
 let readingHold = null;
 const settingsDialog = document.getElementById('reading-settings');
 const fontSaveStatus = document.getElementById('font-save-status');

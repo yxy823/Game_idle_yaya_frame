@@ -31,20 +31,6 @@ function decodeAnchor(hash) {
 }
 
 document.documentElement.classList.add('js');
-// Native opening is optional; ordinary source links remain usable without local setup.
-if (location.protocol === 'file:' && /Win/.test(navigator.platform)) {
-  for (const source of document.querySelectorAll('.chapter-meta a.source-link')) {
-    const target = new URL(source.href);
-    const nativeLink = document.createElement('a');
-    nativeLink.href = 'yaya-md://open/?file=' + encodeURIComponent(target.href);
-    nativeLink.textContent = 'Typora 打开';
-    nativeLink.title = '需完成本机 Typora 打开配置；浏览器可能请求确认';
-    const actions = document.createElement('span');
-    actions.className = 'source-actions';
-    source.replaceWith(actions);
-    actions.append(source, nativeLink);
-  }
-}
 let readingHold = null;
 const settingsDialog = document.getElementById('reading-settings');
 const fontSaveStatus = document.getElementById('font-save-status');
