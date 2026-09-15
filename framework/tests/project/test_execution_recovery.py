@@ -29,7 +29,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         _, failed = make_run(self.root, exit_code=7)
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, old_pass)
-        _, narrow = make_run(self.root, scope="required")
+        _, narrow = make_run(self.root, scope="affected")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             derive_test_evidence(self.root, "F001",
                                  [result_reference(self.root, old_pass), result_reference(self.root, narrow)])
@@ -72,6 +72,79 @@ class ExecutionRecoveryTests(unittest.TestCase):
         latest = max(records, key=lambda record: record["sequence"])
         self.assertEqual(latest["status"], "failed")
         self.assertTrue(any("executable not found" in error for error in latest["errors"]))
+
+    def test_interrupted_auto_recovers_with_later_affected_but_not_old_narrow_or_tied_success(self):
+        plan, old_pass = make_run(self.root)
+        directory = self.root / "reports/gdunit-wrapper/run-auto-interrupted"
+        directory.mkdir()
+        attempt = start_run(self.root, directory, "F001", "final", "auto")
+        original = (directory / "result.json").read_bytes()
+        with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
+            self.derive(plan, old_pass)
+        _, narrow = make_run(self.root, scope="required")
+        with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
+            self.derive(plan, narrow)
+        _, tied = make_run(self.root, scope="affected")
+        result = json.loads(tied.read_text())
+        result["sequence"] = attempt["sequence"]
+        tied.write_text(json.dumps(result), encoding="utf-8")
+        with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
+            self.derive(plan, tied)
+        _, repaired = make_run(self.root, scope="affected")
+        self.derive(plan, repaired)
+        self.assertEqual((directory / "result.json").read_bytes(), original)
+
+    def test_auto_selection_read_failure_recovers_without_new_full_obligation(self):
+        plan, old_pass = make_run(self.root)
+        previous = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        spec = importlib.util.spec_from_file_location("selection_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        runner = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = runner
+        spec.loader.exec_module(runner)
+        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
+        with mock.patch.object(runner, "REPO_ROOT", self.root), \
+                mock.patch.object(runner, "build_selection", side_effect=OSError("temporary read failure")), \
+                mock.patch.object(runner, "_run_process") as launch:
+            self.assertEqual(runner._run_tests(args), 1)
+        launch.assert_not_called()
+        created = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json")) - previous
+        self.assertEqual(len(created), 1)
+        failed = created.pop()
+        original = failed.read_bytes()
+        result = json.loads(original)
+        self.assertEqual((result["status"], result["scope"]), ("failed", "auto"))
+        self.assertIn("temporary read failure", result["errors"])
+        with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
+            self.derive(plan, old_pass)
+        _, repaired = make_run(self.root, scope="affected")
+        self.derive(plan, repaired)
+        self.assertEqual(failed.read_bytes(), original)
+
+    def test_auto_preparation_preserves_current_full_obligation(self):
+        self.registry["components"][0]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
+        plan, _ = make_run(self.root)
+        directory = self.root / "reports/gdunit-wrapper/run-auto-full"
+        directory.mkdir()
+        start_run(self.root, directory, "F001", "final", "auto")
+        _, affected = make_run(self.root, scope="affected")
+        with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
+            self.derive(plan, affected)
+        _, full = make_run(self.root)
+        self.derive(plan, full)
+
+    def test_auto_with_execution_fields_is_not_treated_as_preparation(self):
+        plan, _ = make_run(self.root)
+        directory = self.root / "reports/gdunit-wrapper/run-invalid-auto"
+        directory.mkdir()
+        attempt = start_run(self.root, directory, "F001", "final", "auto")
+        _, full = make_run(self.root)
+        for fields in ({"command": [sys.executable]}, {"selectors": ["tests/unit"]},
+                       {"process": {"returncode": 0}}, {"status": "unknown"}):
+            with self.subTest(fields=fields):
+                self.write_json("reports/gdunit-wrapper/run-invalid-auto/result.json", {**attempt, **fields})
+                with self.assertRaisesRegex(ValueError, "invalid auto preparation"):
+                    self.derive(plan, full)
 
     def test_invalid_history_warns_without_blocking_launch_or_hiding_current_failure(self):
         self.write("tools/testing/gdunit_evidence_runner.gd", "extends SceneTree\n")

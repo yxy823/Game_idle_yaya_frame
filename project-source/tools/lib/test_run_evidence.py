@@ -418,8 +418,17 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
                 or record.get("status") == "passed"
                 or (record.get("snapshot") or {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]):
             continue
+        scope = record.get("scope")
+        if scope == "auto":
+            # Before selection, auto is a request rather than an executed scope.
+            # The same semantic snapshot lets current obligations resolve it.
+            if (record.get("status") not in {"failed", "running"}
+                    or record.get("command") != [] or record.get("selectors") != []
+                    or record.get("process", {}) is not None):
+                raise RunEvidenceError("invalid auto preparation record: " + record["run_id"])
+            scope = "full" if selection["full_suite"]["required"] else "affected"
         if not any(run["sequence"] > record["sequence"]
-                   and rank[run["scope"]] >= rank.get(record["scope"], 3)
+                   and rank[run["scope"]] >= rank.get(scope, 3)
                    and all(any(path == target or path.startswith(target.rstrip("/") + "/")
                                for target in run["selectors"]) for path in record["selectors"])
                    for run in runs):

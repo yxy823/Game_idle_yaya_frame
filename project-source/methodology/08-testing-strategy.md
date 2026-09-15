@@ -232,7 +232,11 @@ without depending on filesystem timestamp precision; a tied sequence cannot clea
 another attempt. For the same Feature/content, an unresolved final
 failure cannot be hidden by an older success or a later narrower run. Recovery uses a
 later successful run covering the failed scope; preserve the original failure and
-diagnose its cause. Baseline/focused runs do not grant final completion. There is no
+diagnose its cause. An `auto` preparation record with no command, selectors or
+process has not chosen an execution scope. Recover it with a later affected run,
+or full when the same snapshot's current obligations require full. This does not
+relax recovery for an actual full failure or accept inconsistent auto records.
+Baseline/focused runs do not grant final completion. There is no
 separate journal, execution lock, invocation, verdict, process report or session receipt.
 
 Record results with:
