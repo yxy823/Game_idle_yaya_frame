@@ -28,9 +28,11 @@ Preserve concrete authorization under **Authorization and continuation** in
 2. Collect only the selected mode's necessary evidence from the engineering
    specification. Keep an unconfirmed root cause unknown. For an unspecified
    refactor, use `pick-refactor-smell` and return here with the selected candidate.
-3. Read the Feature index and relevant details. If no plan exists, use current
-   Product planning through `generate-feature-list` before appending engineering
-   work. Read the Test Registry to propose reusable or new affected components.
+3. Read the Feature index and relevant details. If this work depends on an
+   unplanned current Product, use `generate-feature-list` for that prerequisite.
+   Independent tooling work uses its documented technical contract and may
+   append an engineering Feature to a valid empty ledger without a business
+   Product. Read the Test Registry to propose reusable or new affected components.
 4. Propose the smallest independently verifiable Feature; split `large` work.
    Show ID/title/mode, dependencies, affected components, stable criteria,
    expected files/area and verification obligations. Reuse approval covering the
