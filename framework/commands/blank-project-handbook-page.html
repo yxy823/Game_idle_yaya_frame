@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
 <title>空白 Godot 项目使用手册 · Yaya</title>
+<link rel="icon" type="image/svg+xml" href="@@FAVICON@@">
 <!-- Generated from framework/docs/blank-project/*.md. Edit the Markdown sources and rebuild. -->
 <style>
 :root {
@@ -31,11 +32,11 @@ button:hover { background: var(--hover); border-color: var(--accent); }
 button:disabled { cursor: default; opacity: .45; }
 .sidebar { position: fixed; inset: 0 auto 0 0; width: var(--sidebar); max-width: calc(100vw - 36px); background: var(--nav-bg); color: var(--nav-ink); display: flex; flex-direction: column; z-index: 20; }
 .sidebar-collapsed .sidebar { transform: translateX(-100%); visibility: hidden; }
-.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 23px 18px; border-bottom: 1px solid var(--line); }
-.brand a { display: flex; align-items: center; gap: 13px; color: var(--nav-ink); text-decoration: none; font-weight: 700; font-size: 23px; letter-spacing: 2px; }
+.brand { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: var(--header-height, 72px); padding: 10px 18px; border-bottom: 1px solid var(--line); }
+.brand a { display: flex; align-items: center; gap: 13px; color: var(--nav-ink); text-decoration: none; font-weight: 700; font-size: 23px; line-height: 1.2; letter-spacing: 2px; }
 .brand-mark { display: block; flex: 0 0 32px; width: 32px; height: 32px; }
 .ui-icon { display: block; flex: 0 0 20px; width: 20px; height: 20px; }
-.brand small { display: block; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 400; letter-spacing: .5px; margin-top: 2px; }
+.brand small { display: block; color: var(--nav-muted); font-size: var(--font-ui); font-weight: 400; line-height: 1.4; letter-spacing: .5px; margin-top: 2px; }
 .sidebar nav { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 6px 15px 24px; scrollbar-width: thin; scrollbar-color: var(--control-border) transparent; }
 .sidebar-search { padding: 17px 18px 7px; }
 .sidebar-search label { display: block; color: var(--nav-ink); font-size: 14px; margin-bottom: 7px; }
@@ -46,6 +47,11 @@ button:disabled { cursor: default; opacity: .45; }
 .sidebar button { flex-shrink: 0; min-width: 44px; min-height: 44px; background: var(--paper); border: 1px solid var(--control-border); color: var(--accent); padding: 5px; }
 #close-sidebar, .nav-row .nav-toggle { width: 44px; height: 44px; padding: 0; }
 .sidebar button:hover { background: var(--hover); border-color: var(--accent); }
+#close-sidebar, .nav-row .nav-toggle, #toggle-sidebar { position: relative; isolation: isolate; height: 44px; border: 0; background: transparent; }
+#close-sidebar::before, .nav-toggle::before, #toggle-sidebar::before { content: ""; position: absolute; inset: 6px; z-index: -1; border: 1px solid var(--control-border); border-radius: 6px; background: var(--paper); transition: background-color 160ms ease, border-color 160ms ease; }
+#close-sidebar:hover::before, .nav-toggle:hover::before, #toggle-sidebar:hover::before { background: var(--hover); border-color: var(--accent); }
+#close-sidebar { align-self: flex-start; margin-top: max(0px, calc((var(--header-height, 72px) - 45px) / 2 - 10px)); }
+#close-sidebar .ui-icon, .nav-toggle .ui-icon { flex-basis: 16px; width: 16px; height: 16px; }
 .sidebar-search, #close-sidebar, .nav-toggle, .sidebar-toggle, .sidebar-shade { display: none; }
 .js .sidebar-search { display: block; }
 .js #close-sidebar, .js .nav-toggle, .js .sidebar-toggle { display: inline-flex; align-items: center; justify-content: center; }
@@ -66,7 +72,7 @@ button:disabled { cursor: default; opacity: .45; }
 .nav-toggle .ui-icon { transition: transform 160ms ease; }
 .nav-toggle[aria-expanded="false"] .ui-icon { transform: rotate(-90deg); }
 .nav-row:has(a.active) .nav-toggle { color: var(--selection-ink); }
-.nav-row:has(a.active) .nav-toggle:hover { background: var(--hover); }
+.nav-row:has(a.active) .nav-toggle:hover::before { background: var(--hover); }
 .nav-sections { margin: 9px 9px 16px 24px; padding-left: 16px; border-left: 1px solid var(--control-border); }
 .nav-sections a { display: block; padding: 7px 0; color: var(--nav-muted); text-decoration: none; font-size: var(--font-subnav); line-height: 1.7; }
 .nav-sections a:hover { color: var(--accent-hover); }
@@ -214,7 +220,7 @@ dialog::backdrop { background: var(--backdrop); }
 </head>
 <body id="handbook-top">
 <aside class="sidebar" id="handbook-sidebar" aria-label="手册目录">
-  <div class="brand"><a href="#handbook-top"><svg class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M3 17c3 2 6 2 9 0-1-2-2-4-2-6a7 7 0 0 1 14 0c0 3-2 5-4 7 4 0 7-1 9-3 0 8-5 13-13 13C8 28 3 24 3 17Z" fill="#f6c744" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><path d="m23 11 7 3-7 2Z" fill="#ed9138" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="10" r="1.25" fill="#202b33"/><path d="M10 21c3 3 7 3 10 0" fill="none" stroke="#b88120" stroke-width="1.5" stroke-linecap="round"/></svg><span>YAYA<small>Godot 项目使用手册</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m11 6-6 6 6 6m8-12-6 6 6 6"/></svg></button></div>
+  <div class="brand"><a href="#handbook-top"><svg xmlns="http://www.w3.org/2000/svg" class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M3 17c3 2 6 2 9 0-1-2-2-4-2-6a7 7 0 0 1 14 0c0 3-2 5-4 7 4 0 7-1 9-3 0 8-5 13-13 13C8 28 3 24 3 17Z" fill="#f6c744" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><path d="m23 11 7 3-7 2Z" fill="#ed9138" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="10" r="1.25" fill="#202b33"/><path d="M10 21c3 3 7 3 10 0" fill="none" stroke="#b88120" stroke-width="1.5" stroke-linecap="round"/></svg><span>YAYA<small>Godot 项目使用手册</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m11 6-6 6 6 6m8-12-6 6 6 6"/></svg></button></div>
   <div class="sidebar-search"><label for="nav-search">查找章节与小节 <span aria-hidden="true">/</span></label><div class="search-controls"><input type="search" id="nav-search" placeholder="例如 lint、Feature、迁移" autocomplete="off" aria-describedby="nav-search-status"><button type="button" id="clear-nav-search" aria-label="清空目录搜索" disabled>×</button></div><p id="nav-search-status" role="status">搜索目录；Ctrl + F 查找正文</p></div>
   <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
   <div class="sidebar-footer">标题跳转 · 右侧按钮展开<br>目录跟随正文，手动操作时暂停跟随</div>

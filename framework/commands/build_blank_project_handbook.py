@@ -287,7 +287,11 @@ class OutputInspector(HTMLParser):
         # Mermaid roots receive this prefix in scope_svg; decorative UI icons do not count as diagrams.
         if tag == "svg" and attrs.get("id", "").startswith("diagram-"):
             self.svg_count += 1
-        if tag in {"img", "iframe", "link"} or (tag == "script" and "src" in attrs):
+        embedded_icon = (tag == "link" and attrs.get("rel") == "icon"
+                         and attrs.get("type") == "image/svg+xml"
+                         and attrs.get("href", "").startswith("data:image/svg+xml,"))
+        if (tag in {"img", "iframe"} or (tag == "link" and not embedded_icon)
+                or (tag == "script" and "src" in attrs)):
             raise ValueError(f"阅读文件含外置资源：{tag} {attrs}")
 
 
@@ -314,8 +318,13 @@ def main() -> int:
     diagrams = render_diagrams(documents, args.browser)
     navigation, body = render_body(documents, diagrams)
     page = TEMPLATE.read_text(encoding="utf-8")
+    # Reuse the brand SVG so the tab icon never needs a separately maintained image.
+    brand = re.search(r'<svg\b[^>]*\bclass="brand-mark"[^>]*>.*?</svg>', page, re.DOTALL)
+    if not brand:
+        raise ValueError("页面模板缺少品牌 SVG，无法生成标签页图标。")
     replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body,
                     "@@INTERACTIONS@@": INTERACTIONS.read_text(encoding="utf-8"),
+                    "@@FAVICON@@": "data:image/svg+xml," + quote(brand[0], safe=""),
                     "@@DOCUMENT_COUNT@@": str(len(documents)), "@@DIAGRAM_COUNT@@": str(len(diagrams))}
     # A single substitution prevents source text from being treated as template syntax.
     page = re.sub("|".join(map(re.escape, replacements)), lambda match: replacements[match[0]], page)
