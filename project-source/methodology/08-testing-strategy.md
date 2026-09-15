@@ -214,16 +214,22 @@ Native diagnostics cannot be hidden by green JUnit. Windows process ownership is
 checked in memory, and timeout cleanup terminates only the owned process tree.
 
 Before engine preflight/launch, `result.json` records either a running attempt or
-a failed preparation. Unreadable historical JSON, unsupported result schema,
-mismatched run identity, invalid sequence, or snapshot-read errors produce a failed
-current result without launching Godot. The original history stays untouched;
-invalid history also blocks completion until explicitly investigated and resolved.
+a failed preparation. Invalid historical JSON/schema/identity/sequence produces
+a warning on stderr with the affected path; preserve the original and allow a new
+measurement. This warning does not decide the current run's result. Snapshot-read
+errors still produce a failed current result without launching Godot.
 This requires a writable report directory; a filesystem write failure must still
 be reported as such, not as a successfully saved result.
 
+Completion still rejects damaged referenced results. Its history scan excludes
+another Feature only after reading a supported schema, matching run identity and
+a valid different Feature ID. Current-Feature damage and unreadable or unidentified
+damage still block completion until investigated and resolved under authorization.
+Successful execution alone does not remove that evidence limitation.
+
 A local sequence computed from readable results with valid headers orders attempts
-without depending on filesystem timestamp precision. History errors never authorize
-execution or completion by silently skipping a record. For the same Feature/content, an unresolved final
+without depending on filesystem timestamp precision; a tied sequence cannot clear
+another attempt. For the same Feature/content, an unresolved final
 failure cannot be hidden by an older success or a later narrower run. Recovery uses a
 later successful run covering the failed scope; preserve the original failure and
 diagnose its cause. Baseline/focused runs do not grant final completion. There is no

@@ -1,6 +1,8 @@
 """Preserve failed and unfinished runs without a second journal or lock."""
 from project_context import PROJECT_ROOT
+from contextlib import redirect_stderr
 import importlib.util
+import io
 import json
 import sys
 import unittest
@@ -70,7 +72,8 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.assertEqual(latest["status"], "failed")
         self.assertTrue(any("executable not found" in error for error in latest["errors"]))
 
-    def test_invalid_history_leaves_a_failed_result_without_launching_or_hiding_the_error(self):
+    def test_invalid_history_warns_without_blocking_launch_or_hiding_current_failure(self):
+        self.write("tools/testing/gdunit_evidence_runner.gd", "extends SceneTree\n")
         plan, old_pass = make_run(self.root)
         old_bytes = old_pass.read_bytes()
         history = json.loads(old_bytes)
@@ -95,10 +98,14 @@ class ExecutionRecoveryTests(unittest.TestCase):
                                for path in previous if path != damaged) + 1
                 args = runner._parse_args(["--godot-binary", sys.executable,
                                           "--feature", "F001", "--scope", "full"])
-                with mock.patch.object(runner, "REPO_ROOT", self.root), \
-                        mock.patch.object(runner, "_run_process") as launch:
+                warnings = io.StringIO()
+                with redirect_stderr(warnings), mock.patch.object(runner, "REPO_ROOT", self.root), \
+                        mock.patch.object(runner, "_run_process",
+                                          side_effect=RuntimeError("current launch failed")) as launch:
                     self.assertEqual(runner._run_tests(args), 1)
-                launch.assert_not_called()
+                launch.assert_called_once()
+                self.assertIn("WARNING: invalid run history", warnings.getvalue())
+                self.assertIn(str(damaged), warnings.getvalue())
                 created = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json")) - previous
                 self.assertEqual(len(created), 1)
                 result_path = created.pop()
@@ -109,12 +116,42 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 self.assertIsNotNone(result["finished_at"])
                 self.assertIsNone(result["process"])
                 self.assertEqual(result["artifacts"], {})
-                self.assertTrue(any(str(damaged) in error for error in result["errors"]))
+                self.assertIn("current launch failed", result["errors"])
+                self.assertFalse(any("invalid run history" in error for error in result["errors"]))
                 self.assertEqual(damaged.read_text(encoding="utf-8"), payload)
                 self.assertEqual(old_pass.read_bytes(), old_bytes)
                 with self.assertRaises(ValueError) as failure:
                     self.derive(plan, old_pass)
                 self.assertIn(str(damaged), str(failure.exception))
+
+    def test_unreadable_history_allows_new_pass_but_not_completion(self):
+        self.write("reports/gdunit-wrapper/run-damaged/result.json", "{")
+        with redirect_stderr(io.StringIO()) as warnings:
+            plan, passed = make_run(self.root)
+        self.assertIn("invalid run history", warnings.getvalue())
+        self.assertEqual(json.loads(passed.read_text())["status"], "passed")
+        with self.assertRaisesRegex(ValueError, "invalid run history"):
+            self.derive(plan, passed)
+        self.assertEqual((self.root / "reports/gdunit-wrapper/run-damaged/result.json").read_text(), "{")
+
+    def test_other_feature_bad_sequence_does_not_block_current_completion(self):
+        plan, old_pass = make_run(self.root)
+        record = json.loads(old_pass.read_text())
+        record.update(run_id="run-other-feature", feature_id="F002", sequence=None)
+        damaged = self.write_json("reports/gdunit-wrapper/run-other-feature/result.json", record)
+        original = damaged.read_bytes()
+        with redirect_stderr(io.StringIO()) as warnings:
+            _, passed = make_run(self.root)
+        self.assertIn("invalid run history", warnings.getvalue())
+        self.derive(plan, passed)
+        self.assertEqual(damaged.read_bytes(), original)
+        with self.assertRaises(ValueError):
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, damaged)])
+        for invalid in ({"schema_version": 99}, {"run_id": "run-wrong"}, {"feature_id": "unknown"}):
+            with self.subTest(invalid=invalid):
+                damaged.write_text(json.dumps({**record, **invalid}), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "invalid run history"):
+                    self.derive(plan, passed)
 
     def test_snapshot_error_is_kept_in_the_current_failed_result(self):
         directory = self.root / "reports/gdunit-wrapper/run-snapshot-error"

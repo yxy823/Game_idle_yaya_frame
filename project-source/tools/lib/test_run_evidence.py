@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import os
 import re
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
@@ -261,7 +262,7 @@ def artifact_reference(directory: Path, path: Path) -> dict[str, str]:
     return {"path": relative, "sha256": file_hash(path)}
 
 
-def _run_records(root: Path) -> tuple[list[dict], list[str]]:
+def _run_records(root: Path, feature_id: str | None = None) -> tuple[list[dict], list[str]]:
     """Read usable run headers and report errors without discarding their paths."""
     records, errors = [], []
     for path in (root / "reports/gdunit-wrapper").glob("run-*/result.json"):
@@ -271,6 +272,12 @@ def _run_records(root: Path) -> tuple[list[dict], list[str]]:
                 raise RunEvidenceError("unsupported run result schema")
             if record.get("run_id") != path.parent.name:
                 raise RunEvidenceError("run identity does not match its directory")
+            # Only a readable supported header can establish another Feature's
+            # ownership. Unknown/corrupt identity must still block completion.
+            owner = record.get("feature_id")
+            if (feature_id is not None and isinstance(owner, str)
+                    and re.fullmatch(r"F\d{3}", owner) and owner != feature_id):
+                continue
             if type(record.get("sequence")) is not int or record["sequence"] < 1:
                 raise RunEvidenceError("run sequence must be a positive integer")
             records.append(record)
@@ -282,9 +289,13 @@ def _run_records(root: Path) -> tuple[list[dict], list[str]]:
 def start_run(root: Path, directory: Path, feature_id: str | None,
               phase: str, scope: str) -> dict:
     # Scan before the first write so this run cannot select itself as history.
-    # Unreadable history blocks execution, but still leaves this attempt visible.
+    # History damage is reported without preventing a new measurement. Completion
+    # independently rejects referenced damage and unresolved/unknown history.
     started_at = utc_now()
-    records, errors = _run_records(root)
+    records, history_errors = _run_records(root)
+    for error in history_errors:
+        print("WARNING: " + error, file=sys.stderr)
+    errors = []
     snapshot = None
     try:
         snapshot = current_snapshot(root) if feature_id else None
@@ -399,7 +410,7 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
     # Sequence is local run order, not filesystem timestamp precision. A tie from
     # concurrent launches never clears a different failed/unfinished run.
     rank = {"required": 1, "affected": 2, "full": 3}
-    records, errors = _run_records(root)
+    records, errors = _run_records(root, selection["feature_id"])
     if errors:
         raise RunEvidenceError("; ".join(errors))
     for record in records:

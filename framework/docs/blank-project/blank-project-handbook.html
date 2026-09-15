@@ -3109,8 +3109,8 @@ $LASTEXITCODE
 <td>本次可能中断或尚未结束，不能自行改为 passed</td>
 </tr>
 <tr>
-<td>新运行报告 <code>invalid run history</code>，引擎没有启动</td>
-<td>查看本次 failed 结果指出的历史路径与原因；核对 JSON、schema、运行身份和正整数序号。原件不会自动删除或跳过，完成检查也会拒绝无效历史；查明来源后按授权处理，再重新验证</td>
+<td>新运行提示 <code>WARNING: invalid run history</code></td>
+<td>历史警告不阻止本次测试，实际成败看本次 result.json；保留警告指出的原件。完成检查只排除 schema、运行身份有效且 Feature ID 明确属于其他 Feature 的历史；被引用、当前 Feature 或归属不明的坏记录仍须查明来源后按授权处理，不能用新测试通过掩盖证据缺口</td>
 </tr>
 <tr>
 <td>报告目录或 <code>result.json</code> 写入失败</td>
