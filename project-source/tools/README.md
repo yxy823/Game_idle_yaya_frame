@@ -20,6 +20,10 @@ tools/
 测试登记表合并属于 `generate-feature-list/scripts/merge_test_registry.py`。
 它们位于 `.agents/skills/` 对应 Skill 内，不另设转发命令。
 
+台账检查、登记表合并和运行选择共用 JSON 解码规则：重复对象键及非标准数值
+（`NaN`、`Infinity`）会报错，合并器在写回前拒绝这类输入并保留原件。
+组件候选仍接受数组或含 `components` 数组的对象；各入口分别校验自身的数据结构。
+
 ## 首次 Godot 扫描
 
 适用条件见 [环境配置约定](../methodology/05-document-language.md#project-environment-bootstrap)。

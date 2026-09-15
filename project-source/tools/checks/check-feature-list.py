@@ -14,7 +14,7 @@ from typing import Any, Iterable
 # 脚本在子目录直接启动时，显式加载本项目的共享包。
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.lib.test_selection import acceptance_mode, SelectionError
+from tools.lib.test_selection import acceptance_mode, read_json_value, SelectionError
 from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, eligible_features,
     validate_retirement_shape, validate_retirements, validate_revisions,
@@ -55,13 +55,9 @@ def _load_json(path: Path) -> tuple[Any | None, bool]:
     if not path.exists():
         return None, True
     try:
-        with path.open(encoding="utf-8") as f:
-            return json.load(f), True
-    except json.JSONDecodeError as e:
-        _error(f"{_rel(path)} is invalid JSON: {e}")
-        return None, False
-    except OSError as e:
-        _error(f"cannot read {_rel(path)}: {e}")
+        return read_json_value(path), True
+    except SelectionError as e:
+        _error(str(e))
         return None, False
 
 

@@ -15,6 +15,7 @@ from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, validate_retirement_shape,
     referenced_test_ids, validate_retirements, validate_revisions,
 )
+from tools.lib.test_selection import read_json_value, SelectionError
 
 COMPONENT_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 AC_TEST_RE = re.compile(r"^(F\d{3})-(AC\d{2})(?:-(\d{2}))?$")
@@ -30,11 +31,9 @@ class RegistryError(ValueError):
 
 def _read_json(path: Path) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
-    except FileNotFoundError as exc:
-        raise RegistryError(f"JSON input does not exist: {path}") from exc
-    except (OSError, json.JSONDecodeError) as exc:
-        raise RegistryError(f"cannot read JSON input {path}: {exc}") from exc
+        return read_json_value(path)
+    except SelectionError as exc:
+        raise RegistryError(str(exc)) from exc
 
 
 def _string_list(value: Any, label: str, *, allow_empty: bool = True) -> list[str]:

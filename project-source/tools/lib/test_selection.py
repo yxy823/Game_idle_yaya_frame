@@ -14,7 +14,8 @@ class SelectionError(ValueError):
     """A test contract cannot be translated into a safe, complete selection."""
 
 
-def read_json(path: Path) -> dict[str, Any]:
+def read_json_value(path: Path) -> Any:
+    """Reject ambiguous JSON; each caller owns its root type and business schema."""
     def unique(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         result: dict[str, Any] = {}
         for key, value in pairs:
@@ -24,10 +25,14 @@ def read_json(path: Path) -> dict[str, Any]:
         return result
 
     try:
-        value = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique,
-                           parse_constant=lambda value: (_ for _ in ()).throw(SelectionError(f"invalid number {value}")))
+        return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique,
+                          parse_constant=lambda value: (_ for _ in ()).throw(SelectionError(f"invalid number {value}")))
     except (OSError, ValueError) as exc:
         raise SelectionError(f"cannot read {path}: {exc}") from exc
+
+
+def read_json(path: Path) -> dict[str, Any]:
+    value = read_json_value(path)
     if not isinstance(value, dict):
         raise SelectionError(f"expected JSON object: {path}")
     return value

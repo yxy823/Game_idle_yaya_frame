@@ -47,8 +47,11 @@ class UnitTestPathsTests(unittest.TestCase):
         )
         return path
 
-    def _merge(self, components: list[dict]) -> subprocess.CompletedProcess[str]:
+    def _merge(self, components: list[dict] | dict) -> subprocess.CompletedProcess[str]:
         self._write_json(self.candidates_path, components)
+        return self._merge_file()
+
+    def _merge_file(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [sys.executable, "-B", str(MERGE_HELPER),
              "--components", str(self.candidates_path)],
@@ -171,6 +174,68 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("conflicts", result.stderr)
         self.assertEqual(self.registry_path.read_bytes(), original)
+
+    def test_ambiguous_registry_is_rejected_by_all_readers_without_rewrite(self) -> None:
+        from tools.lib.test_selection import read_json, SelectionError
+        registry = {
+            "meta": {"schema_version": 2}, "components": [self._component()],
+            "tests": [{"id": "INV-INVENTORY-01", "kind": "invariant",
+                       "source_feature": None, "criterion_id": None,
+                       "components": ["inventory"], "path": None, "case": None,
+                       "status": "planned"}],
+        }
+        encoded = json.dumps(registry)
+        payloads = [
+            (encoded[:-1] + ', "tests": []}', "duplicate JSON key"),
+            (encoded.replace('"full_suite_on_change": false',
+                             '"full_suite_on_change": true, "full_suite_on_change": false'),
+             "duplicate JSON key"),
+        ]
+        payloads.extend((encoded[:-1] + ', "note": ' + value + '}', "invalid number")
+                        for value in ("NaN", "Infinity", "-Infinity"))
+        for payload, error in payloads:
+            with self.subTest(payload=payload):
+                self.registry_path.write_text(payload, encoding="utf-8")
+                original = self.registry_path.read_bytes()
+                result = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False}])
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn(error, result.stderr)
+                self.assertEqual(self.registry_path.read_bytes(), original)
+                checked = self._strict()
+                self.assertEqual(checked.returncode, 2, checked.stdout + checked.stderr)
+                self.assertIn(error, checked.stderr)
+                with self.assertRaisesRegex(SelectionError, error):
+                    read_json(self.registry_path)
+                self.assertEqual(self.registry_path.read_bytes(), original)
+
+    def test_duplicate_candidate_keys_preserve_registry_and_candidate_originals(self) -> None:
+        self.assertEqual(self._merge([self._component()]).returncode, 0)
+        original = self.registry_path.read_bytes()
+        candidate = json.dumps({"id": "extra", "unit_test_paths": [], "full_suite_on_change": False})
+        payloads = ['{"components": [' + candidate + '], "components": []}',
+                    '[' + candidate[:-1] + ', "id": "other"}]']
+        for payload in payloads:
+            with self.subTest(payload=payload):
+                self.candidates_path.write_text(payload, encoding="utf-8")
+                candidate_bytes = self.candidates_path.read_bytes()
+                result = self._merge_file()
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("duplicate JSON key", result.stderr)
+                self.assertEqual(self.registry_path.read_bytes(), original)
+                self.assertEqual(self.candidates_path.read_bytes(), candidate_bytes)
+
+    def test_unique_candidates_keep_array_and_object_formats(self) -> None:
+        from tools.lib.test_selection import read_json, SelectionError
+        components = [self._component()]
+        for candidates in (components, {"components": components}):
+            with self.subTest(candidates=candidates):
+                result = self._merge(candidates)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(self._strict().returncode, 0)
+                self.assertEqual(read_json(self.registry_path)["components"], components)
+                if isinstance(candidates, list):
+                    with self.assertRaisesRegex(SelectionError, "expected JSON object"):
+                        read_json(self.candidates_path)
 
     def test_runner_still_rejects_registered_target_with_zero_discovery(self) -> None:
         suite = self._suite()
