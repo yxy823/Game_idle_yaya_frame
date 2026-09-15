@@ -244,7 +244,10 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
                           f'<span class="nav-number">{number:02d}</span><span class="nav-title">{escape(doc.title)}</span></a>'
                           f'<button type="button" class="nav-toggle" aria-expanded="true" '
                           f'aria-controls="outline-{doc.key}" aria-label="收起{escape(doc.title)}的小节">'
-                          '<span aria-hidden="true">⌄</span></button></div>'
+                          '<svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" '
+                          'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" '
+                          'stroke-linejoin="round" aria-hidden="true" focusable="false">'
+                          '<path d="m6 9 6 6 6-6"/></svg></button></div>'
                           f'<div class="nav-sections" id="outline-{doc.key}">{outline}</div></div>')
         heading_titles = {slug: title for _, title, slug in doc.headings}
         for token in doc.tokens:
@@ -281,7 +284,8 @@ class OutputInspector(HTMLParser):
             self.ids.append(attrs["id"])
         if tag == "a" and "href" in attrs:
             self.links.append(attrs["href"])
-        if tag == "svg":
+        # Mermaid roots receive this prefix in scope_svg; decorative UI icons do not count as diagrams.
+        if tag == "svg" and attrs.get("id", "").startswith("diagram-"):
             self.svg_count += 1
         if tag in {"img", "iframe", "link"} or (tag == "script" and "src" in attrs):
             raise ValueError(f"阅读文件含外置资源：{tag} {attrs}")
