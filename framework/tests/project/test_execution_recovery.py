@@ -10,6 +10,7 @@ from unittest import mock
 
 import test_feature_completion_evidence as fixtures
 from gdunit_report_fixture import make_run
+from tools.lib.feature_completion_evidence import EvidenceError
 from tools.lib.test_run_evidence import derive_test_evidence, result_reference, start_run
 
 
@@ -157,12 +158,56 @@ class ExecutionRecoveryTests(unittest.TestCase):
         directory = self.root / "reports/gdunit-wrapper/run-snapshot-error"
         directory.mkdir(parents=True)
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
-                        side_effect=ValueError("snapshot unavailable")):
+                        side_effect=EvidenceError("snapshot unavailable")):
             result = start_run(self.root, directory, "F001", "final", "full")
         self.assertEqual(result["status"], "failed")
         self.assertIsNone(result["snapshot"])
         self.assertEqual(result["errors"], ["snapshot unavailable"])
         self.assertEqual(json.loads((directory / "result.json").read_text()), result)
+
+    def test_snapshot_error_stops_runner_before_launch(self):
+        spec = importlib.util.spec_from_file_location("snapshot_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        runner = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = runner
+        spec.loader.exec_module(runner)
+        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
+        with mock.patch.object(runner, "REPO_ROOT", self.root), \
+                mock.patch.object(runner, "_run_process") as launch, \
+                mock.patch("tools.lib.test_run_evidence.current_snapshot",
+                           side_effect=EvidenceError("git read failed")):
+            self.assertEqual(runner._run_tests(args), 1)
+        launch.assert_not_called()
+        paths = list((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        self.assertEqual(len(paths), 1)
+        result = json.loads(paths[0].read_text())
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["errors"], ["git read failed"])
+        self.assertIsNotNone(result["finished_at"])
+
+    def test_finish_snapshot_error_finalizes_result_and_preserves_raw_reports(self):
+        _, previous = make_run(self.root)
+        snapshot = json.loads(previous.read_text())["snapshot"]
+        with mock.patch("tools.lib.test_run_evidence.current_snapshot",
+                        side_effect=[snapshot, EvidenceError("git read failed at finish")]):
+            _, path = make_run(self.root)
+        result = json.loads(path.read_text())
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["errors"], ["git read failed at finish"])
+        self.assertIsNotNone(result["finished_at"])
+        self.assertEqual(set(result["artifacts"]), {"junit", "discovery", "diagnostics", "engine_log"})
+        for reference in result["artifacts"].values():
+            artifact = path.parent / reference["path"]
+            self.assertEqual(result_reference(path.parent, artifact), reference)
+        self.assertEqual(result["process"]["returncode"], 0)
+
+    def test_snapshot_failure_does_not_hide_result_write_failure(self):
+        directory = self.root / "reports/gdunit-wrapper/run-write-error"
+        with mock.patch("tools.lib.test_run_evidence.current_snapshot",
+                        side_effect=EvidenceError("snapshot unavailable")), \
+                mock.patch("tools.lib.test_run_evidence.write_evidence",
+                           side_effect=OSError("report directory not writable")):
+            with self.assertRaisesRegex(OSError, "report directory not writable"):
+                start_run(self.root, directory, "F001", "final", "auto")
 
     def test_concurrent_sequence_tie_cannot_clear_an_unresolved_failure(self):
         plan, old_pass = make_run(self.root)

@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from tools.lib.feature_completion_evidence import current_snapshot, utc_now, write_evidence
+from tools.lib.feature_completion_evidence import EvidenceError, current_snapshot, utc_now, write_evidence
 from tools.lib.test_selection import execution_selectors, normalized_path, read_json, build_selection
 
 
@@ -299,7 +299,7 @@ def start_run(root: Path, directory: Path, feature_id: str | None,
     snapshot = None
     try:
         snapshot = current_snapshot(root) if feature_id else None
-    except (ValueError, OSError) as error:
+    except (EvidenceError, ValueError, OSError) as error:
         errors.append(str(error))
     result = {"schema_version": 1, "run_id": directory.name,
               "sequence": 1 + max((item["sequence"] for item in records), default=0),
@@ -375,7 +375,7 @@ def finish_run(root: Path, directory: Path, result: dict, *,
                 require_coverage(cases, [{"path": path.removeprefix("res://"), "case": case}])
         if result["snapshot"] and current_snapshot(root)["working_tree_fingerprint"] != result["snapshot"]["working_tree_fingerprint"]:
             result["errors"].append("source changed during test execution")
-    except (ValueError, OSError, KeyError, TypeError, IndexError) as error:
+    except (EvidenceError, ValueError, OSError, KeyError, TypeError, IndexError) as error:
         result["errors"].append(str(error))
     result["status"] = "failed" if result["errors"] else "passed"
     result["finished_at"] = utc_now()
