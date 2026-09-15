@@ -94,8 +94,11 @@ python -B tools/checks/check-project-environment.py --require-ready
 ```
 
 Without the flag, the checker accepts valid incomplete configuration. With it,
-the checker requires ready status, available Python/Godot paths and command
-entrypoints, and a live Godot 4.7.x version matching the recorded value.
+the checker requires ready status, existing Python/Godot executable files and
+the first executable in `test_cmd`, and a live Godot 4.7.x version matching the
+recorded value. It does not check the script or arguments after that executable.
+The setup Agent must separately confirm the actual test script exists and its
+arguments match the project runner; READY alone does not establish this.
 It does not prepare editor caches, install dependencies, execute tests, script
 parsing or lint, initialize Git or claim those checks passed. If setup fails, leave status
 incomplete and report the actual reason in Progress rather than duplicating

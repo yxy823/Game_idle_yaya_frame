@@ -13,7 +13,7 @@ tools/
 | 入口 | 用途 |
 | --- | --- |
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
-| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对工具与版本 |
+| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 ready 状态、Python/Godot 文件、测试命令首个可执行文件及实际 Godot 版本；脚本与参数由 Agent 核对 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 
 完成记录属于 `execute-next-feature/scripts/record-feature-completion.py`；
