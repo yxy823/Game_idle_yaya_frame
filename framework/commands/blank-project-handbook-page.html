@@ -48,8 +48,9 @@ button:disabled { cursor: default; opacity: .45; }
 #close-sidebar, .nav-row .nav-toggle { width: 44px; height: 44px; padding: 0; }
 .sidebar button:hover { background: var(--hover); border-color: var(--accent); }
 #close-sidebar, .nav-row .nav-toggle, #toggle-sidebar { position: relative; isolation: isolate; height: 44px; border: 0; background: transparent; }
-#close-sidebar::before, .nav-toggle::before, #toggle-sidebar::before { content: ""; position: absolute; inset: 6px; z-index: -1; border: 1px solid var(--control-border); border-radius: 6px; background: var(--paper); transition: background-color 160ms ease, border-color 160ms ease; }
-#close-sidebar:hover::before, .nav-toggle:hover::before, #toggle-sidebar:hover::before { background: var(--hover); border-color: var(--accent); }
+#toggle-sidebar::before { content: ""; position: absolute; inset: 6px; z-index: -1; border: 1px solid var(--control-border); border-radius: 6px; background: var(--paper); transition: background-color 160ms ease, border-color 160ms ease; }
+#toggle-sidebar:hover::before { background: var(--hover); border-color: var(--accent); }
+#close-sidebar:hover, .nav-row .nav-toggle:hover { color: var(--accent-hover); }
 #close-sidebar { align-self: flex-start; margin-top: max(0px, calc((var(--header-height, 72px) - 45px) / 2 - 10px)); }
 #close-sidebar .ui-icon, .nav-toggle .ui-icon { flex-basis: 16px; width: 16px; height: 16px; }
 .sidebar-search, #close-sidebar, .nav-toggle, .sidebar-toggle, .sidebar-shade { display: none; }
@@ -72,7 +73,6 @@ button:disabled { cursor: default; opacity: .45; }
 .nav-toggle .ui-icon { transition: transform 160ms ease; }
 .nav-toggle[aria-expanded="false"] .ui-icon { transform: rotate(-90deg); }
 .nav-row:has(a.active) .nav-toggle { color: var(--selection-ink); }
-.nav-row:has(a.active) .nav-toggle:hover::before { background: var(--hover); }
 .nav-sections { margin: 9px 9px 16px 24px; padding-left: 16px; border-left: 1px solid var(--control-border); }
 .nav-sections a { display: block; padding: 7px 0; color: var(--nav-muted); text-decoration: none; font-size: var(--font-subnav); line-height: 1.7; }
 .nav-sections a:hover { color: var(--accent-hover); }
