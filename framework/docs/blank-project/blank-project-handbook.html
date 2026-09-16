@@ -2405,6 +2405,7 @@ $LASTEXITCODE
 <h2 id="doc-framework--docs--blank-project--reference--skills--从哪里取得操作提示词" data-title="从哪里取得操作提示词">从哪里取得操作提示词<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--skills--从哪里取得操作提示词" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>所有可供用户发送给 Agent 的正式操作提示词都在 <a href="../../prompts.json" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">framework/prompts.json</a>。顶层包含“Yaya 框架维护”和“Godot 项目开发”两个 Project，保留 <code>project</code>、<code>categories</code> 结构；分类下的叶子键是提示词名，字符串值是完整正文。</p>
 <p>使用时选择当前任务对应的一条，有 <code>${1:说明}</code> 等占位内容时先填写，再在正确目录发送；GitHub 审核入口交给具有仓库读取权限的模型。以下列出查找位置，不复制正文。</p>
+<p>Codex 输出、外部报告、需求原文和复现日志等可能较长的输入，在相关提示词末尾有独立材料区。先填写目标、范围等短信息，再将原文放入末尾占位处；前面的上下文字段只留摘要或路径。材料区后不再接本条任务要求，补充授权或输出要求放回前文，或在后续消息中明确提出。材料区用于区分指令与输入，不保证仅靠位置就能隔离材料中的干扰。</p>
 <div class="table-scroll"><table>
 <thead>
 <tr>
@@ -2547,7 +2548,7 @@ $LASTEXITCODE
 <p>框架维护入口位于“Yaya 框架维护”，涵盖设计、修改、审核、验证与交接。查找对应入口及输入、产物和只读/实施边界，统一见 <a href="#doc-framework--docs--blank-project--maintenance--updating-the-blank-project--%E9%80%9A%E8%BF%87%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%BC%80%E5%A7%8B%E7%BB%B4%E6%8A%A4">维护提示词说明</a>。项目换线程的具体步骤见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8D%A2%E5%88%B0%E6%96%B0%E7%BA%BF%E7%A8%8B%E7%BB%A7%E7%BB%AD">任务交接</a>。</p>
 <p>手册中的名称用于定位提示词，实际授权以当前 JSON 正文和用户请求为准；已有 GDD 的读取、归属和后续规划见 <a href="#doc-framework--docs--blank-project--guides--product-and-planning--%E6%8E%A5%E5%85%A5%E5%B7%B2%E6%9C%89-gdd">GDD 接入说明</a>。</p>
 <h3 id="doc-framework--docs--blank-project--reference--skills--根据-codex-输出起草回复" data-title="根据 Codex 输出起草回复">根据 Codex 输出起草回复<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--skills--根据-codex-输出起草回复" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
-<p>在目标游戏项目中选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”，填写原任务、疑问和已有决定，并附上 Codex 输出原文或文件路径。只询问状态或下一步时，无需提供 Codex 输出。</p>
+<p>在目标游戏项目中选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”，填写原任务、疑问和已有决定，将 Codex 输出原文或文件路径放入末尾的“Codex 输出（可选）”材料区。只询问状态或下一步时，该处填“无”。</p>
 <p>Agent 使用 <code>yaya-next-step-advisor</code>，结合当前项目规则、相关任务和可用证据，判断原输出的结论、建议与停点是否合理。需要回信时，先给简短判断，再提供一个可复制的回复代码块，说明应继续、纠正或补充核实的事项及适用流程；只问状态时直接回答事实。</p>
 <p>分析只读进行，回复由你检查后发送。已有明确授权继续沿用；Codex 的总结不能替代原始验证证据，生成的回复也不替你作出未表达的产品决定或人工验收。若目的是判断框架本身是否需要改进，改用框架维护侧的 <a href="#doc-framework--docs--blank-project--maintenance--updating-the-blank-project--%E4%BB%8E%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E5%8F%8D%E9%A6%88%E5%A4%8D%E7%9B%98%E6%A1%86%E6%9E%B6">开发反馈复盘入口</a>。</p>
 <h2 id="doc-framework--docs--blank-project--reference--skills--常见组合" data-title="常见组合">常见组合<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--skills--常见组合" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
