@@ -1203,6 +1203,7 @@ $LASTEXITCODE
 <p>Agent 先运行与变更相关的已有测试，作为修改前的安全网。空项目尚无相关测试时如实说明；已有测试本来就失败时保留原始错误，不记成本次修改引入，也不自行吸收无关修复。</p>
 <p>适用 TDD（测试驱动开发）的新行为先建立对应测试，确认失败来自缺失或错误行为，再实现并取得通过。这里的 RED 指测试因目标行为尚未实现或存在错误而失败；解析错误、环境故障和未发现测试用例不属于这种有效失败。窄范围运行支持调试，最终验证按当前 Feature 和测试登记表计算。</p>
 <p>最终默认使用 <code>--scope auto</code> 运行受影响测试集合（affected），必要时执行全量（full）。一次覆盖充分且内容仍匹配的全量成功可同时满足必需集合（Required）和受影响集合，不必重复运行。命令、报告与静态检查见 <a href="#doc-framework--docs--blank-project--reference--commands-and-validation">命令与验证</a>。</p>
+<p>首次生成验证产物前按 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8A%A5%E5%91%8A%E4%BF%9D%E7%95%99%E4%B8%8E%E6%B8%85%E7%90%86">报告保留与清理</a> 选择位置，正常收尾核对本次产物和证据链接；报告归组与历史清理各按已授权范围处理。</p>
 <p>若需求变化涉及旧测试，同步报告先说明要处理的断言、方法/文件和当前引用，批准后交给对应 Feature notes。实现阶段按该范围实际删除或替换，并更新有效映射与注册路径；同一文件里的有效用例继续保留。测试登记表的 <code>retired</code> 只表示记录退役，仍在被选中套件内的旧方法仍可能执行。已完成 Feature 和退役记录保留历史用途，详见 <a href="../../../project-source/methodology/08-testing-strategy.md#requirement-changes-and-stale-tests" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">失效测试处理约定</a>。</p>
 <h2 id="doc-framework--docs--blank-project--guides--feature-delivery--人工验收应如何操作" data-title="人工验收应如何操作">人工验收应如何操作<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--人工验收应如何操作" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>manual Feature 按 <a href="../../../project-source/methodology/manual-acceptance-files.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">人工验收文件契约</a> 交付清单并接收结果。每项检查对应批准的 AC 或必要回归，写清入口场景、起始状态、输入、预期反馈和重置方法；设备、时长或随机种子影响结果时再补充。</p>
@@ -1673,9 +1674,11 @@ Work item: docs/features/F012.json
 <p>占位内容使用 <code>_placeholder_</code> 前缀，并在当前 Feature notes 说明用途、替换方式和未完成的验收。替换素材时核对引用、UID/路径与实际场景；外观、声音、动画和手感仍按需求保留人工验收。</p>
 <p>数据格式改变时核对已有内容和加载方，再决定版本、迁移与兼容范围。资产来源和许可证按现有规则记录。工具生成的输出不应成为可复用脚本或重要项目决定的唯一副本。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--报告保留与清理" data-title="报告保留与清理">报告保留与清理<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--报告保留与清理" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
-<p>准备运行时按 <a href="#doc-framework--docs--blank-project--reference--project-layout--%E5%BC%80%E5%8F%91%E4%B8%AD%E6%8C%89%E9%9C%80%E5%87%BA%E7%8E%B0%E7%9A%84%E5%86%85%E5%AE%B9">目录参考</a> 选择产物位置：保留工具和流程的固定路径，自定义结果按任务归组，验证副本与辅助材料进入临时工作区。临时材料沿用现有生命周期规则；需要跨任务或交接保留时，在已有 Feature notes 或 Progress 中说明用途及可结束保留的条件，例如待验收完成或排障结束。可复用工具和夹具回到正常源码目录。</p>
-<p>当前验证、人工验收、未解决失败或后续工作需要的报告继续保留。默认报告不进入 Git，因此代码提交不保证另一台机器拥有报告原件。需要跨目录或跨机器交接时说明实际可用证据，缺失原件不能靠提交说明补成通过。</p>
-<p>已有目录的整理须同时核对生成命令、读取脚本和当前证据链接，不能只移动文件。<code>scratch</code> 名称不表示内容可以删除，其中仍被验收或失败调查使用的工程与证据同样需要保留。</p>
+<p>首次生成产物前按 <a href="#doc-framework--docs--blank-project--reference--project-layout--%E5%BC%80%E5%8F%91%E4%B8%AD%E6%8C%89%E9%9C%80%E5%87%BA%E7%8E%B0%E7%9A%84%E5%86%85%E5%AE%B9">目录参考</a> 选择位置：工具和人工验收原件沿用固定路径，Feature 自定义结果进入 <code>reports/features/&lt;Feature-ID&gt;/</code>，其他维护报告进入 <code>reports/maintenance/&lt;任务&gt;/</code>，验证副本与辅助输入进入 <code>reports/scratch/&lt;任务&gt;/</code>。目录按需创建，正式验证结果不与临时输入混放；需要保留不同轮次时再设运行子目录，避免覆盖已引用原件。</p>
+<p>gdUnit 已保存结构化结果、引擎日志和原始报告，通常直接引用这些文件；额外控制台日志应保留原件中没有的有用信息。当前状态从 Progress 阅读，单项结论与证据从 Feature 历史阅读，不另建报告总索引；文件名中的 <code>final</code> 或 <code>delivery</code> 不代替证据引用。</p>
+<p>正常收尾核对本次产物位置与链接。临时材料需要跨任务或交接保留时，在已有 Feature notes 或 Progress 中说明用途及可结束保留的条件，例如待验收完成或排障结束。可复用生成器和夹具回到正常源码目录，提交说明、候选输入和一次性探针按临时材料管理。</p>
+<p>当前验证、人工验收、未解决失败或后续工作需要的报告，以及保留的历史和知识条目引用的证据继续保留。默认报告不进入 Git，因此代码提交不保证另一台机器拥有报告原件。需要跨目录或跨机器交接时说明实际可用证据，缺失原件不能靠提交说明补成通过。</p>
+<p>已有目录的整理须同时核对生成命令、读取脚本、当前证据及历史/知识链接，不能只移动文件；工具运行目录与人工验收原件保留原路径。归组和修复引用不包含删除或改写历史证据的授权。<code>scratch</code> 名称不表示内容可以删除，其中仍被验收或失败调查使用的工程与证据同样需要保留。</p>
 <p>清理报告是明确的维护动作：读取拟处理目录和当前引用，只清理已理解且获授权的输出。目录较旧、后面有成功运行、文件未被 Git 跟踪，都不自动授权删除。测试运行器不会自动清理旧报告，也不需要额外的保留登记表。</p>
 <p>依据：<a href="../../../project-source/methodology/09-artifact-lifecycle.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">历史与报告规范</a>、<a href="../../../project-source/methodology/10-architecture-overview.md" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">架构与 ADR 规范</a>。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--读取工程规则" data-title="读取工程规则">读取工程规则<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--读取工程规则" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
@@ -1782,7 +1785,7 @@ Work item: docs/features/F012.json
 <h2 id="doc-framework--docs--blank-project--getting-started--migrate-existing-project--状态验证与交接" data-title="状态、验证与交接">状态、验证与交接<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--getting-started--migrate-existing-project--状态验证与交接" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>已完成的 Feature 保留历史完成事实；进行中的 Feature 保留真实停点，不重演从零开发，也不自动转为完成。无法确认的历史字段如实说明，不能用迁移时间或本次测试补造过去的完成、批准和验收。</p>
 <p>旧测试记录不能当作当前运行结果。根据迁移影响执行环境、台账、解析/lint 及真实测试；跨工具和大量引用的迁移通常需要一次完整现有业务回归，同次运行已覆盖的子集无需重复。现有 UI、音频或手感工作尚待人工验收时，迁移通过仍不代表业务验收完成。</p>
-<p>目标的 <code>reports/framework-migration.md</code> 保存一次性迁移报告，现有 Progress 指向报告并说明真实下一步；已有同名报告未获覆盖授权时使用不冲突名称。报告区分实际通过、失败、未执行、历史记录及来源未变核对，不额外建立同步台账。目标 README、规则和工具继续描述项目自身使用，维护手册与提示词库不进入目标项目。</p>
+<p>目标的 <code>reports/maintenance/framework-migration/migration.md</code> 保存一次性迁移报告，现有 Progress 指向报告并说明真实下一步；已有同名报告未获覆盖授权时使用不冲突名称。报告区分实际通过、失败、未执行、历史记录及来源未变核对，不额外建立同步台账。目标 README、规则和工具继续描述项目自身使用，维护手册与提示词库不进入目标项目。</p>
 <p>迁移完成后停止，再由用户决定是否续接原任务。完整开发流程仍使用 <a href="#doc-framework--docs--blank-project--guides--feature-delivery">Feature 开发说明</a>，框架不会自动更新这个项目。</p>
 <nav class="chapter-pager" aria-label="章节翻页"><a href="#doc-framework--docs--blank-project--guides--project-knowledge" class="previous"><span>← 上一章</span><strong>项目知识、架构与交接</strong></a><a href="#doc-framework--docs--blank-project--reference--project-layout" class="next"><span>下一章 →</span><strong>项目目录与文件职责</strong></a></nav></article>
 <article id="doc-framework--docs--blank-project--reference--project-layout" class="chapter" data-number="09" data-title="项目目录与文件职责"><div class="chapter-meta"><span>参考与排查 / 09</span><a class="source-link" href="reference/project-layout.md" title="本章的 Markdown 源文件">Markdown 原文</a></div>
@@ -2089,9 +2092,14 @@ Work item: docs/features/F012.json
 <td>分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件</td>
 </tr>
 <tr>
-<td><code>reports/&lt;任务&gt;/</code>，如 <code>reports/F001/</code></td>
-<td>自定义验证产生结果时</td>
-<td>按 Feature ID 或有意义的维护任务名归组日志、结果和截图；需要区分多次运行时再设子目录</td>
+<td><code>reports/features/&lt;Feature-ID&gt;/</code>，如 <code>reports/features/F001/</code></td>
+<td>Feature 自定义验证产生结果时</td>
+<td>保存该 Feature 的日志、结果和截图，工程 Feature 同样适用；需要保留不同轮次时再设子目录</td>
+</tr>
+<tr>
+<td><code>reports/maintenance/&lt;任务&gt;/</code></td>
+<td>未归属 Feature 的维护或调查产生结果时</td>
+<td>按有意义的任务名归组报告，例如框架迁移或架构调查</td>
 </tr>
 <tr>
 <td><code>reports/scratch/&lt;任务&gt;/</code></td>
@@ -2100,7 +2108,7 @@ Work item: docs/features/F012.json
 </tr>
 </tbody>
 </table></div>
-<p>工具或流程已约定的报告路径继续沿用；上表后两项用于自定义产物，按需创建。工具支持指定输出位置时，将需保留的结果放入任务报告目录，与临时输入分开；证据仍在验证副本内时保留所需工作区并链接原件。存放与清理约定见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8A%A5%E5%91%8A%E4%BF%9D%E7%95%99%E4%B8%8E%E6%B8%85%E7%90%86">报告保留与清理</a>。</p>
+<p>工具或流程已约定的报告路径继续沿用；自定义目录按需创建，根目录不散放 Feature 文件或每轮运行目录。工具支持指定输出位置时，将需保留的结果放入任务报告目录，与 scratch 中的临时输入分开；证据仍在验证副本内时保留所需工作区并链接原件。阅读入口沿用 Progress 和 Feature 历史，存放与清理约定见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8A%A5%E5%91%8A%E4%BF%9D%E7%95%99%E4%B8%8E%E6%B8%85%E7%90%86">报告保留与清理</a>。</p>
 <p>游戏源码、场景、资源和素材源文件按游戏实际模块组织。项目规则目录中的 <code>10-gdscript</code>、<code>20-scenes</code> 等数字是规则导航，不要求业务目录也按文件类型分组。</p>
 <h2 id="doc-framework--docs--blank-project--reference--project-layout--模板怎么使用" data-title="模板怎么使用">模板怎么使用<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--project-layout--模板怎么使用" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <div class="table-scroll"><table>
@@ -2872,10 +2880,13 @@ $LASTEXITCODE
 &amp; $projectGodot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
 $LASTEXITCODE
 </code></pre></div>
-<div class="code-block"><div class="code-toolbar"><span>powershell</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code># 每次选用不会覆盖仍需保留原件的报告名称。
-&amp; $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output reports/lint-current.json res:// | Out-Host
+<div class="code-block"><div class="code-toolbar"><span>powershell</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code># 替换成实际 Feature；需保留不同轮次时，选择尚未使用的运行子目录。
+$reportDirectory = &#x27;reports/features/F001&#x27;
+New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
+&amp; $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output &quot;$reportDirectory/lint.json&quot; res:// | Out-Host
 $LASTEXITCODE
 </code></pre></div>
+<p>未归属 Feature 的工作使用 <code>reports/maintenance/&lt;任务&gt;/</code>；需要保存的解析输出也放入相应报告目录。不要覆盖仍被引用的原件，目录选择见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8A%A5%E5%91%8A%E4%BF%9D%E7%95%99%E4%B8%8E%E6%B8%85%E7%90%86">报告保留与清理</a>。</p>
 <p>对 Windows GUI 可执行文件，<code>Out-Host</code> 管道用于等待进程，立即检查退出码。lint 扫描完整 <code>res://</code> 并遵循项目配置；修改了被默认排除的依赖时，仍需验证该依赖变更本身。</p>
 <p>当前 lint CLI 的退出码：0 表示无问题或仅 Info，1 表示 Warning，2 表示 Critical，3 表示输入无效、空发现、配置错误或 JSON 报告写入失败。<code>--severity</code> 和 <code>--top</code> 只影响显示，不会抹去真实判定。<code>--output</code> 支持 JSON 和 HTML 文件；默认文件名 <code>code_quality_report.html</code> 仅用于 HTML。报告真实范围与 Critical/Warning/Info 数量，未知数量不能写成零。</p>
 <p>解析证明脚本在实际引擎中的相关语法/类型契约，lint 检查配置的质量规则；两者都不替代运行、资源、场景、导出或人工质量判断。需要编辑器检查时遵循本机项目规则的沙箱外审批路径。普通 Feature 不增加单独导入阶段。</p>

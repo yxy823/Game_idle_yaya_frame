@@ -177,10 +177,14 @@ $LASTEXITCODE
 ```
 
 ```powershell
-# 每次选用不会覆盖仍需保留原件的报告名称。
-& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output reports/lint-current.json res:// | Out-Host
+# 替换成实际 Feature；需保留不同轮次时，选择尚未使用的运行子目录。
+$reportDirectory = 'reports/features/F001'
+New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
+& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
 $LASTEXITCODE
 ```
+
+未归属 Feature 的工作使用 `reports/maintenance/<任务>/`；需要保存的解析输出也放入相应报告目录。不要覆盖仍被引用的原件，目录选择见 [报告保留与清理](../guides/project-knowledge.md#报告保留与清理)。
 
 对 Windows GUI 可执行文件，`Out-Host` 管道用于等待进程，立即检查退出码。lint 扫描完整 `res://` 并遵循项目配置；修改了被默认排除的依赖时，仍需验证该依赖变更本身。
 

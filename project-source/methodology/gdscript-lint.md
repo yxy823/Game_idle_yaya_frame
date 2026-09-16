@@ -75,9 +75,16 @@ Python static wrapper, static manifest, or static-result registration command.
 # $godot is the configured executable path; run from the project directory.
 & $godot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
 $LASTEXITCODE
-& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output reports/lint.json res:// | Out-Host
+# Replace F001 with the actual Feature; use an unused run subdirectory if needed.
+$reportDirectory = 'reports/features/F001'
+New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
+& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
 $LASTEXITCODE
 ```
+
+For work without a Feature, use `reports/maintenance/<task>/`. Choose paths and
+retain originals under [Reports and cleanup](09-artifact-lifecycle.md#reports-and-cleanup);
+saved parsing output follows the same task directory, not scratch.
 
 For PowerShell with the Windows GUI executable, the pipeline waits for the process;
 read `$LASTEXITCODE` immediately. An empty exit value is not a successful check.
@@ -89,7 +96,7 @@ when the task itself changes that dependency.
 
 Check each command's exit code and original output immediately. Keep failures;
 do not overwrite a report still needed for an unresolved task. Choose a distinct
-report filename when preserving an earlier run. Report actual checked scope,
+report filename or run subdirectory when preserving an earlier run. Report actual checked scope,
 Critical/Warning/Info counts and any unexecuted checks. Unknown counts are not zero.
 An unresolved required parse or lint failure prevents completion even when the
 test-evidence helper passes. This is an Agent responsibility, not another state file.

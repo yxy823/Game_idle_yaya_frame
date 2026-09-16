@@ -199,6 +199,10 @@ After approval:
 
 Implement only the current Feature and its approved dependencies/repairs.
 
+Before producing validation output or temporary inputs, choose their destinations
+under [Reports and cleanup](09-artifact-lifecycle.md#reports-and-cleanup). Reuse
+those locations across the task while preserving distinct evidence when needed.
+
 ### 3A. Existing Safety Net baseline
 
 Before writing behavior-changing implementation code:
@@ -423,7 +427,7 @@ run; further execution needs an authorized, concrete verification need.
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
 4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and accepted follow-ups. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
-5. Archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs under [09-artifact-lifecycle.md](09-artifact-lifecycle.md); do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
+5. Check this task's report locations, evidence links and retained scratch purpose under [09-artifact-lifecycle.md](09-artifact-lifecycle.md#reports-and-cleanup), then archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs; do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
 6. Confirm applicable test/acceptance evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
 7. Follow `agent-rules/00-core/git-worktree-and-commits.md` to commit the remaining validated implementation and completion records, with its Feature identity, staging and post-commit checks. Earlier logical commits remain part of this Feature's delivery; do not squash them or create an empty commit merely to mark a Stage. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
 

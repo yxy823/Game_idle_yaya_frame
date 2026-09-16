@@ -5,29 +5,50 @@ execution output; they are not the only copy of reusable tools or project decisi
 
 ## Reports and cleanup
 
-Choose output locations when preparing a run or temporary workspace:
+Choose output locations before producing a run or temporary workspace. Keep the
+report root for fixed entry points; create the following directories only when
+needed:
 
 | Artifact | Location and responsibility |
 | --- | --- |
 | Tool or workflow-defined reports | Keep their existing paths, including `reports/gdunit-wrapper/run-<id>/`, `reports/manual-acceptance/` and `reports/initialization.md`. Their readers and evidence references depend on those contracts. |
-| Custom logs, results and screenshots | Group under `reports/<task>/`, using the Feature ID or a descriptive maintenance key. Add run subdirectories when needed to preserve distinct attempts; avoid scattering custom files or per-run directories at the report root. |
+| Custom Feature logs, results and screenshots | Use `reports/features/<Feature-ID>/`, including engineering Features. Keep results with their Feature rather than scattering files at the root or grouping several Features in a Product scratch directory. |
+| Custom reports without a Feature | Use `reports/maintenance/<task>/`, with a descriptive maintenance or investigation key. |
 | Temporary projects, probes, reference-source excerpts and command-support files | Use `reports/scratch/<task>/`, with separate attempt directories as needed. Keep each copied project and its generated caches inside that workspace; copy only the inputs needed for the check. |
 
-Create these directories only when needed. Where a tool supports output paths,
-save retained results in the task report directory separately from scratch inputs.
+Where a tool supports output paths, save retained results in the task report
+directory separately from scratch inputs. Use descriptive filenames; add a run
+subdirectory when distinct attempts need to survive, and never overwrite a
+referenced original. Repeated `final`, `verified` or `delivery` suffixes do not
+identify the applicable result; the existing Feature/Progress evidence link does.
 When evidence remains embedded in a scratch project, retain the required workspace
 and link the actual evidence location. A scratch path alone does not establish
 that its contents are disposable.
 
+Prefer the original tool output: gdUnit already keeps `result.json`, `engine.log`
+and its raw reports together. Save an additional console transcript only when it
+preserves useful information missing from those originals. A custom report or
+screenshot is evidence; the probe, candidate input or commit-message file used to
+produce a result belongs in scratch. Reusable generators and fixtures belong in
+normal source directories, even when their outputs are temporary placeholders.
+
 Apply the [temporary-file lifecycle rule](../agent-rules/00-core/third-party-generated-and-temporary-files.md#temporary-backup-and-scratch)
 when creating scratch material. If it must survive the task or handoff, record its
 purpose and release condition in existing Feature notes or Progress, such as
-completion of a pending acceptance or investigation. Keep reusable tools and
-fixtures in their normal source directories. Changing an existing output layout
-requires checking its producers, readers and current evidence links together.
+completion of a pending acceptance or investigation. At normal task close, check the
+task's actual output locations and evidence links, and identify any scratch
+material still needed. Use existing Progress/Feature records as the reading entry;
+do not create a second report index or retention ledger.
+
+Organizing existing reports requires checking producers, readers and evidence
+links together, including historical Progress and Knowledge references. Preserve
+tool-managed run bundles and acceptance originals at their contracted paths.
+Grouping files and repairing references does not itself authorize deleting them
+or rewriting the contents of historical evidence.
 
 Retain reports needed by current verification, acceptance, unresolved failures
-or follow-up work. Link the relevant paths from the Feature or Progress record;
+or follow-up work, including evidence linked by retained history and Knowledge.
+Link the relevant paths from the Feature or Progress record;
 do not maintain a separate ownership ledger, hold file or retention state.
 
 Cleanup is an explicit maintenance action. Inspect the proposed paths, current

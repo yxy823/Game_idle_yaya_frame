@@ -65,6 +65,8 @@ Agent 先运行与变更相关的已有测试，作为修改前的安全网。�
 
 最终默认使用 `--scope auto` 运行受影响测试集合（affected），必要时执行全量（full）。一次覆盖充分且内容仍匹配的全量成功可同时满足必需集合（Required）和受影响集合，不必重复运行。命令、报告与静态检查见 [命令与验证](../reference/commands-and-validation.md)。
 
+首次生成验证产物前按 [报告保留与清理](project-knowledge.md#报告保留与清理) 选择位置，正常收尾核对本次产物和证据链接；报告归组与历史清理各按已授权范围处理。
+
 若需求变化涉及旧测试，同步报告先说明要处理的断言、方法/文件和当前引用，批准后交给对应 Feature notes。实现阶段按该范围实际删除或替换，并更新有效映射与注册路径；同一文件里的有效用例继续保留。测试登记表的 `retired` 只表示记录退役，仍在被选中套件内的旧方法仍可能执行。已完成 Feature 和退役记录保留历史用途，详见 [失效测试处理约定](../../../../project-source/methodology/08-testing-strategy.md#requirement-changes-and-stale-tests)。
 
 ## 人工验收应如何操作

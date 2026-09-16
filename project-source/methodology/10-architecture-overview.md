@@ -110,7 +110,8 @@ path reference, or a type reference actually recognized by its parser. Record
 the extractor/version, source snapshot, scanned scope and known blind spots.
 Dynamic loading, runtime signal connections and ownership generally cannot be
 inferred from text alone. Keep generated facts in an owned artifact directory
-such as `reports/architecture-facts/<run>/`, with lifecycle records.
+such as `reports/maintenance/architecture-facts/<run>/`, under the
+[report lifecycle](09-artifact-lifecycle.md#reports-and-cleanup).
 
 Generated output is never the sole architectural authority. A diagram of
 observed references cannot authorize dependencies or establish causal behavior.
