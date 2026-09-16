@@ -21,6 +21,10 @@ verification, acceptance and commit before continuing an authorized batch;
 independent review follows the user's chosen scope and timing under Stage 6.
 Authorization to implement never supplies a missing human acceptance result.
 
+For initial Product decomposition, apply [Decomposition preview](02-feature-list-schema.md#decomposition-preview)
+before plan writes; that contract defines preview confirmation and explicit
+autonomous-planning authority, including continuation into a later Product.
+
 ### Incremental commits and whole-Feature review
 
 One Feature may contain several validated logical commits under

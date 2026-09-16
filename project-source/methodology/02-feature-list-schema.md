@@ -456,6 +456,43 @@ notes. Do not add a Product queue, registry, completion flag or duplicate ledger
 Pre-existing plans remain intact; this rule does not authorize deleting future
 Features or rewriting completed history.
 
+### Decomposition preview
+
+For each current Product's initial decomposition, present a concise preview in
+the conversation before writing its Feature index/details, revision log or
+Test Registry, including registry initialization and component merges. This also
+applies when planning is called from Product writing or adoption of existing
+implementation. Keep the preview in the existing planning proposal:
+
+- Identify the Product and approved scope; state the number of new Features and
+  the ledger total before and after the addition. Distinguish reused work from
+  new entries; derive the count from complete outcomes, not a preset quota.
+- List every proposed Feature in a compact table or list: provisional label,
+  title, one-sentence scope and observable result, and prerequisites. State the
+  reason for the chosen granularity and any exclusions or unresolved choices.
+- Include the requirement coverage correspondence defined below in the same
+  proposal; the overview does not replace coverage review or detailed AC.
+
+By default, wait for the user's confirmation of this concrete decomposition
+before these writes. Approval of Product intent or a general request to plan or
+implement does not by itself approve an unseen decomposition. Reuse an already
+confirmed, unchanged proposal across turns; do not ask for the same decision
+again. If the count, work boundaries or dependencies materially change, refresh
+the preview and resolve the changed decision before writing.
+
+When the user explicitly authorizes autonomous decomposition and continuation
+within a defined scope, including a Goal that grants this authority, show the
+preview before writing and continue without another approval. Merely using Goal
+mode does not supply that authority. This exception also covers refreshed
+previews within that authorization; missing Product decisions or scope changes
+still require the user's decision.
+
+After writes and validation, refresh the same proposal with actual IDs, counts
+and remaining work. Preview acceptance authorizes plan recording, not additional
+implementation or human acceptance. Do not add a preview file, approval field,
+status or supervisory script; this is an Agent workflow obligation, not a check
+performed by the ledger validator.
+
 ## Adopting existing implementation
 
 When implementation predates its Product or Feature records, first use

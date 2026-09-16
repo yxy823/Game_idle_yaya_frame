@@ -7,8 +7,8 @@ description: "Decompose only the current Product into Features and append them t
 
 ## Authority and inputs
 
-Use **Product-by-Product planning**, **Decomposition rules**, **Requirement coverage
-review** and the index/detail/revision/Registry contracts in
+Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition
+rules**, **Requirement coverage review** and the index/detail/revision/Registry contracts in
 `methodology/02-feature-list-schema.md`. This Skill owns the planning procedure
 and component merge below; it does not maintain another schema.
 
@@ -50,12 +50,14 @@ inventory/file mismatches and resolve them before planning; do not guess names.
 2. Propose independently verifiable, session-sized outcomes under the canonical
    decomposition rules. Use precise source sections and observable criteria;
    do not encode class structure as Product behavior or pre-plan later Products.
-3. Present one concise proposal with scope, why this Product is next, proposed
-   Features/dependencies and the canonical requirement coverage correspondence.
-   Compare it with existing authorization and resolve only missing material
-   decisions. Show added work separately from ledger totals.
-4. Before any Feature-plan write, run the Registry merge below. Continue only
-   after absent-registry initialization or validated conflict-free merge.
+3. Present the canonical **Decomposition preview** in the conversation, including
+   Feature counts and every Feature's summary/dependencies, why this Product is
+   next and the requirement coverage correspondence. Apply its confirmation and
+   explicit autonomous-planning rules before any Registry or Feature-plan write;
+   resolve missing material decisions.
+4. After Step 3 permits writing, run the Registry merge below before any
+   Feature-plan write. Continue only after absent-registry initialization or
+   validated conflict-free merge.
 5. Append new index entries and only their detail files, using canonical initial
    planning values. Update index totals/time and decomposition notes. Initialize
    the revision log only if absent; preserve existing Features, metadata unrelated
@@ -120,6 +122,8 @@ what the checker cannot establish:
 
 - The chosen Product is current and unplanned; its required scope is covered
   without duplicate infrastructure, excluded behavior or premature later plans.
+- The written Feature count, boundaries and dependencies match the confirmed
+  preview or the latest preview under explicit autonomous-planning authority.
 - Sources name the actual requirement sections; dependencies reflect real
   prerequisites and applicable architecture constraints.
 - New records use the schema's initial planning values, and the actual diff

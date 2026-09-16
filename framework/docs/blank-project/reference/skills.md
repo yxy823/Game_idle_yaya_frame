@@ -88,7 +88,7 @@ Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，�
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
 | [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
 | [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | Product 音频条目和 `_placeholder_` 文件名，不生成正式音频 |
-| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 将当前模块任务与必要测试关系追加到现有记录，保留历史；前一模块完成后再拆下一模块 |
+| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 先展示数量与逐项摘要，按 [预览确认约定](../guides/product-and-planning.md#写入前看拆分预览) 追加计划并保留历史；前一模块完成后再拆下一模块 |
 | [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
 | [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
