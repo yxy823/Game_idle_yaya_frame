@@ -176,6 +176,13 @@ in the existing entry Markdown and `notes_for_standardizer`. Cover feedback
 timing, duration, relative loudness or loop continuity only where they affect
 the proposed experience. A representative sample may still be replaced later.
 
+For a requested or needed resource preparation handoff, use **Resource preparation
+list and handoff** in the same specification. Return sample paths and applicable
+audio specifications through the existing Markdown/notes for the caller's shared
+list. Pixel/display dimensions are not applicable to audio; unknown duration or
+format stays pending, and technical values such as sample rate are included only
+when the task actually requires them or an inspected file establishes them.
+
 Keep the intended production trigger separate from the prototype's local preview
 action; a preview button does not implement the business event. Scene playback
 and actual human listening belong to authorized delivery or the scoped experiment,

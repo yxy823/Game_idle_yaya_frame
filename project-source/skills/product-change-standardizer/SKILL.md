@@ -177,6 +177,12 @@ observable size/readability requirements; put trial values and node-level tuning
 in implementation notes. Adopt prototype observations only with the applicable
 user decision, preserving still-valid requirements and existing authorization.
 
+When resource preparation needs a user handoff, apply **Resource preparation
+list and handoff** in the same specification. Consolidate relevant sketcher
+inputs and inspected existing assets into the project-local list within the
+current writing scope; link it from the task instead of copying its rows into
+Product or Feature notes. List preparation alone does not expand Product scope.
+
 Pass the resolved `document_language` and confirmed facts to any child workflow.
 These are Product requirements; implementation and actual human acceptance remain separate.
 

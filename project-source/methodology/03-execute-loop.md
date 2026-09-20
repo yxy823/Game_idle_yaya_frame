@@ -157,8 +157,8 @@ Also identify:
 
 ### 1B. Resource/dependency preflight
 
-1. Identify implementation files/resources likely required, external dependencies, placeholders, and out-of-scope impact.
-2. Register `_placeholder_` resources in Feature notes with replacement guidance when approved.
+1. Identify implementation files/resources likely required, external dependencies, placeholders, and out-of-scope impact. When resource preparation needs a handoff, apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff), reusing the current list and checking supplied files before dependent implementation.
+2. Record approved `_placeholder_` replacement needs in the resource list when present and link it from Feature notes; otherwise keep the guidance in notes. Do not duplicate the rows or treat the list's preparation status as acceptance evidence.
 3. Explain any scope expansion before coding.
 
 For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation).

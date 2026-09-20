@@ -69,12 +69,20 @@ and initial specifications → independent Godot visual prototype → layout/sca
 validation and adjustment → dependent production logic → visual refinement.
 Resource specifications and layout may iterate together.
 
+The Agent identifies this need during planning and resource preflight, or the
+user may request a prototype directly. This is task reasoning, not a background
+trigger. Discussion-only work proposes the next step without writing or building;
+existing implementation authorization covers in-scope preparation and execution,
+but never supplies the user's actual visual acceptance.
+
 ### Scope and resources
 
 Before building, identify the questions to settle, the target viewport/window
 and relevant scaling conditions, core elements/states, available resources and
 remaining gaps. The UI/audio sketchers propose these inputs; a written sketch
 or HTML exploration does not verify the Godot result.
+When resources need a preparation handoff, use the
+[resource preparation list](#resource-preparation-list-and-handoff) below.
 
 Use representative real images, fonts, video, music and sound effects where the
 interface calls for them. Select samples that expose actual aspect ratios,
@@ -110,8 +118,9 @@ interactions and listen to relevant samples. Static checks and screenshots are
 supporting evidence, not substitutes for actual operation and human judgment.
 Missing execution or human feedback remains explicitly unverified.
 
-Keep the entry scene, questions, observations, resource gaps and file disposition
-in current Feature notes, or Progress for a standalone experiment. Confirmed
+Keep the entry scene, questions, observations, a link to any resource preparation
+list and file disposition in current Feature notes, or Progress for a standalone
+experiment. Keep resource details in that list when present. Confirmed
 user-visible requirements belong in the owning Product UI/audio sections via
 `product-change-standardizer`; preserve concrete size/readability requirements
 when they matter, while node properties and tuning values remain in the scene,
@@ -131,6 +140,69 @@ remove sample-state wiring when adopting them into production. Retain a separate
 prototype only while it answers an ongoing question; otherwise archive or remove
 it within the authorized scope. Record unresolved limits and keep the accepted
 decisions, without maintaining competing production and prototype interfaces.
+
+## Resource preparation list and handoff
+
+Create or update a project-local Markdown list when the user requests one or
+the authorized task needs the user to prepare/reuse resources before a prototype
+or implementation. Prefer an existing list covering the same scope; otherwise
+use `docs/resource-requirements/<scope>.md`, such as
+`inventory-visual-prototype.md`. Do not create empty lists in blank projects or
+one list per Feature by default. Several Features may reference the same list.
+An ordinary task Agent maintains it; no separate Skill or registry is needed.
+
+Read the current task, confirmed Product requirements, relevant existing assets
+and any supplied source locations. UI/audio sketchers contribute their domain
+requirements; the caller consolidates all applicable resource types. Include only
+the minimum files needed for this scope, merging repeated uses of one resource.
+Do not add future decoration or separate files for states that existing themes
+or procedural presentation can already express. Record unknown inputs rather
+than inventing resources, styles, dimensions or other technical requirements.
+
+The document follows `document_language` and contains a brief scope/source overview,
+a resource file table and unresolved questions. Keep these nine core fields in
+the table; longer specifications may live in details keyed by resource ID:
+
+| Field | Meaning |
+| --- | --- |
+| Resource ID | Unique within the list, e.g. `RES-001`; preserve IDs when revising it, and include the list path for cross-list references. No global counter. |
+| Resource filename | Semantic name with full extension when the format is known. Preserve reusable filenames; mark suggested names as proposals. If format is unresolved, mark the extension pending or show labeled alternatives. |
+| Resource type | The actual needed kind: image, icon, character/UI art, texture, animation, audio, video, font, model or another task-specific resource. |
+| Purpose | The task use and any shared uses that avoid duplicate preparation. |
+| Pixel dimensions | Width × height where applicable; distinguish required dimensions from measurements of an existing file. |
+| Style | Confirmed visual/audio direction, or pending; do not invent a final palette. |
+| File format | Confirmed requirement or observed existing format, consistent with the filename; unresolved choices remain pending. |
+| Preparation status | Plain factual wording such as pending decision, to prepare, supplied/uninspected or inspected for reuse; never a substitute for Feature completion or human acceptance. |
+| Notes | Only applicable constraints, e.g. transparency, aspect ratio, animation frames/duration, audio sample rate/looping or model requirements. |
+
+For each entry, include **source/actual location**, **project target path** and
+**expected display size or relative scale** in Notes or its ID-linked details.
+Identify missing sources and proposed target paths explicitly; reuse the project's
+organization. Runtime assets stay outside ignored documentation folders. Link
+existing provenance records where relevant rather than duplicating them.
+
+Use distinct labels for **pending confirmation** (applicable but unknown),
+**not applicable**, **proposed value** and **measured value**. A non-final sample
+can be sufficient for the current prototype; state what it represents and what
+remains to be replaced. Do not turn every optional technical parameter into a
+blocking question. Missing information does not prevent drafting the useful list.
+
+Product owns observable intent; the list owns preparation details and file mapping;
+scenes/resources own actual implementation settings. Reference the owning Product
+sections and link the list from current Feature notes or Progress, rather than
+copying its rows there. A resource analysis alone does not change Product intent
+or create new Features. Material design changes use the existing Product route.
+
+Hand off the list with the missing files/specifications and their destination
+paths so the user can create, reuse or supply them. Pause only work that needs
+unavailable resources, subject to the current task's continuation boundaries.
+If resources already suffice, continue authorized work without a ceremonial wait.
+When files arrive, inspect their actual content and applicable format, dimensions
+or duration; filenames and user-reported copying alone do not establish fit.
+Update the same list and retain unresolved gaps. Copy/import only within the
+authorized scope, preserving source files and unrelated project content, then
+continue the prototype and its actual operation/listening checks. List completion,
+file presence, successful import and visual/audio acceptance are separate facts.
 
 ## Project terminology and CONTEXT (optional)
 

@@ -134,6 +134,10 @@ When the visual-prototype criteria in `methodology/01-product-doc-structure.md`
 apply, return the relevant inputs in the UI Markdown and `notes_for_standardizer`:
 surrounding screen layout, representative content/states, available image/font/video
 references and missing samples, plus the decisions that need actual operation.
+When a preparation list is requested or needed for a resource handoff, follow
+**Resource preparation list and handoff** in the same specification. Return UI
+resource contributions through the existing notes, with confirmed/proposed sizes
+distinguished; the caller merges them with other resource types into one list.
 Use `product-audio-sketcher` through the caller only when sound requirements also
 need clarification. Do not require a fresh sketch or interview for settled inputs.
 

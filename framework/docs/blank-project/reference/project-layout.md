@@ -16,6 +16,7 @@
 | `methodology/templates/` | 文档与 JSON 的结构模板 | 按需生成实例；不是待执行任务或第二份业务正文 |
 | `docs/methodology-config.json` | 当前项目工具路径、文档语言和测试命令 | 由环境准备核实，供项目工具与 Skill 读取 |
 | `docs/product.md`、`docs/product/` | 全局需求总览与模块规格 | 接收想法或 GDD 的有效内容，为 Feature 提供行为来源 |
+| `docs/resource-requirements/` | 按需保存任务或原型的最小资源清单、规格和来源/目标路径 | 引用 Product 意图，由已有任务或 Progress 链接；准备信息不替代实现或人工验收 |
 | `docs/feature-list.json` | 任务 ID、状态、依赖和详情定位 | 用于选择任务；具体需求和验证安排进入详情 |
 | `docs/features/F0XX.json` | 当前任务范围、来源、组件、AC、验证计划和 notes | 连接 Product 与实现；执行过程由 Progress 续接 |
 | `docs/test-registry.json` | 组件、逻辑测试 ID、实际套件和用例映射 | 根据 Feature 影响范围选择测试，不保存测试通过结论 |
@@ -104,6 +105,7 @@ MyGodotGame/
 | --- | --- | --- |
 | `docs/CONTEXT.md` | 确有需要复用且获准保存的项目术语时 | 简短定义、概念关系和必要 Product 链接；无初始空文件 |
 | `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
+| `docs/resource-requirements/<scope>.md` | 用户要求清单或需要交接资源准备时 | 按范围复用的最小资源集合、文件去向与待确认项；见 [资源准备交接](../guides/product-and-planning.md#按清单准备资源再继续原型)，无初始空目录或文件 |
 | `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
 | `docs/knowledge/<主题>/<条目>.md` | 实际任务产生值得复用的做法、排障方法或教训时 | 独立条目、适用条件和证据链接；需要时增加主题层级并更新索引 |
 | `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用与适用人工决定；不记录复审计数 |
