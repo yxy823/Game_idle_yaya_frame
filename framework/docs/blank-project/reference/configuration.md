@@ -108,4 +108,6 @@ JSON 键、Feature ID、`pending` 等状态、`manual` 等枚举、文件路径�
 
 本仓库当前 gdUnit4 的 `plugin.cfg` 标记 `6.2.0`，GDScript linter 标记 `3.3.0`。这是**随仓库保存的插件版本**，不是上游最新版本声明。linter 另有本地修改，原因与维护范围记录在 [YAYA_PATCH.md](../../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前需核对补丁和许可证。
 
-`.editorconfig` 默认 UTF-8、LF、末尾换行，GDScript/Shader 使用 Tab；Windows `.bat`、`.cmd` 使用 CRLF。`.gitattributes` 负责 Git 文本与二进制约定。跨机器调整时读取实际文件，不把控制台显示问题当作文件编码错误。
+`.editorconfig` 默认 UTF-8、LF、末尾换行并清理行尾空白，Markdown 保留行尾空格；GDScript、Shader 及 Shader include 使用 Tab（显示宽度 4），Python 使用 4 空格，JSON/YAML 使用 2 空格。Windows `.bat`、`.cmd` 使用 CRLF。
+
+`.gitattributes` 与上述换行约定一致，明确将 Godot 文本场景、资源、导入元数据及 SVG/glTF/OBJ 等可读资源按文本处理，将常见图片、音视频、字体、二进制模型和 Godot 二进制场景/资源按二进制处理。二进制标记不表示忽略文件，也不自动启用 Git LFS；默认忽略范围见 [Git、Godot 忽略文件与报告](project-layout.md#gitgodot-忽略文件与报告)。跨机器调整时读取实际文件，不把控制台显示问题当作文件编码错误。

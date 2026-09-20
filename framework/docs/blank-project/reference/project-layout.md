@@ -158,7 +158,9 @@ MyGodotGame/
 
 ## Git、Godot 忽略文件与报告
 
-默认 `.gitignore` 排除 `.godot/`、Python 字节码和测试缓存，以及 `reports/` 下除 `.gdignore` 外的内容。`docs/` 下的需求、台账和完成依据没有被这个默认配置整体忽略。
+默认 `.gitignore` 排除 `.godot/`、从 CSV 导入生成的 `*.translation`、Python 字节码和测试缓存、操作系统目录元数据，以及项目根 `reports/` 下除 `.gdignore` 外的内容。本地 `.env` 和 `.env.*` 被忽略，`.env.example` 与 `.env.template` 可提交，模板中不填写真实凭据。
+
+原始图片、音频、模型、字体、`*.import`、`*.uid`、`export_presets.cfg`、插件和 `.agents/skills/` 保留版本管理；`docs/` 下的需求、台账和完成依据也不整体忽略。导出目录与其他工具缓存按实际使用情况添加到项目 `.gitignore`，不直接套用忽略所有资源或测试目录的通用清单。
 
 `.gdignore` 是提供给 Godot 的扫描边界；它与 `.gitignore` 的作用不同。报告未被 Git 跟踪，也不代表可以删除。当前验证、人工验收或未解决失败仍引用的原件要保留，具体见 [历史与报告](../guides/project-knowledge.md)。
 

@@ -1,6 +1,27 @@
+# Godot 缓存与从 CSV 导入生成的翻译资源
 .godot/
+*.translation
+
+# Python 工具运行缓存
 __pycache__/
 *.pyc
+*.pyo
 .pytest_cache/
-reports/*
-!reports/.gdignore
+
+# 项目报告原件保留在本机；保留 Godot 扫描边界
+/reports/*
+!/reports/.gdignore
+
+# 本地环境变量；示例文件可提交，勿填写真实凭据
+.env
+.env.*
+!.env.example
+!.env.template
+
+# 操作系统生成的目录元数据
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# 原始资源、*.import、*.uid、export_presets.cfg、addons/ 和 .agents/ 均需保留。
+# 导出目录与其他工具缓存按项目实际使用情况添加，避免按资源扩展名整体忽略。

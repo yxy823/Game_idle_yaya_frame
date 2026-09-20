@@ -9,13 +9,19 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{gd,gdshader}]
+[*.{gd,gdshader,gdshaderinc}]
 indent_style = tab
 indent_size = 4
 tab_width = 4
 
-[*.bat]
-end_of_line = crlf
+# 与随项目提供的工具和配置文件保持一致
+[*.py]
+indent_style = space
+indent_size = 4
 
-[*.cmd]
+[*.{json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+[*.{bat,cmd}]
 end_of_line = crlf
