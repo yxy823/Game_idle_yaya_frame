@@ -1176,7 +1176,7 @@ $LASTEXITCODE
 </tbody>
 </table></div>
 <p>代表性资源按实际需要选择图像、字体、视频、音乐和音效，不要求每个原型都包含全部类型。图片要区分文件像素尺寸、画面显示尺寸与透明留白后的主体大小；缺失样本应说明尚未验证的内容，不能用文字占位宣称实际资源效果已通过。最终装饰与配色可以后置，当前文字对比和状态辨识必须足以支持操作检查。</p>
-<p>正式开发中的原型复用普通 Feature 和人工验收；小范围验证可放在当前 Feature 内，相关视觉决定明确后再接依赖它的逻辑。若只想先探索一个布局问题，可使用“需求设计 → 验证玩法或技术假设”，填写视觉问题、资源路径、允许范围与预算，按 <a href="#doc-framework--docs--blank-project--guides--engineering-changes--%E5%8E%9F%E5%9E%8B%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C">实验路线</a> 交付结论。</p>
+<p>正式开发中的原型复用普通 Feature 和人工验收；小范围验证可放在当前 Feature 内，相关视觉决定明确后再接依赖它的逻辑。若只想先探索一个布局问题，可使用“需求设计 → 验证视觉、玩法或技术假设”，填写视觉问题、资源路径、允许范围与预算，按 <a href="#doc-framework--docs--blank-project--guides--engineering-changes--%E5%8E%9F%E5%9E%8B%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%AE%9E%E9%AA%8C">实验路线</a> 交付结论。</p>
 <p>已有验收过的布局能覆盖当前任务时直接复用，纯逻辑或未受影响模块不必等待。经检查可复用原型中的布局、主题和资源，接入正式功能时移除样例状态；独立原型失去用途后按授权归档或清理，避免长期维护两套界面。入口、观察和文件去向记录在现有 Feature notes 或 Progress；已有资源清单时链接过去，不重复抄写资源缺口。</p>
 <p>完整职责与采纳边界以 <a href="../../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">视觉原型规范</a> 为准。</p>
 <h3 id="doc-framework--docs--blank-project--guides--product-and-planning--按清单准备资源再继续原型" data-title="按清单准备资源，再继续原型">按清单准备资源，再继续原型<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--product-and-planning--按清单准备资源再继续原型" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
@@ -1210,6 +1210,7 @@ $LASTEXITCODE
 </tbody>
 </table></div>
 <p>清单保存具体准备信息，Product 保存体验要求，场景和资源保存实际参数。清单不改变 Product 需求或新增 Feature；影响设计的新决定仍走现有需求入口。只暂停依赖缺失素材的工作，并遵守本次任务已有的停止边界；资源已经齐备时无需再等待一次“准备完成”确认。</p>
+<p>随 Product 整理新建或更新清单时，Agent 将本任务已获准的清单与必要链接纳入完整文档变更，核对引用后按项目 Git 规则提交，并交付清单位置、待准备或确认项及目标路径。当前 Feature 内的支持性文档由原执行流程管理提交；用户明确要求不提交或尚缺源基线时，如实说明后续规划、执行的前置缺口，不吸收无关修改。</p>
 <p>单独使用清单提示词时，本次只分析、保存和交接，不自动制作、购买、复制素材或搭建场景。已有完整实施授权的开发任务可以直接把清单作为准备工作，无需逐条重发提示词。完整字段和职责见 <a href="../../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">资源准备与交接规范</a>。</p>
 <h2 id="doc-framework--docs--blank-project--guides--product-and-planning--按需查看完整流程" data-title="按需查看完整流程">按需查看完整流程<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--product-and-planning--按需查看完整流程" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>下面的图供查找讨论、需求整理、初次拆分与增量同步之间的关系。首次使用先沿“整理需求 → 拆分当前模块 → 开发验收”主线阅读；发生术语、UI、声音或已有任务变化时，再查看对应分支。</p>
@@ -1225,6 +1226,7 @@ $LASTEXITCODE
 <p>本入口授权必要环境准备、当前 Product 的规划、实现、验证与按项目规则提交。已有计划和进行中任务直接复用；一个 Product 的必要 Feature 真正完成后，再拆分和执行范围内的下一个 Product，不提前展开全部后续计划。范围以启动时已纳入当前版本的 Product 和用户限制为准；关键产品决定不明仍需用户参与。</p>
 <p>每次初次拆分仍先展示 <a href="#doc-framework--docs--blank-project--guides--product-and-planning--%E5%86%99%E5%85%A5%E5%89%8D%E7%9C%8B%E6%8B%86%E5%88%86%E9%A2%84%E8%A7%88">拆分预览</a>，让你看到数量与各项内容，再写入计划和测试登记表。本入口已明确授权自主拆分，展示后直接继续；普通规划入口的默认确认步骤按预览规范处理。</p>
 <p>首个需要人工验收的 Feature 先做到可运行、适用自动检查通过，并备妥绑定当前版本的验收清单，然后结束本段 Goal。Feature 和 Product 保留未完成状态，不跳过它继续其他工作。若范围内全部 Product 已真正完成，也可结束目标；验证失败、环境受阻和预算耗尽不是成功终点。</p>
+<p>原型的两种承载方式沿用 <a href="#doc-framework--docs--blank-project--guides--product-and-planning--%E5%85%88%E9%AA%8C%E8%AF%81%E8%A7%86%E8%A7%89%E5%8E%9F%E5%9E%8B%E5%86%8D%E6%8E%A5%E5%85%A5%E4%BE%9D%E8%B5%96%E5%AE%83%E7%9A%84%E9%80%BB%E8%BE%91">视觉原型规范</a>：当前 Feature 内的小范围原型尚待必要视觉确认时，只停止依赖该决定的实现，不表示整个 Feature 已准备好最终验收或 Goal 已达成，也不越过当前 Feature。独立原型 Feature 完成其全部适用自主工作并备妥体验入口与验收材料后，可以到达本段 Goal 的人工交接终点；其验收只覆盖原型范围。</p>
 <p>用户提供有效人工结果并明确继续后，Agent 从原停点修复或收尾，再推进后续任务；旧 Goal 已结束时按继续授权启动下一段。Goal 的交接终点与 Feature 完成不同，实际人工接受始终单独核对。完整授权正文只保存在提示词库，项目无需新增 Skill、队列或 Goal 台账。</p>
 <h2 id="doc-framework--docs--blank-project--guides--feature-delivery--你与-agent-各自做什么" data-title="你与 Agent 各自做什么">你与 Agent 各自做什么<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--feature-delivery--你与-agent-各自做什么" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>你主要提供实施范围、解决关键设计选择，并在需要时体验实际结果。Agent 负责读取当前任务、提出具体方案、实现和验证；已有具体授权直接沿用，不因进入新阶段重复询问。</p>
@@ -2579,7 +2581,7 @@ $LASTEXITCODE
 </tr>
 <tr>
 <td>测试一个想法，或单独验证视觉布局与资源尺度</td>
-<td>Godot 项目开发 → 需求设计 → 验证玩法或技术假设</td>
+<td>Godot 项目开发 → 需求设计 → 验证视觉、玩法或技术假设</td>
 </tr>
 <tr>
 <td>将想法或已有 GDD 整理为正式需求</td>

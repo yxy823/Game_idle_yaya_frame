@@ -210,12 +210,22 @@ terms as approved intent. Terminology accompanies Product changes; it never repl
 the Product behavior that Feature planning needs.
 
 After the approved Product write, follow
-`agent-rules/00-core/git-worktree-and-commits.md`: inspect and stage only the
-explicit Product and associated terminology paths, run the cached-diff checks, and
-create the local Product source commit unless the user explicitly requested no commit. Use
-`docs(product): <中文行为摘要>`, omit `Work item` because the downstream Feature
-record does not exist yet, and confirm `git status --short` before Feature
-synchronization.
+`agent-rules/00-core/git-worktree-and-commits.md`: review the complete authorized,
+task-owned documentation change, including associated terminology, new or updated
+resource preparation lists and required links. Stage only explicit owned paths
+or inspected hunks, run the cached-diff checks and validate the complete logical
+change, including its references, before committing.
+
+For standalone Product work, create the local source commit unless the user
+explicitly requested no commit. Use `docs(product): <中文行为摘要>` and omit
+`Work item` when no Feature owns the change. Supporting documentation inside an
+existing Feature stays in its owning execution workflow's validated logical
+commit; calling this Skill does not start a new clean-worktree task or require
+an isolated source commit. Substantive Product changes still require the approved
+impact handling and committed source baseline needed by synchronization.
+Check `git status --short` before downstream planning or execution and account
+for all task-produced documents; preserve unrelated changes and report any unmet
+Git or source-baseline prerequisite, including under a no-commit instruction.
 
 Before writing destructive or foundational changes, show their concrete impact
 and verify that it is explicitly approved. This includes deleting or obsoleting
@@ -240,6 +250,7 @@ Feature history; changed completed behavior creates explicit follow-up work.
 Report:
 
 - Product files created or changed and the intent of each change
+- associated documents and required links, including any resource preparation list path, remaining preparation/confirmation needs and project target paths
 - the confirmed `document_language`
 - Feature planning/synchronization result, including which later Products remain unplanned
 - affected Feature states
