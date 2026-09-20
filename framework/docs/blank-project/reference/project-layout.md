@@ -1,33 +1,60 @@
 # 项目目录与文件职责
 
-[返回手册](../README.md) · 相关：[配置参考](configuration.md)、[项目知识与交接](../guides/project-knowledge.md)
+[返回手册](../README.md) · 相关：[配置参考](configuration.md)、[项目文档维护与交接](../guides/project-knowledge.md)
 
 本页回答“哪个文件负责什么、何时出现、从哪里复制”。先看职责表，再查初始目录与复制映射；开发步骤见对应指南，字段与命令见参考页。
 
 ## 文档与执行文件如何配合
 
-以下路径均相对生成项目根目录。规则约束操作，Skill 执行流程，项目文档保存需求与计划，报告提供实际结果；模板只提供结构。
+以下路径相对**生成项目根目录**。先用关系图区分需求、约束、计划、说明与历史，再按表查具体位置。可选文件只有需要且获准时才创建。
 
-| 文件或目录 | 负责的内容 | 与其他文件的关系 |
-| --- | --- | --- |
-| `README.md` | 项目自身使用入口 | 简短导航，不承载完整流程或框架维护手册 |
-| `AGENTS.md`、`agent-rules/` | 任务路由与按领域读取的工程约束 | Agent 根据修改范围选择规则；不保存任务进度 |
-| `methodology/`、`.agents/skills/` | 阶段、字段等规范；执行相应任务的方法 | Skill 引用规范，按授权读取和更新项目成果 |
-| `methodology/templates/` | 文档与 JSON 的结构模板 | 按需生成实例；不是待执行任务或第二份业务正文 |
-| `docs/methodology-config.json` | 当前项目工具路径、文档语言和测试命令 | 由环境准备核实，供项目工具与 Skill 读取 |
-| `docs/product.md`、`docs/product/` | 全局需求总览与模块规格 | 接收想法或 GDD 的有效内容，为 Feature 提供行为来源 |
-| `docs/project-rules.md` | 对所有适用 Product、Feature 生效的项目约束、协作规则和默认原则 | 区分约束强度；增删改前自检，详细技术规则引用 `agent-rules/` |
-| `docs/resource-requirements/` | 按需保存任务或原型的最小资源清单、规格和来源/目标路径 | 引用 Product 意图，由已有任务或 Progress 链接；准备信息不替代实现或人工验收 |
-| `docs/feature-list.json` | 任务 ID、状态、依赖和详情定位 | 用于选择任务；具体需求和验证安排进入详情 |
-| `docs/features/F0XX.json` | 当前任务范围、来源、组件、AC、验证计划和 notes | 连接 Product 与实现；执行过程由 Progress 续接 |
-| `docs/features/F0XX-design.md` | 按需保存较长的设计与实现说明 | notes 相对链接；解释实际采用的约束，不重复维护 AC 或验证台账 |
-| `docs/test-registry.json` | 组件、逻辑测试 ID、实际套件和用例映射 | 根据 Feature 影响范围选择测试，不保存测试通过结论 |
-| `docs/feature-list-revisions.json` | 需求变化对计划的同步关系与历史 | 支持后续增量处理，不替代 Product 内容或 Git 历史 |
-| `reports/`、`docs/feature-completion-evidence.json` | 原始测试与人工验收文件；完成依据引用 | 原件证明实际结果，依据记录关联当前 Feature 与适用内容 |
-| `docs/progress.md`、`docs/progress/` | 当前停点与交接；归档执行历史 | 链接任务、决定与报告，不重复维护任务状态全集 |
-| `docs/terminology.md`、`docs/architecture.md`、`docs/architecture/`、`docs/knowledge/` | 共享术语、架构决定、可复用经验 | 按需积累并链接所属需求或任务，具体用途见 [项目知识](../guides/project-knowledge.md) |
+```mermaid
+flowchart TD
+    A[Agent 经 product-standardizer] -->|写入| P[Product 总览与模块]
+    A -->|按需写入| T[术语]
+    T -.->|定义引用| P
+    T -.->|定义引用| F[Feature JSON 与 notes]
+    R[项目规则] -->|约束| P
+    R -->|约束| F
+    P -->|需求来源| F
+    F -.->|相对链接| D[Feature design]
+    D -.->|引用当前结构| M[架构地图]
+    M -.->|引用重要取舍| J[ADR]
+    D -.->|引用决定| J
+    F -->|任务事件提炼| K[知识条目]
+    K -.->|参考与原件链接| F
+    G[Progress 当前交接] -.->|定位当前任务| F
+    G -->|归档一次| H[Progress 执行历史]
+    D -->|完成后保留| Z[该 Feature 的历史语境]
+```
 
-外部 GDD 是输入材料，默认不在初始目录内；接入方式见 [已有 GDD](../guides/product-and-planning.md#接入已有-gdd)。正式需求、任务计划和运行报告各有归属，不能通过修改使用说明来替代它们。
+实线表示写入、约束、来源或保留关系，虚线表示引用。知识是带条件的参考，不能覆盖规则或需求。架构地图维护当前结构；已完成设计与 ADR 的旧理由保留历史，不能用后来的决定改写过去。
+
+| 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
+| --- | --- | --- | --- |
+| `README.md` | 项目自身的简短导航 | 创建时复制；Agent 按项目用法维护 | 找当前项目入口 |
+| `AGENTS.md` | 任务路由与仓库执行约束 | 创建时复制；Agent 按任务读取 | 确认任务与授权边界 |
+| `agent-rules/` | Core 与按领域组织的工程语义 | 创建时复制；Agent 按路由读取、按规则维护流程修订 | 有具体规则冲突时查原文 |
+| `methodology/`、`.agents/skills/` | 流程/数据契约；Agent 遵循的具体工作方法 | 创建时复制；工具与 Skill 引用相关规范 | 按本次任务查依据，不必通读 |
+| `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
+| `docs/methodology-config.json` | 机器路径、文档语言、真实测试命令 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
+| `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-standardizer 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
+| `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-standardizer 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
+| `docs/project-rules.md` | 跨 Product/Feature 的约束、协作规则、默认原则；区分 MUST/PREFER/REVIEW | 创建时由模板复制；Agent 写前自检并核对授权，需求/设计/实现持续读取 | 决定实质新增、删除、强度和适用范围 |
+| `docs/feature-list.json` | 任务 ID、标题、状态、依赖、完成时间和详情定位 | 初始空索引；规划和执行 Agent 更新，检查器读取 | 查任务状态与依赖；状态不是验证证据 |
+| `docs/features/F0XX.json` | 本任务范围、source、组件、AC、验证义务；notes 保存短记录与链接 | 规划时建立；执行维护，选择器/完成检查读取 | 审批具体方案，核对覆盖与剩余项 |
+| `docs/features/F0XX-design.md` | 详细设计、规则的具体应用、实现理由与实际偏差；不复制 AC/测试台账 | 按需建立；Stage 1 判断、2 保存、3 对齐，后续保留历史 | 从对应 JSON notes 的相对链接进入 |
+| `docs/test-registry.json` | 组件、逻辑测试 ID、path/case 与 planned/active/retired 关系；不存通过结论 | 初始空表；合并器登记组件、Agent 维护测试映射，运行器/检查器读取 | 核对测试是否存在、被选择并实际执行 |
+| `docs/feature-list-revisions.json` | 源变化影响、同步锚点、替代与依赖演进；不替代 Git 历史 | 初始空记录；同步 Agent 追加，检查器与后续同步读取 | 追查计划为何变化 |
+| `docs/feature-completion-evidence.json` | 当前 Feature 的测试原件引用与适用人工决定，绑定当前内容 | Stage 2 初始化；完成记录工具写入/复核，每次服务当前 Feature | 查看引用的真实原件；不是全部 Feature 历史 |
+| `reports/` | 测试、诊断、初始化、人工验收与其他真实输出 | 创建时只有 .gdignore；运行器/Agent/用户产生原件，检查工具和交接读取 | 分清失败、未执行、接受与已通过 |
+| `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 结构需要解释时创建；实现 Agent 更新，规划/执行/评审引用 | 从当前地图了解系统 |
+| `docs/architecture/adr-NNNN-<slug>.md` | 达到阈值的重要取舍、理由、成本与替代关系 | 真实决策触发；Agent 保存已确认决定，相关任务引用 | 决定候选，保留已取代原因 |
+| `docs/knowledge/` | 有适用条件和证据的经验，索引只放链接；不存规则或可执行输入 | 初始仅索引；Agent 在任务中提炼、开始相关工作时查阅 | 判断经验是否适用于当前版本 |
+| `docs/progress.md`、`docs/progress/<key>.md` | 当前阶段/阻塞/待决定/下一步与索引；单份执行历史 | 当前模板随创建复制，历史按需归档；交接 Agent 写、接手者读 | 从真实停点继续，不能据下一步文字推定授权 |
+| `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 按需准备；Agent 汇总/更新，用户准备素材 | 从原任务/Progress 链接进入，不把齐备当验收 |
+
+外部 GDD 是需求输入，默认不在初始目录内，见 [GDD 接入](../guides/product-and-planning.md#接入已有-gdd)。以上详细制度与维护时机在 [项目文档维护与交接](../guides/project-knowledge.md) 中展开；实际字段由源规范负责。
 
 ## 刚复制完成的目录
 
@@ -105,19 +132,10 @@ MyGodotGame/
 
 ## 开发中按需出现的内容
 
+上表已说明文档出现时机。以下是测试、报告与辅助输入的位置；目录名示例不表示已存在或已运行。
+
 | 路径 | 建立时机 | 主要内容 |
 | --- | --- | --- |
-| `docs/terminology.md` | 确有需要复用且获准保存的项目术语时，之后持续维护 | 标准定义、概念关系、别名或废弃状态及必要来源链接；无初始空文件 |
-| `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
-| `docs/resource-requirements/<scope>.md` | 用户要求清单或需要交接资源准备时 | 按范围复用的最小资源集合、文件去向与待确认项；见 [资源准备交接](../guides/product-and-planning.md#按清单准备资源再继续原型)，无初始空目录或文件 |
-| `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
-| `docs/features/F0XX-design.md` | 用户要求详细说明，或设计需要较长解释时 | 实际约束、职责、状态、接口、实现理由与结果；Stage 1 判断，Stage 2–3 保存与维护 |
-| `docs/knowledge/<主题>/<条目>.md` | 实际任务产生值得复用的做法、排障方法或教训时 | 独立条目、适用条件和证据链接；需要时增加主题层级并更新索引 |
-| `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用与适用人工决定；不记录复审计数 |
-| `docs/progress/<key>.md` | 一项 Feature 或获批批次需要归档时 | 一份执行历史正文 |
-| `docs/architecture.md` | 需要项目级职责和依赖地图时 | 当前架构导航 |
-| `docs/architecture/<subsystem>.md` | 某个子系统需要展开说明时 | 状态归属、关键运行流程、生命周期与失败处理 |
-| `docs/architecture/adr-NNNN-<slug>.md` | 技术决定达到 ADR 阈值时，通常在 Stage 1 判断、Stage 2–3 保存 | 方案、理由、取舍与证据；不按 Feature 数量创建 |
 | `tests/unit/` | 创建组件单元测试时 | 局部代码契约 |
 | `tests/features/` | 创建 Feature 验收或 Bug 回归时 | 用户行为与历史缺陷覆盖 |
 | `tests/invariants/` | 确实需要跨 Feature 不变量测试时 | 可执行的通用约束 |
@@ -148,7 +166,7 @@ MyGodotGame/
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |
 | `architecture-decision-record.md.tmpl` | 按需 ADR |
 
-模板提供结构。Skill 生成正文时遵循 `document_language`，保留机器字段、ID、状态和路径。不要一次性把所有模板实例化成空文档；例如没有真实架构决定就不创建占位 ADR。模板要求见 [模板说明](../../../../project-source/methodology/templates/README.md)。
+`feature-design.md.tmpl` 是可选提纲，不要求每个 Feature 创建文件或填写全部章节。其余模板按各自契约保留必需章节，不适用时说明原因。Agent 遵循 Skill 生成正文时遵循 `document_language`，保留机器字段、ID、状态和路径。不要一次性把所有模板实例化成空文档；例如没有真实架构决定就不创建占位 ADR。模板要求见 [模板说明](../../../../project-source/methodology/templates/README.md)。
 
 Markdown 模板的普通段落按自然段保存，不按固定字符数手动拆行；段落间保留空行，标题、列表、表格和代码块保留必要结构换行。阅读宽度由编辑器自动折行控制，这项格式约定不改变代码的 lint 规则。
 

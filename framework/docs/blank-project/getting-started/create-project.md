@@ -4,6 +4,33 @@
 
 创建器按复制清单把源材料复制到外部目录，得到独立项目文件。它不配置环境、不导入 GDD、不初始化 Git，也不运行游戏或测试；这些工作在目标项目中按后续任务进行。
 
+## 创建时发生什么
+
+```mermaid
+sequenceDiagram
+    actor U as 使用者或 Agent
+    participant C as create_project.py
+    participant S as 清单与源材料
+    participant T as 外部目标
+    U->>C: 在框架根目录指定 --output
+    C->>T: 检查完整路径、包含关系和空目录条件
+    C->>S: 读取 project-files.json，核对全部源路径
+    C->>C: 展开写入位置，检查越界与文件冲突
+    alt 前置失败
+        C-->>U: 非零退出，尚未创建输出
+    else 检查通过
+        C->>T: 创建目录，逐条复制与必要重命名
+        alt 复制中途失败
+            C-->>U: 非零退出，目标可能留下部分内容
+        else 复制完成
+            C-->>U: Copied 清单条目数，退出 0
+            U->>T: 切换到独立项目，开始首次使用
+        end
+    end
+```
+
+清单指定文件来源与目标名称，源文件原文直接复制，没有模板渲染。失败处置见本页末尾；部分输出不能作为非空覆盖重试入口。
+
 ## 准备目标位置
 
 目标必须是维护仓库之外的新目录或空目录。你已经手动创建的空文件夹可以直接作为目标；已生成框架文件的项目应跳过复制，进入 [首次使用](first-use.md)。已有 GDD 留在原位置，复制完成后再按 [GDD 接入说明](../guides/product-and-planning.md#接入已有-gdd) 整理需求。
@@ -35,47 +62,17 @@ $LASTEXITCODE
 
 创建器从自身位置找到维护仓库，再读取 [project-files.json](../../../project-files.json)。它先核对目标、全部清单源路径与展开后的实际写入位置，再创建目录并复制；文件可以改名，目录会连同子目录内容一起复制。目录允许合并，但重复写入同一文件、文件占据目录或父目录位置会在写入前被拒绝。它没有模板替换步骤。
 
-```mermaid
-sequenceDiagram
-    actor U as 使用者
-    participant C as create_project.py
-    participant S as 清单与源文件
-    participant P as 外部目标目录
-    U->>C: 指定 --output
-    C->>C: 校验完整目标路径与目录状态
-    C->>S: 读取清单并核对源路径
-    alt 前置检查失败
-        C-->>U: 返回具体错误，尚未复制
-    else 前置检查通过
-        C->>P: 按清单复制与重命名
-        alt 复制途中失败
-            C-->>U: 返回错误，保留已复制内容
-        else 完成
-            C-->>U: 输出 Copied 与条目数
-        end
-    end
-```
-
 成功输出的数量是**清单条目数**，不是文件总数；一个目录条目可能包含很多文件。以退出码和实际输出判断复制是否完成。
 
 ## 复制完成后的初始状态
 
-| 项目内容 | 初始状态 |
-| --- | --- |
-| 项目说明与规则 | `Project_README.md`、`Project_AGENTS.md` 分别成为根 `README.md`、`AGENTS.md` |
-| 开发 Skill | `skills/` 成为 `.agents/skills/` |
-| 环境配置 | `Project_Workflow_Config.json` 成为 `docs/methodology-config.json`，状态仍为 `incomplete` |
-| Product | `docs/product.md` 是空文件 |
-| Feature 与测试登记表 | 空索引、空修订记录、空组件与测试集合 |
-| Godot | 显示名称为 `New Godot Project`，未设置主场景 |
-| Git | 创建器不执行 `git init`，没有由它建立的提交 |
-| 实际验证 | 没有执行环境检查、Godot、lint 或测试 |
+结果是独立项目文件：根 README/AGENTS、开发 Skill、配置、规范、工具与插件已经就位；`docs/product.md` 为空，Feature/测试索引为空，环境仍为 `incomplete`。默认 Godot 显示名为 `New Godot Project`，尚无主场景、业务测试、Git 初始化或实际验证。
 
-完整映射见 [项目目录与文件职责](../reference/project-layout.md)。复制器保留源文件原文，因此部分模板起始文字是英文；后续生成项目知识时由配置中的 `document_language` 决定人类可读内容的语言。
+逐项来源和默认目录见 [项目目录与文件职责](../reference/project-layout.md#源材料到项目的映射)。部分模板同时保留在 `methodology/templates/` 并复制为初始 `docs/` 文件；后续由 Agent 按 `document_language` 写入正文，创建器不翻译。
 
 ## 为什么本手册不会进入项目
 
-复制清单只选择 `project-source/` 中的交付材料。本手册、集中提示词和维护工具留在 `framework/`，不会先复制再删除。生成项目使用自己的 README、规范与工具；完整分工见 [手册入口](../README.md#先理解三个对象)。
+清单只选择 `project-source/` 中的交付材料。本手册、集中提示词和维护工具留在框架，不先复制再删除；对象边界见 [手册入口](../README.md#先理解三个对象)。
 
 ## 复制失败后如何处理
 
