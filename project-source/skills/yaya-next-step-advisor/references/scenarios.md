@@ -35,6 +35,8 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | User changes only a confirmed sound specification | Owning specialist updates its source within authorization and handles existing-work impacts; Product participates only for actual behavior changes. |
 | A shared Art Bible predates the last sync anchor but was never considered | Verify historical coverage or use authorized current-document alignment; inspect all applicable planned consumers, not only one direct link. |
 | Only a professional source changed | Trace primary/secondary references and shared applicability to concrete Feature/AC/verification impacts; later unplanned Products remain deferred. |
+| A committed specification rename leaves stale Product/UI source links and Feature references | Route approved source-link repairs to their owners before plan writes, then refresh source analysis and return to the same synchronization; plan navigation updates belong to the plan commit. Preserve completed history. |
+| A source rename needs only a Feature primary-source correction | Keep the correction in plan synchronization; do not invent a source edit, extra source commit or new requirement. |
 | User wants UI design and an independent UX review | Separate creation Skill/instance from the reviewer; one author loading both is not independent. |
 | Reviewer role file exists but context/permissions are unknown | Report what must be verified; configuration presence alone does not establish isolation or successful review. |
 | Audio reviewer has filenames but no playable/listening evidence | Report technical checks possible and perceptual checks unverified; no invented listening or human acceptance. |

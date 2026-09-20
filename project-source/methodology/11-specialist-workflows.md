@@ -43,6 +43,11 @@ Git-based synchronization. Within an existing Feature, use its documentation
 checkpoint and commit; a Skill handoff does not create a new clean-worktree gate.
 If a substantive source change needs synchronization, retain its committed-source
 prerequisite. A no-commit instruction may leave that prerequisite unmet; report it.
+When synchronization discovers stale links in its source inputs, the owning entry
+repairs and commits them within the approved scope before any plan write, then
+returns to the same synchronization for refreshed source analysis. Plan-record
+references follow the synchronization Skill's own update and commit steps; a
+Markdown filename alone does not determine which responsibility applies.
 
 ## Discover and map sources
 

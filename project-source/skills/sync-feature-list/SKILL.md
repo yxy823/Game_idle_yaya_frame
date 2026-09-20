@@ -178,6 +178,10 @@ dependents alone are not a complete impact analysis. Do not renumber old Feature
 For a source-file rename/removal, inspect primary sources and secondary references,
 including links and section anchors in Product and Feature designs. A path
 correction is reported separately and is not itself a substantive Feature change.
+Distinguish corrections to authoritative source inputs from references maintained
+with the plan. Classify by the document's role, not its Markdown extension: list
+source repairs and their owners separately from Feature `source`, AC or design
+navigation updates. Do not repair either during analysis.
 
 ### 2.4 Analyze downstream regression and stale-test impact
 
@@ -219,13 +223,27 @@ Stage 2 only reports. Stage 3 must establish approval before any write.
 
 **Entry:** Stage 2 produced the report.
 
-**Output:** an explicit decision for every proposed change.
+**Output:** approved actions and a committed source state ready for plan writes.
 
-Compare the report's concrete actions with existing user approval. Continue to
-Stage 4 when all actions are covered. If scope, retirement, dependencies or other
-material choices remain unapproved, ask only about those choices; retain approval
+Compare the report's concrete actions with existing user approval. If scope,
+retirement, dependencies or other material choices remain unapproved, ask only
+about those choices; retain approval
 for unchanged actions when revising the report. A cancellation stops writes.
 General intent, silence or the report itself does not supply missing approval.
+
+When analysis finds necessary source-link repairs, complete the approved repairs
+through the owning source entry before any Stage 4 write, including Registry
+merges. Treat this as supporting source maintenance, returning here rather than
+starting a nested synchronization. Check the complete task-owned source diff and
+commit it separately under the project Git rules. If authorization or the source
+commit is unavailable, report that prerequisite and leave the plan unchanged.
+
+Then recheck Git status and the actual source HEAD. Re-read the affected sources
+and refresh the Stage 2 analysis against the original verified anchor (or the
+authorized current-document fallback); the repair commit is not proof of earlier
+plan coverage. Reuse unchanged approvals and resolve only newly affected choices.
+Stage 4 starts only when sources and analysis agree with that committed state.
+If only plan references need correction, skip source maintenance and its commit.
 
 ## Stage 4: apply confirmed changes
 
@@ -279,7 +297,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 ### Source-path corrections
 
-- Correct affected primary `source` paths and secondary document/section links, including historical navigation where needed. Preserve completed requirements and decisions; link correction is not permission to rewrite their content.
+- Correct affected primary `source` paths and secondary links in plan records or Feature design navigation, including historical navigation where needed. Preserve completed requirements and decisions; link correction is not permission to rewrite their content. Authoritative source-input repairs belong to Stage 3, not this stage.
 - Record primary Feature `source` changes in `source_path_updates` using its existing `{ feature, from, to }` shape. Record secondary document/link corrections in the ordinary report and revision summary; do not overload this field or add another registry.
 - Do not treat path correction as substantive revision.
 
@@ -383,14 +401,18 @@ Feature, with unfinished implementation and replacement coverage clearly reporte
 Correct task-owned errors under Exception handling before committing.
 
 3. Follow the Core Git contract for explicit staging of the task-owned index,
-   affected details, Registry and revision log; complete cached-diff checks and
+   affected details, approved Feature design navigation edits, Registry and
+   revision log; complete cached-diff checks and
    create the eligible local `chore(feature-plan): <中文行为摘要>` commit unless
    the user requested no commit. Summarize the verified anchor, material plan
    changes and actual validation in its body, then check post-commit status.
 
-Source changes belong in a separate earlier commit. If an uncommitted source
-change appears after preflight, preserve it and stop dependent synchronization;
-the next anchor must identify the actually analyzed committed source state.
+Source changes belong in a separate earlier commit, including the approved
+repairs handled in Stage 3. If a source change remains uncommitted at Stage 4 entry
+or appears during plan writes, preserve it and stop dependent synchronization.
+Inspect any task-owned partial plan under Exception handling; do not absorb other
+work or commit a partial result as synchronized. The next anchor must identify the
+actually analyzed committed source state.
 
 ## Stage 6: handoff
 
@@ -436,7 +458,7 @@ Stage 1: optional user prior
     ↓
 Stage 2: Git-diff analysis and report
     ↓
-Stage 3: establish explicit approval ── unresolved or adjusted → revise Stage 2 report
+Stage 3: establish approval; repair/commit source inputs if needed → refresh Stage 2 analysis and affected decisions
     ↓
 Stage 4: apply confirmed index/detail changes
     ↓
