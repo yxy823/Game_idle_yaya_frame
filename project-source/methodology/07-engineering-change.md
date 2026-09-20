@@ -8,14 +8,17 @@ Choose exactly one mode:
 
 | Mode | Use when | Product contract |
 | --- | --- | --- |
-| `bug` | Implementation contradicts an explicit Product or project-tool contract. | Restore the documented contract without changing Product intent. |
+| `bug` | Implementation contradicts an explicit, confirmed Product, professional or project-tool contract. | Restore the owning contract without changing approved intent. |
 | `refactor` | Internal structure should improve without changing accepted behavior. | Preserve behavior. |
 | `maintenance` | Dependency, build, tooling, tests, migration, logging, performance, or comparable technical work is required. | Preserve behavior/compatibility unless a Product change is separately approved. |
 
-Before classifying a Product-facing bug, read the relevant Product source. Missing,
-contradictory, or materially ambiguous Product expectations route to
-`product-standardizer`; do not guess. Technical defects use their documented
-project-tool contract and remain engineering work.
+Before classifying a bug, read the relevant authoritative source. Missing,
+contradictory or materially ambiguous expectations return to their owner:
+`product-standardizer` for behavior, or the corresponding specialist for design
+requirements under [Specialist work and sources](11-specialist-workflows.md).
+A confirmed professional contract can establish a defect without duplicate
+Product text. An unapproved suggestion cannot. Technical defects use their
+documented project-tool contract and remain engineering work.
 
 Distinguish game behavior from project tooling. Technical defects cite the actual
 tool contract and are repaired in the project-owned source. Do not invent Product
@@ -28,6 +31,7 @@ requirements merely to describe a tooling defect.
 | Defect introduced inside the current unfinished Feature | Keep it in the current Feature and resume the applicable execute Stage; record the failure and rerun affected verification. No duplicate bug Feature merely to move its failure elsewhere. |
 | Independent regression of previously completed behavior | Create an approved `bug` Feature through this workflow, retaining original completed history. |
 | User wants a different observable behavior | `product-standardizer`, even if the user calls it a bug. |
+| User changes a professional requirement while behavior stays fixed | Its owning specialist updates the approved source and handles planned-work impacts; this is not a defect against the old contract. |
 | Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
 | Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
 
@@ -109,7 +113,7 @@ handoff contract.
 Record:
 
 - actual behavior;
-- expected behavior and precise Product or project-tool source;
+- expected outcome and precise confirmed Product, professional or project-tool source;
 - minimum reproduction/trigger;
 - root cause, or an explicit unknown during initial investigation;
 - affected semantic components and area when known;
@@ -171,7 +175,7 @@ requested no commit. Use `<type>(<scope>): <中文行为摘要>` and include
 `Work item: docs/features/F0XX.json` in the body. Run `git status --short`
 afterward. Never push or rewrite history.
 
-Creation of an engineering Feature alone does not create a `feature-list-revisions.json` entry because no Product/Project-Rules synchronization occurred.
+Creation of an engineering Feature alone does not create a `feature-list-revisions.json` entry because no governing-source synchronization occurred.
 
 ## Bug-learning promotion
 

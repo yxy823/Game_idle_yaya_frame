@@ -201,7 +201,7 @@ $LASTEXITCODE
 
 | 输入类别 | 当前实际计算 |
 | --- | --- |
-| 术语、项目规则、Feature design、架构与 ADR | 通常按文件原始字节纳入；换行、措辞或排版变化即使不改含义，也可能改变指纹 |
+| 术语、专业规格/资源清单、项目规则、Feature design、架构与 ADR | 通常按文件原始字节纳入；换行、措辞、准备状态或排版变化即使不改行为，也可能改变指纹 |
 | 源码、测试、配置和其他未豁免文件 | 纳入路径与当前内容；增删、移动同样可能改变摘要 |
 | `docs/features/` 下的 JSON、Feature 索引、Registry、修订记录、methodology-config | 指定 JSON 先解析并排序对象键、统一序列化；数组顺序仍保留，只排除下表约定字段 |
 | `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 从源码指纹排除；报告仍由结果导入/人工原件契约单独核对，不可随意改写 |
@@ -223,6 +223,8 @@ AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 
 治理文档尽量在 Stage 3 完成。最终测试或人工接受后再改了纳入的内容，包括 Stage 5.5 采纳新规则时，先核对当前指纹与验证义务，补齐失效的最终运行、导入和适用人工接受，不能只凭“未改代码”沿用旧结果。内容相同且覆盖仍满足的结果才可复用；只读评审不改变内容。
 
 直接依据是 [内容指纹与完成检查实现](../../../../project-source/tools/lib/feature_completion_evidence.py) 的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及 [测试策略](../../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。静态解析/lint 的实际影响仍由 Agent 单独判断。
+
+性能、长测、显示或试听证据按原任务 AC/设计中的验证义务判断；当前适配器只接收实际 gdUnit 结果，不把专项测量包装为 gdUnit 通过。完成工具也不判断专项证据是否充分，详见 [专业验证边界](../guides/specialist-workflows.md#实现测量与完成)。独立审核产生的隔离报告、日志或缓存不得覆盖原证据或被审成果。
 
 ## 直接脚本解析与 lint
 

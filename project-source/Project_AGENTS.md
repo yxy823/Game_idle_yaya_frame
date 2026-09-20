@@ -17,6 +17,8 @@
 | Test impact, current-run evidence or completion helper use | `methodology/08-testing-strategy.md`; direct parsing/lint commands are in `methodology/gdscript-lint.md` |
 | Report organization, temporary workspaces, Progress, history or cleanup | `methodology/09-artifact-lifecycle.md` |
 | Optional architecture map and ADRs | `methodology/10-architecture-overview.md` |
+| Professional design, resources, localization, diagnostics or multiple requirement sources | `methodology/11-specialist-workflows.md`; specialists own their documents and return to existing task delivery |
+| User-requested formal review | `methodology/12-independent-review.md`; fresh independent instance using `.codex/agents/independent-reviewer.toml` when supported and the applicable review Skills |
 
 These entries are task routes, not a mandatory reading sequence. Follow the
 selected procedure and its applicable references; do not load every workflow.
@@ -24,7 +26,7 @@ There are no automatic tool events or Hooks to grant permission.
 
 Apply relevant `docs/project-rules.md` hard constraints when defining Product intent, planning Features and designing or implementing changes. A local Product, Feature or ADR cannot silently waive them. Every proposed rule addition, removal or edit requires the conversational self-check in `methodology/04-coding-rules-4-layers.md`; reuse explicit decisions, and obtain any missing authority for a substantive change. Stage 3 checks useful terminology, design, architecture/ADR and rule updates before final verification; it does not require an artifact for every category.
 
-Read relevant terminology definitions, Product sources and accepted architecture
+Read relevant terminology definitions, Product/professional sources and accepted architecture
 decisions for the work. Do not create an empty terminology document or require a complete
 Product for discussion. Source writing and implementation use their owning
 workflows; a Skill return does not cancel a broader concrete authorization.

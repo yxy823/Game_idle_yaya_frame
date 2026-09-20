@@ -25,6 +25,8 @@ do not restart completed work or repeat unchanged context.
 | Execute direct parsing/lint | `methodology/gdscript-lint.md` |
 | Record Bug diagnosis/learning | `methodology/07-engineering-change.md` and execute Stage 5.5 |
 | Archive execution or record architecture decisions | `methodology/09-artifact-lifecycle.md` and, when applicable, `methodology/10-architecture-overview.md` |
+| Use professional sources, supporting specialist work or supplemental evidence | `methodology/11-specialist-workflows.md` |
+| Perform user-requested independent review | Stage 6 and `methodology/12-independent-review.md`; review methods live in separate Skills |
 
 The execution specification owns optional Stage 6 review and all completion
 conditions. This Skill supplies no alternative check sequence or evidence format.

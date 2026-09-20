@@ -23,11 +23,13 @@ The project knowledge layer is:
 └── docs/
     ├── product.md + product/*.md        Product intent: What
     ├── terminology.md                  optional domain terms and shared definitions
+    ├── art/, audio/, ui/, localization/ optional professional specifications, owned by specialist Skills
+    ├── resource-requirements/           shared resource specifications and preparation details
     ├── feature-list.json                lightweight Feature index: Todo/status
     ├── features/F0XX.json               Feature detail and durable local notes
     ├── features/F0XX-design.md          optional detailed design of one Feature
     ├── knowledge/                      development experience, with topic indexes and separate entries
-    ├── feature-list-revisions.json      Product/Project-Rules synchronization history
+    ├── feature-list-revisions.json      governing-source synchronization history
     ├── test-registry.json               component/test traceability and safety-net index
     ├── feature-completion-evidence.json current-snapshot Feature completion evidence
     ├── project-rules.md                 project constraints, collaboration and design principles
@@ -43,7 +45,10 @@ The project knowledge layer is:
 | Group | Skills | Responsibility |
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Focused discussion; hand approved terminology to the existing writer only when documentation is requested. |
-| Product | `product-init-elicitor`, `product-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
+| Product | `product-init-elicitor`, `product-standardizer`, `product-spec-elicitor` | Define or change Product behavior. |
+| Professional design | `product-ui-sketcher`, `product-audio-sketcher`, `art-bible`, `sound-bible`, `visual-asset-spec` | Maintain the applicable UI, art, sound and resource specifications directly. |
+| Integration and measurement | `asset-integration`, `localize`, `observability`, `perf-profile`, `soak-test` | Supply independently callable methods within the owning authorized task. |
+| Independent review | `code-review`, `ux-review`, `art-review`, `audio-review`, `asset-audit`, `localization-review`, `balance-review` | Separate methods, selected by requested scope and executed by a fresh reviewer instance. |
 | Planning | `generate-feature-list`, `sync-feature-list` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
@@ -60,9 +65,14 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Record or maintain settled project vocabulary | `project-clarifier` → `product-standardizer` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
 | Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
+| Choose visual or sound direction | `art-bible` / `sound-bible` | Own the confirmed shared specification under [specialist work](11-specialist-workflows.md); do not require an entire game's design or produce assets. |
+| Specify an interface or individual assets | `product-ui-sketcher`, `visual-asset-spec`, `product-audio-sketcher` | Maintain professional sources directly; Product owns behavior and links. |
+| Prepare visual art, music or sound effects | Production capability reserved in [specialist work](11-specialist-workflows.md#design-production-integration-and-review) | Record specifications and available resources; no production Skill is implemented yet. |
+| Integrate supplied assets or localize content | `asset-integration` / `localize` | Specification work may stand alone; runtime changes return to the owning authorized Feature/experiment. |
+| Add diagnostic signals, measure performance or run a soak scenario | `observability` / `perf-profile` / `soak-test` | Separate instrumentation, measurement, diagnosis and authorized repair; report actual evidence and limits. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | Establish layout, resource scale and interaction readability before dependent logic | Current Product planning and delivery, or an explicitly requested scoped experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
-| Analyze and hand off the minimum resource files for a task | Current task Agent; UI/audio sketchers contribute requirements when needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); save a requested preparation list without treating it as new Product intent or authorization to acquire assets or implement the game. |
+| Analyze and hand off the minimum resource files for a task | Current task coordinates `visual-asset-spec` / `product-audio-sketcher` as needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); requirements, production and integration have separate scopes. |
 | New Feature / Product change | `product-standardizer` | Update Product, handle existing-work impacts, and defer later Products' initial decomposition. |
 | Existing implementation without adequate Product/Feature records | `product-standardizer` → existing planning/delivery routes | Confirm intent and adopt the current module under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
 | Decompose the current Product | `generate-feature-list` | Append only this Product's plan; finish its required Features before initially decomposing the next Product. |
@@ -70,11 +80,11 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Continue current Feature | `execute-next-feature` | Resume the actual Stage and existing authorization; “continue” alone does not grant missing approval or acceptance. |
 | Execute eligible planned Feature | `execute-next-feature` | Select by the dependency DAG, present Stage 1 and preserve its approval boundary. |
 | Bug in current unfinished Feature | Current Feature repair route | Reproduce and repair within its scope; keep failure evidence and relevant regression coverage. |
-| Independent Bug in completed behavior | `engineering-change-standardizer` in bug mode | Restore explicit expected behavior; changed intent instead follows Product change. |
+| Independent Bug in completed behavior | `engineering-change-standardizer` in bug mode | Restore a confirmed Product, professional or tool contract; changed requirements return to their owner. |
 | Refactor | `engineering-change-standardizer` in refactor mode | Preserve behavior; use `pick-refactor-smell` first only when selecting a smell is requested. |
 | Maintenance | `engineering-change-standardizer` in maintenance mode | Define technical success, compatibility, migration and validation. |
 | Project tooling issue | `engineering-change-standardizer` | Describe the actual technical problem and repair the project-owned tool within the authorized scope. |
-| Audit | Read-only inspection | Report evidence, uncertainty and findings; a request for audit does not authorize implementation. |
+| Audit | Applicable review Skill in a fresh `independent-reviewer` instance | Follow [independent review](12-independent-review.md): reviewed artifacts stay read-only, permitted validation uses isolation; no repair or human acceptance is implied. |
 | Human Acceptance follow-up | Current Feature Stage 5/6 route | Bind the user's explicit acceptance to the actual reviewed scope and snapshot; do not infer acceptance. |
 | Status query | Read-only state explanation | Report current facts and next legal action; do not start work or call readiness checks merely to answer. |
 
@@ -163,7 +173,7 @@ handoff → continue within existing authorization, otherwise STOP
 A reported bug must be classified before any Product edit:
 
 - documented expected behavior exists and implementation violates it → `engineering-change-standardizer` in `bug` mode;
-- expected behavior is missing, contradictory, or intentionally changing → `product-standardizer`.
+- expectations are missing, contradictory, or intentionally changing → their owner: `product-standardizer` for behavior, the specialist for professional requirements.
 
 ## Delivery control points
 
@@ -241,3 +251,5 @@ Release management, store submission, public version announcements, deployment a
 | Test traceability, TDD, regression/invariant selection | [08-testing-strategy.md](./08-testing-strategy.md) |
 | Reports, explicit cleanup and Progress history | [09-artifact-lifecycle.md](./09-artifact-lifecycle.md) |
 | Optional architecture overview and ADRs | [10-architecture-overview.md](./10-architecture-overview.md) |
+| Professional ownership, sources and production boundaries | [11-specialist-workflows.md](./11-specialist-workflows.md) |
+| Independent review, permissions and evidence limits | [12-independent-review.md](./12-independent-review.md) |

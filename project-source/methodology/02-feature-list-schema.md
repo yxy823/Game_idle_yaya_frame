@@ -155,12 +155,19 @@ Engineering Feature:
 | `verification.test_impact` | Optional when no extra test scope is needed; templates include exactly `additional_tests` and `full_suite_reasons`. Stage 2 persists the approved additional scope here before final test execution. This semantic field is part of the snapshot fingerprint. |
 | `verification.test_impact.additional_tests` | Array of `{ "id": "...", "reason": "..." }` with unique Registry IDs and non-empty reasons. May reference another Feature's test. Referenced tests may be planned during preparation but must be active for current completion. Additional scope does not change test ownership or replace the Feature's own AC/regression mapping. |
 | `verification.test_impact.full_suite_reasons` | Unique array of non-empty reasons for approved full-suite escalation beyond automatically derived triggers. An empty array records no additional escalation. |
-| `source` | Precise Product source when a behavioral contract exists; `infrastructure` for technical work with no single Product source. |
+| `source` | One precise primary Product or professional source; `infrastructure` for technical work with no single documentary source. Follow the source and secondary-reference contract in `11-specialist-workflows.md`. |
 | `notes` | String. Starts empty; later holds brief local decisions, placeholders, TODOs, deferred edges, bug learning and relative links to detailed Feature design or other owning records. Long design explanations follow the optional Markdown contract below. |
 | `engineering_change` | Optional. When present, exactly `bug`, `refactor`, or `maintenance`. Product-derived Features omit it. |
 | `bug_diagnosis` | Optional/null for compatibility. A non-null object is allowed only for `engineering_change: bug` and has exactly `actual`, `expected`, `source`, `reproduction`, `root_cause`. The first three are non-empty strings; reproduction is a non-empty ordered list of non-empty steps. Root cause may be null while investigating, but must be a non-empty confirmed cause for current completion. Non-Bug templates do not invent diagnostic evidence. |
 
 Acceptance-criterion IDs are historical identifiers. Do not renumber criteria on a completed Feature. Product evolution creates a new Feature that changes/supersedes the old behavior.
+
+Professional requirements participate in the same planning, impact and AC mapping
+under [Discover and map sources](11-specialist-workflows.md#discover-and-map-sources).
+Use existing AC/design links for secondary sources, not a new JSON field or a
+multi-path `source` string. The validator checks `source` as non-empty text; the
+planning Agent must verify source existence, authority and coverage. A binding
+requirement must not exist only in process-only `notes`.
 
 The runner always reads recorded `test_impact` obligations together with the
 deterministic Registry scope. Store approved additions and full-suite reasons
@@ -174,7 +181,7 @@ Use `docs/features/F0XX-design.md` when the user asks for detailed design, or a 
 
 The design explains this change: goal and boundaries with Product/AC links; relevant existing behavior; materially constraining rules and how they apply; responsibilities, interfaces and state ownership; important runtime/failure/lifecycle flows; necessary implementation order and verification reasoning; actual outcome and meaningful deviations. Expand useful explanations without a fixed length. Use [feature-design.md.tmpl](templates/feature-design.md.tmpl) as an optional outline, omitting irrelevant sections.
 
-Reference repository rules and records using paths relative to the design document, with useful section anchors. Explain their concrete application rather than copying rule bodies or recording every file read. Version-sensitive external references identify the applicable version and separate evidence from assumptions. AC, component impact, verification mappings and test obligations remain in Feature JSON/Registry; the design links them rather than maintaining another acceptance or test plan. Task state and blockers remain in Progress.
+Reference repository rules and records using paths relative to the design document, with useful section anchors. Explain their concrete application rather than copying rule bodies or recording every file read. Version-sensitive external references identify the applicable version and separate evidence from assumptions. AC, component impact and executable test mappings/obligations remain in Feature JSON/Registry; the design links them rather than duplicating them. Additional scoped measurement, duration, display or listening obligations may be explained in the design under `11-specialist-workflows.md`. Task state and blockers remain in Progress.
 
 Stage 1 develops the proposal; Stage 2 persists approved design; Stage 3 keeps it aligned with implementation and finalizes it before Stage 4. Material changes follow the existing authorization contract. A detailed current subsystem description belongs in `docs/architecture/<subsystem>.md`, and an important cross-Feature rationale may belong in an ADR; the Feature design links those owners. Do not copy the same subsystem description into each Feature.
 
@@ -182,7 +189,7 @@ After completion, retain the design as the account of that Feature. Later behavi
 
 ## File 3: `docs/feature-list-revisions.json`
 
-`sync-feature-list` appends one record for each Product/Project-Rules synchronization:
+`sync-feature-list` appends one record for each governing-source synchronization:
 
 Initial content is `{"schema_version": 2, "revision_log": []}`. The root and each
 revision entry use schema version 2; no old-format parsing or automatic migration
@@ -194,6 +201,8 @@ On first synchronization, a Feature-file edit alone is not a source baseline;
 If approved current-document alignment is needed because that history is unknown,
 the existing anchor fields both identify the inspected HEAD and `summary` records
 this limitation. This establishes the next baseline without claiming an earlier diff.
+A newly admitted professional source category requires the same coverage check
+even when its files predate an existing anchor; see `11-specialist-workflows.md`.
 
 New synchronization records use these fields in addition to the existing summary,
 anchor and human-readable metadata:

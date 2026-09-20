@@ -46,7 +46,7 @@ acceptance.
 Classify using the canonical table, including new/continued Feature, Product
 change, Bug, Refactor, Maintenance, Framework issue, Audit, Human Acceptance
 follow-up and status query. Ambiguous expected behavior is investigated against
-Product before calling it a Bug. A current Feature's own implementation defect
+the owning Product/professional source before calling it a Bug. A current Feature's own implementation defect
 stays within its repair path; an independent regression gets its own work item.
 
 For a status-only question, answer current facts, blockers and relevant uncertainty
@@ -65,6 +65,19 @@ explicit user authorization. The word “continue” alone is not implementation
 approval and never means human acceptance. Producing a prompt grants neither.
 
 Use the current `product-standardizer` entry for Product and meaning-preserving terminology writes. Rule maintenance needs its pre-write self-check and any missing substantive decision; a local design does not automatically become a global rule. Supporting documentation inside an authorized Feature returns to that Feature instead of opening a new planning cycle. Read the destination contracts for details rather than copying a second procedure here.
+
+For specialist work, consult `methodology/11-specialist-workflows.md`: professional
+owners write directly, source changes may affect several planned modules, and an
+old sync anchor does not establish newly included source coverage. Do not send
+a confirmed professional-contract defect back for Product duplication. Distinguish
+direction/specification, reserved production, integration and review. Reserved
+production has no executable Skill; do not invent one in a continuation prompt.
+
+For formal review, use `methodology/12-independent-review.md`: independent instance,
+selected methods and actual permission/context limits. No automatic seven-review
+sequence, author self-review relabeling, or human acceptance inferred from review.
+Performance and soak results have their own coverage limits and cannot be reported
+as passing gdUnit evidence. Advice itself runs none of those validations.
 
 If a framework defect is reported, separate framework/tooling repair from
 business WIP and refer to the existing maintenance route. A user-chosen new

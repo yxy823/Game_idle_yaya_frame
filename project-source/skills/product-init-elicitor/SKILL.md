@@ -16,7 +16,9 @@ metadata:
 
 Act as a product-management assistant. Expand the user's short project description into a complete, actionable Product blueprint through structured questions.
 
-Do not write files. Return one structured draft to `product-standardizer`, which owns all durable writes.
+Do not write files. Return one structured Product draft to `product-standardizer`,
+which owns Product writes; professional Skills own their separate specifications
+under `methodology/11-specialist-workflows.md`.
 
 ## Language contract
 
@@ -44,7 +46,7 @@ When vocabulary obscures a module's identity, ownership or behavior, use
 Read relevant `docs/terminology.md` definitions when present. Keep sufficient local
 definitions in the positioning/data model; attach any proposed shared terminology
 wording and source links to the draft, distinct from module behavior. Omit the
-proposal when existing wording is sufficient. The standardizer owns all writes.
+proposal when existing wording is sufficient. The standardizer owns Product and terminology writes.
 
 ## Stage 1: Product positioning
 
@@ -82,11 +84,15 @@ Example:
 
 ### Q1.6 Visual direction
 
-Ask for the Product-wide visual tone, not module-level layouts. Useful options include minimal, warm, retro pixel art, cyberpunk, and custom. This answer guides `product-ui-sketcher`.
+Capture existing visual experience goals or references when they affect current
+scope. Shared style selection and standards belong to `art-bible`; no full visual
+design is required to draft Product. Preserve links and distinguish proposals.
 
 ### Q1.7 Audio direction
 
-Ask for the Product-wide audio tone. Useful options include 8-bit, natural ambience, electronic synthesis, intentionally silent, and custom.
+Capture feedback goals and existing direction relevant to the Product. Shared
+sonic identity belongs to `sound-bible`; concrete cues go to
+`product-audio-sketcher`. Undecided direction may remain pending.
 
 ## Stage 2: Module elicitation
 

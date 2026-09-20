@@ -29,8 +29,8 @@ Write these sections in this order. A document rendered from the canonical templ
 | Core loop | Yes | A numbered, coherent action sequence for each version such as V0.1 or V0.2. |
 | Module list | Yes | Number, filename, module name, and `draft`, `done`, or `obsolete` status. |
 | Module dependencies | Yes | An ASCII dependency diagram and intended Product execution order, with cross-cutting modules identified separately. |
-| Visual direction | Recommended | UI tone and shared display/readability constraints; final palette and decoration may remain open. |
-| Audio direction | Recommended | Sound-effect and music direction used as input to audio entries. |
+| Visual direction | Recommended | Product experience goals and links to the applicable Art Bible/UI specifications; undecided style remains a proposal. |
+| Audio direction | Recommended | Product feedback goals and links to the Sound Bible/resource specifications. |
 | Change history | Yes | Reverse-chronological date, Product change, and reason. |
 
 ## Standard `product/NN-name.md` sections
@@ -50,14 +50,18 @@ A module document is more detailed than the overview. A rendered template must r
 | Functional flow | Step-by-step user or system behavior, optionally with an ASCII diagram. |
 | Data model | Field, type, default value, and meaning. |
 | State machine | State values and transition rules, when applicable. |
-| UI sketch | ASCII wireframe, key interactions and confirmed visual requirements, proposed by `product-ui-sketcher`; link relevant prototype conclusions. |
-| Audio entries | Trigger, style, duration and resource references or placeholder naming, proposed by `product-audio-sketcher`. |
+| UI sketch | Player actions and behavior, with links to the interface specification maintained by `product-ui-sketcher` and relevant prototype conclusions. |
+| Audio entries | Behavioral triggers and feedback intent, with links to specifications maintained by `product-audio-sketcher`; avoid copying resource rows. |
 | Numeric rules | Formulas, thresholds, and configuration values. |
 | Acceptance criteria | Concrete statements of how completed behavior can be verified. |
 | Edge cases | Known cases intentionally deferred to later Features. |
 | Change history | Reverse-chronological record of changes to this module. |
 
 ## Visual prototype before dependent implementation
+
+Professional documents are maintained directly by their owning Skills under
+[Specialist work and sources](11-specialist-workflows.md). Product keeps behavioral
+intent and useful references, not duplicate UI, art or audio specifications.
 
 For a new interface or a substantial layout/resource change, establish its visual
 foundation before implementing logic that depends on that interface. Reuse an
@@ -81,7 +85,7 @@ but never supplies the user's actual visual acceptance.
 
 Before building, identify the questions to settle, the target viewport/window
 and relevant scaling conditions, core elements/states, available resources and
-remaining gaps. The UI/audio sketchers propose these inputs; a written sketch
+remaining gaps. The relevant specialist Skills specify these inputs; a written sketch
 or HTML exploration does not verify the Godot result.
 When resources need a preparation handoff, use the
 [resource preparation list](#resource-preparation-list-and-handoff) below.
@@ -123,11 +127,11 @@ Missing execution or human feedback remains explicitly unverified.
 Keep the entry scene, questions, observations, a link to any resource preparation
 list and file disposition in current Feature notes, or Progress for a standalone
 experiment. Keep resource details in that list when present. Confirmed
-user-visible requirements belong in the owning Product UI/audio sections via
-`product-standardizer`; preserve concrete size/readability requirements
-when they matter, while node properties and tuning values remain in the scene,
-resources or implementation notes. Do not maintain a second specification or
-prototype status ledger.
+behavior changes belong in Product via `product-standardizer`; professional
+layout, size, readability or sound requirements belong in their owning specialist
+source. Adoption uses the applicable authorization and source-impact route.
+Node properties and tuning values remain in the scene, resources or implementation
+notes. Do not maintain a second specification or prototype status ledger.
 
 During planned delivery, use an ordinary Feature for an independently reviewable
 visual foundation and make dependent implementation wait for its applicable
@@ -151,11 +155,12 @@ or implementation. Prefer an existing list covering the same scope; otherwise
 use `docs/resource-requirements/<scope>.md`, such as
 `inventory-visual-prototype.md`. Do not create empty lists in blank projects or
 one list per Feature by default. Several Features may reference the same list.
-An ordinary task Agent maintains it; no separate Skill or registry is needed.
+The responsible specialist maintains its entries; the current task coordinates
+shared uses without a separate registry or a Product-writing intermediary.
 
-Read the current task, confirmed Product requirements, relevant existing assets
-and any supplied source locations. UI/audio sketchers contribute their domain
-requirements; the caller consolidates all applicable resource types. Include only
+Read the current task, confirmed Product and professional requirements, relevant
+existing assets and any supplied source locations. `visual-asset-spec` and
+`product-audio-sketcher` maintain their domain entries in the same list. Include only
 the minimum files needed for this scope, merging repeated uses of one resource.
 Do not add future decoration or separate files for states that existing themes
 or procedural presentation can already express. Record unknown inputs rather
@@ -189,11 +194,13 @@ can be sufficient for the current prototype; state what it represents and what
 remains to be replaced. Do not turn every optional technical parameter into a
 blocking question. Missing information does not prevent drafting the useful list.
 
-Product owns observable intent; the list owns preparation details and file mapping;
-scenes/resources own actual implementation settings. Reference the owning Product
-sections and link the list from current Feature notes or Progress, rather than
-copying its rows there. A resource analysis alone does not change Product intent
-or create new Features. Material design changes use the existing Product route.
+Product owns behavioral intent; professional sources own their confirmed design
+requirements; the list owns local specifications, preparation details and file
+mapping; scenes/resources own implementation settings. Link the applicable list
+entries from Feature AC/design, with notes or Progress providing navigation.
+Do not hide binding requirements solely in process-only notes or copy entire rows.
+A resource analysis alone does not change intent or create Features. Material
+changes follow the owning source's route in `11-specialist-workflows.md`.
 
 Hand off the list with the missing files/specifications and their destination
 paths so the user can create, reuse or supply them. Pause only work that needs

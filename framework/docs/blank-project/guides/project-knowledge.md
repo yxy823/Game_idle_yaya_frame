@@ -8,6 +8,9 @@
 
 完整文件职责、出现时机与主要读写方集中在 [目录参考](../reference/project-layout.md#文档与执行文件如何配合)。本页只解释何时维护、如何保留历史和从哪里续接；当前 Feature 的 Stage 1–4 衔接见 [最终验证前文档更新](feature-delivery.md#最终验证前完成文档更新)。
 
+美术、声音、UI、资源与本地化文档由对应专业 Skill 直接维护，Product 保存行为与引用。
+来源变化、缺陷分类和设计/接入/审核边界见 [专业工作指南](specialist-workflows.md)。
+
 ## 何时维护项目术语
 
 当同一项目中的概念需要反复解释，或在不同模块、Feature 中出现同名异义、异名同义时，使用 `project-clarifier` 通过具体情景澄清。需要保存的已确认定义由 `product-standardizer` 按授权写入 `docs/terminology.md`；缺少该文件不阻塞讨论或开发，也不预先放一个空模板。
@@ -24,7 +27,7 @@
 
 设计说明可以展开目标与边界、已有实现、实际采用的规则及其应用方式、组件职责、状态和生命周期、接口与调用流程、失败处理、实现顺序及验证理由。引用原始规则或资料并解释为何适用，不复制整份 `agent-rules`。篇幅由需要解释的设计决定。
 
-AC、测试映射、验证计划和状态仍以 Feature JSON 及现有登记表为准，设计说明链接这些记录，不再维护一份台账。跨 Feature 的当前结构进入架构地图，重要且难以恢复的决策理由进入 ADR；完成的 Feature 设计保留历史语境，后续变更由新任务记录。可选模板 `methodology/templates/feature-design.md.tmpl` 只提供提纲，不要求填写全部章节。设计 Markdown 参与内容指纹，不继承 JSON notes 的过程字段豁免；编辑后按 [内容绑定](../reference/commands-and-validation.md#内容绑定与失效判断) 核对依据。结构见 [Feature 设计说明规范](../../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)。
+AC、可执行测试映射/义务和状态仍以 Feature JSON 及登记表为准，设计说明链接这些记录；专项测量、时长、显示或试听条件可在设计中说明，不复制第二份台账。跨 Feature 当前结构进入架构地图，重要取舍进入 ADR；已完成设计保留历史。可选模板 `methodology/templates/feature-design.md.tmpl` 不要求填写全部章节。设计与专业规格 Markdown 参与内容指纹，不继承 JSON notes 的豁免；编辑后按 [内容绑定](../reference/commands-and-validation.md#内容绑定与失效判断) 核对依据。结构见 [Feature 设计说明规范](../../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)。
 
 ## 何时需要架构地图
 

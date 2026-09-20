@@ -17,6 +17,9 @@ flowchart TD
     R[项目规则] -->|约束| P
     R -->|约束| F
     P -->|需求来源| F
+    S[专业 Skill] -->|直接维护| Q[美术、声音、UI、资源与本地化规格]
+    Q -->|任务约束与具体检查| F
+    P -.->|引用| Q
     F -.->|相对链接| D[Feature design]
     D -.->|引用当前结构| M[架构地图]
     M -.->|引用重要取舍| J[ADR]
@@ -36,10 +39,12 @@ flowchart TD
 | `AGENTS.md` | 任务路由与仓库执行约束 | 创建时复制；Agent 按任务读取 | 确认任务与授权边界 |
 | `agent-rules/` | Core 与按领域组织的工程语义 | 创建时复制；Agent 按路由读取、按规则维护流程修订 | 有具体规则冲突时查原文 |
 | `methodology/`、`.agents/skills/` | 流程/数据契约；Agent 遵循的具体工作方法 | 创建时复制；工具与 Skill 引用相关规范 | 按本次任务查依据，不必通读 |
+| `.codex/agents/independent-reviewer.toml` | 独立审核角色，按范围加载审核方法 | 创建时复制；客户端实际加载与权限另行核实 | 不因文件存在就认定上下文和文件隔离成立 |
 | `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
 | `docs/methodology-config.json` | 机器路径、文档语言、真实测试命令 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
 | `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-standardizer 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
 | `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-standardizer 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
+| `docs/art/art-bible.md`、`docs/audio/sound-bible.md`、`docs/ui/<interface>-design.md`、`docs/localization/localization-spec.md` | 各领域已确认专业要求，Product 只保留行为与引用 | 有需要时由对应专业 Skill 直接维护；规划、执行、审核按适用范围读取 | 参见[专业文档归属](../guides/specialist-workflows.md#文档由谁维护)，不放进普通 README 或报告目录 |
 | `docs/project-rules.md` | 跨 Product/Feature 的约束、协作规则、默认原则；区分 MUST/PREFER/REVIEW | 创建时由模板复制；Agent 写前自检并核对授权，需求/设计/实现持续读取 | 决定实质新增、删除、强度和适用范围 |
 | `docs/feature-list.json` | 任务 ID、标题、状态、依赖、完成时间和详情定位 | 初始空索引；规划和执行 Agent 更新，检查器读取 | 查任务状态与依赖；状态不是验证证据 |
 | `docs/features/F0XX.json` | 本任务范围、source、组件、AC、验证义务；notes 保存短记录与链接 | 规划时建立；执行维护，选择器/完成检查读取 | 审批具体方案，核对覆盖与剩余项 |
@@ -62,7 +67,8 @@ flowchart TD
 MyGodotGame/
 ├── AGENTS.md
 ├── README.md
-├── .agents/skills/                  12 项 Skill，含各自脚本或参考资料
+├── .agents/skills/                  27 项 Skill，含需要的脚本或参考资料
+├── .codex/agents/independent-reviewer.toml
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
@@ -108,6 +114,7 @@ MyGodotGame/
 | `project-source/Project_README.md` | `README.md` |
 | `project-source/Project_Workflow_Config.json` | `docs/methodology-config.json` |
 | `project-source/skills/` | `.agents/skills/` |
+| `project-source/agents/independent-reviewer.toml` | `.codex/agents/independent-reviewer.toml` |
 | `project-source/methodology/` | `methodology/` |
 | `project-source/agent-rules/` | `agent-rules/` |
 | `project-source/tools/` | `tools/` |

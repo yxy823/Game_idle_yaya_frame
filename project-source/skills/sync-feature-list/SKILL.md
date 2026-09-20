@@ -1,7 +1,7 @@
 ---
 name: sync-feature-list
 description: >-
-  Incrementally synchronize an existing Feature/test ledger with committed Product or Project Rules changes by analyzing Git diffs. Use for Feature-list updates and realignment, not initial generation. English triggers: sync feature list, update tasks from Product, realign Feature plan. 中文触发：同步 feature-list、更新任务列表、重新对齐 feature-list。
+  Synchronize existing Feature/test plans with committed Product, professional specification or Project Rules changes. Use for source-impact analysis and current-plan realignment, not initial decomposition.
 ---
 
 # Synchronize Feature list
@@ -53,6 +53,13 @@ Synchronization watches:
 - `docs/product.md` for Product-wide intent, module inventory, dependencies, and direction;
 - every `docs/product/NN-xxx.md` module file for behavior, data and state, UI, audio, values, acceptance, and edge cases;
 - `docs/project-rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
+- Applicable professional sources in `docs/art/`, `docs/audio/`, `docs/ui/`, `docs/localization/` and `docs/resource-requirements/`, plus other owning paths discovered through actual references.
+
+Apply **Discover and map sources** in `methodology/11-specialist-workflows.md`.
+The default directory list is not exhaustive: inspect references and shared
+applicability. Proposed wording is not a confirmed contract. Resource status or
+location changes may be editorial for planning while still changing the global
+completion fingerprint.
 
 Between synchronizations, module files may be added, deleted, renamed—including numeric-prefix changes—or modified. The diff analysis must handle all four cases.
 
@@ -74,6 +81,13 @@ Between synchronizations, module files may be added, deleted, renamed—includin
    - Without a usable recorded anchor, inspect planning commits and their actual Product/Feature contents. Choose a verified source state already reflected in the relevant plan, early enough to include all unsynchronized changes to existing work. Merely touching an index/detail, updating notes/status or adding an engineering Feature does not prove source synchronization; neither does the first appearance of an empty copied index. Later Product planning must not silently advance the baseline for older work.
    - If no reliable baseline can be established, disclose the missing historical evidence and offer whole-document alignment of current sources and the current plan. Continue that fallback only within explicit authorization; do not ask again if this concrete scope is already approved. An empty diff from an unverified recent commit is not evidence that nothing changed.
 4. Report the current branch, verified anchor hash/date/subject and its source-coverage basis, or the fallback and inspected HEAD; include counts grouped by Feature status.
+
+Before reusing any anchor for newly admitted professional sources, establish
+whether the affected plan actually incorporated them. A source predating the
+anchor can still be unsynchronized. Compare historical source/plan contents;
+when coverage is unknown, use the authorized current-document fallback for that
+affected planned scope alongside any verified diffs. Report the distinction and
+do not advance the anchor as if unknown history had been checked.
 
 ## Stage 1: user prior
 
@@ -111,7 +125,14 @@ git diff --name-status -M <anchor> HEAD -- docs/product/
 git diff -M <anchor> HEAD -- docs/product/
 
 git diff <anchor> HEAD -- docs/project-rules.md agent-rules/
+
+git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/resource-requirements/
+git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/resource-requirements/
 ```
+
+Include any additional authoritative paths discovered from references in these
+commands. Read current professional sources whose historical coverage is unknown
+even when their diff is empty; widening the path list alone cannot prove coverage.
 
 `-M` is mandatory for module paths so a rename such as `02-foo.md` to `03-foo.md` is not misclassified as one deletion plus one addition.
 
@@ -128,7 +149,9 @@ A path rename with unchanged content is editorial. A rename plus content change 
 
 ### 2.3 Map changes to existing Features
 
-Use each detail file's `source` to map additions, revisions, and removals:
+Use the primary `source`, secondary AC/design references and shared applicability
+to map additions, revisions and removals. Identify all affected planned modules,
+including consumers missing a direct link, and follow their relevant dependencies:
 
 - addition to the current/already planned scope → propose needed new Features;
 - addition or revision confined to a later, unplanned Product → leave it at Product-document level and report deferred decomposition;
@@ -152,7 +175,9 @@ the exact source/replacement IDs, scope boundaries and every downstream dependen
 change. Walk transitive dependents where the changed contract propagates; direct
 dependents alone are not a complete impact analysis. Do not renumber old Features.
 
-For a module-file rename, identify every detail whose `source` uses the old path. A source-path correction is reported separately and is not itself a substantive Feature change.
+For a source-file rename/removal, inspect primary sources and secondary references,
+including links and section anchors in Product and Feature designs. A path
+correction is reported separately and is not itself a substantive Feature change.
 
 ### 2.4 Analyze downstream regression and stale-test impact
 
@@ -160,7 +185,7 @@ Compare every proposed `affected_components` ID with the current Registry. Inclu
 new component records and conflicting existing records in the proposal, using the
 Test registry contract in `.agents/skills/generate-feature-list/SKILL.md`.
 
-For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored Product source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because Product changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
+For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored governing source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because a source changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
 
 Follow **Requirement changes and stale tests** in
 `methodology/08-testing-strategy.md`: read affected test code, including unit tests
@@ -254,8 +279,8 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 ### Source-path corrections
 
-- Update only the detail `source` path for every affected Feature, including `done` history, so references continue to resolve after a module rename.
-- Record every old-to-new mapping in `source_path_updates`.
+- Correct affected primary `source` paths and secondary document/section links, including historical navigation where needed. Preserve completed requirements and decisions; link correction is not permission to rewrite their content.
+- Record primary Feature `source` changes in `source_path_updates` using its existing `{ feature, from, to }` shape. Record secondary document/link corrections in the ordinary report and revision summary; do not overload this field or add another registry.
 - Do not treat path correction as substantive revision.
 
 ### Splits, merges and dependencies
@@ -319,7 +344,9 @@ to rerun a dependent Feature's valid tests.
 
 1. Update index totals/time and append one version-2 revision under **File 3** in
    `methodology/02-feature-list-schema.md`. Preserve the canonical
-   `meta.generated_from`; do not put the revision into index metadata.
+   `meta.generated_from` entries, adding actual professional source locations
+   considered by this plan without claiming all future scope is covered; do not
+   put the revision into index metadata.
    Record actual changes in the canonical readable summary fields where
    applicable; typed migrations/dependency changes carry the
    machine-readable relationships.
@@ -332,6 +359,13 @@ current alignment established this baseline while earlier source history is unkn
 This records a new comparison point, not a reconstructed historical diff. Migration
 sources must be supported by inspected content; unresolved historical claims stay
 unresolved. Do not invent a commit, add tracking fields or rewrite older revisions.
+
+When verified historical differences and newly admitted sources with unknown
+coverage are handled together, retain the verified before/after anchors for the
+known differences, identify which sources were aligned only at current HEAD in
+`summary`, and claim no historical diff for those sources. Support each migration
+from an actually inspected before/after source; unresolved source coverage blocks
+claiming complete synchronization.
 
 Use the exact migration cardinalities and retirement fields in
 `methodology/02-feature-list-schema.md`. Empty migrations/dependency changes are

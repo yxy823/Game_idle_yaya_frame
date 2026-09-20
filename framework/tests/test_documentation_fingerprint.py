@@ -89,6 +89,37 @@ class DocumentationFingerprintTests(unittest.TestCase):
                 self.write(f"docs/knowledge/tools-pipeline/{name}", content)
                 self.assertNotEqual(before, self.fingerprint())
 
+    def test_professional_edits_invalidate_but_isolated_review_outputs_do_not(self):
+        for name in (
+            "docs/art/art-bible.md", "docs/audio/sound-bible.md",
+            "docs/ui/inventory-design.md", "docs/localization/localization-spec.md",
+            "docs/resource-requirements/inventory.md",
+        ):
+            with self.subTest(name=name):
+                source = self.write(name, "Confirmed requirement\nStatus: supplied\n")
+                self.git("add", name)
+                before = self.fingerprint()
+                source.write_text("Confirmed requirement\nStatus: inspected\n", encoding="utf-8")
+                self.assertNotEqual(before, self.fingerprint())
+        before = self.fingerprint()
+        self.write("reports/features/F001/art-review.md", "Bounded review findings\n")
+        self.write("reports/scratch/art-review/run.json", '{"observed": true}')
+        self.write("reports/scratch/art-review/cache.bin", "Isolated cache")
+        self.git("add", "reports")
+        self.assertEqual(before, self.fingerprint())
+
+    def test_process_notes_cannot_bind_a_professional_constraint(self):
+        detail = self.write("docs/features/F001.json", json.dumps({
+            "source": "product/01-inventory.md", "notes": "See Art Bible"
+        }))
+        before = self.fingerprint()
+        detail.write_text(json.dumps({
+            "source": "product/01-inventory.md", "notes": "Icons must be readable at 24px"
+        }), encoding="utf-8")
+        self.assertEqual(before, self.fingerprint())
+        self.write("docs/features/F001-design.md", "Icons must be readable at 24px\n")
+        self.assertNotEqual(before, self.fingerprint())
+
     def test_contracts_and_source_outside_knowledge_still_invalidate(self):
         for name, content in (
             ("main.gd", "extends Node\nvar changed: bool = true\n"),

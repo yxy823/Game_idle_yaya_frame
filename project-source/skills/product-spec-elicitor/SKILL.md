@@ -78,7 +78,10 @@ Run a compact version of Product initialization and ask only:
 6. Primary tunable parameters and defaults.
 7. Observable acceptance criteria covering the agreed behavior without duplication or a target count.
 
-Do not re-ask edge cases, Product-wide visual direction, or Product-wide audio direction. Propose common edge cases for later review and inherit established Product-wide directions. Delegate wireframes and complete audio entries to the corresponding sketchers.
+Do not re-ask settled edge cases or shared visual/audio direction. Reuse applicable
+Art Bible/Sound Bible references and propose only relevant unresolved edge cases.
+The corresponding specialist owns wireframes/resource specifications directly;
+this elicitor supplies Product behavior and proposed links, not their full bodies.
 
 ## Mode B: `modify`
 

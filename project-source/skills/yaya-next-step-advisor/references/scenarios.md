@@ -14,7 +14,7 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Preserve behavior while restructuring | Refactor route; inspect existing safety net and relevant boundaries. |
 | Replace a build/testing tool | Maintenance with compatibility and affected validation; no new Product intent. |
 | Framework Gate blocks business WIP | Isolated framework maintenance, reusable source/template/negative-test fix, preserve business work. |
-| Audit only | Read-only finding/report prompt; no source writes or automatically created Bug. |
+| Audit only | Independent finding/report prompt under the review contract; no reviewed-source writes or automatic Bug. Honor static-only scope; otherwise necessary validation must isolate all side effects. |
 | Human says a specific tested revision is accepted | Follow up on that exact scope/snapshot; do not accept another version or Feature. |
 | Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS or unnecessary continuation prompt. |
 | Simple bounded next action | Short prompt; avoid copying the entire workflow. |
@@ -31,6 +31,16 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | A costly cross-Feature choice has real alternatives | Apply the existing ADR threshold and destination; reuse a relevant record and do not override Product/project rules. |
 | Stage 3 discovers settled terminology or needed design updates | Use the documentation checkpoint within current ownership/authorization; do not end authorized delivery at the supporting Skill return. |
 | Final tests passed before a rule/design document changed | Explain current evidence freshness and the owning revalidation route; old PASS alone cannot authorize completion. |
+| Art Bible contains a confirmed icon requirement absent from Product; implementation violates it | Cite the professional source and route the repair according to current/completed Feature ownership; do not require duplicate Product wording. |
+| User changes only a confirmed sound specification | Owning specialist updates its source within authorization and handles existing-work impacts; Product participates only for actual behavior changes. |
+| A shared Art Bible predates the last sync anchor but was never considered | Verify historical coverage or use authorized current-document alignment; inspect all applicable planned consumers, not only one direct link. |
+| Only a professional source changed | Trace primary/secondary references and shared applicability to concrete Feature/AC/verification impacts; later unplanned Products remain deferred. |
+| User wants UI design and an independent UX review | Separate creation Skill/instance from the reviewer; one author loading both is not independent. |
+| Reviewer role file exists but context/permissions are unknown | Report what must be verified; configuration presence alone does not establish isolation or successful review. |
+| Audio reviewer has filenames but no playable/listening evidence | Report technical checks possible and perceptual checks unverified; no invented listening or human acceptance. |
+| Request to create artwork, music or sound effects | Explain reserved production scope and preserve usable specifications/assets; do not invoke a nonexistent production Skill. |
+| Soak run stopped before its planned duration | Report actual duration/scenarios and remaining coverage; no full-duration pass or substituted gdUnit evidence. |
+| Resource-list status edited after final verification | Apply existing global fingerprint freshness rules, even if planning classifies the edit as editorial. |
 
 For every case, verify that advice reads current project facts, refers to the
 existing destination workflow when routing is needed, supplies a prompt only for

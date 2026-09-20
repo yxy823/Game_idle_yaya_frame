@@ -6,8 +6,6 @@ metadata:
   triggers:
     - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
     - User authorizes recording or updating confirmed project terminology in docs/terminology.md or Product
-    - User says initialize, improve, optimize, add, remove, fix, adjust, or new requirement
-    - 用户说「做一个 XXX」「改进」「优化」「增加」「删除」「修复」「调整」或「新需求」
   priority: high
 ---
 
@@ -17,9 +15,9 @@ metadata:
 
 1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product behavior; optional `docs/terminology.md` owns shared vocabulary, not additional behavior.
 2. Update Product documents before planning or implementation. Handle effects on existing Features, but initially decompose only the current Product under `methodology/02-feature-list-schema.md` **Product-by-Product planning**; later Products remain unplanned until their turn.
-3. This workflow is the only Product and terminology writer. Clarifiers, elicitors and sketchers return proposals; this workflow persists them. Meaning-preserving terminology maintenance follows the separate route below, not Product-change planning.
+3. This workflow is the only Product and terminology writer. Clarifiers and Product elicitors return proposals for it to persist. Professional Skills maintain their own sources directly under `methodology/11-specialist-workflows.md`; Product keeps behavior and links. Meaning-preserving terminology maintenance follows the separate route below.
 4. Product documents describe **what**, not **how**. Keep local implementation details in Feature design/code, current shared structure in architecture and important technical tradeoffs in ADRs. Only project-wide constraints belong in Project Rules.
-5. Never make a Product decision on the user's behalf.
+5. Preserve confirmed Product decisions and existing concrete authorization; unresolved material intent remains a proposal until decided.
 6. Apply relevant `docs/project-rules.md` constraints and accepted architecture decisions before defining Product intent. A conflicting request does not silently revise a rule; use `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including its pre-write self-check and existing authorization.
 
 ## Language contract
@@ -92,8 +90,8 @@ docs/
 │   ├── 01-<module>.md
 │   ├── 02-<module>.md
 │   └── ...
-└── ui-mockups/
-    └── <exploration>.html
+└── ui/
+    └── <interface>-design.md  ← owned by product-ui-sketcher, linked from Product
 ```
 
 Follow **Module filename rules** in `methodology/01-product-doc-structure.md` for stable module identities and filenames.
@@ -135,7 +133,8 @@ Choose exactly one route:
 
 Before choosing the route, distinguish Product change from implementation defect:
 
-- If the relevant Product source already states the expected behavior unambiguously and the implementation merely violates it, route to `engineering-change-standardizer` in `bug` mode and stop. Do not rewrite Product documents for an implementation defect.
+- If a confirmed Product or professional source already states the expected outcome unambiguously and the implementation violates it, use the existing current-Feature repair or independent engineering bug route. Do not rewrite requirements for an implementation defect.
+- If only a professional requirement changes while Product behavior stays fixed, route directly to its owning specialist and the applicable impact analysis under `methodology/11-specialist-workflows.md`.
 - If the expected behavior is missing, contradictory, or the requested fix intentionally changes observable behavior, continue in this Product workflow.
 
 | State | Condition | Route |
@@ -169,37 +168,39 @@ Read the existing UI/audio requirements and reuse established decisions.
 
 | Need | Action |
 | --- | --- |
-| Layout or interaction needs clarification, or a sketch is requested | Use `product-ui-sketcher` for a wireframe, intent and visual requirements; a simple copy/value change with settled interaction needs no new sketch |
-| HTML/Tailwind exploration is requested or has an agreed purpose | Use the sketcher's optional exploration; do not add a routine question about HTML to every UI edit |
-| Sound requirements need design or clarification | Use `product-audio-sketcher` with known trigger, style, duration and available sample references; use its placeholder naming only for unresolved resources |
+| Layout or interaction presentation needs specification | `product-ui-sketcher` maintains its UI document; Product records behavior and a link. Settled copy/value changes need no new sketch. |
+| Shared art or sound direction needs a decision | `art-bible` / `sound-bible` maintains the professional source within scope; no mandatory whole-game specification. |
+| Concrete visual/audio assets need specifications | `visual-asset-spec` / `product-audio-sketcher` maintains the existing resource-list entries with actual sample references and unresolved gaps. |
+| A runnable Godot or HTML exploration is requested | Pass the professional inputs to the separately authorized scoped experiment/delivery route; design Skills do not implement it. |
 
 For new interfaces or substantial layout/resource changes, apply **Visual
 prototype before dependent implementation** in `methodology/01-product-doc-structure.md`.
-Include its relevant questions and constraints in the owning UI/audio sections
+Include its relevant questions and constraints in the owning professional sources
 and pass the needed visual foundation to current-module planning. Keep confirmed
 observable size/readability requirements; put trial values and node-level tuning
 in implementation notes. Adopt prototype observations only with the applicable
 user decision, preserving still-valid requirements and existing authorization.
 
 When resource preparation needs a user handoff, apply **Resource preparation
-list and handoff** in the same specification. Consolidate relevant sketcher
-inputs and inspected existing assets into the project-local list within the
-current writing scope; link it from the task instead of copying its rows into
+list and handoff** in the same specification. Coordinate the responsible specialists'
+entries and inspected existing assets in the shared project-local list within
+the current writing scope; link it from the task instead of copying its rows into
 Product or Feature notes. List preparation alone does not expand Product scope.
 
 Pass the resolved `document_language` and confirmed facts to any child workflow.
-These are Product requirements; implementation and actual human acceptance remain separate.
+Professional source ownership follows `methodology/11-specialist-workflows.md`;
+implementation and actual human acceptance remain separate.
 
 ## Step 5: Write Product documents
 
-This workflow performs all writes:
+This workflow performs Product writes and necessary references:
 
 1. **Initialization:** render the canonical overview and module templates into `document_language`.
 2. **New module:** create `docs/product/NN-<slug>.md` with the next available module number.
 3. **Existing module:** edit only the affected sections; preserve unrelated content.
 4. **Overview:** update the module inventory and dependencies when they change.
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
-6. **Resources:** pass real sample references, remaining gaps and relevant `_placeholder_` asset paths to the current or affected existing Feature plan. Audio return fields `placeholder_file` and `feature_notes_register` may be omitted/empty when real resources cover the requirement; do not invent missing-file obligations from naming examples. Later, unplanned Products retain their resource requirements in Product until decomposition.
+6. **Resources:** link the owning professional specifications/resource-list entries and pass concrete requirements, real samples and remaining gaps to the current or affected plan. Do not duplicate the entries or invent missing-file obligations from naming examples. Later Products retain linked specifications without premature Feature decomposition.
 
 If the elicitor returns terminology changes, review them with the affected
 Product behavior and persist confirmed wording in the owning Product section

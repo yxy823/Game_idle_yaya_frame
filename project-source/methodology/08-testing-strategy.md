@@ -259,7 +259,15 @@ do not authorize completion. Do not add sleeps or rerun unchanged failures to ge
 
 `working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Registry data. Feature AC text, verification (including approved Test Impact), affected components and Registry selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, explanatory Markdown under `docs/knowledge/`, and run artifacts are exempt. Knowledge indexes and entries are contextual reference material; they must not own executable inputs, requirements, rules or validation contracts. Non-Markdown files there still participate.
 
-`docs/terminology.md`, `docs/project-rules.md`, Feature design Markdown and architecture/ADR documents participate as ordinary source inputs. Moving a long design out of JSON `notes` does not grant that Markdown the notes exemption. Finalize these documents at the Stage 3 checkpoint before final verification; later changes use the existing freshness rules rather than a new documentation bypass.
+`docs/terminology.md`, `docs/project-rules.md`, professional specifications/resource lists, Feature design Markdown and architecture/ADR documents participate as ordinary source inputs. Moving a long design out of JSON `notes` does not grant that Markdown the notes exemption. Finalize these documents at the Stage 3 checkpoint before final verification; later changes use the existing freshness rules rather than a new documentation bypass. The fingerprint is global, not filtered by Feature references; editorial wording and resource status/location edits can invalidate current evidence even when they need no Feature-plan change. Historical completed records are not automatically reopened.
+
+Performance, soak and other specialist evidence follows
+[Finalization and evidence](11-specialist-workflows.md#finalization-and-evidence).
+The run-evidence adapter supports actual `gdunit4` results only. Additional
+measurement/display/listening obligations stay in their existing AC/design
+verification plan and are assessed by the owning task and any requested independent
+review. Do not fabricate gdUnit run evidence or use supplemental results to waive
+required tests. `not_required` retains its existing narrow manual-plan conditions.
 
 Ordinary `README.md` files (case-insensitive filename) explain usage and navigation; adding, editing, moving or deleting them does not invalidate test evidence. README files under `.agents/`, `agent-rules/`, `methodology/`, `docs/product/` and `docs/features/` remain inputs because those directories own instructions or verification contracts. Moving a README into one of these directories therefore changes the fingerprint. Keep executable inputs, requirements and validation rules in their existing authoritative files rather than a usage README; other Markdown files remain included unless explicitly exempt above. Documentation changes still require checking facts, links and examples, without automatically rerunning business tests.
 
@@ -317,7 +325,7 @@ The execution loop applies RED/GREEN/refactor per small observable behavior, not
 
 Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 5 records actual human acceptance when required. `.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output and any explicit user review condition under the execution loop. The evidence helper does not prove static checks or review ran, or supply a required human decision.
 
-A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-requirements-and-code-quality-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
+A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
 Stage 1 first chooses `verification.acceptance_mode` from the requirement, then
 fills the corresponding checks. Visual presentation, animation, audio/sound/music,

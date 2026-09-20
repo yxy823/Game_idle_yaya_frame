@@ -108,7 +108,7 @@ existing later plans, and keep engineering repairs within their authorized route
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
-4. Load that Feature detail, its existing `docs/features/F0XX-design.md` and relevant dependency designs when present, its Product source, relevant `docs/terminology.md` definitions, relevant dependency details, current Progress, applicable Project Rules and routed `agent-rules`, test registry, and the principal implementation paths needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
+4. Load that Feature detail, its existing `docs/features/F0XX-design.md` and relevant dependency designs when present, its primary and applicable secondary professional sources under [source discovery](11-specialist-workflows.md#discover-and-map-sources), relevant `docs/terminology.md` definitions, relevant dependency details, current Progress, applicable Project Rules and routed `agent-rules`, test registry, and the principal implementation paths needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
    Before proposing an approach or searching external references, consult
    `docs/knowledge/README.md` and the relevant topic indexes and entries.
    Check their applicability to this Feature; reuse prior reading on continuation
@@ -121,7 +121,7 @@ existing later plans, and keep engineering repairs within their authorized route
 
 **Output:** implementation plan + verification plan + user decision.
 
-Decide acceptance from Product/engineering intent before filling verification lists.
+Decide acceptance from the confirmed Product/professional/engineering intent before filling verification lists.
 Visual presentation, animation feel, audio/sound/music, game feel, and other human
 perception or judgment require `verification.acceptance_mode: "manual"`.
 For other requirements whose AC can all be verified automatically, choose
@@ -154,6 +154,11 @@ Also identify:
   [Requirement changes and stale tests](08-testing-strategy.md#requirement-changes-and-stale-tests);
   include it in the same plan and reuse existing approval for that exact scope;
 - criteria that remain manual-only and why automation is not appropriate.
+
+Identify additional professional verification obligations, such as measured
+performance under a named workload, actual soak duration or in-context display/
+listening checks. State their conditions, completion criteria and evidence location
+in AC or the existing Feature design; do not force them into gdUnit result fields.
 
 ### 1B. Resource/dependency preflight
 
@@ -276,11 +281,12 @@ Check whether this work added, renamed, retired or clarified durable terminology
 | Content | Action and authority |
 | --- | --- |
 | Shared terminology | Invoke `product-standardizer`'s terminology route within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
+| Professional requirements and resource lists | The owning specialist finalizes applicable UI/art/audio/localization specifications and resource status/location updates under [Specialist work and sources](11-specialist-workflows.md). Resolve substantive source impacts before dependent delivery. |
 | Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update current subsystem contracts where they changed, linking rather than duplicating. |
 | Important technical choices | Apply the existing ADR threshold and authorization; preserve replaced decisions and evidence limits. |
 | Project or specialized rules | Apply [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance), including a pre-write self-check for every proposed change. Persist settled constraints; unapproved candidates stay in design/Progress, not active rules. |
 
-Handle material conflicts when discovered rather than postponing them to this checkpoint. Return from supporting workflows to the current Feature; documentation-only routing must not restart Product planning or end authorized delivery. Finalize governing document edits before Stage 4 because terminology, rules, ADR and design Markdown participate in the source fingerprint. If later changes invalidate evidence, complete applicable verification and renewed acceptance under the existing rules; do not exempt these files or claim unchanged coverage.
+Handle material conflicts when discovered rather than postponing them to this checkpoint. Return from supporting workflows to the current Feature; documentation-only routing must not restart Product planning or end authorized delivery. Finalize governing document edits before Stage 4 because terminology, professional specifications, resource lists, rules, ADR and design Markdown participate in the global source fingerprint. Even editorial updates may invalidate evidence. Complete applicable verification and renewed acceptance after such changes; do not exempt these files or claim unchanged coverage.
 
 ## Stage 4 · automated verification and human checklist
 
@@ -324,6 +330,12 @@ Screenshots/logs supplement the relevant action; they do not establish acceptanc
 
 Report actual scope, failures and result paths in ordinary language.
 
+Complete any additional performance, soak, display or listening obligations in
+the approved verification plan and retain their original evidence separately.
+Follow [specialist evidence limits](11-specialist-workflows.md#finalization-and-evidence);
+these results are not gdUnit runs. Passing the evidence helper alone does not
+prove those obligations, static checks or human experience acceptance.
+
 For `manual`, wait for Stage 5. For `automated`, omit Stage 5 and go to Stage 5.5
 for a Bug, otherwise Stage 6. Report manual acceptance as not required; do not
 record an accepted human decision that never occurred.
@@ -364,7 +376,7 @@ If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose a
 
 Handle approved rule changes and any affected plans under Stage 8; reuse existing synchronization authority and work already completed.
 
-## Stage 6 · optional independent requirements and code-quality review
+## Stage 6 · optional independent review
 
 **Trigger:** an explicit user request for independent review. Otherwise continue
 to Stage 7 without a review record or a routine confirmation question. The author
@@ -381,47 +393,19 @@ Do not add per-Feature review switches, pending-review states or a review queue.
 
 **Output:** findings for the selected combined scope, with evidence and limits.
 
-The reviewer must be a fresh-context subagent/session or equivalent independent
-context. If unavailable, report the independence limitation; do not call the
-author's check independent review. It performs no writes and reads the selected
-Features' approved scope and AC, relevant Product and Feature designs, existing terminology definitions
-and accepted architecture decisions, relevant project knowledge, applicable
-Project Rules, actual final diff, directly affected callers
-and changed files, and original verification results with applicable human
-feedback. Treat the implementer's summary as claims to check against these
-sources, not as independent evidence. Establish the compared commits or working
-diff and current combined behavior; avoid repeating a full pass for each Feature
-or expanding to unrelated project history.
+Use [Independent review](12-independent-review.md) for fresh context, neutral
+handoff inputs, effective permissions, isolated validation and completion limits.
+The `independent-reviewer` role loads only the requested applicable methods.
+`code-review` owns requirements and code-quality examination; other review Skills
+cover UX, art, audio, assets, localization or balance when requested. One instance
+may combine methods without a pass per Skill or Feature. The author loading the
+same method still performs only self-checking.
 
-Use one review pass for both questions:
-
-1. **Requirements:** Does the implementation satisfy every current AC, preserve
-   required existing behavior, and stay within approved scope? Check that the
-   cited tests and manual observations actually exercise the claimed behavior.
-   Report missing, stale or inconclusive evidence as a gap; do not invent an
-   acceptance decision or rewrite AC to fit the implementation. For changed or
-   removed contracts, inspect the final diff, affected current references and
-   actual discovery/results for required obsolete-test cleanup and retained valid
-   coverage. Unfinished required cleanup is `must_fix`; Registry status alone
-   cannot establish completion.
-2. **Code quality:** Inspect oversized files, duplicated domain knowledge,
-   misplaced type dispatch, magic values, duplicated constants/enums, God
-   Objects, stack-specific anti-patterns, presentation/domain coupling,
-   comments that restate code, and defects requiring repeated repair attempts.
-   Check changed boundaries against applicable accepted ADRs and architecture maps.
-
-Return a short conclusion for each question plus the existing `must_fix`,
-`suggest`, and `acceptable` findings, with criterion/rule and file/evidence
-references. Keep the two conclusions separate even when grouping findings by
-severity, and identify the relevant question(s) for each finding. State evidence
-gaps explicitly; one question's conclusion cannot stand in for the other's.
-Findings from either question contribute to the same review result.
-
-Deliver one report in the conversation, or at the user's specified report path.
-Map shared findings to all affected Features without duplicating the explanation.
-Review-only work stops after findings; severity labels do not authorize repairs.
-Evaluate the problem and proposed remedy separately before implementing the
-user-selected scope. Reuse authorization that already covers a specific repair.
+Deliver one report for the selected scope, mapping shared findings to affected
+Features without duplication. Review-only work stops after findings. Evaluate
+the problem and proposed remedy separately; reuse authorization for a concrete
+repair where already given. Reports and permitted isolated validation outputs
+must not modify reviewed artifacts, original evidence or acceptance records.
 
 For an unfinished Feature, confirmed in-scope defects return to Stage 3. For
 completed Features, preserve completed history and follow the existing engineering
@@ -433,12 +417,13 @@ check merely because review is optional.
 
 Record only accepted, useful follow-ups in existing Feature notes; a `suggest`
 does not automatically create a TODO or task. No review counts belong in the
-completion evidence. A read-only review does not invalidate a current successful
-run; further execution needs an authorized, concrete verification need.
+completion evidence. Isolated review output does not invalidate a current run;
+check that the reviewed snapshot remained unchanged and satisfy the user's
+required review coverage before continuing.
 
 ## Stage 7 · mark complete
 
-**Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Required test evidence and explicit Stage 5 human acceptance for `manual` must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent checks the final diff against AC and scope, confirms applicable direct parsing/lint passed, and satisfies any explicit user review condition. The evidence helper checks tests and applicable human acceptance; it does not assess static checks, perform review or decide whether a user condition is satisfied.
+**Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Required test evidence and explicit Stage 5 human acceptance for `manual` must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent checks the final diff against AC and scope, confirms applicable direct parsing/lint and supplemental professional verification passed, and satisfies any explicit user review condition. The evidence helper checks tests and applicable human acceptance; it does not assess static/supplemental checks, perform review or decide whether a user condition is satisfied.
 
 Before the completion commands, confirm the Stage 3 documentation checkpoint and any later approved governing updates are complete. If a missing edit is now made, restore applicable current verification and acceptance before marking completion. Do not defer such edits until after the Feature is recorded as done.
 

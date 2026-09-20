@@ -14,9 +14,11 @@
 | 位置 | 内容 |
 | --- | --- |
 | AGENTS.md | 项目规则与 Skill 路由 |
-| .agents/skills/ | 12 项开发 Skill |
+| .agents/skills/ | 27 项开发与独立审核 Skill |
+| .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
 | docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
 | docs/terminology.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-optional) |
+| docs/art/、docs/audio/、docs/ui/、docs/localization/、docs/resource-requirements/ | 按需创建的专业规格与资源清单，由所属 Skill 维护，见[专业工作约定](methodology/11-specialist-workflows.md) |
 | docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录；按需通过 `F0XX-design.md` 保存详细设计 |
 | docs/progress.md、docs/progress/ | 当前进度和必要历史 |
 | [docs/knowledge/](docs/knowledge/README.md) | 按主题积累实际开发经验、成功做法与失败教训；开始相关任务时优先查阅 |
@@ -45,7 +47,7 @@
 | 产品初始化或改变需求 | product-standardizer |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
-| 界面线框、视觉基础规格与可选 HTML 探索 | product-ui-sketcher |
+| 界面线框、布局状态与视觉基础规格 | product-ui-sketcher |
 | 音效、音乐需求与真实样本或占位约定 | product-audio-sketcher |
 | 只拆当前 Product，完成后再拆下一 Product | generate-feature-list |
 | 增量对齐已有 Feature | sync-feature-list |
@@ -53,6 +55,10 @@
 | 执行一个已批准 Feature | execute-next-feature |
 | 从记录中选择重构项 | pick-refactor-smell |
 | 只读理解现状并撰写下一步提示词 | yaya-next-step-advisor |
+| 共享美术/声音方向、具体视觉资源规格 | art-bible、sound-bible、visual-asset-spec |
+| 资源接入与本地化 | asset-integration、localize |
+| 诊断信号、性能测量与长期运行 | observability、perf-profile、soak-test |
+| 用户指定的独立专业审核 | code-review、ux-review、art-review、audio-review、asset-audit、localization-review、balance-review |
 
 新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)
 验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
@@ -66,8 +72,9 @@ flowchart TD
     T --> K[按需更新术语文档或局部定义]
     Q -->|需求初始化或改变| P[product-standardizer]
     P --> I[按需使用 init / spec elicitor]
-    I --> V[按需使用 UI / audio sketcher]
-    V --> D[更新 Product]
+    I --> D[更新 Product 行为与引用]
+    Q -->|专业设计与规格| V[对应专业 Skill 直接维护来源]
+    V -->|影响已有任务时| L
     D -->|当前 Product 或影响已有任务| L[generate-feature-list / sync-feature-list]
     D -->|仅后续未拆分 Product| B[保留需求，暂不生成 Feature]
     Q -->|Bug / 重构 / 维护| E[engineering-change-standardizer]
@@ -125,6 +132,7 @@ flowchart TD
 先按需求决定验收方式，再填写对应检查项。涉及画面、声音、手感等人工判断时保留 Stage 5；
 全部 AC 可自动验证且已选择 automated 时省略 Stage 5，不伪造人工接受。交接后按已有具体授权继续；范围完成或缺少必要决定时停止。
 独立评审默认不启动；用户可以指定单项或多个已完成 Feature 合并评审，具体范围与时机遵循执行流程 Stage 6。
+审核方法与作者分开，使用独立实例；被审成果和原证据只读，获准验证须隔离副作用。美术、音乐、音效制作目前仅保留说明占位，没有生产 Skill。
 用户在当前会话给出的具体授权和检查范围优先于默认流程。
 
 ## 显式检查

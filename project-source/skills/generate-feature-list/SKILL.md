@@ -28,6 +28,14 @@ terminology definitions, prerequisite/affected module sections, configuration an
 rules through `AGENTS.md`. Other Product modules are context only when needed,
 not work to decompose now. Reuse unchanged reading on continuation.
 
+Follow **Discover and map sources** in `methodology/11-specialist-workflows.md`:
+include applicable UI, art, audio, resource and localization requirements through
+actual links and shared applicability. Preserve one primary `source`; put precise
+secondary references in concrete AC or the optional Feature design. Map each
+relevant requirement to an observable outcome and a verification action, not a
+generic “conforms to the Bible”. `meta.generated_from` names actual source locations,
+not proof that every file or later Product has been planned.
+
 | Existing artifact | Needed context |
 | --- | --- |
 | `docs/feature-list.json` | Full lightweight index: current Product, prior plan coverage, statuses, IDs and prerequisites |
@@ -62,7 +70,8 @@ inventory/file mismatches and resolve them before planning; do not guess names.
    Feature-plan write. Continue only after absent-registry initialization or
    validated conflict-free merge.
 5. Append new index entries and only their detail files, using canonical initial
-   planning values. Update index totals/time and decomposition notes. Initialize
+   planning values. Update index totals/time, decomposition notes and actual
+   newly used professional source locations in `meta.generated_from`. Initialize
    the revision log only if absent; preserve existing Features, metadata unrelated
    to this addition and revision history. Planning a newly current Product does
    not advance the synchronization anchor. Do not rewrite Registry data by hand

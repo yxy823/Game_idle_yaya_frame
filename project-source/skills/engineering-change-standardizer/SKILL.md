@@ -22,10 +22,11 @@ Preserve concrete authorization under **Authorization and continuation** in
 
 Read applicable `docs/project-rules.md`, routed engineering rules and relevant existing Feature designs/architecture decisions. Proposed rule changes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`; a technical repair does not silently revise project constraints.
 
-1. Read the actual Product or technical contract, current Progress and relevant
+1. Read the actual confirmed Product, professional or technical contract, current Progress and relevant
    history. Classify ownership as `Framework`, `Tooling` or `Project-specific`,
    and select one canonical mode. Route changed/ambiguous Product intent to
-   `product-standardizer`; keep defects introduced in unfinished work
+   `product-standardizer`, or changed/ambiguous professional requirements to their
+   specialist under `methodology/11-specialist-workflows.md`; keep defects introduced in unfinished work
    with that Feature under the canonical ownership table.
 2. Collect only the selected mode's necessary evidence from the engineering
    specification. Keep an unconfirmed root cause unknown. For an unspecified
@@ -40,9 +41,9 @@ Read applicable `docs/project-rules.md`, routed engineering rules and relevant e
    expected files/area and verification obligations. Reuse approval covering the
    proposal; resolve only missing material decisions.
 
-For `bug`, use the precise Product section or documented framework/tool contract
+For `bug`, use the precise confirmed Product/professional section or documented framework/tool contract
 as `source`. For `refactor` and `maintenance`, use `infrastructure` unless a
-single Product section owns the preserved behavior. Populate a new independent
+single authoritative source owns the preserved contract. Populate a new independent
 Bug's `bug_diagnosis` under the canonical contract; do not invent a diagnosis for
 other modes. Keep durable evidence concise and link the execution archive.
 
@@ -60,7 +61,7 @@ preservation. Temporary candidates are not committed.
 Append the index entry and matching engineering detail using canonical initial
 planning values; preserve completed history and engineering classification.
 Update index totals. This operation does not append a revision-log entry because
-no Product/Project-Rules source synchronization occurred.
+no governing-source synchronization occurred.
 
 Follow the engineering specification's **Feature write rules** for validation
 and the local plan commit. Inspect the actual diff against approved scope,

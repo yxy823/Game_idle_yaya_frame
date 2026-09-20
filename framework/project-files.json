@@ -4,6 +4,10 @@
     "target": ".agents/skills"
   },
   {
+    "source": "project-source/agents/independent-reviewer.toml",
+    "target": ".codex/agents/independent-reviewer.toml"
+  },
+  {
     "source": "project-source/methodology",
     "target": "methodology"
   },
