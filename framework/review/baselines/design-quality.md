@@ -1,7 +1,7 @@
 # 设计复盘
 
 用于判断设计是否值得继续维护，不计算总分，也不作为项目的新增 Gate。
-评估遵循 [根维护约定的核心决策原则](../../AGENTS.md#核心决策原则)。
+评估遵循 [根维护约定的核心决策原则](../../../AGENTS.md#核心决策原则)。
 场景责任另见 [scenario-coverage.md](scenario-coverage.md)。
 
 ## 当前基线
@@ -20,14 +20,14 @@
 | 部分 | 当前职责与证据 |
 | --- | --- |
 | 维护源 | 根 AGENTS 约束维护；`framework/` 保存复制工具、提示词和按需复盘材料 |
-| 项目创建 | [create_project.py](../commands/create_project.py) 读取 [project-files.json](../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
+| 项目创建 | [create_project.py](../../commands/create_project.py) 读取 [project-files.json](../../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
 | Skill 与审核角色 | 当前 27 项 Skill；专业设计、规格、接入、测量与七类审核方法独立，专业文档由所属入口维护。一个 `independent-reviewer` 角色供新上下文按需使用；实际加载/权限须核实，生产能力仅说明占位。专用脚本仍在所属 Skill 的 `scripts/` |
-| 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |
+| 共享工具 | [tools/README.md](../../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
-| 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表；没有独立计划命令、计划文件或计划哈希 |
+| 测试选择 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表；没有独立计划命令、计划文件或计划哈希 |
 | 静态检查 | Agent 按 `methodology/gdscript-lint.md` 直接调用 Godot 解析和插件 CLI；没有包装脚本、专用 manifest 或静态证据注册 |
-| 提示词 | 仅 [prompts.json](../prompts.json) 按框架维护与项目开发两个 Project 保存完整正文，不进入项目；使用清单与正文对应，按需选用 |
+| 提示词 | 仅 [prompts.json](../../prompts.json) 按框架维护与项目开发两个 Project 保存完整正文，不进入项目；使用清单与正文对应，按需选用 |
 
 gdUnit 的 `GdUnitTestSessionHook` 是测试生命周期扩展，用于关联诊断；
 它仍通过项目 Godot 配置启用，与 Agent 动作拦截不同。
@@ -185,7 +185,7 @@ Git 来源也当成必须逐字一致的运行结论，1 项错误来自测试�
 记录实际问题、依据、影响和最小建议即可。区分设计价值、实现问题和本轮未验证项。
 需要整体重检时，使用提示词库中的“静态审核框架与空白项目源材料”，在详细报告中列明当前检查基线、
 模块覆盖、问题详情、跨文件关系、建议处理顺序与未验证项；也可按实际问题限定范围。
-输入与报告输出方式见 [整体重检与详细报告](../docs/blank-project/maintenance/updating-the-blank-project.md#整体重检与详细报告)。
+输入与报告输出方式见 [整体重检与详细报告](../../docs/blank-project/maintenance/updating-the-blank-project.md#整体重检与详细报告)。
 用户只要求静态工作时，不因本文要求额外生成项目或执行全套检查。
 旧评分只属于旧版本与旧口径，不回写旧审核，也不与当前清单进行数值排名。
 用户要求保留的 Skill/流程不通过评分被动改写；确有新证据时再提出明确的改动建议。

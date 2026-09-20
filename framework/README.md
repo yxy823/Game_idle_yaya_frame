@@ -24,8 +24,9 @@
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
 | tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
-| [review/design-quality.md](review/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
-| [review/scenario-coverage.md](review/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
+| [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
+| [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
+| [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |
 
 ## 提示词
 
@@ -53,7 +54,7 @@
 需要结合项目流程回复 Codex 时，选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；用法见 [根据 Codex 输出起草回复](docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。
 从实际游戏项目转发 Codex 输出、判断框架是否需要改进时，选择“Yaya 框架维护 → 维护与复盘 → 依据实际开发反馈复盘框架”；
 输入与归因、建议边界见 [开发反馈复盘说明](docs/blank-project/maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
-新增提示词前先核对 [使用场景清单](review/scenario-coverage.md#提示词使用场景清单)，
+新增提示词前先核对 [使用场景清单](review/baselines/scenario-coverage.md#提示词使用场景清单)，
 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。
 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验
 变成规则、脚本或新机制。项目提示词不要求项目连接或跟随维护源变化。

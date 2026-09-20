@@ -21,7 +21,7 @@ Game_idle_yaya_frame/
 │   ├── prompts.json           用户操作提示词，不复制到项目
 │   ├── docs/blank-project/    详细使用手册，不复制到项目
 │   ├── tests/                 复制器与项目工具的回归源码
-│   └── review/                按需复盘的问题清单
+│   └── review/                设计/场景基线与按次审核报告
 └── project-source/
     ├── Project_AGENTS.md             复制为项目 AGENTS.md
     ├── Project_README.md             复制为项目 README.md
@@ -114,6 +114,6 @@ flowchart LR
 只要求静态检查时，不运行生成器、Godot 或测试。
 
 [framework/README.md](framework/README.md) 说明维护命令及脚本的必要性。
-[设计复盘](framework/review/design-quality.md) 与
-[场景覆盖及提示词场景清单](framework/review/scenario-coverage.md) 记录当前静态基线。
+[设计复盘](framework/review/baselines/design-quality.md) 与
+[场景覆盖及提示词场景清单](framework/review/baselines/scenario-coverage.md) 记录当前静态基线。
 [项目 README](project-source/Project_README.md) 说明项目使用方式。

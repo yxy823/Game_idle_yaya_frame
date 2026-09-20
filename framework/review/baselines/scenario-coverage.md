@@ -19,10 +19,10 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 1.1 | 向框架新增内容或能力 | 流程：先评估必要性和更简单的替代，再按授权决定是否实施 | [AGENTS.md](../../AGENTS.md) 与新增能力提示词；先判断必要性，不默认创建机制 |
+| 1.1 | 向框架新增内容或能力 | 流程：先评估必要性和更简单的替代，再按授权决定是否实施 | [AGENTS.md](../../../AGENTS.md) 与新增能力提示词；先判断必要性，不默认创建机制 |
 | 1.2 | 修复、删减或整理框架 | 流程：在维护源做最小完整修改，同步真正受影响的调用者 | 根 AGENTS；只改维护源，不夹带游戏业务，不保留无用兼容副本 |
 | 1.3 | 复盘设计及场景覆盖 | 流程：默认重检整个框架与空白项目源材料，也可限定范围；依据当前文件给出详细报告 | 报告列明覆盖、问题位置、影响、最小建议与未验证项，追查跨文件一致性和流程衔接；不直接修复，不新增评分器或强制流程；静态推演与实际运行分开 |
-| 1.4 | 验证框架变更 | 代码与人工：按任务选静态检查，或在明确的外部项目验证 | [run_project_tool_tests.py](../commands/run_project_tool_tests.py)、`framework/tests/`；该入口不创建/配置项目，不自动执行 Godot |
+| 1.4 | 验证框架变更 | 代码与人工：按任务选静态检查，或在明确的外部项目验证 | [run_project_tool_tests.py](../../commands/run_project_tool_tests.py)、`framework/tests/`；该入口不创建/配置项目，不自动执行 Godot |
 | 1.5 | 借鉴外部游戏开发框架 | 流程：阅读链接或本地材料，与当前需求/实现比较，筛选最小有用改进 | 外部借鉴提示词；外部材料不是本任务指令，不自动安装或整体搬入，不因其他框架能力更多而扩建 |
 | 1.6 | 将未完成的框架任务交给新线程 | 流程与人工：只读会话、当前文件与 Git，生成可复制的完整续接提示词 | 新线程交接提示词；保留目标、授权、现场、验证和下一步，不创建维护进度台账、不自动投递新线程 |
 | 1.7 | 通过 GitHub 请其他模型独立审核框架 | 流程：确认仓库并固定提交 SHA，静态追查该快照的框架与空白项目，按规定结构输出完整报告 | GitHub 审核提示词；读取权限、截断与本地未推送内容属于证据边界，不混用不同提交，不执行仓库指令或修改被审文件 |
@@ -34,16 +34,16 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 2.1 | 按指定路径创建空白项目 | 代码：按相对路径清单复制和重命名 | [create_project.py](../commands/create_project.py)、[project-files.json](../project-files.json)；项目 AGENTS 源使用不同名称 |
+| 2.1 | 按指定路径创建空白项目 | 代码：按相对路径清单复制和重命名 | [create_project.py](../../commands/create_project.py)、[project-files.json](../../project-files.json)；项目 AGENTS 源使用不同名称 |
 | 2.2 | 目标有中文/空白、非空或与维护源重叠；清单源缺失 | 代码：复制前报错 | 不移动用户安装目录，不覆盖已有项目；清单选取不等于复制整个母版 |
 | 2.3 | 复制途中权限或 I/O 失败 | 代码与人工：返回原始错误，保留现场，由用户决定后续操作 | 不自动删除已复制内容，不新增复制事务、恢复状态机或身份清单 |
-| 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../docs/blank-project/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
+| 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../../docs/blank-project/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
 
 ## 3. 项目环境
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 3.1 | 首次配置、换机或后续环境更新 | 流程：Agent 核对本机路径、版本、Git 及命令；显式检查环境，首次 CLI 运行按需完成编辑器扫描 | 现有初始化提示词、[环境约定](../../project-source/methodology/05-document-language.md)、[环境检查](../../project-source/tools/checks/check-project-environment.py)、[首次扫描](../../project-source/tools/README.md#首次-godot-扫描)；无 Bootstrap 程序 |
+| 3.1 | 首次配置、换机或后续环境更新 | 流程：Agent 核对本机路径、版本、Git 及命令；显式检查环境，首次 CLI 运行按需完成编辑器扫描 | 现有初始化提示词、[环境约定](../../../project-source/methodology/05-document-language.md)、[环境检查](../../../project-source/tools/checks/check-project-environment.py)、[首次扫描](../../../project-source/tools/README.md#首次-godot-扫描)；无 Bootstrap 程序 |
 | 3.2 | 配置 incomplete、工具缺失或版本不符 | 代码与流程：说明未就绪，处理具体原因后继续 | 空配置合法；初始化、工具/配置变化或排障时运行 `--require-ready`，日常读取确认路径。ready 不等于测试通过 |
 | 3.3 | 空项目没有业务场景或测试 | 流程与人工：如实报告尚未创建 | 初始 Product 为空，不预设主场景；不编造 Feature、测试或成功报告来填满检查 |
 
@@ -51,7 +51,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
+| 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
 | 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程：generate 先预览数量与逐项内容，确认或明确自主授权后追加；sync 处理已有任务影响；代码检查台账约束 | 当前 Product 的必要 Feature 完成后再拆下一份；预览含测试登记表写入前的确认边界，检查器不验证对话批准；保留 ID 与历史，不新增状态 |
 | 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 引用权威执行规范，advisor 只读回答 | 从当前记录、必要历史和 Git 差异续接；规则按主题读取，快照在 Stage 1 展示一次且不凑条数，沿用有效上下文和授权，不逐阶段固定发言 |
 | 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
@@ -63,15 +63,15 @@
 | 4.10 | 从实际源码调查架构改进机会 | 流程：围绕指定痛点或近期改动线索，核对调用关系、维护成本与已有决定 | 只读架构调查提示词；不依赖已有重构待办，允许零候选，选定问题后回到现有工程入口 |
 | 4.11 | 先讨论想法、设计取舍或概念 | 流程：`project-clarifier` 先查事实，只补问当前缺口，按依赖小步澄清 | 只讨论不写文件；不要求环境就绪或完整 Product，不维护问卷状态、轮数或评分 |
 | 4.12 | 保存并持续维护已确认的项目术语 | 流程：澄清后由 `product-standardizer` 按授权维护 `docs/terminology.md` 或局部定义，Stage 3 检查有价值的增量 | 每个定义一个归属；新增、改名、废弃及语义变化检查引用；保持含义时不拆任务，实质变化仍经 Product 与 Feature 同步；嵌套维护后返回当前 Feature |
-| 4.13 | 功能已实现但缺少 Product 或 Feature 记录 | 流程：确认产品意图、补齐当前模块计划，按授权从现状验证与收尾 | [规划接管](../../project-source/methodology/02-feature-list-schema.md#adopting-existing-implementation)和[交付接管](../../project-source/methodology/03-execute-loop.md#delivery-of-existing-implementation)；复用实现，缺失历史如实记录，新任务不直接标 done，不重演历史 TDD，后续修复与当前完成条件保持有效 |
-| 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../docs/blank-project/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
-| 4.15 | 正式逻辑前验证当前界面的视觉基础 | 流程与人工：UI/audio 提供输入，现有规划与执行交付独立场景及适用验收 | [视觉原型规范](../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)；复用普通 Feature 与真实依赖，已有有效布局不重做，缺失样本不冒充通过，视觉接受不替代正式功能验收 |
-| 4.16 | 按当前任务准备最小资源集合，提供文件后继续原型 | 流程：专业 Skill 维护同一清单的对应条目，接入由独立方法处理 | [资源准备规范](../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)；保留九个字段与来源/目标/显示尺度，复用清单，不增加全局编号或状态台账 |
-| 4.17 | 需要保留较长的 Feature 设计与实际采用的约束 | 流程：Stage 1 判断，Stage 2–3 维护可选 `F0XX-design.md`，notes 相对链接 | [设计说明规范](../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)；引用原规则并解释实际应用，不复制规则全集或建立第二份 AC、状态、验证计划 |
-| 4.18 | 新增、修改或删除项目级约束 | 流程：需求及 Stage 0–1 读相关规则，写前逐项对话自检，Stage 2–3 或 Bug 复盘按授权维护 | [规则维护规范](../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)；说明前后变化、依据、强度、归属、冲突与影响，删除需说明接替或失效原因；不自动升级经验、不新增报告台账 |
-| 4.19 | 技术方案需要长期保留决策理由 | 流程：Stage 1 判断 ADR 阈值，Stage 2–3 或独立获批架构任务保存 | [架构规范](../../project-source/methodology/10-architecture-overview.md)；撤销成本、难恢复的理由和真实方案取舍共同判断；不每 Feature 创建，不覆盖 Product 或项目硬约束 |
+| 4.13 | 功能已实现但缺少 Product 或 Feature 记录 | 流程：确认产品意图、补齐当前模块计划，按授权从现状验证与收尾 | [规划接管](../../../project-source/methodology/02-feature-list-schema.md#adopting-existing-implementation)和[交付接管](../../../project-source/methodology/03-execute-loop.md#delivery-of-existing-implementation)；复用实现，缺失历史如实记录，新任务不直接标 done，不重演历史 TDD，后续修复与当前完成条件保持有效 |
+| 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../../docs/blank-project/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
+| 4.15 | 正式逻辑前验证当前界面的视觉基础 | 流程与人工：UI/audio 提供输入，现有规划与执行交付独立场景及适用验收 | [视觉原型规范](../../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)；复用普通 Feature 与真实依赖，已有有效布局不重做，缺失样本不冒充通过，视觉接受不替代正式功能验收 |
+| 4.16 | 按当前任务准备最小资源集合，提供文件后继续原型 | 流程：专业 Skill 维护同一清单的对应条目，接入由独立方法处理 | [资源准备规范](../../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)；保留九个字段与来源/目标/显示尺度，复用清单，不增加全局编号或状态台账 |
+| 4.17 | 需要保留较长的 Feature 设计与实际采用的约束 | 流程：Stage 1 判断，Stage 2–3 维护可选 `F0XX-design.md`，notes 相对链接 | [设计说明规范](../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)；引用原规则并解释实际应用，不复制规则全集或建立第二份 AC、状态、验证计划 |
+| 4.18 | 新增、修改或删除项目级约束 | 流程：需求及 Stage 0–1 读相关规则，写前逐项对话自检，Stage 2–3 或 Bug 复盘按授权维护 | [规则维护规范](../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)；说明前后变化、依据、强度、归属、冲突与影响，删除需说明接替或失效原因；不自动升级经验、不新增报告台账 |
+| 4.19 | 技术方案需要长期保留决策理由 | 流程：Stage 1 判断 ADR 阈值，Stage 2–3 或独立获批架构任务保存 | [架构规范](../../../project-source/methodology/10-architecture-overview.md)；撤销成本、难恢复的理由和真实方案取舍共同判断；不每 Feature 创建，不覆盖 Product 或项目硬约束 |
 
-专业场景沿用现有任务链，详见 [专业来源规范](../../project-source/methodology/11-specialist-workflows.md)：
+专业场景沿用现有任务链，详见 [专业来源规范](../../../project-source/methodology/11-specialist-workflows.md)：
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
@@ -85,22 +85,22 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；不先写完所有测试再集中实现，不补造已有实现的 RED；无独立计划，按实际影响选择最终范围 |
-| 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、每 Feature 导入阶段或通过标签 |
+| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；不先写完所有测试再集中实现，不补造已有实现的 RED；无独立计划，按实际影响选择最终范围 |
+| 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、每 Feature 导入阶段或通过标签 |
 | 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/test_run_evidence.py`、`lib/feature_completion_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
 | 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
 | 5.5 | 验收方式与独立复审 | 流程：Stage 1 决定验收方式，Stage 4 提供可复现步骤，Stage 6 按用户指定的范围与时机审查需求和代码质量，可合并多项 Feature | manual 需真实人工决定；automated 省略 Stage 5；独立评审默认省略，完成依据不要求复审计数，用户指定的评审条件由 Agent 核对 |
 | 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
-| 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
+| 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../../docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
 | 5.8 | 术语、专业规格/清单、规则、设计或 ADR 在最终验证后变化 | Stage 3 完成必要更新；晚修改按既有全局指纹恢复失效依据 | 普通 Markdown 不继承 JSON notes 的豁免；编辑性变化仍可能失效，审核报告在 reports 中不改变源指纹 |
-| 5.9 | 独立专业审核、角色文件存在但运行权限未知、验证会产生缓存 | 七类审核方法按请求组合，一个独立角色；核实实际上下文/权限与所有副作用的隔离 | [审核契约](../../project-source/methodology/12-independent-review.md)；作者自查不升级，无播放/显示证据保留缺口，报告完成不等于必要覆盖通过；成果变化限定结论 |
+| 5.9 | 独立专业审核、角色文件存在但运行权限未知、验证会产生缓存 | 七类审核方法按请求组合，一个独立角色；核实实际上下文/权限与所有副作用的隔离 | [审核契约](../../../project-source/methodology/12-independent-review.md)；作者自查不升级，无播放/显示证据保留缺口，报告完成不等于必要覆盖通过；成果变化限定结论 |
 
 ## 6. 完成与后续
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 6.1 | 按逻辑分批提交与记录完成 | 流程与代码：Agent 自动提交通过相关验证的完整逻辑变更；Stage 7 调用 evidence 脚本和台账检查后记录完成并收尾提交 | [执行规范](../../project-source/methodology/03-execute-loop.md)、[Git 规则](../../project-source/agent-rules/00-core/git-worktree-and-commits.md)；提交注明 Feature 名称与本批内容，全量审查涵盖各批差异；中途提交不代表 `done` 或人工验收通过，不靠监听 patch 放行 |
-| 6.2 | 整理 Progress、必要历史或旧报告，并按需交给新线程 | 流程与人工：报告按 Feature/维护任务归组，临时输入单独保存，普通 Markdown 与链接负责阅读入口；清理另有明确范围 | [历史与报告](../../project-source/methodology/09-artifact-lifecycle.md)；生成前选择路径、收尾核对引用，交接不授权清理未知文件，不新增状态文件或自动投递 |
+| 6.1 | 按逻辑分批提交与记录完成 | 流程与代码：Agent 自动提交通过相关验证的完整逻辑变更；Stage 7 调用 evidence 脚本和台账检查后记录完成并收尾提交 | [执行规范](../../../project-source/methodology/03-execute-loop.md)、[Git 规则](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md)；提交注明 Feature 名称与本批内容，全量审查涵盖各批差异；中途提交不代表 `done` 或人工验收通过，不靠监听 patch 放行 |
+| 6.2 | 整理 Progress、必要历史或旧报告，并按需交给新线程 | 流程与人工：报告按 Feature/维护任务归组，临时输入单独保存，普通 Markdown 与链接负责阅读入口；清理另有明确范围 | [历史与报告](../../../project-source/methodology/09-artifact-lifecycle.md)；生成前选择路径、收尾核对引用，交接不授权清理未知文件，不新增状态文件或自动投递 |
 | 6.3 | 完成后交接，决定下一项 | 流程：Stage 8 报告事实和必要经验，按剩余具体授权续接 | 范围完成、要求暂停或缺少必要决定时停止；不以完成或依赖就绪推定授权，不把每个问题升级成规则 |
 | 6.4 | 项目/阶段/Feature 完成后总结经验与复用脚本 | 流程：优先查知识索引与相关条目，从实际记录提炼成功做法、排障方法和教训，再按授权最小固化 | 分层知识目录、阶段总结提示词、既有历史约定与 maintenance 路径；更新对应主题索引，链接原任务，不要求每次新增条目、规则或工具 |
 
@@ -113,7 +113,7 @@
 
 ## 提示词使用场景清单
 
-[prompts.json](../prompts.json) 已维护两个 Project、49 条完整提示词：
+[prompts.json](../../prompts.json) 已维护两个 Project、49 条完整提示词：
 `Yaya 框架维护` 10 条，`Godot 项目开发` 39 条。
 顶层数组的每项仍为 `project`、`categories`。下表保留场景、选择理由和 JSON 位置，
 提示词正文只有 JSON 一份；按需选用，不是每个任务必须发送的一组指令。
@@ -144,17 +144,17 @@
 实施类入口按所属仓库规则完成本地提交，不自动更新其他项目或发布；只读任务以及明确不提交的初始化、交接范围保持原边界。
 
 框架提示词按任务范围读取资料并复用有效上下文。修改空白项目源材料前查阅
-[手册入口](../docs/blank-project/README.md)、[维护说明](../docs/blank-project/maintenance/updating-the-blank-project.md)
+[手册入口](../../docs/blank-project/README.md)、[维护说明](../../docs/blank-project/maintenance/updating-the-blank-project.md)
 与受影响专题，实施后同步说明。局部复盘与验证只核对相关依据；交接仅列续接必需的
 文件或章节和待同步事项，不固定重读同一组入口，保持各自原有授权范围。
 GitHub 审核从固定提交读取相同入口，所有结论受实际可读材料限制；准备与输出方式见
-[GitHub 审核说明](../docs/blank-project/maintenance/updating-the-blank-project.md#通过-github-交给其他模型审核)。
+[GitHub 审核说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#通过-github-交给其他模型审核)。
 动态入口在明确授权的新建外部项目执行现有流程，源材料保持只读；用法见
-[动态流程审核说明](../docs/blank-project/maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程)。
+[动态流程审核说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程)。
 外部结果复核先判断事实和设计取舍，报告交付后由用户选择是否实施；用法见
-[外部结果复核说明](../docs/blank-project/maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)。
+[外部结果复核说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)。
 实际开发反馈围绕原任务、项目副本与当前框架按需归因，不默认整体重检；用法见
-[开发反馈复盘说明](../docs/blank-project/maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
+[开发反馈复盘说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
 
 ### Project：Godot 项目开发
 
@@ -204,11 +204,11 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 
 - 讨论与记录术语共用一个 Skill 的提问方法；两条提示词只区分用户需要的产物和写入授权，不创建两套访谈流程。
 - 初始需求与需求变化、当前 Product 初次拆分与既有计划同步分别提供入口；下一 Product 的规划追加到原台账，不覆盖历史。
-- 外部需求适配只交付对话草稿，区别于正式写入 Product 的 GDD 入口；按内容归属引用现有路由与 Skill，不扩展只读指导 Skill 的职责。用法见 [只整理外部需求内容](../docs/blank-project/guides/product-and-planning.md#只整理外部需求内容)。
+- 外部需求适配只交付对话草稿，区别于正式写入 Product 的 GDD 入口；按内容归属引用现有路由与 Skill，不扩展只读指导 Skill 的职责。用法见 [只整理外部需求内容](../../docs/blank-project/guides/product-and-planning.md#只整理外部需求内容)。
 - 原型实验用于回答未决问题，按授权和预算停止；沿用现有记录，不要求先生成完整规格链。
 - UI、音频、资源接入的输入不同；性能测量和存档保留也各有实际目标，故提供独立提示词。
   专业方法分别维护自己的来源，运行修改返回原任务；不会形成必须逐项执行的新交付流程。
-- “问下一步”“执行新任务”“续接任务”分别表达指导、执行与续接意图，沿用已有授权；根据 Codex 输出起草回信复用只读指导入口，用法见 [根据 Codex 输出起草回复](../docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。
+- “问下一步”“执行新任务”“续接任务”分别表达指导、执行与续接意图，沿用已有授权；根据 Codex 输出起草回信复用只读指导入口，用法见 [根据 Codex 输出起草回复](../../docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。
 - Bug、重构和工程维护分别说明期望行为、保持不变的范围和技术目标。
 - 架构调查从实际源码发现问题；pick-refactor-smell 从既有 notes 选择待办，独立审查检查指定变更或代码现状的正确性、需求符合性与质量。三者关注点与产出不同，调查不自动进入实施。
 - 验证、审查、人工反馈保留独立入口；正常 Feature 仍完成适用测试与验收，独立评审仅在用户明确指定时执行，可等多项交付后集中进行。
@@ -218,7 +218,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 两类交接入口由原线程生成结果、使用者复制到新线程，接收方先核对目录、规则、原文和
 实际差异再按已有授权续接。框架交接保持只读，项目交接可整理必要的现有文档；都不把
 交接当作新实施授权或人工验收，不另建交接文件。用法见
-[换到新线程继续](../docs/blank-project/guides/project-knowledge.md#换到新线程继续)。
+[换到新线程继续](../../docs/blank-project/guides/project-knowledge.md#换到新线程继续)。
 
 ### 阶段总结与固化边界
 
