@@ -19,7 +19,7 @@ Codex 输出、外部报告、需求原文和复现日志等可能较长的输�
 | 确认工具路径与环境 | Godot 项目开发 → 项目初始化 → 准备 Godot 开发环境 |
 | 先讨论，不写文档 | Godot 项目开发 → 需求设计 → 轻量讨论与澄清 |
 | 澄清并保留术语定义 | Godot 项目开发 → 需求设计 → 澄清并记录项目术语 |
-| 测试一个想法 | Godot 项目开发 → 需求设计 → 验证玩法或技术假设 |
+| 测试一个想法，或单独验证视觉布局与资源尺度 | Godot 项目开发 → 需求设计 → 验证玩法或技术假设 |
 | 将想法或已有 GDD 整理为正式需求 | Godot 项目开发 → 需求设计 → 从想法或已有 GDD 整理 Product |
 | 已有功能但缺少需求或任务记录 | Godot 项目开发 → 需求设计 → 从已有实现补齐需求与任务 |
 | 只把外部文本或文档适配为需求草稿 | Godot 项目开发 → 需求设计 → 只读适配外部需求内容 |
@@ -74,7 +74,7 @@ Agent 使用 `yaya-next-step-advisor`，结合当前项目规则、相关任务�
 | 手动修改后接回开发 | [先核对相关需求与实际差异](../guides/engineering-changes.md#手动修改后检查需求一致性)，再按明确的处理范围进入现有 Product 或工程路线 |
 | 只读调查 | 回答明确问题并提供证据，不自动进入实现 |
 
-Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，只补问影响决定的缺口。界面草图与 HTML 探索按实际需要选择，具体名称可查下方职责表。
+Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，只补问影响决定的缺口。界面草图与 HTML 探索用于表达需求；新界面等需要实际验证的情况按 [Godot 视觉原型](../guides/product-and-planning.md#先验证视觉原型再接入依赖它的逻辑) 衔接规划与执行。
 
 ## 12 项 Skill 的职责
 
@@ -86,8 +86,8 @@ Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，�
 | [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与 CONTEXT，处理对已有任务的影响；初次拆分只针对当前模块 |
 | [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
-| [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达 | ASCII 线框和意图；可选 HTML/Tailwind 探索，不直接完成 Godot UI |
-| [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | Product 音频条目和 `_placeholder_` 文件名，不生成正式音频 |
+| [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达、视觉基础规格 | ASCII 线框、已确认约束与原型待验证问题；可选 HTML 探索，Godot 场景交给执行入口 |
+| [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | 音频需求、真实样本引用和试听问题；缺少资源时给出占位命名，不生成音频或实现播放 |
 | [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 先展示数量与逐项摘要，按 [预览确认约定](../guides/product-and-planning.md#写入前看拆分预览) 追加计划并保留历史；前一模块完成后再拆下一模块 |
 | [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |

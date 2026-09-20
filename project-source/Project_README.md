@@ -45,14 +45,17 @@
 | 产品初始化或改变需求 | product-change-standardizer |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
-| 界面线框与可选 HTML 探索 | product-ui-sketcher |
-| 音效、音乐需求与占位文件名 | product-audio-sketcher |
+| 界面线框、视觉基础规格与可选 HTML 探索 | product-ui-sketcher |
+| 音效、音乐需求与真实样本或占位约定 | product-audio-sketcher |
 | 只拆当前 Product，完成后再拆下一 Product | generate-feature-list |
 | 增量对齐已有 Feature | sync-feature-list |
 | Bug、重构或工程维护 | engineering-change-standardizer |
 | 执行一个已批准 Feature | execute-next-feature |
 | 从记录中选择重构项 | pick-refactor-smell |
 | 只读理解现状并撰写下一步提示词 | yaya-next-step-advisor |
+
+新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)
+验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
 
 ```mermaid
 flowchart TD

@@ -535,6 +535,12 @@ or evidence format is needed.
 9. `refactor` Features state behavior-preservation evidence.
 10. `maintenance` Features state the technical success condition and compatibility/invariant to preserve.
 
+For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation).
+Plan a required independent visual foundation as an ordinary Feature with
+`depends_on` links from the logic that needs its decisions; narrow checks can
+remain inside an existing Feature. Reuse validated foundations and do not make
+unrelated logic wait for all art, or create a separate prototype status/type.
+
 ## Requirement coverage review
 
 In the existing planning or synchronization report, show a small table or clear

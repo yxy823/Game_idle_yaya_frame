@@ -1,11 +1,11 @@
 ---
 name: product-ui-sketcher
-description: Turns Product behavior and interaction details into an ASCII wireframe and intent explanation, with an optional standalone HTML and Tailwind visual exploration.
+description: Clarify Product UI layout, interactions and visual specifications, including inputs for a Godot visual prototype. Produces requirement drafts, not runnable Godot scenes.
 metadata:
-  version: 2.0
+  version: 2.1
   triggers:
-    - Sketch a Product UI, ASCII wireframe, or optional HTML mockup
-    - 用户要求「UI 线框」「ASCII 界面」或「HTML mockup」
+    - Sketch a Product UI or clarify visual specifications and prototype inputs
+    - 用户要求界面线框、视觉基础规格或可选 HTML 探索
   priority: medium
   called_by: product-change-standardizer
 ---
@@ -14,9 +14,9 @@ metadata:
 
 ## Role
 
-Create a Product-blueprint wireframe, not a final visual design. Show where elements are and what interactions do. Do not lock implementation into specific colors, fonts, animation, pixels, or framework choices.
+Create a Product-blueprint wireframe and the visual requirements needed to evaluate it. Show where elements are, what interactions do and which layout/resource questions still need a running Godot scene. Preserve confirmed size, typography and readability constraints without inventing final art direction or node-level implementation choices.
 
-The durable Product artifact is the ASCII wireframe plus its intent and interaction notes. An HTML and Tailwind exploration is optional and independently replaceable.
+The durable Product artifact is the ASCII wireframe plus its intent, interaction notes and confirmed visual requirements. An HTML and Tailwind exploration is optional and independently replaceable; it cannot replace the Godot visual prototype defined in `methodology/01-product-doc-structure.md` under **Visual prototype before dependent implementation**.
 
 ## Language contract
 
@@ -30,7 +30,7 @@ that BCP 47 value; ASCII/interaction syntax and protocol keys remain stable.
 1. **ASCII is the durable source.** The Product module always receives the ASCII representation.
 2. **HTML is opt-in.** Generate it only when `want_html_mockup: true` has been explicitly confirmed.
 3. **Intent is mandatory.** Explain why the layout supports Product behavior.
-4. **Do not prescribe colors, fonts, animation, pixel dimensions, or spacing in Product prose.** Those belong to implementation or later visual refinement.
+4. **Separate requirements from tuning.** Record confirmed display conditions, resource proportions, text/button usability and necessary size constraints. Mark trial values as proposals; keep node properties and incidental tuning in implementation, and leave final decoration/palette open unless already decided.
 5. **Mark every interactive element.** Use the fixed syntax below.
 
 ## Input
@@ -84,7 +84,8 @@ Return content that the standardizer can place in the module's UI section. Its l
 2. **Interaction details:** a table mapping each element and condition to observable behavior.
 3. **Intent:** why hierarchy, grouping, and feedback support the Product goal.
 4. **State differences:** list meaningful differences rather than drawing every state, unless layouts differ substantially.
-5. **Visual exploration:** include the optional HTML path only when generated.
+5. **Visual foundation:** relevant display conditions, representative resource references, confirmed constraints and unresolved prototype questions. Reuse existing decisions; do not invent measurements or claim a sketch proves runtime readability.
+6. **Visual exploration:** include the optional HTML path only when generated.
 
 Example structure, with labels rendered in `document_language`:
 
@@ -118,10 +119,30 @@ Example structure, with labels rendered in `document_language`:
 - `paused`: <difference in document_language>
 - `completed`: <difference in document_language>
 
+### <Visual foundation>
+
+<confirmed display constraints, available samples and questions for Godot validation>
+
 ### <Visual exploration>
 
 <localized reference to `docs/ui-mockups/timer-core.html`>
 ````
+
+## Handoff to the Godot visual prototype
+
+When the visual-prototype criteria in `methodology/01-product-doc-structure.md`
+apply, return the relevant inputs in the UI Markdown and `notes_for_standardizer`:
+surrounding screen layout, representative content/states, available image/font/video
+references and missing samples, plus the decisions that need actual operation.
+Use `product-audio-sketcher` through the caller only when sound requirements also
+need clarification. Do not require a fresh sketch or interview for settled inputs.
+
+The standardizer owns approved Product writes and planning; authorized scene
+implementation uses the existing delivery or scoped-experiment route. This Skill
+does not create `.tscn` files, connect business logic or grant human acceptance.
+After a prototype, reuse its actual observations and user decisions to propose
+focused updates to the same UI requirements rather than treating trial values as
+automatically approved specifications.
 
 ## Optional HTML and Tailwind exploration
 

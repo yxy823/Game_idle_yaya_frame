@@ -1,8 +1,8 @@
 ---
 name: product-audio-sketcher
-description: Define or clarify Product requirements for sound effects and background music, including intent, style, duration and placeholder names. Use for audio requirement design, not playback implementation or debugging; 中文触发：设计声音需求、规划音效或音乐。
+description: Define Product sound-effect and music requirements, including real sample references and prototype listening needs. Use for audio requirement design, not asset generation or playback implementation.
 metadata:
-  version: 1.1
+  version: 1.2
   priority: medium
   called_by: product-change-standardizer
 ---
@@ -13,7 +13,7 @@ metadata:
 
 You are an audio-requirement designer. Turn functional descriptions and audio-trigger lists into precise Product requirements that a human can use to find, synthesize, record, or commission audio.
 
-This workflow does **not** generate audio files. Never claim that it will. It produces requirement descriptions and registers stable placeholder filenames in Feature notes.
+This workflow does **not** generate audio files or edit Product/Feature files. It returns requirement descriptions and suggested resource notes to the caller; the Product and delivery workflows own their respective writes.
 
 ## Language contract
 
@@ -26,9 +26,9 @@ remain unchanged.
 
 1. **Do not pretend to generate audio.** Produce requirements only.
 2. **Describe intent, not waveforms.** Prefer “a gentle sense of starting” to oscillator frequencies or other implementation parameters.
-3. **Give every entry a placeholder filename.** Use the stable `_placeholder_` conventions below.
+3. **Keep resource identity clear.** Preserve existing real asset paths in the entry's notes. The stable `_placeholder_` convention below names a replacement slot when needed; it does not require creating a placeholder file or renaming a real sample.
 4. **Keep elicitation focused.** Reuse confirmed answers and ask only about material gaps; related sounds can share established requirements.
-5. **Do not require a reference sound.** A reference is useful when available, but its absence must not block progress.
+5. **Separate requirement drafting from listening.** A missing reference need not block drafting, but an audio judgment in a running prototype needs a playable representative sample; a filename or silence is not listening evidence.
 
 ## Input
 
@@ -99,7 +99,7 @@ Each sound-effect entry must contain:
 | Duration | yes | A concrete duration or narrow range |
 | Style | yes | The shared project tone or an explicit exception |
 | Reference | no | A user-provided comparable sound |
-| Placeholder file | yes | A stable `_placeholder_sfx_<snake_case_action>.wav` filename |
+| Placeholder file | when unresolved | A stable `_placeholder_sfx_<snake_case_action>.wav` replacement slot when the actual resource is still missing |
 | Notes | no | Qualities to emphasize or avoid |
 
 Write field labels and descriptions in `document_language`. Keep the entry ID and placeholder filename language-neutral.
@@ -148,7 +148,7 @@ A BGM entry must cover:
 - duration and loop behavior;
 - volume baseline;
 - optional reference;
-- `_placeholder_bgm_<name>.ogg` placeholder file;
+- actual resource reference, or `_placeholder_bgm_<name>.ogg` when unresolved;
 - optional notes about qualities to emphasize or avoid.
 
 Example structure, localized to `document_language` when emitted:
@@ -166,6 +166,21 @@ Example structure, localized to `document_language` when emitted:
 - **Placeholder file:** `_placeholder_bgm_settings.ogg`
 - **Notes:** Avoid a prominent melody; keep it atmospheric.
 ```
+
+## Handoff to the visual prototype
+
+For sound used in a Godot visual prototype, follow **Visual prototype before
+dependent implementation** in `methodology/01-product-doc-structure.md`. Return
+available playable sample paths, missing resources and relevant listening checks
+in the existing entry Markdown and `notes_for_standardizer`. Cover feedback
+timing, duration, relative loudness or loop continuity only where they affect
+the proposed experience. A representative sample may still be replaced later.
+
+Keep the intended production trigger separate from the prototype's local preview
+action; a preview button does not implement the business event. Scene playback
+and actual human listening belong to authorized delivery or the scoped experiment,
+not this requirement Skill. Do not claim creation, acquisition, playback or
+acceptance of audio that has not occurred.
 
 ## Quality boundaries
 
@@ -207,3 +222,9 @@ feature_notes_register:
 ```
 
 `type` must be either `sfx` or `bgm`. `id`, `feature_module`, and every placeholder path remain stable and language-neutral; `markdown` and `notes_for_standardizer` follow `document_language`.
+
+For an entry with an actual resource, identify its path and sample/final status in
+`markdown` and omit `placeholder_file` unless an unresolved replacement slot is
+also needed. `feature_notes_register` contains only unresolved placeholder needs;
+return an empty list when none remain. These are proposals for the caller, not
+proof that any file exists or that Feature notes have been written.

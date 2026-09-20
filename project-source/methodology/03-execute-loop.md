@@ -161,6 +161,13 @@ Also identify:
 2. Register `_placeholder_` resources in Feature notes with replacement guidance when approved.
 3. Explain any scope expansion before coding.
 
+For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation).
+Reuse a relevant accepted foundation, or resolve the missing prototype work and
+its actual dependencies before implementing dependent logic. For a prototype
+Feature, include representative resources, the independently runnable scene and
+visual/interaction checks in the existing plan; use the normal manual acceptance
+route. Prototype approval does not accept later production behavior.
+
 ### 1C. Present approval packet
 
 Present one concise packet containing:

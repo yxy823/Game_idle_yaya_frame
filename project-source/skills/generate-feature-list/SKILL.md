@@ -45,8 +45,10 @@ inventory/file mismatches and resolve them before planning; do not guess names.
 
 1. Identify the current Product and its approved scope from actual source and
    completion state. Establish needed runnable infrastructure only when it does
-   not already exist. Apply accepted architecture constraints to prerequisite
-   order, such as core behavior before its presentation.
+   not already exist. Apply accepted architecture constraints and **Visual
+   prototype before dependent implementation** in `methodology/01-product-doc-structure.md`
+   to the actual prerequisite order; production domain/presentation separation
+   does not require developing business logic before an independent visual prototype.
 2. Propose independently verifiable, session-sized outcomes under the canonical
    decomposition rules. Use precise source sections and observable criteria;
    do not encode class structure as Product behavior or pre-plan later Products.

@@ -165,9 +165,17 @@ Read the existing UI/audio requirements and reuse established decisions.
 
 | Need | Action |
 | --- | --- |
-| Layout or interaction needs clarification, or a sketch is requested | Use `product-ui-sketcher` for an ASCII wireframe and intent; a simple copy/value change with settled interaction needs no new sketch |
+| Layout or interaction needs clarification, or a sketch is requested | Use `product-ui-sketcher` for a wireframe, intent and visual requirements; a simple copy/value change with settled interaction needs no new sketch |
 | HTML/Tailwind exploration is requested or has an agreed purpose | Use the sketcher's optional exploration; do not add a routine question about HTML to every UI edit |
-| Sound requirements need design or clarification | Use `product-audio-sketcher` with known trigger, style and duration; reuse complete entries and its stable placeholder naming |
+| Sound requirements need design or clarification | Use `product-audio-sketcher` with known trigger, style, duration and available sample references; use its placeholder naming only for unresolved resources |
+
+For new interfaces or substantial layout/resource changes, apply **Visual
+prototype before dependent implementation** in `methodology/01-product-doc-structure.md`.
+Include its relevant questions and constraints in the owning UI/audio sections
+and pass the needed visual foundation to current-module planning. Keep confirmed
+observable size/readability requirements; put trial values and node-level tuning
+in implementation notes. Adopt prototype observations only with the applicable
+user decision, preserving still-valid requirements and existing authorization.
 
 Pass the resolved `document_language` and confirmed facts to any child workflow.
 These are Product requirements; implementation and actual human acceptance remain separate.
@@ -181,7 +189,7 @@ This workflow performs all writes:
 3. **Existing module:** edit only the affected sections; preserve unrelated content.
 4. **Overview:** update the module inventory and dependencies when they change.
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
-6. **Placeholders:** pass relevant `_placeholder_` asset paths to the current or affected existing Feature plan. Later, unplanned Products retain their placeholder requirements in Product until decomposition.
+6. **Resources:** pass real sample references, remaining gaps and relevant `_placeholder_` asset paths to the current or affected existing Feature plan. Audio return fields `placeholder_file` and `feature_notes_register` may be omitted/empty when real resources cover the requirement; do not invent missing-file obligations from naming examples. Later, unplanned Products retain their resource requirements in Product until decomposition.
 
 If the elicitor returns terminology changes, review them with the affected
 Product behavior and persist confirmed wording in the owning Product section

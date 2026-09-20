@@ -27,7 +27,7 @@ Write these sections in this order. A document rendered from the canonical templ
 | Core loop | Yes | A numbered, coherent action sequence for each version such as V0.1 or V0.2. |
 | Module list | Yes | Number, filename, module name, and `draft`, `done`, or `obsolete` status. |
 | Module dependencies | Yes | An ASCII dependency diagram and intended Product execution order, with cross-cutting modules identified separately. |
-| Visual direction | Recommended | Palette, typography, and UI tone used as input to UI sketches. |
+| Visual direction | Recommended | UI tone and shared display/readability constraints; final palette and decoration may remain open. |
 | Audio direction | Recommended | Sound-effect and music direction used as input to audio entries. |
 | Change history | Yes | Reverse-chronological date, Product change, and reason. |
 
@@ -48,12 +48,89 @@ A module document is more detailed than the overview. A rendered template must r
 | Functional flow | Step-by-step user or system behavior, optionally with an ASCII diagram. |
 | Data model | Field, type, default value, and meaning. |
 | State machine | State values and transition rules, when applicable. |
-| UI sketch | ASCII wireframe and key interactions, produced by `product-ui-sketcher`. |
-| Audio entries | Trigger, filename, style, and duration, produced by `product-audio-sketcher`. |
+| UI sketch | ASCII wireframe, key interactions and confirmed visual requirements, proposed by `product-ui-sketcher`; link relevant prototype conclusions. |
+| Audio entries | Trigger, style, duration and resource references or placeholder naming, proposed by `product-audio-sketcher`. |
 | Numeric rules | Formulas, thresholds, and configuration values. |
 | Acceptance criteria | Concrete statements of how completed behavior can be verified. |
 | Edge cases | Known cases intentionally deferred to later Features. |
 | Change history | Reverse-chronological record of changes to this module. |
+
+## Visual prototype before dependent implementation
+
+For a new interface or a substantial layout/resource change, establish its visual
+foundation before implementing logic that depends on that interface. Reuse an
+already validated layout when it covers the current scope; copy/value changes,
+non-visual logic and unaffected modules do not require another prototype.
+Work on the current interface/module, including its surrounding screen context,
+rather than waiting for all game art or all future screens to be ready.
+
+The sequence is: interface purpose and main states → representative resources
+and initial specifications → independent Godot visual prototype → layout/scale
+validation and adjustment → dependent production logic → visual refinement.
+Resource specifications and layout may iterate together.
+
+### Scope and resources
+
+Before building, identify the questions to settle, the target viewport/window
+and relevant scaling conditions, core elements/states, available resources and
+remaining gaps. The UI/audio sketchers propose these inputs; a written sketch
+or HTML exploration does not verify the Godot result.
+
+Use representative real images, fonts, video, music and sound effects where the
+interface calls for them. Select samples that expose actual aspect ratios,
+detail, text lengths and content density; do not require every media type or the
+complete asset library. Distinguish source pixel dimensions, on-screen size and
+visible subject size after transparent padding. For audio, identify duration,
+looping and feedback timing relevant to the experience. Follow existing asset
+provenance and import rules. A missing sample leaves that check unverified;
+identify the gap and seek a suitable sample or an explicitly accepted substitute,
+rather than claiming that text, silence or a placeholder filename proves it.
+
+Create a clearly named, independently runnable `.tscn` in the project's existing
+scene organization, separate from production functionality. Include the actual
+content regions, representative items, buttons and text in their surrounding
+layout. Use local sample state and only interactions needed for evaluation,
+such as hover/pressed/selected/disabled feedback, opening a panel, scrolling or
+preview playback. Do not connect production business/game rules, persistence
+or live data flows. If project Autoloads would run those flows, isolate the
+prototype entry from their side effects. A small local script is sufficient
+when native controls cannot express the required feedback.
+
+Final backgrounds, decoration and palette are optional at this point; readable
+contrast and distinguishable interaction states are necessary for evaluation.
+Avoid a fixed number of design variants: compare alternatives only when a real
+layout decision needs them.
+
+### Validation and adoption
+
+Run the scene in the target project's confirmed Godot environment. Check spatial
+relationships, resource scale/cropping, text readability, button usability and
+relevant empty/dense/long-text states at the agreed display conditions. Exercise
+interactions and listen to relevant samples. Static checks and screenshots are
+supporting evidence, not substitutes for actual operation and human judgment.
+Missing execution or human feedback remains explicitly unverified.
+
+Keep the entry scene, questions, observations, resource gaps and file disposition
+in current Feature notes, or Progress for a standalone experiment. Confirmed
+user-visible requirements belong in the owning Product UI/audio sections via
+`product-change-standardizer`; preserve concrete size/readability requirements
+when they matter, while node properties and tuning values remain in the scene,
+resources or implementation notes. Do not maintain a second specification or
+prototype status ledger.
+
+During planned delivery, use an ordinary Feature for an independently reviewable
+visual foundation and make dependent implementation wait for its applicable
+manual acceptance. A narrow check may stay inside the current Feature, with
+the visual decision settled before dependent logic. An explicitly requested
+standalone exploration follows the scoped-experiment route in
+[task routing](00-overview.md#canonical-task-routing). Prototype acceptance covers
+only its visual/interaction scope, never the later business behavior.
+
+After validation, reuse suitable layout nodes, themes and resources deliberately;
+remove sample-state wiring when adopting them into production. Retain a separate
+prototype only while it answers an ongoing question; otherwise archive or remove
+it within the authorized scope. Record unresolved limits and keep the accepted
+decisions, without maintaining competing production and prototype interfaces.
 
 ## Project terminology and CONTEXT (optional)
 
