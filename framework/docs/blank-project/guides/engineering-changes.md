@@ -8,7 +8,7 @@
 
 | 情况 | 路线 | 应说明的结果 |
 | --- | --- | --- |
-| 预期行为缺失、矛盾，或用户想改变它 | `product-change-standardizer` | 新的 Product 意图与验收条件 |
+| 预期行为缺失、矛盾，或用户想改变它 | `product-standardizer` | 新的 Product 意图与验收条件 |
 | 已有明确预期，代码没有做到 | `engineering-change-standardizer` 的 `bug` 模式 | 恢复预期并覆盖回归 |
 | 外部行为保持不变，调整内部结构 | 同上，`refactor` 模式 | 真实维护收益与行为保持证据 |
 | 工具、构建、依赖、日志、测试设施或数据迁移 | 同上，`maintenance` 模式 | 技术成功条件、兼容边界与验证 |
@@ -27,7 +27,7 @@ Agent 将实际差异与相关 Product、Feature/AC、已有决定及必要调�
 
 检查结果引用需求与文件位置，区分已确认一致、存在冲突和证据不足，指出受影响的计划、测试及人工验收。规则与提示词约束 Agent 的处理方式，无法拦截人工保存；测试仅证明实际覆盖并执行过的部分，格式或引用检查不能证明行为一致。本入口不运行测试、启动 Godot 或修改文件。
 
-后续处理复用现有路线：行为保持或恢复预期通常无需改 Product；实质需求变化由 Product 承接，再同步受影响的已有任务与验证。`sync-feature-list` 根据已提交的 Product/Coding Rules 变化同步计划，不承担通用手动代码审查。继续当前 Feature 时，将相关手动差异纳入其影响判断，重新核对旧证据是否仍有效，保留已完成任务的历史事实；归属与续接按现有 [Git 规则](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md) 和 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 处理。
+后续处理复用现有路线：行为保持或恢复预期通常无需改 Product；实质需求变化由 Product 承接，再同步受影响的已有任务与验证。`sync-feature-list` 根据已提交的 Product/Project Rules 变化同步计划，不承担通用手动代码审查。继续当前 Feature 时，将相关手动差异纳入其影响判断，重新核对旧证据是否仍有效，保留已完成任务的历史事实；归属与续接按现有 [Git 规则](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md) 和 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 处理。
 
 需要正式独立评审时使用“独立审查代码或指定变更”；需要实际运行验证时使用“单独验证某次变更”。各入口位置见 [提示词导航](../reference/skills.md)。
 
@@ -41,7 +41,7 @@ Agent 将实际差异与相关 Product、Feature/AC、已有决定及必要调�
 
 适合自动验证的 Bug 建立 `F0XX-RTyy` 回归测试。无法合理自动化时，说明具体原因并给出可重复的人工回归路径。回归关注原始触发条件和错误结果，不仅证明修复后的某条代码执行过。
 
-Bug 成功验证并完成适用验收后，Stage 5.5 将根因、触发条件、回归覆盖和防范原则保存在当前 Feature notes。通用建议先核对已有规则，只有值得复用且获得明确授权时才提升为 Coding Rule 或不变量；不要把每个缺陷都变成新规则。
+Bug 成功验证并完成适用验收后，Stage 5.5 将根因、触发条件、回归覆盖和防范原则保存在当前 Feature notes。值得长期复用的防范原则按 [规则增量维护](project-knowledge.md#维护项目规则与读取工程规则) 检查归属、写前输出自检并核对授权，再决定是否进入项目规则、专项规则或不变量；不要把每个缺陷都变成新规则。晚于最终验证的治理文档变更仍需更新失效依据。
 
 ## 重构应解释实际收益
 

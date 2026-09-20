@@ -1,7 +1,7 @@
 ---
 name: engineering-change-standardizer
 description: >-
-  Prepare bug, refactor or maintenance Features that preserve explicit Product intent. Triage ownership and evidence, obtain any missing approval, append the engineering plan, then hand off to authorized execution. Changed or ambiguous Product behavior belongs to product-change-standardizer.
+  Prepare bug, refactor or maintenance Features that preserve explicit Product intent. Triage ownership and evidence, obtain any missing approval, append the engineering plan, then hand off to authorized execution. Changed or ambiguous Product behavior belongs to product-standardizer.
 ---
 
 # Standardize one engineering change
@@ -20,10 +20,12 @@ Preserve concrete authorization under **Authorization and continuation** in
 
 ## Triage and proposal
 
+Read applicable `docs/project-rules.md`, routed engineering rules and relevant existing Feature designs/architecture decisions. Proposed rule changes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`; a technical repair does not silently revise project constraints.
+
 1. Read the actual Product or technical contract, current Progress and relevant
    history. Classify ownership as `Framework`, `Tooling` or `Project-specific`,
    and select one canonical mode. Route changed/ambiguous Product intent to
-   `product-change-standardizer`; keep defects introduced in unfinished work
+   `product-standardizer`; keep defects introduced in unfinished work
    with that Feature under the canonical ownership table.
 2. Collect only the selected mode's necessary evidence from the engineering
    specification. Keep an unconfirmed root cause unknown. For an unspecified
@@ -58,7 +60,7 @@ preservation. Temporary candidates are not committed.
 Append the index entry and matching engineering detail using canonical initial
 planning values; preserve completed history and engineering classification.
 Update index totals. This operation does not append a revision-log entry because
-no Product/Coding-Rules source synchronization occurred.
+no Product/Project-Rules source synchronization occurred.
 
 Follow the engineering specification's **Feature write rules** for validation
 and the local plan commit. Inspect the actual diff against approved scope,

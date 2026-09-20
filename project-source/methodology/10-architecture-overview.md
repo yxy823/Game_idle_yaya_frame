@@ -1,7 +1,7 @@
 # Optional architecture overview and decisions
 
 An Architecture Overview is a lightweight navigation and ownership aid, not a
-new approval Stage or a substitute for Product, Coding Rules and approved
+new approval Stage or a substitute for Product, Project Rules and approved
 decisions. Use it when module boundaries are difficult to recover from code.
 It is optional for small projects.
 
@@ -18,6 +18,8 @@ with the Godot boundary, lifecycle and failure handling that matter. Link actual
 implementation or verification evidence and label proposed/unverified behavior.
 Keep this detail in the subsystem document; no fixed number of flows or diagrams
 is required.
+
+Feature design in `docs/features/F0XX-design.md` explains one change. This map and its subsystem documents describe the current system across Features. Keep shared runtime structure here, local implementation reasoning in the Feature design and important choice rationale in ADRs; link the owners instead of copying them. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
 
 Humans maintain why a boundary exists, who owns a responsibility, which
 dependencies are allowed and why an exception is approved. Implementation
@@ -69,7 +71,7 @@ Create a separate ADR only when all three conditions hold:
 
 Repeated discussion is a signal to check whether the rationale is missing or
 hard to find; it does not by itself justify another record. Local implementation
-choices stay in Feature notes. Easily reversible changes and choices with no
+choices stay in Feature notes or its detailed design. Easily reversible changes and choices with no
 real alternative need no ADR; keep any useful constraint in its existing owning
 document. Do not invent alternatives or migrate historical notes to fill a record.
 
@@ -77,6 +79,10 @@ Use [architecture-decision-record.md.tmpl](templates/architecture-decision-recor
 at `docs/architecture/adr-NNNN-<slug>.md`. Choose the next unused number by reading
 existing filenames. The template is available from project creation, but no
 placeholder ADR or architecture map is required before a real decision exists.
+
+During Feature work, Stage 1 assesses whether the current choices meet this threshold and whether an existing explanation suffices. Stage 2 records a confirmed pre-implementation decision; Stage 3 records decisions discovered during implementation before dependent work and final verification. Authorized standalone technical design/investigation may produce an ADR without creating a Feature. This is an Agent judgment at an existing planning point, not an automatic output for every Feature or Stage.
+
+Likely candidates include a costly save-identity/migration model, cross-scene state ownership or a simulation strategy with real accuracy/performance tradeoffs. A local function, ordinary node layout or the already fixed Godot stack does not require a record by itself. Apply all three conditions rather than the topic name alone. Product keeps the required behavior; ADR keeps technical rationale. If feasibility changes Product intent or conflicts with a project rule, resolve that through its owning workflow instead of using ADR acceptance as an override.
 
 Keep the problem and constraints, reasonable alternatives, decision, benefits
 and accepted costs, evidence links and useful revisit conditions. Detailed

@@ -7,7 +7,7 @@ metadata:
     - Initialize the Product or start a new project from one sentence
     - 用户说「初始化产品」或「做一个 XXX」
   priority: medium
-  called_by: product-change-standardizer
+  called_by: product-standardizer
 ---
 
 # Product initialization elicitor
@@ -16,7 +16,7 @@ metadata:
 
 Act as a product-management assistant. Expand the user's short project description into a complete, actionable Product blueprint through structured questions.
 
-Do not write files. Return one structured draft to `product-change-standardizer`, which owns all durable writes.
+Do not write files. Return one structured draft to `product-standardizer`, which owns all durable writes.
 
 ## Language contract
 
@@ -25,6 +25,8 @@ Use confirmed `document_language` from the caller or project configuration for
 human-readable draft values; keep the output keys and module identifiers stable.
 
 ## Core principles
+
+Use applicable `docs/project-rules.md` constraints and relevant accepted architecture decisions supplied by the caller or read from their sources. Surface a conflict before treating draft behavior as approved intent; return any proposed rule change to the owning workflow under the rule-maintenance contract.
 
 Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
 Keep this elicitor's Product dimensions and draft contract; do not start the
@@ -38,9 +40,9 @@ outcome and material constraints are clear. Return a reviewable draft after the
 applicable dimensions are covered; leave unrelated future branches for later.
 
 When vocabulary obscures a module's identity, ownership or behavior, use
-`methodology/01-product-doc-structure.md` **Project terminology and CONTEXT**.
-Read relevant `docs/CONTEXT.md` definitions when present. Keep sufficient local
-definitions in the positioning/data model; attach any proposed shared CONTEXT
+`methodology/01-product-doc-structure.md` **Project terminology**.
+Read relevant `docs/terminology.md` definitions when present. Keep sufficient local
+definitions in the positioning/data model; attach any proposed shared terminology
 wording and source links to the draft, distinct from module behavior. Omit the
 proposal when existing wording is sufficient. The standardizer owns all writes.
 

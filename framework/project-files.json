@@ -72,8 +72,8 @@
     "target": "docs/progress.md"
   },
   {
-    "source": "project-source/methodology/templates/coding_rules.md.tmpl",
-    "target": "docs/coding_rules.md"
+    "source": "project-source/methodology/templates/project-rules.md.tmpl",
+    "target": "docs/project-rules.md"
   },
   {
     "source": "project-source/defaults/gdlint.json",

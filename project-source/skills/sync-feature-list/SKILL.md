@@ -1,7 +1,7 @@
 ---
 name: sync-feature-list
 description: >-
-  Incrementally synchronize an existing Feature/test ledger with committed Product or Coding Rules changes by analyzing Git diffs. Use for Feature-list updates and realignment, not initial generation. English triggers: sync feature list, update tasks from Product, realign Feature plan. 中文触发：同步 feature-list、更新任务列表、重新对齐 feature-list。
+  Incrementally synchronize an existing Feature/test ledger with committed Product or Project Rules changes by analyzing Git diffs. Use for Feature-list updates and realignment, not initial generation. English triggers: sync feature list, update tasks from Product, realign Feature plan. 中文触发：同步 feature-list、更新任务列表、重新对齐 feature-list。
 ---
 
 # Synchronize Feature list
@@ -29,6 +29,8 @@ Git preflight, resumed-task ownership and commit mechanics follow
 source comparison, approval and synchronized plan; use relevant rule sections
 through project `AGENTS.md` when interpreting a changed engineering contract.
 
+Read applicable `docs/project-rules.md` constraints and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the rule source: proposed rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
+
 ## Ledger structure
 
 | Path | Role | Access pattern |
@@ -40,8 +42,8 @@ through project `AGENTS.md` when interpreting a changed engineering contract.
 
 ## Source documents
 
-Read relevant `docs/CONTEXT.md` definitions when present to interpret the source
-diff consistently. CONTEXT is not a separate behavior source to synchronize:
+Read relevant `docs/terminology.md` definitions when present to interpret the source
+diff consistently. Terminology is not a separate behavior source to synchronize:
 substantive intent changes must be expressed in Product. Meaning-preserving
 terminology maintenance alone does not require this workflow; later source
 diffs treat its local definition/link edits as editorial changes.
@@ -50,7 +52,7 @@ Synchronization watches:
 
 - `docs/product.md` for Product-wide intent, module inventory, dependencies, and direction;
 - every `docs/product/NN-xxx.md` module file for behavior, data and state, UI, audio, values, acceptance, and edge cases;
-- `docs/coding_rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
+- `docs/project-rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
 
 Between synchronizations, module files may be added, deleted, renamed—including numeric-prefix changes—or modified. The diff analysis must handle all four cases.
 
@@ -108,7 +110,7 @@ git diff --stat -M <anchor> HEAD -- docs/product/
 git diff --name-status -M <anchor> HEAD -- docs/product/
 git diff -M <anchor> HEAD -- docs/product/
 
-git diff <anchor> HEAD -- docs/coding_rules.md agent-rules/
+git diff <anchor> HEAD -- docs/project-rules.md agent-rules/
 ```
 
 `-M` is mandatory for module paths so a rename such as `02-foo.md` to `03-foo.md` is not misclassified as one deletion plus one addition.

@@ -84,13 +84,13 @@ Agent 按实际任务选择所需 Skill，复用已明确的信息和授权，�
 | Skill | 适合的任务 | 主要产物与边界 |
 | --- | --- | --- |
 | [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
-| [product-change-standardizer](../../../../project-source/skills/product-change-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与 CONTEXT，处理对已有任务的影响；初次拆分只针对当前模块 |
+| [product-standardizer](../../../../project-source/skills/product-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与术语文档，核对项目约束并处理已有任务影响；Feature 内术语整理后返回原流程 |
 | [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
 | [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达、视觉基础规格 | ASCII 线框、已确认约束与原型待验证问题；可选 HTML 探索，Godot 场景交给执行入口 |
 | [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 音效、音乐与触发要求 | 音频需求、真实样本引用和试听问题；缺少资源时给出占位命名，不生成音频或实现播放 |
 | [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 先展示数量与逐项摘要，按 [预览确认约定](../guides/product-and-planning.md#写入前看拆分预览) 追加计划并保留历史；前一模块完成后再拆下一模块 |
-| [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Coding Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
+| [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | 需求或 Project Rules 改变后增量对齐 | 分析 Git 来源差异，保存任务迁移、依赖与测试影响 |
 | [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
 | [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
 | [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |

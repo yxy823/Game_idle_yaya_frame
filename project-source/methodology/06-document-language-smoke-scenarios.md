@@ -124,7 +124,7 @@ The following paired projections describe the same pending Feature. They show la
 ### Prohibited behavior
 
 - Do not persist conversation language as a second language setting.
-- Do not create localized Methodology, Skill, Prompt, template, Coding Rules library, or tool trees.
+- Do not create localized Methodology, Skill, Prompt, template, Project Rules library, or tool trees.
 
 ## Scenario DL-03 · Chinese conversation and English documents
 

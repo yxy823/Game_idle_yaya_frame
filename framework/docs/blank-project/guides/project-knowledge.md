@@ -31,28 +31,32 @@
 
 | 信息 | 主要位置 | 其他记录如何使用 |
 | --- | --- | --- |
-| 跨模块、Feature 或会话复用的项目术语 | 按需创建的 `docs/CONTEXT.md` | Product、规划、实现和复审读取相关定义并引用，避免重复维护 |
-| 本任务局部决定、占位资源、Bug 经验、TODO | Feature 的 `notes` | 历史和后续任务引用，避免再抄一遍 |
+| 跨模块、Feature 或会话复用的项目术语 | 按需创建的 `docs/terminology.md` | Product、规划、实现和复审读取相关定义并引用，避免重复维护 |
+| 本任务短记录、占位资源、Bug 经验、TODO | Feature 的 `notes` | 保存简短说明与相关原件链接 |
+| 需要详细解释的 Feature 设计、实际采用的约束与实现理由 | 按需创建的 `docs/features/F0XX-design.md` | `notes` 相对链接；引用原规则并说明如何应用 |
 | 可复用的成功做法、排障方法与失败教训 | `docs/knowledge/`，按主题分层 | 任务开始时优先查阅相关条目，条目链接原任务与证据 |
 | 当前做到了哪里、阻塞、待决定与下一步 | `docs/progress.md` | 新会话先读取 |
 | 一项任务或获批批次的执行历史 | `docs/progress/<key>.md` | 当前 Progress 保留索引 |
 | 当前模块、状态归属、依赖方向 | `docs/architecture.md`、子系统文档 | 执行与复审读取相关部分 |
 | 重要技术选择的原因与取舍 | `docs/architecture/adr-NNNN-<slug>.md` | 架构地图与 Feature 链接该决定 |
-| 可复用工程约束 | `docs/coding_rules.md`、`agent-rules/` | 读取现有规则，新增按明确授权处理 |
+| 所有适用 Product、Feature 必须遵守的项目约束 | `docs/project-rules.md` | 持续检查；增删改前输出规则自检并核对授权 |
+| 按技术领域适用的具体工程规则 | `agent-rules/` | 按修改领域读取，设计说明引用实际采用的规则 |
 | 本次真实执行输出 | `reports/` | 完成依据和任务记录引用原件 |
 
 ```mermaid
 flowchart LR
-    V[CONTEXT 项目术语] -. 定义与引用 .-> P
+    V[Terminology 项目术语] -. 定义与引用 .-> P
     V -. 澄清概念 .-> F
     P[Product 行为来源] --> F[Feature 与 AC]
     A[架构地图与 ADR] --> F
-    C[Coding Rules 与工程规则] --> F
+    C[Project Rules 与工程规则] --> F
+    C --> P
     K[Knowledge 相关实践经验] -. 适用条件与证据 .-> F
     F --> T[测试登记表与验证]
     T --> R[真实报告]
     R --> E[完成依据]
-    F --> N[Feature notes 长期局部记录]
+    F --> N[Feature notes 简短记录与链接]
+    N --> D[Feature design 详细设计与实现理由]
     N -. 提炼并链接 .-> K
     H[Progress 当前状态] -. 链接 .-> F
     H -. 链接 .-> E
@@ -90,13 +94,23 @@ Agent 开始规划、调查、开发、调试或复审时，先确认当前任�
 
 没有新知识就不新增条目。目录只链接实际运行脚本、数据或报告原件，维护沿用现有任务流程。现有经验已经不适用时明确修正适用条件，跨项目吸收和规则升级仍按原授权处理。
 
-## 何时维护 CONTEXT
+## 何时维护项目术语
 
-当同一项目中的概念需要反复解释，或在不同模块、Feature 中出现同名异义、异名同义时，使用 `project-clarifier` 通过具体情景澄清。需要保存的已确认定义由 `product-change-standardizer` 按授权写入 `docs/CONTEXT.md`；缺少该文件不阻塞讨论或开发，也不预先放一个空模板。
+当同一项目中的概念需要反复解释，或在不同模块、Feature 中出现同名异义、异名同义时，使用 `project-clarifier` 通过具体情景澄清。需要保存的已确认定义由 `product-standardizer` 按授权写入 `docs/terminology.md`；缺少该文件不阻塞讨论或开发，也不预先放一个空模板。
 
-文件只需简短背景、术语名称和一两句话的定义，按需说明概念关系、别名或易混淆项。例如区分“物品定义”“持有物品”“堆叠”，随后链接到 Product 的实际堆叠规则。已有定义直接复用，移入 CONTEXT 时将范围内的重复定义改为链接。
+文件记录长期复用的标准名称、定义和适用范围，按需说明概念关系、别名、旧称或易混淆项。定义以足够消除歧义为准，不限制固定句数。例如区分“物品定义”“持有物品”“堆叠”，随后链接到 Product 的实际堆叠规则。已有定义直接复用，集中整理时将范围内的重复定义改为链接。
 
-详细行为、数值和状态转换由 Product 负责；实现状态归属和技术取舍由架构文档负责；待定想法、聊天记录和当前进度不放在 CONTEXT。仅保持含义的术语维护不会触发完整 Product 初始化或 Feature 拆分；实质行为变化仍走需求变更。规范与格式见 [项目术语约定](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology-and-context-optional)。
+术语持续维护，新增、重命名、废弃或语义变化都应检查已有定义及引用。需求整理时处理当时已知的问题；Feature 执行中发现歧义立即澄清，并在 Stage 3 的文档检查中筛选已确认、具有长期价值的定义，在最终验证前完成必要更新。没有新增价值就不写入，也不生成空文件。
+
+详细行为、数值和状态转换由 Product 负责；设计约束和技术取舍由设计、架构与规则文档负责；待定想法、聊天记录、实现计划和当前进度不放在术语文档。保持含义的术语维护走轻量路线；实质行为变化仍走需求变更。Feature 内的术语整理完成后返回当前执行阶段，沿用原任务的修改归属和提交流程。规范与格式见 [项目术语约定](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology-optional)。
+
+## 何时单独保存 Feature 设计说明
+
+当设计需要较长解释，或你希望保留详细方案时，使用 `docs/features/F0XX-design.md`，在对应 Feature 的 `notes` 中相对链接。Stage 1 判断是否需要，Stage 2 保存获批方案，Stage 3 按实际实现补充结果和偏差；简单任务仍可只用 notes，不为每个 Feature 机械创建文件。
+
+设计说明可以展开目标与边界、已有实现、实际采用的规则及其应用方式、组件职责、状态和生命周期、接口与调用流程、失败处理、实现顺序及验证理由。引用原始规则或资料并解释为何适用，不复制整份 `agent-rules`。篇幅由需要解释的设计决定。
+
+AC、测试映射、验证计划和状态仍以 Feature JSON 及现有登记表为准，设计说明链接这些记录，不再维护一份台账。跨 Feature 的当前结构进入架构地图，重要且难以恢复的决策理由进入 ADR；完成的 Feature 设计保留历史语境，后续变更由新任务记录。结构见 [Feature 设计说明规范](../../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)。
 
 ## 何时需要架构地图
 
@@ -108,7 +122,9 @@ Agent 开始规划、调查、开发、调试或复审时，先确认当前任�
 
 ## 何时使用 ADR
 
-某项技术选择跨多个 Feature、长期约束项目或代价较高时，可建立 ADR。记录问题、约束、候选方案、决定、收益、接受的成本、依据和有用的重新考虑条件。普通局部选择保留在 Feature notes 即可。
+ADR 保存在 `docs/architecture/adr-NNNN-<slug>.md`，按决策触发，不是每个 Feature 或 Stage 的固定产物。创建阈值同时考虑三点：撤销决定存在实质成本；未来仅从源码和当前架构难以恢复原因；存在真实候选方案及值得保留的取舍。跨模块状态归属、持久化格式或核心依赖选择可能达到阈值，普通局部选择通常保留在 Feature 设计说明或 notes。
+
+Stage 1 判断是否达到阈值，Stage 2 在决定已确认后保存理由，Stage 3 发现新的重要选择时及时补充，再继续依赖该决定的实现与最终验证。独立架构讨论也可以按授权创建 ADR，不必虚构 Feature。记录问题、约束、候选方案、决定、收益、接受的成本、依据和有用的重新考虑条件。
 
 ```mermaid
 stateDiagram-v2
@@ -119,7 +135,7 @@ stateDiagram-v2
 
 这些是普通 Markdown 状态，不需要注册表。`Accepted` 说明决定得到确认，不证明相关 API 或运行行为已经测试；`Superseded` 保留旧理由并链接替代 ADR。真实任务已经确认的决定直接沿用，不额外增加一轮批准。
 
-架构地图保存当前结构，ADR 保存跨任务理由，Feature notes 保存局部决定，Progress 保存当前链接。按需更新边界变化，不为每次改函数写 ADR，也不把缺少可选地图当成门禁失败。
+Product 保存对外行为与验收意图，ADR 保存架构取舍及其理由，不能自行改变 Product 或绕过项目约束。架构地图保存当前结构，Feature 设计说明保存详细局部设计，notes 与 Progress 保留所需链接。按需更新边界变化，不把缺少可选文档当成门禁失败。
 
 ## 资源、数据与占位内容
 
@@ -145,9 +161,15 @@ gdUnit 已保存结构化结果、引擎日志和原始报告，通常直接引�
 
 依据：[历史与报告规范](../../../../project-source/methodology/09-artifact-lifecycle.md)、[架构与 ADR 规范](../../../../project-source/methodology/10-architecture-overview.md)。
 
-## 读取工程规则
+## 维护项目规则与读取工程规则
 
-项目根 `AGENTS.md` 是路由入口，`docs/coding_rules.md` 保存协作和通用架构原则，`agent-rules/` 按实际修改领域提供具体工程语义。流程和测试追踪由 `methodology/` 负责。
+项目根 `AGENTS.md` 是路由入口，`docs/project-rules.md` 保存项目级长期约束，相当于所有适用 Product、Feature、设计与实现都必须遵守的项目“宪法”；`agent-rules/` 按实际修改领域提供具体工程语义。流程和测试追踪由 `methodology/` 负责。项目规则区分硬约束 `MUST`、默认偏好 `PREFER` 和需明确判断的 `REVIEW`，不把普通建议误作不可例外的禁令。
+
+需求整理和 Stage 0–1 先核对相关规则。Stage 2 保存已批准的规则决定，Stage 3 的文档检查发现可复用约束后筛选增量更新；Bug 复盘等节点发现问题时沿用同一机制。Agent 主动检查与提出修订，不自动把一次经验或个人偏好升级为硬约束。已有明确授权继续有效，新的或实质改变的约束由用户决定。
+
+每次新增、修改或删除规则，写入前都在对话中输出自检报告：逐项说明前后变化、理由与依据、长期价值和归属、适用范围与强度、重复或冲突、下游影响，以及结论和授权。删除还要解释原约束为何不再需要或由哪里接替；纯措辞修订也给出简短说明。可以合并汇报多项修订，但不能跳过某项。
+
+自检全文默认保留在对话，不另建规则报告或登记表。长期有用的理由按归属进入规则本身、Feature 设计或 ADR，并保留来源链接；Git 保存变化历史。更新影响既有计划或验证时在原流程处理，不能一律推迟到下一个 Feature。字段和执行细则以 [规则增量维护规范](../../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance) 为准。
 
 | 修改领域 | 对应规则入口 |
 | --- | --- |

@@ -164,13 +164,13 @@ An agent must translate meaning-bearing prose, not keys, enums, IDs, evidence st
 
 ## 6. Canonical-source policy
 
-Yaya Loop's executable workflow sources use one canonical English version. This includes Methodology specifications, Skills, templates, Coding Rules sources, explicit tools, and default examples.
+Yaya Loop's executable workflow sources use one canonical English version. This includes Methodology specifications, Skills, templates, Project Rules sources, explicit tools, and default examples.
 
 Task prompts sent by a user may use the conversation language. Their language does
 not by itself change the canonical workflow sources or the configured
 `document_language` for durable project output.
 
-Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodies, or translated Coding Rules libraries. Human-facing entry documents may have explicitly approved translations, such as `README.zh-CN.md`, but those translations are not executable workflow sources.
+Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodies, or translated Project Rules libraries. Human-facing entry documents may have explicitly approved translations, such as `README.zh-CN.md`, but those translations are not executable workflow sources.
 
 When rendering an English canonical template into another document language, preserve every required section and its semantics. Rendering must not weaken, omit, or reinterpret workflow requirements.
 

@@ -14,7 +14,7 @@ depth and document output are independent decisions:
   in the conversation. Do not write files merely because a decision was made.
 - **Document settled vocabulary:** clarify only the remaining gaps, then pass
   confirmed definitions and the authorized write scope to
-  `product-change-standardizer`. Follow the terminology contract in
+  `product-standardizer`. Follow the terminology contract in
   `methodology/01-product-doc-structure.md`.
 
 An explicit request to write already authorizes the specified documentation;
@@ -25,8 +25,8 @@ every task.
 
 ## Shared questioning method
 
-1. **Find facts first.** Read relevant existing Product, `docs/CONTEXT.md` when
-   present, and only the code or architecture records needed for the question.
+1. **Find facts first.** Read relevant existing Product, applicable project constraints in `docs/project-rules.md`, `docs/terminology.md` when
+   present, and only the code, Feature design or architecture records needed for the question.
    Reuse explicit user decisions. Distinguish observed implementation,
    approved intent, assumptions and proposals; show conflicting sources instead
    of silently choosing a new meaning. Missing optional documents are normal.
@@ -43,7 +43,7 @@ every task.
    a relevant example and ask what differs. For inventory, an item definition,
    an owned item and a stack need separate names only when the distinction
    matters. A stacking rule belongs in Product; the short conceptual
-   distinction may belong in CONTEXT. Do not enumerate every possible case.
+   distinction may belong in terminology. Do not enumerate every possible case.
 5. **Follow corrections locally.** When an earlier decision changes, revisit
    only the answers that depended on it. Preserve unaffected decisions and
    explain the consequence that now needs resolving.
@@ -68,13 +68,13 @@ remaining decision in ordinary prose. No document or planning handoff is needed.
 For authorized terminology documentation, read the terminology contract and
 propose the smallest edit. Reuse a clear local Product definition where it is
 sufficient; project vocabulary needed across modules or Features belongs in
-the optional `docs/CONTEXT.md`. Create it only for useful, confirmed content.
+the optional `docs/terminology.md`. Create it only for useful, confirmed content.
 Keep one owning definition and link to it; do not collect chat history, pending
 ideas, task status, detailed behavior or Godot implementation choices there.
 
 Pass the proposed definitions, relevant source locations, confirmed decisions,
 remaining uncertainty and whether meaning or behavior changes to
-`product-change-standardizer`. It alone persists Product and CONTEXT wording.
+`product-standardizer`. It alone persists Product and terminology wording.
 Terminology maintenance that preserves meaning and behavior does not require
 Product initialization or Feature synchronization. A substantive Product change
 uses the normal Product and planning route. Do not silently rename code or

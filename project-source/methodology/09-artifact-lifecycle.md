@@ -93,7 +93,7 @@ links; do not infer approval, overwrite an existing archive or duplicate older
 history. Use `document_language` for new prose; moving history does not require
 translating it.
 
-Feature notes own durable local decisions, regression links and TODOs. Important
+Feature notes own brief local decisions, regression links, TODOs and links to detailed `docs/features/F0XX-design.md` when needed. Feature design explains that change, while architecture documents describe the current system. Preserve completed designs as history and link later replacements; do not grow JSON notes into a second design document. Important
 cross-Feature technical choices may use an ADR under
 [the architecture convention](10-architecture-overview.md#architecture-decision-records);
 Feature notes link that rationale instead of repeating it. The archive owns

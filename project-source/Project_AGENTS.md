@@ -7,10 +7,11 @@
 | Need | Read and follow |
 | --- | --- |
 | Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` and the calling Skill's `scripts/` |
-| Product behavior or project terminology | `methodology/01-product-doc-structure.md`; optional `docs/CONTEXT.md` owns vocabulary, not behavior |
+| Product behavior or project terminology | `methodology/01-product-doc-structure.md`; optional `docs/terminology.md` owns vocabulary, not behavior |
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
 | Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
 | Rule responsibilities, interpretation or promotion | `methodology/04-coding-rules-4-layers.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
+| Detailed Feature design | Optional `docs/features/F0XX-design.md` under `methodology/02-feature-list-schema.md`; JSON keeps AC and verification obligations |
 | Document language or initial environment configuration | `methodology/05-document-language.md` |
 | Bug, refactor or maintenance | `methodology/07-engineering-change.md` |
 | Test impact, current-run evidence or completion helper use | `methodology/08-testing-strategy.md`; direct parsing/lint commands are in `methodology/gdscript-lint.md` |
@@ -21,8 +22,10 @@ These entries are task routes, not a mandatory reading sequence. Follow the
 selected procedure and its applicable references; do not load every workflow.
 There are no automatic tool events or Hooks to grant permission.
 
-Read relevant CONTEXT definitions, Product sources and accepted architecture
-decisions for the work. Do not create an empty CONTEXT or require a complete
+Apply relevant `docs/project-rules.md` hard constraints when defining Product intent, planning Features and designing or implementing changes. A local Product, Feature or ADR cannot silently waive them. Every proposed rule addition, removal or edit requires the conversational self-check in `methodology/04-coding-rules-4-layers.md`; reuse explicit decisions, and obtain any missing authority for a substantive change. Stage 3 checks useful terminology, design, architecture/ADR and rule updates before final verification; it does not require an artifact for every category.
+
+Read relevant terminology definitions, Product sources and accepted architecture
+decisions for the work. Do not create an empty terminology document or require a complete
 Product for discussion. Source writing and implementation use their owning
 workflows; a Skill return does not cancel a broader concrete authorization.
 

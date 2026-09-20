@@ -16,12 +16,12 @@
 | AGENTS.md | 项目规则与 Skill 路由 |
 | .agents/skills/ | 12 项开发 Skill |
 | docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
-| docs/CONTEXT.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-and-context-optional) |
-| docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录 |
+| docs/terminology.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-optional) |
+| docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录；按需通过 `F0XX-design.md` 保存详细设计 |
 | docs/progress.md、docs/progress/ | 当前进度和必要历史 |
 | [docs/knowledge/](docs/knowledge/README.md) | 按主题积累实际开发经验、成功做法与失败教训；开始相关任务时优先查阅 |
 | docs/architecture.md、docs/architecture/ | 按需使用的架构地图、子系统说明和重要技术决定 ADR，见[架构约定](methodology/10-architecture-overview.md) |
-| docs/coding_rules.md、agent-rules/ | 项目约定与具体 Godot 工程规则 |
+| docs/project-rules.md、agent-rules/ | 所有适用 Product、Feature 遵守的项目约束与具体 Godot 工程规则 |
 | docs/methodology-config.json | 本机环境与实际检查命令 |
 | methodology/ | 当前 Skill 使用的详细流程和模板 |
 | tools/ | 显式调用的项目工具 |
@@ -42,7 +42,7 @@
 | 任务 | Skill |
 | --- | --- |
 | 讨论想法、澄清概念，或按授权整理术语 | project-clarifier |
-| 产品初始化或改变需求 | product-change-standardizer |
+| 产品初始化或改变需求 | product-standardizer |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
 | 界面线框、视觉基础规格与可选 HTML 探索 | product-ui-sketcher |
@@ -63,8 +63,8 @@ flowchart TD
     Q -->|讨论或澄清| C[project-clarifier]
     C --> O[对话结论]
     C -->|获授权记录术语| T[standardizer 术语维护路线]
-    T --> K[按需更新 CONTEXT 或局部定义]
-    Q -->|需求初始化或改变| P[product-change-standardizer]
+    T --> K[按需更新术语文档或局部定义]
+    Q -->|需求初始化或改变| P[product-standardizer]
     P --> I[按需使用 init / spec elicitor]
     I --> V[按需使用 UI / audio sketcher]
     V --> D[更新 Product]
@@ -82,9 +82,11 @@ flowchart TD
     X --> R[验证、验收、记录与交接]
 ```
 
-只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/CONTEXT.md`
-有实际内容才创建；由 `product-change-standardizer` 统一写入已确认的定义。
+只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md`
+有实际内容才创建；由 `product-standardizer` 统一写入已确认的定义。
 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
+
+术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 
 Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Feature，
 完成它们后再复核并拆下一 Product。计划追加到同一台账，保留历史；
@@ -99,7 +101,7 @@ Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Fe
 flowchart TD
     S0[Stage 0 读取任务、规则和环境] --> S1[Stage 1 测试影响与方案批准]
     S1 --> S2[Stage 2 更新任务与验证计划]
-    S2 --> S3[Stage 3 实现、TDD 与局部验证]
+    S2 --> S3[Stage 3 实现、TDD 与文档检查]
     S3 --> S4[Stage 4 相关测试与静态检查]
     S4 --> M{Stage 1 已确定的验收方式}
     M -->|manual| S5[Stage 5 人工验收]

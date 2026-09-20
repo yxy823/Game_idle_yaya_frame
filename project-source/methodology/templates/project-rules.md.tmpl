@@ -1,14 +1,22 @@
-# AI-assisted development · Coding Rules
+# Project rules
 
-> Read the applicable collaboration and architecture sections when planning or implementing engineering work. Reuse unchanged reading on continuation under the project `AGENTS.md` router.
+> Read applicable project constraints before defining Product intent, planning Features or choosing an implementation. Reuse unchanged reading under the project `AGENTS.md` router.
 >
-> **Structure:** This file contains the stack-independent collaboration contract and general architecture principles. The root `AGENTS.md` routes repository rules; `agent-rules/00-core/` contains global engineering invariants; and affected specialized `agent-rules/` modules contain concrete semantics.
+> **Structure:** This file owns project-wide constraints, collaboration and general design principles. The root `AGENTS.md` routes rules; `agent-rules/00-core/` owns engineering invariants and conflict handling; specialized modules own concrete engine/language semantics.
+
+## Project-wide constraints
+
+Use the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/00-core/rule-precedence-and-routing.md`. MUST constraints apply to every relevant Product, Feature, design and implementation. A Product, Feature design or ADR cannot silently override them. Keep each constraint's scope and necessary rationale clear; technical details remain at their owning source.
+
+No game-specific hard constraints have been confirmed in this blank project. Add confirmed long-lived project boundaries here when they are needed; do not invent offline, save-compatibility or performance promises from examples. Definitions belong in `docs/terminology.md`, module behavior in Product and current architecture in its own documents.
+
+Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
 
 ---
 
 # Part 1 · Collaboration contract
 
-> This part defines stack-independent collaboration. Rule authority and conflicts follow `methodology/04-coding-rules-4-layers.md` and the Core precedence protocol.
+> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-coding-rules-4-layers.md` and the Core precedence protocol; these requirements do not override external instructions.
 
 ## 1.1 Collaboration discipline
 
@@ -32,9 +40,7 @@ verification and completion. Environment preparation follows
 Git preflight, clean-worktree and task ownership, staging and eligible local
 commits follow `agent-rules/00-core/git-worktree-and-commits.md`.
 
-A Feature changing workflow rules follows the committed rules that existed when
-it started. Newly committed rules govern the next Feature and do not
-retroactively alter the current Feature's gates.
+When rules change, state their approved applicability to current and later work under the incremental maintenance contract. Do not retroactively rewrite historical approvals, and do not assume current work is exempt from a newly confirmed hard constraint.
 
 Every placeholder uses the `_placeholder_` prefix and is recorded in Feature notes.
 
@@ -46,19 +52,13 @@ outside scope; include manual instructions only when applicable.
 
 ## 1.4 Deviating from these rules
 
-A deviation is allowed only when:
-
-- the user explicitly requests a different approach
-- established project style conflicts with a rule and migration cost is disproportionate
-- a mandatory platform or engine convention conflicts with a general preference
-
-The AI must identify the rule and reason, for example: `This implementation deviates from Coding Rules section X because Y.`
+Identify the exact rule, proposed deviation, reason and impact. Project style, migration cost or a mandatory platform convention may justify departing from a PREFER recommendation; they do not automatically waive a MUST. Unresolved mandatory conflicts follow the Core conflict protocol. A substantive rule change or exception requires explicit authority covering that choice and the self-check report above; reuse a decision already made instead of asking again.
 
 ---
 
 # Part 2 · General design and architecture
 
-> These principles are independent of language and engine.
+> These are stack-independent design defaults (`PREFER`), unless a separately identified project or specialized rule makes a specific constraint mandatory. Choose patterns for an actual need; do not automatically promote a local design choice into a project hard constraint.
 
 ## 2.1 Start with a focused function or existing method
 
@@ -155,7 +155,7 @@ Apply the Core precedence protocol to real conflicts; do not load unrelated
 topics or treat a general preference as permission to weaken a mandatory rule.
 
 This template must not create a second concrete-rule tree or copy current
-engine, language, tool, or project status into `docs/coding_rules.md`.
+engine, language, tool, or project status into `docs/project-rules.md`.
 
 ## 3.3 Environment Bootstrap
 

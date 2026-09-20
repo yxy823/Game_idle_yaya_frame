@@ -7,7 +7,7 @@ metadata:
     - Sketch a Product UI or clarify visual specifications and prototype inputs
     - 用户要求界面线框、视觉基础规格或可选 HTML 探索
   priority: medium
-  called_by: product-change-standardizer
+  called_by: product-standardizer
 ---
 
 # Product UI sketcher
@@ -166,7 +166,7 @@ The file must begin with a localized comment preserving these meanings:
 <!--
   This is a replaceable visual exploration, not the final implementation.
   Product intent: docs/product/NN-xxx.md
-  implementation constraints: docs/coding_rules.md
+  implementation constraints: docs/project-rules.md
   Replacing this file does not change the Product blueprint.
 -->
 ```

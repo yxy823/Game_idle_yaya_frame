@@ -6,7 +6,7 @@
 
 - Read `docs/methodology-config.json` before durable writes. Conversation uses the user's current language; durable prose uses `document_language`.
 - Before the first coding Feature, complete the one-time Project Environment Bootstrap defined in [05-document-language.md](./05-document-language.md). Every Stage 0 requires `environment_bootstrap.status: ready`; it reads the confirmed configuration rather than rediscovering commands.
-- Read the applicable active Coding Rules through `AGENTS.md` and [the rule-loading contract](04-coding-rules-4-layers.md#rule-loading), including relevant `docs/coding_rules.md` constraints. Retain the Feature's task-relevant snapshot; complete applicability does not require loading unrelated sections or rereading unchanged sources.
+- Read the applicable active Project Rules through `AGENTS.md` and [the rule-loading contract](04-coding-rules-4-layers.md#rule-loading), including relevant `docs/project-rules.md` constraints. Retain the Feature's task-relevant snapshot; complete applicability does not require loading unrelated sections or rereading unchanged sources.
 - Follow `agent-rules/00-core/git-worktree-and-commits.md`. A new Feature execution starts from a clean worktree; a resumed Feature may retain only changes demonstrably owned by that same Feature.
 - Read `docs/test-registry.json` when automated testing is enabled. Testing semantics are defined in [08-testing-strategy.md](./08-testing-strategy.md).
 - Release/publishing/deployment workflow is outside this loop unless explicitly represented as project work.
@@ -108,7 +108,7 @@ existing later plans, and keep engineering repairs within their authorized route
 1. Read the lightweight index and select either the user-specified Feature or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated DAG selection; ID is only a stable tie-breaker and dependencies may have larger IDs. Resume an existing `in_progress` Feature instead of starting another.
 2. Run `git status --porcelain`. A new Feature requires no output. For a resumed `in_progress` Feature, reconcile every reported path with its durable Feature/Progress record and stop if any path is unrelated or ownership is ambiguous.
 3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool/configuration changes, or to diagnose invocation failures. Routine Features reuse confirmed paths; incomplete setup still blocks coding.
-4. Load that Feature detail, its Product source, relevant definitions in `docs/CONTEXT.md` when present, relevant dependency details, current Progress, applicable Coding Rules, test registry, and the principal implementation files/directories needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
+4. Load that Feature detail, its existing `docs/features/F0XX-design.md` and relevant dependency designs when present, its Product source, relevant `docs/terminology.md` definitions, relevant dependency details, current Progress, applicable Project Rules and routed `agent-rules`, test registry, and the principal implementation paths needed to bound the change. Follow Progress history links only when relevant. Read applicable optional architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
    Before proposing an approach or searching external references, consult
    `docs/knowledge/README.md` and the relevant topic indexes and entries.
    Check their applicability to this Feature; reuse prior reading on continuation
@@ -161,6 +161,8 @@ Also identify:
 2. Record approved `_placeholder_` replacement needs in the resource list when present and link it from Feature notes; otherwise keep the guidance in notes. Do not duplicate the rows or treat the list's preparation status as acceptance evidence.
 3. Explain any scope expansion before coding.
 
+Assess whether the plan needs a detailed [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and whether an important technical choice meets the [ADR threshold](10-architecture-overview.md#architecture-decision-records). Reuse existing explanations. Surface unresolved terminology and project-rule conflicts before dependent implementation; proposed rule changes follow the conversational self-check and authorization in [rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance). If neither record is needed, do not create placeholders or request approval for them.
+
 For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation).
 Reuse a relevant accepted foundation, or resolve the missing prototype work and
 its actual dependencies before implementing dependent logic. For a prototype
@@ -174,6 +176,7 @@ Present one concise packet containing:
 
 - Feature scope and affected components;
 - the Context / Rules Snapshot prepared in Stage 0;
+- material design choices and constraints, any needed Feature design/ADR and rule-change decisions;
 - Existing Safety Net to run before changes;
 - new TDD acceptance/regression tests and unit suites to create;
 - acceptance mode, its reason, and corresponding verification items;
@@ -190,7 +193,7 @@ No approval → no implementation and no durable test-plan mutation.
 After approval:
 
 1. set the selected index entry to `in_progress`, `completed_at: null`;
-2. update `docs/progress.md` with current Feature/batch and Stage, blockers, pending decisions, next legal action, and links to the approved plan/evidence; keep history bodies in `docs/progress/`;
+2. update `docs/progress.md` with current Feature/batch and Stage, blockers, pending decisions, next legal action, and links to the approved plan/evidence; keep history bodies in `docs/progress/`. Persist a needed approved `F0XX-design.md`, link it from Feature `notes`, and record already confirmed rule changes/ADRs at their owning locations. Explain materially constraining rules and their concrete application with relative source links; do not copy the entire snapshot or rule body. Brief changes may remain in notes;
 3. persist approved `verification.acceptance_mode`, criterion verification mappings, Bug regression IDs, and `verification.test_impact` in the Feature detail. Store additional related tests as `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]` and full-suite obligations as `full_suite_reasons: ["<approved reason>"]`. The runner always reads this recorded scope; changing invocation arguments must not shrink approved coverage. Removing an obligation requires an explicit approved plan revision;
 4. register not-yet-created durable acceptance/regression tests in `docs/test-registry.json` with `status: planned`;
 5. add newly approved component entries to the registry when required, with `unit_test_paths: []` if no unit suite exists;
@@ -226,6 +229,8 @@ Before writing behavior-changing implementation code:
 
 For each machine-verifiable new acceptance criterion or Bug regression:
 
+Complete one small observable behavior's RED → GREEN → necessary refactor → relevant passing tests before starting the next behavior. A large criterion may need several cycles; planning test IDs in advance does not mean writing every test before any implementation.
+
 1. create the test using its approved logical ID;
 2. update the matching registry entry with path/case and `status: active` once the test exists;
 3. run the narrowest supported selector;
@@ -240,7 +245,7 @@ When a Stage 1-approved unit suite is created, add its repository-relative file 
 1. implement the smallest coherent change that satisfies the current criterion/repair;
 2. rerun the new test until it passes;
 3. perform local refactoring without changing approved behavior;
-4. repeat for the remaining criteria;
+4. rerun tests protecting each meaningful refactor, then repeat the complete RED/GREEN/refactor cycle for the remaining behavior;
 5. preserve accepted Product behavior outside scope.
 
 As a coherent logical change becomes usable, run its relevant tests and direct
@@ -263,6 +268,19 @@ Registry retirement alone does not remove executable methods; preserve valid
 shared cases and historical records.
 
 At implementation completion, map changed behavior to every criterion ID.
+
+### 3D. Documentation checkpoint before final verification
+
+Check whether this work added, renamed, retired or clarified durable terminology, changed the Feature design/current architecture, produced an important technical decision, or revealed a useful project-rule change. Update only useful, authorized content at its owning location. If none changed, do not create a document or empty report. There is no artifact quota or separate checklist ledger.
+
+| Content | Action and authority |
+| --- | --- |
+| Shared terminology | Invoke `product-standardizer`'s terminology route within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
+| Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update current subsystem contracts where they changed, linking rather than duplicating. |
+| Important technical choices | Apply the existing ADR threshold and authorization; preserve replaced decisions and evidence limits. |
+| Project or specialized rules | Apply [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance), including a pre-write self-check for every proposed change. Persist settled constraints; unapproved candidates stay in design/Progress, not active rules. |
+
+Handle material conflicts when discovered rather than postponing them to this checkpoint. Return from supporting workflows to the current Feature; documentation-only routing must not restart Product planning or end authorized delivery. Finalize governing document edits before Stage 4 because terminology, rules, ADR and design Markdown participate in the source fingerprint. If later changes invalidate evidence, complete applicable verification and renewed acceptance under the existing rules; do not exempt these files or claim unchanged coverage.
 
 ## Stage 4 · automated verification and human checklist
 
@@ -340,19 +358,18 @@ Guardrail: <general principle preventing the same defect class>
 
 Do not persist failed debugging guesses, redundant traces, or incidental machine-local failures.
 
-Evaluate whether the Guardrail is reusable enough for Coding Rules according to [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md). If so, show the exact proposed prescriptive rule and destination and establish explicit approval under Authorization and continuation. Never promote automatically.
+Evaluate whether the Guardrail is reusable enough for project or specialized rules under [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance). Output the required self-check before writing; establish the needed explicit decision without repeating one already given. Never promote automatically. If a late approved rule change alters the snapshot or current obligations, repeat applicable verification and acceptance before completion.
 
 If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and registry entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
 
-If a Coding Rule is approved, Stage 8 requires `sync-feature-list` before another
-Feature starts; use existing synchronization authorization or obtain the missing decision.
+Handle approved rule changes and any affected plans under Stage 8; reuse existing synchronization authority and work already completed.
 
 ## Stage 6 · optional independent requirements and code-quality review
 
 **Trigger:** an explicit user request for independent review. Otherwise continue
 to Stage 7 without a review record or a routine confirmation question. The author
 still checks the final diff against AC, scope and applicable rules; this needs
-no separate self-review Stage or report.
+no general self-review Stage or report. Rule mutations retain their specific conversational self-check under incremental rule maintenance.
 
 The user chooses one Feature, several named Features, a commit range or an
 explicit diff, and when to review it. A review after several completed Features
@@ -367,9 +384,9 @@ Do not add per-Feature review switches, pending-review states or a review queue.
 The reviewer must be a fresh-context subagent/session or equivalent independent
 context. If unavailable, report the independence limitation; do not call the
 author's check independent review. It performs no writes and reads the selected
-Features' approved scope and AC, relevant Product, existing CONTEXT definitions
+Features' approved scope and AC, relevant Product and Feature designs, existing terminology definitions
 and accepted architecture decisions, relevant project knowledge, applicable
-Coding Rules, actual final diff, directly affected callers
+Project Rules, actual final diff, directly affected callers
 and changed files, and original verification results with applicable human
 feedback. Treat the implementer's summary as claims to check against these
 sources, not as independent evidence. Establish the compared commits or working
@@ -423,6 +440,8 @@ run; further execution needs an authorized, concrete verification need.
 
 **Entry:** Stage 4 evidence covers all current automated obligations, or its valid manual/no-automated-obligations case is `not_required`. Required test evidence and explicit Stage 5 human acceptance for `manual` must match the current semantic content fingerprint. Git revision is provenance; content-identical status/time/history commits do not grant new acceptance or require a fictitious rerun. The Agent checks the final diff against AC and scope, confirms applicable direct parsing/lint passed, and satisfies any explicit user review condition. The evidence helper checks tests and applicable human acceptance; it does not assess static checks, perform review or decide whether a user condition is satisfied.
 
+Before the completion commands, confirm the Stage 3 documentation checkpoint and any later approved governing updates are complete. If a missing edit is now made, restore applicable current verification and acceptance before marking completion. Do not defer such edits until after the Feature is recorded as done.
+
 1. Run:
 
    ```powershell
@@ -437,14 +456,14 @@ run; further execution needs an authorized, concrete verification need.
    These are explicit task commands. There is no tool-event interceptor or
    additional terminal state machine. If implementation or contract changes
    invalidate the evidence, finish the relevant verification before delivery.
-4. Persist durable implementation decisions, placeholder guidance, omitted edges, Bug learning, and accepted follow-ups. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations and verification requirements.
+4. Keep brief decisions, placeholder guidance, omitted edges, Bug learning and accepted follow-ups in notes; long explanations belong in the already maintained Feature design. Extract useful successful approaches, debugging methods and failure lessons into the appropriate `docs/knowledge/` topic before committing, following its README. Update an existing entry before duplicating it, link the original Feature/evidence, and maintain the nearest index. No new entry is required when existing material suffices. Knowledge is explanatory Markdown; code, tests and governing contracts keep their normal locations.
 5. Check this task's report locations, evidence links and retained scratch purpose under [09-artifact-lifecycle.md](09-artifact-lifecycle.md#reports-and-cleanup), then archive current execution history once under `docs/progress/<Feature-or-approved-batch>.md`; leave only current state and its history link in `docs/progress.md`. Feature notes own local decisions/TODOs and link important technical ADRs; do not duplicate rationale or execution history. Pure Markdown archival is excluded from test fingerprints.
 6. Confirm applicable test/acceptance evidence still covers the final change under the structured snapshot rules. Reuse valid results; run missing or invalidated checks rather than repeating identical verification because the Stage changed.
 7. Follow `agent-rules/00-core/git-worktree-and-commits.md` to commit the remaining validated implementation and completion records, with its Feature identity, staging and post-commit checks. Earlier logical commits remain part of this Feature's delivery; do not squash them or create an empty commit merely to mark a Stage. The Core contract also owns the no-commit exception, current-branch policy and prohibited Git operations.
 
 ## Stage 8 · handoff and authorized continuation
 
-1. If Stage 5.5 changed Coding Rules, report and complete the required `sync-feature-list` before starting another Feature when that synchronization is authorized. Otherwise request the missing authorization and stop.
+1. If this task changed project or specialized rules, report the change and complete needed `sync-feature-list` impact handling before the next affected Feature. Reuse authorization and any synchronization already completed; meaning-preserving edits need no fabricated work. If an actual decision or required synchronization remains unauthorized, report that boundary and stop the dependent continuation.
 2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
 3. Report the completed Feature, relevant implementation/test changes, verification evidence, its local commit hashes or verified commit range (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress.
 4. Report one sentence or a few concise learning entries in this existing Stage, using `templates/feature-learning-summary.md.tmpl`. With no new reusable learning, explicitly state “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise report the context, useful approach or root cause, existing coverage, applicability and actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling / Automated Check / Regression. Link knowledge or Bug-learning notes already recorded before the commit instead of copying their bodies or starting post-commit documentation. A project-specific approach can be reusable within the project without becoming a universal rule. Do not invent an entry for every incident. A newly discovered out-of-scope tooling or rule change remains a separate authorized task.

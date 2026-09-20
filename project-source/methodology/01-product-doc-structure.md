@@ -15,6 +15,8 @@ The two levels serve different context needs. `product.md` must remain short eno
 
 Generated headings and prose must follow the project's configured `document_language`; the section semantics below must remain intact in every language. See [05-document-language.md](./05-document-language.md).
 
+Before writing or revising Product intent, check applicable hard constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A Product request does not silently amend a project rule. Resolve conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance); keep behavior in Product and rule-change rationale in its owning record.
+
 ## Standard `product.md` sections
 
 Write these sections in this order. A document rendered from the canonical template must preserve every template section; when a section does not apply, retain its heading and state that it is not applicable. A project may add specialized sections, but the standard semantics must remain easy to locate.
@@ -122,7 +124,7 @@ Keep the entry scene, questions, observations, a link to any resource preparatio
 list and file disposition in current Feature notes, or Progress for a standalone
 experiment. Keep resource details in that list when present. Confirmed
 user-visible requirements belong in the owning Product UI/audio sections via
-`product-change-standardizer`; preserve concrete size/readability requirements
+`product-standardizer`; preserve concrete size/readability requirements
 when they matter, while node properties and tuning values remain in the scene,
 resources or implementation notes. Do not maintain a second specification or
 prototype status ledger.
@@ -204,7 +206,7 @@ authorized scope, preserving source files and unrelated project content, then
 continue the prototype and its actual operation/listening checks. List completion,
 file presence, successful import and visual/audio acceptance are separate facts.
 
-## Project terminology and CONTEXT (optional)
+## Project terminology (optional)
 
 Clarify vocabulary when competing names or meanings would change a Product
 decision. Read existing definitions first. If one word describes different
@@ -224,27 +226,29 @@ cannot silently redefine approved intent. A new meaning remains a proposal
 until the user resolves the material Product choice.
 
 Keep a definition local to a Product module when its positioning or data model
-already explains it sufficiently. Use `docs/CONTEXT.md` for confirmed project
+already explains it sufficiently. Use `docs/terminology.md` for confirmed project
 vocabulary needed across modules, Features or conversations. Create it only
 when there is useful content to retain; an empty project does not receive a
-blank glossary. Missing CONTEXT never blocks discussion or development.
+blank glossary. Missing terminology never blocks discussion or development.
 
-CONTEXT is a compact vocabulary reference, not another Product specification:
+`docs/terminology.md` owns confirmed domain vocabulary and a shared language across requirements, design, code and discussion. It is not a general project-context document. Do not create a second `UBIQUITOUS_LANGUAGE.md` or parallel glossary. Retain definitions that will be reused beyond this discussion and prevent a real ambiguity; stable means currently agreed, not immutable.
+
+Use a compact structure, expanding only where a distinction needs explanation:
 
 - Begin with a short description of the domain covered when it helps orient
-  the reader, then give each term a name and a one- or two-sentence definition.
+  the reader, then give each term a canonical name and definition, normally one or two sentences. Include domain actions as well as nouns when their meanings matter. Necessary distinctions may take more space; there is no word or term quota.
 - Explain necessary conceptual relationships, aliases or commonly confused
   neighbors only when they prevent a real misunderstanding.
 - Link to the owning Product section for detailed rules, flows, values, state
   transitions and AC. Keep implementation state ownership, Godot classes,
   storage formats and technical choices in architecture records or code.
 - Keep pending ideas, chat logs, current progress and task-local notes out of
-  CONTEXT. Reuse existing definitions; when moving one here, replace authorized
+  terminology. Reuse existing definitions; when moving one here, replace authorized
   duplicates with links rather than keeping competing copies. Preserve section
   anchors used by existing Feature sources, leaving a link at the old location.
 
 `project-clarifier` and Product elicitors return proposed wording;
-`product-change-standardizer` alone writes approved Product and CONTEXT content.
+`product-standardizer` alone writes approved Product and terminology content.
 Pure terminology maintenance preserves meaning and behavior: it may clarify a
 name, record an already agreed distinction, or move/link a definition. It does
 not require Product initialization, a new Feature, or Feature synchronization,
@@ -252,9 +256,15 @@ even when a local Product definition or link is edited. If a definition changes
 actual intent or exposes a material unresolved behavior, resolve that decision
 and use the normal Product-change and Feature synchronization route.
 
-Read relevant CONTEXT definitions during clarification, planning, implementation
+Read relevant terminology definitions during clarification, planning, implementation
 and review when the file exists. Follow `document_language`, preserve stable
 IDs, and do not rename code or migrate saved data merely to align terminology.
+
+### Incremental terminology maintenance
+
+Check new terms, renames, retirements and clarified meanings during Product work and at the Stage 3 documentation checkpoint before final verification. If there is no useful change, do not write or produce an empty report. Reuse existing documentation authorization for settled, meaning-preserving changes; discovering a new material Product choice does not approve it.
+
+Add confirmed definitions, merge duplicates and repair references. For a rename, retain an old name only while it helps readers find the canonical term. For retirement, retain a replacement link when historical references need it; otherwise remove obsolete wording within scope. Resolve semantic changes in the owning Product/design workflow first and synchronize affected work. Keep the current definitions here and the change rationale in Product history, Feature design, ADR or Git as appropriate, not a growing glossary change log. A known code identifier may be recorded as an alias without authorizing code or save-data migration.
 
 ## Module filename rules
 
@@ -275,11 +285,11 @@ IDs, and do not rename code or migrate saved data merely to align terminology.
 - **Create a module** when a new system has its own data model and an independent interaction entry point.
 - **Extend an existing module** when new behavior, values, or UI remain within that module's established responsibility.
 
-When the boundary is unclear, use `product-change-standardizer`; it owns the routing decision.
+When the boundary is unclear, use `product-standardizer`; it owns the routing decision.
 
 ## Anti-examples
 
-- Do not put implementation choices such as a vector type or pathfinding algorithm in Product documents. Those choices belong in Coding Rules, code, or implementation notes.
+- Do not put implementation choices such as a vector type or pathfinding algorithm in Product documents. Those choices belong in Project Rules, code, or implementation notes.
 - Do not describe numeric behavior with subjective terms such as “high damage”; provide a formula or concrete value.
 - Do not use subjective acceptance language such as “renders smoothly”; state an observable threshold or outcome.
 - Do not put speculative future ideas in active Product requirements. Keep them in a separate `docs/ideas.md` until approved as Product intent.

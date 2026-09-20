@@ -7,26 +7,28 @@ metadata:
     - Clarify a new feature, Product modification, Product bug, or cross-module requirement
     - 用户提出「新功能」「修改需求」「Bug 修复」或「跨模块变更」
   priority: medium
-  called_by: product-change-standardizer
+  called_by: product-standardizer
 ---
 
 # Product specification elicitor
 
 ## Role
 
-Handle a concrete Product change rather than a from-scratch initialization. Decide which points require clarification and which may use a reviewable default, then return a structured change patch to `product-change-standardizer`.
+Handle a concrete Product change rather than a from-scratch initialization. Decide which points require clarification and which may use a reviewable default, then return a structured change patch to `product-standardizer`.
 
 Unlike `product-init-elicitor`, which covers every Product dimension, this workflow asks only questions that materially affect the requested change. It never writes files.
 
 ## Language contract
 
 Apply `methodology/05-document-language.md` to the returned patch. Reuse the
-confirmed `document_language` from `product-change-standardizer`, or resolve it
+confirmed `document_language` from `product-standardizer`, or resolve it
 from project configuration. Patch prose and section labels use that language;
 `mode`, `operation`, `source`, trigger operations and other protocol values remain
 as defined below.
 
 ## Core principles
+
+Use applicable `docs/project-rules.md` constraints and relevant accepted architecture decisions supplied by the caller or read from their sources. Surface a conflict before treating draft behavior as approved intent; return any proposed rule change to the owning workflow under the rule-maintenance contract.
 
 Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
 Keep this elicitor's modes and patch contract; do not start the clarifier's
@@ -42,9 +44,9 @@ standardizer. Keep deferred work outside the patch; do not require every possibl
 design branch to be explored first.
 
 When a term has conflicting meanings or hides a Product decision, use
-`methodology/01-product-doc-structure.md` **Project terminology and CONTEXT**.
-Read relevant `docs/CONTEXT.md` definitions when present. Return local definition
-changes in the owning Product patch and any proposed shared CONTEXT wording
+`methodology/01-product-doc-structure.md` **Project terminology**.
+Read relevant `docs/terminology.md` definitions when present. Return local definition
+changes in the owning Product patch and any proposed shared terminology wording
 with source links separately. Reuse the agreed terms in flows, data descriptions
 and AC. Keep implementation observations distinct from approved intent, and
 leave all writes to the standardizer.

@@ -16,14 +16,16 @@
 | `methodology/templates/` | 文档与 JSON 的结构模板 | 按需生成实例；不是待执行任务或第二份业务正文 |
 | `docs/methodology-config.json` | 当前项目工具路径、文档语言和测试命令 | 由环境准备核实，供项目工具与 Skill 读取 |
 | `docs/product.md`、`docs/product/` | 全局需求总览与模块规格 | 接收想法或 GDD 的有效内容，为 Feature 提供行为来源 |
+| `docs/project-rules.md` | 对所有适用 Product、Feature 生效的项目约束、协作规则和默认原则 | 区分约束强度；增删改前自检，详细技术规则引用 `agent-rules/` |
 | `docs/resource-requirements/` | 按需保存任务或原型的最小资源清单、规格和来源/目标路径 | 引用 Product 意图，由已有任务或 Progress 链接；准备信息不替代实现或人工验收 |
 | `docs/feature-list.json` | 任务 ID、状态、依赖和详情定位 | 用于选择任务；具体需求和验证安排进入详情 |
 | `docs/features/F0XX.json` | 当前任务范围、来源、组件、AC、验证计划和 notes | 连接 Product 与实现；执行过程由 Progress 续接 |
+| `docs/features/F0XX-design.md` | 按需保存较长的设计与实现说明 | notes 相对链接；解释实际采用的约束，不重复维护 AC 或验证台账 |
 | `docs/test-registry.json` | 组件、逻辑测试 ID、实际套件和用例映射 | 根据 Feature 影响范围选择测试，不保存测试通过结论 |
 | `docs/feature-list-revisions.json` | 需求变化对计划的同步关系与历史 | 支持后续增量处理，不替代 Product 内容或 Git 历史 |
 | `reports/`、`docs/feature-completion-evidence.json` | 原始测试与人工验收文件；完成依据引用 | 原件证明实际结果，依据记录关联当前 Feature 与适用内容 |
 | `docs/progress.md`、`docs/progress/` | 当前停点与交接；归档执行历史 | 链接任务、决定与报告，不重复维护任务状态全集 |
-| `docs/CONTEXT.md`、`docs/architecture.md`、`docs/architecture/`、`docs/knowledge/` | 共享术语、架构决定、可复用经验 | 按需积累并链接所属需求或任务，具体用途见 [项目知识](../guides/project-knowledge.md) |
+| `docs/terminology.md`、`docs/architecture.md`、`docs/architecture/`、`docs/knowledge/` | 共享术语、架构决定、可复用经验 | 按需积累并链接所属需求或任务，具体用途见 [项目知识](../guides/project-knowledge.md) |
 
 外部 GDD 是输入材料，默认不在初始目录内；接入方式见 [已有 GDD](../guides/product-and-planning.md#接入已有-gdd)。正式需求、任务计划和运行报告各有归属，不能通过修改使用说明来替代它们。
 
@@ -62,7 +64,7 @@ MyGodotGame/
 │   ├── feature-list-revisions.json revision_log 为空
 │   ├── test-registry.json           components 与 tests 为空
 │   ├── progress.md                 当前状态模板
-│   └── coding_rules.md             协作与通用架构约定
+│   └── project-rules.md            项目约束、协作规则与默认原则
 └── reports/
     └── .gdignore
 ```
@@ -95,24 +97,27 @@ MyGodotGame/
 | `project-source/methodology/templates/feature-list-revisions.json.tmpl` | `docs/feature-list-revisions.json` |
 | `project-source/methodology/templates/test-registry.json.tmpl` | `docs/test-registry.json` |
 | `project-source/methodology/templates/progress.md.tmpl` | `docs/progress.md` |
-| `project-source/methodology/templates/coding_rules.md.tmpl` | `docs/coding_rules.md` |
+| `project-source/methodology/templates/project-rules.md.tmpl` | `docs/project-rules.md` |
 
 部分模板既保留在项目 `methodology/templates/` 中，又复制为初始 `docs/` 文件。复制为初始文件时仅重命名，不执行变量渲染或语言转换。
+
+例如 `docs/project-rules.md` 来自 `project-source/methodology/templates/project-rules.md.tmpl`，并非创建器临时编写，也无需在 `defaults/docs/` 再维护一份正文。初始规则保留框架通用约定，具体游戏的硬约束随已确认需求增量维护。
 
 ## 开发中按需出现的内容
 
 | 路径 | 建立时机 | 主要内容 |
 | --- | --- | --- |
-| `docs/CONTEXT.md` | 确有需要复用且获准保存的项目术语时 | 简短定义、概念关系和必要 Product 链接；无初始空文件 |
+| `docs/terminology.md` | 确有需要复用且获准保存的项目术语时，之后持续维护 | 标准定义、概念关系、别名或废弃状态及必要来源链接；无初始空文件 |
 | `docs/product/NN-name.md` | 产品模块需要详细规格时 | 流程、数据含义、状态、UI、音频、数值、AC |
 | `docs/resource-requirements/<scope>.md` | 用户要求清单或需要交接资源准备时 | 按范围复用的最小资源集合、文件去向与待确认项；见 [资源准备交接](../guides/product-and-planning.md#按清单准备资源再继续原型)，无初始空目录或文件 |
 | `docs/features/F001.json` 等 | 首次规划或新增工程任务时 | 任务行为、组件、AC、验证映射、长期 notes |
+| `docs/features/F0XX-design.md` | 用户要求详细说明，或设计需要较长解释时 | 实际约束、职责、状态、接口、实现理由与结果；Stage 1 判断，Stage 2–3 保存与维护 |
 | `docs/knowledge/<主题>/<条目>.md` | 实际任务产生值得复用的做法、排障方法或教训时 | 独立条目、适用条件和证据链接；需要时增加主题层级并更新索引 |
 | `docs/feature-completion-evidence.json` | Feature 执行初始化完成依据时 | 当前任务的测试原件引用与适用人工决定；不记录复审计数 |
 | `docs/progress/<key>.md` | 一项 Feature 或获批批次需要归档时 | 一份执行历史正文 |
 | `docs/architecture.md` | 需要项目级职责和依赖地图时 | 当前架构导航 |
 | `docs/architecture/<subsystem>.md` | 某个子系统需要展开说明时 | 状态归属、关键运行流程、生命周期与失败处理 |
-| `docs/architecture/adr-NNNN-<slug>.md` | 存在值得长期保留的重要技术决定时 | 方案、理由、取舍与证据 |
+| `docs/architecture/adr-NNNN-<slug>.md` | 技术决定达到 ADR 阈值时，通常在 Stage 1 判断、Stage 2–3 保存 | 方案、理由、取舍与证据；不按 Feature 数量创建 |
 | `tests/unit/` | 创建组件单元测试时 | 局部代码契约 |
 | `tests/features/` | 创建 Feature 验收或 Bug 回归时 | 用户行为与历史缺陷覆盖 |
 | `tests/invariants/` | 确实需要跨 Feature 不变量测试时 | 可执行的通用约束 |
@@ -134,15 +139,18 @@ MyGodotGame/
 | `product.md.tmpl`、`product-module.md.tmpl` | Product 总览与模块规格 |
 | `feature-detail.json.tmpl` | 产品 Feature，省略 `engineering_change` |
 | `engineering-feature-detail.json.tmpl` | Bug、重构、维护 Feature |
+| `feature-design.md.tmpl` | 可选的详细 Feature 设计与实际实现说明 |
 | `feature-list.json.tmpl`、`feature-list-revisions.json.tmpl` | 任务索引与源需求演进记录 |
 | `test-registry.json.tmpl`、`feature-completion-evidence.json.tmpl` | 测试索引与完成依据结构 |
 | `manual-acceptance-checklist.json.tmpl` | 单 Feature 人工清单与结果共用结构，按需填写后绑定版本 |
 | `progress.md.tmpl`、`feature-learning-summary.md.tmpl` | 当前交接与任务结束时的简短经验 |
-| `coding_rules.md.tmpl` | 协作约定与通用设计原则 |
+| `project-rules.md.tmpl` | 项目级约束、协作约定与默认设计原则 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 按需架构地图 |
 | `architecture-decision-record.md.tmpl` | 按需 ADR |
 
 模板提供结构。Skill 生成正文时遵循 `document_language`，保留机器字段、ID、状态和路径。不要一次性把所有模板实例化成空文档；例如没有真实架构决定就不创建占位 ADR。模板要求见 [模板说明](../../../../project-source/methodology/templates/README.md)。
+
+Markdown 模板的普通段落按自然段保存，不按固定字符数手动拆行；段落间保留空行，标题、列表、表格和代码块保留必要结构换行。阅读宽度由编辑器自动折行控制，这项格式约定不改变代码的 lint 规则。
 
 ## 工具为什么分成几处
 

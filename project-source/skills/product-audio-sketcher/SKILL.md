@@ -4,7 +4,7 @@ description: Define Product sound-effect and music requirements, including real 
 metadata:
   version: 1.2
   priority: medium
-  called_by: product-change-standardizer
+  called_by: product-standardizer
 ---
 
 # Product audio sketcher

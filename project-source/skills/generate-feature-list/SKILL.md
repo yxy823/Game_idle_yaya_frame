@@ -24,7 +24,7 @@ Before durable writes, apply the preflight and ownership contract in
 
 Read the selected Product's complete approved specification, with
 `docs/product.md` to establish order and shared requirements. Consult relevant
-CONTEXT definitions, prerequisite/affected module sections, configuration and
+terminology definitions, prerequisite/affected module sections, configuration and
 rules through `AGENTS.md`. Other Product modules are context only when needed,
 not work to decompose now. Reuse unchanged reading on continuation.
 
@@ -49,6 +49,7 @@ inventory/file mismatches and resolve them before planning; do not guess names.
    prototype before dependent implementation** in `methodology/01-product-doc-structure.md`
    to the actual prerequisite order; production domain/presentation separation
    does not require developing business logic before an independent visual prototype.
+   Check applicable `docs/project-rules.md` hard constraints as well. Do not decompose a conflicting Product into an apparently valid plan; resolve the rule/Product choice through the existing owner. Note an actual need for detailed Feature design or an ADR for Stage 1 rather than creating one for every work item.
 2. Propose independently verifiable, session-sized outcomes under the canonical
    decomposition rules. Use precise source sections and observable criteria;
    do not encode class structure as Product behavior or pre-plan later Products.
@@ -87,7 +88,7 @@ Create a new empty schema only when `docs/test-registry.json` does not exist. Fo
 
 When the registry already exists, read and validate it before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
 
-Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `test_unit_root/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Coding Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
+Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `test_unit_root/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Project Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
 
 Use the project-owned merge helper from the repository root. The temporary candidate file contains a JSON array of complete component objects, or an object with a `components` array; it must not be committed.
 

@@ -51,7 +51,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-change-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
+| 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-standardizer` 按需调用 elicitor/UI/audio Skill | [任务路由](../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
 | 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程：generate 先预览数量与逐项内容，确认或明确自主授权后追加；sync 处理已有任务影响；代码检查台账约束 | 当前 Product 的必要 Feature 完成后再拆下一份；预览含测试登记表写入前的确认边界，检查器不验证对话批准；保留 ID 与历史，不新增状态 |
 | 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 引用权威执行规范，advisor 只读回答 | 从当前记录、必要历史和 Git 差异续接；规则按主题读取，快照在 Stage 1 展示一次且不凑条数，沿用有效上下文和授权，不逐阶段固定发言 |
 | 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
@@ -62,23 +62,27 @@
 | 4.9 | 验证尚未确定的视觉布局、资源尺度、玩法、手感或技术假设 | 流程：在授权范围与预算内做一个可判定的实验 | 原型实验提示词及任务路由；视觉问题用真实样本和独立 Godot 场景，结论进入现有 Feature notes 或 Progress，不自动变成正式需求、验收或完成状态 |
 | 4.10 | 从实际源码调查架构改进机会 | 流程：围绕指定痛点或近期改动线索，核对调用关系、维护成本与已有决定 | 只读架构调查提示词；不依赖已有重构待办，允许零候选，选定问题后回到现有工程入口 |
 | 4.11 | 先讨论想法、设计取舍或概念 | 流程：`project-clarifier` 先查事实，只补问当前缺口，按依赖小步澄清 | 只讨论不写文件；不要求环境就绪或完整 Product，不维护问卷状态、轮数或评分 |
-| 4.12 | 保存并复用已确认的项目术语 | 流程：澄清后由 Product standardizer 按授权维护 `docs/CONTEXT.md` 或局部定义 | 每个定义一个归属；保持含义和行为时不拆任务，实质变化仍经 Product 与 Feature 同步；规划、执行、复审读取相关定义 |
+| 4.12 | 保存并持续维护已确认的项目术语 | 流程：澄清后由 `product-standardizer` 按授权维护 `docs/terminology.md` 或局部定义，Stage 3 检查有价值的增量 | 每个定义一个归属；新增、改名、废弃及语义变化检查引用；保持含义时不拆任务，实质变化仍经 Product 与 Feature 同步；嵌套维护后返回当前 Feature |
 | 4.13 | 功能已实现但缺少 Product 或 Feature 记录 | 流程：确认产品意图、补齐当前模块计划，按授权从现状验证与收尾 | [规划接管](../../project-source/methodology/02-feature-list-schema.md#adopting-existing-implementation)和[交付接管](../../project-source/methodology/03-execute-loop.md#delivery-of-existing-implementation)；复用实现，缺失历史如实记录，新任务不直接标 done，不重演历史 TDD，后续修复与当前完成条件保持有效 |
 | 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../docs/blank-project/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
 | 4.15 | 正式逻辑前验证当前界面的视觉基础 | 流程与人工：UI/audio 提供输入，现有规划与执行交付独立场景及适用验收 | [视觉原型规范](../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)；复用普通 Feature 与真实依赖，已有有效布局不重做，缺失样本不冒充通过，视觉接受不替代正式功能验收 |
 | 4.16 | 按当前任务准备最小资源集合，提供文件后继续原型 | 流程：保存项目内 Markdown 清单，交接缺失项和目标路径，核对实际文件后续接 | [资源准备规范](../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)；保留九个字段及来源/目标/显示尺度，区分实测、建议、待确认和不适用；复用清单，不增加 Skill、全局编号或状态台账 |
+| 4.17 | 需要保留较长的 Feature 设计与实际采用的约束 | 流程：Stage 1 判断，Stage 2–3 维护可选 `F0XX-design.md`，notes 相对链接 | [设计说明规范](../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)；引用原规则并解释实际应用，不复制规则全集或建立第二份 AC、状态、验证计划 |
+| 4.18 | 新增、修改或删除项目级约束 | 流程：需求及 Stage 0–1 读相关规则，写前逐项对话自检，Stage 2–3 或 Bug 复盘按授权维护 | [规则维护规范](../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)；说明前后变化、依据、强度、归属、冲突与影响，删除需说明接替或失效原因；不自动升级经验、不新增报告台账 |
+| 4.19 | 技术方案需要长期保留决策理由 | 流程：Stage 1 判断 ADR 阈值，Stage 2–3 或独立获批架构任务保存 | [架构规范](../../project-source/methodology/10-architecture-overview.md)；撤销成本、难恢复的理由和真实方案取舍共同判断；不每 Feature 创建，不覆盖 Product 或项目硬约束 |
 
 ## 5. 验证与异常
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py`；不生成独立计划；同一 runner 的 scope 决定范围，不因维护分类自动 full；Agent 判断实际影响 |
+| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；不先写完所有测试再集中实现，不补造已有实现的 RED；无独立计划，按实际影响选择最终范围 |
 | 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、每 Feature 导入阶段或通过标签 |
 | 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/test_run_evidence.py`、`lib/feature_completion_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
 | 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
 | 5.5 | 验收方式与独立复审 | 流程：Stage 1 决定验收方式，Stage 4 提供可复现步骤，Stage 6 按用户指定的范围与时机审查需求和代码质量，可合并多项 Feature | manual 需真实人工决定；automated 省略 Stage 5；独立评审默认省略，完成依据不要求复审计数，用户指定的评审条件由 Agent 核对 |
 | 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
 | 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
+| 5.8 | 术语、规则、Feature 设计或 ADR 在最终验证后变化 | 流程与既有指纹：Stage 3 尽早完成治理文档更新；晚修改更新失效依据后才完成 | [执行规范](../../project-source/methodology/03-execute-loop.md#3d-documentation-checkpoint-before-final-verification)及测试规范；可选设计不是 notes 字段的指纹豁免，不新增特殊跳过规则 |
 
 ## 6. 完成与后续
 
@@ -149,9 +153,9 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 项目创建与接入 | 2.4 | 复制并迁移旧框架项目 | 原项目与当前框架只读；在独立目标保留当前成果、转换必要格式、实际验证并交接；一次性报告保存于 `reports/maintenance/framework-migration/migration.md`，不重做功能或冒充验收 |
 | 项目创建与接入 | 3.1 | 准备 Godot 开发环境 | 首次配置完整记录且默认不提交；后续更新追加本次差异与实际检查，按项目规则及已有授权提交；复用 initialization 报告，仅配置时说明尚需的首次扫描 |
 | 需求设计 | 4.11 | 轻量讨论与澄清 | 想法、困惑与已有决定；project-clarifier 只补问影响当前判断的缺口，交付对话结论 |
-| 需求设计 | 4.12 | 澄清并记录项目术语 | 概念、场景与已确认内容；澄清后由标准化入口按授权保存定义，保持含义时不初始化需求或规划 |
+| 需求设计 | 4.12 | 澄清并记录项目术语 | 概念、场景与已确认内容；按消除歧义所需的粒度维护定义、改名、废弃和引用，保持含义时不初始化需求或规划 |
 | 需求设计 | 4.9 | 验证玩法或技术假设 | 一个视觉、玩法或技术问题、资源、允许范围、预算与观察标准；最小实验后交付结论、局限和代码去向，不自动进入正式开发 |
-| 需求设计 | 4.1.1 | 从想法或已有 GDD 整理 Product 并衔接规划 | 想法或 GDD 输入放入末尾材料区，复用明确设计并区分缺口；保留原件，按语义整理总览与模块，已有需求增量处理，只规划当前 Product，不开始实现 |
+| 需求设计 | 4.1.1 | 从想法或已有 GDD 整理 Product 并衔接规划 | 想法或 GDD 输入放入末尾材料区，复用明确设计并核对项目约束；保留原件，按语义整理总览与模块，已有需求增量处理，只规划当前 Product，不开始实现 |
 | 需求设计 | 4.13 | 从已有实现补齐需求与任务 | 指定成果、意图和文档/交付范围；沿 Product、规划与执行入口补齐当前依据和真实缺口，不以代码存在替代需求批准或当前完成验证 |
 | 需求设计 | 4.1.5 | 只读适配外部需求内容 | 文本、对话摘录、文件或附件说明放入末尾材料区；保持原意并按现有路由输出规范化 Markdown 草稿、衔接建议与待定项，不写文件、调用写入流程或执行任务 |
 | 需求设计 | 4.1.2 | 新增、删除或调整玩法需求 | 希望改变的行为及范围；Product change/spec elicitor 明确变化并衔接计划 |
@@ -166,7 +170,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 修复与改进 | 4.10 | 只读调查架构改进机会 | 指定维护痛点或下一项变化；核对源码和相关决定，给有依据的候选、最小调整及验证建议，不实施 |
 | 修复与改进 | 4.5.1 | 定位与修复 Bug | 前文说明期望，实际表现、复现与日志放入末尾材料区；当前任务修复或 engineering bug，意图变化转 Product |
 | 修复与改进 | 4.5.2 | 行为保持的重构 | 明确痛点、范围和不变行为；engineering refactor，必要时按请求选择异味 |
-| 修复与改进 | 4.5.3 | 工程维护与工具调整 | 依赖、构建、配置、测试工具等技术目标；engineering maintenance 与相称验证 |
+| 修复与改进 | 4.5.3、4.18 | 工程维护与工具调整 | 实现类维护走 engineering maintenance 与相称验证；独立规则文档维护按写前自检与授权契约处理，不虚构 Feature |
 | 修复与改进 | 4.14 | 审核并原地替换项目框架 | 指定项目与待采用框架来源；审核通过即在项目内替换纯框架、保留数据、无损适配，必要验证后一次提交，不新增 Feature 或自动升级机制 |
 | 资源、性能与数据 | 4.16 | 分析并整理任务资源清单 | 当前任务、已有资源和清单位置；保存最小资源集合、准备规格及文件去向，交接缺口，本入口不制作、购买、复制素材或搭建场景 |
 | 资源、性能与数据 | 4.6、4.16 | 接入或替换游戏资源 | 提供资源及接入目标；有清单时核对并更新同一份，沿现有 Feature/Product/maintenance 路径处理引用、导入与体验 |
@@ -245,7 +249,7 @@ GitHub 独立审核入口规定仓库读取、固定提交、静态检查主题�
 
 2026-09-15 新增实际开发反馈入口：仅核对提示词结构、场景对应、文档链接与授权边界，并同步 HTML 阅读版。未提供实际项目反馈供本轮归因，也未执行游戏验证；入口存在不代表框架已由真实项目再次验证。
 
-轻量澄清与 CONTEXT 的引入采用设计适配：借鉴 Matt 的 grilling/domain-modeling 与 progressive-requirement-clarifier 的问题分流思路，未复制其源码、脚本或状态机制。本次检查 Skill 格式、复制清单、JSON、文档引用及讨论/术语维护/行为变化的路由一致性；未运行真实项目对话或完整 Feature 流程。
+轻量澄清与 terminology 的引入采用设计适配：借鉴 Matt 的 grilling/domain-modeling 与 progressive-requirement-clarifier 的问题分流思路，未复制其源码、脚本或状态机制。本次检查 Skill 格式、复制清单、JSON、文档引用及讨论/术语维护/行为变化的路由一致性；未运行真实项目对话或完整 Feature 流程。
 
 Product 逐个拆分规则调整生成、同步和交接入口：当前 Product 完成后才拆下一份，后续未规划文档不触发提前生成。核对空台账、追加历史、暂缓文档变化及同步锚点的衔接；沿用原 schema 和检查工具，仅作格式、引用和流程静态核对，未运行真实项目的连续 Product 开发。
 

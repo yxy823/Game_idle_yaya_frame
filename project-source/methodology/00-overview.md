@@ -22,14 +22,15 @@ The project knowledge layer is:
 ├── agent-rules/                         repository-specific concrete implementation rules
 └── docs/
     ├── product.md + product/*.md        Product intent: What
-    ├── CONTEXT.md                       optional shared project vocabulary
+    ├── terminology.md                  optional domain terms and shared definitions
     ├── feature-list.json                lightweight Feature index: Todo/status
     ├── features/F0XX.json               Feature detail and durable local notes
+    ├── features/F0XX-design.md          optional detailed design of one Feature
     ├── knowledge/                      development experience, with topic indexes and separate entries
-    ├── feature-list-revisions.json      Product/Coding-Rules synchronization history
+    ├── feature-list-revisions.json      Product/Project-Rules synchronization history
     ├── test-registry.json               component/test traceability and safety-net index
     ├── feature-completion-evidence.json current-snapshot Feature completion evidence
-    ├── coding_rules.md                  collaboration and stack-independent architecture
+    ├── project-rules.md                 project constraints, collaboration and design principles
     ├── progress.md                      current state, blockers, decisions, next action and history index
     ├── progress/                        one historical body per Feature or approved batch
     ├── architecture.md                  optional human-owned module/dependency overview
@@ -42,7 +43,7 @@ The project knowledge layer is:
 | Group | Skills | Responsibility |
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Focused discussion; hand approved terminology to the existing writer only when documentation is requested. |
-| Product | `product-init-elicitor`, `product-change-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
+| Product | `product-init-elicitor`, `product-standardizer`, `product-spec-elicitor`, `product-ui-sketcher`, `product-audio-sketcher` | Define or change Product intent. |
 | Planning | `generate-feature-list`, `sync-feature-list` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-standardizer`, `pick-refactor-smell` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `execute-next-feature` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
@@ -56,12 +57,14 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Task type | Entry | Boundary |
 | --- | --- | --- |
 | Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
-| Record or maintain settled project vocabulary | `project-clarifier` → `product-change-standardizer` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
+| Record or maintain settled project vocabulary | `project-clarifier` → `product-standardizer` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
+| Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
+| Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | Establish layout, resource scale and interaction readability before dependent logic | Current Product planning and delivery, or an explicitly requested scoped experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
 | Analyze and hand off the minimum resource files for a task | Current task Agent; UI/audio sketchers contribute requirements when needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); save a requested preparation list without treating it as new Product intent or authorization to acquire assets or implement the game. |
-| New Feature / Product change | `product-change-standardizer` | Update Product, handle existing-work impacts, and defer later Products' initial decomposition. |
-| Existing implementation without adequate Product/Feature records | `product-change-standardizer` → existing planning/delivery routes | Confirm intent and adopt the current module under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
+| New Feature / Product change | `product-standardizer` | Update Product, handle existing-work impacts, and defer later Products' initial decomposition. |
+| Existing implementation without adequate Product/Feature records | `product-standardizer` → existing planning/delivery routes | Confirm intent and adopt the current module under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
 | Decompose the current Product | `generate-feature-list` | Append only this Product's plan; finish its required Features before initially decomposing the next Product. |
 | Source synchronization | `sync-feature-list` | Trace additions, revisions, splits, merges and dependency/test retirement migrations. |
 | Continue current Feature | `execute-next-feature` | Resume the actual Stage and existing authorization; “continue” alone does not grant missing approval or acceptance. |
@@ -126,11 +129,11 @@ User request
    │      ↓
    │  project-clarifier → conversation result
    │      └─ Authorized terminology documentation
-   │            → product-change-standardizer terminology route → STOP
+   │            → product-standardizer terminology route → return / finish
    │
    ├─ Formalize new, changed, missing, or ambiguous Product intent
    │      ↓
-   │  product-change-standardizer
+   │  product-standardizer
    │      ↓
    │  Product docs → decompose current Product / sync existing-work impacts
    │                 later Products remain at document level until their turn
@@ -160,7 +163,7 @@ handoff → continue within existing authorization, otherwise STOP
 A reported bug must be classified before any Product edit:
 
 - documented expected behavior exists and implementation violates it → `engineering-change-standardizer` in `bug` mode;
-- expected behavior is missing, contradictory, or intentionally changing → `product-change-standardizer`.
+- expected behavior is missing, contradictory, or intentionally changing → `product-standardizer`.
 
 ## Delivery control points
 
@@ -170,7 +173,7 @@ at these control points; reuse decisions that already cover the concrete action:
 1. A proposed Product or engineering change must be approved before durable planning writes that require approval.
 2. `execute-next-feature` Stage 1 requires explicit approval before implementation begins.
 3. Stage 1 decides acceptance from the requirement. Visual/audio/game-feel or other human judgment requires manual mode and Stage 5; fully automated AC may use automated mode and omit Stage 5. Empty checks do not make this decision.
-4. Bug Guardrail promotion into Coding Rules requires explicit approval.
+4. Bug Guardrail promotion into Project Rules requires explicit approval.
 5. Stage 8 reports completion and continues only within the user's remaining authorization. Stop at the requested scope boundary or a missing decision.
 
 ## Stage 0–8 delivery loop
@@ -182,9 +185,9 @@ Stage 0   Require ready environment; select Feature; consult relevant knowledge;
    ↓
 Stage 1   Test Impact Review + resource preflight → explicit human approval
    ↓
-Stage 2   Mark in_progress; persist approved verification plan/registry entries
+Stage 2   Mark in_progress; persist approved verification, needed design and decisions
    ↓
-Stage 3   Existing Safety Net baseline → TDD RED/GREEN → focused implementation
+Stage 3   Baseline → per-behavior RED/GREEN/refactor → documentation checkpoint
    ↓
 Stage 4   Required Test Set + static/full checks → test evidence + human checklist
    ↓
@@ -231,7 +234,7 @@ Release management, store submission, public version announcements, deployment a
 | Product document structure | [01-product-doc-structure.md](./01-product-doc-structure.md) |
 | Feature ledger schema and invariants | [02-feature-list-schema.md](./02-feature-list-schema.md) |
 | Stage 0–8 execution loop | [03-execute-loop.md](./03-execute-loop.md) |
-| Coding Rules architecture and bug-guardrail promotion | [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md) |
+| Project Rules architecture and bug-guardrail promotion | [04-coding-rules-4-layers.md](./04-coding-rules-4-layers.md) |
 | Document language and verification configuration | [05-document-language.md](./05-document-language.md) |
 | Document-language smoke scenarios | [06-document-language-smoke-scenarios.md](./06-document-language-smoke-scenarios.md) |
 | Engineering change classification and creation | [07-engineering-change.md](./07-engineering-change.md) |

@@ -7,6 +7,7 @@ docs/
 ├── feature-list.json
 ├── features/
 │   ├── F001.json
+│   ├── F001-design.md       # Optional detailed design for this Feature
 │   ├── F002.json
 │   └── ...
 ├── feature-list-revisions.json
@@ -24,7 +25,7 @@ The Feature index stays lightweight. Durable behavior, stable acceptance-criteri
     "generated_from": [
       "docs/product.md",
       "docs/product/**/*.md",
-      "docs/coding_rules.md"
+      "docs/project-rules.md"
     ],
     "generated_at": "2026-05-23T05:46:48Z",
     "total_features": 2,
@@ -155,7 +156,7 @@ Engineering Feature:
 | `verification.test_impact.additional_tests` | Array of `{ "id": "...", "reason": "..." }` with unique Registry IDs and non-empty reasons. May reference another Feature's test. Referenced tests may be planned during preparation but must be active for current completion. Additional scope does not change test ownership or replace the Feature's own AC/regression mapping. |
 | `verification.test_impact.full_suite_reasons` | Unique array of non-empty reasons for approved full-suite escalation beyond automatically derived triggers. An empty array records no additional escalation. |
 | `source` | Precise Product source when a behavioral contract exists; `infrastructure` for technical work with no single Product source. |
-| `notes` | String. Starts empty; later holds durable implementation decisions, placeholders, TODO smell suggestions, deferred edges, and bug learning. |
+| `notes` | String. Starts empty; later holds brief local decisions, placeholders, TODOs, deferred edges, bug learning and relative links to detailed Feature design or other owning records. Long design explanations follow the optional Markdown contract below. |
 | `engineering_change` | Optional. When present, exactly `bug`, `refactor`, or `maintenance`. Product-derived Features omit it. |
 | `bug_diagnosis` | Optional/null for compatibility. A non-null object is allowed only for `engineering_change: bug` and has exactly `actual`, `expected`, `source`, `reproduction`, `root_cause`. The first three are non-empty strings; reproduction is a non-empty ordered list of non-empty steps. Root cause may be null while investigating, but must be a non-empty confirmed cause for current completion. Non-Bug templates do not invent diagnostic evidence. |
 
@@ -167,9 +168,21 @@ in the Feature itself; there is no second plan file or extra-scope command.
 Changing that record requires review of the affected scope and invalidates
 prior snapshot evidence.
 
+## Feature design and implementation notes (optional)
+
+Use `docs/features/F0XX-design.md` when the user asks for detailed design, or a Feature's boundaries, state ownership, lifecycle, migration, interfaces or constraints need a sustained explanation. Simple changes need no extra document. Link it from the Feature's `notes` with `[Design](F0XX-design.md)`; do not add a second JSON record, design-status ledger or mandatory file-presence gate. Stage 0 reads existing designs for the selected Feature and relevant dependencies.
+
+The design explains this change: goal and boundaries with Product/AC links; relevant existing behavior; materially constraining rules and how they apply; responsibilities, interfaces and state ownership; important runtime/failure/lifecycle flows; necessary implementation order and verification reasoning; actual outcome and meaningful deviations. Expand useful explanations without a fixed length. Use [feature-design.md.tmpl](templates/feature-design.md.tmpl) as an optional outline, omitting irrelevant sections.
+
+Reference repository rules and records using paths relative to the design document, with useful section anchors. Explain their concrete application rather than copying rule bodies or recording every file read. Version-sensitive external references identify the applicable version and separate evidence from assumptions. AC, component impact, verification mappings and test obligations remain in Feature JSON/Registry; the design links them rather than maintaining another acceptance or test plan. Task state and blockers remain in Progress.
+
+Stage 1 develops the proposal; Stage 2 persists approved design; Stage 3 keeps it aligned with implementation and finalizes it before Stage 4. Material changes follow the existing authorization contract. A detailed current subsystem description belongs in `docs/architecture/<subsystem>.md`, and an important cross-Feature rationale may belong in an ADR; the Feature design links those owners. Do not copy the same subsystem description into each Feature.
+
+After completion, retain the design as the account of that Feature. Later behavior changes get a new Feature/design and update the current architecture. Corrections or replacement links may clarify history without rewriting past decisions as though they had always applied. Design Markdown participates in the current verification fingerprint; it does not inherit the process-only exemption of JSON `notes`.
+
 ## File 3: `docs/feature-list-revisions.json`
 
-`sync-feature-list` appends one record for each Product/Coding-Rules synchronization:
+`sync-feature-list` appends one record for each Product/Project-Rules synchronization:
 
 Initial content is `{"schema_version": 2, "revision_log": []}`. The root and each
 revision entry use schema version 2; no old-format parsing or automatic migration
@@ -328,7 +341,7 @@ create PASS. A valid manual plan with no Required/affected tests and no full-sui
 obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human
 acceptance and applicable static checks still apply. Unresolved failed or
 unfinished final runs on the same snapshot still block completion. Test and applicable human acceptance evidence must match the current semantic snapshot.
-Production, tests, configuration, Product, Coding Rules, Feature AC/verification and
+Production, tests, configuration, Product, Project Rules, Feature AC/verification and
 Registry semantics participate in that snapshot. Pure status/completion timestamps,
 Feature notes and Progress/history archival do not invalidate business test evidence.
 
@@ -496,7 +509,7 @@ performed by the ledger validator.
 ## Adopting existing implementation
 
 When implementation predates its Product or Feature records, first use
-`product-change-standardizer` to establish confirmed Product intent. Existing
+`product-standardizer` to establish confirmed Product intent. Existing
 code is evidence of current behavior, not automatic approval of that behavior.
 Then apply Product-by-Product planning to the requested current module; existing
 implementation does not waive prerequisite completion or expand the planning
@@ -568,7 +581,7 @@ alignment does not mean the new behavior has been implemented or tested.
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
 | Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/registry, preserve existing history |
-| Product/Coding-Rules synchronization | `sync-feature-list` | index/details + revision log + needed components and affected test traceability |
+| Product/Project-Rules synchronization | `sync-feature-list` | index/details + revision log + needed components and affected test traceability |
 | Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details + needed components; test plan is finalized during execution |
 | Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test registry, notes, Progress, implementation/test files |
 | Smell candidate selection | `pick-refactor-smell` | read-only selection; returns to engineering standardizer |

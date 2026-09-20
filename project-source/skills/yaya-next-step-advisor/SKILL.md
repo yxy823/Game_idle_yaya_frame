@@ -34,6 +34,8 @@ and verified read-only Git status/log/diff/show are allowed.
    destination Skill's relevant entry/stop contract. That table and the existing
    workflow own routing and approval; this Skill maintains no second workflow.
 
+When the question concerns terminology, project rules or design, read the relevant `docs/terminology.md`, `docs/project-rules.md`, Feature design and architecture/ADR sources. Use their owning contracts for update authority and the Stage 3 documentation checkpoint. Missing optional designs/ADRs are normal; a proposed rule or accepted ADR is not proof of implementation or verification. Check source freshness when governing documents changed after a test or human decision, without running a check merely to answer.
+
 Report a missing file as missing instead of creating it. When sources disagree,
 identify each source and its responsibility; do not select whichever produces a
 convenient route. An unclear Stage or old report is not proof of new approval or
@@ -61,6 +63,8 @@ commands, version numbers, completed Gates or approvals. Cite configured
 commands instead of baking in the author's local paths. Preserve existing
 explicit user authorization. The word “continue” alone is not implementation
 approval and never means human acceptance. Producing a prompt grants neither.
+
+Use the current `product-standardizer` entry for Product and meaning-preserving terminology writes. Rule maintenance needs its pre-write self-check and any missing substantive decision; a local design does not automatically become a global rule. Supporting documentation inside an authorized Feature returns to that Feature instead of opening a new planning cycle. Read the destination contracts for details rather than copying a second procedure here.
 
 If a framework defect is reported, separate framework/tooling repair from
 business WIP and refer to the existing maintenance route. A user-chosen new

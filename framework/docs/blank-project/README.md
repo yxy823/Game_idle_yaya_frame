@@ -96,7 +96,7 @@ flowchart LR
 | --- | --- |
 | GDD | Game Design Document，游戏设计文档；在此作为整理正式 Product 的输入材料 |
 | Product | 正式需求体系；“逐个 Product 推进”具体指按模块文档及其已确认范围规划和交付 |
-| CONTEXT | 当前项目共用的简短术语定义与概念关系；需要时保存在 `docs/CONTEXT.md` |
+| terminology | 当前项目共用的简短术语定义与概念关系；需要时保存在 `docs/terminology.md` |
 | Feature | 一项可独立理解和验证的完整工作；也可承载 Bug、重构或维护 |
 | AC | Acceptance Criterion，验收条件；在 Feature 内使用稳定的 `AC01` 等 ID |
 | Component | 测试影响分析使用的语义组件，如 `inventory`；不等同于某个文件夹 |

@@ -14,7 +14,7 @@ Choose exactly one mode:
 
 Before classifying a Product-facing bug, read the relevant Product source. Missing,
 contradictory, or materially ambiguous Product expectations route to
-`product-change-standardizer`; do not guess. Technical defects use their documented
+`product-standardizer`; do not guess. Technical defects use their documented
 project-tool contract and remain engineering work.
 
 Distinguish game behavior from project tooling. Technical defects cite the actual
@@ -27,7 +27,7 @@ requirements merely to describe a tooling defect.
 | --- | --- |
 | Defect introduced inside the current unfinished Feature | Keep it in the current Feature and resume the applicable execute Stage; record the failure and rerun affected verification. No duplicate bug Feature merely to move its failure elsewhere. |
 | Independent regression of previously completed behavior | Create an approved `bug` Feature through this workflow, retaining original completed history. |
-| User wants a different observable behavior | `product-change-standardizer`, even if the user calls it a bug. |
+| User wants a different observable behavior | `product-standardizer`, even if the user calls it a bug. |
 | Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
 | Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
 
@@ -171,7 +171,7 @@ requested no commit. Use `<type>(<scope>): <中文行为摘要>` and include
 `Work item: docs/features/F0XX.json` in the body. Run `git status --short`
 afterward. Never push or rewrite history.
 
-Creation of an engineering Feature alone does not create a `feature-list-revisions.json` entry because no Product/Coding-Rules synchronization occurred.
+Creation of an engineering Feature alone does not create a `feature-list-revisions.json` entry because no Product/Project-Rules synchronization occurred.
 
 ## Bug-learning promotion
 
@@ -187,7 +187,7 @@ Guardrail: ...
 
 The local record is factual incident knowledge. Link to `bug_diagnosis` or the
 execution archive for detailed evidence instead of copying the incident transcript.
-Regression IDs are also registered in `docs/test-registry.json`. Coding Rules are
+Regression IDs are also registered in `docs/test-registry.json`. Project Rules are
 prescriptive global knowledge. If an approved Guardrail becomes machine-verifiable
 across Features, it may also become an `INV-<DOMAIN>-NN` invariant under
 `08-testing-strategy.md`. Check existing rules before recommending a new rule.
@@ -200,7 +200,7 @@ Propose promotion of only the generalized `Guardrail` when at least one is true:
 - the defect recurred or needed repeated repair attempts;
 - tests cannot fully enforce it.
 
-Promotion requires explicit human approval. A rejected promotion leaves the local Bug note untouched. An approved promotion changes Coding Rules and therefore requires `sync-feature-list` before another Feature begins; reuse approval covering the concrete synchronization actions, or obtain the missing decision.
+Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Preserve detailed local constraints and rationale in the optional Feature design when needed; do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `sync-feature-list` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
 
 ## Explicit exclusions
 

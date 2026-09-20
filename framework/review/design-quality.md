@@ -22,7 +22,7 @@
 | 维护源 | 根 AGENTS 约束维护；`framework/` 保存复制工具、提示词和按需复盘材料 |
 | 项目创建 | [create_project.py](../commands/create_project.py) 读取 [project-files.json](../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
-| Skill | 当前 12 项；新增 `project-clarifier` 复用提问方法与 Product 写入入口，按需维护项目 CONTEXT，不增加脚本或问卷状态。专用脚本仍在所属 Skill 的 `scripts/` |
+| Skill | 当前 12 项；`project-clarifier` 复用提问方法，由 `product-standardizer` 统一维护 Product 与项目术语，不增加脚本或问卷状态。专用脚本仍在所属 Skill 的 `scripts/` |
 | 共享工具 | [tools/README.md](../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
 | 测试选择 | [test_selection.py](../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表；没有独立计划命令、计划文件或计划哈希 |
@@ -55,6 +55,8 @@ gdUnit 的 `GdUnitTestSessionHook` 是测试生命周期扩展，用于关联诊
 | 事实 | 当前来源 | 应守住的边界 |
 | --- | --- | --- |
 | 需求、任务与测试关系 | Product、Feature 索引/详情、测试登记表 | 各文件负责产品意图、任务记录或测试映射；不要再复制为独立机器计划 |
+| 稳定术语与项目约束 | `docs/terminology.md`、`docs/project-rules.md` | 分别维护统一定义和项目约束；规则增删改先对话自检，授权后更新，不保存开发状态 |
+| 详细局部设计与架构取舍 | 可选 `docs/features/F0XX-design.md`、架构地图、ADR | Feature 设计引用实际约束，地图表示当前结构，达到阈值的 ADR 保存取舍；不重复 AC 或验证台账 |
 | 当前交接与必要历史 | `docs/progress.md`、`docs/progress/`、Feature notes | 普通 Markdown 与链接；不要求机器标记或自动归档 |
 | 本项目环境 | `docs/methodology-config.json` | 记录实际路径和命令；ready 是配置记录，不能冒充本轮检查已通过 |
 | 本次运行事实 | result.json、JUnit、discovery、诊断与引擎日志；解析/lint 的原始输出 | 保留真实执行和必要关联；不能用手填数量、旧文件时间或对话摘要冒充新通过 |

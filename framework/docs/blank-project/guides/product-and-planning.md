@@ -66,7 +66,9 @@ flowchart LR
 
 模块文件使用两位编号和 ASCII kebab-case 名称，例如 `01-gathering.md`。已有模块编号保持稳定；新增模块追加可用编号。模块废弃按规范保留可追溯历史，不为重新排序而批量改名。
 
-模板必需章节保留，不适用时说明原因。共享概念可引用 CONTEXT，具体行为仍写在负责的模块中，不复制多份定义。
+模板必需章节保留，不适用时说明原因。共享概念引用 `docs/terminology.md` 中的相关定义，具体行为仍写在负责的模块中，不复制多份定义。
+
+编写和修改 Product 时核对 `docs/project-rules.md` 中的适用约束及已接受的相关决定。需求与硬约束冲突时先明确取舍及必要规则修订，不能通过改 Product 悄悄绕过。Product 保存目标、行为与验收意图；详细实现设计和重要架构取舍分别由 [Feature 设计说明与 ADR](project-knowledge.md#何时单独保存-feature-设计说明) 承接。
 
 完整结构见 [Product 规范](../../../../project-source/methodology/01-product-doc-structure.md)。
 
@@ -75,13 +77,13 @@ flowchart LR
 | 当前情况 | 入口与处理 |
 | --- | --- |
 | 想先讨论想法、概念或方案 | `project-clarifier` 只补问影响当前判断的缺口，默认只在对话中给结论 |
-| 希望记录已确认的项目术语 | `project-clarifier` 澄清后由 `product-change-standardizer` 按授权写定义和链接，纯术语整理不拆 Feature |
-| `docs/product.md` 为空，已有想法或 GDD | `product-change-standardizer` 复用输入整理初始需求；需要补问时调用 `product-init-elicitor` |
+| 希望记录已确认的项目术语 | `project-clarifier` 澄清后由 `product-standardizer` 按授权写定义和链接，纯术语整理不拆 Feature |
+| `docs/product.md` 为空，已有想法或 GDD | `product-standardizer` 复用输入整理初始需求；需要补问时调用 `product-init-elicitor` |
 | 已有功能，缺少 Product 或 Feature | [从已有实现补齐](#从已有实现补齐需求与任务)，确认意图、记录当前覆盖与缺口，按授权接管验证 |
-| 有 Product，需要补充或修改行为 | `product-change-standardizer` 按歧义使用 `product-spec-elicitor` |
+| 有 Product，需要补充或修改行为 | `product-standardizer` 按歧义使用 `product-spec-elicitor` |
 | 需要界面布局或声音需求 | 按需使用 `product-ui-sketcher` 或 `product-audio-sketcher`；实际布局与资源效果按下文视觉原型验证 |
 | 当前模块已确认且尚未拆分；前一模块的 Feature 已完成 | `generate-feature-list` 只拆当前模块，追加到现有台账 |
-| 已有 Feature 受到 Product 或 Coding Rules 变化影响 | `sync-feature-list` 增量对齐，后续未拆分 Product 暂不生成任务 |
+| 已有 Feature 受到 Product 或 Project Rules 变化影响 | `sync-feature-list` 增量对齐，后续未拆分 Product 暂不生成任务 |
 | 产品预期明确，代码表现错误 | [工程变更](engineering-changes.md) 的 Bug 路线 |
 
 已有明确答案直接沿用。需求整理、拆分或同步结束后，Agent 按本次授权决定下一步：只要求文档或规划时交付后结束，已明确授权实现时进入任务执行。仍会改变验收含义的关键选择由你决定。
@@ -165,7 +167,7 @@ flowchart LR
 | --- | --- |
 | 游戏定位、目标玩家、版本核心循环、模块依赖、整体美术与声音方向 | `docs/product.md`，保持为可快速浏览的总览 |
 | 玩法流程、数据含义、状态转换、UI 交互、声音触发、数值和可观察结果 | 对应 `docs/product/NN-name.md`，保留模板章节语义 |
-| 多处共用且容易混淆的概念 | 优先复用模块定义；确有跨模块需要时整理到 `docs/CONTEXT.md` |
+| 多处共用且容易混淆的概念 | 优先复用模块定义；确有跨模块需要时整理到 `docs/terminology.md` |
 | 引擎类、节点布局、算法或存储格式等技术建议 | 与产品行为分开说明；经采用的技术选择进入实现方案或相应工程记录 |
 | 备选方案、未来版本、待定数值或互相矛盾的描述 | 标明待定或暂缓范围；只解决影响当前模块与其依赖的关键决定 |
 
@@ -204,7 +206,7 @@ Agent 先复用 GDD 中已明确的设计，分别列出已确认内容、提议
 
 `project-clarifier` 默认只讨论；按实际缺口提问，用具体情景检验概念，上游决定变化后只复核受影响结论。需求与音频澄清入口沿用同一方法，返回草案或补丁；已知信息直接复用，不设置问答、模块或 AC 数量下限。
 
-跨模块或 Feature 使用的稳定概念按需放在 `docs/CONTEXT.md`，局部定义已有合适位置时保留原处。每个概念只维护一份定义，其他位置链接过去。具体职责见 [项目知识](project-knowledge.md#何时维护-context)。
+跨模块或 Feature 使用的稳定概念按需放在 `docs/terminology.md`，局部定义已有合适位置时保留原处。每个概念只维护一份定义，其他位置链接过去；新增、改名、废弃或语义变化时持续更新。具体职责与 Stage 3 的维护检查见 [项目知识](project-knowledge.md#何时维护项目术语)。
 
 仅记录已同意的区别、统一名字或移动定义，且含义和行为不变时，不要求 Product 初始化或 Feature 同步。若定义变化实际改变玩法、数值或验收条件，就先解决产品决定，再按授权更新 Product 并同步任务，不能把它当成纯文字整理。
 
@@ -214,7 +216,7 @@ Agent 先复用 GDD 中已明确的设计，分别列出已确认内容、提议
 
 `product-audio-sketcher` 返回声音触发、时长、风格、可用样本引用和必要试听问题。真实资源保留原路径；尚缺资源时才给出稳定的 `_placeholder_` 文件名，不为命名约定创建空文件或重命名真实素材。缺少参考不妨碍整理需求，但文件名或静音不能证明听觉效果。它不生成音频、不直接写 Product 或 Feature，也不实现播放。
 
-这些辅助 Skill 形成 Product 草案或补丁，Product 的正式写入由 `product-change-standardizer` 负责。确认界面或音频需求后，仍需在 Feature 中说明具体实现和人工验收范围。
+这些辅助 Skill 形成 Product 草案或补丁，Product 的正式写入由 `product-standardizer` 负责。确认界面或音频需求后，仍需在 Feature 中说明具体实现和人工验收范围。
 
 ## 先验证视觉原型，再接入依赖它的逻辑
 
@@ -267,8 +269,8 @@ flowchart TD
     Q -->|讨论或澄清概念| R[project-clarifier]
     R --> S[对话结论]
     R -->|获授权记录术语| T[需求整理入口：术语维护]
-    T --> U[按需更新 CONTEXT 或局部定义]
-    Q -->|形成或修改正式需求| B[product-change-standardizer]
+    T --> U[按需更新术语文档或局部定义]
+    Q -->|形成或修改正式需求| B[product-standardizer]
     B --> C{需要澄清什么}
     C -->|初始化需求| D[初始化需求：复用已有材料]
     C -->|模块或行为歧义| E[product-spec-elicitor]

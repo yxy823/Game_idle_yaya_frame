@@ -158,7 +158,7 @@ A full suite is required when any of these is true:
 - impact analysis cannot bound the affected components reliably;
 - the user explicitly requires it.
 
-For other local Features, targeted verification is sufficient before applicable acceptance unless project Coding Rules state otherwise.
+For other local Features, targeted verification is sufficient before applicable acceptance unless Project Rules state otherwise.
 
 ## Runtime Test Impact selection
 
@@ -259,6 +259,8 @@ do not authorize completion. Do not add sleeps or rerun unchanged failures to ge
 
 `working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Registry data. Feature AC text, verification (including approved Test Impact), affected components and Registry selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, explanatory Markdown under `docs/knowledge/`, and run artifacts are exempt. Knowledge indexes and entries are contextual reference material; they must not own executable inputs, requirements, rules or validation contracts. Non-Markdown files there still participate.
 
+`docs/terminology.md`, `docs/project-rules.md`, Feature design Markdown and architecture/ADR documents participate as ordinary source inputs. Moving a long design out of JSON `notes` does not grant that Markdown the notes exemption. Finalize these documents at the Stage 3 checkpoint before final verification; later changes use the existing freshness rules rather than a new documentation bypass.
+
 Ordinary `README.md` files (case-insensitive filename) explain usage and navigation; adding, editing, moving or deleting them does not invalidate test evidence. README files under `.agents/`, `agent-rules/`, `methodology/`, `docs/product/` and `docs/features/` remain inputs because those directories own instructions or verification contracts. Moving a README into one of these directories therefore changes the fingerprint. Keep executable inputs, requirements and validation rules in their existing authoritative files rather than a usage README; other Markdown files remain included unless explicitly exempt above. Documentation changes still require checking facts, links and examples, without automatically rerunning business tests.
 
 Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose or organizing knowledge Markdown alone never invalidates tests. New or unknown contract fields remain included.
@@ -296,6 +298,10 @@ implement smallest coherent change
         ↓
 GREEN: new tests pass
         ↓
+necessary local refactor + rerun relevant tests; repeat the cycle for the next behavior
+        ↓
+Stage 3 documentation checkpoint
+        ↓
 run final affected or necessary full scope + static checks
         ↓
 Stage 5 explicit human acceptance (only for the approved manual mode)
@@ -306,6 +312,8 @@ done gate
 ```
 
 A pre-existing baseline failure must be reported before implementation. Do not attribute it to the current Feature or silently repair it as scope expansion.
+
+The execution loop applies RED/GREEN/refactor per small observable behavior, not as a batch of all tests followed by all implementation. A criterion may need several cycles. Keep tests focused on observable contracts; rerun relevant tests after meaningful refactoring. Focused/TDD results still do not replace final affected/full evidence.
 
 Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 5 records actual human acceptance when required. `.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output and any explicit user review condition under the execution loop. The evidence helper does not prove static checks or review ran, or supply a required human decision.
 
@@ -363,7 +371,7 @@ Bug Feature
 ├── regression test → F0XX-RT01
 └── BUG learning Guardrail
         ↓ explicit human approval only
-   Coding Rule / invariant
+   Project or specialized rule / invariant
         ↓
    INV-<DOMAIN>-01 when machine-verifiable
 ```
