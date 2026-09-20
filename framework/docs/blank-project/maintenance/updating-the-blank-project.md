@@ -29,6 +29,8 @@
 | 环境字段、工具路径、就绪或初始化 Git 行为 | [首次使用](../getting-started/first-use.md)、[配置参考](../reference/configuration.md)、[故障排查](../reference/troubleshooting.md) | 配置源、环境检查器、初始化提示词 |
 | Product 结构、Feature 字段或依赖演进 | [需求与规划](../guides/product-and-planning.md)、[目录参考](../reference/project-layout.md) | methodology、模板、相关检查实现 |
 | Stage、验收、复审、完成或续接 | [Feature 开发流程](../guides/feature-delivery.md)、[命令与验证](../reference/commands-and-validation.md) | 执行 Skill、执行规范、完成依据实现 |
+| 专业来源归属、共享影响或资源交接 | [专业工作](../guides/specialist-workflows.md)、[需求与规划](../guides/product-and-planning.md)、[Feature 开发流程](../guides/feature-delivery.md)、[工程变更](../guides/engineering-changes.md) | [专业职责与来源规范](../../../../project-source/methodology/11-specialist-workflows.md)、对应 Skill 与规划/同步来源规则 |
+| 专业审核方法、独立上下文或角色配置 | [专业审核](../guides/specialist-workflows.md#审核保持独立)、[Skill 导航](../reference/skills.md)、[目录参考](../reference/project-layout.md) | [独立审核规范](../../../../project-source/methodology/12-independent-review.md)、审核 Skill、角色源文件及复制映射 |
 | Bug、重构、维护、实验边界 | [工程变更](../guides/engineering-changes.md) | 对应 Skill 与方法总览 |
 | 测试选择、命令参数、报告或错误语义 | [命令与验证](../reference/commands-and-validation.md)、[故障排查](../reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
 | 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](../guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |
