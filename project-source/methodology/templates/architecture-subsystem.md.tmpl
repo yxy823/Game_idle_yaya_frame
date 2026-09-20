@@ -6,31 +6,20 @@ State the subsystem's responsibility and the owner of its authoritative state.
 
 ## Boundaries and allowed dependencies
 
-Explain why these boundaries exist, permitted dependency directions, and any
-approved exceptions. Link back to `../architecture.md`.
+Explain why these boundaries exist, permitted dependency directions, and any approved exceptions. Link back to `../architecture.md`.
 
 ## Key runtime flows (optional)
 
-Describe flows whose ordering, ownership or failure behavior matters across
-modules. Trace the trigger, participating modules, authoritative state change
-and observable result, with links to the relevant implementation. Use a short
-sequence or diagram only when it helps explain the flow.
+Describe flows whose ordering, ownership or failure behavior matters across modules. Trace the trigger, participating modules, authoritative state change and observable result, with links to the relevant implementation. Use a short sequence or diagram only when it helps explain the flow.
 
 Include the details that affect this subsystem:
 
-- Where Node, Resource, SceneTree or file I/O enters the flow, and where domain
-  logic stays independent of the engine.
-- Who creates and owns runtime state, resources and subscriptions, and who
-  releases or cancels them on completion, scene exit or interruption.
-- Where failure is detected and handled, what remains valid, and how failure or
-  recovery reaches the caller or presentation.
+- Where Node, Resource, SceneTree or file I/O enters the flow, and where domain logic stays independent of the engine.
+- Who creates and owns runtime state, resources and subscriptions, and who releases or cancels them on completion, scene exit or interruption.
+- Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or presentation.
 
-Distinguish observed behavior from proposed or unverified flows. Inspect the
-actual call path; dynamic signals and loading may require runtime verification.
-Link interface definitions, implementation plans and tests in their existing
-records. Omit this section when the flow is already clear from local code.
+Distinguish observed behavior from proposed or unverified flows. Inspect the actual call path; dynamic signals and loading may require runtime verification. Link interface definitions, implementation plans and tests in their existing records. Omit this section when the flow is already clear from local code.
 
 ## Reliable extracted facts
 
-Link optional generated facts with extractor, snapshot and scope. They do not
-replace the human-owned responsibility and dependency contract above.
+Link optional generated facts with extractor, snapshot and scope. They do not replace the human-owned responsibility and dependency contract above.

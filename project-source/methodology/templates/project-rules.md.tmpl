@@ -30,15 +30,9 @@ Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers
 
 ## 1.2 Workflow constraints
 
-Feature implementation uses `execute-next-feature` and the canonical
-`methodology/03-execute-loop.md`. That specification owns the Context / Rules
-Snapshot, authorization and continuation, acceptance, optional independent review,
-verification and completion. Environment preparation follows
-`methodology/05-document-language.md`; test semantics follow
-`methodology/08-testing-strategy.md`. Do not maintain competing Stage instructions here.
+Feature implementation uses `execute-next-feature` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/05-document-language.md`; test semantics follow `methodology/08-testing-strategy.md`. Do not maintain competing Stage instructions here.
 
-Git preflight, clean-worktree and task ownership, staging and eligible local
-commits follow `agent-rules/00-core/git-worktree-and-commits.md`.
+Git preflight, clean-worktree and task ownership, staging and eligible local commits follow `agent-rules/00-core/git-worktree-and-commits.md`.
 
 When rules change, state their approved applicability to current and later work under the incremental maintenance contract. Do not retroactively rewrite historical approvals, and do not assume current work is exempt from a newly confirmed hard constraint.
 
@@ -46,9 +40,7 @@ Every placeholder uses the `_placeholder_` prefix and is recorded in Feature not
 
 ## 1.3 Reporting requirements
 
-Follow `agent-rules/00-core/completion-and-reporting.md` and the owning workflow's
-handoff. Explain material changes, actual verification and expected work left
-outside scope; include manual instructions only when applicable.
+Follow `agent-rules/00-core/completion-and-reporting.md` and the owning workflow's handoff. Explain material changes, actual verification and expected work left outside scope; include manual instructions only when applicable.
 
 ## 1.4 Deviating from these rules
 
@@ -62,13 +54,9 @@ Identify the exact rule, proposed deviation, reason and impact. Project style, m
 
 ## 2.1 Start with a focused function or existing method
 
-Represent an ordinary operation with clear inputs, local intermediate values and an
-explicit result. Split only when responsibility, reuse or readability warrants it.
-Doing one thing does not itself justify a new class.
+Represent an ordinary operation with clear inputs, local intermediate values and an explicit result. Split only when responsibility, reuse or readability warrants it. Doing one thing does not itself justify a new class.
 
-Use a Command object when the current requirement needs an operation to be queued,
-undone, replayed or managed with an independent lifecycle. Keep only state that this
-lifecycle actually needs; do not promote all local variables into object fields.
+Use a Command object when the current requirement needs an operation to be queued, undone, replayed or managed with an independent lifecycle. Keep only state that this lifecycle actually needs; do not promote all local variables into object fields.
 
 ## 2.2 Core architecture principles
 
@@ -131,34 +119,24 @@ Choose a pattern only when it solves a present problem more simply than an ordin
 
 # Part 3 · Project rule sources
 
-> Concrete engine, language, and domain behavior is maintained in the
-> repository's routed rule documents rather than copied into this template.
+> Concrete engine, language, and domain behavior is maintained in the repository's routed rule documents rather than copied into this template.
 
 ## 3.1 Repository routing
 
-The project root `AGENTS.md` is the rule router and records the repository
-workflow. It directs the agent to:
+The project root `AGENTS.md` is the rule router and records the repository workflow. It directs the agent to:
 
 - `agent-rules/00-core/` for global engineering invariants and precedence;
-- each affected specialized `agent-rules/<module>/` README for its concrete
-  Godot, GDScript, or domain rules;
-- the sections matching those READMEs' topic conditions, including each affected
-  module's `validation.md`.
+- each affected specialized `agent-rules/<module>/` README for its concrete Godot, GDScript, or domain rules;
+- the sections matching those READMEs' topic conditions, including each affected module's `validation.md`.
 
-`methodology/` remains the source for Product/Feature workflow, Test Impact
-Review, traceability, human acceptance, and completion gates.
+`methodology/` remains the source for Product/Feature workflow, Test Impact Review, traceability, human acceptance, and completion gates.
 
 ## 3.2 Loading and conflicts
 
-Use the reading route above and `methodology/04-coding-rules-4-layers.md`.
-Apply the Core precedence protocol to real conflicts; do not load unrelated
-topics or treat a general preference as permission to weaken a mandatory rule.
+Use the reading route above and `methodology/04-coding-rules-4-layers.md`. Apply the Core precedence protocol to real conflicts; do not load unrelated topics or treat a general preference as permission to weaken a mandatory rule.
 
-This template must not create a second concrete-rule tree or copy current
-engine, language, tool, or project status into `docs/project-rules.md`.
+This template must not create a second concrete-rule tree or copy current engine, language, tool, or project status into `docs/project-rules.md`.
 
 ## 3.3 Environment Bootstrap
 
-Environment setup status, observed Godot version, executable paths, and command
-strings are owned by `docs/methodology-config.json`. The workflow reads that
-configuration and does not infer or duplicate its current values here.
+Environment setup status, observed Godot version, executable paths, and command strings are owned by `docs/methodology-config.json`. The workflow reads that configuration and does not infer or duplicate its current values here.

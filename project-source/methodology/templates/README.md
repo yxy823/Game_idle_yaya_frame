@@ -33,12 +33,9 @@ Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep b
 
 The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`.
 
-Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md).
-Create an ADR only when a real decision warrants it, not when copying a project.
+Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md). Create an ADR only when a real decision warrants it, not when copying a project.
 
-Lint metric semantics, the controlled vendor patch and executable contract
-checks are documented in `../gdscript-lint.md`.
+Lint metric semantics, the controlled vendor patch and executable contract checks are documented in `../gdscript-lint.md`.
 
 
-Project configuration is stored in `docs/methodology-config.json`.
-Use the templates above when a task needs Product, Feature, test or history records.
+Project configuration is stored in `docs/methodology-config.json`. Use the templates above when a task needs Product, Feature, test or history records.
