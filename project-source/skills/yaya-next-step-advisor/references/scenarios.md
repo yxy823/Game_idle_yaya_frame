@@ -41,6 +41,8 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Reviewer role file exists but context/permissions are unknown | Report what must be verified; configuration presence alone does not establish isolation or successful review. |
 | Audio reviewer has filenames but no playable/listening evidence | Report technical checks possible and perceptual checks unverified; no invented listening or human acceptance. |
 | Request to create artwork, music or sound effects | Explain reserved production scope and preserve usable specifications/assets; do not invoke a nonexistent production Skill. |
+| User requests performance measurement and diagnosis only | Point to perf-profile without inventing a Feature or authorizing optimization; instrumentation needs applicable existing authorization and unavailable measurements remain unverified. |
+| User authorizes performance optimization inside a current Feature | Reuse that task for measurement, repair and verification; a separate maintenance entry is for independently owned optimization. |
 | Soak run stopped before its planned duration | Report actual duration/scenarios and remaining coverage; no full-duration pass or substituted gdUnit evidence. |
 | Resource-list status edited after final verification | Apply existing global fingerprint freshness rules, even if planning classifies the edit as editorial. |
 
