@@ -35,6 +35,7 @@
 | 测试选择、命令参数、报告或错误语义 | [命令与验证](../reference/commands-and-validation.md)、[故障排查](../reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
 | 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](../guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |
 | Skill 名称、职责或提示词入口 | [Skill 导航](../reference/skills.md) | 实际 SKILL.md、prompts.json 和场景用途清单 |
+| 场景入口、操作分支、恢复或交接判据 | [场景索引及三篇分组检查单](../guides/scenario-procedures.md)，以及该场景引用的原专题 | 对应 methodology、实际工具与 prompts.json；同步说明，不另建规范或提示词正文 |
 | Godot / lint / 插件默认值 | [配置参考](../reference/configuration.md)、[命令与验证](../reference/commands-and-validation.md) | 默认配置、plugin.cfg、补丁记录 |
 
 手册概括不能替代源文件核对。若发现规范、脚本与手册存在冲突，应分清当前实际行为和待修问题；在任务范围内修正，或如实报告尚未解决的差异。不要为了让文字一致顺手改写 Skill 流程或测试门槛。

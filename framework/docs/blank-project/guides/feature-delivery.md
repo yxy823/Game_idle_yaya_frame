@@ -2,6 +2,8 @@
 
 [返回手册](../README.md) · 前一步：[需求与规划](product-and-planning.md) · 相关：[命令与验证](../reference/commands-and-validation.md)
 
+实现已完成、需要逐项判断能否交付时，使用 [交付检查单](scenarios-verification-recovery.md#实现完成后判断能否交付)；中断后无法确定停点时，使用 [上下文恢复检查单](scenarios-context-handoff.md#上下文不足时恢复现场并续接)。
+
 开始本章前，应已有确定的 Feature、所需需求和可用开发环境。Agent 通过 `execute-next-feature` 实现这项任务，交付代码、验证结果、适用的人工验收记录与本地提交；中断任务从实际停点继续。
 
 需要主动发起开发时，在目标项目使用 [提示词导航](../reference/skills.md#从哪里取得操作提示词) 中的“Godot 项目开发 → 日常开发 → 执行指定或下一项 Feature”，说明目标任务与本次范围。已有明确实施授权的任务可直接续接，无需重新发送同一批准。

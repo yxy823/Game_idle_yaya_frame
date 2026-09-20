@@ -118,6 +118,19 @@
 顶层数组的每项仍为 `project`、`categories`。下表保留场景、选择理由和 JSON 位置，
 提示词正文只有 JSON 一份；按需选用，不是每个任务必须发送的一组指令。
 
+用户需要逐步操作时，从 [手册场景检查单](../../docs/blank-project/guides/scenario-procedures.md) 进入。检查单复用下面的提示词入口，展开条件、输入、输出与判据，不增加提示词或流程状态。
+
+| 现有场景 | 手册中的详细处置 |
+| --- | --- |
+| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发) |
+| 4.2、4.21、4.22 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划) |
+| 4.10、4.17、4.19 | [核心对象与设计复杂度判断](../../docs/blank-project/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界) |
+| 1.2、4.5 | [修改共享能力前的影响判断](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) |
+| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试或证据导入失败时定位并恢复) |
+| 5.5、6.1 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付) |
+| 4.3、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接) |
+| 5.7 | [文档与实际状态不一致处置](../../docs/blank-project/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) |
+
 有输入占位符时由使用者填写；GitHub 审核正文已指定默认仓库与报告名称，可直接发送，也可补充分支或提交。
 提示词保留任务目标、输入、授权与交付要求；通用维护约束引用根规则，Feature 和动态审核
 的阶段动作引用现行执行规范，测试清理等方法按相关章节读取，不在入口维护流程副本。
