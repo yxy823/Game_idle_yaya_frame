@@ -10,6 +10,7 @@
 
 已有报告：
 
+- [2026-09-20 外部审核修复验证](reports/workflow-audit-validation-2026-09-20.md)
 - [2026-09-20 实际导入验证](reports/import-validation-2026-09-20.md)
 - [2026-09-14 空白项目动态验证](reports/blank-project-dynamic-validation-2026-09-14.md)
 
