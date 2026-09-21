@@ -15,6 +15,11 @@ function matchesWords(text, query) {
   const words = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
   return words.every(word => text.toLocaleLowerCase().includes(word));
 }
+function searchRank(title, body, query) {
+  if (!query.trim()) return Infinity;
+  if (matchesWords(title, query)) return 0;
+  return matchesWords(title + ' ' + body, query) ? 1 : Infinity;
+}
 function zoomAt(view, scale, point) {
   const next = clamp(scale, .05, 4);
   const ratio = next / view.scale;
@@ -184,6 +189,7 @@ const records = chapters.map(chapter => {
   const link = document.querySelector('[data-chapter="' + chapter.id + '"]');
   const row = link.closest('.nav-chapter');
   return {chapter, link, row, title: chapter.dataset.title, number: chapter.dataset.number,
+    isScenario: chapter.dataset.scenarios === 'true',
     toggle: row.querySelector('.nav-toggle'), outline: row.querySelector('.nav-sections'),
     sections: Array.from(row.querySelectorAll('[data-section]'))};
 });
@@ -283,29 +289,40 @@ function filterNavigation() {
   if (query && !filterQuery) expansionBeforeSearch = new Map(records.map(record => [record, !record.outline.hidden]));
   filterQuery = query;
   searchTargets = [];
-  let visibleChapters = 0;
+  const candidates = [];
   for (const record of records) {
-    const chapterMatches = !!query && matchesWords(record.number + ' ' + record.title, query);
-    const matched = new Set(record.sections.filter(link => query && matchesWords(link.textContent, query)));
+    const chapterRank = searchRank(record.number + ' ' + record.title, record.link.dataset.searchText || '', query);
+    const sectionRanks = new Map(record.sections.map(link =>
+      [link, searchRank(link.textContent, link.dataset.searchText || '', query)]));
+    const matched = new Set(record.sections.filter(link => Number.isFinite(sectionRanks.get(link))));
     const visible = new Set(matched);
     let parent;
     for (const link of record.sections) {
       if (link.dataset.level === '2') parent = link;
       else if (matched.has(link) && parent) visible.add(parent);
     }
-    record.row.hidden = !!query && !chapterMatches && !matched.size;
-    if (!record.row.hidden) visibleChapters++;
-    for (const link of record.sections) link.hidden = !!query && !chapterMatches && !visible.has(link);
+    record.row.hidden = !!query && !Number.isFinite(chapterRank) && !matched.size;
+    for (const link of record.sections) {
+      link.hidden = !!query && chapterRank !== 0 && !visible.has(link);
+      if (sectionRanks.get(link) === 1) link.dataset.searchMatch = 'body';
+      else delete link.dataset.searchMatch;
+    }
     if (query) {
       setExpanded(record, true);
-      if (chapterMatches) searchTargets.push(record.chapter.id);
-      else searchTargets.push(...record.sections.filter(link => matched.has(link)).map(link => link.dataset.section));
+      if (Number.isFinite(chapterRank)) candidates.push({id: record.chapter.id, rank: chapterRank,
+        priority: record.isScenario ? 1 : 2});
+      for (const link of matched) candidates.push({id: link.dataset.section, rank: sectionRanks.get(link),
+        priority: record.isScenario ? 0 : 2});
     } else if (expansionBeforeSearch) setExpanded(record, expansionBeforeSearch.get(record));
   }
+  // Keep book order in the outline; Enter favors actionable SOP sections, then title matches.
+  candidates.sort((left, right) => left.priority - right.priority || left.rank - right.rank);
+  searchTargets = candidates.map(candidate => candidate.id);
   for (const heading of sidebar.querySelectorAll('.nav-group')) {
     heading.hidden = !records.some(record => !record.row.hidden && record.row.dataset.group === heading.dataset.group);
   }
-  searchStatus.textContent = query ? (visibleChapters ? '匹配 ' + visibleChapters + ' 章，Enter 跳到首个结果' : '没有匹配的章节或小节') : '搜索目录；Ctrl + F 查找正文';
+  searchStatus.textContent = query ? (searchTargets.length ? '匹配 ' + searchTargets.length + ' 处，Enter ' +
+    (candidates[0].priority === 0 ? '优先进入场景检查单' : '跳到首个结果') : '没有匹配的标题或正文') : '搜索标题与正文；Ctrl + F 查找全文';
   document.getElementById('clear-nav-search').disabled = !query;
   if (!query) { expansionBeforeSearch = null; followActiveLink(); }
 }

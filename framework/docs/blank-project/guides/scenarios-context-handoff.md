@@ -1,8 +1,45 @@
 # 场景处置：上下文与交接
 
-[场景索引](scenario-procedures.md) · [需求与设计](scenarios-requirements-design.md) · [验证与恢复](scenarios-verification-recovery.md)
+[场景索引](scenario-procedures.md) · [需求与设计](scenarios-requirements-design.md) · [界面、音频与资源](scenarios-interface-audio-assets.md) · [验证与恢复](scenarios-verification-recovery.md)
 
 本组处理“我现在究竟在哪一步”以及“记录与现场为什么对不上”。项目使用现有 Progress、Feature、来源和证据恢复事实，不创建 `CONTEXT.md`、Handoff 文件或新的状态台账。
+
+## Feature 中途切换、中断或临时插入其他工作
+
+**适用条件：** 当前 Feature 未完成，又来了一个 Bug、Product change、资源或维护工作，需要决定继续还是中断、切换。新增模块的结构和顺序另见 [插入 Product](scenarios-requirements-design.md#开发中临时插入-product-或模块)；这里处理当前任务的停点和返回。
+
+**目标：** 给新工作正确归属，保护当前有效成果和验证，按明确优先顺序推进，回来后从真实停点续接。
+
+**可用 Prompt：** 仅判断用“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；需要交接用“验证与收尾 → 整理进度与任务交接”；恢复原任务用“日常开发 → 继续中断的当前任务”。新工作使用其 Bug、需求、资源或工程维护现有入口，提供本次要立即切换还是留后续的决定；不新增“插队”提示词或状态。
+
+```mermaid
+flowchart TD
+    A[Feature 进行中收到新工作] --> B{属于当前 AC 的必需范围}
+    B -->|是| C{已在具体批准范围内}
+    C -->|是| D[继续当前 Feature]
+    C -->|否| E[说明实质扩展并取得所缺决定]
+    E --> D
+    B -->|否| F[单独分类新工作]
+    F --> G{用户已要求立即切换}
+    G -->|否| H[记必要后续线索并继续原任务]
+    G -->|是| I[保存真实停点、差异归属与有效结果]
+    I --> J[原 Feature 保持未完成]
+    J --> K{独立写入的授权与工作区前置满足}
+    K -->|否| L[保留现场，只读分析并说明缺口]
+    K -->|是| M[按对应入口处理新的独立工作]
+    M --> N[完成或暂停后核对现场，恢复原 Feature]
+```
+
+| 步骤 / 操作 | 输入与需要检查的内容 | 执行说明与条件分支 | 预期输出与完成判据 |
+| --- | --- | --- | --- |
+| 1. 判断是否属于当前任务 | 当前 Feature/AC、批准范围、新请求与真实影响 | 当前 AC 必需且授权已覆盖→继续；实质扩展→说明具体增加内容并取得所缺决定。无关工作单独分类，不能悄悄加入当前 Feature。 | 原范围与新工作边界清楚；同一 Feature 的必要修复不重复建项。 |
+| 2. 确定优先顺序 | 用户最新要求、真实阻塞、已有依赖 | 没有立即切换要求时，保留必要后续线索并继续原任务；明确要求切换时直接沿用，不重复询问。新增必要前置会改变 Product 顺序时先走对应场景。 | 知道为什么继续或切换；提出想法本身不自动暂停当前工作。 |
+| 3. 保存当前停点 | Git 差异与归属、当前 Stage、已完成行为、验证原件、Progress | 在现有 Progress 记录真实停点、阻塞、下一动作及有效结果链接。已验证且可独立使用的完整逻辑改动可按现有 Git 规则提交；不能为了切换提交破损半成品。 | 原任务仍未完成；提交、暂停、切换均不等于 `done`，不新增 Handoff 文件或状态台账。 |
+| 4. 检查独立写入前置 | 实际 Git 状态、新工作授权和对应流程 | 新写入任务须从干净工作区开始。仍有原任务 WIP 时保留现场，不自动 stash、清空或吸收入新任务；先做只读分类并说明所缺安排，不能只改 Progress 就声称前置满足。 | 前置满足才开始新的修改；无法满足时明确可继续的只读范围。原任务内辅助工作保持原归属，不因此另设工作区关卡。 |
+| 5. 进入正确入口 | 新工作预期、资源/来源、复现和范围 | Bug→[定位修复](scenarios-verification-recovery.md#发现-bug-后定位修复并回归)；Product change→[来源与计划对齐](scenarios-requirements-design.md#已确认要求变化后对齐已有计划)；资源→[接入](scenarios-interface-audio-assets.md#已有资源文件后接入或替换)；maintenance→[工程维护](engineering-changes.md#工程维护如何确定边界)。 | 新工作有自己的责任范围与真实结果，不借新任务完成来关闭旧 Feature。 |
+| 6. 恢复原 Feature | 新工作完成/暂停结果、原 Progress、实际差异和旧证据 | 按下方恢复检查单核对现场，从原 Stage 和有效计划继续。切换期间源码或规格变化可能使旧证据失效，应补适用验证，不重新规划整个 Feature。 | 原任务的下一动作、仍有效成果和剩余义务明确；无需重演已完成且仍有效步骤。 |
+
+**最终产物与返回入口：** 当前 Progress 的必要停点、按规则可提交的完整逻辑成果、新工作的正确归属，或明确工作区阻塞；返回 [上下文恢复与续接](#上下文不足时恢复现场并续接)。依据：[执行异常处理](../../../../project-source/methodology/03-execute-loop.md#exception-handling)、[Git 任务归属](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md#clean-worktree-and-task-ownership)。
 
 ## 上下文不足时恢复现场并续接
 

@@ -2,7 +2,7 @@
 
 [返回手册](../README.md) · 本任务下一步：[开发与交付 Feature](feature-delivery.md)
 
-需要直接处理新功能或已确认要求变化时，使用 [需求与设计检查单](scenarios-requirements-design.md)；本页保留需求结构、规划机制和示例的完整解释。
+需要直接处理新功能、已确认要求变化或临时新增模块时，使用 [需求与设计检查单](scenarios-requirements-design.md)；设计 UI、验证视觉原型或准备声音时，使用 [界面、音频与资源检查单](scenarios-interface-audio-assets.md)。本页保留需求结构、规划机制和示例的完整解释。
 
 你提供游戏想法、已有 GDD 或已确认的设计，Agent 将它们整理成 Product 总览与模块需求，再把当前模块拆成 Feature。本章帮助你判断需求写到什么程度、任务如何验收，以及规划结果还缺什么；尚未明确的关键设计仍由你选择。
 

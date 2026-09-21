@@ -29,7 +29,8 @@ MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.17.0"
 GROUPS = {
     "": "阅读入口",
     "getting-started": "开始使用",
-    "guides": "开发与协作",
+    "guides": "开发指南",
+    "scenarios": "场景检查单",
     "reference": "参考与排查",
     "maintenance": "框架维护",
 }
@@ -47,10 +48,19 @@ class Document:
     def title(self) -> str:
         return self.headings[0][1]
 
+    @property
+    def group(self) -> str:
+        group = self.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
+        if group == "guides" and (self.path.stem == "scenario-procedures"
+                                  or self.path.stem.startswith("scenarios-")):
+            return "scenarios"
+        return group
+
 
 def inline_text(token) -> str:
-    return "".join(child.content for child in token.children or []
-                   if child.type in {"text", "code_inline", "image"})
+    return "".join(" " if child.type in {"softbreak", "hardbreak"} else child.content
+                   for child in token.children or []
+                   if child.type in {"text", "code_inline", "image", "softbreak", "hardbreak"})
 
 
 def parse_document(path: Path) -> Document:
@@ -97,10 +107,67 @@ def load_documents() -> list[Document]:
     linked_order.extend(sorted(set(documents) - set(linked_order)))
     result = [documents[path] for path in linked_order]
     for doc in result:
-        group = doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
-        if group not in GROUPS:
-            raise ValueError(f"新章节分组需要在生成器中命名：{group}")
+        if doc.group not in GROUPS:
+            raise ValueError(f"新章节分组需要在生成器中命名：{doc.group}")
     return result
+
+
+def section_search_text(document: Document) -> dict[str, str]:
+    """Attach prose/table text to the nearest H2/H3; omit fenced code and diagrams."""
+    sections: dict[str, list[str]] = {"": []}
+    current, skip_heading = "", False
+    for token in document.tokens:
+        if token.type == "heading_open":
+            skip_heading = token.tag in {"h1", "h2", "h3"}
+            if token.tag in {"h2", "h3"}:
+                current = token.attrGet("id")
+                sections[current] = []
+        elif token.type == "heading_close":
+            skip_heading = False
+        elif token.type == "inline" and not skip_heading:
+            sections[current].append(inline_text(token))
+    return {anchor: " ".join(parts) for anchor, parts in sections.items()}
+
+
+def render_quick_start(documents: list[Document]) -> str:
+    """Reuse the README's first-use links and the scenario documents' H2s."""
+    entry = next(doc for doc in documents if doc.path == MANUAL / "README.md")
+    first_use = []
+    in_first_use = False
+    for token in entry.tokens:
+        if token.type == "heading_open" and token.tag == "h2":
+            in_first_use = token.attrGet("id") == "第一次使用路线"
+        if in_first_use and token.type == "inline":
+            children = token.children or []
+            for index, child in enumerate(children):
+                if child.type == "link_open":
+                    label = []
+                    for part in children[index + 1:]:
+                        if part.type == "link_close":
+                            break
+                        label.append(part.content)
+                    first_use.append((child.attrGet("href"), "".join(label)))
+                    break
+    if not first_use:
+        raise ValueError("README 缺少第一次使用路线链接。")
+
+    def links(items):
+        return '<ul>' + "".join(f'<li><a href="{escape(href, quote=True)}">{escape(title)}</a></li>'
+                                for href, title in items) + '</ul>'
+
+    scenarios = []
+    for doc in documents:
+        if doc.group == "scenarios" and doc.path.stem.startswith("scenarios-"):
+            items = [("#" + quote(doc.key + "--" + slug), title)
+                     for level, title, slug in doc.headings if level == 2]
+            scenarios.append('<div class="quick-start-group"><h4>'
+                             + escape(doc.title.removeprefix("场景处置：")) + '</h4>'
+                             + links(items) + '</div>')
+    return ('<nav class="quick-start" aria-labelledby="quick-start-title">'
+            '<h2 id="quick-start-title">按当前情况开始</h2>'
+            '<div class="first-use"><h3>第一次使用</h3>' + links(first_use) + '</div>'
+            '<h3>我遇到了具体问题</h3><div class="quick-start-groups">'
+            + "".join(scenarios) + '</div></nav>')
 
 
 def rewrite_links(documents: list[Document]) -> int:
@@ -230,17 +297,20 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
     last_group = None
     navigation_group = ""
     for number, doc in enumerate(documents, 1):
-        group = doc.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
+        group = doc.group
+        search_text = section_search_text(doc)
         if group != last_group:
             # A topic can recur later in the reading order; filter each run separately.
             navigation_group = f"{group}-{number:02d}"
             navigation.append(f'<p class="nav-group" data-group="{navigation_group}">{GROUPS[group]}</p>')
             last_group = group
         outline = "".join(f'<a href="#{quote(doc.key + "--" + slug)}" '
-                          f'data-section="{escape(doc.key + "--" + slug)}" data-level="{level}">'
+                          f'data-section="{escape(doc.key + "--" + slug)}" data-level="{level}" '
+                          f'data-search-text="{escape(search_text[slug], quote=True)}">'
                           f'{escape(title)}</a>' for level, title, slug in doc.headings if level in {2, 3})
         navigation.append(f'<div class="nav-chapter" data-group="{navigation_group}"><div class="nav-row">'
-                          f'<a href="#{doc.key}" data-chapter="{doc.key}">'
+                          f'<a href="#{doc.key}" data-chapter="{doc.key}" '
+                          f'data-search-text="{escape(search_text[""], quote=True)}">'
                           f'<span class="nav-number">{number:02d}</span><span class="nav-title">{escape(doc.title)}</span></a>'
                           f'<button type="button" class="nav-toggle" aria-expanded="true" '
                           f'aria-controls="outline-{doc.key}" aria-label="收起{escape(doc.title)}的小节">'
@@ -263,7 +333,9 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
                 pager.append(f'<a href="#{target.key}" class="{"previous" if offset < 0 else "next"}">'
                              f'<span>{label}</span><strong>{escape(target.title)}</strong></a>')
         articles.append(f'<article id="{doc.key}" class="chapter" data-number="{number:02d}" '
-                        f'data-title="{escape(doc.title)}"><div class="chapter-meta">'
+                        f'data-title="{escape(doc.title)}" '
+                        f'data-scenarios="{str(group == "scenarios" and doc.path.stem.startswith("scenarios-")).lower()}">'
+                        '<div class="chapter-meta">'
                         f'<span>{GROUPS[group]} / {number:02d}</span><a class="source-link" '
                         f'href="{quote(source_path)}" title="本章的 Markdown 源文件">Markdown 原文</a></div>\n'
                         + MARKDOWN.renderer.render(doc.tokens, MARKDOWN.options, {})
@@ -316,13 +388,14 @@ def main() -> int:
     documents = load_documents()
     link_count = rewrite_links(documents)
     diagrams = render_diagrams(documents, args.browser)
+    quick_start = render_quick_start(documents)
     navigation, body = render_body(documents, diagrams)
     page = TEMPLATE.read_text(encoding="utf-8")
     # Reuse the brand SVG so the tab icon never needs a separately maintained image.
     brand = re.search(r'<svg\b[^>]*\bclass="brand-mark"[^>]*>.*?</svg>', page, re.DOTALL)
     if not brand:
         raise ValueError("页面模板缺少品牌 SVG，无法生成标签页图标。")
-    replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body,
+    replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body, "@@QUICK_START@@": quick_start,
                     "@@INTERACTIONS@@": INTERACTIONS.read_text(encoding="utf-8"),
                     "@@FAVICON@@": "data:image/svg+xml," + quote(brand[0], safe=""),
                     "@@DOCUMENT_COUNT@@": str(len(documents)), "@@DIAGRAM_COUNT@@": str(len(diagrams))}

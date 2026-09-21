@@ -71,7 +71,7 @@
 | 4.18 | 新增、修改或删除项目级约束 | 流程：需求及 Stage 0–1 读相关规则，写前逐项对话自检，Stage 2–3 或 Bug 复盘按授权维护 | [规则维护规范](../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)；说明前后变化、依据、强度、归属、冲突与影响，删除需说明接替或失效原因；不自动升级经验、不新增报告台账 |
 | 4.19 | 技术方案需要长期保留决策理由 | 流程：Stage 1 判断 ADR 阈值，Stage 2–3 或独立获批架构任务保存 | [架构规范](../../../project-source/methodology/10-architecture-overview.md)；撤销成本、难恢复的理由和真实方案取舍共同判断；不每 Feature 创建，不覆盖 Product 或项目硬约束 |
 
-专业场景沿用现有任务链，详见 [专业来源规范](../../../project-source/methodology/11-specialist-workflows.md)：
+以下专业工作及开发中衔接场景沿用现有任务链；专业来源分工详见 [专业来源规范](../../../project-source/methodology/11-specialist-workflows.md)：
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
@@ -80,6 +80,8 @@
 | 4.22 | 已确认专业要求缺少 Product 重复正文，现有实现违反它 | 当前未完成 Feature 修复，或工程 bug 后续 | 已确认专业来源可直接证明预期；建议未采用不能判缺陷，不改写已完成历史 |
 | 4.23 | 本地化规格或语言支持实现 | content-localization 独立方法，运行修改由原授权任务承接 | 文档语言不决定游戏语言；机械覆盖、显示与语言判断分开 |
 | 4.24 | 诊断缺少信号、测量性能或执行长测 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test 分工，返回原任务完成 | 诊断与交付版本分开；中止只报告实际时长，不冒充 gdUnit 通过 |
+| 4.25 | 开发中临时插入 Product 或独立模块 | product-author 判断边界，稳定编号，总览维护依赖和 intended order；影响已有任务才同步 | [模块身份](../../../project-source/methodology/01-product-doc-structure.md#module-filename-rules)与[逐模块规划](../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)；新前置不重排旧编号，后续未规划模块不立即拆 Feature，无 Product Queue |
+| 4.26 | Feature 进行中插入其他工作或切换任务 | 先判当前 AC 与授权，独立工作分别分类；保存原停点再按明确顺序处理 | [执行异常](../../../project-source/methodology/03-execute-loop.md#exception-handling)与 Git 归属规则；原任务保持未完成，新写入任务仍需干净工作区，回来恢复原 Stage |
 
 ## 5. 验证与异常
 
@@ -120,16 +122,41 @@
 
 用户需要逐步操作时，从 [手册场景检查单](../../docs/blank-project/guides/scenario-procedures.md) 进入。检查单复用下面的提示词入口，展开条件、输入、输出与判据，不增加提示词或流程状态。
 
-| 现有场景 | 手册中的详细处置 |
-| --- | --- |
-| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发) |
-| 4.2、4.21、4.22 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划) |
-| 4.10、4.17、4.19 | [核心对象与设计复杂度判断](../../docs/blank-project/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界) |
-| 1.2、4.5 | [修改共享能力前的影响判断](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) |
-| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试或证据导入失败时定位并恢复) |
-| 5.5、6.1 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付) |
-| 4.3、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接) |
-| 5.7 | [文档与实际状态不一致处置](../../docs/blank-project/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) |
+### 手册处置路径
+
+下表覆盖上文场景：多步且常需分支恢复的操作进入专用检查单；创建/迁移等复用已有完整步骤；单项方法、参数和范围解释使用专题参考，并说明不另建 SOP 的理由。新增高频场景时同步此映射，不以“能力已存在”代替用户入口。
+
+| 现有场景 | 手册入口 | 入口类型与选择理由 |
+| --- | --- | --- |
+| 1.1–1.5 | [框架维护与验证](../../docs/blank-project/maintenance/updating-the-blank-project.md)；共享修改另见[影响判断](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 已有维护步骤按修改选择同步与验证，跨调用者问题复用专用检查单。 |
+| 1.6–1.10 | [维护、审核、复盘与交接入口](../../docs/blank-project/maintenance/updating-the-blank-project.md#通过提示词开始维护) | 专题已逐项说明输入、授权和停止位置，不复制为游戏开发 SOP。 |
+| 2.1–2.3 | [创建项目](../../docs/blank-project/getting-started/create-project.md) | 已有完整创建与失败处理步骤，复制失败保留现场。 |
+| 2.4、4.14 | [复制迁移](../../docs/blank-project/getting-started/migrate-existing-project.md)、[原地替换](../../docs/blank-project/guides/engineering-changes.md#原地替换项目框架) | 两种独立操作已有各自前置与完成边界，不合并成自动升级流程。 |
+| 3.1–3.3 | [首次使用与环境准备](../../docs/blank-project/getting-started/first-use.md)、[配置参考](../../docs/blank-project/reference/configuration.md) | 首次准备有操作步骤，后续字段与空项目边界查参考即可。 |
+| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发) | 专用检查单：需求、当前模块计划与实施衔接。 |
+| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
+| 4.25 | [开发中插入 Product](../../docs/blank-project/guides/scenarios-requirements-design.md#开发中临时插入-product-或模块) | 专用检查单：模块边界、稳定编号、前置与规划时机。 |
+| 4.26、4.4 | [Feature 中途插入与切换](../../docs/blank-project/guides/scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) | 专用检查单：分类、停点、工作区前置和返回原任务。 |
+| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接) | 专用检查单；日常执行另由 [Feature 指南](../../docs/blank-project/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
+| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/blank-project/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
+| 4.5 中的重构/维护、4.10、4.17、4.19 | [设计复杂度判断](../../docs/blank-project/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)、[共享修改影响](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 判断与影响走专用检查单；具体重构/维护模式查 [工程指南](../../docs/blank-project/guides/engineering-changes.md)，不复写执行 Stage。 |
+| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
+| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
+| 4.6、4.16 | [已有资源接入或替换](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#已有资源文件后接入或替换) | 专用检查单：真实文件、规格分支、UID/引用、显示/播放与清单定稿。 |
+| 4.20 中的美术方向/视觉规格 | [专业方法与职责](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 单独设计共享方向只需专题参考；需要准备和应用素材时进入上述 UI/资源 SOP，要求变化转计划对齐。 |
+| 4.7、4.24 | [性能、观测与长测](../../docs/blank-project/guides/specialist-workflows.md#实现测量与完成) | 专题区分诊断/优化、原始测量和中止范围；交付复用验证检查单，不新增测量生命周期。 |
+| 4.8 | [工程维护边界](../../docs/blank-project/guides/engineering-changes.md#工程维护如何确定边界) | 数据迁移取决于项目保留要求和实际格式，专题与现有维护 Prompt 足够，不预设通用迁移程序。 |
+| 4.9 中的玩法/技术假设 | [限定实验](../../docs/blank-project/guides/engineering-changes.md#原型与技术实验) | 已有假设、范围、预算、结论与文件去向步骤，视觉实验另有专用 SOP。 |
+| 4.11 | [需求与规划](../../docs/blank-project/guides/product-and-planning.md) | 轻量讨论只解决当前决定，不强制完整检查单或文件写入。 |
+| 4.12、4.18、6.4 | [术语、规则与知识维护](../../docs/blank-project/guides/project-knowledge.md) | 各类内容已有维护入口和归属，按需参考；不把每个增量升级为新任务。 |
+| 4.13 | [已有实现补齐](../../docs/blank-project/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/blank-project/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
+| 4.23 | [专业职责与来源](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
+| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/blank-project/reference/commands-and-validation.md)。 |
+| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
+| 5.6 | [验证范围](../../docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)、[测试失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 静态限定是贯穿所有操作的边界，环境缺失走已有恢复，不另加状态。 |
+| 5.7 | [文档与实际状态不一致处置](../../docs/blank-project/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) | 专用检查单：区分确认意图、实现、历史与真正应修位置。 |
+| 5.9、5.5 中的独立审核 | [独立审核交接](../../docs/blank-project/guides/specialist-workflows.md#独立审核怎样交接) | 已有独立实例、范围、证据与作者修复交接说明，自查不冒充审核。 |
+| 7.1、7.2 | [手册使用边界](../../docs/blank-project/README.md#使用约定与内容依据)、[维护边界](../../docs/blank-project/maintenance/updating-the-blank-project.md#保持初始化边界) | 范围解释只需参考页，不为自动同步、多引擎等范围外能力建立 SOP。 |
 
 有输入占位符时由使用者填写；GitHub 审核正文已指定默认仓库与报告名称，可直接发送，也可补充分支或提交。
 提示词保留任务目标、输入、授权与交付要求；通用维护约束引用根规则，Feature 和动态审核
@@ -184,7 +211,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 需求设计 | 4.1.1 | 从想法或已有 GDD 整理 Product 并衔接规划 | 想法或 GDD 输入放入末尾材料区，复用明确设计并核对项目约束；保留原件，来源章节对应到 Product 或所属专业规格，规划读取这些已确认来源；新版 GDD 按实际变化交所属入口处理并分析计划影响，自有文档与必要链接一并检查、提交与交接；只规划当前 Product，不开始实现 |
 | 需求设计 | 4.13 | 从已有实现补齐需求与任务 | 指定成果、意图和文档/交付范围；沿 Product、规划与执行入口补齐当前依据和真实缺口，不以代码存在替代需求批准或当前完成验证 |
 | 需求设计 | 4.1.5 | 只读适配外部需求内容 | 文本、对话摘录、文件或附件说明放入末尾材料区；保持原意并按现有路由输出规范化 Markdown 草稿、衔接建议与待定项，不写文件、调用写入流程或执行任务 |
-| 需求设计 | 4.1.2 | 新增、删除或调整玩法需求 | 希望改变的行为及范围；Product change/spec elicitor 明确变化并衔接计划 |
+| 需求设计 | 4.1.2、4.25 | 新增、删除或调整玩法需求 | 希望改变的行为及范围；Product change/spec elicitor 明确变化并衔接计划，新增模块保持稳定编号和实际依赖顺序 |
 | 需求设计 | 4.1.3、4.15、4.20 | 设计界面与交互 | UI Skill 直接维护界面规格，Product 保存行为与引用，实质变化分析计划影响；不实现场景或兼任 UX 审核 |
 | 需求设计 | 4.1.4、4.15、4.20 | 设计音效与音乐需求 | audio Skill 直接维护具体资源规格与试听缺口，共享方向由 Sound Bible 负责；不制作或播放音频 |
 | 任务规划 | 4.2.1 | 拆分当前 Product 的 Feature | 当前 Product 及范围；核对顺序和前项完成情况，写入前展示数量与逐项摘要，默认确认具体方案后追加 Feature、依赖和测试关系 |
@@ -192,7 +219,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 日常开发 | 4.3.1 | 判断当前状态与下一步 | 状态问题直接说明事实；可选提供 Codex 输出，结合项目证据核对结论、建议与停点；需要措辞时按需读 JSON 派生的精选参考，起草回信或续接提示词；示例不改变路由、既有授权或停止条件，不执行建议或代作人工验收 |
 | 日常开发 | 4.3.2 | 执行指定或下一项 Feature | 默认执行一项，按需读取并复用有效快照；已有明确后续授权时交接后续接，否则在本项交付后停止 |
 | 日常开发 | 4.3.4 | 以 Goal 逐个推进 Product 至人工验收 | 填写本次 Product 范围与排除项，在启动时核实后自主规划、实现、验证和提交；拆分先展示数量与逐项摘要，按明确自主授权继续写入；逐个完成后再拆下一 Product，首个 manual Feature 可体验且备妥验收材料即结束本段 Goal，保留任务未完成状态；Feature 内原型确认仅阻塞依赖实现，不算 Goal 达成；独立原型 Feature 按同一人工交接条件处理 |
-| 日常开发 | 4.3.3 | 继续中断的当前任务 | 当前任务与新增信息；从真实停点完成已授权范围的适用实现、验证与交付，仅在完成、暂停、必要前置受阻或缺少实质决定时停止 |
+| 日常开发 | 4.3.3、4.26 | 继续中断的当前任务 | 当前任务与新增信息；切换回来后从真实停点完成已授权范围的适用实现、验证与交付，仅在完成、暂停、必要前置受阻或缺少实质决定时停止 |
 | 修复与改进 | 4.10 | 只读调查架构改进机会 | 指定维护痛点或下一项变化；核对源码和相关决定，给有依据的候选、最小调整及验证建议，不实施 |
 | 修复与改进 | 4.5.1 | 定位与修复 Bug | 前文说明期望，实际表现、复现与日志放入末尾材料区；当前任务修复或 engineering bug，意图变化转 Product |
 | 修复与改进 | 4.5.2 | 行为保持的重构 | 明确痛点、范围和不变行为；engineering refactor，必要时按请求选择异味 |
@@ -210,7 +237,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 验证与收尾 | 5.5.1 | 独立审查代码或指定变更 | 指定 Feature、提交/差异或模块、文件快照及评审时机；变更沿用 Stage 6，现状走只读审核且不虚构 Feature/差异；一份报告分别判断需求和质量，按授权处理修复 |
 | 验证与收尾 | 5.5.2 | 整理人工验收与反馈 | 按单 Feature 准备绑定版本的 JSON 清单，读取逐项结果并核对原件；有效全通过提交即可接受，也保留明确口头入口，不重复确认或预填通过 |
 | 验证与收尾 | 5.9 | 独立审核专业成果 | 指定领域、版本、原始证据与运行权限；独立实例组合适用方法，报告覆盖和限制，不修复或代替人工验收 |
-| 验证与收尾 | 6.2 | 整理进度与任务交接 | 暂停、换会话或文档过长；写入前置满足时整理 Progress/历史，否则保留文件并只读交接，注明未知修改和记录缺口，保留任务状态与验收语义 |
+| 验证与收尾 | 6.2、4.26 | 整理进度与任务交接 | 暂停、切换工作、换会话或文档过长；写入前置满足时整理 Progress/历史，否则保留文件并只读交接，注明未知修改和记录缺口，保留任务状态与验收语义 |
 | 经验沉淀 | 6.4 | 阶段性总结与复用脚本沉淀 | 完成范围与知识/脚本沉淀授权；优先查现有主题，从真实记录总结实践经验、识别重复脚本，按需最小固化 |
 
 ### 保留这些入口的理由

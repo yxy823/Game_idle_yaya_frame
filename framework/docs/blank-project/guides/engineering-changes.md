@@ -2,7 +2,7 @@
 
 [返回手册](../README.md) · 相关：[Feature 开发流程](feature-delivery.md)、[故障排查](../reference/troubleshooting.md)
 
-需要顺序处置时，查看 [设计复杂度与共享能力检查单](scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)，或 [文档与实际状态不一致检查单](scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置)。
+需要顺序处置时，查看 [Bug 定位、修复与回归检查单](scenarios-verification-recovery.md#发现-bug-后定位修复并回归)、[设计复杂度与共享能力检查单](scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)，或 [文档与实际状态不一致检查单](scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置)。
 
 本页用于将问题归入需求变更、Bug、重构、维护或实验。分类依据是实际预期与授权范围；通常的工程任务写入同一份 Feature 索引和详情，由现有执行流程交付。用户主动发起的一次性框架替换见 [原地替换项目框架](#原地替换项目框架)。
 

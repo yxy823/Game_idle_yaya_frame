@@ -78,6 +78,7 @@ button:disabled { cursor: default; opacity: .45; }
 .nav-sections a:hover { color: var(--accent-hover); }
 .nav-sections a[data-level="3"] { padding-left: 14px; }
 .nav-sections a.active { color: var(--accent); font-weight: 650; text-decoration: underline; text-underline-offset: 4px; }
+.nav-sections a[data-search-match="body"]::after { content: "正文匹配"; display: inline-block; margin-left: 8px; color: var(--muted); font-size: .8em; }
 .sidebar :focus-visible { outline-color: var(--accent); }
 .sidebar-footer { flex-shrink: 0; padding: 17px 24px; border-top: 1px solid var(--line); color: var(--nav-muted); font-size: var(--font-ui); }
 .reading-bar { position: sticky; top: 0; min-height: 72px; margin-left: var(--sidebar-space); padding: 10px 28px; gap: 16px; display: flex; align-items: center; justify-content: space-between; background: var(--canvas); border-bottom: 1px solid var(--line); z-index: 5; font-size: var(--font-ui); color: var(--muted); transition: transform 180ms ease; }
@@ -108,6 +109,16 @@ main { margin-left: var(--sidebar-space); padding: 40px clamp(16px, 3vw, 36px) 6
 .cover-meta span { display: inline-flex; align-items: baseline; gap: 8px; }
 .cover-meta strong { color: var(--ink); font: 600 26px/1.2 "Segoe UI", sans-serif; }
 .reading-note { margin-top: 20px !important; font-size: var(--font-ui) !important; line-height: 1.85; }
+.quick-start { padding: 24px clamp(18px, 3vw, 40px); margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; font-size: var(--font-body); overflow-wrap: anywhere; }
+.quick-start h2 { margin: 0 0 16px; font-size: var(--font-h2); line-height: 1.6; }
+.quick-start h3 { margin: 22px 0 10px; font-size: var(--font-h3); }
+.quick-start h4 { margin: 0 0 8px; font-size: var(--font-body); }
+.quick-start ul { margin: 0; padding-left: 1.2em; }
+.quick-start li { padding: 5px 0; }
+.quick-start a { display: inline-block; padding: 3px 0; }
+.first-use ul { display: flex; flex-wrap: wrap; gap: 0 32px; }
+.quick-start-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px 32px; }
+.quick-start-group { min-width: 0; padding-top: 12px; border-top: 1px solid var(--line); }
 .chapter { font-size: var(--font-body); padding: 32px clamp(18px, 3vw, 40px) 40px; margin-bottom: 32px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; overflow-wrap: anywhere; }
 .chapter-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; font-size: var(--font-ui); color: var(--muted); letter-spacing: 1px; border-bottom: 1px solid var(--line); padding-bottom: 18px; }
 .chapter-meta a { letter-spacing: 0; }
@@ -221,7 +232,7 @@ dialog::backdrop { background: var(--backdrop); }
 <body id="handbook-top">
 <aside class="sidebar" id="handbook-sidebar" aria-label="手册目录">
   <div class="brand"><a href="#handbook-top"><svg xmlns="http://www.w3.org/2000/svg" class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M3 17c3 2 6 2 9 0-1-2-2-4-2-6a7 7 0 0 1 14 0c0 3-2 5-4 7 4 0 7-1 9-3 0 8-5 13-13 13C8 28 3 24 3 17Z" fill="#f6c744" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><path d="m23 11 7 3-7 2Z" fill="#ed9138" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="10" r="1.25" fill="#202b33"/><path d="M10 21c3 3 7 3 10 0" fill="none" stroke="#b88120" stroke-width="1.5" stroke-linecap="round"/></svg><span>YAYA<small>Godot 项目使用手册</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m11 6-6 6 6 6m8-12-6 6 6 6"/></svg></button></div>
-  <div class="sidebar-search"><label for="nav-search">查找章节与小节 <span aria-hidden="true">/</span></label><div class="search-controls"><input type="search" id="nav-search" placeholder="例如 lint、Feature、迁移" autocomplete="off" aria-describedby="nav-search-status"><button type="button" id="clear-nav-search" aria-label="清空目录搜索" disabled>×</button></div><p id="nav-search-status" role="status">搜索目录；Ctrl + F 查找正文</p></div>
+  <div class="sidebar-search"><label for="nav-search">查找场景与正文 <span aria-hidden="true">/</span></label><div class="search-controls"><input type="search" id="nav-search" placeholder="例如 界面、音效、Bug、中断" autocomplete="off" aria-describedby="nav-search-status"><button type="button" id="clear-nav-search" aria-label="清空目录搜索" disabled>×</button></div><p id="nav-search-status" role="status">搜索标题与正文；Ctrl + F 查找全文</p></div>
   <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
   <div class="sidebar-footer">标题跳转 · 右侧按钮展开<br>目录跟随正文，手动操作时暂停跟随</div>
 </aside>
@@ -232,10 +243,11 @@ dialog::backdrop { background: var(--backdrop); }
   <section class="cover" aria-label="阅读说明">
     <div class="eyebrow">YAYA FRAMEWORK / DOCUMENTATION</div>
     <h1>空白项目使用手册</h1>
-    <p>从空目录建立项目，把想法或已有 GDD 整理成 Product，再按模块拆分 Feature、开发与验收。入口页选择路线，指南说明步骤，参考页查文件与命令。</p>
+    <p>从空目录建立项目，把想法或已有 GDD 整理成 Product，再按模块拆分 Feature、开发与验收。第一次使用沿主线进入，开发中遇到具体情况查场景检查单，字段与命令按需查参考。</p>
     <div class="cover-meta"><span><strong>@@DOCUMENT_COUNT@@</strong> 篇完整文档</span><span><strong>@@DIAGRAM_COUNT@@</strong> 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
-    <p class="reading-note">按 / 搜索目录，Ctrl + F 搜索全文，右上角齿轮按钮打开阅读设置。本文件包含手册正文与图表；实际操作所需的提示词、工具和源规范需从完整框架或生成项目取得，↗ 标示这些文件链接。</p>
+    <p class="reading-note">按 / 搜索标题和正文，Ctrl + F 查找全文，右上角齿轮按钮打开阅读设置。本文件包含手册正文与图表；实际操作所需的提示词、工具和源规范需从完整框架或生成项目取得，↗ 标示这些文件链接。</p>
   </section>
+  @@QUICK_START@@
   @@BODY@@
   <footer class="book-footer">Yaya · 空白项目使用手册<br>维护 Markdown 原文，再生成本阅读版。</footer>
 </div></main>
