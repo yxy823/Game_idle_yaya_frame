@@ -10,6 +10,7 @@
 
 | 事项 | 当前情况 | 下一步或完成条件 | 依据 |
 | --- | --- | --- | --- |
+| 工作台规范审核修复 | 四项已修复；既有外部项目 Godot 51 项、后端 22 项、维护 38 项通过，最终 lint 无 Critical/Warning；停止、32 MiB 保存边界、契约故障恢复和真实渲染已验证 | 用户继续实际体验听感与交互；Shader 接入仅讨论，未授权实现，不作为本轮完成条件 | [修复与实际验证](review/reports/asset-workbench-code-quality-fixes-2026-09-22.md) |
 | 模式选型与地图导航 | 已完成 A＋B 及本轮获准补充：地图链接关键设计理由，Core 明确单条规则疑点的反馈与修订，review-code 按实际需求评估状态模型、模式和序列化 | C 的动态效果验证仍待单独决定；静态修订与格式检查不代表实际项目中的规则或评审效果已验证 | [项目规则模板](../project-source/methodology/templates/project-rules.md.tmpl)、[架构规范](../project-source/methodology/10-architecture-overview.md)、[规则疑点处理](../project-source/agent-rules/00-core/rule-precedence-and-routing.md#suspected-rule-errors)、[review-code](../project-source/skills/review-code/SKILL.md) |
 | 审核修复与入口整理 | 已实现 1600×900 项目默认值、single/composition 独立目录入口；修复内存/并发预算、A/B 条件与 STALE、共同 Schema/缓存恢复和源能力预检；边界压力、变异、引擎回归及渲染已验证 | 用户实际体验两个入口、分析/批量窗口及按钮布局；设计讨论沿用现有 UI 规格与 Godot 原型入口 | [本轮修复与验证](review/reports/asset-workbench-audit-fixes-2026-09-21.md) |
 | 美术与音频资源工作台 | 首期已实现，用户在第二阶段实施请求中明确确认已通过验收；保留预览、播放、试调与保存边界 | 后续修改继续回归第一阶段；真实项目接入自身对象/事件时仍需按实际场景验证 | [首期实现与反馈复验](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
@@ -24,6 +25,7 @@
 
 | 日期 | 成果 | 验证范围与记录 |
 | --- | --- | --- |
+| 2026-09-22 | 修复工作台组合停止、分组/快照大小契约、分析配置静态读取与 7 处超长行；按需加载失败可说明原因并恢复 | Godot 18＋8＋13＋12 项、后端 22 项、维护 38 项通过；37 文件 lint 0 Critical/Warning；两个工作台与分析/批量窗口真实渲染并查看截图。新增夹具的早期失败与修正保留在 [报告](review/reports/asset-workbench-code-quality-fixes-2026-09-22.md)；人工听感/交互仍由用户判断 |
 | 2026-09-22 | 补充地图关键理由与已有设计链接、单条规则疑点的反馈与纠错、review-code 对状态模型/模式/序列化的设计判断；复用现有设计原则与授权流程 | review-code Skill 格式校验通过；设计归属、规则与 advisor 路由、复制映射、链接/锚点、UTF-8/LF 和完整 Git 差异已静态核对；手册构建为 22 篇文档、33 张图、482 个源链接。未执行项目测试、Godot 或动态效果验证；阅读体验待用户外部检查 |
 | 2026-09-21 | 完成外部意见复核后获准的模式选型收敛与地图导航修订；地图维护复用 Stage 3D，补充路径和入口变动，不新增流程机制 | 两个 Skill 静态校验、源材料与 advisor/复制映射衔接、链接/锚点和 Git 差异核对通过；手册构建为 22 篇文档、33 张图、478 个源链接。未执行项目测试、Godot 或动态效果验证；阅读体验仍待用户外部检查 |
 | 2026-09-21 | 修复第二阶段审核问题；统一 1600×900 默认值，拆分单对象/组合入口，补充布局讨论导航 | 后端 22、Godot 分析 18、单对象 12、组合 7、分组 12、维护 38 项通过；边界资源内存与 Windows 限额实测通过；37 文件 lint 0 Critical/Warning；真实渲染已查看，人工体验仍待用户。见 [报告](review/reports/asset-workbench-audit-fixes-2026-09-21.md) |
