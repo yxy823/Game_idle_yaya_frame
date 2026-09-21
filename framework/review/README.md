@@ -10,6 +10,7 @@
 
 已有报告：
 
+- [2026-09-22 Shader 接入与独立资源组合验证](reports/asset-workbench-shader-composition-2026-09-22.md)
 - [2026-09-22 工作台编码规范修复与实际验证](reports/asset-workbench-code-quality-fixes-2026-09-22.md)
 - [2026-09-21 工作台第三阶段与交互组合场景](reports/asset-workbench-phase3-2026-09-21.md)
 - [2026-09-21 外部 Analyzer 第二阶段](reports/asset-analyzer-phase2-2026-09-21.md)

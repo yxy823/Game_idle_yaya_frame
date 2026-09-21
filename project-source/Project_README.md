@@ -29,7 +29,7 @@
 | methodology/ | 当前 Skill 使用的详细流程和模板 |
 | tools/ | 显式调用的项目工具 |
 | addons/ | gdUnit4、GDScript linter、默认不启用全局插件的 SoundManager |
-| [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的美术/音频组合预览与示例游戏；`example-*` 资源不代表正式游戏素材 |
+| [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的美术/音频/Shader 独立组合预览与示例游戏；`example-*` 资源不代表正式游戏素材 |
 | components/feedback/、tools/asset_workbench/ | 示例共用的表现组件、局部音频封装与工作台界面 |
 | gdlint.json | GDScript lint 配置 |
 | project.godot | Godot 项目配置 |

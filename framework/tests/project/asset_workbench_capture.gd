@@ -77,7 +77,8 @@ func _check_compact_window(workbench: Control, resolution: Vector2i) -> void:
 	await _check_reachable(body, event, _button(workbench, "Open example game using saved cue"))
 	await _save_frame("workbench-actions-" + suffix)
 	var controls := parameters.get_child(0) as Container
-	await _check_reachable(body, parameters, controls.get_child(-1) as Control)
+	var shader_controls: Container = controls.get("_shader")
+	await _check_reachable(body, parameters, shader_controls.get_child(-1) as Control)
 
 
 func _check_reachable(body: ScrollContainer, column: ScrollContainer, control: Control) -> void:

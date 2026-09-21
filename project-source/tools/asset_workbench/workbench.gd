@@ -13,6 +13,7 @@ const BatchPanel = preload("res://tools/asset_workbench/analysis_batch_panel.gd"
 @export_file("*.tscn") var game_scene_path: String
 @export var texture_candidates: Array[Texture2D] = []
 @export var sound_candidates: Array[AudioStream] = []
+@export var shader_candidates: Array[FeedbackShaderPreset] = []
 @export var workbench_title: String = "ASSET WORKBENCH / single object"
 
 var session: Session = Session.new()
@@ -43,7 +44,7 @@ func _ready() -> void:
 	add_child(_batch)
 	_browser.group_requested.connect(_batch.open_assets)
 	_batch.compare_requested.connect(_analysis.open_results)
-	_controls.build(texture_candidates, sound_candidates)
+	_controls.build(texture_candidates, sound_candidates, shader_candidates)
 	_controls.edited.connect(_edit)
 	presenter.playback_failed.connect(_set_status)
 	_reload_dialog.dialog_text = "Discard both A/B trials and reload the saved file?"
@@ -198,7 +199,7 @@ func _load_session() -> void:
 		return
 	# A keeps the saved cue; B changes only the sound so the example is immediately comparable.
 	for sound: AudioStream in sound_candidates:
-		if sound.resource_path != session.saved.sound.resource_path:
+		if session.saved.sound != null and sound.resource_path != session.saved.sound.resource_path:
 			session.drafts[1].sound = sound
 			break
 	_refresh()
@@ -210,11 +211,11 @@ func _refresh() -> void:
 	_controls.display(session.current())
 	presenter.configure(session.current())
 	_target.text = "Save target: %s\nAffects every consumer of this cue.\n" % cue_path
-	_target.text += "Source images/audio stay unchanged. No loudness matching is applied."
+	_target.text += "Source assets/material presets stay unchanged. No loudness matching is applied."
 	_state.text = "Active: %s   |   %s   |   Event sound: %s" % [
 		"A" if session.active_index == 0 else "B",
 		"UNSAVED TRIAL" if session.is_dirty() else "matches saved cue",
-		session.current().sound.resource_path.get_file(),
+		session.current().sound.resource_path.get_file() if session.current().sound != null else "None",
 	]
 
 

@@ -44,7 +44,7 @@ func _load_sessions() -> void:
 
 func _seed_alternative(session: Session) -> void:
 	for sound: AudioStream in sound_candidates:
-		if sound.resource_path != session.saved.sound.resource_path:
+		if session.saved.sound != null and sound.resource_path != session.saved.sound.resource_path:
 			session.drafts[1].sound = sound
 			break
 
@@ -69,6 +69,23 @@ func update_trial(session: Session) -> void:
 		stage.preview(session.target_path, session.current())
 
 
+func select_all_alternatives(index: int) -> void:
+	stop_requested.emit()
+	stage.stop()
+	for session: Session in sessions.values():
+		session.active_index = index
+		update_trial(session)
+	if sessions.has(_selected_path):
+		session_selected.emit(sessions[_selected_path])
+	_status.text = "All scene objects use trial %s. Trigger all to compare." % ("A" if index == 0 else "B")
+
+
+func trigger_all() -> void:
+	stop_requested.emit()
+	stage.stop()
+	stage.trigger_all()
+
+
 func apply_gain(value: float) -> void:
 	if not is_finite(value) or value < -48.0 or value > 0.0:
 		return
@@ -88,7 +105,7 @@ func assets(selected_only: bool) -> Array[Resource]:
 			continue
 		var cue: FeedbackCue = sessions[path].current()
 		for asset: Resource in [cue.texture, cue.sound]:
-			if asset not in output:
+			if asset != null and asset not in output:
 				output.append(asset)
 	return output
 
@@ -113,7 +130,9 @@ func _build() -> void:
 	var root: Container = self
 	var actions := HFlowContainer.new()
 	root.add_child(actions)
-	_button(actions, "Trigger all", stage.trigger_all)
+	_button(actions, "Scene A", select_all_alternatives.bind(0))
+	_button(actions, "Scene B", select_all_alternatives.bind(1))
+	_button(actions, "Trigger all", trigger_all)
 	_button(actions, "Stop all", func() -> void: stop_requested.emit())
 	_button(actions, "Analyze selected object's sources", func() -> void:
 		analysis_requested.emit(assets(true)))
