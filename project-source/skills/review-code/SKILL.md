@@ -19,6 +19,13 @@ Answer two separate questions in one scoped pass:
   presentation/domain coupling and relevant Godot anti-patterns. Avoid stylistic
   rewrites without a concrete impact.
 
+For added or changed module boundaries, apply **Designing a module boundary**
+and, for a refactor, **Assessing a proposed refactor** in
+`methodology/10-architecture-overview.md`. Ground design findings in actual
+caller obligations, failure/lifetime risks or coordinated edits. A smell is an
+investigation clue, not a violation by itself; similar code shapes or necessary
+consumer updates do not alone justify a new abstraction or merged module.
+
 For changed/removed contracts, inspect actual executable assertions, references,
 test discovery and retained coverage. Registry retirement alone cannot remove a
 stale test; unfinished required cleanup is `must_fix`. Check failure paths,

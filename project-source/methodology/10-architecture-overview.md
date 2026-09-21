@@ -27,11 +27,40 @@ work updates a map only when those contracts change. Stage 0 reads the relevant
 map if present; review checks a changed boundary against it. A stale or missing
 optional map is a clarification/review concern, not a fabricated Gate failure.
 
+## Designing a module boundary
+
+Apply the design defaults in `docs/project-rules.md` when adding a module,
+changing a public interface or moving responsibility. Assess the actual callers
+and confirmed behavior, whether or not an architecture map exists. An ordinary
+local function does not need a separate design exercise or artifact.
+
+Read an interface as everything a caller must know: inputs and observable
+results, required configuration and call order, failure behavior, state ownership
+and lifetimes. For a Godot scene, this can include public signals, exported
+dependencies and when a pending operation becomes invalid. Identify which
+knowledge belongs to the caller and which repeated coordination the module
+could own. Hiding unrelated responsibilities behind one entry point does not
+make them cohesive.
+
+Compare a direct implementation and existing responsibilities before adding an
+abstraction. Where materially different designs have real tradeoffs, compare
+their caller obligations, change locality and verification cost. Use only the
+alternatives needed to decide; this does not require a fixed number of designs,
+parallel reviewers or a new approval step.
+
+| Illustrative Godot case | Design judgment |
+| --- | --- |
+| Several purchase buttons repeat price, balance and capacity checks, then coordinate payment and item delivery | Consider one purchase operation that coordinates the existing state owners through their APIs. Callers receive a defined result; failure effects and change notifications remain part of the contract. Price calculation, wallet and inventory can keep their separate responsibilities. |
+| A short scene coordinator owns subscriptions and invalidates pending work when the scene exits | Keep or deliberately relocate that ownership. Removing the node is useful only if callers do not inherit scattered cleanup and lifetime obligations. |
+
+These examples illustrate the judgment, not required game systems or patterns.
+Record useful reasoning in the existing Feature notes/design or subsystem
+document; apply the ADR threshold below only when warranted.
+
 ## Assessing a proposed refactor
 
-Start from an observed maintenance difficulty or the next agreed change. Read
-what callers must know: required call order, validation, errors, state ownership
-and lifetimes all contribute to interface complexity, even with few methods.
+Start from an observed maintenance difficulty or the next agreed change and
+apply the caller assessment above to the existing and proposed boundaries.
 
 As a thought experiment, remove the layer and call its dependencies directly.
 If behavior stays intact and coordination becomes simpler, the layer may be an

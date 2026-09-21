@@ -67,6 +67,7 @@ Use a Command object when the current requirement needs an operation to be queue
 - **Drive adjustable behavior from data.** Levels, skill values, and entity parameters belong in configuration or data when changing them should not require code changes.
 - **Keep core rules pure.** Decisions, calculations, scoring, and similar domain rules should be callable and testable without an engine or UI.
 - **Pass dependencies explicitly.** Constructor or function parameters make dependencies visible and replaceable in tests.
+- **Reduce what callers must know.** Keep related validation, ordering, failure handling and state coordination with a cohesive owner. Assess an interface by all the knowledge needed to use it correctly, including configuration and lifetime constraints; fewer files or public methods alone do not establish a better design.
 - **Keep runtime state serializable.** Core state should be representable as plain data for saves, replay, or remote debugging.
 
 ## 2.3 Pattern guide

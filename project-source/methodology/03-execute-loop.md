@@ -166,6 +166,11 @@ in AC or the existing Feature design; do not force them into gdUnit result field
 2. Record approved `_placeholder_` replacement needs in the resource list when present and link it from Feature notes; otherwise keep the guidance in notes. Do not duplicate the rows or treat the list's preparation status as acceptance evidence.
 3. Explain any scope expansion before coding.
 
+When the plan adds a module, changes a public interface or moves responsibility,
+apply [Designing a module boundary](10-architecture-overview.md#designing-a-module-boundary)
+to the affected callers and contracts. Keep the reasoning in the current plan
+or an existing design record; this does not require an architecture map.
+
 Assess whether the plan needs a detailed [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and whether an important technical choice meets the [ADR threshold](10-architecture-overview.md#architecture-decision-records). Reuse existing explanations. Surface unresolved terminology and project-rule conflicts before dependent implementation; proposed rule changes follow the conversational self-check and authorization in [rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance). If neither record is needed, do not create placeholders or request approval for them.
 
 For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation).
