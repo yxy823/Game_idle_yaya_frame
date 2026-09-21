@@ -18,13 +18,15 @@
 
 | 当前工作 | 执行依据 |
 | --- | --- |
-| 框架维护 | `framework/` 保存维护材料，`project-source/` 保存可复制材料；后者的 `Project_AGENTS.md` 与 Skill 仅作为源材料阅读，不在维护仓库激活项目流程。 |
+| 框架维护 | `framework/` 保存维护材料，当前成果与后续工作见 [框架进度](framework/progress.md)；`project-source/` 保存可复制材料，后者的 `Project_AGENTS.md` 与 Skill 仅作为源材料阅读，不在维护仓库激活项目流程。 |
 | 创建项目 | [创建器](framework/commands/create_project.py) 仅按 [复制清单](framework/project-files.json) 复制和重命名，不附带环境探测、Bootstrap、测试、Git 初始化、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 修改 HTML 手册 | 先查阅 [阅读版交互维护原则](framework/docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则)，按阅读场景修改对应源文件，再生成离线阅读版。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
+
+框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。目标、决定、完成情况、验证缺口或下一步发生实质变化时，在本次允许写入的范围内及时更新对应条目，并在提交或交接前核对一致；只读任务在回复中指出需更新项。区分已完成、待验证、待决定与暂缓，不把建议记成已获准任务，不复制详细 Git 历史或游戏项目台账；无实质变化不制造更新。
 
 更新使用说明时，Agent 完成内容、链接与锚点的静态核对，以及需要的现有 HTML/Mermaid 构建；禁止使用 Playwright Skill 进行可视化检查。排版与浏览器交互由用户在外部检查，交付时提供阅读版入口和需要关注的位置，不把构建成功写成视觉检查通过。
 

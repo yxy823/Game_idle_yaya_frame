@@ -12,6 +12,7 @@
 
 | 路径 | 职责 |
 | --- | --- |
+| [progress.md](progress.md) | 框架当前成果、验证缺口、未决事项与下一步；随相关维护更新，不复制到项目 |
 | [commands/create_project.py](commands/create_project.py) | 读取相对路径清单，检查目标后复制 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
