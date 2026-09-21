@@ -112,9 +112,9 @@ Capture the user flows needed to explain the agreed behavior.
 
 Ask which durable or transient data the module owns. Let the user supply fields or confirm an AI-proposed inventory.
 
-### M.4 State machine
+### M.4 States and transitions
 
-Determine whether the module has three or more states. If so, list the states and every meaningful transition condition.
+Capture states and meaningful transition conditions when they affect agreed behavior, including relevant cancellation and entry/exit outcomes. State count does not decide applicability; implementation structure belongs to design.
 
 ### M.5 Persistence
 

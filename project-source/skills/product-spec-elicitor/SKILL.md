@@ -73,7 +73,7 @@ Run a compact version of Product initialization and ask only:
 1. Module positioning in one sentence.
 2. Typical functional flows needed to explain the agreed behavior.
 3. Dependencies on and from existing modules.
-4. Whether the module has three or more states, and the states and transitions when it does.
+4. Behaviorally meaningful states and transition conditions, including relevant cancellation or entry/exit outcomes, regardless of state count; leave implementation structure to design.
 5. UI placement: full screen, embedded in an existing module, floating panel, or a custom arrangement.
 6. Primary tunable parameters and defaults.
 7. Observable acceptance criteria covering the agreed behavior without duplication or a target count.

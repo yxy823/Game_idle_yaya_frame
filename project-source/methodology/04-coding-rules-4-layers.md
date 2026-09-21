@@ -71,13 +71,13 @@ The following principles belong in `docs/project-rules.md` because they do not
 depend on a particular engine or programming language:
 
 - separate data and presentation, with explicit events or read-only state;
-- use an explicit state machine for meaningful multi-state transitions;
+- make meaningful state transitions explicit with a model appropriate to their complexity;
 - keep data/rules, orchestration/control, and presentation/input boundaries
   understandable;
 - prefer composition and explicit dependency passing over hidden global access;
 - drive adjustable behavior from data or focused configuration;
 - keep core rules as independent and testable as the project allows;
-- keep important runtime state representable as plain serializable data;
+- define serializable data for confirmed saving, replay, transfer or diagnostic needs;
 - distinguish expected failure from exceptional failure and do not silently
   swallow errors;
 - measure before introducing performance complexity.

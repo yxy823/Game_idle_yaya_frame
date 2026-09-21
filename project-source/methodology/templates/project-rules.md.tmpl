@@ -56,19 +56,19 @@ Identify the exact rule, proposed deviation, reason and impact. Project style, m
 
 Represent an ordinary operation with clear inputs, local intermediate values and an explicit result. Split only when responsibility, reuse or readability warrants it. Doing one thing does not itself justify a new class.
 
-Use a Command object when the current requirement needs an operation to be queued, undone, replayed or managed with an independent lifecycle. Keep only state that this lifecycle actually needs; do not promote all local variables into object fields.
+Player and AI callers can reuse the same behavior API; the caller type alone does not justify a Command. Use a Command object when the current requirement needs an operation to be queued, undone, replayed, recorded or managed with an independent lifecycle. Keep only state that this lifecycle actually needs; do not promote all local variables into object fields.
 
 ## 2.2 Core architecture principles
 
 - **Separate data from presentation.** Use observers or an event bus so the data layer does not know the presentation layer. Presentation subscribes to state and acts as a projection; core data should run without the UI.
-- **Use an explicit state machine for meaningful state transitions.** An object with three or more states and transition rules should not represent them as scattered booleans or unrelated conditionals.
+- **Make meaningful state transitions explicit.** Choose the simplest model that captures mutually exclusive states, valid transitions and entry/exit or cancellation responsibilities. An enum and a central transition function may suffice; separate state objects or nodes are useful when lifecycle, reuse or transition complexity warrants them.
 - **Keep three logical layers.** Data and rules sit below orchestration and control, which sit below presentation and input. Higher layers call lower layers; lower layers report through events rather than reverse dependencies.
 - **Prefer composition over inheritance.** Build behavior from focused components instead of a large all-purpose base-class hierarchy.
 - **Drive adjustable behavior from data.** Levels, skill values, and entity parameters belong in configuration or data when changing them should not require code changes.
 - **Keep core rules pure.** Decisions, calculations, scoring, and similar domain rules should be callable and testable without an engine or UI.
 - **Pass dependencies explicitly.** Constructor or function parameters make dependencies visible and replaceable in tests.
 - **Reduce what callers must know.** Keep related validation, ordering, failure handling and state coordination with a cohesive owner. Assess an interface by all the knowledge needed to use it correctly, including configuration and lifetime constraints; fewer files or public methods alone do not establish a better design.
-- **Keep runtime state serializable.** Core state should be representable as plain data for saves, replay, or remote debugging.
+- **Serialize state for confirmed uses.** When saving, replay, transfer or diagnostics requires serialization, define a representation for the data that use needs. Other runtime state follows its ownership and lifecycle; keep core data clear and rules independently testable.
 
 ## 2.3 Pattern guide
 
@@ -78,8 +78,8 @@ Choose a pattern only when it solves a present problem more simply than an ordin
 | --- | --- |
 | An ordinary action transforms inputs into an output | Focused function or existing method |
 | Several systems react to one event | Observer or event bus |
-| A character or UI flow has multiple transitions | State machine |
-| User actions need undo, replay, recording, or AI control | Command |
+| Behavior depends on legal state transitions or entry/exit responsibilities | Simplest explicit state model |
+| Operations need queuing, undo, replay, recording or an independent lifecycle | Command |
 | Measured allocation cost causes a performance problem | Consider an object pool |
 | An entity combines independent capabilities | Components; use ECS only when its added complexity is justified |
 | Presentation mirrors data | Read the model directly or subscribe to existing signals; snapshots only when needed |
