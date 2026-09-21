@@ -4,6 +4,7 @@ const Service = preload("res://tools/asset_workbench/analysis_service.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
 const Source = preload("res://tools/asset_workbench/analysis_source.gd")
+const Schema = preload("res://tools/asset_workbench/analysis_schema.gd")
 const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const AUDIO: String = "res://examples/asset_workbench/assets/example-confirmation-a.ogg"
 const IMAGE: String = "res://examples/asset_workbench/assets/example-star.png"
@@ -12,6 +13,7 @@ const FAULT_WORKER: String = "res://tests/features/asset_analyzer/analyzer_proce
 var _service: Service
 var _results: Dictionary[int, Dictionary] = {}
 var _owned_files: Array[String] = []
+var _contract_originals: Dictionary[String, PackedByteArray] = {}
 
 
 func before_test() -> void:
@@ -22,10 +24,61 @@ func before_test() -> void:
 
 
 func after_test() -> void:
+	for path: String in _contract_originals:
+		_restore_contract(path)
+	_contract_originals.clear()
 	for path: String in _owned_files:
 		if FileAccess.file_exists(path):
 			DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
 	_owned_files.clear()
+
+
+func _check_contract_failures(workbench: Control) -> void:
+	# This suite runs only in the dedicated external fixture project. Restore exact bytes.
+	var panel: Window = workbench.get("_analysis")
+	for path: String in [Source.CAPABILITIES_PATH, Schema.SCHEMA_PATH]:
+		_contract_originals[path] = FileAccess.get_file_as_bytes(path)
+		for malformed: String in ["", "{broken", "[]", "{}"]:
+			_invalidate_contract(path, malformed)
+			panel.call("open_asset", load(AUDIO))
+			panel.call("_analyze", 0)
+			var failure_deadline := Time.get_ticks_msec() + 5000
+			while panel.results[0].is_empty() and Time.get_ticks_msec() < failure_deadline:
+				await get_tree().process_frame
+			assert_str(panel.results[0].status).is_equal("failed")
+			assert_str(panel.results[0].errors[0].code).is_equal("analyzer_config")
+			assert_str(panel.results[0].errors[0].message).contains(path)
+			workbench.call("_trigger_once")
+			await get_tree().create_timer(0.12).timeout
+			assert_int(workbench.presenter.active_voice_count()).is_greater(0)
+			workbench.call("stop_all")
+			_restore_contract(path)
+		panel.call("open_asset", load(IMAGE))
+		panel.call("_analyze", 0)
+		var recovery_deadline := Time.get_ticks_msec() + 15000
+		while panel.results[0].is_empty() and Time.get_ticks_msec() < recovery_deadline:
+			await get_tree().process_frame
+		assert_str(panel.results[0].status).is_equal("success")
+	panel.call("_close")
+
+
+func _invalidate_contract(path: String, malformed: String) -> void:
+	Source.capabilities.clear()
+	Schema._schema.clear()
+	if malformed.is_empty():
+		assert_int(DirAccess.remove_absolute(path)).is_equal(OK)
+	else:
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		file.store_string(malformed)
+		file.close()
+
+
+func _restore_contract(path: String) -> void:
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_buffer(_contract_originals[path])
+	file.close()
+	Source.capabilities.clear()
+	Schema._schema.clear()
 
 
 func test_real_audio_image_and_cache_through_process_boundary() -> void:
@@ -173,6 +226,8 @@ func test_workbench_still_previews_after_analyzer_failure() -> void:
 	assert_int(workbench.get("presenter").active_voice_count()).is_greater(0)
 	assert_object(workbench.get("session").current().sound).is_not_null()
 	workbench.call("stop_all")
+	panel.get("service").executable = _service.executable
+	await _check_contract_failures(workbench)
 
 
 func test_chart_uses_normalized_series_and_rejects_unit_mismatch() -> void:

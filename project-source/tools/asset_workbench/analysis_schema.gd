@@ -2,12 +2,99 @@ extends RefCounted
 
 ## Executes the vocabulary used by the shared schema, not a second field contract.
 
-static var _schema: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
-	"res://tools/asset_analyzer/result.schema.json"))
+const SCHEMA_PATH: String = "res://tools/asset_analyzer/result.schema.json"
+
+static var _schema: Dictionary = {}
+
+
+## Cache only a usable contract; callers can report the load failure before starting a job.
+static func initialize() -> String:
+	if not _schema.is_empty():
+		return ""
+	var file := FileAccess.open(SCHEMA_PATH, FileAccess.READ)
+	if file == null:
+		return "Cannot read %s: %s" % [SCHEMA_PATH, error_string(FileAccess.get_open_error())]
+	var contents := file.get_as_text()
+	var read_error := file.get_error()
+	file.close()
+	if read_error != OK and read_error != ERR_FILE_EOF:
+		return "Cannot read %s: %s" % [SCHEMA_PATH, error_string(read_error)]
+	var parser := JSON.new()
+	if parser.parse(contents) != OK:
+		return "Invalid JSON in %s: %s" % [SCHEMA_PATH, parser.get_error_message()]
+	if not _valid_contract(parser.data):
+		return "Invalid result schema structure in " + SCHEMA_PATH
+	_schema = parser.data
+	return ""
+
+
+static func _valid_contract(value: Variant) -> bool:
+	if not value is Dictionary or value.get("type") != "object":
+		return false
+	if not value.get("$defs") is Dictionary or not value.get("properties") is Dictionary:
+		return false
+	if not _string_list(value.get("required")) or value.required.is_empty():
+		return false
+	var definitions: Dictionary = value["$defs"]
+	if not _valid_rule(value, definitions):
+		return false
+	return definitions.values().all(func(rule: Variant) -> bool:
+		return _valid_rule(rule, definitions))
+
+
+## Check the interpreter's input shapes, without duplicating result field requirements.
+static func _valid_rule(value: Variant, definitions: Dictionary) -> bool:
+	if not value is Dictionary or not _valid_constraints(value):
+		return false
+	if value.has("$ref") and not _valid_reference(value["$ref"], definitions):
+		return false
+	var properties: Variant = value.get("properties", {})
+	if not properties is Dictionary:
+		return false
+	for key: String in ["items", "additionalProperties", "not", "if", "then", "else"]:
+		if value.has(key) and not _valid_rule(value[key], definitions):
+			return false
+	return properties.values().all(func(child: Variant) -> bool:
+		return _valid_rule(child, definitions))
+
+
+static func _valid_reference(value: Variant, definitions: Dictionary) -> bool:
+	return value is String and value.begins_with("#/$defs/") \
+		and definitions.get(value.get_file()) is Dictionary
+
+
+static func _valid_constraints(rule: Dictionary) -> bool:
+	if rule.has("type") and rule.type not in [
+		"object", "array", "string", "boolean", "null", "number", "integer"]:
+		return false
+	if rule.has("enum") and not rule["enum"] is Array:
+		return false
+	if not _string_list(rule.get("required", [])):
+		return false
+	return _valid_array_constraints(rule)
+
+
+static func _valid_array_constraints(rule: Dictionary) -> bool:
+	var maximum: Variant = rule.get("maxItems", 0)
+	if not (maximum is int or maximum is float) or not is_finite(float(maximum)):
+		return false
+	if maximum < 0 or float(maximum) != floorf(float(maximum)):
+		return false
+	var lengths: Variant = rule.get("x-equal-lengths", [])
+	if not _string_list(lengths):
+		return false
+	if not lengths.is_empty():
+		return lengths.size() == 2 and lengths.all(func(key: String) -> bool:
+			return key in rule.get("required", []))
+	return true
+
+
+static func _string_list(value: Variant) -> bool:
+	return value is Array and value.all(func(item: Variant) -> bool: return item is String)
 
 
 static func is_valid(value: Variant) -> bool:
-	return _finite_json(value) and _matches(value, _schema)
+	return initialize().is_empty() and _finite_json(value) and _matches(value, _schema)
 
 
 static func _finite_json(value: Variant) -> bool:

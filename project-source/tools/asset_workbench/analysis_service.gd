@@ -6,13 +6,14 @@ signal state_changed(task_id: int, state: String)
 const Job = preload("res://tools/asset_workbench/analysis_job.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Source = preload("res://tools/asset_workbench/analysis_source.gd")
+const Schema = preload("res://tools/asset_workbench/analysis_schema.gd")
 const JOB_DIRECTORY: String = "res://reports/asset-analyzer/jobs"
 
 var executable: String
 var worker_path: String = "res://tools/asset_analyzer/worker.py"
 var timeout_seconds: float = 30.0
 var max_concurrent: int = 2
-var memory_budget_mib: int = int(Source.capabilities.pool_memory_mib)
+var memory_budget_mib: int = -1  # Use the shared default after successful contract loading.
 var _next_id: int = 0
 var _queue: Array[int] = []
 var _jobs: Dictionary[int, Job] = {}
@@ -57,11 +58,27 @@ func _process(_delta: float) -> void:
 		var result: Dictionary = _jobs[task_id].poll()
 		if not result.is_empty():
 			_deliver(task_id, result)
+	if not _queue.is_empty():
+		var issue := _initialize_contracts()
+		if not issue.is_empty():
+			var task_id: int = _queue.front()
+			_jobs[task_id].fail("analyzer_config", issue)
+			_deliver(task_id, _jobs[task_id].poll())
+			return
 	while not _queue.is_empty() and _running.size() < clampi(max_concurrent, 1, 4):
 		var cost := Source.memory_mib(_jobs[_queue.front()].request.asset_type)
 		if not _running.is_empty() and reserved_memory_mib() + cost > memory_budget_mib:
 			break
 		_start_next()
+
+
+func _initialize_contracts() -> String:
+	var issue := Source.initialize()
+	if issue.is_empty():
+		issue = Schema.initialize()
+	if issue.is_empty() and memory_budget_mib < 0:
+		memory_budget_mib = int(Source.capabilities.pool_memory_mib)
+	return issue
 
 
 func reserved_memory_mib() -> int:
