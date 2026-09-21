@@ -13,6 +13,7 @@ func _ready() -> void:
 	super()
 	_composition.session_selected.connect(_use_session)
 	_composition.analysis_requested.connect(_batch.open_assets)
+	_composition.stop_requested.connect(stop_all)
 	for object: Control in _composition.stage.objects:
 		if object.presenter != presenter:
 			object.presenter.playback_failed.connect(_set_status)

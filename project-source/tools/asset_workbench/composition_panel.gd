@@ -4,6 +4,7 @@ extends VBoxContainer
 
 signal session_selected(session: Session)
 signal analysis_requested(assets: Array[Resource])
+signal stop_requested
 
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
 const Stage = preload("res://components/feedback/feedback_composition.gd")
@@ -113,7 +114,7 @@ func _build() -> void:
 	var actions := HFlowContainer.new()
 	root.add_child(actions)
 	_button(actions, "Trigger all", stage.trigger_all)
-	_button(actions, "Stop all", stage.stop)
+	_button(actions, "Stop all", func() -> void: stop_requested.emit())
 	_button(actions, "Analyze selected object's sources", func() -> void:
 		analysis_requested.emit(assets(true)))
 	_button(actions, "Analyze all scene sources", func() -> void:

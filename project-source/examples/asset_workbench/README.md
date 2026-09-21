@@ -52,7 +52,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 
 1. 点击对象会选中并触发它。组合工作台右侧立即改为该对象的属性，底部显示真实保存目标。
 2. 沿用现有候选、参数、A/B、重置与保存；试调也更新组合场景中的对应对象。切换对象不会丢弃各自 A/B；初始 B 在有另一个声音时仅换声音。
-3. `Trigger all` 同时触发三个对象，检查重叠；`Stop all` 清理动画、音频及延迟。
+3. `Trigger all` 同时触发三个对象，检查重叠；组合区的 `Stop all` 与试调区停止入口一致，清理全部对象的动画、音频和延迟，并停止连续触发与单项循环试听。
 4. `Apply gain to all trials` 只改变三个对象各自当前 A/B 的音量；另一方案与磁盘保持不变。
 5. `Save all scene cues` 对每个明确 Cue 分别执行原有冲突检查与保存，显示成功数量及失败路径。它不是多文件事务：其他文件可以成功，冲突文件保留试调。
 6. `Open example game using saved cue` 启动组合场景的独立实例，读取已保存 Cue；也可打开 `composition/example-composition.tscn` 按 F6。未保存试调不会进入独立实例。

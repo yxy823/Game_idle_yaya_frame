@@ -114,6 +114,36 @@ func test_scene_trigger_and_stop_use_existing_playback_and_clear_delays() -> voi
 		assert_int(object.presenter.active_effect_count()).is_equal(0)
 
 
+func test_composition_stop_button_cancels_repeat_audition_and_delayed_audio() -> void:
+	var objects: Array = _panel.stage.objects
+	var starts: Array[int] = [0]
+	for object: ObjectView in objects:
+		object.presenter.sound_started.connect(func() -> void: starts[0] += 1)
+	_workbench.session.current().delay_seconds = 0.3
+	_workbench.call("_refresh")
+	var browser: Control = _workbench.get("_browser")
+	browser.call("_select", 2)
+	_workbench.call("_start_repeat", 0.1)
+	browser.call("_set_repeat", true)
+	await get_tree().create_timer(0.15).timeout
+	var stop_button: Button
+	for node: Node in _panel.find_children("*", "Button", true, false):
+		if (node as Button).text == "Stop all":
+			stop_button = node as Button
+	assert_object(stop_button).is_not_null()
+	stop_button.pressed.emit()
+	var count_at_stop: int = starts[0]
+	await get_tree().create_timer(0.7).timeout
+	assert_int(starts[0]).is_equal(count_at_stop)
+	for object: ObjectView in objects:
+		assert_int(object.presenter.active_voice_count()).is_equal(0)
+		assert_int(object.presenter.active_effect_count()).is_equal(0)
+	for node: Node in browser.find_children("*", "AudioStreamPlayer", true, false):
+		assert_bool((node as AudioStreamPlayer).playing).is_false()
+	assert_bool(browser.get("_timer").is_stopped()).is_true()
+	assert_bool(_workbench.get("_repeat").is_stopped()).is_true()
+
+
 func test_composition_is_an_independently_runnable_native_scene() -> void:
 	var scene: Control = auto_free(Composition.instantiate())
 	add_child(scene)
