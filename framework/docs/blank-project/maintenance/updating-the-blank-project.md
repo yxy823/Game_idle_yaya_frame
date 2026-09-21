@@ -62,7 +62,7 @@
 
 `Project_README.md` 保持短入口，描述项目自身用法；不要求已生成项目访问本手册或查询框架版本。框架根 README 和 `framework/README.md` 负责引导维护者找到手册。
 
-新增正式任务提示词仍只写入 `framework/prompts.json`。说明可以引用提示词名称和用途，正文不散落进 README、规则或本手册。
+新增正式任务提示词仍只写入 `framework/prompts.json`。说明可以引用提示词名称和用途，正文不散落进 README、规则或本手册。advisor 的精选表达参考是受控派生文件：修改入选正文、选择范围或相关 Skill 名称后，运行 [精选导出](../../../README.md#导出-advisor-精选表达参考) 并检查输出；这些参考随 Skill 复制，不让创建器或生成项目承担转换、回查与同步职责。
 
 ## 按修改选择验证范围
 

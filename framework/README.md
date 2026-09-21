@@ -15,6 +15,7 @@
 | [commands/create_project.py](commands/create_project.py) | 读取相对路径清单，检查目标后复制 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
+| [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 从 JSON 精选导出 advisor 的表达参考；只在维护时显式执行 |
 | [docs/blank-project/README.md](docs/blank-project/README.md) | 空白项目详细使用手册与维护指引；不复制到项目 |
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 将手册 Markdown、[页面模板](commands/blank-project-handbook-page.html)、[交互源文件](commands/blank-project-handbook-interactions.js) 与 SVG 图表内嵌为单文件 HTML |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
@@ -27,6 +28,25 @@
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |
+
+## 导出 advisor 精选表达参考
+
+`prompts.json` 是唯一手写正文。导出器按其中“Godot 项目开发”的分类与提示词名称精确选择 12 条，
+生成 `project-source/skills/project-next-step-advisor/references/prompt-examples.md` 索引及
+`prompt-examples/` 下五个分类文件。选择清单在导出器的 `SELECTION` 中，不另建配置或流程映射。
+
+```powershell
+& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B framework/commands/export_advisor_prompt_examples.py
+& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B framework/commands/export_advisor_prompt_examples.py --check
+```
+
+修改入选提示词、Skill 名称或选择范围后显式导出；`--check` 只比较内容，缺失或过期返回非零且不写入。
+全部入选来源有效后才开始输出，正文与占位符原样保留，使用 UTF-8 和 LF；无时间戳、后台同步或新依赖。
+生成后随本次逻辑变更提交。相关回归在 `tests/test_advisor_prompt_examples.py`。
+
+创建器只复制 Skill 已有的静态参考，不调用导出器；完整 JSON 与本导出脚本不进入新项目。
+advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Skill 与真实授权决定行动。
+资料的分发与使用边界见 [精选参考说明](docs/blank-project/reference/skills.md#advisor-的精选表达参考)。
 
 ## 提示词
 

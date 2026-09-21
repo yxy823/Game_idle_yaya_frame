@@ -45,6 +45,9 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | User authorizes performance optimization inside a current Feature | Reuse that task for measurement, repair and verification; a separate maintenance entry is for independently owned optimization. |
 | Soak run stopped before its planned duration | Report actual duration/scenarios and remaining coverage; no full-duration pass or substituted gdUnit evidence. |
 | Resource-list status edited after final verification | Apply existing global fingerprint freshness rules, even if planning classifies the edit as editorial. |
+| A selected wording example grants implementation but the user requested investigation only | Preserve the user's read-only scope; the example supplies neither approval nor an instruction to execute. |
+| A status query has a matching prompt example | Answer current facts directly without loading examples or manufacturing a continuation prompt. |
+| A wording example is absent or conflicts with the project's current Skill | Follow current project authority, report a material conflict if relevant, and draft advice without fetching the framework or regenerating files. |
 
 For every case, verify that advice reads current project facts, refers to the
 existing destination workflow when routing is needed, supplies a prompt only for

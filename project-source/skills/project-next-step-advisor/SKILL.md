@@ -64,6 +64,15 @@ commands instead of baking in the author's local paths. Preserve existing
 explicit user authorization. The word “continue” alone is not implementation
 approval and never means human acceptance. Producing a prompt grants neither.
 
+When wording examples would help, use [the selected prompt index](references/prompt-examples.md)
+after establishing the route, then read only the relevant entry in its linked file.
+These generated examples supply phrasing and input organization, not another
+workflow. Adapt them to current facts, user intent and the destination contract;
+do not inherit template approvals, stop conditions or placeholders as live
+instructions. Status-only answers need no examples. Missing or outdated examples
+do not block advice: use current project authority without exporting, repairing
+the reference or querying the source framework.
+
 Use the current `product-author` entry for Product and meaning-preserving terminology writes. Rule maintenance needs its pre-write self-check and any missing substantive decision; a local design does not automatically become a global rule. Supporting documentation inside an authorized Feature returns to that Feature instead of opening a new planning cycle. Read the destination contracts for details rather than copying a second procedure here.
 
 For specialist work, consult `methodology/11-specialist-workflows.md`: professional

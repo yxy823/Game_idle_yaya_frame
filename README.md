@@ -56,8 +56,9 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ## 创建以后怎么开始
 
 从 [prompts.json](framework/prompts.json) 的“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”
-取出提示词，在目标项目中发送给 Agent。提示词在维护目录集中管理，
-不进入项目 README 或项目文件集合。
+取出提示词，在目标项目中发送给 Agent。完整提示词库在维护目录集中管理，
+不进入项目 README 或项目文件集合；advisor 随 Skill 携带从该库生成的精选表达参考，
+仅按需读取，不替代项目规范或当前授权，详见 [参考资料说明](framework/docs/blank-project/reference/skills.md#advisor-的精选表达参考)。
 Agent 在该项目里确认工具路径、项目名称和准备范围，再执行你要求的初始化。
 初始化与业务 Feature 分开；不会因为文件复制完成就宣称环境或测试已经通过。
 

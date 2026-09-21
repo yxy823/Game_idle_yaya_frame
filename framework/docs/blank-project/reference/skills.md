@@ -2,7 +2,7 @@
 
 [返回手册](../README.md) · 相关：[需求与规划](../guides/product-and-planning.md)、[工程变更](../guides/engineering-changes.md)
 
-本页用于选择任务入口。提示词表达本次目标与授权，Skill 提供方法，`methodology/` 定义流程和数据契约。当前项目携带 27 项 Skill，位于 `.agents/skills/`，另有一个独立审核角色；集中提示词留在框架，用户取出正文后在对应工作目录发送。
+本页用于选择任务入口。提示词表达本次目标与授权，Skill 提供方法，`methodology/` 定义流程和数据契约。当前项目携带 27 项 Skill，位于 `.agents/skills/`，另有一个独立审核角色；完整提示词库留在框架，用户取出正文后在对应工作目录发送，advisor 仅携带下述精选表达参考。
 
 ## 从哪里取得操作提示词
 
@@ -77,6 +77,14 @@ Codex 输出、外部报告、需求原文和复现日志等可能较长的输�
 Agent 使用 `project-next-step-advisor`，结合当前项目规则、相关任务和可用证据，判断原输出的结论、建议与停点是否合理。需要回信时，先给简短判断，再提供一个可复制的回复代码块，说明应继续、纠正或补充核实的事项及适用流程；只问状态时直接回答事实。
 
 分析只读进行，回复由你检查后发送。已有明确授权继续沿用；Codex 的总结不能替代原始验证证据，生成的回复也不替你作出未表达的产品决定或人工验收。若目的是判断框架本身是否需要改进，改用框架维护侧的 [开发反馈复盘入口](../maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
+
+### advisor 的精选表达参考
+
+`project-next-step-advisor` 按当前项目规范和目标 Skill 确定路线；需要起草回复时，才从 [精选索引](../../../../project-source/skills/project-next-step-advisor/references/prompt-examples.md) 选择相关条目。12 条示例按需求、规划、开发、工程变更、验证与交接分为五个文件，不要求通读；只问状态时无需读取。
+
+示例正文唯一来源仍是 `framework/prompts.json`，派生 Markdown 不手工维护。示例中的“我授权”、停止条件和占位符不构成当前指令；advisor 结合真实状态与已有授权重新组织措辞，示例过期或缺失时仍按项目自身规范回答。创建、迁移、框架替换、Goal 和 advisor 自身入口未选入。
+
+维护者显式运行 [导出器](../../../commands/export_advisor_prompt_examples.py) 更新源材料，创建器仅照常复制 Skill 中的静态参考。生成项目不读取框架 JSON、不执行导出或自动同步；命令见 [维护工具](../../../README.md#导出-advisor-精选表达参考)。
 
 ## 27 项 Skill 的职责
 
