@@ -10,7 +10,7 @@
 
 | 事项 | 当前情况 | 下一步或完成条件 | 依据 |
 | --- | --- | --- | --- |
-| 美术与音频资源预览、分析与调试工作台 | 正在审核用户提供的 40 节设计方案；本次仅审核，尚未实现 | 核对现有流程、音频插件和 Godot 约束，给出保留、修改、延后内容；实施前确定目标项目、代表性事件与写回位置 | [原型规范](../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)、[专业职责](../project-source/methodology/11-specialist-workflows.md) |
+| 美术与音频资源预览、分析与调试工作台 | 方案适配审核完成，待决定实施取舍；已核对固定提交的音频插件源码，尚未安装或运行工作台 | 讨论预览隔离、保存目标、播放控制与首期范围；进入实施时指定实际项目、代表性事件和现有音频系统 | [2026-09-21 设计审核与增删建议](review/reports/asset-workbench-design-review-2026-09-21.md) |
 | researcher 实际使用验证 | 角色、复制映射、报告约定及回归已完成；anysearch 曾由子 Agent 实际搜索与抽取成功，新角色的客户端加载与完整委派尚未实测 | 在实际项目核实角色是否加载、按任务委派、返回来源并按需写报告；分别记录配置验证与实际委派结果 | [researcher](../project-source/agents/researcher.toml)、[调研使用说明](docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) |
 | 手册阅读体验 | 已有离线阅读版和构建检查；尚缺本会话对应内容的外部排版与交互验收 | 用户在外部检查当前阅读版的导航、正文定位、图表与调研章节；按实际问题修正，不用构建成功替代视觉接受 | [阅读版](docs/blank-project/blank-project-handbook.html)、[维护说明](docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则) |
 | wayfinder 借鉴 | 用户已要求暂缓；尚未采纳整体方案 | 用户重新选择讨论范围后，针对真实问题评估；不因列入本文自动实施 | 本会话已确认的暂缓决定 |
@@ -21,7 +21,7 @@
 | --- | --- | --- |
 | 2026-09-21 | 已有提交 `7f86f60` 明确失败结果与异步操作有效期；`2c27cb7` 补充调用方复杂度的设计与评审判断 | 已从当前 Git 历史和相关规则核对；本次未重新执行其验证，原范围以对应提交为准 |
 | 2026-09-21 | `8dbc9fb` 新增按需 researcher、搜索回退、明确版本与调研报告约定；anysearch 保持用户级安装 | 该轮 24 项 unittest 通过，advisor 导出检查通过；手册构建覆盖 20 篇文档、32 张图和 459 个源链接。记录见 [场景基线](review/baselines/scenario-coverage.md)，不作为此后所有修改的验证结果 |
-| 2026-09-21 | 建立本进度文档及根规则中的更新入口 | 内容、本地链接、锚点与 UTF-8/LF 静态核对通过；复制清单未包含本文件，不增加自动 Hook 或任务状态机 |
+| 2026-09-21 | `84a5136` 建立本进度文档及根规则中的更新入口 | 内容、本地链接、锚点与 UTF-8/LF 静态核对通过；复制清单未包含本文件，不增加自动 Hook 或任务状态机 |
 
 ## 持续观察
 
