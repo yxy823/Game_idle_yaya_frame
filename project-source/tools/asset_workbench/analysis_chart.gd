@@ -116,6 +116,7 @@ func _gui_input(event: InputEvent) -> void:
 		var fraction := clampf((button.position.x - 65.0) / maxf(size.x - 80, 1), 0, 1)
 		var pointer_x := view.position.x + fraction * view.size.x
 		_zoom = clampf(_zoom * (1.5 if button.button_index == MOUSE_BUTTON_WHEEL_UP else 0.667), 1, 32)
-		_center = (pointer_x - _bounds.position.x + (0.5 - fraction) * _bounds.size.x / _zoom) / _bounds.size.x
+		_center = (pointer_x - _bounds.position.x
+			+ (0.5 - fraction) * _bounds.size.x / _zoom) / _bounds.size.x
 	queue_redraw()
 	accept_event()

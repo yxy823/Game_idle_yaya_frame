@@ -31,7 +31,8 @@ static func comparison_identity(data: Dictionary) -> Array:
 static func comparison_reason(first: Dictionary, second: Dictionary) -> String:
 	if first.is_empty() or second.is_empty():
 		return ""
-	var labels := ["schema", "asset type", "analyzer", "analyzer version", "backend versions", "parameters"]
+	var labels := ["schema", "asset type", "analyzer", "analyzer version",
+		"backend versions", "parameters"]
 	var left := comparison_identity(first)
 	var right := comparison_identity(second)
 	var differences: Array[String] = []
