@@ -281,13 +281,13 @@ At implementation completion, map changed behavior to every criterion ID.
 
 ### 3D. Documentation checkpoint before final verification
 
-Check whether this work added, renamed, retired or clarified durable terminology, changed the Feature design/current architecture, produced an important technical decision, or revealed a useful project-rule change. Update only useful, authorized content at its owning location. If none changed, do not create a document or empty report. There is no artifact quota or separate checklist ledger.
+Check whether this work added, renamed, retired or clarified durable terminology, changed the Feature design/current architecture or recorded navigation, produced an important technical decision, or revealed a useful project-rule change. Update only useful, authorized content at its owning location. If none changed, do not create a document or empty report. There is no artifact quota or separate checklist ledger.
 
 | Content | Action and authority |
 | --- | --- |
 | Shared terminology | Invoke `product-author`'s terminology route within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
 | Professional requirements and resource lists | The owning specialist finalizes applicable UI/art/audio/localization specifications and resource status/location updates under [Specialist work and sources](11-specialist-workflows.md). Resolve substantive source impacts before dependent delivery. |
-| Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update current subsystem contracts where they changed, linking rather than duplicating. |
+| Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update affected architecture contracts and navigation under [map maintenance](10-architecture-overview.md#maintaining-a-map), linking rather than duplicating. |
 | Important technical choices | Apply the existing ADR threshold and authorization; preserve replaced decisions and evidence limits. |
 | Project or specialized rules | Apply [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance), including a pre-write self-check for every proposed change. Persist settled constraints; unapproved candidates stay in design/Progress, not active rules. |
 

@@ -5,9 +5,9 @@ new approval Stage or a substitute for Product, Project Rules and approved
 decisions. Use it when module boundaries are difficult to recover from code.
 It is optional for small projects.
 
-`docs/architecture.md` owns the project-level map: modules, responsibilities,
-state owners, major allowed dependency directions and the reasons for those
-boundaries. Use `docs/architecture/<subsystem>.md` for a complex subsystem;
+`docs/architecture.md` owns the project-level map: modules, implementation entry
+points, responsibilities, state owners, major collaborations and allowed dependency
+directions, and the reasons for those boundaries. Use `docs/architecture/<subsystem>.md` for a complex subsystem;
 link it from the overview instead of expanding the main file indefinitely.
 Map templates are [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl)
 and [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl).
@@ -21,11 +21,19 @@ is required.
 
 Feature design in `docs/features/F0XX-design.md` explains one change. This map and its subsystem documents describe the current system across Features. Keep shared runtime structure here, local implementation reasoning in the Feature design and important choice rationale in ADRs; link the owners instead of copying them. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
 
-Humans maintain why a boundary exists, who owns a responsibility, which
-dependencies are allowed and why an exception is approved. Implementation
-work updates a map only when those contracts change. Stage 0 reads the relevant
-map if present; review checks a changed boundary against it. A stale or missing
-optional map is a clarification/review concern, not a fabricated Gate failure.
+## Navigation
+
+When using a map, give each module its main location and useful reading entry points: key scenes, scripts or resources, and relevant verification entries when helpful. Link an existing module README when it already provides that navigation. Keep this selective; do not inventory every file, function or test.
+
+At project level, point to the actual startup/composition boundary and persistent state owners when these help readers understand how modules fit together. Describe the structure that exists, without inventing a bootstrap or Autoload layer. In subsystem documents, keep basic navigation available even when runtime-flow detail is unnecessary.
+
+Distinguish actual direct collaborators and the purpose of their interaction from permitted dependency directions. When using a diagram, identify what its arrows mean: code dependency, scene composition, inheritance or runtime messages, for example. Keep different relationships distinguishable; no fixed set of diagrams is required.
+
+## Maintaining a map
+
+Humans maintain why a boundary exists, who owns a responsibility, which dependencies are allowed and why an exception is approved. Update an existing map when its recorded responsibilities, ownership, collaborations, dependency constraints, paths or entry points change, including moves or renames that leave contracts intact. Implementation changes that do not affect mapped information need no map update or new diagram.
+
+Within the changed scope, check that links and reading entries still resolve to the intended content, reconcile overview and subsystem summaries, and keep affected diagrams consistent with the text. Stage 0 reads the relevant map if present; review checks a changed boundary against it. A stale or missing optional map is a clarification/review concern, not a fabricated Gate failure.
 
 ## Designing a module boundary
 

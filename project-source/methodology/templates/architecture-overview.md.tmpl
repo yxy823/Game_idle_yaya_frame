@@ -1,15 +1,17 @@
 # Architecture overview
 
-> Optional, human-owned project map. Explain responsibility and permitted dependencies; generated reference facts do not define architecture authority.
+> Optional, human-owned project map. Provide reading entries and explain responsibility, current collaboration and permitted dependencies; generated reference facts do not define architecture authority.
 
 ## Modules and responsibility
 
-| Module | Responsibility | Owning boundary | Why this boundary exists |
-| --- | --- | --- | --- |
+| Module | Main location / reading entry | Responsibility | Owning boundary | Why this boundary exists |
+| --- | --- | --- | --- | --- |
+
+Link an existing module README when it already provides useful navigation. Point to the actual startup/composition boundary and persistent state owners when they help explain how the project fits together; do not invent missing layers.
 
 ## Allowed dependency directions
 
-Describe the permitted directions between project-level modules and the reason for each constraint. Record deliberate exceptions and their owner. Do not require a full class-level graph.
+Describe the permitted directions between project-level modules and the reason for each constraint. Distinguish these constraints from key actual collaborations and their purpose. Record deliberate exceptions and their owner. Do not require a full class-level graph.
 
 ## Complex subsystems
 
@@ -25,4 +27,4 @@ Optional generated facts live separately under `reports/maintenance/architecture
 
 ## Maintenance
 
-Update this map when a change alters module responsibility or an allowed dependency direction. Ordinary implementation changes do not require a new diagram. Resolve conflicts with Product, Project Rules and approved decisions; do not silently replace human intent with generated output.
+Follow the Navigation and Maintaining a map sections of `methodology/10-architecture-overview.md` for content, change triggers and checks. Resolve conflicts with Product, Project Rules and approved decisions; do not silently replace human intent with generated output.
