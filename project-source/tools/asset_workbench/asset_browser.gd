@@ -67,6 +67,12 @@ func _build_browser() -> void:
 	add_child(_filter)
 	_list.custom_minimum_size.y = 170.0
 	add_child(_list)
+	_add_button("Audition (-12 dB / 1x / Master)", audition)
+	_add_button("Use selection in active A/B", _bind_selected)
+	_repeat.text = "Repeat audition"
+	_repeat.toggle_mode = true
+	add_child(_repeat)
+	_add_button("Stop audition", stop)
 	_backdrop.custom_minimum_size.y = 120.0
 	_backdrop.clip_contents = true
 	add_child(_backdrop)
@@ -77,12 +83,6 @@ func _build_browser() -> void:
 	_details.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_details.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	add_child(_details)
-	_add_button("Audition (-12 dB / 1x / Master)", audition)
-	_repeat.text = "Repeat audition"
-	_repeat.toggle_mode = true
-	add_child(_repeat)
-	_add_button("Stop audition", stop)
-	_add_button("Use selection in active A/B", _bind_selected)
 
 
 func _add_button(text: String, action: Callable) -> void:

@@ -10,7 +10,8 @@
 
 | 事项 | 当前情况 | 下一步或完成条件 | 依据 |
 | --- | --- | --- | --- |
-| 美术与音频资源工作台 | 首期已实现并通过引擎及新路径验证；原色示例、浅色/深色和棋盘格、单项试听、A/B、连续触发与明确保存可用 | 用户实际观看与试听；真实项目接入一个自身对象/事件后再验证。专业 Analyzer、批量和风格分析按实际需求后续推进 | [首期实现与验证](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
+| 美术与音频资源工作台 | 首期已实现；用户反馈的矮窗口截断与 A/B 初始同音已修正。三个小窗口尺寸渲染检查、12 项实际行为通过；原色、主题、试听与保存能力保留 | 用户重开工作台检查滚动和 A/B 听感；真实项目接入一个自身对象/事件后再验证。编辑器嵌入窗口的人工交互仍待接受 | [首期实现与反馈复验](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
+| 外部专业 Analyzer | 尚未实现音频/美术分析、统一结果协议与图表。当前只有 Godot 尺寸/时长；已核对 FFmpeg/ffprobe、Pillow/NumPy 和按需 librosa 的候选方向 | 选一个真实分析问题，完成后台适配器、结果适用性与 UI 展示闭环；具体依赖及 Windows 构建需烟测后固定，候选不记为已接入 | [现状与技术选择](review/reports/asset-workbench-implementation-validation-2026-09-21.md#analyzer-现状与后续技术选择) |
 | 框架可复制与流程验证 | 已完成源材料隔离检查、独立项目初始化、工具回归、实际 Godot 运行与第二路径无缓存重建；空白源状态保持不变 | 按既有动态审核入口在明确项目执行一个新的微型需求到 Feature 完成记录全过程；不将本次工作台维护回归当作全部流程已验证 | [分层验证方式](docs/blank-project/maintenance/validating-framework.md)、[当前证据与限制](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
 | researcher 实际使用验证 | 角色、复制映射、报告约定及回归已完成；anysearch 曾由子 Agent 实际搜索与抽取成功，新角色的客户端加载与完整委派尚未实测 | 在实际项目核实角色是否加载、按任务委派、返回来源并按需写报告；分别记录配置验证与实际委派结果 | [researcher](../project-source/agents/researcher.toml)、[调研使用说明](docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) |
 | 手册阅读体验 | 当前构建覆盖 22 篇文档、33 张 Mermaid、472 个源链接；尚缺对应内容的外部排版与交互验收 | 用户在外部检查导航、正文定位、图表及新增工作台/框架验证章节；按实际问题修正，不用构建成功替代视觉接受 | [阅读版](docs/blank-project/blank-project-handbook.html)、[维护说明](docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则) |
@@ -20,6 +21,7 @@
 
 | 日期 | 成果 | 验证范围与记录 |
 | --- | --- | --- |
+| 2026-09-21 | 修复工作台小窗口访问与示例 A/B 比较，明确 Analyzer 尚未接入 | 指定项目 Godot 4.7.1：12 项通过，四个改动脚本解析通过，lint 0 Critical/0 Warning；1152×648、900×540、720×480 渲染与滚动可达检查通过。未将命令行音频诊断或旧版第二路径结果当作 Analyzer/本次迁移通过 |
 | 2026-09-21 | 首期工作台、可移除示例与分层验证说明 | 维护 38 项、项目工具 159 项；两个路径的 Godot 行为各 11 项通过，10 个自有脚本解析成功，lint 0 Critical/0 Warning。渲染截图已检查，主观验收待用户；见 [报告](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
 | 2026-09-21 | 已有提交 `7f86f60` 明确失败结果与异步操作有效期；`2c27cb7` 补充调用方复杂度的设计与评审判断 | 已从当前 Git 历史和相关规则核对；本次未重新执行其验证，原范围以对应提交为准 |
 | 2026-09-21 | `8dbc9fb` 新增按需 researcher、搜索回退、明确版本与调研报告约定；anysearch 保持用户级安装 | 该轮 24 项 unittest 通过，advisor 导出检查通过；手册构建覆盖 20 篇文档、32 张图和 459 个源链接。记录见 [场景基线](review/baselines/scenario-coverage.md)，不作为此后所有修改的验证结果 |

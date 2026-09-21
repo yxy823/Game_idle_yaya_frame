@@ -130,6 +130,9 @@ func test_browsing_does_not_bind_until_requested() -> void:
 	candidates.select(3)
 	candidates.item_selected.emit(3)
 	assert_bool(workbench.session.is_dirty()).is_false()
+	_button(workbench, "Audition (-12 dB / 1x / Master)").pressed.emit()
+	assert_array(_playing_sound_paths(workbench)).is_equal([
+		"res://examples/asset_workbench/assets/example-confirmation-b.ogg"])
 	_button(workbench, "Use selection in active A/B").pressed.emit()
 	assert_bool(workbench.session.is_dirty()).is_true()
 	assert_str(workbench.session.current().sound.resource_path).ends_with("confirmation-b.ogg")
@@ -154,19 +157,49 @@ func test_ab_buttons_restore_trials_and_stop_repeat() -> void:
 	assert_int(workbench.presenter.active_voice_count()).is_equal(0)
 
 
+func test_example_ab_actually_plays_different_streams_until_copied() -> void:
+	var workbench: Control = auto_free(WorkbenchScene.instantiate())
+	add_child(workbench)
+	_button(workbench, "Trigger").pressed.emit()
+	await get_tree().create_timer(0.12).timeout
+	assert_array(_playing_sound_paths(workbench)).is_equal([
+		"res://examples/asset_workbench/assets/example-confirmation-a.ogg"])
+	_button(workbench, "B").pressed.emit()
+	await get_tree().create_timer(0.12).timeout
+	assert_array(_playing_sound_paths(workbench)).is_equal([
+		"res://examples/asset_workbench/assets/example-confirmation-b.ogg"])
+	assert_bool(workbench.session.is_dirty()).is_true()
+	_button(workbench, "Copy active to other").pressed.emit()
+	_button(workbench, "A").pressed.emit()
+	await get_tree().create_timer(0.12).timeout
+	assert_array(_playing_sound_paths(workbench)).is_equal([
+		"res://examples/asset_workbench/assets/example-confirmation-b.ogg"])
+	workbench.stop_all()
+
+
 func test_inspection_appearance_does_not_change_trials_or_saved_cue() -> void:
 	var original := FileAccess.get_file_as_string(CUE_PATH)
 	var workbench: Control = auto_free(WorkbenchScene.instantiate())
 	add_child(workbench)
 	var texture: Texture2D = workbench.session.current().texture
+	var alternative_before: FeedbackCue = workbench.session.drafts[1].trial_copy()
 	assert_bool(workbench.get_theme_color("font_color", "Label") == Color.BLACK).is_true()
 	_button(workbench, "Dark background").button_pressed = true
 	_button(workbench, "Transparency grid").button_pressed = true
 	assert_bool(workbench.get_theme_color("font_color", "Label") == Color.WHITE).is_true()
 	assert_bool(workbench.session.is_dirty()).is_false()
-	assert_bool(workbench.session.drafts[1].same_values(workbench.session.saved)).is_true()
+	assert_bool(workbench.session.drafts[1].same_values(alternative_before)).is_true()
 	assert_object(workbench.session.current().texture).is_same(texture)
 	assert_str(FileAccess.get_file_as_string(CUE_PATH)).is_equal(original)
+
+
+func _playing_sound_paths(root: Node) -> Array[String]:
+	var paths: Array[String] = []
+	for node: Node in root.find_children("*", "AudioStreamPlayer", true, false):
+		var player := node as AudioStreamPlayer
+		if player.playing and player.stream != null:
+			paths.append(player.stream.resource_path)
+	return paths
 
 
 func _button(root: Node, text: String) -> Button:

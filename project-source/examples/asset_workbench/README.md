@@ -13,13 +13,14 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 & $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/example-workbench.tscn' | Out-Host
 ```
 
-先完成正常导入。窗口至少 1100 × 860；这不会把示例设为正式游戏入口。
+先完成正常导入。工作台不强制扩大宿主窗口；三个内容栏可分别上下滚动，窄窗口还可横向滚动内容区。
+标题、当前事件声音和底部状态留在滚动区外；这不会把示例设为正式游戏入口。
 
 1. 左侧筛选并查看图片尺寸、音频时长；`Audition` 和 `Repeat audition` 单独试听。
 2. 普通浏览不改事件。点击 `Use selection in active A/B`，或使用右侧候选下拉框，才替换当前试调方案。
 3. 调整显示尺度、脉冲动画时长、单次音量 dB、播放音高倍率、事件起点后的声音延迟秒数及总线；素材保持导入后的原色，不提供染色。
 4. `Trigger` 从初态重播；`Repeat 0.6s`、`Rapid 0.1s` 允许事件重叠；`Stop all` 清除播放、动画、循环及尚未触发的延迟声音。
-5. A、B 各自保留试调值，切换时停止旧效果再触发新方案。`Copy active to other` 复制方案；`Reset active trial` 放弃当前方案修改。
+5. 打开或重载时，A 使用磁盘配置，B 在有其他音频候选时只换成另一声音，便于直接比较。两者各自保留试调值，切换时停止旧效果再触发新方案。`Copy active to other` 复制方案；`Reset active trial` 将当前方案恢复为磁盘配置，因此两者可能再次相同。
 6. `Save active cue` 只保存当前 A/B 到下方显示的 `.tres`，不改原图或音频。`Reload from disk` 经界面确认后放弃两份试调并重读磁盘。
 7. `Open example game` 启动独立进程，点击奖励按钮验证**已保存**配置；未保存的试调不会进入该场景。
 
@@ -30,7 +31,10 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 
 左右两种查看方式共享候选集合，但单项试听使用固定 -12 dB、1 倍速、Master 总线。
 事件按右侧参数播放；没有自动响度匹配，主观比较时保持系统监听音量一致。
+顶部 `Event sound` 显示事件实际使用的文件；左侧选中后点 `Audition` 才单独播放所选文件，点 `Use selection in active A/B` 才绑定并触发事件。
+两个原始音效属于同一确认音系列，解码时长分别约 0.290 秒和 0.539 秒；切换 A/B 不代表自动改变音色、响度或音高。
 示例资源元数据来自导入后的 Texture2D / AudioStream，不是专业响度或风格分析。
+外部 Analyzer、统一分析结果 JSON 和分析图表尚未接入。
 
 ## 数据和运行边界
 

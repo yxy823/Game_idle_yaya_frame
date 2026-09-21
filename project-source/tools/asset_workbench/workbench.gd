@@ -26,7 +26,6 @@ var _backdrop: Backdrop = Backdrop.new()
 
 
 func _ready() -> void:
-	get_window().min_size = Vector2i(1100, 860)
 	_build_layout()
 	add_child(_repeat)
 	_repeat.timeout.connect(presenter.trigger)
@@ -67,33 +66,56 @@ func _build_layout() -> void:
 	var title := Label.new()
 	title.text = "ASSET WORKBENCH  /  example reward - activate"
 	title.add_theme_font_size_override("font_size", 24)
+	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(title)
 	var appearance := HBoxContainer.new()
 	root.add_child(appearance)
 	_toggle(appearance, "Dark background", _set_dark_theme)
 	_toggle(appearance, "Transparency grid", _set_checker)
+	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_state)
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 24)
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_child(columns)
-	_browser.custom_minimum_size.x = 265.0
-	columns.add_child(_browser)
-	_build_event_panel(columns)
-	var scroll := ScrollContainer.new()
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size.x = 285.0
-	columns.add_child(scroll)
-	_controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	scroll.add_child(_controls)
+	_build_body(root)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_status)
 
 
-func _build_event_panel(columns: HBoxContainer) -> void:
+func _build_body(root: VBoxContainer) -> void:
+	# Each column scrolls vertically; narrow embedded windows can also scroll the body sideways.
+	var body := ScrollContainer.new()
+	body.name = "WorkbenchBody"
+	body.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	root.add_child(body)
+	var columns := HBoxContainer.new()
+	columns.add_theme_constant_override("separation", 24)
+	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	body.add_child(columns)
+	_browser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_column(columns, "AssetColumn", 265.0).add_child(_browser)
+	_build_event_panel(_column(columns, "EventColumn", 350.0, true))
+	_controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	_column(columns, "ParameterColumn", 285.0).add_child(_controls)
+
+
+func _column(parent: Container, column_name: String, width: float,
+		expand: bool = false) -> ScrollContainer:
+	var scroll := ScrollContainer.new()
+	scroll.name = column_name
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.custom_minimum_size.x = width
+	scroll.follow_focus = true
+	if expand:
+		scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	parent.add_child(scroll)
+	return scroll
+
+
+func _build_event_panel(parent: ScrollContainer) -> void:
 	var panel := VBoxContainer.new()
 	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	columns.add_child(panel)
+	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	parent.add_child(panel)
 	var heading := Label.new()
 	heading.text = "02 / EVENT PREVIEW"
 	panel.add_child(heading)
@@ -156,16 +178,23 @@ func _load_session() -> void:
 	if not issue.is_empty():
 		_set_status(issue)
 		return
+	# A keeps the saved cue; B changes only the sound so the example is immediately comparable.
+	for sound: AudioStream in sound_candidates:
+		if sound.resource_path != session.saved.sound.resource_path:
+			session.drafts[1].sound = sound
+			break
 	_refresh()
-	_set_status("Ready. Trial changes stay in memory until Save. Both scenes use the saved cue.")
+	_set_status("A starts from the saved cue; B uses another sound when available. "
+		+ "Save applies only the active trial.")
 
 
 func _refresh() -> void:
 	_controls.display(session.current())
 	presenter.configure(session.current())
-	_state.text = "Active: %s   |   %s   |   State: idle -> pulse -> idle" % [
+	_state.text = "Active: %s   |   %s   |   Event sound: %s" % [
 		"A" if session.active_index == 0 else "B",
 		"UNSAVED TRIAL" if session.is_dirty() else "matches saved cue",
+		session.current().sound.resource_path.get_file(),
 	]
 
 
