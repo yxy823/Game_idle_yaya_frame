@@ -56,17 +56,38 @@ Remove empty processing callbacks or disable them with `set_process(false)` / `s
 ## Signals and async
 
 - **[MUST]** Signal connection lifetime follows endpoint ownership. Persistent endpoints must not accumulate duplicate or stale test/runtime subscriptions.
-- **[MUST]** After an `await`, revalidate object/state assumptions that may have changed while suspended.
+- **[MUST]** After an `await`, revalidate object/state assumptions that may have changed while suspended. If an operation can be canceled, replaced or re-entered, also verify that this completion still belongs to the current operation before mutating state. Object validity alone does not establish that authority; use the existing state, operation identity or cancellation mechanism that fits the contract.
+- **[MUST]** Work whose contract ends on scene exit must no longer mutate later state. Choose cleanup for the actual timer, Tween or subscription: a node-bound Tween halts outside the tree and is killed when its bound node is freed, while SceneTreeTimer has no `Timer.stop()` equivalent. Stopping an effect and invalidating a pending completion are separate concerns. See Godot 4.7 [Tween binding](https://docs.godotengine.org/en/4.7/classes/class_tween.html#class-tween-method-bind-node) and [SceneTreeTimer](https://docs.godotengine.org/en/4.7/classes/class_scenetreetimer.html).
 - **[MUST]** Do not add `call_deferred()` merely to make a lifecycle race disappear. Deferred execution must correspond to a real production ordering requirement.
 
 ```gdscript
+extends Control
+
+const MESSAGE_DURATION_SECONDS: float = 1.0
+
+var _message_generation: int = 0
+
+func _exit_tree() -> void:
+	# A later tree entry must not accept a completion from this visit.
+	_message_generation += 1
+	visible = false
+
 func show_message_for_a_second() -> void:
+	_message_generation += 1
+	var generation: int = _message_generation
 	visible = true
-	await get_tree().create_timer(1.0).timeout
+	# Scaled gameplay time; pause the timer with the SceneTree.
+	await get_tree().create_timer(MESSAGE_DURATION_SECONDS, false).timeout
 	if not is_instance_valid(self) or is_queued_for_deletion():
+		return
+	if not is_inside_tree() or generation != _message_generation:
 		return
 	visible = false
 ```
+
+This example assumes calls while the Control is in the tree. A newer message
+invalidates the older wait; exiting invalidates all waits from that visit.
+Simple operations that cannot overlap do not need a generation counter.
 
 ### Animation and audio completion
 

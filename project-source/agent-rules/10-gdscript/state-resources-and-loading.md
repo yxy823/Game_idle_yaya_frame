@@ -17,7 +17,7 @@ Keep definition/config data, mutable runtime state, I/O, time, and randomness ex
 
 ## Errors and determinism
 
-- **[MUST]** Recoverable business failure is represented through a real Result/return/state/event contract. `push_error()`/`push_warning()` are diagnostics, not control flow.
+- **[MUST]** Recoverable business failure is represented through a real Result/return/state/event contract. Required node/resource/configuration failures remain distinguishable from successful empty values; defaults are only for inputs whose contract allows omission. `push_error()`/`push_warning()` are diagnostics, not control flow.
 - **[MUST]** Use `assert` only for development invariants. Assertion conditions must be side-effect free because assertions are ignored in non-debug/release builds.
 - **[MUST]** GDScript has no `throw`, `try`, `except`, or `finally`; use explicit return/null/result contracts and lifecycle callbacks for cleanup.
 - **[MUST]** Document typed Object returns that may be `null`, require callers to check them, and default collections to `[]` / `{}` rather than `null`.
@@ -32,16 +32,26 @@ func take_damage(amount: int) -> void:
 	assert(amount >= 0, "damage amount must be non-negative")
 	health -= amount
 
-# Recoverable failure: report it and return a safe result.
-func load_config(path: String) -> Dictionary:
-	if not FileAccess.file_exists(path):
-		push_error("config file not found: %s" % path)
-		return {}
-	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
-	if parsed is Dictionary:
-		return parsed
-	push_error("config root must be a Dictionary: %s" % path)
-	return {}
+# An empty JSON object is valid here; failed loading is a different result.
+func load_config(path: String) -> Result:
+	var result := Result.new()
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		result.error = "cannot open config %s: %s" % [path, FileAccess.get_open_error()]
+		return result
+	var contents: String = file.get_as_text()
+	var read_error: Error = file.get_error()
+	file.close()
+	if read_error != OK and read_error != ERR_FILE_EOF:
+		result.error = "cannot read config %s: %s" % [path, read_error]
+		return result
+	var parsed: Variant = JSON.parse_string(contents)
+	if not parsed is Dictionary:
+		result.error = "config must contain a valid JSON object: %s" % path
+		return result
+	result.success = true
+	result.data = parsed
+	return result
 
 func find_enemy_by_id(id: int) -> Enemy:
 	for enemy: Enemy in enemies:
@@ -50,19 +60,14 @@ func find_enemy_by_id(id: int) -> Enemy:
 	return null
 
 class Result:
-	var success: bool
+	var success: bool = false
 	var data: Variant
-	var error: String
+	var error: String = ""
 ```
 
-For file APIs that expose an error code, preserve the code and stop at the failure boundary:
-
-```gdscript
-func read_save(path: String) -> PackedByteArray:
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		var error: Error = FileAccess.get_open_error()
-		push_error("failed to open save: %s" % error)
-		return PackedByteArray()
-	return file.get_buffer(file.get_length())
-```
+The caller checks `success` before consuming `data`; it handles or reports the
+failure using the existing project convention. The small Result above illustrates
+that distinction and does not require a shared Result framework. For file APIs
+that expose an error code, preserve it with the relevant path and stop at the
+failure boundary. Optional defaults must not turn a required load failure into
+an apparently successful empty Dictionary or PackedByteArray.

@@ -10,6 +10,7 @@ Keep editor-only execution, serialized editor configuration, global state, and t
 - **[MUST]** Extending an `@tool` script does not make the derived script a tool script. A derived script that requires editor execution must declare `@tool` itself.
 - **[MUST]** Editor modifications that are user-editable operations should integrate with the appropriate Editor undo/redo mechanism.
 - **[MUST]** `@export` is for real design-time persistent configuration, not arbitrary runtime scratch state.
+- **[PREFER]** For a reusable script with editor-assigned dependencies or configuration that can be invalid, consider `_get_configuration_warnings()` and refresh it with `update_configuration_warnings()` when those inputs change. Warnings require `@tool` execution: keep that editor path safe and use it only for a real authoring need. Runtime validation still handles actual failures. See the Godot 4.7 [Node configuration warning contract](https://docs.godotengine.org/en/4.7/classes/class_node.html#class-node-private-method-get-configuration-warnings).
 - **[PREFER]** Use setters/getters for local property invariants, not hidden multi-system workflows.
 
 ## Static/global state
@@ -63,4 +64,5 @@ func acquire_from_pool(spawn_position: Vector2) -> void:
 - **[MUST]** Worker threads do not interact directly with the active SceneTree or mutate main-thread-owned Node state. Marshal active-tree changes to the appropriate main-thread boundary.
 - **[MUST]** Off-tree, thread-local Node or scene construction is allowed only when every API and object involved is thread-safe under the confirmed Godot 4.7 configuration. Keep construction under one worker's mutation ownership, then cross to the main thread before adding the result to the active SceneTree.
 - **[MUST]** Do not mutate one Resource from multiple threads. Shared mutable data uses an explicit synchronization and ownership strategy; Array or Dictionary operations that change container size require synchronization.
+- **[REVIEW]** When a locked section can invoke callbacks or emit signals, inspect cross-thread waits, lock ordering and whether callbacks can observe partially updated state. Godot's [Mutex is reentrant](https://docs.godotengine.org/en/4.7/classes/class_mutex.html): same-thread relocking alone is not a deadlock, and each successful lock requires a matching unlock. This does not make shared state or engine APIs thread-safe.
 - **[REVIEW]** Rendering, physics, navigation, and other Server APIs have distinct thread-safety requirements. Verify the target API and required ProjectSettings before moving that work off the main thread.
