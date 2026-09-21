@@ -32,6 +32,18 @@
     "target": "addons/gdscript-linter"
   },
   {
+    "source": "project-source/addons/sound_manager",
+    "target": "addons/sound_manager"
+  },
+  {
+    "source": "project-source/components/feedback",
+    "target": "components/feedback"
+  },
+  {
+    "source": "project-source/examples/asset_workbench",
+    "target": "examples/asset_workbench"
+  },
+  {
     "source": "project-source/Project_AGENTS.md",
     "target": "AGENTS.md"
   },

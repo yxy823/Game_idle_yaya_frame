@@ -10,6 +10,7 @@
 
 已有报告：
 
+- [2026-09-21 美术与音频工作台首期实现与复制验证](reports/asset-workbench-implementation-validation-2026-09-21.md)
 - [2026-09-21 美术与音频工作台设计适配审核](reports/asset-workbench-design-review-2026-09-21.md)
 - [2026-09-20 外部审核修复验证](reports/workflow-audit-validation-2026-09-20.md)
 - [2026-09-20 实际导入验证](reports/import-validation-2026-09-20.md)

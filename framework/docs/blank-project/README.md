@@ -38,7 +38,7 @@ flowchart TD
 
 ## 这套起点提供什么
 
-复制结果包含 Godot 项目文件与插件、Agent 规则和 Skill、需求与任务模板、检查工具。初始 Product 与任务索引为空，环境状态为 `incomplete`，尚无主场景、玩法代码或业务测试。
+复制结果包含 Godot 项目文件与插件、Agent 规则和 Skill、需求与任务模板、检查工具及明确标记的资源工作台示例。初始 Product 与任务索引为空，环境状态为 `incomplete`，尚无正式主场景、正式玩法或业务测试；示例不承担这些初始化职责。
 
 当前约定技术栈为 Windows 11、PowerShell 7、Godot 4.7、GDScript、gdunit4，维护命令使用 Python 3.12+。这些是项目要求，不证明本机工具已安装。创建、环境就绪、游戏可运行和实际验证通过分别判断。
 
@@ -97,6 +97,7 @@ flowchart TD
 | 把旧项目复制到独立目标并采用当前框架 | [复制迁移已有项目](getting-started/migrate-existing-project.md) |
 | 修 Bug、重构、工程维护、实验或在原项目替换框架 | [工程变更与实验](guides/engineering-changes.md) |
 | 设计美术/声音、指定资源、本地化、观测测量或专业审核 | [专业设计、资源与独立审核](guides/specialist-workflows.md) |
+| 单项查看/试听、组合预览、A/B 试调与保存 | [美术与音频资源工作台](guides/asset-workbench.md) |
 | 维护术语、设计、架构、规则、知识，或从中断续接 | [项目文档维护与交接](guides/project-knowledge.md) |
 | 查外部资料、比较方案或保存调研结论 | [按需搜索与保存调研](guides/project-knowledge.md#按需搜索与保存调研) |
 | 查文件职责、复制来源、出现时机与模板区别 | [项目目录与文件职责](reference/project-layout.md) |
@@ -105,6 +106,7 @@ flowchart TD
 | 查命令、测试选择、结果导入与内容绑定 | [命令与验证](reference/commands-and-validation.md) |
 | 根据实际失败找恢复位置 | [故障排查](reference/troubleshooting.md) |
 | 维护框架、处理审核或开发反馈、构建阅读版 | [维护与同步说明](maintenance/updating-the-blank-project.md) |
+| 验证空白材料能否复制、初始化并在真实项目继续开发 | [框架的复制与运行验证](maintenance/validating-framework.md) |
 
 ## 本手册的事实来源
 

@@ -136,6 +136,32 @@ class ProjectCopyTests(unittest.TestCase):
                          {"rules.md", "product.md", "SKILL.md"})
         self.assertEqual((output / "docs/rules.md").read_text(encoding="utf-8"), "Project rules")
 
+    def test_real_distribution_keeps_examples_separate_from_project_initialization(self):
+        repository = Path(__file__).resolve().parents[2]
+        output = self.base / "real-copy"
+        copy_project(repository, output)
+        config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
+        self.assertEqual(config["environment_bootstrap"]["status"], "incomplete")
+        self.assertEqual(config["environment_bootstrap"]["engine_version"], "")
+        self.assertEqual(config["test_cmd"], "")
+        self.assertNotIn("run/main_scene", (output / "project.godot").read_text(encoding="utf-8"))
+        for name in (".git", ".godot", "framework", "tests", "prompts.json"):
+            self.assertFalse((output / name).exists(), name)
+        for name, key in (("feature-list.json", "features"), ("test-registry.json", "tests")):
+            self.assertEqual(json.loads((output / "docs" / name).read_text(encoding="utf-8"))[key], [])
+        for relative in (
+            "examples/asset_workbench/example-workbench.tscn",
+            "examples/asset_workbench/example-game.tscn",
+            "components/feedback/audio_playback.gd",
+            "tools/asset_workbench/workbench.gd",
+            "addons/sound_manager/abstract_audio_player_pool.gd",
+        ):
+            self.assertEqual((output / relative).read_bytes(),
+                             (repository / "project-source" / relative).read_bytes())
+        assets = list((output / "examples/asset_workbench/assets").iterdir())
+        self.assertTrue(assets)
+        self.assertTrue(all(path.name.startswith("example-") for path in assets))
+
 
 if __name__ == "__main__":
     unittest.main()

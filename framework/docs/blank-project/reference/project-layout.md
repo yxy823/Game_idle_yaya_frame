@@ -81,12 +81,16 @@ MyGodotGame/
 ├── gdlint.json
 ├── addons/
 │   ├── gdUnit4/
-│   └── gdscript-linter/
+│   ├── gdscript-linter/
+│   └── sound_manager/              固定提交；默认不启用全局插件
+├── components/feedback/            示例共用表现组件与薄音频封装
+├── examples/asset_workbench/        独立预览、消费场景与 example-* 素材
 ├── agent-rules/                     按工程领域路由的规则
 ├── methodology/                     流程规范与 templates/
 ├── tools/
 │   ├── checks/                     环境与 Feature 台账检查
 │   ├── testing/                    gdUnit 运行器及 GDScript 扩展
+│   ├── asset_workbench/             单项查看、组合试调与保存界面
 │   └── lib/                        共享实现
 ├── docs/
 │   ├── .gdignore
@@ -107,7 +111,7 @@ MyGodotGame/
     └── .gdignore
 ```
 
-树中省略插件内部文件。`.git/`、`.godot/`、游戏场景和业务测试不由复制器创建；配置中的 `tests/unit` 等值是后续目录约定。
+树中省略插件内部文件。`.git/`、`.godot/`、正式游戏主场景和业务测试不由复制器创建；配置中的 `tests/unit` 等值是后续目录约定。工作台的两份示例场景可单独运行，但不写入主场景设置、不预填业务需求或完成状态。
 
 ## 源材料到项目的映射
 
@@ -126,6 +130,9 @@ MyGodotGame/
 | `project-source/tools/` | `tools/` |
 | `project-source/addons/gdUnit4/` | `addons/gdUnit4/` |
 | `project-source/addons/gdscript-linter/` | `addons/gdscript-linter/` |
+| `project-source/addons/sound_manager/` | `addons/sound_manager/` |
+| `project-source/components/feedback/` | `components/feedback/` |
+| `project-source/examples/asset_workbench/` | `examples/asset_workbench/` |
 | `project-source/defaults/.editorconfig` | `.editorconfig` |
 | `project-source/defaults/.gitattributes` | `.gitattributes` |
 | `project-source/defaults/.gitignore` | `.gitignore` |

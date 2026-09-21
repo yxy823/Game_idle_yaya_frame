@@ -13,6 +13,7 @@
 | 路径 | 职责 |
 | --- | --- |
 | [progress.md](progress.md) | 框架当前成果、验证缺口、未决事项与下一步；随相关维护更新，不复制到项目 |
+| [框架的复制与运行验证](docs/blank-project/maintenance/validating-framework.md) | 源材料、真实外部测试项目、工作流抽样与迁移检查的职责和证据边界 |
 | [commands/create_project.py](commands/create_project.py) | 读取相对路径清单，检查目标后复制 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
@@ -26,6 +27,7 @@
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
 | tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
+| tests/project/asset_workbench_test.gd、asset_workbench_capture.gd | 工作台的真实 Godot 行为与渲染夹具；仅按任务复制到指定外部测试项目，不进入分发清单 |
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |
