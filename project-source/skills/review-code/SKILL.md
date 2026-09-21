@@ -19,6 +19,13 @@ Answer two separate questions in one scoped pass:
   presentation/domain coupling and relevant Godot anti-patterns. Avoid stylistic
   rewrites without a concrete impact.
 
+When reviewing state models, pattern choices or serialization, apply the current
+design defaults in Part 2 of `docs/project-rules.md`. Assess the confirmed need,
+lifecycle and caller obligations against the added structure and whether a
+simpler implementation can fulfill the same responsibilities. Ground proposed
+changes in concrete failure risks or maintenance costs; a pattern's presence or
+absence alone is not a defect.
+
 For added or changed module boundaries, apply **Designing a module boundary**
 and, for a refactor, **Assessing a proposed refactor** in
 `methodology/10-architecture-overview.md`. Ground design findings in actual
