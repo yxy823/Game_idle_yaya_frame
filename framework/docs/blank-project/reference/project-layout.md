@@ -10,7 +10,7 @@
 
 ```mermaid
 flowchart TD
-    A[Agent 经 product-standardizer] -->|写入| P[Product 总览与模块]
+    A[Agent 经 product-author] -->|写入| P[Product 总览与模块]
     A -->|按需写入| T[术语]
     T -.->|定义引用| P
     T -.->|定义引用| F[Feature JSON 与 notes]
@@ -42,8 +42,8 @@ flowchart TD
 | `.codex/agents/independent-reviewer.toml` | 独立审核角色，按范围加载审核方法 | 创建时复制；客户端实际加载与权限另行核实 | 不因文件存在就认定上下文和文件隔离成立 |
 | `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
 | `docs/methodology-config.json` | 机器路径、文档语言、真实测试命令 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
-| `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-standardizer 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
-| `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-standardizer 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
+| `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-author 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
+| `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-author 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
 | `docs/art/art-bible.md`、`docs/audio/sound-bible.md`、`docs/ui/<interface>-design.md`、`docs/localization/localization-spec.md` | 各领域已确认专业要求，Product 只保留行为与引用 | 有需要时由对应专业 Skill 直接维护；规划、执行、审核按适用范围读取 | 参见[专业文档归属](../guides/specialist-workflows.md#文档由谁维护)，不放进普通 README 或报告目录 |
 | `docs/project-rules.md` | 跨 Product/Feature 的约束、协作规则、默认原则；区分 MUST/PREFER/REVIEW | 创建时由模板复制；Agent 写前自检并核对授权，需求/设计/实现持续读取 | 决定实质新增、删除、强度和适用范围 |
 | `docs/feature-list.json` | 任务 ID、标题、状态、依赖、完成时间和详情定位 | 初始空索引；规划和执行 Agent 更新，检查器读取 | 查任务状态与依赖；状态不是验证证据 |
@@ -184,8 +184,8 @@ Markdown 模板的普通段落按自然段保存，不按固定字符数手动�
 | `tools/checks/` | 跨任务的环境和台账检查 |
 | `tools/testing/` | 真实测试入口与引擎扩展 |
 | `tools/lib/` | 工具共享实现 |
-| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 执行流程专用的完成依据记录与检查 |
-| `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | 规划流程专用的组件登记合并 |
+| `.agents/skills/feature-execute/scripts/record-feature-completion.py` | 执行流程专用的完成依据记录与检查 |
+| `.agents/skills/feature-plan/scripts/merge_test_registry.py` | 规划流程专用的组件登记合并 |
 
 这些是直接入口，没有根目录转发脚本，也没有自动工具事件。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。
 

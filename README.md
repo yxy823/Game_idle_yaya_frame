@@ -86,7 +86,7 @@ flowchart LR
 没有自动 Hook 注册、补丁解析或重复终态监听，也没有 `hooks/` 目录。
 共享工具位于 `project-source/tools/`：`checks/` 放台账和环境检查，
 `testing/` 放测试入口与 Godot 辅助脚本，`lib/` 放共享实现。
-结果记录脚本归入 execute-next-feature，测试登记表合并脚本归入 generate-feature-list。
+结果记录脚本归入 feature-execute，测试登记表合并脚本归入 feature-plan。
 具体命令与内部模块说明见 [项目工具说明](project-source/tools/README.md)。
 
 独立测试计划、静态摘要、项目状态汇总和进度归档脚本已删除。

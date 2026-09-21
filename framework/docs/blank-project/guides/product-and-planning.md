@@ -16,7 +16,7 @@
 
 ```mermaid
 flowchart TD
-    I[用户输入与已确认决定] -->|交给| A[Agent 遵循 product-standardizer]
+    I[用户输入与已确认决定] -->|交给| A[Agent 遵循 product-author]
     R[现有 Product、术语、项目规则与模板] -->|读取意图、约束和结构| A
     X[适用 UI、美术、声音、资源与本地化来源] -->|核对行为引用与专业约束| A
     I -->|仅专业要求变化：交所属专业 Skill| Y[Agent 维护已确认的专业来源]
@@ -27,8 +27,8 @@ flowchart TD
     T --> G
     Y --> G
     G --> Q{本次规划影响}
-    Q -->|当前模块未拆分| N[Agent 遵循 generate-feature-list]
-    Q -->|影响已有计划| S[Agent 遵循 sync-feature-list]
+    Q -->|当前模块未拆分| N[Agent 遵循 feature-plan]
+    Q -->|影响已有计划| S[Agent 遵循 feature-sync]
     X -->|规划与同步读取适用来源| N
     X -->|检查实际差异与共享影响| S
     Q -->|仅后续未拆分模块| D[保留需求，暂不生成任务]
@@ -97,7 +97,7 @@ Feature 则确定一次交付：示例 `F001` 实现计数、收集输入和数�
 
 后续模块可以先保留已有设计，轮到它时再复核需求、分配 Feature ID、详细 AC 和测试登记。这样既能保存全局设计，也能结合已实现结果调整后续计划。
 
-任务拆分入口 `generate-feature-list` 将新任务追加到现有索引，保留历史 Feature、测试登记与修订记录。当前模块已有计划时直接复用，需要改变计划则由 `sync-feature-list` 增量同步。
+任务拆分入口 `feature-plan` 将新任务追加到现有索引，保留历史 Feature、测试登记与修订记录。当前模块已有计划时直接复用，需要改变计划则由 `feature-sync` 增量同步。
 
 一项 Feature 交付可独立验证的完整行为或工程结果，工作量为 `small` 或 `medium`，过大的工作继续拆分。Agent 复用已有基础设施，只补当前模块必需的运行基础；模块所需前置未完成时，先调整推进顺序。
 
@@ -154,13 +154,13 @@ Feature 则确定一次交付：示例 `F001` 实现计数、收集输入和数�
 | 当前情况 | 入口与处理 |
 | --- | --- |
 | 想先讨论想法、概念或方案 | `project-clarifier` 只补问影响当前判断的缺口，默认只在对话中给结论 |
-| 希望记录已确认的项目术语 | `project-clarifier` 澄清后由 `product-standardizer` 按授权写定义和链接，纯术语整理不拆 Feature |
-| `docs/product.md` 为空，已有想法或 GDD | `product-standardizer` 复用输入整理初始需求；需要补问时调用 `product-init-elicitor` |
+| 希望记录已确认的项目术语 | `project-clarifier` 澄清后由 `product-author` 按授权写定义和链接，纯术语整理不拆 Feature |
+| `docs/product.md` 为空，已有想法或 GDD | `product-author` 复用输入整理初始需求；需要补问时调用 `product-init-elicitor` |
 | 已有功能，缺少 Product 或 Feature | [从已有实现补齐](#从已有实现补齐需求与任务)，确认意图、记录当前覆盖与缺口，按授权接管验证 |
-| 有 Product，需要补充或修改行为 | `product-standardizer` 按歧义使用 `product-spec-elicitor` |
-| 需要界面布局或声音需求 | 按需使用 `product-ui-sketcher` 或 `product-audio-sketcher`；实际布局与资源效果按下文视觉原型验证 |
-| 当前模块已确认且尚未拆分；前一模块的 Feature 已完成 | `generate-feature-list` 只拆当前模块，追加到现有台账 |
-| 已有 Feature 受到 Product、已确认专业要求或项目/工程规则变化影响 | `sync-feature-list` 增量对齐；Product 未变也须分析专业来源影响，后续未拆分 Product 暂不生成任务 |
+| 有 Product，需要补充或修改行为 | `product-author` 按歧义使用 `product-spec-elicitor` |
+| 需要界面布局或声音需求 | 按需使用 `design-ui-spec` 或 `design-audio-asset-spec`；实际布局与资源效果按下文视觉原型验证 |
+| 当前模块已确认且尚未拆分；前一模块的 Feature 已完成 | `feature-plan` 只拆当前模块，追加到现有台账 |
+| 已有 Feature 受到 Product、已确认专业要求或项目/工程规则变化影响 | `feature-sync` 增量对齐；Product 未变也须分析专业来源影响，后续未拆分 Product 暂不生成任务 |
 | 产品预期明确，代码表现错误 | [工程变更](engineering-changes.md) 的 Bug 路线 |
 
 已有明确答案直接沿用。需求整理、拆分或同步结束后，Agent 按本次授权决定下一步：只要求文档或规划时交付后结束，已明确授权实现时进入任务执行。仍会改变验收含义的关键选择由你决定。
@@ -208,7 +208,7 @@ Agent 先复用 GDD 中已明确的设计，分别列出已确认内容、提议
 
 ## 需求变化后怎样保留历史
 
-已有计划由 `sync-feature-list` 对照真实 Git 源差异、规划基线和当前文件增量更新。已有变更说明直接复用；无法恢复可靠基线时，按授权对当前完整规格与计划做核对，明确历史未知，使用现有修订字段记录新基线。最后一次 notes 提交或复制空台账的提交都不能冒充规划基线。
+已有计划由 `feature-sync` 对照真实 Git 源差异、规划基线和当前文件增量更新。已有变更说明直接复用；无法恢复可靠基线时，按授权对当前完整规格与计划做核对，明确历史未知，使用现有修订字段记录新基线。最后一次 notes 提交或复制空台账的提交都不能冒充规划基线。
 
 | 变化 | 处理方式 |
 | --- | --- |
@@ -262,9 +262,9 @@ Product 保存现在确认的行为与边界，已有文档增量补充。当前
 
 ## UI 与声音产物的边界
 
-`product-ui-sketcher` 直接维护独立 UI 规格，包含 ASCII 线框、交互呈现、状态差异、显示条件、资源引用与待验证问题。已确认尺寸与可读性要求保留在该来源；试验参数与节点设置留在实现中。需要 Godot 或 HTML 探索时交给另行授权的实验/执行任务，草图本身不能证明运行效果。
+`design-ui-spec` 直接维护独立 UI 规格，包含 ASCII 线框、交互呈现、状态差异、显示条件、资源引用与待验证问题。已确认尺寸与可读性要求保留在该来源；试验参数与节点设置留在实现中。需要 Godot 或 HTML 探索时交给另行授权的实验/执行任务，草图本身不能证明运行效果。
 
-`product-audio-sketcher` 直接维护资源清单中的具体声音规格、样本引用和试听问题，真实资源保留原路径；占位名不表示已创建文件。共享声音方向由 `sound-bible` 负责。缺少样本不妨碍整理规格，但文件名或静音不能证明听觉效果；规格 Skill 不制作音频或实现播放。
+`design-audio-asset-spec` 直接维护资源清单中的具体声音规格、样本引用和试听问题，真实资源保留原路径；占位名不表示已创建文件。共享声音方向由 `design-audio-direction` 负责。缺少样本不妨碍整理规格，但文件名或静音不能证明听觉效果；规格 Skill 不制作音频或实现播放。
 
 专业 Skill 在已有具体授权内直接维护各自文档，Product 入口只保存行为与必要引用。确认要求后，在 Feature 的具体 AC/设计与验证中建立对应关系；共享美术方向、视觉资源、本地化等分工见 [专业工作指南](specialist-workflows.md)。专业来源可以直接成为缺陷依据，无需在 Product 重复正文。
 
@@ -300,7 +300,7 @@ Product 保存现在确认的行为与边界，已有文档增量补充。当前
 
 | 交接步骤 | 你与 Agent 的操作 |
 | --- | --- |
-| 生成清单 | visual-asset-spec/audio Skill 维护同一清单的对应条目；具体要求关联 Feature AC/设计，notes 或 Progress 提供导航 |
+| 生成清单 | design-visual-asset-spec/audio Skill 维护同一清单的对应条目；具体要求关联 Feature AC/设计，notes 或 Progress 提供导航 |
 | 准备资源 | 你依据缺失项制作、寻找或复用素材，提供来源文件，或放到清单指定的项目目标位置；实际运行素材不放在被忽略的文档目录中 |
 | 核对接入 | 明确继续后，Agent 检查实际文件内容、适用格式、尺寸或时长，按授权复制或导入，更新同一清单；已有不相关文件和来源原件保留 |
 | 继续原型 | 资源满足当前验证需要后，继续已授权的场景搭建与实际操作、试听；准备状态不代表视觉或声音已经接受 |

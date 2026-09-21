@@ -12,7 +12,7 @@ from pathlib import Path
 
 REPO_ROOT = PROJECT_ROOT
 MERGE_HELPER = (
-    REPO_ROOT / ".agents/skills/generate-feature-list/scripts/merge_test_registry.py"
+    REPO_ROOT / ".agents/skills/feature-plan/scripts/merge_test_registry.py"
 )
 CHECKER = REPO_ROOT / "tools/checks/check-feature-list.py"
 

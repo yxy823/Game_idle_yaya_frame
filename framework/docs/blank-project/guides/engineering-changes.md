@@ -10,11 +10,11 @@
 
 | 情况 | 路线 | 应说明的结果 |
 | --- | --- | --- |
-| 预期行为缺失、矛盾，或用户想改变它 | `product-standardizer` | 新的 Product 意图与验收条件 |
-| 已有明确预期，代码没有做到 | `engineering-change-standardizer` 的 `bug` 模式 | 恢复预期并覆盖回归 |
+| 预期行为缺失、矛盾，或用户想改变它 | `product-author` | 新的 Product 意图与验收条件 |
+| 已有明确预期，代码没有做到 | `engineering-change-plan` 的 `bug` 模式 | 恢复预期并覆盖回归 |
 | 已确认专业要求变化，Product 行为不变 | 对应专业 Skill 与现有计划同步路线 | 更新所属来源及受影响任务，不要求 Product 重复保存 |
-| 外部行为保持不变，调整内部结构 | `engineering-change-standardizer` 的 `refactor` 模式 | 真实维护收益与行为保持证据 |
-| 工具、构建、依赖、日志、测试设施或数据迁移 | `engineering-change-standardizer` 的 `maintenance` 模式 | 技术成功条件、兼容边界与验证 |
+| 外部行为保持不变，调整内部结构 | `engineering-change-plan` 的 `refactor` 模式 | 真实维护收益与行为保持证据 |
+| 工具、构建、依赖、日志、测试设施或数据迁移 | `engineering-change-plan` 的 `maintenance` 模式 | 技术成功条件、兼容边界与验证 |
 | 只想知道架构有什么问题 | 只读调查 | 有证据的发现、优先级和建议，不自动改文件 |
 | 明确验证一个玩法或技术假设 | 限定范围的实验 | 假设、观察、结论和实验文件处置 |
 
@@ -26,7 +26,7 @@
 
 工程标准化负责诊断、分类、提出工作项，并在相应授权下写入任务。规划时，Agent 读取测试登记表，区分复用组件与本次新增组件；批准后先使用现有组件合并入口登记缺少的组件，再写任务并运行台账检查。没有单元套件就用 `unit_test_paths: []`，不创建虚假路径；已有组件和测试保留，同名不同定义须明确处理。
 
-新增组件与任务一同提交，具体测试映射仍在执行阶段确定。`execute-next-feature` 负责实现、验证、适用验收、用户指定的可选评审和交接。用户已对具体工作给出的授权持续有效，后续不重复询问同一批准。
+新增组件与任务一同提交，具体测试映射仍在执行阶段确定。`feature-execute` 负责实现、验证、适用验收、用户指定的可选评审和交接。用户已对具体工作给出的授权持续有效，后续不重复询问同一批准。
 
 复盘中发现的另一项工具问题或跨模块改进，不顺手塞进当前修复。保留证据和建议，按用户决定进入下一项工作。
 
@@ -48,7 +48,7 @@ Bug 成功验证并完成适用验收后，Stage 5.5 将根因、触发条件、
 
 可用一个检查问题帮助判断：移除某层后，调用者是否更简单？若移除只是把校验、错误处理、状态归属和生命周期知识散到各处，这些职责仍需有清楚的位置。文件数量减少、类名变短、评分提高都不足以单独证明改进。
 
-`pick-refactor-smell` 在用户指定的 Feature 范围内读取 notes，按需追查代码、历史和依赖；没有记录不先创建计划。它保持只读，不改写历史 notes。
+`engineering-refactor-select` 在用户指定的 Feature 范围内读取 notes，按需追查代码、历史和依赖；没有记录不先创建计划。它保持只读，不改写历史 notes。
 
 | 判断 | 处理 |
 | --- | --- |
@@ -93,7 +93,7 @@ Agent 将实际差异与相关 Product、已确认专业要求、Feature/AC、�
 
 检查结果引用需求与文件位置，区分已确认一致、存在冲突和证据不足，指出受影响的计划、测试及人工验收。规则与提示词约束 Agent 的处理方式，无法拦截人工保存；测试仅证明实际覆盖并执行过的部分，格式或引用检查不能证明行为一致。本入口不运行测试、启动 Godot 或修改文件。
 
-后续处理复用现有路线：行为保持或恢复预期通常无需改 Product；玩家行为变化由 Product 承接，专业要求变化由所属专业 Skill 维护来源，再同步受影响的已有任务与验证。`sync-feature-list` 检查已提交的 Product、专业规格/资源清单、Project Rules 与相关工程规则变化，按 [来源发现与共享影响规则](specialist-workflows.md#专业来源怎样进入任务) 追查实际引用和受影响计划，不承担通用手动代码审查。只改专业来源、不改 Product 也需分析影响；无法证明新纳入来源的历史覆盖时，按已有授权对齐当前文档与计划。继续当前 Feature 时，将相关手动差异纳入其影响判断，重新核对旧证据是否仍有效，保留已完成任务的历史事实；归属与续接按现有 [Git 规则](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md) 和 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 处理。
+后续处理复用现有路线：行为保持或恢复预期通常无需改 Product；玩家行为变化由 Product 承接，专业要求变化由所属专业 Skill 维护来源，再同步受影响的已有任务与验证。`feature-sync` 检查已提交的 Product、专业规格/资源清单、Project Rules 与相关工程规则变化，按 [来源发现与共享影响规则](specialist-workflows.md#专业来源怎样进入任务) 追查实际引用和受影响计划，不承担通用手动代码审查。只改专业来源、不改 Product 也需分析影响；无法证明新纳入来源的历史覆盖时，按已有授权对齐当前文档与计划。继续当前 Feature 时，将相关手动差异纳入其影响判断，重新核对旧证据是否仍有效，保留已完成任务的历史事实；归属与续接按现有 [Git 规则](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md) 和 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 处理。
 
 需要正式独立评审时使用“独立审查代码或指定变更”；需要实际运行验证时使用“单独验证某次变更”。各入口位置见 [提示词导航](../reference/skills.md)。
 
@@ -109,4 +109,4 @@ Agent 将实际差异与相关 Product、已确认专业要求、Feature/AC、�
 
 ## 对应源文件
 
-[工程变更规范](../../../../project-source/methodology/07-engineering-change.md) 定义分类，[工程标准化 Skill](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) 组织任务，[重构候选 Skill](../../../../project-source/skills/pick-refactor-smell/SKILL.md) 负责只读选择，[方法总览](../../../../project-source/methodology/00-overview.md) 定义实验边界。
+[工程变更规范](../../../../project-source/methodology/07-engineering-change.md) 定义分类，[工程标准化 Skill](../../../../project-source/skills/engineering-change-plan/SKILL.md) 组织任务，[重构候选 Skill](../../../../project-source/skills/engineering-refactor-select/SKILL.md) 负责只读选择，[方法总览](../../../../project-source/methodology/00-overview.md) 定义实验边界。

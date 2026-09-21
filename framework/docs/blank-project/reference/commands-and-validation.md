@@ -59,10 +59,10 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
 | `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
 | `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 启动真实 Godot 测试进程，写隔离的运行目录 |
-| `.agents/skills/execute-next-feature/scripts/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
-| `.agents/skills/generate-feature-list/scripts/merge_test_registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
+| `.agents/skills/feature-execute/scripts/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
+| `.agents/skills/feature-plan/scripts/merge_test_registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
-组件候选为完整组件对象的 JSON 数组，或含 `components` 数组的对象。Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests，候选不提交。它只合并组件，不生成测试或证明测试通过；结构见 [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md#test-registry-docstest-registryjson)。
+组件候选为完整组件对象的 JSON 数组，或含 `components` 数组的对象。Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests，候选不提交。它只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
 
 ## 环境与台账检查
 
@@ -176,7 +176,7 @@ reports/gdunit-wrapper/run-<id>/
 真实报告导入示例：
 
 ```powershell
-& $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-id/result.json
+& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-id/result.json
 $LASTEXITCODE
 ```
 
@@ -189,7 +189,7 @@ $LASTEXITCODE
 完成检查由两部分配合，Agent 还要单独确认直接静态检查与用户指定的评审条件：
 
 ```powershell
-& $projectPython -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature $featureId
+& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature $featureId
 $LASTEXITCODE
 & $projectPython -B tools/checks/check-feature-list.py --completion-feature $featureId
 $LASTEXITCODE
@@ -264,4 +264,4 @@ $LASTEXITCODE
 | 完成依据校验通过 | 它负责的测试与适用人工接受契约满足 | 脚本解析、lint、独立评审或所有目标平台已检查 |
 | 静态检查通过 | 已执行静态范围通过 | 手感、外观、声音和导出质量已接受 |
 
-实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/skills/execute-next-feature/scripts/record-feature-completion.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/skills/feature-execute/scripts/record-feature-completion.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。

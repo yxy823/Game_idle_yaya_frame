@@ -36,7 +36,7 @@
 
 调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
 
-修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/yaya-next-step-advisor/SKILL.md` 及其 `references/scenarios.md`。使建议、来源引用和场景预期与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
+修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 及其 `references/scenarios.md`。使建议、来源引用和场景预期与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
 
 在已指定的外部项目运行回归前，核对被测文件是否对应本次修复；需要同步时仅更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
 

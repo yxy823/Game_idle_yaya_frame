@@ -16,8 +16,8 @@ tools/
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 ready 状态、Python/Godot 文件、测试命令首个可执行文件及实际 Godot 版本；脚本与参数由 Agent 核对 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 
-完成记录属于 `execute-next-feature/scripts/record-feature-completion.py`；
-测试登记表合并属于 `generate-feature-list/scripts/merge_test_registry.py`。
+完成记录属于 `feature-execute/scripts/record-feature-completion.py`；
+测试登记表合并属于 `feature-plan/scripts/merge_test_registry.py`。
 它们位于 `.agents/skills/` 对应 Skill 内，不另设转发命令。
 
 台账检查、登记表合并和运行选择共用 JSON 解码规则：重复对象键及非标准数值
@@ -55,7 +55,7 @@ $LASTEXITCODE
 python -B tools/checks/check-project-environment.py --require-ready
 python -B tools/checks/check-feature-list.py
 python -B tools/testing/run-gdunit-tests.py --godot-binary C:\Godot\Godot.exe --feature F001 --scope auto
-python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
 ```
 
 将上述 Python、Godot 换成实际路径；配置 `test_cmd` 时保留测试入口及

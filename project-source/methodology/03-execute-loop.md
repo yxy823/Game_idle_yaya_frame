@@ -1,6 +1,6 @@
-# 03 · Stage 0–8 `execute-next-feature` loop
+# 03 · Stage 0–8 `feature-execute` loop
 
-> Canonical delivery specification for one Feature. `execute-next-feature` implements this workflow. Stage 1 requires approval; Stage 8 hands off according to the remaining authorization. Stage 5 applies only to the approved manual acceptance mode. Automated testing is subordinate evidence, never an autonomous completion authority.
+> Canonical delivery specification for one Feature. `feature-execute` implements this workflow. Stage 1 requires approval; Stage 8 hands off according to the remaining authorization. Stage 5 applies only to the approved manual acceptance mode. Automated testing is subordinate evidence, never an autonomous completion authority.
 
 ## Shared contracts
 
@@ -205,7 +205,7 @@ After approval:
 6. initialize the current Feature's structured completion evidence:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py initialize --feature F0XX
+   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py initialize --feature F0XX
    ```
 
 7. run:
@@ -280,7 +280,7 @@ Check whether this work added, renamed, retired or clarified durable terminology
 
 | Content | Action and authority |
 | --- | --- |
-| Shared terminology | Invoke `product-standardizer`'s terminology route within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
+| Shared terminology | Invoke `product-author`'s terminology route within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
 | Professional requirements and resource lists | The owning specialist finalizes applicable UI/art/audio/localization specifications and resource status/location updates under [Specialist work and sources](11-specialist-workflows.md). Resolve substantive source impacts before dependent delivery. |
 | Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update current subsystem contracts where they changed, linking rather than duplicating. |
 | Important technical choices | Apply the existing ADR threshold and authorization; preserve replaced decisions and evidence limits. |
@@ -309,7 +309,7 @@ Procedure:
 6. Record the actual Required Test Set, affected-test, and full-suite result, including failures:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run <result.json>
+   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run <result.json>
    ```
 
    `record-tests` validates the supplied run results and stores their references.
@@ -396,7 +396,7 @@ Do not add per-Feature review switches, pending-review states or a review queue.
 Use [Independent review](12-independent-review.md) for fresh context, neutral
 handoff inputs, effective permissions, isolated validation and completion limits.
 The `independent-reviewer` role loads only the requested applicable methods.
-`code-review` owns requirements and code-quality examination; other review Skills
+`review-code` owns requirements and code-quality examination; other review Skills
 cover UX, art, audio, assets, localization or balance when requested. One instance
 may combine methods without a pass per Skill or Feature. The author loading the
 same method still performs only self-checking.
@@ -430,7 +430,7 @@ Before the completion commands, confirm the Stage 3 documentation checkpoint and
 1. Run:
 
    ```powershell
-   python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX
+   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F0XX
    python -B tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 
@@ -448,8 +448,8 @@ Before the completion commands, confirm the Stage 3 documentation checkpoint and
 
 ## Stage 8 · handoff and authorized continuation
 
-1. If this task changed project or specialized rules, report the change and complete needed `sync-feature-list` impact handling before the next affected Feature. Reuse authorization and any synchronization already completed; meaning-preserving edits need no fabricated work. If an actual decision or required synchronization remains unauthorized, report that boundary and stop the dependent continuation.
-2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `generate-feature-list`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
+1. If this task changed project or specialized rules, report the change and complete needed `feature-sync` impact handling before the next affected Feature. Reuse authorization and any synchronization already completed; meaning-preserving edits need no fabricated work. If an actual decision or required synchronization remains unauthorized, report that boundary and stop the dependent continuation.
+2. Otherwise check the current Product's remaining scope and Feature sources/statuses. If work remains, identify the next eligible `pending` Feature or actual blocker. Only after its required Features are complete, recommend revisiting and decomposing the next Product with `feature-plan`, or reusing its existing plan. No eligible Feature is not itself proof of Product completion.
 3. Report the completed Feature, relevant implementation/test changes, verification evidence, its local commit hashes or verified commit range (or the explicit no-commit exception), post-commit worktree status, placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test/reference changes and any remaining work using existing notes/Progress.
 4. Report one sentence or a few concise learning entries in this existing Stage, using `templates/feature-learning-summary.md.tmpl`. With no new reusable learning, explicitly state “No new reusable learning” (Chinese: “无新增可复用经验”). Otherwise report the context, useful approach or root cause, existing coverage, applicability and actual or proposed destination: Knowledge / Agent Rule / Methodology / Tooling / Automated Check / Regression. Link knowledge or Bug-learning notes already recorded before the commit instead of copying their bodies or starting post-commit documentation. A project-specific approach can be reusable within the project without becoming a universal rule. Do not invent an entry for every incident. A newly discovered out-of-scope tooling or rule change remains a separate authorized task.
 5. Continue the next step only when it is within concrete existing authorization

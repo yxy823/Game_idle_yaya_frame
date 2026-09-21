@@ -9,13 +9,13 @@ can be called alone or within an authorized task without creating another lifecy
 
 | Concern | Owner / usual authoritative location |
 | --- | --- |
-| Player behavior, rules, triggers and Product scope | `product-standardizer`: `docs/product.md`, `docs/product/*.md` |
-| Shared visual direction, including choosing an art style | `art-bible`: `docs/art/art-bible.md` |
-| Shared sound direction and feedback hierarchy | `sound-bible`: `docs/audio/sound-bible.md` |
-| Interface layout, states and interaction presentation | `product-ui-sketcher`: `docs/ui/<interface>-design.md` |
-| Visual asset specifications | `visual-asset-spec`: relevant entries in `docs/resource-requirements/<scope>.md` |
-| SFX and music specifications | `product-audio-sketcher`: relevant entries in the same resource list |
-| Localization conventions and glossary | `localize`: `docs/localization/localization-spec.md`; runtime translations remain in project resources |
+| Player behavior, rules, triggers and Product scope | `product-author`: `docs/product.md`, `docs/product/*.md` |
+| Shared visual direction, including choosing an art style | `design-art-direction`: `docs/art/art-bible.md` |
+| Shared sound direction and feedback hierarchy | `design-audio-direction`: `docs/audio/sound-bible.md` |
+| Interface layout, states and interaction presentation | `design-ui-spec`: `docs/ui/<interface>-design.md` |
+| Visual asset specifications | `design-visual-asset-spec`: relevant entries in `docs/resource-requirements/<scope>.md` |
+| SFX and music specifications | `design-audio-asset-spec`: relevant entries in the same resource list |
+| Localization conventions and glossary | `content-localization`: `docs/localization/localization-spec.md`; runtime translations remain in project resources |
 
 Reuse a suitable existing owning file; these paths are defaults, not a command
 to create every document. Create only useful current-scope content, in
@@ -32,8 +32,8 @@ authorize changing Product, another specialist's contract or the task's scope.
 
 | Change | Route |
 | --- | --- |
-| Confirmed professional requirement changes | Owning Skill updates its source; assess current and planned work through `sync-feature-list`. Changed player behavior also goes through `product-standardizer`. |
-| Implementation violates a confirmed professional requirement | Repair within the unfinished owning Feature, or use `engineering-change-standardizer` for an independent bug. Cite the professional source even when Product does not repeat it. |
+| Confirmed professional requirement changes | Owning Skill updates its source; assess current and planned work through `feature-sync`. Changed player behavior also goes through `product-author`. |
+| Implementation violates a confirmed professional requirement | Repair within the unfinished owning Feature, or use `engineering-change-plan` for an independent bug. Cite the professional source even when Product does not repeat it. |
 | A proposed improvement is not yet adopted | Return the proposal; do not use it as an AC, defect or implementation mandate. |
 | Sources conflict or lack a material decision | Resolve with the appropriate owner/user before dependent work; report both sources instead of silently picking one. |
 
@@ -88,7 +88,7 @@ completed Feature history remains intact and changed completed work gets follow-
 ## Design, production, integration and review
 
 Design chooses the direction; specifications describe a concrete deliverable;
-production supplies or processes assets; `asset-integration` imports and connects
+production supplies or processes assets; `content-asset-integration` imports and connects
 available assets. Each can be requested independently. Reuse existing suitable
 assets before requesting new ones; a reference image or audio example is not a
 newly produced deliverable. Missing representative assets leave the corresponding
@@ -100,7 +100,7 @@ their methods and tool choices are deferred. They have no discoverable productio
 Skill or agent in this version. Record a preparation gap and its specification;
 do not invoke a nonexistent Skill or silently promise asset generation in a Bible.
 
-`asset-integration`, `localize` and `observability` may change resources, code or
+`content-asset-integration`, `content-localization` and `diagnostics-instrumentation` may change resources, code or
 configuration only inside an authorized Feature or scoped experiment. Return to
 that task for verification, applicable human acceptance and completion. Standalone
 specification or investigation work need not initialize Product or invent a Feature.

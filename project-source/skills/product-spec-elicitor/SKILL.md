@@ -7,21 +7,21 @@ metadata:
     - Clarify a new feature, Product modification, Product bug, or cross-module requirement
     - 用户提出「新功能」「修改需求」「Bug 修复」或「跨模块变更」
   priority: medium
-  called_by: product-standardizer
+  called_by: product-author
 ---
 
 # Product specification elicitor
 
 ## Role
 
-Handle a concrete Product change rather than a from-scratch initialization. Decide which points require clarification and which may use a reviewable default, then return a structured change patch to `product-standardizer`.
+Handle a concrete Product change rather than a from-scratch initialization. Decide which points require clarification and which may use a reviewable default, then return a structured change patch to `product-author`.
 
 Unlike `product-init-elicitor`, which covers every Product dimension, this workflow asks only questions that materially affect the requested change. It never writes files.
 
 ## Language contract
 
 Apply `methodology/05-document-language.md` to the returned patch. Reuse the
-confirmed `document_language` from `product-standardizer`, or resolve it
+confirmed `document_language` from `product-author`, or resolve it
 from project configuration. Patch prose and section labels use that language;
 `mode`, `operation`, `source`, trigger operations and other protocol values remain
 as defined below.

@@ -51,7 +51,7 @@ the referenced originals, not just a commit or a Markdown summary.
 After writing the draft, bind it to the final implementation:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
 ```
 
 This validates coverage and records the actual snapshot; it does not invent
@@ -71,7 +71,7 @@ identity or whether a person actually performed the actions. Do not import
 Agent-generated passing samples or silently discover a file as human acceptance.
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json --result reports/manual-acceptance/F001/manual-acceptance-checklist.result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json --result reports/manual-acceptance/F001/manual-acceptance-checklist.result.json
 ```
 
 The importer matches IDs and definitions with the unchanged original, checks

@@ -39,7 +39,7 @@ above before generating durable content; a configuration check does not grant th
 
 ### Verification command fields
 
-`docs/methodology-config.json` also owns the stable entrypoints used by `execute-next-feature`:
+`docs/methodology-config.json` also owns the stable entrypoints used by `feature-execute`:
 
 - `test_cmd`: default automated test command or test-runner entrypoint. The agent may select a narrower test target supported by the project, but must not invent unsupported commands.
 - `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.

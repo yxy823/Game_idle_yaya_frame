@@ -50,8 +50,8 @@ A module document is more detailed than the overview. A rendered template must r
 | Functional flow | Step-by-step user or system behavior, optionally with an ASCII diagram. |
 | Data model | Field, type, default value, and meaning. |
 | State machine | State values and transition rules, when applicable. |
-| UI sketch | Player actions and behavior, with links to the interface specification maintained by `product-ui-sketcher` and relevant prototype conclusions. |
-| Audio entries | Behavioral triggers and feedback intent, with links to specifications maintained by `product-audio-sketcher`; avoid copying resource rows. |
+| UI sketch | Player actions and behavior, with links to the interface specification maintained by `design-ui-spec` and relevant prototype conclusions. |
+| Audio entries | Behavioral triggers and feedback intent, with links to specifications maintained by `design-audio-asset-spec`; avoid copying resource rows. |
 | Numeric rules | Formulas, thresholds, and configuration values. |
 | Acceptance criteria | Concrete statements of how completed behavior can be verified. |
 | Edge cases | Known cases intentionally deferred to later Features. |
@@ -127,7 +127,7 @@ Missing execution or human feedback remains explicitly unverified.
 Keep the entry scene, questions, observations, a link to any resource preparation
 list and file disposition in current Feature notes, or Progress for a standalone
 experiment. Keep resource details in that list when present. Confirmed
-behavior changes belong in Product via `product-standardizer`; professional
+behavior changes belong in Product via `product-author`; professional
 layout, size, readability or sound requirements belong in their owning specialist
 source. Adoption uses the applicable authorization and source-impact route.
 Node properties and tuning values remain in the scene, resources or implementation
@@ -159,8 +159,8 @@ The responsible specialist maintains its entries; the current task coordinates
 shared uses without a separate registry or a Product-writing intermediary.
 
 Read the current task, confirmed Product and professional requirements, relevant
-existing assets and any supplied source locations. `visual-asset-spec` and
-`product-audio-sketcher` maintain their domain entries in the same list. Include only
+existing assets and any supplied source locations. `design-visual-asset-spec` and
+`design-audio-asset-spec` maintain their domain entries in the same list. Include only
 the minimum files needed for this scope, merging repeated uses of one resource.
 Do not add future decoration or separate files for states that existing themes
 or procedural presentation can already express. Record unknown inputs rather
@@ -255,7 +255,7 @@ Use a compact structure, expanding only where a distinction needs explanation:
   anchors used by existing Feature sources, leaving a link at the old location.
 
 `project-clarifier` and Product elicitors return proposed wording;
-`product-standardizer` alone writes approved Product and terminology content.
+`product-author` alone writes approved Product and terminology content.
 Pure terminology maintenance preserves meaning and behavior: it may clarify a
 name, record an already agreed distinction, or move/link a definition. It does
 not require Product initialization, a new Feature, or Feature synchronization,
@@ -292,7 +292,7 @@ Add confirmed definitions, merge duplicates and repair references. For a rename,
 - **Create a module** when a new system has its own data model and an independent interaction entry point.
 - **Extend an existing module** when new behavior, values, or UI remain within that module's established responsibility.
 
-When the boundary is unclear, use `product-standardizer`; it owns the routing decision.
+When the boundary is unclear, use `product-author`; it owns the routing decision.
 
 ## Anti-examples
 

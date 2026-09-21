@@ -14,7 +14,7 @@ depth and document output are independent decisions:
   in the conversation. Do not write files merely because a decision was made.
 - **Document settled vocabulary:** clarify only the remaining gaps, then pass
   confirmed definitions and the authorized write scope to
-  `product-standardizer`. Follow the terminology contract in
+  `product-author`. Follow the terminology contract in
   `methodology/01-product-doc-structure.md`.
 
 An explicit request to write already authorizes the specified documentation;
@@ -74,7 +74,7 @@ ideas, task status, detailed behavior or Godot implementation choices there.
 
 Pass the proposed definitions, relevant source locations, confirmed decisions,
 remaining uncertainty and whether meaning or behavior changes to
-`product-standardizer`. It alone persists Product and terminology wording.
+`product-author`. It alone persists Product and terminology wording.
 Terminology maintenance that preserves meaning and behavior does not require
 Product initialization or Feature synchronization. A substantive Product change
 uses the normal Product and planning route. Do not silently rename code or
@@ -88,7 +88,7 @@ Do not manufacture Product, Features or ADRs to conclude a conversation.
 
 ## Reuse inside Product elicitation
 
-`product-init-elicitor`, `product-spec-elicitor` and `product-audio-sketcher` reuse the shared
+`product-init-elicitor`, `product-spec-elicitor` and `design-audio-asset-spec` reuse the shared
 questioning method above while retaining their Product-specific draft/patch
 contracts. They return to their existing caller. Reading this method does not
 start another clarification workflow or call the standardizer recursively.

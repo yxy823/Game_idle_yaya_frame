@@ -189,15 +189,15 @@ After completion, retain the design as the account of that Feature. Later behavi
 
 ## File 3: `docs/feature-list-revisions.json`
 
-`sync-feature-list` appends one record for each governing-source synchronization:
+`feature-sync` appends one record for each governing-source synchronization:
 
 Initial content is `{"schema_version": 2, "revision_log": []}`. The root and each
 revision entry use schema version 2; no old-format parsing or automatic migration
-is provided. Current-format history remains immutable. `engineering-change-standardizer`
+is provided. Current-format history remains immutable. `engineering-change-plan`
 does not append a revision merely for creating an engineering Feature without a source change.
 
 On first synchronization, a Feature-file edit alone is not a source baseline;
-`sync-feature-list` must verify which source state the plan actually absorbed.
+`feature-sync` must verify which source state the plan actually absorbed.
 If approved current-document alignment is needed because that history is unknown,
 the existing anchor fields both identify the inspected HEAD and `summary` records
 this limitation. This establishes the next baseline without claiming an earlier diff.
@@ -362,13 +362,13 @@ Static checks are executed and assessed directly by the Agent, outside this file
 [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
 Repeat `--run` when a plan is covered by multiple real runs. An unavailable full
 suite is a reported blocker, not a caller-entered PASS.
 
-`.agents/skills/execute-next-feature/scripts/record-feature-completion.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
+`.agents/skills/feature-execute/scripts/record-feature-completion.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
 
 ## Bug learning in notes
 
@@ -460,13 +460,13 @@ command to execute or plan every module at once.
    authorization. Stage 8 follows [Authorization and continuation](03-execute-loop.md#authorization-and-continuation);
    completion alone does not authorize planning or implementing the next Product.
 
-`generate-feature-list` handles the first and each subsequent Product's initial
+`feature-plan` handles the first and each subsequent Product's initial
 decomposition by appending to the same ledger. Allocate IDs after the greatest
 existing ID; preserve previous Features, test Registry records and revision
 history. If the selected scope already has a plan, reuse it; changed requirements
-use `sync-feature-list` rather than duplicating or regenerating that plan.
+use `feature-sync` rather than duplicating or regenerating that plan.
 
-`sync-feature-list` still analyzes effects on existing work, including completed
+`feature-sync` still analyzes effects on existing work, including completed
 behavior and real downstream dependencies. Changes to a later, unplanned Product
 do not create Features now. When that Product becomes current, generation reads
 its complete current specification, even if its edits predate the latest sync
@@ -518,7 +518,7 @@ performed by the ledger validator.
 ## Adopting existing implementation
 
 When implementation predates its Product or Feature records, first use
-`product-standardizer` to establish confirmed Product intent. Existing
+`product-author` to establish confirmed Product intent. Existing
 code is evidence of current behavior, not automatic approval of that behavior.
 Then apply Product-by-Product planning to the requested current module; existing
 implementation does not waive prerequisite completion or expand the planning
@@ -589,8 +589,8 @@ alignment does not mean the new behavior has been implemented or tested.
 
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
-| Initial decomposition of the current Product | `generate-feature-list` | append index/details and needed components; initialize missing revision log/registry, preserve existing history |
-| Product/Project-Rules synchronization | `sync-feature-list` | index/details + revision log + needed components and affected test traceability |
-| Bug/refactor/maintenance Feature creation | `engineering-change-standardizer` | index + engineering details + needed components; test plan is finalized during execution |
-| Feature execution and completion notes | `execute-next-feature` | status, verification mapping, test registry, notes, Progress, implementation/test files |
-| Smell candidate selection | `pick-refactor-smell` | read-only selection; returns to engineering standardizer |
+| Initial decomposition of the current Product | `feature-plan` | append index/details and needed components; initialize missing revision log/registry, preserve existing history |
+| Product/Project-Rules synchronization | `feature-sync` | index/details + revision log + needed components and affected test traceability |
+| Bug/refactor/maintenance Feature creation | `engineering-change-plan` | index + engineering details + needed components; test plan is finalized during execution |
+| Feature execution and completion notes | `feature-execute` | status, verification mapping, test registry, notes, Progress, implementation/test files |
+| Smell candidate selection | `engineering-refactor-select` | read-only selection; returns to engineering standardizer |

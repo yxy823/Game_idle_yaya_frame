@@ -77,7 +77,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertNotIn("code_smell", data)
         self.assertEqual(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0], True)
         result = subprocess.run(
-            [sys.executable, "-B", str(PROJECT_ROOT / ".agents/skills/execute-next-feature/scripts/record-feature-completion.py"),
+            [sys.executable, "-B", str(PROJECT_ROOT / ".agents/skills/feature-execute/scripts/record-feature-completion.py"),
              "--repo-root", str(self.root), "validate", "--feature", "F001"],
             capture_output=True, text=True,
         )

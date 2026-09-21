@@ -1,6 +1,6 @@
 # 07 · Engineering change workflow
 
-> This specification owns code/project changes that preserve already-defined Product intent. The executable Skill is `engineering-change-standardizer`.
+> This specification owns code/project changes that preserve already-defined Product intent. The executable Skill is `engineering-change-plan`.
 
 ## Classification boundary
 
@@ -14,7 +14,7 @@ Choose exactly one mode:
 
 Before classifying a bug, read the relevant authoritative source. Missing,
 contradictory or materially ambiguous expectations return to their owner:
-`product-standardizer` for behavior, or the corresponding specialist for design
+`product-author` for behavior, or the corresponding specialist for design
 requirements under [Specialist work and sources](11-specialist-workflows.md).
 A confirmed professional contract can establish a defect without duplicate
 Product text. An unapproved suggestion cannot. Technical defects use their
@@ -30,7 +30,7 @@ requirements merely to describe a tooling defect.
 | --- | --- |
 | Defect introduced inside the current unfinished Feature | Keep it in the current Feature and resume the applicable execute Stage; record the failure and rerun affected verification. No duplicate bug Feature merely to move its failure elsewhere. |
 | Independent regression of previously completed behavior | Create an approved `bug` Feature through this workflow, retaining original completed history. |
-| User wants a different observable behavior | `product-standardizer`, even if the user calls it a bug. |
+| User wants a different observable behavior | `product-author`, even if the user calls it a bug. |
 | User changes a professional requirement while behavior stays fixed | Its owning specialist updates the approved source and handles planned-work impacts; this is not a defect against the old contract. |
 | Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
 | Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
@@ -64,7 +64,7 @@ handoff; stop if execution approval is still missing
    ↓
 explicit execution approval (already supplied or newly given)
    ↓
-execute-next-feature
+feature-execute
 ```
 
 This workflow never implements the change itself.
@@ -140,7 +140,7 @@ archive without changing its original Product/engineering classification.
 
 ## Refactor Feature contract
 
-Record the concrete smell, affected area, behavior that must remain unchanged, and tests/verification protecting that behavior. If no target has been selected, `pick-refactor-smell` may rank candidates; after user selection, return here and create an approved Feature before implementation.
+Record the concrete smell, affected area, behavior that must remain unchanged, and tests/verification protecting that behavior. If no target has been selected, `engineering-refactor-select` may rank candidates; after user selection, return here and create an approved Feature before implementation.
 
 ## Maintenance Feature contract
 
@@ -158,7 +158,7 @@ Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential
 
 Read the existing Test Registry when proposing `affected_components`. After approval,
 register missing components before writing/validating the Feature, using the existing
-merge helper and Test registry contract in `.agents/skills/generate-feature-list/SKILL.md`.
+merge helper and Test registry contract in `.agents/skills/feature-plan/SKILL.md`.
 Reuse existing records without resetting tests; report conflicting IDs. A component
 without an existing unit suite uses `unit_test_paths: []`, and its full-suite flag
 defaults to false unless the approved contract requires otherwise. Include these
@@ -204,7 +204,7 @@ Propose promotion of only the generalized `Guardrail` when at least one is true:
 - the defect recurred or needed repeated repair attempts;
 - tests cannot fully enforce it.
 
-Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Preserve detailed local constraints and rationale in the optional Feature design when needed; do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `sync-feature-list` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
+Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Preserve detailed local constraints and rationale in the optional Feature design when needed; do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `feature-sync` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
 
 ## Explicit exclusions
 

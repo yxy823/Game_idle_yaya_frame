@@ -128,7 +128,7 @@ The test registry is the machine-readable bridge from changed components to exis
 
 ## Test Impact Review
 
-Before implementation, `execute-next-feature` must produce a Test Impact Review. The Required Test Set is derived as follows:
+Before implementation, `feature-execute` must produce a Test Impact Review. The Required Test Set is derived as follows:
 
 ```text
 Required Test Set =
@@ -242,7 +242,7 @@ separate journal, execution lock, invocation, verdict, process report or session
 Record results with:
 
 ```powershell
-python -B .agents/skills/execute-next-feature/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
 ```
 
 Repeat `--run` only for distinct runs needed to cover the obligations. One full run
@@ -323,7 +323,7 @@ A pre-existing baseline failure must be reported before implementation. Do not a
 
 The execution loop applies RED/GREEN/refactor per small observable behavior, not as a batch of all tests followed by all implementation. A criterion may need several cycles. Keep tests focused on observable contracts; rerun relevant tests after meaningful refactoring. Focused/TDD results still do not replace final affected/full evidence.
 
-Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 5 records actual human acceptance when required. `.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output and any explicit user review condition under the execution loop. The evidence helper does not prove static checks or review ran, or supply a required human decision.
+Stage 4 imports verified run results into `docs/feature-completion-evidence.json` when automated obligations exist; Stage 5 records actual human acceptance when required. `.agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F0XX` checks this evidence; `tools/checks/check-feature-list.py --completion-feature F0XX` checks the completion-specific Feature/Registry contract. The Agent separately assesses direct parsing/lint output and any explicit user review condition under the execution loop. The evidence helper does not prove static checks or review ran, or supply a required human decision.
 
 A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
@@ -337,7 +337,7 @@ explicit conversational decision under [Manual acceptance files](manual-acceptan
 
 ## Requirement changes and stale tests
 
-When Product behavior changes, old tests are not automatically authoritative. `sync-feature-list` must perform Test Impact Review before implementation:
+When Product behavior changes, old tests are not automatically authoritative. `feature-sync` must perform Test Impact Review before implementation:
 
 - still-valid contract → keep test active;
 - changed contract → create/update verification through the new Feature;

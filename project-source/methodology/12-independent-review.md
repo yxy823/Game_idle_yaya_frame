@@ -1,8 +1,8 @@
 # 12 · Independent review
 
 This is the common contract for all formal reviews. Review methods live in
-`code-review`, `ux-review`, `art-review`, `audio-review`, `asset-audit`,
-`localization-review` and `balance-review`. Select only methods relevant to the
+`review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`,
+`review-localization` and `review-balance`. Select only methods relevant to the
 user's requested scope; one independent instance can combine several methods.
 Reviews are requested work, never a mandatory seven-step pipeline.
 

@@ -44,21 +44,21 @@
 | 任务 | Skill |
 | --- | --- |
 | 讨论想法、澄清概念，或按授权整理术语 | project-clarifier |
-| 产品初始化或改变需求 | product-standardizer |
+| 产品初始化或改变需求 | product-author |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
-| 界面线框、布局状态与视觉基础规格 | product-ui-sketcher |
-| 音效、音乐需求与真实样本或占位约定 | product-audio-sketcher |
-| 只拆当前 Product，完成后再拆下一 Product | generate-feature-list |
-| 增量对齐已有 Feature | sync-feature-list |
-| Bug、重构或工程维护 | engineering-change-standardizer |
-| 执行一个已批准 Feature | execute-next-feature |
-| 从记录中选择重构项 | pick-refactor-smell |
-| 只读理解现状并撰写下一步提示词 | yaya-next-step-advisor |
-| 共享美术/声音方向、具体视觉资源规格 | art-bible、sound-bible、visual-asset-spec |
-| 资源接入与本地化 | asset-integration、localize |
-| 诊断信号、性能测量与长期运行 | observability、perf-profile、soak-test |
-| 用户指定的独立专业审核 | code-review、ux-review、art-review、audio-review、asset-audit、localization-review、balance-review |
+| 界面线框、布局状态与视觉基础规格 | design-ui-spec |
+| 音效、音乐需求与真实样本或占位约定 | design-audio-asset-spec |
+| 只拆当前 Product，完成后再拆下一 Product | feature-plan |
+| 增量对齐已有 Feature | feature-sync |
+| Bug、重构或工程维护 | engineering-change-plan |
+| 执行一个已批准 Feature | feature-execute |
+| 从记录中选择重构项 | engineering-refactor-select |
+| 只读理解现状并撰写下一步提示词 | project-next-step-advisor |
+| 共享美术/声音方向、具体视觉资源规格 | design-art-direction、design-audio-direction、design-visual-asset-spec |
+| 资源接入与本地化 | content-asset-integration、content-localization |
+| 诊断信号、性能测量与长期运行 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test |
+| 用户指定的独立专业审核 | review-code、review-ux、review-art、review-audio、review-assets、review-localization、review-balance |
 
 新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)
 验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
@@ -70,27 +70,27 @@ flowchart TD
     C --> O[对话结论]
     C -->|获授权记录术语| T[standardizer 术语维护路线]
     T --> K[按需更新术语文档或局部定义]
-    Q -->|需求初始化或改变| P[product-standardizer]
+    Q -->|需求初始化或改变| P[product-author]
     P --> I[按需使用 init / spec elicitor]
     I --> D[更新 Product 行为与引用]
     Q -->|专业设计与规格| V[对应专业 Skill 直接维护来源]
     V -->|影响已有任务时| L
-    D -->|当前 Product 或影响已有任务| L[generate-feature-list / sync-feature-list]
+    D -->|当前 Product 或影响已有任务| L[feature-plan / feature-sync]
     D -->|仅后续未拆分 Product| B[保留需求，暂不生成 Feature]
-    Q -->|Bug / 重构 / 维护| E[engineering-change-standardizer]
-    Q -->|选择重构候选| S[pick-refactor-smell]
+    Q -->|Bug / 重构 / 维护| E[engineering-change-plan]
+    Q -->|选择重构候选| S[engineering-refactor-select]
     S --> E
-    Q -->|只问下一步| A[yaya-next-step-advisor]
+    Q -->|只问下一步| A[project-next-step-advisor]
     A --> H[给出提示词并停止]
     L --> F[已批准的 Feature]
     E --> F
     Q -->|执行已有 Feature| F
-    F --> X[execute-next-feature]
+    F --> X[feature-execute]
     X --> R[验证、验收、记录与交接]
 ```
 
 只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md`
-有实际内容才创建；由 `product-standardizer` 统一写入已确认的定义。
+有实际内容才创建；由 `product-author` 统一写入已确认的定义。
 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
 
 术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
@@ -101,7 +101,7 @@ Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Fe
 
 ## 当前 Feature 流程
 
-具体行为以 [execute-next-feature](.agents/skills/execute-next-feature/SKILL.md)
+具体行为以 [feature-execute](.agents/skills/feature-execute/SKILL.md)
 和 [执行流程](methodology/03-execute-loop.md) 为准。
 
 ```mermaid
@@ -141,7 +141,7 @@ flowchart TD
 显式命令执行；编辑文件或结束回复不会触发另一套拦截流程。
 
 例如：`tools/checks/check-feature-list.py` 检查台账，
-`.agents/skills/execute-next-feature/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。
+`.agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。
 具体命令见
 [tools/README.md](tools/README.md)。
 

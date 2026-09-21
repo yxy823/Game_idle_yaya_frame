@@ -7,7 +7,7 @@ metadata:
     - Initialize the Product or start a new project from one sentence
     - 用户说「初始化产品」或「做一个 XXX」
   priority: medium
-  called_by: product-standardizer
+  called_by: product-author
 ---
 
 # Product initialization elicitor
@@ -16,7 +16,7 @@ metadata:
 
 Act as a product-management assistant. Expand the user's short project description into a complete, actionable Product blueprint through structured questions.
 
-Do not write files. Return one structured Product draft to `product-standardizer`,
+Do not write files. Return one structured Product draft to `product-author`,
 which owns Product writes; professional Skills own their separate specifications
 under `methodology/11-specialist-workflows.md`.
 
@@ -85,14 +85,14 @@ Example:
 ### Q1.6 Visual direction
 
 Capture existing visual experience goals or references when they affect current
-scope. Shared style selection and standards belong to `art-bible`; no full visual
+scope. Shared style selection and standards belong to `design-art-direction`; no full visual
 design is required to draft Product. Preserve links and distinguish proposals.
 
 ### Q1.7 Audio direction
 
 Capture feedback goals and existing direction relevant to the Product. Shared
-sonic identity belongs to `sound-bible`; concrete cues go to
-`product-audio-sketcher`. Undecided direction may remain pending.
+sonic identity belongs to `design-audio-direction`; concrete cues go to
+`design-audio-asset-spec`. Undecided direction may remain pending.
 
 ## Stage 2: Module elicitation
 
@@ -122,7 +122,7 @@ Ask which values survive application shutdown and what the user loses if they do
 
 ### M.6 Primary UI
 
-Ask whether the module has its own screen or appears inside another module. If it has a screen, capture only a layout direction such as centered, vertical regions, horizontal regions, floating panel, or custom. Do not draw ASCII here; hand that work to `product-ui-sketcher`.
+Ask whether the module has its own screen or appears inside another module. If it has a screen, capture only a layout direction such as centered, vertical regions, horizontal regions, floating panel, or custom. Do not draw ASCII here; hand that work to `design-ui-spec`.
 
 ### M.7 Interactive elements
 
@@ -134,7 +134,7 @@ Ask what the interface should communicate or make the user feel.
 
 ### M.9 Audio trigger inventory
 
-List the moments that need audio feedback. Do not design individual sounds; hand the trigger inventory to `product-audio-sketcher`.
+List the moments that need audio feedback. Do not design individual sounds; hand the trigger inventory to `design-audio-asset-spec`.
 
 ### M.10 Tunable values
 
@@ -199,7 +199,7 @@ priority:
   nice_to_have: [03, 04]
 ```
 
-ASCII wireframes and complete audio entries are outside this workflow's output. `product-ui-sketcher` and `product-audio-sketcher` produce them later; this workflow supplies their Product inputs.
+ASCII wireframes and complete audio entries are outside this workflow's output. `design-ui-spec` and `design-audio-asset-spec` produce them later; this workflow supplies their Product inputs.
 
 ## Common traps
 

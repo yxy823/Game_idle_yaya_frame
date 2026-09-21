@@ -36,7 +36,7 @@ flowchart TD
 | 步骤 / 操作 | 输入与需要检查的内容 | 执行说明与条件分支 | 预期输出与完成判据 |
 | --- | --- | --- | --- |
 | 1. 定位工作 | 用户目标、GDD 原件、项目 `AGENTS.md`、`docs/methodology-config.json`、Git 状态、`docs/progress.md` 和 `docs/feature-list.json` | Agent 确认真实项目、当前模块和文档语言，区分只讨论、写需求、规划、实施。正在进行的任务先核对归属；新任务存在未知差异时保留现场，不清理后继续。 | 明确本次模块、允许动作与已有任务。目录、修改归属或关键范围不明时，停在具体缺口。 |
-| 2. 确定可观察意图 | `docs/product.md`、相关 `docs/product/NN-name.md`、专业来源、项目规则；有相关术语、ADR 和知识时读取 | `product-standardizer` 复用已明确的规则，检查输入、状态、输出、边界和不做的部分。缺少会改变验收的决定时用户补充；不能把 GDD 的备选方案视为已采用。 | 每项当前行为有来源与可判断结果；矛盾已解决或明确阻塞。后续版本保留范围，不强行细化。 |
+| 2. 确定可观察意图 | `docs/product.md`、相关 `docs/product/NN-name.md`、专业来源、项目规则；有相关术语、ADR 和知识时读取 | `product-author` 复用已明确的规则，检查输入、状态、输出、边界和不做的部分。缺少会改变验收的决定时用户补充；不能把 GDD 的备选方案视为已采用。 | 每项当前行为有来源与可判断结果；矛盾已解决或明确阻塞。后续版本保留范围，不强行细化。 |
 | 3. 写入所属来源 | 已确认决定、Product 模板、适用专业规格与当前差异 | 行为、反馈意图归 Product；布局、风格、资源规格归对应专业 Skill。只保存有用内容和必要引用；独立来源任务按 Git 规则提交，Feature 内辅助写入沿原归属。 | 权威文件能找到已确认要求，Product 不复制整份专业规格；本次自有文档及链接已核对，提交限制如实说明。 |
 | 4. 检查是否需要拆分 | 当前模块完整要求、总览依赖、Feature 来源/状态、测试登记表和修订记录 | 已有有效计划则复用；范围已有计划但要求变化，转下一场景。尚未规划时确认前置 Product 已交付，只拆当前模块；不能因全局 GDD 很完整就提前生成所有模块。 | 明确复用、同步或初次拆分的选择。仅有“没有 eligible 任务”不能证明前置模块已完成。 |
 | 5. 预览并保存计划 | 当前需求、适用专业验证条件、已有组件和安全网 | Agent 展示数量、逐项范围、可观察结果、依赖及“来源 → Feature/AC → 检查 → 缺口”。普通规划先确认具体方案；已明确授权自主拆分则展示后继续。批准后先合并缺少的组件，再追加详情/索引及适用记录，不重置历史。 | `docs/feature-list.json`、`docs/features/F0XX.json`、Registry 和必要修订文件一致；完整台账检查通过，覆盖核对无未说明遗漏。格式通过仍不能代替语义覆盖。 |
@@ -88,7 +88,7 @@ flowchart TD
 
 若声音规格已经改名并提交，但 Product 还指向旧路径，先修复并提交 Product 链接，再同步计划；若来源文档都已正确、只有 Feature 的 `source` 仍用旧路径，则直接在计划同步中修正。两者都不改变已完成需求的含义。
 
-**最终产物与返回入口：** 来源变化、影响结论、适用任务修订与验证安排；实现进入原执行流程。约束以 [同步 Skill](../../../../project-source/skills/sync-feature-list/SKILL.md)、[来源发现规范](../../../../project-source/methodology/11-specialist-workflows.md#discover-and-map-sources) 和 [需求变化历史](product-and-planning.md#需求变化后怎样保留历史) 为准。
+**最终产物与返回入口：** 来源变化、影响结论、适用任务修订与验证安排；实现进入原执行流程。约束以 [同步 Skill](../../../../project-source/skills/feature-sync/SKILL.md)、[来源发现规范](../../../../project-source/methodology/11-specialist-workflows.md#discover-and-map-sources) 和 [需求变化历史](product-and-planning.md#需求变化后怎样保留历史) 为准。
 
 ## 新增核心对象或发现设计过重时重新判断边界
 

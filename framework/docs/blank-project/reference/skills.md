@@ -74,7 +74,7 @@ Codex 输出、外部报告、需求原文和复现日志等可能较长的输�
 
 在目标游戏项目中选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”，填写原任务、疑问和已有决定，将 Codex 输出原文或文件路径放入末尾的“Codex 输出（可选）”材料区。只询问状态或下一步时，该处填“无”。
 
-Agent 使用 `yaya-next-step-advisor`，结合当前项目规则、相关任务和可用证据，判断原输出的结论、建议与停点是否合理。需要回信时，先给简短判断，再提供一个可复制的回复代码块，说明应继续、纠正或补充核实的事项及适用流程；只问状态时直接回答事实。
+Agent 使用 `project-next-step-advisor`，结合当前项目规则、相关任务和可用证据，判断原输出的结论、建议与停点是否合理。需要回信时，先给简短判断，再提供一个可复制的回复代码块，说明应继续、纠正或补充核实的事项及适用流程；只问状态时直接回答事实。
 
 分析只读进行，回复由你检查后发送。已有明确授权继续沿用；Codex 的总结不能替代原始验证证据，生成的回复也不替你作出未表达的产品决定或人工验收。若目的是判断框架本身是否需要改进，改用框架维护侧的 [开发反馈复盘入口](../maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
 
@@ -82,35 +82,37 @@ Agent 使用 `yaya-next-step-advisor`，结合当前项目规则、相关任务�
 
 下表链接的是框架中的源文件。正式开发时读取目标项目 `.agents/skills/<name>/SKILL.md`，因为生成后的副本可能已经独立修改。
 
+Skill 按实际能力使用 `project-`、`product-`、`feature-`、`engineering-`、`design-`、`content-`、`diagnostics-`、`review-` 前缀，目录名与 frontmatter 的 `name` 一致。目录保持扁平；前缀用于聚合职责，不表示固定阶段、执行顺序或额外授权。方向、规格、内容接入与独立审核分别命名，产物文件仍使用各自契约规定的名称。
+
 | Skill | 适合的任务 | 主要产物与边界 |
 | --- | --- | --- |
 | [project-clarifier](../../../../project-source/skills/project-clarifier/SKILL.md) | 讨论想法、设计取舍与领域概念 | 小步澄清；只讨论不写文件，获授权的术语交给现有写入入口 |
-| [product-standardizer](../../../../project-source/skills/product-standardizer/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与术语文档，核对项目约束并处理已有任务影响；Feature 内术语整理后返回原流程 |
+| [product-author](../../../../project-source/skills/product-author/SKILL.md) | 初始化、补充或改变 Product 意图；维护已确认术语 | 统一写入 Product 与术语文档，核对项目约束并处理已有任务影响；Feature 内术语整理后返回原流程 |
 | [product-init-elicitor](../../../../project-source/skills/product-init-elicitor/SKILL.md) | Product 为空，梳理游戏蓝图 | 结构化草案；自身不写 Product 文件 |
 | [product-spec-elicitor](../../../../project-source/skills/product-spec-elicitor/SKILL.md) | 模块、行为修改或跨模块需求存在重要歧义 | 返回规格补丁；自身不写文件 |
-| [product-ui-sketcher](../../../../project-source/skills/product-ui-sketcher/SKILL.md) | 界面与交互表达、视觉基础规格 | 直接维护 UI 规格、线框与原型问题；Godot/HTML 实现交给授权实验或执行任务 |
-| [product-audio-sketcher](../../../../project-source/skills/product-audio-sketcher/SKILL.md) | 具体音效、音乐与触发要求 | 直接维护资源条目、样本和试听问题；不负责共享声音风格或实际生产 |
-| [generate-feature-list](../../../../project-source/skills/generate-feature-list/SKILL.md) | 初次拆分当前模块需求 | 先展示数量与逐项摘要，按 [预览确认约定](../guides/product-and-planning.md#写入前看拆分预览) 追加计划并保留历史；前一模块完成后再拆下一模块 |
-| [sync-feature-list](../../../../project-source/skills/sync-feature-list/SKILL.md) | Product、专业要求或 Project Rules 改变后增量对齐 | 分析来源差异、共享约束与首次纳入历史覆盖，保存任务和测试影响 |
-| [engineering-change-standardizer](../../../../project-source/skills/engineering-change-standardizer/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
-| [execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
-| [pick-refactor-smell](../../../../project-source/skills/pick-refactor-smell/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
-| [yaya-next-step-advisor](../../../../project-source/skills/yaya-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
-| [art-bible](../../../../project-source/skills/art-bible/SKILL.md) | 选择或调整美术风格 | 直接维护共享美术规范，按当前需要决定方向；不制作样张 |
-| [sound-bible](../../../../project-source/skills/sound-bible/SKILL.md) | 选择或调整声音方向 | 直接维护声音角色、情绪与反馈层次；不制作音乐或音效 |
-| [visual-asset-spec](../../../../project-source/skills/visual-asset-spec/SKILL.md) | 制定具体视觉素材规格 | 维护现有资源清单条目，区分要求与实测；不制作或接入 |
-| [asset-integration](../../../../project-source/skills/asset-integration/SKILL.md) | 接入或替换现有素材 | 按原授权任务处理导入、引用与实际表现，返回原任务验证收尾 |
-| [localize](../../../../project-source/skills/localize/SKILL.md) | 本地化规格、翻译与语言支持 | 专业规范与运行资源分开，代码/资源修改由原任务承接 |
-| [observability](../../../../project-source/skills/observability/SKILL.md) | 补充诊断信息 | 最小必要日志、计数、计时或显示；区分临时埋点与保留支持 |
-| [perf-profile](../../../../project-source/skills/perf-profile/SKILL.md) | 性能测量与诊断 | 真实负载、版本、可比测量与原因判断；修复另按原任务授权 |
-| [soak-test](../../../../project-source/skills/soak-test/SKILL.md) | 长期运行与累积问题验证 | 明确预算、实际时长、采样和中止原因；不替代 gdUnit 结果 |
-| [code-review](../../../../project-source/skills/code-review/SKILL.md) | 独立审查代码与指定变更 | 分开判断需求符合性、代码质量与证据缺口 |
-| [ux-review](../../../../project-source/skills/ux-review/SKILL.md) | 独立审核交互体验 | 核对实际流程与界面状态；不设计界面或做通用试玩分析 |
-| [art-review](../../../../project-source/skills/art-review/SKILL.md) | 独立审核美术效果 | 核对实际显示与风格/规格；未显示不声称视觉通过 |
-| [audio-review](../../../../project-source/skills/audio-review/SKILL.md) | 独立审核声音效果 | 核对实际音频与场景播放；无听取证据不声称听觉通过 |
-| [asset-audit](../../../../project-source/skills/asset-audit/SKILL.md) | 独立审核资源技术条件 | 检查文件、引用、导入与来源记录；不接入或整理资源 |
-| [localization-review](../../../../project-source/skills/localization-review/SKILL.md) | 独立审核本地化 | 检查覆盖、含义、术语和呈现；不修改翻译 |
-| [balance-review](../../../../project-source/skills/balance-review/SKILL.md) | 独立审核规则与数值组合 | 核对策略与节奏目标，说明模型/证据限制；不调参或代替玩家验收 |
+| [design-ui-spec](../../../../project-source/skills/design-ui-spec/SKILL.md) | 界面与交互表达、视觉基础规格 | 直接维护 UI 规格、线框与原型问题；Godot/HTML 实现交给授权实验或执行任务 |
+| [design-audio-asset-spec](../../../../project-source/skills/design-audio-asset-spec/SKILL.md) | 具体音效、音乐与触发要求 | 直接维护资源条目、样本和试听问题；不负责共享声音风格或实际生产 |
+| [feature-plan](../../../../project-source/skills/feature-plan/SKILL.md) | 初次拆分当前模块需求 | 先展示数量与逐项摘要，按 [预览确认约定](../guides/product-and-planning.md#写入前看拆分预览) 追加计划并保留历史；前一模块完成后再拆下一模块 |
+| [feature-sync](../../../../project-source/skills/feature-sync/SKILL.md) | Product、专业要求或 Project Rules 改变后增量对齐 | 分析来源差异、共享约束与首次纳入历史覆盖，保存任务和测试影响 |
+| [engineering-change-plan](../../../../project-source/skills/engineering-change-plan/SKILL.md) | Bug、重构或工程维护 | 分类和诊断，提出并写入获批工程 Feature；执行交给对应 Skill |
+| [feature-execute](../../../../project-source/skills/feature-execute/SKILL.md) | 开始或继续一个确定的 Feature | 实现、测试、适用验收、用户指定的可选评审、完成记录、本地提交与交接 |
+| [engineering-refactor-select](../../../../project-source/skills/engineering-refactor-select/SKILL.md) | 从已有记录中挑选重构候选 | 只读比较与推荐，返回工程标准化入口 |
+| [project-next-step-advisor](../../../../project-source/skills/project-next-step-advisor/SKILL.md) | 理解现状、不知道下一步怎么说 | 状态问题直接回答；需要续接或下一步操作时给提示词，不运行检查或授予批准 |
+| [design-art-direction](../../../../project-source/skills/design-art-direction/SKILL.md) | 选择或调整美术风格 | 直接维护共享美术规范，按当前需要决定方向；不制作样张 |
+| [design-audio-direction](../../../../project-source/skills/design-audio-direction/SKILL.md) | 选择或调整声音方向 | 直接维护声音角色、情绪与反馈层次；不制作音乐或音效 |
+| [design-visual-asset-spec](../../../../project-source/skills/design-visual-asset-spec/SKILL.md) | 制定具体视觉素材规格 | 维护现有资源清单条目，区分要求与实测；不制作或接入 |
+| [content-asset-integration](../../../../project-source/skills/content-asset-integration/SKILL.md) | 接入或替换现有素材 | 按原授权任务处理导入、引用与实际表现，返回原任务验证收尾 |
+| [content-localization](../../../../project-source/skills/content-localization/SKILL.md) | 本地化规格、翻译与语言支持 | 专业规范与运行资源分开，代码/资源修改由原任务承接 |
+| [diagnostics-instrumentation](../../../../project-source/skills/diagnostics-instrumentation/SKILL.md) | 补充诊断信息 | 最小必要日志、计数、计时或显示；区分临时埋点与保留支持 |
+| [diagnostics-performance](../../../../project-source/skills/diagnostics-performance/SKILL.md) | 性能测量与诊断 | 真实负载、版本、可比测量与原因判断；修复另按原任务授权 |
+| [diagnostics-soak-test](../../../../project-source/skills/diagnostics-soak-test/SKILL.md) | 长期运行与累积问题验证 | 明确预算、实际时长、采样和中止原因；不替代 gdUnit 结果 |
+| [review-code](../../../../project-source/skills/review-code/SKILL.md) | 独立审查代码与指定变更 | 分开判断需求符合性、代码质量与证据缺口 |
+| [review-ux](../../../../project-source/skills/review-ux/SKILL.md) | 独立审核交互体验 | 核对实际流程与界面状态；不设计界面或做通用试玩分析 |
+| [review-art](../../../../project-source/skills/review-art/SKILL.md) | 独立审核美术效果 | 核对实际显示与风格/规格；未显示不声称视觉通过 |
+| [review-audio](../../../../project-source/skills/review-audio/SKILL.md) | 独立审核声音效果 | 核对实际音频与场景播放；无听取证据不声称听觉通过 |
+| [review-assets](../../../../project-source/skills/review-assets/SKILL.md) | 独立审核资源技术条件 | 检查文件、引用、导入与来源记录；不接入或整理资源 |
+| [review-localization](../../../../project-source/skills/review-localization/SKILL.md) | 独立审核本地化 | 检查覆盖、含义、术语和呈现；不修改翻译 |
+| [review-balance](../../../../project-source/skills/review-balance/SKILL.md) | 独立审核规则与数值组合 | 核对策略与节奏目标，说明模型/证据限制；不调参或代替玩家验收 |
 
 项目规则与 [方法总览](../../../../project-source/methodology/00-overview.md) 负责完整路由。不要因用户问“当前进度”就执行环境探测或测试；也不要把明确实现请求降级成只提供下一步建议。
 

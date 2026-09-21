@@ -4,7 +4,7 @@
 
 实现已完成、需要逐项判断能否交付时，使用 [交付检查单](scenarios-verification-recovery.md#实现完成后判断能否交付)；中断后无法确定停点时，使用 [上下文恢复检查单](scenarios-context-handoff.md#上下文不足时恢复现场并续接)。
 
-开始本章前，应已有确定的 Feature、所需需求和可用开发环境。Agent 通过 `execute-next-feature` 实现这项任务，交付代码、验证结果、适用的人工验收记录与本地提交；中断任务从实际停点继续。
+开始本章前，应已有确定的 Feature、所需需求和可用开发环境。Agent 通过 `feature-execute` 实现这项任务，交付代码、验证结果、适用的人工验收记录与本地提交；中断任务从实际停点继续。
 
 需要主动发起开发时，在目标项目使用 [提示词导航](../reference/skills.md#从哪里取得操作提示词) 中的“Godot 项目开发 → 日常开发 → 执行指定或下一项 Feature”，说明目标任务与本次范围。已有明确实施授权的任务可直接续接，无需重新发送同一批准。
 
@@ -52,7 +52,7 @@ flowchart TD
 | 7 | 检查完成依据、更新台账和历史、整理有价值的知识、收尾提交 | 当前最终内容满足适用检查，提交剩余实现与完成记录 |
 | 8 | 交接结果并核对后续范围、授权和前置条件 | 已授权则继续；范围完成、要求暂停或缺少必要决定时停止 |
 
-各阶段详细行为由 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 统一定义，[execute-next-feature](../../../../project-source/skills/execute-next-feature/SKILL.md) 提供操作入口与按需参考。这张图用于查找人工验收、Bug 经验和指定评审等分支；各分支的实际要求见对应小节。
+各阶段详细行为由 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 统一定义，[feature-execute](../../../../project-source/skills/feature-execute/SKILL.md) 提供操作入口与按需参考。这张图用于查找人工验收、Bug 经验和指定评审等分支；各分支的实际要求见对应小节。
 
 ## 开始前读取什么
 
@@ -140,7 +140,7 @@ flowchart TD
     A[Stage 1 判断记录需要与冲突] -->|沿用已有授权| B[Stage 2 保存获批方案]
     B --> C[Stage 3 对齐实际实现]
     C -->|无相关变化| V[Stage 4 最终验证]
-    C -->|共享定义变化| T[术语：Agent 经<br/>product-standardizer 更新]
+    C -->|共享定义变化| T[术语：Agent 经<br/>product-author 更新]
     C -->|局部方案变化| D[设计或 notes<br/>对齐实现]
     C -->|结构或重要取舍变化| H[架构地图与 ADR<br/>按阈值更新]
     C -->|约束变化| R[规则：自检并核对授权<br/>采用或修订才写入]
@@ -204,7 +204,7 @@ Agent 先编写初始项为 `pending` 的 JSON 清单，运行 `prepare-manual` 
 
 可以等选定 Feature 完成并提交后再集中评审，之前各项无需停留在未完成状态；明确要求“评审后再继续”时，Agent 遵守该顺序。具体授权沿用原会话，不另建队列、开关或待评审状态。
 
-执行评审时使用新的独立上下文，按范围加载 `code-review` 或适用的专业审核 Skill。代码审核分别判断需求符合性与代码质量；同一根因关联相关 Feature。共享方法见 [独立审核规范](../../../../project-source/methodology/12-independent-review.md)，Stage 6 保留时机、范围和后续处理。角色配置的存在不证明实际加载或权限隔离，作者自己加载审核 Skill 仍是自查。
+执行评审时使用新的独立上下文，按范围加载 `review-code` 或适用的专业审核 Skill。代码审核分别判断需求符合性与代码质量；同一根因关联相关 Feature。共享方法见 [独立审核规范](../../../../project-source/methodology/12-independent-review.md)，Stage 6 保留时机、范围和后续处理。角色配置的存在不证明实际加载或权限隔离，作者自己加载审核 Skill 仍是自查。
 
 被审成果、原证据与验收记录保持只读；允许的针对性验证需把缓存、日志、导入和测试数据一并隔离，条件不足时说明未验证项。交接提供范围、权威来源、版本差异与原始证据，作者解释属于待核实陈述。审核报告交付不等于必要覆盖已通过，也不替代用户人工验收。专业审核与测量边界见 [专业工作指南](specialist-workflows.md#审核保持独立)。
 
