@@ -28,6 +28,7 @@
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
 | tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
 | tests/project/asset_workbench_test.gd、asset_workbench_capture.gd | 工作台的真实 Godot 行为与渲染夹具；仅按任务复制到指定外部测试项目，不进入分发清单 |
+| tests/project/asset_analyzer_backend_test.py、asset_analyzer_test.gd、asset_analyzer_capture.gd、analyzer_process_fixture.py | 第二阶段可选依赖的真实分析、后台异常与图表回归；仅在已安装依赖的指定项目按 [实施报告](review/reports/asset-analyzer-phase2-2026-09-21.md) 显式执行，不加入默认项目工具 unittest 发现 |
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |

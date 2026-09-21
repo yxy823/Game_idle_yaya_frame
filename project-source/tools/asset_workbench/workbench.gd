@@ -6,6 +6,7 @@ const Controls = preload("res://tools/asset_workbench/cue_controls.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
 const Backdrop = preload("res://tools/asset_workbench/preview_backdrop.gd")
+const AnalysisPanel = preload("res://tools/asset_workbench/analysis_panel.gd")
 
 @export_file("*.tres") var cue_path: String
 @export_file("*.tscn") var game_scene_path: String
@@ -23,6 +24,7 @@ var _repeat: Timer = Timer.new()
 var _reload_dialog: ConfirmationDialog = ConfirmationDialog.new()
 var _background: ColorRect = ColorRect.new()
 var _backdrop: Backdrop = Backdrop.new()
+var _analysis: AnalysisPanel = AnalysisPanel.new()
 
 
 func _ready() -> void:
@@ -31,6 +33,8 @@ func _ready() -> void:
 	_repeat.timeout.connect(presenter.trigger)
 	_browser.populate(texture_candidates, sound_candidates)
 	_browser.candidate_requested.connect(_bind_candidate)
+	add_child(_analysis)
+	_browser.analysis_requested.connect(_analysis.open_asset)
 	_controls.build(texture_candidates, sound_candidates)
 	_controls.edited.connect(_edit)
 	presenter.playback_failed.connect(_set_status)
@@ -165,6 +169,7 @@ func _toggle(parent: Container, text: String, action: Callable) -> void:
 func _set_dark_theme(enabled: bool) -> void:
 	theme = Appearance.create(enabled)
 	_background.color = Appearance.background(enabled)
+	_analysis.set_background(enabled)
 
 
 func _set_checker(enabled: bool) -> void:

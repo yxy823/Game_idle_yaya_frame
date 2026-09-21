@@ -31,6 +31,7 @@ static func create(dark: bool) -> Theme:
 	result.set_stylebox("normal", "LineEdit", _box(surface, border))
 	result.set_stylebox("focus", "LineEdit", _box(Color.TRANSPARENT, ink, false))
 	result.set_stylebox("panel", "ItemList", _box(surface, border))
+	_apply_tree(result, surface, border, ink)
 	result.set_stylebox("selected", "ItemList", _box(active, ink))
 	result.set_stylebox("selected_focus", "ItemList", _box(active, ink))
 	result.set_stylebox("panel", "PopupMenu", _box(surface, border))
@@ -45,12 +46,22 @@ static func create(dark: bool) -> Theme:
 
 static func _apply_text_colors(result: Theme, ink: Color) -> void:
 	for type_name: String in ["Label", "Button", "OptionButton", "CheckButton",
-			"LineEdit", "ItemList", "PopupMenu", "Window"]:
+			"LineEdit", "ItemList", "PopupMenu", "Window", "Tree"]:
 		for key: String in ["font_color", "font_hover_color", "font_pressed_color",
 				"font_focus_color", "font_hover_pressed_color", "font_selected_color"]:
 			result.set_color(key, type_name, ink)
 		result.set_color("font_disabled_color", type_name, Color(ink, 0.5))
 		result.set_color("font_outline_color", type_name, Color.TRANSPARENT)
+
+
+static func _apply_tree(result: Theme, surface: Color, border: Color, ink: Color) -> void:
+	result.set_stylebox("panel", "Tree", _box(surface, border))
+	result.set_color("title_button_color", "Tree", ink)
+	for key: String in ["font_hovered_color", "font_hovered_dimmed_color",
+			"font_hovered_selected_color"]:
+		result.set_color(key, "Tree", ink)
+	for state: String in ["normal", "hover", "pressed"]:
+		result.set_stylebox("title_button_" + state, "Tree", _box(surface, border))
 
 
 static func _box(fill: Color, border: Color, draw_center: bool = true) -> StyleBoxFlat:

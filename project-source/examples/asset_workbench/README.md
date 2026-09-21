@@ -33,8 +33,9 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 事件按右侧参数播放；没有自动响度匹配，主观比较时保持系统监听音量一致。
 顶部 `Event sound` 显示事件实际使用的文件；左侧选中后点 `Audition` 才单独播放所选文件，点 `Use selection in active A/B` 才绑定并触发事件。
 两个原始音效属于同一确认音系列，解码时长分别约 0.290 秒和 0.539 秒；切换 A/B 不代表自动改变音色、响度或音高。
-示例资源元数据来自导入后的 Texture2D / AudioStream，不是专业响度或风格分析。
-外部 Analyzer、统一分析结果 JSON 和分析图表尚未接入。
+浏览器资源元数据来自导入后的 Texture2D / AudioStream；`Analyze selected source` 打开独立源文件分析窗口。
+第二阶段已提供后台音频/图像分析、统一 JSON、图表与同类型分析 A/B；安装和操作见
+[Analyzer 说明](../../tools/asset_analyzer/README.md)。缺少可选分析依赖不影响这里的预览与播放。
 
 ## 数据和运行边界
 
@@ -46,9 +47,10 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 | `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
 | `components/feedback/` | 小型图标脉冲表现组件、数据类型和播放封装；两个场景复用同一表现逻辑 |
 | `tools/asset_workbench/` | 候选浏览、试调和保存界面；不注册全局服务 |
+| `tools/asset_analyzer/` | 源文件专业分析与适配器；独立于音频播放，不写回 Cue |
 
 首期是一项奖励按钮的 Activate 事件：一个图标、程序生成的确定性脉冲/放射线、一个声音。
-它没有通用 Object/State/Event 引擎、完整时间轴、多音轨编辑、空间音频、音乐管理或专业 Analyzer。
+它没有通用 Object/State/Event 引擎、完整时间轴、多音轨编辑、空间音频或音乐管理。
 已有游戏对象应接入其现有表现组件与配置；不要为了使用本示例复制一套正式关系模型。
 
 试调复制 Cue 的标量字段，Texture/AudioStream 保持只读共享。保存前检查磁盘内容是否变化，
@@ -61,7 +63,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 切换、停止和退出使旧延迟请求失效；不把引擎帧调度当成采样级同步。
 
 正式游戏导出时选择正式入口场景及依赖。使用全资源导出时，显式排除本示例与
-`tools/asset_workbench/`；保留正式场景实际依赖的组件及音频实现。当前框架不预填生产导出配置。
+`tools/asset_workbench/`、`tools/asset_analyzer/` 和 `reports/`；保留正式场景实际依赖的组件及音频实现。当前框架不预填生产导出配置。
 删除示例前核对正式场景没有引用其中资产；不能只因文件有 `example-` 前缀就忽略真实引用。
 
 ## 素材来源与许可

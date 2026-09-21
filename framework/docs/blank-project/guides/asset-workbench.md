@@ -31,8 +31,28 @@ flowchart LR
 
 首期示例只有一个图标脉冲、放射线效果和一段声音，资源文件统一以 `example-` 开头。
 这些是示例身份标记，不是资源已适合当前游戏的结论。
-当前尺寸、时长来自 Godot 导入资源。外部 Analyzer、统一分析结果协议，以及专业响度、频谱、风格分析、批量管理、通用时间轴或完整音乐工作流均未实现。
-后续分析能力根据实际问题调研接入，不作为当前预览的前置条件。
+浏览器尺寸、时长来自 Godot 导入资源；第二阶段增加独立的源文件分析，仍不作为预览前置条件。
+高级频谱、风格推断、批量管理、通用时间轴或完整音乐工作流未实现。
+
+## 第二阶段：后台基础分析
+
+在实际项目按 [Analyzer 说明](../../../../project-source/tools/asset_analyzer/README.md) 安装明确版本依赖。
+框架创建器只复制源文件；不会自动安装 Python 包，也不会把测试环境和缓存复制进新项目。
+分析在 Windows 11 / Godot 4.7.1 / Python 3.12 上验证，使用项目现有 `python_executable` 配置。
+
+从原浏览器点击 `Analyze selected source`，在非模态分析窗口把当前选择放入分析 A 或 B。
+返回原浏览器即可换另一个候选，不建立第二套资源清单。分析 A/B 不改变事件 A/B、播放或保存目标。
+可查看指标、不可用原因、音频峰值/RMS 包络、颜色与 Alpha 分布，滚轮缩放图表并同坐标比较。
+整窗与指标表支持滚动，关闭窗口会取消其后台任务。
+
+音频 Adapter 使用 PyAV 与 pyloudnorm，图像 Adapter 使用 Pillow/NumPy；所有后端返回统一 Schema v1，
+Godot 仅消费指标和数据序列。版本与许可证见 [依赖记录](../../../../project-source/tools/asset_analyzer/DEPENDENCIES.md)。
+短音频、静音、未支持指标、执行失败分别显示状态，不以零值补齐；源文件分析不包含 Godot 导入和播放参数。
+首尾静音规则在 Godot 侧检查，独立于测量算法；不生成审美分数。
+
+内容哈希、参数、Analyzer/后端及 Schema 版本共同确定项目本地 JSON 缓存。
+`Reanalyze` 强制重算；依赖缺失、超时、取消、损坏输出和解码失败不会阻断原工作台。
+新增指标优先扩展 Adapter 的 metrics/series，现有界面自动消费，不改音频播放插件。
 
 ## 在真实任务中使用
 
@@ -51,6 +71,7 @@ flowchart LR
 | 内容 | 位置与边界 |
 | --- | --- |
 | 可复用工作台、表现组件和薄播放封装 | `tools/asset_workbench/`、`components/feedback/`；通过复制成为项目自己的文件 |
+| 分析源代码与项目本地开发依赖 | `tools/asset_analyzer/` 随框架复制；实际项目安装的 `reports/asset-analyzer/runtime/`、缓存和运行证据不进入框架 |
 | 可操作示例与许可 | `examples/asset_workbench/`；可替换或按引用检查后移除，不预设游戏需求 |
 | 音频第三方代码 | `addons/sound_manager/`；固定提交和 MIT 许可，默认不启用全局插件 |
 | 框架回归用例和维护报告 | 只在 `framework/`；运行时按范围放入指定外部测试项目 |

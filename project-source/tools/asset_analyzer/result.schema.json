@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Asset Analyzer result v1",
+  "type": "object",
+  "required": ["schema_version", "status", "asset", "analyzer", "metrics", "series", "warnings", "errors", "cache"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "status": {"enum": ["success", "partial", "failed", "cancelled"]},
+    "asset": {"type": "object", "required": ["path", "type"], "properties": {
+      "path": {"type": "string"}, "type": {"type": "string"}, "sha256": {"type": "string"}
+    }},
+    "analyzer": {"type": "object", "required": ["id", "version", "backend", "supported_types", "supported_metrics"], "properties": {
+      "id": {"type": "string"}, "version": {"type": "integer"},
+      "backend": {"type": "object", "description": "Backend names mapped to exact versions, including linked codec library versions"},
+      "supported_types": {"type": "array", "items": {"type": "string"}},
+      "supported_metrics": {"type": "array", "items": {"type": "string"}}
+    }},
+    "metrics": {"type": "object", "additionalProperties": {"$ref": "#/$defs/metric"}},
+    "series": {"type": "object", "additionalProperties": {"$ref": "#/$defs/series"}},
+    "warnings": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+    "errors": {"type": "array", "items": {"$ref": "#/$defs/issue"}},
+    "parameters": {"type": "object"},
+    "cache": {"type": "object", "required": ["hit", "key"], "properties": {
+      "hit": {"type": "boolean"}, "key": {"type": "string"}, "identity": {"type": "object"}
+    }}
+  },
+  "$defs": {
+    "metric": {"type": "object", "required": ["status", "value", "unit", "reason"], "properties": {
+      "status": {"enum": ["available", "not_applicable", "unsupported", "failed"]},
+      "value": {}, "unit": {"type": "string"}, "reason": {"type": "string"}
+    }, "if": {"properties": {"status": {"const": "available"}}},
+    "then": {"properties": {"value": {"not": {"type": "null"}}}},
+    "else": {"properties": {"value": {"type": "null"}}}},
+    "series": {"type": "object", "required": ["status", "kind", "x", "y", "x_unit", "y_unit"], "properties": {
+      "status": {"const": "available"}, "kind": {"enum": ["line", "histogram"]},
+      "x": {"type": "array", "maxItems": 2048, "items": {"type": "number"}},
+      "y": {"type": "array", "maxItems": 2048, "items": {"type": "number"}},
+      "x_unit": {"type": "string"}, "y_unit": {"type": "string"}
+    }},
+    "issue": {"type": "object", "required": ["code", "message"], "properties": {
+      "code": {"type": "string"}, "message": {"type": "string"}
+    }}
+  }
+}

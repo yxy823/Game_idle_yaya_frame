@@ -1,0 +1,90 @@
+extends Node
+
+signal completed(task_id: int, result: Dictionary)
+signal state_changed(task_id: int, state: String)
+
+const Job = preload("res://tools/asset_workbench/analysis_job.gd")
+const Result = preload("res://tools/asset_workbench/analysis_result.gd")
+const JOB_DIRECTORY: String = "res://reports/asset-analyzer/jobs"
+
+var executable: String
+var worker_path: String = "res://tools/asset_analyzer/worker.py"
+var timeout_seconds: float = 30.0
+var max_concurrent: int = 2
+var _next_id: int = 0
+var _queue: Array[int] = []
+var _jobs: Dictionary[int, Job] = {}
+var _running: Array[int] = []
+var _prefix: String = "%s-%s" % [Time.get_ticks_usec(), randi()]
+
+
+func _ready() -> void:
+	if executable.is_empty():
+		var config: Variant = JSON.parse_string(
+			FileAccess.get_file_as_string("res://docs/methodology-config.json"))
+		if config is Dictionary:
+			executable = str(config.get("python_executable", ""))
+
+
+func submit(path: String, kind: String, parameters: Dictionary = {}, force: bool = false) -> int:
+	_next_id += 1
+	var job := Job.new()
+	job.request = {"path": ProjectSettings.globalize_path(path), "asset_type": kind,
+		"parameters": parameters, "force": force}
+	job.request_path = ProjectSettings.globalize_path(JOB_DIRECTORY.path_join(
+		"%s-%d.json" % [_prefix, _next_id]))
+	job.timeout_seconds = timeout_seconds
+	_jobs[_next_id] = job
+	_queue.append(_next_id)
+	state_changed.emit(_next_id, "queued")
+	return _next_id
+
+
+func cancel(task_id: int) -> void:
+	if not _jobs.has(task_id):
+		return
+	var job: Job = _jobs[task_id]
+	job.fail("cancelled", "Analysis cancelled")
+	_deliver(task_id, job.poll())
+
+
+func _process(_delta: float) -> void:
+	for task_id: int in _running.duplicate():
+		if not _jobs.has(task_id):
+			continue  # A completion listener may cancel another task in this snapshot.
+		var result: Dictionary = _jobs[task_id].poll()
+		if not result.is_empty():
+			_deliver(task_id, result)
+	while not _queue.is_empty() and _running.size() < clampi(max_concurrent, 1, 4):
+		_start_next()
+
+
+func _start_next() -> void:
+	var task_id: int = _queue.pop_front()
+	var job: Job = _jobs[task_id]
+	if executable.is_empty() or not FileAccess.file_exists(executable):
+		job.fail("process_missing", "Set an existing python_executable in docs/methodology-config.json")
+	elif not FileAccess.file_exists(worker_path):
+		job.fail("worker_missing", "Analyzer worker file is missing")
+	elif DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(JOB_DIRECTORY)) != OK:
+		job.fail("request_write", "Cannot create analysis job directory")
+	else:
+		job.start(executable, ProjectSettings.globalize_path(worker_path))
+	_running.append(task_id)
+	state_changed.emit(task_id, "running")
+
+
+func _deliver(task_id: int, data: Dictionary) -> void:
+	_queue.erase(task_id)
+	_running.erase(task_id)
+	_jobs.erase(task_id)
+	state_changed.emit(task_id, str(data.status))
+	completed.emit(task_id, data)
+
+
+func _exit_tree() -> void:
+	for job: Job in _jobs.values():
+		job.cleanup()
+	_jobs.clear()
+	_queue.clear()
+	_running.clear()
