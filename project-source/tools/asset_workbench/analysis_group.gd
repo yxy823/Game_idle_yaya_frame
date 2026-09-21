@@ -5,6 +5,7 @@ extends RefCounted
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const MAX_ASSETS: int = 512
 const MAX_RULES: int = 64
+const MAX_JSON_BYTES: int = 33554432
 
 
 static func empty() -> Dictionary:
@@ -83,7 +84,7 @@ static func read_json(path: String) -> Dictionary:
 	var file := FileAccess.open(path, FileAccess.READ)
 	if file == null:
 		return {"error": "Cannot open " + path}
-	if file.get_length() > 33554432:
+	if file.get_length() > MAX_JSON_BYTES:
 		return {"error": "JSON exceeds 32 MiB. Split the group."}
 	var parser := JSON.new()
 	if parser.parse(file.get_as_text()) != OK:
@@ -94,10 +95,13 @@ static func read_json(path: String) -> Dictionary:
 static func write_json(path: String, data: Dictionary) -> String:
 	if project_path(path).is_empty() or path.get_extension() != "json":
 		return "Choose a .json file inside this project."
+	var encoded := (JSON.stringify(data, "  ") + "\n").to_utf8_buffer()
+	if encoded.size() > MAX_JSON_BYTES:
+		return "JSON exceeds 32 MiB. Split the group; no file was written."
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
 		return "Cannot write " + path
-	file.store_string(JSON.stringify(data, "  ") + "\n")
+	file.store_buffer(encoded)
 	file.flush()
 	return "" if file.get_error() == OK else "Writing JSON failed."
 

@@ -34,7 +34,7 @@ $LASTEXITCODE
 5. 同类统计显示有效样本数、最小值、中位数和最大值。类型、单位、Schema、Analyzer/后端版本或分析参数不同时分开统计；表格第一列 tooltip 保留版本与参数。不可用、缺失和失败值不进入统计，也不作为零或规则通过。
 6. 分析后，从指标下拉框添加 `Minimum`、`Maximum` 或 `Max distance from median` 规则，阈值使用该指标原单位。中位数偏差需要至少 3 个可比测量，否则显示 unmeasured。规则立即复用现有数据检查，不改底层算法或素材；上限 64 条。
 7. `Save group + rules` 保存项目内 `.json`；`Load group (replace)` 读取并验证后替换当前分组及结果。保存示例见 `examples/asset_workbench/example-analysis-group.json`。文件中的 `parameters` 沿用后端参数协议，可统一设置静音阈值等；改动后重新分析生效。
-8. `Save result snapshot` 将成员、规则和实际统一结果写入 `reports/asset-analyzer/history/batch-*.json`；`Open historical snapshot` 重新打开，标记 HISTORICAL 与原时间，明确不能代表当前文件。重分析重新检查内容哈希；导出的资源身份使用项目相对路径。快照读入上限 32 MiB。
+8. `Save result snapshot` 将成员、规则和实际统一结果写入 `reports/asset-analyzer/history/batch-*.json`；`Open historical snapshot` 重新打开，标记 HISTORICAL 与原时间，明确不能代表当前文件。重分析重新检查内容哈希；导出的资源身份使用项目相对路径。分组与快照读写共用 32 MiB 上限，包含 UTF-8 编码和格式化开销；超限时保存被拒绝，已有文件和当前结果保留，可缩小分组后重试。
 
 分组是轻量 JSON，不另建数据库或业务资产关系。`group_version: 1` 下包含 `name`、`assets`（path/type）、`parameters`、`rules`；规则包含 `type`、`metric`、`unit`、`operator`（min/max/delta）、`value`。快照另用 `snapshot_version: 1`，保留 group、results、created_at；单项结果继续使用 Analyzer Schema v1。
 

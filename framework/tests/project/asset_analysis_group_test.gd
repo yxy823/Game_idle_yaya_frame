@@ -194,6 +194,33 @@ func test_group_json_round_trip_and_bad_json_retains_state() -> void:
 	assert_int(_batch.group.assets.size()).is_equal(4)
 
 
+func test_snapshot_utf8_size_limit_round_trips_and_rejects_before_overwrite() -> void:
+	var directory := _owned_directory("snapshot-size-")
+	var path := directory.path_join("boundary.json")
+	var absent := directory.path_join("too-large.json")
+	_files.append_array([path, absent])
+	var snapshot := _batch.snapshot()
+	snapshot.group.name = ""
+	var overhead := (JSON.stringify(snapshot, "  ") + "\n").to_utf8_buffer().size()
+	var remaining := Group.MAX_JSON_BYTES - overhead
+	snapshot.group.name = "\u4e2d".repeat(floori(remaining / 3.0)) + "a".repeat(remaining % 3)
+	assert_str(Group.snapshot_error(snapshot)).is_empty()
+	assert_str(Group.write_json(path, snapshot)).is_empty()
+	var file := FileAccess.open(path, FileAccess.READ)
+	assert_int(file.get_length()).is_equal(Group.MAX_JSON_BYTES)
+	file.close()
+	var loaded := Group.read_json(path)
+	assert_bool(loaded.has("data")).is_true()
+	assert_str(_batch.load_snapshot(loaded.data)).is_empty()
+	# Normalize JSON number types; keep huge values out of assertion diagnostics.
+	assert_bool(loaded.data == JSON.parse_string(JSON.stringify(snapshot))).is_true()
+	snapshot.group.name += "a"
+	assert_str(Group.write_json(path, snapshot)).contains("no file was written")
+	assert_bool(Group.read_json(path).data == loaded.data).is_true()
+	assert_str(Group.write_json(absent, snapshot)).contains("32 MiB")
+	assert_bool(FileAccess.file_exists(absent)).is_false()
+
+
 func test_history_is_validated_and_reanalysis_invalidates_changed_file() -> void:
 	var directory := _owned_directory("history ")
 	var path := directory.path_join("source.png")
