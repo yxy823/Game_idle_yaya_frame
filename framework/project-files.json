@@ -8,6 +8,10 @@
     "target": ".codex/agents/independent-reviewer.toml"
   },
   {
+    "source": "project-source/agents/researcher.toml",
+    "target": ".codex/agents/researcher.toml"
+  },
+  {
     "source": "project-source/methodology",
     "target": "methodology"
   },

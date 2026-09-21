@@ -19,6 +19,7 @@
 | Optional architecture map and ADRs | `methodology/10-architecture-overview.md` |
 | Professional design, resources, localization, diagnostics or multiple requirement sources | `methodology/11-specialist-workflows.md`; specialists own their documents and return to existing task delivery |
 | User-requested formal review | `methodology/12-independent-review.md`; fresh independent instance using `.codex/agents/independent-reviewer.toml` when supported and the applicable review Skills |
+| External facts or approach research | **External research** in `methodology/00-overview.md`; the coordinating agent decides whether to search directly or delegate to `.codex/agents/researcher.toml` |
 
 These entries are task routes, not a mandatory reading sequence. Follow the
 selected procedure and its applicable references; do not load every workflow.

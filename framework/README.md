@@ -20,7 +20,7 @@
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 将手册 Markdown、[页面模板](commands/blank-project-handbook-page.html)、[交互源文件](commands/blank-project-handbook-interactions.js) 与 SVG 图表内嵌为单文件 HTML |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
 | [tests/test_project_copy.py](tests/test_project_copy.py) | 复制选择、重命名、目标路径与覆盖边界回归 |
-| [tests/test_documentation_fingerprint.py](tests/test_documentation_fingerprint.py) | 用中立临时 Git 夹具核对使用 README、知识 Markdown 与验证契约的指纹边界 |
+| [tests/test_documentation_fingerprint.py](tests/test_documentation_fingerprint.py) | 用中立临时 Git 夹具核对使用 README、知识/调研 Markdown 与验证契约的指纹边界 |
 | [tests/test_manual_acceptance_files.py](tests/test_manual_acceptance_files.py) | 中立 Git 夹具验证人工清单、逐项文件结果、快照匹配与口头入口，不执行游戏或人工体验 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
@@ -54,10 +54,10 @@ advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Sk
 `categories`，不增加另一套提示词配置格式：
 
 - `Yaya 框架维护`：10 条，包含新增能力、外部框架借鉴、修复/删减、复盘、GitHub 审核、动态全流程审核、外部结果复核、实际开发反馈复盘、按需验证与新线程交接。
-- `Godot 项目开发`：39 条，覆盖创建与迁移、环境、澄清与术语、需求与规划、开发、Goal、架构调查、专业设计、本地化、资源接入、观测/性能/长测、独立审核、验证与经验沉淀。
+- `Godot 项目开发`：40 条，覆盖创建与迁移、环境、澄清与术语、外部调研、需求与规划、开发、Goal、架构调查、专业设计、本地化、资源接入、观测/性能/长测、独立审核、验证与经验沉淀。
 
 各 Project 的 `categories` 按用途组织；叶子键为提示词名称，字符串值为完整文本，
-换行保存为 JSON 的 `\n`。49 条提示词均有完整正文；有 `${1:说明}` 等
+换行保存为 JSON 的 `\n`。50 条提示词均有完整正文；有 `${1:说明}` 等
 输入占位符时，发送前填写实际信息，已有授权在会话中继续有效。按需选用某一条，
 不要求每个任务按清单逐条发送。
 需要粘贴长篇原文时，材料区位置与填写方法见 [提示词使用说明](docs/blank-project/reference/skills.md#从哪里取得操作提示词)。

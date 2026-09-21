@@ -75,6 +75,14 @@ the reference or querying the source framework.
 
 Use the current `product-author` entry for Product and meaning-preserving terminology writes. Rule maintenance needs its pre-write self-check and any missing substantive decision; a local design does not automatically become a global rule. Supporting documentation inside an authorized Feature returns to that Feature instead of opening a new planning cycle. Read the destination contracts for details rather than copying a second procedure here.
 
+For external research, use **External research** in `methodology/00-overview.md`
+and the `researcher` role's current contract. Recommend research only when useful
+to the actual question; adequate existing evidence needs no search. Distinguish
+the project-supplied role from the user-installed `anysearch` Skill, and cited
+research in `docs/research/` from confirmed requirements or local verification.
+Advice performs no delegation or report writing; an execution request belongs to
+the research route rather than this read-only Skill.
+
 For specialist work, consult `methodology/11-specialist-workflows.md`: professional
 owners write directly, source changes may affect several planned modules, and an
 old sync anchor does not establish newly included source coverage. Do not send

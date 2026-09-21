@@ -29,6 +29,7 @@ The project knowledge layer is:
     ├── features/F0XX.json               Feature detail and durable local notes
     ├── features/F0XX-design.md          optional detailed design of one Feature
     ├── knowledge/                      development experience, with topic indexes and separate entries
+    ├── research/                       optional cited external research; not project requirements
     ├── feature-list-revisions.json      governing-source synchronization history
     ├── test-registry.json               component/test traceability and safety-net index
     ├── feature-completion-evidence.json current-snapshot Feature completion evidence
@@ -62,6 +63,7 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Task type | Entry | Boundary |
 | --- | --- | --- |
 | Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
+| Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
 | Record or maintain settled project vocabulary | `project-clarifier` → `product-author` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
 | Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
@@ -121,6 +123,32 @@ with one entry per reusable approach or lesson and links to its original
 task evidence. Follow the directory README and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge).
 No matching entry, no new learning, and a read-only task are normal outcomes.
 Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
+
+## External research
+
+The coordinating agent judges whether existing evidence is sufficient, a direct
+lookup would help, or a bounded investigation merits delegation to `researcher`.
+This choice can arise during discussion, planning, implementation or diagnosis;
+no Stage, topic or Feature automatically requires research. Reuse relevant knowledge
+and previous research while checking applicability, rather than repeating searches.
+
+For delegated research, use `.codex/agents/researcher.toml` when supported and actually
+selected by the client. Pass the question, concrete target versions where relevant,
+project constraints, useful existing evidence, and whether/where to save a report.
+Keep independent work moving; decisions depending on the findings wait for them.
+The role owns research methods and report content. Direct lookups use its applicable
+source/version guidance without requiring a subagent or a full report. If the client
+cannot select the role, use the available agent with those instructions or research
+directly, accurately identifying the execution used.
+
+Prefer the available user-installed `anysearch` Skill; it is an external tool
+dependency, not copied into this project. The role permits autonomous fallback to
+other available search methods. Research reports live in `docs/research/` only when
+useful and authorized; [artifact ownership](09-artifact-lifecycle.md#external-research)
+separates them from requirements, runtime evidence and learned project experience.
+The coordinating agent checks applicability, adopts decisions within current
+authorization, finalizes any task-owned documentation/commit and continues the
+owning task. Neither a research result nor a search failure changes that authority.
 
 ## Project environment and workflow
 

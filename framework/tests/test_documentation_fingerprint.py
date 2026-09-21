@@ -1,4 +1,4 @@
-"""用中立临时 Git 夹具验证使用说明、知识文档与验证契约的指纹边界。"""
+"""用中立临时 Git 夹具验证使用说明、知识/调研文档与验证契约的指纹边界。"""
 
 import importlib.util
 import json
@@ -87,6 +87,31 @@ class DocumentationFingerprintTests(unittest.TestCase):
             with self.subTest(name=name):
                 before = self.fingerprint()
                 self.write(f"docs/knowledge/tools-pipeline/{name}", content)
+                self.assertNotEqual(before, self.fingerprint())
+
+    def test_research_prose_preserves_binding_until_adopted_as_a_requirement(self):
+        before = self.fingerprint()
+        report = self.write("docs/research/save-format.md", "Versioned sources and tentative recommendation\n")
+        self.assertEqual(before, self.fingerprint())
+        self.git("add", "docs/research")
+        report.write_text("Revised recommendation; runtime not verified\n", encoding="utf-8")
+        self.assertEqual(before, self.fingerprint())
+        destination = self.root / "docs/research/storage/save-format.md"
+        destination.parent.mkdir(parents=True)
+        report.rename(destination)
+        self.assertEqual(before, self.fingerprint())
+        self.write("docs/features/F001-design.md", "Adopted save-format requirement\n")
+        self.assertNotEqual(before, self.fingerprint())
+
+    def test_research_exemption_does_not_hide_executable_or_neighboring_content(self):
+        for name, content in (
+            ("docs/research/probe.gd", "extends Node\n"),
+            ("docs/research/fixture.json", '{"value": 1}\n'),
+            ("docs/research-other/note.md", "Outside research directory\n"),
+        ):
+            with self.subTest(name=name):
+                before = self.fingerprint()
+                self.write(name, content)
                 self.assertNotEqual(before, self.fingerprint())
 
     def test_professional_edits_invalidate_but_isolated_review_outputs_do_not(self):

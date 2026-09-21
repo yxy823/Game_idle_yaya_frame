@@ -19,6 +19,11 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS or unnecessary continuation prompt. |
 | Simple bounded next action | Short prompt; avoid copying the entire workflow. |
 | Cross-module migration with uncertain inputs | Investigation/planning prompt with evidence gaps and validation obligations. |
+| Existing evidence is sufficient for a proposed approach | Continue the appropriate route; do not add a compulsory search, report or research Stage. |
+| User wants external research before choosing an implementation | Point to External research and researcher with the question, concrete versions and project constraints; preserve investigation-only scope and identify requested report output. |
+| anysearch is absent or unavailable | The researcher may use another available search method without another approval; do not claim the external Skill was bundled or install it automatically. |
+| A search returns stable/latest or a different software version | Apply the role's concrete-version guidance; an explicit query version alone does not establish result applicability. |
+| A research report recommends a different requirement or contains a damaged code extract | Recommendation is not adopted intent; preserve the source link and relevant warning, leaving restoration to actual code use. No automatic implementation or unused-code repair. |
 | Emergency Bug | Shorter preparation is possible; required regression/affected checks, applicable human acceptance and traceable commit remain. |
 | Stable lower ID depends on a newer pending ID | Use actual DAG eligibility, not numeric order or highest-ID selection. |
 | Dirty tree contains another task | Report ownership conflict; do not stash, delete, overwrite or silently commit it. |

@@ -16,6 +16,7 @@
 | AGENTS.md | 项目规则与 Skill 路由 |
 | .agents/skills/ | 27 项开发与独立审核 Skill |
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
+| .codex/agents/researcher.toml、docs/research/ | 按需调研的角色与可提交报告；主 Agent 自主选择搜索或委派，anysearch 使用用户级安装，见[调研入口](methodology/00-overview.md#external-research) |
 | docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
 | docs/terminology.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-optional) |
 | docs/art/、docs/audio/、docs/ui/、docs/localization/、docs/resource-requirements/ | 按需创建的专业规格与资源清单，由所属 Skill 维护，见[专业工作约定](methodology/11-specialist-workflows.md) |

@@ -57,6 +57,29 @@ unknown files and unresolved evidence for a later decision. Age, directory name
 and a later successful run do not by themselves authorize removal of a failure
 record. No test runner automatically cleans old reports.
 
+## External research
+
+Retained external findings belong in `docs/research/<descriptive-topic>.md`, created
+only when useful research is saved. The `researcher` role at
+`.codex/agents/researcher.toml` owns the minimum report content and search guidance;
+the coordinating agent assigns report writing and evaluates adoption. Use existing
+Feature design/notes or Progress links for navigation, adding a simple research
+index only when actual volume warrants it. Reports are ordinary version-controlled
+Markdown; `reports/` remains the location for local execution evidence and scratch.
+
+Research is cited reference material, not approved intent or proof of local runtime
+behavior. Accepted requirements and decisions move into their existing Product,
+specialist, Feature design or ADR owner with a reference to the research. Useful
+lessons established through project work may enter `docs/knowledge/`, linking the
+research and actual evidence without copying the report. Preserve referenced
+historical conclusions when revising research; do not create a second task ledger.
+
+Pure research Markdown does not invalidate business-test evidence, just like
+knowledge prose. Requirements cannot live solely there; scripts, fixtures and other
+non-Markdown files still participate in content binding and belong in normal source
+or report locations. A research-only assignment does not authorize experiments,
+implementation, requirement changes or marking a Feature complete.
+
 ## Project knowledge
 
 `docs/knowledge/README.md` owns the knowledge organization and entry guidance.

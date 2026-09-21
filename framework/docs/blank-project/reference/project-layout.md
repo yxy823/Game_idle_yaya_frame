@@ -24,6 +24,8 @@ flowchart TD
     D -.->|引用当前结构| M[架构地图]
     M -.->|引用重要取舍| J[ADR]
     D -.->|引用决定| J
+    E[researcher] -->|按需保存| X[外部调研报告]
+    D -.->|引用调查依据| X
     F -->|任务事件提炼| K[知识条目]
     K -.->|参考与原件链接| F
     G[Progress 当前交接] -.->|定位当前任务| F
@@ -40,6 +42,7 @@ flowchart TD
 | `agent-rules/` | Core 与按领域组织的工程语义 | 创建时复制；Agent 按路由读取、按规则维护流程修订 | 有具体规则冲突时查原文 |
 | `methodology/`、`.agents/skills/` | 流程/数据契约；Agent 遵循的具体工作方法 | 创建时复制；工具与 Skill 引用相关规范 | 按本次任务查依据，不必通读 |
 | `.codex/agents/independent-reviewer.toml` | 独立审核角色，按范围加载审核方法 | 创建时复制；客户端实际加载与权限另行核实 | 不因文件存在就认定上下文和文件隔离成立 |
+| `.codex/agents/researcher.toml` | 调研角色，定义搜索方法、报告内容和保存约定 | 创建时复制；主 Agent 按需委派，anysearch 保持用户级安装 | 调研使用见[搜索与报告](../guides/project-knowledge.md#按需搜索与保存调研) |
 | `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
 | `docs/methodology-config.json` | 机器路径、文档语言、真实测试命令 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
 | `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-author 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
@@ -56,6 +59,7 @@ flowchart TD
 | `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 结构需要解释时创建；实现 Agent 更新，规划/执行/评审引用 | 从当前地图了解系统 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 达到阈值的重要取舍、理由、成本与替代关系 | 真实决策触发；Agent 保存已确认决定，相关任务引用 | 决定候选，保留已取代原因 |
 | `docs/knowledge/` | 有适用条件和证据的经验，索引只放链接；不存规则或可执行输入 | 初始仅索引；Agent 在任务中提炼、开始相关工作时查阅 | 判断经验是否适用于当前版本 |
+| `docs/research/` | 带来源、版本与限制的外部调研 Markdown，纳入 Git；不拥有需求或本地验证结论 | 有留存价值时按授权建立；researcher 写指定报告，主 Agent 核对采纳并链接原任务 | 无初始空目录；从任务链接进入，区分建议和已采用决定 |
 | `docs/progress.md`、`docs/progress/<key>.md` | 当前阶段/阻塞/待决定/下一步与索引；单份执行历史 | 当前模板随创建复制，历史按需归档；交接 Agent 写、接手者读 | 从真实停点继续，不能据下一步文字推定授权 |
 | `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 按需准备；Agent 汇总/更新，用户准备素材 | 从原任务/Progress 链接进入，不把齐备当验收 |
 
@@ -69,6 +73,7 @@ MyGodotGame/
 ├── README.md
 ├── .agents/skills/                  27 项 Skill，含需要的脚本或参考资料
 ├── .codex/agents/independent-reviewer.toml
+├── .codex/agents/researcher.toml
 ├── .editorconfig
 ├── .gitattributes
 ├── .gitignore
@@ -115,6 +120,7 @@ MyGodotGame/
 | `project-source/Project_Workflow_Config.json` | `docs/methodology-config.json` |
 | `project-source/skills/` | `.agents/skills/` |
 | `project-source/agents/independent-reviewer.toml` | `.codex/agents/independent-reviewer.toml` |
+| `project-source/agents/researcher.toml` | `.codex/agents/researcher.toml` |
 | `project-source/methodology/` | `methodology/` |
 | `project-source/agent-rules/` | `agent-rules/` |
 | `project-source/tools/` | `tools/` |

@@ -50,25 +50,30 @@ class ProjectCopyTests(unittest.TestCase):
             copy_project(self.source, output)
         self.assertEqual((output / "AGENTS.md").read_text(encoding="utf-8"), "Project rules")
 
-    def test_real_reviewer_mapping_preserves_role_without_global_config(self):
+    def test_real_agent_mappings_preserve_roles_without_global_config(self):
         repository = Path(__file__).resolve().parents[2]
         manifest = json.loads((repository / "framework/project-files.json").read_text(encoding="utf-8"))
-        entry = next(item for item in manifest
-                     if item["target"] == ".codex/agents/independent-reviewer.toml")
-        source_bytes = (repository / entry["source"]).read_bytes()
-        fixture_role = self.source / entry["source"]
-        fixture_role.parent.mkdir(parents=True)
-        fixture_role.write_bytes(source_bytes)
-        self.entries.append(entry)
+        entries = []
+        for name in ("independent-reviewer", "researcher"):
+            entry = next(item for item in manifest
+                         if item["target"] == f".codex/agents/{name}.toml")
+            source_bytes = (repository / entry["source"]).read_bytes()
+            fixture_role = self.source / entry["source"]
+            fixture_role.parent.mkdir(parents=True, exist_ok=True)
+            fixture_role.write_bytes(source_bytes)
+            self.entries.append(entry)
+            entries.append((name, entry, source_bytes))
         self.save_manifest()
         output = self.base / "project"
         copy_project(self.source, output)
-        copied = output / entry["target"]
-        self.assertEqual(copied.read_bytes(), source_bytes)
-        role = tomllib.loads(copied.read_text(encoding="utf-8"))
-        self.assertEqual(role["name"], "independent-reviewer")
-        self.assertTrue(role["description"])
-        self.assertTrue(role["developer_instructions"])
+        for name, entry, source_bytes in entries:
+            with self.subTest(role=name):
+                copied = output / entry["target"]
+                self.assertEqual(copied.read_bytes(), source_bytes)
+                role = tomllib.loads(copied.read_text(encoding="utf-8"))
+                self.assertEqual(role["name"], name)
+                self.assertTrue(role["description"])
+                self.assertTrue(role["developer_instructions"])
         self.assertFalse((output / ".codex/config.toml").exists())
 
     def test_bad_destination_fails_before_source_read(self):

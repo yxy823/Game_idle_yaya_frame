@@ -98,6 +98,7 @@ flowchart TD
 | 修 Bug、重构、工程维护、实验或在原项目替换框架 | [工程变更与实验](guides/engineering-changes.md) |
 | 设计美术/声音、指定资源、本地化、观测测量或专业审核 | [专业设计、资源与独立审核](guides/specialist-workflows.md) |
 | 维护术语、设计、架构、规则、知识，或从中断续接 | [项目文档维护与交接](guides/project-knowledge.md) |
+| 查外部资料、比较方案或保存调研结论 | [按需搜索与保存调研](guides/project-knowledge.md#按需搜索与保存调研) |
 | 查文件职责、复制来源、出现时机与模板区别 | [项目目录与文件职责](reference/project-layout.md) |
 | 找提示词正文及对应 Skill | [Skill 与提示词导航](reference/skills.md) |
 | 查配置字段、默认值和机器现值 | [配置参考](reference/configuration.md) |

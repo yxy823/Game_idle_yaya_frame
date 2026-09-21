@@ -114,7 +114,7 @@ remains the user's decision. Playtest analysis and release work are outside this
 ## Finalization and evidence
 
 Put binding professional requirements in ordinary, explicitly named source files.
-Do not put their sole body in `README.md`, `docs/knowledge/` or `reports/`, which
+Do not put their sole body in `README.md`, `docs/knowledge/`, `docs/research/` or `reports/`, which
 can be excluded from the existing completion fingerprint. Finalize applicable
 specifications and resource-list status/location updates at Stage 3's documentation
 checkpoint, before final verification.

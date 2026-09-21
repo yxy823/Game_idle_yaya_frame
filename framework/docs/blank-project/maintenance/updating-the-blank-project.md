@@ -31,6 +31,7 @@
 | Stage、验收、复审、完成或续接 | [Feature 开发流程](../guides/feature-delivery.md)、[命令与验证](../reference/commands-and-validation.md) | 执行 Skill、执行规范、完成依据实现 |
 | 专业来源归属、共享影响或资源交接 | [专业工作](../guides/specialist-workflows.md)、[需求与规划](../guides/product-and-planning.md)、[Feature 开发流程](../guides/feature-delivery.md)、[工程变更](../guides/engineering-changes.md) | [专业职责与来源规范](../../../../project-source/methodology/11-specialist-workflows.md)、对应 Skill 与规划/同步来源规则 |
 | 专业审核方法、独立上下文或角色配置 | [专业审核](../guides/specialist-workflows.md#审核保持独立)、[Skill 导航](../reference/skills.md)、[目录参考](../reference/project-layout.md) | [独立审核规范](../../../../project-source/methodology/12-independent-review.md)、审核 Skill、角色源文件及复制映射 |
+| 外部搜索、调研角色或报告归属 | [搜索与调研](../guides/project-knowledge.md#按需搜索与保存调研)、[Skill 导航](../reference/skills.md)、[目录参考](../reference/project-layout.md) | [researcher](../../../../project-source/agents/researcher.toml)、方法总览/生命周期规范、复制映射及 advisor 场景；报告格式只在角色中定义 |
 | Bug、重构、维护、实验边界 | [工程变更](../guides/engineering-changes.md) | 对应 Skill 与方法总览 |
 | 测试选择、命令参数、报告或错误语义 | [命令与验证](../reference/commands-and-validation.md)、[故障排查](../reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
 | 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](../guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |

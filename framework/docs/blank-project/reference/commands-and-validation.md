@@ -205,7 +205,7 @@ $LASTEXITCODE
 | 源码、测试、配置和其他未豁免文件 | 纳入路径与当前内容；增删、移动同样可能改变摘要 |
 | `docs/features/` 下的 JSON、Feature 索引、Registry、修订记录、methodology-config | 指定 JSON 先解析并排序对象键、统一序列化；数组顺序仍保留，只排除下表约定字段 |
 | `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 从源码指纹排除；报告仍由结果导入/人工原件契约单独核对，不可随意改写 |
-| `docs/progress/`、`docs/knowledge/` 中以 `.md` 结尾的文件 | 解释性 Markdown 排除；非 Markdown 文件仍参与 |
+| `docs/progress/`、`docs/knowledge/`、`docs/research/` 中以 `.md` 结尾的文件 | 解释性 Markdown 排除；非 Markdown 文件仍参与，要求正文不能只放在这些目录 |
 | 普通 `README.md`（文件名大小写不敏感） | 排除；但在 `.agents/`、`agent-rules/`、`methodology/`、`docs/product/`、`docs/features/` 下仍参与 |
 
 未被 Git 列出的忽略文件不会进入这次摘要；这不是把正式需求、规则或可执行输入迁入豁免位置的许可。知识只保留参考经验，普通 README 只保存用法与导航。其他 Markdown 没有通用豁免。

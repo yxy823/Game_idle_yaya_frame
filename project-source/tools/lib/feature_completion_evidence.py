@@ -78,8 +78,8 @@ def _is_fingerprint_input(relative_path: str) -> bool:
         return normalized.casefold().startswith((
             ".agents/", "agent-rules/", "methodology/", "docs/product/", "docs/features/",
         ))
-    # 经验正文只作参考；可执行文件和需求/规则仍参与验证绑定。
-    return not (normalized.startswith(("docs/progress/", "docs/knowledge/")) and normalized.endswith(".md"))
+    # 经验与调研正文只作参考；可执行文件和需求/规则仍参与验证绑定。
+    return not (normalized.startswith(("docs/progress/", "docs/knowledge/", "docs/research/")) and normalized.endswith(".md"))
 
 
 # 只排除明确的流程记账字段；嵌套 AC、verification 和测试状态仍属于验证合约。
@@ -128,7 +128,7 @@ def working_tree_fingerprint(repo_root: Path) -> str:
     """Hash tracked and non-ignored untracked content for the current code snapshot.
 
     Feature/Registry verification semantics are canonical JSON inputs. Only known
-    process fields, evidence outputs, Progress/knowledge Markdown and usage README
+    process fields, evidence outputs, Progress/knowledge/research Markdown and usage README
     files outside contract directories are exempt. A Git commit is provenance,
     not an additional invalidation of identical content.
     """

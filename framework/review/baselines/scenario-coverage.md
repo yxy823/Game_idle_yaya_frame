@@ -82,6 +82,7 @@
 | 4.24 | 诊断缺少信号、测量性能或执行长测 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test 分工，返回原任务完成 | 诊断与交付版本分开；中止只报告实际时长，不冒充 gdUnit 通过 |
 | 4.25 | 开发中临时插入 Product 或独立模块 | product-author 判断边界，稳定编号，总览维护依赖和 intended order；影响已有任务才同步 | [模块身份](../../../project-source/methodology/01-product-doc-structure.md#module-filename-rules)与[逐模块规划](../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)；新前置不重排旧编号，后续未规划模块不立即拆 Feature，无 Product Queue |
 | 4.26 | Feature 进行中插入其他工作或切换任务 | 先判当前 AC 与授权，独立工作分别分类；保存原停点再按明确顺序处理 | [执行异常](../../../project-source/methodology/03-execute-loop.md#exception-handling)与 Git 归属规则；原任务保持未完成，新写入任务仍需干净工作区，回来恢复原 Stage |
+| 4.27 | 判断是否需要外部搜索、委派调研或保留结果 | 主 Agent 自主选择直接查询或 researcher；角色定义版本查证、anysearch 回退、报告与交接 | [调研路由](../../../project-source/methodology/00-overview.md#external-research)与[角色源文件](../../../project-source/agents/researcher.toml)；无强制阶段，Skill 用户级安装，报告按需进入 docs/research，不自动采纳建议或修复未用代码 |
 
 ## 5. 验证与异常
 
@@ -115,8 +116,8 @@
 
 ## 提示词使用场景清单
 
-[prompts.json](../../prompts.json) 已维护两个 Project、49 条完整提示词：
-`Yaya 框架维护` 10 条，`Godot 项目开发` 39 条。
+[prompts.json](../../prompts.json) 已维护两个 Project、50 条完整提示词：
+`Yaya 框架维护` 10 条，`Godot 项目开发` 40 条。
 顶层数组的每项仍为 `project`、`categories`。下表保留场景、选择理由和 JSON 位置，
 提示词正文只有 JSON 一份；按需选用，不是每个任务必须发送的一组指令。
 
@@ -149,6 +150,7 @@
 | 4.9 中的玩法/技术假设 | [限定实验](../../docs/blank-project/guides/engineering-changes.md#原型与技术实验) | 已有假设、范围、预算、结论与文件去向步骤，视觉实验另有专用 SOP。 |
 | 4.11 | [需求与规划](../../docs/blank-project/guides/product-and-planning.md) | 轻量讨论只解决当前决定，不强制完整检查单或文件写入。 |
 | 4.12、4.18、6.4 | [术语、规则与知识维护](../../docs/blank-project/guides/project-knowledge.md) | 各类内容已有维护入口和归属，按需参考；不把每个增量升级为新任务。 |
+| 4.27 | [按需搜索与保存调研](../../docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) | 专题解释主 Agent 判断、角色委派、外部搜索依赖与报告去向，不增加固定 Stage 或另一套 SOP。 |
 | 4.13 | [已有实现补齐](../../docs/blank-project/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/blank-project/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
 | 4.23 | [专业职责与来源](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
 | 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/blank-project/reference/commands-and-validation.md)。 |
@@ -204,6 +206,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 | 项目创建与接入 | 2.4 | 复制并迁移旧框架项目 | 原项目与当前框架只读；在独立目标保留当前成果、转换必要格式、实际验证并交接；一次性报告保存于 `reports/maintenance/framework-migration/migration.md`，不重做功能或冒充验收 |
 | 项目创建与接入 | 3.1 | 准备 Godot 开发环境 | 首次配置完整记录且默认不提交；后续更新追加本次差异与实际检查，按项目规则及已有授权提交；复用 initialization 报告，仅配置时说明尚需的首次扫描 |
 | 需求设计 | 4.11 | 轻量讨论与澄清 | 想法、困惑与已有决定；project-clarifier 只补问影响当前判断的缺口，交付对话结论 |
+| 需求设计 | 4.27 | 调研外部资料与技术方案 | 具体问题、项目版本/约束和输出偏好；按需直接查询或委派 researcher，保存有价值的报告，调查不授权实施或实验 |
 | 需求设计 | 4.12 | 澄清并记录项目术语 | 概念、场景与已确认内容；按消除歧义所需的粒度维护定义、改名、废弃和引用，保持含义时不初始化需求或规划 |
 | 需求设计 | 4.20 | 确定或调整美术风格 | 当前体验、资产族、参考与显示条件；design-art-direction 维护共享规范，不制作样张 |
 | 需求设计 | 4.20 | 确定或调整声音风格 | 当前声音角色、参考与约束；design-audio-direction 维护方向，局部音频规格另行维护 |
@@ -281,6 +284,8 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 
 ## 本次核对结论与未知项
 
+2026-09-21 按需调研：新增 researcher 角色与复制映射，anysearch 仍由用户级安装提供；角色约定自主查询/回退、具体版本查证、按需报告及代码抽取异常提示。24 项相关维护回归通过，覆盖角色复制、文档指纹、advisor 表达与手册构建器；TOML、完整复制清单边界和提示词检查通过。离线手册构建通过：20 篇文档、32 张 Mermaid、459 个源链接。默认沙箱无法读取 npm 缓存，确认已有 11.17.0 后经审批在沙箱外离线构建；未安装依赖。此前同一会话的 anysearch 子 Agent 实测已通过域发现、搜索与正文提取；这不是新增 researcher TOML 的客户端加载验证。本次未生成实际游戏项目、启动 Godot 或验证完整委派流程，浏览器排版与交互仍由用户外部检查。
+
 2026-09-20 专业能力拆分：27 项 Skill 的格式检查通过；28 项维护回归通过，新增核对审核角色复制映射、专业 Markdown/资源清单变动和隔离报告的指纹边界。四个独立上下文场景推演覆盖旧锚点未纳入共享来源、多方法审核与缓存隔离、设计/规格/制作边界、长测中断；发现的旧锚点链接和验证义务措辞已修正。推演不是运行测试；未在真实客户端加载该自定义角色、启动 Godot 或执行完整 Feature，实际权限覆盖与隔离运行仍需在指定外部项目验证。三个制作能力只保留说明，没有可发现的生产 Skill；未新增试玩分析、发布环节或通用证据审核入口。
 
 当前表内可找到代码、Skill/规则或有意保留的人工责任；找到责任入口不等于其复杂度合理。
@@ -289,7 +294,7 @@ GitHub 审核从固定提交读取相同入口，所有结论受实际可读材�
 这些发现见设计复盘，当前不靠增加新场景、新 Gate 或新状态解决。
 自动 Hook、独立测试计划、
 静态包装/manifest、静态摘要、状态汇总、自动归档和框架升级等旧机制不再作为覆盖依据。
-提示词库已分为框架维护与项目开发两个 Project，49 条正文已写入；本文清单与 JSON
+提示词库已分为框架维护与项目开发两个 Project，50 条正文已写入；本文清单与 JSON
 逐项对应。原型实验入口复用现有记录，执行规范的 Stage 4/6 包含试玩复现与
 需求符合性审查；没有新增运行工具、阶段或证据格式。本次方法调整只做静态核对，
 提示词实际导入、Agent 执行效果及完整 Feature 流程未运行验证。
