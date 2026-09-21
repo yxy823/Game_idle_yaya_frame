@@ -6,6 +6,7 @@ const Service = preload("res://tools/asset_workbench/analysis_service.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
 const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 
 var service: Service = Service.new()
 var results: Array[Dictionary] = [{}, {}]
@@ -22,6 +23,7 @@ var _chart: Chart = Chart.new()
 var _threshold: SpinBox = SpinBox.new()
 var _edge_rule: SpinBox = SpinBox.new()
 var _background: ColorRect = ColorRect.new()
+var _comparison: Label = Label.new()
 
 
 func _ready() -> void:
@@ -86,10 +88,13 @@ func _build() -> void:
 		_button(actions, "Analyze selection as " + ["A", "B"][index], _analyze.bind(index))
 		_button(actions, "Reanalyze " + ["A", "B"][index], _reanalyze.bind(index))
 	_button(actions, "Cancel tasks", _cancel)
+	_button(actions, "Reanalyze both with current settings", _reanalyze_both)
 	_button(actions, "Close analysis", _close)
 	_build_options(root)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_status)
+	_comparison.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	root.add_child(_comparison)
 	_build_results(root)
 
 
@@ -104,6 +109,7 @@ func _build_options(root: Container) -> void:
 	_threshold.min_value = -120
 	_threshold.max_value = 0
 	_threshold.value = -50
+	_threshold.value_changed.connect(func(_value: float) -> void: _refresh())
 	_edge_rule.min_value = 0
 	_edge_rule.max_value = 10
 	_edge_rule.step = 0.01
@@ -138,8 +144,16 @@ func _analyze(index: int) -> void:
 	if _selected == null:
 		_status.text = "Select an asset in the existing browser first."
 		return
-	_paths[index] = _selected.resource_path
-	_kinds[index] = "audio" if _selected is AudioStream else "image"
+	var source := Source.describe(_selected)
+	service.cancel(_tasks[index])
+	_tasks[index] = 0
+	if not source.issue.is_empty():
+		_paths[index] = ""
+		results[index] = Result.failure(source.path, source.type, source.issue.code, source.issue.message)
+		_refresh()
+		return
+	_paths[index] = source.path
+	_kinds[index] = source.type
 	var other := 1 - index
 	if _kinds[other] != "" and _kinds[other] != _kinds[index]:
 		service.cancel(_tasks[other])
@@ -152,6 +166,25 @@ func _analyze(index: int) -> void:
 func _reanalyze(index: int) -> void:
 	if not _paths[index].is_empty():
 		_submit(index, true)
+
+
+func _reanalyze_both() -> void:
+	for index: int in 2:
+		_reanalyze(index)
+
+
+func _stale(index: int) -> bool:
+	var data: Dictionary = results[index]
+	return data.get("status") in ["success", "partial"] and data.get(
+		"parameters", {}).get("silence_dbfs") != _threshold.value
+
+
+func _comparison_reason() -> String:
+	var reason := Result.comparison_reason(results[0], results[1])
+	for index: int in 2:
+		if _stale(index) and results[index].status in ["success", "partial"]:
+			reason += " %s STALE: settings changed." % ["A", "B"][index]
+	return reason.strip_edges()
 
 
 func _submit(index: int, force: bool) -> void:
@@ -177,7 +210,19 @@ func _state_changed(task_id: int, state: String) -> void:
 		_status.text = "Task %d: %s. Preview and playback remain available." % [task_id, state]
 
 
+func _update_comparison_notice() -> void:
+	var reason := _comparison_reason()
+	_comparison.text = "Select two results to compare."
+	if not results[0].is_empty() and not results[1].is_empty():
+		_comparison.text = "A/B conditions compatible."
+	if not reason.is_empty():
+		_comparison.text = reason + " Reanalyze both before comparing."
+	for index: int in 2:
+		_table.set_column_title(index + 1, ["A", "B"][index] + (" [STALE]" if _stale(index) else ""))
+
+
 func _refresh() -> void:
+	_update_comparison_notice()
 	_table.clear()
 	var root := _table.create_item()
 	for row: Dictionary in Result.compare_rows(results[0], results[1]):
@@ -215,7 +260,7 @@ func _result_details(index: int) -> String:
 func _show_series(index: int) -> void:
 	var key := _series.get_item_text(index) if index < _series.item_count else ""
 	_chart.display(results[0].get("series", {}).get(key, {}),
-		results[1].get("series", {}).get(key, {}))
+		results[1].get("series", {}).get(key, {}), _comparison_reason())
 
 
 func _cancel() -> void:

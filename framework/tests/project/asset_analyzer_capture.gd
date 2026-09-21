@@ -24,6 +24,9 @@ func _capture() -> void:
 	await _compare(panel, "example-confirmation-a.ogg", "example-confirmation-b.ogg")
 	await _save(panel, "audio-analysis.png")
 	_save_json(panel, "audio-results.json")
+	panel.get("_threshold").value = -30
+	await _save(panel, "audio-stale-settings.png")
+	panel.get("_threshold").value = -50
 	await _compare(panel, "example-trophy.png", "example-star.png")
 	await _save(panel, "image-analysis.png")
 	_save_json(panel, "image-results.json")

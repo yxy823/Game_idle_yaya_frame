@@ -1,6 +1,7 @@
 """Opt-in real pinned backends in the designated project, with owned media fixtures."""
 
 import json
+import copy
 import math
 import os
 import shutil
@@ -174,8 +175,9 @@ class AnalyzerTests(unittest.TestCase):
             worker.backends(self.root / "missing", "audio")
         isolated = self.root / "tools/asset_analyzer"
         isolated.mkdir(parents=True)
-        for name in ("worker.py", "protocol.py", "requirements.txt"):
-            shutil.copyfile(TOOLS / name, isolated / name)
+        for source in TOOLS.iterdir():
+            if source.suffix in {".py", ".json", ".txt"}:
+                shutil.copyfile(source, isolated / source.name)
         self.request.write_text(json.dumps({"path": str(self.audio()), "asset_type": "audio"}),
                                 encoding="utf-8")
         process = subprocess.run([sys.executable, "-B", str(isolated / "worker.py"),
@@ -189,7 +191,7 @@ class AnalyzerTests(unittest.TestCase):
         temporary = self.root / "cache.tmp"
         first = worker.analyze(request, PROJECT_ROOT, temporary)
         self.created_cache.append(first["cache"]["key"])
-        with patch.object(worker, "ANALYZER_VERSION", 2):
+        with patch.object(worker, "ANALYZER_VERSION", worker.ANALYZER_VERSION + 1):
             changed = worker.analyze(request, PROJECT_ROOT, temporary)
         self.created_cache.append(changed["cache"]["key"])
         self.assertNotEqual(first["cache"]["key"], changed["cache"]["key"])
@@ -210,6 +212,87 @@ class AnalyzerTests(unittest.TestCase):
         self.assertEqual(result["status"], "partial")
         self.assertEqual(result["metrics"]["integrated_loudness"]["status"], "failed")
         self.assertEqual(result["metrics"]["sample_peak"]["status"], "available")
+
+    def test_semantically_corrupt_cache_is_recomputed(self):
+        path = self.image()
+        first = self.run_worker(path, "image")
+        cache = PROJECT_ROOT / "reports/asset-analyzer/cache" / (first["cache"]["key"] + ".json")
+        mutations = [
+            lambda data: data["analyzer"].pop("id"),
+            lambda data: data["series"]["alpha_histogram"].pop("x_unit"),
+            lambda data: data["cache"].update(hit="yes"),
+            lambda data: data["warnings"][0].pop("code"),
+            lambda data: data["analyzer"].update(version=99),
+            lambda data: data["parameters"].update(silence_dbfs=-10),
+            lambda data: data["asset"].update(path="wrong.png"),
+            lambda data: data["series"]["alpha_histogram"]["y"].__setitem__(0, float("nan")),
+            lambda data: data["metrics"]["width"].update(value=10**400),
+        ]
+        for mutate in mutations:
+            broken = copy.deepcopy(first)
+            mutate(broken)
+            cache.write_text(json.dumps(broken), encoding="utf-8")
+            rebuilt = self.run_worker(path, "image")
+            self.assertEqual(rebuilt["status"], "success")
+            self.assertFalse(rebuilt["cache"]["hit"])
+
+    def test_source_preflight_distinguishes_legal_unsupported_and_corrupt(self):
+        svg = self.root / "legal.svg"
+        svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><rect width="10" height="10"/></svg>')
+        self.assertEqual(self.run_worker(svg, "image")["errors"][0]["code"], "unsupported_format")
+        self.assertEqual(self.run_worker(self.root, "image")["errors"][0]["code"], "source_not_file")
+        self.assertEqual(self.run_worker(self.root / "missing.png", "image")["errors"][0]["code"], "source_not_file")
+        png = self.root / "corrupt.png"
+        png.write_bytes(b"not an image")
+        self.assertEqual(self.run_worker(png, "image")["errors"][0]["code"], "corrupt_file")
+
+    def test_loudness_budget_preserves_streaming_basic_metrics(self):
+        data = self.run_worker(self.audio(), "audio", parameters={"max_loudness_samples": 100})
+        self.assertEqual(data["status"], "success")
+        self.assertEqual(data["metrics"]["integrated_loudness"]["status"], "unsupported")
+        self.assertEqual(data["metrics"]["rms"]["status"], "available")
+        self.assertEqual(data["execution"]["memory_limit_mib"], 384)
+
+    def test_large_palette_is_explicitly_sampled(self):
+        path = self.root / "larger.png"
+        Image.new("RGBA", (1024, 512), (20, 40, 80, 255)).save(path)
+        data = self.run_worker(path, "image")
+        self.assertEqual(data["status"], "success")
+        self.assertEqual(data["metrics"]["color_count"]["status"], "unsupported")
+        self.assertLessEqual(data["metrics"]["palette_sample_pixels"]["value"], 262144)
+        self.assertEqual(data["metrics"]["dominant_color"]["value"], [20, 40, 80])
+        self.assertAlmostEqual(data["metrics"]["rgb_mean"]["value"][0], 20)
+
+    def test_shared_protocol_mutations_match_schema_and_python(self):
+        from jsonschema import validators, ValidationError
+        cases = json.loads(Path(__file__).with_name("analyzer_protocol_cases.json").read_text(encoding="utf-8"))
+        def equal_lengths(validator, fields, instance, schema):
+            if isinstance(instance, dict) and all(isinstance(instance.get(k), list) for k in fields):
+                if len(instance[fields[0]]) != len(instance[fields[1]]):
+                    yield ValidationError("Paired arrays differ")
+        validator_type = validators.extend(jsonschema.Draft202012Validator, {"x-equal-lengths": equal_lengths})
+        validator = validator_type(json.loads((TOOLS / "result.schema.json").read_text(encoding="utf-8")))
+        for case in cases["cases"]:
+            data = copy.deepcopy(cases["base"])
+            parent = data
+            for key in case["path"][:-1]:
+                parent = parent[key]
+            if case.get("remove"):
+                del parent[case["path"][-1]]
+            else:
+                parent[case["path"][-1]] = case["value"]
+            with self.subTest(case=case["name"]):
+                self.assertEqual(validator.is_valid(data), case["valid"])
+                try:
+                    validate(data)
+                    accepted = True
+                except ValueError:
+                    accepted = False
+                self.assertEqual(accepted, case["valid"])
+        data = copy.deepcopy(cases["base"])
+        data["metrics"]["example"]["value"] = {"nested": [float("nan")]}
+        with self.assertRaises(ValueError):
+            validate(data)
 
     def test_parent_exit_terminates_worker_and_cleans_request(self):
         self.request.write_text(json.dumps({"path": str(self.audio()), "asset_type": "audio"}),

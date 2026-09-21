@@ -20,7 +20,8 @@ $LASTEXITCODE
 2. 非模态分析窗口中点 `Analyze selection as A`。返回同一个浏览器选另一个资源，再打开分析窗口并点 B。
 3. 表格并排显示同类型测量与不可用原因；下拉选择数据序列。图中蓝色 A、橙色 B，共用坐标及单位；滚轮缩放 X、右键复位，悬停显示 X 坐标。长值有完整 tooltip，整个窗口和指标表可滚动。
 4. 换成不同类型资源会清除另一类型的比较位。分析 A/B 与事件试调 A/B 分开，不会误改游戏配置。
-5. `Reanalyze A/B` 以当前静音阈值绕过缓存。`Cancel tasks` 或关闭分析窗口会取消其任务；返回主工作台仍可预览、试听、保存。
+5. 改静音阈值后，旧结果在表头标记 STALE；Schema、资源类型、Analyzer/后端版本或参数不一致时，在表格和图表上方说明原因并停止 B 叠加。`Reanalyze both with current settings` 用当前参数重算两侧；单位或图表种类不同也会明确提示。原值保留供检查，不将不兼容数据当作普通比较。
+6. `Reanalyze A/B` 以当前静音阈值绕过缓存。`Cancel tasks` 或关闭分析窗口会取消其任务；返回主工作台仍可预览、试听、保存。
 
 分析结果中的 `cache.hit` 和界面 HIT/MISS 表示是否复用。缓存仍需要后台进程启动、版本检查和文件哈希，不等于零耗时。
 
@@ -49,10 +50,12 @@ $LASTEXITCODE
 
 | 位置 | 责任 |
 | --- | --- |
-| `../asset_workbench/analysis_service.gd`、`analysis_job.gd` | 队列，默认同时 2 个进程（可设 1–4）、30 秒超时、取消、非阻塞管道、退出码/输出上限、进程与临时文件清理 |
+| `../asset_workbench/analysis_service.gd`、`analysis_job.gd` | 队列受数量和 512 MiB 预留预算共同约束，默认最多 2 个进程（数量可设 1–4）；30 秒超时、取消、非阻塞管道、退出码/输出上限、进程与临时文件清理 |
 | `worker.py` | 一次请求一个独立进程，分派适配器、版本核对、SHA-256 缓存；只读等待 Windows 父进程句柄，父进程退出时终止，不创建子进程 |
 | `audio_adapter.py`、`image_adapter.py` | 唯一依赖具体分析库的算法适配器 |
-| `protocol.py`、`result.schema.json` | Schema v1、测量状态、公共数据契约；Python 与 Godot 两端进行边界检查 |
+| `result.schema.json`、`schema_validation.py`、`../asset_workbench/analysis_schema.gd` | Schema v1 为唯一字段契约，两端读取同一文件；共同变异夹具检验必需字段、类型、状态、单位、诊断与序列长度 |
+| `capabilities.json`、`source_probe.py`、`../asset_workbench/analysis_source.gd` | 源格式、参数/上限和预算共用配置；两端预检普通源文件 |
+| `memory_budget.py`、`audio_statistics.py` | Windows worker 提交内存硬限制/实测高水位、流式电平与静音累计；不限制 Godot 进程 |
 | `../asset_workbench/analysis_result.gd` | 结果验证、并排比较格式、独立的项目规则检查 |
 | `../asset_workbench/analysis_panel.gd`、`analysis_chart.gd` | 共用浏览器选择的分析窗口与通用数字序列图；不识别第三方输出 |
 | `../asset_workbench/analysis_batch.gd`、`analysis_group_scan.gd` | 共用队列的批量任务与有界目录发现；只管理自己的任务 |
@@ -65,7 +68,9 @@ $LASTEXITCODE
 
 单值条目：`{"status":"available","value":-6.02,"unit":"dBFS","reason":""}`。
 不可用条目：`{"status":"not_applicable","value":null,"unit":"LUFS","reason":"Requires at least 0.4 seconds"}`。
-序列条目：`{"status":"available","kind":"line","x":[0.0,0.1],"y":[0.0,0.5],"x_unit":"s","y_unit":"linear full scale"}`。`histogram` 同样使用数值 x/y，当前图表绘制分布折线。
+序列条目：`{"status":"available","kind":"line","x":[0.0,0.1],"y":[0.0,0.5],"x_unit":"s","y_unit":"linear full scale"}`。`histogram` 使用数值 x/y 绘制柱形分布，x 为分箱中心；line 绘制折线。图表轮缩放保持鼠标下的数据点，接近数据边界时限制可视区。
+
+运行时校验器仅解释当前 Schema 使用的词汇，并非通用 JSON Schema 引擎；新增校验词汇必须补充两端支持和共同夹具。`x-equal-lengths` 约束 x/y 等长，递归拒绝 NaN/Infinity；标准 JSON 本身不允许非有限数。分析器版本为 2；旧缓存因算法版本变化自然失效。
 
 任务终态为 success / partial / failed / cancelled；queued / running 由 Godot 信号提供。每个指标区分 available、not_applicable、unsupported、failed，未返回的字段显示 missing。unsupported 不等于任务执行失败；个别本应可算的指标失败使整体 partial，其余结果保留。错误是 code/message，不使用终端文本作为 UI 数据接口。
 
@@ -78,12 +83,18 @@ $LASTEXITCODE
 | 响度 | pyloudnorm BS.1770-4 集成响度：1/2 声道、至少 0.4 秒；LRA 至少 3 秒，采用后端 TECH 3342 实现及其 1.5 秒尾部补零；更多声道暂不支持权重映射 |
 | 静音 | 所有声道的样本幅度均低于阈值，连续不少于最短时长，返回起止/持续/首尾静音；不是语音活动检测 |
 | 图像 | 第一帧、源像素尺寸/模式/Alpha，透明/不透明/半透明比例、Alpha 摘要与分布 |
-| 颜色 | 排除 alpha=0，其余像素等权，精确可见 RGB 色数、最高频代表色、RGB 均值/直方图、HSV 饱和度及分布；不是感知聚类 |
+| 颜色 | 排除 alpha=0，其余像素等权；RGB 均值/直方图、HSV 饱和度及分布按全图分块累计。最多 262,144 像素的图像提供精确色数和频率；更大图的代表色/调色板按固定步长采样，并报告样本数、单位与警告，精确色数为 unsupported |
 | 亮度与对比 | 编码 sRGB 通道加权 luma 与标准差/直方图，明确为 proxy；不进行 ICC、EXIF 旋转、线性光校准、Godot 导入/Shader/显示变换 |
 
 零样本电平是负无穷，有限 JSON 中以 not_applicable + 原因表示；被响度门限排除的信号同样不伪造 LUFS/LRA。真峰值、pitch、tempo 明确 unsupported；节拍、基频、调性、音阶、音色、轮廓/光照/审美分析均未实现。
 
-算法参数在 `worker.DEFAULTS` / `LIMITS` 定义：silence_dbfs=-50、silence_min_seconds=0.05、series_points=256、palette_size=8；解码上限 30,000,000 个声道样本，图像上限 16,000,000 像素。大资源会明确失败；这不是全量长音乐离线分析器。超时可由 `AnalysisService.timeout_seconds` 调整，不能以阻塞主线程替代。
+算法参数集中在 `capabilities.json`：silence_dbfs=-50、silence_min_seconds=0.05、series_points=256、palette_size=8。音频上限 8,000,000 个声道样本，图像上限 8,000,000 像素；可按任务调低，不能超过硬上限。
+
+音频电平/静音流式累计，再解码一遍生成定长包络；最多保留 4,096 段静音区间，超出后区间指标为 unsupported，首尾静音仍保留。响度单独限 2,000,000 个声道样本，超出时响度为 unsupported，其余基础指标继续返回。图像每块 256×256，调色板最多采样 262,144 个源像素，不保留全图浮点 RGB 副本。
+
+每个图像进程预留/硬限 256 MiB，每个音频进程 384 MiB，默认队列总预留 512 MiB。因此可以同时运行两个图像任务，音频任务串行；数量设置不会绕过预算。Windows Job 限制的是进程提交内存，不是所有共享页的工作集总和。`execution` 记录实测 peak_commit_bytes/peak_working_set_bytes；分配超限或原生后端异常退出走结构化失败。预算设置失败则不执行分析。开发期临时目录/解释器均使用 Windows 原生路径。
+
+支持的源扩展名由同一能力文件声明：PNG/JPEG/WebP/BMP/TGA/TIFF、WAV/OGG/MP3/FLAC。内嵌资源、AtlasTexture、.tres/.res 只显示“仅支持源文件分析”，不偷偷导出替代素材。错误分别为 source_not_file、unsupported_format（含后端缺少解码能力）、corrupt_file（后端识别出损坏输入）、decode_failed（其他解码异常）；不能仅凭扩展名保证具体编码可解码。
 
 `Allowed edge silence` 是 Godot 侧独立项目规则，初始 0.05 秒；不改变测量、不参与源文件改写。静音阈值改变后需重新提交/重分析，规则阈值改变则直接用现有结果检查。没有无解释综合分数。
 
@@ -92,7 +103,7 @@ $LASTEXITCODE
 `reports/asset-analyzer/` 已被项目忽略，Godot 不导入其中 wheel 和缓存：
 
 - `runtime/`：可重新安装的本项目依赖，不随框架复制或正式游戏导出。
-- `cache/<key>.json`：可检查、可删除；键包含规范路径、源内容 SHA-256、参数、Analyzer 类型/版本、全部后端版本、Schema 版本。成功结果原子写入；失败/部分失败不缓存，损坏缓存重新分析。
+- `cache/<key>.json`：可检查、可删除；键包含规范路径、源内容 SHA-256、参数、Analyzer 类型/版本、全部后端版本、Schema 版本。读取先按共同 Schema 校验，再比对 asset/analyzer/parameters 与本次完整 identity。缺字段、错类型、语义不一致或超过 2 MiB 的缓存忽略并重算，成功后原子替换；失败/部分失败不缓存。
 - `jobs/`：请求与写缓存的短期文件。完成、取消、超时、工作台退出都清理自有文件；worker 检测父进程退出，避免引擎异常退出后遗留计算进程。
 - `history/`：用户显式保存的批量分析快照；不自动淘汰，不代表当前资源仍保持相同内容。需要长期版本管理时由项目选择归档位置。
 

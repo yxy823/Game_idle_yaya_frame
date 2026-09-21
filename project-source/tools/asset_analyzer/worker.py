@@ -15,13 +15,10 @@ import sys
 import threading
 
 from protocol import ANALYZER_VERSION, SCHEMA_VERSION, failure, result, validate
+from source_probe import CAPABILITIES, AnalysisError, check_source
 
-DEFAULTS = {"silence_dbfs": -50.0, "silence_min_seconds": 0.05,
-            "series_points": 256, "palette_size": 8,
-            "max_audio_samples": 30_000_000, "max_image_pixels": 16_000_000}
-LIMITS = {"silence_dbfs": (-120, 0), "silence_min_seconds": (0.001, 10),
-          "series_points": (16, 512), "palette_size": (1, 32),
-          "max_audio_samples": (1, 30_000_000), "max_image_pixels": (1, 16_000_000)}
+DEFAULTS = CAPABILITIES["defaults"]
+LIMITS = CAPABILITIES["limits"]
 CACHE_WRITE_LOCK = threading.Lock()
 
 
@@ -66,8 +63,7 @@ def digest(path):
 def analyze(request, project, temporary):
     path = Path(request["path"]).resolve()
     kind = request["asset_type"]
-    if kind not in {"audio", "image"}:
-        return failure(path, kind, "unsupported_type", "Supported types: audio, image")
+    check_source(path, kind)
     params = parameters(request.get("parameters", {}))
     backend = backends(project / "reports/asset-analyzer/runtime", kind)
     content = digest(path)
@@ -86,11 +82,15 @@ def analyze(request, project, temporary):
     try:
         metrics, series, notes = run(path, params)
     except Exception as error:
-        data = failure(path, kind, "analysis_failed", str(error))
+        code = error.code if isinstance(error, AnalysisError) else "analysis_failed"
+        if isinstance(error, MemoryError):
+            code = "memory_limit"
+        data = failure(path, kind, code, str(error) or "Worker memory budget exceeded")
         data["analyzer"]["backend"] = backend
         data["parameters"] = params
         return data
     data = result(path, kind, backend)
+    data["analyzer"]["version"] = ANALYZER_VERSION
     data.update(metrics=metrics, series=series, warnings=notes, parameters=params)
     data["asset"]["sha256"] = content
     data["cache"] = {"hit": False, "key": key, "identity": identity}
@@ -111,8 +111,17 @@ def analyze(request, project, temporary):
 
 def read_cache(path, key, identity):
     try:
+        if path.stat().st_size > 2097152:
+            return None
         data = validate(json.loads(path.read_text(encoding="utf-8")))
-        if data["cache"].get("key") == key and data["cache"].get("identity") == identity:
+        expected = result(identity["path"], identity["analyzer"], identity["backend"])
+        expected["analyzer"]["version"] = identity["version"]
+        valid_identity = (
+            data["status"] == "success" and data["schema_version"] == identity["schema"]
+            and data["asset"] == expected["asset"] | {"sha256": identity["sha256"]}
+            and data["analyzer"] == expected["analyzer"]
+            and data.get("parameters") == identity["parameters"])
+        if valid_identity and data["cache"]["key"] == key and data["cache"].get("identity") == identity:
             data["cache"]["hit"] = True
             return data
     except (OSError, ValueError, TypeError, KeyError, AttributeError):
@@ -127,13 +136,29 @@ def main():
     args = parser.parse_args()
     request = {}
     temporary = args.request.with_suffix(".cache.tmp")
+    memory_mib = 0
     try:
         request = json.loads(args.request.read_text(encoding="utf-8"))
         if args.parent_pid:
             threading.Thread(target=watch_parent,
                              args=(args.parent_pid, args.request, temporary), daemon=True).start()
+        check_source(Path(request["path"]), request["asset_type"])
+        from memory_budget import limit_worker, process_memory
+        memory_mib = CAPABILITIES["sources"][request["asset_type"]]["memory_mib"]
+        try:
+            _memory_handle = limit_worker(memory_mib)
+        except OSError as error:
+            raise AnalysisError("memory_budget_setup", str(error)) from error
+        os.environ["OPENBLAS_NUM_THREADS"] = "1"
+        os.environ["OMP_NUM_THREADS"] = "1"
         project = Path(__file__).resolve().parents[2]
         data = analyze(request, project, temporary)
+        data["execution"] = {"memory_limit_mib": memory_mib} | process_memory()
+    except AnalysisError as error:
+        data = failure(request.get("path", ""), request.get("asset_type", "unknown"), error.code, str(error))
+    except MemoryError:
+        data = failure(request.get("path", ""), request.get("asset_type", "unknown"),
+                       "memory_limit", f"Worker exceeded {memory_mib} MiB commit-memory budget")
     except ImportError as error:
         data = failure(request.get("path", ""), request.get("asset_type", "unknown"), "dependency_missing", str(error))
     except Exception as error:  # Process boundary: one bad asset must not terminate the workbench.

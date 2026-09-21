@@ -3,6 +3,7 @@ extends RefCounted
 ## Only this normalized contract crosses the process/UI boundary.
 
 const STATES: Array[String] = ["available", "not_applicable", "unsupported", "failed"]
+const Schema = preload("res://tools/asset_workbench/analysis_schema.gd")
 
 
 static func failure(path: String, kind: String, code: String, message: String) -> Dictionary:
@@ -17,82 +18,27 @@ static func failure(path: String, kind: String, code: String, message: String) -
 
 
 static func is_valid(value: Variant) -> bool:
-	if not value is Dictionary or value.get("schema_version") != 1:
-		return false
-	if value.get("status") not in ["success", "partial", "failed", "cancelled"]:
-		return false
-	for key: String in ["asset", "analyzer", "metrics", "series", "cache"]:
-		if not value.get(key) is Dictionary:
-			return false
-	if not _metadata_valid(value):
-		return false
-	for key: String in ["warnings", "errors"]:
-		if not _issues_valid(value.get(key)):
-			return false
-	return value.metrics.values().all(_metric_valid) and value.series.values().all(_series_valid)
+	return Schema.is_valid(value)
 
 
-static func _metadata_valid(value: Dictionary) -> bool:
-	if not value.asset.get("path") is String or not value.asset.get("type") is String:
-		return false
-	if not value.analyzer.get("backend") is Dictionary or not value.cache.get("hit") is bool:
-		return false
-	if not value.analyzer.get("id") is String:
-		return false
-	if not value.cache.get("key") is String:
-		return false
-	return _analyzer_valid(value.analyzer)
+static func comparison_identity(data: Dictionary) -> Array:
+	var analyzer: Dictionary = data.get("analyzer", {})
+	return [data.get("schema_version"), data.get("asset", {}).get("type"),
+		analyzer.get("id"), analyzer.get("version"), analyzer.get("backend"),
+		data.get("parameters", {})]
 
 
-static func _analyzer_valid(analyzer: Dictionary) -> bool:
-	var version: Variant = analyzer.get("version")
-	if not (version is float or version is int):
-		return false
-	if not is_finite(float(version)) or float(version) != floorf(float(version)):
-		return false
-	return analyzer.get("supported_types") is Array and analyzer.get("supported_metrics") is Array
-
-
-static func _issues_valid(entries: Variant) -> bool:
-	if not entries is Array:
-		return false
-	for entry: Variant in entries:
-		if not entry is Dictionary or not entry.get("message") is String:
-			return false
-	return true
-
-
-static func _metric_valid(entry: Variant) -> bool:
-	if not entry is Dictionary or entry.get("status") not in STATES:
-		return false
-	if not entry.get("unit") is String or not entry.get("reason") is String:
-		return false
-	if entry.status != "available":
-		return entry.get("value") == null
-	if entry.get("value") is float:
-		return is_finite(entry.value)
-	return entry.get("value") != null
-
-
-static func _series_valid(entry: Variant) -> bool:
-	if not entry is Dictionary or entry.get("kind") not in ["line", "histogram"]:
-		return false
-	if entry.get("status") != "available":
-		return false
-	if not entry.get("x") is Array or not entry.get("y") is Array:
-		return false
-	if entry.x.size() != entry.y.size() or entry.x.size() > 2048:
-		return false
-	if not entry.get("x_unit") is String or not entry.get("y_unit") is String:
-		return false
-	return _numbers_valid(entry.x + entry.y)
-
-
-static func _numbers_valid(numbers: Array) -> bool:
-	for number: Variant in numbers:
-		if not (number is float or number is int) or not is_finite(float(number)):
-			return false
-	return true
+static func comparison_reason(first: Dictionary, second: Dictionary) -> String:
+	if first.is_empty() or second.is_empty():
+		return ""
+	var labels := ["schema", "asset type", "analyzer", "analyzer version", "backend versions", "parameters"]
+	var left := comparison_identity(first)
+	var right := comparison_identity(second)
+	var differences: Array[String] = []
+	for index: int in labels.size():
+		if left[index] != right[index]:
+			differences.append(labels[index])
+	return "" if differences.is_empty() else "A/B incompatible: " + ", ".join(differences)
 
 
 static func metric_text(entry: Dictionary) -> String:

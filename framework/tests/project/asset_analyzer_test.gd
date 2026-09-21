@@ -3,6 +3,7 @@ extends GdUnitTestSuite
 const Service = preload("res://tools/asset_workbench/analysis_service.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const AUDIO: String = "res://examples/asset_workbench/assets/example-confirmation-a.ogg"
 const IMAGE: String = "res://examples/asset_workbench/assets/example-star.png"
@@ -200,3 +201,115 @@ func _wait_for(task_id: int) -> void:
 	while not _results.has(task_id) and Time.get_ticks_msec() < deadline:
 		await get_tree().process_frame
 	assert_bool(_results.has(task_id)).is_true()
+
+
+func test_shared_schema_corpus_matches_godot_and_rejects_nonfinite() -> void:
+	var corpus: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(
+		"res://tests/features/asset_analyzer/analyzer_protocol_cases.json"))
+	assert_bool(Result.is_valid(corpus.base)).is_true()
+	for case: Dictionary in corpus.cases:
+		var data: Dictionary = corpus.base.duplicate(true)
+		var target: Variant = data
+		for index: int in range(case.path.size() - 1):
+			var key: Variant = int(case.path[index]) if target is Array else case.path[index]
+			target = target[key]
+		var last: Variant = case.path.back()
+		if case.get("remove", false):
+			target.erase(last)
+		else:
+			target[last] = case.value
+		assert_bool(Result.is_valid(data)).override_failure_message(case.name).is_equal(case.valid)
+	corpus.base.series.example.y[0] = NAN
+	assert_bool(Result.is_valid(corpus.base)).is_false()
+
+
+func test_comparison_fingerprint_checks_parameters_versions_and_backend() -> void:
+	var task := _service.submit(AUDIO, "audio")
+	await _wait_for(task)
+	var first: Dictionary = _results[task]
+	for field: String in ["parameters", "analyzer", "backend", "schema", "type"]:
+		var second: Dictionary = first.duplicate(true)
+		match field:
+			"parameters": second.parameters.silence_dbfs = -30
+			"analyzer": second.analyzer.version += 1
+			"backend": second.analyzer.backend["av"] = "different"
+			"schema": second.schema_version += 1
+			"type": second.asset.type = "image"
+		var reason := Result.comparison_reason(first, second)
+		assert_str(reason).is_not_empty()
+		var chart: Chart = auto_free(Chart.new())
+		chart.display(first.series.peak_envelope, second.series.peak_envelope, reason)
+		assert_bool(chart.second.is_empty()).is_true()
+		assert_str(chart.comparison_notice).contains("B overlay hidden")
+
+
+func test_panel_marks_settings_stale_then_reanalyzes_both() -> void:
+	var workbench: Control = auto_free(Workbench.instantiate())
+	add_child(workbench)
+	var panel: Window = workbench.get("_analysis")
+	var task := _service.submit(AUDIO, "audio")
+	await _wait_for(task)
+	panel.call("open_results", _results[task], _results[task])
+	panel.get("_threshold").value = -30
+	assert_bool(panel.call("_stale", 0)).is_true()
+	assert_str(panel.get("_comparison").text).contains("STALE")
+	assert_bool(panel.get("_chart").second.is_empty()).is_true()
+	panel.call("_reanalyze_both")
+	var deadline := Time.get_ticks_msec() + 15000
+	while panel.get("_tasks") != [0, 0] and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(panel.get("_tasks") == [0, 0]).is_true()
+	assert_bool(panel.call("_stale", 0)).is_false()
+	assert_str(Result.comparison_reason(panel.results[0], panel.results[1])).is_empty()
+	assert_float(panel.results[1].parameters.silence_dbfs).is_equal(-30.0)
+	panel.call("_close")
+
+
+func test_source_preflight_rejects_indirect_and_unsupported_resources() -> void:
+	var atlas := AtlasTexture.new()
+	atlas.atlas = load(IMAGE)
+	assert_str(Source.describe(atlas).issue.code).is_equal("source_not_file")
+	assert_str(Source.describe(ImageTexture.new()).issue.code).is_equal("source_not_file")
+	var path := "res://reports/asset-analyzer/legal vector.svg"
+	_owned_files.append(path)
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	file.store_string('<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"/>')
+	file.close()
+	var task := _service.submit(path, "image")
+	await _wait_for(task)
+	assert_str(_results[task].errors[0].code).is_equal("unsupported_format")
+
+
+func test_memory_reservations_serialize_large_workers_and_allow_two_images() -> void:
+	_service.worker_path = FAULT_WORKER
+	var first := _service.submit(AUDIO, "audio", {"fixture": "timeout"})
+	var second := _service.submit(AUDIO, "audio", {"fixture": "timeout"})
+	await get_tree().process_frame
+	assert_int(_service.get("_running").size()).is_equal(1)
+	assert_int(_service.reserved_memory_mib()).is_equal(384)
+	_service.cancel(first)
+	_service.cancel(second)
+	first = _service.submit(IMAGE, "image", {"fixture": "timeout"})
+	second = _service.submit(IMAGE, "image", {"fixture": "timeout"})
+	await get_tree().process_frame
+	assert_int(_service.get("_running").size()).is_equal(2)
+	assert_int(_service.reserved_memory_mib()).is_equal(512)
+	_service.cancel(first)
+	_service.cancel(second)
+
+
+func test_zoom_preserves_data_position_under_mouse() -> void:
+	var chart: Chart = auto_free(Chart.new())
+	add_child(chart)
+	chart.size = Vector2(600, 250)
+	chart.display({"kind": "histogram", "x": [0, 1, 2], "y": [0.1, 0.2, 0.7],
+		"x_unit": "bin", "y_unit": "ratio"}, {})
+	var event := InputEventMouseButton.new()
+	event.button_index = MOUSE_BUTTON_WHEEL_UP
+	event.pressed = true
+	event.position = Vector2(65 + (600 - 80) * 0.25, 80)
+	var previous_view: Rect2 = chart.call("_view_bounds")
+	chart.call("_gui_input", event)
+	var current_view: Rect2 = chart.call("_view_bounds")
+	assert_float(previous_view.position.x + previous_view.size.x * 0.25).is_equal_approx(
+		current_view.position.x + current_view.size.x * 0.25, 0.00001)

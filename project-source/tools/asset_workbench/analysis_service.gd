@@ -5,12 +5,14 @@ signal state_changed(task_id: int, state: String)
 
 const Job = preload("res://tools/asset_workbench/analysis_job.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 const JOB_DIRECTORY: String = "res://reports/asset-analyzer/jobs"
 
 var executable: String
 var worker_path: String = "res://tools/asset_analyzer/worker.py"
 var timeout_seconds: float = 30.0
 var max_concurrent: int = 2
+var memory_budget_mib: int = int(Source.capabilities.pool_memory_mib)
 var _next_id: int = 0
 var _queue: Array[int] = []
 var _jobs: Dictionary[int, Job] = {}
@@ -56,13 +58,28 @@ func _process(_delta: float) -> void:
 		if not result.is_empty():
 			_deliver(task_id, result)
 	while not _queue.is_empty() and _running.size() < clampi(max_concurrent, 1, 4):
+		var cost := Source.memory_mib(_jobs[_queue.front()].request.asset_type)
+		if not _running.is_empty() and reserved_memory_mib() + cost > memory_budget_mib:
+			break
 		_start_next()
+
+
+func reserved_memory_mib() -> int:
+	var total: int = 0
+	for task: int in _running:
+		total += Source.memory_mib(_jobs[task].request.asset_type)
+	return total
 
 
 func _start_next() -> void:
 	var task_id: int = _queue.pop_front()
 	var job: Job = _jobs[task_id]
-	if executable.is_empty() or not FileAccess.file_exists(executable):
+	var issue := Source.path_issue(job.request.path, job.request.asset_type)
+	if not issue.is_empty():
+		job.fail(issue.code, issue.message)
+	elif Source.memory_mib(job.request.asset_type) > memory_budget_mib:
+		job.fail("memory_budget", "Task reservation exceeds the configured analysis pool budget.")
+	elif executable.is_empty() or not FileAccess.file_exists(executable):
 		job.fail("process_missing", "Set an existing python_executable in docs/methodology-config.json")
 	elif not FileAccess.file_exists(worker_path):
 		job.fail("worker_missing", "Analyzer worker file is missing")

@@ -4,7 +4,7 @@
   "type": "object",
   "required": ["schema_version", "status", "asset", "analyzer", "metrics", "series", "warnings", "errors", "cache"],
   "properties": {
-    "schema_version": {"const": 1},
+    "schema_version": {"type": "integer", "const": 1},
     "status": {"enum": ["success", "partial", "failed", "cancelled"]},
     "asset": {"type": "object", "required": ["path", "type"], "properties": {
       "path": {"type": "string"}, "type": {"type": "string"}, "sha256": {"type": "string"}
@@ -31,7 +31,7 @@
     }, "if": {"properties": {"status": {"const": "available"}}},
     "then": {"properties": {"value": {"not": {"type": "null"}}}},
     "else": {"properties": {"value": {"type": "null"}}}},
-    "series": {"type": "object", "required": ["status", "kind", "x", "y", "x_unit", "y_unit"], "properties": {
+    "series": {"type": "object", "x-equal-lengths": ["x", "y"], "required": ["status", "kind", "x", "y", "x_unit", "y_unit"], "properties": {
       "status": {"const": "available"}, "kind": {"enum": ["line", "histogram"]},
       "x": {"type": "array", "maxItems": 2048, "items": {"type": "number"}},
       "y": {"type": "array", "maxItems": 2048, "items": {"type": "number"}},
