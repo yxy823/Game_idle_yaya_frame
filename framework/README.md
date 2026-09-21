@@ -73,7 +73,7 @@ advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Sk
 手动编辑代码、资源或需求/任务文档后，选择“Godot 项目开发 → 验证与收尾 → 检查手动修改与需求的一致性”；提供范围、意图与比较基线，用法见 [手动修改检查说明](docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)。
 需要结合项目流程回复 Codex 时，选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；用法见 [根据 Codex 输出起草回复](docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。
 从实际游戏项目转发 Codex 输出、判断框架是否需要改进时，选择“Yaya 框架维护 → 维护与复盘 → 依据实际开发反馈复盘框架”；
-输入与归因、建议边界见 [开发反馈复盘说明](docs/blank-project/maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
+审核后可按需参考提示词库，输出标明接收任务、已填入上下文的下一步输入，供手动复制发送；用法与建议边界见 [开发反馈复盘说明](docs/blank-project/maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
 新增提示词前先核对 [使用场景清单](review/baselines/scenario-coverage.md#提示词使用场景清单)，
 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。
 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验
