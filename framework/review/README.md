@@ -10,6 +10,8 @@
 
 已有报告：
 
+- [2026-09-21 工作台第三阶段与交互组合场景](reports/asset-workbench-phase3-2026-09-21.md)
+- [2026-09-21 外部 Analyzer 第二阶段](reports/asset-analyzer-phase2-2026-09-21.md)
 - [2026-09-21 美术与音频工作台首期实现与复制验证](reports/asset-workbench-implementation-validation-2026-09-21.md)
 - [2026-09-21 美术与音频工作台设计适配审核](reports/asset-workbench-design-review-2026-09-21.md)
 - [2026-09-20 外部审核修复验证](reports/workflow-audit-validation-2026-09-20.md)

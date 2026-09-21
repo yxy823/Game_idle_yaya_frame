@@ -4,6 +4,7 @@ extends VBoxContainer
 
 signal candidate_requested(asset: Resource)
 signal analysis_requested(asset: Resource)
+signal group_requested(assets: Array[Resource])
 
 const AudioPlayback = preload("res://components/feedback/audio_playback.gd")
 const Backdrop = preload("res://tools/asset_workbench/preview_backdrop.gd")
@@ -75,6 +76,7 @@ func _build_browser() -> void:
 	add_child(_repeat)
 	_add_button("Stop audition", stop)
 	_add_button("Analyze selected source", _analyze_selected)
+	_add_button("Add filtered candidates to group", _group_filtered)
 	_backdrop.custom_minimum_size.y = 120.0
 	_backdrop.clip_contents = true
 	add_child(_backdrop)
@@ -137,3 +139,7 @@ func _bind_selected() -> void:
 func _analyze_selected() -> void:
 	if _selected != null:
 		analysis_requested.emit(_selected)
+
+
+func _group_filtered() -> void:
+	group_requested.emit(_visible_assets.duplicate())

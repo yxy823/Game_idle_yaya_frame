@@ -53,6 +53,19 @@ func open_asset(asset: Resource) -> void:
 	grab_focus()
 
 
+func open_results(first: Dictionary, second: Dictionary) -> void:
+	_cancel()
+	_selected = null
+	results = [first.duplicate(true), second.duplicate(true)]
+	for index: int in 2:
+		_paths[index] = ProjectSettings.localize_path(results[index].asset.path)
+		_kinds[index] = results[index].asset.type
+	_selection_label.text = "Group results (may be historical). Reanalyze to check current files."
+	_refresh()
+	popup_centered_clamped(Vector2i(1200, 800), 0.9)
+	grab_focus()
+
+
 func _build() -> void:
 	var scroll := ScrollContainer.new()
 	scroll.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -160,7 +173,8 @@ func _completed(task_id: int, data: Dictionary) -> void:
 
 
 func _state_changed(task_id: int, state: String) -> void:
-	_status.text = "Task %d: %s. Preview and playback remain available." % [task_id, state]
+	if task_id in _tasks:
+		_status.text = "Task %d: %s. Preview and playback remain available." % [task_id, state]
 
 
 func _refresh() -> void:

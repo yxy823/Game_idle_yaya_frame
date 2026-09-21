@@ -7,11 +7,14 @@ const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
 const Backdrop = preload("res://tools/asset_workbench/preview_backdrop.gd")
 const AnalysisPanel = preload("res://tools/asset_workbench/analysis_panel.gd")
+const BatchPanel = preload("res://tools/asset_workbench/analysis_batch_panel.gd")
+const CompositionPanel = preload("res://tools/asset_workbench/composition_panel.gd")
 
 @export_file("*.tres") var cue_path: String
 @export_file("*.tscn") var game_scene_path: String
 @export var texture_candidates: Array[Texture2D] = []
 @export var sound_candidates: Array[AudioStream] = []
+@export var composition_scene: PackedScene
 
 var session: Session = Session.new()
 var presenter: Presenter = Presenter.new()
@@ -25,6 +28,9 @@ var _reload_dialog: ConfirmationDialog = ConfirmationDialog.new()
 var _background: ColorRect = ColorRect.new()
 var _backdrop: Backdrop = Backdrop.new()
 var _analysis: AnalysisPanel = AnalysisPanel.new()
+var _batch: BatchPanel = BatchPanel.new()
+var _composition: CompositionPanel
+var _target: Label = Label.new()
 
 
 func _ready() -> void:
@@ -35,6 +41,10 @@ func _ready() -> void:
 	_browser.candidate_requested.connect(_bind_candidate)
 	add_child(_analysis)
 	_browser.analysis_requested.connect(_analysis.open_asset)
+	_batch.batch.service = _analysis.service
+	add_child(_batch)
+	_browser.group_requested.connect(_batch.open_assets)
+	_batch.compare_requested.connect(_analysis.open_results)
 	_controls.build(texture_candidates, sound_candidates)
 	_controls.edited.connect(_edit)
 	presenter.playback_failed.connect(_set_status)
@@ -42,6 +52,16 @@ func _ready() -> void:
 	_reload_dialog.confirmed.connect(_load_session)
 	add_child(_reload_dialog)
 	_load_session()
+	if composition_scene != null:
+		_composition = CompositionPanel.new()
+		_composition.scene_resource = composition_scene
+		_composition.default_session = session
+		_composition.sound_candidates = sound_candidates
+		add_child(_composition)
+		_composition.session_selected.connect(_use_session)
+		_composition.analysis_requested.connect(_batch.open_assets)
+	# SceneTree assigns current_scene after _ready; size only our standalone entry after that.
+	_fit_initial_workspace.call_deferred()
 
 
 func _exit_tree() -> void:
@@ -52,6 +72,8 @@ func stop_all() -> void:
 	_repeat.stop()
 	_browser.stop()
 	presenter.stop()
+	if _composition != null:
+		_composition.stage.stop()
 
 
 func _build_layout() -> void:
@@ -72,10 +94,13 @@ func _build_layout() -> void:
 	title.add_theme_font_size_override("font_size", 24)
 	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(title)
-	var appearance := HBoxContainer.new()
+	var appearance := HFlowContainer.new()
 	root.add_child(appearance)
 	_toggle(appearance, "Dark background", _set_dark_theme)
 	_toggle(appearance, "Transparency grid", _set_checker)
+	_button(appearance, "Fit larger workspace", _fit_workspace)
+	if composition_scene != null:
+		_button(appearance, "Open composition scene", func() -> void: _composition.open())
 	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	root.add_child(_state)
 	_build_body(root)
@@ -144,11 +169,8 @@ func _build_event_panel(parent: ScrollContainer) -> void:
 	_button(panel, "Save active cue to the target below", _save)
 	_button(panel, "Reload from disk (discard both trials)", _reload_dialog.popup_centered)
 	_button(panel, "Open example game using saved cue", _open_game)
-	var target := Label.new()
-	target.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	target.text = "Save target: %s\nAffects every consumer of this cue.\n" % cue_path
-	target.text += "Source images/audio stay unchanged. No loudness matching is applied."
-	panel.add_child(target)
+	_target.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	panel.add_child(_target)
 
 
 func _button(parent: Container, text: String, action: Callable) -> void:
@@ -170,6 +192,34 @@ func _set_dark_theme(enabled: bool) -> void:
 	theme = Appearance.create(enabled)
 	_background.color = Appearance.background(enabled)
 	_analysis.set_background(enabled)
+	_batch.set_background(enabled)
+	if _composition != null:
+		_composition.set_background(enabled)
+
+
+func _use_session(selected: Session) -> void:
+	stop_all()
+	session = selected
+	cue_path = session.target_path
+	_refresh()
+
+
+func _fit_workspace() -> void:
+	if DisplayServer.get_name() == "headless":
+		return
+	if "--wid" in OS.get_cmdline_args():
+		_set_status("Embedded game size follows the editor. Detach the game view for a larger window.")
+		return
+	var window := get_window()
+	var area := DisplayServer.screen_get_usable_rect(window.current_screen)
+	var available := Vector2i(Vector2(area.size) * 0.9)
+	window.size = Vector2i(mini(1600, available.x), mini(900, available.y))
+	window.position = area.position + Vector2i(Vector2(area.size - window.size) * 0.5)
+
+
+func _fit_initial_workspace() -> void:
+	if get_tree().current_scene == self and not "--resolution" in OS.get_cmdline_args():
+		_fit_workspace()
 
 
 func _set_checker(enabled: bool) -> void:
@@ -196,6 +246,10 @@ func _load_session() -> void:
 func _refresh() -> void:
 	_controls.display(session.current())
 	presenter.configure(session.current())
+	_target.text = "Save target: %s\nAffects every consumer of this cue.\n" % cue_path
+	_target.text += "Source images/audio stay unchanged. No loudness matching is applied."
+	if _composition != null:
+		_composition.update_trial(session)
 	_state.text = "Active: %s   |   %s   |   Event sound: %s" % [
 		"A" if session.active_index == 0 else "B",
 		"UNSAVED TRIAL" if session.is_dirty() else "matches saved cue",
@@ -271,11 +325,14 @@ func _save() -> void:
 
 func _open_game() -> void:
 	stop_all()
-	if not OS.has_feature("editor") or not ResourceLoader.exists(game_scene_path):
+	var path := game_scene_path
+	if _composition != null and _composition.sessions.has(cue_path):
+		path = composition_scene.resource_path
+	if not OS.has_feature("editor") or not ResourceLoader.exists(path):
 		_set_status("Game launch requires the editor binary and an existing project scene.")
 		return
 	var process := OS.create_instance(["--path", ProjectSettings.globalize_path("res://"),
-		game_scene_path])
+		path])
 	_set_status("Game opened with saved data." if process > 0 else "Game launch failed.")
 
 

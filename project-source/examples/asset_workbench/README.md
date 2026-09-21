@@ -13,7 +13,10 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 & $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/example-workbench.tscn' | Out-Host
 ```
 
-先完成正常导入。工作台不强制扩大宿主窗口；三个内容栏可分别上下滚动，窄窗口还可横向滚动内容区。
+先完成正常导入。独立运行工作台时优先使用 1600×900，并限制在当前屏幕可用区域的 90% 内。
+显式 `--resolution` 保持用户指定尺寸；嵌入编辑器（`--wid`）时服从宿主区域，可先分离运行窗口。
+`Fit larger workspace` 可重新适配。此行为只作用于工作台，不改全局项目分辨率或正式游戏设置。
+三个内容栏可分别上下滚动，窄窗口还可横向滚动内容区。
 标题、当前事件声音和底部状态留在滚动区外；这不会把示例设为正式游戏入口。
 
 1. 左侧筛选并查看图片尺寸、音频时长；`Audition` 和 `Repeat audition` 单独试听。
@@ -37,13 +40,40 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 第二阶段已提供后台音频/图像分析、统一 JSON、图表与同类型分析 A/B；安装和操作见
 [Analyzer 说明](../../tools/asset_analyzer/README.md)。缺少可选分析依赖不影响这里的预览与播放。
 
+## 可交互组合场景
+
+点击顶部 `Open composition scene`，打开真实的 `example-composition.tscn`：奖杯、星星和奖励三个对象。
+它们复用原始图片、声音与 FeedbackPresenter，每个对象使用独立的 `example-composition-*.tres`。
+组合窗口可与主工作台并排，背景随主工作台浅色/深色切换，素材不染色。
+
+1. 点击对象会选中并触发它。主工作台右侧立即改为该对象的属性，底部显示真实保存目标。
+2. 沿用现有候选、参数、A/B、重置与保存；试调也更新组合场景中的对应对象。切换对象不会丢弃各自 A/B；初始 B 在有另一个声音时仅换声音。
+3. `Trigger all` 同时触发三个对象，检查重叠；`Stop all` 清理动画、音频及延迟。
+4. `Apply gain to all trials` 只改变三个对象各自当前 A/B 的音量；另一方案与磁盘保持不变。
+5. `Save all scene cues` 对每个明确 Cue 分别执行原有冲突检查与保存，显示成功数量及失败路径。它不是多文件事务：其他文件可以成功，冲突文件保留试调。
+6. `Open saved scene in game` 启动该场景的独立实例，读取已保存 Cue；也可在 Godot 打开 `example-composition.tscn` 按 F6。未保存试调不会进入独立实例。
+7. `Analyze selected object's sources` / `Analyze all scene sources` 将当前试调引用的原始资源去重后加入同一个批量分组。分析源文件，不测量最终混音、播放增益或渲染后画面。
+8. `Return to original event` 回到原奖励事件；它和组合对象的试调都保留到本次工作台结束。
+
+对象位置由原生 Scene 布局维护；运行时只编辑明确支持的 Cue 参数。
+Agent 可以根据画面描述组合或修改 `.tscn` 与表现组件。本例验证这种接入方式，没有在运行时实现自然语言生成器、任意节点属性编辑器或通用场景制作软件。
+接真实项目时使用其已有对象/事件数据和明确的表现接口，不自动执行未知场景的业务副作用。
+
+## 第三阶段：分组与批量检查
+
+原浏览器中的 `Add filtered candidates to group` 把当前筛选后的候选加入分组并打开批量窗口。
+可加载 `example-analysis-group.json` 体验包含四个示例资源的分组；其中阈值仅为示例，不是项目硬性规范。
+操作、同类统计、规则、历史快照及缓存边界见 [批量分析说明](../../tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
+
 ## 数据和运行边界
 
 | 位置 | 职责 |
 | --- | --- |
 | `example-workbench.tscn` | 工作台入口、两个视觉与两个音频候选、明确保存目标 |
-| `example-feedback.tres` | 唯一示例事件配置；工作台保存，示例游戏直接读取 |
+| `example-feedback.tres` | 原单对象事件配置；工作台保存，奖励示例游戏直接读取 |
 | `example-game.tscn`、`example_reward_game.gd` | 独立消费方；只有进程内奖励计数，没有真实存档或业务副作用 |
+| `example-composition.tscn`、`example-composition-*.tres` | 三对象真实场景及分别保存的表现配置；不改原单对象配置 |
+| `example-analysis-group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
 | `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
 | `components/feedback/` | 小型图标脉冲表现组件、数据类型和播放封装；两个场景复用同一表现逻辑 |
 | `tools/asset_workbench/` | 候选浏览、试调和保存界面；不注册全局服务 |

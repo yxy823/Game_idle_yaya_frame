@@ -24,6 +24,27 @@ $LASTEXITCODE
 
 分析结果中的 `cache.hit` 和界面 HIT/MISS 表示是否复用。缓存仍需要后台进程启动、版本检查和文件哈希，不等于零耗时。
 
+## 分组批量分析与一致性检查
+
+1. 从原浏览器点击 `Add filtered candidates to group`，或从组合场景把选中对象/全场景的资源加入同一分组。重复路径只加入一次，不加载另一套浏览器或隐式修改事件。
+2. `Add source folder` 选择项目内目录，逐帧发现 PNG/JPEG/WebP/BMP/TGA/TIFF、WAV/OGG/MP3/FLAC 源文件。跳过隐藏项、链接，以及扫描过程中遇到的 addons/reports 子目录。最多扫描 50,000 条目录项，最多 512 个资源；达到限制保留已发现内容并提示缩小范围。
+3. `Analyze group` 将当前成员交给与单项分析共用的队列、超时和缓存。关闭或取消批量窗口只取消它的任务，已完成结果保留；单项分析和预览继续工作。`Force reanalyze` 绕过缓存。
+4. 表中展示每项任务状态、缓存命中和规则偏差数；点击成员查看完整路径、警告与逐条依据。Ctrl 选中两个同类型结果后点 `Compare selected 2`，直接复用原分析窗口与图表，不启动重复分析。
+5. 同类统计显示有效样本数、最小值、中位数和最大值。类型、单位、Schema、Analyzer/后端版本或分析参数不同时分开统计；表格第一列 tooltip 保留版本与参数。不可用、缺失和失败值不进入统计，也不作为零或规则通过。
+6. 分析后，从指标下拉框添加 `Minimum`、`Maximum` 或 `Max distance from median` 规则，阈值使用该指标原单位。中位数偏差需要至少 3 个可比测量，否则显示 unmeasured。规则立即复用现有数据检查，不改底层算法或素材；上限 64 条。
+7. `Save group + rules` 保存项目内 `.json`；`Load group (replace)` 读取并验证后替换当前分组及结果。保存示例见 `examples/asset_workbench/example-analysis-group.json`。文件中的 `parameters` 沿用后端参数协议，可统一设置静音阈值等；改动后重新分析生效。
+8. `Save result snapshot` 将成员、规则和实际统一结果写入 `reports/asset-analyzer/history/batch-*.json`；`Open historical snapshot` 重新打开，标记 HISTORICAL 与原时间，明确不能代表当前文件。重分析重新检查内容哈希；导出的资源身份使用项目相对路径。快照读入上限 32 MiB。
+
+分组是轻量 JSON，不另建数据库或业务资产关系。`group_version: 1` 下包含 `name`、`assets`（path/type）、`parameters`、`rules`；规则包含 `type`、`metric`、`unit`、`operator`（min/max/delta）、`value`。快照另用 `snapshot_version: 1`，保留 group、results、created_at；单项结果继续使用 Analyzer Schema v1。
+
+例如“UI 音效 RMS 不高于 -12 dBFS”可写成：
+
+```json
+{"type":"audio","metric":"rms","unit":"dBFS","operator":"max","value":-12}
+```
+
+这是项目选择的阈值，不是通用推荐响度。图像可比较饱和度、透明比例、luma 等；这类数值偏差不等于审美错误或风格不一致。当前没有聚类、语义风格推断、跨历史趋势图或综合评分。
+
 ## 结构与协议
 
 | 位置 | 责任 |
@@ -34,6 +55,9 @@ $LASTEXITCODE
 | `protocol.py`、`result.schema.json` | Schema v1、测量状态、公共数据契约；Python 与 Godot 两端进行边界检查 |
 | `../asset_workbench/analysis_result.gd` | 结果验证、并排比较格式、独立的项目规则检查 |
 | `../asset_workbench/analysis_panel.gd`、`analysis_chart.gd` | 共用浏览器选择的分析窗口与通用数字序列图；不识别第三方输出 |
+| `../asset_workbench/analysis_batch.gd`、`analysis_group_scan.gd` | 共用队列的批量任务与有界目录发现；只管理自己的任务 |
+| `../asset_workbench/analysis_group.gd`、`analysis_group_statistics.gd` | 分组/历史结构校验、读写、可比样本统计与有解释的规则检查 |
+| `../asset_workbench/analysis_batch_panel.gd`、`analysis_group_rules.gd` | 分组结果、批量入口与独立规则编辑；将两项结果交回现有 A/B 窗口 |
 
 输入为 JSON 文件，含 `path`、`asset_type` (`audio` / `image`)、`parameters` 与 `force`。内部 worker 通过参数数组启动，不经过 shell；stdout 为一份 UTF-8 JSON，stderr 只用于诊断。输出上限 2 MiB。
 
@@ -70,6 +94,7 @@ $LASTEXITCODE
 - `runtime/`：可重新安装的本项目依赖，不随框架复制或正式游戏导出。
 - `cache/<key>.json`：可检查、可删除；键包含规范路径、源内容 SHA-256、参数、Analyzer 类型/版本、全部后端版本、Schema 版本。成功结果原子写入；失败/部分失败不缓存，损坏缓存重新分析。
 - `jobs/`：请求与写缓存的短期文件。完成、取消、超时、工作台退出都清理自有文件；worker 检测父进程退出，避免引擎异常退出后遗留计算进程。
+- `history/`：用户显式保存的批量分析快照；不自动淘汰，不代表当前资源仍保持相同内容。需要长期版本管理时由项目选择归档位置。
 
 强制重分析可覆盖当前缓存；关闭工作台后可删除 `cache` 目录全部重新生成。旧内容键不会自动淘汰，定期按项目需要清理；不建立数据库。
 

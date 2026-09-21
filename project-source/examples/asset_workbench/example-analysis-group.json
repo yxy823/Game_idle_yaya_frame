@@ -1,0 +1,16 @@
+{
+  "group_version": 1,
+  "name": "example-feedback-sources",
+  "assets": [
+    {"path": "res://examples/asset_workbench/assets/example-trophy.png", "type": "image"},
+    {"path": "res://examples/asset_workbench/assets/example-star.png", "type": "image"},
+    {"path": "res://examples/asset_workbench/assets/example-confirmation-a.ogg", "type": "audio"},
+    {"path": "res://examples/asset_workbench/assets/example-confirmation-b.ogg", "type": "audio"}
+  ],
+  "parameters": {"silence_dbfs": -50},
+  "rules": [
+    {"type": "image", "metric": "width", "unit": "px", "operator": "max", "value": 128},
+    {"type": "image", "metric": "height", "unit": "px", "operator": "max", "value": 128},
+    {"type": "audio", "metric": "leading_silence", "unit": "s", "operator": "max", "value": 0.05}
+  ]
+}
