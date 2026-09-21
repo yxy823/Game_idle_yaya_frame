@@ -2,7 +2,7 @@ extends SceneTree
 
 ## Real rendered UI, real worker results. This is evidence, not human acceptance.
 
-const Workbench = preload("res://examples/asset_workbench/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const ASSETS: String = "res://examples/asset_workbench/assets/"
 
 var _failed: bool = false
@@ -16,7 +16,7 @@ func _capture() -> void:
 	if DisplayServer.get_name() == "headless":
 		quit(1)
 		return
-	root.size = Vector2i(1280, 860)
+	root.size = Vector2i(1600, 900)
 	var workbench: Control = Workbench.instantiate()
 	root.add_child(workbench)
 	await process_frame

@@ -26,7 +26,7 @@ var _background: ColorRect = ColorRect.new()
 
 func _ready() -> void:
 	title = "Source asset analysis (independent of event A/B)"
-	size = Vector2i(1000, 700)
+	size = Vector2i(1600, 900)
 	min_size = Vector2i(400, 300)
 	visible = false
 	exclusive = false
@@ -49,7 +49,7 @@ func open_asset(asset: Resource) -> void:
 	_selected = asset
 	_selection_label.text = "Browser selection: " + asset.resource_path
 	if not visible:
-		popup_centered_clamped(Vector2i(1000, 700), 0.9)
+		popup_centered(Vector2i(1600, 900))
 	grab_focus()
 
 
@@ -62,7 +62,7 @@ func open_results(first: Dictionary, second: Dictionary) -> void:
 		_kinds[index] = results[index].asset.type
 	_selection_label.text = "Group results (may be historical). Reanalyze to check current files."
 	_refresh()
-	popup_centered_clamped(Vector2i(1200, 800), 0.9)
+	popup_centered(Vector2i(1600, 900))
 	grab_focus()
 
 

@@ -5,17 +5,21 @@
 
 ## 打开与操作
 
-在 Godot 中打开 `example-workbench.tscn`，按 F6 运行当前场景。
+两个独立入口放在不同目录，在 Godot 中选择对应场景按 F6；二者不互相打开或切换：
+
+- 单对象工作台：`single/example-workbench.tscn`。
+- 组合场景工作台：`composition/example-workbench.tscn`。
+
 也可在**生成项目根目录**使用配置中的引擎：
 
 ```powershell
 $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/example-workbench.tscn' | Out-Host
+& $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/single/example-workbench.tscn' | Out-Host
 ```
 
-先完成正常导入。独立运行工作台时优先使用 1600×900，并限制在当前屏幕可用区域的 90% 内。
-显式 `--resolution` 保持用户指定尺寸；嵌入编辑器（`--wid`）时服从宿主区域，可先分离运行窗口。
-`Fit larger workspace` 可重新适配。此行为只作用于工作台，不改全局项目分辨率或正式游戏设置。
+先完成正常导入。框架的 `project.godot` 默认视口为 1600×900，新建项目继承此值；
+两个工作台入口及分析、批量窗口默认都使用 1600×900，不再自动按屏幕比例缩小。
+显式 `--resolution` 或后续项目设置可覆盖默认值；嵌入编辑器（`--wid`）时仍受宿主区域约束，查看完整独立窗口可分离运行。
 三个内容栏可分别上下滚动，窄窗口还可横向滚动内容区。
 标题、当前事件声音和底部状态留在滚动区外；这不会把示例设为正式游戏入口。
 
@@ -28,7 +32,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 7. `Open example game` 启动独立进程，点击奖励按钮验证**已保存**配置；未保存的试调不会进入该场景。
 
 默认使用白色背景和黑字；`Dark background` 切换为中性深灰背景和白字，适合检查白色素材。
-`Transparency grid` 只给单项图片区与事件预览区增加灰色棋盘格，用于辨认透明边缘；默认关闭。
+`Transparency grid` 给单项图片区与单对象事件预览区增加灰色棋盘格，用于辨认透明边缘；默认关闭。组合场景保留真实场景背景。
 这些查看设置只在当前工作台会话生效，不影响素材颜色、A/B、保存的 Cue 或正式游戏环境。
 黑色图标在深色背景下对比度降低属于素材与背景的真实关系，可切回浅色或启用棋盘格。
 
@@ -42,18 +46,17 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 
 ## 可交互组合场景
 
-点击顶部 `Open composition scene`，打开真实的 `example-composition.tscn`：奖杯、星星和奖励三个对象。
+直接运行 `composition/example-workbench.tscn`，中央加载真实的 `composition/example-composition.tscn`：奖杯、星星和奖励三个对象。
 它们复用原始图片、声音与 FeedbackPresenter，每个对象使用独立的 `example-composition-*.tres`。
-组合窗口可与主工作台并排，背景随主工作台浅色/深色切换，素材不染色。
+组合工作台自身包含对象选择、属性及分析能力，背景可切换浅色/深色，素材不染色。
 
-1. 点击对象会选中并触发它。主工作台右侧立即改为该对象的属性，底部显示真实保存目标。
+1. 点击对象会选中并触发它。组合工作台右侧立即改为该对象的属性，底部显示真实保存目标。
 2. 沿用现有候选、参数、A/B、重置与保存；试调也更新组合场景中的对应对象。切换对象不会丢弃各自 A/B；初始 B 在有另一个声音时仅换声音。
 3. `Trigger all` 同时触发三个对象，检查重叠；`Stop all` 清理动画、音频及延迟。
 4. `Apply gain to all trials` 只改变三个对象各自当前 A/B 的音量；另一方案与磁盘保持不变。
 5. `Save all scene cues` 对每个明确 Cue 分别执行原有冲突检查与保存，显示成功数量及失败路径。它不是多文件事务：其他文件可以成功，冲突文件保留试调。
-6. `Open saved scene in game` 启动该场景的独立实例，读取已保存 Cue；也可在 Godot 打开 `example-composition.tscn` 按 F6。未保存试调不会进入独立实例。
+6. `Open example game using saved cue` 启动组合场景的独立实例，读取已保存 Cue；也可打开 `composition/example-composition.tscn` 按 F6。未保存试调不会进入独立实例。
 7. `Analyze selected object's sources` / `Analyze all scene sources` 将当前试调引用的原始资源去重后加入同一个批量分组。分析源文件，不测量最终混音、播放增益或渲染后画面。
-8. `Return to original event` 回到原奖励事件；它和组合对象的试调都保留到本次工作台结束。
 
 对象位置由原生 Scene 布局维护；运行时只编辑明确支持的 Cue 参数。
 Agent 可以根据画面描述组合或修改 `.tscn` 与表现组件。本例验证这种接入方式，没有在运行时实现自然语言生成器、任意节点属性编辑器或通用场景制作软件。
@@ -69,10 +72,11 @@ Agent 可以根据画面描述组合或修改 `.tscn` 与表现组件。本例�
 
 | 位置 | 职责 |
 | --- | --- |
-| `example-workbench.tscn` | 工作台入口、两个视觉与两个音频候选、明确保存目标 |
-| `example-feedback.tres` | 原单对象事件配置；工作台保存，奖励示例游戏直接读取 |
-| `example-game.tscn`、`example_reward_game.gd` | 独立消费方；只有进程内奖励计数，没有真实存档或业务副作用 |
-| `example-composition.tscn`、`example-composition-*.tres` | 三对象真实场景及分别保存的表现配置；不改原单对象配置 |
+| `single/example-workbench.tscn` | 单对象工作台入口、候选与明确保存目标 |
+| `single/example-feedback.tres` | 单对象事件配置；工作台保存，奖励示例游戏直接读取 |
+| `single/example-game.tscn`、`single/example_reward_game.gd` | 独立消费方；只有进程内奖励计数，没有真实存档或业务副作用 |
+| `composition/example-workbench.tscn` | 独立组合工作台；直接选择场景内对象并编辑属性 |
+| `composition/example-composition.tscn`、该目录的 `example-composition-*.tres` | 三对象真实场景及分别保存的表现配置；不改单对象配置 |
 | `example-analysis-group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
 | `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
 | `components/feedback/` | 小型图标脉冲表现组件、数据类型和播放封装；两个场景复用同一表现逻辑 |

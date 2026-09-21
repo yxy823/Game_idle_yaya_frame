@@ -145,13 +145,18 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertEqual(config["environment_bootstrap"]["engine_version"], "")
         self.assertEqual(config["test_cmd"], "")
         self.assertNotIn("run/main_scene", (output / "project.godot").read_text(encoding="utf-8"))
+        settings = (output / "project.godot").read_text(encoding="utf-8")
+        self.assertIn("window/size/viewport_width=1600", settings)
+        self.assertIn("window/size/viewport_height=900", settings)
         for name in (".git", ".godot", "framework", "tests", "prompts.json"):
             self.assertFalse((output / name).exists(), name)
         for name, key in (("feature-list.json", "features"), ("test-registry.json", "tests")):
             self.assertEqual(json.loads((output / "docs" / name).read_text(encoding="utf-8"))[key], [])
         for relative in (
-            "examples/asset_workbench/example-workbench.tscn",
-            "examples/asset_workbench/example-game.tscn",
+            "examples/asset_workbench/single/example-workbench.tscn",
+            "examples/asset_workbench/single/example-game.tscn",
+            "examples/asset_workbench/composition/example-workbench.tscn",
+            "examples/asset_workbench/composition/example-composition.tscn",
             "components/feedback/audio_playback.gd",
             "tools/asset_workbench/workbench.gd",
             "addons/sound_manager/abstract_audio_player_pool.gd",
@@ -161,6 +166,9 @@ class ProjectCopyTests(unittest.TestCase):
         assets = list((output / "examples/asset_workbench/assets").iterdir())
         self.assertTrue(assets)
         self.assertTrue(all(path.name.startswith("example-") for path in assets))
+        self.assertFalse((output / "examples/asset_workbench/example-workbench.tscn").exists())
+        single = (output / "examples/asset_workbench/single/example-workbench.tscn").read_text()
+        self.assertNotIn("composition", single)
 
 
 if __name__ == "__main__":

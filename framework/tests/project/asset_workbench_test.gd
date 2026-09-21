@@ -5,9 +5,9 @@ extends GdUnitTestSuite
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const Playback = preload("res://components/feedback/audio_playback.gd")
-const Game = preload("res://examples/asset_workbench/example_reward_game.gd")
-const WorkbenchScene = preload("res://examples/asset_workbench/example-workbench.tscn")
-const CUE_PATH: String = "res://examples/asset_workbench/example-feedback.tres"
+const Game = preload("res://examples/asset_workbench/single/example_reward_game.gd")
+const WorkbenchScene = preload("res://examples/asset_workbench/single/example-workbench.tscn")
+const CUE_PATH: String = "res://examples/asset_workbench/single/example-feedback.tres"
 const FIXTURE_PATH: String = "res://tests/features/asset_workbench/test-cue.tres"
 
 var _session: Session

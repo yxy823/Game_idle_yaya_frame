@@ -1,6 +1,7 @@
 extends SceneTree
 
-const Workbench = preload("res://examples/asset_workbench/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/composition/example-workbench.tscn")
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
 const DIRECTORY: String = "res://reports/asset-analysis-group/"
 
@@ -26,27 +27,27 @@ func _capture() -> void:
 		"project_height": ProjectSettings.get_setting("display/window/size/viewport_height"),
 		"engine": Engine.get_version_info().string}
 	_check(Group.write_json(DIRECTORY + "window-state.json", state).is_empty(), "Window evidence")
-	var composition: Window = workbench.get("_composition")
-	composition.call("open")
-	composition.stage.objects[0].pressed.emit()
-	composition.call("apply_gain", -22.0)
-	await _save(composition, "composition-light.png")
-	workbench.call("_set_dark_theme", true)
-	await _save(composition, "composition-dark.png")
-	composition.size = Vector2i(600, 400)
-	await _save(composition, "composition-compact.png")
-	var scroll := composition.find_children("*", "ScrollContainer", false, false)[0] as ScrollContainer
-	var last_object: Control = composition.stage.objects[2]
-	scroll.ensure_control_visible(last_object)
-	await process_frame
-	_check(scroll.scroll_horizontal > 0, "Compact composition must scroll horizontally")
-	_check(Rect2(Vector2.ZERO, Vector2(composition.size)).encloses(last_object.get_global_rect()),
-		"Last scene object must remain reachable")
-	await _save(composition, "composition-compact-scrolled.png")
-	composition.call("_close")
-	workbench.call("_set_dark_theme", false)
 	await _batch_capture(workbench)
 	workbench.queue_free()
+	await process_frame
+	var composed: Control = Composition.instantiate()
+	root.add_child(composed)
+	current_scene = composed
+	var composition: Control = composed.get("_composition")
+	composition.stage.objects[0].pressed.emit()
+	composition.call("apply_gain", -22.0)
+	await _save(root, "composition-light.png")
+	composed.call("_set_dark_theme", true)
+	await _save(root, "composition-dark.png")
+	root.size = Vector2i(900, 600)
+	await _save(root, "composition-compact.png")
+	var scroll := composed.find_child("WorkbenchBody", true, false) as ScrollContainer
+	var parameters := composed.find_child("ParameterColumn", true, false) as ScrollContainer
+	scroll.ensure_control_visible(parameters)
+	await process_frame
+	_check(scroll.scroll_horizontal > 0, "Compact workbench must scroll horizontally")
+	await _save(root, "composition-compact-scrolled.png")
+	composed.queue_free()
 	await process_frame
 	await create_timer(AudioServer.get_output_latency() + 0.1).timeout
 	quit(1 if _failed else 0)

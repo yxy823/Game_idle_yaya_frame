@@ -29,7 +29,7 @@ var _dirty: bool = true
 
 func _ready() -> void:
 	title = "Resource groups / batch analysis"
-	size = Vector2i(1400, 860)
+	size = Vector2i(1600, 900)
 	min_size = Vector2i(420, 320)
 	visible = false
 	add_child(batch)
@@ -64,7 +64,7 @@ func open_assets(assets: Array[Resource]) -> void:
 		paths.append(asset.resource_path)
 	_notice.text = batch.add_paths(paths)
 	if not visible:
-		popup_centered_clamped(Vector2i(1400, 860), 0.92)
+		popup_centered(Vector2i(1600, 900))
 	grab_focus()
 
 

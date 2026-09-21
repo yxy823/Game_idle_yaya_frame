@@ -5,6 +5,10 @@ config_version=5
 config/name="New Godot Project"
 config/features=PackedStringArray("4.7")
 
+[display]
+window/size/viewport_width=1600
+window/size/viewport_height=900
+
 [editor_plugins]
 enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
 

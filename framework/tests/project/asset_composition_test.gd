@@ -1,12 +1,12 @@
 extends GdUnitTestSuite
 
-const Workbench = preload("res://examples/asset_workbench/example-workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/example-composition.tscn")
+const Workbench = preload("res://examples/asset_workbench/composition/example-workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/composition/example-composition.tscn")
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 
 var _workbench: Control
-var _panel: Window
+var _panel: Control
 var _owned: Array[String] = []
 
 
@@ -26,8 +26,6 @@ func after_test() -> void:
 func test_object_click_selects_real_instance_and_preserves_each_trial() -> void:
 	var objects: Array = _panel.stage.objects
 	assert_int(objects.size()).is_equal(3)
-	var original: Session = _workbench.session
-	original.current().gain_db = -31
 	objects[0].pressed.emit()
 	assert_str(_workbench.cue_path).is_equal(objects[0].cue_path)
 	_workbench.session.current().icon_scale = 1.6
@@ -38,9 +36,9 @@ func test_object_click_selects_real_instance_and_preserves_each_trial() -> void:
 	objects[0].pressed.emit()
 	assert_float(_workbench.session.current().icon_scale).is_equal(1.6)
 	assert_str(_workbench.get("_target").text).contains(objects[0].cue_path)
-	_panel.call("_return_original")
-	assert_object(_workbench.session).is_same(original)
-	assert_float(original.current().gain_db).is_equal(-31.0)
+	assert_object(_workbench.presenter).is_same(objects[0].presenter)
+	assert_bool(_panel.has_method("_return_original")).is_false()
+	assert_bool(_workbench.has_method("_fit_workspace")).is_false()
 
 
 func test_batch_gain_updates_only_active_trials_and_keeps_assets_unmodified() -> void:
@@ -124,3 +122,17 @@ func test_composition_is_an_independently_runnable_native_scene() -> void:
 	await get_tree().create_timer(0.05).timeout
 	assert_int(scene.objects[1].presenter.active_voice_count()).is_greater(0)
 	scene.stop()
+
+
+func test_repeat_targets_current_object_after_selection_changes() -> void:
+	var objects: Array = _panel.stage.objects
+	objects[1].pressed.emit()
+	_workbench.call("_start_repeat", 0.1)
+	await get_tree().create_timer(0.24).timeout
+	assert_int(objects[1].presenter.active_voice_count()).is_greater(0)
+	assert_int(objects[0].presenter.active_voice_count()).is_equal(0)
+	objects[2].pressed.emit()
+	_workbench.call("_start_repeat", 0.1)
+	await get_tree().create_timer(0.24).timeout
+	assert_int(objects[2].presenter.active_voice_count()).is_greater(0)
+	assert_int(objects[1].presenter.active_voice_count()).is_equal(0)

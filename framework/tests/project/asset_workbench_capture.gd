@@ -2,8 +2,8 @@ extends SceneTree
 
 ## External-project render check. Needs a real renderer; it is not human acceptance.
 
-const WorkbenchScene = preload("res://examples/asset_workbench/example-workbench.tscn")
-const GameScene = preload("res://examples/asset_workbench/example-game.tscn")
+const WorkbenchScene = preload("res://examples/asset_workbench/single/example-workbench.tscn")
+const GameScene = preload("res://examples/asset_workbench/single/example-game.tscn")
 
 var _layout_failed: bool = false
 

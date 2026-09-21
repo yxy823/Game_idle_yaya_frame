@@ -4,7 +4,7 @@ extends Control
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
-@export_file("*.tres") var cue_path: String = "res://examples/asset_workbench/example-feedback.tres"
+@export_file("*.tres") var cue_path: String = "res://examples/asset_workbench/single/example-feedback.tres"
 
 var cue: FeedbackCue
 var reward_count: int = 0

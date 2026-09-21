@@ -3,7 +3,7 @@ extends GdUnitTestSuite
 const Service = preload("res://tools/asset_workbench/analysis_service.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
-const Workbench = preload("res://examples/asset_workbench/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const AUDIO: String = "res://examples/asset_workbench/assets/example-confirmation-a.ogg"
 const IMAGE: String = "res://examples/asset_workbench/assets/example-star.png"
 const FAULT_WORKER: String = "res://tests/features/asset_analyzer/analyzer_process_fixture.py"
