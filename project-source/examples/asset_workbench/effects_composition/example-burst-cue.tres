@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="FeedbackCue" load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1"]
+[ext_resource type="Texture2D" path="res://examples/asset_workbench/assets/example-trophy.png" id="2"]
+[ext_resource type="AudioStream" path="res://examples/asset_workbench/assets/example-confirmation-a.ogg" id="3"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/shader_composition/example-outline-preset.tres" id="4"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example-burst-preset.tres" id="5"]
+
+[resource]
+script = ExtResource("1")
+texture = ExtResource("2")
+sound = ExtResource("3")
+shader_preset = ExtResource("4")
+gain_db = -18.0
+particle_preset = ExtResource("5")
+tween_enabled = true
+tween_distance = 32.0
+tween_seconds = 0.8

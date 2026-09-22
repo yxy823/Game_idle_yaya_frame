@@ -5,6 +5,7 @@ extends VBoxContainer
 signal edited
 
 const ShaderControls = preload("res://tools/asset_workbench/shader_controls.gd")
+const EffectControls = preload("res://tools/asset_workbench/effect_controls.gd")
 const Widgets = preload("res://tools/asset_workbench/workbench_widgets.gd")
 
 var _textures: Array[Texture2D] = []
@@ -18,10 +19,12 @@ var _pitch: SpinBox = SpinBox.new()
 var _delay: SpinBox = SpinBox.new()
 var _bus: OptionButton = OptionButton.new()
 var _shader: ShaderControls = ShaderControls.new()
+var _effects: EffectControls = EffectControls.new()
 
 
 func build(textures: Array[Texture2D], sounds: Array[AudioStream],
-		shaders: Array[FeedbackShaderPreset] = []) -> void:
+		shaders: Array[FeedbackShaderPreset] = [], particles: Array[FeedbackParticlePreset] = [],
+		clips: Array[Animation] = []) -> void:
 	_textures = textures.duplicate()
 	_sounds = sounds.duplicate()
 	_texture.add_item("无图像")
@@ -34,7 +37,7 @@ func build(textures: Array[Texture2D], sounds: Array[AudioStream],
 		_bus.add_item(AudioServer.get_bus_name(index))
 	add_theme_constant_override("separation", 16)
 	var binding_group := Widgets.section(self, "资源绑定")
-	Widgets.label(binding_group, "图像、音频、Shader 独立选择，均可留空。")
+	Widgets.label(binding_group, "各类资源独立选择，均可留空；预设保持只读。")
 	var bindings := Widgets.grid(binding_group)
 	Widgets.field(bindings, "图像", _texture)
 	Widgets.field(bindings, "音频", _sound)
@@ -55,6 +58,9 @@ func build(textures: Array[Texture2D], sounds: Array[AudioStream],
 	Widgets.section(self, "Shader").add_child(_shader)
 	_shader.build(shaders, bindings)
 	_shader.edited.connect(func() -> void: edited.emit())
+	add_child(_effects)
+	_effects.build(particles, clips, bindings)
+	_effects.edited.connect(func() -> void: edited.emit())
 
 
 func display(cue: FeedbackCue) -> void:
@@ -76,6 +82,7 @@ func display(cue: FeedbackCue) -> void:
 	_delay.set_value_no_signal(cue.delay_seconds)
 	_bus.select(AudioServer.get_bus_index(cue.bus))
 	_shader.display(cue)
+	_effects.display(cue)
 
 
 func apply_to(cue: FeedbackCue) -> void:
@@ -91,6 +98,7 @@ func apply_to(cue: FeedbackCue) -> void:
 	if _bus.selected >= 0:
 		cue.bus = _bus.get_item_text(_bus.selected)
 	_shader.apply_to(cue)
+	_effects.apply_to(cue)
 
 
 func _show_binding_paths() -> void:

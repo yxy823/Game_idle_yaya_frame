@@ -7,6 +7,8 @@ signal playback_failed(message: String)
 
 const AudioPlayback = preload("res://components/feedback/audio_playback.gd")
 const Visual = preload("res://components/feedback/feedback_visual.gd")
+const Particles = preload("res://components/feedback/feedback_particles.gd")
+const Motion = preload("res://components/feedback/feedback_motion.gd")
 const ICON_SIZE: float = 100.0
 const RAY_COUNT: int = 12
 
@@ -15,12 +17,16 @@ var _generation: int = 0
 var _pulses: Array[float] = []
 var _audio: AudioPlayback = AudioPlayback.new()
 var _visual: Visual = Visual.new()
+var _particles: Particles = Particles.new()
+var _motion: Motion = Motion.new()
 
 
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_audio)
-	add_child(_visual)
+	add_child(_motion)
+	_motion.content.add_child(_visual)
+	_motion.content.add_child(_particles)
 
 
 func _process(delta: float) -> void:
@@ -42,7 +48,8 @@ func _draw() -> void:
 		pulse_scale = maxf(pulse_scale, 1.0 + sin(progress * PI) * 0.2)
 		_draw_burst(center, progress)
 	var extent := Vector2.ONE * ICON_SIZE * _cue.icon_scale * pulse_scale
-	_visual.position = center - extent * 0.5
+	_motion.position = center
+	_visual.position = -extent * 0.5
 	_visual.size = extent
 
 
@@ -54,6 +61,8 @@ func configure(cue: FeedbackCue) -> void:
 	stop()
 	_cue = cue.trial_copy()
 	_visual.configure(_cue)
+	_particles.configure(_cue)
+	_motion.configure(_cue)
 	queue_redraw()
 
 
@@ -67,6 +76,8 @@ func trigger() -> void:
 	if _cue.texture != null:
 		_pulses.append(0.0)
 	_visual.trigger()
+	_particles.trigger()
+	_motion.trigger()
 	if _cue.sound != null:
 		_play_after_delay(_cue.trial_copy(), _generation)
 	queue_redraw()
@@ -77,11 +88,14 @@ func stop() -> void:
 	_pulses.clear()
 	_audio.stop_all()
 	_visual.stop()
+	_particles.stop()
+	_motion.stop()
 	queue_redraw()
 
 
 func active_effect_count() -> int:
-	return _pulses.size() + int(_visual.is_active())
+	return (_pulses.size() + int(_visual.is_active())
+		+ int(_particles.is_active()) + _motion.active_count())
 
 
 func active_voice_count() -> int:

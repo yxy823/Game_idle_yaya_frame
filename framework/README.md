@@ -31,6 +31,7 @@
 | tests/project/asset_analyzer_backend_test.py、asset_analyzer_test.gd、asset_analyzer_capture.gd、analyzer_process_fixture.py | 第二阶段可选依赖的真实分析、后台异常与图表回归；仅在已安装依赖的指定项目按 [实施报告](review/reports/asset-analyzer-phase2-2026-09-21.md) 显式执行，不加入默认项目工具 unittest 发现 |
 | tests/project/asset_analysis_group_test.gd、asset_composition_test.gd、asset_analysis_group_capture.gd | 第三阶段真实批量分析、规则/历史、组合对象试调/保存及渲染夹具；按 [验证记录](review/reports/asset-workbench-phase3-2026-09-21.md) 在指定项目运行，不随框架分发 |
 | tests/project/asset_shader_composition_test.gd、asset_shader_render_capture.gd | 图片/声音/Shader 独立组合、材质隔离、保存消费及真实像素回归；按 [验证记录](review/reports/asset-workbench-shader-composition-2026-09-22.md) 在既有外部项目执行 |
+| tests/project/asset_effect_composition_test.gd、asset_effect_render_capture.gd | 粒子/Tween/AnimationPlayer 的独立绑定、生命周期、实例/草稿隔离、保存消费及真实渲染；仅在明确指定的外部项目按范围执行 |
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |

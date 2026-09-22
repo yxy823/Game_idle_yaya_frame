@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://examples/asset_workbench/composition/example-composition.tscn" id="1"]
+
+[node name="ExampleEffectsRoom" instance=ExtResource("1")]
+
+[node name="Trophy" parent="." index="1"]
+text = "爆发 / Tween"
+cue_path = "res://examples/asset_workbench/effects_composition/example-burst-cue.tres"
+
+[node name="Star" parent="." index="2"]
+text = "片段 / Shader"
+cue_path = "res://examples/asset_workbench/effects_composition/example-animation-cue.tres"
+
+[node name="Bonus" parent="." index="3"]
+text = "持续 / 纯粒子"
+cue_path = "res://examples/asset_workbench/effects_composition/example-stream-cue.tres"

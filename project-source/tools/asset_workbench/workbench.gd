@@ -15,6 +15,8 @@ const Layout = preload("res://tools/asset_workbench/workbench_layout.gd")
 @export var texture_candidates: Array[Texture2D] = []
 @export var sound_candidates: Array[AudioStream] = []
 @export var shader_candidates: Array[FeedbackShaderPreset] = []
+@export var particle_candidates: Array[FeedbackParticlePreset] = []
+@export var animation_candidates: Array[Animation] = []
 @export var workbench_title: String = "Asset Workbench · 单对象"
 
 var session: Session = Session.new()
@@ -49,7 +51,8 @@ func _ready() -> void:
 	add_child(_batch)
 	_browser.group_requested.connect(_batch.open_assets)
 	_batch.compare_requested.connect(_analysis.open_results)
-	_controls.build(texture_candidates, sound_candidates, shader_candidates)
+	_controls.build(texture_candidates, sound_candidates, shader_candidates,
+		particle_candidates, animation_candidates)
 	_controls.edited.connect(_edit)
 	presenter.playback_failed.connect(_set_status)
 	_reload_dialog.dialog_text = "从磁盘重载当前 Cue？这会丢弃当前对象 A/B 两份草稿。"

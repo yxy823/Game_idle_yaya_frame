@@ -64,4 +64,11 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 它覆盖三个工作台入口、浅深色、1600×900 及 1152×648 / 900×540 / 720×480、图像与音频候选、固定停止/保存和真实鼠标/键盘路由。
 同目录的 Shader、单项分析及批量分析渲染夹具分别检查真实像素/停止恢复、结果来源和图表/集合访问。
 它们不支持 headless 截图，也不做听觉或人工接受判断；每次运行以实际日志、截图和版本为准。
-首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；当前布局、行为、失败现场及人工待确认项见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果。
+
+粒子与动画的新增用例为 `framework/tests/project/asset_effect_composition_test.gd`，复制到外部项目对应的 `tests/features/asset_effect_composition/` 后运行。
+它补充粒子延迟/自然结束/停止、Tween 与动画片段的变换归属、重触发与退出取消、A/B 隔离、完整字段保存及源分析范围；旧套件继续回归原有入口和能力。
+`asset_effect_render_capture.gd` 检查真实 GPU 粒子、重触发、停止与自然结束的像素输出，以及动画变换恢复、第四个工作台入口和消费场景。
+新增参数在 1600×900、1152×648、900×540、720×480 检查可访问性，真实输出按渲染器保存到外部项目 `reports/asset-workbench-effects-20260922/`。
+它只证明实际执行的渲染器与样例；效果协调、听感和交互舒适度仍需用户确认，不把粒子测量混入源资源 Analyzer。
+
+首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制与本轮回归见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。

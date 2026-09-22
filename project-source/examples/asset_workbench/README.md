@@ -1,15 +1,16 @@
-# 美术、音频与 Shader 组合预览示例
+# 美术、音频、Shader 与粒子动画组合预览示例
 
 这是可删除、可替换的开发示例，不是项目 Product、正式玩法或已验收资源。
 复制框架后仍需按项目 README 完成环境准备；示例不会设置项目主场景或自动启动。
 
 ## 打开与操作
 
-三个独立入口放在不同目录，在 Godot 中选择对应场景按 F6：
+四个独立入口放在不同目录，在 Godot 中选择对应场景按 F6：
 
 - 单对象工作台：`single/example-workbench.tscn`。
 - 组合场景工作台：`composition/example-workbench.tscn`。
 - Shader 组合工作台：`shader_composition/example-workbench.tscn`。
+- 粒子与动画组合工作台：`effects_composition/example-workbench.tscn`。
 
 也可在**生成项目根目录**使用配置中的引擎：
 
@@ -28,7 +29,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 
 1. 左侧筛选已有候选；图像显示等比例缩略图及**导入后**尺寸，音频显示类型与导入后时长。“试听 / 循环试听”固定使用 -12 dB、1×、Master；“停止试听”仅停止独立试听。
 2. 浏览、元数据和源分析均不绑定。按需点击“分析候选源文件”，查看后点击“应用到对象 A/B”；应用只改变当前对象的当前方案。候选更多菜单可查看、选择复制完整路径。
-3. Inspector“资源绑定”分别选择图像、音频和 Shader，均可留空；全空配置有效。下面按图像/动画、音频、Shader 分组编辑，未启用 Shader 时素材保持原色。
+3. Inspector“资源绑定”分别选择图像、音频、Shader、粒子与动画片段，均可留空；全空配置有效。下方按类型编辑，Tween 可独立启用；未启用 Shader 时素材保持原色。
 4. “触发”从初态重播；“循环 0.6 s / 快速 0.1 s”仍允许事件重叠。“停止全部”清除全部对象的播放、动画、循环、待触发延迟及独立试听。
 5. 打开或重载时 A 使用磁盘配置；原配置有声音且存在其他音频候选时，B 只换声音，静音配置保持静音。对象 A/B 按钮明确标出选中方案。对象更多菜单提供复制到另一方案、恢复当前方案、重载及打开消费场景。
 6. “保存当前方案”只保存当前 A/B 到可见目标 `.tres`，影响所有引用该 Cue 的消费场景，不修改源素材或共享材质。“保存路径…”可查看并复制完整路径。重载仍确认丢弃**当前对象的两份**草稿。
@@ -101,6 +102,41 @@ Shader 分组显示禁用原因；“预设引用（只读）”列出类型、S
 可加载 `example-analysis-group.json` 体验包含四个示例资源的分组；其中阈值仅为示例，不是项目硬性规范。
 操作、同类统计、规则、历史快照及缓存边界见 [批量分析说明](../../tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
 
+## 粒子、Tween 与 AnimationPlayer
+
+运行 `effects_composition/example-workbench.tscn`；原来的三个入口保持可用。新增入口复用同一组合工作台、保存流程和消费组件：
+
+| 对象 | 初始内容 | 可独立替换或关闭的部分 |
+| --- | --- | --- |
+| 爆发 / Tween | 奖杯、音效、描边、一次性 GPU 粒子及 Tween 跃动 | 图像、声音、Shader、粒子、Tween 分别控制 |
+| 片段 / Shader | 星星、溶解及 AnimationPlayer 摇摆片段 | 可关闭图像、Shader 或片段，也可另外启用 Tween/粒子 |
+| 持续 / 纯粒子 | 无图像、无声音的持续 GPU 粒子 | 粒子使用自己的贴图；不会自动绑定 Cue 图像或音频 |
+
+资源绑定中的粒子与动画片段是只读预设选择，候选来自场景的 `particle_candidates`、`animation_candidates`，不扫描整个项目。
+已保存的绑定即使不在候选数组里，也会保留并显示。参数只改变当前对象的当前 A/B，保存只写当前 Cue；对象/全场景/源分析 A/B、冲突和逐文件部分失败语义不变。
+源分析仍只收集 Cue 的图片和音频，不把粒子内部贴图、动画片段或最终效果加入原始文件分析集合。
+
+| 机制 | 本轮可编辑参数 | 播放与停止语义 |
+| --- | --- | --- |
+| GPU 粒子 | 独立预设、缩放、延迟；持续预设的发射时长 | 每对象持有一个发射器。重触发重新开始；爆发按粒子生命周期结束，持续发射停止后等待存活粒子消散。发射时长不是单颗粒子的寿命；爆发时此参数禁用 |
+| Tween | 启用、跃动距离、往返时长 | 动态计算内部表现层的向上位移并返回；重触发取消前一次，再从初态开始 |
+| AnimationPlayer | 独立片段、播放速度 | 播放已制作的有限动画片段；重触发从头开始，停止或自然结束恢复内部变换 |
+
+“停止全部”、切换方案/对象、重载和退出会取消粒子延迟与动画；粒子立即隐藏并停止发射，下次触发重置 GPU 模拟，不显示旧粒子。
+声音和原有图标脉冲仍可重叠；粒子、Tween、片段与当前表面的 Shader 分别重启，不为快速触发无限创建节点。
+Tween 位移层与动画片段变换层互相嵌套，作用于图像/Shader 表面和粒子发射器，不移动名称、选中边框或 Inspector。
+已发射粒子是否跟随变换由预设 `local_coords` 决定，本例为局部跟随。旧图标脉冲仍由原绘制逻辑拥有，不与 Tween 写同一属性。
+只启用运动而没有图像、Shader 或粒子时没有可见目标；该配置仍有效，不补入隐藏素材。
+
+新增预设的制作边界：
+
+- 粒子使用 `FeedbackParticlePreset` 引用单根、无附加脚本/子节点的 `GPUParticles2D` 场景，模拟材质为 `ParticleProcessMaterial`；不是图像用的 `FeedbackShaderPreset`。本契约限制 1–256 颗、寿命大于 0 且不超过 5 s、速度倍率为 1。缩放 0.25–2×、延迟 0–0.6 s、持续发射时长 0.15–5 s 保存在 Cue。
+- 运行发射器与其模拟材质按对象隔离；纹理、曲线及预设保持只读共享。制作复杂粒子场景、子发射器、碰撞或自定义模拟 Shader 需要另行明确契约。
+- 动画使用已保存的 `Animation` 资源，本例为 `example-wobble-animation.tres`。仅接受长度大于 0 且不超过 5 s 的非循环片段，以及目标为 `.:position`、`.:scale`、`.:rotation` 的有限数值轨道；不执行方法、音频或跨对象轨道。可在 Godot 编辑器制作片段，工作台只选择和调整速度。
+- Tween 往返时长 0.15–3 s、距离 0–80 px；片段速度 0.5–2×。源文件、共享预设、AnimationLibrary 和运行中的 Tween 不通过 Cue 保存改写。
+
+独立运行 `effects_composition/example-composition.tscn` 即可消费已保存的三份 Cue。这里没有新增 Manager、统一时间轴或通用动画编辑器。
+
 ## 数据和运行边界
 
 | 位置 | 职责 |
@@ -111,9 +147,10 @@ Shader 分组显示禁用原因；“预设引用（只读）”列出类型、S
 | `composition/example-workbench.tscn` | 独立组合工作台；直接选择场景内对象并编辑属性 |
 | `composition/example-composition.tscn`、该目录的 `example-composition-*.tres` | 三对象真实场景及分别保存的表现配置；不改单对象配置 |
 | `shader_composition/` | 继承三对象示例的 Shader 工作台、独立 Cue、材质预设、复制重命名的 Shader 与许可 |
+| `effects_composition/` | 粒子/Tween/AnimationPlayer 组合入口与消费场景、独立 Cue、发射器预设、动画片段及示例贴图/许可 |
 | `example-analysis-group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
 | `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
-| `components/feedback/` | 可选图像/Shader 表面、图标脉冲、Cue 与材质契约、局部音频播放；各入口共用同一表现逻辑 |
+| `components/feedback/` | Cue、图像/Shader 表面、图标脉冲、局部音频、独立粒子与运动层；各入口共用同一表现逻辑 |
 | `tools/asset_workbench/` | 候选浏览、试调和保存界面；不注册全局服务 |
 | `tools/asset_analyzer/` | 源文件专业分析与适配器；独立于音频播放，不写回 Cue |
 
@@ -121,7 +158,7 @@ Shader 分组显示禁用原因；“预设引用（只读）”列出类型、S
 它没有通用 Object/State/Event 引擎、完整时间轴、多音轨编辑、空间音频或音乐管理。
 已有游戏对象应接入其现有表现组件与配置；不要为了使用本示例复制一套正式关系模型。
 
-试调复制 Cue 的值字段，Texture/AudioStream/Shader 预设保持只读共享；运行材质由表现表面单独持有。保存前检查磁盘内容是否变化，
+试调复制 Cue 的值字段，纹理/音频/Shader/粒子预设与动画片段保持只读共享；运行材质、发射器和动画状态按对象持有。保存前检查磁盘内容是否变化，
 保存后绕过 Cue 缓存重新加载并核对；冲突或失败保留试调并显示原因。磁盘冲突检查不提供多进程事务锁。
 保存仅供 Godot 编辑器二进制的开发运行使用，导出游戏不得依赖写回 `res://`。
 所有引用这个目标 Cue 的对象都受保存影响；接真实项目前应明确这个范围。
@@ -152,6 +189,17 @@ Shader 分组显示禁用原因；“预设引用（只读）”列出类型、S
 Shader 从用户指定的本地 GDQuest `godot-shaders/godot/Shaders` 复制，保留逻辑，只重命名并规范空白与换行。
 完整对应与 MIT 许可见 [Shader 许可](shader_composition/example-shaders-license.txt)。
 上游艺术资产采用不同许可，本例没有复制这些艺术资产；溶解遮罩在本例中用 Godot 渐变资源生成。
+
+粒子资源通过用户指定的本地 `game-asset-library-search` Skill 检索，选用 `brackeys-vfx-in-godot`，存档版本 `23b58f272b828b0a894ed7ef72fbf9033ee9d177`。
+只读取并复制所需场景、其一张贴图和原始 README，资源库原件未改动，未执行原包脚本或安装插件。作者的整项目 CC0 声明原文保留在 [example-brackeys-license.md](effects_composition/example-brackeys-license.md)。
+
+| 原包路径（仓库根下） | 本例文件 | 处理 |
+| --- | --- | --- |
+| `vfx/scenes/2d_example.tscn` | `effects_composition/example-particle-stream.tscn`、`example-particle-burst.tscn` | 复制后适配为单发射器，调整数量、寿命、速度、曲线/颜色与本地引用；爆发为基于该样例的变体 |
+| `vfx/brackeys_particle_bundle/particles/alpha/spotlight_01_a.png` | `effects_composition/example-particle-spotlight.png` | 仅重命名，图片字节不变 |
+| `README.md` | `effects_composition/example-brackeys-license.md` | 保留原文与许可声明 |
+
+`example-wobble-animation.tres` 和本轮 Cue/预设为本项目编写；图片、音频与 Shader 继续复用上文已有示例，不把程序制作的动画误记成下载素材。
 
 ## 验证和人工体验
 
