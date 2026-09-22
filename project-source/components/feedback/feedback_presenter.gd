@@ -14,6 +14,9 @@ const RAY_COUNT: int = 12
 
 var _cue: FeedbackCue
 var _generation: int = 0
+var _revision: int = 0
+var _managed: bool = false
+var _pending_audio: int = 0
 var _pulses: Array[float] = []
 var _audio: AudioPlayback = AudioPlayback.new()
 var _visual: Visual = Visual.new()
@@ -21,7 +24,8 @@ var _particles: Particles = Particles.new()
 var _motion: Motion = Motion.new()
 
 
-func _ready() -> void:
+func _init() -> void:
+	# Own every constructed node even when this presenter is freed before entering the tree.
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_audio)
 	add_child(_motion)
@@ -67,24 +71,40 @@ func configure(cue: FeedbackCue) -> void:
 
 
 func trigger() -> void:
-	if _cue == null:
-		return
-	var issue := _cue.validation_error()
-	if not issue.is_empty():
-		playback_failed.emit(issue)
-		return
-	if _cue.texture != null:
-		_pulses.append(0.0)
-	_visual.trigger()
-	_particles.trigger()
-	_motion.trigger()
-	if _cue.sound != null:
-		_play_after_delay(_cue.trial_copy(), _generation)
-	queue_redraw()
+	# A manual trigger takes the whole target back; later managed cancellation cannot stop it.
+	if _managed:
+		stop()
+	_start_playback(false)
+
+
+## Managed playback is exclusive for this target; ordinary triggers still allow audio overlap.
+## Returns this invocation's revision, even if a synchronous signal supersedes it, or 0 on failure.
+func trigger_managed() -> int:
+	stop()
+	return _start_playback(true)
+
+
+func playback_revision() -> int:
+	return _revision
+
+
+func playback_error() -> String:
+	return "No Cue is configured." if _cue == null else _cue.validation_error()
+
+
+func pending_audio_count() -> int:
+	return _pending_audio
+
+
+func is_playing() -> bool:
+	return _pending_audio > 0 or active_voice_count() > 0 or active_effect_count() > 0
 
 
 func stop() -> void:
 	_generation += 1
+	_revision += 1
+	_managed = false
+	_pending_audio = 0
 	_pulses.clear()
 	_audio.stop_all()
 	_visual.stop()
@@ -103,15 +123,36 @@ func active_voice_count() -> int:
 
 
 func _play_after_delay(cue: FeedbackCue, generation: int) -> void:
+	_pending_audio += 1
 	if cue.delay_seconds > 0.0:
 		await get_tree().create_timer(cue.delay_seconds).timeout
 	if generation != _generation or not is_inside_tree():
 		return
+	_pending_audio -= 1
 	var error := _audio.play(cue.sound, cue.gain_db, cue.pitch_scale, cue.bus)
 	if error == OK:
 		sound_started.emit()
 	else:
 		playback_failed.emit("Audio playback failed: %s" % error_string(error))
+
+
+func _start_playback(managed: bool) -> int:
+	_revision += 1
+	var revision := _revision
+	var issue := playback_error()
+	if not issue.is_empty():
+		playback_failed.emit(issue)
+		return 0
+	_managed = managed
+	if _cue.texture != null:
+		_pulses.append(0.0)
+	_visual.trigger()
+	_particles.trigger()
+	_motion.trigger()
+	if _cue.sound != null:
+		_play_after_delay(_cue.trial_copy(), _generation)
+	queue_redraw()
+	return revision
 
 
 func _draw_burst(center: Vector2, progress: float) -> void:

@@ -11,7 +11,7 @@ var _tween: Tween
 var _cue: FeedbackCue
 
 
-func _ready() -> void:
+func _init() -> void:
 	add_child(_tween_root)
 	_tween_root.add_child(content)
 	content.add_child(_player)
