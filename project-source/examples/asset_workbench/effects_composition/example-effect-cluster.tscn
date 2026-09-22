@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="1"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example-cluster-core-cue.tres" id="2_core"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example-cluster-local-cue.tres" id="3_local"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example-cluster-world-cue.tres" id="4_world"]
 
 [node name="ExampleEffectCluster" type="Control"]
 custom_minimum_size = Vector2(340, 270)
@@ -16,7 +19,7 @@ offset_bottom = 145.0
 z_index = 1
 text = "核心组合"
 script = ExtResource("1")
-cue_path = "res://examples/asset_workbench/effects_composition/example-cluster-core-cue.tres"
+cue_resource = ExtResource("2_core")
 
 [node name="Local" type="Button" parent="."]
 offset_top = 130.0
@@ -24,7 +27,7 @@ offset_right = 125.0
 offset_bottom = 260.0
 text = "局部粒子"
 script = ExtResource("1")
-cue_path = "res://examples/asset_workbench/effects_composition/example-cluster-local-cue.tres"
+cue_resource = ExtResource("3_local")
 
 [node name="World" type="Button" parent="."]
 offset_left = 215.0
@@ -33,4 +36,4 @@ offset_right = 340.0
 offset_bottom = 260.0
 text = "场景粒子"
 script = ExtResource("1")
-cue_path = "res://examples/asset_workbench/effects_composition/example-cluster-world-cue.tres"
+cue_resource = ExtResource("4_world")

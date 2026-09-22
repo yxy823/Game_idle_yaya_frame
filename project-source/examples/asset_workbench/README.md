@@ -5,12 +5,14 @@
 
 ## 打开与操作
 
-四个独立入口放在不同目录，在 Godot 中选择对应场景按 F6：
+四个独立入口放在不同目录，在 Godot 中选择对应场景按 F6。按当前要验证的行为选择，不必逐个完成：
 
-- 单对象工作台：`single/example-workbench.tscn`。
-- 组合场景工作台：`composition/example-workbench.tscn`。
-- Shader 组合工作台：`shader_composition/example-workbench.tscn`。
-- 粒子与动画组合工作台：`effects_composition/example-workbench.tscn`。
+| 工作台入口 | 代表性检查 | 保存后的消费入口 |
+| --- | --- | --- |
+| `single/example-workbench.tscn` | 单对象浏览、试听、A/B、保存 | `single/example-game.tscn` |
+| `composition/example-workbench.tscn` | 多对象选择、混合 A/B、逐文件保存 | `composition/example-composition.tscn` |
+| `shader_composition/example-workbench.tscn` | 材质隔离、无图像承载面、独立绑定 | `shader_composition/example-composition.tscn` |
+| `effects_composition/example-workbench.tscn` | 粒子/运动组合、共享 Cue 多实例、局部 Manager 与有限编排 | `effects_composition/example-consumer.tscn` |
 
 也可在**生成项目根目录**使用配置中的引擎：
 
@@ -208,9 +210,22 @@ Manager 的数额统计对象而非粒子数、显存或音频声部；直接触
 不启用其全局插件。最多重叠 16 个非空间声音；到达上限返回可见错误，不改全局总线音量。
 切换、停止和退出使旧延迟请求失效；不把引擎帧调度当成采样级同步。
 
-正式游戏导出时选择正式入口场景及依赖。使用全资源导出时，显式排除本示例与
-`tools/asset_workbench/`、`tools/asset_analyzer/` 和 `reports/`；保留正式场景实际依赖的组件及音频实现。当前框架不预填生产导出配置。
-删除示例前核对正式场景没有引用其中资产；不能只因文件有 `example-` 前缀就忽略真实引用。
+### 消费接入与导出
+
+消费对象通过 `cue_resource: FeedbackCue` 绑定已保存的资源，场景由此声明 Cue 及其媒体/预设依赖；工作台保存路径从该引用派生，不另存第二份目标。
+消费实例进入场景时绕过 Cue 缓存重读，以取得最近一次保存；工作台内存中的 A/B 仍独立。没有绑定与“已绑定但内容全空”的 Cue 不同，后者有效且可以播放为空。
+四个消费入口只使用自身场景、表现组件和局部音频实现，不依赖工作台、Analyzer、框架路径或就绪流程。
+
+正式项目优先复用自身表现接口。使用这些组件时，将所需 Cue、预设及素材放到项目自己的正式目录，再调整场景引用；组合位置/层级仍由原生 Scene 负责。
+需要多对象分组取消或窗口编排时再挂局部 Manager/Timeline；普通单对象无需该层。新增素材应在目标设备核对成本，示例的三个受管对象预算不代表性能上限。
+
+选择“场景及依赖”导出时，除正式入口外，还要显式包含运行时加载的脚本。对本示例，在非资源包含过滤中加入
+`components/feedback/*.gd`、`addons/sound_manager/abstract_audio_player_pool.gd`；仅选择 `.tscn` 不能保证 GDScript 的 `preload` 链都进入包。
+另保留实际使用的第三方许可，例如 SoundManager 的 `LICENSE` 和 Shader 的 `example-shaders-license.txt`，可随包包含或放在发行说明中。
+用导出包独立启动消费场景，核对图像、声音、材质、粒子、动画、编排与停止；编辑器里的 F6 成功不能替代导出验证。当前框架不预填生产导出配置。
+
+使用全资源导出时，排除仅用于开发的 `tools/asset_workbench/`、`tools/asset_analyzer/`、测试与 `reports/`。
+只有正式场景已不引用示例时，才能排除整个 `examples/asset_workbench/`；不能只因文件有 `example-` 前缀就忽略真实引用。保留正式场景实际依赖的组件、音频实现、素材和许可。
 
 ## 素材来源与许可
 

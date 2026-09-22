@@ -76,7 +76,7 @@ func test_shared_identical_save_writes_one_target_and_preserves_inactive_drafts(
 	assert_float(second.drafts[1].tween_distance).is_equal(11.0)
 	assert_str(second.save_error()).is_empty()
 	var object: ObjectView = auto_free(ObjectView.new())
-	object.cue_path = first.target_path
+	object.cue_resource = load(first.target_path) as FeedbackCue
 	add_child(object)
 	assert_float(object.cue.tween_distance).is_equal(27.0)
 

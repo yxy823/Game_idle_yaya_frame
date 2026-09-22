@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
 [ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="2"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/composition/example-composition-trophy.tres" id="3_trophy"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/composition/example-composition-star.tres" id="4_star"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/composition/example-composition-bonus.tres" id="5_bonus"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)
@@ -49,7 +52,7 @@ offset_bottom = 210.0
 text = "Trophy / Activate"
 alignment = 0
 script = ExtResource("2")
-cue_path = "res://examples/asset_workbench/composition/example-composition-trophy.tres"
+cue_resource = ExtResource("3_trophy")
 
 [node name="Star" type="Button" parent="."]
 layout_mode = 1
@@ -62,7 +65,7 @@ offset_bottom = 210.0
 text = "Star / Activate"
 alignment = 0
 script = ExtResource("2")
-cue_path = "res://examples/asset_workbench/composition/example-composition-star.tres"
+cue_resource = ExtResource("4_star")
 
 [node name="Bonus" type="Button" parent="."]
 layout_mode = 1
@@ -75,4 +78,4 @@ offset_bottom = 210.0
 text = "Bonus / Activate"
 alignment = 0
 script = ExtResource("2")
-cue_path = "res://examples/asset_workbench/composition/example-composition-bonus.tres"
+cue_resource = ExtResource("5_bonus")

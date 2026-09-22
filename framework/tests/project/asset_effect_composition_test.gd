@@ -168,7 +168,7 @@ func test_effect_fields_round_trip_and_consumer_uses_saved_current_trial() -> vo
 	assert_bool(session.is_dirty()).is_false()
 	assert_bool(session.drafts[1].same_values(other_before)).is_true()
 	var object: ObjectView = auto_free(ObjectView.new())
-	object.cue_path = FIXTURE
+	object.cue_resource = load(FIXTURE) as FeedbackCue
 	add_child(object)
 	assert_bool(object.cue.same_values(cue)).is_true()
 	object.pressed.emit()

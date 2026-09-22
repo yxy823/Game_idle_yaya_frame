@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://examples/asset_workbench/single/example_reward_game.gd" id="1_script"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/single/example-feedback.tres" id="2_cue"]
 
 [node name="ExampleRewardGame" type="Control"]
 layout_mode = 3
@@ -10,3 +11,4 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
+cue_resource = ExtResource("2_cue")

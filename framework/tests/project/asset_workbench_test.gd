@@ -39,7 +39,7 @@ func test_save_is_reloaded_by_actual_game_consumer() -> void:
 	assert_str(_session.save_current()).is_empty()
 	assert_bool(_session.is_dirty()).is_false()
 	var game: Game = auto_free(Game.new())
-	game.cue_path = FIXTURE_PATH
+	game.cue_resource = load(FIXTURE_PATH) as FeedbackCue
 	add_child(game)
 	assert_float(game.cue.gain_db).is_equal(-21.0)
 	assert_float(game.cue.delay_seconds).is_equal(0.15)

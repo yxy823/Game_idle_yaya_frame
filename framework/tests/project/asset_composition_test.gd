@@ -97,7 +97,7 @@ func test_save_all_reports_conflict_and_game_object_reads_saved_resource() -> vo
 	assert_str(_workbench.get("_status").text).contains("File changed on disk")
 	assert_bool(sessions[conflict_path].is_dirty()).is_true()
 	var object: ObjectView = auto_free(ObjectView.new())
-	object.cue_path = sessions.keys()[0]
+	object.cue_resource = load(sessions.keys()[0]) as FeedbackCue
 	add_child(object)
 	assert_float(object.cue.gain_db).is_equal(-23.0)
 

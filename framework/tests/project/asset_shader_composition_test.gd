@@ -138,7 +138,7 @@ func test_all_combinations_round_trip_and_actual_object_consumes_saved_cue() -> 
 		assert_str(session.save_current()).is_empty()
 		assert_bool(session.is_dirty()).is_false()
 		var object: ObjectView = auto_free(ObjectView.new())
-		object.cue_path = FIXTURE
+		object.cue_resource = load(FIXTURE) as FeedbackCue
 		add_child(object)
 		assert_bool(object.cue.same_values(session.current())).is_true()
 		object.pressed.emit()
