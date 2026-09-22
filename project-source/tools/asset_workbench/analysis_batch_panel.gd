@@ -6,6 +6,7 @@ signal compare_requested(first: Dictionary, second: Dictionary)
 
 const Batch = preload("res://tools/asset_workbench/analysis_batch.gd")
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 const Statistics = preload("res://tools/asset_workbench/analysis_group_statistics.gd")
 const Scan = preload("res://tools/asset_workbench/analysis_group_scan.gd")
 const Rules = preload("res://tools/asset_workbench/analysis_group_rules.gd")
@@ -63,15 +64,47 @@ func _add_discovered(paths: Array[String]) -> void:
 
 
 func open_assets(assets: Array[Resource]) -> void:
-	var paths: Array[String] = []
-	for asset: Resource in assets:
-		paths.append(asset.resource_path)
-	_notice.text = batch.add_paths(paths)
-	if _notice.text.is_empty():
-		_notice.text = "本次收集 %d 个图像 / 音频源文件；集合保留此前成员，不包含 Shader。" % paths.size()
+	var skipped: Array[String] = []
+	var paths := _collect_paths(assets, skipped)
+	var before: int = batch.group.assets.size()
+	var existing: int = 0
+	for member: Dictionary in batch.group.assets:
+		if member.path in paths:
+			existing += 1
+	var issue := batch.add_paths(paths)
+	var added: int = batch.group.assets.size() - before
+	var summary := "本次新增 %d 个源文件；已在集合 %d 个；跳过 %d 项。集合保留此前成员。" % [
+		added, existing, skipped.size()]
+	if not issue.is_empty():
+		summary = issue + "\n" + summary
+	var pending := paths.size() - existing - added
+	if pending > 0:
+		summary += "另有 %d 个有效源文件未加入。" % pending
+	_notice.text = summary
+	for skipped_asset: String in skipped:
+		_notice.text += "\n跳过 " + skipped_asset
 	if not visible:
 		popup_centered(Vector2i(1600, 900))
 	grab_focus()
+
+
+func _collect_paths(assets: Array[Resource], skipped: Array[String]) -> Array[String]:
+	var paths: Array[String] = []
+	for asset: Resource in assets:
+		if asset == null:
+			skipped.append("空资源：未提供图像或音频源文件。")
+			continue
+		var source := Source.describe(asset)
+		if not source.issue.is_empty():
+			var label: String = source.path if not source.path.is_empty() else "未保存资源"
+			skipped.append(label + "：" + str(source.issue.message))
+			continue
+		var path := Group.project_path(source.path)
+		if path.is_empty():
+			skipped.append(str(source.path) + "：批量集合仅接受项目内的源文件。")
+		elif path not in paths:
+			paths.append(path)
+	return paths
 
 
 func _build() -> void:

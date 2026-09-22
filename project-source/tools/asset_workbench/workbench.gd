@@ -22,21 +22,30 @@ const Layout = preload("res://tools/asset_workbench/workbench_layout.gd")
 var session: Session = Session.new()
 var presenter: Presenter
 
-var _browser: Browser = Browser.new()
-var _controls: Controls = Controls.new()
+var _browser: Browser
+var _controls: Controls
 var _status: Label
 var _state: Label
-var _repeat: Timer = Timer.new()
-var _reload_dialog: ConfirmationDialog = ConfirmationDialog.new()
-var _background: ColorRect = ColorRect.new()
+var _repeat: Timer
+var _reload_dialog: ConfirmationDialog
+var _background: ColorRect
 var _backdrop: Backdrop
-var _analysis: AnalysisPanel = AnalysisPanel.new()
-var _batch: BatchPanel = BatchPanel.new()
+var _analysis: AnalysisPanel
+var _batch: BatchPanel
 var _target: Label
-var _ui: Layout = Layout.new()
+var _ui: Layout
 
 
 func _ready() -> void:
+	# UI nodes gain their parents below; cold scene instances must not create detached trees.
+	_browser = Browser.new()
+	_controls = Controls.new()
+	_repeat = Timer.new()
+	_reload_dialog = ConfirmationDialog.new()
+	_background = ColorRect.new()
+	_analysis = AnalysisPanel.new()
+	_batch = BatchPanel.new()
+	_ui = Layout.new()
 	_build_layout()
 	add_child(_repeat)
 	_repeat.timeout.connect(func() -> void: presenter.trigger())
@@ -132,6 +141,8 @@ func _dispatch_action(action: StringName) -> void:
 
 
 func _analyze_object() -> void:
+	if not _has_current_cue():
+		return
 	var assets: Array[Resource] = []
 	for asset: Resource in [session.current().texture, session.current().sound]:
 		if asset != null:
@@ -156,6 +167,8 @@ func _load_session() -> void:
 	stop_all()
 	var issue := session.open(cue_path)
 	if not issue.is_empty():
+		if session.saved == null:
+			_state.text = "未加载有效 Cue"
 		_set_status(issue)
 		return
 	# A keeps the saved cue; B changes only the sound so the example is immediately comparable.
@@ -219,14 +232,25 @@ func _copy_alternative() -> void:
 
 
 func _trigger_once() -> void:
+	if not _has_current_cue():
+		return
 	stop_all()
 	presenter.trigger()
 
 
 func _start_repeat(interval: float) -> void:
+	if not _has_current_cue():
+		return
 	stop_all()
 	_repeat.start(interval)
 	presenter.trigger()
+
+
+func _has_current_cue() -> bool:
+	if session.saved != null:
+		return true
+	_set_status("尚未加载有效 Cue；请修复 Cue 路径后重新加载。候选资源仍可独立试听和分析。")
+	return false
 
 
 func _reset_trial() -> void:

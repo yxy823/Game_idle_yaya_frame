@@ -82,6 +82,28 @@ func _batch_capture(workbench: Control) -> void:
 	await process_frame
 	_check(scroll.scroll_vertical > 0, "Compact group details must remain reachable")
 	await _save(panel, "group-compact-details.png")
+	await _unsupported_source_capture(workbench, panel)
+
+
+func _unsupported_source_capture(workbench: Control, panel: Window) -> void:
+	var atlas := AtlasTexture.new()
+	atlas.atlas = load("res://examples/asset_workbench/assets/example-star.png")
+	var assets: Array[Resource] = [atlas]
+	var count: int = panel.batch.group.assets.size()
+	panel.call("open_assets", assets)
+	_check(panel.batch.group.assets.size() == count, "Indirect texture must not join source files")
+	var notice: Label = panel.get("_notice")
+	_check(notice.text.contains("本次新增 0") and notice.text.contains("跳过 1 项"),
+		"Collection must report real additions and skipped resources")
+	workbench.call("_set_dark_theme", false)
+	panel.size = Vector2i(1600, 900)
+	var scroll := panel.get_node("GroupScroll") as ScrollContainer
+	scroll.scroll_vertical = 0
+	await _save(panel, "group-unsupported-source.png")
+	panel.size = Vector2i(620, 440)
+	await process_frame
+	scroll.ensure_control_visible(notice)
+	await _save(panel, "group-unsupported-source-compact.png")
 
 
 func _save(window: Window, filename: String) -> void:

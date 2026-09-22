@@ -85,4 +85,15 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 当前输出为外部项目 `reports/asset-workbench-e5-e6-20260922/`；失败与旧捕获保留，实际听感/视觉协调仍待人工体验。
 局部对象预算不是性能通过线；此阶段的功能与生命周期回归不替代 E4 测量，也不宣称改善 128 对象帧间隔。
 
+交付边界回归 `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` 放到外部项目对应的同名职责目录（去掉 `_test` 后缀）。
+它们核对四类消费和工作台的未入树释放、显式 Cue 依赖、缓存场景读取最近保存值，以及 Cue 读取失败后恢复、批量不支持项/重复/容量反馈。
+保存测试只写测试目录，不修改示例 Cue；冷释放与已经入树后的装卸是不同分支，不能互相替代。
+
+`asset_consumer_export_presets.cfg` 是四个消费入口的维护测试预设，不进入分发清单，也不是生产导出配置。
+仅在指定测试项目没有 `export_presets.cfg` 时临时安装并于结束恢复原先不存在的状态；已有预设时不得覆盖，先按本次授权选择隔离办法。
+它选择消费场景及依赖，并显式包含表现脚本、局部音频池和素材许可，排除工作台、Analyzer、测试及维护材料。
+通过 Godot `--export-pack` 输出到报告区后，从报告目录使用 `--main-pack` 启动 `asset_consumer_export_probe.gd`，在 `--` 后传唯一的绝对 JSON 输出路径。
+探针检查四入口的 Cue、真实声部、组合/编排、停止与回收及工具目录缺席；从项目根直接运行会使源文件掩盖缺漏，因此不构成相同验证。
+独立资源包运行不等于签名安装包、发行模板或其他平台已验证。原始失败包、日志与最终包分开保留；复用渲染夹具时仅改外部副本输出位置。
+
 首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)，组合复用与规模测量见 [E3/E4 报告](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。
