@@ -18,7 +18,7 @@ func _ready() -> void:
 	for object: Control in _composition.stage.objects:
 		if object.presenter != presenter:
 			object.presenter.playback_failed.connect(_set_status)
-	_composition.select_object(_composition.stage.objects[0].cue_path)
+	_composition.select_object(String(_composition.stage.get_path_to(_composition.stage.objects[0])))
 
 
 func _build_event_panel(parent: Container) -> void:
@@ -28,25 +28,25 @@ func _build_event_panel(parent: Container) -> void:
 	_composition.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	parent.add_child(_composition)
 	presenter = _composition.stage.objects[0].presenter
+	_composition.select_object(String(_composition.stage.get_path_to(_composition.stage.objects[0])))
 
 
 func _current_object_name() -> String:
-	return _composition.object_name(cue_path)
+	return _composition.object_name()
 
 
 func _use_session(selected: Session) -> void:
 	stop_all()
 	session = selected
 	cue_path = session.target_path
-	for object: Control in _composition.stage.objects:
-		if object.cue_path == cue_path:
-			presenter = object.presenter
+	presenter = _composition.current_object().presenter
 	_refresh()
 
 
-func _refresh() -> void:
-	super()
-	_composition.update_trial(session)
+func _preview_trial() -> void:
+	# One configure per edit; object identity is independent of its shared save path.
+	_composition.current_object().preview(session.current())
+	_composition.refresh_state()
 
 
 func _set_dark_theme(enabled: bool) -> void:

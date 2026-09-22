@@ -45,7 +45,7 @@ func copy_to_other() -> void:
 	drafts[1 - active_index] = current().trial_copy()
 
 
-func save_current() -> String:
+func save_error() -> String:
 	if not OS.has_feature("editor"):
 		return "Saving project resources is available only from the Godot editor binary."
 	var issue := current().validation_error()
@@ -53,9 +53,21 @@ func save_current() -> String:
 		return issue
 	if FileAccess.get_file_as_string(target_path) != _disk_text:
 		return "File changed on disk. Reload before saving; trial edits are still available."
+	return ""
+
+
+func save_current() -> String:
+	var issue := save_error()
+	if not issue.is_empty():
+		return issue
 	var error := ResourceSaver.save(current().trial_copy(), target_path)
 	if error != OK:
 		return "Save failed: %s. Trial edits were retained." % error_string(error)
+	return accept_matching_save()
+
+
+func accept_matching_save() -> String:
+	# Shared-file saves acknowledge only identical current values; both drafts stay untouched.
 	var reloaded := ResourceLoader.load(
 		target_path, "", ResourceLoader.CACHE_MODE_IGNORE
 	) as FeedbackCue

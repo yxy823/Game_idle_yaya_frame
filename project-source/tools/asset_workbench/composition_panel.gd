@@ -36,13 +36,11 @@ func _ready() -> void:
 
 func _load_sessions() -> void:
 	for object: ObjectView in stage.objects:
-		if sessions.has(object.cue_path):
-			continue
 		var session := Session.new()
 		var issue := session.open(object.cue_path)
 		if issue.is_empty():
 			_seed_alternative(session)
-			sessions[object.cue_path] = session
+			sessions[String(stage.get_path_to(object))] = session
 		else:
 			_report(issue)
 	_update_scene_state()
@@ -68,19 +66,34 @@ func select_object(path: String) -> void:
 		stage.highlight(path)
 		session_selected.emit(sessions[path])
 		_status.text = "已选择：" + object_name(path)
+		var shared: int = 0
+		for session: Session in sessions.values():
+			shared += int(session.target_path == sessions[path].target_path)
+		if shared > 1:
+			_status.text += "；%d 个对象共享保存目标，草稿各自独立。" % shared
 
 
-func update_trial(session: Session) -> void:
+func update_trial(path: String) -> void:
 	if stage != null:
-		stage.preview(session.target_path, session.current())
+		stage.preview(path, sessions[path].current())
 	_update_scene_state()
 
 
-func object_name(path: String) -> String:
-	for object: ObjectView in stage.objects:
-		if object.cue_path == path:
-			return object.display_name
-	return path.get_file().get_basename()
+func object_name(path: String = "") -> String:
+	var selected := _selected_path if path.is_empty() else path
+	var object := stage.object_at(selected)
+	if object == null:
+		return selected
+	var parent := selected.get_base_dir()
+	return object.display_name if parent.is_empty() else parent + " / " + object.display_name
+
+
+func current_object() -> ObjectView:
+	return stage.object_at(_selected_path)
+
+
+func refresh_state() -> void:
+	_update_scene_state()
 
 
 func _update_scene_state() -> void:
@@ -99,9 +112,10 @@ func _update_scene_state() -> void:
 func select_all_alternatives(index: int) -> void:
 	stop_requested.emit()
 	stage.stop()
-	for session: Session in sessions.values():
+	for path: String in sessions:
+		var session := sessions[path]
 		session.active_index = index
-		update_trial(session)
+		update_trial(path)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
 	_report("所有对象已切换到方案 %s；尚未保存。" % ("A" if index == 0 else "B"))
@@ -117,9 +131,10 @@ func apply_gain(value: float) -> void:
 	if not is_finite(value) or value < -48.0 or value > 0.0:
 		return
 	_gain.set_value_no_signal(value)
-	for session: Session in sessions.values():
+	for path: String in sessions:
+		var session := sessions[path]
 		session.current().gain_db = value
-		update_trial(session)
+		update_trial(path)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
 	_report("已将 %.1f dB 增益应用到各对象的当前方案，尚未保存。" % value)
@@ -142,8 +157,13 @@ func save_all() -> void:
 	stage.stop()
 	var saved: int = 0
 	var issues: Array[String] = []
-	for path: String in sessions:
-		var issue := sessions[path].save_current()
+	var files: Dictionary[String, Array] = {}
+	for session: Session in sessions.values():
+		files.get_or_add(session.target_path, []).append(session)
+	for path: String in files:
+		var group: Array[Session] = []
+		group.assign(files[path])
+		var issue := _save_shared_file(group)
 		if issue.is_empty():
 			saved += 1
 		else:
@@ -151,7 +171,26 @@ func save_all() -> void:
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
 	_report("已保存 %d/%d 个 Cue；逐文件检查与保存，并非多文件事务。\n%s" % [
-		saved, sessions.size(), "\n".join(issues)])
+		saved, files.size(), "\n".join(issues)])
+
+
+func _save_shared_file(group: Array[Session]) -> String:
+	var first: Session = group[0]
+	for session: Session in group:
+		if not session.current().same_values(first.current()):
+			return "多个对象的当前方案引用同一 Cue 但内容不同，未写入。请统一方案或只保存选中对象。"
+		var conflict := session.save_error()
+		if not conflict.is_empty():
+			return conflict
+	var issue := first.save_current()
+	if not issue.is_empty():
+		return issue
+	for session: Session in group:
+		if session != first:
+			issue = session.accept_matching_save()
+			if not issue.is_empty():
+				return issue
+	return ""
 
 
 func _build() -> void:

@@ -164,8 +164,9 @@ func test_scene_ab_switches_all_objects_and_preserves_independent_trials() -> vo
 	for object: ObjectView in panel.stage.objects:
 		assert_float(object.cue.shader_strength).is_equal(0.25)
 		assert_int(object.presenter.active_effect_count()).is_zero()
-		assert_float(panel.sessions[object.cue_path].drafts[1].shader_strength).is_equal(0.8)
-	var silent: Session = panel.sessions[panel.stage.objects[1].cue_path]
+		var key := String(panel.stage.get_path_to(object))
+		assert_float(panel.sessions[key].drafts[1].shader_strength).is_equal(0.8)
+	var silent: Session = panel.sessions[String(panel.stage.get_path_to(panel.stage.objects[1]))]
 	assert_object(silent.drafts[0].sound).is_null()
 	assert_object(silent.drafts[1].sound).is_null()
 	assert_array(panel.assets(false)).not_contains([null, OUTLINE.shader_preset])

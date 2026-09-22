@@ -44,8 +44,8 @@ func test_object_click_selects_real_instance_and_preserves_each_trial() -> void:
 
 func test_batch_gain_updates_only_active_trials_and_keeps_assets_unmodified() -> void:
 	var paths: Array = _panel.sessions.keys()
-	var source := FileAccess.get_file_as_string(paths[0])
 	var session: Session = _panel.sessions[paths[0]]
+	var source := FileAccess.get_file_as_string(session.target_path)
 	var texture := session.saved.texture
 	var sound := session.saved.sound
 	_panel.call("apply_gain", -25.0)
@@ -56,7 +56,7 @@ func test_batch_gain_updates_only_active_trials_and_keeps_assets_unmodified() ->
 		assert_bool(current.is_dirty()).is_true()
 	assert_object(session.current().texture).is_same(texture)
 	assert_object(session.current().sound).is_same(sound)
-	assert_str(FileAccess.get_file_as_string(paths[0])).is_equal(source)
+	assert_str(FileAccess.get_file_as_string(session.target_path)).is_equal(source)
 	_panel.call("apply_gain", NAN)
 	assert_float(session.current().gain_db).is_equal(-25.0)
 

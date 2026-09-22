@@ -169,9 +169,13 @@ func _load_session() -> void:
 
 func _refresh() -> void:
 	_controls.display(session.current())
-	presenter.configure(session.current())
+	_preview_trial()
 	_ui.display_context(_current_object_name(), session.active_index, session.is_dirty(), cue_path)
 	_browser.set_apply_target(_current_object_name(), session.active_index)
+
+
+func _preview_trial() -> void:
+	presenter.configure(session.current())
 
 
 func _current_object_name() -> String:

@@ -2,7 +2,7 @@ extends Button
 
 ## A selectable presentation object. No reward logic or gameplay state is executed.
 
-signal object_selected(path: String)
+signal object_selected
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 
@@ -38,5 +38,5 @@ func preview(value: FeedbackCue) -> void:
 
 
 func _activate() -> void:
-	object_selected.emit(cue_path)
+	object_selected.emit()
 	presenter.trigger()

@@ -108,6 +108,9 @@ func _display_context(cue: FeedbackCue) -> void:
 		_particle_info.text = "一次性爆发：自然结束；发射时长不适用。" if preset.is_one_shot() else (
 			"持续发射：时长结束后等待存活粒子消散。")
 		_particle_info.text += " 再次触发重启；停止全部立即隐藏并取消延迟。"
+		_particle_info.text += " 局部坐标：存活粒子跟随目标。" if (
+			bool(preset.scene_value(&"local_coords", false))) else (
+			"场景坐标：已发射粒子留在原处；停止或移除对象仍清除。")
 	_motion_info.text = "Tween 与片段作用于图像/Shader 表面及粒子发射器，各用独立变换层。"
 	if cue.texture == null and cue.shader_preset == null and preset == null:
 		_motion_info.text += " 当前没有可见目标；不会补入素材。"

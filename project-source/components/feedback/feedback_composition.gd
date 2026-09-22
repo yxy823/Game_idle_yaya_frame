@@ -1,6 +1,6 @@
 extends Control
 
-## Real scene objects expose a small explicit presentation interface to the workbench.
+## Scene-relative node paths identify instances; a shared Cue path is only a save target.
 
 signal object_selected(path: String)
 
@@ -13,17 +13,23 @@ var objects: Array[ObjectView] = []
 
 func _ready() -> void:
 	for path: NodePath in object_nodes:
-		var object := get_node(path) as ObjectView
-		if object != null:
+		var object := get_node_or_null(path) as ObjectView
+		if object != null and object not in objects:
 			objects.append(object)
-			object.object_selected.connect(func(cue_path: String) -> void:
-				object_selected.emit(cue_path))
+			object.object_selected.connect(func() -> void:
+				object_selected.emit(String(get_path_to(object))))
+			object.tree_exiting.connect(func() -> void: objects.erase(object), CONNECT_ONE_SHOT)
+
+
+func object_at(path: String) -> ObjectView:
+	var object := get_node_or_null(NodePath(path)) as ObjectView
+	return object if object in objects else null
 
 
 func preview(path: String, cue: FeedbackCue) -> void:
-	for object: ObjectView in objects:
-		if object.cue_path == path:
-			object.preview(cue)
+	var object := object_at(path)
+	if object != null:
+		object.preview(cue)
 
 
 func trigger_all() -> void:
@@ -33,7 +39,7 @@ func trigger_all() -> void:
 
 func highlight(path: String) -> void:
 	for object: ObjectView in objects:
-		object.set_pressed_no_signal(object.cue_path == path)
+		object.set_pressed_no_signal(String(get_path_to(object)) == path)
 
 
 func stop() -> void:
