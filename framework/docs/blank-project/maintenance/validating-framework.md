@@ -71,4 +71,11 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 新增参数在 1600×900、1152×648、900×540、720×480 检查可访问性，真实输出按渲染器保存到外部项目 `reports/asset-workbench-effects-20260922/`。
 它只证明实际执行的渲染器与样例；效果协调、听感和交互舒适度仍需用户确认，不把粒子测量混入源资源 Analyzer。
 
-首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制与本轮回归见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。
+组合复用用例 `asset_composition_reuse_test.gd` 复制到对应的 `tests/features/asset_composition_reuse/`，覆盖同 Cue 的多实例草稿/保存、分歧与外部冲突、消费和移除清理。
+`asset_composition_reuse_capture.gd` 在真实渲染器比较局部/场景粒子的实际位移，并捕获变换后的双组合消费场景。
+`asset_effect_scale_probe.gd` 使用真实 Presenter 在 1600×900 内显示 8/32/128 个对象，比较 0.6 s 与 0.1 s 重触发，另运行 128 对象 120 s 和 10 轮装卸。
+测量包含当前渲染器/设备、应用帧间隔、引擎进程时间、Godot 内存计数和节点；不是独占 GPU 时间、进程工作集或其他设备保证。探针草稿清空声音、粒子延迟置零以避免快速重触发抑制发射；原 Cue 不改，声音行为由原套件单独回归。
+上述两份独立捕获/测量脚本输出到外部项目 `reports/asset-workbench-e3-e4-20260922/`。复用旧捕获时只在外部副本更换输出目录，保留历史证据。
+先核实范围与脚本，再按需运行；不并行运行多个 GPU 测量，不把观察到的热身缓存或探针采样数组增长直接判为泄漏，不为压测提前引入 Manager/池化。
+
+首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)，组合复用与规模测量见 [E3/E4 报告](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。
