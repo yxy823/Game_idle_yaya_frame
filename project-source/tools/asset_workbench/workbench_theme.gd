@@ -13,6 +13,7 @@ static func create(dark: bool) -> Theme:
 	var surface := Color("333333") if dark else Color("f3f3f3")
 	var active := Color("555555") if dark else Color("d8d8d8")
 	var border := Color("888888")
+	result.default_font_size = 16
 	_apply_text_colors(result, ink)
 	for type_name: String in ["Button", "OptionButton", "CheckButton"]:
 		result.set_stylebox("normal", type_name, _box(surface, border))
@@ -38,10 +39,22 @@ static func create(dark: bool) -> Theme:
 	result.set_stylebox("hover", "PopupMenu", _box(active, ink))
 	result.set_color("title_color", "Window", ink)
 	result.set_stylebox("panel", "AcceptDialog", _box(surface, border))
+	_apply_containers(result, surface, border, ink)
+	_apply_variations(result, surface, dark)
 	for direction: String in ["up", "down"]:
 		for state: String in ["", "hover_", "pressed_", "disabled_"]:
 			result.set_color(direction + "_" + state + "icon_modulate", "SpinBox", ink)
 	return result
+
+
+static func _apply_variations(result: Theme, surface: Color, dark: bool) -> void:
+	result.set_type_variation("PreviewObject", "Button")
+	var selected := _box(surface, Color("66b4ff") if dark else Color("2168a5"))
+	selected.set_border_width_all(3)
+	for state: String in ["pressed", "hover_pressed"]:
+		result.set_stylebox(state, "PreviewObject", selected)
+	result.set_type_variation("DirtyState", "Label")
+	result.set_color("font_color", "DirtyState", Color("f2ba69") if dark else Color("825100"))
 
 
 static func _apply_text_colors(result: Theme, ink: Color) -> void:
@@ -52,6 +65,25 @@ static func _apply_text_colors(result: Theme, ink: Color) -> void:
 			result.set_color(key, type_name, ink)
 		result.set_color("font_disabled_color", type_name, Color(ink, 0.5))
 		result.set_color("font_outline_color", type_name, Color.TRANSPARENT)
+	result.set_color("default_color", "RichTextLabel", ink)
+	for key: String in ["font_color", "collapsed_font_color", "hover_font_color"]:
+		result.set_color(key, "FoldableContainer", ink)
+
+
+static func _apply_containers(result: Theme, surface: Color, border: Color, ink: Color) -> void:
+	var panel := _box(Color.TRANSPARENT, border, false)
+	panel.set_content_margin_all(12)
+	result.set_stylebox("panel", "PanelContainer", panel)
+	for type_name: String in ["HBoxContainer", "VBoxContainer", "HFlowContainer", "GridContainer"]:
+		for key: String in ["separation", "h_separation", "v_separation"]:
+			result.set_constant(key, type_name, 8)
+	result.set_constant("separation", "HSplitContainer", 10)
+	for key: String in ["title_panel", "title_collapsed_panel",
+			"title_hover_panel", "title_collapsed_hover_panel"]:
+		result.set_stylebox(key, "FoldableContainer", _box(surface, border))
+	result.set_stylebox("focus", "FoldableContainer", _box(Color.TRANSPARENT, ink, false))
+	result.set_stylebox("panel", "FoldableContainer", _box(Color.TRANSPARENT, border, false))
+	result.set_stylebox("panel", "PopupPanel", _box(surface, border))
 
 
 static func _apply_tree(result: Theme, surface: Color, border: Color, ink: Color) -> void:

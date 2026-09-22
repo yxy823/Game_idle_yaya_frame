@@ -14,22 +14,24 @@ func _ready() -> void:
 	_composition.session_selected.connect(_use_session)
 	_composition.analysis_requested.connect(_batch.open_assets)
 	_composition.stop_requested.connect(stop_all)
+	_composition.operation_reported.connect(_set_status)
 	for object: Control in _composition.stage.objects:
 		if object.presenter != presenter:
 			object.presenter.playback_failed.connect(_set_status)
 	_composition.select_object(_composition.stage.objects[0].cue_path)
 
 
-func _build_event_panel(parent: ScrollContainer) -> void:
-	var panel := VBoxContainer.new()
-	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	parent.add_child(panel)
+func _build_event_panel(parent: Container) -> void:
 	_composition = CompositionPanel.new()
 	_composition.scene_resource = composition_scene
 	_composition.sound_candidates = sound_candidates
-	panel.add_child(_composition)
+	_composition.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	parent.add_child(_composition)
 	presenter = _composition.stage.objects[0].presenter
-	_build_trial_actions(panel)
+
+
+func _current_object_name() -> String:
+	return _composition.object_name(cue_path)
 
 
 func _use_session(selected: Session) -> void:

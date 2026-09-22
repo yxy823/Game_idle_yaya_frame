@@ -3,7 +3,7 @@ extends SceneTree
 const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const Composition = preload("res://examples/asset_workbench/composition/example-workbench.tscn")
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
-const DIRECTORY: String = "res://reports/asset-analysis-group/"
+const DIRECTORY: String = "res://reports/asset-workbench-ui-20260922/group/"
 
 var _failed: bool = false
 
@@ -16,6 +16,7 @@ func _capture() -> void:
 	if DisplayServer.get_name() == "headless":
 		quit(1)
 		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(DIRECTORY))
 	var workbench: Control = Workbench.instantiate()
 	root.add_child(workbench)
 	current_scene = workbench
@@ -41,11 +42,10 @@ func _capture() -> void:
 	await _save(root, "composition-dark.png")
 	root.size = Vector2i(900, 600)
 	await _save(root, "composition-compact.png")
-	var scroll := composed.find_child("WorkbenchBody", true, false) as ScrollContainer
+	composed.get("_ui").call("_show_region", 2)
 	var parameters := composed.find_child("ParameterColumn", true, false) as ScrollContainer
-	scroll.ensure_control_visible(parameters)
 	await process_frame
-	_check(scroll.scroll_horizontal > 0, "Compact workbench must scroll horizontally")
+	_check(parameters.is_visible_in_tree(), "Compact inspector must remain accessible")
 	await _save(root, "composition-compact-scrolled.png")
 	composed.queue_free()
 	await process_frame

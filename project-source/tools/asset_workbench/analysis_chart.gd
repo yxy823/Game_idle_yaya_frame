@@ -46,19 +46,22 @@ func _draw() -> void:
 	var font := get_theme_default_font()
 	var data: Dictionary = first if not first.is_empty() else second
 	if data.is_empty():
-		draw_string(font, Vector2(75, 60), "No available numeric series", HORIZONTAL_ALIGNMENT_LEFT,
-			-1, 14, ink)
+		draw_string(font, Vector2(75, 60), "无可用图表数据（未分析或不支持）", HORIZONTAL_ALIGNMENT_LEFT,
+			maxf(size.x - 80, 1), 14, ink)
 		return
 	var view := _view_bounds()
-	var heading := "A: blue   B: orange | " + str(data.y_unit)
+	var heading := "分析 A（蓝）/ B（橙）· " + str(data.y_unit)
 	if not comparison_notice.is_empty():
-		heading = comparison_notice
+		heading = "B 叠加已隐藏；请查看上方比较说明 · " + str(data.y_unit)
 	draw_string(font, Vector2(65, 18), heading,
-		HORIZONTAL_ALIGNMENT_LEFT, -1, 14, ink)
+		HORIZONTAL_ALIGNMENT_LEFT, maxf(size.x - 80, 1), 14, ink)
 	draw_string(font, Vector2(0, 38), "%.3f" % _bounds.end.y,
 		HORIZONTAL_ALIGNMENT_LEFT, -1, 13, ink)
-	draw_string(font, Vector2(65, size.y - 12), "%.3f .. %.3f %s | wheel: zoom; right click: reset" % [
-		view.position.x, view.end.x, data.x_unit], HORIZONTAL_ALIGNMENT_LEFT, -1, 13, ink)
+	draw_string(font, Vector2(0, area.end.y), "%.3f" % view.position.y,
+		HORIZONTAL_ALIGNMENT_LEFT, 62, 13, ink)
+	draw_string(font, Vector2(65, size.y - 12), "横轴 %.3f … %.3f %s" % [
+		view.position.x, view.end.x, data.x_unit],
+		HORIZONTAL_ALIGNMENT_LEFT, maxf(size.x - 80, 1), 13, ink)
 	_plot(first, area, view, Color(0.15, 0.45, 0.9))
 	_plot(second, area, view, Color(0.85, 0.38, 0.08))
 

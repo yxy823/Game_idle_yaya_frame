@@ -10,12 +10,15 @@ const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 
 var presenter: Presenter = Presenter.new()
 var cue: FeedbackCue
+var display_name: String
 
 
 func _ready() -> void:
 	toggle_mode = true
+	display_name = text if not text.is_empty() else String(name)
+	theme_type_variation = "PreviewObject"
 	var label := Label.new()
-	label.text = text
+	label.text = display_name
 	label.position = Vector2(10, 8)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(label)

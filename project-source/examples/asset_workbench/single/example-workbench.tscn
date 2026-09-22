@@ -18,3 +18,4 @@ cue_path = "res://examples/asset_workbench/single/example-feedback.tres"
 game_scene_path = "res://examples/asset_workbench/single/example-game.tscn"
 texture_candidates = Array[Texture2D]([ExtResource("2_trophy"), ExtResource("3_star")])
 sound_candidates = Array[AudioStream]([ExtResource("4_sound"), ExtResource("5_sound")])
+workbench_title = "Asset Workbench · 单对象"

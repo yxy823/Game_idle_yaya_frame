@@ -5,11 +5,13 @@ extends VBoxContainer
 signal session_selected(session: Session)
 signal analysis_requested(assets: Array[Resource])
 signal stop_requested
+signal operation_reported(message: String)
 
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
 const Stage = preload("res://components/feedback/feedback_composition.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
+const Widgets = preload("res://tools/asset_workbench/workbench_widgets.gd")
 
 var scene_resource: PackedScene
 var sound_candidates: Array[AudioStream] = []
@@ -19,6 +21,9 @@ var _selected_path: String = ""
 var _status: Label = Label.new()
 var _gain: SpinBox = SpinBox.new()
 var _dark: bool = false
+var _scene_trials: Array[Button] = []
+var _scene_state: Label
+var _gain_popup: PopupPanel = PopupPanel.new()
 
 
 func _ready() -> void:
@@ -39,7 +44,8 @@ func _load_sessions() -> void:
 			_seed_alternative(session)
 			sessions[object.cue_path] = session
 		else:
-			_status.text += issue + "\n"
+			_report(issue)
+	_update_scene_state()
 
 
 func _seed_alternative(session: Session) -> void:
@@ -61,12 +67,33 @@ func select_object(path: String) -> void:
 		_selected_path = path
 		stage.highlight(path)
 		session_selected.emit(sessions[path])
-		_status.text = "Selected: %s. Edit in the workbench; each object retains its A/B trials." % path
+		_status.text = "已选择：" + object_name(path)
 
 
 func update_trial(session: Session) -> void:
 	if stage != null:
 		stage.preview(session.target_path, session.current())
+	_update_scene_state()
+
+
+func object_name(path: String) -> String:
+	for object: ObjectView in stage.objects:
+		if object.cue_path == path:
+			return object.display_name
+	return path.get_file().get_basename()
+
+
+func _update_scene_state() -> void:
+	if _scene_state == null:
+		return
+	var indices: Array[int] = []
+	for session: Session in sessions.values():
+		if session.active_index not in indices:
+			indices.append(session.active_index)
+	var uniform := indices[0] if indices.size() == 1 else -1
+	for index: int in _scene_trials.size():
+		_scene_trials[index].set_pressed_no_signal(index == uniform)
+	_scene_state.text = "全场景：" + (["A", "B"][uniform] if uniform >= 0 else "混合方案")
 
 
 func select_all_alternatives(index: int) -> void:
@@ -77,7 +104,7 @@ func select_all_alternatives(index: int) -> void:
 		update_trial(session)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
-	_status.text = "All scene objects use trial %s. Trigger all to compare." % ("A" if index == 0 else "B")
+	_report("所有对象已切换到方案 %s；尚未保存。" % ("A" if index == 0 else "B"))
 
 
 func trigger_all() -> void:
@@ -95,7 +122,7 @@ func apply_gain(value: float) -> void:
 		update_trial(session)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
-	_status.text = "Applied %.1f dB to each scene object's ACTIVE trial. Not saved." % value
+	_report("已将 %.1f dB 增益应用到各对象的当前方案，尚未保存。" % value)
 
 
 func assets(selected_only: bool) -> Array[Resource]:
@@ -111,6 +138,7 @@ func assets(selected_only: bool) -> Array[Resource]:
 
 
 func save_all() -> void:
+	stop_requested.emit()
 	stage.stop()
 	var saved: int = 0
 	var issues: Array[String] = []
@@ -122,45 +150,71 @@ func save_all() -> void:
 			issues.append(path + ": " + issue)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
-	_status.text = "Saved %d/%d cues. Each file is checked and saved separately.\n%s" % [
-		saved, sessions.size(), "\n".join(issues)]
+	_report("已保存 %d/%d 个 Cue；逐文件检查与保存，并非多文件事务。\n%s" % [
+		saved, sessions.size(), "\n".join(issues)])
 
 
 func _build() -> void:
-	var root: Container = self
 	var actions := HFlowContainer.new()
-	root.add_child(actions)
-	_button(actions, "Scene A", select_all_alternatives.bind(0))
-	_button(actions, "Scene B", select_all_alternatives.bind(1))
-	_button(actions, "Trigger all", trigger_all)
-	_button(actions, "Stop all", func() -> void: stop_requested.emit())
-	_button(actions, "Analyze selected object's sources", func() -> void:
-		analysis_requested.emit(assets(true)))
-	_button(actions, "Analyze all scene sources", func() -> void:
-		analysis_requested.emit(assets(false)))
-	_build_save_actions(root)
+	add_child(actions)
+	var group := ButtonGroup.new()
+	for index: int in 2:
+		var button := Widgets.button(actions, "场景 " + ["A", "B"][index],
+			select_all_alternatives.bind(index))
+		button.toggle_mode = true
+		button.button_group = group
+		_scene_trials.append(button)
+	Widgets.button(actions, "触发全部", trigger_all)
+	_build_scene_menu(actions)
+	_scene_state = Widgets.label(self, "全场景：A")
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_status.text = "Click an object to select and activate it; edit its properties in the workbench."
-	root.add_child(_status)
+	_status.text = "点击对象选择并触发；边框标示当前编辑对象。"
+	add_child(_status)
+	var scroll := ScrollContainer.new()
+	scroll.name = "SceneViewport"
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.follow_focus = true
+	add_child(scroll)
 	stage.custom_minimum_size = Vector2(760, 350)
+	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_child(stage)
+	scroll.add_child(stage)
 
 
-func _build_save_actions(root: Container) -> void:
-	var actions := HFlowContainer.new()
-	root.add_child(actions)
+func _build_scene_menu(parent: Container) -> void:
+	var menu := MenuButton.new()
+	menu.text = "全场景更多…"
+	menu.focus_mode = Control.FOCUS_ALL
+	parent.add_child(menu)
+	var popup := menu.get_popup()
+	popup.add_item("分析场景源资源（图像 / 音频）", 0)
+	popup.add_item("将增益应用到各对象的当前方案…", 1)
+	popup.add_item("保存全场景当前方案（逐文件）", 2)
+	popup.id_pressed.connect(_scene_action)
+	add_child(_gain_popup)
+	var actions := VBoxContainer.new()
+	actions.custom_minimum_size.x = 320
+	_gain_popup.add_child(actions)
+	Widgets.label(actions, "统一增益 (dB) · 各对象的当前方案")
 	_gain.min_value = FeedbackCue.GAIN_LIMITS[0]
 	_gain.max_value = FeedbackCue.GAIN_LIMITS[1]
 	_gain.value = -18
 	_gain.suffix = "dB"
 	actions.add_child(_gain)
-	_button(actions, "Apply gain to all trials", func() -> void: apply_gain(_gain.value))
-	_button(actions, "Save all scene cues (shared files)", save_all)
+	Widgets.button(actions, "将增益应用到各对象的当前方案", func() -> void:
+		apply_gain(_gain.value)
+		_gain_popup.hide())
+	Widgets.label(actions, "只更改各对象当前 A 或 B 草稿，不自动保存。")
 
 
-func _button(parent: Container, text: String, action: Callable) -> void:
-	var button := Button.new()
-	button.text = text
-	button.pressed.connect(action)
-	parent.add_child(button)
+func _scene_action(id: int) -> void:
+	match id:
+		0: analysis_requested.emit(assets(false))
+		1: _gain_popup.popup_centered()
+		2: save_all()
+
+
+func _report(message: String) -> void:
+	_status.text = message.get_slice("\n", 0)
+	_status.tooltip_text = message
+	operation_reported.emit(message)

@@ -179,6 +179,30 @@ func test_scan_handles_unicode_and_skips_generated_files() -> void:
 	assert_array(messages).is_empty()
 
 
+func test_panel_scan_continues_across_slices_and_preserves_existing_members() -> void:
+	var directory := _owned_directory("panel-scan-")
+	for index: int in 40:
+		var path := directory.path_join("sample-%02d.png" % index)
+		assert_int(DirAccess.copy_absolute(IMAGE, path)).is_equal(OK)
+		_files.append(path)
+	var workbench: Control = auto_free(Workbench.instantiate())
+	add_child(workbench)
+	var panel: Window = workbench.get("_batch")
+	var initial: Array[Resource] = [load(IMAGE)]
+	panel.call("open_assets", initial)
+	assert_str(panel.get("_notice").text).contains("集合保留此前成员")
+	var scanner: Scan = panel.get("_scan")
+	scanner.start(directory)
+	for _index: int in 40:
+		await get_tree().process_frame
+		if not scanner.active:
+			break
+	assert_bool(scanner.active).is_false()
+	assert_int(panel.get("batch").group.assets.size()).is_equal(41)
+	assert_str(panel.get("_notice").text).contains("Scan complete: 40 source files")
+	assert_bool(workbench.session.is_dirty()).is_false()
+
+
 func test_group_json_round_trip_and_bad_json_retains_state() -> void:
 	var directory := _owned_directory("group ")
 	var path := directory.path_join("group.json")

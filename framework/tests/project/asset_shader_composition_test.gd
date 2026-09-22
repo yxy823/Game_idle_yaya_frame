@@ -193,7 +193,11 @@ func test_shader_ui_edits_keep_other_objects_audio_and_image_independent() -> vo
 	assert_object(workbench.session.drafts[1].shader_preset).is_same(OUTLINE.shader_preset)
 	controls.get("_sound").select(0)
 	controls.get("_sound").item_selected.emit(0)
-	assert_str(workbench.get("_state").text).contains("None")
+	assert_str(workbench.get("_state").text).contains("未保存")
+	assert_str(controls.get("_sound").get_item_text(0)).is_equal("无音频")
+	assert_bool(shader_controls.get("_color").disabled).is_true()
+	assert_str(shader_controls.get("_availability").text).contains("颜色")
+	assert_str(shader_controls.get("_references").text).contains("canvas_item")
 	assert_object(workbench.session.current().shader_preset).is_same(NOISE)
 
 

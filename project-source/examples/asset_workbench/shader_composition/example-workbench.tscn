@@ -12,4 +12,4 @@ cue_path = "res://examples/asset_workbench/shader_composition/example-outline-cu
 game_scene_path = "res://examples/asset_workbench/shader_composition/example-composition.tscn"
 composition_scene = ExtResource("3")
 shader_candidates = Array[ExtResource("2")]([ExtResource("4"), ExtResource("5"), ExtResource("6")])
-workbench_title = "ASSET WORKBENCH / image + audio + shader composition"
+workbench_title = "Asset Workbench · Shader 组合"

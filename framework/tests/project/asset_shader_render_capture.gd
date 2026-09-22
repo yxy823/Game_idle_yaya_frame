@@ -6,7 +6,7 @@ const Workbench = preload("res://examples/asset_workbench/shader_composition/exa
 const Composition = preload("res://examples/asset_workbench/shader_composition/example-composition.tscn")
 const Visual = preload("res://components/feedback/feedback_visual.gd")
 const EXAMPLES: String = "res://examples/asset_workbench/shader_composition/"
-const OUTPUT: String = "res://reports/asset-shader-20260922/"
+const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/shader/"
 
 var _failed: bool = false
 var _metrics: Dictionary = {}
@@ -97,14 +97,15 @@ func _capture_workbench() -> void:
 	await _save_window("workbench-dark.png")
 	workbench.stop_all()
 	var parameters := workbench.find_child("ParameterColumn", true, false) as ScrollContainer
-	var body := workbench.find_child("WorkbenchBody", true, false) as ScrollContainer
 	var shader_controls: Control = workbench.get("_controls").get("_shader")
-	await _check_reachable(body, parameters, shader_controls.get("_duration"))
+	await _check_reachable(parameters, shader_controls.get("_duration"))
 	await _save_window("workbench-shader-controls.png")
 	root.size = Vector2i(900, 540)
 	await process_frame
 	await process_frame
-	await _check_reachable(body, parameters, shader_controls.get("_duration"))
+	workbench.get("_ui").call("_show_region", 2)
+	await process_frame
+	await _check_reachable(parameters, shader_controls.get("_duration"))
 	await _save_window("workbench-compact-controls.png")
 	workbench.queue_free()
 	await process_frame
@@ -124,14 +125,12 @@ func _capture_consumer() -> void:
 	await process_frame
 
 
-func _check_reachable(body: ScrollContainer, column: ScrollContainer, control: Control) -> void:
+func _check_reachable(column: ScrollContainer, control: Control) -> void:
 	column.ensure_control_visible(control)
-	await process_frame
-	body.ensure_control_visible(control)
 	await process_frame
 	_check(column.get_global_rect().encloses(control.get_global_rect()),
 		"Shader duration must be reachable vertically.")
-	_check(body.get_global_rect().encloses(control.get_global_rect()),
+	_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(control.get_global_rect()),
 		"Shader duration must be reachable horizontally.")
 
 

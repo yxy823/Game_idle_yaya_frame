@@ -5,6 +5,7 @@ extends VBoxContainer
 signal edited
 
 const ShaderControls = preload("res://tools/asset_workbench/shader_controls.gd")
+const Widgets = preload("res://tools/asset_workbench/workbench_widgets.gd")
 
 var _textures: Array[Texture2D] = []
 var _sounds: Array[AudioStream] = []
@@ -23,27 +24,36 @@ func build(textures: Array[Texture2D], sounds: Array[AudioStream],
 		shaders: Array[FeedbackShaderPreset] = []) -> void:
 	_textures = textures.duplicate()
 	_sounds = sounds.duplicate()
-	_texture.add_item("None")
-	_sound.add_item("None")
+	_texture.add_item("无图像")
+	_sound.add_item("无音频")
 	for texture: Texture2D in textures:
 		_texture.add_item(texture.resource_path.get_file())
 	for sound: AudioStream in sounds:
 		_sound.add_item(sound.resource_path.get_file())
 	for index: int in AudioServer.bus_count:
 		_bus.add_item(AudioServer.get_bus_name(index))
-	_field("Visual candidate", _texture)
-	_field("Audio candidate", _sound)
-	_number("Icon scale (multiplier)", _scale, FeedbackCue.SCALE_LIMITS)
-	_number("Animation (seconds)", _duration, FeedbackCue.DURATION_LIMITS)
-	_number("Per-play gain (dB)", _gain, FeedbackCue.GAIN_LIMITS)
-	_number("Playback pitch (multiplier)", _pitch, FeedbackCue.PITCH_LIMITS)
-	_number("Sound delay from event (seconds)", _delay, FeedbackCue.DELAY_LIMITS)
-	_field("Audio bus (does not change bus gain)", _bus)
+	add_theme_constant_override("separation", 16)
+	var binding_group := Widgets.section(self, "资源绑定")
+	Widgets.label(binding_group, "图像、音频、Shader 独立选择，均可留空。")
+	var bindings := Widgets.grid(binding_group)
+	Widgets.field(bindings, "图像", _texture)
+	Widgets.field(bindings, "音频", _sound)
+	Widgets.button(binding_group, "查看并复制绑定路径…", _show_binding_paths)
+	var visual := Widgets.grid(Widgets.section(self, "图像 / 动画"))
+	_number(visual, "缩放 (×)", _scale, FeedbackCue.SCALE_LIMITS)
+	_number(visual, "动画 (s)", _duration, FeedbackCue.DURATION_LIMITS)
+	var audio_group := Widgets.section(self, "音频")
+	var audio := Widgets.grid(audio_group)
+	_number(audio, "增益 (dB)", _gain, FeedbackCue.GAIN_LIMITS)
+	_number(audio, "音高 (×)", _pitch, FeedbackCue.PITCH_LIMITS)
+	_number(audio, "延迟 (s)", _delay, FeedbackCue.DELAY_LIMITS)
+	Widgets.field(audio, "总线", _bus)
+	Widgets.label(audio_group, "Cue 播放条件；不改变源音频或总线增益。")
 	_texture.item_selected.connect(func(_index: int) -> void: edited.emit())
 	_sound.item_selected.connect(func(_index: int) -> void: edited.emit())
 	_bus.item_selected.connect(func(_index: int) -> void: edited.emit())
-	add_child(_shader)
-	_shader.build(shaders)
+	Widgets.section(self, "Shader").add_child(_shader)
+	_shader.build(shaders, bindings)
 	_shader.edited.connect(func() -> void: edited.emit())
 
 
@@ -57,6 +67,8 @@ func display(cue: FeedbackCue) -> void:
 		_sound.add_item(cue.sound.resource_path.get_file())
 	_texture.select(_textures.find(cue.texture) + 1)
 	_sound.select(_sounds.find(cue.sound) + 1)
+	_texture.tooltip_text = cue.texture.resource_path if cue.texture != null else "无图像"
+	_sound.tooltip_text = cue.sound.resource_path if cue.sound != null else "无音频"
 	_scale.set_value_no_signal(cue.icon_scale)
 	_duration.set_value_no_signal(cue.animation_seconds)
 	_gain.set_value_no_signal(cue.gain_db)
@@ -81,17 +93,17 @@ func apply_to(cue: FeedbackCue) -> void:
 	_shader.apply_to(cue)
 
 
-func _field(title: String, control: Control) -> void:
-	var label := Label.new()
-	label.text = title
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(label)
-	add_child(control)
+func _show_binding_paths() -> void:
+	var texture_path := "无图像" if _texture.selected <= 0 else (
+		_textures[_texture.selected - 1].resource_path)
+	var sound_path := "无音频" if _sound.selected <= 0 else _sounds[_sound.selected - 1].resource_path
+	Widgets.show_text(self, "当前方案绑定路径（只读，可选择复制）",
+		"图像：" + texture_path + "\n音频：" + sound_path)
 
 
-func _number(title: String, spin: SpinBox, limits: Array[float]) -> void:
+func _number(parent: GridContainer, title: String, spin: SpinBox, limits: Array[float]) -> void:
 	spin.min_value = limits[0]
 	spin.max_value = limits[1]
 	spin.step = limits[2]
 	spin.value_changed.connect(func(_value: float) -> void: edited.emit())
-	_field(title, spin)
+	Widgets.field(parent, title, spin)

@@ -21,4 +21,4 @@ game_scene_path = "res://examples/asset_workbench/composition/example-compositio
 texture_candidates = Array[Texture2D]([ExtResource("2_trophy"), ExtResource("3_star")])
 sound_candidates = Array[AudioStream]([ExtResource("4_sound"), ExtResource("5_sound")])
 composition_scene = ExtResource("6_scene")
-workbench_title = "ASSET WORKBENCH / composition scene"
+workbench_title = "Asset Workbench · 图像与音频组合"

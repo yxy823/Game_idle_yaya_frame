@@ -8,28 +8,30 @@ const Appearance = preload("res://tools/asset_workbench/workbench_theme.gd")
 const Backdrop = preload("res://tools/asset_workbench/preview_backdrop.gd")
 const AnalysisPanel = preload("res://tools/asset_workbench/analysis_panel.gd")
 const BatchPanel = preload("res://tools/asset_workbench/analysis_batch_panel.gd")
+const Layout = preload("res://tools/asset_workbench/workbench_layout.gd")
 
 @export_file("*.tres") var cue_path: String
 @export_file("*.tscn") var game_scene_path: String
 @export var texture_candidates: Array[Texture2D] = []
 @export var sound_candidates: Array[AudioStream] = []
 @export var shader_candidates: Array[FeedbackShaderPreset] = []
-@export var workbench_title: String = "ASSET WORKBENCH / single object"
+@export var workbench_title: String = "Asset Workbench · 单对象"
 
 var session: Session = Session.new()
 var presenter: Presenter
 
 var _browser: Browser = Browser.new()
 var _controls: Controls = Controls.new()
-var _status: Label = Label.new()
-var _state: Label = Label.new()
+var _status: Label
+var _state: Label
 var _repeat: Timer = Timer.new()
 var _reload_dialog: ConfirmationDialog = ConfirmationDialog.new()
 var _background: ColorRect = ColorRect.new()
 var _backdrop: Backdrop
 var _analysis: AnalysisPanel = AnalysisPanel.new()
 var _batch: BatchPanel = BatchPanel.new()
-var _target: Label = Label.new()
+var _target: Label
+var _ui: Layout = Layout.new()
 
 
 func _ready() -> void:
@@ -38,8 +40,11 @@ func _ready() -> void:
 	_repeat.timeout.connect(func() -> void: presenter.trigger())
 	_browser.populate(texture_candidates, sound_candidates)
 	_browser.candidate_requested.connect(_bind_candidate)
+	_browser.operation_reported.connect(_set_status)
 	add_child(_analysis)
 	_browser.analysis_requested.connect(_analysis.open_asset)
+	_browser.selection_changed.connect(_refresh_source_status)
+	_analysis.results_changed.connect(_refresh_source_status)
 	_batch.batch.service = _analysis.service
 	add_child(_batch)
 	_browser.group_requested.connect(_batch.open_assets)
@@ -47,10 +52,15 @@ func _ready() -> void:
 	_controls.build(texture_candidates, sound_candidates, shader_candidates)
 	_controls.edited.connect(_edit)
 	presenter.playback_failed.connect(_set_status)
-	_reload_dialog.dialog_text = "Discard both A/B trials and reload the saved file?"
+	_reload_dialog.dialog_text = "从磁盘重载当前 Cue？这会丢弃当前对象 A/B 两份草稿。"
 	_reload_dialog.confirmed.connect(_load_session)
 	add_child(_reload_dialog)
 	_load_session()
+	_refresh_source_status()
+
+
+func _refresh_source_status() -> void:
+	_browser.set_analysis_status(_analysis.source_status(_browser.selected_path()))
 
 
 func _exit_tree() -> void:
@@ -60,7 +70,8 @@ func _exit_tree() -> void:
 func stop_all() -> void:
 	_repeat.stop()
 	_browser.stop()
-	presenter.stop()
+	if presenter != null:
+		presenter.stop()
 
 
 func _build_layout() -> void:
@@ -71,111 +82,58 @@ func _build_layout() -> void:
 	var margin := MarginContainer.new()
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for edge: String in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + edge, 20)
+		margin.add_theme_constant_override("margin_" + edge, 12)
 	add_child(margin)
-	var root := VBoxContainer.new()
-	root.add_theme_constant_override("separation", 12)
-	margin.add_child(root)
-	var title := Label.new()
-	title.text = workbench_title
-	title.add_theme_font_size_override("font_size", 24)
-	title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	root.add_child(title)
-	var appearance := HFlowContainer.new()
-	root.add_child(appearance)
-	_toggle(appearance, "Dark background", _set_dark_theme)
-	_toggle(appearance, "Transparency grid", _set_checker)
-	_state.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	root.add_child(_state)
-	_build_body(root)
-	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	root.add_child(_status)
-
-
-func _build_body(root: VBoxContainer) -> void:
-	# Each column scrolls vertically; narrow embedded windows can also scroll the body sideways.
-	var body := ScrollContainer.new()
-	body.name = "WorkbenchBody"
-	body.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	root.add_child(body)
-	var columns := HBoxContainer.new()
-	columns.add_theme_constant_override("separation", 24)
-	columns.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	columns.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	body.add_child(columns)
+	margin.add_child(_ui)
+	_ui.build(workbench_title)
+	_state = _ui.state
+	_status = _ui.status
+	_target = _ui.target
+	_ui.action_requested.connect(_dispatch_action)
+	_ui.appearance_changed.connect(func(dark: bool, checker: bool) -> void:
+		_set_dark_theme(dark)
+		_set_checker(checker))
 	_browser.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_column(columns, "AssetColumn", 265.0).add_child(_browser)
-	_build_event_panel(_column(columns, "EventColumn", 350.0, true))
+	_browser.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_ui.assets.add_child(_browser)
+	_build_event_panel(_ui.preview)
+	_ui.finish_preview()
 	_controls.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_column(columns, "ParameterColumn", 285.0).add_child(_controls)
+	_ui.properties.add_child(_controls)
 
 
-func _column(parent: Container, column_name: String, width: float,
-		expand: bool = false) -> ScrollContainer:
-	var scroll := ScrollContainer.new()
-	scroll.name = column_name
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	scroll.custom_minimum_size.x = width
-	scroll.follow_focus = true
-	if expand:
-		scroll.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	parent.add_child(scroll)
-	return scroll
-
-
-func _build_event_panel(parent: ScrollContainer) -> void:
-	var panel := VBoxContainer.new()
-	panel.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	panel.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	parent.add_child(panel)
+func _build_event_panel(parent: Container) -> void:
 	var heading := Label.new()
-	heading.text = "02 / EVENT PREVIEW"
-	panel.add_child(heading)
+	heading.text = "对象预览 · 当前方案"
+	parent.add_child(heading)
 	_backdrop = Backdrop.new()
 	_backdrop.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	_backdrop.custom_minimum_size = Vector2(350.0, 240.0)
+	_backdrop.custom_minimum_size = Vector2(180.0, 180.0)
 	_backdrop.clip_contents = true
-	panel.add_child(_backdrop)
+	parent.add_child(_backdrop)
 	presenter = Presenter.new()
 	presenter.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_backdrop.add_child(presenter)
-	_build_trial_actions(panel)
 
 
-func _build_trial_actions(panel: Container) -> void:
-	var alternatives := HBoxContainer.new()
-	panel.add_child(alternatives)
-	_button(alternatives, "A", _select_alternative.bind(0))
-	_button(alternatives, "B", _select_alternative.bind(1))
-	_button(alternatives, "Copy active to other", _copy_alternative)
-	var play := HBoxContainer.new()
-	panel.add_child(play)
-	_button(play, "Trigger", _trigger_once)
-	_button(play, "Repeat 0.6s", _start_repeat.bind(0.6))
-	_button(play, "Rapid 0.1s", _start_repeat.bind(0.1))
-	_button(panel, "Stop all / reset effects", stop_all)
-	_button(panel, "Reset active trial to last save", _reset_trial)
-	_button(panel, "Save active cue to the target below", _save)
-	_button(panel, "Reload from disk (discard both trials)", _reload_dialog.popup_centered)
-	_button(panel, "Open example game using saved cue", _open_game)
-	_target.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	panel.add_child(_target)
+func _dispatch_action(action: StringName) -> void:
+	var actions: Dictionary[StringName, Callable] = {
+		&"object_a": _select_alternative.bind(0), &"object_b": _select_alternative.bind(1),
+		&"trigger": _trigger_once, &"repeat": _start_repeat.bind(0.6),
+		&"rapid": _start_repeat.bind(0.1), &"stop": stop_all, &"save": _save,
+		&"copy": _copy_alternative, &"reset": _reset_trial,
+		&"reload": _reload_dialog.popup_centered, &"open": _open_game,
+		&"analyze_object": _analyze_object,
+	}
+	actions[action].call()
 
 
-func _button(parent: Container, text: String, action: Callable) -> void:
-	var button := Button.new()
-	button.text = text
-	button.pressed.connect(action)
-	parent.add_child(button)
-
-
-func _toggle(parent: Container, text: String, action: Callable) -> void:
-	var button := Button.new()
-	button.text = text
-	button.toggle_mode = true
-	button.toggled.connect(action)
-	parent.add_child(button)
+func _analyze_object() -> void:
+	var assets: Array[Resource] = []
+	for asset: Resource in [session.current().texture, session.current().sound]:
+		if asset != null:
+			assets.append(asset)
+	_batch.open_assets(assets)
 
 
 func _set_dark_theme(enabled: bool) -> void:
@@ -203,20 +161,18 @@ func _load_session() -> void:
 			session.drafts[1].sound = sound
 			break
 	_refresh()
-	_set_status("A starts from the saved cue; B uses another sound when available. "
-		+ "Save applies only the active trial.")
+	_set_status("A 从已保存 Cue 开始；B 在已有声音时换用另一候选。浏览不会绑定，保存只写当前方案。")
 
 
 func _refresh() -> void:
 	_controls.display(session.current())
 	presenter.configure(session.current())
-	_target.text = "Save target: %s\nAffects every consumer of this cue.\n" % cue_path
-	_target.text += "Source assets/material presets stay unchanged. No loudness matching is applied."
-	_state.text = "Active: %s   |   %s   |   Event sound: %s" % [
-		"A" if session.active_index == 0 else "B",
-		"UNSAVED TRIAL" if session.is_dirty() else "matches saved cue",
-		session.current().sound.resource_path.get_file() if session.current().sound != null else "None",
-	]
+	_ui.display_context(_current_object_name(), session.active_index, session.is_dirty(), cue_path)
+	_browser.set_apply_target(_current_object_name(), session.active_index)
+
+
+func _current_object_name() -> String:
+	return cue_path.get_file().get_basename()
 
 
 func _edit() -> void:
@@ -252,7 +208,7 @@ func _select_alternative(index: int) -> void:
 func _copy_alternative() -> void:
 	if session.saved != null:
 		session.copy_to_other()
-		_set_status("Copied active trial to the other alternative. Nothing was saved.")
+		_set_status("已复制到当前对象的另一方案，尚未保存。")
 
 
 func _trigger_once() -> void:
@@ -282,7 +238,7 @@ func _save() -> void:
 		_set_status(issue)
 		return
 	_refresh()
-	_set_status("Saved and reloaded. Open the example game to check the actual consumer.")
+	_set_status("当前方案已保存并重新读取。请打开消费场景验证实际效果。")
 
 
 func _open_game() -> void:
@@ -298,3 +254,4 @@ func _open_game() -> void:
 
 func _set_status(message: String) -> void:
 	_status.text = message
+	_status.tooltip_text = message

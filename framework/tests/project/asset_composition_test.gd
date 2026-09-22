@@ -35,7 +35,8 @@ func test_object_click_selects_real_instance_and_preserves_each_trial() -> void:
 	assert_float(_workbench.session.current().icon_scale).is_equal(0.8)
 	objects[0].pressed.emit()
 	assert_float(_workbench.session.current().icon_scale).is_equal(1.6)
-	assert_str(_workbench.get("_target").text).contains(objects[0].cue_path)
+	assert_str(_workbench.get("_target").text).contains(str(objects[0].cue_path).get_file())
+	assert_str(_workbench.get("_target").tooltip_text).is_equal(objects[0].cue_path)
 	assert_object(_workbench.presenter).is_same(objects[0].presenter)
 	assert_bool(_panel.has_method("_return_original")).is_false()
 	assert_bool(_workbench.has_method("_fit_workspace")).is_false()
@@ -92,8 +93,8 @@ func test_save_all_reports_conflict_and_game_object_reads_saved_resource() -> vo
 	file.close()
 	_panel.sessions = sessions
 	_panel.call("save_all")
-	assert_str(_panel.get("_status").text).contains("Saved 1/2")
-	assert_str(_panel.get("_status").text).contains("File changed on disk")
+	assert_str(_panel.get("_status").text).contains("已保存 1/2")
+	assert_str(_workbench.get("_status").text).contains("File changed on disk")
 	assert_bool(sessions[conflict_path].is_dirty()).is_true()
 	var object: ObjectView = auto_free(ObjectView.new())
 	object.cue_path = sessions.keys()[0]
@@ -127,8 +128,8 @@ func test_composition_stop_button_cancels_repeat_audition_and_delayed_audio() ->
 	browser.call("_set_repeat", true)
 	await get_tree().create_timer(0.15).timeout
 	var stop_button: Button
-	for node: Node in _panel.find_children("*", "Button", true, false):
-		if (node as Button).text == "Stop all":
+	for node: Node in _workbench.find_children("*", "Button", true, false):
+		if (node as Button).text == "停止全部" and (node as Button).is_visible_in_tree():
 			stop_button = node as Button
 	assert_object(stop_button).is_not_null()
 	stop_button.pressed.emit()
@@ -142,6 +143,36 @@ func test_composition_stop_button_cancels_repeat_audition_and_delayed_audio() ->
 		assert_bool((node as AudioStreamPlayer).playing).is_false()
 	assert_bool(browser.get("_timer").is_stopped()).is_true()
 	assert_bool(_workbench.get("_repeat").is_stopped()).is_true()
+
+
+func test_scene_status_is_derived_from_each_objects_actual_trial() -> void:
+	_panel.call("select_all_alternatives", 0)
+	assert_str(_panel.get("_scene_state").text).is_equal("全场景：A")
+	_workbench.call("_select_alternative", 1)
+	assert_str(_panel.get("_scene_state").text).contains("混合方案")
+	for button: Button in _panel.get("_scene_trials"):
+		assert_bool(button.button_pressed).is_false()
+	_panel.call("select_all_alternatives", 1)
+	assert_str(_panel.get("_scene_state").text).is_equal("全场景：B")
+	for session: Session in _panel.sessions.values():
+		assert_int(session.active_index).is_equal(1)
+	_workbench.call("_select_alternative", 0)
+	assert_str(_panel.get("_scene_state").text).contains("混合方案")
+	var trials: Array = _workbench.get("_ui").get("_trials")
+	assert_bool(trials[0].button_pressed).is_true()
+	assert_bool(trials[1].button_pressed).is_false()
+
+
+func test_reload_discards_only_current_objects_two_drafts() -> void:
+	var original: FeedbackCue = _workbench.session.saved.trial_copy()
+	_workbench.session.drafts[0].gain_db = -33
+	_workbench.session.drafts[1].gain_db = -37
+	var other: Session = _panel.sessions.values()[1]
+	other.current().gain_db = -29
+	_workbench.get("_reload_dialog").confirmed.emit()
+	assert_bool(_workbench.session.drafts[0].same_values(original)).is_true()
+	assert_float(_workbench.session.drafts[1].gain_db).is_equal(original.gain_db)
+	assert_float(other.current().gain_db).is_equal(-29.0)
 
 
 func test_composition_is_an_independently_runnable_native_scene() -> void:

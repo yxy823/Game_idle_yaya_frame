@@ -4,6 +4,7 @@ extends SceneTree
 
 const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
 const ASSETS: String = "res://examples/asset_workbench/assets/"
+const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/analysis/"
 
 var _failed: bool = false
 
@@ -16,6 +17,7 @@ func _capture() -> void:
 	if DisplayServer.get_name() == "headless":
 		quit(1)
 		return
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(OUTPUT))
 	root.size = Vector2i(1600, 900)
 	var workbench: Control = Workbench.instantiate()
 	root.add_child(workbench)
@@ -45,6 +47,8 @@ func _compact(panel: Window) -> void:
 	await _save(panel, "analysis-compact.png")
 	var scroll := panel.find_children("*", "ScrollContainer", true, false)[0] as ScrollContainer
 	var details := panel.get("_details") as Label
+	(details.get_parent().get_parent() as FoldableContainer).expand()
+	await process_frame
 	scroll.ensure_control_visible(details)
 	await process_frame
 	if scroll.scroll_vertical <= 0:
@@ -70,13 +74,13 @@ func _compare(panel: Window, first: String, second: String) -> void:
 func _save(panel: Window, filename: String) -> void:
 	await process_frame
 	await RenderingServer.frame_post_draw
-	var error := panel.get_texture().get_image().save_png("res://reports/asset-analyzer/" + filename)
+	var error := panel.get_texture().get_image().save_png(OUTPUT + filename)
 	if error != OK:
 		_failed = true
 		push_error("Capture failed: " + error_string(error))
 
 
 func _save_json(panel: Window, filename: String) -> void:
-	var file := FileAccess.open("res://reports/asset-analyzer/" + filename, FileAccess.WRITE)
+	var file := FileAccess.open(OUTPUT + filename, FileAccess.WRITE)
 	file.store_string(JSON.stringify(panel.get("results"), "  "))
 	file.close()

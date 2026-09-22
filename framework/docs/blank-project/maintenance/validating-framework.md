@@ -60,6 +60,8 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 它覆盖试调隔离、磁盘冲突、无效参数、边界值、保存后游戏消费、延迟取消、声音重叠上限、浏览与绑定、A/B/连续触发及主题不修改事件数据。
 测试生成的 `test-cue.tres` 留在外部测试目录，不改示例正式 Cue。
 
-`framework/tests/project/asset_workbench_capture.gd` 在真实渲染器运行，截图写外部项目 `reports/workbench/`。
-它不支持 headless 截图，也不做听觉或人工接受判断。
-本次结果、失败现场和未验证项见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)，不能用本说明中的预期流程代替实际结果。
+`framework/tests/project/asset_workbench_capture.gd` 在真实渲染器运行，当前截图写入外部项目 `reports/asset-workbench-ui-20260922/`。
+它覆盖三个工作台入口、浅深色、1600×900 及 1152×648 / 900×540 / 720×480、图像与音频候选、固定停止/保存和真实鼠标/键盘路由。
+同目录的 Shader、单项分析及批量分析渲染夹具分别检查真实像素/停止恢复、结果来源和图表/集合访问。
+它们不支持 headless 截图，也不做听觉或人工接受判断；每次运行以实际日志、截图和版本为准。
+首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；当前布局、行为、失败现场及人工待确认项见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果。
