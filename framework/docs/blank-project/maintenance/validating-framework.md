@@ -76,6 +76,13 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 `asset_effect_scale_probe.gd` 使用真实 Presenter 在 1600×900 内显示 8/32/128 个对象，比较 0.6 s 与 0.1 s 重触发，另运行 128 对象 120 s 和 10 轮装卸。
 测量包含当前渲染器/设备、应用帧间隔、引擎进程时间、Godot 内存计数和节点；不是独占 GPU 时间、进程工作集或其他设备保证。探针草稿清空声音、粒子延迟置零以避免快速重触发抑制发射；原 Cue 不改，声音行为由原套件单独回归。
 上述两份独立捕获/测量脚本输出到外部项目 `reports/asset-workbench-e3-e4-20260922/`。复用旧捕获时只在外部副本更换输出目录，保留历史证据。
-先核实范围与脚本，再按需运行；不并行运行多个 GPU 测量，不把观察到的热身缓存或探针采样数组增长直接判为泄漏，不为压测提前引入 Manager/池化。
+先核实范围与脚本，再按需运行；不并行运行多个 GPU 测量，不把观察到的热身缓存或探针采样数组增长直接判为泄漏，不为压测提前引入池化。
+
+管理与编排回归为 `asset_playback_manager_test.gd`、`asset_feedback_timeline_test.gd`、`asset_timeline_integration_test.gd`，分别放到外部项目同名的 `tests/features/` 子目录后执行。
+它们检查目标句柄/预算、分组与抢占、待播音频、直接接管、冷构造释放、离树/重入，以及编排 Resource 重读、窗口边界、循环与迟帧、草稿/保存边界和原生消费。
+编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不据此声称逐采样同步。
+`asset_feedback_timeline_capture.gd` 用真实渲染器检查第四入口四种尺寸、浅深色与编排操作，捕获消费场景分阶段播放，并检查重复装卸回收。
+当前输出为外部项目 `reports/asset-workbench-e5-e6-20260922/`；失败与旧捕获保留，实际听感/视觉协调仍待人工体验。
+局部对象预算不是性能通过线；此阶段的功能与生命周期回归不替代 E4 测量，也不宣称改善 128 对象帧间隔。
 
 首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)，组合复用与规模测量见 [E3/E4 报告](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。

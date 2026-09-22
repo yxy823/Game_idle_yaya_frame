@@ -148,7 +148,35 @@ Tween 位移层与动画片段变换层互相嵌套，作用于图像/Shader 表
 登记集合在退出时剔除对象；动态新增、移除后重新加入同一节点和运行时编辑场景拓扑不属于工作台契约，应重新实例化完整场景。
 
 粒子候选仍是三个明确预设，片段候选为一个；没有按并发实例数复制候选。早期 `example-burst-cue.tres`、`example-animation-cue.tres`、`example-stream-cue.tres` 保留作为独立机制示例。
-没有新增 Manager、统一时间轴、全项目扫描或预设数据库。规模测量夹具与机器结果只留在框架维护侧，不能作为其他设备或任意素材的性能保证。
+规模测量夹具与机器结果只留在框架维护侧，不能作为其他设备或任意素材的性能保证；没有全项目扫描或预设数据库。
+
+### 场景局部管理与有限编排
+
+第四工作台预览上方提供“播放编排”和“循环编排”（下次播放生效），旁边显示实际播放状态。
+示例 `example-dual-group-timeline.tres` 为 4.8 s：A 组核心先触发、局部/场景粒子随后并行，再轮到 B 组，最后两组核心同时触发。
+它读取各对象**当前 A/B 草稿**；播放不绑定候选、不改 Cue。停止全部、编辑、切对象/方案、保存及重载沿用已有停止范围，并取消后续片段和循环。
+消费场景读取同一编排和**已保存 Cue**，提供播放/循环、受管触发 A 组、高优先级 B 组、取消受管 A 组及停止全部，便于单独检查调度。
+
+| 组件 | 契约与边界 |
+| --- | --- |
+| `feedback_playback_manager.gd` | 可选场景内 Node；`request(presenter, group, priority)` 返回本 Manager 内有效的整数句柄，0 表示拒绝。句柄拥有整个对象的一次独占播放，包括延迟音频，不代表可单独取消每个叠加声部 |
+| 预算与回收 | 示例最多 3 个受管对象，组件默认 8；满额只接受严格更高优先级，抢占最低优先级中最早的句柄。其他请求拒绝并反馈，不排队。自然结束、取消或目标退出释放句柄；不销毁现有对象，也不建立新对象池 |
+| 取消与直接播放 | `cancel(handle)`、`cancel_group(group)`、`stop_all()` 只取消这个 Manager 仍拥有的播放。直接 `trigger()` 接管同一目标时先停止受管播放；之后手动快速触发照旧允许声音重叠。旧句柄不能停止新播放，未受管对象仍可直接使用 Presenter |
+| `FeedbackTimeline` / `FeedbackTimelineClip` | 原生 `.tres` 保存长度及片段数组，每片段只有相对对象路径、起点、持续时间和优先级；长度最多 120 s、1–128 片段。同目标窗口不可重叠，可首尾相接；不支持绝对路径、父级路径或 `%` 别名 |
+| `feedback_timeline_player.gd` | 一个场景帧时钟负责窗口开始、截止及循环；截止立即取消该句柄，可能截短声音或粒子余尾。效果提早结束不会补触发。Tween、AnimationPlayer、粒子及声音仍由既有组件各自推进 |
+
+Manager 的数额统计对象而非粒子数、显存或音频声部；直接触发不受这个预算约束，不能据此承诺性能上限。
+多个 Manager 不共享限额；它们若争用同一 Presenter，后一次受管播放接管该目标，旧句柄失效。
+处理 Manager/Timeline 同步通知时可取消或停止；需要重新申请/播放时用 `call_deferred`，同步重入会拒绝，避免通知链递归改变正在处理的集合。
+
+编排到期先取消旧窗口，再按**片段数组顺序**申请本帧新窗口；同帧高优先级后列时可以抢占先前已启动的低优先级对象。
+被拒绝或抢占的片段本轮不重试。同一窗口内直接接管也不触发补播；下一轮才重新按定义申请。
+卡顿后，已完整错过的窗口/循环跳过；仍开放的窗口从效果开头触发，到定义终点截止，不补算粒子或音频的过去状态。
+播放时复制编排定义，运行中改共享定义只影响下次播放；目标当前 Cue 在各窗口开始时读取。
+
+在 Godot Inspector 编辑并保存编排 Resource，再将其赋给组合场景的 `timeline`。工作台只播放该定义，没有时间轴编辑或保存按钮；“保存当前方案/全场景”仍只写 Cue。
+普通连续属性动画继续用原生 AnimationPlayer；有限编排补充跨对象触发、句柄取消和预算反馈，不开放任意方法或属性轨道。
+没有暂停/跳转、可视化轨道编辑、多轨混音、采样级同步或全局 Manager；全局 Shader `TIME` 不随编排重置。
 
 ## 数据和运行边界
 
@@ -163,7 +191,7 @@ Tween 位移层与动画片段变换层互相嵌套，作用于图像/Shader 表
 | `effects_composition/` | 第四工作台入口、可复用三对象组合、双实例预览与独立消费场景、Cue、发射器预设、动画片段及示例贴图/许可 |
 | `example-analysis-group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
 | `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
-| `components/feedback/` | Cue、图像/Shader 表面、图标脉冲、局部音频、独立粒子与运动层；各入口共用同一表现逻辑 |
+| `components/feedback/` | Cue、图像/Shader 表面、图标脉冲、局部音频、独立粒子与运动层，可选局部 Manager/有限编排；各入口共用同一表现逻辑 |
 | `tools/asset_workbench/` | 候选浏览、试调和保存界面；不注册全局服务 |
 | `tools/asset_analyzer/` | 源文件专业分析与适配器；独立于音频播放，不写回 Cue |
 
@@ -212,7 +240,7 @@ Shader 从用户指定的本地 GDQuest `godot-shaders/godot/Shaders` 复制，�
 | `vfx/brackeys_particle_bundle/particles/alpha/spotlight_01_a.png` | `effects_composition/example-particle-spotlight.png` | 仅重命名，图片字节不变 |
 | `README.md` | `effects_composition/example-brackeys-license.md` | 保留原文与许可声明 |
 
-`example-wobble-animation.tres` 和本轮 Cue/预设为本项目编写；图片、音频与 Shader 继续复用上文已有示例，不把程序制作的动画误记成下载素材。
+`example-wobble-animation.tres`、`example-dual-group-timeline.tres` 和 Cue/预设为本项目编写；图片、音频、Shader 与粒子继续复用上文已有示例，编排阶段没有再下载或复制外部素材。
 
 ## 验证和人工体验
 

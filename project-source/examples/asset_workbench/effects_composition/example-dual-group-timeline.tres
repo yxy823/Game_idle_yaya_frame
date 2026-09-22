@@ -1,0 +1,58 @@
+[gd_resource type="Resource" script_class="FeedbackTimeline" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_timeline.gd" id="1"]
+[ext_resource type="Script" path="res://components/feedback/feedback_timeline_clip.gd" id="2"]
+
+[sub_resource type="Resource" id="CoreA"]
+script = ExtResource("2")
+target = NodePath("GroupA/Core")
+duration_seconds = 1.1
+
+[sub_resource type="Resource" id="LocalA"]
+script = ExtResource("2")
+target = NodePath("GroupA/Local")
+start_seconds = 0.35
+duration_seconds = 1.25
+
+[sub_resource type="Resource" id="WorldA"]
+script = ExtResource("2")
+target = NodePath("GroupA/World")
+start_seconds = 0.35
+duration_seconds = 1.25
+
+[sub_resource type="Resource" id="CoreB"]
+script = ExtResource("2")
+target = NodePath("GroupB/Core")
+start_seconds = 1.7
+duration_seconds = 1.1
+
+[sub_resource type="Resource" id="LocalB"]
+script = ExtResource("2")
+target = NodePath("GroupB/Local")
+start_seconds = 2.05
+duration_seconds = 1.25
+
+[sub_resource type="Resource" id="WorldB"]
+script = ExtResource("2")
+target = NodePath("GroupB/World")
+start_seconds = 2.05
+duration_seconds = 1.25
+
+[sub_resource type="Resource" id="FinalA"]
+script = ExtResource("2")
+target = NodePath("GroupA/Core")
+start_seconds = 3.5
+duration_seconds = 1.1
+priority = 1
+
+[sub_resource type="Resource" id="FinalB"]
+script = ExtResource("2")
+target = NodePath("GroupB/Core")
+start_seconds = 3.5
+duration_seconds = 1.1
+priority = 1
+
+[resource]
+script = ExtResource("1")
+length_seconds = 4.8
+clips = Array[ExtResource("2")]([SubResource("CoreA"), SubResource("LocalA"), SubResource("WorldA"), SubResource("CoreB"), SubResource("LocalB"), SubResource("WorldB"), SubResource("FinalA"), SubResource("FinalB")])

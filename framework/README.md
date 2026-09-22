@@ -33,6 +33,7 @@
 | tests/project/asset_shader_composition_test.gd、asset_shader_render_capture.gd | 图片/声音/Shader 独立组合、材质隔离、保存消费及真实像素回归；按 [验证记录](review/reports/asset-workbench-shader-composition-2026-09-22.md) 在既有外部项目执行 |
 | tests/project/asset_effect_composition_test.gd、asset_effect_render_capture.gd | 粒子/Tween/AnimationPlayer 的独立绑定、生命周期、实例/草稿隔离、保存消费及真实渲染；仅在明确指定的外部项目按范围执行 |
 | tests/project/asset_composition_reuse_test.gd、asset_composition_reuse_capture.gd、asset_effect_scale_probe.gd | 同 Cue 多实例草稿/保存、原生组合消费、粒子坐标像素及并发/持续装卸测量；外部项目执行，记录设备与测量边界，不随框架分发 |
+| tests/project/asset_playback_manager_test.gd、asset_feedback_timeline_test.gd、asset_timeline_integration_test.gd、asset_feedback_timeline_capture.gd | 场景局部句柄、优先级/分组取消、有限编排及停止/重入/离树回归；真实渲染检查第四入口、消费编排和装卸，按需在指定外部项目执行 |
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |

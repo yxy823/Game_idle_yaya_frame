@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
 [ext_resource type="PackedScene" path="res://examples/asset_workbench/effects_composition/example-effect-cluster.tscn" id="2"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example-dual-group-timeline.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)
@@ -27,6 +28,8 @@ grow_vertical = 2
 theme = SubResource("Theme")
 script = ExtResource("1")
 object_nodes = Array[NodePath]([NodePath("GroupA/Core"), NodePath("GroupA/Local"), NodePath("GroupA/World"), NodePath("GroupB/Core"), NodePath("GroupB/Local"), NodePath("GroupB/World")])
+timeline = ExtResource("3")
+managed_object_limit = 3
 
 [node name="Background" type="ColorRect" parent="."]
 anchors_preset = 15

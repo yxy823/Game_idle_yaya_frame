@@ -24,6 +24,8 @@ var _dark: bool = false
 var _scene_trials: Array[Button] = []
 var _scene_state: Label
 var _gain_popup: PopupPanel = PopupPanel.new()
+var _timeline_state: Label
+var _timeline_repeat: CheckButton
 
 
 func _ready() -> void:
@@ -31,6 +33,10 @@ func _ready() -> void:
 	_build()
 	_load_sessions()
 	stage.object_selected.connect(select_object)
+	stage.playback_reported.connect(_report)
+	if stage.timeline_player != null:
+		stage.timeline_player.state_changed.connect(_update_timeline_state)
+		_update_timeline_state()
 	set_background(_dark)
 
 
@@ -127,6 +133,23 @@ func trigger_all() -> void:
 	stage.trigger_all()
 
 
+func play_timeline() -> void:
+	stop_requested.emit()
+	var issue := stage.play_timeline(_timeline_repeat.button_pressed)
+	if not issue.is_empty():
+		_report(issue)
+	elif stage.timeline_player.is_playing():
+		_report("正在编排各对象的当前方案；片段到期停止，保存仍只写 Cue。")
+
+
+func _update_timeline_state() -> void:
+	if _timeline_state == null:
+		return
+	var playing := stage.timeline_player.is_playing()
+	_timeline_state.text = "编排：" + ("循环播放" if stage.timeline_player.looping else "播放中") \
+		if playing else "编排：已停止"
+
+
 func apply_gain(value: float) -> void:
 	if not is_finite(value) or value < -48.0 or value > 0.0:
 		return
@@ -205,7 +228,10 @@ func _build() -> void:
 		_scene_trials.append(button)
 	Widgets.button(actions, "触发全部", trigger_all)
 	_build_scene_menu(actions)
-	_scene_state = Widgets.label(self, "全场景：A")
+	var states := HFlowContainer.new()
+	add_child(states)
+	_scene_state = Widgets.label(states, "全场景：A")
+	_scene_state.autowrap_mode = TextServer.AUTOWRAP_OFF
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "点击对象选择并触发；边框标示当前编辑对象。"
 	add_child(_status)
@@ -218,6 +244,21 @@ func _build() -> void:
 	stage.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	stage.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	scroll.add_child(stage)
+	if stage.timeline != null:
+		_build_timeline_controls(actions)
+
+
+func _build_timeline_controls(parent: Container) -> void:
+	Widgets.button(parent, "播放编排", play_timeline)
+	_timeline_repeat = CheckButton.new()
+	_timeline_repeat.text = "循环编排"
+	_timeline_repeat.tooltip_text = "下次播放生效；每轮结束停止所有编排片段后重新开始。"
+	parent.add_child(_timeline_repeat)
+	_timeline_state = Widgets.label(_scene_state.get_parent(), "编排：已停止")
+	_timeline_state.autowrap_mode = TextServer.AUTOWRAP_OFF
+	_timeline_state.tooltip_text = "对象当前方案；%.1f s / %d 片段；最多 %d 个受管对象。\n%s" % [
+		stage.timeline.length_seconds, stage.timeline.clips.size(), stage.managed_object_limit,
+		stage.timeline.resource_path]
 
 
 func _build_scene_menu(parent: Container) -> void:
