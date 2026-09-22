@@ -6,38 +6,39 @@
 
 ## 先选正在发生的情况
 
-```mermaid
-flowchart TD
-    A[我现在遇到了什么情况] --> B{问题类型}
-    B -->|新需求或要求变化| C[需求与设计：来源和计划]
-    B -->|界面或视觉原型| D[界面、音频与资源：UI 原型检查单]
-    B -->|声音、音效或音乐| E[界面、音频与资源：声音准备与接入]
-    B -->|资源文件已准备好| F[界面、音频与资源：接入或替换]
-    B -->|发现 Bug| G[验证与恢复：复现、修复与回归]
-    B -->|测试失败或准备交付| H[验证与恢复：证据和完成条件]
-    B -->|开发中插入 Product| I[需求与设计：模块身份和推进顺序]
-    B -->|Feature 中途插入其他工作| J[上下文与交接：中断与切换]
-    B -->|不知道做到哪里| K[上下文与交接：恢复真实停点]
-    B -->|文档和实际状态矛盾| L[上下文与交接：确定修复位置]
-    B -->|新增对象、方案过重或共享修改| M[需求与设计：边界与影响]
-```
+### 需求与设计
 
-| 分组 | 具体情况 | 从这里开始 |
-| --- | --- | --- |
-| 需求与设计 | 收到新功能，尚未形成当前模块的可执行计划 | [新功能进入正式开发](scenarios-requirements-design.md#收到新功能后进入正式开发) |
-| 需求与设计 | 已确认行为或专业规格变了，现有任务可能受影响 | [要求变化后对齐已有计划](scenarios-requirements-design.md#已确认要求变化后对齐已有计划) |
-| 需求与设计 | 开发中临时增加 Product/模块，可能成为当前前置 | [插入 Product 并调整实际顺序](scenarios-requirements-design.md#开发中临时插入-product-或模块) |
-| 需求与设计 | 准备新增模块、系统或核心实体，或方案明显超过当前需要 | [重新判断设计边界](scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界) |
-| 需求与设计 | 准备改公共组件、项目工具或框架源，担心影响其他调用者 | [先界定共享修改影响](scenarios-requirements-design.md#修改共享能力前界定归属与影响) |
-| 界面、音频与资源 | 设计界面、调整 UI 或验证视觉原型 | [设计与实际验证界面](scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型) |
-| 界面、音频与资源 | 确定声音，准备音效/音乐并最终在游戏中试听 | [从声音要求到准备与接入](scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏) |
-| 界面、音频与资源 | 已拿到实际素材，需要导入、接入或替换 | [已有资源接入](scenarios-interface-audio-assets.md#已有资源文件后接入或替换) |
-| 验证与恢复 | 观察到异常行为，需要确认 Bug、定位、修复与回归 | [完整 Bug 处置](scenarios-verification-recovery.md#发现-bug-后定位修复并回归) |
-| 验证与恢复 | 测试、运行器或证据导入失败，不确定错在何处 | [按失败层定位和恢复](scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) |
-| 验证与恢复 | 代码已写完，需要判断能否交付、等待验收或记 done | [实现完成后逐项核对交付](scenarios-verification-recovery.md#实现完成后判断能否交付) |
-| 上下文与交接 | Feature 做到一半插入其他工作，需要中断或切换任务 | [保留停点并切换](scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) |
-| 上下文与交接 | 换线程、压缩或中断后，不确定正在做什么及能否继续 | [恢复上下文并续接](scenarios-context-handoff.md#上下文不足时恢复现场并续接) |
-| 上下文与交接 | Product、任务、说明、代码或结果互相矛盾 | [核对事实并修复正确位置](scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) |
+| 具体情况 | 从这里开始 |
+| --- | --- |
+| 收到新功能，尚未形成当前模块的可执行计划 | [新功能进入正式开发](scenarios-requirements-design.md#收到新功能后进入正式开发) |
+| 已确认行为或专业规格变了，现有任务可能受影响 | [要求变化后对齐已有计划](scenarios-requirements-design.md#已确认要求变化后对齐已有计划) |
+| 开发中临时增加 Product/模块，可能成为当前前置 | [插入 Product 并调整实际顺序](scenarios-requirements-design.md#开发中临时插入-product-或模块) |
+| 准备新增模块、系统或核心实体，或方案明显超过当前需要 | [重新判断设计边界](scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界) |
+| 准备改公共组件、项目工具或框架源，担心影响其他调用者 | [先界定共享修改影响](scenarios-requirements-design.md#修改共享能力前界定归属与影响) |
+
+### 界面、音频与资源
+
+| 具体情况 | 从这里开始 |
+| --- | --- |
+| 设计界面、调整 UI 或验证视觉原型 | [设计与实际验证界面](scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型) |
+| 确定声音，准备音效/音乐并最终在游戏中试听 | [从声音要求到准备与接入](scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏) |
+| 已拿到实际素材，需要导入、接入或替换 | [已有资源接入](scenarios-interface-audio-assets.md#已有资源文件后接入或替换) |
+
+### 验证与恢复
+
+| 具体情况 | 从这里开始 |
+| --- | --- |
+| 观察到异常行为，需要确认 Bug、定位、修复与回归 | [完整 Bug 处置](scenarios-verification-recovery.md#发现-bug-后定位修复并回归) |
+| 测试、运行器或证据导入失败，不确定错在何处 | [按失败层定位和恢复](scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) |
+| 代码已写完，需要判断能否交付、等待验收或记 done | [实现完成后逐项核对交付](scenarios-verification-recovery.md#实现完成后判断能否交付) |
+
+### 上下文与交接
+
+| 具体情况 | 从这里开始 |
+| --- | --- |
+| Feature 做到一半插入其他工作，需要中断或切换任务 | [保留停点并切换](scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) |
+| 换线程、压缩或中断后，不确定正在做什么及能否继续 | [恢复上下文并续接](scenarios-context-handoff.md#上下文不足时恢复现场并续接) |
+| Product、任务、说明、代码或结果互相矛盾 | [核对事实并修复正确位置](scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) |
 
 “要求变化”用于新意图已明确的情况；“文档与实际状态不一致”用于尚不清楚哪一方有错的情况。开发中发现方案违反已确认要求，也从后者开始，不先改需求使方案看起来正确。
 

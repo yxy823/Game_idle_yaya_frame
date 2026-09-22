@@ -53,47 +53,80 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 可以在指定测试项目已被 `.gdignore` 排除的报告区放置独立子项目，避免外层 Godot 扫描到重复全局类。
 这证明本次版本在所测 Windows/Godot 版本和路径下可重建；跨机器仍需重新完成工具路径配置与验证。
 
-## 本次工作台的回归入口
+## 工作台专项验证入口
 
-维护用例在 `framework/tests/project/asset_workbench_test.gd`，只复制到指定外部项目的
-`tests/features/asset_workbench/asset_workbench_test.gd` 后，使用现有 `run-gdunit-tests.py --target` 或已登记 Feature 运行。
-它覆盖试调隔离、磁盘冲突、无效参数、边界值、保存后游戏消费、延迟取消、声音重叠上限、浏览与绑定、A/B/连续触发及主题不修改事件数据。
-测试生成的 `test-cue.tres` 留在外部测试目录，不改示例正式 Cue。
+先按本次修改选择下列小节，不要求每轮运行全部夹具。源文件均在 `framework/tests/project/`，仅将需要的文件复制到明确指定的外部验证项目；运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。
 
-`framework/tests/project/asset_workbench_capture.gd` 在真实渲染器运行，当前截图写入外部项目 `reports/asset-workbench-ui-20260922/`。
-它覆盖三个工作台入口、浅深色、1600×900 及 1152×648 / 900×540 / 720×480、图像与音频候选、固定停止/保存和真实鼠标/键盘路由。
-同目录的 Shader、单项分析及批量分析渲染夹具分别检查真实像素/停止恢复、结果来源和图表/集合访问。
-它们不支持 headless 截图，也不做听觉或人工接受判断；每次运行以实际日志、截图和版本为准。
+### 功能、保存与错误恢复
 
-粒子与动画的新增用例为 `framework/tests/project/asset_effect_composition_test.gd`，复制到外部项目对应的 `tests/features/asset_effect_composition/` 后运行。
-它补充粒子延迟/自然结束/停止、Tween 与动画片段的变换归属、重触发与退出取消、A/B 隔离、完整字段保存及源分析范围；旧套件继续回归原有入口和能力。
-`asset_effect_render_capture.gd` 检查真实 GPU 粒子、重触发、停止与自然结束的像素输出，以及动画变换恢复、第四个工作台入口和消费场景。
-新增参数在 1600×900、1152×648、900×540、720×480 检查可访问性，真实输出按渲染器保存到外部项目 `reports/asset-workbench-effects-20260922/`。
-它只证明实际执行的渲染器与样例；效果协调、听感和交互舒适度仍需用户确认，不把粒子测量混入源资源 Analyzer。
+**适用变化：** Cue 参数、A/B、保存、播放生命周期、管理编排或故障恢复。将套件放入外部项目 `tests/features/<职责名>/`，职责名为文件名去掉 `_test.gd`，再使用现有 `run-gdunit-tests.py --target` 或已登记 Feature 运行。
 
-组合复用用例 `asset_composition_reuse_test.gd` 复制到对应的 `tests/features/asset_composition_reuse/`，覆盖同 Cue 的多实例草稿/保存、分歧与外部冲突、消费和移除清理。
-`asset_composition_reuse_capture.gd` 在真实渲染器比较局部/场景粒子的实际位移，并捕获变换后的双组合消费场景。
-`asset_effect_scale_probe.gd` 使用真实 Presenter 在 1600×900 内显示 8/32/128 个对象，比较 0.6 s 与 0.1 s 重触发，另运行 128 对象 120 s 和 10 轮装卸。
-测量包含当前渲染器/设备、应用帧间隔、引擎进程时间、Godot 内存计数和节点；不是独占 GPU 时间、进程工作集或其他设备保证。探针草稿清空声音、粒子延迟置零以避免快速重触发抑制发射；原 Cue 不改，声音行为由原套件单独回归。
-上述两份独立捕获/测量脚本输出到外部项目 `reports/asset-workbench-e3-e4-20260922/`。复用旧捕获时只在外部副本更换输出目录，保留历史证据。
-先核实范围与脚本，再按需运行；不并行运行多个 GPU 测量，不把观察到的热身缓存或探针采样数组增长直接判为泄漏，不为压测提前引入池化。
+| 变化范围 | 套件文件 | 主要核对 |
+| --- | --- | --- |
+| 基础试调与保存 | `asset_workbench_test.gd` | 草稿隔离、磁盘冲突、无效/边界参数、保存消费、延迟取消、重叠上限、浏览与绑定、A/B/连续触发、主题不改数据 |
+| 粒子、Tween 与动画 | `asset_effect_composition_test.gd` | 延迟/结束/停止、变换归属、重触发与退出取消、字段保存及源分析边界 |
+| 组合复用与共享 Cue | `asset_composition_reuse_test.gd` | 多实例草稿、共享保存分歧/外部冲突、消费与移除清理 |
+| 管理与编排 | `asset_playback_manager_test.gd`、`asset_feedback_timeline_test.gd`、`asset_timeline_integration_test.gd` | 句柄/预算、分组/抢占、待播音频、接管、冷释放/离树/重入；编排重读、窗口/循环/迟帧、草稿与原生消费 |
+| 消费依赖与启动恢复 | `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` | 四类入口未入树释放、显式 Cue 依赖、最近保存值、缺 Cue 恢复、不支持项/重复/容量反馈 |
 
-管理与编排回归为 `asset_playback_manager_test.gd`、`asset_feedback_timeline_test.gd`、`asset_timeline_integration_test.gd`，分别放到外部项目同名的 `tests/features/` 子目录后执行。
-它们检查目标句柄/预算、分组与抢占、待播音频、直接接管、冷构造释放、离树/重入，以及编排 Resource 重读、窗口边界、循环与迟帧、草稿/保存边界和原生消费。
-编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不据此声称逐采样同步。
-`asset_feedback_timeline_capture.gd` 用真实渲染器检查第四入口四种尺寸、浅深色与编排操作，捕获消费场景分阶段播放，并检查重复装卸回收。
-当前输出为外部项目 `reports/asset-workbench-e5-e6-20260922/`；失败与旧捕获保留，实际听感/视觉协调仍待人工体验。
-局部对象预算不是性能通过线；此阶段的功能与生命周期回归不替代 E4 测量，也不宣称改善 128 对象帧间隔。
+保存测试只在测试目录写临时 Cue/资源，不修改示例 Cue。冷释放与已入树后的装卸是不同分支，不能互相替代。
 
-交付边界回归 `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` 放到外部项目对应的同名职责目录（去掉 `_test` 后缀）。
-它们核对四类消费和工作台的未入树释放、显式 Cue 依赖、缓存场景读取最近保存值，以及 Cue 读取失败后恢复、批量不支持项/重复/容量反馈。
-保存测试只写测试目录，不修改示例 Cue；冷释放与已经入树后的装卸是不同分支，不能互相替代。
+编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不证明逐采样同步。管理器对象预算与生命周期回归也不替代规模测量。
 
-`asset_consumer_export_presets.cfg` 是四个消费入口的维护测试预设，不进入分发清单，也不是生产导出配置。
-仅在指定测试项目没有 `export_presets.cfg` 时临时安装并于结束恢复原先不存在的状态；已有预设时不得覆盖，先按本次授权选择隔离办法。
-它选择消费场景及依赖，并显式包含表现脚本、局部音频池和素材许可，排除工作台、Analyzer、测试及维护材料。
-通过 Godot `--export-pack` 输出到报告区后，从报告目录使用 `--main-pack` 启动 `asset_consumer_export_probe.gd`，在 `--` 后传唯一的绝对 JSON 输出路径。
-探针检查四入口的 Cue、真实声部、组合/编排、停止与回收及工具目录缺席；从项目根直接运行会使源文件掩盖缺漏，因此不构成相同验证。
-独立资源包运行不等于签名安装包、发行模板或其他平台已验证。原始失败包、日志与最终包分开保留；复用渲染夹具时仅改外部副本输出位置。
+### 渲染、交互与源分析
 
-首期历史结果见 [2026-09-21 首期验证报告](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)；布局、行为及失败现场见 [2026-09-22 UI/UX 整理与验证](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md)；新增机制见 [E1 粒子与动画接入](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)，组合复用与规模测量见 [E3/E4 报告](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md)。不能用本说明中的预期流程或旧版通过记录代替本轮实际结果，人工接受范围分别记录。
+**适用变化：** 布局、输入路由、材质/粒子效果、分析窗口或编排画面。使用真实显示驱动，不支持 headless 截图。窗口夹具按各自范围检查浅深色、1600×900、1152×648、900×540、720×480；分析窗口另检查紧凑尺寸与滚动。
+
+| 要观察的内容 | 捕获文件 | 实际检查 |
+| --- | --- | --- |
+| 原三个工作台与单对象消费 | `asset_workbench_capture.gd` | 图像/音频候选、固定停止/保存、真实鼠标/键盘、窗口布局 |
+| Shader | `asset_shader_render_capture.gd` | 真实像素与停止恢复 |
+| 单项/批量源分析 | `asset_analyzer_capture.gd`、`asset_analysis_group_capture.gd` | 实际分析结果来源、图表/集合访问及跳过原因 |
+| 粒子与动画 | `asset_effect_render_capture.gd` | GPU 粒子重触发/停止/结束、动画变换恢复、第四入口与消费 |
+| 组合复用 | `asset_composition_reuse_capture.gd` | 局部/场景粒子位移及变换后的双组合消费 |
+| 编排 | `asset_feedback_timeline_capture.gd` | 第四入口编排操作、消费分阶段画面和重复装卸回收 |
+
+**运行前选择输出位置：** 以下是源夹具当前默认目录，均相对外部项目，并非“本轮已通过”的记录。重用夹具时只改获准外部副本的输出位置，保留失败与仍被引用的旧截图，不覆盖历史证据。
+
+| 夹具 | 默认输出 |
+| --- | --- |
+| 工作台、Shader、单项分析、批量分析 | `reports/asset-workbench-ui-20260922/`；后三者分别在 `shader/`、`analysis/`、`group/` 子目录 |
+| 粒子与动画 | `reports/asset-workbench-effects-20260922/`，按渲染器分目录 |
+| 组合复用 | `reports/asset-workbench-e3-e4-20260922/`，按渲染器分目录 |
+| 编排 | `reports/asset-workbench-e5-e6-20260922/`，按渲染器分目录 |
+
+结果只证明实际执行的渲染器和样例；协调性、听感与操作舒适度仍需人工体验。粒子画面和源资源 Analyzer 的测量不能互相替代。
+
+### 规模测量
+
+**适用变化：** 对象数量、加载或重复播放成本、长时回收。使用 `asset_effect_scale_probe.gd`，先核实负载和预算，不并行运行多个 GPU 测量。
+
+探针在 1600×900 内用真实 Presenter 显示 8/32/128 对象，比较 0.6 s 与 0.1 s 重触发，另测 128 对象 120 s 与 10 轮装卸。默认输出为外部项目 `reports/asset-workbench-e3-e4-20260922/`，新一轮应选择不覆盖旧证据的位置。
+
+测量记录设备/渲染器、应用帧间隔、引擎进程时间、Godot 内存计数和节点，不是独占 GPU 时间、进程工作集或其他设备保证。草稿清空声音、粒子延迟置零以避免快速重触发抑制发射；原 Cue 不改，声音行为由功能套件单独回归。
+
+不要把热身缓存或探针采样数组增长直接判为泄漏，也不为压测提前引入池化。原 E4 的设备/样例边界见 [规模测量报告](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md#e4-范围与测量方法)，功能回归通过不证明 128 对象性能改善。
+
+### 独立消费与导出
+
+**适用变化：** 消费资源引用、运行脚本依赖或导出排除规则。使用 `asset_consumer_export_presets.cfg` 与 `asset_consumer_export_probe.gd`；它们只用于维护验证，不进入分发清单，也不是生产导出配置。
+
+**预设前置：** 仅在指定项目没有 `export_presets.cfg` 时临时安装测试预设；已有预设不得覆盖，先按本次授权选择隔离办法。
+
+1. 使用测试预设选择四消费场景及依赖，包含表现脚本、局部音频池和许可；排除工作台、Analyzer、测试及维护材料。
+2. 通过 Godot `--export-pack` 输出到本轮报告区，保留原始失败包和日志。
+3. 从报告目录用 `--main-pack` 启动探针，在 `--` 后传唯一的绝对 JSON 输出路径。从项目根启动会让源文件掩盖缺漏，不构成同样的验证。
+4. 核对四入口的 Cue、真实声部、组合/编排、停止/回收和工具目录缺席；结束后将临时预设恢复到原先不存在的状态。
+
+独立资源包运行不等于签名安装包、发行模板或其他平台已验证。
+
+### 查阅已有验证结果
+
+这些报告保留各轮版本、实际命令、失败与复验；不能代替本次运行，人工接受范围也分别记录。
+
+| 需要追查的范围 | 历史报告 |
+| --- | --- |
+| 首期工作台与 UI/UX | [首期验证](../../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)、[UI/UX 整理](../../../review/reports/asset-workbench-ui-ux-2026-09-22.md) |
+| 粒子动画、组合复用与规模 | [E1](../../../review/reports/asset-workbench-effects-e1-2026-09-22.md)、[E3/E4](../../../review/reports/asset-workbench-e3-e4-2026-09-22.md) |
+| 管理与编排 | [E5/E6](../../../review/reports/asset-workbench-e5-e6-2026-09-22.md) |
+| 消费导出、冷释放和分析恢复 | [E7](../../../review/reports/asset-workbench-e7-review-and-delivery-2026-09-22.md) |

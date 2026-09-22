@@ -66,6 +66,8 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 
 ## 环境与台账检查
 
+**前置：** 在当前终端完成 [调用准备](#调用准备)。
+
 ```powershell
 & $projectPython -B tools/checks/check-project-environment.py --require-ready
 $LASTEXITCODE
@@ -83,7 +85,7 @@ $LASTEXITCODE
 
 ## 三种常见测试调用
 
-在已经批准的任务范围内，按用途选用：
+**前置：** 在当前终端完成 [调用准备](#调用准备)，再在已批准范围内按用途选用：
 
 ```powershell
 # Stage 3：已有安全网，不包含尚未创建的 planned 测试。
@@ -163,7 +165,7 @@ reports/gdunit-wrapper/run-<id>/
 | 子命令 | 何时使用 |
 | --- | --- |
 | `initialize --feature F001` | Stage 2 初始化当前 Feature 依据；会写入当前记录，不作为失败恢复按钮 |
-| `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；必要时重复 `--run` 覆盖不同运行 |
+| `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；多个运行须在同一次调用中列出多个 `--run`，整组替换旧引用 |
 | `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定清单不能重新绑定 |
 | `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户真实结果，与原清单和当前内容对照；记录 accepted、rejected 或 pending |
 | `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已经明确接受当前范围之后 |
@@ -171,20 +173,44 @@ reports/gdunit-wrapper/run-<id>/
 | `show --feature F001` | 只读查看已有记录 |
 | `validate --feature F001` | 检查当前内容对应的完成依据 |
 
-人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见 [人工验收文件契约](../../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，`pending`、`rejected` 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。
+### 导入测试结果
 
-真实报告导入示例：
+**前置：** 在当前终端完成 [调用准备](#调用准备)。把示例运行路径换成运行器实际输出的 `result.json`，先确认文件确已写入。
+
+**调用前确认副作用：**
+
+- 一次 `record-tests` 会用本次所有 `--run` **整组替换**当前测试引用，不会逐次累加；需要保留的兼容运行必须一次列全。
+- 结果导入校验失败会**清除旧测试引用**，原始报告仍保留。应处理失败，不得改写结果文件绕过。
+
+只有一个有效运行时：
 
 ```powershell
 & $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-id/result.json
 $LASTEXITCODE
 ```
 
-把 `run-actual-id` 换成运行器实际输出的目录，并确认文件确已写入。一次 `record-tests` 用本次所有 `--run` 参数替换当前测试引用，并非逐次累加；需保留的兼容运行在同一次调用中列全。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。`record-tests` 失败会清除旧测试引用并保留原始报告，不能改写结果文件绕过失败。
+需同时保留两个兼容运行时，改用一次调用中的两个 `--run`；以下路径同样只是占位：
+
+```powershell
+& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-first/result.json --run reports/gdunit-wrapper/run-actual-second/result.json
+$LASTEXITCODE
+```
+
+导入后核对退出码与实际结果。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。
 
 若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`，保留 `initialize` 生成的 `test_runs: []`。后续仍按真实结果记录人工接受，再运行完成检查；工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败都会阻止这个分支，不能用重新初始化消除失败。
 
 完成依据保存测试原件引用与适用的人工决定，新任务按当前模板初始化。独立评审的范围和时机由用户选择；遇到旧命令或旧记录时，查阅 [故障排查](troubleshooting.md#测试运行和完成依据)。
+
+### 导入人工验收记录
+
+人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见 [人工验收文件契约](../../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。
+
+有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，`pending`、`rejected` 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。
+
+### 检查完成依据与台账
+
+**前置：** 在当前终端完成 [调用准备](#调用准备)。
 
 完成检查由两部分配合，Agent 还要单独确认直接静态检查与用户指定的评审条件：
 
@@ -228,7 +254,7 @@ AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 
 
 ## 直接脚本解析与 lint
 
-从项目根目录，使用同一个已确认 Godot 可执行文件：
+**前置：** 在当前终端完成 [调用准备](#调用准备)。从项目根目录使用同一个已确认 Godot 可执行文件：
 
 ```powershell
 # 替换成实际变更脚本，并按影响解析必要依赖。

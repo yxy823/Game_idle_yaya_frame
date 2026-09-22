@@ -35,6 +35,8 @@ flowchart TD
 
 实线表示写入、约束、来源或保留关系，虚线表示引用。知识是带条件的参考，不能覆盖规则或需求。架构地图维护当前结构；已完成设计与 ADR 的旧理由保留历史，不能用后来的决定改写过去。
 
+### 项目入口与执行约定
+
 | 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
 | --- | --- | --- | --- |
 | `README.md` | 项目自身的简短导航 | 创建时复制；Agent 按项目用法维护 | 找当前项目入口 |
@@ -45,10 +47,21 @@ flowchart TD
 | `.codex/agents/researcher.toml` | 调研角色，定义搜索方法、报告内容和保存约定 | 创建时复制；主 Agent 按需委派，anysearch 保持用户级安装 | 调研使用见[搜索与报告](../guides/project-knowledge.md#按需搜索与保存调研) |
 | `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
 | `docs/methodology-config.json` | 机器路径、文档语言、真实测试命令 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
+
+### 需求、专业规格与约束
+
+| 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
+| --- | --- | --- | --- |
 | `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-author 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
 | `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-author 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
 | `docs/art/art-bible.md`、`docs/audio/sound-bible.md`、`docs/ui/<interface>-design.md`、`docs/localization/localization-spec.md` | 各领域已确认专业要求，Product 只保留行为与引用 | 有需要时由对应专业 Skill 直接维护；规划、执行、审核按适用范围读取 | 参见[专业文档归属](../guides/specialist-workflows.md#文档由谁维护)，不放进普通 README 或报告目录 |
 | `docs/project-rules.md` | 跨 Product/Feature 的约束、协作规则、默认原则；区分 MUST/PREFER/REVIEW | 创建时由模板复制；Agent 写前自检并核对授权，需求/设计/实现持续读取 | 决定实质新增、删除、强度和适用范围 |
+| `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 按需准备；Agent 汇总/更新，用户准备素材 | 从原任务/Progress 链接进入，不把齐备当验收 |
+
+### Feature、测试与完成依据
+
+| 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
+| --- | --- | --- | --- |
 | `docs/feature-list.json` | 任务 ID、标题、状态、依赖、完成时间和详情定位 | 初始空索引；规划和执行 Agent 更新，检查器读取 | 查任务状态与依赖；状态不是验证证据 |
 | `docs/features/F0XX.json` | 本任务范围、source、组件、AC、验证义务；notes 保存短记录与链接 | 规划时建立；执行维护，选择器/完成检查读取 | 审批具体方案，核对覆盖与剩余项 |
 | `docs/features/F0XX-design.md` | 详细设计、规则的具体应用、实现理由与实际偏差；不复制 AC/测试台账 | 按需建立；Stage 1 判断、2 保存、3 对齐，后续保留历史 | 从对应 JSON notes 的相对链接进入 |
@@ -56,12 +69,16 @@ flowchart TD
 | `docs/feature-list-revisions.json` | 源变化影响、同步锚点、替代与依赖演进；不替代 Git 历史 | 初始空记录；同步 Agent 追加，检查器与后续同步读取 | 追查计划为何变化 |
 | `docs/feature-completion-evidence.json` | 当前 Feature 的测试原件引用与适用人工决定，绑定当前内容 | Stage 2 初始化；完成记录工具写入/复核，每次服务当前 Feature | 查看引用的真实原件；不是全部 Feature 历史 |
 | `reports/` | 测试、诊断、初始化、人工验收与其他真实输出 | 创建时只有 .gdignore；运行器/Agent/用户产生原件，检查工具和交接读取 | 分清失败、未执行、接受与已通过 |
+
+### 架构、知识与交接
+
+| 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
+| --- | --- | --- | --- |
 | `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 结构需要解释时创建；实现 Agent 更新，规划/执行/评审引用 | 从当前地图了解系统 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 达到阈值的重要取舍、理由、成本与替代关系 | 真实决策触发；Agent 保存已确认决定，相关任务引用 | 决定候选，保留已取代原因 |
 | `docs/knowledge/` | 有适用条件和证据的经验，索引只放链接；不存规则或可执行输入 | 初始仅索引；Agent 在任务中提炼、开始相关工作时查阅 | 判断经验是否适用于当前版本 |
 | `docs/research/` | 带来源、版本与限制的外部调研 Markdown，纳入 Git；不拥有需求或本地验证结论 | 有留存价值时按授权建立；researcher 写指定报告，主 Agent 核对采纳并链接原任务 | 无初始空目录；从任务链接进入，区分建议和已采用决定 |
 | `docs/progress.md`、`docs/progress/<key>.md` | 当前阶段/阻塞/待决定/下一步与索引；单份执行历史 | 当前模板随创建复制，历史按需归档；交接 Agent 写、接手者读 | 从真实停点继续，不能据下一步文字推定授权 |
-| `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 按需准备；Agent 汇总/更新，用户准备素材 | 从原任务/Progress 链接进入，不把齐备当验收 |
 
 外部 GDD 是需求输入，默认不在初始目录内，见 [GDD 接入](../guides/product-and-planning.md#接入已有-gdd)。以上详细制度与维护时机在 [项目文档维护与交接](../guides/project-knowledge.md) 中展开；实际字段由源规范负责。
 
@@ -152,7 +169,7 @@ MyGodotGame/
 
 ## 开发中按需出现的内容
 
-上表已说明文档出现时机。以下是测试、报告与辅助输入的位置；目录名示例不表示已存在或已运行。
+[文件职责表](#文档与执行文件如何配合) 已说明文档出现时机。以下是测试、报告与辅助输入的位置；目录名示例不表示已存在或已运行。
 
 | 路径 | 建立时机 | 主要内容 |
 | --- | --- | --- |
