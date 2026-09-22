@@ -115,8 +115,14 @@ remains the user's decision. Playtest analysis and release work are outside this
 
 For resource comparison or feedback timing, the project may use the optional
 [asset workbench example](../examples/asset_workbench/README.md). It provides
-single-asset inspection/audition and one icon-pulse event with A/B trials and an
-explicit save target. Reuse an existing project's presentation/data/audio APIs
+single-asset inspection/audition, on-demand image/audio source analysis and
+multi-object previews combining optional images, audio, Shader, particles and
+animation. Object/scene A/B trials, explicit Cue save targets and separate
+consumer scenes support tuning; the effects example also has local playback
+management and finite timeline playback. Scene layout and preset authoring stay
+in native Godot resources; this is not a general interface or timeline editor.
+See the example README for current entries, controls and supported parameters.
+Reuse an existing project's presentation/data/audio APIs
 instead of forcing its objects into the example Cue. Example assets are not
 approved production content. This is a development tool, not an asset-production
 Skill, automatic analysis step, new Stage, or evidence of human acceptance.
