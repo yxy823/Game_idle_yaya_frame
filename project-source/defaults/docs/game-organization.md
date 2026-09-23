@@ -49,6 +49,8 @@ game/mining/
 
 模块名称来自当前游戏：探索游戏可能需要 `world/` 与 `actors/`，放置游戏可能需要 `production/` 与 `upgrades/`。有需求再建立相应目录和实现。功能专属面板跟随功能，菜单等全局 UI 可归入 `game/ui/`。
 
+逻辑分层与目录分层分别判断：优先在所属游戏模块内部明确输入、规则与表现的职责。例如，`mining_rules.gd` 与 `mining_panel.gd` 可以同属 `game/mining/`，规则代码不依赖面板实现。再按内容规模与查找、维护需要细分目录；逻辑分层本身不要求新建根级 `core/`、`presentation/` 等目录。依赖方向沿用[项目架构原则](project-rules.md#22-core-architecture-principles)。
+
 ## 用领域与职责命名
 
 先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-and-organization.md)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#style-and-naming)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
