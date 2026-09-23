@@ -26,6 +26,7 @@
 | [tests/test_manual_acceptance_files.py](tests/test_manual_acceptance_files.py) | 中立 Git 夹具验证人工清单、逐项文件结果、快照匹配与口头入口，不执行游戏或人工体验 |
 | tests/project/ | 当前项目工具的回归源码；不进入空白项目 |
 | tests/project/gdscript_lint_contracts.gd | 按需在外部项目运行的真实引擎 lint 契约；unittest 不执行它 |
+| tests/project/gdscript_lint_entry_contracts.gd、gdscript_lint_editor_contracts.gd | CLI 配置/检查 ID 拒绝与真实编辑器面板的配置归属、控件保存回归；仅在指定外部项目的隔离夹具内执行，保留结果与环境限制 |
 | tests/project/gdunit_runner_contracts.gd | 真实运行器回归：普通/参数化断言、预期错误与受控生命周期失败；不进入空白项目 |
 | tests/project/asset_workbench_test.gd、asset_workbench_capture.gd | 工作台的真实 Godot 行为与渲染夹具；仅按任务复制到指定外部测试项目，不进入分发清单 |
 | tests/project/asset_analyzer_backend_test.py、asset_analyzer_test.gd、asset_analyzer_capture.gd、analyzer_process_fixture.py | 第二阶段可选依赖的真实分析、后台异常与图表回归；仅在已安装依赖的指定项目按 [实施报告](review/reports/asset-analyzer-phase2-2026-09-21.md) 显式执行，不加入默认项目工具 unittest 发现 |

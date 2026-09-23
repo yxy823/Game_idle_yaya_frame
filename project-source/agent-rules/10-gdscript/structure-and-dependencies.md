@@ -14,7 +14,7 @@ Keep ownership and dependency direction explicit rather than discovering collabo
 - **[PREFER]** Use `$` or `%` for scene-internal references. Do not discover cross-module dependencies with deep parent/root paths or recursive `find_child()` searches.
 - **[MUST]** Cross-module dependencies use explicit APIs, dependency injection, a coordinator, or another intentional boundary.
 - **[MUST]** Use Command/API down and Event/Signal up as the default dependency direction. Sibling modules communicate through an owner/coordinator rather than reaching into each other.
-- **[PREFER]** Use the signal object API when the signal is known rather than stringly typed connection logic.
+- For signal API choice and dynamic-boundary exceptions, apply [Exports, properties, and signals](typing-and-api.md#exports-properties-and-signals).
 - **[MUST]** Groups are behavior classification/broadcast mechanisms, not a hidden global service locator.
 
 ### Communication example

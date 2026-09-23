@@ -21,5 +21,6 @@ Static validation and behavioral tests are separate evidence. Use the lowest tes
 
 ## Visual boundary
 
-- **[MUST]** v1 does not require screenshots, golden images, pixel diffs, animation similarity, or subjective layout scoring.
+- **[MUST]** The framework does not impose a general screenshot, golden-image, pixel-diff, animation-similarity or subjective-layout gate. Do not introduce one as an implicit requirement of ordinary delivery.
+- **[REVIEW]** A task with an explicitly agreed objective rendering contract may use scoped screenshot or pixel checks as supplemental evidence. State the observable contract and environment limits; such checks do not establish subjective visual acceptance or become a project-wide gate.
 - **[MUST]** Visual composition, artistic consistency, layout appearance, and animation feel use manual acceptance.

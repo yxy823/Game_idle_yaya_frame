@@ -372,15 +372,9 @@ suite is a reported blocker, not a caller-entered PASS.
 
 ## Bug learning in notes
 
-After successful automated verification and any required human acceptance of an engineering Feature with `engineering_change: bug`, append a concise `BUG learning` block:
-
-```text
-BUG learning
-Root cause: <causal implementation defect>
-Trigger: <minimum precondition>
-Regression coverage: <logical regression test ID(s), or approved manual regression reason/check>
-Guardrail: <general implementation principle preventing the same defect class>
-```
+After successful automated verification and any required human acceptance of an
+engineering Feature with `engineering_change: bug`, append a concise `BUG learning`
+block using [the canonical fields](07-engineering-change.md#bug-learning-promotion).
 
 Do not store dead-end debugging transcripts or transient guesses.
 

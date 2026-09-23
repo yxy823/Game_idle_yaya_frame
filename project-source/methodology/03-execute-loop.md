@@ -363,21 +363,16 @@ For a Bug Feature, accepted Stage 5 enters Stage 5.5. All others enter Stage 6.
 
 Applies only to detail files with `engineering_change: bug`.
 
-Append to Feature notes:
-
-```text
-BUG learning
-Root cause: <causal implementation defect>
-Trigger: <minimum trigger/precondition>
-Regression coverage: <F0XX-RTyy logical IDs, or approved manual regression reason/check>
-Guardrail: <general principle preventing the same defect class>
-```
+Capture the local Feature note and assess Guardrail promotion under
+[Bug-learning promotion](07-engineering-change.md#bug-learning-promotion).
 
 Do not persist failed debugging guesses, redundant traces, or incidental machine-local failures.
 
-Evaluate whether the Guardrail is reusable enough for project or specialized rules under [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance). Output the required self-check before writing; establish the needed explicit decision without repeating one already given. Never promote automatically. If a late approved rule change alters the snapshot or current obligations, repeat applicable verification and acceptance before completion.
+If a late approved rule change alters the snapshot or current obligations,
+repeat applicable verification and acceptance before completion.
 
-If the Guardrail becomes a machine-verifiable cross-Feature invariant, propose an `INV-<DOMAIN>-NN` test and registry entry. Creating that invariant still requires the user's approval when it expands the accepted Feature scope.
+Creating a promoted cross-Feature invariant still requires the user's approval
+when it expands the accepted Feature scope.
 
 Handle approved rule changes and any affected plans under Stage 8; reuse existing synchronization authority and work already completed.
 

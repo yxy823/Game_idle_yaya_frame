@@ -5,14 +5,25 @@ description: "Independently review scoped code or changes against approved requi
 
 # Code review
 
-Apply `methodology/12-independent-review.md` in a fresh reviewer instance. Read
-the selected Feature/AC, relevant Product and professional sources, terminology,
-accepted ADRs/rules, final diff, affected callers and original verification.
+Apply `methodology/12-independent-review.md` in a fresh reviewer instance. Fix
+the reviewed snapshot and scope, then select the inputs for the requested object:
+
+- Change review: establish the comparison baseline and inspect the combined final
+  diff, relevant Feature/AC when present, affected callers and original verification.
+- Current-state audit: inspect the selected module, files or commit snapshot and
+  direct callers. Use existing relevant requirements and evidence; do not require
+  a diff or invent a Feature, AC or historical baseline. Follow the Audit route
+  in `methodology/00-overview.md` without starting Feature delivery.
+
+For either scope, read applicable Product/professional sources, terminology and
+accepted ADRs/rules. Missing requirements or verification limit the corresponding
+conclusions; they do not prevent supported code-quality findings.
 
 Answer two separate questions in one scoped pass:
-- Requirements: does the result satisfy concrete AC, preserve required behavior
-  and stay within authorization? Do tests and human observations actually prove
-  the claims on this snapshot?
+- Requirements: does the result satisfy available approved requirements and AC,
+  preserve required behavior and stay within authorization? Do available tests
+  and human observations actually prove the claims on this snapshot? State what
+  cannot be assessed when those sources are missing.
 - Code quality: are responsibilities, state ownership, lifecycle and dependencies
   coherent? Inspect supported defects and material maintenance costs: duplicated
   domain rules, misplaced dispatch, magic values, oversized responsibilities,

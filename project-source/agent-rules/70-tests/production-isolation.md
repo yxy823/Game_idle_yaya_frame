@@ -27,4 +27,4 @@ Development tests remain loadable by Godot while production export remains indep
 
 - **[MUST]** v1 has no project-wide coverage-percentage gate. Coverage may be auxiliary evidence but never substitutes for behavioral assertions/integration/runtime tests.
 - **[MUST]** v1 has no generic performance threshold without project-specific budget/target hardware contract.
-- **[MUST]** v1 visual quality remains manual acceptance; do not add screenshot regression as hidden production/test requirement.
+- Visual evidence and acceptance follow the [visual boundary](testing-strategy.md#visual-boundary).

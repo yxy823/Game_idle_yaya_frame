@@ -26,6 +26,8 @@
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
+维护 `project-source/` 中的 Godot 代码、场景、资源或测试时，按 [领域规则路由](project-source/Project_AGENTS.md#engineering-rule-routing) 核对适用工程语义；任务授权、Git、验证范围与地点及交付仍以本维护仓库规则为准。
+
 框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。目标、决定、完成情况、验证缺口或下一步发生实质变化时，在本次允许写入的范围内及时更新对应条目，并在提交或交接前核对一致；只读任务在回复中指出需更新项。区分已完成、待验证、待决定与暂缓，不把建议记成已获准任务，不复制详细 Git 历史或游戏项目台账；无实质变化不制造更新。
 
 更新使用说明时，Agent 完成内容、链接与锚点的静态核对，以及需要的现有 HTML/Mermaid 构建；禁止使用 Playwright Skill 进行可视化检查。排版与浏览器交互由用户在外部检查，交付时提供阅读版入口和需要关注的位置，不把构建成功写成视觉检查通过。

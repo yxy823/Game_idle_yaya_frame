@@ -59,7 +59,7 @@
 
 # Preserve the pinned vendor file byte-for-byte while excluding its upstream
 # trailing EOF blank line from Git's whitespace gate.
-addons/gdscript-linter/docs/IGNORE_RULES.md whitespace=-blank-at-eof
+project-source/addons/gdscript-linter/docs/IGNORE_RULES.md whitespace=-blank-at-eof
 
 
 # ============================================================

@@ -15,28 +15,23 @@
 
 ## 追踪与物理组织
 
-- **[MUST]** Feature acceptance test 使用 Yaya 逻辑 ID `F0XX-ACyy[-NN]`，Bug
-  regression test 使用 `F0XX-RTyy`，跨 Feature invariant 使用
-  `INV-<DOMAIN>-NN`；实际路径和 test case 记录在 `docs/test-registry.json`。
-- **[MUST]** 项目测试按保护对象放在 `tests/unit/`、`tests/features/` 或
-  `tests/invariants/`。Regression 是测试来源/类型，不要求独立的
-  `tests/regression/`。
+- **[MUST]** 逻辑 ID、测试目录和实际路径/test case 映射遵循
+  [测试分类](../../methodology/08-testing-strategy.md#test-taxonomy) 与
+  [Registry 规则](../../methodology/08-testing-strategy.md#registry-rules)。
 - **[MUST]** Godot 的 L1 Unit、L2 Integration 和 L3 Runtime Scene 是测试技术
   层级，不是与 Yaya 三个目录根互斥的物理目录。测试应放在其所保护契约对应的
   Yaya 目录中。
 
 ## 执行生命周期
 
-- **[MUST]** 实现前先完成 Yaya Stage 1 Test Impact Review 并获得明确批准，再
-  运行 Existing Safety Net；可自动化的新行为或 Bug regression 按 RED、GREEN、
-  refactor 推进。
-- **[MUST]** 自动验证通过不等于 Feature 完成。先按需求确定验收方式；manual 模式须执行 Stage 5，automated 模式省略该步骤。
-  独立审查按 `methodology/03-execute-loop.md` Stage 6 的用户选择执行，适用完成检查仍须满足。
-- **[MUST]** runner、selector 和 full-suite 使用项目配置与已支持参数。
-  脚本解析和 lint 按 `methodology/gdscript-lint.md` 直接调用 Godot/插件入口，
-  不新增包装程序或静态 manifest。
-- **[MUST]** 项目只采用一个主要 Godot test runner。gdUnit4 仅在项目明确采用并
-  完成配置后生效；本规则集的安装本身不安装或启用 gdUnit4。
+- **[MUST]** 实现批准、基线和 RED/GREEN/refactor 遵循
+  [TDD 执行契约](../../methodology/08-testing-strategy.md#tdd-execution-contract)；
+  验收、可选独立审查和完成条件由 [执行流程](../../methodology/03-execute-loop.md) 负责。
+- **[MUST]** runner、selector 和 full-suite 遵循
+  [Runner 边界](../../methodology/08-testing-strategy.md#runner-boundary) 与实际项目配置；
+  本规则集的安装本身不安装或启用 gdUnit4。
+- **[MUST]** 脚本解析和 lint 的调用、参数与工具边界遵循
+  [直接静态检查契约](../../methodology/gdscript-lint.md)。
 
 如果两套适用的 `[MUST]` 规则仍无法同时满足，按
 `agent-rules/00-core/rule-precedence-and-routing.md` 报告真实规则冲突，不得为了

@@ -183,10 +183,10 @@ Every completed Bug leaves local learning in its Feature notes:
 
 ```text
 BUG learning
-Root cause: ...
-Trigger: ...
-Regression coverage: <F0XX-RTyy logical IDs or approved manual regression>
-Guardrail: ...
+Root cause: <causal implementation defect>
+Trigger: <minimum trigger/precondition>
+Regression coverage: <F0XX-RTyy logical IDs, or approved manual regression reason/check>
+Guardrail: <general principle preventing the same defect class>
 ```
 
 The local record is factual incident knowledge. Link to `bug_diagnosis` or the

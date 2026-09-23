@@ -8,4 +8,4 @@ Use concrete test-selection rules in `test-selection-and-gates.md`.
 - **[MUST]** Test-owned Node/file/Input/global state is cleaned or affected run is not trustworthy.
 - **[MUST]** Required waits/time/randomness are deterministic and bounded.
 - **[MUST]** Production/test isolation is validated when test roots/framework, export filters, test Autoloads, or project test integration change.
-- **[MUST]** v1 automated validation does not include screenshots, golden images, pixel diffs, a generic coverage percentage, or generic performance thresholds.
+- **[MUST]** Apply the [visual boundary](testing-strategy.md#visual-boundary) to rendering evidence and the [coverage/performance policy](production-isolation.md#coveragevisualperformance-policy) to numeric gates.

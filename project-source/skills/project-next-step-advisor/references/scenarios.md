@@ -15,6 +15,7 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | Replace a build/testing tool | Maintenance with compatibility and affected validation; no new Product intent. |
 | Framework Gate blocks business WIP | Isolated framework maintenance, reusable source/template/negative-test fix, preserve business work. |
 | Audit only | Independent finding/report prompt under the review contract; no reviewed-source writes or automatic Bug. Honor static-only scope; otherwise necessary validation must isolate all side effects. |
+| Review an existing module with no Feature, diff or requirement record | Use the current-state audit entry in `review-code` on the named snapshot and callers; report requirement-evidence gaps while reviewing supported code-quality concerns. Do not create a Feature or start delivery. |
 | Human says a specific tested revision is accepted | Follow up on that exact scope/snapshot; do not accept another version or Feature. |
 | Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS or unnecessary continuation prompt. |
 | Simple bounded next action | Short prompt; avoid copying the entire workflow. |

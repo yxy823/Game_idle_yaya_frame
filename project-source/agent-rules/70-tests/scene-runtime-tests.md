@@ -18,4 +18,4 @@ L3 tests verify critical multi-system runtime flows from a legal scenario using 
 
 ## Visual boundary
 
-- **[MUST]** L3 automated assertions remain deterministic runtime state/event/lifecycle/input checks. Do not add screenshot/golden/pixel-diff visual gates in v1.
+- **[MUST]** L3 behavior tests use deterministic runtime state/event/lifecycle/input assertions. Supplemental rendering checks and manual visual acceptance follow the [visual boundary](testing-strategy.md#visual-boundary).
