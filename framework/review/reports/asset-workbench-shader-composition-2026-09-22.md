@@ -26,7 +26,7 @@ Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
 | 无图片承载 | Shader 在普通白色矩形上绘制；噪声可独立显示。具体效果仍依赖 Shader 本身的采样方式，描边不保证在无透明边缘的矩形上明显 |
 | 分析边界 | 仍只收集图片/声音源，跳过空项，不把材质或 Shader 的最终画面交给源文件 Analyzer |
 
-新增入口：[Shader 组合工作台](../../../project-source/examples/asset_workbench/shader_composition/example-workbench.tscn)。
+新增入口：[Shader 组合工作台](../../../project-source/examples/asset_workbench/shader_composition/example_workbench.tscn)。
 继承现有三对象 Scene，使用自己的 Cue；原单对象/组合示例配置未修改。
 三个初始对象分别为图片＋描边＋声音、图片＋溶解且静音、噪声＋声音且无图片。
 右侧颜色按钮在真实截图检查中补足了可点击高度。
@@ -44,7 +44,7 @@ Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
 
 逐文件比较确认逻辑未变，只规范了空白和 LF。原件未改动；本地镜像未提供可识别的上游提交号，不补造版本。
 本地镜像未附 LICENSE，已核对 [GDQuest 上游许可](https://github.com/gdquest-demos/godot-shaders/blob/main/LICENSE)：
-Shader 代码采用 MIT，保留于 [随示例复制的许可](../../../project-source/examples/asset_workbench/shader_composition/example-shaders-license.txt)。
+Shader 代码采用 MIT，保留于 [随示例复制的许可](../../../project-source/examples/asset_workbench/shader_composition/example_shaders_license.txt)。
 没有复制采用另一许可的上游艺术资产；溶解遮罩是本例创建的 Godot 渐变资源。
 
 ## 实际验证

@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="FeedbackParticlePreset" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_particle_preset.gd" id="1"]
+[ext_resource type="PackedScene" path="res://examples/asset_workbench/effects_composition/example_world_stream.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+display_name = "持续粒子 · 场景坐标"
+emitter_scene = ExtResource("2")

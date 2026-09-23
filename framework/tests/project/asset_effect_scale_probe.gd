@@ -84,7 +84,7 @@ func _spawn(count: int) -> void:
 		var object := ObjectView.new()
 		object.name = "Object%d" % index
 		object.text = "%d / %s" % [index + 1, ROLES[index % 3]]
-		var cue_path := BASE + "example-cluster-" + ROLES[index % 3] + "-cue.tres"
+		var cue_path := BASE + "example_cluster_" + ROLES[index % 3] + "_cue.tres"
 		object.cue_resource = load(cue_path) as FeedbackCue
 		object.position = Vector2(index % columns, floori(float(index) / columns)) * cell
 		object.size = cell - Vector2(4, 4)

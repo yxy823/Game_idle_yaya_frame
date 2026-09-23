@@ -66,7 +66,9 @@ $LASTEXITCODE
 
 ## 复制完成后的初始状态
 
-结果是独立项目文件：根 README/AGENTS、开发 Skill、配置、规范、工具与插件已经就位；`docs/product.md` 为空，Feature/测试索引为空，环境仍为 `incomplete`。默认 Godot 显示名为 `New Godot Project`，尚无主场景、业务测试、Git 初始化或实际验证。
+结果是独立项目文件：根 README/AGENTS、开发 Skill、配置、规范、工具与插件已经就位，并带有 `main/`、`game/`、`components/`、`assets/`、`addons/`、`tests/` 的共同骨架。默认 Godot 显示名为 `New Godot Project`，`run/main_scene` 已指向最小启动场景 `res://main/main.tscn`。
+
+`docs/product.md` 为空，Feature/测试索引为空，环境仍为 `incomplete`，尚无正式玩法、业务测试、Git 初始化或实际验证。创建器只复制已有入口，不启动场景；游戏模块和测试子目录按后续需求展开，判断方法随项目保存在 `docs/game-organization.md`。
 
 逐项来源和默认目录见 [项目目录与文件职责](../reference/project-layout.md#源材料到项目的映射)。部分模板同时保留在 `methodology/templates/` 并复制为初始 `docs/` 文件；后续由 Agent 按 `document_language` 写入正文，创建器不翻译。
 

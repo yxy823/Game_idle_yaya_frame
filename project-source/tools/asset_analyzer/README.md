@@ -33,7 +33,7 @@ $LASTEXITCODE
 4. 成员表显示源文件、类型、状态、缓存及问题摘要；选中后先查看警告和依据，再按需展开统计或规则。完整路径可从集合菜单查看复制。Ctrl 选中两项同类结果，点“分析对比 A/B（选中两项）”复用原窗口和图表，不启动重复分析。
 5. 同类统计显示有效样本数、最小值、中位数和最大值。类型、单位、Schema、Analyzer/后端版本或分析参数不同时分开统计；表格第一列 tooltip 保留版本与参数。不可用、缺失和失败值不进入统计，也不作为零或规则通过。
 6. 分析后，从指标下拉框添加 `Minimum`、`Maximum` 或 `Max distance from median` 规则，阈值使用该指标原单位。中位数偏差需要至少 3 个可比测量，否则显示 unmeasured。规则立即复用现有数据检查，不改底层算法或素材；上限 64 条。
-7. 集合菜单的“保存集合与规则”保存项目内 `.json`；“加载集合（替换当前集合）”读取并验证后替换分组及结果。示例见 `examples/asset_workbench/example-analysis-group.json`。`parameters` 沿用后端参数协议，可设置静音阈值等，重分析后生效。
+7. 集合菜单的“保存集合与规则”保存项目内 `.json`；“加载集合（替换当前集合）”读取并验证后替换分组及结果。示例见 `examples/asset_workbench/example_analysis_group.json`。`parameters` 沿用后端参数协议，可设置静音阈值等，重分析后生效。
 8. “保存分析结果快照”写入 `reports/asset-analyzer/history/batch-*.json`；“打开历史快照”标记 HISTORICAL 与原时间，不代表当前文件。重分析检查内容哈希；导出身份用项目相对路径。分组与快照共用 32 MiB 上限，包含 UTF-8 编码及格式化开销；超限保留已有文件和当前结果，可缩小分组重试。
 
 分组是轻量 JSON，不另建数据库或业务资产关系。`group_version: 1` 下包含 `name`、`assets`（path/type）、`parameters`、`rules`；规则包含 `type`、`metric`、`unit`、`operator`（min/max/delta）、`value`。快照另用 `snapshot_version: 1`，保留 group、results、created_at；单项结果继续使用 Analyzer Schema v1。

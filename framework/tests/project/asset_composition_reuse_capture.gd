@@ -3,7 +3,7 @@ extends SceneTree
 ## E3 real pixels: emitted particles follow local transforms or remain in scene space.
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const Consumer = preload("res://examples/asset_workbench/effects_composition/example-consumer.tscn")
+const Consumer = preload("res://examples/asset_workbench/effects_composition/example_consumer.tscn")
 const BASE: String = "res://examples/asset_workbench/effects_composition/"
 const REPORT: String = "res://reports/asset-workbench-e3-e4-20260922/"
 
@@ -43,7 +43,7 @@ func _coordinates(role: String) -> Dictionary:
 	var presenter := Presenter.new()
 	presenter.size = Vector2(256, 256)
 	viewport.add_child(presenter)
-	var source := load(BASE + "example-cluster-" + role + "-cue.tres") as FeedbackCue
+	var source := load(BASE + "example_cluster_" + role + "_cue.tres") as FeedbackCue
 	var cue := source.trial_copy()
 	cue.tween_enabled = false
 	cue.particle_delay_seconds = 0.0

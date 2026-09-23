@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="FeedbackCue" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1"]
+[ext_resource type="Texture2D" path="res://examples/asset_workbench/assets/example_trophy.png" id="2"]
+[ext_resource type="AudioStream" path="res://examples/asset_workbench/assets/example_confirmation_a.ogg" id="3"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/shader_composition/example_outline_preset.tres" id="4"]
+
+[resource]
+script = ExtResource("1")
+texture = ExtResource("2")
+sound = ExtResource("3")
+shader_preset = ExtResource("4")
+gain_db = -18.0
+shader_duration_seconds = 1.2

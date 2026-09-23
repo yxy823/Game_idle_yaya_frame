@@ -9,16 +9,16 @@
 
 | 工作台入口 | 代表性检查 | 保存后的消费入口 |
 | --- | --- | --- |
-| `single/example-workbench.tscn` | 单对象浏览、试听、A/B、保存 | `single/example-game.tscn` |
-| `composition/example-workbench.tscn` | 多对象选择、混合 A/B、逐文件保存 | `composition/example-composition.tscn` |
-| `shader_composition/example-workbench.tscn` | 材质隔离、无图像承载面、独立绑定 | `shader_composition/example-composition.tscn` |
-| `effects_composition/example-workbench.tscn` | 粒子/运动组合、共享 Cue 多实例、局部 Manager 与有限编排 | `effects_composition/example-consumer.tscn` |
+| `single/example_workbench.tscn` | 单对象浏览、试听、A/B、保存 | `single/example_game.tscn` |
+| `composition/example_workbench.tscn` | 多对象选择、混合 A/B、逐文件保存 | `composition/example_composition.tscn` |
+| `shader_composition/example_workbench.tscn` | 材质隔离、无图像承载面、独立绑定 | `shader_composition/example_composition.tscn` |
+| `effects_composition/example_workbench.tscn` | 粒子/运动组合、共享 Cue 多实例、局部 Manager 与有限编排 | `effects_composition/example_consumer.tscn` |
 
 也可在**生成项目根目录**使用配置中的引擎：
 
 ```powershell
 $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/single/example-workbench.tscn' | Out-Host
+& $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/single/example_workbench.tscn' | Out-Host
 ```
 
 先完成正常导入。框架的 `project.godot` 默认视口为 1600×900，新建项目继承此值；
@@ -52,8 +52,8 @@ Inspector 的资源绑定显示实际使用的文件；左侧候选名称不代�
 
 ## 可交互组合场景
 
-直接运行 `composition/example-workbench.tscn`，中央加载真实的 `composition/example-composition.tscn`：奖杯、星星和奖励三个对象。
-它们复用原始图片、声音与 FeedbackPresenter，每个对象使用独立的 `example-composition-*.tres`。
+直接运行 `composition/example_workbench.tscn`，中央加载真实的 `composition/example_composition.tscn`：奖杯、星星和奖励三个对象。
+它们复用原始图片、声音与 FeedbackPresenter，每个对象使用独立的 `example_composition_*.tres`。
 组合工作台自身包含对象选择、属性及分析能力，背景可切换浅色/深色。
 
 1. 点击对象会选中并触发它。组合工作台右侧立即改为该对象的属性，底部显示真实保存目标。
@@ -61,7 +61,7 @@ Inspector 的资源绑定显示实际使用的文件；左侧候选名称不代�
 3. 预览上方“场景 A / B”切换所有对象；Inspector“对象方案 A / B”只切当前对象。全场景状态根据各对象实际方案计算，混用时显示“混合方案”且场景 A/B 均不高亮。“触发全部”清理旧播放后同时触发，单一“停止全部”负责整体停止。
 4. “全场景更多…”中的“将增益应用到各对象的当前方案”只改变各对象当前 A 或 B 草稿；另一方案与磁盘不变。
 5. 同一菜单的“保存全场景当前方案（逐文件）”按不同 Cue 文件检查与保存，显示成功文件数与失败路径。同文件的多个当前草稿一致时只写一次；不一致时跳过该文件，需统一草稿或只保存选中对象。它不是多文件事务：其他文件可以成功，冲突文件保留试调。
-6. “对象更多…”中的“打开消费场景”读取已保存 Cue；也可打开 `composition/example-composition.tscn` 按 F6。
+6. “对象更多…”中的“打开消费场景”读取已保存 Cue；也可打开 `composition/example_composition.tscn` 按 F6。
 7. “对象更多 → 分析当前对象源资源”与“全场景更多 → 分析场景源资源”收集相应当前方案中的图片/音频，跳过空项后去重加入同一批量集合，保留既有集合成员并显示本次范围。不分析 Shader，也不测量最终混音或渲染画面。
 
 集合反馈区分实际新增、已在集合和跳过项；AtlasTexture、音频 `.tres` 等间接资源不能作为源文件分析，会显示对应原因，不自动改为分析其内部资源。
@@ -73,13 +73,13 @@ Agent 可以根据画面描述组合或修改 `.tscn` 与表现组件。本例�
 
 ## Shader 与独立资源组合
 
-运行 `shader_composition/example-workbench.tscn`。它复用组合工作台和三对象原生场景，使用独立的示例 Cue：
+运行 `shader_composition/example_workbench.tscn`。它复用组合工作台和三对象原生场景，使用独立的示例 Cue：
 
 | 对象 | 初始组合 | Shader 来源 |
 | --- | --- | --- |
-| 奖杯 | 图片＋声音＋外描边 | `outline2D_outer.gdshader` → `example-outline.gdshader` |
-| 星星 | 图片＋溶解，无声音 | `dissolve2D.gdshader` → `example-dissolve.gdshader` |
-| 噪声 | Shader＋声音，无图片 | `value_noise.gdshader` → `example-noise.gdshader` |
+| 奖杯 | 图片＋声音＋外描边 | `outline2D_outer.gdshader` → `example_outline.gdshader` |
+| 星星 | 图片＋溶解，无声音 | `dissolve2D.gdshader` → `example_dissolve.gdshader` |
+| 噪声 | Shader＋声音，无图片 | `value_noise.gdshader` → `example_noise.gdshader` |
 
 右侧分别选择图片、声音和 Shader；更换某一类不会自动替换另两类。Shader 可复用于不同图片或对象，
 每个对象及 A/B 草稿保存自己的强度、颜色、延迟和时长。没有图片时，Shader 在普通白色矩形上绘制；
@@ -91,7 +91,7 @@ Shader“强度 (0–1)”映射到预设的峰值；描边最大 10 像素，�
 再次触发重启当前表面的 Shader，声音和图标脉冲仍可重叠。停止或自然结束移除运行材质，恢复原图；无图片时恢复为空。
 Shader 分组显示禁用原因；“预设引用（只读）”列出类型、Shader/材质及现有纹理引用，完整路径可查看复制。不提供任意 uniform 编辑或依赖扫描。
 
-保存仍只写当前对象的 Cue，重载和独立场景 `shader_composition/example-composition.tscn` 读取同一数据。
+保存仍只写当前对象的 Cue，重载和独立场景 `shader_composition/example_composition.tscn` 读取同一数据。
 共享 Shader、纹理、音频及材质预设不被试调修改；每个表现对象创建独立运行材质，普通 uniform 不会串到其他对象。
 源文件分析只收集已选择的图片/声音，跳过空项；不分析 Shader 源码、材质或最终渲染画面。
 
@@ -104,12 +104,12 @@ Shader 分组显示禁用原因；“预设引用（只读）”列出类型、S
 ## 第三阶段：分组与批量检查
 
 “候选更多 → 将筛选结果加入批量分析”把当前筛选后的候选加入分组并打开批量窗口。
-可加载 `example-analysis-group.json` 体验包含四个示例资源的分组；其中阈值仅为示例，不是项目硬性规范。
+可加载 `example_analysis_group.json` 体验包含四个示例资源的分组；其中阈值仅为示例，不是项目硬性规范。
 操作、同类统计、规则、历史快照及缓存边界见 [批量分析说明](../../tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
 
 ## 粒子、Tween 与 AnimationPlayer
 
-运行 `effects_composition/example-workbench.tscn`；原来的三个入口保持可用。第四入口中 GroupA、GroupB 各实例化一次 `example-effect-cluster.tscn`，每个组合包含以下三个对象：
+运行 `effects_composition/example_workbench.tscn`；原来的三个入口保持可用。第四入口中 GroupA、GroupB 各实例化一次 `example_effect_cluster.tscn`，每个组合包含以下三个对象：
 
 | 对象 | 初始内容 | 可独立替换或关闭的部分 |
 | --- | --- | --- |
@@ -137,28 +137,28 @@ Tween 位移层与动画片段变换层互相嵌套，作用于图像/Shader 表
 
 - 粒子使用 `FeedbackParticlePreset` 引用单根、无附加脚本/子节点的 `GPUParticles2D` 场景，模拟材质为 `ParticleProcessMaterial`；不是图像用的 `FeedbackShaderPreset`。本契约限制 1–256 颗、寿命大于 0 且不超过 5 s、速度倍率为 1。缩放 0.25–2×、延迟 0–0.6 s、持续发射时长 0.15–5 s 保存在 Cue。
 - 运行发射器与其模拟材质按对象隔离；纹理、曲线及预设保持只读共享。制作复杂粒子场景、子发射器、碰撞或自定义模拟 Shader 需要另行明确契约。
-- 动画使用已保存的 `Animation` 资源，本例为 `example-wobble-animation.tres`。仅接受长度大于 0 且不超过 5 s 的非循环片段，以及目标为 `.:position`、`.:scale`、`.:rotation` 的有限数值轨道；不执行方法、音频或跨对象轨道。可在 Godot 编辑器制作片段，工作台只选择和调整速度。
+- 动画使用已保存的 `Animation` 资源，本例为 `example_wobble_animation.tres`。仅接受长度大于 0 且不超过 5 s 的非循环片段，以及目标为 `.:position`、`.:scale`、`.:rotation` 的有限数值轨道；不执行方法、音频或跨对象轨道。可在 Godot 编辑器制作片段，工作台只选择和调整速度。
 - Tween 往返时长 0.15–3 s、距离 0–80 px；片段速度 0.5–2×。源文件、共享预设、AnimationLibrary 和运行中的 Tween 不通过 Cue 保存改写。
 
 ### 组合复用、保存和消费
 
-`example-composition.tscn` 用场景相对节点路径（如 `GroupA/Core`）登记六个对象，路径标识当前实例，Cue 路径只表示保存目标。
-工作台显示所属组名及共享目标提示；两个组合对应的对象共用三份 `example-cluster-*-cue.tres`，各对象仍独立拥有 A/B 草稿、运行材质、发射器和动画状态。
+`example_composition.tscn` 用场景相对节点路径（如 `GroupA/Core`）登记六个对象，路径标识当前实例，Cue 路径只表示保存目标。
+工作台显示所属组名及共享目标提示；两个组合对应的对象共用三份 `example_cluster_*_cue.tres`，各对象仍独立拥有 A/B 草稿、运行材质、发射器和动画状态。
 只保存一个对象会更新共享 Cue；其他对象的未保存草稿不自动替换，其后保存会按磁盘变化提示重载。重载只丢弃选中对象的两份草稿。
 全场景保存按上文规则处理同文件的一致或分歧草稿，不按遍历顺序覆盖。
 
-“打开消费场景”运行 `example-consumer.tscn`：它继承组合场景，改变两个组合根的摆放、旋转和缩放，读取同一批已保存 Cue；不依赖工作台或框架路径。
+“打开消费场景”运行 `example_consumer.tscn`：它继承组合场景，改变两个组合根的摆放、旋转和缩放，读取同一批已保存 Cue；不依赖工作台或框架路径。
 组合位置、附着与绘制顺序在原生场景制作：`Core` 的 `z_index=1`，另两个为 0；Presenter 的运动层只控制内部表现，组合根变换由消费场景拥有。
 调用单个 Presenter 的 `stop()` 只停止该对象，组合的 `stop()` 停止其登记的全部对象；移除整个组合实例会取消其子对象的延迟与播放，其他实例继续运行。
 登记集合在退出时剔除对象；动态新增、移除后重新加入同一节点和运行时编辑场景拓扑不属于工作台契约，应重新实例化完整场景。
 
-粒子候选仍是三个明确预设，片段候选为一个；没有按并发实例数复制候选。早期 `example-burst-cue.tres`、`example-animation-cue.tres`、`example-stream-cue.tres` 保留作为独立机制示例。
+粒子候选仍是三个明确预设，片段候选为一个；没有按并发实例数复制候选。早期 `example_burst_cue.tres`、`example_animation_cue.tres`、`example_stream_cue.tres` 保留作为独立机制示例。
 规模测量夹具与机器结果只留在框架维护侧，不能作为其他设备或任意素材的性能保证；没有全项目扫描或预设数据库。
 
 ### 场景局部管理与有限编排
 
 第四工作台预览上方提供“播放编排”和“循环编排”（下次播放生效），旁边显示实际播放状态。
-示例 `example-dual-group-timeline.tres` 为 4.8 s：A 组核心先触发、局部/场景粒子随后并行，再轮到 B 组，最后两组核心同时触发。
+示例 `example_dual_group_timeline.tres` 为 4.8 s：A 组核心先触发、局部/场景粒子随后并行，再轮到 B 组，最后两组核心同时触发。
 它读取各对象**当前 A/B 草稿**；播放不绑定候选、不改 Cue。停止全部、编辑、切对象/方案、保存及重载沿用已有停止范围，并取消后续片段和循环。
 消费场景读取同一编排和**已保存 Cue**，提供播放/循环、受管触发 A 组、高优先级 B 组、取消受管 A 组及停止全部，便于单独检查调度。
 
@@ -187,15 +187,15 @@ Manager 的数额统计对象而非粒子数、显存或音频声部；直接触
 
 | 位置 | 职责 |
 | --- | --- |
-| `single/example-workbench.tscn` | 单对象工作台入口、候选与明确保存目标 |
-| `single/example-feedback.tres` | 单对象事件配置；工作台保存，奖励示例游戏直接读取 |
-| `single/example-game.tscn`、`single/example_reward_game.gd` | 独立消费方；只有进程内奖励计数，没有真实存档或业务副作用 |
-| `composition/example-workbench.tscn` | 独立组合工作台；直接选择场景内对象并编辑属性 |
-| `composition/example-composition.tscn`、该目录的 `example-composition-*.tres` | 三对象真实场景及分别保存的表现配置；不改单对象配置 |
+| `single/example_workbench.tscn` | 单对象工作台入口、候选与明确保存目标 |
+| `single/example_feedback.tres` | 单对象事件配置；工作台保存，奖励示例游戏直接读取 |
+| `single/example_game.tscn`、`single/example_reward_game.gd` | 独立消费方；只有进程内奖励计数，没有真实存档或业务副作用 |
+| `composition/example_workbench.tscn` | 独立组合工作台；直接选择场景内对象并编辑属性 |
+| `composition/example_composition.tscn`、该目录的 `example_composition_*.tres` | 三对象真实场景及分别保存的表现配置；不改单对象配置 |
 | `shader_composition/` | 继承三对象示例的 Shader 工作台、独立 Cue、材质预设、复制重命名的 Shader 与许可 |
 | `effects_composition/` | 第四工作台入口、可复用三对象组合、双实例预览与独立消费场景、Cue、发射器预设、动画片段及示例贴图/许可 |
-| `example-analysis-group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
-| `assets/example-*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
+| `example_analysis_group.json` | 可携带的资源分组与示例规则，不包含缓存或通过记录 |
+| `assets/example_*` | 仅示例素材及许可；禁止据此推定其适合当前游戏 |
 | `components/feedback/` | Cue、图像/Shader 表面、图标脉冲、局部音频、独立粒子与运动层，可选局部 Manager/有限编排；各入口共用同一表现逻辑 |
 | `tools/asset_workbench/` | 候选浏览、试调和保存界面；不注册全局服务 |
 | `tools/asset_analyzer/` | 源文件专业分析与适配器；独立于音频播放，不写回 Cue |
@@ -224,11 +224,11 @@ Manager 的数额统计对象而非粒子数、显存或音频声部；直接触
 
 选择“场景及依赖”导出时，除正式入口外，还要显式包含运行时加载的脚本。对本示例，在非资源包含过滤中加入
 `components/feedback/*.gd`、`addons/sound_manager/abstract_audio_player_pool.gd`；仅选择 `.tscn` 不能保证 GDScript 的 `preload` 链都进入包。
-另保留实际使用的第三方许可，例如 SoundManager 的 `LICENSE` 和 Shader 的 `example-shaders-license.txt`，可随包包含或放在发行说明中。
+另保留实际使用的第三方许可，例如 SoundManager 的 `LICENSE` 和 Shader 的 `example_shaders_license.txt`，可随包包含或放在发行说明中。
 用导出包独立启动消费场景，核对图像、声音、材质、粒子、动画、编排与停止；编辑器里的 F6 成功不能替代导出验证。当前框架不预填生产导出配置。
 
 使用全资源导出时，排除仅用于开发的 `tools/asset_workbench/`、`tools/asset_analyzer/`、测试与 `reports/`。
-只有正式场景已不引用示例时，才能排除整个 `examples/asset_workbench/`；不能只因文件有 `example-` 前缀就忽略真实引用。保留正式场景实际依赖的组件、音频实现、素材和许可。
+只有正式场景已不引用示例时，才能排除整个 `examples/asset_workbench/`；不能只因文件有 `example_` 前缀就忽略真实引用。保留正式场景实际依赖的组件、音频实现、素材和许可。
 
 ## 素材来源与许可
 
@@ -237,28 +237,28 @@ Manager 的数额统计对象而非粒子数、显存或音频声部；直接触
 
 | 示例文件 | 原始包内路径 | 资源项目 / 作者 / 来源 |
 | --- | --- | --- |
-| `example-trophy.png` | `PNG/Black/2x/trophy.png` | `kenney-game-icons` / Kenney / [Game icons](https://opengameart.org/content/game-icons) |
-| `example-star.png` | `PNG/Black/2x/star.png` | 同上 |
-| `example-confirmation-a.ogg` | `Audio/confirmation_001.ogg` | `kenney-interface-sounds` / Kenney / [Interface Sounds](https://opengameart.org/content/interface-sounds) |
-| `example-confirmation-b.ogg` | `Audio/confirmation_002.ogg` | 同上 |
+| `example_trophy.png` | `PNG/Black/2x/trophy.png` | `kenney-game-icons` / Kenney / [Game icons](https://opengameart.org/content/game-icons) |
+| `example_star.png` | `PNG/Black/2x/star.png` | 同上 |
+| `example_confirmation_a.ogg` | `Audio/confirmation_001.ogg` | `kenney-interface-sounds` / Kenney / [Interface Sounds](https://opengameart.org/content/interface-sounds) |
+| `example_confirmation_b.ogg` | `Audio/confirmation_002.ogg` | 同上 |
 
-两包原始许可均为 CC0，分别保留在 [图标许可](assets/example-icons-license.txt) 和
-[声音许可](assets/example-sounds-license.txt)。本文件记录来源，不需要生成逐素材哈希清单。
+两包原始许可均为 CC0，分别保留在 [图标许可](assets/example_icons_license.txt) 和
+[声音许可](assets/example_sounds_license.txt)。本文件记录来源，不需要生成逐素材哈希清单。
 
 Shader 从用户指定的本地 GDQuest `godot-shaders/godot/Shaders` 复制，保留逻辑，只重命名并规范空白与换行。
-完整对应与 MIT 许可见 [Shader 许可](shader_composition/example-shaders-license.txt)。
+完整对应与 MIT 许可见 [Shader 许可](shader_composition/example_shaders_license.txt)。
 上游艺术资产采用不同许可，本例没有复制这些艺术资产；溶解遮罩在本例中用 Godot 渐变资源生成。
 
 粒子资源通过用户指定的本地 `game-asset-library-search` Skill 检索，选用 `brackeys-vfx-in-godot`，存档版本 `23b58f272b828b0a894ed7ef72fbf9033ee9d177`。
-只读取并复制所需场景、其一张贴图和原始 README，资源库原件未改动，未执行原包脚本或安装插件。作者的整项目 CC0 声明原文保留在 [example-brackeys-license.md](effects_composition/example-brackeys-license.md)。
+只读取并复制所需场景、其一张贴图和原始 README，资源库原件未改动，未执行原包脚本或安装插件。作者的整项目 CC0 声明原文保留在 [example_brackeys_license.md](effects_composition/example_brackeys_license.md)。
 
 | 原包路径（仓库根下） | 本例文件 | 处理 |
 | --- | --- | --- |
-| `vfx/scenes/2d_example.tscn` | `effects_composition/example-particle-stream.tscn`、`example-particle-burst.tscn`、`example-world-stream.tscn` | 复制后适配为单发射器，调整数量、寿命、速度、曲线/颜色与本地引用；爆发与场景坐标版本均为基于该样例的变体 |
-| `vfx/brackeys_particle_bundle/particles/alpha/spotlight_01_a.png` | `effects_composition/example-particle-spotlight.png` | 仅重命名，图片字节不变 |
-| `README.md` | `effects_composition/example-brackeys-license.md` | 保留原文与许可声明 |
+| `vfx/scenes/2d_example.tscn` | `effects_composition/example_particle_stream.tscn`、`example_particle_burst.tscn`、`example_world_stream.tscn` | 复制后适配为单发射器，调整数量、寿命、速度、曲线/颜色与本地引用；爆发与场景坐标版本均为基于该样例的变体 |
+| `vfx/brackeys_particle_bundle/particles/alpha/spotlight_01_a.png` | `effects_composition/example_particle_spotlight.png` | 仅重命名，图片字节不变 |
+| `README.md` | `effects_composition/example_brackeys_license.md` | 保留原文与许可声明 |
 
-`example-wobble-animation.tres`、`example-dual-group-timeline.tres` 和 Cue/预设为本项目编写；图片、音频、Shader 与粒子继续复用上文已有示例，编排阶段没有再下载或复制外部素材。
+`example_wobble_animation.tres`、`example_dual_group_timeline.tres` 和 Cue/预设为本项目编写；图片、音频、Shader 与粒子继续复用上文已有示例，编排阶段没有再下载或复制外部素材。
 
 ## 验证和人工体验
 

@@ -6,19 +6,19 @@ const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const Game = preload("res://examples/asset_workbench/single/example_reward_game.gd")
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
 const CONSUMERS: Array[PackedScene] = [
-	preload("res://examples/asset_workbench/single/example-game.tscn"),
-	preload("res://examples/asset_workbench/composition/example-composition.tscn"),
-	preload("res://examples/asset_workbench/shader_composition/example-composition.tscn"),
-	preload("res://examples/asset_workbench/effects_composition/example-consumer.tscn"),
+	preload("res://examples/asset_workbench/single/example_game.tscn"),
+	preload("res://examples/asset_workbench/composition/example_composition.tscn"),
+	preload("res://examples/asset_workbench/shader_composition/example_composition.tscn"),
+	preload("res://examples/asset_workbench/effects_composition/example_consumer.tscn"),
 ]
 const EXPECTED_CUES: Array = [
-	["single/example-feedback.tres"],
-	["composition/example-composition-trophy.tres", "composition/example-composition-star.tres",
-		"composition/example-composition-bonus.tres"],
-	["shader_composition/example-outline-cue.tres", "shader_composition/example-dissolve-cue.tres",
-		"shader_composition/example-noise-cue.tres"],
-	["effects_composition/example-cluster-core-cue.tres", "effects_composition/example-cluster-local-cue.tres",
-		"effects_composition/example-cluster-world-cue.tres"],
+	["single/example_feedback.tres"],
+	["composition/example_composition_trophy.tres", "composition/example_composition_star.tres",
+		"composition/example_composition_bonus.tres"],
+	["shader_composition/example_outline_cue.tres", "shader_composition/example_dissolve_cue.tres",
+		"shader_composition/example_noise_cue.tres"],
+	["effects_composition/example_cluster_core_cue.tres", "effects_composition/example_cluster_local_cue.tres",
+		"effects_composition/example_cluster_world_cue.tres"],
 ]
 const DIRECTORY: String = "res://tests/features/asset_consumer_boundary/"
 

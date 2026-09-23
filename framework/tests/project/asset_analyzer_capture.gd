@@ -2,7 +2,7 @@ extends SceneTree
 
 ## Real rendered UI, real worker results. This is evidence, not human acceptance.
 
-const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/single/example_workbench.tscn")
 const ASSETS: String = "res://examples/asset_workbench/assets/"
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/analysis/"
 
@@ -23,13 +23,13 @@ func _capture() -> void:
 	root.add_child(workbench)
 	await process_frame
 	var panel: Window = workbench.get("_analysis")
-	await _compare(panel, "example-confirmation-a.ogg", "example-confirmation-b.ogg")
+	await _compare(panel, "example_confirmation_a.ogg", "example_confirmation_b.ogg")
 	await _save(panel, "audio-analysis.png")
 	_save_json(panel, "audio-results.json")
 	panel.get("_threshold").value = -30
 	await _save(panel, "audio-stale-settings.png")
 	panel.get("_threshold").value = -50
-	await _compare(panel, "example-trophy.png", "example-star.png")
+	await _compare(panel, "example_trophy.png", "example_star.png")
 	await _save(panel, "image-analysis.png")
 	_save_json(panel, "image-results.json")
 	workbench.call("_set_dark_theme", true)

@@ -1,8 +1,9 @@
-; Project name and startup scene are configured during project setup.
+; Rename the project during setup; replace the starter content as gameplay grows.
 config_version=5
 
 [application]
 config/name="New Godot Project"
+run/main_scene="res://main/main.tscn"
 config/features=PackedStringArray("4.7")
 
 [display]

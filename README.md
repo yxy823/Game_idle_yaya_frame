@@ -53,6 +53,11 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 没有项目名称渲染、环境探测、Bootstrap、Git 初始化或测试副作用。
 显示名称初始为 `New Godot Project`；后续由项目中的 Agent 按你的要求修改。
 
+新项目包含 `main/main.tscn` 最小主入口、`game/` 与公共素材/组件/测试目录，
+并携带[目录与命名判断指南](project-source/defaults/docs/game-organization.md)。
+主入口只显示就绪提示；类型专属模块按需求展开，环境仍为 `incomplete`，
+复制本身不代表已经启动或完成任何业务功能。
+
 ## 创建以后怎么开始
 
 从 [prompts.json](framework/prompts.json) 的“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”

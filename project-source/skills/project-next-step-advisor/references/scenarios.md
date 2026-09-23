@@ -7,6 +7,8 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | User intent / state | Expected advice contract |
 | --- | --- |
 | New behavior, absent Product | Prompt the Product entry to elicit intent; no implementation authorization. |
+| A newly copied project has a starter main scene and empty gameplay/test directories | Distinguish the copied starter from verified startup, machine readiness and completed gameplay; inspect current configuration and evidence before choosing the next route. Do not manufacture a Feature or test result for scaffold presence. |
+| User asks where a module or named file belongs | Consult `docs/game-organization.md` and applicable engineering rules; distinguish fixed base responsibilities from genre examples and do not create every illustrated directory or turn a location question into implementation approval. |
 | Continue current Feature, Stage 1 unapproved | Name the actual current work and pending approval; “continue” alone does not fill it. |
 | Change accepted behavior | Product change followed by traced synchronization, rather than redefining the failure as a Bug. |
 | A current Feature introduced a deterministic defect | Reproduce and repair in its existing approved scope, with regression evidence. |

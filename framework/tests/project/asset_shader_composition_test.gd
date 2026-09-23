@@ -1,12 +1,12 @@
 extends GdUnitTestSuite
 
-const Workbench = preload("res://examples/asset_workbench/shader_composition/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/shader_composition/example_workbench.tscn")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const Controls = preload("res://tools/asset_workbench/cue_controls.gd")
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
-const OUTLINE = preload("res://examples/asset_workbench/shader_composition/example-outline-cue.tres")
-const NOISE = preload("res://examples/asset_workbench/shader_composition/example-noise-preset.tres")
+const OUTLINE = preload("res://examples/asset_workbench/shader_composition/example_outline_cue.tres")
+const NOISE = preload("res://examples/asset_workbench/shader_composition/example_noise_preset.tres")
 const FIXTURE: String = "res://tests/features/asset_shader_composition/test-shader-cue.tres"
 
 
@@ -179,7 +179,7 @@ func test_shader_ui_edits_keep_other_objects_audio_and_image_independent() -> vo
 	var controls: Controls = workbench.get("_controls")
 	var other_before: FeedbackCue = panel.stage.objects[1].cue.trial_copy()
 	var active_before: FeedbackCue = workbench.session.current().trial_copy()
-	var replacement := load("res://examples/asset_workbench/assets/example-star.png") as Texture2D
+	var replacement := load("res://examples/asset_workbench/assets/example_star.png") as Texture2D
 	workbench.call("_bind_candidate", replacement)
 	assert_object(workbench.session.current().texture).is_same(replacement)
 	assert_object(workbench.session.current().sound).is_same(active_before.sound)

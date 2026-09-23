@@ -34,7 +34,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 2.1 | 按指定路径创建空白项目 | 代码：按相对路径清单复制和重命名 | [create_project.py](../../commands/create_project.py)、[project-files.json](../../project-files.json)；项目 AGENTS 源使用不同名称 |
+| 2.1 | 按指定路径创建空白项目 | 代码：按相对路径清单复制基础目录、最小主入口及项目材料 | [create_project.py](../../commands/create_project.py)、[project-files.json](../../project-files.json)；项目 AGENTS 源使用不同名称；创建器不运行引擎，类型模块按[组织指南](../../../project-source/defaults/docs/game-organization.md)展开 |
 | 2.2 | 目标有中文/空白、非空或与维护源重叠；清单源缺失 | 代码：复制前报错 | 不移动用户安装目录，不覆盖已有项目；清单选取不等于复制整个母版 |
 | 2.3 | 复制途中权限或 I/O 失败 | 代码与人工：返回原始错误，保留现场，由用户决定后续操作 | 不自动删除已复制内容，不新增复制事务、恢复状态机或身份清单 |
 | 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../../docs/blank-project/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
@@ -45,7 +45,7 @@
 | --- | --- | --- | --- |
 | 3.1 | 首次配置、换机或后续环境更新 | 流程：Agent 核对本机路径、版本、Git 及命令；显式检查环境，首次 CLI 运行按需完成编辑器扫描 | 现有初始化提示词、[环境约定](../../../project-source/methodology/05-document-language.md)、[环境检查](../../../project-source/tools/checks/check-project-environment.py)、[首次扫描](../../../project-source/tools/README.md#首次-godot-扫描)；无 Bootstrap 程序 |
 | 3.2 | 配置 incomplete、工具缺失或版本不符 | 代码与流程：说明未就绪，处理具体原因后继续 | 空配置合法；初始化、工具/配置变化或排障时运行 `--require-ready`，日常读取确认路径。ready 不等于测试通过 |
-| 3.3 | 空项目没有业务场景或测试 | 流程与人工：如实报告尚未创建 | 初始 Product 为空，不预设主场景；不编造 Feature、测试或成功报告来填满检查 |
+| 3.3 | 新项目只有主入口骨架，没有业务功能或测试 | 流程与人工：区分文件已复制、入口实际启动、环境就绪与业务完成 | 初始 Product 为空，`main/main.tscn` 仅显示就绪提示；空业务/测试目录不代表功能或验证通过，不编造 Feature、测试或成功报告 |
 
 ## 4. 项目任务
 

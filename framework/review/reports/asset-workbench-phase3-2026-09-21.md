@@ -48,7 +48,7 @@
 
 分组为 `group_version: 1`，包含 name/assets/parameters/rules；快照为 `snapshot_version: 1`，包含 group/results/created_at。
 单项结果仍用原 Analyzer Schema v1。源路径保存为 `res://`，不把测试机器路径作为可迁移资源身份。
-规则示例和完整字段见 [示例 JSON](../../../project-source/examples/asset_workbench/example-analysis-group.json) 与 [操作说明](../../../project-source/tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
+规则示例和完整字段见 [示例 JSON](../../../project-source/examples/asset_workbench/example_analysis_group.json) 与 [操作说明](../../../project-source/tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
 
 只统计 available 的数值，缺失、不适用、不支持、失败均不补零。资源类型、单位、Schema、Analyzer/后端版本、参数不同则分组统计。
 相对中位数偏差至少需要 3 个可比测量，显示实际值、距离和样本数；不足时为 unmeasured。阈值来自明确规则，不生成审美分数。

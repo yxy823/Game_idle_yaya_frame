@@ -4,9 +4,9 @@ extends SceneTree
 ## This probes the exported dependency closure; it is not a production export preset.
 
 const BASE: String = "res://examples/asset_workbench/"
-const ENTRIES: Array[String] = ["single/example-game.tscn",
-	"composition/example-composition.tscn", "shader_composition/example-composition.tscn",
-	"effects_composition/example-consumer.tscn"]
+const ENTRIES: Array[String] = ["single/example_game.tscn",
+	"composition/example_composition.tscn", "shader_composition/example_composition.tscn",
+	"effects_composition/example_consumer.tscn"]
 
 var _failures: Array[String] = []
 var _cases: Array[Dictionary] = []

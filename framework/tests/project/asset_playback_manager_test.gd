@@ -4,7 +4,7 @@ extends GdUnitTestSuite
 
 const Manager = preload("res://components/feedback/feedback_playback_manager.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const SOUND = preload("res://examples/asset_workbench/assets/example-confirmation-a.ogg")
+const SOUND = preload("res://examples/asset_workbench/assets/example_confirmation_a.ogg")
 
 
 func test_group_cancel_and_handle_cancel_leave_other_targets_and_direct_playback() -> void:

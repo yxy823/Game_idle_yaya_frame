@@ -16,7 +16,7 @@
 | 比较对象的素材、声音与效果 | [组合预览与试调](#组合预览与试调) | 当前对象、A/B、播放与修改范围清楚 |
 | 把选定参数用于实际场景 | [保存后验证](#保存后验证消费场景) | 明确保存目标，并在消费场景查看已保存效果 |
 
-四个工作台及对应消费入口集中在 [示例操作导航](../../../../project-source/examples/asset_workbench/README.md#打开与操作)。`example-` 前缀只标识示例，不表示素材已适合当前游戏。
+四个工作台及对应消费入口集中在 [示例操作导航](../../../../project-source/examples/asset_workbench/README.md#打开与操作)。`example_` 前缀只标识示例，不表示素材已适合当前游戏。
 
 ```mermaid
 flowchart LR
@@ -30,7 +30,7 @@ flowchart LR
 
 ## 查看与独立试听
 
-1. 打开 `examples/asset_workbench/single/example-workbench.tscn`，按 F6。
+1. 打开 `examples/asset_workbench/single/example_workbench.tscn`，按 F6。
 2. 在左侧“资源候选”筛选并选择文件，查看摘要；音频可独立试听或停止试听。
 3. 确定要使用该候选时，才点击“应用到对象 A/B”，继续在当前入口 [预览与试调](#组合预览与试调)。
 
@@ -70,7 +70,7 @@ flowchart LR
 
 ## 组合预览与试调
 
-**选择入口：** 已打开工作台时继续当前入口；需要三对象示例时，打开 `examples/asset_workbench/composition/example-workbench.tscn` 按 F6。不同入口各自持有配置，不能靠切换入口转移草稿。
+**选择入口：** 已打开工作台时继续当前入口；需要三对象示例时，打开 `examples/asset_workbench/composition/example_workbench.tscn` 按 F6。不同入口各自持有配置，不能靠切换入口转移草稿。
 
 1. 多对象入口先在中央点击目标，这会选中并触发它；单对象入口直接使用当前对象。
 2. 确认 Inspector 顶部对象名称和当前 A/B，再应用候选或修改右侧参数。对象之间保留各自草稿。
@@ -84,7 +84,7 @@ flowchart LR
 
 ### Shader 与独立资源组合
 
-打开 `examples/asset_workbench/shader_composition/example-workbench.tscn`，可试调外描边、溶解与无图片噪声三个预设。图片、声音与 Shader 分别替换或留空，全空配置也允许保存；单对象和普通组合入口同样支持可选绑定。
+打开 `examples/asset_workbench/shader_composition/example_workbench.tscn`，可试调外描边、溶解与无图片噪声三个预设。图片、声音与 Shader 分别替换或留空，全空配置也允许保存；单对象和普通组合入口同样支持可选绑定。
 
 无图片时沿用白色矩形承载面，不补选图片。各对象保持独立材质和参数，源预设只读；“触发全部”从初态触发，再按各自声音/Shader 延迟播放。
 
@@ -92,7 +92,7 @@ flowchart LR
 
 ### 粒子与动画组合预览
 
-打开 `examples/asset_workbench/effects_composition/example-workbench.tscn`，在 Inspector 选择粒子、Tween 或 AnimationPlayer 片段，仍只编辑当前对象当前草稿。两个组合实例展示六个对象；共用 Cue 的对象也独立持有 A/B。
+打开 `examples/asset_workbench/effects_composition/example_workbench.tscn`，在 Inspector 选择粒子、Tween 或 AnimationPlayer 片段，仍只编辑当前对象当前草稿。两个组合实例展示六个对象；共用 Cue 的对象也独立持有 A/B。
 
 图像、声音、Shader、粒子与片段分别可选；粒子可使用自己的贴图，运动目标为空时不补素材。运行实例和材质按对象隔离，动画不移动名称或选中边框。
 
@@ -120,7 +120,7 @@ flowchart LR
 
 **重载：** 明确确认后丢弃当前对象两份草稿。需要保留试调时先保存选定方案，不能把重载当作撤销最后一步。
 
-效果组合的消费入口为 `effects_composition/example-consumer.tscn`，可检查不同摆放、旋转和缩放。正式导出还应按 [消费接入与导出](../../../../project-source/examples/asset_workbench/README.md#消费接入与导出) 包含实际引用、运行脚本与许可，并从独立包验证；F6 成功不证明导出依赖完整。
+效果组合的消费入口为 `effects_composition/example_consumer.tscn`，可检查不同摆放、旋转和缩放。正式导出还应按 [消费接入与导出](../../../../project-source/examples/asset_workbench/README.md#消费接入与导出) 包含实际引用、运行脚本与许可，并从独立包验证；F6 成功不证明导出依赖完整。
 
 ## 在真实任务中使用
 

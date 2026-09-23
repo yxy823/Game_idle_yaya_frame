@@ -3,8 +3,8 @@ extends SceneTree
 ## Real-render E5/E6 evidence; does not save Cue files or claim human visual/listening acceptance.
 
 const Workbench = preload(
-	"res://examples/asset_workbench/effects_composition/example-workbench.tscn")
-const Consumer = preload("res://examples/asset_workbench/effects_composition/example-consumer.tscn")
+	"res://examples/asset_workbench/effects_composition/example_workbench.tscn")
+const Consumer = preload("res://examples/asset_workbench/effects_composition/example_consumer.tscn")
 const Stage = preload("res://components/feedback/feedback_composition.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")

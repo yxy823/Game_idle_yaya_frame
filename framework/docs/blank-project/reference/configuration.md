@@ -88,7 +88,7 @@ JSON 键、Feature ID、`pending` 等状态、`manual` 等枚举、文件路径�
 | 配置区域 | 当前设置 | 对使用者的影响 |
 | --- | --- | --- |
 | application | 名称 `New Godot Project`；features 包含 `4.7` | 表示目标版本和显示名，不证明工具已安装 |
-| application | 没有 `run/main_scene` | 后续任务创建并配置启动场景 |
+| application | `run/main_scene="res://main/main.tscn"` | 已有最小入口供后续组装；没有预置玩法，创建时不运行 |
 | display/window/size | viewport 默认 `1600×900` | 新建项目、单对象/组合工作台沿用此尺寸；之后可按游戏需求显式调整，编辑器嵌入运行仍受宿主区域约束 |
 | editor_plugins | 启用 gdUnit4 | GDScript linter 随项目提供，但默认未在此列表启用其编辑器面板 |
 | gdunit4 session_hooks | 使用 `gdunit_diagnostic_session.gd` | 测试运行关联真实引擎诊断 |

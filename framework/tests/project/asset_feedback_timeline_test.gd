@@ -2,7 +2,7 @@ extends GdUnitTestSuite
 
 ## E6 public components use real presenters with a manually advanced scheduling clock.
 
-const Composition = preload("res://examples/asset_workbench/effects_composition/example-composition.tscn")
+const Composition = preload("res://examples/asset_workbench/effects_composition/example_composition.tscn")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const PlaybackManager = preload("res://components/feedback/feedback_playback_manager.gd")
 const TimelinePlayer = preload("res://components/feedback/feedback_timeline_player.gd")

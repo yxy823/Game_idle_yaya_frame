@@ -2,8 +2,8 @@ extends SceneTree
 
 ## Real-render evidence for the same visual component used by both game and workbench.
 
-const Workbench = preload("res://examples/asset_workbench/shader_composition/example-workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/shader_composition/example-composition.tscn")
+const Workbench = preload("res://examples/asset_workbench/shader_composition/example_workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/shader_composition/example_composition.tscn")
 const Visual = preload("res://components/feedback/feedback_visual.gd")
 const EXAMPLES: String = "res://examples/asset_workbench/shader_composition/"
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/shader/"
@@ -42,7 +42,7 @@ func _check_shader_pixels() -> void:
 	visual.size = Vector2(128, 128)
 	viewport.add_child(visual)
 	for kind: String in ["outline", "dissolve", "noise"]:
-		var saved := load(EXAMPLES + "example-" + kind + "-cue.tres") as FeedbackCue
+		var saved := load(EXAMPLES + "example_" + kind + "_cue.tres") as FeedbackCue
 		var cue := saved.trial_copy()
 		# Half strength leaves a measurable partial silhouette; the saved 0.9 peak can erase it fully.
 		if kind == "dissolve":

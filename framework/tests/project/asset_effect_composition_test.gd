@@ -4,10 +4,10 @@ const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 const Controls = preload("res://tools/asset_workbench/cue_controls.gd")
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
-const Workbench = preload("res://examples/asset_workbench/effects_composition/example-workbench.tscn")
-const BURST = preload("res://examples/asset_workbench/effects_composition/example-burst-cue.tres")
-const STREAM = preload("res://examples/asset_workbench/effects_composition/example-stream-preset.tres")
-const CLIP = preload("res://examples/asset_workbench/effects_composition/example-wobble-animation.tres")
+const Workbench = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
+const BURST = preload("res://examples/asset_workbench/effects_composition/example_burst_cue.tres")
+const STREAM = preload("res://examples/asset_workbench/effects_composition/example_stream_preset.tres")
+const CLIP = preload("res://examples/asset_workbench/effects_composition/example_wobble_animation.tres")
 const FIXTURE: String = "res://tests/features/asset_effect_composition/test-effect-cue.tres"
 const INVALID_CLIP: String = "res://tests/features/asset_effect_composition/test-invalid-clip.tres"
 

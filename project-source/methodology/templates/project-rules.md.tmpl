@@ -97,10 +97,10 @@ Choose a pattern only when it solves a present problem more simply than an ordin
 
 ## 2.5 General code organization
 
-1. Organize by feature rather than file type. A `player/` area containing its data, view, and control code is preferable to distant `models/`, `views/`, and `controllers/` trees.
+1. Organize by stable game domain rather than file type or delivery Feature ID. A `player/` area containing its data, view, and control code is preferable to distant `models/`, `views/`, and `controllers/` trees. Use `docs/game-organization.md` when choosing a module location or expanding the starter skeleton.
 2. Keep one core concept per file. Split when cohesion, responsibility, readability, or testability justify it; numeric thresholds belong to the project's machine-readable validation configuration and do not automatically authorize a split.
 3. Keep entry points limited to assembly, dependency injection, and startup.
-4. Centralize adjustable configuration under a focused config or data area.
+4. Keep adjustable configuration in a focused config or data area owned by its module; shared use alone does not remove domain ownership.
 5. Do not create miscellaneous dumping grounds such as `utils.py` or `helpers.ts`; name utilities by domain or responsibility.
 
 ## 2.6 Error handling

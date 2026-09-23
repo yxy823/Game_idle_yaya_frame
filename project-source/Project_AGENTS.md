@@ -76,6 +76,11 @@ and language semantics belong to `agent-rules/`. Use the root/Core precedence
 protocol for a real conflict. Rule-module directories do not prescribe project
 filesystem layout.
 
+When creating modules or choosing file locations/names, consult
+`docs/game-organization.md` for the starter skeleton, ownership examples and
+genre-specific expansion. Reuse unchanged guidance; concrete naming and engine
+constraints remain in the relevant rule modules below.
+
 For modifications or relevant engineering decisions, use
 `agent-rules/00-core/README.md` and each affected domain below. Read the matching
 concrete sections and applicable validation documents, not the entire directory.

@@ -12,7 +12,7 @@ E2–E7 尚未实施；没有新增 Manager、Timeline、通用属性编辑器�
 
 ## 实现、入口与设计取舍
 
-新增第四个 F6 入口：[粒子与动画工作台](../../../project-source/examples/asset_workbench/effects_composition/example-workbench.tscn)。原三个入口保留，四者共享同一工作台与表现组件。
+新增第四个 F6 入口：[粒子与动画工作台](../../../project-source/examples/asset_workbench/effects_composition/example_workbench.tscn)。原三个入口保留，四者共享同一工作台与表现组件。
 新消费场景为同目录的 `example-composition.tscn`，读取三份独立示例 Cue。完整参数与扩展契约集中在 [示例说明](../../../project-source/examples/asset_workbench/README.md#粒子tween-与-animationplayer)。
 
 | 变更 | 行为与取舍 |

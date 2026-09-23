@@ -2,7 +2,7 @@ extends SceneTree
 
 ## External-project render check. Needs a real renderer; it is not human acceptance.
 
-const GameScene = preload("res://examples/asset_workbench/single/example-game.tscn")
+const GameScene = preload("res://examples/asset_workbench/single/example_game.tscn")
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/"
 
 var _layout_failed: bool = false
@@ -26,7 +26,7 @@ func _capture() -> void:
 
 func _capture_entry(entry: String) -> void:
 	root.size = Vector2i(1600, 900)
-	var path := "res://examples/asset_workbench/" + entry + "/example-workbench.tscn"
+	var path := "res://examples/asset_workbench/" + entry + "/example_workbench.tscn"
 	var workbench: Control = load(path).instantiate()
 	root.add_child(workbench)
 	await process_frame
@@ -109,10 +109,10 @@ func _exercise_input(workbench: Control) -> void:
 	var original: Texture2D = workbench.session.current().texture
 	var item_rect := list.get_item_rect(1)
 	await _click(list.global_position + item_rect.get_center())
-	_check(browser.call("selected_path").ends_with("example-star.png"), "Pointer selection failed")
+	_check(browser.call("selected_path").ends_with("example_star.png"), "Pointer selection failed")
 	_check(workbench.session.current().texture == original, "Browsing must not bind")
 	await _click(browser.get("_apply").get_global_rect().get_center())
-	_check(workbench.session.current().texture.resource_path.ends_with("example-star.png"),
+	_check(workbench.session.current().texture.resource_path.ends_with("example_star.png"),
 		"Explicit apply button is not clickable")
 	_check(workbench.session.drafts[1].texture == original, "Apply changed the other trial")
 	workbench.call("_reset_trial")

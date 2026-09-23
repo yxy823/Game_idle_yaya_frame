@@ -28,8 +28,13 @@
 | docs/methodology-config.json | 本机环境与实际检查命令 |
 | methodology/ | 当前 Skill 使用的详细流程和模板 |
 | tools/ | 显式调用的项目工具 |
+| main/main.tscn | 已配置的最小启动场景；`main/` 负责入口与顶层组装 |
+| game/ | 当前游戏的功能模块；玩法、设置、存档和全局 UI 按实际需求建立 |
+| components/、assets/ | 可复用能力与跨模块共享素材；专属脚本、配置和素材跟随所属模块 |
+| tests/ | 项目测试区域；初始没有业务测试套件 |
+| [docs/game-organization.md](docs/game-organization.md) | 目录归属、模块增长与命名判断指南 |
 | addons/ | gdUnit4、GDScript linter、默认不启用全局插件的 SoundManager |
-| [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的图像/音频/Shader/粒子与动画组合预览及消费示例；`example-*` 资源不代表正式游戏素材 |
+| [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的图像/音频/Shader/粒子与动画组合预览及消费示例；`example_*` 资源不代表正式游戏素材 |
 | components/feedback/、tools/asset_workbench/ | 示例共用的表现组件、局部音频封装与工作台界面 |
 | gdlint.json | GDScript lint 配置 |
 | project.godot | Godot 项目配置 |
@@ -39,8 +44,9 @@
 初始只有目录说明，实际内容随任务积累。
 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
-正式场景、业务源码、资源和测试目录按游戏实际需要组织。Product 初始为空，
-不预设正式玩法、业务模块、主场景或已完成任务；随带的工作台示例是独立开发入口。
+创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。
+Product 与测试索引初始为空，环境为 `incomplete`，没有正式玩法、业务测试或已完成任务；
+入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
 
 ## 根据任务使用 Skill
 

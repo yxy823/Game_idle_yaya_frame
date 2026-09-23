@@ -6,9 +6,9 @@ const Batch = preload("res://tools/asset_workbench/analysis_batch.gd")
 const Scan = preload("res://tools/asset_workbench/analysis_group_scan.gd")
 const Service = preload("res://tools/asset_workbench/analysis_service.gd")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
-const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
-const EXAMPLE: String = "res://examples/asset_workbench/example-analysis-group.json"
-const IMAGE: String = "res://examples/asset_workbench/assets/example-star.png"
+const Workbench = preload("res://examples/asset_workbench/single/example_workbench.tscn")
+const EXAMPLE: String = "res://examples/asset_workbench/example_analysis_group.json"
+const IMAGE: String = "res://examples/asset_workbench/assets/example_star.png"
 const FAULT: String = "res://tests/features/asset_analyzer/analyzer_process_fixture.py"
 
 var _service: Service
@@ -53,7 +53,7 @@ func test_group_schema_rejects_bad_input_without_replacing_members() -> void:
 func test_group_limit_does_not_silently_discard_existing_members() -> void:
 	var paths: Array[String] = []
 	for index: int in Group.MAX_ASSETS + 1:
-		paths.append("res://assets/example-%d.png" % index)
+		paths.append("res://assets/example_%d.png" % index)
 	assert_str(_batch.add_paths(paths)).contains("512")
 	assert_int(_batch.group.assets.size()).is_equal(Group.MAX_ASSETS)
 	assert_str(Group.validation_error(_batch.group)).is_empty()

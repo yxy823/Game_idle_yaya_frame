@@ -1,7 +1,7 @@
 extends SceneTree
 
-const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/composition/example-workbench.tscn")
+const Workbench = preload("res://examples/asset_workbench/single/example_workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/composition/example_workbench.tscn")
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
 const DIRECTORY: String = "res://reports/asset-workbench-ui-20260922/group/"
 
@@ -56,7 +56,7 @@ func _capture() -> void:
 func _batch_capture(workbench: Control) -> void:
 	var panel: Window = workbench.get("_batch")
 	panel.batch.load_group(Group.read_json(
-		"res://examples/asset_workbench/example-analysis-group.json").data)
+		"res://examples/asset_workbench/example_analysis_group.json").data)
 	panel.batch.group.rules.append({"type": "image", "metric": "transparent_ratio",
 		"unit": "ratio", "operator": "max", "value": 0.75})
 	panel.call("open_assets", [] as Array[Resource])
@@ -87,7 +87,7 @@ func _batch_capture(workbench: Control) -> void:
 
 func _unsupported_source_capture(workbench: Control, panel: Window) -> void:
 	var atlas := AtlasTexture.new()
-	atlas.atlas = load("res://examples/asset_workbench/assets/example-star.png")
+	atlas.atlas = load("res://examples/asset_workbench/assets/example_star.png")
 	var assets: Array[Resource] = [atlas]
 	var count: int = panel.batch.group.assets.size()
 	panel.call("open_assets", assets)

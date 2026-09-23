@@ -5,9 +5,9 @@ const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
 const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 const Schema = preload("res://tools/asset_workbench/analysis_schema.gd")
-const Workbench = preload("res://examples/asset_workbench/single/example-workbench.tscn")
-const AUDIO: String = "res://examples/asset_workbench/assets/example-confirmation-a.ogg"
-const IMAGE: String = "res://examples/asset_workbench/assets/example-star.png"
+const Workbench = preload("res://examples/asset_workbench/single/example_workbench.tscn")
+const AUDIO: String = "res://examples/asset_workbench/assets/example_confirmation_a.ogg"
+const IMAGE: String = "res://examples/asset_workbench/assets/example_star.png"
 const FAULT_WORKER: String = "res://tests/features/asset_analyzer/analyzer_process_fixture.py"
 
 var _service: Service
@@ -110,7 +110,7 @@ func test_unicode_space_path_and_content_change_invalidate_cache() -> void:
 	var first := _service.submit(path, "image")
 	await _wait_for(first)
 	assert_str(_results[first].status).is_equal("success")
-	var replacement := "res://examples/asset_workbench/assets/example-trophy.png"
+	var replacement := "res://examples/asset_workbench/assets/example_trophy.png"
 	assert_int(DirAccess.copy_absolute(replacement, path)).is_equal(OK)
 	var second := _service.submit(path, "image")
 	await _wait_for(second)

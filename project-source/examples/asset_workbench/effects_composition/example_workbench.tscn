@@ -1,0 +1,17 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://examples/asset_workbench/shader_composition/example_workbench.tscn" id="1"]
+[ext_resource type="Script" path="res://components/feedback/feedback_particle_preset.gd" id="2"]
+[ext_resource type="PackedScene" path="res://examples/asset_workbench/effects_composition/example_composition.tscn" id="3"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example_burst_preset.tres" id="4"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example_stream_preset.tres" id="5"]
+[ext_resource type="Animation" path="res://examples/asset_workbench/effects_composition/example_wobble_animation.tres" id="6"]
+[ext_resource type="Resource" path="res://examples/asset_workbench/effects_composition/example_world_stream_preset.tres" id="7"]
+
+[node name="ExampleEffectsWorkbench" instance=ExtResource("1")]
+cue_path = "res://examples/asset_workbench/effects_composition/example_cluster_core_cue.tres"
+game_scene_path = "res://examples/asset_workbench/effects_composition/example_consumer.tscn"
+composition_scene = ExtResource("3")
+particle_candidates = Array[ExtResource("2")]([ExtResource("4"), ExtResource("5"), ExtResource("7")])
+animation_candidates = Array[Animation]([ExtResource("6")])
+workbench_title = "Asset Workbench · 粒子与动画组合"

@@ -3,8 +3,8 @@ extends SceneTree
 ## Real GPU output, lifecycle and UI evidence. Run with a real display driver.
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const Workbench = preload("res://examples/asset_workbench/effects_composition/example-workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/effects_composition/example-composition.tscn")
+const Workbench = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/effects_composition/example_composition.tscn")
 const EXAMPLES: String = "res://examples/asset_workbench/effects_composition/"
 const REPORT: String = "res://reports/asset-workbench-effects-20260922/"
 
@@ -42,7 +42,7 @@ func _check_particles() -> void:
 	viewport.add_child(presenter)
 	for kind: String in ["burst", "stream"]:
 		var cue := FeedbackCue.new()
-		cue.particle_preset = load(EXAMPLES + "example-" + kind + "-preset.tres")
+		cue.particle_preset = load(EXAMPLES + "example_" + kind + "_preset.tres")
 		cue.particle_emission_seconds = 0.3
 		presenter.configure(cue)
 		var before := await _read_surface(viewport)
@@ -73,9 +73,9 @@ func _check_motion() -> void:
 	presenter.size = Vector2(256, 256)
 	viewport.add_child(presenter)
 	var cue := FeedbackCue.new()
-	cue.texture = load("res://examples/asset_workbench/assets/example-star.png")
+	cue.texture = load("res://examples/asset_workbench/assets/example_star.png")
 	cue.tween_enabled = true
-	cue.animation_clip = load(EXAMPLES + "example-wobble-animation.tres")
+	cue.animation_clip = load(EXAMPLES + "example_wobble_animation.tres")
 	presenter.configure(cue)
 	var before := await _read_surface(viewport)
 	presenter.trigger()

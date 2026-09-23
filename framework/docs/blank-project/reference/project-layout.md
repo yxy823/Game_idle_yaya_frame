@@ -74,6 +74,7 @@ flowchart TD
 
 | 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
 | --- | --- | --- | --- |
+| `docs/game-organization.md` | 共同骨架、模块归属与命名的判断指南；引用现有工程规则 | 创建时复制；新建或调整模块、场景、资源时按需查阅 | 先判断内容归谁，再选择目录与职责名称 |
 | `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 结构需要解释时创建；实现 Agent 更新，规划/执行/评审引用 | 从当前地图了解系统 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 达到阈值的重要取舍、理由、成本与替代关系 | 真实决策触发；Agent 保存已确认决定，相关任务引用 | 决定候选，保留已取代原因 |
 | `docs/knowledge/` | 有适用条件和证据的经验，索引只放链接；不存规则或可执行输入 | 初始仅索引；Agent 在任务中提炼、开始相关工作时查阅 | 判断经验是否适用于当前版本 |
@@ -96,12 +97,20 @@ MyGodotGame/
 ├── .gitignore
 ├── project.godot
 ├── gdlint.json
+├── main/
+│   └── main.tscn                   已配置的最小启动场景
+├── game/                          当前游戏模块，初始为空
+├── assets/                        跨模块共享素材，初始为空
 ├── addons/
 │   ├── gdUnit4/
 │   ├── gdscript-linter/
 │   └── sound_manager/              固定提交；默认不启用全局插件
 ├── components/feedback/            示例共用表现组件与薄音频封装
-├── examples/asset_workbench/        独立预览、消费场景与 example-* 素材
+├── examples/asset_workbench/        独立预览、消费场景与 example_* 素材
+├── tests/                         初始仅有空目录占位，无业务套件
+│   ├── unit/
+│   ├── features/
+│   └── invariants/
 ├── agent-rules/                     按工程领域路由的规则
 ├── methodology/                     流程规范与 templates/
 ├── tools/
@@ -113,6 +122,7 @@ MyGodotGame/
 │   ├── .gdignore
 │   ├── methodology-config.json
 │   ├── product.md                  空文件
+│   ├── game-organization.md        模块归属与命名判断指南
 │   ├── knowledge/                  知识索引；初始无实际条目
 │   │   ├── README.md
 │   │   ├── godot-runtime/
@@ -128,7 +138,13 @@ MyGodotGame/
     └── .gdignore
 ```
 
-树中省略插件内部文件。`.git/`、`.godot/`、正式游戏主场景和业务测试不由复制器创建；配置中的 `tests/unit` 等值是后续目录约定。工作台的单对象、图像/音频组合、Shader 组合及粒子/动画组合四个入口可单独运行，但不写入主场景设置、不预填业务需求或完成状态。
+树中省略插件内部文件与空目录占位文件。创建器复制最小启动场景与配置中的入口，但不创建 `.git/`、`.godot/`、正式玩法或业务测试；`tests/unit` 等初始占位根与配置对应，套件按真实任务添加。工作台的单对象、图像/音频组合、Shader 组合及粒子/动画组合四个入口可单独运行，不替换 `main/main.tscn`，也不预填业务需求或完成状态。
+
+## 游戏目录如何归属
+
+`main/` 负责入口与顶层组装；`game/` 按当前游戏功能划分，设置、存档和全局 UI 也放在各自模块。`components/` 保存可复用能力，`assets/` 保存跨模块共享素材，插件与测试分别属于 `addons/`、`tests/`。场景、专属脚本、配置和素材尽量就近，模块有实际需要再细分目录。
+
+项目随带的[游戏代码组织与命名指南](../../../../project-source/defaults/docs/game-organization.md)提供归属问题、目录示例与可选职责词。Autoload 按真实生命周期决定，文件按职责放置；不因共同骨架预制存档、设置、全局 Manager 或一整套游戏类型模块。具体规则仍由项目约束及工程规则负责。
 
 ## 源材料到项目的映射
 
@@ -153,9 +169,13 @@ MyGodotGame/
 | `project-source/defaults/.editorconfig` | `.editorconfig` |
 | `project-source/defaults/.gitattributes` | `.gitattributes` |
 | `project-source/defaults/.gitignore` | `.gitignore` |
-| `project-source/defaults/docs/` | `docs/`，包含空 Product、`.gdignore` 和分层知识索引 |
+| `project-source/defaults/docs/` | `docs/`，包含空 Product、组织命名指南、`.gdignore` 和分层知识索引 |
 | `project-source/defaults/docs/.gdignore` | 另复制为 `reports/.gdignore` |
 | `project-source/defaults/gdlint.json` | `gdlint.json` |
+| `project-source/defaults/main/` | `main/`，包含最小启动场景 |
+| `project-source/defaults/game/` | `game/`，初始空目录占位 |
+| `project-source/defaults/assets/` | `assets/`，初始空目录占位 |
+| `project-source/defaults/tests/` | `tests/`，包含与配置对应的空测试根目录 |
 | `project-source/defaults/project.godot` | `project.godot` |
 | `project-source/methodology/templates/feature-list.json.tmpl` | `docs/feature-list.json` |
 | `project-source/methodology/templates/feature-list-revisions.json.tmpl` | `docs/feature-list-revisions.json` |
@@ -173,9 +193,9 @@ MyGodotGame/
 
 | 路径 | 建立时机 | 主要内容 |
 | --- | --- | --- |
-| `tests/unit/` | 创建组件单元测试时 | 局部代码契约 |
-| `tests/features/` | 创建 Feature 验收或 Bug 回归时 | 用户行为与历史缺陷覆盖 |
-| `tests/invariants/` | 确实需要跨 Feature 不变量测试时 | 可执行的通用约束 |
+| `tests/unit/` | 初始空目录，创建组件单元测试时添加套件 | 局部代码契约 |
+| `tests/features/` | 初始空目录，创建 Feature 验收或 Bug 回归时添加套件 | 用户行为与历史缺陷覆盖 |
+| `tests/invariants/` | 初始空目录，确实需要跨 Feature 不变量测试时添加套件 | 可执行的通用约束 |
 | `reports/initialization.md` | 环境准备时 | 实际初始化过程与结果 |
 | `reports/gdunit-wrapper/run-<id>/` | 每次显式测试运行时 | `result.json`、日志、发现集合及原始测试报告 |
 | `reports/manual-acceptance/F001/` 等 | manual Feature 准备验收时 | 分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件 |

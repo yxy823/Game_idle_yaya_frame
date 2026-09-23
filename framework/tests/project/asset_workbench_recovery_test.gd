@@ -2,18 +2,18 @@ extends GdUnitTestSuite
 
 ## E7: run only in the designated external project; fixtures belong to this suite's directory.
 
-const Single = preload("res://examples/asset_workbench/single/example-workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/composition/example-workbench.tscn")
+const Single = preload("res://examples/asset_workbench/single/example_workbench.tscn")
+const Composition = preload("res://examples/asset_workbench/composition/example_workbench.tscn")
 const ShaderWorkbench = preload(
-	"res://examples/asset_workbench/shader_composition/example-workbench.tscn")
-const Effects = preload("res://examples/asset_workbench/effects_composition/example-workbench.tscn")
+	"res://examples/asset_workbench/shader_composition/example_workbench.tscn")
+const Effects = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
 const BatchPanel = preload("res://tools/asset_workbench/analysis_batch_panel.gd")
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
 const Session = preload("res://tools/asset_workbench/preview_session.gd")
-const CUE = preload("res://examples/asset_workbench/single/example-feedback.tres")
-const IMAGE = preload("res://examples/asset_workbench/assets/example-trophy.png")
-const STAR = preload("res://examples/asset_workbench/assets/example-star.png")
-const SOUND = preload("res://examples/asset_workbench/assets/example-confirmation-a.ogg")
+const CUE = preload("res://examples/asset_workbench/single/example_feedback.tres")
+const IMAGE = preload("res://examples/asset_workbench/assets/example_trophy.png")
+const STAR = preload("res://examples/asset_workbench/assets/example_star.png")
+const SOUND = preload("res://examples/asset_workbench/assets/example_confirmation_a.ogg")
 
 var _workbenches: Array[Control] = []
 var _owned_files: Array[String] = []
