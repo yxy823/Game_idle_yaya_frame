@@ -5,7 +5,7 @@ Font role, shaping, localization coverage, scaling, and fallback are separate co
 ## Font roles
 
 - **[MUST]** Classify font role as dynamic/scalable versus bitmap/pixel. Pixel-art presentation does not automatically require bitmap fonts.
-- **[MUST]** Font size is usually usage/theme state; do not duplicate a font Resource solely for every size.
+- **[MUST]** Share one source file for the same logical font by default, reusing it through Theme or Resource references. Do not duplicate source fonts or font Resources solely for different UI scenes or font sizes; font size is usually usage/theme state.
 - **[MUST]** Pixel clarity is a combined font/import/filter/scale/layout contract.
 - **[REVIEW]** Choose MSDF only after weighing actual dynamic scaling, large-size, `Label3D`, and outline needs against its rendering cost and readability tradeoffs; it is not automatic for those uses.
 - **[MUST]** When using MSDF, validate small-size readability because hinting is unavailable, and check self-intersecting/overlapping glyph-outline compatibility. Set `msdf_pixel_range` to at least twice the maximum required outline size so outlines are not clipped.
