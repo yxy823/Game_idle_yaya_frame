@@ -396,7 +396,7 @@ func create_cli_options_card(controls: Dictionary) -> GDLintCollapsibleCard:
 	export_row.add_child(controls.export_config_btn)
 
 	var info_label := Label.new()
-	info_label.text = "(Settings auto-sync to gdlint.json)"
+	info_label.text = "(Analysis edits save to project gdlint.json)"
 	info_label.add_theme_color_override("font_color", GDLintThemeColors.get_color("font_muted"))
 	info_label.add_theme_font_size_override("font_size", 12)
 	export_row.add_child(info_label)
@@ -416,9 +416,9 @@ func create_header_bar() -> HBoxContainer:
 	title.add_theme_color_override("font_color", GDLintThemeColors.get_color("accent"))
 	hbox.add_child(title)
 
-	# Subtitle: " - Code Quality Analyzer for GDScript" in muted color
+	# Keep the project-wide effect of analysis edits visible above every card.
 	var subtitle := Label.new()
-	subtitle.text = " -   Code Quality Analyzer for GDScript"
+	subtitle.text = " -   Analysis saves to project gdlint.json"
 	subtitle.add_theme_font_size_override("font_size", 17)
 	# No color override - inherits default editor font color
 	hbox.add_child(subtitle)

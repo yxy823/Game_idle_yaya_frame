@@ -29,12 +29,13 @@ var _top_limit: int = 0  # Limit to top N issues (0 = no limit)
 var _exit_code: int = 0
 
 func _init() -> void:
-	_parse_arguments()
+	if not _parse_arguments():
+		return
 	_run_analysis()
 	quit(_exit_code)
 
 # gdlint:ignore-function:long-function - CLI argument parsing with many options
-func _parse_arguments() -> void:
+func _parse_arguments() -> bool:
 	var args := OS.get_cmdline_user_args()
 
 	var i := 0
@@ -92,7 +93,7 @@ func _parse_arguments() -> void:
 				"--help", "-h":
 					_print_help()
 					quit(0)
-					return
+					return false
 		else:
 			# Positional argument - treat as a path to analyze
 			var normalized := arg.replace("\\", "/")
@@ -103,6 +104,7 @@ func _parse_arguments() -> void:
 	# Default to current directory if no paths specified
 	if _target_paths.is_empty():
 		_target_paths.append("res://")
+	return true
 
 # gdlint:ignore-function:print-statement,long-function - CLI help output
 func _print_help() -> void:
@@ -116,7 +118,7 @@ func _print_help() -> void:
 	print("  [paths...]        Files or directories to analyze (default: res://)")
 	print("")
 	print("Options:")
-	print("  --config <path>   Path to config file (default: gdlint.json)")
+	print("  --config <path>   Required config file (default: res://gdlint.json)")
 	print("  --format <type>   Output format: console, json, clickable, html, github (default: console)")
 	print("  --severity <lvl>  Minimum severity to report: info, warning, critical")
 	print("  --check <checks>  Comma-separated list of checks to run (e.g., long-function,high-complexity)")
@@ -159,7 +161,10 @@ func _run_analysis() -> void:
 		return
 	if _no_ignore:
 		config.respect_ignore_directives = false
-	_apply_check_filter_to_config(config)
+	if not _apply_check_filter_to_config(config):
+		printerr(config.configuration_error)
+		_exit_code = 3
+		return
 
 	# Fold explicitly-targeted addon paths into included_addons so they are scanned
 	for target_path in _target_paths:
@@ -199,23 +204,19 @@ func _run_analysis() -> void:
 		printerr(error)
 
 
-# Load config from specified path or auto-detect
+# The CLI requires its project config; optional loading remains available to other callers.
 func _load_config() -> Resource:
-	# If custom config path specified, load it
-	if not _config_path.is_empty():
-		var config = AnalysisConfigClass.new()
-		if not config.load_from_json(_config_path) and config.configuration_error.is_empty():
-			config.configuration_error = "Could not load config: " + _config_path
-		return config
-
-	# Load from project root gdlint.json
-	return AnalysisConfigClass.load_project_config_auto("res://")
+	var path := _config_path if not _config_path.is_empty() else "res://gdlint.json"
+	var config = AnalysisConfigClass.new()
+	if not config.load_from_json(path) and config.configuration_error.is_empty():
+		config.configuration_error = "Could not load config: " + path
+	return config
 
 
 # Disable checks not in the filter list
-func _apply_check_filter_to_config(config: Resource) -> void:
+func _apply_check_filter_to_config(config: Resource) -> bool:
 	if _check_filter.is_empty():
-		return
+		return true
 
 	# Map check IDs to config property names
 	var check_id_to_prop := {
@@ -245,6 +246,12 @@ func _apply_check_filter_to_config(config: Resource) -> void:
 		"sealed-violation": "check_sealed",
 	}
 
+	# Validate the entire request before changing any checks.
+	for check_id in _check_filter:
+		if not check_id_to_prop.has(check_id):
+			config.configuration_error = "Unknown check ID: " + check_id
+			return false
+
 	# Disable all checks first
 	for prop in check_id_to_prop.values():
 		if config.get(prop) != null:
@@ -252,9 +259,9 @@ func _apply_check_filter_to_config(config: Resource) -> void:
 
 	# Enable only the requested checks
 	for check_id in _check_filter:
-		if check_id_to_prop.has(check_id):
-			var prop: String = check_id_to_prop[check_id]
-			config.set(prop, true)
+		var prop: String = check_id_to_prop[check_id]
+		config.set(prop, true)
+	return true
 
 
 # Merge second result into first

@@ -4,6 +4,9 @@ The native target Godot parser/compiler and the configured linter establish
 different contracts. The Agent calls the Godot parser and bundled lint CLI directly.
 Project setup records the actual Python and Godot executable paths. The project uses the addon
 under `addons/gdscript-linter` and the root `gdlint.json` configuration.
+The CLI requires that configuration file (or the explicit `--config` file) to
+load successfully. A missing/unreadable config or unknown `--check` ID fails with
+exit 3; it must not become a successful run with fallback policy or disabled checks.
 Never run a Godot editor/import check inside a restricted Windows sandbox when the
 project requires the external approval route.
 
@@ -105,6 +108,13 @@ The lint CLI returns 3 for invalid/empty input, configuration or JSON output err
 and 0 for clean or Info-only results. Display filters cannot erase the real verdict.
 Magic-number Info is a review signal: inspect whether a named constant improves
 the code; do not rename identifiers or change thresholds to silence a false positive.
+
+The optional editor dock uses the same project JSON for analysis settings. Old
+machine-level threshold/check/scan overrides are ignored; personal display,
+export and filter preferences remain editor settings. Opening or rebuilding the
+dock does not save the config. Explicit analysis-setting edits save project values
+while retaining metrics, fields without UI controls and unknown JSON fields.
+The generated project does not enable the linter editor plugin by default.
 
 Resource import belongs to Godot's normal editor/resource handling. It is not a
 Feature stage or a prelude built into static checking. If project preparation is

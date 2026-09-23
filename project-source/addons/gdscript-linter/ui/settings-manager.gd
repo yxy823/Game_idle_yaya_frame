@@ -3,7 +3,7 @@
 @tool
 extends RefCounted
 class_name GDLintSettingsManager
-## Handles loading and saving settings from EditorSettings
+## Keeps project analysis settings separate from editor display preferences.
 
 signal setting_changed(key: String, value: Variant)
 signal display_refresh_needed
@@ -110,7 +110,7 @@ func _init(p_config: Resource) -> void:
 	config = p_config
 
 
-# Load all settings from EditorSettings and apply to config and UI controls
+# Read analysis settings from the project config and personal preferences from EditorSettings.
 func load_settings() -> void:
 	var editor_settings := EditorInterface.get_editor_settings()
 
@@ -128,37 +128,20 @@ func load_settings() -> void:
 	include_context_in_exports = _get_setting(editor_settings, "code_quality/export/include_context", true)
 	export_folder_path = _get_setting(editor_settings, "code_quality/export/folder_path", "")
 
-	# Load scanning settings
-	respect_gdignore = _get_setting(editor_settings, "code_quality/scanning/respect_gdignore", true)
-	config.respect_gdignore = respect_gdignore
-	scan_addons = _get_setting(editor_settings, "code_quality/scanning/scan_addons", false)
-	config.scan_addons = scan_addons
+	# Machine-level analysis overrides must not replace this project's configuration.
+	respect_gdignore = config.respect_gdignore
+	scan_addons = config.scan_addons
 	remember_filter_selections = _get_setting(editor_settings, "code_quality/scanning/remember_filters", false)
-	# Fall back to whatever load_from_json already populated on config, so a
-	# hand-edited gdlint.json isn't clobbered when EditorSettings has no override yet.
-	included_addons_text = _get_setting(editor_settings, "code_quality/scanning/included_addons", ", ".join(config.included_addons))
-	excluded_addons_text = _get_setting(editor_settings, "code_quality/scanning/excluded_addons", ", ".join(config.excluded_addons))
-	_update_config_addon_arrays()
+	included_addons_text = ", ".join(config.included_addons)
+	excluded_addons_text = ", ".join(config.excluded_addons)
 
 	# Load saved filter selections
 	saved_severity_filter = _get_setting(editor_settings, "code_quality/filters/severity", 0)
 	saved_type_filter = _get_setting(editor_settings, "code_quality/filters/type", "all")
 	saved_file_filter = _get_setting(editor_settings, "code_quality/filters/file", "")
 
-	# Load analysis limits
-	config.line_limit_soft = _get_setting(editor_settings, "code_quality/limits/file_lines_warn", 200)
-	config.line_limit_hard = _get_setting(editor_settings, "code_quality/limits/file_lines_critical", 300)
-	config.function_line_limit = _get_setting(editor_settings, "code_quality/limits/function_lines", 30)
-	config.function_line_critical = _get_setting(editor_settings, "code_quality/limits/function_lines_crit", 60)
-	config.cyclomatic_warning = _get_setting(editor_settings, "code_quality/limits/complexity_warn", 10)
-	config.cyclomatic_critical = _get_setting(editor_settings, "code_quality/limits/complexity_crit", 15)
-	config.max_parameters = _get_setting(editor_settings, "code_quality/limits/max_params", 4)
-	config.max_nesting = _get_setting(editor_settings, "code_quality/limits/max_nesting", 3)
-	config.god_class_functions = _get_setting(editor_settings, "code_quality/limits/god_class_funcs", 20)
-	config.god_class_signals = _get_setting(editor_settings, "code_quality/limits/god_class_signals", 10)
-
 	# Load code checks settings
-	_load_check_settings(editor_settings)
+	_load_check_settings()
 
 	# Load Claude Code settings
 	claude_code_enabled = _get_setting(editor_settings, "code_quality/claude/enabled", false)
@@ -169,39 +152,10 @@ func load_settings() -> void:
 	_apply_to_ui()
 
 
-# Load all code check settings from EditorSettings and apply to config
-func _load_check_settings(editor_settings: EditorSettings) -> void:
-	# Map of setting key suffix -> (local var name, config property name)
-	var check_mappings := {
-		"naming_conventions": "check_naming_conventions",
-		"long_lines": "check_long_lines",
-		"todo_comments": "check_todo_comments",
-		"print_statements": "check_print_statements",
-		"magic_numbers": "check_magic_numbers",
-		"commented_code": "check_commented_code",
-		"missing_types": "check_missing_types",
-		"function_length": "check_function_length",
-		"parameters": "check_parameters",
-		"nesting": "check_nesting",
-		"cyclomatic_complexity": "check_cyclomatic_complexity",
-		"empty_functions": "check_empty_functions",
-		"missing_return_type": "check_missing_return_type",
-		"file_length": "check_file_length",
-		"god_class": "check_god_class",
-		"unused_variables": "check_unused_variables",
-		"unused_parameters": "check_unused_parameters",
-		"ascii_only": "check_ascii_only",
-		"strict_limits": "check_strict_limits",
-		"sealed": "check_sealed",
-	}
-
-	for key_suffix: String in check_mappings:
-		var prop_name: String = check_mappings[key_suffix]
-		var setting_key: String = "code_quality/checks/" + key_suffix
-		var value: bool = _get_setting(editor_settings, setting_key, true)
-		set(prop_name, value)
-		if config.get(prop_name) != null:
-			config.set(prop_name, value)
+# Mirror project checks for the controls without changing their source configuration.
+func _load_check_settings() -> void:
+	for prop_name in _check_control_keys:
+		set(prop_name, config.get(prop_name))
 
 
 # Apply current settings to UI controls
@@ -257,7 +211,7 @@ func _apply_to_ui() -> void:
 
 	for control_key in bool_mappings:
 		if controls.has(control_key):
-			controls[control_key].button_pressed = bool_mappings[control_key].call()
+			controls[control_key].set_pressed_no_signal(bool_mappings[control_key].call())
 
 	# Numeric controls (SpinBox)
 	var spin_mappings := {
@@ -275,7 +229,7 @@ func _apply_to_ui() -> void:
 
 	for control_key in spin_mappings:
 		if controls.has(control_key):
-			controls[control_key].value = spin_mappings[control_key].call()
+			controls[control_key].set_value_no_signal(spin_mappings[control_key].call())
 
 	# Text controls (LineEdit/TextEdit)
 	var text_mappings := {
@@ -288,7 +242,10 @@ func _apply_to_ui() -> void:
 
 	for control_key in text_mappings:
 		if controls.has(control_key):
+			var was_blocked: bool = controls[control_key].is_blocking_signals()
+			controls[control_key].set_block_signals(true)
 			controls[control_key].text = text_mappings[control_key].call()
+			controls[control_key].set_block_signals(was_blocked)
 
 
 # Connect all UI control signals
@@ -372,14 +329,12 @@ func _get_setting(editor_settings: EditorSettings, key: String, default_value: V
 
 # Save a single setting
 func save_setting(key: String, value: Variant) -> void:
-	var editor_settings := EditorInterface.get_editor_settings()
-	editor_settings.set_setting(key, value)
-	setting_changed.emit(key, value)
-
-	# Auto-sync analysis settings to project config (gdlint.json)
-	# Only sync settings that affect analysis results (not display/filter/claude settings)
 	if _is_analysis_setting(key):
 		_sync_config_to_json()
+	else:
+		var editor_settings := EditorInterface.get_editor_settings()
+		editor_settings.set_setting(key, value)
+	setting_changed.emit(key, value)
 
 
 # Check if this setting affects analysis and should be synced to project config

@@ -27,22 +27,22 @@ godot --headless --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -
 
 | Argument | Description |
 |----------|-------------|
-| `[paths...]` | Files or directories to analyze (default: `res://`) |
+| `[paths...]` | `.gd` files or directories to analyze (default: `res://`); repeated files are deduplicated |
 
 ## Options
 
 | Option | Description |
 |--------|-------------|
-| `--config <path>` | Path to config file (default: `gdlint.json`) |
+| `--config <path>` | Required config file (default: `res://gdlint.json`); missing, unreadable or invalid configuration fails |
 | `--format <type>` | Output format: `console`, `json`, `clickable`, `html`, `github` |
 | `--severity <level>` | Minimum severity to report: `info`, `warning`, `critical` |
-| `--check <checks>` | Comma-separated list of checks to run |
+| `--check <checks>` | Comma-separated known check IDs to run; an unknown ID fails before changing the enabled checks |
 | `--top <N>` | Show only top N issues sorted by priority |
 | `--json` | Shorthand for `--format json` |
 | `--clickable` | Shorthand for `--format clickable` (Godot Output panel format) |
 | `--html` | Shorthand for `--format html` |
 | `--github` | Shorthand for `--format github` (GitHub Actions annotations) |
-| `--output, -o <file>` | Output file path (for `--html`) |
+| `--output, -o <file>` | JSON or HTML output file; HTML defaults to `code_quality_report.html` |
 | `--no-ignore` | Bypass all `gdlint:ignore` directives |
 | `--help, -h` | Show help message |
 
@@ -50,31 +50,54 @@ godot --headless --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -
 
 | Code | Meaning |
 |------|---------|
-| 0 | No issues found |
+| 0 | No issues or Info-only findings |
 | 1 | Warnings found (no critical issues) |
 | 2 | Critical issues found |
+| 3 | Invalid/empty input, configuration error (including an unknown check ID), or JSON output failure |
+
+`--severity` and `--top` affect the displayed findings only. They do not change
+the exit code calculated from the full analysis. Check the process exit code even
+when the filtered report looks clean. Input paths that do not exist or discover no
+eligible GDScript files fail with exit 3.
 
 ## Configuration
 
-### Auto-Sync from Editor
+### Project Configuration and Editor Preferences
 
-When you change settings in the GDScript Linter dock in the Godot editor, they automatically sync to `gdlint.json` in your project root. The CLI reads this file by default, ensuring editor and CLI use the same settings.
+Analysis thresholds, checks, metrics and scan scope come from the project's
+`gdlint.json`. Existing machine-level analysis settings are ignored. The dock
+stores personal display, export, filter and Claude preferences in `EditorSettings`.
+
+Opening or rebuilding the dock does not save the config. Changing an analysis
+setting writes the project configuration while retaining untouched analysis values
+and unknown JSON fields. It does not write a machine-level analysis override.
+An invalid loaded configuration cannot be saved over by the dock. The bundled
+project enables gdUnit4 by default; the linter dock is an optional editor plugin.
 
 ### Config File Format
 
-The linter uses `gdlint.json` in your project root.
+The CLI requires `gdlint.json` in the Godot project root unless `--config` selects
+another file. It does not silently fall back to built-in defaults when that file
+is missing or unreadable. The generic configuration loader retains optional-file
+behavior for other callers. Partial valid configs still use built-in defaults for
+omitted fields; use the generated project's complete config to retain its policy.
 
 Example `gdlint.json`:
 
 ```json
 {
+	"metrics": {
+		"file_length": "physical",
+		"function_length": "physical"
+	},
 	"limits": {
-		"file_lines_soft": 200,
-		"file_lines_hard": 300,
-		"function_lines": 30,
-		"function_lines_critical": 60,
-		"max_parameters": 4,
+		"file_lines_soft": 400,
+		"file_lines_hard": 600,
+		"function_lines": 40,
+		"function_lines_critical": 70,
+		"max_parameters": 5,
 		"max_nesting": 3,
+		"max_line_length": 100,
 		"cyclomatic_warning": 10,
 		"cyclomatic_critical": 15
 	},
@@ -126,11 +149,18 @@ Human-readable report with summary, top files, and categorized issues.
 
 ### JSON
 
-Machine-parseable output for integration with other tools:
+Write a JSON file directly for integration with other tools:
 
 ```bash
-godot --headless --script ... -- --json > report.json
+godot --headless --script ... -- --json --output report.json
 ```
+
+The report is also printed to standard output. Prefer `--output` for the artifact
+because Godot startup diagnostics can accompany the console output. The destination
+directory must already exist. JSON includes `exit_code`, `input_errors`, summary
+counts, per-file metrics and findings; `presentation_filtered` indicates whether
+`--severity` or `--top` was requested. Early configuration errors go to stderr and
+do not produce a JSON report.
 
 ### Clickable
 
@@ -193,11 +223,15 @@ jobs:
 lint:
   image: barichello/godot-ci:4.2.1
   script:
-	- godot --headless --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --format json > lint-report.json
+    - godot --headless --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --format json --output lint-report.json
   artifacts:
-	reports:
-	  codequality: lint-report.json
+    when: always
+    paths:
+      - lint-report.json
 ```
+
+This publishes the native linter JSON as an artifact; it is not GitLab's separate
+Code Quality report schema.
 
 ## Examples
 
@@ -233,7 +267,7 @@ godot --headless --script ... -- --check high-complexity,long-function
 ### Combine Options
 
 ```bash
-# Strict CI check: critical issues only, specific checks, GitHub annotations
+# Run selected checks; display critical issues (warnings still return exit 1)
 godot --headless --script ... -- \
 	--config gdlint-ci.json \
 	--severity critical \
@@ -269,19 +303,20 @@ For use with `--check`:
 | `naming-enum` | Enum naming convention |
 | `unused-variable` | Local variables never used |
 | `unused-parameter` | Function parameters never used |
+| `ascii-violation` | ASCII-only file directives or project-wide setting |
+| `strict-limit` | Strict-limit directives |
+| `sealed-violation` | Sealed class protection |
+
+The `naming-*` IDs share one naming-conventions switch, so selecting one enables
+the naming group. Unknown IDs, including misspellings mixed with valid IDs, fail
+with exit 3.
 
 ## Common Mistakes
 
-### Wrong: Passing a file path
+### Files and Directories Are Both Supported
 ```bash
-# DON'T do this - CLI expects directories, not files
-godot --headless --script ... -- src/player.gd
-```
-
-### Right: Pass a directory
-```bash
-# DO this - pass the directory containing .gd files
-godot --headless --script ... -- src/
+# Analyze one file and a directory; overlaps are deduplicated
+godot --headless --script ... -- src/player.gd src/
 ```
 
 ### Wrong: Forgetting the `--` separator
@@ -315,9 +350,10 @@ godot --headless --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -
 When using this CLI:
 
 1. **Always use `--` before any linter options** - required separator
-2. **Pass directory paths, not file paths** - the linter scans directories recursively
+2. **Pass `.gd` files, directories, or both** - directories are scanned recursively and repeated files are deduplicated
 3. **The script path is relative to the project with the linter installed** - use `--path` for external projects
 4. **Targeting a specific addon** - pass its path as a positional argument (e.g. `-- addons/myaddon`) and it is automatically added to `included_addons` for that run
+5. **Require configuration and retain the real verdict** - use the project config or an explicit `--config`, write JSON with `--output`, and inspect the exit code even when display filters are used
 
 Example for analyzing an external project:
 ```bash

@@ -392,6 +392,7 @@ func _rebuild_settings_panel() -> void:
 	# Rebuild
 	settings_controls.clear()
 	_init_config_and_settings_panel()
+	settings_manager.config = current_config
 	settings_manager.controls = settings_controls
 	settings_manager.load_settings()
 	settings_manager.connect_controls(export_button, html_export_button, md_export_button)

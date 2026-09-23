@@ -239,6 +239,9 @@ func is_path_excluded(path: String) -> bool:
 
 # Save configuration to JSON file
 func save_to_json(path: String) -> bool:
+	if not configuration_error.is_empty():
+		push_error("GDLint: Cannot save an invalid configuration: " + configuration_error)
+		return false
 	var data := {
 		"metrics": {"file_length": file_length_metric, "function_length": function_length_metric},
 		"limits": {
@@ -290,6 +293,24 @@ func save_to_json(path: String) -> bool:
 			"paths": excluded_paths,
 		},
 	}
+
+	# A dock edit must preserve extension fields that this version does not interpret.
+	if FileAccess.file_exists(path):
+		var existing_file := FileAccess.open(path, FileAccess.READ)
+		if not existing_file:
+			push_error("GDLint: Cannot read existing config: " + path)
+			return false
+		var existing_data = JSON.parse_string(existing_file.get_as_text())
+		existing_file.close()
+		if not existing_data is Dictionary:
+			push_error("GDLint: Cannot overwrite invalid config: " + path)
+			return false
+		for section in data:
+			if existing_data.get(section) is Dictionary:
+				existing_data[section].merge(data[section], true)
+			else:
+				existing_data[section] = data[section]
+		data = existing_data
 
 	var json_string := JSON.stringify(data, "\t")
 	var file := FileAccess.open(path, FileAccess.WRITE)

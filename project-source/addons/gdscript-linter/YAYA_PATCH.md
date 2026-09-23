@@ -13,8 +13,10 @@ Yaya owns `analyzer/source-map.gd` and the integration edits in
 `analysis-config.gd`, `analysis-result.gd`, `file-result.gd`, `code-analyzer.gd`,
 `analyze-cli.gd`, `strict-handler.gd`, `ignore-handler.gd`,
 `checkers/function-checker.gd`, `checkers/unused-checker.gd`, and
-`checkers/style-checker.gd` under `analyzer/`.
-No UI, icons, third-party licenses, or unrelated checker implementations are patched.
+`checkers/style-checker.gd` under `analyzer/`, plus `dock.gd`,
+`ui/settings-manager.gd`, `ui/settings-card-builder.gd`, and the local contract
+corrections in `docs/CLI.md`.
+Icons, third-party licenses, and unrelated checker implementations are not patched.
 
 The patch shares lexical function boundaries across normal/static/private methods,
 multiline signatures, metrics, strict/ignore ranges, and unused-name scope.
@@ -67,6 +69,29 @@ contracts. Run engine-dependent contracts in an external validation project
 using the configured Godot. A Python fixture alone does not establish runtime
 behavior. Direct project checks are described in `methodology/gdscript-lint.md`;
 there is no separate static wrapper or static manifest.
+
+## Configuration and editor consistency (2026-09-22)
+
+The CLI requires the default project `gdlint.json` or the explicit `--config`
+file to load successfully. Missing/unreadable files fail with exit 3, as existing
+JSON/metric configuration errors do. Other callers retain the generic loader's
+optional-file behavior. Unknown `--check` IDs are rejected before changing any
+check switches, including mixed valid/invalid lists. `--help` exits without
+loading a project configuration or starting analysis.
+
+The dock reads analysis thresholds, checks and scan scope from the project config,
+ignoring old machine-level analysis overrides. `EditorSettings` continues to hold
+personal display/export/filter/Claude preferences. Applying settings to controls
+does not emit change signals, and rebuilding the dock keeps its settings manager
+and analyzer on the same newly loaded config. Only explicit analysis-setting
+changes save `gdlint.json`; they do not write global analysis overrides.
+The existing panel header and CLI note identify that project-config write behavior.
+
+Config saving retains all supported analysis fields, including metrics and fields
+without dock controls, and preserves unknown fields in an existing JSON object.
+Invalid loaded configurations and unreadable/non-object destination configs are
+not overwritten. CLI documentation now covers single-file inputs, direct JSON
+output, Info-only success, failure exit 3 and display-filter verdict preservation.
 
 ## Updating upstream
 
