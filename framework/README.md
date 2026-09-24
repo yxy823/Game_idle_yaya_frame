@@ -12,7 +12,7 @@
 
 | 路径 | 职责 |
 | --- | --- |
-| [progress.md](progress.md) | 框架当前成果、验证缺口、未决事项与下一步；随相关维护更新，不复制到项目 |
+| [progress.md](progress.md) | 框架未完成事项与下一步；完成即删除，历史查 Git，不复制到项目 |
 | [框架的复制与运行验证](docs/blank-project/maintenance/validating-framework.md) | 源材料、真实外部测试项目、工作流抽样与迁移检查的职责和证据边界 |
 | [commands/create_project.py](commands/create_project.py) | 按清单复制，建立独立 Git 仓库与本地初始提交 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
