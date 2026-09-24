@@ -43,11 +43,11 @@ not proof that every file or later Product has been planned.
 | `docs/feature-list-revisions.json` | Existing revision history/anchor to preserve |
 | `docs/test-registry.json` | Existing component/test records before proposing additions |
 
-An absent, empty or populated ledger can receive the current Product's first
+An existing empty or populated ledger can receive the current Product's first
 plan. Reuse already planned scope and route its changes to `feature-sync`.
-Do not replace earlier plans. An absent index with orphaned details/history is
-a repair question, not permission to initialize over them. Report actual module
-inventory/file mismatches and resolve them before planning; do not guess names.
+Do not replace earlier plans. Require the creator-supplied index, revision log
+and Registry under the canonical schema; a missing file requires repair before
+planning. Report actual module inventory/file mismatches; do not guess names.
 
 ## Plan and write
 
@@ -69,9 +69,9 @@ inventory/file mismatches and resolve them before planning; do not guess names.
 4. After Step 3 permits writing, run the Registry merge below before any
    Feature-plan write. Continue only after a validated conflict-free merge.
 5. Append new index entries and only their detail files, using canonical initial
-   planning values. Update index totals/time, decomposition notes and actual
+   planning values. Update index time, decomposition notes and actual
    newly used professional source locations in `meta.generated_from`. Preserve
-   the project-supplied revision log, existing Features, metadata unrelated
+   the revision log, existing Features, metadata unrelated
    to this addition and revision history. Planning a newly current Product does
    not advance the synchronization anchor. Do not rewrite Registry data by hand
    after a successful merge.
@@ -92,11 +92,11 @@ This is the fixed project-relative location used by the merge helper, checker,
 test selector and completion check. Do not add a configurable path or repeat it
 in Feature-index metadata. Run the merge command from the project root.
 
-Use the project-supplied version-2 registry and revision log. If either file is missing, report the missing project material instead of creating a replacement. Reject an unsupported format without rewriting it.
+Use the project-supplied version-3 registry and version-2 revision log under `methodology/02-feature-list-schema.md`.
 
 Read and validate the registry before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
 
-Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `test_unit_root/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Project Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
+Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `tests/unit/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Project Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
 
 Use the project-owned merge helper from the repository root. The temporary candidate file contains a JSON array of complete component objects, or an object with a `components` array; it must not be committed.
 
@@ -105,11 +105,11 @@ python -B .agents/skills/feature-plan/scripts/merge_test_registry.py `
   --components <temporary-component-candidates.json>
 ```
 
-The helper validates schema version, component records, registered unit suite path existence, unique component/test IDs, and test-to-component mappings before writing. Retired entries additionally require valid source/reason/replacement/revision relationships against the adjacent Feature index and revision log, using the shared `tools/lib/feature_evolution.py` contract. A malformed existing registry, missing registered suite path, duplicate ID, missing component mapping, or non-identical candidate for an existing component is a blocking conflict. It writes only after the complete merge validates and preserves all existing test entries by value. Path existence does not prove test discovery; execution must confirm the registered suite actually runs tests.
+The helper requires the adjacent Feature index and revision log, then validates schema version, component records, registered unit suite path existence, unique component/test IDs, and test-to-component mappings before writing. Retired entries additionally require valid source/reason/replacement/revision relationships using the shared `tools/lib/feature_evolution.py` contract. A malformed existing registry, missing registered suite path, duplicate ID, missing component mapping, or non-identical candidate for an existing component is a blocking conflict. It writes only after the complete merge validates and preserves all existing test entries by value. Path existence does not prove test discovery; execution must confirm the registered suite actually runs tests.
 
 ```json
 {
-  "meta": {"schema_version": 2},
+  "meta": {"schema_version": 3},
   "components": [
     {
       "id": "inventory",

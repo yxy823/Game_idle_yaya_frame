@@ -44,7 +44,6 @@ above before generating durable content; a configuration check does not grant th
 `docs/methodology-config.json` also owns the stable entrypoints used by `feature-execute`:
 
 - `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.
-- `test_unit_root`, `test_feature_root`, `test_invariant_root`: project test-layout roots. These are project conventions consumed by test planning; a test framework may store its own plugin/runtime files elsewhere.
 - `python_executable`: Complete Python executable path or name used by project tools. It contains no script path or appended arguments; no automatic Hook is registered.
 - `environment_bootstrap`: setup status, actual Godot executable and observed version, as described below.
 
@@ -108,7 +107,7 @@ parsing or lint, initialize Git or claim those checks passed. If setup fails, le
 incomplete and report the actual reason in Progress rather than duplicating
 errors into configuration arrays.
 
-The same runner uses `--scope full` for the configured full test roots.
+The same runner uses `--scope full` to select `tests/` recursively.
 A required full suite still needs an actual successful full run. Ready
 configuration proves environment availability only; Stage 4 proves actual
 test and static results. Subsequent Features reuse the configured commands

@@ -13,15 +13,11 @@ from typing import Any, Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
 from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, validate_retirement_shape,
-    referenced_test_ids, validate_retirements, validate_revisions,
+    referenced_test_ids, test_identity, validate_retirements, validate_revisions,
 )
 from tools.lib.test_selection import read_json_value, SelectionError
 
 COMPONENT_RE = re.compile(r"^[a-z][a-z0-9_]*$")
-AC_TEST_RE = re.compile(r"^(F\d{3})-(AC\d{2})(?:-(\d{2}))?$")
-REGRESSION_TEST_RE = re.compile(r"^(F\d{3})-RT\d{2}$")
-INVARIANT_TEST_RE = re.compile(r"^INV-[A-Z0-9][A-Z0-9_-]*-\d{2}$")
-ALLOWED_TEST_KINDS = {"acceptance", "regression", "invariant"}
 ALLOWED_TEST_STATUSES = {"planned", "active", "retired"}
 
 
@@ -72,15 +68,11 @@ def _validate_test(test: Any, label: str, component_ids: set[str]) -> str:
     if not isinstance(test, dict):
         raise RegistryError(f"{label} must be an object")
     test_id = test.get("id")
-    if not isinstance(test_id, str) or not test_id.strip():
-        raise RegistryError(f"{label}.id must be a non-empty string")
-    kind = test.get("kind")
-    if kind not in ALLOWED_TEST_KINDS:
-        raise RegistryError(f"{label}.kind is invalid")
     status = test.get("status")
     if status not in ALLOWED_TEST_STATUSES:
         raise RegistryError(f"{label}.status is invalid")
     try:
+        test_identity(test_id)
         validate_retirement_shape(test)
     except EvolutionError as exc:
         raise RegistryError(str(exc)) from exc
@@ -102,32 +94,6 @@ def _validate_test(test: Any, label: str, component_ids: set[str]) -> str:
     if case is not None and (not isinstance(case, str) or not case.strip()):
         raise RegistryError(f"{label}.case must be null or a non-empty string")
 
-    source_feature = test.get("source_feature")
-    criterion_id = test.get("criterion_id")
-    if kind == "acceptance":
-        match = AC_TEST_RE.fullmatch(test_id)
-        if match is None:
-            raise RegistryError(f"{label}.id must match F0XX-ACyy[-NN]")
-        if source_feature != match.group(1) or criterion_id != match.group(2):
-            raise RegistryError(
-                f"{label} acceptance id/source_feature/criterion_id disagree"
-            )
-    elif kind == "regression":
-        match = REGRESSION_TEST_RE.fullmatch(test_id)
-        if match is None:
-            raise RegistryError(f"{label}.id must match F0XX-RTyy")
-        if source_feature != match.group(1) or criterion_id is not None:
-            raise RegistryError(
-                f"{label} regression id/source_feature/criterion_id disagree"
-            )
-    elif (
-        not INVARIANT_TEST_RE.fullmatch(test_id)
-        or source_feature is not None
-        or criterion_id is not None
-    ):
-        raise RegistryError(
-            f"{label} invariant id/source_feature/criterion_id are invalid"
-        )
     return test_id
 
 
@@ -137,7 +103,7 @@ def validate_registry(data: Any) -> dict[str, Any]:
     meta = data.get("meta")
     if (not isinstance(meta, dict) or type(meta.get("schema_version")) is not int
             or meta["schema_version"] != REGISTRY_SCHEMA_VERSION):
-        raise RegistryError("test registry meta.schema_version must be integer 2")
+        raise RegistryError(f"test registry meta.schema_version must be integer {REGISTRY_SCHEMA_VERSION}")
     components = data.get("components")
     tests = data.get("tests")
     if not isinstance(components, list):
@@ -182,6 +148,17 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
     # Run from the project root, as required for registered unit-test paths.
     registry_path = Path(TEST_REGISTRY_PATH)
     registry = validate_registry(_read_json(registry_path))
+    index = _read_json(registry_path.parent / "feature-list.json")
+    if not isinstance(index, dict) or not isinstance(index.get("features"), list):
+        raise RegistryError("component merging requires the adjacent Feature index")
+    if any(not isinstance(entry, dict) or not isinstance(entry.get("id"), str)
+           for entry in index["features"]):
+        raise RegistryError("component merging requires valid Feature entries")
+    entries = {entry["id"]: entry for entry in index["features"]}
+    try:
+        revisions = validate_revisions(_read_json(registry_path.parent / "feature-list-revisions.json"), entries)
+    except EvolutionError as exc:
+        raise RegistryError(str(exc)) from exc
 
     candidates = _read_candidates(candidates_path)
     existing = {component["id"]: component for component in registry["components"]}
@@ -201,15 +178,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
     validate_registry(registry)
     if any(test["status"] == "retired" for test in registry["tests"]):
         # Component merging must preserve valid evolution, not merely its JSON shape.
-        index = _read_json(registry_path.parent / "feature-list.json")
-        if not isinstance(index, dict) or not isinstance(index.get("features"), list):
-            raise RegistryError("retirement validation requires the adjacent Feature index")
-        if any(not isinstance(entry, dict) or not isinstance(entry.get("id"), str)
-               for entry in index["features"]):
-            raise RegistryError("retirement validation requires valid Feature entries")
-        entries = {entry["id"]: entry for entry in index["features"]}
         try:
-            revisions = validate_revisions(_read_json(registry_path.parent / "feature-list-revisions.json"), entries)
             replacement_features = {test["retirement"]["replacement"]["feature_id"]
                                     for test in registry["tests"] if test["status"] == "retired"}
             verification_ids = {fid: referenced_test_ids(_read_json(registry_path.parent / "features" / f"{fid}.json"))

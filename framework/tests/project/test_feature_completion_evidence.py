@@ -23,23 +23,22 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write("game.gd", "extends Node\n")
         self.write("tests/unit/example.gd", "extends GdUnitTestSuite\nfunc test_example():\n\tpass\n")
         self.write("tests/features/acceptance.gd", "extends GdUnitTestSuite\nfunc test_acceptance():\n\tpass\n")
+        self.write("tests/invariants/.gitkeep", "")
         self.detail = {
             "id": "F001", "affected_components": ["example"],
             "acceptance_criteria": [{"id": "AC01", "text": "Example contract",
                 "verification": {"automated_tests": ["F001-AC01"], "manual_checks": []}}],
             "verification": {"acceptance_mode": "automated", "regression_tests": [], "manual_regression": None}, "notes": "",
         }
-        self.registry = {"meta": {"schema_version": 2}, "components": [
+        self.registry = {"meta": {"schema_version": 3}, "components": [
             {"id": "example", "unit_test_paths": ["tests/unit"], "full_suite_on_change": False}],
-            "tests": [{"id": "F001-AC01", "kind": "acceptance", "source_feature": "F001",
-                "criterion_id": "AC01", "components": ["example"],
+            "tests": [{"id": "F001-AC01", "components": ["example"],
                 "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]}
         self.write_json("docs/features/F001.json", self.detail)
         self.write_json("docs/test-registry.json", self.registry)
-        self.write_json("docs/feature-list.json", {"meta": {"total_features": 1}, "features": [
+        self.write_json("docs/feature-list.json", {"meta": {}, "features": [
             {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.write_json("docs/methodology-config.json", {"test_framework": "gdunit4", "test_unit_root": "tests/unit",
-            "test_feature_root": "tests/features", "test_invariant_root": "tests/invariants",
+        self.write_json("docs/methodology-config.json", {"test_framework": "gdunit4",
             "python_executable": sys.executable,
             "environment_bootstrap": {"engine_executable": sys.executable}})
         self.git("init")
@@ -164,8 +163,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
                 if obligation == "unit":
                     self.registry["components"][0]["unit_test_paths"] = ["tests/unit"]
                 elif obligation == "affected":
-                    self.registry["tests"] = [{"id": "F002-AC01", "kind": "acceptance",
-                        "source_feature": "F002", "criterion_id": "AC01", "components": ["example"],
+                    self.registry["tests"] = [{"id": "F002-AC01", "components": ["example"],
                         "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]
                 self.write_json("docs/test-registry.json", self.registry)
                 with self.assertRaisesRegex(RunEvidenceError, "no real test run"):
@@ -232,7 +230,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
         self.detail["notes"] = "Archived explanation"
         self.write_json("docs/features/F001.json", self.detail)
-        self.write_json("docs/feature-list.json", {"meta": {"total_features": 1, "updated_at": "later"}, "features": [
+        self.write_json("docs/feature-list.json", {"meta": {"updated_at": "later"}, "features": [
             {"id": "F001", "status": "done", "depends_on": [], "completed_at": "later"}]})
         self.write("docs/progress/feature-one.md", "Historical evidence pointer\n")
         self.write("docs/progress.md", "Current status\n")
@@ -274,6 +272,18 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         with self.assertRaises(SelectionError):
             build_selection(self.root, "F001")
 
+    def test_logical_ids_determine_affected_acceptance_regression_and_invariant_obligations(self) -> None:
+        from tools.lib.test_selection import build_selection
+        for test_id in ("F002-AC01", "F002-RT01", "INV-EXAMPLE-01"):
+            self.registry["tests"].append({"id": test_id, "components": ["example"],
+                "path": "tests/unit/example.gd", "case": "test_example", "status": "active"})
+        self.write_json("docs/test-registry.json", self.registry)
+        plan = build_selection(self.root, "F001")
+        required = {test_id for item in plan["required"] for test_id in item["logical_ids"]}
+        affected = {test_id for item in plan["affected"] for test_id in item["logical_ids"]}
+        self.assertEqual(required, {"F001-AC01", "F002-RT01", "INV-EXAMPLE-01"})
+        self.assertEqual(affected, required | {"F002-AC01"})
+
     def test_registry_full_trigger_and_missing_path_are_not_silently_filtered(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
         self.registry["components"][0]["full_suite_on_change"] = True
@@ -310,6 +320,29 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.git("commit", "-m", "process history only")
         self.assertEqual(derive_test_evidence(self.root, "F001", refs)["required_test_set"]["total"],
                          derived["required_test_set"]["total"])
+
+    def test_full_run_accepts_empty_layers_when_remaining_cases_execute(self) -> None:
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
+        (self.root / "tests/unit/example.gd").unlink()
+        self.registry["components"][0]["unit_test_paths"] = []
+        self.write_json("docs/test-registry.json", self.registry)
+        plan, path = self.run_fixture()
+        self.assertEqual(plan["full_suite"]["selectors"], ["tests"])
+        derived = derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
+        self.assertEqual(derived["full_suite"]["status"], "pass")
+        self.assertEqual(derived["required_test_set"]["total"], 1)
+
+    def test_full_run_with_no_cases_cannot_pass(self) -> None:
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
+        self.manual_without_automated_obligations()
+        self.registry["components"][0]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
+        for name in ("tests/unit/example.gd", "tests/features/acceptance.gd"):
+            (self.root / name).unlink()
+        _, path = self.run_fixture()
+        self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["status"], "failed")
+        with self.assertRaises(RunEvidenceError):
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_missing_tests_skipped_tests_and_nonzero_process_reject_green_labels(self) -> None:
         from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference

@@ -7,7 +7,7 @@ import re
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from tools.lib.feature_evolution import REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH
+from tools.lib.feature_evolution import REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, test_identity
 
 
 class SelectionError(ValueError):
@@ -38,7 +38,7 @@ def read_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def normalized_path(root: Path, value: str, *, must_exist: bool = True) -> str:
+def normalized_path(root: Path, value: str) -> str:
     if not isinstance(value, str) or not value:
         raise SelectionError("test path must be a non-empty repository-relative path")
     value = value.replace("\\", "/").removeprefix("res://")
@@ -48,7 +48,7 @@ def normalized_path(root: Path, value: str, *, must_exist: bool = True) -> str:
     resolved = (root / value).resolve()
     if not resolved.is_relative_to(root.resolve()):
         raise SelectionError(f"test path resolves outside repository: {value}")
-    if must_exist and not resolved.exists():
+    if not resolved.exists():
         raise SelectionError(f"registered test path does not exist: {value}")
     return path.as_posix()
 
@@ -108,7 +108,6 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
     detail = read_json(root / f"docs/features/{feature_id}.json")
     if phase == "final":
         acceptance_mode(detail)
-    config = read_json(root / "docs/methodology-config.json")
     registry = read_json(root / TEST_REGISTRY_PATH)
     if registry.get("meta", {}).get("schema_version") != REGISTRY_SCHEMA_VERSION:
         raise SelectionError("unsupported Test Registry schema")
@@ -140,7 +139,7 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
             return
         if test["status"] != "active":
             raise SelectionError(f"required test {test_id} is {test['status']}; expected active")
-        if direct and test.get("source_feature") != feature_id:
+        if direct and test_identity(test_id)[1] != feature_id:
             raise SelectionError(f"current verification test belongs to another Feature: {test_id}")
         add(mapping, test["path"], test.get("case"), test_id, reason)
 
@@ -164,8 +163,9 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
     for test_id, test in sorted(tests.items()):
         if test["status"] != "active" or not set(test["components"]).intersection(affected_components):
             continue
-        if test["kind"] in {"regression", "invariant"}:
-            add_test(required, test_id, f"affected-{test['kind']}")
+        kind, _, _ = test_identity(test_id)
+        if kind in {"regression", "invariant"}:
+            add_test(required, test_id, f"affected-{kind}")
         add_test(affected, test_id, "affected-component-contract")
     additions = sorted(approved_impact["additional_tests"],
                        key=lambda item: (item["id"], item["reason"]))
@@ -182,25 +182,19 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
             item["reasons"].sort()
         return sorted(mapping.values(), key=lambda item: (item["path"], item["case"] or ""))
 
-    full_roots = [config.get(key, default) for key, default in (
-        ("test_unit_root", "tests/unit"), ("test_feature_root", "tests/features"),
-        ("test_invariant_root", "tests/invariants"))]
-    # Empty configured layers are allowed; missing *registered* paths above are not.
-    full_roots = [normalized_path(root, path, must_exist=False) for path in full_roots]
-    full_roots = [path for path in full_roots if (root / path).exists()]
     result = {"feature_id": feature_id, "phase": phase,
               "affected_components": affected_components,
               "required": stable(required), "affected": stable(affected),
               "selectors": deduplicate_selectors(root, [item["path"] for item in affected.values()]),
               "full_suite": {"required": bool(full_reasons), "reasons": sorted(set(full_reasons)),
-                             "selectors": deduplicate_selectors(root, full_roots)}}
+                             "selectors": ["tests"]}}
     return result
 
 
 # 将内存中的选择转换成 Godot 参数；执行结果只记录实际选择与报告。
 def execution_selectors(root: Path, selection: dict[str, Any], scope: str) -> list[str]:
     if scope == "full":
-        selectors = selection["full_suite"]["selectors"]
+        selectors = deduplicate_selectors(root, selection["full_suite"]["selectors"])
     elif scope in {"required", "affected"}:
         selectors = deduplicate_selectors(root, [item["path"] for item in selection[scope]])
     else:

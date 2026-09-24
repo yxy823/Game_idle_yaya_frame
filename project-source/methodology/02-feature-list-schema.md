@@ -17,6 +17,8 @@ docs/
 
 The Feature index stays lightweight. Durable behavior, stable acceptance-criterion IDs, component impact, verification mapping, engineering classification, and notes live in per-Feature detail files. `docs/test-registry.json` is the machine-readable index that maps components to reusable tests. Human-readable values use `document_language`; machine protocol fields remain stable.
 
+Project creation supplies the index, revision log and Test Registry with empty arrays. All three files are required even before the first Feature is planned. A missing file is a repair issue; do not replace lost records with a newly initialized ledger.
+
 ## File 1: `docs/feature-list.json`
 
 ```json
@@ -28,9 +30,6 @@ The Feature index stays lightweight. Durable behavior, stable acceptance-criteri
       "docs/project-rules.md"
     ],
     "generated_at": "2026-05-23T05:46:48Z",
-    "total_features": 2,
-    "details_dir": "docs/features/",
-    "revisions_file": "docs/feature-list-revisions.json",
     "notes": "Decompose in dependency order and keep each Feature independently verifiable."
   },
   "features": [
@@ -65,7 +64,7 @@ The Feature index stays lightweight. Durable behavior, stable acceptance-criteri
 | `estimated_scope` | Final plan accepts only `small` or `medium`; `large` must be decomposed before finalization. |
 | `completed_at` | Valid ISO 8601 timestamp only for `done` or `obsolete_done`; otherwise `null`. |
 
-`meta.total_features` must equal the number of index entries. The Test Registry has a fixed project-relative location, `docs/test-registry.json`; the index does not duplicate that path.
+Derive Feature counts from `features`. Details, revision history and the Test Registry use the fixed project-relative locations shown above; index metadata does not duplicate their paths.
 
 IDs record allocation, not execution order. Select pending work whose prerequisites
 are all `done`; use stable ID order only to break ties among eligible Features.
@@ -266,7 +265,7 @@ history; `migrations` and `dependency_changes` are the machine-readable relation
 ```json
 {
   "meta": {
-    "schema_version": 2
+    "schema_version": 3
   },
   "components": [
     {
@@ -278,9 +277,6 @@ history; `migrations` and `dependency_changes` are the machine-readable relation
   "tests": [
     {
       "id": "F052-RT01",
-      "kind": "regression",
-      "source_feature": "F052",
-      "criterion_id": null,
       "components": ["inventory"],
       "path": "tests/features/F052/inventory_regression_test.gd",
       "case": "test_f052_rt01_reopen_inventory_after_scene_change",
@@ -290,9 +286,9 @@ history; `migrations` and `dependency_changes` are the machine-readable relation
 }
 ```
 
-Registry semantics are canonicalized in [08-testing-strategy.md](./08-testing-strategy.md). Test IDs are unique. `kind` is `acceptance`, `regression`, or `invariant`; status is `planned`, `active`, or `retired`. Acceptance/regression tests reference a valid source Feature. Invariant tests have `source_feature: null`.
+Registry semantics and ID formats are canonicalized in [08-testing-strategy.md](./08-testing-strategy.md#registry-rules). The logical ID determines the test's kind, owning Feature and acceptance criterion; do not store these a second time. Feature references encoded in IDs must resolve to existing Features.
 
-Registry schema version 2 is the only supported format. Every retired entry requires
+Registry schema version 3 is the only supported format; revision history remains version 2. No old-format parsing or automatic migration is provided. Every retired entry requires
 explicit retirement provenance:
 
 ```json
@@ -323,8 +319,8 @@ not automatically remove a runnable test function: implementation must deliberat
 replace/remove superseded assertions so full discovery executes the current contract.
 
 An approved revision of a pending/in-progress Feature may remove an old AC from
-its current detail. A retired acceptance test keeps that historical `criterion_id`
-and test identity without requiring the old AC to remain in the current detail;
+its current detail. A retired acceptance test keeps the historical criterion encoded
+in its test ID without requiring the old AC to remain in the current detail;
 its source Feature and complete retirement/replacement provenance must still validate.
 Planned and active acceptance tests must reference a current AC. This does not
 authorize rewriting completed Feature history or treating planned replacement tests as passed.
@@ -396,11 +392,10 @@ The `in_progress → done` transition follows Stage 7 of [the execution loop](03
 
 The final ledger must satisfy all of the following:
 
-- JSON parses for index, revision log, test registry, and every `F*.json` detail.
+- Index, revision log and test registry exist, and JSON parses for them and every `F*.json` detail.
 - Feature IDs match `F\d{3}`, are unique, and are sequential in index order.
 - Index IDs and detail filename stems are exactly one-to-one in final state.
 - Detail `id` equals its filename stem.
-- `meta.total_features` equals the index count.
 - Status and scope values use only allowed enums.
 - `completed_at` matches status semantics.
 - Dependencies contain no duplicates, all exist, and never reference self; later IDs are valid prerequisites.
@@ -476,7 +471,7 @@ Features or rewriting completed history.
 
 For each current Product's initial decomposition, present a concise preview in
 the conversation before writing its Feature index/details, revision log or
-Test Registry, including registry initialization and component merges. This also
+Test Registry, including component merges. This also
 applies when planning is called from Product writing or adoption of existing
 implementation. Keep the preview in the existing planning proposal:
 

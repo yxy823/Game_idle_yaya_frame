@@ -72,7 +72,7 @@ The test registry is the machine-readable bridge from changed components to exis
 ```json
 {
   "meta": {
-    "schema_version": 2
+    "schema_version": 3
   },
   "components": [
     {
@@ -89,9 +89,6 @@ The test registry is the machine-readable bridge from changed components to exis
   "tests": [
     {
       "id": "F052-RT01",
-      "kind": "regression",
-      "source_feature": "F052",
-      "criterion_id": null,
       "components": ["inventory", "scene_lifecycle"],
       "path": "tests/features/F052/scene_transition_regression_test.gd",
       "case": "test_f052_rt01_reopen_inventory_after_scene_change",
@@ -99,9 +96,6 @@ The test registry is the machine-readable bridge from changed components to exis
     },
     {
       "id": "INV-LIFECYCLE-01",
-      "kind": "invariant",
-      "source_feature": null,
-      "criterion_id": null,
       "components": ["scene_lifecycle"],
       "path": "tests/invariants/lifecycle/stale_node_reference_test.gd",
       "case": "test_inv_lifecycle_01_stale_node_reference_is_not_reused",
@@ -117,10 +111,8 @@ The test registry is the machine-readable bridge from changed components to exis
 - `unit_test_paths` contain repository-relative paths to existing unit suite files or directories protecting that component and required whenever it is affected. The non-empty examples above assume those suites already exist.
 - A component without unit suites uses `unit_test_paths: []`; never prefill future directories. Propose new unit suites in Stage 1, then register their paths after the approved Stage 3 creation and include them in the Required Test Set.
 - A missing or deleted registered suite path is a registry error, not an empty safety net. Do not silently filter it out; removing a registration requires an explicit reason and user approval. Merge/strict validation checks path existence; the configured runner must establish actual discovery and execution.
-- `full_suite_on_change: true` means any Feature touching that component requires the configured full suite before completion.
-- Test `kind` is exactly `acceptance`, `regression`, or `invariant`.
-- `source_feature` is required for acceptance/regression tests and `null` for invariant tests.
-- `criterion_id` is required only for acceptance tests.
+- `full_suite_on_change: true` means any Feature touching that component requires the full suite before completion.
+- A unique logical ID determines identity: `F0XX-ACyy` or `F0XX-ACyy-NN` denotes acceptance for that Feature/criterion; `F0XX-RTyy` denotes regression for that Feature; `INV-<DOMAIN>-NN` denotes an invariant without a Feature or criterion. `DOMAIN` starts with an uppercase letter/digit and uses uppercase letters, digits, underscores or hyphens. Do not store separate `kind`, `source_feature` or `criterion_id` fields.
 - `status` is `planned`, `active`, or `retired`.
 - `planned` permits a `tests` entry's TDD registration before a physical test exists; it does not apply to `unit_test_paths`. The Feature currently being completed must reference only `active`, resolvable automated tests. Historical completed mappings may point to traceably retired tests under the schema's replacement contract.
 - A retired test preserves its historical ID and records reason, Product change source/revision, and replacement Feature/tests. It does not enter the active safety net. Strict validation checks the migration chain; the completion-specific check still requires active direct verification for the current Feature.
@@ -188,7 +180,7 @@ The adapter executes deduplicated suite/directory selectors supported by the con
 
 The supplemental declaration inventory resolves `GdUnitTestSuite` ancestry through direct inheritance, repository script paths and project `class_name` bases. Non-suite helper methods named `test_*` do not become execution obligations; unresolved base expressions fail closed rather than silently dropping genuine suite coverage.
 
-Full scope covers the existing configured test roots. An absent, unregistered layer contributes no selector; a registered missing suite is an error, and every selected existing root must discover tests. A same-snapshot successful full run can satisfy Required and affected subsets without rerunning them. A necessary full escalation without a successful full result remains blocked; a human checklist or hand-entered `approved_unavailable` label cannot turn it into automated PASS.
+Full scope selects `tests/` recursively. Empty layer directories add no obligation; zero tests in the full run, missing registered paths and incomplete required coverage remain errors. A same-snapshot successful full run can satisfy Required and affected subsets without rerunning them. A necessary full escalation without a successful full result remains blocked; a human checklist or hand-entered `approved_unavailable` label cannot turn it into automated PASS.
 
 ## Artifact-backed completion and semantic freshness
 

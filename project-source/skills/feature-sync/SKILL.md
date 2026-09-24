@@ -69,9 +69,9 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 
 **Output:** a ready environment and an identified comparison anchor.
 
-1. Check `docs/feature-list.json`.
-   - If it does not exist or has no Features, direct current Product planning to `feature-plan` and stop; do not generate all Product modules.
-   - If it exists, read the full index for status, dependency, and count fields. Read the project-supplied `docs/feature-list-revisions.json`; if it is missing, report the missing project material instead of initializing a replacement. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
+1. Read the project-supplied `docs/feature-list.json`, `docs/feature-list-revisions.json` and `docs/test-registry.json`; missing files require repair under the canonical schema before routing or writes.
+   - If the valid index has no Features, direct current Product planning to `feature-plan` and stop; do not generate all Product modules.
+   - Otherwise, use the full index for status, dependencies and derived counts. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
 2. Check Git.
    - Read and report the current branch; `main` and `master` are valid. Do not change branches.
    - Run `git status --porcelain`. If any staged, unstaged, untracked, deleted, renamed, or conflicted change exists, block this new task and report it. Do not add, stash, restore, discard, or absorb it.
@@ -189,7 +189,7 @@ Compare every proposed `affected_components` ID with the current Registry. Inclu
 new component records and conflicting existing records in the proposal, using the
 Test registry contract in `.agents/skills/feature-plan/SKILL.md`.
 
-For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify acceptance/regression/invariant tests whose `source_feature` or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored governing source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because a source changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
+For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify tests whose ID-derived owning Feature or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored governing source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because a source changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
 
 Follow **Requirement changes and stale tests** in
 `methodology/08-testing-strategy.md`: read affected test code, including unit tests
@@ -350,7 +350,7 @@ to rerun a dependent Feature's valid tests.
   execute them before completion. Retirement without replacement is blocked; a
   removed behavior is verified by the new removal contract.
 - Keep `docs/test-registry.json` machine-readable; do not use it as a narrative revision log.
-- Registries, revision roots and revision entries use schema version 2. Append
+- Registries use schema version 3; revision roots and entries retain version 2. Append
   revisions without rewriting current-format history. Unsupported formats and
   retired records lacking provenance fail validation; do not invent migration data.
 
@@ -360,7 +360,7 @@ to rerun a dependent Feature's valid tests.
 
 **Output:** updated metadata, one appended revision entry, validation evidence, and a Git commit.
 
-1. Update index totals/time and append one version-2 revision under **File 3** in
+1. Update index time and append one version-2 revision under **File 3** in
    `methodology/02-feature-list-schema.md`. Preserve the canonical
    `meta.generated_from` entries, adding actual professional source locations
    considered by this plan without claiming all future scope is covered; do not

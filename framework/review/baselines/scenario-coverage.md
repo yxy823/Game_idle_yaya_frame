@@ -54,7 +54,7 @@
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
 | 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-author` 按需调用 elicitor/UI/audio Skill | [任务路由](../../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
-| 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程：generate 先预览数量与逐项内容，确认或明确自主授权后追加；sync 处理已有任务影响；代码检查台账约束 | 当前 Product 的必要 Feature 完成后再拆下一份；预览含测试登记表写入前的确认边界，检查器不验证对话批准；创建器已提供登记表和修订记录，后续不因缺失自动初始化；保留 ID 与历史，不新增状态 |
+| 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程：generate 先预览数量与逐项内容，确认或明确自主授权后追加；sync 处理已有任务影响；代码检查台账约束 | 创建器提供空索引、版本 3 登记表与版本 2 修订记录，缺失时报错，不自动重建；计数和测试身份直接推导，保留逐个 Product、写入授权、ID 与历史边界 |
 | 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 引用权威执行规范，advisor 只读回答 | 从当前记录、必要历史和 Git 差异续接；规则按主题读取，快照在 Stage 1 展示一次且不凑条数，沿用有效上下文和授权，不逐阶段固定发言 |
 | 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
 | 4.5 | Bug、行为保持重构或工程维护 | 流程：engineering-change Skill 引用工程规范，区分 Product 意图与实现问题 | 当前任务内修复与独立新任务分别判断；复用规范的证据、AC 和经验契约，不另建第二套 Bug 状态机 |
@@ -90,7 +90,7 @@
 
 | 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
 | --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；不先写完所有测试再集中实现，不补造已有实现的 RED；无独立计划，按实际影响选择最终范围 |
+| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；full 固定递归选择 `tests/`；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；空分层目录不单独成为义务，零测试、登记路径缺失或必需覆盖不足仍失败；不补造已有实现的 RED，无独立计划，按实际影响选择最终范围 |
 | 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、每 Feature 导入阶段或通过标签 |
 | 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/test_run_evidence.py`、`lib/feature_completion_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
 | 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |

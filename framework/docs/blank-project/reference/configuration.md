@@ -18,13 +18,10 @@
 | `environment_bootstrap.engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `environment_bootstrap.engine_version` | 空字符串 | 填写实际 `Godot --version` 的完整输出，不只填 `4.7` |
 | `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
-| `test_unit_root` | `tests/unit` | 组件单元测试根目录约定 |
-| `test_feature_root` | `tests/features` | Feature 验收与相关回归测试根目录约定 |
-| `test_invariant_root` | `tests/invariants` | 跨 Feature 不变量测试根目录约定 |
 
 配置只保存工具路径，测试使用固定入口 `tools/testing/run-gdunit-tests.py`；执行时指定 Feature 和 scope，不重复保存整条命令。
 
-测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不再重复保存它的路径。测试文件本身按配置表中的测试根目录与登记表映射组织。
+测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不重复保存它的路径。测试统一放在 `tests/` 下，按 `unit/`、`features/`、`invariants/` 分层；full 递归选择整个 `tests/`，局部运行按登记表映射选择。
 
 ## 路径与命令的写法
 

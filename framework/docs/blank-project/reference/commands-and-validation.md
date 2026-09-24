@@ -132,7 +132,7 @@ affected = Required + 与影响组件相交的 active 验收测试
 | `auto` | 默认执行 affected；当前计划需要全量时升级为 full |
 | `required` | 显式运行 Required，适合局部迭代；不能据此绕过最终 affected/full 要求 |
 | `affected` | Required 加相关验收测试 |
-| `full` | 运行配置的现有测试根目录范围，并核对必需覆盖 |
+| `full` | 递归运行 `tests/` 并核对必需覆盖；空分层目录不单独成为义务，测试总数为零仍失败 |
 
 影响组件设有 `full_suite_on_change`、已批准的 `full_suite_reasons`、广泛工具链影响或无法界定影响时，需要按规范执行 full；工程维护标签本身不触发升级。附加测试及理由保存在 Feature 的 `verification.test_impact`，没有独立计划文件。
 

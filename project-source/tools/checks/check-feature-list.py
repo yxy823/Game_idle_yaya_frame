@@ -17,6 +17,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.test_selection import acceptance_mode, read_json_value, SelectionError
 from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, eligible_features,
+    AC_TEST_ID, REGRESSION_TEST_ID, test_identity,
     validate_retirement_shape, validate_retirements, validate_revisions,
 )
 
@@ -29,14 +30,10 @@ DETAILS_DIR = REPO_ROOT / "docs" / "features"
 ID_RE = re.compile(r"^F(\d{3})$")
 AC_RE = re.compile(r"^AC(\d{2})$")
 COMPONENT_RE = re.compile(r"^[a-z][a-z0-9_]*$")
-AC_TEST_RE = re.compile(r"^(F\d{3})-(AC\d{2})(?:-(\d{2}))?$")
-REGRESSION_TEST_RE = re.compile(r"^(F\d{3})-RT\d{2}$")
-INVARIANT_TEST_RE = re.compile(r"^INV-[A-Z0-9][A-Z0-9_-]*-\d{2}$")
 
 ALLOWED_STATUS = {"pending", "in_progress", "done", "obsolete", "obsolete_done", "blocked"}
 ALLOWED_SCOPE = {"small", "medium"}
 ALLOWED_ENGINEERING_CHANGE = {"bug", "refactor", "maintenance"}
-ALLOWED_TEST_KIND = {"acceptance", "regression", "invariant"}
 ALLOWED_TEST_STATUS = {"planned", "active", "retired"}
 
 
@@ -52,8 +49,6 @@ def _error(message: str) -> None:
 
 
 def _load_json(path: Path) -> tuple[Any | None, bool]:
-    if not path.exists():
-        return None, True
     try:
         return read_json_value(path), True
     except SelectionError as e:
@@ -85,8 +80,6 @@ def _unique_string_list(value: Any, label: str, *, allow_empty: bool = True) -> 
 def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
     ok = True
     entries: dict[str, dict[str, Any]] = {}
-    if data is None:
-        return True, entries
     if not isinstance(data, dict):
         _error("docs/feature-list.json root must be an object")
         return False, entries
@@ -139,12 +132,6 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
                 ok = False
         elif completed_at is not None:
             _error(f"{fid}.completed_at must be null when status is {status}")
-            ok = False
-
-    if isinstance(meta, dict):
-        total = meta.get("total_features")
-        if not isinstance(total, int) or isinstance(total, bool) or total != len(features):
-            _error(f"meta.total_features must equal index count {len(features)}; found {total!r}")
             ok = False
 
     for fid, entry in entries.items():
@@ -214,7 +201,7 @@ def _validate_criterion(fid: str, pos: int, item: Any, path: Path) -> tuple[bool
         automated = set(tests)
         if isinstance(ac_id, str):
             for tid in tests:
-                m = AC_TEST_RE.fullmatch(tid)
+                m = AC_TEST_ID.fullmatch(tid)
                 if not m or m.group(1) != fid or m.group(2) != ac_id:
                     _error(f"{label} automated test {tid!r} must belong to {fid}-{ac_id}")
                     ok = False
@@ -223,8 +210,6 @@ def _validate_criterion(fid: str, pos: int, item: Any, path: Path) -> tuple[bool
 
 def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str, Any]]:
     info: dict[str, Any] = {"criteria": set(), "automated": set(), "regressions": set(), "additional_tests": set(), "components": set()}
-    if data is None:
-        return True, None, info
     if not isinstance(data, dict):
         _error(f"{_rel(path)} root must be an object")
         return False, None, info
@@ -277,7 +262,7 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
         rt_ok, regressions = _unique_string_list(verification.get("regression_tests"), f"{_rel(path)}.verification.regression_tests")
         ok &= rt_ok
         for tid in regressions:
-            m = REGRESSION_TEST_RE.fullmatch(tid)
+            m = REGRESSION_TEST_ID.fullmatch(tid)
             if not m or m.group(1) != fid:
                 _error(f"{_rel(path)} regression test {tid!r} must use {fid}-RTxx")
                 ok = False
@@ -356,9 +341,6 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
 
 
 def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]]) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
-    if data is None:
-        _error("docs/test-registry.json is required")
-        return False, {}, set()
     if not isinstance(data, dict):
         _error("docs/test-registry.json root must be an object")
         return False, {}, set()
@@ -366,7 +348,7 @@ def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], detai
     meta = data.get("meta")
     if (not isinstance(meta, dict) or type(meta.get("schema_version")) is not int
             or meta["schema_version"] != REGISTRY_SCHEMA_VERSION):
-        _error("docs/test-registry.json meta.schema_version must be integer 2")
+        _error(f"docs/test-registry.json meta.schema_version must be integer {REGISTRY_SCHEMA_VERSION}")
         ok = False
     components = data.get("components")
     tests = data.get("tests")
@@ -415,19 +397,17 @@ def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], detai
             ok = False
             continue
         tid = test.get("id")
-        kind = test.get("kind")
         status = test.get("status")
-        if not isinstance(tid, str) or not tid.strip():
-            _error(f"{label}.id must be a non-empty string")
+        try:
+            kind, source_feature, criterion_id = test_identity(tid)
+        except EvolutionError as exc:
+            _error(f"{label}: {exc}")
             ok = False
             continue
         if tid in registry_tests:
             _error(f"duplicate test id {tid}")
             ok = False
         registry_tests[tid] = test
-        if kind not in ALLOWED_TEST_KIND:
-            _error(f"{label}.kind {kind!r} is invalid")
-            ok = False
         if status not in ALLOWED_TEST_STATUS:
             _error(f"{label}.status {status!r} is invalid")
             ok = False
@@ -459,48 +439,14 @@ def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], detai
             _error(f"{label}.case must be null or non-empty string")
             ok = False
 
-        source_feature = test.get("source_feature")
-        criterion_id = test.get("criterion_id")
-        if kind == "acceptance":
-            m = AC_TEST_RE.fullmatch(tid)
-            if not m:
-                _error(f"acceptance test id {tid} must match F0XX-ACyy[-NN]")
-                ok = False
-            if not isinstance(source_feature, str) or source_feature not in entries:
-                _error(f"acceptance test {tid} source_feature must reference an existing Feature")
-                ok = False
-            if not isinstance(criterion_id, str) or not AC_RE.fullmatch(criterion_id):
-                _error(f"acceptance test {tid} criterion_id must match ACxx")
-                ok = False
-            if m and (m.group(1) != source_feature or m.group(2) != criterion_id):
-                _error(f"acceptance test {tid} id/source_feature/criterion_id disagree")
-                ok = False
-            # Retired tests retain historical AC identity after an approved revision;
-            # their provenance/replacement chain is checked by validate_retirements.
-            if status != "retired" and source_feature in details and criterion_id not in details[source_feature]["criteria"]:
-                _error(f"acceptance test {tid} references missing criterion {source_feature}-{criterion_id}")
-                ok = False
-        elif kind == "regression":
-            m = REGRESSION_TEST_RE.fullmatch(tid)
-            if not m:
-                _error(f"regression test id {tid} must match F0XX-RTyy")
-                ok = False
-            if not isinstance(source_feature, str) or source_feature not in entries:
-                _error(f"regression test {tid} source_feature must reference an existing Feature")
-                ok = False
-            if criterion_id is not None:
-                _error(f"regression test {tid} criterion_id must be null")
-                ok = False
-            if m and m.group(1) != source_feature:
-                _error(f"regression test {tid} id/source_feature disagree")
-                ok = False
-        elif kind == "invariant":
-            if not INVARIANT_TEST_RE.fullmatch(tid):
-                _error(f"invariant test id {tid} must match INV-<DOMAIN>-NN")
-                ok = False
-            if source_feature is not None or criterion_id is not None:
-                _error(f"invariant test {tid} source_feature and criterion_id must be null")
-                ok = False
+        if source_feature is not None and source_feature not in entries:
+            _error(f"test {tid} references missing Feature {source_feature}")
+            ok = False
+        # Retired IDs keep their historical AC; the replacement chain remains mandatory.
+        if (kind == "acceptance" and status != "retired" and source_feature in details
+                and criterion_id not in details[source_feature]["criteria"]):
+            _error(f"acceptance test {tid} references missing criterion {source_feature}-{criterion_id}")
+            ok = False
 
     return ok, registry_tests, component_ids
 
@@ -616,7 +562,7 @@ def main() -> int:
         return 2
     if args.eligible:
         data, _ = _load_json(INDEX_FILE)
-        print(json.dumps(eligible_features({entry["id"]: entry for entry in (data or {}).get("features", [])})))
+        print(json.dumps(eligible_features({entry["id"]: entry for entry in data["features"]})))
     return 0
 
 

@@ -8,8 +8,5 @@
   },
   "python_executable": "python",
   "language": "GDScript",
-  "test_feature_root": "tests/features",
-  "test_framework": "gdunit4",
-  "test_invariant_root": "tests/invariants",
-  "test_unit_root": "tests/unit"
+  "test_framework": "gdunit4"
 }

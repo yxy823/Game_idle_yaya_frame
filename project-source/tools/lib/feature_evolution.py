@@ -13,15 +13,30 @@ from pathlib import PurePosixPath
 from typing import Any
 
 
-REGISTRY_SCHEMA_VERSION = 2
+REGISTRY_SCHEMA_VERSION = 3
 TEST_REGISTRY_PATH = PurePosixPath("docs/test-registry.json")
 FEATURE_ID = re.compile(r"F\d{3}")
+AC_TEST_ID = re.compile(r"(F\d{3})-(AC\d{2})(?:-\d{2})?")
+REGRESSION_TEST_ID = re.compile(r"(F\d{3})-RT\d{2}")
+INVARIANT_TEST_ID = re.compile(r"INV-[A-Z0-9][A-Z0-9_-]*-\d{2}")
 REVISION_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 COMMIT_ID = re.compile(r"[a-fA-F0-9]{7,64}")
 
 
 class EvolutionError(ValueError):
     """An evolution record cannot establish an unambiguous migration chain."""
+
+
+def test_identity(test_id: Any) -> tuple[str, str | None, str | None]:
+    """Derive kind, owning Feature and criterion from the stable logical ID."""
+    if isinstance(test_id, str):
+        if match := AC_TEST_ID.fullmatch(test_id):
+            return "acceptance", match.group(1), match.group(2)
+        if match := REGRESSION_TEST_ID.fullmatch(test_id):
+            return "regression", match.group(1), None
+        if INVARIANT_TEST_ID.fullmatch(test_id):
+            return "invariant", None, None
+    raise EvolutionError(f"invalid test ID {test_id!r}; expected F0XX-ACyy[-NN], F0XX-RTyy or INV-<DOMAIN>-NN")
 
 
 def _text(value: Any, label: str) -> str:
@@ -89,8 +104,6 @@ def eligible_features(entries: dict[str, dict]) -> list[str]:
 
 
 def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
-    if data is None:
-        return {}
     if not isinstance(data, dict) or not isinstance(data.get("revision_log"), list):
         raise EvolutionError("feature-list-revisions must contain a revision_log array")
     version = data.get("schema_version")
@@ -222,13 +235,14 @@ def validate_retirements(tests: dict[str, dict], entries: dict[str, dict], revis
         revision = revisions.get(retirement["revision_id"])
         if fid not in entries or not revision:
             raise EvolutionError(f"retired test {tid} references missing replacement Feature or version-2 revision")
+        _, source_feature, _ = test_identity(tid)
         if not any(retirement["source"] == migration["source"] and fid in migration["to"]
-                   and (test.get("source_feature") is None or test["source_feature"] in migration["from"])
+                   and (source_feature is None or source_feature in migration["from"])
                    for migration in revision["migrations"]):
             raise EvolutionError(f"retired test {tid} source/replacement does not match its revision migration")
         for replacement_id in replacement["test_ids"]:
             target = tests.get(replacement_id)
-            if not target or target.get("source_feature") != fid:
+            if not target or test_identity(replacement_id)[1] != fid:
                 raise EvolutionError(f"retired test {tid} replacement {replacement_id} is missing or belongs to another Feature")
             if replacement_id not in verification_ids.get(fid, set()):
                 raise EvolutionError(f"retired test {tid} replacement {replacement_id} is not mapped in Feature {fid} verification")

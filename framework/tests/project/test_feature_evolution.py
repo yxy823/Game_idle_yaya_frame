@@ -27,21 +27,20 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
         (self.root / "docs/features").mkdir(parents=True)
-        self.index = {"meta": {"total_features": 3}, "features": [
+        self.index = {"meta": {}, "features": [
             {"id": f"F{i:03d}", "title": f"Capability {i}",
              "status": "done" if i == 1 else "pending", "depends_on": [],
              "estimated_scope": "small", "completed_at": "2026-01-01T00:00:00Z" if i == 1 else None}
             for i in range(1, 4)
         ]}
-        self.registry = {"meta": {"schema_version": 2}, "components": [
+        self.registry = {"meta": {"schema_version": 3}, "components": [
             {"id": "inventory", "unit_test_paths": [], "full_suite_on_change": False}
         ], "tests": []}
         for i in range(1, 4):
             fid = f"F{i:03d}"
             path = f"tests/{fid}.gd"
             self.write(path, "extends Node\n")
-            self.registry["tests"].append({"id": f"{fid}-AC01", "kind": "acceptance",
-                "source_feature": fid, "criterion_id": "AC01", "components": ["inventory"],
+            self.registry["tests"].append({"id": f"{fid}-AC01", "components": ["inventory"],
                 "path": path, "case": "test_contract", "status": "active"})
             self.write(f"docs/features/{fid}.json", {"id": fid, "description": "Contract",
                 "affected_components": ["inventory"], "acceptance_criteria": [{"id": "AC01",
@@ -74,7 +73,6 @@ class FeatureEvolutionTests(unittest.TestCase):
             return checker._validate_all(completion_feature=completion)
 
     def retire(self) -> None:
-        self.registry["meta"]["schema_version"] = 2
         self.registry["tests"][0]["status"] = "retired"
         self.registry["tests"][0]["retirement"] = {"reason": "Product superseded the old assertion",
             "source": copy.deepcopy(self.source), "replacement": {"feature_id": "F003", "test_ids": ["F003-AC01"]},
@@ -84,6 +82,27 @@ class FeatureEvolutionTests(unittest.TestCase):
     def test_only_current_ledger_contract_is_accepted(self) -> None:
         self.revisions = {"revision_log": [{"summary": "Old record"}]}
         self.assertFalse(self.validate())
+
+    def test_registry_old_version_and_invalid_logical_ids_are_rejected(self) -> None:
+        self.registry["meta"]["schema_version"] = 2
+        self.assertFalse(self.validate())
+        self.registry["meta"]["schema_version"] = 3
+        for test_id in (None, "F002-AC1", "F002-AC01-1", "F002-RT1", "INV-lower-01", "F999-AC01"):
+            with self.subTest(test_id=test_id):
+                self.registry["tests"].append(self.registry["tests"][1] | {"id": test_id})
+                self.assertFalse(self.validate())
+            self.registry["tests"].pop()
+
+    def test_multiple_tests_for_one_criterion_keep_their_id_derived_ownership(self) -> None:
+        self.registry["tests"].append(self.registry["tests"][1] | {"id": "F002-AC01-02"})
+        path = self.root / "docs/features/F002.json"
+        detail = json.loads(path.read_text(encoding="utf-8"))
+        detail["acceptance_criteria"][0]["verification"]["automated_tests"].append("F002-AC01-02")
+        self.write("docs/features/F002.json", detail)
+        self.assertTrue(self.validate(completion="F002"))
+        detail["acceptance_criteria"][0]["verification"]["automated_tests"] = ["F003-AC01"]
+        self.write("docs/features/F002.json", detail)
+        self.assertFalse(self.validate(completion="F002"))
 
     def test_string_criteria_and_missing_verification_cannot_waive_registry_checks(self) -> None:
         path = self.root / "docs/features/F001.json"
@@ -135,7 +154,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         old = self.registry["tests"][1]
         replacement = copy.deepcopy(old) | {"status": "planned", "path": None}
         self.registry["tests"].append(replacement)
-        old.update(id="F002-AC02", criterion_id="AC02", status="retired", retirement={"reason": "Approved replacement of the unfinished AC",
+        old.update(id="F002-AC02", status="retired", retirement={"reason": "Approved replacement of the unfinished AC",
             "source": copy.deepcopy(self.source), "replacement": {"feature_id": "F002", "test_ids": ["F002-AC01"]},
             "revision_id": "rev-contract-01"})
         for status in ("pending", "in_progress"):
@@ -145,16 +164,16 @@ class FeatureEvolutionTests(unittest.TestCase):
                 self.assertFalse(self.validate(completion="F002"))
         replacement.update(status="active", path="tests/F002.gd")
         self.assertTrue(self.validate(completion="F002"))
-        old["criterion_id"] = "AC03"
-        self.assertFalse(self.validate())  # Retirement preserves the old identity contract.
-        old["criterion_id"] = "AC02"
+        old["id"] = "F001-AC02"
+        self.assertFalse(self.validate())  # The historical ID still owns its revision source.
+        old["id"] = "F002-AC02"
         old["retirement"]["revision_id"] = "missing-revision"
         self.assertFalse(self.validate())
 
     def test_current_acceptance_tests_still_require_an_existing_criterion(self) -> None:
         path = self.root / "docs/features/F002.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
-        self.registry["tests"][1].update(id="F002-AC02", criterion_id="AC02")
+        self.registry["tests"][1].update(id="F002-AC02")
         detail["acceptance_criteria"][0]["verification"] = {
             "automated_tests": [], "manual_checks": ["Inspect the replacement behavior"]}
         detail["verification"]["acceptance_mode"] = "manual"
@@ -265,7 +284,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2, result.stderr)
         self.assertEqual(path.read_bytes(), before)
 
-    def test_templates_materialize_a_new_project_with_version_two_validation(self) -> None:
+    def test_templates_materialize_a_new_project_with_current_ledger_validation(self) -> None:
         fresh = self.root / "fresh"
         (fresh / "docs").mkdir(parents=True)
         (fresh / "tools").mkdir()
@@ -282,7 +301,8 @@ class FeatureEvolutionTests(unittest.TestCase):
                                 cwd=fresh, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), [])
-        self.assertEqual(json.loads((fresh / "docs/test-registry.json").read_text())["meta"]["schema_version"], 2)
+        self.assertEqual(json.loads((fresh / "docs/test-registry.json").read_text())["meta"]["schema_version"], 3)
+        self.assertEqual(json.loads((fresh / "docs/feature-list-revisions.json").read_text())["schema_version"], 2)
         self.retire()
         self.assertTrue(self.validate())
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
@@ -403,7 +423,6 @@ class FeatureEvolutionTests(unittest.TestCase):
         old["depends_on"].append(new)
         data["features"].append({"id": new, "title": "Approved replacement prerequisite", "status": "pending",
                                  "depends_on": [], "estimated_scope": "small", "completed_at": None})
-        data["meta"]["total_features"] = len(data["features"])
         valid, _ = checker._validate_index(data)
         self.assertTrue(valid)
         self.assertEqual(self.index, original)

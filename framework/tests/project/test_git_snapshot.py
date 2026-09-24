@@ -48,16 +48,15 @@ class GitSnapshotTests(unittest.TestCase):
         self.write("tests/unit/test_contract.gd",
                    "extends GdUnitTestSuite\nfunc test_contract():\n\tpass\n")
         self.write("docs/methodology-config.json", {"test_framework": "gdunit4",
-                   "test_unit_root": "tests/unit", "test_feature_root": "tests/features",
-                   "test_invariant_root": "tests/invariants", "python_executable": sys.executable,
+                   "python_executable": sys.executable,
                    "environment_bootstrap": {"engine_executable": sys.executable}})
         self.write("docs/features/F001.json", {"id": "F001", "affected_components": ["contract"],
                    "acceptance_criteria": [{"id": "AC01", "text": "Preserve the contract",
                        "verification": {"automated_tests": [], "manual_checks": ["Review the contract"]}}],
                    "verification": {"acceptance_mode": "manual", "regression_tests": [], "manual_regression": None}})
-        self.write("docs/feature-list.json", {"meta": {"total_features": 1}, "features": [
+        self.write("docs/feature-list.json", {"meta": {}, "features": [
                    {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.write("docs/test-registry.json", {"meta": {"schema_version": 2}, "components": [
+        self.write("docs/test-registry.json", {"meta": {"schema_version": 3}, "components": [
                    {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True}],
                    "tests": []})
 

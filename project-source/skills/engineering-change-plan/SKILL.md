@@ -60,7 +60,7 @@ preservation. Temporary candidates are not committed.
 
 Append the index entry and matching engineering detail using canonical initial
 planning values; preserve completed history and engineering classification.
-Update index totals. This operation does not append a revision-log entry because
+This operation does not append a revision-log entry because
 no governing-source synchronization occurred.
 
 Follow the engineering specification's **Feature write rules** for validation

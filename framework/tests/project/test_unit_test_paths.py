@@ -25,8 +25,10 @@ class UnitTestPathsTests(unittest.TestCase):
         (self.root / "docs").mkdir()
         self.registry_path = self.root / "docs/test-registry.json"
         self._write_json(self.registry_path, {
-            "meta": {"schema_version": 2}, "components": [], "tests": [],
+            "meta": {"schema_version": 3}, "components": [], "tests": [],
         })
+        self._write_json(self.root / "docs/feature-list.json", {"meta": {}, "features": []})
+        self._write_json(self.root / "docs/feature-list-revisions.json", {"schema_version": 2, "revision_log": []})
         self.candidates_path = self.root / "components.json"
 
     def _component(self, *paths: str) -> dict:
@@ -92,7 +94,7 @@ class UnitTestPathsTests(unittest.TestCase):
             with self.subTest(path=path):
                 component = self._component(path)
                 self._write_json(self.registry_path, {
-                    "meta": {"schema_version": 2},
+                    "meta": {"schema_version": 3},
                     "components": [component], "tests": [],
                 })
                 result = self._merge([component, {
@@ -103,11 +105,22 @@ class UnitTestPathsTests(unittest.TestCase):
                 self.assertEqual(self._registry()["components"][0], component)
                 self.assertEqual(self._strict().returncode, 0)
 
-    def test_missing_registry_is_not_recreated(self) -> None:
-        self.registry_path.unlink()
-        result = self._merge([self._component()])
-        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
-        self.assertFalse(self.registry_path.exists())
+    def test_missing_initial_ledger_blocks_merge_and_check_without_recreation(self) -> None:
+        for name in ("feature-list.json", "feature-list-revisions.json", "test-registry.json"):
+            with self.subTest(name=name):
+                path = self.root / "docs" / name
+                original = path.read_bytes()
+                registry = self.registry_path.read_bytes()
+                path.unlink()
+                result = self._merge([self._component()])
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                checked = self._strict()
+                self.assertEqual(checked.returncode, 2, checked.stdout + checked.stderr)
+                self.assertIn(name, checked.stderr)
+                self.assertFalse(path.exists())
+                if path != self.registry_path:
+                    self.assertEqual(self.registry_path.read_bytes(), registry)
+                path.write_bytes(original)
 
     def test_missing_candidate_suite_preserves_registry(self) -> None:
         original = self.registry_path.read_bytes()
@@ -153,11 +166,10 @@ class UnitTestPathsTests(unittest.TestCase):
         component = self._component(suite)
         component.update(full_suite_on_change=True, note="keep component metadata")
         before = {
-            "meta": {"schema_version": 2, "note": "keep schema metadata"},
+            "meta": {"schema_version": 3, "note": "keep schema metadata"},
             "components": [component],
             "tests": [{
-                "id": "INV-INVENTORY-01", "kind": "invariant",
-                "source_feature": None, "criterion_id": None,
+                "id": "INV-INVENTORY-01",
                 "components": ["inventory"], "path": suite,
                 "case": "test_inventory", "status": "active",
             }],
@@ -188,9 +200,8 @@ class UnitTestPathsTests(unittest.TestCase):
     def test_ambiguous_registry_is_rejected_by_all_readers_without_rewrite(self) -> None:
         from tools.lib.test_selection import read_json, SelectionError
         registry = {
-            "meta": {"schema_version": 2}, "components": [self._component()],
-            "tests": [{"id": "INV-INVENTORY-01", "kind": "invariant",
-                       "source_feature": None, "criterion_id": None,
+            "meta": {"schema_version": 3}, "components": [self._component()],
+            "tests": [{"id": "INV-INVENTORY-01",
                        "components": ["inventory"], "path": None, "case": None,
                        "status": "planned"}],
         }
