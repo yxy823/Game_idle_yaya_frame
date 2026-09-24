@@ -16,14 +16,17 @@
 | AGENTS.md | 项目规则与 Skill 路由 |
 | .agents/skills/ | 27 项开发与独立审核 Skill |
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
-| .codex/agents/researcher.toml、docs/research/ | 按需调研的角色与可提交报告；主 Agent 自主选择搜索或委派，anysearch 使用用户级安装，见[调研入口](methodology/00-overview.md#external-research) |
-| docs/product.md、docs/product/ | 产品目标、模块和用户可观察行为 |
-| docs/terminology.md | 按需维护的项目术语与概念关系，见[术语约定](methodology/01-product-doc-structure.md#project-terminology-optional) |
-| docs/art/、docs/audio/、docs/ui/、docs/localization/、docs/resource-requirements/ | 按需创建的专业规格与资源清单，由所属 Skill 维护，见[专业工作约定](methodology/11-specialist-workflows.md) |
-| docs/feature-list.json、docs/features/ | 任务索引、验收条件和长期任务记录；按需通过 `F0XX-design.md` 保存详细设计 |
-| docs/progress.md、docs/progress/ | 当前进度和必要历史 |
+| .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
+| [游戏总览](docs/product.md)、[模块目录](docs/product/README.md) | 总览初始为用途说明；确定需求后维护产品目标、模块和用户可观察行为 |
+| [项目术语](docs/terminology.md) | 初始尚无定义；按需维护共享名称与概念关系 |
+| [美术圣经](docs/art/art-bible.md)、[声音圣经](docs/audio/sound-bible.md) | 初始方向待确定；随设计决定维护共享视觉与声音规范 |
+| [本地化规范](docs/localization/localization-spec.md) | 初始是否需要与目标语言待确定；按需维护语言表达与格式约定 |
+| [UI 规格目录](docs/ui/README.md)、[资源清单目录](docs/resource-requirements/README.md) | 初始只有说明与导航；具体界面规格和素材准备清单按需建立 |
+| [未采纳想法](docs/unadopted-ideas.md) | 初始无记录；保存尚未采纳的设想，不代表开发承诺 |
+| [任务索引](docs/feature-list.json)、[Feature 目录](docs/features/README.md) | 初始无任务；具体任务详情、验收条件与设计文档由实际规划产生 |
+| [项目进度](docs/progress.md)、[历史目录](docs/progress/README.md) | 当前交接与历史入口；初始无执行历史 |
 | [docs/knowledge/](docs/knowledge/README.md) | 按主题积累实际开发经验、成功做法与失败教训；开始相关任务时优先查阅 |
-| docs/architecture.md、docs/architecture/ | 按需使用的架构地图、子系统说明和重要技术决定 ADR，见[架构约定](methodology/10-architecture-overview.md) |
+| [项目架构](docs/architecture.md) | 初始只有用途说明；需要时维护实际结构，并导航到子系统与重要决定 ADR |
 | docs/project-rules.md、agent-rules/ | 所有适用 Product、Feature 遵守的项目约束与具体 Godot 工程规则 |
 | docs/methodology-config.json | 本机环境与实际检查命令 |
 | methodology/ | 当前 Skill 使用的详细流程和模板 |
@@ -45,7 +48,7 @@
 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
 创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。
-Product 与测试索引初始为空，环境为 `incomplete`，没有正式玩法、业务测试或已完成任务；
+Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境为 `incomplete`，没有正式玩法、业务测试或已完成任务；
 入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
 
 ## 根据任务使用 Skill
@@ -99,7 +102,7 @@ flowchart TD
 ```
 
 只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md`
-有实际内容才创建；由 `product-author` 统一写入已确认的定义。
+初始提供用途说明；由 `product-author` 按需写入已确认的定义。
 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
 
 术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。

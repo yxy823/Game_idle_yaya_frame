@@ -18,8 +18,11 @@ can be called alone or within an authorized task without creating another lifecy
 | Localization conventions and glossary | `content-localization`: `docs/localization/localization-spec.md`; runtime translations remain in project resources |
 
 Reuse a suitable existing owning file; these paths are defaults, not a command
-to create every document. Create only useful current-scope content, in
-`document_language`. A complex asset specification may use a separately named
+to complete every document. New projects include purpose/pending-state placeholders
+for the Art Bible, Sound Bible and localization specification, plus directory
+navigation for UI and resource lists. Their presence does not establish a direction,
+a required locale, an approved specification or produced assets. Fill only useful
+current-scope content in `document_language`. A complex asset specification may use a separately named
 file linked by resource ID. Keep one authoritative body, with links from Product,
 Feature design or AC; do not duplicate whole specifications in Product.
 

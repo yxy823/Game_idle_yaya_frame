@@ -15,6 +15,8 @@ Changing the language of a conversation must not change the language of project 
 
 Every newly initialized project must store `document_language` in `docs/methodology-config.json` before Yaya Loop generates Product or Feature content.
 
+Copied purpose/pending-state notices and directory navigation do not select a document language or establish Product content. When replacing a notice with actual project content, use the confirmed `document_language`; copying performs no translation.
+
 The current file contains the complete configuration. Keep its actual machine
 paths and command values there rather than copying a second example here.
 The project stack is Godot 4.7 / GDScript / gdunit4.
@@ -178,7 +180,7 @@ When rendering an English canonical template into another document language, pre
 
 An existing initialized project may predate this contract. If `docs/methodology-config.json` exists without `document_language`:
 
-1. Inspect the apparent dominant language of `docs/product.md` and the active Product modules. Active modules are files linked from the module list in `docs/product.md`, excluding entries explicitly marked obsolete or archived; if no usable list exists, inspect current files under `docs/product/` as a fallback.
+1. Inspect the apparent dominant language of `docs/product.md` and the active Product modules. Active modules are files linked from the module list in `docs/product.md`, excluding entries explicitly marked obsolete or archived; if no usable list exists, inspect current `NN-name.md` modules under `docs/product/` as a fallback. Ignore directory READMEs and initial purpose/pending-state notices when inferring the language.
 2. Present that language only as a non-binding migration proposal and ask the user to confirm it. If no language clearly dominates, report the uncertainty and ask the user to choose.
 3. Persist the confirmed tag without translating existing files.
 4. Record the migration once in the appropriate execution/upgrade archive and link

@@ -22,6 +22,7 @@ The project knowledge layer is:
 ├── agent-rules/                         repository-specific concrete implementation rules
 └── docs/
     ├── product.md + product/*.md        Product intent: What
+    ├── unadopted-ideas.md               ideas not adopted as requirements or delivery commitments
     ├── terminology.md                  optional domain terms and shared definitions
     ├── art/, audio/, ui/, localization/ optional professional specifications, owned by specialist Skills
     ├── resource-requirements/           shared resource specifications and preparation details
@@ -40,6 +41,8 @@ The project knowledge layer is:
     ├── architecture/                    optional subsystem maps and important technical ADRs
     └── methodology-config.json          language, environment, and verification commands
 ```
+
+New projects include short purpose/pending-state notices in fixed documents and directory navigation for future multi-file content. These are not initialized Product intent, confirmed professional decisions, tasks or historical results. Their owning contracts below govern when useful content is added; document presence alone does not determine the workflow state.
 
 ## Skill groups
 

@@ -28,8 +28,8 @@ There are no automatic tool events or Hooks to grant permission.
 Apply relevant `docs/project-rules.md` hard constraints when defining Product intent, planning Features and designing or implementing changes. A local Product, Feature or ADR cannot silently waive them. Every proposed rule addition, removal or edit requires the conversational self-check in `methodology/04-coding-rules-4-layers.md`; reuse explicit decisions, and obtain any missing authority for a substantive change. Stage 3 checks useful terminology, design, architecture/ADR and rule updates before final verification; it does not require an artifact for every category.
 
 Read relevant terminology definitions, Product/professional sources and accepted architecture
-decisions for the work. Do not create an empty terminology document or require a complete
-Product for discussion. Source writing and implementation use their owning
+decisions for the work. Initial purpose/pending-state notices are not confirmed
+requirements or definitions; do not require a complete Product for discussion. Source writing and implementation use their owning
 workflows; a Skill return does not cancel a broader concrete authorization.
 
 ## Environment and Git

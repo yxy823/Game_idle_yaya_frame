@@ -67,8 +67,8 @@ For meaning-preserving edits:
    wording for approval only when the current authorization does not cover it.
 2. Write the smallest useful definition in its owning Product section or the
    optional `docs/terminology.md`; update relevant links within the authorized scope.
-   Keep one definition. Do not create an empty terminology document or force a complete
-   Product when none exists. Do not run UI/audio elicitation, generate/sync
+   Keep one definition. Leave the initial purpose notice until useful definitions
+   are available; do not force a complete Product when none exists. Do not run UI/audio elicitation, generate/sync
    Features or change their history for this edit.
 3. Check the wording against confirmed meanings and preserve existing source
    links/section anchors when moving definitions. Follow
@@ -139,7 +139,7 @@ Before choosing the route, distinguish Product change from implementation defect
 
 | State | Condition | Route |
 | --- | --- | --- |
-| A. Initialization | `product.md` is absent or only a template | `product-init-elicitor` |
+| A. Initialization | `product.md` is absent, empty, or contains only a template/purpose notice without actual Product intent | `product-init-elicitor` |
 | B. New module | The change introduces a module with its own responsibility | `product-spec-elicitor`, new-module mode |
 | C. Existing module | The change belongs to one existing module | `product-spec-elicitor`, modification mode |
 | D. Product correction | The reported bug exposes missing, contradictory, or changed Product intent | `product-spec-elicitor`, bug mode |

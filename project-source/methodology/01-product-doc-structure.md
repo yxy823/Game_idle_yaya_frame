@@ -13,6 +13,8 @@ docs/
 
 The two levels serve different context needs. `product.md` must remain short enough to scan as a whole, while module documents provide detail on demand. A person or agent should understand the Product shape in about 30 seconds and enter one module in a few minutes.
 
+The initial `product.md` contains only a purpose and pending-state notice. This is not an initialized Product: use the canonical template when writing actual intent. `product/README.md` explains the directory and is not a module; discover modules from the overview and the `NN-name.md` convention.
+
 Generated headings and prose must follow the project's configured `document_language`; the section semantics below must remain intact in every language. See [05-document-language.md](./05-document-language.md).
 
 Before writing or revising Product intent, check applicable hard constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A Product request does not silently amend a project rule. Resolve conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance); keep behavior in Product and rule-change rationale in its owning record.
@@ -153,8 +155,13 @@ Create or update a project-local Markdown list when the user requests one or
 the authorized task needs the user to prepare/reuse resources before a prototype
 or implementation. Prefer an existing list covering the same scope; otherwise
 use `docs/resource-requirements/<scope>.md`, such as
-`inventory-visual-prototype.md`. Do not create empty lists in blank projects or
-one list per Feature by default. Several Features may reference the same list.
+`inventory-panel.md`. Blank projects provide `docs/resource-requirements/README.md`
+for discovery, without empty resource lists or one list per Feature by default.
+Several Features may reference the same list. Name lists for a stable business
+scope and resource purpose using lowercase English and hyphens, such as
+`shared-item-icons.md` or `combat-feedback.md`; do not bind shared lists to a
+single Feature ID or preparation batch. Add module subdirectories only when
+actual volume warrants them, preserving references when moving files.
 The responsible specialist maintains its entries; the current task coordinates
 shared uses without a separate registry or a Product-writing intermediary.
 
@@ -167,8 +174,14 @@ or procedural presentation can already express. Record unknown inputs rather
 than inventing resources, styles, dimensions or other technical requirements.
 
 The document follows `document_language` and contains a brief scope/source overview,
-a resource file table and unresolved questions. Keep these nine core fields in
-the table; longer specifications may live in details keyed by resource ID:
+a resource file table and unresolved questions. State the covered uses and boundaries
+and link the applicable Product, UI and shared professional sources. Maintain the
+directory README's list links, purposes/boundaries and source navigation when lists
+are added, renamed, merged or removed; specifications and preparation status stay
+in the lists rather than the index.
+
+Keep these nine core fields in the table; longer specifications may live in details
+keyed by resource ID:
 
 | Field | Meaning |
 | --- | --- |
@@ -234,9 +247,10 @@ until the user resolves the material Product choice.
 
 Keep a definition local to a Product module when its positioning or data model
 already explains it sufficiently. Use `docs/terminology.md` for confirmed project
-vocabulary needed across modules, Features or conversations. Create it only
-when there is useful content to retain; an empty project does not receive a
-blank glossary. Missing terminology never blocks discussion or development.
+vocabulary needed across modules, Features or conversations. New projects include
+a short purpose/pending-state placeholder; add definitions only when useful
+confirmed content exists. A placeholder or missing glossary never blocks discussion
+or development.
 
 `docs/terminology.md` owns confirmed domain vocabulary and a shared language across requirements, design, code and discussion. It is not a general project-context document. Do not create a second `UBIQUITOUS_LANGUAGE.md` or parallel glossary. Retain definitions that will be reused beyond this discussion and prevent a real ambiguity; stable means currently agreed, not immutable.
 

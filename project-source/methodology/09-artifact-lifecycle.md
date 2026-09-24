@@ -60,11 +60,12 @@ record. No test runner automatically cleans old reports.
 ## External research
 
 Retained external findings belong in `docs/research/<descriptive-topic>.md`, created
-only when useful research is saved. The `researcher` role at
+only when useful research is saved; the initial directory README is navigation only.
+The `researcher` role at
 `.codex/agents/researcher.toml` owns the minimum report content and search guidance;
 the coordinating agent assigns report writing and evaluates adoption. Use existing
-Feature design/notes or Progress links for navigation, adding a simple research
-index only when actual volume warrants it. Reports are ordinary version-controlled
+Feature design/notes or Progress links for navigation, expanding the directory
+README with report links only when actual volume warrants it. Reports are ordinary version-controlled
 Markdown; `reports/` remains the location for local execution evidence and scratch.
 
 Research is cited reference material, not approved intent or proof of local runtime
@@ -108,6 +109,9 @@ authorize rule promotion or changing another project or the framework.
 legal action and a history index. It links approved plans and evidence instead
 of copying their bodies. Ordinary Markdown headings are sufficient; no machine
 markers or prescribed parser layout are required.
+
+The initial `docs/progress/README.md` explains the directory and links back to
+current Progress; it is not an archive or another history index.
 
 The Agent archives completed Feature or approved batch history once under
 `docs/progress/<key>.md`, keeping a link in the current Progress document.

@@ -3,7 +3,9 @@
 An Architecture Overview is a lightweight navigation and ownership aid, not a
 new approval Stage or a substitute for Product, Project Rules and approved
 decisions. Use it when module boundaries are difficult to recover from code.
-It is optional for small projects.
+Substantive mapping is optional for small projects. New projects include a short
+purpose/pending-state placeholder in `docs/architecture.md`; it does not establish
+module boundaries or accepted decisions. Fill it when an actual map is useful.
 
 `docs/architecture.md` owns the project-level map: modules, implementation entry
 points, responsibilities, state owners, major collaborations and allowed dependency

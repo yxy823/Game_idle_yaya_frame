@@ -1,6 +1,6 @@
 ---
 name: product-init-elicitor
-description: Interactively turns a one-line project idea into a structured Product draft when product.md is empty. It elicits and organizes Product intent but does not write files.
+description: Turn a project idea into a structured Product draft when actual Product intent is absent, including a purpose-only starter document. Elicits and organizes requirements without writing files.
 metadata:
   version: 2.0
   triggers:

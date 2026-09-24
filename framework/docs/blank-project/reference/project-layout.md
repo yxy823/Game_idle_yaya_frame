@@ -6,7 +6,7 @@
 
 ## 文档与执行文件如何配合
 
-以下路径相对**生成项目根目录**。先用关系图区分需求、约束、计划、说明与历史，再按表查具体位置。可选文件只有需要且获准时才创建。
+以下路径相对**生成项目根目录**。先用关系图区分需求、约束、计划、说明与历史，再按表查具体位置。固定文档预置简短用途与待定说明，多文件目录预置导航；实际需求、设计、任务与结果按真实工作形成，占位不代表内容已确认。
 
 ```mermaid
 flowchart TD
@@ -52,18 +52,19 @@ flowchart TD
 
 | 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
 | --- | --- | --- | --- |
-| `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始为空，模块按需建立；product-author 写，规划/执行读取 | 确认“应做什么”和暂缓边界 |
-| `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 无初始空文件；product-author 按授权维护，各任务按需引用 | 核对是否同名异义或定义过期 |
-| `docs/art/art-bible.md`、`docs/audio/sound-bible.md`、`docs/ui/<interface>-design.md`、`docs/localization/localization-spec.md` | 各领域已确认专业要求，Product 只保留行为与引用 | 有需要时由对应专业 Skill 直接维护；规划、执行、审核按适用范围读取 | 参见[专业文档归属](../guides/specialist-workflows.md#文档由谁维护)，不放进普通 README 或报告目录 |
+| `docs/product.md`、`docs/product/NN-name.md` | 总览保存核心循环/模块关系，模块保存行为、数据含义、体验与验收意图 | 总览初始只有用途与待定说明，模块目录只有 README；product-author 按实际需求写入 | 确认“应做什么”和暂缓边界；README 不算模块 |
+| `docs/terminology.md` | 共享标准名称、定义、概念关系与别名；不保存完整行为或计划 | 初始只有用途说明，无已确认术语；product-author 按授权维护 | 核对是否同名异义或定义过期 |
+| `docs/art/art-bible.md`、`docs/audio/sound-bible.md`、`docs/ui/<interface>-design.md`、`docs/localization/localization-spec.md` | 各领域已确认专业要求，Product 只保留行为与引用 | 美术、声音、本地化初始只有用途与待定说明，UI 目录只有 README；对应专业 Skill 按需补充 | 参见[专业文档归属](../guides/specialist-workflows.md#文档由谁维护)，占位不代表已确定方向或语言 |
+| `docs/unadopted-ideas.md` | 尚未采纳的玩法、功能和改进设想，不是开发承诺 | 初始只有用途说明，无记录；有需留存设想时按授权维护 | 采纳后将确定内容整理到所属来源并保留去向链接 |
 | `docs/project-rules.md` | 跨 Product/Feature 的约束、协作规则、默认原则；区分 MUST/PREFER/REVIEW | 创建时由模板复制；Agent 写前自检并核对授权，需求/设计/实现持续读取 | 决定实质新增、删除、强度和适用范围 |
-| `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 按需准备；Agent 汇总/更新，用户准备素材 | 从原任务/Progress 链接进入，不把齐备当验收 |
+| `docs/resource-requirements/<scope>.md` | 任务或原型的最小资源清单、规格、来源与目标位置 | 初始只有 README；按稳定业务范围与用途建立清单，Agent 更新、用户准备素材 | 从目录导航或原任务进入；具体规格和状态只留在清单正文，不把齐备当验收 |
 
 ### Feature、测试与完成依据
 
 | 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
 | --- | --- | --- | --- |
 | `docs/feature-list.json` | 任务 ID、标题、状态、依赖、完成时间和详情定位 | 初始空索引；规划和执行 Agent 更新，检查器读取 | 查任务状态与依赖；状态不是验证证据 |
-| `docs/features/F0XX.json` | 本任务范围、source、组件、AC、验证义务；notes 保存短记录与链接 | 规划时建立；执行维护，选择器/完成检查读取 | 审批具体方案，核对覆盖与剩余项 |
+| `docs/features/F0XX.json` | 本任务范围、source、组件、AC、验证义务；notes 保存短记录与链接 | 目录初始只有 README；任务规划时建立，执行维护，选择器/完成检查读取 | 审批具体方案，核对覆盖与剩余项 |
 | `docs/features/F0XX-design.md` | 详细设计、规则的具体应用、实现理由与实际偏差；不复制 AC/测试台账 | 按需建立；Stage 1 判断、2 保存、3 对齐，后续保留历史 | 从对应 JSON notes 的相对链接进入 |
 | `docs/test-registry.json` | 组件、逻辑测试 ID、path/case 与 planned/active/retired 关系；不存通过结论 | 初始空表；合并器登记组件、Agent 维护测试映射，运行器/检查器读取 | 核对测试是否存在、被选择并实际执行 |
 | `docs/feature-list-revisions.json` | 源变化影响、同步锚点、替代与依赖演进；不替代 Git 历史 | 初始空记录；同步 Agent 追加，检查器与后续同步读取 | 追查计划为何变化 |
@@ -75,11 +76,11 @@ flowchart TD
 | 项目文件或目录 | 完整职责与边界 | 出现时机、主要读写方 | 用户关注方式 |
 | --- | --- | --- | --- |
 | `docs/game-organization.md` | 共同骨架、模块归属与命名的判断指南；引用现有工程规则 | 创建时复制；新建或调整模块、场景、资源时按需查阅 | 先判断内容归谁，再选择目录与职责名称 |
-| `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 结构需要解释时创建；实现 Agent 更新，规划/执行/评审引用 | 从当前地图了解系统 |
+| `docs/architecture.md`、`docs/architecture/<subsystem>.md` | 当前模块职责、状态归属、依赖和必要运行流程 | 总览初始只有用途说明；结构需要解释时补充，子系统文件按需建立 | 从总览进入实际地图与子系统，不重复建立目录索引 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 达到阈值的重要取舍、理由、成本与替代关系 | 真实决策触发；Agent 保存已确认决定，相关任务引用 | 决定候选，保留已取代原因 |
 | `docs/knowledge/` | 有适用条件和证据的经验，索引只放链接；不存规则或可执行输入 | 初始仅索引；Agent 在任务中提炼、开始相关工作时查阅 | 判断经验是否适用于当前版本 |
-| `docs/research/` | 带来源、版本与限制的外部调研 Markdown，纳入 Git；不拥有需求或本地验证结论 | 有留存价值时按授权建立；researcher 写指定报告，主 Agent 核对采纳并链接原任务 | 无初始空目录；从任务链接进入，区分建议和已采用决定 |
-| `docs/progress.md`、`docs/progress/<key>.md` | 当前阶段/阻塞/待决定/下一步与索引；单份执行历史 | 当前模板随创建复制，历史按需归档；交接 Agent 写、接手者读 | 从真实停点继续，不能据下一步文字推定授权 |
+| `docs/research/` | 带来源、版本与限制的外部调研 Markdown，纳入 Git；不拥有需求或本地验证结论 | 初始只有 README；researcher 按授权写有留存价值的报告，主 Agent 核对采纳 | 从任务链接进入；数量增加后在 README 补主题导航，区分建议和已采用决定 |
+| `docs/progress.md`、`docs/progress/<key>.md` | 当前阶段/阻塞/待决定/下一步与索引；单份执行历史 | 当前模板和历史目录 README 随创建复制，实际历史按需归档 | 当前 Progress 统一维护历史索引；目录说明不算历史记录 |
 
 外部 GDD 是需求输入，默认不在初始目录内，见 [GDD 接入](../guides/product-and-planning.md#接入已有-gdd)。以上详细制度与维护时机在 [项目文档维护与交接](../guides/project-knowledge.md) 中展开；实际字段由源规范负责。
 
@@ -121,7 +122,19 @@ MyGodotGame/
 ├── docs/
 │   ├── .gdignore
 │   ├── methodology-config.json
-│   ├── product.md                  空文件
+│   ├── product.md                  游戏总览用途与待定说明
+│   ├── product/README.md           模块目录说明；初始无模块
+│   ├── art/art-bible.md            美术圣经；风格待确定
+│   ├── audio/sound-bible.md        声音圣经；方向待确定
+│   ├── terminology.md             术语用途说明；初始无定义
+│   ├── localization/localization-spec.md  本地化用途说明；范围待确定
+│   ├── architecture.md            架构用途说明；子系统与 ADR 按需出现
+│   ├── unadopted-ideas.md          未采纳想法；初始无记录
+│   ├── ui/README.md               界面规格目录说明与导航
+│   ├── resource-requirements/README.md  清单命名、用途与导航
+│   ├── features/README.md         任务目录说明；初始无任务详情
+│   ├── research/README.md         调研目录说明；初始无报告
+│   ├── progress/README.md         历史目录说明；初始无归档
 │   ├── game-organization.md        模块归属与命名判断指南
 │   ├── knowledge/                  知识索引；初始无实际条目
 │   │   ├── README.md
@@ -139,6 +152,8 @@ MyGodotGame/
 ```
 
 树中省略插件内部文件与空目录占位文件。创建器复制最小启动场景与配置中的入口，但不创建 `.git/`、`.godot/`、正式玩法或业务测试；`tests/unit` 等初始占位根与配置对应，套件按真实任务添加。工作台的单对象、图像/音频组合、Shader 组合及粒子/动画组合四个入口可单独运行，不替换 `main/main.tscn`，也不预填业务需求或完成状态。
+
+固定文档采用“标题、用途、当前待定或无记录状态”的短占位；替换为真实内容时遵循已确认的 `document_language`。目录 README 只保存用途和必要导航，Product 模块表、Feature 索引与 Progress 历史索引仍由已有文件统一维护。具体模块、Feature、资源清单、子系统、ADR、报告和验收记录不提前实例化。占位文件不使初始化、设计、实现或验收自动完成。
 
 ## 游戏目录如何归属
 
@@ -169,7 +184,7 @@ MyGodotGame/
 | `project-source/defaults/.editorconfig` | `.editorconfig` |
 | `project-source/defaults/.gitattributes` | `.gitattributes` |
 | `project-source/defaults/.gitignore` | `.gitignore` |
-| `project-source/defaults/docs/` | `docs/`，包含空 Product、组织命名指南、`.gdignore` 和分层知识索引 |
+| `project-source/defaults/docs/` | `docs/`，包含固定文档用途占位、目录导航、组织命名指南、`.gdignore` 和分层知识索引 |
 | `project-source/defaults/docs/.gdignore` | 另复制为 `reports/.gdignore` |
 | `project-source/defaults/gdlint.json` | `gdlint.json` |
 | `project-source/defaults/main/` | `main/`，包含最小启动场景 |

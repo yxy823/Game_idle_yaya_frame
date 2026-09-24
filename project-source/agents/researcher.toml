@@ -44,7 +44,8 @@ unused example or add a warning when no extraction problem was observed.
 
 When the handoff includes report writing, maintain its specified project-local
 Markdown file; the default is docs/research/<descriptive-topic>.md. Create the
-directory only when saving useful research. Reuse a matching report, recording the
+directory if missing when saving useful research; its initial README is not a
+report. Reuse a matching report, recording the
 date and reason when an important conclusion changes and preserving referenced
 historical conclusions. Use document_language from docs/methodology-config.json
 under methodology/05-document-language.md. Keep a short title and metadata for

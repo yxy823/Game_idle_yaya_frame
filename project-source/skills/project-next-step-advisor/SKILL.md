@@ -23,6 +23,9 @@ and verified read-only Git status/log/diff/show are allowed.
 2. Inspect read-only Git status and the relevant Feature/detail/Product/Registry
    records directly. Configured bootstrap `ready` is a recorded claim, not proof
    that a check was executed in this conversation.
+   Distinguish initial purpose/pending-state notices and directory navigation
+   from actual Product intent, professional decisions and task records using their
+   owning methodology contracts.
    Interpret incomplete machine setup through `methodology/00-overview.md` and
    `methodology/05-document-language.md`. The stack is fixed to Godot 4.7 /
    GDScript / gdunit4; missing tools do not mean the engine is undecided.
