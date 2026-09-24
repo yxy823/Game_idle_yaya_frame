@@ -71,7 +71,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 
 1. Check `docs/feature-list.json`.
    - If it does not exist or has no Features, direct current Product planning to `feature-plan` and stop; do not generate all Product modules.
-   - If it exists, read the full index for status, dependency, and count fields. Read `docs/feature-list-revisions.json` when present; on first synchronization it may be absent. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
+   - If it exists, read the full index for status, dependency, and count fields. Read the project-supplied `docs/feature-list-revisions.json`; if it is missing, report the missing project material instead of initializing a replacement. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
 2. Check Git.
    - Read and report the current branch; `main` and `master` are valid. Do not change branches.
    - Run `git status --porcelain`. If any staged, unstaged, untracked, deleted, renamed, or conflicted change exists, block this new task and report it. Do not add, stash, restore, discard, or absorb it.

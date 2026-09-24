@@ -181,8 +181,8 @@ support iteration. Output includes selection reasons, deduplicated selectors and
 full-suite reasons. `--phase baseline` omits planned tests that do not yet exist;
 baseline runs cannot authorize completion. Final selection rejects unresolved or
 retired direct mappings and missing paths. `--target` remains a focused/TDD
-diagnostic route; it does not produce completion evidence. Use the configured
-`test_cmd` with these arguments; do not maintain another affected-command field.
+diagnostic route; it does not produce completion evidence. Use
+`tools/testing/run-gdunit-tests.py` with these arguments and the configured Python interpreter.
 
 The adapter executes deduplicated suite/directory selectors supported by the configured runner; case-level obligations are checked against actual JUnit cases. Selecting a suite may run extra cases. Every selected path must discover and execute tests; missing cases/suites, zero discovery, skipped required cases, invalid paths, runtime diagnostics, timeout and runner failure fail closed. `tools/testing/gdunit_evidence_runner.gd` records gdUnit's actual expanded discovery before execution, including every parameterized case and its source method. This complete identity set must exactly equal the JUnit testcase set. GdUnit source declarations supplement runtime discovery to detect omitted suites; declarations alone never prove execution.
 
@@ -273,13 +273,10 @@ Ordinary `README.md` files (case-insensitive filename) explain usage and navigat
 
 Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose or organizing knowledge/research Markdown alone never invalidates tests. New or unknown contract fields remain included.
 
-A newly initialized Git working repository can verify before its initial commit.
-Its snapshot records `git_revision: "UNBORN"` only when HEAD names a valid branch
-whose ref does not yet exist; non-repositories, malformed refs and missing commit
-objects fail. The same source fingerprint covers staged and nonignored untracked
-files. Creating the initial commit with identical semantic content preserves the
-run evidence, as does a later process-only commit. Neither commit supplies missing
-tests, bootstrap readiness, human acceptance or review.
+Project creation supplies the initial Git commit. Verification requires a valid
+current commit; missing or broken Git state fails. The source fingerprint also
+covers staged and nonignored untracked files. A content-identical commit preserves
+run evidence but supplies no missing tests, readiness, human acceptance or review.
 
 When the approved acceptance mode is manual, human acceptance remains separate, snapshot-specific evidence. A semantic/source change after acceptance requires renewed acceptance. Run evidence lifecycle follows the common artifact policy; failed runs stay active for diagnosis and evidence referenced by current Gate/acceptance is retained.
 

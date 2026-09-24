@@ -23,6 +23,9 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.repo_root = Path(self.temporary.name)
+        runner = self.repo_root / "tools/testing/run-gdunit-tests.py"
+        runner.parent.mkdir(parents=True)
+        runner.write_text("# Runner path fixture\n", encoding="utf-8")
 
     def tearDown(self) -> None:
         self.temporary.cleanup()
@@ -30,7 +33,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def _config(self, status: str) -> dict[str, object]:
         return {
             "document_language": "en",
-            "test_cmd": sys.executable,
             "test_framework": "gdunit4",
             "engine": "Godot 4.7",
             "language": "GDScript",
@@ -117,6 +119,15 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def test_incomplete_does_not_grant_readiness(self) -> None:
         errors = check_project_environment._readiness_errors(self._config("incomplete"), self.repo_root)
         self.assertIn("environment_bootstrap.status is incomplete", errors)
+
+    def test_missing_fixed_runner_blocks_readiness(self) -> None:
+        (self.repo_root / "tools/testing/run-gdunit-tests.py").unlink()
+        with mock.patch.object(check_project_environment, "_read_engine_version",
+                               return_value=("4.7.1.stable", None)):
+            errors = check_project_environment._readiness_errors(
+                self._ready_config("4.7.1.stable"), self.repo_root
+            )
+        self.assertEqual(errors, ["test runner is missing: tools/testing/run-gdunit-tests.py"])
 
     def test_matching_recorded_version_cannot_authorize_a_different_engine_version(self) -> None:
         config = self._ready_config("4.8.0.stable")

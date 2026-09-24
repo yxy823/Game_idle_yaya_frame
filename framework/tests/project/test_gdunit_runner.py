@@ -80,6 +80,29 @@ class GdUnitRunnerTests(unittest.TestCase):
             with self.subTest(value=invalid), self.assertRaises(argparse.ArgumentTypeError):
                 runner._positive_seconds(invalid)
 
+    def test_default_engine_reads_config_and_override_needs_no_config(self) -> None:
+        config = self.root / "docs/methodology-config.json"
+        config.parent.mkdir()
+        config.write_text(
+            '{"environment_bootstrap":{"engine_executable":"engine folder/Godot.exe"}}',
+            encoding="utf-8",
+        )
+        args = runner._parse_args(["--feature", "F001"])
+        self.assertEqual(runner._build_command(args, self.root / "reports")[0],
+                         str((self.root / "engine folder/Godot.exe").resolve()))
+        config.unlink()
+        self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).godot_binary,
+                         sys.executable)
+        with self.assertRaises(SystemExit):
+            runner._parse_args([])
+
+    def test_invalid_configured_engine_is_rejected_before_launch(self) -> None:
+        for value in (None, [], {}, 7, "", "   "):
+            with self.subTest(value=value), mock.patch.object(
+                runner, "read_json", return_value={"environment_bootstrap": {"engine_executable": value}}
+            ), self.assertRaises(SystemExit):
+                runner._parse_args([])
+
     def test_project_relative_engine_path_preserves_spaces_and_unicode(self) -> None:
         executable = self.root / "engine folder" / "工具.exe"
         executable.parent.mkdir()
@@ -204,6 +227,10 @@ class GdUnitRunnerTests(unittest.TestCase):
         config = self.root / "docs/methodology-config.json"
         config.parent.mkdir()
         config.write_text('{"test_framework":"pytest"}', encoding="utf-8")
+        subprocess.run(["git", "-C", str(self.root), "add", "docs", "tools"], check=True, capture_output=True)
+        subprocess.run(["git", "-C", str(self.root), "-c", "user.name=Runner Fixture",
+                        "-c", "user.email=fixture@example.invalid", "commit", "-m", "Fixture baseline"],
+                       check=True, capture_output=True)
         args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
         with mock.patch.object(runner, "_run_process") as launch:
             self.assertEqual(runner._run_tests(args), 1)

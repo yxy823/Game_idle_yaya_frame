@@ -14,7 +14,7 @@
 | --- | --- |
 | [progress.md](progress.md) | 框架当前成果、验证缺口、未决事项与下一步；随相关维护更新，不复制到项目 |
 | [框架的复制与运行验证](docs/blank-project/maintenance/validating-framework.md) | 源材料、真实外部测试项目、工作流抽样与迁移检查的职责和证据边界 |
-| [commands/create_project.py](commands/create_project.py) | 读取相对路径清单，检查目标后复制 |
+| [commands/create_project.py](commands/create_project.py) | 按清单复制，建立独立 Git 仓库与本地初始提交 |
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
 | [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 从 JSON 精选导出 advisor 的表达参考；只在维护时显式执行 |
@@ -71,7 +71,7 @@ advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Sk
 输入占位符时，发送前填写实际信息，已有授权在会话中继续有效。按需选用某一条，
 不要求每个任务按清单逐条发送。
 需要粘贴长篇原文时，材料区位置与填写方法见 [提示词使用说明](docs/blank-project/reference/skills.md#从哪里取得操作提示词)。
-首次配置与后续环境更新均在配置和必要检查完成后默认本地提交，明确的不提交要求或其他提交条件优先；尚无 Git 基线时提交已知初始文件及环境改动，已有基线时仅提交本次环境改动。两者复用默认仅保存在本地的初始化报告，后续只追加本次变化；详见[首次使用说明](docs/blank-project/getting-started/first-use.md)。
+环境准备与普通修改任务使用相同的项目 Git 规则；初始化报告与后续更新见[首次使用说明](docs/blank-project/getting-started/first-use.md)。
 需要准备新项目时，使用“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”。
 已有旧框架成果需要保留时，使用“Godot 项目开发 → 项目创建与接入 → 复制并迁移旧框架项目”；
 输入、授权及原件保留方式见[复制迁移说明](docs/blank-project/getting-started/migrate-existing-project.md)。

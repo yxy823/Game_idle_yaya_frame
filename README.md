@@ -46,11 +46,12 @@ Game_idle_yaya_frame/
 python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ```
 
-脚本只读取 [文件清单](framework/project-files.json) 并复制其中指定的文件或目录，
+脚本读取 [文件清单](framework/project-files.json) 并复制其中指定的文件或目录，
 按目标路径完成重命名。完整目标路径不能含中文或空白字符，目标必须不存在或为空，
 且位于本目录之外。复制失败返回具体错误并保留已复制内容，不自动清理现场。
 
-没有项目名称渲染、环境探测、Bootstrap、Git 初始化或测试副作用。
+复制完成后自动建立独立 Git 仓库并创建本地初始提交；本机需已安装 Git 并配置提交身份。
+没有项目名称渲染、环境探测、Bootstrap、远程推送或测试副作用。
 显示名称初始为 `New Godot Project`；后续由项目中的 Agent 按你的要求修改。
 
 新项目包含 `main/main.tscn` 最小主入口、`game/` 与公共素材/组件/测试目录，
@@ -69,7 +70,7 @@ Agent 在该项目里确认工具路径、项目名称和准备范围，再执�
 
 ```mermaid
 flowchart LR
-    A[维护源与文件清单] --> B[create_project：只复制]
+    A[维护源与文件清单] --> B[create_project：复制、Git 初始化与初始提交]
     B --> C[独立空白项目]
     C --> D[用户发送首次使用提示词]
     D --> E[Agent 配置当前项目]

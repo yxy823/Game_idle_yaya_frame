@@ -34,17 +34,8 @@ rules. These rules apply to every task that may modify repository files.
   unexplained, report it and stop writes. Read-only review, clarification,
   cancellation and acceptance discussion can continue. Do not create a new
   owner record or clean the workspace to manufacture proof.
-- **[MUST]** Ordinary project writes require Git. The one first-use exception
-  is an explicitly requested fresh-project initialization: inspect the exact
-  project files, configure tools, initialize independent Git, review
-  initial/imported files and create an initial local commit within the user's
-  authorization. If the request explicitly excludes a commit, finish the
-  authorized environment preparation with the initial baseline uncommitted.
-  When that commit is authorized, continue the same initialization and review
-  only its known initial files and setup changes before committing.
-  This exception cannot absorb existing business work or unknown files.
-  Before a new modifying task starts, the initial baseline must be committed
-  and the worktree clean. See README environment instructions.
+- **[MUST]** Project writes require Git. Environment setup follows the same
+  task ownership, validation and local commit rules as other modifying tasks.
 
 ## Staging
 

@@ -19,7 +19,7 @@
 | 当前工作 | 执行依据 |
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，当前成果与后续工作见 [框架进度](framework/progress.md)；`project-source/` 保存可复制材料，后者的 `Project_AGENTS.md` 与 Skill 仅作为源材料阅读，不在维护仓库激活项目流程。 |
-| 创建项目 | [创建器](framework/commands/create_project.py) 仅按 [复制清单](framework/project-files.json) 复制和重命名，不附带环境探测、Bootstrap、测试、Git 初始化、来源记录或升级。 |
+| 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 修改 HTML 手册 | 先查阅 [阅读版交互维护原则](framework/docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则)，按阅读场景修改对应源文件，再生成离线阅读版。 |

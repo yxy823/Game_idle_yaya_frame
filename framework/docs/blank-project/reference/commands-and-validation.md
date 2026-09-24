@@ -89,19 +89,19 @@ $LASTEXITCODE
 
 ```powershell
 # Stage 3：已有安全网，不包含尚未创建的 planned 测试。
-& $projectPython -B tools/testing/run-gdunit-tests.py --godot-binary $projectGodot --feature $featureId --phase baseline --scope auto
+& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --phase baseline --scope auto
 $LASTEXITCODE
 ```
 
 ```powershell
 # TDD 或定点诊断：替换成实际已存在的套件或目录。
-& $projectPython -B tools/testing/run-gdunit-tests.py --godot-binary $projectGodot --target tests/features/F001/example_test.gd
+& $projectPython -B tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
 $LASTEXITCODE
 ```
 
 ```powershell
 # Stage 4：读取当前 Feature/测试登记表和已批准范围。
-& $projectPython -B tools/testing/run-gdunit-tests.py --godot-binary $projectGodot --feature $featureId --scope auto
+& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
 $LASTEXITCODE
 ```
 

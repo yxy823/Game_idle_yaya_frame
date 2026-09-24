@@ -44,14 +44,14 @@ flowchart TD
 
 ## 第一次使用路线
 
-1. **[创建空白项目](getting-started/create-project.md)**：指定外部空目录，检查后复制材料，得到独立项目；已有生成项目时跳过。
-2. **[首次使用与环境准备](getting-started/first-use.md)**：进入目标项目，核实工具、填写配置、检查并保存初始化报告，按授权处理 Git 基线。
+1. **[创建空白项目](getting-started/create-project.md)**：指定外部空目录，复制材料并创建 Git 仓库与本地初始提交；已有生成项目时跳过。
+2. **[首次使用与环境准备](getting-started/first-use.md)**：进入目标项目，核实工具、填写配置、检查并保存初始化报告，按项目规则提交环境改动。
 3. **[需求与规划](guides/product-and-planning.md)**：将想法或 GDD 写成正式需求，展示当前模块的拆分方案，再保存适用计划。
 4. **[Feature 开发与交付](guides/feature-delivery.md)**：方案与验证范围确定后实现、检查、取得适用人工结果，完成记录与本地提交，再交接或继续已授权工作。
 
 ```mermaid
 flowchart TD
-    C[框架目录：创建独立项目] -->|切换工作目录| E[项目目录：准备环境与 Git 基线]
+    C[框架目录：创建项目与 Git 初始提交] -->|切换工作目录| E[项目目录：准备环境]
     E -->|提供想法或 GDD| P[Agent 整理正式需求]
     P -->|确定当前模块| L[Agent 展示并保存 Feature 计划]
     L -->|具体方案与实施授权齐备| D[Agent 实现并更新必要文档]

@@ -1,5 +1,4 @@
-"""A new project's first verification does not require an earlier commit."""
-# 首个提交前仍可核对真实代码快照；不能把缺失首次提交等同于损坏 Git。
+"""Project verification binds to a real commit and current source content."""
 from __future__ import annotations
 from project_context import PROJECT_ROOT
 
@@ -19,17 +18,19 @@ from tools.lib.test_run_evidence import derive_test_evidence, result_reference
 from tools.lib.test_run_evidence import RunEvidenceError
 
 
-class UnbornRepositoryTests(unittest.TestCase):
+class GitSnapshotTests(unittest.TestCase):
     def setUp(self) -> None:
-        temporary = tempfile.TemporaryDirectory(prefix="yaya-unborn-")
+        temporary = tempfile.TemporaryDirectory(prefix="yaya-git-snapshot-")
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
         self.git("init", "--initial-branch=bootstrap")
-        self.git("config", "user.name", "Unborn Evidence Fixture")
+        self.git("config", "user.name", "Git Snapshot Fixture")
         self.git("config", "user.email", "fixture@example.invalid")
         self.git("config", "core.autocrlf", "false")
         self.write(".gitignore", "reports/\n")
         self.write("source.gd", "extends RefCounted\n")
+        self.git("add", ".gitignore", "source.gd")
+        self.git("commit", "-m", "Fixture baseline")
 
     def git(self, *arguments: str) -> str:
         result = subprocess.run(["git", "-C", str(self.root), *arguments],
@@ -60,20 +61,20 @@ class UnbornRepositoryTests(unittest.TestCase):
                    {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True}],
                    "tests": []})
 
-    def test_unborn_snapshot_is_explicit_stable_and_hashes_untracked_source(self) -> None:
+    def test_snapshot_tracks_commit_and_hashes_untracked_source(self) -> None:
+        self.write("new.gd", "extends RefCounted\n")
         before = feature_completion_evidence.current_snapshot(self.root)
-        self.assertEqual("UNBORN", before["git_revision"])
+        self.assertEqual(self.git("rev-parse", "HEAD"), before["git_revision"])
         self.assertEqual(before, feature_completion_evidence.current_snapshot(self.root))
-        self.git("add", ".gitignore", "source.gd")
+        self.git("add", "new.gd")
         self.assertEqual(before, feature_completion_evidence.current_snapshot(self.root))
         self.write("source.gd", "extends RefCounted\nvar changed = true\n")
         self.assertNotEqual(before["working_tree_fingerprint"],
                             feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
 
-    def test_precommit_run_survives_initial_and_process_only_commits_without_granting_acceptance(self) -> None:
+    def test_run_survives_content_identical_commits_without_granting_acceptance(self) -> None:
         self.plan_fixture()
         plan, manifest = make_run(self.root)
-        self.assertEqual("UNBORN", feature_completion_evidence.current_snapshot(self.root)["git_revision"])
         references = [result_reference(self.root, manifest)]
         verified = derive_test_evidence(self.root, "F001", references)
         evidence = feature_completion_evidence.empty_evidence("F001", feature_completion_evidence.current_snapshot(self.root))
@@ -81,8 +82,8 @@ class UnbornRepositoryTests(unittest.TestCase):
         feature_completion_evidence.write_evidence(self.root / feature_completion_evidence.EVIDENCE_RELATIVE_PATH, evidence)
         task_files = [".gitignore", "source.gd", "tests", "docs"]
         self.git("add", *task_files)
-        self.git("commit", "-m", "Fixture initial commit after verification")
-        self.assertNotEqual("UNBORN", feature_completion_evidence.git_revision(self.root))
+        self.git("commit", "-m", "Fixture verified changes")
+        self.assertEqual(self.git("rev-parse", "HEAD"), feature_completion_evidence.git_revision(self.root))
         self.assertEqual(verified["required_test_set"]["total"],
                          derive_test_evidence(self.root, "F001", references)["required_test_set"]["total"])
         accepted, reason = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
@@ -101,19 +102,22 @@ class UnbornRepositoryTests(unittest.TestCase):
         with self.assertRaisesRegex(RunEvidenceError, "source changed"):
             derive_test_evidence(self.root, "F001", references)
 
-    def test_non_repository_does_not_receive_unborn_provenance(self) -> None:
+    def test_missing_repository_or_initial_commit_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory(prefix="yaya-not-repo-") as unrelated:
             with self.assertRaises(feature_completion_evidence.EvidenceError):
                 feature_completion_evidence.current_snapshot(Path(unrelated))
+            subprocess.run(["git", "init", "--template=", unrelated], check=True, capture_output=True)
+            with self.assertRaises(feature_completion_evidence.EvidenceError):
+                feature_completion_evidence.current_snapshot(Path(unrelated))
 
-    def test_corrupt_or_dangling_head_is_not_treated_as_a_fresh_repository(self) -> None:
+    def test_corrupt_or_dangling_head_is_rejected(self) -> None:
         for content in ("invalid HEAD\n", "f" * 40 + "\n"):
             with self.subTest(content=content):
                 self.write(".git/HEAD", content)
                 with self.assertRaises(feature_completion_evidence.EvidenceError):
                     feature_completion_evidence.current_snapshot(self.root)
 
-    def test_existing_broken_branch_ref_is_not_treated_as_unborn(self) -> None:
+    def test_broken_branch_ref_is_rejected(self) -> None:
         for content in ("not-an-object-id\n", "f" * 40 + "\n"):
             with self.subTest(content=content):
                 self.write(".git/refs/heads/bootstrap", content)

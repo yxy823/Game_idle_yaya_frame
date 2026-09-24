@@ -18,12 +18,11 @@
 | `environment_bootstrap.engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `environment_bootstrap.engine_version` | 空字符串 | 填写实际 `Godot --version` 的完整输出，不只填 `4.7` |
 | `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
-| `test_cmd` | 空字符串 | 保存真实 Python 测试入口命令；执行时追加当前 Feature 和 scope |
 | `test_unit_root` | `tests/unit` | 组件单元测试根目录约定 |
 | `test_feature_root` | `tests/features` | Feature 验收与相关回归测试根目录约定 |
 | `test_invariant_root` | `tests/invariants` | 跨 Feature 不变量测试根目录约定 |
 
-完整路径和测试命令分别保存，避免把带参数的命令放进可执行文件字段。字段之间的位置关系和实际脚本入口需要核对，不能仅凭 JSON 能解析就认为环境可运行。
+配置只保存工具路径，测试使用固定入口 `tools/testing/run-gdunit-tests.py`；执行时指定 Feature 和 scope，不重复保存整条命令。
 
 测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不再重复保存它的路径。测试文件本身按配置表中的测试根目录与登记表映射组织。
 
@@ -34,23 +33,24 @@
 ```json
 {
   "python_executable": "C:\\Users\\89523\\anaconda3\\envs\\codex-python\\python.exe",
-  "test_cmd": "\"C:\\Users\\89523\\anaconda3\\envs\\codex-python\\python.exe\" -B tools/testing/run-gdunit-tests.py --godot-binary \"C:\\Godot\\Godot.exe\""
+  "environment_bootstrap": {
+    "engine_executable": "C:\\Godot\\Godot.exe"
+  }
 }
 ```
 
-JSON 中反斜杠写成 `\\`，命令内的双引号写成 `\"`。路径字段本身不需要额外嵌入引号：带空格的可执行文件路径仍是完整的一个值。不能把 `$env:...`、`&` 或 `--version` 当作可执行文件路径的一部分。
+JSON 中反斜杠写成 `\\`。路径字段不额外嵌入引号：带空格的可执行文件路径仍是完整的一个值。不能把 `$env:...`、`&` 或 `--version` 当作可执行文件路径的一部分。
 
 PowerShell 直接调用路径变量时使用调用运算符，并把参数分开传入：
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
 $projectPython = $projectConfig.python_executable
-$projectGodot = $projectConfig.environment_bootstrap.engine_executable
 & $projectPython -B tools/checks/check-project-environment.py --require-ready
 $LASTEXITCODE
 ```
 
-`test_cmd` 是一整条命令文本，不能用 `& $projectConfig.test_cmd` 把它当作一个可执行文件名。日常调用可按已确认命令展开为独立参数，示例见 [命令参考](commands-and-validation.md)。
+测试入口默认读取配置中的 Godot 路径，临时更换时可显式传入 `--godot-binary <路径>`；示例见 [命令参考](commands-and-validation.md)。
 
 Godot 的 `engine_executable` 必须是实际文件路径，可以是绝对路径，也可以相对项目根目录；环境检查和测试运行器使用同一解析方式，不去 PATH 寻找同名安装。`python_executable` 仍支持完整路径或 PATH 中的命令名。路径字段不含额外 shell 引号或参数，带空格和非 ASCII 字符的完整工具路径可保留。
 
@@ -64,10 +64,10 @@ Godot 的 `engine_executable` 必须是实际文件路径，可以是绝对路�
 | --- | --- | --- |
 | Python | 完整路径/项目相对路径，或裸命令的 PATH 解析结果是否为文件 | 独立执行所选解释器，确认 Python 3.12+ 与所需依赖；检查器不启动 Python 版本探针 |
 | Godot | 按项目相对或绝对文件路径解析，启动 `--version`，要求进程成功、输出与记录一致且为 4.7.x | 路径不可用时说明原因；项目资源、脚本和测试是否可运行需要实际调用 |
-| `test_cmd` | 从 Windows 命令文本提取首个程序，检查其解析结果为文件 | 后续测试脚本是否存在、引号/参数/工作目录是否正确；完整命令是否实际成功 |
+| 测试入口 | 检查固定文件 `tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试；文件存在不代表测试通过 |
 | `document_language` | 基本字符、子段与连接形式 | 完整标签有效性及用户已确认的持久文档语言 |
 
-文件存在不等于程序能够执行；测试命令中找到 Python 也不证明其余参数正确。就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析/lint 或 Git 初始化。首次准备的顺序、报告与 Git 授权见 [首次使用](../getting-started/first-use.md)。
+文件存在不等于程序能够执行。就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析/lint 或 Git 初始化。首次准备的顺序见 [首次使用](../getting-started/first-use.md)。
 
 ## 文档语言
 

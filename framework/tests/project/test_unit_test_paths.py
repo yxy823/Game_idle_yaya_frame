@@ -24,6 +24,9 @@ class UnitTestPathsTests(unittest.TestCase):
         self.root = Path(temporary.name)
         (self.root / "docs").mkdir()
         self.registry_path = self.root / "docs/test-registry.json"
+        self._write_json(self.registry_path, {
+            "meta": {"schema_version": 2}, "components": [], "tests": [],
+        })
         self.candidates_path = self.root / "components.json"
 
     def _component(self, *paths: str) -> dict:
@@ -100,12 +103,19 @@ class UnitTestPathsTests(unittest.TestCase):
                 self.assertEqual(self._registry()["components"][0], component)
                 self.assertEqual(self._strict().returncode, 0)
 
-    def test_missing_candidate_suite_blocks_before_registry_creation(self) -> None:
+    def test_missing_registry_is_not_recreated(self) -> None:
+        self.registry_path.unlink()
+        result = self._merge([self._component()])
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertFalse(self.registry_path.exists())
+
+    def test_missing_candidate_suite_preserves_registry(self) -> None:
+        original = self.registry_path.read_bytes()
         result = self._merge([self._component("tests/unit/inventory")])
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
         self.assertIn("unit_test_paths", result.stderr)
         self.assertIn("tests/unit/inventory", result.stderr)
-        self.assertFalse(self.registry_path.exists())
+        self.assertEqual(self.registry_path.read_bytes(), original)
 
     def test_invalid_candidate_preserves_existing_registry_bytes(self) -> None:
         self.assertEqual(self._merge([self._component()]).returncode, 0)

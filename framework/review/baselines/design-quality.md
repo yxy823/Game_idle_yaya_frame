@@ -20,7 +20,7 @@
 | 部分 | 当前职责与证据 |
 | --- | --- |
 | 维护源 | 根 AGENTS 约束维护；`framework/` 保存复制工具、提示词和按需复盘材料 |
-| 项目创建 | [create_project.py](../../commands/create_project.py) 读取 [project-files.json](../../project-files.json)，检查目标后复制；不渲染、配置环境、初始化 Git 或运行测试 |
+| 项目创建 | [create_project.py](../../commands/create_project.py) 读取 [project-files.json](../../project-files.json)，检查目标后复制并建立 Git 仓库与本地初始提交；不渲染、配置环境或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
 | Skill 与角色 | 当前 27 项 Skill；专业文档由所属入口维护，七类审核方法由 `independent-reviewer` 按需组合。`researcher` 负责外部调研与报告，主 Agent 自主选择搜索或委派，anysearch 保持用户级安装。实际角色加载/权限须核实，生产能力仅说明占位；专用脚本仍在所属 Skill 的 `scripts/` |
 | 共享工具 | [tools/README.md](../../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |

@@ -17,7 +17,6 @@ The following paired projections describe the same pending Feature. They show la
 {
   "config": {
     "document_language": "en",
-    "test_cmd": "",
     "test_framework": "gdunit4",
     "test_unit_root": "tests/unit",
     "test_feature_root": "tests/features",
@@ -54,7 +53,6 @@ The following paired projections describe the same pending Feature. They show la
 {
   "config": {
     "document_language": "zh-CN",
-    "test_cmd": "",
     "test_framework": "gdunit4",
     "test_unit_root": "tests/unit",
     "test_feature_root": "tests/features",

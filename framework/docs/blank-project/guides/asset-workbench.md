@@ -48,7 +48,7 @@ flowchart LR
 
 ## 分析图像与音频源文件
 
-**前置：** 按 [Analyzer 说明](../../../../project-source/tools/asset_analyzer/README.md) 准备依赖和项目 `python_executable`。创建器只复制文件，不安装依赖。缺少分析依赖不妨碍预览和播放。
+**前置：** 按 [Analyzer 说明](../../../../project-source/tools/asset_analyzer/README.md) 准备依赖和项目 `python_executable`。创建器不安装依赖。缺少分析依赖不妨碍预览和播放。
 
 1. 选择候选，点击“分析候选源文件”；在独立窗口中使用“分析对比 A/B”。
 2. 先核对两侧文件名、类型和状态，再查看问题摘要、指标及图表。更换候选不会给旧结果换名。

@@ -1,4 +1,4 @@
-"""按相对路径清单复制一个空白项目；不运行项目命令。"""
+"""按相对路径清单创建空白项目，并建立 Git 仓库与本地初始提交。"""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import argparse
 import json
 import re
 import shutil
+import subprocess
 from pathlib import Path
 
 
@@ -74,15 +75,30 @@ def copy_project(source: Path, output: Path) -> int:
     return len(copies)
 
 
+def create_project(source: Path, output: Path) -> int:
+    """复制完成后提交新项目文件；Git 失败时保留现场并向调用方报错。"""
+    count = copy_project(source, output)
+    output = output.resolve()
+    initial_paths = sorted(path.name for path in output.iterdir())
+    subprocess.run(["git", "init"], cwd=output, check=True)
+    subprocess.run(["git", "add", "--", *initial_paths], cwd=output, check=True)
+    subprocess.run(
+        ["git", "commit", "-m", "chore(init): 创建空白 Godot 项目"],
+        cwd=output,
+        check=True,
+    )
+    return count
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", required=True, type=Path, help="New empty project directory")
     args = parser.parse_args()
     try:
-        count = copy_project(Path(__file__).resolve().parents[2], args.output)
-    except (OSError, ValueError, KeyError, TypeError) as error:
-        parser.exit(1, f"Copy failed: {error}\n")
-    print(f"Copied {count} entries to {args.output.resolve()}")
+        count = create_project(Path(__file__).resolve().parents[2], args.output)
+    except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
+        parser.exit(1, f"Creation failed: {error}\n")
+    print(f"Created {args.output.resolve()} from {count} entries with an initial Git commit")
     return 0
 
 

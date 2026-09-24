@@ -15,7 +15,7 @@ tools/
 | 入口 | 用途 |
 | --- | --- |
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
-| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 ready 状态、Python/Godot 文件、测试命令首个可执行文件及实际 Godot 版本；脚本与参数由 Agent 核对 |
+| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 ready 状态、Python/Godot 文件、固定测试入口文件及实际 Godot 版本 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [资源 Analyzer](asset_analyzer/README.md) | 后台音频/图像分析、缓存、图表、分组批量检查与历史快照；开发项目按需安装固定依赖，不参与音频播放 |
 
@@ -52,17 +52,16 @@ $LASTEXITCODE
 ## 调用
 
 `python_executable` 和 `environment_bootstrap.engine_executable` 保存完整路径，
-不包含引号或参数。`test_cmd` 保存测试命令，全量范围由同一入口的 `--scope full` 指定。
+不包含引号或参数。测试使用固定入口 `tools/testing/run-gdunit-tests.py`，默认读取配置中的 Godot 路径；全量范围用 `--scope full` 指定。
 
 ```powershell
 python -B tools/checks/check-project-environment.py --require-ready
 python -B tools/checks/check-feature-list.py
-python -B tools/testing/run-gdunit-tests.py --godot-binary C:\Godot\Godot.exe --feature F001 --scope auto
+python -B tools/testing/run-gdunit-tests.py --feature F001 --scope auto
 python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
 ```
 
-将上述 Python、Godot 换成实际路径；配置 `test_cmd` 时保留测试入口及
-`--godot-binary` 参数，执行时追加 Feature 和 scope。
+将上述 Python 换成配置中的实际解释器；仅需临时更换 Godot 时传入 `--godot-binary <路径>`。
 测试的 `--target <path>` 用于 focused/TDD，`--phase baseline` 用于已有安全网。
 `auto` 按批准范围选择 affected/full；没有独立计划文件。
 

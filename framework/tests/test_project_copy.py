@@ -1,12 +1,15 @@
 """复制器的少量边界回归；仅在明确执行测试时使用临时目录。"""
 
 import json
+import os
+import subprocess
 import tempfile
 import tomllib
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
-from framework.commands.create_project import copy_project
+from framework.commands.create_project import copy_project, create_project
 
 
 class ProjectCopyTests(unittest.TestCase):
@@ -49,6 +52,30 @@ class ProjectCopyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             copy_project(self.source, output)
         self.assertEqual((output / "AGENTS.md").read_text(encoding="utf-8"), "Project rules")
+
+    def test_creation_leaves_one_local_commit_and_clean_worktree(self):
+        output = self.base / "project"
+        environment = {
+            "GIT_CONFIG_GLOBAL": os.devnull,
+            "GIT_CONFIG_NOSYSTEM": "1",
+            "GIT_AUTHOR_NAME": "Creator Test",
+            "GIT_AUTHOR_EMAIL": "creator@example.invalid",
+            "GIT_COMMITTER_NAME": "Creator Test",
+            "GIT_COMMITTER_EMAIL": "creator@example.invalid",
+        }
+        with patch.dict(os.environ, environment):
+            self.assertEqual(create_project(self.source, output), len(self.entries))
+
+        def git(*args):
+            return subprocess.check_output(["git", *args], cwd=output, text=True).strip()
+
+        self.assertEqual(git("rev-list", "--count", "HEAD"), "1")
+        self.assertEqual(git("status", "--porcelain"), "")
+        self.assertEqual(git("remote"), "")
+        self.assertEqual(
+            set(git("ls-tree", "-r", "--name-only", "HEAD").splitlines()),
+            {"AGENTS.md", ".agents/skills/example/SKILL.md"},
+        )
 
     def test_real_agent_mappings_preserve_roles_without_global_config(self):
         repository = Path(__file__).resolve().parents[2]
@@ -143,7 +170,6 @@ class ProjectCopyTests(unittest.TestCase):
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
         self.assertEqual(config["environment_bootstrap"]["status"], "incomplete")
         self.assertEqual(config["environment_bootstrap"]["engine_version"], "")
-        self.assertEqual(config["test_cmd"], "")
         settings = (output / "project.godot").read_text(encoding="utf-8")
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
         self.assertIn("window/size/viewport_width=1600", settings)

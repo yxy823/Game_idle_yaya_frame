@@ -583,7 +583,7 @@ alignment does not mean the new behavior has been implemented or tested.
 
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
-| Initial decomposition of the current Product | `feature-plan` | append index/details and needed components; initialize missing revision log/registry, preserve existing history |
+| Initial decomposition of the current Product | `feature-plan` | append index/details and needed components; use the project-supplied revision log/registry and preserve existing history |
 | Product/Project-Rules synchronization | `feature-sync` | index/details + revision log + needed components and affected test traceability |
 | Bug/refactor/maintenance Feature creation | `engineering-change-plan` | index + engineering details + needed components; test plan is finalized during execution |
 | Feature execution and completion notes | `feature-execute` | status, verification mapping, test registry, notes, Progress, implementation/test files |

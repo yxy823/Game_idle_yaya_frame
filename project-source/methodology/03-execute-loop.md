@@ -300,7 +300,7 @@ Handle material conflicts when discovered rather than postponing them to this ch
 Read project commands from `docs/methodology-config.json`:
 
 - confirmed Python/Godot executable paths for direct checks described in `gdscript-lint.md`;
-- `test_cmd`: project test runner entrypoint or documented targeted command;
+- `tools/testing/run-gdunit-tests.py`: fixed test entry, reading the configured Godot path;
 
 Procedure:
 

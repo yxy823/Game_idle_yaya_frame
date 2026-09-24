@@ -67,12 +67,11 @@ inventory/file mismatches and resolve them before planning; do not guess names.
    explicit autonomous-planning rules before any Registry or Feature-plan write;
    resolve missing material decisions.
 4. After Step 3 permits writing, run the Registry merge below before any
-   Feature-plan write. Continue only after absent-registry initialization or
-   validated conflict-free merge.
+   Feature-plan write. Continue only after a validated conflict-free merge.
 5. Append new index entries and only their detail files, using canonical initial
    planning values. Update index totals/time, decomposition notes and actual
-   newly used professional source locations in `meta.generated_from`. Initialize
-   the revision log only if absent; preserve existing Features, metadata unrelated
+   newly used professional source locations in `meta.generated_from`. Preserve
+   the project-supplied revision log, existing Features, metadata unrelated
    to this addition and revision history. Planning a newly current Product does
    not advance the synchronization anchor. Do not rewrite Registry data by hand
    after a successful merge.
@@ -93,9 +92,9 @@ This is the fixed project-relative location used by the merge helper, checker,
 test selector and completion check. Do not add a configurable path or repeat it
 in Feature-index metadata. Run the merge command from the project root.
 
-Create a new empty schema only when `docs/test-registry.json` does not exist. For a new registry, initialize `meta.schema_version` to `2`, `components` to an empty array, and `tests` to an empty array before adding generated components. Existing registries must use version 2. Reject an unsupported format without rewriting it.
+Use the project-supplied version-2 registry and revision log. If either file is missing, report the missing project material instead of creating a replacement. Reject an unsupported format without rewriting it.
 
-When the registry already exists, read and validate it before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
+Read and validate the registry before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
 
 Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists; never prefill a future `test_unit_root/<component>` directory. Non-empty entries are repository-relative paths to existing suite files or directories that must enter the component's Required Test Set. Register a new suite only after its approved Stage 3 creation, as defined in `methodology/08-testing-strategy.md`. Set `full_suite_on_change` to `false` for a new component unless Product/Project Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
 

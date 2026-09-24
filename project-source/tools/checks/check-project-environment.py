@@ -47,22 +47,6 @@ def _python_executable(config: dict[str, Any]) -> str:
     return value
 
 
-# 此函数只处理带参数命令；纯可执行文件路径走下面的路径解析契约。
-def _command_head(command: str) -> str:
-    """Read the executable from a Windows command field, preserving backslashes."""
-    stripped = command.strip()
-    head: list[str] = []
-    quoted = False
-    for character in stripped:
-        if character == '"':
-            quoted = not quoted
-        elif character in " \t" and not quoted:
-            break
-        else:
-            head.append(character)
-    return "" if quoted else "".join(head)
-
-
 # 先把完整字符串当作文件路径，保留空格和非 ASCII 文件名。
 def _resolve_executable_path(executable: str, repo_root: Path) -> Path:
     """Preserve an executable field whole, resolving relative paths at the root.
@@ -89,13 +73,6 @@ def _executable_exists(executable: str, repo_root: Path) -> bool:
         return False
     candidate = _resolve_executable_path(executable, repo_root)
     return candidate.is_file()
-
-
-def _command_exists(command: str, repo_root: Path) -> bool:
-    head = _command_head(command)
-    if not head:
-        return False
-    return _executable_exists(head, repo_root)
 
 
 def _read_engine_version(engine_executable: Path, repo_root: Path) -> tuple[str | None, str | None]:
@@ -131,9 +108,6 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     except ValueError as error:
         errors.append(str(error))
 
-    for key in ("test_cmd",):
-        if not isinstance(config.get(key), str):
-            errors.append(f"{key} must be a string")
     bootstrap = config.get("environment_bootstrap")
     if not isinstance(bootstrap, dict):
         return errors + ["environment_bootstrap must be an object"]
@@ -193,11 +167,8 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
         elif not re.match(r"^4\.7\.\d+(?:\.|$)", observed_version):
             errors.append("engine executable must report Godot 4.7.x")
 
-    command = config.get("test_cmd")
-    if not _nonempty_string(command):
-        errors.append("primary test runner is not configured")
-    elif not _command_exists(command, repo_root):
-        errors.append(f"primary test runner executable is unavailable: {_command_head(command)!r}")
+    if not (repo_root / "tools/testing/run-gdunit-tests.py").is_file():
+        errors.append("test runner is missing: tools/testing/run-gdunit-tests.py")
 
     return errors
 

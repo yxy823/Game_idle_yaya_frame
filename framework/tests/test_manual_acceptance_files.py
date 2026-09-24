@@ -25,6 +25,8 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.git("config", "user.name", "File contract test")
         self.git("config", "user.email", "test@example.invalid")
         (self.root / "implementation.txt").write_text("version one", encoding="utf-8")
+        self.git("add", "implementation.txt")
+        self.git("commit", "--quiet", "-m", "Fixture baseline")
         self.detail = {"id": "F001", "affected_components": ["example"], "notes": "",
                        "acceptance_criteria": [{"id": "AC01", "text": "Human judgment",
                            "verification": {"manual_checks": ["Observe appearance", "Listen"], "automated_tests": []}}],
@@ -86,7 +88,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.assertEqual(evidence.current_snapshot(self.root), original)
         self.record_file()
         stored = self.load(self.root / "docs/feature-completion-evidence.json")
-        self.assertEqual(stored["human_acceptance"]["git_revision"], "UNBORN")
+        self.assertEqual(stored["human_acceptance"]["git_revision"], original["git_revision"])
         self.assertNotIn("tests", stored["human_acceptance"])
         self.assertEqual(self.load(self.result)["unrelated_metadata"], value["unrelated_metadata"])
         self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])

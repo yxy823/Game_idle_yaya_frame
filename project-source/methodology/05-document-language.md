@@ -18,7 +18,7 @@ Every newly initialized project must store `document_language` in `docs/methodol
 Copied purpose/pending-state notices and directory navigation do not select a document language or establish Product content. When replacing a notice with actual project content, use the confirmed `document_language`; copying performs no translation.
 
 The current file contains the complete configuration. Keep its actual machine
-paths and command values there rather than copying a second example here.
+tool paths there rather than copying a second example here.
 The project stack is Godot 4.7 / GDScript / gdunit4.
 
 
@@ -39,17 +39,16 @@ This does not validate complete BCP 47 subtag ordering, registry membership or u
 confirmation. The Agent still resolves tag validity and the confirmation requirements
 above before generating durable content; a configuration check does not grant them.
 
-### Verification command fields
+### Verification configuration
 
 `docs/methodology-config.json` also owns the stable entrypoints used by `feature-execute`:
 
-- `test_cmd`: default automated test command or test-runner entrypoint. The agent may select a narrower test target supported by the project, but must not invent unsupported commands.
 - `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.
 - `test_unit_root`, `test_feature_root`, `test_invariant_root`: project test-layout roots. These are project conventions consumed by test planning; a test framework may store its own plugin/runtime files elsewhere.
 - `python_executable`: Complete Python executable path or name used by project tools. It contains no script path or appended arguments; no automatic Hook is registered.
 - `environment_bootstrap`: setup status, actual Godot executable and observed version, as described below.
 
-These values are machine-facing command strings and must not be translated when `document_language` changes. A document-language migration preserves them byte-for-byte unless the user separately changes the project's verification setup.
+These values are machine-facing configuration and must not be translated when `document_language` changes. A document-language migration preserves them byte-for-byte unless the user separately changes the project's verification setup.
 
 The Test Registry always lives at `docs/test-registry.json`, relative to the project root.
 Its location is shared by the merger, checker, test selector and completion check;
@@ -71,7 +70,9 @@ If that path is unavailable, report the reason; change it only when the user
 requests a new tool location. Keep `engine_version` empty and status incomplete
 until actual setup confirms the environment; a prefilled path is not readiness.
 The top-level stack remains Godot 4.7 / GDScript / gdunit4. Store the Python
-executable in `python_executable` and commands in `test_cmd`.
+executable in `python_executable`. The fixed test entry is
+`tools/testing/run-gdunit-tests.py`; it reads the configured Godot path unless
+`--godot-binary` explicitly overrides it for that run.
 Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner
 accepts scope arguments; focused and affected scopes do not need separate
 configuration copies. No plugin source/hash inventory, timestamp, working-directory
@@ -99,11 +100,9 @@ python -B tools/checks/check-project-environment.py --require-ready
 ```
 
 Without the flag, the checker accepts valid incomplete configuration. With it,
-the checker requires ready status, existing Python/Godot executable files and
-the first executable in `test_cmd`, and a live Godot 4.7.x version matching the
-recorded value. It does not check the script or arguments after that executable.
-The setup Agent must separately confirm the actual test script exists and its
-arguments match the project runner; READY alone does not establish this.
+the checker requires ready status, existing Python/Godot executable files,
+the fixed test runner file, and a live Godot 4.7.x version matching the
+recorded value. File presence does not prove a successful test run.
 It does not prepare editor caches, install dependencies, execute tests, script
 parsing or lint, initialize Git or claim those checks passed. If setup fails, leave status
 incomplete and report the actual reason in Progress rather than duplicating

@@ -28,7 +28,7 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
-def _run_git(repo_root: Path, *args: str, expected_exit: int = 0) -> bytes:
+def _run_git(repo_root: Path, *args: str) -> bytes:
     try:
         result = subprocess.run(
             ["git", "-C", str(repo_root), *args],
@@ -38,30 +38,17 @@ def _run_git(repo_root: Path, *args: str, expected_exit: int = 0) -> bytes:
         )
     except OSError as exc:
         raise EvidenceError(f"cannot execute git: {exc}") from exc
-    if result.returncode != expected_exit:
+    if result.returncode != 0:
         detail = result.stderr.decode("utf-8", errors="replace").strip()
-        raise EvidenceError(f"git {' '.join(args)} failed (exit {result.returncode}, expected {expected_exit}): {detail or 'unexpected result'}")
+        raise EvidenceError(f"git {' '.join(args)} failed (exit {result.returncode}): {detail or 'unexpected result'}")
     return result.stdout
 
 
 def git_revision(repo_root: Path) -> str:
-    """Record real commit provenance or a verified unborn working repository."""
+    """Record the current commit; project creation supplies the initial baseline."""
     if _run_git(repo_root, "rev-parse", "--is-inside-work-tree").strip() != b"true":
         raise EvidenceError("snapshot requires a Git working repository")
-    try:
-        revision = _run_git(repo_root, "rev-parse", "--verify", "HEAD^{commit}").decode("ascii", errors="strict").strip()
-    except EvidenceError as head_error:
-        # A missing initial commit is valid; a malformed HEAD, broken ref or
-        # absent commit object is not. Only an absent branch ref proves unborn.
-        try:
-            branch = _run_git(repo_root, "symbolic-ref", "--quiet", "HEAD").decode("utf-8").strip()
-            if not branch.startswith("refs/heads/"):
-                raise EvidenceError("unborn HEAD must name a branch")
-            _run_git(repo_root, "check-ref-format", branch)
-            _run_git(repo_root, "show-ref", "--verify", "--quiet", branch, expected_exit=1)
-        except EvidenceError:
-            raise head_error
-        return "UNBORN"
+    revision = _run_git(repo_root, "rev-parse", "--verify", "HEAD^{commit}").decode("ascii", errors="strict").strip()
     if not revision:
         raise EvidenceError("git rev-parse HEAD^{commit} returned an empty revision")
     return revision

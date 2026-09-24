@@ -1,5 +1,4 @@
-"""Executable fields are paths; command fields use the host command grammar."""
-# 路径夹具区分纯可执行文件路径与带参数命令；版本探针的实机结果须另行记录。
+"""Executable fields preserve complete paths, including spaces and Unicode."""
 from __future__ import annotations
 from project_context import PROJECT_ROOT
 
@@ -24,6 +23,9 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(prefix="yaya path contract ")
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
+        runner = self.root / "tools/testing/run-gdunit-tests.py"
+        runner.parent.mkdir(parents=True)
+        runner.write_text("# Runner path fixture\n", encoding="utf-8")
         self.executable = self.root / "Tool Folder" / "工具 python.exe"
         self.executable.parent.mkdir()
         shutil.copy2(sys.executable, self.executable)
@@ -43,11 +45,9 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.assertTrue(self.version.startswith("Python "), self.version)
 
     def config(self, executable: str) -> dict:
-        command = subprocess.list2cmdline([str(self.executable), "--version"])
         bootstrap = {"status": "ready", "engine_executable": executable,
                      "engine_version": self.version}
         return {"document_language": "en", "python_executable": executable,
-                "test_cmd": command,
                 "engine": "Godot 4.7", "language": "GDScript", "test_framework": "gdunit4",
                 "environment_bootstrap": bootstrap}
 
@@ -97,17 +97,6 @@ class ExecutablePathContractTests(unittest.TestCase):
         config = self.config(str(self.executable))
         config.pop("python_executable")
         self.assertTrue(environment._schema_errors(config, self.root))
-
-    def test_command_head_preserves_windows_path_quoting(self) -> None:
-        cases = (('"C:\\Tool Folder\\工具.exe" --version', "C:\\Tool Folder\\工具.exe"),
-                 ("C:\\Tools\\工具.exe --version", "C:\\Tools\\工具.exe"))
-        for command, expected in cases:
-            with self.subTest(command=command):
-                self.assertEqual(environment._command_head(command), expected)
-
-    def test_malformed_command_quote_is_unavailable(self) -> None:
-        self.assertEqual(environment._command_head('"unfinished executable'), "")
-
 
 if __name__ == "__main__":
     unittest.main()

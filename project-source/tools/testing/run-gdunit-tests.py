@@ -109,7 +109,7 @@ def _positive_seconds(value: str) -> float:
 
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--godot-binary")
+    parser.add_argument("--godot-binary", help="Override the configured Godot executable for this run")
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--target", default="tests")
     selection.add_argument("--feature", help="Read the current Feature/Test Registry directly")
@@ -122,8 +122,14 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Maximum test-process wall time (default: 120 seconds).",
     )
     args = parser.parse_args(list(argv))
-    if not args.godot_binary:
-        parser.error("--godot-binary is required")
+    if args.godot_binary is None:
+        try:
+            config = read_json(REPO_ROOT / "docs/methodology-config.json")
+            args.godot_binary = config["environment_bootstrap"]["engine_executable"]
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            parser.error(f"cannot read configured Godot executable: {error}")
+    if not isinstance(args.godot_binary, str) or not args.godot_binary.strip():
+        parser.error("Godot executable must be configured or supplied with --godot-binary")
     return args
 
 

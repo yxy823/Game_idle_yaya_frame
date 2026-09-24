@@ -161,7 +161,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
                 "acceptance_criteria": [{"id": "AC01", "text": "Changed requirement"}]
             })),
             ("docs/test-registry.json", '{"tests": [{"id": "changed", "status": "active"}]}'),
-            ("docs/methodology-config.json", '{"test_cmd": "changed"}'),
+            ("docs/methodology-config.json", '{"test_unit_root": "tests/changed"}'),
         ):
             with self.subTest(name=name):
                 before = self.fingerprint()

@@ -157,9 +157,9 @@ owning task. Neither a research result nor a search failure changes that authori
 
 This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11.
 The machine configuration starts incomplete. A first-use request lets the Agent
-configure actual executable paths and commands directly in docs/methodology-config.json,
+configure actual executable paths directly in docs/methodology-config.json,
 then run `tools/checks/check-project-environment.py --require-ready`.
-Git initialization is a separate explicit action.
+Project creation already establishes Git and its initial local commit.
 
 ### Workflow entry
 

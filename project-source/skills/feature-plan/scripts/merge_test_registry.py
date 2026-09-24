@@ -181,15 +181,7 @@ def _read_candidates(path: Path) -> list[dict[str, Any]]:
 def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
     # Run from the project root, as required for registered unit-test paths.
     registry_path = Path(TEST_REGISTRY_PATH)
-    existed = registry_path.exists()
-    if existed:
-        registry = validate_registry(_read_json(registry_path))
-    else:
-        registry = {
-            "meta": {"schema_version": REGISTRY_SCHEMA_VERSION},
-            "components": [],
-            "tests": [],
-        }
+    registry = validate_registry(_read_json(registry_path))
 
     candidates = _read_candidates(candidates_path)
     existing = {component["id"]: component for component in registry["components"]}
@@ -225,8 +217,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
             validate_retirements({test["id"]: test for test in registry["tests"]}, entries, revisions, verification_ids)
         except EvolutionError as exc:
             raise RegistryError(str(exc)) from exc
-    if not existed or added:
-        registry_path.parent.mkdir(parents=True, exist_ok=True)
+    if added:
         temporary = registry_path.with_name(f".{registry_path.name}.{os.getpid()}.tmp")
         try:
             temporary.write_text(
@@ -241,7 +232,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
             except FileNotFoundError:
                 pass
 
-    state = "created" if not existed else ("updated" if added else "unchanged")
+    state = "updated" if added else "unchanged"
     return state, added, len(registry["tests"])
 
 

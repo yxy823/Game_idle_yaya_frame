@@ -166,9 +166,9 @@ python -B tools/checks/check-project-environment.py
 python -B tools/checks/check-project-environment.py --require-ready
 ```
 
-前一条检查配置结构，后一条检查 ready 状态、Python/Godot 文件路径、测试命令的首个可执行文件与实际 Godot 版本。
-测试脚本是否存在、后续参数是否正确仍由准备环境的 Agent 核对；READY 不代表整条测试命令已可运行。
+前一条检查配置结构，后一条检查 ready 状态、Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。
+READY 不代表测试已经执行或通过。
 它们不配置环境、不运行测试，也不初始化 Git。
-测试使用配置中的实际命令；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。
+测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。
 首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。
 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。
