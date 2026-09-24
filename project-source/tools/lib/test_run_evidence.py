@@ -22,12 +22,6 @@ class RunEvidenceError(ValueError):
     """The recorded execution cannot prove the requested test obligations."""
 
 
-def require_supported_adapter(root: Path) -> None:
-    config = read_json(root / "docs/methodology-config.json")
-    if config.get("test_framework") != "gdunit4":
-        raise RunEvidenceError("artifact-backed execution currently supports only configured gdunit4")
-
-
 def file_hash(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -385,7 +379,6 @@ def finish_run(root: Path, directory: Path, result: dict, *,
 
 def verify_run(root: Path, reference: dict[str, str], selection: dict,
                snapshot: dict) -> tuple[dict, list[dict]]:
-    require_supported_adapter(root)
     path = (root / reference["path"]).resolve()
     if not path.is_relative_to((root / "reports/gdunit-wrapper").resolve()) or not path.is_file():
         raise RunEvidenceError("run result must exist under reports/gdunit-wrapper")

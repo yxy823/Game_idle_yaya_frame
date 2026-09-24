@@ -113,11 +113,6 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
         return errors + ["environment_bootstrap must be an object"]
     if bootstrap.get("status") not in {"incomplete", "ready"}:
         errors.append("environment_bootstrap.status must be incomplete or ready")
-    # 固定技术栈与本机就绪分开：未安装工具合法，切换引擎不属于框架配置。
-    for key, expected in {"engine": "Godot 4.7", "language": "GDScript", "test_framework": "gdunit4"}.items():
-        if config.get(key) != expected:
-            errors.append(f"{key} must be {expected!r}")
-
     # 只保存需要复用的路径和实际版本；缺项与阻塞原因由检查即时报告。
     for key in ENGINE_FIELDS:
         if key not in bootstrap:
@@ -198,7 +193,7 @@ def main() -> int:
     if not args.require_ready:
         print(
             "Project environment configuration: "
-            f"{bootstrap['status'].upper()} ({config['engine']} / {config['language']})"
+            f"{bootstrap['status'].upper()}"
         )
         return 0
 
@@ -208,7 +203,7 @@ def main() -> int:
         print("BLOCKED: Project Environment Bootstrap is not ready:\n- " + detail, file=sys.stderr)
         return 2
 
-    print(f"Project Environment Bootstrap: READY ({config['engine']} / {config['language']})")
+    print("Project Environment Bootstrap: READY")
     return 0
 
 

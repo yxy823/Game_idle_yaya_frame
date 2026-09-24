@@ -38,8 +38,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write_json("docs/test-registry.json", self.registry)
         self.write_json("docs/feature-list.json", {"meta": {}, "features": [
             {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.write_json("docs/methodology-config.json", {"test_framework": "gdunit4",
-            "python_executable": sys.executable,
+        self.write_json("docs/methodology-config.json", {"python_executable": sys.executable,
             "environment_bootstrap": {"engine_executable": sys.executable}})
         self.git("init")
         self.git("config", "user.name", "Evidence Test")
@@ -386,15 +385,6 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         os.utime(report, ns=(original_time, original_time))
         with self.assertRaisesRegex(RunEvidenceError, "changed after"):
             derive_test_evidence(self.root, "F001", [reference])
-
-    def test_non_gdunit_configuration_cannot_import_gdunit_run(self) -> None:
-        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
-        config = json.loads((self.root / "docs/methodology-config.json").read_text())
-        config["test_framework"] = "pytest"
-        self.write_json("docs/methodology-config.json", config)
-        plan, path = self.run_fixture()
-        with self.assertRaisesRegex(RunEvidenceError, "gdunit4"):
-            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_required_full_escalation_cannot_be_claimed_by_affected_run(self) -> None:
         from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference

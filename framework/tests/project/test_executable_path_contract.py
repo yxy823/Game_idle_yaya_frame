@@ -48,7 +48,6 @@ class ExecutablePathContractTests(unittest.TestCase):
         bootstrap = {"status": "ready", "engine_executable": executable,
                      "engine_version": self.version}
         return {"document_language": "en", "python_executable": executable,
-                "engine": "Godot 4.7", "language": "GDScript", "test_framework": "gdunit4",
                 "environment_bootstrap": bootstrap}
 
     def test_actual_absolute_space_and_unicode_path_is_not_split(self) -> None:

@@ -219,23 +219,5 @@ class GdUnitRunnerTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertIn("expected one current JUnit report, found 2", result["errors"])
 
-    def test_feature_entry_rejects_other_framework_before_launch(self) -> None:
-        subprocess.run(["git", "init", "--template=", str(self.root)], capture_output=True, check=True)
-        script = self.root / runner.RUNNER_SCRIPT.removeprefix("res://")
-        script.parent.mkdir(parents=True)
-        script.write_text("extends SceneTree\n", encoding="utf-8")
-        config = self.root / "docs/methodology-config.json"
-        config.parent.mkdir()
-        config.write_text('{"test_framework":"pytest"}', encoding="utf-8")
-        subprocess.run(["git", "-C", str(self.root), "add", "docs", "tools"], check=True, capture_output=True)
-        subprocess.run(["git", "-C", str(self.root), "-c", "user.name=Runner Fixture",
-                        "-c", "user.email=fixture@example.invalid", "commit", "-m", "Fixture baseline"],
-                       check=True, capture_output=True)
-        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
-        with mock.patch.object(runner, "_run_process") as launch:
-            self.assertEqual(runner._run_tests(args), 1)
-        launch.assert_not_called()
-
-
 if __name__ == "__main__":
     unittest.main()

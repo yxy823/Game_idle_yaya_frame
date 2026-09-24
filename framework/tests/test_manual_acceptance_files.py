@@ -35,7 +35,6 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.write("docs/features/F001.json", self.detail)
         self.write("docs/test-registry.json", {"meta": {"schema_version": 3}, "tests": [],
                     "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False}]})
-        self.write("docs/methodology-config.json", {"test_framework": "gdunit4"})
         self.checklist = self.write("reports/manual-acceptance/F001/manual-acceptance-checklist.json", {
             "schema_version": 1, "feature_id": "F001", "title": "人工验收", "snapshot": None,
             "tests": [{"id": f"F001-M{index:02d}", "source_ref": ref, "title": ref,

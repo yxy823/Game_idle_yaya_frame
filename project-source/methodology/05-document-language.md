@@ -27,7 +27,7 @@ The value of `document_language` must be a [BCP 47 language tag](https://www.rfc
 - `en` for English
 - `zh-CN` for Simplified Chinese
 
-Other well-formed BCP 47 tags may be used on a best-effort basis, but the agent must disclose that they are not covered by the existing language examples. Yaya Loop's existing `language` field continues to identify the programming language and must not be reused for document language.
+Other well-formed BCP 47 tags may be used on a best-effort basis, but the agent must disclose that they are not covered by the existing language examples.
 
 Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case script, and uppercase region. Bootstrap preserves the exact value explicitly confirmed by the user and does not silently normalize it. Empty values, whitespace, and underscore forms such as `zh_CN` are invalid and must be confirmed again in a hyphenated form. Private-use, grandfathered, and other unusual tags require explicit confirmation and remain best-effort rather than verified.
 
@@ -41,9 +41,8 @@ above before generating durable content; a configuration check does not grant th
 
 ### Verification configuration
 
-`docs/methodology-config.json` also owns the stable entrypoints used by `feature-execute`:
+`docs/methodology-config.json` also stores the machine settings used by `feature-execute`:
 
-- `test_framework`: stable identifier for the configured runner. Workflow selection semantics remain separate from runner details, but readiness and evidence import require an implemented adapter. This project uses `gdunit4`; incomplete setup means machine tools remain unconfirmed.
 - `python_executable`: Complete Python executable path or name used by project tools. It contains no script path or appended arguments; no automatic Hook is registered.
 - `environment_bootstrap`: setup status, actual Godot executable and observed version, as described below.
 
@@ -68,8 +67,7 @@ Use the user-configured `engine_executable` directly without rediscovering it.
 If that path is unavailable, report the reason; change it only when the user
 requests a new tool location. Keep `engine_version` empty and status incomplete
 until actual setup confirms the environment; a prefilled path is not readiness.
-The top-level stack remains Godot 4.7 / GDScript / gdunit4. Store the Python
-executable in `python_executable`. The fixed test entry is
+Store the Python executable in `python_executable`. The fixed test entry is
 `tools/testing/run-gdunit-tests.py`; it reads the configured Godot path unless
 `--godot-binary` explicitly overrides it for that run.
 Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner

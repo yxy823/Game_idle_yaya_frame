@@ -33,9 +33,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def _config(self, status: str) -> dict[str, object]:
         return {
             "document_language": "en",
-            "test_framework": "gdunit4",
-            "engine": "Godot 4.7",
-            "language": "GDScript",
             "python_executable": sys.executable,
             "environment_bootstrap": {
                 "status": status,
@@ -46,7 +43,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
 
     def _ready_config(self, engine_version: str) -> dict[str, object]:
         config = self._config("ready")
-        config["test_framework"] = "gdunit4"
         bootstrap = config["environment_bootstrap"]
         assert isinstance(bootstrap, dict)
         bootstrap.update(engine_executable=sys.executable, engine_version=engine_version)
@@ -105,16 +101,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
             self._ready_config("4.7.1.stable"), self.repo_root
         )
         self.assertEqual(errors, [])
-
-    def test_fixed_stack_is_required_even_before_machine_setup(self) -> None:
-        for status in ("incomplete", "ready"):
-            for key, value in (("engine", "unconfigured"), ("engine", "other-engine"),
-                               ("language", "Python"), ("test_framework", "other-runner")):
-                with self.subTest(status=status, key=key, value=value):
-                    config = self._config(status)
-                    config[key] = value
-                    errors = check_project_environment._schema_errors(config, self.repo_root)
-                    self.assertTrue(any(error.startswith(key + " must be") for error in errors), errors)
 
     def test_incomplete_does_not_grant_readiness(self) -> None:
         errors = check_project_environment._readiness_errors(self._config("incomplete"), self.repo_root)

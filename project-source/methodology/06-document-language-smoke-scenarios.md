@@ -16,10 +16,7 @@ The following paired projections describe the same pending Feature. They show la
 ```json
 {
   "config": {
-    "document_language": "en",
-    "test_framework": "gdunit4",
-    "engine": "Godot 4.7",
-    "language": "GDScript"
+    "document_language": "en"
   },
   "feature": {
     "id": "F900",
@@ -49,10 +46,7 @@ The following paired projections describe the same pending Feature. They show la
 ```json
 {
   "config": {
-    "document_language": "zh-CN",
-    "test_framework": "gdunit4",
-    "engine": "Godot 4.7",
-    "language": "GDScript"
+    "document_language": "zh-CN"
   },
   "feature": {
     "id": "F900",

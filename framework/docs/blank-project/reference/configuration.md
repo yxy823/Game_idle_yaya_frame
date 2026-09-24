@@ -11,15 +11,12 @@
 | 字段 | 初始值 | 含义与修改注意事项 |
 | --- | --- | --- |
 | `document_language` | `zh-CN` | 持久项目知识的语言；与当前聊天语言独立 |
-| `engine` | `Godot 4.7` | 固定技术栈标识，不能通过随意改字段宣称支持其他引擎 |
-| `language` | `GDScript` | 编程语言，不是文档语言 |
-| `test_framework` | `gdunit4` | 当前实现支持的测试适配器标识 |
 | `environment_bootstrap.status` | `incomplete` | 环境尚未确认；确认后使用 `ready` |
 | `environment_bootstrap.engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `environment_bootstrap.engine_version` | 空字符串 | 填写实际 `Godot --version` 的完整输出，不只填 `4.7` |
 | `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
 
-配置只保存工具路径，测试使用固定入口 `tools/testing/run-gdunit-tests.py`；执行时指定 Feature 和 scope，不重复保存整条命令。
+技术栈固定为 Godot 4.7、GDScript 和 gdUnit4，不另存三份标签。配置保存文档语言、工具路径和环境准备结果；测试使用固定入口 `tools/testing/run-gdunit-tests.py`，执行时指定 Feature 和 scope，不重复保存整条命令。
 
 测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不重复保存它的路径。测试统一放在 `tests/` 下，按 `unit/`、`features/`、`invariants/` 分层；full 递归选择整个 `tests/`，局部运行按登记表映射选择。
 
