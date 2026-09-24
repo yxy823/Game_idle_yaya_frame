@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 from dataclasses import dataclass
+from hashlib import sha256
 from html import escape
 from html.parser import HTMLParser
 import json
@@ -14,8 +15,9 @@ import re
 import shutil
 import subprocess
 import sys
-from tempfile import TemporaryDirectory
+from tempfile import NamedTemporaryFile, TemporaryDirectory
 from urllib.parse import quote, unquote, urlsplit
+from xml.etree import ElementTree
 
 from markdown_it import MarkdownIt
 
@@ -26,6 +28,16 @@ OUTPUT = MANUAL / "blank-project-handbook.html"
 TEMPLATE = Path(__file__).with_name("blank-project-handbook-page.html")
 INTERACTIONS = Path(__file__).with_name("blank-project-handbook-interactions.js")
 MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.17.0"
+DIAGRAM_CACHE = ROOT / "framework/.cache/handbook-mermaid"
+DIAGRAM_WIDTH = 1400
+MERMAID_CONFIG = {
+    "theme": "base", "htmlLabels": False, "deterministicIds": True,
+    "deterministicIDSeed": "blank-project-handbook",
+    "themeVariables": {"fontFamily": "Microsoft YaHei, sans-serif", "fontSize": "16px",
+                       "primaryColor": "#edf6f2", "primaryTextColor": "#203c35",
+                       "primaryBorderColor": "#79a595", "lineColor": "#62877a",
+                       "secondaryColor": "#f5f0e4", "tertiaryColor": "#f5f7f6"},
+}
 GROUPS = {
     "": "阅读入口",
     "getting-started": "开始使用",
@@ -225,7 +237,32 @@ def scope_svg(svg: str, prefix: str) -> str:
     return svg
 
 
-def render_diagrams(documents: list[Document], browser: Path) -> list[str]:
+def valid_svg(svg: str) -> bool:
+    """A truncated or non-SVG cache entry must be rendered again."""
+    try:
+        return ElementTree.fromstring(svg).tag == "{http://www.w3.org/2000/svg}svg"
+    except ElementTree.ParseError:
+        return False
+
+
+def write_cached_svg(path: Path, svg: str) -> None:
+    """Publish complete output atomically, including across concurrent builds."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = None
+    try:
+        with NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", suffix=".tmp",
+                                dir=path.parent, delete=False) as output:
+            temporary = Path(output.name)
+            output.write(svg)
+        # Close the handle before replacement on Windows.
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def render_diagrams(documents: list[Document], browser: Path, *,
+                    cache_dir: Path | None = None, rebuild: bool = False) -> list[str]:
     diagrams = []
     for doc in documents:
         for token in doc.tokens:
@@ -234,9 +271,46 @@ def render_diagrams(documents: list[Document], browser: Path) -> list[str]:
                 diagrams.append(token.content)
     if not diagrams:
         return []
+    browser = browser.resolve()
+    if not browser.is_file():
+        raise ValueError("生成图表需要 --browser 指定的现有 Chromium 浏览器。")
+    browser_stat = browser.stat()
+    # Cache raw render output; document order and page markup do not affect it.
+    context = {"format": 1, "package": MERMAID_PACKAGE, "config": MERMAID_CONFIG,
+               "width": DIAGRAM_WIDTH,
+               "browser": [str(browser), browser_stat.st_size, browser_stat.st_mtime_ns]}
+    keys = [sha256(json.dumps([context, source], sort_keys=True,
+                             ensure_ascii=False).encode("utf-8")).hexdigest() for source in diagrams]
+    cache_dir = DIAGRAM_CACHE if cache_dir is None else cache_dir
+    cached: dict[str, str] = {}
+    pending: dict[str, str] = {}
+    for key, source in zip(keys, diagrams):
+        if key in cached or key in pending:
+            continue
+        svg = ""
+        if not rebuild:
+            try:
+                svg = (cache_dir / f"mermaid-{key}.svg").read_text(encoding="utf-8")
+            except (FileNotFoundError, UnicodeError):
+                pass
+        if valid_svg(svg):
+            cached[key] = svg
+        else:
+            pending[key] = source
+    if pending:
+        rendered = render_missing_diagrams(list(pending.values()), browser)
+        for key, svg in zip(pending, rendered):
+            write_cached_svg(cache_dir / f"mermaid-{key}.svg", svg)
+            cached[key] = svg
+    print(f"Mermaid cache: reused {len(diagrams) - len(pending)}; rendered {len(pending)}")
+    # Apply the current position even when a cached diagram moved or occurs twice.
+    return [scope_svg(cached[key], f"diagram-{index + 1}-") for index, key in enumerate(keys)]
+
+
+def render_missing_diagrams(diagrams: list[str], browser: Path) -> list[str]:
     npx = shutil.which("npx.cmd" if os.name == "nt" else "npx")
-    if not npx or not browser.is_file():
-        raise ValueError("生成图表需要 Node.js/npx 和 --browser 指定的现有 Chromium 浏览器。")
+    if not npx:
+        raise ValueError("生成新图表需要 Node.js/npx。")
     with TemporaryDirectory(prefix="blank-project-handbook-") as temporary:
         folder = Path(temporary)
         source = folder / "diagrams.md"
@@ -245,25 +319,20 @@ def render_diagrams(documents: list[Document], browser: Path) -> list[str]:
         browser_config = folder / "browser.json"
         browser_config.write_text(json.dumps({"executablePath": str(browser.resolve())}), encoding="utf-8")
         config = folder / "mermaid.json"
-        config.write_text(json.dumps({
-            "theme": "base", "htmlLabels": False, "deterministicIds": True,
-            "deterministicIDSeed": "blank-project-handbook",
-            "themeVariables": {"fontFamily": "Microsoft YaHei, sans-serif", "fontSize": "16px",
-                               "primaryColor": "#edf6f2", "primaryTextColor": "#203c35",
-                               "primaryBorderColor": "#79a595", "lineColor": "#62877a",
-                               "secondaryColor": "#f5f0e4", "tertiaryColor": "#f5f7f6"},
-        }), encoding="utf-8")
+        config.write_text(json.dumps(MERMAID_CONFIG), encoding="utf-8")
         environment = os.environ.copy()
         environment["PUPPETEER_SKIP_DOWNLOAD"] = "true"
         command = [npx, "--yes", "--package", MERMAID_PACKAGE, "--", "mmdc",
                    "-i", str(source), "-o", str(rendered), "-e", "svg", "-j", "1",
-                   "-w", "1400", "-p", str(browser_config), "-c", str(config)]
+                   "-w", str(DIAGRAM_WIDTH), "-p", str(browser_config), "-c", str(config)]
         subprocess.run(command, check=True, env=environment, cwd=ROOT)
         svg_paths = re.findall(r"!\[[^\]]*\]\(([^)]+\.svg)\)", rendered.read_text(encoding="utf-8"))
         if len(svg_paths) != len(diagrams):
             raise ValueError(f"图表产物数量不匹配：{len(svg_paths)} / {len(diagrams)}")
-        return [scope_svg((folder / name).read_text(encoding="utf-8"), f"diagram-{index + 1}-")
-                for index, name in enumerate(svg_paths)]
+        svgs = [(folder / name).read_text(encoding="utf-8") for name in svg_paths]
+        if not all(valid_svg(svg) for svg in svgs):
+            raise ValueError("Mermaid 返回了无效 SVG，未更新图表缓存。")
+        return svgs
 
 
 def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, str]:
@@ -384,10 +453,11 @@ def check_output(page: str, expected_diagrams: int) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--browser", required=True, type=Path, help="用于生成 SVG 的现有 Edge/Chromium 可执行文件")
+    parser.add_argument("--rebuild-diagrams", action="store_true", help="忽略图表缓存并重新渲染全部 Mermaid")
     args = parser.parse_args()
     documents = load_documents()
     link_count = rewrite_links(documents)
-    diagrams = render_diagrams(documents, args.browser)
+    diagrams = render_diagrams(documents, args.browser, rebuild=args.rebuild_diagrams)
     quick_start = render_quick_start(documents)
     navigation, body = render_body(documents, diagrams)
     page = TEMPLATE.read_text(encoding="utf-8")
