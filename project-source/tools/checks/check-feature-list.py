@@ -16,9 +16,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.test_selection import acceptance_mode, read_json_value, SelectionError
 from tools.lib.feature_evolution import (
-    EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, eligible_features,
+    EvolutionError, TEST_REGISTRY_PATH, eligible_features, COMPONENT_ID,
     AC_TEST_ID, REGRESSION_TEST_ID, test_identity,
-    validate_retirement_shape, validate_retirements, validate_revisions,
+    validate_registry, validate_retirements, validate_revisions,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -29,12 +29,10 @@ DETAILS_DIR = REPO_ROOT / "docs" / "features"
 
 ID_RE = re.compile(r"^F(\d{3})$")
 AC_RE = re.compile(r"^AC(\d{2})$")
-COMPONENT_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 ALLOWED_STATUS = {"pending", "in_progress", "done", "obsolete", "obsolete_done", "blocked"}
 ALLOWED_SCOPE = {"small", "medium"}
 ALLOWED_ENGINEERING_CHANGE = {"bug", "refactor", "maintenance"}
-ALLOWED_TEST_STATUS = {"planned", "active", "retired"}
 
 
 def _rel(path: Path) -> str:
@@ -232,7 +230,7 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     comps_ok, comps = _unique_string_list(components, f"{_rel(path)}.affected_components", allow_empty=False)
     ok &= comps_ok
     for comp in comps:
-        if not COMPONENT_RE.fullmatch(comp):
+        if not COMPONENT_ID.fullmatch(comp):
             _error(f"{_rel(path)} affected component {comp!r} must be lower_snake_case")
             ok = False
     info["components"] = set(comps)
@@ -341,104 +339,17 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
 
 
 def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], details: dict[str, dict[str, Any]]) -> tuple[bool, dict[str, dict[str, Any]], set[str]]:
-    if not isinstance(data, dict):
-        _error("docs/test-registry.json root must be an object")
+    try:
+        validate_registry(data, REPO_ROOT)
+    except EvolutionError as exc:
+        _error(f"docs/test-registry.json: {exc}")
         return False, {}, set()
     ok = True
-    meta = data.get("meta")
-    if (not isinstance(meta, dict) or type(meta.get("schema_version")) is not int
-            or meta["schema_version"] != REGISTRY_SCHEMA_VERSION):
-        _error(f"docs/test-registry.json meta.schema_version must be integer {REGISTRY_SCHEMA_VERSION}")
-        ok = False
-    components = data.get("components")
-    tests = data.get("tests")
-    if not isinstance(components, list):
-        _error("docs/test-registry.json components must be an array")
-        components = []
-        ok = False
-    if not isinstance(tests, list):
-        _error("docs/test-registry.json tests must be an array")
-        tests = []
-        ok = False
-
-    component_ids: set[str] = set()
-    for i, comp in enumerate(components):
-        label = f"docs/test-registry.json components[{i}]"
-        if not isinstance(comp, dict):
-            _error(f"{label} must be an object")
-            ok = False
-            continue
-        cid = comp.get("id")
-        if not isinstance(cid, str) or not COMPONENT_RE.fullmatch(cid):
-            _error(f"{label}.id must be lower_snake_case")
-            ok = False
-            continue
-        if cid in component_ids:
-            _error(f"duplicate test registry component {cid}")
-            ok = False
-        component_ids.add(cid)
-        paths_ok, unit_paths = _unique_string_list(comp.get("unit_test_paths"), f"{label}.unit_test_paths")
-        ok &= paths_ok
-        if paths_ok:
-            for unit_path in unit_paths:
-                path = REPO_ROOT / unit_path
-                if not (path.is_file() or path.is_dir()):
-                    _error(f"{label}.unit_test_paths references a missing unit suite: {unit_path}")
-                    ok = False
-        if not isinstance(comp.get("full_suite_on_change"), bool):
-            _error(f"{label}.full_suite_on_change must be boolean")
-            ok = False
-
-    registry_tests: dict[str, dict[str, Any]] = {}
-    for i, test in enumerate(tests):
-        label = f"docs/test-registry.json tests[{i}]"
-        if not isinstance(test, dict):
-            _error(f"{label} must be an object")
-            ok = False
-            continue
-        tid = test.get("id")
-        status = test.get("status")
-        try:
-            kind, source_feature, criterion_id = test_identity(tid)
-        except EvolutionError as exc:
-            _error(f"{label}: {exc}")
-            ok = False
-            continue
-        if tid in registry_tests:
-            _error(f"duplicate test id {tid}")
-            ok = False
-        registry_tests[tid] = test
-        if status not in ALLOWED_TEST_STATUS:
-            _error(f"{label}.status {status!r} is invalid")
-            ok = False
-        try:
-            validate_retirement_shape(test)
-        except EvolutionError as exc:
-            _error(str(exc))
-            ok = False
-        comps_ok, comps = _unique_string_list(test.get("components"), f"{label}.components", allow_empty=False)
-        ok &= comps_ok
-        for cid in comps:
-            if cid not in component_ids:
-                _error(f"{label}.components references missing component {cid}")
-                ok = False
-        path = test.get("path")
-        case = test.get("case")
-        if status in {"planned", "retired"}:
-            if path is not None and (not isinstance(path, str) or not path.strip()):
-                _error(f"{label}.path must be null or non-empty while {status}")
-                ok = False
-        else:
-            if not isinstance(path, str) or not path.strip():
-                _error(f"{label}.path must be non-empty when status is {status}")
-                ok = False
-            elif status == "active" and not (REPO_ROOT / path).exists():
-                _error(f"active test {tid} path does not exist: {path}")
-                ok = False
-        if case is not None and (not isinstance(case, str) or not case.strip()):
-            _error(f"{label}.case must be null or non-empty string")
-            ok = False
-
+    component_ids = {component["id"] for component in data["components"]}
+    registry_tests = {test["id"]: test for test in data["tests"]}
+    for tid, test in registry_tests.items():
+        kind, source_feature, criterion_id = test_identity(tid)
+        status = test["status"]
         if source_feature is not None and source_feature not in entries:
             _error(f"test {tid} references missing Feature {source_feature}")
             ok = False

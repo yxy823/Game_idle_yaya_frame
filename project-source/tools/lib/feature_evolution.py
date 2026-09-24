@@ -1,4 +1,4 @@
-"""Shared validation of Feature and test evolution records.
+"""Shared validation of the Test Registry and Feature evolution records.
 
 Completed verification mappings are historical facts. Retirement changes the
 active safety net through an explicit replacement chain; it does not rewrite
@@ -9,12 +9,13 @@ from __future__ import annotations
 
 import re
 from datetime import datetime
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 
 REGISTRY_SCHEMA_VERSION = 3
 TEST_REGISTRY_PATH = PurePosixPath("docs/test-registry.json")
+COMPONENT_ID = re.compile(r"[a-z][a-z0-9_]*")
 FEATURE_ID = re.compile(r"F\d{3}")
 AC_TEST_ID = re.compile(r"(F\d{3})-(AC\d{2})(?:-\d{2})?")
 REGRESSION_TEST_ID = re.compile(r"(F\d{3})-RT\d{2}")
@@ -51,6 +52,86 @@ def _strings(value: Any, label: str, *, nonempty: bool = False) -> list[str]:
     if len(set(value)) != len(value) or (nonempty and not value):
         raise EvolutionError(f"{label} must be unique{' and non-empty' if nonempty else ''}")
     return value
+
+
+def validate_registry_component(component: Any, label: str, repo_root: Path) -> str:
+    if not isinstance(component, dict):
+        raise EvolutionError(f"{label} must be an object")
+    component_id = component.get("id")
+    if not isinstance(component_id, str) or not COMPONENT_ID.fullmatch(component_id):
+        raise EvolutionError(f"{label}.id must be lower_snake_case")
+    unit_paths = _strings(component.get("unit_test_paths"), f"{label}.unit_test_paths")
+    for unit_path in unit_paths:
+        path = repo_root / unit_path
+        if not (path.is_file() or path.is_dir()):
+            raise EvolutionError(
+                f"{label}.unit_test_paths references a missing unit suite: {unit_path}"
+            )
+    if not isinstance(component.get("full_suite_on_change"), bool):
+        raise EvolutionError(f"{label}.full_suite_on_change must be boolean")
+    return component_id
+
+
+def _validate_registry_test(test: Any, label: str, component_ids: set[str], repo_root: Path) -> str:
+    if not isinstance(test, dict):
+        raise EvolutionError(f"{label} must be an object")
+    test_id = test.get("id")
+    status = test.get("status")
+    if status not in ("planned", "active", "retired"):
+        raise EvolutionError(f"{label}.status is invalid")
+    test_identity(test_id)
+    validate_retirement_shape(test)
+    mapped_components = _strings(
+        test.get("components"), f"{label}.components", nonempty=True
+    )
+    missing = sorted(set(mapped_components) - component_ids)
+    if missing:
+        raise EvolutionError(
+            f"{label}.components references missing components: {', '.join(missing)}"
+        )
+    path = test.get("path")
+    if status in {"planned", "retired"}:
+        if path is not None and (not isinstance(path, str) or not path.strip()):
+            raise EvolutionError(f"{label}.path must be null or a non-empty string")
+    elif not isinstance(path, str) or not path.strip():
+        raise EvolutionError(f"{label}.path must be non-empty when status is {status}")
+    if status == "active" and not (repo_root / path).exists():
+        raise EvolutionError(f"active test {test_id} path does not exist: {path}")
+    case = test.get("case")
+    if case is not None and (not isinstance(case, str) or not case.strip()):
+        raise EvolutionError(f"{label}.case must be null or a non-empty string")
+
+    return test_id
+
+
+def validate_registry(data: Any, repo_root: Path) -> dict[str, Any]:
+    if not isinstance(data, dict):
+        raise EvolutionError("test registry root must be an object")
+    meta = data.get("meta")
+    if (not isinstance(meta, dict) or type(meta.get("schema_version")) is not int
+            or meta["schema_version"] != REGISTRY_SCHEMA_VERSION):
+        raise EvolutionError(f"test registry meta.schema_version must be integer {REGISTRY_SCHEMA_VERSION}")
+    components = data.get("components")
+    tests = data.get("tests")
+    if not isinstance(components, list):
+        raise EvolutionError("test registry components must be an array")
+    if not isinstance(tests, list):
+        raise EvolutionError("test registry tests must be an array")
+
+    component_ids: set[str] = set()
+    for index, component in enumerate(components):
+        component_id = validate_registry_component(component, f"components[{index}]", repo_root)
+        if component_id in component_ids:
+            raise EvolutionError(f"duplicate component id: {component_id}")
+        component_ids.add(component_id)
+
+    test_ids: set[str] = set()
+    for index, test in enumerate(tests):
+        test_id = _validate_registry_test(test, f"tests[{index}]", component_ids, repo_root)
+        if test_id in test_ids:
+            raise EvolutionError(f"duplicate test id: {test_id}")
+        test_ids.add(test_id)
+    return data
 
 
 def _source(value: Any, label: str) -> dict[str, str]:

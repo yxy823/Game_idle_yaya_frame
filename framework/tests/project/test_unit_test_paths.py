@@ -197,6 +197,34 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertIn("conflicts", result.stderr)
         self.assertEqual(self.registry_path.read_bytes(), original)
 
+    def test_merge_and_check_reject_the_same_invalid_registry_without_rewriting(self) -> None:
+        suite = self._suite()
+        valid = {"meta": {"schema_version": 3}, "components": [self._component()],
+                 "tests": [{"id": "INV-INVENTORY-01", "components": ["inventory"],
+                            "path": suite, "case": "test_inventory", "status": "active"}]}
+        mutations = (
+            lambda d: d["meta"].update(schema_version=True),
+            lambda d: d["components"].append(copy.deepcopy(d["components"][0])),
+            lambda d: d["tests"].append(copy.deepcopy(d["tests"][0])),
+            lambda d: d["tests"][0].update(id="unknown"),
+            lambda d: d["tests"][0].update(components=["missing"]),
+            lambda d: d["tests"][0].update(status=[]),
+            lambda d: d["tests"][0].update(path="tests/missing.gd"),
+            lambda d: d["tests"][0].update(case=[]),
+        )
+        for index, mutate in enumerate(mutations):
+            with self.subTest(index=index):
+                invalid = copy.deepcopy(valid)
+                mutate(invalid)
+                self._write_json(self.registry_path, invalid)
+                before = self.registry_path.read_bytes()
+                merged = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False}])
+                checked = self._strict()
+                for result in (merged, checked):
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertNotIn("Traceback", result.stderr)
+                self.assertEqual(self.registry_path.read_bytes(), before)
+
     def test_ambiguous_registry_is_rejected_by_all_readers_without_rewrite(self) -> None:
         from tools.lib.test_selection import read_json, SelectionError
         registry = {
