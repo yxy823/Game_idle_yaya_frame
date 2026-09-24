@@ -299,4 +299,4 @@ When the boundary is unclear, use `product-author`; it owns the routing decision
 - Do not put implementation choices such as a vector type or pathfinding algorithm in Product documents. Those choices belong in Project Rules, code, or implementation notes.
 - Do not describe numeric behavior with subjective terms such as “high damage”; provide a formula or concrete value.
 - Do not use subjective acceptance language such as “renders smoothly”; state an observable threshold or outcome.
-- Do not put speculative future ideas in active Product requirements. Keep them in a separate `docs/ideas.md` until approved as Product intent.
+- Do not put speculative future ideas in active Product requirements. Keep them in a separate `docs/unadopted-ideas.md` until approved as Product intent.
