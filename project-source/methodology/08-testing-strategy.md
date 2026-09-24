@@ -194,7 +194,10 @@ unfinished final run for the same Feature/snapshot still blocks completion. Reco
 actual human acceptance on the current snapshot, and assess
 applicable static checks. Any automated obligation retains the normal real-run requirement.
 
-Each invocation creates one isolated `reports/gdunit-wrapper/run-<id>/` directory.
+Each Feature invocation creates one `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`
+directory. Focused runs use `reports/gdunit-wrapper/focused/run-<id>/`.
+Run order and completion history are local to the current Feature directory;
+unreadable or misfiled records in that directory still block completion.
 The runner writes one `result.json` (schema 1) before setup and finalizes that same
 file after execution. It records Feature/phase/scope, selected paths, the real command,
 source fingerprint, process outcome and errors, plus references/hashes for the
@@ -214,13 +217,12 @@ errors still produce a failed current result without launching Godot.
 This requires a writable report directory; a filesystem write failure must still
 be reported as such, not as a successfully saved result.
 
-Completion still rejects damaged referenced results. Its history scan excludes
-another Feature only after reading a supported schema, matching run identity and
-a valid different Feature ID. Current-Feature damage and unreadable or unidentified
-damage still block completion until investigated and resolved under authorization.
-Successful execution alone does not remove that evidence limitation.
+Completion rejects damaged referenced results and invalid history inside the
+current Feature directory, including a mismatched Feature ID. Investigate and
+resolve that damage under authorization; a new passing run does not erase it.
+Other Feature directories and focused runs are not read for this completion.
 
-A local sequence computed from readable results with valid headers orders attempts
+A per-Feature sequence computed from readable results with valid headers orders attempts
 without depending on filesystem timestamp precision; a tied sequence cannot clear
 another attempt. For the same Feature/content, an unresolved final
 failure cannot be hidden by an older success or a later narrower run. Recovery uses a
@@ -235,7 +237,7 @@ separate journal, execution lock, invocation, verdict, process report or session
 Record results with:
 
 ```powershell
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
 ```
 
 Repeat `--run` only for distinct runs needed to cover the obligations. One full run

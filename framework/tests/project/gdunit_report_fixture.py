@@ -16,7 +16,7 @@ def make_run(root: Path, *, scope: str = "full", skipped: bool = False,
     selection = build_selection(root, "F001", phase=phase)
     selectors = execution_selectors(root, selection, scope)
     expected = expected_gdunit_cases(root, selectors)
-    directory = root / "reports/gdunit-wrapper" / ("run-" + uuid.uuid4().hex)
+    directory = root / "reports/gdunit-wrapper/F001" / ("run-" + uuid.uuid4().hex)
     directory.mkdir(parents=True)
     result = start_run(root, directory, "F001", phase, scope)
     result.update(command=[sys.executable], selectors=selectors)

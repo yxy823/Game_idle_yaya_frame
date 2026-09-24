@@ -358,7 +358,7 @@ Static checks are executed and assessed directly by the Agent, outside this file
 [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
 ```powershell
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/run-<id>/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
 ```
 
 Repeat `--run` when a plan is covered by multiple real runs. An unavailable full

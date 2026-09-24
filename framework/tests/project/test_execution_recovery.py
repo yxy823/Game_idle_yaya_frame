@@ -46,7 +46,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_interruption_leaves_one_running_result_that_blocks_old_success(self):
         plan, passed = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/run-interrupted"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-interrupted"
         directory.mkdir()
         start_run(self.root, directory, "F001", "final", "full")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
@@ -68,14 +68,14 @@ class ExecutionRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, passed)
         records = [json.loads(path.read_text()) for path in
-                   (self.root / "reports/gdunit-wrapper").glob("run-*/result.json")]
+                   (self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")]
         latest = max(records, key=lambda record: record["sequence"])
         self.assertEqual(latest["status"], "failed")
         self.assertTrue(any("executable not found" in error for error in latest["errors"]))
 
     def test_interrupted_auto_recovers_with_later_affected_but_not_old_narrow_or_tied_success(self):
         plan, old_pass = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/run-auto-interrupted"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-auto-interrupted"
         directory.mkdir()
         attempt = start_run(self.root, directory, "F001", "final", "auto")
         original = (directory / "result.json").read_bytes()
@@ -96,7 +96,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_auto_selection_read_failure_recovers_without_new_full_obligation(self):
         plan, old_pass = make_run(self.root)
-        previous = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        previous = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
         spec = importlib.util.spec_from_file_location("selection_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
@@ -107,7 +107,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 mock.patch.object(runner, "_run_process") as launch:
             self.assertEqual(runner._run_tests(args), 1)
         launch.assert_not_called()
-        created = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json")) - previous
+        created = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")) - previous
         self.assertEqual(len(created), 1)
         failed = created.pop()
         original = failed.read_bytes()
@@ -124,7 +124,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.registry["components"][0]["full_suite_on_change"] = True
         self.write_json("docs/test-registry.json", self.registry)
         plan, _ = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/run-auto-full"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-auto-full"
         directory.mkdir()
         start_run(self.root, directory, "F001", "final", "auto")
         _, affected = make_run(self.root, scope="affected")
@@ -135,14 +135,14 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_auto_with_execution_fields_is_not_treated_as_preparation(self):
         plan, _ = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/run-invalid-auto"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-invalid-auto"
         directory.mkdir()
         attempt = start_run(self.root, directory, "F001", "final", "auto")
         _, full = make_run(self.root)
         for fields in ({"command": [sys.executable]}, {"selectors": ["tests/unit"]},
                        {"process": {"returncode": 0}}, {"status": "unknown"}):
             with self.subTest(fields=fields):
-                self.write_json("reports/gdunit-wrapper/run-invalid-auto/result.json", {**attempt, **fields})
+                self.write_json("reports/gdunit-wrapper/F001/run-invalid-auto/result.json", {**attempt, **fields})
                 with self.assertRaisesRegex(ValueError, "invalid auto preparation"):
                     self.derive(plan, full)
 
@@ -152,7 +152,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         old_bytes = old_pass.read_bytes()
         history = json.loads(old_bytes)
         history.update(run_id="run-damaged", sequence=2)
-        damaged = self.write_json("reports/gdunit-wrapper/run-damaged/result.json", history)
+        damaged = self.write_json("reports/gdunit-wrapper/F001/run-damaged/result.json", history)
         missing_sequence = {key: value for key, value in history.items() if key != "sequence"}
         payloads = ["{", "[]", json.dumps(missing_sequence),
                     json.dumps({**history, "schema_version": 99}),
@@ -167,7 +167,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         for payload in payloads:
             with self.subTest(payload=payload):
                 damaged.write_text(payload, encoding="utf-8")
-                previous = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+                previous = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
                 sequence = max(json.loads(path.read_text())["sequence"]
                                for path in previous if path != damaged) + 1
                 args = runner._parse_args(["--godot-binary", sys.executable,
@@ -180,7 +180,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 launch.assert_called_once()
                 self.assertIn("WARNING: invalid run history", warnings.getvalue())
                 self.assertIn(str(damaged), warnings.getvalue())
-                created = set((self.root / "reports/gdunit-wrapper").glob("run-*/result.json")) - previous
+                created = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")) - previous
                 self.assertEqual(len(created), 1)
                 result_path = created.pop()
                 result = json.loads(result_path.read_text())
@@ -199,36 +199,46 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 self.assertIn(str(damaged), str(failure.exception))
 
     def test_unreadable_history_allows_new_pass_but_not_completion(self):
-        self.write("reports/gdunit-wrapper/run-damaged/result.json", "{")
+        self.write("reports/gdunit-wrapper/F001/run-damaged/result.json", "{")
         with redirect_stderr(io.StringIO()) as warnings:
             plan, passed = make_run(self.root)
         self.assertIn("invalid run history", warnings.getvalue())
         self.assertEqual(json.loads(passed.read_text())["status"], "passed")
         with self.assertRaisesRegex(ValueError, "invalid run history"):
             self.derive(plan, passed)
-        self.assertEqual((self.root / "reports/gdunit-wrapper/run-damaged/result.json").read_text(), "{")
+        self.assertEqual((self.root / "reports/gdunit-wrapper/F001/run-damaged/result.json").read_text(), "{")
 
-    def test_other_feature_bad_sequence_does_not_block_current_completion(self):
+    def test_other_feature_and_focused_history_do_not_affect_sequence_or_completion(self):
         plan, old_pass = make_run(self.root)
         record = json.loads(old_pass.read_text())
-        record.update(run_id="run-other-feature", feature_id="F002", sequence=None)
-        damaged = self.write_json("reports/gdunit-wrapper/run-other-feature/result.json", record)
-        original = damaged.read_bytes()
-        with redirect_stderr(io.StringIO()) as warnings:
-            _, passed = make_run(self.root)
-        self.assertIn("invalid run history", warnings.getvalue())
-        self.derive(plan, passed)
-        self.assertEqual(damaged.read_bytes(), original)
-        with self.assertRaises(ValueError):
-            derive_test_evidence(self.root, "F001", [result_reference(self.root, damaged)])
-        for invalid in ({"schema_version": 99}, {"run_id": "run-wrong"}, {"feature_id": "unknown"}):
-            with self.subTest(invalid=invalid):
-                damaged.write_text(json.dumps({**record, **invalid}), encoding="utf-8")
-                with self.assertRaisesRegex(ValueError, "invalid run history"):
-                    self.derive(plan, passed)
+        record.update(run_id="run-other-feature", feature_id="F002", sequence=9999)
+        damaged = self.write_json("reports/gdunit-wrapper/F002/run-other-feature/result.json", record)
+        self.write("reports/gdunit-wrapper/focused/run-damaged/result.json", "{")
+        sequence = json.loads(old_pass.read_text())["sequence"]
+        for payload in (json.dumps(record), "{", "[]", json.dumps({**record, "schema_version": 99}),
+                        json.dumps({**record, "run_id": "wrong", "feature_id": "unknown"})):
+            with self.subTest(payload=payload):
+                damaged.write_text(payload, encoding="utf-8")
+                with redirect_stderr(io.StringIO()) as warnings:
+                    _, passed = make_run(self.root)
+                self.assertEqual(warnings.getvalue(), "")
+                sequence += 1
+                self.assertEqual(json.loads(passed.read_text())["sequence"], sequence)
+                self.derive(plan, passed)
+                self.assertEqual(damaged.read_text(encoding="utf-8"), payload)
+                with self.assertRaisesRegex(ValueError, "run result must exist at"):
+                    derive_test_evidence(self.root, "F001", [result_reference(self.root, damaged)])
+
+    def test_wrong_feature_in_current_history_is_an_error_not_a_foreign_record(self):
+        plan, passed = make_run(self.root)
+        record = json.loads(passed.read_text())
+        record.update(run_id="run-misfiled", feature_id="F002")
+        self.write_json("reports/gdunit-wrapper/F001/run-misfiled/result.json", record)
+        with self.assertRaisesRegex(ValueError, "Feature does not match its history directory"):
+            self.derive(plan, passed)
 
     def test_snapshot_error_is_kept_in_the_current_failed_result(self):
-        directory = self.root / "reports/gdunit-wrapper/run-snapshot-error"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-snapshot-error"
         directory.mkdir(parents=True)
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")):
@@ -250,7 +260,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                            side_effect=EvidenceError("git read failed")):
             self.assertEqual(runner._run_tests(args), 1)
         launch.assert_not_called()
-        paths = list((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        paths = list((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
         self.assertEqual(len(paths), 1)
         result = json.loads(paths[0].read_text())
         self.assertEqual(result["status"], "failed")
@@ -274,7 +284,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.assertEqual(result["process"]["returncode"], 0)
 
     def test_snapshot_failure_does_not_hide_result_write_failure(self):
-        directory = self.root / "reports/gdunit-wrapper/run-write-error"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-write-error"
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")), \
                 mock.patch("tools.lib.test_run_evidence.write_evidence",

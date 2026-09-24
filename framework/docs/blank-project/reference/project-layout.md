@@ -212,7 +212,7 @@ MyGodotGame/
 | `tests/features/` | 初始空目录，创建 Feature 验收或 Bug 回归时添加套件 | 用户行为与历史缺陷覆盖 |
 | `tests/invariants/` | 初始空目录，确实需要跨 Feature 不变量测试时添加套件 | 可执行的通用约束 |
 | `reports/initialization.md` | 环境准备时 | 实际初始化过程与结果 |
-| `reports/gdunit-wrapper/run-<id>/` | 每次显式测试运行时 | `result.json`、日志、发现集合及原始测试报告 |
+| `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 或 `reports/gdunit-wrapper/focused/run-<id>/` | 每次显式测试运行时 | `result.json`、日志、发现集合及原始测试报告 |
 | `reports/manual-acceptance/F001/` 等 | manual Feature 准备验收时 | 分别保存绑定版本的清单 JSON 与用户结果 JSON；复验按需要另存目录保留原件 |
 | `reports/features/<Feature-ID>/`，如 `reports/features/F001/` | Feature 自定义验证产生结果时 | 保存该 Feature 的日志、结果和截图，工程 Feature 同样适用；需要保留不同轮次时再设子目录 |
 | `reports/maintenance/<任务>/` | 未归属 Feature 的维护或调查产生结果时 | 按有意义的任务名归组报告，例如框架迁移或架构调查 |

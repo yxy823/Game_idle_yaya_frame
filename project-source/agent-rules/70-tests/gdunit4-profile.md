@@ -1,8 +1,7 @@
 # GdUnit4 Runner Profile
 
-This file records behavior specific to the primary runner configured in
-`docs/methodology-config.json`. That configuration remains the authority for
-the installed runner version and executable commands.
+This file records behavior specific to the project's fixed gdUnit runner.
+`docs/methodology-config.json` supplies the Godot executable and observed version.
 
 ## Project-owned launch and process protection
 
@@ -22,7 +21,8 @@ The project-owned process guard confines timeout termination to this invocation
 and its descendants, including the Windows console launcher's engine child.
 
 Each invocation retains one `result.json` plus the original engine log,
-discovery, JUnit and diagnostic reports under `reports/gdunit-wrapper/run-*`. Missing, ambiguous, or stale JUnit cannot satisfy a run.
+discovery, JUnit and diagnostic reports under `reports/gdunit-wrapper/<Feature-ID>/run-*`,
+or `reports/gdunit-wrapper/focused/run-*` for focused runs. Missing, ambiguous, or stale JUnit cannot satisfy a run.
 
 ## Discovery and verdict
 

@@ -95,7 +95,7 @@ flowchart TD
 
 | 图中定位 | 原件位置与恢复入口 |
 | --- | --- |
-| 运行、发现、断言与诊断 | 运行器实际打印的 `reports/gdunit-wrapper/run-<id>/`；从 [一次运行留下什么](commands-and-validation.md#一次运行留下什么) 读取原件 |
+| 运行、发现、断言与诊断 | 运行器实际打印的 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`；从 [一次运行留下什么](commands-and-validation.md#一次运行留下什么) 读取原件 |
 | 导入与当前内容 | `docs/feature-completion-evidence.json`、本次命令错误和被引用 result.json；按 [完成依据](commands-and-validation.md#记录完成依据) 与 [指纹边界](commands-and-validation.md#内容绑定与失效判断) 修复 |
 | 人工反馈 | `reports/manual-acceptance/` 原清单、用户结果或明确口头决定；从 [Stage 5](../guides/feature-delivery.md#人工验收应如何操作) 继续 |
 
@@ -107,7 +107,7 @@ flowchart TD
 | 参数化测试集合不匹配 | 核对实际展开的用例标识与 JUnit；源码方法数量不足以证明执行 |
 | 超时 | 读取超时和进程结果，判断卡住或必要运行时长；调整超时要有真实依据 |
 | `result.json` 停在 running | 本次可能中断或尚未结束，不能自行改为 passed |
-| 新运行提示 `WARNING: invalid run history` | 历史警告不阻止本次测试，实际成败看本次 result.json；保留警告指出的原件。完成检查只排除 schema、运行身份有效且 Feature ID 明确属于其他 Feature 的历史；被引用、当前 Feature 或归属不明的坏记录仍须查明来源后按授权处理，不能用新测试通过掩盖证据缺口 |
+| 新运行提示 `WARNING: invalid run history` | 警告只涉及本次所属目录，不阻止继续测试，实际成败看本次 result.json。当前 Feature 目录中的损坏记录或归属错误仍会阻止完成；保留原件并查明原因，不能用新测试通过掩盖。其他 Feature 和 focused 目录不参与本 Feature 的完成检查 |
 | 报告目录或 `result.json` 写入失败 | 先解决实际 I/O 或权限问题；本次可能没有结果文件，不能将打印出的目标路径当作保存成功 |
 | 已有旧成功，较新失败仍阻止完成 | 修复后运行能够覆盖失败范围的实际验证，保留失败原件 |
 | `record-tests` 拒绝导入 | 核对 Feature、final 阶段、scope、当前源码绑定、原件和真实覆盖 |

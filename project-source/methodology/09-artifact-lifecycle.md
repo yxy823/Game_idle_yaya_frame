@@ -11,7 +11,7 @@ needed:
 
 | Artifact | Location and responsibility |
 | --- | --- |
-| Tool or workflow-defined reports | Keep their existing paths, including `reports/gdunit-wrapper/run-<id>/`, `reports/manual-acceptance/` and `reports/initialization.md`. Their readers and evidence references depend on those contracts. |
+| Tool or workflow-defined reports | Keep their existing paths, including `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` (or `focused/run-<id>/` under the same root), `reports/manual-acceptance/` and `reports/initialization.md`. Their readers and evidence references depend on those contracts. |
 | Custom Feature logs, results and screenshots | Use `reports/features/<Feature-ID>/`, including engineering Features. Keep results with their Feature rather than scattering files at the root or grouping several Features in a Product scratch directory. |
 | Custom reports without a Feature | Use `reports/maintenance/<task>/`, with a descriptive maintenance or investigation key. |
 | Temporary projects, probes, reference-source excerpts and command-support files | Use `reports/scratch/<task>/`, with separate attempt directories as needed. Keep each copied project and its generated caches inside that workspace; copy only the inputs needed for the check. |

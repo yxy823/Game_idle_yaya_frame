@@ -93,6 +93,21 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
 
+    def test_first_report_import_creates_completion_record_without_initialization(self):
+        _, report = self.run_fixture()
+        path = self.root / feature_completion_evidence.EVIDENCE_RELATIVE_PATH
+        self.assertFalse(path.exists())
+        result = subprocess.run(
+            [sys.executable, "-B", str(PROJECT_ROOT / ".agents/skills/feature-execute/scripts/record-feature-completion.py"),
+             "--repo-root", str(self.root), "record-tests", "--feature", "F001", "--run", str(report)],
+            capture_output=True, text=True,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        stored = json.loads(path.read_text(encoding="utf-8"))
+        self.assertEqual(stored["feature_id"], "F001")
+        self.assertTrue(stored["test_runs"][0]["path"].startswith("reports/gdunit-wrapper/F001/run-"))
+        self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+
     def test_manual_acceptance_must_still_cover_current_content_without_review(self):
         self.detail["verification"]["acceptance_mode"] = "manual"
         self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = ["Listen to the sound"]
@@ -187,10 +202,10 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
     def test_no_obligations_does_not_hide_supplied_or_failed_runs(self):
         from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, start_run
         self.manual_without_automated_obligations()
-        for references in (None, {}, [{"path": "reports/gdunit-wrapper/missing/result.json", "sha256": "missing"}]):
+        for references in (None, {}, [{"path": "reports/gdunit-wrapper/F001/missing/result.json", "sha256": "missing"}]):
             with self.subTest(references=references), self.assertRaises(RunEvidenceError):
                 derive_test_evidence(self.root, "F001", references)
-        directory = self.root / "reports/gdunit-wrapper/run-unfinished"
+        directory = self.root / "reports/gdunit-wrapper/F001/run-unfinished"
         record = start_run(self.root, directory, "F001", "final", "affected")
         for status in ("running", "failed"):
             with self.subTest(status=status):

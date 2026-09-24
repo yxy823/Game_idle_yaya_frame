@@ -269,7 +269,7 @@ Agent 在 Stage 8 汇报实际交付、验证范围与报告路径、提交和�
 | --- | --- | --- |
 | 需求 → 当前任务 | 示例模块 `docs/product/01-gathering.md` 被 F001 的 source 引用，AC01 初始 0，AC02 点击后依次 1、2 | 确定预期；不证明已实现 |
 | 任务 → 测试映射 | Stage 1–2 可规划 `F001-AC01`、`F001-AC02`；Stage 3 在 Registry 关联实际创建的套件与 case，例如 `tests/features/F001/collection_test.gd::test_collect_twice` | 只有真实存在且被发现的测试才提供执行覆盖 |
-| 映射 → 运行结果 | Stage 4 使用实际 F001 运行，读取命令打印的 `reports/gdunit-wrapper/run-<实际值>/result.json` | 原始结果证明实际覆盖与成败，0、1、2 仍是预期值 |
+| 映射 → 运行结果 | Stage 4 使用实际 F001 运行，读取命令打印的 `reports/gdunit-wrapper/F001/run-<实际值>/result.json` | 原始结果证明实际覆盖与成败，0、1、2 仍是预期值 |
 | 结果 → 完成依据 | `record-tests` 导入该路径及内容引用；若按钮辨识或手感属于需求，再绑定清单并取得用户结果 | 自动结果和人工决定分别核对当前内容 |
 | 依据 → 状态 | 满足全部适用检查后 Agent 才记 done；人工项未完成则保持 in_progress 并在 Progress 说明等待内容 | 提交代码、导入成功或数值测试通过均不单独等于验收完成 |
 

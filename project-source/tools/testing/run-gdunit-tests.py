@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.feature_completion_evidence import write_evidence
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
-from tools.lib.test_run_evidence import start_run, finish_run
+from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory
 from tools.lib.test_selection import build_selection, execution_selectors, read_json
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -53,7 +53,7 @@ def _startup_diagnostics(output: str) -> list[str]:
 
 
 def _run_tests(args: argparse.Namespace) -> int:
-    report_base = REPO_ROOT / "reports/gdunit-wrapper"
+    report_base = run_history_directory(REPO_ROOT, args.feature)
     report_base.mkdir(parents=True, exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix="run-", dir=report_base))
     print(f"Run result: {directory / 'result.json'}", flush=True)
@@ -121,6 +121,10 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Maximum test-process wall time (default: 120 seconds).",
     )
     args = parser.parse_args(list(argv))
+    try:
+        run_history_directory(REPO_ROOT, args.feature)
+    except ValueError as error:
+        parser.error(str(error))
     if args.godot_binary is None:
         try:
             config = read_json(REPO_ROOT / "docs/methodology-config.json")

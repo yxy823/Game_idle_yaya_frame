@@ -175,7 +175,7 @@ class LifecycleEvidenceTests(unittest.TestCase):
         with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
                 runner, "_run_process", side_effect=failed_process):
             self.assertEqual(runner._run_tests(args), 1)
-        path = next((self.root / "reports/gdunit-wrapper").glob("run-*/result.json"))
+        path = next((self.root / "reports/gdunit-wrapper/focused").glob("run-*/result.json"))
         result = json.loads(path.read_text())
         self.assertEqual(result["process"]["returncode"], 7)
         self.assertEqual(result["status"], "failed")

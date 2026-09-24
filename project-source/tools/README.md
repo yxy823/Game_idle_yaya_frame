@@ -58,7 +58,7 @@ $LASTEXITCODE
 python -B tools/checks/check-project-environment.py --require-ready
 python -B tools/checks/check-feature-list.py
 python -B tools/testing/run-gdunit-tests.py --feature F001 --scope auto
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/run-ID/result.json
+python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/F001/run-ID/result.json
 ```
 
 将上述 Python 换成配置中的实际解释器；仅需临时更换 Godot 时传入 `--godot-binary <路径>`。
@@ -69,14 +69,12 @@ python -B .agents/skills/feature-execute/scripts/record-feature-completion.py re
 [直接检查说明](../methodology/gdscript-lint.md)。没有静态检查 Python 包装器、
 静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
 
-每次测试只写一份 `result.json`，关联引擎日志、实际发现集合、JUnit 和诊断原件。
+Feature 运行保存到 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行保存到 `reports/gdunit-wrapper/focused/run-<id>/`。每次测试只写一份 `result.json`，关联引擎日志、实际发现集合、JUnit 和诊断原件。
 运行中、失败与通过都保存在该文件；完成检查从原件计算覆盖，不维护第二份尝试日志。
 历史结果无法读取或头部无效时，启动阶段在 stderr 提示 `WARNING: invalid run history`，
 保留原件并继续本次验证；警告不决定本次测试成败。当前快照读取失败仍保存本次
 `failed` 结果并返回非零，不启动 Godot。
-完成检查拒绝被引用的损坏结果及当前 Feature 的无效历史；只有 schema 和运行身份有效、
-Feature ID 明确属于另一 Feature 的记录才排除。不可读或身份不明的坏记录仍阻止完成，
-须查明原因后按授权处理。正常的失败仍须由同 Feature/内容的后续充分验证解决。
+运行顺序和完成检查只读取当前 Feature 目录。目录内不可读、格式损坏或 Feature 不符的记录仍会阻止完成，须查明原因后按授权处理。正常的失败仍须由同 Feature/内容的后续充分验证解决。
 目录或结果文件写入失败时如实报告 I/O 错误，不能声称结果已经保存。
 
 ## 结果如何使用

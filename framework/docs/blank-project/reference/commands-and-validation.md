@@ -140,10 +140,10 @@ affected = Required + 与影响组件相交的 active 验收测试
 
 ## 一次运行留下什么
 
-每次调用创建 `reports/gdunit-wrapper/run-<id>/`，输出真实 `result.json` 路径。使用命令打印的路径，不猜测 run ID 或报告文件夹编号。
+Feature 运行创建 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行创建 `reports/gdunit-wrapper/focused/run-<id>/`。运行顺序和完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不猜测 run ID 或报告文件夹编号。
 
 ```text
-reports/gdunit-wrapper/run-<id>/
+reports/gdunit-wrapper/F001/run-<id>/
 ├── result.json                 同一个文件从运行中更新为成功或失败
 ├── engine.log                  原始引擎输出
 ├── discovery.json              实际展开后的测试发现集合
@@ -184,14 +184,14 @@ reports/gdunit-wrapper/run-<id>/
 只有一个有效运行时：
 
 ```powershell
-& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-id/result.json
+& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-id/result.json"
 $LASTEXITCODE
 ```
 
 需同时保留两个兼容运行时，改用一次调用中的两个 `--run`；以下路径同样只是占位：
 
 ```powershell
-& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run reports/gdunit-wrapper/run-actual-first/result.json --run reports/gdunit-wrapper/run-actual-second/result.json
+& $projectPython -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-first/result.json" --run "reports/gdunit-wrapper/$featureId/run-actual-second/result.json"
 $LASTEXITCODE
 ```
 

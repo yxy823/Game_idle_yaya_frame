@@ -256,22 +256,24 @@ def artifact_reference(directory: Path, path: Path) -> dict[str, str]:
     return {"path": relative, "sha256": file_hash(path)}
 
 
-def _run_records(root: Path, feature_id: str | None = None) -> tuple[list[dict], list[str]]:
+def run_history_directory(root: Path, feature_id: str | None) -> Path:
+    if feature_id is not None and (not isinstance(feature_id, str) or not re.fullmatch(r"F\d{3}", feature_id)):
+        raise RunEvidenceError("Feature ID must match F0XX")
+    return root / "reports/gdunit-wrapper" / (feature_id if feature_id is not None else "focused")
+
+
+def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[str]]:
     """Read usable run headers and report errors without discarding their paths."""
     records, errors = [], []
-    for path in (root / "reports/gdunit-wrapper").glob("run-*/result.json"):
+    for path in run_history_directory(root, feature_id).glob("run-*/result.json"):
         try:
             record = read_json(path)
             if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
                 raise RunEvidenceError("unsupported run result schema")
             if record.get("run_id") != path.parent.name:
                 raise RunEvidenceError("run identity does not match its directory")
-            # Only a readable supported header can establish another Feature's
-            # ownership. Unknown/corrupt identity must still block completion.
-            owner = record.get("feature_id")
-            if (feature_id is not None and isinstance(owner, str)
-                    and re.fullmatch(r"F\d{3}", owner) and owner != feature_id):
-                continue
+            if record.get("feature_id") != feature_id:
+                raise RunEvidenceError("run Feature does not match its history directory")
             if type(record.get("sequence")) is not int or record["sequence"] < 1:
                 raise RunEvidenceError("run sequence must be a positive integer")
             records.append(record)
@@ -286,7 +288,7 @@ def start_run(root: Path, directory: Path, feature_id: str | None,
     # History damage is reported without preventing a new measurement. Completion
     # independently rejects referenced damage and unresolved/unknown history.
     started_at = utc_now()
-    records, history_errors = _run_records(root)
+    records, history_errors = _run_records(root, feature_id)
     for error in history_errors:
         print("WARNING: " + error, file=sys.stderr)
     errors = []
@@ -380,8 +382,10 @@ def finish_run(root: Path, directory: Path, result: dict, *,
 def verify_run(root: Path, reference: dict[str, str], selection: dict,
                snapshot: dict) -> tuple[dict, list[dict]]:
     path = (root / reference["path"]).resolve()
-    if not path.is_relative_to((root / "reports/gdunit-wrapper").resolve()) or not path.is_file():
-        raise RunEvidenceError("run result must exist under reports/gdunit-wrapper")
+    history_directory = run_history_directory(root, selection["feature_id"]).resolve()
+    if (path.parent.parent != history_directory or path.name != "result.json"
+            or not path.parent.name.startswith("run-") or not path.is_file()):
+        raise RunEvidenceError(f"run result must exist at {history_directory}/run-<id>/result.json")
     if file_hash(path) != reference["sha256"]:
         raise RunEvidenceError("run result changed after recording")
     result = read_json(path)
@@ -400,14 +404,14 @@ def verify_run(root: Path, reference: dict[str, str], selection: dict,
 
 
 def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs: list[dict]) -> None:
-    # Sequence is local run order, not filesystem timestamp precision. A tie from
+    # Sequence is this Feature's run order, not filesystem timestamp precision. A tie from
     # concurrent launches never clears a different failed/unfinished run.
     rank = {"required": 1, "affected": 2, "full": 3}
     records, errors = _run_records(root, selection["feature_id"])
     if errors:
         raise RunEvidenceError("; ".join(errors))
     for record in records:
-        if (record.get("feature_id") != selection["feature_id"] or record.get("phase") != "final"
+        if (record.get("phase") != "final"
                 or record.get("status") == "passed"
                 or (record.get("snapshot") or {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]):
             continue

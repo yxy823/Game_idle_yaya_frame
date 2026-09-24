@@ -80,6 +80,12 @@ class GdUnitRunnerTests(unittest.TestCase):
             with self.subTest(value=invalid), self.assertRaises(argparse.ArgumentTypeError):
                 runner._positive_seconds(invalid)
 
+    def test_invalid_feature_cannot_choose_a_report_directory(self) -> None:
+        for feature in ("../outside", "F001/run-other", "focused", "", "F01"):
+            with self.subTest(feature=feature), self.assertRaises(SystemExit):
+                runner._parse_args(["--godot-binary", sys.executable, "--feature", feature])
+        self.assertFalse((self.root / "reports").exists())
+
     def test_default_engine_reads_config_and_override_needs_no_config(self) -> None:
         config = self.root / "docs/methodology-config.json"
         config.parent.mkdir()
