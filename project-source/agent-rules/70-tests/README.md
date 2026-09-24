@@ -10,9 +10,7 @@ L3 Runtime Scene Test
 Manual Visual Acceptance
 ```
 
-v1 intentionally does **not** create `visual-regression.md`, screenshot golden
-baselines, pixel-diff tolerance, coverage-percentage gates, or generic
-performance thresholds.
+v1 intentionally does **not** create `visual-regression.md`, screenshot golden baselines, pixel-diff tolerance, coverage-percentage gates, or generic performance thresholds.
 
 Read the matching sections below; combine domains when the test actually uses them.
 

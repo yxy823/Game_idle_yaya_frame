@@ -10,8 +10,7 @@
 
 完整文件职责、出现时机与主要读写方集中在 [目录参考](../reference/project-layout.md#文档与执行文件如何配合)。本页只解释何时维护、如何保留历史和从哪里续接；当前 Feature 的 Stage 1–4 衔接见 [最终验证前文档更新](feature-delivery.md#最终验证前完成文档更新)。
 
-美术、声音、UI、资源与本地化文档由对应专业 Skill 直接维护，Product 保存行为与引用。
-来源变化、缺陷分类和设计/接入/审核边界见 [专业工作指南](specialist-workflows.md)。
+美术、声音、UI、资源与本地化文档由对应专业 Skill 直接维护，Product 保存行为与引用。 来源变化、缺陷分类和设计/接入/审核边界见 [专业工作指南](specialist-workflows.md)。
 
 ## 按需搜索与保存调研
 

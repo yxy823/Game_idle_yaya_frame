@@ -186,10 +186,7 @@ anysearch 是用户级搜索 Skill，不包含在上述 27 项中，也不随创
 
 ## Skill 未被自动识别时
 
-专业内容、制作占位与独立审核的协作见 [专业工作指南](../guides/specialist-workflows.md)。
-所有审核方法由独立实例按需选用，不默认逐项执行；角色源文件为
-[independent-reviewer.toml](../../../../project-source/agents/independent-reviewer.toml)，
-复制到项目 `.codex/agents/`。实际加载、上下文和权限需核实，不能由文件存在推定。
+专业内容、制作占位与独立审核的协作见 [专业工作指南](../guides/specialist-workflows.md)。 所有审核方法由独立实例按需选用，不默认逐项执行；角色源文件为 [independent-reviewer.toml](../../../../project-source/agents/independent-reviewer.toml)， 复制到项目 `.codex/agents/`。实际加载、上下文和权限需核实，不能由文件存在推定。
 
 先核对当前工作目录、项目 `.agents/skills/` 和目标 `SKILL.md` 是否存在，再核对所用 Agent 对项目 Skill 的加载方式。不要直接以“未自动出现”推断源文件丢失，也不要先改流程或生成替代 Skill。
 

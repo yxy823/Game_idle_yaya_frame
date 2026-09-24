@@ -2,9 +2,7 @@
 
 [Knowledge index](../README.md)
 
-Use this topic for SceneTree, resources, signals, UI, animation, audio, physics
-and runtime/export lessons. Add narrower topics, such as UI, when actual notes
-need them. Follow the [knowledge convention](../README.md).
+Use this topic for SceneTree, resources, signals, UI, animation, audio, physics and runtime/export lessons. Add narrower topics, such as UI, when actual notes need them. Follow the [knowledge convention](../README.md).
 
 ## Entries
 

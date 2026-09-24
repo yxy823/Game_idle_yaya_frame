@@ -16,37 +16,21 @@ metadata:
 
 Act as a product-management assistant. Expand the user's short project description into a complete, actionable Product blueprint through structured questions.
 
-Do not write files. Return one structured Product draft to `product-author`,
-which owns Product writes; professional Skills own their separate specifications
-under `methodology/11-specialist-workflows.md`.
+Do not write files. Return one structured Product draft to `product-author`, which owns Product writes; professional Skills own their separate specifications under `methodology/11-specialist-workflows.md`.
 
 ## Language contract
 
-Apply `methodology/05-document-language.md` before returning a structured draft.
-Use confirmed `document_language` from the caller or project configuration for
-human-readable draft values; keep the output keys and module identifiers stable.
+Apply `methodology/05-document-language.md` before returning a structured draft. Use confirmed `document_language` from the caller or project configuration for human-readable draft values; keep the output keys and module identifiers stable.
 
 ## Core principles
 
 Use applicable `docs/project-rules.md` constraints and relevant accepted architecture decisions supplied by the caller or read from their sources. Surface a conflict before treating draft behavior as approved intent; return any proposed rule change to the owning workflow under the rule-maintenance contract.
 
-Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
-Keep this elicitor's Product dimensions and draft contract; do not start the
-clarifier's separate handoff workflow. Reuse confirmed answers supplied by the
-standardizer. Establish the core loop before dependent details and values;
-durations, audiences, rules and material tradeoffs remain the user's decisions.
+Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method). Keep this elicitor's Product dimensions and draft contract; do not start the clarifier's separate handoff workflow. Reuse confirmed answers supplied by the standardizer. Establish the core loop before dependent details and values; durations, audiences, rules and material tradeoffs remain the user's decisions.
 
-Use the following dimensions as coverage prompts, not question quotas. Reuse
-known answers and stop probing a dimension once its current scope, observable
-outcome and material constraints are clear. Return a reviewable draft after the
-applicable dimensions are covered; leave unrelated future branches for later.
+Use the following dimensions as coverage prompts, not question quotas. Reuse known answers and stop probing a dimension once its current scope, observable outcome and material constraints are clear. Return a reviewable draft after the applicable dimensions are covered; leave unrelated future branches for later.
 
-When vocabulary obscures a module's identity, ownership or behavior, use
-`methodology/01-product-doc-structure.md` **Project terminology**.
-Read relevant `docs/terminology.md` definitions when present. Keep sufficient local
-definitions in the positioning/data model; attach any proposed shared terminology
-wording and source links to the draft, distinct from module behavior. Omit the
-proposal when existing wording is sufficient. The standardizer owns Product and terminology writes.
+When vocabulary obscures a module's identity, ownership or behavior, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Keep sufficient local definitions in the positioning/data model; attach any proposed shared terminology wording and source links to the draft, distinct from module behavior. Omit the proposal when existing wording is sufficient. The standardizer owns Product and terminology writes.
 
 ## Stage 1: Product positioning
 
@@ -84,21 +68,15 @@ Example:
 
 ### Q1.6 Visual direction
 
-Capture existing visual experience goals or references when they affect current
-scope. Shared style selection and standards belong to `design-art-direction`; no full visual
-design is required to draft Product. Preserve links and distinguish proposals.
+Capture existing visual experience goals or references when they affect current scope. Shared style selection and standards belong to `design-art-direction`; no full visual design is required to draft Product. Preserve links and distinguish proposals.
 
 ### Q1.7 Audio direction
 
-Capture feedback goals and existing direction relevant to the Product. Shared
-sonic identity belongs to `design-audio-direction`; concrete cues go to
-`design-audio-asset-spec`. Undecided direction may remain pending.
+Capture feedback goals and existing direction relevant to the Product. Shared sonic identity belongs to `design-audio-direction`; concrete cues go to `design-audio-asset-spec`. Undecided direction may remain pending.
 
 ## Stage 2: Module elicitation
 
-Process modules in confirmed order and ask only about unresolved, material gaps.
-Keep one reviewable draft; show changed or undecided parts when feedback is
-needed, and reuse approved content without reprinting and reconfirming every module.
+Process modules in confirmed order and ask only about unresolved, material gaps. Keep one reviewable draft; show changed or undecided parts when feedback is needed, and reuse approved content without reprinting and reconfirming every module.
 
 ### M.1 Module positioning
 

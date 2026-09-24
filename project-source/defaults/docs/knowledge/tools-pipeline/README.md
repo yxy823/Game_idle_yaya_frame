@@ -2,9 +2,7 @@
 
 [Knowledge index](../README.md)
 
-Use this topic for PowerShell/Python helpers, data and import workflows, build
-and local tooling. Record machine-specific conditions when relevant. Follow the
-[knowledge convention](../README.md).
+Use this topic for PowerShell/Python helpers, data and import workflows, build and local tooling. Record machine-specific conditions when relevant. Follow the [knowledge convention](../README.md).
 
 ## Entries
 

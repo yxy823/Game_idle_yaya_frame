@@ -2,16 +2,9 @@
 
 ## 范围与版本
 
-用户在静态审核后明确授权修复四项问题并实际验证；Shader 接入仅讨论，本轮没有实现。
-修改基于 `2d00f251c6d5d7ce7f4569232086bbd2e0bf97d5`，开始时维护仓库工作区干净。
-本报告的通过结果来自本轮最终代码，不沿用 2026-09-21 的通过记录。
+用户在静态审核后明确授权修复四项问题并实际验证；Shader 接入仅讨论，本轮没有实现。 修改基于 `2d00f251c6d5d7ce7f4569232086bbd2e0bf97d5`，开始时维护仓库工作区干净。 本报告的通过结果来自本轮最终代码，不沿用 2026-09-21 的通过记录。
 
-源代码在 `project-source/`，回归夹具在 `framework/tests/project/`。
-实际执行使用既有外部项目 `D:/A_Games/Game_idle_yaya_frame_workbench_test`：
-Windows、Godot `4.7.1.stable.official.a13da4feb`、Vulkan Forward+ / RTX 4060 Laptop GPU，
-Python 使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe` 和项目已安装的 Analyzer 依赖。
-只同步本轮具体源文件、相关说明与三份回归夹具，未覆盖机器配置、主场景设置和 Cue。
-执行后核对源代码、四套测试及 Cue 与对应源材料一致；故障注入的两份契约 JSON 已恢复原字节。
+源代码在 `project-source/`，回归夹具在 `framework/tests/project/`。 实际执行使用既有外部项目 `D:/A_Games/Game_idle_yaya_frame_workbench_test`： Windows、Godot `4.7.1.stable.official.a13da4feb`、Vulkan Forward+ / RTX 4060 Laptop GPU， Python 使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe` 和项目已安装的 Analyzer 依赖。 只同步本轮具体源文件、相关说明与三份回归夹具，未覆盖机器配置、主场景设置和 Cue。 执行后核对源代码、四套测试及 Cue 与对应源材料一致；故障注入的两份契约 JSON 已恢复原字节。
 
 ## 四项修复
 
@@ -22,15 +15,11 @@ Python 使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe` 和项目�
 | 两份分析契约在 GDScript 静态变量初始化时读取文件 | 按需显式加载，只有结构可用时才缓存；服务在启动任务前初始化默认预算和契约。缺失、解析失败及当前解释器不支持的结构返回含文件路径的 `analyzer_config`，失败不缓存，恢复文件后可重试 | `analysis_source.gd`、`analysis_schema.gd`、`analysis_service.gd` |
 | 七处代码超过 100 字符限制 | 折行及提取局部判定，保持原表达式语义。未调宽规则 | `analysis_source.gd`、`analysis_result.gd`、`analysis_chart.gd`、`single/example_reward_game.gd` |
 
-工作台脚本位于 [tools/asset_workbench](../../../project-source/tools/asset_workbench/)，
-示例脚本位于 [examples/asset_workbench/single](../../../project-source/examples/asset_workbench/single/)。
-配置校验只检查当前消费者需要的类型、预算和解释器输入结构；结果字段仍由原来的共同 JSON Schema 定义。
-不新增配置服务、依赖、结果协议版本、流程 Gate 或自动同步。
+工作台脚本位于 [tools/asset_workbench](../../../project-source/tools/asset_workbench/)， 示例脚本位于 [examples/asset_workbench/single](../../../project-source/examples/asset_workbench/single/)。 配置校验只检查当前消费者需要的类型、预算和解释器输入结构；结果字段仍由原来的共同 JSON Schema 定义。 不新增配置服务、依赖、结果协议版本、流程 Gate 或自动同步。
 
 ## 本轮实际验证
 
-以下原始证据路径均相对外部验证项目。四套 Godot 测试共 51 项，均通过测试包装器的最终判定，
-不是仅看引擎退出码或测试界面的绿色文字。
+以下原始证据路径均相对外部验证项目。四套 Godot 测试共 51 项，均通过测试包装器的最终判定， 不是仅看引擎退出码或测试界面的绿色文字。
 
 | 检查 | 结果与覆盖 | 原始证据 |
 | --- | --- | --- |
@@ -43,9 +32,7 @@ Python 使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe` 和项目�
 | 框架维护回归 | 38/38 unittest，包含复制与契约边界；运行输出保留在本次会话 | 框架根目录 `unittest discover -s framework/tests -p test_*.py` |
 | 真实渲染 | 两份现有 capture 均退出 0；单对象/组合入口、音频/图像 A/B、批量、浅深色、小窗滚动实际渲染。Agent 查看了两个入口、音频结果、批量结果、深色及小窗滚动后的截图 | `reports/asset-analyzer/review-fixes-20260922-rendering/` |
 
-渲染产物中 `group/window-state.json` 记录主窗口与项目设置均为 1600×900。
-捕获脚本只将原夹具的输出目录机械替换到本次独立产物目录，保留旧证据；两份运行副本及 `engine.log` 一并保留。
-未修改手册 Markdown/HTML：现有工作台指南继续链接本轮更新的示例与 Analyzer README，具体操作说明在对应 README 同步。
+渲染产物中 `group/window-state.json` 记录主窗口与项目设置均为 1600×900。 捕获脚本只将原夹具的输出目录机械替换到本次独立产物目录，保留旧证据；两份运行副本及 `engine.log` 一并保留。 未修改手册 Markdown/HTML：现有工作台指南继续链接本轮更新的示例与 Analyzer README，具体操作说明在对应 README 同步。
 
 ### 调试过程中的失败
 
@@ -69,8 +56,7 @@ foreach ($suite in @('asset_analyzer', 'asset_composition', 'asset_analysis_grou
 }
 ```
 
-契约故障注入测试仅适用于该独立验证项目，必须串行执行；期间不要另外启动分析任务或修改契约文件。
-后端与维护回归在框架根目录执行：
+契约故障注入测试仅适用于该独立验证项目，必须串行执行；期间不要另外启动分析任务或修改契约文件。 后端与维护回归在框架根目录执行：
 
 ```powershell
 $env:YAYA_TEST_PROJECT = 'D:/A_Games/Game_idle_yaya_frame_workbench_test'
@@ -80,20 +66,8 @@ $env:YAYA_TEST_PROJECT = 'D:/A_Games/Game_idle_yaya_frame_workbench_test'
 
 ## Shader 接入讨论与验证边界
 
-当前 `FeedbackPresenter` 继承 `Control`，图标和放射线在同一个 CanvasItem 的 `_draw()` 绘制，
-可以接入 `canvas_item` Shader；只作用图标时应分离其绘制节点。已有组合场景也可承载原生材质节点。
-但 `FeedbackCue`、试调控件、值比较和保存目前没有 Shader 参数契约，不能称为现成 Shader 编辑器。
+当前 `FeedbackPresenter` 继承 `Control`，图标和放射线在同一个 CanvasItem 的 `_draw()` 绘制， 可以接入 `canvas_item` Shader；只作用图标时应分离其绘制节点。已有组合场景也可承载原生材质节点。 但 `FeedbackCue`、试调控件、值比较和保存目前没有 Shader 参数契约，不能称为现成 Shader 编辑器。
 
-用户进一步说明目标是“组合场景：多个对象的材质和特效联动”。较小的后续范围是选一个真实的多对象联动效果，
-复用现有对象选择、各自 A/B、同时触发和统一停止，补必要参数控件、对象间参数隔离、显式保存/重载，
-并让独立组合场景消费同一配置。需要错峰、统一进度或重复触发时，先明确该效果的时序要求，再补对应表现数据；
-现有音频延迟字段不应隐式改成所有视觉效果的时钟，也不预先扩建通用时间轴。
-Shader 代码与只读纹理可共享，可变 uniform 值按适用契约使用实例参数或独立材质；
-现有 `trial_copy()` 浅复制不能直接承担新增可变材质的隔离。
-需要停止/重播一致时使用表现组件管理的时间或进度 uniform，不能把全局 `TIME` 当作单个试调的时钟。
-参见 Godot 4.7 的 [CanvasItem Shader](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html)
-和 [ShaderMaterial 参数共享说明](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html)。
+用户进一步说明目标是“组合场景：多个对象的材质和特效联动”。较小的后续范围是选一个真实的多对象联动效果， 复用现有对象选择、各自 A/B、同时触发和统一停止，补必要参数控件、对象间参数隔离、显式保存/重载， 并让独立组合场景消费同一配置。需要错峰、统一进度或重复触发时，先明确该效果的时序要求，再补对应表现数据； 现有音频延迟字段不应隐式改成所有视觉效果的时钟，也不预先扩建通用时间轴。 Shader 代码与只读纹理可共享，可变 uniform 值按适用契约使用实例参数或独立材质； 现有 `trial_copy()` 浅复制不能直接承担新增可变材质的隔离。 需要停止/重播一致时使用表现组件管理的时间或进度 uniform，不能把全局 `TIME` 当作单个试调的时钟。 参见 Godot 4.7 的 [CanvasItem Shader](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html) 和 [ShaderMaterial 参数共享说明](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html)。
 
-全屏后处理、3D 材质和通用任意 Shader 参数编辑需要不同的预览上下文，尚未实施或验证。
-现有 Analyzer 测量源图片/音频，不测 Shader 后的最终画面。
-本轮自动断言和渲染不替代用户对听感、布局与交互的接受，也未覆盖所有设备、全部编码和完整项目开发流程。
+全屏后处理、3D 材质和通用任意 Shader 参数编辑需要不同的预览上下文，尚未实施或验证。 现有 Analyzer 测量源图片/音频，不测 Shader 后的最终画面。 本轮自动断言和渲染不替代用户对听感、布局与交互的接受，也未覆盖所有设备、全部编码和完整项目开发流程。

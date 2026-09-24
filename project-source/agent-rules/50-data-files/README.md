@@ -1,7 +1,6 @@
 # 50 Data File Rules
 
-Applies to design/runtime data such as JSON, CSV, XLSX, YAML, generated canonical
-data, schemas, migrations, and data validators.
+Applies to design/runtime data such as JSON, CSV, XLSX, YAML, generated canonical data, schemas, migrations, and data validators.
 
 Canonical lifecycle:
 

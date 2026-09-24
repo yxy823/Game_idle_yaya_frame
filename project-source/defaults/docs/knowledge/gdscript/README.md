@@ -2,8 +2,7 @@
 
 [Knowledge index](../README.md)
 
-Use this topic for type and API usage, language pitfalls, script organization
-and implementation approaches. Follow the [knowledge convention](../README.md).
+Use this topic for type and API usage, language pitfalls, script organization and implementation approaches. Follow the [knowledge convention](../README.md).
 
 ## Entries
 

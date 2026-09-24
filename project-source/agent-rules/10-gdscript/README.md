@@ -1,8 +1,6 @@
 # 10 GDScript Rules
 
-Applies to project-owned `.gd` files, including project-owned test scripts.
-Vendor addon code follows Core vendor rules unless the task explicitly owns a
-patch/fork.
+Applies to project-owned `.gd` files, including project-owned test scripts. Vendor addon code follows Core vendor rules unless the task explicitly owns a patch/fork.
 
 Read the matching sections below; a `.gd` file does not require every topic.
 

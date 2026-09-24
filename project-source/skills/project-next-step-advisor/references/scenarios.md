@@ -1,8 +1,6 @@
 # Guidance regression scenarios
 
-Review actual advice against the canonical routing table, using small neutral
-projects. These are language-model acceptance scenarios; Python state-reader
-tests prove read-only data retrieval, not natural-language routing accuracy.
+Review actual advice against the canonical routing table, using small neutral projects. These are language-model acceptance scenarios; Python state-reader tests prove read-only data retrieval, not natural-language routing accuracy.
 
 | User intent / state | Expected advice contract |
 | --- | --- |
@@ -60,8 +58,4 @@ tests prove read-only data retrieval, not natural-language routing accuracy.
 | A status query has a matching prompt example | Answer current facts directly without loading examples or manufacturing a continuation prompt. |
 | A wording example is absent or conflicts with the project's current Skill | Follow current project authority, report a material conflict if relevant, and draft advice without fetching the framework or regenerating files. |
 
-For every case, verify that advice reads current project facts, refers to the
-existing destination workflow when routing is needed, supplies a prompt only for
-a handoff/next-action need, and performs no writes.
-Record any observed misrouting as a focused regression case; do not claim these
-expectations themselves are executed end-to-end tests.
+For every case, verify that advice reads current project facts, refers to the existing destination workflow when routing is needed, supplies a prompt only for a handoff/next-action need, and performs no writes. Record any observed misrouting as a focused regression case; do not claim these expectations themselves are executed end-to-end tests.

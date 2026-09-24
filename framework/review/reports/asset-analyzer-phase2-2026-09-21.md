@@ -1,14 +1,10 @@
 # 第二阶段：外部 Analyzer 实施与验证
 
-日期：2026-09-21。维护仓库：`D:/A_Games/Game_idle_yaya_frame`；基线提交 `49bf0ba`。
-用户在本轮明确确认第一阶段已通过验收，并授权第二阶段代码、测试、文档和验收记录。
-实际验证项目沿用 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，不是未初始化的分发源目录。
+日期：2026-09-21。维护仓库：`D:/A_Games/Game_idle_yaya_frame`；基线提交 `49bf0ba`。 用户在本轮明确确认第一阶段已通过验收，并授权第二阶段代码、测试、文档和验收记录。 实际验证项目沿用 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，不是未初始化的分发源目录。
 
 ## 实施结论与范围
 
-已建立源资源选择 → Godot 后台进程 → 外部音频/图像分析 → Schema v1 → 指标/图表 → 同类 A/B → 内容缓存闭环。
-分析是原浏览器上的新入口，使用非模态窗口；没有第二套资源浏览器，没有重做预览或修改 SoundManager。
-第一阶段事件 A/B 和分析资源 A/B 各有明确用途，后者不写入 Cue。当前交付的自动化与渲染证据不替代用户对第二阶段界面的人工验收。
+已建立源资源选择 → Godot 后台进程 → 外部音频/图像分析 → Schema v1 → 指标/图表 → 同类 A/B → 内容缓存闭环。 分析是原浏览器上的新入口，使用非模态窗口；没有第二套资源浏览器，没有重做预览或修改 SoundManager。 第一阶段事件 A/B 和分析资源 A/B 各有明确用途，后者不写入 Cue。当前交付的自动化与渲染证据不替代用户对第二阶段界面的人工验收。
 
 ## 开始前审查与复用
 
@@ -28,14 +24,9 @@
 
 ## 技术选择与文件位置
 
-采用 PyAV **18.1.0**、Pillow **12.3.0**、NumPy **2.5.3**、pyloudnorm **0.2.0**、SciPy **1.18.1**。
-2026-09-21 核对官方发布、维护状态、Windows wheel 与许可后实际安装；没有沿用旧调研中的模糊版本。
-PyAV wheel 实际链接 FFmpeg **8.1.2 / LGPL-3.0-or-later**，不是当日独立 CLI 最新的 9.0.2。
-主包许可及 wheel 附带组件边界、来源链接、未选 FFmpeg CLI/librosa/OpenCV 的原因见
-[依赖记录](../../../project-source/tools/asset_analyzer/DEPENDENCIES.md)。
+采用 PyAV **18.1.0**、Pillow **12.3.0**、NumPy **2.5.3**、pyloudnorm **0.2.0**、SciPy **1.18.1**。 2026-09-21 核对官方发布、维护状态、Windows wheel 与许可后实际安装；没有沿用旧调研中的模糊版本。 PyAV wheel 实际链接 FFmpeg **8.1.2 / LGPL-3.0-or-later**，不是当日独立 CLI 最新的 9.0.2。 主包许可及 wheel 附带组件边界、来源链接、未选 FFmpeg CLI/librosa/OpenCV 的原因见 [依赖记录](../../../project-source/tools/asset_analyzer/DEPENDENCIES.md)。
 
-选择可安装的 Windows wheel，避免额外 CLI 路径、日志解析和编译链；SciPy 是成熟响度实现的依赖。
-所有包安装在测试项目的 `reports/asset-analyzer/runtime`，没有升级原 Python 环境、修改框架默认 ready 状态或写入机器绝对路径。
+选择可安装的 Windows wheel，避免额外 CLI 路径、日志解析和编译链；SciPy 是成熟响度实现的依赖。 所有包安装在测试项目的 `reports/asset-analyzer/runtime`，没有升级原 Python 环境、修改框架默认 ready 状态或写入机器绝对路径。
 
 | 新增/修改文件 | 实际责任 |
 | --- | --- |
@@ -53,13 +44,11 @@ PyAV wheel 实际链接 FFmpeg **8.1.2 / LGPL-3.0-or-later**，不是当日独�
 
 `framework/project-files.json` 已递归复制整个 tools，无需重复加映射。新增源码、Schema、依赖声明随项目复制；Python wheel、分析缓存、测试脚本和运行证据不会进入空白分发源。
 
-概念接口的等效实现：`AnalysisService.submit(path, kind, parameters, force)` 分派 audio/image；`analysis_result.compare_rows` 和通用 Chart 执行比较；`rule_messages` 在 Godot 侧检查规则。没有为四个概念方法再造抽象类层。
-`analyzer.backend` 的版本映射承担 backend/backend_version 语义，能表达多个实际后端及 FFmpeg 库版本。
+概念接口的等效实现：`AnalysisService.submit(path, kind, parameters, force)` 分派 audio/image；`analysis_result.compare_rows` 和通用 Chart 执行比较；`rule_messages` 在 Godot 侧检查规则。没有为四个概念方法再造抽象类层。 `analyzer.backend` 的版本映射承担 backend/backend_version 语义，能表达多个实际后端及 FFmpeg 库版本。
 
 ## 结果与指标
 
-实际音频 JSON 保留在测试项目 `reports/asset-analyzer/audio-results.json`，图像为 `image-results.json`。
-下面是实际 A 结果的选定字段（为便于阅读缩减了指标/序列/缓存详情，并缩短路径；不是完整 Schema 验证夹具）：
+实际音频 JSON 保留在测试项目 `reports/asset-analyzer/audio-results.json`，图像为 `image-results.json`。 下面是实际 A 结果的选定字段（为便于阅读缩减了指标/序列/缓存详情，并缩短路径；不是完整 Schema 验证夹具）：
 
 ```json
 {
@@ -79,12 +68,9 @@ PyAV wheel 实际链接 FFmpeg **8.1.2 / LGPL-3.0-or-later**，不是当日独�
 }
 ```
 
-实际 B 时长 0.539002 秒、sample peak -0.955889 dBFS、RMS -14.883515 dBFS、集成响度 -13.300539 LUFS。
-两者源音频不同，A 的短时长没有被伪造为有效 LUFS。包络输出为有限 x/y 数组，图表直接绘制；图像的透明比例、主色与各类分布同样来自真实像素。
+实际 B 时长 0.539002 秒、sample peak -0.955889 dBFS、RMS -14.883515 dBFS、集成响度 -13.300539 LUFS。 两者源音频不同，A 的短时长没有被伪造为有效 LUFS。包络输出为有限 x/y 数组，图表直接绘制；图像的透明比例、主色与各类分布同样来自真实像素。
 
-已实现的全部指标、适用条件、参数和限制集中在 [Analyzer 使用与协议说明](../../../project-source/tools/asset_analyzer/README.md#测量口径与限制)。
-关键边界：sample peak 不是真峰值；crest factor 不是 LRA；集成响度至少 0.4 秒，LRA 至少 3 秒且仅验证 1/2 声道；零电平与响度门限使用明确状态；可见颜色排除 alpha=0；亮度采用明确标记的编码 sRGB luma proxy。
-未实现 pitch/BPM/beat/onset/key/scale/timbre、高级视觉或审美分析，没有引入大型模型。后续只需按实际用途扩展 Adapter/metric/series；不因存在扩展点提前安装高级依赖。
+已实现的全部指标、适用条件、参数和限制集中在 [Analyzer 使用与协议说明](../../../project-source/tools/asset_analyzer/README.md#测量口径与限制)。 关键边界：sample peak 不是真峰值；crest factor 不是 LRA；集成响度至少 0.4 秒，LRA 至少 3 秒且仅验证 1/2 声道；零电平与响度门限使用明确状态；可见颜色排除 alpha=0；亮度采用明确标记的编码 sRGB luma proxy。 未实现 pitch/BPM/beat/onset/key/scale/timbre、高级视觉或审美分析，没有引入大型模型。后续只需按实际用途扩展 Adapter/metric/series；不因存在扩展点提前安装高级依赖。
 
 ## 可重复命令与验证
 
@@ -97,8 +83,7 @@ $env:YAYA_TEST_PROJECT='D:/A_Games/Game_idle_yaya_frame_workbench_test'
 & 'C:/Users/89523/anaconda3/envs/codex-python/python.exe' -B -m unittest discover -s framework/tests/project -p asset_analyzer_backend_test.py -v
 ```
 
-按范围复制 `asset_analyzer_test.gd` / `analyzer_process_fixture.py` 到指定项目 `tests/features/asset_analyzer/`，capture 到 `tests/asset_analyzer_capture.gd`。
-下列引擎命令在该项目根执行，Godot Windows GUI 二进制通过管道等待结束：
+按范围复制 `asset_analyzer_test.gd` / `analyzer_process_fixture.py` 到指定项目 `tests/features/asset_analyzer/`，capture 到 `tests/asset_analyzer_capture.gd`。 下列引擎命令在该项目根执行，Godot Windows GUI 二进制通过管道等待结束：
 
 ```powershell
 $python='C:/Users/89523/anaconda3/envs/codex-python/python.exe'
@@ -123,10 +108,8 @@ $godot='E:/GameTools/Godot/4.7.1/Godot_v4.7.1-stable_win64.exe'
 
 ## 验收闭环与未覆盖范围
 
-用户要求的 12 项自动验收闭环由上述真实资源、后台进程、结构化结果、指标/图表、同类 A/B、缓存失效、故障隔离与第一阶段回归覆盖。
-Analyzer 细节留在 Python Adapter；Godot 图表消费统一数值序列。关闭/取消只终止自己拥有的 Python 进程，没有终止系统其他 Python 或 Godot 实例。
+用户要求的 12 项自动验收闭环由上述真实资源、后台进程、结构化结果、指标/图表、同类 A/B、缓存失效、故障隔离与第一阶段回归覆盖。 Analyzer 细节留在 Python Adapter；Godot 图表消费统一数值序列。关闭/取消只终止自己拥有的 Python 进程，没有终止系统其他 Python 或 Godot 实例。
 
 保留的限制：这是源文件、第一流/第一帧分析；不模拟最终混音/导入/Shader/显示效果，不支持所有声道布局。分析有解码像素/样本、进程时间和输出上限；当前内存解码适合资源检查，不是任意长音乐批处理。缓存无自动淘汰，旧键可按项目需要删除。父进程退出保护明确面向 Windows；其他 OS、其他 Godot/Python 版本以及生产导出不在本轮验证范围。
 
-第二阶段界面的人工作业体验仍待用户接受；第一阶段已有接受不自动延伸到新窗口。
-本轮没有重做初始化到完整 Feature 的全流程抽样，也不以媒体分析测试宣称全部框架流程再次验证。框架默认配置仍保持未初始化；测试项目的机器配置与安装目录没有回写源材料。
+第二阶段界面的人工作业体验仍待用户接受；第一阶段已有接受不自动延伸到新窗口。 本轮没有重做初始化到完整 Feature 的全流程抽样，也不以媒体分析测试宣称全部框架流程再次验证。框架默认配置仍保持未初始化；测试项目的机器配置与安装目录没有回写源材料。

@@ -10,10 +10,7 @@ Use this three-stage workflow to find unresolved code smells in Feature notes, c
 
 ## Language contract
 
-This read-only report uses the conversation language and preserves extracted
-note excerpts verbatim. It does not require document-language setup. The writer
-of any subsequently authorized durable note follows
-`methodology/05-document-language.md`.
+This read-only report uses the conversation language and preserves extracted note excerpts verbatim. It does not require document-language setup. The writer of any subsequently authorized durable note follows `methodology/05-document-language.md`.
 
 ## Scope
 

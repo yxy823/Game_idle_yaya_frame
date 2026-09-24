@@ -2,16 +2,11 @@
 
 ## 范围与基线
 
-用户明确授权从指定本地 Shader 库复制合适样例、重命名、实现和实际测试，随后补充要求：
-美术、声音、Shader 独立、可留空和自由组合。修改基于 `d5f6af9`，开始时维护仓库干净。
-此前四项审核修复已完成，本报告记录后续新增能力，不将之前的“Shader 仅讨论”当作当前限制。
+用户明确授权从指定本地 Shader 库复制合适样例、重命名、实现和实际测试，随后补充要求： 美术、声音、Shader 独立、可留空和自由组合。修改基于 `d5f6af9`，开始时维护仓库干净。 此前四项审核修复已完成，本报告记录后续新增能力，不将之前的“Shader 仅讨论”当作当前限制。
 
-源材料在 `project-source/`；测试和报告只留在 `framework/`。
-真实验证复用 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，没有新建游戏、Feature 或项目流程状态。
-同步前比对现有被测文件与 Git 基线，仅同步相关组件、工作台、新增示例及夹具，保留机器配置、主场景和原 Cue。
+源材料在 `project-source/`；测试和报告只留在 `framework/`。 真实验证复用 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，没有新建游戏、Feature 或项目流程状态。 同步前比对现有被测文件与 Git 基线，仅同步相关组件、工作台、新增示例及夹具，保留机器配置、主场景和原 Cue。
 
-环境：Windows、Godot `4.7.1.stable.official.a13da4feb`、Vulkan Forward+ / RTX 4060 Laptop GPU，
-Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
+环境：Windows、Godot `4.7.1.stable.official.a13da4feb`、Vulkan Forward+ / RTX 4060 Laptop GPU， Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
 
 ## 实现与取舍
 
@@ -26,13 +21,9 @@ Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
 | 无图片承载 | Shader 在普通白色矩形上绘制；噪声可独立显示。具体效果仍依赖 Shader 本身的采样方式，描边不保证在无透明边缘的矩形上明显 |
 | 分析边界 | 仍只收集图片/声音源，跳过空项，不把材质或 Shader 的最终画面交给源文件 Analyzer |
 
-新增入口：[Shader 组合工作台](../../../project-source/examples/asset_workbench/shader_composition/example_workbench.tscn)。
-继承现有三对象 Scene，使用自己的 Cue；原单对象/组合示例配置未修改。
-三个初始对象分别为图片＋描边＋声音、图片＋溶解且静音、噪声＋声音且无图片。
-右侧颜色按钮在真实截图检查中补足了可点击高度。
+新增入口：[Shader 组合工作台](../../../project-source/examples/asset_workbench/shader_composition/example_workbench.tscn)。 继承现有三对象 Scene，使用自己的 Cue；原单对象/组合示例配置未修改。 三个初始对象分别为图片＋描边＋声音、图片＋溶解且静音、噪声＋声音且无图片。 右侧颜色按钮在真实截图检查中补足了可点击高度。
 
-完整使用与扩展契约集中在 [示例 README](../../../project-source/examples/asset_workbench/README.md#shader-与独立资源组合)。
-现有目录复制映射已覆盖新增文件，无需修改创建器或清单。
+完整使用与扩展契约集中在 [示例 README](../../../project-source/examples/asset_workbench/README.md#shader-与独立资源组合)。 现有目录复制映射已覆盖新增文件，无需修改创建器或清单。
 
 ## Shader 来源
 
@@ -42,10 +33,7 @@ Python 为 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`。
 - `dissolve2D.gdshader` → `example-dissolve.gdshader`。
 - `value_noise.gdshader` → `example-noise.gdshader`。
 
-逐文件比较确认逻辑未变，只规范了空白和 LF。原件未改动；本地镜像未提供可识别的上游提交号，不补造版本。
-本地镜像未附 LICENSE，已核对 [GDQuest 上游许可](https://github.com/gdquest-demos/godot-shaders/blob/main/LICENSE)：
-Shader 代码采用 MIT，保留于 [随示例复制的许可](../../../project-source/examples/asset_workbench/shader_composition/example_shaders_license.txt)。
-没有复制采用另一许可的上游艺术资产；溶解遮罩是本例创建的 Godot 渐变资源。
+逐文件比较确认逻辑未变，只规范了空白和 LF。原件未改动；本地镜像未提供可识别的上游提交号，不补造版本。 本地镜像未附 LICENSE，已核对 [GDQuest 上游许可](https://github.com/gdquest-demos/godot-shaders/blob/main/LICENSE)： Shader 代码采用 MIT，保留于 [随示例复制的许可](../../../project-source/examples/asset_workbench/shader_composition/example_shaders_license.txt)。 没有复制采用另一许可的上游艺术资产；溶解遮罩是本例创建的 Godot 渐变资源。
 
 ## 实际验证
 
@@ -65,10 +53,7 @@ Shader 代码采用 MIT，保留于 [随示例复制的许可](../../../project-
 | 框架维护回归 | 38/38 unittest；覆盖既有复制、文档及工具契约 | 本次会话命令输出 |
 | 手册构建 | 22 篇、33 张 Mermaid、483 个源链接；正文链接与生成锚点检查通过 | `framework/docs/blank-project/blank-project-handbook.html` |
 
-真实渲染探针使用 128×128 透明表面：描边的可见像素从 4764 增至 8401；
-半强度溶解从 3731 减至 2471；无图片的噪声从 0 增至 16384，且颜色随 UV 变化。
-三个效果停止后的像素均与各自静止初态逐字节一致。
-原工作台截图保存在本轮新目录，没有覆盖先前任务的证据。
+真实渲染探针使用 128×128 透明表面：描边的可见像素从 4764 增至 8401； 半强度溶解从 3731 减至 2471；无图片的噪声从 0 增至 16384，且颜色随 UV 变化。 三个效果停止后的像素均与各自静止初态逐字节一致。 原工作台截图保存在本轮新目录，没有覆盖先前任务的证据。
 
 ### 本轮遇到的失败
 
@@ -88,9 +73,6 @@ $godot = 'E:/GameTools/Godot/4.7.1/Godot_v4.7.1-stable_win64.exe'
 & $godot --path . --script res://reports/asset-shader-20260922/asset_shader_render_capture.gd | Out-Host
 ```
 
-回归四套既有测试沿用 [上次报告的命令入口](asset-workbench-code-quality-fixes-2026-09-22.md#复跑入口)。
-本轮未改 Python 分析后端，未重跑其独立 22 项；不能将上次通过写成本次通过。
+回归四套既有测试沿用 [上次报告的命令入口](asset-workbench-code-quality-fixes-2026-09-22.md#复跑入口)。 本轮未改 Python 分析后端，未重跑其独立 22 项；不能将上次通过写成本次通过。
 
-当前支持 2D `canvas_item` 与明确的参数契约；3D、全屏后处理、任意 uniform 编辑、多 Shader 堆叠、
-依赖全局 TIME 的重播一致性与其他设备均未验证。声音听感、效果协调性和界面使用体验仍由用户实际体验判断。
-手册 HTML 只完成静态/构建检查，外部阅读排版与交互未代替用户验收。
+当前支持 2D `canvas_item` 与明确的参数契约；3D、全屏后处理、任意 uniform 编辑、多 Shader 堆叠、 依赖全局 TIME 的重播一致性与其他设备均未验证。声音听感、效果协调性和界面使用体验仍由用户实际体验判断。 手册 HTML 只完成静态/构建检查，外部阅读排版与交互未代替用户验收。

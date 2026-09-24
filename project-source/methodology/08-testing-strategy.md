@@ -136,11 +136,7 @@ An empty `unit_test_paths` array contributes no unit selector and does not trigg
 
 The affected set contains Required plus active acceptance tests intersecting affected components. The agent may add related tests from other components when dependency/API analysis shows material impact, recording the exact reason. It may not remove any deterministic requirement. Approved retirement changes the underlying Product/Registry contract instead of adding a runner exclusion.
 
-Ordinary downstream regression belongs to the Feature implementing the change.
-Carry the affected behavior and coverage gaps from its notes into Stage 1; use
-existing component selection or approved additional tests without changing their
-ownership. Repeating valid tests alone does not require another Feature. Separate
-implementation, repair or an independently agreed deliverable may justify one.
+Ordinary downstream regression belongs to the Feature implementing the change. Carry the affected behavior and coverage gaps from its notes into Stage 1; use existing component selection or approved additional tests without changing their ownership. Repeating valid tests alone does not require another Feature. Separate implementation, repair or an independently agreed deliverable may justify one.
 
 A full suite is required when any of these is true:
 
@@ -154,27 +150,15 @@ For other local Features, targeted verification is sufficient before applicable 
 
 ## Runtime Test Impact selection
 
-The runner reads the current Feature and Test Registry through
-`tools/lib/test_selection.py`. There is no separate plan command, plan file or plan hash.
+The runner reads the current Feature and Test Registry through `tools/lib/test_selection.py`. There is no separate plan command, plan file or plan hash.
 
-After Stage 1 approval, Stage 2 stores extra tests and full-suite obligations in
-the Feature's `verification.test_impact`: `additional_tests: [{id, reason}]`
-and `full_suite_reasons: [reason]`. The runner always includes these obligations.
-Agent judgment supplies impact analysis and any needed additions; scripts only
-translate the recorded mappings into executable selections.
+After Stage 1 approval, Stage 2 stores extra tests and full-suite obligations in the Feature's `verification.test_impact`: `additional_tests: [{id, reason}]` and `full_suite_reasons: [reason]`. The runner always includes these obligations. Agent judgment supplies impact analysis and any needed additions; scripts only translate the recorded mappings into executable selections.
 
 ```text
 python -B tools/testing/run-gdunit-tests.py --godot-binary <confirmed-executable> --feature F0XX --scope auto
 ```
 
-Default `--scope auto` executes affected tests including Required, escalating to
-one full run when required. Explicit `required`, `affected` and `full` scopes
-support iteration. Output includes selection reasons, deduplicated selectors and
-full-suite reasons. `--phase baseline` omits planned tests that do not yet exist;
-baseline runs cannot authorize completion. Final selection rejects unresolved or
-retired direct mappings and missing paths. `--target` remains a focused/TDD
-diagnostic route; it does not produce completion evidence. Use
-`tools/testing/run-gdunit-tests.py` with these arguments and the configured Python interpreter.
+Default `--scope auto` executes affected tests including Required, escalating to one full run when required. Explicit `required`, `affected` and `full` scopes support iteration. Output includes selection reasons, deduplicated selectors and full-suite reasons. `--phase baseline` omits planned tests that do not yet exist; baseline runs cannot authorize completion. Final selection rejects unresolved or retired direct mappings and missing paths. `--target` remains a focused/TDD diagnostic route; it does not produce completion evidence. Use `tools/testing/run-gdunit-tests.py` with these arguments and the configured Python interpreter.
 
 The adapter executes deduplicated suite/directory selectors supported by the configured runner; case-level obligations are checked against actual JUnit cases. Selecting a suite may run extra cases. Every selected path must discover and execute tests; missing cases/suites, zero discovery, skipped required cases, invalid paths, runtime diagnostics, timeout and runner failure fail closed. `tools/testing/gdunit_evidence_runner.gd` records gdUnit's actual expanded discovery before execution, including every parameterized case and its source method. This complete identity set must exactly equal the JUnit testcase set. GdUnit source declarations supplement runtime discovery to detect omitted suites; declarations alone never prove execution.
 
@@ -184,55 +168,17 @@ Full scope selects `tests/` recursively. Empty layer directories add no obligati
 
 ## Artifact-backed completion and semantic freshness
 
-For a valid `manual` acceptance plan only, when the current Required and affected
-sets are both empty and full suite is not required, no automated run is needed.
-Recording actual human acceptance creates the completion record with `test_runs: []`;
-do not call the runner or `record-tests` just to manufacture evidence. The helper
-derives `not_required`, never an empty PASS.
-Current mappings and registered paths must still be valid; an unresolved failed or
-unfinished final run for the same Feature/snapshot still blocks completion. Record
-actual human acceptance on the current snapshot, and assess
-applicable static checks. Any automated obligation retains the normal real-run requirement.
+For a valid `manual` acceptance plan only, when the current Required and affected sets are both empty and full suite is not required, no automated run is needed. Recording actual human acceptance creates the completion record with `test_runs: []`; do not call the runner or `record-tests` just to manufacture evidence. The helper derives `not_required`, never an empty PASS. Current mappings and registered paths must still be valid; an unresolved failed or unfinished final run for the same Feature/snapshot still blocks completion. Record actual human acceptance on the current snapshot, and assess applicable static checks. Any automated obligation retains the normal real-run requirement.
 
-Each Feature invocation creates one `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`
-directory. Focused runs use `reports/gdunit-wrapper/focused/run-<id>/`.
-Run order and completion history are local to the current Feature directory;
-unreadable or misfiled records in that directory still block completion.
-The runner writes one `result.json` (schema 1) before setup and finalizes that same
-file after execution. It records Feature/phase/scope, selected paths, the real command,
-source fingerprint, process outcome and errors, plus references/hashes for the
-original `engine.log`, `discovery.json`, JUnit and diagnostics. Case identities and
-totals are read from those original reports when needed, not copied into more summaries.
+Each Feature invocation creates one `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` directory. Focused runs use `reports/gdunit-wrapper/focused/run-<id>/`. Run order and completion history are local to the current Feature directory; unreadable or misfiled records in that directory still block completion. The runner writes one `result.json` (schema 1) before setup and finalizes that same file after execution. It records Feature/phase/scope, selected paths, the real command, source fingerprint, process outcome and errors, plus references/hashes for the original `engine.log`, `discovery.json`, JUnit and diagnostics. Case identities and totals are read from those original reports when needed, not copied into more summaries.
 
-The gdUnit extension writes actual expanded discovery with this run ID and engine PID.
-Discovery must match the JUnit cases; source declarations detect omitted suites.
-Native diagnostics cannot be hidden by green JUnit. Windows process ownership is
-checked in memory, and timeout cleanup terminates only the owned process tree.
+The gdUnit extension writes actual expanded discovery with this run ID and engine PID. Discovery must match the JUnit cases; source declarations detect omitted suites. Native diagnostics cannot be hidden by green JUnit. Windows process ownership is checked in memory, and timeout cleanup terminates only the owned process tree.
 
-Before engine preflight/launch, `result.json` records either a running attempt or
-a failed preparation. Invalid historical JSON/schema/identity/sequence produces
-a warning on stderr with the affected path; preserve the original and allow a new
-measurement. This warning does not decide the current run's result. Snapshot-read
-errors still produce a failed current result without launching Godot.
-This requires a writable report directory; a filesystem write failure must still
-be reported as such, not as a successfully saved result.
+Before engine preflight/launch, `result.json` records either a running attempt or a failed preparation. Invalid historical JSON/schema/identity/sequence produces a warning on stderr with the affected path; preserve the original and allow a new measurement. This warning does not decide the current run's result. Snapshot-read errors still produce a failed current result without launching Godot. This requires a writable report directory; a filesystem write failure must still be reported as such, not as a successfully saved result.
 
-Completion rejects damaged referenced results and invalid history inside the
-current Feature directory, including a mismatched Feature ID. Investigate and
-resolve that damage under authorization; a new passing run does not erase it.
-Other Feature directories and focused runs are not read for this completion.
+Completion rejects damaged referenced results and invalid history inside the current Feature directory, including a mismatched Feature ID. Investigate and resolve that damage under authorization; a new passing run does not erase it. Other Feature directories and focused runs are not read for this completion.
 
-A per-Feature sequence computed from readable results with valid headers orders attempts
-without depending on filesystem timestamp precision; a tied sequence cannot clear
-another attempt. For the same Feature/content, an unresolved final
-failure cannot be hidden by an older success or a later narrower run. Recovery uses a
-later successful run covering the failed scope; preserve the original failure and
-diagnose its cause. An `auto` preparation record with no command, selectors or
-process has not chosen an execution scope. Recover it with a later affected run,
-or full when the same snapshot's current obligations require full. This does not
-relax recovery for an actual full failure or accept inconsistent auto records.
-Baseline/focused runs do not grant final completion. There is no
-separate journal, execution lock, invocation, verdict, process report or session receipt.
+A per-Feature sequence computed from readable results with valid headers orders attempts without depending on filesystem timestamp precision; a tied sequence cannot clear another attempt. For the same Feature/content, an unresolved final failure cannot be hidden by an older success or a later narrower run. Recovery uses a later successful run covering the failed scope; preserve the original failure and diagnose its cause. An `auto` preparation record with no command, selectors or process has not chosen an execution scope. Recover it with a later affected run, or full when the same snapshot's current obligations require full. This does not relax recovery for an actual full failure or accept inconsistent auto records. Baseline/focused runs do not grant final completion. There is no separate journal, execution lock, invocation, verdict, process report or session receipt.
 
 Record results with:
 
@@ -240,38 +186,21 @@ Record results with:
 python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
 ```
 
-Repeat `--run` only for distinct runs needed to cover the obligations. One full run
-can cover Required/affected. The helper computes coverage from the current Feature,
-Registry and original reports; caller-provided pass labels or totals cannot create PASS.
-Failed imports clear old references. Completion schema 8 stores test references and
-actual human acceptance; no review counts, required/affected/full totals or cached gate status.
-Parsing/lint results are assessed directly by the Agent.
+Repeat `--run` only for distinct runs needed to cover the obligations. One full run can cover Required/affected. The helper computes coverage from the current Feature, Registry and original reports; caller-provided pass labels or totals cannot create PASS. Failed imports clear old references. Completion schema 8 stores test references and actual human acceptance; no review counts, required/affected/full totals or cached gate status. Parsing/lint results are assessed directly by the Agent.
 
-Hashes, current-source binding and run identity detect accidental stale reuse or
-altered artifacts. These locally editable records are not an independent security
-signature against someone rewriting all evidence. File mtimes and wall-clock precision
-do not authorize completion. Do not add sleeps or rerun unchanged failures to get green.
+Hashes, current-source binding and run identity detect accidental stale reuse or altered artifacts. These locally editable records are not an independent security signature against someone rewriting all evidence. File mtimes and wall-clock precision do not authorize completion. Do not add sleeps or rerun unchanged failures to get green.
 
 `working_tree_fingerprint` v2 hashes tracked/nonignored source content, including Product, rules, tests, runner/configuration and semantic Feature/Registry data. Feature AC text, verification (including approved Test Impact), affected components and Registry selectors/status/retirement participate. Known top-level process fields (`status`, timestamps, `notes`), Progress Markdown/current history, explanatory Markdown under `docs/knowledge/` and `docs/research/`, and run artifacts are exempt. Knowledge and research are contextual reference material; they must not own executable inputs, requirements, rules or validation contracts. Non-Markdown files there still participate.
 
 `docs/terminology.md`, `docs/project-rules.md`, professional specifications/resource lists, Feature design Markdown and architecture/ADR documents participate as ordinary source inputs. Moving a long design out of JSON `notes` does not grant that Markdown the notes exemption. Finalize these documents at the Stage 3 checkpoint before final verification; later changes use the existing freshness rules rather than a new documentation bypass. The fingerprint is global, not filtered by Feature references; editorial wording and resource status/location edits can invalidate current evidence even when they need no Feature-plan change. Historical completed records are not automatically reopened.
 
-Performance, soak and other specialist evidence follows
-[Finalization and evidence](11-specialist-workflows.md#finalization-and-evidence).
-The run-evidence adapter supports actual `gdunit4` results only. Additional
-measurement/display/listening obligations stay in their existing AC/design
-verification plan and are assessed by the owning task and any requested independent
-review. Do not fabricate gdUnit run evidence or use supplemental results to waive
-required tests. `not_required` retains its existing narrow manual-plan conditions.
+Performance, soak and other specialist evidence follows [Finalization and evidence](11-specialist-workflows.md#finalization-and-evidence). The run-evidence adapter supports actual `gdunit4` results only. Additional measurement/display/listening obligations stay in their existing AC/design verification plan and are assessed by the owning task and any requested independent review. Do not fabricate gdUnit run evidence or use supplemental results to waive required tests. `not_required` retains its existing narrow manual-plan conditions.
 
 Ordinary `README.md` files (case-insensitive filename) explain usage and navigation; adding, editing, moving or deleting them does not invalidate test evidence. README files under `.agents/`, `agent-rules/`, `methodology/`, `docs/product/` and `docs/features/` remain inputs because those directories own instructions or verification contracts. Moving a README into one of these directories therefore changes the fingerprint. Keep executable inputs, requirements and validation rules in their existing authoritative files rather than a usage README; other Markdown files remain included unless explicitly exempt above. Documentation changes still require checking facts, links and examples, without automatically rerunning business tests.
 
 Revision-log entry timestamps, summary and notes are excluded; migration relations, revision IDs and source anchors remain semantic. Nested test status is semantic. Git revision is retained as provenance; a process-only commit with identical semantic content does not force another test run. Moving Progress prose or organizing knowledge/research Markdown alone never invalidates tests. New or unknown contract fields remain included.
 
-Project creation supplies the initial Git commit. Verification requires a valid
-current commit; missing or broken Git state fails. The source fingerprint also
-covers staged and nonignored untracked files. A content-identical commit preserves
-run evidence but supplies no missing tests, readiness, human acceptance or review.
+Project creation supplies the initial Git commit. Verification requires a valid current commit; missing or broken Git state fails. The source fingerprint also covers staged and nonignored untracked files. A content-identical commit preserves run evidence but supplies no missing tests, readiness, human acceptance or review.
 
 When the approved acceptance mode is manual, human acceptance remains separate, snapshot-specific evidence. A semantic/source change after acceptance requires renewed acceptance. Run evidence lifecycle follows the common artifact policy; failed runs stay active for diagnosis and evidence referenced by current Gate/acceptance is retained.
 
@@ -279,9 +208,7 @@ When the approved acceptance mode is manual, human acceptance remains separate, 
 
 When `docs/methodology-config.json` enables automated testing, the normal Feature flow is:
 
-For behavior implemented before formal recording, apply [Delivery of existing implementation](03-execute-loop.md#delivery-of-existing-implementation)
-to distinguish present verification from unavailable historical baseline/RED
-evidence. New behavior changes and repairs still follow the normal TDD flow below.
+For behavior implemented before formal recording, apply [Delivery of existing implementation](03-execute-loop.md#delivery-of-existing-implementation) to distinguish present verification from unavailable historical baseline/RED evidence. New behavior changes and repairs still follow the normal TDD flow below.
 
 ```text
 Test Impact Review
@@ -319,13 +246,7 @@ Stage 4 imports verified run results into `docs/feature-completion-evidence.json
 
 A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
-Stage 1 first chooses `verification.acceptance_mode` from the requirement, then
-fills the corresponding checks. Visual presentation, animation, audio/sound/music,
-game feel and other human judgment require `manual`; requirements whose AC can all
-be checked automatically may use `automated`. Empty lists or existing PASS results
-never decide the mode. Automated mode omits Stage 5 without recording fake human
-acceptance; manual mode still requires the user's actual file submission or
-explicit conversational decision under [Manual acceptance files](manual-acceptance-files.md).
+Stage 1 first chooses `verification.acceptance_mode` from the requirement, then fills the corresponding checks. Visual presentation, animation, audio/sound/music, game feel and other human judgment require `manual`; requirements whose AC can all be checked automatically may use `automated`. Empty lists or existing PASS results never decide the mode. Automated mode omits Stage 5 without recording fake human acceptance; manual mode still requires the user's actual file submission or explicit conversational decision under [Manual acceptance files](manual-acceptance-files.md).
 
 ## Requirement changes and stale tests
 
@@ -337,28 +258,11 @@ When Product behavior changes, old tests are not automatically authoritative. `f
 - new behavior → add new acceptance test IDs;
 - Bug fix → add regression coverage unless deterministic automation is impractical.
 
-Registry retirement does not remove executable tests: gdUnit discovers methods
-under selected suite/directory paths, including retired cases still in those
-files. Read affected test code as well as Registry; ordinary unit tests may have
-no logical ID. Use the existing sync report to identify obsolete assertions,
-methods/files, affected current references and the owning Feature. After approval,
-keep necessary cleanup actions in that Feature's `notes`; planning does not edit
-test code or establish that cleanup has happened.
+Registry retirement does not remove executable tests: gdUnit discovers methods under selected suite/directory paths, including retired cases still in those files. Read affected test code as well as Registry; ordinary unit tests may have no logical ID. Use the existing sync report to identify obsolete assertions, methods/files, affected current references and the owning Feature. After approval, keep necessary cleanup actions in that Feature's `notes`; planning does not edit test code or establish that cleanup has happened.
 
-During that Feature's approved implementation, delete or replace superseded
-assertions and update affected active mappings, `unit_test_paths` and current
-requirement/usage references. Remove obsolete empty suites and their registrations
-within the approved scope. Preserve still-valid cases sharing those files and
-unaffected regressions/invariants. Retired Registry records retain historical
-ID/source/path/case and provenance; completed Feature records and historical
-evidence are not cleanup targets.
+During that Feature's approved implementation, delete or replace superseded assertions and update affected active mappings, `unit_test_paths` and current requirement/usage references. Remove obsolete empty suites and their registrations within the approved scope. Preserve still-valid cases sharing those files and unaffected regressions/invariants. Retired Registry records retain historical ID/source/path/case and provenance; completed Feature records and historical evidence are not cleanup targets.
 
-Use normal verification and author checking to inspect the final diff, affected
-references and current discovery/original results. Required cleanup left open
-means that change is not complete; a `retired` label or a TODO alone is insufficient.
-Keep pending work in the owning Feature notes or current Progress, and report
-actual cleanup and remaining work at handoff. Unrelated cleanup stays outside
-scope. No separate cleanup ledger, checker or unconditional full run is needed.
+Use normal verification and author checking to inspect the final diff, affected references and current discovery/original results. Required cleanup left open means that change is not complete; a `retired` label or a TODO alone is insufficient. Keep pending work in the owning Feature notes or current Progress, and report actual cleanup and remaining work at handoff. Unrelated cleanup stays outside scope. No separate cleanup ledger, checker or unconditional full run is needed.
 
 Never change implementation merely to satisfy a test whose underlying Product/Feature contract has been superseded.
 

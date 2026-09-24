@@ -2,18 +2,13 @@
 
 ## 范围与基线
 
-用户在完成 E0–E7 规划后授权开始实现，并要求通过指定 `game-asset-library-search` Skill 查找、复制合适资源，以 `example-` 标明示例。
-本轮落实 E1：一次性与持续 GPU 粒子、Tween 跃动、一个 AnimationPlayer 片段，以及现有图像/音频/Shader 的组合、A/B、保存和消费回归。
-E2–E7 尚未实施；没有新增 Manager、Timeline、通用属性编辑器、效果分析引擎或项目流程状态。
+用户在完成 E0–E7 规划后授权开始实现，并要求通过指定 `game-asset-library-search` Skill 查找、复制合适资源，以 `example-` 标明示例。 本轮落实 E1：一次性与持续 GPU 粒子、Tween 跃动、一个 AnimationPlayer 片段，以及现有图像/音频/Shader 的组合、A/B、保存和消费回归。 E2–E7 尚未实施；没有新增 Manager、Timeline、通用属性编辑器、效果分析引擎或项目流程状态。
 
-修改基于 `f76c29f8af8f2b2405f8df910c6ea64620fd71c9`，维护仓库开始时干净。原 UI 实现为 `4332ce1`，其画面已有用户验收；该验收不等于接受本轮新效果。
-源材料在 `project-source/`，维护夹具与本报告在 `framework/`。沿用本会话授权，仅定向同步到既有 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，不创建新游戏或 Feature。
-同步前比较既有目标文件与基线，保护原 Cue、预设、项目主场景和机器配置；只回收本轮新脚本的 `.gd.uid` 与一份贴图 `.import`，不回灌缓存或测试结果。
+修改基于 `f76c29f8af8f2b2405f8df910c6ea64620fd71c9`，维护仓库开始时干净。原 UI 实现为 `4332ce1`，其画面已有用户验收；该验收不等于接受本轮新效果。 源材料在 `project-source/`，维护夹具与本报告在 `framework/`。沿用本会话授权，仅定向同步到既有 `D:/A_Games/Game_idle_yaya_frame_workbench_test`，不创建新游戏或 Feature。 同步前比较既有目标文件与基线，保护原 Cue、预设、项目主场景和机器配置；只回收本轮新脚本的 `.gd.uid` 与一份贴图 `.import`，不回灌缓存或测试结果。
 
 ## 实现、入口与设计取舍
 
-新增第四个 F6 入口：[粒子与动画工作台](../../../project-source/examples/asset_workbench/effects_composition/example_workbench.tscn)。原三个入口保留，四者共享同一工作台与表现组件。
-新消费场景为同目录的 `example-composition.tscn`，读取三份独立示例 Cue。完整参数与扩展契约集中在 [示例说明](../../../project-source/examples/asset_workbench/README.md#粒子tween-与-animationplayer)。
+新增第四个 F6 入口：[粒子与动画工作台](../../../project-source/examples/asset_workbench/effects_composition/example_workbench.tscn)。原三个入口保留，四者共享同一工作台与表现组件。 新消费场景为同目录的 `example-composition.tscn`，读取三份独立示例 Cue。完整参数与扩展契约集中在 [示例说明](../../../project-source/examples/asset_workbench/README.md#粒子tween-与-animationplayer)。
 
 | 变更 | 行为与取舍 |
 | --- | --- |
@@ -25,18 +20,13 @@ E2–E7 尚未实施；没有新增 Manager、Timeline、通用属性编辑器�
 | 草稿与保存 | 新字段加入 Cue 比较、校验、复制及保存后重读核对；编辑只改当前对象当前 A/B，绑定不在候选列表中时仍保留。保存只写 Cue，共享资源不写回；全场景继续逐文件保存与部分失败反馈 |
 | 保留能力 | 声音和原图标脉冲仍可重叠；粒子、Tween、片段和当前 Shader 各自重启。源分析只收集 Cue 图片/音频，不把效果渲染或粒子内部纹理混入分析集合 |
 
-关键代码：`feedback_cue.gd`、`feedback_presenter.gd` 接入现有生命周期；新增 `feedback_particle_preset.gd`、`feedback_particles.gd`、`feedback_motion.gd` 分别负责预设契约、粒子实例和运动层。
-工作台新增 `effect_controls.gd`，由 `cue_controls.gd` 和 `workbench.gd` 提供候选及参数。没有另写一套预览/保存逻辑。
-预设数量和时长限制用于本轮有限示例契约，详见示例说明；未把它们包装成全局资源管理能力。
+关键代码：`feedback_cue.gd`、`feedback_presenter.gd` 接入现有生命周期；新增 `feedback_particle_preset.gd`、`feedback_particles.gd`、`feedback_motion.gd` 分别负责预设契约、粒子实例和运动层。 工作台新增 `effect_controls.gd`，由 `cue_controls.gd` 和 `workbench.gd` 提供候选及参数。没有另写一套预览/保存逻辑。 预设数量和时长限制用于本轮有限示例契约，详见示例说明；未把它们包装成全局资源管理能力。
 
 ## 素材选择与许可
 
-使用 [用户指定 Skill](D:/A_Games/Game_Assets_Library/.agents/skills/game-asset-library-search/SKILL.md)，先通过资源库索引搜索 `particle`、`effect` 和 `art/vfx`。
-候选为 Brackeys VFX in Godot 与 haowg Godot VFX Library；选用前者的 2D GPU 样例，未展开备用包。
-本次“查找合适的复制过来”作为选择和复制授权，资源库原件、标签与元数据未改动。
+使用 [用户指定 Skill](D:/A_Games/Game_Assets_Library/.agents/skills/game-asset-library-search/SKILL.md)，先通过资源库索引搜索 `particle`、`effect` 和 `art/vfx`。 候选为 Brackeys VFX in Godot 与 haowg Godot VFX Library；选用前者的 2D GPU 样例，未展开备用包。 本次“查找合适的复制过来”作为选择和复制授权，资源库原件、标签与元数据未改动。
 
-来源：`brackeys-vfx-in-godot`，上游 [Brackeys/vfx-in-godot](https://github.com/Brackeys/vfx-in-godot)，本地存档版本 `23b58f272b828b0a894ed7ef72fbf9033ee9d177`。
-从 ZIP 定向读取三个成员，未执行原包脚本、未安装插件：
+来源：`brackeys-vfx-in-godot`，上游 [Brackeys/vfx-in-godot](https://github.com/Brackeys/vfx-in-godot)，本地存档版本 `23b58f272b828b0a894ed7ef72fbf9033ee9d177`。 从 ZIP 定向读取三个成员，未执行原包脚本、未安装插件：
 
 | 原包成员 | 本轮用途 |
 | --- | --- |
@@ -48,9 +38,7 @@ Tween 行为、摇摆 Animation、Cue 与包装预设为本项目编写；已有
 
 ## 本轮实际验证
 
-环境为 Windows、Godot `4.7.1.stable.official.a13da4feb`、RTX 4060 Laptop GPU（NVIDIA 596.21）。
-使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`；真实引擎只在上述外部项目运行。
-下表证据路径相对该外部项目，`E` 代表 `reports/asset-workbench-effects-20260922/`。
+环境为 Windows、Godot `4.7.1.stable.official.a13da4feb`、RTX 4060 Laptop GPU（NVIDIA 596.21）。 使用 `C:/Users/89523/anaconda3/envs/codex-python/python.exe`；真实引擎只在上述外部项目运行。 下表证据路径相对该外部项目，`E` 代表 `reports/asset-workbench-effects-20260922/`。
 
 | 层次 | 实际结果 | 原始证据 |
 | --- | --- | --- |
@@ -64,14 +52,9 @@ Tween 行为、摇摆 Animation、Cue 与包装预设为本项目编写；已有
 | 维护工具回归 | 38/38 unittest，14.990 s；复制与文档契约检查 | 本次会话命令原始输出 |
 | 文档与阅读版 | 使用说明和进度已同步；HTML 构建通过，22 篇、33 张 Mermaid、486 个源链接；另核对新文件 UTF-8/LF、复制映射及源/外部对应 | 本仓库手册与本轮构建输出 |
 
-透明 256×256 探针中，Compatibility 爆发/持续可见像素为 3453/1656，Forward+ 为 3436/1656；停止和自然结束都回到 0。
-数值仅是“该样例确实绘制并清除”的证据，不是质量评分、跨渲染器一致性承诺或性能指标。
-图像＋Tween＋片段在运动期间实际像素改变，停止与自然结束后均与初态逐字节相同。
-四种客户区尺寸为 1600×900、1152×648、900×540、720×480，新增选择器和参数可滚动访问，停止及保存持续可见。
-Agent 已查看宽窗浅色组合、深色参数、1152/720 窄窗、独立消费及旧 Shader 窄窗等截图；真实观看/试听接受由用户决定。
+透明 256×256 探针中，Compatibility 爆发/持续可见像素为 3453/1656，Forward+ 为 3436/1656；停止和自然结束都回到 0。 数值仅是“该样例确实绘制并清除”的证据，不是质量评分、跨渲染器一致性承诺或性能指标。 图像＋Tween＋片段在运动期间实际像素改变，停止与自然结束后均与初态逐字节相同。 四种客户区尺寸为 1600×900、1152×648、900×540、720×480，新增选择器和参数可滚动访问，停止及保存持续可见。 Agent 已查看宽窗浅色组合、深色参数、1152/720 窄窗、独立消费及旧 Shader 窄窗等截图；真实观看/试听接受由用户决定。
 
-本轮代表图：[浅色组合](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/workbench-light.png)、[深色参数](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/effect-controls-1600x900.png)、[720×480 参数](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/effect-controls-720x480.png)、[消费场景](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/saved-consumer-playing.png)。
-截图留在外部项目，没有复制进框架源材料。
+本轮代表图：[浅色组合](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/workbench-light.png)、[深色参数](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/effect-controls-1600x900.png)、[720×480 参数](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/effect-controls-720x480.png)、[消费场景](D:/A_Games/Game_idle_yaya_frame_workbench_test/reports/asset-workbench-effects-20260922/forward_plus/saved-consumer-playing.png)。 截图留在外部项目，没有复制进框架源材料。
 
 ### 发现、修正与失败证据
 
@@ -91,14 +74,10 @@ $effectGodot = 'E:/GameTools/Godot/4.7.1/Godot_v4.7.1-stable_win64.exe'
 & $effectGodot --path . --rendering-method forward_plus --script res://reports/asset-workbench-effects-20260922/fixtures/asset_effect_render_capture.gd | Out-Host
 ```
 
-每次分别检查退出码。Compatibility 将渲染参数改为 `gl_compatibility`；旧 UI 夹具仅在外部副本替换了输出目录，未覆盖先前 UI 报告。
-维护 unittest 与手册构建命令沿用 [维护说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)。
+每次分别检查退出码。Compatibility 将渲染参数改为 `gl_compatibility`；旧 UI 夹具仅在外部副本替换了输出目录，未覆盖先前 UI 报告。 维护 unittest 与手册构建命令沿用 [维护说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)。
 
 ## 交付和未验证边界
 
-可分发变更为 8 份项目脚本、4 份新 UID、`effects_composition/` 示例/许可/导入描述和项目使用说明；两份新夹具只留在维护侧。
-同步更新框架指南、目录说明、验证入口、阅读版及 [框架进度](../../progress.md)。27 份本轮分发文件已核对与外部副本相同，既有示例 Cue/场景/Shader/图像/音频无差异；外部两份使用说明同步前也与原基线一致。既有目录映射已覆盖新内容，没有增加复制规则或自动同步机制。
+可分发变更为 8 份项目脚本、4 份新 UID、`effects_composition/` 示例/许可/导入描述和项目使用说明；两份新夹具只留在维护侧。 同步更新框架指南、目录说明、验证入口、阅读版及 [框架进度](../../progress.md)。27 份本轮分发文件已核对与外部副本相同，既有示例 Cue/场景/Shader/图像/音频无差异；外部两份使用说明同步前也与原基线一致。既有目录映射已覆盖新内容，没有增加复制规则或自动同步机制。
 
-E1 实现和本轮自动检查已完成；新效果的视觉协调、快速触发时的听感、实际保存/消费操作体验仍待用户验收。
-手册仅完成静态/构建核对，浏览器排版与交互仍由用户外部检查；本轮未复跑未改动的 Python 分析后端独立 22 项，也未执行完整项目开发 Stage 流程。
-其他 GPU/平台、移动端、大规模长时间负载、CPU 粒子、复杂子发射器、动画轨道编辑、暂停/任意拖动定位均不在本轮验证范围。后续按 E2–E7 的真实需求和依赖选择，不因当前通过自动进入下一阶段。
+E1 实现和本轮自动检查已完成；新效果的视觉协调、快速触发时的听感、实际保存/消费操作体验仍待用户验收。 手册仅完成静态/构建核对，浏览器排版与交互仍由用户外部检查；本轮未复跑未改动的 Python 分析后端独立 22 项，也未执行完整项目开发 Stage 流程。 其他 GPU/平台、移动端、大规模长时间负载、CPU 粒子、复杂子发射器、动画轨道编辑、暂停/任意拖动定位均不在本轮验证范围。后续按 E2–E7 的真实需求和依赖选择，不因当前通过自动进入下一阶段。

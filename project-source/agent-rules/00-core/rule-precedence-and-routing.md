@@ -20,18 +20,12 @@ Defines repository-internal rule semantics. It does not redefine Codex/system/de
 
 ## Rule conflict protocol
 
-When applicable `[MUST]` rules remain impossible to satisfy simultaneously
-after the analysis above:
+When applicable `[MUST]` rules remain impossible to satisfy simultaneously after the analysis above:
 
-1. **[MUST]** The Agent that detects the conflict must stop implementation in
-   the affected scope before making further writes there.
-2. **[MUST]** Report every conflicting rule with its source path and identify
-   the affected files, behavior, and validation or completion Gates.
-3. **[MUST]** Do not silently choose one rule, weaken either rule, or implement
-   a workaround that bypasses the conflict.
-4. **[MUST]** Request explicit clarification or an approved update to the
-   governing rule, and resume the affected implementation only after the
-   conflict is resolved.
+1. **[MUST]** The Agent that detects the conflict must stop implementation in the affected scope before making further writes there.
+2. **[MUST]** Report every conflicting rule with its source path and identify the affected files, behavior, and validation or completion Gates.
+3. **[MUST]** Do not silently choose one rule, weaken either rule, or implement a workaround that bypasses the conflict.
+4. **[MUST]** Request explicit clarification or an approved update to the governing rule, and resume the affected implementation only after the conflict is resolved.
 
 ## Suspected rule errors
 

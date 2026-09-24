@@ -8,12 +8,7 @@ description: >-
 
 ## Procedure
 
-Use `methodology/03-execute-loop.md` as the sole Stage 0–8 procedure, including
-its shared contracts, approval packet, evidence commands, exception handling
-and authorized continuation. Read the shared contracts and current Stage,
-then follow every applicable Stage in order. On resumption, use the actual
-Feature/Progress state and current evidence to find the next required action;
-do not restart completed work or repeat unchanged context.
+Use `methodology/03-execute-loop.md` as the sole Stage 0–8 procedure, including its shared contracts, approval packet, evidence commands, exception handling and authorized continuation. Read the shared contracts and current Stage, then follow every applicable Stage in order. On resumption, use the actual Feature/Progress state and current evidence to find the next required action; do not restart completed work or repeat unchanged context.
 
 | Decision or action | Supporting authority |
 | --- | --- |
@@ -28,10 +23,6 @@ do not restart completed work or repeat unchanged context.
 | Use professional sources, supporting specialist work or supplemental evidence | `methodology/11-specialist-workflows.md` |
 | Perform user-requested independent review | Stage 6 and `methodology/12-independent-review.md`; review methods live in separate Skills |
 
-The execution specification owns optional Stage 6 review and all completion
-conditions. This Skill supplies no alternative check sequence or evidence format.
-Its `scripts/record-feature-completion.py` records and validates the evidence
-described there; it does not perform implementation, tests or review.
+The execution specification owns optional Stage 6 review and all completion conditions. This Skill supplies no alternative check sequence or evidence format. Its `scripts/record-feature-completion.py` records and validates the evidence described there; it does not perform implementation, tests or review.
 
-At Stage 8, return the completed Feature and next action to the caller under
-the specification's **Authorization and continuation** contract.
+At Stage 8, return the completed Feature and next action to the caller under the specification's **Authorization and continuation** contract.

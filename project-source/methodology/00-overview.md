@@ -60,8 +60,7 @@ New projects include short purpose/pending-state notices in fixed documents and 
 
 ## Canonical task routing
 
-This table owns task routing. Guidance Skills read it and the destination
-workflow; they do not maintain an independent lifecycle or approval table.
+This table owns task routing. Guidance Skills read it and the destination workflow; they do not maintain an independent lifecycle or approval table.
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
@@ -93,73 +92,29 @@ workflow; they do not maintain an independent lifecycle or approval table.
 | Human Acceptance follow-up | Current Feature Stage 5/6 route | Bind the user's explicit acceptance to the actual reviewed scope and snapshot; do not infer acceptance. |
 | Status query | Read-only state explanation | Report current facts and next legal action; do not start work or call readiness checks merely to answer. |
 
-Product execution order governs the planning horizon: one Product's Features
-are decomposed and completed before the next Product is decomposed. Revisit
-later requirements using actual experience instead of allocating all future
-tasks up front. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning)
-with the existing Product documents and Feature sources/statuses; no extra
-Product queue or planning-state file is needed.
+Product execution order governs the planning horizon: one Product's Features are decomposed and completed before the next Product is decomposed. Revisit later requirements using actual experience instead of allocating all future tasks up front. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) with the existing Product documents and Feature sources/statuses; no extra Product queue or planning-state file is needed.
 
-Complexity changes prompt detail, not authorization. Simple known work gets a
-short actionable prompt; uncertain, cross-module or migration work gets an
-investigation/planning prompt. Current user authorization takes precedence over
-generic workflow wording, but implementation approval never implies human
-acceptance.
+Complexity changes prompt detail, not authorization. Simple known work gets a short actionable prompt; uncertain, cross-module or migration work gets an investigation/planning prompt. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
 
-Prototype observations and tentative parameters are not approved Product intent
-or Feature acceptance. Keep the question, observed result, decision and experiment
-file disposition in current Feature notes, or current Progress when no Feature
-exists. Adopting an outcome into formal development returns to the Product or
-engineering entry above; exceeding the experiment budget requires user direction.
+Prototype observations and tentative parameters are not approved Product intent or Feature acceptance. Keep the question, observed result, decision and experiment file disposition in current Feature notes, or current Progress when no Feature exists. Adopting an outcome into formal development returns to the Product or engineering entry above; exceeding the experiment budget requires user direction.
 
 ## Reuse project knowledge
 
-Before choosing an approach for planning, investigation, development or review,
-consult `docs/knowledge/README.md`, then the relevant topic indexes and experience
-entries. Use project evidence before repeating external research;
-verify its conditions against the current task and target version. This is
-scoped reading, not a requirement to load the whole directory or to accept
-historical notes as rules. Reuse prior reading when continuing unchanged work.
+Before choosing an approach for planning, investigation, development or review, consult `docs/knowledge/README.md`, then the relevant topic indexes and experience entries. Use project evidence before repeating external research; verify its conditions against the current task and target version. This is scoped reading, not a requirement to load the whole directory or to accept historical notes as rules. Reuse prior reading when continuing unchanged work.
 
-Capture useful task learning in that directory during authorized documentation,
-with one entry per reusable approach or lesson and links to its original
-task evidence. Follow the directory README and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge).
-No matching entry, no new learning, and a read-only task are normal outcomes.
-Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
+Capture useful task learning in that directory during authorized documentation, with one entry per reusable approach or lesson and links to its original task evidence. Follow the directory README and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge). No matching entry, no new learning, and a read-only task are normal outcomes. Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
 
 ## External research
 
-The coordinating agent judges whether existing evidence is sufficient, a direct
-lookup would help, or a bounded investigation merits delegation to `researcher`.
-This choice can arise during discussion, planning, implementation or diagnosis;
-no Stage, topic or Feature automatically requires research. Reuse relevant knowledge
-and previous research while checking applicability, rather than repeating searches.
+The coordinating agent judges whether existing evidence is sufficient, a direct lookup would help, or a bounded investigation merits delegation to `researcher`. This choice can arise during discussion, planning, implementation or diagnosis; no Stage, topic or Feature automatically requires research. Reuse relevant knowledge and previous research while checking applicability, rather than repeating searches.
 
-For delegated research, use `.codex/agents/researcher.toml` when supported and actually
-selected by the client. Pass the question, concrete target versions where relevant,
-project constraints, useful existing evidence, and whether/where to save a report.
-Keep independent work moving; decisions depending on the findings wait for them.
-The role owns research methods and report content. Direct lookups use its applicable
-source/version guidance without requiring a subagent or a full report. If the client
-cannot select the role, use the available agent with those instructions or research
-directly, accurately identifying the execution used.
+For delegated research, use `.codex/agents/researcher.toml` when supported and actually selected by the client. Pass the question, concrete target versions where relevant, project constraints, useful existing evidence, and whether/where to save a report. Keep independent work moving; decisions depending on the findings wait for them. The role owns research methods and report content. Direct lookups use its applicable source/version guidance without requiring a subagent or a full report. If the client cannot select the role, use the available agent with those instructions or research directly, accurately identifying the execution used.
 
-Prefer the available user-installed `anysearch` Skill; it is an external tool
-dependency, not copied into this project. The role permits autonomous fallback to
-other available search methods. Research reports live in `docs/research/` only when
-useful and authorized; [artifact ownership](09-artifact-lifecycle.md#external-research)
-separates them from requirements, runtime evidence and learned project experience.
-The coordinating agent checks applicability, adopts decisions within current
-authorization, finalizes any task-owned documentation/commit and continues the
-owning task. Neither a research result nor a search failure changes that authority.
+Prefer the available user-installed `anysearch` Skill; it is an external tool dependency, not copied into this project. The role permits autonomous fallback to other available search methods. Research reports live in `docs/research/` only when useful and authorized; [artifact ownership](09-artifact-lifecycle.md#external-research) separates them from requirements, runtime evidence and learned project experience. The coordinating agent checks applicability, adopts decisions within current authorization, finalizes any task-owned documentation/commit and continues the owning task. Neither a research result nor a search failure changes that authority.
 
 ## Project environment and workflow
 
-This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11.
-The machine configuration starts incomplete. A first-use request lets the Agent
-configure actual executable paths directly in docs/methodology-config.json,
-then run `tools/checks/check-project-environment.py --require-ready`.
-Project creation already establishes Git and its initial local commit.
+This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11. The machine configuration starts incomplete. A first-use request lets the Agent configure actual executable paths directly in docs/methodology-config.json, then run `tools/checks/check-project-environment.py --require-ready`. Project creation already establishes Git and its initial local commit.
 
 ### Workflow entry
 
@@ -208,8 +163,7 @@ A reported bug must be classified before any Product edit:
 
 ## Delivery control points
 
-Apply [Authorization and continuation](03-execute-loop.md#authorization-and-continuation)
-at these control points; reuse decisions that already cover the concrete action:
+Apply [Authorization and continuation](03-execute-loop.md#authorization-and-continuation) at these control points; reuse decisions that already cover the concrete action:
 
 1. A proposed Product or engineering change must be approved before durable planning writes that require approval.
 2. `feature-execute` Stage 1 requires explicit approval before implementation begins.
@@ -245,22 +199,13 @@ Stage 8   Report results; continue authorized next work or stop at the scope/dec
 
 ## Explicit project checks
 
-No automatic tool events are registered. The Agent reads Git status and follows
-the current task's Skill. Editing a file or ending a reply does not trigger a
-second workflow.
+No automatic tool events are registered. The Agent reads Git status and follows the current task's Skill. Editing a file or ending a reply does not trigger a second workflow.
 
-`tools/checks/check-feature-list.py` validates the ledger, Registry and
-dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
+`tools/checks/check-feature-list.py` validates the ledger, Registry and dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
 
-`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly.
-`.agents/skills/feature-execute/scripts/record-feature-completion.py` records actual results and human
-decisions. Its `validate --feature F0XX` command checks completion evidence
-before the Agent records completion. Test, static and acceptance requirements
-remain those of the execution Skill.
+`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly. `.agents/skills/feature-execute/scripts/record-feature-completion.py` records actual results and human decisions. Its `validate --feature F0XX` command checks completion evidence before the Agent records completion. Test, static and acceptance requirements remain those of the execution Skill.
 
-Report actual verification scope and review findings in ordinary language. Result
-references and explicit decisions are stored by the Skill helper, not parsed from
-conversation summaries.
+Report actual verification scope and review findings in ordinary language. Result references and explicit decisions are stored by the Skill helper, not parsed from conversation summaries.
 
 ## Scope boundary for this personal-project workflow
 

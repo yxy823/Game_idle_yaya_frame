@@ -20,36 +20,17 @@ Unlike `product-init-elicitor`, which covers every Product dimension, this workf
 
 ## Language contract
 
-Apply `methodology/05-document-language.md` to the returned patch. Reuse the
-confirmed `document_language` from `product-author`, or resolve it
-from project configuration. Patch prose and section labels use that language;
-`mode`, `operation`, `source`, trigger operations and other protocol values remain
-as defined below.
+Apply `methodology/05-document-language.md` to the returned patch. Reuse the confirmed `document_language` from `product-author`, or resolve it from project configuration. Patch prose and section labels use that language; `mode`, `operation`, `source`, trigger operations and other protocol values remain as defined below.
 
 ## Core principles
 
 Use applicable `docs/project-rules.md` constraints and relevant accepted architecture decisions supplied by the caller or read from their sources. Surface a conflict before treating draft behavior as approved intent; return any proposed rule change to the owning workflow under the rule-maintenance contract.
 
-Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method).
-Keep this elicitor's modes and patch contract; do not start the clarifier's
-separate handoff workflow. Reuse confirmed answers supplied by the standardizer.
-Focus on unresolved changes to the core loop, primary flow, numeric range,
-state machine and concrete risks to completed behavior. Mark inferred defaults
-for review. Do not turn a Product bug report into an implementation solution.
+Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method). Keep this elicitor's modes and patch contract; do not start the clarifier's separate handoff workflow. Reuse confirmed answers supplied by the standardizer. Focus on unresolved changes to the core loop, primary flow, numeric range, state machine and concrete risks to completed behavior. Mark inferred defaults for review. Do not turn a Product bug report into an implementation solution.
 
-Treat the mode-specific questions below as coverage prompts, not a quota or a
-reason to repeat known answers. Once the current scope, observable outcomes and
-material constraints are clear enough for a reviewable patch, return it to the
-standardizer. Keep deferred work outside the patch; do not require every possible
-design branch to be explored first.
+Treat the mode-specific questions below as coverage prompts, not a quota or a reason to repeat known answers. Once the current scope, observable outcomes and material constraints are clear enough for a reviewable patch, return it to the standardizer. Keep deferred work outside the patch; do not require every possible design branch to be explored first.
 
-When a term has conflicting meanings or hides a Product decision, use
-`methodology/01-product-doc-structure.md` **Project terminology**.
-Read relevant `docs/terminology.md` definitions when present. Return local definition
-changes in the owning Product patch and any proposed shared terminology wording
-with source links separately. Reuse the agreed terms in flows, data descriptions
-and AC. Keep implementation observations distinct from approved intent, and
-leave all writes to the standardizer.
+When a term has conflicting meanings or hides a Product decision, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Return local definition changes in the owning Product patch and any proposed shared terminology wording with source links separately. Reuse the agreed terms in flows, data descriptions and AC. Keep implementation observations distinct from approved intent, and leave all writes to the standardizer.
 
 ## Input
 
@@ -78,10 +59,7 @@ Run a compact version of Product initialization and ask only:
 6. Primary tunable parameters and defaults.
 7. Observable acceptance criteria covering the agreed behavior without duplication or a target count.
 
-Do not re-ask settled edge cases or shared visual/audio direction. Reuse applicable
-Art Bible/Sound Bible references and propose only relevant unresolved edge cases.
-The corresponding specialist owns wireframes/resource specifications directly;
-this elicitor supplies Product behavior and proposed links, not their full bodies.
+Do not re-ask settled edge cases or shared visual/audio direction. Reuse applicable Art Bible/Sound Bible references and propose only relevant unresolved edge cases. The corresponding specialist owns wireframes/resource specifications directly; this elicitor supplies Product behavior and proposed links, not their full bodies.
 
 ## Mode B: `modify`
 
@@ -97,8 +75,7 @@ else:
     disclose the affected sections and ask whether to change them together
 ```
 
-Check the following effects against the supplied facts and approved decisions;
-ask only where a material answer is missing. These are not mandatory questions.
+Check the following effects against the supplied facts and approved decisions; ask only where a material answer is missing. These are not mandatory questions.
 
 | Change | Required clarification or action |
 | --- | --- |

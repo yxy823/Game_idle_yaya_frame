@@ -65,9 +65,4 @@ class Result:
 	var error: String = ""
 ```
 
-The caller checks `success` before consuming `data`; it handles or reports the
-failure using the existing project convention. The small Result above illustrates
-that distinction and does not require a shared Result framework. For file APIs
-that expose an error code, preserve it with the relevant path and stop at the
-failure boundary. Optional defaults must not turn a required load failure into
-an apparently successful empty Dictionary or PackedByteArray.
+The caller checks `success` before consuming `data`; it handles or reports the failure using the existing project convention. The small Result above illustrates that distinction and does not require a shared Result framework. For file APIs that expose an error code, preserve it with the relevant path and stop at the failure boundary. Optional defaults must not turn a required load failure into an apparently successful empty Dictionary or PackedByteArray.

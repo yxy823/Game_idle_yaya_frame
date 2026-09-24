@@ -1,13 +1,10 @@
 # Godot 游戏项目
 
-使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdunit4。
-项目名称、工具路径和具体玩法由当前项目决定。
+使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdunit4。 项目名称、工具路径和具体玩法由当前项目决定。
 
 ## 开发环境
 
-实际工具路径、Godot 版本和检查命令记录在 `docs/methodology-config.json`。
-环境配置说明见 [环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)；
-命令用法见 [检查工具](tools/README.md)。配置就绪与实际测试通过分别记录。
+实际工具路径、Godot 版本和检查命令记录在 `docs/methodology-config.json`。 环境配置说明见 [环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)； 命令用法见 [检查工具](tools/README.md)。配置就绪与实际测试通过分别记录。
 
 ## 文档与代码
 
@@ -42,14 +39,9 @@
 | gdlint.json | GDScript lint 配置 |
 | project.godot | Godot 项目配置 |
 
-知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题，
-实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。
-初始只有目录说明，实际内容随任务积累。
-经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
+知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题， 实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。 初始只有目录说明，实际内容随任务积累。 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
-创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。
-Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境为 `incomplete`，没有正式玩法、业务测试或已完成任务；
-入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
+创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。 Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境为 `incomplete`，没有正式玩法、业务测试或已完成任务； 入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
 
 ## 根据任务使用 Skill
 
@@ -72,8 +64,7 @@ Product 和专业文档初始只有用途与待定说明，任务及测试索引
 | 诊断信号、性能测量与长期运行 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test |
 | 用户指定的独立专业审核 | review-code、review-ux、review-art、review-audio、review-assets、review-localization、review-balance |
 
-新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)
-验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
+新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation) 验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
 
 ```mermaid
 flowchart TD
@@ -101,20 +92,15 @@ flowchart TD
     X --> R[验证、验收、记录与交接]
 ```
 
-只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md`
-初始提供用途说明；由 `product-author` 按需写入已确认的定义。
-保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
+只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md` 初始提供用途说明；由 `product-author` 按需写入已确认的定义。 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
 
 术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 
-Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Feature，
-完成它们后再复核并拆下一 Product。计划追加到同一台账，保留历史；
-后续 Product 先保留需求，不提前展开全部任务。见[逐个 Product 规划](methodology/02-feature-list-schema.md#product-by-product-planning)。
+Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Feature， 完成它们后再复核并拆下一 Product。计划追加到同一台账，保留历史； 后续 Product 先保留需求，不提前展开全部任务。见[逐个 Product 规划](methodology/02-feature-list-schema.md#product-by-product-planning)。
 
 ## 当前 Feature 流程
 
-具体行为以 [feature-execute](.agents/skills/feature-execute/SKILL.md)
-和 [执行流程](methodology/03-execute-loop.md) 为准。
+具体行为以 [feature-execute](.agents/skills/feature-execute/SKILL.md) 和 [执行流程](methodology/03-execute-loop.md) 为准。
 
 ```mermaid
 flowchart TD
@@ -141,21 +127,13 @@ flowchart TD
     S6 -->|已确认且获准的修复| S3
 ```
 
-先按需求决定验收方式，再填写对应检查项。涉及画面、声音、手感等人工判断时保留 Stage 5；
-全部 AC 可自动验证且已选择 automated 时省略 Stage 5，不伪造人工接受。交接后按已有具体授权继续；范围完成或缺少必要决定时停止。
-独立评审默认不启动；用户可以指定单项或多个已完成 Feature 合并评审，具体范围与时机遵循执行流程 Stage 6。
-审核方法与作者分开，使用独立实例；被审成果和原证据只读，获准验证须隔离副作用。美术、音乐、音效制作目前仅保留说明占位，没有生产 Skill。
-用户在当前会话给出的具体授权和检查范围优先于默认流程。
+先按需求决定验收方式，再填写对应检查项。涉及画面、声音、手感等人工判断时保留 Stage 5； 全部 AC 可自动验证且已选择 automated 时省略 Stage 5，不伪造人工接受。交接后按已有具体授权继续；范围完成或缺少必要决定时停止。 独立评审默认不启动；用户可以指定单项或多个已完成 Feature 合并评审，具体范围与时机遵循执行流程 Stage 6。 审核方法与作者分开，使用独立实例；被审成果和原证据只读，获准验证须隔离副作用。美术、音乐、音效制作目前仅保留说明占位，没有生产 Skill。 用户在当前会话给出的具体授权和检查范围优先于默认流程。
 
 ## 显式检查
 
-当前项目没有自动工具事件。Git 状态由 Agent 读取，任务与证据检查由 Skill 中的
-显式命令执行；编辑文件或结束回复不会触发另一套拦截流程。
+当前项目没有自动工具事件。Git 状态由 Agent 读取，任务与证据检查由 Skill 中的 显式命令执行；编辑文件或结束回复不会触发另一套拦截流程。
 
-例如：`tools/checks/check-feature-list.py` 检查台账，
-`.agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。
-具体命令见
-[tools/README.md](tools/README.md)。
+例如：`tools/checks/check-feature-list.py` 检查台账， `.agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。 具体命令见 [tools/README.md](tools/README.md)。
 
 ## 常用项目命令
 
@@ -166,9 +144,4 @@ python -B tools/checks/check-project-environment.py
 python -B tools/checks/check-project-environment.py --require-ready
 ```
 
-前一条检查配置结构，后一条检查 ready 状态、Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。
-READY 不代表测试已经执行或通过。
-它们不配置环境、不运行测试，也不初始化 Git。
-测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。
-首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。
-失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。
+前一条检查配置结构，后一条检查 ready 状态、Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。 READY 不代表测试已经执行或通过。 它们不配置环境、不运行测试，也不初始化 Git。 测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。 首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。

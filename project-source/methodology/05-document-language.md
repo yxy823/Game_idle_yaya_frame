@@ -17,9 +17,7 @@ Every newly initialized project must store `document_language` in `docs/methodol
 
 Copied purpose/pending-state notices and directory navigation do not select a document language or establish Product content. When replacing a notice with actual project content, use the confirmed `document_language`; copying performs no translation.
 
-The current file contains the complete configuration. Keep its actual machine
-tool paths there rather than copying a second example here.
-The project stack is Godot 4.7 / GDScript / gdunit4.
+The current file contains the complete configuration. Keep its actual machine tool paths there rather than copying a second example here. The project stack is Godot 4.7 / GDScript / gdunit4.
 
 
 The value of `document_language` must be a [BCP 47 language tag](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1). Initial verified values are:
@@ -31,13 +29,7 @@ Other well-formed BCP 47 tags may be used on a best-effort basis, but the agent 
 
 Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case script, and uppercase region. Bootstrap preserves the exact value explicitly confirmed by the user and does not silently normalize it. Empty values, whitespace, and underscore forms such as `zh_CN` are invalid and must be confirmed again in a hyphenated form. Private-use, grandfathered, and other unusual tags require explicit confirmation and remain best-effort rather than verified.
 
-The environment checker performs basic lexical screening: an ASCII alphabetic
-primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags;
-hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects
-whitespace, underscores and empty/overlong subtags without normalizing the value.
-This does not validate complete BCP 47 subtag ordering, registry membership or user
-confirmation. The Agent still resolves tag validity and the confirmation requirements
-above before generating durable content; a configuration check does not grant them.
+The environment checker performs basic lexical screening: an ASCII alphabetic primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags; hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects whitespace, underscores and empty/overlong subtags without normalizing the value. This does not validate complete BCP 47 subtag ordering, registry membership or user confirmation. The Agent still resolves tag validity and the confirmation requirements above before generating durable content; a configuration check does not grant them.
 
 ### Verification configuration
 
@@ -48,68 +40,28 @@ above before generating durable content; a configuration check does not grant th
 
 These values are machine-facing configuration and must not be translated when `document_language` changes. A document-language migration preserves them byte-for-byte unless the user separately changes the project's verification setup.
 
-The Test Registry always lives at `docs/test-registry.json`, relative to the project root.
-Its location is shared by the merger, checker, test selector and completion check;
-it is not a configuration field or duplicated Feature-index metadata.
+The Test Registry always lives at `docs/test-registry.json`, relative to the project root. Its location is shared by the merger, checker, test selector and completion check; it is not a configuration field or duplicated Feature-index metadata.
 
 ### Project Environment Bootstrap
 
-Bootstrap means the Agent prepares this project's environment in response to an
-explicit setup request. Use the configuration contract below; there is no
-separate setup program.
+Bootstrap means the Agent prepares this project's environment in response to an explicit setup request. Use the configuration contract below; there is no separate setup program.
 
 The `environment_bootstrap` object stores only:
 - `status`: `incomplete` or `ready`;
 - `engine_executable`: complete Godot executable file path, absolute or relative to the project root, without shell quotes or arguments; no PATH lookup;
 - `engine_version`: the exact output observed from `Godot --version`.
 
-Use the user-configured `engine_executable` directly without rediscovering it.
-If that path is unavailable, report the reason; change it only when the user
-requests a new tool location. Keep `engine_version` empty and status incomplete
-until actual setup confirms the environment; a prefilled path is not readiness.
-Store the Python executable in `python_executable`. The fixed test entry is
-`tools/testing/run-gdunit-tests.py`; it reads the configured Godot path unless
-`--godot-binary` explicitly overrides it for that run.
-Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner
-accepts scope arguments; focused and affected scopes do not need separate
-configuration copies. No plugin source/hash inventory, timestamp, working-directory
-field or stored blocker list is needed; commands run from the project root.
+Use the user-configured `engine_executable` directly without rediscovering it. If that path is unavailable, report the reason; change it only when the user requests a new tool location. Keep `engine_version` empty and status incomplete until actual setup confirms the environment; a prefilled path is not readiness. Store the Python executable in `python_executable`. The fixed test entry is `tools/testing/run-gdunit-tests.py`; it reads the configured Godot path unless `--godot-binary` explicitly overrides it for that run. Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner accepts scope arguments; focused and affected scopes do not need separate configuration copies. No plugin source/hash inventory, timestamp, working-directory field or stored blocker list is needed; commands run from the project root.
 
-The Agent confirms the tools and dependencies. Before the first CLI run that needs
-project scripts in a newly copied project, let the configured Godot editor finish
-its normal resource import and global class scan if this project has not already
-been opened. Follow the [first scan instructions](../tools/README.md#首次-godot-扫描).
-Configuration-only setup may defer this to the authorized first run and must
-report that it was not executed. Reuse completed preparation on later Features;
-do not add an import wrapper or a per-Feature import phase.
-Record the actual setup process and findings in `reports/initialization.md`.
-Append a new entry when that report already exists; preserve earlier failures.
-This is a human-readable task report, not a machine gate or another state file.
-The default project `.gitignore` keeps this report local; committing Progress
-does not include the linked report. Check the project's actual ignore rules;
-include the report in version control only within the user's explicit scope.
-Progress keeps the current result, blockers, next step and report link.
-Set status ready
-after confirming configuration, then run:
+The Agent confirms the tools and dependencies. Before the first CLI run that needs project scripts in a newly copied project, let the configured Godot editor finish its normal resource import and global class scan if this project has not already been opened. Follow the [first scan instructions](../tools/README.md#首次-godot-扫描). Configuration-only setup may defer this to the authorized first run and must report that it was not executed. Reuse completed preparation on later Features; do not add an import wrapper or a per-Feature import phase. Record the actual setup process and findings in `reports/initialization.md`. Append a new entry when that report already exists; preserve earlier failures. This is a human-readable task report, not a machine gate or another state file. The default project `.gitignore` keeps this report local; committing Progress does not include the linked report. Check the project's actual ignore rules; include the report in version control only within the user's explicit scope. Progress keeps the current result, blockers, next step and report link. Set status ready after confirming configuration, then run:
 
 ```powershell
 python -B tools/checks/check-project-environment.py --require-ready
 ```
 
-Without the flag, the checker accepts valid incomplete configuration. With it,
-the checker requires ready status, existing Python/Godot executable files,
-the fixed test runner file, and a live Godot 4.7.x version matching the
-recorded value. File presence does not prove a successful test run.
-It does not prepare editor caches, install dependencies, execute tests, script
-parsing or lint, initialize Git or claim those checks passed. If setup fails, leave status
-incomplete and report the actual reason in Progress rather than duplicating
-errors into configuration arrays.
+Without the flag, the checker accepts valid incomplete configuration. With it, the checker requires ready status, existing Python/Godot executable files, the fixed test runner file, and a live Godot 4.7.x version matching the recorded value. File presence does not prove a successful test run. It does not prepare editor caches, install dependencies, execute tests, script parsing or lint, initialize Git or claim those checks passed. If setup fails, leave status incomplete and report the actual reason in Progress rather than duplicating errors into configuration arrays.
 
-The same runner uses `--scope full` to select `tests/` recursively.
-A required full suite still needs an actual successful full run. Ready
-configuration proves environment availability only; Stage 4 proves actual
-test and static results. Subsequent Features reuse the configured commands
-rather than rediscovering installations.
+The same runner uses `--scope full` to select `tests/` recursively. A required full suite still needs an actual successful full run. Ready configuration proves environment availability only; Stage 4 proves actual test and static results. Subsequent Features reuse the configured commands rather than rediscovering installations.
 
 ## 3. Language selection
 
@@ -136,11 +88,7 @@ The following generated, human-readable project knowledge must use `document_lan
 
 Transient questions, explanations, reports, and verification instructions shown to the user follow the current conversation language. They do not need to match `document_language` unless they are also persisted into the project.
 
-Read `docs/progress.md` as the current state and history index, then load only the
-linked Feature/batch archive relevant to the task. New archives under `docs/progress/`
-use `document_language`; existing history remains in its original language. A pure
-history move preserves the original text and evidence links. Do not translate or
-duplicate historical bodies in both Progress and Feature notes during archival.
+Read `docs/progress.md` as the current state and history index, then load only the linked Feature/batch archive relevant to the task. New archives under `docs/progress/` use `document_language`; existing history remains in its original language. A pure history move preserves the original text and evidence links. Do not translate or duplicate historical bodies in both Progress and Feature notes during archival.
 
 Quoted user-interface text, proper nouns, code samples, and external references may legitimately contain another language. Language checks must not reject content solely because individual characters or examples use a different script.
 
@@ -167,9 +115,7 @@ An agent must translate meaning-bearing prose, not keys, enums, IDs, evidence st
 
 Yaya Loop's executable workflow sources use one canonical English version. This includes Methodology specifications, Skills, templates, Project Rules sources, explicit tools, and default examples.
 
-Task prompts sent by a user may use the conversation language. Their language does
-not by itself change the canonical workflow sources or the configured
-`document_language` for durable project output.
+Task prompts sent by a user may use the conversation language. Their language does not by itself change the canonical workflow sources or the configured `document_language` for durable project output.
 
 Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodies, or translated Project Rules libraries. Human-facing entry documents may have explicitly approved translations, such as `README.zh-CN.md`, but those translations are not executable workflow sources.
 
@@ -177,17 +123,11 @@ When rendering an English canonical template into another document language, pre
 
 ## 7. Missing configuration is an error
 
-The creator supplies `docs/methodology-config.json` with `document_language`.
-A missing file or field is a project-file error, not an older-project mode.
-Report it and resolve the configuration before writing durable content; do not
-guess its value from Product files or create a migration record.
+The creator supplies `docs/methodology-config.json` with `document_language`. A missing file or field is a project-file error, not an older-project mode. Report it and resolve the configuration before writing durable content; do not guess its value from Product files or create a migration record.
 
 ## 8. Content in another language
 
-Use the configured `document_language` for new durable content. Existing text in
-another language does not change that setting. Translate existing sections only
-within an explicitly approved scope; preserve completed Features and revision
-records unless their translation is also authorized.
+Use the configured `document_language` for new durable content. Existing text in another language does not change that setting. Translate existing sections only within an explicitly approved scope; preserve completed Features and revision records unless their translation is also authorized.
 
 ## 9. Changing an established document language
 

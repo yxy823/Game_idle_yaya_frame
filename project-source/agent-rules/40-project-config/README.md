@@ -1,7 +1,6 @@
 # 40 Project Configuration Rules
 
-Owns `project.godot` / ProjectSettings semantics.
-Build/distribution settings in `export_presets.cfg` belong to `41-export-config`.
+Owns `project.godot` / ProjectSettings semantics. Build/distribution settings in `export_presets.cfg` belong to `41-export-config`.
 
 Read:
 

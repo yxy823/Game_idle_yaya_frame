@@ -3013,8 +3013,7 @@ Work item: docs/features/F012.json
 <article id="doc-framework--docs--blank-project--guides--asset-workbench" class="chapter" data-number="14" data-title="美术、音频与视觉效果资源工作台" data-scenarios="false"><div class="chapter-meta"><span>开发指南 / 14</span><a class="source-link" href="guides/asset-workbench.md" title="本章的 Markdown 源文件">Markdown 原文</a></div>
 <h1 id="doc-framework--docs--blank-project--guides--asset-workbench--美术音频与视觉效果资源工作台" data-title="美术、音频与视觉效果资源工作台">美术、音频与视觉效果资源工作台</h1>
 <p><a href="#doc-framework--docs--blank-project--README">返回手册</a> · 相关：<a href="#doc-framework--docs--blank-project--guides--specialist-workflows">专业设计</a>、<a href="#doc-framework--docs--blank-project--maintenance--validating-framework">框架验证方式</a></p>
-<p>工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。
-它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。</p>
+<p>工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。 它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。</p>
 <h2 id="doc-framework--docs--blank-project--guides--asset-workbench--按当前任务进入" data-title="按当前任务进入">按当前任务进入<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--asset-workbench--按当前任务进入" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>先在实际游戏项目完成 <a href="#doc-framework--docs--blank-project--getting-started--first-use">环境准备</a>，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。</p>
 <div class="table-scroll"><table>
@@ -3117,8 +3116,7 @@ Work item: docs/features/F012.json
 <p>效果组合的消费入口为 <code>effects_composition/example_consumer.tscn</code>，可检查不同摆放、旋转和缩放。正式导出还应按 <a href="../../../project-source/examples/asset_workbench/README.md#%E6%B6%88%E8%B4%B9%E6%8E%A5%E5%85%A5%E4%B8%8E%E5%AF%BC%E5%87%BA" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">消费接入与导出</a> 包含实际引用、运行脚本与许可，并从独立包验证；F6 成功不证明导出依赖完整。</p>
 <h2 id="doc-framework--docs--blank-project--guides--asset-workbench--在真实任务中使用" data-title="在真实任务中使用">在真实任务中使用<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--asset-workbench--在真实任务中使用" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <h3 id="doc-framework--docs--blank-project--guides--asset-workbench--先讨论按钮与布局" data-title="先讨论按钮与布局">先讨论按钮与布局<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--asset-workbench--先讨论按钮与布局" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
-<p>沿用提示词库“Godot 项目开发 → 需求设计 → 设计界面与交互”，对应 <code>design-ui-spec</code>，不需要新增布局专用流程。
-输入界面目标、主要/次要操作、1600×900 显示条件、实际文本及参考界面。按 <a href="#doc-framework--docs--blank-project--guides--scenarios-interface-audio-assets">UI 场景检查单</a> 推进：</p>
+<p>沿用提示词库“Godot 项目开发 → 需求设计 → 设计界面与交互”，对应 <code>design-ui-spec</code>，不需要新增布局专用流程。 输入界面目标、主要/次要操作、1600×900 显示条件、实际文本及参考界面。按 <a href="#doc-framework--docs--blank-project--guides--scenarios-interface-audio-assets">UI 场景检查单</a> 推进：</p>
 <ol>
 <li>先确定信息层级、按钮分组、常用动作和需要确认的保存/覆盖行为，给出 ASCII 线框及状态说明。</li>
 <li>讨论并选择布局，把已确认要求、试验尺寸和待决定项记录在项目 <code>docs/ui/&lt;interface&gt;-design.md</code>。</li>
@@ -3127,13 +3125,9 @@ Work item: docs/features/F012.json
 </ol>
 <p>完整界面方案由 Agent 编写独立 <code>.tscn</code> 原型，工作台可辅助其中的资源与反馈试调。它不提供自然语言场景生成、通用拖拽编辑或任意节点属性修改，示例布局也不等于实际游戏已确认的 UI 设计。</p>
 <h3 id="doc-framework--docs--blank-project--guides--asset-workbench--接入实际对象" data-title="接入实际对象">接入实际对象<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--asset-workbench--接入实际对象" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>
-<p>沿用原型、资源接入或当前 Feature 的授权与记录。需要试调时进入工作台；参数已经明确的普通替换不必走完整链路。
-提示词仍使用“验证视觉、玩法或技术假设”或“接入或替换游戏资源”等已有入口，不新增工作台 Stage 或专属完成状态。</p>
-<p>接入真实对象前，复用它已有的表现组件、Scene/Resource 和音频服务，明确一个实际写回目标。
-本例的 <code>FeedbackCue</code> 表达可选媒体、粒子与有限动画表现；不要求把已有游戏改造成该模型。
-预览入口隔离掉落、存档、网络、业务 Autoload 等副作用；仅选择场景文件不能证明它安全独立。</p>
-<p>专业规格仍由原有美术、音频与 UI Skill 维护。源资源、Godot 导入结果、工作台画面与正式场景表现各有验证边界。
-记录实际观察和待确认项，随后在真实场景验证；示例通过不自动完成具体 Feature 或人工验收。</p>
+<p>沿用原型、资源接入或当前 Feature 的授权与记录。需要试调时进入工作台；参数已经明确的普通替换不必走完整链路。 提示词仍使用“验证视觉、玩法或技术假设”或“接入或替换游戏资源”等已有入口，不新增工作台 Stage 或专属完成状态。</p>
+<p>接入真实对象前，复用它已有的表现组件、Scene/Resource 和音频服务，明确一个实际写回目标。 本例的 <code>FeedbackCue</code> 表达可选媒体、粒子与有限动画表现；不要求把已有游戏改造成该模型。 预览入口隔离掉落、存档、网络、业务 Autoload 等副作用；仅选择场景文件不能证明它安全独立。</p>
+<p>专业规格仍由原有美术、音频与 UI Skill 维护。源资源、Godot 导入结果、工作台画面与正式场景表现各有验证边界。 记录实际观察和待确认项，随后在真实场景验证；示例通过不自动完成具体 Feature 或人工验收。</p>
 <h2 id="doc-framework--docs--blank-project--guides--asset-workbench--工程归属" data-title="工程归属">工程归属<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--asset-workbench--工程归属" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <div class="table-scroll"><table>
 <thead>
@@ -3178,8 +3172,7 @@ Work item: docs/features/F012.json
 <p>在生成项目中，Agent 随已授权任务维护必要的定义、设计、规则和经验；需要续接时再用 Progress 定位真实停点。本页先按文档维护时机组织，后半部说明报告保留与中断交接。不因存在模板就创建全部文档，也不因任务结束才集中补写会影响验证的内容。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--信息应该放在哪里" data-title="信息应该放在哪里">信息应该放在哪里<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--信息应该放在哪里" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>完整文件职责、出现时机与主要读写方集中在 <a href="#doc-framework--docs--blank-project--reference--project-layout--%E6%96%87%E6%A1%A3%E4%B8%8E%E6%89%A7%E8%A1%8C%E6%96%87%E4%BB%B6%E5%A6%82%E4%BD%95%E9%85%8D%E5%90%88">目录参考</a>。本页只解释何时维护、如何保留历史和从哪里续接；当前 Feature 的 Stage 1–4 衔接见 <a href="#doc-framework--docs--blank-project--guides--feature-delivery--%E6%9C%80%E7%BB%88%E9%AA%8C%E8%AF%81%E5%89%8D%E5%AE%8C%E6%88%90%E6%96%87%E6%A1%A3%E6%9B%B4%E6%96%B0">最终验证前文档更新</a>。</p>
-<p>美术、声音、UI、资源与本地化文档由对应专业 Skill 直接维护，Product 保存行为与引用。
-来源变化、缺陷分类和设计/接入/审核边界见 <a href="#doc-framework--docs--blank-project--guides--specialist-workflows">专业工作指南</a>。</p>
+<p>美术、声音、UI、资源与本地化文档由对应专业 Skill 直接维护，Product 保存行为与引用。 来源变化、缺陷分类和设计/接入/审核边界见 <a href="#doc-framework--docs--blank-project--guides--specialist-workflows">专业工作指南</a>。</p>
 <h2 id="doc-framework--docs--blank-project--guides--project-knowledge--按需搜索与保存调研" data-title="按需搜索与保存调研">按需搜索与保存调研<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--guides--project-knowledge--按需搜索与保存调研" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>主 Agent 根据问题、已有证据与项目条件，自主判断是否搜索、直接查询还是委派 <code>researcher</code>。需求讨论、规划、实现或排错都可以使用；没有必经的调研阶段，也不要求每个 Feature 搜索一次。已有信息充分时直接继续，简单查询可以只在对话中引用来源。</p>
 <p>需要独立调研时，主 Agent 传入具体问题、适用版本、项目约束和已有资料，并决定是否保存、保存到哪里。<code>researcher</code> 使用当前可用的 anysearch Skill 调查，返回结论、来源、建议和未确认项；主 Agent 判断适用性并继续原任务。需要报告时由子 Agent 直接写指定文件，主 Agent 负责核对、必要的原任务链接与提交。角色与报告格式的唯一指令正文是 <a href="../../../project-source/agents/researcher.toml" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">researcher.toml</a>，正式项目使用自己的 <code>.codex/agents/researcher.toml</code>。</p>
@@ -4446,10 +4439,7 @@ Work item: docs/features/F012.json
 <p><a href="../../../project-source/agents/researcher.toml" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">researcher.toml</a> 随项目复制到 <code>.codex/agents/</code>，定义调研方法、报告内容与默认保存位置。主 Agent 自主选择直接查询或委派；按需保存到 <code>docs/research/</code>，不增加 research Skill 或固定阶段。详细用法见 <a href="#doc-framework--docs--blank-project--guides--project-knowledge--%E6%8C%89%E9%9C%80%E6%90%9C%E7%B4%A2%E4%B8%8E%E4%BF%9D%E5%AD%98%E8%B0%83%E7%A0%94">搜索与调研</a>。</p>
 <p>anysearch 是用户级搜索 Skill，不包含在上述 27 项中，也不随创建器复制。researcher 优先使用当前可用安装，不可用时自主回退其他搜索方式。客户端未提供角色选择能力时，由可用实例读取对应角色指令执行并说明实际方式，不声称配置已自动加载。</p>
 <h2 id="doc-framework--docs--blank-project--reference--skills--skill-未被自动识别时" data-title="Skill 未被自动识别时">Skill 未被自动识别时<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--reference--skills--skill-未被自动识别时" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
-<p>专业内容、制作占位与独立审核的协作见 <a href="#doc-framework--docs--blank-project--guides--specialist-workflows">专业工作指南</a>。
-所有审核方法由独立实例按需选用，不默认逐项执行；角色源文件为
-<a href="../../../project-source/agents/independent-reviewer.toml" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">independent-reviewer.toml</a>，
-复制到项目 <code>.codex/agents/</code>。实际加载、上下文和权限需核实，不能由文件存在推定。</p>
+<p>专业内容、制作占位与独立审核的协作见 <a href="#doc-framework--docs--blank-project--guides--specialist-workflows">专业工作指南</a>。 所有审核方法由独立实例按需选用，不默认逐项执行；角色源文件为 <a href="../../../project-source/agents/independent-reviewer.toml" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">independent-reviewer.toml</a>， 复制到项目 <code>.codex/agents/</code>。实际加载、上下文和权限需核实，不能由文件存在推定。</p>
 <p>先核对当前工作目录、项目 <code>.agents/skills/</code> 和目标 <code>SKILL.md</code> 是否存在，再核对所用 Agent 对项目 Skill 的加载方式。不要直接以“未自动出现”推断源文件丢失，也不要先改流程或生成替代 Skill。</p>
 <p>这份手册不承诺所有 Agent 客户端都以相同方式自动加载 Skill；目标项目的实际文件与当前客户端行为需要分别确认。</p>
 <nav class="chapter-pager" aria-label="章节翻页"><a href="#doc-framework--docs--blank-project--reference--project-layout" class="previous"><span>← 上一章</span><strong>项目目录与文件职责</strong></a><a href="#doc-framework--docs--blank-project--reference--configuration" class="next"><span>下一章 →</span><strong>配置参考</strong></a></nav></article>
@@ -5516,8 +5506,7 @@ $LASTEXITCODE
 &amp; &#x27;C:\Users\89523\anaconda3\envs\codex-python\python.exe&#x27; -B -m unittest discover -s framework/tests -p test_*.py
 $LASTEXITCODE
 </code></pre></div>
-<p>上述入口包含复制器、文档指纹边界和人工验收文件契约回归；后两者只用中立临时 Git 夹具检查
-使用说明与验证契约的指纹边界、清单覆盖、结果往返及版本匹配，不创建游戏，也不替代外部项目工具回归或真实人工体验。</p>
+<p>上述入口包含复制器、文档指纹边界和人工验收文件契约回归；后两者只用中立临时 Git 夹具检查 使用说明与验证契约的指纹边界、清单覆盖、结果往返及版本匹配，不创建游戏，也不替代外部项目工具回归或真实人工体验。</p>
 <div class="code-block"><div class="code-toolbar"><span>powershell</span><div class="code-actions"><button type="button" class="toggle-code-wrap" aria-pressed="false">自动换行</button><button type="button" class="copy-code">复制代码</button></div></div><pre><code># 替换成用户明确指定的外部验证项目。
 &amp; &#x27;C:\Users\89523\anaconda3\envs\codex-python\python.exe&#x27; -B framework/commands/run_project_tool_tests.py --project &#x27;D:\Games\MyGodotGame&#x27;
 $LASTEXITCODE
@@ -5734,8 +5723,7 @@ $LASTEXITCODE
 <article id="doc-framework--docs--blank-project--maintenance--validating-framework" class="chapter" data-number="22" data-title="框架的复制与运行验证" data-scenarios="false"><div class="chapter-meta"><span>框架维护 / 22</span><a class="source-link" href="maintenance/validating-framework.md" title="本章的 Markdown 源文件">Markdown 原文</a></div>
 <h1 id="doc-framework--docs--blank-project--maintenance--validating-framework--框架的复制与运行验证" data-title="框架的复制与运行验证">框架的复制与运行验证</h1>
 <p><a href="#doc-framework--docs--blank-project--README">返回手册</a> · 相关：<a href="#doc-framework--docs--blank-project--maintenance--updating-the-blank-project--%E6%8C%89%E4%BF%AE%E6%94%B9%E9%80%89%E6%8B%A9%E9%AA%8C%E8%AF%81%E8%8C%83%E5%9B%B4">维护与同步</a>、<a href="#doc-framework--docs--blank-project--getting-started--create-project">创建项目</a></p>
-<p><code>project-source/</code> 是未初始化的分发材料，包含最小入口 <code>main/main.tscn</code>；不在这里启动 Godot，
-不预置实际游戏玩法、本机就绪配置、业务需求或已完成任务。可用性通过源材料检查和独立项目中的真实运行共同验证。</p>
+<p><code>project-source/</code> 是未初始化的分发材料，包含最小入口 <code>main/main.tscn</code>；不在这里启动 Godot， 不预置实际游戏玩法、本机就绪配置、业务需求或已完成任务。可用性通过源材料检查和独立项目中的真实运行共同验证。</p>
 <h2 id="doc-framework--docs--blank-project--maintenance--validating-framework--分层验证" data-title="分层验证">分层验证<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--maintenance--validating-framework--分层验证" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <div class="table-scroll"><table>
 <thead>
@@ -5773,14 +5761,9 @@ $LASTEXITCODE
 </tr>
 </tbody>
 </table></div>
-<p>每次按改动选择适用层，不要求纯文档修改也建立游戏项目。
-现有命令在 <a href="../../README.md#%E6%8C%89%E9%9C%80%E6%A3%80%E6%9F%A5" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">维护工具</a>；实际流程入口仍是提示词库中的“通过实际任务动态审核框架流程”。
-Skill 是 Agent 阅读的方法，Prompt 是输入；格式检查、脚本测试和一次真实委派是三种不同证据。
-reviewer/researcher 的客户端加载与独立实例执行没有实测时，必须明确保留未验证项。</p>
+<p>每次按改动选择适用层，不要求纯文档修改也建立游戏项目。 现有命令在 <a href="../../README.md#%E6%8C%89%E9%9C%80%E6%A3%80%E6%9F%A5" class="source-link" title="仓库文件：需与仓库一起保留，可能由浏览器下载或交给编辑器打开">维护工具</a>；实际流程入口仍是提示词库中的“通过实际任务动态审核框架流程”。 Skill 是 Agent 阅读的方法，Prompt 是输入；格式检查、脚本测试和一次真实委派是三种不同证据。 reviewer/researcher 的客户端加载与独立实例执行没有实测时，必须明确保留未验证项。</p>
 <h2 id="doc-framework--docs--blank-project--maintenance--validating-framework--测试载体与文件归属" data-title="测试载体与文件归属">测试载体与文件归属<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--maintenance--validating-framework--测试载体与文件归属" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
-<p>优先从当前源材料创建一个全新外部测试项目，再完成 Godot 初始化。
-这样同时检验“复制是否完整”和“初始化后能否继续开发”，避免已有项目的缓存或旧文件遮住遗漏。
-测试项目独立拥有文件，本次授权内修正具体文件后继续验证；不增加自动同步或升级机制。</p>
+<p>优先从当前源材料创建一个全新外部测试项目，再完成 Godot 初始化。 这样同时检验“复制是否完整”和“初始化后能否继续开发”，避免已有项目的缓存或旧文件遮住遗漏。 测试项目独立拥有文件，本次授权内修正具体文件后继续验证；不增加自动同步或升级机制。</p>
 <div class="table-scroll"><table>
 <thead>
 <tr>
@@ -5817,20 +5800,11 @@ reviewer/researcher 的客户端加载与独立实例执行没有实测时，必
 </tr>
 </tbody>
 </table></div>
-<p>已经初始化且非空的项目可以作为有明确范围的集成验证载体，但不能直接用创建器覆盖。
-现有创建器只接受不存在或空的目标；已有 <code>project.godot</code>、机器配置与业务文件须按接入/迁移范围逐项合并。
-对新使用者，首选“创建外部空目录 → 复制 → 初始化 → 开发”的路径。</p>
+<p>已经初始化且非空的项目可以作为有明确范围的集成验证载体，但不能直接用创建器覆盖。 现有创建器只接受不存在或空的目标；已有 <code>project.godot</code>、机器配置与业务文件须按接入/迁移范围逐项合并。 对新使用者，首选“创建外部空目录 → 复制 → 初始化 → 开发”的路径。</p>
 <h2 id="doc-framework--docs--blank-project--maintenance--validating-framework--一次有意义的流程抽样" data-title="一次有意义的流程抽样">一次有意义的流程抽样<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--maintenance--validating-framework--一次有意义的流程抽样" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
-<p>从未初始化副本开始，核对环境检查对 incomplete 和 ready 的不同结果，再建立一个很小的真实任务。
-使用项目自己的 Skill/规范准备需求、AC、Feature 与 Registry；实际调用检查、测试运行和完成记录工具，
-保留失败及修复后的结果，更新本项目 Progress/notes，并按授权完成本地提交与交接。</p>
-<p>当前新增工作台已有实现时，可以把“复制后验证试调隔离、保存和消费一致性”作为维护任务；
-不要伪称从需求到实现都重新执行过，也不要把补录文档称为当时发生的需求讨论或 TDD。
-需要验证从零生成需求和开发的完整分支时，另按动态审核入口执行一个新微型功能，复用已确认授权。
-涉及主观观感、音色与手感的 AC 保持人工待验收，实施授权和自动化通过都不能替代它。</p>
-<p>迁移检查使用另一条干净路径、无 <code>.godot</code> 缓存和无已初始化数据的副本重新导入、加载资源与启动入口。
-可以在指定测试项目已被 <code>.gdignore</code> 排除的报告区放置独立子项目，避免外层 Godot 扫描到重复全局类。
-这证明本次版本在所测 Windows/Godot 版本和路径下可重建；跨机器仍需重新完成工具路径配置与验证。</p>
+<p>从未初始化副本开始，核对环境检查对 incomplete 和 ready 的不同结果，再建立一个很小的真实任务。 使用项目自己的 Skill/规范准备需求、AC、Feature 与 Registry；实际调用检查、测试运行和完成记录工具， 保留失败及修复后的结果，更新本项目 Progress/notes，并按授权完成本地提交与交接。</p>
+<p>当前新增工作台已有实现时，可以把“复制后验证试调隔离、保存和消费一致性”作为维护任务； 不要伪称从需求到实现都重新执行过，也不要把补录文档称为当时发生的需求讨论或 TDD。 需要验证从零生成需求和开发的完整分支时，另按动态审核入口执行一个新微型功能，复用已确认授权。 涉及主观观感、音色与手感的 AC 保持人工待验收，实施授权和自动化通过都不能替代它。</p>
+<p>迁移检查使用另一条干净路径、无 <code>.godot</code> 缓存和无已初始化数据的副本重新导入、加载资源与启动入口。 可以在指定测试项目已被 <code>.gdignore</code> 排除的报告区放置独立子项目，避免外层 Godot 扫描到重复全局类。 这证明本次版本在所测 Windows/Godot 版本和路径下可重建；跨机器仍需重新完成工具路径配置与验证。</p>
 <h2 id="doc-framework--docs--blank-project--maintenance--validating-framework--工作台专项验证入口" data-title="工作台专项验证入口">工作台专项验证入口<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--maintenance--validating-framework--工作台专项验证入口" aria-label="复制本小节链接" title="复制本小节链接">#</button></h2>
 <p>先按本次修改选择下列小节，不要求每轮运行全部夹具。源文件均在 <code>framework/tests/project/</code>，仅将需要的文件复制到明确指定的外部验证项目；运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。</p>
 <h3 id="doc-framework--docs--blank-project--maintenance--validating-framework--功能保存与错误恢复" data-title="功能、保存与错误恢复">功能、保存与错误恢复<button type="button" class="heading-link" data-anchor="doc-framework--docs--blank-project--maintenance--validating-framework--功能保存与错误恢复" aria-label="复制本小节链接" title="复制本小节链接">#</button></h3>

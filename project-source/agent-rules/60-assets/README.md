@@ -1,7 +1,6 @@
 # 60 Asset Pipeline Rules
 
-Applies to source images/audio/fonts, `.import` metadata, Godot imported cache,
-custom importers, paths/UIDs, provenance/licenses, variants, and asset validation.
+Applies to source images/audio/fonts, `.import` metadata, Godot imported cache, custom importers, paths/UIDs, provenance/licenses, variants, and asset validation.
 
 Core model:
 

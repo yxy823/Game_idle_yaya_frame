@@ -66,9 +66,7 @@ $LASTEXITCODE
 
 结果包含 `schema_version`、`status`、`asset`、`analyzer`、`metrics`、`series`、`warnings`、`errors`、`cache`。`analyzer.backend` 是后端名称到具体版本的映射（含 FFmpeg 库版本），承担 backend_version 语义，便于组合多个库。协议不会直接暴露其私有输出。
 
-单值条目：`{"status":"available","value":-6.02,"unit":"dBFS","reason":""}`。
-不可用条目：`{"status":"not_applicable","value":null,"unit":"LUFS","reason":"Requires at least 0.4 seconds"}`。
-序列条目：`{"status":"available","kind":"line","x":[0.0,0.1],"y":[0.0,0.5],"x_unit":"s","y_unit":"linear full scale"}`。`histogram` 使用数值 x/y 绘制柱形分布，x 为分箱中心；line 绘制折线。图表轮缩放保持鼠标下的数据点，接近数据边界时限制可视区。
+单值条目：`{"status":"available","value":-6.02,"unit":"dBFS","reason":""}`。 不可用条目：`{"status":"not_applicable","value":null,"unit":"LUFS","reason":"Requires at least 0.4 seconds"}`。 序列条目：`{"status":"available","kind":"line","x":[0.0,0.1],"y":[0.0,0.5],"x_unit":"s","y_unit":"linear full scale"}`。`histogram` 使用数值 x/y 绘制柱形分布，x 为分箱中心；line 绘制折线。图表轮缩放保持鼠标下的数据点，接近数据边界时限制可视区。
 
 运行时校验器仅解释当前 Schema 使用的词汇，并非通用 JSON Schema 引擎；新增校验词汇必须补充两端支持和共同夹具。`x-equal-lengths` 约束 x/y 等长，递归拒绝 NaN/Infinity；标准 JSON 本身不允许非有限数。分析器版本为 2；旧缓存因算法版本变化自然失效。
 

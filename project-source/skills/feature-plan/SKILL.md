@@ -7,34 +7,15 @@ description: "Decompose only the current Product into Features and append them t
 
 ## Authority and inputs
 
-Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition
-rules**, **Requirement coverage review** and the index/detail/revision/Registry contracts in
-`methodology/02-feature-list-schema.md`. This Skill owns the planning procedure
-and component merge below; it does not maintain another schema.
+Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition rules**, **Requirement coverage review** and the index/detail/revision/Registry contracts in `methodology/02-feature-list-schema.md`. This Skill owns the planning procedure and component merge below; it does not maintain another schema.
 
-When the requested scope already has implementation but lacks Feature records,
-also apply **Adopting existing implementation** in that specification. Reuse
-the actual implementation and tests in the proposal; planning does not mark
-the adopted work complete.
+When the requested scope already has implementation but lacks Feature records, also apply **Adopting existing implementation** in that specification. Reuse the actual implementation and tests in the proposal; planning does not mark the adopted work complete.
 
-Apply `methodology/05-document-language.md` before durable prose. Resolve
-`document_language` from confirmed configuration; preserve existing history.
-Before durable writes, apply the preflight and ownership contract in
-`agent-rules/00-core/git-worktree-and-commits.md`.
+Apply `methodology/05-document-language.md` before durable prose. Resolve `document_language` from confirmed configuration; preserve existing history. Before durable writes, apply the preflight and ownership contract in `agent-rules/00-core/git-worktree-and-commits.md`.
 
-Read the selected Product's complete approved specification, with
-`docs/product.md` to establish order and shared requirements. Consult relevant
-terminology definitions, prerequisite/affected module sections, configuration and
-rules through `AGENTS.md`. Other Product modules are context only when needed,
-not work to decompose now. Reuse unchanged reading on continuation.
+Read the selected Product's complete approved specification, with `docs/product.md` to establish order and shared requirements. Consult relevant terminology definitions, prerequisite/affected module sections, configuration and rules through `AGENTS.md`. Other Product modules are context only when needed, not work to decompose now. Reuse unchanged reading on continuation.
 
-Follow **Discover and map sources** in `methodology/11-specialist-workflows.md`:
-include applicable UI, art, audio, resource and localization requirements through
-actual links and shared applicability. Preserve one primary `source`; put precise
-secondary references in concrete AC or the optional Feature design. Map each
-relevant requirement to an observable outcome and a verification action, not a
-generic “conforms to the Bible”. `meta.generated_from` names actual source locations,
-not proof that every file or later Product has been planned.
+Follow **Discover and map sources** in `methodology/11-specialist-workflows.md`: include applicable UI, art, audio, resource and localization requirements through actual links and shared applicability. Preserve one primary `source`; put precise secondary references in concrete AC or the optional Feature design. Map each relevant requirement to an observable outcome and a verification action, not a generic “conforms to the Bible”. `meta.generated_from` names actual source locations, not proof that every file or later Product has been planned.
 
 | Existing artifact | Needed context |
 | --- | --- |
@@ -43,54 +24,22 @@ not proof that every file or later Product has been planned.
 | `docs/feature-list-revisions.json` | Existing revision history/anchor to preserve |
 | `docs/test-registry.json` | Existing component/test records before proposing additions |
 
-An existing empty or populated ledger can receive the current Product's first
-plan. Reuse already planned scope and route its changes to `feature-sync`.
-Do not replace earlier plans. Require the creator-supplied index, revision log
-and Registry under the canonical schema; a missing file requires repair before
-planning. Report actual module inventory/file mismatches; do not guess names.
+An existing empty or populated ledger can receive the current Product's first plan. Reuse already planned scope and route its changes to `feature-sync`. Do not replace earlier plans. Require the creator-supplied index, revision log and Registry under the canonical schema; a missing file requires repair before planning. Report actual module inventory/file mismatches; do not guess names.
 
 ## Plan and write
 
-1. Identify the current Product and its approved scope from actual source and
-   completion state. Establish needed runnable infrastructure only when it does
-   not already exist. Apply accepted architecture constraints and **Visual
-   prototype before dependent implementation** in `methodology/01-product-doc-structure.md`
-   to the actual prerequisite order; production domain/presentation separation
-   does not require developing business logic before an independent visual prototype.
-   Check applicable `docs/project-rules.md` hard constraints as well. Do not decompose a conflicting Product into an apparently valid plan; resolve the rule/Product choice through the existing owner. Note an actual need for detailed Feature design or an ADR for Stage 1 rather than creating one for every work item.
-2. Propose independently verifiable, session-sized outcomes under the canonical
-   decomposition rules. Use precise source sections and observable criteria;
-   do not encode class structure as Product behavior or pre-plan later Products.
-3. Present the canonical **Decomposition preview** in the conversation, including
-   Feature counts and every Feature's summary/dependencies, why this Product is
-   next and the requirement coverage correspondence. Apply its confirmation and
-   explicit autonomous-planning rules before any Registry or Feature-plan write;
-   resolve missing material decisions.
-4. After Step 3 permits writing, run the Registry merge below before any
-   Feature-plan write. Continue only after a validated conflict-free merge.
-5. Append new index entries and only their detail files, using canonical initial
-   planning values. Update index time, decomposition notes and actual
-   newly used professional source locations in `meta.generated_from`. Preserve
-   the revision log, existing Features, metadata unrelated
-   to this addition and revision history. Planning a newly current Product does
-   not advance the synchronization anchor. Do not rewrite Registry data by hand
-   after a successful merge.
-6. Complete validation and semantic review below. Refresh the same proposal with
-   actual IDs and remaining work rather than creating another report file.
-7. Follow the Git contract above for explicit task-owned staging, cached-diff
-   review and the local commit. Use
-   `chore(feature-plan): <中文行为摘要>`; omit `Work item` because this creates
-   a plan. Do not stage a broad `docs/features/` path.
-8. Report the result and first eligible Feature for this Product. Return to the
-   calling workflow under **Authorization and continuation** in
-   `methodology/03-execute-loop.md`; authorized implementation uses
-   `feature-execute`. Planning success grants no later-Product scope.
+1. Identify the current Product and its approved scope from actual source and completion state. Establish needed runnable infrastructure only when it does not already exist. Apply accepted architecture constraints and **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md` to the actual prerequisite order; production domain/presentation separation does not require developing business logic before an independent visual prototype. Check applicable `docs/project-rules.md` hard constraints as well. Do not decompose a conflicting Product into an apparently valid plan; resolve the rule/Product choice through the existing owner. Note an actual need for detailed Feature design or an ADR for Stage 1 rather than creating one for every work item.
+2. Propose independently verifiable, session-sized outcomes under the canonical decomposition rules. Use precise source sections and observable criteria; do not encode class structure as Product behavior or pre-plan later Products.
+3. Present the canonical **Decomposition preview** in the conversation, including Feature counts and every Feature's summary/dependencies, why this Product is next and the requirement coverage correspondence. Apply its confirmation and explicit autonomous-planning rules before any Registry or Feature-plan write; resolve missing material decisions.
+4. After Step 3 permits writing, run the Registry merge below before any Feature-plan write. Continue only after a validated conflict-free merge.
+5. Append new index entries and only their detail files, using canonical initial planning values. Update index time, decomposition notes and actual newly used professional source locations in `meta.generated_from`. Preserve the revision log, existing Features, metadata unrelated to this addition and revision history. Planning a newly current Product does not advance the synchronization anchor. Do not rewrite Registry data by hand after a successful merge.
+6. Complete validation and semantic review below. Refresh the same proposal with actual IDs and remaining work rather than creating another report file.
+7. Follow the Git contract above for explicit task-owned staging, cached-diff review and the local commit. Use `chore(feature-plan): <中文行为摘要>`; omit `Work item` because this creates a plan. Do not stage a broad `docs/features/` path.
+8. Report the result and first eligible Feature for this Product. Return to the calling workflow under **Authorization and continuation** in `methodology/03-execute-loop.md`; authorized implementation uses `feature-execute`. Planning success grants no later-Product scope.
 
 ## Test registry: `docs/test-registry.json`
 
-This is the fixed project-relative location used by the merge helper, checker,
-test selector and completion check. Do not add a configurable path or repeat it
-in Feature-index metadata. Run the merge command from the project root.
+This is the fixed project-relative location used by the merge helper, checker, test selector and completion check. Do not add a configurable path or repeat it in Feature-index metadata. Run the merge command from the project root.
 
 Use the project-supplied version-3 registry and version-2 revision log under `methodology/02-feature-list-schema.md`.
 
@@ -127,18 +76,11 @@ After all related files are consistent, run:
 
 `python -B tools/checks/check-feature-list.py`
 
-This checks JSON parsing and cross-file invariants together. Use a separate
-syntax check only to diagnose an individual error. The Agent still reviews
-what the checker cannot establish:
+This checks JSON parsing and cross-file invariants together. Use a separate syntax check only to diagnose an individual error. The Agent still reviews what the checker cannot establish:
 
-- The chosen Product is current and unplanned; its required scope is covered
-  without duplicate infrastructure, excluded behavior or premature later plans.
-- The written Feature count, boundaries and dependencies match the confirmed
-  preview or the latest preview under explicit autonomous-planning authority.
-- Sources name the actual requirement sections; dependencies reflect real
-  prerequisites and applicable architecture constraints.
-- New records use the schema's initial planning values, and the actual diff
-  preserves previous Features, revision anchors, Registry records and independent
-  invariants except for approved component additions.
+- The chosen Product is current and unplanned; its required scope is covered without duplicate infrastructure, excluded behavior or premature later plans.
+- The written Feature count, boundaries and dependencies match the confirmed preview or the latest preview under explicit autonomous-planning authority.
+- Sources name the actual requirement sections; dependencies reflect real prerequisites and applicable architecture constraints.
+- New records use the schema's initial planning values, and the actual diff preserves previous Features, revision anchors, Registry records and independent invariants except for approved component additions.
 
 Resolve failed validation or a material semantic gap before reporting completion.

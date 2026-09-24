@@ -137,14 +137,10 @@ The following paired projections describe the same pending Feature. They show la
 
 Progress lifecycle scenarios also apply in every document language:
 
-- Main `docs/progress.md` holds current state, blockers, decisions, next legal
-  action and history links; read an archive only when it is relevant to the task.
-- A completed Feature or approved batch moves its execution history to
-  `docs/progress/`; the original prose and evidence links are preserved.
-- Language migration updates only explicitly approved current content. It does
-  not translate old archives or copy their bodies into Feature notes.
-- Pure archival preserves the semantic business-test fingerprint; changing an AC
-  or verification mapping still invalidates the corresponding evidence.
+- Main `docs/progress.md` holds current state, blockers, decisions, next legal action and history links; read an archive only when it is relevant to the task.
+- A completed Feature or approved batch moves its execution history to `docs/progress/`; the original prose and evidence links are preserved.
+- Language migration updates only explicitly approved current content. It does not translate old archives or copy their bodies into Feature notes.
+- Pure archival preserves the semantic business-test fingerprint; changing an AC or verification mapping still invalidates the corresponding evidence.
 
 Record which of these checks actually ran; the checklist itself is not execution evidence:
 

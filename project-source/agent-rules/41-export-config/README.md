@@ -1,8 +1,6 @@
 # 41 Export Configuration Rules
 
-Owns `export_presets.cfg`, export targets, packaging filters, custom export
-features, signing/secrets boundaries, `EditorExportPlugin` behavior, and actual
-export validation.
+Owns `export_presets.cfg`, export targets, packaging filters, custom export features, signing/secrets boundaries, `EditorExportPlugin` behavior, and actual export validation.
 
 `project.godot` runtime/project settings remain under `40-project-config`.
 

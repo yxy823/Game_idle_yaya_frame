@@ -17,6 +17,4 @@ Organize by domain ownership and stable consumer semantics without forcing one u
 - **[PREFER]** Keep a scene and its dedicated root script adjacent with the same basename. Shared scripts need not match every consuming scene; global `class_name` identity follows [GDScript naming](../10-gdscript/typing-and-api.md#style-and-naming).
 - **[PREFER]** Use role suffixes only when that role exists. `Manager` implies actual coordination or lifecycle management, not automatic Autoload registration; extensions already distinguish scenes, scripts and Resources.
 
-For base directories, genre examples and ambiguous ownership choices, consult
-`docs/game-organization.md` in the generated project. The guide applies these
-rules without requiring every example directory or role to exist.
+For base directories, genre examples and ambiguous ownership choices, consult `docs/game-organization.md` in the generated project. The guide applies these rules without requiring every example directory or role to exist.

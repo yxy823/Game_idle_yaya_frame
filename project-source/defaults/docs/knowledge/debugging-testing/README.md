@@ -2,8 +2,7 @@
 
 [Knowledge index](../README.md)
 
-Use this topic for reproduction, diagnosis, test isolation, regression coverage
-and validation methods. Follow the [knowledge convention](../README.md).
+Use this topic for reproduction, diagnosis, test isolation, regression coverage and validation methods. Follow the [knowledge convention](../README.md).
 
 ## Entries
 

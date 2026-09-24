@@ -85,9 +85,7 @@ func show_message_for_a_second() -> void:
 	visible = false
 ```
 
-This example assumes calls while the Control is in the tree. A newer message
-invalidates the older wait; exiting invalidates all waits from that visit.
-Simple operations that cannot overlap do not need a generation counter.
+This example assumes calls while the Control is in the tree. A newer message invalidates the older wait; exiting invalidates all waits from that visit. Simple operations that cannot overlap do not need a generation counter.
 
 ### Animation and audio completion
 
