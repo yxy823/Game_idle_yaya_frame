@@ -10,6 +10,7 @@
 
 | 事项 | 当前情况 | 下一步或完成条件 | 依据 |
 | --- | --- | --- | --- |
+| 环境初始化提交与报告交接 | 已按确认改为配置和必要检查完成后默认本地提交，区分 Git 基线与本次环境改动，保留明确限制及失败/归属边界；补明初始化报告默认仅本地保留。提示词仅改环境条目；6 份 Markdown 的 218 个链接/锚点及 advisor 精选参考检查通过，手册 22 篇/32 图/532 链接构建完成 | 用户外部检查首次使用流程图与报告说明；本轮未创建或修改已有游戏、运行测试或 Godot，新模板不覆盖旧任务授权 | [首次使用](docs/blank-project/getting-started/first-use.md#首次-git-状态如何处理)；[环境约定](../project-source/methodology/05-document-language.md#project-environment-bootstrap)；[场景覆盖](review/baselines/scenario-coverage.md#3-项目环境) |
 | 初始文档入口与占位 | 已补齐七份固定文档用途占位（含原 Product）、六个目录 README 和资源清单命名/导航，沿用 `defaults/docs/` 复制。初始化、专业来源与 advisor 已区分占位和真实内容；967 文件映射、99 个项目链接/锚点、3 项 Skill 格式静态检查通过，手册 22 篇/32 图/530 链接构建完成 | 用户外部检查导航与阅读体验；本轮未创建外部项目、运行测试或 Godot。具体模块、任务、清单、ADR 和验证记录仍随真实工作产生；已有项目不自动同步。构建曾因 Edge 兼容层退出，复用已有进程级恢复方式后通过 | [初始目录](docs/blank-project/reference/project-layout.md#刚复制完成的目录)；[资源清单说明](docs/blank-project/guides/product-and-planning.md#按清单准备资源再继续原型)；[构建恢复依据](review/reports/project-skeleton-and-naming-2026-09-23.md#失败与恢复) |
 | 新项目骨架与统一命名 | 共同骨架、按游戏类型展开的判断指南与 `main/` 最小入口已实现；57 个示例文件迁移为 `snake_case`，无旧名称兼容。新外部项目实际启动、134 项 Godot、38 项维护、10 份解析通过；65 文件 lint 零 Critical/Warning，四入口独立消费包通过；手册 22 篇/32 图/530 链接构建完成 | 用户确认最小入口与手册阅读体验；具体游戏模块按实际需求展开，初始环境仍为 `incomplete`，不以骨架或专项回归代表玩法及全部流程完成 | [实施与验证](review/reports/project-skeleton-and-naming-2026-09-23.md)；[目录与命名指南](../project-source/defaults/docs/game-organization.md) |
 | 资源与模块化教程补充 | 已按确认补明同一逻辑字体共享源文件，以及逻辑分层与目录分层分别判断；仅修改指导文字，完成静态核对 | 生成项目继续独立拥有内容；组件与 Addon 沿用现有判断，不新增跨项目分发指导。以后有具体插件需要时使用现有 `addons/` 边界 | [字体规则](../project-source/agent-rules/60-assets/font-assets.md)；[模块展开指导](../project-source/defaults/docs/game-organization.md#有实际内容再展开模块) |
@@ -26,7 +27,7 @@
 | 第三阶段与组合场景 | 分组、有界发现、批量分析、可比统计、规则与历史已实现；三对象组合现为独立目录和入口，自身复用属性、A/B、保存与源分析；与单对象入口不互相切换 | 用户实际体验组合交互与批量操作；后续按场景决定属性适配、聚类或历史趋势，不把示例称为通用场景编辑器 | [第三阶段实施](review/reports/asset-workbench-phase3-2026-09-21.md)、[当前入口与回归](review/reports/asset-workbench-audit-fixes-2026-09-21.md) |
 | 框架可复制与流程验证 | 已完成源材料隔离检查、独立项目初始化、工具回归、实际 Godot 运行与第二路径无缓存重建；空白源状态保持不变 | 按既有动态审核入口在明确项目执行一个新的微型需求到 Feature 完成记录全过程；不将本次工作台维护回归当作全部流程已验证 | [分层验证方式](docs/blank-project/maintenance/validating-framework.md)、[当前证据与限制](review/reports/asset-workbench-implementation-validation-2026-09-21.md) |
 | researcher 实际使用验证 | 角色、复制映射、报告约定及回归已完成；anysearch 曾由子 Agent 实际搜索与抽取成功，新角色的客户端加载与完整委派尚未实测 | 在实际项目核实角色是否加载、按任务委派、返回来源并按需写报告；分别记录配置验证与实际委派结果 | [researcher](../project-source/agents/researcher.toml)、[调研使用说明](docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) |
-| 手册阅读体验 | 基于 `1207c78` 的九项外部意见已核实并修订：命令副作用前置、拥挤步骤拆分、阶段直链、导航分组与工作台/专项验证重排；专业规范的旧能力概述同步修正。新骨架与命名说明已同步，现构建覆盖 22 篇文档、32 张 Mermaid、530 个源链接 | 用户在外部检查命令定位、Stage 3D/6 续接、分类搜索与工作台任务入口；排版和浏览器交互尚未验收，不用构建成功替代 | [阅读版](docs/blank-project/blank-project-handbook.html)、[维护说明](docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则) |
+| 手册阅读体验 | 基于 `1207c78` 的九项外部意见已核实并修订：命令副作用前置、拥挤步骤拆分、阶段直链、导航分组与工作台/专项验证重排；专业规范的旧能力概述同步修正。新骨架、命名及初始化交接说明已同步，现构建覆盖 22 篇文档、32 张 Mermaid、532 个源链接 | 用户在外部检查命令定位、Stage 3D/6 续接、分类搜索与工作台任务入口；排版和浏览器交互尚未验收，不用构建成功替代 | [阅读版](docs/blank-project/blank-project-handbook.html)、[维护说明](docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则) |
 | wayfinder 借鉴 | 用户已要求暂缓；尚未采纳整体方案 | 用户重新选择讨论范围后，针对真实问题评估；不因列入本文自动实施 | 本会话已确认的暂缓决定 |
 
 ## Asset Workbench 视觉效果扩展规划

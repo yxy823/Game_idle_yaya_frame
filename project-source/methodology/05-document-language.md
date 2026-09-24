@@ -87,6 +87,9 @@ do not add an import wrapper or a per-Feature import phase.
 Record the actual setup process and findings in `reports/initialization.md`.
 Append a new entry when that report already exists; preserve earlier failures.
 This is a human-readable task report, not a machine gate or another state file.
+The default project `.gitignore` keeps this report local; committing Progress
+does not include the linked report. Check the project's actual ignore rules;
+include the report in version control only within the user's explicit scope.
 Progress keeps the current result, blockers, next step and report link.
 Set status ready
 after confirming configuration, then run:
