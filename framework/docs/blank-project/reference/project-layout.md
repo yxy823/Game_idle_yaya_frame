@@ -68,7 +68,7 @@ flowchart TD
 | `docs/features/F0XX-design.md` | 详细设计、规则的具体应用、实现理由与实际偏差；不复制 AC/测试台账 | 按需建立；Stage 1 判断、2 保存、3 对齐，后续保留历史 | 从对应 JSON notes 的相对链接进入 |
 | `docs/test-registry.json` | 组件、逻辑测试 ID、path/case 与 planned/active/retired 关系；不存通过结论 | 初始空表；合并器登记组件、Agent 维护测试映射，运行器/检查器读取 | 核对测试是否存在、被选择并实际执行 |
 | `docs/feature-list-revisions.json` | 源变化影响、同步锚点、替代与依赖演进；不替代 Git 历史 | 初始空记录；同步 Agent 追加，检查器与后续同步读取 | 追查计划为何变化 |
-| `docs/feature-completion-evidence.json` | 当前 Feature 的测试原件引用与适用人工决定，绑定当前内容 | Stage 2 初始化；完成记录工具写入/复核，每次服务当前 Feature | 查看引用的真实原件；不是全部 Feature 历史 |
+| `docs/feature-completion-evidence.json` | 当前 Feature 的测试原件引用与适用人工决定，绑定当前内容 | 首次记录真实结果时创建，完成记录工具写入/复核 | 查看引用的真实原件；不是全部 Feature 历史 |
 | `reports/` | 测试、诊断、初始化、人工验收与其他真实输出 | 创建时只有 .gdignore；运行器/Agent/用户产生原件，检查工具和交接读取 | 分清失败、未执行、接受与已通过 |
 
 ### 架构、知识与交接

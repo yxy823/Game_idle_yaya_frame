@@ -163,12 +163,34 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.assertFalse(evidence.validate_completion_evidence(self.root, "F001")[0])
 
     def test_explicit_conversation_remains_available_without_fake_file_source(self):
+        self.assertFalse((self.root / evidence.EVIDENCE_RELATIVE_PATH).exists())
         self.invoke("record-acceptance", "--feature", "F001", "--status", "accepted")
         stored = self.load(self.root / "docs/feature-completion-evidence.json")
+        self.assertEqual(stored["test_runs"], [])
         self.assertNotIn("source", stored["human_acceptance"])
         self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])
         self.invoke("record-acceptance", "--feature", "F001", "--status", "rejected")
         self.assertFalse(evidence.validate_completion_evidence(self.root, "F001")[0])
+
+    def test_invalid_existing_evidence_is_not_reset_by_recording(self):
+        path = self.root / evidence.EVIDENCE_RELATIVE_PATH
+        valid = evidence.empty_evidence("F001", evidence.current_snapshot(self.root))
+        for content in ("{broken", "[]", json.dumps({**valid, "schema_version": 0}),
+                        json.dumps({**valid, "feature_id": None}),
+                        json.dumps({**valid, "test_runs": None})):
+            with self.subTest(content=content):
+                path.write_text(content, encoding="utf-8")
+                before = path.read_bytes()
+                self.invoke("record-acceptance", "--feature", "F001", "--status", "accepted", expected=2)
+                self.assertEqual(path.read_bytes(), before)
+
+    def test_new_feature_does_not_inherit_previous_acceptance(self):
+        self.invoke("record-acceptance", "--feature", "F001", "--status", "accepted")
+        self.invoke("record-acceptance", "--feature", "F002", "--status", "rejected")
+        stored = self.load(self.root / evidence.EVIDENCE_RELATIVE_PATH)
+        self.assertEqual(stored["feature_id"], "F002")
+        self.assertEqual(stored["human_acceptance"]["status"], "rejected")
+        self.assertEqual(stored["test_runs"], [])
 
     def test_cli_requires_paired_file_paths_and_never_overwrites_evidence_on_invalid_import(self):
         self.prepared_result()

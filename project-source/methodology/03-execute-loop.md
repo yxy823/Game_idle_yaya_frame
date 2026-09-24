@@ -44,7 +44,7 @@ Git state and task-owned history; do not introduce a separate commit ledger.
 For implementation adopted under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation),
 use Stages 0–2 to confirm the current contract, actual implementation coverage,
 remaining work, acceptance mode and Test Impact Review, then persist the approved
-plan and initialize completion evidence. Reuse concrete authorization; a request
+plan. Completion records are written when actual results are recorded. Reuse concrete authorization; a request
 to document existing work alone does not authorize execution or repairs. Git
 ownership and environment requirements remain those of the shared contracts.
 
@@ -207,13 +207,7 @@ After approval:
 3. persist approved `verification.acceptance_mode`, criterion verification mappings, Bug regression IDs, and `verification.test_impact` in the Feature detail. Store additional related tests as `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]` and full-suite obligations as `full_suite_reasons: ["<approved reason>"]`. The runner always reads this recorded scope; changing invocation arguments must not shrink approved coverage. Removing an obligation requires an explicit approved plan revision;
 4. register not-yet-created durable acceptance/regression tests in `docs/test-registry.json` with `status: planned`;
 5. add newly approved component entries to the registry when required, with `unit_test_paths: []` if no unit suite exists;
-6. initialize the current Feature's structured completion evidence:
-
-   ```powershell
-   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py initialize --feature F0XX
-   ```
-
-7. run:
+6. run:
 
    ```powershell
    python -B tools/checks/check-feature-list.py

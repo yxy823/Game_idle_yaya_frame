@@ -186,8 +186,9 @@ Full scope selects `tests/` recursively. Empty layer directories add no obligati
 
 For a valid `manual` acceptance plan only, when the current Required and affected
 sets are both empty and full suite is not required, no automated run is needed.
-Keep the initialized `test_runs: []`; do not call the runner or `record-tests` just
-to manufacture evidence. The helper derives `not_required`, never an empty PASS.
+Recording actual human acceptance creates the completion record with `test_runs: []`;
+do not call the runner or `record-tests` just to manufacture evidence. The helper
+derives `not_required`, never an empty PASS.
 Current mappings and registered paths must still be valid; an unresolved failed or
 unfinished final run for the same Feature/snapshot still blocks completion. Record
 actual human acceptance on the current snapshot, and assess

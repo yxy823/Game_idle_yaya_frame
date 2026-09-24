@@ -17,8 +17,8 @@ from tools.lib.feature_completion_evidence import (
     EVIDENCE_RELATIVE_PATH,
     EvidenceError,
     current_snapshot,
-    empty_evidence,
     evidence_for_snapshot,
+    load_evidence,
     utc_now,
     validate_completion_evidence,
     write_evidence,
@@ -52,14 +52,6 @@ def _load_for_write(repo_root: Path, feature_id: str) -> tuple[Path, dict[str, A
 def _save(path: Path, data: dict[str, Any]) -> None:
     data["recorded_at"] = utc_now()
     write_evidence(path, data)
-
-
-def _initialize(repo_root: Path, feature_id: str) -> int:
-    snapshot = current_snapshot(repo_root)
-    data = empty_evidence(feature_id, snapshot)
-    data["recorded_at"] = utc_now()
-    write_evidence(repo_root / EVIDENCE_RELATIVE_PATH, data)
-    return 0
 
 
 # 只导入实际测试结果；脚本解析与 lint 由 Agent 直接执行、阅读原始输出。
@@ -102,7 +94,8 @@ def _validate(repo_root: Path, feature_id: str) -> int:
 
 
 def _show(repo_root: Path, feature_id: str) -> int:
-    path, data, snapshot = _load_for_write(repo_root, feature_id)
+    path = repo_root / EVIDENCE_RELATIVE_PATH
+    data = load_evidence(path)
     print(json.dumps(data, indent=2, ensure_ascii=False))
     valid, message = validate_completion_evidence(repo_root, feature_id, evidence_path=path)
     print(f"Current completion gate: {'PASS' if valid else 'NOT READY'} - {message}", file=sys.stderr)
@@ -113,9 +106,6 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
     subparsers = parser.add_subparsers(dest="command", required=True)
-
-    initialize = subparsers.add_parser("initialize")
-    initialize.add_argument("--feature", required=True, type=_feature_id)
 
     prepare = subparsers.add_parser("prepare-manual")
     prepare.add_argument("--feature", required=True, type=_feature_id)
@@ -149,8 +139,6 @@ def main() -> int:
     args = _parse_args(sys.argv[1:])
     repo_root = args.repo_root.resolve()
     try:
-        if args.command == "initialize":
-            return _initialize(repo_root, args.feature)
         if args.command == "prepare-manual":
             from tools.lib.manual_acceptance import prepare_checklist
             path = prepare_checklist(repo_root, args.feature, args.checklist)

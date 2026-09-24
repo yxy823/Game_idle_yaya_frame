@@ -6,7 +6,7 @@
 
 ## 从运行结果到完成状态
 
-Stage 2 初始化记录，Stage 4 产生最终验证结果，Stage 5 按需接收人工结果，Stage 7 完成检查。下面是实际读写关系；它不会因编辑文件自动触发。
+Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，首次记录时建立完成依据文件，Stage 7 检查完成条件。下面是实际读写关系；它不会因编辑文件自动触发。
 
 ```mermaid
 flowchart TD
@@ -164,7 +164,6 @@ reports/gdunit-wrapper/run-<id>/
 
 | 子命令 | 何时使用 |
 | --- | --- |
-| `initialize --feature F001` | Stage 2 初始化当前 Feature 依据；会写入当前记录，不作为失败恢复按钮 |
 | `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；多个运行须在同一次调用中列出多个 `--run`，整组替换旧引用 |
 | `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定清单不能重新绑定 |
 | `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户真实结果，与原清单和当前内容对照；记录 accepted、rejected 或 pending |
@@ -198,9 +197,9 @@ $LASTEXITCODE
 
 导入后核对退出码与实际结果。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。
 
-若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`，保留 `initialize` 生成的 `test_runs: []`。后续仍按真实结果记录人工接受，再运行完成检查；工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败都会阻止这个分支，不能用重新初始化消除失败。
+若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`。记录真实人工验收结果时会建立完成记录，其中 `test_runs: []`；随后运行完成检查。工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败仍会阻止完成。
 
-完成依据保存测试原件引用与适用的人工决定，新任务按当前模板初始化。独立评审的范围和时机由用户选择；遇到旧命令或旧记录时，查阅 [故障排查](troubleshooting.md#测试运行和完成依据)。
+有结果时直接记录，不用提前建空记录，也不用额外执行初始化命令。首次记录测试结果或真实人工验收时建立完成记录；已有文件损坏或格式不受支持时会报错，不会覆盖。独立评审的范围和时机由用户选择；其他失败处理见 [故障排查](troubleshooting.md#测试运行和完成依据)。
 
 ### 导入人工验收记录
 

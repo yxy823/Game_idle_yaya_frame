@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
@@ -219,9 +220,17 @@ def write_evidence(path: Path, data: dict[str, Any]) -> None:
 def evidence_for_snapshot(path: Path, feature_id: str, snapshot: dict[str, str]) -> dict[str, Any]:
     try:
         current = load_evidence(path)
-    except EvidenceError:
-        return empty_evidence(feature_id, snapshot)
-    if current.get("schema_version") != SCHEMA_VERSION or current.get("feature_id") != feature_id:
+    except EvidenceError as exc:
+        if isinstance(exc.__cause__, FileNotFoundError):
+            return empty_evidence(feature_id, snapshot)
+        raise
+    if current.get("schema_version") != SCHEMA_VERSION:
+        raise EvidenceError(f"unsupported gate evidence schema_version: {current.get('schema_version')!r}")
+    if not isinstance(current.get("feature_id"), str) or not re.fullmatch(r"F\d{3}", current["feature_id"]):
+        raise EvidenceError("gate evidence feature_id must match F0XX")
+    if not isinstance(current.get("test_runs"), list) or not isinstance(current.get("human_acceptance"), dict):
+        raise EvidenceError("gate evidence requires test_runs and human_acceptance")
+    if current["feature_id"] != feature_id:
         return empty_evidence(feature_id, snapshot)
     current["git_revision"] = snapshot["git_revision"]
     current["working_tree_fingerprint"] = snapshot["working_tree_fingerprint"]
