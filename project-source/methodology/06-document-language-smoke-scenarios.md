@@ -76,7 +76,7 @@ The following paired projections describe the same pending Feature. They show la
 
 ### Setup
 
-- Start with a new repository that has no `docs/methodology-config.json`.
+- Start with a project produced by the current creator, including its `docs/methodology-config.json`.
 - Speak English to the agent.
 - Confirm `en` when the agent proposes the document language.
 
@@ -96,7 +96,7 @@ The following paired projections describe the same pending Feature. They show la
 
 ### Setup
 
-- Start with a new repository that has no `docs/methodology-config.json`.
+- Start with a project produced by the current creator, including its `docs/methodology-config.json`.
 - Speak Simplified Chinese to the agent.
 - Confirm `zh-CN` when the agent proposes the document language.
 

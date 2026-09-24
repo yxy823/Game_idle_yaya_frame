@@ -175,31 +175,19 @@ Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodie
 
 When rendering an English canonical template into another document language, preserve every required section and its semantics. Rendering must not weaken, omit, or reinterpret workflow requirements.
 
-## 7. Projects missing document_language
+## 7. Missing configuration is an error
 
-An existing initialized project may predate this contract. If `docs/methodology-config.json` exists without `document_language`:
+The creator supplies `docs/methodology-config.json` with `document_language`.
+A missing file or field is a project-file error, not an older-project mode.
+Report it and resolve the configuration before writing durable content; do not
+guess its value from Product files or create a migration record.
 
-1. Inspect the apparent dominant language of `docs/product.md` and the active Product modules. Active modules are files linked from the module list in `docs/product.md`, excluding entries explicitly marked obsolete or archived; if no usable list exists, inspect current `NN-name.md` modules under `docs/product/` as a fallback. Ignore directory READMEs and initial purpose/pending-state notices when inferring the language.
-2. Present that language only as a non-binding migration proposal and ask the user to confirm it. If no language clearly dominates, report the uncertainty and ask the user to choose.
-3. Persist the confirmed tag without translating existing files.
-4. Record the migration once in the appropriate execution/upgrade archive and link
-   it from the Progress history index; keep only a current unresolved decision in
-   the main Progress file.
-5. Apply the confirmed language to new durable content from that point forward.
+## 8. Content in another language
 
-Do not select a language from Feature titles alone when Product documents are available, because historical Feature data may contain mixed or imported content.
-
-## 8. Existing mixed-language projects
-
-If existing durable documents already contain multiple languages:
-
-1. Report the mixture and identify the dominant Product language.
-2. Ask the user to choose the authoritative `document_language`.
-3. Persist the choice without silently translating historical content.
-4. Write new standalone content in the configured language.
-5. Before substantively editing an existing section written in another language, ask whether to localize that section now or preserve it for a later migration.
-
-Historical completed Features and revision records may remain in their original language. Active Product requirements, pending Features, and current Progress should converge only through explicit, reviewable edits.
+Use the configured `document_language` for new durable content. Existing text in
+another language does not change that setting. Translate existing sections only
+within an explicitly approved scope; preserve completed Features and revision
+records unless their translation is also authorized.
 
 ## 9. Changing an established document language
 
@@ -218,7 +206,7 @@ Yaya Loop must not start this migration because the user merely changes conversa
 Every workflow that creates or updates durable project knowledge must:
 
 1. Read `docs/methodology-config.json` before writing.
-2. Resolve missing configuration through the compatibility rules above.
+2. Treat a missing file or `document_language` as an error under section 7.
 3. Produce human-readable durable content in `document_language`.
 4. Preserve the stable protocol elements in section 5.
 5. Stop and ask when an edit would create an unapproved language migration.
