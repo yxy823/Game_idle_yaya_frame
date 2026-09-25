@@ -28,13 +28,22 @@ static func initialize() -> String:
 	return ""
 
 
+## Call initialize() successfully first. Classification does not require a current file.
+static func asset_type(path: String) -> String:
+	var extension := path.get_extension().to_lower()
+	for kind: String in capabilities.sources:
+		if extension in capabilities.sources[kind].extensions:
+			return kind
+	return ""
+
+
 static func _valid_capabilities(value: Variant) -> bool:
 	if not value is Dictionary or value.get("capability_version") != 1:
 		return false
 	if not _positive_integer(value.get("pool_memory_mib")):
 		return false
 	var sources: Variant = value.get("sources")
-	if not sources is Dictionary:
+	if not sources is Dictionary or sources.size() != 2:
 		return false
 	for kind: String in ["audio", "image"]:
 		if not _valid_source(sources.get(kind)):
@@ -83,7 +92,7 @@ static func path_issue(path: String, kind: String) -> Dictionary:
 		return {"code": "source_not_file", "message": "Source path is not an existing ordinary file."}
 	if not capabilities.sources.has(kind):
 		return {"code": "unsupported_type", "message": "Choose an audio stream or a source texture."}
-	if path.get_extension().to_lower() not in capabilities.sources[kind].extensions:
+	if asset_type(path) != kind:
 		return {"code": "unsupported_format", "message":
 			"Source extension is not supported by the declared Analyzer capabilities."}
 	return {}

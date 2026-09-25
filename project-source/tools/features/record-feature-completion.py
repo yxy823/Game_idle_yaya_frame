@@ -15,14 +15,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.feature_completion_evidence import (
     EVIDENCE_RELATIVE_PATH,
-    EvidenceError,
-    current_snapshot,
     evidence_for_snapshot,
     load_evidence,
-    utc_now,
     validate_completion_evidence,
-    write_evidence,
 )
+from tools.lib.atomic_json import write_json
+from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
 FEATURE_ID_RE = re.compile(r"F\d{3}")
@@ -51,7 +49,7 @@ def _load_for_write(repo_root: Path, feature_id: str) -> tuple[Path, dict[str, A
 
 def _save(path: Path, data: dict[str, Any]) -> None:
     data["recorded_at"] = utc_now()
-    write_evidence(path, data)
+    write_json(path, data)
 
 
 # 只导入实际测试结果；脚本解析与 lint 由 Agent 直接执行、阅读原始输出。
@@ -96,10 +94,10 @@ def _validate(repo_root: Path, feature_id: str) -> int:
 def _show(repo_root: Path, feature_id: str) -> int:
     path = repo_root / EVIDENCE_RELATIVE_PATH
     data = load_evidence(path)
+    if data["feature_id"] != feature_id:
+        raise EvidenceError(f"gate evidence belongs to {data['feature_id']!r}, not {feature_id}")
     print(json.dumps(data, indent=2, ensure_ascii=False))
-    valid, message = validate_completion_evidence(repo_root, feature_id, evidence_path=path)
-    print(f"Current completion gate: {'PASS' if valid else 'NOT READY'} - {message}", file=sys.stderr)
-    return 0 if valid else 2
+    return 0
 
 
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
@@ -124,10 +122,10 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     decision.add_argument("--result", type=Path, help="User-submitted manual result JSON.")
     acceptance.add_argument("--checklist", type=Path, help="Unchanged original checklist for --result.")
 
-    show = subparsers.add_parser("show")
+    show = subparsers.add_parser("show", help="Read the matching record; does not validate completion.")
     show.add_argument("--feature", required=True, type=_feature_id)
 
-    validate = subparsers.add_parser("validate")
+    validate = subparsers.add_parser("validate", help="Validate current test and acceptance evidence.")
     validate.add_argument("--feature", required=True, type=_feature_id)
     args = parser.parse_args(list(argv))
     if args.command == "record-acceptance" and bool(args.result) != bool(args.checklist):

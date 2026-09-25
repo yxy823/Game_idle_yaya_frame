@@ -3,6 +3,8 @@ extends RefCounted
 ## Comparable cohorts retain type, units, analysis parameters and backend identity.
 ## Differences are measurements or explicit rules, never an aesthetic score.
 
+const Result = preload("res://tools/asset_workbench/analysis_result.gd")
+
 
 static func columns(results: Dictionary) -> Dictionary:
 	var output: Dictionary = {}
@@ -84,6 +86,4 @@ static func _numeric(entry: Dictionary) -> bool:
 
 
 static func _key(data: Dictionary, metric: String, unit: String) -> String:
-	var analyzer: Dictionary = data.analyzer
-	return JSON.stringify([data.asset.type, metric, unit, data.schema_version,
-		analyzer.id, analyzer.version, analyzer.backend, data.get("parameters", {})])
+	return JSON.stringify([Result.comparison_identity(data), metric, unit])

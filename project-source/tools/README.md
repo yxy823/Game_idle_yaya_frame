@@ -18,7 +18,7 @@ tools/
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
-| [record-feature-completion.py](features/record-feature-completion.py) | 记录测试原件引用与人工决定，或检查已有完成依据 |
+| [record-feature-completion.py](features/record-feature-completion.py) | 记录测试原件引用与人工决定；`show` 查看指定 Feature 的记录，`validate` 检查当前完成依据 |
 | [资源 Analyzer](asset_analyzer/README.md) | 后台音频/图像分析、缓存、图表、分组批量检查与历史快照；开发项目按需安装固定依赖，不参与音频播放 |
 
 公共命令统一位于 `tools/`，Skill 引用命令并说明调用时机。`features/` 保存测试登记合并、完成记录与人工验收操作，`lib/` 保存共享实现。
@@ -76,6 +76,8 @@ flowchart TD
 
 人工验收的清单准备、JSON 结果读取与口头反馈沿用完成记录入口，格式及确切命令见 [人工验收文件契约](../methodology/manual-acceptance-files.md)。命令成功只表示记录成功， 结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
 
+`show --feature F001` 只检查记录可读取、基本结构有效且属于 F001，然后显示原文数据。它不查询 Git、不重读测试或人工验收原件；待验收、已失效的引用不构成查看失败。判断当前测试与人工依据能否支持完成，使用 `validate --feature F001`。缺失、损坏或属于另一项 Feature 的记录仍使 `show` 返回非零，且不会修改原件。
+
 ## 内部实现
 
 | 文件 | 职责 |
@@ -83,7 +85,9 @@ flowchart TD
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
 | `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
-| `feature_completion_evidence.py` | 当前源码指纹、真实测试依据和适用人工接受；不记录复审计数 |
+| `feature_completion_evidence.py` | 完成记录的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
+| `verification_snapshot.py` | Git 提交与当前内容指纹；测试和人工依据共用，不判断任务完成 |
+| `atomic_json.py` | 关闭文件流后原子替换 JSON，失败时保留目标原件并清理临时文件 |
 | `manual_acceptance.py` | 人工清单覆盖与快照绑定、逐项结果对照和原件复核 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |

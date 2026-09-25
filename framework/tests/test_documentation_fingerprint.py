@@ -8,10 +8,10 @@ import unittest
 from pathlib import Path
 
 
-SOURCE = Path(__file__).resolve().parents[2] / "project-source/tools/lib/feature_completion_evidence.py"
-SPEC = importlib.util.spec_from_file_location("documentation_feature_completion_evidence", SOURCE)
-feature_completion_evidence = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(feature_completion_evidence)
+SOURCE = Path(__file__).resolve().parents[2] / "project-source/tools/lib/verification_snapshot.py"
+SPEC = importlib.util.spec_from_file_location("documentation_verification_snapshot", SOURCE)
+verification_snapshot = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(verification_snapshot)
 
 
 class DocumentationFingerprintTests(unittest.TestCase):
@@ -35,7 +35,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
         return path
 
     def fingerprint(self):
-        return feature_completion_evidence.working_tree_fingerprint(self.root)
+        return verification_snapshot.working_tree_fingerprint(self.root)
 
     def test_usage_readme_add_edit_remove_and_staging_preserve_source_binding(self):
         before = self.fingerprint()

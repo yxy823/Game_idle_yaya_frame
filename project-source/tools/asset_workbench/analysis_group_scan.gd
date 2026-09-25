@@ -6,6 +6,7 @@ signal found(paths: Array[String])
 signal finished(message: String)
 
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 const ENTRY_LIMIT: int = 50000
 
 var active: bool = false
@@ -21,6 +22,10 @@ func start(path: String) -> void:
 	var local := Group.project_path(path)
 	if local.is_empty() or not DirAccess.dir_exists_absolute(local):
 		finished.emit("Choose an existing folder inside this project.")
+		return
+	var issue := Source.initialize()
+	if not issue.is_empty():
+		finished.emit(issue)
 		return
 	_directories = [local]
 	_visited = 0
@@ -96,7 +101,7 @@ func _read_entry(paths: Array[String]) -> void:
 	if _directory.current_is_dir():
 		if entry_name not in ["addons", "reports"]:
 			_directories.append(path)
-	elif not Group.asset_type(path).is_empty():
+	elif not Source.asset_type(path).is_empty():
 		paths.append(path)
 		_matches += 1
 

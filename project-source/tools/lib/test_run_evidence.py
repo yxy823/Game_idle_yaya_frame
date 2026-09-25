@@ -14,7 +14,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import Any
 
-from tools.lib.feature_completion_evidence import EvidenceError, current_snapshot, utc_now, write_evidence
+from tools.lib.atomic_json import write_json
+from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
 from tools.lib.test_selection import execution_selectors, normalized_path, read_json, build_selection
 
 
@@ -304,7 +305,7 @@ def start_run(root: Path, directory: Path, feature_id: str | None,
               "started_at": started_at, "finished_at": utc_now() if errors else None,
               "command": [], "selectors": [], "status": "failed" if errors else "running",
               "process": None, "errors": errors, "artifacts": {}}
-    write_evidence(directory / "result.json", result)
+    write_json(directory / "result.json", result)
     return result
 
 
@@ -375,7 +376,7 @@ def finish_run(root: Path, directory: Path, result: dict, *,
         result["errors"].append(str(error))
     result["status"] = "failed" if result["errors"] else "passed"
     result["finished_at"] = utc_now()
-    write_evidence(directory / "result.json", result)
+    write_json(directory / "result.json", result)
     return result
 
 

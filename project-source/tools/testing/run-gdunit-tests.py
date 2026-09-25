@@ -13,7 +13,7 @@ from typing import Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from tools.lib.feature_completion_evidence import write_evidence
+from tools.lib.atomic_json import write_json
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory, derive_test_evidence
@@ -94,7 +94,7 @@ def _run_tests(args: argparse.Namespace) -> int:
             raise selection_error
         result["command"] = _build_command(args, directory)
         result["selectors"] = getattr(args, "targets", [args.target])
-        write_evidence(directory / "result.json", result)
+        write_json(directory / "result.json", result)
         if not Path(result["command"][0]).is_file():
             raise ValueError(f"Godot executable not found: {result['command'][0]}")
         if not (REPO_ROOT / RUNNER_SCRIPT.removeprefix("res://")).is_file():

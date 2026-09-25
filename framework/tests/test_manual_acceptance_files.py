@@ -11,6 +11,7 @@ import unittest
 SOURCE = Path(__file__).resolve().parents[2] / "project-source"
 sys.path.insert(0, str(SOURCE))
 from tools.lib import feature_completion_evidence as evidence
+from tools.lib import verification_snapshot
 from tools.lib.manual_acceptance import prepare_checklist, read_result
 
 CLI = SOURCE / "tools/features/record-feature-completion.py"
@@ -75,7 +76,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         return self.invoke("record-acceptance", "--feature", "F001", "--checklist", str(self.checklist), "--result", str(self.result))
 
     def test_roundtrip_preserves_extensions_defaults_bom_and_id_matching(self):
-        original = evidence.current_snapshot(self.root)
+        original = verification_snapshot.current_snapshot(self.root)
         value = self.prepared_result()
         value["unrelated_metadata"] = {"version": "custom", "text": "保留"}
         value["tests"][0]["extra"] = "opaque"
@@ -83,7 +84,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.result.write_text(json.dumps(value, ensure_ascii=False), encoding="utf-8-sig")
         decision = read_result(self.root, "F001", self.checklist, self.result)
         self.assertEqual(decision["status"], "accepted")
-        self.assertEqual(evidence.current_snapshot(self.root), original)
+        self.assertEqual(verification_snapshot.current_snapshot(self.root), original)
         self.record_file()
         stored = self.load(self.root / "docs/feature-completion-evidence.json")
         self.assertEqual(stored["human_acceptance"]["git_revision"], original["git_revision"])
@@ -120,7 +121,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
             value = copy.deepcopy(original)
             mutation(value)
             self.write(self.result, value)
-            with self.assertRaises((evidence.EvidenceError, ValueError)):
+            with self.assertRaises((verification_snapshot.EvidenceError, ValueError)):
                 read_result(self.root, "F001", self.checklist, self.result)
 
     def test_preparation_rejects_incomplete_coverage_and_rebinding(self):
@@ -128,12 +129,12 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         invalid = copy.deepcopy(original)
         invalid["tests"].pop()
         self.write(self.checklist, invalid)
-        with self.assertRaisesRegex(evidence.EvidenceError, "missing manual obligations"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "missing manual obligations"):
             prepare_checklist(self.root, "F001", self.checklist)
         self.write(self.checklist, original)
         self.invoke("prepare-manual", "--feature", "F001", "--checklist", str(self.checklist))
         before = self.checklist.read_bytes()
-        with self.assertRaisesRegex(evidence.EvidenceError, "already bound"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "already bound"):
             prepare_checklist(self.root, "F001", self.checklist)
         self.assertEqual(self.checklist.read_bytes(), before)
 
@@ -173,7 +174,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
 
     def test_invalid_existing_evidence_is_not_reset_by_recording(self):
         path = self.root / evidence.EVIDENCE_RELATIVE_PATH
-        valid = evidence.empty_evidence("F001", evidence.current_snapshot(self.root))
+        valid = evidence.empty_evidence("F001", verification_snapshot.current_snapshot(self.root))
         for content in ("{broken", "[]", json.dumps({**valid, "schema_version": 0}),
                         json.dumps({**valid, "feature_id": None}),
                         json.dumps({**valid, "test_runs": None})):
@@ -205,19 +206,19 @@ class ManualAcceptanceFileTests(unittest.TestCase):
     def test_reports_are_separate_and_cannot_escape_project(self):
         self.prepared_result()
         for path in (self.checklist, self.root / "docs/features/F001.json", self.root.parent / "outside.json"):
-            with self.assertRaises(evidence.EvidenceError):
+            with self.assertRaises(verification_snapshot.EvidenceError):
                 read_result(self.root, "F001", self.checklist, path)
 
     def test_contract_change_and_automated_mode_cannot_reuse_manual_results(self):
         self.prepared_result()
         self.detail["acceptance_criteria"][0]["verification"]["manual_checks"][0] = "Different judgment"
         self.write("docs/features/F001.json", self.detail)
-        with self.assertRaisesRegex(evidence.EvidenceError, "snapshot"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "snapshot"):
             read_result(self.root, "F001", self.checklist, self.result)
         self.detail["verification"].update(acceptance_mode="automated", manual_regression=None)
         self.detail["acceptance_criteria"][0]["verification"].update(manual_checks=[], automated_tests=["F001-AC01"])
         self.write("docs/features/F001.json", self.detail)
-        with self.assertRaisesRegex(evidence.EvidenceError, "manual Feature"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "manual Feature"):
             read_result(self.root, "F001", self.checklist, self.result)
 
     def test_multiple_cases_per_obligation_are_supported_without_presupplied_success(self):
@@ -227,7 +228,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         value["tests"].append(extra)
         value["tests"][0]["status"] = "passed"
         self.write(self.checklist, value)
-        with self.assertRaisesRegex(evidence.EvidenceError, "only pending"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "only pending"):
             prepare_checklist(self.root, "F001", self.checklist)
         value["tests"][0]["status"] = "pending"
         self.write(self.checklist, value)
@@ -238,7 +239,7 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.prepared_result()
         text = self.result.read_text(encoding="utf-8")
         self.result.write_text(text[:-1] + ', "extra": NaN}', encoding="utf-8")
-        with self.assertRaisesRegex(evidence.EvidenceError, "invalid JSON number"):
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "invalid JSON number"):
             read_result(self.root, "F001", self.checklist, self.result)
 
 

@@ -10,7 +10,7 @@ from unittest import mock
 
 import test_feature_completion_evidence as fixtures
 from gdunit_report_fixture import make_run
-from tools.lib.feature_completion_evidence import EvidenceError
+from tools.lib.verification_snapshot import EvidenceError
 from tools.lib.test_run_evidence import derive_test_evidence, result_reference, start_run
 
 
@@ -287,7 +287,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         directory = self.root / "reports/gdunit-wrapper/F001/run-write-error"
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")), \
-                mock.patch("tools.lib.test_run_evidence.write_evidence",
+                mock.patch("tools.lib.test_run_evidence.write_json",
                            side_effect=OSError("report directory not writable")):
             with self.assertRaisesRegex(OSError, "report directory not writable"):
                 start_run(self.root, directory, "F001", "final", "auto")

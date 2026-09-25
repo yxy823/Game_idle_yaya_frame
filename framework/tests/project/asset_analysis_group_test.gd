@@ -104,15 +104,32 @@ func test_units_versions_parameters_and_types_form_separate_cohorts() -> void:
 	parameters.parameters = {"mode": "different"}
 	var audio := _measurement(0.5)
 	audio.asset.type = "audio"
+	var schema := _measurement(0.6)
+	schema.schema_version = 2
+	var analyzer := _measurement(0.7)
+	analyzer.analyzer.id = "another_analyzer"
 	var data := {"base": base, "unit": unit, "version": version, "backend": backend,
-		"parameters": parameters, "audio": audio}
-	assert_int(Statistics.columns(data).size()).is_equal(6)
+		"parameters": parameters, "audio": audio, "schema": schema, "analyzer": analyzer}
+	assert_int(Statistics.columns(data).size()).is_equal(8)
+	for changed: Dictionary in [version, backend, parameters, audio, schema, analyzer]:
+		assert_str(Result.comparison_reason(base, changed)).is_not_empty()
 	var group := Group.empty()
 	group.assets = [{"path": "base", "type": "image"}]
 	group.rules = [_rule("delta", 0.1)]
 	var checks := Statistics.checks(group, data, Statistics.columns(data))
 	assert_str(checks.base[0].status).is_equal("unmeasured")
 	assert_str(checks.base[0].message).contains("3 comparable")
+
+
+func test_equal_comparison_identity_merges_cohorts_regardless_of_dictionary_order() -> void:
+	var first := _measurement(0.2)
+	first.parameters = {"mode": "normal", "size": 8}
+	var second := _measurement(0.4)
+	second.parameters = {"size": 8, "mode": "normal"}
+	assert_str(Result.comparison_reason(first, second)).is_empty()
+	var columns := Statistics.columns({"first": first, "second": second})
+	assert_int(columns.size()).is_equal(1)
+	assert_int(columns.values()[0].count).is_equal(2)
 
 
 func test_real_batch_and_cache_use_the_existing_queue() -> void:

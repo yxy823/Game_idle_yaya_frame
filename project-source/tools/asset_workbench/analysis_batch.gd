@@ -6,6 +6,7 @@ signal changed
 
 const Group = preload("res://tools/asset_workbench/analysis_group.gd")
 const Service = preload("res://tools/asset_workbench/analysis_service.gd")
+const Source = preload("res://tools/asset_workbench/analysis_source.gd")
 
 var service: Service
 var group: Dictionary = Group.empty()
@@ -27,9 +28,12 @@ func busy() -> bool:
 func add_paths(paths: Array[String]) -> String:
 	if busy():
 		return "Cancel or finish the batch before changing membership."
+	var issue := Source.initialize()
+	if not issue.is_empty():
+		return issue
 	for path: String in paths:
 		var local := Group.project_path(path)
-		var kind := Group.asset_type(local)
+		var kind := Source.asset_type(local)
 		if local.is_empty() or kind.is_empty():
 			continue
 		var asset := {"path": local, "type": kind}

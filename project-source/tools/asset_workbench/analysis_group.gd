@@ -13,15 +13,6 @@ static func empty() -> Dictionary:
 		"parameters": {}, "rules": []}
 
 
-static func asset_type(path: String) -> String:
-	var extension := path.get_extension().to_lower()
-	if extension in ["wav", "ogg", "mp3", "flac"]:
-		return "audio"
-	if extension in ["png", "jpg", "jpeg", "webp", "bmp", "tga", "tif", "tiff"]:
-		return "image"
-	return ""
-
-
 static func project_path(path: String) -> String:
 	var normalized := ProjectSettings.localize_path(path.simplify_path())
 	return normalized if normalized.begins_with("res://") else ""

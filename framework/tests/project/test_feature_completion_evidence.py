@@ -13,7 +13,8 @@ from pathlib import Path
 
 TOOLS = (PROJECT_ROOT / "tools")
 sys.path.insert(0, str(PROJECT_ROOT))
-from tools.lib import feature_completion_evidence
+from tools.lib import feature_completion_evidence, verification_snapshot
+from tools.lib.atomic_json import write_json
 class FeatureCompletionEvidenceTests(unittest.TestCase):
     def setUp(self) -> None:
         temporary = tempfile.TemporaryDirectory(prefix="yaya-evidence-")
@@ -62,11 +63,11 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
     def completion_fixture(self):
         from tools.lib.test_run_evidence import result_reference
         _, test_path = self.run_fixture()
-        snapshot = feature_completion_evidence.current_snapshot(self.root)
+        snapshot = verification_snapshot.current_snapshot(self.root)
         data = feature_completion_evidence.empty_evidence("F001", snapshot)
-        data.update(recorded_at=feature_completion_evidence.utc_now(),
+        data.update(recorded_at=verification_snapshot.utc_now(),
                     test_runs=[result_reference(self.root, test_path)])
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         return data
 
     def test_automated_completion_needs_no_review_or_fabricated_human_acceptance(self):
@@ -89,9 +90,54 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("human acceptance", message)
-        data["human_acceptance"].update(status="accepted", **feature_completion_evidence.current_snapshot(self.root))
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        data["human_acceptance"].update(status="accepted", **verification_snapshot.current_snapshot(self.root))
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+
+    def completion_command(self, command: str):
+        return subprocess.run(
+            [sys.executable, "-B", str(TOOLS / "features/record-feature-completion.py"),
+             "--repo-root", str(self.root), command, "--feature", "F001"],
+            capture_output=True, text=True, encoding="utf-8",
+        )
+
+    def test_show_reads_pending_record_without_claiming_completion(self):
+        self.detail["verification"]["acceptance_mode"] = "manual"
+        self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = ["Listen to the sound"]
+        self.write_json("docs/features/F001.json", self.detail)
+        data = self.completion_fixture()
+        shown = self.completion_command("show")
+        self.assertEqual(shown.returncode, 0, shown.stderr)
+        self.assertEqual(json.loads(shown.stdout), data)
+        self.assertEqual(shown.stderr, "")
+        validated = self.completion_command("validate")
+        self.assertEqual(validated.returncode, 2, validated.stdout + validated.stderr)
+        self.assertIn("explicit human acceptance", validated.stdout)
+
+    def test_show_does_not_read_git_or_referenced_test_originals(self):
+        data = self.completion_fixture()
+        report = self.root / data["test_runs"][0]["path"]
+        report.unlink()
+        self.write(".git/HEAD", "invalid HEAD\n")
+        shown = self.completion_command("show")
+        self.assertEqual(shown.returncode, 0, shown.stderr)
+        self.assertEqual(json.loads(shown.stdout), data)
+        self.assertEqual(self.completion_command("validate").returncode, 2)
+
+    def test_show_rejects_missing_corrupt_or_mismatched_record_without_changes(self):
+        self.assertEqual(self.completion_command("show").returncode, 2)
+        valid = feature_completion_evidence.empty_evidence("F001")
+        for value in ("{broken", "[]", json.dumps({**valid, "schema_version": 0}),
+                      json.dumps({**valid, "feature_id": "F002"}),
+                      json.dumps({**valid, "test_runs": None}),
+                      json.dumps({**valid, "human_acceptance": None})):
+            with self.subTest(value=value):
+                path = self.write("docs/feature-completion-evidence.json", value)
+                original = path.read_bytes()
+                shown = self.completion_command("show")
+                self.assertEqual(shown.returncode, 2, shown.stdout + shown.stderr)
+                self.assertEqual(shown.stdout, "")
+                self.assertEqual(path.read_bytes(), original)
 
     def test_first_report_import_creates_completion_record_without_initialization(self):
         _, report = self.run_fixture()
@@ -114,7 +160,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write_json("docs/features/F001.json", self.detail)
         data = self.completion_fixture()
         data["human_acceptance"].update(status="accepted", working_tree_fingerprint="sha256:old-content")
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("human acceptance does not match", message)
@@ -156,13 +202,13 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         for name in ("required_test_set", "affected_tests", "full_suite"):
             self.assertEqual(derived[name]["status"], "not_required")
             self.assertEqual(derived[name]["run_ids"], [])
-        snapshot = feature_completion_evidence.current_snapshot(self.root)
+        snapshot = verification_snapshot.current_snapshot(self.root)
         data = feature_completion_evidence.empty_evidence("F001", snapshot)
-        data["recorded_at"] = feature_completion_evidence.utc_now()
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        data["recorded_at"] = verification_snapshot.utc_now()
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         self.assertIn("human acceptance", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
         data["human_acceptance"].update(status="accepted", **snapshot)
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         self.assertNotIn("code_smell", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
         self.write("game.gd", "extends Node\nvar changed = true\n")
@@ -210,7 +256,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         for status in ("running", "failed"):
             with self.subTest(status=status):
                 record["status"] = status
-                feature_completion_evidence.write_evidence(directory / "result.json", record)
+                write_json(directory / "result.json", record)
                 with self.assertRaisesRegex(RunEvidenceError, "unresolved failed or unfinished"):
                     derive_test_evidence(self.root, "F001", [])
 
@@ -235,29 +281,29 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertIn("changed after verification", message)
 
     def test_feature_verification_text_and_mapping_invalidate_snapshot(self) -> None:
-        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"]
         self.detail["acceptance_criteria"][0]["text"] = "Changed contract"
         self.write_json("docs/features/F001.json", self.detail)
-        self.assertNotEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertNotEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_process_fields_notes_and_progress_archive_do_not_invalidate(self) -> None:
-        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"]
         self.detail["notes"] = "Archived explanation"
         self.write_json("docs/features/F001.json", self.detail)
         self.write_json("docs/feature-list.json", {"meta": {"updated_at": "later"}, "features": [
             {"id": "F001", "status": "done", "depends_on": [], "completed_at": "later"}]})
         self.write("docs/progress/feature-one.md", "Historical evidence pointer\n")
         self.write("docs/progress.md", "Current status\n")
-        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_duplicate_index_paths_from_git_do_not_change_after_staging(self) -> None:
         self.write("new.txt", "new source\n")
-        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"]
         self.git("add", "new.txt")
-        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_counts_cannot_authorize_completion(self) -> None:
-        data = feature_completion_evidence.empty_evidence("F001", feature_completion_evidence.current_snapshot(self.root))
+        data = feature_completion_evidence.empty_evidence("F001", verification_snapshot.current_snapshot(self.root))
         for key in ("required_test_set", "affected_tests"):
             data[key] = dict(status="pass", total=0, failed=0, git_revision=data["git_revision"],
                 working_tree_fingerprint=data["working_tree_fingerprint"])
@@ -265,7 +311,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data["full_suite"] = {"status": "pass"}
         data["human_acceptance"]["status"] = "accepted"
         data["gate_status"] = "pass"
-        feature_completion_evidence.write_evidence(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/feature-completion-evidence.json", data)
         self.assertFalse(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
 
     def test_selection_derives_required_and_removes_overlapping_targets(self) -> None:
@@ -487,13 +533,13 @@ func test_plain():
             "summary": "Original explanation", "migrations": [{"kind": "revise", "from": ["F001"],
                 "to": ["F002"], "source": {"path": "product.md", "anchor_commit": "a" * 40}}]}]}
         self.write_json("docs/feature-list-revisions.json", revision)
-        initial = feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"]
+        initial = verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"]
         revision["revision_log"][0].update(revised_at="after", summary="Archived explanation")
         self.write_json("docs/feature-list-revisions.json", revision)
-        self.assertEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
         revision["revision_log"][0]["migrations"][0]["to"] = ["F003"]
         self.write_json("docs/feature-list-revisions.json", revision)
-        self.assertNotEqual(initial, feature_completion_evidence.current_snapshot(self.root)["working_tree_fingerprint"])
+        self.assertNotEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_selection_rejects_malformed_recorded_impact(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection

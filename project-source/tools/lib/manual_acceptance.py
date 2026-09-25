@@ -5,7 +5,8 @@ import json
 from pathlib import Path
 from typing import Any
 
-from tools.lib.feature_completion_evidence import EvidenceError, current_snapshot, write_evidence
+from tools.lib.atomic_json import write_json
+from tools.lib.verification_snapshot import EvidenceError, current_snapshot
 from tools.lib.test_selection import acceptance_mode
 
 
@@ -118,7 +119,7 @@ def prepare_checklist(root: Path, feature: str, checklist: Path) -> Path:
     data["snapshot"] = snapshot
     if current_snapshot(root)["working_tree_fingerprint"] != snapshot["working_tree_fingerprint"]:
         raise EvidenceError("source changed while preparing manual checklist")
-    write_evidence(path, data)
+    write_json(path, data)
     return path
 
 
