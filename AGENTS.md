@@ -29,7 +29,7 @@
 | 框架维护 | `framework/` 保存维护材料，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存可复制材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
 | 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
-| 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
+| 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 手册重构与阅读版 | 当前只交付 Markdown，先讨论八篇场景样稿再全量迁移；HTML 构建暂缓，保留工具，按 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓) 在重新引入时适配。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |

@@ -2,7 +2,7 @@
 
 这里保留文件复制、手册生成和可显式调用的回归入口。修改不需要任务登记、源码清单续接、 发布身份、升级计划或专门的哈希状态。
 
-项目使用文档见[整体目录与当前入口](docs/blank-project/README.md)，首轮阅读[八篇场景样稿](docs/blank-project/quick-reference/scenario-index.md)。框架维护说明位于[独立目录](docs/framework-maintenance/README.md)。当前只交付 Markdown，旧 HTML 已撤下，构建工具保留但暂停调用；后续处理见[阅读版说明](docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓)。修改源材料时按[维护与同步说明](docs/framework-maintenance/updating-the-blank-project.md)核对相关内容。文档不复制到生成项目。
+项目使用文档见[整体目录与当前入口](docs/README.md)，首轮阅读[八篇场景样稿](docs/quick-reference/scenario-index.md)。框架维护说明位于[独立目录](docs/framework-maintenance/README.md)。当前只交付 Markdown，旧 HTML 已撤下，构建工具保留但暂停调用；后续处理见[阅读版说明](docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓)。修改源材料时按[维护与同步说明](docs/framework-maintenance/updating-the-blank-project.md)核对相关内容。文档不复制到生成项目。
 
 | 路径 | 职责 |
 | --- | --- |
@@ -12,8 +12,9 @@
 | [project-files.json](project-files.json) | 唯一复制清单；每项只有 source 与 target |
 | [prompts.json](prompts.json) | 集中管理框架维护与实际项目开发的全部操作提示词；不复制到项目 |
 | [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 从 JSON 精选导出 advisor 的表达参考；只在维护时显式执行 |
-| [docs/blank-project/README.md](docs/blank-project/README.md) | 两本项目手册的内容边界、整体目录与原材料迁移范围 |
-| [场景索引](docs/blank-project/quick-reference/scenario-index.md)与[编写 README](docs/blank-project/quick-reference/README.md) | 按事项和状态组织的八篇样稿；保留 11 类定义，只展示有内容的栏目 |
+| [docs/README.md](docs/README.md) | 统一导航、内容边界与原材料迁移范围 |
+| [操作手册](docs/operation-manual/README.md) | 框架、概念、配置与工具职责 |
+| [场景索引](docs/quick-reference/scenario-index.md)与[编写 README](docs/quick-reference/README.md) | 按事项和状态组织的八篇样稿；保留 11 类定义，只展示有内容的栏目 |
 | [docs/framework-maintenance/README.md](docs/framework-maintenance/README.md) | 框架维护者的说明入口 |
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 保留的 HTML 生成器；配套[模板](commands/blank-project-handbook-page.html)、[交互源码](commands/blank-project-handbook-interactions.js)与相关测试保留，重新引入阅读版时再适配新目录 |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 用户需要时，对指定外部项目执行已有项目工具回归 |
@@ -46,7 +47,7 @@
 
 修改入选提示词、Skill 名称或选择范围后显式导出；`--check` 只比较内容，缺失或过期返回非零且不写入。 全部入选来源有效后才开始输出，正文与占位符原样保留，使用 UTF-8 和 LF；无时间戳、后台同步或新依赖。 生成后随本次逻辑变更提交。相关回归在 `tests/test_advisor_prompt_examples.py`。
 
-创建器只复制 Skill 已有的静态参考，不调用导出器；完整 JSON 与本导出脚本不进入新项目。 advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Skill 与真实授权决定行动。 资料的分发与使用边界见 [精选参考说明](docs/blank-project/reference/skills.md#advisor-的精选表达参考)。
+创建器只复制 Skill 已有的静态参考，不调用导出器；完整 JSON 与本导出脚本不进入新项目。 advisor 只在需要措辞参考时读取相应条目，项目规范、目标 Skill 与真实授权决定行动。 资料的分发与使用边界见 [精选参考说明](docs/framework-maintenance/migration-source/reference/skills.md#advisor-的精选表达参考)。
 
 ## 提示词
 
@@ -55,7 +56,7 @@
 - `Yaya 框架维护`：10 条，包含新增能力、外部框架借鉴、修复/删减、复盘、GitHub 审核、动态全流程审核、外部结果复核、实际开发反馈复盘、按需验证与新线程交接。
 - `Godot 项目开发`：40 条，覆盖创建与迁移、环境、澄清与术语、外部调研、需求与规划、开发、Goal、架构调查、专业设计、本地化、资源接入、观测/性能/长测、独立审核、验证与经验沉淀。
 
-各 Project 的 `categories` 按用途组织；叶子键为提示词名称，字符串值为完整文本， 换行保存为 JSON 的 `\n`。50 条提示词均有完整正文；有 `${1:说明}` 等 输入占位符时，发送前填写实际信息，已有授权在会话中继续有效。按需选用某一条， 不要求每个任务按清单逐条发送。 需要粘贴长篇原文时，材料区位置与填写方法见 [提示词使用说明](docs/blank-project/reference/skills.md#从哪里取得操作提示词)。 环境准备与普通修改任务使用相同的项目 Git 规则；初始化报告与后续更新见[首次使用说明](docs/blank-project/getting-started/first-use.md)。 需要准备新项目时，使用“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”。 已有旧框架成果需要保留时，使用“Godot 项目开发 → 项目创建与接入 → 复制并迁移旧框架项目”； 输入、授权及原件保留方式见[复制迁移说明](docs/blank-project/getting-started/migrate-existing-project.md)。 `prompts.json` 只保存提示词，不执行命令，也不要求项目读取维护目录。 需要按任务准备素材时，使用“Godot 项目开发 → 资源、性能与数据 → 分析并整理任务资源清单”；清单保存在具体游戏项目，用法见 [资源准备与原型交接](docs/blank-project/guides/product-and-planning.md#按清单准备资源再继续原型)。 外部文本或文档需要先整理、不写入或执行时，选择“Godot 项目开发 → 需求设计 → 只读适配外部需求内容”；用法见 [只整理外部需求内容](docs/blank-project/guides/product-and-planning.md#只整理外部需求内容)。 功能已经实现、需求或任务记录缺失时，选择“Godot 项目开发 → 需求设计 → 从已有实现补齐需求与任务”；输入和文档/交付边界见 [已有实现补齐说明](docs/blank-project/guides/product-and-planning.md#从已有实现补齐需求与任务)。 需要独立检查模块现状或指定变更时，选择“Godot 项目开发 → 验证与收尾 → 独立审查代码或指定变更”；现状审查无需创建 Feature 或虚构差异，用法见 [独立评审说明](docs/blank-project/guides/feature-delivery.md#按需独立评审与再次验证)。 手动编辑代码、资源或需求/任务文档后，选择“Godot 项目开发 → 验证与收尾 → 检查手动修改与需求的一致性”；提供范围、意图与比较基线，用法见 [手动修改检查说明](docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)。 需要结合项目流程回复 Codex 时，选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；用法见 [根据 Codex 输出起草回复](docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。 从实际游戏项目转发 Codex 输出、判断框架是否需要改进时，选择“Yaya 框架维护 → 维护与复盘 → 依据实际开发反馈复盘框架”； 审核后可按需参考提示词库，输出标明接收任务、已填入上下文的下一步输入，供手动复制发送；用法与建议边界见 [开发反馈复盘说明](docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。 新增提示词前先核对 [使用场景清单](review/baselines/scenario-coverage.md#提示词使用场景清单)， 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验 变成规则、脚本或新机制。项目提示词不要求项目连接或跟随维护源变化。 提示词正文及清单做静态核对；不把工具回归当成已逐条运行全部提示词。
+各 Project 的 `categories` 按用途组织；叶子键为提示词名称，字符串值为完整文本， 换行保存为 JSON 的 `\n`。50 条提示词均有完整正文；有 `${1:说明}` 等 输入占位符时，发送前填写实际信息，已有授权在会话中继续有效。按需选用某一条， 不要求每个任务按清单逐条发送。 需要粘贴长篇原文时，材料区位置与填写方法见 [提示词使用说明](docs/framework-maintenance/migration-source/reference/skills.md#从哪里取得操作提示词)。 环境准备与普通修改任务使用相同的项目 Git 规则；初始化报告与后续更新见[首次使用说明](docs/framework-maintenance/migration-source/getting-started/first-use.md)。 需要准备新项目时，使用“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”。 已有旧框架成果需要保留时，使用“Godot 项目开发 → 项目创建与接入 → 复制并迁移旧框架项目”； 输入、授权及原件保留方式见[复制迁移说明](docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)。 `prompts.json` 只保存提示词，不执行命令，也不要求项目读取维护目录。 需要按任务准备素材时，使用“Godot 项目开发 → 资源、性能与数据 → 分析并整理任务资源清单”；清单保存在具体游戏项目，用法见 [资源准备与原型交接](docs/framework-maintenance/migration-source/guides/product-and-planning.md#按清单准备资源再继续原型)。 外部文本或文档需要先整理、不写入或执行时，选择“Godot 项目开发 → 需求设计 → 只读适配外部需求内容”；用法见 [只整理外部需求内容](docs/framework-maintenance/migration-source/guides/product-and-planning.md#只整理外部需求内容)。 功能已经实现、需求或任务记录缺失时，选择“Godot 项目开发 → 需求设计 → 从已有实现补齐需求与任务”；输入和文档/交付边界见 [已有实现补齐说明](docs/framework-maintenance/migration-source/guides/product-and-planning.md#从已有实现补齐需求与任务)。 需要独立检查模块现状或指定变更时，选择“Godot 项目开发 → 验证与收尾 → 独立审查代码或指定变更”；现状审查无需创建 Feature 或虚构差异，用法见 [独立评审说明](docs/framework-maintenance/migration-source/guides/feature-delivery.md#按需独立评审与再次验证)。 手动编辑代码、资源或需求/任务文档后，选择“Godot 项目开发 → 验证与收尾 → 检查手动修改与需求的一致性”；提供范围、意图与比较基线，用法见 [手动修改检查说明](docs/framework-maintenance/migration-source/guides/engineering-changes.md#手动修改后检查需求一致性)。 需要结合项目流程回复 Codex 时，选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；用法见 [根据 Codex 输出起草回复](docs/framework-maintenance/migration-source/reference/skills.md#根据-codex-输出起草回复)。 从实际游戏项目转发 Codex 输出、判断框架是否需要改进时，选择“Yaya 框架维护 → 维护与复盘 → 依据实际开发反馈复盘框架”； 审核后可按需参考提示词库，输出标明接收任务、已填入上下文的下一步输入，供手动复制发送；用法与建议边界见 [开发反馈复盘说明](docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。 新增提示词前先核对 [使用场景清单](review/baselines/scenario-coverage.md#提示词使用场景清单)， 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验 变成规则、脚本或新机制。项目提示词不要求项目连接或跟随维护源变化。 提示词正文及清单做静态核对；不把工具回归当成已逐条运行全部提示词。
 
 框架提示词遵循根规则并按任务读取资料，复用仍有效的上下文；修改空白项目源材料前 查阅手册入口、维护说明与受影响专题。局部复盘、验证与交接不要求通读相同入口，具体边界见 [通过提示词开始维护](docs/framework-maintenance/updating-the-blank-project.md#通过提示词开始维护)。
 
@@ -74,7 +75,7 @@
 - 框架维护：`Yaya 框架维护 → 维护与复盘 → 生成新线程交接提示词`，只读当前会话与仓库。
 - 项目开发：`Godot 项目开发 → 验证与收尾 → 整理进度与任务交接`，写入前置满足时整理必要记录，否则只读交接并说明记录缺口。
 
-两者都输出一个已填入实际目标、目录、进展、授权、检查结果与下一步的完整代码块。 由使用者复制到同一工作区的新线程，接收方先核对实际文件再继续；原线程输出后停止实施。 具体用法见 [换到新线程继续](docs/blank-project/guides/project-knowledge.md#换到新线程继续)。
+两者都输出一个已填入实际目标、目录、进展、授权、检查结果与下一步的完整代码块。 由使用者复制到同一工作区的新线程，接收方先核对实际文件再继续；原线程输出后停止实施。 具体用法见 [换到新线程继续](docs/framework-maintenance/migration-source/guides/project-knowledge.md#换到新线程继续)。
 
 ## 复制入口
 

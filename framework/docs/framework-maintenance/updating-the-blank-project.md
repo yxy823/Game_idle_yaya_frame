@@ -10,7 +10,7 @@
 | --- | --- |
 | 新项目应携带的文件 | `project-source/`；需要调整目标位置时同时核对复制清单 |
 | 创建项目如何复制 | `framework/commands/create_project.py` 与 `framework/project-files.json` |
-| 项目使用导览、框架与项目边界 | `framework/docs/blank-project/` 中按职责分开的两本手册 |
+| 项目使用导览、框架与项目边界 | `framework/docs/operation-manual/` 与 `framework/docs/quick-reference/`，分别维护工具概念和具体场景 |
 | 项目内简短入口 | `project-source/Project_README.md`，保持概括与项目自身导航 |
 | 某条流程、Skill 或工程语义 | 对应源规范；只在任务明确涉及该行为时调整 |
 | 给用户发送的正式操作提示词 | `framework/prompts.json` |
@@ -27,19 +27,19 @@
 
 | 本次变化 | 优先核对的手册章节 | 同时查看的实际来源 |
 | --- | --- | --- |
-| 复制范围、目录、重命名、目标限制 | [创建项目](../blank-project/getting-started/create-project.md)、[目录参考](../blank-project/reference/project-layout.md) | 创建器、复制清单、默认文件 |
-| 环境字段、工具路径、就绪或初始化 Git 行为 | [首次使用](../blank-project/getting-started/first-use.md)、[配置参考](../blank-project/reference/configuration.md)、[故障排查](../blank-project/reference/troubleshooting.md) | 配置源、环境检查器、初始化提示词 |
-| Product 结构、Feature 字段或依赖演进 | [需求与规划](../blank-project/guides/product-and-planning.md)、[目录参考](../blank-project/reference/project-layout.md) | methodology、模板、相关检查实现 |
-| Stage、验收、复审、完成或续接 | [Feature 开发流程](../blank-project/guides/feature-delivery.md)、[命令与验证](../blank-project/reference/commands-and-validation.md) | 执行 Skill、执行规范、完成依据实现 |
-| 专业来源归属、共享影响或资源交接 | [专业工作](../blank-project/guides/specialist-workflows.md)、[需求与规划](../blank-project/guides/product-and-planning.md)、[Feature 开发流程](../blank-project/guides/feature-delivery.md)、[工程变更](../blank-project/guides/engineering-changes.md) | [专业职责与来源规范](../../../project-source/methodology/11-specialist-workflows.md)、对应 Skill 与规划/同步来源规则 |
-| 专业审核方法、独立上下文或角色配置 | [专业审核](../blank-project/guides/specialist-workflows.md#审核保持独立)、[Skill 导航](../blank-project/reference/skills.md)、[目录参考](../blank-project/reference/project-layout.md) | [独立审核规范](../../../project-source/methodology/12-independent-review.md)、审核 Skill、角色源文件及复制映射 |
-| 外部搜索、调研角色或报告归属 | [搜索与调研](../blank-project/guides/project-knowledge.md#按需搜索与保存调研)、[Skill 导航](../blank-project/reference/skills.md)、[目录参考](../blank-project/reference/project-layout.md) | [researcher](../../../project-source/agents/researcher.toml)、方法总览/生命周期规范、复制映射及 advisor 场景；报告格式只在角色中定义 |
-| Bug、重构、维护、实验边界 | [工程变更](../blank-project/guides/engineering-changes.md) | 对应 Skill 与方法总览 |
-| 测试选择、命令参数、报告或错误语义 | [命令与验证](../blank-project/reference/commands-and-validation.md)、[故障排查](../blank-project/reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
-| 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](../blank-project/guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |
-| Skill 名称、职责或提示词入口 | [Skill 导航](../blank-project/reference/skills.md) | 实际 SKILL.md、prompts.json 和场景用途清单 |
-| 场景入口、操作分支、恢复或交接判据 | [场景索引](../blank-project/quick-reference/scenario-index.md)；尚未迁移部分核对原专题与检查单 | 对应 methodology、实际工具与 prompts.json；同步 [场景覆盖映射](../../review/baselines/scenario-coverage.md#手册处置路径)，不另建规范或提示词正文 |
-| Godot / lint / 插件默认值 | [配置参考](../blank-project/reference/configuration.md)、[命令与验证](../blank-project/reference/commands-and-validation.md) | 默认配置、plugin.cfg、补丁记录 |
+| 复制范围、目录、重命名、目标限制 | [创建项目](migration-source/getting-started/create-project.md)、[目录参考](migration-source/reference/project-layout.md) | 创建器、复制清单、默认文件 |
+| 环境字段、工具路径、就绪或初始化 Git 行为 | [首次使用](migration-source/getting-started/first-use.md)、[配置参考](migration-source/reference/configuration.md)、[故障排查](migration-source/reference/troubleshooting.md) | 配置源、环境检查器、初始化提示词 |
+| Product 结构、Feature 字段或依赖演进 | [需求与规划](migration-source/guides/product-and-planning.md)、[目录参考](migration-source/reference/project-layout.md) | methodology、模板、相关检查实现 |
+| Stage、验收、复审、完成或续接 | [Feature 开发流程](migration-source/guides/feature-delivery.md)、[命令与验证](migration-source/reference/commands-and-validation.md) | 执行 Skill、执行规范、完成依据实现 |
+| 专业来源归属、共享影响或资源交接 | [专业工作](migration-source/guides/specialist-workflows.md)、[需求与规划](migration-source/guides/product-and-planning.md)、[Feature 开发流程](migration-source/guides/feature-delivery.md)、[工程变更](migration-source/guides/engineering-changes.md) | [专业职责与来源规范](../../../project-source/methodology/11-specialist-workflows.md)、对应 Skill 与规划/同步来源规则 |
+| 专业审核方法、独立上下文或角色配置 | [专业审核](migration-source/guides/specialist-workflows.md#审核保持独立)、[Skill 导航](migration-source/reference/skills.md)、[目录参考](migration-source/reference/project-layout.md) | [独立审核规范](../../../project-source/methodology/12-independent-review.md)、审核 Skill、角色源文件及复制映射 |
+| 外部搜索、调研角色或报告归属 | [搜索与调研](migration-source/guides/project-knowledge.md#按需搜索与保存调研)、[Skill 导航](migration-source/reference/skills.md)、[目录参考](migration-source/reference/project-layout.md) | [researcher](../../../project-source/agents/researcher.toml)、方法总览/生命周期规范、复制映射及 advisor 场景；报告格式只在角色中定义 |
+| Bug、重构、维护、实验边界 | [工程变更](migration-source/guides/engineering-changes.md) | 对应 Skill 与方法总览 |
+| 测试选择、命令参数、报告或错误语义 | [命令与验证](migration-source/reference/commands-and-validation.md)、[故障排查](migration-source/reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
+| 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](migration-source/guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |
+| Skill 名称、职责或提示词入口 | [Skill 导航](migration-source/reference/skills.md) | 实际 SKILL.md、prompts.json 和场景用途清单 |
+| 场景入口、操作分支、恢复或交接判据 | [场景索引](../quick-reference/scenario-index.md)；尚未迁移部分核对原专题与检查单 | 对应 methodology、实际工具与 prompts.json；同步 [场景覆盖映射](../../review/baselines/scenario-coverage.md#手册处置路径)，不另建规范或提示词正文 |
+| Godot / lint / 插件默认值 | [配置参考](migration-source/reference/configuration.md)、[命令与验证](migration-source/reference/commands-and-validation.md) | 默认配置、plugin.cfg、补丁记录 |
 
 手册概括不能替代源文件核对。若发现规范、脚本与手册存在冲突，应分清当前实际行为和待修问题；在任务范围内修正，或如实报告尚未解决的差异。不要为了让文字一致顺手改写 Skill 流程或测试门槛。
 
@@ -64,13 +64,13 @@
 
 说明文件时写清位置、职责和读写关系。区分外部 GDD、Product 总览、Product 模块、Feature 计划和实际完成依据；图表与文字使用同一套名称。
 
-场景的编写要求集中在[速查 README](../blank-project/quick-reference/README.md)，读者从[场景索引](../blank-project/quick-reference/scenario-index.md)进入。先讨论八篇样稿，再完成其余内容迁移；原专题和检查单在此期间是待拆分材料，不再作为另一套速查正文继续扩写。
+场景的编写要求集中在[速查 README](../quick-reference/README.md)，读者从[场景索引](../quick-reference/scenario-index.md)进入。先讨论八篇样稿，再完成其余内容迁移；原专题和检查单集中保存在[迁移原材料](migration-source/README.md)，不再作为另一套速查正文继续扩写。上面的专题链接暂时指向这些待拆分材料；迁移完成后同步改为正式页面并删除原材料。
 
 两本手册之间不互相引用，必要说明就地提供，权威事实仍以项目规范与实际工具为准。当前只做 Markdown 内容与链接核对，HTML 恢复条件见[阅读版暂缓说明](#html-阅读版暂缓)。
 
 ## 保持初始化边界
 
-项目使用手册位于 `framework/docs/blank-project/`，框架维护说明位于 `framework/docs/framework-maintenance/`。两类文档都不要加入 `project-files.json`，也不要复制或移动到 `project-source/`。不增加“先复制再删除手册”的动作。
+项目使用手册分别位于 `framework/docs/operation-manual/` 和 `framework/docs/quick-reference/`，框架维护说明及迁移原材料位于 `framework/docs/framework-maintenance/`。全部文档都不要加入 `project-files.json`，也不要复制或移动到 `project-source/`。不增加“先复制再删除手册”的动作。
 
 `Project_README.md` 保持短入口，描述项目自身用法；不要求已生成项目访问本手册或查询框架版本。框架根 README 和 `framework/README.md` 负责引导维护者找到手册。
 

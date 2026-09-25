@@ -21,4 +21,4 @@
 - [2026-09-20 实际导入验证](reports/import-validation-2026-09-20.md)
 - [2026-09-14 空白项目动态验证](reports/blank-project-dynamic-validation-2026-09-14.md)
 
-报告的范围、原始证据和未验证项以各次记录为准；正式使用流程仍以源规范及[使用手册](../docs/blank-project/README.md)为准。
+报告的范围、原始证据和未验证项以各次记录为准；正式使用流程仍以源规范及[使用手册](../docs/README.md)为准。

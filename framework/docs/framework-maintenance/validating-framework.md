@@ -1,6 +1,6 @@
 # 框架的复制与运行验证
 
-[维护文档入口](README.md) · 相关：[维护与同步](updating-the-blank-project.md#按修改选择验证范围)、[创建项目](../blank-project/getting-started/create-project.md)
+[维护文档入口](README.md) · 相关：[维护与同步](updating-the-blank-project.md#按修改选择验证范围)、[创建项目](migration-source/getting-started/create-project.md)
 
 `project-source/` 是未初始化的分发材料，包含最小入口 `main/main.tscn`；不在这里启动 Godot， 不预置实际游戏玩法、本机就绪配置、业务需求或已完成任务。可用性通过源材料检查和独立项目中的真实运行共同验证。
 

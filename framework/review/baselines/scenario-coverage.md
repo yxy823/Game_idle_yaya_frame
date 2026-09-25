@@ -28,7 +28,7 @@
 | 2.1 | 按指定路径创建空白项目 | 代码：按清单复制项目材料，建立独立 Git 仓库与本地初始提交 | [create_project.py](../../commands/create_project.py)、[project-files.json](../../project-files.json)；项目 AGENTS 源使用不同名称；创建器不运行引擎，类型模块按[组织指南](../../../project-source/defaults/docs/game-organization.md)展开 |
 | 2.2 | 目标有中文/空白、非空或与维护源重叠；清单源缺失 | 代码：复制前报错 | 不移动用户安装目录，不覆盖已有项目；清单选取不等于复制整个母版 |
 | 2.3 | 复制途中权限或 I/O 失败 | 代码与人工：返回原始错误，保留现场，由用户决定后续操作 | 不自动删除已复制内容，不新增复制事务、恢复状态机或身份清单 |
-| 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../../docs/blank-project/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
+| 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../../docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
 
 ## 3. 项目环境
 
@@ -57,7 +57,7 @@
 | 4.11 | 先讨论想法、设计取舍或概念 | 流程：`project-clarifier` 先查事实，只补问当前缺口，按依赖小步澄清 | 只讨论不写文件；不要求环境就绪或完整 Product，不维护问卷状态、轮数或评分 |
 | 4.12 | 保存并持续维护已确认的项目术语 | 流程：澄清后由 `product-author` 按授权维护 `docs/terminology.md` 或局部定义，Stage 3 检查有价值的增量 | 每个定义一个归属；新增、改名、废弃及语义变化检查引用；保持含义时不拆任务，实质变化仍经 Product 与 Feature 同步；嵌套维护后返回当前 Feature |
 | 4.13 | 功能已实现但缺少 Product 或 Feature 记录 | 流程：确认产品意图、补齐当前模块计划，按授权从现状验证与收尾 | [规划接管](../../../project-source/methodology/02-feature-list-schema.md#adopting-existing-implementation)和[交付接管](../../../project-source/methodology/03-execute-loop.md#delivery-of-existing-implementation)；复用实现，缺失历史如实记录，新任务不直接标 done，不重演历史 TDD，后续修复与当前完成条件保持有效 |
-| 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../../docs/blank-project/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
+| 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
 | 4.15 | 正式逻辑前验证当前界面的视觉基础 | 流程与人工：UI/audio 提供输入，现有规划与执行交付独立场景及适用验收 | [视觉原型规范](../../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)；复用普通 Feature 与真实依赖，已有有效布局不重做，缺失样本不冒充通过，视觉接受不替代正式功能验收 |
 | 4.16 | 按当前任务准备最小资源集合，提供文件后继续原型 | 流程：专业 Skill 维护同一清单的对应条目，接入由独立方法处理 | [资源准备规范](../../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)；保留九个字段与来源/目标/显示尺度，复用清单，不增加全局编号或状态台账 |
 | 4.17 | 需要保留较长的 Feature 设计与实际采用的约束 | 流程：Stage 1 判断，Stage 2–3 维护可选 `F0XX-design.md`，notes 相对链接 | [设计说明规范](../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)；引用原规则并解释实际应用，不复制规则全集或建立第二份 AC、状态、验证计划 |
@@ -87,7 +87,7 @@
 | 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
 | 5.5 | 验收方式与独立复审 | 流程：Stage 1 决定验收方式，Stage 4 提供可复现步骤，Stage 6 按用户指定的范围与时机审查需求和代码质量，可合并多项 Feature | manual 需真实人工决定；automated 省略 Stage 5；独立评审默认省略，完成依据不要求复审计数，用户指定的评审条件由 Agent 核对 |
 | 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
-| 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../../docs/blank-project/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
+| 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
 | 5.8 | 术语、专业规格/清单、规则、设计或 ADR 在最终验证后变化 | Stage 3 完成必要更新；晚修改按既有全局指纹恢复失效依据 | 普通 Markdown 不继承 JSON notes 的豁免；编辑性变化仍可能失效，审核报告在 reports 中不改变源指纹 |
 | 5.9 | 独立专业审核、角色文件存在但运行权限未知、验证会产生缓存 | 七类审核方法按请求组合，一个独立角色；核实实际上下文/权限与所有副作用的隔离 | [审核契约](../../../project-source/methodology/12-independent-review.md)；作者自查不升级，无播放/显示证据保留缺口，报告完成不等于必要覆盖通过；成果变化限定结论 |
 
@@ -111,46 +111,46 @@
 
 [prompts.json](../../prompts.json) 已维护两个 Project、50 条完整提示词： `Yaya 框架维护` 10 条，`Godot 项目开发` 40 条。 顶层数组的每项仍为 `project`、`categories`。下表保留场景、选择理由和 JSON 位置， 提示词正文只有 JSON 一份；按需选用，不是每个任务必须发送的一组指令。
 
-用户按实际情况从[场景速查索引](../../docs/blank-project/quick-reference/scenario-index.md)进入。当前有八篇 Markdown 样稿，其余情境在样稿讨论后迁移；提示词入口与实际流程保持原有职责。
+用户按实际情况从[场景速查索引](../../docs/quick-reference/scenario-index.md)进入。当前有八篇 Markdown 样稿，其余情境在样稿讨论后迁移；提示词入口与实际流程保持原有职责。
 
 ### 手册处置路径
 
 下表保留上文场景的现有材料位置，用于后续迁移核对。原专题与多分支检查单需要按入口状态拆分：概念和工具用法进入操作手册，所有具体情境处理进入速查手册。新增场景同步既有映射，不另建覆盖台账。
 
-首轮[场景样稿](../../docs/blank-project/quick-reference/scenario-index.md)按事项、状态和叶子场景分层；保留 11 类定义，空栏目省略。八篇只覆盖各自前提成立的路径，包括两种 Bug 状态；下面的旧检查单承担待拆分材料的定位，不代表所有路径已经迁移。编写要求见[速查 README](../../docs/blank-project/quick-reference/README.md)。
+首轮[场景样稿](../../docs/quick-reference/scenario-index.md)按事项、状态和叶子场景分层；保留 11 类定义，空栏目省略。八篇只覆盖各自前提成立的路径，包括两种 Bug 状态；下面的旧检查单承担待拆分材料的定位，不代表所有路径已经迁移。编写要求见[速查 README](../../docs/quick-reference/README.md)。
 
 | 现有场景 | 手册入口 | 入口类型与选择理由 |
 | --- | --- | --- |
-| 1.1–1.5 | [框架维护与验证](../../docs/framework-maintenance/updating-the-blank-project.md)；共享修改另见[影响判断](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 已有维护步骤按修改选择同步与验证，跨调用者问题复用专用检查单。 |
+| 1.1–1.5 | [框架维护与验证](../../docs/framework-maintenance/updating-the-blank-project.md)；共享修改另见[影响判断](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 已有维护步骤按修改选择同步与验证，跨调用者问题复用专用检查单。 |
 | 1.6–1.10 | [维护、审核、复盘与交接入口](../../docs/framework-maintenance/updating-the-blank-project.md#通过提示词开始维护) | 专题已逐项说明输入、授权和停止位置，不复制为游戏开发 SOP。 |
-| 2.1–2.3 | [创建项目](../../docs/blank-project/getting-started/create-project.md) | 已有完整创建与失败处理步骤，复制失败保留现场。 |
-| 2.4、4.14 | [复制迁移](../../docs/blank-project/getting-started/migrate-existing-project.md)、[原地替换](../../docs/blank-project/guides/engineering-changes.md#原地替换项目框架) | 两种独立操作已有各自前置与完成边界，不合并成自动升级流程。 |
-| 3.1–3.3 | [首次使用与环境准备](../../docs/blank-project/getting-started/first-use.md)、[配置参考](../../docs/blank-project/reference/configuration.md) | 首次准备有操作步骤，后续字段与空项目边界查参考即可。 |
-| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发)；[首次规划样稿](../../docs/blank-project/quick-reference/requirements/ready-to-plan/plan-confirmed-module.md) | 专用检查单：需求、当前模块计划与实施衔接。 |
-| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划)；[未开工变更样稿](../../docs/blank-project/quick-reference/requirements/confirmed-plan/change-before-development.md) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
-| 4.25 | [开发中插入 Product](../../docs/blank-project/guides/scenarios-requirements-design.md#开发中临时插入-product-或模块) | 专用检查单：模块边界、稳定编号、前置与规划时机。 |
-| 4.26、4.4 | [Feature 中途插入与切换](../../docs/blank-project/guides/scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) | 专用检查单：分类、停点、工作区前置和返回原任务。 |
-| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接)；[新对话续接样稿](../../docs/blank-project/quick-reference/resumption/new-conversation/resume-unfinished-feature.md) | 专用检查单；日常执行另由 [Feature 指南](../../docs/blank-project/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
-| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/blank-project/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归)；[交付前后两篇 Bug 样稿](../../docs/blank-project/quick-reference/scenario-index.md#问题修复) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
-| 4.5 中的重构/维护、4.10、4.17、4.19 | [设计复杂度判断](../../docs/blank-project/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)、[共享修改影响](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 判断与影响走专用检查单；具体重构/维护模式查 [工程指南](../../docs/blank-project/guides/engineering-changes.md)，不复写执行 Stage。 |
-| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型)；[方案已定的原型样稿](../../docs/blank-project/quick-reference/interface-assets/ui-ready/build-clickable-prototype.md) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
-| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏)；[音效已备的接入样稿](../../docs/blank-project/quick-reference/interface-assets/audio-ready/connect-approved-sound.md) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
-| 4.6、4.16 | [已有资源接入或替换](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#已有资源文件后接入或替换) | 专用检查单：真实文件、规格分支、UID/引用、显示/播放与清单定稿。 |
-| 4.20 中的美术方向/视觉规格 | [专业方法与职责](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 单独设计共享方向只需专题参考；需要准备和应用素材时进入上述 UI/资源 SOP，要求变化转计划对齐。 |
-| 4.7、4.24 | [性能、观测与长测](../../docs/blank-project/guides/specialist-workflows.md#实现测量与完成) | 专题区分诊断/优化、原始测量和中止范围；交付复用验证检查单，不新增测量生命周期。 |
-| 4.8 | [工程维护边界](../../docs/blank-project/guides/engineering-changes.md#工程维护如何确定边界) | 数据迁移取决于项目保留要求和实际格式，专题与现有维护 Prompt 足够，不预设通用迁移程序。 |
-| 4.9 中的玩法/技术假设 | [限定实验](../../docs/blank-project/guides/engineering-changes.md#原型与技术实验) | 已有假设、范围、预算、结论与文件去向步骤，视觉实验另有专用 SOP。 |
-| 4.11 | [需求与规划](../../docs/blank-project/guides/product-and-planning.md) | 轻量讨论只解决当前决定，不强制完整检查单或文件写入。 |
-| 4.12、4.18、6.4 | [术语、规则与知识维护](../../docs/blank-project/guides/project-knowledge.md) | 各类内容已有维护入口和归属，按需参考；不把每个增量升级为新任务。 |
-| 4.27 | [按需搜索与保存调研](../../docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) | 专题解释主 Agent 判断、角色委派、外部搜索依赖与报告去向，不增加固定 Stage 或另一套 SOP。 |
-| 4.13 | [已有实现补齐](../../docs/blank-project/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/blank-project/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
-| 4.23 | [专业职责与来源](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
-| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复)；[有效原件引用修复样稿](../../docs/blank-project/quick-reference/verification/existing-results/import-passed-tests.md) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/blank-project/reference/commands-and-validation.md)。 |
-| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
-| 5.6 | [验证范围](../../docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)、[测试失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 静态限定是贯穿所有操作的边界，环境缺失走已有恢复，不另加状态。 |
-| 5.7 | [文档与实际状态不一致处置](../../docs/blank-project/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) | 专用检查单：区分确认意图、实现、历史与真正应修位置。 |
-| 5.9、5.5 中的独立审核 | [独立审核交接](../../docs/blank-project/guides/specialist-workflows.md#独立审核怎样交接) | 已有独立实例、范围、证据与作者修复交接说明，自查不冒充审核。 |
-| 7.1、7.2 | [手册使用边界](../../docs/blank-project/README.md#使用约定与内容依据)、[维护边界](../../docs/framework-maintenance/updating-the-blank-project.md#保持初始化边界) | 范围解释只需参考页，不为自动同步、多引擎等范围外能力建立 SOP。 |
+| 2.1–2.3 | [创建项目](../../docs/framework-maintenance/migration-source/getting-started/create-project.md) | 已有完整创建与失败处理步骤，复制失败保留现场。 |
+| 2.4、4.14 | [复制迁移](../../docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)、[原地替换](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原地替换项目框架) | 两种独立操作已有各自前置与完成边界，不合并成自动升级流程。 |
+| 3.1–3.3 | [首次使用与环境准备](../../docs/framework-maintenance/migration-source/getting-started/first-use.md)、[配置参考](../../docs/framework-maintenance/migration-source/reference/configuration.md) | 首次准备有操作步骤，后续字段与空项目边界查参考即可。 |
+| 4.1、4.2 | [新功能进入正式开发](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#收到新功能后进入正式开发)；[首次规划样稿](../../docs/quick-reference/requirements/ready-to-plan/plan-confirmed-module.md) | 专用检查单：需求、当前模块计划与实施衔接。 |
+| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划)；[未开工变更样稿](../../docs/quick-reference/requirements/confirmed-plan/change-before-development.md) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
+| 4.25 | [开发中插入 Product](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#开发中临时插入-product-或模块) | 专用检查单：模块边界、稳定编号、前置与规划时机。 |
+| 4.26、4.4 | [Feature 中途插入与切换](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) | 专用检查单：分类、停点、工作区前置和返回原任务。 |
+| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接)；[新对话续接样稿](../../docs/quick-reference/resumption/new-conversation/resume-unfinished-feature.md) | 专用检查单；日常执行另由 [Feature 指南](../../docs/framework-maintenance/migration-source/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
+| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归)；[交付前后两篇 Bug 样稿](../../docs/quick-reference/scenario-index.md#问题修复) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
+| 4.5 中的重构/维护、4.10、4.17、4.19 | [设计复杂度判断](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)、[共享修改影响](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 判断与影响走专用检查单；具体重构/维护模式查 [工程指南](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md)，不复写执行 Stage。 |
+| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型)；[方案已定的原型样稿](../../docs/quick-reference/interface-assets/ui-ready/build-clickable-prototype.md) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
+| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏)；[音效已备的接入样稿](../../docs/quick-reference/interface-assets/audio-ready/connect-approved-sound.md) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
+| 4.6、4.16 | [已有资源接入或替换](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#已有资源文件后接入或替换) | 专用检查单：真实文件、规格分支、UID/引用、显示/播放与清单定稿。 |
+| 4.20 中的美术方向/视觉规格 | [专业方法与职责](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#按实际目标选能力) | 单独设计共享方向只需专题参考；需要准备和应用素材时进入上述 UI/资源 SOP，要求变化转计划对齐。 |
+| 4.7、4.24 | [性能、观测与长测](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#实现测量与完成) | 专题区分诊断/优化、原始测量和中止范围；交付复用验证检查单，不新增测量生命周期。 |
+| 4.8 | [工程维护边界](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#工程维护如何确定边界) | 数据迁移取决于项目保留要求和实际格式，专题与现有维护 Prompt 足够，不预设通用迁移程序。 |
+| 4.9 中的玩法/技术假设 | [限定实验](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原型与技术实验) | 已有假设、范围、预算、结论与文件去向步骤，视觉实验另有专用 SOP。 |
+| 4.11 | [需求与规划](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md) | 轻量讨论只解决当前决定，不强制完整检查单或文件写入。 |
+| 4.12、4.18、6.4 | [术语、规则与知识维护](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md) | 各类内容已有维护入口和归属，按需参考；不把每个增量升级为新任务。 |
+| 4.27 | [按需搜索与保存调研](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md#按需搜索与保存调研) | 专题解释主 Agent 判断、角色委派、外部搜索依赖与报告去向，不增加固定 Stage 或另一套 SOP。 |
+| 4.13 | [已有实现补齐](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/framework-maintenance/migration-source/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
+| 4.23 | [专业职责与来源](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
+| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复)；[有效原件引用修复样稿](../../docs/quick-reference/verification/existing-results/import-passed-tests.md) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/framework-maintenance/migration-source/reference/commands-and-validation.md)。 |
+| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
+| 5.6 | [验证范围](../../docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)、[测试失败恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 静态限定是贯穿所有操作的边界，环境缺失走已有恢复，不另加状态。 |
+| 5.7 | [文档与实际状态不一致处置](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) | 专用检查单：区分确认意图、实现、历史与真正应修位置。 |
+| 5.9、5.5 中的独立审核 | [独立审核交接](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#独立审核怎样交接) | 已有独立实例、范围、证据与作者修复交接说明，自查不冒充审核。 |
+| 7.1、7.2 | [手册使用边界](../../docs/README.md#使用约定与内容依据)、[维护边界](../../docs/framework-maintenance/updating-the-blank-project.md#保持初始化边界) | 范围解释只需参考页，不为自动同步、多引擎等范围外能力建立 SOP。 |
 
 有输入占位符时由使用者填写；GitHub 审核正文已指定默认仓库与报告名称，可直接发送，也可补充分支或提交。 提示词保留任务目标、输入、授权与交付要求；通用维护约束引用根规则，Feature 和动态审核 的阶段动作引用现行执行规范，测试清理等方法按相关章节读取，不在入口维护流程副本。 不另建工作流、注册器、执行状态或动作检查器。编号沿用上文场景，细分用途使用子编号。
 
@@ -171,7 +171,7 @@
 
 外部参考用于解决已有问题，设计优点与直接复制源码分别判断。先核对当前是否已有、 通用收益、引入依赖与未来维护成本；没有适合吸收的内容也是有效结论。 只读外部材料不自动授权安装、执行其脚本或整体迁入。 实施类入口按所属仓库规则完成本地提交，不自动更新其他项目或发布；只读任务以及明确不提交的初始化、交接范围保持原边界。
 
-框架提示词按任务范围读取资料并复用有效上下文。修改空白项目源材料前查阅 [手册入口](../../docs/blank-project/README.md)、[维护说明](../../docs/framework-maintenance/updating-the-blank-project.md) 与受影响专题，实施后同步说明。局部复盘与验证只核对相关依据；交接仅列续接必需的 文件或章节和待同步事项，不固定重读同一组入口，保持各自原有授权范围。 GitHub 审核从固定提交读取相同入口，所有结论受实际可读材料限制；准备与输出方式见 [GitHub 审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#通过-github-交给其他模型审核)。 动态入口在明确授权的新建外部项目执行现有流程，源材料保持只读；用法见 [动态流程审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程)。 外部结果复核先判断事实和设计取舍，报告交付后由用户选择是否实施；用法见 [外部结果复核说明](../../docs/framework-maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)。 实际开发反馈围绕原任务、项目副本与当前框架按需归因，不默认整体重检；用法见 [开发反馈复盘说明](../../docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
+框架提示词按任务范围读取资料并复用有效上下文。修改空白项目源材料前查阅 [手册入口](../../docs/README.md)、[维护说明](../../docs/framework-maintenance/updating-the-blank-project.md) 与受影响专题，实施后同步说明。局部复盘与验证只核对相关依据；交接仅列续接必需的 文件或章节和待同步事项，不固定重读同一组入口，保持各自原有授权范围。 GitHub 审核从固定提交读取相同入口，所有结论受实际可读材料限制；准备与输出方式见 [GitHub 审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#通过-github-交给其他模型审核)。 动态入口在明确授权的新建外部项目执行现有流程，源材料保持只读；用法见 [动态流程审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程)。 外部结果复核先判断事实和设计取舍，报告交付后由用户选择是否实施；用法见 [外部结果复核说明](../../docs/framework-maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)。 实际开发反馈围绕原任务、项目副本与当前框架按需归因，不默认整体重检；用法见 [开发反馈复盘说明](../../docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
 
 ### Project：Godot 项目开发
 
@@ -222,16 +222,16 @@
 
 - 讨论与记录术语共用一个 Skill 的提问方法；两条提示词只区分用户需要的产物和写入授权，不创建两套访谈流程。
 - 初始需求与需求变化、当前 Product 初次拆分与既有计划同步分别提供入口；下一 Product 的规划追加到原台账，不覆盖历史。
-- 外部需求适配只交付对话草稿，区别于正式写入 Product 的 GDD 入口；按内容归属引用现有路由与 Skill，不扩展只读指导 Skill 的职责。用法见 [只整理外部需求内容](../../docs/blank-project/guides/product-and-planning.md#只整理外部需求内容)。
+- 外部需求适配只交付对话草稿，区别于正式写入 Product 的 GDD 入口；按内容归属引用现有路由与 Skill，不扩展只读指导 Skill 的职责。用法见 [只整理外部需求内容](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md#只整理外部需求内容)。
 - 原型实验用于回答未决问题，按授权和预算停止；沿用现有记录，不要求先生成完整规格链。
 - UI、音频、资源接入的输入不同；性能测量和存档保留也各有实际目标，故提供独立提示词。 专业方法分别维护自己的来源，运行修改返回原任务；不会形成必须逐项执行的新交付流程。
-- “问下一步”“执行新任务”“续接任务”分别表达指导、执行与续接意图，沿用已有授权；根据 Codex 输出起草回信复用只读指导入口，用法见 [根据 Codex 输出起草回复](../../docs/blank-project/reference/skills.md#根据-codex-输出起草回复)。
+- “问下一步”“执行新任务”“续接任务”分别表达指导、执行与续接意图，沿用已有授权；根据 Codex 输出起草回信复用只读指导入口，用法见 [根据 Codex 输出起草回复](../../docs/framework-maintenance/migration-source/reference/skills.md#根据-codex-输出起草回复)。
 - Bug、重构和工程维护分别说明期望行为、保持不变的范围和技术目标。
 - 架构调查从实际源码发现问题；engineering-refactor-select 从既有 notes 选择待办，独立审查检查指定变更或代码现状的正确性、需求符合性与质量。三者关注点与产出不同，调查不自动进入实施。
 - 验证、审查、人工反馈保留独立入口；正常 Feature 仍完成适用测试与验收，独立评审仅在用户明确指定时执行，可等多项交付后集中进行。
 - 进度交接负责接得上；阶段总结负责找值得复用的经验和重复工作。原任务经过留在历史， 知识目录按主题保存提炼出的解释并链接原件，不因复盘重复复制正文、规则和脚本。
 
-两类交接入口由原线程生成结果、使用者复制到新线程，接收方先核对目录、规则、原文和 实际差异再按已有授权续接。框架交接保持只读，项目交接可整理必要的现有文档；都不把 交接当作新实施授权或人工验收，不另建交接文件。用法见 [换到新线程继续](../../docs/blank-project/guides/project-knowledge.md#换到新线程继续)。
+两类交接入口由原线程生成结果、使用者复制到新线程，接收方先核对目录、规则、原文和 实际差异再按已有授权续接。框架交接保持只读，项目交接可整理必要的现有文档；都不把 交接当作新实施授权或人工验收，不另建交接文件。用法见 [换到新线程继续](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md#换到新线程继续)。
 
 ### 阶段总结与固化边界
 

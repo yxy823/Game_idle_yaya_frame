@@ -2,7 +2,7 @@
 
 这里维护一套 Godot 项目的起始文件和开发 Skill，供 Windows 11 / PowerShell 7 使用。 目标是让用户与 Coding Agent 持续开发时需求清楚、任务接得上、修改有验证、结果如实记录。 Skill 提供方法，项目文件积累知识，Agent 根据任务作工程判断。
 
-使用说明正在按[整体目录](framework/docs/blank-project/README.md)重构：操作手册负责框架、概念、配置与工具，场景速查手册负责具体情境，框架维护说明[独立归档](framework/docs/framework-maintenance/README.md)。当前先试读[八篇场景样稿](framework/docs/blank-project/quick-reference/scenario-index.md)，讨论后再迁移其余正文。只交付 Markdown，HTML 阅读版暂缓。手册不进入新项目，项目内 README 保持自身的简短导航。
+使用说明正在按[整体目录](framework/docs/README.md)重构：操作手册负责框架、概念、配置与工具，场景速查手册负责具体情境，框架维护说明[独立归档](framework/docs/framework-maintenance/README.md)。当前先试读[八篇场景样稿](framework/docs/quick-reference/scenario-index.md)，讨论后再迁移其余正文。只交付 Markdown，HTML 阅读版暂缓。手册不进入新项目，项目内 README 保持自身的简短导航。
 
 ## 文件放在哪里
 
@@ -14,8 +14,10 @@ Game_idle_yaya_frame/
 │   ├── commands/              复制入口；按需执行的项目工具回归入口
 │   ├── project-files.json     相对路径复制清单
 │   ├── prompts.json           用户操作提示词，不复制到项目
-│   ├── docs/blank-project/    项目使用文档与场景样稿，不复制到项目
-│   ├── docs/framework-maintenance/  框架维护文档，不复制到项目
+│   ├── docs/                  统一文档入口，不复制到项目
+│   │   ├── operation-manual/  框架、概念、配置与工具用法
+│   │   ├── quick-reference/   具体场景与编写要求
+│   │   └── framework-maintenance/  维护说明与待拆分原材料
 │   ├── tests/                 复制器与项目工具的回归源码
 │   └── review/                设计/场景基线与按次审核报告
 └── project-source/
@@ -49,7 +51,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 ## 创建以后怎么开始
 
-从 [prompts.json](framework/prompts.json) 的“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境” 取出提示词，在目标项目中发送给 Agent。完整提示词库在维护目录集中管理， 不进入项目 README 或项目文件集合；advisor 随 Skill 携带从该库生成的精选表达参考， 仅按需读取，不替代项目规范或当前授权，详见 [参考资料说明](framework/docs/blank-project/reference/skills.md#advisor-的精选表达参考)。 Agent 在该项目里确认工具路径、项目名称和准备范围，再执行你要求的初始化。 初始化与业务 Feature 分开；不会因为文件复制完成就宣称环境或测试已经通过。
+从 [prompts.json](framework/prompts.json) 的“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境” 取出提示词，在目标项目中发送给 Agent。完整提示词库在维护目录集中管理， 不进入项目 README 或项目文件集合；advisor 随 Skill 携带从该库生成的精选表达参考， 仅按需读取，不替代项目规范或当前授权，详见 [参考资料说明](framework/docs/framework-maintenance/migration-source/reference/skills.md#advisor-的精选表达参考)。 Agent 在该项目里确认工具路径、项目名称和准备范围，再执行你要求的初始化。 初始化与业务 Feature 分开；不会因为文件复制完成就宣称环境或测试已经通过。
 
 ```mermaid
 flowchart LR
@@ -66,7 +68,7 @@ flowchart LR
 
 生成与维护层已经改为直接复制，撤去源外任务登记、发布、升级和来源哈希链。 框架复盘使用简短问题清单，不计算总分或覆盖率，不产生新的执行门槛。
 
-当前包含 27 项 Skill 和一个独立审核角色；专业设计、规格、接入、测量与审核按需调用， 专业文档由所属 Skill 维护，Product 保留行为与引用。美术、音乐、音效制作仅保留占位说明。 具体用法见[专业工作指南](framework/docs/blank-project/guides/specialist-workflows.md)。 保留 Skill 主流程；验收方式在 Stage 1 按需求决定，manual 执行人工验收，automated 省略 Stage 5。
+当前包含 27 项 Skill 和一个独立审核角色；专业设计、规格、接入、测量与审核按需调用， 专业文档由所属 Skill 维护，Product 保留行为与引用。美术、音乐、音效制作仅保留占位说明。 具体用法见[专业工作指南](framework/docs/framework-maintenance/migration-source/guides/specialist-workflows.md)。 保留 Skill 主流程；验收方式在 Stage 1 按需求决定，manual 执行人工验收，automated 省略 Stage 5。
 
 没有自动 Hook 注册、补丁解析或重复终态监听，也没有 `hooks/` 目录。 共享工具位于 `project-source/tools/`：`checks/` 放台账和环境检查， `testing/` 放测试入口与 Godot 辅助脚本，`lib/` 放共享实现。 结果记录脚本归入 feature-execute，测试登记表合并脚本归入 feature-plan。 具体命令与内部模块说明见 [项目工具说明](project-source/tools/README.md)。
 
