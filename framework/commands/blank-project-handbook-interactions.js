@@ -212,7 +212,7 @@ let sidebarCollapsed = readPreference('yaya.handbook.sidebar') === 'collapsed';
 let drawerOpen = false, sideHovered = false, sidePausedUntil = 0, sideFollowTimer;
 let filterQuery = '', expansionBeforeSearch = null, searchTargets = [];
 let positionTimer, pendingPosition = '';
-const positionKey = 'yaya.handbook.reading-anchor';
+const positionKey = document.body.dataset.readingKey;
 
 function setExpanded(record, expanded) {
   record.outline.hidden = !expanded;

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light">
-<title>空白 Godot 项目使用手册 · Yaya</title>
+<title>@@PAGE_TITLE@@ · Yaya</title>
 <link rel="icon" type="image/svg+xml" href="@@FAVICON@@">
 <!-- Generated from framework/docs/blank-project/*.md. Edit the Markdown sources and rebuild. -->
 <style>
@@ -229,9 +229,9 @@ dialog::backdrop { background: var(--backdrop); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
-<body id="handbook-top">
+<body id="handbook-top" data-reading-key="@@READING_KEY@@">
 <aside class="sidebar" id="handbook-sidebar" aria-label="手册目录">
-  <div class="brand"><a href="#handbook-top"><svg xmlns="http://www.w3.org/2000/svg" class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M3 17c3 2 6 2 9 0-1-2-2-4-2-6a7 7 0 0 1 14 0c0 3-2 5-4 7 4 0 7-1 9-3 0 8-5 13-13 13C8 28 3 24 3 17Z" fill="#f6c744" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><path d="m23 11 7 3-7 2Z" fill="#ed9138" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="10" r="1.25" fill="#202b33"/><path d="M10 21c3 3 7 3 10 0" fill="none" stroke="#b88120" stroke-width="1.5" stroke-linecap="round"/></svg><span>YAYA<small>Godot 项目使用手册</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m11 6-6 6 6 6m8-12-6 6 6 6"/></svg></button></div>
+  <div class="brand"><a href="#handbook-top"><svg xmlns="http://www.w3.org/2000/svg" class="brand-mark" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><path d="M3 17c3 2 6 2 9 0-1-2-2-4-2-6a7 7 0 0 1 14 0c0 3-2 5-4 7 4 0 7-1 9-3 0 8-5 13-13 13C8 28 3 24 3 17Z" fill="#f6c744" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><path d="m23 11 7 3-7 2Z" fill="#ed9138" stroke="#96651c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="20" cy="10" r="1.25" fill="#202b33"/><path d="M10 21c3 3 7 3 10 0" fill="none" stroke="#b88120" stroke-width="1.5" stroke-linecap="round"/></svg><span>YAYA<small>@@SIDEBAR_TITLE@@</small></span></a><button type="button" id="close-sidebar" aria-label="收起目录" title="收起目录"><svg class="ui-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m11 6-6 6 6 6m8-12-6 6 6 6"/></svg></button></div>
   <div class="sidebar-search"><label for="nav-search">查找场景与正文 <span aria-hidden="true">/</span></label><div class="search-controls"><input type="search" id="nav-search" placeholder="例如 界面、音效、Bug、中断" autocomplete="off" aria-describedby="nav-search-status"><button type="button" id="clear-nav-search" aria-label="清空目录搜索" disabled>×</button></div><p id="nav-search-status" role="status">搜索标题与正文；Ctrl + F 查找全文</p></div>
   <nav aria-label="章节与小节">@@NAVIGATION@@</nav>
   <div class="sidebar-footer">标题跳转 · 右侧按钮展开<br>目录跟随正文，手动操作时暂停跟随</div>
@@ -242,14 +242,14 @@ dialog::backdrop { background: var(--backdrop); }
   <div class="resume-reading" id="resume-reading" hidden><button type="button" id="continue-reading">继续上次阅读</button><button type="button" id="dismiss-resume" aria-label="关闭继续阅读提示">×</button></div>
   <section class="cover" aria-label="阅读说明">
     <div class="eyebrow">YAYA FRAMEWORK / DOCUMENTATION</div>
-    <h1>空白项目使用手册</h1>
-    <p>从空目录建立项目，把想法或已有 GDD 整理成 Product，再按模块拆分 Feature、开发与验收。第一次使用沿主线进入，开发中遇到具体情况查场景检查单，字段与命令按需查参考。</p>
+    <h1>@@BOOK_TITLE@@</h1>
+    <p>@@BOOK_INTRO@@</p>
     <div class="cover-meta"><span><strong>@@DOCUMENT_COUNT@@</strong> 篇完整文档</span><span><strong>@@DIAGRAM_COUNT@@</strong> 张流程与关系图</span><span>离线阅读 · 无需安装</span></div>
     <p class="reading-note">按 / 搜索标题和正文，Ctrl + F 查找全文，右上角齿轮按钮打开阅读设置。本文件包含手册正文与图表；实际操作所需的提示词、工具和源规范需从完整框架或生成项目取得，↗ 标示这些文件链接。</p>
   </section>
   @@QUICK_START@@
   @@BODY@@
-  <footer class="book-footer">Yaya · 空白项目使用手册<br>维护 Markdown 原文，再生成本阅读版。</footer>
+  <footer class="book-footer">Yaya · @@BOOK_TITLE@@<br>维护 Markdown 原文，再生成本阅读版。</footer>
 </div></main>
 <dialog class="settings-dialog" id="reading-settings" aria-labelledby="reading-settings-title">
   <div class="settings-heading"><div><h2 id="reading-settings-title">阅读设置</h2><p>先选一组搭配，再按分区微调。</p></div><button type="button" class="close-settings" id="close-settings" aria-label="关闭阅读设置">×</button></div>

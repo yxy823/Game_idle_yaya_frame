@@ -43,6 +43,7 @@ GROUPS = {
     "getting-started": "开始使用",
     "guides": "开发指南",
     "scenarios": "场景检查单",
+    "quick-reference": "速查场景",
     "reference": "参考与排查",
     "maintenance": "框架维护",
 }
@@ -63,6 +64,8 @@ class Document:
     @property
     def group(self) -> str:
         group = self.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
+        if group == "quick-reference" and self.path.name == "README.md":
+            return ""
         if group == "guides" and (self.path.stem == "scenario-procedures"
                                   or self.path.stem.startswith("scenarios-")):
             return "scenarios"
@@ -104,9 +107,12 @@ def child_tokens(document: Document):
         yield from token.children or []
 
 
-def load_documents() -> list[Document]:
-    documents = {path.resolve(): parse_document(path) for path in MANUAL.rglob("*.md")}
-    entry = documents[(MANUAL / "README.md").resolve()]
+def load_documents(*, quick_reference: bool = False) -> list[Document]:
+    quick_directory = MANUAL / "quick-reference"
+    source = quick_directory if quick_reference else MANUAL
+    documents = {path.resolve(): parse_document(path) for path in source.rglob("*.md")
+                 if quick_reference or not path.is_relative_to(quick_directory)}
+    entry = documents[(source / "README.md").resolve()]
     # README owns the reading order; directory labels must not interrupt it.
     linked_order = [entry.path.resolve()]
     for token in child_tokens(entry):
@@ -141,8 +147,18 @@ def section_search_text(document: Document) -> dict[str, str]:
     return {anchor: " ".join(parts) for anchor, parts in sections.items()}
 
 
-def render_quick_start(documents: list[Document]) -> str:
-    """Reuse the README's first-use links and the scenario documents' H2s."""
+def render_quick_start(documents: list[Document], *, quick_reference: bool = False) -> str:
+    """Use scene titles for the quick guide, first-use links and H2s for the full book."""
+    def links(items):
+        return '<ul>' + "".join(f'<li><a href="{escape(href, quote=True)}">{escape(title)}</a></li>'
+                                for href, title in items) + '</ul>'
+
+    if quick_reference:
+        items = [("#" + quote(doc.key), doc.title) for doc in documents
+                 if doc.group == "quick-reference"]
+        return ('<nav class="quick-start" aria-labelledby="quick-start-title">'
+                '<h2 id="quick-start-title">选择当前场景</h2>' + links(items) + '</nav>')
+
     entry = next(doc for doc in documents if doc.path == MANUAL / "README.md")
     first_use = []
     in_first_use = False
@@ -163,10 +179,6 @@ def render_quick_start(documents: list[Document]) -> str:
     if not first_use:
         raise ValueError("README 缺少第一次使用路线链接。")
 
-    def links(items):
-        return '<ul>' + "".join(f'<li><a href="{escape(href, quote=True)}">{escape(title)}</a></li>'
-                                for href, title in items) + '</ul>'
-
     scenarios = []
     for doc in documents:
         if doc.group == "scenarios" and doc.path.stem.startswith("scenarios-"):
@@ -182,7 +194,8 @@ def render_quick_start(documents: list[Document]) -> str:
             + "".join(scenarios) + '</div></nav>')
 
 
-def rewrite_links(documents: list[Document]) -> int:
+def rewrite_links(documents: list[Document], *, output: Path | None = None) -> int:
+    output = output or OUTPUT
     by_path = {doc.path.resolve(): doc for doc in documents}
     heading_cache = {path: {item[2] for item in doc.headings} for path, doc in by_path.items()}
     count = 0
@@ -201,7 +214,7 @@ def rewrite_links(documents: list[Document]) -> int:
             fragment = unquote(url.fragment)
             if not target.is_relative_to(ROOT):
                 raise ValueError(f"链接超出仓库：{doc.path}: {original}")
-            if target != OUTPUT and not target.exists():
+            if target != output and not target.exists():
                 raise ValueError(f"链接目标不存在：{doc.path}: {original}")
             if fragment and target.suffix == ".md":
                 if target not in heading_cache:
@@ -211,10 +224,10 @@ def rewrite_links(documents: list[Document]) -> int:
             if target in by_path:
                 anchor = by_path[target].key + ("--" + fragment if fragment else "")
                 token.attrSet("href", "#" + quote(anchor))
-            elif target == OUTPUT:
+            elif target == output:
                 token.attrSet("href", "#handbook-top")
             else:
-                relative = Path(os.path.relpath(target, OUTPUT.parent)).as_posix()
+                relative = Path(os.path.relpath(target, output.parent)).as_posix()
                 token.attrSet("href", quote(relative, safe="/.-_") +
                               ("#" + quote(fragment) if fragment else ""))
                 token.attrSet("class", "source-link")
@@ -335,7 +348,9 @@ def render_missing_diagrams(diagrams: list[str], browser: Path) -> list[str]:
         return svgs
 
 
-def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, str]:
+def render_body(documents: list[Document], diagrams: list[str], *,
+                output: Path | None = None) -> tuple[str, str]:
+    output = output or OUTPUT
     def fence(tokens, index, options, env):
         token = tokens[index]
         if "diagram" in token.meta:
@@ -393,7 +408,9 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
             if token.type == "heading_open":
                 token.attrSet("data-title", heading_titles[token.attrGet("id")])
                 token.attrSet("id", doc.key + "--" + token.attrGet("id"))
-        source_path = doc.path.relative_to(MANUAL).as_posix()
+        source_path = Path(os.path.relpath(doc.path, output.parent)).as_posix()
+        is_scenario = (group == "quick-reference"
+                       or (group == "scenarios" and doc.path.stem.startswith("scenarios-")))
         pager = []
         for offset, label in ((-1, "← 上一章"), (1, "下一章 →")):
             target_index = number - 1 + offset
@@ -403,7 +420,7 @@ def render_body(documents: list[Document], diagrams: list[str]) -> tuple[str, st
                              f'<span>{label}</span><strong>{escape(target.title)}</strong></a>')
         articles.append(f'<article id="{doc.key}" class="chapter" data-number="{number:02d}" '
                         f'data-title="{escape(doc.title)}" '
-                        f'data-scenarios="{str(group == "scenarios" and doc.path.stem.startswith("scenarios-")).lower()}">'
+                        f'data-scenarios="{str(is_scenario).lower()}">'
                         '<div class="chapter-meta">'
                         f'<span>{GROUPS[group]} / {number:02d}</span><a class="source-link" '
                         f'href="{quote(source_path)}" title="本章的 Markdown 源文件">Markdown 原文</a></div>\n'
@@ -454,26 +471,38 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--browser", required=True, type=Path, help="用于生成 SVG 的现有 Edge/Chromium 可执行文件")
     parser.add_argument("--rebuild-diagrams", action="store_true", help="忽略图表缓存并重新渲染全部 Mermaid")
+    parser.add_argument("--quick-reference", action="store_true", help="仅构建 quick-reference 子目录的独立速查阅读版")
     args = parser.parse_args()
-    documents = load_documents()
-    link_count = rewrite_links(documents)
+    output = MANUAL / "quick-reference/quick-reference-handbook.html" if args.quick_reference else OUTPUT
+    documents = load_documents(quick_reference=args.quick_reference)
+    link_count = rewrite_links(documents, output=output)
     diagrams = render_diagrams(documents, args.browser, rebuild=args.rebuild_diagrams)
-    quick_start = render_quick_start(documents)
-    navigation, body = render_body(documents, diagrams)
+    quick_start = render_quick_start(documents, quick_reference=args.quick_reference)
+    navigation, body = render_body(documents, diagrams, output=output)
     page = TEMPLATE.read_text(encoding="utf-8")
     # Reuse the brand SVG so the tab icon never needs a separately maintained image.
     brand = re.search(r'<svg\b[^>]*\bclass="brand-mark"[^>]*>.*?</svg>', page, re.DOTALL)
     if not brand:
         raise ValueError("页面模板缺少品牌 SVG，无法生成标签页图标。")
+    book_title = "场景速查手册" if args.quick_reference else "空白项目使用手册"
+    book_intro = ("按当前情况选择一个场景，查看具体动作、同编号产出、分支、阻塞与完成标准。"
+                  "本批样稿用于试读统一的 11 栏结构，详细解释与命令通过来源链接查阅。"
+                  if args.quick_reference else
+                  "从空目录建立项目，把想法或已有 GDD 整理成 Product，再按模块拆分 Feature、开发与验收。"
+                  "第一次使用沿主线进入，开发中遇到具体情况查场景检查单，字段与命令按需查参考。")
     replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body, "@@QUICK_START@@": quick_start,
+                    "@@PAGE_TITLE@@": "Godot 项目场景速查手册" if args.quick_reference else "空白 Godot 项目使用手册",
+                    "@@BOOK_TITLE@@": book_title, "@@BOOK_INTRO@@": book_intro,
+                    "@@SIDEBAR_TITLE@@": "Godot 项目场景速查" if args.quick_reference else "Godot 项目使用手册",
+                    "@@READING_KEY@@": "yaya.quick-reference.reading-anchor" if args.quick_reference else "yaya.handbook.reading-anchor",
                     "@@INTERACTIONS@@": INTERACTIONS.read_text(encoding="utf-8"),
                     "@@FAVICON@@": "data:image/svg+xml," + quote(brand[0], safe=""),
                     "@@DOCUMENT_COUNT@@": str(len(documents)), "@@DIAGRAM_COUNT@@": str(len(diagrams))}
     # A single substitution prevents source text from being treated as template syntax.
     page = re.sub("|".join(map(re.escape, replacements)), lambda match: replacements[match[0]], page)
     check_output(page, len(diagrams))
-    OUTPUT.write_text(page, encoding="utf-8", newline="\n")
-    print(f"Generated: {OUTPUT}\nDocuments: {len(documents)}; diagrams: {len(diagrams)}; source links checked: {link_count}")
+    output.write_text(page, encoding="utf-8", newline="\n")
+    print(f"Generated: {output}\nDocuments: {len(documents)}; diagrams: {len(diagrams)}; source links checked: {link_count}")
     return 0
 
 

@@ -117,6 +117,8 @@
 
 下表覆盖上文场景：多步且常需分支恢复的操作进入专用检查单；创建/迁移等复用已有完整步骤；单项方法、参数和范围解释使用专题参考，并说明不另建 SOP 的理由。新增高频场景时同步此映射，不以“能力已存在”代替用户入口。
 
+首批[独立速查样稿](../../docs/blank-project/quick-reference/README.md)把以下八个已有处置路径整理为统一 11 栏，试读阶段保留原检查单；样稿不新增流程或场景编号。
+
 | 现有场景 | 手册入口 | 入口类型与选择理由 |
 | --- | --- | --- |
 | 1.1–1.5 | [框架维护与验证](../../docs/blank-project/maintenance/updating-the-blank-project.md)；共享修改另见[影响判断](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 已有维护步骤按修改选择同步与验证，跨调用者问题复用专用检查单。 |
@@ -124,15 +126,15 @@
 | 2.1–2.3 | [创建项目](../../docs/blank-project/getting-started/create-project.md) | 已有完整创建与失败处理步骤，复制失败保留现场。 |
 | 2.4、4.14 | [复制迁移](../../docs/blank-project/getting-started/migrate-existing-project.md)、[原地替换](../../docs/blank-project/guides/engineering-changes.md#原地替换项目框架) | 两种独立操作已有各自前置与完成边界，不合并成自动升级流程。 |
 | 3.1–3.3 | [首次使用与环境准备](../../docs/blank-project/getting-started/first-use.md)、[配置参考](../../docs/blank-project/reference/configuration.md) | 首次准备有操作步骤，后续字段与空项目边界查参考即可。 |
-| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发) | 专用检查单：需求、当前模块计划与实施衔接。 |
-| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
+| 4.1、4.2 | [新功能进入正式开发](../../docs/blank-project/guides/scenarios-requirements-design.md#收到新功能后进入正式开发)；[速查样稿](../../docs/blank-project/quick-reference/feature-planning.md) | 专用检查单：需求、当前模块计划与实施衔接。 |
+| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/blank-project/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划)；[速查样稿](../../docs/blank-project/quick-reference/requirements-change.md) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
 | 4.25 | [开发中插入 Product](../../docs/blank-project/guides/scenarios-requirements-design.md#开发中临时插入-product-或模块) | 专用检查单：模块边界、稳定编号、前置与规划时机。 |
 | 4.26、4.4 | [Feature 中途插入与切换](../../docs/blank-project/guides/scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) | 专用检查单：分类、停点、工作区前置和返回原任务。 |
-| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接) | 专用检查单；日常执行另由 [Feature 指南](../../docs/blank-project/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
-| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/blank-project/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
+| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/blank-project/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接)；[速查样稿](../../docs/blank-project/quick-reference/context-resume.md) | 专用检查单；日常执行另由 [Feature 指南](../../docs/blank-project/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
+| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/blank-project/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归)；[速查样稿](../../docs/blank-project/quick-reference/bug-fix.md) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
 | 4.5 中的重构/维护、4.10、4.17、4.19 | [设计复杂度判断](../../docs/blank-project/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)、[共享修改影响](../../docs/blank-project/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 判断与影响走专用检查单；具体重构/维护模式查 [工程指南](../../docs/blank-project/guides/engineering-changes.md)，不复写执行 Stage。 |
-| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
-| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
+| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型)；[速查样稿](../../docs/blank-project/quick-reference/ui-prototype.md) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
+| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏)；[速查样稿](../../docs/blank-project/quick-reference/audio-integration.md) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
 | 4.6、4.16 | [已有资源接入或替换](../../docs/blank-project/guides/scenarios-interface-audio-assets.md#已有资源文件后接入或替换) | 专用检查单：真实文件、规格分支、UID/引用、显示/播放与清单定稿。 |
 | 4.20 中的美术方向/视觉规格 | [专业方法与职责](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 单独设计共享方向只需专题参考；需要准备和应用素材时进入上述 UI/资源 SOP，要求变化转计划对齐。 |
 | 4.7、4.24 | [性能、观测与长测](../../docs/blank-project/guides/specialist-workflows.md#实现测量与完成) | 专题区分诊断/优化、原始测量和中止范围；交付复用验证检查单，不新增测量生命周期。 |
@@ -143,8 +145,8 @@
 | 4.27 | [按需搜索与保存调研](../../docs/blank-project/guides/project-knowledge.md#按需搜索与保存调研) | 专题解释主 Agent 判断、角色委派、外部搜索依赖与报告去向，不增加固定 Stage 或另一套 SOP。 |
 | 4.13 | [已有实现补齐](../../docs/blank-project/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/blank-project/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
 | 4.23 | [专业职责与来源](../../docs/blank-project/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
-| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/blank-project/reference/commands-and-validation.md)。 |
-| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
+| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复)；[速查样稿](../../docs/blank-project/quick-reference/verification-recovery.md) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/blank-project/reference/commands-and-validation.md)。 |
+| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/blank-project/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办)；[速查样稿](../../docs/blank-project/quick-reference/feature-delivery.md) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
 | 5.6 | [验证范围](../../docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)、[测试失败恢复](../../docs/blank-project/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 静态限定是贯穿所有操作的边界，环境缺失走已有恢复，不另加状态。 |
 | 5.7 | [文档与实际状态不一致处置](../../docs/blank-project/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) | 专用检查单：区分确认意图、实现、历史与真正应修位置。 |
 | 5.9、5.5 中的独立审核 | [独立审核交接](../../docs/blank-project/guides/specialist-workflows.md#独立审核怎样交接) | 已有独立实例、范围、证据与作者修复交接说明，自查不冒充审核。 |

@@ -135,6 +135,43 @@ Second section only.
         with self.assertRaisesRegex(ValueError, "第一次使用路线"):
             handbook.render_quick_start([entry])
 
+    def test_quick_reference_has_own_order_and_links_from_nested_output(self):
+        self.document("README.md", "# Full manual\n\n[Quick](quick-reference/README.md)\n")
+        self.document("guides/development.md", "# Develop\n\n## Checks\n")
+        self.document("quick-reference/README.md", """# Quick guide
+
+[Verify](verification.md)
+[Bug](bug.md)
+[Full manual](../README.md)
+[Output](quick-reference-handbook.html)
+""")
+        self.document("quick-reference/verification.md", """# Verify
+
+[Bug result](bug.md#result)
+[Reference](../guides/development.md#checks)
+
+## Result
+""")
+        self.document("quick-reference/bug.md", "# Bug\n\n## Result\n")
+        full = handbook.load_documents()
+        self.assertEqual([doc.title for doc in full], ["Full manual", "Develop"])
+        docs = handbook.load_documents(quick_reference=True)
+        self.assertEqual([doc.title for doc in docs], ["Quick guide", "Verify", "Bug"])
+        output = self.manual / "quick-reference/quick-reference-handbook.html"
+        handbook.rewrite_links(docs, output=output)
+        quick = handbook.render_quick_start(docs, quick_reference=True)
+        self.assertEqual([unquote(link["href"]) for link in Links(quick).anchors],
+                         ["#" + doc.key for doc in docs[1:]])
+        navigation, body = handbook.render_body(docs, [], output=output)
+        hrefs = [unquote(link["href"]) for link in Links(body).anchors]
+        self.assertIn("#" + docs[2].key + "--result", hrefs)
+        self.assertIn("../README.md", hrefs)
+        self.assertIn("../guides/development.md#checks", hrefs)
+        self.assertIn("verification.md", hrefs)
+        self.assertIn("#handbook-top", hrefs)
+        self.assertIn('data-scenarios="true"', body)
+        handbook.check_output('<div id="handbook-top"></div>' + quick + navigation + body, 0)
+
 
 class HandbookDiagramCacheTests(unittest.TestCase):
     def setUp(self):
