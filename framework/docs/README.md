@@ -2,12 +2,12 @@
 
 本目录按用途分成操作手册、场景速查手册和框架维护说明。两本手册不互相引用，本页统一导航；只有现有内容需要时才创建目录。
 
-| 需要什么 | 入口 |
-| --- | --- |
-| 理解框架、项目对象、配置、Skill 和工具用法 | [操作手册](operation-manual/README.md) |
-| 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) |
-| 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) |
-| 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) |
+| 需要什么 | Markdown 入口 | HTML 阅读版 |
+| --- | --- | --- |
+| 理解框架、项目对象、配置、Skill 和工具用法 | [操作手册](operation-manual/README.md) | [打开操作手册](operation-manual/operation-handbook.html) |
+| 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) | [打开场景速查手册](quick-reference/quick-reference-handbook.html) |
+| 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) | 收录在场景速查手册末尾 |
+| 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) | — |
 
 ## 目录与分工
 
@@ -59,4 +59,4 @@ framework/docs/
 
 框架保存创建器、复制材料、手册与完整提示词库；生成项目独立维护自己的文件。本目录不进入 [复制清单](../project-files.json)，也不承担项目升级或自动同步。权威行为由项目自身规则、methodology、Skill 和实际工具定义，手册解释它们，不另建流程。
 
-当前只交付 Markdown。HTML 生成工具保留但不调用，恢复时按两本独立手册适配；具体边界见 [阅读版说明](framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓)。
+Markdown 是正文来源，HTML 由一条[构建命令](../README.md#构建-html-阅读版)分别生成，并自动检查链接、锚点和产物结构；日常重建不要求手动复审未改正文。具体边界见 [阅读版说明](framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。

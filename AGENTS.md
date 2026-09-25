@@ -32,7 +32,7 @@
 | 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
-| 手册与阅读版 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册不互相引用，由文档总入口导航。当前只交付 Markdown，HTML 构建暂缓并保留工具，按 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓) 在重新引入时适配。 |
+| 手册与阅读版 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册不互相引用，由文档总入口导航。Markdown 是正文来源，HTML 由 [构建脚本](framework/commands/build_blank_project_handbook.py) 生成；执行与检查边界见 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
@@ -40,7 +40,7 @@
 
 框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。只保留仍需推进的工作、真实验证缺口、阻塞与必要待决定项，写明下一步和必要依据；条目不授予实施权限。完成并通过必要验证的事项立即删除；尚有必要人工验收时仅保留具体待验收项。历史由 Git 保存，不保留完成记录、成果汇总或长期搁置的设想；无待办时清空文件。相关状态发生实质变化时，在本次允许写入的范围内及时更新，提交或交接前核对一致；只读任务在回复中指出需更新项，无实质变化不制造更新。
 
-更新使用说明时，Agent 完成内容、路径、链接与锚点的静态核对，交付 Markdown 入口与需要试读的位置。当前不生成 HTML 或 Mermaid 阅读版。以后重新引入 HTML 时，排版与浏览器交互仍由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查，不把构建成功写成视觉检查通过。
+更新手册 Markdown 后执行 HTML 构建脚本，由脚本自动检查收录范围、路径、链接、锚点、章节覆盖、两册隔离和图表产物；Agent 确认退出码与诊断输出，不手动重复逐项检查。仅重新生成 HTML 不触发正文复审；正文或构建逻辑改变时，只验证实际变化。排版与浏览器交互由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查，不把构建成功写成视觉检查通过，也不把人工试读设为生成前置。
 
 ## 文件命名与修改
 

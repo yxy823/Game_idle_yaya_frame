@@ -29,21 +29,25 @@ class HandbookNavigationTests(unittest.TestCase):
         area = tempfile.TemporaryDirectory(prefix="handbook_navigation_")
         self.addCleanup(area.cleanup)
         self.root = Path(area.name)
-        self.manual = self.root / "manual"
+        self.manual = self.root / "operation-manual"
         self.manual.mkdir()
+        self.quick = self.root / "quick-reference"
+        self.quick.mkdir()
         overrides = patch.multiple(handbook, ROOT=self.root, MANUAL=self.manual,
-                                   OUTPUT=self.manual / "handbook.html")
+                                   QUICK_REFERENCE=self.quick,
+                                   OUTPUT=self.manual / "operation-handbook.html",
+                                   QUICK_OUTPUT=self.quick / "quick-reference-handbook.html")
         overrides.start()
         self.addCleanup(overrides.stop)
 
-    def document(self, name, text):
-        path = self.manual / name
+    def document(self, name, text, *, quick=False):
+        path = (self.quick if quick else self.manual) / name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
         return handbook.parse_document(path)
 
     def test_body_and_tables_belong_to_nearest_heading_without_code_leakage(self):
-        doc = self.document("guides/scenarios-resources.md", """# Resource scenarios
+        doc = self.document("resources.md", """# Resources
 
 Chapter introduction.
 
@@ -93,84 +97,109 @@ Second section only.
         self.assertEqual(playback["data-search-text"], sections["playback"])
         handbook.check_output(navigation + body, 0)
 
-    def test_quick_start_follows_readme_links_and_new_scenario_h2s(self):
+    def test_topics_follow_readme_categories_and_order(self):
         self.document("README.md", """# Manual
 
-## 第一次使用路线
-
-1. [Setup](getting-started/setup.md).
-2. [Develop](guides/development.md).
-
-## Other
-
-[Scenario index](guides/scenario-procedures.md)
-[Resources](guides/scenarios-resources.md)
+- **框架基础**
+  - [Setup](setup.md).
+- **需求与任务**
+  - [Develop](development.md).
+- **方法与工具**
+  - [Tools & evidence](tools.md).
 """)
-        self.document("getting-started/setup.md", "# Setup\n\n## Environment\n")
-        self.document("guides/development.md", "# Develop\n\n## Implement\n")
-        self.document("guides/scenario-procedures.md", "# Index\n\n## Choose\n")
-        scenario = self.document("guides/scenarios-resources.md", """# 场景处置：Resources
-
-## Import & verify
-
-### Details
-
-## Newly added procedure
-""")
+        self.document("setup.md", "# Setup\n\n## Environment\n")
+        self.document("development.md", "# Develop\n\n## Implement\n")
+        self.document("tools.md", "# Tools & evidence\n\n## Commands\n")
         docs = handbook.load_documents()
-        self.assertEqual([doc.group for doc in docs], ["", "getting-started", "guides", "scenarios", "scenarios"])
+        self.assertEqual([doc.group for doc in docs], ["阅读入口", "框架基础", "需求与任务", "方法与工具"])
         handbook.rewrite_links(docs)
         quick = handbook.render_quick_start(docs)
         anchors = [unquote(link["href"]) for link in Links(quick).anchors]
-        expected = ["#" + doc.key for doc in docs[1:3]]
-        expected.extend("#" + scenario.key + "--" + slug for level, _, slug in scenario.headings if level == 2)
-        self.assertEqual(anchors, expected)
-        self.assertIn("Import &amp; verify", quick)
+        self.assertEqual(anchors, ["#" + doc.key for doc in docs[1:]])
+        self.assertIn("Tools &amp; evidence", quick)
         navigation, body = handbook.render_body(docs, [])
-        self.assertIn(">场景检查单</p>", navigation)
+        self.assertIn(">需求与任务</p>", navigation)
+        self.assertNotIn('data-scenarios="true"', body)
         handbook.check_output(quick + navigation + body, 0)
 
-    def test_missing_first_use_section_reports_source_gap(self):
-        entry = self.document("README.md", "# Manual\n\n## Other\n")
-        with self.assertRaisesRegex(ValueError, "第一次使用路线"):
-            handbook.render_quick_start([entry])
+    def test_missing_entry_or_unlisted_document_fails(self):
+        with self.assertRaisesRegex(ValueError, "缺少手册入口"):
+            handbook.load_documents()
+        self.document("README.md", "# Manual\n")
+        self.document("orphan.md", "# Unlisted topic\n")
+        with self.assertRaisesRegex(ValueError, "未收录文档"):
+            handbook.load_documents()
 
-    def test_quick_reference_has_own_order_and_links_from_nested_output(self):
-        self.document("README.md", "# Full manual\n\n[Quick](quick-reference/README.md)\n")
-        self.document("guides/development.md", "# Develop\n\n## Checks\n")
-        self.document("quick-reference/README.md", """# Quick guide
+    def test_quick_reference_uses_its_index_and_keeps_source_links(self):
+        self.document("README.md", "# Full manual\n")
+        (self.root / "authority.md").write_text("# Authority\n\n## Checks\n", encoding="utf-8")
+        self.document("README.md", "# Writing guide\n", quick=True)
+        self.document("scenario-index.md", """# Quick guide
 
-[Verify](verification.md)
-[Bug](bug.md)
-[Full manual](../README.md)
+## Godot 项目开发
+### 验证与收尾
+- [Verify](<Godot 项目开发/验证与收尾/需要验证.md>)
+### 修复与改进
+- [Bug](<Godot 项目开发/修复与改进/发现 Bug.md>)
+
+[Writing guide](README.md)
 [Output](quick-reference-handbook.html)
-""")
-        self.document("quick-reference/verification.md", """# Verify
+""", quick=True)
+        self.document("Godot 项目开发/验证与收尾/需要验证.md", """# Verify
 
-[Bug result](bug.md#result)
-[Reference](../guides/development.md#checks)
+[Bug result](<../修复与改进/发现 Bug.md#result>)
+[Reference](../../../authority.md#checks)
 
 ## Result
-""")
-        self.document("quick-reference/bug.md", "# Bug\n\n## Result\n")
+""", quick=True)
+        self.document("Godot 项目开发/修复与改进/发现 Bug.md", "# Bug\n\n## Result\n", quick=True)
         full = handbook.load_documents()
-        self.assertEqual([doc.title for doc in full], ["Full manual", "Develop"])
+        self.assertEqual([doc.title for doc in full], ["Full manual"])
         docs = handbook.load_documents(quick_reference=True)
-        self.assertEqual([doc.title for doc in docs], ["Quick guide", "Verify", "Bug"])
-        output = self.manual / "quick-reference/quick-reference-handbook.html"
+        self.assertEqual([doc.title for doc in docs], ["Quick guide", "Verify", "Bug", "Writing guide"])
+        self.assertEqual([doc.group for doc in docs[1:3]],
+                         ["Godot 项目开发 / 验证与收尾", "Godot 项目开发 / 修复与改进"])
+        output = handbook.QUICK_OUTPUT
         handbook.rewrite_links(docs, output=output)
         quick = handbook.render_quick_start(docs, quick_reference=True)
         self.assertEqual([unquote(link["href"]) for link in Links(quick).anchors],
-                         ["#" + doc.key for doc in docs[1:]])
+                         ["#" + docs[0].key + "--" + slug for level, _, slug in docs[0].headings if level == 3])
         navigation, body = handbook.render_body(docs, [], output=output)
         hrefs = [unquote(link["href"]) for link in Links(body).anchors]
         self.assertIn("#" + docs[2].key + "--result", hrefs)
-        self.assertIn("../README.md", hrefs)
-        self.assertIn("../guides/development.md#checks", hrefs)
-        self.assertIn("verification.md", hrefs)
+        self.assertIn("../authority.md#checks", hrefs)
+        self.assertIn("Godot 项目开发/验证与收尾/需要验证.md", hrefs)
         self.assertIn("#handbook-top", hrefs)
-        self.assertIn('data-scenarios="true"', body)
-        handbook.check_output('<div id="handbook-top"></div>' + quick + navigation + body, 0)
+        self.assertEqual(body.count('data-scenarios="true"'), 2)
+        handbook.check_output('<div id="handbook-top"></div>' + quick + navigation + body, 0,
+                              output=output, documents=docs)
+
+    def test_cross_book_links_are_rejected(self):
+        self.document("README.md", "# Other book\n", quick=True)
+        doc = self.document("README.md", "# Manual\n\n[Other](../quick-reference/README.md)\n")
+        with self.assertRaisesRegex(ValueError, "不得互相引用"):
+            handbook.rewrite_links([doc])
+
+    def test_missing_source_anchor_and_html_target_are_rejected(self):
+        doc = self.document("README.md", "# Manual\n\n[Missing](#missing)\n")
+        with self.assertRaisesRegex(ValueError, "标题锚点不存在"):
+            handbook.rewrite_links([doc])
+        with self.assertRaisesRegex(ValueError, "HTML 本地链接无效"):
+            handbook.check_output('<a href="missing.md">Source</a>', 0, output=handbook.OUTPUT)
+        with self.assertRaisesRegex(ValueError, "HTML 锚点"):
+            handbook.check_output('<a href="#missing">Section</a>', 0)
+        with self.assertRaisesRegex(ValueError, "章节覆盖或顺序"):
+            handbook.check_output('<article id="wrong" class="chapter"></article>', 0, documents=[doc])
+
+    def test_second_book_failure_keeps_both_previous_outputs(self):
+        for output in (handbook.OUTPUT, handbook.QUICK_OUTPUT):
+            output.write_text("previous build", encoding="utf-8")
+        with patch.object(handbook, "build_book", side_effect=[(handbook.OUTPUT, "new"), ValueError("bad link")]), \
+                patch("sys.argv", ["build"]):
+            with self.assertRaisesRegex(ValueError, "bad link"):
+                handbook.main()
+        for output in (handbook.OUTPUT, handbook.QUICK_OUTPUT):
+            self.assertEqual(output.read_text(encoding="utf-8"), "previous build")
 
 
 class HandbookDiagramCacheTests(unittest.TestCase):

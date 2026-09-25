@@ -315,14 +315,14 @@ function filterNavigation() {
         priority: record.isScenario ? 0 : 2});
     } else if (expansionBeforeSearch) setExpanded(record, expansionBeforeSearch.get(record));
   }
-  // Keep book order in the outline; Enter favors actionable SOP sections, then title matches.
+  // Keep book order in the outline; Enter favors scene sections, then title matches.
   candidates.sort((left, right) => left.priority - right.priority || left.rank - right.rank);
   searchTargets = candidates.map(candidate => candidate.id);
   for (const heading of sidebar.querySelectorAll('.nav-group')) {
     heading.hidden = !records.some(record => !record.row.hidden && record.row.dataset.group === heading.dataset.group);
   }
   searchStatus.textContent = query ? (searchTargets.length ? '匹配 ' + searchTargets.length + ' 处，Enter ' +
-    (candidates[0].priority === 0 ? '优先进入场景检查单' : '跳到首个结果') : '没有匹配的标题或正文') : '搜索标题与正文；Ctrl + F 查找全文';
+    (candidates[0].priority === 0 ? '优先进入场景小节' : '跳到首个结果') : '没有匹配的标题或正文') : '搜索标题与正文；Ctrl + F 查找全文';
   document.getElementById('clear-nav-search').disabled = !query;
   if (!query) { expansionBeforeSearch = null; followActiveLink(); }
 }

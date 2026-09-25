@@ -11,4 +11,4 @@
 | 尚需推进的工作与真实验证缺口 | [框架待办](../../progress.md) |
 | 长期基线与按次审核报告 | [审核材料](../../review/README.md) |
 
-当前维护 Markdown；HTML 构建暂缓，保留工具，恢复条件见 [阅读版说明](updating-the-blank-project.md#html-阅读版暂缓)。手册与维护文档不进入项目复制清单。
+维护 Markdown 后，由构建脚本生成并自动检查两本独立 HTML 手册，日常重建不增加正文复审。具体边界见 [阅读版说明](updating-the-blank-project.md#html-阅读版构建)。手册与维护文档不进入项目复制清单。

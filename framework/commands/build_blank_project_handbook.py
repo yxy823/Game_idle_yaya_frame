@@ -1,4 +1,4 @@
-"""Build the offline handbook from its Markdown sources and rendered Mermaid SVGs."""
+"""Build and validate the two independent offline handbooks from Markdown."""
 
 from __future__ import annotations
 
@@ -23,8 +23,10 @@ from markdown_it import MarkdownIt
 
 
 ROOT = Path(__file__).resolve().parents[2]
-MANUAL = ROOT / "framework/docs/blank-project"
-OUTPUT = MANUAL / "blank-project-handbook.html"
+MANUAL = ROOT / "framework/docs/operation-manual"
+QUICK_REFERENCE = ROOT / "framework/docs/quick-reference"
+OUTPUT = MANUAL / "operation-handbook.html"
+QUICK_OUTPUT = QUICK_REFERENCE / "quick-reference-handbook.html"
 TEMPLATE = Path(__file__).with_name("blank-project-handbook-page.html")
 INTERACTIONS = Path(__file__).with_name("blank-project-handbook-interactions.js")
 MERMAID_PACKAGE = "@mermaid-js/mermaid-cli@11.17.0"
@@ -38,15 +40,6 @@ MERMAID_CONFIG = {
                        "primaryBorderColor": "#79a595", "lineColor": "#62877a",
                        "secondaryColor": "#f5f0e4", "tertiaryColor": "#f5f7f6"},
 }
-GROUPS = {
-    "": "阅读入口",
-    "getting-started": "开始使用",
-    "guides": "开发指南",
-    "scenarios": "场景检查单",
-    "quick-reference": "速查场景",
-    "reference": "参考与排查",
-    "maintenance": "框架维护",
-}
 MARKDOWN = MarkdownIt("commonmark", {"html": False}).enable("table").enable("strikethrough")
 
 
@@ -56,20 +49,12 @@ class Document:
     key: str
     tokens: list
     headings: list[tuple[int, str, str]]
+    group: str = "阅读入口"
+    is_scenario: bool = False
 
     @property
     def title(self) -> str:
         return self.headings[0][1]
-
-    @property
-    def group(self) -> str:
-        group = self.path.relative_to(MANUAL).parent.as_posix().replace(".", "")
-        if group == "quick-reference" and self.path.name == "README.md":
-            return ""
-        if group == "guides" and (self.path.stem == "scenario-procedures"
-                                  or self.path.stem.startswith("scenarios-")):
-            return "scenarios"
-        return group
 
 
 def inline_text(token) -> str:
@@ -108,26 +93,50 @@ def child_tokens(document: Document):
 
 
 def load_documents(*, quick_reference: bool = False) -> list[Document]:
-    quick_directory = MANUAL / "quick-reference"
-    source = quick_directory if quick_reference else MANUAL
-    documents = {path.resolve(): parse_document(path) for path in source.rglob("*.md")
-                 if quick_reference or not path.is_relative_to(quick_directory)}
-    entry = documents[(source / "README.md").resolve()]
-    # README owns the reading order; directory labels must not interrupt it.
+    source = QUICK_REFERENCE if quick_reference else MANUAL
+    documents = {path.resolve(): parse_document(path) for path in source.rglob("*.md")}
+    entry_path = source / ("scenario-index.md" if quick_reference else "README.md")
+    if entry_path.resolve() not in documents:
+        raise ValueError(f"缺少手册入口：{entry_path}")
+    entry = documents[entry_path.resolve()]
+    # The authored index owns both grouping and reading order; no second catalog.
     linked_order = [entry.path.resolve()]
-    for token in child_tokens(entry):
-        if token.type == "link_open":
-            url = urlsplit(token.attrGet("href"))
-            if not url.scheme and url.path:
+    group, project, list_depth = "", "", 0
+    for index, token in enumerate(entry.tokens):
+        if token.type in {"bullet_list_open", "ordered_list_open"}:
+            list_depth += 1
+        elif token.type in {"bullet_list_close", "ordered_list_close"}:
+            list_depth -= 1
+        elif quick_reference and token.type == "heading_open":
+            title = inline_text(entry.tokens[index + 1])
+            if token.tag == "h2":
+                project, group = title, ""
+            elif token.tag == "h3":
+                group = f"{project} / {title}"
+        elif token.type == "inline":
+            links = [child for child in token.children or [] if child.type == "link_open"]
+            if not quick_reference and list_depth == 1 and not links:
+                group = inline_text(token)
+            for link in links:
+                url = urlsplit(link.attrGet("href"))
+                if url.scheme or url.netloc or not url.path:
+                    continue
                 target = (entry.path.parent / unquote(url.path)).resolve()
-                if target in documents and target not in linked_order:
-                    linked_order.append(target)
-    linked_order.extend(sorted(set(documents) - set(linked_order)))
-    result = [documents[path] for path in linked_order]
-    for doc in result:
-        if doc.group not in GROUPS:
-            raise ValueError(f"新章节分组需要在生成器中命名：{doc.group}")
-    return result
+                if target not in documents or target in linked_order:
+                    continue
+                doc = documents[target]
+                if quick_reference and target == (source / "README.md").resolve():
+                    doc.group = "编写与维护"
+                else:
+                    if not group:
+                        raise ValueError(f"入口中的文档链接缺少分类：{entry_path}: {url.path}")
+                    doc.group = group
+                    doc.is_scenario = quick_reference
+                linked_order.append(target)
+    missing = sorted(set(documents) - set(linked_order))
+    if missing:
+        raise ValueError(f"手册入口未收录文档：{missing}")
+    return [documents[path] for path in linked_order]
 
 
 def section_search_text(document: Document) -> dict[str, str]:
@@ -148,50 +157,31 @@ def section_search_text(document: Document) -> dict[str, str]:
 
 
 def render_quick_start(documents: list[Document], *, quick_reference: bool = False) -> str:
-    """Use scene titles for the quick guide, first-use links and H2s for the full book."""
+    """Link to topics or scene categories using the current index structure."""
     def links(items):
         return '<ul>' + "".join(f'<li><a href="{escape(href, quote=True)}">{escape(title)}</a></li>'
                                 for href, title in items) + '</ul>'
 
+    groups: dict[str, list[tuple[str, str]]] = {}
     if quick_reference:
-        items = [("#" + quote(doc.key), doc.title) for doc in documents
-                 if doc.group == "quick-reference"]
-        return ('<nav class="quick-start" aria-labelledby="quick-start-title">'
-                '<h2 id="quick-start-title">选择当前场景</h2>' + links(items) + '</nav>')
-
-    entry = next(doc for doc in documents if doc.path == MANUAL / "README.md")
-    first_use = []
-    in_first_use = False
-    for token in entry.tokens:
-        if token.type == "heading_open" and token.tag == "h2":
-            in_first_use = token.attrGet("id") == "第一次使用路线"
-        if in_first_use and token.type == "inline":
-            children = token.children or []
-            for index, child in enumerate(children):
-                if child.type == "link_open":
-                    label = []
-                    for part in children[index + 1:]:
-                        if part.type == "link_close":
-                            break
-                        label.append(part.content)
-                    first_use.append((child.attrGet("href"), "".join(label)))
-                    break
-    if not first_use:
-        raise ValueError("README 缺少第一次使用路线链接。")
-
-    scenarios = []
-    for doc in documents:
-        if doc.group == "scenarios" and doc.path.stem.startswith("scenarios-"):
-            items = [("#" + quote(doc.key + "--" + slug), title)
-                     for level, title, slug in doc.headings if level == 2]
-            scenarios.append('<div class="quick-start-group"><h4>'
-                             + escape(doc.title.removeprefix("场景处置：")) + '</h4>'
-                             + links(items) + '</div>')
+        project = ""
+        entry = documents[0]
+        for level, title, slug in entry.headings:
+            if level == 2:
+                project = title
+            elif level == 3:
+                groups.setdefault(project, []).append(("#" + quote(entry.key + "--" + slug), title))
+    else:
+        for doc in documents[1:]:
+            groups.setdefault(doc.group, []).append(("#" + quote(doc.key), doc.title))
+    if not groups:
+        raise ValueError("手册入口缺少专题或场景分类。")
+    sections = [f'<div class="quick-start-group"><h3>{escape(group)}</h3>{links(items)}</div>'
+                for group, items in groups.items()]
+    title = "按要处理的事情选择场景" if quick_reference else "按主题查阅"
     return ('<nav class="quick-start" aria-labelledby="quick-start-title">'
-            '<h2 id="quick-start-title">按当前情况开始</h2>'
-            '<div class="first-use"><h3>第一次使用</h3>' + links(first_use) + '</div>'
-            '<h3>我遇到了具体问题</h3><div class="quick-start-groups">'
-            + "".join(scenarios) + '</div></nav>')
+            f'<h2 id="quick-start-title">{title}</h2><div class="quick-start-groups">'
+            + "".join(sections) + '</div></nav>')
 
 
 def rewrite_links(documents: list[Document], *, output: Path | None = None) -> int:
@@ -214,6 +204,9 @@ def rewrite_links(documents: list[Document], *, output: Path | None = None) -> i
             fragment = unquote(url.fragment)
             if not target.is_relative_to(ROOT):
                 raise ValueError(f"链接超出仓库：{doc.path}: {original}")
+            other_book = MANUAL if output.parent == QUICK_REFERENCE else QUICK_REFERENCE
+            if target.is_relative_to(other_book.resolve()):
+                raise ValueError(f"两本手册不得互相引用：{doc.path}: {original}")
             if target != output and not target.exists():
                 raise ValueError(f"链接目标不存在：{doc.path}: {original}")
             if fragment and target.suffix == ".md":
@@ -258,7 +251,7 @@ def valid_svg(svg: str) -> bool:
         return False
 
 
-def write_cached_svg(path: Path, svg: str) -> None:
+def write_generated_text(path: Path, text: str) -> None:
     """Publish complete output atomically, including across concurrent builds."""
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
@@ -266,7 +259,7 @@ def write_cached_svg(path: Path, svg: str) -> None:
         with NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n", suffix=".tmp",
                                 dir=path.parent, delete=False) as output:
             temporary = Path(output.name)
-            output.write(svg)
+            output.write(text)
         # Close the handle before replacement on Windows.
         temporary.replace(path)
     finally:
@@ -274,7 +267,7 @@ def write_cached_svg(path: Path, svg: str) -> None:
             temporary.unlink(missing_ok=True)
 
 
-def render_diagrams(documents: list[Document], browser: Path, *,
+def render_diagrams(documents: list[Document], browser: Path | None, *,
                     cache_dir: Path | None = None, rebuild: bool = False) -> list[str]:
     diagrams = []
     for doc in documents:
@@ -284,6 +277,8 @@ def render_diagrams(documents: list[Document], browser: Path, *,
                 diagrams.append(token.content)
     if not diagrams:
         return []
+    if browser is None:
+        raise ValueError("手册含 Mermaid 图表，请用 --browser 指定现有 Edge/Chromium 可执行文件。")
     browser = browser.resolve()
     if not browser.is_file():
         raise ValueError("生成图表需要 --browser 指定的现有 Chromium 浏览器。")
@@ -313,7 +308,7 @@ def render_diagrams(documents: list[Document], browser: Path, *,
     if pending:
         rendered = render_missing_diagrams(list(pending.values()), browser)
         for key, svg in zip(pending, rendered):
-            write_cached_svg(cache_dir / f"mermaid-{key}.svg", svg)
+            write_generated_text(cache_dir / f"mermaid-{key}.svg", svg)
             cached[key] = svg
     print(f"Mermaid cache: reused {len(diagrams) - len(pending)}; rendered {len(pending)}")
     # Apply the current position even when a cached diagram moved or occurs twice.
@@ -386,13 +381,13 @@ def render_body(documents: list[Document], diagrams: list[str], *,
         if group != last_group:
             # A topic can recur later in the reading order; filter each run separately.
             navigation_group = f"{group}-{number:02d}"
-            navigation.append(f'<p class="nav-group" data-group="{navigation_group}">{GROUPS[group]}</p>')
+            navigation.append(f'<p class="nav-group" data-group="{escape(navigation_group)}">{escape(group)}</p>')
             last_group = group
         outline = "".join(f'<a href="#{quote(doc.key + "--" + slug)}" '
                           f'data-section="{escape(doc.key + "--" + slug)}" data-level="{level}" '
                           f'data-search-text="{escape(search_text[slug], quote=True)}">'
                           f'{escape(title)}</a>' for level, title, slug in doc.headings if level in {2, 3})
-        navigation.append(f'<div class="nav-chapter" data-group="{navigation_group}"><div class="nav-row">'
+        navigation.append(f'<div class="nav-chapter" data-group="{escape(navigation_group)}"><div class="nav-row">'
                           f'<a href="#{doc.key}" data-chapter="{doc.key}" '
                           f'data-search-text="{escape(search_text[""], quote=True)}">'
                           f'<span class="nav-number">{number:02d}</span><span class="nav-title">{escape(doc.title)}</span></a>'
@@ -409,8 +404,6 @@ def render_body(documents: list[Document], diagrams: list[str], *,
                 token.attrSet("data-title", heading_titles[token.attrGet("id")])
                 token.attrSet("id", doc.key + "--" + token.attrGet("id"))
         source_path = Path(os.path.relpath(doc.path, output.parent)).as_posix()
-        is_scenario = (group == "quick-reference"
-                       or (group == "scenarios" and doc.path.stem.startswith("scenarios-")))
         pager = []
         for offset, label in ((-1, "← 上一章"), (1, "下一章 →")):
             target_index = number - 1 + offset
@@ -420,9 +413,9 @@ def render_body(documents: list[Document], diagrams: list[str], *,
                              f'<span>{label}</span><strong>{escape(target.title)}</strong></a>')
         articles.append(f'<article id="{doc.key}" class="chapter" data-number="{number:02d}" '
                         f'data-title="{escape(doc.title)}" '
-                        f'data-scenarios="{str(is_scenario).lower()}">'
+                        f'data-scenarios="{str(doc.is_scenario).lower()}">'
                         '<div class="chapter-meta">'
-                        f'<span>{GROUPS[group]} / {number:02d}</span><a class="source-link" '
+                        f'<span>{escape(group)} / {number:02d}</span><a class="source-link" '
                         f'href="{quote(source_path)}" title="本章的 Markdown 源文件">Markdown 原文</a></div>\n'
                         + MARKDOWN.renderer.render(doc.tokens, MARKDOWN.options, {})
                         + '<nav class="chapter-pager" aria-label="章节翻页">' + "".join(pager) + '</nav></article>')
@@ -434,6 +427,7 @@ class OutputInspector(HTMLParser):
         super().__init__()
         self.ids = []
         self.links = []
+        self.chapters = []
         self.svg_count = 0
 
     def handle_starttag(self, tag, attributes):
@@ -442,6 +436,8 @@ class OutputInspector(HTMLParser):
             self.ids.append(attrs["id"])
         if tag == "a" and "href" in attrs:
             self.links.append(attrs["href"])
+        if tag == "article" and "chapter" in attrs.get("class", "").split():
+            self.chapters.append(attrs.get("id"))
         # Mermaid roots receive this prefix in scope_svg; decorative UI icons do not count as diagrams.
         if tag == "svg" and attrs.get("id", "").startswith("diagram-"):
             self.svg_count += 1
@@ -453,7 +449,8 @@ class OutputInspector(HTMLParser):
             raise ValueError(f"阅读文件含外置资源：{tag} {attrs}")
 
 
-def check_output(page: str, expected_diagrams: int) -> None:
+def check_output(page: str, expected_diagrams: int, *, output: Path | None = None,
+                 documents: list[Document] | None = None) -> None:
     inspector = OutputInspector()
     inspector.feed(page)
     duplicates = [value for value, count in Counter(inspector.ids).items() if count > 1]
@@ -465,44 +462,69 @@ def check_output(page: str, expected_diagrams: int) -> None:
         raise ValueError(f"HTML 锚点或图表数量不匹配：{missing[:5]}, SVG={inspector.svg_count}")
     if re.search(r"(?:@import\s|url\(\s*['\"]?(?:https?:|//))", page, re.IGNORECASE):
         raise ValueError("阅读文件含远程样式或字体资源。")
+    if documents is not None and inspector.chapters != [doc.key for doc in documents]:
+        raise ValueError("HTML 章节覆盖或顺序与 Markdown 不一致。")
+    if output is not None:
+        other_book = MANUAL if output.parent == QUICK_REFERENCE else QUICK_REFERENCE
+        for link in inspector.links:
+            url = urlsplit(link)
+            if url.scheme or url.netloc or not url.path:
+                continue
+            target = (output.parent / unquote(url.path)).resolve()
+            if not target.is_relative_to(ROOT) or not target.exists():
+                raise ValueError(f"HTML 本地链接无效：{link}")
+            if target.is_relative_to(other_book.resolve()):
+                raise ValueError(f"HTML 含另一册的引用：{link}")
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--browser", required=True, type=Path, help="用于生成 SVG 的现有 Edge/Chromium 可执行文件")
-    parser.add_argument("--rebuild-diagrams", action="store_true", help="忽略图表缓存并重新渲染全部 Mermaid")
-    parser.add_argument("--quick-reference", action="store_true", help="仅构建 quick-reference 子目录的独立速查阅读版")
-    args = parser.parse_args()
-    output = MANUAL / "quick-reference/quick-reference-handbook.html" if args.quick_reference else OUTPUT
-    documents = load_documents(quick_reference=args.quick_reference)
+def build_book(browser: Path | None, *, quick_reference: bool = False,
+               rebuild_diagrams: bool = False) -> tuple[Path, str]:
+    """Prepare a checked book in memory; publish only after every selected book passes."""
+    output = QUICK_OUTPUT if quick_reference else OUTPUT
+    documents = load_documents(quick_reference=quick_reference)
     link_count = rewrite_links(documents, output=output)
-    diagrams = render_diagrams(documents, args.browser, rebuild=args.rebuild_diagrams)
-    quick_start = render_quick_start(documents, quick_reference=args.quick_reference)
+    diagrams = render_diagrams(documents, browser, rebuild=rebuild_diagrams)
+    quick_start = render_quick_start(documents, quick_reference=quick_reference)
     navigation, body = render_body(documents, diagrams, output=output)
     page = TEMPLATE.read_text(encoding="utf-8")
     # Reuse the brand SVG so the tab icon never needs a separately maintained image.
     brand = re.search(r'<svg\b[^>]*\bclass="brand-mark"[^>]*>.*?</svg>', page, re.DOTALL)
     if not brand:
         raise ValueError("页面模板缺少品牌 SVG，无法生成标签页图标。")
-    book_title = "场景速查手册" if args.quick_reference else "空白项目使用手册"
-    book_intro = ("按当前情况选择一个场景，查看具体动作、同编号产出、分支、阻塞与完成标准。"
-                  "本批样稿用于试读统一的 11 栏结构，详细解释与命令通过来源链接查阅。"
-                  if args.quick_reference else
-                  "从空目录建立项目，把想法或已有 GDD 整理成 Product，再按模块拆分 Feature、开发与验收。"
-                  "第一次使用沿主线进入，开发中遇到具体情况查场景检查单，字段与命令按需查参考。")
+    book_title = "场景速查手册" if quick_reference else "操作手册"
+    book_intro = ("先选择执行仓库，再按要处理的事情和当前状态查找场景。"
+                  "每篇围绕一个目标，说明所需材料、实际步骤、阻塞和完成标准，并对应一条同名专用提示词。"
+                  if quick_reference else
+                  "按对象与契约查阅框架、目录、配置、需求与任务、Skill、Agent、命令和证据。"
+                  "专题按需阅读，用来理解各项能力的职责、参数、副作用与结果含义。")
     replacements = {"@@NAVIGATION@@": navigation, "@@BODY@@": body, "@@QUICK_START@@": quick_start,
-                    "@@PAGE_TITLE@@": "Godot 项目场景速查手册" if args.quick_reference else "空白 Godot 项目使用手册",
+                    "@@PAGE_TITLE@@": book_title,
                     "@@BOOK_TITLE@@": book_title, "@@BOOK_INTRO@@": book_intro,
-                    "@@SIDEBAR_TITLE@@": "Godot 项目场景速查" if args.quick_reference else "Godot 项目使用手册",
-                    "@@READING_KEY@@": "yaya.quick-reference.reading-anchor" if args.quick_reference else "yaya.handbook.reading-anchor",
+                    "@@SIDEBAR_TITLE@@": book_title,
+                    "@@READING_KEY@@": "yaya.quick-reference.reading-anchor" if quick_reference else "yaya.operation-manual.reading-anchor",
                     "@@INTERACTIONS@@": INTERACTIONS.read_text(encoding="utf-8"),
                     "@@FAVICON@@": "data:image/svg+xml," + quote(brand[0], safe=""),
                     "@@DOCUMENT_COUNT@@": str(len(documents)), "@@DIAGRAM_COUNT@@": str(len(diagrams))}
     # A single substitution prevents source text from being treated as template syntax.
     page = re.sub("|".join(map(re.escape, replacements)), lambda match: replacements[match[0]], page)
-    check_output(page, len(diagrams))
-    output.write_text(page, encoding="utf-8", newline="\n")
-    print(f"Generated: {output}\nDocuments: {len(documents)}; diagrams: {len(diagrams)}; source links checked: {link_count}")
+    check_output(page, len(diagrams), output=output, documents=documents)
+    print(f"Validated: {output}\nDocuments: {len(documents)}; diagrams: {len(diagrams)}; source links checked: {link_count}")
+    return output, page
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--browser", type=Path, help="含 Mermaid 时指定现有 Edge/Chromium 可执行文件")
+    parser.add_argument("--rebuild-diagrams", action="store_true", help="忽略图表缓存并重新渲染全部 Mermaid")
+    parser.add_argument("--book", choices=("all", "operation", "quick-reference"), default="all",
+                        help="默认构建两本手册，也可指定其中一本")
+    args = parser.parse_args()
+    choices = [False, True] if args.book == "all" else [args.book == "quick-reference"]
+    pages = [build_book(args.browser, quick_reference=quick, rebuild_diagrams=args.rebuild_diagrams)
+             for quick in choices]
+    for output, page in pages:
+        write_generated_text(output, page)
+        print(f"Generated: {output}")
     return 0
 
 
