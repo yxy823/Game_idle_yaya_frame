@@ -1,11 +1,11 @@
 ---
 name: product-spec-elicitor
-description: Elicits only the materially ambiguous parts of a new module, Product modification, Product bug, or cross-module change and returns a structured patch without writing files.
+description: Clarify missing, contradictory or intentionally changing Product intent for a module or cross-module change, returning a structured patch without writes. Implementation defects against explicit requirements return to the current Feature or engineering-change-plan.
 metadata:
   version: 2.0
   triggers:
-    - Clarify a new feature, Product modification, Product bug, or cross-module requirement
-    - 用户提出「新功能」「修改需求」「Bug 修复」或「跨模块变更」
+    - Clarify material intent gaps in a new module, Product modification or cross-module requirement
+    - 用户要求澄清缺失、矛盾或有意改变的 Product 行为
   priority: medium
   called_by: product-author
 ---
@@ -30,7 +30,7 @@ Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#sha
 
 Treat the mode-specific questions below as coverage prompts, not a quota or a reason to repeat known answers. Once the current scope, observable outcomes and material constraints are clear enough for a reviewable patch, return it to the standardizer. Keep deferred work outside the patch; do not require every possible design branch to be explored first.
 
-When a term has conflicting meanings or hides a Product decision, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Return local definition changes in the owning Product patch and any proposed shared terminology wording with source links separately. Reuse the agreed terms in flows, data descriptions and AC. Keep implementation observations distinct from approved intent, and leave all writes to the standardizer.
+When a term has conflicting meanings or hides a Product decision, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Return behavior changes in the Product patch and proposed local/shared definitions with source links separately. Reuse agreed terms in flows, data descriptions and AC. Keep implementation observations distinct from approved intent. The Product coordinator writes behavior and calls `project-terminology` for meaning-preserving definitions; this elicitor writes neither.
 
 ## Input
 
@@ -89,14 +89,16 @@ Check the following effects against the supplied facts and approved decisions; a
 
 ## Mode C: `bug_fix`
 
-Structure the mismatch between implemented and expected Product behavior. Ask for:
+This mode only resolves a reported problem whose expected Product behavior is missing, contradictory or intentionally changing. First inspect the cited Product or professional source. If it already states the expected result unambiguously and implementation violates it, return the source and defect facts to the unfinished Feature or `engineering-change-plan` under methodology 07; do not produce a Product patch or change AC to accommodate the defect. Professional-only ambiguity returns to its source owner.
+
+For a genuine Product intent gap, structure the unresolved difference. Ask only for missing facts:
 
 1. Reproduction conditions: user actions and observed result.
 2. Expected behavior.
 3. Affected modules and user flows.
 4. Priority: blocks core use, harms experience but has a workaround, or affects an edge case.
 
-Return Product facts for the appropriate Edge cases section or a clearly identified Known issues and correction requirements section. Do not propose code or a technical repair. Recommend explicit follow-up work for affected completed Features, using the Feature synchronization workflow rather than silently editing history.
+Return the confirmed Product decision for the owning behavior or Edge cases section, with any still-unresolved choice explicit. Do not propose code or a technical repair. Recommend explicit follow-up work for affected completed Features, using the Feature synchronization workflow rather than silently editing history.
 
 ## Mode D: `cross_module`
 
@@ -162,5 +164,5 @@ side_effects:
 1. Do not turn a modification into a rewrite. Ask only about the requested change.
 2. Do not draw UI here. Return `trigger_ui_sketcher` and let the standardizer run that workflow.
 3. Never ignore the impact of deleting behavior. Inspect `docs/feature-list.json` and require confirmation.
-4. Record a Product bug's reproduction and expected behavior without prescribing an implementation fix.
+4. A Bug report does not authorize changing requirements. Return explicit-requirement defects to engineering; use `bug_fix` only for a real Product intent gap.
 5. Do not overuse `ai_default`; high-impact decisions always require an answer.

@@ -11,6 +11,7 @@
 
 已有报告：
 
+- [2026-09-25 职责重构与新项目实际验证](reports/framework-implementation-validation-2026-09-25.md)：实施与外部项目运行结果；独立审核包括 [Skill 与工具](reports/skill-tool-implementation-review-2026-09-25.md)、[提示词与场景](reports/prompt-scenario-implementation-review-2026-09-25.md)、[手册迁移](reports/manual-migration-review-2026-09-25.md)和[实际验证证据](reports/validation-evidence-review-2026-09-25.md)。
 - [2026-09-25 职责准则与子智能体全量审核汇总](reports/responsibility-audit-summary-2026-09-25.md)：[27 个 Skill](reports/skill-responsibility-audit-2026-09-25.md)、[55 个工具脚本及模块](reports/script-responsibility-audit-2026-09-25.md)、[50 条提示词与 8 篇样稿](reports/prompt-scenario-responsibility-audit-2026-09-25.md)。
 - [2026-09-22 编码规范与审核体系局部修复](reports/coding-review-system-fixes-2026-09-22.md)
 - [2026-09-22 Shader 接入与独立资源组合验证](reports/asset-workbench-shader-composition-2026-09-22.md)

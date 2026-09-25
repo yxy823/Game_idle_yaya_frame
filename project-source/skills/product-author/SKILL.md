@@ -1,11 +1,10 @@
 ---
 name: product-author
-description: Create, maintain or formalize Product requirements and confirmed project terminology, then plan the current module or synchronize affected Features. Discussion uses project-clarifier; defects against explicit intent use engineering-change-plan.
+description: Create, maintain or formalize Product behavior requirements, then plan the current module or synchronize affected Features. Meaning-preserving terminology uses project-terminology; defects against explicit intent use the current Feature or engineering-change-plan.
 metadata:
   version: 4.0
   triggers:
     - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
-    - User authorizes recording or updating confirmed project terminology in docs/terminology.md or Product
   priority: high
 ---
 
@@ -15,35 +14,24 @@ metadata:
 
 1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product behavior; optional `docs/terminology.md` owns shared vocabulary, not additional behavior.
 2. Update Product documents before planning or implementation. Handle effects on existing Features, but initially decompose only the current Product under `methodology/02-feature-list-schema.md` **Product-by-Product planning**; later Products remain unplanned until their turn.
-3. This workflow is the only Product and terminology writer. Clarifiers and Product elicitors return proposals for it to persist. Professional Skills maintain their own sources directly under `methodology/11-specialist-workflows.md`; Product keeps behavior and links. Meaning-preserving terminology maintenance follows the separate route below.
+3. This workflow owns Product behavior writes. Clarifiers and Product elicitors return behavior proposals for it to persist. `project-terminology` owns meaning-preserving definitions and links, including local Product definitions; coordinate related edits within the same authorized change. Professional Skills maintain their own sources directly under `methodology/11-specialist-workflows.md`; Product keeps behavior and links.
 4. Product documents describe **what**, not **how**. Keep local implementation details in Feature design/code, current shared structure in architecture and important technical tradeoffs in ADRs. Only project-wide constraints belong in Project Rules.
 5. Preserve confirmed Product decisions and existing concrete authorization; unresolved material intent remains a proposal until decided.
 6. Apply relevant `docs/project-rules.md` constraints and accepted architecture decisions before defining Product intent. A conflicting request does not silently revise a rule; use `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including its pre-write self-check and existing authorization.
 
 ## Language contract
 
-Apply `methodology/05-document-language.md` before preparing durable Product or terminology wording. Resolve `document_language` from project configuration and pass the confirmed value to any elicitor/sketcher; preserve protocol identifiers and existing history. Language migration follows that contract within explicit scope.
+Apply `methodology/05-document-language.md` before preparing durable Product wording. Resolve `document_language` from project configuration and pass the confirmed value to supporting Skills; preserve protocol identifiers and existing history. Language migration follows that contract within explicit scope.
 
 ## Existing implementation route
 
 When asked to formalize already implemented behavior, compare the specified files, relevant history and user decisions with any existing Product. Separate confirmed intent, observed behavior, experiments/placeholders and unresolved choices; only confirmed intent becomes Product. Reuse settled answers instead of repeating a full elicitation. Record the present formalization in Product change history without inventing earlier approval or copying code structure.
 
-Use the normal Product writing procedure for missing or changed intent within the authorized scope. When Product already covers the requested behavior, reuse it and proceed to Steps 6–7 for missing planning and handoff. Apply **Adopting existing implementation** in `methodology/02-feature-list-schema.md`; diagnose implementation gaps against the owning Feature, without rewriting Product to justify defects. Git ownership still follows the existing preflight contract.
+Use the normal Product writing procedure for missing or changed intent within the authorized scope. When Product already covers the requested behavior, reuse it and proceed to Steps 6–7 for missing planning and handoff. Apply **Adopting existing implementation** in `methodology/02-feature-list-schema.md`; diagnose implementation gaps against the owning Feature, without rewriting Product to justify defects. Preserve existing Git differences under the project Git rules.
 
-## Terminology maintenance route
+## Terminology handoff
 
-For an authorized terminology-only request, read `methodology/01-product-doc-structure.md`, existing `docs/terminology.md` and only the relevant Product/code sources. Reuse definitions and explicit decisions already supplied by the user, `project-clarifier` or an elicitor. Do not repeat the interview or ask for an approval already given. A discussion-only request returns to `project-clarifier` without writing files.
-
-This route also supports the current Feature's Stage 3 documentation checkpoint. Reuse that Feature's established task ownership and documentation authorization; a supporting call is not a new clean-worktree task. Return to the caller after updating terminology so authorized implementation/verification continues. For substantive Product changes discovered inside a Feature, preserve current ownership and resolve the affected scope before taking the normal Product/planning route.
-
-Determine whether the proposed edit preserves meaning and behavior. Recording an agreed concept, clarifying a name, or moving/linking an existing definition can use this route. If it changes intended behavior, rules, values or AC, or reveals a material unresolved Product choice, resolve that choice and use Steps 1–7 with the settled answers instead. Code observations alone cannot approve a new definition or settle a conflict with Product.
-
-For meaning-preserving edits:
-
-1. Resolve the document language and any remaining ambiguity. Show the concrete wording for approval only when the current authorization does not cover it.
-2. Write the smallest useful definition in its owning Product section or the optional `docs/terminology.md`; update relevant links within the authorized scope. Keep one definition. Leave the initial purpose notice until useful definitions are available; do not force a complete Product when none exists. Do not run UI/audio elicitation, generate/sync Features or change their history for this edit.
-3. Check the wording against confirmed meanings and preserve existing source links/section anchors when moving definitions. Follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect only the owned documentation diff, run cached-diff checks, and make the local documentation commit unless the user requested no commit. Standalone terminology work uses `docs(terminology): <中文术语摘要>` and needs no new work item. Inside a Feature, let the owning execution workflow include these edits in its validated logical commit rather than making an isolated source commit or declaring the Feature complete.
-4. Report the changed definitions and files, then return to the caller or finish the standalone request. Steps 1–7 below are for substantive Product changes, not a required continuation of this route.
+For a terminology-only request that preserves meaning and behavior, use `project-terminology` directly and return its result to the original caller. Do not start the Product writing or planning steps below. During a Product change, pass confirmed definitions and relevant sources to that Skill within the same authorization; coordinate the resulting references and documentation in the same logical change. A definition that changes intended behavior, rules, values or AC remains a Product decision handled here before dependent terminology edits.
 
 ## Product structure and templates
 
@@ -145,11 +133,11 @@ This workflow performs Product writes and necessary references:
 5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
 6. **Resources:** link the owning professional specifications/resource-list entries and pass concrete requirements, real samples and remaining gaps to the current or affected plan. Do not duplicate the entries or invent missing-file obligations from naming examples. Later Products retain linked specifications without premature Feature decomposition.
 
-If the elicitor returns terminology changes, review them with the affected Product behavior and persist confirmed wording in the owning Product section or `docs/terminology.md`, following the **Project terminology** guidance in `methodology/01-product-doc-structure.md`. Keep one owning definition and links from relevant modules. Do not treat code observations or unconfirmed terms as approved intent. Terminology accompanies Product changes; it never replaces the Product behavior that Feature planning needs.
+If the elicitor returns terminology changes, review them with the affected Product behavior and pass confirmed definitions and links to `project-terminology` within this task's documentation scope. Follow **Project terminology** in `methodology/01-product-doc-structure.md`; behavior writes stay here. Do not treat code observations or unconfirmed terms as approved intent. Terminology accompanies Product changes; it never replaces the Product behavior that Feature planning needs.
 
 After the approved Product write, follow `agent-rules/00-core/git-worktree-and-commits.md`: review the complete authorized, task-owned documentation change, including associated terminology, new or updated resource preparation lists and required links. Stage only explicit owned paths or inspected hunks, run the cached-diff checks and validate the complete logical change, including its references, before committing.
 
-For standalone Product work, create the local source commit unless the user explicitly requested no commit. Use `docs(product): <中文行为摘要>` and omit `Work item` when no Feature owns the change. Supporting documentation inside an existing Feature stays in its owning execution workflow's validated logical commit; calling this Skill does not start a new clean-worktree task or require an isolated source commit. Substantive Product changes still require the approved impact handling and committed source baseline needed by synchronization. Check `git status --short` before downstream planning or execution and account for all task-produced documents; preserve unrelated changes and report any unmet Git or source-baseline prerequisite, including under a no-commit instruction.
+For standalone Product work, create the local source commit unless the user explicitly requested no commit. Use `docs(product): <中文行为摘要>` and omit `Work item` when no Feature owns the change. Supporting documentation inside an existing Feature stays in its owning execution workflow's validated logical commit; calling this Skill does not start a new task or require an isolated source commit. Substantive Product changes still require the approved impact handling and committed source baseline needed by synchronization. Check `git status --short` before downstream planning or execution and account for all task-produced documents; preserve unrelated changes and report any unmet Git or source-baseline prerequisite, including under a no-commit instruction.
 
 Before writing destructive or foundational changes, show their concrete impact and verify that it is explicitly approved. This includes deleting or obsoleting a module, changing the target audience or core loop, or invalidating completed Product behavior. Reuse that approval when already given; ask only about an unapproved effect or material change.
 

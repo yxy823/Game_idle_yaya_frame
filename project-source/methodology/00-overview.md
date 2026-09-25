@@ -2,6 +2,8 @@
 
 > This is the canonical mental model for the workflow. Skills guide the work; project checks are invoked explicitly.
 
+The project has one user coordinating Agent work in one project directory. Pause, switch and resume tasks through existing records and real Git differences. Multi-user attribution and worktree isolation/resumption are not supported workflows; focused research and independent review remain available under their contracts.
+
 ## Mental model: specification and execution
 
 ```text
@@ -48,9 +50,10 @@ New projects include short purpose/pending-state notices in fixed documents and 
 
 | Group | Skills | Responsibility |
 | --- | --- | --- |
-| Clarification | `project-clarifier` | Focused discussion; hand approved terminology to the existing writer only when documentation is requested. |
+| Clarification | `project-clarifier` | Resolve material uncertainty and return settled answers to the current task. |
+| Terminology | `project-terminology` | Maintain meaning-preserving definitions and links without starting Product planning. |
 | Product | `product-init-elicitor`, `product-author`, `product-spec-elicitor` | Define or change Product behavior. |
-| Professional design | `design-ui-spec`, `design-audio-asset-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec` | Maintain the applicable UI, art, sound and resource specifications directly. |
+| Professional design | `design-ui-spec`, `design-audio-asset-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec`, `design-localization-spec` | Maintain the applicable UI, art, sound, resource and localization specifications directly. |
 | Integration and measurement | `content-asset-integration`, `content-localization`, `diagnostics-instrumentation`, `diagnostics-performance`, `diagnostics-soak-test` | Supply independently callable methods within the owning authorized task. |
 | Independent review | `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization`, `review-balance` | Separate methods, selected by requested scope and executed by a fresh reviewer instance. |
 | Planning | `feature-plan`, `feature-sync` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
@@ -66,13 +69,14 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | --- | --- | --- |
 | Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
-| Record or maintain settled project vocabulary | `project-clarifier` → `product-author` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
+| Record or maintain settled project vocabulary | `project-terminology` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
 | Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
 | Choose visual or sound direction | `design-art-direction` / `design-audio-direction` | Own the confirmed shared specification under [specialist work](11-specialist-workflows.md); do not require an entire game's design or produce assets. |
 | Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Maintain professional sources directly; Product owns behavior and links. |
 | Prepare visual art, music or sound effects | Production capability reserved in [specialist work](11-specialist-workflows.md#design-production-integration-and-review) | Record specifications and available resources; no production Skill is implemented yet. |
-| Integrate supplied assets or localize content | `content-asset-integration` / `content-localization` | Specification work may stand alone; runtime changes return to the owning authorized Feature/experiment. |
+| Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source; domain meanings stay with Product/terminology. Specification work may stand alone. |
+| Integrate supplied assets or implement approved localization | `content-asset-integration` / `content-localization` | Runtime changes consume approved specifications and return to the owning authorized Feature/experiment. |
 | Add diagnostic signals, measure performance or run a soak scenario | `diagnostics-instrumentation` / `diagnostics-performance` / `diagnostics-soak-test` | Separate instrumentation, measurement, diagnosis and authorized repair; report actual evidence and limits. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | Establish layout, resource scale and interaction readability before dependent logic | Current Product planning and delivery, or an explicitly requested scoped experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
@@ -124,8 +128,10 @@ User request
    ├─ Discuss or clarify the current idea
    │      ↓
    │  project-clarifier → conversation result
-   │      └─ Authorized terminology documentation
-   │            → product-author terminology route → return / finish
+   │
+   ├─ Document already settled terminology
+   │      ↓
+   │  project-terminology → return to caller / finish
    │
    ├─ Formalize new, changed, missing, or ambiguous Product intent
    │      ↓
@@ -174,7 +180,7 @@ Apply [Authorization and continuation](03-execute-loop.md#authorization-and-cont
 ## Stage 0–8 delivery loop
 
 ```text
-Clean worktree gate (new task) / verify task ownership (resumed task)
+Inspect and preserve Git changes; recover the current task's actual stop point
    ↓
 Stage 0   Require ready environment; select Feature; consult relevant knowledge; load Context / Rules Snapshot
    ↓

@@ -14,7 +14,7 @@ When delegating, start without the full author conversation when the client supp
 | --- | --- |
 | Scope and decision | User request, questions to decide, applicable methods and exclusions |
 | Authoritative requirements | Exact source/rule paths, approved decisions and unresolved proposals distinguished |
-| Snapshot | Repository/checkout, commit or range, relevant uncommitted diff and ownership |
+| Snapshot | Project directory, commit or range, and relevant uncommitted differences included in the reviewed result |
 | Raw evidence | Original test/measurement files, reproduction steps and environment; summaries labeled as claims |
 | Allowed validation | Permitted commands/run scope, isolated output location and effective permission limits |
 
@@ -24,7 +24,7 @@ Do not include a persuasive “why this must be correct” narrative or the auth
 
 Reviewed source, assets, specifications, original acceptance records and original evidence are read-only to the reviewer. Do not fix, reformat, update requirements, replace evidence, record human acceptance, mark Features done or commit changes. These boundaries apply even if the actual sandbox grants broader writes.
 
-Necessary targeted verification is allowed within the user's review scope unless restricted. Before running it, inspect side effects and direct all logs, caches, imports, test data and outputs away from the reviewed artifacts. Use an isolated copy/worktree or an existing suitable validation environment, and the existing `reports/scratch/<task>/` convention where safe. A separate report path alone does not isolate a Godot import or test that writes into source/user data. Preserve the exact reviewed snapshot when copying; a clean worktree alone omits dirty work. Do not run a command when its side effects cannot be contained or its permission is unavailable. Report the resulting unverified claim instead of bypassing limits.
+Necessary targeted verification is allowed within the user's review scope unless restricted. Before running it, inspect side effects and direct all logs, caches, imports, test data and outputs away from the reviewed artifacts. Use an isolated safe copy or an existing authorized validation environment, and the existing `reports/scratch/<task>/` convention where safe. A separate report path alone does not isolate a Godot import or test that writes into source/user data. Preserve the exact reviewed snapshot when copying, including relevant uncommitted files; a copy of HEAD alone omits those changes. Do not run a command when its side effects cannot be contained or its permission is unavailable. Report the resulting unverified claim instead of bypassing limits.
 
 Keep retained review reports under the existing `reports/features/<ID>/` or `reports/maintenance/<task>/` locations; conversation output is normally sufficient. Never overwrite another run or the author's evidence. Follow [artifact lifecycle](09-artifact-lifecycle.md) without adding a review registry.
 

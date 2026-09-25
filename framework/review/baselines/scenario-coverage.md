@@ -1,276 +1,67 @@
-# 使用场景复盘
+# 使用场景覆盖与职责入口
 
-检查必要场景是否有清晰责任入口；不要求每次逐行执行，不计算覆盖率。 设计判断见 [design-quality.md](design-quality.md)。新增内容先判断通用性、 实际后果和更简单的处理方式，缺一条提示词不等于缺一个框架机制。
+本文件维护当前场景范围与提示词导航，不是逐项必跑清单，也不以篇数或路径匹配证明真实流程已经通过。单一职责与一对一契约见[职责设计准则](skill-script-prompt-design.md)，正文入口见[场景索引](../../docs/quick-reference/scenario-index.md)。历史版本和过去验证保留在 Git 与对应报告，不混入当前通过声明。
 
-提示词与场景的目标边界和同名路径以[职责设计准则](skill-script-prompt-design.md#提示词与场景)为准。下文保留现有用途与历史验证范围，不表示当前提示词已经完成单一场景拆分或场景目录迁移；剩余工作见[框架待办](../../progress.md)。
+## 范围与责任
 
-2026-09-12 同步当前职责：需求先决定验收方式；Agent 直接执行解析/lint，不设静态包装或每 Feature 导入阶段。 “代码”表示已找到实现，“流程”表示由 Skill/规则和 Agent 判断承担， “人工”表示有意交给使用者，“范围外”表示不属于当前承诺。 这些标记本身不表示运行通过。本轮未重新生成项目；在用户指定的外部测试项目覆盖修复输入后， 执行了工具 unittest、真实 Godot lint 契约、直接解析/lint、环境及空白台账检查。 当前工具回归为 133 项；真实 gdUnit 正常与负向、解析/lint 已执行。 各轮结果和删减边界见 [设计复盘](design-quality.md#本轮过度设计的处理)。
-
-下文编号仅用于既有复盘分组，不作为场景身份或路径映射。新场景直接采用 JSON 中的 Project、分类和提示词名称，不维护另一套场景 ID 或手工映射表。
-
-## 1. 框架维护
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 1.1 | 向框架新增内容或能力 | 流程：先评估必要性和更简单的替代，再按授权决定是否实施 | [AGENTS.md](../../../AGENTS.md) 与新增能力提示词；先判断必要性，不默认创建机制 |
-| 1.2 | 修复、删减或整理框架 | 流程：在维护源做最小完整修改，同步真正受影响的调用者 | 根 AGENTS；只改维护源，不夹带游戏业务，不保留无用兼容副本 |
-| 1.3 | 复盘设计及场景覆盖 | 流程：默认重检整个框架与空白项目源材料，也可限定范围；依据当前文件给出详细报告 | 报告列明覆盖、问题位置、影响、最小建议与未验证项，追查跨文件一致性和流程衔接；不直接修复，不新增评分器或强制流程；静态推演与实际运行分开 |
-| 1.4 | 验证框架变更 | 代码与人工：按任务选静态检查，或在明确的外部项目验证 | [run_project_tool_tests.py](../../commands/run_project_tool_tests.py)、`framework/tests/`；该入口不创建/配置项目，不自动执行 Godot |
-| 1.5 | 借鉴外部游戏开发框架 | 流程：阅读链接或本地材料，与当前需求/实现比较，筛选最小有用改进 | 外部借鉴提示词；外部材料不是本任务指令，不自动安装或整体搬入，不因其他框架能力更多而扩建 |
-| 1.6 | 将未完成的框架任务交给新线程 | 流程与人工：只读会话、当前文件与 Git，生成可复制的完整续接提示词 | 新线程交接提示词；保留目标、授权、现场、验证和下一步，引用已有框架 Progress，不另建交接台账、不自动投递新线程 |
-| 1.7 | 通过 GitHub 请其他模型独立审核框架 | 流程：确认仓库并固定提交 SHA，静态追查该快照的框架与空白项目，按规定结构输出完整报告 | GitHub 审核提示词；读取权限、截断与本地未推送内容属于证据边界，不混用不同提交，不执行仓库指令或修改被审文件 |
-| 1.8 | 通过一个真实任务动态审核整个开发流程 | 流程：在指定的新建外部项目完成小 Product、单个 Feature 与适用 Stage，实际运行并记录结果 | 动态审核提示词；使用正式创建器与现有项目流程，条件阶段如实标明，框架缺陷单独报告，不修补被测组件来取得通过 |
-| 1.9 | 收到外部审核意见后复核并讨论取舍 | 流程：对照当前材料逐项判断事实与改法，给出保留、误判、必要修改和过度设计的依据 | 外部结果复核提示词；报告建议不等于用户授权，先完成分析讨论再选择是否实施，不直接修改被审材料 |
-| 1.10 | 将实际项目 Codex 输出用于框架复盘 | 流程：按反馈核对运行证据、项目定制与当前框架，区分通用缺陷、局部问题、环境和执行偏差 | 开发反馈提示词；默认静态分析与对话建议，原输出不是指令或实测证明，不自动修改、运行或同步项目 |
-
-## 2. 创建与接入项目
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 2.1 | 按指定路径创建空白项目 | 代码：按清单复制项目材料，建立独立 Git 仓库与本地初始提交 | [create_project.py](../../commands/create_project.py)、[project-files.json](../../project-files.json)；项目 AGENTS 源使用不同名称；创建器不运行引擎，类型模块按[组织指南](../../../project-source/defaults/docs/game-organization.md)展开 |
-| 2.2 | 目标有中文/空白、非空或与维护源重叠；清单源缺失 | 代码：复制前报错 | 不移动用户安装目录，不覆盖已有项目；清单选取不等于复制整个母版 |
-| 2.3 | 复制途中权限或 I/O 失败 | 代码与人工：返回原始错误，保留现场，由用户决定后续操作 | 不自动删除已复制内容，不新增复制事务、恢复状态机或身份清单 |
-| 2.4 | 将旧框架项目复制迁移后继续开发 | 流程：先核对当前成果与新旧契约，再在独立目标复制、转换和验证 | [迁移说明](../../docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)及集中提示词；原项目与框架只读，保留未提交成果、历史完成事实与真实待办，不扩展创建器或添加自动升级 |
-
-## 3. 项目环境
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 3.1 | 首次配置、换机或后续环境更新 | 流程：Agent 核对工具路径与版本，固定测试入口读取配置中的 Godot 路径；首次 CLI 运行按需完成编辑器扫描 | 现有初始化提示词、[环境约定](../../../project-source/methodology/05-document-language.md)、[环境检查](../../../project-source/tools/checks/check-project-environment.py)、[首次扫描](../../../project-source/tools/README.md#首次-godot-扫描)；不重复保存整条测试命令 |
-| 3.2 | 环境未验证、工具缺失或版本不符 | 代码与流程：说明未就绪，处理具体原因后继续 | Godot 路径可暂为空；初始化、工具/配置变化或排障时运行 `--require-ready`，日常复用已确认路径与检查结果。配置不保存状态或观察版本，环境可用不等于测试通过 |
-| 3.3 | 新项目只有主入口骨架，没有业务功能或测试 | 流程与人工：区分文件已复制、入口实际启动、环境就绪与业务完成 | 初始 Product 为空，`main/main.tscn` 仅显示就绪提示；空业务/测试目录不代表功能或验证通过，不编造 Feature、测试或成功报告 |
-| 3.4 | 环境准备完成后提交配置改动 | 流程：与普通修改任务使用相同的项目 Git 规则 | 创建器已建立初始提交；环境准备遵循本次授权、适用验证与普通提交条件，不另设初始化例外 |
-| 3.5 | Progress 链接初始化报告，但 Git 状态或克隆中没有报告 | 配置与说明：默认 `.gitignore` 将报告保留在本地 | [环境约定](../../../project-source/methodology/05-document-language.md#project-environment-bootstrap)明确报告保留方式；核对项目实际忽略规则，报告纳入版本控制按用户明确范围，不因链接存在自动追踪 |
-
-## 4. 项目任务
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 4.1 | 初始化/修改需求或存在关键歧义 | 流程：`product-author` 按需调用 elicitor/UI/audio Skill | [任务路由](../../../project-source/methodology/00-overview.md)；局部需求从总览定位相关模块和实际依赖，复用已知答案，不凑模块、AC 或问答数量，草图与视觉探索按需选择 |
-| 4.2 | 逐个 Product 拆分或同步已有 Feature/测试登记表 | 流程：generate 先预览数量与逐项内容，确认或明确自主授权后追加；sync 处理已有任务影响；代码检查台账约束 | 创建器提供空索引、版本 3 登记表与版本 2 修订记录，缺失时报错，不自动重建；空台账首次有效规划建立已提交来源的 R000，后续 Product 不推进锚点；已有计划缺历史仍须核对。计数和测试身份直接推导，保留写入授权、ID 与历史边界 |
-| 4.3 | 执行、续接已批准任务或询问下一步 | 流程：execute Skill 引用权威执行规范，advisor 只读回答 | 从当前记录、必要历史和 Git 差异续接；规则按主题读取，快照在 Stage 1 展示一次且不凑条数，沿用有效上下文和授权，不逐阶段固定发言 |
-| 4.4 | 已有未知修改、混合任务或授权不清 | 流程：Agent 确认改动归属，保留无关工作 | 项目 AGENTS 与 Git 规则；没有 clean-worktree 自动 Hook，不能写成“自动阻止混入” |
-| 4.5 | Bug、行为保持重构或工程维护 | 流程：engineering-change Skill 引用工程规范，区分 Product 意图与实现问题 | 当前任务内修复与独立新任务分别判断；复用规范的证据、AC 和经验契约，不另建第二套 Bug 状态机 |
-| 4.6 | 接入或替换美术、场景、动画、音频等资源 | 流程：按意图选择 Product 或当前 Feature/工程维护路径 | 资源接入提示词及 agent-rules 资源/场景/资产模块；引用检查与人工体验分开 |
-| 4.7 | 仅诊断性能问题或测量后优化 | 流程：仅诊断直接用 diagnostics-performance；优化复用已有授权任务，独立优化才进入 maintenance | 性能提示词保留范围选择；埋点核对已有授权，记录实际版本和可比条件，按问题选择分位数、尖峰或加载/内存指标；不为调查强建 Feature，不凭静态猜测报告提升 |
-| 4.8 | 调整存档或迁移数据 | 流程：先确定真实数据保留要求，再按工程维护或 Product 变化处理 | 数据迁移提示词及数据规则；在明确样本副本验证，项目数据保留需求不代表框架要兼容旧项目 |
-| 4.9 | 验证尚未确定的视觉布局、资源尺度、玩法、手感或技术假设 | 流程：在授权范围与预算内做一个可判定的实验 | 原型实验提示词及任务路由；视觉问题用真实样本和独立 Godot 场景，结论进入现有 Feature notes 或 Progress，不自动变成正式需求、验收或完成状态 |
-| 4.10 | 从实际源码调查架构改进机会 | 流程：围绕指定痛点或近期改动线索，核对调用关系、维护成本与已有决定 | 只读架构调查提示词；不依赖已有重构待办，允许零候选，选定问题后回到现有工程入口 |
-| 4.11 | 先讨论想法、设计取舍或概念 | 流程：`project-clarifier` 先查事实，只补问当前缺口，按依赖小步澄清 | 只讨论不写文件；不要求环境就绪或完整 Product，不维护问卷状态、轮数或评分 |
-| 4.12 | 保存并持续维护已确认的项目术语 | 流程：澄清后由 `product-author` 按授权维护 `docs/terminology.md` 或局部定义，Stage 3 检查有价值的增量 | 每个定义一个归属；新增、改名、废弃及语义变化检查引用；保持含义时不拆任务，实质变化仍经 Product 与 Feature 同步；嵌套维护后返回当前 Feature |
-| 4.13 | 功能已实现但缺少 Product 或 Feature 记录 | 流程：确认产品意图、补齐当前模块计划，按授权从现状验证与收尾 | [规划接管](../../../project-source/methodology/02-feature-list-schema.md#adopting-existing-implementation)和[交付接管](../../../project-source/methodology/03-execute-loop.md#delivery-of-existing-implementation)；复用实现，缺失历史如实记录，新任务不直接标 done，不重演历史 TDD，后续修复与当前完成条件保持有效 |
-| 4.14 | 审核后在当前项目直接替换框架 | 流程：按职责审核，条件通过即替换并最小适配；保护项目数据和有效定制 | [原地替换说明](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原地替换项目框架)及集中提示词；严重冲突拒绝直接覆盖，普通差异不增设迁移流程，必要验证后一个提交 |
-| 4.15 | 正式逻辑前验证当前界面的视觉基础 | 流程与人工：UI/audio 提供输入，现有规划与执行交付独立场景及适用验收 | [视觉原型规范](../../../project-source/methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation)；复用普通 Feature 与真实依赖，已有有效布局不重做，缺失样本不冒充通过，视觉接受不替代正式功能验收 |
-| 4.16 | 按当前任务准备最小资源集合，提供文件后继续原型 | 流程：专业 Skill 维护同一清单的对应条目，接入由独立方法处理 | [资源准备规范](../../../project-source/methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)；保留九个字段与来源/目标/显示尺度，复用清单，不增加全局编号或状态台账 |
-| 4.17 | 需要保留较长的 Feature 设计与实际采用的约束 | 流程：Stage 1 判断，Stage 2–3 维护可选 `F0XX-design.md`，notes 相对链接 | [设计说明规范](../../../project-source/methodology/02-feature-list-schema.md#feature-design-and-implementation-notes-optional)；引用原规则并解释实际应用，不复制规则全集或建立第二份 AC、状态、验证计划 |
-| 4.18 | 新增、修改或删除项目级约束 | 流程：需求及 Stage 0–1 读相关规则，写前逐项对话自检，Stage 2–3 或 Bug 复盘按授权维护 | [规则维护规范](../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)；说明前后变化、依据、强度、归属、冲突与影响，删除需说明接替或失效原因；不自动升级经验、不新增报告台账 |
-| 4.19 | 技术方案需要长期保留决策理由 | 流程：Stage 1 判断 ADR 阈值，Stage 2–3 或独立获批架构任务保存 | [架构规范](../../../project-source/methodology/10-architecture-overview.md)；撤销成本、难恢复的理由和真实方案取舍共同判断；不每 Feature 创建，不覆盖 Product 或项目硬约束 |
-
-以下专业工作及开发中衔接场景沿用现有任务链；专业来源分工详见 [专业来源规范](../../../project-source/methodology/11-specialist-workflows.md)：
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 4.20 | 决定美术/声音风格，或修订专业规格 | design-art-direction / design-audio-direction 维护共享方向，UI/视觉/audio Skill 维护局部规格 | 专业来源直接写入；Product 保留行为与引用，不要求全游戏设计或实际生成样张 |
-| 4.21 | 专业文档早于旧锚点、只有专业文件变化、共享规范影响多模块 | sync 沿实际引用、适用范围和依赖核对已有计划；历史覆盖未知时当前对齐 | 保留单主 source、具体 AC/设计关联，不只依赖 Git diff 或单个直接引用，不预拆后续 Product |
-| 4.22 | 已确认专业要求缺少 Product 重复正文，现有实现违反它 | 当前未完成 Feature 修复，或工程 bug 后续 | 已确认专业来源可直接证明预期；建议未采用不能判缺陷，不改写已完成历史 |
-| 4.23 | 本地化规格或语言支持实现 | content-localization 独立方法，运行修改由原授权任务承接 | 文档语言不决定游戏语言；机械覆盖、显示与语言判断分开 |
-| 4.24 | 诊断缺少信号、测量性能或执行长测 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test 分工，返回原任务完成 | 诊断与交付版本分开；中止只报告实际时长，不冒充 gdUnit 通过 |
-| 4.25 | 开发中临时插入 Product 或独立模块 | product-author 判断边界，稳定编号，总览维护依赖和 intended order；影响已有任务才同步 | [模块身份](../../../project-source/methodology/01-product-doc-structure.md#module-filename-rules)与[逐模块规划](../../../project-source/methodology/02-feature-list-schema.md#product-by-product-planning)；新前置不重排旧编号，后续未规划模块不立即拆 Feature，无 Product Queue |
-| 4.26 | Feature 进行中插入其他工作或切换任务 | 先判当前 AC 与授权，独立工作分别分类；保存原停点再按明确顺序处理 | [执行异常](../../../project-source/methodology/03-execute-loop.md#exception-handling)与 Git 归属规则；原任务保持未完成，新写入任务仍需干净工作区，回来恢复原 Stage |
-| 4.27 | 判断是否需要外部搜索、委派调研或保留结果 | 主 Agent 自主选择直接查询或 researcher；角色定义版本查证、anysearch 回退、报告与交接 | [调研路由](../../../project-source/methodology/00-overview.md#external-research)与[角色源文件](../../../project-source/agents/researcher.toml)；无强制阶段，Skill 用户级安装，报告按需进入 docs/research，不自动采纳建议或修复未用代码 |
-
-## 5. 验证与异常
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 5.1 | baseline、focused/TDD、affected 或必要 full 测试 | 代码与流程：测试入口读取 Feature/测试登记表，选择并运行 gdUnit；full 固定递归选择 `tests/`；实现按小行为 RED/GREEN/必要重构循环 | [测试入口](../../../project-source/tools/testing/run-gdunit-tests.py)、`lib/test_selection.py` 与 Stage 3；空分层目录不单独成为义务，零测试、登记路径缺失或必需覆盖不足仍失败；不补造已有实现的 RED，无独立计划，按实际影响选择最终范围 |
-| 5.2 | 执行 Godot 脚本解析与 lint | 流程：Agent 直接使用配置的 Godot 和插件 CLI，读取真实输出 | [直接检查约定](../../../project-source/methodology/gdscript-lint.md)；不另设静态包装、manifest、每 Feature 导入阶段或通过标签 |
-| 5.3 | 漏测、跳过、零测试、旧报告、源码改变或工件被修改 | 代码：显式结果校验读取真实 discovery/JUnit、诊断、哈希和当前源 | `lib/test_run_evidence.py`、`lib/feature_completion_evidence.py`；本轮工件夹具负向回归通过，完整真实 Feature 未执行；当前为 result.json 加原始报告，未建立独立防伪签名 |
-| 5.4 | 检查失败、启动失败、超时或进程中断 | 代码与流程：记录实际尝试，处理所拥有的进程，保留失败 | `lib/test_run_evidence.py`、`lib/gdunit_process.py`；运行前写同一 result，旧通过不能覆盖未解决失败；没有第二份尝试日志或锁，失败原件保留 |
-| 5.5 | 验收方式与独立复审 | 流程：Stage 1 决定验收方式，Stage 4 提供可复现步骤，Stage 6 按用户指定的范围与时机审查需求和代码质量，可合并多项 Feature | manual 需真实人工决定；automated 省略 Stage 5；独立评审默认省略，完成依据不要求复审计数，用户指定的评审条件由 Agent 核对 |
-| 5.6 | 只要求静态检查，或运行环境暂不可用 | 流程与人工：完成获授权的检查并说明未执行项 | 不强制生成/启动项目，不跳过失败后改报通过；实际 Windows/Godot 能力需在对应环境另行验证 |
-| 5.7 | 手动修改代码、场景、资源、配置或需求/任务文档后检查一致性 | 流程：核实未提交或指定提交差异，对照相关 Product、Feature/AC 和已有决定，给出分类与最小处理建议 | [手动修改检查说明](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#手动修改后检查需求一致性)及集中提示词；只读且不要求工作区干净，不将代码自动视为新需求，不拦截人工保存，不把静态结论或旧测试等同于当前验收 |
-| 5.8 | 术语、专业规格/清单、规则、设计或 ADR 在最终验证后变化 | Stage 3 完成必要更新；晚修改按既有全局指纹恢复失效依据 | 普通 Markdown 不继承 JSON notes 的豁免；编辑性变化仍可能失效，审核报告在 reports 中不改变源指纹 |
-| 5.9 | 独立专业审核、角色文件存在但运行权限未知、验证会产生缓存 | 七类审核方法按请求组合，一个独立角色；核实实际上下文/权限与所有副作用的隔离 | [审核契约](../../../project-source/methodology/12-independent-review.md)；作者自查不升级，无播放/显示证据保留缺口，报告完成不等于必要覆盖通过；成果变化限定结论 |
-
-## 6. 完成与后续
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 6.1 | 按逻辑分批提交与记录完成 | 流程与代码：Agent 自动提交通过相关验证的完整逻辑变更；Stage 7 调用 evidence 脚本和台账检查后记录完成并收尾提交 | [执行规范](../../../project-source/methodology/03-execute-loop.md)、[Git 规则](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md)；提交注明 Feature 名称与本批内容，全量审查涵盖各批差异；中途提交不代表 `done` 或人工验收通过，不靠监听 patch 放行 |
-| 6.2 | 整理 Progress、必要历史或旧报告，并按需交给新线程 | 流程与人工：报告按 Feature/维护任务归组，临时输入单独保存，普通 Markdown 与链接负责阅读入口；清理另有明确范围 | [历史与报告](../../../project-source/methodology/09-artifact-lifecycle.md)；生成前选择路径、收尾核对引用，交接不授权清理未知文件，不新增状态文件或自动投递 |
-| 6.3 | 完成后交接，决定下一项 | 流程：Stage 8 报告事实和必要经验，按剩余具体授权续接 | 范围完成、要求暂停或缺少必要决定时停止；不以完成或依赖就绪推定授权，不把每个问题升级成规则 |
-| 6.4 | 项目/阶段/Feature 完成后总结经验与复用脚本 | 流程：优先查知识索引与相关条目，从实际记录提炼成功做法、排障方法和教训，再按授权最小固化 | 分层知识目录、阶段总结提示词、既有历史约定与 maintenance 路径；更新对应主题索引，链接原任务，不要求每次新增条目、规则或工具 |
-
-## 7. 明确的范围边界
-
-| 编号 | 场景 | 当前覆盖与责任 | 静态依据及合理边界 |
-| --- | --- | --- | --- |
-| 7.1 | 母版后来变化，已有项目继续开发 | 范围外：项目不接收框架自动同步或升级 | 生成后完全独立；用户主动选择的复制迁移见 2.4，审核后原地替换见 4.14，不建立 release/provenance/revision 库来授权项目使用 |
-| 7.2 | 其他引擎、操作系统或具体游戏规则 | 范围外：固定 Godot/Win11；业务由实际项目处理 | 不用缺少跨平台/多引擎覆盖来证明应扩建框架 |
+| 领域 | 当前责任与边界 |
+| --- | --- |
+| 框架维护 | 评估、借鉴、修复、删减、目录整理、静态/动态审核分别有专用入口；维护源与外部验证项目分开 |
+| 创建与环境 | 创建器复制并建立独立 Git 与初始提交；配置、更新、路径恢复和首次扫描分别处理；环境可用不代表业务通过 |
+| 需求与专业来源 | Product 管行为；实施前设计边界单独判断；术语由 project-terminology；美术、声音、UI、资源规格和本地化规格由所属方法维护唯一来源 |
+| 任务规划 | 首次 R000、后续 Product 追加、不同状态下来源变化与历史基线恢复分别处理；保留 ID 和真实完成历史 |
+| 实现与修复 | 新任务执行、原型、交付前后 Bug、重构和 maintenance 明确目标；feature-execute 编排完整交付，专业方法不另建 Stage |
+| 素材与诊断 | 准备、接收、技术审核、按类型新增与替换资源分开；已定方向的变化追查消费者；临时观测与持久指标分开；测量诊断与优化分开 |
+| 验证与人工 | 解析/lint、自动测试、实际场景、独立专业/代码审核、清单准备及两种真实结果登记分开；测量结论由独立实例核实；无 Feature 组件测试使用 --target；不互相代替证据 |
+| 恢复与交接 | 区分报告路径、原件缺失、内容过期和运行中断；同目录暂停、切换、原/新对话续接保持真实停点；无 Feature 的研究、讨论和独立审核有实际任务入口，不为续接创建任务 |
+| 知识 | 只读总结、知识写入与脚本实现分别有入口，先查已有覆盖，不因复盘自动新增规则 |
 
 ## 提示词使用场景清单
 
-[prompts.json](../../prompts.json) 已维护两个 Project、50 条完整提示词： `Yaya 框架维护` 10 条，`Godot 项目开发` 40 条。 顶层数组的每项仍为 `project`、`categories`。下表保留场景、选择理由和 JSON 位置， 提示词正文只有 JSON 一份；按需选用，不是每个任务必须发送的一组指令。
-
-用户按实际情况从[场景速查索引](../../docs/quick-reference/scenario-index.md)进入。当前有八篇 Markdown 样稿，其余情境在样稿讨论后迁移；提示词入口与实际流程保持原有职责。
+[集中提示词库](../../prompts.json)保留两个 Project，当前 123 条专用正文与 123 篇场景对应。下表仅供人阅读与查找；校验工具直接由 JSON 推导路径，不读取本表作为第二数据源。
 
 ### 手册处置路径
 
-下表保留上文场景的现有材料位置，用于后续迁移核对。原专题与多分支检查单需要按入口状态拆分：概念和工具用法进入操作手册，所有具体情境处理进入速查手册。新增场景同步既有映射，不另建覆盖台账。
-
-首轮[场景样稿](../../docs/quick-reference/scenario-index.md)按事项、状态和叶子场景分层；保留 11 类定义，空栏目省略。八篇只覆盖各自前提成立的路径，包括两种 Bug 状态；下面的旧检查单承担待拆分材料的定位，不代表所有路径已经迁移。编写要求见[速查 README](../../docs/quick-reference/README.md)。
-
-| 现有场景 | 手册入口 | 入口类型与选择理由 |
-| --- | --- | --- |
-| 1.1–1.5 | [框架维护与验证](../../docs/framework-maintenance/updating-the-blank-project.md)；共享修改另见[影响判断](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 已有维护步骤按修改选择同步与验证，跨调用者问题复用专用检查单。 |
-| 1.6–1.10 | [维护、审核、复盘与交接入口](../../docs/framework-maintenance/updating-the-blank-project.md#通过提示词开始维护) | 专题已逐项说明输入、授权和停止位置，不复制为游戏开发 SOP。 |
-| 2.1–2.3 | [创建项目](../../docs/framework-maintenance/migration-source/getting-started/create-project.md) | 已有完整创建与失败处理步骤，复制失败保留现场。 |
-| 2.4、4.14 | [复制迁移](../../docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)、[原地替换](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原地替换项目框架) | 两种独立操作已有各自前置与完成边界，不合并成自动升级流程。 |
-| 3.1–3.3 | [首次使用与环境准备](../../docs/framework-maintenance/migration-source/getting-started/first-use.md)、[配置参考](../../docs/framework-maintenance/migration-source/reference/configuration.md) | 首次准备有操作步骤，后续字段与空项目边界查参考即可。 |
-| 4.1、4.2 | [新功能进入正式开发](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#收到新功能后进入正式开发)；[首次规划样稿](../../docs/quick-reference/requirements/ready-to-plan/plan-confirmed-module.md) | 专用检查单：需求、当前模块计划与实施衔接。 |
-| 4.2、4.21 | [已确认要求变化后的计划对齐](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#已确认要求变化后对齐已有计划)；[未开工变更样稿](../../docs/quick-reference/requirements/confirmed-plan/change-before-development.md) | 专用检查单：涵盖仅专业变化、历史锚点与共享影响。 |
-| 4.25 | [开发中插入 Product](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#开发中临时插入-product-或模块) | 专用检查单：模块边界、稳定编号、前置与规划时机。 |
-| 4.26、4.4 | [Feature 中途插入与切换](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#feature-中途切换中断或临时插入其他工作) | 专用检查单：分类、停点、工作区前置和返回原任务。 |
-| 4.3、4.4、6.2 | [上下文恢复与续接](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#上下文不足时恢复现场并续接)；[新对话续接样稿](../../docs/quick-reference/resumption/new-conversation/resume-unfinished-feature.md) | 专用检查单；日常执行另由 [Feature 指南](../../docs/framework-maintenance/migration-source/guides/feature-delivery.md) 展开，简单状态提问保持只读。 |
-| 4.5 中的 Bug、4.22 | [发现 Bug 后定位、修复并回归](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#发现-bug-后定位修复并回归)；[交付前后两篇 Bug 样稿](../../docs/quick-reference/scenario-index.md#问题修复) | 专用检查单：有效预期、任务归属、根因、回归和适用经验记录。 |
-| 4.5 中的重构/维护、4.10、4.17、4.19 | [设计复杂度判断](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#新增核心对象或发现设计过重时重新判断边界)、[共享修改影响](../../docs/framework-maintenance/migration-source/guides/scenarios-requirements-design.md#修改共享能力前界定归属与影响) | 判断与影响走专用检查单；具体重构/维护模式查 [工程指南](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md)，不复写执行 Stage。 |
-| 4.9 中的视觉问题、4.15、4.16 | [设计界面并验证视觉原型](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#设计-ui-界面并验证视觉原型)；[方案已定的原型样稿](../../docs/quick-reference/interface-assets/ui-ready/build-clickable-prototype.md) | 专用检查单：UI 规格、最小素材、独立原型、真实体验及返回正式开发。 |
-| 4.20 中的声音方向/规格、4.16 | [声音、音效与音乐准备及接入](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#确定声音准备音效或音乐并接入游戏)；[音效已备的接入样稿](../../docs/quick-reference/interface-assets/audio-ready/connect-approved-sound.md) | 专用检查单：明确外部制作/用户准备节点，规格 Skill 不生成音频。 |
-| 4.6、4.16 | [已有资源接入或替换](../../docs/framework-maintenance/migration-source/guides/scenarios-interface-audio-assets.md#已有资源文件后接入或替换) | 专用检查单：真实文件、规格分支、UID/引用、显示/播放与清单定稿。 |
-| 4.20 中的美术方向/视觉规格 | [专业方法与职责](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#按实际目标选能力) | 单独设计共享方向只需专题参考；需要准备和应用素材时进入上述 UI/资源 SOP，要求变化转计划对齐。 |
-| 4.7、4.24 | [性能、观测与长测](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#实现测量与完成) | 专题区分诊断/优化、原始测量和中止范围；交付复用验证检查单，不新增测量生命周期。 |
-| 4.8 | [工程维护边界](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#工程维护如何确定边界) | 数据迁移取决于项目保留要求和实际格式，专题与现有维护 Prompt 足够，不预设通用迁移程序。 |
-| 4.9 中的玩法/技术假设 | [限定实验](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md#原型与技术实验) | 已有假设、范围、预算、结论与文件去向步骤，视觉实验另有专用 SOP。 |
-| 4.11 | [需求与规划](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md) | 轻量讨论只解决当前决定，不强制完整检查单或文件写入。 |
-| 4.12、4.18、6.4 | [术语、规则与知识维护](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md) | 各类内容已有维护入口和归属，按需参考；不把每个增量升级为新任务。 |
-| 4.27 | [按需搜索与保存调研](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md#按需搜索与保存调研) | 专题解释主 Agent 判断、角色委派、外部搜索依赖与报告去向，不增加固定 Stage 或另一套 SOP。 |
-| 4.13 | [已有实现补齐](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md#从已有实现补齐需求与任务)、[交付接管](../../docs/framework-maintenance/migration-source/guides/feature-delivery.md#接管已有实现的交付) | 已有专门步骤，保留实现并补当前义务，不重演历史。 |
-| 4.23 | [专业职责与来源](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#按实际目标选能力) | 本地化规格和运行实现按原任务范围处理；语言、显示与交付复用现有专业/验收路径。 |
-| 5.1–5.4 | [测试与证据导入失败恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复)；[有效原件引用修复样稿](../../docs/quick-reference/verification/existing-results/import-passed-tests.md) | 专用检查单处理失败；正常运行参数查 [命令参考](../../docs/framework-maintenance/migration-source/reference/commands-and-validation.md)。 |
-| 5.5、5.8、6.1、6.3 | [实现完成后的交付判断](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#实现完成后判断能否交付)、[人工拒绝后的恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#人工验收失败之后怎么办) | 专用检查单：真实完成条件、晚改验证、人工失败及后续授权。 |
-| 5.6 | [验证范围](../../docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)、[测试失败恢复](../../docs/framework-maintenance/migration-source/guides/scenarios-verification-recovery.md#测试失败或证据导入失败时定位并恢复) | 静态限定是贯穿所有操作的边界，环境缺失走已有恢复，不另加状态。 |
-| 5.7 | [文档与实际状态不一致处置](../../docs/framework-maintenance/migration-source/guides/scenarios-context-handoff.md#文档与实际状态不一致时确定修复位置) | 专用检查单：区分确认意图、实现、历史与真正应修位置。 |
-| 5.9、5.5 中的独立审核 | [独立审核交接](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md#独立审核怎样交接) | 已有独立实例、范围、证据与作者修复交接说明，自查不冒充审核。 |
-| 7.1、7.2 | [手册使用边界](../../docs/README.md#使用约定与内容依据)、[维护边界](../../docs/framework-maintenance/updating-the-blank-project.md#保持初始化边界) | 范围解释只需参考页，不为自动同步、多引擎等范围外能力建立 SOP。 |
-
-有输入占位符时由使用者填写；GitHub 审核正文已指定默认仓库与报告名称，可直接发送，也可补充分支或提交。 提示词保留任务目标、输入、授权与交付要求；通用维护约束引用根规则，Feature 和动态审核 的阶段动作引用现行执行规范，测试清理等方法按相关章节读取，不在入口维护流程副本。 不另建工作流、注册器、执行状态或动作检查器。编号沿用上文场景，细分用途使用子编号。
+- 框架、概念、配置与工具接口由操作手册解释；所有具体执行情境放在场景速查手册。
+- 每个场景路径为 `quick-reference/<Project>/<分类>/<提示词名称>.md`；文件名与 H1 同名，不使用英文别名或额外状态目录。
+- 框架维护情境也在 `Yaya 框架维护` Project 下；维护设计准则、审核报告和命令说明仍在维护材料中。
+- 来源链接可以直达 methodology、Skill、工具与 JSON；两本手册不互相依赖补齐操作步骤。
 
 ### Project：Yaya 框架维护
 
-| JSON 分类 | 场景编号 | 提示词名称 | 适用输入与预期结果 |
-| --- | --- | --- | --- |
-| 设计与借鉴 | 1.1 | 向框架新增内容或能力 | 实际问题、频率与期望；比较不新增、复用/合并与最小新增，按现有授权决定是否实施 |
-| 设计与借鉴 | 1.5 | 借鉴外部框架的有用设计 | 链接/仓库或本地材料、关注点；给出有来源依据的吸收/适配/不采用建议及最小落点 |
-| 维护与复盘 | 1.2 | 修复、删减与整理框架 | 问题、范围与允许检查；在维护源完成必要修改并同步实际调用者 |
-| 维护与复盘 | 1.3 | 静态审核框架与空白项目源材料 | 整体或限定范围、可选历史基线与报告位置；静态重检框架及空白项目，输出覆盖表、问题详情、跨文件依据、处理顺序与未验证项；指定文件只授权写报告 |
-| 维护与复盘 | 1.7 | 静态审核 GitHub 框架快照 | 读取 yxy823/Game_idle_yaya_frame 的默认分支或指定版本，先固定提交 SHA；静态审核十个主题，按九节结构输出 Game_idle_yaya_frame-audit-report.md，无法输出文件时给完整正文 |
-| 维护与复盘 | 1.8 | 通过实际任务动态审核框架流程 | 当前任务亲自运行验证：指定新建外部项目、微型任务与报告位置；实际创建、配置、按需完成首次编辑器扫描、编写 Product、拆分 Feature、执行适用 Stage 与本地收尾，报告证据和未完成部分；接收其他任务输出改用 1.10 |
-| 维护与复盘 | 1.9 | 复核外部审核结果并讨论取舍 | 外部报告放入末尾材料区，前文补充被审版本线索与输出位置；分别核对事实与改法；简单意见直接说明，多项争议用对应表和必要论证，同一依据只展开一次，交付最小建议后按用户选择修改 |
-| 维护与复盘 | 1.10 | 依据实际开发反馈复盘框架 | 在框架维护任务接收另一个任务、另一个项目的实际 Codex 输出与原始日志，放入末尾材料区，前文只留上下文摘要与路径；无需正式报告或重跑项目，按复杂度给出归属、证据与最小建议；需推进时参考 JSON 适用条目，标明接收任务、入口与先后，输出已填入上下文的可复制输入，保留授权和证据缺口，默认不实施或自动发送 |
-| 维护与复盘 | 1.4 | 按需验证框架变更 | 变更与静态/运行范围，运行另需目标项目；输出真实检查结果与未执行项 |
-| 维护与复盘 | 1.6 | 生成新线程交接提示词 | 当前维护任务与重点；只读整理目标、授权、Git 现场、实际验证和下一步，输出一个可复制到新线程的完整代码块后停止实施 |
-
-外部参考用于解决已有问题，设计优点与直接复制源码分别判断。先核对当前是否已有、 通用收益、引入依赖与未来维护成本；没有适合吸收的内容也是有效结论。 只读外部材料不自动授权安装、执行其脚本或整体迁入。 实施类入口按所属仓库规则完成本地提交，不自动更新其他项目或发布；只读任务以及明确不提交的初始化、交接范围保持原边界。
-
-框架提示词按任务范围读取资料并复用有效上下文。修改空白项目源材料前查阅 [手册入口](../../docs/README.md)、[维护说明](../../docs/framework-maintenance/updating-the-blank-project.md) 与受影响专题，实施后同步说明。局部复盘与验证只核对相关依据；交接仅列续接必需的 文件或章节和待同步事项，不固定重读同一组入口，保持各自原有授权范围。 GitHub 审核从固定提交读取相同入口，所有结论受实际可读材料限制；准备与输出方式见 [GitHub 审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#通过-github-交给其他模型审核)。 动态入口在明确授权的新建外部项目执行现有流程，源材料保持只读；用法见 [动态流程审核说明](../../docs/framework-maintenance/updating-the-blank-project.md#用一个实际任务动态审核流程)。 外部结果复核先判断事实和设计取舍，报告交付后由用户选择是否实施；用法见 [外部结果复核说明](../../docs/framework-maintenance/updating-the-blank-project.md#复核外部审核结果与讨论取舍)。 实际开发反馈围绕原任务、项目副本与当前框架按需归因，不默认整体重检；用法见 [开发反馈复盘说明](../../docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。
+| 分类 | 同名场景与提示词入口 |
+| --- | --- |
+| 设计与借鉴 | [想给框架增加一项能力，先判断是否值得做](<../../docs/quick-reference/Yaya 框架维护/设计与借鉴/想给框架增加一项能力，先判断是否值得做.md>)<br>[新增能力的方案已确定，现在修改框架](<../../docs/quick-reference/Yaya 框架维护/设计与借鉴/新增能力的方案已确定，现在修改框架.md>)<br>[看到外部框架的一个设计，先判断是否适合借鉴](<../../docs/quick-reference/Yaya 框架维护/设计与借鉴/看到外部框架的一个设计，先判断是否适合借鉴.md>)<br>[已经选定外部设计，现在引入框架](<../../docs/quick-reference/Yaya 框架维护/设计与借鉴/已经选定外部设计，现在引入框架.md>) |
+| 维护与复盘 | [框架出现可复现问题，需要修复](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架出现可复现问题，需要修复.md>)<br>[框架中两套机制重复，需要合并或删减](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架中两套机制重复，需要合并或删减.md>)<br>[框架文件位置混乱，需要整理目录](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架文件位置混乱，需要整理目录.md>)<br>[想检查本地框架是否自洽，先做静态审核](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>)<br>[想请独立 Agent 审核 GitHub 上的框架快照](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/想请独立 Agent 审核 GitHub 上的框架快照.md>)<br>[想用一个小任务实际验证框架流程](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)<br>[收到外部审核意见，先核实哪些值得修改](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)<br>[实际开发遇到问题，想判断框架是否需要改进](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/实际开发遇到问题，想判断框架是否需要改进.md>)<br>[框架刚改完，只检查文件和引用](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架刚改完，只检查文件和引用.md>)<br>[框架刚改完，在指定外部项目验证工具行为](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架刚改完，在指定外部项目验证工具行为.md>)<br>[框架任务还没做完，准备换一个对话继续](<../../docs/quick-reference/Yaya 框架维护/维护与复盘/框架任务还没做完，准备换一个对话继续.md>) |
 
 ### Project：Godot 项目开发
 
-| JSON 分类 | 场景编号 | 提示词名称 | 适用时机、现有入口与结果 |
-| --- | --- | --- | --- |
-| 项目创建与接入 | 2.1 | 创建空白项目 | 指定空目标目录；创建器按清单复制并建立 Git 仓库与本地初始提交，后续进入新项目 |
-| 项目创建与接入 | 2.4 | 复制并迁移旧框架项目 | 原项目与当前框架只读；在独立目标保留当前成果、转换必要格式、实际验证并交接；一次性报告保存于 `reports/maintenance/framework-migration/migration.md`，不重做功能或冒充验收 |
-| 项目创建与接入 | 3.1、3.4、3.5 | 准备 Godot 开发环境 | 首次配置完整记录，后续更新追加差异与实际检查；按普通项目 Git 规则提交。报告保留见 3.5；仅配置时说明尚需的首次扫描 |
-| 需求设计 | 4.11 | 轻量讨论与澄清 | 想法、困惑与已有决定；project-clarifier 只补问影响当前判断的缺口，交付对话结论 |
-| 需求设计 | 4.27 | 调研外部资料与技术方案 | 具体问题、项目版本/约束和输出偏好；按需直接查询或委派 researcher，保存有价值的报告，调查不授权实施或实验 |
-| 需求设计 | 4.12 | 澄清并记录项目术语 | 概念、场景与已确认内容；按消除歧义所需的粒度维护定义、改名、废弃和引用，保持含义时不初始化需求或规划 |
-| 需求设计 | 4.20 | 确定或调整美术风格 | 当前体验、资产族、参考与显示条件；design-art-direction 维护共享规范，不制作样张 |
-| 需求设计 | 4.20 | 确定或调整声音风格 | 当前声音角色、参考与约束；design-audio-direction 维护方向，局部音频规格另行维护 |
-| 需求设计 | 4.9 | 验证视觉、玩法或技术假设 | 一个视觉、玩法或技术问题、资源、允许范围、预算与观察标准；最小实验后交付结论、局限和代码去向，不自动进入正式开发 |
-| 需求设计 | 4.1.1 | 从想法或已有 GDD 整理 Product 并衔接规划 | 想法或 GDD 输入放入末尾材料区，复用明确设计并核对项目约束；保留原件，来源章节对应到 Product 或所属专业规格，规划读取这些已确认来源；新版 GDD 按实际变化交所属入口处理并分析计划影响，自有文档与必要链接一并检查、提交与交接；只规划当前 Product，不开始实现 |
-| 需求设计 | 4.13 | 从已有实现补齐需求与任务 | 指定成果、意图和文档/交付范围；沿 Product、规划与执行入口补齐当前依据和真实缺口，不以代码存在替代需求批准或当前完成验证 |
-| 需求设计 | 4.1.5 | 只读适配外部需求内容 | 文本、对话摘录、文件或附件说明放入末尾材料区；保持原意并按现有路由输出规范化 Markdown 草稿、衔接建议与待定项，不写文件、调用写入流程或执行任务 |
-| 需求设计 | 4.1.2、4.25 | 新增、删除或调整玩法需求 | 希望改变的行为及范围；Product change/spec elicitor 明确变化并衔接计划，新增模块保持稳定编号和实际依赖顺序 |
-| 需求设计 | 4.1.3、4.15、4.20 | 设计界面与交互 | UI Skill 直接维护界面规格，Product 保存行为与引用，实质变化分析计划影响；不实现场景或兼任 UX 审核 |
-| 需求设计 | 4.1.4、4.15、4.20 | 设计音效与音乐需求 | audio Skill 直接维护具体资源规格与试听缺口，共享方向由 Sound Bible 负责；不制作或播放音频 |
-| 任务规划 | 4.2.1 | 拆分当前 Product 的 Feature | 当前 Product 及范围；核对顺序和前项完成情况，写入前展示数量与逐项摘要，默认确认具体方案后追加 Feature、依赖和测试关系 |
-| 任务规划 | 4.2.2、4.21 | 需求变化后同步已有任务 | 已有台账及 Product/专业来源/规则变化；核对来源历史覆盖与所有适用消费者。发现来源输入旧链接时，先按授权交所属入口修复、提交并刷新分析，再写计划；仅计划引用修正随计划提交，保留历史 |
-| 日常开发 | 4.3.1 | 判断当前状态与下一步 | 状态问题直接说明事实；可选提供 Codex 输出，结合项目证据核对结论、建议与停点；需要措辞时按需读 JSON 派生的精选参考，起草回信或续接提示词；示例不改变路由、既有授权或停止条件，不执行建议或代作人工验收 |
-| 日常开发 | 4.3.2 | 执行指定或下一项 Feature | 默认执行一项，按需读取并复用有效快照；已有明确后续授权时交接后续接，否则在本项交付后停止 |
-| 日常开发 | 4.3.4 | 以 Goal 逐个推进 Product 至人工验收 | 填写本次 Product 范围与排除项，在启动时核实后自主规划、实现、验证和提交；拆分先展示数量与逐项摘要，按明确自主授权继续写入；逐个完成后再拆下一 Product，首个 manual Feature 可体验且备妥验收材料即结束本段 Goal，保留任务未完成状态；Feature 内原型确认仅阻塞依赖实现，不算 Goal 达成；独立原型 Feature 按同一人工交接条件处理 |
-| 日常开发 | 4.3.3、4.26 | 继续中断的当前任务 | 当前任务与新增信息；切换回来后从真实停点完成已授权范围的适用实现、验证与交付，仅在完成、暂停、必要前置受阻或缺少实质决定时停止 |
-| 修复与改进 | 4.10 | 只读调查架构改进机会 | 指定维护痛点或下一项变化；核对源码和相关决定，给有依据的候选、最小调整及验证建议，不实施 |
-| 修复与改进 | 4.5.1 | 定位与修复 Bug | 前文说明期望，实际表现、复现与日志放入末尾材料区；当前任务修复或 engineering bug，意图变化转 Product。本次任务在必要验证与用户明确验收通过后才提交；此前保留计划和修复改动，不作阶段性/checkpoint 提交，多轮修复及续接沿用此条件 |
-| 修复与改进 | 4.5.2 | 行为保持的重构 | 明确痛点、范围和不变行为；engineering refactor，必要时按请求选择异味 |
-| 修复与改进 | 4.5.3、4.18 | 工程维护与工具调整 | 实现类维护走 engineering maintenance 与相称验证；独立规则文档维护按写前自检与授权契约处理，不虚构 Feature |
-| 修复与改进 | 4.14 | 审核并原地替换项目框架 | 指定项目与待采用框架来源；审核通过即在项目内替换纯框架、保留数据、无损适配，必要验证后一次提交，不新增 Feature 或自动升级机制 |
-| 资源、性能与数据 | 4.16 | 分析并整理任务资源清单 | 当前任务、已有资源和清单位置；保存最小资源集合、准备规格及文件去向，交接缺口，本入口不制作、购买、复制素材或搭建场景 |
-| 资源、性能与数据 | 4.6、4.16 | 接入或替换游戏资源 | 提供资源及接入目标；有清单时核对并更新同一份，沿现有 Feature/Product/maintenance 路径处理引用、导入与体验 |
-| 资源、性能与数据 | 4.7 | 定位并优化性能 | 问题场景、设备、指标及本次范围；仅测量诊断交付证据与建议，测量后优化由已有任务或独立维护承接；固定构建和采样条件，核对获准修改的效果与代价 |
-| 资源、性能与数据 | 4.8 | 调整存档或迁移项目数据 | 当前/目标结构与必须保留的数据；明确迁移要求，在样本副本验证，不自动引入版本系统 |
-| 资源、性能与数据 | 4.23 | 设计或实施本地化 | 语言与范围、规格/实现授权；content-localization 维护规范或返回原任务交付运行修改 |
-| 资源、性能与数据 | 4.24 | 补充运行观测信号 | 要回答的问题、允许修改与运行范围；最小信号、实际版本、开销和清理 |
-| 资源、性能与数据 | 4.24 | 执行长期运行验证 | 场景、时长、预算与停止条件；原始记录、实际覆盖和未完成项 |
-| 验证与收尾 | 5.7 | 检查手动修改与需求的一致性 | 指定修改范围、意图及比较基线；只读核对未提交或指定提交与 Product/Feature 的一致性，区分冲突与证据缺口，建议现有处理入口和所需验证 |
-| 验证与收尾 | 5.1、5.2 | 单独验证某次变更 | 指定差异及允许的静态/测试/导入/启动范围；静态检查不附加导入阶段，授权导入与首次扫描按对应规范处理，报告真实结果 |
-| 验证与收尾 | 5.5.1 | 独立审查代码或指定变更 | 指定 Feature、提交/差异或模块、文件快照及评审时机；变更沿用 Stage 6，现状走只读审核且不虚构 Feature/差异；一份报告分别判断需求和质量，按授权处理修复 |
-| 验证与收尾 | 5.5.2 | 整理人工验收与反馈 | 按单 Feature 准备绑定版本的 JSON 清单，读取逐项结果并核对原件；有效全通过提交即可接受，也保留明确口头入口，不重复确认或预填通过 |
-| 验证与收尾 | 5.9 | 独立审核专业成果 | 指定领域、版本、原始证据与运行权限；独立实例组合适用方法，报告覆盖和限制，不修复或代替人工验收 |
-| 验证与收尾 | 6.2、4.26 | 整理进度与任务交接 | 暂停、切换工作、换会话或文档过长；写入前置满足时整理 Progress/历史，否则保留文件并只读交接，注明未知修改和记录缺口，保留任务状态与验收语义 |
-| 经验沉淀 | 6.4 | 阶段性总结与复用脚本沉淀 | 完成范围与知识/脚本沉淀授权；优先查现有主题，从真实记录总结实践经验、识别重复脚本，按需最小固化 |
+| 分类 | 同名场景与提示词入口 |
+| --- | --- |
+| 项目创建与接入 | [旧项目想采用当前框架，先评估复制迁移方案](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/旧项目想采用当前框架，先评估复制迁移方案.md>)<br>[复制迁移方案已确定，现在迁移旧项目](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/复制迁移方案已确定，现在迁移旧项目.md>)<br>[准备开始新游戏，先创建空白项目](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/准备开始新游戏，先创建空白项目.md>)<br>[空白项目已经创建，现在配置开发环境](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/空白项目已经创建，现在配置开发环境.md>)<br>[工具位置或版本变了，需要更新项目环境](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/工具位置或版本变了，需要更新项目环境.md>)<br>[配置中的工具路径失效了，需要恢复可用环境](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/配置中的工具路径失效了，需要恢复可用环境.md>)<br>[第一次运行项目，Godot 还没有完成资源扫描](<../../docs/quick-reference/Godot 项目开发/项目创建与接入/第一次运行项目，Godot 还没有完成资源扫描.md>) |
+| 需求设计 | [方案有一个外部问题没确定，需要查资料](<../../docs/quick-reference/Godot 项目开发/需求设计/方案有一个外部问题没确定，需要查资料.md>)<br>[功能已经写出来，需要补齐需求和任务记录](<../../docs/quick-reference/Godot 项目开发/需求设计/功能已经写出来，需要补齐需求和任务记录.md>)<br>[拿到一份外部需求，先整理成项目可用的草稿](<../../docs/quick-reference/Godot 项目开发/需求设计/拿到一份外部需求，先整理成项目可用的草稿.md>)<br>[有一个项目问题没想清楚，先讨论](<../../docs/quick-reference/Godot 项目开发/需求设计/有一个项目问题没想清楚，先讨论.md>)<br>[项目里同一个词有不同理解，需要统一并记录](<../../docs/quick-reference/Godot 项目开发/需求设计/项目里同一个词有不同理解，需要统一并记录.md>)<br>[界面效果还没确定，先用真实素材试一下](<../../docs/quick-reference/Godot 项目开发/需求设计/界面效果还没确定，先用真实素材试一下.md>)<br>[玩法效果还没确定，先做小实验](<../../docs/quick-reference/Godot 项目开发/需求设计/玩法效果还没确定，先做小实验.md>)<br>[技术方案是否可行还不确定，先做验证](<../../docs/quick-reference/Godot 项目开发/需求设计/技术方案是否可行还不确定，先做验证.md>)<br>[只有游戏想法，需要整理第一份 Product](<../../docs/quick-reference/Godot 项目开发/需求设计/只有游戏想法，需要整理第一份 Product.md>)<br>[已有 GDD，需要整理为项目 Product](<../../docs/quick-reference/Godot 项目开发/需求设计/已有 GDD，需要整理为项目 Product.md>)<br>[已有模块的玩法要求变了，需要更新需求](<../../docs/quick-reference/Godot 项目开发/需求设计/已有模块的玩法要求变了，需要更新需求.md>)<br>[想增加一个独立玩法模块，需要确定边界和顺序](<../../docs/quick-reference/Godot 项目开发/需求设计/想增加一个独立玩法模块，需要确定边界和顺序.md>)<br>[当前资产的美术方向不明确，需要定下来](<../../docs/quick-reference/Godot 项目开发/需求设计/当前资产的美术方向不明确，需要定下来.md>)<br>[当前模块的声音风格不明确，需要定下来](<../../docs/quick-reference/Godot 项目开发/需求设计/当前模块的声音风格不明确，需要定下来.md>)<br>[玩家要做什么已确定，需要设计界面和交互](<../../docs/quick-reference/Godot 项目开发/需求设计/玩家要做什么已确定，需要设计界面和交互.md>)<br>[已确认的界面要求要变，需要更新规格并明确影响](<../../docs/quick-reference/Godot 项目开发/需求设计/已确认的界面要求要变，需要更新规格并明确影响.md>)<br>[声音用途已确定，需要列出音频文件准备要求](<../../docs/quick-reference/Godot 项目开发/需求设计/声音用途已确定，需要列出音频文件准备要求.md>)<br>[图片用途已确定，需要列出视觉文件准备要求](<../../docs/quick-reference/Godot 项目开发/需求设计/图片用途已确定，需要列出视觉文件准备要求.md>)<br>[已确认的美术方向要调整，需要更新规范并检查影响](<../../docs/quick-reference/Godot 项目开发/需求设计/已确认的美术方向要调整，需要更新规范并检查影响.md>)<br>[已确认的声音方向要调整，需要更新规范并检查影响](<../../docs/quick-reference/Godot 项目开发/需求设计/已确认的声音方向要调整，需要更新规范并检查影响.md>)<br>[实现前发现设计边界不清，先确定最小方案](<../../docs/quick-reference/Godot 项目开发/需求设计/实现前发现设计边界不清，先确定最小方案.md>) |
+| 日常开发 | [已有实现和任务已对齐，现在补验证并办理交付](<../../docs/quick-reference/Godot 项目开发/日常开发/已有实现和任务已对齐，现在补验证并办理交付.md>)<br>[Product 范围已确定，想自动推进到首次人工验收](<../../docs/quick-reference/Godot 项目开发/日常开发/Product 范围已确定，想自动推进到首次人工验收.md>)<br>[人工验收已有结果，继续原 Goal](<../../docs/quick-reference/Godot 项目开发/日常开发/人工验收已有结果，继续原 Goal.md>)<br>[想知道项目现在做到哪里](<../../docs/quick-reference/Godot 项目开发/日常开发/想知道项目现在做到哪里.md>)<br>[当前停住了，想确定下一步做什么](<../../docs/quick-reference/Godot 项目开发/日常开发/当前停住了，想确定下一步做什么.md>)<br>[收到 Codex 的回复，想判断并写出下一条指令](<../../docs/quick-reference/Godot 项目开发/日常开发/收到 Codex 的回复，想判断并写出下一条指令.md>)<br>[Feature 已规划并可开始，现在实施这一项](<../../docs/quick-reference/Godot 项目开发/日常开发/Feature 已规划并可开始，现在实施这一项.md>)<br>[界面布局已经确定，想先做一个能点击的原型](<../../docs/quick-reference/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md>) |
+| 任务规划 | [当前模块的需求已确认，准备做项目的第一份 Feature 计划](<../../docs/quick-reference/Godot 项目开发/任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md>)<br>[前一个模块已完成，准备规划下一个 Product](<../../docs/quick-reference/Godot 项目开发/任务规划/前一个模块已完成，准备规划下一个 Product.md>)<br>[要求已经改好，开工前需要同步 Feature 计划](<../../docs/quick-reference/Godot 项目开发/任务规划/要求已经改好，开工前需要同步 Feature 计划.md>)<br>[Feature 正在开发，已确认要求发生变化](<../../docs/quick-reference/Godot 项目开发/任务规划/Feature 正在开发，已确认要求发生变化.md>)<br>[Feature 已交付，后来确认要改变要求](<../../docs/quick-reference/Godot 项目开发/任务规划/Feature 已交付，后来确认要改变要求.md>)<br>[已有计划，但采用的来源基线无法核实](<../../docs/quick-reference/Godot 项目开发/任务规划/已有计划，但采用的来源基线无法核实.md>) |
+| 修复与改进 | [已经选定新框架，检查适用后在当前项目替换](<../../docs/quick-reference/Godot 项目开发/修复与改进/已经选定新框架，检查适用后在当前项目替换.md>)<br>[某处代码总是难改，先调查是否值得重构](<../../docs/quick-reference/Godot 项目开发/修复与改进/某处代码总是难改，先调查是否值得重构.md>)<br>[已经记录了几个代码问题，想选一个值得重构的](<../../docs/quick-reference/Godot 项目开发/修复与改进/已经记录了几个代码问题，想选一个值得重构的.md>)<br>[Feature 交付前发现 Bug](<../../docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md>)<br>[Feature 交付后发现 Bug](<../../docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付后发现 Bug.md>)<br>[发现异常，先定位原因，不修改实现](<../../docs/quick-reference/Godot 项目开发/修复与改进/发现异常，先定位原因，不修改实现.md>)<br>[重构目标已经选定，现在调整结构并保持行为](<../../docs/quick-reference/Godot 项目开发/修复与改进/重构目标已经选定，现在调整结构并保持行为.md>)<br>[项目工具需要修改，按工程任务完成](<../../docs/quick-reference/Godot 项目开发/修复与改进/项目工具需要修改，按工程任务完成.md>)<br>[项目约束已确认要改，现在维护规则文档](<../../docs/quick-reference/Godot 项目开发/修复与改进/项目约束已确认要改，现在维护规则文档.md>)<br>[共享能力准备修改，先明确契约和影响范围](<../../docs/quick-reference/Godot 项目开发/修复与改进/共享能力准备修改，先明确契约和影响范围.md>)<br>[文档和实际状态对不上，先确定应该修复哪里](<../../docs/quick-reference/Godot 项目开发/修复与改进/文档和实际状态对不上，先确定应该修复哪里.md>) |
+| 资源、性能与数据 | [任务已经明确，需要列出要准备的素材](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/任务已经明确，需要列出要准备的素材.md>)<br>[素材文件已经收到，先登记来源并核对是否齐全](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/素材文件已经收到，先登记来源并核对是否齐全.md>)<br>[音效文件和播放位置都已确定，现在要把声音接进游戏](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/音效文件和播放位置都已确定，现在要把声音接进游戏.md>)<br>[图片和消费位置已确定，现在接入界面](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/图片和消费位置已确定，现在接入界面.md>)<br>[动画资源已确定，现在接到对应动作](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/动画资源已确定，现在接到对应动作.md>)<br>[已有图片要替换，需要保留界面引用](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/已有图片要替换，需要保留界面引用.md>)<br>[已有音频要替换，需要保留播放关系](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/已有音频要替换，需要保留播放关系.md>)<br>[已有动画要替换，需要保留动作衔接](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/已有动画要替换，需要保留动作衔接.md>)<br>[准备增加语言支持，先确定本地化要求](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/准备增加语言支持，先确定本地化要求.md>)<br>[本地化要求已确定，现在接入目标语言](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/本地化要求已确定，现在接入目标语言.md>)<br>[问题缺少证据，先加临时观测信号](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/问题缺少证据，先加临时观测信号.md>)<br>[已经确定需要长期保留某项运行指标](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/已经确定需要长期保留某项运行指标.md>)<br>[短测看不出问题，需要按约定负载持续运行](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/短测看不出问题，需要按约定负载持续运行.md>)<br>[运行出现卡顿，先测量并定位瓶颈](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/运行出现卡顿，先测量并定位瓶颈.md>)<br>[性能瓶颈已确认，现在优化并对比结果](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/性能瓶颈已确认，现在优化并对比结果.md>)<br>[存档结构需要修改，旧数据不需要继续使用](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构需要修改，旧数据不需要继续使用.md>)<br>[存档结构变了，需要保留并转换已有数据](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构变了，需要保留并转换已有数据.md>)<br>[音乐文件和切换时机已确定，现在接入背景音乐](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/音乐文件和切换时机已确定，现在接入背景音乐.md>)<br>[场景文件及依赖已准备好，现在接入当前游戏](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/场景文件及依赖已准备好，现在接入当前游戏.md>)<br>[已有场景需要替换，必须保留游戏中的调用关系](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/已有场景需要替换，必须保留游戏中的调用关系.md>) |
+| 验证与收尾 | [我手动改过项目，想确认是否仍符合要求](<../../docs/quick-reference/Godot 项目开发/验证与收尾/我手动改过项目，想确认是否仍符合要求.md>)<br>[代码刚改完，只检查解析和 lint](<../../docs/quick-reference/Godot 项目开发/验证与收尾/代码刚改完，只检查解析和 lint.md>)<br>[已有变更需要重新运行相关自动测试](<../../docs/quick-reference/Godot 项目开发/验证与收尾/已有变更需要重新运行相关自动测试.md>)<br>[场景或资源刚改完，需要实际启动检查](<../../docs/quick-reference/Godot 项目开发/验证与收尾/场景或资源刚改完，需要实际启动检查.md>)<br>[界面已经做出，需要独立检查交互体验](<../../docs/quick-reference/Godot 项目开发/验证与收尾/界面已经做出，需要独立检查交互体验.md>)<br>[视觉成果已准备好，需要独立检查美术效果](<../../docs/quick-reference/Godot 项目开发/验证与收尾/视觉成果已准备好，需要独立检查美术效果.md>)<br>[音频成果已准备好，需要独立检查听觉效果](<../../docs/quick-reference/Godot 项目开发/验证与收尾/音频成果已准备好，需要独立检查听觉效果.md>)<br>[素材已收到，需要独立检查技术规格](<../../docs/quick-reference/Godot 项目开发/验证与收尾/素材已收到，需要独立检查技术规格.md>)<br>[翻译已接入，需要独立检查语言与显示](<../../docs/quick-reference/Godot 项目开发/验证与收尾/翻译已接入，需要独立检查语言与显示.md>)<br>[数值方案已有样本，需要独立检查平衡](<../../docs/quick-reference/Godot 项目开发/验证与收尾/数值方案已有样本，需要独立检查平衡.md>)<br>[这次变更已准备好，需要独立代码审核](<../../docs/quick-reference/Godot 项目开发/验证与收尾/这次变更已准备好，需要独立代码审核.md>)<br>[想检查某个模块现状，不依赖 Feature 或差异](<../../docs/quick-reference/Godot 项目开发/验证与收尾/想检查某个模块现状，不依赖 Feature 或差异.md>)<br>[Feature 已能体验，需要准备人工验收清单](<../../docs/quick-reference/Godot 项目开发/验证与收尾/Feature 已能体验，需要准备人工验收清单.md>)<br>[人工验收 JSON 已填好，需要导入结果](<../../docs/quick-reference/Godot 项目开发/验证与收尾/人工验收 JSON 已填好，需要导入结果.md>)<br>[已经实际体验，需要记录我的明确验收结论](<../../docs/quick-reference/Godot 项目开发/验证与收尾/已经实际体验，需要记录我的明确验收结论.md>)<br>[测试已经通过，但填错报告路径导致导入失败](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)<br>[测试摘要还在，但原始报告找不到了](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试摘要还在，但原始报告找不到了.md>)<br>[实现又改过了，需要更新已经过期的验证证据](<../../docs/quick-reference/Godot 项目开发/验证与收尾/实现又改过了，需要更新已经过期的验证证据.md>)<br>[测试运行中断了，需要从真实结果恢复验证](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试运行中断了，需要从真实结果恢复验证.md>)<br>[没有 Feature，只想运行指定组件的自动测试](<../../docs/quick-reference/Godot 项目开发/验证与收尾/没有 Feature，只想运行指定组件的自动测试.md>)<br>[测量数据已经取得，需要独立核实结论是否成立](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测量数据已经取得，需要独立核实结论是否成立.md>) |
+| 项目恢复与交接 | [换了一个对话，想继续上次没做完的 Feature](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/换了一个对话，想继续上次没做完的 Feature.md>)<br>[仍在原对话，想继续暂停的 Feature](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/仍在原对话，想继续暂停的 Feature.md>)<br>[进度记录太长，需要整理当前状态和历史](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/进度记录太长，需要整理当前状态和历史.md>)<br>[Feature 还没做完，准备换一个对话继续](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/Feature 还没做完，准备换一个对话继续.md>)<br>[当前 Feature 需要暂停，先保存真实停点](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/当前 Feature 需要暂停，先保存真实停点.md>)<br>[当前任务已经暂停，准备切换到另一项工作](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/当前任务已经暂停，准备切换到另一项工作.md>)<br>[当前工作没有 Feature，需要先暂停并保存停点](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，需要先暂停并保存停点.md>)<br>[当前工作没有 Feature，准备换一个对话继续](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，准备换一个对话继续.md>)<br>[外部调研还没结束，继续查清原来的问题](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/外部调研还没结束，继续查清原来的问题.md>)<br>[项目问题还没讨论清楚，继续原来的讨论](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/项目问题还没讨论清楚，继续原来的讨论.md>)<br>[独立审核中断了，需要继续完成原范围的报告](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/独立审核中断了，需要继续完成原范围的报告.md>) |
+| 经验沉淀 | [一个阶段已经结束，先总结值得保留的经验](<../../docs/quick-reference/Godot 项目开发/经验沉淀/一个阶段已经结束，先总结值得保留的经验.md>)<br>[经验已经确认，需要整理进项目知识](<../../docs/quick-reference/Godot 项目开发/经验沉淀/经验已经确认，需要整理进项目知识.md>)<br>[重复操作已确认值得固化，需要做成项目脚本](<../../docs/quick-reference/Godot 项目开发/经验沉淀/重复操作已确认值得固化，需要做成项目脚本.md>) |
 
-### 保留这些入口的理由
+## 关键保留约束
 
-- 讨论与记录术语共用一个 Skill 的提问方法；两条提示词只区分用户需要的产物和写入授权，不创建两套访谈流程。
-- 初始需求与需求变化、当前 Product 初次拆分与既有计划同步分别提供入口；下一 Product 的规划追加到原台账，不覆盖历史。
-- 外部需求适配只交付对话草稿，区别于正式写入 Product 的 GDD 入口；按内容归属引用现有路由与 Skill，不扩展只读指导 Skill 的职责。用法见 [只整理外部需求内容](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md#只整理外部需求内容)。
-- 原型实验用于回答未决问题，按授权和预算停止；沿用现有记录，不要求先生成完整规格链。
-- UI、音频、资源接入的输入不同；性能测量和存档保留也各有实际目标，故提供独立提示词。 专业方法分别维护自己的来源，运行修改返回原任务；不会形成必须逐项执行的新交付流程。
-- “问下一步”“执行新任务”“续接任务”分别表达指导、执行与续接意图，沿用已有授权；根据 Codex 输出起草回信复用只读指导入口，用法见 [根据 Codex 输出起草回复](../../docs/framework-maintenance/migration-source/reference/skills.md#根据-codex-输出起草回复)。
-- Bug、重构和工程维护分别说明期望行为、保持不变的范围和技术目标。
-- 架构调查从实际源码发现问题；engineering-refactor-select 从既有 notes 选择待办，独立审查检查指定变更或代码现状的正确性、需求符合性与质量。三者关注点与产出不同，调查不自动进入实施。
-- 验证、审查、人工反馈保留独立入口；正常 Feature 仍完成适用测试与验收，独立评审仅在用户明确指定时执行，可等多项交付后集中进行。
-- 进度交接负责接得上；阶段总结负责找值得复用的经验和重复工作。原任务经过留在历史， 知识目录按主题保存提炼出的解释并链接原件，不因复盘重复复制正文、规则和脚本。
+交付前 Bug 留在原 Feature，交付后 Bug 使用独立工程任务；正式交付由项目完成状态与完成记录判定。两条专用 Bug 提示词均保留“实际人工验收前不作任何本地提交”的特有约束，场景页只引用有效提交约束。
 
-两类交接入口由原线程生成结果、使用者复制到新线程，接收方先核对目录、规则、原文和 实际差异再按已有授权续接。框架交接保持只读，项目交接可整理必要的现有文档；都不把 交接当作新实施授权或人工验收，不另建交接文件。用法见 [换到新线程继续](../../docs/framework-maintenance/migration-source/guides/project-knowledge.md#换到新线程继续)。
+已确认术语由 project-terminology 直接保存；只澄清不写入。design-localization-spec 保存语言规格，content-localization 只做既定规格下的运行接入。多个场景可以使用同一职责明确的方法，不复制执行规范。
 
-### 阶段总结与固化边界
+查看记录仅证明读到匹配记录；record-tests 保存整组有效运行引用；validate 才核对当前完成依据。静态检查、测试、专项验证、独立审核和人工体验仍分别按实际义务判断，不能用一个命令退出 0 代替全部完成。
 
-总结依据实际完成记录，区分项目经验、可复用脚本和可能有通用价值的建议。 先找现有覆盖，再比较已有命令、合并脚本和最小新工具；频繁使用和清晰输入输出才是 固化的依据，不以脚本数量、经验条数或潜在边界情况凑成果。
+## 明确的范围边界
 
-获授权的总结整理现有历史与 `docs/knowledge/` 中对应的经验条目；仅建议时不写文件。 脚本实现按本次实际授权与既有工程维护路径处理，说明真实改动和验证。 规则/Skill 修改需要已有明确授权。通用建议可以单独交付， 项目任务不自动修改其他目录。没有新增经验或脚本也是有效结果。
+框架面向单人 Godot 项目，保留普通 Git 内容保护、同目录任务切换和必要独立 Agent；不扩展多人协作、改动归属流程或 worktree 续接。素材制作、未确定的打包发布、自动升级、多引擎与旧项目长期兼容不属于当前承诺。
 
-### 使用边界
+需要实际制作素材的工作停在准备要求与可用输入，不用已有规格或占位文件宣称已具备生产能力。独立副本迁移与一次性原地框架替换保留必要路径和数据保护，不扩展创建器为升级服务。
 
-项目提示词描述当前项目自己的工作，不嵌入维护源机器路径、来源说明或自动同步责任。 “创建空白项目”和“复制并迁移旧框架项目”在接入目标之前读取框架；迁移同时只读原项目，写入及验证只在目标。接入完成后的项目不依赖维护源。 场景名称与输入不同不意味着每次都需新增任务、审批轮次或验证步骤。 简单改名、具体报错、单次清理等可直接提出，不需要额外提示词。 框架发布、自动升级、多引擎及跨平台支持仍不在当前默认范围内。
+## 验证含义
 
-## 本次核对结论与未知项
-
-2026-09-21 资源工作台首期：新增可选的单项查看/试听、组合预览、A/B 与安全保存示例，沿用原型/资源接入入口，不新增 Stage 或提示词。正式复制映射、实际外部项目与新路径无缓存副本均已验证；两处 Godot 行为回归各 11 项通过，最终全项目 lint 为 0 Critical、0 Warning、59 Info。维护 unittest 38 项、项目工具 unittest 159 项通过。完整需求到 Feature 的动态流程、角色加载及人工观感不由这些结果替代。具体范围、修复和原始证据见 [首期验证报告](../reports/asset-workbench-implementation-validation-2026-09-21.md)。
-
-2026-09-21 按需调研：新增 researcher 角色与复制映射，anysearch 仍由用户级安装提供；角色约定自主查询/回退、具体版本查证、按需报告及代码抽取异常提示。24 项相关维护回归通过，覆盖角色复制、文档指纹、advisor 表达与手册构建器；TOML、完整复制清单边界和提示词检查通过。离线手册构建通过：20 篇文档、32 张 Mermaid、459 个源链接。默认沙箱无法读取 npm 缓存，确认已有 11.17.0 后经审批在沙箱外离线构建；未安装依赖。此前同一会话的 anysearch 子 Agent 实测已通过域发现、搜索与正文提取；这不是新增 researcher TOML 的客户端加载验证。本次未生成实际游戏项目、启动 Godot 或验证完整委派流程，浏览器排版与交互仍由用户外部检查。
-
-2026-09-20 专业能力拆分：27 项 Skill 的格式检查通过；28 项维护回归通过，新增核对审核角色复制映射、专业 Markdown/资源清单变动和隔离报告的指纹边界。四个独立上下文场景推演覆盖旧锚点未纳入共享来源、多方法审核与缓存隔离、设计/规格/制作边界、长测中断；发现的旧锚点链接和验证义务措辞已修正。推演不是运行测试；未在真实客户端加载该自定义角色、启动 Godot 或执行完整 Feature，实际权限覆盖与隔离运行仍需在指定外部项目验证。三个制作能力只保留说明，没有可发现的生产 Skill；未新增试玩分析、发布环节或通用证据审核入口。
-
-当前表内可找到代码、Skill/规则或有意保留的人工责任；找到责任入口不等于其复杂度合理。 后续优先复盘 5.3/5.4 的重复证据与尝试链、5.1 的分类触发全量、4.2 的宽松/严格双结论、 4.3/6.3 的固定措辞和逐阶段汇报；项目编码规则的默认 Command 对象也有扩大实现成本的风险。 这些发现见设计复盘，当前不靠增加新场景、新 Gate 或新状态解决。 自动 Hook、独立测试计划、 静态包装/manifest、静态摘要、状态汇总、自动归档和框架升级等旧机制不再作为覆盖依据。 提示词库已分为框架维护与项目开发两个 Project，50 条正文已写入；本文清单与 JSON 逐项对应。原型实验入口复用现有记录，执行规范的 Stage 4/6 包含试玩复现与 需求符合性审查；没有新增运行工具、阶段或证据格式。本次方法调整只做静态核对， 提示词实际导入、Agent 执行效果及完整 Feature 流程未运行验证。
-
-Goal 连续开发入口复用现有规划、执行与人工验收契约；本次仅核对提示词结构、范围授权、逐 Product 顺序和人工交接终点，并同步离线手册，未启动 Goal 或执行游戏开发。
-
-新增的只读架构调查入口只做 JSON、场景清单和授权边界的静态核对；未运行实际项目调查，不以该入口的存在宣称架构质量已改善。
-
-新线程交接新增框架入口并扩展原项目交接入口；只核对 JSON、场景导航、文档链接和授权边界，未实际执行跨线程交接。
-
-GitHub 独立审核入口规定仓库读取、固定提交、静态检查主题、证据状态和报告结构；本次入口调整仅静态核对提示词格式、导航、计数与复制排除边界，并生成离线手册，未实际执行其他模型的 GitHub 审核。
-
-动态审核入口规定一次最小 Product/Feature 的实际开发与逐阶段报告；编写该入口时只核对提示词、现行 Stage/授权边界、文档导航及复制排除，未启动这次动态审核，不以提示词存在宣称流程已实测通过。
-
-外部结果复核入口规定逐条证据核对、事实与改法分别判断、明确分类及讨论后的实施选择；本次只静态核对提示词、导航和授权边界，未收到或实际复核外部报告，不以入口存在宣称外部意见已获采纳。
-
-2026-09-15 新增实际开发反馈入口：仅核对提示词结构、场景对应、文档链接与授权边界，并同步 HTML 阅读版。未提供实际项目反馈供本轮归因，也未执行游戏验证；入口存在不代表框架已由真实项目再次验证。
-
-轻量澄清与 terminology 的引入采用设计适配：借鉴 Matt 的 grilling/domain-modeling 与 progressive-requirement-clarifier 的问题分流思路，未复制其源码、脚本或状态机制。本次检查 Skill 格式、复制清单、JSON、文档引用及讨论/术语维护/行为变化的路由一致性；未运行真实项目对话或完整 Feature 流程。
-
-Product 逐个拆分规则调整生成、同步和交接入口：当前 Product 完成后才拆下一份，后续未规划文档不触发提前生成。核对空台账、追加历史、暂缓文档变化及同步锚点的衔接；沿用原 schema 和检查工具，仅作格式、引用和流程静态核对，未运行真实项目的连续 Product 开发。
-
-以下为此前工具回归记录，不作为本次方法调整的运行证据。旧插件真实 Godot 契约运行复现 5 项误报，修复后 108 项检查通过； 项目工具 unittest 首轮 137 项中 8 失败、1 错误，修正夹具/断言并删除精确文档措辞测试后， 136 项通过。直接解析三个工具脚本成功；直接 lint 3 文件为 0 Critical、0 Warning、1 Info； 环境 readiness 和空白台账 strict 通过。原始失败日志保留，详细原因与报告链接见设计复盘。 测试范围不包含完整新 Feature、主场景或人工体验；没有重新生成项目，也不把以前初始化记录当成本轮通过。 后续如需要实证，使用 1.4 按具体任务选择验证范围，不把本清单变成全套必跑清单。
+`framework/commands/check_scenario_prompt_paths.py` 只读取 JSON 名称与实际目录，验证缺少、多余、重复和非法路径。正文标题、目标、授权、步骤和出口需要独立内容审核；真实工具、Godot 和人工体验需要相应运行证据。提示词、场景和文件存在均不构成这些运行已通过。

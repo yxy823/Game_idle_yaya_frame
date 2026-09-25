@@ -16,7 +16,7 @@ Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md
 
 Use the artifact schemas, Product order and evolution invariants in `methodology/02-feature-list-schema.md`. Apply `methodology/05-document-language.md` for new durable prose; preserve completed history and original evidence instead of translating them. Resolve `document_language` from confirmed configuration.
 
-Git preflight, resumed-task ownership and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
+Git change preservation, same-directory continuation and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
 
 Read applicable `docs/project-rules.md` constraints and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the rule source: proposed rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
 
@@ -55,8 +55,8 @@ Between synchronizations, module files may be added, deleted, renamed—includin
    - Otherwise, use the full index for status, dependencies and derived counts. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
 2. Check Git.
    - Read and report the current branch; `main` and `master` are valid. Do not change branches.
-   - Run `git status --porcelain`. If any staged, unstaged, untracked, deleted, renamed, or conflicted change exists, block this new task and report it. Do not add, stash, restore, discard, or absorb it.
-   - Source Markdown must already be committed separately so the diff and next anchor remain meaningful.
+   - Run `git status --porcelain` and inspect relevant differences. Preserve unfinished work; unrelated changes do not block source analysis. Resolve actual overlapping plan edits or conflicts before dependent writes, without stashing, discarding or absorbing other changes.
+   - Sources used for synchronization must be committed separately before dependent plan writes so the diff and next anchor remain meaningful. Report any relevant uncommitted source and return its approved change to its owner; do not turn an unrelated dirty path into a blanket blocker.
 3. Determine the anchor commit.
    - Prefer `synced_at_commit` from the last `revision_log` entry and verify that the commit is available in the current history. This includes the first `R000` planning baseline defined in `methodology/02-feature-list-schema.md`; its declared coverage is limited to the actually planned Product and adopted sources.
    - Without a usable recorded anchor, inspect planning commits and their actual Product/Feature contents. Choose a verified source state already reflected in the relevant plan, early enough to include all unsynchronized changes to existing work. Merely touching an index/detail, updating notes/status or adding an engineering Feature does not prove source synchronization; neither does the first appearance of an empty copied index. Later Product planning must not silently advance the baseline for older work.
@@ -275,7 +275,7 @@ Return the synchronized plan and remaining work to the calling workflow. Continu
 | Diff and user prior conflict materially | Pause, enumerate mismatches, and ask the user to check for unintended source edits |
 | Product module inventory and actual files differ | Pause, list the discrepancy, and require Product repair rather than guessing |
 | Pre-existing index, detail, or revision data is invalid | Report the original error and resolve the repair scope; do not invent missing history or change unrelated data |
-| This task introduces invalid JSON or an incomplete authorized write | Inspect the actual partial result, correct task-owned errors within the approved actions, and rerun the relevant validation; stop if ownership or the correct recovery is uncertain |
+| This task introduces invalid JSON or an incomplete authorized write | Inspect the actual partial result, correct errors introduced by the approved actions, and rerun the relevant validation; stop dependent writes if the intended recovery is unclear or overlaps preserved work |
 | A file or Git operation fails | Preserve the error and classify it; correct a task-owned invocation error or use permitted recovery, but do not bypass a permission denial, reset/restore history, discard work, or expand scope |
 
 ## Workflow map

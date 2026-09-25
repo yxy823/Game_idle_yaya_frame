@@ -30,7 +30,7 @@ Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#sha
 
 Use the following dimensions as coverage prompts, not question quotas. Reuse known answers and stop probing a dimension once its current scope, observable outcome and material constraints are clear. Return a reviewable draft after the applicable dimensions are covered; leave unrelated future branches for later.
 
-When vocabulary obscures a module's identity, ownership or behavior, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Keep sufficient local definitions in the positioning/data model; attach any proposed shared terminology wording and source links to the draft, distinct from module behavior. Omit the proposal when existing wording is sufficient. The standardizer owns Product and terminology writes.
+When vocabulary obscures a module's identity, ownership or behavior, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Keep sufficient local definitions in the positioning/data model; attach any proposed shared terminology wording and source links to the draft, distinct from module behavior. Omit the proposal when existing wording is sufficient. The Product coordinator owns behavior writes and calls `project-terminology` for confirmed meaning-preserving definitions.
 
 ## Stage 1: Product positioning
 

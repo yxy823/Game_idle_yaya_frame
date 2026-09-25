@@ -1,5 +1,7 @@
 # 提示词与场景职责全量审核
 
+本页保留实施前基线的判断；文中行号和旧数量属于当时版本，阅读链接已指向迁移后的对应材料。实施及复验见[实际验证报告](framework-implementation-validation-2026-09-25.md)。
+
 ## 检查基线与范围
 
 本报告由子智能体 `audit_all_prompts_scenarios` 独立形成，日期为 2026-09-25。检查基线为提交 `8fe14d6e4f63fe824eef485d34ea6313f31ac65f` 的提示词、八篇场景样稿、相关 Skill 和工具；审核期间主智能体正在补充职责准则及维护入口。结论采用本轮已确认的[职责设计准则](../baselines/skill-script-prompt-design.md)，不把正在进行的规则文档更新当成被审入口已经修复。
@@ -117,14 +119,14 @@
 
 | 当前样稿与入口位置 | 当前引用提示词 | 单一场景内容判断、实际方法和迁移建议 |
 | --- | --- | --- |
-| [首次计划](../../docs/quick-reference/requirements/ready-to-plan/plan-confirmed-module.md)，行 25 | 拆分当前 Product 的 Feature | H1 为“当前模块的需求已确认，准备做项目的第一份 Feature 计划”。正文限定空索引、空修订，`feature-plan` 建立首次 R000，组件合并和台账检查用于正式计划；该范围比通用提示词窄且成立。迁入 `任务规划/`，写同名专用提示词。来源提交与计划提交、不能伪造历史的要求应保留。 |
-| [开工前改要求](../../docs/quick-reference/requirements/confirmed-plan/change-before-development.md)，行 25 | 需求变化后同步已有任务 | H1 为“Feature 还没开工，但已经确认要修改其中一条要求”。正文实际入口是来源已修改并提交，当前动作只有 `feature-sync` 计划同步；标题容易让人以为会代改需求。建议改为“要求已经改好，开工前需要同步 Feature 计划”，同步更新同名提示词和 H1；迁入 `任务规划/`。 |
-| [已定界面原型](../../docs/quick-reference/interface-assets/ui-ready/build-clickable-prototype.md)，行 25 | 执行指定或下一项 Feature | H1 为“界面布局已经确定，想先做一个能点击的原型”。真实输入是已确认规格、素材和当前 Feature；输出可体验原型及接受范围。`feature-execute` 可复用，上游 `design-ui-spec` 只读取成果；另写专用提示词，放 `日常开发/`。通用执行入口不能代替本页；不要混入“布局尚未确定的实验”。 |
-| [新增音效接入](../../docs/quick-reference/interface-assets/audio-ready/connect-approved-sound.md)，行 21 | 接入或替换游戏资源 | H1 为“音效文件和播放位置都已确定，现在要把声音接进游戏”。已排除制作、风格和替换共享资源，使用 `content-asset-integration` 并回当前 `feature-execute` 验证；迁入 `资源、性能与数据/`，提示词只包含新增音效、真实触发与试听。 |
-| [交付前 Bug](../../docs/quick-reference/issues/current-feature/bug-after-tests.md)，行 31 | 定位与修复 Bug | H1 为“Feature 交付前发现 Bug”。正文清楚地留在当前 Feature，不调用工程规划新建任务；使用 `feature-execute`、实际测试与结果导入。迁入 `修复与改进/`，独立提示词不再含交付后新建任务分支。保留已有入口验收前不提交的特有约束。 |
-| [交付后 Bug](../../docs/quick-reference/issues/completed-feature/bug-after-delivery.md)，行 31 | 定位与修复 Bug | H1 为“Feature 交付后发现 Bug”。使用 `engineering-change-plan bug` 建立新任务，再 `feature-execute`，原历史不改；迁入 `修复与改进/`。专用提示词需明确新 Bug 身份、原有效要求及历史保护，不能复制交付前正文只换名字。 |
-| [结果导入恢复](../../docs/quick-reference/verification/existing-results/import-passed-tests.md)，行 23 | 继续中断的当前任务 | H1 为“测试已经通过，但结果没有导入成功”。正文实际仅处理错误报告路径，原件丢失/过期/失败排除。建议同名体系使用更准确的“测试已经通过，但填错报告路径导致导入失败”，迁入 `验证与收尾/`。专用提示词限定整组 `record-tests` 重新导入，不改代码、不重跑有效测试；S4 的 `show` 描述与实现冲突，见下一节。 |
-| [新对话续接](../../docs/quick-reference/resumption/new-conversation/resume-unfinished-feature.md)，行 21 | 继续中断的当前任务 | H1 为“换了一个对话，想继续上次没做完的 Feature”。接收方核实同一目录、真实停点和原件，`feature-execute` 继续原授权；迁入 `日常开发/`，写同名专用提示词。不要把它作为仅恢复测试引用的备用入口，也不重建任务或 worktree。 |
+| [首次计划](<../../docs/quick-reference/Godot 项目开发/任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md>)，行 25 | 拆分当前 Product 的 Feature | H1 为“当前模块的需求已确认，准备做项目的第一份 Feature 计划”。正文限定空索引、空修订，`feature-plan` 建立首次 R000，组件合并和台账检查用于正式计划；该范围比通用提示词窄且成立。迁入 `任务规划/`，写同名专用提示词。来源提交与计划提交、不能伪造历史的要求应保留。 |
+| [开工前改要求](<../../docs/quick-reference/Godot 项目开发/任务规划/要求已经改好，开工前需要同步 Feature 计划.md>)，行 25 | 需求变化后同步已有任务 | H1 为“Feature 还没开工，但已经确认要修改其中一条要求”。正文实际入口是来源已修改并提交，当前动作只有 `feature-sync` 计划同步；标题容易让人以为会代改需求。建议改为“要求已经改好，开工前需要同步 Feature 计划”，同步更新同名提示词和 H1；迁入 `任务规划/`。 |
+| [已定界面原型](<../../docs/quick-reference/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md>)，行 25 | 执行指定或下一项 Feature | H1 为“界面布局已经确定，想先做一个能点击的原型”。真实输入是已确认规格、素材和当前 Feature；输出可体验原型及接受范围。`feature-execute` 可复用，上游 `design-ui-spec` 只读取成果；另写专用提示词，放 `日常开发/`。通用执行入口不能代替本页；不要混入“布局尚未确定的实验”。 |
+| [新增音效接入](<../../docs/quick-reference/Godot 项目开发/资源、性能与数据/音效文件和播放位置都已确定，现在要把声音接进游戏.md>)，行 21 | 接入或替换游戏资源 | H1 为“音效文件和播放位置都已确定，现在要把声音接进游戏”。已排除制作、风格和替换共享资源，使用 `content-asset-integration` 并回当前 `feature-execute` 验证；迁入 `资源、性能与数据/`，提示词只包含新增音效、真实触发与试听。 |
+| [交付前 Bug](<../../docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md>)，行 31 | 定位与修复 Bug | H1 为“Feature 交付前发现 Bug”。正文清楚地留在当前 Feature，不调用工程规划新建任务；使用 `feature-execute`、实际测试与结果导入。迁入 `修复与改进/`，独立提示词不再含交付后新建任务分支。保留已有入口验收前不提交的特有约束。 |
+| [交付后 Bug](<../../docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付后发现 Bug.md>)，行 31 | 定位与修复 Bug | H1 为“Feature 交付后发现 Bug”。使用 `engineering-change-plan bug` 建立新任务，再 `feature-execute`，原历史不改；迁入 `修复与改进/`。专用提示词需明确新 Bug 身份、原有效要求及历史保护，不能复制交付前正文只换名字。 |
+| [结果导入恢复](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)，行 23 | 继续中断的当前任务 | H1 为“测试已经通过，但结果没有导入成功”。正文实际仅处理错误报告路径，原件丢失/过期/失败排除。建议同名体系使用更准确的“测试已经通过，但填错报告路径导致导入失败”，迁入 `验证与收尾/`。专用提示词限定整组 `record-tests` 重新导入，不改代码、不重跑有效测试；S4 的 `show` 描述与实现冲突，见下一节。 |
+| [新对话续接](<../../docs/quick-reference/Godot 项目开发/项目恢复与交接/换了一个对话，想继续上次没做完的 Feature.md>)，行 21 | 继续中断的当前任务 | H1 为“换了一个对话，想继续上次没做完的 Feature”。接收方核实同一目录、真实停点和原件，`feature-execute` 继续原授权；迁入 `日常开发/`，写同名专用提示词。不要把它作为仅恢复测试引用的备用入口，也不重建任务或 worktree。 |
 
 样稿已明确 Skill、执行 Agent、所需材料和关键命令，这部分值得保留。细节核对还表明：测试运行器真实支持 `--feature`、`--scope`，默认 `--phase final`；`record-tests --run` 为可重复参数且整组替换，不是追加。上述事实只支持静态命令契约正确，不代表本次实际运行成功。
 
@@ -144,7 +146,7 @@
 
 ### 3. “查看记录”与“全部完成”含义在样稿和脚本间不一致
 
-**P2，已确认静态契约冲突。** [结果导入恢复页](../../docs/quick-reference/verification/existing-results/import-passed-tests.md)的 S4 表述 `show` 只展示记录；[实际工具](../../../project-source/tools/features/record-feature-completion.py)，行 96–102，在输出 JSON 后调用 `validate_completion_evidence`，以全部完成条件决定返回 0 或 2。
+**P2，已确认静态契约冲突。** [结果导入恢复页](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)的 S4 表述 `show` 只展示记录；[实际工具](../../../project-source/tools/features/record-feature-completion.py)，行 96–102，在输出 JSON 后调用 `validate_completion_evidence`，以全部完成条件决定返回 0 或 2。
 
 因此，即使 `record-tests` 成功保存结果，人工验收尚未完成也可能使后续 `show` 返回 2。它不能作为“测试引用保存失败”的证据。专用恢复场景应分别判断导入退出码和实际保存内容；是否将 `show` 调整为纯读取，由脚本职责审核及获准实现处理。只改样稿措辞不会修复该命令行为；改脚本则需要同步调用方和对应验证。
 
@@ -175,8 +177,8 @@
 | [advisor 精选索引](../../../project-source/skills/project-next-step-advisor/references/prompt-examples.md)和五个分类文件 | 标題与来源行包含旧提示词名字，正文为 JSON 的派生内容 | 用导出器重新生成，不手工复制修改；检查数字锚点重排后导航仍对应实际条目 |
 | [advisor Skill](../../../project-source/skills/project-next-step-advisor/SKILL.md)与[场景参考](../../../project-source/skills/project-next-step-advisor/references/scenarios.md) | 先按规范路由再读示例；参考区分当前/交付后缺陷、状态与续接、性能诊断与实现等 | 检查新入口和被拆 Skill 的职责引用、单人范围及建议措辞；仅提示词改名不自动证明自然语言路由已验证 |
 | [覆盖清单](../baselines/scenario-coverage.md)，提示词使用场景清单 | 逐条列当前 50 个名称，并将多个具体状态映到旧通用入口 | 改为新专用入口的职责说明；删除“为了入口少而复用不同场景”的旧理由，不增加独立机器映射或新场景 ID |
-| [框架 README](../../README.md)与[旧 Skill 导航](../../docs/framework-maintenance/migration-source/reference/skills.md) | 写明现有 50 条、12 条精选，以及旧名称与用途 | 随 JSON 实际变化更新数量/名字，避免固化旧计数；使用说明迁移期间注明现状，不伪称全部已对应 |
-| [旧需求专题](../../docs/framework-maintenance/migration-source/guides/product-and-planning.md)、[工程专题](../../docs/framework-maintenance/migration-source/guides/engineering-changes.md)、[环境专题](../../docs/framework-maintenance/migration-source/getting-started/first-use.md)及[复制迁移](../../docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md) | 正文以旧提示词名称选择入口，有些包含被拆状态的操作 | 按既定手册分工迁移具体场景；保留概念/配置说明，避免在维护原材料和新场景同时维护新流程正文 |
+| [框架 README](../../README.md)与[旧 Skill 导航](../../docs/operation-manual/skills-and-agents.md) | 写明现有 50 条、12 条精选，以及旧名称与用途 | 随 JSON 实际变化更新数量/名字，避免固化旧计数；使用说明迁移期间注明现状，不伪称全部已对应 |
+| [旧需求专题](../../docs/operation-manual/requirements-and-planning.md)、[工程专题](../../docs/operation-manual/feature-lifecycle.md)、[环境专题](../../docs/operation-manual/configuration.md)及[复制迁移](../../docs/operation-manual/framework-and-project.md) | 正文以旧提示词名称选择入口，有些包含被拆状态的操作 | 按既定手册分工迁移具体场景；保留概念/配置说明，避免在维护原材料和新场景同时维护新流程正文 |
 | [八篇索引](../../docs/quick-reference/scenario-index.md)和页面互链 | 链接旧英文路径和状态层级 | 迁入 JSON 决定的三层名称后同步索引、同册关联和源材料引用，实际校验相对路径及锚点 |
 | [复制清单](../../project-files.json)，首项 | 整个 `project-source/skills` 复制到 `.agents/skills`，因此精选派生文件随 Skill 进入项目 | 仅改提示词名称无需修改复制规则；Skill 拆分后检查新目录/引用的实际复制结果。完整提示词库、场景手册和审核报告仍不进入生成项目 |
 

@@ -32,7 +32,7 @@ Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers
 
 Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/05-document-language.md`; test semantics follow `methodology/08-testing-strategy.md`. Do not maintain competing Stage instructions here.
 
-Git preflight, clean-worktree and task ownership, staging and eligible local commits follow `agent-rules/00-core/git-worktree-and-commits.md`.
+Inspect and preserve existing changes, continue work in the same project directory, stage the intended scope and create eligible logical commits under `agent-rules/00-core/git-worktree-and-commits.md`.
 
 When rules change, state their approved applicability to current and later work under the incremental maintenance contract. Do not retroactively rewrite historical approvals, and do not assume current work is exempt from a newly confirmed hard constraint.
 
@@ -140,4 +140,4 @@ This template must not create a second concrete-rule tree or copy current engine
 
 ## 3.3 Environment Bootstrap
 
-Environment setup status, observed Godot version, executable paths, and command strings are owned by `docs/methodology-config.json`. The workflow reads that configuration and does not infer or duplicate its current values here.
+`docs/methodology-config.json` owns the document language and Python/Godot executable paths. Actual setup findings and the observed engine version belong in the initialization report and current Progress under `methodology/05-document-language.md`; configuration does not store readiness flags or verification command strings. Do not infer or duplicate the current environment state here.

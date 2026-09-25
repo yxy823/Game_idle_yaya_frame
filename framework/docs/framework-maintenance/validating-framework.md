@@ -1,6 +1,6 @@
 # 框架的复制与运行验证
 
-[维护文档入口](README.md) · 相关：[维护与同步](updating-the-blank-project.md#按修改选择验证范围)、[创建项目](migration-source/getting-started/create-project.md)
+[维护文档入口](README.md) · 相关：[维护与同步](updating-the-blank-project.md#按修改选择验证范围)、[创建器契约](../operation-manual/framework-and-project.md#创建器用法)
 
 `project-source/` 是未初始化的分发材料，包含最小入口 `main/main.tscn`；不在这里启动 Godot， 不预置实际游戏玩法、本机就绪配置、业务需求或已完成任务。可用性通过源材料检查和独立项目中的真实运行共同验证。
 
@@ -14,7 +14,7 @@
 | 真实 Godot 行为 | 导入真实资源；解析、lint、gdUnit、独立入口及消费场景实际运行；按本次变化检查保存、重载、取消、音频和生命周期 | 原始引擎/JUnit/诊断、可选截图与运行观察；画面和声音的人工接受单独记录 |
 | 工作流与迁移 | 对一个明确的小任务，实际经过需求、规划、开发/维护、验证、记录和续接；再在新路径从无缓存副本核对启动与资源引用 | 标明实际执行的 Skill/脚本和未经过分支；不能据一次样例宣称全部 Skill、所有提示词及所有平台已验证 |
 
-每次按改动选择适用层，不要求纯文档修改也建立游戏项目。 现有命令在 [维护工具](../../README.md#按需检查)；实际流程入口仍是提示词库中的“通过实际任务动态审核框架流程”。 Skill 是 Agent 阅读的方法，Prompt 是输入；格式检查、脚本测试和一次真实委派是三种不同证据。 reviewer/researcher 的客户端加载与独立实例执行没有实测时，必须明确保留未验证项。
+每次按改动选择适用层，不要求纯文档修改也建立游戏项目。现有命令在 [维护工具](../../README.md#按需检查)；实际流程入口是提示词库中的“想用一个小任务实际验证框架流程”。Skill 是 Agent 阅读的方法，Prompt 是输入；格式检查、脚本测试和一次真实委派是三种不同证据。reviewer/researcher 的客户端加载与独立实例执行没有实测时，必须明确保留未验证项。
 
 ## 测试载体与文件归属
 
@@ -53,8 +53,11 @@
 | 组合复用与共享 Cue | `asset_composition_reuse_test.gd` | 多实例草稿、共享保存分歧/外部冲突、消费与移除清理 |
 | 管理与编排 | `asset_playback_manager_test.gd`、`asset_feedback_timeline_test.gd`、`asset_timeline_integration_test.gd` | 句柄/预算、分组/抢占、待播音频、接管、冷释放/离树/重入；编排重读、窗口/循环/迟帧、草稿与原生消费 |
 | 消费依赖与启动恢复 | `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` | 四类入口未入树释放、显式 Cue 依赖、最近保存值、缺 Cue 恢复、不支持项/重复/容量反馈 |
+| 批量源格式契约 | `asset_analysis_source_contract_test.gd` | 独立检查当前源格式配置、配置变化与错误恢复；历史结果读取不依赖当前源格式配置 |
 
 保存测试只在测试目录写临时 Cue/资源，不修改示例 Cue。冷释放与已入树后的装卸是不同分支，不能互相替代。
+
+`asset_analyzer_test.gd` 的后台与协议验证同时需要同目录的 `analyzer_process_fixture.py` 和 `analyzer_protocol_cases.json`。复制夹具时保留这两个实际依赖，单独复制套件不能证明协议回归已具备运行条件。批量源格式契约由上表独立套件维护，`asset_analysis_group_test.gd` 继续核对集合、规则和历史等其余职责，不重复承担这四项格式用例。
 
 编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不证明逐采样同步。管理器对象预算与生命周期回归也不替代规模测量。
 

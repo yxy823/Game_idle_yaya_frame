@@ -19,7 +19,7 @@ Review actual advice against the canonical routing table, using small neutral pr
 | An independent completed behavior regressed | Engineering Bug with precise expected source, reproduction and regression obligation. |
 | Preserve behavior while restructuring | Refactor route; inspect existing safety net and relevant boundaries. |
 | Replace a build/testing tool | Maintenance with compatibility and affected validation; no new Product intent. |
-| Framework Gate blocks business WIP | Isolated framework maintenance, reusable source/template/negative-test fix, preserve business work. |
+| Framework Gate blocks business WIP | Preserve business work and its stop point; route framework-source repair to the maintenance repository or bounded project-tool repair to the same project directory. Do not introduce a worktree. |
 | Audit only | Independent finding/report prompt under the review contract; no reviewed-source writes or automatic Bug. Honor static-only scope; otherwise necessary validation must isolate all side effects. |
 | Review an existing module with no Feature, diff or requirement record | Use the current-state audit entry in `review-code` on the named snapshot and callers; report requirement-evidence gaps while reviewing supported code-quality concerns. Do not create a Feature or start delivery. |
 | Human says a specific tested revision is accepted | Follow up on that exact scope/snapshot; do not accept another version or Feature. |
@@ -34,18 +34,24 @@ Review actual advice against the canonical routing table, using small neutral pr
 | A research report recommends a different requirement or contains a damaged code extract | Recommendation is not adopted intent; preserve the source link and relevant warning, leaving restoration to actual code use. No automatic implementation or unused-code repair. |
 | Emergency Bug | Shorter preparation is possible; required regression/affected checks, applicable human acceptance and traceable commit remain. |
 | Stable lower ID depends on a newer pending ID | Use actual DAG eligibility, not numeric order or highest-ID selection. |
-| Dirty tree contains another task | Report ownership conflict; do not stash, delete, overwrite or silently commit it. |
-| Record a confirmed term without changing behavior | Point to `product-author` terminology maintenance and `docs/terminology.md`; no Product initialization, new Feature or second glossary. |
+| Project directory contains unfinished changes while a bounded separate task is requested | Preserve current changes, inspect relevant differences and identify any actual overlap. Non-empty status alone does not block; do not stash, delete, overwrite or silently include those changes in another commit. |
+| Resume an unfinished Feature in a new conversation | Use its actual files, Feature/Progress record, prior commits and still-valid authorization in the same directory. No worktree handoff, per-file authorship proof or fresh implementation approval solely due to the new conversation. |
+| A requested edit overlaps an existing change whose intended result is unclear | Explain the precise conflicting content and missing decision; pause that mutation while unaffected authorized work can continue. |
+| Record a confirmed term without changing behavior | Point directly to `project-terminology` and the existing definition source; no mandatory clarification, Product initialization, new Feature or second glossary. |
 | A terminology edit changes intended behavior | Resolve the Product choice and affected planning; do not disguise it as editorial maintenance. |
 | Continue a Feature with an existing long design | Read `F0XX-design.md` and source links; reuse approved constraints and return to the actual Stage. |
 | A local implementation choice is proposed as a project rule | Require the rule-change self-check and any missing substantive authority; do not infer a global rule from local success. |
 | User already approved a concrete rule change | Preserve that decision, require the self-check before writing, and route impact handling without asking again. |
 | Ordinary Feature has no ADR | Missing optional ADR is normal; do not manufacture a record or block completion. |
 | A costly cross-Feature choice has real alternatives | Apply the existing ADR threshold and destination; reuse a relevant record and do not override Product/project rules. |
-| Stage 3 discovers settled terminology or needed design updates | Use the documentation checkpoint within current ownership/authorization; do not end authorized delivery at the supporting Skill return. |
+| Stage 3 discovers settled terminology or needed design updates | Use `project-terminology` or the appropriate document owner under the current documentation authorization; return to the actual Feature Stage and continue authorized delivery. |
+| A direct Product elicitor request describes an implementation defect against an explicit requirement | Return the confirmed source and defect facts to the current Feature or engineering Bug route; do not create a Product patch or relax AC. |
 | Final tests passed before a rule/design document changed | Explain current evidence freshness and the owning revalidation route; old PASS alone cannot authorize completion. |
 | Art Bible contains a confirmed icon requirement absent from Product; implementation violates it | Cite the professional source and route the repair according to current/completed Feature ownership; do not require duplicate Product wording. |
 | User changes only a confirmed sound specification | Owning specialist updates its source within authorization and handles existing-work impacts; Product participates only for actual behavior changes. |
+| User asks only to define language coverage, fallback and formatting | Point to `design-localization-spec`; no translation import, runtime change or artificial Feature. |
+| Localization specification is approved and implementation is requested | Point to `content-localization` inside the authorized Feature/experiment, preserving actual display verification and language-acceptance gaps. |
+| Runtime localization exposes an undecided language requirement | Return the material choice to `design-localization-spec`; do not silently decide it through an implementation default. |
 | A shared Art Bible predates the last sync anchor but was never considered | Verify historical coverage or use authorized current-document alignment; inspect all applicable planned consumers, not only one direct link. |
 | Only a professional source changed | Trace primary/secondary references and shared applicability to concrete Feature/AC/verification impacts; later unplanned Products remain deferred. |
 | A committed specification rename leaves stale Product/UI source links and Feature references | Route approved source-link repairs to their owners before plan writes, then refresh source analysis and return to the same synchronization; plan navigation updates belong to the plan commit. Preserve completed history. |

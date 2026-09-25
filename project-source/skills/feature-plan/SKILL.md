@@ -11,7 +11,7 @@ Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition 
 
 When the requested scope already has implementation but lacks Feature records, also apply **Adopting existing implementation** in that specification. Reuse the actual implementation and tests in the proposal; planning does not mark the adopted work complete.
 
-Apply `methodology/05-document-language.md` before durable prose. Resolve `document_language` from confirmed configuration; preserve existing history. Before durable writes, apply the preflight and ownership contract in `agent-rules/00-core/git-worktree-and-commits.md`.
+Apply `methodology/05-document-language.md` before durable prose. Resolve `document_language` from confirmed configuration; preserve existing history. Before durable writes, apply the change-preservation and commit contract in `agent-rules/00-core/git-worktree-and-commits.md`.
 
 Read the selected Product's complete approved specification, with `docs/product.md` to establish order and shared requirements. Consult relevant terminology definitions, prerequisite/affected module sections, configuration and rules through `AGENTS.md`. Other Product modules are context only when needed, not work to decompose now. Reuse unchanged reading on continuation.
 

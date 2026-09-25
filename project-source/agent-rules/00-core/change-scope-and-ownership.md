@@ -13,7 +13,7 @@ Control how far a task may modify the repository while preserving existing work.
 
 ## Existing work and shared contracts
 
-- **[MUST]** Do not overwrite, reset, revert, or delete unrelated existing user/collaborator modifications. Patch against the current state.
+- **[MUST]** Do not overwrite, reset, revert or delete unrelated existing project changes. Patch against the current state.
 - **[MUST]** Unknown or unrelated existing modifications are work to preserve, not garbage.
 - **[MUST]** A shared/public contract change must migrate all known necessary consumers or use an explicitly designed staged compatibility mechanism.
 - **[MUST]** Lint/metric thresholds alone do not authorize structural refactoring; a split/refactor must improve a real responsibility, dependency, or maintainability boundary.

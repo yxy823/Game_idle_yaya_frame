@@ -29,10 +29,12 @@ Markdown 普通段落和同一列表项不按固定字符数插入换行；保�
 
 ## Workflow and authority
 
+This framework supports one project user working with an Agent in a single project directory. Multi-user collaboration, change-attribution workflows and worktree isolation/resumption are outside scope. Same-directory task pauses, switches and new-conversation continuation remain supported; bounded research and independent reviewer instances retain their existing contracts.
+
 | Need | Read and follow |
 | --- | --- |
 | Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` |
-| Product behavior or project terminology | `methodology/01-product-doc-structure.md`; optional `docs/terminology.md` owns vocabulary, not behavior |
+| Product behavior or project terminology | `methodology/01-product-doc-structure.md`; `product-author` owns behavior, `project-terminology` maintains confirmed definitions and links |
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
 | Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
 | Rule responsibilities, interpretation or promotion | `methodology/04-coding-rules-4-layers.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
@@ -56,7 +58,7 @@ Read relevant terminology definitions, Product/professional sources and accepted
 
 Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires confirmed environment preparation based on actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
 
-Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`, including its clean-worktree preflight, resumed-task ownership, automatic commits of validated logical changes and Feature identification in commit messages. Implementation approval and actual human acceptance remain distinct under the execute loop; automated results cannot supply a missing human decision.
+Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve actual differences, continue from current records in the same directory, and commit validated logical changes with the applicable Feature identity. Non-empty Git status alone does not block a task; actual overlapping edits or an inseparable commit require resolving the concrete conflict. Implementation approval and actual human acceptance remain distinct under the execute loop; automated results cannot supply a missing human decision.
 
 ## Project knowledge and rule feedback
 

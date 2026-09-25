@@ -2,16 +2,18 @@
 
 使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdunit4。 项目名称、工具路径和具体玩法由当前项目决定。
 
+适用于一位项目使用者与 Agent 配合开发，在同一项目目录内暂停、切换和续接任务。多人协作、改动归属流程和 worktree 隔离不在支持范围内；按需调研与独立审核仍可使用。
+
 ## 开发环境
 
-实际工具路径、Godot 版本和检查命令记录在 `docs/methodology-config.json`。 环境配置说明见 [环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)； 命令用法见 [检查工具](tools/README.md)。配置就绪与实际测试通过分别记录。
+`docs/methodology-config.json` 保存文档语言以及 Python、Godot 可执行路径。实际环境检查结果、观察到的版本及所用命令记录在初始化报告和必要的 Progress 中，不添加到配置字段。环境配置说明见 [环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)；命令用法见 [检查工具](tools/README.md)。环境可用与实际测试通过分别记录。
 
 ## 文档与代码
 
 | 位置 | 内容 |
 | --- | --- |
 | AGENTS.md | 项目规则与 Skill 路由 |
-| .agents/skills/ | 27 项开发与独立审核 Skill |
+| .agents/skills/ | 开发、专业设计与独立审核 Skill |
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
 | .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
 | [游戏总览](docs/product.md)、[模块目录](docs/product/README.md) | 总览初始为用途说明；确定需求后维护产品目标、模块和用户可观察行为 |
@@ -25,7 +27,7 @@
 | [docs/knowledge/](docs/knowledge/README.md) | 按主题积累实际开发经验、成功做法与失败教训；开始相关任务时优先查阅 |
 | [项目架构](docs/architecture.md) | 初始只有用途说明；需要时维护实际结构，并导航到子系统与重要决定 ADR |
 | docs/project-rules.md、agent-rules/ | 所有适用 Product、Feature 遵守的项目约束与具体 Godot 工程规则 |
-| docs/methodology-config.json | 本机环境与实际检查命令 |
+| docs/methodology-config.json | 文档语言和 Python、Godot 可执行路径 |
 | methodology/ | 当前 Skill 使用的详细流程和模板 |
 | tools/ | 显式调用的项目工具 |
 | main/main.tscn | 已配置的最小启动场景；`main/` 负责入口与顶层组装 |
@@ -47,7 +49,8 @@
 
 | 任务 | Skill |
 | --- | --- |
-| 讨论想法、澄清概念，或按授权整理术语 | project-clarifier |
+| 讨论想法、澄清尚未确定的概念 | project-clarifier |
+| 保存已确认的术语定义、别名和引用 | project-terminology |
 | 产品初始化或改变需求 | product-author |
 | 从想法梳理产品蓝图 | product-init-elicitor |
 | 澄清模块、新行为或需求修改 | product-spec-elicitor |
@@ -60,7 +63,8 @@
 | 从记录中选择重构项 | engineering-refactor-select |
 | 只读理解现状并撰写下一步提示词 | project-next-step-advisor |
 | 共享美术/声音方向、具体视觉资源规格 | design-art-direction、design-audio-direction、design-visual-asset-spec |
-| 资源接入与本地化 | content-asset-integration、content-localization |
+| 确定语言覆盖与本地化规格 | design-localization-spec |
+| 资源接入与已批准规格下的本地化实现 | content-asset-integration、content-localization |
 | 诊断信号、性能测量与长期运行 | diagnostics-instrumentation、diagnostics-performance、diagnostics-soak-test |
 | 用户指定的独立专业审核 | review-code、review-ux、review-art、review-audio、review-assets、review-localization、review-balance |
 
@@ -71,7 +75,7 @@ flowchart TD
     U[用户任务] --> Q{任务内容}
     Q -->|讨论或澄清| C[project-clarifier]
     C --> O[对话结论]
-    C -->|获授权记录术语| T[standardizer 术语维护路线]
+    Q -->|记录已确定术语| T[project-terminology]
     T --> K[按需更新术语文档或局部定义]
     Q -->|需求初始化或改变| P[product-author]
     P --> I[按需使用 init / spec elicitor]
@@ -92,7 +96,7 @@ flowchart TD
     X --> R[验证、验收、记录与交接]
 ```
 
-只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md` 初始提供用途说明；由 `product-author` 按需写入已确认的定义。 保持含义和行为的术语整理不拆分 Feature，实质行为变化仍走 Product 流程。
+只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md` 初始提供用途说明；由 `project-terminology` 按需维护已确认的定义。保持含义和行为的术语整理不创建 Feature，实质行为变化仍由 `product-author` 处理。
 
 术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 

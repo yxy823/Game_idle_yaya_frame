@@ -1,5 +1,7 @@
 # 框架 Skill 全量职责审核（2026-09-25）
 
+本页保留实施前基线的判断；文中行号和旧数量属于当时版本，阅读链接已指向迁移后的对应材料。实施及复验见[实际验证报告](framework-implementation-validation-2026-09-25.md)。
+
 本轮完整读取并评价 `project-source/skills/` 下全部 **27 个 Skill**。建议优先拆出 `product-author` 的纯术语维护职责，以及 `content-localization` 的规格编写职责；收窄澄清入口和 Product 缺陷澄清的触发边界。其余能力不能因为包含多个阶段、检查项、资产类型或调用工具就机械拆开。
 
 另有一项跨文件问题：已确认的单人项目范围尚未贯彻到生成项目的 Skill、方法论和 Git 规则。它需要统一修改职责与入口约定，不能仅删除一个 `worktree` 词或复制更多 Skill。
@@ -138,7 +140,7 @@
 
 **结论：收窄范围与修订共用规范，不以拆 Skill 处理。**
 
-证据：根维护约定已排除多人协作、改动归属处理与 worktree 隔离／续接，但 [engineering-change-plan](../../../project-source/skills/engineering-change-plan/SKILL.md)第 26 行仍主动提供“明确批准的隔离 worktree”；[advisor 场景参考](../../../project-source/skills/project-next-step-advisor/references/scenarios.md)第 37 行仍把另一个任务的 dirty tree 作为改动归属冲突；[生成项目 Git 规则](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md#clean-worktree-and-task-ownership)和[生成项目 AGENTS](../../../project-source/Project_AGENTS.md#environment-and-git)仍要求跨会话逐文件匹配 ownership。
+证据：根维护约定已排除多人协作、改动归属处理与 worktree 隔离／续接，但 [engineering-change-plan](../../../project-source/skills/engineering-change-plan/SKILL.md)第 26 行仍主动提供“明确批准的隔离 worktree”；[advisor 场景参考](../../../project-source/skills/project-next-step-advisor/references/scenarios.md)第 37 行仍把另一个任务的 dirty tree 作为改动归属冲突；[生成项目 Git 规则](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md#inspect-and-preserve-current-changes)和[生成项目 AGENTS](../../../project-source/Project_AGENTS.md#environment-and-git)仍要求跨会话逐文件匹配 ownership。
 
 这证明范围变更尚未落到被分发材料，不能把根文档一句限制当作生成项目已生效。与此同时，“clean worktree”也可以只是“干净 Git 工作目录”的术语，不能简单全文删除每处 worktree，更不能删掉 Git 状态检查、未提交工作保留或明确路径暂存。
 
@@ -167,7 +169,7 @@
 1. 本报告给出职责调整建议，尚未拆分、改名或重写 Skill。报告不授予被审核实现的自动修改权限；按用户最终选择实施，并保留原有具体授权、有效历史和必要验证。
 2. S1／S2 涉及唯一 owner 变更，应先更新权威来源，再改直接调用者、advisor、提示词和场景。只改 description、另添新 Skill 但保留旧入口原样，会形成两套可用正文。
 3. [复制清单](../../project-files.json)整目录复制 `project-source/skills` 到 `.agents/skills`，当前无逐 Skill 白名单；新增／删除目录会直接改变新项目内容。仍应检查生成后的路由和引用。已有生成项目独立拥有文件，本次没有同步外部项目。
-4. 已定位的说明消费者还包括[旧 Skill 参考材料](../../docs/framework-maintenance/migration-source/reference/skills.md)、[专业工作材料](../../docs/framework-maintenance/migration-source/guides/specialist-workflows.md)、[场景覆盖基线](../baselines/scenario-coverage.md)和 advisor 生成表达参考。后续变更必须从 [prompts.json](../../prompts.json)和其导出器更新生成正文，不能手改生成参考。这里只核对引用影响，不宣称已逐段审核全部旧说明或全部提示词。
+4. 已定位的说明消费者还包括[旧 Skill 参考材料](../../docs/operation-manual/skills-and-agents.md)、[专业工作材料](../../docs/operation-manual/specialist-work.md)、[场景覆盖基线](../baselines/scenario-coverage.md)和 advisor 生成表达参考。后续变更必须从 [prompts.json](../../prompts.json)和其导出器更新生成正文，不能手改生成参考。这里只核对引用影响，不宣称已逐段审核全部旧说明或全部提示词。
 5. 27 个 Skill 的正文全量覆盖不等于所有工程规则、模板、工具和真实客户交互全量验证。核心结论依赖的引用已读取；领域工程规则具体 Godot API 正确性、工具运行结果、语言模型触发效果、角色客户端加载、视觉与聆听能力没有在本轮验证。
 6. 后续有针对性的场景验证应覆盖：已确认术语直接维护；术语实际改变玩法时退回 Product；只写本地化规格；仅按既定规格接入语言；直接请求明确已有要求的 Bug；当前 Feature 内调用支持 Skill 后继续；单目录暂停／新对话恢复；审核过程保持原始证据只读。它们是待执行验证建议，不是本轮通过结果。
 

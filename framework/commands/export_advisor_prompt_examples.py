@@ -16,19 +16,22 @@ PROJECT = "Godot 项目开发"
 # Exact source names keep selection explicit; these are examples, not routing rules.
 SELECTION = (
     ("product", "需求设计", (
-        "从想法或已有 GDD 整理 Product 并衔接规划", "新增、删除或调整玩法需求",
+        "只有游戏想法，需要整理第一份 Product", "已有模块的玩法要求变了，需要更新需求",
     )),
     ("planning", "任务规划", (
-        "拆分当前 Product 的 Feature", "需求变化后同步已有任务",
+        "当前模块的需求已确认，准备做项目的第一份 Feature 计划", "要求已经改好，开工前需要同步 Feature 计划",
     )),
     ("development", "日常开发", (
-        "执行指定或下一项 Feature", "继续中断的当前任务",
+        "Feature 已规划并可开始，现在实施这一项", "界面布局已经确定，想先做一个能点击的原型",
     )),
     ("engineering", "修复与改进", (
-        "定位与修复 Bug", "行为保持的重构", "工程维护与工具调整",
+        "Feature 交付前发现 Bug", "Feature 交付后发现 Bug", "重构目标已经选定，现在调整结构并保持行为", "项目工具需要修改，按工程任务完成",
     )),
     ("verification", "验证与收尾", (
-        "单独验证某次变更", "整理人工验收与反馈", "整理进度与任务交接",
+        "已有变更需要重新运行相关自动测试", "Feature 已能体验，需要准备人工验收清单", "人工验收 JSON 已填好，需要导入结果",
+    )),
+    ("resumption", "项目恢复与交接", (
+        "换了一个对话，想继续上次没做完的 Feature", "Feature 还没做完，准备换一个对话继续",
     )),
 )
 NOTICE = (

@@ -2,182 +2,113 @@
 
 [维护文档入口](README.md) · [框架规则](../../../AGENTS.md) · [维护工具](../../README.md)
 
-本页面向框架维护者。处理修改时，先定位材料归属，再同步受影响说明，选择相称的验证并提交交付。项目使用者从文档总入口选择所需内容；审核、复盘和交接提示词的详细用法在本页后半部按需查阅。
+本页保存框架维护的材料归属、说明同步和验证约定。具体任务入口由文档总入口统一导航，不在这里复写场景流程或正式提示词。
 
 ## 先判断修改属于哪里
 
-| 内容 | 应维护的位置 |
+| 内容 | 维护位置 |
 | --- | --- |
-| 新项目应携带的文件 | `project-source/`；需要调整目标位置时同时核对复制清单 |
-| 创建项目如何复制 | `framework/commands/create_project.py` 与 `framework/project-files.json` |
-| 项目使用导览、框架与项目边界 | `framework/docs/operation-manual/` 与 `framework/docs/quick-reference/`，分别维护工具概念和具体场景 |
-| 项目内简短入口 | `project-source/Project_README.md`，保持概括与项目自身导航 |
-| 某条流程、Skill 或工程语义 | 对应源规范；只在任务明确涉及该行为时调整 |
-| Skill、脚本、提示词与场景的设计和拆分依据 | [职责设计准则](../../review/baselines/skill-script-prompt-design.md)；当次审核事实另存 `framework/review/reports/` |
-| 给用户发送的正式操作提示词 | `framework/prompts.json` |
-| 框架维护约束 | 根 `AGENTS.md` |
-| 某个已有游戏的独有需求或修复 | 明确指定的外部项目，不顺带回灌或同步 |
+| 新项目应携带的文件 | project-source/；路径变化同时核对复制清单 |
+| 创建器与复制规则 | framework/commands/create_project.py 与 framework/project-files.json |
+| 概念、配置与工具说明 | framework/docs/operation-manual/ |
+| 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
+| 项目内简短导航 | project-source/Project_README.md |
+| Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
+| 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 reports/ |
+| 正式操作提示词 | framework/prompts.json，唯一手写正文 |
+| 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
+| 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-`project-source/Project_AGENTS.md` 是待复制规则源文件。根规则明确引用其中的“沟通与交付”和“使用说明的可读性”，使框架维护与生成项目共用表达要求；项目开发流程不在维护仓库启用。阅读 Skill 源文档以核对手册，也不表示当前维护任务已经进入那项 Skill 的执行流程。
+Project_AGENTS.md 是待复制源规则。根规则明确引用其“沟通与交付”“使用说明的可读性”，除此不在维护仓库启用项目开发 Stage。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 
-维护分发的 Godot 代码时，按改动涉及的领域核对 `project-source/agent-rules/` 中的工程语义；具体阅读由各领域 README 路由。维护授权、Git、验证地点和交付仍遵循根规则，不因此启动生成项目的 Feature 阶段。
+维护分发的 Godot 文件按领域读取 project-source/agent-rules/，授权、Git、验证地点和交付仍以本维护仓库规则为准。框架面向单人项目，同目录暂停/切换/续接和独立审核支持，不扩展多人改动归属或 worktree 流程。
 
 ## 找到受影响的说明
 
-按实际变化选择对应章节，不要求每次修改整本手册。
+只核对实际变化相关专题及直接调用者，不每次全仓通读。
 
-| 本次变化 | 优先核对的手册章节 | 同时查看的实际来源 |
+| 变化 | 操作专题 | 真实依据 |
 | --- | --- | --- |
-| 复制范围、目录、重命名、目标限制 | [创建项目](migration-source/getting-started/create-project.md)、[目录参考](migration-source/reference/project-layout.md) | 创建器、复制清单、默认文件 |
-| 环境字段、工具路径、就绪或初始化 Git 行为 | [首次使用](migration-source/getting-started/first-use.md)、[配置参考](migration-source/reference/configuration.md)、[故障排查](migration-source/reference/troubleshooting.md) | 配置源、环境检查器、初始化提示词 |
-| Product 结构、Feature 字段或依赖演进 | [需求与规划](migration-source/guides/product-and-planning.md)、[目录参考](migration-source/reference/project-layout.md) | methodology、模板、相关检查实现 |
-| Stage、验收、复审、完成或续接 | [Feature 开发流程](migration-source/guides/feature-delivery.md)、[命令与验证](migration-source/reference/commands-and-validation.md) | 执行 Skill、执行规范、完成依据实现 |
-| 专业来源归属、共享影响或资源交接 | [专业工作](migration-source/guides/specialist-workflows.md)、[需求与规划](migration-source/guides/product-and-planning.md)、[Feature 开发流程](migration-source/guides/feature-delivery.md)、[工程变更](migration-source/guides/engineering-changes.md) | [专业职责与来源规范](../../../project-source/methodology/11-specialist-workflows.md)、对应 Skill 与规划/同步来源规则 |
-| 专业审核方法、独立上下文或角色配置 | [专业审核](migration-source/guides/specialist-workflows.md#审核保持独立)、[Skill 导航](migration-source/reference/skills.md)、[目录参考](migration-source/reference/project-layout.md) | [独立审核规范](../../../project-source/methodology/12-independent-review.md)、审核 Skill、角色源文件及复制映射 |
-| 外部搜索、调研角色或报告归属 | [搜索与调研](migration-source/guides/project-knowledge.md#按需搜索与保存调研)、[Skill 导航](migration-source/reference/skills.md)、[目录参考](migration-source/reference/project-layout.md) | [researcher](../../../project-source/agents/researcher.toml)、方法总览/生命周期规范、复制映射及 advisor 场景；报告格式只在角色中定义 |
-| Bug、重构、维护、实验边界 | [工程变更](migration-source/guides/engineering-changes.md) | 对应 Skill 与方法总览 |
-| 测试选择、命令参数、报告或错误语义 | [命令与验证](migration-source/reference/commands-and-validation.md)、[故障排查](migration-source/reference/troubleshooting.md) | 测试策略、实际 CLI、共享实现 |
-| 术语、设计、架构、规则、资产记录、Progress 或历史 | [项目文档维护与交接](migration-source/guides/project-knowledge.md) | 需求/设计、架构/生命周期规范与工程规则 |
-| Skill 名称、职责或提示词入口 | [Skill 导航](migration-source/reference/skills.md) | 实际 SKILL.md、prompts.json 和场景用途清单 |
-| 场景入口、操作分支、恢复或交接判据 | [场景索引](../quick-reference/scenario-index.md)；尚未迁移部分核对原专题与检查单 | 对应 methodology、实际工具与 prompts.json；同步 [场景覆盖映射](../../review/baselines/scenario-coverage.md#手册处置路径)，不另建规范或提示词正文 |
-| Godot / lint / 插件默认值 | [配置参考](migration-source/reference/configuration.md)、[命令与验证](migration-source/reference/commands-and-validation.md) | 默认配置、plugin.cfg、补丁记录 |
+| 复制、目录、重命名、初始化边界 | [框架与项目](../operation-manual/framework-and-project.md)、[项目目录](../operation-manual/project-layout.md) | 创建器、清单、默认文件 |
+| 环境字段、插件或 lint 默认值 | [配置](../operation-manual/configuration.md)、[错误含义](../operation-manual/errors-and-results.md) | 配置源、检查器、插件及补丁 |
+| Product、AC、依赖、规划与历史 | [需求与规划](../operation-manual/requirements-and-planning.md) | methodology、模板、规划/同步 Skill、检查器 |
+| Stage、验收、任务类型、完成或持续授权 | [阶段语义](../operation-manual/feature-lifecycle.md) | 执行规范、Feature Skill、工程规范 |
+| 专业所有者、资源、语言或独立审核 | [专业来源](../operation-manual/specialist-work.md)、[Skill 与角色](../operation-manual/skills-and-agents.md) | 专业/审核规范、相应 Skill、角色及复制映射 |
+| 参数、测试选择、结果、指纹或错误 | [命令与证据](../operation-manual/commands-and-evidence.md)、[错误含义](../operation-manual/errors-and-results.md) | 实际 CLI、tools/lib/verification_snapshot.py、完成校验与测试策略 |
+| 工作台、Analyzer、表现组件 | [资源工作台](../operation-manual/asset-workbench.md) | 对应工具、示例 README、消费接口及夹具 |
+| 术语、设计、架构、规则、研究、知识或 Progress | [知识与记录](../operation-manual/knowledge-and-records.md) | 来源规范、生命周期、角色与领域规则 |
+| 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | prompts.json、所属 Skill/methodology/CLI、场景职责清单 |
 
-手册概括不能替代源文件核对。若发现规范、脚本与手册存在冲突，应分清当前实际行为和待修问题；在任务范围内修正，或如实报告尚未解决的差异。不要为了让文字一致顺手改写 Skill 流程或测试门槛。
+框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md 及 references/scenarios.md；只更新失效内容，不复制另一套流程。术语唯一入口为 project-terminology，本地化规格为 design-localization-spec，content-localization 负责按已定要求实现。
+
+路径或字段变化追到全部读写方、调用链、模板、复制映射和回归夹具。说明与源码冲突时分别判断实际行为及待修问题，不能只改一段文字掩盖未解决契约。
 
 ## 文档同步应包含什么
 
-行为或默认值变化后，更新对应操作步骤、参数、路径、初始状态、输出解释和必要故障说明。目录结构、阅读路线或职责关系改变时，同时修改入口索引、相关链接与 Mermaid 图。
+用户可见行为或默认值变化后，同步对应参数、路径、初始状态、输出、副作用与必要错误解释。结构改变更新入口、链接、锚点和相关图；只改内部实现且使用契约不变时，核对后不必制造无意义修改。
 
-以最终行为组织说明，不长期保留“旧方式/新方式”两套并行教程。需要历史原因时链接 Git 历史或现有补丁说明；不建立说明版本状态、同步收据、哈希清单或发布资格文件。
-
-仅内部实现调整、使用契约完全不变时，核对相关说明仍适用即可，无需制造无意义的文档差异。涉及用户可见使用方式的修改，应在本次提交中同步完成说明。
+文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 与当次报告保存，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
-通用写法遵循 [使用说明的可读性](../../../project-source/Project_AGENTS.md#使用说明的可读性)。以下补充本手册的页面分工与名称要求。
+通用表达遵循 [可读性要求](../../../project-source/Project_AGENTS.md#使用说明的可读性)。
 
-| 内容 | 归属与写法 |
+| 位置 | 职责 |
 | --- | --- |
-| 文档总入口 | 两本手册的职责、整体目录与首轮迁移范围 |
-| 操作手册 | 框架、概念、目录、配置与工具用法；具体场景全部移交速查手册 |
-| 场景速查手册 | 按 JSON 的 Project、分类、提示词名称对应目录与文件；单篇一个目标、一条同名专用提示词，状态写入名称，11 类信息仅显示有内容的栏目 |
-| 框架维护说明 | 本目录保存维护规范与工具说明；具体维护场景迁入速查手册的 `Yaya 框架维护` Project |
+| docs/README.md | 两册与维护说明的统一导航 |
+| operation-manual/ | 框架、概念、对象、配置与工具用法 |
+| quick-reference/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
+| framework-maintenance/ | 维护规范与验证工具说明，不保留另一套具体场景正文 |
 
-说明文件时写清位置、职责和读写关系。区分外部 GDD、Product 总览、Product 模块、Feature 计划和实际完成依据；图表与文字使用同一套名称。
+场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名。编写要求唯一维护在速查手册 README；用 [路径检查器](../../commands/check_scenario_prompt_paths.py) 核对路径集合，正文标题、输入、单一目标、步骤与出口由独立内容审核确认。路径匹配不证明内容或实际执行通过。
 
-场景的编写要求集中在[速查 README](../quick-reference/README.md)，读者从[场景索引](../quick-reference/scenario-index.md)进入。先讨论八篇样稿，再完成其余内容迁移；原专题和检查单集中保存在[迁移原材料](migration-source/README.md)，不再作为另一套速查正文继续扩写。上面的专题链接暂时指向这些待拆分材料；迁移完成后同步改为正式页面并删除原材料。
-
-两本手册之间不互相引用，必要说明就地提供，权威事实仍以项目规范与实际工具为准。当前只做 Markdown 内容与链接核对，HTML 恢复条件见[阅读版暂缓说明](#html-阅读版暂缓)。
+两本手册之间不互相引用，必要解释就地提供，权威规范与工具仍可共同引用。当前只做 Markdown 内容与路径、链接、锚点核对。
 
 ## 保持初始化边界
 
-项目使用手册分别位于 `framework/docs/operation-manual/` 和 `framework/docs/quick-reference/`，框架维护说明及迁移原材料位于 `framework/docs/framework-maintenance/`。全部文档都不要加入 `project-files.json`，也不要复制或移动到 `project-source/`。不增加“先复制再删除手册”的动作。
+手册、维护说明、完整提示词和框架审核材料不加入 project-files.json，也不移动到 project-source/。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
 
-`Project_README.md` 保持短入口，描述项目自身用法；不要求已生成项目访问本手册或查询框架版本。框架根 README 和 `framework/README.md` 负责引导维护者找到手册。
-
-新增正式任务提示词仍只写入 `framework/prompts.json`。说明可以引用提示词名称和用途，正文不散落进 README、规则或本手册。advisor 的精选表达参考是受控派生文件：修改入选正文、选择范围或相关 Skill 名称后，运行 [精选导出](../../README.md#导出-advisor-精选表达参考) 并检查输出；这些参考随 Skill 复制，不让创建器或生成项目承担转换、回查与同步职责。
+advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择范围或所引用 Skill 名称后，按 [导出说明](../../README.md#导出-advisor-精选表达参考) 生成并检查；创建器只复制静态材料，项目不承担转换或回查职责。
 
 ## 按修改选择验证范围
 
-未初始化源材料、独立测试项目、可分发示例与测试专用文件的关系，以及复制—初始化—运行—工作流抽样的具体边界，见 [框架的复制与运行验证](validating-framework.md)。默认工具路径不能被外部测试项目的机器配置覆盖；可用性以各项目的实际检查为准。
+分发源、外部项目和维护夹具的具体边界见 [复制与运行验证](validating-framework.md)，命令见 [按需检查](../../README.md#按需检查)。
 
-| 变化类型 | 合适的检查 |
+| 修改 | 相称检查 |
 | --- | --- |
-| 仅使用文档、目录导航和 Mermaid 说明 | 对照当前源文件检查事实、路径、链接、代码围栏、示例与复制排除边界；检查 Git 差异 |
-| 复制器或清单行为变化 | 检查源/目标映射与路径边界，按任务需要运行已有复制器回归 |
-| 项目工具实现变化 | 静态审查相关实现与调用点；需要执行时在明确指定的外部项目运行相应回归 |
-| GDScript / Godot / 插件行为变化 | 根据影响在指定外部项目进行真实引擎验证，保留实际输出 |
-| 只读或只要求静态检查 | 仅做授权的静态范围，不生成项目、不启动 Godot、不运行测试 |
+| Markdown、目录与导航 | 对照源材料核对事实、链接/锚点、围栏、示例、两册隔离和复制排除；检查 Git 差异 |
+| 提示词或场景 | JSON/名称/路径检查与对应正文独立审核；不将其写成已逐条执行 |
+| 创建器或清单 | 映射、边界及按需创建器回归 |
+| Python 项目工具 | 相关实现与调用静态核对，指定外部项目中的工具回归 |
+| Godot 代码、插件、场景或资源 | 按实际影响在指定外部项目运行真实引擎验证 |
+| 仅静态或只读请求 | 不生成项目、不启动 Godot、不运行测试 |
 
-已有维护命令从框架根目录调用，使用本机已确认的解释器：
+文档指纹与人工验收回归可用中立临时 Git 夹具；不创建业务项目或替代真实人工体验。项目工具回归入口不替用户创建/更新项目，不启动引擎。已有结果只在对应最终内容与覆盖仍有效时复用，未执行部分明确保留。
 
-```powershell
-# 维护层回归会使用系统临时目录；仅在本次任务需要实际回归时执行。
-& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B -m unittest discover -s framework/tests -p test_*.py
-$LASTEXITCODE
-```
-
-上述入口包含复制器、文档指纹边界和人工验收文件契约回归；后两者只用中立临时 Git 夹具检查 使用说明与验证契约的指纹边界、清单覆盖、结果往返及版本匹配，不创建游戏，也不替代外部项目工具回归或真实人工体验。
-
-```powershell
-# 替换成用户明确指定的外部验证项目。
-& 'C:\Users\89523\anaconda3\envs\codex-python\python.exe' -B framework/commands/run_project_tool_tests.py --project 'D:\Games\MyGodotGame'
-$LASTEXITCODE
-```
-
-后一个入口运行现有项目工具 unittest，不替用户创建或更新目标项目，不启动 Godot，也不建立示例业务台账。读取测试源码、通过 Python 工具回归与执行真实引擎检查分别报告，不能互相替代。
-
-手册改动无需为了证明排除边界创建一个真实游戏：静态读取清单、展开选中源路径并确认与本手册无交集即可。若只检查 Mermaid 源码，报告语法或静态核对范围；只有真正渲染过才声称完成视觉检查。
+检查手册未被复制无需创建真实游戏，可静态展开清单核对。静态图源核对不是渲染或视觉验收。外部测试项目的机器路径、主场景、台账与历史不回灌默认值。
 
 ## 提交与交付
 
-按根 `AGENTS.md` 在修改前检查已有差异，保护无关工作；完成本次必要验证后，只暂存本次逻辑变更。提交前检查暂存区 whitespace、统计与完整差异，再创建本地提交，除非用户明确要求不提交。
+遵循根 Git 约定：保护已有差异，仅暂存本次明确路径或检查过的差异块；必要验证后检查完整暂存差异和 whitespace，再按用户授权创建本地提交。文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
 
-交付说明实际新增或改变的用法、文档入口、验证范围和任何未完成项。仅修改文档的任务不宣称项目运行或测试通过。框架提交不会更新已有游戏，也不自动触发发布或下一项工作。
+交付指出实际变化、Markdown 入口、静态/工具/引擎/人工各自真实结果以及仍需验证的情境。未完成事项按根规则维护 framework/progress.md，完成即移除，不保留长期成果清单。
 
 ## HTML 阅读版暂缓
 
-当前只维护与交付 Markdown，已撤下两份旧 HTML 阅读版及入口。文档变更不触发 HTML 或 Mermaid 构建；Agent 核对内容、路径、链接和锚点，用户试读样稿。
+当前只维护和交付 Markdown，不触发 HTML 或 Mermaid 构建。保留 [生成器](../../commands/build_blank_project_handbook.py)、[页面模板](../../commands/blank-project-handbook-page.html)、[交互源码](../../commands/blank-project-handbook-interactions.js) 与相关回归源码。
 
-保留[生成器](../../commands/build_blank_project_handbook.py)、[页面模板](../../commands/blank-project-handbook-page.html)、[交互源码](../../commands/blank-project-handbook-interactions.js)及相关回归源码。现有生成器仍含旧目录和章节约定，恢复阅读版时再按确定后的两本手册适配与验证，不把保留代码描述为新结构已经可构建。
+现有生成器仍含旧目录与章节约定，不能视为新结构已经可构建。重新引入时按两本手册独立构建、独立阅读、不互相引用的约定适配并验证。浏览器排版与交互由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查；构建与体验结论分开报告。
 
-重新引入 HTML 时，两本手册独立构建、独立阅读，不互相引用。排版与浏览器交互由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查；实际构建与人工体验结果分别报告。
+## 整体重检与详细报告
 
-## 通过提示词开始维护
+静态审核结果需要明确当前版本、检查范围、文件证据、影响、最小建议与未验证项。整体审核展开覆盖和跨文件关系，局部问题不要求套长报告。指定输出路径只授权写报告，报告不成为执行台账或修改授权。
 
-正式正文只在 [framework/prompts.json](../../prompts.json) 的“Yaya 框架维护”中维护；选择用途后填写范围与材料。读取手册不扩大授权，已生成项目的业务任务仍使用项目自己的文件。
+GitHub 审核固定完整提交 SHA；未提交或未推送内容不属于该快照。外部报告、开发反馈与当前源材料分别核对版本、项目定制和实际结果，区分问题是否成立与建议是否值得采用。旧版本已修不否定原现场，未知材料不补成已验证。
 
-| 用途 | 入口边界与手册衔接 |
-| --- | --- |
-| 新增、借鉴、修复删减或整理框架 | 实施范围内同步受影响步骤、导航和必要图示；只讨论时交付建议 |
-| 本地或 GitHub 静态审核 | 先核对版本与材料，交付有证据的发现；不改被审材料 |
-| 动态全流程审核 | 仅在明确的新建外部项目运行一条实际流程，源框架只读 |
-| 外部结果或开发反馈复核 | 先分别判断问题与改法，用户选择实施范围后才修改 |
-| 按需验证 | 执行获准检查，分别记录静态、工具与真实引擎结果 |
-| 新任务交接 | 只读汇总目标、现场、有效结论与必要阅读；引用现有框架 Progress，不另建交接台账 |
+动态流程抽样与静态审核不同：只在明确指定的新建外部项目执行获准路径，报告实际经过的阶段与原件；一个样例不证明所有 Skill/提示词。审核发现不自动改源框架或业务项目。正式维护任务输入均在 prompts.json；本页不复制操作正文。
 
-### 整体重检与详细报告
+## 后续用口语继续
 
-选择“维护与复盘 → 静态审核框架与空白项目源材料”。默认检查当前本地框架与源材料，也可限定模块或变更；提供范围、可选基线与输出位置。旧提交用于比较，旧通过记录不代表当前版本已经验证。
+同一会话的具体授权、职责、说明同步和如实验证要求继续有效。最新明确要求调整相应目标与范围，已被替代的临时只读、输出或停止条件不永久约束后续工作。
 
-报告按实际复杂度说明当前 Git 状态、阅读覆盖、问题证据、影响、最小建议和未验证项。简单局部意见直接给结论与依据，整体审核再展开覆盖和处理顺序；具体字段以提示词正文为准。默认在对话交付，指定 `framework/` 内报告路径仅授权写报告；既有文件无覆盖授权时使用不冲突名称。
-
-静态审核不运行测试或 Godot，不创建项目；需要运行证据时沿已有明确授权，或另选按需验证。报告保持本次观察性质，不进入生成项目，也不成为持续维护台账。
-
-### 通过 GitHub 交给其他模型审核
-
-选择“维护与复盘 → 静态审核 GitHub 框架快照”，交给能读取仓库的模型。默认仓库 `yxy823/Game_idle_yaya_frame`，将实际分支解析为完整提交 SHA 后固定证据链接；本地未提交、未推送内容不属于该快照。
-
-审核只读代码、规范与相关历史，指出不可读材料和未运行范围，不能用提交说明代替验证。支持文件输出的平台可交付 `Game_idle_yaya_frame-audit-report.md`；否则在对话给出报告。收到结果后进入下文复核，不直接执行外部建议。
-
-### 用一个实际任务动态审核流程
-
-选择“维护与复盘 → 通过实际任务动态审核框架流程”。填写**明确的新建外部空目录**、一个微型任务和报告位置；只有发送并执行该请求才启动验证，阅读本说明不会创建项目。
-
-这个入口由当前任务亲自创建并运行验证项目。若你是在另一个任务或项目开发，再把实际输出转发到框架维护任务审核，使用下文“依据实际开发反馈复盘框架”，不需要重跑开发流程。
-
-该入口授权目标内必要环境、需求规划、实现、验证及本地提交，包括初始基线与规划提交；Stage 1 仍展示方案并沿用具体授权。默认任务按自动化验收，适用时保留真实人工决定；独立评审只在用户明确指定时执行。图表浏览器渲染与这类 Godot 实际项目验证分别记录。
-
-报告保留实际命令、文件、原始结果、失败和未执行阶段。一个样例只证明经过的路径；框架缺陷保持现场并给最小建议，不修改源材料或既有游戏，验证产物不自动清理。
-
-### 复核外部审核结果与讨论取舍
-
-选择“维护与复盘 → 复核外部审核结果并讨论取舍”，提供原报告、被审版本线索与输出位置。按原条目对照当前文件和调用链，分别判断事实是否成立、建议是否值得采用；区分已修复、旧版本适用和证据不足，未知版本如实说明。
-
-多条或有争议时用对应表，只展开必要论证；简单意见直接说明依据和最小改法。默认只分析讨论，不写补丁、不运行测试；指定报告位置只授权报告。用户明确选定修复范围后才实施，外部报告的优先级不是修改授权。
-
-### 从实际开发反馈复盘框架
-
-选择“维护与复盘 → 依据实际开发反馈复盘框架”，在框架维护任务附上另一个任务、另一个项目的实际 Codex 输出；原目标与授权、项目路径、日志、文件与版本线索有则补充，无需先制作正式报告。这是审核外部开发反馈的入口，与亲自运行“动态审核”分开。
-
-先区分可核实结果与 Agent 的解释，再比较项目副本、定制差异和当前框架。结论说明归属、证据、原因及最小建议；仅转述或缺少运行证据时保留限制。当前框架已修复不否定原现场曾出错，也不要求重复修复。
-
-需要继续推进时，维护任务按需参考 [提示词库](../../prompts.json) 中适用条目，标明完整入口与接收任务，给出已填入实际上下文的可复制输入。原项目动作参考“Godot 项目开发”，框架修正参考“Yaya 框架维护”；存在依赖时说明先后。接收方依据自己的当前文件与授权行动，无需访问维护仓库；已有授权沿用，待核实事项与尚缺决定明确保留。没有合适条目时直接起草，无需后续动作时说明原因。
-
-默认只读复盘，不接管业务项目、不启动动态审核；需要真实复现时说明最小范围并按授权执行。后续新反馈复用仍有效的上下文，没有新增定时监控、同步系统或反馈台账。
-
-### 后续用口语继续
-
-同一会话的具体授权、职责边界、文档同步和如实验证要求继续有效，口语续接不要求重发完整提示词。后续明确选择调整本次目标与范围；此前已被替代的只读、格式或停止要求不永久约束后续工作。
-
-例如先只读复盘，再说“按刚才的方案修改这两处”，可以在该范围转入实施；“这样改合适吗”仍是讨论。已有未变决定不重复批准，实质新决定仍由用户选择，人工验收不由实施授权替代。交接区分有效原则、当前限制与已替代要求；长期规则以根 AGENTS.md 为准。
+例如先只读分析，再明确说“按该方案修改这两处”，即可在所选范围实施；“这样改合适吗”仍是讨论。已批准且未变的决定不重复确认，新决定和实际人工验收分别处理。交接区分有效原则、当前限制与已替代要求，接收方依自己的实际文件与授权继续。

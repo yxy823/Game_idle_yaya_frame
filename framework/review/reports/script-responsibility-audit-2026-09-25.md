@@ -1,5 +1,7 @@
 # 自研工具脚本职责全量审核
 
+本页保留实施前基线的判断；文中行号和旧数量属于当时版本，阅读链接已指向迁移后的对应材料。实施及复验见[实际验证报告](framework-implementation-validation-2026-09-25.md)。
+
 ## 结论与检查范围
 
 本次由独立子智能体 `audit_all_tool_scripts` 按[职责设计准则](../baselines/skill-script-prompt-design.md)完成静态审核。范围内 **55 个生产脚本及共享模块均已阅读全文**；公开命令、内部调用接口、Godot 生命周期和 DOM 事件路径分别检查，没有将抽样结论扩展为全量结论。
@@ -33,7 +35,7 @@
 
 - **结论：收窄入口职责；保留同一 CLI 文件及已有 `validate` 命令。**
 - 依据：[完成记录入口](../../../project-source/tools/features/record-feature-completion.py)，第 96–102 行。`_show` 先读取并打印 JSON，然后调用 `validate_completion_evidence`，根据全部适用完成条件返回 0 或 2。第 90–93 行已有专用 `_validate`。
-- 影响：记录可读取，但人工验收尚未取得、测试引用失效、Git 或工作区快照不可取得时，`show` 会返回失败。该操作还会读取测试原件、Feature 定义并运行 Git 查询。与[命令说明](../../docs/framework-maintenance/migration-source/reference/commands-and-validation.md)第 174 行的“只读查看已有记录”，以及[测试结果导入场景](../../docs/quick-reference/verification/existing-results/import-passed-tests.md)中的查看步骤，存在职责表达差异。只读不等于仅查看：本项问题是查询被赋予整项验收的成功条件，并非发现了隐含写入。
+- 影响：记录可读取，但人工验收尚未取得、测试引用失效、Git 或工作区快照不可取得时，`show` 会返回失败。该操作还会读取测试原件、Feature 定义并运行 Git 查询。与[命令说明](../../docs/operation-manual/commands-and-evidence.md)第 174 行的“只读查看已有记录”，以及[测试结果导入场景](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)中的查看步骤，存在职责表达差异。只读不等于仅查看：本项问题是查询被赋予整项验收的成功条件，并非发现了隐含写入。
 - 最小改法：`show` 的输入是记录位置与预期 Feature，输出为该记录；成功以读取、结构及 Feature 身份满足查询约定为准。记录中的业务状态可显示，但待验收不构成读取失败。整项测试/人工接受的有效性继续由 `validate` 判定，不另建新的检查入口。
 - 调用方影响：同步完成记录说明、两篇使用 `show` 的速查样稿；增加“可读取但未验收时 show 成功、validate 未就绪”的独立回归，并保留缺失/损坏/Feature 不符的查询失败。不能通过让 `validate` 放宽条件解决。
 
