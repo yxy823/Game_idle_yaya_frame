@@ -46,7 +46,7 @@ flowchart TD
 | `.codex/agents/independent-reviewer.toml` | 独立审核角色，按范围加载审核方法 | 创建时复制；客户端实际加载与权限另行核实 | 不因文件存在就认定上下文和文件隔离成立 |
 | `.codex/agents/researcher.toml` | 调研角色，定义搜索方法、报告内容和保存约定 | 创建时复制；主 Agent 按需委派，anysearch 保持用户级安装 | 调研使用见[搜索与报告](../guides/project-knowledge.md#按需搜索与保存调研) |
 | `methodology/templates/` | 实例的结构或可选提纲 | 创建时复制；Agent 按任务取用 | 模板不是任务或已批准正文 |
-| `docs/methodology-config.json` | 工具路径、文档语言、环境状态与实际 Godot 版本 | 创建时 incomplete；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
+| `docs/methodology-config.json` | 工具路径与文档语言 | 创建时环境未验证；Agent 准备环境写入，工具读取 | 核对当前机器现值和检查结果 |
 
 ### 需求、专业规格与约束
 

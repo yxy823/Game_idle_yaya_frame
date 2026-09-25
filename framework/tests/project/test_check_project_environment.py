@@ -1,4 +1,4 @@
-# 用中立配置和受控探针检查 incomplete / ready 边界；这些单测不代表宿主工具实际可用。
+# 用中立配置和受控探针检查 真实工具可用性；这些单测不代表宿主工具实际可用。
 from __future__ import annotations
 from project_context import PROJECT_ROOT
 
@@ -30,27 +30,16 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary.cleanup()
 
-    def _config(self, status: str) -> dict[str, object]:
+    def _config(self, engine_executable: str = "") -> dict[str, object]:
         return {
             "document_language": "en",
             "python_executable": sys.executable,
-            "environment_bootstrap": {
-                "status": status,
-                "engine_executable": "",
-                "engine_version": "",
-            },
+            "engine_executable": engine_executable,
         }
 
-    def _ready_config(self, engine_version: str) -> dict[str, object]:
-        config = self._config("ready")
-        bootstrap = config["environment_bootstrap"]
-        assert isinstance(bootstrap, dict)
-        bootstrap.update(engine_executable=sys.executable, engine_version=engine_version)
-        return config
-
-    def test_incomplete_allows_unconfigured_engine(self) -> None:
+    def test_schema_allows_unconfigured_engine(self) -> None:
         errors = check_project_environment._schema_errors(
-            self._config("incomplete"), self.repo_root
+            self._config(), self.repo_root
         )
         self.assertEqual(errors, [])
 
@@ -58,7 +47,7 @@ class ProjectEnvironmentTests(unittest.TestCase):
         for tag in ("en", "zh-CN", "zh-Hant-TW", "es-419", "sr-Latn",
                     "en-US-u-ca-gregory", "x-private", "i-klingon", "EN-us"):
             with self.subTest(tag=tag):
-                config = self._config("incomplete")
+                config = self._config()
                 config["document_language"] = tag
                 self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
                 self.assertEqual(config["document_language"], tag)
@@ -69,61 +58,50 @@ class ProjectEnvironmentTests(unittest.TestCase):
                     "-en", "en-", "zh--CN", "zh–CN", "123", "e", "x", "i",
                     "中文", "éñ", "abcdefghij", "en-abcdefghi", "en-US.UTF-8", "en/US"):
             with self.subTest(tag=tag):
-                config = self._config("incomplete")
+                config = self._config()
                 config["document_language"] = tag
                 errors = check_project_environment._schema_errors(config, self.repo_root)
                 self.assertTrue(any(error.startswith("document_language") for error in errors), errors)
 
-    def test_engine_version_field_is_required(self) -> None:
-        config = self._config("incomplete")
-        bootstrap = config["environment_bootstrap"]
-        assert isinstance(bootstrap, dict)
-        del bootstrap["engine_version"]
-
-        errors = check_project_environment._schema_errors(config, self.repo_root)
-
-        self.assertIn("environment_bootstrap.engine_version is required", errors)
-
-    def test_ready_requires_recorded_engine_path_and_version(self) -> None:
-        errors = check_project_environment._schema_errors(
-            self._config("ready"), self.repo_root
-        )
-
-        self.assertIn(
-            "ready environment_bootstrap.engine_version must be configured", errors
-        )
-        self.assertIn(
-            "ready environment_bootstrap.engine_executable must be configured", errors
-        )
+    def test_engine_path_field_is_required_and_typed(self) -> None:
+        for value in (None, 7, [], {}):
+            with self.subTest(value=value):
+                config = self._config()
+                config["engine_executable"] = value
+                self.assertIn("engine_executable must be a string",
+                              check_project_environment._schema_errors(config, self.repo_root))
+        config.pop("engine_executable")
+        self.assertIn("engine_executable must be a string",
+                      check_project_environment._schema_errors(config, self.repo_root))
 
     def test_ready_configuration_needs_no_duplicate_plugin_metadata(self) -> None:
         errors = check_project_environment._schema_errors(
-            self._ready_config("4.7.1.stable"), self.repo_root
+            self._config(sys.executable), self.repo_root
         )
         self.assertEqual(errors, [])
 
-    def test_incomplete_does_not_grant_readiness(self) -> None:
-        errors = check_project_environment._readiness_errors(self._config("incomplete"), self.repo_root)
-        self.assertIn("environment_bootstrap.status is incomplete", errors)
+    def test_empty_path_does_not_grant_readiness(self) -> None:
+        errors = check_project_environment._readiness_errors(self._config(), self.repo_root)
+        self.assertIn("engine executable is not configured", errors)
 
     def test_missing_fixed_runner_blocks_readiness(self) -> None:
         (self.repo_root / "tools/testing/run-gdunit-tests.py").unlink()
         with mock.patch.object(check_project_environment, "_read_engine_version",
                                return_value=("4.7.1.stable", None)):
             errors = check_project_environment._readiness_errors(
-                self._ready_config("4.7.1.stable"), self.repo_root
+                self._config(sys.executable), self.repo_root
             )
         self.assertEqual(errors, ["test runner is missing: tools/testing/run-gdunit-tests.py"])
 
-    def test_matching_recorded_version_cannot_authorize_a_different_engine_version(self) -> None:
-        config = self._ready_config("4.8.0.stable")
+    def test_unsupported_engine_version_is_rejected(self) -> None:
+        config = self._config(sys.executable)
         with mock.patch.object(check_project_environment, "_read_engine_version",
                                return_value=("4.8.0.stable", None)):
             errors = check_project_environment._readiness_errors(config, self.repo_root)
         self.assertIn("engine executable must report Godot 4.7.x", errors)
 
-    def test_readiness_accepts_matching_engine_version(self) -> None:
-        config = self._ready_config("4.7.1.stable")
+    def test_readiness_uses_observed_engine_version(self) -> None:
+        config = self._config(sys.executable)
         completed = subprocess.CompletedProcess(
             args=[], returncode=0, stdout="4.7.1.stable\n", stderr=""
         )
@@ -137,28 +115,31 @@ class ProjectEnvironmentTests(unittest.TestCase):
 
         self.assertEqual(errors, [])
 
-    def test_readiness_rejects_engine_version_mismatch(self) -> None:
-        config = self._ready_config("4.7.1.stable")
-        completed = subprocess.CompletedProcess(
-            args=[], returncode=0, stdout="4.8.0.stable\n", stderr=""
-        )
-
-        with mock.patch.object(
-            check_project_environment.subprocess, "run", return_value=completed
+    def test_probe_failures_block_readiness(self) -> None:
+        for completed in (
+            subprocess.CompletedProcess([], 1, stdout="", stderr="failed"),
+            subprocess.CompletedProcess([], 0, stdout="", stderr=""),
         ):
-            errors = check_project_environment._readiness_errors(
-                config, self.repo_root
-            )
+            with self.subTest(completed=completed), mock.patch.object(
+                check_project_environment.subprocess, "run", return_value=completed
+            ):
+                self.assertTrue(check_project_environment._readiness_errors(
+                    self._config(sys.executable), self.repo_root))
+        with mock.patch.object(check_project_environment.subprocess, "run",
+                               side_effect=subprocess.TimeoutExpired("godot", 30)):
+            self.assertTrue(check_project_environment._readiness_errors(
+                self._config(sys.executable), self.repo_root))
 
-        self.assertIn(
-            "engine version mismatch: recorded '4.7.1.stable', observed '4.8.0.stable'",
-            errors,
-        )
+    def test_new_supported_patch_version_needs_no_recorded_version(self) -> None:
+        with mock.patch.object(check_project_environment, "_read_engine_version",
+                               return_value=("4.7.2.stable", None)):
+            self.assertEqual(check_project_environment._readiness_errors(
+                self._config(sys.executable), self.repo_root), [])
 
     def test_godot_requires_a_file_path_while_python_still_accepts_a_path_command(self) -> None:
-        config = self._ready_config("4.7.1.stable")
+        config = self._config(sys.executable)
         config["python_executable"] = "python-on-path"
-        config["environment_bootstrap"]["engine_executable"] = "godot-on-path"
+        config["engine_executable"] = "godot-on-path"
         with mock.patch.object(check_project_environment.shutil, "which", return_value=sys.executable), \
                 mock.patch.object(check_project_environment, "_read_engine_version",
                                   return_value=("4.7.1.stable", None)) as probe:

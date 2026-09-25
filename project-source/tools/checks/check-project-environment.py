@@ -16,7 +16,6 @@ from typing import Any, Iterable
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIG = REPO_ROOT / "docs" / "methodology-config.json"
 UNCONFIGURED = {"", "unconfigured"}
-ENGINE_FIELDS = ("engine_executable", "engine_version")
 # Lexical screening only; full BCP 47 validity and unusual tags remain an Agent check.
 DOCUMENT_LANGUAGE_SHAPE = re.compile(
     r"(?:[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*|[iIxX](?:-[A-Za-z0-9]{1,8})+)"
@@ -108,30 +107,14 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     except ValueError as error:
         errors.append(str(error))
 
-    bootstrap = config.get("environment_bootstrap")
-    if not isinstance(bootstrap, dict):
-        return errors + ["environment_bootstrap must be an object"]
-    if bootstrap.get("status") not in {"incomplete", "ready"}:
-        errors.append("environment_bootstrap.status must be incomplete or ready")
-    # 只保存需要复用的路径和实际版本；缺项与阻塞原因由检查即时报告。
-    for key in ENGINE_FIELDS:
-        if key not in bootstrap:
-            errors.append(f"environment_bootstrap.{key} is required")
-        elif not isinstance(bootstrap[key], str):
-            errors.append(f"environment_bootstrap.{key} must be a string")
-    if bootstrap.get("status") == "ready":
-        for key in ENGINE_FIELDS:
-            if not _nonempty_string(bootstrap.get(key)):
-                errors.append(f"ready environment_bootstrap.{key} must be configured")
+    if not isinstance(config.get("engine_executable"), str):
+        errors.append("engine_executable must be a string")
     return errors
 
 
 # 读取已确认配置并核对实际工具；不在每个 Feature 中重新选择环境或写回配置。
 def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
-    bootstrap = config["environment_bootstrap"]
     errors: list[str] = []
-    if bootstrap.get("status") != "ready":
-        errors.append("environment_bootstrap.status is incomplete")
     try:
         python_executable = _python_executable(config)
     except ValueError as error:
@@ -140,27 +123,24 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
         if not _executable_exists(python_executable, repo_root):
             errors.append(f"Python executable is unavailable: {python_executable!r}")
 
-    engine_executable = bootstrap.get("engine_executable")
+    engine_executable = config.get("engine_executable")
     if not _nonempty_string(engine_executable):
         errors.append("engine executable is not configured")
     # The gdUnit runner treats Godot as an absolute/project-relative file path;
     # readiness must probe that same file instead of accepting a PATH substitute.
     elif not (repo_root / engine_executable).resolve().is_file():
         errors.append(f"engine executable is unavailable: {engine_executable!r}; use an absolute or project-relative file path, not PATH lookup")
-    elif _nonempty_string(bootstrap.get("engine_version")):
+    else:
         observed_version, version_error = _read_engine_version(
             (repo_root / engine_executable).resolve(),
             repo_root,
         )
         if version_error is not None:
             errors.append(version_error)
-        elif observed_version != bootstrap["engine_version"]:
-            errors.append(
-                "engine version mismatch: "
-                f"recorded {bootstrap['engine_version']!r}, observed {observed_version!r}"
-            )
-        elif not re.match(r"^4\.7\.\d+(?:\.|$)", observed_version):
-            errors.append("engine executable must report Godot 4.7.x")
+        else:
+            print(f"Observed Godot version: {observed_version}")
+            if not re.match(r"^4\.7\.\d+(?:\.|$)", observed_version):
+                errors.append("engine executable must report Godot 4.7.x")
 
     if not (repo_root / "tools/testing/run-gdunit-tests.py").is_file():
         errors.append("test runner is missing: tools/testing/run-gdunit-tests.py")
@@ -189,12 +169,8 @@ def main() -> int:
         print("ERROR: Invalid project environment configuration:\n- " + "\n- ".join(errors), file=sys.stderr)
         return 2
 
-    bootstrap = config["environment_bootstrap"]
     if not args.require_ready:
-        print(
-            "Project environment configuration: "
-            f"{bootstrap['status'].upper()}"
-        )
+        print("Project environment configuration: VALID (tools not probed)")
         return 0
 
     errors = _readiness_errors(config, repo_root)

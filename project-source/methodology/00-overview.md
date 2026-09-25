@@ -114,7 +114,7 @@ Prefer the available user-installed `anysearch` Skill; it is an external tool de
 
 ## Project environment and workflow
 
-This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11. The machine configuration starts incomplete. A first-use request lets the Agent configure actual executable paths directly in docs/methodology-config.json, then run `tools/checks/check-project-environment.py --require-ready`. Project creation already establishes Git and its initial local commit.
+This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11. Copied tool paths have not yet been verified on this machine. A first-use request lets the Agent configure actual executable paths directly in docs/methodology-config.json, then run `tools/checks/check-project-environment.py --require-ready`. Project creation already establishes Git and its initial local commit.
 
 ### Workflow entry
 

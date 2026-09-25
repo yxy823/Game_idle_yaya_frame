@@ -1,9 +1,5 @@
 {
   "document_language": "zh-CN",
-  "environment_bootstrap": {
-    "status": "incomplete",
-    "engine_executable": "E:\\GameTools\\Godot\\4.7.1\\Godot_v4.7.1-stable_win64.exe",
-    "engine_version": ""
-  },
+  "engine_executable": "E:\\GameTools\\Godot\\4.7.1\\Godot_v4.7.1-stable_win64.exe",
   "python_executable": "python"
 }

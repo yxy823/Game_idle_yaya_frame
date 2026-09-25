@@ -39,7 +39,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write_json("docs/feature-list.json", {"meta": {}, "features": [
             {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
         self.write_json("docs/methodology-config.json", {"python_executable": sys.executable,
-            "environment_bootstrap": {"engine_executable": sys.executable}})
+            "engine_executable": sys.executable})
         self.git("init")
         self.git("config", "user.name", "Evidence Test")
         self.git("config", "user.email", "test@example.invalid")

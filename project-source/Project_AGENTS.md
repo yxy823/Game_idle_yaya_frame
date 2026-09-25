@@ -1,6 +1,6 @@
 # Project instructions
 
-本项目使用 Windows 11 / PowerShell 7、Godot 4.7 / GDScript / gdunit4。实际工具路径与环境就绪状态以 `docs/methodology-config.json` 为准，不从模板推断本机已安装的工具。
+本项目使用 Windows 11 / PowerShell 7、Godot 4.7 / GDScript / gdunit4。实际工具路径以 `docs/methodology-config.json` 为准，环境可用性以真实检查结果为准，不从模板推断本机已安装的工具。
 
 ## 沟通与交付
 
@@ -54,7 +54,7 @@ Read relevant terminology definitions, Product/professional sources and accepted
 
 ## Environment and Git
 
-Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires `environment_bootstrap.status: ready`. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
+Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires confirmed environment preparation based on actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
 
 Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`, including its clean-worktree preflight, resumed-task ownership, automatic commits of validated logical changes and Feature identification in commit messages. Implementation approval and actual human acceptance remain distinct under the execute loop; automated results cannot supply a missing human decision.
 

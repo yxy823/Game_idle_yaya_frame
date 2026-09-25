@@ -44,13 +44,13 @@ flowchart TD
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
 $projectPython = $projectConfig.python_executable
-$projectGodot = (Resolve-Path -LiteralPath $projectConfig.environment_bootstrap.engine_executable -ErrorAction Stop).Path
+$projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -ErrorAction Stop).Path
 $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 ```
 
 在本机，`python_executable` 应是个人规则指定并已确认的完整解释器路径。`F001` 和示例脚本路径都需换成实际存在的任务与文件。每条原生命令后立即读取 `$LASTEXITCODE`；缺失退出码不能当作 0。
 
-新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；配置 ready 不代替这次扫描。
+新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；环境检查通过 不代替这次扫描。
 
 ## 入口与副作用
 
@@ -240,7 +240,7 @@ $LASTEXITCODE
 | JSON 位置 | 不参与摘要的字段 |
 | --- | --- |
 | Feature 详情顶层、索引每条 Feature 顶层 | `notes`、`status`、`completed_at`、`created_at`、`updated_at`、`recorded_at` |
-| 索引/Registry 的 `meta`，配置的 `environment_bootstrap` | 上述过程字段及以 `_at` 结尾的键 |
+| 索引/Registry 的 `meta` | 上述过程字段及以 `_at` 结尾的键 |
 | 修订记录的每条 `revision_log` | `revised_at`、`created_at`、`updated_at`、`recorded_at`、`summary`、`notes` |
 
 AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 ID、源提交锚点和未知合同字段仍参与。notes 中的链接是过程记录，**被链接的 F0XX-design.md 自身仍纳入**。Git 提交号另作来源记录；仅提交了过程字段且指纹相同，不会凭提交号要求重跑或取得新接受。

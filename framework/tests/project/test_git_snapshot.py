@@ -48,7 +48,7 @@ class GitSnapshotTests(unittest.TestCase):
         self.write("tests/unit/test_contract.gd",
                    "extends GdUnitTestSuite\nfunc test_contract():\n\tpass\n")
         self.write("docs/methodology-config.json", {"python_executable": sys.executable,
-                   "environment_bootstrap": {"engine_executable": sys.executable}})
+                   "engine_executable": sys.executable})
         self.write("docs/features/F001.json", {"id": "F001", "affected_components": ["contract"],
                    "acceptance_criteria": [{"id": "AC01", "text": "Preserve the contract",
                        "verification": {"automated_tests": [], "manual_checks": ["Review the contract"]}}],

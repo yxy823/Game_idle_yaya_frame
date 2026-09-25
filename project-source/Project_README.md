@@ -41,7 +41,7 @@
 
 知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题， 实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。 初始只有目录说明，实际内容随任务积累。 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
-创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。 Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境为 `incomplete`，没有正式玩法、业务测试或已完成任务； 入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
+创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。 Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境尚未验证，没有正式玩法、业务测试或已完成任务； 入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
 
 ## 根据任务使用 Skill
 
@@ -144,4 +144,4 @@ python -B tools/checks/check-project-environment.py
 python -B tools/checks/check-project-environment.py --require-ready
 ```
 
-前一条检查配置结构，后一条检查 ready 状态、Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。 READY 不代表测试已经执行或通过。 它们不配置环境、不运行测试，也不初始化 Git。 测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。 首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。
+前一条检查配置结构，后一条检查 Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。 READY 不代表测试已经执行或通过。 它们不配置环境、不运行测试，也不初始化 Git。 测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。 首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。

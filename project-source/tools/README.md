@@ -15,7 +15,7 @@ tools/
 | 入口 | 用途 |
 | --- | --- |
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
-| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 ready 状态、Python/Godot 文件、固定测试入口文件及实际 Godot 版本 |
+| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 记录测试原件引用与人工决定，或检查已有完成依据 |
@@ -31,7 +31,7 @@ tools/
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-$projectGodot = (Resolve-Path -LiteralPath $projectConfig.environment_bootstrap.engine_executable -ErrorAction Stop).Path
+$projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -ErrorAction Stop).Path
 & $projectGodot --headless --editor --path . --quit | Out-Host
 $LASTEXITCODE
 ```
@@ -42,7 +42,7 @@ $LASTEXITCODE
 
 ## 调用
 
-`python_executable` 和 `environment_bootstrap.engine_executable` 保存完整路径， 不包含引号或参数。测试使用固定入口 `tools/testing/run-gdunit-tests.py`，默认读取配置中的 Godot 路径；全量范围用 `--scope full` 指定。
+`python_executable` 和 `engine_executable` 保存完整路径， 不包含引号或参数。测试使用固定入口 `tools/testing/run-gdunit-tests.py`，默认读取配置中的 Godot 路径；全量范围用 `--scope full` 指定。
 
 ```powershell
 python -B tools/checks/check-project-environment.py --require-ready

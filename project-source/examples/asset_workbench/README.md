@@ -17,7 +17,7 @@
 
 ```powershell
 $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.environment_bootstrap.engine_executable --path . 'res://examples/asset_workbench/single/example_workbench.tscn' | Out-Host
+& $config.engine_executable --path . 'res://examples/asset_workbench/single/example_workbench.tscn' | Out-Host
 ```
 
 先完成正常导入。框架的 `project.godot` 默认视口为 1600×900，新建项目继承此值； 工作台入口及分析、批量窗口默认都使用 1600×900，不再自动按屏幕比例缩小。 显式 `--resolution` 或后续项目设置可覆盖默认值；嵌入编辑器（`--wid`）时仍受宿主区域约束，查看完整独立窗口可分离运行。 宽窗口使用可拖动三栏：资源候选、真实预览、对象 Inspector。候选列表和属性独立滚动； 对象名称、对象 A/B、未保存状态、播放及保存入口不随长表单滚动。 窄窗口通过“资源候选 / 组合预览 / 对象属性”切换区域，底部持续显示当前对象、方案、保存目标、停止和保存； 真实组合场景尺寸不足时在预览内部滚动，不重排示例对象。低频操作在具名菜单中，无布局持久化。

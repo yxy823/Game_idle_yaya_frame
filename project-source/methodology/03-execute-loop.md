@@ -5,7 +5,7 @@
 ## Shared contracts
 
 - Read `docs/methodology-config.json` before durable writes. Conversation uses the user's current language; durable prose uses `document_language`.
-- Before the first coding Feature, complete the one-time Project Environment Bootstrap defined in [05-document-language.md](./05-document-language.md). Every Stage 0 requires `environment_bootstrap.status: ready`; it reads the confirmed configuration rather than rediscovering commands.
+- Before the first coding Feature, complete the one-time Project Environment Bootstrap defined in [05-document-language.md](./05-document-language.md). Stage 0 reuses confirmed preparation and configured paths; repeat checks only after tool/configuration changes or actual invocation failures.
 - Read the applicable active Project Rules through `AGENTS.md` and [the rule-loading contract](04-coding-rules-4-layers.md#rule-loading), including relevant `docs/project-rules.md` constraints. Retain the Feature's task-relevant snapshot; complete applicability does not require loading unrelated sections or rereading unchanged sources.
 - Follow `agent-rules/00-core/git-worktree-and-commits.md`. A new Feature execution starts from a clean worktree; a resumed Feature may retain only changes demonstrably owned by that same Feature.
 - Read `docs/test-registry.json` when automated testing is enabled. Testing semantics are defined in [08-testing-strategy.md](./08-testing-strategy.md).

@@ -11,25 +11,21 @@
 | 字段 | 初始值 | 含义与修改注意事项 |
 | --- | --- | --- |
 | `document_language` | `zh-CN` | 持久项目知识的语言；与当前聊天语言独立 |
-| `environment_bootstrap.status` | `incomplete` | 环境尚未确认；确认后使用 `ready` |
-| `environment_bootstrap.engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
-| `environment_bootstrap.engine_version` | 空字符串 | 填写实际 `Godot --version` 的完整输出，不只填 `4.7` |
+| `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
 
-技术栈固定为 Godot 4.7、GDScript 和 gdUnit4，不另存三份标签。配置保存文档语言、工具路径和环境准备结果；测试使用固定入口 `tools/testing/run-gdunit-tests.py`，执行时指定 Feature 和 scope，不重复保存整条命令。
+技术栈固定为 Godot 4.7、GDScript 和 gdUnit4，不另存三份标签。配置只保存文档语言与工具路径，实际版本与准备结果由检查输出和初始化报告记录；测试使用固定入口 `tools/testing/run-gdunit-tests.py`，执行时指定 Feature 和 scope，不重复保存整条命令。
 
 测试登记表固定为项目根目录下的 `docs/test-registry.json`。合并工具、台账校验器、测试选择器及完成检查均使用这一位置；配置和 Feature 索引不重复保存它的路径。测试统一放在 `tests/` 下，按 `unit/`、`features/`、`invariants/` 分层；full 递归选择整个 `tests/`，局部运行按登记表映射选择。
 
 ## 路径与命令的写法
 
-以下是**配置片段示例**，不是可覆盖整个配置文件的 ready 配置；其中 Godot 路径必须换成该项目已经确认的值：
+以下是**配置片段示例**，不是可覆盖整个配置文件的完整配置；其中 Godot 路径必须换成该项目已经确认的值：
 
 ```json
 {
   "python_executable": "C:\\Users\\89523\\anaconda3\\envs\\codex-python\\python.exe",
-  "environment_bootstrap": {
-    "engine_executable": "C:\\Godot\\Godot.exe"
-  }
+  "engine_executable": "C:\\Godot\\Godot.exe"
 }
 ```
 
@@ -52,12 +48,12 @@ Godot 的 `engine_executable` 必须是实际文件路径，可以是绝对路�
 
 ## 检查能力边界
 
-`tools/checks/check-project-environment.py` 只读取配置。普通调用检查字段与基本语言标签形式，允许合法 incomplete；`--require-ready` 再核对 ready 及以下内容。`--config` 可指定文件，项目根按该配置的上两级目录解析，不能任意把一份临时配置当作另一个项目。
+`tools/checks/check-project-environment.py` 只读取配置。普通调用检查字段与基本语言标签形式，允许 Godot 路径暂时为空；`--require-ready` 根据以下实际检查判定就绪，不读写状态字段。`--config` 可指定文件，项目根按该配置的上两级目录解析，不能任意把一份临时配置当作另一个项目。
 
 | 对象 | 检查器实际做什么 | Agent 仍需核对什么 |
 | --- | --- | --- |
 | Python | 完整路径/项目相对路径，或裸命令的 PATH 解析结果是否为文件 | 独立执行所选解释器，确认 Python 3.12+ 与所需依赖；检查器不启动 Python 版本探针 |
-| Godot | 按项目相对或绝对文件路径解析，启动 `--version`，要求进程成功、输出与记录一致且为 4.7.x | 路径不可用时说明原因；项目资源、脚本和测试是否可运行需要实际调用 |
+| Godot | 按项目相对或绝对文件路径解析，启动 `--version`，要求进程成功、输出为 4.7.x；打印实际版本，不要求手填版本或锁定补丁版本 | 路径不可用时说明原因；项目资源、脚本和测试是否可运行需要实际调用 |
 | 测试入口 | 检查固定文件 `tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试；文件存在不代表测试通过 |
 | `document_language` | 基本字符、子段与连接形式 | 完整标签有效性及用户已确认的持久文档语言 |
 
@@ -90,7 +86,7 @@ JSON 键、Feature ID、`pending` 等状态、`manual` 等枚举、文件路径�
 | gdunit4 flaky check | `false` | 不以自动重复运行替代失败调查 |
 | gdunit4 test lookup | `tests` | 项目测试位于业务测试区域 |
 
-默认文件没有业务 Autoload、Input Map、导出预设或玩法参数。新增这些内容遵循对应工程规则和实际需求。Godot 目标 API 以配置中的真实版本核对，不凭目录名或版本标签推断兼容性。
+默认文件没有业务 Autoload、Input Map、导出预设或玩法参数。新增这些内容遵循对应工程规则和实际需求。Godot 目标 API 以实际检查输出的版本核对，不凭目录名或版本标签推断兼容性。
 
 ## GDScript lint 默认配置
 

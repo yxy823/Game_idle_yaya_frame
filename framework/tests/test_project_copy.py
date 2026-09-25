@@ -168,8 +168,8 @@ class ProjectCopyTests(unittest.TestCase):
         output = self.base / "real-copy"
         copy_project(repository, output)
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
-        self.assertEqual(config["environment_bootstrap"]["status"], "incomplete")
-        self.assertEqual(config["environment_bootstrap"]["engine_version"], "")
+        self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable"})
+        self.assertIsInstance(config["engine_executable"], str)
         settings = (output / "project.godot").read_text(encoding="utf-8")
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
         self.assertIn("window/size/viewport_width=1600", settings)

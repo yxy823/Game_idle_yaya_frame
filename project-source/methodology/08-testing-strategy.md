@@ -284,6 +284,6 @@ A regression test proves that the concrete historical defect does not return. An
 
 ## Runner boundary
 
-After the one-time Project Environment Bootstrap is `ready`, the fixed runner reads the Godot executable from `docs/methodology-config.json` and selects tests from the Feature and Registry. GdUnit discovery, flags, JUnit identities and session diagnostics implement this concrete stack. Evidence import validates the actual gdUnit reports; there is no configurable adapter or second copy of test roots and commands.
+After the one-time Project Environment Bootstrap has passed its actual checks, the fixed runner reads the Godot executable from `docs/methodology-config.json` and selects tests from the Feature and Registry. GdUnit discovery, flags, JUnit identities and session diagnostics implement this concrete stack. Evidence import validates the actual gdUnit reports; there is no configurable adapter or second copy of test roots and commands.
 
 For gdUnit4 specifically, a project may keep the plugin under `addons/gdUnit4/` while keeping project tests under the canonical `tests/unit`, `tests/features`, and `tests/invariants` roots. The Yaya Loop taxonomy is therefore a project convention, not a gdUnit4 directory requirement.

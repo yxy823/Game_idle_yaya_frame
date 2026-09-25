@@ -128,7 +128,7 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     if args.godot_binary is None:
         try:
             config = read_json(REPO_ROOT / "docs/methodology-config.json")
-            args.godot_binary = config["environment_bootstrap"]["engine_executable"]
+            args.godot_binary = config["engine_executable"]
         except (OSError, ValueError, KeyError, TypeError) as error:
             parser.error(f"cannot read configured Godot executable: {error}")
     if not isinstance(args.godot_binary, str) or not args.godot_binary.strip():

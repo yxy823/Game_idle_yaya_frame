@@ -45,10 +45,8 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.assertTrue(self.version.startswith("Python "), self.version)
 
     def config(self, executable: str) -> dict:
-        bootstrap = {"status": "ready", "engine_executable": executable,
-                     "engine_version": self.version}
         return {"document_language": "en", "python_executable": executable,
-                "environment_bootstrap": bootstrap}
+                "engine_executable": executable}
 
     def test_actual_absolute_space_and_unicode_path_is_not_split(self) -> None:
         config = self.config(str(self.executable))
@@ -57,7 +55,7 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.assertEqual(environment._readiness_errors(config, self.root),
                          ["engine executable must report Godot 4.7.x"])
         observed, error = environment._read_engine_version(
-            environment._resolve_executable_path(config["environment_bootstrap"]["engine_executable"], self.root), self.root)
+            environment._resolve_executable_path(config["engine_executable"], self.root), self.root)
         self.assertIsNone(error)
         self.assertEqual(observed, self.version)
 
@@ -67,17 +65,9 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.assertEqual(environment._readiness_errors(config, self.root),
                          ["engine executable must report Godot 4.7.x"])
         observed, error = environment._read_engine_version(
-            environment._resolve_executable_path(config["environment_bootstrap"]["engine_executable"], self.root), self.root)
+            environment._resolve_executable_path(config["engine_executable"], self.root), self.root)
         self.assertIsNone(error)
         self.assertEqual(observed, self.version)
-
-    def test_actual_probe_detects_version_mismatch_at_complete_path(self) -> None:
-        config = self.config(str(self.executable))
-        config["environment_bootstrap"]["engine_version"] = "different recorded version"
-        errors = environment._readiness_errors(config, self.root)
-        self.assertEqual(len(errors), 1, errors)
-        self.assertIn("engine version mismatch", errors[0])
-        self.assertIn(self.version, errors[0])
 
     def test_missing_file_is_not_rescued_by_a_similarly_named_path_command(self) -> None:
         config = self.config("Missing Folder/工具 python.exe")

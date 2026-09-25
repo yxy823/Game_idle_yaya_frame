@@ -99,9 +99,6 @@ def semantic_json(relative_path: str, data: Any) -> Any:
              if key not in {"revised_at", "created_at", "updated_at", "recorded_at", "summary", "notes"}}
             for entry in data.get("revision_log", [])
         ]
-    if relative_path == "docs/methodology-config.json" and isinstance(result.get("environment_bootstrap"), dict):
-        result["environment_bootstrap"] = {key: value for key, value in result["environment_bootstrap"].items()
-                                           if key not in PROCESS_FIELDS and not key.endswith("_at")}
     return result
 
 

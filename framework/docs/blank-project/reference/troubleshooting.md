@@ -28,13 +28,13 @@
 
 | 现象 | 可能的具体原因 | 应检查什么 |
 | --- | --- | --- |
-| 普通配置检查通过，`--require-ready` 失败 | 普通检查允许合法的 `incomplete` | status、文件存在检查、Godot 实时版本输出；Python 版本与依赖须另行核实 |
+| 普通配置检查通过，`--require-ready` 失败 | 普通检查只验证配置结构 | 实际路径、文件存在检查、Godot 实时版本输出；Python 版本与依赖须另行核实 |
 | Godot 路径不可用 | 配置指定文件不存在、不可读或无执行权限 | 已配置路径本身；没有更换授权时不搜索替代版本 |
 | `engine version mismatch` | 实际工具输出与记录不同 | 是否更换了工具，是否完整保存 `--version` 输出 |
 | `engine executable must report Godot 4.7.x` | 实际输出不符合项目目标版本 | 核对真实引擎，不改配置标签伪装兼容 |
 | Python 路径带参数后无法调用 | 把命令写进可执行文件字段 | 路径单独存放，`-B` 和脚本放在调用参数中 |
 | 固定测试入口文件缺失 | 项目文件被删除或复制不完整 | 核对 `tools/testing/run-gdunit-tests.py`，按实际缺失修复 |
-| 环境 ready 后测试仍失败 | 就绪检查不运行测试 | 实际运行器输出、发现集合和引擎诊断 |
+| 环境检查通过后测试仍失败 | 就绪检查不运行测试 | 实际运行器输出、发现集合和引擎诊断 |
 | 新项目首次 CLI 测试找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite` | Godot 编辑器可能尚未完成全局类扫描 | 按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 核对并处理；仍失败时追查插件和解析错误，未执行用例的失败不能算业务 RED |
 | PowerShell 中退出码为空 | GUI 程序未按预期等待结束 | 使用直接检查约定的 `Out-Host` 管道并立即读取退出码 |
 

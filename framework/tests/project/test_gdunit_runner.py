@@ -90,7 +90,7 @@ class GdUnitRunnerTests(unittest.TestCase):
         config = self.root / "docs/methodology-config.json"
         config.parent.mkdir()
         config.write_text(
-            '{"environment_bootstrap":{"engine_executable":"engine folder/Godot.exe"}}',
+            '{"engine_executable":"engine folder/Godot.exe"}',
             encoding="utf-8",
         )
         args = runner._parse_args(["--feature", "F001"])
@@ -105,7 +105,7 @@ class GdUnitRunnerTests(unittest.TestCase):
     def test_invalid_configured_engine_is_rejected_before_launch(self) -> None:
         for value in (None, [], {}, 7, "", "   "):
             with self.subTest(value=value), mock.patch.object(
-                runner, "read_json", return_value={"environment_bootstrap": {"engine_executable": value}}
+                runner, "read_json", return_value={"engine_executable": value}
             ), self.assertRaises(SystemExit):
                 runner._parse_args([])
 
