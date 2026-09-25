@@ -16,6 +16,8 @@ Read-only also excludes launching Godot/import, installing Skills or invoking a 
 3. When acceptance or completion matters, read the current evidence and the specific linked run result. Distinguish old PASS, current snapshot and pending human acceptance. Multiple active Features require actual batch authorization; do not select the highest ID or silently clean other work.
 4. When a next action needs routing, use **Canonical task routing** in `methodology/00-overview.md`, then read the destination Skill's relevant entry/stop contract. That table and the existing workflow own routing and approval; this Skill maintains no second workflow.
 
+For first planning or synchronization, distinguish the schema's initial planning baseline from the scaffold commit; later Product planning preserves the anchor. Missing history for existing work belongs to synchronization's coverage check.
+
 When the question concerns terminology, project rules or design, read the relevant `docs/terminology.md`, `docs/project-rules.md`, Feature design and architecture/ADR sources. Use their owning contracts for update authority and the Stage 3 documentation checkpoint. Missing optional designs/ADRs are normal; a proposed rule or accepted ADR is not proof of implementation or verification. Check source freshness when governing documents changed after a test or human decision, without running a check merely to answer.
 
 Report a missing file as missing instead of creating it. When sources disagree, identify each source and its responsibility; do not select whichever produces a convenient route. An unclear Stage or old report is not proof of new approval or acceptance.

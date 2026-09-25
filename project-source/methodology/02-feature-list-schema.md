@@ -174,11 +174,31 @@ After completion, retain the design as the account of that Feature. Later behavi
 
 ## File 3: `docs/feature-list-revisions.json`
 
-`feature-sync` appends one record for each governing-source synchronization:
+`feature-plan` establishes the first eligible planning baseline below; `feature-sync` appends one record for each later governing-source synchronization.
 
 Initial content is `{"schema_version": 2, "revision_log": []}`. The root and each revision entry use schema version 2; no old-format parsing or automatic migration is provided. Current-format history remains immutable. `engineering-change-plan` does not append a revision merely for creating an engineering Feature without a source change.
 
-On first synchronization, a Feature-file edit alone is not a source baseline; `feature-sync` must verify which source state the plan actually absorbed. If approved current-document alignment is needed because that history is unknown, the existing anchor fields both identify the inspected HEAD and `summary` records this limitation. This establishes the next baseline without claiming an earlier diff. A newly admitted professional source category requires the same coverage check even when its files predate an existing anchor; see `11-specialist-workflows.md`.
+### Initial planning baseline
+
+When both the Feature index and revision log were empty before this first Product plan, establish one baseline with the plan. An empty copied project or an engineering Feature alone does not establish source coverage. For an interrupted first planning task, verify the same pre-write empty state and adopted source revision from its existing task context and Git history; do not infer them from an empty revision log alone.
+
+Before writing the plan, ensure all adopted Product, professional and rule sources are committed under their owning workflow and existing authorization. Resolve the actual source HEAD as a full commit hash. If sources cannot be committed or their adopted state is unclear, report the prerequisite rather than using the scaffold commit. After checking the written plan's semantic coverage, append the following version-2 entry and include it in the final ledger validation and plan commit:
+
+| Field | Initial value |
+| --- | --- |
+| `revision_id`, `schema_version` | `R000`, `2` |
+| `anchor_commit`, `synced_at_commit` | The same verified source HEAD adopted by this plan |
+| `revised_at`, `user_intent` | Actual timestamp; supplied planning intent or `null` |
+| `summary`, `added` | Initial baseline, current Product and adopted source coverage/limits in prose; the actual new Feature IDs |
+| `migrations`, `dependency_changes` | Empty arrays; this records initial planning, not a historical source change |
+
+Recheck that the adopted source contents still match the recorded commit before finalizing. No self-referencing plan commit, additional baseline file or new schema field is needed. This baseline covers only the planned scope and actually adopted sources, not every Product or every file present at HEAD.
+
+Later Product planning preserves the entire revision log and never advances the anchor: it must not hide unsynchronized changes to earlier work. A populated ledger with no baseline uses `feature-sync` to verify prior coverage or perform an authorized current-document alignment; do not backfill `R000` just because the log is empty. Preserve an existing baseline on continuation.
+
+### Synchronization records
+
+On synchronization without a usable recorded baseline, a Feature-file edit alone is not a source baseline; `feature-sync` must verify which source state the plan actually absorbed. If approved current-document alignment is needed because that history is unknown, the existing anchor fields both identify the inspected HEAD and `summary` records this limitation. This establishes the next baseline without claiming an earlier diff. A newly admitted professional source category requires the same coverage check even when its files predate an existing anchor; see `11-specialist-workflows.md`.
 
 New synchronization records use these fields in addition to the existing summary, anchor and human-readable metadata:
 
