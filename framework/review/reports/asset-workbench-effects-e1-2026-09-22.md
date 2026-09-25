@@ -74,7 +74,7 @@ $effectGodot = 'E:/GameTools/Godot/4.7.1/Godot_v4.7.1-stable_win64.exe'
 & $effectGodot --path . --rendering-method forward_plus --script res://reports/asset-workbench-effects-20260922/fixtures/asset_effect_render_capture.gd | Out-Host
 ```
 
-每次分别检查退出码。Compatibility 将渲染参数改为 `gl_compatibility`；旧 UI 夹具仅在外部副本替换了输出目录，未覆盖先前 UI 报告。 维护 unittest 与手册构建命令沿用 [维护说明](../../docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)。
+每次分别检查退出码。Compatibility 将渲染参数改为 `gl_compatibility`；旧 UI 夹具仅在外部副本替换了输出目录，未覆盖先前 UI 报告。 维护 unittest 与手册构建命令沿用 [维护说明](../../docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)。
 
 ## 交付和未验证边界
 

@@ -20,7 +20,7 @@
 
 ## 使用说明的可读性
 
-编写 README、使用手册和操作指南时，遵循 [通用可读性要求](project-source/Project_AGENTS.md#使用说明的可读性)。框架手册的页面分工与同步要求见 [说明的组织与措辞](framework/docs/blank-project/maintenance/updating-the-blank-project.md#说明的组织与措辞)。
+编写 README、使用手册和操作指南时，遵循 [通用可读性要求](project-source/Project_AGENTS.md#使用说明的可读性)。框架手册的页面分工与同步要求见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
 
 ## 维护边界与查阅
 
@@ -29,16 +29,16 @@
 | 框架维护 | `framework/` 保存维护材料，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存可复制材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
 | 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
-| 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
-| 修改 HTML 手册 | 先查阅 [阅读版交互维护原则](framework/docs/blank-project/maintenance/updating-the-blank-project.md#阅读版交互维护原则)，按阅读场景修改对应源文件，再生成离线阅读版。 |
+| 修改空白项目 | 先读 [使用手册](framework/docs/blank-project/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
+| 手册重构与阅读版 | 当前只交付 Markdown，先讨论八篇场景样稿再全量迁移；HTML 构建暂缓，保留工具，按 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓) 在重新引入时适配。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
-| 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
+| 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
 维护 `project-source/` 中的 Godot 代码、场景、资源或测试时，按 [领域规则路由](project-source/Project_AGENTS.md#engineering-rule-routing) 核对适用工程语义；任务授权、Git、验证范围与地点及交付仍以本维护仓库规则为准。
 
 框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。只保留仍需推进的工作、真实验证缺口、阻塞与必要待决定项，写明下一步和必要依据；条目不授予实施权限。完成并通过必要验证的事项立即删除；尚有必要人工验收时仅保留具体待验收项。历史由 Git 保存，不保留完成记录、成果汇总或长期搁置的设想；无待办时清空文件。相关状态发生实质变化时，在本次允许写入的范围内及时更新，提交或交接前核对一致；只读任务在回复中指出需更新项，无实质变化不制造更新。
 
-更新使用说明时，Agent 完成内容、链接与锚点的静态核对，以及需要的现有 HTML/Mermaid 构建；禁止使用 Playwright Skill 进行可视化检查。排版与浏览器交互由用户在外部检查，交付时提供阅读版入口和需要关注的位置，不把构建成功写成视觉检查通过。
+更新使用说明时，Agent 完成内容、路径、链接与锚点的静态核对，交付 Markdown 入口与需要试读的位置。当前不生成 HTML 或 Mermaid 阅读版。以后重新引入 HTML 时，排版与浏览器交互仍由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查，不把构建成功写成视觉检查通过。
 
 ## 文件命名与修改
 
@@ -64,7 +64,7 @@
 | Skill 触发 | description 简短说明职责和具体适用任务，必要时注明易混淆的排除项；不堆砌关键词或用宽泛领域强制触发无关 Skill。 |
 | 按需阅读 | 引用资料时写明适用任务或条件，多流程 Skill 的入口保持精简路由；复用仍有效的上下文，不把固定文档组、通读目录或全仓地图设为每轮任务的前置。 |
 | 流程粒度 | 写清必要依赖，保留 Agent 对普通实现细节的判断；不照搬旧模型的逐动作配方，不设置无依据的提问轮数、产物数量或逐阶段发言要求。 |
-| 授权与完成 | 按本次授权定义完成标准，覆盖适用的实现、必要验证与交付；已有具体授权按 [会话延续约定](framework/docs/blank-project/maintenance/updating-the-blank-project.md#后续用口语继续) 跨 Skill、阶段和后续口语请求沿用。Skill 返回或局部步骤完成不结束已授权工作；授权范围完成、必要前置受阻、缺少决定、范围实质变化或用户要求暂停时停止，实现授权不替代实际人工验收。 |
+| 授权与完成 | 按本次授权定义完成标准，覆盖适用的实现、必要验证与交付；已有具体授权按 [会话延续约定](framework/docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续) 跨 Skill、阶段和后续口语请求沿用。Skill 返回或局部步骤完成不结束已授权工作；授权范围完成、必要前置受阻、缺少决定、范围实质变化或用户要求暂停时停止，实现授权不替代实际人工验收。 |
 | 阻塞可解释 | 指令确实导致暂停或改变方向时，指出具体文件、条款与当前缺口；先核对适用范围和已有授权，不因推测的风险追加确认。 |
 
 同类短枚举合并为一行或表格；只有需分别详细解释的条目才拆行。模型或工作方式变化后，按真实误触发、冲突、等待和重复工作检查相关指令，不因个别现象叠加普遍规则。

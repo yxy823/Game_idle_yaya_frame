@@ -47,7 +47,7 @@ E7 的整合、独立审核、五项修复与自动验证已完成，新增效�
 | 第四入口及消费真实渲染 | Forward+ / Compatibility 均通过四尺寸 × 浅深色、真实播放/停止输入、编排 A/B/并行阶段像素、10 轮回收；节点回到 1，孤儿 0 | `timeline-<renderer>.log`、`<renderer>/timeline-render-results.json` 及 PNG |
 | 原三入口及单对象消费 | 四尺寸、浅深色、输入、停止/保存可达，单对象新主题真实显示 | `existing-entries.log`、`existing-entries/layout-results.json` 与 `example-game.png` |
 | 批量源分析画面 | 四个原始源文件实际分析 success、无错误；浅深色、620×440 滚动可达，新增不支持 Atlas 的原因直接显示 | `batch-capture.log`、`group/batch-results.json`、`group/group-unsupported-source*.png` |
-| 文档 | Markdown/调用关系/链接静态核对，离线手册构建 **22 篇 / 33 图 / 490 链接** | [阅读版](../../docs/blank-project/blank-project-handbook.html)；未进行浏览器排版或交互验收 |
+| 文档 | Markdown/调用关系/链接静态核对，离线手册构建 **22 篇 / 33 图 / 490 链接** | 阅读版（当时的 HTML 已撤下）；未进行浏览器排版或交互验收 |
 
 渲染四尺寸为 1600×900、1152×648、900×540、720×480。作者和审核者查看了新宽/窄工作台、单对象消费及批量反馈截图。 像素变化只证明实际绘制；包验证使用引擎加载资源包，不是签名可执行发行包或其他平台验证。 源分析仍不测最终混音/渲染质量；本轮未重跑不受影响的后端工具全部测试及 E4 长时性能探针，只对已迁移的规模探针做解析/lint。
 

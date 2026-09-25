@@ -93,4 +93,4 @@
 
 不能把所有声音都送进同一评分公式。例如该版本 ebur128 的瞬时窗口为 400 ms、短期窗口为 3 s；本例 0.290 s 的声音不应展示貌似可靠的完整响度统计。 应优先给出适用的峰值、RMS 等信息，对时长不足或无明确音高的项目返回原因，不用补静音伪造适用性。图像统计同样需要明确透明像素与色彩空间处理，不能将背景颜色混入素材颜色。
 
-后续测试方式见 [框架的复制与运行验证](../../docs/blank-project/maintenance/validating-framework.md)，当前待办见 [框架进度](../../progress.md)。
+后续测试方式见 [框架的复制与运行验证](../../docs/framework-maintenance/validating-framework.md)，当前待办见 [框架进度](../../progress.md)。

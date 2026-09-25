@@ -27,7 +27,7 @@
 | lint | 65 文件，0 Critical / 0 Warning、485 Info；阈值未改 | `starter_lint.json`、`starter_lint.log` |
 | 独立消费包 | 最终导出退出 0，无错误诊断；从报告目录用 `--main-pack` 加载包，四入口声部分别 1/3/2/2，生命周期与工具排除断言通过 | `asset_consumers_verified.zip`、`starter_export_verified.log`、`starter_export_probe.json` / `.log` |
 | 静态核对 | 命名/资源引用、UID、复制排除、源与被测内容、Skill 格式与文档链接通过；最终定向复核无必须修复项 | 本轮差异与终端输出 |
-| 手册构建 | 22 篇、32 张 Mermaid SVG、530 个来源链接检查，构建退出 0 | [离线阅读版](../../docs/blank-project/blank-project-handbook.html) |
+| 手册构建 | 22 篇、32 张 Mermaid SVG、530 个来源链接检查，构建退出 0 | 离线阅读版（当时的 HTML 已撤下） |
 
 消费包验证使用 Compatibility 渲染器和引擎资源包，不是独立可执行发行包验证。没有重跑未受影响的后端全量回归、性能压测或所有历史画面场景。
 

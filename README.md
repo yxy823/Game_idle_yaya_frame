@@ -2,7 +2,7 @@
 
 这里维护一套 Godot 项目的起始文件和开发 Skill，供 Windows 11 / PowerShell 7 使用。 目标是让用户与 Coding Agent 持续开发时需求清楚、任务接得上、修改有验证、结果如实记录。 Skill 提供方法，项目文件积累知识，Agent 根据任务作工程判断。
 
-完整使用说明见 [空白项目使用手册](framework/docs/blank-project/README.md)： 按入门、日常开发、配置与工具参考、框架维护分层，覆盖创建、环境准备、需求规划、 Feature 执行、验收、工程变更、架构与交接、故障排查。 手册仅保存在框架内，不进入新项目；项目内 README 继续保持简短导航。
+使用说明正在按[整体目录](framework/docs/blank-project/README.md)重构：操作手册负责框架、概念、配置与工具，场景速查手册负责具体情境，框架维护说明[独立归档](framework/docs/framework-maintenance/README.md)。当前先试读[八篇场景样稿](framework/docs/blank-project/quick-reference/scenario-index.md)，讨论后再迁移其余正文。只交付 Markdown，HTML 阅读版暂缓。手册不进入新项目，项目内 README 保持自身的简短导航。
 
 ## 文件放在哪里
 
@@ -14,7 +14,8 @@ Game_idle_yaya_frame/
 │   ├── commands/              复制入口；按需执行的项目工具回归入口
 │   ├── project-files.json     相对路径复制清单
 │   ├── prompts.json           用户操作提示词，不复制到项目
-│   ├── docs/blank-project/    详细使用手册，不复制到项目
+│   ├── docs/blank-project/    项目使用文档与场景样稿，不复制到项目
+│   ├── docs/framework-maintenance/  框架维护文档，不复制到项目
 │   ├── tests/                 复制器与项目工具的回归源码
 │   └── review/                设计/场景基线与按次审核报告
 └── project-source/
@@ -77,6 +78,6 @@ flowchart LR
 
 ## 维护和检查
 
-修改 → 按本次任务需要静态检查或实际验证 → 如实交付。没有固定发布流水线。 维护源使用独立 Git 仓库管理变更，后续不再创建源外备份。 修改空白项目之前先阅读手册与相关专题，修改后同步受影响说明；具体映射见 [维护与同步说明](framework/docs/blank-project/maintenance/updating-the-blank-project.md)。 静态检查可查看路径、引用、语法和配置。实际项目验证只在明确指定的外部项目中进行； 只要求静态检查时，不运行生成器、Godot 或测试。
+修改 → 按本次任务需要静态检查或实际验证 → 如实交付。没有固定发布流水线。 维护源使用独立 Git 仓库管理变更，后续不再创建源外备份。 修改空白项目之前先阅读手册与相关专题，修改后同步受影响说明；具体映射见 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md)。 静态检查可查看路径、引用、语法和配置。实际项目验证只在明确指定的外部项目中进行； 只要求静态检查时，不运行生成器、Godot 或测试。
 
 [framework/README.md](framework/README.md) 说明维护命令及脚本的必要性。 [设计复盘](framework/review/baselines/design-quality.md) 与 [场景覆盖及提示词场景清单](framework/review/baselines/scenario-coverage.md) 记录当前静态基线。 [项目 README](project-source/Project_README.md) 说明项目使用方式。

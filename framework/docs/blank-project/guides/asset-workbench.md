@@ -1,6 +1,6 @@
 # 美术、音频与视觉效果资源工作台
 
-[返回手册](../README.md) · 相关：[专业设计](specialist-workflows.md)、[框架验证方式](../maintenance/validating-framework.md)
+[返回手册](../README.md) · 相关：[专业设计](specialist-workflows.md)、[框架验证方式](../../framework-maintenance/validating-framework.md)
 
 工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。 它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。
 
