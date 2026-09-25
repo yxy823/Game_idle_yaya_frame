@@ -58,7 +58,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | --- | --- | --- |
 | `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
 | `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
-| `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 启动真实 Godot 测试进程，写隔离的运行目录 |
+| `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法空集返回 `not_required`，不创建报告 |
 | `tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
 | `tools/features/merge-test-registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
@@ -138,9 +138,11 @@ affected = Required + 与影响组件相交的 active 验收测试
 
 没有单元套件的组件使用 `unit_test_paths: []`，不产生虚构选择器。已登记路径丢失、被选中目录零测试、必需用例跳过或报告缺失都不能记为通过。不存在且未登记的测试层不会贡献全量选择器；这不把空项目变成有成功测试证据的项目。
 
+合法空选择集的返回及完成记录衔接见[记录完成依据](#记录完成依据)。
+
 ## 一次运行留下什么
 
-Feature 运行创建 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行创建 `reports/gdunit-wrapper/focused/run-<id>/`。运行顺序和完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不猜测 run ID 或报告文件夹编号。
+实际 Feature 运行创建 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行创建 `reports/gdunit-wrapper/focused/run-<id>/`。运行顺序和完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不猜测 run ID 或报告文件夹编号。
 
 ```text
 reports/gdunit-wrapper/F001/run-<id>/
@@ -197,7 +199,7 @@ $LASTEXITCODE
 
 导入后核对退出码与实际结果。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。
 
-若有效 manual 计划的 Required、affected 都为空且不要求全量测试，省略自动运行和 `record-tests`。记录真实人工验收结果时会建立完成记录，其中 `test_runs: []`；随后运行完成检查。工具从当前计划计算 `not_required`，不生成空的成功报告。任何自动测试义务、无效映射或当前内容上的未解决失败仍会阻止完成。
+统一调用运行器即可：有效 manual 计划的 Required、affected 都为空且不要求全量时，退出码为 0，stdout 输出 `status: not_required` 的 JSON；不启动 Godot、不读取引擎配置、不创建运行报告，也不调用 `record-tests`。真实人工验收结果随后建立完成记录，其中 `test_runs: []`。合法空基线也返回 `not_required`；显式 `--scope full` 或 `--require-test`、无效映射、缺失路径、当前内容上的未解决最终失败仍会报错。退出 0 在此仅表示无需自动测试，不是 PASS。
 
 有结果时直接记录，不用提前建空记录，也不用额外执行初始化命令。首次记录测试结果或真实人工验收时建立完成记录；已有文件损坏或格式不受支持时会报错，不会覆盖。独立评审的范围和时机由用户选择；其他失败处理见 [故障排查](troubleshooting.md#测试运行和完成依据)。
 

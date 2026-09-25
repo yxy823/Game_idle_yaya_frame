@@ -51,7 +51,7 @@ python -B tools/testing/run-gdunit-tests.py --feature F001 --scope auto
 python -B tools/features/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/F001/run-ID/result.json
 ```
 
-将上述 Python 换成配置中的实际解释器；仅需临时更换 Godot 时传入 `--godot-binary <路径>`。 测试的 `--target <path>` 用于 focused/TDD，`--phase baseline` 用于已有安全网。 `auto` 按批准范围选择 affected/full；没有独立计划文件。
+将上述 Python 换成配置中的实际解释器；仅需临时更换 Godot 时传入 `--godot-binary <路径>`。 测试的 `--target <path>` 用于 focused/TDD，`--phase baseline` 用于已有安全网。 `auto` 按批准范围选择 affected/full；没有独立计划文件。合法空基线或无自动测试义务的 manual 最终验证返回 0，并在 stdout 输出 `status: not_required` 的 JSON，不启动 Godot、不读取引擎配置或创建运行报告，也不调用 `record-tests`。这不表示测试通过；显式 full/必需用例、缺失路径及未解决的最终失败仍须处理。
 
 脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见 [直接检查说明](../methodology/gdscript-lint.md)。没有静态检查 Python 包装器、 静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
 

@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.feature_completion_evidence import write_evidence
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
-from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory
+from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory, derive_test_evidence
 from tools.lib.test_selection import build_selection, execution_selectors, read_json
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -34,7 +34,12 @@ class ProcessResult:
 
 
 def _build_command(args: argparse.Namespace, report_root: Path) -> list[str]:
-    command = [str((REPO_ROOT / args.godot_binary).resolve()), "--path", str(REPO_ROOT),
+    engine = args.godot_binary
+    if engine is None:
+        engine = read_json(REPO_ROOT / "docs/methodology-config.json")["engine_executable"]
+    if not isinstance(engine, str) or not engine.strip():
+        raise ValueError("Godot executable must be configured or supplied with --godot-binary")
+    command = [str((REPO_ROOT / engine).resolve()), "--path", str(REPO_ROOT),
                "--debug", "--ignore-error-breaks", "--script", RUNNER_SCRIPT,
                "-rd", str(report_root)]
     for target in getattr(args, "targets", [args.target]):
@@ -53,6 +58,27 @@ def _startup_diagnostics(output: str) -> list[str]:
 
 
 def _run_tests(args: argparse.Namespace) -> int:
+    selection_error = None
+    try:
+        if args.feature:
+            selection = build_selection(REPO_ROOT, args.feature, phase=args.phase)
+            if args.scope == "auto":
+                args.scope = "full" if selection["full_suite"]["required"] else "affected"
+            print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True)
+            if (args.scope != "full" and not args.require_test
+                    and not selection["required"] and not selection["affected"]
+                    and not selection["full_suite"]["required"]):
+                # Final selection validates manual acceptance; also retain unresolved failures.
+                if args.phase == "final":
+                    derive_test_evidence(REPO_ROOT, args.feature, [])
+                print(json.dumps({"status": "not_required", "feature_id": args.feature,
+                                  "phase": args.phase, "scope": args.scope,
+                                  "reason": "no automated test obligations"}))
+                return 0
+            args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
+    except (ValueError, OSError, KeyError, TypeError, RuntimeError) as error:
+        selection_error = error
+
     report_base = run_history_directory(REPO_ROOT, args.feature)
     report_base.mkdir(parents=True, exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix="run-", dir=report_base))
@@ -64,13 +90,8 @@ def _run_tests(args: argparse.Namespace) -> int:
     process = None
     errors = []
     try:
-        if args.feature:
-            selection = build_selection(REPO_ROOT, args.feature, phase=args.phase)
-            if args.scope == "auto":
-                args.scope = "full" if selection["full_suite"]["required"] else "affected"
-            args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
-            result["scope"] = args.scope
-            print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True)
+        if selection_error is not None:
+            raise selection_error
         result["command"] = _build_command(args, directory)
         result["selectors"] = getattr(args, "targets", [args.target])
         write_evidence(directory / "result.json", result)
@@ -125,14 +146,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         run_history_directory(REPO_ROOT, args.feature)
     except ValueError as error:
         parser.error(str(error))
-    if args.godot_binary is None:
-        try:
-            config = read_json(REPO_ROOT / "docs/methodology-config.json")
-            args.godot_binary = config["engine_executable"]
-        except (OSError, ValueError, KeyError, TypeError) as error:
-            parser.error(f"cannot read configured Godot executable: {error}")
-    if not isinstance(args.godot_binary, str) or not args.godot_binary.strip():
-        parser.error("Godot executable must be configured or supplied with --godot-binary")
+    if args.godot_binary is not None and not args.godot_binary.strip():
+        parser.error("--godot-binary must be a non-empty executable path")
     return args
 
 

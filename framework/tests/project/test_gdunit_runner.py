@@ -5,6 +5,9 @@ from project_context import PROJECT_ROOT
 import argparse
 import ctypes
 import importlib.util
+import io
+import json
+from contextlib import redirect_stdout
 import os
 import subprocess
 import sys
@@ -99,15 +102,93 @@ class GdUnitRunnerTests(unittest.TestCase):
         config.unlink()
         self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).godot_binary,
                          sys.executable)
-        with self.assertRaises(SystemExit):
-            runner._parse_args([])
+        with self.assertRaises(ValueError):
+            runner._build_command(runner._parse_args([]), self.root / "reports")
 
     def test_invalid_configured_engine_is_rejected_before_launch(self) -> None:
         for value in (None, [], {}, 7, "", "   "):
             with self.subTest(value=value), mock.patch.object(
                 runner, "read_json", return_value={"engine_executable": value}
-            ), self.assertRaises(SystemExit):
-                runner._parse_args([])
+            ), self.assertRaises(ValueError):
+                runner._build_command(runner._parse_args([]), self.root / "reports")
+
+    def _manual_plan(self) -> dict:
+        for command in (
+            ["git", "init", "--quiet"],
+            ["git", "-c", "user.name=Test", "-c", "user.email=test@example.invalid",
+             "commit", "--allow-empty", "--quiet", "-m", "Fixture"],
+        ):
+            subprocess.run(command, cwd=self.root, check=True, capture_output=True)
+        detail = {"id": "F001", "affected_components": ["example"],
+                  "acceptance_criteria": [{"id": "AC01", "text": "Inspect appearance",
+                      "verification": {"automated_tests": [], "manual_checks": ["Inspect appearance"]}}],
+                  "verification": {"acceptance_mode": "manual", "regression_tests": []}}
+        path = self.root / "docs/features/F001.json"
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(detail), encoding="utf-8")
+        (self.root / "docs/test-registry.json").write_text(json.dumps({
+            "meta": {"schema_version": 3},
+            "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False}],
+            "tests": [],
+        }), encoding="utf-8")
+        return detail
+
+    def test_manual_empty_selection_needs_no_engine_or_reports(self) -> None:
+        self._manual_plan()
+        for scope in ("auto", "required", "affected"):
+            output = io.StringIO()
+            with self.subTest(scope=scope), redirect_stdout(output), mock.patch.object(runner, "_run_process") as engine:
+                self.assertEqual(runner._run_tests(runner._parse_args(
+                    ["--feature", "F001", "--scope", scope])), 0)
+                engine.assert_not_called()
+            self.assertEqual(json.loads(output.getvalue().splitlines()[-1])["status"], "not_required")
+        self.assertFalse((self.root / "reports").exists())
+        self.assertFalse((self.root / "docs/feature-completion-evidence.json").exists())
+
+    def test_empty_final_cannot_hide_failed_run(self) -> None:
+        self._manual_plan()
+        directory = self.root / "reports/gdunit-wrapper/F001/run-failed"
+        directory.mkdir(parents=True)
+        result = runner.start_run(self.root, directory, "F001", "final", "affected")
+        runner.finish_run(self.root, directory, result, errors=["previous failure"])
+        with mock.patch.object(runner, "_run_process") as engine:
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            engine.assert_not_called()
+
+    def test_empty_selection_cannot_skip_explicit_test_or_full_scope(self) -> None:
+        self._manual_plan()
+        for extra in (["--scope", "full"], ["--require-test", "tests/example.gd::test_case"]):
+            with self.subTest(extra=extra), mock.patch.object(runner, "_run_process") as engine:
+                self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001", *extra])), 1)
+                engine.assert_not_called()
+
+    def test_missing_registered_path_is_not_an_empty_selection(self) -> None:
+        self._manual_plan()
+        path = self.root / "docs/test-registry.json"
+        registry = json.loads(path.read_text(encoding="utf-8"))
+        registry["components"][0]["unit_test_paths"] = ["tests/missing.gd"]
+        path.write_text(json.dumps(registry), encoding="utf-8")
+        with mock.patch.object(runner, "_run_process") as engine:
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            engine.assert_not_called()
+
+    def test_planned_automated_tests_can_have_empty_baseline_but_not_final(self) -> None:
+        detail = self._manual_plan()
+        detail["verification"]["acceptance_mode"] = "automated"
+        detail["acceptance_criteria"][0]["verification"] = {
+            "automated_tests": ["F001-AC01-01"], "manual_checks": []}
+        (self.root / "docs/features/F001.json").write_text(json.dumps(detail), encoding="utf-8")
+        path = self.root / "docs/test-registry.json"
+        registry = json.loads(path.read_text(encoding="utf-8"))
+        registry["tests"] = [{"id": "F001-AC01-01", "status": "planned",
+                             "components": ["example"], "path": None, "case": None}]
+        path.write_text(json.dumps(registry), encoding="utf-8")
+        with mock.patch.object(runner, "_run_process") as engine:
+            self.assertEqual(runner._run_tests(runner._parse_args(
+                ["--feature", "F001", "--phase", "baseline"])), 0)
+            self.assertFalse((self.root / "reports").exists())
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            engine.assert_not_called()
 
     def test_project_relative_engine_path_preserves_spaces_and_unicode(self) -> None:
         executable = self.root / "engine folder" / "工具.exe"

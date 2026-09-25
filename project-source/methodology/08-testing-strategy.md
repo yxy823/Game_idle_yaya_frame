@@ -132,7 +132,7 @@ Required Test Set =
   + approved additional tests in verification.test_impact
 ```
 
-An empty `unit_test_paths` array contributes no unit selector and does not trigger an empty targeted run. Every registered suite for an affected component must enter the Required Test Set; a missing path or a targeted run discovering zero tests is an error, not PASS.
+An empty `unit_test_paths` array contributes no unit selector; the runner handles a valid empty selection as described below. Every registered suite for an affected component must enter the Required Test Set; a missing path or a targeted run discovering zero tests is an error, not PASS.
 
 The affected set contains Required plus active acceptance tests intersecting affected components. The agent may add related tests from other components when dependency/API analysis shows material impact, recording the exact reason. It may not remove any deterministic requirement. Approved retirement changes the underlying Product/Registry contract instead of adding a runner exclusion.
 
@@ -168,7 +168,7 @@ Full scope selects `tests/` recursively. Empty layer directories add no obligati
 
 ## Artifact-backed completion and semantic freshness
 
-For a valid `manual` acceptance plan only, when the current Required and affected sets are both empty and full suite is not required, no automated run is needed. Recording actual human acceptance creates the completion record with `test_runs: []`; do not call the runner or `record-tests` just to manufacture evidence. The helper derives `not_required`, never an empty PASS. Current mappings and registered paths must still be valid; an unresolved failed or unfinished final run for the same Feature/snapshot still blocks completion. Record actual human acceptance on the current snapshot, and assess applicable static checks. Any automated obligation retains the normal real-run requirement.
+For final verification, only a valid `manual` acceptance plan with empty Required and affected sets and no full-suite obligation can return `not_required`. Invoke the runner normally: it checks the current plan and unresolved same-snapshot failures, then returns exit 0 with a JSON status on stdout without launching Godot, reading engine configuration or creating a run report. Do not call `record-tests` for this outcome. Recording actual human acceptance creates the completion record with `test_runs: []`; applicable static checks remain required. Baseline selection may likewise be empty because new planned tests do not exist yet. An explicit `--scope full` or `--require-test` still requires a real run; missing registered paths, zero discovery and unimplemented final automated mappings remain errors. `not_required` never clears an earlier failed or unfinished final run.
 
 Each Feature invocation creates one `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` directory. Focused runs use `reports/gdunit-wrapper/focused/run-<id>/`. Run order and completion history are local to the current Feature directory; unreadable or misfiled records in that directory still block completion. The runner writes one `result.json` (schema 1) before setup and finalizes that same file after execution. It records Feature/phase/scope, selected paths, the real command, source fingerprint, process outcome and errors, plus references/hashes for the original `engine.log`, `discovery.json`, JUnit and diagnostics. Case identities and totals are read from those original reports when needed, not copied into more summaries.
 

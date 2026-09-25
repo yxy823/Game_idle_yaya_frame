@@ -136,7 +136,7 @@ Before producing validation output or temporary inputs, choose their destination
 
 Before writing behavior-changing implementation code:
 
-1. run the Existing Safety Net from Stage 1, excluding new `planned` tests that do not exist yet;
+1. run the Existing Safety Net from Stage 1 with `--feature F0XX --phase baseline --scope auto`, excluding new `planned` tests that do not exist yet. A valid empty safety net returns `not_required`, creates no run report and is not a test PASS;
 2. directly run script parsing/lint if useful for the pre-change baseline;
 3. if an existing required test already fails, preserve the original error and report it before implementation. Do not attribute it to the current Feature or silently expand scope.
 
@@ -196,12 +196,12 @@ Read project commands from `docs/methodology-config.json`:
 
 Procedure:
 
-1. Read the current Feature/Registry obligations. If any Required/affected test or full-suite obligation exists, run the configured test runner with `--feature F0XX --scope auto`. It prints the selection, reasons, deduplication and full-suite escalation. No independent plan file is written. Missing or zero-discovery selectors fail. Only a valid `manual` plan with empty Required and affected sets and no full-suite obligation may omit the run and step 6, retaining `test_runs: []`; report `not_required`, not PASS. Continue applicable static checks and actual human acceptance. This case cannot hide an unresolved failed/unfinished final run on the same snapshot.
+1. Run the configured test runner with `--feature F0XX --scope auto`. It reads current obligations and prints the selection, reasons, deduplication and full-suite escalation. A valid `manual` plan with empty Required/affected sets and no full-suite obligation returns `not_required` without launching Godot or creating a run report; skip step 6 and retain `test_runs: []` in that case. Continue applicable static checks and actual human acceptance. Missing paths, zero discovery and unresolved failed/unfinished final runs on the same snapshot still fail.
 2. Inspect the actual selected scope and test results. If full is required, run one real full suite whose executed set covers Required and affected; do not repeat equivalent runs merely to fill different Gate fields. Otherwise run the affected union, including every Required item.
 3. Directly run Godot script parsing for changed scripts and necessary dependants, then the bundled lint CLI as described in `gdscript-lint.md`. Inspect actual output and exit codes. Do not add a Python wrapper, static manifest or import step.
 4. For a Bug, ensure each approved `F0XX-RTyy` test is active and passes, or the approved `manual_regression` is concrete and repeatable.
 5. If Stage 1 required full, the Feature’s recorded Test Impact must require it and the actual full result must pass. An unavailable or failed required full suite blocks completion; a reason or transcript cannot turn it into PASS.
-6. Record the actual Required Test Set, affected-test, and full-suite result, including failures:
+6. When a run result was produced, record the actual Required Test Set, affected-test, and full-suite result, including failures:
 
    ```powershell
    python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>

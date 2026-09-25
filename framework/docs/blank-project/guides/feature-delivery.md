@@ -301,7 +301,7 @@ Agent 在 Stage 8 汇报实际交付、验证范围与报告路径、提交和�
 
 ## 没有自动测试义务时
 
-只有有效 manual 计划确实没有 Required、affected 或全量义务，才省略自动运行和 `record-tests`，保留 `test_runs: []` 并报告 `not_required`。人工接受与适用直接静态检查仍须满足；不能用此分支掩盖当前内容上的失败、未完成运行或缺失测试路径。完整条件见 [完成依据参考](../reference/commands-and-validation.md#记录完成依据)。
+统一调用运行器后，只有有效 manual 计划确实没有 Required、affected 或全量义务，才会返回 `not_required`，不创建测试运行报告。此时省略 `record-tests`，真实人工接受建立的完成记录保留 `test_runs: []`。适用直接静态检查仍须满足；当前内容上的失败、未完成最终运行或缺失测试路径仍然阻止完成。完整条件见 [完成依据参考](../reference/commands-and-validation.md#记录完成依据)。
 
 ## 中断和失败时怎么继续
 
