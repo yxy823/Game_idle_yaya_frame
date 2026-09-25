@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-前一个模块已完成，准备规划下一个 Product。需要的材料：下一 Product、已完成前置模块、现有计划与修订。
+前一个模块已完成，准备规划下一个 Product。
+
+需要的材料：
+
+- 规划对象与前置：下一 Product、已完成前置模块。
+- 当前记录：现有计划与修订。
 
 ## 前置条件与适用范围
 
@@ -26,7 +31,12 @@
 
 追加新 ID 与详情，保留旧索引、历史和同步锚点；调用 check-feature-list.py 检查并提交。
 
-项目工具命令在实际游戏项目根目录执行；使用 `docs/methodology-config.json` 中的 `python_executable`，调用形式为 `& $projectPython -B <脚本路径> <参数>`，每次立即检查 `$LASTEXITCODE`。尖括号参数替换为实际值。命令成功只证明该操作完成。
+项目工具命令的使用要求：
+
+- 工作目录：实际游戏项目根目录。
+- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
+- 参数：尖括号参数替换为实际值。
+- 结果边界：命令成功只证明该操作完成。
 
 ## 步骤产出与状态变化
 

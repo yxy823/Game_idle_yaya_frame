@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-当前模块的需求已确认，准备做项目的第一份 Feature 计划。需要的材料：当前 Product、采用专业来源、本次规划范围。
+当前模块的需求已确认，准备做项目的第一份 Feature 计划。
+
+需要的材料：
+
+- 规划依据：当前 Product、采用专业来源。
+- 规划范围：本次规划范围。
 
 ## 前置条件与适用范围
 
@@ -30,7 +35,12 @@ Feature 索引与修订均为空，当前来源已确认。
 
 用项目 Python 调用 tools/checks/check-feature-list.py，再加 --eligible 查询可执行候选，核对覆盖后提交计划。
 
-项目工具命令在实际游戏项目根目录执行；使用 `docs/methodology-config.json` 中的 `python_executable`，调用形式为 `& $projectPython -B <脚本路径> <参数>`，每次立即检查 `$LASTEXITCODE`。尖括号参数替换为实际值。命令成功只证明该操作完成。
+项目工具命令的使用要求：
+
+- 工作目录：实际游戏项目根目录。
+- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
+- 参数：尖括号参数替换为实际值。
+- 结果边界：命令成功只证明该操作完成。
 
 ## 步骤产出与状态变化
 

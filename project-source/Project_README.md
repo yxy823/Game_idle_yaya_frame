@@ -6,7 +6,9 @@
 
 ## 开发环境
 
-`docs/methodology-config.json` 保存文档语言以及 Python、Godot 可执行路径。实际环境检查结果、观察到的版本及所用命令记录在初始化报告和必要的 Progress 中，不添加到配置字段。环境配置说明见 [环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)；命令用法见 [检查工具](tools/README.md)。环境可用与实际测试通过分别记录。
+- **配置内容**：`docs/methodology-config.json` 保存文档语言以及 Python、Godot 可执行路径。
+- **实际检查**：环境检查结果、观察到的版本及所用命令记录在初始化报告和必要的 Progress 中，不添加到配置字段。环境可用与实际测试通过分别记录。
+- **查阅入口**：[环境配置约定](methodology/05-document-language.md#project-environment-bootstrap)说明配置要求，[检查工具](tools/README.md)说明命令用法。
 
 ## 文档与代码
 
@@ -43,7 +45,11 @@
 
 知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题， 实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。 初始只有目录说明，实际内容随任务积累。 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
 
-创建后已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开。 Product 和专业文档初始只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。环境尚未验证，没有正式玩法、业务测试或已完成任务； 入口存在不代表已运行或验收通过。随带的工作台示例是独立开发入口。
+创建后的初始内容与状态如下：
+
+- **项目入口**：已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开；随带的工作台示例是独立开发入口。
+- **文档与台账**：Product 和专业文档只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。
+- **验证状态**：环境尚未验证，没有正式玩法、业务测试或已完成任务；入口存在不代表已运行或验收通过。
 
 ## 根据任务使用 Skill
 
@@ -131,7 +137,16 @@ flowchart TD
     S6 -->|已确认且获准的修复| S3
 ```
 
-先按需求决定验收方式，再填写对应检查项。涉及画面、声音、手感等人工判断时保留 Stage 5； 全部 AC 可自动验证且已选择 automated 时省略 Stage 5，不伪造人工接受。交接后按已有具体授权继续；范围完成或缺少必要决定时停止。 独立评审默认不启动；用户可以指定单项或多个已完成 Feature 合并评审，具体范围与时机遵循执行流程 Stage 6。 审核方法与作者分开，使用独立实例；被审成果和原证据只读，获准验证须隔离副作用。美术、音乐、音效制作目前仅保留说明占位，没有生产 Skill。 用户在当前会话给出的具体授权和检查范围优先于默认流程。
+用户在当前会话给出的具体授权和检查范围优先于默认流程。各环节的边界如下：
+
+- **验收方式**：先按需求决定方式，再填写对应检查项。
+  - 涉及画面、声音、手感等人工判断时，保留 Stage 5。
+  - 全部 AC 可自动验证且已选择 automated 时，省略 Stage 5，不伪造人工接受。
+- **交接后续**：按已有具体授权继续；范围完成或缺少必要决定时停止。
+- **独立评审**：默认不启动。用户可以指定单项或多个已完成 Feature 合并评审，具体范围与时机遵循执行流程 Stage 6。
+  - 审核方法与作者分开，使用独立实例。
+  - 被审成果和原证据只读，获准验证须隔离副作用。
+- **素材制作**：美术、音乐、音效制作目前仅保留说明占位，没有生产 Skill。
 
 ## 显式检查
 
@@ -148,4 +163,11 @@ python -B tools/checks/check-project-environment.py
 python -B tools/checks/check-project-environment.py --require-ready
 ```
 
-前一条检查配置结构，后一条检查 Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。 READY 不代表测试已经执行或通过。 它们不配置环境、不运行测试，也不初始化 Git。 测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径；脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。 首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。 失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。
+- **配置结构检查**：前一条命令检查配置结构。
+- **实际可用性检查**：后一条命令检查 Python/Godot 文件路径、固定测试入口文件与实际 Godot 版本。READY 不代表测试已经执行或通过。
+- **命令副作用**：这两条命令不配置环境、不运行测试，也不初始化 Git。
+- **测试与静态检查**：
+  - 测试使用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py`，默认读取 Godot 路径。
+  - 脚本解析和 lint 按 [直接检查说明](methodology/gdscript-lint.md) 调用 Godot 与插件自身入口。
+- **首次准备**：首次 CLI 运行前按需完成 [Godot 编辑器扫描](tools/README.md#首次-godot-扫描)，后续 Feature 复用已有准备。
+- **结果记录**：失败、未执行和人工待验收分别记录，具体说明见 [tools/README.md](tools/README.md)。

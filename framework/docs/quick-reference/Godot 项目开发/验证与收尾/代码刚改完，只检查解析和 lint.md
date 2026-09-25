@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-代码刚改完，只检查解析和 lint。需要的材料：改动脚本、当前版本、允许的静态检查范围。
+代码刚改完，只检查解析和 lint。
+
+需要的材料：
+
+- 检查对象：改动脚本、当前版本。
+- 检查授权：允许的静态检查范围。
 
 ## 前置条件与适用范围
 
@@ -20,13 +25,20 @@
 
 **S2｜执行限定检查**
 
-在项目根目录以配置 Godot 对变更脚本及必要依赖执行 --headless --path . --check-only --script res://<脚本>；随后对完整 res:// 运行 addons/gdscript-linter/analyzer/analyze-cli.gd。每条命令经 Out-Host 等待后立即读取退出码。
+在项目根目录以配置 Godot 执行：
+
+- 解析检查：对变更脚本及必要依赖执行 --headless --path . --check-only --script res://<脚本>。
+- lint：随后对完整 res:// 运行 addons/gdscript-linter/analyzer/analyze-cli.gd。
+
+每条命令经 Out-Host 等待后立即读取退出码。
 
 **S3｜报告覆盖**
 
 说明解析、lint 各自结果与未执行部分；不把静态结果等同功能测试。
 
-替换尖括号参数，报告目录不能覆盖仍需保留的原件；无 Feature 时使用 reports/maintenance/<任务>/。解析检查选定脚本，lint 按 gdlint.json 检查全项目；退出 3 表示输入或配置错误，2 表示 Critical，1 表示 Warning，0 才是无 Critical/Warning。
+- 参数与报告：替换尖括号参数，报告目录不能覆盖仍需保留的原件；无 Feature 时使用 reports/maintenance/<任务>/。
+- 检查范围：解析检查选定脚本，lint 按 gdlint.json 检查全项目。
+- lint 退出码：3 表示输入或配置错误，2 表示 Critical，1 表示 Warning，0 才是无 Critical/Warning。
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json

@@ -61,7 +61,11 @@
 
 ## 复制与重命名
 
-完整映射只维护在 [project-files.json](../../project-files.json)。其中 `Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`，`skills/ → .agents/skills/`、`agents/ → .codex/agents/`；默认文档、工程规则、方法、代码、工具及插件按清单复制。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
+完整映射只维护在 [project-files.json](../../project-files.json)。主要重命名与复制关系包括：
+
+- **项目入口：** `Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
+- **方法与角色：** `skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
+- **其他材料：** 默认文档、工程规则、方法、代码、工具及插件按清单复制。
 
 `framework/`、根维护规则和完整提示词库不进入项目。创建器不做变量渲染，不自动安装分析器依赖；复制选择不等于每个被复制组件已被项目采用。
 
@@ -82,8 +86,15 @@
 
 ## Git 与 Godot 扫描的区别
 
-默认忽略 Godot 缓存、派生翻译缓存、报告和本机秘密；`.env.example` / `.env.template` 可保留。源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档应按项目规则跟踪。具体模式以 [默认 gitignore](../../../project-source/defaults/.gitignore) 为准。
+Git 的默认范围如下，具体模式以 [默认 gitignore](../../../project-source/defaults/.gitignore) 为准。
 
-`.gdignore` 控制 Godot 扫描，不决定 Git 是否跟踪或文件是否可删除。`.import` 是导入配置，`.godot/` 是缓存，两者不能一并当作垃圾清空。报告未进 Git 时，本地提交不保证另一位置拥有验证原件。
+- **默认忽略：** Godot 缓存、派生翻译缓存、报告和本机秘密；`.env.example` / `.env.template` 可保留。
+- **按项目规则跟踪：** 源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
+
+还需区分扫描、导入与证据保留：
+
+- `.gdignore` 控制 Godot 扫描，不决定 Git 是否跟踪或文件是否可删除。
+- `.import` 是导入配置，`.godot/` 是缓存，两者不能一并当作垃圾清空。
+- 报告未进 Git 时，本地提交不保证另一位置拥有验证原件。
 
 文档选择依据见 [知识、设计与记录](knowledge-and-records.md)，专业材料职责见 [专业来源与资源](specialist-work.md)。

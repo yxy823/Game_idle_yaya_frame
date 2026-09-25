@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-Feature 已能体验，需要准备人工验收清单。需要的材料：manual Feature、批准的 manual_checks 与必要 manual_regression、运行入口。
+Feature 已能体验，需要准备人工验收清单。
+
+需要的材料：
+
+- 任务与人工义务：manual Feature、批准的 manual_checks 与必要 manual_regression。
+- 体验入口：运行入口。
 
 ## 前置条件与适用范围
 
@@ -26,7 +31,12 @@ Feature 已能体验，需要准备人工验收清单。需要的材料：manual
 
 用配置 Python 调用 tools/features/record-feature-completion.py prepare-manual --feature <ID> --checklist <清单路径>，给出可点击路径及返回方式。
 
-项目工具命令在实际游戏项目根目录执行；使用 `docs/methodology-config.json` 中的 `python_executable`，调用形式为 `& $projectPython -B <脚本路径> <参数>`，每次立即检查 `$LASTEXITCODE`。尖括号参数替换为实际值。命令成功只证明该操作完成。
+项目工具命令的使用要求：
+
+- 工作目录：实际游戏项目根目录。
+- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
+- 参数：尖括号参数替换为实际值。
+- 结果边界：命令成功只证明该操作完成。
 
 ## 步骤产出与状态变化
 

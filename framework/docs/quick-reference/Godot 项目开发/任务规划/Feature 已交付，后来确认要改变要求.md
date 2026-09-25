@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-Feature 已交付，后来确认要改变要求。需要的材料：已提交来源差异、受影响 Feature、批准的需求变化。
+Feature 已交付，后来确认要改变要求。
+
+需要的材料：
+
+- 变更依据：已提交来源差异、批准的需求变化。
+- 影响对象：受影响 Feature。
 
 ## 前置条件与适用范围
 
@@ -26,7 +31,12 @@ Feature 已交付，后来确认要改变要求。需要的材料：已提交来
 
 调用项目 tools/checks/check-feature-list.py，检查 ID、引用与覆盖后提交，交回获准执行。
 
-项目工具命令在实际游戏项目根目录执行；使用 `docs/methodology-config.json` 中的 `python_executable`，调用形式为 `& $projectPython -B <脚本路径> <参数>`，每次立即检查 `$LASTEXITCODE`。尖括号参数替换为实际值。命令成功只证明该操作完成。
+项目工具命令的使用要求：
+
+- 工作目录：实际游戏项目根目录。
+- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
+- 参数：尖括号参数替换为实际值。
+- 结果边界：命令成功只证明该操作完成。
 
 ## 步骤产出与状态变化
 
@@ -38,7 +48,8 @@ Feature 已交付，后来确认要改变要求。需要的材料：已提交来
 
 ## 资源与文件影响
 
-Feature 索引、详情、测试登记及必要修订修改；Product 读取，历史完成记录不篡改。
+- 修改：Feature 索引、详情、测试登记及必要修订。
+- 读取与保留：读取 Product，不篡改历史完成记录。
 
 ## 阻塞、异常与范围变化
 

@@ -62,7 +62,12 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | `tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
 | `tools/features/merge-test-registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
 
-组件候选为完整组件对象的 JSON 数组，或含 `components` 数组的对象。Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests，候选不提交。它只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
+组件合并器的输入和行为：
+
+- **候选格式：** 完整组件对象的 JSON 数组，或含 `components` 数组的对象。
+- **调用：** Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；候选不提交。
+- **冲突与保留：** 现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests。
+- **能力边界：** 只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
 
 ## 环境与台账检查
 
@@ -105,9 +110,14 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-`--feature` 与 `--target` 互斥；两者都不传时 target 默认为 `tests`。`--phase` 支持 `baseline`、`final`，默认 final。baseline 和 focused/target 运行用于基线或调试，不能直接作为当前 Feature 完成依据。
+- **目标：** `--feature` 与 `--target` 互斥；两者都不传时 target 默认为 `tests`。
+- **阶段：** `--phase` 支持 `baseline`、`final`，默认 final。baseline 和 focused/target 运行用于基线或调试，不能直接作为当前 Feature 完成依据。
 
-其他参数：`--timeout-seconds` 默认 120，必须是大于 0 的有限数；`--require-test` 使用 `<suite-path>::<test-case>` 格式，要求原始报告确实覆盖该用例；`--continue` 传给 gdUnit 的 `-c`，不表示继续一个已有 Yaya 任务或复用上次报告。
+其他参数：
+
+- `--timeout-seconds` 默认 120，必须是大于 0 的有限数。
+- `--require-test` 使用 `<suite-path>::<test-case>` 格式，要求原始报告确实覆盖该用例。
+- `--continue` 传给 gdUnit 的 `-c`，不表示继续一个已有 Yaya 任务或复用上次报告。
 
 运行器启动真实引擎和测试，而非纯文件检查。所需权限、窗口行为与运行范围按当前项目和任务确认；不能因为名字含“测试”就认为无副作用。
 
@@ -201,9 +211,20 @@ $LASTEXITCODE
 
 导入后核对退出码与实际结果。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。
 
-统一调用运行器即可：有效 manual 计划的 Required、affected 都为空且不要求全量时，退出码为 0，stdout 输出 `status: not_required` 的 JSON；不启动 Godot、不读取引擎配置、不创建运行报告，也不调用 `record-tests`。真实人工验收结果随后建立完成记录，其中 `test_runs: []`。合法空基线也返回 `not_required`；显式 `--scope full` 或 `--require-test`、无效映射、缺失路径、当前内容上的未解决最终失败仍会报错。退出 0 在此仅表示无需自动测试，不是 PASS。
+统一调用运行器即可，空选择集的处理如下：
 
-有结果时直接记录，不用提前建空记录，也不用额外执行初始化命令。首次记录测试结果或真实人工验收时建立完成记录；已有文件损坏或格式不受支持时会报错，不会覆盖。独立评审的范围和时机由用户选择；其他失败处理见 [故障排查](errors-and-results.md#测试与完成依据)。
+- **适用条件：** 有效 manual 计划的 Required、affected 都为空且不要求全量时，退出码为 0，stdout 输出 `status: not_required` 的 JSON。合法空基线也返回 `not_required`。
+- **运行与记录：** 不启动 Godot、不读取引擎配置、不创建运行报告，也不调用 `record-tests`。真实人工验收结果随后建立完成记录，其中 `test_runs: []`。
+- **仍会报错的情况：** 显式 `--scope full` 或 `--require-test`、无效映射、缺失路径、当前内容上的未解决最终失败。
+- **结果含义：** 退出 0 在此仅表示无需自动测试，不是 PASS。
+
+有结果时直接记录，不用提前建空记录，也不用额外执行初始化命令。
+
+- **首次记录：** 记录测试结果或真实人工验收时建立完成记录。
+- **已有文件：** 损坏或格式不受支持时会报错，不会覆盖。
+- **独立评审：** 范围和时机由用户选择。
+
+其他失败处理见 [故障排查](errors-and-results.md#测试与完成依据)。
 
 ### 导入人工验收记录
 
@@ -247,7 +268,9 @@ $LASTEXITCODE
 | 索引/Registry 的 `meta` | 上述过程字段及以 `_at` 结尾的键 |
 | 修订记录的每条 `revision_log` | `revised_at`、`created_at`、`updated_at`、`recorded_at`、`summary`、`notes` |
 
-AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 ID、源提交锚点和未知合同字段仍参与。notes 中的链接是过程记录，**被链接的 F0XX-design.md 自身仍纳入**。Git 提交号另作来源记录；仅提交了过程字段且指纹相同，不会凭提交号要求重跑或取得新接受。
+- **仍参与的字段：** AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 ID、源提交锚点和未知合同字段。
+- **被链接的设计：** notes 中的链接是过程记录，**被链接的 F0XX-design.md 自身仍纳入**。
+- **Git 提交号：** 另作来源记录；仅提交了过程字段且指纹相同，不会凭提交号要求重跑或取得新接受。
 
 治理文档尽量在 Stage 3 完成。最终测试或人工接受后再改了纳入的内容，包括 Stage 5.5 采纳新规则时，先核对当前指纹与验证义务，补齐失效的最终运行、导入和适用人工接受，不能只凭“未改代码”沿用旧结果。内容相同且覆盖仍满足的结果才可复用；只读评审不改变内容。
 
@@ -277,7 +300,12 @@ $LASTEXITCODE
 
 对 Windows GUI 可执行文件，`Out-Host` 管道用于等待进程，立即检查退出码。lint 扫描完整 `res://` 并遵循项目配置；修改了被默认排除的依赖时，仍需验证该依赖变更本身。
 
-当前 lint CLI 的退出码：0 表示无问题或仅 Info，1 表示 Warning，2 表示 Critical，3 表示输入无效、空发现、配置错误或 JSON 报告写入失败。`--severity` 和 `--top` 只影响显示，不会抹去真实判定。`--output` 支持 JSON 和 HTML 文件；默认文件名 `code_quality_report.html` 仅用于 HTML。报告真实范围与 Critical/Warning/Info 数量，未知数量不能写成零。
+当前 lint CLI 的结果与报告约定：
+
+- **退出码：** 0 表示无问题或仅 Info，1 表示 Warning，2 表示 Critical，3 表示输入无效、空发现、配置错误或 JSON 报告写入失败。
+- **显示参数：** `--severity` 和 `--top` 只影响显示，不会抹去真实判定。
+- **输出文件：** `--output` 支持 JSON 和 HTML 文件；默认文件名 `code_quality_report.html` 仅用于 HTML。
+- **报告内容：** 报告真实范围与 Critical/Warning/Info 数量，未知数量不能写成零。
 
 默认项目配置必须成功读取；根 `gdlint.json` 缺失或不可读时不会静默换成插件内置阈值。显式 `--config` 遵循相同失败边界，`--check` 中任一未知检查 ID 都以 3 退出，不能把零检查结果当成成功。
 
@@ -287,7 +315,10 @@ $LASTEXITCODE
 
 ## 退出码和结果边界
 
-环境与台账检查成功通常为 0、校验失败为 2；gdUnit 包装器成功为 0、运行失败为 1，参数解析错误可为 2。最终结论仍结合原始输出和检查范围，不能将不同工具的非零值统一解释为业务测试失败。
+- **环境与台账检查：** 成功通常为 0、校验失败为 2。
+- **gdUnit 包装器：** 成功为 0、运行失败为 1，参数解析错误可为 2。
+
+最终结论仍结合原始输出和检查范围，不能将不同工具的非零值统一解释为业务测试失败。
 
 | 已有结果 | 可以报告 | 不应推断 |
 | --- | --- | --- |

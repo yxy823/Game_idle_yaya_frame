@@ -4,7 +4,12 @@
 
 ## 触发场景与使用时机
 
-人工验收 JSON 已填好，需要导入结果。需要的材料：Feature ID、未改动原清单、用户填写的结果 JSON。
+人工验收 JSON 已填好，需要导入结果。
+
+需要的材料：
+
+- 所属任务：Feature ID。
+- 用户验收原件：未改动原清单、用户填写的结果 JSON。
 
 ## 前置条件与适用范围
 
@@ -26,7 +31,12 @@
 
 核对导入结果；有效全 passed 即为明确接受，不再重复确认；failed/pending 保留给对应处理。
 
-项目工具命令在实际游戏项目根目录执行；使用 `docs/methodology-config.json` 中的 `python_executable`，调用形式为 `& $projectPython -B <脚本路径> <参数>`，每次立即检查 `$LASTEXITCODE`。尖括号参数替换为实际值。命令成功只证明该操作完成。
+项目工具命令的使用要求：
+
+- 工作目录：实际游戏项目根目录。
+- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
+- 参数：尖括号参数替换为实际值。
+- 结果边界：命令成功只证明该操作完成。
 
 ## 步骤产出与状态变化
 

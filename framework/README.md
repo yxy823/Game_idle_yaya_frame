@@ -29,7 +29,12 @@
 python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ```
 
-source 相对维护仓库、target 相对项目。目录内容按清单复制，文件可重命名，原文不渲染。预检允许目录合并，拒绝重复文件、文件/目录冲突及不满足边界的目标；目标必须外部、不存在或为空，完整路径不能含中文或空白。
+复制入口按以下约定处理路径与文件：
+
+- **路径基准**：source 相对维护仓库，target 相对项目。
+- **复制方式**：目录内容按清单复制，文件可重命名，原文不渲染。
+- **预检范围**：允许目录合并；拒绝重复文件、文件/目录冲突及不满足边界的目标。
+- **目标要求**：位于框架之外，不存在或为空，完整路径不能含中文或空白。
 
 复制后需要 Git 身份来建立本地初始提交。复制/Git 失败保留现场，不自动清理；没有环境探测、测试、推送或项目同步。完整使用契约见 [框架与创建器](docs/operation-manual/framework-and-project.md)。
 
@@ -41,7 +46,15 @@ JSON 顶层保留两个 Project：Yaya 框架维护、Godot 项目开发；categ
 python -B framework/commands/check_scenario_prompt_paths.py
 ```
 
-可传 `--prompts <JSON>`、`--scenarios <目录>`。只读检查缺少、多余、重复与非法路径；根级 README.md、scenario-index.md 是导航排除项，不保存额外映射。退出 0 为集合一致，1 为缺少或多余，2 为输入/结构错误。它不检查正文 H1、具体步骤、授权、语义和运行结果，相关部分仍须内容审核。
+路径检查器的参数与结果如下：
+
+- **可选参数**：`--prompts <JSON>`、`--scenarios <目录>`。
+- **检查范围**：只读检查缺少、多余、重复与非法路径；根级 README.md、scenario-index.md 是导航排除项，不保存额外映射。
+- **退出码**：
+  - `0`：集合一致。
+  - `1`：缺少或多余。
+  - `2`：输入或结构错误。
+- **内容审核**：正文 H1、具体步骤、授权、语义和运行结果不在此工具检查范围内，仍须另行核对。
 
 新增或修改正文后同步同名场景及覆盖清单；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
@@ -54,7 +67,10 @@ python -B framework/commands/export_advisor_prompt_examples.py
 python -B framework/commands/export_advisor_prompt_examples.py --check
 ```
 
-入选正文、Skill 名称或范围改变后显式导出。全部来源有效后才写输出；正文/占位符原样保留，UTF-8、LF、无时间戳。--check 只比较内容，缺失/过期返回非零且不写入。生成结果随本次逻辑变更保存，相关回归见 [导出器测试](tests/test_advisor_prompt_examples.py)。
+- **导出时机**：入选正文、Skill 名称或范围改变后显式导出。
+- **输出约定**：全部来源有效后才写输出；正文和占位符原样保留，使用 UTF-8、LF，不附加时间戳。
+- **只读检查**：`--check` 只比较内容，缺失或过期返回非零且不写入。
+- **保存范围**：生成结果随本次逻辑变更保存，相关回归见 [导出器测试](tests/test_advisor_prompt_examples.py)。
 
 创建器只复制已有静态参考；完整 JSON 和导出器不进入项目，项目不访问维护源。advisor 仅按需借鉴措辞，实际规则与当前授权决定行动，详见 [精选参考](docs/operation-manual/skills-and-agents.md#advisor-的精选表达参考)。
 
