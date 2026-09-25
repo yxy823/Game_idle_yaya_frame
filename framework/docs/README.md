@@ -9,7 +9,7 @@
 | 查框架边界、概念、配置与工具职责 | [操作手册](operation-manual/README.md) |
 | 根据当前情况找到具体处理步骤 | [场景速查索引](quick-reference/scenario-index.md) |
 | 编写或修改场景页 | [场景手册编写要求](quick-reference/README.md) |
-| 修改框架、核对文档同步与验证范围 | [框架维护](framework-maintenance/README.md) |
+| 查维护准则、核对文档同步与验证范围 | [框架维护](framework-maintenance/README.md) |
 | 拆分旧专题，核对尚待迁入的内容 | [迁移原材料](framework-maintenance/migration-source/README.md) |
 
 当前操作手册提供概念、配置与工具入口，速查手册包含八篇样稿。旧专题集中留在迁移原材料目录；讨论样稿后再按段落用途完成全量拆分，不把原材料视为另一套正式手册。当前只交付 Markdown，HTML 构建工具保留，恢复时再适配新目录。
@@ -42,7 +42,7 @@ framework/docs/
       └─ reference/
 ```
 
-速查目录继续采用“要处理的事情 → 当前状态 → 具体场景”。只有状态影响处理方式时才增加层级；每篇一个目标，11 类信息仅显示有内容的栏目。
+上图保留当前尚未迁移的样稿位置。已确认的目标结构为 `quick-reference/<Project>/<分类>/<提示词名称>.md`，三层名称直接取自集中提示词库；分类按事项组织，状态写入场景名称，不额外增加状态目录。项目开发与框架维护场景分别进入对应 Project 文件夹。每篇一个目标、对应一条同名专用提示词，11 类信息只显示有内容的栏目；规范与审核依据见[职责设计准则](../review/baselines/skill-script-prompt-design.md)。
 
 ## 原材料与目标归属
 

@@ -1,6 +1,6 @@
 # 设计复盘
 
-用于判断设计是否值得继续维护，不计算总分，也不作为项目的新增 Gate。 评估遵循 [根维护约定的核心决策原则](../../../AGENTS.md#核心决策原则)。 场景责任另见 [scenario-coverage.md](scenario-coverage.md)。
+用于判断设计是否值得继续维护，不计算总分，也不作为项目的新增 Gate。评估遵循[根维护约定的核心决策原则](../../../AGENTS.md#核心决策原则)。新增、调整或审核具体入口时，使用[Skill、脚本与提示词的职责设计准则](skill-script-prompt-design.md)；本页保留总体取舍与既有复盘事实。场景覆盖记录另见 [scenario-coverage.md](scenario-coverage.md)，旧记录不代替当前一对一场景审核。
 
 ## 当前基线
 

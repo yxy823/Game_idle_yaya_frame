@@ -5,11 +5,13 @@
 | 位置 | 用途 |
 | --- | --- |
 | [baselines/design-quality.md](baselines/design-quality.md) | 设计判断依据、当前结构与需要继续观察的成本 |
+| [baselines/skill-script-prompt-design.md](baselines/skill-script-prompt-design.md) | Skill、脚本与提示词的长期职责准则、场景同名目录契约和全量审核要求 |
 | [baselines/scenario-coverage.md](baselines/scenario-coverage.md) | 场景职责、静态覆盖依据及集中提示词用途清单 |
 | `reports/` | 按次保留的审核、导入或运行验证报告，文件名说明主题与日期；旧结果不证明当前版本通过 |
 
 已有报告：
 
+- [2026-09-25 职责准则与子智能体全量审核汇总](reports/responsibility-audit-summary-2026-09-25.md)：[27 个 Skill](reports/skill-responsibility-audit-2026-09-25.md)、[55 个工具脚本及模块](reports/script-responsibility-audit-2026-09-25.md)、[50 条提示词与 8 篇样稿](reports/prompt-scenario-responsibility-audit-2026-09-25.md)。
 - [2026-09-22 编码规范与审核体系局部修复](reports/coding-review-system-fixes-2026-09-22.md)
 - [2026-09-22 Shader 接入与独立资源组合验证](reports/asset-workbench-shader-composition-2026-09-22.md)
 - [2026-09-22 工作台编码规范修复与实际验证](reports/asset-workbench-code-quality-fixes-2026-09-22.md)

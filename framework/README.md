@@ -33,6 +33,7 @@
 | tests/project/asset_composition_reuse_test.gd、asset_composition_reuse_capture.gd、asset_effect_scale_probe.gd | 同 Cue 多实例草稿/保存、原生组合消费、粒子坐标像素及并发/持续装卸测量；外部项目执行，记录设备与测量边界，不随框架分发 |
 | tests/project/asset_playback_manager_test.gd、asset_feedback_timeline_test.gd、asset_timeline_integration_test.gd、asset_feedback_timeline_capture.gd | 场景局部句柄、优先级/分组取消、有限编排及停止/重入/离树回归；真实渲染检查第四入口、消费编排和装卸，按需在指定外部项目执行 |
 | [review/baselines/design-quality.md](review/baselines/design-quality.md) | 设计判断依据、当前静态基线与待观察成本 |
+| [review/baselines/skill-script-prompt-design.md](review/baselines/skill-script-prompt-design.md) | 新增、修改与审核 Skill、脚本和提示词时的职责准则；提示词与场景一对一，按 JSON 名称对应目录 |
 | [review/baselines/scenario-coverage.md](review/baselines/scenario-coverage.md) | 按层级编号的场景职责、覆盖依据及提示词使用清单 |
 | [review/README.md](review/README.md) 与 `review/reports/` | 基线和按次报告的分类导航；报告保留具体版本、检查范围与历史结果 |
 
@@ -55,6 +56,8 @@
 
 - `Yaya 框架维护`：10 条，包含新增能力、外部框架借鉴、修复/删减、复盘、GitHub 审核、动态全流程审核、外部结果复核、实际开发反馈复盘、按需验证与新线程交接。
 - `Godot 项目开发`：40 条，覆盖创建与迁移、环境、澄清与术语、外部调研、需求与规划、开发、Goal、架构调查、专业设计、本地化、资源接入、观测/性能/长测、独立审核、验证与经验沉淀。
+
+上述数量描述现有库，不表示已经满足新的单一场景要求。后续按[职责准则](review/baselines/skill-script-prompt-design.md#提示词与场景)拆分混合入口，采用 `docs/quick-reference/<Project>/<分类>/<提示词名称>.md` 对应场景。当前八篇样稿仍待迁移；职责审核与迁移剩余工作见[框架待办](progress.md)。
 
 各 Project 的 `categories` 按用途组织；叶子键为提示词名称，字符串值为完整文本， 换行保存为 JSON 的 `\n`。50 条提示词均有完整正文；有 `${1:说明}` 等 输入占位符时，发送前填写实际信息，已有授权在会话中继续有效。按需选用某一条， 不要求每个任务按清单逐条发送。 需要粘贴长篇原文时，材料区位置与填写方法见 [提示词使用说明](docs/framework-maintenance/migration-source/reference/skills.md#从哪里取得操作提示词)。 环境准备与普通修改任务使用相同的项目 Git 规则；初始化报告与后续更新见[首次使用说明](docs/framework-maintenance/migration-source/getting-started/first-use.md)。 需要准备新项目时，使用“Godot 项目开发 → 项目创建与接入 → 准备 Godot 开发环境”。 已有旧框架成果需要保留时，使用“Godot 项目开发 → 项目创建与接入 → 复制并迁移旧框架项目”； 输入、授权及原件保留方式见[复制迁移说明](docs/framework-maintenance/migration-source/getting-started/migrate-existing-project.md)。 `prompts.json` 只保存提示词，不执行命令，也不要求项目读取维护目录。 需要按任务准备素材时，使用“Godot 项目开发 → 资源、性能与数据 → 分析并整理任务资源清单”；清单保存在具体游戏项目，用法见 [资源准备与原型交接](docs/framework-maintenance/migration-source/guides/product-and-planning.md#按清单准备资源再继续原型)。 外部文本或文档需要先整理、不写入或执行时，选择“Godot 项目开发 → 需求设计 → 只读适配外部需求内容”；用法见 [只整理外部需求内容](docs/framework-maintenance/migration-source/guides/product-and-planning.md#只整理外部需求内容)。 功能已经实现、需求或任务记录缺失时，选择“Godot 项目开发 → 需求设计 → 从已有实现补齐需求与任务”；输入和文档/交付边界见 [已有实现补齐说明](docs/framework-maintenance/migration-source/guides/product-and-planning.md#从已有实现补齐需求与任务)。 需要独立检查模块现状或指定变更时，选择“Godot 项目开发 → 验证与收尾 → 独立审查代码或指定变更”；现状审查无需创建 Feature 或虚构差异，用法见 [独立评审说明](docs/framework-maintenance/migration-source/guides/feature-delivery.md#按需独立评审与再次验证)。 手动编辑代码、资源或需求/任务文档后，选择“Godot 项目开发 → 验证与收尾 → 检查手动修改与需求的一致性”；提供范围、意图与比较基线，用法见 [手动修改检查说明](docs/framework-maintenance/migration-source/guides/engineering-changes.md#手动修改后检查需求一致性)。 需要结合项目流程回复 Codex 时，选择“Godot 项目开发 → 日常开发 → 判断当前状态与下一步”；用法见 [根据 Codex 输出起草回复](docs/framework-maintenance/migration-source/reference/skills.md#根据-codex-输出起草回复)。 从实际游戏项目转发 Codex 输出、判断框架是否需要改进时，选择“Yaya 框架维护 → 维护与复盘 → 依据实际开发反馈复盘框架”； 审核后可按需参考提示词库，输出标明接收任务、已填入上下文的下一步输入，供手动复制发送；用法与建议边界见 [开发反馈复盘说明](docs/framework-maintenance/updating-the-blank-project.md#从实际开发反馈复盘框架)。 新增提示词前先核对 [使用场景清单](review/baselines/scenario-coverage.md#提示词使用场景清单)， 合并目的和授权边界相同的场景；正文确定后写入 JSON，并同步场景用途。 外部框架借鉴先比较实际价值，阶段总结先核对已有覆盖；不自动把每个优点或经验 变成规则、脚本或新机制。项目提示词不要求项目连接或跟随维护源变化。 提示词正文及清单做静态核对；不把工具回归当成已逐条运行全部提示词。
 
