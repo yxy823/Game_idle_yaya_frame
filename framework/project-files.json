@@ -72,8 +72,8 @@
     "target": "docs"
   },
   {
-    "source": "project-source/defaults/docs/.gdignore",
-    "target": "reports/.gdignore"
+    "source": "project-source/defaults/reports",
+    "target": "reports"
   },
   {
     "source": "project-source/methodology/templates/feature-list.json.tmpl",

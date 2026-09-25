@@ -185,7 +185,7 @@ MyGodotGame/
 | `project-source/defaults/.gitattributes` | `.gitattributes` |
 | `project-source/defaults/.gitignore` | `.gitignore` |
 | `project-source/defaults/docs/` | `docs/`，包含固定文档用途占位、目录导航、组织命名指南、`.gdignore` 和分层知识索引 |
-| `project-source/defaults/docs/.gdignore` | 另复制为 `reports/.gdignore` |
+| `project-source/defaults/reports/` | `reports/`，创建时只包含 `.gdignore` |
 | `project-source/defaults/gdlint.json` | `gdlint.json` |
 | `project-source/defaults/main/` | `main/`，包含最小启动场景 |
 | `project-source/defaults/game/` | `game/`，初始空目录占位 |
