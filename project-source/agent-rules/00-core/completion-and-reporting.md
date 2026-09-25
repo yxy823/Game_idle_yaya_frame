@@ -12,6 +12,7 @@ Completion reports state outcomes and evidence, not private step-by-step reasoni
 
 - **[PREFER]** Summarize outcomes and evidence rather than the Agent's internal process.
 - **[MUST]** Report material behavior/architecture/configuration changes, including significant necessary dependent migrations.
+- **[MUST]** Identify the key changed files or coherent file groups and explain why the changes were needed. Scale detail to the task rather than dumping an exhaustive file list or repeating the diff.
 - **[MUST]** Report the material validation gates actually executed and their results.
 - **[MUST]** Do not say 'all tests passed', 'fully validated', or equivalent unless that exact scope was actually executed.
 - **[MUST]** Report any applicable required gate not executed, with reason and concrete residual risk.

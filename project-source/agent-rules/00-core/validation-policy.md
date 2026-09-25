@@ -5,6 +5,7 @@ Defines evidence rules shared by all specialized validation modules.
 ## Evidence composition
 
 - **[MUST]** Every changed artifact and affected behavior must satisfy every applicable validation route. Multiple modules add their requirements together.
+- **[MUST]** Include relevant tests and the project's supported lint, parsing and type checks when applicable to the changed artifacts. Use configured entrypoints; do not invent an unsupported checker or install a new toolchain solely to fill a generic checklist.
 - **[MUST]** A higher-level PASS does not override a lower-level failure.
 - **[MUST]** A gate is PASS only if the applicable check was actually executed and completed successfully.
 - **[MUST]** Do not substitute one validation class for another unless project rules explicitly define that check as equivalent for the affected contract.
