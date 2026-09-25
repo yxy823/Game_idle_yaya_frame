@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 # 脚本在子目录直接启动时，显式加载本项目的共享包。
-sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.feature_completion_evidence import (
     EVIDENCE_RELATIVE_PATH,
@@ -24,7 +24,7 @@ from tools.lib.feature_completion_evidence import (
     write_evidence,
 )
 
-DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[4]
+DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
 FEATURE_ID_RE = re.compile(r"F\d{3}")
 
 

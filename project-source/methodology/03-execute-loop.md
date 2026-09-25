@@ -204,7 +204,7 @@ Procedure:
 6. Record the actual Required Test Set, affected-test, and full-suite result, including failures:
 
    ```powershell
-   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run <result.json>
+   python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>
    ```
 
    `record-tests` validates the supplied run results and stores their references. It neither runs nor validates static checks. The Agent separately assesses direct parsing/lint output; a passing evidence helper cannot override a static failure. Failed evidence imports clear old test references and preserve original reports.
@@ -271,7 +271,7 @@ Before the completion commands, confirm the Stage 3 documentation checkpoint and
 1. Run:
 
    ```powershell
-   python -B .agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F0XX
+   python -B tools/features/record-feature-completion.py validate --feature F0XX
    python -B tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 

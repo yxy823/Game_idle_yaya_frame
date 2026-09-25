@@ -242,17 +242,16 @@ MyGodotGame/
 
 Markdown 模板的普通段落按自然段保存，不按固定字符数手动拆行；段落间保留空行，标题、列表、表格和代码块保留必要结构换行。阅读宽度由编辑器自动折行控制，这项格式约定不改变代码的 lint 规则。
 
-## 工具为什么分成几处
+## 项目工具按职责组织
 
 | 位置 | 职责 |
 | --- | --- |
 | `tools/checks/` | 跨任务的环境和台账检查 |
 | `tools/testing/` | 真实测试入口与引擎扩展 |
 | `tools/lib/` | 工具共享实现 |
-| `.agents/skills/feature-execute/scripts/record-feature-completion.py` | 执行流程专用的完成依据记录与检查 |
-| `.agents/skills/feature-plan/scripts/merge_test_registry.py` | 规划流程专用的组件登记合并 |
+| `tools/features/` | 跨流程使用的测试登记合并、完成记录与人工验收操作 |
 
-这些是直接入口，没有根目录转发脚本，也没有自动工具事件。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。
+Skill 说明调用时机与判断依据，公共命令统一放在 `tools/`，共享实现放在 `tools/lib/`。`project.godot` 中的 gdUnit session hook 是引擎测试诊断扩展，不是监督 Agent 编辑动作的 Hook。
 
 ## Git、Godot 忽略文件与报告
 

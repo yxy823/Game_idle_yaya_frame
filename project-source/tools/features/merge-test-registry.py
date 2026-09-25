@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any, Iterable
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[4]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.feature_evolution import (
     EvolutionError, TEST_REGISTRY_PATH, validate_registry, validate_registry_component,
     referenced_test_ids, validate_retirements, validate_revisions,

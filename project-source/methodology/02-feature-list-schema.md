@@ -280,12 +280,12 @@ This repository-owned JSON file holds the current Feature's completion evidence.
 The current evidence schema is version 8. It keeps real test-run references plus applicable human acceptance. Required/affected/full test conclusions are calculated from those artifacts rather than persisted again. Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in `methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
 ```powershell
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
+python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
 ```
 
 Repeat `--run` when a plan is covered by multiple real runs. An unavailable full suite is a reported blocker, not a caller-entered PASS.
 
-`.agents/skills/feature-execute/scripts/record-feature-completion.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
+`tools/features/record-feature-completion.py` records evidence and provides the explicit `validate --feature F0XX` check used before completion. Assistant summaries and a `done` field do not supply missing evidence. No automatic Hook supervises the index edit.
 
 ## Bug learning in notes
 

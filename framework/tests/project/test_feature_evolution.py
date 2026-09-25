@@ -269,7 +269,7 @@ class FeatureEvolutionTests(unittest.TestCase):
     def test_component_merge_preserves_retirement_and_rejects_invalid_chain_atomically(self) -> None:
         self.retire()
         self.assertTrue(self.validate())
-        helper = ROOT / ".agents/skills/feature-plan/scripts/merge_test_registry.py"
+        helper = ROOT / "tools/features/merge-test-registry.py"
         self.write("components.json", [])
         command = [sys.executable, "-B", str(helper), "--components", "components.json"]
         path = self.root / "docs/test-registry.json"

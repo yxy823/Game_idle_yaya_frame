@@ -23,6 +23,6 @@ Use `methodology/03-execute-loop.md` as the sole Stage 0–8 procedure, includin
 | Use professional sources, supporting specialist work or supplemental evidence | `methodology/11-specialist-workflows.md` |
 | Perform user-requested independent review | Stage 6 and `methodology/12-independent-review.md`; review methods live in separate Skills |
 
-The execution specification owns optional Stage 6 review and all completion conditions. This Skill supplies no alternative check sequence or evidence format. Its `scripts/record-feature-completion.py` records and validates the evidence described there; it does not perform implementation, tests or review.
+The execution specification owns optional Stage 6 review and all completion conditions. This Skill supplies no alternative check sequence or evidence format. The project command `tools/features/record-feature-completion.py` records and validates the evidence described there; it does not perform implementation, tests or review.
 
 At Stage 8, return the completed Feature and next action to the caller under the specification's **Authorization and continuation** contract.

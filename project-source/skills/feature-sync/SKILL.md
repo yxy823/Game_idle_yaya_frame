@@ -168,7 +168,7 @@ Then recheck Git status and the actual source HEAD. Re-read the affected sources
 
 **Output:** a consistent index and affected detail files. Every addition or revision must update the correct sides together.
 
-Before rewriting Features or test retirements, merge approved new components using the existing `.agents/skills/feature-plan/scripts/merge_test_registry.py` command and candidate format in the Test registry contract above. Preserve existing records; conflicting existing IDs must be resolved explicitly, not overwritten. Use `unit_test_paths: []` if no suite exists and `full_suite_on_change: false` unless the approved contract requires it. Do not invent future paths or commit temporary candidates. Then apply the confirmed Feature/replacement-test/retirement changes and the Stage 5 revision record before strict cross-file validation.
+Before rewriting Features or test retirements, merge approved new components using the existing `tools/features/merge-test-registry.py` command and candidate format in the Test registry contract above. Preserve existing records; conflicting existing IDs must be resolved explicitly, not overwritten. Use `unit_test_paths: []` if no suite exists and `full_suite_on_change: false` unless the approved contract requires it. Do not invent future paths or commit temporary candidates. Then apply the confirmed Feature/replacement-test/retirement changes and the Stage 5 revision record before strict cross-file validation.
 
 ### Schema and history
 

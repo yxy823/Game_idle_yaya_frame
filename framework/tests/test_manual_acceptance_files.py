@@ -13,7 +13,7 @@ sys.path.insert(0, str(SOURCE))
 from tools.lib import feature_completion_evidence as evidence
 from tools.lib.manual_acceptance import prepare_checklist, read_result
 
-CLI = SOURCE / "skills/feature-execute/scripts/record-feature-completion.py"
+CLI = SOURCE / "tools/features/record-feature-completion.py"
 
 
 class ManualAcceptanceFileTests(unittest.TestCase):

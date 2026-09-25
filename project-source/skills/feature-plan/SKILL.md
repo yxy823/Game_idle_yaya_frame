@@ -50,7 +50,7 @@ Create one candidate component entry for every generated `affected_components` I
 Use the project-owned merge helper from the repository root. The temporary candidate file contains a JSON array of complete component objects, or an object with a `components` array; it must not be committed.
 
 ```powershell
-python -B .agents/skills/feature-plan/scripts/merge_test_registry.py `
+python -B tools/features/merge-test-registry.py `
   --components <temporary-component-candidates.json>
 ```
 

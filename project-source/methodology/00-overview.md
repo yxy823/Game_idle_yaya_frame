@@ -203,7 +203,7 @@ No automatic tool events are registered. The Agent reads Git status and follows 
 
 `tools/checks/check-feature-list.py` validates the ledger, Registry and dependencies; `--eligible` lists pending work whose prerequisites are satisfied.
 
-`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly. `.agents/skills/feature-execute/scripts/record-feature-completion.py` records actual results and human decisions. Its `validate --feature F0XX` command checks completion evidence before the Agent records completion. Test, static and acceptance requirements remain those of the execution Skill.
+`tools/testing/run-gdunit-tests.py --feature F0XX` reads the current Feature/Registry and selects tests directly. `tools/features/record-feature-completion.py` records actual results and human decisions. Its `validate --feature F0XX` command checks completion evidence before the Agent records completion. Test, static and acceptance requirements remain those of the execution Skill.
 
 Report actual verification scope and review findings in ordinary language. Result references and explicit decisions are stored by the Skill helper, not parsed from conversation summaries.
 

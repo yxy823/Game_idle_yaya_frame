@@ -34,7 +34,7 @@ flowchart TD
     Q -->|仅后续未拆分模块| D[保留需求，暂不生成任务]
     N -->|展示拆分预览| U[核对具体方案与已有授权]
     S -->|读取源差异与基线，展示影响| U
-    U -->|允许写入| M[调用 merge_test_registry.py 合并组件]
+    U -->|允许写入| M[调用 merge-test-registry.py 合并组件]
     U -->|缺少决定| W[保留提案，等待必要输入]
     M -->|成功后由 Agent 写入| F[Feature 索引与详情]
     F -->|协调测试映射与适用修订记录| C[调用 check-feature-list.py]

@@ -28,7 +28,7 @@ Keep both originals under `reports/manual-acceptance/`, normally `reports/manual
 After writing the draft, bind it to the final implementation:
 
 ```powershell
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B tools/features/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
 ```
 
 This validates coverage and records the actual snapshot; it does not invent steps or run tests. A prepared file cannot be rebound. Finish code and contract changes before preparation; reporting and notes do not invalidate the snapshot. Provide a clickable checklist path and a brief execution/result-return explanation to the user. No second hand-maintained checklist or mandatory report is needed.
@@ -38,7 +38,7 @@ This validates coverage and records the actual snapshot; it does not invent step
 Read the user's submitted file and comments before recording it. A submitted, valid result in which all required cases are `passed` is the user's explicit acceptance of that checklist's scope; do not ask for another acceptance phrase. Contradictory or ambiguous comments require clarification of that specific issue. The parser compares structure and status, not natural-language meaning, user identity or whether a person actually performed the actions. Do not import Agent-generated passing samples or silently discover a file as human acceptance.
 
 ```powershell
-python -B .agents/skills/feature-execute/scripts/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json --result reports/manual-acceptance/F001/manual-acceptance-checklist.result.json
+python -B tools/features/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json --result reports/manual-acceptance/F001/manual-acceptance-checklist.result.json
 ```
 
 The importer matches IDs and definitions with the unchanged original, checks Feature/source references and the original snapshot against current content, and derives `accepted` (all passed), `rejected` (any failed), or `pending` (otherwise). A successful command means the actual status was recorded, not that acceptance passed or the Feature is done. Invalid files return a nonzero exit code without replacing existing evidence; stop that import and resolve the reported mismatch instead of falling back to an old acceptance.

@@ -133,7 +133,7 @@ flowchart TD
 
 当前项目没有自动工具事件。Git 状态由 Agent 读取，任务与证据检查由 Skill 中的 显式命令执行；编辑文件或结束回复不会触发另一套拦截流程。
 
-例如：`tools/checks/check-feature-list.py` 检查台账， `.agents/skills/feature-execute/scripts/record-feature-completion.py validate --feature F001` 检查已有完成依据。 具体命令见 [tools/README.md](tools/README.md)。
+例如：`tools/checks/check-feature-list.py` 检查台账， `tools/features/record-feature-completion.py validate --feature F001` 检查已有完成依据。 具体命令见 [tools/README.md](tools/README.md)。
 
 ## 常用项目命令
 

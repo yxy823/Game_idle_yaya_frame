@@ -31,7 +31,7 @@ Markdown 普通段落和同一列表项不按固定字符数插入换行；保�
 
 | Need | Read and follow |
 | --- | --- |
-| Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` and the calling Skill's `scripts/` |
+| Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` |
 | Product behavior or project terminology | `methodology/01-product-doc-structure.md`; optional `docs/terminology.md` owns vocabulary, not behavior |
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
 | Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
