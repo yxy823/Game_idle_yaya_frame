@@ -101,14 +101,14 @@ Second section only.
         self.document("README.md", """# Manual
 
 - **框架基础**
-  - [Setup](setup.md).
+  - [Setup](基础/setup.md).
 - **需求与任务**
-  - [Develop](development.md).
+  - [Develop](任务/development.md).
 - **方法与工具**
   - [Tools & evidence](tools.md).
 """)
-        self.document("setup.md", "# Setup\n\n## Environment\n")
-        self.document("development.md", "# Develop\n\n## Implement\n")
+        self.document("基础/setup.md", "# Setup\n\n## Environment\n")
+        self.document("任务/development.md", "# Develop\n\n## Implement\n")
         self.document("tools.md", "# Tools & evidence\n\n## Commands\n")
         docs = handbook.load_documents()
         self.assertEqual([doc.group for doc in docs], ["阅读入口", "框架基础", "需求与任务", "方法与工具"])
@@ -179,6 +179,24 @@ Second section only.
         doc = self.document("README.md", "# Manual\n\n[Other](../quick-reference/README.md)\n")
         with self.assertRaisesRegex(ValueError, "不得互相引用"):
             handbook.rewrite_links([doc])
+
+    def test_shared_glossary_is_embedded_in_each_book_without_becoming_a_scenario(self):
+        glossary = self.root / "terminology.md"
+        glossary.write_text("# Terms\n\n## Feature\nA development task.\n", encoding="utf-8")
+        self.document("README.md", "# Manual\n\n[Terms](../terminology.md#feature)\n")
+        self.document("scenario-index.md", "# Scenarios\n\n[Terms](../terminology.md#feature)\n", quick=True)
+        for quick_reference, output in ((False, handbook.OUTPUT), (True, handbook.QUICK_OUTPUT)):
+            with self.subTest(quick_reference=quick_reference):
+                docs = handbook.load_documents(quick_reference=quick_reference)
+                self.assertEqual(docs[-1].path, glossary)
+                self.assertEqual(docs[-1].group, "公共参考")
+                self.assertFalse(docs[-1].is_scenario)
+                handbook.rewrite_links(docs, output=output)
+                navigation, body = handbook.render_body(docs, [], output=output)
+                self.assertIn("#" + docs[-1].key + "--feature",
+                              [unquote(link["href"]) for link in Links(body).anchors])
+                self.assertNotIn('data-scenarios="true"', body)
+                handbook.check_output(navigation + body, 0, output=output, documents=docs)
 
     def test_missing_source_anchor_and_html_target_are_rejected(self):
         doc = self.document("README.md", "# Manual\n\n[Missing](#missing)\n")

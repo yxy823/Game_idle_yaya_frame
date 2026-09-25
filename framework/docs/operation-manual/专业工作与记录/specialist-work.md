@@ -1,6 +1,6 @@
 # 专业来源与资源
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 专业设计描述要求，资源准备提供真实文件，接入建立运行关系，验证和审核取得不同性质的证据。一个任务只使用所需能力；存在 Art Bible 或 Sound Bible 的占位文件，不要求先设计整款游戏的美术和声音。
 
@@ -89,4 +89,4 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件和待�
 
 报告默认在对话，需留存时在相应 `reports/features/` 或 `reports/maintenance/`。报告已交付、审核条件满足、用户人工接受是三个不同事实。发现的优先级不授予修复权限；确认的完成阻断项也不能因为审核可选而忽略。
 
-权威边界见 [专业职责规范](../../../project-source/methodology/11-specialist-workflows.md) 和 [独立审核规范](../../../project-source/methodology/12-independent-review.md)。
+权威边界见 [专业职责规范](../../../../project-source/methodology/11-specialist-workflows.md) 和 [独立审核规范](../../../../project-source/methodology/12-independent-review.md)。

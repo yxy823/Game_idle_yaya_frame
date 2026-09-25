@@ -8,14 +8,20 @@
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) | [打开场景速查手册](quick-reference/quick-reference-handbook.html) |
 | 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) | 收录在场景速查手册末尾 |
 | 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) | — |
+| 确认框架与项目公共术语的含义和统一写法 | [术语](terminology.md) | 两本阅读版共用同一正文 |
 
 ## 目录与分工
 
 ```text
 framework/docs/
 ├── README.md                       统一入口
+├── terminology.md                  两册共用的框架与工程术语
 ├── operation-manual/               框架、概念、配置、职责与工具专题
-│   └── README.md                   专题索引
+│   ├── README.md                   专题索引
+│   ├── 框架基础/                   创建器、目录与配置
+│   ├── 需求与任务/                 需求、规划与阶段
+│   ├── 方法与工具/                 Skill、命令与证据
+│   └── 专业工作与记录/             专业来源、工作台与知识
 ├── quick-reference/
 │   ├── README.md                   编写要求
 │   ├── scenario-index.md           场景索引

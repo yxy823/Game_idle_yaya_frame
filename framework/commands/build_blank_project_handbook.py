@@ -95,6 +95,10 @@ def child_tokens(document: Document):
 def load_documents(*, quick_reference: bool = False) -> list[Document]:
     source = QUICK_REFERENCE if quick_reference else MANUAL
     documents = {path.resolve(): parse_document(path) for path in source.rglob("*.md")}
+    # Both books embed the same authored glossary without depending on each other.
+    terminology = (source.parent / "terminology.md").resolve()
+    if terminology.is_file():
+        documents[terminology] = parse_document(terminology)
     entry_path = source / ("scenario-index.md" if quick_reference else "README.md")
     if entry_path.resolve() not in documents:
         raise ValueError(f"缺少手册入口：{entry_path}")
@@ -125,7 +129,9 @@ def load_documents(*, quick_reference: bool = False) -> list[Document]:
                 if target not in documents or target in linked_order:
                     continue
                 doc = documents[target]
-                if quick_reference and target == (source / "README.md").resolve():
+                if target == terminology:
+                    doc.group = "公共参考"
+                elif quick_reference and target == (source / "README.md").resolve():
                     doc.group = "编写与维护"
                 else:
                     if not group:

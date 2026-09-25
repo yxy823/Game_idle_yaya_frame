@@ -7,7 +7,7 @@
 - `project-source/defaults/project.godot` 明确默认视口 1600×900；创建器原样复制。单对象/组合主窗口继承它，分析与批量窗口默认同为 1600×900。删除按屏幕 90% 缩小和 Fit 按钮；显式命令行覆盖、窗口缩放与编辑器宿主约束仍属 Godot 行为。
 - `examples/asset_workbench/single/` 保存单对象工作台、消费场景、脚本和 Cue；`composition/` 保存组合工作台、真实组合场景和三个 Cue。两个目录各有 `example-workbench.tscn`，按 F6 独立运行，不互相打开/返回。
 - 组合工作台在自身中央选择真实对象，右侧直接编辑选中对象，复用候选、参数、A/B、分析、保存与播放；素材继续共享原文件且不染色。
-- UI 布局讨论复用现有“Godot 项目开发 → 需求设计 → 设计界面与交互”及 `design-ui-spec`。现有规范已包含线框、信息层级、交互状态、显示条件和 Godot 原型问题，无需新建 Prompt/Skill。操作衔接见 [工作台说明](../../docs/operation-manual/asset-workbench.md)。
+- UI 布局讨论复用现有“Godot 项目开发 → 需求设计 → 设计界面与交互”及 `design-ui-spec`。现有规范已包含线框、信息层级、交互状态、显示条件和 Godot 原型问题，无需新建 Prompt/Skill。操作衔接见 [工作台说明](../../docs/operation-manual/专业工作与记录/asset-workbench.md)。
 
 ## 审核问题与实际修复
 

@@ -1,12 +1,12 @@
 # 配置参考
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 项目实际机器配置由 `docs/methodology-config.json` 保存。这里解释当前默认值和使用方法；修改时仍先读取目标项目的现值。
 
 ## 环境与流程配置
 
-初始来源是 [Project_Workflow_Config.json](../../../project-source/Project_Workflow_Config.json)。
+初始来源是 [Project_Workflow_Config.json](../../../../project-source/Project_Workflow_Config.json)。
 
 | 字段 | 初始值 | 含义与修改注意事项 |
 | --- | --- | --- |
@@ -41,7 +41,7 @@ $projectPython = $projectConfig.python_executable
 $LASTEXITCODE
 ```
 
-测试入口默认读取配置中的 Godot 路径，临时更换时可显式传入 `--godot-binary <路径>`；示例见 [命令参考](commands-and-evidence.md)。
+测试入口默认读取配置中的 Godot 路径，临时更换时可显式传入 `--godot-binary <路径>`；示例见 [命令参考](../方法与工具/commands-and-evidence.md)。
 
 - **Godot 路径：** `engine_executable` 必须是实际文件路径，可以是绝对路径，也可以相对项目根目录；环境检查和测试运行器使用同一解析方式，不去 PATH 寻找同名安装。
 - **Python 路径：** `python_executable` 仍支持完整路径或 PATH 中的命令名。
@@ -76,13 +76,13 @@ $LASTEXITCODE
 - **聊天语言：** 聊天换语言不会自动翻译项目。
 - **已有文档迁移：** 修改已建立的文档语言需要核对活动文档、标题锚点和历史范围；只改一个配置字段不等于完成迁移。
 
-复制阶段不会把英文模板翻译成中文。后续生成内容遵循已确认的语言与模板结构，不删除不适用章节来缩短模板，也不建立平行的翻译版 Skill 树。详见 [文档语言约定](../../../project-source/methodology/05-document-language.md)。
+复制阶段不会把英文模板翻译成中文。后续生成内容遵循已确认的语言与模板结构，不删除不适用章节来缩短模板，也不建立平行的翻译版 Skill 树。详见 [文档语言约定](../../../../project-source/methodology/05-document-language.md)。
 
 用户发送的任务提示词可以使用当前会话语言；其产出的持久项目内容仍遵循 `document_language`，不因此翻译工作流规范或 Skill。
 
 ## Godot 默认配置
 
-实际文件是 [defaults/project.godot](../../../project-source/defaults/project.godot)。
+实际文件是 [defaults/project.godot](../../../../project-source/defaults/project.godot)。
 
 | 配置区域 | 当前设置 | 对使用者的影响 |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ $LASTEXITCODE
 
 ## GDScript lint 默认配置
 
-实际文件是 [defaults/gdlint.json](../../../project-source/defaults/gdlint.json)，指标含义见 [lint 契约](../../../project-source/methodology/gdscript-lint.md)。
+实际文件是 [defaults/gdlint.json](../../../../project-source/defaults/gdlint.json)，指标含义见 [lint 契约](../../../../project-source/methodology/gdscript-lint.md)。
 
 | 配置 | 当前值 |
 | --- | --- |
@@ -125,7 +125,7 @@ CLI 和可选编辑器面板都以项目根 `gdlint.json` 为分析配置来源�
 
 ## 插件和文本约定
 
-本仓库当前 gdUnit4 的 `plugin.cfg` 标记 `6.2.0`，GDScript linter 标记 `3.3.0`。这是**随仓库保存的插件版本**，不是上游最新版本声明。linter 另有本地修改，原因与维护范围记录在 [YAYA_PATCH.md](../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前需核对补丁和许可证。
+本仓库当前 gdUnit4 的 `plugin.cfg` 标记 `6.2.0`，GDScript linter 标记 `3.3.0`。这是**随仓库保存的插件版本**，不是上游最新版本声明。linter 另有本地修改，原因与维护范围记录在 [YAYA_PATCH.md](../../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前需核对补丁和许可证。
 
 `.editorconfig` 约定：
 

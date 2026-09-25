@@ -35,7 +35,7 @@
 
 - **结论：收窄入口职责；保留同一 CLI 文件及已有 `validate` 命令。**
 - 依据：[完成记录入口](../../../project-source/tools/features/record-feature-completion.py)，第 96–102 行。`_show` 先读取并打印 JSON，然后调用 `validate_completion_evidence`，根据全部适用完成条件返回 0 或 2。第 90–93 行已有专用 `_validate`。
-- 影响：记录可读取，但人工验收尚未取得、测试引用失效、Git 或工作区快照不可取得时，`show` 会返回失败。该操作还会读取测试原件、Feature 定义并运行 Git 查询。与[命令说明](../../docs/operation-manual/commands-and-evidence.md)第 174 行的“只读查看已有记录”，以及[测试结果导入场景](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)中的查看步骤，存在职责表达差异。只读不等于仅查看：本项问题是查询被赋予整项验收的成功条件，并非发现了隐含写入。
+- 影响：记录可读取，但人工验收尚未取得、测试引用失效、Git 或工作区快照不可取得时，`show` 会返回失败。该操作还会读取测试原件、Feature 定义并运行 Git 查询。与[命令说明](../../docs/operation-manual/方法与工具/commands-and-evidence.md)第 174 行的“只读查看已有记录”，以及[测试结果导入场景](<../../docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md>)中的查看步骤，存在职责表达差异。只读不等于仅查看：本项问题是查询被赋予整项验收的成功条件，并非发现了隐含写入。
 - 最小改法：`show` 的输入是记录位置与预期 Feature，输出为该记录；成功以读取、结构及 Feature 身份满足查询约定为准。记录中的业务状态可显示，但待验收不构成读取失败。整项测试/人工接受的有效性继续由 `validate` 判定，不另建新的检查入口。
 - 调用方影响：同步完成记录说明、两篇使用 `show` 的速查样稿；增加“可读取但未验收时 show 成功、validate 未就绪”的独立回归，并保留缺失/损坏/Feature 不符的查询失败。不能通过让 `validate` 放宽条件解决。
 
@@ -67,7 +67,7 @@
 
 - **结论：暂缓工具保留；恢复时收窄书籍选择配置与输入契约。**
 - 依据：[HTML 生成器](../../commands/build_blank_project_handbook.py)第 27–29 行指向已删除的 `framework/docs/blank-project`；`load_documents`、`Document.group`、`GROUPS` 和快速入口生成依赖旧目录及旧手册栏目，`--quick-reference` 只是旧父目录内的选择。
-- 当前影响：它不能直接用于现有三类文档目录与新的 Project/分类/场景路径。按[阅读版暂缓约定](../../docs/framework-maintenance/updating-the-blank-project.md#html-阅读版暂缓)，本轮不执行构建；这不是本轮 Markdown 交付的运行失败。
+- 当时影响：它不能直接用于当时三类文档目录与新的 Project/分类/场景路径。按被审基线中的阅读版暂缓约定，该轮不执行构建；这不是该轮 Markdown 交付的运行失败。现行用法见[阅读版构建约定](../../docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)，不据此改写本项历史结论。
 - 恢复时最小改法：先明确每本书的输入根、输出和导航，再由一份共享 Markdown/Mermaid 渲染实现构建对应书籍。两本书的内容与导航要独立，但不需要复制渲染器和前端辅助算法。恢复工作需同步模板、JS 对场景标记的消费和[生成器回归](../../tests/test_blank_project_handbook.py)。
 
 ## CLI 操作覆盖

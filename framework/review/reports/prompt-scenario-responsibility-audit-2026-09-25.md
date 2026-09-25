@@ -177,8 +177,8 @@
 | [advisor 精选索引](../../../project-source/skills/project-next-step-advisor/references/prompt-examples.md)和五个分类文件 | 标題与来源行包含旧提示词名字，正文为 JSON 的派生内容 | 用导出器重新生成，不手工复制修改；检查数字锚点重排后导航仍对应实际条目 |
 | [advisor Skill](../../../project-source/skills/project-next-step-advisor/SKILL.md)与[场景参考](../../../project-source/skills/project-next-step-advisor/references/scenarios.md) | 先按规范路由再读示例；参考区分当前/交付后缺陷、状态与续接、性能诊断与实现等 | 检查新入口和被拆 Skill 的职责引用、单人范围及建议措辞；仅提示词改名不自动证明自然语言路由已验证 |
 | [覆盖清单](../baselines/scenario-coverage.md)，提示词使用场景清单 | 逐条列当前 50 个名称，并将多个具体状态映到旧通用入口 | 改为新专用入口的职责说明；删除“为了入口少而复用不同场景”的旧理由，不增加独立机器映射或新场景 ID |
-| [框架 README](../../README.md)与[旧 Skill 导航](../../docs/operation-manual/skills-and-agents.md) | 写明现有 50 条、12 条精选，以及旧名称与用途 | 随 JSON 实际变化更新数量/名字，避免固化旧计数；使用说明迁移期间注明现状，不伪称全部已对应 |
-| [旧需求专题](../../docs/operation-manual/requirements-and-planning.md)、[工程专题](../../docs/operation-manual/feature-lifecycle.md)、[环境专题](../../docs/operation-manual/configuration.md)及[复制迁移](../../docs/operation-manual/framework-and-project.md) | 正文以旧提示词名称选择入口，有些包含被拆状态的操作 | 按既定手册分工迁移具体场景；保留概念/配置说明，避免在维护原材料和新场景同时维护新流程正文 |
+| [框架 README](../../README.md)与[旧 Skill 导航](../../docs/operation-manual/方法与工具/skills-and-agents.md) | 写明现有 50 条、12 条精选，以及旧名称与用途 | 随 JSON 实际变化更新数量/名字，避免固化旧计数；使用说明迁移期间注明现状，不伪称全部已对应 |
+| [旧需求专题](../../docs/operation-manual/需求与任务/requirements-and-planning.md)、[工程专题](../../docs/operation-manual/需求与任务/feature-lifecycle.md)、[环境专题](../../docs/operation-manual/框架基础/configuration.md)及[复制迁移](../../docs/operation-manual/框架基础/framework-and-project.md) | 正文以旧提示词名称选择入口，有些包含被拆状态的操作 | 按既定手册分工迁移具体场景；保留概念/配置说明，避免在维护原材料和新场景同时维护新流程正文 |
 | [八篇索引](../../docs/quick-reference/scenario-index.md)和页面互链 | 链接旧英文路径和状态层级 | 迁入 JSON 决定的三层名称后同步索引、同册关联和源材料引用，实际校验相对路径及锚点 |
 | [复制清单](../../project-files.json)，首项 | 整个 `project-source/skills` 复制到 `.agents/skills`，因此精选派生文件随 Skill 进入项目 | 仅改提示词名称无需修改复制规则；Skill 拆分后检查新目录/引用的实际复制结果。完整提示词库、场景手册和审核报告仍不进入生成项目 |
 

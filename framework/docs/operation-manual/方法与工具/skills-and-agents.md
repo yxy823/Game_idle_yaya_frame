@@ -1,12 +1,12 @@
 # Skill、Agent 与提示词
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达本次具体任务。三者不具有相同粒度：每条正式提示词只对应一个具体场景，通用 Skill 与脚本则按职责和独立变化原因划界，不能为了每篇场景复制一套实现。
 
 ## Skill 职责速查
 
-以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../project-source/skills/)，具体触发和排除项以各自 description 与正文为准。
+以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。
 
 | Skill | 唯一主要职责 |
 | --- | --- |
@@ -48,15 +48,15 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 - **用户：** 负责未决意图与实际人工体验。
 - **工具：** 负责可重复检查；工具退出成功不取代用户判断。
 
-项目附带的 [researcher](../../../project-source/agents/researcher.toml) 用于按需独立调研，[independent-reviewer](../../../project-source/agents/independent-reviewer.toml) 用于独立审核。需要新上下文、宿主真实支持及适当有效权限，配置文件存在不证明角色已加载或文件系统已隔离。作者自己读审核 Skill 仍是自查。
+项目附带的 [researcher](../../../../project-source/agents/researcher.toml) 用于按需独立调研，[independent-reviewer](../../../../project-source/agents/independent-reviewer.toml) 用于独立审核。需要新上下文、宿主真实支持及适当有效权限，配置文件存在不证明角色已加载或文件系统已隔离。作者自己读审核 Skill 仍是自查。
 
-研究可使用用户级 anysearch；框架不复制其实现、密钥或个人路径。工具不可用时按角色规则选实际可用渠道并说明限制；没有可用来源不伪造已查证。调研方法与报告格式由角色维护，长期保存位置见 [知识、设计与记录](knowledge-and-records.md#调研与项目知识)。
+研究可使用用户级 anysearch；框架不复制其实现、密钥或个人路径。工具不可用时按角色规则选实际可用渠道并说明限制；没有可用来源不伪造已查证。调研方法与报告格式由角色维护，长期保存位置见 [知识、设计与记录](../专业工作与记录/knowledge-and-records.md#调研与项目知识)。
 
 没有显示在客户端 Skill 列表，不等于文件未安装。核对当前实际项目路径、文件与客户端加载能力；不能把个人安装、框架源目录和生成项目的 Skill 混为同一份。
 
 ## 提示词库的结构与输入
 
-正式可发送正文仅在 [framework/prompts.json](../../prompts.json)。
+正式可发送正文仅在 [framework/prompts.json](../../../prompts.json)。
 
 - **Project：** 顶层保留 `Yaya 框架维护` 和 `Godot 项目开发` 两个 Project。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
@@ -74,10 +74,10 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 advisor 根据项目自己的规则、状态和本次问题给出建议。它可以报告现状、判断下一步或拟一条已填写上下文的回复，但建议和候选不是实施授权，用户说“看看下一步”也不自动启动开发。
 
-- **正文来源：** `references/prompt-examples.md` 及其分类文件由 [导出器](../../commands/export_advisor_prompt_examples.py) 从集中 JSON 精选生成，不手工维护第二套正文。
+- **正文来源：** `references/prompt-examples.md` 及其分类文件由 [导出器](../../../commands/export_advisor_prompt_examples.py) 从集中 JSON 精选生成，不手工维护第二套正文。
 - **维护范围：** 选入范围只在导出器 `SELECTION` 中定义；维护时导出和 `--check`。
 - **项目获得方式：** 创建器仅复制已有静态参考，生成项目不查询框架或运行导出。
 
 精选文本只帮助表达，不拥有流程、批准或同步机制。示例里出现“执行”不代表当前任务已获准；advisor 仍要按当前来源与真实上下文判断，不给用户只剩占位符的回复。
 
-职责设计的长期评价规则在 [设计准则](../../review/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../project-source/methodology/00-overview.md)。
+职责设计的长期评价规则在 [设计准则](../../../review/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。

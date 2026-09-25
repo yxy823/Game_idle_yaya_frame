@@ -36,7 +36,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 - **预检范围**：允许目录合并；拒绝重复文件、文件/目录冲突及不满足边界的目标。
 - **目标要求**：位于框架之外，不存在或为空，完整路径不能含中文或空白。
 
-复制后需要 Git 身份来建立本地初始提交。复制/Git 失败保留现场，不自动清理；没有环境探测、测试、推送或项目同步。完整使用契约见 [框架与创建器](docs/operation-manual/framework-and-project.md)。
+复制后需要 Git 身份来建立本地初始提交。复制/Git 失败保留现场，不自动清理；没有环境探测、测试、推送或项目同步。完整使用契约见 [框架与创建器](docs/operation-manual/框架基础/framework-and-project.md)。
 
 ## 提示词与场景路径检查
 
@@ -56,7 +56,7 @@ python -B framework/commands/check_scenario_prompt_paths.py
   - `2`：输入或结构错误。
 - **内容审核**：正文 H1、具体步骤、授权、语义和运行结果不在此工具检查范围内，仍须另行核对。
 
-新增或修改正文后同步同名场景及覆盖清单；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
+新增或修改正文后同步同名场景及覆盖清单；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
 ## 导出 advisor 精选表达参考
 
@@ -72,7 +72,7 @@ python -B framework/commands/export_advisor_prompt_examples.py --check
 - **只读检查**：`--check` 只比较内容，缺失或过期返回非零且不写入。
 - **保存范围**：生成结果随本次逻辑变更保存，相关回归见 [导出器测试](tests/test_advisor_prompt_examples.py)。
 
-创建器只复制已有静态参考；完整 JSON 和导出器不进入项目，项目不访问维护源。advisor 仅按需借鉴措辞，实际规则与当前授权决定行动，详见 [精选参考](docs/operation-manual/skills-and-agents.md#advisor-的精选表达参考)。
+创建器只复制已有静态参考；完整 JSON 和导出器不进入项目，项目不访问维护源。advisor 仅按需借鉴措辞，实际规则与当前授权决定行动，详见 [精选参考](docs/operation-manual/方法与工具/skills-and-agents.md#advisor-的精选表达参考)。
 
 ## 按需检查
 
@@ -101,10 +101,12 @@ python -B framework/commands/build_blank_project_handbook.py --browser 'C:/Progr
 ```
 
 - **输入与顺序**：操作手册使用 `docs/operation-manual/README.md` 的专题分类；速查手册使用 `docs/quick-reference/scenario-index.md` 的 Project 与场景分类，不另建目录清单。
+- **公共术语**：两册均从 `docs/terminology.md` 嵌入同一份正文，分别在各自索引中导航；不复制手写词表，也不让一册依赖另一册。
 - **输出**：[操作手册 HTML](docs/operation-manual/operation-handbook.html) 与 [场景速查 HTML](docs/quick-reference/quick-reference-handbook.html)。各自包含正文、样式和交互，两册不互相引用；源规范与工具链接仍需保留完整仓库。
 - **按需构建**：`--book operation` 或 `--book quick-reference` 只生成对应手册；默认 `--book all`。`--rebuild-diagrams` 忽略 Mermaid 缓存并重绘。
 - **运行环境**：Python 需可导入 `markdown_it`。含 Mermaid 时用 `--browser` 指定本机 Edge/Chromium；生成未缓存图表还需 Node.js/npx，使用脚本固定的 Mermaid CLI 版本。无图表的手册可省略浏览器参数。
 - **自动检查**：源文件收录、本地路径与 Markdown 锚点、两册隔离、生成章节覆盖与顺序、重复 ID、HTML 内部与本地文件链接、SVG 数量及离线资源约束。检查失败返回非零，且不覆盖所选手册的既有 HTML；全部检查通过后写入并返回 `0`。
+- **检查覆盖**：上述检查针对所收录的手册和公共术语；不会递归检查被引用的维护说明、规范或历史报告中的所有链接。
 - **人工边界**：日常生成只需确认退出码与诊断，不要求手动复查链接或重审未改正文。排版与交互的实际体验不由构建结果代替，也不是生成前置；详见 [阅读版说明](docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。
 
 维护脚本解决可重复的文件/数据操作，Agent 决定任务范围与结果意义。不增加逐动作监督、重复状态、发布资格或自动同步；共享解析和指纹函数可复用，独立用户命令按实际职责区分。

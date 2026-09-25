@@ -1,6 +1,6 @@
 # 错误与结果的含义
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 本页解释工具输出，具体恢复任务按其实际范围处理。先区分环境、调用、发现、行为断言、引擎诊断和记录导入，不把所有非零退出都解释为游戏 Bug，也不把文件或成功摘要当作完整证据。
 
@@ -17,7 +17,7 @@
 | Windows GUI 命令退出码缺失 | 可能没有等待结束；空值不能当作零。命令例子的 Out-Host 用于等待 |
 | 权限、AppData、缓存或沙箱错误 | 先按实际环境规则定位；不能据此修改业务断言、删除未核实目录或宣称引擎行为错误 |
 
-配置与就绪检查边界见 [配置参考](configuration.md)，创建器副作用见 [框架与项目](framework-and-project.md#创建器用法)。
+配置与就绪检查边界见 [配置参考](../框架基础/configuration.md)，创建器副作用见 [框架与项目](../框架基础/framework-and-project.md#创建器用法)。
 
 ## 台账与任务
 
@@ -57,4 +57,4 @@
 
 场景启动、图片显示、声音试听、输入、长时间运行、资源包或导出依赖都需要对应实际结果。静态检查、一次 F6、运行器成功或人工清单已生成不能互相代替。未执行、失败、报告丢失、旧版本成功分别报告，不压缩成“没有问题”。
 
-工具的实际错误契约见 [工具说明](../../../project-source/tools/README.md)、[测试策略](../../../project-source/methodology/08-testing-strategy.md) 和 [人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。
+工具的实际错误契约见 [工具说明](../../../../project-source/tools/README.md)、[测试策略](../../../../project-source/methodology/08-testing-strategy.md) 和 [人工验收文件契约](../../../../project-source/methodology/manual-acceptance-files.md)。

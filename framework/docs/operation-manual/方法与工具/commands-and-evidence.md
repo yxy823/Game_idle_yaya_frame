@@ -1,6 +1,6 @@
 # 命令与验证证据
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 所有项目命令在**生成后的项目根目录**运行。按当前任务调用所需入口，以下命令参考不意味着每次都要整页执行。涉及写记录的命令遵循对应 Skill 和已有授权。
 
@@ -27,7 +27,7 @@ flowchart TD
     D -->|全部适用条件满足才写入| S[Feature 索引 done 与完成时间]
 ```
 
-实线表示实际调用、读写与结果交接，虚线表示原件引用。完成依据 JSON 位于 `docs/feature-completion-evidence.json`。`record-tests`、`validate` 均属于完成记录工具；不运行测试、不评估直接静态检查、不获取用户决定，也不修改 Feature 状态。人工文件导入还会核对清单与结果原件，具体操作见 [人工验收](feature-lifecycle.md#自动与人工验收)。
+实线表示实际调用、读写与结果交接，虚线表示原件引用。完成依据 JSON 位于 `docs/feature-completion-evidence.json`。`record-tests`、`validate` 均属于完成记录工具；不运行测试、不评估直接静态检查、不获取用户决定，也不修改 Feature 状态。人工文件导入还会核对清单与结果原件，具体操作见 [人工验收](../需求与任务/feature-lifecycle.md#自动与人工验收)。
 
 | 文件交接 | 输入与产出 | 结果判定 |
 | --- | --- | --- |
@@ -50,7 +50,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 
 在本机，`python_executable` 应是个人规则指定并已确认的完整解释器路径。`F001` 和示例脚本路径都需换成实际存在的任务与文件。每条原生命令后立即读取 `$LASTEXITCODE`；缺失退出码不能当作 0。
 
-新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；环境检查通过 不代替这次扫描。
+新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；环境检查通过 不代替这次扫描。
 
 ## 入口与副作用
 
@@ -67,7 +67,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 - **候选格式：** 完整组件对象的 JSON 数组，或含 `components` 数组的对象。
 - **调用：** Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；候选不提交。
 - **冲突与保留：** 现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests。
-- **能力边界：** 只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
+- **能力边界：** 只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
 
 ## 环境与台账检查
 
@@ -82,7 +82,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-环境检查器的精确能力见 [配置检查边界](configuration.md#检查能力边界)。台账检查读取完整索引、详情、测试登记表和修订关系，检查 ID、字段、引用、路径、依赖与历史规则。`--eligible` 校验后输出依赖已满足的 pending Feature ID 集合，不能代替实现授权。
+环境检查器的精确能力见 [配置检查边界](../框架基础/configuration.md#检查能力边界)。台账检查读取完整索引、详情、测试登记表和修订关系，检查 ID、字段、引用、路径、依赖与历史规则。`--eligible` 校验后输出依赖已满足的 pending Feature ID 集合，不能代替实现授权。
 
 规划或同步完成后使用这个完整入口即可，它已经包含 JSON 解析；单文件语法检查只用于定位具体错误。Agent 仍需核对需求覆盖、真实依赖和历史保留，这些语义不能由结构检查代替。
 
@@ -123,7 +123,7 @@ $LASTEXITCODE
 
 ## 测试范围怎样计算
 
-Stage 1 的完整测试范围规则见测试规范中的 [Test Impact Review](../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)。下文用中文说明 Required、affected、full 与命令的对应关系。
+Stage 1 的完整测试范围规则见测试规范中的 [Test Impact Review](../../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)。下文用中文说明 Required、affected、full 与命令的对应关系。
 
 ```text
 Required Test Set =
@@ -228,7 +228,7 @@ $LASTEXITCODE
 
 ### 导入人工验收记录
 
-人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见 [人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。
+人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见 [人工验收文件契约](../../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。
 
 有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，`pending`、`rejected` 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。
 
@@ -274,9 +274,9 @@ $LASTEXITCODE
 
 治理文档尽量在 Stage 3 完成。最终测试或人工接受后再改了纳入的内容，包括 Stage 5.5 采纳新规则时，先核对当前指纹与验证义务，补齐失效的最终运行、导入和适用人工接受，不能只凭“未改代码”沿用旧结果。内容相同且覆盖仍满足的结果才可复用；只读评审不改变内容。
 
-直接依据是 [验证快照实现](../../../project-source/tools/lib/verification_snapshot.py) 的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及 [测试策略](../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。静态解析/lint 的实际影响仍由 Agent 单独判断。
+直接依据是 [验证快照实现](../../../../project-source/tools/lib/verification_snapshot.py) 的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及 [测试策略](../../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。静态解析/lint 的实际影响仍由 Agent 单独判断。
 
-性能、长测、显示或试听证据按原任务 AC/设计中的验证义务判断；当前适配器只接收实际 gdUnit 结果，不把专项测量包装为 gdUnit 通过。完成工具也不判断专项证据是否充分，详见 [专业验证边界](specialist-work.md#测量与实现)。独立审核产生的隔离报告、日志或缓存不得覆盖原证据或被审成果。
+性能、长测、显示或试听证据按原任务 AC/设计中的验证义务判断；当前适配器只接收实际 gdUnit 结果，不把专项测量包装为 gdUnit 通过。完成工具也不判断专项证据是否充分，详见 [专业验证边界](../专业工作与记录/specialist-work.md#测量与实现)。独立审核产生的隔离报告、日志或缓存不得覆盖原证据或被审成果。
 
 ## 直接脚本解析与 lint
 
@@ -296,7 +296,7 @@ New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
 $LASTEXITCODE
 ```
 
-未归属 Feature 的工作使用 `reports/maintenance/<任务>/`；需要保存的解析输出也放入相应报告目录。不要覆盖仍被引用的原件，目录选择见 [报告保留与清理](knowledge-and-records.md#报告与历史)。
+未归属 Feature 的工作使用 `reports/maintenance/<任务>/`；需要保存的解析输出也放入相应报告目录。不要覆盖仍被引用的原件，目录选择见 [报告保留与清理](../专业工作与记录/knowledge-and-records.md#报告与历史)。
 
 对 Windows GUI 可执行文件，`Out-Host` 管道用于等待进程，立即检查退出码。lint 扫描完整 `res://` 并遵循项目配置；修改了被默认排除的依赖时，仍需验证该依赖变更本身。
 
@@ -311,7 +311,7 @@ $LASTEXITCODE
 
 解析证明脚本在实际引擎中的相关语法/类型契约，lint 检查配置的质量规则；两者都不替代运行、资源、场景、导出或人工质量判断。需要编辑器检查时遵循本机项目规则的沙箱外审批路径。仅执行解析或 lint 时不额外增加导入步骤或包装程序；已授权资源导入和新项目首次运行所需扫描按对应环境规范处理，普通 Feature 不增加单独导入阶段。
 
-通用交付不默认增加截图或像素比较门禁；任务明确约定客观渲染契约时，可以补充限定范围和环境的检查。画面构图、艺术一致性与动画体验仍由人工验收，具体边界见 [视觉验证规则](../../../project-source/agent-rules/70-tests/testing-strategy.md#visual-boundary)。
+通用交付不默认增加截图或像素比较门禁；任务明确约定客观渲染契约时，可以补充限定范围和环境的检查。画面构图、艺术一致性与动画体验仍由人工验收，具体边界见 [视觉验证规则](../../../../project-source/agent-rules/70-tests/testing-strategy.md#visual-boundary)。
 
 ## 退出码和结果边界
 
@@ -328,4 +328,4 @@ $LASTEXITCODE
 | 完成依据校验通过 | 它负责的测试与适用人工接受契约满足 | 脚本解析、lint、独立评审或所有目标平台已检查 |
 | 静态检查通过 | 已执行静态范围通过 | 手感、外观、声音和导出质量已接受 |
 
-实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[直接 lint 契约](../../../project-source/methodology/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../../project-source/tools/README.md)、[测试运行器](../../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../../project-source/tools/features/record-feature-completion.py)、[直接 lint 契约](../../../../project-source/methodology/gdscript-lint.md)。

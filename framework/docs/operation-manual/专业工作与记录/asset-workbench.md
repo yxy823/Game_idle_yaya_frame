@@ -1,12 +1,12 @@
 # 美术、音频与视觉效果资源工作台
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。 它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。
 
 ## 按当前任务进入
 
-先在实际游戏项目完成 [环境配置](configuration.md)，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。
+先在实际游戏项目完成 [环境配置](../框架基础/configuration.md)，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。
 
 | 现在要做什么 | 从这里开始 | 完成检查 |
 | --- | --- | --- |
@@ -15,7 +15,7 @@
 | 比较对象的素材、声音与效果 | [组合预览与试调](#组合预览与试调) | 当前对象、A/B、播放与修改范围清楚 |
 | 把选定参数用于实际场景 | [保存后验证](#保存后验证消费场景) | 明确保存目标，并在消费场景查看已保存效果 |
 
-四个工作台及对应消费入口集中在 [示例操作导航](../../../project-source/examples/asset_workbench/README.md#打开与操作)。`example_` 前缀只标识示例，不表示素材已适合当前游戏。
+四个工作台及对应消费入口集中在 [示例操作导航](../../../../project-source/examples/asset_workbench/README.md#打开与操作)。`example_` 前缀只标识示例，不表示素材已适合当前游戏。
 
 ```mermaid
 flowchart LR
@@ -51,7 +51,7 @@ flowchart LR
 
 ## 分析图像与音频源文件
 
-**前置：** 按 [Analyzer 说明](../../../project-source/tools/asset_analyzer/README.md) 准备依赖和项目 `python_executable`。创建器不安装依赖。缺少分析依赖不妨碍预览和播放。
+**前置：** 按 [Analyzer 说明](../../../../project-source/tools/asset_analyzer/README.md) 准备依赖和项目 `python_executable`。创建器不安装依赖。缺少分析依赖不妨碍预览和播放。
 
 1. 选择候选，点击“分析候选源文件”；在独立窗口中使用“分析对比 A/B”。
 2. 先核对两侧文件名、类型和状态，再查看问题摘要、指标及图表。更换候选不会给旧结果换名。
@@ -65,7 +65,7 @@ flowchart LR
 - **过期或不可比较：** 修改分析参数后旧结果标为 STALE；版本、后端、参数或单位不兼容时停止叠图，可按当前参数同时重算两侧。
 - **重算与取消：** “重分析”强制重算；关闭窗口取消其后台任务。
 
-非文件资源、不支持格式、解码失败、超时或损坏输出会显示原因，不阻断原工作台。大图有限采样与音频预算以实际状态为准；缓存、Adapter、Schema、扩展指标及上限由 [Analyzer 技术说明](../../../project-source/tools/asset_analyzer/README.md) 承接，版本与许可见 [依赖记录](../../../project-source/tools/asset_analyzer/DEPENDENCIES.md)。
+非文件资源、不支持格式、解码失败、超时或损坏输出会显示原因，不阻断原工作台。大图有限采样与音频预算以实际状态为准；缓存、Adapter、Schema、扩展指标及上限由 [Analyzer 技术说明](../../../../project-source/tools/asset_analyzer/README.md) 承接，版本与许可见 [依赖记录](../../../../project-source/tools/asset_analyzer/DEPENDENCIES.md)。
 
 ### 批量分析与比较
 
@@ -73,7 +73,7 @@ flowchart LR
 2. 核对实际新增、已有和跳过项。原集合成员保留；间接纹理或音频 Resource 显示跳过原因，不自动展开内部依赖，也不收集 Shader。
 3. 运行批量分析，查看逐项状态和同类统计；Ctrl 选择两项同类结果送回分析 A/B 图表。
 
-可取消运行、保存分组/规则，或显式保存结果历史。明确阈值和相对中位数偏差只提示数值差异；不据此推断语义风格。完整操作、容量限制和失败处理见 [分组批量说明](../../../project-source/tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
+可取消运行、保存分组/规则，或显式保存结果历史。明确阈值和相对中位数偏差只提示数值差异；不据此推断语义风格。完整操作、容量限制和失败处理见 [分组批量说明](../../../../project-source/tools/asset_analyzer/README.md#分组批量分析与一致性检查)。
 
 ## 组合预览与试调
 
@@ -103,7 +103,7 @@ flowchart LR
 
 无图片时沿用白色矩形承载面，不补选图片。各对象保持独立材质和参数，源预设只读；“触发全部”从初态触发，再按各自声音/Shader 延迟播放。
 
-目前支持 2D `canvas_item` 及既定强度、颜色、时序参数；没有任意参数编辑、3D、全屏后处理或多 Shader 堆叠。候选配置、参数适用性、契约与许可见 [Shader 示例说明](../../../project-source/examples/asset_workbench/README.md#shader-与独立资源组合)。
+目前支持 2D `canvas_item` 及既定强度、颜色、时序参数；没有任意参数编辑、3D、全屏后处理或多 Shader 堆叠。候选配置、参数适用性、契约与许可见 [Shader 示例说明](../../../../project-source/examples/asset_workbench/README.md#shader-与独立资源组合)。
 
 ### 粒子与动画组合预览
 
@@ -113,7 +113,7 @@ flowchart LR
 
 粒子/运动重触发从头开始；声音与图标脉冲仍可重叠。持续粒子的发射时长与存活时间不同；停止全部立即隐藏并取消待播放内容，下次触发重置模拟。
 
-预设、局部/场景坐标、组合变换和层级在原生 Godot 场景/Animation 资源中制作，工作台不提供任意轨道编辑。参数与素材来源见 [粒子与动画说明](../../../project-source/examples/asset_workbench/README.md#粒子tween-与-animationplayer)。
+预设、局部/场景坐标、组合变换和层级在原生 Godot 场景/Animation 资源中制作，工作台不提供任意轨道编辑。参数与素材来源见 [粒子与动画说明](../../../../project-source/examples/asset_workbench/README.md#粒子tween-与-animationplayer)。
 
 ### 局部管理与有限时间编排
 
@@ -124,14 +124,14 @@ flowchart LR
 - **时间窗口：** 片段截止会截断声音和粒子余尾；错过的窗口不会补播，尚未结束的窗口从效果开头触发。
 - **播放预算：** 示例只允许三个受管对象同时播放，延迟音频也占预算；它不是 GPU、显存或全场景声部保证。
 
-编排在原生 Godot Inspector 制作，工作台不提供时间轴编辑、暂停或跳转。消费场景可试验分组触发/取消和优先级。局部 Manager、句柄、时钟与 API 的实现说明集中在 [管理与编排说明](../../../project-source/examples/asset_workbench/README.md#场景局部管理与有限编排)。
+编排在原生 Godot Inspector 制作，工作台不提供时间轴编辑、暂停或跳转。消费场景可试验分组触发/取消和优先级。局部 Manager、句柄、时钟与 API 的实现说明集中在 [管理与编排说明](../../../../project-source/examples/asset_workbench/README.md#场景局部管理与有限编排)。
 
 ## 保存后验证消费场景
 
 **保存前：** 看固定底栏中的目标文件与影响范围。保存当前方案只写当前 Cue，不修改源图片、声音或共享预设；所有引用同一 Cue 的消费场景会读到该保存结果。
 
 1. 点击“保存当前方案”，核对成功或冲突消息；需要完整路径时查看并复制保存目标。
-2. 用“对象更多 → 打开消费场景”，或按 [入口导航](../../../project-source/examples/asset_workbench/README.md#打开与操作) 打开对应场景按 F6。
+2. 用“对象更多 → 打开消费场景”，或按 [入口导航](../../../../project-source/examples/asset_workbench/README.md#打开与操作) 打开对应场景按 F6。
 3. 实际观看、操作和试听，确认消费场景读到已保存效果；未保存的 A/B 草稿不会传入。
 
 **保存全场景：** 沿用逐文件保存，不是多文件事务。
@@ -142,7 +142,7 @@ flowchart LR
 
 **重载：** 明确确认后丢弃当前对象两份草稿。需要保留试调时先保存选定方案，不能把重载当作撤销最后一步。
 
-效果组合的消费入口为 `effects_composition/example_consumer.tscn`，可检查不同摆放、旋转和缩放。正式导出还应按 [消费接入与导出](../../../project-source/examples/asset_workbench/README.md#消费接入与导出) 包含实际引用、运行脚本与许可，并从独立包验证；F6 成功不证明导出依赖完整。
+效果组合的消费入口为 `effects_composition/example_consumer.tscn`，可检查不同摆放、旋转和缩放。正式导出还应按 [消费接入与导出](../../../../project-source/examples/asset_workbench/README.md#消费接入与导出) 包含实际引用、运行脚本与许可，并从独立包验证；F6 成功不证明导出依赖完整。
 
 ## 工具与实际游戏的关系
 

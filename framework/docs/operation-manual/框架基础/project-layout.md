@@ -1,6 +1,6 @@
 # 项目对象与目录
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 以下路径相对生成项目根目录。文件职责由实际使用者和权威来源决定；目录、模板或空占位文件的存在不代表相应工作已经完成。
 
@@ -15,7 +15,7 @@
 | `docs/product.md` / `docs/product/` | 总体范围、模块关系 / 可观察行为与规则 | `product-author`；规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
 | `docs/project-rules.md` | 项目级 MUST、PREFER、REVIEW 约束 | 已获准规则维护；所有相关工作读取 |
-| `docs/game-organization.md` | 游戏代码、场景与资源的组织和命名判断指南 | 项目结构工作按需读取；[随项目复制的指南](../../../project-source/defaults/docs/game-organization.md) |
+| `docs/game-organization.md` | 游戏代码、场景与资源的组织和命名判断指南 | 项目结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 共享方向和专业规格 | 对应 design Skill；行为仍由 Product 定义 |
 | `docs/resource-requirements/` | 稳定业务范围的素材准备要求、位置与状态 | 对应专业规格及接入任务；README 只导航 |
@@ -61,7 +61,7 @@
 
 ## 复制与重命名
 
-完整映射只维护在 [project-files.json](../../project-files.json)。主要重命名与复制关系包括：
+完整映射只维护在 [project-files.json](../../../project-files.json)。主要重命名与复制关系包括：
 
 - **项目入口：** `Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
 - **方法与角色：** `skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
@@ -86,7 +86,7 @@
 
 ## Git 与 Godot 扫描的区别
 
-Git 的默认范围如下，具体模式以 [默认 gitignore](../../../project-source/defaults/.gitignore) 为准。
+Git 的默认范围如下，具体模式以 [默认 gitignore](../../../../project-source/defaults/.gitignore) 为准。
 
 - **默认忽略：** Godot 缓存、派生翻译缓存、报告和本机秘密；`.env.example` / `.env.template` 可保留。
 - **按项目规则跟踪：** 源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
@@ -97,4 +97,4 @@ Git 的默认范围如下，具体模式以 [默认 gitignore](../../../project-
 - `.import` 是导入配置，`.godot/` 是缓存，两者不能一并当作垃圾清空。
 - 报告未进 Git 时，本地提交不保证另一位置拥有验证原件。
 
-文档选择依据见 [知识、设计与记录](knowledge-and-records.md)，专业材料职责见 [专业来源与资源](specialist-work.md)。
+文档选择依据见 [知识、设计与记录](../专业工作与记录/knowledge-and-records.md)，专业材料职责见 [专业来源与资源](../专业工作与记录/specialist-work.md)。

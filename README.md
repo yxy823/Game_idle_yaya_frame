@@ -47,7 +47,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 默认显示名为 New Godot Project，主场景为 main/main.tscn，代码与文档是最小起点。创建器不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。默认工具位置不代表可用，配置中也没有“已就绪”状态字段。
 
-工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [prompts.json](framework/prompts.json)，在实际项目目录使用。
+工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/框架基础/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [prompts.json](framework/prompts.json)，在实际项目目录使用。
 
 ## 项目能力与边界
 

@@ -1,6 +1,6 @@
 # 任务类型、开发阶段与完成语义
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 项目采用一位使用者与 Agent 的单目录开发方式。任务、阶段、Git 提交与实际验收分别表达不同事实；阶段号帮助定位工作，不构成额外自动状态机或逐阶段审批。
 
@@ -19,6 +19,16 @@
 
 Bug 的实际表现、预期及来源、复现和根因应能对应证据；未知解释保持假设。可自动回归的缺陷以目标行为失败和修复后的通过保护，确实不适合自动化时保留原因与可重复人工路径。
 
+## 修改前后的共用要求
+
+Bug 修复、功能实现、重构、工具维护、资源接入、迁移和性能优化都应按实际影响采用以下要求，具体方法仍由所属任务决定：
+
+- **修改前**：读取当前实现与直接消费者，找到行为实际所属位置，简述必要修改和验证范围；有效计划可直接复用，不新增审批关卡。
+- **修改时**：完成最小且完整的目标，保持无需变化的 API、依赖与代码风格；必要契约变化同步实际消费者，不顺带改无关代码。
+- **交付前**：完成相关测试及项目支持的适用静态检查，检查最终差异；说明关键文件、修改理由、实际验证和有依据的剩余风险。
+
+共用正文见[变更准备与范围](../../../../project-source/agent-rules/00-core/change-scope-and-ownership.md)、[验证政策](../../../../project-source/agent-rules/00-core/validation-policy.md)与[交付说明](../../../../project-source/agent-rules/00-core/completion-and-reporting.md)。这些要求不扩大只读任务的授权，也不替代所属流程的实际人工验收。
+
 ## Stage 的含义
 
 | 阶段 | 保存的决定或事实 |
@@ -35,7 +45,7 @@ Bug 的实际表现、预期及来源、复现和根因应能对应证据；未�
 | 7 完成记录 | 所有适用条件满足后由 Agent 更新 done、实际完成时间、记录与收尾提交 |
 | 8 交接 | 报告实际交付与限制，核对剩余授权；已授权后续工作继续推进 |
 
-具体流程唯一正文在 [执行规范](../../../project-source/methodology/03-execute-loop.md) 与 [feature-execute](../../../project-source/skills/feature-execute/SKILL.md)。普通实现细节由 Agent 判断；未变的具体授权跨 Skill 和阶段沿用，原 Skill 返回不等于整项授权结束。
+具体流程唯一正文在 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 与 [feature-execute](../../../../project-source/skills/feature-execute/SKILL.md)。普通实现细节由 Agent 判断；未变的具体授权跨 Skill 和阶段沿用，原 Skill 返回不等于整项授权结束。
 
 ## 自动与人工验收
 
@@ -48,7 +58,7 @@ Bug 的实际表现、预期及来源、复现和根因应能对应证据；未�
 - **用户结果：** 用户另存结果填写 passed/failed/pending 与观察，不能改 ID、步骤或预期来消除失败。
 - **接受判据：** 有效必需项全通过且无矛盾反馈已表示接受，无需重复索取相同确认。
 
-口头明确结论和结果 JSON 是两种记录方式。原件缺失、版本失效或反馈有歧义时保留缺口，导入成功也可能记录 rejected 或 pending。automated 不生成空清单或伪造接受。契约与工具见 [人工验收文件](../../../project-source/methodology/manual-acceptance-files.md)、[命令与证据](commands-and-evidence.md)。
+口头明确结论和结果 JSON 是两种记录方式。原件缺失、版本失效或反馈有歧义时保留缺口，导入成功也可能记录 rejected 或 pending。automated 不生成空清单或伪造接受。契约与工具见 [人工验收文件](../../../../project-source/methodology/manual-acceptance-files.md)、[命令与证据](../方法与工具/commands-and-evidence.md)。
 
 只有有效 manual 计划确无自动测试义务，且不存在未解决的失败或未结束最终运行时，运行器才可能返回 `not_required`。该结果不是放弃测试的开关；直接静态、专项检查与人工要求仍各自适用。
 
@@ -81,4 +91,4 @@ Goal 只是持续工作的承载方式。
 - **原型缺少决定时：** 只暂停依赖部分，不能据此宣称最终验收材料齐备。
 - **持续任务的结果：** 失败、预算耗尽或前置受阻不是成功完成；用户结果与继续授权决定后续段落。
 
-独立审核的范围、真实性与修复权限见 [专业来源与资源](specialist-work.md#独立审核)，工程分类见 [工程变更规范](../../../project-source/methodology/07-engineering-change.md)。
+独立审核的范围、真实性与修复权限见 [专业来源与资源](../专业工作与记录/specialist-work.md#独立审核)，工程分类见 [工程变更规范](../../../../project-source/methodology/07-engineering-change.md)。

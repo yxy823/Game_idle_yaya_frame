@@ -169,7 +169,7 @@
 1. 本报告给出职责调整建议，尚未拆分、改名或重写 Skill。报告不授予被审核实现的自动修改权限；按用户最终选择实施，并保留原有具体授权、有效历史和必要验证。
 2. S1／S2 涉及唯一 owner 变更，应先更新权威来源，再改直接调用者、advisor、提示词和场景。只改 description、另添新 Skill 但保留旧入口原样，会形成两套可用正文。
 3. [复制清单](../../project-files.json)整目录复制 `project-source/skills` 到 `.agents/skills`，当前无逐 Skill 白名单；新增／删除目录会直接改变新项目内容。仍应检查生成后的路由和引用。已有生成项目独立拥有文件，本次没有同步外部项目。
-4. 已定位的说明消费者还包括[旧 Skill 参考材料](../../docs/operation-manual/skills-and-agents.md)、[专业工作材料](../../docs/operation-manual/specialist-work.md)、[场景覆盖基线](../baselines/scenario-coverage.md)和 advisor 生成表达参考。后续变更必须从 [prompts.json](../../prompts.json)和其导出器更新生成正文，不能手改生成参考。这里只核对引用影响，不宣称已逐段审核全部旧说明或全部提示词。
+4. 已定位的说明消费者还包括[旧 Skill 参考材料](../../docs/operation-manual/方法与工具/skills-and-agents.md)、[专业工作材料](../../docs/operation-manual/专业工作与记录/specialist-work.md)、[场景覆盖基线](../baselines/scenario-coverage.md)和 advisor 生成表达参考。后续变更必须从 [prompts.json](../../prompts.json)和其导出器更新生成正文，不能手改生成参考。这里只核对引用影响，不宣称已逐段审核全部旧说明或全部提示词。
 5. 27 个 Skill 的正文全量覆盖不等于所有工程规则、模板、工具和真实客户交互全量验证。核心结论依赖的引用已读取；领域工程规则具体 Godot API 正确性、工具运行结果、语言模型触发效果、角色客户端加载、视觉与聆听能力没有在本轮验证。
 6. 后续有针对性的场景验证应覆盖：已确认术语直接维护；术语实际改变玩法时退回 Product；只写本地化规格；仅按既定规格接入语言；直接请求明确已有要求的 Bug；当前 Feature 内调用支持 Skill 后继续；单目录暂停／新对话恢复；审核过程保持原始证据只读。它们是待执行验证建议，不是本轮通过结果。
 

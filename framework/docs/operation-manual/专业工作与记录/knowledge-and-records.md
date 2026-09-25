@@ -1,6 +1,6 @@
 # 知识、设计与记录
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 长期定义、当前结构、历史决定、外部调研和执行进度有不同职责。按实际需要保存一次并互相链接，不因为有模板就创建全部文件，也不把要求放进工具不读取的过程记录。
 
@@ -33,7 +33,7 @@ Feature 设计是可选材料，简单任务只需 notes。
 
 图中的箭头要分清代码依赖、装配、继承、消息或时序；静态引用搜索不证明动态加载、运行时 Signal 和真实状态归属。观察、推断、建议和已实现行为分别表述。地图更新职责、路径、入口和理由，旧设计正确记录过去时保留历史，不改成一直如此。
 
-设计新核心对象或调整结构时，实际判断来自已确认行为、状态与生命周期、调用方负担及真实依赖。比较复用、不改、局部修正、删除/合并与必要新增；API 更短、文件更少或采用模式本身都不是收益。枚举状态、Command、序列化或新管理层只服务实际用途，不为假想未来预建体系。具体方法见 [架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+设计新核心对象或调整结构时，实际判断来自已确认行为、状态与生命周期、调用方负担及真实依赖。比较复用、不改、局部修正、删除/合并与必要新增；API 更短、文件更少或采用模式本身都不是收益。枚举状态、Command、序列化或新管理层只服务实际用途，不为假想未来预建体系。具体方法见 [架构规范](../../../../project-source/methodology/10-architecture-overview.md)。
 
 ## ADR 的阈值
 
@@ -74,7 +74,7 @@ ADR 使用 `docs/architecture/adr-NNNN-<slug>.md`，同时考虑：
 
 没有规则变化不生成报告，不新建规则台账。
 
-规则变化先处理当前任务的实际影响，沿用具体授权；新决定才等待用户。原 Feature 内辅助文档不另起“必须清空工作区”的任务。适用记录在最终验证前定稿，较晚采纳也检查失效依据。唯一细则见 [规则增量维护](../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
+规则变化先处理当前任务的实际影响，沿用具体授权；新决定才等待用户。原 Feature 内辅助文档不另起“必须清空工作区”的任务。适用记录在最终验证前定稿，较晚采纳也检查失效依据。唯一细则见 [规则增量维护](../../../../project-source/methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 
 ## 调研与项目知识
 
@@ -93,7 +93,7 @@ ADR 使用 `docs/architecture/adr-NNNN-<slug>.md`，同时考虑：
 
 ## 报告与历史
 
-工具原件使用固定路径，自定义结果按 [目录说明](project-layout.md#模板与按需记录) 放置；正式证据和临时输入分开。直接引用 gdUnit 原件，额外控制台日志只补原件没有的信息，不新建报告总索引或用文件名 final 代替有效结果。
+工具原件使用固定路径，自定义结果按 [目录说明](../框架基础/project-layout.md#模板与按需记录) 放置；正式证据和临时输入分开。直接引用 gdUnit 原件，额外控制台日志只补原件没有的信息，不新建报告总索引或用文件名 final 代替有效结果。
 
 - **临时材料：** 需要跨任务保留时，在现有 notes/Progress 说明用途和结束保留条件。
 - **证据保留：** 当前验收、未解决失败、后续工作、历史与知识引用需要的证据继续保留。
@@ -114,4 +114,4 @@ Progress 保存真实停点和必要链接，不能由“下一步实施”推�
 
 会话摘要帮助定位，不替代权威文件；不要求为换对话清空现场、提交半成品、另开分支、建 worktree 或重跑全部检查。具体交接步骤的临时只读/输出限制不永久覆盖接收方后续已授权任务。这里不建立 Handoff 文件、CONTEXT.md 或平行任务状态表。
 
-权威依据：[产物生命周期](../../../project-source/methodology/09-artifact-lifecycle.md)、[项目术语](../../../project-source/methodology/01-product-doc-structure.md#project-terminology-optional)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[产物生命周期](../../../../project-source/methodology/09-artifact-lifecycle.md)、[项目术语](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology-optional)、[架构规范](../../../../project-source/methodology/10-architecture-overview.md)。

@@ -24,6 +24,10 @@
 
 编写 README、使用手册和操作指南时，遵循 [通用可读性要求](project-source/Project_AGENTS.md#使用说明的可读性)。框架手册的页面分工与同步要求见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
 
+组织多专题文档时，按读者查找的主题建立实体子文件夹，索引分组与实际目录保持一致，不把全部正文平铺在根目录。根目录保留入口、跨主题公共资料和必要生成产物；通常采用“主题 → 文档”两层，有独立用途才继续分层，不创建空分类或重复正文。移动文件时同步相对链接、索引与构建入口。
+
+框架及生成项目共用的术语写法维护在 [框架术语](framework/docs/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，不把两者混为同一份词表。
+
 ## 维护边界与查阅
 
 | 当前工作 | 执行依据 |
@@ -37,6 +41,8 @@
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
 维护 `project-source/` 中的 Godot 代码、场景、资源或测试时，按 [领域规则路由](project-source/Project_AGENTS.md#engineering-rule-routing) 核对适用工程语义；任务授权、Git、验证范围与地点及交付仍以本维护仓库规则为准。
+
+修改代码或工具前，按共用的[变更准备与范围约定](project-source/agent-rules/00-core/change-scope-and-ownership.md)确认实际实现、影响范围与简短方案；验证和交付沿用本仓库约定，不因此启用生成项目的 Stage。
 
 框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。只保留仍需推进的工作、真实验证缺口、阻塞与必要待决定项，写明下一步和必要依据；条目不授予实施权限。完成并通过必要验证的事项立即删除；尚有必要人工验收时仅保留具体待验收项。历史由 Git 保存，不保留完成记录、成果汇总或长期搁置的设想；无待办时清空文件。相关状态发生实质变化时，在本次允许写入的范围内及时更新，提交或交接前核对一致；只读任务在回复中指出需更新项，无实质变化不制造更新。
 

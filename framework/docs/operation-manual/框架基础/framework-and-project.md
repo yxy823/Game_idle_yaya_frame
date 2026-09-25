@@ -1,6 +1,6 @@
 # 框架、创建器与项目边界
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 框架保存可复制的 Godot 项目材料。创建后的项目独立拥有代码、配置、文档、Git 历史和开发记录；修改框架不会更新已有项目。框架面向一位使用者与 Agent 配合开发，同一项目目录内支持暂停、切换和新对话续接，不提供多人改动归属、worktree 隔离或续接机制。
 
@@ -24,7 +24,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ```
 
 - **参数：** `--output` 是目标项目目录；`-B` 是 Python 的禁止字节码缓存选项。
-- **准备与写入：** 创建器需要可用的 Git 和提交身份，按 [复制清单](../../project-files.json) 复制、重命名，随后建立独立 Git 仓库和本地初始提交。
+- **准备与写入：** 创建器需要可用的 Git 和提交身份，按 [复制清单](../../../project-files.json) 复制、重命名，随后建立独立 Git 仓库和本地初始提交。
 - **执行边界：** 它不安装依赖、不运行环境检查或 Godot、不生成需求、不运行测试、不配置远程或推送。
 - **成功消息：** 复制数量是清单项数，不是实际文件总数。
 
@@ -36,7 +36,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 | 写入前检查 | 展开所有清单项；目录可以合并，重复目标文件和文件/目录冲突拒绝 |
 | 失败现场 | 预检失败不开始复制；复制或 Git 失败可能留下部分内容，不自动删除、回滚、重试覆盖 |
 
-具体参数与拒绝条件以 [创建器源码](../../commands/create_project.py) 为准。项目名称、机器路径和文档语言在独立项目中配置，初始提交不是业务验证证据。
+具体参数与拒绝条件以 [创建器源码](../../../commands/create_project.py) 为准。项目名称、机器路径和文档语言在独立项目中配置，初始提交不是业务验证证据。
 
 ## 环境就绪的含义
 
@@ -65,4 +65,4 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 迁移报告可放 `reports/maintenance/framework-migration/migration.md`，已有文件不可无依据覆盖。历史测试仅证明历史版本；无法恢复的旧决定、基线或原件保留未知，不能补造过去的审批、TDD、验收或完成时间。框架替换和业务功能交付是不同范围，没有持续升级服务。
 
-配置字段见 [配置参考](configuration.md)，文件职责见 [项目对象与目录](project-layout.md)，结果含义见 [命令与验证证据](commands-and-evidence.md)。
+配置字段见 [配置参考](configuration.md)，文件职责见 [项目对象与目录](project-layout.md)，结果含义见 [命令与验证证据](../方法与工具/commands-and-evidence.md)。

@@ -1,6 +1,6 @@
 # 需求、Feature 与规划基线
 
-[操作手册](README.md)
+[操作手册](../README.md)
 
 需求说明预期结果，计划分配实现与验证责任。外部 GDD、当前代码、讨论提案、Product 和 Feature 各自提供不同事实，不能因为文件较新或实现已存在就自动采用其中的要求。
 
@@ -81,4 +81,4 @@ Feature 按当前模块的完整必要行为拆分，优先得到能独立理解
 
 例如“初始资源为 0，每次点击增加 1”的教学候选，可对应一个收集模块、含初始值和连续点击结果的两条 AC，再关联真实测试。它只说明对象如何连接，不为任何项目自动批准数值、文件名、Feature ID、存档范围或测试结果。
 
-权威结构见 [Product 规范](../../../project-source/methodology/01-product-doc-structure.md)、[Feature 规范](../../../project-source/methodology/02-feature-list-schema.md) 和 [测试策略](../../../project-source/methodology/08-testing-strategy.md)。
+权威结构见 [Product 规范](../../../../project-source/methodology/01-product-doc-structure.md)、[Feature 规范](../../../../project-source/methodology/02-feature-list-schema.md) 和 [测试策略](../../../../project-source/methodology/08-testing-strategy.md)。

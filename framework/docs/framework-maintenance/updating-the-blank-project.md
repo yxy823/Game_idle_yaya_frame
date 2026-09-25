@@ -14,12 +14,13 @@
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
-| 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 reports/ |
+| 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
+| 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
 | 正式操作提示词 | framework/prompts.json，唯一手写正文 |
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-Project_AGENTS.md 是待复制源规则。根规则明确引用其“沟通与交付”“使用说明的可读性”，除此不在维护仓库启用项目开发 Stage。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
+Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 
 维护分发的 Godot 文件按领域读取 project-source/agent-rules/，授权、Git、验证地点和交付仍以本维护仓库规则为准。框架面向单人项目，同目录暂停/切换/续接和独立审核支持，不扩展多人改动归属或 worktree 流程。
 
@@ -29,14 +30,14 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用其“沟通与�
 
 | 变化 | 操作专题 | 真实依据 |
 | --- | --- | --- |
-| 复制、目录、重命名、初始化边界 | [框架与项目](../operation-manual/framework-and-project.md)、[项目目录](../operation-manual/project-layout.md) | 创建器、清单、默认文件 |
-| 环境字段、插件或 lint 默认值 | [配置](../operation-manual/configuration.md)、[错误含义](../operation-manual/errors-and-results.md) | 配置源、检查器、插件及补丁 |
-| Product、AC、依赖、规划与历史 | [需求与规划](../operation-manual/requirements-and-planning.md) | methodology、模板、规划/同步 Skill、检查器 |
-| Stage、验收、任务类型、完成或持续授权 | [阶段语义](../operation-manual/feature-lifecycle.md) | 执行规范、Feature Skill、工程规范 |
-| 专业所有者、资源、语言或独立审核 | [专业来源](../operation-manual/specialist-work.md)、[Skill 与角色](../operation-manual/skills-and-agents.md) | 专业/审核规范、相应 Skill、角色及复制映射 |
-| 参数、测试选择、结果、指纹或错误 | [命令与证据](../operation-manual/commands-and-evidence.md)、[错误含义](../operation-manual/errors-and-results.md) | 实际 CLI、tools/lib/verification_snapshot.py、完成校验与测试策略 |
-| 工作台、Analyzer、表现组件 | [资源工作台](../operation-manual/asset-workbench.md) | 对应工具、示例 README、消费接口及夹具 |
-| 术语、设计、架构、规则、研究、知识或 Progress | [知识与记录](../operation-manual/knowledge-and-records.md) | 来源规范、生命周期、角色与领域规则 |
+| 复制、目录、重命名、初始化边界 | [框架与项目](../operation-manual/框架基础/framework-and-project.md)、[项目目录](../operation-manual/框架基础/project-layout.md) | 创建器、清单、默认文件 |
+| 环境字段、插件或 lint 默认值 | [配置](../operation-manual/框架基础/configuration.md)、[错误含义](../operation-manual/方法与工具/errors-and-results.md) | 配置源、检查器、插件及补丁 |
+| Product、AC、依赖、规划与历史 | [需求与规划](../operation-manual/需求与任务/requirements-and-planning.md) | methodology、模板、规划/同步 Skill、检查器 |
+| Stage、验收、任务类型、完成或持续授权 | [阶段语义](../operation-manual/需求与任务/feature-lifecycle.md) | 执行规范、Feature Skill、工程规范 |
+| 专业所有者、资源、语言或独立审核 | [专业来源](../operation-manual/专业工作与记录/specialist-work.md)、[Skill 与角色](../operation-manual/方法与工具/skills-and-agents.md) | 专业/审核规范、相应 Skill、角色及复制映射 |
+| 参数、测试选择、结果、指纹或错误 | [命令与证据](../operation-manual/方法与工具/commands-and-evidence.md)、[错误含义](../operation-manual/方法与工具/errors-and-results.md) | 实际 CLI、tools/lib/verification_snapshot.py、完成校验与测试策略 |
+| 工作台、Analyzer、表现组件 | [资源工作台](../operation-manual/专业工作与记录/asset-workbench.md) | 对应工具、示例 README、消费接口及夹具 |
+| 术语、设计、架构、规则、研究、知识或 Progress | [知识与记录](../operation-manual/专业工作与记录/knowledge-and-records.md) | 来源规范、生命周期、角色与领域规则 |
 | 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | prompts.json、所属 Skill/methodology/CLI、场景职责清单 |
 
 框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md 及 references/scenarios.md；只更新失效内容，不复制另一套流程。术语唯一入口为 project-terminology，本地化规格为 design-localization-spec，content-localization 负责按已定要求实现。
@@ -72,7 +73,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用其“沟通与�
 
 路径匹配不证明内容或实际执行通过。
 
-两本手册之间不互相引用，必要解释就地提供，权威规范与工具仍可共同引用。链接、锚点、收录范围和 HTML 产物结构由构建脚本自动核对。
+两本手册之间不互相引用，必要解释就地提供，权威规范、工具和公共术语仍可共同引用。构建脚本自动核对所收录 Markdown 的链接、锚点、收录范围和 HTML 产物结构，不递归审核被引用文件的全部内容与链接。
 
 ## 保持初始化边界
 
@@ -86,7 +87,7 @@ advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择
 
 | 修改 | 相称检查 |
 | --- | --- |
-| Markdown、目录与导航 | 对照源材料核对修改涉及的事实与示例；运行构建脚本自动检查链接、锚点、两册隔离与生成结果；检查 Git 差异 |
+| Markdown、目录与导航 | 对照源材料核对修改涉及的事实与示例；构建脚本检查所收录手册的链接、锚点、两册隔离与产物；构建范围外的改动文件另做静态链接检查；检查 Git 差异 |
 | 只重新生成 HTML | 执行构建脚本并确认退出码与诊断输出；不手动重复链接检查或复审未改正文 |
 | HTML 构建器、模板或交互 | 针对改变运行现有构建回归并重新生成；构建成功不等于排版与交互体验已验收 |
 | 提示词或场景 | JSON/名称/路径检查与对应正文独立审核；不将其写成已逐条执行 |
@@ -101,9 +102,7 @@ advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择
 
 ## 提交与交付
 
-遵循根 Git 约定：保护已有差异，仅暂存本次明确路径或检查过的差异块；必要验证后检查完整暂存差异和 whitespace，再按用户授权创建本地提交。文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
-
-交付指出实际变化、Markdown 入口、静态/工具/引擎/人工各自真实结果以及仍需验证的情境。未完成事项按根规则维护 framework/progress.md，完成即移除，不保留长期成果清单。
+提交与未完成事项遵循[根维护约定](../../../AGENTS.md#本地提交)，不在本页维护第二套规则。交付提供受影响文档入口与真实验证结果；文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
 
 ## HTML 阅读版构建
 
@@ -116,11 +115,14 @@ advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择
 
 ## 整体重检与详细报告
 
-静态审核结果需要明确当前版本、检查范围、文件证据、影响、最小建议与未验证项。整体审核展开覆盖和跨文件关系，局部问题不要求套长报告。指定输出路径只授权写报告，报告不成为执行台账或修改授权。
+按目标选择已有场景，不在维护规范中复写执行步骤：
 
-GitHub 审核固定完整提交 SHA；未提交或未推送内容不属于该快照。外部报告、开发反馈与当前源材料分别核对版本、项目定制和实际结果，区分问题是否成立与建议是否值得采用。旧版本已修不否定原现场，未知材料不补成已验证。
+- **检查当前工作区**：[本地静态审核](<../quick-reference/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>)。
+- **请外部 Agent 审核**：[GitHub 快照审核](<../quick-reference/Yaya 框架维护/维护与复盘/想请独立 Agent 审核 GitHub 上的框架快照.md>)，以固定完整提交 SHA 区分远端快照与本地改动。
+- **核实收到的意见**：[外部意见复核](<../quick-reference/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
+- **验证真实流程**：[小任务验证](<../quick-reference/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
 
-动态流程抽样与静态审核不同：只在明确指定的新建外部项目执行获准路径，报告实际经过的阶段与原件；一个样例不证明所有 Skill/提示词。审核发现不自动改源框架或业务项目。正式维护任务输入均在 prompts.json；本页不复制操作正文。
+总体判断依据为[设计复盘](../../review/baselines/design-quality.md)，文本与职责评价依据为[职责设计准则](../../review/baselines/skill-script-prompt-design.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 后续用口语继续
 
