@@ -20,10 +20,21 @@ Agent 找到并核实原件，调用导入工具；工具检查原件并保存�
 
 在实际游戏项目根目录操作，使用该项目已确认的 Python 和完成依据工具。Feature ID 与运行路径必须取自真实任务和本次输出。
 
-1. **S1 找到正确结果。** Agent 从运行器实际输出定位 result.json，检查其中的执行状态、范围、版本以及引用的原始报告。
-2. **S2 准备完整引用组。** Agent 核对本次要保留的兼容运行，确认整组能满足当前任务义务。
-3. **S3 重新导入。** Agent 使用项目的 record-tests 入口，指定实际 Feature，并在同一次调用中列出全部需要保留的 --run 参数。
-4. **S4 查看记录。** Agent 检查退出码及实际完成记录中的测试引用，确认对应正确原件，再继续原任务尚待完成的检查。
+**S1｜找到正确结果**
+
+Agent 从运行器实际输出定位 result.json，检查其中的执行状态、范围、版本以及引用的原始报告。
+
+**S2｜准备完整引用组**
+
+Agent 核对本次要保留的兼容运行，确认整组能满足当前任务义务。
+
+**S3｜重新导入**
+
+Agent 使用项目的 record-tests 入口，指定实际 Feature，并在同一次调用中列出全部需要保留的 --run 参数。
+
+**S4｜查看记录**
+
+Agent 检查退出码及实际完成记录中的测试引用，确认对应正确原件，再继续原任务尚待完成的检查。
 
 调用 S3 前须知道：record-tests 会用本次整组引用替换旧测试引用；导入校验失败会清除旧测试引用，但保留原始报告。不要分多次调用来假定引用会累加。
 
@@ -41,7 +52,7 @@ python -B tools/features/record-feature-completion.py show --feature F0XX
 | S1 | 真实成功原件可定位且可用 |
 | S2 | 同一次导入需要的全部运行路径已确定 |
 | S3 | 导入成功，工具记录对应当前内容的测试引用 |
-| S4 | 已保存引用与实际原件一致，可继续其他交付检查 |
+| S4 | 已保存引用与实际原件一致，可继续其他完成检查 |
 
 ## 资源与文件影响
 
@@ -52,7 +63,7 @@ python -B tools/features/record-feature-completion.py show --feature F0XX
 | docs/feature-completion-evidence.json | 导入时创建必要记录或替换测试引用；失败可能清除旧测试引用 |
 | 游戏实现与测试代码 | 本页不修改 |
 
-## 异常与非正常退出
+## 阻塞、异常与范围变化
 
 S1 发现原件、内容或覆盖不满足条件时，保留导入错误和已有材料，退出引用恢复，补足实际验证缺口。不能凭摘要或旧成功补写通过。
 
@@ -64,6 +75,6 @@ S1 发现原件、内容或覆盖不满足条件时，保留导入错误和已�
 
 ## 流程关联与衔接关系
 
-上游可以是[当前 Feature 修复](../../issues/current-feature/bug-after-tests.md)或[独立 Bug 修复](../../issues/completed-feature/bug-after-delivery.md)的验证。下游为原任务的剩余交付检查。
+上游可以是[当前 Feature 修复](../../issues/current-feature/bug-after-tests.md)或[独立 Bug 修复](../../issues/completed-feature/bug-after-delivery.md)的验证。下游为原任务的剩余完成检查。
 
 依据：[实际完成依据工具](../../../../../../project-source/tools/features/record-feature-completion.py)、[测试证据规范](../../../../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。

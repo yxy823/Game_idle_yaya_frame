@@ -36,15 +36,15 @@
 
 ### 当前 Feature 尚未完成交付
 
-[测试通过了，但试玩时发现本次改动还有 Bug](issues/current-feature/bug-after-tests.md)
+[Feature 交付前发现 Bug](issues/current-feature/bug-after-tests.md)
 
-目标：在当前任务内修复，取得针对问题的验证结果，再回到原任务的交付检查。
+目标：在当前任务内修复，取得针对问题的验证结果，再返回原 Feature 的完成检查。
 
 ### 出问题的 Feature 已经完成交付
 
-[Feature 已经完成交付，后来又发现它有 Bug](issues/completed-feature/bug-after-delivery.md)
+[Feature 交付后发现 Bug](issues/completed-feature/bug-after-delivery.md)
 
-目标：以独立工程 Bug 任务修复，取得验证结果并交回该修复任务的收尾检查；保留原 Feature 的完成历史。
+目标：以独立工程 Bug 任务修复，取得验证结果并返回该任务的完成检查；保留原 Feature 的完成历史。
 
 ## 测试与交付
 
