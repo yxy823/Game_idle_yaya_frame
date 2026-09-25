@@ -26,7 +26,7 @@
 
 **S1｜核对输入**
 
-当前 Agent 按 `feature-plan` 读取模块、执行顺序与采用的专业规格，检查 `docs/feature-list.json`、`docs/feature-list-revisions.json` 确实为空，并用 `git status --short` 核对工作区及修改归属。
+当前 Agent 按 `feature-plan` 读取模块、执行顺序与采用的专业规格，检查 `docs/feature-list.json`、`docs/feature-list-revisions.json` 确实为空，并用 `git status --short` 核对工作区是否满足规划前提。
 
 **S2｜展示拆分**
 
