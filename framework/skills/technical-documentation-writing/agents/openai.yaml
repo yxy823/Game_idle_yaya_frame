@@ -1,0 +1,6 @@
+interface:
+  display_name: "技术文档编写与整理"
+  short_description: "整理技术文档的目录、层级、术语和操作说明，保留原有行为与验收边界"
+
+policy:
+  allow_implicit_invocation: false
