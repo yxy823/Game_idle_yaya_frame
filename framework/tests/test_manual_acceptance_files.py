@@ -153,6 +153,23 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.record_file()
         self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])
 
+    def test_manual_results_survive_staging_and_committing_source_deletion(self):
+        implementation = self.root / "implementation.txt"
+        implementation.unlink()
+        self.prepared_result()
+        self.record_file()
+        originals = (self.checklist.read_bytes(), self.result.read_bytes())
+        self.git("add", "implementation.txt")
+        self.record_file()
+        self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])
+        self.git("commit", "--quiet", "-m", "Fixture accepted deletion")
+        self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])
+        self.assertEqual(originals, (self.checklist.read_bytes(), self.result.read_bytes()))
+        implementation.write_text("restored source", encoding="utf-8")
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError, "current content snapshot"):
+            read_result(self.root, "F001", self.checklist, self.result)
+        self.assertFalse(evidence.validate_completion_evidence(self.root, "F001")[0])
+
     def test_completion_rereads_originals_and_blocks_later_failure_or_missing_file(self):
         value = self.prepared_result()
         self.record_file()

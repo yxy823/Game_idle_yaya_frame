@@ -108,8 +108,9 @@ def working_tree_fingerprint(repo_root: Path) -> str:
 
     Feature/Registry verification semantics are canonical JSON inputs. Only known
     process fields, evidence outputs, Progress/knowledge/research Markdown and usage README
-    files outside contract directories are exempt. A Git commit is provenance,
-    not an additional invalidation of identical content.
+    files outside contract directories are exempt. Deleted paths left in the
+    index are absent content; staging their deletion must not change the hash.
+    A Git commit is provenance, not an invalidation of identical content.
     """
 
     raw_paths = _run_git(repo_root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")
@@ -128,6 +129,9 @@ def working_tree_fingerprint(repo_root: Path) -> str:
         except ValueError as exc:
             raise EvidenceError(f"git reported a path outside the repository: {relative_path}") from exc
 
+        # 未暂存的删除仍在索引中；当前内容不应包含这类残留路径。
+        if not candidate.exists():
+            continue
         digest.update(normalized.encode("utf-8", errors="surrogateescape"))
         digest.update(b"\0")
         if candidate.is_file():
@@ -143,10 +147,8 @@ def working_tree_fingerprint(repo_root: Path) -> str:
                 digest.update(json.dumps(projected, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8"))
             else:
                 _hash_file(digest, candidate)
-        elif candidate.exists():
-            digest.update(b"non-file\0")
         else:
-            digest.update(b"missing\0")
+            digest.update(b"non-file\0")
         digest.update(b"\0")
 
     return f"sha256:{digest.hexdigest()}"

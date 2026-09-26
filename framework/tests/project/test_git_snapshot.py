@@ -71,6 +71,45 @@ class GitSnapshotTests(unittest.TestCase):
         self.assertNotEqual(before["working_tree_fingerprint"],
                             verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
+    def test_source_deletion_and_rename_change_content_only_once(self) -> None:
+        for destination in (None, "renamed.gd"):
+            with self.subTest(destination=destination):
+                source = self.root / "source.gd"
+                before = verification_snapshot.working_tree_fingerprint(self.root)
+                if destination is None:
+                    source.unlink()
+                else:
+                    source.rename(self.root / destination)
+                changed = verification_snapshot.working_tree_fingerprint(self.root)
+                self.assertNotEqual(before, changed)
+                paths = ["source.gd"] + ([destination] if destination else [])
+                self.git("add", *paths)
+                self.assertEqual(changed, verification_snapshot.working_tree_fingerprint(self.root))
+                self.git("commit", "-m", "Fixture source removal")
+                self.assertEqual(changed, verification_snapshot.working_tree_fingerprint(self.root))
+                self.write("source.gd", "extends RefCounted\n")
+                self.git("add", "source.gd")
+                self.git("commit", "-m", "Fixture restored source")
+
+    def test_recorded_run_survives_staging_a_source_deletion(self) -> None:
+        self.plan_fixture()
+        before = verification_snapshot.working_tree_fingerprint(self.root)
+        (self.root / "source.gd").unlink()
+        self.assertNotEqual(before, verification_snapshot.working_tree_fingerprint(self.root))
+        _plan, manifest = make_run(self.root)
+        references = [result_reference(self.root, manifest)]
+        verified = derive_test_evidence(self.root, "F001", references)
+        self.git("add", "source.gd")
+        self.assertEqual(verified, derive_test_evidence(self.root, "F001", references))
+        self.git("commit", "-m", "Fixture verified deletion")
+        after = derive_test_evidence(self.root, "F001", references)
+        for scope, result in verified.items():
+            self.assertEqual(result["working_tree_fingerprint"], after[scope]["working_tree_fingerprint"])
+            self.assertEqual(result["run_ids"], after[scope]["run_ids"])
+        self.write("source.gd", "extends RefCounted\n")
+        with self.assertRaisesRegex(RunEvidenceError, "source changed"):
+            derive_test_evidence(self.root, "F001", references)
+
     def test_run_survives_content_identical_commits_without_granting_acceptance(self) -> None:
         self.plan_fixture()
         plan, manifest = make_run(self.root)
