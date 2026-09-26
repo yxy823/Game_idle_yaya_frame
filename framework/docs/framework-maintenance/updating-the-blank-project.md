@@ -13,6 +13,7 @@
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
+| 框架维护、供用户自行复用的 Skill | framework/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不进入项目复制清单 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
@@ -56,7 +57,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 说明的组织与措辞
 
-通用表达遵循 [可读性要求](../../../project-source/Project_AGENTS.md#使用说明的可读性)。
+通用详细写法维护在 [技术文档编写 Skill](../../skills/technical-documentation-writing/SKILL.md)，本节只保存框架的页面分工与检查约定。生成项目保留 [基本可读性要求](../../../project-source/Project_AGENTS.md#使用说明的可读性)，无需访问框架或安装该 Skill。
 
 | 位置 | 职责 |
 | --- | --- |
@@ -65,9 +66,8 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | quick-reference/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
 | framework-maintenance/ | 维护规范与验证工具说明，不保留另一套具体场景正文 |
 
-场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，编写要求唯一维护在速查手册 README。
+场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，框架专有编写要求维护在速查手册 README；通用流程分类引用写作 Skill 的参考。
 
-- **排版选择**：按通用可读性要求，将需要分别查阅的并列内容分组列出，避免长段堆叠；保留有实际比较价值的表格。
 - **路径核对**：使用 [路径检查器](../../commands/check_scenario_prompt_paths.py) 核对路径集合。
 - **内容审核**：正文实质变化时由独立审核者确认标题、输入、单一目标、步骤与出口；调整列表时保留原有条件和先后依赖。只重新生成 HTML 不触发正文复审。
 
@@ -75,9 +75,18 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 两本手册之间不互相引用，必要解释就地提供，权威规范、工具和公共术语仍可共同引用。构建脚本自动核对所收录 Markdown 的链接、锚点、收录范围和 HTML 产物结构，不递归审核被引用文件的全部内容与链接。
 
+### 可复用写作 Skill 的维护
+
+[technical-documentation-writing](../../skills/technical-documentation-writing/SKILL.md) 负责通用的目录组织、表达与操作文档写法。其源码由框架维护，跨项目复制与更新由用户操作，不增加安装或同步工具。
+
+- **正文归属**：详细通用方法在 Skill 内维护；本框架的提示词与场景一对一、目录映射、术语含义和 HTML 约定保留在所属规范。项目 AGENTS 保留独立可用的简短底线，不复制整套指南。
+- **独立携带**：Skill 所需参考放在内部 `references/`。确需配套脚本时，脚本和私有模块放在内部 `scripts/`，资源相对脚本或 Skill 定位，待处理项目作为显式输入；不得引用本框架的命令目录、绝对路径或包外私有模块。
+- **依赖边界**：运行时和第三方依赖如确有需要须明确说明，不把包内自有资源与外部安装环境混淆。目标项目已有的检查器是按实际情况使用的项目工具，不作为 Skill 绑定本框架的依赖；当前版本无需脚本，不预建空目录。
+- **修改验证**：根据真实误用、表达问题或维护成本调整相应条款与示例，核对保留的项目底线。首次创建或明显改变适用范围时，用独立试写检查实际结果与可携带性；格式校验不替代内容判断，不要求每次局部改字都重新跑完整试写。
+
 ## 保持初始化边界
 
-手册、维护说明、完整提示词和框架审核材料不加入 project-files.json，也不移动到 project-source/。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
+手册、维护说明、完整提示词、framework/skills/ 和框架审核材料不加入 project-files.json，也不移动到 project-source/。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
 
 advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择范围或所引用 Skill 名称后，按 [导出说明](../../README.md#导出-advisor-精选表达参考) 生成并检查；创建器只复制静态材料，项目不承担转换或回查职责。
 

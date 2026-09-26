@@ -22,9 +22,9 @@
 
 ## 使用说明的可读性
 
-编写 README、使用手册和操作指南时，遵循 [通用可读性要求](project-source/Project_AGENTS.md#使用说明的可读性)。框架手册的页面分工与同步要求见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
+编写或整理 README、使用手册和操作指南时，使用框架维护的 [技术文档编写 Skill](framework/skills/technical-documentation-writing/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
 
-组织多专题文档时，按读者查找的主题建立实体子文件夹，索引分组与实际目录保持一致，不把全部正文平铺在根目录。根目录保留入口、跨主题公共资料和必要生成产物；通常采用“主题 → 文档”两层，有独立用途才继续分层，不创建空分类或重复正文。移动文件时同步相对链接、索引与构建入口。
+生成项目的 [基本可读性要求](project-source/Project_AGENTS.md#使用说明的可读性) 保持独立可用；通用详细写法在上述 Skill 中维护。`framework/skills/` 不进入项目复制清单，Skill 的跨项目复制与更新由用户处理。
 
 框架及生成项目共用的术语写法维护在 [框架术语](framework/docs/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，不把两者混为同一份词表。
 
