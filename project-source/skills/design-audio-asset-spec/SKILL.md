@@ -6,7 +6,7 @@ metadata:
   priority: medium
 ---
 
-# Product audio sketcher
+# Audio asset specification
 
 Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Maintain audio entries directly in the existing `docs/resource-requirements/<scope>.md` under the resource-list contract in `methodology/01-product-doc-structure.md`. Complex needs may have a linked, resource-ID-specific specification. Follow `document_language`.
 

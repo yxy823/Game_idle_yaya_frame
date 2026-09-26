@@ -6,7 +6,7 @@ metadata:
   priority: medium
 ---
 
-# Product UI sketcher
+# UI specification
 
 Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. Product owns player behavior and links to this specification; `product-author` is not its saving intermediary.
 
