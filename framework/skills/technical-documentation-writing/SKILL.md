@@ -19,7 +19,7 @@ description: 编写或整理 README、使用手册、操作指南及配置、工
 | 当前需要 | 使用方式 |
 | --- | --- |
 | 普通单页写作或润色 | 使用本页的表达和检查原则，无需加载全部参考 |
-| 多专题目录、页面分工、命名、术语或正文去重 | 阅读 [文档结构](references/document-structure.md) |
+| 整套文档编写或整理、多专题目录、页面分工、命名、术语或正文去重 | 阅读 [文档结构](references/document-structure.md) |
 | 操作步骤、流程指南或场景速查页 | 阅读 [流程文档](references/procedure-writing.md)；11 类信息只用于流程，不套入所有文档 |
 
 ## 表达与排版
