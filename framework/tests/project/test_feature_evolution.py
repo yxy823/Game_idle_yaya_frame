@@ -143,8 +143,10 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_replacement_may_be_planned_until_its_feature_completes(self) -> None:
         self.retire()
-        self.registry["tests"][2].update(status="planned", path=None)
-        self.assertTrue(self.validate())
+        for path in (None, "tests/future.gd"):
+            with self.subTest(path=path):
+                self.registry["tests"][2].update(status="planned", path=path)
+                self.assertTrue(self.validate())
         self.index["features"][2].update(status="done", completed_at="2026-02-02T00:00:00Z")
         self.assertFalse(self.validate())
 
@@ -268,6 +270,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_component_merge_preserves_retirement_and_rejects_invalid_chain_atomically(self) -> None:
         self.retire()
+        self.registry["tests"][0]["path"] = "tests/removed_historical_test.gd"
         self.assertTrue(self.validate())
         helper = ROOT / "tools/features/merge-test-registry.py"
         self.write("components.json", [])

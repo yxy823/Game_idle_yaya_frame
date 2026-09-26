@@ -7,7 +7,9 @@ import re
 from pathlib import Path, PurePosixPath
 from typing import Any
 
-from tools.lib.feature_evolution import REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, test_identity
+from tools.lib.feature_evolution import (
+    EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, resolve_test_path, test_identity,
+)
 
 
 class SelectionError(ValueError):
@@ -42,15 +44,13 @@ def normalized_path(root: Path, value: str) -> str:
     if not isinstance(value, str) or not value:
         raise SelectionError("test path must be a non-empty repository-relative path")
     value = value.replace("\\", "/").removeprefix("res://")
-    path = PurePosixPath(value)
-    if path.is_absolute() or ":" in value or ".." in path.parts:
-        raise SelectionError(f"test path leaves repository: {value}")
-    resolved = (root / value).resolve()
-    if not resolved.is_relative_to(root.resolve()):
-        raise SelectionError(f"test path resolves outside repository: {value}")
+    try:
+        resolved = resolve_test_path(root, value)
+    except EvolutionError as exc:
+        raise SelectionError(str(exc)) from exc
     if not resolved.exists():
         raise SelectionError(f"registered test path does not exist: {value}")
-    return path.as_posix()
+    return PurePosixPath(value).as_posix()
 
 
 def deduplicate_selectors(root: Path, paths: list[str]) -> list[str]:

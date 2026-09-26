@@ -4,6 +4,7 @@ from project_context import PROJECT_ROOT
 
 import copy
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -89,8 +90,9 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(self._strict().returncode, 0)
 
     def test_existing_suite_file_and_directory_are_retained(self) -> None:
+        from tools.lib.test_selection import normalized_path
         suite = self._suite()
-        for path in (suite, "tests/unit/inventory"):
+        for path in (suite, "tests/unit/inventory", "./" + suite, suite.replace("/", "\\")):
             with self.subTest(path=path):
                 component = self._component(path)
                 self._write_json(self.registry_path, {
@@ -104,6 +106,67 @@ class UnitTestPathsTests(unittest.TestCase):
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(self._registry()["components"][0], component)
                 self.assertEqual(self._strict().returncode, 0)
+                self.assertEqual(normalized_path(self.root, path),
+                                 path.replace("\\", "/").removeprefix("./"))
+
+    def _assert_path_rejected_before_write(self, path: str) -> None:
+        from tools.lib.test_selection import normalized_path, SelectionError
+        with self.assertRaisesRegex(SelectionError, "repository"):
+            normalized_path(self.root, path)
+        registry = {"meta": {"schema_version": 3}, "components": [], "tests": []}
+        self._write_json(self.registry_path, registry)
+        before = self.registry_path.read_bytes()
+        result = self._merge([self._component(path)])
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertIn("repository", result.stderr)
+        self.assertEqual(self.registry_path.read_bytes(), before)
+        # 已有组件和 active 测试也必须被普通检查与合并入口拒绝。
+        for active_test in (False, True):
+            with self.subTest(active_test=active_test):
+                registry["components"] = [self._component() if active_test else self._component(path)]
+                registry["tests"] = [{"id": "INV-INVENTORY-01", "components": ["inventory"],
+                                      "path": path, "case": None, "status": "active"}] if active_test else []
+                self._write_json(self.registry_path, registry)
+                before = self.registry_path.read_bytes()
+                for result in (self._merge([]), self._strict()):
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertIn("repository", result.stderr)
+                    self.assertNotIn("Traceback", result.stderr)
+                self.assertEqual(self.registry_path.read_bytes(), before)
+
+    def test_nonrelative_existing_paths_are_rejected_before_write(self) -> None:
+        suite = self._suite()
+        with tempfile.TemporaryDirectory(prefix="external-registry-", dir=self.root.parent) as external:
+            outside = Path(external)
+            (outside / "test_external.gd").write_text("extends GdUnitTestSuite\n", encoding="utf-8")
+            for path in (f"../{outside.name}", f"..\\{outside.name}\\test_external.gd",
+                         str(outside), str(self.root / suite), "tests/../" + suite):
+                with self.subTest(path=path):
+                    self.assertTrue((self.root / path).exists())
+                    self._assert_path_rejected_before_write(path)
+
+    def test_resolved_external_link_is_rejected_before_write(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="linked-registry-", dir=self.root.parent) as external:
+            link = self.root / "linked-tests"
+            try:
+                link.symlink_to(external, target_is_directory=True)
+            except OSError as exc:
+                if os.name == "nt" and getattr(exc, "winerror", None) == 1314:
+                    self.skipTest("Windows account cannot create symbolic links")
+                raise
+            try:
+                self._assert_path_rejected_before_write("linked-tests")
+            finally:
+                link.unlink()
+
+    def test_resource_prefix_remains_a_selector_adapter_not_a_registry_alias(self) -> None:
+        from tools.lib.test_selection import normalized_path
+        suite = self._suite()
+        self.assertEqual(normalized_path(self.root, "res://" + suite), suite)
+        before = self.registry_path.read_bytes()
+        result = self._merge([self._component("res://" + suite)])
+        self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+        self.assertEqual(self.registry_path.read_bytes(), before)
 
     def test_missing_initial_ledger_blocks_merge_and_check_without_recreation(self) -> None:
         for name in ("feature-list.json", "feature-list-revisions.json", "test-registry.json"):

@@ -54,6 +54,20 @@ def _strings(value: Any, label: str, *, nonempty: bool = False) -> list[str]:
     return value
 
 
+def resolve_test_path(repo_root: Path, value: str) -> Path:
+    """Keep test paths inside the repository; callers own existence requirements."""
+    if not isinstance(value, str) or not value:
+        raise EvolutionError("test path must be a non-empty repository-relative path")
+    value = value.replace("\\", "/")
+    path = PurePosixPath(value)
+    if path.is_absolute() or ":" in value or ".." in path.parts:
+        raise EvolutionError(f"test path leaves repository: {value}")
+    resolved = (repo_root / value).resolve()
+    if not resolved.is_relative_to(repo_root.resolve()):
+        raise EvolutionError(f"test path resolves outside repository: {value}")
+    return resolved
+
+
 def validate_registry_component(component: Any, label: str, repo_root: Path) -> str:
     if not isinstance(component, dict):
         raise EvolutionError(f"{label} must be an object")
@@ -62,7 +76,7 @@ def validate_registry_component(component: Any, label: str, repo_root: Path) -> 
         raise EvolutionError(f"{label}.id must be lower_snake_case")
     unit_paths = _strings(component.get("unit_test_paths"), f"{label}.unit_test_paths")
     for unit_path in unit_paths:
-        path = repo_root / unit_path
+        path = resolve_test_path(repo_root, unit_path)
         if not (path.is_file() or path.is_dir()):
             raise EvolutionError(
                 f"{label}.unit_test_paths references a missing unit suite: {unit_path}"
@@ -95,7 +109,7 @@ def _validate_registry_test(test: Any, label: str, component_ids: set[str], repo
             raise EvolutionError(f"{label}.path must be null or a non-empty string")
     elif not isinstance(path, str) or not path.strip():
         raise EvolutionError(f"{label}.path must be non-empty when status is {status}")
-    if status == "active" and not (repo_root / path).exists():
+    if status == "active" and not resolve_test_path(repo_root, path).exists():
         raise EvolutionError(f"active test {test_id} path does not exist: {path}")
     case = test.get("case")
     if case is not None and (not isinstance(case, str) or not case.strip()):
