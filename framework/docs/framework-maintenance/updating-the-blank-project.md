@@ -78,7 +78,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 可复用写作 Skill 的维护
 
-[technical-documentation-writing](../../../.agents/skills/technical-documentation-writing/SKILL.md) 位于仓库根目录的 `.agents/skills/`，负责通用的目录组织、表达与操作文档写法。其源码由框架维护，保留 `allow_implicit_invocation: false`；完整 Skill 的跨项目复制与更新由用户操作，不增加安装或同步工具。
+[technical-documentation-writing](../../../.agents/skills/technical-documentation-writing/SKILL.md) 位于仓库根目录的 `.agents/skills/`，负责通用的目录组织、表达与操作文档写法。其源码由框架维护，设置 `allow_implicit_invocation: true`，允许在本项目的文档编写、更新、整理及代码或配置变更后的文档同步任务中自动选用；触发范围由 `SKILL.md` 的 `description` 描述，`short_description` 用于界面展示。完整 Skill 的跨项目复制与更新由用户操作，不增加安装或同步工具。
 
 - **正文归属**：通用写法只在 Skill 内的三份参考中维护：`writing-guide.md` 保存基本原则，`document-structure.md` 保存目录与正文分工，`procedure-writing.md` 保存流程写法。`SKILL.md` 仅保留入口和资源约定；本框架的提示词与场景一对一、目录映射、术语含义和 HTML 约定保留在所属规范。
 - **项目分发**：复制清单逐文件选择这三份参考，原样放入生成项目的 `agent-rules/00-core/documentation/`，保留同目录相对链接。项目 AGENTS 与 Core 路由指向本地指南，不维护另一套写作正文，也不复制本写作 Skill 的 `SKILL.md`、`agents/openai.yaml` 或调用策略。
