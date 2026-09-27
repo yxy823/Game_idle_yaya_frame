@@ -61,6 +61,27 @@ class DocumentationFingerprintTests(unittest.TestCase):
         readme.rename(requirement)
         self.assertNotEqual(before, self.fingerprint())
 
+    def test_gdd_content_changes_bind_globally_before_or_after_staging(self):
+        for name in (
+            "docs/gdd/README.md", "docs/gdd/systems/ReadMe.md",
+            "docs/gdd/future-system.md",
+        ):
+            with self.subTest(name=name):
+                before = self.fingerprint()
+                source = self.write(name, "Confirmed game design\n")
+                added = self.fingerprint()
+                self.assertNotEqual(before, added)
+                self.git("add", name)
+                self.assertEqual(added, self.fingerprint())
+                source.write_text("Revised game design\n", encoding="utf-8")
+                edited = self.fingerprint()
+                self.assertNotEqual(added, edited)
+                destination = source.with_name("renamed-design.md")
+                source.rename(destination)
+                self.assertNotEqual(edited, self.fingerprint())
+                destination.unlink()
+                self.assertEqual(before, self.fingerprint())
+
     def test_knowledge_capture_edit_and_reorganization_preserve_source_binding(self):
         before = self.fingerprint()
         self.write("docs/knowledge/README.md", "Topic index\n")

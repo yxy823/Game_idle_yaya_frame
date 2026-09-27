@@ -4,7 +4,7 @@
 
 ## How to run the scenarios
 
-Run each scenario in a disposable repository initialized from the current Kit. Record the agent's questions, the confirmed language, generated files, and validation output. A scenario passes only when every expected result and prohibited behavior below is satisfied.
+Run each scenario in an authorized disposable repository initialized from the current Kit with a supplied substantive GDD under `docs/gdd/`. The framework does not create a GDD during these scenarios. Record the agent's questions, the confirmed language, generated files, and validation output. A scenario passes only when every expected result and prohibited behavior below is satisfied.
 
 The initially verified document languages are `en` and `zh-CN`. Other BCP 47 tags remain best-effort and must not be described as verified by these scenarios.
 

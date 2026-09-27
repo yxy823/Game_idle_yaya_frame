@@ -5,7 +5,7 @@ description: "Independently review interface usability, interaction clarity and 
 
 # UX review
 
-Apply `methodology/12-independent-review.md`. Read the relevant user goal, Product behavior and UI specification, then inspect actual screen/interaction evidence for the requested flow and display/input conditions.
+Apply `methodology/12-independent-review.md`. Read the relevant user goal, GDD behavior, Product delivery scope and UI specification, then inspect actual screen/interaction evidence for the requested flow and display/input conditions.
 
 Trace whether actions are discoverable, state and feedback are understandable, navigation/focus is predictable, mistakes are recoverable and the flow supports the goal. Include relevant empty, loading, disabled, error, dense/long-text and repeated-entry states. Examine readable contrast, target size, input method and non-color cues where the task requires them; do not invent a certification standard.
 

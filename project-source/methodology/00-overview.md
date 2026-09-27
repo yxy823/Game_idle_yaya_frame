@@ -12,7 +12,7 @@ methodology/                         canonical workflow specification
      ├──────────────→ Skills         agent-executable workflows
      │                    │
      │                    ▼
-     │               project docs/  durable Product, Feature, Rules, Progress
+     │               project docs/  durable GDD, Product, Feature, Rules, Progress
      │                    ▲
      └──────────────→ Commands       explicit validation when the task needs it
 ```
@@ -23,7 +23,8 @@ The project knowledge layer is:
 <repo>/
 ├── agent-rules/                         repository-specific concrete implementation rules
 └── docs/
-    ├── product.md + product/*.md        Product intent: What
+    ├── gdd/                            existing, maintained game-design authority
+    ├── product.md + product/*.md        delivery pre-decomposition and current Product scope
     ├── unadopted-ideas.md               ideas not adopted as requirements or delivery commitments
     ├── terminology.md                  optional domain terms and shared definitions
     ├── art/, audio/, ui/, localization/ optional professional specifications, owned by specialist Skills
@@ -44,7 +45,7 @@ The project knowledge layer is:
     └── methodology-config.json          language, environment, and verification commands
 ```
 
-New projects include short purpose/pending-state notices in fixed documents and directory navigation for future multi-file content. These are not initialized Product intent, confirmed professional decisions, tasks or historical results. Their owning contracts below govern when useful content is added; document presence alone does not determine the workflow state.
+New projects include short purpose/pending-state notices in fixed documents and directory navigation for future multi-file content. These are not a GDD, a delivery plan, confirmed professional decisions, tasks or historical results. Their owning contracts below govern when useful content is added; document presence alone does not determine the workflow state.
 
 ## Skill groups
 
@@ -52,7 +53,7 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Resolve material uncertainty and return settled answers to the current task. |
 | Terminology | `project-terminology` | Maintain meaning-preserving definitions and links without starting Product planning. |
-| Product | `product-init-elicitor`, `product-author`, `product-spec-elicitor` | Define or change Product behavior. |
+| Game design and Product | `product-author`, `product-spec-elicitor` | Maintain existing GDD design and derive or revise Product delivery scope. |
 | Professional design | `design-ui-spec`, `design-audio-asset-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec`, `design-localization-spec` | Maintain the applicable UI, art, sound, resource and localization specifications directly. |
 | Integration and measurement | `content-asset-integration`, `content-localization`, `diagnostics-instrumentation`, `diagnostics-performance`, `diagnostics-soak-test` | Supply independently callable methods within the owning authorized task. |
 | Independent review | `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization`, `review-balance` | Separate methods, selected by requested scope and executed by a fresh reviewer instance. |
@@ -63,26 +64,28 @@ New projects include short purpose/pending-state notices in fixed documents and 
 
 ## Canonical task routing
 
-This table owns task routing. Guidance Skills read it and the destination workflow; they do not maintain an independent lifecycle or approval table.
+This table owns task routing. Guidance Skills read it and the destination workflow; they do not maintain an independent lifecycle or approval table. Every development entry requires the [existing GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority). If it is missing, explain the required input and stop; no discussion, technical or specialist route initializes the game from an idea or bypasses the prerequisite.
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
-| Discuss an idea, design choice or ambiguous term | `project-clarifier` | Ask only useful questions; conversation alone writes nothing and needs no Product or ready environment. |
+| Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-clarifier`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
-| Record or maintain settled project vocabulary | `project-terminology` | Write only within existing authorization. Meaning-preserving definitions/links do not initialize Product or synchronize Features; substantive behavior changes use the Product route. |
+| Record or maintain settled project vocabulary | `project-terminology` | Write only within existing authorization. Meaning-preserving definitions/links do not create Product plans or synchronize Features; substantive behavior changes use the GDD design route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
 | Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
 | Choose visual or sound direction | `design-art-direction` / `design-audio-direction` | Own the confirmed shared specification under [specialist work](11-specialist-workflows.md); do not require an entire game's design or produce assets. |
-| Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Maintain professional sources directly; Product owns behavior and links. |
+| Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Refine and reference GDD requirements in professional sources; Product owns delivery scope and source mapping. |
 | Prepare visual art, music or sound effects | Production capability reserved in [specialist work](11-specialist-workflows.md#design-production-integration-and-review) | Record specifications and available resources; no production Skill is implemented yet. |
-| Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source; domain meanings stay with Product/terminology. Specification work may stand alone. |
+| Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source within GDD design; domain meanings stay with GDD/terminology. Specification work may stand alone. |
 | Integrate supplied assets or implement approved localization | `content-asset-integration` / `content-localization` | Runtime changes consume approved specifications and return to the owning authorized Feature/experiment. |
 | Add diagnostic signals, measure performance or run a soak scenario | `diagnostics-instrumentation` / `diagnostics-performance` / `diagnostics-soak-test` | Separate instrumentation, measurement, diagnosis and authorized repair; report actual evidence and limits. |
 | Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
 | Establish layout, resource scale and interaction readability before dependent logic | Current Product planning and delivery, or an explicitly requested scoped experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
 | Analyze and hand off the minimum resource files for a task | Current task coordinates `design-visual-asset-spec` / `design-audio-asset-spec` as needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); requirements, production and integration have separate scopes. |
-| New Feature / Product change | `product-author` | Update Product, handle existing-work impacts, and defer later Products' initial decomposition. |
-| Existing implementation without adequate Product/Feature records | `product-author` → existing planning/delivery routes | Confirm intent and adopt the current module under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
+| Pre-decompose delivery scope from an existing GDD | `product-author` | Write or revise only the requested `product.md` horizon, boundaries, source mapping, dependencies and suggested order. |
+| Revise existing game design or current Product scope | `product-author` | Update the owning GDD/Products, handle existing-work impacts, and keep future Products at pre-decomposition level. |
+| Existing implementation without adequate Product/Feature records | `product-author` → existing planning/delivery routes | Use confirmed existing GDD design to define the current delivery under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
+| Detail the next Product after current delivery completes | `product-author` → `feature-plan` when authorized | Revisit current GDD and the candidate, write this Product's delivery document, then plan its complete necessary scope. |
 | Decompose the current Product | `feature-plan` | Append only this Product's plan; finish its required Features before initially decomposing the next Product. |
 | Source synchronization | `feature-sync` | Trace additions, revisions, splits, merges and dependency/test retirement migrations. |
 | Continue current Feature | `feature-execute` | Resume the actual Stage and existing authorization; “continue” alone does not grant missing approval or acceptance. |
@@ -96,11 +99,11 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Human Acceptance follow-up | Current Feature Stage 5/6 route | Bind the user's explicit acceptance to the actual reviewed scope and snapshot; do not infer acceptance. |
 | Status query | Read-only state explanation | Report current facts and next legal action; do not start work or call readiness checks merely to answer. |
 
-Product execution order governs the planning horizon: one Product's Features are decomposed and completed before the next Product is decomposed. Revisit later requirements using actual experience instead of allocating all future tasks up front. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) with the existing Product documents and Feature sources/statuses; no extra Product queue or planning-state file is needed.
+Product execution order governs both detailed writing and Feature planning: first pre-decompose the agreed delivery horizon in `product.md`, then write only the current Product document and decompose its complete necessary scope into multiple Features. Complete those Features before detailing the next Product. Revisit later candidates and GDD dependencies using actual experience. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) with existing documents and Feature sources/statuses; no extra Product queue or planning-state file is needed.
 
 Choose investigation, planning or execution from the available evidence and current user authorization. Drafted task prompts use explicit fields under the prompt-writing contract in `project-next-step-advisor`, regardless of task size; the format does not create new steps or authority. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
 
-Prototype observations and tentative parameters are not approved Product intent or Feature acceptance. Keep the question, observed result, decision and experiment file disposition in current Feature notes, or current Progress when no Feature exists. Adopting an outcome into formal development returns to the Product or engineering entry above; exceeding the experiment budget requires user direction.
+Prototype observations and tentative parameters are not approved GDD design or Feature acceptance. Keep the question, observed result, decision and experiment file disposition in current Feature notes, or current Progress when no Feature exists. Adopting game-design changes updates the existing GDD and affected delivery scope; technical outcomes return to the engineering entry above. Exceeding the experiment budget requires user direction.
 
 ## Reuse project knowledge
 
@@ -125,7 +128,9 @@ This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11. Copied tool path
 ```text
 User request
    │
-   ├─ Discuss or clarify the current idea
+   ├─ No substantive project GDD → report missing input and STOP
+   │
+   ├─ Clarify an existing GDD or delivery choice
    │      ↓
    │  project-clarifier → conversation result
    │
@@ -133,14 +138,14 @@ User request
    │      ↓
    │  project-terminology → return to caller / finish
    │
-   ├─ Formalize new, changed, missing, or ambiguous Product intent
+   ├─ Maintain existing GDD or define/revise delivery scope
    │      ↓
    │  product-author
    │      ↓
-   │  Product docs → decompose current Product / sync existing-work impacts
-   │                 later Products remain at document level until their turn
+   │  GDD → pre-decomposition → current Product → complete Feature plan
+   │       sync existing-work impacts; later Products remain candidates
    │
-   └─ Product intent is already explicit and should stay fixed
+   └─ Existing GDD design and delivery intent should stay fixed
           ↓
       engineering-change-plan
           ├─ bug
@@ -165,7 +170,7 @@ handoff → continue within existing authorization, otherwise STOP
 A reported bug must be classified before any Product edit:
 
 - documented expected behavior exists and implementation violates it → `engineering-change-plan` in `bug` mode;
-- expectations are missing, contradictory, or intentionally changing → their owner: `product-author` for behavior, the specialist for professional requirements.
+- expectations in an existing GDD are missing, contradictory, or intentionally changing → their owner: `product-author` for game design, the specialist for professional specifications.
 
 ## Delivery control points
 
@@ -182,7 +187,7 @@ Apply [Authorization and continuation](03-execute-loop.md#authorization-and-cont
 ```text
 Inspect and preserve Git changes; recover the current task's actual stop point
    ↓
-Stage 0   Require ready environment; select Feature; consult relevant knowledge; load Context / Rules Snapshot
+Stage 0   Confirm existing GDD and ready environment; select Feature; load relevant knowledge and Context / Rules Snapshot
    ↓
 Stage 1   Test Impact Review + resource preflight → explicit human approval
    ↓
@@ -215,7 +220,7 @@ Report actual verification scope and review findings in ordinary language. Resul
 
 ## Scope boundary for this personal-project workflow
 
-This methodology covers Product definition, engineering changes, Feature planning, implementation, automated testing, human acceptance, defect learning, refactoring review, maintenance, and local Git-safe handoff.
+This methodology covers maintenance of existing GDD design, Product delivery planning, engineering changes, Feature planning, implementation, automated testing, human acceptance, defect learning, refactoring review, maintenance, and local Git-safe handoff. It does not initialize GDD from a game idea.
 
 Release management, store submission, public version announcements, deployment approval, publishing workflow, and distribution governance are outside the default methodology unless the user explicitly defines one of them as project work.
 

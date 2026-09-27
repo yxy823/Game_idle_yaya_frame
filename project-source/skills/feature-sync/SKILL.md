@@ -1,16 +1,16 @@
 ---
 name: feature-sync
 description: >-
-  Synchronize existing Feature/test plans with committed Product, professional specification or Project Rules changes. Use for source-impact analysis and current-plan realignment, not initial decomposition.
+  Synchronize existing Feature/test plans with committed GDD, Product delivery, professional specification or Project Rules changes. Use for source-impact analysis and current-plan realignment, not initial decomposition.
 ---
 
 # Synchronize Feature list
 
-Run Feature-list synchronization as the seven-stage workflow defined below.
+Apply the existing-GDD prerequisite in methodology 01, then run the seven-stage workflow below. An existing plan does not substitute for GDD.
 
-The core method is to identify source changes through Git diffs against a recorded anchor. Never infer historical change merely by comparing the current Product with the current Feature plan.
+The core method is to identify source changes through Git diffs against a recorded anchor. Never infer historical change merely by comparing the current source documents with the current Feature plan.
 
-Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md`. Synchronize actual effects on existing work; do not initially decompose a later Product just because its document was added or revised. When the next Product becomes current, `feature-plan` reads its complete current specification and appends its plan, even if those source edits predate this workflow's anchor.
+Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md`. Synchronize actual effects on existing work; do not initially decompose a later Product just because its document was added or revised. When the next Product becomes current, `product-author` details its scope from the latest GDD before `feature-plan` appends its complete plan, even if those source edits predate this workflow's anchor.
 
 ## Shared contracts
 
@@ -31,12 +31,13 @@ Read applicable `docs/project-rules.md` constraints and affected Feature designs
 
 ## Source documents
 
-Read relevant `docs/terminology.md` definitions when present to interpret the source diff consistently. Terminology is not a separate behavior source to synchronize: substantive intent changes must be expressed in Product. Meaning-preserving terminology maintenance alone does not require this workflow; later source diffs treat its local definition/link edits as editorial changes.
+Read relevant `docs/terminology.md` definitions when present to interpret the source diff consistently. Terminology is not a separate behavior source to synchronize: substantive game-design changes must be expressed in GDD. Meaning-preserving terminology maintenance alone does not require this workflow; later source diffs treat its local definition/link edits as editorial changes.
 
 Synchronization watches:
 
-- `docs/product.md` for Product-wide intent, module inventory, dependencies, and direction;
-- every `docs/product/NN-xxx.md` module file for behavior, data and state, UI, audio, values, acceptance, and edge cases;
+- `docs/gdd/` for game-design intent, rules, states, values, version scope and design acceptance;
+- `docs/product.md` for delivery outlines, source mappings, boundaries, dependencies and order;
+- existing `docs/product/NN-xxx.md` delivery documents for adopted scope, integration and delivery acceptance;
 - `docs/project-rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
 - Applicable professional sources in `docs/art/`, `docs/audio/`, `docs/ui/`, `docs/localization/` and `docs/resource-requirements/`, plus other owning paths discovered through actual references.
 
@@ -51,7 +52,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
 **Output:** a ready environment and an identified comparison anchor.
 
 1. Read the project-supplied `docs/feature-list.json`, `docs/feature-list-revisions.json` and `docs/test-registry.json`; missing files require repair under the canonical schema before routing or writes.
-   - If the valid index has no Features, direct current Product planning to `feature-plan` and stop; do not generate all Product modules.
+   - If the valid index has no Features, return to current Product preparation through `product-author` and then authorized `feature-plan`; do not generate all Product documents.
    - Otherwise, use the full index for status, dependencies and derived counts. Read individual detail files only when Stage 2 mapping or Stage 4 changes require them.
 2. Check Git.
    - Read and report the current branch; `main` and `master` are valid. Do not change branches.
@@ -63,7 +64,7 @@ Between synchronizations, module files may be added, deleted, renamed—includin
    - If no reliable baseline can be established, disclose the missing historical evidence and offer whole-document alignment of current sources and the current plan. Continue that fallback only within explicit authorization; do not ask again if this concrete scope is already approved. An empty diff from an unverified recent commit is not evidence that nothing changed.
 4. Report the current branch, verified anchor hash/date/subject and its source-coverage basis, or the fallback and inspected HEAD; include counts grouped by Feature status.
 
-Before reusing any anchor for newly admitted professional sources, establish whether the affected plan actually incorporated them. A source predating the anchor can still be unsynchronized. Compare historical source/plan contents; when coverage is unknown, use the authorized current-document fallback for that affected planned scope alongside any verified diffs. Report the distinction and do not advance the anchor as if unknown history had been checked.
+Before reusing any anchor for newly admitted GDD or professional sources, establish whether the affected plan actually incorporated them. A source predating the anchor can still be unsynchronized. Compare historical source/plan contents; when coverage is unknown, use the authorized current-document fallback for that affected planned scope alongside any verified diffs. Report the distinction and do not advance the anchor as if unknown history had been checked.
 
 ## Stage 1: user prior
 
@@ -86,6 +87,9 @@ For the approved whole-document fallback, read the complete current sources rele
 Inspect committed changes from the anchor to `HEAD`. Cover all source paths and enable rename detection for module files:
 
 ```powershell
+git diff --name-status -M <anchor> HEAD -- docs/gdd/
+git diff -M <anchor> HEAD -- docs/gdd/
+
 git diff <anchor> HEAD -- docs/product.md
 
 git diff --stat -M <anchor> HEAD -- docs/product/
@@ -98,7 +102,7 @@ git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/l
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/resource-requirements/
 ```
 
-Include any additional authoritative paths discovered from references in these commands. Read current professional sources whose historical coverage is unknown even when their diff is empty; widening the path list alone cannot prove coverage.
+Include any additional authoritative paths discovered from references in these commands. Read current GDD and professional sources whose historical coverage is unknown even when their diff is empty; widening the path list alone cannot prove coverage.
 
 `-M` is mandatory for module paths so a rename such as `02-foo.md` to `03-foo.md` is not misclassified as one deletion plus one addition.
 
@@ -106,7 +110,7 @@ Include any additional authoritative paths discovered from references in these c
 
 Use the user prior and actual diff to classify every hunk:
 
-- **Substantive addition:** a new Product rule, constraint, or module.
+- **Substantive addition:** a new GDD rule, professional constraint or adopted delivery scope.
 - **Substantive revision:** changed behavior, value, condition, or meaning.
 - **Substantive removal:** removed behavior, newly explicit exclusion, or deleted module.
 - **Editorial adjustment:** wording, formatting, typo, or pure rename with unchanged meaning. It produces no Feature change.
@@ -118,7 +122,7 @@ A path rename with unchanged content is editorial. A rename plus content change 
 Use the primary `source`, secondary AC/design references and shared applicability to map additions, revisions and removals. Identify all affected planned modules, including consumers missing a direct link, and follow their relevant dependencies:
 
 - addition to the current/already planned scope → propose needed new Features;
-- addition or revision confined to a later, unplanned Product → leave it at Product-document level and report deferred decomposition;
+- addition or revision confined to a later, unplanned Product → keep the design in GDD and delivery outline in `docs/product.md`; defer its detailed Product and Features;
 - revision → identify every affected Feature ID;
 - removal → identify every affected Feature ID.
 
@@ -187,7 +191,7 @@ Append new index entries and matching details with never-used IDs and canonical 
 | `done` | Set index `status` to `obsolete_done`; append a localized timestamped removal reason to detail `notes`; preserve `id`, `description`, and `acceptance_criteria`; append a new Feature that removes the implemented behavior, with dependencies chosen from actual impact |
 | `obsolete` or `obsolete_done` | Keep status unchanged; append a localized note that exclusion was confirmed again |
 
-Do not translate or substantively rewrite the removed `done` Feature. Its status transition and removal note record the confirmed Product deletion; the new removal Feature carries the implementation work.
+Do not translate or substantively rewrite the removed `done` Feature. Its status transition and removal note record the confirmed source/scope deletion; the new removal Feature carries the implementation work.
 
 ### Revisions
 
@@ -195,7 +199,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 |---|---|
 | `pending` | Update detail `description`, `affected_components`, and criterion text/IDs before execution; preserve any still-valid planned verification mapping, explicitly retire superseded planned registry entries, append a localized timestamped revision note; change index `title` only when affected |
 | `in_progress` | Apply the `pending` action and warn that current implementation may need adjustment |
-| `done` | Do not modify the original index entry or detail. Append a new Feature that revises the implementation for the new Product rule, depends on the original ID, and states the new behavior in its acceptance criteria |
+| `done` | Do not modify the original index entry or detail. Append a new Feature that revises the implementation for the new GDD rule, depends on the original ID, and states the new behavior in its acceptance criteria |
 | `obsolete` or `obsolete_done` | Normally do nothing. If the user wants reactivation, require an explicit decision and append a new Feature |
 
 ### Source-path corrections
@@ -233,7 +237,7 @@ Assign ordinary downstream verification to the Feature implementing this change,
 
 **Output:** updated metadata, one appended revision entry, validation evidence, and a Git commit.
 
-1. Update index time and append one version-2 revision under **File 3** in `methodology/02-feature-list-schema.md`. Preserve the canonical `meta.generated_from` entries, adding actual professional source locations considered by this plan without claiming all future scope is covered; do not put the revision into index metadata. Record actual changes in the canonical readable summary fields where applicable; typed migrations/dependency changes carry the machine-readable relationships.
+1. Update index time and append one version-2 revision under **File 3** in `methodology/02-feature-list-schema.md`. Preserve the canonical `meta.generated_from` entries, adding actual GDD and professional source locations considered by this plan without claiming all future scope is covered; do not put the revision into index metadata. Record actual changes in the canonical readable summary fields where applicable; typed migrations/dependency changes carry the machine-readable relationships.
 
 `synced_at_commit` is the next run's anchor and is mandatory. It must identify the committed source-document state analyzed by this synchronization. `source_path_updates` preserves rename traceability, including mappings for immutable completed history.
 
@@ -273,7 +277,7 @@ Return the synchronized plan and remaining work to the calling workflow. Continu
 | No reliable anchor can be established | Offer current whole-document alignment, disclose unknown history, and use explicit scope authorization |
 | Source changes are too broad to classify reliably | Narrow the affected scope with the user, preserving current records and Product order; do not recommend full-project regeneration based on file or line counts |
 | Diff and user prior conflict materially | Pause, enumerate mismatches, and ask the user to check for unintended source edits |
-| Product module inventory and actual files differ | Pause, list the discrepancy, and require Product repair rather than guessing |
+| Current or previously documented Product source is missing | Report the discrepancy and repair its source before dependent writes; future overview-only entries intentionally have no detail file |
 | Pre-existing index, detail, or revision data is invalid | Report the original error and resolve the repair scope; do not invent missing history or change unrelated data |
 | This task introduces invalid JSON or an incomplete authorized write | Inspect the actual partial result, correct errors introduced by the approved actions, and rerun the relevant validation; stop dependent writes if the intended recovery is unclear or overlaps preserved work |
 | A file or Git operation fails | Preserve the error and classify it; correct a task-owned invocation error or use permitted recovery, but do not bypass a permission denial, reset/restore history, discard work, or expand scope |

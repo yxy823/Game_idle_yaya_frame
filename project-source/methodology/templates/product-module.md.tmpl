@@ -1,65 +1,37 @@
 # {{NN}}-{{module-name}} · {{MODULE_DISPLAY_NAME}}
 
-## Module positioning
+## Delivery goal
 
-*In one or two sentences, explain this module's role in the system and what it interacts with.*
+*State the coherent, observable outcome this Product adds. Write this document when the Product becomes current, after reviewing its GDD sources and prior delivery results.*
 
-## Functional flow
+## Design sources
 
-*Describe the user or system behavior step by step. An ASCII diagram or numbered list is welcome.*
+| Source | Applies to this delivery |
+| --- | --- |
+| *Precise existing GDD section link* | *Adopted part of the design* |
+| *Applicable professional specification link* | *UI, art, audio, resource or localization constraint* |
 
-```text
-1. ...
-2. ...
-3. ...
-```
+*Link the authoritative rules, flows, states and values rather than copying their bodies. Resolve missing or changed game design in the existing GDD.*
 
-## Data model
+## Included and deferred scope
 
-| Field | Type | Default | Description |
-| --- | --- | --- | --- |
-| *field_name* | *string / int / bool / enum* | *default* | *Meaning of the field* |
+- **Included:** *The specific design outcomes delivered in this Product.*
+- **Deferred or excluded:** *The limits of this delivery and their reason; link later candidates when useful. Deferral does not silently alter the GDD.*
 
-## State machine (if applicable)
+## Prerequisites and integration
 
-```text
-state_a ──(condition)──→ state_b
-state_b ──(condition)──→ state_c
-```
+*Identify existing delivered outcomes and the connections required for this Product. Link shared GDD rules and relevant prior Products/Features. Resolve dependencies affecting this delivery without detailing every future Product.*
 
-## UI sketch
+## Acceptance scenarios
 
-*Link the interface specification maintained by design-ui-spec. It owns the wireframe, layout and presentation constraints; keep behavioral interactions here.*
+*Describe end-to-end situations that demonstrate this delivery's outcome. Cite the source of expected behavior; task-sized AC, stable criterion IDs and test mappings are created during Feature planning.*
 
-Key interactions:
+1. *With prerequisite X available, the player performs Y and observes the source-defined outcome Z.*
 
-- *Select Action 1 → ...*
-- *Select Action 2 → ...*
+## Open decisions
 
-## Audio entries
-
-*State the feedback triggers and intent, then link the relevant resource-list entries maintained by design-audio-asset-spec. Do not repeat filenames, style or duration tables here.*
-
-## Numeric rules
-
-*Record formulas, thresholds, and configuration values. For example:*
-
-- *Maximum value: 100*
-- *Decay formula: current = max(0, current - rate * dt)*
-
-## Acceptance criteria
-
-*Each item must state a concrete way to verify the completed behavior.*
-
-1. *In context X, the user performs Y and observes Z.*
-2. *...*
-
-## Edge cases
-
-*Record known cases intentionally excluded from this version.*
-
-- *Case A: Not handled yet; leave it for a later Feature.*
+*Record only unresolved choices affecting this delivery, their owning source and the dependent work that must wait. State “None” when no such decision remains.*
 
 ## Change history
 
-- *YYYY-MM-DD*: Initialized the module.
+- *YYYY-MM-DD*: Defined the current Product's delivery scope from its GDD sources.

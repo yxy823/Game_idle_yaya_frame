@@ -15,13 +15,13 @@ Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep b
 
 | Template | Purpose |
 | --- | --- |
-| `product.md.tmpl` | Product overview and module inventory. |
-| `product-module.md.tmpl` | One Product module specification. |
+| `product.md.tmpl` | Delivery pre-decomposition, GDD source mapping, boundaries, dependencies and suggested order. |
+| `product-module.md.tmpl` | Current Product delivery scope, source links, integration and acceptance scenarios; written only when its turn arrives. |
 | `feature-list.json.tmpl` | Lightweight Feature index. |
 | `feature-detail.json.tmpl` | Product-derived Feature detail. It intentionally omits `engineering_change`. |
 | `feature-design.md.tmpl` | Optional outline for a detailed `docs/features/F0XX-design.md`; select useful sections, keep AC/test obligations in JSON and link current architecture/ADRs. |
 | `engineering-feature-detail.json.tmpl` | Bug/refactor/maintenance Feature detail with required `engineering_change`. |
-| `feature-list-revisions.json.tmpl` | Versioned Product/Project-Rules migration log, preserving historical entries and typed evolution relationships. |
+| `feature-list-revisions.json.tmpl` | Versioned governing-source migration log for GDD, Product, professional sources and Project Rules, preserving historical entries and typed evolution relationships. |
 | `test-registry.json.tmpl` | Empty machine-readable component/test traceability registry used by Test Impact Review. |
 | `feature-completion-evidence.json.tmpl` | Current-Feature test and applicable human-acceptance evidence, with Git revision and working-tree fingerprint; no review counts. |
 | `manual-acceptance-checklist.json.tmpl` | Pending manual checks expanded from one Feature; preparation and returned results follow [the file contract](../manual-acceptance-files.md). |
@@ -31,7 +31,7 @@ Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep b
 | `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps and relevant subsystem runtime flows, separate from generated reference facts. |
 | `architecture-decision-record.md.tmpl` | Optional rationale for one important technical choice; Feature notes and architecture maps link it without copying its body. |
 
-The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`.
+The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`. Project development requires an existing GDD under `../01-product-doc-structure.md#gdd-prerequisite-and-authority`; no template here initializes one.
 
 Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md). Create an ADR only when a real decision warrants it, not when copying a project.
 

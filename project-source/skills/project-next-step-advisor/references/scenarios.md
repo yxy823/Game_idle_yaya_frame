@@ -4,17 +4,22 @@ Review actual advice against the canonical routing table, using small neutral pr
 
 | User intent / state | Expected advice contract |
 | --- | --- |
-| New behavior, absent Product | Prompt the Product entry to elicit intent; no implementation authorization. |
-| A new project has purpose-only Product, art/audio/localization/terminology/architecture files and directory READMEs | Treat them as navigation and undecided content; route actual Product initialization normally. Do not count READMEs as modules, Features, reports or archives, or infer adopted requirements from file presence. |
+| A project has no actual GDD, including only a directory, directory-navigation README or pending-content notice | Report the missing prerequisite and stop. Do not initialize GDD, elicit a game from vague ideas, or create a substitute Product. |
+| Actual GDD exists but no delivery outline | Recommend `product-author` to outline the agreed delivery scope with GDD mappings, boundaries, dependencies and order; no future detailed Products or Features. |
+| Actual GDD and a delivery outline exist, but the current eligible Product has no detailed scope | Refine only that Product's delivery scope, source mappings and integration needs before Feature planning; do not copy game design. |
+| A new project has actual GDD but purpose-only Product, art/audio/localization/terminology/architecture files and directory READMEs | Treat scaffold content as navigation and undecided details; inspect GDD and route the delivery outline or current scope as needed. Do not infer adopted professional specifications or tasks from file presence. |
 | A newly copied project has a starter main scene and empty gameplay/test directories | Distinguish the copied starter from verified startup, machine readiness and completed gameplay; inspect current configuration and evidence before choosing the next route. Do not manufacture a Feature or test result for scaffold presence. |
 | Tool paths are filled but no actual environment check is recorded | Explain that paths do not establish availability; recommend environment preparation when needed, without probing tools in read-only advice or inventing a ready flag. |
 | A project is missing its Feature index, revision log or Test Registry | Report the missing creator-supplied file and route a bounded repair; do not treat missing history as an empty first plan or recommend reinitializing the ledger. |
 | The existing index, revision log and Test Registry contain valid empty arrays | Route the current Product's initial decomposition to `feature-plan`, including the schema's first planning baseline from committed adopted sources; the scaffold commit alone proves no coverage. |
 | Existing Features have no recorded baseline | Route history/coverage verification to `feature-sync`; do not recommend backfilling R000 from the latest commit. |
 | A later Product is planned while earlier source edits are unsynchronized | Preserve the existing anchor and earlier revision history; later planning does not absorb changes to old work. |
+| The current Product is fully complete and the next one is only an outline entry | Recheck the latest GDD and dependencies, refine the next Product, then plan multiple Features covering its complete necessary scope. |
+| GDD changes while a Feature is underway | Trace relevant source changes into current delivery scope, existing Features and evidence; keep unaffected work and completed history. Future unrefined Products need only outline updates. |
+| GDD already contains detailed visual, audio or UI requirements | Reuse those details by reference; specialist methods add only missing implementation specifications, not a competing copy. |
 | User asks where a module or named file belongs | Consult `docs/game-organization.md` and applicable engineering rules; distinguish fixed base responsibilities from genre examples and do not create every illustrated directory or turn a location question into implementation approval. |
 | Continue current Feature, Stage 1 unapproved | Name the actual current work and pending approval; “continue” alone does not fill it. |
-| Change accepted behavior | Product change followed by traced synchronization, rather than redefining the failure as a Bug. |
+| Change accepted behavior | Authorized maintenance of existing GDD, affected delivery scope and professional sources, followed by traced plan synchronization; do not redefine a design change as a Bug. |
 | A current Feature introduced a deterministic defect | Reproduce and repair in its existing approved scope, with regression evidence. |
 | An independent completed behavior regressed | Engineering Bug with precise expected source, reproduction and regression obligation. |
 | Preserve behavior while restructuring | Refactor route; inspect existing safety net and relevant boundaries. |
@@ -39,17 +44,17 @@ Review actual advice against the canonical routing table, using small neutral pr
 | Resume an unfinished Feature in a new conversation | Use its actual files, Feature/Progress record, prior commits and still-valid authorization in the same directory. No worktree handoff, per-file authorship proof or fresh implementation approval solely due to the new conversation. |
 | A requested edit overlaps an existing change whose intended result is unclear | Explain the precise conflicting content and missing decision; pause that mutation while unaffected authorized work can continue. |
 | Record a confirmed term without changing behavior | Point directly to `project-terminology` and the existing definition source; no mandatory clarification, Product initialization, new Feature or second glossary. |
-| A terminology edit changes intended behavior | Resolve the Product choice and affected planning; do not disguise it as editorial maintenance. |
+| A terminology edit changes intended behavior | Resolve the GDD design choice, affected delivery scope and planning; do not disguise it as editorial maintenance. |
 | Continue a Feature with an existing long design | Read `F0XX-design.md` and source links; reuse approved constraints and return to the actual Stage. |
 | A local implementation choice is proposed as a project rule | Require the rule-change self-check and any missing substantive authority; do not infer a global rule from local success. |
 | User already approved a concrete rule change | Preserve that decision, require the self-check before writing, and route impact handling without asking again. |
 | Ordinary Feature has no ADR | Missing optional ADR is normal; do not manufacture a record or block completion. |
-| A costly cross-Feature choice has real alternatives | Apply the existing ADR threshold and destination; reuse a relevant record and do not override Product/project rules. |
+| A costly cross-Feature choice has real alternatives | Apply the existing ADR threshold and destination; reuse a relevant record and do not override GDD, delivery scope or project rules. |
 | Stage 3 discovers settled terminology or needed design updates | Use `project-terminology` or the appropriate document owner under the current documentation authorization; return to the actual Feature Stage and continue authorized delivery. |
-| A direct Product elicitor request describes an implementation defect against an explicit requirement | Return the confirmed source and defect facts to the current Feature or engineering Bug route; do not create a Product patch or relax AC. |
+| A direct Product elicitor request describes an implementation defect against an explicit requirement | Return the confirmed GDD/professional source and defect facts to the current Feature or engineering Bug route; do not change design or delivery scope to excuse the defect or relax AC. |
 | Final tests passed before a rule/design document changed | Explain current evidence freshness and the owning revalidation route; old PASS alone cannot authorize completion. |
 | Art Bible contains a confirmed icon requirement absent from Product; implementation violates it | Cite the professional source and route the repair according to current/completed Feature ownership; do not require duplicate Product wording. |
-| User changes only a confirmed sound specification | Owning specialist updates its source within authorization and handles existing-work impacts; Product participates only for actual behavior changes. |
+| User changes only a confirmed sound specification | Owning specialist updates its source within authorization and handles existing-work impacts; update GDD only where it owns changed design, and Product only where delivery scope or references change. |
 | User asks only to define language coverage, fallback and formatting | Point to `design-localization-spec`; no translation import, runtime change or artificial Feature. |
 | Localization specification is approved and implementation is requested | Point to `content-localization` inside the authorized Feature/experiment, preserving actual display verification and language-acceptance gaps. |
 | Runtime localization exposes an undecided language requirement | Return the material choice to `design-localization-spec`; do not silently decide it through an implementation default. |

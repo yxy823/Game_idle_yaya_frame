@@ -13,7 +13,7 @@ After understanding the current task and its governing rules, consult this index
 | [Debugging and testing](debugging-testing/README.md) | Reproduction, diagnosis, fixtures, regression coverage and validation methods |
 | [Tools and pipelines](tools-pipeline/README.md) | PowerShell/Python helpers, data/import workflows, build and local tooling |
 
-Prefer a demonstrated project approach when its conditions still fit. Knowledge is contextual evidence, not a new rule authority: current user intent, Product, accepted decisions, applicable engineering rules, and target-version API facts still govern the task. Verify a material conflict or version difference instead of repeating a historical workaround blindly. An empty topic or no matching entry is normal and does not block work.
+Prefer a demonstrated project approach when its conditions still fit. Knowledge is contextual evidence, not a new rule authority: current user intent, GDD design, Product delivery scope, accepted decisions, applicable engineering rules, and target-version API facts still govern the task. Verify a material conflict or version difference instead of repeating a historical workaround blindly. An empty topic or no matching entry is normal and does not block work.
 
 ## Organize entries
 
@@ -44,4 +44,4 @@ When a task establishes a useful lesson or approach, first check for an existing
 
 Review entry accuracy and links before delivery. If evidence changes, correct the conclusion and its limits; do not silently turn an old result into a claim about a new version. No task must manufacture a new entry. Ordinary documentation review and the existing task workflow are sufficient.
 
-Keep runnable helpers, fixtures, data and actual reports in their existing project locations and link them here. This directory's Markdown is explanatory knowledge, not executable input, Product requirements, rules or validation contracts. Correcting prose alone is not a new gameplay verification run; changes to code, tests or governing contracts still require their applicable checks.
+Keep runnable helpers, fixtures, data and actual reports in their existing project locations and link them here. This directory's Markdown is explanatory knowledge, not executable input, GDD design, Product delivery requirements, rules or validation contracts. Correcting prose alone is not a new gameplay verification run; changes to code, tests or governing contracts still require their applicable checks.

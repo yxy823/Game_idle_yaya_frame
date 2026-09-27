@@ -1,18 +1,20 @@
 # 07 · Engineering change workflow
 
-> This specification owns code/project changes that preserve already-defined Product intent. The executable Skill is `engineering-change-plan`.
+> This specification owns code/project changes that preserve confirmed game design and delivery intent. The executable Skill is `engineering-change-plan`.
+
+An existing substantive GDD remains required under [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority). A technical repair, refactor or experiment does not provide a route around this prerequisite; detailed Product documents are needed only when their delivery scope is relevant.
 
 ## Classification boundary
 
 Choose exactly one mode:
 
-| Mode | Use when | Product contract |
+| Mode | Use when | Governing contract |
 | --- | --- | --- |
-| `bug` | Implementation contradicts an explicit, confirmed Product, professional or project-tool contract. | Restore the owning contract without changing approved intent. |
+| `bug` | Implementation contradicts an explicit, confirmed GDD, Product delivery, professional or project-tool contract. | Restore the owning contract without changing approved intent. |
 | `refactor` | Internal structure should improve without changing accepted behavior. | Preserve behavior. |
 | `maintenance` | Dependency, build, tooling, tests, migration, logging, performance, or comparable technical work is required. | Preserve behavior/compatibility unless a Product change is separately approved. |
 
-Before classifying a bug, read the relevant authoritative source. Missing, contradictory or materially ambiguous expectations return to their owner: `product-author` for behavior, or the corresponding specialist for design requirements under [Specialist work and sources](11-specialist-workflows.md). A confirmed professional contract can establish a defect without duplicate Product text. An unapproved suggestion cannot. Technical defects use their documented project-tool contract and remain engineering work.
+Before classifying a bug, read the relevant authoritative source. Missing, contradictory or materially ambiguous expectations return to their owner: `product-author` for existing GDD design or delivery boundaries, or the corresponding specialist for professional requirements under [Specialist work and sources](11-specialist-workflows.md). A confirmed GDD or professional contract can establish a defect without duplicate Product text. An unapproved suggestion cannot. Technical defects use their documented project-tool contract and remain engineering work.
 
 Distinguish game behavior from project tooling. Technical defects cite the actual tool contract and are repaired in the project-owned source. Do not invent Product requirements merely to describe a tooling defect.
 
@@ -35,6 +37,8 @@ Before any durable write, follow `agent-rules/00-core/git-worktree-and-commits.m
 
 ```text
 Engineering request
+   ↓
+confirm existing GDD; stop if missing
    ↓
 classify bug / refactor / maintenance
    ↓
@@ -84,7 +88,7 @@ Applicable human acceptance, user-requested independent review, the Completion G
 Record:
 
 - actual behavior;
-- expected outcome and precise confirmed Product, professional or project-tool source;
+- expected outcome and precise confirmed GDD, Product delivery, professional or project-tool source;
 - minimum reproduction/trigger;
 - root cause, or an explicit unknown during initial investigation;
 - affected semantic components and area when known;

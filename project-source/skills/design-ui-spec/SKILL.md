@@ -8,9 +8,9 @@ metadata:
 
 # UI specification
 
-Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. Product owns player behavior and links to this specification; `product-author` is not its saving intermediary.
+Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reuse GDD-owned details by reference; `product-author` is not this specification's saving intermediary.
 
-Read the relevant Product goal/actions, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to Product.
+Read the relevant GDD goals/actions and Product delivery scope, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `product-author`.
 
 ## Useful specification
 
@@ -24,6 +24,6 @@ Distinguish confirmed display/readability constraints from trial values. Include
 
 Apply **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md`. The spec supplies questions and inputs for an independently runnable Godot scene; it does not create that scene or prove usability. A requested HTML exploration is separate authorized experiment work and cannot substitute for Godot validation.
 
-Coordinate resource entries with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`, keeping one shared preparation list rather than copying rows. Adopt actual prototype observations only with the applicable user decision, updating the owning UI specification and routing any behavior changes to Product.
+Coordinate resource entries with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`, keeping one shared preparation list rather than copying rows. Adopt actual prototype observations only with the applicable user decision, updating the owning UI specification and routing any behavior changes to GDD through `product-author`.
 
 Return the source path, confirmed decisions, unresolved questions and relevant planning/prototype inputs. Continue the owning authorized task. Formal UX review uses `review-ux` in a different instance; this Skill cannot grant human acceptance.

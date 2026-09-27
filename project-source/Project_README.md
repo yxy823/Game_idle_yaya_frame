@@ -4,6 +4,8 @@
 
 适用于一位项目使用者与 Agent 配合开发，在同一项目目录内暂停、切换和续接任务。多人协作、改动归属流程和 worktree 隔离不在支持范围内；按需调研与独立审核仍可使用。
 
+项目开发以 `docs/gdd/` 中已有真实设计正文为前提；缺少时说明缺口并停止，目录说明或空模板不能代替 GDD。已有 GDD 随获准需求正常维护，具体边界见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+
 ## 开发环境
 
 - **配置内容**：`docs/methodology-config.json` 保存文档语言以及 Python、Godot 可执行路径。
@@ -18,7 +20,8 @@
 | .agents/skills/ | 开发、专业设计与独立审核 Skill |
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
 | .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
-| [游戏总览](docs/product.md)、[模块目录](docs/product/README.md) | 总览初始为用途说明；确定需求后维护产品目标、模块和用户可观察行为 |
+| [GDD 目录](docs/gdd/README.md) | 游戏设计正文；初始只有目录说明，须先放入已有 GDD |
+| [Product 总览](docs/product.md)、[交付单元目录](docs/product/README.md) | 先预拆分交付范围、来源与顺序；当前 Product 轮到时才细化 |
 | [项目术语](docs/terminology.md) | 初始尚无定义；按需维护共享名称与概念关系 |
 | [美术圣经](docs/art/art-bible.md)、[声音圣经](docs/audio/sound-bible.md) | 初始方向待确定；随设计决定维护共享视觉与声音规范 |
 | [本地化规范](docs/localization/localization-spec.md) | 初始是否需要与目标语言待确定；按需维护语言表达与格式约定 |
@@ -43,12 +46,12 @@
 | gdlint.json | GDScript lint 配置 |
 | project.godot | Godot 项目配置 |
 
-知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题， 实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。 初始只有目录说明，实际内容随任务积累。 经验是带适用条件的参考；项目规则、Product 和实际验证仍各自负责其事实。
+知识目录先分 Godot 运行时、GDScript、调试与测试、工具与管线四个主题， 实际内容需要时再按领域或游戏模块细分。每条经验单独成篇，索引只保存链接。 初始只有目录说明，实际内容随任务积累。 经验是带适用条件的参考；GDD、Product、项目规则和实际验证仍各自负责其事实。
 
 创建后的初始内容与状态如下：
 
 - **项目入口**：已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开；随带的工作台示例是独立开发入口。
-- **文档与台账**：Product 和专业文档只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。
+- **文档与台账**：GDD 目录、Product 和专业文档只有用途与待定说明，尚无游戏设计正文，任务及测试索引为空；后续内容遵循已确认的文档语言。
 - **验证状态**：环境尚未验证，没有正式玩法、业务测试或已完成任务；入口存在不代表已运行或验收通过。
 
 ## 编辑器效率插件
@@ -67,11 +70,10 @@
 
 | 任务 | Skill |
 | --- | --- |
-| 讨论想法、澄清尚未确定的概念 | project-clarifier |
+| 围绕已有 GDD 讨论设计或澄清概念 | project-clarifier |
 | 保存已确认的术语定义、别名和引用 | project-terminology |
-| 产品初始化或改变需求 | product-author |
-| 从想法梳理产品蓝图 | product-init-elicitor |
-| 澄清模块、新行为或需求修改 | product-spec-elicitor |
+| 维护已有 GDD、预拆分交付或细化当前 Product | product-author |
+| 澄清已有设计、交付范围或需求修改中的缺口 | product-spec-elicitor |
 | 界面线框、布局状态与视觉基础规格 | design-ui-spec |
 | 音效、音乐需求与真实样本或占位约定 | design-audio-asset-spec |
 | 只拆当前 Product，完成后再拆下一 Product | feature-plan |
@@ -90,23 +92,26 @@
 
 ```mermaid
 flowchart TD
-    U[用户任务] --> Q{任务内容}
+    U[用户任务] --> SQ{仅查询现状或下一步}
+    SQ -->|是| A[project-next-step-advisor]
+    A --> H[报告事实或给出建议后停止]
+    SQ -->|否| G{项目内已有真实 GDD}
+    G -->|否| Z[说明缺少 GDD 并停止]
+    G -->|是| Q{任务内容}
     Q -->|讨论或澄清| C[project-clarifier]
     C --> O[对话结论]
     Q -->|记录已确定术语| T[project-terminology]
     T --> K[按需更新术语文档或局部定义]
-    Q -->|需求初始化或改变| P[product-author]
-    P --> I[按需使用 init / spec elicitor]
-    I --> D[更新 Product 行为与引用]
+    Q -->|设计变更或交付规划| P[product-author]
+    P --> I[按需使用 product-spec-elicitor]
+    I --> D[维护 GDD 或 Product 交付范围]
     Q -->|专业设计与规格| V[对应专业 Skill 直接维护来源]
     V -->|影响已有任务时| L
-    D -->|当前 Product 或影响已有任务| L[feature-plan / feature-sync]
-    D -->|仅后续未拆分 Product| B[保留需求，暂不生成 Feature]
+    D -->|已授权当前规划或已有任务同步| L[feature-plan / feature-sync]
+    D -->|仅文档或后续预拆分| B[保存相应来源与交付说明后结束]
     Q -->|Bug / 重构 / 维护| E[engineering-change-plan]
     Q -->|选择重构候选| S[engineering-refactor-select]
     S --> E
-    Q -->|只问下一步| A[project-next-step-advisor]
-    A --> H[给出提示词并停止]
     L --> F[已批准的 Feature]
     E --> F
     Q -->|执行已有 Feature| F
@@ -114,11 +119,11 @@ flowchart TD
     X --> R[验证、验收、记录与交接]
 ```
 
-只讨论时不写文件，也不要求先准备环境或完整 Product。`docs/terminology.md` 初始提供用途说明；由 `project-terminology` 按需维护已确认的定义。保持含义和行为的术语整理不创建 Feature，实质行为变化仍由 `product-author` 处理。
+只讨论时仍须已有 GDD，但不写文件，也不要求先准备环境或详细 Product。`docs/terminology.md` 初始提供用途说明；由 `project-terminology` 按需维护已确认的定义。保持含义和行为的术语整理不创建 Feature，实质设计变化由 `product-author` 更新 GDD 并处理相关影响。
 
-术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
+GDD、Product、专业规格、术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 
-Product 按实际执行顺序逐个拆分：只生成当前 Product 所需的 Feature， 完成它们后再复核并拆下一 Product。计划追加到同一台账，保留历史； 后续 Product 先保留需求，不提前展开全部任务。见[逐个 Product 规划](methodology/02-feature-list-schema.md#product-by-product-planning)。
+先在 `docs/product.md` 预拆分交付范围、GDD 来源、依赖与建议顺序，再编写当前 Product 文档，一次拆出它的完整必要 Feature。完成这些 Feature 后，按最新 GDD 和实际结果复核、细化下一个 Product。后续交付单元只保留总览中的粗略范围；计划追加到同一台账并保留历史。见[逐个 Product 规划](methodology/02-feature-list-schema.md#product-by-product-planning)。
 
 ## 当前 Feature 流程
 

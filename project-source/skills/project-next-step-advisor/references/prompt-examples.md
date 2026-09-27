@@ -8,7 +8,7 @@
 
 | 分类 | 按需读取的条目 |
 | --- | --- |
-| 需求设计 | [只有游戏想法，需要整理第一份 Product](prompt-examples/product.md#example-1)；[已有模块的玩法要求变了，需要更新需求](prompt-examples/product.md#example-2) |
+| 需求设计 | [已有 GDD，需要预拆分 Product 交付范围](prompt-examples/product.md#example-1)；[已有模块的玩法要求变了，需要更新需求](prompt-examples/product.md#example-2) |
 | 任务规划 | [当前模块的需求已确认，准备做项目的第一份 Feature 计划](prompt-examples/planning.md#example-1)；[要求已经改好，开工前需要同步 Feature 计划](prompt-examples/planning.md#example-2) |
 | 日常开发 | [Feature 已规划并可开始，现在实施这一项](prompt-examples/development.md#example-1)；[界面布局已经确定，想先做一个能点击的原型](prompt-examples/development.md#example-2) |
 | 修复与改进 | [Feature 交付前发现 Bug](prompt-examples/engineering.md#example-1)；[Feature 交付后发现 Bug](prompt-examples/engineering.md#example-2)；[重构目标已经选定，现在调整结构并保持行为](prompt-examples/engineering.md#example-3)；[项目工具需要修改，按工程任务完成](prompt-examples/engineering.md#example-4) |

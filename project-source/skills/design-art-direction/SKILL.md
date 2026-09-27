@@ -5,11 +5,11 @@ description: "Define or revise a game's shared visual direction, including choos
 
 # Art Bible
 
-Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Read the relevant Product experience, existing visual direction, UI constraints and supplied references, not every game module.
+Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Read the relevant GDD experience goals and Product delivery scope, existing visual direction, UI constraints and supplied references, not every game module.
 
 Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. Distinguish a reference's useful properties from permission or ability to reproduce it.
 
-Maintain the applicable shared decisions in `docs/art/art-bible.md`:
+Maintain the applicable detailed art standards in `docs/art/art-bible.md`. Link any direction or details already owned by GDD instead of copying them; a change to the game's adopted overall direction is coordinated with `product-author` in GDD. Useful specification topics include:
 - visual language and intended mood, with practical inclusion/exclusion examples;
 - silhouette, shape, palette, contrast, typography and material/detail treatment where relevant to the current game;
 - perspective, scale, animation language and visual priority across asset families;

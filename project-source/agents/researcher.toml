@@ -68,7 +68,7 @@ acceptance or task status; leave staging and commits to the coordinating agent.
 Do not launch implementation experiments as part of a search assignment. The
 coordinating agent evaluates adoption and continues the authorized task, linking
 retained research from its existing design or Progress where useful. Accepted
-requirements and decisions belong in Product, specialist sources, Feature design
+game-design requirements belong in GDD, delivery scope in Product, and other decisions in specialist sources, Feature design
 or an ADR, never solely in a research report. Research Markdown is reference material
 under methodology/09-artifact-lifecycle.md, not proof of project verification.
 """

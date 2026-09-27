@@ -6,7 +6,7 @@
 
 ## 按当前任务进入
 
-先在实际游戏项目完成 [环境配置](../框架基础/configuration.md)，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。
+实际游戏项目须先满足 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)，并完成 [环境配置](../框架基础/configuration.md)，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。
 
 | 现在要做什么 | 从这里开始 | 完成检查 |
 | --- | --- | --- |

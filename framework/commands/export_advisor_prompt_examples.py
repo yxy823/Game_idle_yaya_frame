@@ -16,7 +16,7 @@ PROJECT = "Godot 项目开发"
 # Exact source names keep selection explicit; these are examples, not routing rules.
 SELECTION = (
     ("product", "需求设计", (
-        "只有游戏想法，需要整理第一份 Product", "已有模块的玩法要求变了，需要更新需求",
+        "已有 GDD，需要预拆分 Product 交付范围", "已有模块的玩法要求变了，需要更新需求",
     )),
     ("planning", "任务规划", (
         "当前模块的需求已确认，准备做项目的第一份 Feature 计划", "要求已经改好，开工前需要同步 Feature 计划",

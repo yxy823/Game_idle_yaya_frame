@@ -8,14 +8,15 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。
 
+项目开发先核对 `docs/gdd/` 中的真实设计正文；没有 GDD 时说明缺口并停止，状态查询可以直接报告这一事实。专业、工程或只讨论入口也不绕过此前提，详见 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+
 | Skill | 唯一主要职责 |
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
-| `project-clarifier` | 澄清会实质影响范围或验收的未决问题 |
+| `project-clarifier` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
 | `project-terminology` | 保存已确认且含义不变的局部/共享定义与术语引用 |
-| `product-author` | 协调 Product 行为要求的创建和变化，交给正确来源维护 |
-| `product-init-elicitor` | 梳理游戏总体范围与模块结构 |
-| `product-spec-elicitor` | 澄清模块行为；明确契约的实现缺陷交工程流程，不重写需求 |
+| `product-author` | 维护已有 GDD、交付预拆分和当前 Product，协调已规划工作的影响 |
+| `product-spec-elicitor` | 澄清已有设计或当前交付范围的缺口；明确契约的实现缺陷交工程流程 |
 | `feature-plan` | 为当前 Product 建立可追溯 Feature 覆盖与依赖 |
 | `feature-sync` | 将已确认来源变化映射到已有计划及测试历史 |
 | `feature-execute` | 交付获准 Feature，承担适用实现、验证、记录与收尾 |

@@ -68,7 +68,7 @@ $LASTEXITCODE
 
 ## 文档语言
 
-`document_language` 控制新生成的 Product、Feature 自然语言、Progress 和项目知识。`zh-CN` 与 `en` 是当前规范明确给出示例的语言；其他合规语言标签按现有规范处理，不扩展验证声明。
+`document_language` 控制新写或修改的 GDD、Product、Feature 自然语言、Progress 和项目知识。`zh-CN` 与 `en` 是当前规范明确给出示例的语言；其他合规语言标签按现有规范处理，不扩展验证声明。
 
 环境检查器会检查基本字符和分段形式，拒绝 `zh_CN`、包含空白、空子段或子段超过八个字符等输入，并保留原值的大小写。它不验证完整 BCP 47 子段顺序或注册信息，也不代替用户确认；特殊标签的合法性和使用选择仍由 Agent 按语言规范核对。
 

@@ -1,6 +1,6 @@
 # Project rules
 
-> Read applicable project constraints before defining Product intent, planning Features or choosing an implementation. Reuse unchanged reading under the project `AGENTS.md` router.
+> Read applicable project constraints before revising existing GDD design, defining Product delivery scope, planning Features or choosing an implementation. Reuse unchanged reading under the project `AGENTS.md` router.
 >
 > **Structure:** This file owns project-wide constraints, collaboration and general design principles. The root `AGENTS.md` routes rules; `agent-rules/00-core/` owns engineering invariants and conflict handling; specialized modules own concrete engine/language semantics.
 
@@ -8,7 +8,7 @@
 
 Use the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/00-core/rule-precedence-and-routing.md`. MUST constraints apply to every relevant Product, Feature, design and implementation. A Product, Feature design or ADR cannot silently override them. Keep each constraint's scope and necessary rationale clear; technical details remain at their owning source.
 
-No game-specific hard constraints have been confirmed in this blank project. Add confirmed long-lived project boundaries here when they are needed; do not invent offline, save-compatibility or performance promises from examples. Definitions belong in `docs/terminology.md`, module behavior in Product and current architecture in its own documents.
+No game-specific hard constraints have been confirmed in this blank project. Add confirmed long-lived project boundaries here when they are needed; do not invent offline, save-compatibility or performance promises from examples. Definitions belong in `docs/terminology.md`, game-design behavior in `docs/gdd/`, delivery boundaries in Product and current architecture in its own documents.
 
 Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
 

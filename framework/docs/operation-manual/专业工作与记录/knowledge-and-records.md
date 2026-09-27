@@ -8,6 +8,8 @@
 
 | 材料 | 内容与边界 |
 | --- | --- |
+| `docs/gdd/` | 持续维护的游戏设计正文；是项目开发前提，目录说明和空模板不满足此前提 |
+| `docs/product.md` / `docs/product/NN-name.md` | 交付预拆分及当前交付范围；具体 Product 轮到时才写，链接 GDD 而不复制规则 |
 | `docs/terminology.md` | 可复用标准名称、定义、范围、关系、别名与易混淆项；不放数值、完整行为或当前计划 |
 | `docs/features/F0XX-design.md` | 需要较长解释的局部设计：职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
 | `docs/architecture.md` | 当前结构的模块位置、状态所有者、依赖和阅读入口；不枚举全仓文件或复制历史设计 |
@@ -16,10 +18,10 @@
 | Feature notes | 该任务局部决定、真实根因、链接与有价值的过程信息 |
 | `docs/knowledge/` | 可复用的项目实践及适用条件；不是规则或需求的替代正文 |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项；不是项目已经实测的经验 |
-| `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 Product 或对应专业来源 |
+| `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-术语由 `project-terminology` 维护；只有实质歧义才由 `project-clarifier` 讨论。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 Product，专业语言要求归对应来源。
+术语由 `project-terminology` 维护；只有实质歧义才由 `project-clarifier` 讨论。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源。以上项目工作同样遵守 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 
 ## 局部设计与当前架构
 
@@ -80,7 +82,7 @@ ADR 使用 `docs/architecture/adr-NNNN-<slug>.md`，同时考虑：
 
 调研按问题需要进行，可直接查询或委派 researcher，不是每个 Feature 必经阶段。涉及引擎/API 写明实际版本，核对所读页面；stable/latest 不代替版本号。一手来源事实、项目推断、本地实测分别说明，损坏抽取或遗漏代码保留原文链接及限制。
 
-有长期价值时写 `docs/research/<明确主题>.md`，同主题优先维护已有报告，重要结论变化保留日期、原因与被引用历史。最低信息为问题与范围、日期和适用环境、结论、依据、建议、未知；角色文件维护详细报告约定。采纳决定回到 Product、专业来源、设计或 ADR，不让研究建议自动变成要求。
+有长期价值时写 `docs/research/<明确主题>.md`，同主题优先维护已有报告，重要结论变化保留日期、原因与被引用历史。最低信息为问题与范围、日期和适用环境、结论、依据、建议、未知；角色文件维护详细报告约定。采纳的游戏设计回到 GDD，交付安排回到 Product，其他决定回到专业来源、设计或 ADR，不让研究建议自动变成要求。
 
 知识目录初始有 `godot-runtime/`、`gdscript/`、`debugging-testing/`、`tools-pipeline/` 主题索引。
 

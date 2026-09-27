@@ -10,7 +10,7 @@ metadata:
 
 Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Maintain audio entries directly in the existing `docs/resource-requirements/<scope>.md` under the resource-list contract in `methodology/01-product-doc-structure.md`. Complex needs may have a linked, resource-ID-specific specification. Follow `document_language`.
 
-Read confirmed Product triggers, applicable Sound Bible, related entries and actual sample references. Global sonic identity belongs to `design-audio-direction`. Reuse settled decisions, and clarify only material gaps. Do not add a cue to every interaction or assume voice-over. An unknown value may remain pending while other useful specification work continues.
+Read confirmed GDD triggers and Product delivery scope, applicable Sound Bible, related entries and actual sample references. Use `design-audio-direction` for detailed shared sound standards. Reference GDD-owned direction, triggers and values rather than copying them into another source. Reuse settled decisions, and clarify only material gaps. Do not add a cue to every interaction or assume voice-over. An unknown value may remain pending while other useful specification work continues.
 
 ## Concrete deliverables
 
@@ -29,4 +29,4 @@ Provide available playable samples, missing files and applicable checks such as 
 
 Music and SFX production are reserved capabilities. This Skill does not synthesize, record, acquire or process files. `content-asset-integration` connects supplied audio; `review-audio` evaluates it in a separate instance. No production, playback or acceptance may be claimed without the corresponding actual action/evidence.
 
-Return specification paths/resource IDs, decisions and gaps. Route behavior changes to `product-author`, and changed professional requirements through the existing planning impact route. Continue the caller's authorized work without creating a second delivery process.
+Return specification paths/resource IDs, decisions and gaps. Route behavior changes to `product-author` for GDD maintenance, and changed professional requirements through the existing planning impact route. Continue the caller's authorized work without creating a second delivery process.

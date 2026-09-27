@@ -1,168 +1,42 @@
 ---
 name: product-spec-elicitor
-description: Clarify missing, contradictory or intentionally changing Product intent for a module or cross-module change, returning a structured patch without writes. Implementation defects against explicit requirements return to the current Feature or engineering-change-plan.
-metadata:
-  version: 2.0
-  triggers:
-    - Clarify material intent gaps in a new module, Product modification or cross-module requirement
-    - 用户要求澄清缺失、矛盾或有意改变的 Product 行为
-  priority: medium
-  called_by: product-author
+description: Clarify a material change or gap in an existing GDD or Product delivery scope, returning a focused proposal without writing files. Does not initialize game design.
 ---
 
-# Product specification elicitor
+# Existing design and delivery clarification
 
-## Role
+## Scope and inputs
 
-Handle a concrete Product change rather than a from-scratch initialization. Decide which points require clarification and which may use a reviewable default, then return a structured change patch to `product-author`.
+Use the GDD prerequisite and source ownership in `methodology/01-product-doc-structure.md`. Without an actual project GDD, report the missing input and stop; this Skill has no from-scratch idea or initialization route.
 
-Unlike `product-init-elicitor`, which covers every Product dimension, this workflow asks only questions that materially affect the requested change. It never writes files.
+Read the caller's requested change, relevant GDD topics, applicable Project Rules/architecture decisions, current Product outline or delivery document and affected existing Feature facts. Reuse confirmed answers and `document_language`. Actual implementation describes current behavior, not approved design.
 
-## Language contract
+Use the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method) for missing material decisions. Do not start another interview when supplied sources and authorization already settle the change. This Skill only returns proposals to `product-author`; it does not write GDD, Product or plan files.
 
-Apply `methodology/05-document-language.md` to the returned patch. Reuse the confirmed `document_language` from `product-author`, or resolve it from project configuration. Patch prose and section labels use that language; `mode`, `operation`, `source`, trigger operations and other protocol values remain as defined below.
+## Clarify the relevant difference
 
-## Core principles
-
-Use applicable `docs/project-rules.md` constraints and relevant accepted architecture decisions supplied by the caller or read from their sources. Surface a conflict before treating draft behavior as approved intent; return any proposed rule change to the owning workflow under the rule-maintenance contract.
-
-Read and reuse the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method). Keep this elicitor's modes and patch contract; do not start the clarifier's separate handoff workflow. Reuse confirmed answers supplied by the standardizer. Focus on unresolved changes to the core loop, primary flow, numeric range, state machine and concrete risks to completed behavior. Mark inferred defaults for review. Do not turn a Product bug report into an implementation solution.
-
-Treat the mode-specific questions below as coverage prompts, not a quota or a reason to repeat known answers. Once the current scope, observable outcomes and material constraints are clear enough for a reviewable patch, return it to the standardizer. Keep deferred work outside the patch; do not require every possible design branch to be explored first.
-
-When a term has conflicting meanings or hides a Product decision, use `methodology/01-product-doc-structure.md` **Project terminology**. Read relevant `docs/terminology.md` definitions when present. Return behavior changes in the Product patch and proposed local/shared definitions with source links separately. Reuse agreed terms in flows, data descriptions and AC. Keep implementation observations distinct from approved intent. The Product coordinator writes behavior and calls `project-terminology` for meaning-preserving definitions; this elicitor writes neither.
-
-## Input
-
-```yaml
-mode: new_module | modify | bug_fix | cross_module
-document_language: en
-change_description: <the user's original description>
-affected_modules:
-  - id: 02
-    name: character
-    current_content: <complete current module content>
-existing_product_overview: <current docs/product.md content>
-```
-
-Keys, `mode` values, module IDs, and module slugs remain stable. Natural-language values follow `document_language`.
-
-## Mode A: `new_module`
-
-Run a compact version of Product initialization and ask only:
-
-1. Module positioning in one sentence.
-2. Typical functional flows needed to explain the agreed behavior.
-3. Dependencies on and from existing modules.
-4. Behaviorally meaningful states and transition conditions, including relevant cancellation or entry/exit outcomes, regardless of state count; leave implementation structure to design.
-5. UI placement: full screen, embedded in an existing module, floating panel, or a custom arrangement.
-6. Primary tunable parameters and defaults.
-7. Observable acceptance criteria covering the agreed behavior without duplication or a target count.
-
-Do not re-ask settled edge cases or shared visual/audio direction. Reuse applicable Art Bible/Sound Bible references and propose only relevant unresolved edge cases. The corresponding specialist owns wireframes/resource specifications directly; this elicitor supplies Product behavior and proposed links, not their full bodies.
-
-## Mode B: `modify`
-
-Locate the affected module sections and apply this decision process to each one:
-
-```text
-if the change clearly does not affect another section:
-    if the user's description is sufficient:
-        draft the patch without another question and mark it for confirmation
-    else:
-        ask only about material ambiguous points
-else:
-    disclose the affected sections and ask whether to change them together
-```
-
-Check the following effects against the supplied facts and approved decisions; ask only where a material answer is missing. These are not mandatory questions.
-
-| Change | Required clarification or action |
+| Situation | Focus |
 | --- | --- |
-| Core functional flow changes | Ask whether acceptance criteria must change |
-| A new state | Ask for transition conditions and UI representation |
-| A numeric default changes | Ask whether only the default or also the valid range changes |
-| A new interactive element | Ask its observable behavior and whether it needs audio feedback |
-| UI layout changes | Return `trigger_ui_sketcher` when layout/interaction needs clarification or a sketch is requested |
-| Audio requirements change | Return `trigger_audio_sketcher` when sound requirements need design or clarification |
-| Existing behavior is deleted | Inspect effects on completed Features; reuse approval covering those effects or ask for the missing decision |
+| A new or revised game behavior within the existing GDD | Changed trigger, input, state, outcome, constraints and important exceptions; identify the owning GDD topic and real cross-system dependencies. |
+| A Product delivery boundary or order needs clarification | Which existing GDD requirements this unit delivers, excludes or depends on; do not redesign the game or fully specify future units. |
+| A reported bug exposes ambiguous intent | Separate actual behavior from confirmed expectations. An explicit requirement violation returns to the unfinished Feature or engineering route without changing requirements. |
+| A cross-system change | Identify affected GDD topics, existing consumers and delivery boundaries; clarify only unresolved inclusions, exclusions and consequences. |
+| Presentation details need professional work | Identify the relevant UI/art/audio/localization question and its source owner under methodology 11. Do not duplicate their specifications here. |
 
-## Mode C: `bug_fix`
+Ask about a value or edge case only when it changes the current decision. Mark a proposed default as a proposal, never an adopted requirement. Reuse valid professional requirements and shared terminology; substantive meaning changes belong with the GDD rule, while meaning-preserving definitions can go to `project-terminology`.
 
-This mode only resolves a reported problem whose expected Product behavior is missing, contradictory or intentionally changing. First inspect the cited Product or professional source. If it already states the expected result unambiguously and implementation violates it, return the source and defect facts to the unfinished Feature or `engineering-change-plan` under methodology 07; do not produce a Product patch or change AC to accommodate the defect. Professional-only ambiguity returns to its source owner.
+For a dependency on a future Product, settle only the contract needed by the current delivery. The future outline remains in `docs/product.md`; clarification does not create its full document or Feature plan.
 
-For a genuine Product intent gap, structure the unresolved difference. Ask only for missing facts:
+Deletion, foundational positioning changes and effects on completed behavior must be explicit. Reuse authorization that covers them and ask only about an unresolved material effect. Do not turn a defect report into permission to relax requirements.
 
-1. Reproduction conditions: user actions and observed result.
-2. Expected behavior.
-3. Affected modules and user flows.
-4. Priority: blocks core use, harms experience but has a workaround, or affects an edge case.
+## Return a reviewable proposal
 
-Return the confirmed Product decision for the owning behavior or Edge cases section, with any still-unresolved choice explicit. Do not propose code or a technical repair. Recommend explicit follow-up work for affected completed Features, using the Feature synchronization workflow rather than silently editing history.
+Return a compact result in the configured document language, using a table or structured list when useful:
 
-## Mode D: `cross_module`
+- The current source and proposed change, with an actual file/section or a proposed topic location within the existing GDD.
+- Whether the change belongs to GDD, Product delivery scope, shared terminology or a professional specification.
+- Confirmed decisions, remaining proposals and blocking questions, kept distinct.
+- Effects on the current Product, existing Features/completed behavior and later pre-split entries; omit categories with no impact.
+- Required specialist input or validation questions, when applicable.
 
-1. Propose one Product-overview entry that states the global goal.
-2. List affected modules and ask the user to confirm inclusions and exclusions.
-3. Apply Mode B to every affected module in the context of the global change.
-4. Check whether module dependencies change.
-
-Do not persist the proposed overview section or module patches; return them to the standardizer.
-
-## AI-default marking
-
-Every value inferred without asking must be explicit and reviewable:
-
-```yaml
-parameters:
-  - name: pause_max_duration
-    value: 60
-    unit: minutes
-    source: ai_default
-    source_explanation: <human-readable explanation in document_language>
-    needs_review: true
-```
-
-The standardizer must surface every `needs_review: true` item when it requests final Product confirmation and record accepted defaults in the affected change history. Never use an AI default for a high-impact core-loop or primary-flow decision.
-
-## Return structure
-
-```yaml
-mode: modify
-
-patches:
-  - module_id: 02
-    module_name: character
-    section: <human-readable section path in document_language>
-    operation: add | modify | delete
-    content: |
-      <Product change prose in document_language>
-    source: user_explicit | ai_default
-    needs_review: false
-
-  - module_id: 02
-    section: <UI section label in document_language>
-    operation: trigger_ui_sketcher
-    reason: <reason in document_language>
-
-  - module_id: 02
-    section: <audio section label in document_language>
-    operation: trigger_audio_sketcher
-    reason: <reason in document_language>
-
-questions_unresolved: []
-
-side_effects:
-  - affected_features:
-      - feature_id: F023
-        current_status: done
-        recommendation: <recommendation in document_language>
-```
-
-## Common traps
-
-1. Do not turn a modification into a rewrite. Ask only about the requested change.
-2. Do not draw UI here. Return `trigger_ui_sketcher` and let the standardizer run that workflow.
-3. Never ignore the impact of deleting behavior. Inspect `docs/feature-list.json` and require confirmation.
-4. A Bug report does not authorize changing requirements. Return explicit-requirement defects to engineering; use `bug_fix` only for a real Product intent gap.
-5. Do not overuse `ai_default`; high-impact decisions always require an answer.
+Do not reproduce unchanged source text, impose a fixed question count or create a second state record. The caller persists the approved change at its owner, handles planning impact and continues the authorized task.

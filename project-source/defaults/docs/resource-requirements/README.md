@@ -4,7 +4,7 @@
 
 ## 命名与归属
 
-按稳定的业务范围和具体用途命名，采用小写英文与短横线，例如 `inventory-panel.md`、`shared-item-icons.md`、`combat-feedback.md`；这些名称仅为示例。清单开头说明覆盖范围，并链接适用 Product、UI 或共享规范。具体字段与维护要求见 [资源准备与交接](../../methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)。
+按稳定的业务范围和具体用途命名，采用小写英文与短横线，例如 `inventory-panel.md`、`shared-item-icons.md`、`combat-feedback.md`；这些名称仅为示例。清单开头说明覆盖范围，并链接适用的 GDD、Product、UI 或共享规范。具体字段与维护要求见 [资源准备与交接](../../methodology/01-product-doc-structure.md#resource-preparation-list-and-handoff)。
 
 同范围优先更新已有清单；文件较多时再按模块细分目录，修复原有引用。
 

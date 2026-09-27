@@ -1,185 +1,73 @@
 ---
 name: product-author
-description: Create, maintain or formalize Product behavior requirements, then plan the current module or synchronize affected Features. Meaning-preserving terminology uses project-terminology; defects against explicit intent use the current Feature or engineering-change-plan.
-metadata:
-  version: 4.0
-  triggers:
-    - User requests a new Product, feature, Product improvement, behavior change, requirement correction, or a bug whose expected behavior is not already explicit
-  priority: high
+description: Maintain an existing project GDD, organize Product delivery scope, and handle related Feature planning or synchronization. Does not initialize a GDD.
 ---
 
-# Product standardizer
+# GDD maintenance and Product delivery
 
-## Non-negotiable rules
+## Authority and entry
 
-1. `docs/product.md` and `docs/product/*.md` are the single source of truth for Product behavior; optional `docs/terminology.md` owns shared vocabulary, not additional behavior.
-2. Update Product documents before planning or implementation. Handle effects on existing Features, but initially decompose only the current Product under `methodology/02-feature-list-schema.md` **Product-by-Product planning**; later Products remain unplanned until their turn.
-3. This workflow owns Product behavior writes. Clarifiers and Product elicitors return behavior proposals for it to persist. `project-terminology` owns meaning-preserving definitions and links, including local Product definitions; coordinate related edits within the same authorized change. Professional Skills maintain their own sources directly under `methodology/11-specialist-workflows.md`; Product keeps behavior and links.
-4. Product documents describe **what**, not **how**. Keep local implementation details in Feature design/code, current shared structure in architecture and important technical tradeoffs in ADRs. Only project-wide constraints belong in Project Rules.
-5. Preserve confirmed Product decisions and existing concrete authorization; unresolved material intent remains a proposal until decided.
-6. Apply relevant `docs/project-rules.md` constraints and accepted architecture decisions before defining Product intent. A conflicting request does not silently revise a rule; use `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including its pre-write self-check and existing authorization.
+Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. The project must already contain actual design content under `docs/gdd/`; an empty directory, purpose notice, Product or code does not substitute for it. If it is missing or unreadable, report the missing input and stop. Do not start an idea interview or initialize a GDD.
 
-## Language contract
+Within the current authorization, maintain the existing GDD as the game-design source and Product as delivery scope. Read the actual GDD entry and follow its relevant topic links; preserve its organization instead of imposing a new filename or duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order. Only the current unit receives `docs/product/NN-name.md`.
 
-Apply `methodology/05-document-language.md` before preparing durable Product wording. Resolve `document_language` from project configuration and pass the confirmed value to supporting Skills; preserve protocol identifiers and existing history. Language migration follows that contract within explicit scope.
+Apply `methodology/05-document-language.md`, the project Git contract and applicable Project Rules/accepted architecture decisions. A file, a commit or observed code behavior does not approve a proposed design. Preserve explicit decisions and authorization; discussion-only requests return a proposal without writes.
 
-## Existing implementation route
+## Select the requested result
 
-When asked to formalize already implemented behavior, compare the specified files, relevant history and user decisions with any existing Product. Separate confirmed intent, observed behavior, experiments/placeholders and unresolved choices; only confirmed intent becomes Product. Reuse settled answers instead of repeating a full elicitation. Record the present formalization in Product change history without inventing earlier approval or copying code structure.
+Read the GDD sections relevant to the request, Product overview, lightweight Feature index and any affected detail/source documents. Follow real dependencies; do not load all future design or all Feature details.
 
-Use the normal Product writing procedure for missing or changed intent within the authorized scope. When Product already covers the requested behavior, reuse it and proceed to Steps 6–7 for missing planning and handoff. Apply **Adopting existing implementation** in `methodology/02-feature-list-schema.md`; diagnose implementation gaps against the owning Feature, without rewriting Product to justify defects. Preserve existing Git differences under the project Git rules.
-
-## Terminology handoff
-
-For a terminology-only request that preserves meaning and behavior, use `project-terminology` directly and return its result to the original caller. Do not start the Product writing or planning steps below. During a Product change, pass confirmed definitions and relevant sources to that Skill within the same authorization; coordinate the resulting references and documentation in the same logical change. A definition that changes intended behavior, rules, values or AC remains a Product decision handled here before dependent terminology edits.
-
-## Product structure and templates
-
-Use this stable structure:
-
-```text
-docs/
-├── product.md
-├── product/
-│   ├── 01-<module>.md
-│   ├── 02-<module>.md
-│   └── ...
-└── ui/
-    └── <interface>-design.md  ← owned by design-ui-spec, linked from Product
-```
-
-Follow **Module filename rules** in `methodology/01-product-doc-structure.md` for stable module identities and filenames.
-
-Before writing Product documents, read:
-
-- `methodology/templates/README.md` for the rendering contract
-- `methodology/templates/product.md.tmpl`
-- `methodology/templates/product-module.md.tmpl`
-- `methodology/01-product-doc-structure.md`
-
-Preserve every required section and its semantics. Render human-readable headings and guidance in `document_language`; do not copy canonical English headings into a non-English Product or maintain a localized template tree.
-
-## Step 1: Confirm Product intent
-
-Restate the requested change in one or two sentences. Reuse explicit write authorization and decisions from the user or `project-clarifier`; do not ask again just to enter this workflow. If the request is discussion only, return to `project-clarifier`. If the intended write scope remains unclear, clarify that scope before persisting content.
-
-## Step 2: Load state and choose a route
-
-Read:
-
-- `docs/methodology-config.json`
-- `docs/product.md`, if present
-- affected `docs/product/*.md` sections and shared/dependency contracts identified from the overview and requested change, if present
-- relevant definitions in `docs/terminology.md`, if present
-- applicable `docs/project-rules.md` constraints and relevant architecture/ADR records
-- `docs/feature-list.json`, if present
-
-The overview and lightweight Feature index are sufficient for initial routing. Expand reading along actual dependencies or unresolved references; do not load all active modules or Feature details for a local change. The selected planning workflow loads the additional details it needs.
-
-Choose exactly one route:
-
-Before choosing the route, distinguish Product change from implementation defect:
-
-- If a confirmed Product or professional source already states the expected outcome unambiguously and the implementation violates it, use the existing current-Feature repair or independent engineering bug route. Do not rewrite requirements for an implementation defect.
-- If only a professional requirement changes while Product behavior stays fixed, route directly to its owning specialist and the applicable impact analysis under `methodology/11-specialist-workflows.md`.
-- If the expected behavior is missing, contradictory, or the requested fix intentionally changes observable behavior, continue in this Product workflow.
-
-| State | Condition | Route |
-| --- | --- | --- |
-| A. Initialization | `product.md` is absent, empty, or contains only a template/purpose notice without actual Product intent | `product-init-elicitor` |
-| B. New module | The change introduces a module with its own responsibility | `product-spec-elicitor`, new-module mode |
-| C. Existing module | The change belongs to one existing module | `product-spec-elicitor`, modification mode |
-| D. Product correction | The reported bug exposes missing, contradictory, or changed Product intent | `product-spec-elicitor`, bug mode |
-| E. Cross-module | The change affects multiple established modules | `product-spec-elicitor`, cross-module mode |
-
-## Step 3: Run the selected elicitor
-
-For initialization, run `product-init-elicitor` with the user's short description. It returns a complete overview and module draft, while UI wireframes and complete audio entries may remain pending.
-
-For states B through E with material gaps, run `product-spec-elicitor` with:
-
-- the change description
-- the selected mode
-- current content of every affected module
-- the resolved `document_language`
-
-Pass relevant terminology definitions and already confirmed answers to the elicitor. It asks only remaining questions that materially affect the change and returns a structured patch. It must not write files or restart a completed interview. When the supplied facts and decisions already define the change, prepare that patch directly without invoking another interview.
-
-## Step 4: Complete UI and audio dimensions
-
-Read the existing UI/audio requirements and reuse established decisions.
-
-| Need | Action |
+| Requested result | Work to perform |
 | --- | --- |
-| Layout or interaction presentation needs specification | `design-ui-spec` maintains its UI document; Product records behavior and a link. Settled copy/value changes need no new sketch. |
-| Shared art or sound direction needs a decision | `design-art-direction` / `design-audio-direction` maintains the professional source within scope; no mandatory whole-game specification. |
-| Concrete visual/audio assets need specifications | `design-visual-asset-spec` / `design-audio-asset-spec` maintains the existing resource-list entries with actual sample references and unresolved gaps. |
-| A runnable Godot or HTML exploration is requested | Pass the professional inputs to the separately authorized scoped experiment/delivery route; design Skills do not implement it. |
+| Pre-split the agreed delivery scope | Create or revise only `docs/product.md`: outcomes, boundaries, GDD mappings, dependencies and order. Do not create every Product file or any Feature plan. |
+| Detail the current Product | Revisit the latest GDD and completed work, then write only the current delivery document from the canonical template. Resolve dependencies that affect this delivery without detailing future Products. |
+| Change existing game design | Update the owning GDD topics and references first; adjust affected delivery scope and existing plans. |
+| Change delivery boundaries or order without changing design | Update Product only; preserve GDD intent and evaluate affected existing Features. |
+| Formalize already implemented work | Compare the confirmed GDD with actual behavior; reuse suitable implementation under **Adopting existing implementation** in methodology 02. Records do not establish past approval or completion. |
+| Maintain meaning-preserving terminology | Use `project-terminology`; no new Product or Feature plan is needed. |
+| Repair an implementation that violates explicit requirements | Return to the unfinished Feature or `engineering-change-plan`; do not rewrite design to justify the defect. |
+| Change only a professional specification | Use its owner under methodology 11; coordinate a GDD change only if game design changes. |
 
-For new interfaces or substantial layout/resource changes, apply **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md`. Include its relevant questions and constraints in the owning professional sources and pass the needed visual foundation to current-module planning. Keep confirmed observable size/readability requirements; put trial values and node-level tuning in implementation notes. Adopt prototype observations only with the applicable user decision, preserving still-valid requirements and existing authorization.
+A Product is a verifiable delivery unit, not necessarily a complete game system or a GDD chapter. The overview may pre-split several units, but future units retain only their outline there. An authorized GDD change may update future design without producing future Product files.
 
-When resource preparation needs a user handoff, apply **Resource preparation list and handoff** in the same specification. Coordinate the responsible specialists' entries and inspected existing assets in the shared project-local list within the current writing scope; link it from the task instead of copying its rows into Product or Feature notes. List preparation alone does not expand Product scope.
+## Resolve actual gaps
 
-Pass the resolved `document_language` and confirmed facts to any child workflow. Professional source ownership follows `methodology/11-specialist-workflows.md`; implementation and actual human acceptance remain separate.
+Reuse clear requirements and settled answers. For a material ambiguity in the existing GDD or delivery boundary, use `product-spec-elicitor` with the relevant source sections, requested change, current Product scope and existing decisions. It returns a proposal without writing. A clear change needs no additional elicitation.
 
-## Step 5: Write Product documents
+Distinguish a design change from a delivery choice. New gameplay rules, states, formulas and version design scope belong in GDD; Product identifies which requirements are being delivered, their boundaries and how they connect to existing work. Technical implementation choices belong in Feature design, architecture or code.
 
-This workflow performs Product writes and necessary references:
+Explain the effect of a foundational change, deletion or invalidation of completed behavior. Obtain only decisions not already covered by the user's concrete authorization. Do not silently remove an adopted requirement or use a speculative default as a confirmed rule.
 
-1. **Initialization:** render the canonical overview and module templates into `document_language`.
-2. **New module:** create `docs/product/NN-<slug>.md` with the next available module number.
-3. **Existing module:** edit only the affected sections; preserve unrelated content.
-4. **Overview:** update the module inventory and dependencies when they change.
-5. **Change history:** append a dated change and reason to every affected Product file, in `document_language`.
-6. **Resources:** link the owning professional specifications/resource-list entries and pass concrete requirements, real samples and remaining gaps to the current or affected plan. Do not duplicate the entries or invent missing-file obligations from naming examples. Later Products retain linked specifications without premature Feature decomposition.
+## Coordinate professional requirements
 
-If the elicitor returns terminology changes, review them with the affected Product behavior and pass confirmed definitions and links to `project-terminology` within this task's documentation scope. Follow **Project terminology** in `methodology/01-product-doc-structure.md`; behavior writes stay here. Do not treat code observations or unconfirmed terms as approved intent. Terminology accompanies Product changes; it never replaces the Product behavior that Feature planning needs.
+Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain UI, art, audio, resource and localization specifications. GDD owns game-design intent; specialists supplement it with their detailed requirements. If GDD already owns a detail, link that section instead of copying it into another authoritative body.
 
-After the approved Product write, follow `agent-rules/00-core/git-worktree-and-commits.md`: review the complete authorized, task-owned documentation change, including associated terminology, new or updated resource preparation lists and required links. Stage only explicit owned paths or inspected hunks, run the cached-diff checks and validate the complete logical change, including its references, before committing.
+For new interfaces or substantial presentation changes, use **Visual prototype before dependent implementation** in methodology 01. Resource handoffs use its **Resource preparation list and handoff**. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
 
-For standalone Product work, create the local source commit unless the user explicitly requested no commit. Use `docs(product): <中文行为摘要>` and omit `Work item` when no Feature owns the change. Supporting documentation inside an existing Feature stays in its owning execution workflow's validated logical commit; calling this Skill does not start a new task or require an isolated source commit. Substantive Product changes still require the approved impact handling and committed source baseline needed by synchronization. Check `git status --short` before downstream planning or execution and account for all task-produced documents; preserve unrelated changes and report any unmet Git or source-baseline prerequisite, including under a no-commit instruction.
+Pass the confirmed language, relevant facts and existing authorization to supporting work. Return its actual result to this task; a Skill handoff does not create another lifecycle or end authorized delivery.
 
-Before writing destructive or foundational changes, show their concrete impact and verify that it is explicitly approved. This includes deleting or obsoleting a module, changing the target audience or core loop, or invalidating completed Product behavior. Reuse that approval when already given; ask only about an unapproved effect or material change.
+## Write and validate the sources
 
-## Step 6: Synchronize Features
+Use the Product templates and their semantics from `methodology/templates/README.md` only for the requested Product result. GDD maintenance follows its existing entry/topic structure.
 
-- Read the Product execution order and existing Feature sources/statuses using the **Product-by-Product planning** rule. A new module or a large change does not authorize regenerating the project plan.
-- For the current Product without a plan, use `feature-plan` to decompose only its approved scope. The first Product may start from an empty ledger; later Products wait until the current Product's required Features are complete and append to the same ledger.
-- For changes affecting already planned or completed behavior, use `feature-sync` to handle the actual Feature, dependency and test impacts. Do not use synchronization to pre-plan later Products.
-- For a later Product with no Feature plan and no impact on existing work, finish the Product-document update and report that its Feature decomposition is deferred. Do not call a planning Skill merely because this document changed.
+- Update substantive design at its owning GDD location, with relevant links and decision status. Do not maintain a second core loop, system inventory, version scope or rule set in Product.
+- In the overview, preserve stable delivery identities and update boundaries, GDD links and dependencies. Future entries need no placeholder files, detailed AC or test registrations.
+- When the current Product is ready, create or revise its delivery document with precise source references, inclusions/exclusions, integration boundaries, delivery acceptance scenarios and material gaps. Observable acceptance can restate the result needed for verification, but rule definitions and values remain at their source.
+- Preserve existing records and filenames; a collision requires inspecting the actual owner rather than overwriting or allocating a duplicate. Meaning-preserving definitions use `project-terminology`.
+- Check source coverage, internal consistency and affected links. Distinguish unreadable material, unadopted proposals, implementation observations and actual user decisions.
 
-When a planning workflow is needed, wait for it to finish and inspect its result. Never report synchronization as successful merely because it was invoked, or describe a deliberately unplanned Product as fully covered. Preserve completed Feature history; changed completed behavior creates explicit follow-up work.
+Follow `agent-rules/00-core/git-worktree-and-commits.md` for explicit path/hunk staging, cached-diff inspection and validated local commits. Standalone source work uses `docs(product): <中文变更摘要>`; supporting work inside a Feature follows its existing commit boundary. Before initial planning or synchronization, satisfy the committed-source baseline in methodology 02. Report an unmet prerequisite, including a no-commit instruction; do not invent an anchor or absorb unrelated edits.
 
-## Step 7: Report and hand off
+## Plan, synchronize and continue
 
-Report:
+Use **Product-by-Product planning** in methodology 02 and the current request to choose the next action:
 
-- Product files created or changed and the intent of each change
-- associated documents and required links, including any resource preparation list path, remaining preparation/confirmation needs and project target paths
-- the confirmed `document_language`
-- Feature planning/synchronization result, including which later Products remain unplanned
-- affected Feature states
-- every placeholder resource
+- A pre-split-only or document-only request ends at that requested result. It does not automatically authorize Feature planning.
+- When planning is authorized, detail the current Product first, then use `feature-plan` once to cover its complete necessary scope with multiple Features. Reuse an existing plan rather than regenerate it.
+- A substantive source change that affects already planned or completed work uses `feature-sync`. A changed future GDD topic can affect current consumers even when that future Product is unplanned.
+- If only future, unplanned scope changes, update GDD and the relevant overview outline; defer its Product document and Features until its turn.
+- Finish the current Product's required Features before detailing and planning the next. Revisit the next scope against the latest GDD and delivery results, continuing only within existing authorization.
 
-Report unresolved Product decisions, if any. Return the completed documents and plan to the calling workflow; when concrete execution authorization is already present, continue through `feature-execute`. Otherwise stop at the requested documentation/planning result or ask for the missing decision. This Skill owns Product writing, while the execution Skill owns implementation and its Gates.
+Inspect actual planning/synchronization results; invocation is not success. Preserve completed history and use follow-up work for changed completed behavior. A failed synchronization leaves an explicit alignment gap.
 
-## Boundaries
-
-1. Strip implementation choices from Product intent. Translate a request such as using a particular animation component into its observable transition behavior.
-2. Complete Product and applicable Feature planning/synchronization before handing implementation to `feature-execute`; preserve any already authorized end-to-end scope.
-3. Resolve ambiguous Product decisions through the appropriate elicitor.
-4. Always assess substantive changes against existing Features. Current Product decomposition and actual impacts on planned work need the appropriate planning route; a later, unplanned Product remains at document level. Meaning-preserving terminology maintenance also omits planning.
-5. Never silently edit a completed Feature. Create follow-up work or use the synchronization workflow's explicit lifecycle rules.
-6. Require confirmation before deleting modules, invalidating completed behavior, or changing foundational positioning.
-7. Do not let a conversation-language change rewrite or gradually mix durable Product language.
-
-## Failure handling
-
-- If the user rejects an elicitor draft, do not persist it; return to the elicitor for focused clarification.
-- If Feature synchronization fails, report the failure and do not leave Product and Feature state presented as aligned. Offer a reviewable repair or Git rollback; never perform a destructive rollback automatically.
-- If a destination module filename already exists, stop and ask whether to merge, choose a new module boundary, or use the next valid number. Never overwrite silently.
-- If a child workflow returns durable prose in the wrong language, re-render it in `document_language` before writing. Preserve approved meaning and reuse existing authorization; ask only if the correction introduces a material meaning choice.
-
-For substantive Product changes, preserve this order within the authorized scope:
-
-**Product documents first → applicable current-Product planning or existing-Feature synchronization → implementation last.** Later, unplanned Products stop at the document update until their turn.
+Report changed sources and delivery scope, validation results, remaining material decisions, planning results when applicable and the next authorized action. Continue implementation through `feature-execute` when authorized, preserving actual human acceptance boundaries.

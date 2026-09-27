@@ -25,6 +25,7 @@ Project creation supplies the index, revision log and Test Registry with empty a
 {
   "meta": {
     "generated_from": [
+      "docs/gdd/**/*.md",
       "docs/product.md",
       "docs/product/**/*.md",
       "docs/project-rules.md"
@@ -149,14 +150,14 @@ Engineering Feature:
 | `verification.test_impact` | Optional when no extra test scope is needed; templates include exactly `additional_tests` and `full_suite_reasons`. Stage 2 persists the approved additional scope here before final test execution. This semantic field is part of the snapshot fingerprint. |
 | `verification.test_impact.additional_tests` | Array of `{ "id": "...", "reason": "..." }` with unique Registry IDs and non-empty reasons. May reference another Feature's test. Referenced tests may be planned during preparation but must be active for current completion. Additional scope does not change test ownership or replace the Feature's own AC/regression mapping. |
 | `verification.test_impact.full_suite_reasons` | Unique array of non-empty reasons for approved full-suite escalation beyond automatically derived triggers. An empty array records no additional escalation. |
-| `source` | One precise primary Product or professional source; `infrastructure` for technical work with no single documentary source. Follow the source and secondary-reference contract in `11-specialist-workflows.md`. |
+| `source` | One precise primary Product delivery, GDD or professional source; `infrastructure` for technical work with no single documentary source. Follow the source and secondary-reference contract in `11-specialist-workflows.md`. |
 | `notes` | String. Starts empty; later holds brief local decisions, placeholders, TODOs, deferred edges, bug learning and relative links to detailed Feature design or other owning records. Long design explanations follow the optional Markdown contract below. |
 | `engineering_change` | Optional. When present, exactly `bug`, `refactor`, or `maintenance`. Product-derived Features omit it. |
 | `bug_diagnosis` | Optional/null for compatibility. A non-null object is allowed only for `engineering_change: bug` and has exactly `actual`, `expected`, `source`, `reproduction`, `root_cause`. The first three are non-empty strings; reproduction is a non-empty ordered list of non-empty steps. Root cause may be null while investigating, but must be a non-empty confirmed cause for current completion. Non-Bug templates do not invent diagnostic evidence. |
 
 Acceptance-criterion IDs are historical identifiers. Do not renumber criteria on a completed Feature. Product evolution creates a new Feature that changes/supersedes the old behavior.
 
-Professional requirements participate in the same planning, impact and AC mapping under [Discover and map sources](11-specialist-workflows.md#discover-and-map-sources). Use existing AC/design links for secondary sources, not a new JSON field or a multi-path `source` string. The validator checks `source` as non-empty text; the planning Agent must verify source existence, authority and coverage. A binding requirement must not exist only in process-only `notes`.
+GDD and professional requirements participate in the same planning, impact and AC mapping under [Discover and map sources](11-specialist-workflows.md#discover-and-map-sources). A Product-derived Feature uses the current Product delivery section as its primary source and links applicable GDD design in AC/design. Use those existing links for secondary sources, not a new JSON field or a multi-path `source` string. The validator checks `source` as non-empty text; the planning Agent must verify source existence, authority and coverage. A binding requirement must not exist only in process-only `notes`.
 
 The runner always reads recorded `test_impact` obligations together with the deterministic Registry scope. Store approved additions and full-suite reasons in the Feature itself; there is no second plan file or extra-scope command. Changing that record requires review of the affected scope and invalidates prior snapshot evidence.
 
@@ -182,7 +183,7 @@ Initial content is `{"schema_version": 2, "revision_log": []}`. The root and eac
 
 When both the Feature index and revision log were empty before this first Product plan, establish one baseline with the plan. An empty copied project or an engineering Feature alone does not establish source coverage. For an interrupted first planning task, verify the same pre-write empty state and adopted source revision from its existing task context and Git history; do not infer them from an empty revision log alone.
 
-Before writing the plan, ensure all adopted Product, professional and rule sources are committed under their owning workflow and existing authorization. Resolve the actual source HEAD as a full commit hash. If sources cannot be committed or their adopted state is unclear, report the prerequisite rather than using the scaffold commit. After checking the written plan's semantic coverage, append the following version-2 entry and include it in the final ledger validation and plan commit:
+Before writing the plan, ensure all adopted GDD, Product, professional and rule sources are committed under their owning workflow and existing authorization. Resolve the actual source HEAD as a full commit hash. If sources cannot be committed or their adopted state is unclear, report the prerequisite rather than using the scaffold commit. After checking the written plan's semantic coverage, append the following version-2 entry and include it in the final ledger validation and plan commit:
 
 | Field | Initial value |
 | --- | --- |
@@ -198,7 +199,7 @@ Later Product planning preserves the entire revision log and never advances the 
 
 ### Synchronization records
 
-On synchronization without a usable recorded baseline, a Feature-file edit alone is not a source baseline; `feature-sync` must verify which source state the plan actually absorbed. If approved current-document alignment is needed because that history is unknown, the existing anchor fields both identify the inspected HEAD and `summary` records this limitation. This establishes the next baseline without claiming an earlier diff. A newly admitted professional source category requires the same coverage check even when its files predate an existing anchor; see `11-specialist-workflows.md`.
+On synchronization without a usable recorded baseline, a Feature-file edit alone is not a source baseline; `feature-sync` must verify which source state the plan actually absorbed. If approved current-document alignment is needed because that history is unknown, the existing anchor fields both identify the inspected HEAD and `summary` records this limitation. This establishes the next baseline without claiming an earlier diff. Newly admitted GDD or professional sources require the same coverage check even when their files predate an existing anchor; see `11-specialist-workflows.md`.
 
 New synchronization records use these fields in addition to the existing summary, anchor and human-readable metadata:
 
@@ -216,8 +217,8 @@ New synchronization records use these fields in addition to the existing summary
       "kind": "revise",
       "from": ["F002"],
       "to": ["F004"],
-      "reason": "The approved Product change replaces the earlier contract",
-      "source": {"path": "docs/product/02-inventory.md#capacity", "anchor_commit": "78cfcb9"}
+      "reason": "The approved GDD change replaces the earlier contract",
+      "source": {"path": "docs/gdd/inventory.md#capacity", "anchor_commit": "78cfcb9"}
     }
   ],
   "dependency_changes": [{"feature": "F003", "before": ["F002"], "after": ["F004"]}]
@@ -276,8 +277,8 @@ Registry schema version 3 is the only supported format; revision history remains
 
 ```json
 {
-  "reason": "The approved Product contract supersedes this assertion",
-  "source": {"path": "docs/product/02-inventory.md#capacity", "anchor_commit": "78cfcb9"},
+  "reason": "The approved GDD contract supersedes this assertion",
+  "source": {"path": "docs/gdd/inventory.md#capacity", "anchor_commit": "78cfcb9"},
   "replacement": {"feature_id": "F004", "test_ids": ["F004-AC01"]},
   "revision_id": "rev-contract-01"
 }
@@ -297,7 +298,7 @@ Component suite paths and active test paths must stay inside the repository afte
 
 ## File 5: `docs/feature-completion-evidence.json`
 
-This repository-owned JSON file holds the current Feature's completion evidence. PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched against the approved Required/affected/full plan. Caller-supplied pass counts cannot create PASS. A valid manual plan with no Required/affected tests and no full-suite obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human acceptance and applicable static checks still apply. Unresolved failed or unfinished final runs on the same snapshot still block completion. Test and applicable human acceptance evidence must match the current semantic snapshot. Production, tests, configuration, Product, Project Rules, Feature AC/verification and Registry semantics participate in that snapshot. Pure status/completion timestamps, Feature notes and Progress/history archival do not invalidate business test evidence.
+This repository-owned JSON file holds the current Feature's completion evidence. PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched against the approved Required/affected/full plan. Caller-supplied pass counts cannot create PASS. A valid manual plan with no Required/affected tests and no full-suite obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human acceptance and applicable static checks still apply. Unresolved failed or unfinished final runs on the same snapshot still block completion. Test and applicable human acceptance evidence must match the current semantic snapshot. Production, tests, configuration, GDD, Product, professional sources, Project Rules, Feature AC/verification and Registry semantics participate in that snapshot. Pure status/completion timestamps, Feature notes and Progress/history archival do not invalidate business test evidence.
 
 The current evidence schema is version 8. It keeps real test-run references plus applicable human acceptance. Required/affected/full test conclusions are calculated from those artifacts rather than persisted again. Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in `methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
 
@@ -363,17 +364,17 @@ During normal editing, the Agent can update related files together before runnin
 
 ## Product-by-Product planning
 
-Decompose one Product at a time in the actual execution order. In the current document layout, the planning unit is one `docs/product/NN-<module>.md` module with its currently approved scope. `docs/product.md` provides the overview, dependencies and intended order; file numbers are stable identities, not a command to execute or plan every module at once.
+Apply the [existing GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority). Pre-decompose the agreed delivery horizon in `docs/product.md`, then detail and deliver one Product at a time in the actual execution order. The Feature planning unit is the current `docs/product/NN-<delivery>.md` with its approved scope and GDD references. The overview holds candidate boundaries, source mapping, dependencies and suggested order; file numbers are stable identities, not an instruction to detail or plan every Product at once.
 
-1. Identify the current Product from the user's request, Product order and existing Feature `source`/status records. Read relevant Progress for context. Resolve an ambiguous scope or unfinished prerequisite before decomposing.
-2. Decompose the current Product's required behavior into complete, verifiable Features. Include only infrastructure needed to deliver that scope; reuse existing infrastructure and completed prerequisite Features. If another Product must be delivered first, correct the order rather than pre-planning both Products.
-3. Leave later Products at the Product-document level. They may already have descriptions, but do not allocate their Feature IDs, detailed Feature AC or test registrations yet. Read them only as needed to understand dependencies.
+1. Identify the current Product from the user's request, pre-decomposition order and existing Feature `source`/status records. Read relevant Progress for context. Revisit applicable GDD design and actual earlier delivery results, then use `product-author` to write or update this Product's delivery document within existing authorization. Resolve unclear current scope and necessary cross-system rules before decomposing; do not detail future Products to settle one shared rule.
+2. Decompose the current Product's complete necessary scope into multiple independently verifiable Features in one planning pass. Include only infrastructure needed to deliver that scope; reuse existing infrastructure and completed prerequisite Features. If another Product must be delivered first, correct the order rather than pre-planning both Products.
+3. Leave later Products as concise pre-decomposition entries in `product.md`. Do not write their detailed delivery documents or allocate Feature IDs, detailed Feature AC or test registrations. Read their GDD dependencies only as needed for current decisions.
 4. Finish the current Product's required Features before decomposing the next Product. Check actual Feature completion and outstanding scope: no eligible task, an empty plan, or a Product document marked `done` does not prove implementation is complete. `pending`, `in_progress` and `blocked` work is unfinished; explicitly withdrawn scope follows existing retirement rules.
-5. After completion, revisit the next Product against what was learned and its current requirements, then decompose it under the user's existing planning authorization. Stage 8 follows [Authorization and continuation](03-execute-loop.md#authorization-and-continuation); completion alone does not authorize planning or implementing the next Product.
+5. After completion, revisit the next candidate against the current GDD and what was learned. Adjust pre-decomposition if needed, write that Product's delivery document and then decompose it under existing authorization. Stage 8 follows [Authorization and continuation](03-execute-loop.md#authorization-and-continuation); completion alone does not authorize planning or implementing the next Product.
 
 `feature-plan` handles the first and each subsequent Product's initial decomposition by appending to the same ledger. Allocate IDs after the greatest existing ID; preserve previous Features, test Registry records and revision history. If the selected scope already has a plan, reuse it; changed requirements use `feature-sync` rather than duplicating or regenerating that plan.
 
-`feature-sync` still analyzes effects on existing work, including completed behavior and real downstream dependencies. Changes to a later, unplanned Product do not create Features now. When that Product becomes current, generation reads its complete current specification, even if its edits predate the latest sync anchor. Do not interpret a global source anchor as proof that every Product has been decomposed. `meta.generated_from` names source locations, not coverage.
+`feature-sync` analyzes GDD and other governing-source changes against existing work, including completed behavior and actual downstream dependencies. Changes affecting only a later, unplanned candidate update its pre-decomposition as needed without creating detailed Product documents or Features. When that candidate becomes current, read its full applicable current GDD and professional design even if those edits predate the latest sync anchor. Do not interpret a global source anchor as proof that every Product has been detailed or decomposed. `meta.generated_from` names source locations, not coverage.
 
 Use the existing Product order, Feature sources/statuses and ordinary Progress notes. Do not add a Product queue, registry, completion flag or duplicate ledger. Pre-existing plans remain intact; this rule does not authorize deleting future Features or rewriting completed history.
 
@@ -393,7 +394,7 @@ After writes and validation, refresh the same proposal with actual IDs, counts a
 
 ## Adopting existing implementation
 
-When implementation predates its Product or Feature records, first use `product-author` to establish confirmed Product intent. Existing code is evidence of current behavior, not automatic approval of that behavior. Then apply Product-by-Product planning to the requested current module; existing implementation does not waive prerequisite completion or expand the planning horizon. Later modules may retain Product descriptions without Feature allocation.
+When implementation predates its Product or Feature records, an existing substantive GDD is still required. First use `product-author` to establish the current delivery boundary from that design, resolving approved design changes in the GDD. Existing code is evidence of current behavior, not automatic approval of that behavior or a way to initialize a missing GDD. Apply Product-by-Product planning to the requested current delivery; implementation does not waive prerequisite completion or expand the planning horizon. Keep later candidates at pre-decomposition level.
 
 Reuse an existing Feature covering the outcome. If no record covers it, create ordinary Product-derived Features around independently verifiable outcomes, not hypothetical historical coding steps or one Feature per source file. Derive AC from confirmed intent and map each to the existing implementation, usable tests and remaining gaps in the normal requirement coverage review. Do not weaken AC to fit a defect or create duplicate work just to rerun tests.
 
@@ -406,8 +407,8 @@ Documentation-only work stops after the authorized Product/plan writes and their
 1. Each Feature is the smallest independently verifiable complete behavior or engineering outcome.
 2. Plan only the current Product under the rule above; reuse or establish the runnable infrastructure it needs, then follow its Feature dependencies.
 3. Final Features are `small` or `medium`; decompose `large` work.
-4. Product-derived Features do not invent behavior absent from Product documents.
-5. Engineering Features preserve Product intent unless a separate Product change has been approved.
+4. Product-derived Features implement their Product delivery scope from confirmed GDD and professional sources; they do not invent absent design rules.
+5. Engineering Features preserve GDD design and approved delivery intent unless the substantive change has been approved through its owning route.
 6. Each Feature declares semantic `affected_components`; keep the set minimal and meaningful.
 7. New acceptance criteria receive stable `ACxx` identifiers in order.
 8. A `bug` Feature requires regression coverage when deterministic automation is feasible; an explicit repeatable human regression check is allowed only with a concrete reason automation is impractical.
@@ -429,7 +430,7 @@ Refresh the report against the files actually written before handoff. Name any u
 | Operation | Owner | Main files changed |
 | --- | --- | --- |
 | Initial decomposition of the current Product | `feature-plan` | append index/details and needed components; use the project-supplied revision log/registry and preserve existing history |
-| Product/Project-Rules synchronization | `feature-sync` | index/details + revision log + needed components and affected test traceability |
+| GDD/Product/professional/Project-Rules synchronization | `feature-sync` | index/details + revision log + needed components and affected test traceability |
 | Bug/refactor/maintenance Feature creation | `engineering-change-plan` | index + engineering details + needed components; test plan is finalized during execution |
 | Feature execution and completion notes | `feature-execute` | status, verification mapping, test registry, notes, Progress, implementation/test files |
 | Smell candidate selection | `engineering-refactor-select` | read-only selection; returns to engineering standardizer |

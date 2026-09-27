@@ -1,23 +1,37 @@
-# 01 · Product document structure
+# 01 · GDD and Product document structure
 
-## Two-level structure
+## GDD prerequisite and authority
+
+Project development requires an existing, substantive game design document under `docs/gdd/`. Read its entry and the sections relevant to the current task before planning or making project changes. An empty directory, directory-navigation README, template or pending-state notice is not a GDD. If none exists, report the missing input and stop the development workflow; this framework does not initialize a game design from an idea. Discussion, specialist work, engineering repairs and scoped experiments do not bypass this prerequisite. A status query may explain the missing input without starting work.
+
+The GDD owns game positioning, intended player experience, core loops, system rules, states, numeric behavior, content progression and game-version design scope. Preserve its actual organization and section links; the framework does not require a second GDD template or a specific entry filename. It need not settle every future detail, but the current delivery scope and design dependencies must be clear before dependent planning or implementation. Resolve an affecting gap in the existing GDD within the authorized design discussion; do not invent the missing rule in Product or Feature text.
+
+The GDD is a normal maintained project source. Within the user's concrete authorization, `product-author` updates confirmed game-design changes in their owning GDD sections and coordinates affected Product/professional sources and existing Features. Proposals remain distinct from accepted design; file presence or a saved edit alone does not confirm a choice. Preserve unrelated content and use the existing source-commit, synchronization and validation contracts. No separate GDD permission, tracking ledger or synchronization system is required.
+
+Professional documents refine the GDD into UI, art, audio, resource and localization specifications under [Specialist work and sources](11-specialist-workflows.md). Reference a detail already defined in the GDD rather than maintaining another body. Changes to game rules or accepted overall direction update the GDD; technical implementation choices belong in Feature design, architecture or code.
+
+Before revising design or delivery scope, check applicable hard constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A design request does not silently amend a project rule. Resolve conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance).
+
+## Design and delivery structure
 
 ```text
 docs/
-├── product.md              ← Scannable Product overview
+├── gdd/                    ← Maintained game design and its navigation
+├── product.md              ← Delivery pre-decomposition and source navigation
 └── product/
-    ├── 01-<core-module>.md ← Detailed module specification
-    ├── 02-<other>.md
-    └── ...
+    ├── README.md           ← Directory purpose, not a Product
+    └── 01-<delivery>.md    ← Written when this Product becomes current
 ```
 
-The two levels serve different context needs. `product.md` must remain short enough to scan as a whole, while module documents provide detail on demand. A person or agent should understand the Product shape in about 30 seconds and enter one module in a few minutes.
+GDD describes the game; Product describes how the selected design is delivered in verifiable units. A Product may cover one system, a part of a system or a coherent outcome across systems. It need not match one GDD chapter. For example, manual gathering can be one Product while automation remains a later candidate in the same gathering design.
 
-The initial `product.md` contains only a purpose and pending-state notice. This is not an initialized Product: use the canonical template when writing actual intent. `product/README.md` explains the directory and is not a module; discover modules from the overview and the `NN-name.md` convention.
+Pre-decompose the currently agreed delivery horizon in `product.md` to check coverage, boundaries, dependencies and suggested order. Keep future Products as concise candidates there; do not create their detailed documents, Feature IDs, AC or test registrations in advance. When a Product becomes current, revisit its sources using earlier delivery results and write its `product/NN-name.md` document, then decompose its complete necessary scope into multiple Features. Finish those required Features before detailing the next Product, under [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning).
+
+An affecting cross-system rule must be resolved before current implementation, even if the other Product is later. Clarify that shared rule in the GDD without writing the future Product's full delivery document. Adjust future candidates as learning changes the intended delivery sequence; a pre-decomposition is not a fixed implementation commitment.
+
+The initial `product.md` contains only a purpose and pending-state notice. It establishes neither design nor a delivery plan. Use the canonical templates when writing actual delivery content; discover detailed Products through the overview and the `NN-name.md` convention.
 
 Generated headings and prose must follow the project's configured `document_language`; the section semantics below must remain intact in every language. See [05-document-language.md](./05-document-language.md).
-
-Before writing or revising Product intent, check applicable hard constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A Product request does not silently amend a project rule. Resolve conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance); keep behavior in Product and rule-change rationale in its owning record.
 
 ## Standard `product.md` sections
 
@@ -25,39 +39,33 @@ Write these sections in this order. A document rendered from the canonical templ
 
 | Section semantics | Required? | Content |
 | --- | --- | --- |
-| Title and version summary | Yes | Current version plus a one-sentence description of that version's complete loop. |
-| One-line positioning | Yes | A sentence that makes the Product and its complete short experience immediately understandable. |
-| Target users | Yes | Primary users, usage context, and expected frequency. An MVP may target maintainer self-testing. |
-| Core loop | Yes | A numbered, coherent action sequence for each version such as V0.1 or V0.2. |
-| Module list | Yes | Number, filename, module name, and `draft`, `done`, or `obsolete` status. |
-| Module dependencies | Yes | An ASCII dependency diagram and intended Product execution order, with cross-cutting modules identified separately. |
-| Visual direction | Recommended | Product experience goals and links to the applicable Art Bible/UI specifications; undecided style remains a proposal. |
-| Audio direction | Recommended | Product feedback goals and links to the Sound Bible/resource specifications. |
-| Change history | Yes | Reverse-chronological date, Product change, and reason. |
+| Design entry and delivery horizon | Yes | Link the actual GDD entry and relevant game-version scope; identify which agreed scope this pre-decomposition covers. |
+| Product pre-decomposition | Yes | Each candidate's delivery outcome, rough included/deferred boundary and precise GDD references. Link a detailed Product document only after it exists. |
+| Dependencies and suggested order | Yes | Explain prerequisite outcomes and the current recommended sequence, including cross-system decisions affecting the current Product. |
+| Planning decisions to resolve | Yes | Questions that affect delivery boundaries or order, linking design questions to their GDD location. |
+| Change history | Yes | Reverse-chronological delivery-scope/order changes and reasons. Game-design history stays with its source. |
+
+Do not repeat the GDD's positioning, target users, core-loop body, system inventory, game-version content or visual/audio direction. A short navigational summary is sufficient. The game-system inventory and Product delivery list answer different questions and need not contain the same entries. Actual execution state remains in the Feature ledger and Progress, not an additional Product status field.
 
 ## Standard `product/NN-name.md` sections
 
-The overview may describe later modules without allocating their Features. Decompose only the current Product and complete its required Features before decomposing the next; see [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning). Revisit the next module's scope before planning it. Module-document status and file numbers do not establish implementation completion or override dependencies.
+Write this document only when the Product becomes current. Its filename number identifies it; it does not establish execution order or implementation completion.
 
-A module document is more detailed than the overview. A rendered template must retain its standard headings and explicitly mark inapplicable sections rather than deleting them. Optional additions such as Version evolution may be included when useful, but unrelated concerns must not be collapsed in a way that hides Product behavior.
+A Product document makes its delivery boundary precise without copying game-design rules. A rendered template retains its standard headings and explicitly marks inapplicable sections. Add useful delivery-specific sections when needed; keep behavior, formulas, data definitions and state-machine bodies in their GDD source.
 
 | Section semantics | Content |
 | --- | --- |
-| Module positioning | The module's role and the modules or actors it interacts with. |
-| Version evolution (optional) | How the module changes across V0.x releases. |
-| Functional flow | Step-by-step user or system behavior, optionally with an ASCII diagram. |
-| Data model | Field, type, default value, and meaning. |
-| State machine | State values and transition rules, when applicable. |
-| UI sketch | Player actions and behavior, with links to the interface specification maintained by `design-ui-spec` and relevant prototype conclusions. |
-| Audio entries | Behavioral triggers and feedback intent, with links to specifications maintained by `design-audio-asset-spec`; avoid copying resource rows. |
-| Numeric rules | Formulas, thresholds, and configuration values. |
-| Acceptance criteria | Concrete statements of how completed behavior can be verified. |
-| Edge cases | Known cases intentionally deferred to later Features. |
-| Change history | Reverse-chronological record of changes to this module. |
+| Delivery goal | The coherent, observable outcome this Product adds. |
+| Design sources | Precise GDD sections and applicable professional-source links, stating how they apply. |
+| Included and deferred scope | The adopted part of the design, its boundaries and intentionally later work; exclusions cannot silently change the design. |
+| Prerequisites and integration | Existing delivered outcomes, interfaces and shared rules this Product depends on, with links to their sources. |
+| Acceptance scenarios | End-to-end delivery scenarios and observable results derived from the sources; Feature planning owns task-sized AC and test mappings. |
+| Open decisions | Only unresolved choices affecting this delivery; identify which dependent work must wait and where the design decision belongs. |
+| Change history | Reverse-chronological delivery-boundary changes and reasons. |
 
 ## Visual prototype before dependent implementation
 
-Professional documents are maintained directly by their owning Skills under [Specialist work and sources](11-specialist-workflows.md). Product keeps behavioral intent and useful references, not duplicate UI, art or audio specifications.
+Professional documents are maintained directly by their owning Skills under [Specialist work and sources](11-specialist-workflows.md). GDD owns game-design requirements; Product selects the delivery scope and links the applicable sources.
 
 For a new interface or a substantial layout/resource change, establish its visual foundation before implementing logic that depends on that interface. Reuse an already validated layout when it covers the current scope; copy/value changes, non-visual logic and unaffected modules do not require another prototype. Work on the current interface/module, including its surrounding screen context, rather than waiting for all game art or all future screens to be ready.
 
@@ -79,7 +87,7 @@ Final backgrounds, decoration and palette are optional at this point; readable c
 
 Run the scene in the target project's confirmed Godot environment. Check spatial relationships, resource scale/cropping, text readability, button usability and relevant empty/dense/long-text states at the agreed display conditions. Exercise interactions and listen to relevant samples. Static checks and screenshots are supporting evidence, not substitutes for actual operation and human judgment. Missing execution or human feedback remains explicitly unverified.
 
-Keep the entry scene, questions, observations, a link to any resource preparation list and file disposition in current Feature notes, or Progress for a standalone experiment. Keep resource details in that list when present. Confirmed behavior changes belong in Product via `product-author`; professional layout, size, readability or sound requirements belong in their owning specialist source. Adoption uses the applicable authorization and source-impact route. Node properties and tuning values remain in the scene, resources or implementation notes. Do not maintain a second specification or prototype status ledger.
+Keep the entry scene, questions, observations, a link to any resource preparation list and file disposition in current Feature notes, or Progress for a standalone experiment. Keep resource details in that list when present. Confirmed game-design changes belong in the GDD via `product-author`; delivery-boundary changes belong in Product, while professional layout, size, readability or sound specifications belong in their owning specialist source. Adoption uses the applicable authorization and source-impact route. Node properties and tuning values remain in the scene, resources or implementation notes. Do not maintain a second specification or prototype status ledger.
 
 During planned delivery, use an ordinary Feature for an independently reviewable visual foundation and make dependent implementation wait for its applicable manual acceptance. A narrow check may stay inside the current Feature, with the visual decision settled before dependent logic. An explicitly requested standalone exploration follows the scoped-experiment route in [task routing](00-overview.md#canonical-task-routing). Prototype acceptance covers only its visual/interaction scope, never the later business behavior.
 
@@ -89,7 +97,7 @@ After validation, reuse suitable layout nodes, themes and resources deliberately
 
 Create or update a project-local Markdown list when the user requests one or the authorized task needs the user to prepare/reuse resources before a prototype or implementation. Prefer an existing list covering the same scope; otherwise use `docs/resource-requirements/<scope>.md`, such as `inventory-panel.md`. Blank projects provide `docs/resource-requirements/README.md` for discovery, without empty resource lists or one list per Feature by default. Several Features may reference the same list. Name lists for a stable business scope and resource purpose using lowercase English and hyphens, such as `shared-item-icons.md` or `combat-feedback.md`; do not bind shared lists to a single Feature ID or preparation batch. Add module subdirectories only when actual volume warrants them, preserving references when moving files. The responsible specialist maintains its entries; the current task coordinates shared uses without a separate registry or a Product-writing intermediary.
 
-Read the current task, confirmed Product and professional requirements, relevant existing assets and any supplied source locations. `design-visual-asset-spec` and `design-audio-asset-spec` maintain their domain entries in the same list. Include only the minimum files needed for this scope, merging repeated uses of one resource. Do not add future decoration or separate files for states that existing themes or procedural presentation can already express. Record unknown inputs rather than inventing resources, styles, dimensions or other technical requirements.
+Read the current task, confirmed GDD design, Product delivery scope and professional requirements, relevant existing assets and any supplied source locations. `design-visual-asset-spec` and `design-audio-asset-spec` maintain their domain entries in the same list. Include only the minimum files needed for this scope, merging repeated uses of one resource. Do not add future decoration or separate files for states that existing themes or procedural presentation can already express. Record unknown inputs rather than inventing resources, styles, dimensions or other technical requirements.
 
 The document follows `document_language` and contains a brief scope/source overview, a resource file table and unresolved questions. State the covered uses and boundaries and link the applicable Product, UI and shared professional sources. Maintain the directory README's list links, purposes/boundaries and source navigation when lists are added, renamed, merged or removed; specifications and preparation status stay in the lists rather than the index.
 
@@ -111,7 +119,7 @@ For each entry, include **source/actual location**, **project target path** and 
 
 Use distinct labels for **pending confirmation** (applicable but unknown), **not applicable**, **proposed value** and **measured value**. A non-final sample can be sufficient for the current prototype; state what it represents and what remains to be replaced. Do not turn every optional technical parameter into a blocking question. Missing information does not prevent drafting the useful list.
 
-Product owns behavioral intent; professional sources own their confirmed design requirements; the list owns local specifications, preparation details and file mapping; scenes/resources own implementation settings. Link the applicable list entries from Feature AC/design, with notes or Progress providing navigation. Do not hide binding requirements solely in process-only notes or copy entire rows. A resource analysis alone does not change intent or create Features. Material changes follow the owning source's route in `11-specialist-workflows.md`.
+GDD owns game design; Product owns delivery scope; professional sources own their confirmed detailed specifications; the list owns local specifications, preparation details and file mapping; scenes/resources own implementation settings. Link the applicable list entries from Feature AC/design, with notes or Progress providing navigation. Do not hide binding requirements solely in process-only notes or copy entire rows. A resource analysis alone does not change intent or create Features. Material changes follow the owning source's route in `11-specialist-workflows.md`.
 
 Hand off the list with the missing files/specifications and their destination paths so the user can create, reuse or supply them. Pause only work that needs unavailable resources, subject to the current task's continuation boundaries. If resources already suffice, continue authorized work without a ceremonial wait. When files arrive, inspect their actual content and applicable format, dimensions or duration; filenames and user-reported copying alone do not establish fit. Update the same list and retain unresolved gaps. Copy/import only within the authorized scope, preserving source files and unrelated project content, then continue the prototype and its actual operation/listening checks. List completion, file presence, successful import and visual/audio acceptance are separate facts.
 
@@ -119,11 +127,11 @@ Hand off the list with the missing files/specifications and their destination pa
 
 Clarify vocabulary when competing names or meanings would change a Product decision. Read existing definitions first. If one word describes different concepts, distinguish them using familiar names; if several words mean the same thing, propose one consistent name. Reuse an already clear definition instead of starting a glossary for every task.
 
-Test the distinction with a concrete scenario. For example, when discussing inventory, distinguish an item definition, an owned item and a stack only if their identity or behavior differs. Whether two items with different modifiers can stack exposes a real decision; listing every possible item attribute does not. Record any resulting behavior in the flow, data model or AC that owns it.
+Test the distinction with a concrete scenario. For example, when discussing inventory, distinguish an item definition, an owned item and a stack only if their identity or behavior differs. Whether two items with different modifiers can stack exposes a real decision; listing every possible item attribute does not. Record an accepted behavior decision in its owning GDD section and derive delivery scope and AC from it.
 
 When implementation exists, compare the relevant code with the stated meaning. Surface conflicts with both sources: code describes what happens today and cannot silently redefine approved intent. A new meaning remains a proposal until the user resolves the material Product choice.
 
-Keep a definition local to a Product module when its positioning or data model already explains it sufficiently. Use `docs/terminology.md` for confirmed project vocabulary needed across modules, Features or conversations. New projects include a short purpose/pending-state placeholder; add definitions only when useful confirmed content exists. A placeholder or missing glossary never blocks discussion or development.
+Keep a definition in its GDD section when that context already explains it sufficiently. Use `docs/terminology.md` for confirmed project vocabulary needed across systems, Products, Features or conversations. New projects include a short purpose/pending-state placeholder; add definitions only when useful confirmed content exists. A placeholder or missing glossary is not a blocker; the GDD prerequisite still applies.
 
 `docs/terminology.md` owns confirmed domain vocabulary and a shared language across requirements, design, code and discussion. It is not a general project-context document. Do not create a second `UBIQUITOUS_LANGUAGE.md` or parallel glossary. Retain definitions that will be reused beyond this discussion and prevent a real ambiguity; stable means currently agreed, not immutable.
 
@@ -131,10 +139,10 @@ Use a compact structure, expanding only where a distinction needs explanation:
 
 - Begin with a short description of the domain covered when it helps orient the reader, then give each term a canonical name and definition, normally one or two sentences. Include domain actions as well as nouns when their meanings matter. Necessary distinctions may take more space; there is no word or term quota.
 - Explain necessary conceptual relationships, aliases or commonly confused neighbors only when they prevent a real misunderstanding.
-- Link to the owning Product section for detailed rules, flows, values, state transitions and AC. Keep implementation state ownership, Godot classes, storage formats and technical choices in architecture records or code.
+- Link to the owning GDD section for detailed rules, flows, values and state transitions, and to Product/Feature records for delivery scope and AC. Keep implementation state ownership, Godot classes, storage formats and technical choices in architecture records or code.
 - Keep pending ideas, chat logs, current progress and task-local notes out of terminology. Reuse existing definitions; when moving one here, replace authorized duplicates with links rather than keeping competing copies. Preserve section anchors used by existing Feature sources, leaving a link at the old location.
 
-`project-clarifier` and Product elicitors return proposed wording. `product-author` owns Product behavior; `project-terminology` owns meaning-preserving definitions and links, whether local to Product or shared in `docs/terminology.md`. A Product change may coordinate both methods within one authorized logical change, keeping one definition. Pure terminology maintenance may clarify a name, record an already agreed distinction or move/link a definition; it requires neither Product initialization, a new Feature nor Feature synchronization. If a definition changes actual intent or exposes a material unresolved behavior, resolve that decision through the Product owner and use the applicable Product-change and Feature synchronization route before updating dependent terminology.
+`project-clarifier` and `product-spec-elicitor` return proposed wording for the existing GDD and delivery scope. `product-author` owns accepted GDD design changes and Product delivery documents; `project-terminology` owns meaning-preserving definitions and links, whether local to the GDD or shared in `docs/terminology.md`. An authorized change may coordinate both methods while keeping one definition. Pure terminology maintenance may clarify a name, record an already agreed distinction or move/link a definition; it does not require a new Product, Feature or Feature synchronization. If a definition changes actual intent or exposes a material unresolved behavior, resolve that decision through the design owner and synchronize affected work before updating dependent terminology.
 
 Read relevant terminology definitions during clarification, planning, implementation and review when the file exists. Follow `document_language`, preserve stable IDs, and do not rename code or migrate saved data merely to align terminology.
 
@@ -147,27 +155,26 @@ Add confirmed definitions, merge duplicates and repair references. For a rename,
 ## Module filename rules
 
 - Use a two-digit prefix and a kebab-case ASCII slug, such as `01-pawn-core.md`, `02-map.md`, or `13-mining.md`.
-- Numbers are stable identities, not execution order. Initial allocation may follow known dependencies; planning and execution follow the overview's current dependencies and intended order.
+- Allocate a filename when writing the current Product. Numbers are stable identities, not execution order; planning and execution follow the overview's current dependencies and intended order.
 - Once assigned, module numbers must not be reordered. New modules use the next available number, including a new prerequisite of an existing module.
 - An obsolete module must be renamed with the `_obsolete-` prefix rather than deleted, preserving traceability.
 
 ## Version convention
 
-- Use `V<MAJOR>.<MINOR>`, such as `V0.9`.
-- Keep MAJOR at `0` during the MVP phase; increment it for the first formal release.
-- Increment MINOR when the user-observable core loop expands.
-- Small changes within the same loop remain in the current version rather than creating a new version number.
+Use the game-version names and scope already defined in the GDD. Product links the version scope it delivers; it does not maintain a separate release sequence or change a game version merely because a delivery unit is split or reordered.
 
 ## When to create a module
 
-- **Create a module** when a new system has its own data model and an independent interaction entry point.
-- **Extend an existing module** when new behavior, values, or UI remain within that module's established responsibility.
+- **Create a Product** when a distinct, coherent outcome should be delivered and verified as the next unit. One system can span several Products, and one Product can integrate parts of several systems.
+- **Extend the current Product** when the adopted change remains within its coherent delivery goal. Reassess existing Feature coverage rather than creating a duplicate plan.
+- **Revise a later candidate** in `product.md` when its boundary or order changes. Detail it only after the current Product's required Features are complete.
 
 When the boundary is unclear, use `product-author`; it owns the routing decision.
 
 ## Anti-examples
 
-- Do not put implementation choices such as a vector type or pathfinding algorithm in Product documents. Those choices belong in Project Rules, code, or implementation notes.
-- Do not describe numeric behavior with subjective terms such as “high damage”; provide a formula or concrete value.
+- Do not put implementation choices such as a vector type or pathfinding algorithm in GDD or Product documents. Those choices belong in Project Rules, code, or implementation notes.
+- Do not copy GDD flows, states or numeric rules into Product. Link the precise source and explain its delivery applicability.
+- Do not describe numeric behavior with subjective terms such as “high damage”; resolve the applicable formula or concrete value in the GDD.
 - Do not use subjective acceptance language such as “renders smoothly”; state an observable threshold or outcome.
-- Do not put speculative future ideas in active Product requirements. Keep them in a separate `docs/unadopted-ideas.md` until approved as Product intent.
+- Do not put speculative future ideas in active requirements. Keep them in `docs/unadopted-ideas.md` until adopted into the existing GDD; that file is not a route for starting development without a GDD.

@@ -47,13 +47,15 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 默认显示名为 New Godot Project，主场景为 main/main.tscn，代码与文档是最小起点。创建器不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。默认工具位置不代表可用，配置中也没有“已就绪”状态字段。
 
+新项目预设 `docs/gdd/` 用途说明。项目开发前须已有真实 GDD 正文，缺少时停止；已有设计在项目内持续维护，框架不从模糊想法初始化 GDD。
+
 工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/框架基础/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [prompts.json](framework/prompts.json)，在实际项目目录使用。
 
 ## 项目能力与边界
 
 核心材料与专业方法按职责区分：
 
-- **需求与任务**：Product 拥有玩家行为，Feature 拥有本项范围与验证责任，完成证据引用真实测试/人工原件。
+- **设计与交付**：GDD 保存游戏设计，Product 总览预拆分交付范围；当前 Product 轮到时才编写文档，并一次拆出完整必要 Feature。完成后再细化下一个 Product，完成证据引用真实测试/人工原件。
 - **专业要求与实现**：由对应 Skill 负责。
   - `project-terminology`：维护含义不变的定义。
   - `design-localization-spec`：确定语言要求。

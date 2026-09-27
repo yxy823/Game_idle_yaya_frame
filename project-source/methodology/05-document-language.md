@@ -44,7 +44,7 @@ The Test Registry always lives at `docs/test-registry.json`, relative to the pro
 
 ### Project Environment Bootstrap
 
-Bootstrap means the Agent prepares this project's environment in response to an explicit setup request. Use the configuration contract below; there is no separate setup program.
+Bootstrap means the Agent prepares this project's environment in response to an explicit setup request. The [existing GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority) applies before this project-development work. Use the configuration contract below; there is no separate setup program.
 
 Configuration stores tool choices, not derived readiness or an observed version. The checker probes Godot and reports its actual version; keep useful output in the existing initialization report.
 
@@ -77,7 +77,7 @@ Every inferred value is non-binding until the user confirms it. If the evidence 
 
 The following generated, human-readable project knowledge must use `document_language`:
 
-- Product headings, prose, tables, diagrams, UI labels, and audio descriptions
+- Authorized additions or edits to existing GDD prose, Product delivery headings/prose, and professional specifications
 - Feature titles, descriptions, acceptance criteria, and human-readable source annotations
 - Feature notes and revision-log explanations
 - Current Progress, linked execution archives, implementation decisions, and durable handoff records
@@ -132,7 +132,7 @@ Use the configured `document_language` for new durable content. Existing text in
 
 Editing the configuration field alone is not a supported language migration. A user who explicitly requests a different document language must receive a scoped migration plan covering at least:
 
-- active Product documents and headings
+- active GDD, Product and professional documents and headings
 - pending and in-progress Feature natural-language fields
 - current Progress state and links; historical archives are excluded unless explicitly approved
 - source anchors or links affected by translated headings

@@ -36,7 +36,7 @@ It is the stable home for:
 
 It must not copy the current Environment Bootstrap status, executable paths, tool versions, or concrete Godot/GDScript rules. Those facts belong to the authoritative configuration or routed rule documents.
 
-Keep enough scope and rationale to apply each project constraint. Domain terms belong in `docs/terminology.md`; observable module behavior belongs in Product; current structure belongs in architecture documentation; costly technical tradeoffs belong in ADRs when warranted. Do not turn local Feature choices into global restrictions or prefill a blank project with unconfirmed offline, platform or save-compatibility promises.
+Keep enough scope and rationale to apply each project constraint. Domain terms belong in `docs/terminology.md`; game-design behavior belongs in `docs/gdd/`; delivery boundaries belong in Product; current structure belongs in architecture documentation; costly technical tradeoffs belong in ADRs when warranted. Do not turn local Feature choices into global restrictions or prefill a blank project with unconfirmed offline, platform or save-compatibility promises.
 
 ## Rule loading
 
@@ -99,7 +99,7 @@ Before writing any project-rule addition, deletion or edit, output a self-check 
 
 For deletion, explain why the protected concern no longer applies or what now protects it. Reuse explicit decisions and documentation authority: persisting an already agreed constraint or a meaning-preserving edit needs no repeated approval. New restrictions, removals and changes of meaning, strength, scope or exceptions require an explicit decision covering that change. A general Feature implementation request does not authorize constitutional changes. Cost, existing style or a local implementation convenience cannot alone waive a MUST. Stop only affected work when a real conflict is unresolved.
 
-After approval, update the owning rule and affected references incrementally; merge duplicates instead of only appending. Assess existing Product and planned/completed Features through `feature-sync` where rule changes affect their contracts. During an active Feature, retain its task context and record necessary follow-up scope; supporting synchronization remains part of that authorized work and preserves its unfinished changes. Resolve current conflicts and committed-source prerequisites before dependent plan writes, and complete authorized downstream synchronization before the next affected Feature.
+After approval, update the owning rule and affected references incrementally; merge duplicates instead of only appending. Assess existing GDD, Product and planned/completed Features through `feature-sync` where rule changes affect their contracts. During an active Feature, retain its task context and record necessary follow-up scope; supporting synchronization remains part of that authorized work and preserves its unfinished changes. Resolve current conflicts and committed-source prerequisites before dependent plan writes, and complete authorized downstream synchronization before the next affected Feature.
 
 Workflow changes do not retroactively rewrite historical approvals or evidence. State when an approved change applies, preserve completed history, and reassess current design/tests where applicable; a blanket 'next Feature only' policy cannot silently exempt current work from a newly confirmed project hard constraint. Final rule/design edits precede Stage 4 when possible. Later changes must satisfy the existing source-freshness, verification and applicable acceptance requirements.
 

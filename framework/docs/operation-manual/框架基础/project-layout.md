@@ -12,12 +12,13 @@
 | `agent-rules/` / `methodology/` | 按领域工程语义 / 开发和验证契约 | 所属规范；执行与审核按当前任务读取 |
 | `.agents/skills/` / `.codex/agents/` | 专项方法 / researcher、independent-reviewer 角色配置 | 主 Agent 按任务选用；角色文件不证明宿主已加载 |
 | `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
-| `docs/product.md` / `docs/product/` | 总体范围、模块关系 / 可观察行为与规则 | `product-author`；规划和实现读取 |
+| `docs/gdd/` | 游戏定位、核心循环、系统规则、内容与版本设计范围 | `product-author` 维护已有正文；相关项目工作读取 |
+| `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
 | `docs/project-rules.md` | 项目级 MUST、PREFER、REVIEW 约束 | 已获准规则维护；所有相关工作读取 |
 | `docs/game-organization.md` | 游戏代码、场景与资源的组织和命名判断指南 | 项目结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
-| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 共享方向和专业规格 | 对应 design Skill；行为仍由 Product 定义 |
+| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；已由 GDD 定义的细节直接引用 |
 | `docs/resource-requirements/` | 稳定业务范围的素材准备要求、位置与状态 | 对应专业规格及接入任务；README 只导航 |
 | `docs/feature-list.json` | ID、标题、依赖、状态与详情入口 | 规划/执行；可开始任务及台账检查 |
 | `docs/features/F0XX.json` | 本项范围、AC、来源、验证义务与必要 notes | 规划/执行；测试选择和完成检查 |
@@ -57,7 +58,7 @@
 
 最小入口不是预建完整游戏架构。代码、场景和资源可按业务模块相邻放置；存档、设置和全局 UI 按实际所有者组织。工程规则的编号目录不要求游戏照搬同样层级，也不要求新增 Bootstrap、Autoload、事件总线或每类脚本一个目录。
 
-四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与可选设计等按实际活动产生。初始空测试目录和占位 Product 不提供任何通过证据。
+四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与可选设计等按实际活动产生。初始 GDD 目录只有用途说明，不能作为开发所需的真实正文；空测试目录和占位 Product 也不提供任何通过证据。
 
 ## 复制与重命名
 
@@ -72,6 +73,8 @@
 ## 模板与按需记录
 
 `methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；可选 Feature 设计按解释需要省略不适用章节。
+
+GDD 沿项目已有的真实文件组织入口和主题，不附带另一套强制模板。Product 模板用于组织交付，不能替代或初始化 GDD。
 
 | 产物 | 位置与注意事项 |
 | --- | --- |

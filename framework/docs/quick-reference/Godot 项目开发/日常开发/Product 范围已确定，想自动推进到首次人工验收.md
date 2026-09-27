@@ -13,19 +13,19 @@ Product 范围已确定，想自动推进到首次人工验收。
 
 ## 前置条件与适用范围
 
-明确请求启动 Goal，按既定范围连续推进到首个真实人工交接点。
+项目已有真实 GDD，明确请求启动 Goal，按已确认的交付预拆分范围连续推进到首个真实人工交接点。
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 日常开发 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 日常开发 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
 
 **S1｜固定 Goal 范围**
 
-当前 Agent 核对总览、真实进度与范围；若 Goal 已存在则沿用，未指定预算不自行设定。
+当前 Agent 核对 GDD、交付预拆分、真实进度与范围；若 Goal 已存在则沿用，未指定预算不自行设定。
 
 **S2｜逐个推进 Product**
 
-只规划当前 Product，写前展示拆分后按目标自主授权继续，实现、必要验证与本地提交沿现有流程。
+先依据最新 GDD 细化已轮到的 Product，再一次拆出其完整必要范围的多个 Feature；展示拆分后按目标自主授权继续。当前 Product 全部必要 Feature 真实完成后，再复核并细化下一个；实现、必要验证与本地提交沿现有流程。
 
 **S3｜交接首个人工验收**
 
@@ -45,7 +45,7 @@ manual Feature 先完成全部适用自主工作，提供可运行入口与绑�
 
 ## 阻塞、异常与范围变化
 
-局部原型确认只阻塞依赖实现，不算整段目标完成；预算耗尽或阻塞不是达成。
+GDD 缺失时说明缺口并停止，不初始化设计。局部原型确认只阻塞依赖实现，不算整段目标完成；预算耗尽或阻塞不是达成。
 
 ## 完成状态与验证标准
 

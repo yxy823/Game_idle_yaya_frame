@@ -4,6 +4,8 @@
 
 所有项目命令在**生成后的项目根目录**运行。按当前任务调用所需入口，以下命令参考不意味着每次都要整页执行。涉及写记录的命令遵循对应 Skill 和已有授权。
 
+Agent 先按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority) 核对真实设计正文，再进入项目开发。命令成功不能代替这项内容判断，工具不通过新增状态字段宣告 GDD 就绪。
+
 ## 从运行结果到完成状态
 
 Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，首次记录时建立完成依据文件，Stage 7 检查完成条件。下面是实际读写关系；它不会因编辑文件自动触发。
@@ -255,12 +257,12 @@ $LASTEXITCODE
 
 | 输入类别 | 当前实际计算 |
 | --- | --- |
-| 术语、专业规格/资源清单、项目规则、Feature design、架构与 ADR | 通常按文件原始字节纳入；换行、措辞、准备状态或排版变化即使不改行为，也可能改变指纹 |
+| GDD、Product、术语、专业规格/资源清单、项目规则、Feature design、架构与 ADR | 通常按文件原始字节纳入；换行、措辞、准备状态或排版变化即使不改行为，也可能改变指纹 |
 | 源码、测试、配置和其他未豁免文件 | 纳入路径与当前内容；增删、移动同样可能改变摘要 |
 | `docs/features/` 下的 JSON、Feature 索引、Registry、修订记录、methodology-config | 指定 JSON 先解析并排序对象键、统一序列化；数组顺序仍保留，只排除下表约定字段 |
 | `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 从源码指纹排除；报告仍由结果导入/人工原件契约单独核对，不可随意改写 |
 | `docs/progress/`、`docs/knowledge/`、`docs/research/` 中以 `.md` 结尾的文件 | 解释性 Markdown 排除；非 Markdown 文件仍参与，要求正文不能只放在这些目录 |
-| 普通 `README.md`（文件名大小写不敏感） | 排除；但在 `.agents/`、`agent-rules/`、`methodology/`、`docs/product/`、`docs/features/` 下仍参与 |
+| 普通 `README.md`（文件名大小写不敏感） | 排除；但在 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下仍参与 |
 
 未被 Git 列出的忽略文件不会进入这次摘要；这不是把正式需求、规则或可执行输入迁入豁免位置的许可。知识只保留参考经验，普通 README 只保存用法与导航。其他 Markdown 没有通用豁免。
 
@@ -277,6 +279,8 @@ $LASTEXITCODE
 - **Git 提交号：** 另作来源记录；仅提交了过程字段且指纹相同，不会凭提交号要求重跑或取得新接受。
 
 治理文档尽量在 Stage 3 完成。最终测试或人工接受后再改了纳入的内容，包括 Stage 5.5 采纳新规则时，先核对当前指纹与验证义务，补齐失效的最终运行、导入和适用人工接受，不能只凭“未改代码”沿用旧结果。内容相同且覆盖仍满足的结果才可复用；只读评审不改变内容。
+
+这一绑定是全局的。即使修改的是后续尚未开发的 GDD 章节，也可能使当前未完成 Feature 的已有测试或人工接受失效；已完成的历史记录不自动重开。最终验证前应完成本轮来源更新，不为 GDD 另建一套指纹或同步记录。
 
 直接依据是 [验证快照实现](../../../../project-source/tools/lib/verification_snapshot.py) 的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及 [测试策略](../../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。静态解析/lint 的实际影响仍由 Agent 单独判断。
 
