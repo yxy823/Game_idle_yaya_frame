@@ -8,12 +8,13 @@
 
 | 内容 | 维护位置 |
 | --- | --- |
-| 新项目应携带的文件 | project-source/；路径变化同时核对复制清单 |
+| 常规项目分发材料 | project-source/；路径变化同时核对复制清单，共用写作指南的来源见下列条目 |
 | 创建器与复制规则 | framework/commands/create_project.py 与 framework/project-files.json |
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
-| 框架维护、供用户自行复用的 Skill | framework/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不进入项目复制清单 |
+| 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
+| 框架与项目共用的写作正文 | technical-documentation-writing/references/，只维护这一份；清单指定三份指南作为普通规则复制给新项目 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
@@ -57,7 +58,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 说明的组织与措辞
 
-通用详细写法维护在 [技术文档编写 Skill](../../skills/technical-documentation-writing/SKILL.md)，本节只保存框架的页面分工与检查约定。生成项目保留 [基本可读性要求](../../../project-source/Project_AGENTS.md#使用说明的可读性)，无需访问框架或安装该 Skill。
+通用详细写法维护在 [技术文档编写 Skill](../../../.agents/skills/technical-documentation-writing/SKILL.md) 的参考文件中，本节只保存框架的页面分工与检查约定。生成项目通过[本地写作入口](../../../project-source/Project_AGENTS.md#使用说明的可读性)读取创建时复制的同一份正文，无需访问框架或安装该 Skill。
 
 | 位置 | 职责 |
 | --- | --- |
@@ -77,16 +78,19 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 可复用写作 Skill 的维护
 
-[technical-documentation-writing](../../skills/technical-documentation-writing/SKILL.md) 负责通用的目录组织、表达与操作文档写法。其源码由框架维护，跨项目复制与更新由用户操作，不增加安装或同步工具。
+[technical-documentation-writing](../../../.agents/skills/technical-documentation-writing/SKILL.md) 位于仓库根目录的 `.agents/skills/`，负责通用的目录组织、表达与操作文档写法。其源码由框架维护，保留 `allow_implicit_invocation: false`；完整 Skill 的跨项目复制与更新由用户操作，不增加安装或同步工具。
 
-- **正文归属**：详细通用方法在 Skill 内维护；本框架的提示词与场景一对一、目录映射、术语含义和 HTML 约定保留在所属规范。项目 AGENTS 保留独立可用的简短底线，不复制整套指南。
+- **正文归属**：通用写法只在 Skill 内的三份参考中维护：`writing-guide.md` 保存基本原则，`document-structure.md` 保存目录与正文分工，`procedure-writing.md` 保存流程写法。`SKILL.md` 仅保留入口和资源约定；本框架的提示词与场景一对一、目录映射、术语含义和 HTML 约定保留在所属规范。
+- **项目分发**：复制清单逐文件选择这三份参考，原样放入生成项目的 `agent-rules/00-core/documentation/`，保留同目录相对链接。项目 AGENTS 与 Core 路由指向本地指南，不维护另一套写作正文，也不复制本写作 Skill 的 `SKILL.md`、`agents/openai.yaml` 或调用策略。
+- **适用边界**：项目说明、需求、设计、知识和报告中的自然语言采用共同写法；所属规范继续决定固定路径、字段、文档语言、流程和验收条件，11 类信息只用于流程与场景。项目特有规则仍由项目维护。
+- **更新边界**：修改框架正文只影响以后创建的项目；已创建项目拥有独立副本，后续更新由用户决定，不回查框架或自动同步。
 - **独立携带**：Skill 所需参考放在内部 `references/`。确需配套脚本时，脚本和私有模块放在内部 `scripts/`，资源相对脚本或 Skill 定位，待处理项目作为显式输入；不得引用本框架的命令目录、绝对路径或包外私有模块。
 - **依赖边界**：运行时和第三方依赖如确有需要须明确说明，不把包内自有资源与外部安装环境混淆。目标项目已有的检查器是按实际情况使用的项目工具，不作为 Skill 绑定本框架的依赖；当前版本无需脚本，不预建空目录。
-- **修改验证**：根据真实误用、表达问题或维护成本调整相应条款与示例，核对保留的项目底线。首次创建或明显改变适用范围时，用独立试写检查实际结果与可携带性；格式校验不替代内容判断，不要求每次局部改字都重新跑完整试写。
+- **修改验证**：根据真实误用、表达问题或维护成本调整相应条款与示例；分发变化核对复制后的文件、入口和相对引用。首次创建或明显改变适用范围时，用独立试写检查实际结果与可携带性；格式校验不替代内容判断，不要求每次局部改字都重新跑完整试写。
 
 ## 保持初始化边界
 
-手册、维护说明、完整提示词、framework/skills/ 和框架审核材料不加入 project-files.json，也不移动到 project-source/。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
+手册、维护说明、完整提示词、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。唯一按普通写作规则分发的材料是上述三份指南，直接从 Skill 内取用，不在 project-source/ 保存第二份正文。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
 
 advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择范围或所引用 Skill 名称后，按 [导出说明](../../README.md#导出-advisor-精选表达参考) 生成并检查；创建器只复制静态材料，项目不承担转换或回查职责。
 

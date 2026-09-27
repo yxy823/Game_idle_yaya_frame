@@ -176,6 +176,15 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertIn("window/size/viewport_height=900", settings)
         for name in (".git", ".godot", "framework", "prompts.json"):
             self.assertFalse((output / name).exists(), name)
+        writing_rules = output / "agent-rules/00-core/documentation"
+        writing_sources = repository / ".agents/skills/technical-documentation-writing/references"
+        guide_names = {"writing-guide.md", "document-structure.md", "procedure-writing.md"}
+        self.assertEqual({path.name for path in writing_rules.iterdir()}, guide_names)
+        for name in guide_names:
+            with self.subTest(writing_guide=name):
+                self.assertEqual((writing_rules / name).read_bytes(),
+                                 (writing_sources / name).read_bytes())
+        self.assertFalse((output / ".agents/skills/technical-documentation-writing").exists())
         main_scene = output / "main/main.tscn"
         self.assertEqual(main_scene.read_bytes(),
                          (repository / "project-source/defaults/main/main.tscn").read_bytes())

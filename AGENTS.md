@@ -22,9 +22,9 @@
 
 ## 使用说明的可读性
 
-编写或整理 README、使用手册和操作指南时，使用框架维护的 [技术文档编写 Skill](framework/skills/technical-documentation-writing/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
+编写或整理技术文档时，使用本仓库的 [技术文档编写 Skill](.agents/skills/technical-documentation-writing/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
 
-生成项目的 [基本可读性要求](project-source/Project_AGENTS.md#使用说明的可读性) 保持独立可用；通用详细写法在上述 Skill 中维护。`framework/skills/` 不进入项目复制清单，Skill 的跨项目复制与更新由用户处理。
+通用写作正文只在上述 Skill 的 `references/` 中维护。创建器按清单将三份指南原样复制到生成项目的 `agent-rules/00-core/documentation/`，由[项目写作入口](project-source/Project_AGENTS.md#使用说明的可读性)引用；不分发本写作 Skill 的入口、元数据或调用策略。生成项目使用本地规则，不查询框架；已有项目与完整 Skill 的跨项目复制、更新由用户处理，不增加同步机制。
 
 框架及生成项目共用的术语写法维护在 [框架术语](framework/docs/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，不把两者混为同一份词表。
 
@@ -32,7 +32,7 @@
 
 | 当前工作 | 执行依据 |
 | --- | --- |
-| 框架维护 | `framework/` 保存维护材料，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存可复制材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
+| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存常规分发材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
 | 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |

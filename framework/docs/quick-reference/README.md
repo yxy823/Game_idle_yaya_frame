@@ -45,11 +45,11 @@
 
 ### 排版与层级
 
-通用排版遵循[技术文档编写 Skill](../../skills/technical-documentation-writing/SKILL.md#表达与排版)，操作内容按其[流程文档参考](../../skills/technical-documentation-writing/references/procedure-writing.md)组织。本 README 保留框架场景的特有约定，不再维护另一份通用写法。
+通用排版遵循[写作指南](../../../.agents/skills/technical-documentation-writing/references/writing-guide.md#表达与排版)，操作内容按其[流程文档参考](../../../.agents/skills/technical-documentation-writing/references/procedure-writing.md)组织。本 README 保留框架场景的特有约定，不再维护另一份通用写法。
 
 ## 11 类信息如何使用
 
-采用[11 类信息及其边界](../../skills/technical-documentation-writing/references/procedure-writing.md#11-类信息及其边界)中的分类名称、边界和顺序。框架场景只展示有内容的栏目；空项省略，不写“无”或“不适用”。未知但会影响执行的信息写明缺口，不当作空项隐藏。正文标题不带固定栏目编号，避免省略后留下编号缺口。
+采用[11 类信息及其边界](../../../.agents/skills/technical-documentation-writing/references/procedure-writing.md#11-类信息及其边界)中的分类名称、边界和顺序。框架场景只展示有内容的栏目；空项省略，不写“无”或“不适用”。未知但会影响执行的信息写明缺口，不当作空项隐藏。正文标题不带固定栏目编号，避免省略后留下编号缺口。
 
 场景应尽量保持单一正常路径。没有分支就省略该栏；若需要在两套处理方法间选择，先收窄入口或拆成不同场景。正常等待用户体验属于当前步骤的待完成状态，不伪装成异常。
 

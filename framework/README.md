@@ -1,6 +1,6 @@
 # 维护工具
 
-本目录保存创建器、复制清单、集中提示词、可复用 Skill、文档和审核/回归材料。项目使用说明从 [文档总入口](docs/README.md) 进入，维护原则见 [维护与同步说明](docs/framework-maintenance/updating-the-blank-project.md)。这些材料不复制到生成项目。
+本目录保存创建器、复制清单、集中提示词、文档和审核/回归材料。项目使用说明从 [文档总入口](docs/README.md) 进入，维护原则见 [维护与同步说明](docs/framework-maintenance/updating-the-blank-project.md)。这些维护材料不复制到生成项目；框架自用 Skill 放在仓库根目录的 `.agents/skills/`。
 
 ## 文件与职责
 
@@ -13,7 +13,7 @@
 | [commands/check_scenario_prompt_paths.py](commands/check_scenario_prompt_paths.py) | 从 JSON 名称和目录文件名核对提示词与场景一对一，不读取场景正文 |
 | [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 显式导出 advisor 精选表达参考，不承担流程或同步职责 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
-| [skills/technical-documentation-writing/](skills/technical-documentation-writing/SKILL.md) | 通用技术文档写作与整理，参考资料随 Skill 保存；跨项目复制由用户处理 |
+| [技术文档编写 Skill](../.agents/skills/technical-documentation-writing/SKILL.md) | 通用写作正文随 Skill 保存；创建器只将三份指南复制为项目普通规则，完整 Skill 的跨项目复制由用户处理 |
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 一次生成并检查两本独立 HTML 手册；共享 [模板](commands/blank-project-handbook-page.html)、[交互源码](commands/blank-project-handbook-interactions.js) 与渲染实现 |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目 |
 | [tests/](tests/) | 创建器、导出器、路径映射、文档指纹、人工文件等维护回归 |

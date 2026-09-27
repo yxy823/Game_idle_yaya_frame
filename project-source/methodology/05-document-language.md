@@ -112,6 +112,8 @@ An agent must translate meaning-bearing prose, not keys, enums, IDs, evidence st
 
 Yaya Loop's executable workflow sources use one canonical English version. This includes Methodology specifications, Skills, templates, Project Rules sources, explicit tools, and default examples.
 
+The shared writing guides in `agent-rules/00-core/documentation/` retain their distributed source language as an explicit exception. They are ordinary rule sources, not project narrative to translate according to `document_language`; do not create parallel translations. Documents written using these guides still follow the configured project document language and their owning schemas.
+
 Task prompts sent by a user may use the conversation language. Their language does not by itself change the canonical workflow sources or the configured `document_language` for durable project output.
 
 Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodies, or translated Project Rules libraries. Human-facing entry documents may have explicitly approved translations, such as `README.zh-CN.md`, but those translations are not executable workflow sources.

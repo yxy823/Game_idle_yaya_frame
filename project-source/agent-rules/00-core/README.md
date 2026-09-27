@@ -11,5 +11,6 @@ Core rules apply across file types. Use this router for modifications or relevan
 | `third-party-generated-and-temporary-files.md` | Vendor, generated, `.import`, cache, backup, scratch, or temporary files are involved |
 | `validation-policy.md` | Combining validation gates or determining whether evidence is sufficient |
 | `completion-and-reporting.md` | Preparing the final task report |
+| `documentation/writing-guide.md` | Writing or organizing project documentation; follow its conditional links for document structure or procedures, preserving the owning schemas and workflow contracts |
 
 Core rules define cross-cutting invariants. Specialized modules refine them for a narrower domain; they do not silently erase unrelated Core obligations.
