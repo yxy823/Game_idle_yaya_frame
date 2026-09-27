@@ -61,6 +61,14 @@
 # trailing EOF blank line from Git's whitespace gate.
 project-source/addons/gdscript-linter/docs/IGNORE_RULES.md whitespace=-blank-at-eof
 
+# Keep upstream addon text intact; these pinned packages contain trailing spaces.
+# Project-owned code and documentation retain the normal whitespace checks.
+project-source/addons/kanban_tasks/** whitespace=-blank-at-eol
+project-source/addons/resources_spreadsheet_view/** whitespace=-blank-at-eol
+project-source/addons/signal_lens/** whitespace=-blank-at-eol
+# This upstream file also ends with a whitespace-only line.
+project-source/addons/resources_spreadsheet_view/typed_editors/dock_texture.gd whitespace=-blank-at-eol,-blank-at-eof
+
 
 # ============================================================
 # Environment templates

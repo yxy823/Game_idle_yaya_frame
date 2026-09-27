@@ -37,7 +37,7 @@
 | components/、assets/ | 可复用能力与跨模块共享素材；专属脚本、配置和素材跟随所属模块 |
 | tests/ | 项目测试区域；初始没有业务测试套件 |
 | [docs/game-organization.md](docs/game-organization.md) | 目录归属、模块增长与命名判断指南 |
-| addons/ | gdUnit4、GDScript linter、默认不启用全局插件的 SoundManager |
+| addons/ | gdUnit4、GDScript linter、SoundManager，以及下列编辑器效率插件 |
 | [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的图像/音频/Shader/粒子与动画组合预览及消费示例；`example_*` 资源不代表正式游戏素材 |
 | components/feedback/、tools/asset_workbench/ | 示例共用的表现组件、局部音频封装与工作台界面 |
 | gdlint.json | GDScript lint 配置 |
@@ -50,6 +50,18 @@
 - **项目入口**：已有最小启动场景 `main/main.tscn`，业务模块按游戏实际需要展开；随带的工作台示例是独立开发入口。
 - **文档与台账**：Product 和专业文档只有用途与待定说明，任务及测试索引为空；后续内容遵循已确认的文档语言。
 - **验证状态**：环境尚未验证，没有正式玩法、业务测试或已完成任务；入口存在不代表已运行或验收通过。
+
+## 编辑器效率插件
+
+在 Godot 的“项目 → 项目设置 → 插件”中启用或停用。新项目默认启用 Script-IDE、Inspector Tabs 和 Kanban Tasks；Edit Resources as Table 与 Signal Lens 已安装，按需启用。gdUnit4 保持启用，GDScript linter 面板和 SoundManager 全局插件保持停用。
+
+| 插件 | 使用入口与用途 |
+| --- | --- |
+| Script-IDE | Script 编辑区的标签页、成员大纲和快速搜索；偏好在编辑器设置的 `Plugin / Script Ide` 中调整 |
+| Inspector Tabs | 检查器属性分类标签；在高级编辑器设置的 `Inspector Tabs` 中调整布局或切换滚动定位模式 |
+| Kanban Tasks | 顶部 `Tasks` 工作区；个人灵感看板默认保存到项目根的 `kanban_tasks_data.kanban`，与开发任务记录各自独立，无同步关系 |
+| Edit Resources as Table | 启用后进入顶部 `ResourceTables` 工作区，以表格浏览和编辑 Resource；当前组合在退出编辑器时有资源泄漏诊断，因此默认停用 |
+| Signal Lens | 启用后在调试器中查看运行中节点的信号连接与触发；插件会注册 `SignalLens` Autoload，停用时移除，发行导出前先停用 |
 
 ## 根据任务使用 Skill
 

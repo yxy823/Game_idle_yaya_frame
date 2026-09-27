@@ -7,6 +7,7 @@
 | 材料归属、说明同步、验证选择和交付约定 | [修改空白项目与同步使用说明](updating-the-blank-project.md) |
 | Skill、脚本、提示词与场景的职责判断 | [职责设计准则](../../review/baselines/skill-script-prompt-design.md) |
 | 源材料、工具回归、真实引擎和流程抽样的证据范围 | [框架的复制与运行验证](validating-framework.md) |
+| 编辑器效率插件的上游链接、安装版本、Godot 兼容性与升级核对 | [编辑器插件版本记录](editor-plugin-versions.md) |
 | 维护命令、复制清单、导出与路径检查工具 | [维护工具](../../README.md) |
 | 尚需推进的工作与真实验证缺口 | [框架待办](../../progress.md) |
 | 长期基线与按次审核报告 | [审核材料](../../review/README.md) |

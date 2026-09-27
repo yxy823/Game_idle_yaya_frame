@@ -48,6 +48,26 @@
     "target": "addons/sound_manager"
   },
   {
+    "source": "project-source/addons/script-ide",
+    "target": "addons/script-ide"
+  },
+  {
+    "source": "project-source/addons/inspector_tabs",
+    "target": "addons/inspector_tabs"
+  },
+  {
+    "source": "project-source/addons/kanban_tasks",
+    "target": "addons/kanban_tasks"
+  },
+  {
+    "source": "project-source/addons/resources_spreadsheet_view",
+    "target": "addons/resources_spreadsheet_view"
+  },
+  {
+    "source": "project-source/addons/signal_lens",
+    "target": "addons/signal_lens"
+  },
+  {
     "source": "project-source/components/feedback",
     "target": "components/feedback"
   },

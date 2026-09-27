@@ -89,7 +89,7 @@ $LASTEXITCODE
 | application | 名称 `New Godot Project`；features 包含 `4.7` | 表示目标版本和显示名，不证明工具已安装 |
 | application | `run/main_scene="res://main/main.tscn"` | 已有最小入口供后续组装；没有预置玩法，创建时不运行 |
 | display/window/size | viewport 默认 `1600×900` | 新建项目、单对象/组合工作台沿用此尺寸；之后可按游戏需求显式调整，编辑器嵌入运行仍受宿主区域约束 |
-| editor_plugins | 启用 gdUnit4 | GDScript linter 随项目提供，但默认未在此列表启用其编辑器面板 |
+| editor_plugins | 启用 gdUnit4、Script-IDE、Inspector Tabs、Kanban Tasks | 其余随带插件按需启用，具体用途与限制见下文 |
 | gdunit4 session_hooks | 使用 `gdunit_diagnostic_session.gd` | 测试运行关联真实引擎诊断 |
 | gdunit4 report | 打开 push error、script error 和 orphan 诊断 | 测试需要保留引擎错误事实 |
 | gdunit4 flaky check | `false` | 不以自动重复运行替代失败调查 |
@@ -126,6 +126,10 @@ CLI 和可选编辑器面板都以项目根 `gdlint.json` 为分析配置来源�
 ## 插件和文本约定
 
 本仓库当前 gdUnit4 的 `plugin.cfg` 标记 `6.2.0`，GDScript linter 标记 `3.3.0`。这是**随仓库保存的插件版本**，不是上游最新版本声明。linter 另有本地修改，原因与维护范围记录在 [YAYA_PATCH.md](../../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前需核对补丁和许可证。
+
+空白项目还随带 Script-IDE、Inspector Tabs、Kanban Tasks、Edit Resources as Table 2 和 Signal Lens。前三个默认启用。资源表格插件在当前组合中有退出泄漏诊断，因此保留安装、按需启用；Signal Lens 也按需启用，它会注册调试用 Autoload，停用时移除。Kanban 是使用者独立维护的灵感看板，与框架开发任务记录没有读取或同步关系。
+
+这五个插件的上游链接、固定源码版本、包内版本差异、启用边界与实测结果集中在[编辑器插件版本记录](../../framework-maintenance/editor-plugin-versions.md)。记录只保留在框架维护目录，不进入生成项目；项目内的简短使用入口见 [README](../../../../project-source/Project_README.md#编辑器效率插件)。
 
 `.editorconfig` 约定：
 

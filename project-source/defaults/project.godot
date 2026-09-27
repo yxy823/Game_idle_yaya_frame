@@ -11,7 +11,7 @@ window/size/viewport_width=1600
 window/size/viewport_height=900
 
 [editor_plugins]
-enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")
+enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/script-ide/plugin.cfg", "res://addons/inspector_tabs/plugin.cfg", "res://addons/kanban_tasks/plugin.cfg")
 
 [gdunit4]
 hooks/session_hooks=Dictionary[String, bool]({
