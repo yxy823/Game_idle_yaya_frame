@@ -25,8 +25,9 @@ Review actual advice against the canonical routing table, using small neutral pr
 | Human says a specific tested revision is accepted | Follow up on that exact scope/snapshot; do not accept another version or Feature. |
 | Runner returned not_required for an empty manual plan | Explain that no automated test ran; retain applicable static checks and actual human acceptance. Do not recommend importing a nonexistent report or clearing earlier failures. |
 | Status query with old PASS and changed source | Report stored evidence and unverified freshness separately; no fake current PASS or unnecessary continuation prompt. |
-| Simple bounded next action | Short prompt; avoid copying the entire workflow. |
-| Cross-module migration with uncertain inputs | Investigation/planning prompt with evidence gaps and validation obligations. |
+| Bounded next action with known inputs | Prompt with all eight explicit fixed fields, populated from current facts and destination rules; no field exemption based on brevity and no copied full workflow. |
+| Cross-module migration with uncertain inputs | The same eight fixed fields, plus relevant explicit conditional fields for evidence gaps, risk/recovery and environment; investigation/planning remains within actual authorization. |
+| A continuation prompt reaches a missing decision, unavailable verification or pending human acceptance | Describe the actual stop and recovery condition separately from completion; do not treat reporting a blocker as achieving an implementation/delivery goal. |
 | Existing evidence is sufficient for a proposed approach | Continue the appropriate route; do not add a compulsory search, report or research Stage. |
 | User wants external research before choosing an implementation | Point to External research and researcher with the question, concrete versions and project constraints; preserve investigation-only scope and identify requested report output. |
 | anysearch is absent or unavailable | The researcher may use another available search method without another approval; do not claim the external Skill was bundled or install it automatically. |

@@ -98,7 +98,7 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 
 Product execution order governs the planning horizon: one Product's Features are decomposed and completed before the next Product is decomposed. Revisit later requirements using actual experience instead of allocating all future tasks up front. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) with the existing Product documents and Feature sources/statuses; no extra Product queue or planning-state file is needed.
 
-Complexity changes prompt detail, not authorization. Simple known work gets a short actionable prompt; uncertain, cross-module or migration work gets an investigation/planning prompt. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
+Choose investigation, planning or execution from the available evidence and current user authorization. Drafted task prompts use explicit fields under the prompt-writing contract in `project-next-step-advisor`, regardless of task size; the format does not create new steps or authority. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
 
 Prototype observations and tentative parameters are not approved Product intent or Feature acceptance. Keep the question, observed result, decision and experiment file disposition in current Feature notes, or current Progress when no Feature exists. Adopting an outcome into formal development returns to the Product or engineering entry above; exceeding the experiment budget requires user direction.
 
