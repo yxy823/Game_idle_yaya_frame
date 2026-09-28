@@ -163,7 +163,7 @@ Project、分类、文件名均使用 JSON 中的准确文字，不另建英文�
 
 ## 文本编写的评价维度
 
-审核 AGENTS、Skill、脚本说明、提示词和手册时，同时评价表达是否准确、容易查找和执行，不只检查路径或技术行为。通用写法及示例维护在[技术文档编写 Skill](../../../.agents/skills/technical-documentation-writing/SKILL.md)，此处保留审核问题与框架特有要求。
+审核 AGENTS、Skill、脚本说明、提示词和手册时，同时评价表达是否准确、容易查找和执行，不只检查路径或技术行为。框架说明的写法及示例维护在[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)，生成项目的写法由独立的 [Godot 文档编写 Skill](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责；此处保留审核问题与框架特有要求。
 
 | 维度 | 检查问题 |
 | --- | --- |

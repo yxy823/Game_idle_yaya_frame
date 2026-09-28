@@ -10,7 +10,7 @@
 | --- | --- |
 | 框架根目录 | 维护约定、入口说明；不是游戏项目工作目录 |
 | `framework/` | 创建器、复制清单、完整提示词库、手册、回归夹具和审核材料；不复制给项目 |
-| `.agents/skills/` | 框架自用 Skill；写作 Skill 只分发三份通用指南为项目普通规则，不分发 Skill 入口与元数据 |
+| `.agents/skills/` | 框架自用 Skill，包括 Yaya 框架文档写作；不分发给游戏项目 |
 | `project-source/` | 待复制代码、插件、默认文件、Skill、角色与方法；不在这里启动游戏开发流程或 Godot |
 | 外部生成项目 | 用自己的 `AGENTS.md`、`.agents/skills/`、`methodology/` 和工具开发；不查询框架状态或自动同步 |
 
@@ -18,7 +18,7 @@
 
 项目开发须先有 `docs/gdd/` 中的真实设计正文，缺少时停止；空白项目创建成功不满足此前提。已有 GDD 在项目内正常维护，Product 据此组织交付预拆分和当前范围。详见 [GDD 与交付规划](../需求与任务/requirements-and-planning.md)。
 
-项目写作规则位于 `agent-rules/00-core/documentation/`，由创建器从框架写作 Skill 的参考中原样复制，项目 `AGENTS.md` 提供本地入口。通用正文只维护一份；已创建项目保留独立副本，后续更新由用户决定。
+项目 `AGENTS.md` 指向本地 `technical-documentation-writing-godot` Skill，创建器从项目分发源整包复制入口、元数据和参考。它面向游戏项目文档，与框架自用的 `technical-documentation-writing-yaya` 分别维护；两者可以独立修改，不跨包引用写作正文。已创建项目拥有自己的副本，后续更新由用户决定。
 
 ## 创建器用法
 

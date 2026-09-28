@@ -8,13 +8,14 @@
 
 | 内容 | 维护位置 |
 | --- | --- |
-| 常规项目分发材料 | project-source/；路径变化同时核对复制清单，共用写作指南的来源见下列条目 |
+| 项目分发材料 | project-source/；路径变化同时核对复制清单 |
 | 创建器与复制规则 | framework/commands/create_project.py 与 framework/project-files.json |
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
-| 框架与项目共用的写作正文 | technical-documentation-writing/references/，只维护这一份；清单指定三份指南作为普通规则复制给新项目 |
+| 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
+| Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
@@ -58,7 +59,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 说明的组织与措辞
 
-通用详细写法维护在 [技术文档编写 Skill](../../../.agents/skills/technical-documentation-writing/SKILL.md) 的参考文件中，本节只保存框架的页面分工与检查约定。生成项目通过[本地写作入口](../../../project-source/Project_AGENTS.md#使用说明的可读性)读取创建时复制的同一份正文，无需访问框架或安装该 Skill。
+框架说明的详细写法维护在 [Yaya 框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中，本节保存框架的页面分工与检查约定。生成项目通过[本地写作入口](../../../project-source/Project_AGENTS.md#使用说明的可读性)使用创建时复制的 Godot 版 Skill；该包独立维护，使用时无需访问框架或框架版写作资料。
 
 | 位置 | 职责 |
 | --- | --- |
@@ -67,7 +68,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | quick-reference/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
 | framework-maintenance/ | 维护规范与验证工具说明，不保留另一套具体场景正文 |
 
-场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，框架专有编写要求维护在速查手册 README；通用流程分类引用写作 Skill 的参考。
+场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，对应关系、栏目使用和编号要求维护在速查手册 README；11 类信息的定义与写法引用框架版 Skill 的流程参考，不作为 Godot 项目文档的默认结构。
 
 - **路径核对**：使用 [路径检查器](../../commands/check_scenario_prompt_paths.py) 核对路径集合。
 - **内容审核**：正文实质变化时由独立审核者确认标题、输入、单一目标、步骤与出口；调整列表时保留原有条件和先后依赖。只重新生成 HTML 不触发正文复审。
@@ -78,19 +79,19 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 可复用写作 Skill 的维护
 
-[technical-documentation-writing](../../../.agents/skills/technical-documentation-writing/SKILL.md) 位于仓库根目录的 `.agents/skills/`，负责通用的目录组织、表达与操作文档写法。其源码由框架维护，设置 `allow_implicit_invocation: true`，允许在本项目的文档编写、更新、整理及代码或配置变更后的文档同步任务中自动选用；触发范围由 `SKILL.md` 的 `description` 描述，`short_description` 用于界面展示。完整 Skill 的跨项目复制与更新由用户操作，不增加安装或同步工具。
+[technical-documentation-writing-yaya](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 位于根目录的 `.agents/skills/`，服务整个框架的手册、场景、工具说明、维护设计和审核记录。[technical-documentation-writing-godot](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 位于项目 Skill 分发源中，服务实际游戏项目的 README、GDD、Product、Feature、架构、知识和操作说明。框架手册里介绍游戏开发的页面仍由框架版处理；项目中的实际文档由 Godot 版处理。
 
-- **正文归属**：通用写法只在 Skill 内的三份参考中维护：`writing-guide.md` 保存基本原则，`document-structure.md` 保存目录与正文分工，`procedure-writing.md` 保存流程写法。`SKILL.md` 仅保留入口和资源约定；本框架的提示词与场景一对一、目录映射、术语含义和 HTML 约定保留在所属规范。
-- **项目分发**：复制清单逐文件选择这三份参考，原样放入生成项目的 `agent-rules/00-core/documentation/`，保留同目录相对链接。项目 AGENTS 与 Core 路由指向本地指南，不维护另一套写作正文，也不复制本写作 Skill 的 `SKILL.md`、`agents/openai.yaml` 或调用策略。
-- **适用边界**：项目说明、需求、设计、知识和报告中的自然语言采用共同写法；所属规范继续决定固定路径、字段、文档语言、流程和验收条件，11 类信息只用于流程与场景。项目特有规则仍由项目维护。
-- **更新边界**：修改框架正文只影响以后创建的项目；已创建项目拥有独立副本，后续更新由用户决定，不回查框架或自动同步。
-- **独立携带**：Skill 所需参考放在内部 `references/`。确需配套脚本时，脚本和私有模块放在内部 `scripts/`，资源相对脚本或 Skill 定位，待处理项目作为显式输入；不得引用本框架的命令目录、绝对路径或包外私有模块。
-- **依赖边界**：运行时和第三方依赖如确有需要须明确说明，不把包内自有资源与外部安装环境混淆。目标项目已有的检查器是按实际情况使用的项目工具，不作为 Skill 绑定本框架的依赖；当前版本无需脚本，不预建空目录。
+- **独立正文**：两份 Skill 各自保存 `SKILL.md`、`agents/openai.yaml` 和完整参考。可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步正文；相似原则可分别维护。各自产物的实际契约仍由所属规范拥有，不在写作包中另造流程。
+- **发现与调用**：两份元数据均设置 `allow_implicit_invocation: true`，职责由各自 `description` 限定，`short_description` 用于界面展示。框架只启用根目录的框架版；Godot 版源文件在维护仓库只作为分发材料，复制后成为项目本地 Skill。
+- **项目分发**：现有 `project-source/skills/` 目录映射整包复制 Godot 版到生成项目的 `.agents/skills/technical-documentation-writing-godot/`，保留内部相对引用。不复制框架版，也不另外生成普通写作指南副本。
+- **内容与语言**：框架版保留框架文档的说明语言；Godot 版入口与参考使用项目流程源规范的英文版本，编写产物时读取项目 `document_language`。GDD、Product、Feature 及其验收场景沿用自己的结构，不能套用框架的 11 类栏目或 S1 编号。
+- **更新边界**：修改框架版不改变 Godot 版；修改 Godot 版源材料只影响以后创建的项目。已创建项目拥有独立副本，后续更新由用户决定，不回查框架或自动同步。
+- **包内资源与外部依据**：每包的写作方法通过内部相对路径读取。框架版查当前框架规范，Godot 版查当前游戏项目的规则、模板、词表和工具，不跨项目读取。当前两包均不需要执行脚本、私有运行时或同步工具。
 - **修改验证**：根据真实误用、表达问题或维护成本调整相应条款与示例；分发变化核对复制后的文件、入口和相对引用。首次创建或明显改变适用范围时，用独立试写检查实际结果与可携带性；格式校验不替代内容判断，不要求每次局部改字都重新跑完整试写。
 
 ## 保持初始化边界
 
-手册、维护说明、完整提示词、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。唯一按普通写作规则分发的材料是上述三份指南，直接从 Skill 内取用，不在 project-source/ 保存第二份正文。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
+手册、维护说明、完整提示词、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。Godot 版写作 Skill 是项目自身的分发材料，按普通项目 Skill 整包复制。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
 
 advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择范围或所引用 Skill 名称后，按 [导出说明](../../README.md#导出-advisor-精选表达参考) 生成并检查；创建器只复制静态材料，项目不承担转换或回查职责。
 

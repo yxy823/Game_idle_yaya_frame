@@ -22,9 +22,9 @@
 
 ## 使用说明的可读性
 
-编写或整理技术文档时，使用本仓库的 [技术文档编写 Skill](.agents/skills/technical-documentation-writing/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
+编写或整理框架技术文档时，使用本仓库的 [Yaya 框架文档编写 Skill](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/updating-the-blank-project.md#说明的组织与措辞)。
 
-通用写作正文只在上述 Skill 的 `references/` 中维护。创建器按清单将三份指南原样复制到生成项目的 `agent-rules/00-core/documentation/`，由[项目写作入口](project-source/Project_AGENTS.md#使用说明的可读性)引用；不分发本写作 Skill 的入口、元数据或调用策略。生成项目使用本地规则，不查询框架；已有项目与完整 Skill 的跨项目复制、更新由用户处理，不增加同步机制。
+框架版在上述目录独立维护；[Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 在项目分发源中独立维护，创建器随项目 Skill 目录整包复制，由[项目写作入口](project-source/Project_AGENTS.md#使用说明的可读性)引用。两份 Skill 各自拥有入口、元数据和参考，可独立修改，不跨包引用写作正文。框架版不分发；生成项目拥有自己的 Godot 版副本，不查询框架或接受自动同步。已有项目的更新由用户决定。
 
 框架及生成项目共用的术语写法维护在 [框架术语](framework/docs/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，不把两者混为同一份词表。
 

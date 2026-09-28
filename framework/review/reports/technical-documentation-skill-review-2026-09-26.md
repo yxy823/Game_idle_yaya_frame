@@ -14,9 +14,9 @@
 
 | 对象 | 审核结论与依据 |
 | --- | --- |
-| [SKILL.md](../../../.agents/skills/technical-documentation-writing/SKILL.md) | 保留。目标是将既有事实与操作要求整理为可查找、理解和执行的技术文档；单页任务不扩大为全仓迁移，业务矛盾不以文案修改代替决定。 |
-| [文档结构](../../../.agents/skills/technical-documentation-writing/references/document-structure.md) | 保留。目录、标题、正文来源和术语围绕同一文档组织目标；不强制创建全部类别，不把数量或篇幅当成拆页依据。 |
-| [流程文档](../../../.agents/skills/technical-documentation-writing/references/procedure-writing.md) | 保留。11 类信息区分触发、门槛、动作、产出、对象影响和完成标准；只在流程任务按需使用，沿用目标项目的约定。 |
+| [SKILL.md](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | 保留。目标是将既有事实与操作要求整理为可查找、理解和执行的技术文档；单页任务不扩大为全仓迁移，业务矛盾不以文案修改代替决定。 |
+| [文档结构](../../../.agents/skills/technical-documentation-writing-yaya/references/document-structure.md) | 保留。目录、标题、正文来源和术语围绕同一文档组织目标；不强制创建全部类别，不把数量或篇幅当成拆页依据。 |
+| [流程文档](../../../.agents/skills/technical-documentation-writing-yaya/references/procedure-writing.md) | 保留。11 类信息区分触发、门槛、动作、产出、对象影响和完成标准；只在流程任务按需使用，沿用目标项目的约定。 |
 | [根 AGENTS.md](../../../AGENTS.md#使用说明的可读性) | 保留。通用写法入口改指新 Skill，保留框架词表归属；明确 Skill 不进入项目复制清单，跨项目复制与更新由用户处理。 |
 | [项目规则可读性小节](../../../project-source/Project_AGENTS.md#使用说明的可读性) | 保留。短版保留目录、表达形式、执行入口、副作用、证据和授权底线；没有指向框架 Skill 的运行依赖。小节外内容未纳入全量审核。 |
 | [framework/README.md](../../README.md#文件与职责) | 保留。新增源码导航及职责说明，没有新增安装、同步或检查命令。 |

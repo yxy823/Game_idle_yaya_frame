@@ -24,18 +24,6 @@
     "target": "agent-rules"
   },
   {
-    "source": ".agents/skills/technical-documentation-writing/references/writing-guide.md",
-    "target": "agent-rules/00-core/documentation/writing-guide.md"
-  },
-  {
-    "source": ".agents/skills/technical-documentation-writing/references/document-structure.md",
-    "target": "agent-rules/00-core/documentation/document-structure.md"
-  },
-  {
-    "source": ".agents/skills/technical-documentation-writing/references/procedure-writing.md",
-    "target": "agent-rules/00-core/documentation/procedure-writing.md"
-  },
-  {
     "source": "project-source/addons/gdUnit4",
     "target": "addons/gdUnit4"
   },

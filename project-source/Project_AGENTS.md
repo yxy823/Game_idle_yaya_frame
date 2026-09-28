@@ -17,9 +17,9 @@
 
 ## 使用说明的可读性
 
-编写或整理项目文档时，遵循本地 `agent-rules/00-core/documentation/writing-guide.md`，按本次需要读取其中链接的目录组织或流程专题。适用于 README、使用说明及需求、设计、知识和报告中的自然语言文字，无需另行调用写作 Skill。
+编写、更新或整理项目文档时，使用本地 [technical-documentation-writing-godot](.agents/skills/technical-documentation-writing-godot/SKILL.md)，按本次文档类型读取其中的参考。适用于 README、使用说明及需求、设计、知识和报告中的自然语言文字。
 
-所属规范继续决定字段、固定路径、文档语言、流程、授权、验收与完成条件；写作指南不替代这些契约，也不改变机器可读结构。只有流程与场景使用 11 类信息规则。
+所属规范继续决定字段、固定路径、文档语言、流程、授权、验收与完成条件；写作 Skill 不替代这些契约，也不改变机器可读结构。持久项目文档使用 `docs/methodology-config.json` 中的 `document_language`。
 
 ## Workflow and authority
 

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Technical Writing"
+  short_description: "Write clear Godot project docs within their contracts"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,6 +1,0 @@
-interface:
-  display_name: "技术文档编写与整理"
-  short_description: "编写、更新与整理技术文档，改善结构、术语和操作说明，保留行为与验收边界"
-
-policy:
-  allow_implicit_invocation: true
