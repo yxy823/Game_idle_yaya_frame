@@ -70,9 +70,9 @@ Organize code around cohesive responsibilities and domain boundaries. File lengt
 
 ## Contextual project knowledge
 
-`docs/knowledge/` stores reusable approaches, debugging methods and failure lessons from actual project tasks. Its README routes to topic indexes and separate entries. Consult relevant notes before choosing an approach, then check their conditions against current intent, code and target-version facts. Knowledge is evidence, not another source of mandatory engineering rules.
+`docs/knowledge/` stores contextual evidence from actual project tasks, not another source of mandatory engineering rules. Use the [knowledge README](../docs/knowledge/README.md) for lookup and entry maintenance.
 
-An experience may be useful only in this project's particular conditions and still deserve a note. Feature notes keep the original incident and local task history; knowledge holds the extracted explanation and links that record. Stable prescriptive guidance follows the existing rule-promotion path below.
+An experience may be useful only in this project's particular conditions and still deserve a note. Stable prescriptive guidance requires the existing authority under [incremental rule maintenance](#incremental-rule-maintenance); recording knowledge does not authorize rule promotion.
 
 ## Evolution and rule promotion
 

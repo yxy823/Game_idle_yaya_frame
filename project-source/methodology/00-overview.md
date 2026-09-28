@@ -107,9 +107,9 @@ Prototype observations and tentative parameters are not approved GDD design or F
 
 ## Reuse project knowledge
 
-Before choosing an approach for planning, investigation, development or review, consult `docs/knowledge/README.md`, then the relevant topic indexes and experience entries. Use project evidence before repeating external research; verify its conditions against the current task and target version. This is scoped reading, not a requirement to load the whole directory or to accept historical notes as rules. Reuse prior reading when continuing unchanged work.
+Before choosing an approach for planning, investigation, development or review, or repeating external research, follow [project knowledge lookup](../docs/knowledge/README.md#find-relevant-knowledge-first).
 
-Capture useful task learning in that directory during authorized documentation, with one entry per reusable approach or lesson and links to its original task evidence. Follow the directory README and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge). No matching entry, no new learning, and a read-only task are normal outcomes. Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
+Capture useful task learning during authorized documentation under [knowledge maintenance](../docs/knowledge/README.md#maintain-during-authorized-work) and [knowledge ownership](09-artifact-lifecycle.md#project-knowledge). Feature documentation is finalized before the Stage 7 commit; Stage 8 reports it.
 
 ## External research
 

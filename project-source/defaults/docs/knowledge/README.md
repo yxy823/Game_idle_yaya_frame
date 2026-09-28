@@ -42,6 +42,8 @@ Feature notes retain the concrete incident, local decisions and TODOs; Progress 
 
 When a task establishes a useful lesson or approach, first check for an existing entry and update or link it before creating another. Include task-owned knowledge and index edits in the task's normal documentation and commit work; no extra approval is needed for recording facts already within that authorized scope. A discussion-only or read-only task keeps its write boundary. Rule changes and cross-project reuse keep their existing authorization boundaries.
 
+When creating or substantively updating an entry, apply [Organize entries](#organize-entries) and [Keep the useful context](#keep-the-useful-context).
+
 Review entry accuracy and links before delivery. If evidence changes, correct the conclusion and its limits; do not silently turn an old result into a claim about a new version. No task must manufacture a new entry. Ordinary documentation review and the existing task workflow are sufficient.
 
 Keep runnable helpers, fixtures, data and actual reports in their existing project locations and link them here. This directory's Markdown is explanatory knowledge, not executable input, GDD design, Product delivery requirements, rules or validation contracts. Correcting prose alone is not a new gameplay verification run; changes to code, tests or governing contracts still require their applicable checks.

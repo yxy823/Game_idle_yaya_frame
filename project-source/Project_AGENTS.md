@@ -58,9 +58,9 @@ Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: 
 
 ## Project knowledge and rule feedback
 
-Before choosing an approach in planning, investigation, implementation, debugging or review, consult `docs/knowledge/README.md` and relevant topic indexes/entries. Narrow by task, module, symptom, API or tool; reuse prior reading unless scope or evidence changed. Empty topics are normal. Check experience against current intent, code and versions; it cannot override accepted decisions or rules.
+Before choosing an approach in planning, investigation, implementation, debugging or review, consult [relevant project knowledge](docs/knowledge/README.md#find-relevant-knowledge-first). Empty topics do not block work; knowledge cannot override accepted decisions or rules.
 
-During authorized task documentation, retain useful approaches and failure lessons in the matching knowledge topic under its README. Update existing entries and indexes, link the original Feature/evidence, and keep task history in its owning record. No useful new knowledge requires no entry. Read-only tasks retain their write boundary; Feature notes and knowledge belong before the Stage 7 commit, with Stage 8 linking them.
+During authorized task documentation, retain useful approaches and failure lessons under [knowledge maintenance](docs/knowledge/README.md#maintain-during-authorized-work). Read-only tasks retain their write boundary. If there is no useful new learning, no entry is required. Finalize Feature notes and knowledge before the Stage 7 commit; Stage 8 links them.
 
 At completion, check whether reusable prescriptive learning is already covered by `agent-rules/`. If valuable guidance is missing, propose one generalized rule, its target module and a real example only when useful. Do not create a rule for every defect, duplicate an existing rule, promote Product detail or edit rules without explicit approval.
 
