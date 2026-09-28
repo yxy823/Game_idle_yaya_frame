@@ -28,3 +28,12 @@ Defines evidence rules shared by all specialized validation modules.
 - **[MUST]** If an applicable required gate cannot run, report it as not executed/blocked with the reason and unresolved risk. Never assume PASS.
 - **[MUST]** Manual acceptance and automated validation are distinct evidence types and must not be reported as each other.
 - **[MUST]** Validation artifacts such as logs/JUnit/temp exports follow generated/temp ownership rules and must not silently become production source.
+
+## Windows editor checks
+
+本节适用于项目根 `AGENTS.md` 中“本机 Godot 编辑器检查”所限定的环境；权限与审批要求遵循该入口。
+
+| 触发条件 | 必须执行 |
+| --- | --- |
+| 出现 `Could not create editor data directory`、`Could not create editor config directory` 或 `AppData/Roaming/Godot` 访问失败 | 按环境权限排查，停止依赖该次成功结果的后续验证；不报告通过，不据此修改业务代码或弱化门禁 |
+| 编辑器检查前后 | 比较项目根目录列表，包含 Git 不记录的空目录；新增 `export_templates`、`feature_profiles`、`script_templates` 或 `text_editor_themes` 等异常目录时先核对来源，只对确认由本次运行产生且为空的目录按现有清理规则处理，保留已有同名目录 |

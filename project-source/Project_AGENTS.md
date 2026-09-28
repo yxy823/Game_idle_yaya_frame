@@ -93,8 +93,6 @@ Scope, minimal complete changes and preservation follow `agent-rules/00-core/cha
 
 以下约束只适用于本机 Windows / Codex 受限沙箱中的 Godot 编辑器检查；其他机器先核对真实权限与目录行为。它们不要求每个 Feature 额外启动编辑器。
 
-| 触发条件 | 必须执行 |
-| --- | --- |
-| 启动编辑器检查，包括 `--headless --editor` | 直接通过 `require_escalated` 审批路径在沙箱外运行；审批未通过或不可用时报告未执行或受阻，不绕过审批 |
-| 出现 `Could not create editor data directory`、`Could not create editor config directory` 或 `AppData/Roaming/Godot` 访问失败 | 按环境权限排查，停止依赖该次成功结果的后续验证；不报告通过，不据此修改业务代码或弱化门禁 |
-| 编辑器检查前后 | 比较项目根目录列表，包含 Git 不记录的空目录；新增 `export_templates`、`feature_profiles`、`script_templates` 或 `text_editor_themes` 等异常目录时先核对来源，只对确认由本次运行产生且为空的目录按现有清理规则处理，保留已有同名目录 |
+启动编辑器检查（包括 `--headless --editor`）时，直接通过 `require_escalated` 审批路径在沙箱外运行；审批未通过或不可用时报告未执行或受阻，不绕过审批。
+
+启动前先读取[本机编辑器检查细则](agent-rules/00-core/validation-policy.md#windows-editor-checks)；检查前后的目录核对及权限异常处理按该节执行。
