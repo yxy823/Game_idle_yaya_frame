@@ -13,6 +13,7 @@
 | [commands/check_scenario_prompt_paths.py](commands/check_scenario_prompt_paths.py) | 从 JSON 名称和目录文件名核对提示词与场景一对一，不读取场景正文 |
 | [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 显式导出 advisor 精选表达参考，不承担流程或同步职责 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
+| [Codex 指令编写与审核 Skill](../.agents/skills/writing-for-agents-yaya/SKILL.md) | 框架内 Codex 指令的编写与审核方法；框架自用，不随游戏项目分发 |
 | [框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | 框架自用的手册、场景、维护与审核说明写作方法，独立维护且不分发 |
 | [Godot 项目文档编写 Skill](../project-source/skills/technical-documentation-writing-godot/SKILL.md) | 面向游戏项目的文档写作方法，独立维护并整包复制到新项目 |
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 一次生成并检查两本独立 HTML 手册；共享 [模板](commands/blank-project-handbook-page.html)、[交互源码](commands/blank-project-handbook-interactions.js) 与渲染实现 |

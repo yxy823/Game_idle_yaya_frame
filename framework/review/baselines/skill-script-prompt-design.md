@@ -163,7 +163,11 @@ Project、分类、文件名均使用 JSON 中的准确文字，不另建英文�
 
 ## 文本编写的评价维度
 
-审核 AGENTS、Skill、脚本说明、提示词和手册时，同时评价表达是否准确、容易查找和执行，不只检查路径或技术行为。框架说明的写法及示例维护在[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)，生成项目的写法由独立的 [Godot 文档编写 Skill](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责；此处保留审核问题与框架特有要求。
+审核 AGENTS、Skill、脚本说明、提示词和手册时，同时评价表达是否准确、容易查找和执行，不只检查路径或技术行为。
+
+编写或审核指令的触发、正文归属、按需阅读和完成边界时，使用 [Codex 指令编写与审核 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md) 中的方法。本准则继续拥有职责评价、提示词字段及审核覆盖契约，写作 Skill 不另立一套标准。
+
+已确认的框架说明文字，其表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)；生成项目的写法由独立的 [Godot 文档编写 Skill](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责。下表保留审核问题与框架特有要求。
 
 | 维度 | 检查问题 |
 | --- | --- |

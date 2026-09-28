@@ -14,6 +14,7 @@
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
+| Codex 指令编写与审核方法 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
@@ -22,6 +23,8 @@
 | 正式操作提示词 | framework/prompts.json，唯一手写正文 |
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
+
+编写或审核框架指令时使用 [Codex 指令编写与审核 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；整理已确认说明的表达与组织时使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](../../review/baselines/skill-script-prompt-design.md)定义，按任务需要查阅，不因使用其中一个 Skill 而固定加载另一个。
 
 Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 

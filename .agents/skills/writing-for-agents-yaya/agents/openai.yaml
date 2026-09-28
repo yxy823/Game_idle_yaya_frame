@@ -1,0 +1,5 @@
+interface:
+  display_name: "Yaya Codex 指令编写与审核"
+  short_description: "编写与审核 Yaya 框架的 Codex 指令，明确触发、引用、归属和完成边界"
+policy:
+  allow_implicit_invocation: true

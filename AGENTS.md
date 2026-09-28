@@ -68,6 +68,8 @@
 
 ## AGENTS.md、Skill 与任务提示词编写
 
+编写、修改或审核本框架的 AGENTS.md、Skill、任务提示词及条件引用规则时，使用 [Codex 指令编写与审核 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)，按实际任务检查触发、正文归属、按需阅读和完成边界。
+
 编写或调整指令时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
 
 | 关注点 | 编写要求 |
