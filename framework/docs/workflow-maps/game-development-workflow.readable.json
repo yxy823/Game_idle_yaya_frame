@@ -38,6 +38,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/旧项目想采用当前框架，先评估复制迁移方案.md"
       }
     },
     {
@@ -76,6 +80,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/复制迁移方案已确定，现在迁移旧项目.md"
       }
     },
     {
@@ -114,6 +122,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/准备开始新游戏，先创建空白项目.md"
       }
     },
     {
@@ -152,6 +164,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/空白项目已经创建，现在配置开发环境.md"
       }
     },
     {
@@ -190,6 +206,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/工具位置或版本变了，需要更新项目环境.md"
       }
     },
     {
@@ -228,6 +248,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/配置中的工具路径失效了，需要恢复可用环境.md"
       }
     },
     {
@@ -266,6 +290,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/第一次运行项目，Godot 还没有完成资源扫描.md"
       }
     },
     {
@@ -304,6 +332,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/方案有一个外部问题没确定，需要查资料.md"
       }
     },
     {
@@ -342,6 +374,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/功能已经写出来，需要补齐需求和任务记录.md"
       }
     },
     {
@@ -380,6 +416,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/拿到一份外部需求，先整理成项目可用的草稿.md"
       }
     },
     {
@@ -418,6 +458,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/有一个项目问题没想清楚，先讨论.md"
       }
     },
     {
@@ -456,6 +500,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/项目里同一个词有不同理解，需要统一并记录.md"
       }
     },
     {
@@ -494,6 +542,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/界面效果还没确定，先用真实素材试一下.md"
       }
     },
     {
@@ -532,6 +584,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/玩法效果还没确定，先做小实验.md"
       }
     },
     {
@@ -570,6 +626,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/技术方案是否可行还不确定，先做验证.md"
       }
     },
     {
@@ -608,6 +668,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有 GDD，需要预拆分 Product 交付范围.md"
       }
     },
     {
@@ -646,6 +710,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/Product 已预拆分，准备细化当前交付范围.md"
       }
     },
     {
@@ -684,6 +752,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有模块的玩法要求变了，需要更新需求.md"
       }
     },
     {
@@ -722,6 +794,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/想增加一个独立玩法模块，需要确定边界和顺序.md"
       }
     },
     {
@@ -760,6 +836,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/当前资产的美术方向不明确，需要定下来.md"
       }
     },
     {
@@ -798,6 +878,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/当前模块的声音风格不明确，需要定下来.md"
       }
     },
     {
@@ -836,6 +920,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/玩家要做什么已确定，需要设计界面和交互.md"
       }
     },
     {
@@ -874,6 +962,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的界面要求要变，需要更新规格并明确影响.md"
       }
     },
     {
@@ -912,6 +1004,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/声音用途已确定，需要列出音频文件准备要求.md"
       }
     },
     {
@@ -950,6 +1046,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/图片用途已确定，需要列出视觉文件准备要求.md"
       }
     },
     {
@@ -988,6 +1088,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的美术方向要调整，需要更新规范并检查影响.md"
       }
     },
     {
@@ -1026,6 +1130,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的声音方向要调整，需要更新规范并检查影响.md"
       }
     },
     {
@@ -1064,6 +1172,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/实现前发现设计边界不清，先确定最小方案.md"
       }
     },
     {
@@ -1102,6 +1214,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/已有实现和任务已对齐，现在补验证并办理交付.md"
       }
     },
     {
@@ -1140,6 +1256,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/Product 范围已确定，想自动推进到首次人工验收.md"
       }
     },
     {
@@ -1178,6 +1298,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/人工验收已有结果，继续原 Goal.md"
       }
     },
     {
@@ -1216,6 +1340,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/想知道项目现在做到哪里.md"
       }
     },
     {
@@ -1254,6 +1382,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/想了解项目当前进度，并确定下一步.md"
       }
     },
     {
@@ -1292,6 +1424,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/收到 Codex 的回复，想判断并写出下一条指令.md"
       }
     },
     {
@@ -1330,6 +1466,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/Feature 已规划并可开始，现在实施这一项.md"
       }
     },
     {
@@ -1368,6 +1508,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md"
       }
     },
     {
@@ -1406,6 +1550,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md"
       }
     },
     {
@@ -1444,6 +1592,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/前一个模块已完成，准备规划下一个 Product.md"
       }
     },
     {
@@ -1482,6 +1634,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/要求已经改好，开工前需要同步 Feature 计划.md"
       }
     },
     {
@@ -1520,6 +1676,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/Feature 正在开发，已确认要求发生变化.md"
       }
     },
     {
@@ -1558,6 +1718,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/Feature 已交付，后来确认要改变要求.md"
       }
     },
     {
@@ -1596,6 +1760,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/已有计划，但采用的来源基线无法核实.md"
       }
     },
     {
@@ -1634,6 +1802,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/已经选定新框架，检查适用后在当前项目替换.md"
       }
     },
     {
@@ -1672,6 +1844,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/某处代码总是难改，先调查是否值得重构.md"
       }
     },
     {
@@ -1710,6 +1886,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/已经记录了几个代码问题，想选一个值得重构的.md"
       }
     },
     {
@@ -1748,6 +1928,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md"
       }
     },
     {
@@ -1786,6 +1970,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付后发现 Bug.md"
       }
     },
     {
@@ -1824,6 +2012,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/发现异常，先定位原因，不修改实现.md"
       }
     },
     {
@@ -1862,6 +2054,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/重构目标已经选定，现在调整结构并保持行为.md"
       }
     },
     {
@@ -1900,6 +2096,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/项目工具需要修改，按工程任务完成.md"
       }
     },
     {
@@ -1938,6 +2138,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/项目约束已确认要改，现在维护规则文档.md"
       }
     },
     {
@@ -1976,6 +2180,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/共享能力准备修改，先明确契约和影响范围.md"
       }
     },
     {
@@ -2014,6 +2222,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/文档和实际状态对不上，先确定应该修复哪里.md"
       }
     },
     {
@@ -2052,6 +2264,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/任务已经明确，需要列出要准备的素材.md"
       }
     },
     {
@@ -2090,6 +2306,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/素材文件已经收到，先登记来源并核对是否齐全.md"
       }
     },
     {
@@ -2128,6 +2348,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/音效文件和播放位置都已确定，现在要把声音接进游戏.md"
       }
     },
     {
@@ -2166,6 +2390,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/图片和消费位置已确定，现在接入界面.md"
       }
     },
     {
@@ -2204,6 +2432,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/动画资源已确定，现在接到对应动作.md"
       }
     },
     {
@@ -2242,6 +2474,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有图片要替换，需要保留界面引用.md"
       }
     },
     {
@@ -2280,6 +2516,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有音频要替换，需要保留播放关系.md"
       }
     },
     {
@@ -2318,6 +2558,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有动画要替换，需要保留动作衔接.md"
       }
     },
     {
@@ -2356,6 +2600,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/准备增加语言支持，先确定本地化要求.md"
       }
     },
     {
@@ -2394,6 +2642,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/本地化要求已确定，现在接入目标语言.md"
       }
     },
     {
@@ -2432,6 +2684,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/问题缺少证据，先加临时观测信号.md"
       }
     },
     {
@@ -2470,6 +2726,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已经确定需要长期保留某项运行指标.md"
       }
     },
     {
@@ -2508,6 +2768,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/短测看不出问题，需要按约定负载持续运行.md"
       }
     },
     {
@@ -2546,6 +2810,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/运行出现卡顿，先测量并定位瓶颈.md"
       }
     },
     {
@@ -2584,6 +2852,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/性能瓶颈已确认，现在优化并对比结果.md"
       }
     },
     {
@@ -2622,6 +2894,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构需要修改，旧数据不需要继续使用.md"
       }
     },
     {
@@ -2660,6 +2936,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构变了，需要保留并转换已有数据.md"
       }
     },
     {
@@ -2698,6 +2978,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/音乐文件和切换时机已确定，现在接入背景音乐.md"
       }
     },
     {
@@ -2736,6 +3020,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/场景文件及依赖已准备好，现在接入当前游戏.md"
       }
     },
     {
@@ -2774,6 +3062,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有场景需要替换，必须保留游戏中的调用关系.md"
       }
     },
     {
@@ -2812,6 +3104,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/我手动改过项目，想确认是否仍符合要求.md"
       }
     },
     {
@@ -2850,6 +3146,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/代码刚改完，只检查解析和 lint.md"
       }
     },
     {
@@ -2888,6 +3188,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已有变更需要重新运行相关自动测试.md"
       }
     },
     {
@@ -2926,6 +3230,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/场景或资源刚改完，需要实际启动检查.md"
       }
     },
     {
@@ -2964,6 +3272,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/界面已经做出，需要独立检查交互体验.md"
       }
     },
     {
@@ -3002,6 +3314,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/视觉成果已准备好，需要独立检查美术效果.md"
       }
     },
     {
@@ -3040,6 +3356,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/音频成果已准备好，需要独立检查听觉效果.md"
       }
     },
     {
@@ -3078,6 +3398,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/素材已收到，需要独立检查技术规格.md"
       }
     },
     {
@@ -3116,6 +3440,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/翻译已接入，需要独立检查语言与显示.md"
       }
     },
     {
@@ -3154,6 +3482,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/数值方案已有样本，需要独立检查平衡.md"
       }
     },
     {
@@ -3192,6 +3524,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/这次变更已准备好，需要独立代码审核.md"
       }
     },
     {
@@ -3230,6 +3566,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/想检查某个模块现状，不依赖 Feature 或差异.md"
       }
     },
     {
@@ -3268,6 +3608,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/Feature 已能体验，需要准备人工验收清单.md"
       }
     },
     {
@@ -3306,6 +3650,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/人工验收 JSON 已填好，需要导入结果.md"
       }
     },
     {
@@ -3344,6 +3692,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已经实际体验，需要记录我的明确验收结论.md"
       }
     },
     {
@@ -3382,6 +3734,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md"
       }
     },
     {
@@ -3420,6 +3776,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试摘要还在，但原始报告找不到了.md"
       }
     },
     {
@@ -3458,6 +3818,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/实现又改过了，需要更新已经过期的验证证据.md"
       }
     },
     {
@@ -3496,6 +3860,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试运行中断了，需要从真实结果恢复验证.md"
       }
     },
     {
@@ -3534,6 +3902,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/没有 Feature，只想运行指定组件的自动测试.md"
       }
     },
     {
@@ -3572,6 +3944,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测量数据已经取得，需要独立核实结论是否成立.md"
       }
     },
     {
@@ -3610,6 +3986,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/换了一个对话，想继续上次没做完的 Feature.md"
       }
     },
     {
@@ -3648,6 +4028,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/仍在原对话，想继续暂停的 Feature.md"
       }
     },
     {
@@ -3686,6 +4070,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/进度记录太长，需要整理当前状态和历史.md"
       }
     },
     {
@@ -3724,6 +4112,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/Feature 还没做完，准备换一个对话继续.md"
       }
     },
     {
@@ -3762,6 +4154,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前 Feature 需要暂停，先保存真实停点.md"
       }
     },
     {
@@ -3800,6 +4196,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前任务已经暂停，准备切换到另一项工作.md"
       }
     },
     {
@@ -3838,6 +4238,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，需要先暂停并保存停点.md"
       }
     },
     {
@@ -3876,6 +4280,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，准备换一个对话继续.md"
       }
     },
     {
@@ -3914,6 +4322,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/外部调研还没结束，继续查清原来的问题.md"
       }
     },
     {
@@ -3952,6 +4364,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/项目问题还没讨论清楚，继续原来的讨论.md"
       }
     },
     {
@@ -3990,6 +4406,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/独立审核中断了，需要继续完成原范围的报告.md"
       }
     },
     {
@@ -4028,6 +4448,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/一个阶段已经结束，先总结值得保留的经验.md"
       }
     },
     {
@@ -4066,6 +4490,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/经验已经确认，需要整理进项目知识.md"
       }
     },
     {
@@ -4104,6 +4532,10 @@
         "wrap": true,
         "opacity": 1,
         "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/重复操作已确认值得固化，需要做成项目脚本.md"
       }
     }
   ],
@@ -4123,13 +4555,13 @@
       "vertices": [],
       "label": "创建后配置",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4139,8 +4571,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4150,7 +4582,8 @@
         "opacity": 1,
         "labelPosition": 0.254901961,
         "labelOffset": 21.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4168,13 +4601,13 @@
       "vertices": [],
       "label": "首次启动需扫描",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4184,8 +4617,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4195,7 +4628,8 @@
         "opacity": 1,
         "labelPosition": 0.445682451,
         "labelOffset": -21.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4213,13 +4647,13 @@
       "vertices": [],
       "label": "已有实质性 GDD",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4229,8 +4663,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4240,7 +4674,8 @@
         "opacity": 1,
         "labelPosition": 0.481927711,
         "labelOffset": 21.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4287,13 +4722,13 @@
       ],
       "label": "当前 Product 已选定",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4303,8 +4738,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4314,7 +4749,8 @@
         "opacity": 1,
         "labelPosition": 0.129017306,
         "labelOffset": -70.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4409,13 +4845,13 @@
       ],
       "label": "范围确认后规划",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4425,8 +4861,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4436,7 +4872,8 @@
         "opacity": 1,
         "labelPosition": 0.05057605,
         "labelOffset": 57.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4479,13 +4916,13 @@
       ],
       "label": "计划已批准且依赖满足",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4495,8 +4932,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4506,7 +4943,8 @@
         "opacity": 1,
         "labelPosition": 0.200865638,
         "labelOffset": 21.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4524,13 +4962,13 @@
       "vertices": [],
       "label": "manual 且已可体验",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4540,8 +4978,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4551,7 +4989,8 @@
         "opacity": 1,
         "labelPosition": 0.80781759,
         "labelOffset": 97.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4569,13 +5008,13 @@
       "vertices": [],
       "label": "用户填写 JSON",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4585,8 +5024,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4596,7 +5035,8 @@
         "opacity": 1,
         "labelPosition": 0.25,
         "labelOffset": 0,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4627,13 +5067,13 @@
       ],
       "label": "用户给出明确体验结论",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4643,8 +5083,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4654,7 +5094,8 @@
         "opacity": 1,
         "labelPosition": 0.08923743,
         "labelOffset": 0,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4672,13 +5113,13 @@
       "vertices": [],
       "label": "全部适用完成条件满足，\n当前 Product 完成",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4688,8 +5129,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4699,7 +5140,8 @@
         "opacity": 1,
         "labelPosition": 0.479532164,
         "labelOffset": 0,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4730,13 +5172,13 @@
       ],
       "label": "全部适用完成条件满足，\n当前 Product 完成",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4746,8 +5188,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4757,7 +5199,8 @@
         "opacity": 1,
         "labelPosition": 0.268537643,
         "labelOffset": 0,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4784,13 +5227,13 @@
       ],
       "label": "新增计划已批准且依赖满足",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4800,8 +5243,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4811,7 +5254,8 @@
         "opacity": 1,
         "labelPosition": 0.029775649,
         "labelOffset": 21.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4842,13 +5286,13 @@
       ],
       "label": "全部适用完成条件满足，\n当前 Product 完成",
       "stroke": {
-        "width": 2,
+        "width": 3,
         "color": "#315EA8",
         "dash": "solid"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 13,
+        "fontSize": 16,
         "color": "#334155",
         "align": "center",
         "fontFamily": "system",
@@ -4858,8 +5302,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 10,
-        "sourceMarker": "none",
+        "targetMarkerSize": 16,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4869,7 +5313,8 @@
         "opacity": 1,
         "labelPosition": 0.068067083,
         "labelOffset": 106.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 16
       }
     },
     {
@@ -4887,13 +5332,13 @@
       "vertices": [],
       "label": "方案已确定并授权迁移",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -4903,8 +5348,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4914,7 +5359,8 @@
         "opacity": 1,
         "labelPosition": 0.272727273,
         "labelOffset": 68.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -4937,13 +5383,13 @@
       ],
       "label": "核对新副本环境",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -4953,8 +5399,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -4964,7 +5410,8 @@
         "opacity": 1,
         "labelPosition": 0.54809231,
         "labelOffset": 54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -4995,13 +5442,13 @@
       ],
       "label": "工具变更",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5011,8 +5458,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5022,7 +5469,8 @@
         "opacity": 1,
         "labelPosition": 0.078363305,
         "labelOffset": -36,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5040,13 +5488,13 @@
       "vertices": [],
       "label": "路径仍失效",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5056,8 +5504,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5067,7 +5515,8 @@
         "opacity": 1,
         "labelPosition": 0.270833333,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5094,13 +5543,13 @@
       ],
       "label": "恢复后需扫描",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5110,8 +5559,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5121,7 +5570,8 @@
         "opacity": 1,
         "labelPosition": 0.338547315,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5139,13 +5589,13 @@
       "vertices": [],
       "label": "存在待确认项",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5155,8 +5605,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5166,7 +5616,8 @@
         "opacity": 1,
         "labelPosition": 0.393939394,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5201,13 +5652,13 @@
       ],
       "label": "已确认 GDD 交付范围",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5217,8 +5668,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5228,7 +5679,8 @@
         "opacity": 1,
         "labelPosition": 0.220483439,
         "labelOffset": -70,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5251,13 +5703,13 @@
       ],
       "label": "需要外部事实",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5267,8 +5719,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5278,7 +5730,8 @@
         "opacity": 1,
         "labelPosition": 0.054640035,
         "labelOffset": -48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5305,13 +5758,13 @@
       ],
       "label": "术语已明确需记录",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5321,8 +5774,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5332,7 +5785,8 @@
         "opacity": 1,
         "labelPosition": 0.109841554,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5350,13 +5804,13 @@
       "vertices": [],
       "label": "需求与任务已对齐",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5366,8 +5820,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5377,7 +5831,8 @@
         "opacity": 1,
         "labelPosition": 0.176470588,
         "labelOffset": -132.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5395,13 +5850,13 @@
       "vertices": [],
       "label": "布局已确认且原型获准",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5411,8 +5866,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5422,7 +5877,8 @@
         "opacity": 1,
         "labelPosition": 0.157894737,
         "labelOffset": 68.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5449,13 +5905,13 @@
       ],
       "label": "采纳玩法变更时",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5465,8 +5921,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5476,7 +5932,8 @@
         "opacity": 1,
         "labelPosition": 0.391429961,
         "labelOffset": -54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5503,13 +5960,13 @@
       ],
       "label": "取得技术证据后",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5519,8 +5976,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5530,7 +5987,8 @@
         "opacity": 1,
         "labelPosition": 0.070336461,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5557,13 +6015,13 @@
       ],
       "label": "需要真实素材验证界面",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5573,8 +6031,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5584,7 +6042,8 @@
         "opacity": 1,
         "labelPosition": 0.380983626,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5619,13 +6078,13 @@
       ],
       "label": "需要限定玩法实验",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5635,8 +6094,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5646,7 +6105,8 @@
         "opacity": 1,
         "labelPosition": 0.172604554,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5677,13 +6137,13 @@
       ],
       "label": "需要限定技术验证",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5693,8 +6153,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5704,7 +6164,8 @@
         "opacity": 1,
         "labelPosition": 0.036261477,
         "labelOffset": -48.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5751,13 +6212,13 @@
       ],
       "label": "尚未开工",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5767,8 +6228,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5778,7 +6239,8 @@
         "opacity": 1,
         "labelPosition": 0.163315699,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5821,13 +6283,13 @@
       ],
       "label": "Feature 开发中",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5837,8 +6299,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5848,7 +6310,8 @@
         "opacity": 1,
         "labelPosition": 0.592775097,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5871,13 +6334,13 @@
       ],
       "label": "Feature 已交付",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5887,8 +6350,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5898,7 +6361,8 @@
         "opacity": 1,
         "labelPosition": 0.24151791,
         "labelOffset": 51.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5937,13 +6401,13 @@
       ],
       "label": "模块边界与顺序已确认",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -5953,8 +6417,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -5964,7 +6428,8 @@
         "opacity": 1,
         "labelPosition": 0.181180113,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -5987,13 +6452,13 @@
       ],
       "label": "需要独立新模块",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6003,8 +6468,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6014,7 +6479,8 @@
         "opacity": 1,
         "labelPosition": 0.016815691,
         "labelOffset": -54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6049,13 +6515,13 @@
       ],
       "label": "需要美术方向",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6065,8 +6531,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6076,7 +6542,8 @@
         "opacity": 1,
         "labelPosition": 0.098238269,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6111,13 +6578,13 @@
       ],
       "label": "需要声音方向",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6127,8 +6594,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6138,7 +6605,8 @@
         "opacity": 1,
         "labelPosition": 0.123224741,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6169,13 +6637,13 @@
       ],
       "label": "需要界面规格",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6185,8 +6653,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6196,7 +6664,8 @@
         "opacity": 1,
         "labelPosition": 0.159090521,
         "labelOffset": -48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6223,13 +6692,13 @@
       ],
       "label": "方向需要调整",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6239,8 +6708,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6250,7 +6719,8 @@
         "opacity": 1,
         "labelPosition": 0.318088047,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6285,13 +6755,13 @@
       ],
       "label": "方向需要调整",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6301,8 +6771,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6312,7 +6782,8 @@
         "opacity": 1,
         "labelPosition": 0.118463573,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6330,13 +6801,13 @@
       "vertices": [],
       "label": "界面要求改变",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6346,8 +6817,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6357,7 +6828,8 @@
         "opacity": 1,
         "labelPosition": 0.555555556,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6388,13 +6860,13 @@
       ],
       "label": "细化图片要求",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6404,8 +6876,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6415,7 +6887,8 @@
         "opacity": 1,
         "labelPosition": 0.248545146,
         "labelOffset": 0,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6446,13 +6919,13 @@
       ],
       "label": "细化音频要求",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6462,8 +6935,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6473,7 +6946,8 @@
         "opacity": 1,
         "labelPosition": 0.045565428,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6508,13 +6982,13 @@
       ],
       "label": "规格变化影响计划",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6524,8 +6998,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6535,7 +7009,8 @@
         "opacity": 1,
         "labelPosition": 0.053370568,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6570,13 +7045,13 @@
       ],
       "label": "规格变化影响计划",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6586,8 +7061,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6597,7 +7072,8 @@
         "opacity": 1,
         "labelPosition": 0.029057326,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6640,13 +7116,13 @@
       ],
       "label": "规格变化影响计划",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6656,8 +7132,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6667,7 +7143,8 @@
         "opacity": 1,
         "labelPosition": 0.124943926,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6714,13 +7191,13 @@
       ],
       "label": "方案已确认且可实施",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6730,8 +7207,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6741,7 +7218,8 @@
         "opacity": 1,
         "labelPosition": 0.021403717,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6796,13 +7274,13 @@
       ],
       "label": "设计边界仍不清",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6812,8 +7290,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6823,7 +7301,8 @@
         "opacity": 1,
         "labelPosition": 0.298395935,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6866,13 +7345,13 @@
       ],
       "label": "授权自动推进到首次人工验收",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6882,8 +7361,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6893,7 +7372,8 @@
         "opacity": 1,
         "labelPosition": 0.071807043,
         "labelOffset": 90,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -6948,13 +7428,13 @@
       ],
       "label": "manual 交接点已准备好",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -6964,8 +7444,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -6975,7 +7455,8 @@
         "opacity": 1,
         "labelPosition": 0.010096143,
         "labelOffset": 75.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7014,13 +7495,13 @@
       ],
       "label": "继续原 Goal",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7030,8 +7511,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7041,7 +7522,8 @@
         "opacity": 1,
         "labelPosition": 0.388668602,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7068,13 +7550,13 @@
       ],
       "label": "继续原 Goal",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7084,8 +7566,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7095,7 +7577,8 @@
         "opacity": 1,
         "labelPosition": 0.017260267,
         "labelOffset": -44,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7142,13 +7625,13 @@
       ],
       "label": "仍有获准后续范围",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7158,8 +7641,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7169,7 +7652,8 @@
         "opacity": 1,
         "labelPosition": 0.083220656,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7212,13 +7696,13 @@
       ],
       "label": "原型判断完成，\n继续所属 Feature",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7228,8 +7712,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7239,7 +7723,8 @@
         "opacity": 1,
         "labelPosition": 0.161357887,
         "labelOffset": -57.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7266,13 +7751,13 @@
       ],
       "label": "尚需人工验收",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7282,8 +7767,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7293,7 +7778,8 @@
         "opacity": 1,
         "labelPosition": 0.058468598,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7311,13 +7797,13 @@
       "vertices": [],
       "label": "需要进一步指导",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7327,8 +7813,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7338,7 +7824,8 @@
         "opacity": 1,
         "labelPosition": 0.206896552,
         "labelOffset": 48.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7373,13 +7860,13 @@
       ],
       "label": "需要进一步指导",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7389,8 +7876,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7400,7 +7887,8 @@
         "opacity": 1,
         "labelPosition": 0.139769287,
         "labelOffset": 54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7435,13 +7923,13 @@
       ],
       "label": "已明确实施这一项",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7451,8 +7939,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7462,7 +7950,8 @@
         "opacity": 1,
         "labelPosition": 0.455845366,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7513,13 +8002,13 @@
       ],
       "label": "同步后仍可执行",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7529,8 +8018,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7540,7 +8029,8 @@
         "opacity": 1,
         "labelPosition": 0.605328748,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7623,13 +8113,13 @@
       ],
       "label": "修订获准后恢复",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7639,8 +8129,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7650,7 +8140,8 @@
         "opacity": 1,
         "labelPosition": 0.043514339,
         "labelOffset": -54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7681,13 +8172,13 @@
       ],
       "label": "新要求已另行规划并批准",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7697,8 +8188,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7708,7 +8199,8 @@
         "opacity": 1,
         "labelPosition": 0.589631543,
         "labelOffset": -190,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7739,13 +8231,13 @@
       ],
       "label": "来源基线无法核实",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7755,8 +8247,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7766,7 +8258,8 @@
         "opacity": 1,
         "labelPosition": 0.116285277,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7793,13 +8286,13 @@
       ],
       "label": "来源已核实需同步",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7809,8 +8302,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7820,7 +8313,8 @@
         "opacity": 1,
         "labelPosition": 0.281633763,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7855,13 +8349,13 @@
       ],
       "label": "先只读定位异常",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7871,8 +8365,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7882,7 +8376,8 @@
         "opacity": 1,
         "labelPosition": 0.722092817,
         "labelOffset": -54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7921,13 +8416,13 @@
       ],
       "label": "当前未交付 Feature 的缺陷",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7937,8 +8432,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -7948,7 +8443,8 @@
         "opacity": 1,
         "labelPosition": 0.643403056,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -7975,13 +8471,13 @@
       ],
       "label": "已交付行为的独立缺陷",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -7991,8 +8487,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8002,7 +8498,8 @@
         "opacity": 1,
         "labelPosition": 0.591286501,
         "labelOffset": 72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8053,13 +8550,13 @@
       ],
       "label": "修复后需实际验收",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8069,8 +8566,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8080,7 +8577,8 @@
         "opacity": 1,
         "labelPosition": 0.025518624,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8111,13 +8609,13 @@
       ],
       "label": "修复后需实际验收",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8127,8 +8625,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8138,7 +8636,8 @@
         "opacity": 1,
         "labelPosition": 0.13683976,
         "labelOffset": -88,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8173,13 +8672,13 @@
       ],
       "label": "目标选定并获准时",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8189,8 +8688,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8200,7 +8699,8 @@
         "opacity": 1,
         "labelPosition": 0.173071068,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8218,13 +8718,13 @@
       "vertices": [],
       "label": "目标选定并获准时",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8234,8 +8734,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8245,7 +8745,8 @@
         "opacity": 1,
         "labelPosition": 0.509433962,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8276,13 +8777,13 @@
       ],
       "label": "发现结构维护问题",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8292,8 +8793,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8303,7 +8804,8 @@
         "opacity": 1,
         "labelPosition": 0.359621582,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8334,13 +8836,13 @@
       ],
       "label": "确认为重构且获准",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8350,8 +8852,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8361,7 +8863,8 @@
         "opacity": 1,
         "labelPosition": 0.140175013,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8400,13 +8903,13 @@
       ],
       "label": "工具修改后相关测试",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8416,8 +8919,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8427,7 +8930,8 @@
         "opacity": 1,
         "labelPosition": 0.016280106,
         "labelOffset": 66,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8450,13 +8954,13 @@
       ],
       "label": "结构调整后回归",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8466,8 +8970,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8477,7 +8981,8 @@
         "opacity": 1,
         "labelPosition": 0.200381539,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8504,13 +9009,13 @@
       ],
       "label": "已确认修复规则文档",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8520,8 +9025,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8531,7 +9036,8 @@
         "opacity": 1,
         "labelPosition": 0.167838232,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8566,13 +9072,13 @@
       ],
       "label": "已确认修复任务记录",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8582,8 +9088,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8593,7 +9099,8 @@
         "opacity": 1,
         "labelPosition": 0.022264411,
         "labelOffset": 66,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8624,13 +9131,13 @@
       ],
       "label": "规则影响当前证据",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8640,8 +9147,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8651,7 +9158,8 @@
         "opacity": 1,
         "labelPosition": 0.401652184,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8678,13 +9186,13 @@
       ],
       "label": "替换后需核对环境",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8694,8 +9202,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8705,7 +9213,8 @@
         "opacity": 1,
         "labelPosition": 0.639226158,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8740,13 +9249,13 @@
       ],
       "label": "涉及共享契约",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8756,8 +9265,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8767,7 +9276,8 @@
         "opacity": 1,
         "labelPosition": 0.041815234,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8794,13 +9304,13 @@
       ],
       "label": "涉及共享工具",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8810,8 +9320,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8821,7 +9331,8 @@
         "opacity": 1,
         "labelPosition": 0.245889915,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8848,13 +9359,13 @@
       ],
       "label": "文档与实际冲突",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8864,8 +9375,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8875,7 +9386,8 @@
         "opacity": 1,
         "labelPosition": 0.12277675,
         "labelOffset": -132.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8910,13 +9422,13 @@
       ],
       "label": "准备视觉资源",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8926,8 +9438,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8937,7 +9449,8 @@
         "opacity": 1,
         "labelPosition": 0.170427634,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -8968,13 +9481,13 @@
       ],
       "label": "准备音频资源",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -8984,8 +9497,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -8995,7 +9508,8 @@
         "opacity": 1,
         "labelPosition": 0.174817811,
         "labelOffset": 48.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9022,13 +9536,13 @@
       ],
       "label": "收到文件",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9038,8 +9552,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9049,7 +9563,8 @@
         "opacity": 1,
         "labelPosition": 0.277483758,
         "labelOffset": 36,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9080,13 +9595,13 @@
       ],
       "label": "收到文件",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9096,8 +9611,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9107,7 +9622,8 @@
         "opacity": 1,
         "labelPosition": 0.043265451,
         "labelOffset": 36,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9130,13 +9646,13 @@
       ],
       "label": "实施需要素材",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9146,8 +9662,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9157,7 +9673,8 @@
         "opacity": 1,
         "labelPosition": 0.378719066,
         "labelOffset": 124,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9184,13 +9701,13 @@
       ],
       "label": "资源及消费位置已确定",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9200,8 +9717,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9211,7 +9728,8 @@
         "opacity": 1,
         "labelPosition": 0.643096701,
         "labelOffset": -32.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9242,13 +9760,13 @@
       ],
       "label": "资源及消费位置已确定",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9258,8 +9776,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9269,7 +9787,8 @@
         "opacity": 1,
         "labelPosition": 0.372616536,
         "labelOffset": -72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9316,13 +9835,13 @@
       ],
       "label": "资源及消费位置已确定",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9332,8 +9851,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9343,7 +9862,8 @@
         "opacity": 1,
         "labelPosition": 0.307586899,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9366,13 +9886,13 @@
       ],
       "label": "资源及消费位置已确定",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9382,8 +9902,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9393,7 +9913,8 @@
         "opacity": 1,
         "labelPosition": 0.062624209,
         "labelOffset": 72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9416,13 +9937,13 @@
       ],
       "label": "资源及消费位置已确定",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9432,8 +9953,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9443,7 +9964,8 @@
         "opacity": 1,
         "labelPosition": 0.053662658,
         "labelOffset": 72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9461,13 +9983,13 @@
       "vertices": [],
       "label": "替换图片",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9477,8 +9999,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9488,7 +10010,8 @@
         "opacity": 1,
         "labelPosition": 0.266666667,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9506,13 +10029,13 @@
       "vertices": [],
       "label": "替换音频",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9522,8 +10045,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9533,7 +10056,8 @@
         "opacity": 1,
         "labelPosition": 0.188405797,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9560,13 +10084,13 @@
       ],
       "label": "替换动画",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9576,8 +10100,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9587,7 +10111,8 @@
         "opacity": 1,
         "labelPosition": 0.413243291,
         "labelOffset": -36,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9614,13 +10139,13 @@
       ],
       "label": "替换场景",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9630,8 +10155,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9641,7 +10166,8 @@
         "opacity": 1,
         "labelPosition": 0.115177581,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9676,13 +10202,13 @@
       ],
       "label": "需要语言支持",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9692,8 +10218,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9703,7 +10229,8 @@
         "opacity": 1,
         "labelPosition": 0.202629931,
         "labelOffset": -48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9730,13 +10257,13 @@
       ],
       "label": "规格已确认并获准实现",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9746,8 +10273,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9757,7 +10284,8 @@
         "opacity": 1,
         "labelPosition": 0.364503302,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9784,13 +10312,13 @@
       ],
       "label": "请求独立核查时",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9800,8 +10328,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9811,7 +10339,8 @@
         "opacity": 1,
         "labelPosition": 0.232912417,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9838,13 +10367,13 @@
       ],
       "label": "证据不足且获准加观测",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9854,8 +10383,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9865,7 +10394,8 @@
         "opacity": 1,
         "labelPosition": 0.193620014,
         "labelOffset": -72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9892,13 +10422,13 @@
       ],
       "label": "确认需长期保留",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9908,8 +10438,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9919,7 +10449,8 @@
         "opacity": 1,
         "labelPosition": 0.466569538,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -9942,13 +10473,13 @@
       ],
       "label": "短测不足",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -9958,8 +10489,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -9969,7 +10500,8 @@
         "opacity": 1,
         "labelPosition": 0.655208059,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10000,13 +10532,13 @@
       ],
       "label": "卡顿需要测量",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10016,8 +10548,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10027,7 +10559,8 @@
         "opacity": 1,
         "labelPosition": 0.06890017,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10074,13 +10607,13 @@
       ],
       "label": "瓶颈已确认且优化获准",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10090,8 +10623,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10101,7 +10634,8 @@
         "opacity": 1,
         "labelPosition": 0.3007743,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10124,13 +10658,13 @@
       ],
       "label": "请求独立核实测量",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10140,8 +10674,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10151,7 +10685,8 @@
         "opacity": 1,
         "labelPosition": 0.263818852,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10169,13 +10704,13 @@
       "vertices": [],
       "label": "请求独立核实测量",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10185,8 +10720,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10196,7 +10731,8 @@
         "opacity": 1,
         "labelPosition": 0.434782609,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10223,13 +10759,13 @@
       ],
       "label": "指标实现需回归",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10239,8 +10775,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10250,7 +10786,8 @@
         "opacity": 1,
         "labelPosition": 0.098102123,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10281,13 +10818,13 @@
       ],
       "label": "明确无需保留旧数据",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10297,8 +10834,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10308,7 +10845,8 @@
         "opacity": 1,
         "labelPosition": 0.069191927,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10343,13 +10881,13 @@
       ],
       "label": "明确需转换已有数据",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10359,8 +10897,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10370,7 +10908,8 @@
         "opacity": 1,
         "labelPosition": 0.306530588,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10401,13 +10940,13 @@
       ],
       "label": "存档变更后回归",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10417,8 +10956,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10428,7 +10967,8 @@
         "opacity": 1,
         "labelPosition": 0.09403853,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10451,13 +10991,13 @@
       ],
       "label": "转换后验证",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10467,8 +11007,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10478,7 +11018,8 @@
         "opacity": 1,
         "labelPosition": 0.079847874,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10525,13 +11066,13 @@
       ],
       "label": "需要直接静态检查",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10541,8 +11082,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10552,7 +11093,8 @@
         "opacity": 1,
         "labelPosition": 0.43743906,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10627,13 +11169,13 @@
       ],
       "label": "需要自动回归",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10643,8 +11185,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10654,7 +11196,8 @@
         "opacity": 1,
         "labelPosition": 0.428579024,
         "labelOffset": -48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10689,13 +11232,13 @@
       ],
       "label": "需要真实启动检查",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10705,8 +11248,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10716,7 +11259,8 @@
         "opacity": 1,
         "labelPosition": 0.416186764,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10739,13 +11283,13 @@
       ],
       "label": "本次需静态检查",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10755,8 +11299,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10766,7 +11310,8 @@
         "opacity": 1,
         "labelPosition": 0.081705361,
         "labelOffset": 54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10801,13 +11346,13 @@
       ],
       "label": "本次需相关回归",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10817,8 +11362,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10828,7 +11373,8 @@
         "opacity": 1,
         "labelPosition": 0.209806917,
         "labelOffset": 54,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10863,13 +11409,13 @@
       ],
       "label": "已可体验且 manual",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10879,8 +11425,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10890,7 +11436,8 @@
         "opacity": 1,
         "labelPosition": 0.109343825,
         "labelOffset": 63.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10929,13 +11476,13 @@
       ],
       "label": "发现当前范围缺陷",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -10945,8 +11492,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -10956,7 +11503,8 @@
         "opacity": 1,
         "labelPosition": 0.042339591,
         "labelOffset": -60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -10995,13 +11543,13 @@
       ],
       "label": "发现当前范围缺陷",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11011,8 +11559,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11022,7 +11570,8 @@
         "opacity": 1,
         "labelPosition": 0.527110883,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11057,13 +11606,13 @@
       ],
       "label": "用户请求独立代码审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11073,8 +11622,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11084,7 +11633,8 @@
         "opacity": 1,
         "labelPosition": 0.79186205,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11111,13 +11661,13 @@
       ],
       "label": "另行请求模块现状审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11127,8 +11677,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11138,7 +11688,8 @@
         "opacity": 1,
         "labelPosition": 0.474759704,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11233,13 +11784,13 @@
       ],
       "label": "用户请求交互审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11249,8 +11800,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11260,7 +11811,8 @@
         "opacity": 1,
         "labelPosition": 0.023312385,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11291,13 +11843,13 @@
       ],
       "label": "用户请求美术审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11307,8 +11859,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11318,7 +11870,8 @@
         "opacity": 1,
         "labelPosition": 0.526967952,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11345,13 +11898,13 @@
       ],
       "label": "用户请求听觉审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11361,8 +11914,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11372,7 +11925,8 @@
         "opacity": 1,
         "labelPosition": 0.041488271,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11407,13 +11961,13 @@
       ],
       "label": "用户请求技术规格审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11423,8 +11977,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11434,7 +11988,8 @@
         "opacity": 1,
         "labelPosition": 0.166489036,
         "labelOffset": 72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11465,13 +12020,13 @@
       ],
       "label": "已有数值样本且请求审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11481,8 +12036,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11492,7 +12047,8 @@
         "opacity": 1,
         "labelPosition": 0.110537587,
         "labelOffset": 78,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11523,13 +12079,13 @@
       ],
       "label": "确认原范围缺陷且修复获准",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11539,8 +12095,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11550,7 +12106,8 @@
         "opacity": 1,
         "labelPosition": 0.137984579,
         "labelOffset": 48.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11577,13 +12134,13 @@
       ],
       "label": "报告路径填写错误",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11593,8 +12150,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11604,7 +12161,8 @@
         "opacity": 1,
         "labelPosition": 0.378327667,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11631,13 +12189,13 @@
       ],
       "label": "原始报告缺失",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11647,8 +12205,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11658,7 +12216,8 @@
         "opacity": 1,
         "labelPosition": 0.208794966,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11681,13 +12240,13 @@
       ],
       "label": "运行中断",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11697,8 +12256,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11708,7 +12267,8 @@
         "opacity": 1,
         "labelPosition": 0.091672218,
         "labelOffset": -36,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11726,13 +12286,13 @@
       "vertices": [],
       "label": "还发现证据过期",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11742,8 +12302,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11753,7 +12313,8 @@
         "opacity": 1,
         "labelPosition": 0.230769231,
         "labelOffset": 68.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11788,13 +12349,13 @@
       ],
       "label": "需重新取得原始结果",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11804,8 +12365,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11815,7 +12376,8 @@
         "opacity": 1,
         "labelPosition": 0.074987082,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11850,13 +12412,13 @@
       ],
       "label": "重新验证当前内容",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11866,8 +12428,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11877,7 +12439,8 @@
         "opacity": 1,
         "labelPosition": 0.018433838,
         "labelOffset": 60,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11908,13 +12471,13 @@
       ],
       "label": "依据真实结果补充验证",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11924,8 +12487,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11935,7 +12498,8 @@
         "opacity": 1,
         "labelPosition": 0.043265451,
         "labelOffset": -72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -11962,13 +12526,13 @@
       ],
       "label": "后来需要按已有变更选测",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -11978,8 +12542,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -11989,7 +12553,8 @@
         "opacity": 1,
         "labelPosition": 0.364503302,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12028,13 +12593,13 @@
       ],
       "label": "用户要求暂停",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12044,8 +12609,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12055,7 +12620,8 @@
         "opacity": 1,
         "labelPosition": 0.416104197,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12082,13 +12648,13 @@
       ],
       "label": "原对话继续",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12098,8 +12664,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12109,7 +12675,8 @@
         "opacity": 1,
         "labelPosition": 0.303248109,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12168,13 +12735,13 @@
       ],
       "label": "准备换对话",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12184,8 +12751,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12195,7 +12762,8 @@
         "opacity": 1,
         "labelPosition": 0.065739148,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12222,13 +12790,13 @@
       ],
       "label": "新对话接手",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12238,8 +12806,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12249,7 +12817,8 @@
         "opacity": 1,
         "labelPosition": 0.492378142,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12300,13 +12869,13 @@
       ],
       "label": "恢复原 Feature 停点",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12316,8 +12885,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12327,7 +12896,8 @@
         "opacity": 1,
         "labelPosition": 0.029798474,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12374,13 +12944,13 @@
       ],
       "label": "恢复原 Feature 停点",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12390,8 +12960,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12401,7 +12971,8 @@
         "opacity": 1,
         "labelPosition": 0.233586049,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12428,13 +12999,13 @@
       ],
       "label": "改做另一项明确工作",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12444,8 +13015,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12455,7 +13026,8 @@
         "opacity": 1,
         "labelPosition": 0.420748231,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12478,13 +13050,13 @@
       ],
       "label": "无 Feature 需暂停",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12494,8 +13066,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12505,7 +13077,8 @@
         "opacity": 1,
         "labelPosition": 0.069316407,
         "labelOffset": -59.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12523,13 +13096,13 @@
       "vertices": [],
       "label": "准备跨对话交接",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12539,8 +13112,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12550,7 +13123,8 @@
         "opacity": 1,
         "labelPosition": 0.563380282,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12585,13 +13159,13 @@
       ],
       "label": "恢复原讨论",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12601,8 +13175,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12612,7 +13186,8 @@
         "opacity": 1,
         "labelPosition": 0.057951214,
         "labelOffset": -42,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12630,13 +13205,13 @@
       "vertices": [],
       "label": "继续未完调研",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12646,8 +13221,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12657,7 +13232,8 @@
         "opacity": 1,
         "labelPosition": 0.481481481,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12688,13 +13264,13 @@
       ],
       "label": "继续未完讨论",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12704,8 +13280,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12715,7 +13291,8 @@
         "opacity": 1,
         "labelPosition": 0.459524306,
         "labelOffset": 48.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12750,13 +13327,13 @@
       ],
       "label": "继续中断审核",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12766,8 +13343,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12777,7 +13354,8 @@
         "opacity": 1,
         "labelPosition": 0.077843497,
         "labelOffset": 48,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12804,13 +13382,13 @@
       ],
       "label": "进度历史需整理",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12820,8 +13398,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12831,7 +13409,8 @@
         "opacity": 1,
         "labelPosition": 0.156716246,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12870,13 +13449,13 @@
       ],
       "label": "阶段已结束且请求复盘",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12886,8 +13465,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12897,7 +13476,8 @@
         "opacity": 1,
         "labelPosition": 0.099547898,
         "labelOffset": -20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12928,13 +13508,13 @@
       ],
       "label": "阶段已结束且请求复盘",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12944,8 +13524,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -12955,7 +13535,8 @@
         "opacity": 1,
         "labelPosition": 0.343882544,
         "labelOffset": 72,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -12973,13 +13554,13 @@
       "vertices": [],
       "label": "经验确认后归档",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -12989,8 +13570,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -13000,7 +13581,8 @@
         "opacity": 1,
         "labelPosition": 0.5,
         "labelOffset": 20.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     },
     {
@@ -13018,13 +13600,13 @@
       "vertices": [],
       "label": "重复操作已确认值得脚本化",
       "stroke": {
-        "width": 1,
+        "width": 2,
         "color": "#8994A5",
         "dash": "dashed"
       },
-      "arrow": "target",
+      "arrow": "both",
       "text": {
-        "fontSize": 12,
+        "fontSize": 15,
         "color": "#475569",
         "align": "center",
         "fontFamily": "system",
@@ -13034,8 +13616,8 @@
       },
       "zIndex": 0,
       "appearance": {
-        "targetMarkerSize": 8,
-        "sourceMarker": "none",
+        "targetMarkerSize": 14,
+        "sourceMarker": "block",
         "targetMarker": "block",
         "labelPadding": 2,
         "rounded": true,
@@ -13045,7 +13627,8 @@
         "opacity": 1,
         "labelPosition": 0.206896552,
         "labelOffset": 68.5,
-        "routerPadding": 1
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
       }
     }
   ],
