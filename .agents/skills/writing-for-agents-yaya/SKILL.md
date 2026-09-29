@@ -59,4 +59,4 @@ description: 编写、修改或审核 Yaya 框架中的 Codex 指令，包括 AG
 
 发现问题时说明具体文件或片段、影响、依据和最小改法；没有证据的行为猜测标为待验证。格式与链接检查、静态语义审核、有限试用、客户端实际调用分别报告。普通修正不额外建立脚本、评分、审批或报告层；有归档要求时沿用现有位置。
 
-本 Skill 根据 Matt Pocock 的 writing-for-agents 本地材料改编，保留条件引用、信息层级与正文归属等方法，并针对 Codex 和本框架重新组织。上游许可见 [LICENSE](LICENSE)。
+本 Skill 根据 Matt Pocock 的 writing-for-agents 本地材料改编，保留条件引用、信息层级与正文归属等方法，并针对 Codex 和本框架重新组织。

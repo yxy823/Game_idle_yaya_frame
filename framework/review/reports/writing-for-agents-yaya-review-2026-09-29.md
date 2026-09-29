@@ -15,7 +15,7 @@
 | [SKILL.md](../../../.agents/skills/writing-for-agents-yaya/SKILL.md) | 保留。description 以编写、修改、审核框架 Codex 指令为触发，排除普通说明润色和仅执行既有指令。正文覆盖本框架维护规则与待分发指令源，明确不向游戏项目分发。只读审核与已授权修改分开，局部返回不结束尚未完成的具体授权。 |
 | [Codex 编写参考](../../../.agents/skills/writing-for-agents-yaya/references/codex-skill-authoring.md) | 保留。承接 frontmatter、调用策略、资源组织和相称验证，只有涉及这些对象时读取。区分界面短描述、description、隐式选择、资料引用和副作用授权，没有把它们混为同一机制。 |
 | [agents/openai.yaml](../../../.agents/skills/writing-for-agents-yaya/agents/openai.yaml) | 保留。展示名与说明对应指令编写审核，`allow_implicit_invocation: true` 位于 `policy` 下。与本轮读取的本机 `skill-creator/references/openai_yaml.md` 所列字段和默认值一致。 |
-| [LICENSE](../../../.agents/skills/writing-for-agents-yaya/LICENSE) | 保留。MIT 许可正文和 `Copyright (c) 2026 Matt Pocock` 与上游本地仓库根 LICENSE 内容相符，入口注明改编来源；没有把上游描述当作 Codex 产品契约。 |
+| `LICENSE`（当次文件，历史版本见 Git） | 保留。MIT 许可正文和 `Copyright (c) 2026 Matt Pocock` 与上游本地仓库根 LICENSE 内容相符，入口注明改编来源；没有把上游描述当作 Codex 产品契约。 |
 
 对上游的比较依据为当前会话已完整读取的 `writing-for-agents/SKILL.md`、本轮读取的 `SKILL-MECHANICS.md` 与仓库根 LICENSE。本地来源位于 `D:/A_Games/Game_Ai_Agent/general-development-agents/mattpocock--skills/`。上游是方法来源，不作为本次任务的新授权或 Codex 机制依据。
 
