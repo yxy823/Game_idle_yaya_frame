@@ -25,7 +25,7 @@
 
 **S2｜细化当前交付范围**
 
-product-author 编写当前 Product 的纳入与排除范围、来源映射和已有功能衔接，不复制 GDD 正文。必要设计决定由 product-spec-elicitor 澄清并由所属方法保存；按来源约定提交后进入规划。
+product-author 编写当前 Product 的纳入与排除范围、来源映射和已有功能衔接，不复制 GDD 正文。交付取舍使用 product-spec-elicitor 澄清；必要游戏设计差异由 design-gdd 处理，数值主题按需使用 design-balance。按来源约定提交后进入规划。
 
 **S3｜展示本次完整拆分**
 

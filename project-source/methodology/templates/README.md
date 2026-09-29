@@ -31,7 +31,7 @@ Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep b
 | `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps and relevant subsystem runtime flows, separate from generated reference facts. |
 | `architecture-decision-record.md.tmpl` | Optional rationale for one important technical choice; Feature notes and architecture maps link it without copying its body. |
 
-The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`. Project development requires an existing GDD under `../01-product-doc-structure.md#gdd-prerequisite-and-authority`; no template here initializes one.
+The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`. Delivery planning and implementation require substantive current-scope GDD under `../01-product-doc-structure.md#gdd-prerequisite-and-authority`. Initial game design uses `design-gdd`; these delivery templates do not substitute for it.
 
 Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md). Create an ADR only when a real decision warrants it, not when copying a project.
 

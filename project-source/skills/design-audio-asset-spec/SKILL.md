@@ -29,4 +29,4 @@ Provide available playable samples, missing files and applicable checks such as 
 
 Music and SFX production are reserved capabilities. This Skill does not synthesize, record, acquire or process files. `content-asset-integration` connects supplied audio; `review-audio` evaluates it in a separate instance. No production, playback or acceptance may be claimed without the corresponding actual action/evidence.
 
-Return specification paths/resource IDs, decisions and gaps. Route behavior changes to `product-author` for GDD maintenance, and changed professional requirements through the existing planning impact route. Continue the caller's authorized work without creating a second delivery process.
+Return specification paths/resource IDs, decisions and gaps. Route behavior changes to `design-gdd` for GDD maintenance, and changed professional requirements through the existing planning impact route. Continue the caller's authorized work without creating a second delivery process.

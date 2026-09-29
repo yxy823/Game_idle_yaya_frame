@@ -1,11 +1,11 @@
 ---
 name: plan-review-godot
-description: Review an existing Godot GDD, Product or Feature proposal for consequential gaps, conflicts and implementation feasibility. Returns findings; does not replace ordinary clarification, author the plan or add a required review gate.
+description: Review a GDD draft, topic or whole design, Product scope or Feature proposal for consequential gaps, conflicts and feasibility. Returns findings without rewriting sources or adding a required review gate.
 ---
 
 # Godot plan review
 
-Review the supplied proposal against its intended outcome and current project constraints. Apply the project's existing GDD prerequisite under `methodology/01-product-doc-structure.md`; a review does not initialize missing game design. This is a focused review method, not a step required for every task. A formal independent review also follows `methodology/12-independent-review.md`; loading this Skill alone establishes no independence.
+Review the supplied design or proposal against its intended outcome and current project constraints. GDD review can cover an early draft, one topic or the whole document set before Product or Features exist. Review actual supplied material; a missing design limits findings rather than authorizing its creation. Product and Feature review still needs the relevant design sources under `methodology/01-product-doc-structure.md`. This is a requested review method, not a step required for every task. A formal independent review also follows `methodology/12-independent-review.md`; loading this Skill alone establishes no independence.
 
 ## Establish the current question
 
@@ -13,13 +13,15 @@ Identify the proposal, the decision it should support and the requested review s
 
 Read only sources that can affect this judgment: relevant GDD topics and Product boundaries, selected Feature details/designs and their dependencies, applicable project rules, accepted architecture decisions, professional requirements and matching project knowledge. Follow actual references rather than a fixed document list. Use the engineering routes in project `AGENTS.md` for affected Godot domains. Missing optional documents are not defects by themselves.
 
+For GDD topic or whole-design review, read [GDD review concerns](references/gdd-review.md). It adds stage-sensitive checks for design completeness, consistency and player experience; do not load it for a delivery-only or technical proposal with no GDD review scope. Formal numeric balance review remains with [review-balance](../review-balance/SKILL.md), which may be combined when requested under the same independent-review contract.
+
 ## Examine consequential weaknesses
 
 Select the relevant concerns below and explain their concrete effect. Do not force an issue under every heading or invent a design for unrelated future scope.
 
 | Concern | What to establish |
 | --- | --- |
-| Goal and boundary | The proposed outcome serves the confirmed GDD intent and current Product delivery; inclusions, exclusions and effects on existing behavior are consistent. |
+| Goal and boundary | The proposed outcome serves the supplied game intent and, where applicable, current Product delivery; distinguish draft choices from adopted requirements, and check inclusions, exclusions and effects on existing behavior. |
 | Assumptions and choices | Material assumptions have evidence or remain visibly undecided. Compare feasible alternatives where the choice changes scope, user-visible behavior or costly implementation. |
 | Decomposition and dependencies | Features deliver coherent, independently verifiable outcomes; coverage has no consequential omission or overlap. Dependencies reflect actual contracts and available inputs, without detailing future Products prematurely. |
 | Verification | Important outcomes have observable acceptance criteria and a feasible way to check them. Distinguish static checks, automated/runtime evidence and human perception or acceptance; planned checks are not results. |
@@ -33,7 +35,8 @@ Lead with whether the proposal supports the requested next step, the most conseq
 
 | Result needing follow-up | Existing owner |
 | --- | --- |
-| GDD design or Product delivery document change | [product-author](../product-author/SKILL.md); material design or delivery uncertainty uses [product-spec-elicitor](../product-spec-elicitor/SKILL.md) within that work. |
+| GDD concept, experience goal or rule change | [design-gdd](../design-gdd/SKILL.md); scoped numeric design and derivation use [design-balance](../design-balance/SKILL.md). |
+| Product delivery document change | [product-author](../product-author/SKILL.md); material delivery uncertainty uses [product-spec-elicitor](../product-spec-elicitor/SKILL.md) within that work. |
 | Initial decomposition of the current Product | [feature-plan](../feature-plan/SKILL.md), preserving its existing proposal and writing contract. |
 | Changes affecting an existing Feature plan | [feature-sync](../feature-sync/SKILL.md), with its actual source, baseline and plan-evolution contracts; findings do not establish a historical source change. |
 | Current Feature's detailed implementation design | [feature-execute](../feature-execute/SKILL.md), under the optional design contract in `methodology/02-feature-list-schema.md`. |

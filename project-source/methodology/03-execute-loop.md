@@ -180,7 +180,7 @@ Check whether this work changed accepted game design or delivery scope, added, r
 
 | Content | Action and authority |
 | --- | --- |
-| GDD and Product delivery | `product-author` records approved game-design changes in the existing GDD and adjusts affected Product boundaries/source links. Future Products remain pre-decomposition candidates. Resolve current and already planned impacts through the existing source-commit and synchronization route. |
+| GDD and Product delivery | `design-gdd` records approved overall game-design changes; `design-balance` maintains scoped numerical design in the owning GDD topic. `product-author` adjusts affected Product boundaries/source links. Future Products remain pre-decomposition candidates. Resolve current and already planned impacts through the existing source-commit and synchronization route. |
 | Shared terminology | Invoke `project-terminology` within the current documentation authorization; definitions follow [the terminology contract](01-product-doc-structure.md#project-terminology-optional). Meaning changes use the owning Product/design route. |
 | Professional requirements and resource lists | The owning specialist finalizes applicable UI/art/audio/localization specifications and resource status/location updates under [Specialist work and sources](11-specialist-workflows.md). Resolve substantive source impacts before dependent delivery. |
 | Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design; update affected architecture contracts and navigation under [map maintenance](10-architecture-overview.md#maintaining-a-map), linking rather than duplicating. |

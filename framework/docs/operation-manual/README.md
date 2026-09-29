@@ -24,6 +24,6 @@
 
 框架只面向单人 Godot 项目，支持同目录暂停、切换和新对话续接。生成项目独立拥有自身文件；本册、完整提示词库和维护文档不复制给项目，也不建立自动同步。
 
-项目开发以 `docs/gdd/` 中已有真实设计正文为前提。创建器只预设目录说明；没有 GDD 时停止开发，不从模糊想法创建设计。已有 GDD 正常维护，Product 据此组织交付范围。
+创建器只预设 `docs/gdd/` 目录说明；项目内可由 `design-gdd` 从想法形成设计，或整合、修订已有资料，数值主题由 `design-balance` 按授权直接维护。规划和实现依赖的当前范围须有足够明确的真实设计，Product 据此组织交付，不代替 GDD。
 
 行为依据为项目自身的 [AGENTS 源](../../../project-source/Project_AGENTS.md)、[方法总览](../../../project-source/methodology/00-overview.md)、[Skills](../../../project-source/skills/) 和 [工具](../../../project-source/tools/README.md)。本册解释现行契约，不能通过文字重排改写授权、状态或验证要求。

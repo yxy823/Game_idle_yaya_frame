@@ -1,0 +1,6 @@
+interface:
+  display_name: "Game Design and GDD"
+  short_description: "Develop game ideas and maintain coherent GDD design"
+
+policy:
+  allow_implicit_invocation: true

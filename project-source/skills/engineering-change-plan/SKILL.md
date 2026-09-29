@@ -1,7 +1,7 @@
 ---
 name: engineering-change-plan
 description: >-
-  Prepare bug, refactor or maintenance Features that preserve confirmed GDD design and delivery scope. Triage ownership and evidence, obtain any missing approval, append the engineering plan, then hand off to authorized execution. Changed or ambiguous game design belongs to product-author.
+  Prepare bug, refactor or maintenance Features that preserve confirmed GDD design and delivery scope. Triage ownership and evidence, obtain any missing approval, append the engineering plan, then hand off to authorized execution. Changed or ambiguous game design belongs to design-gdd.
 ---
 
 # Standardize one engineering change
@@ -18,7 +18,7 @@ Read applicable `docs/project-rules.md`, routed engineering rules and relevant e
 
 Apply **Feedback assessment** in methodology 07 before treating a report as a change, including when no triage Skill was selected. [feedback-triage-godot](../feedback-triage-godot/SKILL.md) exposes the same checks as a direct entry. When a defect needs causal investigation, use **Causal diagnosis** there through [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md), collecting only evidence needed for this preparation. Reuse completed assessment/diagnosis; missing causal evidence may remain explicit in the initial proposal under the Bug contract.
 
-1. Read the actual confirmed GDD, Product delivery scope, professional or technical contract, current Progress and relevant history. Classify ownership as `Framework`, `Tooling` or `Project-specific`, and select one canonical mode. Route changed/ambiguous GDD intent to `product-author`, or changed/ambiguous professional requirements to their specialist under `methodology/11-specialist-workflows.md`; keep defects introduced in unfinished work with that Feature under the canonical ownership table.
+1. Read the actual confirmed GDD, Product delivery scope, professional or technical contract, current Progress and relevant history. Classify ownership as `Framework`, `Tooling` or `Project-specific`, and select one canonical mode. Route changed/ambiguous GDD intent to `design-gdd`, scoped numeric design to `design-balance`, delivery scope to `product-author`, or changed/ambiguous professional requirements to their specialist under `methodology/11-specialist-workflows.md`; keep defects introduced in unfinished work with that Feature under the canonical ownership table.
 2. Collect only the selected mode's necessary evidence from the engineering specification. Keep an unconfirmed root cause unknown. For an unspecified refactor, use `engineering-refactor-select` and return here with the selected candidate.
 3. Read the Feature index and relevant details. If this work depends on an unplanned current Product, use `feature-plan` for that prerequisite. Independent tooling work uses its documented technical contract and may append an engineering Feature to a valid empty ledger without a detailed business Product, provided the project already has an actual GDD. Read the Test Registry to propose reusable or new affected components.
 4. Propose the smallest independently verifiable Feature; split `large` work. Show ID/title/mode, dependencies, affected components, stable criteria, expected files/area and verification obligations. Reuse approval covering the proposal; resolve only missing material decisions.

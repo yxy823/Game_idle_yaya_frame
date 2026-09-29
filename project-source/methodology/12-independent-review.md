@@ -1,6 +1,6 @@
 # 12 · Independent review
 
-This is the common contract for all formal reviews. Review methods live in `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization` and `review-balance`. Select only methods relevant to the user's requested scope; one independent instance can combine several methods. Reviews are requested work, never a mandatory seven-step pipeline.
+This is the common contract for all formal reviews. Design-document and proposal inspection uses `plan-review-godot`, including its conditional GDD method; other review methods live in `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization` and `review-balance`. Select only methods relevant to the user's requested scope; one independent instance can combine several methods. Reviews are requested work, never a mandatory pipeline.
 
 ## Trigger and independence
 

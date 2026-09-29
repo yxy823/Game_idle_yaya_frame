@@ -1,0 +1,31 @@
+# GDD co-creation
+
+Use this reference when the user wants to develop a game together or improve a draft through discussion. Reuse [Shared questioning method](../../project-grill-me/SKILL.md#shared-questioning-method) for facts, question grouping, consequences and corrections. Reading that method does not invoke a second clarification workflow; GDD design and authorized writing remain with `design-gdd`.
+
+## Start from the current design
+
+Use the relevant idea, GDD topics and explicit decisions already available. An idea is enough to begin; an existing Product, Feature plan or ready Godot environment is not required. If the user asks for a draft first, produce a useful draft with visible assumptions and gaps rather than delaying it for a questionnaire. Discussion-only work keeps its design summary in the conversation.
+
+Track the design choices that matter to the requested scope. Experience goals, player context and core actions can constrain later rules, progression and numeric targets. Resolve consequential upstream choices before asking for details that depend on them; independent choices may be grouped. Do not impose a fixed interview length or exhaust every branch of the design.
+
+## Ask in terms of play
+
+Number questions and label concrete options A/B/C. Give the meaningful consequence and a recommendation where useful, while leaving room for the user's own answer. An open question about an imagined play moment can remain open rather than receiving artificial choices.
+
+Translate vague goals such as satisfying or deep into situations: what the player notices, chooses, does and sees change. When a reference game is supplied, distinguish the property to retain from what the user wants to change. A player's mistake, unexpected choice or repeated action can expose a rule gap; use only the cases relevant to the current decision.
+
+If the answer requires playing or measurement, preserve a hypothesis and propose the observation that would resolve it. Repeated questions cannot establish an untested feel or parameter. User requests for fewer questions or a quick draft should produce appropriately labeled candidates, without presenting silence as adoption.
+
+## Continue as answers arrive
+
+Answer an explanation request first, then return to unresolved design work within the original scope. An explanation is not acceptance of the proposed design. Reuse an explicit choice or an instruction to follow a concrete recommendation; when a user changes a decision, revisit its affected rules and assumptions while preserving unrelated decisions.
+
+When an issue is settled or deliberately deferred, continue to the next material question in the authorized design scope. Avoid stopping at an acknowledgement when useful work remains. Conversely, do not manufacture questions once the requested design is clear enough. Respect an explicit request to explain only, pause, finish or narrow the scope.
+
+## Keep the current design coherent
+
+When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Keep candidates and unresolved alternatives labeled. Preserve the current document structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed.
+
+Record the reason for a consequential design choice beside the relevant design. Do not create a separate decision, question or version ledger just to document the conversation. Settled terminology and resumption records use the existing conditional routes in the Skill entry.
+
+The requested discussion can finish when its important choices are resolved, explicitly deferred or left as identified validation questions. Summarize the result and any dependency that still limits its next use; deliver updated files when writing was authorized. A local discussion milestone does not end a broader authorized drafting or implementation task.

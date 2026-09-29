@@ -13,7 +13,7 @@ Changing the language of a conversation must not change the language of project 
 
 ## 2. Configuration contract
 
-Every newly initialized project must store `document_language` in `docs/methodology-config.json` before Yaya Loop generates Product or Feature content.
+Every newly initialized project must store `document_language` in `docs/methodology-config.json` before Yaya Loop generates durable GDD, Product or Feature content. Language selection also applies to an initial GDD draft; it does not require environment Bootstrap, a Godot run or an existing GDD. Preserve unrelated tool settings when saving the confirmed language.
 
 Copied purpose/pending-state notices and directory navigation do not select a document language or establish Product content. When replacing a notice with actual project content, use the confirmed `document_language`; copying performs no translation.
 
@@ -66,18 +66,18 @@ For a new project:
 
 1. Infer a reasonable proposed default from the language currently used by the user.
 2. Ask the user to confirm the proposed document language once.
-3. Persist the confirmed BCP 47 tag before generating durable Product or Feature content.
+3. Persist the confirmed BCP 47 tag before generating durable GDD, Product or Feature content.
 4. Use the persisted value as the authority in every later workflow.
 
 If the user's preference cannot be inferred, propose `en` and ask for confirmation. Inference is only a default; country, IP address, timezone, operating-system locale, and account location must not silently select the language.
 
-Every inferred value is non-binding until the user confirms it. If the evidence is mixed or weak, report that uncertainty instead of presenting a dominant language as fact.
+Every inferred value is non-binding until the user confirms it. Reuse a still-valid explicit language decision from the current task or the established project; do not request the same confirmation again when switching Skills. If the evidence is mixed or weak, report that uncertainty instead of presenting a dominant language as fact.
 
 ## 4. Content governed by document_language
 
 The following generated, human-readable project knowledge must use `document_language`:
 
-- Authorized additions or edits to existing GDD prose, Product delivery headings/prose, and professional specifications
+- Authorized initial GDD drafts, additions or edits to GDD prose, Product delivery headings/prose, and professional specifications
 - Feature titles, descriptions, acceptance criteria, and human-readable source annotations
 - Feature notes and revision-log explanations
 - Current Progress, linked execution archives, implementation decisions, and durable handoff records

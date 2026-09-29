@@ -28,7 +28,7 @@ This framework supports one project user working with an Agent. Multi-user colla
 | Need | Read and follow |
 | --- | --- |
 | Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` |
-| Existing GDD, Product delivery scope or project terminology | `methodology/01-product-doc-structure.md`; `product-author` maintains GDD design and Product delivery documents, `project-terminology` maintains confirmed definitions and links |
+| Create or maintain GDD, design numerical models, plan Product delivery or maintain terminology | `methodology/01-product-doc-structure.md`; `design-gdd` owns overall game design, `design-balance` its scoped numerical design, `product-author` delivery documents and `project-terminology` confirmed definitions and links |
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
 | Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
 | Rule responsibilities, interpretation or promotion | `methodology/04-coding-rules-4-layers.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
@@ -44,11 +44,11 @@ This framework supports one project user working with an Agent. Multi-user colla
 
 These entries are task routes, not a mandatory reading sequence. Follow the selected procedure and its applicable references; do not load every workflow. There are no automatic tool events or Hooks to grant permission.
 
-Every project development entry requires an existing substantive GDD under `docs/gdd/`, as defined in `methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority`. Without it, report the missing input and stop; placeholders, idea discussion, engineering work and experiments do not bypass this prerequisite. The framework does not initialize GDD. Once present, GDD is a normal maintained project source within existing authorization; Product documents organize delivery and reference its design rather than duplicating it.
+Game design may start from an idea through `design-gdd`, with scoped clarification, numerical modeling and draft review as needed. Apply `methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority`: delivery planning, implementation, engineering work and runnable experiments require substantive GDD content and sufficiently clear current-scope design. A placeholder does not satisfy that prerequisite. GDD is a maintained project source within existing authorization; Product documents organize delivery and reference its design rather than duplicating it.
 
 Apply relevant `docs/project-rules.md` hard constraints when defining Product intent, planning Features and designing or implementing changes. A local Product, Feature or ADR cannot silently waive them. Every proposed rule addition, removal or edit requires the conversational self-check in `methodology/04-coding-rules-4-layers.md`; reuse explicit decisions, and obtain any missing authority for a substantive change. Stage 3 checks useful terminology, design, architecture/ADR and rule updates before final verification; it does not require an artifact for every category.
 
-Read relevant terminology definitions, GDD, Product/professional sources and accepted architecture decisions for the work. Initial purpose/pending-state notices are not confirmed requirements or definitions. With an existing GDD, clarification need not wait for all future design details or detailed Product documents; dependent planning and implementation require sufficiently clear current-scope design. Source writing and implementation use their owning workflows; a Skill return does not cancel a broader concrete authorization.
+Read relevant terminology definitions, available GDD, Product/professional sources and accepted architecture decisions for the work. Initial purpose/pending-state notices are not confirmed requirements or definitions. Design discussion need not wait for all future details or detailed Product documents; dependent planning and implementation require sufficiently clear current-scope design. Source writing and implementation use their owning workflows; a Skill return does not cancel a broader concrete authorization.
 
 ## Environment and Git
 

@@ -12,7 +12,7 @@
 | `agent-rules/` / `methodology/` | 按领域工程语义 / 开发和验证契约 | 所属规范；执行与审核按当前任务读取 |
 | `.agents/skills/` / `.codex/agents/` | 专项方法 / researcher、independent-reviewer 角色配置 | 主 Agent 按任务选用；角色文件不证明宿主已加载 |
 | `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
-| `docs/gdd/` | 游戏定位、核心循环、系统规则、内容与版本设计范围 | `product-author` 维护已有正文；相关项目工作读取 |
+| `docs/gdd/` | 游戏定位、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
 | `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
 | `docs/project-rules.md` | 项目级 MUST、PREFER、REVIEW 约束 | 已获准规则维护；所有相关工作读取 |
@@ -74,7 +74,7 @@
 
 `methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；可选 Feature 设计按解释需要省略不适用章节。
 
-GDD 沿项目已有的真实文件组织入口和主题，不附带另一套强制模板。Product 模板用于组织交付，不能替代或初始化 GDD。
+新建 GDD 默认采用总览入口与主题文档，具体划分由 `design-gdd` 按范围确定，不为凑目录建立空文件。已有单文件或分层结构按实际需要维护，不强制迁移。数值正文放在所属主题或章节，不另建重复规格。Product 模板用于组织交付，不能替代 GDD。
 
 | 产物 | 位置与注意事项 |
 | --- | --- |

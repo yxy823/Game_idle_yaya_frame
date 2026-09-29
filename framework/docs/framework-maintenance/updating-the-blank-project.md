@@ -21,6 +21,7 @@
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
 | 框架方案检验 | .agents/skills/plan-review-yaya/，框架自用；维护复盘与重复工作讨论由当前 Agent 按已有场景及适用方法处理 |
 | Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/retro-godot/，随 Skill 目录整包分发 |
+| Godot 游戏设计与数值设计 | project-source/skills/design-gdd/ 与 design-balance/；GDD 草稿或完整文档审核使用 plan-review-godot 的条件参考，数值正式审核仍归 review-balance |
 | Godot 重复工作方法设计 | project-source/skills/loop-me-godot/，随项目分发，使用项目自己的规范与能力 |
 | Godot 相互依赖问题的探索 | project-source/skills/wayfinder-godot/，随项目分发；按实际缺口选择讨论、调研或实验，记录仍归现有规范 |
 | Godot worktree 准备与成果整合 | project-source/skills/worktree-create-godot/ 与 worktree-integrate-godot/，分别拥有准备和整合入口；冲突方法归整合入口的 references/merge-conflicts.md |
@@ -58,6 +59,8 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | prompts.json、所属 Skill/methodology/CLI、场景职责清单 |
 
 框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md 及 references/scenarios.md；只更新失效内容，不复制另一套流程。术语唯一入口为 project-terminology，本地化规格为 design-localization-spec，content-localization 负责按已定要求实现。
+
+游戏设计正文由 design-gdd 创建、整合或维护，design-balance 可直接维护获准的 GDD 数值主题及计算说明；product-author 只管理交付范围，product-spec-elicitor 只澄清交付取舍。新建 GDD 默认分层，已有结构按需维护；设计与草稿审核不以 Product/Feature 已存在为前提，依赖设计的开发仍需当前规则明确。维护入口时核对设计、采用、写入和验证各自边界，不把专项写入变成整体玩法决策或正式审核。
 
 核实反馈与外部报告使用框架自用的 [feedback-triage-yaya](../../../.agents/skills/feedback-triage-yaya/SKILL.md)；调查具体异常原因使用 [bug-diagnosis-yaya](../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)；保存停点或准备新对话交接使用 [task-handoff-yaya](../../../.agents/skills/task-handoff-yaya/SKILL.md)。它们按当前授权调用相关规范，不新增必经阶段；只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 对应入口使用项目自己的方法与记录，不能回查框架 Skill 或完整提示词库。
 

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Game Numeric Design"
+  short_description: "Derive game formulas, values and explainable pacing models"
+
+policy:
+  allow_implicit_invocation: true

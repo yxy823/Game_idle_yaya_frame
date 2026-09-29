@@ -5,7 +5,7 @@ description: Resolve linked uncertainties blocking an existing Godot project goa
 
 # Find a workable path through linked Godot questions
 
-Use this method when several material unknowns affect one another and solving one changes what can be decided next. It can support discussion, planning or implementation without adding a Stage or a mandatory entry before ordinary work. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`; missing substantive GDD stops project exploration, rather than starting a game-idea interview.
+Use this method when several material unknowns affect one another and solving one changes what can be decided next. It can support discussion, planning or implementation without adding a Stage or a mandatory entry before ordinary work. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md` to the actual destination: initial game-design questions return to `design-gdd`, while dependent planning, engineering exploration and implementation need the relevant actual GDD. This method does not fill missing design through technical assumptions.
 
 ## Establish the goal and the relevant unknowns
 

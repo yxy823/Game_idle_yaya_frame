@@ -4,7 +4,7 @@
 
 适用于一位项目使用者与 Agent 配合开发，支持同一项目目录内暂停、切换和续接任务；明确指定其他工作目录时，在该目录核对和继续。worktree 按任务范围与授权使用，不是默认前置。多人协作和改动归属流程不在支持范围内；按需调研与独立审核仍可使用。
 
-项目开发以 `docs/gdd/` 中已有真实设计正文为前提；缺少时说明缺口并停止，目录说明或空模板不能代替 GDD。已有 GDD 随获准需求正常维护，具体边界见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+可以使用 `design-gdd` 从游戏想法开始讨论和建立 GDD，也可以导入、维护已有设计。交付规划、实现与运行实验以 `docs/gdd/` 中当前范围足够明确的真实设计为前提，目录说明或空模板不能代替 GDD。具体边界见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 
 ## 开发环境
 
@@ -21,7 +21,7 @@
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
 | .codex/agents/implementation-advisor.toml | 用户明确委派时，为已有 Feature 准备实施指导；固定模型与失败边界见 [implementation-guidance-godot](.agents/skills/implementation-guidance-godot/SKILL.md) |
 | .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
-| [GDD 目录](docs/gdd/README.md) | 游戏设计正文；初始只有目录说明，须先放入已有 GDD |
+| [GDD 目录](docs/gdd/README.md) | 游戏设计正文；初始只有目录说明，可导入已有 GDD 或从想法开始编写 |
 | [Product 总览](docs/product.md)、[交付单元目录](docs/product/README.md) | 先预拆分交付范围、来源与顺序；当前 Product 轮到时才细化 |
 | [项目术语](docs/terminology.md) | 初始尚无定义；按需维护共享名称与概念关系 |
 | [美术圣经](docs/art/art-bible.md)、[声音圣经](docs/audio/sound-bible.md) | 初始方向待确定；随设计决定维护共享视觉与声音规范 |
@@ -71,13 +71,16 @@
 
 | 任务 | Skill |
 | --- | --- |
-| 围绕已有 GDD 讨论设计或澄清概念 | project-grill-me |
+| 从游戏想法建立 GDD，深化、修订或整合设计 | design-gdd |
+| 推导或调整数值模型、公式与参数 | design-balance |
+| 讨论当前设计问题或澄清概念 | project-grill-me |
+| 检验 GDD 草稿、设计文档或 Product/Feature 方案 | plan-review-godot；按需读取 GDD 专项方法 |
 | 几个重要问题互相影响，需要按依赖逐步弄清 | wayfinder-godot |
 | 为获准任务准备或复用另一个 Git 工作目录 | worktree-create-godot |
 | 带回已选定的 worktree 成果，或接手已有整合冲突 | worktree-integrate-godot |
 | 保存已确认的术语定义、别名和引用 | project-terminology |
-| 维护已有 GDD、预拆分交付或细化当前 Product | product-author |
-| 澄清已有设计、交付范围或需求修改中的缺口 | product-spec-elicitor |
+| 基于 GDD 预拆分交付或细化当前 Product | product-author |
+| 澄清 Product 交付范围、依赖与推进顺序 | product-spec-elicitor |
 | 界面线框、布局状态与视觉基础规格 | design-ui-spec |
 | 音效、音乐需求与真实样本或占位约定 | design-audio-asset-spec |
 | 只拆当前 Product，完成后再拆下一 Product | feature-plan |
@@ -102,31 +105,38 @@ flowchart TD
     U[用户任务] --> SQ{仅查询现状或下一步}
     SQ -->|是| A[project-next-step-advisor]
     A --> H[报告事实或给出建议后停止]
-    SQ -->|否| G{项目内已有真实 GDD}
-    G -->|否| Z[说明缺少 GDD 并停止]
-    G -->|是| Q{任务内容}
+    SQ -->|否| Q{任务内容}
+    Q -->|建立或修订游戏设计| GD[design-gdd / design-balance]
+    GD --> O[对话结论或获准的设计正文]
+    Q -->|检验已有草稿或方案| RV[plan-review-godot]
+    RV --> RF[返回发现，正式修改交回作者]
     Q -->|讨论或澄清| C[project-grill-me]
-    C --> O[对话结论]
-    Q -->|记录已确定术语| T[project-terminology]
+    C --> O
+    Q -->|交付规划或工程工作| G{当前范围有足够明确的 GDD}
+    G -->|否| Z[说明设计缺口与可用设计入口]
+    G -->|是| W{具体工作}
+    Q -->|维护已确定术语| T[project-terminology]
     T --> K[按需更新术语文档或局部定义]
-    Q -->|设计变更或交付规划| P[product-author]
+    W -->|交付规划| P[product-author]
     P --> I[按需使用 product-spec-elicitor]
-    I --> D[维护 GDD 或 Product 交付范围]
-    Q -->|专业设计与规格| V[对应专业 Skill 直接维护来源]
+    I --> D[维护 Product 交付范围]
+    W -->|专业设计与规格| V[对应专业 Skill 直接维护来源]
     V -->|影响已有任务时| L
     D -->|已授权当前规划或已有任务同步| L[feature-plan / feature-sync]
     D -->|仅文档或后续预拆分| B[保存相应来源与交付说明后结束]
-    Q -->|Bug / 重构 / 维护| E[engineering-change-plan]
-    Q -->|选择重构候选| S[engineering-refactor-select]
+    W -->|Bug / 重构 / 维护| E[engineering-change-plan]
+    W -->|选择重构候选| S[engineering-refactor-select]
     S --> E
     L --> F[已批准的 Feature]
     E --> F
-    Q -->|执行已有 Feature| F
+    W -->|执行已有 Feature| F
     F --> X[feature-execute]
     X --> R[验证、验收、记录与交接]
 ```
 
-只讨论时仍须已有 GDD，但不写文件，也不要求先准备环境或详细 Product。`docs/terminology.md` 初始提供用途说明；由 `project-terminology` 按需维护已确认的定义。保持含义和行为的术语整理不创建 Feature，实质设计变化由 `product-author` 更新 GDD 并处理相关影响。
+初始游戏设计讨论可以从想法开始，不要求先准备运行环境、完整 GDD 或详细 Product；只讨论时不写文件。新 GDD 默认采用简短入口与主题正文，已有有效结构按需维护。数值设计可在授权内直接维护相应 GDD 主题，正式数值审核由 `review-balance` 承担；候选、采纳与验证状态分别说明。
+
+`docs/terminology.md` 初始提供用途说明；由 `project-terminology` 按需维护已确认的定义。保持含义和行为的术语整理不创建 Feature，实质设计变化由 `design-gdd` 或对应数值设计入口更新 GDD，交付影响由 `product-author` 及已有同步流程处理。
 
 GDD、Product、专业规格、术语、Feature 设计、架构与项目规则在开发中持续维护，Stage 3 在最终验证前检查必要更新。项目规则增删改须先输出对话自检并核对授权，见[规则维护约定](methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance)。
 

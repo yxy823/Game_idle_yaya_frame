@@ -1,0 +1,25 @@
+# Consolidate game-design material
+
+Use this reference to combine scattered notes, GDD topics, supplied documents or adopted discussion results into a maintainable design. Consolidation remains authoring; a separate findings-only review uses `plan-review-godot`.
+
+## Establish what each source supports
+
+Read the relevant material and identify its topic, current status and actual references. Distinguish adopted rules, candidate designs, implementation observations and measured evidence. User-designated authority and explicit decisions matter; a file's date, size or position in the directory does not settle a design conflict.
+
+When implementation differs from adopted design, preserve that distinction rather than automatically rewriting the design to match it. For a material conflict, identify both claims, their locations, available adoption evidence and what depends on resolving it. Keep an unresolved choice visible and continue independent consolidation work.
+
+A small comparison in the conversation or affected topic is sufficient when needed. Do not create a new source ledger or record every file's metadata merely to organize the task.
+
+## Consolidate without losing design
+
+Use [Design document structure](design-docs.md) for the output. Preserve an effective existing structure unless reorganization is part of the authorized result. Creating a new GDD defaults to a short entry with theme documents; an existing single-file GDD does not require another copy or automatic conversion.
+
+Give each retained rule an owning location. Preserve its exceptions, assumptions, numeric meaning, decision state and useful evidence even when the surrounding wording is compressed. Resolve terminology that would otherwise change interpretation, using the existing terminology route where a durable domain definition is needed.
+
+Keep enough source-to-result information to verify that substantive content was retained or deliberately changed. A brief explanation is enough for a small consolidation; a larger migration may need a mapping table in the response or an existing task record. This does not require another artifact.
+
+Check the new or updated entry, affected links and anchors, and cross-topic agreement in rules, terms and numbers. Only replace, archive or remove old material within the actual task's authorized scope. An explicit separate-copy request preserves the inputs; ordinary local editing has no separate-copy requirement.
+
+## Deliver the consolidated design
+
+Provide the resulting entry or edited topics, explain material structural changes and adoption reasoning, and identify any unresolved conflict and its consequence. A proposal introduced during consolidation remains a proposal until adopted. State actual coverage and evidence limits rather than claiming that organized documentation proves gameplay or implementation.

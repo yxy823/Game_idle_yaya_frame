@@ -8,7 +8,7 @@
 
 | 材料 | 内容与边界 |
 | --- | --- |
-| `docs/gdd/` | 持续维护的游戏设计正文；是项目开发前提，目录说明和空模板不满足此前提 |
+| `docs/gdd/` | 可由想法逐步形成的游戏设计正文；依赖设计的规划或实现须有足够明确的当前范围，目录说明和空模板不能替代 |
 | `docs/product.md` / `docs/product/NN-name.md` | 交付预拆分及当前交付范围；具体 Product 轮到时才写，链接 GDD 而不复制规则 |
 | `docs/terminology.md` | 可复用标准名称、定义、范围、关系、别名与易混淆项；不放数值、完整行为或当前计划 |
 | `docs/features/F0XX-design.md` | 需要较长解释的局部设计：职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
@@ -21,7 +21,9 @@
 | `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-术语由 `project-terminology` 维护；只有实质歧义才由 `project-grill-me` 讨论。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源。以上项目工作同样遵守 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值主题与计算说明；两者引用同一份实际规则，不在报告或 Product 中维护副本。新建默认采用总览与主题文档，已有单文件或分层结构按需维护。草案、采用决定和实际验证状态分开表述。
+
+术语由 `project-terminology` 维护；只有实质歧义才使用共用提问方法。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源；缺失决定按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)判断哪些后续工作依赖它。
 
 ## 局部设计与当前架构
 

@@ -8,12 +8,12 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。
 
-项目开发先核对 `docs/gdd/` 中的真实设计正文；没有 GDD 时说明缺口并停止，状态查询可以直接报告这一事实。专业、工程或只讨论入口也不绕过此前提，详见 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+`design-gdd` 可以在项目内从想法形成 GDD；设计讨论、数值建模和 GDD 草稿审核不要求先有完整 Product 或 Feature。依赖设计的规划与实现仍须先核对当前范围的真实规则，缺失时只停止依赖部分并明确设计缺口，详见 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 
 | Skill | 唯一主要职责 |
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
-| `project-grill-me` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
+| `project-grill-me` | 澄清会实质影响当前任务的未决问题；游戏设计归 design-gdd，交付取舍归 product-spec-elicitor |
 | `wayfinder-godot` | 处理相互影响的多个未知，按依赖选择所需讨论、调研或实验 |
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
@@ -25,12 +25,14 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `worktree-create-godot` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
 | `worktree-integrate-godot` | 将已选成果带入目标，处理已有整合冲突并验证组合后的结果 |
 | `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
-| `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
+| `plan-review-godot` | 按约定范围审核 GDD 草稿或完整文档、Product 或 Feature 方案，返回有依据的缺口与结论 |
 | `retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `loop-me-godot` | 为用户指出的重复或预计重复工作设计处理方法，明确入口、判断、产出与正文归属 |
 | `project-terminology` | 保存已确认且含义不变的局部/共享定义与术语引用 |
-| `product-author` | 维护已有 GDD、交付预拆分和当前 Product，协调已规划工作的影响 |
-| `product-spec-elicitor` | 澄清已有设计或当前交付范围的缺口；明确契约的实现缺陷交工程流程 |
+| `design-gdd` | 从想法形成、整合或修订 GDD，维护整体规则、体验目标与跨主题一致性 |
+| `design-balance` | 推导或调整数值模型，直接维护获准的 GDD 数值主题、公式参数与计算说明 |
+| `product-author` | 根据 GDD 维护交付预拆分和当前 Product，协调已规划工作的影响 |
+| `product-spec-elicitor` | 澄清交付边界、依赖与顺序；游戏规则问题回到设计入口，明确契约的实现缺陷交工程流程 |
 | `feature-plan` | 为当前 Product 建立可追溯 Feature 覆盖与依赖 |
 | `feature-sync` | 将已确认来源变化映射到已有计划及测试历史 |
 | `feature-execute` | 交付获准 Feature，承担适用实现、验证、记录与收尾 |
@@ -58,7 +60,9 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 前缀帮助识别职责，不代表必须按 design → content → diagnostics → review 全部执行。只读调查、规格编写与实现有不同授权；纯术语已经明确时直接交 `project-terminology`，不重复开启需求访谈。本地化规格也不再由运行接入 Skill 兼管。
 
-普通澄清继续由 `project-grill-me` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [retro-godot](../../../../project-source/skills/retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
+普通澄清由 `project-grill-me` 负责，GDD 设计由 [design-gdd](../../../../project-source/skills/design-gdd/SKILL.md) 处理，Product 问题由 `product-spec-elicitor` 使用共用提问方法，Feature 拆分由 `feature-plan` 负责。现有草稿、完整 GDD 或方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)，按 GDD 阶段与范围读取其领域参考，不因尚无 Product 或 Feature 拒绝审核；正式独立审核仍须非作者实例。开发经验复盘使用 [retro-godot](../../../../project-source/skills/retro-godot/SKILL.md)。这些结论交回原有负责人，不增加必经关卡，也不替代人工验收。
+
+[design-balance](../../../../project-source/skills/design-balance/SKILL.md) 从已知目标与规则推导数值方案，也可以针对既有模型调整参数；它在写入授权内直接维护所属 GDD 数值正文，不要求另一 Skill 代为保存。参数采用、文件写入和验证状态分别记录，新增玩法或体验目标变化回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，使用 `review-balance` 独立审核；设计者的计算自查不能称为独立审核。普通尺寸或数量记录不自动触发专项建模。
 
 收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
 

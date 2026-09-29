@@ -17,7 +17,7 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 需求设计 → Product 已预拆分，准备细化当前交付范围”。填入上述材料；已有对话直接补齐输入，不必重发入口。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要设计和范围问题由 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清。
+使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 需求设计 → Product 已预拆分，准备细化当前交付范围”。填入上述材料；已有对话直接补齐输入，不必重发入口。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要交付范围问题由 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清；游戏设计变化交给 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)。
 
 **S1｜复核当前范围**
 
@@ -29,7 +29,7 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 **S3｜检查可规划性**
 
-核对当前交付范围、设计依据、已实现功能和必要衔接，明确尚未解决的缺口；已确认设计需要修改时，在原授权内维护所属来源并重新核对。
+核对当前交付范围、设计依据、已实现功能和必要衔接，明确尚未解决的缺口；已确认设计需要修改时，在原授权内由 design-gdd 或对应专业入口维护所属来源并重新核对。
 
 ## 资源与文件影响
 

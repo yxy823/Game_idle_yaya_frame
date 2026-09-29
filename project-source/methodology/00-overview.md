@@ -23,7 +23,7 @@ The project knowledge layer is:
 <repo>/
 ├── agent-rules/                         repository-specific concrete implementation rules
 └── docs/
-    ├── gdd/                            existing, maintained game-design authority
+    ├── gdd/                            game-design authority, created and maintained as needed
     ├── product.md + product/*.md        delivery pre-decomposition and current Product scope
     ├── unadopted-ideas.md               ideas not adopted as requirements or delivery commitments
     ├── terminology.md                  optional domain terms and shared definitions
@@ -65,7 +65,9 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | Development retrospective | `retro-godot` | Use actual task evidence to suggest focused improvements to project workflows, rules or tools. |
 | Recurring work design | `loop-me-godot` | Design reusable handling for a user-identified recurring or anticipated activity; compare existing entries, Skills, documentation and tools. |
 | Terminology | `project-terminology` | Maintain meaning-preserving definitions and links without starting Product planning. |
-| Game design and Product | `product-author`, `product-spec-elicitor` | Maintain existing GDD design and derive or revise Product delivery scope. |
+| Game design | `design-gdd` | Develop ideas into GDD and deepen, revise or consolidate game design. |
+| Numerical design | `design-balance` | Derive or adjust models, formulas and parameters; maintain their scoped GDD body within authorization. |
+| Product delivery | `product-author`, `product-spec-elicitor` | Clarify, derive and maintain delivery scope from sufficiently clear GDD design. |
 | Professional design | `design-ui-spec`, `design-audio-asset-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec`, `design-localization-spec` | Maintain the applicable UI, art, sound, resource and localization specifications directly. |
 | Integration and measurement | `content-asset-integration`, `content-localization`, `diagnostics-instrumentation`, `diagnostics-performance`, `diagnostics-soak-test` | Supply independently callable methods within the owning authorized task. |
 | Independent review | `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization`, `review-balance` | Separate methods, selected by requested scope and executed by a fresh reviewer instance. |
@@ -78,15 +80,17 @@ New projects include short purpose/pending-state notices in fixed documents and 
 
 ## Canonical task routing
 
-This table owns task routing. Guidance Skills read it and the destination workflow; they do not maintain an independent lifecycle or approval table. Every development entry requires the [existing GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority). If it is missing, explain the required input and stop; no discussion, technical or specialist route initializes the game from an idea or bypasses the prerequisite.
+This table owns task routing. Guidance Skills read it and the destination workflow; they do not maintain an independent lifecycle or approval table. Apply [GDD creation and the development prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority): initial GDD design and its supporting clarification, numerical modeling and draft review may start from known goals and available material. Delivery planning, implementation, engineering repairs and runnable experiments require substantive current-scope design. If that input is missing, explain the design route without starting an unrequested interview or inventing requirements.
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
-| Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-grill-me`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
+| Develop a game idea, write or deepen a GDD, or consolidate design materials | `design-gdd` | Begin with available goals and sources, distinguish assumptions and adopted decisions, and write only within authorization. No complete GDD, Product, Feature or ready engine is required for this design work. |
+| Design or adjust numerical models, formulas and parameters | `design-balance` | Use known experience goals and rules, including an early GDD draft. Directly maintain the authorized numerical topic; gameplay changes return to overall design, runtime changes to implementation. Formal balance review uses `review-balance`. |
+| Clarify a game-design choice, delivery boundary or ambiguous term | `project-grill-me`, or `product-spec-elicitor` for delivery questions | Ask only useful questions; discussion alone writes nothing. Initial GDD design may reuse the shared method without starting another interview. |
 | Resolve several material unknowns whose answers affect one another | `wayfinder-godot` | Follow actual decision dependencies and choose only needed methods. Preserve discussion-only limits or existing implementation authority; no compulsory interview, prototype, worktree or new record type. |
 | Assess feedback or an external report before choosing work | `feedback-triage-godot` | Check current facts, distinguish defects, changed intent, existing coverage and evidence gaps, then identify the owner. Classification does not authorize a repair or create a Feature. |
 | Investigate the cause of a concrete abnormal behavior | `bug-diagnosis-godot` | Test relevant hypotheses within the authorized evidence/run scope. Keep unknown causes explicit; an investigation-only request does not permit implementation changes. |
-| Examine assumptions, boundaries or decomposition in an existing GDD, Product or Feature proposal | `plan-review-godot` | Return supported findings and material open choices; source changes remain with their existing owners. This is optional inspection, not formal delivery review or permission to advance a Stage. |
+| Examine a GDD draft/document or a Product/Feature proposal | `plan-review-godot` | Read only the requested topics or whole-document scope; GDD review does not require a Product or Feature. Return findings to the source owner. Formal independent review follows methodology 12; neither kind advances a Stage or creates a mandatory review gate. |
 | Reflect on actual task experience, including observed recurring friction | `retro-godot` | Return evidence-based improvement suggestions and their proper owners. No automatic rule edits, reports, checks or new work items; subsequent implementation follows existing authorization. |
 | Design how to handle a recurring or anticipated project activity identified by the user | `loop-me-godot` | Compare existing capabilities and propose a useful entry, inputs, decisions, outputs and ownership of details. No prior failure is required; this callable design method adds no Stage or automatic implementation, and existing implementation authority returns to its owner. |
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
@@ -105,7 +109,8 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Establish layout, resource scale and interaction readability before dependent logic | `prototype-godot` within current Product planning/delivery or an authorized experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
 | Analyze and hand off the minimum resource files for a task | Current task coordinates `design-visual-asset-spec` / `design-audio-asset-spec` as needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); requirements, production and integration have separate scopes. |
 | Pre-decompose delivery scope from an existing GDD | `product-author` | Write or revise only the requested `product.md` horizon, boundaries, source mapping, dependencies and suggested order. |
-| Revise existing game design or current Product scope | `product-author` | Update the owning GDD/Products, handle existing-work impacts, and keep future Products at pre-decomposition level. |
+| Revise game design | `design-gdd`, or `design-balance` for scoped numerical design | Update the owning GDD topic, coordinate affected sources and existing work within authorization; a design edit does not automatically create a Product or Feature. |
+| Revise current Product delivery scope | `product-author` | Update the owning Product, handle existing-work impacts, and keep future Products at pre-decomposition level. |
 | Existing implementation without adequate Product/Feature records | `product-author` → existing planning/delivery routes | Use confirmed existing GDD design to define the current delivery under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation); reuse working behavior, preserve real history and finish only authorized gaps and verification. |
 | Detail the next Product after current delivery completes | `product-author` → `feature-plan` when authorized | Revisit current GDD and the candidate, write this Product's delivery document, then plan its complete necessary scope. |
 | Decompose the current Product | `feature-plan` | Append only this Product's plan; finish its required Features before initially decomposing the next Product. |
@@ -157,9 +162,12 @@ This project uses Godot 4.7 / GDScript / gdunit4 on Windows 11. Copied tool path
 ```text
 User request
    │
-   ├─ No substantive project GDD → report missing input and STOP
+   ├─ Create or revise game design, including from an idea
+   │      ↓
+   │  design-gdd / design-balance → discussion or authorized GDD writing
+   │      continue through affected delivery owners only within authorization
    │
-   ├─ Clarify an existing GDD or delivery choice
+   ├─ Clarify a design or delivery choice
    │      ↓
    │  project-grill-me → conversation result
    │
@@ -167,11 +175,15 @@ User request
    │      ↓
    │  project-terminology → return to caller / finish
    │
-   ├─ Maintain existing GDD or define/revise delivery scope
+   ├─ Inspect an actual GDD draft/document or delivery proposal
+   │      ↓
+   │  plan-review-godot → findings; source remains read-only
+   │
+   ├─ Define/revise delivery scope from substantive GDD
    │      ↓
    │  product-author
    │      ↓
-   │  GDD → pre-decomposition → current Product → complete Feature plan
+   │  pre-decomposition → current Product → complete Feature plan
    │       sync existing-work impacts; later Products remain candidates
    │
    └─ Existing GDD design and delivery intent should stay fixed
@@ -183,7 +195,7 @@ User request
           ↓
       approved engineering Feature
 
-Product and engineering paths
+Product and engineering paths (missing substantive GDD blocks dependent work)
    ↓
 feature-execute
    ↓
@@ -199,7 +211,7 @@ handoff → continue within existing authorization, otherwise STOP
 A reported bug must be classified before any Product edit:
 
 - documented expected behavior exists and implementation violates it → `engineering-change-plan` in `bug` mode;
-- expectations in an existing GDD are missing, contradictory, or intentionally changing → their owner: `product-author` for game design, the specialist for professional specifications.
+- expectations in a GDD are missing, contradictory, or intentionally changing → their owner: `design-gdd` for game design, `design-balance` for scoped numerical design, the specialist for professional specifications; `product-author` handles delivery-boundary choices.
 
 ## Delivery control points
 
@@ -249,7 +261,7 @@ Report actual verification scope and review findings in ordinary language. Resul
 
 ## Scope boundary for this personal-project workflow
 
-This methodology covers maintenance of existing GDD design, Product delivery planning, engineering changes, Feature planning, implementation, automated testing, human acceptance, defect learning, refactoring review, maintenance, and local Git-safe handoff. It does not initialize GDD from a game idea.
+This methodology covers GDD creation from game ideas and ongoing design, numerical modeling and tuning, Product delivery planning, engineering changes, Feature planning, implementation, automated testing, human acceptance, defect learning, refactoring review, maintenance, and local Git-safe handoff. Early design does not remove the substantive-GDD and current-scope clarity prerequisites for dependent development.
 
 Release management, store submission, public version announcements, deployment approval, publishing workflow, and distribution governance are outside the default methodology unless the user explicitly defines one of them as project work.
 

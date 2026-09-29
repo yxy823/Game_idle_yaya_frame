@@ -35,7 +35,7 @@ ${1:项目内 GDD 入口、当前约定的采用范围、项目约束和已知�
 
 ## 约束
 
-遵循项目 AGENTS.md 和 methodology/01-product-doc-structure.md；没有真实 GDD 时说明缺口并停止，不从模糊想法初始化设计。交付单元不必与 GDD 系统一一对应，不复制设计正文。
+遵循项目 AGENTS.md 和 methodology/01-product-doc-structure.md；当前交付依赖的真实设计不足时说明缺口，停止依赖它的拆分；形成或修订 GDD 交给 design-gdd，本入口不自行扩大为设计创作。交付单元不必与 GDD 系统一一对应，不复制设计正文。
 
 ## 输出与交付
 
@@ -77,7 +77,7 @@ ${1:所属模块、原要求、新决定、影响范围}
 
 ## 决策边界与授权
 
-product-spec-elicitor 只澄清必要差异，product-author 将确认的游戏设计更新到 GDD，并维护受影响的 Product 交付范围与引用；专业细节交所属方法，有效决定不重复批准。
+design-gdd 澄清必要玩法差异并将确认设计更新到 GDD；product-author 维护受影响的 Product 交付范围与引用，product-spec-elicitor 仅澄清交付取舍。数值主题由 design-balance 在授权内直接维护，其他专业细节交所属方法，有效决定不重复批准。
 
 ## 约束
 

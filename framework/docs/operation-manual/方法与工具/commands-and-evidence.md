@@ -4,7 +4,7 @@
 
 所有项目命令在**生成后的项目根目录**运行。按当前任务调用所需入口，以下命令参考不意味着每次都要整页执行。涉及写记录的命令遵循对应 Skill 和已有授权。
 
-Agent 先按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority) 核对真实设计正文，再进入项目开发。命令成功不能代替这项内容判断，工具不通过新增状态字段宣告 GDD 就绪。
+Agent 按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority) 核对本次规划、实现或运行依赖的真实规则。设计可以逐步形成，命令成功不能代替内容判断，工具不通过新增状态字段宣告 GDD 就绪。
 
 ## 从运行结果到完成状态
 

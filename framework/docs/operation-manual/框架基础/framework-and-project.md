@@ -16,7 +16,7 @@
 
 源材料自带最小 `main/main.tscn`、示例工作台和空业务台账，以及只有用途说明的 `docs/gdd/`。文件存在不证明环境已就绪、需求已确定、示例已验证或业务已完成。完整提示词库与手册不随项目复制；advisor 的精选表达参考随其 Skill 静态复制。
 
-项目开发须先有 `docs/gdd/` 中的真实设计正文，缺少时停止；空白项目创建成功不满足此前提。已有 GDD 在项目内正常维护，Product 据此组织交付预拆分和当前范围。详见 [GDD 与交付规划](../需求与任务/requirements-and-planning.md)。
+创建后可以在项目内使用 `design-gdd` 从想法形成 GDD，也可以整合或修订已有设计。空白项目创建成功不代表设计已明确；依赖设计的规划或实现仍须有 `docs/gdd/` 中支撑当前范围的真实规则，Product 据此组织交付预拆分和当前范围。详见 [GDD 与交付规划](../需求与任务/requirements-and-planning.md)。
 
 项目 `AGENTS.md` 指向本地 `technical-documentation-writing-godot` Skill，创建器从项目分发源整包复制入口、元数据和参考。它面向游戏项目文档，与框架自用的 `technical-documentation-writing-yaya` 分别维护；两者可以独立修改，不跨包引用写作正文。已创建项目拥有自己的副本，后续更新由用户决定。
 
