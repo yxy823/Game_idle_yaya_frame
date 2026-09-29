@@ -85,6 +85,8 @@
 
 ## 提示词维护
 
+新增、修改、重命名、调整分类、删除或审核集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、两份项目场景图与派生参考。详细规范继续由其条件引用的材料维护，不随 Godot 项目分发该入口。
+
 所有供用户发送给 Agent 的任务提示词统一维护在 [framework/prompts.json](framework/prompts.json)，覆盖框架维护与实际项目开发；不另建分散的手写提示词文件，不把提示词正文混入 README、规则或工具说明。advisor 的精选表达参考仅由 [导出器](framework/commands/export_advisor_prompt_examples.py) 从该 JSON 生成，修改入选正文或选择范围后重新导出；示例不拥有流程、授权或自动同步职责。
 
 沿用 JSON 顶层数组中的 `Yaya 框架维护`、`Godot 项目开发` 两个 Project，保留 `project`、`categories` 结构，按用途放入对应分类。

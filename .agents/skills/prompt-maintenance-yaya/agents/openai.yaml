@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 提示词维护"
+  short_description: "维护集中提示词与同名场景，按变化同步导航、场景图和精选导出"
+
+policy:
+  allow_implicit_invocation: true

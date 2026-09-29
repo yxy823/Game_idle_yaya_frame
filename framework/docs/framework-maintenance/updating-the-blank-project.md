@@ -15,6 +15,7 @@
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
 | Codex 指令编写与审核方法 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
+| 集中提示词与关联场景维护 | .agents/skills/prompt-maintenance-yaya/，框架自用；按变化引用分类、场景、导航、两份项目场景图与派生参考的现有规范 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
 | 框架方案检验 | .agents/skills/plan-review-yaya/，框架自用；维护复盘与重复工作讨论由当前 Agent 按已有场景及适用方法处理 |

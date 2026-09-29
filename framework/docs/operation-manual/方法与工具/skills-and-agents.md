@@ -104,6 +104,8 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 正式可发送正文仅在 [framework/prompts.json](../../../prompts.json)。
 
+维护库内的提示词、分类或场景时，使用框架专用的 [prompt-maintenance-yaya](../../../../.agents/skills/prompt-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、两份 Godot 场景图与 advisor 精选参考；详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+
 - **Project：** 顶层保留 `Yaya 框架维护` 和 `Godot 项目开发` 两个 Project。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
 - **目录映射：** `<Project>/<分类>/<提示词名称>.md`，无需读取文档正文推断配对。

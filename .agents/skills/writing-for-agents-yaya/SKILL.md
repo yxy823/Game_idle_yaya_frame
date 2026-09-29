@@ -15,7 +15,7 @@ description: 编写、修改或审核 Yaya 框架中的 Codex 指令，包括 AG
 | --- | --- |
 | 编写或审核 Skill 的 description、目录、元数据、调用策略 | [Codex Skill 编写参考](references/codex-skill-authoring.md) |
 | 新增或调整 Skill 的职责、判断拆分与合并 | [职责设计准则：Skill](../../../framework/review/baselines/skill-script-prompt-design.md#skill-的评价维度) |
-| 编写或审核集中任务提示词 | [提示词与场景准则](../../../framework/review/baselines/skill-script-prompt-design.md#提示词与场景)，正文在现有 `framework/prompts.json` 中维护 |
+| 编写或审核集中任务提示词 | 以[提示词与场景准则](../../../framework/review/baselines/skill-script-prompt-design.md#提示词与场景)判断正文；入口定位与联动维护由 [prompt-maintenance-yaya](../prompt-maintenance-yaya/SKILL.md) 承接，复用已读依据 |
 | 全量审核、明确覆盖范围或归档报告 | [审核覆盖与结论](../../../framework/review/baselines/skill-script-prompt-design.md#审核覆盖与结论) |
 
 普通局部修改只读取相关正文与必要调用方；复用仍有效的上下文，不把所有参考设为固定前置。

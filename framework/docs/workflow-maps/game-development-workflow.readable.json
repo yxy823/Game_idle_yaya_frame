@@ -4537,6 +4537,132 @@
         "kind": "local",
         "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/重复操作已确认值得固化，需要做成项目脚本.md"
       }
+    },
+    {
+      "id": "scene-109",
+      "shape": "rounded-rect",
+      "x": 4836,
+      "y": 3333.5,
+      "width": 168,
+      "height": 61,
+      "label": "当前任务反复返工，\n先复盘原因",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/当前任务反复返工，先复盘原因.md"
+      }
+    },
+    {
+      "id": "scene-110",
+      "shape": "rounded-rect",
+      "x": 5180,
+      "y": 3333.5,
+      "width": 200,
+      "height": 61,
+      "label": "同类工作总要重复交代，\n先设计复用方法",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/同类工作总要重复交代，先设计复用方法.md"
+      }
+    },
+    {
+      "id": "scene-111",
+      "shape": "rounded-rect",
+      "x": 5464,
+      "y": 3333.5,
+      "width": 200,
+      "height": 61,
+      "label": "以后会经常做这类工作，\n先设计处理方法",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/以后会经常做这类工作，先设计处理方法.md"
+      }
     }
   ],
   "edges": [
@@ -13627,6 +13753,187 @@
         "opacity": 1,
         "labelPosition": 0.206896552,
         "labelOffset": 68.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-109-scene-107",
+      "source": {
+        "node": "scene-109",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-107",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 4744,
+          "y": 3364
+        },
+        {
+          "x": 4744,
+          "y": 2088
+        },
+        {
+          "x": 5264,
+          "y": 2088
+        }
+      ],
+      "label": "经验已确认且获准整理进知识",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.4,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-110-scene-108",
+      "source": {
+        "node": "scene-110",
+        "port": "top"
+      },
+      "target": {
+        "node": "scene-108",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 5280,
+          "y": 3280
+        },
+        {
+          "x": 5708,
+          "y": 3280
+        },
+        {
+          "x": 5708,
+          "y": 2110
+        },
+        {
+          "x": 5572,
+          "y": 2110
+        }
+      ],
+      "label": "已采用方法且获准将重复操作固化为脚本",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.55,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-111-scene-050",
+      "source": {
+        "node": "scene-111",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-050",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 5796,
+          "y": 3364
+        },
+        {
+          "x": 5796,
+          "y": 392
+        },
+        {
+          "x": 3248,
+          "y": 392
+        }
+      ],
+      "label": "已采用方法且获准修改现有项目工具",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.3,
+        "labelOffset": 20.5,
         "routerPadding": 1,
         "sourceMarkerSize": 14
       }

@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | 理解框架、项目对象、配置、Skill 和工具用法 | [操作手册](operation-manual/README.md) | [打开操作手册](operation-manual/operation-handbook.html) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) | [打开场景速查手册](quick-reference/quick-reference-handbook.html) |
-| 查看游戏项目开发场景之间的衔接关系 | [场景图与 JSON 格式](workflow-maps/README.md) | [JSON 图文件](workflow-maps/game-development-workflow.json) |
+| 查看游戏项目开发场景之间的衔接关系 | [场景图与 JSON 格式](workflow-maps/README.md) | [主图](workflow-maps/game-development-workflow.json) · [可读版](workflow-maps/game-development-workflow.readable.json) |
 | 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) | 收录在场景速查手册末尾 |
 | 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) | — |
 | 确认框架与项目公共术语的含义和统一写法 | [术语](terminology.md) | 两本阅读版共用同一正文 |
