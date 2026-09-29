@@ -14,6 +14,10 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
 | `project-clarifier` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
+| `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
+| `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
+| `prototype-godot` | 在当前 Feature 或获准实验中制作并检查真实 Godot UI/逻辑原型 |
+| `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的同目录续接文本 |
 | `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
 | `development-retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `project-terminology` | 保存已确认且含义不变的局部/共享定义与术语引用 |
@@ -35,7 +39,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `diagnostics-instrumentation` | 为明确问题提供有单位、用途和开销的观测信号 |
 | `diagnostics-performance` | 可比较的性能测量与瓶颈诊断 |
 | `diagnostics-soak-test` | 在约定负载、时长和停止条件内取得长测证据 |
-| `review-code` | 独立判断需求符合性、代码质量和实际覆盖 |
+| `review-code` | 独立检查变更或模块现状的需求符合性、代码质量和实际覆盖 |
 | `review-ux` | 操作理解、可操作性及相关无障碍要求 |
 | `review-art` | 实际视觉表现与美术/界面规格 |
 | `review-audio` | 实际音频和场景播放的听觉与规格符合性 |
@@ -47,6 +51,12 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 普通澄清继续由 `project-clarifier` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [development-retro-godot](../../../../project-source/skills/development-retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
 
+收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
+
+[prototype-godot](../../../../project-source/skills/prototype-godot/SKILL.md) 用可运行的 Godot 场景或逻辑实验回答本次问题，保持实际运行、原型观察与生产验收的区别。[task-handoff-godot](../../../../project-source/skills/task-handoff-godot/SKILL.md) 使用既有 Progress、Feature 或任务记录：只要求暂停时保存停点，需要换对话时再提供可复制文本；不自动创建对话、发送消息或另建交接台账。恢复已有停点直接回到原任务，不必再调用一次交接。
+
+这些入口便于明确调用，description 也帮助按任务选择；文件存在或格式校验通过不证明客户端已经隐式选中它。工程规范中的必要调查与验证仍由原流程负责，不能只依赖 Skill 的自动发现。
+
 ## 框架维护侧的方案检验与复盘
 
 框架维护讨论继续使用个人的渐进式澄清 Skill；它不随项目分发。框架另有两个自用入口，各自与 Godot 版独立维护：
@@ -55,6 +65,16 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 - [development-retro-yaya](../../../../.agents/skills/development-retro-yaya/SKILL.md)：依据实际维护记录，判断导航、规则、工具或验证安排是否值得改进，并说明最小改法与归属。
 
 复盘不因缺少 Hook 或 CI 就判定存在问题，也不默认修改规则、建立脚本或新增报告。两侧 Skill 的建议都不自动成为需求或待办；已有具体实施授权则由原任务继续处理。独立入口表示职责可单独调用，不代表已经使用了独立审核实例。
+
+## 框架维护侧的反馈、诊断与交接
+
+以下三个入口只在框架维护仓库使用，与 Godot 版分别维护，不随项目分发：
+
+- [feedback-triage-yaya](../../../../.agents/skills/feedback-triage-yaya/SKILL.md)：核实反馈或外部报告，区分当前问题、已有覆盖、设计取舍与证据缺口，提出处理归属。
+- [bug-diagnosis-yaya](../../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)：对具体维护异常调查因果关系，按本次获准的静态或运行范围取得证据。
+- [task-handoff-yaya](../../../../.agents/skills/task-handoff-yaya/SKILL.md)：核对真实停点与有效授权，按请求整理既有记录或生成可复制交接；明确要求只读时不写文件。
+
+三者使用框架自己的维护、验证和记录约定，不启用待分发项目的 Stage。收到报告不等于获准修改；已批准的后续工作沿原任务继续，明确暂停则保持暂停。
 
 ## 主 Agent 与专用角色
 
@@ -96,6 +116,6 @@ advisor 根据项目自己的规则、状态和本次问题给出建议。它可
 
 精选文本只帮助表达，不拥有流程、批准或同步机制。示例里出现“执行”不代表当前任务已获准；advisor 仍要按当前来源与真实上下文判断，不给用户只剩占位符的回复。
 
-advisor 起草的提示词同样明确标识各固定字段，不按任务长短省略。状态查询仍直接回答，不为套字段额外生成提示词；等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
+advisor 与交接入口起草的项目续接提示词共同遵循 [Continuation prompts](../../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，不按任务长短省略固定字段。该规范随项目分发，实际使用不依赖框架完整提示词库。状态查询仍直接回答，不为套字段额外生成提示词；等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
 
 职责设计的长期评价规则在 [设计准则](../../../review/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。

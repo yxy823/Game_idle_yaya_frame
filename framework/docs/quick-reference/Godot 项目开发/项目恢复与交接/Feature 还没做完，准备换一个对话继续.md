@@ -19,7 +19,7 @@ Feature 还没做完，准备换一个对话继续。需要的材料：
 
 **S1｜核对任务现场**
 
-当前 Agent 读取真实文件、Git、Progress 与原始证据，区分实施、建议、失败和待人工事项。
+当前 Agent 使用 [task-handoff-godot](../../../../../project-source/skills/task-handoff-godot/SKILL.md)，读取真实文件、Git、Progress 与原始证据，区分实施、建议、失败和待人工事项；按本页授权整理必要记录并生成交接文本。
 
 **S2｜保存必要进度**
 

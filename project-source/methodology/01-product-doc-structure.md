@@ -33,6 +33,12 @@ The initial `product.md` contains only a purpose and pending-state notice. It es
 
 Generated headings and prose must follow the project's configured `document_language`; the section semantics below must remain intact in every language. See [05-document-language.md](./05-document-language.md).
 
+### Delivery outcomes and prerequisites
+
+Describe each Product by the observable capability it delivers, rather than only naming a system, GDD chapter or code layer. Check that the boundary preserves a coherent result: for example, manual gathering may include collecting a resource, seeing the amount and handling the confirmed capacity limit. Its precise rules still come from the GDD; this example does not add requirements to another Product.
+
+For each prerequisite, identify the result or decision it supplies and what part of this delivery cannot proceed without it. Distinguish required prerequisites from a preferred work order. Existing capabilities may already satisfy a dependency; a later Product's shared rule can be resolved without implementing that whole Product. Keep these reasons in the existing dependency/integration sections, not a new ledger or state field.
+
 ## Standard `product.md` sections
 
 Write these sections in this order. A document rendered from the canonical template must preserve every template section; when a section does not apply, retain its heading and state that it is not applicable. A project may add specialized sections, but the standard semantics must remain easy to locate.
@@ -92,6 +98,16 @@ Keep the entry scene, questions, observations, a link to any resource preparatio
 During planned delivery, use an ordinary Feature for an independently reviewable visual foundation and make dependent implementation wait for its applicable manual acceptance. A narrow check may stay inside the current Feature, with the visual decision settled before dependent logic. An explicitly requested standalone exploration follows the scoped-experiment route in [task routing](00-overview.md#canonical-task-routing). Prototype acceptance covers only its visual/interaction scope, never the later business behavior.
 
 After validation, reuse suitable layout nodes, themes and resources deliberately; remove sample-state wiring when adopting them into production. Retain a separate prototype only while it answers an ongoing question; otherwise archive or remove it within the authorized scope. Record unresolved limits and keep the accepted decisions, without maintaining competing production and prototype interfaces.
+
+## Scoped logic prototypes
+
+Use `prototype-godot` when an authorized experiment can settle a specific interaction, state-transition or technical-feasibility question. Identify the question, relevant confirmed GDD rules, observed result needed to answer it and the bounded experiment before building. Preserve unsettled design choices as proposals; an experiment does not approve a new rule. Reuse an existing experiment when it still answers the question, and follow the scoped-experiment route in [task routing](00-overview.md#canonical-task-routing).
+
+Prefer a small, independently runnable Godot scene with only the state and interactions needed for the question. Make relevant state visible, support reset to a known starting point, and combine free operation with repeatable situations that expose the uncertainty. For a crafting queue, useful situations might include insufficient materials, pausing or cancellation and refund; include only those relevant to the confirmed question. Do not require a fixed number of cases or visual variants.
+
+Local sample state is suitable for exploring a proposed interaction. If the question concerns actual signals, input, lifecycle, persistence or another engine integration, exercise the relevant real path under the task's permissions and protect live data. A simulated transition cannot prove that integration works. Use the visual-prototype requirements above when judging layout, representative assets or perceptual quality. HTML is optional only for an explicitly requested engine-independent concept demonstration; it is not a required precursor or evidence of Godot behavior.
+
+Report what the experiment answered, the actual observations and remaining limits. Reuse the recording and adoption rules under [Validation and adoption](#validation-and-adoption): retain the entry and useful evidence in existing notes or Progress, return accepted decisions to their source owners, and resolve sample code disposition within authorization. A successful experiment does not establish production readiness, required regression coverage or human acceptance. Do not make experimentation a prerequisite for work with no relevant uncertainty.
 
 ## Resource preparation list and handoff
 

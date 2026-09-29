@@ -9,7 +9,7 @@ description: Maintain an existing project GDD, organize Product delivery scope, 
 
 Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. The project must already contain actual design content under `docs/gdd/`; an empty directory, purpose notice, Product or code does not substitute for it. If it is missing or unreadable, report the missing input and stop. Do not start an idea interview or initialize a GDD.
 
-Within the current authorization, maintain the existing GDD as the game-design source and Product as delivery scope. Read the actual GDD entry and follow its relevant topic links; preserve its organization instead of imposing a new filename or duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order. Only the current unit receives `docs/product/NN-name.md`.
+Within the current authorization, maintain the existing GDD as the game-design source and Product as delivery scope. Read the actual GDD entry and follow its relevant topic links; preserve its organization instead of imposing a new filename or duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order; apply **Delivery outcomes and prerequisites** in methodology 01 when judging those boundaries. Only the current unit receives `docs/product/NN-name.md`.
 
 Apply `methodology/05-document-language.md`, the project Git contract and applicable Project Rules/accepted architecture decisions. A file, a commit or observed code behavior does not approve a proposed design. Preserve explicit decisions and authorization; discussion-only requests return a proposal without writes.
 

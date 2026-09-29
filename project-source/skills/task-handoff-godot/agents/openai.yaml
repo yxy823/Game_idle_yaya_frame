@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Task Handoff"
+  short_description: "Preserve task state and prepare scoped continuation text"
+
+policy:
+  allow_implicit_invocation: true

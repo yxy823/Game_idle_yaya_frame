@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Bug Diagnosis"
+  short_description: "Trace specific defects to causes with scoped evidence"
+
+policy:
+  allow_implicit_invocation: true

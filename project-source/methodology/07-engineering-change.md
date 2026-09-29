@@ -4,9 +4,17 @@
 
 An existing substantive GDD remains required under [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority). A technical repair, refactor or experiment does not provide a route around this prerequisite; detailed Product documents are needed only when their delivery scope is relevant.
 
+## Feedback assessment
+
+Before treating a report as engineering work, compare its actual observation with the relevant confirmed contract and current implementation. Reuse established facts; ask only for missing information that changes the judgment. Check whether the reported capability already exists, its entry or explanation is difficult to find, the implementation violates the contract, or the user is requesting a different result. Code shows current behavior, not permission to redefine approved intent.
+
+Return a supported classification, source/evidence, important uncertainty and the next owner. An unobserved failure remains unconfirmed rather than disproved. Missing expectations return to their design or professional owner before choosing a repair. An explanation or navigation problem can end with the requested answer; feedback assessment does not require creating a Feature or a rejection/backlog record. Durable changes follow their existing owner and current authorization.
+
+`feedback-triage-godot` provides this assessment as a direct entry. Engineering preparation must apply these checks even when no Skill was automatically selected. Once a defect and its ownership are established, use `bug-diagnosis-godot` for focused causal investigation when needed; do not repeat assessment merely because the entry changes.
+
 ## Classification boundary
 
-Choose exactly one mode:
+For work that requires an engineering change, choose exactly one mode:
 
 | Mode | Use when | Governing contract |
 | --- | --- | --- |
@@ -79,9 +87,21 @@ Discovery
 → Commit
 ```
 
-This chain uses the existing execute loop; it adds no independent Stage. Triage collects actual/expected behavior and the smallest deterministic trigger. Establish the causal explanation before choosing the repair; mark unknown causes as unknown while investigating. Record the affected components and the approved regression obligation in Test Impact Review. A parser error, setup failure or unrelated baseline failure is not the intended regression RED. Apply the smallest complete fix, observe GREEN for the regression, then execute the planned affected set and necessary full suite. Reuse a real full run only when its snapshot and actual coverage cover the subsets. No hand-entered count can stand in for execution evidence.
+This chain uses the existing execute loop; it adds no independent Stage. Triage collects actual/expected behavior and a repeatable trigger, or the observed conditions of an intermittent failure. Establish the causal explanation before choosing the repair; mark unknown causes as unknown while investigating. Record the affected components and the approved regression obligation in Test Impact Review. A parser error, setup failure or unrelated baseline failure is not the intended regression RED. Apply the smallest complete fix, observe GREEN for the regression, then execute the planned affected set and necessary full suite. Reuse a real full run only when its snapshot and actual coverage cover the subsets. No hand-entered count can stand in for execution evidence.
 
 Applicable human acceptance, user-requested independent review, the Completion Gate and a local traceable commit finish the repair under `03-execute-loop.md` and `08-testing-strategy.md`. A review repair that changes accepted behavior returns through verification and applicable human acceptance. Stage 8 then reports brief reusable learning and follows the remaining user authorization under the execution loop's handoff contract.
+
+### Causal diagnosis
+
+Define the failure using the user's exact observable symptom and its confirmed expectation. Record the relevant version, environment, inputs and actual evidence. A check for "does not crash" cannot establish that an action occurs exactly once or produces the right result. Reproduction may be automated or a repeatable human procedure; lack of an automated failing command does not prevent source inspection or hypothesis formation.
+
+Reduce irrelevant inputs, scene elements or steps while preserving the same failure. Change one relevant factor at a time when distinguishing causes, and retain the original scenario for later verification. For intermittent failures, report observed attempts, workload and conditions; do not invent determinism or require a fixed retry count.
+
+Use plausible causal hypotheses with observations that could distinguish or refute them. Inspect the affected code and existing evidence first. Choose the smallest discriminating probe instead of trying speculative fixes or adding broad logging. Missing runtime signals may use `diagnostics-instrumentation`; measured timing/resource problems may use `diagnostics-performance`, and sustained accumulation or stability questions may use `diagnostics-soak-test`, within their actual execution permissions. Temporary diagnostics and retained evidence follow [artifact lifecycle](09-artifact-lifecycle.md).
+
+Explain the chain from trigger to defective state or operation and then to the observed result, citing the evidence. Separate a supported cause from a hypothesis or an unresolved gap. If the authorized investigation is blocked, report what is known, what is missing and the next discriminating check; a log capture alone does not mean the root cause was found. Keep applicable evidence in the existing Feature/Progress records and report locations, not a second Bug ledger.
+
+An authorized repair follows the Unified Bug workflow above and rechecks the original scenario as well as the focused regression. A diagnosis-only request returns the causal conclusion or explicit investigation gap without silently implementing a repair. Already authorized repairs return to their owning task without asking again solely because diagnosis ended; actual missing decisions, scope changes and human acceptance retain their existing boundaries.
 
 ## Bug Feature contract
 

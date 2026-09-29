@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 框架 Bug 诊断"
+  short_description: "围绕框架具体异常建立复现、检验原因，交付根因证据或明确的验证缺口"
+
+policy:
+  allow_implicit_invocation: true

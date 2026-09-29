@@ -19,7 +19,7 @@
 
 **S1｜停止依赖实施**
 
-当前 Agent 按实际运行权限处理尚在执行的命令，记录已知进程状态，保留日志。
+当前 Agent 使用 [task-handoff-godot](../../../../../project-source/skills/task-handoff-godot/SKILL.md)，按实际运行权限处理尚在执行的命令，记录已知进程状态，保留日志。本次只保存暂停记录，不要求新对话交接文本。
 
 **S2｜记录真实停点**
 

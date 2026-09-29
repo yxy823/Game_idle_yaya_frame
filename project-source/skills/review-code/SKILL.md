@@ -1,6 +1,6 @@
 ---
 name: review-code
-description: "Independently review scoped code or changes against approved requirements, architecture and tests. Use when the user requests review; excludes implementation and refactor-candidate selection."
+description: "Independently inspect an existing module or code changes for defects and concrete maintenance problems. Use for requested current-state audits or change reviews; excludes implementation and selection from already recorded refactor candidates."
 ---
 
 # Code review
@@ -19,6 +19,8 @@ Answer two separate questions in one scoped pass:
 When reviewing state models, pattern choices or serialization, apply the current design defaults in Part 2 of `docs/project-rules.md`. Assess the confirmed need, lifecycle and caller obligations against the added structure and whether a simpler implementation can fulfill the same responsibilities. Ground proposed changes in concrete failure risks or maintenance costs; a pattern's presence or absence alone is not a defect.
 
 For added or changed module boundaries, apply **Designing a module boundary** and, for a refactor, **Assessing a proposed refactor** in `methodology/10-architecture-overview.md`. Ground design findings in actual caller obligations, failure/lifetime risks or coordinated edits. A smell is an investigation clue, not a violation by itself; similar code shapes or necessary consumer updates do not alone justify a new abstraction or merged module.
+
+In a current-state audit, follow a representative behavior through the selected scope and its direct callers. Investigate why an ordinary change requires coordinated edits or why a layer exists: what caller obligation or useful behavior would be lost if it were removed? Use change frequency or difficulty following the code to choose where to inspect, not as proof of a defect. Tie each proposed simplification to a concrete risk or maintenance cost; retaining the current structure is a valid conclusion. Do not turn a scoped request into an automatic repository-wide cleanup.
 
 For changed/removed contracts, inspect actual executable assertions, references, test discovery and retained coverage. Registry retirement alone cannot remove a stale test; unfinished required cleanup is `must_fix`. Check failure paths, repeated lifecycle use and the directly affected dependency boundary.
 

@@ -19,6 +19,8 @@
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
 | 框架方案检验与开发复盘 | .agents/skills/plan-review-yaya/ 与 .agents/skills/development-retro-yaya/，框架自用 |
 | Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/development-retro-godot/，随 Skill 目录整包分发 |
+| 框架反馈核实、异常诊断与任务交接 | .agents/skills/feedback-triage-yaya/、bug-diagnosis-yaya/ 与 task-handoff-yaya/，框架自用 |
+| Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
@@ -49,6 +51,8 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | prompts.json、所属 Skill/methodology/CLI、场景职责清单 |
 
 框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md 及 references/scenarios.md；只更新失效内容，不复制另一套流程。术语唯一入口为 project-terminology，本地化规格为 design-localization-spec，content-localization 负责按已定要求实现。
+
+核实反馈与外部报告使用框架自用的 [feedback-triage-yaya](../../../.agents/skills/feedback-triage-yaya/SKILL.md)；调查具体异常原因使用 [bug-diagnosis-yaya](../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)；保存停点或准备新对话交接使用 [task-handoff-yaya](../../../.agents/skills/task-handoff-yaya/SKILL.md)。它们按当前授权调用相关规范，不新增必经阶段；只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 对应入口使用项目自己的方法与记录，不能回查框架 Skill 或完整提示词库。
 
 路径或字段变化追到全部读写方、调用链、模板、复制映射和回归夹具。说明与源码冲突时分别判断实际行为及待修问题，不能只改一段文字掩盖未解决契约。
 
@@ -99,6 +103,8 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 手册、维护说明、完整提示词、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。Godot 版写作 Skill 是项目自身的分发材料，按普通项目 Skill 整包复制。项目 README 保持自身短导航；生成项目不查询框架、不接受自动同步。
 
 advisor 的精选表达参考由集中 JSON 派生。修改入选正文、选择范围或所引用 Skill 名称后，按 [导出说明](../../README.md#导出-advisor-精选表达参考) 生成并检查；创建器只复制静态材料，项目不承担转换或回查职责。
+
+项目动态续接提示词的通用格式维护在 [Continuation prompts](../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，由 advisor 和 task-handoff-godot 引用；框架集中提示词仍保留各场景的具体输入、授权和停点目的。普通暂停、换对话和已有停点恢复不合并为一条通用提示词，也不因新增 Skill 要求每个入口另建场景。
 
 ## 按修改选择验证范围
 

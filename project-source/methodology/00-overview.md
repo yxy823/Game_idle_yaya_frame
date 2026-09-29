@@ -52,6 +52,8 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | Group | Skills | Responsibility |
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Resolve material uncertainty and return settled answers to the current task. |
+| Feedback and diagnosis | `feedback-triage-godot`, `bug-diagnosis-godot` | Classify feedback against current evidence, or investigate the cause of a concrete abnormal behavior; return to the owning authorized task. |
+| Prototyping | `prototype-godot` | Build and inspect a bounded Godot UI or logic prototype within an existing Feature or authorized experiment. |
 | Plan inspection | `plan-review-godot` | Inspect an existing GDD, Product or Feature proposal and return findings to its owner; no mandatory planning gate. |
 | Development retrospective | `development-retro-godot` | Use actual task evidence to suggest focused improvements to project workflows, rules or tools. |
 | Terminology | `project-terminology` | Maintain meaning-preserving definitions and links without starting Product planning. |
@@ -63,6 +65,7 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | Engineering | `engineering-change-plan`, `engineering-refactor-select` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `feature-execute` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
 | Guidance | `project-next-step-advisor` | Explain current state; provide a scoped continuation prompt when needed, without executing or granting approval. |
+| Task handoff | `task-handoff-godot` | Preserve a requested stop point and prepare continuation context using existing records; do not create or message another conversation. |
 
 ## Canonical task routing
 
@@ -71,6 +74,8 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Task type | Entry | Boundary |
 | --- | --- | --- |
 | Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-clarifier`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
+| Assess feedback or an external report before choosing work | `feedback-triage-godot` | Check current facts, distinguish defects, changed intent, existing coverage and evidence gaps, then identify the owner. Classification does not authorize a repair or create a Feature. |
+| Investigate the cause of a concrete abnormal behavior | `bug-diagnosis-godot` | Test relevant hypotheses within the authorized evidence/run scope. Keep unknown causes explicit; an investigation-only request does not permit implementation changes. |
 | Examine assumptions, boundaries or decomposition in an existing GDD, Product or Feature proposal | `plan-review-godot` | Return supported findings and material open choices; source changes remain with their existing owners. This is optional inspection, not formal delivery review or permission to advance a Stage. |
 | Reflect on an actual development task or recurring workflow friction | `development-retro-godot` | Return evidence-based improvement suggestions and their proper owners. No automatic rule edits, reports, checks or new work items; subsequent implementation follows existing authorization. |
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
@@ -83,8 +88,8 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source within GDD design; domain meanings stay with GDD/terminology. Specification work may stand alone. |
 | Integrate supplied assets or implement approved localization | `content-asset-integration` / `content-localization` | Runtime changes consume approved specifications and return to the owning authorized Feature/experiment. |
 | Add diagnostic signals, measure performance or run a soak scenario | `diagnostics-instrumentation` / `diagnostics-performance` / `diagnostics-soak-test` | Separate instrumentation, measurement, diagnosis and authorized repair; report actual evidence and limits. |
-| Explicitly requested prototype / technical spike | Scoped experiment in the target project | Answer one hypothesis within the authorized change/run scope and budget. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
-| Establish layout, resource scale and interaction readability before dependent logic | Current Product planning and delivery, or an explicitly requested scoped experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
+| Explicitly requested prototype / technical spike | `prototype-godot` in the target project | Answer one hypothesis with actual Godot UI or logic under the authorized change/run scope and budget; apply [Scoped logic prototypes](01-product-doc-structure.md#scoped-logic-prototypes) when testing logic. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |
+| Establish layout, resource scale and interaction readability before dependent logic | `prototype-godot` within current Product planning/delivery or an authorized experiment | Apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation); sketchers supply requirements, while the runnable Godot scene and applicable human acceptance belong to execution. |
 | Analyze and hand off the minimum resource files for a task | Current task coordinates `design-visual-asset-spec` / `design-audio-asset-spec` as needed | Apply [Resource preparation list and handoff](01-product-doc-structure.md#resource-preparation-list-and-handoff); requirements, production and integration have separate scopes. |
 | Pre-decompose delivery scope from an existing GDD | `product-author` | Write or revise only the requested `product.md` horizon, boundaries, source mapping, dependencies and suggested order. |
 | Revise existing game design or current Product scope | `product-author` | Update the owning GDD/Products, handle existing-work impacts, and keep future Products at pre-decomposition level. |
@@ -102,10 +107,11 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Audit | Applicable review Skill in a fresh `independent-reviewer` instance | Follow [independent review](12-independent-review.md): reviewed artifacts stay read-only, permitted validation uses isolation; no repair or human acceptance is implied. |
 | Human Acceptance follow-up | Current Feature Stage 5/6 route | Bind the user's explicit acceptance to the actual reviewed scope and snapshot; do not infer acceptance. |
 | Status query | Read-only state explanation | Report current facts and next legal action; do not start work or call readiness checks merely to answer. |
+| Save a requested pause or prepare another conversation to continue the same task | `task-handoff-godot` | Use existing Progress/Feature or task records and current Git facts. Preserve an explicit pause; supply copyable continuation text when requested, without a new Feature, handoff ledger, conversation or message. |
 
 Product execution order governs both detailed writing and Feature planning: first pre-decompose the agreed delivery horizon in `product.md`, then write only the current Product document and decompose its complete necessary scope into multiple Features. Complete those Features before detailing the next Product. Revisit later candidates and GDD dependencies using actual experience. Use [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) with existing documents and Feature sources/statuses; no extra Product queue or planning-state file is needed.
 
-Choose investigation, planning or execution from the available evidence and current user authorization. Drafted task prompts use explicit fields under the prompt-writing contract in `project-next-step-advisor`, regardless of task size; the format does not create new steps or authority. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
+Choose investigation, planning or execution from the available evidence and current user authorization. Feedback triage and diagnosis are callable methods, not additional mandatory Stages; their return does not end already authorized work through its existing owner. Drafted task prompts follow [Continuation prompts](09-artifact-lifecycle.md#continuation-prompts), regardless of task size; the format does not create new steps or authority. Current user authorization takes precedence over generic workflow wording, but implementation approval never implies human acceptance.
 
 Prototype observations and tentative parameters are not approved GDD design or Feature acceptance. Keep the question, observed result, decision and experiment file disposition in current Feature notes, or current Progress when no Feature exists. Adopting game-design changes updates the existing GDD and affected delivery scope; technical outcomes return to the engineering entry above. Exceeding the experiment budget requires user direction.
 

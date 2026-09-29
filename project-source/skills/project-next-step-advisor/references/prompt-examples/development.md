@@ -85,7 +85,7 @@ ${1:当前 Feature、确认 UI 规格、真实素材、原型体验范围}
 
 ## 决策边界与授权
 
-使用 feature-execute；核对原型是当前 Feature 的局部检查点还是独立原型 Feature，按已有授权推进。
+由 feature-execute 调用 prototype-godot；核对原型是当前 Feature 的局部检查点还是独立原型 Feature，按已有授权制作真实 Godot 原型。
 
 ## 约束
 

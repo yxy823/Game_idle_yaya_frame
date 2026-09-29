@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 框架反馈核实"
+  short_description: "核实框架异常、缺项与审核意见，区分问题类别并说明处理依据和归属"
+
+policy:
+  allow_implicit_invocation: true

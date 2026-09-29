@@ -415,6 +415,10 @@ Documentation-only work stops after the authorized Product/plan writes and their
 9. `refactor` Features state behavior-preservation evidence.
 10. `maintenance` Features state the technical success condition and compatibility/invariant to preserve.
 
+Check each proposed outcome with a concrete precondition, action or engineering check, and observable result. A class, file or layer name alone does not establish a complete Feature. A technical outcome can be independently verifiable without a player-facing interface; do not force every Feature to include UI, persistence and every code layer.
+
+For each `depends_on`, identify the capability, contract, running foundation or accepted decision supplied by the prerequisite. Ask whether the current Feature could still be correctly completed and verified without that result. Retain actual dependencies and applicable architecture constraints; do not encode numbering or a preferred sequence as a dependency. Explain non-obvious dependencies in the existing decomposition preview or Feature design, without adding schema fields or a separate checklist. Reuse completed prerequisites and the [Product prerequisite distinctions](01-product-doc-structure.md#delivery-outcomes-and-prerequisites).
+
 For interface work, apply [Visual prototype before dependent implementation](01-product-doc-structure.md#visual-prototype-before-dependent-implementation). Plan a required independent visual foundation as an ordinary Feature with `depends_on` links from the logic that needs its decisions; narrow checks can remain inside an existing Feature. Reuse validated foundations and do not make unrelated logic wait for all art, or create a separate prototype status/type.
 
 ## Requirement coverage review
