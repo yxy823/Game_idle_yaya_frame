@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../../prompts.json)中的“Godot 项目开发 → 验证与收尾 → 没有 Feature，只想运行指定组件的自动测试”。已有对话补齐实际材料即可，续接不重新索取已经存在的授权。 本页的执行者、角色和具体方法见各步骤；没有专用 Skill 时使用当前 Agent 与现有职责契约。
+使用[集中提示词库](../../../../prompts.json)中的“Godot 项目开发 → 验证与收尾 → 没有 Feature，只想运行指定组件的自动测试”。已有对话补齐实际材料即可，续接不重新索取已经存在的授权。 本页由当前 Agent 使用项目自己的 `project-verification-godot` Skill；[源码入口](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)仅供核对。
 
 **S1｜确认实际目标**
 

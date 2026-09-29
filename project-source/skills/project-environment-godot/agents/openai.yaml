@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot 环境维护"
+  short_description: "配置、更新或恢复项目工具，并按实际需要完成首次资源扫描"
+
+policy:
+  allow_implicit_invocation: true

@@ -16,6 +16,10 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `project-clarifier` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
+| `project-environment-godot` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
+| `project-verification-godot` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
+| `manual-acceptance-godot` | 为实际 Feature 准备待验收清单，或登记用户真实给出的验收结果 |
+| `verification-evidence-godot` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
 | `prototype-godot` | 在当前 Feature 或获准实验中制作并检查真实 Godot UI/逻辑原型 |
 | `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
 | `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
@@ -52,6 +56,8 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 普通澄清继续由 `project-clarifier` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [development-retro-godot](../../../../project-source/skills/development-retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
 
 收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
+
+环境准备、限定检查、人工验收和证据处理这四个入口可以在不同工作环节按需调用，也可以承接直接提出的限定任务，不是新增的固定阶段。例如，只要求跑现有测试时，有无 Feature 都按该检查的实际范围执行；登记人工验收时，则必须对应实际 Feature 与用户结果。工具可用、检查通过、用户接受和证据仍适用是不同事实，不能相互替代，也不因调用其中一个入口就扩展为整套交付。具体选择由[任务路由](../../../../project-source/methodology/00-overview.md#canonical-task-routing)统一维护，各 Skill 按需引用原有配置、测试、验收与证据规范，不复制第二套正文。
 
 [prototype-godot](../../../../project-source/skills/prototype-godot/SKILL.md) 用可运行的 Godot 场景或逻辑实验回答本次问题，保持实际运行、原型观察与生产验收的区别。[task-handoff-godot](../../../../project-source/skills/task-handoff-godot/SKILL.md) 使用既有 Progress、Feature 或任务记录：只要求暂停时保存停点，需要换对话时再提供可复制文本；不自动创建对话、发送消息或另建交接台账。恢复已有停点直接回到原任务，不必再调用一次交接。
 

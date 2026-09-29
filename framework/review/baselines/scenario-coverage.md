@@ -56,7 +56,7 @@
 
 已确认术语由 project-terminology 直接保存；只澄清不写入。design-localization-spec 保存语言规格，content-localization 只做既定规格下的运行接入。多个场景可以使用同一职责明确的方法，不复制执行规范。
 
-场景能力与现有 Skill 的适用范围、执行者和写入边界一致时，提示词直接点名入口，同名场景提供可查阅链接。视觉、玩法和技术实验共用 prototype-godot；文档与实际状态冲突由 feedback-triage-godot 核实；进度和确认知识的表达可用 technical-documentation-writing-godot，正文归属仍分别由产物生命周期与知识 README 决定。只在条件成立时调用专业或规划方法，已有任务直接续接；限定验证、记录和当前 Agent 调查不因补名称扩大为完整交付或独立审核。
+场景能力与现有 Skill 的适用范围、执行者和写入边界一致时，提示词直接点名入口，同名场景提供可查阅链接。视觉、玩法和技术实验共用 prototype-godot；文档与实际状态冲突由 feedback-triage-godot 核实；进度和确认知识的表达可用 technical-documentation-writing-godot，正文归属仍分别由产物生命周期与知识 README 决定。环境维护由 project-environment-godot 承接；限定运行由 project-verification-godot 承接；人工结果与测试证据分别由 manual-acceptance-godot、verification-evidence-godot 承接。只在条件成立时调用专业或规划方法，已有任务直接续接；限定验证、记录和当前 Agent 调查不因补名称扩大为完整交付或独立审核。
 
 查看记录仅证明读到匹配记录；record-tests 保存整组有效运行引用；validate 才核对当前完成依据。静态检查、测试、专项验证、独立审核和人工体验仍分别按实际义务判断，不能用一个命令退出 0 代替全部完成。
 

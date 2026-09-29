@@ -13,7 +13,7 @@
 ```text
 ## 目标
 
-请只对有明确 Feature 的当前变更运行必要自动测试；本入口不处理没有 Feature 的组件检查，组件测试使用其专用 --target 场景，不虚构任务 ID。
+请使用 $project-verification-godot，只对有明确 Feature 的当前变更运行必要自动测试；本入口不处理没有 Feature 的组件检查，组件测试使用其专用 --target 场景，不虚构任务 ID。
 
 ## 背景与入口条件
 
@@ -67,7 +67,7 @@ ${1:当前 Feature ID、改动范围、测试授权}
 ```text
 ## 目标
 
-请为当前可体验的 manual Feature 准备人工清单。
+请使用 $manual-acceptance-godot，为当前可体验的 manual Feature 准备人工清单。
 
 ## 背景与入口条件
 
@@ -117,7 +117,7 @@ ${1:manual Feature、批准的 manual_checks 与必要 manual_regression、运�
 ```text
 ## 目标
 
-请导入我实际填写的人工验收 JSON。
+请使用 $manual-acceptance-godot，导入我实际填写的人工验收 JSON。
 
 ## 背景与入口条件
 

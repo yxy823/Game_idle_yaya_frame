@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 验证与收尾 → 人工验收 JSON 已填好，需要导入结果”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 验证与收尾 → 人工验收 JSON 已填好，需要导入结果”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页由当前 Agent 使用项目自己的 `manual-acceptance-godot` Skill；[源码入口](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)仅供核对。
 
 **S1｜核对原件与结果**
 

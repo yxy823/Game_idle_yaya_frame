@@ -21,6 +21,7 @@
 | Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/development-retro-godot/，随 Skill 目录整包分发 |
 | 框架反馈核实、异常诊断与任务交接 | .agents/skills/feedback-triage-yaya/、bug-diagnosis-yaya/ 与 task-handoff-yaya/，框架自用 |
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
+| Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |

@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 验证与收尾 → 代码刚改完，只检查解析和 lint”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页由当前 Agent 使用现有规则和工具处理；需要独立审核的步骤明确交给独立实例。
+使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 验证与收尾 → 代码刚改完，只检查解析和 lint”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页由当前 Agent 使用项目自己的 `project-verification-godot` Skill；[源码入口](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)仅供核对。
 
 **S1｜核对直接命令**
 
