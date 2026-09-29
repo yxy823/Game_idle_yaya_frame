@@ -1,0 +1,5 @@
+interface:
+  display_name: "Godot Implementation Guidance"
+  short_description: "Prepare source-linked guidance for an existing Feature"
+policy:
+  allow_implicit_invocation: true

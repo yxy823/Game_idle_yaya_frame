@@ -4,7 +4,6 @@
 
 | 待办 | 剩余工作与完成条件 |
 | --- | --- |
-| 可选实施指导 | 完成仅面向已有 Feature 的实施指导方法与固定 GPT-6 Astra xhigh 顾问角色，同步分发、提示词和说明；完成静态检查及独立情境审核后提交。 |
 | 开发场景关系图首版试读 | 用户导入 [JSON 图文件](docs/workflow-maps/game-development-workflow.json)，确认场景名称换行、缩放阅读和跨区连线辨识；格式与节点名称集合校验不替代实际查看。格式及维护方法见 [说明](docs/workflow-maps/README.md)。 |
 | 工作台具体体验确认 | 用户确认组合听感、编排节奏与截尾、分组与抢占、保存后的消费体验；已有画面验收不重复列入。待确认范围见 [E7 交付边界](review/reports/asset-workbench-e7-review-and-delivery-2026-09-22.md)。 |
 | 编辑器插件兼容性缺口 | 资源表格已安装但默认停用，组合退出泄漏根因未确定；完整默认图形组合仍有 gdUnit4 重复连接与退出诊断，其单独基线也有错误。后续分别定位并在指定外部项目重验，不能把当前功能断言通过当作完整兼容；证据见 [插件版本记录](docs/framework-maintenance/editor-plugin-versions.md#godot-验证)。 |

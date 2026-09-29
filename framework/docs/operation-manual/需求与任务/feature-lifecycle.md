@@ -49,6 +49,8 @@ Bug 修复、功能实现、重构、工具维护、资源接入、迁移和性�
 
 具体流程唯一正文在 [执行规范](../../../../project-source/methodology/03-execute-loop.md) 与 [feature-execute](../../../../project-source/skills/feature-execute/SKILL.md)。普通实现细节由 Agent 判断；未变的具体授权跨 Skill 和阶段沿用，原 Skill 返回不等于整项授权结束。
 
+复杂 Feature 可按需使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md) 准备指导，仍沿用 Stage 1 方案与 Stage 2 保存设计的顺序，不增加指导阶段或额外批准。默认由主 Agent 准备；明确要求时才委派指定顾问。主 Agent 核对关键原规则与实际代码后继续执行；调用方法、收到设计或顾问完成，都不表示 Feature 已实现、验收或独立审核。
+
 ## 自动与人工验收
 
 验收方式从要求出发。画面辨识、声音、动画、操作手感等需要人判断时采用 manual；所有 AC 都能充分自动验证时才可 automated。manual 同样可以有大量自动义务；实现授权、自动通过与用户沉默都不是人工接受。

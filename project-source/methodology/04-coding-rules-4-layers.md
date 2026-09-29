@@ -50,6 +50,14 @@ An agent loads the applicable rules in this order:
 
 The README files are the routing authority for concrete documents. Reuse already read, unchanged rules on continuation; load additional sections when scope or evidence changes. This limits reading, not the applicability of requirements. Status queries and terminology discussion do not automatically load engine rules.
 
+### Implementing with prepared guidance
+
+For an existing Feature using `implementation-guidance-godot`, the guidance preparer follows the routes above and explains the relevant constraints with source links in the existing Feature design contract. When an advisor was explicitly requested, the main Agent can reuse its background investigation without reproducing all of it. The implementing Agent still reads the guidance, the key applicable original rule sections governing its edits and validation, and the actual code, interfaces, callers and resource consumers needed for the change. Guidance narrows retrieval; it does not replace governing sources or remove an applicable obligation. Distinguish direct inspection from findings received from the advisor.
+
+Before dependent implementation or resumption, compare the guidance with the actual checkout and relevant committed or uncommitted changes. Revisit affected sources when the goal, rules, code, interfaces, consumers or target-version facts change, when actual behavior contradicts the guidance, or when a missing dependency appears. Load additional routed rules where those facts require them; do not repeat unrelated background reading. Governing-source changes affecting the Feature's contract still follow the existing synchronization route before dependent work.
+
+The main Agent handles ordinary implementation choices within the approved design. For a material deviation, check the original sources and resolve any missing decision; consult the advisor only within the explicit delegation authorization. A proposed design cannot waive a rule, change AC or establish verification or human acceptance. Final scope checks and evidence freshness remain governed by the execution loop, including the Feature design's existing snapshot participation.
+
 ## Stack-independent architecture
 
 The following principles belong in `docs/project-rules.md` because they do not depend on a particular engine or programming language:

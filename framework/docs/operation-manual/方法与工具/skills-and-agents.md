@@ -34,6 +34,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `feature-plan` | 为当前 Product 建立可追溯 Feature 覆盖与依赖 |
 | `feature-sync` | 将已确认来源变化映射到已有计划及测试历史 |
 | `feature-execute` | 交付获准 Feature，承担适用实现、验证、记录与收尾 |
+| `implementation-guidance-godot` | 为已有 Feature 准备约束、设计、必要实现顺序和验证思路，沿用该 Feature 设计稿 |
 | `engineering-change-plan` | 为 Bug、重构、维护等独立工程工作确定任务范围与验证 |
 | `engineering-refactor-select` | 从已有真实候选中选择值得实施的行为保持重构 |
 | `design-art-direction` | 共享视觉方向与适用约束 |
@@ -106,6 +107,12 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 - **工具：** 负责可重复检查；工具退出成功不取代用户判断。
 
 项目附带的 [researcher](../../../../project-source/agents/researcher.toml) 用于按需独立调研，[independent-reviewer](../../../../project-source/agents/independent-reviewer.toml) 用于独立审核。需要新上下文、宿主真实支持及适当有效权限，配置文件存在不证明角色已加载或文件系统已隔离。作者自己读审核 Skill 仍是自查。
+
+已有 Feature 的实施指导使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md)。默认由主 Agent 准备；只有用户在任务提示词或仍有效的具体授权中明确要求，才委派 [implementation-advisor](../../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载 Skill 或要求详细设计本身都不自动触发委派。顾问角色固定使用 GPT-6 Astra、`xhigh`，模型设置只在角色配置维护。
+
+顾问读取相关规则和实际代码，给出有来源的设计及验证思路。需要用户决定时，它把编号问题、A/B 选项和建议交给主 Agent；主 Agent 在当前对话正文中展示，并把回答传回同一顾问。未获批准的方案先在对话中讨论，批准后顾问才可保存获准的同一份 Feature 设计稿，主 Agent 负责核对、记录和后续实施。存放位置与生命周期见[局部设计](../专业工作与记录/knowledge-and-records.md#局部设计与当前架构)。
+
+顾问不运行 Godot、测试或实验，不改业务实现、Feature JSON、Registry、状态或验收，不提交。主 Agent 仍阅读设计稿、关键适用原规则和实际要改的代码与消费者，不必重复顾问的全部背景调研。启动、指定模型或顾问执行失败时，停止依赖它的工作并报告原因与已完成部分，不自动换模型或改由主 Agent 接管。设计者不能兼任这份设计的独立审核者。
 
 研究可使用用户级 anysearch；框架不复制其实现、密钥或个人路径。工具不可用时按角色规则选实际可用渠道并说明限制；没有可用来源不伪造已查证。调研方法与报告格式由角色维护，长期保存位置见 [知识、设计与记录](../专业工作与记录/knowledge-and-records.md#调研与项目知识)。
 

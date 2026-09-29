@@ -14,6 +14,7 @@ Apply the project GDD prerequisite before starting or resuming; an existing Feat
 | --- | --- |
 | Select the current Product/Feature | **Product-by-Product planning** in `methodology/02-feature-list-schema.md` |
 | Read applicable implementation rules and knowledge | Project `AGENTS.md` and its task-specific routes |
+| Prepare needed implementation guidance for an existing Feature | `implementation-guidance-godot`; its explicit-request contract controls advisor delegation, while methodology 02 owns the design lifecycle |
 | Resolve document language or environment setup | `methodology/05-document-language.md` and confirmed `docs/methodology-config.json` |
 | Plan tests, stale-test cleanup or runtime selection | Relevant sections of `methodology/08-testing-strategy.md` |
 | Write Feature, Registry or completion fields | Relevant artifact contract in `methodology/02-feature-list-schema.md` |

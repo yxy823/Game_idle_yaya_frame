@@ -72,6 +72,7 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | Planning | `feature-plan`, `feature-sync` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-plan`, `engineering-refactor-select` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `feature-execute` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
+| Implementation guidance | `implementation-guidance-godot` | Prepare constraints, design, necessary implementation dependencies and verification reasoning for an existing Feature; reuse its optional design document. |
 | Guidance | `project-next-step-advisor` | Explain current state; provide a scoped continuation prompt when needed, without executing or granting approval. |
 | Task handoff | `task-handoff-godot` | Preserve a requested stop point and prepare continuation context using existing records; do not create or message another conversation. |
 
@@ -111,6 +112,7 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Source synchronization | `feature-sync` | Trace additions, revisions, splits, merges and dependency/test retirement migrations. |
 | Continue current Feature | `feature-execute` | Resume the actual Stage and existing authorization; “continue” alone does not grant missing approval or acceptance. |
 | Execute eligible planned Feature | `feature-execute` | Select by the dependency DAG, present Stage 1 and preserve its approval boundary. |
+| Prepare implementation guidance for an existing Feature | `implementation-guidance-godot`, normally used by the main agent | Only explicit user delegation or still-valid task authorization selects `implementation-advisor`; complexity alone does not. Follow the Skill's model, question relay, limited design-writing and stop-on-failure contract, then return to the owning Feature. |
 | Bug in current unfinished Feature | Current Feature repair route | Reproduce and repair within its scope; keep failure evidence and relevant regression coverage. |
 | Independent Bug in completed behavior | `engineering-change-plan` in bug mode | Restore a confirmed Product, professional or tool contract; changed requirements return to their owner. |
 | Refactor | `engineering-change-plan` in refactor mode | Preserve behavior; use `engineering-refactor-select` first only when selecting a smell is requested. |

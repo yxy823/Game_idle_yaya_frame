@@ -24,6 +24,8 @@ When the question concerns terminology, project rules or design, read the releva
 
 Report a missing file as missing instead of creating it. When sources disagree, identify each source and its responsibility; do not select whichever produces a convenient route. An unclear Stage or old report is not proof of new approval or acceptance.
 
+For implementation guidance on an existing Feature, use the canonical `implementation-guidance-godot` route and read its contract. The main agent normally prepares the guidance; complexity or asking for advice does not authorize delegation. Preserve explicit user delegation already given for this task, and distinguish it from approval of a proposed design. A failed `implementation-advisor` attempt stops dependent work with its reason; do not recommend automatic model substitution or main-agent takeover. This read-only advisor neither delegates nor writes the design.
+
 ## Answer the question and provide a prompt when needed
 
 Classify using the canonical table, including new/continued Feature, GDD design or Product delivery-scope change, Bug, Refactor, Maintenance, Framework issue, Audit, Human Acceptance follow-up and status query. Ambiguous expected behavior is investigated against GDD and the owning professional source within the Product delivery boundary before calling it a Bug. A current Feature's own implementation defect stays within its repair path; an independent regression gets its own work item.

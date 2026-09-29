@@ -32,7 +32,7 @@ This framework supports one project user working with an Agent. Multi-user colla
 | Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
 | Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
 | Rule responsibilities, interpretation or promotion | `methodology/04-coding-rules-4-layers.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
-| Detailed Feature design | Optional `docs/features/F0XX-design.md` under `methodology/02-feature-list-schema.md`; JSON keeps AC and verification obligations |
+| Detailed Feature design and implementation guidance | `implementation-guidance-godot` uses the optional `docs/features/F0XX-design.md` under `methodology/02-feature-list-schema.md`; JSON keeps AC and verification obligations. Delegate to `implementation-advisor` only when explicitly requested by the user or still authorized for this task; otherwise the main agent prepares the guidance. |
 | Document language or initial environment configuration | `methodology/05-document-language.md` |
 | Bug, refactor or maintenance | `methodology/07-engineering-change.md` |
 | Test impact, current-run evidence or completion helper use | `methodology/08-testing-strategy.md`; direct parsing/lint commands are in `methodology/gdscript-lint.md` |

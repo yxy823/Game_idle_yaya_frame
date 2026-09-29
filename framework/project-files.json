@@ -12,6 +12,10 @@
     "target": ".codex/agents/researcher.toml"
   },
   {
+    "source": "project-source/agents/implementation-advisor.toml",
+    "target": ".codex/agents/implementation-advisor.toml"
+  },
+  {
     "source": "project-source/methodology",
     "target": "methodology"
   },

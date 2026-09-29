@@ -19,6 +19,7 @@
 | AGENTS.md | 项目规则与 Skill 路由 |
 | .agents/skills/ | 开发、专业设计与独立审核 Skill |
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
+| .codex/agents/implementation-advisor.toml | 用户明确委派时，为已有 Feature 准备实施指导；固定模型与失败边界见 [implementation-guidance-godot](.agents/skills/implementation-guidance-godot/SKILL.md) |
 | .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
 | [GDD 目录](docs/gdd/README.md) | 游戏设计正文；初始只有目录说明，须先放入已有 GDD |
 | [Product 总览](docs/product.md)、[交付单元目录](docs/product/README.md) | 先预拆分交付范围、来源与顺序；当前 Product 轮到时才细化 |
@@ -83,6 +84,7 @@
 | 增量对齐已有 Feature | feature-sync |
 | Bug、重构或工程维护 | engineering-change-plan |
 | 执行一个已批准 Feature | feature-execute |
+| 为已有 Feature 准备设计约束、实现顺序与验证思路 | implementation-guidance-godot；默认由主 Agent 完成，明确要求时才委派顾问 |
 | 从记录中选择重构项 | engineering-refactor-select |
 | 只读理解现状并撰写下一步提示词 | project-next-step-advisor |
 | 共享美术/声音方向、具体视觉资源规格 | design-art-direction、design-audio-direction、design-visual-asset-spec |
