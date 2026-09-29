@@ -52,6 +52,8 @@ Distinguish inspecting an existing proposal from clarifying an undecided require
 
 For pause, switching or new-conversation continuation, use the existing single project directory, actual differences and current task records under the Git contract. `task-handoff-godot` prepares a requested stop point or copyable handoff; resuming or switching from an already recorded stop returns directly to the target task. Do not add another handoff before ordinary continuation. Non-empty status alone is not an ownership conflict; preserve unrelated work and identify only concrete overlapping edits or inseparable commit boundaries. Do not recommend worktrees or an attribution ledger. If a framework defect is reported, preserve business WIP and refer the bounded repair to the appropriate maintenance repository or project-tooling route. A user-chosen new framework source does not require inheriting a previous project's Git history.
 
+When advice concerns committing, read the relevant sections of `agent-rules/00-core/git-worktree-and-commits.md` and the task's actual commit conditions. Distinguish a validated logical change ready for an incremental commit from whole-Feature completion. Preserve any separately required acceptance or explicit commit permission; do not infer that permission from an acceptance result or a generic continuation request. This Skill only explains the next action and never stages or commits.
+
 ## Stop
 
 Check that the answer addresses the question with current facts, includes a prompt only when needed, and has performed no writes. Stop after the advice. For regression review use `references/scenarios.md`; those scenario expectations are not claims that a language-model interaction was automatically tested.
