@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Recurring Work Design"
+  short_description: "Design useful methods for recurring Godot project activities"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 重复工作方法设计"
+  short_description: "为已发现或预计重复的维护工作设计处理方法，明确入口、判断、产出与正文归属"
+
+policy:
+  allow_implicit_invocation: true

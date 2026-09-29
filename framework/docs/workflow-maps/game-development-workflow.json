@@ -2269,6 +2269,69 @@
         "color": "#17283d",
         "align": "center"
       }
+    },
+    {
+      "id": "scene-109",
+      "shape": "rounded-rect",
+      "x": 6420,
+      "y": 780,
+      "width": 540,
+      "height": 120,
+      "label": "当前任务反复返工，先复盘原因",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-110",
+      "shape": "rounded-rect",
+      "x": 6420,
+      "y": 980,
+      "width": 540,
+      "height": 120,
+      "label": "同类工作总要重复交代，先设计复用方法",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-111",
+      "shape": "rounded-rect",
+      "x": 6420,
+      "y": 1180,
+      "width": 540,
+      "height": 120,
+      "label": "以后会经常做这类工作，先设计处理方法",
+      "zIndex": 1,
+      "fill": "#f1f3e8",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
     }
   ],
   "edges": [
@@ -7941,6 +8004,122 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "重复操作已确认值得脚本化",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-109-scene-107",
+      "source": {
+        "node": "scene-109",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-107",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 7020,
+          "y": 840
+        },
+        {
+          "x": 7020,
+          "y": 440
+        }
+      ],
+      "label": "经验已确认且获准整理进知识",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-110-scene-108",
+      "source": {
+        "node": "scene-110",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-108",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 7100,
+          "y": 1040
+        },
+        {
+          "x": 7100,
+          "y": 640
+        }
+      ],
+      "label": "已采用方法且获准将重复操作固化为脚本",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-111-scene-050",
+      "source": {
+        "node": "scene-111",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-050",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 6330,
+          "y": 1240
+        },
+        {
+          "x": 6330,
+          "y": 1520
+        },
+        {
+          "x": 4710,
+          "y": 1520
+        },
+        {
+          "x": 4710,
+          "y": 1640
+        }
+      ],
+      "label": "已采用方法且获准修改现有项目工具",
       "stroke": {
         "color": "#8994a5",
         "width": 1.2,

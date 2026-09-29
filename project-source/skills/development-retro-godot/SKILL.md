@@ -9,6 +9,8 @@ Use actual task experience to decide whether the project's way of working needs 
 
 This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. Apply the existing GDD prerequisite in `methodology/01-product-doc-structure.md` and current project authority; it neither starts a Feature nor replaces its validation or completion work.
 
+Use [workflow-design-godot](../workflow-design-godot/SKILL.md) when the user wants to design future handling of identified recurring or anticipated work; that design needs no history of failure.
+
 ## Establish what happened
 
 Identify the task, relevant version or time span, intended outcome and concern from available conversation and records. Read only evidence that bears on that concern: applicable Feature/design notes, relevant diffs, actual verification output, user feedback and the affected workflow, rule, tool or knowledge source. Reuse valid context; do not scan every task, rule or knowledge topic.
