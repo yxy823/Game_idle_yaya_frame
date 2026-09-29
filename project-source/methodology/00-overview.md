@@ -2,7 +2,7 @@
 
 > This is the canonical mental model for the workflow. Skills guide the work; project checks are invoked explicitly.
 
-The project has one user coordinating Agent work in one project directory. Pause, switch and resume tasks through existing records and real Git differences. Multi-user attribution and worktree isolation/resumption are not supported workflows; focused research and independent review remain available under their contracts.
+The project has one user coordinating Agent work. Pause, switch and resume tasks through existing records and real Git differences in the task's target checkout. Worktree use follows the Core Git contract and actual task authorization rather than being default setup. Multi-user attribution is outside scope; focused research and independent review remain available under their contracts.
 
 ## Mental model: specification and execution
 

@@ -16,7 +16,7 @@ Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md
 
 Use the artifact schemas, Product order and evolution invariants in `methodology/02-feature-list-schema.md`. Apply `methodology/05-document-language.md` for new durable prose; preserve completed history and original evidence instead of translating them. Resolve `document_language` from confirmed configuration.
 
-Git change preservation, same-directory continuation and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
+Git change preservation, task continuation in the target checkout and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
 
 Read applicable `docs/project-rules.md` constraints and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the rule source: proposed rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
 

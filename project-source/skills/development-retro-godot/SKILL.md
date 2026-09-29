@@ -5,7 +5,7 @@ description: Retrospect on actual Godot development work and verification record
 
 # Godot development retrospective
 
-Use actual task experience to decide whether the project's way of working needs a focused improvement or deserves reusable knowledge. Support one project user working with an Agent in the existing project directory. Do not extend the project into multi-user coordination, change-attribution systems or worktree workflows.
+Use actual task experience to decide whether the project's way of working needs a focused improvement or deserves reusable knowledge. Support one project user working with an Agent in the task's target checkout. Do not extend the project into multi-user coordination or change-attribution systems.
 
 This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. Apply the existing GDD prerequisite in `methodology/01-product-doc-structure.md` and current project authority; it neither starts a Feature nor replaces its validation or completion work.
 

@@ -37,7 +37,7 @@ Distinguish game behavior from project tooling. Technical defects cite the actua
 | Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
 | Urgent repair | Preparation may be concise and the existing user authorization may cover multiple preparation steps; required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
 
-Routing a current-Feature defect back to execution does not by itself authorize a new scope. Report material scope changes for approval. Preserve existing work when switching to a bounded repair in the same project directory, and recover the paused task from its existing records and actual changes. Resolve concrete overlapping edits before dependent work; never stash, discard or stage unrelated WIP merely to make the directory clean.
+Routing a current-Feature defect back to execution does not by itself authorize a new scope. Report material scope changes for approval. Preserve existing work when switching to a bounded repair in the task's designated checkout, and recover the paused task from its existing records and actual changes. Resolve concrete overlapping edits before dependent work; never stash, discard or stage unrelated WIP merely to make the directory clean.
 
 Before any durable write, follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve real Git differences, and limit staging to the validated logical Feature-plan change.
 

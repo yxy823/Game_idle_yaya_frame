@@ -23,7 +23,7 @@
 
 ## Workflow and authority
 
-This framework supports one project user working with an Agent in a single project directory. Multi-user collaboration, change-attribution workflows and worktree isolation/resumption are outside scope. Same-directory task pauses, switches and new-conversation continuation remain supported; bounded research and independent reviewer instances retain their existing contracts.
+This framework supports one project user working with an Agent. Multi-user collaboration and change-attribution workflows are outside scope. Same-directory task pauses, switches and new-conversation continuation remain supported. Worktree use follows the current task's scope and authorization under `agent-rules/00-core/git-worktree-and-commits.md`; it is not default task setup. Bounded research and independent reviewer instances retain their existing contracts.
 
 | Need | Read and follow |
 | --- | --- |
@@ -54,7 +54,7 @@ Read relevant terminology definitions, GDD, Product/professional sources and acc
 
 Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires confirmed environment preparation based on actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
 
-Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve actual differences and unrelated staging state, continue from current records in the same directory, and commit each self-contained logical change as soon as its applicable validation passes, with the applicable Feature identity. Do not wait until the whole complex task ends. Non-empty Git status alone does not block a task; actual overlapping edits or an inseparable commit require resolving the concrete conflict. User-defined no-commit and commit-permission conditions retain their stated scope across continuation. Implementation approval, actual human acceptance and any separately required commit permission remain distinct; automated results cannot supply a missing human decision.
+Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve actual differences and unrelated staging state, continue from current records in the task's target checkout, and commit each self-contained logical change as soon as its applicable validation passes, with the applicable Feature identity. Do not wait until the whole complex task ends. Non-empty Git status alone does not block a task; actual overlapping edits or an inseparable commit require resolving the concrete conflict. User-defined no-commit and commit-permission conditions retain their stated scope across continuation. Implementation approval, actual human acceptance and any separately required commit permission remain distinct; automated results cannot supply a missing human decision.
 
 ## Project knowledge and rule feedback
 

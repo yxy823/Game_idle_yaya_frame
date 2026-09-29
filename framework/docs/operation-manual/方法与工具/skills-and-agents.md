@@ -17,7 +17,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
 | `prototype-godot` | 在当前 Feature 或获准实验中制作并检查真实 Godot UI/逻辑原型 |
-| `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的同目录续接文本 |
+| `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
 | `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
 | `development-retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `project-terminology` | 保存已确认且含义不变的局部/共享定义与术语引用 |

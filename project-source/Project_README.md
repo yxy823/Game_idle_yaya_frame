@@ -2,7 +2,7 @@
 
 使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdunit4。 项目名称、工具路径和具体玩法由当前项目决定。
 
-适用于一位项目使用者与 Agent 配合开发，在同一项目目录内暂停、切换和续接任务。多人协作、改动归属流程和 worktree 隔离不在支持范围内；按需调研与独立审核仍可使用。
+适用于一位项目使用者与 Agent 配合开发，支持同一项目目录内暂停、切换和续接任务；明确指定其他工作目录时，在该目录核对和继续。worktree 按任务范围与授权使用，不是默认前置。多人协作和改动归属流程不在支持范围内；按需调研与独立审核仍可使用。
 
 项目开发以 `docs/gdd/` 中已有真实设计正文为前提；缺少时说明缺口并停止，目录说明或空模板不能代替 GDD。已有 GDD 随获准需求正常维护，具体边界见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 

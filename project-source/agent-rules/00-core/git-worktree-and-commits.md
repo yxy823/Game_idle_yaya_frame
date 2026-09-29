@@ -1,6 +1,6 @@
 # Git Changes and Commits
 
-Defines Git change preservation, staging and local commits for a single-user project in one project directory. These rules apply to every task that may modify repository files; they do not establish multi-user change attribution or worktree workflows.
+Defines Git change preservation, staging and local commits for a single-user project. These rules apply to every task that may modify repository files; they do not establish multi-user change attribution.
 
 ## Responsibility boundary
 
@@ -9,9 +9,10 @@ Defines Git change preservation, staging and local commits for a single-user pro
 
 ## Inspect and preserve current changes
 
+- **[MUST]** Use the task's designated checkout when one is specified, including an authorized worktree. Verify its actual path and Git state, and read, modify and validate project files there rather than substituting another checkout. Worktree use follows the current scope and authorization; do not create one by default. A separate checkout alone does not establish isolation of tools, running processes, caches or runtime data; assess the side effects relevant to the requested operation.
 - **[MUST]** Before the first repository write for a task, run `git status --short` and `git diff --stat`; also inspect `git diff --cached --stat` when staged changes exist. Inspect all status entries, including staged, unstaged, untracked, deleted, renamed, and conflicted paths, then read the relevant diffs.
 - **[MUST]** Preserve pre-existing unrelated content and its staging state. A non-empty Git status alone does not block an authorized task. Do not stash, restore, delete, overwrite or include unrelated changes merely to obtain a clean directory or a convenient commit.
-- **[MUST]** Pause, switch and resume work in the same project directory using the requested task, existing Feature/Progress records, current HEAD and relevant actual differences. Reuse valid work, decisions and authorization; a new conversation does not start the task over. Existing changes belonging to that same authorized task may be completed, validated and committed after verification of their scope. Do not require per-file authorship proof or create an attribution ledger.
+- **[MUST]** Pause, switch and resume work using the task's designated checkout, existing Feature/Progress records, current HEAD and relevant actual differences. Ordinary same-directory continuation needs no new checkout. Reuse valid work, decisions and authorization; a new conversation does not start the task over. Existing changes belonging to that same authorized task may be completed, validated and committed after verification of their scope. Do not require per-file authorship proof or create an attribution ledger.
 - **[MUST]** If the requested edit conflicts with existing content, the intended result is materially ambiguous, or a coherent validated commit cannot be separated from unrelated changes, explain the concrete overlap and stop only the dependent mutation until resolved. Continue unaffected authorized work and read-only analysis. Do not resolve a conflict by discarding existing work.
 - **[MUST]** If an unfinished merge/rebase or a HEAD/branch change cannot be explained by the authorized task's operations, preserve the state and report it. Resolve the uncertainty before dependent writes or commits; do not automatically abort, reset or clean it up.
 - **[MUST]** Project writes require Git. Environment setup follows the same preservation, validation and local commit rules as other modifying tasks.
@@ -26,7 +27,7 @@ Defines Git change preservation, staging and local commits for a single-user pro
 
 ## Local commits
 
-- **[MUST]** Execute Features and create their eligible local commits on the current Git branch, including `main` or `master`. The branch name does not waive change preservation, approval, acceptance, validation or Completion Gates.
+- **[MUST]** Execute Features and create their eligible local commits in the task's target checkout. A branch named `main` or `master` does not by itself require switching branches, and the branch name does not waive change preservation, approval, acceptance, validation or Completion Gates.
 - **[MUST]** At the start of complex work, identify independently verifiable outcomes in the existing plan and adjust those boundaries as real dependencies emerge; no separate commit plan or ledger is required. Automatically commit each complete logical change as soon as its applicable validation passes, without another confirmation; do not accumulate eligible changes until the entire task ends. At task completion, commit any remaining eligible changes.
 - **[MUST]** An explicit no-commit request or user-defined commit condition takes precedence within its scope and continues across Skills and resumed conversations. When a task separately requires actual acceptance and explicit permission to commit, satisfy both: an accepted result alone grants no commit permission, and permission to commit alone supplies no acceptance. Reuse already explicit permission without asking again.
 - **[MUST]** One commit represents one independently understandable logical change, with its necessary implementation, tests, references and documentation. Separate independent Features, Bugs, and Refactors. Changes sharing one root cause may stay together only when they must be implemented and verified together. One Feature may have several commits; each later commit may depend on earlier committed work. Choose boundaries by coherent behavior and validation, not time, file count, a fixed number of commits or separate "code/test/docs" phases. A small task may need only one commit.
@@ -57,4 +58,4 @@ Work item: docs/features/F012.json
 ## Forbidden operations
 
 - **[MUST]** Do not automatically push, tag, amend, rebase, reset, modify Git remotes, bypass hooks with `--no-verify`, force-update history, or use a destructive checkout/clean operation.
-- **[MUST]** Do not automatically create, switch, merge, or delete branches.
+- **[MUST]** Do not create, switch, merge or delete branches outside the current task's concrete authorization. Worktree use alone does not authorize changes to another checkout or removal of existing work.

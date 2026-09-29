@@ -25,7 +25,7 @@ Apply **Feedback assessment** in methodology 07 before treating a report as a ch
 
 For `bug`, use the precise confirmed GDD/Product/professional section or documented framework/tool contract as `source`. For `refactor` and `maintenance`, use `infrastructure` unless a single authoritative source owns the preserved contract. Populate a new independent Bug's `bug_diagnosis` under the canonical contract; do not invent a diagnosis for other modes. Keep durable evidence concise and link the execution archive.
 
-For a project-tooling blocker with business work in progress, preserve that WIP and its evidence. Use the same project directory for the bounded repair, keeping its changed paths, evidence and logical commit distinct. Resolve a concrete overlapping edit before dependent mutation; use the existing Progress/Feature records to return to the paused work after the repair. Do not introduce a worktree or change-attribution workflow.
+For a project-tooling blocker with business work in progress, preserve that WIP and its evidence. Use the task's designated checkout under the Core Git contract for the bounded repair, keeping its changed paths, evidence and logical commit distinct. Resolve a concrete overlapping edit before dependent mutation; use the existing Progress/Feature records to return to the paused work after the repair. Do not introduce a change-attribution workflow or create a worktree merely to obtain a clean directory.
 
 ## Write and hand off
 
