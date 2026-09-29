@@ -2395,6 +2395,90 @@
         "color": "#17283d",
         "align": "center"
       }
+    },
+    {
+      "id": "scene-115",
+      "shape": "rounded-rect",
+      "x": 960,
+      "y": 4580,
+      "width": 540,
+      "height": 120,
+      "label": "只有游戏想法，先形成 GDD 草稿",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-116",
+      "shape": "rounded-rect",
+      "x": 960,
+      "y": 4780,
+      "width": 540,
+      "height": 120,
+      "label": "设计资料分散在多处，需要整合 GDD",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-117",
+      "shape": "rounded-rect",
+      "x": 960,
+      "y": 4980,
+      "width": 540,
+      "height": 120,
+      "label": "体验目标已明确，需要设计数值模型",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-118",
+      "shape": "rounded-rect",
+      "x": 960,
+      "y": 5180,
+      "width": 540,
+      "height": 120,
+      "label": "已有数值需要调整，更新模型与参数",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
     }
   ],
   "edges": [
@@ -8411,6 +8495,303 @@
         }
       ],
       "label": "讨论未结束且用户要求继续",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-003-scene-115",
+      "source": {
+        "node": "scene-003",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-115",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "项目已有，仅有想法且请求形成草稿",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-010-scene-116",
+      "source": {
+        "node": "scene-010",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-116",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "外部设计资料已明确，获准整合 GDD",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-115-scene-116",
+      "source": {
+        "node": "scene-115",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-116",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "后续设计资料分散，获准整合",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-115-scene-016",
+      "source": {
+        "node": "scene-115",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-016",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前范围设计已采用且明确，获准规划交付",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-116-scene-016",
+      "source": {
+        "node": "scene-116",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-016",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前范围设计已采用且明确，获准规划交付",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-115-scene-117",
+      "source": {
+        "node": "scene-115",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-117",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "体验目标和可探索机制明确，需要数值建模",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-116-scene-117",
+      "source": {
+        "node": "scene-116",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-117",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "体验目标和可探索机制明确，需要数值建模",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-117-scene-118",
+      "source": {
+        "node": "scene-117",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-118",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有模型，获准按目标或证据调整",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-117-scene-083",
+      "source": {
+        "node": "scene-117",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-083",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有可审样本，要求独立数值审核",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-118-scene-083",
+      "source": {
+        "node": "scene-118",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-083",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有可审样本，要求独立数值审核",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-083-scene-118",
+      "source": {
+        "node": "scene-083",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-118",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "审核发现经核实，获准调整数值",
       "stroke": {
         "color": "#8994a5",
         "width": 1.2,

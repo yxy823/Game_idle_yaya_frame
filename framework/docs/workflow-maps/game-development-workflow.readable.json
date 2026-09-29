@@ -4789,6 +4789,178 @@
         "kind": "local",
         "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/目标已有方向，但多个问题互相影响，先逐步理清.md"
       }
+    },
+    {
+      "id": "scene-115",
+      "shape": "rounded-rect",
+      "x": 400,
+      "y": 1165.5,
+      "width": 220,
+      "height": 83,
+      "label": "只有游戏想法，\n先形成 GDD 草稿",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/只有游戏想法，先形成 GDD 草稿.md"
+      },
+      "note": "1. 我只有游戏想法，想先围绕这次要明确的范围保存一份 GDD 草稿。\n2. 请把已有想法和决定整理成可继续讨论的 GDD，标清候选方案与未决项。\n3. 先形成当前范围的游戏设计草稿，不把保存草稿当成全部设计已经采用。"
+    },
+    {
+      "id": "scene-116",
+      "shape": "rounded-rect",
+      "x": 720,
+      "y": 1165.5,
+      "width": 220,
+      "height": 83,
+      "label": "设计资料分散在多处，\n需要整合 GDD",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/设计资料分散在多处，需要整合 GDD.md"
+      },
+      "note": "1. 设计内容散在几份资料里，请按已确认决定整合到现有 GDD。\n2. 请整理指定设计资料的重复和冲突，保留有效结构并明确正文归属。\n3. 把分散的游戏设计整合成可追查来源的 GDD，未决冲突留下说明。"
+    },
+    {
+      "id": "scene-117",
+      "shape": "rounded-rect",
+      "x": 720,
+      "y": 930,
+      "width": 220,
+      "height": 83,
+      "label": "体验目标已明确，\n需要设计数值模型",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/体验目标已明确，需要设计数值模型.md"
+      },
+      "note": "1. 体验目标和相关机制已有方向，请为当前范围建立可复算的数值模型。\n2. 请按明确的目标推导公式与参数，并保存到所属 GDD 数值主题。\n3. 我需要一份有计算依据的数值方案，区分候选、采用决定与实际验证。"
+    },
+    {
+      "id": "scene-118",
+      "shape": "rounded-rect",
+      "x": 1040,
+      "y": 930,
+      "width": 220,
+      "height": 83,
+      "label": "已有数值需要调整，\n更新模型与参数",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有数值需要调整，更新模型与参数.md"
+      },
+      "note": "1. 已有数值需要根据当前目标和证据调整，请更新所属模型与参数说明。\n2. 请比较调参前后的计算结果，在授权范围内写回数值正文并保留未采纳候选。\n3. 我想调整现有数值模型，说明旧值、新值、影响和仍缺少的验证证据。"
     }
   ],
   "edges": [
@@ -14366,6 +14538,512 @@
         }
       ],
       "label": "讨论未结束且用户要求继续",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-003-scene-115",
+      "source": {
+        "node": "scene-003",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-115",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "项目已有，仅有想法且请求形成草稿",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-010-scene-116",
+      "source": {
+        "node": "scene-010",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-116",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "外部设计资料已明确，获准整合 GDD",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-115-scene-116",
+      "source": {
+        "node": "scene-115",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-116",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "后续设计资料分散，获准整合",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-115-scene-016",
+      "source": {
+        "node": "scene-115",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-016",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前范围设计已采用且明确，获准规划交付",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-116-scene-016",
+      "source": {
+        "node": "scene-116",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-016",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前范围设计已采用且明确，获准规划交付",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-115-scene-117",
+      "source": {
+        "node": "scene-115",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-117",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "体验目标和可探索机制明确，需要数值建模",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-116-scene-117",
+      "source": {
+        "node": "scene-116",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-117",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "体验目标和可探索机制明确，需要数值建模",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-117-scene-118",
+      "source": {
+        "node": "scene-117",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-118",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有模型，获准按目标或证据调整",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-117-scene-083",
+      "source": {
+        "node": "scene-117",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-083",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有可审样本，要求独立数值审核",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-118-scene-083",
+      "source": {
+        "node": "scene-118",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-083",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "已有可审样本，要求独立数值审核",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-083-scene-118",
+      "source": {
+        "node": "scene-083",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-118",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "审核发现经核实，获准调整数值",
       "stroke": {
         "width": 2,
         "color": "#8994A5",
