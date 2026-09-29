@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 框架方案检验"
+  short_description: "检验已有框架维护方案的假设、职责、分发影响与验证，交付依据和待决定点"
+
+policy:
+  allow_implicit_invocation: true

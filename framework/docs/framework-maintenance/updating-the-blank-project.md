@@ -17,6 +17,8 @@
 | Codex 指令编写与审核方法 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
+| 框架方案检验与开发复盘 | .agents/skills/plan-review-yaya/ 与 .agents/skills/development-retro-yaya/，框架自用 |
+| Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/development-retro-godot/，随 Skill 目录整包分发 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
 | 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |

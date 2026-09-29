@@ -1,0 +1,6 @@
+interface:
+  display_name: "Godot Development Retrospective"
+  short_description: "Assess task evidence for useful Godot workflow improvements"
+
+policy:
+  allow_implicit_invocation: true

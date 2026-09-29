@@ -52,6 +52,8 @@ New projects include short purpose/pending-state notices in fixed documents and 
 | Group | Skills | Responsibility |
 | --- | --- | --- |
 | Clarification | `project-clarifier` | Resolve material uncertainty and return settled answers to the current task. |
+| Plan inspection | `plan-review-godot` | Inspect an existing GDD, Product or Feature proposal and return findings to its owner; no mandatory planning gate. |
+| Development retrospective | `development-retro-godot` | Use actual task evidence to suggest focused improvements to project workflows, rules or tools. |
 | Terminology | `project-terminology` | Maintain meaning-preserving definitions and links without starting Product planning. |
 | Game design and Product | `product-author`, `product-spec-elicitor` | Maintain existing GDD design and derive or revise Product delivery scope. |
 | Professional design | `design-ui-spec`, `design-audio-asset-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec`, `design-localization-spec` | Maintain the applicable UI, art, sound, resource and localization specifications directly. |
@@ -69,6 +71,8 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Task type | Entry | Boundary |
 | --- | --- | --- |
 | Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-clarifier`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
+| Examine assumptions, boundaries or decomposition in an existing GDD, Product or Feature proposal | `plan-review-godot` | Return supported findings and material open choices; source changes remain with their existing owners. This is optional inspection, not formal delivery review or permission to advance a Stage. |
+| Reflect on an actual development task or recurring workflow friction | `development-retro-godot` | Return evidence-based improvement suggestions and their proper owners. No automatic rule edits, reports, checks or new work items; subsequent implementation follows existing authorization. |
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
 | Record or maintain settled project vocabulary | `project-terminology` | Write only within existing authorization. Meaning-preserving definitions/links do not create Product plans or synchronize Features; substantive behavior changes use the GDD design route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |

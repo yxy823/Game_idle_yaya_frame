@@ -14,6 +14,8 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
 | `project-clarifier` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
+| `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
+| `development-retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `project-terminology` | 保存已确认且含义不变的局部/共享定义与术语引用 |
 | `product-author` | 维护已有 GDD、交付预拆分和当前 Product，协调已规划工作的影响 |
 | `product-spec-elicitor` | 澄清已有设计或当前交付范围的缺口；明确契约的实现缺陷交工程流程 |
@@ -42,6 +44,17 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `review-balance` | 数值组合与已确认策略、成长及节奏目标 |
 
 前缀帮助识别职责，不代表必须按 design → content → diagnostics → review 全部执行。只读调查、规格编写与实现有不同授权；纯术语已经明确时直接交 `project-terminology`，不重复开启需求访谈。本地化规格也不再由运行接入 Skill 兼管。
+
+普通澄清继续由 `project-clarifier` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [development-retro-godot](../../../../project-source/skills/development-retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
+
+## 框架维护侧的方案检验与复盘
+
+框架维护讨论继续使用个人的渐进式澄清 Skill；它不随项目分发。框架另有两个自用入口，各自与 Godot 版独立维护：
+
+- [plan-review-yaya](../../../../.agents/skills/plan-review-yaya/SKILL.md)：检查已有维护方案的假设、职责、分发影响和验证办法，指出具体问题或证据缺口。
+- [development-retro-yaya](../../../../.agents/skills/development-retro-yaya/SKILL.md)：依据实际维护记录，判断导航、规则、工具或验证安排是否值得改进，并说明最小改法与归属。
+
+复盘不因缺少 Hook 或 CI 就判定存在问题，也不默认修改规则、建立脚本或新增报告。两侧 Skill 的建议都不自动成为需求或待办；已有具体实施授权则由原任务继续处理。独立入口表示职责可单独调用，不代表已经使用了独立审核实例。
 
 ## 主 Agent 与专用角色
 

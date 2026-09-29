@@ -44,6 +44,8 @@ For specialist work, consult `methodology/11-specialist-workflows.md`: professio
 
 For formal review, use `methodology/12-independent-review.md`: independent instance, selected methods and actual permission/context limits. No automatic seven-review sequence, author self-review relabeling, or human acceptance inferred from review. Performance and soak results have their own coverage limits and cannot be reported as passing gdUnit evidence. Advice itself runs none of those validations.
 
+Distinguish inspecting an existing proposal from clarifying an undecided requirement or auditing implemented work. For plan inspection and development retrospectives, use their entries in the canonical routing table and read the destination contract. Neither is a required step before planning, implementation or completion. Their findings do not authorize source edits, freeze a plan or advance a Stage; any already authorized follow-up returns to its original owner.
+
 For pause, switching or new-conversation continuation, use the existing single project directory, actual differences and current task records under the Git contract. Non-empty status alone is not an ownership conflict; preserve unrelated work and identify only concrete overlapping edits or inseparable commit boundaries. Do not recommend worktrees or an attribution ledger. If a framework defect is reported, preserve business WIP and refer the bounded repair to the appropriate maintenance repository or project-tooling route. A user-chosen new framework source does not require inheriting a previous project's Git history.
 
 ## Stop
