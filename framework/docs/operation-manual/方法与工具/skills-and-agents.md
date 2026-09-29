@@ -13,7 +13,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | Skill | 唯一主要职责 |
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
-| `project-clarifier` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
+| `project-grill-me` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
 | `project-environment-godot` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
@@ -54,7 +54,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 前缀帮助识别职责，不代表必须按 design → content → diagnostics → review 全部执行。只读调查、规格编写与实现有不同授权；纯术语已经明确时直接交 `project-terminology`，不重复开启需求访谈。本地化规格也不再由运行接入 Skill 兼管。
 
-普通澄清继续由 `project-clarifier` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [retro-godot](../../../../project-source/skills/retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
+普通澄清继续由 `project-grill-me` 负责，Product 问题由 `product-spec-elicitor` 使用其提问方法，Feature 拆分由 `feature-plan` 负责。已有方案需要检验时才使用 [plan-review-godot](../../../../project-source/skills/plan-review-godot/SKILL.md)；希望从一次开发经历中总结改进时才使用 [retro-godot](../../../../project-source/skills/retro-godot/SKILL.md)。两者先返回结论，正式修改交回原有负责者，不增加必经关卡，也不替代代码审核或人工验收。
 
 收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
 

@@ -70,7 +70,7 @@
 
 | 任务 | Skill |
 | --- | --- |
-| 围绕已有 GDD 讨论设计或澄清概念 | project-clarifier |
+| 围绕已有 GDD 讨论设计或澄清概念 | project-grill-me |
 | 保存已确认的术语定义、别名和引用 | project-terminology |
 | 维护已有 GDD、预拆分交付或细化当前 Product | product-author |
 | 澄清已有设计、交付范围或需求修改中的缺口 | product-spec-elicitor |
@@ -98,7 +98,7 @@ flowchart TD
     SQ -->|否| G{项目内已有真实 GDD}
     G -->|否| Z[说明缺少 GDD 并停止]
     G -->|是| Q{任务内容}
-    Q -->|讨论或澄清| C[project-clarifier]
+    Q -->|讨论或澄清| C[project-grill-me]
     C --> O[对话结论]
     Q -->|记录已确定术语| T[project-terminology]
     T --> K[按需更新术语文档或局部定义]

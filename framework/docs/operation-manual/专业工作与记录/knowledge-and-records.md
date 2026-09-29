@@ -21,7 +21,7 @@
 | `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-术语由 `project-terminology` 维护；只有实质歧义才由 `project-clarifier` 讨论。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源。以上项目工作同样遵守 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+术语由 `project-terminology` 维护；只有实质歧义才由 `project-grill-me` 讨论。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源。以上项目工作同样遵守 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 
 ## 局部设计与当前架构
 

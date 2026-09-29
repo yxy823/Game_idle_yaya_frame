@@ -38,6 +38,6 @@ Lead with whether the proposal supports the requested next step, the most conseq
 | Changes affecting an existing Feature plan | [feature-sync](../feature-sync/SKILL.md), with its actual source, baseline and plan-evolution contracts; findings do not establish a historical source change. |
 | Current Feature's detailed implementation design | [feature-execute](../feature-execute/SKILL.md), under the optional design contract in `methodology/02-feature-list-schema.md`. |
 | Professional specification change | Its owning specialist under `methodology/11-specialist-workflows.md`; keep GDD intent and detailed professional requirements at their existing sources. |
-| Ordinary unresolved project question | [project-clarifier](../project-clarifier/SKILL.md); do not impose a plan review on normal clarification. |
+| Ordinary unresolved project question | [project-grill-me](../project-grill-me/SKILL.md); do not impose a plan review on normal clarification. |
 
 This Skill returns analysis; it does not edit authoritative sources, code, rules, plan records or task state. Its conclusion neither changes approved/frozen decisions nor advances a Stage or substitutes for human acceptance. Return findings to the coordinating task. If its concrete authorization already covers the follow-up, continue there through the existing owner without asking again merely because this review ended; a review-only request ends with the findings.

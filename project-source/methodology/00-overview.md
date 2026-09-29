@@ -51,7 +51,7 @@ New projects include short purpose/pending-state notices in fixed documents and 
 
 | Group | Skills | Responsibility |
 | --- | --- | --- |
-| Clarification | `project-clarifier` | Resolve material uncertainty and return settled answers to the current task. |
+| Clarification | `project-grill-me` | Resolve material uncertainty and return settled answers to the current task. |
 | Feedback and diagnosis | `feedback-triage-godot`, `bug-diagnosis-godot` | Classify feedback against current evidence, or investigate the cause of a concrete abnormal behavior; return to the owning authorized task. |
 | Project environment | `project-environment-godot` | Configure or recover project tools and complete a needed first resource scan under the existing environment contract. |
 | Scoped verification | `project-verification-godot` | Run requested parsing, lint, existing tests or scoped scene checks and report actual results. |
@@ -78,7 +78,7 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 
 | Task type | Entry | Boundary |
 | --- | --- | --- |
-| Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-clarifier`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
+| Clarify an existing GDD design choice, delivery boundary or ambiguous term | `project-grill-me`, or `product-spec-elicitor` for scoped design/delivery questions | Ask only useful questions; discussion alone writes nothing and cannot replace the existing GDD prerequisite. |
 | Assess feedback or an external report before choosing work | `feedback-triage-godot` | Check current facts, distinguish defects, changed intent, existing coverage and evidence gaps, then identify the owner. Classification does not authorize a repair or create a Feature. |
 | Investigate the cause of a concrete abnormal behavior | `bug-diagnosis-godot` | Test relevant hypotheses within the authorized evidence/run scope. Keep unknown causes explicit; an investigation-only request does not permit implementation changes. |
 | Examine assumptions, boundaries or decomposition in an existing GDD, Product or Feature proposal | `plan-review-godot` | Return supported findings and material open choices; source changes remain with their existing owners. This is optional inspection, not formal delivery review or permission to advance a Stage. |
@@ -151,7 +151,7 @@ User request
    │
    ├─ Clarify an existing GDD or delivery choice
    │      ↓
-   │  project-clarifier → conversation result
+   │  project-grill-me → conversation result
    │
    ├─ Document already settled terminology
    │      ↓

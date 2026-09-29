@@ -1,9 +1,9 @@
 ---
-name: project-clarifier
+name: project-grill-me
 description: Resolve material uncertainties in an existing GDD, delivery scope, design tradeoff or domain term. Settled terminology uses project-terminology; clear requests continue their authorized workflow.
 ---
 
-# Project clarifier
+# Project grill-me
 
 ## Scope
 
@@ -31,3 +31,5 @@ When the current request already authorizes subsequent work, return settled answ
 ## Reuse inside Product elicitation
 
 `product-spec-elicitor` and `design-audio-asset-spec` reuse the shared questioning method above while retaining their scoped proposal contracts. They return to their existing caller. Reading this method does not start another clarification workflow or call the standardizer recursively.
+
+Inspired by Matt Pocock's `grill-me` questioning approach; adapted for this Godot project's existing GDD, source ownership and authorization boundaries.

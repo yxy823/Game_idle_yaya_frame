@@ -11,7 +11,7 @@ Use the GDD prerequisite and source ownership in `methodology/01-product-doc-str
 
 Read the caller's requested change, relevant GDD topics, applicable Project Rules/architecture decisions, current Product outline or delivery document and affected existing Feature facts. Reuse confirmed answers and `document_language`. Actual implementation describes current behavior, not approved design.
 
-Use the [shared questioning method](../project-clarifier/SKILL.md#shared-questioning-method) for missing material decisions. Do not start another interview when supplied sources and authorization already settle the change. This Skill only returns proposals to `product-author`; it does not write GDD, Product or plan files.
+Use the [shared questioning method](../project-grill-me/SKILL.md#shared-questioning-method) for missing material decisions. Do not start another interview when supplied sources and authorization already settle the change. This Skill only returns proposals to `product-author`; it does not write GDD, Product or plan files.
 
 ## Clarify the relevant difference
 

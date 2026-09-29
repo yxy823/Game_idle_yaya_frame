@@ -24,7 +24,7 @@ Explain the parts needed for this activity:
 - The reusable method, the owner of its detailed rules, and the conditions for reading that source.
 - The result delivered and how to judge success; address interruption, recovery and side effects when they are relevant.
 
-When a missing choice changes the method, use the discussion approach in [project-clarifier](../project-clarifier/SKILL.md). Group related choices and give grounded recommendations. Do not restart GDD/Product elicitation merely to design a working method or require every possible question to be settled. Ordinary implementation details remain Agent decisions.
+When a missing choice changes the method, use the discussion approach in [project-grill-me](../project-grill-me/SKILL.md). Group related choices and give grounded recommendations. Do not restart GDD/Product elicitation merely to design a working method or require every possible question to be settled. Ordinary implementation details remain Agent decisions.
 
 ## Choose the smallest useful home
 
