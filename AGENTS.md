@@ -68,7 +68,7 @@
 
 ## AGENTS.md、Skill 与任务提示词编写
 
-编写、修改或审核本框架的 AGENTS.md、Skill、任务提示词及条件引用规则时，使用 [Codex 指令编写与审核 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)，按实际任务检查触发、正文归属、按需阅读和完成边界。
+编写、修改及作者自查本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，使用 [Codex 指令编写 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](.agents/skills/review-agent-instructions-yaya/SKILL.md)。两者分工、独立实例和共享正文遵循[职责设计准则](framework/review/baselines/skill-script-prompt-design.md#能力划分与正式审核)，不把作者自查称为独立审核。
 
 编写或调整指令时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
 
@@ -76,7 +76,7 @@
 | --- | --- |
 | 内容归属与去重 | AGENTS.md 只保留代码和配置无法推断的约束，任务提示词补充本次目标、输入与特有约束；流程与测试规则以权威规范为唯一正文。已有 README 或工具配置负责的内容不重复展开，同义规则合并。 |
 | Skill 触发 | description 简短说明职责和具体适用任务，必要时注明易混淆的排除项；不堆砌关键词或用宽泛领域强制触发无关 Skill。 |
-| 按需阅读 | 引用资料时写明适用任务或条件，多流程 Skill 的入口保持精简路由；复用仍有效的上下文，不把固定文档组、通读目录或全仓地图设为每轮任务的前置。 |
+| 按需阅读 | 引用资料时写明适用任务或条件，同一能力的条件分支按需引用；复用仍有效的上下文，不把固定文档组、通读目录或全仓地图设为每轮任务的前置。 |
 | 流程粒度 | 写清必要依赖，保留 Agent 对普通实现细节的判断；不照搬旧模型的逐动作配方，不设置无依据的提问轮数、产物数量或逐阶段发言要求。 |
 | 授权与完成 | 按本次授权定义完成标准，覆盖适用的实现、必要验证与交付；已有具体授权按 [会话延续约定](framework/docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续) 跨 Skill、阶段和后续口语请求沿用。Skill 返回或局部步骤完成不结束已授权工作；授权范围完成、必要前置受阻、缺少决定、范围实质变化或用户要求暂停时停止，实现授权不替代实际人工验收。 |
 | 阻塞可解释 | 指令确实导致暂停或改变方向时，指出具体文件、条款与当前缺口；先核对适用范围和已有授权，不因推测的风险追加确认。 |
@@ -85,7 +85,7 @@
 
 ## 提示词维护
 
-新增、修改、重命名、调整分类、删除或审核集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、两份项目场景图与派生参考。详细规范继续由其条件引用的材料维护，不随 Godot 项目分发该入口。
+新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、两份项目场景图与派生参考；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
 
 所有供用户发送给 Agent 的任务提示词统一维护在 [framework/prompts.json](framework/prompts.json)，覆盖框架维护与实际项目开发；不另建分散的手写提示词文件，不把提示词正文混入 README、规则或工具说明。advisor 的精选表达参考仅由 [导出器](framework/commands/export_advisor_prompt_examples.py) 从该 JSON 生成，修改入选正文或选择范围后重新导出；示例不拥有流程、授权或自动同步职责。
 

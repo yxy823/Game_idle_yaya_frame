@@ -14,7 +14,8 @@
 | 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
-| Codex 指令编写与审核方法 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
+| Codex 指令编写、修改与作者自查 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
+| Codex 指令正式只读审核 | .agents/skills/review-agent-instructions-yaya/，独立入口与非作者实例，共享设计参考，不分发 |
 | 集中提示词与关联场景维护 | .agents/skills/prompt-maintenance-yaya/，框架自用；按变化引用分类、场景、导航、两份项目场景图与派生参考的现有规范 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
@@ -33,7 +34,7 @@
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-编写或审核框架指令时使用 [Codex 指令编写与审核 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；整理已确认说明的表达与组织时使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](../../review/baselines/skill-script-prompt-design.md)定义，按任务需要查阅，不因使用其中一个 Skill 而固定加载另一个。
+框架指令的编写、修改与作者自查使用 [Codex 指令编写 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](../../../.agents/skills/review-agent-instructions-yaya/SKILL.md)，按职责准则核对独立实例。两者引用同一份设计参考，不在一个 Skill 内切换实现与正式审核。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](../../review/baselines/skill-script-prompt-design.md)定义，按需查阅；拆分入口不新增每次修改必经的审核阶段。
 
 Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 
