@@ -18,6 +18,8 @@ Paths below are relative to the project root. `methodology/05-document-language.
 | A configured tool cannot be invoked | **Project Environment Bootstrap** for using the configured path, reporting its actual failure and changing a tool location only within the requested scope |
 | A newly copied project needs its first import/class scan | **Project Environment Bootstrap** and **首次 Godot 扫描** in `tools/README.md`; apply the project's actual process and permission constraints |
 
+Before an editor, import or other writing tool runs in a worktree, read [Godot worktree runtime preparation](../worktree-create-godot/references/godot-worktree-runtime.md) if relevant write or cleanup destinations are unknown or have changed. Reuse still-valid preparation; reading this reference neither invokes worktree creation nor requires a new checkout or full isolation routine for every environment check.
+
 Use configured executables and the existing environment checker. Check its real output rather than treating a prefilled path or file presence as readiness. Do not recreate the project, install dependencies or replace a tool choice merely because a check fails. Reuse a completed first scan; do not add a recurring import phase or clear caches to hide a failure.
 
 ## Return the actual preparation result

@@ -1,0 +1,3 @@
+interface:
+  display_name: "Godot Wayfinder"
+  short_description: "Resolve linked unknowns before choosing a Godot project path"

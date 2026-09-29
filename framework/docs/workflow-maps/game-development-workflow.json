@@ -2332,6 +2332,69 @@
         "color": "#17283d",
         "align": "center"
       }
+    },
+    {
+      "id": "scene-112",
+      "shape": "rounded-rect",
+      "x": 1740,
+      "y": 1380,
+      "width": 540,
+      "height": 120,
+      "label": "想保留当前实现，另开 worktree 尝试另一种方案",
+      "zIndex": 1,
+      "fill": "#eeeefa",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-113",
+      "shape": "rounded-rect",
+      "x": 4860,
+      "y": 4380,
+      "width": 540,
+      "height": 120,
+      "label": "已选定 worktree 中的成果，带回目标分支",
+      "zIndex": 1,
+      "fill": "#eaf2ff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
+    },
+    {
+      "id": "scene-114",
+      "shape": "rounded-rect",
+      "x": 960,
+      "y": 4380,
+      "width": 540,
+      "height": 120,
+      "label": "目标已有方向，但多个问题互相影响，先逐步理清",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#64748b",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 20,
+        "color": "#17283d",
+        "align": "center"
+      }
     }
   ],
   "edges": [
@@ -8120,6 +8183,234 @@
         }
       ],
       "label": "已采用方法且获准修改现有项目工具",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-114-scene-011",
+      "source": {
+        "node": "scene-114",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-011",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 820,
+          "y": 4440
+        },
+        {
+          "x": 820,
+          "y": 840
+        }
+      ],
+      "label": "需要澄清影响当前方向的选择",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-114-scene-008",
+      "source": {
+        "node": "scene-114",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-008",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 800,
+          "y": 4440
+        },
+        {
+          "x": 800,
+          "y": 1040
+        }
+      ],
+      "label": "外部事实缺口需要调研",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-114-scene-015",
+      "source": {
+        "node": "scene-114",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-015",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1580,
+          "y": 4440
+        },
+        {
+          "x": 1580,
+          "y": 2040
+        }
+      ],
+      "label": "需要技术可行性证据且已获准实验",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-114-scene-112",
+      "source": {
+        "node": "scene-114",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-112",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1640,
+          "y": 4440
+        },
+        {
+          "x": 1640,
+          "y": 1440
+        }
+      ],
+      "label": "需要隔离可比较实现且已获准创建",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-112-scene-113",
+      "source": {
+        "node": "scene-112",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-113",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2010,
+          "y": 4340
+        },
+        {
+          "x": 4770,
+          "y": 4340
+        },
+        {
+          "x": 4770,
+          "y": 4440
+        }
+      ],
+      "label": "成果已选定且获准整合到目标",
+      "stroke": {
+        "color": "#8994a5",
+        "width": 1.2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#334155",
+        "align": "center"
+      },
+      "zIndex": 0
+    },
+    {
+      "id": "link-scene-114-scene-104",
+      "source": {
+        "node": "scene-114",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-104",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1560,
+          "y": 4440
+        },
+        {
+          "x": 1560,
+          "y": 4320
+        },
+        {
+          "x": 5540,
+          "y": 4320
+        },
+        {
+          "x": 5540,
+          "y": 1840
+        }
+      ],
+      "label": "讨论未结束且用户要求继续",
       "stroke": {
         "color": "#8994a5",
         "width": 1.2,

@@ -21,6 +21,8 @@
 | 框架方案检验 | .agents/skills/plan-review-yaya/，框架自用；维护复盘与重复工作讨论由当前 Agent 按已有场景及适用方法处理 |
 | Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/retro-godot/，随 Skill 目录整包分发 |
 | Godot 重复工作方法设计 | project-source/skills/loop-me-godot/，随项目分发，使用项目自己的规范与能力 |
+| Godot 相互依赖问题的探索 | project-source/skills/wayfinder-godot/，随项目分发；按实际缺口选择讨论、调研或实验，记录仍归现有规范 |
+| Godot worktree 准备与成果整合 | project-source/skills/worktree-create-godot/ 与 worktree-integrate-godot/，分别拥有准备和整合入口；冲突方法归整合入口的 references/merge-conflicts.md |
 | 框架反馈核实、异常诊断与任务交接 | .agents/skills/feedback-triage-yaya/、bug-diagnosis-yaya/ 与 task-handoff-yaya/，框架自用 |
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |
@@ -47,6 +49,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | 环境字段、插件或 lint 默认值 | [配置](../operation-manual/框架基础/configuration.md)、[错误含义](../operation-manual/方法与工具/errors-and-results.md) | 配置源、检查器、插件及补丁 |
 | Product、AC、依赖、规划与历史 | [需求与规划](../operation-manual/需求与任务/requirements-and-planning.md) | methodology、模板、规划/同步 Skill、检查器 |
 | Stage、验收、任务类型、完成或持续授权 | [阶段语义](../operation-manual/需求与任务/feature-lifecycle.md) | 执行规范、Feature Skill、工程规范 |
+| 探索、worktree 准备或成果整合入口 | [Skill 与角色](../operation-manual/方法与工具/skills-and-agents.md#逐步探索与-worktree)、[知识与记录](../operation-manual/专业工作与记录/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、总路由、Git 规范及原有产物归属 |
 | 专业所有者、资源、语言或独立审核 | [专业来源](../operation-manual/专业工作与记录/specialist-work.md)、[Skill 与角色](../operation-manual/方法与工具/skills-and-agents.md) | 专业/审核规范、相应 Skill、角色及复制映射 |
 | 参数、测试选择、结果、指纹或错误 | [命令与证据](../operation-manual/方法与工具/commands-and-evidence.md)、[错误含义](../operation-manual/方法与工具/errors-and-results.md) | 实际 CLI、tools/lib/verification_snapshot.py、完成校验与测试策略 |
 | 工作台、Analyzer、表现组件 | [资源工作台](../operation-manual/专业工作与记录/asset-workbench.md) | 对应工具、示例 README、消费接口及夹具 |
@@ -56,6 +59,8 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md 及 references/scenarios.md；只更新失效内容，不复制另一套流程。术语唯一入口为 project-terminology，本地化规格为 design-localization-spec，content-localization 负责按已定要求实现。
 
 核实反馈与外部报告使用框架自用的 [feedback-triage-yaya](../../../.agents/skills/feedback-triage-yaya/SKILL.md)；调查具体异常原因使用 [bug-diagnosis-yaya](../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)；保存停点或准备新对话交接使用 [task-handoff-yaya](../../../.agents/skills/task-handoff-yaya/SKILL.md)。它们按当前授权调用相关规范，不新增必经阶段；只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 对应入口使用项目自己的方法与记录，不能回查框架 Skill 或完整提示词库。
+
+Godot worktree 的共同运行准备只维护在 `worktree-create-godot/references/godot-worktree-runtime.md`，整合、环境和验证入口按实际写入位置与已有准备条件引用。准备、整合与 wayfinder 不组成固定顺序，也不另设框架版；Git、验证、验收和记录继续由原规范拥有。维护这些职责时同步总路由、项目 README 与 advisor，不在 Project_AGENTS 或手册复制一套操作正文。
 
 路径或字段变化追到全部读写方、调用链、模板、复制映射和回归夹具。说明与源码冲突时分别判断实际行为及待修问题，不能只改一段文字掩盖未解决契约。
 

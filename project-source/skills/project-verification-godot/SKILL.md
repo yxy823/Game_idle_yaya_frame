@@ -18,6 +18,8 @@ The following paths are project-relative. Read the branch needed for this reques
 | A specified test suite/component without a Feature | The focused target route in `tools/README.md` and methodology 08; no Feature, plan or completion record is needed |
 | Actual startup or a specific scene/resource observation | The requested scene, relevant project engineering rules through `AGENTS.md` and actual configured Godot environment; first-scan instructions in `tools/README.md` only if preparation is missing |
 
+For a check in an existing worktree, read [Godot worktree runtime preparation](../worktree-create-godot/references/godot-worktree-runtime.md) before writing tools run if relevant data or cleanup destinations are unknown or changed. This includes tests and editor/import operations, not only gameplay. Reuse still-valid preparation; the reference does not require invoking the creation Skill, making another checkout or expanding this check into a full delivery run.
+
 Run only the requested kinds of check, while retaining each method's required scope and existing obligations. A focused diagnostic run does not satisfy a broader delivery requirement. If the requested restriction conflicts with a required method or permission, explain the specific conflict instead of silently weakening the check or expanding the task.
 
 This method does not edit implementation, tests, AC or check policy to obtain a pass. Return failures to the existing owner; diagnosis or repair follows the task's actual authorization. Preserve original results under **Reports and cleanup** in `methodology/09-artifact-lifecycle.md`. Any permitted repository writes follow `agent-rules/00-core/git-worktree-and-commits.md` and the task's commit conditions.

@@ -4663,6 +4663,132 @@
         "kind": "local",
         "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/以后会经常做这类工作，先设计处理方法.md"
       }
+    },
+    {
+      "id": "scene-112",
+      "shape": "rounded-rect",
+      "x": 2200,
+      "y": 1165.5,
+      "width": 200,
+      "height": 83,
+      "label": "想保留当前实现，\n另开 worktree 尝试\n另一种方案",
+      "zIndex": 1,
+      "fill": "#eeeefa",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/想保留当前实现，另开 worktree 尝试另一种方案.md"
+      }
+    },
+    {
+      "id": "scene-113",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 1165.5,
+      "width": 264,
+      "height": 61,
+      "label": "已选定 worktree 中的成果，\n带回目标分支",
+      "zIndex": 1,
+      "fill": "#eaf2ff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已选定 worktree 中的成果，带回目标分支.md"
+      }
+    },
+    {
+      "id": "scene-114",
+      "shape": "rounded-rect",
+      "x": 1200,
+      "y": 1165.5,
+      "width": 200,
+      "height": 83,
+      "label": "目标已有方向，\n但多个问题互相影响，\n先逐步理清",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "width": 1,
+        "color": "#94A3B8",
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "fontFamily": "system",
+        "color": "#17283D",
+        "align": "center",
+        "verticalAlign": "middle",
+        "bold": false,
+        "hidden": false,
+        "opacity": 1
+      },
+      "textSizing": "content",
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "appearance": {
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true,
+        "opacity": 1,
+        "fillOpacity": 1
+      },
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/目标已有方向，但多个问题互相影响，先逐步理清.md"
+      }
     }
   ],
   "edges": [
@@ -13933,6 +14059,340 @@
         "jump": "none",
         "opacity": 1,
         "labelPosition": 0.3,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-114-scene-011",
+      "source": {
+        "node": "scene-114",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-011",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1300,
+          "y": 1378
+        },
+        {
+          "x": 1288,
+          "y": 1378
+        }
+      ],
+      "label": "需要澄清影响当前方向的选择",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-114-scene-008",
+      "source": {
+        "node": "scene-114",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-008",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1480,
+          "y": 1207
+        },
+        {
+          "x": 1480,
+          "y": 1736
+        }
+      ],
+      "label": "外部事实缺口需要调研",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-114-scene-015",
+      "source": {
+        "node": "scene-114",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-015",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1440,
+          "y": 1207
+        },
+        {
+          "x": 1440,
+          "y": 1320
+        },
+        {
+          "x": 2632,
+          "y": 1320
+        }
+      ],
+      "label": "需要技术可行性证据且已获准实验",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-114-scene-112",
+      "source": {
+        "node": "scene-114",
+        "port": "top"
+      },
+      "target": {
+        "node": "scene-112",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1300,
+          "y": 1100
+        },
+        {
+          "x": 2300,
+          "y": 1100
+        }
+      ],
+      "label": "需要隔离可比较实现且已获准创建",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-112-scene-113",
+      "source": {
+        "node": "scene-112",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-113",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2520,
+          "y": 1207
+        },
+        {
+          "x": 2520,
+          "y": 1196
+        }
+      ],
+      "label": "成果已选定且获准整合到目标",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "routerPadding": 1,
+        "sourceMarkerSize": 14
+      }
+    },
+    {
+      "id": "link-scene-114-scene-104",
+      "source": {
+        "node": "scene-114",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-104",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1300,
+          "y": 1368
+        },
+        {
+          "x": 2324,
+          "y": 1368
+        }
+      ],
+      "label": "讨论未结束且用户要求继续",
+      "stroke": {
+        "width": 2,
+        "color": "#8994A5",
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "verticalAlign": "middle",
+        "hidden": false,
+        "opacity": 1
+      },
+      "zIndex": 0,
+      "appearance": {
+        "targetMarkerSize": 14,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "curve": "default",
+        "jump": "none",
+        "opacity": 1,
+        "labelPosition": 0.5,
         "labelOffset": 20.5,
         "routerPadding": 1,
         "sourceMarkerSize": 14

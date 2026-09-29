@@ -14,6 +14,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
 | `project-grill-me` | 围绕已有 GDD 澄清会实质影响范围或验收的未决问题 |
+| `wayfinder-godot` | 处理相互影响的多个未知，按依赖选择所需讨论、调研或实验 |
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
 | `project-environment-godot` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
@@ -21,6 +22,8 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `manual-acceptance-godot` | 为实际 Feature 准备待验收清单，或登记用户真实给出的验收结果 |
 | `verification-evidence-godot` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
 | `prototype-godot` | 在当前 Feature 或获准实验中制作并检查真实 Godot UI/逻辑原型 |
+| `worktree-create-godot` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
+| `worktree-integrate-godot` | 将已选成果带入目标，处理已有整合冲突并验证组合后的结果 |
 | `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
 | `plan-review-godot` | 检验已有 GDD、Product 或 Feature 方案的假设、边界与拆分，返回结论 |
 | `retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
@@ -63,6 +66,14 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 [prototype-godot](../../../../project-source/skills/prototype-godot/SKILL.md) 用可运行的 Godot 场景或逻辑实验回答本次问题，保持实际运行、原型观察与生产验收的区别。[task-handoff-godot](../../../../project-source/skills/task-handoff-godot/SKILL.md) 使用既有 Progress、Feature 或任务记录：只要求暂停时保存停点，需要换对话时再提供可复制文本；不自动创建对话、发送消息或另建交接台账。恢复已有停点直接回到原任务，不必再调用一次交接。
 
 这些入口便于明确调用，description 也帮助按任务选择；文件存在或格式校验通过不证明客户端已经隐式选中它。工程规范中的必要调查与验证仍由原流程负责，不能只依赖 Skill 的自动发现。
+
+## 逐步探索与 worktree
+
+[wayfinder-godot](../../../../project-source/skills/wayfinder-godot/SKILL.md) 适合几个问题互相牵连、要先解决一个才能判断下一个的情况。例如，背包容量会影响搜索需求和列表性能。它按当前缺口选择讨论、事实调查或限定原型，不要求把所有方法走一遍，也不让普通澄清、已有方案检验或清楚的实施任务先经过探索。只讨论就交付结论；已有具体实施授权则在问题解决后返回原任务继续。结论与证据按[知识与记录](../专业工作与记录/knowledge-and-records.md#探索结果与工作目录)保存。
+
+确需另一个工作目录时，用 [worktree-create-godot](../../../../project-source/skills/worktree-create-godot/SKILL.md) 准备或复用指定版本的 checkout。目录分开不证明运行数据分开；具体准备只在该 Skill 的[运行参考](../../../../project-source/skills/worktree-create-godot/references/godot-worktree-runtime.md)维护，环境和验证入口在相关写入位置未知或变化时也直接引用它，不必重新创建 worktree。
+
+已经选定要采用的成果，或要接手已有整合冲突时，用 [worktree-integrate-godot](../../../../project-source/skills/worktree-integrate-godot/SKILL.md)。它负责带回必要依赖并检查组合结果，冲突方法是其按需参考。原任务的验证、人工验收及提交条件继续有效；整合不自动删除源目录或分支。Git 详细规则仍归[项目 Git 规范](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md)。这三个能力可以分别调用，不构成新的固定阶段。
 
 ## 框架维护侧的方案检验与复盘
 

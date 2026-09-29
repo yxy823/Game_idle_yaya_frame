@@ -71,6 +71,9 @@
 | 任务 | Skill |
 | --- | --- |
 | 围绕已有 GDD 讨论设计或澄清概念 | project-grill-me |
+| 几个重要问题互相影响，需要按依赖逐步弄清 | wayfinder-godot |
+| 为获准任务准备或复用另一个 Git 工作目录 | worktree-create-godot |
+| 带回已选定的 worktree 成果，或接手已有整合冲突 | worktree-integrate-godot |
 | 保存已确认的术语定义、别名和引用 | project-terminology |
 | 维护已有 GDD、预拆分交付或细化当前 Product | product-author |
 | 澄清已有设计、交付范围或需求修改中的缺口 | product-spec-elicitor |
@@ -89,6 +92,8 @@
 | 用户指定的独立专业审核 | review-code、review-ux、review-art、review-audio、review-assets、review-localization、review-balance |
 
 新界面或明显布局变化先按 [视觉原型约定](methodology/01-product-doc-structure.md#visual-prototype-before-dependent-implementation) 验证真实资源、布局与尺寸，再接入依赖它的逻辑；场景实现复用现有执行或限定实验入口。
+
+多个未知相互牵连时才需要 wayfinder；它按缺口选择讨论、调研或原型，不默认创建 worktree。准备工作目录与整合已选成果也可以直接调用，不必先经过探索。完整选择与各自边界见[任务路由](methodology/00-overview.md#canonical-task-routing)，下图仅展示主要交付路线。
 
 ```mermaid
 flowchart TD
