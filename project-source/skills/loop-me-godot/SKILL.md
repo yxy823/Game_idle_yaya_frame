@@ -1,13 +1,13 @@
 ---
-name: workflow-design-godot
-description: Design a reusable way to handle recurring or anticipated Godot project work identified by the user. Clarifies triggers, inputs, decisions and delivery, and compares existing entries, Skills, documentation and tools. Historical task lessons belong to development-retro-godot; this entry does not automatically implement or schedule a workflow.
+name: loop-me-godot
+description: Design a reusable way to handle recurring or anticipated Godot project work identified by the user. Clarifies triggers, inputs, decisions and delivery, and compares existing entries, Skills, documentation and tools. Historical task lessons belong to retro-godot; this entry does not automatically implement or schedule a workflow.
 ---
 
 # Design recurring Godot project work
 
 Help the user decide how a named kind of repeated work should be handled next time. The work may already recur or be anticipated; no history of failure is required. Use at any relevant point in project development, under the existing GDD prerequisite and authority in `methodology/01-product-doc-structure.md`. This is not a new Stage or a mandatory planning step.
 
-Use [development-retro-godot](../development-retro-godot/SKILL.md) for explaining what happened in actual development and identifying lessons. This Skill instead designs future handling of the user's specified recurring activity; do not widen it into reviewing all tasks or personal habits.
+Use [retro-godot](../retro-godot/SKILL.md) for explaining what happened in actual development and identifying lessons. This Skill instead designs future handling of the user's specified recurring activity; do not widen it into reviewing all tasks or personal habits.
 
 ## Understand the repeated activity
 
@@ -35,3 +35,5 @@ For a proposed project-tool implementation, return to `methodology/07-engineerin
 Deliver the proposed method in the conversation: concrete need, entry, inputs and outputs, key decisions, ownership of details, and remaining adoption choices. No additional mechanism may be the best result. Walk through a relevant example or a clearly labelled future case; static reasoning is not execution evidence.
 
 Do not automatically create workflow directories, personal profiles, reports, state ledgers, schedules or approval checkpoints. A design-only request ends with the proposal. If implementation was already specifically authorized, return to its existing owner and continue applicable work without another confirmation merely because this Skill returned; preserve the task's validation, human acceptance and Git requirements.
+
+Inspired by Matt Pocock's `loop-me` idea of designing reusable handling for recurring activities; rewritten for Godot project work and its existing ownership and authorization boundaries.

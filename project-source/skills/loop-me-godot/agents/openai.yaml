@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot Recurring Work Design"
+  display_name: "Godot Loop Me"
   short_description: "Design useful methods for recurring Godot project activities"
 
 policy:

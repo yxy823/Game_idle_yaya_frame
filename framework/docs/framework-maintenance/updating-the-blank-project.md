@@ -17,9 +17,9 @@
 | Codex 指令编写与审核方法 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
-| 框架方案检验与开发复盘 | .agents/skills/plan-review-yaya/ 与 .agents/skills/development-retro-yaya/，框架自用 |
-| Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/development-retro-godot/，随 Skill 目录整包分发 |
-| 重复工作方法设计 | .agents/skills/workflow-design-yaya/ 为框架自用；project-source/skills/workflow-design-godot/ 独立维护并随项目分发，不跨包读取框架正文 |
+| 框架方案检验 | .agents/skills/plan-review-yaya/，框架自用；维护复盘与重复工作讨论由当前 Agent 按已有场景及适用方法处理 |
+| Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/retro-godot/，随 Skill 目录整包分发 |
+| Godot 重复工作方法设计 | project-source/skills/loop-me-godot/，随项目分发，使用项目自己的规范与能力 |
 | 框架反馈核实、异常诊断与任务交接 | .agents/skills/feedback-triage-yaya/、bug-diagnosis-yaya/ 与 task-handoff-yaya/，框架自用 |
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |

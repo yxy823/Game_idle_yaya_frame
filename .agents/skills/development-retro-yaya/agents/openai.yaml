@@ -1,6 +1,0 @@
-interface:
-  display_name: "Yaya 框架开发复盘"
-  short_description: "依据实际执行记录复盘框架流程与工具摩擦，判断原因、最小改法和维护归属"
-
-policy:
-  allow_implicit_invocation: true

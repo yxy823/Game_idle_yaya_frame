@@ -1,5 +1,5 @@
 ---
-name: development-retro-godot
+name: retro-godot
 description: Retrospect on actual Godot development work and verification records to assess useful workflow, rule, tool or knowledge improvements. Returns evidence-based recommendations and their owners; not routine completion, code review or automatic rule maintenance.
 ---
 
@@ -9,7 +9,7 @@ Use actual task experience to decide whether the project's way of working needs 
 
 This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. Apply the existing GDD prerequisite in `methodology/01-product-doc-structure.md` and current project authority; it neither starts a Feature nor replaces its validation or completion work.
 
-Use [workflow-design-godot](../workflow-design-godot/SKILL.md) when the user wants to design future handling of identified recurring or anticipated work; that design needs no history of failure.
+Use [loop-me-godot](../loop-me-godot/SKILL.md) when the user wants to design future handling of identified recurring or anticipated work; that design needs no history of failure.
 
 ## Establish what happened
 
@@ -44,3 +44,5 @@ For each useful recommendation, explain the observed problem or benefit, support
 Keep the result in the conversation. This Skill does not automatically edit rules, code, tools, knowledge, state or approval records, create reports, or turn recommendations into a backlog. Review findings cannot rewrite a past decision, advance Stage, supply missing acceptance or establish implementation success.
 
 Return the recommendations and evidence to the coordinating task. Concrete follow-up already authorized continues through its existing owner and applicable checks without a new confirmation merely because this Skill returned. A retrospective-only request ends with the analysis; a genuinely new restriction, unresolved choice or wider scope retains its existing decision boundary.
+
+Inspired by Matt Pocock's `retro` approach to improving agent work from actual experience; rewritten for this Godot project's workflow, evidence and authorization boundaries.

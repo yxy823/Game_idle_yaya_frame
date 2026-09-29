@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot Development Retrospective"
+  display_name: "Godot Retro"
   short_description: "Assess task evidence for useful Godot workflow improvements"
 
 policy:
