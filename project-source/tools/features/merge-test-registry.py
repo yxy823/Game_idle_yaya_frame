@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import argparse
-import json
-import os
 import sys
 from pathlib import Path
 from typing import Any, Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from tools.lib.atomic_json import write_json
 from tools.lib.feature_evolution import (
     EvolutionError, TEST_REGISTRY_PATH, validate_registry, validate_registry_component,
     referenced_test_ids, validate_retirements, validate_revisions,
@@ -88,19 +87,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
         except EvolutionError as exc:
             raise RegistryError(str(exc)) from exc
     if added:
-        temporary = registry_path.with_name(f".{registry_path.name}.{os.getpid()}.tmp")
-        try:
-            temporary.write_text(
-                json.dumps(registry, indent=2, ensure_ascii=False) + "\n",
-                encoding="utf-8",
-                newline="\n",
-            )
-            os.replace(temporary, registry_path)
-        finally:
-            try:
-                temporary.unlink()
-            except FileNotFoundError:
-                pass
+        write_json(registry_path, registry)
 
     state = "updated" if added else "unchanged"
     return state, added, len(registry["tests"])
