@@ -45,6 +45,44 @@ class ProjectCopyTests(unittest.TestCase):
             (self.source / "project-source/skills/example/SKILL.md").read_bytes(),
         )
 
+    def test_nested_python_caches_are_skipped_without_filtering_source_or_assets(self):
+        origin = self.source / "project-source/skills/example"
+        cached = ("__pycache__/nested/cache.bin", ".pytest_cache/v/cache/nodeids",
+                  "nested/__pycache__/helper.pyc", "nested/helper.pyc", "nested/helper.pyo")
+        kept = ("helper.py", "nested/source.py", "icon.png", "icon.png.import",
+                "helper.gd.uid", "LICENSE", "cache.json", "folder.pyc/source.txt")
+        for relative in (*cached, *kept):
+            path = origin / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(b"original bytes\r\n")
+        output = self.base / "project"
+        copy_project(self.source, output)
+        copied = output / ".agents/skills/example"
+        self.assertEqual({path.relative_to(copied).as_posix()
+                          for path in copied.rglob("*") if path.is_file()},
+                         {"SKILL.md", *kept})
+        for relative in kept:
+            self.assertEqual((copied / relative).read_bytes(), (origin / relative).read_bytes())
+        for relative in cached:
+            self.assertTrue((origin / relative).is_file())
+        self.assertFalse((copied / "__pycache__").exists())
+        self.assertFalse((copied / ".pytest_cache").exists())
+
+    def test_ignored_cache_does_not_claim_a_target_during_preflight(self):
+        origin = self.source / "project-source/skills/example"
+        for relative in ("helper.pyc", "__pycache__/nested/cache.bin"):
+            with self.subTest(relative=relative):
+                path = origin / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(b"cache")
+                self.entries.append({"source": "project-source/Project_AGENTS.md",
+                                     "target": f".agents/skills/example/{relative}"})
+                self.save_manifest()
+                output = self.base / f"project-{len(self.entries)}"
+                copy_project(self.source, output)
+                self.assertEqual((output / ".agents/skills/example" / relative).read_text(),
+                                 "Project rules")
+
     def test_empty_target_allowed_nonempty_preserved(self):
         output = self.base / "project"
         output.mkdir()

@@ -10,6 +10,19 @@ import subprocess
 from pathlib import Path
 
 
+def is_python_cache(relative: Path, is_directory: bool) -> bool:
+    """预检和复制共用同一窄范围，只排除 Python 缓存。"""
+    directories = relative.parts if is_directory else relative.parts[:-1]
+    return any(name in {"__pycache__", ".pytest_cache"} for name in directories) or (
+        not is_directory and relative.suffix in {".pyc", ".pyo"}
+    )
+
+
+def ignore_python_caches(directory: str, names: list[str]) -> set[str]:
+    return {name for name in names
+            if is_python_cache(Path(name), (Path(directory) / name).is_dir())}
+
+
 def relative_path(root: Path, value: str) -> Path:
     """清单中的位置必须留在对应根目录内。"""
     relative = Path(value)
@@ -62,14 +75,17 @@ def copy_project(source: Path, output: Path) -> int:
         claim(destination, origin.is_dir())
         if origin.is_dir():
             for child in origin.rglob("*"):
-                claim(destination / child.relative_to(origin), child.is_dir())
+                relative = child.relative_to(origin)
+                is_directory = child.is_dir()
+                if not is_python_cache(relative, is_directory):
+                    claim(destination / relative, is_directory)
 
     # 只复制清单明确指定的文件或目录，不渲染内容，也不附加身份或状态文件。
     output.mkdir(parents=True, exist_ok=True)
     for origin, destination in copies:
         destination.parent.mkdir(parents=True, exist_ok=True)
         if origin.is_dir():
-            shutil.copytree(origin, destination, dirs_exist_ok=True)
+            shutil.copytree(origin, destination, dirs_exist_ok=True, ignore=ignore_python_caches)
         else:
             shutil.copyfile(origin, destination)
     return len(copies)
