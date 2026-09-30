@@ -8,7 +8,7 @@ metadata:
 
 # Audio asset specification
 
-Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Maintain audio entries directly in the existing `docs/resource-requirements/<scope>.md` under the resource-list contract in `methodology/01-product-doc-structure.md`. Complex needs may have a linked, resource-ID-specific specification. Follow `document_language`.
+Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Maintain audio requirements inside the owning presentation alternative, interface document or shared sound design section under **Resource requirements and handoff** in `methodology/01-product-doc-structure.md`. Expand complex resource details there and reference shared requirements once; do not create a separate preparation list. Follow `document_language`.
 
 Read confirmed GDD triggers and Product delivery scope, applicable Sound Bible, related entries and actual sample references. Use `design-audio-direction` for detailed shared sound standards. Reference GDD-owned direction, triggers and values rather than copying them into another source. Reuse settled decisions, and clarify only material gaps. Do not add a cue to every interaction or assume voice-over. An unknown value may remain pending while other useful specification work continues.
 
@@ -21,7 +21,7 @@ Read confirmed GDD triggers and Product delivery scope, applicable Sound Bible, 
 
 Keep the intended production trigger distinct from a prototype's preview button. Do not invent oscillator settings, loudness numbers or sample rates as if they were confirmed requirements. Record technical constraints only when needed or actually measured. Pixel dimensions are not applicable to audio.
 
-Preserve resource IDs and real filenames. Record source/actual location, target path, observed duration/format and sample/final status in the same resource list. An unresolved slot may use the existing examples `_placeholder_sfx_<action>.wav` or `_placeholder_bgm_<name>.ogg` when those formats are appropriate. This does not create a file, force a format decision or require renaming an available sample. Mark suggestions as suggestions.
+Preserve local resource IDs and real filenames. Record source/actual location, target path, observed duration/format, preparation status and sample/final status in the owning resource section. An unresolved slot may use the existing examples `_placeholder_sfx_<action>.wav` or `_placeholder_bgm_<name>.ogg` when those formats are appropriate. This does not create a file, force a format decision or require renaming an available sample. Mark suggestions as suggestions; a candidate alternative's dependency is not automatically a file to prepare.
 
 ## Handoff and boundaries
 

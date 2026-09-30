@@ -41,7 +41,8 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 | `engineering-refactor-select` | 从已有真实候选中选择值得实施的行为保持重构 |
 | `design-art-direction` | 共享视觉方向与适用约束 |
 | `design-audio-direction` | 共享声音方向与反馈层次 |
-| `design-ui-spec` | 界面布局、状态、显示条件与交互呈现规格 |
+| `design-ui-spec` | 界面布局、状态、界面专用资源章节及关联游戏表现导航 |
+| `design-game-presentation` | 从体验目标规划一次游戏表现，标准化组件需求、比较候选并记录采用及实际实现关系 |
 | `design-visual-asset-spec` | 具体视觉资源的准备和交付要求 |
 | `design-audio-asset-spec` | 具体音效/音乐的准备和交付要求 |
 | `design-localization-spec` | 语言覆盖、回退、文本与字体等本地化要求 |

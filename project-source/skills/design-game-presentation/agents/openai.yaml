@@ -1,0 +1,6 @@
+interface:
+  display_name: "Game Presentation Planning"
+  short_description: "Plan game moments, component choices and adoption links"
+
+policy:
+  allow_implicit_invocation: true

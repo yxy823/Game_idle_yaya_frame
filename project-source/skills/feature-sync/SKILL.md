@@ -39,7 +39,7 @@ Synchronization watches:
 - `docs/product.md` for delivery outlines, source mappings, boundaries, dependencies and order;
 - existing `docs/product/NN-xxx.md` delivery documents for adopted scope, integration and delivery acceptance;
 - `docs/project-rules.md` and its routed repository rule sources (for this project, `agent-rules/`) for collaboration, architecture, and technology constraints.
-- Applicable professional sources in `docs/art/`, `docs/audio/`, `docs/ui/`, `docs/localization/` and `docs/resource-requirements/`, plus other owning paths discovered through actual references.
+- Applicable professional sources in `docs/art/`, `docs/audio/`, `docs/ui/`, `docs/localization/` and `docs/presentation/`, plus other owning paths discovered through actual references.
 
 Apply **Discover and map sources** in `methodology/11-specialist-workflows.md`. The default directory list is not exhaustive: inspect references and shared applicability. Proposed wording is not a confirmed contract. Resource status or location changes may be editorial for planning while still changing the global completion fingerprint.
 
@@ -98,8 +98,8 @@ git diff -M <anchor> HEAD -- docs/product/
 
 git diff <anchor> HEAD -- docs/project-rules.md agent-rules/
 
-git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/resource-requirements/
-git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/resource-requirements/
+git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
+git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 ```
 
 Include any additional authoritative paths discovered from references in these commands. Read current GDD and professional sources whose historical coverage is unknown even when their diff is empty; widening the path list alone cannot prove coverage.

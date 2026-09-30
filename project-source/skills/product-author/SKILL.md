@@ -40,9 +40,9 @@ Explain the effect of a foundational change, deletion or invalidation of complet
 
 ## Coordinate professional requirements
 
-Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain UI, art, audio, resource and localization specifications. GDD owns game-design intent; specialists supplement it with their detailed requirements. If GDD already owns a detail, link that section instead of copying it into another authoritative body.
+Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain presentations, UI, art, audio, resource and localization specifications. GDD owns game-design intent; specialists supplement it with their detailed requirements. If GDD already owns a detail, link that section instead of copying it into another authoritative body.
 
-For new interfaces or substantial presentation changes, use **Visual prototype before dependent implementation** in methodology 01. Resource handoffs use its **Resource preparation list and handoff**. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
+For new interfaces or substantial layout/resource changes, use **Visual prototype before dependent implementation** in methodology 01. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in their owning design sections. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
 
 Pass the confirmed language, relevant facts and existing authorization to supporting work. Return its actual result to this task; a Skill handoff does not create another lifecycle or end authorized delivery.
 

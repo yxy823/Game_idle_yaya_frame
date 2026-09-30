@@ -19,7 +19,7 @@
 | `docs/game-organization.md` | 游戏代码、场景与资源的组织和命名判断指南 | 项目结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；已由 GDD 定义的细节直接引用 |
-| `docs/resource-requirements/` | 稳定业务范围的素材准备要求、位置与状态 | 对应专业规格及接入任务；README 只导航 |
+| `docs/presentation/` | 一次游戏表现的过程、组件、候选、采用组合、实现与验收入口；方案专用资源规格归属相应章节 | `design-game-presentation` 与当前实现任务；UI/GDD 引用，README 只导航 |
 | `docs/feature-list.json` | ID、标题、依赖、状态与详情入口 | 规划/执行；可开始任务及台账检查 |
 | `docs/features/F0XX.json` | 本项范围、AC、来源、验证义务与必要 notes | 规划/执行；测试选择和完成检查 |
 | `docs/features/F0XX-design.md` | 按需展开局部设计与理由 | 原任务；不拥有第二套 AC 或测试映射 |

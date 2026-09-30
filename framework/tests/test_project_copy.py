@@ -229,6 +229,25 @@ class ProjectCopyTests(unittest.TestCase):
                                  (writing_sources / relative).read_bytes())
         for name in ("technical-documentation-writing", "technical-documentation-writing-yaya"):
             self.assertFalse((output / ".agents/skills" / name).exists(), name)
+        presentation_sources = repository / "project-source/skills/design-game-presentation"
+        presentation_skill = output / ".agents/skills/design-game-presentation"
+        presentation_files = {path.relative_to(presentation_sources).as_posix()
+                              for path in presentation_sources.rglob("*") if path.is_file()}
+        self.assertTrue({"SKILL.md", "agents/openai.yaml", "references/technique-selection.md",
+                         "references/shader-requirements.md", "references/particle-requirements.md",
+                         "references/presentation-example.md"} <= presentation_files)
+        self.assertEqual({path.relative_to(presentation_skill).as_posix()
+                          for path in presentation_skill.rglob("*") if path.is_file()},
+                         presentation_files)
+        for relative in presentation_files:
+            with self.subTest(presentation_skill_file=relative):
+                self.assertEqual((presentation_skill / relative).read_bytes(),
+                                 (presentation_sources / relative).read_bytes())
+        self.assertEqual({path.name for path in (output / "docs/presentation").iterdir()},
+                         {"README.md"})
+        self.assertEqual((output / "docs/presentation/README.md").read_bytes(),
+                         (repository / "project-source/defaults/docs/presentation/README.md").read_bytes())
+        self.assertFalse((output / "docs/resource-requirements").exists())
         self.assertFalse((output / "agent-rules/00-core/documentation").exists())
         main_scene = output / "main/main.tscn"
         self.assertEqual(main_scene.read_bytes(),

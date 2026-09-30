@@ -46,7 +46,7 @@ gdUnit 的 `GdUnitTestSessionHook` 是测试生命周期扩展，用于关联诊
 | 事实 | 当前来源 | 应守住的边界 |
 | --- | --- | --- |
 | 需求、任务与测试关系 | GDD、Product、Feature 索引/详情、测试登记表 | 各文件分别负责游戏设计、交付范围、任务记录或测试映射；不要再复制为独立机器计划 |
-| 专业要求与任务关联 | Art/Sound Bible、UI/本地化规格、资源清单；Feature 主 source 和 AC/设计引用 | 共享适用范围进入同步分析，新增来源不能默认继承历史覆盖；不增加来源注册表或细粒度指纹 |
+| 专业要求与任务关联 | Art/Sound Bible、UI/表现/本地化规格及所属资源章节；Feature 主 source 和 AC/设计引用 | 共享适用范围进入同步分析，新增来源不能默认继承历史覆盖；不增加来源注册表或细粒度指纹 |
 | 稳定术语与项目约束 | `docs/terminology.md`、`docs/project-rules.md` | 分别维护统一定义和项目约束；规则增删改先对话自检，授权后更新，不保存开发状态 |
 | 详细局部设计与架构取舍 | 可选 `docs/features/F0XX-design.md`、架构地图、ADR | Feature 设计引用实际约束，地图表示当前结构，达到阈值的 ADR 保存取舍；不重复 AC 或验证台账 |
 | 当前交接与必要历史 | `docs/progress.md`、`docs/progress/`、Feature notes | 普通 Markdown 与链接；不要求机器标记或自动归档 |

@@ -26,7 +26,7 @@
 | [项目术语](docs/terminology.md) | 初始尚无定义；按需维护共享名称与概念关系 |
 | [美术圣经](docs/art/art-bible.md)、[声音圣经](docs/audio/sound-bible.md) | 初始方向待确定；随设计决定维护共享视觉与声音规范 |
 | [本地化规范](docs/localization/localization-spec.md) | 初始是否需要与目标语言待确定；按需维护语言表达与格式约定 |
-| [UI 规格目录](docs/ui/README.md)、[资源清单目录](docs/resource-requirements/README.md) | 初始只有说明与导航；具体界面规格和素材准备清单按需建立 |
+| [UI 规格目录](docs/ui/README.md)、[游戏表现目录](docs/presentation/README.md) | 初始只有导航；界面设计关联具体表现，资源规格保存在所属方案、界面或共享设计章节 |
 | [未采纳想法](docs/unadopted-ideas.md) | 初始无记录；保存尚未采纳的设想，不代表开发承诺 |
 | [任务索引](docs/feature-list.json)、[Feature 目录](docs/features/README.md) | 初始无任务；具体任务详情、验收条件与设计文档由实际规划产生 |
 | [项目进度](docs/progress.md)、[历史目录](docs/progress/README.md) | 当前交接与历史入口；初始无执行历史 |
@@ -90,6 +90,7 @@
 | 为已有 Feature 准备设计约束、实现顺序与验证思路 | implementation-guidance-godot；默认由主 Agent 完成，明确要求时才委派顾问 |
 | 从记录中选择重构项 | engineering-refactor-select |
 | 只读理解现状并撰写下一步提示词 | project-next-step-advisor |
+| 从体验目标拆解一次游戏表现，比较组成部分方案并记录采用关系 | design-game-presentation |
 | 共享美术/声音方向、具体视觉资源规格 | design-art-direction、design-audio-direction、design-visual-asset-spec |
 | 确定语言覆盖与本地化规格 | design-localization-spec |
 | 资源接入与已批准规格下的本地化实现 | content-asset-integration、content-localization |

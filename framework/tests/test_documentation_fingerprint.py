@@ -139,7 +139,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
         for name in (
             "docs/art/art-bible.md", "docs/audio/sound-bible.md",
             "docs/ui/inventory-design.md", "docs/localization/localization-spec.md",
-            "docs/resource-requirements/inventory.md",
+            "docs/presentation/inventory-arrival.md",
         ):
             with self.subTest(name=name):
                 source = self.write(name, "Confirmed requirement\nStatus: supplied\n")
@@ -152,6 +152,31 @@ class DocumentationFingerprintTests(unittest.TestCase):
         self.write("reports/scratch/art-review/run.json", '{"observed": true}')
         self.write("reports/scratch/art-review/cache.bin", "Isolated cache")
         self.git("add", "reports")
+        self.assertEqual(before, self.fingerprint())
+
+    def test_presentation_adoption_and_resource_specs_bind_but_acceptance_report_does_not(self):
+        presentation = self.write(
+            "docs/presentation/reward-collection.md",
+            "Adopted: flight B + button A\nTexture: alpha required\n"
+            "Acceptance: ../../reports/features/F001/manual-checklist.md\n",
+        )
+        self.git("add", "docs/presentation/reward-collection.md")
+        before = self.fingerprint()
+        presentation.write_text(
+            presentation.read_text(encoding="utf-8").replace("flight B", "flight A"),
+            encoding="utf-8",
+        )
+        self.assertNotEqual(before, self.fingerprint())
+        before = self.fingerprint()
+        presentation.write_text(
+            presentation.read_text(encoding="utf-8").replace("alpha required", "opaque allowed"),
+            encoding="utf-8",
+        )
+        self.assertNotEqual(before, self.fingerprint())
+        before = self.fingerprint()
+        report = self.write("reports/features/F001/manual-checklist.md", "Result: pending\n")
+        self.git("add", "reports/features/F001/manual-checklist.md")
+        report.write_text("Result: accepted by user for flight A + button A\n", encoding="utf-8")
         self.assertEqual(before, self.fingerprint())
 
     def test_process_notes_cannot_bind_a_professional_constraint(self):
