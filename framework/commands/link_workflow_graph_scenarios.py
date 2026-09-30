@@ -6,7 +6,8 @@ scenario paths. --check reports pending changes without writing. Graph_Map shows
 and copies local references; these links do not make the browser open local files.
 
 Exit codes: 0 = synchronized, 1 = name/file differences or pending --check changes,
-2 = invalid input or an I/O error. The original diagram is not a default target.
+2 = invalid input or an I/O error. Output follows Graph_Map's two-space JSON
+format without a trailing newline and preserves existing field order.
 """
 from __future__ import annotations
 
@@ -63,6 +64,9 @@ def update_links(prompts: Path, graph_path: Path, scenarios: Path,
         if node.get("link") != expected:
             changes.append({**location, "before": node.get("link"), "after": expected})
             node["link"] = expected
+            # Graph_Map serializes an optional link before node appearance.
+            if "appearance" in node:
+                node["appearance"] = node.pop("appearance")
     report = {"ok": not missing and (not check or not changes), "written": False,
               "graph_file": str(graph_path.resolve()), "nodes": len(graph["nodes"]),
               "changed": len(changes), "unchanged": len(graph["nodes"]) - len(changes) - len(missing),
@@ -76,7 +80,6 @@ def update_links(prompts: Path, graph_path: Path, scenarios: Path,
                                          suffix=".tmp", delete=False) as handle:
             temporary = Path(handle.name)
             json.dump(graph, handle, ensure_ascii=False, indent=2)
-            handle.write("\n")
         if graph_path.read_bytes() != original:
             raise ValueError("Graph changed during preflight; no replacement was made")
         os.replace(temporary, graph_path)

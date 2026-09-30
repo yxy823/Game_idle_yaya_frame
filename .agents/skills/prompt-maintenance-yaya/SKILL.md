@@ -21,7 +21,7 @@ description: 维护 Yaya 框架集中提示词库中的具体 Project、分类�
 | --- | --- |
 | 提示词正文或入口范围变化 | 按[场景编写约定](../../../framework/docs/quick-reference/README.md)核对同名场景的输入、方法、授权与出口，修改实际受影响内容；场景页不复制完整提示词。 |
 | 新增、删除、重命名或调整 Project / 分类 | 沿准则的准确名称同步 JSON 与同名场景路径、一级标题，再核对[场景索引](../../../framework/docs/quick-reference/scenario-index.md)、[覆盖清单](../../../framework/review/baselines/scenario-coverage.md#提示词使用场景清单)及直接引用。正文变化也需核对这些导航的描述，未失效处不制造修改。 |
-| Godot 场景集合、名称、分类或实际衔接变化 | 读取[场景图维护约定](../../../framework/docs/workflow-maps/README.md#阅读与维护)，核对并同步主图与可读版；保留各自已有 ID、布局与显示字段，按各自名称规则核对场景和相关连线，路径变化还需刷新可读版链接。两图只覆盖 Godot，框架场景不加入其中。仅修改提示词措辞且未改变这些关系时无需改图。 |
+| Godot 场景集合、名称、分类或实际衔接变化 | 读取[场景图维护约定](../../../framework/docs/workflow-maps/README.md#阅读与维护)，更新唯一维护的可读版；保留已有 ID、布局与显示字段，按[保存格式](../../../framework/docs/workflow-maps/README.md#编写与保存格式)维护字段顺序，核对场景名称和相关连线，路径变化还需刷新场景链接。图只覆盖 Godot，框架场景不加入其中。仅修改提示词措辞且未改变这些关系时无需改图。 |
 | 入选 advisor 的正文、所引 Skill 名称或选择集变化 | 按[精选导出契约](../../../framework/README.md#导出-advisor-精选表达参考)核对导出器 SELECTION；获准变更选择集时在原位置维护。重新导出并运行只读一致性检查，不手改派生参考。未入选正文变化不要求重导出。 |
 | 收录手册的 Markdown 变化 | 按[维护验证范围](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)及[阅读版构建](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)处理相应手册。命令、环境与审批读取现有说明及根规则，不复制机器路径，不手改 HTML。 |
 
@@ -31,6 +31,6 @@ description: 维护 Yaya 框架集中提示词库中的具体 Project、分类�
 
 按[提示词与场景路径检查](../../../framework/README.md#提示词与场景路径检查)运行现有配对工具；它只核对名称与文件路径，不检查正文 H1、语义、授权、图文件或实际执行。所需正式指令审核由审核入口承担，其他验证按上述维护规范选取；维护自查不冒充独立审核，区分已读范围、实际执行和未验证部分。
 
-场景图变化按其[依据与检查](../../../framework/docs/workflow-maps/README.md#依据与检查)及[现有图工具](../../../framework/commands/README.md)核对两图名称集合、ID、端点、关系与可读版文件链接。名称检查和链接检查不证明完整图格式或连线语义正确；手册构建也不能替代图文件检查或查看器中的布局体验。不为此新增校验脚本或运行依赖。
+场景图变化按其[依据与检查](../../../framework/docs/workflow-maps/README.md#依据与检查)及[现有图工具](../../../framework/commands/README.md)核对名称集合、ID、端点、关系与场景文件链接。名称检查和链接检查不证明完整图格式或连线语义正确；手册构建也不能替代图文件检查或查看器中的布局体验。不为此新增校验脚本或运行依赖。
 
 交付本次变更与联动文件、实际检查结果及尚未完成项。获准实施按根仓库规则提交；明确暂停或特定提交条件保持本次边界。尚有已授权工作时返回原任务继续，不因提示词或某项派生输出完成而提前结束。

@@ -9,6 +9,11 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+[framework/docs/workflow-maps/game-development-workflow.readable.json]
+indent_style = space
+indent_size = 2
+insert_final_newline = false
+
 [*.{gd,gdshader}]
 indent_style = tab
 indent_size = 4
