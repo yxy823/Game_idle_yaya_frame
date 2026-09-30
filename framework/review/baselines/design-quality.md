@@ -15,7 +15,7 @@
 | 维护源 | 根 AGENTS 约束维护；`framework/` 保存复制工具、提示词和按需复盘材料 |
 | 项目创建 | [create_project.py](../../commands/create_project.py) 读取 [project-files.json](../../project-files.json)，检查目标后复制并建立 Git 仓库与本地初始提交；不渲染、配置环境或运行测试 |
 | 项目使用 | 项目独立维护其文件；`Project_AGENTS.md` 在复制时改名，维护规则与项目规则分开 |
-| Skill 与角色 | 当前 29 项 Skill，术语维护与本地化规格具有独立入口；专业文档由所属入口维护，七类审核方法由 `independent-reviewer` 按需组合。`researcher` 负责外部调研与报告，主 Agent 自主选择搜索或委派，anysearch 保持用户级安装。实际角色加载与权限按客户端验证，资产制作保持待扩展 |
+| Skill 与角色 | [项目 Skill](../../../project-source/skills/) 按职责提供入口，术语维护与本地化规格具有独立入口；专业文档由所属入口维护，七类审核方法由 `independent-reviewer` 按需组合。`researcher` 负责外部调研与报告，主 Agent 自主选择搜索或委派，anysearch 保持用户级安装。实际角色加载与权限按客户端验证，资产制作保持待扩展 |
 | 共享工具 | [tools/README.md](../../../project-source/tools/README.md)：`checks/` 两个检查入口；`testing/` 测试入口与三个 Godot 脚本；`lib/` 保存共享实现模块 |
 | 检查方式 | 显式调用成果检查；没有 Agent 的 PreToolUse、PostToolUse、Stop 注册或 `hooks/` 目录 |
 | 测试选择 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 直接读取当前 Feature/测试登记表，测试身份从逻辑 ID 推导，full 固定递归选择 `tests/`；没有独立计划命令、计划文件或计划哈希 |
