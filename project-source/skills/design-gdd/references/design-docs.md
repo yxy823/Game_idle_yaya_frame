@@ -4,9 +4,9 @@ Use this reference when creating a GDD entry or topic, revising organization or 
 
 ## Use a navigable structure
 
-For a new GDD, default to a short entry with linked topic documents under `docs/gdd/`. The entry introduces the game and current scope; topics hold the actual rules, their decisions and relevant unknowns. Group related content where readers need it together. Create more levels only when real content warrants them.
+For a new GDD, use a short entry with linked topic documents under `docs/gdd/`, including the fixed **Design scope and boundaries** subdocument defined in `methodology/01-product-doc-structure.md`. The entry introduces the game and reading path; topics hold the actual rules, their decisions and relevant unknowns. Group related content where readers need it together. Create more levels only when real content warrants them.
 
-Preserve an existing effective structure and filenames, including a single GDD file. A local change updates its owning section and affected references; it does not require migrating the GDD, creating a new entry or saving a separate copy. Reorganization follows the actual request or a concrete navigation problem, within the existing authorization.
+Preserve effective existing structure outside the affected scope, including a single file for other topics. Establishing the fixed scope subdocument follows its contract above; a local change does not require reorganizing unrelated design or saving a separate copy. Reorganization follows the actual request or a concrete navigation problem, within the existing authorization.
 
 Use the project's current naming convention and configured `document_language`. Do not impose numbered files, a fixed topic count, a version-number scheme or role/owner fields. Follow existing useful conventions when present.
 
@@ -19,10 +19,10 @@ docs/gdd/
   gameplay.md
   progression.md
   presentation.md
-  scope-and-validation.md
+  design-scope-and-boundaries.md
 ```
 
-This is an example, not a template to instantiate in full. A small initial draft may combine most design in one topic linked from the entry. A complex economy can have its own topic or subdirectory. Do not create empty topics or duplicate decision histories to match the example.
+Only the scope subdocument has a fixed path; the other filenames illustrate a possible structure. A small initial draft may combine other design in one topic linked from the entry. A complex economy can have its own topic or subdirectory. Do not create empty topics or duplicate decision histories to match the example.
 
 ## Give each rule one owner
 

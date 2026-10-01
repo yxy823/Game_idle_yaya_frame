@@ -8,7 +8,7 @@ The repository uses these rule boundaries:
 
 ```text
 docs/project-rules.md
-  project-wide constraints, collaboration and general design principles
+  project-wide development constraints, collaboration and engineering principles
 
 AGENTS.md
   root project router and repository execution instructions
@@ -24,11 +24,11 @@ agent-rules/<specialized module>/
 
 ## `docs/project-rules.md`
 
-The generated Project Rules document is the project-level rule entry for every Product, Feature, design and implementation. It separates mandatory constraints from recommendations and review conditions using the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings. An ADR, Product or Feature design does not by itself grant an exception. Follow the Core conflict protocol and external instruction precedence rather than inventing a new total ordering of all documents.
+The generated Project Rules document is the project-level engineering rule entry for every applicable Product, Feature, design and implementation. It separates mandatory constraints from recommendations and review conditions using the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings. An ADR, Product or Feature design does not by itself grant an exception. Follow the Core conflict protocol and external instruction precedence rather than inventing a new total ordering of all documents.
 
 It is the stable home for:
 
-- confirmed long-lived constraints that span Products/Features, including product boundaries and architecture invariants;
+- confirmed development constraints that span Products/Features, including dependency restrictions and architecture invariants;
 - collaboration expectations and human-control boundaries;
 - stack-independent workflow constraints;
 - general architecture, dependency, state, data, error-handling, and performance principles;
@@ -36,13 +36,13 @@ It is the stable home for:
 
 It must not copy the current Environment Bootstrap status, executable paths, tool versions, or concrete Godot/GDScript rules. Those facts belong to the authoritative configuration or routed rule documents.
 
-Keep enough scope and rationale to apply each project constraint. Domain terms belong in `docs/terminology.md`; game-design behavior belongs in `docs/gdd/`; delivery boundaries belong in Product; current structure belongs in architecture documentation; costly technical tradeoffs belong in ADRs when warranted. Do not turn local Feature choices into global restrictions or prefill a blank project with unconfirmed offline, platform or save-compatibility promises.
+Keep enough scope and rationale to apply each engineering constraint. Game-design scope, exclusions and version boundaries belong in GDD's [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries), even when long-lived or shared across systems; refer to that owner instead of keeping a second body here. Domain terms belong in `docs/terminology.md`; local game rules belong in their GDD topics; delivery boundaries belong in Product; current structure belongs in architecture documentation; costly technical tradeoffs belong in ADRs when warranted. Do not turn local Feature choices into global restrictions or prefill a blank project with unconfirmed technical promises.
 
 ## Rule loading
 
 An agent loads the applicable rules in this order:
 
-1. Read the root `AGENTS.md` and identify the affected domains. Read applicable `docs/project-rules.md` constraints before defining Product intent, decomposing Features or choosing an implementation. Reuse unchanged reading; status-only questions need not load every engineering rule.
+1. Read the root `AGENTS.md` and identify the affected domains. Read applicable `docs/project-rules.md` engineering constraints before defining Product intent, decomposing Features or choosing an implementation. For work involving game design or its delivery, also follow [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries). Reuse unchanged reading; status-only questions need not load every engineering rule.
 2. Use `agent-rules/00-core/README.md` to select the concrete documents and sections relevant to the current decision or change.
 3. Read each affected specialized module README and follow its topic conditions. Load applicable sections, not every document in the module. A module's `validation.md` is applied whenever that module is affected.
 4. Apply the core precedence protocol. A specialized rule may refine behavior inside its delegated scope, but may not silently weaken a core invariant.

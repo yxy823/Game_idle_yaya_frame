@@ -10,7 +10,7 @@ Apply `methodology/12-independent-review.md` in a fresh reviewer instance. Fix t
 - Change review: establish the comparison baseline and inspect the combined final diff, relevant Feature/AC when present, affected callers and original verification.
 - Current-state audit: inspect the selected module, files or commit snapshot and direct callers. Use existing relevant requirements and evidence; do not require a diff or invent a Feature, AC or historical baseline. Follow the Audit route in `methodology/00-overview.md` without starting Feature delivery.
 
-Apply the existing-GDD prerequisite before either scope. Read applicable GDD, Product delivery and professional sources, terminology and accepted ADRs/rules. Missing requirements or verification limit the corresponding conclusions; they do not prevent supported code-quality findings.
+Apply the existing-GDD prerequisite before either scope. For game-behavior review, apply **Design scope and boundaries** in `methodology/01-product-doc-structure.md` with the relevant GDD topics. Read applicable Product delivery and professional sources, terminology and accepted engineering ADRs/rules. Missing requirements or verification limit the corresponding conclusions; they do not prevent supported code-quality findings.
 
 Answer two separate questions in one scoped pass:
 - Requirements: does the result satisfy available approved requirements and AC, preserve required behavior and stay within authorization? Do available tests and human observations actually prove the claims on this snapshot? State what cannot be assessed when those sources are missing.

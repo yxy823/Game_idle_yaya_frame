@@ -18,7 +18,7 @@ Use the artifact schemas, Product order and evolution invariants in `methodology
 
 Git change preservation, task continuation in the target checkout and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
 
-Read applicable `docs/project-rules.md` constraints and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the rule source: proposed rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
+Read applicable **Design scope and boundaries** in `methodology/01-product-doc-structure.md`, engineering constraints in `docs/project-rules.md` and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the governing source: game-design boundaries return to `design-gdd`, while engineering-rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
 
 ## Ledger structure
 

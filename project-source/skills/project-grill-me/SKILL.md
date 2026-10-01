@@ -17,7 +17,7 @@ Apply this method to the user's current discussion goal, including its remaining
 
 ### Establish facts and group the current questions
 
-Read the supplied idea or relevant GDD topics, any applicable Product delivery scope, project constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal.
+Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow the scope contract for reading and persistence rather than inventing exclusions.
 
 For a discussion with several material choices, start with a brief overview of what is settled, which questions are currently known and which depend on earlier answers. This is the current picture, not a promised final question count or an exhaustive design tree. A single clear gap needs no extra overview.
 
@@ -57,7 +57,7 @@ Game-design discussion needs neither a ready Godot environment nor a detailed Pr
 
 ## Finish in the right place
 
-For discussion only, return the conclusion, its important reason and any remaining decision in ordinary prose. No document or planning handoff is needed.
+For discussion only, return the conclusion, its important reason and any remaining decision in ordinary prose. Identify useful confirmed conclusions that remain unsaved so they are not mistaken for project source content. Do not create a document or planning handoff merely to close the discussion.
 
 When the current request already authorizes subsequent work, return settled answers, relevant sources and remaining uncertainty to its coordinator so that work continues. Use `design-gdd` for initial game design and GDD rule changes, `design-balance` for numeric design within its boundary, `product-author` for Product delivery scope, `project-terminology` for meaning-preserving definitions, or the appropriate entry in `methodology/00-overview.md` for other work. The destination owns durable writing and its completion rules; do not ask again merely because the Skill changes. Technical structure and decision records follow `methodology/10-architecture-overview.md` within that work's authorization. Do not manufacture Product, Features or ADRs to conclude a conversation.
 

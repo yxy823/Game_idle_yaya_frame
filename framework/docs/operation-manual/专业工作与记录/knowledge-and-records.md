@@ -15,14 +15,14 @@
 | `docs/features/F0XX-design.md` | 需要较长解释的局部设计：职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
 | `docs/architecture.md` | 当前结构的模块位置、状态所有者、依赖和阅读入口；不枚举全仓文件或复制历史设计 |
 | `docs/architecture/` | 需要展开的子系统、重要 ADR；从架构总览导航 |
-| `docs/project-rules.md` | 项目长期适用约束；强度区分 MUST / PREFER / REVIEW |
+| `docs/project-rules.md` | 开发约束、协作与工程原则；强度区分 MUST / PREFER / REVIEW，游戏设计边界归 GDD |
 | Feature notes | 该任务局部决定、真实根因、链接与有价值的过程信息 |
 | `docs/knowledge/` | 可复用的项目实践及适用条件；不是规则或需求的替代正文 |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项；不是项目已经实测的经验 |
 | `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值主题与计算说明；两者引用同一份实际规则，不在报告或 Product 中维护副本。新建默认采用总览与主题文档，已有单文件或分层结构按需维护。草案、采用决定和实际验证状态分开表述。
+GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值主题与计算说明；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。
 
 术语由 `project-terminology` 维护；只有实质歧义才使用共用提问方法。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源；缺失决定按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)判断哪些后续工作依赖它。
 
@@ -67,7 +67,7 @@ ADR 使用 `docs/architecture/adr-NNNN-<slug>.md`，同时考虑：
 ## 项目规则与领域规则
 
 - **根 AGENTS：** 规则入口。
-- **`docs/project-rules.md`：** 项目约束。
+- **`docs/project-rules.md`：** 开发约束、协作与工程原则；需要游戏设计边界时引用 GDD 所属正文。
 - **`agent-rules/`：** 按领域提供工程语义。
 - **`methodology/`：** 流程和验证。
 

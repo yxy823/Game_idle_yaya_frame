@@ -720,7 +720,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：项目约束和按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n它们约束适用设计和实施；详细流程与模板归 methodology，具体方法归项目 Skill。",
+      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1021,7 +1021,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始只有目录说明，真实主题正文由设计工作产生。\n是交付和专业设计的来源；已在 GDD 写清的细节直接引用。界面和一次表现按实际用途链接。",
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始只有目录说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

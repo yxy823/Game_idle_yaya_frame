@@ -37,7 +37,7 @@ The project knowledge layer is:
     ├── feature-list-revisions.json      governing-source synchronization history
     ├── test-registry.json               component/test traceability and safety-net index
     ├── feature-completion-evidence.json current-snapshot Feature completion evidence
-    ├── project-rules.md                 project constraints, collaboration and design principles
+    ├── project-rules.md                 development constraints, collaboration and engineering principles
     ├── progress.md                      current state, blockers, decisions, next action and history index
     ├── progress/                        one historical body per Feature or approved batch
     ├── architecture.md                  optional human-owned module/dependency overview

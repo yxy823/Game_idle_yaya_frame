@@ -22,7 +22,7 @@ Apply the shared method's continuation and progress rules to the remaining desig
 
 ## Keep the current design coherent
 
-When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Keep candidates and unresolved alternatives labeled. Preserve the current document structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed.
+When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Overall scope and exclusions follow **Design scope and boundaries** in `methodology/01-product-doc-structure.md`; local rules stay in their topics. Keep candidates and unresolved alternatives labeled. Preserve unrelated structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed. In discussion-only work, identify useful confirmed conclusions that remain unsaved when wrapping up.
 
 Record the reason for a consequential design choice beside the relevant design. Do not create a separate decision, question or version ledger just to document the conversation. Settled terminology and resumption records use the existing conditional routes in the Skill entry.
 

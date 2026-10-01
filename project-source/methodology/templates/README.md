@@ -26,7 +26,7 @@ Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep b
 | `feature-completion-evidence.json.tmpl` | Current-Feature test and applicable human-acceptance evidence, with Git revision and working-tree fingerprint; no review counts. |
 | `manual-acceptance-checklist.json.tmpl` | Pending manual checks expanded from one Feature; preparation and returned results follow [the file contract](../manual-acceptance-files.md). |
 | `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
-| `project-rules.md.tmpl` | Project-wide constraints, collaboration and design defaults, with rule strengths, incremental maintenance and links to specialized rules. Copied directly to `docs/project-rules.md`; no game-specific constraints are invented. |
+| `project-rules.md.tmpl` | Development constraints, collaboration and engineering defaults, with rule strengths, incremental maintenance and links to specialized rules. Copied directly to `docs/project-rules.md`; game-design boundaries remain in GDD. |
 | `feature-learning-summary.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |
 | `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps and relevant subsystem runtime flows, separate from generated reference facts. |
 | `architecture-decision-record.md.tmpl` | Optional rationale for one important technical choice; Feature notes and architecture maps link it without copying its body. |

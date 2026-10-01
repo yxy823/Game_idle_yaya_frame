@@ -15,9 +15,10 @@
 | `.agents/skills/` / `.codex/agents/` | 专项方法 / researcher、independent-reviewer 角色配置 | 主 Agent 按任务选用；角色文件不证明宿主已加载 |
 | `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
 | `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
+| `docs/gdd/design-scope-and-boundaries.md` | GDD《设计范围与边界》：整体范围、排除项和版本边界；局部限制引用所属主题 | `design-gdd` 在实际保存设计时建立和维护；讨论、规划、实现与审核按需读取 |
 | `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
-| `docs/project-rules.md` | 项目级 MUST、PREFER、REVIEW 约束 | 已获准规则维护；所有相关工作读取 |
+| `docs/project-rules.md` | 项目开发约束、协作与工程原则，强度区分 MUST、PREFER、REVIEW | 已获准工程规则维护；受其影响的工作读取 |
 | `docs/game-organization.md` | 逻辑与表现职责、文档关系、业务模块与代码组织和命名判断 | 项目设计及结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；已由 GDD 定义的细节直接引用 |

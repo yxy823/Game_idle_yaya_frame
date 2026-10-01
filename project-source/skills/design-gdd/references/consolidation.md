@@ -12,7 +12,7 @@ A small comparison in the conversation or affected topic is sufficient when need
 
 ## Consolidate without losing design
 
-Use [Design document structure](design-docs.md) for the output. Preserve an effective existing structure unless reorganization is part of the authorized result. Creating a new GDD defaults to a short entry with theme documents; an existing single-file GDD does not require another copy or automatic conversion.
+Use [Design document structure](design-docs.md) for the output, including its fixed scope subdocument contract. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated existing structure. A single-file GDD does not require another copy or conversion of all its topics.
 
 Give each retained rule an owning location. Preserve its exceptions, assumptions, numeric meaning, decision state and useful evidence even when the surrounding wording is compressed. Resolve terminology that would otherwise change interpretation, using the existing terminology route where a durable domain definition is needed.
 

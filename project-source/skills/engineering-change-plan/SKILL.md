@@ -14,7 +14,7 @@ Apply the existing-GDD prerequisite in methodology 01 before project engineering
 
 ## Triage and proposal
 
-Read applicable `docs/project-rules.md`, routed engineering rules and relevant existing Feature designs/architecture decisions. Proposed rule changes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`; a technical repair does not silently revise project constraints.
+Read applicable `docs/project-rules.md`, routed engineering rules and relevant existing Feature designs/architecture decisions. When investigating or changing game behavior, also apply **Design scope and boundaries** in `methodology/01-product-doc-structure.md` and the relevant GDD/professional sources. Proposed engineering-rule changes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`; a technical repair does not silently revise engineering constraints or game-design boundaries.
 
 Apply **Feedback assessment** in methodology 07 before treating a report as a change, including when no triage Skill was selected. [feedback-triage-godot](../feedback-triage-godot/SKILL.md) exposes the same checks as a direct entry. When a defect needs causal investigation, use **Causal diagnosis** there through [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md), collecting only evidence needed for this preparation. Reuse completed assessment/diagnosis; missing causal evidence may remain explicit in the initial proposal under the Bug contract.
 

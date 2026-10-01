@@ -9,7 +9,7 @@ description: Clarify Product delivery boundaries, order, dependencies and accept
 
 Use the GDD prerequisite and source ownership in `methodology/01-product-doc-structure.md`. Clarify which actual GDD requirements the Product delivers. Missing or materially unresolved game design returns to `design-gdd` before dependent delivery choices; do not invent it through Product questions.
 
-Read the caller's requested change, relevant GDD topics, applicable Project Rules/architecture decisions, current Product outline or delivery document and affected existing Feature facts. Reuse confirmed answers and `document_language`. Actual implementation describes current behavior, not approved design.
+Read the caller's requested change, applicable **Design scope and boundaries** under `methodology/01-product-doc-structure.md`, relevant GDD topics, engineering constraints in Project Rules/architecture decisions, current Product outline or delivery document and affected existing Feature facts. Reuse confirmed answers and `document_language`. Actual implementation describes current behavior, not approved design.
 
 Use the [shared questioning method](../project-grill-me/SKILL.md#shared-questioning-method) for missing material decisions. Do not start another interview when supplied sources and authorization already settle the change. This Skill only returns proposals to `product-author`; it does not write GDD, Product or plan files.
 

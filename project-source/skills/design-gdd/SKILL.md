@@ -11,9 +11,9 @@ Turn an idea, an ongoing design conversation or existing material into useful ga
 
 Use `methodology/01-product-doc-structure.md` for GDD authority and its relationship to delivery. This Skill may begin from an idea without an existing GDD, Product or Feature. Own positioning, intended experience, core loops, rules and system relationships, content progression, game-version scope and corresponding design requirements in `docs/gdd/`.
 
-Read the relevant existing design and concrete user decisions before changing them. For a layered GDD, follow its entry to the affected topics and necessary dependencies. Check applicable project constraints when they affect a proposed design. Reuse clear requirements; ask only about a material unresolved choice. A direct drafting request does not require an interview, and a discussion-only request does not authorize file writes.
+Read the relevant existing design and concrete user decisions before changing them. Follow **Design scope and boundaries** in `methodology/01-product-doc-structure.md`, then the affected topics and necessary dependencies. Check applicable engineering constraints in Project Rules when they affect the proposed design. Reuse clear requirements; ask only about a material unresolved choice. A direct drafting request does not require an interview, and a discussion-only request does not authorize file writes.
 
-New GDDs default to a short entry plus topic documents. Preserve an existing effective structure, including a single document; a local edit does not require restructuring or saving a separate copy. Write durable content in the configured `document_language` under `methodology/05-document-language.md`. Follow the project's existing directory and naming conventions.
+New GDDs use a short entry linking the fixed scope subdocument and other useful topics under the contract above. Preserve effective existing organization outside the affected scope; a local edit does not require restructuring unrelated design or saving a separate copy. Write durable content in the configured `document_language` under `methodology/05-document-language.md`; retain the scope document's fixed path and follow existing naming conventions elsewhere.
 
 Keep candidate proposals, adopted decisions and verification evidence distinguishable in the relevant prose. Saving a draft does not adopt its proposals or silently replace an adopted rule; adoption does not establish that the game is balanced, understandable or enjoyable. Mark a useful working assumption and its consequence instead of inventing missing facts.
 
@@ -35,6 +35,8 @@ Describe each affected mechanism through its purpose, trigger, input, state, res
 
 Keep one owning location for each rule. Update the affected text and references when a decision changes, rather than leaving a contradictory rule and appending a correction. Sources can inform different claims: observed implementation is evidence of current behavior, not automatic authority over adopted design. An unresolved conflict retains its sources and impact while independent work continues.
 
+During authorized drafting or scope revision, maintain `docs/gdd/design-scope-and-boundaries.md` and its entry link as useful scope decisions settle, following the owning contract above. Local mechanism and presentation limits stay with their topics. Saving an already confirmed game-design boundary uses the current GDD writing authority; it does not require a separate Project Rules task.
+
 Choose supporting capabilities by the actual task:
 
 - Record ordinary specifications and existing values directly. Formula derivation, parameter models, economy or growth curves and tuning use [design-balance](../design-balance/SKILL.md). Pass the relevant goals, draft rules and existing authorization; a complete GDD is not a prerequisite for early numeric exploration.
@@ -49,6 +51,6 @@ Game code, runtime resources and prototype or asset production are outside this 
 
 ## Finish the requested result
 
-For discussion, return the useful conclusions and remaining material choices. For authorized writing, deliver the actual GDD entry or changed topics, with the important changes, assumptions and relevant unresolved questions. Check current-scope rule consistency, terminology, numeric references and links; consolidation also accounts for the retained content and unresolved source conflicts.
+For discussion, return the useful conclusions and remaining material choices, identifying useful confirmed conclusions that remain unsaved. For authorized writing, deliver the actual GDD entry or changed topics, including the scope document when affected, with important changes, assumptions and relevant unresolved questions. Check current-scope boundaries, rule consistency, terminology, numeric references and links; consolidation also accounts for retained content and unresolved source conflicts.
 
 A draft may finish with explicit unknowns when it meets the requested purpose. Identify which unknowns block the proposed next use and which can wait. Report calculations, static reasoning, actual execution and human feedback only as far as the evidence supports them. Follow the current task's Git and completion rules; reaching a reference's end does not cancel remaining authorized work.
