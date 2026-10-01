@@ -9,8 +9,8 @@
 - **直接表达与阅读顺序：** 开头先回答用户最关心的问题。分析、评估和建议类回答先给主要结论、优先建议及影响判断的必要边界，再展开理由；主要要求查找问题时先呈现关键发现，单纯解释概念时不强造建议或下一步。用日常用语讲清具体问题、改法和结果，必要术语就地解释；删除客套、绕句、空泛鼓励和无用比喻。
 - **同题就近讲完整：** 同一主题的建议、必要理由和适用边界放在一起，不拆散到“优点、缺点、建议、另外”等位置让读者自行拼接。确需跨节提及时，用短提醒或明确引用，不重复完整论述。
 - **主要判断与支撑细节：** 不影响当前判断的实现细节、背景和补充案例后置；会改变建议的重要风险、前提和不确定性就近说明或前置，不为简洁隐藏。保留必要证据和来源，用户要求详细解释时充分展开。
-- **按内容组织：** 简单问题直接回答，不为凑结构增加章节；长回复用能直接说明主题的标题，每个段落或条目围绕一个主要问题。操作流程用编号步骤，每步写清执行者和一个可判断完成的动作；短比较用表格，多项内容按主题或用途分组。评估、解释类回答不必逐段套用“执行者、动作、完成标准”，不以固定字数、段落数或条目数代替可读性判断。
-- **用场景说明关系：** 解释多文档、多职责或跨阶段关系时，优先用贴近当前任务的具体场景串起需求、设计、实现与验收；需要比较时使用简短表格，再补充抽象分工。只在有助于理解当前关系时使用，不强制每次套用。
+- **按内容组织：** 简单问题直接回答，不为凑结构增加章节；长回复用能直接说明主题的标题，每个段落或条目围绕一个主要问题。操作流程用编号步骤，每步写清执行者和一个可判断完成的动作；需要按相同维度对照对象或方案时，可使用表格；多项内容按主题或用途分组。向用户提问时，遵循个人沟通规则及当前 Skill 的具体提问要求。评估、解释类回答不必逐段套用“执行者、动作、完成标准”，不以固定字数、段落数或条目数代替可读性判断。
+- **用场景说明关系：** 解释多文档、多职责或跨阶段关系时，优先用贴近当前任务的具体场景串起需求、设计、实现与验收，再补充抽象分工。只在有助于理解当前关系时使用，不强制每次套用。
 - **有用重复与无效复述：** 保留帮助记住优先项、恢复上下文或避免遗漏的简短重复，以及已有的默认高频提示机制；只删没有新增作用的复述，不因出现频繁就删除。
 - **状态与交付：** 多轮工作有进展时说明已完成、仍受阻和下一步，不编造总步骤数。完成后先给可用成果、文件入口和实际验证结果。只有需要用户行动时，结尾给一个能立即开始的具体动作；工作已结束不另造下一步。
 - **错误与估算：** 客观说明错误位置、已知原因和修复或排查办法，分清事实、推测与未知。同样的失败不盲目重试，先核对关键假设，有新证据再试。耗时估算有依据时用分钟、小时等单位或范围，写明影响估算的条件。
@@ -55,6 +55,8 @@ Read relevant terminology definitions, available GDD, Product/professional sourc
 
 Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires confirmed environment preparation based on actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
 
+启动 Godot 编辑器检查（包括 `--headless --editor`）前，读取并遵循[编辑器检查约定](agent-rules/00-core/validation-policy.md#windows-editor-checks)。
+
 Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve actual differences and unrelated staging state, continue from current records in the task's target checkout, and commit each self-contained logical change as soon as its applicable validation passes, with the applicable Feature identity. Do not wait until the whole complex task ends. Non-empty Git status alone does not block a task; actual overlapping edits or an inseparable commit require resolving the concrete conflict. User-defined no-commit and commit-permission conditions retain their stated scope across continuation. Implementation approval, actual human acceptance and any separately required commit permission remain distinct; automated results cannot supply a missing human decision.
 
 ## Project knowledge and rule feedback
@@ -89,11 +91,3 @@ For modifications or relevant engineering decisions, use `agent-rules/00-core/RE
 If no dedicated module applies, use relevant Core rules and project conventions; consult adjacent rules only where their semantics overlap. Verify target Godot semantics when the change involves version-sensitive engine behavior, not for ordinary Markdown or unrelated artifact work. Do not expand the rule system as an incidental implementation task.
 
 Scope, minimal complete changes and preservation follow `agent-rules/00-core/change-scope-and-ownership.md`; vendor/generated ownership follows `third-party-generated-and-temporary-files.md` in that directory. Validation and truthful completion reporting follow `validation-policy.md` and `completion-and-reporting.md` there. Preserve authoritative state, API, ownership and lifecycle boundaries; test/debug tooling must not become an arbitrary reflection or property-mutation backdoor.
-
-## 本机 Godot 编辑器检查
-
-以下约束只适用于本机 Windows / Codex 受限沙箱中的 Godot 编辑器检查；其他机器先核对真实权限与目录行为。它们不要求每个 Feature 额外启动编辑器。
-
-启动编辑器检查（包括 `--headless --editor`）时，直接通过 `require_escalated` 审批路径在沙箱外运行；审批未通过或不可用时报告未执行或受阻，不绕过审批。
-
-启动前先读取[本机编辑器检查细则](agent-rules/00-core/validation-policy.md#windows-editor-checks)；检查前后的目录核对及权限异常处理按该节执行。

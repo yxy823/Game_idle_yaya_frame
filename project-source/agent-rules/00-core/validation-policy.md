@@ -31,7 +31,9 @@ Defines evidence rules shared by all specialized validation modules.
 
 ## Windows editor checks
 
-本节适用于项目根 `AGENTS.md` 中“本机 Godot 编辑器检查”所限定的环境；权限与审批要求遵循该入口。
+以下约束只适用于本机 Windows / Codex 受限沙箱中的 Godot 编辑器检查；其他机器先核对真实权限与目录行为。它们不要求每个 Feature 额外启动编辑器。
+
+启动编辑器检查（包括 `--headless --editor`）时，直接通过 `require_escalated` 审批路径在沙箱外运行；审批未通过或不可用时报告未执行或受阻，不绕过审批。
 
 | 触发条件 | 必须执行 |
 | --- | --- |
