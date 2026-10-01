@@ -13,13 +13,16 @@ Start from the confirmed expected behavior, actual symptom, relevant implementat
 
 Apply the canonical diagnosis method to obtain a useful reproduction, distinguish plausible causes and explain the causal chain. Investigation can use existing logs and source reasoning before a runnable reproduction is available. Runtime evidence, diagnostic edits and test runs must fit the current task's authorized scope and project verification rules; a read-only request does not authorize them.
 
-Use a specialist only when its evidence answers the current question:
+Use the relevant method only when its evidence answers the current question:
 
 | Evidence needed | Method |
 | --- | --- |
 | Missing signals about a transition, object owner or repeated operation | [diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md) |
 | Comparable timing, memory or workload measurements | [diagnostics-performance](../diagnostics-performance/SKILL.md) |
 | Accumulation or stability during sustained/repeated execution | [diagnostics-soak-test](../diagnostics-soak-test/SKILL.md) |
+| Evidence points to Shader loading, material/parameter binding, visual data flow or rendering cost | [Shader diagnostics](references/shader-diagnostics.md), a directly readable technical reference rather than another Skill workflow |
+
+The same diagnosis can trace rule results, state, feedback and their connections under the canonical method. Neither a visual symptom nor reading a Shader reference requires the user to classify the defect's layer, split its record or grant further execution authority.
 
 ## Return the diagnosis to the owning task
 

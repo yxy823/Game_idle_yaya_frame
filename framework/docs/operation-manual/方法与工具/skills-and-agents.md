@@ -6,6 +6,16 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 [游戏逻辑与表现](../框架基础/game-logic-and-presentation.md)用于理解功能范围，Skill 仍按当前工作选择：规则与体验目标由设计入口处理，一次表现由 `design-game-presentation` 细化，获准开发由原 Feature 承接。跨层功能可以由同一任务完成，不要求分别委派逻辑和表现 Agent；环境、测试与构建方法作为共同工程支持使用。
 
+工程规则、可复用方法和当前游戏方案各自承担不同职责。以 Shader 为例：
+
+| 内容 | 保存位置与用途 |
+| --- | --- |
+| 工程约束 | [Shader 规则](../../../../project-source/agent-rules/30-shaders/README.md)维护语言、坐标、材质参数和真实验证等适用要求，按既有 MUST、PREFER、REVIEW 区分强度 |
+| 可复用方法 | [实现方法参考](../../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流与算法选择；[诊断参考](../../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能辨别原因的检查，按当前问题读取 |
+| 当前游戏方案与证据 | 表现目标和采用方案保存在所属游戏表现文档；已有 Feature 需要详细工程设计时使用其设计稿，原型、诊断与验证证据沿用原任务记录，具体归属见[知识、设计与记录](../专业工作与记录/knowledge-and-records.md) |
+
+Shader 规则入口同时导航这些可选方法。正式实现、限定原型或排错任务都可以直接阅读相关参考；文件位于某个 Skill 的 `references/` 中，不表示需要启动该 Skill 的完整流程、创建 Feature 或委派顾问。方法不改变当前任务的授权与完成条件，具体效果数值也不因此成为通用规则。
+
 ## Skill 职责速查
 
 以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。
@@ -67,7 +77,7 @@ Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达�
 
 [design-balance](../../../../project-source/skills/design-balance/SKILL.md) 从已知目标与规则推导数值方案，也可以针对既有模型调整参数；它在写入授权内直接维护所属 GDD 数值正文，不要求另一 Skill 代为保存。参数采用、文件写入和验证状态分别记录，新增玩法或体验目标变化回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，使用 `review-balance` 独立审核；设计者的计算自查不能称为独立审核。普通尺寸或数量记录不自动触发专项建模。
 
-收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
+收到反馈、尚不清楚是否要改时，使用 [feedback-triage-godot](../../../../project-source/skills/feedback-triage-godot/SKILL.md) 核对类别与归属；已经有具体异常、需要查原因时，使用 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md)。用户描述实际症状即可，Agent 随证据追查逻辑、表现及其连接，不要求用户先选层，也不因跨层自动拆成多个 Bug。它们不新增工单状态，也不改变交付前后 Bug 的归属。只调查就交付证据与结论；已有具体修复授权则返回原任务继续，不因方法结束重新索取同一批准。
 
 环境准备、限定检查、人工验收和证据处理这四个入口可以在不同工作环节按需调用，也可以承接直接提出的限定任务，不是新增的固定阶段。例如，只要求跑现有测试时，有无 Feature 都按该检查的实际范围执行；登记人工验收时，则必须对应实际 Feature 与用户结果。工具可用、检查通过、用户接受和证据仍适用是不同事实，不能相互替代，也不因调用其中一个入口就扩展为整套交付。具体选择由[任务路由](../../../../project-source/methodology/00-overview.md#canonical-task-routing)统一维护，各 Skill 按需引用原有配置、测试、验收与证据规范，不复制第二套正文。
 

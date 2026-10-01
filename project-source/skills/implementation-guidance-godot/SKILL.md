@@ -9,6 +9,8 @@ Use this method when implementation guidance is needed for an existing Feature. 
 
 Paths in code spans are relative to the target project root. Read **Feature design and implementation notes (optional)** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links, proposal/approval lifecycle and sole durable location. Read **Implementing with prepared guidance** in `methodology/04-coding-rules-4-layers.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
 
+When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md). That technical reference is also directly usable by authorized development or prototype tasks; reading it does not start this Feature-only guidance workflow or request an advisor.
+
 ## Choose who prepares the guidance
 
 The main Agent may use this method itself. Delegate only when the current task prompt or still-valid session authorization explicitly requests an implementation advisor. Loading this Skill, a complex Feature or a request for detailed guidance does not by itself request delegation. Otherwise the main Agent prepares the needed design through the existing Feature workflow.

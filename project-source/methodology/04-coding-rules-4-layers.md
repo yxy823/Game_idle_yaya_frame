@@ -60,11 +60,13 @@ The main Agent handles ordinary implementation choices within the approved desig
 
 ## Stack-independent architecture
 
+Use the logic/presentation responsibility model and document relationships in `docs/game-organization.md` to interpret the game's organization; the model does not prescribe physical directories or a communication mechanism.
+
 The following principles belong in `docs/project-rules.md` because they do not depend on a particular engine or programming language:
 
-- separate data and presentation, with explicit events or read-only state;
+- distinguish ownership of game rules and business state from presentation and its local display state, choosing communication mechanisms to fit the actual collaboration;
 - make meaningful state transitions explicit with a model appropriate to their complexity;
-- keep data/rules, orchestration/control, and presentation/input boundaries understandable;
+- keep gameplay orchestration within logic responsibilities and feedback sequencing within presentation responsibilities, and explain their actual assembly and connections without requiring a separate control layer;
 - prefer composition and explicit dependency passing over hidden global access;
 - drive adjustable behavior from data or focused configuration;
 - keep core rules as independent and testable as the project allows;

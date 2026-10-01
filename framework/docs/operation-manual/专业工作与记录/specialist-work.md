@@ -88,6 +88,12 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件和待�
 
 ## 测量与实现
 
+具体异常统一由 [bug-diagnosis-godot](../../../../project-source/skills/bug-diagnosis-godot/SKILL.md) 按[因果诊断](../../../../project-source/methodology/07-engineering-change.md#causal-diagnosis)处理，先看症状、预期和证据，再选择所需的专业方法。用户不必先判断它属于逻辑、表现还是两者的连接。
+
+例如，已确认“角色受击后闪红”，实际生命值正确减少却没有闪红。扣血正确只说明这部分状态变化符合预期；Agent 仍需检查受击结果是否到达反馈控制、播放是否被打断，以及材质和参数是否接到了正确对象。证据指向 Shader 数据流时，才按需使用[Shader 诊断参考](../../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能仅因画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
+
+修复仍由原任务承接。涉及算法选择时可直接查阅[Shader 实现方法](../../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)，同时遵守[Shader 工程规则](../../../../project-source/agent-rules/30-shaders/README.md)；读取参考不启动新的指导任务或增加写入授权。表现要求、采用方案或文档记录的实际文件与接入关系发生变化时，同步所属设计；诊断与验证结果沿用原任务的证据位置。
+
 - `diagnostics-instrumentation` 提供有目的、单位和成本边界的日志、计数或时序信号。
 - `diagnostics-performance` 获取可重复负载下的测量和瓶颈依据。
 - `diagnostics-soak-test` 获取明确时长与停止条件下的趋势和失败。
