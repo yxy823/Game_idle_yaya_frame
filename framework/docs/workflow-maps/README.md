@@ -2,13 +2,13 @@
 
 [文档入口](../README.md) · [场景图](game-development-workflow.readable.json)
 
-本目录只维护 [game-development-workflow.readable.json](game-development-workflow.readable.json)，展示[提示词库](../../prompts.json)中 `Godot 项目开发` 的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../quick-reference/scenario-index.md)。
+本目录的主图为 [game-development-workflow.readable.json](game-development-workflow.readable.json)，展示[提示词库](../../prompts.json)中 `Godot 项目开发` 的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../quick-reference/scenario-index.md)。个人使用次数另存本目录的本地 JSON，不纳入 Git。
 
 图中保存为阅读调整的布局、文字换行、尺寸和连线外观，以及同名场景文件链接和三条替代表达备注。已有名称检查和链接维护命令默认处理此文件；提示词顺序变化不要求重排整图。
 
 ## 阅读与维护
 
-将 JSON 导入支持本页字段的 `graph-map-core` v1 查看器。导入会替换当前画布；有未保存内容时按查看器提示处理。当前 Graph_Map 在支持本地文件保存的 Windows Edge 中关联导入文件，点击“保存”或按 Ctrl+S 写回该文件；“另存为”保存到新位置并切换关联，“导出 JSON”只下载副本。缩放和平移是临时视图状态。
+在当前 Graph_Map 的 Windows Edge 页面中点击“打开图目录”，选择 `D:/A_Games/Game_idle_yaya_frame/framework/docs/workflow-maps`，一并读取主图和对应次数文件；目录中有多张图时再选择图文件。打开会替换当前画布，有未保存内容时按查看器提示处理。点击“保存”或按 Ctrl+S 分别保存有修改的图和次数，单改次数不重写主图；“另存为”将两份文件保存到新目录，成功后切换关联。刷新后需重新打开目录，缩放和平移是临时视图状态。
 
 节点按实际关系安排主线和分支位置，维护时保留已有布局。颜色只辅助辨认分类，不表示任务状态；分类名称不另建节点。
 
@@ -29,9 +29,30 @@
 
 本目录只在框架维护仓库保存，不进入生成项目复制清单，也不建立运行依赖或自动同步。以下格式说明足以支持日常编辑；无需读取外部项目代码。
 
+## 本地使用次数
+
+主图的稳定 UUID `documentId` 关联同目录的 `graph-usage.<documentId>.json`，后者按节点或连线 ID 保存使用次数。修改场景文字、布局或主图文件名时保留图 ID；节点重命名也保留元素 ID。主图不保存 `usageCount`，继续由 Git 追踪结构和内容，次数文件由本仓库 `.gitignore` 单独忽略。
+
+次数文件的完整结构如下，示例 ID 仅演示格式：
+
+```json
+{
+  "format": "graph-map-usage",
+  "version": 1,
+  "documentId": "163c207d-a618-4953-8219-095116dbb0a2",
+  "counts": { "example-create": 3 }
+}
+```
+
+根对象恰好含上述四个字段，`documentId` 与主图一致；`counts` 的键是元素 ID，值是 0–9007199254740991 的非负安全整数。未设置的元素按 0 次显示，显式 0 也有效。次数文件不存在时按全图 0 次打开；格式、权限或图 ID 错误会拒绝打开并保留原会话。不在图中的 ID 不显示，下次保存次数时清理。
+
+使用次数仍通过属性输入或 −1/+1 修改，可撤销并用于搜索和排序。次数独立参与未保存提醒。“导出 JSON”下载主图副本，“导出次数”下载次数副本，均不清除未保存状态。备份或换机器时同时复制主图和对应次数文件；Git 克隆不包含个人计数，需自行迁移。
+
+旧图可用“导入 JSON”打开；首次 Ctrl+S 会先成功保存次数，再移除主图内嵌字段并保存稳定图 ID。已经拆分的图使用“打开图目录”，避免漏读次数。本图的已有次数已迁移，日常只改次数不会产生主图 Git 差异。
+
 ## 文件结构
 
-图文件使用 UTF-8 的严格 JSON，无注释、尾逗号、重复键或非有限数值，根对象恰好包含下列五个字段。
+图文件使用 UTF-8 的严格 JSON，无注释、尾逗号、重复键或非有限数值，当前主图根对象恰好包含下列六个字段。
 
 下文定义根结构、必填字段和图中已使用的可选字段。这些字段属于已核对的查看器契约，不能当成任意元数据。
 
@@ -39,6 +60,7 @@
 | --- | --- |
 | `format` | 固定字符串 `graph-map-core` |
 | `version` | 固定数字 `1` |
+| `documentId` | 稳定 UUID 字符串，关联同目录的独立次数文件；维护现有图时保留 |
 | `nodes` | 节点对象数组，可为空 |
 | `edges` | 连线对象数组，可为空 |
 | `canvas` | 必须含 `gridSize`、`gridVisible`、`snapToGrid`；网格尺寸为 1–100 的有限数值，后两项为布尔值 |
@@ -121,7 +143,7 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 
 | 对象 | 当前使用的字段顺序 |
 | --- | --- |
-| 根对象 | `format`、`version`、`nodes`、`edges`、`canvas` |
+| 根对象 | `format`、`version`、`documentId`、`nodes`、`edges`、`canvas` |
 | 节点 | `id`、`shape`、`x`、`y`、`width`、`height`、`label`、`zIndex`、`fill`、`stroke`、`text`、`textPadding`、`note`、`textSizing`、`link`、`appearance` |
 | 连线 | `id`、`source`、`target`、`mode`、`path`、`vertices`、`label`、`stroke`、`arrow`、`text`、`zIndex`、`appearance` |
 | `stroke` | `color`、`width`、`dash` |
@@ -146,6 +168,7 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 {
   "format": "graph-map-core",
   "version": 1,
+  "documentId": "163c207d-a618-4953-8219-095116dbb0a2",
   "nodes": [
     {
       "id": "example-create",
@@ -229,7 +252,7 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 
 ## 依据与检查
 
-格式依据为本次核对的独立 Graph_Map 项目 `src/core/model.ts` 中的 `GraphDocument`、`validateDocument` / `parseDocument`，以及 `docs/integration.md` 的 JSON 契约。核对位置为 `D:/WebTools/Graph_Map`；该路径仅说明格式出处，不是本仓库配置或日常运行前提。需要重新核对格式时，以实际使用的查看器版本为准，不自动引入其新增能力。
+格式依据为本次核对的独立 Graph_Map 项目 `src/core/model.ts` 中的 `GraphDocument`、`validateDocument` / `parseDocument`，`src/core/file-document.ts` 中的拆分与次数契约，以及 `docs/json-appearance.md` 和 `docs/integration.md`。核对位置为 `D:/WebTools/Graph_Map`；该路径仅说明格式出处，不是本仓库配置或日常运行前提。需要重新核对格式时，以实际使用的查看器版本为准，不自动引入其新增能力。
 
 | 检查内容 | 本仓库依据 |
 | --- | --- |

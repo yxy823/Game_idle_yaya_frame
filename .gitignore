@@ -5,3 +5,4 @@ __pycache__/
 reports/*
 !reports/.gdignore
 /framework/.cache/handbook-mermaid/
+/framework/docs/workflow-maps/graph-usage.*.json

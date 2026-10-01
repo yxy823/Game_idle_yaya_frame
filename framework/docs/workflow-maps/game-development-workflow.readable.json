@@ -1,6 +1,7 @@
 {
   "format": "graph-map-core",
   "version": 1,
+  "documentId": "2235cd49-09e2-4d6a-b58d-dac9505c6035",
   "nodes": [
     {
       "id": "scene-001",
@@ -3644,7 +3645,6 @@
         "vertical": 8
       },
       "note": "1. 我想独立审核某个模块当前的实现，只读检查现状，不要求有 Feature 或代码差异。\n2. 需要对选定模块及直接依赖做独立现状评审，检查范围以当前快照为准，不修改代码。\n3. 这次关注模块现在是否符合要求及代码质量如何，希望独立检查现状，无需依附开发任务或变更记录。",
-      "usageCount": 3,
       "textSizing": "content",
       "link": {
         "kind": "local",
