@@ -1,6 +1,6 @@
 # GDD co-creation
 
-Use this reference when the user wants to develop a game together or improve a draft through discussion. Reuse [Shared questioning method](../../project-grill-me/SKILL.md#shared-questioning-method) for facts, question grouping, consequences and corrections. Reading that method does not invoke a second clarification workflow; GDD design and authorized writing remain with `design-gdd`.
+Use this reference when the user wants to develop a game together or improve a draft through discussion. Reuse [Shared questioning method](../../project-grill-me/SKILL.md#shared-questioning-method) for the discussion overview, question grouping, proportionate treatment of unusual cases, continuation, progress and completion. Reading that method does not invoke a second clarification workflow; GDD design and authorized writing remain with `design-gdd`.
 
 ## Start from the current design
 
@@ -18,9 +18,7 @@ If the answer requires playing or measurement, preserve a hypothesis and propose
 
 ## Continue as answers arrive
 
-Answer an explanation request first, then return to unresolved design work within the original scope. An explanation is not acceptance of the proposed design. Reuse an explicit choice or an instruction to follow a concrete recommendation; when a user changes a decision, revisit its affected rules and assumptions while preserving unrelated decisions.
-
-When an issue is settled or deliberately deferred, continue to the next material question in the authorized design scope. Avoid stopping at an acknowledgement when useful work remains. Conversely, do not manufacture questions once the requested design is clear enough. Respect an explicit request to explain only, pause, finish or narrow the scope.
+Apply the shared method's continuation and progress rules to the remaining design choices. An explicit choice or instruction to follow a concrete recommendation settles the corresponding GDD decision; apply corrections to its affected rules and assumptions while preserving unrelated decisions and the existing writing authority.
 
 ## Keep the current design coherent
 
@@ -28,4 +26,4 @@ When writing is authorized, update the owning GDD passage and its affected refer
 
 Record the reason for a consequential design choice beside the relevant design. Do not create a separate decision, question or version ledger just to document the conversation. Settled terminology and resumption records use the existing conditional routes in the Skill entry.
 
-The requested discussion can finish when its important choices are resolved, explicitly deferred or left as identified validation questions. Summarize the result and any dependency that still limits its next use; deliver updated files when writing was authorized. A local discussion milestone does not end a broader authorized drafting or implementation task.
+Use the shared method's completion conditions to report the design result and any dependency that still limits its next use; deliver updated files when writing was authorized. A local discussion milestone does not end a broader authorized drafting or implementation task.
