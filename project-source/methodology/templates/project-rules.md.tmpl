@@ -60,12 +60,12 @@ Player and AI callers can reuse the same behavior API; the caller type alone doe
 
 ## 2.2 Core architecture principles
 
-- **Separate data from presentation.** Use observers or an event bus so the data layer does not know the presentation layer. Presentation subscribes to state and acts as a projection; core data should run without the UI.
+- **Separate game authority from presentation.** Game logic owns rules, business state and valid results; presentation translates them into player feedback and may own view-local state. Apply the responsibility model and examples in `docs/game-organization.md`; concrete state-mutation and dependency rules remain in `agent-rules/10-gdscript/structure-and-dependencies.md`.
 - **Make meaningful state transitions explicit.** Choose the simplest model that captures mutually exclusive states, valid transitions and entry/exit or cancellation responsibilities. An enum and a central transition function may suffice; separate state objects or nodes are useful when lifecycle, reuse or transition complexity warrants them.
-- **Keep three logical layers.** Data and rules sit below orchestration and control, which sit below presentation and input. Higher layers call lower layers; lower layers report through events rather than reverse dependencies.
+- **Make collaboration explicit.** Distinguish requests, current state and one-time events/results. Gameplay orchestration belongs with game rules; feedback orchestration belongs with presentation. Connect them through suitable existing APIs, signals or a coordinator according to ownership and lifetime, without requiring a fixed control layer or event bus.
 - **Prefer composition over inheritance.** Build behavior from focused components instead of a large all-purpose base-class hierarchy.
 - **Drive adjustable behavior from data.** Levels, skill values, and entity parameters belong in configuration or data when changing them should not require code changes.
-- **Keep core rules pure.** Decisions, calculations, scoring, and similar domain rules should be callable and testable without an engine or UI.
+- **Isolate independent rules where useful.** Keep suitable calculations and rule decisions testable without the UI or engine. Preserve real Godot physics and lifecycle dependencies where the behavior needs them; engine objects do not by themselves make a responsibility presentational.
 - **Pass dependencies explicitly.** Constructor or function parameters make dependencies visible and replaceable in tests.
 - **Reduce what callers must know.** Keep related validation, ordering, failure handling and state coordination with a cohesive owner. Assess an interface by all the knowledge needed to use it correctly, including configuration and lifetime constraints; fewer files or public methods alone do not establish a better design.
 - **Serialize state for confirmed uses.** When saving, replay, transfer or diagnostics requires serialization, define a representation for the data that use needs. Other runtime state follows its ownership and lifecycle; keep core data clear and rules independently testable.

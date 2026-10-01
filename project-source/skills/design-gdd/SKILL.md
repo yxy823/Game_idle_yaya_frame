@@ -31,14 +31,14 @@ These references support the current design task; they are not a mandatory seque
 
 ## Maintain the design at its source
 
-Describe each affected mechanism through its purpose, trigger, input, state, result and meaningful boundaries. Use a representative play sequence when it helps connect the player's goal, action, feedback and progress. Distinguish rule acceptance scenarios from experience hypotheses that need observation or play.
+Describe each affected mechanism through its purpose, trigger, input, state, result and meaningful boundaries. Use a representative play sequence when it helps connect the player's goal, action, feedback and progress. Under the logic/presentation model in `docs/game-organization.md`, GDD still owns both overall rules and experience goals; distinguish the valid game result from how the player perceives it. Distinguish rule acceptance scenarios from experience hypotheses that need observation or play.
 
 Keep one owning location for each rule. Update the affected text and references when a decision changes, rather than leaving a contradictory rule and appending a correction. Sources can inform different claims: observed implementation is evidence of current behavior, not automatic authority over adopted design. An unresolved conflict retains its sources and impact while independent work continues.
 
 Choose supporting capabilities by the actual task:
 
 - Record ordinary specifications and existing values directly. Formula derivation, parameter models, economy or growth curves and tuning use [design-balance](../design-balance/SKILL.md). Pass the relevant goals, draft rules and existing authorization; a complete GDD is not a prerequisite for early numeric exploration.
-- Delivery boundaries, dependencies and order belong to [product-author](../product-author/SKILL.md). Detailed UI, art, audio, asset and localization requirements use their owners in `methodology/11-specialist-workflows.md`. Reference details already owned by GDD instead of duplicating them.
+- Delivery boundaries, dependencies and order belong to [product-author](../product-author/SKILL.md). Detailed game-presentation, UI, art, audio, asset and localization requirements use their owners in `methodology/11-specialist-workflows.md`. Reference details already owned by GDD instead of duplicating them; link relevant non-UI presentations directly from their GDD topic.
 - When a design change affects planned or completed work, apply the source-impact and committed-source contracts in `methodology/11-specialist-workflows.md` and use `feature-sync` within the existing authorization. A future unplanned idea does not require a Product document or Feature plan.
 - For settled domain meanings that need durable definitions, use [project-terminology](../project-terminology/SKILL.md). For document wording or organization, use [technical-documentation-writing-godot](../technical-documentation-writing-godot/SKILL.md); it does not decide the design.
 - When a pause, blocker or unfinished design needs resumption, use existing Progress/task records under `methodology/09-artifact-lifecycle.md`. Keep design decisions at their GDD topics; do not create a separate question or design-state ledger.

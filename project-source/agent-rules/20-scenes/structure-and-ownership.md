@@ -17,6 +17,8 @@ Scene hierarchy expresses ownership, lifetime, transforms, dependencies, and pro
 - **[MUST]** Do not remove legitimate Timer/AnimationPlayer/component Nodes merely to reduce node count.
 - **[REVIEW]** Multiple independent writers to the same visual/gameplay property require explicit coordination; avoid hidden last-writer-wins behavior.
 
+Scene composition can contain both game logic and presentation. When a scene crosses that boundary, use `docs/game-organization.md` to identify state authority, feedback and their connection; do not classify a whole scene by its visual appearance. Animation callbacks may supply gameplay timing, while the game-rule owner decides validity, cancellation and resulting state changes. Keep the actual timing and lifetime contract explicit where it affects the feature.
+
 ## Propagation risks
 
 - **[REVIEW]** Reparenting/wrapping Nodes must review transform, process/pause, visibility, modulation, theme, owner, and other inherited/propagated behavior.

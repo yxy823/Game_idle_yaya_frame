@@ -23,11 +23,13 @@ Select the relevant concerns below and explain their concrete effect. Do not for
 | --- | --- |
 | Goal and boundary | The proposed outcome serves the supplied game intent and, where applicable, current Product delivery; distinguish draft choices from adopted requirements, and check inclusions, exclusions and effects on existing behavior. |
 | Assumptions and choices | Material assumptions have evidence or remain visibly undecided. Compare feasible alternatives where the choice changes scope, user-visible behavior or costly implementation. |
-| Decomposition and dependencies | Features deliver coherent, independently verifiable outcomes; coverage has no consequential omission or overlap. Dependencies reflect actual contracts and available inputs, without detailing future Products prematurely. |
+| Decomposition and dependencies | Features deliver coherent, independently verifiable outcomes under methodology 02; coverage has no consequential omission or overlap. Logic, presentation and cross-layer scope do not mandate separate Features or logic-first implementation. Dependencies reflect actual contracts and available inputs, without detailing future Products prematurely. |
 | Verification | Important outcomes have observable acceptance criteria and a feasible way to check them. Distinguish static checks, automated/runtime evidence and human perception or acceptance; planned checks are not results. |
 | Godot implementation constraints | Relevant scene/resource ownership, state boundaries, signals, lifecycle, imports, persistence, UI or engine APIs fit the project and target version. Inspect only affected domains and verify uncertain version-sensitive claims before relying on them. |
 
 Use a concrete example or counterexample to test a disputed claim. Prefer a local correction, reuse or removal when sufficient. Separate a blocking contradiction from a useful improvement and an evidence gap; uncertainty alone does not prove a defect. Ask only about a missing fact or choice that changes the current judgment. Return qualified findings when possible instead of pursuing an exhaustive interview.
+
+When the proposal changes a game's logic/presentation relationship, use `docs/game-organization.md` to inspect the affected state and result ownership, requests and feedback. Do not infer a missing requirement from an absent layer folder, optional presentation document or architecture map; require a concrete responsibility, behavior or verification gap.
 
 ## Return the conclusion to its owner
 

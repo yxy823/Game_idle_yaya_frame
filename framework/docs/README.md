@@ -4,7 +4,7 @@
 
 | 需要什么 | Markdown 入口 | HTML 阅读版 |
 | --- | --- | --- |
-| 理解框架、项目对象、配置、Skill 和工具用法 | [操作手册](operation-manual/README.md) | [打开操作手册](operation-manual/operation-handbook.html) |
+| 理解框架、游戏逻辑与表现、项目对象、配置和工具用法 | [操作手册](operation-manual/README.md) | [打开操作手册](operation-manual/operation-handbook.html) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) | [打开场景速查手册](quick-reference/quick-reference-handbook.html) |
 | 查看游戏项目开发场景之间的衔接关系 | [场景图与 JSON 格式](workflow-maps/README.md) | [打开场景图](workflow-maps/game-development-workflow.readable.json) |
 | 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) | 收录在场景速查手册末尾 |
@@ -20,7 +20,7 @@ framework/docs/
 ├── workflow-maps/                  复用提示场景名称的关系图与格式说明
 ├── operation-manual/               框架、概念、配置、职责与工具专题
 │   ├── README.md                   专题索引
-│   ├── 框架基础/                   创建器、目录与配置
+│   ├── 框架基础/                   项目边界、逻辑与表现、目录与配置
 │   ├── 需求与任务/                 需求、规划与阶段
 │   ├── 方法与工具/                 Skill、命令与证据
 │   └── 专业工作与记录/             专业来源、工作台与知识
@@ -38,7 +38,7 @@ framework/docs/
 两本手册各自的组织方式如下：
 
 - **操作手册**：按对象与契约组织。
-  - 框架基础：创建器、目录与配置。
+  - 框架基础：项目边界、游戏逻辑与表现、目录与配置。
   - 需求与任务：需求与规划、阶段语义。
   - 方法与工具：Skill/Agent、命令与证据、错误含义。
   - 专业工作与记录：专业来源、资源工作台、知识记录。

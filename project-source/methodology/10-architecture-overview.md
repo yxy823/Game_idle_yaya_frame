@@ -8,6 +8,14 @@ When a responsibility map is insufficient, the relevant subsystem document may t
 
 Feature design in `docs/features/F0XX-design.md` explains one change. This map and its subsystem documents describe the current system across Features. Keep shared runtime structure here, local implementation reasoning in the Feature design and important choice rationale in ADRs; link the owners instead of copying them. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
 
+## Game responsibilities and collaboration
+
+Use the logic/presentation model in `docs/game-organization.md` to explain actual responsibilities within business modules. Link the relevant GDD rules and experience goals, UI and game-presentation specifications to implementation entries. The map owns current technical connections; it does not duplicate their requirements or require separate logic/presentation directories.
+
+For a cross-layer flow whose boundary needs explanation, identify the request, authoritative state owner, accepted/rejected result and presentation consumer. Distinguish reading current state from reacting to a one-time event, and view-local state from business state. Explain who connects participants and cancels pending work when that lifetime affects correctness. For example, a shop UI requests a purchase, the purchase operation coordinates wallet and inventory owners, and the UI uses the result for feedback; reopening the UI reads current state without implying another purchase.
+
+Gameplay orchestration, presentation sequencing and scene assembly have their actual owners; this does not mandate an additional control layer. Engine-dependent gameplay and animation timing may participate under an explicit validity/cancellation contract. Preserve the implementation choices allowed by project rules and keep simple relationships in existing code or notes when a separate map adds no value.
+
 ## Navigation
 
 When using a map, give each module its main location and useful reading entry points: key scenes, scripts or resources, and relevant verification entries when helpful. Link an existing module README when it already provides that navigation. Keep this selective; do not inventory every file, function or test.

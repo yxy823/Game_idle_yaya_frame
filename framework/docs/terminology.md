@@ -29,7 +29,7 @@
 
 | 术语 | 本框架中的含义与边界 |
 | --- | --- |
-| GDD | Game Design Document，游戏设计正文；在 `docs/gdd/` 持续维护定位、核心循环、系统规则、内容与版本设计范围，是项目开发前提 |
+| GDD | Game Design Document，游戏设计正文；在 `docs/gdd/` 持续维护定位、体验与反馈目标、核心循环、系统规则、内容与版本设计范围，是项目开发前提 |
 | Product | 依据 GDD 划定的可验收交付单元，可覆盖一个系统、其中一部分或跨系统体验；不重复定义游戏规则 |
 | Product 总览 | `docs/product.md` 中的交付预拆分、来源、边界、依赖与建议顺序；不等于 GDD 游戏总览 |
 | Feature | 具有范围、验收条件和状态的开发任务；工程 Bug、重构和维护也可按规范建为 Feature |
@@ -46,6 +46,20 @@
 | 公开接口 / API | 调用方依赖的参数、返回值、行为及失败约定；影响消费者时须核对实际契约 |
 
 来源：[方法总览](../../project-source/methodology/00-overview.md)、[执行规范](../../project-source/methodology/03-execute-loop.md)、[工程变更](../../project-source/methodology/07-engineering-change.md)、[角色源文件](../../project-source/agents/)、[职责设计准则](../review/baselines/skill-script-prompt-design.md)。
+
+### 游戏职责与协作
+
+| 术语 | 本框架中的含义与边界 |
+| --- | --- |
+| 游戏逻辑层 | 负责游戏规则、业务状态与有效结果；可使用真实 Godot 能力，不要求所有逻辑脱离引擎 |
+| 游戏表现层 | 负责玩家感知与交互反馈，包括界面、动画、特效、声音和镜头；可以维护显示过渡等自身状态 |
+| 游戏表现文档 | 记录一次具体表现的过程、标准要求、候选方案、采用关系及实现与验收入口；不等于表现层全部资料 |
+| 行为请求 | 对游戏操作表达意图，由负责该规则的逻辑判断是否允许及实际结果 |
+| 游戏状态 | 当前游戏事实，如余额、生命值、库存；有明确所有者，区别于悬停或动画进度等表现状态 |
+| 一次性事件 | 某次已发生变化的通知或结果，如本次购买成功；读取当前状态不代表需要重放历史反馈 |
+| 跨层功能 | 同时涉及游戏逻辑、表现及双方接入的功能范围；不新增任务类型、阶段或强制拆分方式 |
+
+来源：[游戏组织指南](../../project-source/defaults/docs/game-organization.md)、[架构规范](../../project-source/methodology/10-architecture-overview.md)、[专业来源约定](../../project-source/methodology/11-specialist-workflows.md)。两层用于理解游戏职责；工具、环境、测试与构建仍按共同工程支持说明。
 
 ### 验证与记录
 

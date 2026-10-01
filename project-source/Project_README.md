@@ -6,6 +6,17 @@
 
 可以使用 `design-gdd` 从游戏想法开始讨论和建立 GDD，也可以导入、维护已有设计。交付规划、实现与运行实验以 `docs/gdd/` 中当前范围足够明确的真实设计为前提，目录说明或空模板不能代替 GDD。具体边界见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
 
+## 从游戏功能开始阅读
+
+游戏逻辑负责规则、业务状态和有效结果，游戏表现负责玩家如何感知和操作。两者可在同一个业务模块内协作；开发环境、测试和工具共同支持它们。职责边界、商店购买示例与代码组织见[游戏职责与项目组织指南](docs/game-organization.md)。
+
+围绕一个功能，可以按以下关系定位资料；这不是每次工作必须通读的顺序：
+
+1. 从 [GDD](docs/gdd/README.md) 找到游戏目标、规则与体验要求。
+2. 从 [UI 设计](docs/ui/README.md)找到界面，从[游戏表现](docs/presentation/README.md)找到一次具体反馈的过程与方案；非 UI 表现直接由 GDD 引用。
+3. 从[项目架构](docs/architecture.md)找到实际状态所有者、实现与协作；复杂关系按需展开。
+4. 从 [Product](docs/product.md) 和 [Feature](docs/features/README.md) 找到本次交付、局部设计、验证和验收记录。
+
 ## 开发环境
 
 - **配置内容**：`docs/methodology-config.json` 保存文档语言以及 Python、Godot 可执行路径。
@@ -40,7 +51,7 @@
 | game/ | 当前游戏的功能模块；玩法、设置、存档和全局 UI 按实际需求建立 |
 | components/、assets/ | 可复用能力与跨模块共享素材；专属脚本、配置和素材跟随所属模块 |
 | tests/ | 项目测试区域；初始没有业务测试套件 |
-| [docs/game-organization.md](docs/game-organization.md) | 目录归属、模块增长与命名判断指南 |
+| [游戏职责与项目组织](docs/game-organization.md) | 逻辑与表现分工、文档关系、目录归属、模块增长与命名判断 |
 | addons/ | gdUnit4、GDScript linter、SoundManager，以及下列编辑器效率插件 |
 | [examples/asset_workbench/](examples/asset_workbench/README.md) | 可按 F6 运行的图像/音频/Shader/粒子与动画组合预览及消费示例；`example_*` 资源不代表正式游戏素材 |
 | components/feedback/、tools/asset_workbench/ | 示例共用的表现组件、局部音频封装与工作台界面 |

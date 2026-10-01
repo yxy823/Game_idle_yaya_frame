@@ -2,7 +2,7 @@
 
 ## Responsibility and owner
 
-State the subsystem's responsibility and the owner of its authoritative state.
+State the subsystem's responsibility and the owner of its authoritative state. Where relevant, distinguish game logic, presentation and view-local state using `docs/game-organization.md`; one business subsystem may include both game responsibilities.
 
 Give its main location and useful scene, script or resource reading entries, linking an existing module README where sufficient. Link relevant verification entries when useful; keep test details in their existing records. This navigation remains useful even when the optional runtime-flow section is omitted.
 
@@ -19,6 +19,7 @@ Describe flows whose ordering, ownership or failure behavior matters across modu
 Include the details that affect this subsystem:
 
 - Where Node, Resource, SceneTree or file I/O enters the flow, and where domain logic stays independent of the engine.
+- How requests, accepted/rejected results, current state and one-time feedback connect. Link their owning requirements; explain animation timing or interruption conditions when they affect game-rule validity.
 - Who creates and owns runtime state, resources and subscriptions, and who releases or cancels them on completion, scene exit or interruption.
 - Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or presentation.
 

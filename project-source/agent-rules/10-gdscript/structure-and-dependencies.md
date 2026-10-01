@@ -5,7 +5,7 @@ Keep ownership and dependency direction explicit rather than discovering collabo
 ## Responsibilities
 
 - **[MUST]** A script should have one primary responsibility. Do not split files mechanically only to satisfy a metric threshold; split on real responsibility/dependency boundaries.
-- **[MUST]** Mutable business state has one authoritative owner. Other systems mutate it through the owner-defined API/Command path.
+- **[MUST]** Mutable business state has one authoritative owner. Other systems mutate it through the owner-defined API/Command path. Presentation-local state such as hover or display interpolation belongs to its presentation owner and is not a second authority for gameplay values.
 - **[PREFER]** Prefer composition for independent capabilities. Use inheritance only for a stable `is-a` relationship and supported shared contract.
 - **[REVIEW]** Use abstract classes only where the target Godot version and architecture need a real abstract contract; do not create inheritance scaffolding for speculative reuse.
 
@@ -20,6 +20,8 @@ Keep ownership and dependency direction explicit rather than discovering collabo
 ### Communication example
 
 The parent owns coordination and may call a child API. A child reports an event upward; it does not discover or mutate its parent through `get_parent()`.
+
+Distinguish a requested action from its accepted result and from reading current state, as explained in `docs/game-organization.md`. The example below assumes an accepted collection that can be added; if adding can fail, handle that result before showing success feedback. Showing current inventory when opening the HUD should not by itself replay pickup events.
 
 ```gdscript
 # parent.gd
@@ -53,4 +55,4 @@ Do not replace this with `get_parent().get_node("HUD")` or a sibling lookup. If 
 
 - **[MUST]** Autoload is for true global lifetime/ownership, not a convenience service locator for arbitrary dependencies.
 - **[MUST]** Test/debug adapters invoke the same production API/Command boundaries; do not create arbitrary reflection setters or universal `set_property` backdoors.
-- **[PREFER]** Separate pure/domain logic from SceneTree, I/O, VFX, and external services where that reflects the real architecture and improves testability.
+- **[PREFER]** Separate independently testable rule calculations from SceneTree, I/O, VFX, and external services where that reflects the real architecture and improves testability. Gameplay that depends on physics or scene lifetime still owns its game-rule decisions; a Node is not automatically a presentation object.

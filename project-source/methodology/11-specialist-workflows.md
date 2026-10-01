@@ -4,6 +4,8 @@ This specification owns professional document authority, source discovery and ha
 
 ## Ownership and decisions
 
+Use the [game responsibility model](00-overview.md#game-logic-presentation-and-delivery) to understand the design, then use this table to find its authoritative document. Logic and presentation do not own two disjoint document sets: GDD contains overall rules and experience goals, and a Feature may deliver both. The presentation layer also includes ordinary UI and other feedback that need no separate game-presentation document.
+
 | Concern | Owner / usual authoritative location |
 | --- | --- |
 | Game positioning, experience, loops, behavior, rules, states and game-version scope | `design-gdd`: `docs/gdd/` design sources, including initial design from an idea |
@@ -44,6 +46,8 @@ Synchronization includes actual GDD, Product and professional source paths, incl
 ## Game presentation documents
 
 Plan around an observable game moment, such as collecting a reward or a character dying. Start from the experience goal and describe the trigger, visible/audible sequence and end condition before selecting techniques. A presentation can combine sprite frames, Shader, particles, Tween, AnimationPlayer or existing implementations. Choosing a technique does not authorize its implementation or the production of image/audio files.
+
+When feedback represents a game-state change, identify the business fact or accepted result it communicates, linking its GDD owner instead of redefining the rule. Distinguish a request or immediate interaction response from a confirmed success result. Current-state display and one-time event feedback may need different behavior: reopening a health panel shows current HP without replaying a past hit. Use `docs/game-organization.md` for this collaboration model; actual APIs, signal wiring and lifecycle ownership belong to architecture or the implementation design.
 
 Maintain one business-scoped body in `docs/presentation/<scope>.md`, named with lowercase English and hyphens. Use sections for the following information, expanding only useful current-scope detail:
 

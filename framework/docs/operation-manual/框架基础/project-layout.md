@@ -4,6 +4,8 @@
 
 以下路径相对生成项目根目录。文件职责由实际使用者和权威来源决定；目录、模板或空占位文件的存在不代表相应工作已经完成。
 
+先用 [游戏逻辑、表现与协作](game-logic-and-presentation.md) 判断功能职责，再按本页定位正文与代码。目录按资料用途和业务模块组织；GDD 同时表达规则与体验，测试和工具服务两层，不按“逻辑／表现”强行搬迁。
+
 ## 主要对象及读写关系
 
 | 对象 | 保存什么 | 主要维护者与读取方 |
@@ -12,11 +14,11 @@
 | `agent-rules/` / `methodology/` | 按领域工程语义 / 开发和验证契约 | 所属规范；执行与审核按当前任务读取 |
 | `.agents/skills/` / `.codex/agents/` | 专项方法 / researcher、independent-reviewer 角色配置 | 主 Agent 按任务选用；角色文件不证明宿主已加载 |
 | `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
-| `docs/gdd/` | 游戏定位、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
+| `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
 | `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
 | `docs/project-rules.md` | 项目级 MUST、PREFER、REVIEW 约束 | 已获准规则维护；所有相关工作读取 |
-| `docs/game-organization.md` | 游戏代码、场景与资源的组织和命名判断指南 | 项目结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
+| `docs/game-organization.md` | 逻辑与表现职责、文档关系、业务模块与代码组织和命名判断 | 项目设计及结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；已由 GDD 定义的细节直接引用 |
 | `docs/presentation/` | 一次游戏表现的过程、组件、候选、采用组合、实现与验收入口；方案专用资源规格归属相应章节 | `design-game-presentation` 与当前实现任务；UI/GDD 引用，README 只导航 |
@@ -26,7 +28,7 @@
 | `docs/test-registry.json` | 组件与测试 ID、套件/case、planned/active/retired | 规划/实现；测试运行器 |
 | `docs/feature-list-revisions.json` | 真实规划覆盖基线与修订 | 规划/同步；不是任意最新 Git 提交的别名 |
 | `docs/feature-completion-evidence.json` | 当前完成依据的原件引用及绑定 | 完成记录工具；首个真实结果后出现 |
-| `docs/architecture.md` / `docs/architecture/` | 当前结构导航 / 子系统说明及历史 ADR | 实际结构或重要决定改变时维护 |
+| `docs/architecture.md` / `docs/architecture/` | 当前模块、状态所有者、协作与实现导航 / 子系统说明及历史 ADR | 实际结构或重要决定改变时维护 |
 | `docs/knowledge/` / `docs/research/` | 项目实践经验 / 外部资料研究 | 已授权的经验或调研任务；不成为需求唯一正文 |
 | `docs/progress.md` / `docs/progress/` | 当前停点与下一步 / 单份已归档执行历史 | 原任务；新对话恢复事实 |
 | `reports/` | 运行原件、人工验收与任务报告 | 相应工具或用户；默认不跟踪到 Git |
@@ -57,6 +59,8 @@
 ```
 
 最小入口不是预建完整游戏架构。代码、场景和资源可按业务模块相邻放置；存档、设置和全局 UI 按实际所有者组织。工程规则的编号目录不要求游戏照搬同样层级，也不要求新增 Bootstrap、Autoload、事件总线或每类脚本一个目录。
+
+例如商店模块可以相邻保存购买规则和商店面板，前者负责有效购买结果，后者负责显示与交互。明确职责并不要求建立根级 `logic/`、`presentation/` 目录；具体拆分根据已有结构和维护需要决定。
 
 四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与可选设计等按实际活动产生。初始 GDD 目录只有用途说明，不能作为开发所需的真实正文；空测试目录和占位 Product 也不提供任何通过证据。
 

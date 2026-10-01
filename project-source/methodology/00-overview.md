@@ -47,6 +47,14 @@ The project knowledge layer is:
 
 New projects include short purpose/pending-state notices in fixed documents and directory navigation for future multi-file content. These are not a GDD, a delivery plan, confirmed professional decisions, tasks or historical results. Their owning contracts below govern when useful content is added; document presence alone does not determine the workflow state.
 
+## Game logic, presentation and delivery
+
+Use `docs/game-organization.md` when explaining a game function's responsibilities or finding its design and implementation owners. Game logic owns rules, business state and valid results; presentation makes them perceptible and can own its local interaction/playback state. This is a responsibility model within game modules, not a prescribed directory tree or communication mechanism. Environment, tests, build tools and this delivery workflow are shared engineering support rather than additional game-layer requirements.
+
+GDD remains the overall design source for both rules and experience goals. UI and game-presentation documents refine the relevant parts under [specialist ownership](11-specialist-workflows.md#ownership-and-decisions); [architecture](10-architecture-overview.md) explains actual implementation relationships. A presentation document describes a game moment, not the whole presentation layer.
+
+Presentation-only, logic-only and cross-layer describe a function's scope. They do not replace the task routes below or add Feature types, fields or Stages. Choose delivery boundaries and order through the existing [decomposition rules](02-feature-list-schema.md#decomposition-rules), including a visual prototype before logic that depends on its decisions.
+
 ## Skill groups
 
 | Group | Skills | Responsibility |

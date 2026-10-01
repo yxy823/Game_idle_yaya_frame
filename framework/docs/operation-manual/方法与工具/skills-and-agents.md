@@ -4,6 +4,8 @@
 
 Skill 保存可复用方法，Agent 是执行方法的实例，提示词表达本次具体任务。三者不具有相同粒度：每条正式提示词只对应一个具体场景，通用 Skill 与脚本则按职责和独立变化原因划界，不能为了每篇场景复制一套实现。
 
+[游戏逻辑与表现](../框架基础/game-logic-and-presentation.md)用于理解功能范围，Skill 仍按当前工作选择：规则与体验目标由设计入口处理，一次表现由 `design-game-presentation` 细化，获准开发由原 Feature 承接。跨层功能可以由同一任务完成，不要求分别委派逻辑和表现 Agent；环境、测试与构建方法作为共同工程支持使用。
+
 ## Skill 职责速查
 
 以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。

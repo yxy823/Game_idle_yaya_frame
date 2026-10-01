@@ -16,6 +16,8 @@ Read the relevant GDD goals/actions and Product delivery scope, existing interfa
 
 Explain how hierarchy, grouping and feedback serve the current user goal. Provide an ASCII wireframe with realistic content, key actions and state differences. Draw separate states only when layouts differ substantially.
 
+When an interaction affects game rules or business state, use the responsibility model in `docs/game-organization.md`: link the governing game rule, distinguish the requested action from its accepted/rejected result, and describe the corresponding display. Hover, focus, panel expansion and display transitions may remain UI-local state. A displayed affordability hint does not replace the logic's purchase decision; actual wiring belongs to implementation.
+
 Use existing conventions: `[button]`, `[[primary action]]`, `< input >`, `[option ▾]`, `[ ]` / `[x]`, image/icon labels and `↕` for scrolling. Keep the primary action clear for each state. Mark focus, disabled/error/empty/dense states and input navigation where relevant; no requirement to design every possible future screen.
 
 Distinguish confirmed display/readability constraints from trial values. Include surrounding screen context, viewport/scaling conditions, representative text and resource references, source versus visible-subject scale, and unresolved questions for runtime evaluation. Node properties and incidental tuning stay in implementation.

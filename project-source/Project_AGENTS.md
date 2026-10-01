@@ -69,7 +69,7 @@ At completion, check whether reusable prescriptive learning is already covered b
 
 Workflow and traceability semantics belong to `methodology/`; concrete engine and language semantics belong to `agent-rules/`. Use the root/Core precedence protocol for a real conflict. Rule-module directories do not prescribe project filesystem layout.
 
-When creating modules or choosing file locations/names, consult `docs/game-organization.md` for the starter skeleton, ownership examples and genre-specific expansion. Reuse unchanged guidance; concrete naming and engine constraints remain in the relevant rule modules below.
+When reasoning about game logic/presentation responsibilities, locating their design sources, or choosing module locations/names, consult the matching sections of `docs/game-organization.md`. The guide connects responsibilities, documents and business modules; it does not prescribe extra task types or a fixed implementation structure. Reuse unchanged guidance; concrete naming and engine constraints remain in the relevant rule modules below.
 
 For modifications or relevant engineering decisions, use `agent-rules/00-core/README.md` and each affected domain below. Read the matching concrete sections and applicable validation documents, not the entire directory. Modules are additive: a test `.gd` needs relevant GDScript and test rules. Reuse already loaded, unchanged material on continuation; expand only when the task or evidence requires it.
 
