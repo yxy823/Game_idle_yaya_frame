@@ -6,7 +6,8 @@
 | --- | --- | --- |
 | 理解框架、游戏逻辑与表现、项目对象、配置和工具用法 | [操作手册](operation-manual/README.md) | [打开操作手册](operation-manual/operation-handbook.html) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](quick-reference/scenario-index.md) | [打开场景速查手册](quick-reference/quick-reference-handbook.html) |
-| 查看游戏项目开发场景之间的衔接关系 | [场景图与 JSON 格式](workflow-maps/README.md) | [打开场景图](workflow-maps/game-development-workflow.readable.json) |
+| 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档关系图说明](workflow-maps/README.md#文档系统关系图) | [打开文档关系图 JSON](workflow-maps/document-system.readable.json) |
+| 查看游戏项目开发场景之间的衔接关系 | [开发场景图与 JSON 格式](workflow-maps/README.md#游戏项目开发场景图) | [打开场景图 JSON](workflow-maps/game-development-workflow.readable.json) |
 | 编写或修改单一场景 | [场景手册编写要求](quick-reference/README.md) | 收录在场景速查手册末尾 |
 | 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) | — |
 | 确认框架与项目公共术语的含义和统一写法 | [术语](terminology.md) | 两本阅读版共用同一正文 |
@@ -17,7 +18,7 @@
 framework/docs/
 ├── README.md                       统一入口
 ├── terminology.md                  两册共用的框架与工程术语
-├── workflow-maps/                  复用提示场景名称的关系图与格式说明
+├── workflow-maps/                  文档系统关系图、开发场景图与格式说明
 ├── operation-manual/               框架、概念、配置、职责与工具专题
 │   ├── README.md                   专题索引
 │   ├── 框架基础/                   项目边界、逻辑与表现、目录与配置
