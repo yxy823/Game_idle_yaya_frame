@@ -8,6 +8,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_PROMPTS = (
+    ROOT / "framework/yaya-maintenance-prompts.json",
+    ROOT / "framework/godot-development-prompts.json",
+)
 NAVIGATION = {"README.md", "scenario-index.md"}
 RESERVED = {"CON", "PRN", "AUX", "NUL", *(f"COM{i}" for i in range(1, 10)),
             *(f"LPT{i}" for i in range(1, 10))}
@@ -69,8 +73,13 @@ def expected_paths(data: object) -> set[str]:
     return expected
 
 
-def compare_paths(prompts_path: Path, scenarios_root: Path) -> dict:
-    data = json.loads(prompts_path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
+def compare_paths(prompts_paths: list[Path] | tuple[Path, ...], scenarios_root: Path) -> dict:
+    data = []
+    for prompts_path in prompts_paths:
+        project = json.loads(prompts_path.read_text(encoding="utf-8"), object_pairs_hook=unique_object)
+        if not isinstance(project, list) or len(project) != 1:
+            raise ValueError(f"Each prompt file must contain exactly one Project: {prompts_path}")
+        data.extend(project)
     expected = expected_paths(data)
     if not scenarios_root.is_dir():
         raise ValueError(f"Scenario directory does not exist: {scenarios_root}")
@@ -87,7 +96,8 @@ def compare_paths(prompts_path: Path, scenarios_root: Path) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--prompts", type=Path, default=ROOT / "framework/prompts.json")
+    parser.add_argument("--prompts", type=Path, nargs="+", default=DEFAULT_PROMPTS,
+                        help="Prompt files, each containing one Project; defaults to both catalogs")
     parser.add_argument("--scenarios", type=Path, default=ROOT / "framework/docs/quick-reference")
     args = parser.parse_args(argv)
     try:

@@ -17,7 +17,7 @@ class WorkflowGraphLinksTests(unittest.TestCase):
         self.area = tempfile.TemporaryDirectory(prefix="workflow_graph_links_")
         self.addCleanup(self.area.cleanup)
         self.root = Path(self.area.name)
-        self.prompts = self.root / "prompts.json"
+        self.prompts = self.root / "godot-development-prompts.json"
         self.graph = self.root / "graph.json"
         self.scenarios = self.root / "scenarios"
         self.project = "Godot 项目开发"

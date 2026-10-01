@@ -1,6 +1,6 @@
 ---
 name: prompt-maintenance-yaya
-description: 维护 Yaya 框架集中提示词库中的具体 Project、分类或提示词，并处理同名场景及受影响导航、场景图和派生参考。用于新增、修改、重命名、调整分类或删除入口；正式审核使用 review-agent-instructions-yaya，临时对话提示词与游戏项目内续接文本不适用。
+description: 维护 Yaya 框架与 Godot 开发提示词库中的分类或提示词，并处理同名场景、导航和场景图。用于新增、修改、重命名、调整分类或删除入口；正式审核使用 review-agent-instructions-yaya，临时对话提示词与游戏项目内续接文本不适用。
 ---
 
 # Yaya 提示词维护
@@ -11,7 +11,7 @@ description: 维护 Yaya 框架集中提示词库中的具体 Project、分类�
 
 ## 定位本次入口
 
-按 Project、分类、名称定位 [prompts.json](../../../framework/prompts.json) 中的当前正文，核对目标、输入、执行仓库及出口。新增或合并前搜索相关用途，只合并目标与执行边界相同的入口。读取本次对象、相关候选和必要调用方；普通局部修改不通读整个提示词库或全量场景。
+先按用途选择 [Godot 开发提示词库](../../../framework/godot-development-prompts.json)或 [Yaya 框架维护提示词库](../../../framework/yaya-maintenance-prompts.json)，再按分类、名称定位当前正文，核对目标、输入、执行仓库及出口。每份文件只含所属 Project。新增或合并前搜索相关用途，只合并目标与执行边界相同的入口。读取本次对象、相关候选和必要调用方；普通局部修改不通读整个提示词库或全量场景。
 
 编写、修改和作者自查使用 [writing-for-agents-yaya](../writing-for-agents-yaya/SKILL.md)。结构、命名、一对一关系、字段与内容判断以[提示词与场景准则](../../../framework/review/baselines/skill-script-prompt-design.md#提示词与场景)为正文；运行、提交和持续授权沿用[根提示词维护约定](../../../AGENTS.md#提示词维护)及本次明确例外，不在此重写通用流程。
 
@@ -22,10 +22,10 @@ description: 维护 Yaya 框架集中提示词库中的具体 Project、分类�
 | 提示词正文或入口范围变化 | 按[场景编写约定](../../../framework/docs/quick-reference/README.md)核对同名场景的输入、方法、授权与出口，修改实际受影响内容；场景页不复制完整提示词。 |
 | 新增、删除、重命名或调整 Project / 分类 | 沿准则的准确名称同步 JSON 与同名场景路径、一级标题，再核对[场景索引](../../../framework/docs/quick-reference/scenario-index.md)、[覆盖清单](../../../framework/review/baselines/scenario-coverage.md#提示词使用场景清单)及直接引用。正文变化也需核对这些导航的描述，未失效处不制造修改。 |
 | Godot 场景集合、名称、分类或实际衔接变化 | 读取[场景图维护约定](../../../framework/docs/workflow-maps/README.md#阅读与维护)，更新唯一维护的可读版；保留已有 ID、布局与显示字段，按[保存格式](../../../framework/docs/workflow-maps/README.md#编写与保存格式)维护字段顺序，核对场景名称和相关连线，路径变化还需刷新场景链接。图只覆盖 Godot，框架场景不加入其中。仅修改提示词措辞且未改变这些关系时无需改图。 |
-| 入选 advisor 的正文、所引 Skill 名称或选择集变化 | 按[精选导出契约](../../../framework/README.md#导出-advisor-精选表达参考)核对导出器 SELECTION；获准变更选择集时在原位置维护。重新导出并运行只读一致性检查，不手改派生参考。未入选正文变化不要求重导出。 |
+| Godot 场景的匹配条件或下一步入口变化 | 核对 [advisor](../../../project-source/skills/project-next-step-advisor/SKILL.md) 的状态判断与入口说明。advisor 直接读取同一份 Godot 提示词库，无需导出或同步副本；只修改实际失效的说明。 |
 | 收录手册的 Markdown 变化 | 按[维护验证范围](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)及[阅读版构建](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)处理相应手册。命令、环境与审批读取现有说明及根规则，不复制机器路径，不手改 HTML。 |
 
-若变更实质影响任务路由、职责、授权或完成机制，按[维护与同步说明](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#找到受影响的说明)继续核对相关规范、advisor 和场景预期。普通措辞修正不扩大成整套流程重审；发现范围外问题时说明具体缺口，不擅自改动。
+若变更实质影响任务路由、职责、授权或完成机制，按[维护与同步说明](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#找到受影响的说明)继续核对相关规范、advisor 和同名场景。普通措辞修正不扩大成整套流程重审；发现范围外问题时说明具体缺口，不擅自改动。
 
 ## 核对与交付
 

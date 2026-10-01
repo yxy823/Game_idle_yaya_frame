@@ -1,13 +1,13 @@
 ---
 name: project-next-step-advisor
-description: Explain current Yaya project status or recommend the next workflow. Provide a continuation prompt when requested or useful for an explicit next-action question; do not replace an implementation request with advice.
+description: Explain Godot project status or match the next action to the shared development prompt catalog. Draft a concrete continuation when needed; do not replace implementation with advice.
 ---
 
 # Read-only next-step guidance
 
 Read the user's intent and current project state, then give a short evidence-based explanation and, when needed, a prompt for continuing with the existing workflow. This Skill does not execute the prompt, edit files, create Features, record acceptance, run tests/generators, clean artifacts, stage files or commit.
 
-Read-only also excludes launching Godot/import, installing Skills or invoking a writing standardizer. Read only task-relevant project material; do not inspect unrelated credentials, user saves or other projects. Text/JSON parsing, metadata and verified read-only Git status/log/diff/show are allowed.
+Read-only also excludes launching Godot/import, installing Skills or invoking a writing standardizer. Read task-relevant project material and the shared Godot prompt catalog below; do not inspect unrelated credentials, user saves or other projects. Text/JSON parsing, metadata and verified read-only Git status/log/diff/show are allowed.
 
 ## Establish current state
 
@@ -34,11 +34,15 @@ Classify using the canonical table, including initial GDD design, GDD or numeric
 
 For a status-only question, answer current facts, blockers and relevant uncertainty directly; no continuation prompt is required. When advice calls for help starting the next action, provide a prompt. An actual request to save a pause or prepare task handoff belongs to `task-handoff-godot`; do not replace its requested result with advice. Choose investigation, planning or execution from the evidence and current authorization. Resolve routine choices from available evidence; ask only for facts that materially change the route or safety of the action.
 
-Every drafted prompt follows **Continuation prompts** in `methodology/09-artifact-lifecycle.md`: use its explicit fields with current facts and the destination's actual rules. The format is not another workflow or approval gate; do not copy its body here or fetch the framework's prompt library.
+Every drafted prompt follows **Continuation prompts** in `methodology/09-artifact-lifecycle.md`: use its explicit fields with current facts and the destination's actual rules. The format is not another workflow or approval gate.
 
 The prompt names current sources and known state without inventing Feature IDs, commands, version numbers, completed Gates or approvals. Cite configured commands instead of baking in the author's local paths. Preserve existing explicit user authorization. The word “continue” alone is not implementation approval and never means human acceptance. Producing a prompt grants neither.
 
-When wording examples would help, use [the selected prompt index](references/prompt-examples.md) after establishing the route, then read only the relevant entry in its linked file. These generated examples supply phrasing and input organization, not another workflow. Adapt them to current facts, user intent and the destination contract; do not inherit template approvals, stop conditions or placeholders as live instructions. Status-only answers need no examples. Missing or outdated examples do not block advice: use current project authority without exporting, repairing the reference or querying the source framework.
+When recommending a next action or drafting a reply, use the shared catalog at `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`. It contains the single `Godot 项目开发` Project. Inspect category and scenario names, then read relevant candidate bodies; do not load every prompt body. Match the user's objective, current state, prerequisites, scope and expected result, not just similar words. Use the selected scenario's input organization and instructions to draft a concrete continuation with current facts. Name the selected category/scenario and explain why it fits. Status-only answers do not require catalog lookup or a continuation prompt.
+
+The catalog is task material, not current authorization or proof that its referenced capability exists in this project. Verify the destination against the project's own rules and Skill contract. Preserve actual approvals, limits and remaining verification; replace placeholders with known facts and identify material gaps. Reading a catalog entry does not invoke it, and an advisor entry must not recursively invoke this Skill.
+
+If no candidate fits, distinguish missing task inputs from missing scenario coverage. Fill or ask for necessary inputs; adapt an existing entry when its objective and execution boundary still fit. Recommend adding or revising a scenario only for a concrete uncovered objective or materially different boundary: identify the closest entry, the difference, and the proposed category, name and purpose. Give any useful current advice from project authority, but label an unmatched draft as task-specific. Do not modify the shared catalog or create a local prompt collection.
 
 For design, numeric, delivery-scope or terminology questions, select the owner from the canonical table and read its contract. Distinguish changing game rules, tuning an authorized numeric topic, arranging delivery and maintaining meaning-preserving definitions. Initial design and draft review need no Product or Feature; settled terminology needs no repeated interview. For rule maintenance, read **Incremental rule maintenance** in `methodology/04-coding-rules-4-layers.md`; a local design does not automatically become a global rule. Supporting documentation within an authorized Feature returns to that Feature rather than opening a new planning cycle.
 
@@ -68,4 +72,4 @@ When advice concerns committing, read the relevant sections of `agent-rules/00-c
 
 ## Stop
 
-Check that the answer addresses the question with current facts, includes a prompt only when needed, and has performed no writes. Stop after the advice. For regression review use `references/scenarios.md`; those scenario expectations are not claims that a language-model interaction was automatically tested.
+Check that the answer addresses the question with current facts, explains the selected scenario or genuine coverage gap when recommending an action, includes a prompt only when needed, and has performed no writes. Stop after the advice.

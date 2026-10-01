@@ -137,11 +137,11 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 ## 提示词库的结构与输入
 
-正式可发送正文仅在 [framework/prompts.json](../../../prompts.json)。
+正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../yaya-maintenance-prompts.json)。
 
-维护库内的提示词、分类或场景时，使用框架专用的 [prompt-maintenance-yaya](../../../../.agents/skills/prompt-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、两份 Godot 场景图与 advisor 精选参考；详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+维护库内的提示词、分类或场景时，使用框架专用的 [prompt-maintenance-yaya](../../../../.agents/skills/prompt-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、Godot 场景图与 advisor 的相关说明；详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
-- **Project：** 顶层保留 `Yaya 框架维护` 和 `Godot 项目开发` 两个 Project。
+- **Project：** 每份文件保留单元素顶层数组，分别保存 `Yaya 框架维护` 或 `Godot 项目开发`。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
 - **目录映射：** `<Project>/<分类>/<提示词名称>.md`，无需读取文档正文推断配对。
 
@@ -155,16 +155,17 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 框架维护在框架目录，业务工作在实际项目。创建/复制迁移明确输入与目标；读取模板或讨论提示词不启动命令、Goal、外部任务或自动写入。用户选择范围可扩大后续授权，也可替代原来的临时只读限制；实际人工接受始终单独核对。
 
-## advisor 的精选表达参考
+## advisor 的共享场景入口
 
 advisor 根据项目自己的规则、状态和本次问题给出建议。它可以报告现状、判断下一步或拟一条已填写上下文的回复，但建议和候选不是实施授权，用户说“看看下一步”也不自动启动开发。
 
-- **正文来源：** `references/prompt-examples.md` 及其分类文件由 [导出器](../../../commands/export_advisor_prompt_examples.py) 从集中 JSON 精选生成，不手工维护第二套正文。
-- **维护范围：** 选入范围只在导出器 `SELECTION` 中定义；维护时导出和 `--check`。
-- **项目获得方式：** 创建器仅复制已有静态参考，生成项目不查询框架或运行导出。
+- **核对现状：** 读取当前项目记录和相关证据，判断现在做到哪里、还需要解决什么。
+- **选择场景：** 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
+- **形成指令：** 说明选中了哪个场景及适用理由，把项目当前事实、文件和已有授权填入续接文本；具体执行仍核对项目自己的规则与目标 Skill。
+- **判断缺口：** 缺少输入时补齐信息；目标和执行边界相同则适配现有场景。只有真实缺少目标或边界明显不同，才建议新增或修改场景，说明最接近的条目、差异和建议用途；advisor 不修改共享库。
 
-精选文本只帮助表达，不拥有流程、批准或同步机制。示例里出现“执行”不代表当前任务已获准；advisor 仍要按当前来源与真实上下文判断，不给用户只剩占位符的回复。
+提示词正文只在共享库维护。advisor 读取当前正文，不需要导出副本；条目里的“执行”不代表当前任务已获准，Skill 名称也不证明本项目已经具备该能力。状态查询直接回答，不要求查找场景。
 
-advisor 与交接入口起草的项目续接提示词共同遵循 [Continuation prompts](../../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，不按任务长短省略固定字段。该规范随项目分发，实际使用不依赖框架完整提示词库。状态查询仍直接回答，不为套字段额外生成提示词；等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
+advisor 与交接入口起草的项目续接提示词共同遵循 [Continuation prompts](../../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，不按任务长短省略固定字段。格式规范由项目持有；advisor 的场景素材来自共享 Godot 库。等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
 
 职责设计的长期评价规则在 [设计准则](../../../review/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。

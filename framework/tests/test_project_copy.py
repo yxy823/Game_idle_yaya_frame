@@ -212,7 +212,8 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
         self.assertIn("window/size/viewport_width=1600", settings)
         self.assertIn("window/size/viewport_height=900", settings)
-        for name in (".git", ".godot", "framework", "prompts.json"):
+        for name in (".git", ".godot", "framework", "godot-development-prompts.json",
+                     "yaya-maintenance-prompts.json"):
             self.assertFalse((output / name).exists(), name)
         writing_skill = output / ".agents/skills/technical-documentation-writing-godot"
         writing_sources = repository / "project-source/skills/technical-documentation-writing-godot"

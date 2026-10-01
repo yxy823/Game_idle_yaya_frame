@@ -14,7 +14,7 @@ class ScenarioPromptPathTests(unittest.TestCase):
         self.area = tempfile.TemporaryDirectory(prefix="scenario_paths_")
         self.addCleanup(self.area.cleanup)
         self.root = Path(self.area.name)
-        self.prompts = self.root / "prompts.json"
+        self.prompts = self.root / "godot-development-prompts.json"
         self.scenarios = self.root / "scenarios"
         self.scenarios.mkdir()
         self.data = [{"project": "Godot 项目开发", "categories": {
@@ -33,13 +33,13 @@ class ScenarioPromptPathTests(unittest.TestCase):
         self.page("Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md")
         self.page("README.md")
         self.page("scenario-index.md")
-        self.assertEqual(compare_paths(self.prompts, self.scenarios), {
+        self.assertEqual(compare_paths([self.prompts], self.scenarios), {
             "expected": 1, "matched": 1, "missing": [], "unexpected": []})
 
     def test_wrong_category_and_legacy_paths_are_reported(self):
         self.page("Godot 项目开发/其他分类/Feature 交付前发现 Bug.md")
         self.page("issues/current-feature/bug-after-tests.md")
-        report = compare_paths(self.prompts, self.scenarios)
+        report = compare_paths([self.prompts], self.scenarios)
         self.assertEqual(report["matched"], 0)
         self.assertEqual(report["missing"], ["Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md"])
         self.assertEqual(len(report["unexpected"]), 2)
@@ -47,13 +47,44 @@ class ScenarioPromptPathTests(unittest.TestCase):
     def test_only_root_navigation_is_excluded(self):
         self.page("Godot 项目开发/README.md")
         self.page("unlisted.md")
-        self.assertEqual(compare_paths(self.prompts, self.scenarios)["unexpected"],
+        self.assertEqual(compare_paths([self.prompts], self.scenarios)["unexpected"],
                          ["Godot 项目开发/README.md", "unlisted.md"])
 
     def test_duplicate_json_keys_are_rejected_before_overwrite(self):
         self.prompts.write_text('[{"project":"A","project":"B","categories":{}}]', encoding="utf-8")
         with self.assertRaisesRegex(ValueError, "Duplicate JSON key"):
-            compare_paths(self.prompts, self.scenarios)
+            compare_paths([self.prompts], self.scenarios)
+
+    def test_separate_catalogs_are_checked_together(self):
+        maintenance = self.root / "yaya-maintenance-prompts.json"
+        maintenance.write_text(json.dumps([{"project": "Yaya 框架维护", "categories": {
+            "维护与复盘": {"修复框架": "修复已确认的问题。"}}}], ensure_ascii=False), encoding="utf-8")
+        self.page("Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md")
+        self.page("Yaya 框架维护/维护与复盘/修复框架.md")
+        report = compare_paths([maintenance, self.prompts], self.scenarios)
+        self.assertEqual(report, {"expected": 2, "matched": 2, "missing": [], "unexpected": []})
+        args = ["--prompts", str(maintenance), str(self.prompts), "--scenarios", str(self.scenarios)]
+        with contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(main(args), 0)
+
+    def test_duplicate_project_across_files_is_rejected(self):
+        duplicate = self.root / "duplicate.json"
+        duplicate.write_bytes(self.prompts.read_bytes())
+        with self.assertRaisesRegex(ValueError, "Duplicate name in Projects"):
+            compare_paths([self.prompts, duplicate], self.scenarios)
+
+    def test_each_file_must_contain_one_project(self):
+        for data in ([], {}, self.data * 2):
+            with self.subTest(data=data):
+                self.prompts.write_text(json.dumps(data), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "exactly one Project"):
+                    compare_paths([self.prompts], self.scenarios)
+
+    def test_missing_second_catalog_is_an_input_error(self):
+        args = ["--prompts", str(self.prompts), str(self.root / "missing.json"),
+                "--scenarios", str(self.scenarios)]
+        with contextlib.redirect_stderr(io.StringIO()):
+            self.assertEqual(main(args), 2)
 
     def test_same_project_titles_cannot_be_hidden_in_different_categories(self):
         self.data[0]["categories"] = {"first": {"Bug": "one"}, "second": {"bug": "two"}}

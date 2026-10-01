@@ -9,9 +9,9 @@
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [project-files.json](project-files.json) | 唯一复制映射，每项只有 source 与 target |
 | [commands/create_project.py](commands/create_project.py) | 预检、复制与重命名，建立独立 Git 仓库及本地初始提交 |
-| [prompts.json](prompts.json) | 框架维护与实际项目开发的全部手写任务提示词 |
+| [godot-development-prompts.json](godot-development-prompts.json) | Godot 项目开发的完整任务提示词；advisor 直接读取的共享来源 |
+| [yaya-maintenance-prompts.json](yaya-maintenance-prompts.json) | Yaya 框架维护的完整任务提示词 |
 | [commands/check_scenario_prompt_paths.py](commands/check_scenario_prompt_paths.py) | 从 JSON 名称和目录文件名核对提示词与场景一对一，不读取场景正文 |
-| [commands/export_advisor_prompt_examples.py](commands/export_advisor_prompt_examples.py) | 显式导出 advisor 精选表达参考，不承担流程或同步职责 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
 | [Codex 指令编写 Skill](../.agents/skills/writing-for-agents-yaya/SKILL.md) | 框架内 Codex 指令的编写、修改与作者自查；框架自用，不分发 |
 | [Codex 指令审核 Skill](../.agents/skills/review-agent-instructions-yaya/SKILL.md) | 独立实例对现有指令作正式只读审核；引用共用依据，不接管修复，不分发 |
@@ -19,7 +19,7 @@
 | [Godot 项目文档编写 Skill](../project-source/skills/technical-documentation-writing-godot/SKILL.md) | 面向游戏项目的文档写作方法，独立维护并整包复制到新项目 |
 | [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 一次生成并检查两本独立 HTML 手册；共享 [模板](commands/blank-project-handbook-page.html)、[交互源码](commands/blank-project-handbook-interactions.js) 与渲染实现 |
 | [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目 |
-| [tests/](tests/) | 创建器、导出器、路径映射、文档指纹、人工文件等维护回归 |
+| [tests/](tests/) | 创建器、路径映射、文档指纹、人工文件等维护回归 |
 | [tests/project/](tests/project/) | 外部项目工具与真实 Godot 夹具，不进入复制清单 |
 | [review/README.md](review/README.md) | 长期准则、基线与按次审核报告的导航 |
 
@@ -44,7 +44,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 ## 提示词与场景路径检查
 
-JSON 顶层保留两个 Project：Yaya 框架维护、Godot 项目开发；categories 下叶子键是名称，字符串是完整正文。场景路径直接为 `docs/quick-reference/<Project>/<分类>/<提示词名称>.md`。一条提示词只对应一个场景，名称一致；不同验收目标或进入状态不能用一个通用正文覆盖。
+两份提示词 JSON 各保存一个 Project：`yaya-maintenance-prompts.json` 保存 `Yaya 框架维护`，`godot-development-prompts.json` 保存 `Godot 项目开发`。每份保留单元素顶层数组；categories 下叶子键是名称，字符串是完整正文。场景路径直接为 `docs/quick-reference/<Project>/<分类>/<提示词名称>.md`。一条提示词只对应一个场景，名称一致；不同验收目标或进入状态不能用一个通用正文覆盖。
 
 ```powershell
 python -B framework/commands/check_scenario_prompt_paths.py
@@ -52,7 +52,7 @@ python -B framework/commands/check_scenario_prompt_paths.py
 
 路径检查器的参数与结果如下：
 
-- **可选参数**：`--prompts <JSON>`、`--scenarios <目录>`。
+- **可选参数**：`--prompts <JSON> [<JSON> ...]`、`--scenarios <目录>`；默认合并两份库的名称检查全部场景，每份只允许一个 Project，跨文件重复 Project 也会报错。
 - **检查范围**：只读检查缺少、多余、重复与非法路径；根级 README.md、scenario-index.md 是导航排除项，不保存额外映射。
 - **退出码**：
   - `0`：集合一致。
@@ -62,25 +62,15 @@ python -B framework/commands/check_scenario_prompt_paths.py
 
 新增或修改正文后同步同名场景及覆盖清单；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
-## 导出 advisor 精选表达参考
+## advisor 的共享场景入口
 
-prompts.json 是唯一手写来源。导出器的 SELECTION 精确选择分类与名称，生成 project-source/skills/project-next-step-advisor/references/prompt-examples.md 及其 prompt-examples/ 分类正文，不另建选择配置。
+advisor 在核对项目现状后，直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，按相关分类与场景名称选择候选，再核对正文的目标、前提和执行边界。它结合当前事实生成具体指令，并区分缺少输入、可适配场景和确实需要补充的场景。
 
-```powershell
-python -B framework/commands/export_advisor_prompt_examples.py
-python -B framework/commands/export_advisor_prompt_examples.py --check
-```
-
-- **导出时机**：入选正文、Skill 名称或范围改变后显式导出。
-- **输出约定**：全部来源有效后才写输出；正文和占位符原样保留，使用 UTF-8、LF，不附加时间戳。
-- **只读检查**：`--check` 只比较内容，缺失或过期返回非零且不写入。
-- **保存范围**：生成结果随本次逻辑变更保存，相关回归见 [导出器测试](tests/test_advisor_prompt_examples.py)。
-
-创建器只复制已有静态参考；完整 JSON 和导出器不进入项目，项目不访问维护源。advisor 仅按需借鉴措辞，实际规则与当前授权决定行动，详见 [精选参考](docs/operation-manual/方法与工具/skills-and-agents.md#advisor-的精选表达参考)。
+修改 Godot 提示词后，advisor 下次读取同一份正文；不需要导出或维护提示词副本。项目自己的规则、目标 Skill 和有效授权决定实际行动，advisor 只提供建议，不修改共享库。使用说明见 [advisor 场景入口](docs/operation-manual/方法与工具/skills-and-agents.md#advisor-的共享场景入口)。
 
 ## 按需检查
 
-维护层回归使用系统临时目录，包括复制、路径映射、导出、文档指纹与人工验收文件契约：
+维护层回归使用系统临时目录，包括复制、路径映射、文档指纹与人工验收文件契约：
 
 ```powershell
 python -B -m unittest discover -s framework/tests -p test_*.py

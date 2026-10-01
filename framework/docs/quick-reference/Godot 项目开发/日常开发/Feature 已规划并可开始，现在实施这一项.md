@@ -14,7 +14,7 @@ Feature 已规划并可开始，现在实施这一项。需要的材料：Featur
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 日常开发 → Feature 已规划并可开始，现在实施这一项”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../../godot-development-prompts.json>)中的“Godot 项目开发 → 日常开发 → Feature 已规划并可开始，现在实施这一项”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
 
 **S1｜确认开工任务**
 

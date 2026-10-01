@@ -14,7 +14,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../../prompts.json)中的“Godot 项目开发 → 需求设计 → 设计资料分散在多处，需要整合 GDD”。当前 Agent 使用 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)，按需读取其整合参考。
+使用[集中提示词库](../../../../godot-development-prompts.json)中的“Godot 项目开发 → 需求设计 → 设计资料分散在多处，需要整合 GDD”。当前 Agent 使用 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)，按需读取其整合参考。
 
 **S1｜核对来源与有效决定**
 

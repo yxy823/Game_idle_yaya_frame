@@ -48,7 +48,7 @@ framework/docs/
   - 单篇范围：一个目标，对应一条同名专用提示词。
   - 信息栏目：保留 11 类分类规则，只展示有内容的栏目。
 
-速查路径直接使用 [prompts.json](../prompts.json) 中的三个名称：
+速查路径直接使用 [Godot 开发提示词库](../godot-development-prompts.json)或 [Yaya 框架维护提示词库](../yaya-maintenance-prompts.json) 中的三个名称；每份只保存自己的 Project：
 
 - Project：所属项目文件夹。
 - 分类：该项目下的子文件夹。
@@ -66,6 +66,6 @@ framework/docs/
 
 项目手册中的 docs/、tools/ 等相对生成后的游戏项目根目录；维护文档的框架路径相对本仓库。示例 ID、路径和输出必须换成实际对象，不能当作已经完成的验证或批准。
 
-框架保存创建器、复制材料、手册与完整提示词库；生成项目独立维护自己的文件。本目录不进入 [复制清单](../project-files.json)，也不承担项目升级或自动同步。权威行为由项目自身规则、methodology、Skill 和实际工具定义，手册解释它们，不另建流程。
+框架保存创建器、复制材料、手册与两份独立提示词库；生成项目独立维护自己的文件，advisor 通过固定绝对路径只读查询本机 Godot 开发提示词库。本目录不进入 [复制清单](../project-files.json)，也不承担项目升级或自动同步。权威行为由项目自身规则、methodology、Skill 和实际工具定义，手册解释它们，不另建流程。
 
 Markdown 是正文来源，HTML 由一条[构建命令](../README.md#构建-html-阅读版)分别生成，并自动检查链接、锚点和产物结构；日常重建不要求手动复审未改正文。具体边界见 [阅读版说明](framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。

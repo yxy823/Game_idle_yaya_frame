@@ -36,7 +36,7 @@
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存常规分发材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
 | 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
-| 生成项目 | 项目独立拥有其文件，不查询框架或接受自动同步；维护手册与完整提示词库不进入生成项目，仅 advisor 的精选表达参考随 Skill 复制，项目 README 保持简短的自身使用导航。 |
+| 生成项目 | 项目独立拥有其文件，不接受自动同步；维护手册与提示词库不进入生成项目。advisor 通过固定绝对路径只读引用本机 Godot 开发提示词库，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 手册与阅读版 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册不互相引用，由文档总入口导航。Markdown 是正文来源，HTML 由 [构建脚本](framework/commands/build_blank_project_handbook.py) 生成；执行与检查边界见 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
@@ -62,7 +62,7 @@
 
 调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
 
-修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 及其 `references/scenarios.md`。使建议、来源引用和场景预期与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
+修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关 Godot 开发提示词及同名场景。使建议和来源引用与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
 
 在已指定的外部项目运行回归前，核对被测文件是否对应本次修复；需要同步时仅更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
 
@@ -87,11 +87,11 @@
 
 ## 提示词维护
 
-新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与派生参考；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
+新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
 
-所有供用户发送给 Agent 的任务提示词统一维护在 [framework/prompts.json](framework/prompts.json)，覆盖框架维护与实际项目开发；不另建分散的手写提示词文件，不把提示词正文混入 README、规则或工具说明。advisor 的精选表达参考仅由 [导出器](framework/commands/export_advisor_prompt_examples.py) 从该 JSON 生成，修改入选正文或选择范围后重新导出；示例不拥有流程、授权或自动同步职责。
+任务提示词按用途分别维护在 [Godot 开发提示词库](framework/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
 
-沿用 JSON 顶层数组中的 `Yaya 框架维护`、`Godot 项目开发` 两个 Project，保留 `project`、`categories` 结构，按用途放入对应分类。
+两份 JSON 各自保留仅含所属 Project 的顶层数组：`yaya-maintenance-prompts.json` 对应 `Yaya 框架维护`，`godot-development-prompts.json` 对应 `Godot 项目开发`。保留 `project`、`categories` 结构，按用途放入对应分类。
 
 提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/review/baselines/skill-script-prompt-design.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后同步 [提示词使用场景清单](framework/review/baselines/scenario-coverage.md#提示词使用场景清单) 与受影响的使用说明。
 

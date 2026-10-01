@@ -17,7 +17,7 @@ Feature 交付前发现规则、表现或二者接入的 Bug。例如数值计�
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../../prompts.json>)中的“Godot 项目开发 → 修复与改进 → Feature 交付前发现 Bug”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../../godot-development-prompts.json>)中的“Godot 项目开发 → 修复与改进 → Feature 交付前发现 Bug”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
 
 **S1｜记录问题与现场**
 

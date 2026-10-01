@@ -16,7 +16,7 @@
 
 每条提示词只对应一个具体场景，每篇具体场景只有一条专用提示词。两者围绕同一入口、处理目标、执行范围和可验证出口；不同场景应编写各自的正文，不能复制通用路由正文后只换名称。重复用途应合并为一个场景和一个入口。
 
-提示词正文唯一维护在 [prompts.json](../../prompts.json)。保留顶层 Project 数组以及 `project`、`categories` 结构：Project 下为分类，分类下为“提示词名称：正文”，不增加中间状态分类或另一份手工映射表。
+提示词正文按用途分别维护在 [Godot 开发提示词库](../../godot-development-prompts.json)和 [Yaya 框架维护提示词库](../../yaya-maintenance-prompts.json)，每条正文只有一个来源。每份保留仅含所属 Project 的顶层数组以及 `project`、`categories` 结构：Project 下为分类，分类下为“提示词名称：正文”，不增加中间状态分类或另一份手工映射表。
 
 场景路径直接对应 JSON 的名称：
 

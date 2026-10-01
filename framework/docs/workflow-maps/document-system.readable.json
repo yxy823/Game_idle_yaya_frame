@@ -268,7 +268,7 @@
       "y": 320,
       "width": 270,
       "height": 88,
-      "label": "集中提示词库\nprompts.json",
+      "label": "任务提示词\nGodot 开发 / Yaya 维护",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -290,11 +290,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：所有手写任务提示词正文的唯一维护位置。\n位置：framework/prompts.json。\n场景速查与其名称一一对应；开发场景图复用 Godot 场景名称，advisor 的精选表达参考由导出器派生。",
+      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/godot-development-prompts.json 与 framework/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开两份库的维护导航。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompts.json"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/README.md"
       },
       "appearance": {
         "opacity": 1,

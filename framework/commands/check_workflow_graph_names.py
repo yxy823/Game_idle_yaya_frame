@@ -134,7 +134,7 @@ def compare_names(prompts_path: Path, graph_path: Path, project: str) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("--prompts", type=Path, default=ROOT / "framework/prompts.json")
+    parser.add_argument("--prompts", type=Path, default=ROOT / "framework/godot-development-prompts.json")
     parser.add_argument("--graph", type=Path, default=DEFAULT_GRAPH)
     parser.add_argument("--project", default="Godot 项目开发")
     parser.add_argument("--summary", action="store_true", help="Print counts only; default includes all field locations and candidates")

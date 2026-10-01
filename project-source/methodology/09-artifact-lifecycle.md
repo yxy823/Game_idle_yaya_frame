@@ -59,7 +59,7 @@ Use the existing Progress and Feature notes for information that must survive th
 
 Follow `agent-rules/00-core/git-worktree-and-commits.md` for state preservation in the task's target checkout and any authorized record commit. A handoff does not establish human acceptance or completion, reset Feature state, discard WIP, create a second handoff ledger or require an operating-system temporary file. Preserve the user's explicit pause or narrower current scope; old implementation authorization cannot override it. Generating text does not open a new conversation, send a message or start its proposed action.
 
-`task-handoff-godot` organizes this work as a direct entry. A request only to understand status or choose a workflow may instead use `project-next-step-advisor`; that read-only method does not update records. When a prompt is requested, follow the format below using project-local sources; generated projects do not need the framework's full prompt library.
+`task-handoff-godot` organizes this work as a direct entry. A request only to understand status or choose a workflow may instead use `project-next-step-advisor`; that read-only method does not update records. When a prompt is requested, follow the project-owned format below and use current project facts. The advisor selects scenario material from its declared shared Godot catalog; task handoff uses the owning task's sources.
 
 ## Continuation prompts
 

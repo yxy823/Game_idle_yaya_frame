@@ -10,9 +10,10 @@
 Game_idle_yaya_frame/
 ├── AGENTS.md                  当前维护约定
 ├── framework/
-│   ├── commands/              创建、导出、路径检查与按需回归入口
+│   ├── commands/              创建、路径检查与按需回归入口
 │   ├── project-files.json     唯一复制映射
-│   ├── prompts.json           集中任务提示词
+│   ├── godot-development-prompts.json  Godot 项目开发提示词
+│   ├── yaya-maintenance-prompts.json   Yaya 框架维护提示词
 │   ├── docs/                  操作手册、场景速查与维护说明
 │   ├── tests/                 维护和外部项目回归夹具
 │   └── review/                长期准则、基线与按次报告
@@ -49,7 +50,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 新项目预设 `docs/gdd/` 用途说明。创建后可以由 `design-gdd` 从想法形成设计，也可以导入并整理已有资料。新建 GDD 默认采用总览与主题文档，已有结构按需维护；开始依赖设计的规划或实现前，当前范围必须有足够明确的真实设计，目录说明和空模板不能代替它。
 
-工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/框架基础/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [prompts.json](framework/prompts.json)，在实际项目目录使用。
+工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/框架基础/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [Godot 开发提示词库](framework/godot-development-prompts.json)，在实际项目目录使用；维护工作使用 [Yaya 框架维护提示词库](framework/yaya-maintenance-prompts.json)。
 
 ## 项目能力与边界
 
@@ -66,8 +67,8 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 同一项目目录内可以暂停、切换和换对话续接，保留真实差异及已有授权；已有明确目标工作目录时，在该目录继续。worktree 按任务需要与授权使用，不是默认前置；不为多人改动归属建立机制。独立调研和审核使用真实可用的专用上下文；角色文件存在不证明加载或隔离成功。
 
-- **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不查询框架、不自动升级或同步。
-- **advisor 参考**：只携带从集中库导出的精选表达参考，不让项目依赖维护源。
+- **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不自动升级或同步。
+- **advisor 入口**：根据项目现状，通过固定绝对路径读取本机 Godot 开发提示词库，选择适用场景、起草具体指令并判断覆盖缺口；执行仍依据项目自己的规则与有效授权。
 - **脚本边界**：保存和检查实际成果，不设置逐动作 Hook、重复状态或发布资格。
 
 ## 维护与验证
