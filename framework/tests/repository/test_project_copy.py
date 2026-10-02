@@ -164,6 +164,68 @@ class ProjectCopyTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             copy_project(self.source, self.source / "project")
 
+    def assert_link_rejected_without_writing(self):
+        for existing in (False, True):
+            output = self.base / ("empty-project" if existing else "absent-project")
+            if existing:
+                output.mkdir()
+            with self.subTest(existing=existing), self.assertRaisesRegex(ValueError, "source link"):
+                copy_project(self.source, output)
+            if existing:
+                self.assertEqual(list(output.iterdir()), [])
+            else:
+                self.assertFalse(output.exists())
+
+    def test_nested_file_and_directory_symlinks_are_rejected(self):
+        outside = self.base / "outside"
+        outside.mkdir()
+        (outside / "private.txt").write_text("not distribution material", encoding="utf-8")
+        link = self.source / "project-source/skills/example/linked"
+        for target in (outside / "private.txt", outside, self.source / "project-source/Project_AGENTS.md"):
+            with self.subTest(target=target):
+                try:
+                    link.symlink_to(target, target_is_directory=target.is_dir())
+                except OSError as exc:
+                    if os.name == "nt" and getattr(exc, "winerror", None) == 1314:
+                        self.skipTest("Windows account cannot create symbolic links")
+                    raise
+                try:
+                    self.assert_link_rejected_without_writing()
+                finally:
+                    link.unlink()
+                    empty = self.base / "empty-project"
+                    if empty.exists():
+                        empty.rmdir()
+
+    @unittest.skipUnless(os.name == "nt", "Windows junction contract")
+    def test_junction_and_mapping_through_junction_are_rejected(self):
+        outside = self.base / "outside"
+        outside.mkdir()
+        (outside / "private.txt").write_text("not distribution material", encoding="utf-8")
+        link = self.source / "project-source/skills/example/linked"
+        result = subprocess.run(
+            ["pwsh", "-NoProfile", "-Command",
+             "New-Item -ItemType Junction -Path $env:YAYA_COPY_LINK "
+             "-Target $env:YAYA_COPY_TARGET -ErrorAction Stop | Out-Null"],
+            env={**os.environ, "YAYA_COPY_LINK": str(link), "YAYA_COPY_TARGET": str(outside)},
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(link.is_junction())
+        try:
+            self.assert_link_rejected_without_writing()
+            (self.base / "empty-project").rmdir()
+            self.entries = [{"source": "project-source/skills/example/linked/private.txt",
+                             "target": "private.txt"}]
+            self.save_manifest()
+            with self.assertRaisesRegex(ValueError, "source link|leaves its root"):
+                copy_project(self.source, self.base / "mapped-project")
+            self.assertFalse((self.base / "mapped-project").exists())
+        finally:
+            link.rmdir()
+        self.assertEqual((outside / "private.txt").read_text(encoding="utf-8"),
+                         "not distribution material")
+
     def test_conflicting_targets_fail_before_writing_in_either_order(self):
         file_source = "project-source/Project_AGENTS.md"
         directory_source = "project-source/skills/example"

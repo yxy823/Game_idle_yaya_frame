@@ -34,6 +34,12 @@ def relative_path(root: Path, value: str) -> Path:
     return path
 
 
+def reject_source_link(path: Path) -> None:
+    """源材料必须是普通文件或目录，复制时不得跟随链接或 Windows junction。"""
+    if path.is_symlink() or path.is_junction():
+        raise ValueError(f"Unsupported source link: {path}")
+
+
 def copy_project(source: Path, output: Path) -> int:
     """先检查目标和清单，再复制；复制失败时保留现场并返回原始错误。"""
     source = source.resolve()
@@ -52,6 +58,10 @@ def copy_project(source: Path, output: Path) -> int:
     copies = []
     for entry in entries:
         origin = relative_path(source, entry["source"])
+        unresolved = source
+        for part in Path(entry["source"]).parts:
+            unresolved = unresolved / part
+            reject_source_link(unresolved)
         destination = relative_path(output, entry["target"])
         if not origin.exists():
             raise FileNotFoundError(origin)
@@ -74,11 +84,17 @@ def copy_project(source: Path, output: Path) -> int:
     for origin, destination in copies:
         claim(destination, origin.is_dir())
         if origin.is_dir():
-            for child in origin.rglob("*"):
+            pending = list(origin.iterdir())
+            while pending:
+                child = pending.pop()
                 relative = child.relative_to(origin)
                 is_directory = child.is_dir()
-                if not is_python_cache(relative, is_directory):
-                    claim(destination / relative, is_directory)
+                if is_python_cache(relative, is_directory):
+                    continue
+                reject_source_link(child)
+                claim(destination / relative, is_directory)
+                if is_directory:
+                    pending.extend(child.iterdir())
 
     # 只复制清单明确指定的文件或目录，不渲染内容，也不附加身份或状态文件。
     output.mkdir(parents=True, exist_ok=True)
