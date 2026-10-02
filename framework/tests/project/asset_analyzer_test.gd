@@ -14,16 +14,19 @@ var _service: Service
 var _results: Dictionary[int, Dictionary] = {}
 var _owned_files: Array[String] = []
 var _contract_originals: Dictionary[String, PackedByteArray] = {}
+var _original_path: String
 
 
 func before_test() -> void:
 	_results.clear()
+	_original_path = OS.get_environment("PATH")
 	_service = auto_free(Service.new())
 	add_child(_service)
 	_service.completed.connect(func(id: int, data: Dictionary) -> void: _results[id] = data)
 
 
 func after_test() -> void:
+	OS.set_environment("PATH", _original_path)
 	for path: String in _contract_originals:
 		_restore_contract(path)
 	_contract_originals.clear()
@@ -96,9 +99,21 @@ func test_real_audio_image_and_cache_through_process_boundary() -> void:
 	assert_bool(_results[cached].cache.hit).is_true()
 
 
-func test_missing_process_is_structured_failure() -> void:
+func test_python_command_and_missing_explicit_paths() -> void:
+	var python_path := _service.executable
 	_service.executable = "res://tests/nonexistent-python.exe"
 	var task := _service.submit(AUDIO, "audio")
+	await _wait_for(task)
+	assert_str(_results[task].errors[0].code).is_equal("process_missing")
+	assert_bool(python_path.is_absolute_path()).is_true()
+	OS.set_environment("PATH", python_path.get_base_dir() + ";" + _original_path)
+	_service.executable = python_path.get_file().get_basename()
+	task = _service.submit(IMAGE, "image", {}, true)
+	await _wait_for(task)
+	assert_str(_results[task].status).is_equal("success")
+	assert_bool(_results[task].series.has("alpha_histogram")).is_true()
+	_service.executable = "reports/nonexistent/" + python_path.get_file()
+	task = _service.submit(IMAGE, "image", {}, true)
 	await _wait_for(task)
 	assert_str(_results[task].errors[0].code).is_equal("process_missing")
 

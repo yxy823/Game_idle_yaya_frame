@@ -60,7 +60,7 @@ class UnitTestPathsTests(unittest.TestCase):
     def _merge_file(self) -> subprocess.CompletedProcess[str]:
         return subprocess.run(
             [sys.executable, "-B", str(MERGE_HELPER),
-             "--components", str(self.candidates_path)],
+             "--repo-root", str(self.root), "--components", str(self.candidates_path)],
             cwd=self.root, text=True, capture_output=True, check=False,
         )
 
@@ -88,6 +88,41 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertFalse((self.root / "tests/unit/inventory").exists())
         self.assertEqual(self._registry()["tests"], [])
         self.assertEqual(self._strict().returncode, 0)
+
+    def test_explicit_project_resolves_candidates_and_suites_outside_working_directory(self) -> None:
+        component = self._component(self._suite())
+        self._write_json(self.candidates_path, [component])
+        result = subprocess.run(
+            [sys.executable, "-B", str(MERGE_HELPER), "--repo-root", str(self.root),
+             "--components", "components.json"],
+            cwd=self.root.parent, text=True, capture_output=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self._registry()["components"], [component])
+
+    def test_default_project_is_script_owner_not_another_project_in_cwd(self) -> None:
+        for relative in ("tools/__init__.py", "tools/lib/__init__.py",
+                         "tools/features/merge-test-registry.py", "tools/lib/atomic_json.py",
+                         "tools/lib/feature_evolution.py", "tools/lib/test_selection.py"):
+            destination = self.root / relative
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes((REPO_ROOT / relative).read_bytes())
+        component = self._component(self._suite())
+        self._write_json(self.candidates_path, [component])
+        foreign = self.root / "another-project"
+        (foreign / "docs").mkdir(parents=True)
+        for name in ("test-registry.json", "feature-list.json", "feature-list-revisions.json"):
+            (foreign / "docs" / name).write_bytes((self.root / "docs" / name).read_bytes())
+        foreign_registry = foreign / "docs/test-registry.json"
+        original = foreign_registry.read_bytes()
+        result = subprocess.run(
+            [sys.executable, "-B", str(self.root / "tools/features/merge-test-registry.py"),
+             "--components", "components.json"],
+            cwd=foreign, text=True, capture_output=True, check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(self._registry()["components"], [component])
+        self.assertEqual(foreign_registry.read_bytes(), original)
 
     def test_existing_suite_file_and_directory_are_retained(self) -> None:
         from tools.lib.test_selection import normalized_path

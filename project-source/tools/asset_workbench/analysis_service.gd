@@ -91,21 +91,36 @@ func reserved_memory_mib() -> int:
 func _start_next() -> void:
 	var task_id: int = _queue.pop_front()
 	var job: Job = _jobs[task_id]
+	var command := _executable_path()
 	var issue := Source.path_issue(job.request.path, job.request.asset_type)
 	if not issue.is_empty():
 		job.fail(issue.code, issue.message)
 	elif Source.memory_mib(job.request.asset_type) > memory_budget_mib:
 		job.fail("memory_budget", "Task reservation exceeds the configured analysis pool budget.")
-	elif executable.is_empty() or not FileAccess.file_exists(executable):
-		job.fail("process_missing", "Set an existing python_executable in docs/methodology-config.json")
+	elif command.is_empty() or (
+			command.is_absolute_path() and not FileAccess.file_exists(command)):
+		job.fail("process_missing",
+			"Set an available Python path or command in docs/methodology-config.json")
 	elif not FileAccess.file_exists(worker_path):
 		job.fail("worker_missing", "Analyzer worker file is missing")
 	elif DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(JOB_DIRECTORY)) != OK:
 		job.fail("request_write", "Cannot create analysis job directory")
 	else:
-		job.start(executable, ProjectSettings.globalize_path(worker_path))
+		job.start(command, ProjectSettings.globalize_path(worker_path))
 	_running.append(task_id)
 	state_changed.emit(task_id, "running")
+
+
+func _executable_path() -> String:
+	if executable.is_empty() or executable.is_absolute_path():
+		return executable
+	var local_path := ProjectSettings.globalize_path("res://".path_join(executable))
+	var explicit_path := executable.contains("/") or executable.contains("\\") \
+		or executable.contains(":")
+	if FileAccess.file_exists(local_path) or explicit_path:
+		return local_path
+	# Only bare command names use the operating system's PATH lookup.
+	return executable
 
 
 func _deliver(task_id: int, data: Dictionary) -> void:

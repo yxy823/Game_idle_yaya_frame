@@ -42,7 +42,9 @@ $LASTEXITCODE
 
 ## 调用
 
-`python_executable` 和 `engine_executable` 保存完整路径， 不包含引号或参数。测试使用固定入口 `tools/testing/run-gdunit-tests.py`，默认读取配置中的 Godot 路径；全量范围用 `--scope full` 指定。
+`python_executable` 支持完整路径、项目相对路径或 PATH 中的命令名；`engine_executable` 使用完整路径或项目相对文件路径，不查询 PATH。两者都不包含 shell 引号或参数。测试使用固定入口 `tools/testing/run-gdunit-tests.py`，默认读取配置中的 Godot 路径；全量范围用 `--scope full` 指定。
+
+`merge-test-registry.py` 默认修改脚本所属项目；可用 `--repo-root <项目目录>` 指定目标。`--components` 的相对路径及候选中的测试路径都以目标项目为准，不依赖命令启动时所在的目录。
 
 ```powershell
 python -B tools/checks/check-project-environment.py --require-ready

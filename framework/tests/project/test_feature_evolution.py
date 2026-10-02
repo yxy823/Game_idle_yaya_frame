@@ -274,7 +274,8 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertTrue(self.validate())
         helper = ROOT / "tools/features/merge-test-registry.py"
         self.write("components.json", [])
-        command = [sys.executable, "-B", str(helper), "--components", "components.json"]
+        command = [sys.executable, "-B", str(helper), "--repo-root", str(self.root),
+                   "--components", "components.json"]
         path = self.root / "docs/test-registry.json"
         before = path.read_bytes()
         result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)

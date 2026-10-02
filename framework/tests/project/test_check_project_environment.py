@@ -95,10 +95,17 @@ class ProjectEnvironmentTests(unittest.TestCase):
 
     def test_unsupported_engine_version_is_rejected(self) -> None:
         config = self._config(sys.executable)
+        for version in ("4.8.0.stable", "4.70.stable", "4.6.9.stable", "4.7foo"):
+            with self.subTest(version=version), mock.patch.object(
+                    check_project_environment, "_read_engine_version", return_value=(version, None)):
+                errors = check_project_environment._readiness_errors(config, self.repo_root)
+                self.assertIn("engine executable must report Godot 4.7.x", errors)
+
+    def test_zero_patch_version_uses_godot_branch_only_format(self) -> None:
         with mock.patch.object(check_project_environment, "_read_engine_version",
-                               return_value=("4.8.0.stable", None)):
-            errors = check_project_environment._readiness_errors(config, self.repo_root)
-        self.assertIn("engine executable must report Godot 4.7.x", errors)
+                               return_value=("4.7.stable.official.example", None)):
+            self.assertEqual(check_project_environment._readiness_errors(
+                self._config(sys.executable), self.repo_root), [])
 
     def test_readiness_uses_observed_engine_version(self) -> None:
         config = self._config(sys.executable)

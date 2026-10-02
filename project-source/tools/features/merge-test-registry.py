@@ -15,6 +15,8 @@ from tools.lib.feature_evolution import (
 )
 from tools.lib.test_selection import read_json_value, SelectionError
 
+DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
+
 
 class RegistryError(ValueError):
     """Raised when registry input cannot be merged without losing information."""
@@ -27,7 +29,7 @@ def _read_json(path: Path) -> Any:
         raise RegistryError(str(exc)) from exc
 
 
-def _read_candidates(path: Path) -> list[dict[str, Any]]:
+def _read_candidates(path: Path, repo_root: Path) -> list[dict[str, Any]]:
     data = _read_json(path)
     if isinstance(data, dict):
         data = data.get("components")
@@ -36,7 +38,7 @@ def _read_candidates(path: Path) -> list[dict[str, Any]]:
     candidates: list[dict[str, Any]] = []
     seen: set[str] = set()
     for index, component in enumerate(data):
-        component_id = validate_registry_component(component, f"candidates[{index}]", Path.cwd())
+        component_id = validate_registry_component(component, f"candidates[{index}]", repo_root)
         if component_id in seen:
             raise RegistryError(f"duplicate candidate component id: {component_id}")
         seen.add(component_id)
@@ -44,10 +46,9 @@ def _read_candidates(path: Path) -> list[dict[str, Any]]:
     return candidates
 
 
-def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
-    # Run from the project root, as required for registered unit-test paths.
-    registry_path = Path(TEST_REGISTRY_PATH)
-    registry = validate_registry(_read_json(registry_path), Path.cwd())
+def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, int]:
+    registry_path = repo_root / TEST_REGISTRY_PATH
+    registry = validate_registry(_read_json(registry_path), repo_root)
     index = _read_json(registry_path.parent / "feature-list.json")
     if not isinstance(index, dict) or not isinstance(index.get("features"), list):
         raise RegistryError("component merging requires the adjacent Feature index")
@@ -60,7 +61,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
     except EvolutionError as exc:
         raise RegistryError(str(exc)) from exc
 
-    candidates = _read_candidates(candidates_path)
+    candidates = _read_candidates(repo_root / candidates_path, repo_root)
     existing = {component["id"]: component for component in registry["components"]}
     added = 0
     for candidate in candidates:
@@ -75,7 +76,7 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
         existing[component_id] = candidate
         added += 1
 
-    validate_registry(registry, Path.cwd())
+    validate_registry(registry, repo_root)
     if any(test["status"] == "retired" for test in registry["tests"]):
         # Component merging must preserve valid evolution, not merely its JSON shape.
         try:
@@ -95,16 +96,19 @@ def merge_registry(candidates_path: Path) -> tuple[str, int, int]:
 
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Merge components into docs/test-registry.json; run from the project root."
+        description="Merge components into the selected project's docs/test-registry.json."
     )
-    parser.add_argument("--components", type=Path, required=True)
+    parser.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT,
+                        help="Target project; defaults to the project containing this script.")
+    parser.add_argument("--components", type=Path, required=True,
+                        help="Candidate JSON, absolute or relative to the selected project.")
     return parser.parse_args(list(argv))
 
 
 def main() -> int:
     args = _parse_args(sys.argv[1:])
     try:
-        state, added, preserved_tests = merge_registry(args.components)
+        state, added, preserved_tests = merge_registry(args.components, args.repo_root.resolve())
     except (RegistryError, EvolutionError) as exc:
         print(f"TEST REGISTRY MERGE: BLOCKED - {exc}", file=sys.stderr)
         return 2

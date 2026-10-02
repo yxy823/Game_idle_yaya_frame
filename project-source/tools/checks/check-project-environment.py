@@ -139,7 +139,7 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
             errors.append(version_error)
         else:
             print(f"Observed Godot version: {observed_version}")
-            if not re.match(r"^4\.7\.\d+(?:\.|$)", observed_version):
+            if not re.match(r"^4\.7(?:\.\d+)?(?:\.|$)", observed_version):
                 errors.append("engine executable must report Godot 4.7.x")
 
     if not (repo_root / "tools/testing/run-gdunit-tests.py").is_file():
