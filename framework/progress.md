@@ -10,3 +10,4 @@
 | 工作台具体体验确认 | 用户确认组合听感、编排节奏与截尾、分组与抢占、保存后的消费体验；已有画面验收不重复列入。从[示例使用说明](../project-source/asset_workbench/examples/README.md)进入第四工作台或对应消费场景，自动测试不代替这些人工体验。 |
 | 编辑器插件兼容性缺口 | 资源表格已安装但默认停用，组合退出泄漏根因未确定；完整默认图形组合仍有 gdUnit4 重复连接与退出诊断，其单独基线也有错误。后续分别定位并在指定外部项目重验，不能把当前功能断言通过当作完整兼容；证据见 [插件版本记录](docs/framework-maintenance/editor-plugin-versions.md#godot-验证)。 |
 | 编辑器插件人工验收 | 待确认 Script-IDE 分屏/搜索、Inspector Tabs 标签切换、Kanban 拖放、资源表格编辑撤销，以及 Signal Lens 运行中信号捕获和远程图；范围见 [插件验证说明](docs/framework-maintenance/editor-plugin-versions.md#godot-验证)。 |
+| 创建器符号链接边界复验 | 本轮真实 Windows junction 拒绝与目标未写入检查已通过；普通文件、外部目录和内部文件的符号链接用例因本机创建权限不足而跳过。需在允许创建符号链接的环境运行 [test_project_copy.py](tests/repository/test_project_copy.py) 的 `test_nested_file_and_directory_symlinks_are_rejected`，确认三个子场景均实际执行且通过后删除本项。 |
