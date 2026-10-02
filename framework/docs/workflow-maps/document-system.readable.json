@@ -419,7 +419,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n基线用于持续维护；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/review-materials.md\n文件： framework/docs/framework-maintenance/baselines/*.md",
+      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n长期准则包括文档内容的固定归属，以及 Skill、脚本与提示词的职责；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/review-materials.md\n文件： framework/docs/framework-maintenance/baselines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

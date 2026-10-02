@@ -5,7 +5,7 @@
 | 入口 | 用途 |
 | --- | --- |
 | [根规则的核心原则](../../../AGENTS.md#核心决策原则) | 总体设计取舍与最小完整修改 |
-| [职责设计准则](baselines/skill-script-prompt-design.md) | 文本、Skill、脚本与提示词的职责判断 |
+| [职责设计准则](baselines/skill-script-prompt-design.md) | 文档固定归属、文本、Skill、脚本与提示词的职责判断 |
 | [场景范围与责任](baselines/scenario-coverage.md) | 当前支持范围；具体入口由场景索引维护 |
 
 审核默认在对话中交付。明确要求保存或当前任务确实需要留存的报告，放在 `framework/docs/framework-maintenance/reports/`，注明被审版本、范围、实际证据和未验证项。
