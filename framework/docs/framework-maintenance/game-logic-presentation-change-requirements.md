@@ -2,6 +2,8 @@
 
 本文保存 2026-10-01 已确认的变更依据，面向本次框架与新项目分发源的维护。它说明要解决的问题、采纳的要求和验收范围，不作为实施进度或长期架构规范的第二份正文。当前有效规则由项目规则、工程规则和 methodology 各自维护。
 
+本文仅保留到[框架待办](../../progress.md)中的“游戏职责与文档导航试读”完成，随后删除正文与导航；历史由 Git 保存。
+
 ## 1. 背景与目标
 
 现有框架已在[游戏组织指南](../../../project-source/defaults/docs/game-organization.md)中区分规则与表现，并按业务模块组织代码；[项目架构原则模板](../../../project-source/methodology/templates/project-rules.md.tmpl)在本次变更前使用“数据规则、编排控制、表现输入”三层表述。[专业来源约定](../../../project-source/methodology/11-specialist-workflows.md)已经区分 GDD、UI、一次游戏表现、架构和开发任务的记录职责。

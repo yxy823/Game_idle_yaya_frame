@@ -10,7 +10,7 @@
 | 编辑器效率插件的上游链接、安装版本、Godot 兼容性与升级核对 | [编辑器插件版本记录](editor-plugin-versions.md) |
 | 维护命令、复制清单、导出与路径检查工具 | [维护工具](../../README.md) |
 | 尚需推进的工作与真实验证缺口 | [框架待办](../../progress.md) |
-| 长期基线与按次审核报告 | [审核材料](../../review/README.md) |
-| 2026-10-01 游戏逻辑与表现组织模型的已确认变更范围 | [当次需求变更依据](game-logic-presentation-change-requirements.md)；保存决定与验收范围，长期规则仍由各自规范维护 |
+| 长期准则与当次报告的保留边界 | [复盘材料](../../review/README.md) |
+| 游戏职责与文档导航的待验收范围 | [当次需求变更依据](game-logic-presentation-change-requirements.md)；对应人工试读完成后删除本文档及此导航，历史由 Git 保存 |
 
 HTML 生成与检查范围见[阅读版说明](updating-the-blank-project.md#html-阅读版构建)。验证文档中的带日期输出路径是夹具的实际默认值，不代表本轮运行结果；历史报告只证明对应版本，不替代当前验证。

@@ -29,7 +29,7 @@
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
-| 职责设计和审核事实 | 长期准则在 framework/review/baselines/，当次报告在 framework/review/reports/ |
+| 职责设计和审核事实 | 长期准则在 framework/review/baselines/；当次报告的保存与清理由[复盘材料说明](../../review/README.md)规定 |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
 | 正式操作提示词 | framework/godot-development-prompts.json 与 framework/yaya-maintenance-prompts.json，按用途各自维护完整正文 |
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
@@ -76,7 +76,7 @@ Godot worktree 的共同运行准备只维护在 `worktree-create-godot/referenc
 - **结构变化**：更新入口、链接、锚点和相关图。
 - **仅内部实现变化**：使用契约不变时，核对后不必制造无意义修改。
 
-文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 与当次报告保存，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
+文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 保存；当次仍需使用的报告按[保留边界](../../review/README.md)处理，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
@@ -159,7 +159,7 @@ advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/godot-developmen
 - **核实收到的意见**：[外部意见复核](<../quick-reference/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
 - **验证真实流程**：[小任务验证](<../quick-reference/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
 
-总体判断依据为[设计复盘](../../review/baselines/design-quality.md)，文本与职责评价依据为[职责设计准则](../../review/baselines/skill-script-prompt-design.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据为[根规则的核心原则](../../../AGENTS.md#核心决策原则)，文本与职责评价依据为[职责设计准则](../../review/baselines/skill-script-prompt-design.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 后续用口语继续
 

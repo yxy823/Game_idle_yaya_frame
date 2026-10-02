@@ -95,7 +95,7 @@
 
 两份 JSON 各自保留仅含所属 Project 的顶层数组：`yaya-maintenance-prompts.json` 对应 `Yaya 框架维护`，`godot-development-prompts.json` 对应 `Godot 项目开发`。保留 `project`、`categories` 结构，按用途放入对应分类。
 
-提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/review/baselines/skill-script-prompt-design.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后同步 [提示词使用场景清单](framework/review/baselines/scenario-coverage.md#提示词使用场景清单) 与受影响的使用说明。
+提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/review/baselines/skill-script-prompt-design.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后核对[场景索引](framework/docs/quick-reference/scenario-index.md)与受影响的使用说明，只同步实际变化，不维护第二份场景清单。
 
 ## 本地提交
 

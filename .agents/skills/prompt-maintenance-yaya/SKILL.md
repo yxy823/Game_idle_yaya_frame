@@ -20,7 +20,7 @@ description: 维护 Yaya 框架与 Godot 开发提示词库中的分类或提示
 | 本次变化 | 查阅与处理 |
 | --- | --- |
 | 提示词正文或入口范围变化 | 按[场景编写约定](../../../framework/docs/quick-reference/README.md)核对同名场景的输入、方法、授权与出口，修改实际受影响内容；场景页不复制完整提示词。 |
-| 新增、删除、重命名或调整 Project / 分类 | 沿准则的准确名称同步 JSON 与同名场景路径、一级标题，再核对[场景索引](../../../framework/docs/quick-reference/scenario-index.md)、[覆盖清单](../../../framework/review/baselines/scenario-coverage.md#提示词使用场景清单)及直接引用。正文变化也需核对这些导航的描述，未失效处不制造修改。 |
+| 新增、删除、重命名或调整 Project / 分类 | 沿准则的准确名称同步 JSON 与同名场景路径、一级标题，再核对[场景索引](../../../framework/docs/quick-reference/scenario-index.md)及直接引用。正文变化也需核对导航描述，未失效处不制造修改，不维护第二份场景清单。 |
 | Godot 场景集合、名称、分类或实际衔接变化 | 读取[场景图维护约定](../../../framework/docs/workflow-maps/README.md#阅读与维护)，更新唯一维护的可读版；保留已有 ID、布局与显示字段，按[保存格式](../../../framework/docs/workflow-maps/README.md#编写与保存格式)维护字段顺序，核对场景名称和相关连线，路径变化还需刷新场景链接。图只覆盖 Godot，框架场景不加入其中。仅修改提示词措辞且未改变这些关系时无需改图。 |
 | Godot 场景的匹配条件或下一步入口变化 | 核对 [advisor](../../../project-source/skills/project-next-step-advisor/SKILL.md) 的状态判断与入口说明。advisor 直接读取同一份 Godot 提示词库，无需导出或同步副本；只修改实际失效的说明。 |
 | 收录手册的 Markdown 变化 | 按[维护验证范围](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)及[阅读版构建](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)处理相应手册。命令、环境与审批读取现有说明及根规则，不复制机器路径，不手改 HTML。 |

@@ -50,6 +50,43 @@
 
 迁移检查使用另一条干净路径、无 `.godot` 缓存和无已初始化数据的副本重新导入、加载资源与启动入口。 可以在指定测试项目已被 `.gdignore` 排除的报告区放置独立子项目，避免外层 Godot 扫描到重复全局类。 这证明本次版本在所测 Windows/Godot 版本和路径下可重建；跨机器仍需重新完成工具路径配置与验证。
 
+## lint 与运行器专项入口
+
+这些夹具验证工具本身，不随新项目分发，也不要求每次维护都运行。源文件在 `framework/tests/project/`。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
+
+| 夹具 | 入口与用途 | 输出及副作用 |
+| --- | --- | --- |
+| `gdscript_lint_contracts.gd` | SceneTree 脚本；检查解析、度量、忽略指令及具体诊断规则 | `--` 后唯一参数是 JSON 报告路径；只在内存中构造被分析代码 |
+| `gdscript_lint_entry_contracts.gd` | SceneTree 脚本；检查 CLI 参数、配置拒绝、退出码与 JSON 一致性 | 同上；临时替换根目录 `gdlint.json`，创建 `gdlint-entry-contracts*` 文件，正常结束恢复。已有同名残留时拒绝运行，只用于可丢弃的外部项目 |
+| `gdscript_lint_editor_contracts.gd` | 临时 EditorPlugin；检查真实面板加载、控件保存及重建 | 参数为 `--lint-editor-contracts <报告路径>`；临时修改项目配置和本机 `code_quality/*` 编辑器设置，正常结束恢复，不能与其他编辑器实例并行 |
+| `gdunit_runner_contracts.gd` | gdUnit 套件；检查真实发现、参数化、预期错误和未处理的引擎错误 | 使用现有运行器及其 `result.json`；设置 `YAYA_RUNNER_REGRESSION_FAILURE=native` 的负向运行应失败，不能算业务测试失败或改报为通过 |
+
+两个 SceneTree 夹具放到外部项目 `tests/contracts/`，报告父目录须先存在。在该项目根目录，用已配置的 Godot 执行所选文件，例如：
+
+```powershell
+$validationGodot = (Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json).engine_executable
+New-Item -ItemType Directory -Path 'reports/maintenance' -Force
+& $validationGodot --headless --path . --script res://tests/contracts/gdscript_lint_contracts.gd -- reports/maintenance/lint-contracts.json | Out-Host
+$LASTEXITCODE
+```
+
+每轮使用不覆盖旧证据的报告名。核对进程退出码与 JSON 的 `failures`；CLI 夹具内故意触发的拒绝由夹具断言核实，不凭日志出现错误字样就判整项失败。异常中断时先检查备份和临时文件，不能覆盖残留后重跑。
+
+编辑器夹具不能用 `--script` 启动。将它放到外部项目 `addons/maintenance_lint_contracts/`，在同目录建立临时 `plugin.cfg`：
+
+```ini
+[plugin]
+name="Maintenance lint contracts"
+description="Temporary lint editor checks"
+author="Framework maintenance"
+version="1.0"
+script="gdscript_lint_editor_contracts.gd"
+```
+
+备份项目配置及相关编辑器设置，把这个插件加入项目的启用列表，再执行 `& $validationGodot --headless --editor --path . -- --lint-editor-contracts reports/maintenance/lint-editor-contracts.json | Out-Host`。检查退出码与报告；结束后恢复临时插件配置，异常中断还需恢复被测设置。不要在日常开发项目中做这一项检查。
+
+运行器夹具放到 `tests/features/gdunit_runner/`。用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py --target tests/features/gdunit_runner`，先确认正常运行通过；再仅为该进程设置上述负向环境变量，确认即使四个断言通过，未处理引擎错误仍使运行器失败。结束后恢复原环境变量，保留两次独立结果；不需要创建 Feature 或填写验收记录。
+
 ## 工作台专项验证入口
 
 先按本次修改选择下列小节，不要求每轮运行全部夹具。源文件均在 `framework/tests/project/`，仅将需要的文件复制到明确指定的外部验证项目；运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。
@@ -61,13 +98,15 @@
 | 变化范围 | 套件文件 | 主要核对 |
 | --- | --- | --- |
 | 基础试调与保存 | `asset_workbench_test.gd` | 草稿隔离、磁盘冲突、无效/边界参数、保存消费、延迟取消、重叠上限、浏览与绑定、A/B/连续触发、主题不改数据 |
+| 多对象工作台 | `asset_composition_test.gd` | 对象选择、独立草稿、批量增益、部分保存与消费；运行前建立 `reports/asset-analyzer/`，临时 Cue 在该目录创建并清理 |
+| Shader 组合 | `asset_shader_composition_test.gd` | Shader 重启、结束/停止恢复、独立资源保存与消费；套件必须放在 `tests/features/asset_shader_composition/`，其 `test-shader-cue.tres` 会被写入并删除，运行前确认不存在 |
 | 粒子、Tween 与动画 | `asset_effect_composition_test.gd` | 延迟/结束/停止、变换归属、重触发与退出取消、字段保存及源分析边界 |
 | 组合复用与共享 Cue | `asset_composition_reuse_test.gd` | 多实例草稿、共享保存分歧/外部冲突、消费与移除清理 |
 | 管理与编排 | `asset_playback_manager_test.gd`、`asset_feedback_timeline_test.gd`、`asset_timeline_integration_test.gd` | 句柄/预算、分组/抢占、待播音频、接管、冷释放/离树/重入；编排重读、窗口/循环/迟帧、草稿与原生消费 |
 | 消费依赖与启动恢复 | `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` | 四类入口未入树释放、显式 Cue 依赖、最近保存值、缺 Cue 恢复、不支持项/重复/容量反馈 |
 | 批量源格式契约 | `asset_analysis_source_contract_test.gd` | 独立检查当前源格式配置、配置变化与错误恢复；历史结果读取不依赖当前源格式配置 |
 
-保存测试只在测试目录写临时 Cue/资源，不修改示例 Cue。冷释放与已入树后的装卸是不同分支，不能互相替代。
+保存测试在各自测试目录或上表指定的报告目录写临时 Cue/资源，不修改示例 Cue。冷释放与已入树后的装卸是不同分支，不能互相替代。
 
 相关套件的依赖与分工如下：
 
@@ -76,6 +115,22 @@
 - **集合、规则和历史**：`asset_analysis_group_test.gd` 继续核对其余职责，不重复承担源格式用例。其取消隔离测试也依赖 `tests/features/asset_analyzer/analyzer_process_fixture.py`；即使不运行单项分析套件，也必须将该 worker 复制到这个规定路径。
 
 编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不证明逐采样同步。管理器对象预算与生命周期回归也不替代规模测量。
+
+### Python 分析后端与内存边界
+
+这两项从框架根目录直接调用维护夹具，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../project-source/tools/asset_analyzer/README.md)准备该项目的固定版本依赖；后端测试还需要调用解释器可导入 `jsonschema`，并保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，示例项目路径须替换为本次实际路径：
+
+```powershell
+$env:YAYA_TEST_PROJECT = 'D:/A_Games/YayaValidation'
+$validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
+```
+
+| 夹具与命令（按需选择） | 检查及副作用 |
+| --- | --- |
+| `& $validationPython -B framework/tests/project/asset_analyzer_backend_test.py` | 实际音频/图像后端、错误输入、缓存与协议；写入专属临时媒体及缓存，正常清理；以 unittest 结果与退出码判断 |
+| `& $validationPython -B framework/tests/project/asset_analyzer_memory_check.py` | Windows 子进程内存限制、边界素材及双 worker 测量；生成并清理临时媒体和本次缓存，固定写入外部项目 `reports/asset-analyzer/memory-check.json` |
+
+内存测量会覆盖同名报告，先保留仍需使用的旧结果。检查真实进程退出码、内存记录和分配拒绝断言，不把一次测量推广为所有素材或设备的性能保证。结束后恢复原 `YAYA_TEST_PROJECT` 环境变量。
 
 ### 渲染、交互与源分析
 

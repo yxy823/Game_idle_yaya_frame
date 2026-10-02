@@ -8,22 +8,19 @@
 | --- | --- |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [project-files.json](project-files.json) | 唯一复制映射，每项只有 source 与 target |
-| [commands/create_project.py](commands/create_project.py) | 预检、复制与重命名，建立独立 Git 仓库及本地初始提交 |
+| [commands/README.md](commands/README.md) | 完整命令目录，含创建器、手册构建、路径/关系图检查和项目工具回归入口 |
 | [godot-development-prompts.json](godot-development-prompts.json) | Godot 项目开发的完整任务提示词；advisor 直接读取的共享来源 |
 | [yaya-maintenance-prompts.json](yaya-maintenance-prompts.json) | Yaya 框架维护的完整任务提示词 |
-| [commands/check_scenario_prompt_paths.py](commands/check_scenario_prompt_paths.py) | 从 JSON 名称和目录文件名核对提示词与场景一对一，不读取场景正文 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
 | [Codex 指令编写 Skill](../.agents/skills/writing-for-agents-yaya/SKILL.md) | 框架内 Codex 指令的编写、修改与作者自查；框架自用，不分发 |
 | [Codex 指令审核 Skill](../.agents/skills/review-agent-instructions-yaya/SKILL.md) | 独立实例对现有指令作正式只读审核；引用共用依据，不接管修复，不分发 |
 | [框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | 框架自用的手册、场景、维护与审核说明写作方法，独立维护且不分发 |
 | [Godot 项目文档编写 Skill](../project-source/skills/technical-documentation-writing-godot/SKILL.md) | 面向游戏项目的文档写作方法，独立维护并整包复制到新项目 |
-| [commands/build_blank_project_handbook.py](commands/build_blank_project_handbook.py) | 一次生成并检查两本独立 HTML 手册；共享 [模板](commands/blank-project-handbook-page.html)、[交互源码](commands/blank-project-handbook-interactions.js) 与渲染实现 |
-| [commands/run_project_tool_tests.py](commands/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目 |
 | [tests/](tests/) | 创建器、路径映射、文档指纹、人工文件等维护回归 |
 | [tests/project/](tests/project/) | 外部项目工具与真实 Godot 夹具，不进入复制清单 |
-| [review/README.md](review/README.md) | 长期准则、基线与按次审核报告的导航 |
+| [review/README.md](review/README.md) | 长期准则与当次报告的保留边界 |
 
-职责评价见 [Skill、脚本、提示词设计准则](review/baselines/skill-script-prompt-design.md)，场景用途见 [覆盖清单](review/baselines/scenario-coverage.md)，结构判断见 [设计基线](review/baselines/design-quality.md)。当次报告保留被审版本、检查范围与实际结果，不成为新增工作授权。
+总体取舍依据[根规则的核心原则](../AGENTS.md#核心决策原则)，职责评价见 [Skill、脚本、提示词设计准则](review/baselines/skill-script-prompt-design.md)，场景范围见[责任边界](review/baselines/scenario-coverage.md)。当次报告不成为新增工作授权，历史通过 Git 查阅。
 
 ## 复制入口
 
@@ -60,7 +57,7 @@ python -B framework/commands/check_scenario_prompt_paths.py
   - `2`：输入或结构错误。
 - **内容审核**：正文 H1、具体步骤、授权、语义和运行结果不在此工具检查范围内，仍须另行核对。
 
-新增或修改正文后同步同名场景及覆盖清单；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
+新增或修改正文后核对同名场景及[场景索引](docs/quick-reference/scenario-index.md)，只同步实际变化；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
 ## advisor 的共享场景入口
 
@@ -84,7 +81,7 @@ python -B framework/commands/run_project_tool_tests.py --project D:\Games\MyGodo
 
 这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不顺带执行 Godot、人工验收或发布。所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
 
-真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界集中在 [专项验证说明](docs/framework-maintenance/validating-framework.md#工作台专项验证入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
+真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界集中在 [专项验证说明](docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
 
 ## 构建 HTML 阅读版
 
