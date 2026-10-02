@@ -9,9 +9,9 @@
 | 内容 | 维护位置 |
 | --- | --- |
 | 项目分发材料 | project-source/；路径变化同时核对复制清单 |
-| 创建器与复制规则 | framework/commands/create_project.py 与 framework/project-files.json |
+| 创建器与复制规则 | framework/commands/create_project.py 与 framework/commands/project-files.json |
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
-| 具体项目或维护场景 | framework/docs/quick-reference/ 的对应 Project |
+| 具体项目或维护场景 | framework/prompt_scenarios/scenarios/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
 | Codex 指令编写、修改与作者自查 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
@@ -29,13 +29,13 @@
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
-| 职责设计和审核事实 | 长期准则在 framework/review/baselines/；当次报告的保存与清理由[复盘材料说明](../../review/README.md)规定 |
+| 职责设计和审核事实 | 长期准则在 framework/docs/framework-maintenance/baselines/；当次报告的保存与清理由[复盘材料说明](review-materials.md)规定 |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
-| 正式操作提示词 | framework/godot-development-prompts.json 与 framework/yaya-maintenance-prompts.json，按用途各自维护完整正文 |
+| 正式操作提示词 | framework/prompt_scenarios/prompts/godot-development-prompts.json 与 framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json，按用途各自维护完整正文 |
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-框架指令的编写、修改与作者自查使用 [Codex 指令编写 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](../../../.agents/skills/review-agent-instructions-yaya/SKILL.md)，按职责准则核对独立实例。两者引用同一份设计参考，不在一个 Skill 内切换实现与正式审核。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](../../review/baselines/skill-script-prompt-design.md)定义，按需查阅；拆分入口不新增每次修改必经的审核阶段。
+框架指令的编写、修改与作者自查使用 [Codex 指令编写 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](../../../.agents/skills/review-agent-instructions-yaya/SKILL.md)，按职责准则核对独立实例。两者引用同一份设计参考，不在一个 Skill 内切换实现与正式审核。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](baselines/skill-script-prompt-design.md)定义，按需查阅；拆分入口不新增每次修改必经的审核阶段。
 
 Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 
@@ -76,7 +76,7 @@ Godot worktree 的共同运行准备只维护在 `worktree-create-godot/referenc
 - **结构变化**：更新入口、链接、锚点和相关图。
 - **仅内部实现变化**：使用契约不变时，核对后不必制造无意义修改。
 
-文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 保存；当次仍需使用的报告按[保留边界](../../review/README.md)处理，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
+文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 保存；当次仍需使用的报告按[保留边界](review-materials.md)处理，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
@@ -86,12 +86,12 @@ Godot worktree 的共同运行准备只维护在 `worktree-create-godot/referenc
 | --- | --- |
 | docs/README.md | 两册与维护说明的统一导航 |
 | operation-manual/ | 框架、概念、对象、配置与工具用法 |
-| quick-reference/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
+| framework/prompt_scenarios/scenarios/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
 | framework-maintenance/ | 维护规范与验证工具说明，不保留另一套具体场景正文 |
 
 场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，对应关系、栏目使用和编号要求维护在速查手册 README；11 类信息的定义与写法引用框架版 Skill 的流程参考，不作为 Godot 项目文档的默认结构。
 
-- **路径核对**：使用 [路径检查器](../../commands/check_scenario_prompt_paths.py) 核对路径集合。
+- **路径核对**：使用 [路径检查器](../../prompt_scenarios/tools/check_scenario_prompt_paths.py) 核对路径集合。
 - **内容审核**：正文实质变化时由独立审核者确认标题、输入、单一目标、步骤与出口；调整列表时保留原有条件和先后依赖。只重新生成 HTML 不触发正文复审。
 
 路径匹配不证明内容或实际执行通过。
@@ -114,7 +114,7 @@ Godot worktree 的共同运行准备只维护在 `worktree-create-godot/referenc
 
 手册、维护说明、提示词库、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。Godot 版写作 Skill 是项目自身的分发材料，按普通项目 Skill 整包复制。项目 README 保持自身短导航；项目文件不接受自动同步。
 
-advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json` 作为本机共享场景入口。修改正文后无需导出；核对相关场景说明及 advisor 的实际匹配条件，执行规范和授权继续由项目持有。使用与维护见 [共享场景入口](../../README.md#advisor-的共享场景入口)。
+advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json` 作为本机共享场景入口。修改正文后无需导出；核对相关场景说明及 advisor 的实际匹配条件，执行规范和授权继续由项目持有。使用与维护见 [共享场景入口](../../README.md#advisor-的共享场景入口)。
 
 项目动态续接提示词的通用格式维护在 [Continuation prompts](../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，由 advisor 和 task-handoff-godot 引用；框架集中提示词仍保留各场景的具体输入、授权和停点目的。普通暂停、换对话和已有停点恢复不合并为一条通用提示词，也不因新增 Skill 要求每个入口另建场景。
 
@@ -143,7 +143,7 @@ advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/godot-developmen
 
 ## HTML 阅读版构建
 
-两本阅读版由同一[生成器](../../commands/build_blank_project_handbook.py)使用共享[页面模板](../../commands/blank-project-handbook-page.html)和[交互源码](../../commands/blank-project-handbook-interactions.js)分别生成；命令、参数、环境与输出见[构建用法](../../README.md#构建-html-阅读版)。Markdown 是唯一手写正文，不直接编辑生成的 HTML。
+两本阅读版由同一[生成器](../handbook/build_blank_project_handbook.py)使用共享[页面模板](../handbook/assets/blank-project-handbook-page.html)和[交互源码](../handbook/assets/blank-project-handbook-interactions.js)分别生成；命令、参数、环境与输出见[构建用法](../../README.md#构建-html-阅读版)。Markdown 是唯一手写正文，不直接编辑生成的 HTML。
 
 - **自动完成**：解析现有目录与分类，改写本册内部链接，渲染或复用 Mermaid SVG，检查本地链接、锚点、章节覆盖、两册隔离及离线资源，再写入 HTML。
 - **失败处理**：检查失败返回非零并保留既有阅读版，按脚本指出的源文件或链接修复后重跑。所选手册全部检查通过后才开始写入。
@@ -154,12 +154,12 @@ advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/godot-developmen
 
 按目标选择已有场景，不在维护规范中复写执行步骤：
 
-- **检查当前工作区**：[本地静态审核](<../quick-reference/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>)。
-- **请外部 Agent 审核**：[GitHub 快照审核](<../quick-reference/Yaya 框架维护/维护与复盘/想请独立 Agent 审核 GitHub 上的框架快照.md>)，以固定完整提交 SHA 区分远端快照与本地改动。
-- **核实收到的意见**：[外部意见复核](<../quick-reference/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
-- **验证真实流程**：[小任务验证](<../quick-reference/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
+- **检查当前工作区**：[本地静态审核](<../../prompt_scenarios/scenarios/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>)。
+- **请外部 Agent 审核**：[GitHub 快照审核](<../../prompt_scenarios/scenarios/Yaya 框架维护/维护与复盘/想请独立 Agent 审核 GitHub 上的框架快照.md>)，以固定完整提交 SHA 区分远端快照与本地改动。
+- **核实收到的意见**：[外部意见复核](<../../prompt_scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
+- **验证真实流程**：[小任务验证](<../../prompt_scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
 
-总体判断依据为[根规则的核心原则](../../../AGENTS.md#核心决策原则)，文本与职责评价依据为[职责设计准则](../../review/baselines/skill-script-prompt-design.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据为[根规则的核心原则](../../../AGENTS.md#核心决策原则)，文本与职责评价依据为[职责设计准则](baselines/skill-script-prompt-design.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 后续用口语继续
 

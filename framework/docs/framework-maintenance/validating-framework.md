@@ -42,7 +42,7 @@
 
 ## 一次有意义的流程抽样
 
-执行入口见[小任务验证场景](<../quick-reference/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)。本节只限定证据含义：
+执行入口见[小任务验证场景](<../../prompt_scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)。本节只限定证据含义：
 
 - 已有实现的保存、消费和试调回归，只证明本轮实际运行的行为，不证明重新经历了需求、规划和开发。
 - 补录文档不能充当当时进行需求讨论或 TDD 的证据；一个样例不能证明所有 Skill 和提示词已执行。
@@ -52,7 +52,7 @@
 
 ## lint 与运行器专项入口
 
-这些夹具验证工具本身，不随新项目分发，也不要求每次维护都运行。源文件在 `framework/tests/project/`。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
+这些夹具验证工具本身，不随新项目分发，也不要求每次维护都运行。源文件在 `framework/tests/external-project/tool-regression/`。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
 
 | 夹具 | 入口与用途 | 输出及副作用 |
 | --- | --- | --- |
@@ -89,7 +89,7 @@ script="gdscript_lint_editor_contracts.gd"
 
 ## 工作台专项验证入口
 
-先按本次修改选择下列小节，不要求每轮运行全部夹具。源文件均在 `framework/tests/project/`，仅将需要的文件复制到明确指定的外部验证项目；运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。
+先按本次修改选择下列小节，不要求每轮运行全部夹具。源文件均在 `framework/tests/external-project/workbench/`，仅将需要的文件复制到明确指定的外部验证项目；运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。
 
 ### 功能、保存与错误恢复
 
@@ -127,8 +127,8 @@ $validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
 
 | 夹具与命令（按需选择） | 检查及副作用 |
 | --- | --- |
-| `& $validationPython -B framework/tests/project/asset_analyzer_backend_test.py` | 实际音频/图像后端、错误输入、缓存与协议；写入专属临时媒体及缓存，正常清理；以 unittest 结果与退出码判断 |
-| `& $validationPython -B framework/tests/project/asset_analyzer_memory_check.py` | Windows 子进程内存限制、边界素材及双 worker 测量；生成并清理临时媒体和本次缓存，固定写入外部项目 `reports/asset-analyzer/memory-check.json` |
+| `& $validationPython -B framework/tests/external-project/workbench/asset_analyzer_backend_test.py` | 实际音频/图像后端、错误输入、缓存与协议；写入专属临时媒体及缓存，正常清理；以 unittest 结果与退出码判断 |
+| `& $validationPython -B framework/tests/external-project/workbench/asset_analyzer_memory_check.py` | Windows 子进程内存限制、边界素材及双 worker 测量；生成并清理临时媒体和本次缓存，固定写入外部项目 `reports/asset-analyzer/memory-check.json` |
 
 内存测量会覆盖同名报告，先保留仍需使用的旧结果。检查真实进程退出码、内存记录和分配拒绝断言，不把一次测量推广为所有素材或设备的性能保证。结束后恢复原 `YAYA_TEST_PROJECT` 环境变量。
 

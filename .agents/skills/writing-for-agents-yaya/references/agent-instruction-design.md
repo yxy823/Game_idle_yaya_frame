@@ -1,6 +1,6 @@
 # Codex 指令设计参考
 
-编写入口与正式审核入口按实际对象引用本页，核对触发、正文归属、按需阅读和完成边界。它是共用参考，不是编写或审核的执行入口，也不授予写入权限。Skill 职责及分工遵循[职责设计准则](../../../../framework/review/baselines/skill-script-prompt-design.md#skill-的评价维度)，普通文字的表达方法由框架文档写作包维护。
+编写入口与正式审核入口按实际对象引用本页，核对触发、正文归属、按需阅读和完成边界。它是共用参考，不是编写或审核的执行入口，也不授予写入权限。Skill 职责及分工遵循[职责设计准则](../../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#skill-的评价维度)，普通文字的表达方法由框架文档写作包维护。
 
 ## 让引用能在正确时机生效
 

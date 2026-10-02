@@ -48,7 +48,7 @@
 
 ## 游戏项目开发场景图
 
-[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../../godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../quick-reference/scenario-index.md)。
+[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../../prompt_scenarios/prompts/godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../../prompt_scenarios/scenarios/scenario-index.md)。
 
 图中保存为阅读调整的布局、文字换行、尺寸和连线外观，以及同名场景文件链接和三条替代表达备注。已有名称检查和链接维护命令默认处理此文件；提示词顺序变化不要求重排整图。
 
@@ -175,7 +175,7 @@
 
 本地链接由 Graph_Map 展示和复制，不直接打开文件，不把文件内容打包进 JSON。`target` 最长 8192 字符，不能是空白或含控制字符；本仓库的链接命令还会检查对应场景文件确实存在。仓库移动、场景分类或名称变化后，需要按当前路径更新链接。
 
-链接维护使用现有 [link_workflow_graph_scenarios.py](../../commands/link_workflow_graph_scenarios.py)，详细用法见[维护脚本说明](../../commands/README.md)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
+链接维护使用现有 [link_workflow_graph_scenarios.py](../../prompt_scenarios/tools/link_workflow_graph_scenarios.py)，详细用法见[维护脚本说明](../../commands/README.md)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
 
 上述附加字段以本轮核对的 Graph_Map `src/core/model.ts` 和 `docs/json-appearance.md` 为依据。日常场景维护保留已生效配置，不要求每次读取外部项目；确需新增字段或改变格式时，再核对实际查看器版本，不把同为 v1 当作支持所有外观配置的保证。
 
@@ -302,8 +302,8 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 
 | 检查内容 | 本仓库依据 |
 | --- | --- |
-| 节点名称与完整集合 | [Godot 开发提示词库](../../godot-development-prompts.json) |
-| 场景前提、出口和对应提示词 | [场景索引](../quick-reference/scenario-index.md)、[场景覆盖](../../review/baselines/scenario-coverage.md) |
+| 节点名称与完整集合 | [Godot 开发提示词库](../../prompt_scenarios/prompts/godot-development-prompts.json) |
+| 场景前提、出口和对应提示词 | [场景索引](../../prompt_scenarios/scenarios/scenario-index.md)、[场景覆盖](../framework-maintenance/baselines/scenario-coverage.md) |
 | 任务路由、Product 顺序与 GDD 前提 | [流程总览](../../../project-source/methodology/00-overview.md) |
 | 授权、验证、人工验收与完成 | [执行规范](../../../project-source/methodology/03-execute-loop.md) |
 | 专业工作职责 | [专业流程](../../../project-source/methodology/11-specialist-workflows.md) |
@@ -311,8 +311,8 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 场景集合或名称变化后，在仓库根目录使用现有只读命令检查图文件。`python` 应使用当前个人规则指定的解释器。
 
 ```powershell
-python -B framework/commands/check_workflow_graph_names.py --summary
-python -B framework/commands/link_workflow_graph_scenarios.py --check
+python -B framework/prompt_scenarios/tools/check_workflow_graph_names.py --summary
+python -B framework/prompt_scenarios/tools/link_workflow_graph_scenarios.py --check
 ```
 
 名称检查只忽略 CR/LF，核对名称多重集合并报告缺少、多余、重名及节点 ID 重复；删除 `--summary` 可查看准确字段位置和候选名称。链接检查默认针对可读版，核对场景文件及节点 `link`。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步台账。

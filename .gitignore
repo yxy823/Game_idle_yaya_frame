@@ -4,5 +4,5 @@ __pycache__/
 .pytest_cache/
 reports/*
 !reports/.gdignore
-/framework/.cache/handbook-mermaid/
+/framework/docs/handbook/.cache/handbook-mermaid/
 /framework/docs/workflow-maps/graph-usage.*.json

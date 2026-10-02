@@ -36,7 +36,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/旧项目想采用当前框架，先评估复制迁移方案.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/旧项目想采用当前框架，先评估复制迁移方案.md"
       },
       "appearance": {
         "opacity": 1,
@@ -79,7 +79,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/复制迁移方案已确定，现在迁移旧项目.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/复制迁移方案已确定，现在迁移旧项目.md"
       },
       "appearance": {
         "opacity": 1,
@@ -122,7 +122,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/准备开始新游戏，先创建空白项目.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/准备开始新游戏，先创建空白项目.md"
       },
       "appearance": {
         "opacity": 1,
@@ -165,7 +165,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/空白项目已经创建，现在配置开发环境.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/空白项目已经创建，现在配置开发环境.md"
       },
       "appearance": {
         "opacity": 1,
@@ -208,7 +208,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/工具位置或版本变了，需要更新项目环境.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/工具位置或版本变了，需要更新项目环境.md"
       },
       "appearance": {
         "opacity": 1,
@@ -251,7 +251,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/配置中的工具路径失效了，需要恢复可用环境.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/配置中的工具路径失效了，需要恢复可用环境.md"
       },
       "appearance": {
         "opacity": 1,
@@ -294,7 +294,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目创建与接入/第一次运行项目，Godot 还没有完成资源扫描.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目创建与接入/第一次运行项目，Godot 还没有完成资源扫描.md"
       },
       "appearance": {
         "opacity": 1,
@@ -337,7 +337,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/方案有一个外部问题没确定，需要查资料.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/方案有一个外部问题没确定，需要查资料.md"
       },
       "appearance": {
         "opacity": 1,
@@ -380,7 +380,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/功能已经写出来，需要补齐需求和任务记录.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/功能已经写出来，需要补齐需求和任务记录.md"
       },
       "appearance": {
         "opacity": 1,
@@ -423,7 +423,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/拿到一份外部需求，先整理成项目可用的草稿.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/拿到一份外部需求，先整理成项目可用的草稿.md"
       },
       "appearance": {
         "opacity": 1,
@@ -466,7 +466,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/有一个项目问题没想清楚，先讨论.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/有一个项目问题没想清楚，先讨论.md"
       },
       "appearance": {
         "opacity": 1,
@@ -509,7 +509,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/项目里同一个词有不同理解，需要统一并记录.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/项目里同一个词有不同理解，需要统一并记录.md"
       },
       "appearance": {
         "opacity": 1,
@@ -552,7 +552,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/界面效果还没确定，先用真实素材试一下.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/界面效果还没确定，先用真实素材试一下.md"
       },
       "appearance": {
         "opacity": 1,
@@ -595,7 +595,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/玩法效果还没确定，先做小实验.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/玩法效果还没确定，先做小实验.md"
       },
       "appearance": {
         "opacity": 1,
@@ -638,7 +638,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/技术方案是否可行还不确定，先做验证.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/技术方案是否可行还不确定，先做验证.md"
       },
       "appearance": {
         "opacity": 1,
@@ -681,7 +681,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有 GDD，需要预拆分 Product 交付范围.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已有 GDD，需要预拆分 Product 交付范围.md"
       },
       "appearance": {
         "opacity": 1,
@@ -724,7 +724,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/Product 已预拆分，准备细化当前交付范围.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/Product 已预拆分，准备细化当前交付范围.md"
       },
       "appearance": {
         "opacity": 1,
@@ -767,7 +767,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有模块的玩法要求变了，需要更新需求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已有模块的玩法要求变了，需要更新需求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -810,7 +810,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/想增加一个独立玩法模块，需要确定边界和顺序.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/想增加一个独立玩法模块，需要确定边界和顺序.md"
       },
       "appearance": {
         "opacity": 1,
@@ -853,7 +853,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/当前资产的美术方向不明确，需要定下来.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/当前资产的美术方向不明确，需要定下来.md"
       },
       "appearance": {
         "opacity": 1,
@@ -896,7 +896,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/当前模块的声音风格不明确，需要定下来.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/当前模块的声音风格不明确，需要定下来.md"
       },
       "appearance": {
         "opacity": 1,
@@ -939,7 +939,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/玩家要做什么已确定，需要设计界面和交互.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/玩家要做什么已确定，需要设计界面和交互.md"
       },
       "appearance": {
         "opacity": 1,
@@ -982,7 +982,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的界面要求要变，需要更新规格并明确影响.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已确认的界面要求要变，需要更新规格并明确影响.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1025,7 +1025,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/声音用途已确定，需要列出音频文件准备要求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/声音用途已确定，需要列出音频文件准备要求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1068,7 +1068,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/图片用途已确定，需要列出视觉文件准备要求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/图片用途已确定，需要列出视觉文件准备要求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1111,7 +1111,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的美术方向要调整，需要更新规范并检查影响.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已确认的美术方向要调整，需要更新规范并检查影响.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1154,7 +1154,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已确认的声音方向要调整，需要更新规范并检查影响.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已确认的声音方向要调整，需要更新规范并检查影响.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1197,7 +1197,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/实现前发现设计边界不清，先确定最小方案.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/实现前发现设计边界不清，先确定最小方案.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1240,7 +1240,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/已有实现和任务已对齐，现在补验证并办理交付.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/已有实现和任务已对齐，现在补验证并办理交付.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1283,7 +1283,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/Product 范围已确定，想自动推进到首次人工验收.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/Product 范围已确定，想自动推进到首次人工验收.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1326,7 +1326,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/人工验收已有结果，继续原 Goal.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/人工验收已有结果，继续原 Goal.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1369,7 +1369,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/想知道项目现在做到哪里.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/想知道项目现在做到哪里.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1412,7 +1412,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/想了解项目当前进度，并确定下一步.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/想了解项目当前进度，并确定下一步.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1455,7 +1455,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/收到 Codex 的回复，想判断并写出下一条指令.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/收到 Codex 的回复，想判断并写出下一条指令.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1498,7 +1498,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/Feature 已规划并可开始，现在实施这一项.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/Feature 已规划并可开始，现在实施这一项.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1541,7 +1541,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1584,7 +1584,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1627,7 +1627,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/前一个模块已完成，准备规划下一个 Product.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/前一个模块已完成，准备规划下一个 Product.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1670,7 +1670,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/要求已经改好，开工前需要同步 Feature 计划.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/要求已经改好，开工前需要同步 Feature 计划.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1713,7 +1713,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/Feature 正在开发，已确认要求发生变化.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/Feature 正在开发，已确认要求发生变化.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1756,7 +1756,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/Feature 已交付，后来确认要改变要求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/Feature 已交付，后来确认要改变要求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1799,7 +1799,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/已有计划，但采用的来源基线无法核实.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/已有计划，但采用的来源基线无法核实.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1842,7 +1842,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/已经选定新框架，检查适用后在当前项目替换.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/已经选定新框架，检查适用后在当前项目替换.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1885,7 +1885,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/某处代码总是难改，先调查是否值得重构.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/某处代码总是难改，先调查是否值得重构.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1928,7 +1928,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/已经记录了几个代码问题，想选一个值得重构的.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/已经记录了几个代码问题，想选一个值得重构的.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1971,7 +1971,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2014,7 +2014,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/Feature 交付后发现 Bug.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/Feature 交付后发现 Bug.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2057,7 +2057,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/发现异常，先定位原因，不修改实现.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/发现异常，先定位原因，不修改实现.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2100,7 +2100,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/重构目标已经选定，现在调整结构并保持行为.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/重构目标已经选定，现在调整结构并保持行为.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2143,7 +2143,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/项目工具需要修改，按工程任务完成.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/项目工具需要修改，按工程任务完成.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2186,7 +2186,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/项目约束已确认要改，现在维护规则文档.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/项目约束已确认要改，现在维护规则文档.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2229,7 +2229,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/共享能力准备修改，先明确契约和影响范围.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/共享能力准备修改，先明确契约和影响范围.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2272,7 +2272,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/修复与改进/文档和实际状态对不上，先确定应该修复哪里.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/修复与改进/文档和实际状态对不上，先确定应该修复哪里.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2315,7 +2315,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/任务已经明确，需要列出要准备的素材.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/任务已经明确，需要列出要准备的素材.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2358,7 +2358,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/素材文件已经收到，先登记来源并核对是否齐全.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/素材文件已经收到，先登记来源并核对是否齐全.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2401,7 +2401,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/音效文件和播放位置都已确定，现在要把声音接进游戏.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/音效文件和播放位置都已确定，现在要把声音接进游戏.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2444,7 +2444,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/图片和消费位置已确定，现在接入界面.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/图片和消费位置已确定，现在接入界面.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2487,7 +2487,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/动画资源已确定，现在接到对应动作.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/动画资源已确定，现在接到对应动作.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2530,7 +2530,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有图片要替换，需要保留界面引用.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/已有图片要替换，需要保留界面引用.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2573,7 +2573,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有音频要替换，需要保留播放关系.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/已有音频要替换，需要保留播放关系.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2616,7 +2616,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有动画要替换，需要保留动作衔接.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/已有动画要替换，需要保留动作衔接.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2659,7 +2659,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/准备增加语言支持，先确定本地化要求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/准备增加语言支持，先确定本地化要求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2702,7 +2702,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/本地化要求已确定，现在接入目标语言.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/本地化要求已确定，现在接入目标语言.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2745,7 +2745,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/问题缺少证据，先加临时观测信号.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/问题缺少证据，先加临时观测信号.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2788,7 +2788,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已经确定需要长期保留某项运行指标.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/已经确定需要长期保留某项运行指标.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2831,7 +2831,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/短测看不出问题，需要按约定负载持续运行.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/短测看不出问题，需要按约定负载持续运行.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2874,7 +2874,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/运行出现卡顿，先测量并定位瓶颈.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/运行出现卡顿，先测量并定位瓶颈.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2917,7 +2917,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/性能瓶颈已确认，现在优化并对比结果.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/性能瓶颈已确认，现在优化并对比结果.md"
       },
       "appearance": {
         "opacity": 1,
@@ -2960,7 +2960,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构需要修改，旧数据不需要继续使用.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/存档结构需要修改，旧数据不需要继续使用.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3003,7 +3003,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/存档结构变了，需要保留并转换已有数据.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/存档结构变了，需要保留并转换已有数据.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3046,7 +3046,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/音乐文件和切换时机已确定，现在接入背景音乐.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/音乐文件和切换时机已确定，现在接入背景音乐.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3089,7 +3089,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/场景文件及依赖已准备好，现在接入当前游戏.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/场景文件及依赖已准备好，现在接入当前游戏.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3132,7 +3132,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/资源、性能与数据/已有场景需要替换，必须保留游戏中的调用关系.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/资源、性能与数据/已有场景需要替换，必须保留游戏中的调用关系.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3175,7 +3175,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/我手动改过项目，想确认是否仍符合要求.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/我手动改过项目，想确认是否仍符合要求.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3218,7 +3218,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/代码刚改完，只检查解析和 lint.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/代码刚改完，只检查解析和 lint.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3261,7 +3261,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已有变更需要重新运行相关自动测试.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/已有变更需要重新运行相关自动测试.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3304,7 +3304,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/场景或资源刚改完，需要实际启动检查.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/场景或资源刚改完，需要实际启动检查.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3347,7 +3347,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/界面已经做出，需要独立检查交互体验.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/界面已经做出，需要独立检查交互体验.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3390,7 +3390,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/视觉成果已准备好，需要独立检查美术效果.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/视觉成果已准备好，需要独立检查美术效果.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3433,7 +3433,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/音频成果已准备好，需要独立检查听觉效果.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/音频成果已准备好，需要独立检查听觉效果.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3476,7 +3476,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/素材已收到，需要独立检查技术规格.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/素材已收到，需要独立检查技术规格.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3519,7 +3519,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/翻译已接入，需要独立检查语言与显示.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/翻译已接入，需要独立检查语言与显示.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3562,7 +3562,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/数值方案已有样本，需要独立检查平衡.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/数值方案已有样本，需要独立检查平衡.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3605,7 +3605,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/这次变更已准备好，需要独立代码审核.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/这次变更已准备好，需要独立代码审核.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3648,7 +3648,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/想检查某个模块现状，不依赖 Feature 或差异.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/想检查某个模块现状，不依赖 Feature 或差异.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3691,7 +3691,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/Feature 已能体验，需要准备人工验收清单.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/Feature 已能体验，需要准备人工验收清单.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3734,7 +3734,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/人工验收 JSON 已填好，需要导入结果.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/人工验收 JSON 已填好，需要导入结果.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3777,7 +3777,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已经实际体验，需要记录我的明确验收结论.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/已经实际体验，需要记录我的明确验收结论.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3820,7 +3820,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/测试已经通过，但填错报告路径导致导入失败.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3863,7 +3863,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试摘要还在，但原始报告找不到了.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/测试摘要还在，但原始报告找不到了.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3906,7 +3906,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/实现又改过了，需要更新已经过期的验证证据.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/实现又改过了，需要更新已经过期的验证证据.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3949,7 +3949,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测试运行中断了，需要从真实结果恢复验证.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/测试运行中断了，需要从真实结果恢复验证.md"
       },
       "appearance": {
         "opacity": 1,
@@ -3992,7 +3992,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/没有 Feature，只想运行指定组件的自动测试.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/没有 Feature，只想运行指定组件的自动测试.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4035,7 +4035,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/测量数据已经取得，需要独立核实结论是否成立.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/测量数据已经取得，需要独立核实结论是否成立.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4078,7 +4078,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/换了一个对话，想继续上次没做完的 Feature.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/换了一个对话，想继续上次没做完的 Feature.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4121,7 +4121,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/仍在原对话，想继续暂停的 Feature.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/仍在原对话，想继续暂停的 Feature.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4164,7 +4164,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/进度记录太长，需要整理当前状态和历史.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/进度记录太长，需要整理当前状态和历史.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4207,7 +4207,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/Feature 还没做完，准备换一个对话继续.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/Feature 还没做完，准备换一个对话继续.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4250,7 +4250,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前 Feature 需要暂停，先保存真实停点.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/当前 Feature 需要暂停，先保存真实停点.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4293,7 +4293,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前任务已经暂停，准备切换到另一项工作.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/当前任务已经暂停，准备切换到另一项工作.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4336,7 +4336,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，需要先暂停并保存停点.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，需要先暂停并保存停点.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4379,7 +4379,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，准备换一个对话继续.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/当前工作没有 Feature，准备换一个对话继续.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4422,7 +4422,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/外部调研还没结束，继续查清原来的问题.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/外部调研还没结束，继续查清原来的问题.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4465,7 +4465,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/项目问题还没讨论清楚，继续原来的讨论.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/项目问题还没讨论清楚，继续原来的讨论.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4508,7 +4508,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/项目恢复与交接/独立审核中断了，需要继续完成原范围的报告.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/项目恢复与交接/独立审核中断了，需要继续完成原范围的报告.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4551,7 +4551,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/一个阶段已经结束，先总结值得保留的经验.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/一个阶段已经结束，先总结值得保留的经验.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4594,7 +4594,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/经验已经确认，需要整理进项目知识.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/经验已经确认，需要整理进项目知识.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4637,7 +4637,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/重复操作已确认值得固化，需要做成项目脚本.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/重复操作已确认值得固化，需要做成项目脚本.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4680,7 +4680,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/当前任务反复返工，先复盘原因.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/当前任务反复返工，先复盘原因.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4723,7 +4723,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/同类工作总要重复交代，先设计复用方法.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/同类工作总要重复交代，先设计复用方法.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4766,7 +4766,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/经验沉淀/以后会经常做这类工作，先设计处理方法.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/经验沉淀/以后会经常做这类工作，先设计处理方法.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4809,7 +4809,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/任务规划/想保留当前实现，另开 worktree 尝试另一种方案.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/任务规划/想保留当前实现，另开 worktree 尝试另一种方案.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4852,7 +4852,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/验证与收尾/已选定 worktree 中的成果，带回目标分支.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/验证与收尾/已选定 worktree 中的成果，带回目标分支.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4895,7 +4895,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/目标已有方向，但多个问题互相影响，先逐步理清.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/目标已有方向，但多个问题互相影响，先逐步理清.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4938,7 +4938,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/只有游戏想法，先形成 GDD 草稿.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/只有游戏想法，先形成 GDD 草稿.md"
       },
       "appearance": {
         "opacity": 1,
@@ -4981,7 +4981,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/设计资料分散在多处，需要整合 GDD.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/设计资料分散在多处，需要整合 GDD.md"
       },
       "appearance": {
         "opacity": 1,
@@ -5024,7 +5024,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/体验目标已明确，需要设计数值模型.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/体验目标已明确，需要设计数值模型.md"
       },
       "appearance": {
         "opacity": 1,
@@ -5067,7 +5067,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/已有数值需要调整，更新模型与参数.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/已有数值需要调整，更新模型与参数.md"
       },
       "appearance": {
         "opacity": 1,
@@ -5110,7 +5110,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/Godot 项目开发/需求设计/有游戏表现想法，需要拆解需求并选择实现方案.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/Godot 项目开发/需求设计/有游戏表现想法，需要拆解需求并选择实现方案.md"
       },
       "appearance": {
         "opacity": 1,

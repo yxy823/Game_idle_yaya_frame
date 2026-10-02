@@ -9,7 +9,7 @@
 | 目标驱动 | 先从用户要完成的事情识别关键决策和交付物，再检查现有能力覆盖，最后决定复用、补充或新增。 |
 | 背景与场景核对 | 讨论新增能力或文档之前，先说明与本次决策有关的现有背景、已有职责、新增位置和上下游关系，再讨论内部细节。收束时还应拿具体使用场景走一遍，检查用户能否从需求找到设计、从设计找到实现与验收。 |
 | 唯一正文与集中维护 | 同一作用域内的同一事实、规则或决定，只在职责所属位置维护一份权威正文；其他位置引用，并按需保留简短提醒。新增或拆分前先核对已有归属，优先复用；确需迁移时同步引用并移除旧正文，不留下并行维护副本。 |
-| 按职责组织，权衡拆合成本 | 围绕共同目标、变化原因和使用场景组织内容与能力。需要共同理解、修改或完成的部分优先集中；职责或使用条件可以独立，且拆分能减少无关阅读、依赖或维护牵连时，再分开。综合考虑查找、跳转、交接和维护成本，不以文件长短、数量或步骤多少单独决定拆合。具体判断沿用[职责设计准则](framework/review/baselines/skill-script-prompt-design.md)。 |
+| 按职责组织，权衡拆合成本 | 围绕共同目标、变化原因和使用场景组织内容与能力。需要共同理解、修改或完成的部分优先集中；职责或使用条件可以独立，且拆分能减少无关阅读、依赖或维护牵连时，再分开。综合考虑查找、跳转、交接和维护成本，不以文件长短、数量或步骤多少单独决定拆合。具体判断沿用[职责设计准则](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md)。 |
 | 奥卡姆剃刀 | 先比较复用、合并、删除与局部修正；普通文件、现有命令或 Agent 判断已经足够时，不增加脚本、依赖或流程层。 |
 | 第一性原理 | 从当前需求、真实问题和已知约束推导方案，重新判断既有机制是否必要；不把现有实现或历史投入当作必须保留的理由。 |
 | 最小完整修改 | 在本次授权范围内选择能完整解决问题的最小方案，保留必要能力与约束；不以最少行数或最少文件数为目标，也不借修复扩大任务。 |
@@ -37,10 +37,10 @@
 | 当前工作 | 执行依据 |
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存常规分发材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
-| 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
+| 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/commands/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不接受自动同步；维护手册与提示词库不进入生成项目。advisor 通过固定绝对路径只读引用本机 Godot 开发提示词库，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/updating-the-blank-project.md) 查阅受影响专题、核对源材料并同步说明。 |
-| 手册与阅读版 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册不互相引用，由文档总入口导航。Markdown 是正文来源，HTML 由 [构建脚本](framework/commands/build_blank_project_handbook.py) 生成；执行与检查边界见 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。 |
+| 手册与阅读版 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册不互相引用，由文档总入口导航。Markdown 是正文来源，HTML 由 [构建脚本](framework/docs/handbook/build_blank_project_handbook.py) 生成；执行与检查边界见 [阅读版说明](framework/docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)，确切命令见 [按需检查](framework/README.md#按需检查)。 |
 
@@ -50,7 +50,7 @@
 
 框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)。只保留仍需推进的工作、真实验证缺口、阻塞与必要待决定项，写明下一步和必要依据；条目不授予实施权限。完成并通过必要验证的事项立即删除；尚有必要人工验收时仅保留具体待验收项。历史由 Git 保存，不保留完成记录、成果汇总或长期搁置的设想；无待办时清空文件。相关状态发生实质变化时，在本次允许写入的范围内及时更新，提交或交接前核对一致；只读任务在回复中指出需更新项，无实质变化不制造更新。
 
-本机 Windows 环境下，执行 `framework/commands/build_blank_project_handbook.py` 必须从首次调用起走沙箱外审批路径（`exec_command` 设置 `sandbox_permissions: "require_escalated"`），禁止先在沙箱内尝试，以避免临时文件权限错误触发长时间重试。审批拒绝或不可用时按现有审批规则处理，不回退到沙箱内构建。
+本机 Windows 环境下，执行 `framework/docs/handbook/build_blank_project_handbook.py` 必须从首次调用起走沙箱外审批路径（`exec_command` 设置 `sandbox_permissions: "require_escalated"`），禁止先在沙箱内尝试，以避免临时文件权限错误触发长时间重试。审批拒绝或不可用时按现有审批规则处理，不回退到沙箱内构建。
 
 更新手册 Markdown 后执行 HTML 构建脚本，由脚本自动检查收录范围、路径、链接、锚点、章节覆盖、两册隔离和图表产物；Agent 确认退出码与诊断输出，不手动重复逐项检查。仅重新生成 HTML 不触发正文复审；正文或构建逻辑改变时，只验证实际变化。排版与浏览器交互由用户在外部检查，禁止使用 Playwright Skill 做手册可视化检查，不把构建成功写成视觉检查通过，也不把人工试读设为生成前置。
 
@@ -58,7 +58,7 @@
 
 自主命名的文件必须能直接看出用途，并包含必要的所属领域与具体职责，例如 `test-registry.json` 明确表达测试登记表。工具要求的约定文件名和第三方原始名称按各自契约保留。
 
-新增、实质调整职责或审核 Skill、脚本、提示词与场景时，按[职责设计准则](framework/review/baselines/skill-script-prompt-design.md)评价对应对象；普通局部修改不触发无关全量审核。长期准则与当次审核报告分开维护。
+新增、实质调整职责或审核 Skill、脚本、提示词与场景时，按[职责设计准则](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md)评价对应对象；普通局部修改不触发无关全量审核。长期准则与当次审核报告分开维护。
 
 整理文档或文件名不得顺带改变 Skill 行为。
 
@@ -72,7 +72,7 @@
 
 ## AGENTS.md、Skill 与任务提示词编写
 
-编写、修改及作者自查本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，使用 [Codex 指令编写 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](.agents/skills/review-agent-instructions-yaya/SKILL.md)。两者分工、独立实例和共享正文遵循[职责设计准则](framework/review/baselines/skill-script-prompt-design.md#能力划分与正式审核)，不把作者自查称为独立审核。
+编写、修改及作者自查本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，使用 [Codex 指令编写 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](.agents/skills/review-agent-instructions-yaya/SKILL.md)。两者分工、独立实例和共享正文遵循[职责设计准则](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#能力划分与正式审核)，不把作者自查称为独立审核。
 
 编写或调整指令时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
 
@@ -91,11 +91,11 @@
 
 新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
 
-任务提示词按用途分别维护在 [Godot 开发提示词库](framework/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
+任务提示词按用途分别维护在 [Godot 开发提示词库](framework/prompt_scenarios/prompts/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
 
 两份 JSON 各自保留仅含所属 Project 的顶层数组：`yaya-maintenance-prompts.json` 对应 `Yaya 框架维护`，`godot-development-prompts.json` 对应 `Godot 项目开发`。保留 `project`、`categories` 结构，按用途放入对应分类。
 
-提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/review/baselines/skill-script-prompt-design.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后核对[场景索引](framework/docs/quick-reference/scenario-index.md)与受影响的使用说明，只同步实际变化，不维护第二份场景清单。
+提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后核对[场景索引](framework/prompt_scenarios/scenarios/scenario-index.md)与受影响的使用说明，只同步实际变化，不维护第二份场景清单。
 
 ## 本地提交
 

@@ -13,8 +13,8 @@ description: 检验已有 Yaya 框架维护方案的假设、反例、职责、�
 
 只追查影响判断的材料：
 
-- 涉及 Skill、脚本或提示词职责时，按[职责设计准则](../../../framework/review/baselines/skill-script-prompt-design.md)阅读对应维度、实际入口和必要调用方。
-- 涉及项目分发时，核对[复制清单](../../../framework/project-files.json)、相关源文件和生成后的使用路径；有路径或字段变化时追查受影响的消费者与回归夹具。
+- 涉及 Skill、脚本或提示词职责时，按[职责设计准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md)阅读对应维度、实际入口和必要调用方。
+- 涉及项目分发时，核对[复制清单](../../../framework/commands/project-files.json)、相关源文件和生成后的使用路径；有路径或字段变化时追查受影响的消费者与回归夹具。
 - 涉及验证安排时，按[维护验证范围](../../../framework/docs/framework-maintenance/updating-the-blank-project.md#按修改选择验证范围)核对现有检查能力、执行地点与必要人工证据。历史通过只说明其当时版本与覆盖。
 
 ## 检验关键推断

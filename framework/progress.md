@@ -4,6 +4,7 @@
 
 | 待办 | 剩余工作与完成条件 |
 | --- | --- |
+| 资源工作台目录迁移与新项目验证 | 将分发源的工作台、Analyzer 与示例迁入 `asset_workbench/`，同步清单、引用和导出夹具；在新建的 `D:/A_Games/YayaDirectoryValidation_20261002` 完成 Godot 4.7.1 导入、解析、lint、工具回归、工作台功能与消费导出验证，带回对应导入元数据。框架侧目录、75 项维护测试、链接与阅读版构建已核对；这不代替尚未执行的项目侧验证。完成后删除本项。 |
 | 游戏职责与文档导航试读 | 用户从[游戏逻辑、表现与协作](docs/operation-manual/框架基础/game-logic-and-presentation.md)的商店购买案例出发，并结合[项目 README](../project-source/Project_README.md)与[游戏组织指南](../project-source/defaults/docs/game-organization.md)，确认能理解规则、界面、获得反馈、实际协作与验收分别在哪里记录。静态检查与阅读版构建不替代实际阅读体验确认；确认完成后删除[当次需求变更依据](docs/framework-maintenance/game-logic-presentation-change-requirements.md)及其导航，历史由 Git 保存。 |
 | 开发场景关系图试读、次数保存与箭头确认 | 用户在当前 Graph_Map 中用“打开图目录”选择 `framework/docs/workflow-maps`，只将 `scene-085` 的次数从 3 改为 4 并 Ctrl+S，确认主图无 Git 差异，刷新重开仍恢复 4 次；本地次数文件已迁移并忽略。确认场景名称换行、缩放阅读和跨区连线辨识，包括新增游戏表现规划节点及其 6 条按需关系；同时确认原有 151 条双向箭头是否符合实际衔接方向，该配置已保留。格式与节点名称集合校验不替代实际查看和关系判断。格式及维护方法见 [说明](docs/workflow-maps/README.md)。 |
 | 文档系统关系图试读 | 用户在 Graph_Map 打开同一目录并选择 `document-system.readable.json`，确认框架区与项目区、四类连线、节点备注和本地链接能帮助查找资料；沿 GDD → UI/表现 → Product/Feature → 验证证据的实际问题检查缩放阅读与长线辨识。图中按需产物不代表项目已经生成正文，格式与链接检查不替代阅读体验确认。见[文档关系图说明](docs/workflow-maps/README.md#文档系统关系图)。 |

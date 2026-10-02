@@ -1,6 +1,6 @@
 # 编辑器插件版本与兼容性记录
 
-本页供框架维护者查找五个编辑器效率插件的上游、当前安装版本和升级检查依据。源码保存在 `project-source/addons/`，由[复制清单](../../project-files.json)分发；本页只保留在 `framework/`，不复制到生成项目，也不建立自动升级或项目同步机制。
+本页供框架维护者查找五个编辑器效率插件的上游、当前安装版本和升级检查依据。源码保存在 `project-source/addons/`，由[复制清单](../../commands/project-files.json)分发；本页只保留在 `framework/`，不复制到生成项目，也不建立自动升级或项目同步机制。
 
 ## 当前安装来源
 
@@ -62,7 +62,7 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 ### 复用功能夹具
 
-[editor_plugin_lifecycle_probe.gd](../../tests/project/editor_plugin_lifecycle_probe.gd) 只供已指定的外部验证项目临时使用，不进入项目复制清单。将它复制为外部项目的 `addons/editor_plugin_probe/plugin.gd`，同目录创建以下 `plugin.cfg`，导入后临时启用该插件并启动编辑器：
+[editor_plugin_lifecycle_probe.gd](../../tests/external-project/plugins/editor_plugin_lifecycle_probe.gd) 只供已指定的外部验证项目临时使用，不进入项目复制清单。将它复制为外部项目的 `addons/editor_plugin_probe/plugin.gd`，同目录创建以下 `plugin.cfg`，导入后临时启用该插件并启动编辑器：
 
 ```ini
 [plugin]

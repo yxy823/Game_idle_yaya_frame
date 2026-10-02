@@ -7,20 +7,20 @@
 | 路径 | 职责 |
 | --- | --- |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
-| [project-files.json](project-files.json) | 唯一复制映射，每项只有 source 与 target |
+| [project-files.json](commands/project-files.json) | 唯一复制映射，每项只有 source 与 target |
 | [commands/README.md](commands/README.md) | 完整命令目录，含创建器、手册构建、路径/关系图检查和项目工具回归入口 |
-| [godot-development-prompts.json](godot-development-prompts.json) | Godot 项目开发的完整任务提示词；advisor 直接读取的共享来源 |
-| [yaya-maintenance-prompts.json](yaya-maintenance-prompts.json) | Yaya 框架维护的完整任务提示词 |
+| [godot-development-prompts.json](prompt_scenarios/prompts/godot-development-prompts.json) | Godot 项目开发的完整任务提示词；advisor 直接读取的共享来源 |
+| [yaya-maintenance-prompts.json](prompt_scenarios/prompts/yaya-maintenance-prompts.json) | Yaya 框架维护的完整任务提示词 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
 | [Codex 指令编写 Skill](../.agents/skills/writing-for-agents-yaya/SKILL.md) | 框架内 Codex 指令的编写、修改与作者自查；框架自用，不分发 |
 | [Codex 指令审核 Skill](../.agents/skills/review-agent-instructions-yaya/SKILL.md) | 独立实例对现有指令作正式只读审核；引用共用依据，不接管修复，不分发 |
 | [框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | 框架自用的手册、场景、维护与审核说明写作方法，独立维护且不分发 |
 | [Godot 项目文档编写 Skill](../project-source/skills/technical-documentation-writing-godot/SKILL.md) | 面向游戏项目的文档写作方法，独立维护并整包复制到新项目 |
-| [tests/](tests/) | 创建器、路径映射、文档指纹、人工文件等维护回归 |
-| [tests/project/](tests/project/) | 外部项目工具与真实 Godot 夹具，不进入复制清单 |
-| [review/README.md](review/README.md) | 长期准则与当次报告的保留边界 |
+| [tests/repository/](tests/repository/) | 可从仓库根目录运行的创建器、路径映射、文档指纹与人工文件等维护回归 |
+| [tests/external-project/](tests/external-project/) | 需要指定外部项目的工具回归、工作台与插件夹具，不进入复制清单 |
+| [维护准则与报告](docs/framework-maintenance/review-materials.md) | 长期准则与当次报告的保留边界 |
 
-总体取舍依据[根规则的核心原则](../AGENTS.md#核心决策原则)，职责评价见 [Skill、脚本、提示词设计准则](review/baselines/skill-script-prompt-design.md)，场景范围见[责任边界](review/baselines/scenario-coverage.md)。当次报告不成为新增工作授权，历史通过 Git 查阅。
+总体取舍依据[根规则的核心原则](../AGENTS.md#核心决策原则)，职责评价见 [Skill、脚本、提示词设计准则](docs/framework-maintenance/baselines/skill-script-prompt-design.md)，场景范围见[责任边界](docs/framework-maintenance/baselines/scenario-coverage.md)。当次报告不成为新增工作授权，历史通过 Git 查阅。
 
 ## 复制入口
 
@@ -41,10 +41,10 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 ## 提示词与场景路径检查
 
-两份提示词 JSON 各保存一个 Project：`yaya-maintenance-prompts.json` 保存 `Yaya 框架维护`，`godot-development-prompts.json` 保存 `Godot 项目开发`。每份保留单元素顶层数组；categories 下叶子键是名称，字符串是完整正文。场景路径直接为 `docs/quick-reference/<Project>/<分类>/<提示词名称>.md`。一条提示词只对应一个场景，名称一致；不同验收目标或进入状态不能用一个通用正文覆盖。
+两份提示词 JSON 在 `prompt_scenarios/prompts/` 各保存一个 Project：`yaya-maintenance-prompts.json` 保存 `Yaya 框架维护`，`godot-development-prompts.json` 保存 `Godot 项目开发`。每份保留单元素顶层数组；categories 下叶子键是名称，字符串是完整正文。场景路径直接为 `prompt_scenarios/scenarios/<Project>/<分类>/<提示词名称>.md`。一条提示词只对应一个场景，名称一致；不同验收目标或进入状态不能用一个通用正文覆盖。
 
 ```powershell
-python -B framework/commands/check_scenario_prompt_paths.py
+python -B framework/prompt_scenarios/tools/check_scenario_prompt_paths.py
 ```
 
 路径检查器的参数与结果如下：
@@ -57,11 +57,11 @@ python -B framework/commands/check_scenario_prompt_paths.py
   - `2`：输入或结构错误。
 - **内容审核**：正文 H1、具体步骤、授权、语义和运行结果不在此工具检查范围内，仍须另行核对。
 
-新增或修改正文后核对同名场景及[场景索引](docs/quick-reference/scenario-index.md)，只同步实际变化；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
+新增或修改正文后核对同名场景及[场景索引](prompt_scenarios/scenarios/scenario-index.md)，只同步实际变化；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
 ## advisor 的共享场景入口
 
-advisor 在核对项目现状后，直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，按相关分类与场景名称选择候选，再核对正文的目标、前提和执行边界。它结合当前事实生成具体指令，并区分缺少输入、可适配场景和确实需要补充的场景。
+advisor 在核对项目现状后，直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json`，按相关分类与场景名称选择候选，再核对正文的目标、前提和执行边界。它结合当前事实生成具体指令，并区分缺少输入、可适配场景和确实需要补充的场景。
 
 修改 Godot 提示词后，advisor 下次读取同一份正文；不需要导出或维护提示词副本。项目自己的规则、目标 Skill 和有效授权决定实际行动，advisor 只提供建议，不修改共享库。使用说明见 [advisor 场景入口](docs/operation-manual/方法与工具/skills-and-agents.md#advisor-的共享场景入口)。
 
@@ -70,13 +70,13 @@ advisor 在核对项目现状后，直接读取 `D:/A_Games/Game_idle_yaya_frame
 维护层回归使用系统临时目录，包括复制、路径映射、文档指纹与人工验收文件契约：
 
 ```powershell
-python -B -m unittest discover -s framework/tests -p test_*.py
+python -B -m unittest discover -s framework/tests/repository -p test_*.py
 ```
 
 文档指纹和人工文件测试只建立中立 Git 夹具，不创建业务项目或运行游戏；合成结果不证明真实人工体验。项目工具回归需要明确指定且已对应本次修改的外部项目：
 
 ```powershell
-python -B framework/commands/run_project_tool_tests.py --project D:\Games\MyGodotGame
+python -B framework/tests/external-project/run_project_tool_tests.py --project D:\Games\MyGodotGame
 ```
 
 这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不顺带执行 Godot、人工验收或发布。所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
@@ -88,12 +88,12 @@ python -B framework/commands/run_project_tool_tests.py --project D:\Games\MyGodo
 在仓库根目录执行一条命令，同时生成两本阅读版并完成自动检查：
 
 ```powershell
-python -B framework/commands/build_blank_project_handbook.py --browser 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
+python -B framework/docs/handbook/build_blank_project_handbook.py --browser 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
 ```
 
-- **输入与顺序**：操作手册使用 `docs/operation-manual/README.md` 的专题分类；速查手册使用 `docs/quick-reference/scenario-index.md` 的 Project 与场景分类，不另建目录清单。
+- **输入与顺序**：操作手册使用 `docs/operation-manual/README.md` 的专题分类；速查手册使用 `prompt_scenarios/scenarios/scenario-index.md` 的 Project 与场景分类，不另建目录清单。
 - **公共术语**：两册均从 `docs/terminology.md` 嵌入同一份正文，分别在各自索引中导航；不复制手写词表，也不让一册依赖另一册。
-- **输出**：[操作手册 HTML](docs/operation-manual/operation-handbook.html) 与 [场景速查 HTML](docs/quick-reference/quick-reference-handbook.html)。各自包含正文、样式和交互，两册不互相引用；源规范与工具链接仍需保留完整仓库。
+- **输出**：[操作手册 HTML](docs/operation-manual/operation-handbook.html) 与 [场景速查 HTML](prompt_scenarios/scenarios/quick-reference-handbook.html)。各自包含正文、样式和交互，两册不互相引用；源规范与工具链接仍需保留完整仓库。
 - **按需构建**：`--book operation` 或 `--book quick-reference` 只生成对应手册；默认 `--book all`。`--rebuild-diagrams` 忽略 Mermaid 缓存并重绘。
 - **运行环境**：Python 需可导入 `markdown_it`。含 Mermaid 时用 `--browser` 指定本机 Edge/Chromium；生成未缓存图表还需 Node.js/npx，使用脚本固定的 Mermaid CLI 版本。无图表的手册可省略浏览器参数。
 - **自动检查**：源文件收录、本地路径与 Markdown 锚点、两册隔离、生成章节覆盖与顺序、重复 ID、HTML 内部与本地文件链接、SVG 数量及离线资源约束。检查失败返回非零，且不覆盖所选手册的既有 HTML；全部检查通过后写入并返回 `0`。

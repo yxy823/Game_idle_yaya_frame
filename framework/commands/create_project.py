@@ -48,7 +48,7 @@ def copy_project(source: Path, output: Path) -> int:
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise ValueError("Project path must be absent or an empty directory")
 
-    entries = json.loads((source / "framework/project-files.json").read_text(encoding="utf-8"))
+    entries = json.loads((source / "framework/commands/project-files.json").read_text(encoding="utf-8"))
     copies = []
     for entry in entries:
         origin = relative_path(source, entry["source"])

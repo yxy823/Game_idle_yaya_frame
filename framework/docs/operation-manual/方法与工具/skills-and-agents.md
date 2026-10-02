@@ -137,7 +137,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 ## 提示词库的结构与输入
 
-正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../yaya-maintenance-prompts.json)。
+正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../prompt_scenarios/prompts/godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../prompt_scenarios/prompts/yaya-maintenance-prompts.json)。
 
 维护库内的提示词、分类或场景时，使用框架专用的 [prompt-maintenance-yaya](../../../../.agents/skills/prompt-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、Godot 场景图与 advisor 的相关说明；详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
@@ -145,7 +145,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
 - **目录映射：** `<Project>/<分类>/<提示词名称>.md`，无需读取文档正文推断配对。
 
-每条正文都用明确字段区分目标、范围、输入与事实来源、决策边界与授权、约束、输出与交付、验证要求和完成条件。其他字段按真实场景补充；完整表格及审核依据见[提示词字段与审核原则](../../../review/baselines/skill-script-prompt-design.md#提示词字段与审核原则)。字段中的规范引用继续有效，无需重复填写可从当前对话或项目读取的信息。
+每条正文都用明确字段区分目标、范围、输入与事实来源、决策边界与授权、约束、输出与交付、验证要求和完成条件。其他字段按真实场景补充；完整表格及审核依据见[提示词字段与审核原则](../../framework-maintenance/baselines/skill-script-prompt-design.md#提示词字段与审核原则)。字段中的规范引用继续有效，无需重复填写可从当前对话或项目读取的信息。
 
 发送时注意：
 
@@ -160,7 +160,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 advisor 根据项目自己的规则、状态和本次问题给出建议。它可以报告现状、判断下一步或拟一条已填写上下文的回复，但建议和候选不是实施授权，用户说“看看下一步”也不自动启动开发。
 
 - **核对现状：** 读取当前项目记录和相关证据，判断现在做到哪里、还需要解决什么。
-- **选择场景：** 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/godot-development-prompts.json`，先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
+- **选择场景：** 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json`，先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
 - **形成指令：** 说明选中了哪个场景及适用理由，把项目当前事实、文件和已有授权填入续接文本；具体执行仍核对项目自己的规则与目标 Skill。
 - **判断缺口：** 缺少输入时补齐信息；目标和执行边界相同则适配现有场景。只有真实缺少目标或边界明显不同，才建议新增或修改场景，说明最接近的条目、差异和建议用途；advisor 不修改共享库。
 
@@ -168,4 +168,4 @@ advisor 根据项目自己的规则、状态和本次问题给出建议。它可
 
 advisor 与交接入口起草的项目续接提示词共同遵循 [Continuation prompts](../../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，不按任务长短省略固定字段。格式规范由项目持有；advisor 的场景素材来自共享 Godot 库。等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
 
-职责设计的长期评价规则在 [设计准则](../../../review/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。
+职责设计的长期评价规则在 [设计准则](../../framework-maintenance/baselines/skill-script-prompt-design.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。

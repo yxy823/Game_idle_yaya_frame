@@ -15,8 +15,8 @@ description: 编写、修改并自查 Yaya 框架中的 Codex 指令，包括 AG
 | --- | --- |
 | 编写或修改指令的触发、引用、正文归属、授权和完成边界 | [指令设计参考](references/agent-instruction-design.md) |
 | 编写或修改 Skill 的 description、目录、元数据、调用策略 | [Codex Skill 编写参考](references/codex-skill-authoring.md) |
-| 新增或调整 Skill 的职责、判断拆分与合并 | [职责设计准则：Skill](../../../framework/review/baselines/skill-script-prompt-design.md#skill-的评价维度) |
-| 编写或修改集中任务提示词 | 以[提示词与场景准则](../../../framework/review/baselines/skill-script-prompt-design.md#提示词与场景)判断正文；入口定位与联动维护由 [prompt-maintenance-yaya](../prompt-maintenance-yaya/SKILL.md) 承接，复用已读依据 |
+| 新增或调整 Skill 的职责、判断拆分与合并 | [职责设计准则：Skill](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#skill-的评价维度) |
+| 编写或修改集中任务提示词 | 以[提示词与场景准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)判断正文；入口定位与联动维护由 [prompt-maintenance-yaya](../prompt-maintenance-yaya/SKILL.md) 承接，复用已读依据 |
 
 普通局部修改只读取相关正文与必要调用方；复用仍有效的上下文，不把所有参考设为固定前置。
 

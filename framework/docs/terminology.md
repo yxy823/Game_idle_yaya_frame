@@ -14,7 +14,7 @@
 | --- | --- |
 | 框架维护仓库 | 保存创建器、可复制源材料、维护工具、手册和集中提示词的仓库；不直接作为游戏运行项目 |
 | 分发源 / `project-source/` | 创建器按清单复制的源材料；不是已完成环境初始化的游戏项目 |
-| 复制清单 | `framework/project-files.json` 中的选择与重命名规则；不承担升级或已有项目自动同步 |
+| 复制清单 | `framework/commands/project-files.json` 中的选择与重命名规则；不承担升级或已有项目自动同步 |
 | 创建器 | 根据复制清单创建独立项目及其本地 Git 初始提交的命令 |
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目 |
 | Project | 提示词 JSON 中区分“Yaya 框架维护”和“Godot 项目开发”的顶层名称；不等于 Product 或 Feature |
@@ -23,7 +23,7 @@
 | 权威来源 | 对某项事实或规则负责的唯一正文或实现；索引、摘要和报告引用它，不各自维护另一套定义 |
 | README / AGENTS.md | 前者提供人类使用导航；后者规定 Agent 必须遵守的约束与按需阅读路由 |
 
-来源：[维护约定](../../AGENTS.md)、[创建器与维护工具](../README.md)、[复制清单](../project-files.json)。
+来源：[维护约定](../../AGENTS.md)、[创建器与维护工具](../README.md)、[复制清单](../commands/project-files.json)。
 
 ### 需求、任务与执行主体
 
@@ -45,7 +45,7 @@
 | 提示词 / Prompt | 用户发送给 Agent 的当前任务输入；集中库中的每条入口只对应一个具体场景 |
 | 公开接口 / API | 调用方依赖的参数、返回值、行为及失败约定；影响消费者时须核对实际契约 |
 
-来源：[方法总览](../../project-source/methodology/00-overview.md)、[执行规范](../../project-source/methodology/03-execute-loop.md)、[工程变更](../../project-source/methodology/07-engineering-change.md)、[角色源文件](../../project-source/agents/)、[职责设计准则](../review/baselines/skill-script-prompt-design.md)。
+来源：[方法总览](../../project-source/methodology/00-overview.md)、[执行规范](../../project-source/methodology/03-execute-loop.md)、[工程变更](../../project-source/methodology/07-engineering-change.md)、[角色源文件](../../project-source/agents/)、[职责设计准则](framework-maintenance/baselines/skill-script-prompt-design.md)。
 
 ### 游戏职责与协作
 

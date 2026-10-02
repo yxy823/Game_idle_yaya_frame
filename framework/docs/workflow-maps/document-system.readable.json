@@ -161,11 +161,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：从当前情况找到处理步骤、同名提示词、输入和出口。\n位置：framework/docs/quick-reference/。\n涵盖 Yaya 框架维护与 Godot 项目开发；与提示词按 Project、分类、名称一一对应，不由 JSON 自动生成正文。",
+      "note": "职责：从当前情况找到处理步骤、同名提示词、输入和出口。\n位置：framework/prompt_scenarios/scenarios/。\n涵盖 Yaya 框架维护与 Godot 项目开发；与提示词按 Project、分类、名称一一对应，不由 JSON 自动生成正文。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/quick-reference/scenario-index.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/scenarios/scenario-index.md"
       },
       "appearance": {
         "opacity": 1,
@@ -290,7 +290,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/godot-development-prompts.json 与 framework/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开两份库的维护导航。",
+      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt_scenarios/prompts/godot-development-prompts.json 与 framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开两份库的维护导航。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -419,11 +419,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/review/README.md、framework/review/baselines/。\n基线用于持续维护；报告只陈述对应版本的检查事实。",
+      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n基线用于持续维护；报告只陈述对应版本的检查事实。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/review/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/review-materials.md"
       },
       "appearance": {
         "opacity": 1,
@@ -462,11 +462,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按次保留的审核和实际验证记录。\n位置：framework/review/reports/，原始运行证据仍按当次记录定位。\n入口来自审核索引或仍需要证据的维护记录；历史通过不证明当前版本通过。",
+      "note": "职责：按次保留的审核和实际验证记录。\n位置：framework/docs/framework-maintenance/reports/，原始运行证据仍按当次记录定位。\n入口来自审核索引或仍需要证据的维护记录；历史通过不证明当前版本通过。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/review/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/review-materials.md"
       },
       "appearance": {
         "opacity": 1,
@@ -591,11 +591,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。",
+      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/commands/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/project-files.json"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/commands/project-files.json"
       },
       "appearance": {
         "opacity": 1,

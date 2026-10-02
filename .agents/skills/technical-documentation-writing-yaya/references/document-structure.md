@@ -14,11 +14,14 @@
 - 框架中介绍创建器参数、处理复制失败和说明维护验证，分别服务对象查询、具体操作与框架维护。当前框架的页面分工由维护说明拥有，以下入口帮助确定应查哪类材料。
 
 ```text
-framework/docs/
-  README.md
-  operation-manual/        概念、对象、配置与工具
-  quick-reference/         具体使用场景
-  framework-maintenance/   材料维护与验证
+framework/
+  docs/
+    README.md
+    operation-manual/        概念、对象、配置与工具
+    framework-maintenance/   材料维护、职责准则与验证
+  prompt_scenarios/
+    prompts/                集中提示词
+    scenarios/              具体使用场景
 ```
 
 这是框架入口示意，不是生成游戏项目的目录模板。页面的实际位置、两册引用边界及场景与提示词的对应规则，按当前维护说明和场景手册规范核对；不从示意图推导新增目录或搬迁授权。
