@@ -36,7 +36,7 @@ Each initial topic has its own README. Additional topic and entry files are crea
 
 An entry should explain the situation, the approach or lesson and why it helped, the conditions where it applies, and its supporting Feature, commit, test, report, or reference links. Record versions, platform and reproduction details when they affect the conclusion. Successful approaches need observed benefits and limits, not a fabricated root cause. Distinguish observations, hypotheses, and verified conclusions in ordinary prose; uncertainty is not proof.
 
-Feature notes retain the concrete incident, local decisions and TODOs; Progress retains current state and history links. Knowledge owns the extracted reusable explanation and links the original record instead of copying its chronology. Important technical choices belong in ADRs. Stable prescriptive guidance can be proposed for `agent-rules/` under its existing approval rules; then link that rule rather than maintaining another copy here.
+Feature notes retain brief incident learning, TODOs and links to decisions in the Feature design; Progress retains current state and history links. Knowledge owns the extracted reusable explanation and links the original record instead of copying its chronology. Technical choices meeting the architecture convention's conditions have their rationale in ADRs. Stable prescriptive guidance can be proposed for `agent-rules/` under its existing approval rules; then link that rule rather than maintaining another copy here.
 
 ## Maintain during authorized work
 

@@ -1,6 +1,6 @@
 # Architecture overview
 
-> Optional, human-owned project map. Provide reading entries and explain responsibility, current collaboration and permitted dependencies; generated reference facts do not define architecture authority.
+> Human-owned project map. Record actual project-level structure and reading entries under the architecture convention; generated reference facts do not define architecture authority.
 
 ## Modules and responsibility
 
@@ -11,19 +11,23 @@ Link an existing module README when it already provides useful navigation. Point
 
 Use `docs/game-organization.md` to explain logic, presentation and their actual collaboration within these modules. Link relevant GDD, UI or game-presentation sources; do not split the map into fixed layer directories or treat development tools as gameplay responsibilities.
 
-Briefly explain the problem each material boundary choice solves and link its existing Feature design/notes or ADR. Keep reasons that explain the current structure; do not copy full plans, invent missing decision history or create an ADR just to supply a link.
+Briefly explain the problem each material boundary choice solves; link local implementation rationale to its Feature design and qualifying cross-Feature rationale to its ADR. Do not copy full plans, invent missing decision history or create an ADR just to supply a link.
 
 ## Allowed dependency directions
 
 Describe the permitted directions between project-level modules and the reason for each constraint. Distinguish these constraints from key actual collaborations and their purpose. Record deliberate exceptions and their owner. Do not require a full class-level graph.
 
-## Complex subsystems
+## Subsystem contracts
 
-Link a separate `architecture/<subsystem>.md` only when a subsystem needs more detail than this overview. Keep the overview at project level.
+Link each documented subsystem's internal contracts at `architecture/<subsystem>.md`, using its stable name from the module list. Keep the overview at project level; explanation length and complexity do not select the location. Do not create empty subsystem files.
 
 ## Important decisions
 
 Link relevant `architecture/adr-NNNN-<slug>.md` records when they exist. Keep tradeoffs and decision status in each ADR; this map describes the current structure. Omit this section when no ADR is needed.
+
+## Standalone technical decisions
+
+Use this section only for adopted decisions without a Feature that do not meet the ADR conditions and have project-level or cross-subsystem scope. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its fixed scope, authorization and migration rules. Keep decision rationale separate from actual implemented facts; omit the section when no matching content exists.
 
 ## Extracted facts
 

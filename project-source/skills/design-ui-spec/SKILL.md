@@ -8,7 +8,7 @@ metadata:
 
 # UI specification
 
-Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reuse GDD-owned details by reference; `product-author` is not this specification's saving intermediary.
+Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reference GDD rules and goals; maintain interface specifications only in their fixed UI file, moving authorized current-scope specifications out of GDD and updating references. Keep protected source inputs intact; `product-author` is not this specification's saving intermediary.
 
 Read the relevant GDD goals/actions and Product delivery scope, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
 

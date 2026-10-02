@@ -31,7 +31,7 @@ The project knowledge layer is:
     ├── presentation/                    game moments, alternatives, adoption and implementation links
     ├── feature-list.json                lightweight Feature index: Todo/status
     ├── features/F0XX.json               Feature detail and durable local notes
-    ├── features/F0XX-design.md          optional detailed design of one Feature
+    ├── features/F0XX-design.md          fixed implementation design of one Feature
     ├── knowledge/                      development experience, with topic indexes and separate entries
     ├── research/                       optional cited external research; not project requirements
     ├── feature-list-revisions.json      governing-source synchronization history
@@ -82,7 +82,7 @@ Presentation-only, logic-only and cross-layer describe a function's scope. They 
 | Planning | `feature-plan`, `feature-sync` | Decompose one Product at a time; preserve stable Feature IDs and trace actual source changes to existing work. |
 | Engineering | `engineering-change-plan`, `engineering-refactor-select` | Create controlled engineering work when Product intent stays fixed: bugs, refactors, maintenance. |
 | Delivery | `feature-execute` | Implement exactly one approved Feature through verification, applicable human acceptance, user-requested independent review, completion, and handoff. |
-| Implementation guidance | `implementation-guidance-godot` | Prepare constraints, design, necessary implementation dependencies and verification reasoning for an existing Feature; reuse its optional design document. |
+| Implementation guidance | `implementation-guidance-godot` | Prepare constraints, design, necessary implementation dependencies and verification reasoning for an existing Feature; reuse its fixed design document. |
 | Guidance | `project-next-step-advisor` | Explain current state; provide a scoped continuation prompt when needed, without executing or granting approval. |
 | Task handoff | `task-handoff-godot` | Preserve a requested stop point and prepare continuation context using existing records; do not create or message another conversation. |
 
@@ -104,7 +104,7 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` under [External research](#external-research) | Choose search depth and retention by the actual question; no mandatory research Stage, new Feature or automatic adoption. |
 | Record or maintain settled project vocabulary | `project-terminology` | Write only within existing authorization. Meaning-preserving definitions/links do not create Product plans or synchronize Features; substantive behavior changes use the GDD design route. |
 | Maintain project-wide or specialized rules | Current authorized task, using [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance) | Report every proposed rule change before writing; reuse specific authority, obtain missing substantive decisions and handle actual downstream impacts. No artificial Feature is required for standalone rule documentation. |
-| Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes-optional) and [architecture/ADR](10-architecture-overview.md) | Create detailed Markdown only when useful or requested; an ADR needs a real qualifying choice. Preserve Product and project-rule authority. |
+| Explain a Feature design or important technical decision | Current planning/design task under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes) and [architecture/ADR](10-architecture-overview.md) | Implementation design uses the fixed Feature design file; qualifying technical rationale uses an ADR. Content responsibility determines the location, independently of game size or explanation length. Preserve Product and project-rule authority. |
 | Choose visual or sound direction | `design-art-direction` / `design-audio-direction` | Own the confirmed shared specification under [specialist work](11-specialist-workflows.md); do not require an entire game's design or produce assets. |
 | Plan a game moment from experience goals or colloquial descriptions, or compare its component approaches | `design-game-presentation` | Maintain [presentation documents](11-specialist-workflows.md#game-presentation-documents), standard requirements, alternatives and adopted combinations. Can support initial GDD exploration; code, resource production and actual acceptance remain separate responsibilities. |
 | Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Refine and reference GDD requirements in professional sources. UI links relevant presentations; resource specifications stay in the owning presentation, UI or shared design section. Product owns delivery scope and source mapping. |

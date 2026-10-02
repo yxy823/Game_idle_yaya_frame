@@ -24,9 +24,11 @@
 
 **S2｜整合唯一正文**
 
-将可确定的内容放入所属 GDD 主题。新建整合结果或获准标准化时，按[标准文件名与职责](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)使用固定名称，入口为 `docs/gdd/README.md`；相同职责不另取名，迁移时同步实际文件与章节引用。涉及整体范围时按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)归入 `design-scope-and-boundaries.md`，局部限制留在所属主题，其他位置引用正文。保留范围外的既有结构，不重排无关内容或预建空章节。保留原始输入资料，不能静默删除未采用材料或把候选改为确定规则。
+将可确定的内容放入所属 GDD 主题。新建整合结果或获准标准化时，按[标准文件名与职责](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)使用固定名称与多实例命名模式，入口为 `docs/gdd/README.md`；系统规则与数值模型按作用域进入固定文件，不按游戏规模、篇幅或复杂程度选择位置。相同职责不另取名，迁移时同步实际文件与章节引用。涉及整体范围时按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)归入 `design-scope-and-boundaries.md`，局部限制留在所属主题，其他位置引用正文。保留范围外的既有结构，不重排无关内容或预建空章节。保留原始输入资料，不能静默删除未采用材料或把候选改为确定规则。
 
 按[开放问题规范](../../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)把尚未解决的设计冲突归入固定文件，保留来源、影响和所需决定，主题只保留必要上下文与引用。后续讨论和规划据此处理依赖；已解决项的结果写回所属主题并更新引用。
+
+本次资料中已确定的专业规格按[专业来源归属](../../../../../project-source/methodology/11-specialist-workflows.md#ownership-and-decisions)迁入对应固定正文，GDD 保留整体目标、玩法规则与引用；首次写在哪里不改变职责。
 
 按[项目术语规范](../../../../../project-source/methodology/01-product-doc-structure.md#project-terminology)，使用 `project-terminology` 将本次资料中已确认的定义与别名统一保存到 `docs/terminology.md`，当前仅用于一个主题的术语也使用该文件。GDD 中的重复定义改为引用，详细玩法规则留在所属主题；要求留存的原始输入继续作为来源保存。
 
@@ -36,7 +38,7 @@
 
 ## 资源与文件影响
 
-本入口请求维护 `docs/gdd/` 的正文、`docs/terminology.md` 中本次已确认的术语与必要导航；用户只要求讨论时，不写文件。引用原始资料不改变其文件，未经额外授权不删除或覆盖原件，不开始实现或重写历史验收。
+本入口请求维护 `docs/gdd/` 的正文、本次已确定的专业规格、`docs/terminology.md` 中本次已确认的术语与必要导航；用户只要求讨论时，不写文件。引用原始资料不改变其文件，未经额外授权不删除或覆盖原件，不开始实现或重写历史验收。
 
 ## 阻塞、异常与范围变化
 

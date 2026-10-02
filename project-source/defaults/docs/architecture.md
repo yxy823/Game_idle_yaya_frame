@@ -4,4 +4,4 @@
 
 当前状态：尚未整理游戏架构。随实际实现补充，不预设模块或技术决定。
 
-复杂子系统与重要决定按需保存到 `architecture/<subsystem>.md`、`architecture/adr-NNNN-<slug>.md`，由本文链接；维护方法见 [架构约定](../methodology/10-architecture-overview.md)。
+本文保存项目级模块关系；子系统内部职责、状态、接口与运行流程固定保存到 `architecture/<subsystem>.md`。符合 [架构约定](../methodology/10-architecture-overview.md) 中 ADR 条件的技术决策，其理由固定保存到 `architecture/adr-NNNN-<slug>.md`。无 Feature 的已采用技术决定按同一规范的“独立技术决定”契约保存到对应架构文档的固定章节，区分决定与已实现事实。按实际内容建立文档并由本文链接，不按游戏规模、篇幅或复杂程度改换存放位置。

@@ -9,7 +9,7 @@ Use `methodology/11-specialist-workflows.md` for ownership, authorization, sourc
 
 Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. Distinguish a reference's useful properties from permission or ability to reproduce it.
 
-Maintain the applicable detailed art standards in `docs/art/art-bible.md`. Link any direction or details already owned by GDD instead of copying them; a change to the game's adopted overall direction is coordinated with `design-gdd` in GDD. Useful specification topics include:
+Maintain shared detailed art standards only in `docs/art/art-bible.md`; GDD retains overall experience and visual goals and references these standards. Move current in-scope art standards already embedded in GDD to the Art Bible under methodology 11's ownership contract. A change to the game's adopted overall direction is coordinated with `design-gdd`. Useful specification topics include:
 - visual language and intended mood, with practical inclusion/exclusion examples;
 - silhouette, shape, palette, contrast, typography and material/detail treatment where relevant to the current game;
 - perspective, scale, animation language and visual priority across asset families;

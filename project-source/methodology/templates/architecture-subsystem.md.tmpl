@@ -10,7 +10,7 @@ Give its main location and useful scene, script or resource reading entries, lin
 
 Identify key actual direct collaborators and what the subsystem uses them for. Distinguish these from permitted dependency directions; explain why the boundaries exist and any approved exceptions. Link back to `../architecture.md`.
 
-Summarize key reasons needed to understand the current subsystem and link existing Feature design/notes or ADRs for detail. Preserve historical decisions in their owning records; do not invent missing rationale or create an ADR just to fill this map.
+Summarize key reasons needed to understand the current subsystem; link local implementation rationale to its Feature design and qualifying cross-Feature rationale to its ADR. Preserve historical decisions in their owning records; do not invent missing rationale or create an ADR just to fill this map.
 
 ## Key runtime flows (optional)
 
@@ -24,6 +24,10 @@ Include the details that affect this subsystem:
 - Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or presentation.
 
 Distinguish observed behavior from proposed or unverified flows. Inspect the actual call path; dynamic signals and loading may require runtime verification. Link interface definitions, implementation plans and tests in their existing records. Omit this section when the flow is already clear from local code.
+
+## Standalone technical decisions
+
+Use this section only for adopted decisions without a Feature that do not meet the ADR conditions and belong to this one subsystem. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its fixed scope, authorization and migration rules. Keep decision rationale separate from actual implemented facts; omit the section when no matching content exists.
 
 ## Reliable extracted facts
 

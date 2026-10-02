@@ -34,7 +34,7 @@ For each useful recommendation, explain the observed problem or benefit, support
 
 | Subject | Owning material or workflow |
 | --- | --- |
-| Task-specific incident, design choice or pending work | Existing Feature notes/design and the current records under `methodology/09-artifact-lifecycle.md`; preserve historical facts. |
+| Task-specific incident, design choice or pending work | Incident reminders in Feature notes, implementation choices in the Feature design, current pending work in Progress under `methodology/09-artifact-lifecycle.md`; preserve historical facts. |
 | Reusable contextual technique or failure lesson | `docs/knowledge/README.md` and its relevant topic; check for an existing entry. Knowledge explains evidence and conditions, not new mandatory behavior. |
 | Stable development constraint or concrete engineering rule | `methodology/04-coding-rules-4-layers.md` determines `docs/project-rules.md` versus the applicable `agent-rules/` module and owns the pre-write self-check and authorization. Game-design exclusions use **Design scope and boundaries** in methodology 01, even when long-lived or cross-system. |
 | Workflow, Skill guidance, command or configuration | The actual project-owned source and its callers. Follow `methodology/07-engineering-change.md` for an authorized project-tool change. Task routing belongs in **Canonical task routing** in `methodology/00-overview.md`; `AGENTS.md` routes affected engineering domains to Core and specialized rule entries. A framework-source recommendation returns to the framework maintenance task without writing across repositories or fetching framework materials. |

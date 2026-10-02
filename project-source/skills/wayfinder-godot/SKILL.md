@@ -33,9 +33,9 @@ For example, an inventory with many items may need a design choice about search 
 
 ## Preserve findings in their existing home
 
-Keep a one-off discussion in the conversation. When authorized continuity or durable work requires records, use the relevant sections of `methodology/09-artifact-lifecycle.md`: Progress and Feature notes/design for the current task, research for retained external findings, and existing report locations for actual execution evidence. Link authoritative decisions and original evidence instead of copying them into a new exploration document.
+Keep a one-off discussion in the conversation. When authorized continuity or durable work requires records, use the relevant sections of `methodology/09-artifact-lifecycle.md`: Progress for current state, Feature notes for reminders and navigation, the fixed Feature design for local implementation decisions, research for retained external findings, and existing report locations for actual execution evidence. Link authoritative decisions and original evidence instead of copying them into a new exploration document.
 
-Apply **Architecture Decision Records** in `methodology/10-architecture-overview.md` only for a technical decision that meets its existing conditions; ordinary questions do not require an ADR. Confirmed game intent, delivery scope and professional requirements still return to their GDD/Product or specialist owner. An exploration finding alone does not authorize those writes.
+Apply **Architecture Decision Records** in `methodology/10-architecture-overview.md` for a technical decision that meets its conditions; ordinary questions do not require an ADR. Adopted technical decisions without a Feature that do not qualify use **Standalone technical decisions** in the same specification when saving is authorized. Confirmed game intent, delivery scope and professional requirements still return to their GDD/Product or specialist owner. An exploration finding alone does not authorize those writes.
 
 Do not create an issue/ticket map, question ledger, claim state, research-only branch or parallel backlog for this method. Work without a Feature can use its existing task records; it need not manufacture a Feature or a new conversation to resolve the next question.
 

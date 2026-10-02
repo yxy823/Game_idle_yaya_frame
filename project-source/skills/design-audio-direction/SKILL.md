@@ -7,7 +7,7 @@ description: "Define or revise shared music, ambience and sound-effect direction
 
 Follow `methodology/11-specialist-workflows.md`. Read the relevant GDD experience goals, feedback behavior, existing audio conventions and available references.
 
-Link direction and details already owned by GDD rather than duplicating them. Maintain `docs/audio/sound-bible.md` for supplementary shared sound specifications: mood and sonic identity; roles of music, ambience and effects; importance and coexistence of feedback; transitions, repetition fatigue and silence; accessibility needs such as whether essential information also has a visual channel. Scope each rule to its applicable scenes or sound families.
+Maintain shared sound specifications only in `docs/audio/sound-bible.md`: mood and sonic identity; roles of music, ambience and effects; importance and coexistence of feedback; transitions, repetition fatigue and silence; accessibility needs such as whether essential information also has a visual channel. GDD retains overall experience goals and gameplay feedback triggers and references this specification. Move current in-scope sound specifications already embedded in GDD to the Sound Bible under methodology 11's ownership contract. Scope each rule to its applicable scenes or sound families.
 
 Describe useful timbre, texture, rhythmic and dynamic characteristics in terms that guide a concrete specification. Do not invent loudness targets, sample rates, technical bus topology or a complete soundtrack when they are not requirements. Changes to adopted game-design intent or behavior return to GDD through `design-gdd`; project mixing implementation belongs to the authorized task.
 

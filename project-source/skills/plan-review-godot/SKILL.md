@@ -41,7 +41,7 @@ Lead with whether the proposal supports the requested next step, the most conseq
 | Product delivery document change | [product-author](../product-author/SKILL.md); material delivery uncertainty uses [product-spec-elicitor](../product-spec-elicitor/SKILL.md) within that work. |
 | Initial decomposition of the current Product | [feature-plan](../feature-plan/SKILL.md), preserving its existing proposal and writing contract. |
 | Changes affecting an existing Feature plan | [feature-sync](../feature-sync/SKILL.md), with its actual source, baseline and plan-evolution contracts; findings do not establish a historical source change. |
-| Current Feature's detailed implementation design | [feature-execute](../feature-execute/SKILL.md), under the optional design contract in `methodology/02-feature-list-schema.md`. |
+| Current Feature's detailed implementation design | [feature-execute](../feature-execute/SKILL.md), under the fixed design contract in `methodology/02-feature-list-schema.md`. |
 | Professional specification change | Its owning specialist under `methodology/11-specialist-workflows.md`; keep GDD intent and detailed professional requirements at their existing sources. |
 | Ordinary unresolved project question | [project-grill-me](../project-grill-me/SKILL.md); do not impose a plan review on normal clarification. |
 

@@ -4,11 +4,11 @@ Use this reference when creating a GDD entry or topic, revising organization or 
 
 ## Use a navigable structure
 
-For a new GDD, use `docs/gdd/README.md` and the standard topic names defined by **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the filename-to-responsibility mapping and reference rules. The entry introduces the game and reading path; topics hold the actual rules and decisions and link relevant open questions. Group related content within its owning topic; create more levels only when real content warrants them.
+For a new GDD, use `docs/gdd/README.md` and the fixed topic paths and naming patterns defined by **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the content-to-location mapping, system keys and reference rules. The entry introduces the game and reading path; topics hold their assigned rules and decisions and link relevant open questions. Use the same structure throughout development, without choosing file placement by size or complexity.
 
 Preserve existing structure outside an authorized restructuring scope, including an existing single-file GDD. Standardization uses the naming contract above and updates affected references; a local change does not require reorganizing unrelated design or saving a separate copy. Establishing the scope and open-questions documents follows their own creation contracts.
 
-Use the configured `document_language` for titles and prose while keeping standard filenames unchanged. Do not add numeric prefixes, translated filename variants, a version-number scheme or role/owner fields. Specialized topics choose a stable descriptive name under the same naming contract.
+Use the configured `document_language` for titles and prose while keeping standard filenames unchanged. System and model instances follow the owning contract's fixed patterns. Do not add numeric prefixes, translated filename variants, ad hoc topic locations, a version-number scheme or role/owner fields.
 
 The standard names are:
 
@@ -17,13 +17,16 @@ docs/gdd/
   README.md
   concept-and-experience.md
   gameplay.md
+  systems/<system-key>.md
+  balance/<system-key>.md
+  balance/cross-system.md
   progression.md
   presentation.md
   design-scope-and-boundaries.md
   open-questions.md
 ```
 
-These names are fixed for their stated responsibilities, not optional spellings. A small draft creates only the topic bodies it needs. A complex economy can have a specialized topic or subdirectory linked from its owning standard topic and the entry. Do not create empty topics or duplicate decision histories just to fill the list.
+These locations are fixed for their stated responsibilities. Create a body when its content is written, including system rules from the first system in a draft; the gameplay overview links them. Do not create empty topics or duplicate decision histories to fill the list.
 
 ## Give each rule one owner
 

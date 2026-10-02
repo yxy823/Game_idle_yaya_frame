@@ -12,17 +12,18 @@
 | `docs/product.md` / `docs/product/NN-name.md` | 交付预拆分及当前交付范围；具体 Product 轮到时才写，链接 GDD 而不复制规则 |
 | `docs/ui/` / `docs/presentation/` | 界面布局、状态与交互 / 一次具体表现的过程、方案及采用关系；资源规格随所属章节保存，详见[专业来源](specialist-work.md) |
 | `docs/terminology.md` | 已确认项目术语、标准名称、定义、关系与别名的唯一正文；详细数值和行为归 GDD |
-| `docs/features/F0XX-design.md` | 需要较长解释的局部设计：职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
-| `docs/architecture.md` | 当前结构的模块位置、状态所有者、依赖和阅读入口；不枚举全仓文件或复制历史设计 |
-| `docs/architecture/` | 需要展开的子系统、重要 ADR；从架构总览导航 |
+| `docs/features/F0XX-design.md` | 该 Feature 的实施设计、局部技术决定与理由的固定正文，含职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
+| `docs/architecture.md` | 项目级模块关系、装配与依赖；按架构契约保存项目级独立技术决定，区分决定与当前结构 |
+| `docs/architecture/<subsystem>.md` | 子系统内部结构、状态、接口与运行流程；按架构契约保存该子系统的独立技术决定 |
 | `docs/project-rules.md` | 开发约束、协作与工程原则；强度区分 MUST / PREFER / REVIEW，游戏设计边界归 GDD |
-| Feature notes | 该任务局部决定、真实根因、链接与有价值的过程信息 |
+| `docs/architecture/adr-NNNN-<slug>.md` | 满足 ADR 条件的跨 Feature、跨模块或项目级技术决策理由 |
+| Feature notes | 任务提醒、简短事件教训、TODO 与正文链接；实施决定与理由归设计文件 |
 | `docs/knowledge/` | 可复用的项目实践及适用条件；不是规则或需求的替代正文 |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项；不是项目已经实测的经验 |
 | `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值主题与计算说明；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。
+GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值模型与计算说明。系统规则固定在 `docs/gdd/systems/<system-key>.md`，单系统模型在 `docs/gdd/balance/<system-key>.md`，跨系统模型在 `docs/gdd/balance/cross-system.md`；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。
 
 项目术语定义固定由 `project-terminology` 维护在 `docs/terminology.md`，当前只用于一个主题的术语也使用这一位置。GDD 编写与整合一并保存当前范围内已确认的术语，并把其他正文中的重复定义改为引用；普通解释和例子仍留在对应主题，不另设词表。只有实质歧义才使用共用提问方法，已确认含义不重复访谈；没有已确认术语时保留用途说明。
 
@@ -30,7 +31,7 @@ GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的
 
 ## 局部设计与当前架构
 
-Feature 设计是可选材料，简单任务只需 notes。
+实施设计和局部决定固定保存到同编号的 `F0XX-design.md`，简短说明也使用该文件。notes 只保留提醒、事件教训和引用。按真实内容创建设计稿，不按游戏规模、文档篇幅或复杂程度另选位置，也不预建空文件。
 
 - **引用位置：** 在该 Feature JSON 的 notes 中使用相对链接 `[设计说明](F0XX-design.md)`。
 - **保存与更新：** 方案批准后保存设计，实际实现改变时对齐。
@@ -40,29 +41,29 @@ Feature 设计是可选材料，简单任务只需 notes。
 
 实施任务在 Stage 1 提出方案和未决选择，在 Stage 2 取得有效批准后保存；已有设计就更新原文件。若仅授权交付指导文档，只沿用批准后的设计保存契约，不启动完整 Stage 2、不推进实施状态或测试计划。明确委派顾问时，顾问只可写获准的设计稿，Feature notes 链接和 Progress 等记录由原负责人按本次授权维护。设计属于解释材料，不替代需求、规则、AC 或 Registry；其修改照常参与当前证据指纹，不能把旧验证自动当成新设计已通过。
 
-架构地图在源码难以表达模块关系时才有价值。总览区分实际直接协作与允许的依赖方向，说明谁创建/释放状态、谁有权修改及关键入口。模块 README 已能导航时链接即可，不预设 Bootstrap 或 Autoload。运行说明可按需包含触发、状态变化、Godot 生命周期和失败路径。
+架构总览固定说明项目级模块关系、装配与依赖；子系统内部职责、状态、接口与运行流程固定在 `docs/architecture/<subsystem>.md`。从已有事实补充所需正文，不按复杂程度选择文件。总览链接子系统和已有模块 README，不预设 Bootstrap 或 Autoload；运行说明按实际需要包含触发、状态变化、Godot 生命周期和失败路径。
 
-对照 [逻辑与表现职责](../框架基础/game-logic-and-presentation.md)，架构记录真实协作而非再次定义玩法。例如 GDD 保存购买条件，UI 保存商店操作，表现文档保存获得反馈；架构说明哪个对象处理购买、谁维护余额和背包、界面如何读取状态及响应结果。一次任务改变这些连接时，可在局部设计展开必要理由；简单调用清楚可见时，不为两层模型另建架构文档。
+对照 [逻辑与表现职责](../框架基础/game-logic-and-presentation.md)，架构记录真实协作而非再次定义玩法。例如 GDD 保存购买条件，UI 保存商店操作，表现文档保存获得反馈；架构说明哪个对象处理购买、谁维护余额和背包、界面如何读取状态及响应结果。一次任务改变这些连接时，实施理由进入同编号设计文件，当前结构按项目级或子系统级作用域更新；两层模型不要求虚构模块或预建空文档。
 
-图中的箭头要分清代码依赖、装配、继承、消息或时序；静态引用搜索不证明动态加载、运行时 Signal 和真实状态归属。观察、推断、建议和已实现行为分别表述。地图更新职责、路径、入口和理由，旧设计正确记录过去时保留历史，不改成一直如此。
+图中的箭头要分清代码依赖、装配、继承、消息或时序；静态引用搜索不证明动态加载、运行时 Signal 和真实状态归属。观察、推断、建议和已实现行为分别表述。地图更新职责、路径、入口及理由的所属正文引用，旧设计正确记录过去时保留历史，不改成一直如此。
 
 设计新核心对象或调整结构时，实际判断来自已确认行为、状态与生命周期、调用方负担及真实依赖。比较复用、不改、局部修正、删除/合并与必要新增；API 更短、文件更少或采用模式本身都不是收益。枚举状态、Command、序列化或新管理层只服务实际用途，不为假想未来预建体系。具体方法见 [架构规范](../../../../project-source/methodology/10-architecture-overview.md)。
 
 ## ADR 的阈值
 
-ADR 使用 `docs/architecture/adr-NNNN-<slug>.md`，同时考虑：
+跨 Feature、跨模块或约束项目后续工作的技术选择，同时满足以下三个条件时，理由必须保存到 `docs/architecture/adr-NNNN-<slug>.md`：
 
 - 撤销是否有实质成本。
 - 仅靠源码和当前结构是否难以恢复原因。
 - 是否确有候选与重要取舍。
 
-普通局部选择留在设计或 notes；独立架构讨论可以保存已获准 ADR，不必虚构 Feature。
+Feature 的普通局部选择统一进入其设计文件。其他位置已经写过理由，不能作为跳过符合条件 ADR 的理由；迁移当前正文并更新引用，保留必要历史。没有 Feature 的已采用技术决定按[独立技术决定](../../../../project-source/methodology/10-architecture-overview.md#standalone-technical-decisions)保存：符合 ADR 条件的仍归 ADR，其余按作用域进入架构文档的固定章节，不虚构 Feature。
 
 记录问题、约束、候选、决定、收益、成本、依据和有用的重新考虑条件。Proposed、Accepted、Superseded 是普通文档状态，后者保留旧理由并链接替代决定；Accepted 说明决定已确认，不证明代码运行通过。已有具体授权直接沿用，不加额外批准。
 
 ## 探索结果与工作目录
 
-[wayfinder-godot](../../../../project-source/skills/wayfinder-godot/SKILL.md) 沿用本页的文档分工：一次性讨论可以留在对话；需要获准续接记录时，在 Progress 保存当前问题、未决项、下一步与材料链接，局部决定进入 Feature notes 或设计。外部结论归研究资料，真实运行归现有报告位置；重要技术决定仍须满足 ADR 阈值，采纳的游戏规则与交付边界回到各自 GDD/Product，不另建探索台账或默认报告。
+[wayfinder-godot](../../../../project-source/skills/wayfinder-godot/SKILL.md) 沿用本页的文档分工：一次性讨论可以留在对话；需要获准续接记录时，在 Progress 保存当前问题、未决项、下一步与材料链接，局部实施决定进入 Feature 设计，notes 保留提醒和引用。外部结论归研究资料，真实运行归现有报告位置；重要技术决定仍须满足 ADR 阈值，采纳的游戏规则与交付边界回到各自 GDD/Product，不另建探索台账或默认报告。
 
 使用 worktree 后，需要续接的信息还包括实际工作目录和当前版本，让下一次工作能找到正确现场。目录中的源码、被忽略的本机材料和运行证据仍各有归属；仅有代码提交不能证明另一目录拥有相同数据或证据。记录结论不等于批准采用某套实现，采用成果也不自动授权清理其目录，具体准备与整合由[对应 Skill](../方法与工具/skills-and-agents.md#逐步探索与-worktree)负责。
 

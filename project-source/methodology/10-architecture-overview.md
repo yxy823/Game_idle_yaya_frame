@@ -1,12 +1,12 @@
-# Optional architecture overview and decisions
+# Architecture overview and decisions
 
-An Architecture Overview is a lightweight navigation and ownership aid, not a new approval Stage or a substitute for Product, Project Rules and approved decisions. Use it when module boundaries are difficult to recover from code. Substantive mapping is optional for small projects. New projects include a short purpose/pending-state placeholder in `docs/architecture.md`; it does not establish module boundaries or accepted decisions. Fill it when an actual map is useful.
+The Architecture Overview records current project structure and provides reading entries. It is not a new approval Stage or a substitute for Product, Project Rules and approved decisions. New projects include a purpose/pending-state file in `docs/architecture.md`; fill it from actual structure within the authorized work, without inventing future modules. Use the same ownership and paths from initial development through expansion; there is no separate small-project arrangement.
 
-`docs/architecture.md` owns the project-level map: modules, implementation entry points, responsibilities, state owners, major collaborations and allowed dependency directions, and the reasons for those boundaries. Use `docs/architecture/<subsystem>.md` for a complex subsystem; link it from the overview instead of expanding the main file indefinitely. Map templates are [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl) and [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl).
+`docs/architecture.md` owns the project-level map: modules and their roles, startup/composition entry points, cross-module collaborations and permitted dependency directions. A subsystem's internal state owners, interfaces, dependencies and runtime flows use `docs/architecture/<subsystem>.md`, regardless of length or complexity. Identify the subsystem by a stable lowercase hyphenated name in the overview and link its document there; reuse that name for the same actual subsystem. Keep project-level summaries in the overview and internal contracts in the subsystem file. Decision rationale follows the Feature design, ADR and [standalone-decision contract](#standalone-technical-decisions) below. Map templates are [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl) and [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl).
 
 When a responsibility map is insufficient, the relevant subsystem document may trace key runtime flows: trigger, participating modules, state owner and result, with the Godot boundary, lifecycle and failure handling that matter. Link actual implementation or verification evidence and label proposed/unverified behavior. Keep this detail in the subsystem document; no fixed number of flows or diagrams is required.
 
-Feature design in `docs/features/F0XX-design.md` explains one change. This map and its subsystem documents describe the current system across Features. Keep shared runtime structure here, local implementation reasoning in the Feature design and important choice rationale in ADRs; link the owners instead of copying them. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
+Feature design in `docs/features/F0XX-design.md` explains one change. This map and its subsystem documents describe the current system across Features. Keep shared runtime structure here, a Feature's local implementation reasoning in its design and qualifying technical rationale in ADRs; standalone decisions use the specific contract below. Link the owners instead of copying them. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
 
 ## Game responsibilities and collaboration
 
@@ -14,7 +14,7 @@ Use the logic/presentation model in `docs/game-organization.md` to explain actua
 
 For a cross-layer flow whose boundary needs explanation, identify the request, authoritative state owner, accepted/rejected result and presentation consumer. Distinguish reading current state from reacting to a one-time event, and view-local state from business state. Explain who connects participants and cancels pending work when that lifetime affects correctness. For example, a shop UI requests a purchase, the purchase operation coordinates wallet and inventory owners, and the UI uses the result for feedback; reopening the UI reads current state without implying another purchase.
 
-Gameplay orchestration, presentation sequencing and scene assembly have their actual owners; this does not mandate an additional control layer. Engine-dependent gameplay and animation timing may participate under an explicit validity/cancellation contract. Preserve the implementation choices allowed by project rules and keep simple relationships in existing code or notes when a separate map adds no value.
+Gameplay orchestration, presentation sequencing and scene assembly have their actual owners; this does not mandate an additional control layer. Engine-dependent gameplay and animation timing may participate under an explicit validity/cancellation contract. Preserve implementation choices allowed by project rules. When documenting these relationships, use the project or subsystem location determined by their scope; notes only link the owning explanation.
 
 ## Navigation
 
@@ -26,7 +26,7 @@ Distinguish actual direct collaborators and the purpose of their interaction fro
 
 ## Maintaining a map
 
-Humans maintain why a boundary exists, who owns a responsibility, which dependencies are allowed and why an exception is approved. Update an existing map when its recorded responsibilities, ownership, collaborations, dependency constraints, paths or entry points change, including moves or renames that leave contracts intact. Implementation changes that do not affect mapped information need no map update or new diagram.
+Maps describe current boundaries, responsibility owners and allowed dependencies, linking decision rationale at its fixed owner. Update an existing map when its recorded responsibilities, ownership, collaborations, dependency constraints, paths or entry points change, including moves or renames that leave contracts intact. Implementation changes that do not affect mapped information need no map update or new diagram.
 
 Within the changed scope, check that links and reading entries still resolve to the intended content, reconcile overview and subsystem summaries, and keep affected diagrams consistent with the text. Stage 0 reads the relevant map if present; review checks a changed boundary against it. A stale or missing optional map is a clarification/review concern, not a fabricated Gate failure.
 
@@ -43,7 +43,7 @@ Compare a direct implementation and existing responsibilities before adding an a
 | Several purchase buttons repeat price, balance and capacity checks, then coordinate payment and item delivery | Consider one purchase operation that coordinates the existing state owners through their APIs. Callers receive a defined result; failure effects and change notifications remain part of the contract. Price calculation, wallet and inventory can keep their separate responsibilities. |
 | A short scene coordinator owns subscriptions and invalidates pending work when the scene exits | Keep or deliberately relocate that ownership. Removing the node is useful only if callers do not inherit scattered cleanup and lifetime obligations. |
 
-These examples illustrate the judgment, not required game systems or patterns. Record useful reasoning in the existing Feature notes/design or subsystem document; apply the ADR threshold below only when warranted.
+These examples illustrate the judgment, not required game systems or patterns. Record the Feature's implementation choices and reasoning in its design file. A subsystem document describes current implemented structure and references that design; technical decisions meeting the ADR conditions below use the ADR as their rationale source.
 
 ## Assessing a proposed refactor
 
@@ -57,19 +57,19 @@ Verify the behavior callers depend on using the existing [testing strategy](08-t
 
 ## Architecture Decision Records
 
-Consider an optional ADR for an important technical choice that affects multiple Features/modules or constrains later work. First read related Feature notes, architecture documents and existing ADRs. Reuse and link an explanation that already answers the question instead of recording the same rationale again.
+An ADR is the fixed rationale source for a technical choice that affects multiple Features/modules or constrains project-wide later work and meets all three conditions below. Read the relevant Feature design, architecture and existing ADRs first. Reuse the existing ADR for the same decision; an explanation previously written elsewhere does not exempt a qualifying decision from this ownership contract.
 
-Create a separate ADR only when all three conditions hold:
+Record the decision in an ADR when its scope qualifies above and all three conditions hold:
 
 - Reversing the choice would require meaningful migration or rework.
 - A future maintainer could reasonably question the choice because its reasons cannot be recovered from the code alone.
 - Real alternatives were considered, with concrete reasons for accepting some costs and rejecting others.
 
-Repeated discussion is a signal to check whether the rationale is missing or hard to find; it does not by itself justify another record. Local implementation choices stay in Feature notes or its detailed design. Easily reversible changes and choices with no real alternative need no ADR; keep any useful constraint in its existing owning document. Do not invent alternatives or migrate historical notes to fill a record.
+Repeated discussion is a signal to check whether the rationale is missing or hard to find; it does not itself change ownership. Decisions outside these conditions use the owning Feature design, including brief local choices; work without a Feature uses [Standalone technical decisions](#standalone-technical-decisions). Investigation findings remain evidence until a decision is adopted; a standalone investigation does not need an artificial Feature. Do not invent alternatives to satisfy the ADR conditions. When a qualifying current decision's rationale already exists in a Feature design or architecture document, move the authorized current body into its ADR and replace it with a link. Preserve referenced anchors and historical records as history rather than creating another current rationale body.
 
 Use [architecture-decision-record.md.tmpl](templates/architecture-decision-record.md.tmpl) at `docs/architecture/adr-NNNN-<slug>.md`. Choose the next unused number by reading existing filenames. The template is available from project creation, but no placeholder ADR or architecture map is required before a real decision exists.
 
-During Feature work, Stage 1 assesses whether the current choices meet this threshold and whether an existing explanation suffices. Stage 2 records a confirmed pre-implementation decision; Stage 3 records decisions discovered during implementation before dependent work and final verification. Authorized standalone technical design/investigation may produce an ADR without creating a Feature. This is an Agent judgment at an existing planning point, not an automatic output for every Feature or Stage.
+During Feature work, Stage 1 checks the scope and three conditions to determine the fixed owner and locate any existing ADR. Stage 2 records a confirmed pre-implementation decision; Stage 3 records decisions discovered during implementation before dependent work and final verification. Authorized standalone technical design/investigation records a qualifying decision in an ADR without creating a Feature. Apply these same conditions regardless of game size or perceived complexity; do not create empty ADRs for decisions that have not arisen.
 
 Likely candidates include a costly save-identity/migration model, cross-scene state ownership or a simulation strategy with real accuracy/performance tradeoffs. A local function, ordinary node layout or the already fixed Godot stack does not require a record by itself. Apply all three conditions rather than the topic name alone. GDD keeps game-design requirements, Product keeps delivery boundaries, and ADR keeps technical rationale. If feasibility changes game design or delivery scope, or conflicts with a project rule, resolve that through its owning workflow instead of using ADR acceptance as an override.
 
@@ -81,7 +81,18 @@ Use these states as ordinary Markdown, without a separate status registry:
 - `Accepted`: the choice is confirmed within the task's existing authorization. Reuse an explicit decision already made; do not add another approval round. Acceptance records a decision, not proof that an API or runtime behavior was tested. Keep assumptions and any necessary verification visible.
 - `Superseded by <ADR link>`: an accepted choice has been replaced. Preserve its rationale, link the replacement, and link back from the new ADR. Clarifying wording does not require a new record; changing the decision does.
 
-The ADR owns the cross-Feature rationale. The architecture map owns the current structure and links relevant ADRs without duplicating their rationale or status. Feature notes keep local decisions and link applicable ADRs; Progress keeps only current handoff links. Stage 0 reads relevant ADRs even when no map exists, and the existing review checks consistency with applicable accepted decisions. A missing optional ADR is not a failure; an actual conflicting or undecided choice is resolved within the current task's scope and authorization.
+The ADR owns the rationale for decisions meeting the conditions above. The architecture map owns current structure and links relevant ADRs without duplicating their rationale or status. Feature design owns that Feature's local implementation decisions and links applicable ADRs; Feature notes provide navigation, and Progress keeps current handoff links. Standalone decisions follow the contract below. Stage 0 reads relevant ADRs even when no map exists, and review checks consistency with accepted decisions. No qualifying decision means no ADR is required; missing rationale for a qualifying decision is a documentation gap to resolve within the current task's scope and authorization.
+
+## Standalone technical decisions
+
+For work without a Feature, a technical decision meeting the ADR conditions still belongs in an ADR. When an adopted decision does not meet those conditions and saving it is authorized, use the **Standalone technical decisions** section in the architecture document determined below. This section records the decision and rationale, distinct from the map's current implemented facts; explain its scope, basis and unverified or unimplemented parts. Discussion-only work stays in the conversation.
+
+| Decision scope | Fixed owning document |
+| --- | --- |
+| Exactly one identified subsystem | `docs/architecture/<subsystem>.md` |
+| Cross-subsystem or project-level scope, including decisions before subsystem boundaries are established | `docs/architecture.md` |
+
+Use the document's configured language for the section title and preserve its references. Do not invent a Feature, subsystem, separate guide or ADR to provide a filename. Once the decision becomes part of a Feature's approved implementation design, move the current rationale into its `F0XX-design.md` at the authorized design-persistence step and replace the architecture decision body with a link; establishing a pending Feature alone does not authorize that write. Current structure remains in the map, and referenced history remains historical. If the decision later meets the ADR conditions, migrate its current rationale to the ADR under the rule above.
 
 ## Extracted reference facts
 

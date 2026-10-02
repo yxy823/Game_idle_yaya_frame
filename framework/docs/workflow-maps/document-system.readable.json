@@ -999,7 +999,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "GDD 游戏设计正文\nREADME.md · *.md",
+      "label": "GDD 游戏设计正文\nREADME.md · **/*.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1021,7 +1021,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\ngameplay.md 保存整体循环与系统导航；系统规则固定在 systems/<system-key>.md，单系统数值模型在 balance/<system-key>.md，跨系统模型在 balance/cross-system.md，不按游戏规模、篇幅或复杂程度选择位置。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\nGDD 保存整体目标与游戏规则；专业规格固定归专业正文，获准编写与整合时归位当前范围内的已确认规格，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1236,7 +1236,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：细化 GDD 的共享视觉方向、约束和共用资源规格。\n项目位置：docs/art/art-bible.md；初始方向待定。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
+      "note": "职责：共享视觉方向、约束和共用资源规格的固定正文；GDD 保留整体体验目标与引用。\n项目位置：docs/art/art-bible.md；初始方向待定。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1365,7 +1365,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释一项变更的边界、职责、接口、生命周期、失败处理、实现与验证理由。\n项目位置：docs/features/F0XX-design.md；需要持续说明时才创建。\n从 Feature notes 进入，并引用 Feature/AC、来源、当前架构和适用 ADR；完成后保留该任务的历史事实。\n\n项目文件： docs/features/F[0-9][0-9][0-9]-design.md",
+      "note": "职责：保存一项 Feature 的实施设计、局部技术决定与理由，解释该变更的边界、职责、接口、生命周期、失败处理、实现与验证理由。\n项目位置：docs/features/F0XX-design.md；有设计内容时创建，简短理由也固定使用此文件，不按复杂程度改写到 notes。\n从 Feature notes 进入，并引用 Feature/AC、来源、当前架构和适用 ADR；完成后保留该任务的历史事实。\n\n项目文件： docs/features/F[0-9][0-9][0-9]-design.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1408,7 +1408,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前任务范围、组件影响、主来源、可观察 AC、验证义务和简短 notes。\n项目位置：docs/features/F0XX.json；真实规划后产生。\nsource 指向精确主来源，其他约束通过 AC/可选设计引用；notes 导航局部设计、报告和决定，不成为要求的唯一正文。\n\n项目文件： docs/features/F[0-9][0-9][0-9].json",
+      "note": "职责：当前任务范围、组件影响、主来源、可观察 AC、验证义务和简短 notes。\n项目位置：docs/features/F0XX.json；真实规划后产生。\nsource 指向精确主来源，可观察要求及来源写入 AC，实施约束及来源写入同编号设计；notes 保存提醒、事件教训和导航，不保存另一份实施设计或决定理由。\n\n项目文件： docs/features/F[0-9][0-9][0-9].json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1494,7 +1494,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：细化 GDD 的声音方向、反馈层级和共享音频要求。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，声音文件准备规格随实际使用章节保存。\n\n项目文件： docs/audio/*.md",
+      "note": "职责：共享声音方向、反馈层级和音频要求的固定正文；GDD 保留整体体验目标、玩法触发规则与引用。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，声音文件准备规格随实际使用章节保存。\n\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1580,7 +1580,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前模块、实现入口、状态所有者、依赖方向及必要协作。\n项目位置：docs/architecture.md；初始只有用途说明。\n链接实际 GDD/UI/表现和代码入口；复杂部分进入子系统文档，重要取舍链接 ADR，不覆盖 Feature 的历史。\n\n项目文件： docs/architecture.md",
+      "note": "职责：项目级模块、装配入口、跨模块协作与依赖方向。\n项目位置：docs/architecture.md；初始只有用途说明。\n子系统内部契约固定进入子系统文档，不按复杂程度分流；符合条件的技术决策理由归 ADR。\n无 Feature 且不符合 ADR 条件的已采用项目级或跨子系统决定，按架构规范保存到独立技术决定章节，区分决定与已实现事实；纳入 Feature 设计时按规定迁移并保留引用。\n链接实际 GDD/UI/表现和代码入口，不覆盖 Feature 的历史。\n\n项目文件： docs/architecture.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1709,7 +1709,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：目标语言、表达和格式约定。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
+      "note": "职责：目标语言、表达和格式约定的固定正文；原先写在 GDD 的当前规格在获准整理时归位。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1795,7 +1795,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：复杂子系统的当前职责、接口、状态、协作与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；按需要创建，从架构总览进入。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n\n项目文件： docs/architecture/*.md",
+      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n\n项目文件： docs/architecture/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：重要跨任务技术选择的问题、候选、决定、接受成本、证据和复核条件。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；满足现有阈值才创建。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
+      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、候选、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -5152,7 +5152,7 @@
       "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
-      "label": "复杂部分展开",
+      "label": "子系统内部契约",
       "stroke": {
         "color": "#64748B",
         "width": 1.5,

@@ -34,13 +34,13 @@ A Product is a verifiable delivery unit, not necessarily a complete game system 
 
 Reuse clear requirements and settled answers. For a material ambiguity in delivery boundaries, order or integration, use `product-spec-elicitor` with the relevant source sections, requested change, current Product scope and existing decisions. It returns a proposal without writing. An unresolved game rule returns to `design-gdd`; numeric design within settled gameplay belongs to `design-balance`. A clear change needs no additional elicitation.
 
-Distinguish a design change from a delivery choice. New gameplay rules, states, formulas and version design scope belong in GDD; Product identifies which requirements are being delivered, their boundaries and how they connect to existing work. Technical implementation choices belong in Feature design, architecture or code.
+Distinguish a design change from a delivery choice. New gameplay rules, states, formulas and version design scope belong in GDD; Product identifies which requirements are being delivered, their boundaries and how they connect to existing work. Implementation decisions and rationale use the fixed Feature design, ADR or standalone-decision owner under methodology 10; current structure belongs in architecture and executable behavior in code.
 
 Explain the effect of a foundational change, deletion or invalidation of completed behavior. Obtain only decisions not already covered by the user's concrete authorization. Do not silently remove an adopted requirement or use a speculative default as a confirmed rule.
 
 ## Coordinate professional requirements
 
-Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain presentations, UI, art, audio, resource and localization specifications. GDD owns game-design intent; specialists supplement it with their detailed requirements. If GDD already owns a detail, link that section instead of copying it into another authoritative body.
+Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain presentations, UI, art, audio, resource and localization specifications. GDD owns game rules and overall experience goals; professional specifications have the fixed owners in that contract. A specification previously written in GDD does not acquire GDD ownership: return it to the professional owner for authorized consolidation and update affected references, preserving protected input sources. Link rules and goals at their GDD source without copying them.
 
 For new interfaces or substantial layout/resource changes, use **Visual prototype before dependent implementation** in methodology 01. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in their owning design sections. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
 

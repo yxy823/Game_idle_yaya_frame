@@ -86,7 +86,7 @@ An experience may be useful only in this project's particular conditions and sti
 
 ## Evolution and rule promotion
 
-Keep concrete framework and language learnings in the appropriate `agent-rules/<module>/` source after explicit approval. Keep incident-specific learning in Feature notes or design, and reusable explanatory knowledge in its own topic. Promote only reusable, prescriptive guidance under the incremental maintenance contract below; Project Rules is not an incident log.
+Keep concrete framework and language learnings in the appropriate `agent-rules/<module>/` source after explicit approval. Keep brief incident learning in Feature notes, implementation decisions and rationale in the Feature design, and reusable explanatory knowledge in its own topic. Promote only reusable, prescriptive guidance under the incremental maintenance contract below; Project Rules is not an incident log.
 
 When a change would move a rule between these boundaries, inspect ownership and report the boundary change before editing. Do not create a parallel concrete rule authority to avoid the existing router.
 

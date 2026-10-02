@@ -8,7 +8,7 @@ GDD 说明游戏设计，Product 组织交付范围，Feature 分配实现与验
 
 ## GDD 是项目开发的前提
 
-项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。新 GDD 以 `docs/gdd/README.md` 为固定入口，通用主题使用[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先确定的名称；包括 `design-scope-and-boundaries.md`（设计范围与边界）和 `open-questions.md`（开放问题）。实际保存设计时按各文档的建立条件补充正文，不为填满目录预建空文件。相同职责沿用名称；修改已有设计时只整理受影响范围，需要调整路径或引用章节时同步实际使用方。
+项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。新 GDD 以 `docs/gdd/README.md` 为固定入口，主题使用[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先确定的名称与多实例命名模式，不按游戏规模、篇幅或复杂程度选择位置；包括 `design-scope-and-boundaries.md`（设计范围与边界）和 `open-questions.md`（开放问题）。实际保存设计时按各文档的建立条件补充正文，不为填满目录预建空文件。相同职责沿用名称；修改已有设计时只整理受影响范围，需要调整路径或引用章节时同步实际使用方。
 
 `docs/gdd/open-questions.md` 是固定的《开放问题》文件，集中当前设计尚未确定的选择与证据缺口。条目链接相关主题，说明影响及需要什么才能解决；GDD 入口直接引用它。后续设计讨论据此继续问题，Product/Feature 规划判断哪些工作受阻，审核判断设计能否支撑下一步，相关调研或实验据此确定要取得的证据。具体读写和解决后处理见[开放问题规范](../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)。
 
@@ -49,7 +49,8 @@ Product 编号是稳定身份，不是排序号。新单元使用下一个可用
 | AC | 一个可客观判断的预期结果；ID 在演进中保持稳定 |
 | 组件 | 可复用的真实影响范围，用于连接实现与相关测试；不是每个文件一个组件 |
 | 验证方式 | `manual` 或 `automated` 根据要求选择；规划时未决定可为 `null`，空人工列表不能倒推 automated |
-| notes / 可选设计 | 过程决定与解释；不能成为 AC、测试义务或专业要求的唯一正文 |
+| notes | 任务提醒、事件教训、TODO 与正文链接 |
+| `F0XX-design.md` | 实施设计、局部决定与理由的固定正文；不代替 AC、测试义务或专业要求 |
 
 测试 ID 可为 `F012-AC01`、`F052-RT01` 或项目实际不变量 ID；这些例子不表示已有测试。
 

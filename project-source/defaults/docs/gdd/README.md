@@ -4,7 +4,11 @@
 
 [开放问题](open-questions.md)集中当前尚未解决的设计问题，说明相关主题、影响和所需决定或证据。后续讨论、规划、审核及相关实验按范围读取；解决后将决定写回所属主题并更新引用。具体职责见[开放问题规范](../../methodology/01-product-doc-structure.md#open-design-questions)。
 
+系统规则固定使用 `systems/<system-key>.md`；系统数值模型使用相同键的 `balance/<system-key>.md`，跨系统数值模型使用 `balance/cross-system.md`。`gameplay.md` 保存核心循环、系统关系和入口链接。按上述标准命名契约区分内容职责，游戏规模、篇幅和复杂程度不改变位置；没有实际内容时不预建文件。
+
 GDD 同时说明游戏逻辑与表现目标；界面细节和一次具体表现分别链接到 [UI 设计](../ui/README.md)与[游戏表现](../presentation/README.md)。例如商店主题保存购买规则和成功反馈目标，再引用界面、获得物品的表现以及实际接入说明。整体查找关系见[游戏职责与项目组织](../game-organization.md)。
+
+共享视觉规格、声音规格和本地化要求分别由[美术规范](../art/art-bible.md)、[声音规范](../audio/sound-bible.md)和[本地化规范](../localization/localization-spec.md)保存。编写或整合 GDD 时按[专业来源规范](../../methodology/11-specialist-workflows.md)归位当前范围内的已确认规格，本目录引用其正文。
 
 项目术语的定义与别名统一维护在[项目术语](../terminology.md)，本目录引用该文件，不另设术语表。编写或整合 GDD 时，一并整理当前范围内已确认的术语；具体职责见[项目术语规范](../../methodology/01-product-doc-structure.md#project-terminology)。
 

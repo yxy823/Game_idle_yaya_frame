@@ -178,7 +178,7 @@ Propose promotion of only the generalized `Guardrail` when at least one is true:
 - the defect recurred or needed repeated repair attempts;
 - tests cannot fully enforce it.
 
-Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Preserve detailed local constraints and rationale in the optional Feature design when needed; do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `feature-sync` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
+Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Save local implementation constraints and rationale in the fixed Feature design, including brief explanations; notes reference that body. Do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `feature-sync` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
 
 ## Explicit exclusions
 

@@ -22,11 +22,11 @@
 | `docs/project-rules.md` | 项目开发约束、协作与工程原则，强度区分 MUST、PREFER、REVIEW | 已获准工程规则维护；受其影响的工作读取 |
 | `docs/game-organization.md` | 逻辑与表现职责、文档关系、业务模块与代码组织和命名判断 | 项目设计及结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
-| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；已由 GDD 定义的细节直接引用 |
+| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；专业正文固定维护在所属文件，GDD 保存整体目标与规则并引用 |
 | `docs/presentation/` | 一次游戏表现的过程、组件、候选、采用组合、实现与验收入口；方案专用资源规格归属相应章节 | `design-game-presentation` 与当前实现任务；UI/GDD 引用，README 只导航 |
 | `docs/feature-list.json` | ID、标题、依赖、状态与详情入口 | 规划/执行；可开始任务及台账检查 |
 | `docs/features/F0XX.json` | 本项范围、AC、来源、验证义务与必要 notes | 规划/执行；测试选择和完成检查 |
-| `docs/features/F0XX-design.md` | 按需展开局部设计与理由 | 原任务；不拥有第二套 AC 或测试映射 |
+| `docs/features/F0XX-design.md` | 实施设计与局部决定的固定正文，简短理由也使用此文件 | 原任务；不拥有第二套 AC 或测试映射 |
 | `docs/test-registry.json` | 组件与测试 ID、套件/case、planned/active/retired | 规划/实现；测试运行器 |
 | `docs/feature-list-revisions.json` | 真实规划覆盖基线与修订 | 规划/同步；不是任意最新 Git 提交的别名 |
 | `docs/feature-completion-evidence.json` | 当前完成依据的原件引用及绑定 | 完成记录工具；首个真实结果后出现 |
@@ -65,7 +65,7 @@
 
 例如商店模块可以相邻保存购买规则和商店面板，前者负责有效购买结果，后者负责显示与交互。明确职责并不要求建立根级 `logic/`、`presentation/` 目录；具体拆分根据已有结构和维护需要决定。
 
-四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与可选设计等按实际活动产生。初始 GDD 目录只有用途说明，不能作为开发所需的真实正文；空测试目录和占位 Product 也不提供任何通过证据。
+四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与设计正文等按实际活动产生。初始 GDD 目录只有用途说明，不能作为开发所需的真实正文；空测试目录和占位 Product 也不提供任何通过证据。
 
 ## 复制与重命名
 
@@ -79,9 +79,9 @@
 
 ## 模板与按需记录
 
-`methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；可选 Feature 设计按解释需要省略不适用章节。
+`methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；Feature 设计使用固定文件，按内容省略不适用章节。
 
-新建 GDD 使用 `docs/gdd/README.md` 入口及[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中指定的通用主题名称，`design-gdd` 按实际内容创建所需主题，不为凑目录建立空文件。已有单文件或分层结构的局部修改不强制整套迁移；获准标准化时同步受影响的文件与章节引用。数值正文放在所属主题或章节，不另建重复规格。Product 模板用于组织交付，不能替代 GDD。
+新建 GDD 使用 `docs/gdd/README.md` 入口及[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中指定的主题名称和多实例命名模式，`design-gdd` 按实际内容创建所需主题，不为凑目录建立空文件。已有单文件或分层结构的局部修改不强制整套迁移；获准标准化时同步受影响的文件与章节引用。系统规则固定在 `docs/gdd/systems/<system-key>.md`；数值模型固定在 `docs/gdd/balance/<system-key>.md`，跨系统模型使用 `balance/cross-system.md`。位置由内容和作用域决定，不按游戏规模、篇幅或复杂程度选择。Product 模板用于组织交付，不能替代 GDD。
 
 | 产物 | 位置与注意事项 |
 | --- | --- |
