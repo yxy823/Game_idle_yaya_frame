@@ -1,6 +1,6 @@
 # GDD design coverage
 
-Use this reference when drafting a full GDD, checking coverage or extending an existing design. These are design questions, not an interview checklist or a file-per-row template. The fixed **Design scope and boundaries** subdocument follows `methodology/01-product-doc-structure.md`; other topics may share a document, and a local revision needs only its affected topics and dependencies.
+Use this reference when drafting a full GDD, checking coverage or extending an existing design. These are design questions, not an interview checklist or a file-per-row template. The fixed **Design scope and boundaries** and **Open design questions** documents follow `methodology/01-product-doc-structure.md`; other topics may share a document, and a local revision needs only its affected topics and dependencies.
 
 ## Match depth to the requested result
 
@@ -23,8 +23,8 @@ The entry briefly identifies the game, concept, covered scope and reading path. 
 | Interaction and understanding | What view, controls, information, navigation and state feedback support the actions? What must a first-time or returning player understand? Address relevant input, reading, color, sound and reaction constraints. Detailed interface specifications may link their professional owner. |
 | Visual and audio intent | What mood and presentation make important objects, actions and states recognizable? What role does sound play? Name the useful properties of references. This is design intent; actual production and detailed professional specifications have separate owners. |
 | Design scope and boundaries | What overall game scope and exclusions are adopted, and what is deferred only for a named version? Which actual resource, platform and design constraints apply? Keep this body in the fixed scope subdocument; local mechanism/presentation limits, delivery ordering and technical implementation detail remain with their own sources. |
-| Risks, unknowns and validation | Which assumptions could change the design, what consequence would be wrong, and what work depends on resolving them? Rule checks identify initial conditions, action and expected result; experience checks identify observations that would support or challenge a hypothesis. Actual evidence states the tested conditions and limits. |
-| Decisions and sources | Which consequential choices have been adopted, and on what basis? Where do conflicting claims or uncertain terms remain? Keep the necessary reason, source and uncertainty near the owning rule; reuse existing terminology and resumption records instead of duplicating them. |
+| Risks, unknowns and validation | Which assumptions could change the design, what consequence would be wrong, and what work depends on resolving them? Keep current questions in the open-questions document and link their affected topics. Rule checks identify initial conditions, action and expected result; experience checks identify observations that would support or challenge a hypothesis. Actual evidence states the tested conditions and limits. |
+| Decisions and sources | Which consequential choices have been adopted, and on what basis? Where do conflicting claims or uncertain terms remain? Keep the necessary reason, source and evidence limits near the owning rule, linking unresolved questions; reuse existing terminology and resumption records instead of duplicating them. |
 
 ## Conditional systems
 

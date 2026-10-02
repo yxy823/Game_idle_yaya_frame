@@ -15,7 +15,7 @@ Apply `methodology/05-document-language.md`, the project Git contract and applic
 
 ## Select the requested result
 
-Read the applicable **Design scope and boundaries** under `methodology/01-product-doc-structure.md`, relevant GDD topics, Product overview, lightweight Feature index and any affected detail/source documents. Follow real dependencies; do not load all future design or all Feature details.
+Read the applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md`, relevant GDD topics, Product overview, lightweight Feature index and any affected detail/source documents. Use relevant open questions to identify unresolved delivery prerequisites and link them from the affected Product section; do not resolve a game rule by choosing a delivery default. Follow real dependencies; do not load all future design or all Feature details.
 
 | Requested result | Work to perform |
 | --- | --- |

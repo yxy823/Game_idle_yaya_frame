@@ -4,7 +4,7 @@ Use this reference when creating a GDD entry or topic, revising organization or 
 
 ## Use a navigable structure
 
-For a new GDD, use a short entry with linked topic documents under `docs/gdd/`, including the fixed **Design scope and boundaries** subdocument defined in `methodology/01-product-doc-structure.md`. The entry introduces the game and reading path; topics hold the actual rules, their decisions and relevant unknowns. Group related content where readers need it together. Create more levels only when real content warrants them.
+For a new GDD, use a short entry with linked topic documents under `docs/gdd/`, including the fixed **Design scope and boundaries** and **Open design questions** documents defined in `methodology/01-product-doc-structure.md`. The entry introduces the game and reading path; topics hold the actual rules and decisions and link relevant open questions. Group related content where readers need it together. Create more levels only when real content warrants them.
 
 Preserve effective existing structure outside the affected scope, including a single file for other topics. Establishing the fixed scope subdocument follows its contract above; a local change does not require reorganizing unrelated design or saving a separate copy. Reorganization follows the actual request or a concrete navigation problem, within the existing authorization.
 
@@ -20,9 +20,10 @@ docs/gdd/
   progression.md
   presentation.md
   design-scope-and-boundaries.md
+  open-questions.md
 ```
 
-Only the scope subdocument has a fixed path; the other filenames illustrate a possible structure. A small initial draft may combine other design in one topic linked from the entry. A complex economy can have its own topic or subdirectory. Do not create empty topics or duplicate decision histories to match the example.
+The scope and open-questions documents have fixed paths; the other filenames illustrate a possible structure. A small initial draft may combine other design in one topic linked from the entry. A complex economy can have its own topic or subdirectory. Do not create empty topics or duplicate decision histories to match the example.
 
 ## Give each rule one owner
 
@@ -41,7 +42,7 @@ A useful system topic explains its purpose, player process, rules and relevant d
 - Specifications and existing numeric rules, with units and sources. Use `design-balance` for derived formulas or related parameter sets.
 - Interactions with other systems and visible feedback, linking their owning passages.
 - Observable rule scenarios and experience questions, keeping actual evidence separate from plans.
-- Consequential choices, alternatives or assumptions that still affect interpretation.
+- Working assumptions that still affect interpretation, with links to their unresolved choices in the open-questions document rather than a second question body.
 
 For example, a candidate light-board design could say that clicking a cell toggles that cell only; the flow topic defines whether input remains available after all cells are lit. The display topic references that completion state for its message rather than redefining it. A sample play sequence can expose whether a mistaken click is recoverable. These are illustrative candidate rules, not adopted requirements or verified experience.
 

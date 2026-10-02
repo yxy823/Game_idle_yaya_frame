@@ -4,7 +4,7 @@ Use this reference to combine scattered notes, GDD topics, supplied documents or
 
 ## Establish what each source supports
 
-Read the relevant material and identify its topic, current status and actual references. Distinguish adopted rules, candidate designs, implementation observations and measured evidence. User-designated authority and explicit decisions matter; a file's date, size or position in the directory does not settle a design conflict.
+Read the relevant material and open questions, and identify each source's topic, current status and actual references. Distinguish adopted rules, candidate designs, implementation observations and measured evidence. User-designated authority and explicit decisions matter; a file's date, size or position in the directory does not settle a design conflict.
 
 When implementation differs from adopted design, preserve that distinction rather than automatically rewriting the design to match it. For a material conflict, identify both claims, their locations, available adoption evidence and what depends on resolving it. Keep an unresolved choice visible and continue independent consolidation work.
 
@@ -12,7 +12,7 @@ A small comparison in the conversation or affected topic is sufficient when need
 
 ## Consolidate without losing design
 
-Use [Design document structure](design-docs.md) for the output, including its fixed scope subdocument contract. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated existing structure. A single-file GDD does not require another copy or conversion of all its topics.
+Use [Design document structure](design-docs.md) for the output, including its fixed scope and open-questions contracts. Consolidate unresolved design conflicts into the existing open-questions document with their sources and effects, replacing duplicated question bodies with links. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated existing structure. A single-file GDD does not require another copy or conversion of all its topics.
 
 Give each retained rule an owning location. Preserve its exceptions, assumptions, numeric meaning, decision state and useful evidence even when the surrounding wording is compressed. Resolve terminology that would otherwise change interpretation, using the existing terminology route where a durable domain definition is needed.
 

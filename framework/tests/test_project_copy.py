@@ -262,11 +262,11 @@ class ProjectCopyTests(unittest.TestCase):
             self.assertFalse(any((output / relative).rglob(".gdignore")), relative)
         for name, key in (("feature-list.json", "features"), ("test-registry.json", "tests")):
             self.assertEqual(json.loads((output / "docs" / name).read_text(encoding="utf-8"))[key], [])
-        for relative in ("gdd/README.md", "product.md", "product/README.md"):
+        for relative in ("gdd/README.md", "gdd/open-questions.md", "product.md", "product/README.md"):
             self.assertEqual((output / "docs" / relative).read_bytes(),
                              (repository / "project-source/defaults/docs" / relative).read_bytes())
-        for name in ("gdd", "product"):
-            self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, {"README.md"})
+        for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
+            self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
         for relative in (
             "examples/asset_workbench/single/example_workbench.tscn",
             "examples/asset_workbench/single/example_game.tscn",

@@ -29,7 +29,7 @@ For diagnosis, distinguish the observed symptom, supported conclusion and cause 
 
 ## Write back and coordinate consequences
 
-Keep formulas, values, decision state and calculation assumptions together at their owning GDD location. Update the authorized numeric passage and relevant links directly; no separate overall-design approval is needed merely because the owning document is GDD.
+Keep formulas, values, decision state and calculation assumptions together at their owning GDD location. Read and maintain affected numeric questions under **Open design questions** in `methodology/01-product-doc-structure.md`, preserving uncertainties that still need adoption or play evidence. Update the authorized numeric passage and relevant links directly; no separate overall-design approval is needed merely because the owning document is GDD.
 
 - A new mechanic or changed experience goal belongs to [design-gdd](../design-gdd/SKILL.md). Explain the conflict or proposed tradeoff and carry the existing authorization into that work; do not treat a tuning request as permission to adopt a different game.
 - When the changed numeric source affects planned or completed work, use the source-impact and committed-source contracts in `methodology/11-specialist-workflows.md`. Coordinate affected Product scope with `product-author` and planned consumers with `feature-sync` within the task's authorization. Do not create Product/Feature documents merely to finish a standalone model.

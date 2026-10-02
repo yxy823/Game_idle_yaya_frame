@@ -16,6 +16,7 @@
 | `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
 | `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
 | `docs/gdd/design-scope-and-boundaries.md` | GDD《设计范围与边界》：整体范围、排除项和版本边界；局部限制引用所属主题 | `design-gdd` 在实际保存设计时建立和维护；讨论、规划、实现与审核按需读取 |
+| `docs/gdd/open-questions.md` | 当前设计开放问题、相关主题、影响与所需决定或证据；初始只有用途和待定说明 | GDD 作者随设计维护；讨论、规划、审核、相关实验与续接按范围使用 |
 | `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
 | `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
 | `docs/project-rules.md` | 项目开发约束、协作与工程原则，强度区分 MUST、PREFER、REVIEW | 已获准工程规则维护；受其影响的工作读取 |

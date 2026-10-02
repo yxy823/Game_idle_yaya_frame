@@ -4,7 +4,7 @@ Use this reference for a requested review of a GDD draft, selected topic or whol
 
 ## Establish what the document must support
 
-Identify the intended next use: exploring a concept, selecting a design direction, handing off rules for implementation or checking an existing design. Start with the game goal, core loop, adopted scope and exclusions. Read layered designs from their actual entry and follow relevant links; a single-file GDD remains valid and needs no migration for review. Report the actual documents read and inaccessible references.
+Identify the intended next use: exploring a concept, selecting a design direction, handing off rules for implementation or checking an existing design. Start with the game goal, core loop, adopted scope and exclusions. Read layered designs from their actual entry and follow relevant links, including relevant entries in `docs/gdd/open-questions.md` under **Open design questions** in methodology 01. Use them to judge missing decisions and evidence, not to assume that every listed question blocks this review. A single-file GDD remains valid and needs no migration for review. Report the actual documents read and inaccessible references.
 
 Judge coverage by content, not matching chapter names. A topic may span several files or share a chapter with another topic. Say “not found in the inspected material” when coverage is partial; do not infer that the whole project lacks the design.
 

@@ -17,7 +17,7 @@ Apply this method to the user's current discussion goal, including its remaining
 
 ### Establish facts and group the current questions
 
-Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow the scope contract for reading and persistence rather than inventing exclusions.
+Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow the scope contract for reading and persistence rather than inventing exclusions.
 
 For a discussion with several material choices, start with a brief overview of what is settled, which questions are currently known and which depend on earlier answers. This is the current picture, not a promised final question count or an exhaustive design tree. A single clear gap needs no extra overview.
 
@@ -45,7 +45,7 @@ Evaluate the user's answer against the relevant facts and constraints, state wha
 
 Answer an explanation request first, then return to the remaining discussion; asking for an explanation is not acceptance of a proposal. When an earlier decision changes, revisit only the answers that depended on it and preserve unaffected decisions. Respect an explicit request to explain only, pause, finish or narrow the scope.
 
-After substantive progress, briefly say what is settled, what remains and what the next questions will resolve. Explain newly discovered questions or changed dependencies. Known remaining items may be counted, but do not invent a fixed total or a completion percentage. Keep this orientation in the conversation; do not create round counters, confidence scores, question ledgers, state files or formatting checks.
+After substantive progress, briefly say what is settled, what remains and what the next questions will resolve. Explain newly discovered questions or changed dependencies. Known remaining items may be counted, but do not invent a fixed total or a completion percentage. Keep this orientation in the conversation; do not create round counters, confidence scores, conversation-tracking ledgers, state files or formatting checks. Authorized GDD writing maintains its existing open-questions document through the owning source workflow.
 
 ### Finish against the discussion goal
 

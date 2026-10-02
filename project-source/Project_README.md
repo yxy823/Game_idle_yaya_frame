@@ -32,7 +32,7 @@
 | .codex/agents/independent-reviewer.toml | 独立审核角色；实际加载、上下文和权限需核实，见[审核契约](methodology/12-independent-review.md) |
 | .codex/agents/implementation-advisor.toml | 用户明确委派时，为已有 Feature 准备实施指导；固定模型与失败边界见 [implementation-guidance-godot](.agents/skills/implementation-guidance-godot/SKILL.md) |
 | .codex/agents/researcher.toml、[调研目录](docs/research/README.md) | 调研角色与报告入口；初始只有目录说明，报告按需保存，见[调研入口](methodology/00-overview.md#external-research) |
-| [GDD 目录](docs/gdd/README.md) | 游戏设计正文；初始只有目录说明，实际编写时建立《设计范围与边界》子文档及相关主题 |
+| [GDD 目录](docs/gdd/README.md)、[开放问题](docs/gdd/open-questions.md) | 游戏设计正文与当前未决问题；初始只有用途和待定说明，实际编写时建立《设计范围与边界》及相关主题 |
 | [Product 总览](docs/product.md)、[交付单元目录](docs/product/README.md) | 先预拆分交付范围、来源与顺序；当前 Product 轮到时才细化 |
 | [项目术语](docs/terminology.md) | 初始尚无定义；按需维护共享名称与概念关系 |
 | [美术圣经](docs/art/art-bible.md)、[声音圣经](docs/audio/sound-bible.md) | 初始方向待确定；随设计决定维护共享视觉与声音规范 |

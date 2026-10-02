@@ -20,6 +20,8 @@
 
 当前 Agent 使用 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)，核对现有想法、GDD《设计范围与边界》及相关主题、适用工程约束和有效决定，只补问会实质改变当前结果的问题。范围文档尚未形成时沿用已知设计与明确决定；参考游戏和 Agent 建议不能自动写成已采用要求。
 
+已有 `docs/gdd/open-questions.md` 时，读取与本次范围有关的问题和依赖，复用已有答案，再继续讨论。
+
 **S2｜讨论关键选择并形成草稿**
 
 围绕目标体验、玩家过程、核心循环和当前相关规则展开，说明各机制如何产生预期体验。有关键选择需要共同决定时，使用 [GDD 共创方法](../../../../../project-source/skills/design-gdd/references/gdd-dialogue.md)，结合玩家情境提出问题与候选方案，说明取舍和推荐理由；需要构思或比较玩法方向时再读[构思方法](../../../../../project-source/skills/design-gdd/references/concept-ideation.md)。
@@ -31,6 +33,8 @@
 本入口请求保存 `docs/gdd/` 中的草稿，可随有效决定更新正文。按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)建立固定子文档及入口引用，整体范围集中维护，局部限制留在所属主题；保留不受影响的结构并遵循项目文档语言。若用户限定只讨论，则只在对话中形成结论，并说明有用的已确认结论尚未保存。区分已采用决定、候选、明确暂缓事项和验证缺口，指出它们限制的下一步。
 
 草稿保存不结束尚未完成的共创。仍需用户决定的关键选择应继续进入讨论；用户明确要求先交一版草稿时，可以先交付可读草稿并列明假设与缺口。
+
+获准写入时，按[开放问题规范](../../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
 
 ## 资源与文件影响
 
