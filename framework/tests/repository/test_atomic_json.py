@@ -43,6 +43,14 @@ class AtomicJsonTests(unittest.TestCase):
         self.assertEqual(self.path.read_bytes(), original)
         self.assertEqual(list(self.root.iterdir()), [self.path])
 
+    def test_nonfinite_numbers_preserve_old_document_and_remove_temporary(self):
+        original = self.path.read_bytes()
+        for value in (float("inf"), float("-inf"), float("nan")):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                atomic_json.write_json(self.path, {"metadata": {"values": [value]}})
+            self.assertEqual(self.path.read_bytes(), original)
+            self.assertEqual(list(self.root.iterdir()), [self.path])
+
 
 if __name__ == "__main__":
     unittest.main()

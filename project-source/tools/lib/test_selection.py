@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 from pathlib import Path, PurePosixPath
 from typing import Any
@@ -26,8 +27,15 @@ def read_json_value(path: Path) -> Any:
             result[key] = value
         return result
 
+    def finite_float(value: str) -> float:
+        number = float(value)
+        if not math.isfinite(number):
+            raise SelectionError(f"invalid number {value}")
+        return number
+
     try:
         return json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique,
+                          parse_float=finite_float,
                           parse_constant=lambda value: (_ for _ in ()).throw(SelectionError(f"invalid number {value}")))
     except (OSError, ValueError) as exc:
         raise SelectionError(f"cannot read {path}: {exc}") from exc

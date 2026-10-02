@@ -12,7 +12,7 @@ def write_json(path: Path, data: dict[str, Any]) -> None:
     temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
     try:
         with temporary.open("w", encoding="utf-8", newline="\n") as stream:
-            stream.write(json.dumps(data, indent=2, ensure_ascii=False) + "\n")
+            stream.write(json.dumps(data, indent=2, ensure_ascii=False, allow_nan=False) + "\n")
             stream.flush()
             os.fsync(stream.fileno())
         os.replace(temporary, path)

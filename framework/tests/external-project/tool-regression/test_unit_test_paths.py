@@ -341,7 +341,7 @@ class UnitTestPathsTests(unittest.TestCase):
              "duplicate JSON key"),
         ]
         payloads.extend((encoded[:-1] + ', "note": ' + value + '}', "invalid number")
-                        for value in ("NaN", "Infinity", "-Infinity"))
+                        for value in ("NaN", "Infinity", "-Infinity", "1e400", "-1e400"))
         for payload, error in payloads:
             with self.subTest(payload=payload):
                 self.registry_path.write_text(payload, encoding="utf-8")
@@ -385,6 +385,32 @@ class UnitTestPathsTests(unittest.TestCase):
                 if isinstance(candidates, list):
                     with self.assertRaisesRegex(SelectionError, "expected JSON object"):
                         read_json(self.candidates_path)
+
+    def test_overflowing_candidate_numbers_preserve_both_originals(self) -> None:
+        original = self.registry_path.read_bytes()
+        candidate = json.dumps(self._component())
+        for value in ("1e400", "-1e400"):
+            with self.subTest(value=value):
+                payload = '[' + candidate[:-1] + ', "metadata": {"values": [' + value + ']}}]'
+                self.candidates_path.write_text(payload, encoding="utf-8")
+                candidate_bytes = self.candidates_path.read_bytes()
+                result = self._merge_file()
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertIn("invalid number", result.stderr)
+                self.assertEqual(self.registry_path.read_bytes(), original)
+                self.assertEqual(self.candidates_path.read_bytes(), candidate_bytes)
+
+    def test_finite_float_and_large_integer_metadata_survive_merge(self) -> None:
+        registry = self._registry()
+        registry["meta"]["values"] = [1e308, -1e308, 10 ** 400]
+        self._write_json(self.registry_path, registry)
+        component = self._component()
+        component["metadata"] = {"values": [1e-300, -1e-300, 10 ** 400]}
+        result = self._merge([component])
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        registry["components"] = [component]
+        self.assertEqual(self._registry(), registry)
+        self.assertEqual(self._strict().returncode, 0)
 
     def test_runner_still_rejects_registered_target_with_zero_discovery(self) -> None:
         suite = self._suite()
