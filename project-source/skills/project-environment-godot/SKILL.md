@@ -13,7 +13,7 @@ Paths below are relative to the project root. `methodology/05-document-language.
 
 | Current need | Read and apply |
 | --- | --- |
-| Initial environment configuration | **Configuration contract**, **Verification configuration** and **Project Environment Bootstrap**; use **Language selection** only when the document language is not already confirmed |
+| Initial environment configuration | **Configuration contract**, **Verification configuration** and **Project Environment Bootstrap**; consult **Language selection** for an explicit language change or ambiguity, not to reconfirm the configured default |
 | A tool location or version changed | **Verification configuration** and the affected Bootstrap checks; preserve unrelated settings and valid preparation |
 | A configured tool cannot be invoked | **Project Environment Bootstrap** for using the configured path, reporting its actual failure and changing a tool location only within the requested scope |
 | A newly copied project needs its first import/class scan | **Project Environment Bootstrap** and **首次 Godot 扫描** in `tools/README.md`; apply the project's actual process and permission constraints |

@@ -44,7 +44,7 @@ Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintai
 
 For new interfaces or substantial layout/resource changes, use **Visual prototype before dependent implementation** in methodology 01. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in their owning design sections. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
 
-Pass the confirmed language, relevant facts and existing authorization to supporting work. Return its actual result to this task; a Skill handoff does not create another lifecycle or end authorized delivery.
+Pass the configured document language, relevant facts and existing authorization to supporting work. Return its actual result to this task; a Skill handoff does not create another lifecycle or end authorized delivery.
 
 ## Write and validate the sources
 

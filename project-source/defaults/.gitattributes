@@ -54,6 +54,12 @@
 # 保留随项目提供的第三方原件，允许其已有的末尾空行
 addons/gdscript-linter/docs/IGNORE_RULES.md whitespace=-blank-at-eof
 
+# 固定版本的第三方插件含行尾空白，保留上游原件
+addons/kanban_tasks/** whitespace=-blank-at-eol
+addons/resources_spreadsheet_view/** whitespace=-blank-at-eol
+addons/signal_lens/** whitespace=-blank-at-eol
+addons/resources_spreadsheet_view/typed_editors/dock_texture.gd whitespace=-blank-at-eol,-blank-at-eof
+
 # Godot 二进制场景/资源
 *.scn binary
 *.res binary

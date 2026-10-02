@@ -14,7 +14,7 @@ Follow **Product-by-Product planning** in `methodology/02-feature-list-schema.md
 
 ## Shared contracts
 
-Use the artifact schemas, Product order and evolution invariants in `methodology/02-feature-list-schema.md`. Apply `methodology/05-document-language.md` for new durable prose; preserve completed history and original evidence instead of translating them. Resolve `document_language` from confirmed configuration.
+Use the artifact schemas, Product order and evolution invariants in `methodology/02-feature-list-schema.md`. Apply `methodology/05-document-language.md` for new durable prose; preserve completed history and original evidence instead of translating them. Read `document_language` from the current configuration.
 
 Git change preservation, task continuation in the target checkout and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
 

@@ -9,6 +9,10 @@ trim_trailing_whitespace = true
 [*.md]
 trim_trailing_whitespace = false
 
+# 插件目录按原文件保留行尾空白，避免保存时产生无关差异
+[addons/**]
+trim_trailing_whitespace = false
+
 [*.{gd,gdshader,gdshaderinc}]
 indent_style = tab
 indent_size = 4

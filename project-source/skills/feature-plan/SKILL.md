@@ -11,7 +11,7 @@ Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition 
 
 When the requested scope already has implementation but lacks Feature records, also apply **Adopting existing implementation** in that specification. Reuse the actual implementation and tests in the proposal; planning does not mark the adopted work complete.
 
-Apply `methodology/05-document-language.md` before durable prose. Resolve `document_language` from confirmed configuration; preserve existing history. Before durable writes, apply the change-preservation and commit contract in `agent-rules/00-core/git-worktree-and-commits.md`.
+Apply `methodology/05-document-language.md` before durable prose. Read `document_language` from the current configuration; preserve existing history. Before durable writes, apply the change-preservation and commit contract in `agent-rules/00-core/git-worktree-and-commits.md`.
 
 Apply the GDD prerequisite in methodology 01. Read the current Product's approved delivery document and the actual GDD topics it adopts, with `docs/product.md` for boundaries, dependencies and order. If the current delivery document is missing, use `product-author` to detail that unit within existing authorization before planning. Consult relevant terminology, professional requirements and project rules. Later Products remain overview outlines; do not create their documents or Features. Reuse unchanged reading on continuation.
 

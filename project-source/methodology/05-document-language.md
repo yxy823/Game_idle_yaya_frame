@@ -13,9 +13,9 @@ Changing the language of a conversation must not change the language of project 
 
 ## 2. Configuration contract
 
-Every newly initialized project must store `document_language` in `docs/methodology-config.json` before Yaya Loop generates durable GDD, Product or Feature content. Language selection also applies to an initial GDD draft; it does not require environment Bootstrap, a Godot run or an existing GDD. Preserve unrelated tool settings when saving the confirmed language.
+New projects use Simplified Chinese (`zh-CN`) for durable documents by default. The creator supplies this value in `docs/methodology-config.json`; use it without asking the user to confirm the default. An explicit user choice of another document language overrides the default under **Language selection**. This also applies to an initial GDD draft and does not require environment Bootstrap, a Godot run or an existing GDD. Preserve unrelated tool settings when saving a requested language change.
 
-Copied purpose/pending-state notices and directory navigation do not select a document language or establish Product content. When replacing a notice with actual project content, use the confirmed `document_language`; copying performs no translation.
+Copied purpose/pending-state notices and directory navigation do not establish Product content. When replacing a notice with actual project content, use the configured `document_language`; copying performs no translation.
 
 The current file contains the complete configuration. Keep its actual machine tool paths there rather than copying a second example here. The project stack is Godot 4.7 / GDScript / gdunit4.
 
@@ -27,9 +27,9 @@ The value of `document_language` must be a [BCP 47 language tag](https://www.rfc
 
 Other well-formed BCP 47 tags may be used on a best-effort basis, but the agent must disclose that they are not covered by the existing language examples.
 
-Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case script, and uppercase region. Bootstrap preserves the exact value explicitly confirmed by the user and does not silently normalize it. Empty values, whitespace, and underscore forms such as `zh_CN` are invalid and must be confirmed again in a hyphenated form. Private-use, grandfathered, and other unusual tags require explicit confirmation and remain best-effort rather than verified.
+Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case script, and uppercase region. Preserve the configured value without silently normalizing it. Empty values, whitespace, and underscore forms such as `zh_CN` are invalid; report the configuration error and resolve the intended valid tag before writing. Private-use, grandfathered, and other unusual tags remain best-effort rather than verified; ask only if the user's intended language is unclear.
 
-The environment checker performs basic lexical screening: an ASCII alphabetic primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags; hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects whitespace, underscores and empty/overlong subtags without normalizing the value. This does not validate complete BCP 47 subtag ordering, registry membership or user confirmation. The Agent still resolves tag validity and the confirmation requirements above before generating durable content; a configuration check does not grant them.
+The environment checker performs basic lexical screening: an ASCII alphabetic primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags; hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects whitespace, underscores and empty/overlong subtags without normalizing the value. This does not validate complete BCP 47 subtag ordering or registry membership. The Agent resolves unusual-tag validity and applies the configured language; the checker does not decide language preferences.
 
 ### Verification configuration
 
@@ -62,16 +62,11 @@ The same runner uses `--scope full` to select `tests/` recursively. A required f
 
 ## 3. Language selection
 
-For a new project:
+Read `document_language` before generating durable GDD, Product or Feature content. For a new project, keep the supplied `zh-CN` and proceed without a language-confirmation question.
 
-1. Infer a reasonable proposed default from the language currently used by the user.
-2. Ask the user to confirm the proposed document language once.
-3. Persist the confirmed BCP 47 tag before generating durable GDD, Product or Feature content.
-4. Use the persisted value as the authority in every later workflow.
+If the user explicitly requests another document language before substantive content exists, save its valid BCP 47 tag and use it directly; that request needs no second confirmation. For an established project, preserve its configured language and apply **Changing an established document language** when a migration is requested. Reuse still-valid explicit decisions across Skills and sessions.
 
-If the user's preference cannot be inferred, propose `en` and ask for confirmation. Inference is only a default; country, IP address, timezone, operating-system locale, and account location must not silently select the language.
-
-Every inferred value is non-binding until the user confirms it. Reuse a still-valid explicit language decision from the current task or the established project; do not request the same confirmation again when switching Skills. If the evidence is mixed or weak, report that uncertainty instead of presenting a dominant language as fact.
+Conversation language, country, IP address, timezone, operating-system locale and account location do not override the configured value. Ask only when an explicit request is ambiguous or conflicts with the existing document scope; do not turn the default into a recurring approval step.
 
 ## 4. Content governed by document_language
 

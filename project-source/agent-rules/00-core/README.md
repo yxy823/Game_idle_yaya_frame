@@ -6,6 +6,7 @@ Core rules apply across file types. Use this router for modifications or relevan
 |---|---|
 | `rule-precedence-and-routing.md` | Multiple rule modules apply; rule strength or conflict must be resolved |
 | `godot-version-and-authority.md` | Godot/tool behavior is version-sensitive or uncertain; assessing an upgrade or a documentation/runtime discrepancy |
+| `godot-resource-references.md` | Choosing or changing business IDs, Resource UIDs, resource paths, NodePaths or scene references |
 | `change-scope-and-ownership.md` | Preparing a modification: locate the implementation and impact, choose scope, preserve APIs/dependencies/style and existing work; assess dependent changes, deletion or refactor |
 | `git-worktree-and-commits.md` | Every modifying task: target checkout, inspect/preserve current changes, task continuation, staging, local commits or prohibited Git operations |
 | `third-party-generated-and-temporary-files.md` | Vendor, generated, `.import`, cache, backup, scratch, or temporary files are involved |

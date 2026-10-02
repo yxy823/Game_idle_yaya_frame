@@ -4,7 +4,7 @@
 
 ## How to run the scenarios
 
-Run each scenario in an authorized disposable repository initialized from the current Kit with a supplied substantive GDD under `docs/gdd/`. The framework does not create a GDD during these scenarios. Record the agent's questions, the confirmed language, generated files, and validation output. A scenario passes only when every expected result and prohibited behavior below is satisfied.
+Run each scenario in an authorized disposable repository initialized from the current Kit. Apply the scenario's language setup, then supply a substantive GDD under `docs/gdd/` before Product or Feature work. The framework does not create or translate a GDD during these scenarios. Record the agent's questions, the configured language, generated files, and validation output. A scenario passes only when every expected result and prohibited behavior below is satisfied.
 
 The initially verified document languages are `en` and `zh-CN`. Other BCP 47 tags remain best-effort and must not be described as verified by these scenarios.
 
@@ -78,12 +78,14 @@ The following paired projections describe the same pending Feature. They show la
 
 - Start with a project produced by the current creator, including its `docs/methodology-config.json`.
 - Speak English to the agent.
-- Confirm `en` when the agent proposes the document language.
+- Explicitly request English project documents while the project still contains only its initial purpose notices.
+- After the agent saves `en`, supply the prepared English GDD. This setup does not migrate an established project's documents.
 
 ### Expected result
 
 - The agent communicates in English.
 - `document_language` is persisted as `en` before Product or Feature generation.
+- The explicit request is applied without a second confirmation question.
 - Product headings and prose, Feature titles and details, and Progress entries use natural English.
 - The English stable-protocol fixture above represents the generated protocol shape.
 
@@ -98,12 +100,12 @@ The following paired projections describe the same pending Feature. They show la
 
 - Start with a project produced by the current creator, including its `docs/methodology-config.json`.
 - Speak Simplified Chinese to the agent.
-- Confirm `zh-CN` when the agent proposes the document language.
+- Leave the supplied `zh-CN` unchanged; do not provide a separate language confirmation.
 
 ### Expected result
 
 - The agent communicates in Simplified Chinese.
-- `document_language` is persisted as `zh-CN` before Product or Feature generation.
+- The agent uses the supplied `zh-CN` without asking the user to confirm it.
 - Product headings and prose, Feature titles and details, and Progress entries use natural Simplified Chinese.
 - The Chinese stable-protocol fixture above differs from the English fixture only in `document_language` and human-readable values.
 
@@ -146,7 +148,7 @@ Record which of these checks actually ran; the checklist itself is not execution
 
 1. all JSON fixtures in this document parse;
 2. English and Chinese fixtures preserve identical machine projections;
-3. Bootstrap and the document-language contract retain confirmation, preservation, and no-silent-translation rules;
+3. Bootstrap and the document-language contract retain the Chinese default without confirmation, explicit overrides, preservation, and no-silent-translation rules;
 4. every installed Skill preserves stable machine protocol values across document languages; and
 5. test-layout/registry protocol fields remain stable across document languages; human summaries use natural language; and
 6. repository tests, tool fixtures, and `git diff --check` pass without changing verification command strings.
