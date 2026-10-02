@@ -26,7 +26,7 @@ The project knowledge layer is:
     ├── gdd/                            game-design authority, created and maintained as needed
     ├── product.md + product/*.md        delivery pre-decomposition and current Product scope
     ├── unadopted-ideas.md               ideas not adopted as requirements or delivery commitments
-    ├── terminology.md                  optional domain terms and shared definitions
+    ├── terminology.md                  single source for confirmed project terms
     ├── art/, audio/, ui/, localization/ optional professional specifications, owned by specialist Skills
     ├── presentation/                    game moments, alternatives, adoption and implementation links
     ├── feature-list.json                lightweight Feature index: Todo/status
@@ -109,7 +109,7 @@ This table owns task routing. Guidance Skills read it and the destination workfl
 | Plan a game moment from experience goals or colloquial descriptions, or compare its component approaches | `design-game-presentation` | Maintain [presentation documents](11-specialist-workflows.md#game-presentation-documents), standard requirements, alternatives and adopted combinations. Can support initial GDD exploration; code, resource production and actual acceptance remain separate responsibilities. |
 | Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Refine and reference GDD requirements in professional sources. UI links relevant presentations; resource specifications stay in the owning presentation, UI or shared design section. Product owns delivery scope and source mapping. |
 | Prepare visual art, music or sound effects | Production capability reserved in [specialist work](11-specialist-workflows.md#design-production-integration-and-review) | Record specifications and available resources; no production Skill is implemented yet. |
-| Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source within GDD design; domain meanings stay with GDD/terminology. Specification work may stand alone. |
+| Define language coverage and locale conventions | `design-localization-spec` | Own the approved localization source within GDD design; game rules stay in GDD and term definitions in `docs/terminology.md`. Specification work may stand alone. |
 | Integrate supplied assets or implement approved localization | `content-asset-integration` / `content-localization` | Runtime changes consume approved specifications and return to the owning authorized Feature/experiment. |
 | Add diagnostic signals, measure performance or run a soak scenario | `diagnostics-instrumentation` / `diagnostics-performance` / `diagnostics-soak-test` | Separate instrumentation, measurement, diagnosis and authorized repair; report actual evidence and limits. |
 | Explicitly requested prototype / technical spike | `prototype-godot` in the target project | Answer one hypothesis with actual Godot UI or logic under the authorized change/run scope and budget; apply [Scoped logic prototypes](01-product-doc-structure.md#scoped-logic-prototypes) when testing logic. An experiment inside a Feature keeps its workflow; independent exploration need not create a full Product/Feature chain. |

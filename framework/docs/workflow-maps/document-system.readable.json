@@ -978,7 +978,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：共享名称、已确认定义、别名和易混淆概念。\n项目位置：docs/terminology.md；初始只有用途说明。\n详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
+      "note": "职责：全部已确认项目术语、标准名称、定义、别名和概念区别的唯一正文；仅用于一个主题的术语也在此维护。\n固定项目位置：docs/terminology.md；初始只有用途说明，GDD 编写或整合时同步保存已确认定义。\nGDD 与其他使用方引用本页；详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1021,7 +1021,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -4090,16 +4090,16 @@
       "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
-      "label": "详细行为归所属设计",
+      "label": "统一项目术语",
       "stroke": {
-        "color": "#7C3AED",
-        "width": 1.5,
-        "dash": "dashed"
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#7C3AED",
+        "color": "#2563EB",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,

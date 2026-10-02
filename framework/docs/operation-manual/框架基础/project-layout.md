@@ -18,7 +18,7 @@
 | `docs/gdd/design-scope-and-boundaries.md` | GDD《设计范围与边界》：整体范围、排除项和版本边界；局部限制引用所属主题 | `design-gdd` 在实际保存设计时建立和维护；讨论、规划、实现与审核按需读取 |
 | `docs/gdd/open-questions.md` | 当前设计开放问题、相关主题、影响与所需决定或证据；初始只有用途和待定说明 | GDD 作者随设计维护；讨论、规划、审核、相关实验与续接按范围使用 |
 | `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
-| `docs/terminology.md` | 跨模块复用的已确认定义 | `project-terminology`；不复制玩法规则 |
+| `docs/terminology.md` | 已确认项目术语定义的固定唯一正文 | `project-terminology`；详细玩法规则归 GDD |
 | `docs/project-rules.md` | 项目开发约束、协作与工程原则，强度区分 MUST、PREFER、REVIEW | 已获准工程规则维护；受其影响的工作读取 |
 | `docs/game-organization.md` | 逻辑与表现职责、文档关系、业务模块与代码组织和命名判断 | 项目设计及结构工作按需读取；[随项目复制的指南](../../../../project-source/defaults/docs/game-organization.md) |
 | `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |

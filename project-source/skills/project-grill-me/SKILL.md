@@ -37,7 +37,7 @@ Check a proposed unusual case against the confirmed scope and constraints before
 
 When discussing a rare or extreme case, explicitly label it as such in the user's language and distinguish evidence from a hypothetical possibility. Say when its likelihood is unknown instead of inventing a probability. Ordinary boundaries such as an empty inventory, full capacity or insufficient funds are not rare merely because they are outside the happy path. If the user explicitly requests edge-case analysis, cover that scope while preserving these distinctions.
 
-Use a relevant concrete situation to distinguish similar concepts, without enumerating every possible case. For inventory, an item definition, an owned item and a stack need separate names only when the distinction matters. A stacking rule belongs in GDD; the short conceptual distinction may belong in terminology.
+Use a relevant concrete situation to distinguish similar concepts, without enumerating every possible case. For inventory, an item definition, an owned item and a stack need separate names only when the distinction matters. A stacking rule belongs in GDD; the confirmed conceptual definitions belong in `docs/terminology.md`, written by the authorized owning task through `project-terminology`.
 
 ### Continue from answers and show progress
 

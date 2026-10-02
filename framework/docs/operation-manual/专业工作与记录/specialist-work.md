@@ -15,7 +15,7 @@
 | 整体游戏设计、玩家行为与反馈意图 | `docs/gdd/` | `design-gdd` 创建、整合与维护 |
 | 数值模型、公式、参数、曲线及计算说明 | GDD 中对应数值主题或章节 | `design-balance` 在授权内直接维护 |
 | 交付预拆分与当前 Product 范围 | `docs/product.md`、`docs/product/` | `product-author` |
-| 含义不变的共享定义 | `docs/terminology.md`；局部定义可留在所属 GDD 或专业来源 | `project-terminology` |
+| 已确认项目术语的定义与别名 | 固定为 `docs/terminology.md`；GDD 与专业来源引用 | `project-terminology` |
 | 共享视觉方向 | `docs/art/art-bible.md` | `design-art-direction` |
 | 共享声音方向 | `docs/audio/sound-bible.md` | `design-audio-direction` |
 | 界面布局、状态及其表现引用 | `docs/ui/<interface>-design.md` | `design-ui-spec` |

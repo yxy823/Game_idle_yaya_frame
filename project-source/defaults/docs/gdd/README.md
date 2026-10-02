@@ -6,6 +6,8 @@
 
 GDD 同时说明游戏逻辑与表现目标；界面细节和一次具体表现分别链接到 [UI 设计](../ui/README.md)与[游戏表现](../presentation/README.md)。例如商店主题保存购买规则和成功反馈目标，再引用界面、获得物品的表现以及实际接入说明。整体查找关系见[游戏职责与项目组织](../game-organization.md)。
 
+项目术语的定义与别名统一维护在[项目术语](../terminology.md)，本目录引用该文件，不另设术语表。编写或整合 GDD 时，一并整理当前范围内已确认的术语；具体职责见[项目术语规范](../../methodology/01-product-doc-structure.md#project-terminology)。
+
 当前尚无 GDD 设计正文。本页仅说明目录用途，不能代替 GDD。可以导入已有设计，也可以使用 `design-gdd` 从游戏想法开始讨论并编写初稿；数值建模与调参使用 `design-balance`，按授权直接维护本目录中的对应主题。候选、已采纳设计和实际验证结果分别说明。
 
 设计讨论不要求先有完整 GDD、Product、Feature 或可运行环境。交付规划与实现仍须有当前范围足够明确的真实设计；具体边界见 [GDD 前提与职责](../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。

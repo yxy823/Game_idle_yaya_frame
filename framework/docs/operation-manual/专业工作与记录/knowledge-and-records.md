@@ -11,7 +11,7 @@
 | `docs/gdd/` | 游戏目标、玩法规则与体验要求的正文；依赖设计的规划或实现须有足够明确的当前范围，目录说明和空模板不能替代 |
 | `docs/product.md` / `docs/product/NN-name.md` | 交付预拆分及当前交付范围；具体 Product 轮到时才写，链接 GDD 而不复制规则 |
 | `docs/ui/` / `docs/presentation/` | 界面布局、状态与交互 / 一次具体表现的过程、方案及采用关系；资源规格随所属章节保存，详见[专业来源](specialist-work.md) |
-| `docs/terminology.md` | 可复用标准名称、定义、范围、关系、别名与易混淆项；不放数值、完整行为或当前计划 |
+| `docs/terminology.md` | 已确认项目术语、标准名称、定义、关系与别名的唯一正文；详细数值和行为归 GDD |
 | `docs/features/F0XX-design.md` | 需要较长解释的局部设计：职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
 | `docs/architecture.md` | 当前结构的模块位置、状态所有者、依赖和阅读入口；不枚举全仓文件或复制历史设计 |
 | `docs/architecture/` | 需要展开的子系统、重要 ADR；从架构总览导航 |
@@ -24,7 +24,9 @@
 
 GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值主题与计算说明；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。
 
-术语由 `project-terminology` 维护；只有实质歧义才使用共用提问方法。确认且保持含义的定义直接保存，不能强迫重新访谈。行为、数值与状态转换归 GDD，专业语言要求归对应来源；缺失决定按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)判断哪些后续工作依赖它。
+项目术语定义固定由 `project-terminology` 维护在 `docs/terminology.md`，当前只用于一个主题的术语也使用这一位置。GDD 编写与整合一并保存当前范围内已确认的术语，并把其他正文中的重复定义改为引用；普通解释和例子仍留在对应主题，不另设词表。只有实质歧义才使用共用提问方法，已确认含义不重复访谈；没有已确认术语时保留用途说明。
+
+例如三消游戏中的“棋子／方块”“重新随机／洗牌”及“死局”的简明定义统一放项目词表；GDD 负责匹配条件、死局检测时机、洗牌保留对象与恢复流程，表现文档负责按钮状态和反馈形式。行为、数值与状态转换归 GDD，专业语言要求归对应来源；缺失决定按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)判断哪些后续工作依赖它。
 
 ## 局部设计与当前架构
 
@@ -131,4 +133,4 @@ Progress 保存真实停点和必要链接，不能由“下一步实施”推�
 
 会话摘要帮助定位，不替代权威文件；不要求为换对话清空现场、提交半成品、另开分支、建 worktree 或重跑全部检查。具体交接步骤的临时只读/输出限制不永久覆盖接收方后续已授权任务。这里不建立 Handoff 文件、CONTEXT.md 或平行任务状态表。
 
-权威依据：[产物生命周期](../../../../project-source/methodology/09-artifact-lifecycle.md)、[项目术语](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology-optional)、[架构规范](../../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[产物生命周期](../../../../project-source/methodology/09-artifact-lifecycle.md)、[项目术语](../../../../project-source/methodology/01-product-doc-structure.md#project-terminology)、[架构规范](../../../../project-source/methodology/10-architecture-overview.md)。

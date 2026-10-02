@@ -36,9 +36,11 @@
 
 获准写入时，按[开放问题规范](../../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
 
+同一次编写按[项目术语规范](../../../../../project-source/methodology/01-product-doc-structure.md#project-terminology)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
+
 ## 资源与文件影响
 
-只维护当前 GDD 草稿和必要导航。不会因为写了草稿就创建 Product、Feature、运行资源或游戏代码；保存也不表示所有提案已被采用。
+维护当前 GDD 草稿、`docs/terminology.md` 中本次已确认的定义和必要导航。不会因为写了草稿就创建 Product、Feature、运行资源或游戏代码；保存也不表示所有提案已被采用。
 
 ## 阻塞、异常与范围变化
 
