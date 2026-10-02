@@ -103,7 +103,7 @@
 | 消费入口 | 读取已保存 Cue 并在运行时使用它的场景或代码；区别于工作台编辑入口 |
 | A/B 比较 | 在规定条件下对照两份候选或参数；具体比较对象需写明 |
 
-来源：[工程领域规则](../../project-source/agent-rules/)、[工作台与消费示例](../../project-source/examples/asset_workbench/README.md)。这里只解释项目用语，不代替 Godot API 文档。
+来源：[工程领域规则](../../project-source/agent-rules/)、[工作台与消费示例](../../project-source/asset_workbench/examples/README.md)。这里只解释项目用语，不代替 Godot API 文档。
 
 ## 动词性术语
 

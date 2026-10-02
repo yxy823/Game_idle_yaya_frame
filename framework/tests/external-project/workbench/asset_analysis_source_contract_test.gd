@@ -2,13 +2,13 @@ extends GdUnitTestSuite
 
 ## Source capability changes share one contract across single, batch and scan entry points.
 
-const Group = preload("res://tools/asset_workbench/analysis_group.gd")
-const Batch = preload("res://tools/asset_workbench/analysis_batch.gd")
-const Scan = preload("res://tools/asset_workbench/analysis_group_scan.gd")
-const Service = preload("res://tools/asset_workbench/analysis_service.gd")
-const Source = preload("res://tools/asset_workbench/analysis_source.gd")
-const Result = preload("res://tools/asset_workbench/analysis_result.gd")
-const IMAGE: String = "res://examples/asset_workbench/assets/example_star.png"
+const Group = preload("res://asset_workbench/ui/analysis_group.gd")
+const Batch = preload("res://asset_workbench/ui/analysis_batch.gd")
+const Scan = preload("res://asset_workbench/ui/analysis_group_scan.gd")
+const Service = preload("res://asset_workbench/ui/analysis_service.gd")
+const Source = preload("res://asset_workbench/ui/analysis_source.gd")
+const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const IMAGE: String = "res://asset_workbench/examples/assets/example_star.png"
 
 var _batch: Batch
 var _files: Array[String] = []

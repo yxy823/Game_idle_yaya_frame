@@ -64,8 +64,8 @@
     "target": "components/feedback"
   },
   {
-    "source": "project-source/examples/asset_workbench",
-    "target": "examples/asset_workbench"
+    "source": "project-source/asset_workbench",
+    "target": "asset_workbench"
   },
   {
     "source": "project-source/Project_AGENTS.md",

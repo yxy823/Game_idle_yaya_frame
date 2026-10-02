@@ -250,6 +250,13 @@ class ProjectCopyTests(unittest.TestCase):
                          (repository / "project-source/defaults/docs/presentation/README.md").read_bytes())
         self.assertFalse((output / "docs/resource-requirements").exists())
         self.assertFalse((output / "agent-rules/00-core/documentation").exists())
+        self.assertEqual({path.name for path in (output / "tools").iterdir() if path.is_dir()},
+                         {"checks", "features", "testing", "lib"})
+        self.assertFalse((output / "examples").exists())
+        self.assertEqual({path.name for path in (output / "asset_workbench").iterdir()},
+                         {"ui", "analyzer", "examples"})
+        self.assertFalse(any((output / ".agents/skills").glob("*-yaya")))
+        self.assertFalse(any(output.rglob("__pycache__")))
         main_scene = output / "main/main.tscn"
         self.assertEqual(main_scene.read_bytes(),
                          (repository / "project-source/defaults/main/main.tscn").read_bytes())
@@ -268,21 +275,22 @@ class ProjectCopyTests(unittest.TestCase):
         for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
             self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
         for relative in (
-            "examples/asset_workbench/single/example_workbench.tscn",
-            "examples/asset_workbench/single/example_game.tscn",
-            "examples/asset_workbench/composition/example_workbench.tscn",
-            "examples/asset_workbench/composition/example_composition.tscn",
+            "asset_workbench/examples/single/example_workbench.tscn",
+            "asset_workbench/examples/single/example_game.tscn",
+            "asset_workbench/examples/composition/example_workbench.tscn",
+            "asset_workbench/examples/composition/example_composition.tscn",
             "components/feedback/audio_playback.gd",
-            "tools/asset_workbench/workbench.gd",
+            "asset_workbench/ui/workbench.gd",
+            "asset_workbench/analyzer/worker.py",
             "addons/sound_manager/abstract_audio_player_pool.gd",
         ):
             self.assertEqual((output / relative).read_bytes(),
                              (repository / "project-source" / relative).read_bytes())
-        assets = list((output / "examples/asset_workbench/assets").iterdir())
+        assets = list((output / "asset_workbench/examples/assets").iterdir())
         self.assertTrue(assets)
         self.assertTrue(all(path.name.startswith("example_") for path in assets))
-        self.assertFalse((output / "examples/asset_workbench/example_workbench.tscn").exists())
-        single = (output / "examples/asset_workbench/single/example_workbench.tscn").read_text()
+        self.assertFalse((output / "asset_workbench/examples/example_workbench.tscn").exists())
+        single = (output / "asset_workbench/examples/single/example_workbench.tscn").read_text()
         self.assertNotIn("composition", single)
 
 

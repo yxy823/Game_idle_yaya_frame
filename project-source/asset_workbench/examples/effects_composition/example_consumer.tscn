@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://asset_workbench/examples/effects_composition/example_composition.tscn" id="1"]
+[ext_resource type="Script" path="res://asset_workbench/examples/effects_composition/example_managed_consumer.gd" id="2"]
+
+[node name="ExampleEffectsConsumer" instance=ExtResource("1")]
+script = ExtResource("2")
+
+[node name="GroupA" parent="." index="1"]
+anchor_left = 0.1
+anchor_top = 0.3
+anchor_right = 0.1
+anchor_bottom = 0.3
+rotation = -0.12
+
+[node name="GroupB" parent="." index="2"]
+anchor_left = 0.6
+anchor_top = 0.45
+anchor_right = 0.6
+anchor_bottom = 0.45
+rotation = 0.12
+scale = Vector2(1.1, 1.1)

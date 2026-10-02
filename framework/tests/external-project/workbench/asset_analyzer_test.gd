@@ -1,13 +1,13 @@
 extends GdUnitTestSuite
 
-const Service = preload("res://tools/asset_workbench/analysis_service.gd")
-const Result = preload("res://tools/asset_workbench/analysis_result.gd")
-const Chart = preload("res://tools/asset_workbench/analysis_chart.gd")
-const Source = preload("res://tools/asset_workbench/analysis_source.gd")
-const Schema = preload("res://tools/asset_workbench/analysis_schema.gd")
-const Workbench = preload("res://examples/asset_workbench/single/example_workbench.tscn")
-const AUDIO: String = "res://examples/asset_workbench/assets/example_confirmation_a.ogg"
-const IMAGE: String = "res://examples/asset_workbench/assets/example_star.png"
+const Service = preload("res://asset_workbench/ui/analysis_service.gd")
+const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const Chart = preload("res://asset_workbench/ui/analysis_chart.gd")
+const Source = preload("res://asset_workbench/ui/analysis_source.gd")
+const Schema = preload("res://asset_workbench/ui/analysis_schema.gd")
+const Workbench = preload("res://asset_workbench/examples/single/example_workbench.tscn")
+const AUDIO: String = "res://asset_workbench/examples/assets/example_confirmation_a.ogg"
+const IMAGE: String = "res://asset_workbench/examples/assets/example_star.png"
 const FAULT_WORKER: String = "res://tests/features/asset_analyzer/analyzer_process_fixture.py"
 
 var _service: Service
@@ -125,7 +125,7 @@ func test_unicode_space_path_and_content_change_invalidate_cache() -> void:
 	var first := _service.submit(path, "image")
 	await _wait_for(first)
 	assert_str(_results[first].status).is_equal("success")
-	var replacement := "res://examples/asset_workbench/assets/example_trophy.png"
+	var replacement := "res://asset_workbench/examples/assets/example_trophy.png"
 	assert_int(DirAccess.copy_absolute(replacement, path)).is_equal(OK)
 	var second := _service.submit(path, "image")
 	await _wait_for(second)

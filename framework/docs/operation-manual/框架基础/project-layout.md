@@ -45,15 +45,16 @@
 ├── game/                     游戏独有模块、场景、状态与资源
 ├── components/               实际可复用能力
 ├── assets/                   共享资产（按真实需要组织）
-├── examples/asset_workbench/  可独立运行的分发示例
+├── asset_workbench/
+│   ├── ui/                   编辑期资源试调工具
+│   ├── analyzer/             图像/音频源文件分析
+│   └── examples/             可独立运行的分发示例
 ├── addons/                   第三方插件及已记录补丁
 ├── tools/
 │   ├── checks/               环境与 Feature 台账检查
 │   ├── features/             组件合并与完成记录命令
 │   ├── lib/                  验证快照、解析及共享实现
-│   ├── testing/              gdUnit 运行、报告与验证支持
-│   ├── asset_workbench/      编辑期资源试调工具
-│   └── asset_analyzer/       图像/音频源文件分析
+│   └── testing/              gdUnit 运行、报告与验证支持
 └── tests/
     ├── unit/                 组件级自动测试
     ├── features/             Feature 验收与回归

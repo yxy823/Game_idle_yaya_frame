@@ -3,9 +3,9 @@ extends SceneTree
 ## Real GPU output, lifecycle and UI evidence. Run with a real display driver.
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const Workbench = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/effects_composition/example_composition.tscn")
-const EXAMPLES: String = "res://examples/asset_workbench/effects_composition/"
+const Workbench = preload("res://asset_workbench/examples/effects_composition/example_workbench.tscn")
+const Composition = preload("res://asset_workbench/examples/effects_composition/example_composition.tscn")
+const EXAMPLES: String = "res://asset_workbench/examples/effects_composition/"
 const REPORT: String = "res://reports/asset-workbench-effects-20260922/"
 
 var _failed: bool = false
@@ -111,7 +111,7 @@ func _check_motion_case(kind: String) -> void:
 
 func _motion_cue(kind: String) -> FeedbackCue:
 	var cue := FeedbackCue.new()
-	cue.texture = load("res://examples/asset_workbench/assets/example_star.png")
+	cue.texture = load("res://asset_workbench/examples/assets/example_star.png")
 	# The controlled sample is after the pulse ends and before either motion finishes.
 	cue.animation_seconds = 0.15
 	cue.tween_enabled = kind in ["tween", "combined"]

@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Texture2D" path="res://asset_workbench/examples/effects_composition/example_particle_spotlight.png" id="1"]
+
+[sub_resource type="Gradient" id="Gradient"]
+offsets = PackedFloat32Array(0, 0.4, 1)
+colors = PackedColorArray(1, 0.6, 0.12, 1, 0.8, 0.16, 0.1, 1, 0.5, 0.06, 0.02, 0)
+
+[sub_resource type="GradientTexture1D" id="Ramp"]
+gradient = SubResource("Gradient")
+
+[sub_resource type="Curve" id="Curve"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="Scale"]
+curve = SubResource("Curve")
+
+[sub_resource type="ParticleProcessMaterial" id="Process"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 110.0
+gravity = Vector3(0, 35, 0)
+scale_min = 0.04
+scale_max = 0.12
+scale_curve = SubResource("Scale")
+color_ramp = SubResource("Ramp")
+
+[node name="ExampleParticleBurst" type="GPUParticles2D"]
+emitting = false
+amount = 36
+texture = ExtResource("1")
+lifetime = 0.65
+one_shot = true
+explosiveness = 1.0
+local_coords = true
+visibility_rect = Rect2(-180, -180, 360, 360)
+use_fixed_seed = true
+seed = 34
+fixed_fps = 0
+process_material = SubResource("Process")

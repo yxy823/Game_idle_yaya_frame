@@ -2,10 +2,10 @@ extends SceneTree
 
 ## Real-render evidence for the same visual component used by both game and workbench.
 
-const Workbench = preload("res://examples/asset_workbench/shader_composition/example_workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/shader_composition/example_composition.tscn")
+const Workbench = preload("res://asset_workbench/examples/shader_composition/example_workbench.tscn")
+const Composition = preload("res://asset_workbench/examples/shader_composition/example_composition.tscn")
 const Visual = preload("res://components/feedback/feedback_visual.gd")
-const EXAMPLES: String = "res://examples/asset_workbench/shader_composition/"
+const EXAMPLES: String = "res://asset_workbench/examples/shader_composition/"
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/shader/"
 
 var _failed: bool = false

@@ -7,8 +7,6 @@ tools/
 ├── checks/      环境与台账检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
-├── asset_workbench/  资源与事件预览、试调和分析界面
-├── asset_analyzer/   可选的源文件分析后端与依赖声明
 └── lib/         共享实现
 ```
 
@@ -19,9 +17,9 @@ tools/
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature/测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 记录测试原件引用与人工决定；`show` 查看指定 Feature 的记录，`validate` 检查当前完成依据 |
-| [资源 Analyzer](asset_analyzer/README.md) | 后台音频/图像分析、缓存、图表、分组批量检查与历史快照；开发项目按需安装固定依赖，不参与音频播放 |
+| [资源 Analyzer](../asset_workbench/analyzer/README.md) | 后台音频/图像分析、缓存、图表、分组批量检查与历史快照；开发项目按需安装固定依赖，不参与音频播放 |
 
-公共命令统一位于 `tools/`，Skill 引用命令并说明调用时机。`features/` 保存测试登记合并、完成记录与人工验收操作，`lib/` 保存共享实现。
+公共命令统一位于 `tools/`，Skill 引用命令并说明调用时机。`features/` 保存测试登记合并、完成记录与人工验收操作，`lib/` 保存共享实现。资源工作台独立位于 `asset_workbench/`，其中 `ui/` 保存试调与分析界面，`analyzer/` 保存可选源文件分析后端，`examples/` 保存[使用示例](../asset_workbench/examples/README.md)。
 
 台账检查、登记表合并和运行选择共用 JSON 解码规则：重复对象键及非标准数值 （`NaN`、`Infinity`）会报错，合并器在写回前拒绝这类输入并保留原件。 组件候选仍接受数组或含 `components` 数组的对象；各入口分别校验自身的数据结构。
 

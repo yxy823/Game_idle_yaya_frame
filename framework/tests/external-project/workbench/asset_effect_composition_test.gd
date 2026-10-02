@@ -2,12 +2,12 @@ extends GdUnitTestSuite
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const Controls = preload("res://tools/asset_workbench/cue_controls.gd")
-const Session = preload("res://tools/asset_workbench/preview_session.gd")
-const Workbench = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
-const BURST = preload("res://examples/asset_workbench/effects_composition/example_burst_cue.tres")
-const STREAM = preload("res://examples/asset_workbench/effects_composition/example_stream_preset.tres")
-const CLIP = preload("res://examples/asset_workbench/effects_composition/example_wobble_animation.tres")
+const Controls = preload("res://asset_workbench/ui/cue_controls.gd")
+const Session = preload("res://asset_workbench/ui/preview_session.gd")
+const Workbench = preload("res://asset_workbench/examples/effects_composition/example_workbench.tscn")
+const BURST = preload("res://asset_workbench/examples/effects_composition/example_burst_cue.tres")
+const STREAM = preload("res://asset_workbench/examples/effects_composition/example_stream_preset.tres")
+const CLIP = preload("res://asset_workbench/examples/effects_composition/example_wobble_animation.tres")
 const FIXTURE: String = "res://tests/features/asset_effect_composition/test-effect-cue.tres"
 const INVALID_CLIP: String = "res://tests/features/asset_effect_composition/test-invalid-clip.tres"
 

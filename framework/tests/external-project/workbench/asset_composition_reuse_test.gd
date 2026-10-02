@@ -2,12 +2,12 @@ extends GdUnitTestSuite
 
 ## E3: reusable native instances have independent drafts and explicit shared-file saves.
 
-const Workbench = preload("res://examples/asset_workbench/effects_composition/example_workbench.tscn")
-const Consumer = preload("res://examples/asset_workbench/effects_composition/example_consumer.tscn")
-const Session = preload("res://tools/asset_workbench/preview_session.gd")
-const CompositionPanel = preload("res://tools/asset_workbench/composition_panel.gd")
+const Workbench = preload("res://asset_workbench/examples/effects_composition/example_workbench.tscn")
+const Consumer = preload("res://asset_workbench/examples/effects_composition/example_consumer.tscn")
+const Session = preload("res://asset_workbench/ui/preview_session.gd")
+const CompositionPanel = preload("res://asset_workbench/ui/composition_panel.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const CORE = preload("res://examples/asset_workbench/effects_composition/example_cluster_core_cue.tres")
+const CORE = preload("res://asset_workbench/examples/effects_composition/example_cluster_core_cue.tres")
 const DIRECTORY: String = "res://tests/features/asset_composition_reuse/"
 
 var _workbench: Control

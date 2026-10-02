@@ -2,13 +2,13 @@ extends GdUnitTestSuite
 
 ## Copy this suite into the designated external Godot project, never run in project-source.
 
-const Session = preload("res://tools/asset_workbench/preview_session.gd")
+const Session = preload("res://asset_workbench/ui/preview_session.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
 const Playback = preload("res://components/feedback/audio_playback.gd")
-const Game = preload("res://examples/asset_workbench/single/example_reward_game.gd")
-const WorkbenchScene = preload("res://examples/asset_workbench/single/example_workbench.tscn")
-const Result = preload("res://tools/asset_workbench/analysis_result.gd")
-const CUE_PATH: String = "res://examples/asset_workbench/single/example_feedback.tres"
+const Game = preload("res://asset_workbench/examples/single/example_reward_game.gd")
+const WorkbenchScene = preload("res://asset_workbench/examples/single/example_workbench.tscn")
+const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const CUE_PATH: String = "res://asset_workbench/examples/single/example_feedback.tres"
 
 var _session: Session
 var _cue: FeedbackCue
@@ -36,7 +36,7 @@ func after_test() -> void:
 
 func test_trials_do_not_mutate_saved_or_other_alternative() -> void:
 	_session.current().gain_db = -24.0
-	_session.current().texture = load("res://examples/asset_workbench/assets/example_star.png")
+	_session.current().texture = load("res://asset_workbench/examples/assets/example_star.png")
 	assert_bool(_session.is_dirty()).is_true()
 	assert_float(_session.saved.gain_db).is_equal(-12.0)
 	assert_float(_session.drafts[1].gain_db).is_equal(-12.0)
@@ -145,7 +145,7 @@ func test_browsing_does_not_bind_until_requested() -> void:
 	assert_bool(workbench.session.is_dirty()).is_false()
 	_button(workbench, "试听").pressed.emit()
 	assert_array(_playing_sound_paths(workbench)).is_equal([
-		"res://examples/asset_workbench/assets/example_confirmation_b.ogg"])
+		"res://asset_workbench/examples/assets/example_confirmation_b.ogg"])
 	_button(workbench, "应用到对象 A").pressed.emit()
 	assert_bool(workbench.session.is_dirty()).is_true()
 	assert_str(workbench.session.current().sound.resource_path).ends_with("confirmation_b.ogg")
@@ -176,17 +176,17 @@ func test_example_ab_actually_plays_different_streams_until_copied() -> void:
 	_button(workbench, "触发").pressed.emit()
 	await get_tree().create_timer(0.12).timeout
 	assert_array(_playing_sound_paths(workbench)).is_equal([
-		"res://examples/asset_workbench/assets/example_confirmation_a.ogg"])
+		"res://asset_workbench/examples/assets/example_confirmation_a.ogg"])
 	_button(workbench, "B").pressed.emit()
 	await get_tree().create_timer(0.12).timeout
 	assert_array(_playing_sound_paths(workbench)).is_equal([
-		"res://examples/asset_workbench/assets/example_confirmation_b.ogg"])
+		"res://asset_workbench/examples/assets/example_confirmation_b.ogg"])
 	assert_bool(workbench.session.is_dirty()).is_true()
 	workbench.call("_dispatch_action", &"copy")
 	_button(workbench, "A").pressed.emit()
 	await get_tree().create_timer(0.12).timeout
 	assert_array(_playing_sound_paths(workbench)).is_equal([
-		"res://examples/asset_workbench/assets/example_confirmation_b.ogg"])
+		"res://asset_workbench/examples/assets/example_confirmation_b.ogg"])
 	workbench.stop_all()
 
 
@@ -240,7 +240,7 @@ func test_analysis_identity_survives_browsing_and_late_completion() -> void:
 	assert_str(result.get("status", "")).is_equal("success")
 	panel.set("_tasks", [987654, 0] as Array[int])
 	panel.call("open_results", result, result)
-	var path := "res://examples/asset_workbench/assets/example_star.png"
+	var path := "res://asset_workbench/examples/assets/example_star.png"
 	panel.call("_completed", 987654, Result.failure(path, "image", "cancelled", "old task"))
 	assert_str(panel.results[0].asset.path).is_equal(result.asset.path)
 	panel.call("open_asset", load(path))

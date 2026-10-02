@@ -1,0 +1,81 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
+[ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="2"]
+[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_trophy.tres" id="3_trophy"]
+[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_star.tres" id="4_star"]
+[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_bonus.tres" id="5_bonus"]
+
+[sub_resource type="StyleBoxFlat" id="Style"]
+bg_color = Color(0.95, 0.95, 0.95, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="Theme" id="Theme"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+Button/styles/normal = SubResource("Style")
+Button/styles/hover = SubResource("Style")
+Button/styles/pressed = SubResource("Style")
+
+[node name="ExampleRewardRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme")
+script = ExtResource("1")
+object_nodes = Array[NodePath]([NodePath("Trophy"), NodePath("Star"), NodePath("Bonus")])
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="Trophy" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.3
+anchor_right = 0.08
+anchor_bottom = 0.3
+offset_right = 190.0
+offset_bottom = 210.0
+text = "Trophy / Activate"
+alignment = 0
+script = ExtResource("2")
+cue_resource = ExtResource("3_trophy")
+
+[node name="Star" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.4
+anchor_top = 0.1
+anchor_right = 0.4
+anchor_bottom = 0.1
+offset_right = 190.0
+offset_bottom = 210.0
+text = "Star / Activate"
+alignment = 0
+script = ExtResource("2")
+cue_resource = ExtResource("4_star")
+
+[node name="Bonus" type="Button" parent="."]
+layout_mode = 1
+anchor_left = 0.72
+anchor_top = 0.3
+anchor_right = 0.72
+anchor_bottom = 0.3
+offset_right = 190.0
+offset_bottom = 210.0
+text = "Bonus / Activate"
+alignment = 0
+script = ExtResource("2")
+cue_resource = ExtResource("5_bonus")

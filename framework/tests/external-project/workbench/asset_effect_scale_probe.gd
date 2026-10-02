@@ -4,7 +4,7 @@ extends SceneTree
 ## Frame intervals include this harness and the OS; they are not isolated GPU timings.
 
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const BASE: String = "res://examples/asset_workbench/effects_composition/"
+const BASE: String = "res://asset_workbench/examples/effects_composition/"
 const REPORT: String = "res://reports/asset-workbench-e3-e4-20260922/"
 const ROLES: Array[String] = ["core", "local", "world"]
 

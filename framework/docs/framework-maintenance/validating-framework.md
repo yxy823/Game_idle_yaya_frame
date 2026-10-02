@@ -118,7 +118,7 @@ script="gdscript_lint_editor_contracts.gd"
 
 ### Python 分析后端与内存边界
 
-这两项从框架根目录直接调用维护夹具，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../project-source/tools/asset_analyzer/README.md)准备该项目的固定版本依赖；后端测试还需要调用解释器可导入 `jsonschema`，并保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，示例项目路径须替换为本次实际路径：
+这两项从框架根目录直接调用维护夹具，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../project-source/asset_workbench/analyzer/README.md)准备该项目的固定版本依赖；后端测试还需要调用解释器可导入 `jsonschema`，并保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，示例项目路径须替换为本次实际路径：
 
 ```powershell
 $env:YAYA_TEST_PROJECT = 'D:/A_Games/YayaValidation'

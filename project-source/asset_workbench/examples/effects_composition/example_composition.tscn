@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
+[ext_resource type="PackedScene" path="res://asset_workbench/examples/effects_composition/example_effect_cluster.tscn" id="2"]
+[ext_resource type="Resource" path="res://asset_workbench/examples/effects_composition/example_dual_group_timeline.tres" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="Style"]
+bg_color = Color(0.95, 0.95, 0.95, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="Theme" id="Theme"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+Button/styles/normal = SubResource("Style")
+Button/styles/hover = SubResource("Style")
+Button/styles/pressed = SubResource("Style")
+
+[node name="ExampleEffectsRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme")
+script = ExtResource("1")
+object_nodes = Array[NodePath]([NodePath("GroupA/Core"), NodePath("GroupA/Local"), NodePath("GroupA/World"), NodePath("GroupB/Core"), NodePath("GroupB/Local"), NodePath("GroupB/World")])
+timeline = ExtResource("3")
+managed_object_limit = 3
+
+[node name="Background" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="GroupA" parent="." instance=ExtResource("2")]
+anchor_left = 0.03
+anchor_top = 0.15
+anchor_right = 0.03
+anchor_bottom = 0.15
+
+[node name="GroupB" parent="." instance=ExtResource("2")]
+anchor_left = 0.52
+anchor_top = 0.15
+anchor_right = 0.52
+anchor_bottom = 0.15

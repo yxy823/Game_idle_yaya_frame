@@ -3,7 +3,7 @@ extends SceneTree
 ## Run with --main-pack from the report directory, not the source project.
 ## This probes the exported dependency closure; it is not a production export preset.
 
-const BASE: String = "res://examples/asset_workbench/"
+const BASE: String = "res://asset_workbench/examples/"
 const ENTRIES: Array[String] = ["single/example_game.tscn",
 	"composition/example_composition.tscn", "shader_composition/example_composition.tscn",
 	"effects_composition/example_consumer.tscn"]
@@ -17,8 +17,8 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	_check(not DirAccess.dir_exists_absolute("res://tools/asset_workbench"), "No workbench in pack")
-	_check(not DirAccess.dir_exists_absolute("res://tools/asset_analyzer"), "No analyzer in pack")
+	_check(not DirAccess.dir_exists_absolute("res://asset_workbench/ui"), "No workbench in pack")
+	_check(not DirAccess.dir_exists_absolute("res://asset_workbench/analyzer"), "No analyzer in pack")
 	_check(not DirAccess.dir_exists_absolute("res://tests"), "No tests in pack")
 	for index: int in ENTRIES.size():
 		await _consume(index)

@@ -17,7 +17,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "reports/asset-analyzer/runtime"))
 import numpy as np
 from PIL import Image
 
-TOOLS = PROJECT_ROOT / "tools/asset_analyzer"
+TOOLS = PROJECT_ROOT / "asset_workbench/analyzer"
 
 
 def run(root, name, source, kind):

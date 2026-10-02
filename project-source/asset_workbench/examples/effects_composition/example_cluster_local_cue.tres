@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="FeedbackCue" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1"]
+[ext_resource type="Resource" path="res://asset_workbench/examples/effects_composition/example_stream_preset.tres" id="2"]
+
+[resource]
+script = ExtResource("1")
+particle_preset = ExtResource("2")
+particle_delay_seconds = 0.12
+particle_emission_seconds = 0.5
+tween_enabled = true
+tween_distance = 65.0
+tween_seconds = 1.5

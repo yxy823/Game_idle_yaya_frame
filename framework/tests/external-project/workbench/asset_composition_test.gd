@@ -1,8 +1,8 @@
 extends GdUnitTestSuite
 
-const Workbench = preload("res://examples/asset_workbench/composition/example_workbench.tscn")
-const Composition = preload("res://examples/asset_workbench/composition/example_composition.tscn")
-const Session = preload("res://tools/asset_workbench/preview_session.gd")
+const Workbench = preload("res://asset_workbench/examples/composition/example_workbench.tscn")
+const Composition = preload("res://asset_workbench/examples/composition/example_composition.tscn")
+const Session = preload("res://asset_workbench/ui/preview_session.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
 
 var _workbench: Control
