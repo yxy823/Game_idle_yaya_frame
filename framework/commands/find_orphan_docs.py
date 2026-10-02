@@ -5,7 +5,7 @@
 Windows 11 / Linux / macOS 均可运行。
 脚本只回答“有没有被提到、被谁提到”，不判断那句话是否真的要求读取或写入该文档；
 候选文档的实际入口与适用条件仍需人工核对，文本命中也可能误指其他文件。
-默认不检查导航文件自身，但仍搜索其中的引用；可用 --targets 显式选中导航文件。
+默认不检查导航文件及已认可的路径，但仍搜索其中的引用；可用 --targets 显式选中这些文件。
 
 引用类别（按优先级归类，一个引用方文件只属于一类）：
   self     目标文档自己
@@ -38,6 +38,15 @@ DEFAULT_NAV = ["README.md", "index.md", "*index.md"]          # 无 "/" 的按�
 DEFAULT_HISTORY = ["reports/*", "*/reports/*"]                 # 含 "/" 的按完整相对路径匹配
 DEFAULT_EXCLUDE = [".git/*", ".godot/*", "node_modules/*", "*/__pycache__/*",
                    "__pycache__/*", ".cache/*", "*/.cache/*"]
+# 已认可的规则路由、由专用检查维护的场景，以及明确保留的来源/许可资料。
+# 只排除检查目标；其指向其他文档的引用仍需参与统计。
+DEFAULT_TARGET_EXCLUDE = [
+    "project-source/agent-rules/*",
+    "framework/prompt_scenarios/scenarios/*",
+    "project-source/addons/sound_manager/UPSTREAM.md",
+    "project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md",
+    "project-source/addons/resources_spreadsheet_view/LICENSE.md",
+]
 DEFAULT_SEARCH_EXT = {".md", ".json", ".py", ".gd", ".toml", ".yaml", ".yml", ".tmpl",
                       ".txt", ".tscn", ".tres", ".cfg", ".ps1", ".js", ".gdshader"}
 DEFAULT_TARGET_EXT = {".md"}
@@ -57,7 +66,7 @@ CATEGORY_DESCRIPTIONS = {"reader": "普通文件", "nav": "导航类文件", "hi
 KIND_DESCRIPTIONS = {"link": "Markdown 链接", "path": "路径文本", "name": "唯一文件名文本（子串匹配）"}
 INTERPRETATION_NOTE = (
     "分类依据是引用来源文件的路径/名称，不是文档是否合格。README 可能承担条件读取路由，"
-    "NAV_ONLY 需核对入口用途，不能整类排除；READ 也不证明实际读取或执行。"
+    "NAV_ONLY 需核对入口用途，已认可的对象按具体路径排除；READ 也不证明实际读取或执行。"
     "路径后缀和文件名子串可能误指其他文件，未命中也可能是引用写法未被识别。"
 )
 
@@ -111,7 +120,7 @@ def main() -> int:
                                  epilog=__doc__)
     ap.add_argument("--root", type=Path, default=Path.cwd(), help="仓库根目录，默认当前目录")
     ap.add_argument("--targets", nargs="+", default=None,
-                    help="要检查的文档：文件名、相对路径或通配；默认所有非导航 .md，显式指定可选中导航文件")
+                    help="要检查的文档：文件名、相对路径或通配；显式指定可选中导航文件及默认不检查的路径")
     ap.add_argument("--search-in", nargs="+", default=None,
                     help="只在这些路径/通配内找引用；默认整个根目录的文本文件")
     ap.add_argument("--exclude", nargs="*", default=None,
@@ -146,9 +155,10 @@ def main() -> int:
         b = norm(f).rsplit("/", 1)[-1]
         base_count[b] = base_count.get(b, 0) + 1
 
+    target_exclusions = [*nav, *DEFAULT_TARGET_EXCLUDE] if args.targets is None else []
     if args.targets is None:
         targets = [f for f in all_files
-                   if Path(f).suffix.lower() in DEFAULT_TARGET_EXT and not matches(f, nav)]
+                   if Path(f).suffix.lower() in DEFAULT_TARGET_EXT and not matches(f, target_exclusions)]
     else:
         targets = [f for f in all_files if matches(f, args.targets)]
     if not targets:
@@ -231,6 +241,7 @@ def main() -> int:
 
     if args.json:
         output = json.dumps({"root": root.as_posix(), "summary": summary, "skipped_unreadable": skipped,
+                             "target_exclusions": target_exclusions,
                              "explanations": {"verdict": VERDICT_DESCRIPTIONS,
                                               "category": CATEGORY_DESCRIPTIONS,
                                               "kind": KIND_DESCRIPTIONS,
@@ -238,7 +249,11 @@ def main() -> int:
                              "results": results}, ensure_ascii=False, indent=2)
     else:
         out = [f"根目录：{root.as_posix()}", f"目标 {len(results)} 个；搜索 {len(contents)} 个文件"
-               f"（不可读已跳过 {skipped}）", "汇总："]
+               f"（不可读已跳过 {skipped}）"]
+        if target_exclusions:
+            out.append("不作为检查目标的路径规则（仍保留为引用来源）：")
+            out.extend(f"  {pattern}" for pattern in target_exclusions)
+        out.append("汇总：")
         out.extend(f"  {code}（{VERDICT_DESCRIPTIONS[code]}）：{count}"
                    for code, count in summary.items())
         out.append("引用来源（按命中行计数）：" + "；".join(

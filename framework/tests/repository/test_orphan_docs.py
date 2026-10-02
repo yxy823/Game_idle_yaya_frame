@@ -85,6 +85,32 @@ class OrphanDocsTests(unittest.TestCase):
                          {"README.md", "docs/readme.MD"})
         self.assertIn("docs/guide.md", self.results("--nav", "guide.md", "--targets", "docs/guide.md"))
 
+    def test_accepted_paths_skip_targets_without_hiding_their_outgoing_references(self):
+        accepted = (
+            "project-source/agent-rules/10-gdscript/accepted-rule.md",
+            "framework/prompt_scenarios/scenarios/Example/Category/Accepted scenario.md",
+            "project-source/addons/sound_manager/UPSTREAM.md",
+            "project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md",
+            "project-source/addons/resources_spreadsheet_view/LICENSE.md",
+        )
+        self.write("docs/used.md", "# Used")
+        self.write("docs/navigation.md", "# Still needs review")
+        self.write("README.md", "[Navigation](docs/navigation.md)")
+        for path in accepted:
+            self.write(path, "Read docs/used.md")
+        rows = self.results()
+        self.assertEqual(set(rows), {"docs/used.md", "docs/navigation.md"})
+        self.assertEqual(rows["docs/used.md"]["verdict"], "READ")
+        self.assertEqual({ref["file"] for ref in rows["docs/used.md"]["refs"]}, set(accepted))
+        self.assertEqual(rows["docs/navigation.md"]["verdict"], "NAV_ONLY")
+        self.assertEqual(set(self.results("--targets", *accepted)), set(accepted))
+        data = json.loads(self.run_cli("--targets", *accepted).stdout)
+        self.assertEqual(data["target_exclusions"], [])
+        data = json.loads(self.run_cli().stdout)
+        self.assertIn("project-source/agent-rules/*", data["target_exclusions"])
+        rows = self.results("--targets", *accepted, "--exclude", "project-source/agent-rules/*")
+        self.assertNotIn(accepted[0], rows)
+
     def test_optional_report_and_failure_exit_preserve_scanned_files(self):
         self.write("docs/unreferenced.md", "# Unreferenced")
         self.write("docs/navigation.md", "# Navigation")
