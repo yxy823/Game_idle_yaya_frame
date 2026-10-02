@@ -220,11 +220,27 @@ class ManualAcceptanceFileTests(unittest.TestCase):
                     "--result", str(self.result), expected=2)
         self.assertEqual(path.read_bytes(), before)
 
-    def test_reports_are_separate_and_cannot_escape_project(self):
+    def test_checklist_and_result_must_be_separate_files(self):
         self.prepared_result()
-        for path in (self.checklist, self.root / "docs/features/F001.json", self.root.parent / "outside.json"):
-            with self.assertRaises(verification_snapshot.EvidenceError):
-                read_result(self.root, "F001", self.checklist, path)
+        with self.assertRaisesRegex(verification_snapshot.EvidenceError,
+                                    "^checklist and result must be separate files$"):
+            read_result(self.root, "F001", self.checklist, self.checklist)
+
+    def test_reports_reject_valid_documents_outside_report_directory(self):
+        self.prepared_result()
+        self.assertEqual(read_result(self.root, "F001", self.checklist, self.result)["status"], "accepted")
+        outside = tempfile.TemporaryDirectory(prefix="yaya-manual-outside-")
+        self.addCleanup(outside.cleanup)
+        # Valid documents outside the snapshot inputs isolate the path boundary from content errors.
+        for directory in (self.root / "reports/other", Path(outside.name)):
+            for source in (self.checklist, self.result):
+                with self.subTest(directory=directory, document=source.name):
+                    misplaced = self.write(directory / source.name, self.load(source))
+                    checklist = misplaced if source == self.checklist else self.checklist
+                    result = misplaced if source == self.result else self.result
+                    with self.assertRaisesRegex(verification_snapshot.EvidenceError,
+                                                "^manual acceptance files must be JSON under reports/manual-acceptance$"):
+                        read_result(self.root, "F001", checklist, result)
 
     def test_contract_change_and_automated_mode_cannot_reuse_manual_results(self):
         self.prepared_result()
