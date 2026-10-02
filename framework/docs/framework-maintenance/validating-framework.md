@@ -170,7 +170,7 @@ $validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
 
 测量记录设备/渲染器、应用帧间隔、引擎进程时间、Godot 内存计数和节点，不是独占 GPU 时间、进程工作集或其他设备保证。草稿清空声音、粒子延迟置零以避免快速重触发抑制发射；原 Cue 不改，声音行为由功能套件单独回归。
 
-不要把热身缓存或探针采样数组增长直接判为泄漏，也不为压测提前引入池化。原 E4 的设备/样例边界见 [规模测量报告](../../review/reports/asset-workbench-e3-e4-2026-09-22.md#e4-范围与测量方法)，功能回归通过不证明 128 对象性能改善。
+不要把热身缓存或探针采样数组增长直接判为泄漏，也不为压测提前引入池化。功能回归通过不证明 128 对象性能改善。
 
 ### 独立消费与导出
 
@@ -187,11 +187,4 @@ $validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
 
 ### 查阅已有验证结果
 
-这些报告保留各轮版本、实际命令、失败与复验；不能代替本次运行，人工接受范围也分别记录。
-
-| 需要追查的范围 | 历史报告 |
-| --- | --- |
-| 首期工作台与 UI/UX | [首期验证](../../review/reports/asset-workbench-implementation-validation-2026-09-21.md)、[UI/UX 整理](../../review/reports/asset-workbench-ui-ux-2026-09-22.md) |
-| 粒子动画、组合复用与规模 | [E1](../../review/reports/asset-workbench-effects-e1-2026-09-22.md)、[E3/E4](../../review/reports/asset-workbench-e3-e4-2026-09-22.md) |
-| 管理与编排 | [E5/E6](../../review/reports/asset-workbench-e5-e6-2026-09-22.md) |
-| 消费导出、冷释放和分析恢复 | [E7](../../review/reports/asset-workbench-e7-review-and-delivery-2026-09-22.md) |
+以往验证结果通过 Git 历史查阅。旧结果只适用于当时的版本和执行范围，不能代替本次运行或人工验收。
