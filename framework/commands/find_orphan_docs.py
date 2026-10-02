@@ -4,20 +4,20 @@
 仅标准库、不联网、不执行被检查的代码；不修改扫描对象，仅在指定 --out 时写报告。
 Windows 11 / Linux / macOS 均可运行。
 脚本只回答“有没有被提到、被谁提到”，不判断那句话是否真的要求读取或写入该文档；
-这一步留给人或模型，只需要看被分到 NONE / NAV_ONLY / HISTORY_ONLY 的少数文档。
+候选文档的实际入口与适用条件仍需人工核对，文本命中也可能误指其他文件。
 默认不检查导航文件自身，但仍搜索其中的引用；可用 --targets 显式选中导航文件。
 
 引用类别（按优先级归类，一个引用方文件只属于一类）：
   self     目标文档自己
   history  历史材料（默认 reports 目录），提到不代表现行使用
-  nav      只做导航的文件（默认 README.md、index.md、*index.md），提到不代表被读取
-  reader   其余文件：被认为是真正的使用方
+  nav      按文件名规则归类（默认 README.md、index.md、*index.md），也可能承担条件读取路由
+  reader   未匹配导航或历史规则的文件；存在引用不证明实际读取
 
 判定档位：
-  NONE          没有任何其他文件引用
-  NAV_ONLY      只有导航文件引用
-  HISTORY_ONLY  只有导航/历史文件引用
-  READ          至少有一个 reader 引用
+  NONE          未识别到其他文件引用
+  NAV_ONLY      仅导航类文件引用
+  HISTORY_ONLY  有历史引用、无普通引用（可含导航引用）
+  READ          存在普通文件引用
 
 引用写法：markdown 链接（按相对路径解析）> 带路径的文本（至少两段路径后缀）> 仅文件名
 （只在该文件名在整个仓库中唯一时才算）。路径比较不区分大小写，反斜杠按 / 处理。
@@ -46,6 +46,20 @@ ACTION_HINT = re.compile(
     re.IGNORECASE)
 LINK_RE = re.compile(r"\]\(\s*(?:<([^>]+)>|([^)>\s]+))")
 # --------------------------------------------------------------------------------
+
+VERDICT_DESCRIPTIONS = {
+    "NONE": "未识别到其他文件引用",
+    "NAV_ONLY": "仅导航类文件引用",
+    "HISTORY_ONLY": "有历史引用、无普通引用（可含导航引用）",
+    "READ": "存在普通文件引用",
+}
+CATEGORY_DESCRIPTIONS = {"reader": "普通文件", "nav": "导航类文件", "history": "历史材料"}
+KIND_DESCRIPTIONS = {"link": "Markdown 链接", "path": "路径文本", "name": "唯一文件名文本（子串匹配）"}
+INTERPRETATION_NOTE = (
+    "分类依据是引用来源文件的路径/名称，不是文档是否合格。README 可能承担条件读取路由，"
+    "NAV_ONLY 需核对入口用途，不能整类排除；READ 也不证明实际读取或执行。"
+    "路径后缀和文件名子串可能误指其他文件，未命中也可能是引用写法未被识别。"
+)
 
 
 def norm(p: str) -> str:
@@ -217,15 +231,27 @@ def main() -> int:
 
     if args.json:
         output = json.dumps({"root": root.as_posix(), "summary": summary, "skipped_unreadable": skipped,
+                             "explanations": {"verdict": VERDICT_DESCRIPTIONS,
+                                              "category": CATEGORY_DESCRIPTIONS,
+                                              "kind": KIND_DESCRIPTIONS,
+                                              "note": INTERPRETATION_NOTE},
                              "results": results}, ensure_ascii=False, indent=2)
     else:
         out = [f"根目录：{root.as_posix()}", f"目标 {len(results)} 个；搜索 {len(contents)} 个文件"
-               f"（不可读已跳过 {skipped}）", f"汇总：{summary}", ""]
+               f"（不可读已跳过 {skipped}）", "汇总："]
+        out.extend(f"  {code}（{VERDICT_DESCRIPTIONS[code]}）：{count}"
+                   for code, count in summary.items())
+        out.append("引用来源（按命中行计数）：" + "；".join(
+            f"{code}={description}" for code, description in CATEGORY_DESCRIPTIONS.items()))
+        out.append("引用写法：" + "；".join(
+            f"{code}={description}" for code, description in KIND_DESCRIPTIONS.items()))
+        out.extend([f"结果说明：{INTERPRETATION_NOTE}", ""])
         for r in results:
             if r["verdict"] == "READ" and not args.show_read:
                 continue
             c = r["counts"]
-            out.append(f"{r['target']}  [{r['verdict']}]  reader={c['reader']} nav={c['nav']} "
+            out.append(f"{r['target']}  [{r['verdict']}：{VERDICT_DESCRIPTIONS[r['verdict']]}]  "
+                       f"reader={c['reader']} nav={c['nav']} "
                        f"history={c['history']}")
             shown = sorted(r["refs"], key=lambda x: {"reader": 0, "nav": 1, "history": 2}[x["category"]])
             for x in shown[:args.max_refs]:
