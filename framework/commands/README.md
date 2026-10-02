@@ -7,6 +7,7 @@
 | 命令位置（相对 framework/） | 用途 |
 | --- | --- |
 | [commands/create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交。 |
+| [commands/find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，按普通、导航和历史引用分类，列出孤立候选及引用文件、行号。 |
 | [docs/handbook/build_blank_project_handbook.py](../docs/handbook/build_blank_project_handbook.py) | 从 Markdown 构建两本 HTML 手册，并检查链接、收录范围和图表产物。 |
 | [prompt_scenarios/tools/check_scenario_prompt_paths.py](../prompt_scenarios/tools/check_scenario_prompt_paths.py) | 默认读取 Godot 开发和 Yaya 维护两份提示词库，只读核对名称与场景文件路径是否一一对应。 |
 | [prompt_scenarios/tools/check_workflow_graph_names.py](../prompt_scenarios/tools/check_workflow_graph_names.py) | 只读核对流程图节点名与提示场景名；忽略 CR/LF 换行，输出匹配、差异、字段位置和候选名称。默认检查可读版 JSON，`--summary` 只显示统计。 |
@@ -18,3 +19,15 @@
 在仓库根目录运行 `python -B framework/prompt_scenarios/tools/link_workflow_graph_scenarios.py`，默认更新可读版；用 `--graph` 指定其他图。脚本只修改节点的 `link`，会替换已有链接，名称不匹配或目标文件缺失时不写入。链接为当前仓库的绝对本地路径，仓库移动后重新运行即可；Graph_Map 仅展示和复制这些路径，不直接打开文件。
 
 两个 Godot 场景图命令默认读取 `framework/prompt_scenarios/prompts/godot-development-prompts.json`；`--prompts` 可指定待检查的单份 JSON。
+
+## 检查孤立文档
+
+在仓库根目录运行；使用 Python 标准库，不需要安装依赖：
+
+```powershell
+python -B framework/commands/find_orphan_docs.py
+```
+
+默认递归检查 Markdown，搜索源码和文档文本，不读取生成的 HTML。`NONE` 表示没有其他文件提及，`NAV_ONLY` 表示只有导航引用，`HISTORY_ONLY` 表示只有导航或历史引用；`READ` 仅表示存在其他类别的文本引用，不证明实际读写或执行。路径后缀与唯一文件名也会作为线索，需人工核对，不能据此删除文档。
+
+`--root` 指定检查目录，`--targets` 限定目标，`--json` 输出完整结构化结果；只有显式指定 `--out` 才写报告，父目录须已存在。`--exclude` 会替换默认排除项。默认扫描完成返回 `0`；使用 `--fail-on-orphan` 时，存在 `NONE` 返回 `1`，其他分类不会触发失败。
