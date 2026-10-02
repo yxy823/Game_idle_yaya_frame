@@ -106,7 +106,7 @@ Write these sections in this order. A document rendered from the canonical templ
 | Design entry and delivery horizon | Yes | Link the actual GDD entry and relevant game-version scope; identify which agreed scope this pre-decomposition covers. |
 | Product pre-decomposition | Yes | Each candidate's delivery outcome, rough included/deferred boundary and precise GDD references. Link a detailed Product document only after it exists. |
 | Dependencies and suggested order | Yes | Explain prerequisite outcomes and the current recommended sequence, including cross-system decisions affecting the current Product. |
-| Planning decisions to resolve | Yes | Questions that affect delivery boundaries or order, linking design questions to their GDD location. |
+| Planning decisions to resolve | Yes | Unresolved delivery choices spanning multiple Products or concerning a candidate without a detailed Product document, under [Delivery decision ownership](#delivery-decision-ownership). Link questions owned by GDD or a detailed Product. |
 | Change history | Yes | Reverse-chronological delivery-scope/order changes and reasons. Game-design history stays with its source. |
 
 Do not repeat the GDD's positioning, target users, core-loop body, system inventory, game-version content or visual/audio direction. A short navigational summary is sufficient. The game-system inventory and Product delivery list answer different questions and need not contain the same entries. Actual execution state remains in the Feature ledger and Progress, not an additional Product status field.
@@ -124,8 +124,23 @@ A Product document makes its delivery boundary precise without copying game-desi
 | Included and deferred scope | The adopted part of the design, its boundaries and intentionally later work; exclusions cannot silently change the design. |
 | Prerequisites and integration | Existing delivered outcomes, interfaces and shared rules this Product depends on, with links to their sources. |
 | Acceptance scenarios | End-to-end delivery scenarios and observable results derived from the sources; Feature planning owns task-sized AC and test mappings. |
-| Open decisions | Only unresolved choices affecting this delivery; identify which dependent work must wait and where the design decision belongs. |
+| Open decisions | Unresolved delivery choices confined to this detailed Product, under [Delivery decision ownership](#delivery-decision-ownership). Link questions owned by GDD or the overview and identify this delivery's dependent work. |
 | Change history | Reverse-chronological delivery-boundary changes and reasons. |
+
+### Delivery decision ownership
+
+Store each unresolved delivery choice once, using the first applicable condition below. References at other locations identify their own dependency without repeating the question's body.
+
+| Decision scope | Fixed owner |
+| --- | --- |
+| A game rule, intended experience or game-version design boundary is unresolved | `docs/gdd/open-questions.md`; Product only references it. |
+| The choice changes the allocation, prerequisites or relative order of two or more identified Products | `docs/product.md` → Planning decisions to resolve, even when one affected Product already has a detailed document. |
+| The choice is confined to one Product with an existing detailed document | That `docs/product/NN-name.md` → Open decisions. |
+| The choice is confined to a candidate whose detailed document has not been written | `docs/product.md` → Planning decisions to resolve until that Product is detailed. |
+
+For example, whether the current backpack delivery includes already-designed keyboard navigation belongs in that Product's Open decisions when no other Product allocation is being decided. Assigning the same work between the backpack Product and an identified accessibility Product belongs in the overview. Merely leaving work for an unspecified future delivery does not make the first question cross-Product.
+
+When detailing a candidate, move its still-open local delivery questions from the overview into the new detail and replace the old body with a link; keep cross-Product questions in the overview. When a question's scope changes, move its body to the newly determined owner and update live references in the same authorized edit. Once resolved, put the adopted boundary, prerequisite or order in its owning Product section, remove the open entry and update affected references. Preserve useful change reasons in the existing history, without a second question ledger.
 
 ## Visual prototype before dependent implementation
 

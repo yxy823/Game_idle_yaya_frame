@@ -337,8 +337,15 @@ pending ──execute Stage 2──→ in_progress ──Stage 7 after applicabl
    ├──source synchronization retires work──→ obsolete
    └──invalid prerequisite──→ blocked
 
+blocked ──prerequisite validity restored──→ pending
+blocked ──source synchronization retires work──→ obsolete
+
 done ──Product evolution removes implemented behavior──→ obsolete_done
 ```
+
+`blocked` records a pending Feature whose required source decision, input or dependency contract is invalid or unavailable. Record the concrete blocker and the condition for recovery in its existing detail `notes`; it does not permit broken dependency IDs or obsolete prerequisites. An otherwise valid Feature waiting for an unfinished dependency remains `pending` and simply is not eligible. Work already in progress retains `in_progress` and records its blocker in the current execution record; do not discard that execution state by switching it to `blocked`.
+
+During authorized synchronization or continuation, recheck the recorded blocker against current sources and dependencies. Revisions may update blocked work, and dependency replacements must include it. Restore `blocked` to `pending` only when the recorded prerequisite is valid and available again, appending the reason to `notes`; then apply the ordinary all-prerequisites-`done` eligibility check. Restoration alone does not start execution or establish completion. Confirmed withdrawal uses `obsolete`, preserving the original blocker and retirement reason as history.
 
 The `in_progress → done` transition follows Stage 7 of [the execution loop](03-execute-loop.md): satisfy the decided acceptance plan, applicable tests and direct static checks, and any explicit user review condition. Independent review is optional under Stage 6; the completion record contains no review counts. The Agent runs the explicit evidence check for the current code snapshot and records the actual result.
 

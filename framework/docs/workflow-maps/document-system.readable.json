@@ -1064,7 +1064,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序和未决项。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档，后续单元保持粗略范围。\n\n项目文件： docs/product.md",
+      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化候选的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1107,7 +1107,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景和缺口。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源，Feature 据此细分可验证的任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
+      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景，以及仅涉及该单元的未决交付选择。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源；跨 Product 选择引用总览，游戏设计问题引用 GDD。Feature 据此细分任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1299,8 +1299,8 @@
       "x": 1340,
       "y": 2190,
       "width": 270,
-      "height": 88,
-      "label": "游戏表现设计\n<scope>.md",
+      "height": 104,
+      "label": "游戏表现与共享组件\n<scope>.md\n<component-key>.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1322,7 +1322,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；初始只有导航。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md",
+      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1537,7 +1537,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现方案、UI 文档或共享视觉/声音设计中的资源章节；没有独立默认资源台账。\nFeature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现或共享组件方案、UI 文档或共享视觉/声音设计中的资源章节；没有独立默认资源台账。\nFeature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

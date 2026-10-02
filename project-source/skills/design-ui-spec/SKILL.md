@@ -12,6 +12,8 @@ Follow `methodology/11-specialist-workflows.md` for professional ownership, auth
 
 Read the relevant GDD goals/actions and Product delivery scope, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
 
+When creating, renaming or removing a UI specification, or changing the purpose or Product association shown in its navigation, read `docs/ui/README.md` and maintain the affected navigation entry under its existing contract in the same authorized change. Do not turn this maintenance into a directory-wide review.
+
 ## Useful specification
 
 Explain how hierarchy, grouping and feedback serve the current user goal. Provide an ASCII wireframe with realistic content, key actions and state differences. Draw separate states only when layouts differ substantially.

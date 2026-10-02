@@ -53,6 +53,7 @@ Use the Product templates and their semantics from `methodology/templates/README
 - Reference substantive design at its owning GDD location and preserve its decision status. Do not maintain a second core loop, system inventory, version scope or rule set in Product; return required source changes to the design owner.
 - In the overview, preserve stable delivery identities and update boundaries, GDD links and dependencies. Future entries need no placeholder files, detailed AC or test registrations.
 - When the current Product is ready, create or revise its delivery document with precise source references, inclusions/exclusions, integration boundaries, delivery acceptance scenarios and material gaps. Observable acceptance can restate the result needed for verification, but rule definitions and values remain at their source.
+- Apply **Delivery decision ownership** in methodology 01 to unresolved choices. When detailing a candidate or changing a question's scope, move its body to the prescribed owner and update references in the same edit; do not leave parallel open-question bodies in the overview and detail.
 - Preserve existing records and filenames; a collision requires inspecting the actual owner rather than overwriting or allocating a duplicate. Meaning-preserving definitions use `project-terminology`.
 - Check source coverage, internal consistency and affected links. Distinguish unreadable material, unadopted proposals, implementation observations and actual user decisions.
 

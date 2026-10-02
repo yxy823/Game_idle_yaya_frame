@@ -19,7 +19,7 @@
 | 共享视觉方向 | `docs/art/art-bible.md` | `design-art-direction` |
 | 共享声音方向 | `docs/audio/sound-bible.md` | `design-audio-direction` |
 | 界面布局、状态及其表现引用 | `docs/ui/<interface>-design.md` | `design-ui-spec` |
-| 一次游戏表现的过程、组件要求、候选与采用组合 | `docs/presentation/<scope>.md` | `design-game-presentation`；实现任务同步实际文件和接入关系 |
+| 一次游戏表现的过程、组件要求、候选与采用组合 | `docs/presentation/<scope>.md`；跨表现共享组件按下文固定存放 | `design-game-presentation`；实现任务同步实际文件和接入关系 |
 | 具体视觉资源准备要求 | 所属表现方案、界面或共享视觉设计章节 | `design-visual-asset-spec` |
 | 具体音频资源准备要求 | 所属表现方案、界面或共享声音设计章节 | `design-audio-asset-spec` |
 | 语言覆盖、回退、排版与翻译惯例 | `docs/localization/localization-spec.md` | `design-localization-spec` |
@@ -52,7 +52,9 @@ GDD、规格、表现正文及本地化要求在最终验证前完成本轮必�
 | 角色死亡 | 从相关 GDD 章节及表现总览找到正文，无需为此创建 UI 文档 |
 | 替换一个组成部分的技术 | 当前任务保留已确认要求，同步采用组合及真实路径，再完成适用验证；目标改变按设计变更处理 |
 
-表现正文按需要组织目标与过程、组件标准需求、候选方案、资源规格、采用关系、实际实现和验收入口。组件默认在所属表现内分节，确需跨表现复用时再独立成篇。`docs/presentation/README.md` 只导航；绑定要求写在具体正文中。
+表现正文按需要组织目标与过程、组件标准需求、候选方案、资源规格、采用关系、实际实现和验收入口。组件仅属于一份表现时在父文档内分节；第二份独立表现使用相同组件要求时，将共同要求、候选及其资源规格迁入固定的 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现不会触发这次迁移。建立后的共享组件仍有消费者时保留原路径，各父表现只维护自己的过程、触发与目标上下文、采用组合和验收入口。具体身份与生命周期见[表现文档约定](../../../../project-source/methodology/11-specialist-workflows.md#game-presentation-documents)。
+
+`docs/presentation/README.md` 导航到表现及共享组件，列出实际使用关系；绑定要求写在各自正文中。UI 规格新增、改名或移除，以及导航中的用途或关联 Product 变化时，`design-ui-spec` 同步读取 `docs/ui/README.md` 并维护受影响导航条目，无需审查无关目录内容。
 
 表现与开发任务不要求一一对应，只把已采纳要求和当前获准方案接入现有 Feature 的来源、AC 或设计。候选可以只保留描述，不要求全部制作。有具体不确定性才用 Godot 原型验证；正式实现沿用已有开发任务。
 

@@ -187,6 +187,7 @@ Append new index entries and matching details with never-used IDs and canonical 
 | Current status | Confirmed action |
 |---|---|
 | `pending` | Set index `status` to `obsolete`; append a localized timestamped removal reason to detail `notes` |
+| `blocked` | Set index `status` to `obsolete`; preserve the recorded blocker and append a localized timestamped removal reason to detail `notes` |
 | `in_progress` | Set index `status` to `obsolete`; append the reason; warn that written code may require an explicitly authorized rollback |
 | `done` | Set index `status` to `obsolete_done`; append a localized timestamped removal reason to detail `notes`; preserve `id`, `description`, and `acceptance_criteria`; append a new Feature that removes the implemented behavior, with dependencies chosen from actual impact |
 | `obsolete` or `obsolete_done` | Keep status unchanged; append a localized note that exclusion was confirmed again |
@@ -198,6 +199,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 | Current status | Confirmed action |
 |---|---|
 | `pending` | Update detail `description`, `affected_components`, and criterion text/IDs before execution; preserve any still-valid planned verification mapping, explicitly retire superseded planned registry entries, append a localized timestamped revision note; change index `title` only when affected |
+| `blocked` | Apply the `pending` action, then recheck the recorded blocker under **Status transitions** in methodology 02; retain `blocked` while it remains, or restore `pending` with the resolved prerequisite and reason in `notes` |
 | `in_progress` | Apply the `pending` action and warn that current implementation may need adjustment |
 | `done` | Do not modify the original index entry or detail. Append a new Feature that revises the implementation for the new GDD rule, depends on the original ID, and states the new behavior in its acceptance criteria |
 | `obsolete` or `obsolete_done` | Normally do nothing. If the user wants reactivation, require an explicit decision and append a new Feature |
@@ -212,7 +214,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 - A split retains its original entry as `obsolete`/`obsolete_done` and appends two or more never-used Feature IDs with independently testable scope.
 - A merge retains all original entries as `obsolete`/`obsolete_done` and appends one never-used Feature ID covering the approved combined scope. A completed source's description, criteria and historical mappings remain unchanged.
-- Rewrite affected pending dependencies to the actual replacement prerequisites, even when their IDs are larger. Review in-progress work explicitly before changing its scope/dependencies. Do not rewrite completed dependency history.
+- Rewrite affected pending and blocked dependencies to the actual replacement prerequisites, even when their IDs are larger. For blocked work, recheck the recorded recovery condition after the replacement; a valid but unfinished dependency leaves restored work pending and ineligible until that dependency is done. Review in-progress work explicitly before changing its scope/dependencies. Do not rewrite completed dependency history.
 - Record each operation as typed `migrations` and each dependency edit as `dependency_changes` in a version-2 revision. Check both the migration graph and execution DAG for cycles, unknown IDs, self-dependencies and obsolete prerequisites.
 - Add/revise/split/merge/retire are incremental operations; never regenerate the whole ledger merely because an insertion would disrupt numeric execution order.
 

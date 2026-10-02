@@ -12,7 +12,7 @@ Apply the project GDD prerequisite before starting or resuming; an existing Feat
 
 | Decision or action | Supporting authority |
 | --- | --- |
-| Select the current Product/Feature | **Product-by-Product planning** in `methodology/02-feature-list-schema.md` |
+| Select the current Product/Feature | **Stage 0 · select and load context** in `methodology/03-execute-loop.md`, with Product order from **Product-by-Product planning** in methodology 02 |
 | Read applicable implementation rules and knowledge | Project `AGENTS.md` and its task-specific routes |
 | Prepare needed implementation guidance for an existing Feature | `implementation-guidance-godot`; its explicit-request contract controls advisor delegation, while methodology 02 owns the design lifecycle |
 | Resolve document language or environment setup | `methodology/05-document-language.md` and current `docs/methodology-config.json` |

@@ -26,7 +26,7 @@ These references help normalize requirements, not mandate algorithms, node trees
 
 ## Durable output and continuation
 
-Maintain the business-scoped `docs/presentation/<scope>.md` body and its navigation under the canonical document contract. Put alternative-specific resource requirements inside that alternative; coordinate visual/audio specifications with their specialist Skills. Missing files can remain explicit while planning continues. This Skill neither produces image/audio files nor searches local asset libraries.
+Maintain the business-scoped `docs/presentation/<scope>.md` body and its navigation under the canonical document contract. When the same component contract is used by a second distinct presentation, apply that contract's mandatory extraction to `docs/presentation/components/<component-key>.md`, migrating the body and updating all affected references. Put alternative-specific resource requirements inside that alternative; coordinate visual/audio specifications with their specialist Skills. Missing files can remain explicit while planning continues. This Skill neither produces image/audio files nor searches local asset libraries.
 
 Link a UI use at its actual interaction and in the UI's final related-presentations navigation; link a non-UI use from its relevant GDD topic. Preserve one shared body for multiple consumers. Only adopted requirements and the authorized approach enter Feature source/AC/design references; presentations and Features need not correspond one-to-one.
 
