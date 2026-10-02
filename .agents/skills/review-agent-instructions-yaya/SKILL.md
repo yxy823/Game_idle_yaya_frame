@@ -20,7 +20,7 @@ description: 正式只读审核 Yaya 框架的 Codex 指令，包括 AGENTS.md�
 | 指令触发、条件引用、信息层级、正文归属、授权和完成边界 | [指令设计参考](../writing-for-agents-yaya/references/agent-instruction-design.md)；它是共用正文，读取不调用编写入口 |
 | Skill 的职责、拆分与编排 | [Skill 评价维度和实现原则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#skill-的评价维度)，以及实际必要的 references 和调用方 |
 | Skill frontmatter、元数据、目录和调用策略 | [Codex Skill 编写参考](../writing-for-agents-yaya/references/codex-skill-authoring.md)，核对实际发现入口与包的部署范围 |
-| 集中任务提示词及关联场景 | [提示词与场景准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)；按维护入口的[联动归属](../prompt-maintenance-yaya/SKILL.md#按实际变化同步)识别受影响对象，只读核对而不执行同步 |
+| 集中任务提示词及关联场景 | [提示词与场景准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)；按维护入口的[联动归属](../prompt-and-graph-maintenance-yaya/SKILL.md#按实际变化同步)识别受影响对象，只读核对而不执行同步 |
 
 沿真实使用路径检查需要的分支，例如普通直接调用、跳过创建步骤进入验证、继续已有任务、只讨论、只读和尚缺人工决定的情况。对照现行规则及实际授权，不以理想化使用顺序掩盖漏读，不为没有证据的假想风险增加流程。Skill、提示词、引用规则和执行工具各自的职责要分清。
 

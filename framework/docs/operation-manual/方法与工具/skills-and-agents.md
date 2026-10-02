@@ -139,7 +139,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../prompt_scenarios/prompts/godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../prompt_scenarios/prompts/yaya-maintenance-prompts.json)。
 
-维护库内的提示词、分类或场景时，使用框架专用的 [prompt-maintenance-yaya](../../../../.agents/skills/prompt-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、Godot 场景图与 advisor 的相关说明；详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
 - **Project：** 每份文件保留单元素顶层数组，分别保存 `Yaya 框架维护` 或 `Godot 项目开发`。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。

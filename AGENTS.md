@@ -64,6 +64,8 @@
 
 调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
 
+文档职责、路径、产物归属或实际引用关系变化时，使用 [提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步文档系统图中的对应节点与关系；普通正文措辞变化不触发全图维护。全仓文档覆盖扫描只在用户明确要求检查时运行。
+
 修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关 Godot 开发提示词及同名场景。使建议和来源引用与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
 
 在已指定的外部项目运行回归前，核对被测文件是否对应本次修复；需要同步时仅更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
@@ -89,7 +91,7 @@
 
 ## 提示词维护
 
-新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-maintenance-yaya](.agents/skills/prompt-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
+新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
 
 任务提示词按用途分别维护在 [Godot 开发提示词库](framework/prompt_scenarios/prompts/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
 

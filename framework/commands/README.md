@@ -9,6 +9,7 @@
 | [commands/create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交。 |
 | [commands/find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，按普通、导航和历史引用分类，列出孤立候选及引用文件、行号。 |
 | [docs/handbook/build_blank_project_handbook.py](../docs/handbook/build_blank_project_handbook.py) | 从 Markdown 构建两本 HTML 手册，并检查链接、收录范围和图表产物。 |
+| [docs/workflow-maps/check_document_graph_coverage.py](../docs/workflow-maps/check_document_graph_coverage.py) | 按文档图备注的文件路径检查文档覆盖；只读、显式调用，范围与结果含义见[图谱说明](../docs/workflow-maps/README.md#按需检查文档覆盖)。 |
 | [prompt_scenarios/tools/check_scenario_prompt_paths.py](../prompt_scenarios/tools/check_scenario_prompt_paths.py) | 默认读取 Godot 开发和 Yaya 维护两份提示词库，只读核对名称与场景文件路径是否一一对应。 |
 | [prompt_scenarios/tools/check_workflow_graph_names.py](../prompt_scenarios/tools/check_workflow_graph_names.py) | 只读核对流程图节点名与提示场景名；忽略 CR/LF 换行，输出匹配、差异、字段位置和候选名称。默认检查可读版 JSON，`--summary` 只显示统计。 |
 | [prompt_scenarios/tools/link_workflow_graph_scenarios.py](../prompt_scenarios/tools/link_workflow_graph_scenarios.py) | 为可读版 JSON 的节点写入或更新同名场景文件链接；先检查全部名称和文件，`--check` 只读检查。 |

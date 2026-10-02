@@ -10,7 +10,7 @@
       "y": 240,
       "width": 270,
       "height": 88,
-      "label": "框架仓库入口\nREADME",
+      "label": "框架仓库入口\nREADME.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -32,7 +32,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：框架用途、目录、创建器与能力入口。\n位置：仓库 README.md。\n通过文档总入口查手册，通过根 AGENTS 查维护约定；这里只导航，不复制各专题正文。",
+      "note": "职责：框架用途、目录、创建器与能力入口。\n位置：仓库 README.md。\n通过文档总入口查手册，通过根 AGENTS 查维护约定；这里只导航，不复制各专题正文。\n\n文件： README.md\n文件： framework/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -53,7 +53,7 @@
       "y": 240,
       "width": 270,
       "height": 88,
-      "label": "框架文档\n总入口",
+      "label": "框架文档总入口\nREADME.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -75,7 +75,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：统一导航操作手册、场景速查、关系图、维护说明与公共术语。\n位置：framework/docs/README.md。\n两册独立阅读，不互相引用，由本入口连接。",
+      "note": "职责：统一导航操作手册、场景速查、关系图、维护说明与公共术语。\n位置：framework/docs/README.md。\n两册独立阅读，不互相引用，由本入口连接。\n\n文件： framework/docs/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -96,7 +96,7 @@
       "y": 100,
       "width": 270,
       "height": 88,
-      "label": "操作手册\n概念与工具",
+      "label": "操作手册\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -118,7 +118,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n引用权威源规范；Markdown 是正文来源，HTML 是派生阅读版。",
+      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n引用权威源规范；Markdown 是正文来源，HTML 是派生阅读版。\n\n文件： framework/docs/operation-manual/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -139,7 +139,7 @@
       "y": 320,
       "width": 270,
       "height": 88,
-      "label": "场景速查\n具体任务入口",
+      "label": "场景速查\nscenario-index.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -161,7 +161,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：从当前情况找到处理步骤、同名提示词、输入和出口。\n位置：framework/prompt_scenarios/scenarios/。\n涵盖 Yaya 框架维护与 Godot 项目开发；与提示词按 Project、分类、名称一一对应，不由 JSON 自动生成正文。",
+      "note": "职责：从当前情况找到处理步骤、同名提示词、输入和出口。\n位置：framework/prompt_scenarios/scenarios/。\n涵盖 Yaya 框架维护与 Godot 项目开发；与提示词按 Project、分类、名称一一对应，不由 JSON 自动生成正文。\n\n文件： framework/prompt_scenarios/scenarios/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -182,7 +182,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "框架维护说明\n归属、同步与验证",
+      "label": "框架维护说明\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -204,7 +204,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：材料位置、维护边界、文档同步、工具及验证说明。\n位置：framework/docs/framework-maintenance/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。",
+      "note": "职责：材料位置、维护边界、文档同步、工具及验证说明。\n位置：framework/docs/framework-maintenance/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/docs/framework-maintenance/*.md\n文件： framework/commands/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -225,7 +225,7 @@
       "y": 760,
       "width": 270,
       "height": 88,
-      "label": "框架公共术语",
+      "label": "框架公共术语\nterminology.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -247,7 +247,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：框架和工程公共概念的含义与统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。",
+      "note": "职责：框架和工程公共概念的含义与统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/docs/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -267,8 +267,8 @@
       "x": 1340,
       "y": 320,
       "width": 270,
-      "height": 88,
-      "label": "任务提示词\nGodot 开发 / Yaya 维护",
+      "height": 148,
+      "label": "任务提示词\ngodot-development-prompts.json\nyaya-maintenance-prompts.json",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -290,7 +290,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt_scenarios/prompts/godot-development-prompts.json 与 framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开两份库的维护导航。",
+      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt_scenarios/prompts/godot-development-prompts.json 与 framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开两份库的维护导航。\n\n文件： framework/prompt_scenarios/prompts/godot-development-prompts.json\n文件： framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -310,8 +310,8 @@
       "x": 1340,
       "y": 100,
       "width": 270,
-      "height": 88,
-      "label": "场景图与\n文档关系图",
+      "height": 148,
+      "label": "场景图与文档关系图\ngame-development-workflow.readable.json\ndocument-system.readable.json",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -333,7 +333,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/docs/workflow-maps/。\n图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。",
+      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/docs/workflow-maps/。\n图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/docs/workflow-maps/README.md\n文件： framework/docs/workflow-maps/game-development-workflow.readable.json\n文件： framework/docs/workflow-maps/document-system.readable.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -353,8 +353,8 @@
       "x": 1760,
       "y": 100,
       "width": 270,
-      "height": 88,
-      "label": "两册 HTML\n阅读版",
+      "height": 128,
+      "label": "两册 HTML 阅读版\noperation-handbook.html\nquick-reference-handbook.html",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -376,7 +376,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：由 Markdown 构建的两本阅读版。\n位置：operation-manual/operation-handbook.html 与 quick-reference/quick-reference-handbook.html。\n通过现有构建脚本派生；不单独维护正文。本节点链接操作手册，另一册从文档总入口进入。",
+      "note": "职责：由 Markdown 构建的两本阅读版。\n位置：framework/docs/operation-manual/operation-handbook.html 与 framework/prompt_scenarios/scenarios/quick-reference-handbook.html。\n通过现有构建脚本派生；不单独维护正文。本节点链接操作手册，另一册从文档总入口进入。\n\n文件： framework/docs/operation-manual/operation-handbook.html\n文件： framework/prompt_scenarios/scenarios/quick-reference-handbook.html",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -397,7 +397,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "审核入口与\n长期职责基线",
+      "label": "审核入口与职责基线\nreview-materials.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -419,7 +419,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n基线用于持续维护；报告只陈述对应版本的检查事实。",
+      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n基线用于持续维护；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/review-materials.md\n文件： framework/docs/framework-maintenance/baselines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -440,7 +440,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "框架审核与\n验证报告",
+      "label": "框架审核与验证报告\n*.md",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -462,7 +462,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按次保留的审核和实际验证记录。\n位置：framework/docs/framework-maintenance/reports/，原始运行证据仍按当次记录定位。\n入口来自审核索引或仍需要证据的维护记录；历史通过不证明当前版本通过。",
+      "note": "职责：按次保留的审核和实际验证记录。\n位置：framework/docs/framework-maintenance/reports/，原始运行证据仍按当次记录定位。\n入口来自审核索引或仍需要证据的维护记录；历史通过不证明当前版本通过。\n\n文件： framework/docs/framework-maintenance/reports/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -483,7 +483,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "框架待办\n真实剩余工作",
+      "label": "框架待办\nprogress.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -505,7 +505,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n必要时链接实际依据；完成并通过适用验证的事项删除，历史由 Git 保存。",
+      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n必要时链接实际依据；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -526,7 +526,7 @@
       "y": 650,
       "width": 270,
       "height": 88,
-      "label": "框架维护规则\n与框架 Skill",
+      "label": "框架维护规则与 Skill\nAGENTS.md · SKILL.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -548,7 +548,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前维护约束、条件阅读和框架专项能力入口。\n位置：AGENTS.md、.agents/skills/。\n框架 Skill 供维护仓库使用，不随生成项目复制；Skill 自带的参考由各包按条件引用。",
+      "note": "职责：当前维护约束、条件阅读和框架专项能力入口。\n位置：AGENTS.md、.agents/skills/。\n框架 Skill 供维护仓库使用，不随生成项目复制；Skill 自带的参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -569,7 +569,7 @@
       "y": 1020,
       "width": 270,
       "height": 88,
-      "label": "项目分发源\n与复制映射",
+      "label": "项目分发源与复制映射\nproject-files.json",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -591,7 +591,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/commands/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。",
+      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/commands/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。\n\n文件： framework/commands/project-files.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -612,7 +612,7 @@
       "y": 1020,
       "width": 270,
       "height": 88,
-      "label": "项目文档模板\n按需采用的结构",
+      "label": "项目文档模板\nREADME.md · *.tmpl",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -634,7 +634,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Product、Feature、测试、进度、规则和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n少量模板由创建器复制为初始空记录；其他模板只在真实任务需要时采用，不自动创建业务文档。",
+      "note": "职责：Product、Feature、测试、进度、规则和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n少量模板由创建器复制为初始空记录；其他模板只在真实任务需要时采用，不自动创建业务文档。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -655,7 +655,7 @@
       "y": 1470,
       "width": 270,
       "height": 88,
-      "label": "项目 README\n阅读入口",
+      "label": "项目阅读入口\nREADME.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -677,7 +677,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：生成项目的能力、文件和阅读导航。\n项目位置：README.md；本节点链接其分发源。\n项目独立使用自己的文档与规则；初始入口和空记录不代表已有真实设计、实现或验证结果。",
+      "note": "职责：生成项目的能力、文件和阅读导航。\n项目位置：README.md；本节点链接其分发源。\n项目独立使用自己的文档与规则；初始入口和空记录不代表已有真实设计、实现或验证结果。\n\n项目文件： README.md\n项目文件： docs/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -697,8 +697,8 @@
       "x": 500,
       "y": 1470,
       "width": 270,
-      "height": 88,
-      "label": "项目规则\n与领域规则",
+      "height": 128,
+      "label": "项目规则与领域规则\nAGENTS.md · project-rules.md\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -720,7 +720,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。",
+      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： agent-rules/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -741,7 +741,7 @@
       "y": 1470,
       "width": 270,
       "height": 88,
-      "label": "项目 Skill\n与流程规范",
+      "label": "项目 Skill 与流程规范\nSKILL.md · *.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -763,7 +763,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。",
+      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： methodology/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -784,7 +784,7 @@
       "y": 1470,
       "width": 270,
       "height": 88,
-      "label": "项目工具与\n示例使用说明",
+      "label": "项目工具与示例说明\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -806,7 +806,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：tools/README.md，以及 asset_workbench/examples/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。",
+      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：tools/README.md，以及 asset_workbench/examples/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： tools/**/*.md\n项目文件： asset_workbench/**/*.md\n项目文件： components/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -827,7 +827,7 @@
       "y": 1470,
       "width": 270,
       "height": 88,
-      "label": "环境与语言\n配置",
+      "label": "环境与语言配置\nmethodology-config.json",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -849,7 +849,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：文档语言、Python 与 Godot 可执行路径。\n项目位置：docs/methodology-config.json。\n初始值不代表环境已核实；实际检查结果进入初始化报告和必要的 Progress。",
+      "note": "职责：文档语言、Python 与 Godot 可执行路径。\n项目位置：docs/methodology-config.json。\n初始值不代表环境已核实；实际检查结果进入初始化报告和必要的 Progress。\n\n项目文件： docs/methodology-config.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -870,7 +870,7 @@
       "y": 1470,
       "width": 270,
       "height": 88,
-      "label": "初始化\n检查报告",
+      "label": "初始化检查报告\ninitialization.md",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -892,7 +892,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：实际环境检查、观察到的版本、命令、成功和缺口。\n项目位置：reports/initialization.md；按实际环境任务产生。\n本节点链接环境规范，未指向一个已经生成的报告。配置正确与业务测试通过是不同事实。",
+      "note": "职责：实际环境检查、观察到的版本、命令、成功和缺口。\n项目位置：reports/initialization.md；按实际环境任务产生。\n本节点链接环境规范，未指向一个已经生成的报告。配置正确与业务测试通过是不同事实。\n\n项目文件： reports/initialization.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -913,7 +913,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "游戏职责与\n文档查找指南",
+      "label": "游戏职责与文档指南\ngame-organization.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -935,7 +935,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释规则、状态、表现、协作、文档与实现的对应关系。\n项目位置：docs/game-organization.md。\n按功能找到 GDD、UI、表现、架构、Product 和 Feature；示例不代表项目已经实现该功能。",
+      "note": "职责：解释规则、状态、表现、协作、文档与实现的对应关系。\n项目位置：docs/game-organization.md。\n按功能找到 GDD、UI、表现、架构、Product 和 Feature；示例不代表项目已经实现该功能。\n\n项目文件： docs/game-organization.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -956,7 +956,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "游戏业务\n术语",
+      "label": "游戏业务术语\nterminology.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -978,7 +978,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：共享名称、已确认定义、别名和易混淆概念。\n项目位置：docs/terminology.md；初始只有用途说明。\n详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。",
+      "note": "职责：共享名称、已确认定义、别名和易混淆概念。\n项目位置：docs/terminology.md；初始只有用途说明。\n详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -999,7 +999,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "GDD\n游戏设计正文",
+      "label": "GDD 游戏设计正文\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1021,7 +1021,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。",
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n是交付和专业设计的来源；已写清的细节直接引用，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1042,7 +1042,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "Product 总览\n交付预拆分",
+      "label": "Product 总览\nproduct.md",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1064,7 +1064,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序和未决项。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档，后续单元保持粗略范围。",
+      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序和未决项。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档，后续单元保持粗略范围。\n\n项目文件： docs/product.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1085,7 +1085,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "当前 Product\n交付单元",
+      "label": "当前 Product\nNN-name.md",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1107,7 +1107,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景和缺口。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源，Feature 据此细分可验证的任务，不复制游戏规则正文。",
+      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景和缺口。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源，Feature 据此细分可验证的任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1128,7 +1128,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "Feature 索引\n身份、依赖与状态",
+      "label": "Feature 索引\nfeature-list.json",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1150,7 +1150,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：轻量任务索引、依赖、状态和详情路径。\n项目位置：docs/feature-list.json；创建时为空。\n经 detail_path 进入各 Feature JSON；索引不复制验收条件与详细设计。",
+      "note": "职责：轻量任务索引、依赖、状态和详情路径。\n项目位置：docs/feature-list.json；创建时为空。\n经 detail_path 进入各 Feature JSON；索引不复制验收条件与详细设计。\n\n项目文件： docs/feature-list.json\n项目文件： docs/features/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1171,7 +1171,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "来源基线\n与计划修订记录",
+      "label": "来源基线与计划修订\nfeature-list-revisions.json",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1193,7 +1193,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录规划实际采用的来源提交、后续同步及 Feature 演进关系。\n项目位置：docs/feature-list-revisions.json；初始为空。\n采用来源包括 GDD、Product、专业规格和项目规则。空白项目的初始提交不构成需求基线。",
+      "note": "职责：记录规划实际采用的来源提交、后续同步及 Feature 演进关系。\n项目位置：docs/feature-list-revisions.json；初始为空。\n采用来源包括 GDD、Product、专业规格和项目规则。空白项目的初始提交不构成需求基线。\n\n项目文件： docs/feature-list-revisions.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1214,7 +1214,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "共享美术\n规范",
+      "label": "共享美术规范\nart-bible.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1236,7 +1236,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：细化 GDD 的共享视觉方向、约束和共用资源规格。\n项目位置：docs/art/art-bible.md；初始方向待定。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。",
+      "note": "职责：细化 GDD 的共享视觉方向、约束和共用资源规格。\n项目位置：docs/art/art-bible.md；初始方向待定。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1257,7 +1257,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "UI 设计\n界面与交互",
+      "label": "UI 设计\n<interface>-design.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1279,7 +1279,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途和关联 Product。",
+      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途和关联 Product。\n\n项目文件： docs/ui/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1300,7 +1300,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "游戏表现设计\n过程、方案与采用",
+      "label": "游戏表现设计\n<scope>.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1322,7 +1322,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；初始只有导航。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。",
+      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；初始只有导航。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1343,7 +1343,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "Feature 局部设计\n按需展开",
+      "label": "Feature 局部设计\nF0XX-design.md",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1365,7 +1365,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释一项变更的边界、职责、接口、生命周期、失败处理、实现与验证理由。\n项目位置：docs/features/F0XX-design.md；需要持续说明时才创建。\n从 Feature notes 进入，并引用 Feature/AC、来源、当前架构和适用 ADR；完成后保留该任务的历史事实。",
+      "note": "职责：解释一项变更的边界、职责、接口、生命周期、失败处理、实现与验证理由。\n项目位置：docs/features/F0XX-design.md；需要持续说明时才创建。\n从 Feature notes 进入，并引用 Feature/AC、来源、当前架构和适用 ADR；完成后保留该任务的历史事实。\n\n项目文件： docs/features/F[0-9][0-9][0-9]-design.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1386,7 +1386,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "Feature 详情\nAC、验证与 notes",
+      "label": "Feature 详情\nF0XX.json",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1408,7 +1408,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前任务范围、组件影响、主来源、可观察 AC、验证义务和简短 notes。\n项目位置：docs/features/F0XX.json；真实规划后产生。\nsource 指向精确主来源，其他约束通过 AC/可选设计引用；notes 导航局部设计、报告和决定，不成为要求的唯一正文。",
+      "note": "职责：当前任务范围、组件影响、主来源、可观察 AC、验证义务和简短 notes。\n项目位置：docs/features/F0XX.json；真实规划后产生。\nsource 指向精确主来源，其他约束通过 AC/可选设计引用；notes 导航局部设计、报告和决定，不成为要求的唯一正文。\n\n项目文件： docs/features/F[0-9][0-9][0-9].json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1429,7 +1429,7 @@
       "y": 2190,
       "width": 270,
       "height": 88,
-      "label": "测试登记表\n组件与测试映射",
+      "label": "测试登记表\ntest-registry.json",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -1451,7 +1451,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：测试身份、组件、实现位置和生命周期；为 AC、回归及测试影响提供可追溯映射。\n项目位置：docs/test-registry.json；初始为空。\n登记、真实实现、运行结果和完成证据分别记录；planned 条目不等于测试已通过。",
+      "note": "职责：测试身份、组件、实现位置和生命周期；为 AC、回归及测试影响提供可追溯映射。\n项目位置：docs/test-registry.json；初始为空。\n登记、真实实现、运行结果和完成证据分别记录；planned 条目不等于测试已通过。\n\n项目文件： docs/test-registry.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1472,7 +1472,7 @@
       "y": 2550,
       "width": 270,
       "height": 88,
-      "label": "共享声音\n规范",
+      "label": "共享声音规范\nsound-bible.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1494,7 +1494,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：细化 GDD 的声音方向、反馈层级和共享音频要求。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，声音文件准备规格随实际使用章节保存。",
+      "note": "职责：细化 GDD 的声音方向、反馈层级和共享音频要求。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，声音文件准备规格随实际使用章节保存。\n\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1515,7 +1515,7 @@
       "y": 2550,
       "width": 270,
       "height": 88,
-      "label": "资源规格与准备\n所属设计中的章节",
+      "label": "资源规格与准备\n所属设计的 *.md 章节",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1537,7 +1537,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现方案、UI 文档或共享视觉/声音设计中的资源章节；没有独立默认资源台账。\nFeature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。",
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现方案、UI 文档或共享视觉/声音设计中的资源章节；没有独立默认资源台账。\nFeature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1558,7 +1558,7 @@
       "y": 2550,
       "width": 270,
       "height": 88,
-      "label": "项目架构\n当前结构与协作",
+      "label": "项目架构\narchitecture.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -1580,7 +1580,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前模块、实现入口、状态所有者、依赖方向及必要协作。\n项目位置：docs/architecture.md；初始只有用途说明。\n链接实际 GDD/UI/表现和代码入口；复杂部分进入子系统文档，重要取舍链接 ADR，不覆盖 Feature 的历史。",
+      "note": "职责：当前模块、实现入口、状态所有者、依赖方向及必要协作。\n项目位置：docs/architecture.md；初始只有用途说明。\n链接实际 GDD/UI/表现和代码入口；复杂部分进入子系统文档，重要取舍链接 ADR，不覆盖 Feature 的历史。\n\n项目文件： docs/architecture.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1600,8 +1600,8 @@
       "x": 2180,
       "y": 2550,
       "width": 270,
-      "height": 88,
-      "label": "人工验收\n清单与实际结果",
+      "height": 148,
+      "label": "人工验收清单与结果\nmanual-acceptance-checklist.json\nmanual-acceptance-checklist.result.json",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -1623,7 +1623,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：展开当前 Feature 的人工检查，保留准备清单与用户实际返回结果。\n项目位置：reports/manual-acceptance/<Feature-ID>/；仅 manual 验收按实际需要产生。\n结果绑定对应内容快照，完成证据引用原件；清单存在不代表用户已经接受。",
+      "note": "职责：展开当前 Feature 的人工检查，保留准备清单与用户实际返回结果。\n项目位置：reports/manual-acceptance/<Feature-ID>/；仅 manual 验收按实际需要产生。\n结果绑定对应内容快照，完成证据引用原件；清单存在不代表用户已经接受。\n\n项目文件： reports/manual-acceptance/**/*.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1644,7 +1644,7 @@
       "y": 2550,
       "width": 270,
       "height": 88,
-      "label": "自动测试\n原始报告",
+      "label": "自动测试原始报告\nresult.json · *.log · *.xml",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -1666,7 +1666,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保存真实 gdUnit 运行结果、日志及其原始报告。\n项目位置：reports/gdunit-wrapper/<Feature-ID>/run-<id>/ 或 focused/run-<id>/。\n由测试工具产生，完成证据记录真实运行入口；静态检查或补充测量不能伪装成 gdUnit 通过。",
+      "note": "职责：保存真实 gdUnit 运行结果、日志及其原始报告。\n项目位置：reports/gdunit-wrapper/<Feature-ID>/run-<id>/ 或 focused/run-<id>/。\n由测试工具产生，完成证据记录真实运行入口；静态检查或补充测量不能伪装成 gdUnit 通过。\n\n项目文件： reports/gdunit-wrapper/**/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1687,7 +1687,7 @@
       "y": 2910,
       "width": 270,
       "height": 88,
-      "label": "本地化\n规范",
+      "label": "本地化规范\nlocalization-spec.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1709,7 +1709,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：目标语言、表达和格式约定。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。",
+      "note": "职责：目标语言、表达和格式约定。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1730,7 +1730,7 @@
       "y": 2910,
       "width": 270,
       "height": 88,
-      "label": "未采纳\n想法",
+      "label": "未采纳想法\nunadopted-ideas.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -1752,7 +1752,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保留尚未采纳的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\n采用后链接相应 GDD、Product 或专业来源；保存想法不等于安排开发。",
+      "note": "职责：保留尚未采纳的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\n采用后链接相应 GDD、Product 或专业来源；保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1773,7 +1773,7 @@
       "y": 2910,
       "width": 270,
       "height": 88,
-      "label": "子系统说明\n按复杂度展开",
+      "label": "子系统说明\n<subsystem>.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -1795,7 +1795,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：复杂子系统的当前职责、接口、状态、协作与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；按需要创建，从架构总览进入。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。",
+      "note": "职责：复杂子系统的当前职责、接口、状态、协作与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；按需要创建，从架构总览进入。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n\n项目文件： docs/architecture/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1815,8 +1815,8 @@
       "x": 2180,
       "y": 2910,
       "width": 270,
-      "height": 88,
-      "label": "当前 Feature\n完成证据",
+      "height": 112,
+      "label": "当前 Feature 完成证据\nfeature-completion-evidence.json",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -1838,7 +1838,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录当前 Feature 的测试运行、适用人工验收及对应版本/内容快照。\n项目位置：docs/feature-completion-evidence.json；由现有记录工具按任务产生。\n引用测试、清单与返回结果原件；不是所有 Feature 的第二份状态表。历史执行事实通过 notes、Progress 归档及原证据保留。",
+      "note": "职责：记录当前 Feature 的测试运行、适用人工验收及对应版本/内容快照。\n项目位置：docs/feature-completion-evidence.json；由现有记录工具按任务产生。\n引用测试、清单与返回结果原件；不是所有 Feature 的第二份状态表。历史执行事实通过 notes、Progress 归档及原证据保留。\n\n项目文件： docs/feature-completion-evidence.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1859,7 +1859,7 @@
       "y": 2910,
       "width": 270,
       "height": 88,
-      "label": "任务报告\n测量、诊断与审核",
+      "label": "任务报告与临时输入\n*.md · *.json · *.log",
       "zIndex": 1,
       "fill": "#FFF7ED",
       "stroke": {
@@ -1881,7 +1881,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时输入按需放 reports/scratch/<task>/，临时目录名不代表允许删除。",
+      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时输入按需放 reports/scratch/<task>/，临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1902,7 +1902,7 @@
       "y": 3270,
       "width": 270,
       "height": 88,
-      "label": "外部调研\n来源与适用条件",
+      "label": "外部调研\n<topic>.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -1924,7 +1924,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：可留存的外部问题、来源、结论、建议和未知项。\n项目位置：docs/research/<topic>.md；初始只有目录说明。\n从相关 Feature 设计、notes 或 Progress 进入，数量增加后补主题导航；结论经采纳才写回要求所属正文。",
+      "note": "职责：可留存的外部问题、来源、结论、建议和未知项。\n项目位置：docs/research/<topic>.md；初始只有目录说明。\n从相关 Feature 设计、notes 或 Progress 进入，数量增加后补主题导航；结论经采纳才写回要求所属正文。\n\n项目文件： docs/research/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1945,7 +1945,7 @@
       "y": 3270,
       "width": 270,
       "height": 88,
-      "label": "ADR\n重要技术决定",
+      "label": "ADR 重要技术决定\nadr-NNNN-<slug>.md",
       "zIndex": 1,
       "fill": "#F1F5F9",
       "stroke": {
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：重要跨任务技术选择的问题、候选、决定、接受成本、证据和复核条件。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；满足现有阈值才创建。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。",
+      "note": "职责：重要跨任务技术选择的问题、候选、决定、接受成本、证据和复核条件。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；满足现有阈值才创建。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1988,7 +1988,7 @@
       "y": 3270,
       "width": 270,
       "height": 88,
-      "label": "项目 Progress\n当前停点与历史入口",
+      "label": "项目当前进度\nprogress.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -2010,7 +2010,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接台账。",
+      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接台账。\n\n项目文件： docs/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -2031,7 +2031,7 @@
       "y": 3270,
       "width": 270,
       "height": 88,
-      "label": "执行历史\n归档正文",
+      "label": "执行历史\n<key>.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -2053,7 +2053,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：完成 Feature 或获准批次的一份执行历史。\n项目位置：docs/progress/<key>.md；完成后按需归档，从当前 Progress 进入。\n保留当时决定、验证范围和证据链接；未解决事项继续留在当前 Progress。",
+      "note": "职责：完成 Feature 或获准批次的一份执行历史。\n项目位置：docs/progress/<key>.md；完成后按需归档，从当前 Progress 进入。\n保留当时决定、验证范围和证据链接；未解决事项继续留在当前 Progress。\n\n项目文件： docs/progress/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -2074,7 +2074,7 @@
       "y": 3630,
       "width": 270,
       "height": 88,
-      "label": "项目知识\n经验与适用条件",
+      "label": "项目知识\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -2096,7 +2096,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：可复用的实际经验、成功做法和失败教训。\n项目位置：docs/knowledge/，经总索引、主题索引进入单篇条目；初始只有导航。\n条目链接原始任务/证据，相关工作按需查阅；知识不替代当前需求、规则或真实验证。",
+      "note": "职责：可复用的实际经验、成功做法和失败教训。\n项目位置：docs/knowledge/，经总索引、主题索引进入单篇条目；初始只有导航。\n条目链接原始任务/证据，相关工作按需查阅；知识不替代当前需求、规则或真实验证。\n\n项目文件： docs/knowledge/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
