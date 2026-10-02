@@ -9,17 +9,29 @@ const Game = preload("res://examples/asset_workbench/single/example_reward_game.
 const WorkbenchScene = preload("res://examples/asset_workbench/single/example_workbench.tscn")
 const Result = preload("res://tools/asset_workbench/analysis_result.gd")
 const CUE_PATH: String = "res://examples/asset_workbench/single/example_feedback.tres"
-const FIXTURE_PATH: String = "res://tests/features/asset_workbench/test-cue.tres"
 
 var _session: Session
 var _cue: FeedbackCue
+var _fixture_path: String = ""
 
 
 func before_test() -> void:
+	_fixture_path = get_script().resource_path.get_base_dir().path_join(
+		"asset-workbench-cue-%d-%d.tres" % [OS.get_process_id(), Time.get_ticks_usec()])
 	_cue = ResourceLoader.load(CUE_PATH, "", ResourceLoader.CACHE_MODE_IGNORE) as FeedbackCue
-	assert_int(ResourceSaver.save(_cue.trial_copy(), FIXTURE_PATH)).is_equal(OK)
+	assert_bool(FileAccess.file_exists(_fixture_path)).is_false()
+	assert_int(ResourceSaver.save(_cue.trial_copy(), _fixture_path)).is_equal(OK)
 	_session = Session.new()
-	assert_str(_session.open(FIXTURE_PATH)).is_empty()
+	assert_str(_session.open(_fixture_path)).is_empty()
+
+
+func after_test() -> void:
+	_session = null
+	_cue = null
+	if FileAccess.file_exists(_fixture_path):
+		assert_int(DirAccess.remove_absolute(_fixture_path)).is_equal(OK)
+	assert_bool(FileAccess.file_exists(_fixture_path)).is_false()
+	_fixture_path = ""
 
 
 func test_trials_do_not_mutate_saved_or_other_alternative() -> void:
@@ -39,7 +51,7 @@ func test_save_is_reloaded_by_actual_game_consumer() -> void:
 	assert_str(_session.save_current()).is_empty()
 	assert_bool(_session.is_dirty()).is_false()
 	var game: Game = auto_free(Game.new())
-	game.cue_resource = load(FIXTURE_PATH) as FeedbackCue
+	game.cue_resource = load(_fixture_path) as FeedbackCue
 	add_child(game)
 	assert_float(game.cue.gain_db).is_equal(-21.0)
 	assert_float(game.cue.delay_seconds).is_equal(0.15)
@@ -50,22 +62,22 @@ func test_save_is_reloaded_by_actual_game_consumer() -> void:
 
 
 func test_external_edit_blocks_save_and_keeps_trial() -> void:
-	var edited := FileAccess.get_file_as_string(FIXTURE_PATH) + "\n; external editor change\n"
-	var file := FileAccess.open(FIXTURE_PATH, FileAccess.WRITE)
+	var edited := FileAccess.get_file_as_string(_fixture_path) + "\n; external editor change\n"
+	var file := FileAccess.open(_fixture_path, FileAccess.WRITE)
 	file.store_string(edited)
 	file.close()
 	_session.current().gain_db = -20.0
 	assert_str(_session.save_current()).contains("File changed on disk")
-	assert_str(FileAccess.get_file_as_string(FIXTURE_PATH)).is_equal(edited)
+	assert_str(FileAccess.get_file_as_string(_fixture_path)).is_equal(edited)
 	assert_float(_session.current().gain_db).is_equal(-20.0)
 	assert_bool(_session.is_dirty()).is_true()
 
 
 func test_invalid_trial_cannot_overwrite_file() -> void:
-	var original := FileAccess.get_file_as_string(FIXTURE_PATH)
+	var original := FileAccess.get_file_as_string(_fixture_path)
 	_session.current().gain_db = NAN
 	assert_str(_session.save_current()).is_not_empty()
-	assert_str(FileAccess.get_file_as_string(FIXTURE_PATH)).is_equal(original)
+	assert_str(FileAccess.get_file_as_string(_fixture_path)).is_equal(original)
 
 
 func test_documented_parameter_boundaries_are_accepted() -> void:

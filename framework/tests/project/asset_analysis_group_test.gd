@@ -134,18 +134,23 @@ func test_equal_comparison_identity_merges_cohorts_regardless_of_dictionary_orde
 
 func test_real_batch_and_cache_use_the_existing_queue() -> void:
 	assert_str(_batch.load_group(Group.read_json(EXAMPLE).data)).is_empty()
+	var expected_paths: Array[String] = []
+	for asset: Dictionary in _batch.group.assets:
+		expected_paths.append(asset.path)
+	assert_array(expected_paths).has_size(4)
 	_service.max_concurrent = 1
-	_batch.run(true)
-	await get_tree().process_frame
-	assert_int(_service.get("_running").size()).is_equal(1)
-	await _wait_for_batch()
-	assert_int(_batch.results.size()).is_equal(4)
-	for data: Dictionary in _batch.results.values():
-		assert_str(data.status).is_equal("success")
-	_batch.run()
-	await _wait_for_batch()
-	for data: Dictionary in _batch.results.values():
-		assert_bool(data.cache.hit).is_true()
+	for force: bool in [true, false]:
+		_batch.run(force)
+		if force:
+			await get_tree().process_frame
+			assert_int(_service.get("_running").size()).is_equal(1)
+		await _wait_for_batch()
+		assert_array(_batch.results.keys()).contains_exactly_in_any_order(expected_paths)
+		for path: String in expected_paths:
+			var data: Dictionary = _batch.results.get(path, {})
+			assert_str(data.get("status", "")).is_equal("success")
+			assert_str(Group.project_path(data.get("asset", {}).get("path", ""))).is_equal(path)
+			assert_bool(data.get("cache", {}).get("hit", false)).is_equal(not force)
 
 
 func test_batch_cancel_preserves_independent_single_asset_job() -> void:

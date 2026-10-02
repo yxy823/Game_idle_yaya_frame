@@ -68,32 +68,74 @@ func _check_particles() -> void:
 
 
 func _check_motion() -> void:
+	for kind: String in ["pulse", "tween", "clip", "combined"]:
+		await _check_motion_case(kind)
+
+
+func _check_motion_case(kind: String) -> void:
 	var viewport := _surface()
 	var presenter := Presenter.new()
 	presenter.size = Vector2(256, 256)
 	viewport.add_child(presenter)
-	var cue := FeedbackCue.new()
-	cue.texture = load("res://examples/asset_workbench/assets/example_star.png")
-	cue.tween_enabled = true
-	cue.animation_clip = load(EXAMPLES + "example_wobble_animation.tres")
+	var cue := _motion_cue(kind)
 	presenter.configure(cue)
+	presenter.set_process(false)
+	var player: AnimationPlayer = presenter.get("_motion").get("_player")
+	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 	var before := await _read_surface(viewport)
 	presenter.trigger()
-	await create_timer(0.2).timeout
+	_check(_advance_motion(presenter, 0.35) == cue.tween_enabled, kind + " Tween activity")
 	var moving := await _read_surface(viewport)
-	_save(moving, "motion-playing.png")
-	_check(moving.get_data() != before.get_data(), "Motion must change actual output")
+	_save(moving, "motion-" + kind + "-playing.png")
+	_check(presenter.get("_pulses").is_empty(), "Pulse must end before sampling " + kind)
+	_check(player.is_playing() == (cue.animation_clip != null), kind + " clip activity")
+	var changed := moving.get_data() != before.get_data()
+	_check(changed == (kind != "pulse"), kind + " pixel change must come from its motion")
 	presenter.stop()
 	var stopped := await _read_surface(viewport)
-	_check(stopped.get_data() == before.get_data(), "Motion stop must restore original output")
+	_check(stopped.get_data() == before.get_data(), kind + " stop must restore original output")
 	presenter.trigger()
-	await create_timer(1.2).timeout
+	var duration := maxf(cue.animation_seconds, cue.tween_seconds if cue.tween_enabled else 0.0)
+	if cue.animation_clip != null:
+		duration = maxf(duration, cue.animation_clip.length / cue.animation_speed)
+	_check(not _advance_motion(presenter, duration + 0.2), kind + " Tween must finish naturally")
 	var ended := await _read_surface(viewport)
-	_check(ended.get_data() == before.get_data(), "Natural motion end must restore original output")
-	_metrics["motion"] = {"restored_after_stop": stopped.get_data() == before.get_data(),
+	_check(presenter.active_effect_count() == 0, kind + " must finish naturally")
+	_check(ended.get_data() == before.get_data(), kind + " natural end must restore original output")
+	_metrics["motion_" + kind] = {"changed_after_pulse": changed,
+		"restored_after_stop": stopped.get_data() == before.get_data(),
 		"restored_after_end": ended.get_data() == before.get_data()}
 	viewport.queue_free()
 	await process_frame
+
+
+func _motion_cue(kind: String) -> FeedbackCue:
+	var cue := FeedbackCue.new()
+	cue.texture = load("res://examples/asset_workbench/assets/example_star.png")
+	# The controlled sample is after the pulse ends and before either motion finishes.
+	cue.animation_seconds = 0.15
+	cue.tween_enabled = kind in ["tween", "combined"]
+	cue.tween_seconds = 1.2
+	if kind in ["clip", "combined"]:
+		cue.animation_clip = load(EXAMPLES + "example_wobble_animation.tres")
+		cue.animation_speed = 0.5
+	return cue
+
+
+func _advance_motion(presenter: Presenter, delta: float) -> bool:
+	# Advance the real engines; render-frame delays cannot change the sampled time.
+	var motion: Node = presenter.get("_motion")
+	var tween: Tween = motion.get("_tween")
+	var tween_pending := false
+	if tween != null and tween.is_valid():
+		tween.pause()
+		tween.custom_step(delta)
+		# Godot 4.7.1 returns true even on the step that emits finished.
+		tween_pending = tween.get_loops_left() != 0
+	var player: AnimationPlayer = motion.get("_player")
+	player.advance(delta)
+	presenter.call("_process", delta)
+	return tween_pending
 
 
 func _capture_workbench() -> void:
