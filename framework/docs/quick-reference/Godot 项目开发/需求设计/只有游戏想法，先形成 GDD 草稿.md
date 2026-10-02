@@ -30,7 +30,7 @@
 
 **S3｜随讨论保存草稿并说明设计状态**
 
-本入口请求保存 `docs/gdd/` 中的草稿，可随有效决定更新正文。按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)建立固定子文档及入口引用，整体范围集中维护，局部限制留在所属主题；保留不受影响的结构并遵循项目文档语言。若用户限定只讨论，则只在对话中形成结论，并说明有用的已确认结论尚未保存。区分已采用决定、候选、明确暂缓事项和验证缺口，指出它们限制的下一步。
+本入口请求保存 `docs/gdd/` 中的草稿，可随有效决定更新正文。新 GDD 使用 `docs/gdd/README.md` 入口，其他主题按[标准文件名与职责](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)使用固定名称并按需创建；文件名不随正文语言变化。按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)建立 `design-scope-and-boundaries.md` 及入口引用，整体范围集中维护，局部限制留在所属主题。保留不受影响的既有结构，引用真实文件与章节，必要的迁移同步使用方。若用户限定只讨论，则只在对话中形成结论，并说明有用的已确认结论尚未保存。区分已采用决定、候选、明确暂缓事项和验证缺口，指出它们限制的下一步。
 
 草稿保存不结束尚未完成的共创。仍需用户决定的关键选择应继续进入讨论；用户明确要求先交一版草稿时，可以先交付可读草稿并列明假设与缺口。
 

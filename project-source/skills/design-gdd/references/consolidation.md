@@ -12,7 +12,7 @@ A small comparison in the conversation or affected topic is sufficient when need
 
 ## Consolidate without losing design
 
-Use [Design document structure](design-docs.md) for the output, including its fixed scope and open-questions contracts. Consolidate unresolved design conflicts into the existing open-questions document with their sources and effects, replacing duplicated question bodies with links. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated existing structure. A single-file GDD does not require another copy or conversion of all its topics.
+Use [Design document structure](design-docs.md) for the output and its standard naming contract. New GDD outputs and authorized standardization use the fixed names; preserve existing paths outside that scope and update affected file/heading references when moving content. Consolidate unresolved design conflicts into the existing open-questions document with their sources and effects, replacing duplicated question bodies with links. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated existing structure. A single-file GDD does not require another copy or conversion of all its topics merely for a local consolidation.
 
 Give each retained rule an owning location. Preserve its exceptions, assumptions, numeric meaning, decision state and useful evidence even when the surrounding wording is compressed. Resolve terminology that would otherwise change interpretation, using the existing terminology route where a durable domain definition is needed.
 

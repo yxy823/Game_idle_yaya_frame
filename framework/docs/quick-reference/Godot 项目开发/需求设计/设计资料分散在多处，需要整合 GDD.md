@@ -24,7 +24,7 @@
 
 **S2｜整合唯一正文**
 
-将可确定的内容放入所属 GDD 主题。涉及整体范围时按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)归到固定子文档，局部限制留在所属主题，其他位置通过导航和引用到达正文。保留不受影响的结构，不重排无关内容或预建空章节。保留原始输入资料，不能静默删除未采用材料或把候选改为确定规则。
+将可确定的内容放入所属 GDD 主题。新建整合结果或获准标准化时，按[标准文件名与职责](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)使用固定名称，入口为 `docs/gdd/README.md`；相同职责不另取名，迁移时同步实际文件与章节引用。涉及整体范围时按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)归入 `design-scope-and-boundaries.md`，局部限制留在所属主题，其他位置引用正文。保留范围外的既有结构，不重排无关内容或预建空章节。保留原始输入资料，不能静默删除未采用材料或把候选改为确定规则。
 
 按[开放问题规范](../../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)把尚未解决的设计冲突归入固定文件，保留来源、影响和所需决定，主题只保留必要上下文与引用。后续讨论和规划据此处理依赖；已解决项的结果写回所属主题并更新引用。
 

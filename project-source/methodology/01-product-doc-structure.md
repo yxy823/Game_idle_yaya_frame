@@ -6,7 +6,7 @@ Use `design-gdd` to develop a game idea into a GDD, or to deepen, revise or cons
 
 Delivery planning, implementation, engineering repairs and runnable experiments require a substantive game design document under `docs/gdd/`. Read its entry and the sections relevant to the task. An empty directory, directory-navigation README, template or pending-state notice is not a GDD. If it is absent, explain the missing design and the `design-gdd` route; stop dependent development rather than inventing gameplay or starting an unrequested design interview. Other specialist work applies the same prerequisite unless it is the early GDD design support described above. A status query may explain the current state without starting work.
 
-The GDD owns game positioning, intended player experience, core loops, system rules, states, numeric behavior, content progression and game-version design scope. Maintain its fixed [Design scope and boundaries](#design-scope-and-boundaries) and [Open questions](#open-design-questions) documents alongside the other useful design topics under `docs/gdd/`. The GDD entry links these sources; its filename is not prescribed. Preserve effective existing organization outside the affected scope, including a single file for other design topics; do not create empty chapters or duplicate bodies. The GDD need not settle every future detail, but the current delivery scope and design dependencies must be clear before dependent planning or implementation. Resolve an affecting design gap in its owning GDD topic and update its open question; do not invent the missing rule in Product or Feature text.
+The GDD owns game positioning, intended player experience, core loops, system rules, states, numeric behavior, content progression and game-version design scope. Use the [standard document names](#gdd-document-names) under `docs/gdd/`, including [Design scope and boundaries](#design-scope-and-boundaries) and [Open questions](#open-design-questions). The entry links the actual owning sources. Preserve existing organization outside an authorized restructuring scope; do not create empty chapters or duplicate bodies. The GDD need not settle every future detail, but the current delivery scope and design dependencies must be clear before dependent planning or implementation. Resolve an affecting design gap in its owning GDD topic and update its open question; do not invent the missing rule in Product or Feature text.
 
 The GDD is a normal maintained project source. Within the user's concrete authorization, `design-gdd` owns overall game design and cross-topic consistency; `design-balance` may directly maintain the scoped numerical model, formulas, parameters and calculation explanations at their owning GDD location. Ordinary specification values do not require numerical modeling. `product-author` owns delivery documents, not game-design authoring. The coordinating task handles affected Product/professional sources and existing Features through their owners without using a document author as a mandatory writing intermediary.
 
@@ -17,6 +17,24 @@ Professional documents refine the GDD into presentation, UI, art, audio, resourc
 The [logic/presentation responsibility model](00-overview.md#game-logic-presentation-and-delivery) does not turn the GDD into a logic-only document. For a shop purchase, the GDD owns purchase conditions, state effects and intended feedback; the shop UI and item-acquisition presentation refine how the player operates and perceives it. Product selects a coherent delivery across those sources. Keep detailed collaboration and state-owner implementation in architecture or the relevant Feature design, linking their actual paths when available.
 
 Before revising design or delivery scope, check the applicable GDD design boundaries below, engineering constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A design request does not silently amend an engineering rule. Resolve such conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance).
+
+## GDD document names
+
+New GDDs and authorized standardization use these fixed filenames for the matching responsibilities. They are reference targets, not interchangeable examples. Keep filenames unchanged across document languages; titles and prose follow `document_language`.
+
+| Filename under `docs/gdd/` | Owning responsibility |
+| --- | --- |
+| `README.md` | GDD entry: brief game introduction, covered scope and links to the actual design sources. |
+| `concept-and-experience.md` | Game concept, player context, intended experience and design principles. |
+| `gameplay.md` | Core loop, representative play, mechanics, states, system relationships and their numeric rules. |
+| `progression.md` | Content, teaching, challenge, unlocks, progression and pacing. |
+| `presentation.md` | Game-level interaction, understanding, visual/audio intent and feedback goals; link detailed UI and game-presentation specifications instead of duplicating them. |
+| `design-scope-and-boundaries.md` | Overall design scope, confirmed exclusions and version boundaries, under the contract below. |
+| `open-questions.md` | Current unresolved design choices and missing evidence, under the contract below. |
+
+Create topic bodies only when the actual design needs them; a fixed filename does not require empty files or a complete future game design. Keep the initial purpose notices and the scope document's first-write conditions. Keep a standard responsibility at its named location rather than choosing a synonym or creating a parallel copy. A complex system or numeric model may need a separate document: choose its descriptive filename when that scope is introduced, link its actual path from the owning standard topic and GDD entry, and reuse that name thereafter. The standard topic retains the useful overview and links instead of copying the extracted rules.
+
+Read the existing GDD entry before naming an output or drafting a consumer prompt. Reference the actual owning file and relevant heading; do not infer that a standard topic already has content. A local edit or review of an existing differently organized GDD does not itself authorize renaming it. When standardization or restructuring is authorized, move affected content to its owning location and update all affected references, including Product/Feature sources and professional documents; keep one body, not aliases or parallel copies. Preserve filenames and referenced headings while their meaning is unchanged. A necessary rename or move must carry its affected paths and anchors with it.
 
 ## Design scope and boundaries
 

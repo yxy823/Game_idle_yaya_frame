@@ -1,6 +1,6 @@
 # GDD design coverage
 
-Use this reference when drafting a full GDD, checking coverage or extending an existing design. These are design questions, not an interview checklist or a file-per-row template. The fixed **Design scope and boundaries** and **Open design questions** documents follow `methodology/01-product-doc-structure.md`; other topics may share a document, and a local revision needs only its affected topics and dependencies.
+Use this reference when drafting a full GDD, checking coverage or extending an existing design. These are design questions, not an interview checklist or a file-per-row template. Use **GDD document names** in `methodology/01-product-doc-structure.md` for the fixed filenames and owning topic groups, including **Design scope and boundaries** and **Open design questions**. Several rows may belong to one standard topic; a local revision needs only its affected topics and dependencies.
 
 ## Match depth to the requested result
 

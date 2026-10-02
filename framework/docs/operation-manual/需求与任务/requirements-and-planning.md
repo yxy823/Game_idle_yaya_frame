@@ -8,7 +8,7 @@ GDD 说明游戏设计，Product 组织交付范围，Feature 分配实现与验
 
 ## GDD 是项目开发的前提
 
-项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。实际保存新 GDD 时建立总览入口、固定的《设计范围与边界》及其他有内容的主题；修改已有设计时只整理受影响范围，不重组无关内容。
+项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。新 GDD 以 `docs/gdd/README.md` 为固定入口，通用主题使用[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先确定的名称；包括 `design-scope-and-boundaries.md`（设计范围与边界）和 `open-questions.md`（开放问题）。实际保存设计时按各文档的建立条件补充正文，不为填满目录预建空文件。相同职责沿用名称；修改已有设计时只整理受影响范围，需要调整路径或引用章节时同步实际使用方。
 
 `docs/gdd/open-questions.md` 是固定的《开放问题》文件，集中当前设计尚未确定的选择与证据缺口。条目链接相关主题，说明影响及需要什么才能解决；GDD 入口直接引用它。后续设计讨论据此继续问题，Product/Feature 规划判断哪些工作受阻，审核判断设计能否支撑下一步，相关调研或实验据此确定要取得的证据。具体读写和解决后处理见[开放问题规范](../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)。
 

@@ -4,13 +4,13 @@ Use this reference when creating a GDD entry or topic, revising organization or 
 
 ## Use a navigable structure
 
-For a new GDD, use a short entry with linked topic documents under `docs/gdd/`, including the fixed **Design scope and boundaries** and **Open design questions** documents defined in `methodology/01-product-doc-structure.md`. The entry introduces the game and reading path; topics hold the actual rules and decisions and link relevant open questions. Group related content where readers need it together. Create more levels only when real content warrants them.
+For a new GDD, use `docs/gdd/README.md` and the standard topic names defined by **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the filename-to-responsibility mapping and reference rules. The entry introduces the game and reading path; topics hold the actual rules and decisions and link relevant open questions. Group related content within its owning topic; create more levels only when real content warrants them.
 
-Preserve effective existing structure outside the affected scope, including a single file for other topics. Establishing the fixed scope subdocument follows its contract above; a local change does not require reorganizing unrelated design or saving a separate copy. Reorganization follows the actual request or a concrete navigation problem, within the existing authorization.
+Preserve existing structure outside an authorized restructuring scope, including an existing single-file GDD. Standardization uses the naming contract above and updates affected references; a local change does not require reorganizing unrelated design or saving a separate copy. Establishing the scope and open-questions documents follows their own creation contracts.
 
-Use the project's current naming convention and configured `document_language`. Do not impose numbered files, a fixed topic count, a version-number scheme or role/owner fields. Follow existing useful conventions when present.
+Use the configured `document_language` for titles and prose while keeping standard filenames unchanged. Do not add numeric prefixes, translated filename variants, a version-number scheme or role/owner fields. Specialized topics choose a stable descriptive name under the same naming contract.
 
-An illustrative structure is:
+The standard names are:
 
 ```text
 docs/gdd/
@@ -23,7 +23,7 @@ docs/gdd/
   open-questions.md
 ```
 
-The scope and open-questions documents have fixed paths; the other filenames illustrate a possible structure. A small initial draft may combine other design in one topic linked from the entry. A complex economy can have its own topic or subdirectory. Do not create empty topics or duplicate decision histories to match the example.
+These names are fixed for their stated responsibilities, not optional spellings. A small draft creates only the topic bodies it needs. A complex economy can have a specialized topic or subdirectory linked from its owning standard topic and the entry. Do not create empty topics or duplicate decision histories just to fill the list.
 
 ## Give each rule one owner
 

@@ -80,7 +80,7 @@
 
 `methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；可选 Feature 设计按解释需要省略不适用章节。
 
-新建 GDD 默认采用总览入口与主题文档，具体划分由 `design-gdd` 按范围确定，不为凑目录建立空文件。已有单文件或分层结构按实际需要维护，不强制迁移。数值正文放在所属主题或章节，不另建重复规格。Product 模板用于组织交付，不能替代 GDD。
+新建 GDD 使用 `docs/gdd/README.md` 入口及[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中指定的通用主题名称，`design-gdd` 按实际内容创建所需主题，不为凑目录建立空文件。已有单文件或分层结构的局部修改不强制整套迁移；获准标准化时同步受影响的文件与章节引用。数值正文放在所属主题或章节，不另建重复规格。Product 模板用于组织交付，不能替代 GDD。
 
 | 产物 | 位置与注意事项 |
 | --- | --- |

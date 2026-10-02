@@ -1,6 +1,6 @@
 # 游戏设计文档目录
 
-本目录保存持续维护的 GDD 设计正文，包括游戏定位、核心循环、系统规则、数值、体验与反馈目标、内容与版本范围。实际编写时由入口链接固定的《设计范围与边界》子文档 `design-scope-and-boundaries.md`，集中整体范围、排除项与版本边界；局部限制留在所属主题。其他主题按需要组织，局部修改不重组无关内容或另存副本，具体契约见[设计范围与边界](../../methodology/01-product-doc-structure.md#design-scope-and-boundaries)。
+本目录保存持续维护的 GDD 设计正文，包括游戏定位、核心循环、系统规则、数值、体验与反馈目标、内容与版本范围。`README.md` 是固定总览入口，通用主题按需建立并使用[标准文件名与职责](../../methodology/01-product-doc-structure.md#gdd-document-names)中指定的名称；相同职责沿用同一名称，不为填满目录预建空文件。实际编写时链接《设计范围与边界》子文档 `design-scope-and-boundaries.md`，集中整体范围、排除项与版本边界；局部限制留在所属主题，具体契约见[设计范围与边界](../../methodology/01-product-doc-structure.md#design-scope-and-boundaries)。局部修改不重组无关内容或另存副本，调整路径或被引用标题时同步实际使用方。
 
 [开放问题](open-questions.md)集中当前尚未解决的设计问题，说明相关主题、影响和所需决定或证据。后续讨论、规划、审核及相关实验按范围读取；解决后将决定写回所属主题并更新引用。具体职责见[开放问题规范](../../methodology/01-product-doc-structure.md#open-design-questions)。
 
