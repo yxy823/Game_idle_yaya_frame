@@ -34,16 +34,34 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 ## 本地修正
 
-本次仅修改 Kanban 的两个上游源码文件，包内版本仍保留 `2.1`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
+本地修改限定在下列 Kanban 与 Script-IDE 源码，包内版本分别保留 `2.1` 与 `2.2.5`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
 
 | 文件 | 原问题与本地处理 |
 | --- | --- |
 | [kanban_tasks/plugin.gd](../../../project-source/addons/kanban_tasks/plugin.gd) | 退出时 Help 菜单误写成再次释放 File 菜单，改为释放 `help_menu`；同时销毁该插件创建的 `PluginSingletons` 容器，使停用后不残留编辑上下文与快捷键节点 |
 | [kanban_tasks/view/edit_context.gd](../../../project-source/addons/kanban_tasks/view/edit_context.gd) | `UndoRedo` 是需显式释放的 Object；在编辑上下文销毁时释放，消除单独运行 Kanban 时的退出泄漏 |
+| [script-ide/plugin.gd](../../../project-source/addons/script-ide/plugin.gd) | 关闭分屏时只移除容器会遗留离树节点；移除后同时 `queue_free()`，释放容器及其 CodeEdit |
+| [script-ide/split/split_code_edit.gd](../../../project-source/addons/script-ide/split/split_code_edit.gd) | 分屏和原编辑器共用高亮器会覆盖它所属的 TextEdit，分屏释放后可导致原编辑器访问失效对象；只读分屏保存独立的逐行高亮快照，保持打开时的显示结果，并使两边各自拥有高亮器 |
 
-其余四个插件源码保持固定提交的原文，仅补齐前述两个许可证文件。Kanban 的五个图标/文档 SVG 与 Signal Lens 的两个 PNG 所附 `.import` 文件采用外部 Godot 4.7.1 重导入后的设置，增加引擎默认的压缩与通道映射字段；不带入 `.godot` 缓存或用户偏好。没有给资源表格插件应用未经证实的退出修正。
+Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提交的原文，仅补齐前述两个许可证文件。Kanban 的五个图标/文档 SVG 与 Signal Lens 的两个 PNG 所附 `.import` 文件采用外部 Godot 4.7.1 重导入后的设置，增加引擎默认的压缩与通道映射字段；不带入 `.godot` 缓存或用户偏好。没有给资源表格插件应用未经证实的退出修正。
 
 ## Godot 验证
+
+### 2026-10-03 分屏与目标生命周期
+
+在新建外部项目 `D:/A_Games/Game_idle_yaya_frame_audit_validation_20261003`、Windows、Godot `4.7.1.stable.official.a13da4feb` 上验证。以下日志和 JSON 原件保存在该项目的 `reports/plugin-lifecycle-20261003/`；本轮结束后恢复默认插件列表并停用临时探针。
+
+| 检查范围 | 实际结果与证据 |
+| --- | --- |
+| Script-IDE 分屏 | `script-ide-complete-headless` 与 `script-ide-complete-graphical` 的 `.log`、`.json` 各有 28 项断言通过，退出码均为 `0`；后者使用 OpenGL Compatibility。覆盖三轮开关、容器和 CodeEdit 实际释放、高亮器各自归属、逐行高亮一致、折叠后搜索及关闭后原编辑器高亮更新 |
+| 分屏释放负向对照 | `script-ide-no-release-negative.log`、`.json` 恢复原来的只移除行为，六项释放断言失败，退出码为 `1`；探针保留离树节点引用，因此不会把“树上已找不到”误当成释放 |
+| Signal Lens 销毁后切换 | `signal-lens-final-queued` 与 `signal-lens-final-immediate` 的 `.log`、`.json` 分别覆盖 `queue_free()` 和 `free()`，各 14 项断言通过，退出码均为 `0`；验证 A 销毁后选择 B、B 发出信号、活目标 B 切换 C 时解绑，以及清理。使用上游原源码，失效目标与 `null` 的比较成立 |
+
+Script-IDE 两种模式的最终日志均未出现脚本错误、泄漏或退出崩溃。此前 `script-ide-final-graphical.log` 曾记录 `gdscript-linter/dock.tscn` 的 `settings.svg` UID 回退警告，最终图形回归未再出现。项目及显式维护探针的 `lint-final.json` 返回 `2`，含 1 Critical、5 Warning、128 Info；`lint-baseline-probe-verified.json` 使用原编辑器探针时含 2 Critical、4 Warning。现存全插件探针长函数仍未消除，复杂度由 18 降为 15；四条输出警告来自两份探针的结果打印。这些诊断保留在报告中，不能把本轮 lint 写成全通过。
+
+Signal Lens 的空值比较结果与 [Godot 4.7.1 的 `OperatorEvaluatorNotEqualObjectNil`](https://github.com/godotengine/godot/blob/4.7.1-stable/core/variant/variant_op.h#L496-L501) 一致：先获取仍有效的对象，再与空指针比较。本轮使用本地调试器验证目标与连接生命周期，未验证远程面板收包或人工交互。分屏的自动化图形检查也不替代人工观感验收；下述旧组合问题仍未关闭。
+
+### 2026-09-27 五插件组合
 
 2026-09-27 在 Windows、Godot `4.7.1.stable.official.a13da4feb` 上验证。外部项目为 `D:/A_Games/Game_idle_yaya_frame_plugins_test`，由创建器生成；引擎不在分发源目录启动。使用隔离的编辑器配置，图形运行采用 OpenGL Compatibility。原始日志保存在外部项目 `reports/editor-plugins-20260927/`，功能断言保存在 `reports/editor-plugin-lifecycle.json`。
 
@@ -58,7 +76,7 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 上述进程退出码均为 `0`，但错误日志已单独保留，退出码不代表全部检查通过。Inspector Tabs 首次缺少可选偏好文件时会普通打印 `ERROR LOADING SETTINGS FILE`，随后使用默认设置；这与引擎的 `ERROR:`、`SCRIPT ERROR:` 诊断不同。
 
-尚未做人工视觉与交互验收，包括 Script-IDE 分屏/搜索、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程信号图。Signal Lens 本次只验证注册与启停，未验证运行中信号的远程捕获；这些范围不能沿用功能探针的通过结论。
+尚未做人工视觉与交互验收，包括 Script-IDE 分屏/搜索、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程信号图。该次 Signal Lens 只验证注册与启停，未验证运行中信号的远程捕获；这些范围不能沿用功能探针的通过结论。
 
 ### 复用功能夹具
 
@@ -74,6 +92,17 @@ script="plugin.gd"
 ```
 
 夹具会切换五个插件、打开脚本和检查器、写入 `tests/editor_plugin_probe_data/` 下的临时看板与 Gradient 资源，并生成上述 JSON 报告后退出。结束时停用资源表格与 Signal Lens；还应在外部项目停用夹具，并恢复分发模板的默认插件列表。不要在有用户工作内容的项目直接运行。复核时同时读取报告、进程退出码和引擎日志。
+
+只回归 Script-IDE 分屏时，临时启用 Script-IDE 与该探针，启动编辑器时在 `--` 后传 `--script-ide-split-only`。该模式不切换其他插件，报告的 `scope` 为 `script-ide-split`；报告仍写入 `reports/editor-plugin-lifecycle.json`，重复运行前保留需要的旧原件。
+
+[signal_lens_target_lifecycle_probe.gd](../../tests/external-project/plugins/signal_lens_target_lifecycle_probe.gd) 复制到外部项目的 `tests/contracts/`，在 Signal Lens 插件停用、没有现成 `SignalLens` Autoload 时运行：
+
+```powershell
+& $validationGodot --headless --debug --path . --script res://tests/contracts/signal_lens_target_lifecycle_probe.gd | Out-Host
+$LASTEXITCODE
+```
+
+`$validationGodot` 取自该项目已确认的 Godot 配置。`--debug` 提供 Autoload 发送消息所需的本地调试器；在命令末尾加 `-- --free-immediately` 验证立即释放，否则验证延迟释放。探针在内存中创建目标，使用观察子类记录真实回调并调用上游实现，清理节点及调试捕获注册后退出；报告固定为 `reports/signal-lens-target-lifecycle.json`。两次运行分别保存 JSON、日志和退出码，不把本地调试器结果当作远程 UI 验收。
 
 ## 升级时核对
 

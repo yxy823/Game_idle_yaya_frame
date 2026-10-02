@@ -13,7 +13,9 @@ static func new_from(from_code_edit: CodeEdit) -> CodeEdit:
 	var new_code_edit: CodeEdit = new()
 
 	new_code_edit.text = from_code_edit.text
-	new_code_edit.syntax_highlighter = from_code_edit.syntax_highlighter
+	# This read-only text snapshot needs its own highlighter, without the source TextEdit's lifetime.
+	if from_code_edit.syntax_highlighter != null:
+		new_code_edit.syntax_highlighter = SplitSyntaxHighlighter.new(from_code_edit)
 	new_code_edit.highlight_all_occurrences = from_code_edit.highlight_all_occurrences
 	new_code_edit.highlight_current_line = from_code_edit.highlight_current_line
 
@@ -45,3 +47,14 @@ static func new_from(from_code_edit: CodeEdit) -> CodeEdit:
 	new_code_edit.last_v_scroll = from_code_edit.scroll_vertical
 
 	return new_code_edit
+
+
+class SplitSyntaxHighlighter extends SyntaxHighlighter:
+	var line_highlighting: Array[Dictionary] = []
+
+	func _init(source: CodeEdit) -> void:
+		for line in range(source.get_line_count()):
+			line_highlighting.append(source.syntax_highlighter.get_line_syntax_highlighting(line).duplicate(true))
+
+	func _get_line_syntax_highlighting(line: int) -> Dictionary:
+		return line_highlighting[line]

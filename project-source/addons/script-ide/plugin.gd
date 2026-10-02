@@ -572,7 +572,9 @@ func toggle_split_view():
 		tab_splitter.add_child(container)
 	else:
 		multiline_tab_bar.set_split(false)
-		tab_splitter.remove_child(tab_splitter.get_child(tab_splitter.get_child_count() - 1))
+		var container: Node = tab_splitter.get_child(tab_splitter.get_child_count() - 1)
+		tab_splitter.remove_child(container)
+		container.queue_free()
 
 		if (split_script_editor_base == null):
 			multiline_tab_bar.set_split_disabled(true)

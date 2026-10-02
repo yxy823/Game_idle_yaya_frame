@@ -19,6 +19,10 @@ func _enter_tree() -> void:
 
 func _run() -> void:
 	await _settle()
+	if OS.get_cmdline_user_args().has("--script-ide-split-only"):
+		await _run_split_only()
+		_finish("script-ide-split")
+		return
 	for addon in PLUGINS:
 		if not EditorInterface.is_plugin_enabled(addon):
 			EditorInterface.set_plugin_enabled(addon, true)
@@ -34,6 +38,7 @@ func _run() -> void:
 	var ide := _instances("script-ide")
 	if ide.size() == 1:
 		_record("Script-IDE tabs created", is_instance_valid(ide[0].get("multiline_tab_bar")))
+		await _check_split_lifecycle(ide[0])
 	var inspector := _instances("inspector_tabs")
 	if inspector.size() == 1:
 		_record("Inspector Tabs inspector registered", inspector[0].get("plugin") != null)
@@ -87,15 +92,86 @@ func _run() -> void:
 	EditorInterface.set_plugin_enabled("signal_lens", false)
 	EditorInterface.set_plugin_enabled("resources_spreadsheet_view", false)
 	await _settle()
+	_finish("all-plugins")
+
+
+func _run_split_only() -> void:
+	if not EditorInterface.is_plugin_enabled("script-ide"):
+		EditorInterface.set_plugin_enabled("script-ide", true)
+		await _settle()
+	EditorInterface.edit_script(load("res://addons/script-ide/split/split_code_edit.gd"))
+	await _settle()
+	var instances := _instances("script-ide")
+	_record("Script-IDE enabled once", instances.size() == 1)
+	if instances.size() == 1:
+		await _check_split_lifecycle(instances[0])
+
+
+func _finish(scope: String) -> void:
 	var passed := true
 	for check in checks:
 		passed = passed and check.passed
 	DirAccess.make_dir_recursive_absolute(REPORT.get_base_dir())
 	var file := FileAccess.open(REPORT, FileAccess.WRITE)
-	file.store_string(JSON.stringify({"godot": Engine.get_version_info().string, "checks": checks}, "\t") + "\n")
+	file.store_string(JSON.stringify({"godot": Engine.get_version_info().string,
+		"scope": scope, "checks": checks}, "\t") + "\n")
 	file.close()
 	print("EDITOR_PLUGIN_PROBE ", "PASS" if passed else "FAIL", ": ", checks.size(), " checks")
 	get_tree().quit(0 if passed else 1)
+
+
+func _check_split_lifecycle(ide: Node) -> void:
+	var tabs: Object = ide.get("multiline_tab_bar")
+	var splitter: Node = ide.get("tab_splitter")
+	if tabs.is_split():
+		ide.call("toggle_split_view")
+		await _settle()
+	var original_children := splitter.get_child_count()
+	var original: CodeEdit = EditorInterface.get_script_editor().get_current_editor().get_base_editor()
+	for cycle in range(3):
+		ide.call("toggle_split_view")
+		await _settle()
+		var opened: bool = tabs.is_split() and splitter.get_child_count() == original_children + 1
+		_record("Script-IDE split opened cycle %d" % cycle, opened)
+		if not opened:
+			return
+		# Keep identities even after removal: searching the tree would miss leaked orphans.
+		var container: Node = splitter.get_child(-1)
+		var code_edit: CodeEdit = container.get_child(0)
+		_check_highlighter_ownership(original, code_edit, cycle)
+		ide.call("toggle_split_view")
+		await _settle()
+		_record("Script-IDE split container freed cycle %d" % cycle, not is_instance_valid(container))
+		_record("Script-IDE split CodeEdit freed cycle %d" % cycle, not is_instance_valid(code_edit))
+		_record("Script-IDE original editor preserved cycle %d" % cycle,
+			splitter.get_child_count() == original_children and not tabs.is_split())
+		original.syntax_highlighter.update_cache()
+		_record("Script-IDE original highlighting survives close cycle %d" % cycle,
+			not original.syntax_highlighter.get_line_syntax_highlighting(1).is_empty())
+		# Allow negative runs against old versions to finish without probe-owned leaks.
+		if is_instance_valid(container):
+			container.queue_free()
+			await _settle()
+
+
+func _check_highlighter_ownership(original: CodeEdit, split: CodeEdit, cycle: int) -> void:
+	var original_highlighter := original.syntax_highlighter
+	var split_highlighter := split.syntax_highlighter
+	_record("Script-IDE independent highlighters cycle %d" % cycle,
+		original_highlighter != split_highlighter)
+	_record("Script-IDE highlighters retain their editor cycle %d" % cycle,
+		original_highlighter.get_text_edit() == original and split_highlighter.get_text_edit() == split)
+	split.fold_all_lines()
+	split.unfold_all_lines()
+	_record("Script-IDE snapshot search survives folding cycle %d" % cycle,
+		not split.editable and split.search("extends", 0, 0, 0) == original.search("extends", 0, 0, 0))
+	original_highlighter.update_cache()
+	split_highlighter.update_cache()
+	var matching := true
+	for line in range(original.get_line_count()):
+		matching = matching and original_highlighter.get_line_syntax_highlighting(line) == \
+			split_highlighter.get_line_syntax_highlighting(line)
+	_record("Script-IDE split highlighting matches source cycle %d" % cycle, matching)
 
 
 func _instances(addon: String) -> Array[Node]:
