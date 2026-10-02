@@ -143,11 +143,29 @@ class ExecutionRecoveryTests(unittest.TestCase):
         attempt = start_run(self.root, directory, "F001", "final", "auto")
         _, full = make_run(self.root)
         for fields in ({"command": [sys.executable]}, {"selectors": ["tests/unit"]},
-                       {"process": {"returncode": 0}}, {"status": "unknown"}):
+                       {"process": {"returncode": 0}}):
             with self.subTest(fields=fields):
                 self.write_json("reports/gdunit-wrapper/F001/run-invalid-auto/result.json", {**attempt, **fields})
                 with self.assertRaisesRegex(ValueError, "invalid auto preparation"):
                     self.derive(plan, full)
+
+    def test_history_filter_fields_must_be_valid_before_ignoring_a_failed_run(self):
+        plan, passed = make_run(self.root)
+        _, failed = make_run(self.root, exit_code=7)
+        history = json.loads(failed.read_text())
+        payloads = [{key: value for key, value in history.items() if key != missing}
+                    for missing in ("phase", "status", "scope", "snapshot", "selectors")]
+        for field in ("phase", "status", "scope", "selectors"):
+            payloads.extend({**history, field: value} for value in (None, {}, "unknown"))
+        payloads.extend({**history, "snapshot": value} for value in (
+            None, {}, [], "unknown", {"working_tree_fingerprint": None},
+            {"working_tree_fingerprint": ""}, {"working_tree_fingerprint": "sha256:damaged"}))
+        for record in payloads:
+            with self.subTest(record=record):
+                failed.write_text(json.dumps(record), encoding="utf-8")
+                with self.assertRaisesRegex(ValueError, "invalid run history") as failure:
+                    self.derive(plan, passed)
+                self.assertIn(str(failed), str(failure.exception))
 
     def test_invalid_history_warns_without_blocking_launch_or_hiding_current_failure(self):
         self.write("tools/testing/gdunit_evidence_runner.gd", "extends SceneTree\n")
@@ -250,6 +268,19 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.assertIsNone(result["snapshot"])
         self.assertEqual(result["errors"], ["snapshot unavailable"])
         self.assertEqual(json.loads((directory / "result.json").read_text()), result)
+
+    def test_explicit_null_snapshot_preparation_failure_is_valid_history(self):
+        directory = self.root / "reports/gdunit-wrapper/F001/run-snapshot-error"
+        with mock.patch("tools.lib.test_run_evidence.current_snapshot",
+                        side_effect=EvidenceError("snapshot unavailable")):
+            failed = start_run(self.root, directory, "F001", "final", "auto")
+        original = (directory / "result.json").read_bytes()
+        with redirect_stderr(io.StringIO()) as warnings:
+            plan, passed = make_run(self.root)
+        self.assertEqual(warnings.getvalue(), "")
+        self.assertEqual(json.loads(passed.read_text())["sequence"], failed["sequence"] + 1)
+        self.derive(plan, passed)
+        self.assertEqual((directory / "result.json").read_bytes(), original)
 
     def test_snapshot_error_stops_runner_before_launch(self):
         spec = importlib.util.spec_from_file_location("snapshot_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")

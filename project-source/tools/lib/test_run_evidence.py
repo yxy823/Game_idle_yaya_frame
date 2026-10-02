@@ -277,6 +277,38 @@ def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[s
                 raise RunEvidenceError("run Feature does not match its history directory")
             if type(record.get("sequence")) is not int or record["sequence"] < 1:
                 raise RunEvidenceError("run sequence must be a positive integer")
+            # Validate every field used to classify history before filtering out
+            # baseline, passed or older-snapshot runs. Missing metadata is not
+            # evidence that a failed attempt belongs to some other verification.
+            if record.get("phase") not in ("baseline", "final"):
+                raise RunEvidenceError("run phase must be baseline or final")
+            if record.get("status") not in ("running", "failed", "passed"):
+                raise RunEvidenceError("run status must be running, failed or passed")
+            if record.get("scope") not in ("auto", "required", "affected", "full"):
+                raise RunEvidenceError("run scope must be auto, required, affected or full")
+            if (not isinstance(record.get("selectors"), list)
+                    or any(not isinstance(item, str) or not item for item in record["selectors"])):
+                raise RunEvidenceError("run selectors must be a list of nonempty paths")
+            preparation = (record.get("command") == [] and record["selectors"] == []
+                           and record.get("process", {}) is None)
+            if feature_id is not None and record["scope"] == "auto":
+                if record["status"] == "passed" or not preparation:
+                    raise RunEvidenceError("invalid auto preparation record: " + record["run_id"])
+            if "snapshot" not in record:
+                raise RunEvidenceError("run snapshot is missing")
+            snapshot = record["snapshot"]
+            if snapshot is None:
+                # start_run can fail to obtain a snapshot before any execution.
+                # Keep that explicit failure distinct from damaged history.
+                if feature_id is not None and not (
+                        record["status"] == "failed" and preparation
+                        and isinstance(record.get("errors"), list) and record["errors"]
+                        and all(isinstance(error, str) and error for error in record["errors"])):
+                    raise RunEvidenceError("null run snapshot requires a failed preparation")
+            elif (not isinstance(snapshot, dict)
+                  or not isinstance(snapshot.get("working_tree_fingerprint"), str)
+                  or not re.fullmatch(r"sha256:[0-9a-f]{64}", snapshot["working_tree_fingerprint"])):
+                raise RunEvidenceError("run snapshot has no valid working tree fingerprint")
             records.append(record)
         except (ValueError, OSError) as error:
             errors.append(f"invalid run history {path}: {error}")
@@ -420,10 +452,6 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
         if scope == "auto":
             # Before selection, auto is a request rather than an executed scope.
             # The same semantic snapshot lets current obligations resolve it.
-            if (record.get("status") not in {"failed", "running"}
-                    or record.get("command") != [] or record.get("selectors") != []
-                    or record.get("process", {}) is not None):
-                raise RunEvidenceError("invalid auto preparation record: " + record["run_id"])
             scope = "full" if selection["full_suite"]["required"] else "affected"
         if not any(run["sequence"] > record["sequence"]
                    and rank[run["scope"]] >= rank.get(scope, 3)

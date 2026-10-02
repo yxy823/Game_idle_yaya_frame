@@ -305,7 +305,9 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertEqual(initial, verification_snapshot.current_snapshot(self.root)["working_tree_fingerprint"])
 
     def test_counts_cannot_authorize_completion(self) -> None:
-        data = feature_completion_evidence.empty_evidence("F001", verification_snapshot.current_snapshot(self.root))
+        data = self.completion_fixture()
+        self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+        data["test_runs"] = []
         for key in ("required_test_set", "affected_tests"):
             data[key] = dict(status="pass", total=0, failed=0, git_revision=data["git_revision"],
                 working_tree_fingerprint=data["working_tree_fingerprint"])
@@ -314,7 +316,9 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data["human_acceptance"]["status"] = "accepted"
         data["gate_status"] = "pass"
         write_json(self.root / "docs/feature-completion-evidence.json", data)
-        self.assertFalse(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+        valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
+        self.assertFalse(valid)
+        self.assertIn("test run evidence is invalid: no real test run result was supplied", message)
 
     def test_selection_derives_required_and_removes_overlapping_targets(self) -> None:
         from tools.lib.test_selection import build_selection
@@ -414,13 +418,57 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
                 with self.assertRaises(RunEvidenceError):
                     derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
-    def test_artifacts_must_stay_current_and_within_the_originating_run(self) -> None:
+    def test_source_declared_method_cannot_vanish_from_both_discovery_and_junit(self) -> None:
+        from tools.lib.test_run_evidence import RunEvidenceError, artifact_reference, derive_test_evidence, result_reference
+        self.write("tests/unit/example.gd", "extends GdUnitTestSuite\n"
+                   "func test_kept():\n\tpass\nfunc test_lost():\n\tpass\n")
+        _, path = self.run_fixture()
+        self.assertEqual(derive_test_evidence(self.root, "F001",
+                         [result_reference(self.root, path)])["required_test_set"]["total"], 3)
+        result = json.loads(path.read_text())
+        discovery = path.parent / "discovery.json"
+        # Hand-authored report identities intentionally omit a real source method
+        # from both inventories, while preserving every selected suite and AC.
+        discovery.write_text(json.dumps({"schema_version": 1, "run_id": path.parent.name,
+            "engine_pid": 123, "cases": [
+                {"id": "tests/unit/example.gd::test_kept", "path": "tests/unit/example.gd",
+                 "case": "test_kept", "method": "test_kept"},
+                {"id": "tests/features/acceptance.gd::test_acceptance", "path": "tests/features/acceptance.gd",
+                 "case": "test_acceptance", "method": "test_acceptance"}]}), encoding="utf-8")
+        junit = path.parent / "report_1/results.xml"
+        junit.write_text('<testsuites tests="2" failures="0" skipped="0" flaky="0">'
+            '<testsuite name="example" package="tests/unit" tests="1" errors="0" failures="0" skipped="0">'
+            '<testcase name="test_kept"/></testsuite>'
+            '<testsuite name="acceptance" package="tests/features" tests="1" errors="0" failures="0" skipped="0">'
+            '<testcase name="test_acceptance"/></testsuite></testsuites>', encoding="utf-8")
+        for name, artifact in (("discovery", discovery), ("junit", junit)):
+            result["artifacts"][name] = artifact_reference(path.parent, artifact)
+        path.write_text(json.dumps(result), encoding="utf-8")
+        with self.assertRaisesRegex(RunEvidenceError,
+                                   "required test/suite was not discovered: tests/unit/example.gd::test_lost"):
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
+
+    def test_artifacts_must_stay_current(self) -> None:
         from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         plan, path = self.run_fixture()
         reference = result_reference(self.root, path)
         (path.parent / "report_1/results.xml").write_text("<testsuites/>", encoding="utf-8")
         with self.assertRaisesRegex(RunEvidenceError, "changed after"):
             derive_test_evidence(self.root, "F001", [reference])
+
+    def test_unchanged_artifact_outside_its_originating_run_is_rejected(self) -> None:
+        from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, file_hash, result_reference
+        _, path = self.run_fixture()
+        self.assertEqual(derive_test_evidence(self.root, "F001",
+                         [result_reference(self.root, path)])["full_suite"]["status"], "pass")
+        result = json.loads(path.read_text())
+        original = path.parent / result["artifacts"]["engine_log"]["path"]
+        outside = self.write("reports/shared-engine.log", original.read_text(encoding="utf-8"))
+        self.assertEqual(file_hash(outside), result["artifacts"]["engine_log"]["sha256"])
+        result["artifacts"]["engine_log"]["path"] = Path(os.path.relpath(outside, path.parent)).as_posix()
+        path.write_text(json.dumps(result), encoding="utf-8")
+        with self.assertRaisesRegex(RunEvidenceError, "artifact missing or outside its run directory"):
+            derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
 
     def test_low_precision_artifact_times_do_not_reject_current_session(self) -> None:
         from tools.lib.test_run_evidence import derive_test_evidence, result_reference
@@ -464,12 +512,22 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(SelectionError, "automated coverage"):
             build_selection(self.root, "F001")
 
-    def test_manual_criterion_does_not_allow_a_retired_direct_automated_mapping(self) -> None:
+    def test_retired_direct_mapping_is_rejected_in_automated_and_manual_modes(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
-        self.registry["tests"][0]["status"] = "retired"
-        self.write_json("docs/test-registry.json", self.registry)
-        with self.assertRaisesRegex(SelectionError, "retired"):
-            build_selection(self.root, "F001")
+        for mode in ("automated", "manual"):
+            with self.subTest(mode=mode):
+                self.detail["verification"]["acceptance_mode"] = mode
+                self.detail["acceptance_criteria"][0]["verification"]["manual_checks"] = (
+                    ["Listen to the approved sound"] if mode == "manual" else [])
+                self.write_json("docs/features/F001.json", self.detail)
+                self.registry["tests"][0]["status"] = "active"
+                self.write_json("docs/test-registry.json", self.registry)
+                self.assertIn("F001-AC01", [test_id for item in build_selection(self.root, "F001")["required"]
+                                           for test_id in item["logical_ids"]])
+                self.registry["tests"][0]["status"] = "retired"
+                self.write_json("docs/test-registry.json", self.registry)
+                with self.assertRaisesRegex(SelectionError, "retired"):
+                    build_selection(self.root, "F001")
 
     def test_baseline_planned_tests_are_excluded_but_never_final_evidence(self) -> None:
         from tools.lib.test_selection import SelectionError, build_selection
