@@ -5,6 +5,7 @@
 Windows 11 / Linux / macOS 均可运行。
 脚本只回答“有没有被提到、被谁提到”，不判断那句话是否真的要求读取或写入该文档；
 这一步留给人或模型，只需要看被分到 NONE / NAV_ONLY / HISTORY_ONLY 的少数文档。
+默认不检查导航文件自身，但仍搜索其中的引用；可用 --targets 显式选中导航文件。
 
 引用类别（按优先级归类，一个引用方文件只属于一类）：
   self     目标文档自己
@@ -96,13 +97,13 @@ def main() -> int:
                                  epilog=__doc__)
     ap.add_argument("--root", type=Path, default=Path.cwd(), help="仓库根目录，默认当前目录")
     ap.add_argument("--targets", nargs="+", default=None,
-                    help="要检查的文档：文件名、相对路径或通配；默认根目录下所有 .md")
+                    help="要检查的文档：文件名、相对路径或通配；默认所有非导航 .md，显式指定可选中导航文件")
     ap.add_argument("--search-in", nargs="+", default=None,
                     help="只在这些路径/通配内找引用；默认整个根目录的文本文件")
     ap.add_argument("--exclude", nargs="*", default=None,
                     help=f"排除的路径/通配（替换默认值 {DEFAULT_EXCLUDE}）")
     ap.add_argument("--nav", nargs="*", default=None,
-                    help=f"只做导航的文件（替换默认值 {DEFAULT_NAV}）")
+                    help=f"导航文件：默认不作检查目标，仍作引用来源（替换默认值 {DEFAULT_NAV}）")
     ap.add_argument("--history", nargs="*", default=None,
                     help=f"历史材料（替换默认值 {DEFAULT_HISTORY}）")
     ap.add_argument("--max-refs", type=int, default=8, help="每个文档最多显示的引用数")
@@ -132,7 +133,8 @@ def main() -> int:
         base_count[b] = base_count.get(b, 0) + 1
 
     if args.targets is None:
-        targets = [f for f in all_files if Path(f).suffix.lower() in DEFAULT_TARGET_EXT]
+        targets = [f for f in all_files
+                   if Path(f).suffix.lower() in DEFAULT_TARGET_EXT and not matches(f, nav)]
     else:
         targets = [f for f in all_files if matches(f, args.targets)]
     if not targets:

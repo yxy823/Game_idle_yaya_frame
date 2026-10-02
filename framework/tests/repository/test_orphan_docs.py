@@ -70,6 +70,21 @@ class OrphanDocsTests(unittest.TestCase):
         self.assertEqual(rows["second/shared.md"]["verdict"], "NONE")
         self.assertEqual(rows["docs/unique.md"]["refs"][0]["kind"], "name")
 
+    def test_default_targets_skip_navigation_but_keep_its_references(self):
+        navigation = ("README.md", "docs/readme.MD", "docs/index.md",
+                      "docs/scenario-index.md")
+        self.write("docs/guide.md", "# Guide")
+        for path in navigation:
+            self.write(path, "Read docs/guide.md")
+        rows = self.results()
+        self.assertEqual(set(rows), {"docs/guide.md"})
+        self.assertEqual(rows["docs/guide.md"]["verdict"], "NAV_ONLY")
+        self.assertEqual({ref["file"] for ref in rows["docs/guide.md"]["refs"]},
+                         set(navigation))
+        self.assertEqual(set(self.results("--targets", "README.md")),
+                         {"README.md", "docs/readme.MD"})
+        self.assertIn("docs/guide.md", self.results("--nav", "guide.md", "--targets", "docs/guide.md"))
+
     def test_optional_report_and_failure_exit_preserve_scanned_files(self):
         self.write("docs/unreferenced.md", "# Unreferenced")
         self.write("docs/navigation.md", "# Navigation")
