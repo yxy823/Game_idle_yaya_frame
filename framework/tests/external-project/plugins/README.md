@@ -1,6 +1,6 @@
 # 编辑器插件验证夹具
 
-[插件版本记录](../../../docs/framework-maintenance/editor-plugin-versions.md) · [验证范围](../../../docs/framework-maintenance/validating-framework.md)
+[插件版本记录](../../../maintenance/dependencies/editor-plugin-versions.md) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
 [editor_plugin_lifecycle_probe.gd](editor_plugin_lifecycle_probe.gd) 只供已指定的外部验证项目临时使用，不进入项目复制清单。将它复制为外部项目的 `addons/editor_plugin_probe/plugin.gd`，同目录创建以下 `plugin.cfg`，导入后临时启用该插件并启动编辑器：
 

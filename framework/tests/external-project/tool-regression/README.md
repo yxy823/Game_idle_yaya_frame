@@ -1,10 +1,10 @@
 # 工具回归夹具
 
-[维护命令](../../../commands/README.md#按需检查) · [验证范围](../../../docs/framework-maintenance/validating-framework.md)
+[测试与夹具](../../README.md#按需检查) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
 ## lint 与运行器专项检查
 
-本目录的 GDScript 夹具验证 lint 与 gdUnit 运行器本身，不随新项目分发，也不要求每次维护都运行。同目录的 Python 工具回归由 [run_project_tool_tests.py](../run_project_tool_tests.py) 统一运行，用法见[维护命令的按需检查](../../../commands/README.md#按需检查)。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
+本目录的 GDScript 夹具验证 lint 与 gdUnit 运行器本身，不随新项目分发，也不要求每次维护都运行。同目录的 Python 工具回归由 [run_project_tool_tests.py](../run_project_tool_tests.py) 统一运行，用法见[维护命令的按需检查](../../README.md#按需检查)。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
 
 | 夹具 | 入口与用途 | 输出及副作用 |
 | --- | --- | --- |

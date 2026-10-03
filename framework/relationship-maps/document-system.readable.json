@@ -32,7 +32,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：框架用途、顶层目录、创建器与能力入口；framework/README.md 维护唯一的 framework/ 目录说明。\n位置：仓库 README.md。\n通过文档总入口查手册，通过根 AGENTS 查维护约定；这里只导航，不复制各专题正文。\n\n文件： README.md\n文件： framework/README.md",
+      "note": "职责：框架用途、顶层目录、创建器与能力入口；framework/ 的目录由框架入口单独说明。\n位置：仓库 README.md。\n通过框架入口查手册与维护说明，通过根 AGENTS 查维护约定；这里只导航，不复制各专题正文。\n\n文件： README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -53,7 +53,7 @@
       "y": 240,
       "width": 270,
       "height": 88,
-      "label": "框架文档总入口\nREADME.md",
+      "label": "框架入口\nframework/README.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -75,11 +75,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：统一导航操作手册、场景速查、关系图、维护说明与公共术语。\n位置：framework/docs/README.md。\n两册独立阅读，不互相引用，由本入口连接。\n\n文件： framework/docs/README.md",
+      "note": "职责：framework/ 的唯一目录说明；统一导航 Godot 项目手册、场景速查、关系图、维护说明与公共术语；维护使用范围、阅读约定与维护命令索引。\n位置：framework/README.md。\n两册独立阅读，不互相引用，由本入口连接。\n\n文件： framework/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -96,7 +96,7 @@
       "y": 100,
       "width": 270,
       "height": 88,
-      "label": "操作手册\nREADME.md · *.md",
+      "label": "Godot 项目手册\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -118,11 +118,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n直接维护和阅读 Markdown，并引用权威源规范。\n\n文件： framework/docs/operation-manual/**/*.md",
+      "note": "职责：解释用框架创建的 Godot 项目：项目边界、游戏逻辑与表现、项目文档对象、配置、Skill、命令与证据。\n位置：framework/godot-project-manual/。\n直接维护和阅读 Markdown，并引用权威源规范。\n\n文件： framework/godot-project-manual/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/operation-manual/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/godot-project-manual/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -182,7 +182,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "框架维护说明\nREADME.md · *.md",
+      "label": "框架维护说明与工具用法\nREADME.md · *.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -204,11 +204,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：材料位置、维护边界、文档同步、维护命令、验证范围与外部项目夹具说明。\n位置：framework/docs/framework-maintenance/、framework/commands/README.md 与 framework/tests/external-project/ 各子目录 README。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/docs/framework-maintenance/*.md\n文件： framework/commands/README.md\n文件： framework/tests/external-project/*/README.md",
+      "note": "职责：修改归属、文档同步、验证范围、第三方插件记录，以及各 tools/ 目录与测试夹具的用法说明。\n位置：framework/maintenance/（职责设计准则另见独立节点）、各对象目录的 tools/README.md、framework/tests/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/maintenance/*.md\n文件： framework/maintenance/validation/*.md\n文件： framework/maintenance/dependencies/*.md\n文件： framework/maintenance/tools/README.md\n文件： framework/project-creation/tools/README.md\n文件： framework/prompt-scenarios/tools/README.md\n文件： framework/relationship-maps/tools/README.md\n文件： framework/tests/README.md\n文件： framework/tests/external-project/*/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -247,11 +247,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Yaya 框架特有或具有特定含义的术语及统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/docs/terminology.md",
+      "note": "职责：Yaya 框架特有或具有特定含义的术语及统一写法。\n位置：framework/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/terminology.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/terminology.md"
       },
       "appearance": {
         "opacity": 1,
@@ -294,7 +294,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/prompts-and-scenarios.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/prompts-and-scenarios.md"
       },
       "appearance": {
         "opacity": 1,
@@ -376,11 +376,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/docs/framework-maintenance/design-guidelines/，README 导航，按文档、提示词与场景、Skill 与脚本、规则文件、审核与报告分页。\n长期准则只在这里维护；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/design-guidelines/*.md",
+      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/maintenance/design-guidelines/，README 导航，按文档、提示词与场景、Skill 与脚本、规则文件、审核与报告分页。\n长期准则只在这里维护；报告只陈述对应版本的检查事实。\n\n文件： framework/maintenance/design-guidelines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -423,7 +423,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/reviews-and-reports.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/reviews-and-reports.md"
       },
       "appearance": {
         "opacity": 1,
@@ -548,11 +548,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/commands/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。\n\n文件： framework/commands/project-files.json",
+      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/project-creation/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。\n\n文件： framework/project-creation/project-files.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/commands/project-files.json"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/project-creation/project-files.json"
       },
       "appearance": {
         "opacity": 1,

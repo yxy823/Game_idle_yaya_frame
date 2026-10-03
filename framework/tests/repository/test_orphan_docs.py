@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 
-COMMAND = Path(__file__).resolve().parents[3] / "framework/commands/find_orphan_docs.py"
+COMMAND = Path(__file__).resolve().parents[3] / "framework/maintenance/tools/find_orphan_docs.py"
 
 
 class OrphanDocsTests(unittest.TestCase):

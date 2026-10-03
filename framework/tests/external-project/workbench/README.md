@@ -1,6 +1,6 @@
 # 资源工作台验证夹具
 
-[维护命令](../../../commands/README.md#按需检查) · [验证范围](../../../docs/framework-maintenance/validating-framework.md)
+[测试与夹具](../../README.md#按需检查) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
 本目录保存资源工作台、Analyzer 与表现组件的维护夹具。先按本次修改选择下列小节，不要求每轮运行全部夹具；仅将需要的文件复制到明确指定的外部验证项目，运行前确认被测文件对应本次改动，保留该项目机器配置与无关内容。
 

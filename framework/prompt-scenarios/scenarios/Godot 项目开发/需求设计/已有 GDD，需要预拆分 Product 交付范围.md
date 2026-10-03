@@ -45,4 +45,4 @@ docs/gdd/ 已有实际游戏设计正文。空目录、仅作目录导航的 REA
 
 ## 流程关联与衔接关系
 
-依据：[项目路由](<../../../../../project-source/methodology/00-overview.md>)、[GDD 与 Product 分工](<../../../../../project-source/methodology/01-product-doc-structure.md>)。预拆分完成后，可按有效授权进入[当前 Product 细化](Product%20已预拆分，准备细化当前交付范围.md)；本页完成不代表已生成 Feature 或已实现游戏。
+依据：[项目路由](<../../../../../project-source/methodology/00-overview.md>)、[GDD 与 Product 分工](<../../../../../project-source/methodology/01-product-doc-structure.md>)。预拆分完成后，可按有效授权进入[当前 Product 细化](<Product 已预拆分，准备细化当前交付范围.md>)；本页完成不代表已生成 Feature 或已实现游戏。

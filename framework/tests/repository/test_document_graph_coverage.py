@@ -10,7 +10,7 @@ from pathlib import Path
 COMMAND = (Path(__file__).resolve().parents[3]
            / "framework/relationship-maps/tools/check_document_graph_coverage.py")
 GRAPH = "framework/relationship-maps/document-system.readable.json"
-MANIFEST = "framework/commands/project-files.json"
+MANIFEST = "framework/project-creation/project-files.json"
 
 
 class DocumentGraphCoverageTests(unittest.TestCase):
@@ -61,30 +61,30 @@ class DocumentGraphCoverageTests(unittest.TestCase):
         self.write("project-source/Project_README.md", "Project")
         for name in ("F001.json", "F100.json", "FABC.json", "nested/F009.json"):
             self.write(f"project-source/defaults/docs/features/{name}", "{}")
-        self.write("framework/docs/with space/notes.md", "Notes")
-        self.write("framework/docs/unregistered.MD", "Unregistered")
+        self.write("framework/relationship-maps/with space/notes.md", "Notes")
+        self.write("framework/relationship-maps/unregistered.MD", "Unregistered")
         self.manifest(("project-source/Project_README.md", "README.md"),
                       ("project-source/defaults/docs", "docs"))
-        self.graph("文件： README.md\n文件： framework/docs/with space/notes.md",
+        self.graph("文件： README.md\n文件： framework/relationship-maps/with space/notes.md",
                    "项目文件： docs/features/F[0-9][0-9][0-9].json")
         rows = self.results(exit_code=1)
         self.assertEqual({(r["scope"], r["path"]) for r in rows if not r["nodes"]}, {
-            ("repository", "framework/docs/unregistered.MD"),
+            ("repository", "framework/relationship-maps/unregistered.MD"),
             ("project", "README.md"), ("project", "docs/features/FABC.json"),
             ("project", "docs/features/nested/F009.json"),
         })
         self.assertTrue(next(r for r in rows if r["path"] == "docs/features/F100.json")["nodes"])
 
     def test_recursive_patterns_cover_navigation_and_skip_non_document_outputs(self):
-        included = {"framework/docs/README.md", "framework/docs/scenario-index.md",
-                    "framework/docs/sub/deeper/guide.md", "framework/docs/settings.json"}
-        excluded = {"framework/docs/guide.html", "framework/docs/graph-usage.personal.json",
-                    "framework/docs/.cache/cache.md", "project-source/addons/plugin/README.md",
+        included = {"framework/relationship-maps/README.md", "framework/relationship-maps/scenario-index.md",
+                    "framework/relationship-maps/sub/deeper/guide.md", "framework/relationship-maps/settings.json"}
+        excluded = {"framework/relationship-maps/guide.html", "framework/relationship-maps/graph-usage.personal.json",
+                    "framework/relationship-maps/.cache/cache.md", "project-source/addons/plugin/README.md",
                     "project-source/tools/config.json", "project-source/defaults/gdlint.json",
                     "project-source/asset_workbench/examples/group.json"}
         for path in included | excluded:
             self.write(path, "{}")
-        self.graph("文件： framework/docs/**/*.md\n文件： framework/docs/settings.json",
+        self.graph("文件： framework/relationship-maps/**/*.md\n文件： framework/relationship-maps/settings.json",
                    "项目文件： docs/features/F[0-9][0-9][0-9].json")
         rows = self.results()
         self.assertEqual({r["source"] for r in rows}, included | {MANIFEST, GRAPH})
