@@ -33,10 +33,10 @@ Game_idle_yaya_frame/
 在本目录使用已确认的 Python 3.12+ 和配置了身份的 Git：
 
 ```powershell
-python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
+python -B framework/commands/project/create_project.py --output D:\Games\MyGodotGame
 ```
 
-创建器按[复制清单](framework/commands/project-files.json)复制和重命名，再建立独立 Git 仓库与本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[框架、创建器与项目边界](framework/docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
+创建器按[复制清单](framework/commands/project/project-files.json)复制和重命名，再建立独立 Git 仓库与本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[框架、创建器与项目边界](framework/docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
 
 新项目预设 `docs/gdd/` 用途说明。创建后可以由 `design-gdd` 从想法形成设计，也可以导入并整理已有资料。新建 GDD 默认采用总览与主题文档，已有结构按需维护；开始依赖设计的规划或实现前，当前范围必须有足够明确的真实设计，目录说明和空模板不能代替它。
 
