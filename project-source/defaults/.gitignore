@@ -12,6 +12,9 @@ __pycache__/
 /reports/*
 !/reports/.gdignore
 
+# 临时文档按任务保存在此目录
+/tmp/
+
 # 本地环境变量；示例文件可提交，勿填写真实凭据
 .env
 .env.*

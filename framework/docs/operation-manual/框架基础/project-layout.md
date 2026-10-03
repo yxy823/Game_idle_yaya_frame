@@ -90,7 +90,8 @@
 | 人工清单与结果 | `reports/manual-acceptance/`；原清单和用户结果分开保存 |
 | Feature 自定义结果 | `reports/features/<Feature-ID>/` |
 | 其他维护报告 | `reports/maintenance/<任务>/` |
-| 临时输入与验证副本 | `reports/scratch/<任务>/`；名称不授予删除权限 |
+| 临时文档 | 项目根目录 `tmp/<任务>/`；草稿、当次方案、交接副本与资料摘录可按主题分层，不能混入正式目录 |
+| 临时探针、命令辅助文件与验证副本 | `reports/scratch/<任务>/`；名称不授予删除权限 |
 
 临时目录不能保存重要代码或决定的唯一副本。当前验收、失败调查及知识引用依赖的报告需要保留，归组须同时调整读写方与引用，工具原件固定路径不随意搬动。
 
@@ -98,7 +99,7 @@
 
 Git 的默认范围如下，具体模式以 [默认 gitignore](../../../../project-source/defaults/.gitignore) 为准。
 
-- **默认忽略：** Godot 缓存、派生翻译缓存、报告和本机秘密；`.env.example` / `.env.template` 可保留。
+- **默认忽略：** Godot 缓存、派生翻译缓存、报告、`tmp/` 临时文档和本机秘密；`.env.example` / `.env.template` 可保留。
 - **按项目规则跟踪：** 源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
 
 还需区分扫描、导入与证据保留：

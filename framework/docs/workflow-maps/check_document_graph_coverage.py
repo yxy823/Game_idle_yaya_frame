@@ -44,6 +44,7 @@ def document_files(root: Path) -> list[str]:
         relative = Path(current).relative_to(root)
         directories[:] = [name for name in directories
                           if name not in SKIP_DIRECTORIES
+                          and (relative / name).as_posix() != "tmp"
                           and (relative / name).as_posix() != "project-source/addons"]
         for name in names:
             path = (relative / name).as_posix()

@@ -36,7 +36,7 @@ from urllib.parse import unquote
 # ---- 可自定义的默认值：改这里，或用命令行参数覆盖 --------------------------------
 DEFAULT_NAV = ["README.md", "index.md", "*index.md"]          # 无 "/" 的按文件名匹配
 DEFAULT_HISTORY = ["reports/*", "*/reports/*"]                 # 含 "/" 的按完整相对路径匹配
-DEFAULT_EXCLUDE = [".git/*", ".godot/*", "node_modules/*", "*/__pycache__/*",
+DEFAULT_EXCLUDE = [".git/*", ".godot/*", "tmp/*", "node_modules/*", "*/__pycache__/*",
                    "__pycache__/*", ".cache/*", "*/.cache/*"]
 # 已认可的规则路由、由专用检查维护的场景，以及明确保留的来源/许可资料。
 # 只排除检查目标；其指向其他文档的引用仍需参与统计。

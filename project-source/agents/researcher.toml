@@ -58,8 +58,9 @@ research date, applicable versions/environment and related task/design, then cov
 - Unresolved items: conflicting sources, missing evidence or decisions still open.
 
 These are minimum information needs, not a machine schema; combine short sections
-and omit inapplicable metadata. Keep raw downloads and probes in the existing
-reports/scratch/<task>/ convention, not in docs/research/. A simple lookup or a
+and omit inapplicable metadata. Keep temporary drafts and source excerpts in
+tmp/<task>/; raw downloads and probes use reports/scratch/<task>/ under
+methodology/09-artifact-lifecycle.md. A simple lookup or a
 conversation-only task can return findings without writing a file. If writing is
 unavailable, return the report content and disclose that it was not saved.
 

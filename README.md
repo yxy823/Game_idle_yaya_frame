@@ -2,7 +2,7 @@
 
 这里维护一套供 Windows / PowerShell 使用的 Godot 起始文件、开发方法与工具。使用者与 Agent 在单人项目中协作，让需求、任务、实际验证和交接有清楚的依据。
 
-[文档总入口](framework/docs/README.md) 提供操作手册、场景速查手册的 Markdown 与 HTML 入口，以及框架维护说明。两本手册独立阅读，HTML 由同一构建脚本分别生成并自动检查。手册与完整提示词库不进入新项目，项目 README 保持自身的简短导航。
+[文档总入口](framework/docs/README.md) 提供操作手册、场景速查手册的 Markdown 入口，以及框架维护说明。两本手册独立阅读。手册与完整提示词库不进入新项目，项目 README 保持自身的简短导航。
 
 ## 文件放在哪里
 
@@ -12,7 +12,7 @@ Game_idle_yaya_frame/
 ├── framework/
 │   ├── commands/              创建器、唯一复制清单与全部命令索引
 │   ├── prompt_scenarios/      prompts/ 提示词、scenarios/ 场景与 tools/ 检查
-│   ├── docs/                  操作手册、构建器、关系图与框架维护说明
+│   ├── docs/                  操作手册、关系图与框架维护说明
 │   └── tests/                 repository/ 维护回归与 external-project/ 外部夹具
 └── project-source/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md

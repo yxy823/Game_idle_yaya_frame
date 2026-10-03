@@ -118,7 +118,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n引用权威源规范；Markdown 是正文来源，HTML 是派生阅读版。\n\n文件： framework/docs/operation-manual/**/*.md",
+      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n直接维护和阅读 Markdown，并引用权威源规范。\n\n文件： framework/docs/operation-manual/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -348,49 +348,6 @@
       }
     },
     {
-      "id": "doc-html",
-      "shape": "rounded-rect",
-      "x": 1760,
-      "y": 100,
-      "width": 270,
-      "height": 128,
-      "label": "两册 HTML 阅读版\noperation-handbook.html\nquick-reference-handbook.html",
-      "zIndex": 1,
-      "fill": "#EAF3FF",
-      "stroke": {
-        "color": "#94A3B8",
-        "width": 1.25,
-        "dash": "solid"
-      },
-      "text": {
-        "fontSize": 18,
-        "color": "#17283D",
-        "align": "center",
-        "fontFamily": "system",
-        "bold": false,
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "textPadding": {
-        "horizontal": 16,
-        "vertical": 12
-      },
-      "note": "职责：由 Markdown 构建的两本阅读版。\n位置：framework/docs/operation-manual/operation-handbook.html 与 framework/prompt_scenarios/scenarios/quick-reference-handbook.html。\n通过现有构建脚本派生；不单独维护正文。本节点链接操作手册，另一册从文档总入口进入。\n\n文件： framework/docs/operation-manual/operation-handbook.html\n文件： framework/prompt_scenarios/scenarios/quick-reference-handbook.html",
-      "textSizing": "fixed",
-      "link": {
-        "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/operation-manual/operation-handbook.html"
-      },
-      "appearance": {
-        "opacity": 1,
-        "fillOpacity": 1,
-        "cornerRadius": 10,
-        "shadow": false,
-        "wrap": true
-      }
-    },
-    {
       "id": "doc-review",
       "shape": "rounded-rect",
       "x": 1340,
@@ -462,7 +419,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按次保留的审核和实际验证记录。\n位置：framework/docs/framework-maintenance/reports/，原始运行证据仍按当次记录定位。\n入口来自审核索引或仍需要证据的维护记录；历史通过不证明当前版本通过。\n\n文件： framework/docs/framework-maintenance/reports/**/*.md",
+      "note": "职责：按次保留的审核和实际验证记录。\n位置：tmp/reports/<任务>/，可按专题或检查轮次分层；原始运行证据仍按当次记录定位。\n需要继续工作的报告由框架待办链接；当次用途结束后清理，长期结论归正式文档。\n\n文件： tmp/reports/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1881,7 +1838,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时输入按需放 reports/scratch/<task>/，临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*",
+      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时文档统一放项目根 tmp/<task>/，探针与验证副本放 reports/scratch/<task>/。临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*\n项目文件： tmp/**/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -3088,171 +3045,6 @@
       "text": {
         "fontSize": 14,
         "color": "#2563EB",
-        "align": "center",
-        "fontFamily": "system",
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "zIndex": 0,
-      "appearance": {
-        "opacity": 1,
-        "sourceMarker": "none",
-        "targetMarker": "block",
-        "sourceMarkerSize": 8,
-        "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
-        "labelPadding": 4,
-        "rounded": true,
-        "radius": 12,
-        "jump": "none",
-        "routerPadding": 24,
-        "curve": "default"
-      }
-    },
-    {
-      "id": "relation-operation-html",
-      "source": {
-        "node": "doc-operation",
-        "port": "top"
-      },
-      "target": {
-        "node": "doc-html",
-        "port": "top"
-      },
-      "mode": "fixed",
-      "path": "orthogonal",
-      "vertices": [
-        {
-          "x": 1055,
-          "y": 50
-        },
-        {
-          "x": 1895,
-          "y": 50
-        }
-      ],
-      "label": "构建操作阅读版",
-      "stroke": {
-        "color": "#C2410C",
-        "width": 1.5,
-        "dash": "solid"
-      },
-      "arrow": "target",
-      "text": {
-        "fontSize": 14,
-        "color": "#C2410C",
-        "align": "center",
-        "fontFamily": "system",
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "zIndex": 0,
-      "appearance": {
-        "opacity": 1,
-        "sourceMarker": "none",
-        "targetMarker": "block",
-        "sourceMarkerSize": 8,
-        "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
-        "labelPadding": 4,
-        "rounded": true,
-        "radius": 12,
-        "jump": "none",
-        "routerPadding": 24,
-        "curve": "default"
-      }
-    },
-    {
-      "id": "relation-scenarios-html",
-      "source": {
-        "node": "doc-scenarios",
-        "port": "bottom"
-      },
-      "target": {
-        "node": "doc-html",
-        "port": "bottom"
-      },
-      "mode": "fixed",
-      "path": "orthogonal",
-      "vertices": [
-        {
-          "x": 1055,
-          "y": 450
-        },
-        {
-          "x": 1895,
-          "y": 450
-        }
-      ],
-      "label": "构建场景阅读版",
-      "stroke": {
-        "color": "#C2410C",
-        "width": 1.5,
-        "dash": "solid"
-      },
-      "arrow": "target",
-      "text": {
-        "fontSize": 14,
-        "color": "#C2410C",
-        "align": "center",
-        "fontFamily": "system",
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "zIndex": 0,
-      "appearance": {
-        "opacity": 1,
-        "sourceMarker": "none",
-        "targetMarker": "block",
-        "sourceMarkerSize": 8,
-        "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
-        "labelPadding": 4,
-        "rounded": true,
-        "radius": 12,
-        "jump": "none",
-        "routerPadding": 24,
-        "curve": "default"
-      }
-    },
-    {
-      "id": "relation-terms-html",
-      "source": {
-        "node": "doc-framework-terms",
-        "port": "right"
-      },
-      "target": {
-        "node": "doc-html",
-        "port": "right"
-      },
-      "mode": "fixed",
-      "path": "orthogonal",
-      "vertices": [
-        {
-          "x": 2110,
-          "y": 804
-        },
-        {
-          "x": 2110,
-          "y": 144
-        }
-      ],
-      "label": "两册收录公共正文",
-      "stroke": {
-        "color": "#C2410C",
-        "width": 1.5,
-        "dash": "solid"
-      },
-      "arrow": "target",
-      "text": {
-        "fontSize": 14,
-        "color": "#C2410C",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,

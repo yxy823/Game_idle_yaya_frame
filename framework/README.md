@@ -8,7 +8,7 @@
 | --- | --- |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [project-files.json](commands/project-files.json) | 唯一复制映射，每项只有 source 与 target |
-| [commands/README.md](commands/README.md) | 完整命令目录，含创建器、手册构建、路径/关系图检查和项目工具回归入口 |
+| [commands/README.md](commands/README.md) | 完整命令目录，含创建器、路径/关系图检查和项目工具回归入口 |
 | [godot-development-prompts.json](prompt_scenarios/prompts/godot-development-prompts.json) | Godot 项目开发的完整任务提示词；advisor 直接读取的共享来源 |
 | [yaya-maintenance-prompts.json](prompt_scenarios/prompts/yaya-maintenance-prompts.json) | Yaya 框架维护的完整任务提示词 |
 | [docs/README.md](docs/README.md) | 操作手册、场景手册与维护说明的统一入口 |
@@ -83,21 +83,5 @@ python -B framework/tests/external-project/run_project_tool_tests.py --project D
 
 真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界集中在 [专项验证说明](docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
 
-## 构建 HTML 阅读版
-
-在仓库根目录执行一条命令，同时生成两本阅读版并完成自动检查：
-
-```powershell
-python -B framework/docs/handbook/build_blank_project_handbook.py --browser 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe'
-```
-
-- **输入与顺序**：操作手册使用 `docs/operation-manual/README.md` 的专题分类；速查手册使用 `prompt_scenarios/scenarios/scenario-index.md` 的 Project 与场景分类，不另建目录清单。
-- **公共术语**：两册均从 `docs/terminology.md` 嵌入同一份正文，分别在各自索引中导航；不复制手写词表，也不让一册依赖另一册。
-- **输出**：[操作手册 HTML](docs/operation-manual/operation-handbook.html) 与 [场景速查 HTML](prompt_scenarios/scenarios/quick-reference-handbook.html)。各自包含正文、样式和交互，两册不互相引用；源规范与工具链接仍需保留完整仓库。
-- **按需构建**：`--book operation` 或 `--book quick-reference` 只生成对应手册；默认 `--book all`。`--rebuild-diagrams` 忽略 Mermaid 缓存并重绘。
-- **运行环境**：Python 需可导入 `markdown_it`。含 Mermaid 时用 `--browser` 指定本机 Edge/Chromium；生成未缓存图表还需 Node.js/npx，使用脚本固定的 Mermaid CLI 版本。无图表的手册可省略浏览器参数。
-- **自动检查**：源文件收录、本地路径与 Markdown 锚点、两册隔离、生成章节覆盖与顺序、重复 ID、HTML 内部与本地文件链接、SVG 数量及离线资源约束。检查失败返回非零，且不覆盖所选手册的既有 HTML；全部检查通过后写入并返回 `0`。
-- **检查覆盖**：上述检查针对所收录的手册和公共术语；不会递归检查被引用的维护说明、规范或历史报告中的所有链接。
-- **人工边界**：日常生成只需确认退出码与诊断，不要求手动复查链接或重审未改正文。排版与交互的实际体验不由构建结果代替，也不是生成前置；详见 [阅读版说明](docs/framework-maintenance/updating-the-blank-project.md#html-阅读版构建)。
 
 维护脚本解决可重复的文件/数据操作，Agent 决定任务范围与结果意义。不增加逐动作监督、重复状态、发布资格或自动同步；共享解析和指纹函数可复用，独立用户命令按实际职责区分。

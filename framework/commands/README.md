@@ -8,14 +8,13 @@
 | --- | --- |
 | [commands/create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交。 |
 | [commands/find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，按普通、导航和历史引用分类，列出孤立候选及引用文件、行号。 |
-| [docs/handbook/build_blank_project_handbook.py](../docs/handbook/build_blank_project_handbook.py) | 从 Markdown 构建两本 HTML 手册，并检查链接、收录范围和图表产物。 |
 | [docs/workflow-maps/check_document_graph_coverage.py](../docs/workflow-maps/check_document_graph_coverage.py) | 按文档图备注的文件路径检查文档覆盖；只读、显式调用，范围与结果含义见[图谱说明](../docs/workflow-maps/README.md#按需检查文档覆盖)。 |
 | [prompt_scenarios/tools/check_scenario_prompt_paths.py](../prompt_scenarios/tools/check_scenario_prompt_paths.py) | 默认读取 Godot 开发和 Yaya 维护两份提示词库，只读核对名称与场景文件路径是否一一对应。 |
 | [prompt_scenarios/tools/check_workflow_graph_names.py](../prompt_scenarios/tools/check_workflow_graph_names.py) | 只读核对流程图节点名与提示场景名；忽略 CR/LF 换行，输出匹配、差异、字段位置和候选名称。默认检查可读版 JSON，`--summary` 只显示统计。 |
 | [prompt_scenarios/tools/link_workflow_graph_scenarios.py](../prompt_scenarios/tools/link_workflow_graph_scenarios.py) | 为可读版 JSON 的节点写入或更新同名场景文件链接；先检查全部名称和文件，`--check` 只读检查。 |
 | [tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目。 |
 
-创建器的唯一复制映射为同目录的 [project-files.json](project-files.json)。手册构建的[页面模板](../docs/handbook/assets/blank-project-handbook-page.html)与[交互源码](../docs/handbook/assets/blank-project-handbook-interactions.js)保存在构建器的 `assets/`；它们不是独立命令。按被测对象选择的维护夹具，其调用前提、参数和副作用见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。
+创建器的唯一复制映射为同目录的 [project-files.json](project-files.json)。按被测对象选择的维护夹具，其调用前提、参数和副作用见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。
 
 在仓库根目录运行 `python -B framework/prompt_scenarios/tools/link_workflow_graph_scenarios.py`，默认更新可读版；用 `--graph` 指定其他图。脚本只修改节点的 `link`，会替换已有链接，名称不匹配或目标文件缺失时不写入。链接为当前仓库的绝对本地路径，仓库移动后重新运行即可；Graph_Map 仅展示和复制这些路径，不直接打开文件。
 
@@ -29,7 +28,7 @@
 python -B framework/commands/find_orphan_docs.py
 ```
 
-默认递归检查 Markdown，排除 `README.md`、`index.md`、`*index.md` 这些导航类文件以及下表路径作为检查目标；它们仍作为引用来源参与统计，避免把其引用的其他文档误报成孤立。搜索源码和文档文本，不读取生成的 HTML。
+默认递归检查 Markdown，排除 `README.md`、`index.md`、`*index.md` 这些导航类文件以及下表路径作为检查目标；它们仍作为引用来源参与统计，避免把其引用的其他文档误报成孤立。搜索源码和文档文本，根目录 `tmp/` 中的临时材料不作为检查目标或引用来源。
 
 | 默认不检查的路径（相对仓库根目录） | 原因 |
 | --- | --- |
@@ -52,13 +51,13 @@ python -B framework/commands/find_orphan_docs.py
 
 引用来源 `reader`、`nav`、`history` 分别指普通文件、导航类文件、历史材料，计数为命中行数。引用写法 `link`、`path`、`name` 分别指 Markdown 链接、路径文本、唯一文件名文本；路径后缀与文件名子串可能误指其他文件，仍需核对实际目标，不能据此删除文档。输出中的 `*` 只表示该行含读取或更新等动作词，不是实际执行证据。
 
-`--root` 指定检查目录，`--targets` 显式选择目标时可重新检查导航文件及上表路径，`--nav` 调整导航文件规则，`--json` 输出完整结构化结果并在 `explanations` 中附中文释义；原有分类代码、计数和引用字段保持不变。只有显式指定 `--out` 才写报告，父目录须已存在。`--exclude` 替换的是同时影响目标和引用来源的目录排除规则（默认排除 Git、缓存等），其命中的文件不能被 `--targets` 重新选入。默认扫描完成返回 `0`；使用 `--fail-on-orphan` 时，存在 `NONE` 返回 `1`，其他分类不会触发失败。
+`--root` 指定检查目录，`--targets` 显式选择目标时可重新检查导航文件及上表路径，`--nav` 调整导航文件规则，`--json` 输出完整结构化结果并在 `explanations` 中附中文释义；原有分类代码、计数和引用字段保持不变。只有显式指定 `--out` 才写报告，父目录须已存在，临时报告放在根目录 `tmp/` 下。`--exclude` 替换的是同时影响目标和引用来源的目录排除规则（默认排除 Git、缓存、根目录 tmp/ 等），其命中的文件不能被 `--targets` 重新选入。默认扫描完成返回 `0`；使用 `--fail-on-orphan` 时，存在 `NONE` 返回 `1`，其他分类不会触发失败。
 
 ### 提示词与场景排除后如何防漏
 
 继续使用现有检查，不把场景是否配对交给孤立文档的文本命中推断：
 
 - [提示词与场景路径检查](../README.md#提示词与场景路径检查)核对两份集中提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
-- [速查手册构建](../README.md#构建-html-阅读版)检查场景索引的实际收录：场景页已存在但索引没有链接时，报“手册入口未收录文档”；索引链接失效也会使构建失败。使用已有构建器的 `--book quick-reference` 可只检查并重建速查手册，构建审批沿用根规则。
+- 调整场景入口时，核对[场景索引](../prompt_scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
 
-前者不检查索引，后者不检查提示词配对，两项不能互相替代。提示词或场景变更时的调用时机沿用现有[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，普通孤立文档扫描不会自动调用它们。
+路径检查不检查索引收录或正文。提示词或场景变更时按现有[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步，普通孤立文档扫描不会自动调用它。
