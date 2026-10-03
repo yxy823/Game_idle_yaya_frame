@@ -37,6 +37,6 @@
 
 项目手册中的 docs/、tools/ 等相对生成后的游戏项目根目录；维护文档的框架路径相对本仓库。示例 ID、路径和输出必须换成实际对象，不能当作已经完成的验证或批准。
 
-框架保存创建器、复制材料、手册与两份独立提示词库；生成项目独立维护自己的文件，advisor 通过固定绝对路径只读查询本机 Godot 开发提示词库。本目录不进入 [复制清单](../commands/project-files.json)，也不承担项目升级或自动同步。权威行为由项目自身规则、methodology、Skill 和实际工具定义，手册解释它们，不另建流程。
+框架保存创建器、复制材料、手册与两份独立提示词库；生成项目独立维护自己的文件，advisor 通过固定绝对路径只读查询本机 Godot 开发提示词库。本目录不进入 [复制清单](../commands/project/project-files.json)，也不承担项目升级或自动同步。权威行为由项目自身规则、methodology、Skill 和实际工具定义，手册解释它们，不另建流程。
 
 临时文档与当次报告保存在仓库根目录的 `tmp/`，保存与清理见[当次报告的保存与清理](framework-maintenance/responsibility-design-guidelines.md#当次报告的保存与清理)。

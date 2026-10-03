@@ -16,7 +16,7 @@ from pathlib import Path, PurePosixPath
 
 
 DEFAULT_GRAPH = "framework/docs/relationship-maps/document-system.readable.json"
-MANIFEST = "framework/commands/project-files.json"
+MANIFEST = "framework/commands/project/project-files.json"
 SKIP_DIRECTORIES = {".git", ".godot", ".cache", "__pycache__", ".pytest_cache", "node_modules"}
 JSON_DIRECTORIES = (
     "framework/docs/", "framework/prompt-scenarios/prompts/",
@@ -148,7 +148,7 @@ def check_coverage(root: Path, graph: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[2],
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[3],
                         help="框架仓库，默认从脚本位置定位")
     parser.add_argument("--graph", type=Path, default=Path(DEFAULT_GRAPH),
                         help="文档图；相对路径以 --root 为基准")

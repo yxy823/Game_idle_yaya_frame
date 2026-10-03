@@ -100,4 +100,4 @@
 
 阅读检查关注：能否找到自己的情况，能否明确开始与结束，步骤和产出是否便于对照，以及是否仍有应拆分的正文。调整入口时同步 JSON、同名路径、索引和受影响引用，不建立新的流程台账。
 
-路径核对在框架根目录使用已确认的框架 Python 运行 `framework/commands/check_scenario_prompt_paths.py`。该命令只读取 JSON 名称和目录文件名，不读取正文或维护映射缓存；正文 H1、专用输入、步骤和出口由作者自查。
+路径核对在框架根目录使用已确认的框架 Python 运行 `framework/commands/prompts/check_scenario_prompt_paths.py`。该命令只读取 JSON 名称和目录文件名，不读取正文或维护映射缓存；正文 H1、专用输入、步骤和出口由作者自查。

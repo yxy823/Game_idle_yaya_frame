@@ -10,12 +10,12 @@
 | 术语 | 本框架中的含义与边界 |
 | --- | --- |
 | 分发源 / `project-source/` | 创建器按清单复制到新游戏项目的源材料 |
-| 复制清单 | `framework/commands/project-files.json` 中的选择与重命名规则；不承担升级或已有项目自动同步 |
+| 复制清单 | `framework/commands/project/project-files.json` 中的选择与重命名规则；不承担升级或已有项目自动同步 |
 | 创建器 | 根据复制清单创建独立项目及其本地 Git 初始提交的命令 |
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目 |
 | Project | 提示词 JSON 中区分“Yaya 框架维护”和“Godot 项目开发”的顶层名称；不等于 Product 或 Feature |
 
-来源：[维护约定](../../AGENTS.md)、[创建器与维护命令](../commands/README.md)、[复制清单](../commands/project-files.json)。
+来源：[维护约定](../../AGENTS.md)、[创建器与维护命令](../commands/README.md)、[复制清单](../commands/project/project-files.json)。
 
 ## 设计与交付
 

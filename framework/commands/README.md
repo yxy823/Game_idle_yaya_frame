@@ -1,23 +1,27 @@
 # 维护命令
 
-本目录保存全部维护脚本与唯一复制清单 [project-files.json](project-files.json)，本页是命令用法的唯一说明。命令都在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存。参数细节以各命令的 `--help` 为准。
+本目录保存全部维护脚本与唯一复制清单，本页是命令用法的唯一说明。命令都在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存。参数细节以各命令的 `--help` 为准。
 
-| 命令 | 用途 |
-| --- | --- |
-| [create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交 |
-| [check_scenario_prompt_paths.py](check_scenario_prompt_paths.py) | 只读核对两份提示词库的名称与场景文件路径是否一一对应 |
-| [check_workflow_graph_names.py](check_workflow_graph_names.py) | 只读核对开发场景图节点名与 Godot 提示词名称 |
-| [link_workflow_graph_scenarios.py](link_workflow_graph_scenarios.py) | 为开发场景图节点写入或更新同名场景文件链接；`--check` 只读 |
-| [check_document_graph_coverage.py](check_document_graph_coverage.py) | 按文档系统图登记的路径检查文档覆盖，只读、显式调用 |
-| [find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，列出孤立候选及引用文件、行号 |
-| [../tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目 |
+命令按作用对象分在三个子目录：
 
-新增维护脚本放在本目录并在上表登记；回归测试与夹具放在 `framework/tests/`。
+| 子目录 | 命令 | 用途 |
+| --- | --- | --- |
+| `project/` | [create_project.py](project/create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交 |
+| | [project-files.json](project/project-files.json) | 唯一复制清单，每项只有 `source` 与 `target` |
+| `prompts/` | [check_scenario_prompt_paths.py](prompts/check_scenario_prompt_paths.py) | 只读核对两份提示词库的名称与场景文件路径是否一一对应 |
+| | [check_workflow_graph_names.py](prompts/check_workflow_graph_names.py) | 只读核对开发场景图节点名与 Godot 提示词名称 |
+| | [link_workflow_graph_scenarios.py](prompts/link_workflow_graph_scenarios.py) | 为开发场景图节点写入或更新同名场景文件链接；`--check` 只读 |
+| `documents/` | [check_document_graph_coverage.py](documents/check_document_graph_coverage.py) | 按文档系统图登记的路径检查文档覆盖，只读、显式调用 |
+| | [find_orphan_docs.py](documents/find_orphan_docs.py) | 扫描文档的文本引用，列出孤立候选及引用文件、行号 |
+
+外部项目的工具回归入口是 [tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py)，用法见下文「按需检查」。
+
+新增维护脚本按作用对象放进对应子目录并在上表登记；确实不属于现有三类时再新建子目录。回归测试与夹具放在 `framework/tests/`。
 
 ## 创建空白项目
 
 ```powershell
-python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
+python -B framework/commands/project/create_project.py --output D:\Games\MyGodotGame
 ```
 
 创建器按清单预检、复制和重命名，再建立独立 Git 仓库与本地初始提交。目标路径、复制映射、失败处理与执行边界的完整契约见[框架、创建器与项目边界](../docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
@@ -25,7 +29,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ## 提示词与场景路径检查
 
 ```powershell
-python -B framework/commands/check_scenario_prompt_paths.py
+python -B framework/commands/prompts/check_scenario_prompt_paths.py
 ```
 
 默认合并两份提示词库的名称，检查 `framework/prompt-scenarios/scenarios/<Project>/<分类>/<提示词名称>.md` 是否一一对应。名称与路径规则见[提示词与场景准则](../docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)。
@@ -38,8 +42,8 @@ python -B framework/commands/check_scenario_prompt_paths.py
 ## 检查场景图名称与链接
 
 ```powershell
-python -B framework/commands/check_workflow_graph_names.py --summary
-python -B framework/commands/link_workflow_graph_scenarios.py --check
+python -B framework/commands/prompts/check_workflow_graph_names.py --summary
+python -B framework/commands/prompts/link_workflow_graph_scenarios.py --check
 ```
 
 两个命令默认读取 `framework/prompt-scenarios/prompts/godot-development-prompts.json` 和开发场景图，`--prompts`、`--graph` 可分别指定其他文件。
@@ -54,7 +58,7 @@ python -B framework/commands/link_workflow_graph_scenarios.py --check
 仅在用户需要找出未纳入文档系统图的文件时运行：
 
 ```powershell
-python -B framework/commands/check_document_graph_coverage.py
+python -B framework/commands/documents/check_document_graph_coverage.py
 ```
 
 命令只读现有文件、复制清单和文档图，不更新图、不写报告、不生成项目。默认扫描框架与分发源的 Markdown、Markdown/JSON 文档模板，以及文档目录、提示词库、复制清单和项目环境配置中的 JSON，包含 README 与索引页；第三方插件、缓存、个人图谱次数、临时文档、代码配置和素材数据不在范围内。项目区核对分发源对应的目标路径，不扫描已有外部项目；尚未创建的可选产物不会被当作缺失。
@@ -88,7 +92,7 @@ python -B framework/tests/external-project/run_project_tool_tests.py --project D
 在仓库根目录运行；使用 Python 标准库，不需要安装依赖：
 
 ```powershell
-python -B framework/commands/find_orphan_docs.py
+python -B framework/commands/documents/find_orphan_docs.py
 ```
 
 默认递归检查 Markdown，排除 `README.md`、`index.md`、`*index.md` 这些导航类文件以及下表路径作为检查目标；它们仍作为引用来源参与统计，避免把其引用的其他文档误报成孤立。搜索源码和文档文本，根目录 `tmp/` 中的临时材料不作为检查目标或引用来源。

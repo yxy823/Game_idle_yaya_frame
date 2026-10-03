@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from framework.commands.create_project import copy_project, create_project
+from framework.commands.project.create_project import copy_project, create_project
 
 
 class ProjectCopyTests(unittest.TestCase):
@@ -18,7 +18,7 @@ class ProjectCopyTests(unittest.TestCase):
         self.addCleanup(self.area.cleanup)
         self.base = Path(self.area.name)
         self.source = self.base / "source"
-        (self.source / "framework/commands").mkdir(parents=True)
+        (self.source / "framework/commands/project").mkdir(parents=True)
         (self.source / "project-source/skills/example").mkdir(parents=True)
         (self.source / "AGENTS.md").write_text("Maintenance rules", encoding="utf-8")
         (self.source / "project-source/Project_AGENTS.md").write_text("Project rules", encoding="utf-8")
@@ -30,7 +30,7 @@ class ProjectCopyTests(unittest.TestCase):
         self.save_manifest()
 
     def save_manifest(self):
-        (self.source / "framework/commands/project-files.json").write_text(
+        (self.source / "framework/commands/project/project-files.json").write_text(
             json.dumps(self.entries), encoding="utf-8"
         )
 
@@ -117,7 +117,7 @@ class ProjectCopyTests(unittest.TestCase):
 
     def test_real_agent_mappings_preserve_roles_without_global_config(self):
         repository = Path(__file__).resolve().parents[3]
-        manifest = json.loads((repository / "framework/commands/project-files.json").read_text(encoding="utf-8"))
+        manifest = json.loads((repository / "framework/commands/project/project-files.json").read_text(encoding="utf-8"))
         entries = []
         for name in ("independent-reviewer", "researcher"):
             entry = next(item for item in manifest

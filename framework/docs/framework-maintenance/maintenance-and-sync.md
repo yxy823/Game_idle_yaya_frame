@@ -9,7 +9,7 @@
 | 内容 | 维护位置 |
 | --- | --- |
 | 项目分发材料 | project-source/；路径变化同时核对复制清单 |
-| 创建器与复制规则 | framework/commands/create_project.py 与 framework/commands/project-files.json |
+| 创建器与复制规则 | framework/commands/project/create_project.py 与 framework/commands/project/project-files.json |
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
 | 具体项目或维护场景 | framework/prompt-scenarios/scenarios/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |

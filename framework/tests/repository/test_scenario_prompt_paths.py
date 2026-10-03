@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from framework.commands.check_scenario_prompt_paths import compare_paths, expected_paths, main
+from framework.commands.prompts.check_scenario_prompt_paths import compare_paths, expected_paths, main
 
 
 class ScenarioPromptPathTests(unittest.TestCase):

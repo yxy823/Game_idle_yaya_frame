@@ -9,7 +9,7 @@
 | 路径 | 职责 |
 | --- | --- |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
-| [commands/](commands/README.md) | 全部维护脚本、唯一复制清单 `project-files.json`，以及命令用法的唯一说明 |
+| [commands/](commands/README.md) | 全部维护脚本，按作用对象分为 `project/`（创建器与唯一复制清单）、`prompts/`（提示词、场景与场景图检查）、`documents/`（文档图覆盖与孤立文档检查）；README 是命令用法的唯一说明 |
 | [docs/](docs/README.md) | 文档总入口、框架术语和下列三类文档 |
 | [docs/operation-manual/](docs/operation-manual/README.md) | 操作手册：框架概念、配置、职责与工具用法，按专题分四个子目录 |
 | [docs/relationship-maps/](docs/relationship-maps/README.md) | 文档系统关系图、开发场景图，读图与维护说明，以及 [Graph_Map 文件格式](docs/relationship-maps/graph-map-format.md) |
