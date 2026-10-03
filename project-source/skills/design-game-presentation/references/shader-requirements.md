@@ -16,4 +16,4 @@ Example translation: “受伤时闪一下，但轮廓不要糊掉” can become
 
 Make rendering limits explicit where they affect the chosen approach. A Shader can make a surface appear displaced; collision, input areas, layout and game state require their own actual implementation when the requirement calls for them. A full-screen effect needs the real rendering context verified during implementation; do not silently treat it as a local sprite effect.
 
-Record texture/mask dependencies and their relevant specs in this alternative's resource section. Preserve semantic control needs such as “progress from intact to invisible,” while leaving uniform names, equations, blending setup and source code to the implementation unless an existing integration contract requires them.
+Record texture/mask dependencies and their relevant specs in this alternative's resource section. Preserve semantic control needs such as “progress from intact to invisible,” while leaving uniform names, equations, blending setup and source code to the implementation unless an established integration interface requires them.

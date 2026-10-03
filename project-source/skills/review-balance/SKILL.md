@@ -1,6 +1,6 @@
 ---
 name: review-balance
-description: "Independently review proposed or adopted game formulas and values against stated strategy, progression and pacing goals. Use for requested balance analysis; excludes numeric authoring, tuning implementation and player playtest analysis."
+description: "Independently review proposed or adopted game formulas and values against stated strategy, progression and pacing goals. Use for a requested balance analysis. Not for numeric authoring (design-balance), tuning implementation or player playtest analysis."
 ---
 
 # Balance review
@@ -11,4 +11,4 @@ Analyze meaningful decision paths and boundary cases: dominant or useless option
 
 Compare plausible player strategies rather than one optimal trace. Check whether the model matches the reviewed rules and, when implementation is in scope, the actual runtime behavior; identify results that depend on unverified assumptions. Predicted pacing is not observed player enjoyment, comprehension or retention. General playtest analysis remains outside this framework scope.
 
-Report supported exploits or contract failures separately from tuning suggestions. Keep raw calculations/results and confidence limits. Do not change values, rewrite GDD goals or use this review as human gameplay acceptance. Return scoped numeric authoring to `design-balance`, overall gameplay or experience changes to `design-gdd`, and code/resource repairs to the authorized implementation owner.
+Report supported exploits or rule failures separately from tuning suggestions. Keep raw calculations, results and confidence limits. Return scoped numeric authoring to `design-balance`, overall gameplay or experience changes to `design-gdd`, and code/resource repairs to the authorized implementation owner.

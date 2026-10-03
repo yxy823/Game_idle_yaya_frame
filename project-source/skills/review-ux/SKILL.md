@@ -1,6 +1,6 @@
 ---
 name: review-ux
-description: "Independently review interface usability, interaction clarity and accessibility in a specified flow. Use for requested UX review, not UI design or general playtest analysis."
+description: "Independently review interface usability, interaction clarity and accessibility in a specified flow. Use for a requested UX review. Not for UI design or general playtest analysis."
 ---
 
 # UX review
@@ -11,4 +11,4 @@ Trace whether actions are discoverable, state and feedback are understandable, n
 
 Distinguish demonstrated interaction problems, requirement violations and design suggestions. Static mockups cannot establish keyboard/controller operation or timing, and screenshots alone cannot establish end-to-end usability. If actual interaction evidence is unavailable, limit the conclusion accordingly.
 
-Report concrete user action, observed obstacle, consequence and evidence location. Do not redesign the screen, edit its specification or substitute for human experience acceptance. Gameplay motivation/retention playtesting is outside scope.
+Report the concrete user action, observed obstacle, consequence and evidence location. Do not redesign the screen. Gameplay motivation and retention playtesting are outside scope.

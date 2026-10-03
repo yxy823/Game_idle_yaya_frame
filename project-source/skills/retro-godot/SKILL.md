@@ -1,13 +1,15 @@
 ---
 name: retro-godot
-description: Retrospect on actual Godot development work and verification records to assess useful workflow, rule, tool or knowledge improvements. Returns evidence-based recommendations and their owners; not routine completion, code review or automatic rule maintenance.
+description: "Review actual Godot development work and verification records to find useful workflow, rule, tool or knowledge improvements, and return evidence-based recommendations with their owners. Use for a requested retrospective or an observed recurring difficulty. Not for routine task completion, code review or automatic rule edits."
 ---
 
 # Godot development retrospective
 
 Use actual task experience to decide whether the project's way of working needs a focused improvement or deserves reusable knowledge. Support one project user working with an Agent in the task's target checkout. Do not extend the project into multi-user coordination or change-attribution systems.
 
-This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. Apply the existing GDD prerequisite in `methodology/01-product-doc-structure.md` and current project authority; it neither starts a Feature nor replaces its validation or completion work.
+This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. It neither starts a Feature nor replaces its validation or completion work.
+
+A missing GDD does not stop a retrospective. Base the analysis on the available task records; when a conclusion would need a comparison with game design, name that gap instead.
 
 Use [loop-me-godot](../loop-me-godot/SKILL.md) when the user wants to design future handling of identified recurring or anticipated work; that design needs no history of failure.
 
@@ -43,6 +45,8 @@ For each useful recommendation, explain the observed problem or benefit, support
 
 Keep the result in the conversation. This Skill does not automatically edit rules, code, tools, knowledge, state or approval records, create reports, or turn recommendations into a backlog. Review findings cannot rewrite a past decision, advance Stage, supply missing acceptance or establish implementation success.
 
-Return the recommendations and evidence to the coordinating task. Concrete follow-up already authorized continues through its existing owner and applicable checks without a new confirmation merely because this Skill returned. A retrospective-only request ends with the analysis; a genuinely new restriction, unresolved choice or wider scope retains its existing decision boundary.
+Return the recommendations and evidence to the coordinating task. A retrospective-only request ends with the analysis. Already authorized follow-up continues through its owner and the applicable checks; a new restriction, unresolved choice or wider scope still needs its own decision.
+
+Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
 
 Inspired by Matt Pocock's `retro` approach to improving agent work from actual experience; rewritten for this Godot project's workflow, evidence and authorization boundaries.

@@ -1,16 +1,34 @@
 ---
 name: design-audio-direction
-description: "Define or revise shared music, ambience and sound-effect direction and feedback priorities. Use for sound design standards, not asset production or audio review."
+description: "Define or revise shared music, ambience and sound-effect direction and feedback priorities in the Sound Bible. Use for shared sound standards. Not for concrete audio specifications (design-audio-asset-spec), asset production or audio review (review-audio)."
 ---
 
-# Sound Bible
+# Sound direction (Sound Bible)
 
-Follow `methodology/11-specialist-workflows.md`. Read the relevant GDD experience goals, feedback behavior, existing audio conventions and available references.
+Follow `methodology/11-specialist-workflows.md` for ownership, authorization and source impacts. **What stays in the GDD** in that file covers moving sound specifications out of GDD. Read the relevant GDD experience goals, feedback behavior, current audio conventions and available references.
 
-Maintain shared sound specifications only in `docs/audio/sound-bible.md`: sonic identity serving the GDD's experience goals; roles of music, ambience and effects; importance and coexistence of feedback; transitions, repetition fatigue and silence; accessibility needs such as whether essential information also has a visual channel. GDD retains intended player feelings, recognition needs and gameplay feedback triggers and references this specification. Move current in-scope sound specifications already embedded in GDD to the Sound Bible under methodology 11's ownership contract. Scope each rule to its applicable scenes or sound families.
+## Maintain the Sound Bible
 
-Describe useful timbre, texture, rhythmic and dynamic characteristics in terms that guide a concrete specification. Do not invent loudness targets, sample rates, technical bus topology or a complete soundtrack when they are not requirements. Changes to adopted game-design intent or behavior return to GDD through `design-gdd`; project mixing implementation belongs to the authorized task.
+Keep shared sound specifications only in `docs/audio/sound-bible.md`. They cover:
 
-References establish direction only; written descriptions are not listening evidence and no generated examples are promised. Music and SFX production remain reserved capabilities. Use `design-audio-asset-spec` for concrete deliverables and `content-asset-integration` for supplied files. Formal evaluation uses `review-audio` in a different instance. Report confirmed direction, applicable sources and gaps.
+- sonic identity serving the GDD's experience goals;
+- the roles of music, ambience and effects;
+- the importance and coexistence of feedback;
+- transitions, repetition fatigue and silence;
+- accessibility needs, such as whether essential information also has a visual channel.
 
-`design-audio-asset-spec` maintains concrete file entries in this Bible's **Shared resource specifications** section when methodology 01's resource contract selects this owner. Keep the direction standards here and let those entries reference them; do not create a second soundtrack or receiving catalog.
+GDD keeps intended player feelings, recognition needs and gameplay feedback triggers, and links this specification. Scope each rule to its applicable scenes or sound families.
+
+Describe useful timbre, texture, rhythm and dynamics in terms that can guide a concrete specification. Do not invent loudness targets, sample rates, technical bus topology or a complete soundtrack when they are not requirements. Changes to adopted game-design intent or behavior return to GDD through `design-gdd`; mixing implementation belongs to the authorized implementation task.
+
+References establish direction only. Written descriptions are not listening evidence, and no generated examples are promised. Music and SFX production are reserved capabilities with no Skill (methodology 11 **Design, production, integration and review**).
+
+## Hand off
+
+- Concrete deliverables go to `design-audio-asset-spec`. When **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the Sound Bible, that Skill maintains the Bible's **Shared resource specifications** section; this Skill keeps the direction standards those entries reference. Do not create a second soundtrack or receiving catalog.
+- Supplied files go to `content-asset-integration`.
+- Formal evaluation uses `review-audio` in a different instance.
+
+Report the confirmed direction, applicable sources and gaps.
+
+Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

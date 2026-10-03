@@ -4,35 +4,17 @@ Use this reference when creating a GDD entry or topic, revising organization or 
 
 ## Use a navigable structure
 
-For a new GDD, use `docs/gdd/README.md` and the fixed topic paths and naming patterns defined by **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the content-to-location mapping, system keys and reference rules. The entry introduces the game and reading path; topics hold their assigned rules and decisions and link relevant open questions. Use the same structure throughout development, without choosing file placement by size or complexity.
+For a new GDD, use `docs/gdd/README.md` and the fixed topic paths in **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the content-to-file mapping, system keys, reference rules and the handling of imported or differently organized GDDs. The scope and open-questions documents follow their own sections in methodology 01.
 
-Preserve existing topics outside an authorized restructuring scope, including those in an imported single-file GDD. Add new topics and systems at the standard paths and link them from the existing entry, following the naming contract above; revise an existing rule at its current owner until migration is authorized. Standardization updates affected references, but a local addition does not require reorganizing unrelated design or saving a separate copy. Establishing the scope and open-questions documents follows their own creation contracts.
+The entry introduces the game and its reading path. Topics hold their assigned rules and decisions and link relevant open questions. Create a topic when its content is written; do not create empty topics or duplicate decision histories to fill the structure.
 
-Use the configured `document_language` for titles and prose while keeping standard filenames unchanged. System and model instances follow the owning contract's fixed patterns. Do not add numeric prefixes, translated filename variants, ad hoc topic locations, a version-number scheme or role/owner fields.
-
-The standard names are:
-
-```text
-docs/gdd/
-  README.md
-  concept-and-experience.md
-  gameplay.md
-  systems/<system-key>.md
-  balance/<system-key>.md
-  balance/cross-system.md
-  progression.md
-  presentation.md
-  design-scope-and-boundaries.md
-  open-questions.md
-```
-
-These locations are fixed for their stated responsibilities. Create a body when its content is written, including system rules from the first system in a draft; the gameplay overview links them. Do not create empty topics or duplicate decision histories to fill the list.
+Use the configured `document_language` for titles and prose while keeping the standard filenames unchanged. Do not add numeric prefixes, translated filename variants, ad hoc topic locations, a version-number scheme or role and owner fields.
 
 ## Give each rule one owner
 
 Keep a rule's definition, meaningful exceptions and relevant decision or evidence limits together. Other pages link to that location and explain how they consume it. A short navigational summary is useful; maintaining another full rule body is not.
 
-When changing a rule, inspect its affected systems, numeric assumptions, presentation requirements and validation scenarios. Update necessary references within authorization. Moving a file or renaming a heading also requires fixing affected paths and anchors. For planned consumers, follow the existing source-impact route in the Skill entry; document restructuring does not silently change implementation scope.
+When changing a rule, inspect its affected systems, numeric assumptions, presentation requirements and validation scenarios. Update necessary references within authorization. Moving a file or renaming a heading also requires fixing affected paths and anchors. For planned consumers, follow the change route named in the Skill entry; document restructuring does not silently change implementation scope.
 
 GDD owns the game's intended behavior. Product selects a deliverable scope and references GDD. Professional sources refine presentation or production requirements. Feature design and architecture explain implementation. Use these distinct purposes when deciding where content belongs instead of copying the same design into all four.
 

@@ -1,37 +1,36 @@
 ---
 name: design-ui-spec
-description: Design and maintain interface layout, states and interaction presentation in a UI specification. Use for wireframes and Godot prototype inputs; excludes art direction, implementation and UX review.
-metadata:
-  version: 3.0
-  priority: medium
+description: "Design and maintain interface layout, states and interaction presentation in a UI specification. Use for wireframes and Godot prototype inputs. Not for art direction, implementation or UX review."
 ---
 
 # UI specification
 
-Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain the fixed interface/component files under **UI document boundaries** directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reference GDD rules and goals; maintain interface specifications only in their fixed UI file, moving authorized current-scope specifications out of GDD and updating references. Keep protected source inputs intact; `product-author` is not this specification's saving intermediary.
+Follow `methodology/11-specialist-workflows.md` for ownership, authorization and source impacts. Its **UI document boundaries** section fixes the interface and component files and how a shared control moves to `docs/ui/components/<component-key>-design.md`. **What stays in the GDD** in that file covers moving interface specifications out of GDD. Write directly within the authorized scope in the configured `document_language`; discussion-only work returns a proposal.
 
-Read the relevant GDD goals/actions and Product delivery scope, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
+GDD owns player behavior, and Product links adopted requirements for delivery. Reference GDD rules and goals instead of copying them. Keep protected source inputs intact. `product-author` does not save this specification on its behalf.
 
-Select the interface and shared-control boundary using **UI document boundaries** in methodology 11 before naming the output. Independently entered/exited screens and overlays have their own file; subordinate panels and HUD parts stay with their host. A second interface using the same control/dialog contract triggers migration to `docs/ui/components/<component-key>-design.md`, with consumers referencing that body. Shared style alone remains in the Art Bible.
+Read the relevant GDD goals and actions, Product delivery scope, the current interface, the applicable Art Bible, display and input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
 
-When creating, renaming or removing an interface/component specification, or changing the purpose, Product association or component consumers shown in its navigation, read `docs/ui/README.md` and maintain the affected entry in the same authorized change. Do not turn this maintenance into a directory-wide review.
+Select the interface or shared-control document under **UI document boundaries** before naming the output. When creating, renaming or removing an interface or component specification, or changing the purpose, Product association or component consumers shown in its navigation, read `docs/ui/README.md` and update the affected entry in the same authorized change. Do not turn this update into a directory-wide review.
 
 ## Useful specification
 
 Explain how hierarchy, grouping and feedback serve the current user goal. Provide an ASCII wireframe with realistic content, key actions and state differences. Draw separate states only when layouts differ substantially.
 
-When an interaction affects game rules or business state, use the responsibility model in `docs/game-organization.md`: link the governing game rule, distinguish the requested action from its accepted/rejected result, and describe the corresponding display. Hover, focus, panel expansion and display transitions may remain UI-local state. A displayed affordability hint does not replace the logic's purchase decision; actual wiring belongs to implementation.
+When an interaction affects game rules or business state, use the responsibility model in `docs/game-organization.md`. Link the governing game rule, distinguish the requested action from its accepted or rejected result, and describe the corresponding display. Hover, focus, panel expansion and display transitions may remain UI-local state. A displayed affordability hint does not replace the logic's purchase decision; actual wiring belongs to implementation.
 
-Use existing conventions: `[button]`, `[[primary action]]`, `< input >`, `[option ▾]`, `[ ]` / `[x]`, image/icon labels and `↕` for scrolling. Keep the primary action clear for each state. Mark focus, disabled/error/empty/dense states and input navigation where relevant; no requirement to design every possible future screen.
+Use these conventions: `[button]`, `[[primary action]]`, `< input >`, `[option ▾]`, `[ ]` / `[x]`, image and icon labels, and `↕` for scrolling. Keep the primary action clear for each state. Mark focus, disabled, error, empty and dense states and input navigation where relevant; there is no requirement to design every possible future screen.
 
-Distinguish confirmed display/readability constraints from trial values. Include surrounding screen context, viewport/scaling conditions, representative text and resource references, source versus visible-subject scale, and unresolved questions for runtime evaluation. Node properties and incidental tuning stay in implementation.
+Distinguish confirmed display and readability constraints from trial values. Include the surrounding screen context, viewport and scaling conditions, representative text and resource references, source versus visible-subject scale, and unresolved questions for runtime evaluation. Node properties and incidental tuning stay in implementation.
 
-Keep ordinary control states here. For a complete game moment such as collecting a reward, use `design-game-presentation` to maintain its observable process, component requirements and alternative approaches. Link it at the actual UI use and in an end-of-document related-game-presentations navigation section, localized through `document_language`. Several interfaces reference the same shared body while retaining their specific trigger and usage context. The UI document does not replace the presentation's current adoption or implementation references.
+Ordinary control states stay here. A complete game moment, such as collecting a reward, belongs to `design-game-presentation`. Link it from the UI document as **Game presentation documents** in methodology 11 describes; the UI document does not replace the presentation's adoption or implementation references.
 
 ## Handoff
 
-Apply **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md`. The spec supplies questions and inputs for an independently runnable Godot scene; it does not create that scene or prove usability. A requested HTML exploration is separate authorized experiment work and cannot substitute for Godot validation.
+Apply **Visual prototype before dependent implementation** in `methodology/13-prototypes.md`. The specification supplies questions and inputs for an independently runnable Godot scene; it does not create that scene or prove usability. A requested HTML exploration is separate authorized experiment work and cannot replace Godot validation.
 
-Coordinate resource sections with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`. Use **Resource requirements and handoff** in methodology 01 to select the interface, component or presentation owner; resources shared outside one such owner link the **Shared resource specifications** section in `docs/art/art-bible.md` or `docs/audio/sound-bible.md`. Do not create a separate resource list. Adopt actual prototype observations only with the applicable user decision, updating the owning UI specification and routing any behavior changes to GDD through `design-gdd`.
+Coordinate visual resource sections with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`. **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the owning section; do not create a separate resource list. Adopt actual prototype observations only with the applicable user decision, updating the UI specification and routing any behavior change to GDD through `design-gdd`.
 
-Return the source path, confirmed decisions, unresolved questions and relevant planning/prototype inputs. Continue the owning authorized task. Formal UX review uses `review-ux` in a different instance; this Skill cannot grant human acceptance.
+Return the source path, confirmed decisions, unresolved questions and relevant planning and prototype inputs. Formal UX review uses `review-ux` in a different instance; this Skill cannot grant human acceptance.
+
+Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

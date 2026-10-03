@@ -10,9 +10,9 @@ Useful approaches include following a core action, reasoning backward from an ex
 
 ## Compare meaningful alternatives
 
-Offer alternatives only when they differ in player decisions, the loop or another material consequence. For each, explain the player's activity, intended effect, fit with existing constraints, main cost or tradeoff and largest unverified assumption. Label alternatives A/B/C and explain the recommendation without recording it as the user's choice.
+Offer alternatives only when they differ in player decisions, the loop or another material consequence. For each, explain the player's activity, intended effect, fit with existing constraints, main cost or tradeoff and largest unverified assumption. Present them as lettered options under the shared questioning method, and explain the recommendation without recording it as the user's choice.
 
-When the user combines directions, check that their rules and scope fit together. Once a direction is adopted, develop it rather than reopening the choice. Use candidate wording where the user asked for exploration rather than a decision. If saving is authorized, use **Candidate and unadopted ideas** in `methodology/01-product-doc-structure.md`: keep the current comparison in its open question and park ideas with no current decision dependency in `docs/unadopted-ideas.md`; do not scatter speculative system drafts among adopted rules.
+When the user combines directions, check that their rules and scope fit together. Once a direction is adopted, develop it rather than reopening the choice. Use candidate wording where the user asked for exploration rather than a decision. If saving is authorized, save proposals at the owner chosen by **Candidate and unadopted ideas** in `methodology/01-product-doc-structure.md`; do not scatter speculative system drafts among adopted rules.
 
 ## Make the game concrete
 
@@ -26,4 +26,4 @@ For a consequential unknown, state the assumption or requirement, a bounded situ
 
 Rule correctness, player comprehension and intended experience need different evidence. A coherent written loop does not demonstrate enjoyment, and a technical experiment cannot establish retention or market demand. Preserve hypotheses until evidence supports the corresponding claim.
 
-This design task may propose a prototype, calculation or observation. It does not automatically build a Godot prototype, change runtime files or require environment setup. Actual experiments proceed only under the appropriate authorized workflow; reuse existing authorization when the broader task already includes them.
+This design task may propose a prototype, calculation or observation. It does not automatically build a Godot prototype, change runtime files or require environment setup. Actual experiments proceed only under the appropriate authorized workflow; reuse the current authorization when the broader task already includes them.

@@ -1,17 +1,17 @@
 ---
 name: product-author
-description: Organize Product delivery scope from current GDD sources and coordinate authorized Feature planning or synchronization. Game design and GDD writing belong to design-gdd.
+description: "Organize Product delivery scope from current GDD sources and coordinate authorized Feature planning or synchronization. Use for `docs/product.md` and the current Product document. Not for game design or GDD writing (design-gdd)."
 ---
 
 # Product delivery authoring
 
 ## Authority and entry
 
-Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. Product delivery needs actual GDD content covering its scope; an empty directory, purpose notice, Product or code does not substitute for it. If that design is missing or unresolved, return the design work to `design-gdd` within existing authorization before preparing the dependent Product. An unrelated unfinished GDD topic does not block a sufficiently defined delivery.
+Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. Product delivery needs actual GDD content covering its scope; an empty directory, purpose notice, Product or code does not substitute for it. If that design is missing or unresolved, return the design work to `design-gdd` within the current authorization before preparing the dependent Product. An unrelated unfinished GDD topic does not block a sufficiently defined delivery.
 
 Within the current authorization, maintain Product as delivery scope and reference GDD as the game-design source. Read the actual GDD entry and follow its relevant topic links without duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order; apply **Delivery outcomes and prerequisites** in methodology 01 when judging those boundaries. Only the current unit receives `docs/product/NN-name.md`.
 
-Apply `methodology/05-document-language.md`, the project Git contract and applicable Project Rules/accepted architecture decisions. A file, a commit or observed code behavior does not approve a proposed design. Preserve explicit decisions and authorization; discussion-only requests return a proposal without writes.
+Apply `methodology/05-document-language.md`, the project Git rules, the relevant Project Rules and accepted architecture decisions. A file, a commit or observed code behavior does not approve a proposed design. Preserve explicit decisions and authorization; discussion-only requests return a proposal without writes.
 
 ## Select the requested result
 
@@ -40,11 +40,11 @@ Explain the effect of a foundational change, deletion or invalidation of complet
 
 ## Coordinate professional requirements
 
-Under `methodology/11-specialist-workflows.md`, the corresponding Skills maintain presentations, UI, art, audio, resource and localization specifications. GDD owns game rules and overall experience goals; professional specifications have the fixed owners in that contract. A specification previously written in GDD does not acquire GDD ownership: return it to the professional owner for authorized consolidation and update affected references, preserving protected input sources. Link rules and goals at their GDD source without copying them.
+Presentation, UI, art, audio, resource and localization specifications have fixed owners under `methodology/11-specialist-workflows.md`; a specification first written in GDD still belongs to its professional owner, as that file explains. Link game rules and goals at their GDD source without copying them.
 
-For new interfaces or substantial layout/resource changes, use **Visual prototype before dependent implementation** in methodology 01. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in their owning design sections. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
+For new interfaces or substantial layout or resource changes, use **Visual prototype before dependent implementation** in `methodology/13-prototypes.md`. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in `methodology/11-specialist-workflows.md`. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
 
-Pass the configured document language, relevant facts and existing authorization to supporting work. Return its actual result to this task; a Skill handoff does not create another lifecycle or end authorized delivery.
+Pass the configured document language, relevant facts and the current authorization to supporting work, and continue this task with its actual result.
 
 ## Write and validate the sources
 
@@ -57,7 +57,7 @@ Use the Product templates and their semantics from `methodology/templates/README
 - Preserve existing records and filenames; a collision requires inspecting the actual owner rather than overwriting or allocating a duplicate. Meaning-preserving definitions use `project-terminology`.
 - Check source coverage, internal consistency and affected links. Distinguish unreadable material, unadopted proposals, implementation observations and actual user decisions.
 
-Follow `agent-rules/00-core/git-worktree-and-commits.md` for explicit path/hunk staging, cached-diff inspection and validated local commits. Standalone source work uses `docs(product): <中文变更摘要>`; supporting work inside a Feature follows its existing commit boundary. Before initial planning or synchronization, satisfy the committed-source baseline in methodology 02. Report an unmet prerequisite, including a no-commit instruction; do not invent an anchor or absorb unrelated edits.
+Follow `agent-rules/00-core/git-worktree-and-commits.md` for staging only this task's paths or hunks and for validated local commits. Standalone source work uses `docs(product): <中文变更摘要>`; supporting work inside a Feature follows its existing commit boundary. Before initial planning or synchronization, satisfy the committed-source baseline in methodology 02. Report an unmet prerequisite, including a no-commit instruction; do not invent an anchor or absorb unrelated edits.
 
 ## Plan, synchronize and continue
 
@@ -67,7 +67,7 @@ Use **Product-by-Product planning** in methodology 02 and the current request to
 - When planning is authorized, detail the current Product first, then use `feature-plan` once to cover its complete necessary scope with multiple Features. Reuse an existing plan rather than regenerate it.
 - A substantive source change that affects already planned or completed work uses `feature-sync`. A changed future GDD topic can affect current consumers even when that future Product is unplanned.
 - If only future, unplanned scope changes, reflect the owning design result in the relevant overview outline; defer its Product document and Features until its turn.
-- Finish the current Product's required Features before detailing and planning the next. Revisit the next scope against the latest GDD and delivery results, continuing only within existing authorization.
+- Finish the current Product's required Features before detailing and planning the next. Revisit the next scope against the latest GDD and delivery results, continuing only within the current authorization.
 
 Inspect actual planning/synchronization results; invocation is not success. Preserve completed history and use follow-up work for changed completed behavior. A failed synchronization leaves an explicit alignment gap.
 

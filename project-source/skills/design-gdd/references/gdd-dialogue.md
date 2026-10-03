@@ -10,7 +10,7 @@ Track the design choices that matter to the requested scope. Experience goals, p
 
 ## Ask in terms of play
 
-Number questions and label concrete options A/B/C. Give the meaningful consequence and a recommendation where useful, while leaving room for the user's own answer. An open question about an imagined play moment can remain open rather than receiving artificial choices.
+Number questions and letter the options as the shared method describes. For each option, give its consequence for play and, where useful, a recommendation.
 
 Translate vague goals such as satisfying or deep into situations: what the player notices, chooses, does and sees change. When a reference game is supplied, distinguish the property to retain from what the user wants to change. A player's mistake, unexpected choice or repeated action can expose a rule gap; use only the cases relevant to the current decision.
 
@@ -18,11 +18,11 @@ If the answer requires playing or measurement, preserve a hypothesis and propose
 
 ## Continue as answers arrive
 
-Apply the shared method's continuation and progress rules to the remaining design choices. An explicit choice or instruction to follow a concrete recommendation settles the corresponding GDD decision; apply corrections to its affected rules and assumptions while preserving unrelated decisions and the existing writing authority.
+Apply the shared method's continuation and progress rules to the remaining design choices. An explicit choice or instruction to follow a concrete recommendation settles the corresponding GDD decision; apply corrections to its affected rules and assumptions while preserving unrelated decisions and the current writing authority.
 
 ## Keep the current design coherent
 
-When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Overall scope and exclusions follow **Design scope and boundaries** in `methodology/01-product-doc-structure.md`; local rules stay in their topics. Route proposals through **Candidate and unadopted ideas** in that contract: current compared choices go to open questions, alternative values remain with the adopted rule/model, and an idea the user asks to park goes to `docs/unadopted-ideas.md`. Keep its undecided status explicit. Preserve unrelated structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed. In discussion-only work, identify useful confirmed conclusions that remain unsaved when wrapping up.
+When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Overall scope and exclusions follow **Design scope and boundaries** in `methodology/01-product-doc-structure.md`; local rules stay in their topics. Save proposals at the owner chosen by **Candidate and unadopted ideas** in the same file, and keep their undecided status explicit. Preserve unrelated structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed. In discussion-only work, identify useful confirmed conclusions that remain unsaved when wrapping up.
 
 Record the reason for a consequential design choice beside the relevant design. Read and maintain unresolved design choices through **Open design questions** in methodology 01; when a choice is settled, update its owning topic and affected references. Do not create a separate conversation, decision or version ledger. Settled terminology and resumption records use the existing conditional routes in the Skill entry.
 

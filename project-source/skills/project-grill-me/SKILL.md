@@ -1,6 +1,6 @@
 ---
 name: project-grill-me
-description: Resolve material uncertainties in game ideas, GDD drafts, delivery scope, design tradeoffs or domain terms. Settled terminology uses project-terminology; clear requests continue their authorized workflow.
+description: "Resolve material uncertainties in game ideas, GDD drafts, design tradeoffs or domain terms through focused questions. Use for clarifying a game-design choice or an ambiguous term. Not for Product delivery-boundary questions (product-spec-elicitor), recording settled terms (project-terminology) or clear requests, which continue their authorized workflow."
 ---
 
 # Project grill-me
@@ -9,9 +9,9 @@ description: Resolve material uncertainties in game ideas, GDD drafts, delivery 
 
 Resolve material uncertainties within the requested discussion scope and return a useful conclusion or reviewable choice. Read relevant facts and existing decisions before asking. Do not write files merely because a decision was made, and do not insert an interview before a clear authorized action. Settled vocabulary goes directly to `project-terminology`; this Skill is not a mandatory entry to its documentation workflow.
 
-Follow source ownership in `methodology/01-product-doc-structure.md`. This questioning method may support initial game design or GDD drafts before Product and Features exist. Use the user's idea and constraints as inputs and keep proposals distinct from adopted design. Durable GDD authoring belongs to `design-gdd`; discussion does not bypass the design prerequisites of later planning or implementation.
+Follow source ownership in `methodology/01-product-doc-structure.md`. This questioning method may support initial game design or GDD drafts before Product and Features exist. Use the user's idea and constraints as inputs and keep proposals distinct from adopted design. Saving GDD content belongs to `design-gdd`; discussion does not bypass the design prerequisites of later planning or implementation.
 
-When the user explicitly asks to save an idea for later, apply **Candidate and unadopted ideas** in that contract. An idea with no current decision dependency belongs in `docs/unadopted-ideas.md`; save it within that specific writing scope or return it to an already authorized `design-gdd` task. Current design comparisons and adopted-rule alternatives return to their specified owners. Do not create a new GDD system, Product or Feature merely to retain an idea; discussion without writing authorization stays in the conversation.
+When the user explicitly asks to save an idea for later, **Candidate and unadopted ideas** in methodology 01 selects its owner. This Skill saves only an idea with no current decision dependency, in `docs/unadopted-ideas.md` within that specific writing scope, or returns it to an already authorized `design-gdd` task. Current design comparisons and alternatives to adopted rules return to `design-gdd`. Do not create a GDD system, Product or Feature merely to retain an idea; without writing authorization, the idea stays in the conversation.
 
 ## Shared questioning method
 
@@ -19,11 +19,11 @@ Apply this method to the user's current discussion goal, including its remaining
 
 ### Establish facts and group the current questions
 
-Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow the scope contract for reading and persistence rather than inventing exclusions.
+Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow **Design scope and boundaries** for reading and saving instead of inventing exclusions.
 
 For a discussion with several material choices, start with a brief overview of what is settled, which questions are currently known and which depend on earlier answers. This is the current picture, not a promised final question count or an exhaustive design tree. A single clear gap needs no extra overview.
 
-Clear request: no extra question. One material gap: ask about that gap. Group related independent decisions that can already be answered into one understandable set with concrete options and recommendations. Resolve prerequisites before their dependent details, briefly identifying the topics waiting on them. Do not split a related set into repeated one- or two-question turns or impose a fixed question quota. Leave room for a custom answer without demanding unrelated choices.
+A clear request needs no extra question. A single material gap needs one question about that gap. Group related independent decisions that can already be answered into one understandable set with concrete options and recommendations. Resolve prerequisites before their dependent details, briefly identifying the topics waiting on them. Do not split a related set into repeated one- or two-question turns or impose a fixed question quota. Leave room for a custom answer without demanding unrelated choices.
 
 Use the available question mechanism and the user's conversation language, following actual tool limits without turning them into a fixed quota for the discussion. Keep each question visibly numbered and its selectable options labeled with letters, preserving the question text so the user can answer by number and letter; allow a custom answer. An open question need not have artificial options.
 
@@ -47,7 +47,7 @@ Evaluate the user's answer against the relevant facts and constraints, state wha
 
 Answer an explanation request first, then return to the remaining discussion; asking for an explanation is not acceptance of a proposal. When an earlier decision changes, revisit only the answers that depended on it and preserve unaffected decisions. Respect an explicit request to explain only, pause, finish or narrow the scope.
 
-After substantive progress, briefly say what is settled, what remains and what the next questions will resolve. Explain newly discovered questions or changed dependencies. Known remaining items may be counted, but do not invent a fixed total or a completion percentage. Keep this orientation in the conversation; do not create round counters, confidence scores, conversation-tracking ledgers, state files or formatting checks. Authorized GDD writing maintains its existing open-questions document through the owning source workflow.
+After substantive progress, briefly say what is settled, what remains and what the next questions will resolve. Explain newly discovered questions or changed dependencies. Known remaining items may be counted, but do not invent a fixed total or a completion percentage. Keep this orientation in the conversation; do not create round counters, confidence scores, conversation-tracking ledgers, state files or formatting checks. Authorized GDD writing maintains `docs/gdd/open-questions.md` through `design-gdd`.
 
 ### Finish against the discussion goal
 
@@ -55,16 +55,18 @@ An answered subquestion does not complete the whole discussion. Finish when the 
 
 State whether the requested discussion is complete, still awaiting a user choice, or limited by missing facts or validation. Summarize the useful conclusion and any remaining dependency; do not present a missing decision or untested hypothesis as resolved. Continue independent work still authorized, and return to the owning task when its next step is ready.
 
-Game-design discussion needs neither a ready Godot environment nor a detailed Product. Before preparing durable wording, resolve `document_language` through `methodology/05-document-language.md`; this is not a prerequisite for ordinary conversation.
+Game-design discussion needs neither a ready Godot environment nor a detailed Product. Before preparing wording to be saved in a document, resolve `document_language` through `methodology/05-document-language.md`; ordinary conversation does not need it.
 
 ## Finish in the right place
 
 For discussion only, return the conclusion, its important reason and any remaining decision in ordinary prose. Identify useful confirmed conclusions that remain unsaved so they are not mistaken for project source content. Do not create a document or planning handoff merely to close the discussion.
 
-When the current request already authorizes subsequent work, return settled answers, relevant sources and remaining uncertainty to its coordinator so that work continues. Use `design-gdd` for initial game design and GDD rule changes, `design-balance` for numeric design within its boundary, `product-author` for Product delivery scope, `project-terminology` for meaning-preserving definitions, or the appropriate entry in `methodology/00-overview.md` for other work. The destination owns durable writing and its completion rules; do not ask again merely because the Skill changes. Technical structure and decision records follow `methodology/10-architecture-overview.md` within that work's authorization. Do not manufacture Product, Features or ADRs to conclude a conversation.
+When the current request already authorizes subsequent work, return settled answers, relevant sources and remaining uncertainty to its coordinator so that work continues. Use `design-gdd` for initial game design and GDD rule changes, `design-balance` for numeric design within its boundary, `product-author` for Product delivery scope, `project-terminology` for meaning-preserving definitions, or the appropriate entry in `methodology/00-overview.md` for other work. The destination owns writing and its completion rules; do not ask again merely because the Skill changes. Technical structure and decision records follow `methodology/10-architecture-overview.md` within that work's authorization. Do not manufacture Product, Features or ADRs to conclude a conversation.
+
+Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
 
 ## Reuse inside scoped design work
 
-`design-gdd`, `design-balance`, `product-spec-elicitor` and `design-audio-asset-spec` may reuse the shared questioning method above while retaining their own ownership and writing contracts. They return to their existing caller. Reading this method does not start another clarification workflow or call the standardizer recursively.
+Other Skills may reuse the shared questioning method above while keeping their own ownership and writing rules. Reading the method does not start this Skill's workflow; the reusing Skill continues its own task.
 
 Inspired by Matt Pocock's `grill-me` questioning approach; adapted for this Godot project's source ownership and authorization boundaries.

@@ -1,20 +1,33 @@
 ---
 name: design-art-direction
-description: "Define or revise a game's shared visual direction, including choosing its art style. Use for art standards; individual asset specifications and art review have separate Skills."
+description: "Define or revise a game's shared visual direction, including its art style, in the Art Bible. Use for shared art standards. Not for individual asset specifications (design-visual-asset-spec) or art review (review-art)."
 ---
 
-# Art Bible
+# Art direction (Art Bible)
 
-Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Read the relevant GDD experience goals and Product delivery scope, existing visual direction, UI constraints and supplied references, not every game module.
+Follow `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. **What stays in the GDD** in that file covers moving art standards out of GDD. Read the relevant GDD experience goals, Product delivery scope, current visual direction, UI constraints and supplied references, not every game module.
 
-Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. Distinguish a reference's useful properties from permission or ability to reproduce it.
+## Choose the direction
 
-Maintain shared detailed art standards only in `docs/art/art-bible.md`; GDD retains intended player feelings and recognition goals and references these standards. Move current in-scope art standards already embedded in GDD to the Art Bible under methodology 11's ownership contract. A change to the game's adopted overall direction is coordinated with `design-gdd`. Useful specification topics include:
-- visual language and the style choices serving the GDD's experience goals, with practical inclusion/exclusion examples;
-- silhouette, shape, palette, contrast, typography and material/detail treatment where relevant to the current game;
+Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. A reference's useful properties are separate from permission or ability to reproduce it.
+
+## Maintain the Art Bible
+
+Keep detailed shared art standards only in `docs/art/art-bible.md`. GDD keeps intended player feelings and recognition goals and links these standards. Coordinate a change to the game's adopted overall direction with `design-gdd`. Useful topics include:
+
+- visual language and the style choices that serve the GDD's experience goals, with practical inclusion and exclusion examples;
+- silhouette, shape, palette, contrast, typography and material or detail treatment where relevant to the current game;
 - perspective, scale, animation language and visual priority across asset families;
-- applicability and observable constraints needed by UI and resource specifications.
+- applicability and observable constraints that UI and resource specifications need.
 
-Only settle needed decisions; no full-game art catalog or mandatory variant count. Identify confirmed requirements and open choices. Existing references are not produced sample assets. Actual visual-art production is reserved, not implemented.
+Settle only the needed decisions; there is no full-game art catalog or required variant count. Mark confirmed requirements and open choices. Reference images are not produced sample assets. Visual-art production is a reserved capability with no Skill (methodology 11 **Design, production, integration and review**).
 
-Hand concrete file specifications to `design-visual-asset-spec`: it maintains the Bible's **Shared resource specifications** section when the resource contract in methodology 01 selects this owner. This Skill maintains the shared style standards those entries reference; do not duplicate file entries in another catalog. Hand interface presentation to `design-ui-spec` and source impacts to existing planning. Formal evaluation uses a separate `review-art` instance; this Skill does not approve its own design. Return the maintained source, decisions and gaps, then continue the owning task.
+## Hand off
+
+- Concrete file specifications go to `design-visual-asset-spec`. When **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the Art Bible, that Skill maintains the Bible's **Shared resource specifications** section; this Skill maintains the style standards those entries reference.
+- Interface presentation goes to `design-ui-spec`. Effects on planned work use the change routes under **Writing and adoption** in methodology 11.
+- Formal evaluation uses a separate `review-art` instance; this Skill does not approve its own design.
+
+Return the maintained source, decisions and gaps.
+
+Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
