@@ -28,7 +28,7 @@
 
 编写或整理框架技术文档时，使用本仓库的 [Yaya 框架文档编写 Skill](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按当前文档类型读取其中的参考。框架手册的专有分工见 [说明的组织与措辞](framework/docs/framework-maintenance/maintenance-and-sync.md#说明的组织与措辞)。
 
-框架版在上述目录独立维护；[Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 在项目分发源中独立维护，创建器随项目 Skill 目录整包复制，由[项目写作入口](project-source/Project_AGENTS.md#使用说明的可读性)引用。两份 Skill 各自拥有入口、元数据和参考，可独立修改，不跨包引用写作正文。框架版不分发；生成项目拥有自己的 Godot 版副本，不查询框架或接受自动同步。已有项目的更新由用户决定。
+框架版与分发给项目的 [Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护、不跨包引用，分工见[可复用写作 Skill 的维护](framework/docs/framework-maintenance/maintenance-and-sync.md#可复用写作-skill-的维护)。
 
 框架及生成项目共用的术语写法维护在 [框架术语](framework/docs/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，不把两者混为同一份词表。
 
@@ -83,30 +83,13 @@
 
 ## AGENTS.md、Skill 与任务提示词编写
 
-维护本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，按[规则与提示词文件维护约定](framework/docs/framework-maintenance/responsibility-design-guidelines.md#规则与提示词文件维护)核对实际变化并自查。用户要求独立审核时，按[正式审核的独立性](framework/docs/framework-maintenance/responsibility-design-guidelines.md#能力划分与正式审核)执行。
-
-维护上述规则和提示词文件时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
-
-| 关注点 | 编写要求 |
-| --- | --- |
-| 内容归属与去重 | AGENTS.md 只保留代码和配置无法推断的约束，任务提示词补充本次目标、输入与特有约束；流程与测试规则以权威规范为唯一正文。已有 README 或工具配置负责的内容不重复展开，同义规则合并。 |
-| Skill 触发 | description 简短说明职责和具体适用任务，必要时注明易混淆的排除项；不堆砌关键词或用宽泛领域强制触发无关 Skill。 |
-| 按需阅读 | 引用资料时写明适用任务或条件，同一能力的条件分支按需引用；复用仍有效的上下文，不把固定文档组、通读目录或全仓地图设为每轮任务的前置。 |
-| 流程粒度 | 写清必要依赖，保留 Agent 对普通实现细节的判断；不照搬旧模型的逐动作配方，不设置无依据的提问轮数、产物数量或逐阶段发言要求。 |
-| 授权与完成 | 按本次授权定义完成标准，覆盖适用的实现、必要验证与交付；已有具体授权按 [会话延续约定](framework/docs/framework-maintenance/maintenance-and-sync.md#后续用口语继续) 跨 Skill、阶段和后续口语请求沿用。Skill 返回或局部步骤完成不结束已授权工作；授权范围完成、必要前置受阻、缺少决定、范围实质变化或用户要求暂停时停止，实现授权不替代实际人工验收。 |
-| 阻塞可解释 | 指令确实导致暂停或改变方向时，指出具体文件、条款与当前缺口；先核对适用范围和已有授权，不因推测的风险追加确认。 |
-
-紧密相关的几个短语可以保留在一句中；需要分别查阅的并列事项按主题使用无序列表，有真实分类时再增加一层。具体排版遵循上述通用可读性要求，不为压缩行数堆叠信息。模型或工作方式变化后，按真实误触发、冲突、等待和重复工作检查相关指令，不因个别现象叠加普遍规则。
+维护本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，按[规则与提示词文件维护约定](framework/docs/framework-maintenance/responsibility-design-guidelines.md#规则与提示词文件维护)核对实际变化并自查；内容归属、触发、按需阅读、流程粒度、授权与完成、阻塞说明等编写要求都在该节。用户要求独立审核时，按[正式审核的独立性](framework/docs/framework-maintenance/responsibility-design-guidelines.md#能力划分与正式审核)执行。
 
 ## 提示词维护
 
-新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用。用户要求正式审核时，按[审核覆盖与结论](framework/docs/framework-maintenance/responsibility-design-guidelines.md#审核覆盖与结论)交付。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
+新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、开发场景图与 advisor 引用。两份提示词库的结构、一对一场景和命名规则见[提示词与场景准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)；提示词正文不混入 README、规则或工具说明。
 
-任务提示词按用途分别维护在 [Godot 开发提示词库](framework/prompt-scenarios/prompts/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
-
-两份 JSON 各自保留仅含所属 Project 的顶层数组：`yaya-maintenance-prompts.json` 对应 `Yaya 框架维护`，`godot-development-prompts.json` 对应 `Godot 项目开发`。保留 `project`、`categories` 结构，按用途放入对应分类。
-
-提示词与具体场景一对一，名称和目录对应遵循[提示词与场景准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)。新增前核对已有用途，只合并目标与执行边界相同的重复入口，不用一条通用提示词覆盖不同场景。运行验证与提交要求引用所属仓库约定，不在模板中无意覆盖默认行为；任务特有的只读、只验证或不提交例外应限定作用范围。修改后核对[场景索引](framework/prompt-scenarios/scenarios/scenario-index.md)与受影响的使用说明，只同步实际变化，不维护第二份场景清单。
+advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 只读使用 Godot 提示词库。移动或改名该文件时，同步 `project-source/skills/project-next-step-advisor/SKILL.md`；已创建的项目由用户决定是否更新。
 
 ## 本地提交
 

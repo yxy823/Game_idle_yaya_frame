@@ -53,9 +53,9 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
   - `content-localization`：按要求实现。
 - **其他专项工作**：共享设计、资源准备、接入、测量和独立审核按需使用。
 
-素材目前覆盖准备要求、接收与检查；美术、音乐和音效制作保留待扩展边界。工作台提供实际资源查看、试听、分析与组合试调，不自动成为游戏设计或验收结论。
+工作台提供实际资源查看、试听、分析与组合试调，不自动成为游戏设计或验收结论。
 
-同一项目目录内可以暂停、切换和换对话续接，保留真实差异及已有授权；已有明确目标工作目录时，在该目录继续。worktree 按任务需要与授权使用，不是默认前置；不为多人改动归属建立机制。独立调研和审核使用真实可用的专用上下文；角色文件存在不证明加载或隔离成功。
+单人使用、任务续接、worktree 和素材制作的适用范围见[使用范围](framework/docs/README.md#使用范围)。独立调研和审核的角色与独立性要求见操作手册的 [Skill、Agent 与提示词](framework/docs/operation-manual/methods-and-tools/skills-and-agents.md)。
 
 - **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不自动升级或同步。
 - **advisor 入口**：根据项目现状，通过固定绝对路径读取本机 Godot 开发提示词库，选择适用场景、起草具体指令并判断覆盖缺口；执行仍依据项目自己的规则与有效授权。
@@ -65,4 +65,4 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 按修改范围选择静态、工具或真实引擎验证。仅静态任务不创建项目、不启动 Godot 或测试；实际项目验证在明确指定且材料对应本次修改的外部项目进行，机器配置与业务内容不回灌空白默认值。
 
-修改源材料同时核对受影响说明、读写方、复制映射与夹具，具体见 [维护与同步](framework/docs/framework-maintenance/maintenance-and-sync.md)。维护目录见 [框架维护入口](framework/README.md)，命令见 [维护命令](framework/commands/README.md)，职责准则与审核入口见 [职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)。所有结果按实际执行范围报告，旧版本成功、未运行或人工未验收不能写成当前通过。
+修改源材料同时核对受影响说明、读写方、复制映射与夹具，具体见 [维护与同步](framework/docs/framework-maintenance/maintenance-and-sync.md)。维护目录见 [框架维护入口](framework/README.md)，命令见 [维护命令](framework/commands/README.md)，职责准则与审核入口见 [职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)。

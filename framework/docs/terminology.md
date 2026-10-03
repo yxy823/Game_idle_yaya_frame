@@ -15,7 +15,7 @@
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目 |
 | Project | 提示词 JSON 中区分“Yaya 框架维护”和“Godot 项目开发”的顶层名称；不等于 Product 或 Feature |
 
-来源：[维护约定](../../AGENTS.md)、[创建器与维护工具](../README.md)、[复制清单](../commands/project-files.json)。
+来源：[维护约定](../../AGENTS.md)、[创建器与维护命令](../commands/README.md)、[复制清单](../commands/project-files.json)。
 
 ## 设计与交付
 

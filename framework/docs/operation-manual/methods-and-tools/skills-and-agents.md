@@ -40,6 +40,7 @@ Shader 规则入口同时导航这些可选方法。正式实现、限定原型�
 | `plan-review-godot` | 按约定范围审核 GDD 草稿或完整文档、Product 或 Feature 方案，返回有依据的缺口与结论 |
 | `retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `loop-me-godot` | 为用户指出的重复或预计重复工作设计处理方法，明确入口、判断、产出与正文归属 |
+| `technical-documentation-writing-godot` | 编写、更新或整理项目文档的表达与导航，不做游戏设计决定或职责审核 |
 | `project-terminology` | 在 `docs/terminology.md` 统一保存已确认且含义不变的项目定义，维护术语引用 |
 | `design-gdd` | 从想法形成、整合或修订 GDD，维护整体规则、体验目标与跨主题一致性 |
 | `design-balance` | 推导或调整数值模型，直接维护获准的 GDD 数值主题、公式参数与计算说明 |
