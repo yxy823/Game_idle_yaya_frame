@@ -1,69 +1,39 @@
-# GDScript 状态、资源、加载、错误、时间与随机数
+# GDScript 状态、加载、错误、时间与随机数
 
-明确区分定义与配置数据、可变的运行时状态、I/O、时间和随机数。
+把定义数据、可变的运行时状态、I/O、时间和随机数分开处理。
 
-## Resource 与状态语义
+## Resource 与加载
 
-- **[必须]** 按生命周期和状态语义选择 Node、RefCounted 或 Resource，不按方便选择。
-- **[必须]** 定义与配置类 Resource 在运行时保持只读，见 [Resource 角色](../21-resources/roles-sharing-and-locality.md#角色)。可变的运行时状态通常属于单独的权威状态所属方或模型；运行时的修改永远不保存回项目定义的 `.tres` 文件（见[保存规则](../21-resources/identity-paths-and-saving.md#保存与生成)）。
-- **[必须]** 代码依赖共享或缓存的 Resource 时，遵守 ResourceLoader 的缓存身份。不假设重复调用 `load()` 会返回一份新副本。
+- 定义与配置类 Resource 在运行时只读，规则见 [Resource 角色](../21-resources/roles-sharing-and-locality.md#角色)。
+- `load()` 和 `preload()` 返回 ResourceLoader 缓存中的同一个实例。需要独立副本时显式复制，复制方式见[复制](../21-resources/roles-sharing-and-locality.md#复制)。
+- 建议：编写时就确定的依赖用 `preload()` 或导出引用；运行时才选定的用 `load()`。不在逐帧路径中首次加载资源。
+- 后台加载用 `ResourceLoader.load_threaded_request()`，再用 `load_threaded_get_status()` 查询进度，状态为 `THREAD_LOAD_LOADED` 后才调用 `load_threaded_get()`。加载未完成时调用 `load_threaded_get()` 会阻塞调用线程，不能拿它轮询。
 
-## 加载
+## 错误与失败
 
-- **[优先]** 稳定的加载期依赖使用 `preload()`；运行时才选定的依赖使用 `load()` 或 ResourceLoader。
-- **[必须]** 没有明确理由或预加载策略时，不在热循环或对延迟敏感的路径中首次加载资源。
-- **[必须]** 多线程 ResourceLoader 代码使用官方的请求、状态查询和获取流程。不把 `load_threaded_get()` 当作轮询操作。
+- 可恢复的业务失败通过返回值、结果对象、状态或信号表达。`push_error()` 和 `push_warning()` 只做诊断，不承担控制流程。
+- 必需的文件、Resource 或配置加载失败时，返回能与“成功得到空值”区分的结果。只有契约允许缺省的输入才回退到默认值。
+- 文件 API 失败时，保留错误码和对应路径，并在失败处停止：`FileAccess.open()` 返回 `null` 时读 `FileAccess.get_open_error()`，读取后检查 `get_error()`。
+- `assert()` 只检查开发期不变量。条件表达式不能有副作用，因为发布构建不执行断言。
 
-## 错误与确定性
+## 时间域
 
-- **[必须]** 可恢复的业务失败，通过真实的结果、返回值、状态或事件契约来表示。
-- **[必须]** 必需的 Node、Resource 和配置加载失败时，要能与成功得到的空值区分开。只有契约允许省略的输入才使用默认值。
-- **[必须]** `push_error()` 和 `push_warning()` 用于诊断，不用于控制流程。
-- **[必须]** `assert` 只用于开发期不变量。断言条件不能有副作用，因为发布（非调试）构建会忽略断言。
-- **[必须]** GDScript 没有 `throw`、`try`、`except` 或 `finally`。使用明确的返回值、null 或结果契约，并用生命周期回调做清理。
-- **[必须]** 可能返回 `null` 的带类型 Object 返回值要写进文档，并要求调用方检查。集合默认用 `[]` 或 `{}`，不用 `null`。
-- **[优先]** 在需要可复现的玩法规则中，使用确定的、可注入的或由所属方持有的 RNG。不依赖不受控的全局 RNG 状态。
-- **[必须]** 明确时间域。受缩放的玩法时间、物理时间、单调递增的经过时间，以及挂钟或日历时间，不能互相替代。
-- **[必须]** Shader、特效和动画的时间不是权威的玩法状态。
-- **[优先]** 纯规则保持确定：相同的显式输入和已声明的依赖产生相同的结果。
+受缩放的玩法时间、物理时间、单调递增的经过时间和系统日历时间不能互相替代：
 
-```gdscript
-# 开发期不变量；这个断言不是运行时的恢复路径。
-func take_damage(amount: int) -> void:
-	assert(amount >= 0, "damage amount must be non-negative")
-	health -= amount
+| 时间域 | 来源 | 用途 |
+| --- | --- | --- |
+| 玩法时间 | `_process(delta)`、受暂停和 `Engine.time_scale` 影响的 Timer 或 SceneTreeTimer | 随游戏推进、可暂停的玩法 |
+| 物理时间 | `_physics_process(delta)` | 固定步长的移动与碰撞 |
+| 单调经过时间 | `Time.get_ticks_msec()`、`Time.get_ticks_usec()` | 测量时长和超时 |
+| 系统日历时间 | `Time.get_unix_time_from_system()` 等 `_from_system` 方法 | 日期、存档时间戳、离线时长 |
 
-# 这里空的 JSON 对象是有效的；加载失败是另一种结果。
-func load_config(path: String) -> Result:
-	var result := Result.new()
-	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
-	if file == null:
-		result.error = "cannot open config %s: %s" % [path, FileAccess.get_open_error()]
-		return result
-	var contents: String = file.get_as_text()
-	var read_error: Error = file.get_error()
-	file.close()
-	if read_error != OK and read_error != ERR_FILE_EOF:
-		result.error = "cannot read config %s: %s" % [path, read_error]
-		return result
-	var parsed: Variant = JSON.parse_string(contents)
-	if not parsed is Dictionary:
-		result.error = "config must contain a valid JSON object: %s" % path
-		return result
-	result.success = true
-	result.data = parsed
-	return result
+- 暂停与 `Engine.time_scale` 是两个独立的维度。修改计时逻辑时，分别确认暂停时和时间缩放后的行为。
+- 系统时钟可以被用户或操作系统调整。用它计算离线收益等跨会话时长时，处理时间倒退和异常大的跨度。
+- Shader、特效和动画的时间不是权威的玩法状态。
 
-func find_enemy_by_id(id: int) -> Enemy:
-	for enemy: Enemy in enemies:
-		if enemy.id == id:
-			return enemy
-	return null
+## 随机数
 
-class Result:
-	var success: bool = false
-	var data: Variant
-	var error: String = ""
-```
-
-调用方先检查 `success`，再使用 `data`；失败时按项目已有的惯例处理或汇报。上面这个小小的 Result 只用来说明这种区分，不要求建立共享的 Result 框架。对于会给出错误码的文件 API，把错误码连同对应路径一起保留，并在失败处停止。可选的默认值不能把必需的加载失败，变成看似成功的空 Dictionary 或 PackedByteArray。
+- 需要可复现的玩法规则，使用所属方持有或注入的 `RandomNumberGenerator`，每个领域一个实例，不用全局的 `randi()`、`randf()`。
+- 用 `seed` 初始化 RNG；`state` 只用于保存后恢复到同一位置。
+- 不把 Godot RNG 输出的具体数列当作跨引擎版本保持不变的业务契约，除非项目自己实现并持有该算法。
+- 建议：纯规则保持确定，相同的显式输入和依赖得到相同的结果。

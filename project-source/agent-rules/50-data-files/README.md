@@ -1,16 +1,22 @@
 # 50 数据文件规则
 
-适用于设计数据和运行时数据，例如 JSON、CSV、XLSX 和 YAML 文件，生成的规范数据，schema、迁移和数据校验器。
+适用于游戏的设计数据和运行时数据文件（JSON、CSV），生成的规范数据，以及数据的 schema、迁移和校验代码。定义数据做成自定义 Resource（`.tres`）时，同时阅读 [21 Resource 规则](../21-resources/README.md)。
 
 | 文档 | 何时阅读 |
 | --- | --- |
-| `data-lifecycle-and-authority.md` | 任何数据修改：从编写源到玩法使用的生命周期、权威来源、错误类别、运行时加载、打包和信任边界 |
-| `schema-and-types.md` | 定义或修改字段、语义类型或某个数据领域的结构 |
-| `identity-and-references.md` | 定义、重命名或引用业务 ID、别名或关联关系 |
-| `normalization-and-determinism.md` | 规范化取值或写出规范输出 |
-| `generation-and-derived-data.md` | 编写或修改生成器、派生字段或提交到仓库的生成数据 |
-| `schema-evolution.md` | 修改 `schema_version`，或迁移持久化数据或外部数据 |
+| `data-lifecycle-and-authority.md` | 任何数据修改都读：权威来源、错误处理、加载与打包、信任边界、生成与派生数据 |
+| `schema-identity-and-migration.md` | 新增或修改字段与取值规则、业务 ID 与引用，或修改 `schema_version` 与迁移代码 |
 | `json.md` | 解析、写出或信任 JSON |
-| `csv.md` | 解析或编写 CSV |
-| `spreadsheet-and-yaml-authoring.md` | 用 XLSX 或 YAML 编写数据 |
-| `validation.md` | 任何数据修改：确定需要做哪些验证 |
+| `csv.md` | 编写、解析或写出 CSV |
+
+## 验证
+
+测试范围按 [Required、affected 与 full](../../methodology/08-test-traceability-and-evidence.md) 选择；下表列出数据修改在此之外需要的检查。
+
+| 改动 | 需要的验证 |
+| --- | --- |
+| 只改数值或内容 | 用生产加载器加载修改后的文件，校验没有错误 |
+| 字段、类型、ID 或引用规则 | 测试中覆盖新规则的失败情况，例如缺少必填字段、类型错误、重复 ID、悬空引用 |
+| 生成器或规范化代码 | 同一输入连续生成两次，输出逐字节一致；用生产加载器重新加载生成结果 |
+| `schema_version` 或迁移代码 | 每个仍受支持的旧版本夹具都能迁移，并通过当前的全部校验 |
+| 运行时用 `FileAccess` 读取的文件（新增、移动或修改导出设置） | 在实际导出的构建中读取一次 |

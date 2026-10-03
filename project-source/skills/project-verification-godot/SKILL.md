@@ -22,7 +22,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 只运行要求的检查种类，同时保留每种方法要求的范围和已有义务。一次定向的诊断运行，不能满足更大的交付要求。要求的限制与必需的方法或权限冲突时，说明具体冲突，不要悄悄降低检查标准或扩大任务。
 
-本方法不为了通过而修改实现、测试、AC 或检查策略。失败交回已有的负责方；诊断或修复按任务的实际授权进行。原始结果按 `methodology/09-records-reports-and-handoff.md` 的 **报告与清理** 保留。允许的仓库写入，按 `agent-rules/00-core/git-worktree-and-commits.md` 和任务的提交条件执行。
+本方法不为了通过而修改实现、测试、AC 或检查策略。失败交回已有的负责方；诊断或修复按任务的实际授权进行。原始结果按 `methodology/09-records-reports-and-handoff.md` 的 **报告与清理** 保留。允许的仓库写入，按 `methodology/15-task-scope-git-and-reporting.md` 和任务的提交条件执行。
 
 ## 报告并继续
 

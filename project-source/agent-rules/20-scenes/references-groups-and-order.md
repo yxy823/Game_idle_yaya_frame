@@ -1,24 +1,28 @@
 # 场景引用、分组、ID 与顺序
 
-序列化的引用和 Godot 管理的 ID 是有语义的数据。Resource UID、NodePath 和 `%UniqueName` 的身份规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)；本页补充在 `.tscn` 文件内适用的要求。
+Resource UID、场景节点的 `unique_id`、NodePath 和 `%UniqueName` 的身份规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)。本页只补充 `.tscn` 文件内的要求。
 
-## 资源 ID
+## 序列化 ID
 
-- **[必须]** `ExtResource` 和 `SubResource` 的数字 ID 是文件内的序列化标识。不为美观而复制或重新编号。
-- **[必须]** 保留 Godot 4.6 及以后版本中场景 Node 的 `unique_id` 值。不把同一个值复制给复制出来的 Node，也不为可读性重新编号。
-- **[必须]** Godot 4.6 之前保存的旧场景可以合法地没有 Node `unique_id`。仅缺少这些值不代表文件损坏；不为格式统一而生成、补填或重新编号。
-- **[必须]** SubResource 的顺序遵循实际的依赖关系；不盲目重排。
-- **[必须]** 不把已弃用的序列化字段（例如早期版本中关于 `load_steps` 的假设）重新引入 Godot 4.7 场景。
+- `ExtResource` 和 `SubResource` 的 ID 是文件内的引用标识，不为美观复制或重新编号。SubResource 的先后顺序跟随依赖关系，不手工重排。
+- Godot 4.6 起，`.tscn` 的 `[node]` 条目带有 `unique_id`；保存场景时，Godot 给缺少或重复该值的节点分配新值。手工编辑文本时不改写、不重新编号已有的值。复制 `[node]` 条目时删去复制来的 `unique_id`，不自己编造新值。没有 `unique_id` 的节点合法，不手工补填。
+- Godot 4.6 起，场景和资源文件头不再写 `load_steps`，加载时也不读取它。不手工添加或维护 `load_steps`。
 
 ## NodePath 与重命名
 
-- **[必须]** 重命名 Node 或更换其父节点，是一次[场景引用迁移](../00-core/godot-resource-references.md#场景引用)。在 `.tscn` 中，检查并验证 NodePath 属性、动画、`node_paths`、信号连接、父节点与 owner、脚本、继承场景中的覆盖以及代码中的消费方。
-- **[必须]** 给 Node 添加、复制或启用 `unique_name_in_owner` 之前，确认它的名字在整个 owner 范围内唯一，而不只是在同级节点之间唯一。不让复制子树悄悄产生重复的 `%Name`。
-- **[必须]** 如果会出现唯一名冲突，有意识地选定并迁移受影响的名字，更新每一个使用该 `%Name` 的地方，并重新验证引用能否解析。
+重命名节点或更换父节点是一次[场景引用迁移](../00-core/godot-resource-references.md#场景引用)。在 `.tscn` 中检查：
+
+- NodePath 属性和 `node_paths` 列表；
+- 动画轨道路径；
+- `[connection]` 条目中的 `from` 和 `to`；
+- 子节点的 `parent` 路径和 owner；
+- 继承场景和实例上的覆盖；
+- 代码中的 `$`、`%` 和 `get_node()` 路径。
+
+给节点启用 `unique_name_in_owner`，或复制带唯一名的子树之前，确认名字在整个 owner 范围内唯一，而不只是在同级节点之间唯一。出现冲突时，选定新名字，更新每一处使用该 `%Name` 的代码和场景，再验证引用能解析。
 
 ## 分组与顺序
 
-- **[必须]** 分组是行为声明，不是装饰性的元数据。不分析使用它的消费方，就不移除或规范化分组。
-- **[必须]** 不创建以 `_` 开头的自定义项目分组，因为 Godot 用下划线开头的名称表示内部约定。
-- **[必须]** 分组命名和遍历顺序遵循 [分组与层](../40-project-config/groups-and-layers.md#分组)。
-- **[必须]** 同级顺序和索引顺序，可能对绘制、布局、处理和序列化行为有语义，在继承场景和实例场景中也一样。不为美观或文本整洁而按字母排列、重排或排序 Node。
+- 分组是行为声明。移除或改名分组前，找出所有调用 `is_in_group()`、`get_nodes_in_group()`、`call_group()` 的消费方。分组命名和遍历顺序遵循[分组](../40-project-config/subsystem-settings.md#分组与层)。
+- 不创建以 `_` 开头的自定义分组；Godot 用下划线开头的分组名做内部用途。
+- 同级顺序决定 2D 绘制顺序、Container 布局、处理顺序和焦点顺序，在实例和继承场景中也一样。不为美观按字母重排节点。

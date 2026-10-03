@@ -1,52 +1,103 @@
-# GdUnit4 运行器配置
+# gdUnit4 运行器与诊断
 
-本文记录项目固定使用的 gdUnit4 运行器在编写和运行测试时需要注意的行为。`docs/methodology-config.json` 提供 Godot 可执行文件及其实测版本。测试选择、运行记录和完成证据在 [methodology 08](../../methodology/08-test-traceability-and-evidence.md) 中规定。
+项目固定使用 `addons/gdUnit4/` 中的 gdUnit4，版本以其 `plugin.cfg` 为准。测试的选择和完成证据见 [methodology 08](../../methodology/08-test-traceability-and-evidence.md)；本文写包装脚本的实际行为，以及编写测试时要配合的地方。
 
-## 启动与进程限制
+## 运行方式
 
-项目自己的包装脚本直接调用配置的 Godot 可执行文件：
+所有测试都通过包装脚本运行，从项目根目录执行：
 
 ```text
-<godot> --path <project> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <unique-run-directory> -a <target> [-c]
+python -B tools/testing/run-gdunit-tests.py --target tests/unit/<suite>.gd
+python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ```
 
-Godot 选项写在脚本路径之前。这种启动方式不使用第三方提供的批处理启动器、`--remote-debug` 或默认的 `--headless` 开关。
+`--target` 用于迭代和诊断，不产生完成证据；`--feature` 的范围选项见[运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
 
-- 每次运行都有有限的墙钟时间上限，用 `--timeout-seconds` 设置（默认 120 秒）。等待超过上限的测试会让本次运行失败。
-- 标准输入已关闭，所以测试不能等待控制台输入。
-- stdout 和 stderr 按顺序写入同一份日志。
-- 每次运行把引擎日志、测试发现、JUnit 和诊断报告保存在 `reports/gdunit-wrapper/` 下自己的目录中。诊断失败时到那里读取。缺失、有歧义或过期的 JUnit 不能让一次运行成立。运行目录的布局、`result.json` 以及进程与超时处理，见 [基于原件的完成判定](../../methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
+- 包装脚本用 `docs/methodology-config.json` 中的 Godot 可执行文件，以 `--path <项目> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <运行目录>` 启动。
+- 每个选择器生成一个 `-a <路径>` 参数。`--continue` 对应 gdUnit 的 `-c`；不加时，gdUnit 在第一个失败处停止。
+- 不使用 `--headless`：gdUnit 在无头模式下拒绝运行，因为 InputEvent 不会传递。测试窗口以最小化方式运行。
+- 进程归属依赖 Windows Job Object，只支持 Windows。
+- `--timeout-seconds` 设置墙钟上限，默认 120 秒。超时即失败，并结束本次创建的整个进程树。
+- 标准输入已关闭，测试不能等待控制台输入。
 
-## 测试发现与判定
+每次运行有自己的目录 `reports/gdunit-wrapper/<F0XX 或 focused>/run-<id>/`：
 
-- **[必须]** GDScript 测试套件继承 `GdUnitTestSuite`，每个测试用例使用运行器发现测试所要求的 `test_` 前缀。
-- **[必须]** 聚焦执行通过项目的判定包装脚本，确认要求的测试套件和测试用例已被发现并执行。仅凭运行器的退出码不能证明这一点。
-- **[必须]** 项目的测试命令使用 `tests/` 下配置的查找根目录，以及项目自己的包装脚本 `tools/testing/run-gdunit-tests.py`，调用方式见 [运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
-- **[必须]** 当前的运行器配置监控脚本错误、未预期的 `push_error()`、未预期的 `push_warning()`、孤立节点和不稳定结果。执行了零个测试的运行不是 PASS，见[运行器与测试发现](test-selection-and-gates.md#运行器与测试发现)。
-- **[必须]** 固定版本运行器的 push-error 监控也会捕获警告。用限定范围的 GdUnit 预期诊断断言声明预期的错误或警告；只有该断言是协程时才 `await` 它。不要全局关闭监控。
+| 文件 | 内容 |
+| --- | --- |
+| `result.json` | 选择范围、实际命令、选择器、进程结果、错误和原始报告的哈希 |
+| `engine.log` | 按顺序合并的 stdout 与 stderr |
+| `discovery.json` | gdUnit 实际发现的用例，包括展开后的参数化用例 |
+| `report_*/results.xml` | JUnit 报告 |
+| `report_*/diagnostics.jsonl` | 会话钩子记录的诊断和已声明的预期诊断 |
 
-### 测试函数体之外的诊断
+## 判定
 
-在固定版本的运行器中，`STARTED` 早于 `before_test()`，随后启动的监控会清除这个钩子产生的诊断。套件的 `after()` 和退出清理同样缺少可靠的 JUnit 诊断覆盖。因此，包装脚本在整个生命周期中识别 Godot 原生的标题、消息和源码位置记录，测试横幅也不会关闭这些检查。这不是在任意输出中搜索错误字样。
+结论只看 `result.json` 的 `status`，以及脚本最后输出的 `TEST VERDICT: PASS` 或 `TEST VERDICT: FAIL - <原因>`。不要根据 gdUnit 的退出码或控制台末行推断通过。失败时先读 `result.json` 的 `errors`，再读同目录的 `engine.log`。
 
-- 项目自己的会话钩子 `tools/testing/gdunit_diagnostic_session.gd`，把诊断和正面匹配上的限定范围断言记录到当前报告的 `diagnostics.jsonl` 中。它观察公开的执行上下文、信号和监控条目，不修改第三方代码的状态。
-- 每条诊断 ID 和源记录把每项豁免绑定到本次运行。额外出现的未匹配诊断仍然导致失败。
-- 诊断证据缺失、不完整或不匹配时失败关闭。钩子启动之前和关闭之后的原生记录，受同样的检查。
-- JUnit、非零的进程退出码和超时仍是相互独立的失败来源。固定版本的 JUnit 写出器会省略孤立节点记录，但运行器的孤立节点退出码 101 仍会让包装脚本判定失败。
+包装脚本在以下情况判失败，完整的失败条件见 08 的[什么情况下运行失败](../../methodology/08-test-traceability-and-evidence.md#什么情况下运行失败)：
 
-## 协程断言
+- Godot 进程退出码不是 0，或超时。gdUnit 有失败用例时返回 100，只有孤立节点时返回 101，两者都失败。
+- JUnit 报告缺失或不止一份，或者计数与用例节点不一致。
+- 有失败、跳过或标记为 flaky 的用例。
+- `discovery.json` 与 JUnit 用例不一致，或者选中的套件、源码中声明的 `test_` 方法没有执行。
+- `diagnostics.jsonl` 缺失或不完整，或者出现任何未声明的诊断（见[诊断监控](#诊断监控)）。
+- Feature 运行期间源码指纹发生变化。
 
-- **[必须]** await GdUnit 的协程断言。特别是 `assert_signal(...).is_emitted(...)` 和 `is_not_emitted(...)` 必须 `await`；省略它可能悄悄跳过断言。
-- **[必须]** 协程断言同样遵循 `time-randomness-and-async.md` 中关于有界等待和观察者顺序的规则。
+## 编写测试时的约定
 
-## 清理与 ProjectSettings
+- 套件直接或经 `class_name`、脚本路径间接继承 `GdUnitTestSuite`，测试方法以 `test_` 开头。包装脚本按源码声明核对执行；无法解析的 `extends` 表达式直接失败。
+- 不用跳过、`-i` 忽略列表或过滤来绕过失败。被跳过的用例本身就让运行失败。
+- `project.godot` 设置了 `flaky_check_enable=false`，失败的用例不会重试。不要打开重试来掩盖不稳定。
+- `await` 每一个协程断言，包括 `assert_signal(...).is_emitted()`、`is_not_emitted()` 和 `assert_error(...)` 的各个匹配方法。漏写 `await` 时，测试不等断言完成就继续，失败可能不被计入。
 
-- **[优先]** 测试拥有的对象用 `auto_free()` 登记，或执行在测试边界之前完成的显式 teardown。
-- **[必须]** 固定版本的运行器会对尚未执行的 `queue_free()` 报告误报的孤立节点。需要时等待真实的空闲或删除条件；不要用关闭孤立节点检测来绕过。
-- **[必须]** 运行器的 `ProjectSettings` 快照只在以下情况下可靠：恢复的是拍快照时已存在、恢复时仍存在的键的值。
-- **[必须]** 新增或删除 `ProjectSettings` 键的测试使用显式清理或进程隔离；不依赖运行器快照恢复键的集合。
-- **[必须]** 通过 `ProjectSettings.save()` 测试持久化的测试，在明确隔离的进程中运行，并有自己的清理契约。其他测试遵循 [Autoload 与 ProjectSettings 规则](production-isolation.md#autoload-与-projectsettings)。
+## 诊断监控
+
+`project.godot` 的 `[gdunit4]` 节开启了 `report/godot/push_error`、`report/godot/script_error` 和 `report/verbose_orphans`，并注册了会话钩子 `tools/testing/gdunit_diagnostic_session.gd`。注意：gdUnit 的 push_error 监控同时记录 `push_warning()`。
+
+包装脚本另外解析 `engine.log` 中的原生记录，即 `ERROR`、`WARNING`、`SCRIPT ERROR`、`SHADER ERROR` 标题加 `at:` 源码位置行。解析覆盖整个进程生命周期，包括 gdUnit 自身监控不到的 `before_test()`、`after()` 和退出清理阶段。这不是在任意输出中搜索错误字样。
+
+- 任何未声明的错误、警告、脚本错误或 Shader 错误都让运行失败。出现新警告时，调查并修复来源，不要抑制。
+- 不全局关闭监控，不修改 `[gdunit4]` 的 report 设置，不放宽包装脚本或会话钩子。
+- 不为了让测试通过，删除或降级有效的生产诊断。
+
+### 预期的错误与警告
+
+错误或警告本身就是被测契约时，在测试中用限定范围的断言声明它，并同时断言对应的结果或事后状态：
+
+```gdscript
+func test_remove_unknown_item_reports_error() -> void:
+	var inventory := Inventory.new()
+	var remove_missing := func() -> void: inventory.remove_item(&"missing")
+	await assert_error(remove_missing).is_push_error("Unknown item: missing")
+	assert_int(inventory.item_count()).is_equal(0)
+```
+
+- 只有 `is_push_error()`、`is_push_warning()` 和 `is_runtime_error()` 匹配成功时，会话钩子才把对应的一次诊断记为预期。`is_success()` 不豁免任何诊断。Shader 错误无法声明为预期。
+- 每次匹配只豁免一次出现。同样的诊断多出现一次，仍然失败。
+- 这些方法按完整消息相等比较，也接受 gdUnit 的参数匹配器。被测代码的消息里不拼入绝对路径、行号等易变内容。
+
+## 日志与错误处理
+
+- 普通业务测试不把 stdout 或日志文本当作唯一的成败依据，应断言结构化结果。消息本身是开发者或工具诊断的契约时，可以断言文本。
+- `push_error()` 和 `push_warning()` 不代替失败控制流。可能失败的操作返回结构化结果，测试断言这个结果。
+- 捕获失败后走回退路径的代码，测试原始失败能否识别、回退后的结果，以及要求的诊断。
+
+## 孤立节点
+
+- 运行结束时仍有孤立节点，gdUnit 返回 101，包装脚本判失败。没有可接受的“基线”孤立节点。
+- JUnit 报告不记录孤立节点，定位时读 `engine.log` 中 gdUnit 的孤立节点输出。
+- 测试创建的 Node 用 `auto_free()` 登记，或在 `after_test()` 中释放。
+- 注意：已移出场景树、但 `queue_free()` 还没执行的 Node 也算孤立节点。需要时 `await await_idle_frame()` 等待删除完成，不关闭孤立节点检测。
+- 孤立节点检测不能证明文件、信号、线程、Timer 和 Resource 已经清理，这些按 [fixtures-and-isolation.md](fixtures-and-isolation.md) 处理。
+
+## ProjectSettings 快照
+
+gdUnit 在每个套件和每个用例前后为 ProjectSettings 拍快照。恢复时只写回快照中存在、且恢复时仍存在的键的值：新增的键不会删除，删除的键不会恢复。
+
+- 新增或删除 ProjectSettings 键的测试，自己清理，或在隔离的进程中运行。
+- 调用 `ProjectSettings.save()` 的测试，在隔离的进程中运行，并有自己的清理。其他测试不写 `project.godot`，见[Autoload 与 ProjectSettings](production-isolation.md#autoload-与-projectsettings)。
+- 快照不覆盖 InputMap、`Engine.time_scale`、暂停等其他全局状态，这些按[全局状态](fixtures-and-isolation.md#全局状态)恢复。
 
 ## 运行器版本变更
 
-- **[必须]** 配置的运行器版本改变时，重新验证测试发现、诊断监控、报告字段、协程行为、孤立节点处理和 `ProjectSettings` 恢复。只有完成这些核实后，才删除针对特定版本的绕行方案。
+更新 `addons/gdUnit4/`，或修改 `tools/testing/` 与 `[gdunit4]` 配置时，重新核对：测试发现与 `discovery.json`、JUnit 字段、诊断监控与会话钩子、协程断言、孤立节点退出码，以及 ProjectSettings 快照的行为。核对完成之前，不删除针对旧版本的绕行代码。

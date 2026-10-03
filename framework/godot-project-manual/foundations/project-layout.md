@@ -19,7 +19,7 @@
 | `.agents/skills/` | 各项专门方法（Skill） | 所属 Skill / 主 Agent 按任务选用 |
 | `.codex/agents/` | researcher、independent-reviewer 等角色配置 | 所属配置 / 宿主加载；文件存在不代表宿主已加载 |
 | `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
-| `docs/project-rules.md` | 项目的开发约束与工程原则，强度分 MUST、PREFER、REVIEW | 获准的规则修改 / 受影响的工作 |
+| `docs/project-rules.md` | 项目的开发约束与工程原则；条目默认必须遵守，写“建议：”的可有理由地偏离 | 获准的规则修改 / 受影响的工作 |
 | `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
 
 ### 设计与专业规格

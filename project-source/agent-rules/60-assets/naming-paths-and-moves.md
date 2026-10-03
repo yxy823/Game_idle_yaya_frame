@@ -1,0 +1,34 @@
+# 素材命名、路径与移动
+
+## 命名与组织
+
+- 项目自有的目录、脚本、场景、Resource、Shader、运行时数据和素材，使用小写英文 `snake_case` 命名。第三方文件和工具要求的文件名按原样保留；文档沿用自己的命名约定。
+- 不使用只有大小写不同的文件名。
+- 文件名写出领域对象和职责，例如 `production_state.gd`、`producer_definition.gd`、`copper_ore_icon.png`。只有用来区分有意义的差异时，才加序号或变体后缀。
+- 场景与它专用的根脚本放在同一目录，使用相同的基础名。共享脚本不必与场景同名。全局 `class_name` 的命名见 [GDScript 命名](../10-gdscript/typing-and-api.md#风格与命名)。
+- 只有确实承担对应角色时才使用 `Manager` 等后缀。`Manager` 不意味着要注册为 Autoload。
+- 建议：按所属领域、场景或功能组织目录，让相关的场景、脚本和素材放在一起，不按扩展名建大分类目录。第三方素材包保留原有的目录边界，便于更新和追溯来源。
+- 已有文件不符合命名约定时，只在当前任务涉及它时，按下文的移动方式改名，不保留旧名称作别名或回退路径。其他违规按[任务范围](../../methodology/15-task-scope-git-and-reporting.md#范围判断)报告。
+
+基础目录、各类游戏的示例，以及归属不明确时的取舍，见项目的 `docs/game-organization.md`。
+
+## 移动、重命名与复制
+
+- 建议在编辑器的文件系统面板中移动、重命名和复制，让 Godot 更新引用。
+- 在编辑器外移动或重命名时：
+  - 素材与同名的 `.import` 文件一起移动，脚本和 Shader 与同名的 `.uid` 文件一起移动，分开会丢失 UID 或导入设置；
+  - 移动后让 Godot 扫描和导入（见[重新导入](import-configuration.md#重新导入)），检查有没有缺失依赖的报错。
+- 在编辑器外复制出一个独立的新素材时，不复制原文件的 `.import` 或 `.uid`，让 Godot 为新文件生成新的 UID。UID 的规则见[资源引用](../00-core/godot-resource-references.md#资源引用)。
+- 注意：UID 只能修复 Resource 引用。脚本中按字符串路径 `load()` 的代码、`FileAccess` 读取的路径和数据文件中的路径，需要逐个更新。
+- 重命名文件不会改变业务 ID。业务 ID 的迁移见[业务 ID 与引用](../50-data-files/schema-identity-and-migration.md#业务-id-与引用)。
+- 修改前分清是哪一种：
+  - 替换内容：路径和 UID 不变；
+  - 移动或重命名：仍是同一个素材，UID 不变；
+  - 用新素材替换旧素材：新素材有新的 UID，引用改为指向它。
+
+## 删除
+
+未使用素材的报告只给出候选。删除的许可与范围见[删除与派生产物](../../methodology/15-task-scope-git-and-reporting.md#删除与派生产物)。
+
+- 删除前搜索对它的引用：场景、Resource、脚本中的路径字符串、数据文件、本地化和测试。
+- 源文件与它的 `.import` 一起删除。`.godot/imported/` 中的缓存交给 Godot 处理，不手工整理。

@@ -1,26 +1,32 @@
 # Shader 的语言与结构
 
-使用目标版本 Godot 4.7 的准确 Shader 语义；Shader 只负责视觉，不承担权威的玩法逻辑。
+Shader 只负责表现，不持有权威的玩法状态。语法和语义以 Godot 4.7 为准。
 
-## 目标语言
+## 语言与阶段
 
-- **[必须]** `shader_type` 和渲染模式与实际的 Node、材质、渲染路径以及目标 Godot 4.7 API 一致。
-- **[必须]** 未对照目标版本核实之前，不要从 Godot 3、`latest` 或 `master` 照搬 Shader 语法或渲染模式。
-- **[必须]** 新增、删除或修改渲染模式属于渲染管线行为，不是外观上的文本修改。
-- **[必须]** 局部变量在每条控制流路径上被读取前都已初始化。编译成功不代表未定义值在不同 GPU 和驱动上表现一致。
-
-## 阶段语义
-
-- **[必须]** 每个自定义 Shader 函数定义在调用它的函数之前。被 `vertex()`、`fragment()` 或 `light()` 调用的辅助函数写在这些处理函数上方。
-- **[优先]** 为了可读性，按 Godot 的代码顺序书写：`shader_type`、渲染模式、uniform、常量、varying、辅助函数，最后是处理函数。这个顺序中的排版选择并非都是编译要求。
-- **[必须]** 阶段之间的自定义数据通过 `varying` 传递。不要假定不同阶段里名称相似的内置变量共享自定义状态。
-- **[必须]** 离散的 ID 或类别在插值会破坏语义时，使用 `flat` 插值。
-- **[必须]** 只在 Godot 允许赋值的处理函数中给 varying 赋值。
-- **[必须]** Shader 代码永远不成为权威的玩法状态。
+- `shader_type` 和渲染模式与实际的节点、材质和渲染器一致。来自 Godot 3、`latest` 或 `master` 资料的语法和渲染模式，先对照 4.7 核实。
+- 改渲染模式会改变渲染管线行为，按 README 的验证表做渲染验证。
+- 局部变量在每条控制流路径上都先初始化再读取。注意：编译通过不代表未初始化的值在各 GPU 上表现一致。
+- 阶段之间的自定义数据用 `varying` 传递。离散的 ID 或类别加 `flat`，避免被插值。
 
 ## Shader 类别
 
-- **[必须]** 粒子 Shader 跨帧保留状态，面向 GPU 粒子。开始、重启、保留数据、`CUSTOM` 或 `USERDATA` 的生命周期有影响时，跨帧验证。
-- **[复核]** 使用 `TIME`、动态 uniform、`LIGHT`，或使用半分辨率、四分之一分辨率通道的天空 Shader，可能改变辐照度立方体贴图的更新开销。把它们当作天空管线工作评估，不当作普通 fragment 工作。
-- **[必须]** 雾 Shader 需要真正支持预期行为的渲染器和体积雾路径。评估 FogVolume 和 froxel 覆盖的开销。
-- **[必须]** `texture_blit` 的假设限定在它的 DrawableTexture 契约之内；不要盲目套用 CanvasItem 的假设。
+- **粒子**：`particles` Shader 的状态跨帧保留。改 `CUSTOM`、`USERDATA`、`keep_data` 或开始与重启逻辑时，运行多帧并在重启后再检查。
+- **天空**：使用 `TIME`、`LIGHT0_*`–`LIGHT3_*` 或 `use_half_res_pass`、`use_quarter_res_pass` 会增加辐照度立方体贴图的更新开销。引入这些用法时检查开销。
+- **雾**：`fog` Shader 只作用于 FogVolume，需要启用 `Environment.volumetric_fog_enabled`。注意：体积雾只在 Forward+ 中支持。
+- **texture_blit**：供 `DrawableTexture2D.blit_rect()` 使用（实验性 API）。入口函数是 `blit()`，内置变量只有 `UV`、`FRAGCOORD`、`MODULATE`、`TIME` 和输出 `COLOR0`–`COLOR3`，没有 CanvasItem 的 `TEXTURE`、`VERTEX`。
+
+## Include
+
+- 多个 Shader 共用的稳定逻辑才提取为 `.gdshaderinc`；不为一两行表达式建 include。
+- include 之间不成环。函数和宏使用带语义前缀的名称，避免重复定义。
+- 嵌套 include 超过 25 层时预处理器报错。保持 include 链浅。
+- 修改、重命名或移动 include 时，同步所有 `#include` 路径，并重新编译每个直接和传递使用它的 Shader。
+
+## 性能与首次使用卡顿
+
+- 循环的终止必须可证明。由 uniform 控制次数的循环，用 `hint_range` 或 `clamp` 给次数设上界。
+- 没有目标平台的实测证据时，不加 `lowp`、`mediump` 做优化。
+- `discard` 用于镂空和遮罩，不当作 alpha 为零时的性能优化。
+- 屏幕纹理、`next_pass` 和大量采样的开销取决于覆盖面积、实例数量和硬件。需要性能结论时实测。
+- 预加载 Resource 不会编译它的渲染管线。首次使用的卡顿有影响时，实测首次绘制。

@@ -1,50 +1,38 @@
-# Resource 角色、共享与场景本地化
+# Resource 角色、共享与复制
 
-先给 Resource 归类，再判断对它的修改、共享或场景本地行为是否正确。
+先确定 Resource 的角色，再判断对它的修改、共享、复制或场景本地化是否正确。
 
 ## 角色
 
-- **[必须]** 把 Resource 归为以下一类：定义或配置数据、实例本地状态、明确的运行时可变共享状态。
-- **[必须]** 定义与配置类 Resource 默认在运行时只读。可变的运行时状态属于单独的所属方（见[持久化资源图](duplication-and-runtime-state.md#持久化资源图)），并按[保存规则](identity-paths-and-saving.md#保存与生成)保存。
-- **[必须]** Resource 是外部 `.tres` 还是 SubResource，本身不能证明它是共享的还是唯一的。
+- 每个 Resource 归为一类：定义或配置数据、实例本地状态、有意共享的运行时可变状态。
+- 定义与配置类 Resource（包括 `res://` 下的 `.tres`）在运行时只读。它们会被所有加载者共享，运行时修改会影响每个使用者。可变的运行时状态由单独的所属方或模型持有，保存位置见[保存](identity-saving-and-schema.md#保存)。
+- 外部 `.tres` 还是内嵌的 SubResource，不能说明它是共享的还是唯一的；按实际引用关系判断。
+- 建议：物品、技能、关卡配置这类可在检查器中编辑的定义，用带类型的自定义 Resource，存为文本 `.tres`。不需要手工转成 `.res`：项目设置 `editor/export/convert_text_resources_to_binary` 默认开启，导出时会转为二进制。
+- 因为导出后扩展名可能变化，代码用 `load()` 或 `ResourceLoader` 读取 Resource，不用 `FileAccess` 按路径读取 `.tres` 文本。
 
-### 数据驱动的编辑
+## 变更通知
 
-- **[优先]** 物品数据、技能、敌人参数、关卡配置或对话等可在检查器中编辑的定义，使用带类型的自定义 Resource。
-- **[优先]** 仓库中的源 Resource 保持 `.tres` 格式，因为它是文本，版本控制可以审查和比对差异。
-- **[必须]** 不要求在发布前仅为打包而手工把 `.tres` 转换为 `.res`；Godot 的导出流程可以处理二进制打包。只有明确的体积、性能或二进制源文件需求时，才直接编写 `.res`。
-- **[必须]** Resource 是数据，不是 SceneTree 中的 Node；它没有 `_process` 回调，不参与逐帧处理。
-
-```gdscript
-# res://resources/enemy_stats.gd
-class_name EnemyStats
-extends Resource
-
-@export var enemy_name: String = ""
-@export var max_health: int = 100
-@export var attack: int = 10
-@export var icon: Texture2D
-@export var loot_table: Array[ItemData] = []
-```
-
-通过 FileSystem → New → Resource 创建 `EnemyStats` 的 `.tres`，并在检查器中编辑。运行时才选定时用 `load()` 加载，或者通过明确的 `@export` 引用指定。
-
-### 变更通知
-
-- **[必须]** 导出值变化时，自定义 Resource 不会自动发出 `changed`。如果消费方依赖变更通知，在 setter 中发出它，同时保持属性的不变量。
+- 自定义 Resource 的导出属性变化时，不会自动发出 `changed`。消费方依赖这个通知时，在 setter 中调用 `emit_changed()`：
 
 ```gdscript
-@export var hp: int = 100:
+@export var max_level: int = 10:
 	set(value):
-		if hp != value:
-			hp = value
+		if max_level != value:
+			max_level = value
 			emit_changed()
 ```
 
+## 复制
+
+- 复制前决定顶层 Resource、容器、内部子资源和外部 Resource 中哪些共享、哪些复制：
+  - `duplicate(false)`：只复制顶层；嵌套的 Array、Dictionary 和 Resource 与原件共享。
+  - `duplicate(true)`：递归复制嵌套容器，但只复制内部（本地）子资源，外部 `.tres` 仍然共享。
+  - `duplicate_deep(mode)`：用 `DEEP_DUPLICATE_NONE`、`DEEP_DUPLICATE_INTERNAL` 或 `DEEP_DUPLICATE_ALL` 选择子资源的复制范围。
+- 深度复制时，原资源图中被引用多次的同一个 Resource 只复制一次，副本中仍是同一个对象。身份重要时，测试复制结果中的共享关系，而不只比较值。
+- 建议：持久化的资源图保持无环，子资源不反向引用所属的父资源。业务上确实有环或关联的数据，用稳定 ID 加查找表示。
+
 ## 场景本地
 
-- **[必须]** 只有每个 PackedScene 实例确实需要自己的一份 Resource 副本时，才使用 `resource_local_to_scene`。
-- **[必须]** 在运行时修改 `resource_local_to_scene`，不会回溯克隆已经实例化的 Resource。
-- **[必须]** `_setup_local_to_scene()` 用于初始化实例本地的副本；它不能顺带修改外部的源 Resource。
-- **[必须]** 场景本地的初始化通过重写 `_setup_local_to_scene()` 实现。业务代码或 Agent 代码不手动调用已弃用的 `setup_local_to_scene()`；让场景实例化的生命周期去调用它。
-- **[优先]** 场景本地的初始化保持确定；需要随机性时，注入或自行持有 RNG。
+- 只有每个场景实例确实需要自己的副本时，才开启 `resource_local_to_scene`。运行时修改这个属性，不影响已经创建的副本。
+- 场景本地副本的初始化写在重写的 `_setup_local_to_scene()` 中，不修改源 Resource。不手动调用已弃用的 `setup_local_to_scene()`，由 `PackedScene.instantiate()` 调用。
+- 建议：场景本地的初始化需要随机性时，注入或自行持有 RNG，见[随机数](../10-gdscript/state-resources-and-loading.md#随机数)。

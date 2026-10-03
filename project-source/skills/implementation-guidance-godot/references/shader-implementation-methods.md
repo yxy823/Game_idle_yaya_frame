@@ -21,7 +21,7 @@
 - **处理和传递：** 在哪个着色器阶段采样或计算什么？什么必须传到下一阶段？顶点阶段通过 varying 输出的值，会插值后供片元阶段使用；只有插值后仍能保持预期结果时，才选择这种传递。仅凭输入在物体空间，不足以把非线性或细节丰富的计算移到顶点阶段。参见 [Godot 4.7 着色语言参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/shading_language.html#varyings)。
 - **输出和合成：** 什么改变了 RGB、覆盖范围或 alpha？哪些源图细节和调制需要保留？检查实际的混合方式和渲染环境，不只看输出表达式。
 
-工程约定以已有规则为准：空间、区域和采样见 `agent-rules/30-shaders/coordinates-and-sampling.md`；参数和时钟的负责方见同目录的 `uniforms-and-material-contracts.md`；合成见 `color-alpha-and-blending.md`。本参考只提供做选择时的思路，不是第二份规则清单。
+工程约定以已有规则为准：空间、区域和采样见 `agent-rules/30-shaders/coordinates-sampling-and-color.md`；参数和时钟的负责方见同目录的 `uniforms-and-material-contracts.md`；颜色、Alpha 与合成也在 `coordinates-sampling-and-color.md`。本参考只提供做选择时的思路，不是第二份规则清单。
 
 ## 按要求的效果比较方案
 
@@ -44,10 +44,10 @@
 
 需要额外纹理时，只按所选方案的需要说明它的用途、通道含义、尺寸或密度要求、透明度和采样假设。某个方案专属的资源要求，按已有的文档归属写进该方案在表现文档中的小节；这不授权制作图像，也不要求另建素材清单。
 
-开销可能区分候选方案时，考虑预计的纹理读取次数、计算量、覆盖面积、过度绘制和同时存在的实例数。表达式更短不能证明效果更快。按 `agent-rules/30-shaders/performance-and-stability.md` 处理；只有任务确实需要性能证据时才去测量，不把性能分析设为普通参数修改的前置条件。
+开销可能区分候选方案时，考虑预计的纹理读取次数、计算量、覆盖面积、过度绘制和同时存在的实例数。表达式更短不能证明效果更快。按 `agent-rules/30-shaders/language-and-structure.md` 处理；只有任务确实需要性能证据时才去测量，不把性能分析设为普通参数修改的前置条件。
 
 ## 把选择交回当前任务
 
 修改影响到已记录的表现方案时，按已有的表现文档约定，更新该方案的选定做法，以及实际的实现路径和使用方路径。确有需要时，把必要的工程推理留在所属 Feature 的设计或实现说明位置；小改动不必另建设计文件。候选方案可以不实现。
 
-在任务已获授权的范围内，按 `agent-rules/30-shaders/validation.md`，针对实际的目标编译器、材质和渲染路径规划验证。编译通过本身不能证明外观符合预期。遇到已观察到的故障时，用 [Shader 诊断](../../bug-diagnosis-godot/references/shader-diagnostics.md) 选择能检验当前假设的证据；该参考不改变任务的授权或完成标准。
+在任务已获授权的范围内，按 `agent-rules/30-shaders/README.md`，针对实际的目标编译器、材质和渲染路径规划验证。编译通过本身不能证明外观符合预期。遇到已观察到的故障时，用 [Shader 诊断](../../bug-diagnosis-godot/references/shader-diagnostics.md) 选择能检验当前假设的证据；该参考不改变任务的授权或完成标准。

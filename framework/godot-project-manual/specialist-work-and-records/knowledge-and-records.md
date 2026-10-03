@@ -43,7 +43,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 
 - **怎样引用**：在该 Feature JSON 的 notes 中使用相对链接 `[设计说明](F0XX-design.md)`。
 - **何时写、何时改**：方案获批后保存；实际实现与设计不一致时同步修改。
-- **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../agent-rules/00-core/change-scope-and-ownership.md`。
+- **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../methodology/15-task-scope-git-and-reporting.md`。
 
 需要实施指导时，[implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md) 也写这同一份设计稿：
 
@@ -128,7 +128,7 @@ ADR 记录问题、约束、候选方案、决定、收益、成本、依据，�
 
 规则可能过时或范围过宽。怀疑时，指出具体条款、相关事实和影响，把“代码是否符合规则”和“规则本身是否正确”分开判断。
 
-- 合理地偏离一条 PREFER 规则，不必因此修改规则。
+- 有理由地偏离一条“建议：”规则，不必因此修改规则。
 - 不能因个人偏好暗中豁免规则。
 - 不要把每个 Bug 的教训都升级成硬性规则。
 

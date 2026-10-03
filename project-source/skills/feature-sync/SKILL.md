@@ -19,7 +19,7 @@ description: >-
 
 - **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/F0XX.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
 - **语言：** 新写的文字使用 `methodology/05-document-language.md`；已完成的历史和原始证据保持原样，不翻译。
-- **Git：** 保留改动、目标工作目录、暂存和提交，遵循 `agent-rules/00-core/git-worktree-and-commits.md`。
+- **Git：** 保留改动、目标工作目录、暂存和提交，遵循 `methodology/15-task-scope-git-and-reporting.md`。
 - **来源的负责方：** 本流程更新计划，不更新来源文档。游戏设计边界交回 [design-gdd](../design-gdd/SKILL.md)；工程规则的写入遵循 `methodology/04-project-rules.md` 中的自查。说明影响时，阅读 methodology 01 的 **设计范围与边界**、`docs/project-rules.md` 和受影响的 Feature 设计稿。已完成 Feature 的设计稿作为历史保留。
 
 ## 监视的来源
@@ -128,7 +128,7 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
    - `synced_at_commit` 必须填写：它是本次分析的已提交来源状态，也是下一个锚点。`source_path_updates` 保留重命名的可追溯性。
    - 使用回退方式，或某些来源只在 HEAD 上对齐时，见[记录修订](references/anchor-and-fallback.md#记录修订)。
 2. 运行 `python -B tools/checks/check-feature-list.py`。对照获批的动作审查差异：历史已保留，来源和锚点正确，依赖真实存在，清理和替代覆盖已分配给负责的 Feature。提交之前，修正本任务造成的错误。
-3. 按 Core Git 规则中 **暂存** 的要求，只暂存本任务负责的计划文件和获批的 Feature 设计稿导航修改。除非用户要求不提交，否则提交 `chore(feature-plan): <中文行为摘要>`；和首次规划一样，`feature-plan` 这个 scope 指的是计划文件。在正文中概括锚点、计划变化和校验，然后检查提交后的状态。
+3. 按 `methodology/15-task-scope-git-and-reporting.md` 中 **暂存** 的要求，只暂存本任务负责的计划文件和获批的 Feature 设计稿导航修改。除非用户要求不提交，否则提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）；和首次规划一样，`feature-plan` 这个 scope 指的是计划文件。在正文中概括锚点、计划变化和校验，然后检查提交后的状态。
 
 ## 阶段 6：交接
 

@@ -8,7 +8,7 @@
 - 写入项目文件前，先读 `docs/methodology-config.json`。对话使用用户当前的语言；写进项目文件的文字使用 `document_language`。
 - 第一个编码 Feature 开始前，完成一次性的[项目环境准备](06-project-environment.md#项目环境准备)。Stage 0 复用已确认的准备结果和已配置的路径。只有工具或配置变化后，或实际调用失败后，才重复检查。
 - 通过 `AGENTS.md` 和 [规则加载约定](04-project-rules.md#加载规则) 读取适用的有效项目规则，包括 `docs/project-rules.md` 中与本任务有关的约束。为这个 Feature 保留一份与任务有关的快照；不需要加载无关的小节，也不需要重读没变的来源。
-- 遵循 `agent-rules/00-core/git-worktree-and-commits.md`：检查并保留当前的改动；续接时使用任务记录；在依赖这些改动的编辑之前，解决具体的重叠。Git 状态非空本身不算阻塞。
+- 遵循 `methodology/15-task-scope-git-and-reporting.md`：检查并保留当前的改动；续接时使用任务记录；在依赖这些改动的编辑之前，解决具体的重叠。Git 状态非空本身不算阻塞。
 - 启用自动测试时，读取 `docs/test-registry.json`。测试的含义定义在 [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md)。
 - 发布、上架和部署不在本循环内，除非它们被明确规划为项目工作。
 
@@ -25,7 +25,7 @@
 
 ### 分步提交与整体 Feature 核对
 
-按 `agent-rules/00-core/git-worktree-and-commits.md`，一个 Feature 可以包含多个已验证的逻辑提交。
+按 `methodology/15-task-scope-git-and-reporting.md`，一个 Feature 可以包含多个已验证的逻辑提交。
 
 - 这些提交期间，Feature 保持 `in_progress` 和 `completed_at: null`；只有 Stage 7 才确立完成。
 - 提交后工作区干净，不是跳过剩余工作或开始另一个 Feature 的理由。
@@ -371,7 +371,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
-7. 按 `agent-rules/00-core/git-worktree-and-commits.md` 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。Core 契约还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
+7. 按 `methodology/15-task-scope-git-and-reporting.md` 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。Core 契约还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
 
 ## Stage 8 · 交接与已获授权的续接
 

@@ -36,7 +36,7 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 - **修改时**：完成最小而完整的目标；不需要变化的 API、依赖和代码风格保持不变；契约确实要变时，同步修改实际使用方；不顺手改无关代码。
 - **交付前**：完成相关测试和项目支持的静态检查，检查最终差异；说明关键文件、修改理由、实际做了哪些验证，以及有依据的剩余风险。
 
-规则正文见[变更准备与范围](../../../project-source/agent-rules/00-core/change-scope-and-ownership.md)、[验证政策](../../../project-source/agent-rules/00-core/validation-policy.md)与[交付说明](../../../project-source/agent-rules/00-core/completion-and-reporting.md)。这些要求不会扩大只读任务的权限。
+规则正文见[变更准备与范围](../../../project-source/methodology/15-task-scope-git-and-reporting.md#任务范围)、[验证政策](../../../project-source/agent-rules/00-core/validation-policy.md)与[交付说明](../../../project-source/methodology/15-task-scope-git-and-reporting.md#完成汇报)。这些要求不会扩大只读任务的权限。
 
 ## Feature 的执行阶段
 
@@ -104,7 +104,7 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 - 提交不设额外的审核关卡；提交后发现问题，新建一个修正提交，不改写历史。
 - Feature 提交的主题写成 `<type>(F0XX): <中文行为摘要>`，正文用 `Feature:` 写真实标题，用 `Work item:` 指向详情文件；不属于任何 Feature 的任务不虚构这些字段。
 
-提交边界、暂存保护、提交说明和禁止操作的唯一正文是 [Git 规则](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md)。
+提交边界、暂存保护、提交说明和禁止操作的唯一正文是 [Git 规则](../../../project-source/methodology/15-task-scope-git-and-reporting.md#git-与提交)。
 
 ## 持续任务（Goal）
 

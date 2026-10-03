@@ -1,27 +1,24 @@
 # InputMap 配置
 
-Input Action 是跨设备、跨用户重新绑定都保持稳定的语义抽象。GDScript 中的事件路由遵循[输入处理](../10-gdscript/godot-lifecycle-and-input.md#输入处理)。
+Input Action 是与设备和改键无关的语义抽象。GDScript 中的事件路由见[输入处理](../10-gdscript/godot-lifecycle-and-input.md#输入处理)，输入测试见[输入与 Command 测试](../70-tests/input-and-command-testing.md)。
 
 ## Action
 
-- **[必须]** 自定义玩法 Action 使用有业务含义、稳定的 `snake_case` 名称。
-- **[必须]** 玩法使用 Input Action，不使用硬编码的 Key 或 Button 事件。例外是重新绑定、文本与 IME 输入、诊断和设备特有的行为。
-- **[必须]** 内置的 `ui_*` Action 仍作为 UI、焦点和导航 Action，不承载玩法语义。
-- **[必须]** 基于按键位置的操作使用物理按键身份，语义快捷键使用逻辑键码，文本输入使用文本或 Unicode 值。
-- **[必须]** 构造 `InputEventKey` 时，设置想要的身份语义；不要“保险起见”把每个按键字段都填上。
-- **[优先]** 按当前键盘布局显示物理按键绑定，不假定固定的按键标签。
+- 自定义玩法 Action 使用有业务含义、稳定的 `snake_case` 名称。
+- 玩法通过 Input Action 读取输入，不硬编码按键或按钮事件。例外是改键界面、文本与 IME 输入、诊断和设备特有的行为。
+- 内置的 `ui_*` Action 只用于 UI 焦点和导航，不承载玩法语义。
+- 按位置决定的操作用物理键码（`physical_keycode`），语义快捷键用逻辑键码（`keycode`），文本输入用 `unicode`。构造 `InputEventKey` 时只设置需要的那一种，不把每个字段都填上。
+- 建议：显示物理按键绑定时，按当前键盘布局转换标签，不假定固定的按键名称。
 
-## 模拟输入、重复与重新绑定
+## 死区、重复与改键
 
-- **[必须]** 持久化的 Action 和脚本创建的 Action 有意设置死区，不依赖可能变化的 API 或编辑器默认值。
-- **[优先]** 常见的双轴移动符合操作契约时，使用 `Input.get_vector()`。
-- **[复核]** 一个物理事件映射到多个玩法 Action 时，需要有意设计的上下文或优先级。
-- **[必须]** 重复触发的时机有影响时，使用项目自己的确定性重复逻辑；不依赖操作系统的按键回显。
-- **[必须]** 玩家的重新绑定持久化到 `user://`；项目默认值仍是恢复默认的来源。
-- **[必须]** 重命名或删除 Action 时，迁移代码、场景、测试，并在支持时迁移持久化的重新绑定数据。
+- 死区显式设置。在 `project.godot` 中写明每个 Action 的 `deadzone`；脚本调用 `InputMap.add_action()` 时显式传入 `deadzone`，不依赖参数默认值（4.7 中为 0.2）。
+- 建议：双轴移动用 `Input.get_vector()`。
+- 一个物理事件映射到多个玩法 Action 时，写明上下文或优先级。
+- 重复触发的时机影响玩法时，用项目自己的计时逻辑，不依赖操作系统的按键回显。
+- 玩家的改键保存到 `user://`；`project.godot` 中的绑定是恢复默认的来源。
+- 重命名或删除 Action 时，迁移代码、场景、测试和已保存的改键数据。
 
-## 自动化语义
+## 编辑器中的 InputMap
 
-- **[必须]** 在 `EditorPlugin` 或 `@tool` 上下文中，不要把 `InputMap` 单例的结果当作项目的 Input Map：那里的 `action_get_events()` 等方法返回的是编辑器自己的 Action 绑定。
-- **[必须]** 在编辑器中编写项目 Action 和绑定时，读写 `ProjectSettings` 的 `input/*` 设置，或使用经过核实的结构化项目工具。运行时的 `InputMap` 和编辑器的 Action 映射始终是分开的。
-- **[必须]** 轮询测试使用 `Input.action_press()` 和 `Input.action_release()`；事件路由测试使用 `Input.parse_input_event()` 或测试运行器的事件模拟。不要混淆这两条路径。
+- 在 `EditorPlugin` 或 `@tool` 脚本中，`InputMap` 单例返回的是编辑器自己的 Action。要读写项目的 Action 和绑定，读写 `ProjectSettings` 的 `input/*` 设置。

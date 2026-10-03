@@ -1,29 +1,27 @@
-# 60 资源管线规则
+# 60 素材与导入规则
 
-适用于源图像、音频和字体，`.import` 元数据，Godot 导入缓存，自定义导入器，路径与 UID，来源与许可证，变体和资源验证。
+适用于源图像、音频和字体，`.import` 文件与导入设置，项目导入默认值，自定义导入器，素材的命名、路径和 UID，第三方素材的来源与许可证，以及 `.gdignore` 和通过 `FileAccess` 读取的原始文件。
 
-```text
-Source Asset
-+ <asset>.import configuration
--> Godot Importer
--> .godot/imported generated cache
--> ResourceLoader
--> .tscn, .tres and .gd consumers
--> Export
-```
-
-上面的流程依次为：源资源加上 `<asset>.import` 配置 → Godot 导入器 → `.godot/imported` 生成缓存 → ResourceLoader → `.tscn`、`.tres` 和 `.gd` 使用方 → 导出。
+源素材和它的 `.import` 配置经 Godot 导入器生成 `.godot/imported/` 缓存。场景、Resource 和脚本通过源文件的 `res://` 路径加载素材，导出时打包导入后的结果。
 
 | 文档 | 何时阅读 |
 | --- | --- |
-| `source-and-derived-assets.md` | 新增源美术或其他源资源，判断内容属于源文件、生成内容还是运行时内容，对资源做版本控制，或创建变体和副本 |
-| `import-configuration.md` | 修改 `.import` 配置、导入类型或导入设置，或重新导入资源 |
-| `paths-uid-and-moves.md` | 移动、重命名、复制或删除资源 |
-| `naming-and-organization.md` | 给文件和目录命名，或组织资源 |
-| `ignored-and-raw-files.md` | 使用 `.gdignore`，或通过 FileAccess 读取原始文件 |
-| `textures-and-images.md` | 导入或修改纹理和图像 |
+| `source-and-derived-assets.md` | 任何素材修改都读：源文件与生成内容、版本控制、变体与副本、第三方素材的来源与许可证、`.gdignore` 与原始文件 |
+| `import-configuration.md` | 修改 `.import` 文件、导入类型或导入设置，修改项目导入默认值，在编辑器外增改素材后重新导入，或编写自定义导入器 |
+| `naming-paths-and-moves.md` | 新建、命名、移动、重命名、复制或删除素材文件与目录 |
+| `textures-and-images.md` | 导入或修改纹理与图像，或决定像素画的过滤与 mipmap |
 | `audio-assets.md` | 导入或修改音频 |
-| `font-assets.md` | 导入或修改字体 |
-| `custom-importers.md` | 编写或修改自定义导入器 |
-| `asset-provenance-and-licenses.md` | 新增或修改第三方资源 |
-| `validation.md` | 任何资源修改：确定需要做哪些验证 |
+| `font-assets.md` | 导入或修改字体，或调整文字的字形覆盖与回退 |
+
+## 验证
+
+测试范围按 [Required、affected 与 full](../../methodology/08-test-traceability-and-evidence.md) 选择；下表列出素材修改在此之外需要的检查。
+
+| 改动 | 需要的验证 |
+| --- | --- |
+| 新增或替换素材 | Godot 扫描导入时没有错误；从源 `res://` 路径加载得到预期的 Resource 类型；在一个实际使用它的场景中查看 |
+| 修改导入设置或导入类型 | 重新导入后，`.import` 的差异只包含预期的参数；检查有代表性的使用方 |
+| 修改项目导入默认值 | 全新导入一个有代表性的新素材，验证默认值；已有素材的迁移另行重新导入并验证，两项分开报告 |
+| 移动、重命名或删除 | 扫描后没有缺失依赖的报错；逐个检查按路径字符串加载的使用方 |
+| 自定义导入器 | 用有代表性的源文件做全新导入和批量重新导入，加载输出并检查下游使用方 |
+| 影响导出包的修改，例如原始文件、编解码器、导出过滤 | 在实际导出的构建中加载或播放一次 |

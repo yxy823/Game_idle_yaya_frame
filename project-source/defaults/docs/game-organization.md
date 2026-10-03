@@ -109,7 +109,7 @@ game/mining/
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-and-organization.md)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 
@@ -130,6 +130,6 @@ game/mining/
 
 Autoload 按真实生命周期选择，文件仍按职责归属。例如，需要跨场景存续的存档服务可以留在 `game/saving/`；场景局部协调者则跟随其所属场景。`Manager` 后缀不表示全局生命周期，放进 `components/` 也不自动证明它已经独立。
 
-需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../agent-rules/40-project-config/autoloads.md)。
+需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 
 当实际边界需要说明时，按[架构约定](../methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。

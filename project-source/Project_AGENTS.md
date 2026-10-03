@@ -27,7 +27,7 @@
 项目由一位使用者与 Agent 配合开发。工作流程不涉及多人协作，也不追踪每处改动由谁完成。
 
 - 支持在同一目录内暂停、切换和续接任务，包括换到新对话后续接。
-- 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 改动与提交](agent-rules/00-core/git-worktree-and-commits.md)。任务默认不在 worktree 中开始。
+- 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](methodology/15-task-scope-git-and-reporting.md#git-与提交)。任务默认不在 worktree 中开始。
 - 限定范围的调研和独立审核通过下表的入口使用各自的角色。
 
 | 需要做的事 | 阅读 |
@@ -43,6 +43,7 @@
 | 设置文档语言 | `methodology/05-document-language.md` |
 | 配置工具或准备项目环境 | `methodology/06-project-environment.md` |
 | 修复 Bug、重构或做工程维护 | `methodology/07-engineering-change.md` |
+| 确定修改范围、保留已有改动、本地提交或写完成汇报 | `methodology/15-task-scope-git-and-reporting.md` |
 | 选择测试、记录本次运行的证据或使用完成辅助工具 | `methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `methodology/contracts/gdscript-lint.md` |
 | 整理报告、临时工作区、Progress、历史或清理 | `methodology/09-records-reports-and-handoff.md` |
 | 维护可选的架构图或 ADR | `methodology/10-architecture-overview.md` |
@@ -77,7 +78,7 @@
 
 启动任何 Godot 编辑器检查（包括 `--headless --editor`）之前，阅读并遵循 [Windows 编辑器检查](agent-rules/00-core/validation-policy.md#windows-编辑器检查)。
 
-每个会修改文件的任务都遵循 [Git 改动与提交](agent-rules/00-core/git-worktree-and-commits.md)：
+每个会修改文件的任务都遵循 [Git 与提交](methodology/15-task-scope-git-and-reporting.md#git-与提交)：
 
 - 在任务指定的工作目录中工作；
 - 保留已有的改动；
@@ -100,13 +101,13 @@
 
 ## 领域规则路由
 
-`methodology/` 规定工作流程和可追溯性，`agent-rules/` 规定具体的引擎与语言规则。真实冲突按 `agent-rules/00-core/rule-precedence-and-routing.md` 中的 Core 优先级协议解决。带编号的规则模块目录不规定项目自身的文件夹布局。
+`methodology/` 规定工作流程和可追溯性，包括[任务范围、Git 与完成汇报](methodology/15-task-scope-git-and-reporting.md)；`agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
 
-做修改或与修改有关的工程决定时，阅读 `agent-rules/00-core/README.md`，以及下表中每个受影响领域的 README：
+做修改或与修改有关的工程决定时，先读 `agent-rules/00-core/README.md`，再读下表中每个受影响领域的 README：
 
-- 只读匹配的小节和该领域的验证文档，不读整个目录。
-- 模块可以叠加。例如测试用的 `.gd` 文件同时需要 GDScript 规则和测试规则。
-- 续接时，已加载且未变化的规则直接复用。只有任务或新证据需要时才多读。
+- 按 README 的路由表只读匹配的文件和小节，不读整个目录。需要的验证写在模块 README 末尾的验证节。
+- 模块可以叠加。例如测试用的 `.gd` 文件同时适用 GDScript 规则和测试规则。
+- 续接时，已读且未变化的规则直接复用。只有任务或新证据需要时才多读。
 
 | 修改的对象或领域 | 规则入口 |
 | --- | --- |
@@ -121,14 +122,16 @@
 | 测试、测试夹具或测试运行器 | `agent-rules/70-tests/README.md` |
 | UID、路径、NodePath、业务 ID 或 RID 的身份 | `agent-rules/00-core/godot-resource-references.md` |
 
-没有专门模块时，使用与本次修改有关的 Core 规则和项目已有的约定；只在主题重叠的地方阅读相邻模块。修改依赖随版本变化的引擎行为时，核对目标 Godot 版本的行为；普通的 Markdown 编辑不需要。不要在实现过程中顺带扩展规则体系。
+常见任务读哪些（路径相对于 `agent-rules/`）：
 
-要判断游戏逻辑和游戏表现的职责归属、它们的设计来源在哪里，或者模块放在哪里、叫什么名字，阅读 `docs/game-organization.md` 中匹配的小节。它解释概念并给出示例；命名和引擎约束仍以上面的规则模块为准。
+| 任务 | 阅读 |
+| --- | --- |
+| 改 `.gd` 并加单元测试 | `00-core/README.md`；`10-gdscript/README.md` 与 `typing-and-api.md`；`70-tests/README.md` 与 `test-levels.md` |
+| 重命名或移动节点、场景、资源 | `00-core/godot-resource-references.md`；`20-scenes/README.md`；移动资源文件时再读 `60-assets/README.md` |
+| 导入或替换图片、音频、字体 | `60-assets/README.md`；涉及 `.import` 或生成文件时读 `00-core/third-party-generated-and-temporary-files.md` |
+| 新增或修改游戏数据及其定义 | `21-resources/README.md`；`50-data-files/README.md` |
+| 运行 Godot 编辑器检查 | `00-core/validation-policy.md` 的 Windows 编辑器检查 |
 
-Core 目录还覆盖下列主题：
+没有专门模块时，使用 `00-core` 规则和项目已有的约定，只在主题重叠处读相邻模块。修改依赖随版本变化的引擎行为时，按 [Godot 版本与依据](agent-rules/00-core/godot-version-and-authority.md) 核对 Godot 4.7 的行为；普通的 Markdown 编辑不需要。不在实现过程中顺带扩展规则体系。
 
-- 范围、最小完整修改和保留已有工作：`change-scope-and-ownership.md`。
-- 第三方、生成和临时文件：`third-party-generated-and-temporary-files.md`。
-- 验证与如实的完成报告：`validation-policy.md` 和 `completion-and-reporting.md`。
-
-保持权威状态、API、职责归属和生命周期的边界。测试和调试工具不能成为任意反射或修改属性的后门。
+要判断游戏逻辑和游戏表现的职责归属、它们的设计来源，或模块的位置和命名，读 `docs/game-organization.md` 中匹配的小节。它解释概念并给出示例；命名和引擎约束仍以上面的规则模块为准。

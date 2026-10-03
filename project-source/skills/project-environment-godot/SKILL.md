@@ -28,6 +28,6 @@ description: 配置、更新或恢复 Godot 项目的工具路径，或执行项
 
 只做用户要求的配置或准备修改，并运行对应的检查。如果配置了路径，但首次扫描留到以后，要说明这一点。
 
-按 **项目环境准备** 的说明，把结果记录到 `reports/initialization.md` 和 Progress。按 `agent-rules/00-core/git-worktree-and-commits.md` 提交，包括用户设定的提交条件。
+按 **项目环境准备** 的说明，把结果记录到 `reports/initialization.md` 和 Progress。按 `methodology/15-task-scope-git-and-reporting.md` 提交，包括用户设定的提交条件。
 
 返回修改了什么、实际检查了什么，以及剩余的阻塞。检查通过只说明工具可用，不说明测试通过或游戏能正常运行。如果本 Skill 是从另一个已授权的任务中调用的，继续那个任务；环境准备成功不代表那个任务已完成。

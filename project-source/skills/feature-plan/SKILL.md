@@ -11,7 +11,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 请求的范围已有实现、但缺少 Feature 记录时，同时使用该规范中的 **接手已有实现**。在方案中复用实际的实现和测试；规划不会把被接纳的工作标为完成。
 
-写入长期保存的文字之前，使用 `methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，使用 `agent-rules/00-core/git-worktree-and-commits.md` 中关于保留改动和提交的约定。
+写入长期保存的文字之前，使用 `methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，使用 `methodology/15-task-scope-git-and-reporting.md` 中关于保留改动和提交的约定。
 
 使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
 
@@ -46,7 +46,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 4. 第 3 步允许写入后，按 `methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
 5. 追加新的索引条目，并且只追加它们的详情文件，使用权威的初始规划值。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。语义覆盖审查之后、最终校验之前，按该约定只追加符合条件的初始基线。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
 6. 完成下面的校验和语义审查。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
-7. 按 `agent-rules/00-core/git-worktree-and-commits.md` 中 **暂存** 的要求，只暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <中文行为摘要>`。这次提交是在创建计划，所以省略 `Work item`。不要暂存整个 `docs/features/` 路径。
+7. 按 `methodology/15-task-scope-git-and-reporting.md` 中 **暂存** 的要求，只暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。不要暂存整个 `docs/features/` 路径。
 8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
 
 ## 测试登记表：`docs/test-registry.json`

@@ -18,7 +18,7 @@
 
 | 内容 | 位置与用途 |
 | --- | --- |
-| 工程约束 | [Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求，按 MUST、PREFER、REVIEW 区分强度 |
+| 工程约束 | [Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求；条目默认必须遵守，写“建议：”的是可偏离的默认做法 |
 | 可复用的方法 | [实现方法参考](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
 | 当前游戏的方案与证据 | 表现目标和采用的方案写在对应的游戏表现文档；需要详细工程设计时写在 Feature 设计稿；原型、诊断与验证证据留在原任务的记录中，见[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md) |
 
@@ -111,7 +111,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | --- | --- | --- |
 | [wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) | 几个问题互相牵连，要先解决一个才能判断下一个。例如背包容量会影响搜索需求和列表性能 | 按当前缺口选择讨论、事实调查或限定原型，不需要把所有方法都走一遍。普通澄清、检验已有方案或目标清楚的实施任务不必先经过它。只讨论时交付结论；已有实施授权时，问题解决后回到原任务。结论与证据的存放见[探索结果与工作目录](../specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) |
 | [worktree-create-godot](../../../project-source/skills/worktree-create-godot/SKILL.md) | 确实需要另一个工作目录 | 准备或复用指定版本的 checkout。目录分开不代表运行数据也分开，具体准备方法只在它的[运行参考](../../../project-source/skills/worktree-create-godot/references/godot-worktree-runtime.md)中维护；环境与验证入口遇到写入位置不明或变化时，也直接引用这份参考 |
-| [worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) | 已选定要采用的成果，或要接手已有的整合冲突 | 带回必要的依赖并检查合并后的结果。原任务的验证、人工验收和提交条件仍然有效；整合后不会自动删除源目录或分支。Git 细则见[项目 Git 规范](../../../project-source/agent-rules/00-core/git-worktree-and-commits.md) |
+| [worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) | 已选定要采用的成果，或要接手已有的整合冲突 | 带回必要的依赖并检查合并后的结果。原任务的验证、人工验收和提交条件仍然有效；整合后不会自动删除源目录或分支。Git 细则见[项目 Git 规范](../../../project-source/methodology/15-task-scope-git-and-reporting.md#git-与提交) |
 
 这三个 Skill 可以分别调用，不构成固定的阶段。
 

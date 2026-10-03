@@ -1,35 +1,35 @@
 # 输入与 Command 测试
 
-区分物理输入、Godot 事件路由、UI 适配层和生产业务 Command。
+区分轮询得到的 Action 状态、事件路由、UI 适配层和业务 Command，按被测契约选择路径。Command 与 Query 的生产设计见 [structure-and-dependencies.md](../10-gdscript/structure-and-dependencies.md)。
 
-## 输入层次
+## 输入路径
 
-- **[必须]** `Input.action_press()` 和 `Input.action_release()` 测试的是轮询得到的 Action 状态；它们不能证明事件经过 `_input()` 或 `_unhandled_input()` 的传播。
-- **[必须]** 事件路由或 GUI 消费是契约时，使用 `Input.parse_input_event()` 或运行器的真实事件模拟。
-- **[必须]** `InputEventAction('attack')` 证明的是 Action 语义，不是物理的 Key、Mouse 或 Joypad 绑定。
-- **[优先]** 玩法业务测试使用语义 Action 或生产 Command，不绑定到当前的默认按键。
-- **[复核]** 物理绑定、修饰键、`exact_match`、死区、轴方向和设备特有行为，用真实的物理 InputEvent 测试。
-- **[必须]** GUI 消费、焦点、`mouse_filter` 或 Viewport 路由有影响时，通过真实的 Viewport 事件路径测试，不直接调用处理函数。
+- `Input.action_press()` 和 `Input.action_release()` 只改变轮询得到的 Action 状态，例如 `Input.is_action_pressed()`。它们不产生事件，不经过 `_input()`、`_unhandled_input()` 或 GUI。注意：Action 不在 InputMap 中时，这两个方法报 ERROR，会让测试运行失败。
+- 事件路由、GUI 消费、焦点、`mouse_filter` 或 Viewport 路由是契约时，用 `Input.parse_input_event()` 或 gdUnit SceneRunner 的输入模拟，不直接调用处理函数。
+- `InputEventAction` 证明的是 Action 语义，不是物理按键、鼠标或手柄的绑定：
 
-## UI 行为与业务行为
+```gdscript
+func _send_action(action: StringName, pressed: bool) -> void:
+	var event := InputEventAction.new()
+	event.action = action
+	event.pressed = pressed
+	Input.parse_input_event(event)
+```
 
-- **[必须]** UI 交互连接、UI 状态和下游业务行为是不同的测试目标。
-- **[必须]** 契约是“用户能点击这个控件”时，直接发出控件的信号或调用其处理函数不算充分证据。
-- **[必须]** Command 或领域 API 才是实际的行为边界时，不要强制通过鼠标或 UI 测试业务规则。
+- 物理绑定、修饰键、`exact_match`、死区、轴方向和设备特有的行为，用真实的物理 InputEvent 测试，例如 `InputEventKey`、`InputEventJoypadMotion`。
+- 玩法测试使用语义 Action 或生产 Command，不绑定当前的默认按键。
+- 测试注入的按下状态在 teardown 中释放，见[清理](fixtures-and-isolation.md#清理)。
 
-## Command
+## UI 与业务行为
 
-- **[优先]** 可以自动化的玩法操作通过生产 Command 和 API 边界执行。
-- **[必须]** 测试与调试工具不通过直接修改内部状态，绕过生产校验、状态归属、成本、阶段检查或事件发出。
-- **[必须]** Command 表达稳定的业务意图，不是任意的 `set_property`、`call_method` 或反射式修改。
-- **[复核]** 测试夹具或场景构建器可以快速建立合法的初始状态，但准备过程与被测操作是两回事。
-- **[必须]** 普通的测试夹具构建器创建满足当前领域不变量的状态。只有明确针对恢复或校验的测试，才构造无效或损坏的状态。
-- **[必须]** 文本调试或控制台命令工具负责解析、解析引用并分派带类型的生产 Command；它们不重新实现业务逻辑。
-- **[必须]** 解析器测试与 Command 行为测试分开。
-- **[必须]** Command 中的实体引用使用稳定的业务身份或槽位身份，不使用易变的 SceneTree NodePath 或 UI 名称。
-- **[必须]** 会修改状态的 Command 与只读的 Query 分开。Query 不暗中修复、创建或推进状态。
-- **[优先]** 业务断言读取权威的领域快照或查询，不从深层 UI Node 推断状态。
-- **[优先]** 可能失败的 Command 返回或发出结构化、稳定的结果；人读的日志文本不是唯一的成功或失败 API。
-- **[必须]** 被拒绝的 Command 的测试，既断言失败，也断言权威状态没有发生任何部分修改。
-- **[优先]** 复杂 Bug 从合法的初始场景、确定的种子与时间输入，以及一串生产 Command 复现。
-- **[必须]** Input Action ID 和领域 Command ID 是不同的命名空间；适配层把带上下文的输入意图映射到业务 Command。
+- UI 连接、UI 状态和下游的业务行为，是不同的测试目标。
+- 契约是“用户能点击这个控件”时，直接发出控件信号或调用处理函数不算证据。
+- 业务规则通过 Command 或领域 API 测试，不强制经过鼠标或 UI。
+- 业务断言读取权威的领域状态或查询，不从深层的 UI Node 推断状态。
+
+## Command 测试
+
+- 夹具可以快速建立合法的初始状态，但准备过程与被测的 Command 是两回事。
+- 被拒绝的 Command，既断言失败结果，也断言权威状态没有任何部分修改。
+- 文本或控制台命令的解析器测试，与 Command 行为测试分开。
+- 建议：复杂 Bug 从合法的初始场景、确定的种子与时间输入，加一串生产 Command 复现。
