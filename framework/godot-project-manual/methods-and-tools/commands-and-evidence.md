@@ -2,13 +2,183 @@
 
 [Godot 项目手册](../README.md)
 
-所有项目命令在**生成后的项目根目录**运行。按当前任务调用所需入口，以下命令参考不意味着每次都要整页执行。涉及写记录的命令遵循对应 Skill 和已有授权。
+本页说明生成项目中检查、测试与完成记录命令的用法，以及每种结果能证明什么。所有命令都在**生成后的项目根目录**运行；按当前任务选用需要的入口，不必每次整页执行。写入记录的命令只在对应 Skill 和已有授权范围内使用。
 
-命令成功不能代替内容判断：工具不检查 GDD 是否足以支撑本次范围，也不通过状态字段宣告设计就绪。
+## 每种结果能证明什么
 
-## 从运行结果到完成状态
+本节是手册中“证据之间不能互相替代”这条规则的唯一正文，其他页面需要时链接到这里。
 
-Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，首次记录时建立完成依据文件，Stage 7 检查完成条件。下面是实际读写关系；它不会因编辑文件自动触发。
+一个结果只能证明它实际检查过的范围。下表列出常见结果的含义：
+
+| 已有结果 | 可以报告 | 不能据此推断 |
+| --- | --- | --- |
+| 文件或模板存在 | 文件已就位 | 环境就绪、需求已定、示例已验证或业务已完成 |
+| 环境检查通过 | 配置结构与工具路径满足该检查 | 测试、导入、场景启动或游戏可玩 |
+| 台账检查通过 | 数据结构、引用和依赖满足契约 | AC 已实现、需求覆盖完整 |
+| focused / baseline 测试通过 | 指定范围在本次运行成功 | 最终 Required / affected / full 已满足 |
+| 最终测试通过 | 选中的自动测试在当前内容上成功 | 解析、lint、性能、画面、声音或手感合格 |
+| 解析或 lint 通过 | 执行过的静态范围没有问题 | 运行行为、资源、导出或人工质量合格 |
+| 完成依据校验通过 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立评审或所有目标平台已检查 |
+| 人工清单已生成 | 待验收材料已交给用户 | 用户已验收或已接受 |
+| 原型观察可接受 | 原型范围内的效果可行 | 正式规则已接入、正式验收已通过 |
+
+判断时还要遵守三条规则：
+
+- **新失败优先**：同一内容上较新的失败，只能被之后覆盖同一范围的成功解决；更早的或范围更窄的通过不能抵消它。保留失败原件，再说明修复与后续结果。
+- **退出码只说明工具本身**：退出码为 0 表示该工具按自身契约完成，不等于任务完成；缺失的退出码不能当作 0；不同工具的非零值含义不同，不能一律当作业务测试失败。
+- **未知保持未知**：原件缺失、报告未写入或命令未执行时，如实报告缺口；不补造报告、不手填哈希或通过次数，也不用旧版本的成功代替。
+
+工具的完整错误含义见[错误与结果的含义](errors-and-results.md)。
+
+## 调用准备
+
+先确认项目配置已经就绪。本页 PowerShell 示例共用以下变量：
+
+```powershell
+$projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
+$projectPython = $projectConfig.python_executable
+$projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -ErrorAction Stop).Path
+$featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
+```
+
+- `python_executable` 应已改为确认过的解释器，见[配置参考](../foundations/configuration.md#环境与流程配置)。
+- `F001` 和示例脚本路径都要换成实际存在的任务与文件。
+- 每条原生命令后立即读取 `$LASTEXITCODE`。
+
+新项目第一次运行 CLI 测试或项目脚本前，先按[首次扫描说明](../../../project-source/tools/README.md#首次-godot-扫描)完成编辑器扫描；环境检查通过不包含这一步。
+
+## 命令一览
+
+| 入口 | 常用参数 | 读写与副作用 |
+| --- | --- | --- |
+| `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
+| `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
+| `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
+| `tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
+| `tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
+
+组件合并器的输入与行为：
+
+- **候选格式**：完整组件对象的 JSON 数组，或含 `components` 数组的对象。
+- **调用方式**：Agent 把已批准的候选写入临时文件，再用 `--components <候选文件>` 调用；候选文件不提交。
+- **冲突处理**：已有同 ID 但内容不同的组件视为冲突，不会被覆盖。工具保留现有测试，并报告 `added_components` 与 `preserved_tests`。
+- **能力边界**：只合并组件，不生成测试。组件结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
+
+## 环境与台账检查
+
+在当前终端完成[调用准备](#调用准备)后运行：
+
+```powershell
+& $projectPython -B tools/checks/check-project-environment.py --require-ready
+$LASTEXITCODE
+& $projectPython -B tools/checks/check-feature-list.py
+$LASTEXITCODE
+& $projectPython -B tools/checks/check-feature-list.py --eligible
+$LASTEXITCODE
+```
+
+环境检查器各模式检查什么，见[配置参考的检查能力边界](../foundations/configuration.md#检查能力边界)。
+
+台账检查读取完整的 Feature 索引、详情、测试登记表和修订关系，核对 ID、字段、引用、路径、依赖与历史规则。它已经包含 JSON 解析，规划或同步完成后运行这一个入口即可；单文件语法检查只在定位具体错误时使用。需求覆盖、真实依赖和历史保留这些语义，仍由 Agent 核对。
+
+- **`--eligible`**：校验后输出依赖已满足的 pending Feature ID。它只说明哪些任务可以开始，不授予实现权限。
+- **`--completion-feature F001`**：额外要求该 Feature 直接对应的自动验证映射处于 active 状态。日常历史检查接受可追溯的已退役测试，但当前任务完成时不能用已退役测试代替实际验证。
+
+测试路径的登记规则：
+
+- 组件套件和 active 测试登记项目内的相对路径，不带 `res://` 前缀。合并器与台账检查都会拒绝绝对路径、`..` 跳转和解析后指向项目外的链接，避免到选择测试时才发现路径不可用。
+- planned 和 retired 测试的 `path` 可以是 `null`；已填写的路径不要求文件当前存在，已知的历史路径仍要保留。
+
+## 运行测试
+
+在当前终端完成[调用准备](#调用准备)后，在已批准范围内按用途选用：
+
+```powershell
+# Stage 3 基线：运行已有安全网，不含尚未创建的 planned 测试。
+& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --phase baseline --scope auto
+$LASTEXITCODE
+```
+
+```powershell
+# TDD 或定点诊断：换成实际存在的套件或目录。
+& $projectPython -B tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
+$LASTEXITCODE
+```
+
+```powershell
+# Stage 4 最终验证：按当前 Feature、测试登记表和已批准范围选择测试。
+& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
+$LASTEXITCODE
+```
+
+| 参数 | 说明 |
+| --- | --- |
+| `--feature` / `--target` | 两者互斥；都不传时 target 默认为 `tests` |
+| `--phase` | `baseline` 或 `final`，默认 `final`。基线和 `--target` 运行只用于建立基线或调试，不能作为 Feature 的完成依据 |
+| `--timeout-seconds` | 默认 120，必须是大于 0 的有限数 |
+| `--require-test` | 格式为 `<suite-path>::<test-case>`，要求原始报告确实包含该用例 |
+| `--continue` | 传给 gdUnit 的 `-c`；与“继续一个 Yaya 任务”或“复用上次报告”无关 |
+
+运行器会启动真实引擎，不是纯文件检查。所需权限、窗口行为和运行范围按当前项目与任务确认。
+
+## 测试范围怎样计算
+
+完整规则见测试规范的 [Test Impact Review](../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)，这里用中文说明各范围的组成：
+
+```text
+Required Test Set =
+  当前 Feature 的自动验收测试
+  + 当前 Feature 的回归测试
+  + 影响组件已登记的 unit_test_paths
+  + 与影响组件相交的 active 历史回归
+  + 与影响组件相交的 active 不变量
+  + 已批准的 additional_tests
+
+affected = Required + 与影响组件相交的 active 验收测试
+```
+
+| `--scope` | 用途 |
+| --- | --- |
+| `auto` | 默认运行 affected；当前计划要求全量时升级为 full |
+| `required` | 只运行 Required，适合局部迭代；最终验证仍要满足 affected 或 full |
+| `affected` | Required 加相关验收测试 |
+| `full` | 递归运行 `tests/` 并核对必需覆盖；空的分层目录不算义务，但测试总数为零仍然失败 |
+
+以下情况要按规范运行 full：影响组件设置了 `full_suite_on_change`、计划中有已批准的 `full_suite_reasons`、改动影响范围很广的工具链，或影响范围无法界定。“工程维护”这个任务标签本身不触发 full。附加测试及理由保存在 Feature 的 `verification.test_impact` 中，没有单独的计划文件。
+
+没有单元套件的组件写 `unit_test_paths: []`，不会产生虚构的选择器。以下情况都不能记为通过：已登记的路径丢失、选中的目录里没有测试、必需用例被跳过、报告缺失。空项目没有测试层时，full 也不会因此变成“已有成功测试”。
+
+## 一次运行留下什么
+
+运行目录的位置：
+
+- Feature 运行：`reports/gdunit-wrapper/<Feature-ID>/run-<id>/`
+- `--target` 定点运行：`reports/gdunit-wrapper/focused/run-<id>/`
+
+完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不要猜测 run ID。
+
+```text
+reports/gdunit-wrapper/F001/run-<id>/
+├── result.json                 运行中持续更新，结束时记录成功或失败
+├── engine.log                  原始引擎输出
+├── discovery.json              实际展开后的测试发现集合
+└── report_<...>/
+    ├── results.xml             原始 JUnit
+    └── diagnostics.jsonl       运行诊断
+```
+
+启动或中途失败时，部分文件可能还没有生成，缺失本身就是需要报告的结果。gdUnit 还可能生成其他文件。
+
+运行器会同时核对进程结果、实际发现集合、JUnit 用例和诊断：
+
+- 参数化用例以实际展开后的集合为准；源码里有 `test_*` 方法，不代表它真的执行了。
+- JUnit 显示成功，也可能同时存在引擎错误或未完成的运行，以运行器的整体结果为准。
+
+## 记录完成依据
+
+### 从运行结果到完成状态
+
+Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时创建完成依据文件 `docs/feature-completion-evidence.json`，Stage 7 检查完成条件。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
 
 ```mermaid
 flowchart TD
@@ -29,175 +199,38 @@ flowchart TD
     D -->|全部适用条件满足才写入| S[Feature 索引 done 与完成时间]
 ```
 
-实线表示实际调用、读写与结果交接，虚线表示原件引用。完成依据 JSON 位于 `docs/feature-completion-evidence.json`。`record-tests`、`validate` 均属于完成记录工具；不运行测试、不评估直接静态检查、不获取用户决定，也不修改 Feature 状态。人工文件导入还会核对清单与结果原件，具体操作见 [人工验收](../requirements-and-tasks/feature-lifecycle.md#自动与人工验收)。
+实线表示实际调用、读写与结果交接，虚线表示对原件的引用。完成记录工具（`record-tests`、`validate` 等）不运行测试、不做解析和 lint、不替用户做决定，也不修改 Feature 状态；状态由 Agent 在全部条件满足后更新。
 
-| 文件交接 | 输入与产出 | 结果判定 |
+| 环节 | 输入 → 产出 | 判定方式 |
 | --- | --- | --- |
-| 测试运行器 | 当前 Feature、Registry、配置与源码 → 运行目录、result.json 和实际报告 | 等待进程结束，读取结果、发现集合、覆盖与诊断；仅打印路径不证明文件保存成功 |
-| `record-tests` | 实际 final Feature 的 result.json 路径 → 完成依据中的路径/哈希引用 | 重新核对当前内容、原件、覆盖及未解决失败；不接受手写“通过次数” |
-| 人工反馈导入 | 绑定当前内容的清单 + 用户结果，或明确的口头决定 → 人工记录 | 命令成功只代表记录成功，状态仍可能 pending/rejected |
-| `validate` | 当前契约与完成依据 → 只读结论 | 重新计算测试义务并读取原件，核对适用人工接受；不替代其他检查 |
-| Agent 更新台账 | 完成依据、直接解析/lint、AC/差异、台账与用户指定评审条件 | 满足后写 done/真实完成时间，再检查最终台账并收尾 |
+| 测试运行器 | 当前 Feature、测试登记表、配置与源码 → 运行目录、`result.json` 与报告 | 等进程结束后读取结果、发现集合、覆盖与诊断；只打印路径不代表文件已保存 |
+| `record-tests` | 最终运行的 `result.json` 路径 → 完成依据中的路径与哈希引用 | 重新核对当前内容、原件、覆盖和未解决的失败 |
+| 人工结果导入 | 绑定当前内容的清单 + 用户结果，或用户明确的口头决定 → 人工记录 | 命令成功只代表记录成功，状态仍可能是 pending 或 rejected |
+| `validate` | 当前契约与完成依据 → 只读结论 | 重新计算测试义务并读取原件，核对适用的人工接受 |
+| Agent 更新台账 | 完成依据、直接解析与 lint、AC 与差异、台账、用户指定的评审条件 | 全部满足后写入 done 和真实完成时间，再检查最终台账 |
 
-## 调用准备
+### 子命令
 
-先确认项目配置已经就绪。本页 PowerShell 示例共用以下变量：
-
-```powershell
-$projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-$projectPython = $projectConfig.python_executable
-$projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -ErrorAction Stop).Path
-$featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
-```
-
-`python_executable` 应已改为确认过的解释器，见[配置参考](../foundations/configuration.md#环境与流程配置)。`F001` 和示例脚本路径都需换成实际存在的任务与文件。每条原生命令后立即读取 `$LASTEXITCODE`；缺失退出码不能当作 0。
-
-新项目首次 CLI 测试或项目脚本运行前，按 [首次扫描说明](../../../project-source/tools/README.md#首次-godot-扫描) 处理编辑器准备；环境检查通过不代替这次扫描。
-
-## 入口与副作用
-
-| 入口 | 常用参数 | 行为 |
-| --- | --- | --- |
-| `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 读配置；就绪检查可能启动 Godot `--version`，不写配置 |
-| `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 读 Feature/测试登记表/历史和依赖，不修改台账、不运行测试 |
-| `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法空集返回 `not_required`，不创建报告 |
-| `tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局 `--repo-root` 在子命令之前 | 写入测试/人工记录，或只读展示、校验已有依据 |
-| `tools/features/merge-test-registry.py` | `--components` | 在项目根目录运行，将批准的组件合并到固定的 `docs/test-registry.json`；属于规划写操作 |
-
-组件合并器的输入和行为：
-
-- **候选格式**：完整组件对象的 JSON 数组，或含 `components` 数组的对象。
-- **调用**：Agent 将批准的候选写入临时文件，使用 `--components <实际候选文件>` 调用合并器；候选不提交。
-- **冲突与保留**：现存同 ID 不同内容是冲突，不能覆盖。工具保留现存测试并报告 added_components/preserved_tests。
-- **能力边界**：只合并组件，不生成测试或证明测试通过；结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
-
-## 环境与台账检查
-
-**前置**：在当前终端完成 [调用准备](#调用准备)。
-
-```powershell
-& $projectPython -B tools/checks/check-project-environment.py --require-ready
-$LASTEXITCODE
-& $projectPython -B tools/checks/check-feature-list.py
-$LASTEXITCODE
-& $projectPython -B tools/checks/check-feature-list.py --eligible
-$LASTEXITCODE
-```
-
-环境检查器的精确能力见 [配置检查边界](../foundations/configuration.md#检查能力边界)。台账检查读取完整索引、详情、测试登记表和修订关系，检查 ID、字段、引用、路径、依赖与历史规则。`--eligible` 校验后输出依赖已满足的 pending Feature ID 集合，不能代替实现授权。
-
-组件套件和 active 测试必须登记项目内的相对路径，不带 `res://` 前缀。合并器与台账检查都会拒绝绝对路径、父目录跳转以及解析后指向项目外的链接，避免到测试选择时才发现路径不可用。planned 和 retired 测试的 `path` 可为 `null`；已填写的路径不要求对应文件当前存在，已知历史路径仍须保留。
-
-规划或同步完成后使用这个完整入口即可，它已经包含 JSON 解析；单文件语法检查只用于定位具体错误。Agent 仍需核对需求覆盖、真实依赖和历史保留，这些语义不能由结构检查代替。
-
-`--completion-feature F001` 额外要求当前待完成任务的直接自动验证映射处于 active 状态。正常历史检查可以接受可追溯退役的旧测试；当前完成不能拿已退役测试替代实际验证。
-
-## 三种常见测试调用
-
-**前置**：在当前终端完成 [调用准备](#调用准备)，再在已批准范围内按用途选用：
-
-```powershell
-# Stage 3：已有安全网，不包含尚未创建的 planned 测试。
-& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --phase baseline --scope auto
-$LASTEXITCODE
-```
-
-```powershell
-# TDD 或定点诊断：替换成实际已存在的套件或目录。
-& $projectPython -B tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
-$LASTEXITCODE
-```
-
-```powershell
-# Stage 4：读取当前 Feature/测试登记表和已批准范围。
-& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
-$LASTEXITCODE
-```
-
-- **目标**：`--feature` 与 `--target` 互斥；两者都不传时 target 默认为 `tests`。
-- **阶段**：`--phase` 支持 `baseline`、`final`，默认 final。baseline 和 focused/target 运行用于基线或调试，不能直接作为当前 Feature 完成依据。
-
-其他参数：
-
-- `--timeout-seconds` 默认 120，必须是大于 0 的有限数。
-- `--require-test` 使用 `<suite-path>::<test-case>` 格式，要求原始报告确实覆盖该用例。
-- `--continue` 传给 gdUnit 的 `-c`，不表示继续一个已有 Yaya 任务或复用上次报告。
-
-运行器启动真实引擎和测试，而非纯文件检查。所需权限、窗口行为与运行范围按当前项目和任务确认；不能因为名字含“测试”就认为无副作用。
-
-## 测试范围怎样计算
-
-Stage 1 的完整测试范围规则见测试规范中的 [Test Impact Review](../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)。下文用中文说明 Required、affected、full 与命令的对应关系。
-
-```text
-Required Test Set =
-  当前 Feature 的自动验收测试
-  + 当前 Feature 的回归测试
-  + 影响组件已登记的 unit_test_paths
-  + 与影响组件相交的 active 历史回归
-  + 与影响组件相交的 active 不变量
-  + 已批准的 additional_tests
-
-affected = Required + 与影响组件相交的 active 验收测试
-```
-
-| `--scope` | 用途 |
-| --- | --- |
-| `auto` | 默认执行 affected；当前计划需要全量时升级为 full |
-| `required` | 显式运行 Required，适合局部迭代；不能据此绕过最终 affected/full 要求 |
-| `affected` | Required 加相关验收测试 |
-| `full` | 递归运行 `tests/` 并核对必需覆盖；空分层目录不单独成为义务，测试总数为零仍失败 |
-
-影响组件设有 `full_suite_on_change`、已批准的 `full_suite_reasons`、广泛工具链影响或无法界定影响时，需要按规范执行 full；工程维护标签本身不触发升级。附加测试及理由保存在 Feature 的 `verification.test_impact`，没有独立计划文件。
-
-没有单元套件的组件使用 `unit_test_paths: []`，不产生虚构选择器。已登记路径丢失、被选中目录零测试、必需用例跳过或报告缺失都不能记为通过。不存在且未登记的测试层不会贡献全量选择器；这不把空项目变成有成功测试证据的项目。
-
-合法空选择集的返回及完成记录衔接见[记录完成依据](#记录完成依据)。
-
-## 一次运行留下什么
-
-实际 Feature 运行创建 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行创建 `reports/gdunit-wrapper/focused/run-<id>/`。运行顺序和完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不猜测 run ID 或报告文件夹编号。
-
-```text
-reports/gdunit-wrapper/F001/run-<id>/
-├── result.json                 同一个文件从运行中更新为成功或失败
-├── engine.log                  原始引擎输出
-├── discovery.json              实际展开后的测试发现集合
-└── report_<...>/
-    ├── results.xml             原始 JUnit
-    └── diagnostics.jsonl       运行诊断
-```
-
-启动或中途失败时，部分原件可能尚未产生；缺失本身就是要读取的结果，不应补造空报告。实际报告还可能包含 gdUnit 生成的其他文件。
-
-运行器核对过程结果、实际发现集合、JUnit 用例和诊断。参数化用例需要对应真实展开后的集合，源码里存在 `test_*` 方法不证明它实际执行。JUnit 看起来成功也不能遮住引擎错误或未完成运行。
-
-同一内容上的较新失败需要由之后覆盖该失败范围的成功解决；更早成功或更窄的通过不能盖掉它。保留原始失败，再说明修复与后续结果。
-
-## 记录完成依据
-
-完成依据入口为 `tools/features/record-feature-completion.py`。下表是参数速查，不是让使用者批量填“通过”的步骤：
+入口为 `tools/features/record-feature-completion.py`。下表是参数速查，用来记录真实结果，不是批量填写“通过”的步骤：
 
 | 子命令 | 何时使用 |
 | --- | --- |
-| `record-tests --feature F001 --run <result.json>` | 导入真实 final Feature 运行；多个运行须在同一次调用中列出多个 `--run`，整组替换旧引用 |
-| `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定清单不能重新绑定 |
-| `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户真实结果，与原清单和当前内容对照；记录 accepted、rejected 或 pending |
-| `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已经明确接受当前范围之后 |
-| `record-acceptance --feature F001 --status rejected` | 记录真实拒绝与后续修复需要 |
-| `show --feature F001` | 只读检查记录文件结构和 Feature 身份并展示；不判定完成 |
-| `validate --feature F001` | 检查当前内容对应的完成依据 |
+| `record-tests --feature F001 --run <result.json>` | 导入真实的最终 Feature 运行；多个运行在同一次调用中列出多个 `--run`，整组替换旧引用 |
+| `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定的清单不能重新绑定 |
+| `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户的真实结果，与原清单和当前内容对照，记录 accepted、rejected 或 pending |
+| `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已明确接受当前范围 |
+| `record-acceptance --feature F001 --status rejected` | 记录用户的拒绝和需要修复的内容 |
+| `show --feature F001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
+| `validate --feature F001` | 检查当前内容对应的完成依据是否满足 |
 
-`show` 退出 0 仅表示匹配记录可读取；尚无通过测试、尚待人工结果或完成条件不满足的有效记录也可以展示成功。需要判断能否完成时调用 `validate`，两者都不更新 Feature 状态。损坏结构或身份不匹配仍返回错误。
+`show` 退出 0 只表示记录可读取：没有通过的测试、仍在等待人工结果的记录也能正常展示。判断能否完成要用 `validate`。两者都不改 Feature 状态；记录结构损坏或身份不匹配时都会报错。
 
 ### 导入测试结果
 
-**前置**：在当前终端完成 [调用准备](#调用准备)。把示例运行路径换成运行器实际输出的 `result.json`，先确认文件确已写入。
+在当前终端完成[调用准备](#调用准备)，并确认运行器输出的 `result.json` 确实已写入。调用前注意两个副作用：
 
-**调用前确认副作用**：
-
-- 一次 `record-tests` 会用本次所有 `--run` **整组替换**当前测试引用，不会逐次累加；需要保留的兼容运行必须一次列全。
-- 结果导入校验失败会**清除旧测试引用**，原始报告仍保留。应处理失败，不得改写结果文件绕过。
+- 每次 `record-tests` 都用本次传入的全部 `--run` **整组替换**当前测试引用，不会累加。需要同时保留的运行必须一次列全。
+- 导入校验失败时会**清除旧的测试引用**，原始报告仍然保留。要处理失败原因，不能改写结果文件来绕过。
 
 只有一个有效运行时：
 
@@ -206,41 +239,36 @@ reports/gdunit-wrapper/F001/run-<id>/
 $LASTEXITCODE
 ```
 
-需同时保留两个兼容运行时，改用一次调用中的两个 `--run`；以下路径同样只是占位：
+需要同时保留两个运行时，在一次调用中写两个 `--run`（路径同样是占位）：
 
 ```powershell
 & $projectPython -B tools/features/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-first/result.json" --run "reports/gdunit-wrapper/$featureId/run-actual-second/result.json"
 $LASTEXITCODE
 ```
 
-导入后核对退出码与实际结果。原件引用和当前内容绑定用于发现错误复用；脚本不接受手填通过次数来创建成功。
+导入后核对退出码与实际结果。完成依据文件在第一次记录测试结果或人工验收结果时自动创建，不需要提前建空记录；已有文件损坏或格式不受支持时会报错，不会被覆盖。独立评审的范围和时机由用户决定。
 
-统一调用运行器即可，空选择集的处理如下：
+### 不需要自动测试的情况
 
-- **适用条件**：有效 manual 计划的 Required、affected 都为空且不要求全量时，退出码为 0，stdout 输出 `status: not_required` 的 JSON。合法空基线也返回 `not_required`。
-- **运行与记录**：不启动 Godot、不读取引擎配置、不创建运行报告，也不调用 `record-tests`。真实人工验收结果随后建立完成记录，其中 `test_runs: []`。
-- **仍会报错的情况**：显式 `--scope full` 或 `--require-test`、无效映射、缺失路径、当前内容上的未解决最终失败。
-- **结果含义**：退出 0 在此仅表示无需自动测试，不是 PASS。
+运行器会自己判断是否有需要运行的测试，统一调用即可：
 
-有结果时直接记录，不用提前建空记录，也不用额外执行初始化命令。
+- **适用条件**：有效的 manual 计划中 Required 和 affected 都为空、且不要求全量时，退出码为 0，并输出含 `status: not_required` 的 JSON。合法的空基线同样返回 `not_required`。
+- **运行与记录**：这时不启动 Godot、不写报告，也不调用 `record-tests`。之后用真实的人工验收结果创建完成记录，其中 `test_runs: []`。
+- **仍会报错的情况**：显式指定 `--scope full` 或 `--require-test`、映射无效、路径缺失，或当前内容上还有未解决的最终失败。
 
-- **首次记录**：记录测试结果或真实人工验收时建立完成记录。
-- **已有文件**：损坏或格式不受支持时会报错，不会覆盖。
-- **独立评审**：范围和时机由用户选择。
+这里的退出码 0 只表示“不需要自动测试”，不是测试通过。
 
-其他失败处理见 [故障排查](errors-and-results.md#测试与完成依据)。
+### 导入人工验收结果
 
-### 导入人工验收记录
+人工清单和结果文件都保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。`--result` 必须与 `--checklist` 配对使用，不能和表示口头决定的 `--status` 混用。
 
-人工文件均保留在 `reports/manual-acceptance/`，输入/结果格式和命令示例见 [人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。`--result` 与 `--checklist` 配对，不能与口头决定的 `--status` 混用。
-
-有效全通过结果本身就是该范围的人工接受；注释存在实质矛盾时先澄清。命令退出 0 表示成功记录实际状态，`pending`、`rejected` 仍不能完成。无效导入退出非零且保留已有记录，Agent 必须处理本次错误，不能退回旧接受绕过。
+- 有效且全部通过的结果文件，本身就是该范围的人工接受；备注里有实质矛盾时先向用户澄清。
+- 命令退出 0 表示如实记录了状态；`pending` 和 `rejected` 都不能完成任务。
+- 导入无效时命令以非零退出，并保留已有记录。Agent 要处理本次错误，不能退回使用旧的接受记录。
 
 ### 检查完成依据与台账
 
-**前置**：在当前终端完成 [调用准备](#调用准备)。
-
-完成检查由两部分配合，Agent 还要单独确认直接静态检查与用户指定的评审条件：
+在当前终端完成[调用准备](#调用准备)后运行下面两条命令；直接解析、lint 和用户指定的评审条件由 Agent 另外确认：
 
 ```powershell
 & $projectPython -B tools/features/record-feature-completion.py validate --feature $featureId
@@ -249,91 +277,91 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-## 内容绑定与失效判断
+其他失败的含义见[错误与结果的含义](errors-and-results.md#测试与完成依据)。
 
-内容指纹是工具计算的文件摘要，**不等于 Agent 对“含义是否改变”的判断**。当前实现先通过 Git 列出已跟踪文件与未被忽略的未跟踪文件，按路径排序；对纳入的文件记录路径、存在类型与内容，再计算摘要。它读取当前工作区字节，不依据修改时间，也不只看本 Feature 的差异。
+## 内容指纹与失效判断
 
-删除或重命名纳入的源码会改变指纹；已经不存在、仅残留在 Git 索引中的路径不参与摘要。纳入的现存文件集合及内容保持不变时，在该删除或重命名之后取得的测试和人工证据，不会因随后仅暂存或提交同一变化而失效。再次改变纳入的内容仍需按当前义务补验证。
+内容指纹是工具对当前文件计算出的摘要，用来判断已有测试和人工记录是否仍对应当前内容。它只比较字节，**不判断含义是否改变**：
 
-| 输入类别 | 当前实际计算 |
+- 工具通过 Git 列出已跟踪文件和未被忽略的未跟踪文件，按路径排序，对纳入的文件记录路径、类型与内容后计算摘要。
+- 读取的是当前工作区的字节，不看修改时间，也不只看本 Feature 的差异。
+- 删除或重命名纳入的文件会改变指纹；已经不存在、只残留在 Git 索引中的路径不参与计算。
+- 在一次删除或重命名之后取得的证据，不会因为随后只是暂存或提交同一变化而失效。之后如果再改纳入的内容，仍要补做验证。
+
+各类文件的计算方式：
+
+| 文件 | 计算方式 |
 | --- | --- |
-| GDD、Product、术语、专业规格/表现文档及资源章节、项目规则、Feature design、架构与 ADR | 通常按文件原始字节纳入；换行、措辞、准备状态或排版变化即使不改行为，也可能改变指纹 |
-| 源码、测试、配置和其他未豁免文件 | 纳入路径与当前内容；增删、移动同样可能改变摘要 |
-| `docs/features/` 下的 JSON、Feature 索引、Registry、修订记录、methodology-config | 指定 JSON 先解析并排序对象键、统一序列化；数组顺序仍保留，只排除下表约定字段 |
-| `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 从源码指纹排除；报告仍由结果导入/人工原件契约单独核对，不可随意改写 |
-| `docs/progress/`、`docs/knowledge/`、`docs/research/` 中以 `.md` 结尾的文件 | 解释性 Markdown 排除；非 Markdown 文件仍参与，要求正文不能只放在这些目录 |
-| 普通 `README.md`（文件名大小写不敏感） | 排除；但在 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下仍参与 |
+| GDD、Product、术语、专业规格与表现文档、项目规则、Feature 设计稿、架构与 ADR | 按原始字节纳入；换行、措辞或排版变化即使不改行为，也会改变指纹 |
+| 源码、测试、配置和其他未列出的文件 | 纳入路径与内容；增删、移动都会改变指纹 |
+| `docs/features/` 下的 JSON、Feature 索引、测试登记表、修订记录、`methodology-config.json` | 先解析 JSON、排序对象键再计算；数组顺序保留，下表列出的过程字段除外 |
+| `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工原件契约单独核对，仍不能随意改写 |
+| `docs/progress/`、`docs/knowledge/`、`docs/research/` 下的 `.md` 文件 | 不纳入；这些目录里的非 Markdown 文件仍纳入 |
+| 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
 
-未被 Git 列出的忽略文件不会进入这次摘要；这不是把正式需求、规则或可执行输入迁入豁免位置的许可。知识只保留参考经验，普通 README 只保存用法与导航。其他 Markdown 没有通用豁免。
+不纳入只是计算规则，不是存放许可：正式需求、规则和可执行输入不能为了避开指纹而放进这些位置。知识目录只存参考经验，普通 README 只写用法和导航；其他 Markdown 没有豁免。
 
-`semantic_json()` 只在特定位置移除过程字段，不递归移除所有同名键：
+JSON 中不参与计算的过程字段只在下列位置移除，不会递归移除所有同名键：
 
-| JSON 位置 | 不参与摘要的字段 |
+| JSON 位置 | 不参与计算的字段 |
 | --- | --- |
-| Feature 详情顶层、索引每条 Feature 顶层 | `notes`、`status`、`completed_at`、`created_at`、`updated_at`、`recorded_at` |
-| 索引/Registry 的 `meta` | 上述过程字段及以 `_at` 结尾的键 |
-| 修订记录的每条 `revision_log` | `revised_at`、`created_at`、`updated_at`、`recorded_at`、`summary`、`notes` |
+| Feature 详情顶层、索引中每条 Feature 的顶层 | `notes`、`status`、`completed_at`、`created_at`、`updated_at`、`recorded_at` |
+| 索引与测试登记表的 `meta` | 上述字段，以及所有以 `_at` 结尾的键 |
+| 修订记录中每条 `revision_log` | `revised_at`、`created_at`、`updated_at`、`recorded_at`、`summary`、`notes` |
 
-- **仍参与的字段**：AC 文本、验证计划、组件、嵌套测试 status、退役关系、修订 ID、源提交锚点和未知契约字段。
-- **被链接的设计**：notes 中的链接是过程记录，**被链接的 F0XX-design.md 自身仍纳入**。
-- **Git 提交号**：另作来源记录；仅提交了过程字段且指纹相同，不会凭提交号要求重跑或取得新接受。
+- **仍参与计算的字段**：AC 文本、验证计划、组件、嵌套测试的 status、退役关系、修订 ID、源提交锚点，以及未知的契约字段。
+- **notes 中链接的设计稿**：notes 本身不参与，但被链接的 `F0XX-design.md` 文件仍按原始字节纳入。
+- **Git 提交号**：另作来源记录。只提交了过程字段、指纹没有变化时，不会因为提交号变化要求重跑或重新验收。
 
-治理文档尽量在 Stage 3 完成。最终测试或人工接受后再改了纳入的内容，包括 Stage 5.5 采纳新规则时，先核对当前指纹与验证义务，补齐失效的最终运行、导入和适用人工接受，不能只凭“未改代码”沿用旧结果。内容相同且覆盖仍满足的结果才可复用；只读评审不改变内容。
+指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档尽量在 Stage 3 完成。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读评审不改变内容。
 
-这一绑定是全局的。即使修改的是后续尚未开发的 GDD 章节，也可能使当前未完成 Feature 的已有测试或人工接受失效；已完成的历史记录不自动重开。最终验证前应完成本轮来源更新，不为 GDD 另建一套指纹或同步记录。
+直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。
 
-直接依据是 [验证快照实现](../../../project-source/tools/lib/verification_snapshot.py) 的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及 [测试策略](../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。静态解析/lint 的实际影响仍由 Agent 单独判断。
+性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见[专业来源与资源的测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
 
-性能、长测、显示或试听证据按原任务 AC/设计中的验证义务判断；当前适配器只接收实际 gdUnit 结果，不把专项测量包装为 gdUnit 通过。完成工具也不判断专项证据是否充分，详见 [专业验证边界](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的隔离报告、日志或缓存不得覆盖原证据或被审成果。
+## 脚本解析与 lint
 
-## 直接脚本解析与 lint
-
-**前置**：在当前终端完成 [调用准备](#调用准备)。从项目根目录使用同一个已确认 Godot 可执行文件：
+在当前终端完成[调用准备](#调用准备)后，从项目根目录使用同一个已确认的 Godot 可执行文件：
 
 ```powershell
-# 替换成实际变更脚本，并按影响解析必要依赖。
+# 换成实际改动的脚本，并按影响解析必要的依赖。
 & $projectGodot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
 $LASTEXITCODE
 ```
 
 ```powershell
-# 替换成实际 Feature；需保留不同轮次时，选择尚未使用的运行子目录。
+# 换成实际 Feature；需要保留多轮结果时，使用尚未用过的子目录。
 $reportDirectory = "reports/features/$featureId"
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
 & $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
 $LASTEXITCODE
 ```
 
-未归属 Feature 的工作使用 `reports/maintenance/<任务>/`；需要保存的解析输出也放入相应报告目录。不要覆盖仍被引用的原件，目录选择见 [报告保留与清理](../specialist-work-and-records/knowledge-and-records.md#报告与历史)。
+- **报告目录**：不属于某个 Feature 的工作使用 `reports/maintenance/<任务>/`。不要覆盖仍被引用的报告，目录选择见[报告与历史](../specialist-work-and-records/knowledge-and-records.md#报告与历史)。
+- **等待进程**：Godot 在 Windows 上是 GUI 程序，`| Out-Host` 让 PowerShell 等它结束，之后立即读取退出码。
+- **lint 范围**：扫描完整 `res://` 并遵循项目配置；改了默认被排除的依赖时，仍要单独验证那处改动。
 
-对 Windows GUI 可执行文件，`Out-Host` 管道用于等待进程，立即检查退出码。lint 扫描完整 `res://` 并遵循项目配置；修改了被默认排除的依赖时，仍需验证该依赖变更本身。
+lint CLI 的结果约定：
 
-当前 lint CLI 的结果与报告约定：
+| 项目 | 约定 |
+| --- | --- |
+| 退出码 | 0 无问题或只有 Info；1 有 Warning；2 有 Critical；3 输入无效、没有发现文件、配置错误或 JSON 报告写入失败 |
+| `--severity`、`--top` | 只影响显示，不改变实际判定 |
+| `--output` | 支持 JSON 和 HTML；默认文件名 `code_quality_report.html` 只用于 HTML |
+| 报告内容 | 写明实际范围以及 Critical、Warning、Info 的数量；未知数量不能写成 0 |
 
-- **退出码**：0 表示无问题或仅 Info，1 表示 Warning，2 表示 Critical，3 表示输入无效、空发现、配置错误或 JSON 报告写入失败。
-- **显示参数**：`--severity` 和 `--top` 只影响显示，不会抹去真实判定。
-- **输出文件**：`--output` 支持 JSON 和 HTML 文件；默认文件名 `code_quality_report.html` 仅用于 HTML。
-- **报告内容**：报告真实范围与 Critical/Warning/Info 数量，未知数量不能写成零。
+项目根目录的 `gdlint.json` 必须能读取，缺失或损坏时不会悄悄换成插件内置阈值；显式 `--config` 也一样。`--check` 中只要有一个未知检查 ID 就以 3 退出，零检查不算成功。
 
-默认项目配置必须成功读取；根 `gdlint.json` 缺失或不可读时不会静默换成插件内置阈值。显式 `--config` 遵循相同失败边界，`--check` 中任一未知检查 ID 都以 3 退出，不能把零检查结果当成成功。
+只做解析或 lint 时，不需要额外的导入步骤或包装程序。已授权的资源导入和新项目首次运行所需的扫描，按对应环境规范处理。
 
-解析证明脚本在实际引擎中的相关语法/类型契约，lint 检查配置的质量规则；两者都不替代运行、资源、场景、导出或人工质量判断。仅执行解析或 lint 时不额外增加导入步骤或包装程序；已授权资源导入和新项目首次运行所需扫描按对应环境规范处理，普通 Feature 不增加单独导入阶段。
+通用交付不默认加截图或像素比较。任务明确约定了客观的渲染契约时，可以补充限定范围和环境的检查；构图、美术一致性和动画体验仍靠人工验收，边界见[视觉验证规则](../../../project-source/agent-rules/70-tests/testing-strategy.md#visual-boundary)。
 
-通用交付不默认增加截图或像素比较门禁；任务明确约定客观渲染契约时，可以补充限定范围和环境的检查。画面构图、艺术一致性与动画体验仍由人工验收，具体边界见 [视觉验证规则](../../../project-source/agent-rules/70-tests/testing-strategy.md#visual-boundary)。
+## 工具退出码速查
 
-## 退出码和结果边界
+| 工具 | 退出码 |
+| --- | --- |
+| 环境检查、台账检查 | 0 成功；2 校验失败 |
+| gdUnit 运行器 | 0 成功；1 运行失败；2 参数错误 |
+| lint CLI | 见上节 |
 
-- **环境与台账检查**：成功通常为 0、校验失败为 2。
-- **gdUnit 包装器**：成功为 0、运行失败为 1，参数解析错误可为 2。
-
-最终结论仍结合原始输出和检查范围，不能将不同工具的非零值统一解释为业务测试失败。
-
-| 已有结果 | 可以报告 | 不应推断 |
-| --- | --- | --- |
-| 配置就绪 | 实际环境检查通过 | 游戏或测试通过 |
-| 台账通过 | 数据结构、引用和依赖满足该检查 | AC 已实现 |
-| focused 通过 | 指定套件在本次运行成功 | 最终 Required/affected/full 已满足 |
-| 完成依据校验通过 | 它负责的测试与适用人工接受契约满足 | 脚本解析、lint、独立评审或所有目标平台已检查 |
-| 静态检查通过 | 已执行静态范围通过 | 手感、外观、声音和导出质量已接受 |
-
-实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[直接 lint 契约](../../../project-source/methodology/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[lint 契约](../../../project-source/methodology/gdscript-lint.md)。

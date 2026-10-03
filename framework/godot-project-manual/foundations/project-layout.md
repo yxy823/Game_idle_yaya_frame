@@ -2,40 +2,64 @@
 
 [Godot 项目手册](../README.md)
 
-以下路径相对生成项目根目录。文件职责由实际使用者和权威来源决定；目录、模板或空占位文件的存在不代表相应工作已经完成。
+本页说明生成项目中每类文档和代码放在哪里、谁来写、谁来读。路径都相对项目根目录。目录或模板存在，只表示位置已经准备好，不表示对应的工作已经完成。
 
-先用 [游戏逻辑、表现与协作](game-logic-and-presentation.md) 判断功能职责，再按本页定位正文与代码。目录按资料用途和业务模块组织；GDD 同时表达规则与体验，测试和工具服务两层，不按“逻辑／表现”强行搬迁。
+想知道一个功能涉及哪些职责，先读[游戏逻辑、表现与协作](game-logic-and-presentation.md)，再回到本页找具体位置。目录按资料用途和业务模块组织，不按“逻辑 / 表现”两层拆分：GDD 同时描述规则与体验，测试和工具也同时服务两者。
 
 ## 主要对象及读写关系
 
-| 对象 | 保存什么 | 主要维护者与读取方 |
-| --- | --- | --- |
-| `README.md` / `AGENTS.md` | 项目导航 / Agent 约束与路由 | 项目维护者；用户与所有执行 Agent |
-| `agent-rules/` / `methodology/` | 按领域工程语义 / 开发和验证契约 | 所属规范；执行与审核按当前任务读取 |
-| `.agents/skills/` / `.codex/agents/` | 专项方法 / researcher、independent-reviewer 角色配置 | 主 Agent 按任务选用；角色文件不证明宿主已加载 |
-| `docs/methodology-config.json` | 文档语言及工具路径 | 环境维护；项目命令读取 |
-| `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本设计范围 | `design-gdd` 维护整体设计；`design-balance` 直接维护获准的数值主题；相关项目工作读取 |
-| `docs/gdd/design-scope-and-boundaries.md` | GDD《设计范围与边界》：整体范围、排除项和版本边界；局部限制引用所属主题 | `design-gdd` 在实际保存设计时建立和维护；讨论、规划、实现与审核按需读取 |
-| `docs/gdd/open-questions.md` | 当前设计开放问题、相关主题、影响与所需决定或证据；初始只有用途和待定说明 | GDD 作者随设计维护；讨论、规划、审核、相关实验与续接按范围使用 |
-| `docs/product.md` / `docs/product/` | 交付预拆分、来源、依赖、顺序 / 当前交付范围与衔接 | `product-author`；具体文档轮到时编写，规划和实现读取 |
-| `docs/terminology.md` | 已确认项目术语定义的固定唯一正文 | `project-terminology`；详细玩法规则归 GDD |
-| `docs/project-rules.md` | 项目开发约束、协作与工程原则，强度区分 MUST、PREFER、REVIEW | 已获准工程规则维护；受其影响的工作读取 |
-| `docs/game-organization.md` | 逻辑与表现职责、文档关系、业务模块与代码组织和命名判断 | 项目设计及结构工作按需读取；[随项目复制的指南](../../../project-source/defaults/docs/game-organization.md) |
-| `docs/unadopted-ideas.md` | 未采纳设想及其原因；不代表开发承诺 | 需求讨论按需维护；采纳后链接正式来源 |
-| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化的共享方向和专业规格 | 对应 design Skill；专业正文固定维护在所属文件，GDD 保存整体目标与规则并引用 |
-| `docs/presentation/` | 一次游戏表现的过程、组件、候选、采用组合、实现与验收入口；方案专用资源规格归属相应章节 | `design-game-presentation` 与当前实现任务；UI/GDD 引用，README 只导航 |
-| `docs/feature-list.json` | ID、标题、依赖、状态与详情入口 | 规划/执行；可开始任务及台账检查 |
-| `docs/features/F0XX.json` | 本项范围、AC、来源、验证义务与必要 notes | 规划/执行；测试选择和完成检查 |
-| `docs/features/F0XX-design.md` | 实施设计与局部决定的固定正文，简短理由也使用此文件 | 原任务；不拥有第二套 AC 或测试映射 |
-| `docs/test-registry.json` | 组件与测试 ID、套件/case、planned/active/retired | 规划/实现；测试运行器 |
-| `docs/feature-list-revisions.json` | 真实规划覆盖基线与修订 | 规划/同步；不是任意最新 Git 提交的别名 |
-| `docs/feature-completion-evidence.json` | 当前完成依据的原件引用及绑定 | 完成记录工具；首个真实结果后出现 |
-| `docs/architecture.md` / `docs/architecture/` | 当前模块、状态所有者、协作与实现导航 / 子系统说明及历史 ADR | 实际结构或重要决定改变时维护 |
-| `docs/knowledge/` / `docs/research/` | 项目实践经验 / 外部资料研究 | 已授权的经验或调研任务；不成为需求唯一正文 |
-| `docs/progress.md` / `docs/progress/` | 当前停点与下一步 / 单份已归档执行历史 | 原任务；新对话恢复事实 |
-| `reports/` | 运行原件、人工验收与任务报告 | 相应工具或用户；默认不跟踪到 Git |
+### 规则、方法与配置
 
-`source` 和引用能定位材料，不自动证明其获准、仍有效或已覆盖。测试登记、执行结果、验收决定与 `done` 是不同事实。
+| 位置 | 保存什么 | 谁维护 / 谁读取 |
+| --- | --- | --- |
+| `README.md` | 项目导航 | 项目维护者 / 用户与 Agent |
+| `AGENTS.md` | Agent 的约束与任务路由 | 项目维护者 / 所有执行 Agent |
+| `agent-rules/` | 按领域划分的工程规则 | 所属规则 / 执行与审核时按任务读取 |
+| `methodology/` | 开发与验证流程契约、模板 | 所属规范 / 执行与审核时按任务读取 |
+| `.agents/skills/` | 各项专门方法（Skill） | 所属 Skill / 主 Agent 按任务选用 |
+| `.codex/agents/` | researcher、independent-reviewer 等角色配置 | 所属配置 / 宿主加载；文件存在不代表宿主已加载 |
+| `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
+| `docs/project-rules.md` | 项目的开发约束与工程原则，强度分 MUST、PREFER、REVIEW | 获准的规则修改 / 受影响的工作 |
+| `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
+
+### 设计与专业规格
+
+| 位置 | 保存什么 | 谁维护 / 谁读取 |
+| --- | --- | --- |
+| `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本范围 | `design-gdd` 维护整体设计，`design-balance` 维护获准的数值主题 / 所有依赖设计的工作 |
+| `docs/gdd/design-scope-and-boundaries.md` | 《设计范围与边界》：整体范围、排除项和版本边界 | `design-gdd` 在第一次保存设计时建立 / 讨论、规划、实现与审核 |
+| `docs/gdd/open-questions.md` | 《开放问题》：尚未决定的设计选择、影响和所需证据；初始只有用途说明 | GDD 作者 / 讨论、规划、审核、实验与续接 |
+| `docs/terminology.md` | 已确认的项目术语定义（唯一正文） | `project-terminology` / 所有文档；详细玩法规则仍在 GDD |
+| `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；不是开发承诺 | 需求讨论 / 采纳时迁移到正式位置并留链接 |
+| `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化出的共享方向与专业规格 | 对应的 design Skill / GDD 保存整体目标并引用这些正文 |
+| `docs/presentation/` | 一次游戏表现的过程、组件、候选方案、采用组合、实现与验收入口；方案专用的资源规格写在对应章节 | `design-game-presentation` 与实现任务 / UI 文档和 GDD 引用；README 只做导航 |
+
+### 交付规划与任务台账
+
+| 位置 | 保存什么 | 谁维护 / 谁读取 |
+| --- | --- | --- |
+| `docs/product.md` | 交付预拆分：各交付单元的粗略边界、来源、依赖和建议顺序 | `product-author` / 规划 |
+| `docs/product/NN-name.md` | 当前交付单元的范围与衔接，轮到时才编写 | `product-author` / 规划与实现 |
+| `docs/feature-list.json` | Feature 的 ID、标题、依赖、状态与详情入口 | 规划与执行 / 可开始任务判断、台账检查 |
+| `docs/features/F0XX.json` | 单个 Feature 的范围、AC、来源、验证义务与 notes | 规划与执行 / 测试选择、完成检查 |
+| `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
+| `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
+| `docs/feature-list-revisions.json` | 规划实际覆盖的来源基线与修订记录 | 规划与同步 / 不是“最新 Git 提交”的别名 |
+| `docs/feature-completion-evidence.json` | 完成依据：验证原件的引用与内容绑定 | 完成记录工具 / 第一次记录真实结果时创建 |
+
+### 架构、知识与过程记录
+
+| 位置 | 保存什么 | 谁维护 / 谁读取 |
+| --- | --- | --- |
+| `docs/architecture.md` | 当前模块、状态所有者、协作关系与实现导航 | 结构或重要决定改变时更新 |
+| `docs/architecture/` | 子系统说明与 ADR | 同上 |
+| `docs/knowledge/` | 项目自己的实践经验 | 获准的经验整理 / 规划、调试、实现时查阅 |
+| `docs/research/` | 外部资料调研 | 获准的调研 / 需要时查阅；不能代替需求正文 |
+| `docs/progress.md` | 当前停点与下一步 | 原任务 / 新对话恢复工作 |
+| `docs/progress/` | 已归档的执行历史，每项一份 | 原任务 |
+| `reports/` | 运行原件、人工验收与任务报告 | 对应工具或用户；默认不纳入 Git |
+
+`source` 字段和链接能帮助找到材料，但不说明材料已获准、仍然有效或已被完整覆盖。测试已登记、测试已执行、验收已决定和 Feature 已 `done` 是四个不同的状态。
 
 ## 代码与开发工具
 
@@ -61,51 +85,57 @@
     └── invariants/           跨任务不变量
 ```
 
-最小入口不是预建完整游戏架构。代码、场景和资源可按业务模块相邻放置；存档、设置和全局 UI 按实际所有者组织。工程规则的编号目录不要求游戏照搬同样层级，也不要求新增 Bootstrap、Autoload、事件总线或每类脚本一个目录。
+最小入口只是起点，不是预先搭好的完整架构。代码、场景和资源可以按业务模块放在一起；存档、设置和全局 UI 按实际所有者组织。工程规则目录的编号层级不要求游戏照搬，也不要求预先建立 Bootstrap、Autoload、事件总线或“每类脚本一个目录”。
 
-例如商店模块可以相邻保存购买规则和商店面板，前者负责有效购买结果，后者负责显示与交互。明确职责并不要求建立根级 `logic/`、`presentation/` 目录；具体拆分根据已有结构和维护需要决定。
+例如商店模块可以把购买规则和商店面板放在同一目录：前者负责得出有效的购买结果，后者负责显示和交互。职责清楚不等于要建根级的 `logic/`、`presentation/` 目录，怎样拆分按已有结构和维护需要决定。
 
-四类工作台及消费示例不替换正式主场景。`.git/` 由创建器建立；`.godot/`、运行报告、真实测试套件与设计正文等按实际活动产生。初始 GDD 目录只有用途说明，不能作为开发所需的真实正文；空测试目录和占位 Product 也不提供任何通过证据。
+其他说明：
+
+- 四个资源工作台及其消费示例不会替换正式的主场景。
+- `.git/` 由创建器建立；`.godot/`、运行报告、测试套件和设计正文都在实际工作中产生。
+- 初始的 GDD 目录只有用途说明，空测试目录和占位 Product 也不包含任何结果。
 
 ## 复制与重命名
 
-完整映射只维护在 [project-files.json](../../project-creation/project-files.json)。主要重命名与复制关系包括：
+完整映射只维护在 [project-files.json](../../project-creation/project-files.json)，主要关系如下：
 
 - **项目入口**：`Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
-- **方法与角色**：`skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
-- **其他材料**：默认文档、工程规则、方法、代码、工具及插件按清单复制。
+- **方法与角色**：`skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增的 Skill 只要放在 skills 目录内，就会随整个目录复制，不需要单独加映射。
+- **其他材料**：默认文档、工程规则、方法、代码、工具和插件按清单复制。
 
-`framework/`、根维护规则和完整提示词库不进入项目。创建器不做变量渲染，不自动安装分析器依赖；复制选择不等于每个被复制组件已被项目采用。
+`framework/`、框架根目录的维护规则和完整提示词库不进入项目。创建器不替换模板变量，也不安装分析器依赖；某个组件被复制进来，不代表项目已经开始使用它。
 
 ## 模板与按需记录
 
-`methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；Feature 设计使用固定文件，按内容省略不适用章节。
+`methodology/templates/` 提供以下格式参考：Product、Feature、工程变更、Feature 详情 / 索引 / 修订、测试登记、完成依据、人工清单、Progress、知识、项目规则、架构和 ADR。模板只是格式参考，不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
 
-GDD 的固定入口、标准主题名称与导入非标准 GDD 的处理见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。Product 模板用于组织交付，不能替代 GDD。
+GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。Product 模板用来组织交付，不能代替 GDD。
 
-| 产物 | 位置与注意事项 |
-| --- | --- |
-| 初始化事实 | `reports/initialization.md`；后续记增量 |
-| gdUnit 原件 | `reports/gdunit-wrapper/<Feature-ID 或 focused>/run-<id>/`；保留真实结果与失败 |
-| 人工清单与结果 | `reports/manual-acceptance/`；原清单和用户结果分开保存 |
-| Feature 自定义结果 | `reports/features/<Feature-ID>/` |
-| 其他维护报告 | `reports/maintenance/<任务>/` |
-| 临时文档 | 项目根目录 `tmp/<任务>/`；草稿、当次方案、交接副本与资料摘录可按主题分层，不能混入正式目录 |
-| 临时探针、命令辅助文件与验证副本 | `reports/scratch/<任务>/`；名称不授予删除权限 |
+各类产物的存放位置：
 
-临时目录不能保存重要代码或决定的唯一副本。当前验收、失败调查及知识引用依赖的报告需要保留，归组须同时调整读写方与引用，工具原件固定路径不随意搬动。
+| 产物 | 位置 | 注意 |
+| --- | --- | --- |
+| 初始化结果 | `reports/initialization.md` | 之后只追加新结果 |
+| gdUnit 运行原件 | `reports/gdunit-wrapper/<Feature-ID 或 focused>/run-<id>/` | 保留真实结果，包括失败 |
+| 人工清单与结果 | `reports/manual-acceptance/` | 原清单和用户结果分开保存 |
+| Feature 自定义结果 | `reports/features/<Feature-ID>/` | — |
+| 其他维护报告 | `reports/maintenance/<任务>/` | — |
+| 临时文档 | 项目根目录 `tmp/<任务>/` | 草稿、当次方案、交接副本与资料摘录，可按主题分层；不放进正式目录 |
+| 临时探针、命令辅助文件与验证副本 | `reports/scratch/<任务>/` | 目录名带 scratch 不代表可以随意删除 |
+
+临时目录里不能存放重要代码或决定的唯一副本。当前验收、失败调查或知识条目还在引用的报告要保留；需要重新归组时，同时修改读写这些报告的工具和引用。工具原件的固定路径不要随意搬动。
 
 ## Git 与 Godot 扫描的区别
 
-Git 的默认范围如下，具体模式以 [默认 gitignore](../../../project-source/defaults/.gitignore) 为准。
+Git 的默认范围如下，具体规则以[默认 .gitignore](../../../project-source/defaults/.gitignore) 为准：
 
-- **默认忽略**：Godot 缓存、派生翻译缓存、报告、`tmp/` 临时文档和本机秘密；`.env.example` / `.env.template` 可保留。
-- **按项目规则跟踪**：源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
+- **默认忽略**：Godot 缓存、派生的翻译缓存、`reports/`、`tmp/` 和本机秘密；`.env.example`、`.env.template` 可以保留。
+- **按项目规则跟踪**：源素材、必要的 `.import`、`.gd.uid`、导出预设、插件、Skill 和正式文档。
 
-还需区分扫描、导入与证据保留：
+几个容易混淆的概念：
 
-- `.gdignore` 控制 Godot 扫描，不决定 Git 是否跟踪或文件是否可删除。
-- `.import` 是导入配置，`.godot/` 是缓存，两者不能一并当作垃圾清空。
-- 报告未进 Git 时，本地提交不保证另一位置拥有验证原件。
+- `.gdignore` 只控制 Godot 是否扫描某个目录，与 Git 是否跟踪、文件能否删除无关。
+- `.import` 是导入配置，`.godot/` 是缓存，不能一起当作垃圾清空。
+- `reports/` 默认不进 Git，所以提交代码不会把验证原件带到其他目录或机器。
 
-文档选择依据见 [知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md)，专业材料职责见 [专业来源与资源](../specialist-work-and-records/specialist-work.md)。
+相关专题：[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md)、[专业来源与资源](../specialist-work-and-records/specialist-work.md)。
