@@ -1,29 +1,29 @@
-# Shader Coordinates and Sampling
+# Shader 的坐标与采样
 
-Every coordinate, offset and pixel-size calculation has an explicit space.
+每个坐标、偏移和像素尺寸的计算都有明确的空间。
 
-## Coordinate spaces
+## 坐标空间
 
-- **[MUST]** Do not mix UV units, screen UV, render pixels, physical display pixels, logical pixels and texture texels without explicit conversion.
-- **[MUST]** `TEXTURE_PIXEL_SIZE` refers to the built-in `TEXTURE`. Custom samplers need their own texel-size contract or a justified `textureSize()` path.
-- **[MUST]** Object texture effects normally use object UV; screen-space effects use `SCREEN_UV` and screen-texture semantics.
-- **[MUST]** Do not assume that one texture texel equals one screen or render pixel.
-- **[MUST]** Pixel-perfect rendering is first a problem of the viewport, stretch settings and integer scaling. Do not add a universal shader snapping hack.
+- **[必须]** 不经过明确换算，不要混用 UV 单位、屏幕 UV、渲染像素、物理显示像素、逻辑像素和纹理纹素。
+- **[必须]** `TEXTURE_PIXEL_SIZE` 指内置的 `TEXTURE`。自定义采样器需要自己的纹素尺寸契约，或有理由地使用 `textureSize()`。
+- **[必须]** 物体纹理效果通常使用物体 UV；屏幕空间效果使用 `SCREEN_UV` 和屏幕纹理语义。
+- **[必须]** 不要假定一个纹理纹素等于一个屏幕像素或渲染像素。
+- **[必须]** 像素完美渲染首先是视口、拉伸设置和整数缩放的问题。不要加一个通用的 Shader 吸附补丁。
 
-## Atlas, region, filter, and mipmaps
+## 图集、区域、过滤与 Mipmap
 
-- **[MUST]** Sprite2D region and atlas effects use region-aware coordinates (`REGION_RECT` or an equivalent contract) and prevent unintended sampling of neighboring regions.
-- **[MUST]** Filtering and repeat behavior are part of the algorithm contract. Do not impose nearest filtering globally just because the game uses pixel art.
-- **[MUST]** Mipmaps are not globally banned. Require or disable them based on minification, lookup and data semantics.
-- **[MUST]** Sampling a higher LOD requires an import and filter path that actually supplies usable mipmaps.
+- **[必须]** Sprite2D 的区域和图集效果使用考虑区域的坐标（`REGION_RECT` 或等效契约），并防止意外采样到相邻区域。
+- **[必须]** 过滤和重复行为是算法契约的一部分。不要因为游戏用像素画，就全局强制最近邻过滤。
+- **[必须]** 不全局禁用 mipmap。根据缩小、查找和数据语义决定要求还是关闭 mipmap。
+- **[必须]** 采样更高的 LOD 时，导入和过滤路径必须真的提供可用的 mipmap。
 
-## Vertex and viewport
+## 顶点与视口
 
-- **[MUST]** When changing vertex transform modes, keep the coordinate space of `VERTEX` and downstream varyings explicit.
-- **[MUST]** Validate screen-space shaders on a SubViewport or at an alternate resolution against the actual render resolution, rather than assuming the desktop window size.
+- **[必须]** 修改顶点变换模式时，保持 `VERTEX` 和下游 varying 的坐标空间明确。
+- **[必须]** 屏幕空间 Shader 要在 SubViewport 中或换一个分辨率，按实际渲染分辨率验证，不要假定等于桌面窗口尺寸。
 
-## Screen and backbuffer sampling
+## 屏幕与后台缓冲采样
 
-- **[MUST]** In 2D, the automatic full-screen backbuffer copy for the first `hint_screen_texture` use usually occurs only once. Check overlapping screen effects against tree order, and use `BackBufferCopy` when an explicit intermediate copy is required.
-- **[MUST]** Do not sample a region-limited `BackBufferCopy` outside its copied region; such samples have undefined results.
-- **[MUST]** In 3D, screen texture capture occurs after the opaque pass and before the transparent pass. Transparent objects are not captured, and a material that uses the screen texture is itself subject to transparent-pipeline behavior. Validate the intended visibility between effects.
+- **[必须]** 在 2D 中，第一次使用 `hint_screen_texture` 时自动进行的全屏后台缓冲复制通常只发生一次。按场景树顺序检查互相重叠的屏幕效果；需要明确的中间副本时使用 `BackBufferCopy`。
+- **[必须]** 不要在限定区域的 `BackBufferCopy` 的复制区域之外采样；那里的采样结果未定义。
+- **[必须]** 在 3D 中，屏幕纹理在不透明通道之后、透明通道之前捕获。透明物体不会被捕获，使用屏幕纹理的材质本身也受透明管线行为约束。验证各效果之间预期的可见关系。

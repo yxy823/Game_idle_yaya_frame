@@ -1,4 +1,4 @@
-# Scene Validation
+# 场景验证
 
 ```text
 format and dependency parse
@@ -9,11 +9,11 @@ format and dependency parse
 -> affected integration and runtime behavior
 ```
 
-- **[MUST]** Validate changed scenes with the target Godot 4.7.
-- **[MUST]** For instancing or inheritance changes, validate representative source scenes and their derived or instance consumers.
-- **[MUST]** If editor or automation tooling was used, inspect the resulting diff for unrelated scene pollution or normalization.
-- **[MUST]** A scene that parses but fails during instantiation or `_ready` does not pass.
-- **[PREFER]** For a sufficiently independent reusable Scene, use Play Current Scene (F6) or an equivalent isolated run as an additional validation path.
-- **[MUST]** Classify an isolated-run failure as either a hidden, undeclared dependency or a declared public dependency that the isolated run did not provide. A reasonable dependency-injection contract is not an architecture defect merely because a bare F6 run cannot supply it.
-- **[PREFER]** When a reusable Scene has a declared public dependency, validate it with the smallest harness or fixture that provides that dependency. Do not make the Scene falsely self-contained or add hidden `/root/...` paths merely to make isolated execution pass.
-- **[PREFER]** Use the Remote Scene tree during runtime validation when ownership, instantiation, reparenting or orphan behavior is part of the change.
+- **[必须]** 用目标 Godot 4.7 验证改动的场景。
+- **[必须]** 修改实例化或继承时，验证有代表性的源场景，以及它们的派生场景或实例消费方。
+- **[必须]** 使用了编辑器或自动化工具时，检查结果差异中有没有无关的场景污染或规范化。
+- **[必须]** 能解析、但在实例化或 `_ready` 期间失败的场景，不算通过。
+- **[优先]** 对足够独立的可复用场景，额外用 Play Current Scene（F6）或等价的单独运行作为验证路径。
+- **[必须]** 单独运行失败时，归类为以下两者之一：隐藏的、未声明的依赖；或单独运行时没有提供的已声明公共依赖。合理的依赖注入契约，不会仅因为单纯按 F6 运行无法提供依赖就成为架构缺陷。
+- **[优先]** 可复用场景有已声明的公共依赖时，用能提供该依赖的最小测试装置或夹具验证。不为了让单独运行通过，把场景伪装成自包含，或加入隐藏的 `/root/...` 路径。
+- **[优先]** 修改涉及所有权、实例化、更换父节点或孤立节点行为时，在运行时验证中使用 Remote 场景树。

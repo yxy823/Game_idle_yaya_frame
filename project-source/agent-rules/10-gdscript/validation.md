@@ -1,9 +1,9 @@
-# GDScript Validation
+# GDScript 验证
 
-After a `.gd` change:
+修改 `.gd` 文件后：
 
-- **[MUST]** Validate with the parser, compiler and import path of the target Godot 4.7, not only with a third-party parser.
-- **[MUST]** Run the configured `graydwarf/godot-gdscript-linter` checks on changed project-owned GDScript. `gdlint.json` owns the exact thresholds.
-- **[MUST]** Do not add or expand `gdlint:ignore*`, `@warning_ignore`, exclusions or linter configuration merely to pass.
-- **[MUST]** Run the affected behavioral tests that [test selection and gates](../70-tests/test-selection-and-gates.md) requires.
-- **[MUST]** If lifecycle, Node, Resource, Input, Autoload, threading or other runtime semantics changed, include the corresponding real Godot integration or runtime gate.
+- **[必须]** 用目标 Godot 4.7 的解析器、编译器和导入路径验证，不只用第三方解析器。
+- **[必须]** 对改动的项目自有 GDScript 运行已配置的 `graydwarf/godot-gdscript-linter` 检查。确切阈值由 `gdlint.json` 规定。
+- **[必须]** 不为了通过检查而添加或扩大 `gdlint:ignore*`、`@warning_ignore`、排除项或 linter 配置。
+- **[必须]** 运行 [测试选择与门槛](../70-tests/test-selection-and-gates.md) 要求的受影响行为测试。
+- **[必须]** 如果生命周期、Node、Resource、Input、Autoload、线程或其他运行时语义发生了变化，纳入对应的真实 Godot 集成或运行时验证关卡。

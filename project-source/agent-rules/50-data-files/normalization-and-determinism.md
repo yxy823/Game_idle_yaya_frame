@@ -1,22 +1,22 @@
-# Data Normalization and Determinism
+# 数据规范化与确定性
 
-Normalization canonicalizes valid equivalent inputs; it does not repair invalid semantics.
+规范化把有效且等价的输入统一为规范形式；它不修补无效的语义。
 
-## Normalization
+## 规范化
 
-- **[MUST]** Missing, null, an empty String, zero and false remain distinct according to the schema.
-- **[MUST]** Whitespace normalization is specific to each field. Stable IDs with illegal surrounding whitespace are errors rather than silently trimmed identities.
-- **[REVIEW]** Unicode normalization is domain-specific; do not apply blanket NFC or NFKC without a semantic review.
-- **[MUST]** Percentages and probabilities have one declared authoring scale and one canonical scale; do not infer the scale from the magnitude of a value.
-- **[MUST]** Exact decimal authoring values, such as money or precise percentages, use decimal or fixed-point semantics at the build boundary before any optional runtime conversion.
-- **[MUST]** Make the rounding precision, mode and stage explicit where they affect canonical values.
-- **[MUST]** The display precision of a spreadsheet is not the authoritative numeric precision.
+- **[必须]** 缺失、null、空 String、零和 false 按 schema 保持区分。
+- **[必须]** 空白规范化按字段分别规定。稳定 ID 两端有非法空白时是错误，不悄悄裁剪成另一个身份。
+- **[复核]** Unicode 规范化取决于领域；没有语义复核时，不要一刀切地应用 NFC 或 NFKC。
+- **[必须]** 百分比和概率各有一个声明的编写刻度和一个规范刻度；不要根据数值大小推断刻度。
+- **[必须]** 精确的十进制编写值（例如金额或精确百分比），在可选的运行时转换之前，于构建边界使用十进制或定点语义。
+- **[必须]** 舍入精度、模式和阶段影响规范值时，明确写出。
+- **[必须]** 电子表格的显示精度不是权威的数值精度。
 
-## Canonical output
+## 规范输出
 
-- **[MUST]** Canonical serialization has stable rules for key order, indentation and format, numeric precision, newlines and encoding.
-- **[MUST]** Sort map, object or set-like data only when the schema declares it unordered. Never sort semantic sequences for a deterministic appearance.
-- **[MUST]** Do not emit generated timestamps, absolute machine paths, uncontrolled RNG or UUID values, locale-dependent numbers or dates, or output in hash-map order.
-- **[MUST]** When randomness is part of generation, the generator takes an explicit seed as input.
-- **[MUST]** The same declared input, schema, generator and options yield the same logical output and, where intended, stable bytes.
-- **[PREFER]** Use an input fingerprint (of source, schema, generator and options) and a semantic hash of the normalized data when the value of detecting stale output justifies them. Do not confuse either with a schema version.
+- **[必须]** 规范序列化对键顺序、缩进与格式、数值精度、换行和编码有稳定的规则。
+- **[必须]** 只有 schema 声明为无序时，才对映射、对象或类集合数据排序。不要为了外观上的确定性而对有语义的序列排序。
+- **[必须]** 不输出生成时间戳、机器上的绝对路径、不受控的 RNG 或 UUID 值、随语言区域变化的数字或日期，或按哈希表顺序排列的输出。
+- **[必须]** 随机性是生成的一部分时，生成器接收明确的种子作为输入。
+- **[必须]** 相同的声明输入、schema、生成器和选项产生相同的逻辑输出；在有此意图时，还产生稳定的字节。
+- **[优先]** 发现过期输出的价值足够时，使用输入指纹（覆盖源文件、schema、生成器和选项）和规范化数据的语义哈希。不要把两者与 schema 版本混淆。

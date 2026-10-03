@@ -1,38 +1,38 @@
-# Subsystem architecture
+# 子系统架构
 
-## Responsibility and owner
+## 职责与负责方
 
-*State the subsystem's responsibility and the owner of its authoritative state. Where relevant, separate game logic, presentation and view-local state using `docs/game-organization.md`; one business subsystem may contain both logic and presentation.*
+*写明子系统的职责，以及其权威状态由谁负责。需要时按 `docs/game-organization.md` 区分游戏逻辑、表现和视图本地状态；一个业务子系统可以同时包含逻辑和表现。*
 
-*Give its main location and useful scene, script or resource entry points, or link a module README when that is enough. Link relevant verification entries when useful; test details stay in their own records. Keep this navigation even when the optional runtime-flow section is omitted.*
+*给出它的主要位置，以及有用的场景、脚本或资源入口；模块 README 已经足够时直接链接它。有用时链接验证入口；测试细节留在各自的记录中。即使省略了可选的运行时流程一节，也保留这些导航。*
 
-## Boundaries and allowed dependencies
+## 边界与允许的依赖
 
-*Name the key direct collaborators and what the subsystem uses each one for. Keep these separate from the permitted dependency directions. Explain why the boundaries exist and list any approved exceptions. Link back to `../architecture.md`.*
+*列出关键的直接协作方，以及本子系统用每个协作方做什么。这些协作与允许的依赖方向分开写。说明边界存在的原因，并列出已批准的例外。链接回 `../architecture.md`。*
 
-*Summarize the reasons needed to understand the current subsystem. Link local implementation rationale to its Feature design and cross-Feature rationale that meets the ADR conditions to its ADR. Earlier decisions stay in their own records; do not invent missing rationale or create an ADR just to fill this map.*
+*概括理解当前子系统所需的理由。局部的实现理由链接到它的 Feature 设计；满足 ADR 条件的跨 Feature 理由链接到它的 ADR。更早的决定留在各自的记录中；不编造缺失的理由，也不为了填满这张地图而创建 ADR。*
 
-## Key runtime flows (optional)
+## 关键运行时流程（可选）
 
-*Describe flows whose ordering, ownership or failure behavior matters across modules. Trace the trigger, participating modules, authoritative state change and observable result, with links to the implementation. Use a short sequence or diagram only when it helps.*
+*描述那些顺序、归属或失败行为会影响多个模块的流程。追踪触发点、参与的模块、权威状态的变化和可观察的结果，并链接到实现。只有在确实有帮助时，才用简短的时序说明或图。*
 
-*Include the details that affect this subsystem:*
+*写入影响本子系统的细节：*
 
-- *Where Node, Resource, SceneTree or file I/O enters the flow, and where domain logic stays independent of the engine.*
-- *How requests, accepted or rejected results, current state and one-time feedback connect. Link the requirements that define them. Explain animation timing or interruption conditions when they affect whether a game rule applies.*
-- *Who creates and owns runtime state, resources and subscriptions, and who releases or cancels them on completion, scene exit or interruption.*
-- *Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or the presentation.*
+- *Node、Resource、SceneTree 或文件 I/O 在流程的哪一步进入，领域逻辑在哪里保持与引擎无关。*
+- *请求、被接受或被拒绝的结果、当前状态和一次性反馈如何衔接。链接定义它们的需求。动画时机或中断条件会影响游戏规则是否生效时，说明清楚。*
+- *运行时状态、资源和订阅由谁创建、由谁持有，在完成、退出场景或中断时由谁释放或取消。*
+- *失败在哪里被发现和处理，哪些内容仍然有效，失败或恢复如何传给调用方或表现层。*
 
-*Mark which behavior has been observed and which is proposed or unverified. Inspect the actual call path; dynamic signals and loading may need runtime verification. Link interface definitions, implementation plans and tests where they already live. Omit this section when the local code already makes the flow clear.*
+*标出哪些行为已经观察到，哪些是拟议或未验证的。检查实际的调用路径；动态信号和加载可能需要运行时验证。接口定义、实现计划和测试已有所在位置时，直接链接。本地代码已能让流程一目了然时，省略本节。*
 
-## Standalone technical decisions
+## 独立技术决定
 
-*Use this section only for adopted decisions that have no Feature, do not meet the ADR conditions, and belong to this one subsystem. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its scope, authorization and migration rules. Keep the decision rationale separate from implemented facts. Omit this section when there is no such decision.*
+*本节只用于已采纳、没有对应 Feature、不满足 ADR 条件、且只属于本子系统的决定。按 `methodology/10-architecture-overview.md` 中的 **独立技术决定** 执行，包括其中的范围、授权和迁移规则。决定理由与已实现的事实分开写。没有这类决定时省略本节。*
 
-## Extracted reference facts
+## 提取的引用事实
 
-*Link optional generated facts with the extractor, snapshot and scope. They do not replace the responsibility and dependency description above.*
+*链接可选的自动生成事实时，注明提取工具、快照和范围。它们不能代替上面对职责和依赖的描述。*
 
-## Maintenance
+## 维护
 
-*Follow the **Navigation** and **Maintaining a map** sections of `methodology/10-architecture-overview.md` for content, change triggers and checks.*
+*内容、变更触发条件和检查方法按 `methodology/10-architecture-overview.md` 的 **导航** 和 **维护架构地图** 两节执行。*

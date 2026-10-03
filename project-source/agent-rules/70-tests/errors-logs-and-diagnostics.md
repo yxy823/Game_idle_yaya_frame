@@ -1,35 +1,35 @@
-# Errors, Logs, and Diagnostics in Tests
+# 测试中的错误、日志与诊断
 
-A test is not healthy when its assertions pass but unanticipated runtime errors, leaks or diagnostics occurred.
+断言通过但出现了未预期的运行时错误、泄漏或诊断时，测试并不健康。
 
-## Unexpected diagnostics
+## 未预期的诊断
 
-- **[MUST]** Unanticipated GDScript, runtime and script errors are hard test failures.
-- **[MUST]** An unexpected `push_error()` is a failure under the project's test profile.
-- **[MUST]** Configure the primary runner to monitor runtime and script errors rather than relying only on assertion results.
-- **[MUST]** `push_warning()` follows explicit project policy; do not mechanically make every Warning a hard failure.
-- **[PREFER]** Keep ordinary tests free of warnings, and investigate new warnings rather than reflexively suppressing them.
+- **[必须]** 未预期的 GDScript 错误、运行时错误和脚本错误是测试的硬失败。
+- **[必须]** 在项目的测试配置下，未预期的 `push_error()` 算失败。
+- **[必须]** 配置主要运行器监控运行时错误和脚本错误，不只依赖断言结果。
+- **[必须]** `push_warning()` 按项目明确的策略处理；不要机械地把每个 Warning 都定为硬失败。
+- **[优先]** 普通测试保持没有警告；出现新警告时去调查，而不是条件反射地抑制它。
 
-## Expected diagnostics
+## 预期的诊断
 
-- **[MUST]** If an Error or Warning is itself the tested contract, declare it with the runner's scoped expected-diagnostic assertion rather than globally disabling monitoring.
-- **[MUST]** Expected-diagnostic tests also assert the structured failure, result or post-state that the diagnostic represents.
-- **[MUST]** Do not broaden global allowlists or suppressions to make one negative test pass.
-- **[PREFER]** Match a stable diagnostic type, code or core message rather than the entire Godot engine text, an absolute path or a line number, unless the location text itself is the contract.
+- **[必须]** Error 或 Warning 本身就是被测契约时，用运行器限定范围的预期诊断断言声明它，不要全局关闭监控。
+- **[必须]** 预期诊断的测试还要断言该诊断所代表的结构化失败、结果或事后状态。
+- **[必须]** 不要为了让一个负面测试通过而放宽全局允许清单或抑制规则。
+- **[优先]** 匹配稳定的诊断类型、代码或核心消息，而不是 Godot 引擎的完整文本、绝对路径或行号，除非位置文本本身就是契约。
 
-## Logs and error handling
+## 日志与错误处理
 
-- **[MUST]** Ordinary business tests do not use stdout or log text as their only success or failure contract.
-- **[REVIEW]** Direct assertions on message text are appropriate for stable developer and tool diagnostics where the message quality is itself part of the product contract.
-- **[MUST]** Prefer structured error monitoring by Godot and the test runner to searching stderr for the word ERROR.
-- **[PREFER]** CI keeps useful full logs as diagnostic artifacts, but logs do not replace a structured test result or exit status.
-- **[MUST]** `push_error()` and `push_warning()` do not replace real failure control flow.
-- **[PREFER]** Project validators and tooling expose a stable diagnostic code, structured context and a human-readable message.
+- **[必须]** 普通业务测试不把 stdout 或日志文本作为唯一的成功或失败契约。
+- **[复核]** 对稳定的开发者诊断和工具诊断，消息质量本身属于产品契约时，适合直接断言消息文本。
+- **[必须]** 优先使用 Godot 和测试运行器的结构化错误监控，而不是在 stderr 中搜索 ERROR 一词。
+- **[优先]** CI 把有用的完整日志保留为诊断产物，但日志不能代替结构化的测试结果或退出状态。
+- **[必须]** `push_error()` 和 `push_warning()` 不能代替真正的失败控制流。
+- **[优先]** 项目的校验器和工具提供稳定的诊断代码、结构化上下文和人能读懂的消息。
 
-## Leaks and suppression
+## 泄漏与抑制
 
-- **[MUST]** An orphan Node owned by a test is an isolation failure.
-- **[REVIEW]** Baseline orphans owned by the framework may be explicitly understood, but do not globally disable orphan detection to hide leaks that tests create.
-- **[MUST]** Node orphan detection does not prove that files, signals, threads, timers and Resources are all cleaned.
-- **[MUST]** Do not remove or downgrade valid production diagnostics merely to make the runner green.
-- **[MUST]** A fallback path that catches a failure is tested for recognizing the original failure, the allowed fallback behavior, the result and the required diagnostics.
+- **[必须]** 测试拥有的孤立 Node（orphan）是隔离失败。
+- **[复核]** 框架拥有的基线孤立节点可以在明确理解后接受，但不要全局关闭孤立节点检测来掩盖测试造成的泄漏。
+- **[必须]** Node 孤立检测不能证明文件、信号、线程、计时器和 Resource 都已清理。
+- **[必须]** 不要只为了让运行器变绿，就删除或降级有效的生产诊断。
+- **[必须]** 捕获失败的回退路径要测试：能否识别原始失败、允许的回退行为、结果以及要求的诊断。

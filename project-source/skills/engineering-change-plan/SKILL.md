@@ -1,38 +1,50 @@
 ---
 name: engineering-change-plan
 description: >-
-  Prepare bug, refactor or maintenance Features that preserve confirmed GDD design and delivery scope. Triage ownership and evidence, obtain any missing approval, append the engineering plan, then hand off to authorized execution. Changed or ambiguous game design belongs to design-gdd.
+  准备 Bug、重构或维护类 Feature，保持已确认的 GDD 设计和交付范围不变。分诊职责归属和证据，取得缺少的批准，追加工程计划，然后交给已获授权的执行。游戏设计发生变化或含义不清时，交给 design-gdd。
 ---
 
-# Standardize one engineering change
+# 规范一次工程变更
 
-## Authority
+## 依据
 
-Follow `methodology/07-engineering-change.md` for classification, Bug ownership, mode-specific evidence and AC, Feature writes and Bug-learning promotion. Use the relevant artifact schema in `methodology/02-feature-list-schema.md` and the language contract in `methodology/05-document-language.md`. Before durable writes, apply `agent-rules/00-core/git-worktree-and-commits.md`.
+分类、Bug 归属、各模式需要的证据和 AC、Feature 写入以及 Bug 经验的提升，遵循 `methodology/07-engineering-change.md`。产物使用 `methodology/02-feature-list-schema.md` 中对应的数据结构，语言遵循 `methodology/05-document-language.md`。长期写入之前，使用 `agent-rules/00-core/git-worktree-and-commits.md`。
 
-Apply the [GDD prerequisite](../../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority) before project engineering work. This Skill prepares engineering work; [feature-execute](../feature-execute/SKILL.md) performs it. Preparation does not imply human acceptance.
+开始项目工程工作之前，使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)。本 Skill 准备工程工作；[feature-execute](../feature-execute/SKILL.md) 执行它。准备工作不代表人工验收。
 
-## Triage and proposal
+## 分诊与方案
 
-Read applicable `docs/project-rules.md`, routed engineering rules and relevant existing Feature designs/architecture decisions. When investigating or changing game behavior, also apply **Design scope and boundaries** in `methodology/01-product-doc-structure.md` and the relevant GDD/professional sources. Proposed engineering-rule changes follow the self-check and authorization in `methodology/04-project-rules.md`; a technical repair does not silently revise engineering constraints or game-design boundaries.
+阅读约束本任务的 `docs/project-rules.md`、路由到的工程规则，以及相关的已有 Feature 设计稿和架构决定。调查或修改游戏行为时，还要使用 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 以及相关的 GDD 和专业来源。提出的工程规则修改遵循 `methodology/04-project-rules.md` 中的自查和授权；技术修复不能悄悄修改工程约束或游戏设计边界。
 
-Apply **Feedback assessment** in methodology 07 before treating a report as a change, including when no triage Skill was selected. [feedback-triage-godot](../feedback-triage-godot/SKILL.md) exposes the same checks as a direct entry. When a defect needs causal investigation, use **Causal diagnosis** there through [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md), collecting only evidence needed for this preparation. Reuse completed assessment/diagnosis; missing causal evidence may remain explicit in the initial proposal under the Bug contract.
+把一份报告当作变更处理之前，先使用 methodology 07 的 **反馈评估**，即使没有选用分诊 Skill 也要这样做。[feedback-triage-godot](../feedback-triage-godot/SKILL.md) 以直接入口的形式提供同样的检查。缺陷需要查找原因时，通过 [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md) 使用其中的 **因果诊断**，只收集本次准备需要的证据。已完成的评估和诊断直接复用；按 Bug 约定，缺少的因果证据可以在初始方案中明确标为缺失。
 
-1. Read the actual confirmed GDD, Product delivery scope, professional or technical contract, current Progress and relevant history. Distinguish game behavior from project tooling and select one mode under **Classification boundary** in methodology 07. Route changed or ambiguous GDD intent to [design-gdd](../design-gdd/SKILL.md), scoped numeric design to [design-balance](../design-balance/SKILL.md), delivery scope to [product-author](../product-author/SKILL.md), or changed/ambiguous professional requirements to their specialist under `methodology/11-specialist-workflows.md`; keep defects introduced in unfinished work with that Feature under the canonical ownership table.
-2. Collect only the selected mode's necessary evidence from the engineering specification. Keep an unconfirmed root cause unknown. For an unspecified refactor, use [engineering-refactor-select](../engineering-refactor-select/SKILL.md) and return here with the selected candidate.
-3. Read the Feature index and relevant details. If this work depends on an unplanned current Product, use [feature-plan](../feature-plan/SKILL.md) for that prerequisite. Independent tooling work uses its documented technical contract and may append an engineering Feature to a valid empty ledger without a detailed business Product, provided the project already has an actual GDD. Read the Test Registry to propose reusable or new affected components.
-4. Propose the smallest independently verifiable Feature; split `large` work. Show ID/title/mode, dependencies, affected components, stable criteria, expected files/area and verification obligations. Reuse approval covering the proposal; resolve only missing material decisions.
+1. 阅读实际已确认的 GDD、Product 交付范围、专业或技术约定、当前 Progress 和相关历史。区分游戏行为和项目工具，按 methodology 07 的 **分类边界** 选择一种模式。按下列去向转交：
+   - GDD 意图有变化或含义不清：[design-gdd](../design-gdd/SKILL.md)；
+   - 限定范围的数值设计：[design-balance](../design-balance/SKILL.md)；
+   - 交付范围：[product-author](../product-author/SKILL.md)；
+   - 专业要求有变化或含义不清：`methodology/11-specialist-workflows.md` 中对应的专业入口。
 
-For `bug`, use the precise confirmed GDD/Product/professional section or documented framework/tool contract as `source`. For `refactor` and `maintenance`, use `infrastructure` unless a single authoritative source owns the preserved contract. Populate a new independent Bug's `bug_diagnosis` under the canonical contract; do not invent a diagnosis for other modes. Keep durable evidence concise and link the execution archive.
+   按权威归属表，未完成的工作中引入的缺陷留在那个 Feature 中处理。
+2. 按工程规范，只收集所选模式必需的证据。未确认的根本原因保持为未知。没有指定具体内容的重构，使用 [engineering-refactor-select](../engineering-refactor-select/SKILL.md)，带着选中的候选回到这里。
+3. 阅读 Feature 索引和相关详情。如果这项工作依赖一个尚未规划的当前 Product，先用 [feature-plan](../feature-plan/SKILL.md) 完成这个前提。独立的工具工作使用其已写成文档的技术约定；只要项目已经有实际的 GDD，它可以在没有详细业务 Product 的情况下，向一个有效的空台账追加工程 Feature。阅读测试登记表（Test Registry），提出可以复用的或新的受影响组件。
+4. 提出能独立验证的最小 Feature；`large` 的工作要拆分。展示 ID、标题、模式、依赖、受影响的组件、稳定的验收条件、预计涉及的文件或区域，以及验证义务。已有批准覆盖这份方案时直接沿用，只解决缺少的实质性决定。
 
-For a project-tooling blocker with business work in progress, preserve that WIP and its evidence. Use the task's designated checkout under the Core Git contract for the bounded repair, keeping its changed paths, evidence and logical commit distinct. Resolve a concrete overlapping edit before dependent mutation; use the existing Progress/Feature records to return to the paused work after the repair. Do not introduce a change-attribution workflow or create a worktree merely to obtain a clean directory.
+对 `bug`，用准确的、已确认的 GDD/Product/专业小节，或已写成文档的框架/工具约定作为 `source`。对 `refactor` 和 `maintenance`，使用 `infrastructure`，除非有单一的权威来源负责被保持的约定。新的独立 Bug 按权威约定填写 `bug_diagnosis`；其他模式不要编造诊断。长期保存的证据保持简洁，并链接执行归档。
 
-## Write and hand off
+业务工作正在进行时遇到项目工具的阻塞问题：
 
-After approval, merge missing components before writing the Feature plan using the [Test registry merge procedure](../feature-plan/SKILL.md#test-registry-docstest-registryjson) in `feature-plan`. That procedure owns candidate format, conflict handling and existing-record preservation. Temporary candidates are not committed.
+- 保留进行中的工作及其证据。
+- 按 Core Git 约定，在任务指定的工作目录中完成这次有边界的修复，让它改动的路径、证据和逻辑提交与业务工作分开。
+- 在依赖它的修改之前，先解决具体重叠的编辑。
+- 修复后，通过已有的 Progress/Feature 记录回到暂停的工作。
+- 不要引入改动归属追踪流程，也不要只为了得到一个干净的目录而创建 worktree。
 
-Append the index entry and matching engineering detail using canonical initial planning values; preserve completed history and engineering classification. This operation does not append a revision-log entry because no governing-source synchronization occurred.
+## 写入与交接
 
-Follow the engineering specification's **Feature write rules** for validation and the local plan commit. Inspect the actual diff against approved scope, component registration and preserved history before declaring the plan ready. Include the owning Feature's `Work item` reference in the commit.
+获得批准后，在写入 Feature 计划之前，按 `feature-plan` 中的[测试登记表合并步骤](../feature-plan/SKILL.md#测试登记表docstest-registryjson)合并缺少的组件。候选格式、冲突处理和已有记录的保留都由该步骤负责。临时候选文件不提交。
 
-Report the created Feature and remaining work. Pass Bug reproduction and regression obligations and the canonical learning requirements into execution; preparation performs no tests and records no acceptance. Execution continues with `feature-execute` only when its concrete scope is authorized; otherwise stop at the missing decision. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+使用权威的初始规划值，追加索引条目和对应的工程详情；保留已完成的历史和工程分类。这次操作不追加修订记录条目，因为没有发生针对权威来源的同步。
+
+校验和本地计划提交遵循工程规范的 **Feature 写入规则**。宣布计划就绪之前，对照已批准的范围、组件登记和被保留的历史检查实际差异。提交中写上所属 Feature 的 `Work item` 引用。
+
+报告创建的 Feature 和剩余工作。把 Bug 的复现与回归义务以及权威的经验记录要求传给执行阶段；准备阶段不运行测试，也不登记验收。只有具体范围已获授权时，执行才继续使用 `feature-execute`；否则停在缺少的决定上。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

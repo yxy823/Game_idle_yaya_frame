@@ -1,29 +1,32 @@
 ---
 name: content-asset-integration
-description: "Import, replace or connect available game assets in an authorized Godot task. Use for supplied or reused files whose specifications already exist. Not for asset creation or independent asset auditing."
+description: "在已授权的 Godot 任务中导入、替换或接入现有的游戏资源。用于规格已经存在的外部提供或复用文件。不用于制作资源，也不用于独立的资源审核。"
 ---
 
-# Asset integration
+# 资源接入
 
-Follow `methodology/11-specialist-workflows.md` for scope and ownership. Runtime changes belong to the current authorized Feature or scoped experiment; return there for validation and completion.
+范围和归属按 `methodology/11-specialist-workflows.md` 执行。运行时修改属于当前已授权的 Feature 或限定实验；验证和完成回到那里处理。
 
-## Read the requirements and the files
+## 阅读要求和文件
 
-- Read the affected resource sections in the owning presentation alternative, UI specification or shared design section, located under **Resource requirements and handoff** in `methodology/11-specialist-workflows.md`. Also read the currently adopted approach and the actual source files.
-- Read the relevant `agent-rules/60-assets/` rules, resource-reference rules and scene and resource rules.
-- Confirm provenance and usage constraints from available records. Unknown provenance is a gap; do not make up a license.
-- Inspect the actual type, dimensions, transparency, duration, channels or animation properties as applicable.
+- 按 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 找到资源章节的所属位置：所属的表现方案、UI 规格或共享设计章节。阅读其中受影响的资源章节，以及当前采用的方案和实际源文件。
+- 阅读 `agent-rules/60-assets/` 中与本次资源有关的规则、资源引用规则，以及场景与资源规则。
+- 根据现有记录确认资源来源和使用限制。来源不明是缺口，不要自行编造许可。
+- 按资源类型检查实际的类型、尺寸、透明度、时长、声道或动画属性。
 
-## Integrate
+## 接入
 
-Map each reused or supplied file to its project destination and consumers. Preserve external originals, unrelated resources and valid UID and path relationships. Choose import settings for the actual use and target constraints; do not blindly reimport the full library. Update affected scenes, themes, resource bindings or audio routing without redesigning the approved requirement.
+- 把每个复用或外部提供的文件对应到项目中的目标位置和使用方。
+- 保留外部原件、无关资源，以及有效的 UID 与路径关系。
+- 按实际用途和目标约束选择导入设置；不要盲目重新导入整个资源库。
+- 更新受影响的场景、主题、资源绑定或音频路由，不重新设计已批准的要求。
 
-## Verify and record
+## 验证与记录
 
-Verify import and, where needed, actual in-context rendering, playback or animation. File presence, successful import, measured fit and human acceptance are separate facts.
+验证导入结果；需要时在真实场景中检查实际渲染、播放或动画。文件存在、导入成功、测量结果合适和人工验收是四件不同的事。
 
-Before final task verification, update the preparation status and the actual resource and consumer paths in their owning sections, including the presentation's adopted combination when affected. Keep missing files and unverifiable experience checks explicit. Acceptance results stay in the linked report or completion record.
+在任务的最终验证之前，到所属章节更新准备状态、实际资源路径和使用方路径；如果影响到表现的采用组合，一并更新。缺失的文件和无法验证的体验检查要明确写出。验收结果留在链接的报告或完成记录里。
 
-Asset production is a reserved capability with no Skill (methodology 11 **Design, production, integration and review**). Formal technical inspection uses `review-assets` in a separate instance, with `review-art` or `review-audio` for the experience.
+资源制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。正式的技术检查在另一个实例中使用 `review-assets`；体验部分配合 `review-art` 或 `review-audio`。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

@@ -1,131 +1,131 @@
-# 09 · Records, reports and handoff
+# 09 · 记录、报告与交接
 
-This document defines where reports, research, project knowledge and Progress are kept, and how a task is handed off or continued in another conversation. Reusable tools and project decisions stay in the project source directories; reports contain only actual execution output.
+本文规定报告、调研、项目知识和 Progress 保存在哪里，以及任务怎样交接或在另一个对话中续接。可复用的工具和项目决定留在项目的源目录中；报告只包含实际的执行输出。
 
-## Reports and cleanup
+## 报告与清理
 
-Choose output locations before producing a run or temporary workspace. Keep the report root for fixed entry points; create the following directories only when needed:
+在产生一次运行或临时工作区之前，先选好输出位置。报告根目录只放固定入口；下列目录只在需要时创建：
 
-| Artifact | Location and responsibility |
+| 产物 | 位置与职责 |
 | --- | --- |
-| Tool or workflow-defined reports | Keep their fixed paths, including `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` (or `focused/run-<id>/` under the same root), `reports/manual-acceptance/` and `reports/initialization.md`. Their readers and evidence references depend on those contracts. |
-| Custom Feature logs, results and screenshots | Use `reports/features/<Feature-ID>/`, including engineering Features. Keep results with their Feature rather than scattering files at the root or grouping several Features in a Product scratch directory. |
-| Custom reports without a Feature | Use `reports/maintenance/<task>/`, with a descriptive maintenance or investigation key. |
-| Temporary documents: drafts, interim plans, handoff copies and reference-source excerpts | Use `tmp/<task>/` at the project root, with topic or attempt subdirectories as useful. Do not mix temporary documents into normal source or documentation directories. |
-| Temporary projects, probes and command-support files | Use `reports/scratch/<task>/`, with separate attempt directories as needed. Keep each copied project and its generated caches inside that workspace; copy only the inputs needed for the check. |
+| 工具或流程规定的报告 | 保持其固定路径，包括 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`（或同一根目录下的 `focused/run-<id>/`）、`reports/manual-acceptance/` 和 `reports/initialization.md`。读取它们的工具和证据引用依赖这些约定。 |
+| 自定义的 Feature 日志、结果和截图 | 使用 `reports/features/<Feature-ID>/`，工程 Feature 也一样。结果跟着各自的 Feature 存放，不散落在根目录，也不把多个 Feature 归进一个 Product 草稿目录。 |
+| 不属于 Feature 的自定义报告 | 使用 `reports/maintenance/<task>/`，用能说明维护或调查内容的名称。 |
+| 临时文档：草稿、当次方案、交接副本和参考来源摘录 | 使用项目根目录的 `tmp/<task>/`，需要时按主题或尝试建子目录。临时文档不混进正式的源码或文档目录。 |
+| 临时项目、探查和命令辅助文件 | 使用 `reports/scratch/<task>/`，需要时按尝试分目录。每个复制的项目及其生成的缓存都留在这个工作区内；只复制检查所需的输入。 |
 
-Temporary documents in `tmp/` are local and ignored by Git. Integrate lasting decisions into their owning maintained documents before removing drafts; retain any temporary material still needed by the current task or handoff.
+`tmp/` 中的临时文档只在本地，被 Git 忽略。删除草稿之前，把长期有效的决定整合进它们所属的正式文档；当前任务或交接仍需要的临时材料要保留。
 
-### Saving results
+### 保存结果
 
-- Where a tool supports output paths, save kept results in the task report directory, apart from scratch inputs.
-- Use descriptive filenames. Add a run subdirectory when separate attempts must survive, and never overwrite a referenced original.
-- Suffixes such as `final`, `verified` or `delivery` do not identify the applicable result; the Feature or Progress evidence link does.
-- When evidence stays inside a scratch project, keep the needed workspace and link the actual evidence location. A scratch path alone does not make its contents disposable.
-- Prefer the original tool output: gdUnit already keeps `result.json`, `engine.log` and its raw reports together. Save a console transcript only when it keeps useful information the originals lack.
-- A custom report or screenshot is evidence. Probes and candidate inputs belong in scratch; temporary documents such as commit messages belong in `tmp/<task>/`. Reusable generators and fixtures belong in normal source directories, even when their outputs are temporary placeholders.
+- 工具支持指定输出路径时，把要保留的结果存进任务报告目录，与临时输入分开。
+- 文件名要能说明内容。需要保留多次尝试时加运行子目录，绝不覆盖被引用的原件。
+- `final`、`verified`、`delivery` 这类后缀不能说明哪份结果有效；能说明的是 Feature 或 Progress 中的证据链接。
+- 证据留在临时项目里时，保留所需的工作区，并链接证据的实际位置。路径在 scratch 下，不代表其中的内容可以丢弃。
+- 优先使用工具的原始输出：gdUnit 已经把 `result.json`、`engine.log` 和原始报告放在一起。只有控制台记录包含原件没有的有用信息时，才另存它。
+- 自定义报告或截图属于证据。探查和候选输入放在 scratch；提交说明这类临时文档放在 `tmp/<task>/`。可复用的生成器和夹具放在正式的源码目录，即使它们的输出只是临时占位。
 
-### Keeping scratch material
+### 保留临时材料
 
-Apply the [temporary-file lifecycle rule](../agent-rules/00-core/third-party-generated-and-temporary-files.md#temporary-backup-and-scratch) when creating scratch material. If it must survive the task or a handoff, record its purpose and release condition in the Feature notes or Progress, for example the completion of a pending acceptance or investigation. At normal task close, check the task's actual output locations and evidence links, and identify scratch material still needed. Progress and Feature records are the reading entry; do not create a second report index or retention ledger.
+创建临时材料时，按[临时文件生命周期规则](../agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理。临时材料必须在任务结束或交接后继续保留时，在 Feature notes 或 Progress 中记录它的用途和释放条件，例如某项待完成的验收或调查结束时。任务正常收尾时，检查任务实际的输出位置和证据链接，指出仍需要的临时材料。Progress 和 Feature 记录是阅读入口；不另建报告索引或保留台账。
 
-### Organizing and cleaning reports
+### 整理和清理报告
 
-- Keep reports needed by current verification, acceptance, unresolved failures or follow-up work, including evidence linked from kept history and knowledge entries. Link their paths from the Feature or Progress record. Do not keep a separate ownership ledger, hold file or retention state.
-- Before organizing reports, check their producers, readers and evidence links together, including earlier Progress and knowledge references. Keep tool-managed run directories and acceptance originals at their fixed paths. Grouping files and repairing references does not authorize deleting them or rewriting earlier evidence.
-- Cleanup is an explicit maintenance action. Inspect the proposed paths, current references and contents first. Remove only understood, authorized output; leave unknown files and unresolved evidence for a later decision.
-- Age, directory name or a later successful run alone does not authorize removing a failure record. No test runner cleans old reports automatically.
+- 保留当前验证、验收、未解决的失败或后续工作需要的报告，包括保留下来的历史和知识条目所链接的证据。从 Feature 或 Progress 记录链接它们的路径。不另设归属台账、保留文件或保留状态。
+- 整理报告之前，一并核对它们的生成方、读取方和证据链接，包括之前的 Progress 和知识引用。工具管理的运行目录和验收原件保持在固定路径。归类文件和修复引用，不授权删除它们或改写之前的证据。
+- 清理是一项明确的维护操作。先检查拟清理的路径、当前引用和内容。只删除理解清楚且获得授权的输出；未知文件和尚未解决的证据留待之后决定。
+- 文件的存在时间、目录名或之后的一次成功运行，单独都不能授权删除失败记录。没有任何测试运行器会自动清理旧报告。
 
-## External research
+## 外部调研
 
-### Deciding and delegating research
+### 决定与委派调研
 
-The coordinating Agent decides whether current evidence is enough, whether a direct lookup helps, or whether a bounded investigation should go to the `researcher` role. No Stage, topic or Feature requires research.
+协调 Agent 决定：现有证据是否已经足够，直接查找是否有帮助，或者是否把一项有边界的调查交给 `researcher` 角色。没有任何 Stage、主题或 Feature 强制要求调研。
 
-- **Delegating:** pass the question, concrete target versions, project constraints, useful evidence already found, and whether and where to save a report. Keep independent work moving; only decisions that depend on the findings wait for them.
-- **Direct lookups:** follow the role's source and version guidance without starting a subagent or writing a full report.
-- **Role unavailable:** if the client cannot select the role, give an available agent the role's instructions or research directly, and say which was used.
-- **Prefer `anysearch`:** use the user-installed `anysearch` Skill when available. It is an external tool and is not copied into the project; the role may fall back to other search methods on its own.
-- **After the result:** the coordinating Agent checks whether the findings apply, adopts decisions within current authorization, finishes the task's documentation and commits, and continues the task. Neither a result nor a failed search changes that authority.
+- **委派时**：传递问题、具体的目标版本、项目约束、已找到的有用证据，以及是否保存报告、保存到哪里。独立的工作照常推进；只有依赖调研结果的决定才等待。
+- **直接查找时**：遵循该角色关于来源和版本的指导，不启动子 Agent，也不写完整报告。
+- **角色不可用时**：客户端无法选择该角色时，把角色的说明交给一个可用的 Agent，或者直接调研，并说明用了哪种方式。
+- **优先使用 `anysearch`**：可用时使用用户安装的 `anysearch` Skill。它是外部工具，不复制进项目；该角色可以自行退回到其他搜索方式。
+- **拿到结果后**：协调 Agent 判断调研结论是否适用，在当前授权内采纳决定，完成任务的文档和提交，并继续任务。调研结果或搜索失败都不改变这项权限。
 
-### Saving research
+### 保存调研
 
-Saved external findings go in `docs/research/<descriptive-topic>.md`, created only when useful research is saved. The initial directory README is navigation only.
+保存下来的外部调研结论放在 `docs/research/<descriptive-topic>.md`，只在保存有用的调研时创建。初始的目录 README 只做导航。
 
-- The `researcher` role in `.codex/agents/researcher.toml` defines the minimum report content and search guidance. The coordinating Agent assigns the report and decides what to adopt.
-- Navigate through the Feature design, notes or Progress links. Add report links to the directory README only when the number of reports warrants it.
-- Reports are ordinary version-controlled Markdown. `reports/` stays the location for local execution evidence and scratch.
+- `.codex/agents/researcher.toml` 中的 `researcher` 角色规定报告的最低内容和搜索指导。协调 Agent 分派报告，并决定采纳什么。
+- 通过 Feature 设计、notes 或 Progress 的链接导航。只在报告数量多到需要时，才在目录 README 中添加报告链接。
+- 报告是普通的、纳入版本控制的 Markdown。`reports/` 仍是本地执行证据和临时材料的位置。
 
-Research is cited reference material. It is not approved intent or proof of local runtime behavior.
+调研是被引用的参考材料，不是已批准的意图，也不能证明本地的运行时行为。
 
-- Accepted game-design decisions update the GDD. Delivery boundaries, professional specifications and technical decisions update the Product, specialist document, Feature design or ADR, with a reference to the research.
-- Lessons confirmed through project work may enter `docs/knowledge/`, linking the research and actual evidence without copying the report.
-- When revising research, keep conclusions that other documents reference. Do not create a second task ledger.
+- 被接受的游戏设计决定更新 GDD。交付边界、专业规范和技术决定更新 Product、专业文档、Feature 设计或 ADR，并引用这份调研。
+- 经过项目工作确认的经验可以进入 `docs/knowledge/`，链接调研和实际证据，不复制报告。
+- 修订调研时，保留其他文档引用的结论。不另建第二份任务台账。
 
-Research Markdown does not affect test evidence ([content fingerprint](08-test-traceability-and-evidence.md#content-fingerprint)), so requirements cannot live only there. Scripts, fixtures and other non-Markdown files belong in normal source or report locations. A research-only assignment does not authorize experiments, implementation, requirement changes or marking a Feature complete.
+调研 Markdown 不影响测试证据（见[内容指纹](08-test-traceability-and-evidence.md#内容指纹)），所以需求不能只写在那里。脚本、夹具和其他非 Markdown 文件放在正式的源码或报告位置。只要求调研的任务，不授权做实验、实现、修改需求或把 Feature 标为完成。
 
-## Project knowledge
+## 项目知识
 
-`docs/knowledge/` holds reusable explanations from project work. Feature notes keep brief incident learning and links to local decisions in the Feature design. Incident notes are contextual evidence, not Product requirements, engineering rules or executable inputs. Follow the knowledge README for [organization](../docs/knowledge/README.md#organize-entries) and [entry maintenance](../docs/knowledge/README.md#maintain-during-authorized-work).
+`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [organization](../docs/knowledge/README.md#组织条目) 和 [条目维护](../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
 
-Knowledge Markdown and its index do not affect test evidence; see [content fingerprint](08-test-traceability-and-evidence.md#content-fingerprint). Runnable scripts, fixtures and data belong in their normal project directories.
+知识 Markdown 及其索引不影响测试证据，见[内容指纹](08-test-traceability-and-evidence.md#内容指纹)。可运行的脚本、夹具和数据放在项目的正式目录中。
 
-Finalize task-owned entries and index changes before the normal task commit; the handoff reports links. Updating project knowledge does not authorize rule promotion or changing another project or the framework.
+在任务的正常提交之前，定稿本任务负责的条目和索引修改；交接时报告链接。更新项目知识不授权提升规则，也不授权修改其他项目或框架。
 
 ## Progress
 
-`docs/progress.md` contains the current state, blockers, pending decisions, the next allowed action and a history index. It links approved plans and evidence instead of copying their bodies. Ordinary Markdown headings are sufficient; no machine markers or prescribed parser layout are required.
+`docs/progress.md` 包含当前状态、阻塞、待决定事项、下一个允许的动作和历史索引。它链接已批准的计划和证据，不复制其正文。普通的 Markdown 标题就够了；不需要机器标记或规定的解析格式。
 
-The initial `docs/progress/README.md` explains the directory and links back to current Progress; it is not an archive or another history index.
+初始的 `docs/progress/README.md` 说明这个目录，并链接回当前 Progress；它不是归档，也不是另一份历史索引。
 
-The Agent archives the history of a completed Feature or approved batch once, under `docs/progress/<key>.md`, and keeps a link in the current Progress document. Keep remaining blockers, pending decisions, original history and evidence links. Do not infer approval, overwrite an archive or duplicate earlier history. Write new prose in `document_language`; moving history does not require translating it.
+已完成的 Feature 或已批准批次的历史，由 Agent 一次性归档到 `docs/progress/<key>.md`，并在当前 Progress 文档中保留链接。保留剩余的阻塞、待决定事项、原始历史和证据链接。不要推断批准，不要覆盖归档，也不要重复之前的历史。新正文用 `document_language` 写；移动历史不需要翻译它。
 
-The archive holds execution history and Progress holds the present. Feature notes hold task reminders, regression links, TODOs and navigation. Implementation design and local decisions live in `docs/features/F0XX-design.md` under the [Feature design contract](02-feature-list-schema.md#feature-design-and-implementation-notes); ADRs and standalone technical decisions follow [10 · Architecture overview](10-architecture-overview.md#architecture-decision-records). Link those records instead of pasting the same narrative into Progress or notes.
+归档保存执行历史，Progress 保存当前状态。Feature notes 保存任务提醒、回归链接、TODO 和导航。实现设计和局部决定按 [Feature 设计约定](02-feature-list-schema.md#feature-设计与实现说明) 写在 `docs/features/F0XX-design.md`；ADR 和独立技术决定按 [10 · 架构概览](10-architecture-overview.md#架构决策记录)处理。链接这些记录，不要把同一段叙述贴进 Progress 或 notes。
 
-## Task handoff
+## 任务交接
 
-Prepare a handoff from the current request, relevant files, actual Git state and the task records. Preserve the original goal, confirmed decisions, still-valid authorization, actual stop point, unresolved obligations and the next allowed action. Identify the next conversation's concrete purpose when one is planned, not merely "continue the project". Separate completed work, evidence for the observed version, unverified claims, blockers and pending human acceptance.
+根据当前请求、相关文件、实际的 Git 状态和任务记录准备交接。保留原始目标、已确认的决定、仍然有效的授权、实际停下的位置、未完成的义务和下一个允许的动作。如果计划开启下一个对话，写明它的具体目的，而不只是“继续这个项目”。把已完成的工作、针对已观察版本的证据、未经验证的说法、阻塞和待进行的人工验收分开写。
 
-Information that must survive the conversation goes in Progress and the Feature notes; work without a Feature uses Progress and its task files. Link designs and original evidence instead of copying them. Update only the records this task needs, within authorization.
+需要在对话结束后保留的信息写进 Progress 和 Feature notes；不属于 Feature 的工作使用 Progress 及其任务文件。链接设计和原始证据，不复制它们。只在授权范围内更新本任务需要的记录。
 
-- A summary-only request needs no file writes.
-- A pause record needs no continuation prompt.
-- Preparing a handoff does not require rerunning completed checks or finishing the paused implementation.
+- 只要求摘要的请求不需要写文件。
+- 暂停记录不需要续接提示词。
+- 准备交接不要求重跑已完成的检查，也不要求完成被暂停的实现。
 
-Follow `agent-rules/00-core/git-worktree-and-commits.md` to preserve state in the task's checkout and for any authorized record commit. A handoff does not:
+按 `agent-rules/00-core/git-worktree-and-commits.md` 在任务的工作目录中保留状态，并处理任何获得授权的记录提交。交接不会：
 
-- establish human acceptance or completion;
-- reset Feature state or discard work in progress;
-- create a second handoff ledger or require an operating-system temporary file;
-- open a new conversation, send a message or start the proposed action.
+- 确立人工验收或完成；
+- 重置 Feature 状态或丢弃进行中的工作；
+- 建立第二份交接台账，或要求操作系统的临时文件；
+- 开启新对话、发送消息或启动建议的动作。
 
-Respect the user's explicit pause or narrower current scope; earlier implementation authorization cannot override it.
+尊重用户明确的暂停或缩小后的当前范围；之前的实现授权不能覆盖它。
 
-`task-handoff-godot` is the direct entry for this work. A request only to understand status or choose a workflow may use `project-next-step-advisor` instead; it is read-only and does not update records. When a prompt is requested, follow the format below with current project facts. The advisor takes scenario material from its declared shared Godot catalog; task handoff uses the owning task's sources.
+`task-handoff-godot` 是这项工作的直接入口。只想了解状态或选择流程的请求，可以改用 `project-next-step-advisor`；它只读，不更新记录。要求提供提示词时，按下面的格式并结合当前的项目事实来写。advisor 从它声明的共享 Godot 提示词库中取场景材料；任务交接使用所属任务的来源。
 
-## Continuation prompts
+## 续接提示词
 
-Every drafted task or continuation prompt uses level-two headings for these fields, in this order:
+每份起草的任务提示词或续接提示词，都按下列顺序用二级标题写出这些字段：
 
-1. Goal
-2. Scope
-3. Inputs and sources of truth
-4. Decision boundaries and authorization
-5. Constraints
-6. Output and delivery
-7. Verification requirements
-8. Completion conditions
+1. 目标
+2. 范围
+3. 输入与事实来源
+4. 决策边界与授权
+5. 约束
+6. 输出与交付
+7. 验证要求
+8. 完成条件
 
-Write the headings in the current conversation language, like the rest of the prompt; for example, a Chinese conversation uses `目标`, `范围`, `输入与事实来源`, `决策边界与授权`, `约束`, `输出与交付`, `验证要求`, `完成条件`. Fill every field with content specific to the task, however short the prompt.
+标题和提示词的其余部分一样，使用当前对话语言；例如英文对话使用 `Goal`、`Scope`、`Inputs and sources of truth`、`Decision boundaries and authorization`、`Constraints`、`Output and delivery`、`Verification requirements`、`Completion conditions`。无论提示词多短，每个字段都要填写针对该任务的内容。
 
-- Cite the destination's actual rules for shared requirements instead of copying them.
-- Add clearly labeled fields for background or entry point, conflict handling, environment, or risk and recovery beside the related fields, only when relevant.
-- The format is presentation only; it adds no workflow step or approval gate.
+- 共同要求引用目标任务实际的规则，不复制它们。
+- 只在确有需要时，在相关字段旁加上标注清楚的字段，用于背景或入口、冲突处理、环境，或风险与恢复。
+- 这个格式只管呈现，不增加流程步骤或审批关卡。
 
-State the destination task's purpose and first useful action, its real current sources and the remaining obligations.
+写明目标任务的目的和第一个有用的动作、它真实的当前来源和剩余义务。
 
-- Keep effective authorization and explicit limits. Do not invent IDs, paths, command availability, completed checks, decisions or acceptance; name missing facts as gaps.
-- Separate blocked or pending-human states from successful completion.
-- Neither a field nor a Skill boundary ends broader valid authorization, and the word "continue" supplies no missing authorization.
+- 保留有效的授权和明确的限制。不要虚构 ID、路径、命令可用性、已完成的检查、决定或验收；缺少的事实写明是缺口。
+- 把受阻或等待人工的状态与成功完成分开。
+- 字段或 Skill 的边界都不会终止更大范围的有效授权，“继续”一词也补不上缺少的授权。
 
-Produce task-specific copyable text when requested, not a maintained template file or a parallel prompt collection. Handoff and the advisor share this format; their different read and write responsibilities still apply.
+被要求时，产出针对该任务、可直接复制的文字，而不是维护一个模板文件或一套并行的提示词集合。交接和 advisor 共用这个格式；它们各自不同的读写职责仍然适用。

@@ -1,49 +1,57 @@
-# Shader diagnostics
+# Shader 诊断
 
-Use this reference when evidence points to Shader compilation, material/parameter binding, visual data flow or rendering cost. Start with the actual symptom and confirmed expectation; a missing effect can originate in gameplay, event delivery or presentation control before the Shader is involved. The user need not identify that boundary in advance.
+证据指向 Shader 编译、材质/参数绑定、视觉数据流或渲染开销时，使用本参考。从实际症状和已确认的预期出发：效果缺失可能在用到 Shader 之前就出在玩法、事件传递或表现控制上。用户不需要事先判断这条边界。
 
-This is a technical reference, independently usable by the current authorized diagnosis, implementation or prototype task. Reading it does not invoke the containing Skill's full workflow, create a Feature or authorize diagnostic edits, running Godot or repairing the defect. **Causal diagnosis** in `methodology/07-engineering-change.md` owns the investigation and Bug records; `methodology/09-records-reports-and-handoff.md` owns temporary probes and retained evidence. Paths in code spans are relative to the target project root.
+这是一份技术参考，当前已获授权的诊断、实现或原型任务都可以单独使用它。阅读它不会启动所在 Skill 的完整流程，不会创建 Feature，也不授权诊断用的修改、运行 Godot 或修复缺陷。
 
-## Select a branch from the evidence
+- 调查方法和 Bug 记录由 `methodology/07-engineering-change.md` 的 **因果诊断** 负责。
+- 临时探测和保留的证据由 `methodology/09-records-reports-and-handoff.md` 负责。
+- 代码格式中的路径相对于目标项目根目录。
 
-Read current source, relevant consumers and existing evidence before choosing a probe. Establish the actual Godot version and the material/node/render context relevant to the symptom. Ask for missing logs, an image or runtime conditions only when that evidence can distinguish causes; none is a universal submission requirement.
+## 按证据选择排查分支
 
-| Observed problem | Useful checks or discriminating evidence |
+选择探测方式之前，先阅读当前源码、相关的使用方和已有证据。确认实际的 Godot 版本，以及与症状有关的材质、节点和渲染上下文。只有当缺失的日志、图片或运行条件能区分不同原因时，才向用户索取；这些都不是每次都必须提交的材料。
+
+| 观察到的问题 | 有用的检查或能区分原因的证据 |
 | --- | --- |
-| Compilation or loading fails | Relate the actual engine error to the loaded Shader and include files. Verify resource paths and consumers before modifying an expression merely near the reported line. |
-| Edits seem to have no effect | Confirm which scene, node, material and source the running instance actually uses. Check whether another assignment, material override or runtime update replaces the intended value. When hot reload is uncertain, obtain evidence of the loaded revision or deliberately reload within the task's authority. |
-| A parameter affects nothing, the wrong value or several objects | Trace its exact uniform name, type, material instance and runtime writer. Distinguish a shared-material update from per-instance control before changing ownership. |
-| The Shader runs but color, edges or transparency are wrong | Isolate the relevant sample, coordinate conversion, alpha, mask or blend relationship. The hypothesis determines which intermediate value to inspect. |
-| Timing or repeated triggers behave incorrectly | Trace the trigger, controller state and value delivered to the Shader, then its time/progress calculation. Do not infer a Shader defect solely from a visual symptom. |
-| The effect is expensive | Establish a comparable workload and use existing performance diagnosis when measurements are needed. Compare relevant coverage, overdraw, sampling or simultaneous instances; do not infer cost from source length. |
+| 编译或加载失败 | 把引擎实际报出的错误对应到被加载的 Shader 及其 include 文件。先核对资源路径和使用方，不要只因为某个表达式靠近报错行就改它。 |
+| 修改看起来没有效果 | 确认运行中的实例实际使用的是哪个场景、节点、材质和源文件。检查是否有其他赋值、材质覆盖或运行时更新替换了预期的值。不确定热重载是否生效时，取得已加载版本的证据，或在任务授权内主动重新加载。 |
+| 参数不起作用、取值不对或影响了多个对象 | 追查它准确的 uniform 名称、类型、材质实例和运行时写入方。改变归属之前，先分清这是共享材质的更新还是逐实例的控制。 |
+| Shader 在运行，但颜色、边缘或透明度不对 | 隔离相关的采样、坐标转换、alpha、遮罩或混合关系。由假设决定要检查哪个中间值。 |
+| 时序或重复触发不对 | 依次追查触发条件、控制器状态、传给 Shader 的值，再到 Shader 中的时间/进度计算。不要只凭视觉症状就推断是 Shader 缺陷。 |
+| 效果开销大 | 建立可比较的负载；需要测量时使用已有的性能诊断。比较相关的覆盖面积、overdraw、采样次数或同时存在的实例数；不要根据源码长度推断开销。 |
 
-Use the existing `agent-rules/30-shaders/README.md` route for applicable engineering constraints. For example, `ShaderMaterial.set_shader_parameter()` is case-sensitive and updates a shared material for all its users; see the [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter). The source path in an editor or an unchanged log alone does not prove that the running object consumed the latest edit.
+适用的工程约束沿用 `agent-rules/30-shaders/README.md` 这条入口。例如，`ShaderMaterial.set_shader_parameter()` 区分大小写，并且会更新共享材质的所有使用者；见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。编辑器中显示的源路径，或者一条没有变化的日志，本身都不能证明运行中的对象用上了最新的修改。
 
-## Make one suspected relationship visible
+## 让一个可疑关系变得可见
 
-A temporary output can test whether an input or intermediate value matches the hypothesis. Choose the smallest useful probe and preserve unrelated work. Reading all channels or adding permanent debug uniforms is not a prerequisite.
+临时输出可以检验某个输入或中间值是否符合假设。选择最小的有用探测，保留无关的工作。不需要先读出所有通道，也不需要先加永久性的调试 uniform。
 
-| Question | Possible temporary view | Interpretation limits |
+| 问题 | 可用的临时视图 | 解读时的局限 |
 | --- | --- | --- |
-| Are the coordinates in the intended space and range? | Map the relevant coordinate components into visible colors or a simple grid. | Out-of-range values need a meaningful display mapping. Discontinuities may be expected at seams or repeated regions. |
-| Is the correct source sampled? | Show raw sampled RGB, or sampled alpha as grayscale. | Separate source content from modulation, later masks and blending. A grayscale alpha probe must be visible without accidentally hiding its own zero values. |
-| Does a threshold or mask select the intended area? | Show the scalar field, mask or edge band separately. | Check expected endpoints and polarity; a uniform black or white result is not automatically wrong. |
-| Is a direction or auxiliary buffer meaningful? | Inspect appropriately mapped normals, directions, depth or screen samples when the actual shader type and stage provide them. | Signed or non-color data needs interpretation. Do not invent unavailable built-ins or assume that a screen/depth source includes every object. |
+| 坐标是否处于预期的空间和范围？ | 把相关的坐标分量映射成可见的颜色或简单网格。 | 超出范围的值需要有意义的显示映射。在接缝或重复区域出现不连续可能是正常的。 |
+| 采样的来源是否正确？ | 显示原始采样的 RGB，或把采样的 alpha 显示成灰度。 | 把来源内容与调制、后续遮罩和混合区分开。灰度 alpha 探测必须可见，不能意外地把它自己的零值也藏起来。 |
+| 阈值或遮罩是否选中了预期区域？ | 单独显示标量场、遮罩或边缘带。 | 核对预期的端点和极性；全黑或全白的结果不一定是错的。 |
+| 方向或辅助缓冲的数据是否有意义？ | 当实际的 Shader 类型和阶段提供这些数据时，查看经过适当映射的法线、方向、深度或屏幕采样。 | 有符号或非颜色数据需要解读。不要编造不存在的内置变量，也不要假设屏幕/深度来源包含了每个对象。 |
 
-In CanvasItem fragment processing, incoming `COLOR` combines vertex color/modulation and the default texture; comparing it with a raw texture sample can separate those factors. See the [Godot 4.7 CanvasItem reference](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#color-and-texture). When constructing a probe, keep its compositing changes explicit: a Spatial Shader that reads or writes `ALPHA` enters the transparent pipeline, so adding that output can change the behavior under investigation. See the [Godot 4.7 Spatial reference](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html#fragment-built-ins).
+在 CanvasItem 的 fragment 处理中，传入的 `COLOR` 合并了顶点颜色/调制和默认纹理；把它和原始纹理采样比较，可以把这些因素分开。见 [Godot 4.7 CanvasItem 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#color-and-texture)。构造探测时，要明确它对合成方式的改变：读写 `ALPHA` 的 Spatial Shader 会进入透明管线，所以加上这个输出可能改变正在调查的行为。见 [Godot 4.7 Spatial 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html#fragment-built-ins)。
 
-For example, if a hit flash colors the sprite's transparent rectangle red, first confirm which alpha should preserve the silhouette. Compare sampled alpha with the effect mask only as needed to distinguish an input problem from output composition. Do not rewrite the hit calculation just because the symptom followed a hit, or claim an alpha fix from a diagnostic image that bypasses the formal blend path.
+例如，受击闪光把精灵的透明矩形区域染成了红色时，先确认应该由哪个 alpha 保住轮廓。只在需要区分“输入有问题”和“输出合成有问题”时，才比较采样 alpha 和效果遮罩。不要只因为症状出现在受击之后就重写受击计算；也不要用一张绕开正式混合路径的诊断图，宣称已经修好了 alpha。
 
-## Stabilize a comparison when time obscures it
+## 时间干扰比较时，先固定比较条件
 
-If successive observations cannot be compared because animation advances, hold the relevant progress or diagnostic time input constant and align the scene, camera, viewport, trigger and initialization conditions that affect the result. This is a targeted comparison, not proof that the entire runtime is deterministic.
+如果动画在推进，导致前后几次观察无法比较，就把相关的进度或诊断用时间输入固定下来，并对齐会影响结果的场景、相机、视口、触发条件和初始化条件。这是一次有针对性的比较，不能证明整个运行时是确定性的。
 
-Pausing the scene does not freeze the built-in Shader `TIME`; the [Godot 4.7 CanvasItem time contract](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#global-built-ins) documents that distinction. Use a controlled input when the comparison needs one, within the existing clock contract. Reset other relevant state where necessary rather than assuming a fixed time also resets particle simulation or gameplay.
+暂停场景不会冻结 Shader 内置的 `TIME`；[Godot 4.7 CanvasItem 时间约定](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#global-built-ins)记载了这一区别。比较需要时，在已有的时钟约定内使用受控的输入。必要时重置其他相关状态，不要以为固定了时间也就重置了粒子模拟或玩法。
 
-An image can preserve useful evidence, but every defect does not need screenshots or a golden-image system. Match the evidence to the claim: compiler output for compilation, actual parameter/control evidence for binding, and a comparable rendered observation for an appearance hypothesis.
+图片可以保存有用的证据，但不是每个缺陷都需要截图或黄金图像系统。证据要与结论对应：
 
-## Restore and verify the formal path
+- 编译问题用编译器输出；
+- 绑定问题用实际的参数/控制证据；
+- 外观假设用可比较的渲染观察。
 
-Once the probe has answered its question, restore temporary outputs, assignments, diagnostic constants and resources introduced for the investigation. Retain useful failure evidence under the existing artifact policy. Confirm that the intended Shader revision and real material/control path are in use, then check the original trigger and relevant regression cases under `agent-rules/30-shaders/validation.md` and the current task's verification boundary.
+## 恢复并验证正式路径
 
-A read-only investigation may finish without running or changing anything; record that coverage honestly. A successful probe is not proof that the restored implementation works. If loading freshness, the real render path or the cause remains unverified, report that precise gap. Keep objective mismatches, aesthetic judgments and untested hypotheses distinct, and return findings to the owning task without a second Bug record solely for the Shader portion.
+探测回答了它的问题后，恢复为调查引入的临时输出、赋值、诊断常量和资源。按已有的产物策略保留有用的失败证据。确认实际使用的是预期的 Shader 版本以及真实的材质/控制路径，再按 `agent-rules/30-shaders/validation.md` 和当前任务的验证边界，检查原始触发条件和相关的回归用例。
+
+只读调查可以在不运行、不修改任何东西的情况下结束；如实记录这一覆盖范围。探测成功不能证明恢复后的实现可以正常工作。加载的是否为最新版本、真实的渲染路径或原因本身仍未验证时，准确报告这一缺口。把客观的不符、审美判断和未测试的假设分开，把发现交回所属任务，不为 Shader 部分单独再建一条 Bug 记录。

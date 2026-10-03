@@ -1,22 +1,39 @@
 ---
 name: feedback-triage-godot
-description: Verify a Godot project feedback report against confirmed intent and current behavior, then identify its classification and next owner. Use when a reported missing capability or unexpected result needs checking; established defects proceed to diagnosis or their existing task.
+description: 对照已确认的意图和当前行为核实一份 Godot 项目反馈，确定它的类别和下一个负责方。用于需要核实“缺少某项能力”或“结果不符合预期”这类反馈时；已经确认的缺陷直接进入诊断或其已有任务。
 ---
 
-# Verify and route project feedback
+# 核实并转交项目反馈
 
-Return what the report means for this project: a supported defect, a changed requirement, an existing capability with a discovery/explanation problem, or an unresolved evidence gap. Apply **Feedback assessment**, **Classification boundary** and **Bug ownership and routing** in `methodology/07-engineering-change.md`; these own the assessment rules and subsequent work.
+说明这份反馈对本项目意味着什么，结果是下列之一：
 
-## Establish the report
+- 有依据的缺陷；
+- 需求发生了变化；
+- 能力已经存在，只是不容易发现或需要解释；
+- 尚未解决的证据缺口。
 
-Use the conversation and relevant current sources to identify the actual observation, expected result, entry/trigger and affected version. Read only the GDD, Product, professional or project-tool contract and implementation needed to resolve this report. Inspect relevant Feature/Progress history when it determines ownership or prior evidence. Reuse answered questions and current evidence; labels such as "Bug" or "missing feature" are claims to examine, not conclusions.
+使用 `methodology/07-engineering-change.md` 中的 **反馈评估**、**分类边界** 和 **Bug 的归属与路由**；评估规则和后续工作都由它们负责。
 
-A read-only request permits inspection and analysis, not running Godot or writing probes. When the task authorizes reproduction, use the relevant existing verification method and preserve its real result. If reproduction is unavailable, distinguish source evidence from unverified runtime behavior rather than declaring the report false.
+## 弄清反馈内容
 
-## Return the next useful action
+根据对话和当前的相关来源，确定实际的观察、预期结果、入口或触发条件以及受影响的版本。只阅读解决这份反馈所需的 GDD、Product、专业或项目工具约定和实现。Feature/Progress 的历史能决定归属或提供先前证据时，查看相关部分。已回答的问题和当前证据直接复用；“Bug”“缺少功能”这类标签是需要核实的说法，不是结论。
 
-Explain the classification, supporting source/observation, significant uncertainty and next owner. Where the capability already exists, give its actual entry and limits. Where evidence conflicts, show the disagreement rather than selecting the source that makes a convenient answer. A short answer may be sufficient; no report file, issue state or new Feature is required by this Skill.
+只读请求允许查看和分析，不允许运行 Godot 或写探测代码。任务授权复现时，使用已有的相关验证方法，并保留它的真实结果。无法复现时，把源码证据和未经验证的运行时行为区分开，而不是宣布反馈不成立。
 
-For a confirmed defect whose cause needs investigation, use [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md) within the same task. For actual changes, follow the canonical ownership table in methodology 07: current-Feature defects stay with that Feature; independent engineering work uses [engineering-change-plan](../engineering-change-plan/SKILL.md); design/professional questions return to their existing owner. Documentation-only corrections retain their normal writing scope.
+## 给出下一个有用的动作
 
-This assessment does not amend intent, create a plan, mark a Feature complete or supply human acceptance. A report-checking-only request ends with the assessment and any real gap. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+说明类别、支撑它的来源或观察、重要的不确定之处和下一个负责方。
+
+- 能力已经存在时，给出它实际的入口和局限。
+- 证据相互冲突时，展示分歧，不要挑一个能给出方便答案的来源。
+- 简短的回答可能就够了；本 Skill 不要求报告文件、问题状态或新的 Feature。
+
+已确认的缺陷需要调查原因时，在同一个任务中使用 [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md)。实际需要修改时，遵循 methodology 07 中的权威归属表：
+
+- 当前 Feature 中的缺陷留在那个 Feature；
+- 独立的工程工作使用 [engineering-change-plan](../engineering-change-plan/SKILL.md)；
+- 设计或专业问题交回其已有的负责方。
+
+只涉及文档的更正保持其正常的写作范围。
+
+这次评估不修改意图、不创建计划、不把 Feature 标为完成，也不提供人工验收。只要求核实反馈的请求，以评估结果和真实存在的缺口结束。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

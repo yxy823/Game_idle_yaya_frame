@@ -1,30 +1,30 @@
-# Completion and Reporting
+# 完成与汇报
 
-Completion reports state outcomes and evidence, not private step-by-step reasoning.
+完成汇报写结果和证据，不写私下的逐步推理。
 
-## Completion and local commits
+## 完成与本地提交
 
-- **[MUST]** The applicable completion workflow and its Completion Gate determine **when** the current task has satisfied its required approval, validation, acceptance and completion conditions and may be reported complete.
-- **[MUST]** An unresolved completion blocker prevents marking the task complete. Validated logical changes may still be committed under the governing workflow; report the remaining work and any applicable human acceptance truthfully.
-- **[MUST]** Leave logical commit boundaries, staging, message format, prohibited operations and commit delivery reporting to `git-worktree-and-commits.md`; do not duplicate those mechanics here.
+- **[必须]** 由适用的完成流程及其完成检查决定当前任务**何时**满足了所需的批准、验证、验收和完成条件，可以汇报为完成。
+- **[必须]** 存在未解决的完成阻塞时，不把任务标为完成。已验证的逻辑修改仍可按管辖流程提交；如实汇报剩余工作和适用的人工验收情况。
+- **[必须]** 逻辑提交边界、暂存、提交说明格式、禁止的操作和提交的交付汇报，交给 `git-worktree-and-commits.md`；本页不重复这些操作细节。
 
-## Required report content
+## 汇报必须包含的内容
 
-- **[PREFER]** Summarize outcomes and evidence rather than the Agent's internal process.
-- **[MUST]** Report material changes to behavior, architecture or configuration, including significant necessary dependent migrations.
-- **[MUST]** Identify the key changed files or coherent file groups and explain why the changes were needed. Scale the detail to the task; do not dump an exhaustive file list or repeat the diff.
-- **[MUST]** Report the material validation gates that were actually executed and their results.
-- **[MUST]** Do not say "all tests passed", "fully validated" or an equivalent unless that exact scope was actually executed.
-- **[MUST]** Report any applicable required gate that was not executed, with the reason and the concrete residual risk.
-- **[MUST]** Surface remaining validation failures and blockers clearly. Do not summarize a mixed or failing run as successful overall.
+- **[优先]** 概括结果和证据，不复述 Agent 的内部过程。
+- **[必须]** 汇报行为、架构或配置上的实质变化，包括重要的必要连带迁移。
+- **[必须]** 指出关键的改动文件或成组的文件，并说明为什么需要这些修改。详略与任务规模相称；不罗列全部文件，也不复述差异。
+- **[必须]** 汇报实际执行过的实质验证关卡及其结果。
+- **[必须]** 只有实际执行了完全相同的范围，才能说“所有测试通过”“已完整验证”或同等的话。
+- **[必须]** 适用的必需关卡没有执行时，汇报原因和具体的剩余风险。
+- **[必须]** 清楚列出仍然存在的验证失败和阻塞。不把部分失败或整体失败的运行概括为总体成功。
 
-## Precision
+## 准确性
 
-- **[PREFER]** Do not enumerate every unrelated validation category just to mark it not applicable.
-- **[PREFER]** Report residual risk only when there is a concrete unverified condition, limitation, compatibility concern or deferred issue.
-- **[PREFER]** Report useful incidental issues separately from current-task failures so that they are not mistaken for regressions caused by the task.
-- **[MUST]** Do not claim unmeasured performance, platform compatibility, freedom from leaks, visual quality or other properties that were not actually evaluated.
-- **[PREFER]** For a visual change, state which composition, layout or animation-feel aspects still require manual acceptance under the [visual boundary](../70-tests/testing-strategy.md#visual-boundary).
-- **[PREFER]** Include the exact Godot or tool version when the result is materially version-sensitive.
-- **[PREFER]** Summarize logs instead of pasting them, unless a log excerpt is needed to explain a failure.
-- **[MUST]** Report the current completion state only. Do not describe unperformed future work as if it will happen automatically.
+- **[优先]** 不为了标注“不适用”而逐一列出无关的验证类别。
+- **[优先]** 只在存在具体的未验证条件、限制、兼容性顾虑或推迟处理的问题时，才汇报剩余风险。
+- **[优先]** 把有用的顺带发现的问题与本任务的失败分开汇报，避免被误认为是本任务造成的回归。
+- **[必须]** 不声称未经测量的性能、平台兼容性、无泄漏、视觉质量，或其他没有实际评估过的性质。
+- **[优先]** 对视觉修改，按[视觉边界](../70-tests/testing-strategy.md#视觉验证边界)说明构图、布局或动画手感中哪些方面仍需人工验收。
+- **[优先]** 结果与版本实质相关时，写明确切的 Godot 或工具版本。
+- **[优先]** 概括日志而不是粘贴日志，除非需要用日志片段解释失败。
+- **[必须]** 只汇报当前的完成状态。不把尚未执行的后续工作写成会自动发生的事。

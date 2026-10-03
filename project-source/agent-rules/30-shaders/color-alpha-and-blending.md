@@ -1,24 +1,24 @@
-# Shader Color, Alpha, and Blending
+# Shader 的颜色、Alpha 与混合
 
-Color space, alpha representation and blend mode are explicit rendering contracts.
+色彩空间、alpha 表示方式和混合模式都是明确的渲染契约。
 
-## Color space
+## 色彩空间
 
-- **[MUST]** Mark actual sRGB and albedo color samplers and uniforms with `source_color`. Data textures, masks, normals, and LUT or index textures are not `source_color` by default.
-- **[MUST]** Color math distinguishes linear from sRGB values. Do not add empirical `pow()` or gamma patches without a defined color-space reason.
-- **[MUST]** Do not gamma-transform alpha as if it were color.
-- **[MUST]** Do not mechanically clamp HDR RGB to 0..1 unless the effect contract requires clamping.
+- **[必须]** 真正的 sRGB 颜色和反照率颜色的采样器与 uniform 标记 `source_color`。数据纹理、遮罩、法线、LUT 和索引纹理默认不标 `source_color`。
+- **[必须]** 颜色运算区分线性值和 sRGB 值。没有明确的色彩空间理由时，不添加凭经验的 `pow()` 或 gamma 补丁。
+- **[必须]** 不要把 alpha 当成颜色做 gamma 变换。
+- **[必须]** 除非效果契约要求截断，不要机械地把 HDR RGB 截断到 0..1。
 
-## CanvasItem and alpha
+## CanvasItem 与 Alpha
 
-- **[MUST]** When rewriting CanvasItem `COLOR`, explicitly preserve or intentionally bypass the texture, `modulate` and `self_modulate` semantics.
-- **[MUST]** The alpha representation matches the blend mode. Do not premultiply RGB twice or mix straight and premultiplied assumptions.
-- **[REVIEW]** A blend-mode change alters composition; review it as rendering behavior, not as a convenient fix.
-- **[REVIEW]** Use `discard` for cutout or mask semantics where appropriate, not as a generic optimization for zero alpha.
-- **[MUST]** Diagnose transparent-edge artifacts across import, filtering, atlas packing, alpha, blending and the shader; do not assume that the shader alone is the cause.
+- **[必须]** 改写 CanvasItem 的 `COLOR` 时，明确保留或有意绕过纹理、`modulate` 和 `self_modulate` 的语义。
+- **[必须]** alpha 表示方式与混合模式一致。不要对 RGB 重复预乘，也不要混用直通 alpha 和预乘 alpha 的假设。
+- **[复核]** 修改混合模式会改变合成结果；把它当作渲染行为来复核，不当作顺手的修补。
+- **[复核]** `discard` 在合适时用于镂空或遮罩语义，不作为 alpha 为零时的通用优化。
+- **[必须]** 排查透明边缘瑕疵时，把导入、过滤、图集打包、alpha、混合和 Shader 一起检查；不要假定原因只在 Shader。
 
-## Special cases
+## 特殊情况
 
-- **[MUST]** Palette and exact-color lookups require proof that discrete identity is preserved through import, filtering, mipmapping and shader math.
-- **[MUST]** Reading or writing `ALPHA` in a Spatial shader sends the material through the transparent pipeline, even when the shader always writes `1.0`. Do not treat that as an ordinary opaque path.
-- **[MUST]** Use Spatial `ALPHA` only when transparency semantics are intended, and review the resulting sorting, shadow and depth behavior, and screen- and depth-texture behavior.
+- **[必须]** 调色板查找和精确颜色查找，需要证明离散的颜色身份在导入、过滤、mipmap 和 Shader 运算后仍然保留。
+- **[必须]** Spatial Shader 读写 `ALPHA` 会让材质进入透明管线，即使 Shader 始终写入 `1.0` 也一样。不要把它当作普通的不透明路径。
+- **[必须]** 只有确实需要透明语义时才使用 Spatial `ALPHA`，并复核由此带来的排序、阴影与深度行为，以及屏幕纹理和深度纹理的行为。

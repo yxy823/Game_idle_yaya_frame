@@ -1,43 +1,43 @@
-# 06 · Project environment
+# 06 · 项目环境
 
-This page covers the tool paths stored in `docs/methodology-config.json` and how the Agent prepares a newly created project to run them. Document language, the other setting in that file, is covered in [document language](05-document-language.md).
+本页说明 `docs/methodology-config.json` 中保存的工具路径，以及 Agent 怎样让新创建的项目能运行这些工具。该文件中的另一项设置是文档语言，见[文档语言](05-document-language.md)。
 
-## Tool configuration
+## 工具配置
 
-`docs/methodology-config.json` stores two machine settings used by project tools:
+`docs/methodology-config.json` 保存两项供项目工具使用的机器设置：
 
-| Field | Value |
+| 字段 | 取值 |
 | --- | --- |
-| `python_executable` | The Python executable path or command name used to run project tools. No script path or arguments. |
-| `engine_executable` | The full path of the Godot executable, absolute or relative to the project root. No shell quotes or arguments; it is not looked up on `PATH`. |
+| `python_executable` | 运行项目工具所用的 Python 可执行文件路径或命令名。不含脚本路径和参数。 |
+| `engine_executable` | Godot 可执行文件的完整路径，可以是绝对路径，也可以相对项目根目录。不含 shell 引号和参数；不会在 `PATH` 中查找。 |
 
-The file stores tool choices only. It does not store whether the environment is ready, the observed Godot version, a blocker list or a plugin inventory. These values are never translated. A document-language change keeps them byte-for-byte.
+这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 
-Use the configured `engine_executable` as given; do not search for another Godot installation. If the path does not work, report why. When the user asks the Agent to set up the environment, the Agent may write the Python and Godot paths it finds into this file. During any other task, change the paths only when the user asks for a new tool location. A filled-in path does not mean the tools are ready.
+按原样使用配置的 `engine_executable`，不要另找 Godot 安装。路径不可用时，报告原因。用户要求 Agent 准备环境时，Agent 可以把找到的 Python 和 Godot 路径写进这个文件。执行其他任务时，只有用户要求使用新的工具位置才修改路径。路径已填写不代表工具已经可用。
 
-Commands run from the project root. The test entry is fixed at `tools/testing/run-gdunit-tests.py`; it reads the configured Godot path, and `--godot-binary` overrides it for one run only. Script parsing and lint call Godot and the linter addon directly, as described in [GDScript lint](contracts/gdscript-lint.md).
+命令从项目根目录运行。测试入口固定为 `tools/testing/run-gdunit-tests.py`；它读取配置的 Godot 路径，`--godot-binary` 只在单次运行中覆盖该路径。脚本解析和 lint 直接调用 Godot 和 linter 插件，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
 
-## Project Environment Bootstrap
+## 项目环境准备
 
-Bootstrap is the Agent preparing this project's environment when the user asks for setup. It is a task the Agent performs, not a separate setup program. It does not depend on a GDD.
+项目环境准备（Project Environment Bootstrap）是用户要求准备环境时，由 Agent 为本项目准备运行环境。它是 Agent 执行的一项任务，不是单独的安装程序，也不依赖 GDD。
 
-1. **Confirm the tools.** Check the Python and Godot paths and any dependencies, and write the paths into the configuration.
-2. **Run the first Godot scan.** If the project has never been opened, let the configured Godot editor finish importing resources and scanning global classes before the first command that needs project scripts. Follow the [first scan instructions](../tools/README.md#首次-godot-扫描). A setup request that only asks for configuration may leave the scan to the first authorized run; say that it has not run yet. Later Features reuse the finished scan; there is no import wrapper or per-Feature import step.
-3. **Check readiness.** Run:
+1. **确认工具。** 检查 Python 和 Godot 的路径以及所需依赖，把路径写进配置。
+2. **运行首次 Godot 扫描。** 项目从未打开过时，在第一条需要项目脚本的命令之前，让配置的 Godot 编辑器完成资源导入和全局类扫描。按[首次扫描说明](../tools/README.md#首次-godot-扫描)操作。只要求填写配置的环境准备请求，可以把扫描留到第一次获准的运行；这时要说明扫描尚未运行。之后的 Feature 复用已完成的扫描；没有导入包装脚本，也没有逐个 Feature 的导入步骤。
+3. **检查是否就绪。** 运行：
 
    ```powershell
    python -B tools/checks/check-project-environment.py --require-ready
    ```
 
-4. **Record the result.** Write what you did and what you found in `reports/initialization.md`. If the file already exists, add a new entry and keep earlier failures. Progress records the current result, blockers, next step and a link to the report.
+4. **记录结果。** 把做了什么、发现了什么写进 `reports/initialization.md`。文件已存在时，追加一条新记录，保留之前的失败。Progress 记录当前结果、阻塞、下一步和指向该报告的链接。
 
-`reports/initialization.md` is a report for people; no tool treats it as a gate. The default project `.gitignore` keeps it local, so committing Progress does not include it. Commit the report only when the user asks.
+`reports/initialization.md` 是给人看的报告，没有工具把它当作关卡。默认的项目 `.gitignore` 让它只留在本地，提交 Progress 时不会包含它。只有用户要求时才提交这份报告。
 
-## What the readiness check proves
+## 就绪检查能证明什么
 
-| Mode | Checks |
+| 模式 | 检查内容 |
 | --- | --- |
-| Without `--require-ready` | The configuration structure. An empty Godot path is allowed, and tool availability is not claimed. |
-| With `--require-ready` | The Python and Godot executables exist, the test runner file exists, and a live Godot version probe reports 4.7.x. It prints the observed version. |
+| 不带 `--require-ready` | 配置结构。允许 Godot 路径为空，不声称工具可用。 |
+| 带 `--require-ready` | Python 和 Godot 可执行文件存在，测试运行器文件存在，并实际探测 Godot 版本，结果为 4.7.x。它会打印观察到的版本。 |
 
-The check does not prepare editor caches, install dependencies, run tests, parse scripts, run lint or initialize Git. Passing it shows only that the tools are available; Stage 4 test, parse and lint runs prove the actual results. If setup fails, record the reason in Progress and the initialization report, not in the configuration file.
+这项检查不准备编辑器缓存、不安装依赖、不运行测试、不解析脚本、不运行 lint，也不初始化 Git。通过它只说明工具可用；实际结果由 Stage 4 的测试、解析和 lint 运行证明。准备失败时，把原因记在 Progress 和初始化报告里，不写进配置文件。

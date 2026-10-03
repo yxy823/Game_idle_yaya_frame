@@ -1,52 +1,52 @@
 ---
 name: retro-godot
-description: "Review actual Godot development work and verification records to find useful workflow, rule, tool or knowledge improvements, and return evidence-based recommendations with their owners. Use for a requested retrospective or an observed recurring difficulty. Not for routine task completion, code review or automatic rule edits."
+description: "复查实际的 Godot 开发工作和验证记录，找出有用的工作流、规则、工具或知识改进，并返回有证据支撑、注明负责方的建议。用于用户要求的复盘，或已观察到的反复出现的困难。不用于例行的任务收尾、代码审核或自动修改规则。"
 ---
 
-# Godot development retrospective
+# Godot 开发复盘
 
-Use actual task experience to decide whether the project's way of working needs a focused improvement or deserves reusable knowledge. Support one project user working with an Agent in the task's target checkout. Do not extend the project into multi-user coordination or change-attribution systems.
+用实际的任务经验判断：项目的工作方式是否需要一项有针对性的改进，或是否值得沉淀为可复用的知识。面向的是一位项目使用者与 Agent 在任务指定的工作目录中配合工作。不要把项目扩展到多人协调或改动归属系统。
 
-This is an optional retrospective for a concrete question or observed recurring difficulty, not a mandatory end-of-task exercise. It neither starts a Feature nor replaces its validation or completion work.
+这是针对具体问题或已观察到的反复困难的可选复盘，不是每个任务结束时必做的环节。它不启动 Feature，也不代替 Feature 的验证或完成工作。
 
-A missing GDD does not stop a retrospective. Base the analysis on the available task records; when a conclusion would need a comparison with game design, name that gap instead.
+缺少 GDD 不妨碍复盘。分析以现有的任务记录为依据；某个结论需要与游戏设计对比时，指出这个缺口。
 
-Use [loop-me-godot](../loop-me-godot/SKILL.md) when the user wants to design future handling of identified recurring or anticipated work; that design needs no history of failure.
+用户想为已识别的反复出现或预期会出现的工作设计今后的处理方式时，使用 [loop-me-godot](../loop-me-godot/SKILL.md)；这种设计不需要先有失败经历。
 
-## Establish what happened
+## 弄清发生了什么
 
-Identify the task, relevant version or time span, intended outcome and concern from available conversation and records. Read only evidence that bears on that concern: applicable Feature/design notes, relevant diffs, actual verification output, user feedback and the affected workflow, rule, tool or knowledge source. Reuse valid context; do not scan every task, rule or knowledge topic.
+从现有的对话和记录中确定任务、涉及的版本或时间段、预期结果和要关注的问题。只读与这个问题有关的证据：适用的 Feature 与设计说明、涉及的差异、实际的验证输出、用户反馈，以及受影响的工作流、规则、工具或知识来源。复用仍然有效的上下文；不要扫描所有任务、规则或知识主题。
 
-Separate the requirement and chosen method from the observed result. Check whether evidence belongs to the relevant revision and whether it demonstrates static correctness, a tool run, real engine behavior or actual human acceptance. Missing, interrupted or older verification remains a limitation, not a pass or proof of a process defect. If no task evidence is available, explain the minimum information needed for this retrospective rather than inventing a history or cause.
+把需求和所选方法与观察到的结果分开。核对证据是否属于对应的版本，以及它证明的是静态正确性、一次工具运行、真实引擎行为，还是实际的人工验收。缺失、中断或旧版本的验证仍是局限，既不算通过，也不能证明流程有缺陷。没有任何任务证据时，说明这次复盘至少需要哪些信息，不要编造经过或原因。
 
-## Judge the smallest useful improvement
+## 判断最小的有用改进
 
-Consider both observed difficulties and successful approaches worth retaining. Distinguish a local mistake, a tool/environment limitation, a real rule conflict, repeated process friction and a useful contextual technique; do not promote one incident into a universal restriction.
+既考虑观察到的困难，也考虑值得保留的成功做法。区分局部失误、工具或环境限制、真实的规则冲突、反复出现的流程摩擦，以及有用的情境技巧；不要把一次事件上升为通用限制。
 
-- Check existing coverage before proposing a new rule, helper or knowledge entry. A clearer reference, merged duplicate, removal of an obsolete constraint or local correction may be enough.
-- Assess the concrete benefit, recurring cost and conditions of each proposal against the single-user project. Ordinary Agent judgment and existing commands remain valid solutions.
-- Do not treat the absence of Hooks, CI, scripts, scoring, receipts or extra approval stages as a problem. Do not default to adding them or automate supervision of Agent actions.
-- Link the conclusion to real evidence. Mark a plausible cause as a hypothesis and identify the observation that would distinguish it; do not claim a remedy has been validated merely because it sounds reasonable.
+- 提议新规则、辅助工具或知识条目之前，先查已有内容是否覆盖。一条更清楚的引用、合并重复内容、删除过时约束或一次局部修正，可能就足够了。
+- 针对单人项目，评估每项提议的具体收益、持续成本和适用条件。普通的 Agent 判断和已有命令仍然是有效的解决方案。
+- 不要把没有 Hook、CI、脚本、评分、收据或额外审批环节当成问题。不要默认添加它们，也不要自动化地监督 Agent 的动作。
+- 把结论与真实证据联系起来。把可能的原因标为假设，并指出能区分它的观察；不要因为某个补救措施听起来合理，就声称它已经验证。
 
-No improvement may be warranted. Return that conclusion with its evidence and limits instead of manufacturing a lesson, rule or follow-up task.
+可能根本不需要任何改进。这时返回这个结论及其证据和局限，不要硬造经验、规则或后续任务。
 
-## Place recommendations at their actual owner
+## 把建议放到实际负责的位置
 
-For each useful recommendation, explain the observed problem or benefit, supporting record, proposed change, why it belongs at that location and any missing decision or validation. Use the following boundaries only when the proposal touches that subject; they are not a reading checklist.
+对每条有用的建议，说明观察到的问题或收益、支撑它的记录、拟议的改动、为什么属于那个位置，以及仍缺的决定或验证。下表的边界只在提议涉及该主题时使用，不是阅读清单。
 
-| Subject | Owning material or workflow |
+| 主题 | 负责的材料或工作流 |
 | --- | --- |
-| Task-specific incident, design choice or pending work | Incident reminders in Feature notes, implementation choices in the Feature design, current pending work in Progress under `methodology/09-records-reports-and-handoff.md`; preserve historical facts. |
-| Reusable contextual technique or failure lesson | `docs/knowledge/README.md` and its relevant topic; check for an existing entry. Knowledge explains evidence and conditions, not new mandatory behavior. |
-| Stable development constraint or concrete engineering rule | `methodology/04-project-rules.md` determines `docs/project-rules.md` versus the applicable `agent-rules/` module and owns the pre-write self-check and authorization. Game-design exclusions use **Design scope and boundaries** in methodology 01, even when long-lived or cross-system. |
-| Workflow, Skill guidance, command or configuration | The actual project-owned source and its callers. Follow `methodology/07-engineering-change.md` for an authorized project-tool change. Task routing belongs in **Canonical task routing** in `methodology/00-overview.md`; `AGENTS.md` routes affected engineering domains to Core and specialized rule entries. A framework-source recommendation returns to the framework maintenance task without writing across repositories or fetching framework materials. |
-| Current technical structure or an important cross-Feature decision | `methodology/10-architecture-overview.md`; do not require an ADR for an ordinary local choice. |
-| Changed game-design intent, delivery scope or existing Feature plan | [design-gdd](../design-gdd/SKILL.md) owns game design, [design-balance](../design-balance/SKILL.md) scoped numeric design, and [product-author](../product-author/SKILL.md) delivery scope; affected existing plans use [feature-sync](../feature-sync/SKILL.md). Do not relax requirements to explain a failed implementation. |
+| 任务特有的事件、设计选择或待办工作 | 按 `methodology/09-records-reports-and-handoff.md`：事件提醒写在 Feature notes，实现选择写在 Feature 设计，当前待办写在 Progress（进度记录）；保留历史事实。 |
+| 可复用的情境技巧或失败教训 | `docs/knowledge/README.md` 及其涉及的主题；先查是否已有条目。知识说明证据和条件，不新增强制行为。 |
+| 稳定的开发约束或具体的工程规则 | 由 `methodology/04-project-rules.md` 判断写进 `docs/project-rules.md` 还是适用的 `agent-rules/` 模块，写入前的自查和授权也按它执行。游戏设计上的排除项按 methodology 01 的 **设计范围与边界** 处理，即使它长期有效或跨系统。 |
+| 工作流、Skill 指引、命令或配置 | 项目实际拥有的源文件及其调用方。已获授权的项目工具修改按 `methodology/07-engineering-change.md` 执行。任务路由属于 `methodology/00-overview.md` 的 **任务路由表**；`AGENTS.md` 把受影响的工程领域路由到 Core 和专项规则入口。针对框架源材料的建议交回框架维护任务，不跨仓库写入，也不去获取框架材料。 |
+| 当前技术结构或重要的跨 Feature 决定 | `methodology/10-architecture-overview.md`；普通的局部选择不要求 ADR。 |
+| 游戏设计意图、交付范围或已有 Feature 计划发生变化 | [design-gdd](../design-gdd/SKILL.md) 负责游戏设计，[design-balance](../design-balance/SKILL.md) 负责限定范围的数值设计，[product-author](../product-author/SKILL.md) 负责交付范围；受影响的已有计划使用 [feature-sync](../feature-sync/SKILL.md)。不要为了解释一次失败的实现而放宽需求。 |
 
-Keep the result in the conversation. This Skill does not automatically edit rules, code, tools, knowledge, state or approval records, create reports, or turn recommendations into a backlog. Review findings cannot rewrite a past decision, advance Stage, supply missing acceptance or establish implementation success.
+结果留在对话中。本 Skill 不自动修改规则、代码、工具、知识、状态或审批记录，不生成报告，也不把建议变成待办列表。复盘发现不能改写过去的决定，不能推进 Stage，不能补上缺失的验收，也不能证明实现成功。
 
-Return the recommendations and evidence to the coordinating task. A retrospective-only request ends with the analysis. Already authorized follow-up continues through its owner and the applicable checks; a new restriction, unresolved choice or wider scope still needs its own decision.
+把建议和证据交回协调任务。只要求复盘的请求，以分析结束。已获授权的后续工作通过其负责方和适用的检查继续；新的限制、未决的选择或更大的范围，仍需要单独决定。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
 
-Inspired by Matt Pocock's `retro` approach to improving agent work from actual experience; rewritten for this Godot project's workflow, evidence and authorization boundaries.
+灵感来自 Matt Pocock 用实际经验改进 Agent 工作的 `retro` 方法；已针对本 Godot 项目的工作流、证据和授权边界重写。

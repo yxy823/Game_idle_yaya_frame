@@ -1,19 +1,19 @@
-# Resource Roles, Sharing, and Locality
+# Resource 角色、共享与场景本地化
 
-Classify a Resource before deciding whether its mutation, sharing or local-to-scene behavior is correct.
+先给 Resource 归类，再判断对它的修改、共享或场景本地行为是否正确。
 
-## Roles
+## 角色
 
-- **[MUST]** Classify a Resource as definition or configuration data, instance-local state, or explicit runtime mutable shared state.
-- **[MUST]** Definition and configuration Resources are read-only at runtime by default. Mutable runtime state belongs to a separate owner, as described in [Persistent graphs](duplication-and-runtime-state.md#persistent-graphs), and is saved under the [saving rules](identity-paths-and-saving.md#saving-and-generation).
-- **[MUST]** Whether a Resource is an external `.tres` or a SubResource does not by itself prove shared or unique semantics.
+- **[必须]** 把 Resource 归为以下一类：定义或配置数据、实例本地状态、明确的运行时可变共享状态。
+- **[必须]** 定义与配置类 Resource 默认在运行时只读。可变的运行时状态属于单独的所属方（见[持久化资源图](duplication-and-runtime-state.md#持久化资源图)），并按[保存规则](identity-paths-and-saving.md#保存与生成)保存。
+- **[必须]** Resource 是外部 `.tres` 还是 SubResource，本身不能证明它是共享的还是唯一的。
 
-### Data-driven authoring
+### 数据驱动的编辑
 
-- **[PREFER]** Use typed custom Resources for inspector-editable definitions such as item data, skills, enemy parameters, level configuration or dialogue.
-- **[PREFER]** Keep repository source Resources in the `.tres` format, because it is text that version control can review and diff.
-- **[MUST]** Do not require a manual `.tres` to `.res` conversion before release solely for packaging; the Godot export pipeline may handle binary packaging. Author `.res` directly only for an explicit size, performance or binary-source requirement.
-- **[MUST]** A Resource is data, not a SceneTree Node; it has no `_process` callback and does not participate in per-frame processing.
+- **[优先]** 物品数据、技能、敌人参数、关卡配置或对话等可在检查器中编辑的定义，使用带类型的自定义 Resource。
+- **[优先]** 仓库中的源 Resource 保持 `.tres` 格式，因为它是文本，版本控制可以审查和比对差异。
+- **[必须]** 不要求在发布前仅为打包而手工把 `.tres` 转换为 `.res`；Godot 的导出流程可以处理二进制打包。只有明确的体积、性能或二进制源文件需求时，才直接编写 `.res`。
+- **[必须]** Resource 是数据，不是 SceneTree 中的 Node；它没有 `_process` 回调，不参与逐帧处理。
 
 ```gdscript
 # res://resources/enemy_stats.gd
@@ -27,11 +27,11 @@ extends Resource
 @export var loot_table: Array[ItemData] = []
 ```
 
-Create an `EnemyStats` `.tres` through FileSystem → New → Resource and edit it in the Inspector. Load it with `load()` when selected at runtime or assign it through an explicit `@export` reference.
+通过 FileSystem → New → Resource 创建 `EnemyStats` 的 `.tres`，并在检查器中编辑。运行时才选定时用 `load()` 加载，或者通过明确的 `@export` 引用指定。
 
-### Change notification
+### 变更通知
 
-- **[MUST]** A custom Resource does not automatically emit `changed` when an exported value changes. If consumers rely on change notification, emit it from the setter while preserving the property invariant.
+- **[必须]** 导出值变化时，自定义 Resource 不会自动发出 `changed`。如果消费方依赖变更通知，在 setter 中发出它，同时保持属性的不变量。
 
 ```gdscript
 @export var hp: int = 100:
@@ -41,10 +41,10 @@ Create an `EnemyStats` `.tres` through FileSystem → New → Resource and edit 
 			emit_changed()
 ```
 
-## Local-to-scene
+## 场景本地
 
-- **[MUST]** Use `resource_local_to_scene` only when each PackedScene instance genuinely needs its own copy of the Resource.
-- **[MUST]** Changing `resource_local_to_scene` at runtime does not retroactively clone already-instantiated Resources.
-- **[MUST]** `_setup_local_to_scene()` initializes the instance-local copy; it must not mutate the external source Resource as a side effect.
-- **[MUST]** Override `_setup_local_to_scene()` for local-to-scene initialization. Business or Agent code must not manually call deprecated `setup_local_to_scene()`; let the scene-instantiation lifecycle invoke it.
-- **[PREFER]** Keep local-to-scene initialization deterministic; inject or own the RNG when randomness is required.
+- **[必须]** 只有每个 PackedScene 实例确实需要自己的一份 Resource 副本时，才使用 `resource_local_to_scene`。
+- **[必须]** 在运行时修改 `resource_local_to_scene`，不会回溯克隆已经实例化的 Resource。
+- **[必须]** `_setup_local_to_scene()` 用于初始化实例本地的副本；它不能顺带修改外部的源 Resource。
+- **[必须]** 场景本地的初始化通过重写 `_setup_local_to_scene()` 实现。业务代码或 Agent 代码不手动调用已弃用的 `setup_local_to_scene()`；让场景实例化的生命周期去调用它。
+- **[优先]** 场景本地的初始化保持确定；需要随机性时，注入或自行持有 RNG。

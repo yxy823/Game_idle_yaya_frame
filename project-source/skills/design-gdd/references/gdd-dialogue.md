@@ -1,29 +1,29 @@
-# GDD co-creation
+# GDD 共同创作
 
-Use this reference when the user wants to develop a game together or improve a draft through discussion. Reuse [Shared questioning method](../../project-grill-me/SKILL.md#shared-questioning-method) for the discussion overview, question grouping, proportionate treatment of unusual cases, continuation, progress and completion. Reading that method does not invoke a second clarification workflow; GDD design and authorized writing remain with `design-gdd`.
+用户想一起发展一款游戏，或者想通过讨论改进草稿时，使用本参考。讨论概览、问题分组、对少见情况的适度处理、续接、进度和完成，复用[共享提问方法](../../project-grill-me/SKILL.md#共享提问方法)。阅读这个方法不会启动第二个澄清流程；GDD 设计和获准的写入仍由 `design-gdd` 负责。
 
-## Start from the current design
+## 从当前设计出发
 
-Use the relevant idea, GDD topics and explicit decisions already available. An idea is enough to begin; an existing Product, Feature plan or ready Godot environment is not required. If the user asks for a draft first, produce a useful draft with visible assumptions and gaps rather than delaying it for a questionnaire. Discussion-only work keeps its design summary in the conversation.
+使用本次涉及的想法、GDD 主题和已有的明确决定。一个想法就足以开始；不要求已有 Product、Feature 计划或准备好的 Godot 环境。用户要求先出草稿时，就给出一份标明假设和缺口的有用草稿，不要用问卷拖延。只讨论时，设计摘要留在对话中。
 
-Track the design choices that matter to the requested scope. Experience goals, player context and core actions can constrain later rules, progression and numeric targets. Resolve consequential upstream choices before asking for details that depend on them; independent choices may be grouped. Do not impose a fixed interview length or exhaust every branch of the design.
+跟踪对要求的范围有影响的设计选择。体验目标、玩家背景和核心操作可能约束后面的规则、进程和数值目标。先解决有重要影响的上游选择，再询问依赖它们的细节；互不依赖的选择可以放在一组问。不要规定固定的访谈长度，也不要穷尽设计的每个分支。
 
-## Ask in terms of play
+## 用游玩的语言提问
 
-Number questions and letter the options as the shared method describes. For each option, give its consequence for play and, where useful, a recommendation.
+按共享方法的要求给问题编号、给选项标字母。每个选项都说明它对游玩的影响；有用时给出推荐。
 
-Translate vague goals such as satisfying or deep into situations: what the player notices, chooses, does and sees change. When a reference game is supplied, distinguish the property to retain from what the user wants to change. A player's mistake, unexpected choice or repeated action can expose a rule gap; use only the cases relevant to the current decision.
+把“爽快”“有深度”这类模糊目标转换成具体情境：玩家注意到什么、选择什么、做什么、看到什么发生了变化。用户提供参考游戏时，区分要保留的特征和用户想改变的部分。玩家的失误、意外选择或重复操作可能暴露规则缺口；只使用与当前决定有关的情况。
 
-If the answer requires playing or measurement, preserve a hypothesis and propose the observation that would resolve it. Repeated questions cannot establish an untested feel or parameter. User requests for fewer questions or a quick draft should produce appropriately labeled candidates, without presenting silence as adoption.
+如果答案需要试玩或测量才能得到，就保留为假设，并提出能解决它的观察方法。反复提问无法确定未经测试的手感或参数。用户要求少问几个问题或快速出草稿时，给出标明为候选值的方案，不要把用户没有表态当成采用。
 
-## Continue as answers arrive
+## 随回答继续推进
 
-Apply the shared method's continuation and progress rules to the remaining design choices. An explicit choice or instruction to follow a concrete recommendation settles the corresponding GDD decision; apply corrections to its affected rules and assumptions while preserving unrelated decisions and the current writing authority.
+对剩余的设计选择，使用共享方法的续接和进度规则。用户明确做出选择，或明确指示按某条具体推荐执行，就确定了对应的 GDD 决定；用户的更正应用到受影响的规则和假设上，同时保留无关的决定和当前的写入授权。
 
-## Keep the current design coherent
+## 保持当前设计一致
 
-When writing is authorized, update the owning GDD passage and its affected references as useful decisions emerge. Overall scope and exclusions follow **Design scope and boundaries** in `methodology/01-product-doc-structure.md`; local rules stay in their topics. Save proposals at the owner chosen by **Candidate and unadopted ideas** in the same file, and keep their undecided status explicit. Preserve unrelated structure for local work; use [Design document structure](design-docs.md) when a new entry or broader reorganization is needed. In discussion-only work, identify useful confirmed conclusions that remain unsaved when wrapping up.
+获准写入时，随着有用的决定产生，更新所属的 GDD 段落和受影响的引用。整体范围和排除项按 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 处理；局部规则留在各自的主题中。建议保存在同一文件的 **候选与未采纳想法** 选定的位置，并明确标出尚未决定。局部工作保留无关的结构；需要新建入口或做较大的重新组织时，使用[设计文档结构](design-docs.md)。只讨论时，在收尾时指出哪些已确认的有用结论还没有保存。
 
-Record the reason for a consequential design choice beside the relevant design. Read and maintain unresolved design choices through **Open design questions** in methodology 01; when a choice is settled, update its owning topic and affected references. Do not create a separate conversation, decision or version ledger. Settled terminology and resumption records use the existing conditional routes in the Skill entry.
+重要设计选择的理由，记录在对应的设计旁边。通过 methodology 01 的 **开放问题** 阅读和维护尚未决定的设计选择；选择确定后，更新它的所属主题和受影响的引用。不要另建对话、决定或版本台账。已确定的术语和续接记录，使用 Skill 入口中已有的按需路径。
 
-Use the shared method's completion conditions to report the design result and any dependency that still limits its next use; deliver updated files when writing was authorized. A local discussion milestone does not end a broader authorized drafting or implementation task.
+使用共享方法的完成条件，报告设计结果，以及仍限制下一步用途的依赖；获准写入时交付更新后的文件。一次局部讨论的阶段性结果，不会结束更大的已授权起草或实现任务。

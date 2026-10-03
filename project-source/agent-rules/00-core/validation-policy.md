@@ -1,38 +1,38 @@
-# Validation Policy
+# 验证策略
 
-Defines evidence rules shared by all specialized validation modules.
+本页规定所有专项验证模块共用的证据规则。
 
-## Evidence composition
+## 证据的组合
 
-- **[MUST]** Every changed artifact and affected behavior satisfies every applicable validation route. The requirements of several modules add together.
-- **[MUST]** Include the relevant tests and the project's supported lint, parsing and type checks when they apply to the changed artifacts. Use the configured entrypoints. Do not invent an unsupported checker or install a new toolchain solely to fill a generic checklist.
-- **[MUST]** A higher-level PASS does not override a lower-level failure.
-- **[MUST]** A gate is PASS only if the applicable check was actually executed and completed successfully.
-- **[MUST]** Do not substitute one validation class for another unless project rules explicitly define that check as equivalent for the affected contract.
-- **[PREFER]** Use repository-provided validation scripts and entrypoints when they encode the supported workflow, instead of rebuilding an ad-hoc alternative.
-- **[MUST]** A validation wrapper preserves the failure semantics of the checks it runs; a wrapper exit code of 0 cannot erase a known underlying failure.
-- **[PREFER]** Use the tool's supported exit status or structured result instead of guessing from console text.
+- **[必须]** 每个改动的产物和受影响的行为，都要满足每一条适用的验证路径。多个模块的要求相互叠加。
+- **[必须]** 适用于改动产物时，纳入相关测试，以及项目支持的 lint、解析和类型检查。使用已配置的入口。不为了填满通用清单而编造不受支持的检查器或安装新的工具链。
+- **[必须]** 上层的 PASS 不能抵消下层的失败。
+- **[必须]** 只有适用的检查实际执行并成功结束，这项验证关卡（gate）才算 PASS。
+- **[必须]** 不用一类验证替代另一类，除非项目规则明确规定该检查对受影响的契约是等价的。
+- **[优先]** 仓库提供的验证脚本和入口体现了受支持的流程时，使用它们，不临时另搭一套。
+- **[必须]** 验证包装脚本要保留它所运行检查的失败语义；包装脚本的退出码为 0，不能抹掉已知的底层失败。
+- **[优先]** 使用工具支持的退出状态或结构化结果，不根据控制台文字猜测。
 
-## Failure handling
+## 失败处理
 
-- **[MUST]** Do not obtain a green status by weakening lint thresholds, expanding ignores, skipping failing tests, disabling error monitoring, lowering schema severity, removing gates or rewriting rules.
-- **[MUST]** Treat a validation failure as evidence that requires classification. Do not assume that the checker is wrong merely because it blocks completion.
-- **[MUST]** After fixing a gate failure, rerun that gate and any additional checks that the fix makes necessary.
-- **[MUST]** Run all validation routes that apply to the change, not every imaginable expensive gate.
-- **[PREFER]** When the material impact scope is uncertain, choose a slightly broader relevant validation scope rather than claiming an unjustifiably precise minimum.
+- **[必须]** 不通过放宽 lint 阈值、扩大忽略范围、跳过失败的测试、关闭错误监控、降低 schema 严重级别、移除验证关卡或改写规则来换取通过。
+- **[必须]** 把验证失败当作需要归类的证据。不能仅因为检查器阻碍了完成，就认定它出错。
+- **[必须]** 修复一项关卡失败后，重新运行这项关卡，以及这次修复使之成为必要的其他检查。
+- **[必须]** 运行适用于这次修改的全部验证路径，而不是所有能想到的昂贵检查。
+- **[优先]** 实质影响范围不确定时，选择稍宽一些的相关验证范围，不声称一个缺乏依据的精确最小范围。
 
-## Environment and reporting
+## 环境与汇报
 
-- **[MUST]** Environment-specific evidence proves only the environment semantics that it actually exercises.
-- **[MUST]** When a specialized rule requires fresh evidence from a new process, import, export or target runtime, an existing editor or session result is not a substitute.
-- **[MUST]** If an applicable required gate cannot run, report it as not executed or blocked, with the reason and the unresolved risk. Never assume PASS.
-- **[MUST]** Manual acceptance and automated validation are distinct evidence types. Do not report one as the other.
-- **[MUST]** Validation artifacts such as logs, JUnit reports and temporary exports follow the generated and temporary file ownership rules. They must not silently become production source.
+- **[必须]** 特定环境下的证据，只证明它实际运行到的环境语义。
+- **[必须]** 专项规则要求来自新进程、新导入、新导出或目标运行时的新证据时，已有的编辑器或会话结果不能替代。
+- **[必须]** 适用的必需关卡无法运行时，汇报为未执行或被阻塞，并写明原因和未解决的风险。绝不假定 PASS。
+- **[必须]** 人工验收和自动验证是不同类型的证据。不把其中一种汇报成另一种。
+- **[必须]** 日志、JUnit 报告和临时导出等验证产物，遵循生成文件与临时文件的归属规则。它们不能悄悄变成正式源文件。
 
-## Windows editor checks
+## Windows 编辑器检查
 
-These rules apply only to Godot editor checks on the local Windows machine inside the Codex restricted sandbox. On another machine, first check the actual permissions and directory behavior. They do not require launching the editor for every Feature.
+这些规则只适用于在本机 Windows、Codex 受限沙箱中运行的 Godot 编辑器检查。在其他机器上，先检查实际的权限和目录行为。这些规则不要求每个 Feature 都启动编辑器。
 
-- **[MUST]** Run editor checks, including `--headless --editor`, outside the sandbox through the `require_escalated` approval path. If approval is denied or unavailable, report the check as not executed or blocked; do not bypass approval.
-- **[MUST]** When the output contains `Could not create editor data directory` or `Could not create editor config directory`, or access to `AppData/Roaming/Godot` fails, investigate the environment permissions. Stop later validation that depends on that run's success. Do not report a pass, and do not change business code or weaken gates because of it.
-- **[MUST]** Before and after an editor check, compare the listing of the project root, including empty directories that Git does not track. When unexpected directories such as `export_templates`, `feature_profiles`, `script_templates` or `text_editor_themes` appear, check their origin first. Apply the [temporary-file rules](third-party-generated-and-temporary-files.md#temporary-backup-and-scratch) only to empty directories confirmed as created by this run, and keep pre-existing directories with the same name.
+- **[必须]** 编辑器检查（包括 `--headless --editor`）通过 `require_escalated` 审批路径在沙箱外运行。审批被拒绝或不可用时，把这项检查汇报为未执行或被阻塞；不绕过审批。
+- **[必须]** 输出中出现 `Could not create editor data directory` 或 `Could not create editor config directory`，或访问 `AppData/Roaming/Godot` 失败时，调查环境权限。停止依赖这次运行成功的后续验证。不汇报为通过，也不因此修改业务代码或削弱验证关卡。
+- **[必须]** 编辑器检查前后，对比项目根目录的列表，包括 Git 不跟踪的空目录。出现 `export_templates`、`feature_profiles`、`script_templates`、`text_editor_themes` 等意外目录时，先查明来源。只对确认由这次运行创建的空目录应用[临时文件规则](third-party-generated-and-temporary-files.md#临时备份与草稿文件)，保留事先已存在的同名目录。

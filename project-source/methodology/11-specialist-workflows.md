@@ -1,281 +1,281 @@
-# 11 · Specialist work and sources
+# 11 · 专业工作与来源
 
-This specification defines where professional documents live, how planning and synchronization find their sources, and how resource requirements are handed off. [Task routing](00-overview.md#canonical-task-routing) selects the entry; [Feature planning](02-feature-list-schema.md) and the [execution loop](03-execute-loop.md) handle delivery. A specialist Skill can run alone or inside an authorized task; it does not start another lifecycle.
+本规范定义专业文档放在哪里、规划和源同步如何找到来源，以及资源需求如何交接。入口由[任务路由](00-overview.md#任务路由表)选择；交付由 [Feature 规划](02-feature-list-schema.md) 和 [执行循环](03-execute-loop.md) 处理。专业 Skill 可以单独运行，也可以在已获授权的任务中运行；它不会另外开始一套生命周期。
 
-## Ownership and decisions
+## 归属与决策
 
-Game logic owns rules, business state and valid results. Presentation makes them perceptible and may own local interaction or playback state. `docs/game-organization.md` explains this responsibility model, and [architecture](10-architecture-overview.md) describes the actual implementation relationships.
+游戏逻辑负责规则、业务状态和有效结果。表现让这些内容可以被感知，并可以负责局部的交互或播放状态。`docs/game-organization.md` 解释这个职责模型，[架构](10-architecture-overview.md)描述实际的实现关系。
 
-- The model describes responsibilities inside game modules. It does not prescribe directories or communication mechanisms, and it adds no task routes, Feature types, fields or Stages.
-- Presentation-only, logic-only and cross-layer describe a function's scope. Delivery boundaries and order still follow the [decomposition rules](02-feature-list-schema.md#decomposition-rules), including a visual prototype before logic that depends on its decisions.
-- Environment, tests, build tools and the delivery workflow are shared engineering support, not additional game layers.
-- Logic and presentation do not have separate document sets. The GDD holds the overall rules and experience goals, and one Feature may deliver both.
-- Ordinary UI and other feedback are part of presentation but need no separate game-presentation document. A presentation document describes one game moment, not the whole presentation layer.
+- 这个模型描述的是游戏模块内部的职责。它不规定目录或通信机制，也不增加任务路由、Feature 类型、字段或 Stage。
+- “只有表现”“只有逻辑”“跨层”描述的是一个功能的范围。交付边界和顺序仍然遵循 [拆分规则](02-feature-list-schema.md#拆分规则)，包括在依赖其决定的逻辑之前先做视觉原型。
+- 环境、测试、构建工具和交付流程是共用的工程支持，不是额外的游戏层。
+- 逻辑和表现没有各自独立的文档集。GDD 保存整体规则和体验目标，一个 Feature 可以同时交付两者。
+- 普通 UI 和其他反馈属于表现，但不需要单独的游戏表现文档。一份表现文档描述一个游戏时刻，而不是整个表现层。
 
-Use this table to find the authoritative document for each concern:
+用下表查找每类内容的权威文档：
 
-| Concern | Skill and fixed location |
+| 内容 | Skill 与固定位置 |
 | --- | --- |
-| Game positioning, experience, loops, behavior, rules, states and game-version scope | `design-gdd`: the design files under `docs/gdd/`, including initial design from an idea |
-| Numerical models, formulas, parameters, curves and calculation explanations | `design-balance`: the fixed balance files under [GDD document names](01-product-doc-structure.md#gdd-document-names), without a duplicate specification |
-| Delivery pre-decomposition, boundaries, dependencies and source mapping | `product-author`: `docs/product.md`, plus only the current `docs/product/NN-<delivery>.md` |
-| Shared visual specification refining the GDD's direction | `design-art-direction`: `docs/art/art-bible.md` |
-| Shared sound specification and feedback hierarchy refining the GDD | `design-audio-direction`: `docs/audio/sound-bible.md` |
-| Interface layout, states and interaction presentation | `design-ui-spec`: `docs/ui/<interface>-design.md`; shared controls use `docs/ui/components/<component-key>-design.md` under [UI document boundaries](#ui-document-boundaries) |
-| A game presentation's observable process, component requirements and approach selection | `design-game-presentation`: `docs/presentation/<scope>.md`; shared components use the fixed location under [Game presentation documents](#game-presentation-documents); UI or GDD documents link each use |
-| Visual asset specifications | `design-visual-asset-spec`: the resource section of the presentation or UI document that uses the asset, or **Shared resource specifications** in `docs/art/art-bible.md`, selected by [Resource requirements and handoff](#resource-requirements-and-handoff) |
-| SFX and music specifications | `design-audio-asset-spec`: the resource section of the presentation or UI document that uses the sound, or **Shared resource specifications** in `docs/audio/sound-bible.md`, selected the same way |
-| Localization coverage, locale conventions and approved term translations | `design-localization-spec`: `docs/localization/localization-spec.md`, including [Term translations](#localization-term-translations). Domain definitions link to `docs/terminology.md`, and detailed game rules link to the GDD |
-| Translation resources and runtime locale support | `content-localization`: approved translations, keys and locale-sensitive implementation inside the authorized Feature or experiment |
+| 游戏定位、体验、循环、行为、规则、状态和游戏版本范围 | `design-gdd`：`docs/gdd/` 下的设计文件，包括从想法开始的初始设计 |
+| 数值模型、公式、参数、曲线和计算说明 | `design-balance`：[GDD 文件名](01-product-doc-structure.md#gdd-文件名)中规定的固定数值文件，不另写重复的规格 |
+| 交付预拆分、边界、依赖和来源映射 | `product-author`：`docs/product.md`，以及仅限当前 Product 的 `docs/product/NN-<delivery>.md` |
+| 细化 GDD 方向的共用视觉规范 | `design-art-direction`：`docs/art/art-bible.md` |
+| 细化 GDD 的共用声音规范和反馈层级 | `design-audio-direction`：`docs/audio/sound-bible.md` |
+| 界面布局、状态和交互表现 | `design-ui-spec`：`docs/ui/<interface>-design.md`；共用控件按 [UI 文档边界](#ui-文档边界)使用 `docs/ui/components/<component-key>-design.md` |
+| 一次游戏表现的可观察过程、组成部分要求和方案选择 | `design-game-presentation`：`docs/presentation/<scope>.md`；共用组件使用[游戏表现文档](#游戏表现文档)中规定的固定位置；UI 或 GDD 文档链接每一处使用 |
+| 视觉资源规格 | `design-visual-asset-spec`：使用该资源的表现或 UI 文档中的资源章节，或 `docs/art/art-bible.md` 中的**共享资源规格**，按[资源需求与交接](#资源需求与交接)选择 |
+| 音效和音乐规格 | `design-audio-asset-spec`：使用该声音的表现或 UI 文档中的资源章节，或 `docs/audio/sound-bible.md` 中的**共享资源规格**，选择方式相同 |
+| 本地化覆盖范围、区域格式约定和已批准的术语译名 | `design-localization-spec`：`docs/localization/localization-spec.md`，包括[术语译名](#本地化术语译名)。领域定义链接 `docs/terminology.md`，详细游戏规则链接 GDD |
+| 翻译资源和运行时语言支持 | `content-localization`：在已获授权的 Feature 或实验中，处理已批准的译文、键和与语言相关的实现 |
 
-### GDD prerequisite and fixed locations
+### GDD 前提与固定位置
 
-Standalone and embedded specialist work follow [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority), including its exception for early design support. Presentation exploration and saving settled professional specifications may support initial GDD design; runnable work still needs the relevant substantive design.
+单独进行或嵌在其他任务中的专业工作，都遵循 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)，包括其中对早期设计支持的例外。表现探索和保存已确定的专业规格可以支持初始 GDD 设计；可运行的工作仍需要相关的实质设计。
 
-- The locations above follow content responsibility, regardless of game size or where the content was first drafted.
-- Not every document has to be filled.
-- New projects include the Art Bible, Sound Bible and localization specification with only their purpose and empty sections, and navigation READMEs for UI and presentations. Their presence does not establish an adopted requirement or a produced asset.
+- 上表中的位置按内容职责确定，与游戏规模或内容最初在哪里起草无关。
+- 不是每份文档都必须填写。
+- 新项目附带 Art Bible、Sound Bible 和本地化规范，其中只有用途说明和空章节；UI 和表现目录附带导航 README。这些文件存在，不代表已有采纳的需求或已制作的资源。
 
-### What stays in the GDD
+### 留在 GDD 中的内容
 
-The GDD keeps game rules, intended player feelings and what players must recognize. Professional standards go to their documents:
+GDD 保留游戏规则、预期的玩家感受，以及玩家必须识别的内容。专业标准写进各自的文档：
 
-- visual style, palette, typography and material treatment: the Art Bible;
-- sonic identity, timbre, rhythm and feedback hierarchy: the Sound Bible;
-- locale coverage and language conventions: the localization specification;
-- interface specifications and complete presentation sequences: their UI and presentation paths.
+- 视觉风格、配色、字体和材质处理：Art Bible；
+- 声音特征、音色、节奏和反馈层级：Sound Bible；
+- 语言覆盖范围和语言约定：本地化规范；
+- 界面规格和完整的表现过程：各自的 UI 和表现路径。
 
-For example, the GDD may require a calm experience and recognizable rewards. Low-saturation hand-drawn art and restrained acoustic textures are Bible standards linked from that goal.
+例如，GDD 可以要求体验平静、奖励易于辨认。低饱和度的手绘美术和克制的原声质感属于 Bible 中的标准，从这个目标链接过去。
 
-When saving or consolidating:
+保存或整合时：
 
-- Save confirmed content in `document_language` at its professional document, including during authorized GDD creation or consolidation.
-- Move in-scope current specifications that are embedded in the GDD to their professional document and replace the GDD bodies with links. Keep referenced anchors and any original inputs the task must preserve.
-- Product, Feature design and AC reference the same professional documents.
-- When the user limits the write scope, report the specific content left unsaved or unmoved. Do not silently keep two current versions.
+- 已确认的内容用 `document_language` 保存到对应的专业文档，在已获授权的 GDD 创建或整合期间也是如此。
+- 把嵌在 GDD 中、属于本次范围的当前规格移到专业文档，并把 GDD 中的正文换成链接。保留被引用的锚点，以及任务必须保留的原始输入。
+- Product、Feature 设计和 AC 引用同一份专业文档。
+- 用户限制了写入范围时，报告具体哪些内容没有保存或没有移动。不要悄悄保留两个当前版本。
 
-### Writing and adoption
+### 编写与采纳
 
-- Each Skill writes its own documents within the user's concrete authorization. Owning a file does not authorize adopting an undecided requirement.
-- Distinguish confirmed requirements, proposals and measured observations in the text. A file or a Git commit alone is not evidence of approval.
-- Reuse the user's decisions; ask only for missing material choices.
-- A narrow specialist edit does not authorize changing GDD rules, Product scope, another specialist's specification or the task's scope.
-- `design-balance` maintains its numerical GDD content directly, without routing the writes through `design-gdd`. Changes to experience goals, mechanics or other systems return to `design-gdd`.
-- When another professional decision changes game behavior or the accepted overall direction, update the GDD through `design-gdd` in the same task.
+- 每个 Skill 在用户具体授权的范围内编写自己的文档。负责一个文件，不代表可以采纳尚未决定的需求。
+- 在正文中区分已确认的需求、提议和实测观察。文件或 Git 提交本身都不能证明已获批准。
+- 复用用户已做的决定；只就缺少的关键选择提问。
+- 范围很窄的专业修改，不授权修改 GDD 规则、Product 范围、其他专业规格或任务范围。
+- `design-balance` 直接维护 GDD 中的数值内容，不经 `design-gdd` 转交写入。体验目标、机制或其他系统的变化交回 `design-gdd`。
+- 其他专业决定改变游戏行为或已接受的整体方向时，在同一任务中通过 `design-gdd` 更新 GDD。
 
-| Change | Route |
+| 变化 | 处理路由 |
 | --- | --- |
-| A confirmed professional requirement changes | The Skill that owns the document updates it; `feature-sync` assesses current and planned work. A change to overall game design updates the GDD through `design-gdd`, scoped numerical design through `design-balance`, and delivery boundaries through `product-author`. |
-| Implementation violates a confirmed professional requirement | Repair it inside the unfinished Feature that delivers it, or use `engineering-change-plan` for an independent bug. Cite the professional document even when Product does not repeat it. |
-| A proposed improvement is not yet adopted | Return the proposal. Do not use it as an AC, a defect or an implementation mandate. |
-| Sources conflict or lack a material decision | Resolve it with the responsible Skill or the user before dependent work. Report both sources instead of silently picking one. |
+| 已确认的专业需求变化 | 负责该文档的 Skill 更新文档；`feature-sync` 评估当前和已规划的工作。整体游戏设计的变化通过 `design-gdd` 更新 GDD，限定范围的数值设计通过 `design-balance`，交付边界通过 `product-author`。 |
+| 实现违反了已确认的专业需求 | 在交付它的未完成 Feature 中修复，或对独立 Bug 使用 `engineering-change-plan`。即使 Product 没有重复这条需求，也要引用该专业文档。 |
+| 提议的改进尚未采纳 | 把提议交回。不要把它当作 AC、缺陷或实现要求。 |
+| 来源之间冲突，或缺少关键决定 | 在依赖它的工作开始前，与负责的 Skill 或用户一起解决。同时报告两个来源，不悄悄选其中一个。 |
 
-### Committing source changes before synchronization
+### 源同步前先提交来源修改
 
-- For standalone authorized specification work, validate the affected links and commit the complete source change under the project Git rules before `feature-sync` compares Git history.
-- Inside a Feature, use its Stage 3 documentation checkpoint and commit. A Skill handoff does not start a new task or require a clean working directory.
-- A substantive source change that needs synchronization must be committed first. If a no-commit instruction leaves it uncommitted, report the unmet prerequisite.
-- When synchronization finds stale links in its source documents, the Skill that maintains those documents repairs and commits them within the approved scope before any plan write. Synchronization then restarts its source analysis on the refreshed documents.
-- Links inside plan records follow `feature-sync`'s own update and commit steps. A Markdown filename alone does not decide which Skill maintains a file.
+- 单独的已获授权规格工作，在 `feature-sync` 比较 Git 历史之前，先校验受影响的链接，并按项目 Git 规则提交完整的来源修改。
+- 在 Feature 内部，使用该 Feature 的 Stage 3 文档检查点和提交。Skill 之间的交接不会开始新任务，也不要求工作区干净。
+- 需要源同步的实质来源修改必须先提交。如果“不提交”的指示使它保持未提交，报告这个未满足的前提。
+- 源同步发现其来源文档中有失效链接时，由维护这些文档的 Skill 在批准范围内修复并提交，然后才写入任何计划。之后源同步基于更新后的文档重新开始来源分析。
+- 计划记录内部的链接，按 `feature-sync` 自己的更新和提交步骤处理。仅凭 Markdown 文件名，不能决定由哪个 Skill 维护该文件。
 
-## Discover and map sources
+## 查找与映射来源
 
-The Feature `source` stays one precise primary source string:
+Feature 的 `source` 始终是一个精确的主来源字符串：
 
-- the current Product's delivery section, for Product-derived work;
-- a GDD or professional section, when it directly defines the scoped change;
-- `infrastructure`, for technical work without a single documentary source.
+- 来自 Product 的工作，写当前 Product 的交付章节；
+- GDD 或专业文档章节直接定义了限定范围的修改时，写该章节；
+- 没有单一文档来源的技术工作，写 `infrastructure`。
 
-Do not add a sources array or encode a list into this string. Record observable requirements as concrete AC with source links. Record implementation constraints and their source links in the Feature design file. Notes provide navigation, not the body of a binding constraint.
+不要增加来源数组，也不要把列表编码进这个字符串。可观察的需求写成具体的 AC，并附来源链接。实现约束及其来源链接写在 Feature 设计文件中。备注只用于导航，不能承载有约束力的正文。
 
-At planning or synchronization:
+规划或源同步时：
 
-1. Read the relevant GDD entry, [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries) and [Open design questions](01-product-doc-structure.md#open-design-questions). Check whether an open question prevents a current requirement or AC; do not turn a working assumption into adopted design.
-2. Follow the primary source's actual links to GDD sections, UI and presentation documents, resource sections, and art, audio and localization specifications.
-3. Read the Feature index and Product dependencies to find every planned consumer of a shared source, then read their details. Each shared source states in plain prose where it applies, such as "all inventory icons" or "all interactive feedback"; it need not list Feature IDs.
-4. Apply a shared source even where a link to it is missing. Repair missing links within scope instead of treating them as an exemption.
-5. Check for renames, removed sections and stale links.
+1. 读取相关的 GDD 入口、[设计范围与边界](01-product-doc-structure.md#设计范围与边界)和[开放问题](01-product-doc-structure.md#开放问题)。检查是否有开放问题妨碍当前的需求或 AC；不要把工作假设当成已采纳的设计。
+2. 顺着主来源中实际存在的链接，读到 GDD 章节、UI 与表现文档、资源章节，以及美术、音频和本地化规格。
+3. 读取 Feature 索引和 Product 依赖，找出共用来源的每一个已规划使用方，再读它们的详情。每个共用来源用普通文字说明适用范围，例如“所有背包图标”或“所有交互反馈”；不必列出 Feature ID。
+4. 即使缺少指向共用来源的链接，也要应用它。在范围内补上缺失的链接，不把缺链接当作豁免。
+5. 检查改名、删除的章节和失效链接。
 
-Use the same reading when creating or reviewing professional requirements. Do not load design or professional documents that cannot affect the task.
+创建或审查专业需求时，按同样的方式读取。不要加载不可能影响任务的设计或专业文档。
 
-Translate each requirement that applies into a concrete, task-sized AC, or into a linked design constraint with a verification obligation. For example, name the icon states, target display size and recognition check instead of only saying “fits the Art Bible”. Keep executable test mappings in the Feature JSON and the Registry. Keep additional performance, duration, display or listening checks in the Feature's verification plan or design. No new schema field, dependency registry or duplicate acceptance ledger is needed.
+把每条适用的需求转成具体的、任务粒度的 AC，或转成带验证义务并附链接的设计约束。例如，写出图标的各个状态、目标显示尺寸和辨认检查，而不只是写“符合 Art Bible”。可执行的测试映射保存在 Feature JSON 和测试登记表（Registry）中。额外的性能、时长、显示或试听检查，保存在 Feature 的验证计划或设计中。不需要新的结构字段、依赖登记表或重复的验收台账。
 
-Synchronization covers the actual GDD, Product and professional source paths, including presentation documents and their resource sections, in both the Git differences and the comparison with current sources.
+源同步覆盖实际的 GDD、Product 和专业来源路径，包括表现文档及其资源章节；Git 差异和与当前来源的比较两部分都要覆盖。
 
-- A previous `synced_at_commit` proves only that the sources read at that synchronization were considered. A source category that synchronization did not read, such as presentation documents, may still be unsynchronized even when its files predate that commit.
-- When needed, compare the sources and the affected plan as they were at the anchor.
-- If coverage cannot be established, use `feature-sync`'s current-document alignment for the planned scope and report the unknown history.
-- Do not invent a baseline, add per-source receipts or silently advance the anchor.
-- Later Products stay short pre-decomposition candidates until their turn. Completed Feature history stays intact; a change to completed work gets a follow-up.
+- 之前的 `synced_at_commit` 只能证明那次源同步读过的来源已被考虑。源同步没有读取的来源类别（例如表现文档），即使文件早于那次提交，也可能仍未同步。
+- 需要时，比较锚点提交时的来源和受影响的计划。
+- 无法确认覆盖情况时，对已规划的范围使用 `feature-sync` 的当前文档对齐方式，并报告历史未知。
+- 不编造基线，不增加逐个来源的收据，也不悄悄推进锚点。
+- 后续 Product 在轮到它们之前，保持为简短的预拆分候选。已完成 Feature 的历史保持完整；对已完成工作的修改另建后续工作。
 
-## Localization term translations
+## 本地化术语译名
 
-Maintain the approved glossary in the **Term translations** section of `docs/localization/localization-spec.md` (`术语译名` in Chinese). `design-localization-spec` maintains this section.
+已批准的译名表维护在 `docs/localization/localization-spec.md` 的**术语译名**章节（英文为 `Term translations`）。这个章节由 `design-localization-spec` 维护。
 
-- Each entry links the canonical concept in `docs/terminology.md` and gives the target locale, the chosen wording and any context-dependent distinction.
-- Keep pending candidates marked as pending until the wording is adopted.
-- Keep forbidden variants or inflection guidance only when they prevent an actual ambiguity.
-- Do not copy domain definitions or create a second registry of term identities.
+- 每个条目链接 `docs/terminology.md` 中的规范概念，并写出目标语言、选定的用词，以及随上下文变化的区分。
+- 待定的候选译名保持标记为待定，直到用词被采纳。
+- 只有在能避免实际歧义时，才保留禁用写法或词形变化说明。
+- 不复制领域定义，也不另建一份术语身份登记表。
 
-The documents divide the work as follows:
+各文档的分工如下：
 
-- `docs/terminology.md` owns conceptual meaning, canonical project names and lookup aliases, including code names. It does not decide target-locale wording.
-- The localization glossary owns those wording requirements.
-- Runtime translation resources hold the complete translated strings and implement the glossary. Ordinary sentences and dialogue are not copied into a Markdown translation catalog.
-- The documentation language does not choose the game's source or target locale.
+- `docs/terminology.md` 负责概念含义、项目规范名称和查找用的别名，包括代码名。它不决定目标语言的用词。
+- 本地化译名表负责这些用词要求。
+- 运行时翻译资源保存完整的译文字符串，并落实译名表。普通句子和对话不复制到 Markdown 翻译目录中。
+- 文档语言不决定游戏的源语言或目标语言。
 
-`content-localization` applies the approved entries to actual strings, and `review-localization` checks consistent use against the same section. A proposed term translation or a conflict returns to `design-localization-spec` within the task's authorization. A change to the underlying concept or gameplay returns to `design-gdd` and [Project terminology](14-project-terminology.md). During authorized consolidation, move in-scope target-language glossary bodies from the GDD or the terminology file into this section and update references. Runtime strings remain implementation content, not another authoritative glossary.
+`content-localization` 把已批准的条目应用到实际字符串，`review-localization` 对照同一章节检查用词是否一致。提议的译名或冲突，在任务授权范围内交回 `design-localization-spec`。底层概念或玩法的变化交回 `design-gdd` 和[项目术语](14-project-terminology.md)。在已获授权的整合期间，把 GDD 或术语文件中属于本次范围的目标语言译名正文移到本章节，并更新引用。运行时字符串仍是实现内容，不是另一份权威译名表。
 
-## UI document boundaries
+## UI 文档边界
 
-Use one `docs/ui/<interface>-design.md` for each screen or overlay that the player enters and leaves on its own and that has its own interaction flow. Give the interface a stable lowercase English hyphenated key, independent of its scene filename, Product or writing session.
+玩家单独进入和离开、并有自己交互流程的每个画面或浮层，各使用一份 `docs/ui/<interface>-design.md`。给界面一个稳定的小写英文连字符键，不随场景文件名、Product 或编写时的对话变化。
 
-- A panel, tab, HUD part or local expansion that works only inside its host flow stays in the host's document. Hiding or showing a widget does not by itself make a separate interface.
-- A shop's confirmation dialog with its own confirm and cancel flow has its own document; the shop's item list stays in the shop document.
+- 只在宿主流程内部工作的面板、标签页、HUD 部件或局部展开区域，留在宿主的文档中。只是隐藏或显示一个控件，本身不构成单独的界面。
+- 商店里有独立确认和取消流程的确认对话框，有自己的文档；商店的物品列表留在商店文档中。
 
-When a second distinct interface adopts or explicitly considers the same control or dialog behavior:
+第二个不同的界面采用或明确考虑同一种控件或对话框行为时：
 
-1. Check `docs/ui/README.md`, then choose a stable lowercase English hyphenated behavior key, such as `confirmation-dialog`.
-2. Move the common states, interaction rules and component-only resource specifications to `docs/ui/components/<component-key>-design.md`. If the dialog already had an interface document, move that body instead of keeping both.
-3. Leave each consumer only its invocation context, supplied content, local differences and links.
+1. 查看 `docs/ui/README.md`，再选一个稳定的小写英文连字符行为键，例如 `confirmation-dialog`。
+2. 把共同的状态、交互规则和组件专用的资源规格移到 `docs/ui/components/<component-key>-design.md`。如果该对话框原来已有界面文档，移动那份正文，不同时保留两份。
+3. 每个使用方只保留自己的调用情境、提供的内容、局部差异和链接。
 
-Shared appearance alone belongs in the Art Bible and does not need a behavior component document. Keep a component inside its only interface until such reuse exists; do not create hypothetical shared controls. Once extracted, the component keeps its path while any consumer remains.
+只是外观相同，写进 Art Bible 即可，不需要行为组件文档。在出现这种复用之前，组件留在它唯一的界面中；不创建假想的共用控件。组件一旦抽出，只要还有使用方，就保持原路径。
 
-`docs/ui/README.md` lists interface and component links, their purpose, associated Products when any, and component consumers; do not create another component index. Moves update affected links and remove duplicate current bodies within the task's authorization and the [artifact lifecycle](09-records-reports-and-handoff.md). Complete game moments use the presentation rules below.
+`docs/ui/README.md` 列出界面和组件的链接、用途、关联的 Product（如有）以及组件的使用方；不另建组件索引。移动时，在任务授权和 [产物生命周期](09-records-reports-and-handoff.md) 的范围内更新受影响的链接，并删除重复的当前正文。完整的游戏时刻使用下面的表现规则。
 
-## Game presentation documents
+## 游戏表现文档
 
-Plan around an observable game moment, such as an item arriving in the inventory or a character dying. Start from the experience goal and describe the trigger, the visible and audible sequence and the end condition before selecting techniques. A presentation can combine sprite frames, Shader, particles, Tween, AnimationPlayer or project implementations that already exist. Choosing a technique does not authorize implementing it or producing image or audio files.
+围绕一个可观察的游戏时刻来规划，例如物品进入背包或角色死亡。先从体验目标出发，描述触发条件、看到和听到的过程以及结束条件，再选择技术。一次表现可以组合序列帧、Shader、粒子、Tween、AnimationPlayer 或项目中已有的实现。选定技术不代表授权实现它，也不代表授权制作图像或音频文件。
 
-When feedback represents a game-state change, identify the business fact or accepted result it communicates and link its GDD section instead of redefining the rule. Distinguish a request or an immediate interaction response from a confirmed success result. Current-state display and one-time event feedback may need different behavior: reopening a health panel shows current HP without replaying a past hit. `docs/game-organization.md` describes this collaboration model; actual APIs, signal wiring and lifecycle ownership belong in architecture or the implementation design.
+反馈代表一次游戏状态变化时，说明它传达的业务事实或已接受的结果，并链接对应的 GDD 章节，不重新定义规则。区分请求或即时的交互响应，与已确认的成功结果。当前状态的显示和一次性事件的反馈可能需要不同的行为：重新打开生命值面板时显示当前 HP，不重放过去的一次受击。`docs/game-organization.md` 描述这种协作模型；实际的 API、信号连接和生命周期归属写在架构或实现设计中。
 
-A presentation's identity is its trigger moment and the result the player perceives.
+一次表现的身份由它的触发时刻和玩家感知到的结果决定。
 
-- Different sources of the same moment and result share one `docs/presentation/<scope>.md`. Name the stable lowercase English hyphenated scope after that result, not after a screen, Feature or technique. Record source-specific triggers, targets and selected combinations inside that document.
-- For example, item arrival after either a reward claim or a shop purchase uses `item-added.md` when both communicate the same confirmed arrival. Different origin screens alone do not justify separate `reward-collection.md` and `shop-purchase.md` copies.
-- A separately meaningful process with a different trigger or result, such as revealing an unknown reward before it is accepted, has its own scope. If that process ends with the item-arrival moment, link `item-added.md` at that point instead of copying it or creating a component for the whole moment.
-- Reuse of part of two distinct processes follows the component rules below.
+- 同一时刻、同一结果的不同来源，共用一份 `docs/presentation/<scope>.md`。用稳定的小写英文连字符 scope 按该结果命名，不按画面、Feature 或技术命名。各来源特有的触发、目标和选定组合记录在这份文档中。
+- 例如，领取奖励或商店购买之后的物品到账，如果两者传达的是同一次已确认的到账，就使用 `item-added.md`。只是来源画面不同，不足以拆成 `reward-collection.md` 和 `shop-purchase.md` 两份副本。
+- 触发或结果不同、本身有独立意义的过程，例如在接受奖励之前揭示未知奖励，有自己的 scope。如果这个过程以物品到账时刻结束，在那一点链接 `item-added.md`，不复制它，也不为整个时刻创建组件。
+- 两个不同过程中部分内容的复用，遵循下面的组件规则。
 
-Check `docs/presentation/README.md` before assigning a scope. Use sections for the following information, and expand only the detail that is useful for the current scope:
+分配 scope 之前查看 `docs/presentation/README.md`。用章节组织以下信息，只展开对当前 scope 有用的细节：
 
-- **Goal and process:** the source requirement, applicable scenarios, observable sequence, confirmed constraints and unresolved choices.
-- **Components and standard requirements:** what each part must communicate, and when relevant its timing, spatial relationship, triggers, retrigger and cancel behavior, and externally controlled values. Distinguish shared requirements from one alternative's own constraints. Do not prescribe algorithms or node organization without a real requirement.
-- **Alternatives:** candidates for the whole presentation or for individual components, with their suitability, tradeoffs, dependencies and resource specifications. A candidate can remain a description; not every alternative must be built. Component bodies follow the placement rules below.
-- **Current adoption and implementation:** the selected combination for each relevant use, plus the actual implementation and consumer paths when they exist. For example, in `item-added.md` the reward overlay may adopt icon flight B plus destination feedback A; link those sections instead of repeating a full specification for every combination. Distinguish proposed paths from actual files, and unimplemented decisions from integrated behavior.
-- **Acceptance entry:** link the Feature or experiment that verifies the presentation, the acceptance conditions, the runnable entry and the report or completion record. Identify which alternative or combination and which scenario the evidence covers. Results stay in those records under the [artifact lifecycle](09-records-reports-and-handoff.md), not in a second acceptance ledger in this document.
+- **目标与过程：** 来源需求、适用场景、可观察的过程、已确认的约束和未决选择。
+- **组成部分与标准要求：** 每个部分必须传达什么；相关时写明时机、空间关系、触发、重复触发和取消行为，以及由外部控制的数值。区分共同要求和某个方案自己的约束。没有真实需求时，不规定算法或节点组织。
+- **备选方案：** 整个表现或单个组成部分的候选方案，写明适用性、取舍、依赖和资源规格。候选方案可以只停留在描述层面；不是每个方案都要做出来。组成部分的正文遵循下面的放置规则。
+- **当前采纳与实现：** 每一处相关使用选定的组合；已存在时，写出实际的实现路径和使用方路径。例如在 `item-added.md` 中，奖励浮层可能采用图标飞行 B 加目的地反馈 A；链接这些章节，不为每种组合重复一份完整规格。区分拟议路径和实际文件，区分尚未实现的决定和已接入的行为。
+- **验收入口：** 链接验证该表现的 Feature 或实验、验收条件、可运行入口，以及报告或完成记录。说明证据覆盖的是哪个方案或组合、哪个场景。结果按 [产物生命周期](09-records-reports-and-handoff.md) 保存在这些记录中，不在本文档中另建验收台账。
 
-### Shared presentation components
+### 共享表现组件
 
-Keep a component's requirements, alternatives and alternative-specific resources in its parent presentation while only that presentation uses it. Several UI consumers of the same presentation do not change this.
+只有一个表现使用某个组件时，组件的要求、备选方案和方案专用资源都留在这个父表现中。同一表现有多个 UI 使用方，也不改变这一点。
 
-When a second distinct presentation adopts or explicitly considers the same component behavior:
+第二个不同的表现采用或明确考虑同一种组件行为时：
 
-1. Check the presentation navigation, then choose one stable lowercase English hyphenated key that names the behavior, such as `icon-flight`.
-2. Move the component body to `docs/presentation/components/<component-key>.md`.
-3. Replace every parent copy with a link. Different techniques for that behavior stay as alternatives inside the component document.
+1. 查看表现导航，再选一个稳定的小写英文连字符键来命名这种行为，例如 `icon-flight`。
+2. 把组件正文移到 `docs/presentation/components/<component-key>.md`。
+3. 把每个父表现中的副本换成链接。这种行为的不同技术实现，作为备选方案留在组件文档中。
 
-The shared component owns its common requirements, alternatives, resource specifications and links to the shared implementation. Each parent presentation owns its own sequence, trigger and target context, selected combination and acceptance entry, and links the component's sections. Record the component link and its consuming presentations in `docs/presentation/README.md`; do not create another component index.
+共享组件负责它的共同要求、备选方案、资源规格和指向共享实现的链接。每个父表现负责自己的过程、触发和目标情境、选定组合和验收入口，并链接组件的章节。在 `docs/presentation/README.md` 中记录组件链接和使用它的表现；不另建组件索引。
 
-A shared component keeps its fixed path while any presentation uses it, even after another consumer is removed. Removing the last use follows the [artifact lifecycle](09-records-reports-and-handoff.md). Do not create a shared component file for hypothetical reuse, or keep a second current body in the original parent.
+只要还有表现在使用，共享组件就保持固定路径，即使其中一个使用方已被移除。移除最后一处使用时，遵循 [产物生命周期](09-records-reports-and-handoff.md)。不要为假想的复用创建共享组件文件，也不要在原来的父表现中保留第二份当前正文。
 
-### Links, Features and implementation updates
+### 链接、Feature 与实现更新
 
-UI specifications link presentations at their actual use sites and end with a “Related game presentations” navigation section, written in `document_language`. Ordinary control states can stay in the UI specification. Several interfaces can link one shared presentation and keep their own trigger and consumer information. Presentations without a UI use are linked from the relevant GDD topic. `docs/presentation/README.md` is navigation to the actual documents and upstream sources; do not keep binding requirements only in that index.
+UI 规格在实际使用处链接表现，并在结尾加一个“相关游戏表现”（英文为 `Related game presentations`）导航章节，用 `document_language` 编写。普通控件状态可以留在 UI 规格中。多个界面可以链接同一个共享表现，并各自保留自己的触发和使用方信息。没有 UI 使用的表现，从相关的 GDD 主题链接。`docs/presentation/README.md` 是指向实际文档和上游来源的导航；有约束力的要求不能只写在这个索引中。
 
-Presentation documents and Features do not correspond one to one. Map only adopted requirements and currently authorized alternatives into the Feature source, AC, design and verification obligations. Detailed engineering guidance stays in the Feature design or the implementation; link its actual path from the relevant alternative instead of copying code or algorithms here. Use `prototype-godot` to answer a concrete uncertainty, not as a compulsory step for every presentation.
+表现文档和 Feature 不是一一对应的。只把已采纳的需求和当前已获授权的方案映射到 Feature 的来源、AC、设计和验证义务中。详细的工程指引留在 Feature 设计或实现中；从相关方案链接其实际路径，不在这里复制代码或算法。用 `prototype-godot` 解答具体的不确定点，而不是把它当作每个表现的必经步骤。
 
-The implementation task updates the presentation document with the effective technique, files, resources and consumers before final verification.
+实现任务在最终验证之前，把实际生效的技术、文件、资源和使用方更新到表现文档中。
 
-- It may change the implementation means while keeping the confirmed presentation requirements, within its authorization. Changed goals or constraints use the change routes in [Writing and adoption](#writing-and-adoption).
-- Distinguish planning complete, implementation available and actual human acceptance.
-- Replacing one component updates the adopted combination and the current verification scope. Earlier acceptance evidence stays as history for the version and coverage it recorded.
+- 在授权范围内，它可以改变实现手段，但要保留已确认的表现要求。目标或约束的变化，使用[编写与采纳](#编写与采纳)中的变化路由。
+- 区分“规划完成”“实现可用”和“实际人工验收”。
+- 替换一个组成部分时，更新采纳的组合和当前的验证范围。之前的验收证据作为历史保留，只对应它记录的版本和覆盖范围。
 
-## Resource requirements and handoff
+## 资源需求与交接
 
-Keep resource specifications and preparation information inside the design document that uses the resource. Choose the document from the actual or explicitly considered uses, including the component boundaries in [UI document boundaries](#ui-document-boundaries) and [Shared presentation components](#shared-presentation-components):
+资源规格和准备信息保存在使用该资源的设计文档中。根据实际的或明确考虑过的使用来选择文档，包括 [UI 文档边界](#ui-文档边界)和[共享表现组件](#共享表现组件)中的组件边界：
 
-| Resource use | Fixed location |
+| 资源使用情况 | 固定位置 |
 | --- | --- |
-| Used by one presentation or one extracted presentation component only | Its `docs/presentation/<scope>.md` or `docs/presentation/components/<component-key>.md`. A dependency of one alternative stays in that alternative; requirements shared by its alternatives go in the common resource section. |
-| Used by one interface or one extracted UI component only, and no separate presentation covers the use | The resource section of its `docs/ui/<interface>-design.md` or `docs/ui/components/<component-key>-design.md`. |
-| Shared across several of the documents above, outside a single component | Visual resources: **Shared resource specifications** in `docs/art/art-bible.md`. Audio resources: the same section in `docs/audio/sound-bible.md` (`共享资源规格` in Chinese). |
+| 只被一个表现或一个已抽出的表现组件使用 | 它的 `docs/presentation/<scope>.md` 或 `docs/presentation/components/<component-key>.md`。只有某个方案依赖的资源留在该方案中；各方案共同需要的写在共同的资源章节中。 |
+| 只被一个界面或一个已抽出的 UI 组件使用，且没有单独的表现覆盖这处使用 | 它的 `docs/ui/<interface>-design.md` 或 `docs/ui/components/<component-key>-design.md` 中的资源章节。 |
+| 在上述多份文档之间共用，且不属于某一个组件 | 视觉资源：`docs/art/art-bible.md` 中的**共享资源规格**。音频资源：`docs/audio/sound-bible.md` 中的同名章节（英文为 `Shared resource specifications`）。 |
 
-A shared component's own resources stay with that component; many callers do not by themselves make those resources global. An item icon used by the inventory, the shop and reward feedback belongs in the Art Bible's shared-resource section. A texture used only by a shared icon-flight alternative stays in that component. A general click sound used by independent interfaces belongs in the Sound Bible's shared-resource section.
+共享组件自己的资源留在该组件中；调用方多，本身不会让这些资源变成全局资源。背包、商店和奖励反馈都使用的物品图标，写在 Art Bible 的共享资源章节。只被共享图标飞行组件的某个方案使用的纹理，留在该组件中。多个独立界面使用的通用点击音效，写在 Sound Bible 的共享资源章节。
 
-When added uses change where a resource belongs:
+新增的使用改变了资源的归属位置时：
 
-- Move the affected specifications and preparation state together, update consumers and replace old bodies with links within the authorized scope.
-- `design-art-direction` and `design-audio-direction` own the Bibles' shared standards. `design-visual-asset-spec` and `design-audio-asset-spec` maintain the concrete file entries in the shared-resource sections.
-- Localized headings keep these section semantics.
-- Link each use to that body. Do not create a separate default resource-list directory, a list per Feature or a second receiving ledger. Product does not need to relay these writes.
+- 把受影响的规格和准备状态一起移动，更新使用方，并在授权范围内把旧正文换成链接。
+- `design-art-direction` 和 `design-audio-direction` 负责两份 Bible 中的共用标准。`design-visual-asset-spec` 和 `design-audio-asset-spec` 维护共享资源章节中的具体文件条目。
+- 本地化后的标题保持这些章节的含义。
+- 每一处使用都链接到这份正文。不另建默认的资源清单目录、按 Feature 分的清单或第二份接收台账。Product 不需要转交这些写入。
 
-### Writing resource entries
+### 编写资源条目
 
-Read the current task, the relevant GDD and professional requirements, the selected or candidate alternative, the relevant project assets and any supplied source locations.
+读取当前任务、相关的 GDD 和专业需求、选定的或候选的方案、项目中相关的资源，以及用户提供的来源位置。
 
-- Include only files needed by the current scope or an explicitly discussed alternative.
-- Do not add future decoration, or separate files for states that themes or procedural presentation can already express.
-- Record unknown inputs instead of inventing resources, styles, dimensions or technical requirements.
-- A candidate alternative's dependencies are not automatically resources the project must prepare.
+- 只包含当前范围或明确讨论过的方案所需的文件。
+- 不添加未来的装饰；主题或程序化表现已经能表达的状态，不另建文件。
+- 输入未知时就记录为未知，不编造资源、风格、尺寸或技术要求。
+- 候选方案的依赖，不自动成为项目必须准备的资源。
 
-Write in `document_language`, state the covered uses and link the source requirements. A compact table can hold short entries; longer specifications stay in the same section. If local resource IDs help references, keep them stable and unique in that document or section, and include the document path and anchor in cross-document links. No global ID counter or resource registry is needed.
+使用 `document_language` 编写，写明覆盖的使用，并链接来源需求。条目简短时可以用紧凑的表格；较长的规格留在同一章节中。如果局部资源 ID 有助于引用，让它们在该文档或章节内稳定且唯一，跨文档链接时带上文档路径和锚点。不需要全局 ID 计数器或资源登记表。
 
-Record what is needed to prepare and inspect each actual resource:
+记录准备和检查每个实际资源所需的信息：
 
-| Field | Meaning |
+| 字段 | 含义 |
 | --- | --- |
-| Purpose and identity | Needed kind, covered uses, real or proposed filename, and links to the applicable shared style or source. Keep reusable filenames. |
-| Resource constraints | Required format and, where relevant, dimensions, transparency, aspect ratio, padding or cropping, frame timing, audio duration or looping, or other meaningful constraints. Distinguish source pixels from the expected display size, visible subject size or relative scale. Do not impose pixel fields on audio or unrelated media. |
-| Preparation and file mapping | Factual preparation status, the supplied source or actual location, the proposed or actual project target path, and the relation to runtime consumers. Mark missing files and sample or final status explicitly. |
-| Decisions and observations | Separate confirmed requirements, proposed values, measured values, values pending confirmation and fields that do not apply. Keep unresolved choices with the alternative they affect. |
+| 用途与身份 | 需要的类型、覆盖的使用、真实或拟议的文件名，以及指向适用的共用风格或来源的链接。保留可复用的文件名。 |
+| 资源约束 | 需要的格式；相关时还包括尺寸、透明度、宽高比、留边或裁切、帧时序、音频时长或循环，以及其他有意义的约束。区分源像素尺寸与预期显示尺寸、可见主体尺寸或相对比例。不要给音频或无关媒体套用像素字段。 |
+| 准备与文件映射 | 实际的准备状态、提供的来源或实际位置、拟议或实际的项目目标路径，以及与运行时使用方的关系。明确标出缺失的文件，以及样本还是最终版本。 |
+| 决定与观察 | 分开写已确认的需求、拟议值、实测值、待确认的值和不适用的字段。未决选择跟它影响的方案放在一起。 |
 
-Reuse the project's file organization. Runtime assets stay outside ignored documentation folders. Link provenance records where relevant instead of copying them. Settings that only implement a requirement stay in the actual scenes, resources, code or engineering guidance.
+沿用项目的文件组织。运行时资源放在被忽略的文档目录之外。相关时链接来源记录，不复制它们。只是用来落实某项需求的设置，留在实际的场景、资源、代码或工程指引中。
 
-A non-final sample can be enough for a scoped prototype; state what it represents and what remains to be replaced. Missing textures do not prevent planning a spark's motion, density, duration and trigger. If the particle alternative needs a texture, describe its specifications in that alternative and mark the unavailable file. Only dependent implementation or final experience checks may be blocked; do not turn optional parameters or missing files into a barrier to useful planning.
+对于限定范围的原型，非最终的样本可能就够了；写明它代表什么、还有什么需要替换。缺少纹理不妨碍规划火花的运动、密度、时长和触发。如果粒子方案需要纹理，在该方案中描述其规格，并标出不可用的文件。只有依赖它的实现或最终体验检查可能被阻塞；不要把可选参数或缺失文件变成有用规划的障碍。
 
-Link the relevant resource sections from Feature AC or design; notes or Progress provide navigation. Do not hide binding requirements only in process notes, and do not copy entire rows. A resource analysis alone does not change intent, authorize production or create Features. A material change follows the routes in [Writing and adoption](#writing-and-adoption).
+从 Feature 的 AC 或设计链接相关的资源章节；备注或 Progress 只提供导航。不要把有约束力的要求只藏在过程备注中，也不要复制整行。单独的资源分析不改变意图，不授权制作，也不创建 Feature。实质性的变化遵循[编写与采纳](#编写与采纳)中的路由。
 
-### Handing off and receiving files
+### 交接与接收文件
 
-1. Hand off links to the resource sections, the missing specifications and files, and their intended destinations, so the user can prepare or supply them outside the project. Image and audio production and searching a local asset library are outside this capability.
-2. If the available resources are enough, continue authorized work without waiting.
-3. When files arrive, inspect their actual content and the relevant format, dimensions or duration. A filename or the user's report that a file was copied does not establish fit.
-4. Update the same sections and keep unresolved gaps visible.
-5. Copy or import only within the authorized scope, keeping source files and unrelated content.
-6. Finalize the preparation status and the actual file and consumer relationships before final task verification.
+1. 交出资源章节的链接、缺少的规格和文件，以及它们的预定目标位置，让用户可以在项目之外准备或提供这些文件。图像和音频制作、搜索本地素材库，都不在这项能力的范围内。
+2. 现有资源已经够用时，不必等待，继续已获授权的工作。
+3. 文件到达后，检查其实际内容，以及相关的格式、尺寸或时长。仅凭文件名或用户说“已经复制了”，不能确认文件合适。
+4. 更新同一批章节，并让未解决的缺口保持可见。
+5. 只在授权范围内复制或导入，保留源文件和无关内容。
+6. 在任务最终验证之前，确定准备状态，以及实际文件和使用方之间的关系。
 
-Specification completion, file presence, successful import and human visual or audio acceptance are separate facts.
+规格完成、文件存在、导入成功和人工视觉或听觉验收，是相互独立的事实。
 
-## Design, production, integration and review
+## 设计、制作、接入与审核
 
-Design chooses the direction; specifications describe a concrete deliverable; production supplies or processes assets; `content-asset-integration` imports and connects available assets. Each can be requested independently. Reuse suitable project assets before requesting new ones; a reference image or audio example is not a produced deliverable. Missing representative assets leave the corresponding visual or listening checks unverified.
+设计选择方向；规格描述具体的交付物；制作提供或处理资源；`content-asset-integration` 导入并连接已有资源。每一项都可以单独请求。在请求新资源之前，先复用项目中合适的资源；参考图或音频示例不是已制作的交付物。缺少有代表性的资源时，对应的视觉或试听检查保持未验证。
 
-Visual-art, music and sound-effect production are reserved capabilities. No production Skill or agent exists, and their methods and tools are undefined. Record the preparation gap and its specification; do not invoke a nonexistent Skill or promise asset generation in a Bible.
+美术、音乐和音效制作是预留能力。目前没有制作 Skill 或 Agent，其方法和工具也没有定义。记录准备缺口和它的规格；不要调用不存在的 Skill，也不要在 Bible 中承诺生成资源。
 
-`content-asset-integration`, `content-localization` and `diagnostics-instrumentation` may change resources, code or configuration only inside an authorized Feature or scoped experiment.
+`content-asset-integration`、`content-localization` 和 `diagnostics-instrumentation` 只能在已获授权的 Feature 或限定范围的实验中修改资源、代码或配置。
 
-- Adopting numerical values into runtime resources or code also uses that implementation route; authorization for the numerical document alone does not cover it.
-- These Skills return to the calling task for verification, any required human acceptance and completion.
-- Standalone specification or investigation work need not invent a detailed Product or Feature.
-- Diagnostic findings do not authorize repairs or new requirements.
+- 把数值采纳到运行时资源或代码中，同样走这条实现路由；只针对数值文档的授权不包括这一步。
+- 这些 Skill 把验证、必需的人工验收和完成交回调用它们的任务。
+- 单独的规格或调查工作，不必为此编造细化的 Product 或 Feature。
+- 诊断发现不授权修复，也不产生新需求。
 
-For comparing resources or tuning feedback timing, the project may use the optional [asset workbench example](../asset_workbench/examples/README.md), which lists its entries, controls and supported parameters. It is a development tool, not an asset-production Skill, an automatic analysis step, a Stage or evidence of human acceptance, and its example assets are not approved production content. Reuse the project's own presentation, data and audio APIs instead of forcing project objects into the example Cue.
+需要比较资源或调整反馈时机时，项目可以使用可选的[资源工作台示例](../asset_workbench/examples/README.md)，其中列出了入口、控件和支持的参数。它是开发工具，不是资源制作 Skill、自动分析步骤、Stage 或人工验收的证据；其中的示例资源也不是已批准的正式内容。复用项目自己的表现、数据和音频 API，不要把项目对象硬塞进示例 Cue。
 
-Formal reviews use separate review Skills and an independent instance under [independent review](12-independent-review.md). No creation or measurement Skill certifies its own output as independently reviewed. Human experience acceptance remains the user's decision. Playtest analysis and release work are outside this scope.
+正式审核使用单独的审核 Skill，并按[独立审核](12-independent-review.md)在独立实例中进行。任何创作或测量 Skill 都不能把自己的产出认定为已独立审核。人工体验验收仍由用户决定。试玩分析和发布工作不在此范围内。
 
-## Finalization and evidence
+## 定稿与证据
 
-Put binding requirements in their source documents under `docs/gdd/` or the relevant professional directory. Do not put the only body of a requirement in a general-purpose `README.md`, `docs/knowledge/`, `docs/research/` or `reports/`; a substantive GDD `README.md` entry is a source document. [Artifact-backed completion and semantic freshness](08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness) defines which of these files the completion fingerprint covers and when an edit invalidates evidence.
+有约束力的需求写在 `docs/gdd/` 或对应专业目录下的来源文档中。不要把某项需求的唯一正文放在通用的 `README.md`、`docs/knowledge/`、`docs/research/` 或 `reports/` 中；实质 GDD 的 `README.md` 入口属于来源文档。[基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 规定完成指纹覆盖其中哪些文件，以及什么样的编辑会使证据失效。
 
-- Finalize the GDD, specifications, presentation adoption and implementation links, and resource status and location updates at the Stage 3 documentation checkpoint, before final verification.
-- Record later human acceptance in the report or completion record that the presentation links. Do not append the result to the source documents after verification while still treating the earlier evidence as current.
-- Keep transient findings in the conversation, and original evidence or review reports under the [artifact lifecycle](09-records-reports-and-handoff.md).
+- 在 Stage 3 文档检查点、最终验证之前，定稿 GDD、规格、表现的采纳与实现链接，以及资源状态和位置的更新。
+- 之后的人工验收结果，记录在表现所链接的报告或完成记录中。不要在验证之后把结果追加到来源文档里，同时仍把之前的证据当作当前有效。
+- 临时发现留在对话中；原始证据或审核报告按 [产物生命周期](09-records-reports-and-handoff.md) 保存。
 
-Performance and long-run measurements record:
+性能和长时间运行的测量需要记录：
 
-- the actual version and uncommitted changes;
-- the environment, scenario and workload;
-- the method, duration and termination reason;
-- the remaining gaps.
+- 实际版本和未提交的修改；
+- 环境、场景和负载；
+- 方法、时长和终止原因；
+- 剩余的缺口。
 
-Keep temporary diagnostic instrumentation separate from the delivered version, and measure again when the change affects the claim. An interrupted soak run proves only its observed duration and scenarios; the absence of a failure is not general proof. The gdUnit evidence adapter accepts actual gdUnit results only. Supplemental evidence satisfies its own planned obligations; it does not stand in for a gdUnit pass or excuse skipping required tests. The task that planned the measurement and the reviewer judge whether the evidence is sufficient.
+临时的诊断插桩与交付版本分开；修改影响到结论时，重新测量。中断的长时间运行（soak）测试只能证明它实际观察到的时长和场景；没有出现故障不是普遍证明。gdUnit 证据适配器只接受实际的 gdUnit 结果。补充证据满足它自己计划的义务；它不能代替 gdUnit 通过，也不能成为跳过必需测试的理由。由计划这次测量的任务和审核实例判断证据是否充分。

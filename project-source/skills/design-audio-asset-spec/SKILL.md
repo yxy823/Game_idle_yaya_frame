@@ -1,33 +1,39 @@
 ---
 name: design-audio-asset-spec
-description: "Specify concrete sound effects, music and ambience, including sample references and listening needs, in their owning resource sections. Use for audio file specifications. Not for shared sound direction, production, integration or audio review."
+description: "在所属的资源章节中写明具体音效、音乐和环境声的规格，包括示例参考和试听需求。用于音频文件规格。不用于共享的声音方向、制作、接入或音频审核。"
 ---
 
-# Audio asset specification
+# 音频资源规格
 
-Follow `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Its **Resource requirements and handoff** section selects the owning section (a presentation, UI or extracted component section, or **Shared resource specifications** in `docs/audio/sound-bible.md`), lists the common resource fields and explains how specifications move when the owner changes. Do not create a separate preparation list. Write in `document_language`.
+归属、授权、来源影响和定稿按 `methodology/11-specialist-workflows.md` 执行。该文件的 **资源需求与交接** 章节负责：
 
-Read confirmed GDD triggers, Product delivery scope, the applicable Sound Bible, related entries and actual sample references. Detailed shared sound standards belong to `design-audio-direction`. Reference GDD-owned direction, triggers and values instead of copying them. Reuse settled decisions and clarify only material gaps. Do not add a cue to every interaction or assume voice-over. An unknown value may stay pending while other useful specification work continues.
+- 选定所属章节：表现、UI 或已抽出组件的章节，或 `docs/audio/sound-bible.md` 中的 **共享资源规格**；
+- 列出资源的通用字段；
+- 说明归属变化时规格怎样迁移。
 
-## Concrete deliverables
+不要另建一份准备清单。使用 `document_language` 编写。
 
-| Kind | Useful specification |
+阅读已确认的 GDD 触发条件、Product 交付范围、适用的 Sound Bible、相关条目和实际的示例参考。详细的共享声音标准由 `design-audio-direction` 维护。GDD 中的方向、触发条件和数值直接引用，不要复制。复用已定的决定，只澄清重要的缺口。不要给每个交互都加声音提示（cue），也不要默认有配音。某个值未知时可以保持待定，同时继续完成规格中其他有用的部分。
+
+## 具体交付物
+
+| 类型 | 有用的规格 |
 | --- | --- |
-| SFX | Exact trigger and conditions; feedback purpose; duration or range; shared style or an explicit exception; repetition, overlap and priority needs; available references and qualities to avoid |
-| Music or ambience | Use scenario and transitions; mood, texture and rhythm; duration and loop behavior; relevant relative mix and priority expectations; references and qualities to avoid |
+| 音效 | 准确的触发方式和条件；反馈目的；时长或范围；沿用的共享风格或明确的例外；重复、叠加和优先级要求；可用的参考和要避免的特征 |
+| 音乐或环境声 | 使用场景和过渡；情绪、质感和节奏；时长和循环方式；需要时写明相对混音和优先级预期；参考和要避免的特征 |
 
-Keep the intended production trigger separate from a prototype's preview button. Do not present oscillator settings, loudness numbers or sample rates as confirmed requirements; record technical constraints only when needed or actually measured. Pixel dimensions do not apply to audio.
+正式制作中的触发条件与原型里的预览按钮分开写。不要把振荡器设置、响度数值或采样率当作已确认的要求；技术约束只在确实需要或实际测量过时才记录。像素尺寸不适用于音频。
 
-Preserve local resource IDs and real filenames. In the owning resource section, record the source or actual location, target path, observed duration and format, preparation status and whether the file is a sample or final.
+保留局部资源 ID 和真实文件名。在所属资源章节中记录：来源或实际位置、目标路径、实测的时长和格式、准备状态，以及该文件是示例还是成品。
 
-An unresolved slot may use the example names `_placeholder_sfx_<action>.wav` or `_placeholder_bgm_<name>.ogg` when those formats fit. Such a name creates no file, fixes no format and does not require renaming an available sample. Mark suggestions as suggestions; a candidate alternative's dependency is not automatically a file to prepare.
+尚未确定的位置，在格式合适时可以使用示例名称 `_placeholder_sfx_<action>.wav` 或 `_placeholder_bgm_<name>.ogg`。这类名称不会创建文件，不固定格式，也不要求给现有示例改名。建议要标成建议；候选方案依赖的文件，不会自动成为要准备的文件。
 
-## Handoff and boundaries
+## 交接与边界
 
-Provide available playable samples, missing files and applicable checks, such as feedback timing, masking or loop continuity, to the authorized Godot prototype or delivery task. A missing reference need not block drafting, but actual listening evaluation stays unverified. A textual description or silence is not evidence.
+把可用的可播放示例、缺失的文件，以及需要做的检查（例如反馈时机、遮蔽或循环接缝）交给已授权的 Godot 原型或交付任务。缺少参考不一定阻塞起草，但实际的听感评估仍保持未验证。文字描述或没有声音都不算证据。
 
-Music and SFX production are reserved capabilities with no Skill (methodology 11 **Design, production, integration and review**). This Skill does not synthesize, record, acquire or process files. `content-asset-integration` connects supplied audio, and `review-audio` evaluates it in a separate instance. Do not claim production, playback or acceptance without the corresponding action and evidence.
+音乐和音效制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。本 Skill 不合成、不录制、不获取，也不处理音频文件。外部提供的音频由 `content-asset-integration` 接入，由另一个实例中的 `review-audio` 评估。没有实际的操作和证据，不要声称已经制作、播放或验收。
 
-Return specification paths, resource IDs, decisions and gaps. Behavior changes go to `design-gdd`; changed professional requirements use the change routes under **Writing and adoption** in methodology 11.
+返回规格路径、资源 ID、决定和缺口。行为变化交给 `design-gdd`；专业要求的变化按 methodology 11 的 **编写与采纳** 中的变更路径处理。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

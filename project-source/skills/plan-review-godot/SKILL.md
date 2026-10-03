@@ -1,48 +1,48 @@
 ---
 name: plan-review-godot
-description: Review a GDD draft, topic or whole design, Product scope or Feature proposal for consequential gaps, conflicts and feasibility. Returns findings without rewriting sources or adding a required review gate.
+description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或 Feature 方案，找出影响较大的缺口、冲突和可行性问题。返回审查结论，不改写源文档，也不增设必经的审查关卡。
 ---
 
-# Godot plan review
+# Godot 方案审查
 
-Review the supplied design or proposal against its intended outcome and current project constraints. GDD review can cover an early draft, one topic or the whole document set before Product or Features exist. Review actual supplied material; a missing design limits findings rather than authorizing its creation. Product and Feature review still needs the relevant design sources under `methodology/01-product-doc-structure.md`. This is a requested review method, not a step required for every task. A formal independent review also follows `methodology/12-independent-review.md`; loading this Skill alone establishes no independence.
+对照预期结果和项目当前的约束，审查用户提供的设计或方案。GDD 审查可以在 Product 或 Feature 出现之前进行，覆盖早期草稿、单个主题或整套文档。审查实际提供的材料；缺少设计只会限制能得出的结论，不代表可以替用户编写设计。Product 和 Feature 审查仍需要 `methodology/01-product-doc-structure.md` 规定的设计来源。这是用户要求时才使用的审查方法，不是每个任务的必经步骤。正式的独立审核还要遵循 `methodology/12-independent-review.md`；只加载本 Skill 不构成独立性。
 
-## Establish the current question
+## 明确当前要回答的问题
 
-Identify the proposal, the decision it should support and the requested review scope from the conversation and current files. Reuse confirmed decisions. Distinguish approved requirements, observed implementation, proposed changes and assumptions; an old review or passing test does not establish the current proposal's correctness.
+从对话和当前文件中确认：审查哪个方案，它要支持什么决定，用户要求的审查范围是什么。复用已确认的决定。区分已批准的需求、观察到的实现、提出的修改和假设；旧的审查结论或通过的测试，不能证明当前方案正确。
 
-Read only sources that can affect this judgment: relevant GDD topics and Product boundaries, selected Feature details/designs and their dependencies, applicable project rules, accepted architecture decisions, professional requirements and matching project knowledge. Follow actual references rather than a fixed document list. Use the engineering routes in project `AGENTS.md` for affected Godot domains. Missing optional documents are not defects by themselves.
+只读会影响这次判断的来源：涉及的 GDD 主题和 Product 边界、选定 Feature 的详情和设计及其依赖、适用的项目规则、已采纳的架构决定、专业要求和匹配的项目知识。顺着实际引用阅读，不按固定的文档清单。涉及的 Godot 领域，按项目 `AGENTS.md` 中的工程规则路由处理。可选文档缺失，本身不算缺陷。
 
-For GDD topic or whole-design review, read [GDD review concerns](references/gdd-review.md). It adds stage-sensitive checks for design completeness, consistency and player experience; do not load it for a delivery-only or technical proposal with no GDD review scope. Formal numeric balance review remains with [review-balance](../review-balance/SKILL.md), which may be combined when requested under the same independent-review contract.
+审查 GDD 主题或整体设计时，阅读 [GDD 审查要点](references/gdd-review.md)。它按设计阶段补充设计完整性、一致性和玩家体验方面的检查；只涉及交付或技术方案、没有 GDD 审查范围时，不加载它。正式的数值平衡审查仍由 [review-balance](../review-balance/SKILL.md) 负责；用户要求时，可以在同一份独立审核约定下一并进行。
 
-## Examine consequential weaknesses
+## 检查影响较大的薄弱点
 
-Select the relevant concerns below and explain their concrete effect. Do not force an issue under every heading or invent a design for unrelated future scope.
+从下表选出与当前方案有关的方面，说明问题的具体影响。不要在每一项下都硬找问题，也不要为无关的未来范围构想设计。
 
-| Concern | What to establish |
+| 方面 | 要弄清什么 |
 | --- | --- |
-| Goal and boundary | The proposed outcome serves the supplied game intent and, where applicable, current Product delivery; distinguish draft choices from adopted requirements, and check inclusions, exclusions and effects on existing behavior. |
-| Assumptions and choices | Material assumptions have evidence or remain visibly undecided. Compare feasible alternatives where the choice changes scope, user-visible behavior or costly implementation. |
-| Decomposition and dependencies | Features deliver coherent, independently verifiable outcomes under methodology 02; coverage has no consequential omission or overlap. Logic, presentation and cross-layer scope do not mandate separate Features or logic-first implementation. Dependencies reflect actual contracts and available inputs, without detailing future Products prematurely. |
-| Verification | Important outcomes have observable acceptance criteria and a feasible way to check them. Distinguish static checks, automated/runtime evidence and human perception or acceptance; planned checks are not results. |
-| Godot implementation constraints | Relevant scene/resource ownership, state boundaries, signals, lifecycle, imports, persistence, UI or engine APIs fit the project and target version. Inspect only affected domains and verify uncertain version-sensitive claims before relying on them. |
+| 目标和边界 | 提出的结果符合所提供的游戏意图；适用时，也符合当前 Product 的交付。区分草稿中的选择和已采纳的需求，检查包含哪些、排除哪些，以及对已有行为的影响。 |
+| 假设和选择 | 关键假设有证据支持，或明确标为尚未决定。选择会改变范围、用户可见行为或高成本实现时，比较可行的替代方案。 |
+| 拆分和依赖 | 按 methodology 02，每个 Feature 交付连贯、可以独立验证的结果；覆盖范围没有影响较大的遗漏或重叠。逻辑、表现和跨层范围，不要求拆成单独的 Feature，也不要求先实现逻辑。依赖反映实际的约定和可用的输入，不过早细化未来的 Product。 |
+| 验证 | 重要结果有可观察的验收条件（AC）和可行的检查方式。区分静态检查、自动或运行时证据，以及人的感受或人工验收；计划中的检查不是结果。 |
+| Godot 实现约束 | 涉及的场景和资源归属、状态边界、信号、生命周期、导入、持久化、UI 或引擎 API 适合本项目和目标版本。只检查受影响的领域；依赖与版本有关、尚不确定的说法前，先核实。 |
 
-Use a concrete example or counterexample to test a disputed claim. Prefer a local correction, reuse or removal when sufficient. Separate a blocking contradiction from a useful improvement and an evidence gap; uncertainty alone does not prove a defect. Ask only about a missing fact or choice that changes the current judgment. Return qualified findings when possible instead of pursuing an exhaustive interview.
+有争议的说法，用具体的例子或反例检验。局部修正、复用或删除已经够用时，优先采用。把阻塞性的矛盾、有用的改进和证据缺口分开；仅仅不确定，不能证明存在缺陷。只在缺少的事实或选择会改变当前判断时提问。能给出附带条件的结论时就给出，不追求穷尽式的追问。
 
-When the proposal changes a game's logic/presentation relationship, use `docs/game-organization.md` to inspect the affected state and result ownership, requests and feedback. Do not infer a missing requirement from an absent layer folder, optional presentation document or architecture map; require a concrete responsibility, behavior or verification gap.
+方案改变游戏逻辑与表现之间的关系时，用 `docs/game-organization.md` 检查受影响的状态和结果归属、请求和反馈。不要因为缺少某个分层目录、可选的表现文档或架构图，就推断缺少需求；必须指出具体的职责、行为或验证缺口。
 
-## Return the conclusion to its owner
+## 把结论交给负责方
 
-Lead with whether the proposal supports the requested next step, the most consequential issue and the limits of the review. For each actionable finding give its source or concrete scenario, impact, suggested correction and owning workflow. State the actual scope examined and important unresolved evidence. A sound proposal may receive no change recommendation; no score, new approval status or report file is required.
+开头先说明：方案是否支持用户要做的下一步，影响最大的问题是什么，审查有哪些局限。每个可以处理的问题，给出来源或具体场景、影响、建议的修正和负责的工作流程。说明实际检查的范围，以及重要的未解决证据。合理的方案可以没有修改建议；不需要评分、新的批准状态或报告文件。
 
-| Result needing follow-up | Existing owner |
+| 需要后续处理的结果 | 已有的负责方 |
 | --- | --- |
-| GDD concept, experience goal or rule change | [design-gdd](../design-gdd/SKILL.md); scoped numeric design and derivation use [design-balance](../design-balance/SKILL.md). |
-| Product delivery document change | [product-author](../product-author/SKILL.md); material delivery uncertainty uses [product-spec-elicitor](../product-spec-elicitor/SKILL.md) within that work. |
-| Initial decomposition of the current Product | [feature-plan](../feature-plan/SKILL.md), preserving its existing proposal and writing contract. |
-| Changes affecting an existing Feature plan | [feature-sync](../feature-sync/SKILL.md), with its actual source, baseline and plan-evolution contracts; findings do not establish a historical source change. |
-| Current Feature's detailed implementation design | [feature-execute](../feature-execute/SKILL.md), under the fixed design contract in `methodology/02-feature-list-schema.md`. |
-| Professional specification change | Its owning specialist under `methodology/11-specialist-workflows.md`; keep GDD intent and detailed professional requirements at their existing sources. |
-| Ordinary unresolved project question | [project-grill-me](../project-grill-me/SKILL.md); do not impose a plan review on normal clarification. |
+| GDD 的概念、体验目标或规则变化 | [design-gdd](../design-gdd/SKILL.md)；限定范围的数值设计和推导用 [design-balance](../design-balance/SKILL.md)。 |
+| Product 交付文档的变化 | [product-author](../product-author/SKILL.md)；其中关键的交付不确定性，在该工作内用 [product-spec-elicitor](../product-spec-elicitor/SKILL.md) 处理。 |
+| 当前 Product 的首次拆分 | [feature-plan](../feature-plan/SKILL.md)，保持它已有的方案和写入约定。 |
+| 影响已有 Feature 规划的变化 | [feature-sync](../feature-sync/SKILL.md)，按它关于实际来源、基线和规划演变的约定处理；审查结论本身不构成历史来源的变化。 |
+| 当前 Feature 的详细实现设计 | [feature-execute](../feature-execute/SKILL.md)，遵循 `methodology/02-feature-list-schema.md` 中固定的设计约定。 |
+| 专业规格的变化 | 按 `methodology/11-specialist-workflows.md` 交给负责该专业的 Skill；GDD 意图和详细的专业要求留在各自已有的来源。 |
+| 普通的未决项目问题 | [project-grill-me](../project-grill-me/SKILL.md)；普通的澄清不强加方案审查。 |
 
-This Skill returns analysis; it does not edit source documents, code, rules, plan records or task state, and its conclusion does not change approved or frozen decisions. A review-only request ends with the findings. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+本 Skill 只返回分析；不修改源文档、代码、规则、规划记录或任务状态，它的结论也不改变已批准或已冻结的决定。只要求审查的请求，以给出审查结论结束。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

@@ -1,98 +1,103 @@
 ---
 name: engineering-refactor-select
 description: >-
-  Compare unresolved code smells recorded in Feature notes, recommend one worthwhile refactor or explain why to defer, and return the user's choice to engineering-change-plan. This workflow never edits or commits. English triggers: pick a smell to refactor, scan suggestions, find refactor TODOs. 中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
+  比较 Feature 笔记中记录的、尚未解决的代码坏味道，推荐一项值得做的重构或说明为什么暂缓，并把用户的选择交回 engineering-change-plan。本流程从不修改文件或提交。英文触发：pick a smell to refactor, scan suggestions, find refactor TODOs。中文触发：挑一个坏味道重构、扫一下 suggest、看看 notes 里的重构待办。
 ---
 
-# Pick one refactor smell
+# 挑选一项要重构的坏味道
 
-Use this three-stage workflow to find unresolved code smells in Feature notes, compare their current value and cost, and recommend one when action is worthwhile. Explain when deferring is more useful. A user-selected problem returns to [engineering-change-plan](../engineering-change-plan/SKILL.md), which owns refactor triage and Feature creation.
+本流程分三个阶段：在 Feature 笔记中找出尚未解决的代码坏味道，比较它们当前的价值和成本，值得动手时推荐一项。暂缓更有用时，说明理由。用户选定的问题交回 [engineering-change-plan](../engineering-change-plan/SKILL.md)，由它负责重构分诊和 Feature 创建。
 
-## Language contract
+## 语言约定
 
-This read-only report uses the conversation language and preserves extracted note excerpts verbatim. It does not require document-language setup. The writer of any subsequently authorized durable note follows `methodology/05-document-language.md`.
+这份只读报告使用对话语言，摘录的笔记原文保持原样。它不需要先设置文档语言。之后获得授权、写入长期笔记的一方，遵循 `methodology/05-document-language.md`。
 
-## Scope
+## 范围
 
-- Use this workflow when the user wants to refactor but does not know which recorded smell to choose.
-- Use it with a Feature or category filter when the user asks to inspect only a subset, such as one Feature or cross-file smells.
-- If the user already knows the exact smell, skip selection and route it directly to `engineering-change-plan` in `refactor` mode.
-- If the problem comes from an external observation, route it to `engineering-change-plan`; use `bug`, `refactor`, or `maintenance` mode according to its semantics.
+- 用户想做重构，但不知道该选哪一项已记录的坏味道时，使用本流程。
+- 用户只要求检查一部分（例如某一个 Feature，或跨文件的坏味道）时，带上 Feature 或类别筛选条件使用本流程。
+- 用户已经清楚是哪一项坏味道时，跳过挑选，直接以 `refactor` 模式交给 `engineering-change-plan`。
+- 问题来自外部观察时，交给 `engineering-change-plan`；按其含义使用 `bug`、`refactor` 或 `maintenance` 模式。
 
-## Global rules
+## 全局规则
 
-1. Discover and select only. Do not write code, modify files, or commit. Report the recommendation or reason to defer, and wait for the user's choice.
-2. Explain relative priority using current evidence, expected benefit, and the cost of a safe change. Do not calculate numeric scores or create priority fields or a separate ledger.
-3. Cover the requested scope without hiding important candidates merely to shorten the report; do not expand a filtered request into a whole-project scan.
-4. Do not invoke another Skill, including [feature-plan](../feature-plan/SKILL.md), [feature-sync](../feature-sync/SKILL.md) or [feature-execute](../feature-execute/SKILL.md). After the user chooses, hand the selection back as **Response routing** describes; `engineering-change-plan` starts any further work, and `feature-execute` implements only after explicit Feature approval.
+1. 只发现和挑选。不写代码、不修改文件、不提交。报告推荐项或暂缓的理由，然后等待用户选择。
+2. 用当前证据、预期收益和安全修改的成本说明相对优先级。不计算数值分数，不创建优先级字段或单独的台账。
+3. 覆盖用户要求的范围，不为缩短报告而隐藏重要的候选；不要把带筛选条件的请求扩大成全项目扫描。
+4. 不调用其他 Skill，包括 [feature-plan](../feature-plan/SKILL.md)、[feature-sync](../feature-sync/SKILL.md) 和 [feature-execute](../feature-execute/SKILL.md)。用户选定后，按[回复处理](#回复处理)交回选择；后续工作由 `engineering-change-plan` 发起，`feature-execute` 只有在 Feature 获得明确批准后才实施。
 
-## Stage 1: scan
+## 阶段 1：扫描
 
-**Entry:** the user invokes this workflow.
+**开始条件：** 用户调用本流程。
 
-**Output:** an unranked list of confirmed unresolved candidates and any material uncertainty.
+**产出：** 一份未排序的列表，列出已确认尚未解决的候选，以及实质性的不确定之处。
 
-1. Check `docs/features/`. If it is absent, report that there are no recorded Feature candidates and stop; selection does not require creating a plan.
-2. Read `docs/feature-list.json` for titles, statuses and dependencies. Apply any requested Feature filter before loading details, then read the selected details' `notes`. A category filter selects matching findings within that scope; a project-wide category search may need all notes. Follow other details only to resolve a candidate's current validity or real dependency, not to broaden the scan.
-3. Split notes by line or sentence and extract any paragraph containing at least one stable marker:
+1. 检查 `docs/features/`。不存在时，报告没有已记录的 Feature 候选，然后停止；挑选不需要创建计划。
+2. 读取 `docs/feature-list.json` 中的标题、状态和依赖。先按用户要求的 Feature 筛选条件过滤，再加载详情，然后读取选中详情中的 `notes`。类别筛选条件在这个范围内选出匹配的发现；全项目的类别搜索可能需要读取全部笔记。只有为了确认某个候选当前是否仍然成立或是否存在真实依赖时，才去看其他详情，不借此扩大扫描。
+3. 按行或句子拆分笔记，提取至少包含一个下列稳定标记的段落：
    - `TODO`
    - `suggest`
-   - `Code smell` or the Chinese equivalent `代码气味`
-   - `refactor` or `重构`
-   - `future`, `defer`, `未来`, or `推到`
-4. Read each finding in its full note context before counting or ranking it. Exclude findings explicitly resolved or superseded; follow linked later Features and named current files when needed to confirm the meaning. A completed source Feature alone does not resolve every TODO in its notes. If current validity cannot be established, report the uncertainty separately without ranking or recommending that finding. Preserve historical notes unchanged.
-5. Record for every remaining candidate:
-   - Feature ID;
-   - concise Feature title from the index;
-   - a verbatim excerpt of at most 200 characters;
-   - code file paths named in the note, when any.
-6. If no confirmed unresolved candidate remains, report that result and any unresolved uncertainty in the current conversation language; the user may describe an external observation directly. Stop before Stage 2 without forcing a recommendation or claiming unverified findings were resolved.
+   - `Code smell` 或中文的 `代码气味`
+   - `refactor` 或 `重构`
+   - `future`、`defer`、`未来` 或 `推到`
+4. 计数或排序之前，先在完整的笔记上下文中阅读每条发现。排除明确写明已解决或已被取代的发现；需要确认含义时，跟进链接到的后续 Feature 和笔记中点名的当前文件。来源 Feature 已完成，本身并不说明它笔记中的每个 TODO 都已解决。无法确认当前是否仍然成立时，单独报告这一不确定性，不对这条发现排序或推荐。历史笔记保持原样。
+5. 为每个剩下的候选记录：
+   - Feature ID；
+   - 索引中简短的 Feature 标题；
+   - 不超过 200 个字符的原文摘录；
+   - 笔记中点名的代码文件路径（如有）。
+6. 如果没有剩下已确认尚未解决的候选，用当前对话语言报告这一结果和尚未解决的不确定之处；用户可以直接描述外部观察到的问题。在阶段 2 之前停止，不强行给出推荐，也不把未核实的发现说成已解决。
 
-## Stage 2: compare value, impact, and cost
+## 阶段 2：比较价值、影响和成本
 
-**Entry:** Stage 1 found at least one candidate.
+**开始条件：** 阶段 1 至少找到一个候选。
 
-**Output:** a reasoned relative order, including candidates better deferred and material evidence gaps.
+**产出：** 带理由的相对排序，包括更适合暂缓的候选和实质性的证据缺口。
 
-Compare candidates against the user's current goals. Use the evidence needed to explain the order:
+对照用户当前的目标比较候选。使用能解释排序的证据：
 
-- **Current facts:** identify the problem in checked source, call relationships, or actual maintenance records. Distinguish static inference from observed execution; historical notes alone do not establish current runtime behavior.
-- **Consequences of leaving it:** explain any obstruction to an agreed next task, repeated coordinated edits, or other concrete maintenance cost. State unknown frequency or impact honestly. A Feature dependency does not by itself prove that this smell blocks the dependent work.
-- **Smallest complete remedy:** compare leaving the code as it is, a local correction or removal, and a larger structural change when relevant. Identify the expected improvement while preserving accepted behavior; file count and pattern preferences alone do not establish value.
-- **Timing and verification cost:** consider existing tests, change and recovery risk, and actual dependencies. Explain whether acting now is worthwhile or whether the same cleanup fits better with a later related change.
+- **当前事实：** 在已检查的源码、调用关系或实际维护记录中确认问题。区分静态推断和实际观察到的运行；只有历史笔记，不能确定当前的运行时行为。
+- **不处理的后果：** 说明它是否妨碍某个已约定的下一项任务、是否导致反复的联动修改，或其他具体的维护成本。频率或影响未知时如实说明。存在 Feature 依赖，本身不能证明这个坏味道阻塞了依赖它的工作。
+- **最小完整的处理方式：** 视情况比较保持原样、局部修正或删除，以及更大的结构调整。在保持已接受行为的前提下，说明预期的改进；文件数量和对某种模式的偏好，本身不能证明价值。
+- **时机和验证成本：** 考虑已有测试、修改和恢复的风险以及实际依赖。说明现在动手是否值得，还是同样的清理更适合放到以后相关的修改中一起做。
 
-File counts, `BUG` or pitfall keywords, dependency counts, and several notes naming the same file are investigation clues, not automatic priority rules. Do not convert these considerations into weights, thresholds, or a new scoring system.
+文件数量、`BUG` 或陷阱类关键词、依赖数量、多条笔记点名同一个文件，都是调查线索，不是自动的优先级规则。不要把这些考虑转换成权重、阈值或新的评分体系。
 
-Findings with the same confirmed cause may share one comparison and smallest remedy; preserve all source Feature IDs, excerpts, and paths. Keep unrelated causes distinct even when they share a file. Explain real dependencies between proposed remedies without treating them as a severity bonus.
+确认原因相同的发现可以共用一次比较和同一个最小处理方式；保留所有来源 Feature ID、摘录和路径。原因不同的发现即使涉及同一个文件，也要分开。说明各项处理之间的真实依赖，但不要把依赖当作严重程度的加分。
 
-If current evidence shows that accepted behavior is broken, separate that defect from behavior-preserving refactor candidates. Point to `engineering-change-plan` and the Bug ownership rules in `methodology/07-engineering-change.md`; an old `BUG` marker alone is insufficient. This report neither creates a Bug task nor starts its repair.
+如果当前证据表明已接受的行为已经坏了，把这个缺陷和保持行为不变的重构候选分开。指向 `engineering-change-plan` 和 `methodology/07-engineering-change.md` 中的 Bug 归属规则；只有一个旧的 `BUG` 标记是不够的。这份报告既不创建 Bug 任务，也不开始修复。
 
-## Stage 3: report, recommend, and stop
+## 阶段 3：报告、推荐并停止
 
-**Entry:** Stage 2 compared the candidates.
+**开始条件：** 阶段 2 已比较完候选。
 
-**Output:** one transient report with a recommendation or a reason to defer, plus any material uncertainty or separate Bug finding.
+**产出：** 一份临时报告，包含推荐项或暂缓理由，以及实质性的不确定之处或单独列出的 Bug 发现。
 
-Use a short table or paragraphs in the current conversation language. Give distinct candidates unambiguous references, especially when one Feature has several findings. Keep each candidate traceable to its source Feature, verbatim excerpt, and checked paths; identify all origins when findings were combined. Explain current impact, the smallest useful remedy, and why its timing differs from alternatives. Keep uncertain findings separate from the ordering and explain what evidence could change the judgment.
+用当前对话语言，以简短的表格或段落写出：
 
-Recommend one candidate when its current benefit justifies the change and verification cost. Compare it with the alternatives. If none is worthwhile now, say so and explain why; an unresolved improvement can remain valid without becoming a current task. Do not invent a recommendation or mark deferred or uncertain findings as resolved.
+- 给不同的候选明确的指代，尤其是一个 Feature 有多条发现时。
+- 每个候选都能追溯到来源 Feature、原文摘录和已检查的路径；合并过的发现要写出全部来源。
+- 说明当前影响、最小的有用处理方式，以及它的时机为什么和其他选项不同。
+- 不确定的发现与排序分开，并说明什么证据可能改变判断。
 
-After the report, wait for the user's choice under Global rules 1 and 4; do not start planning or delegate further investigation. Choosing a candidate alone is not implementation approval; retain any specific additional authorization the user actually supplies.
+当前收益足以抵消修改和验证成本时，推荐一个候选，并和其他选项比较。如果现在没有值得做的，直接说明并解释原因；一项未解决的改进可以继续成立，而不必成为当前任务。不要编造推荐，也不要把暂缓或不确定的发现标为已解决。
 
-## Response routing
+报告之后，按全局规则 1 和 4 等待用户选择；不要开始规划，也不要委派进一步的调查。仅仅选中一个候选不等于批准实施；用户实际给出的具体追加授权要保留下来。
 
-| User response | Action |
+## 回复处理
+
+| 用户回复 | 动作 |
 |---|---|
-| Selects an ID, item number, or a refactor recommendation | Return the selected problem, evidence, proposed scope, and existing authorization to `engineering-change-plan` in `refactor` mode; implementation requires an explicitly approved scope |
-| Chooses to address a separately reported behavior defect | Return it to `engineering-change-plan` for Bug ownership and scope triage; do not label the repair as refactor or start it here |
-| Requests complete notes for F0YY | Read and show `docs/features/F0YY.json` notes verbatim, then ask whether to select it |
-| Requests another scan filtered to category X | Re-run Stages 1–3 with X as the filter |
-| Declines all candidates | Confirm that no refactor will be started and stop |
-| Gives an ambiguous answer | Ask which candidate or scope the user means; do not assume a choice or manufacture a recommendation |
+| 选择一个 ID、条目编号或重构推荐项 | 以 `refactor` 模式把选中的问题、证据、建议范围和已有授权交回 `engineering-change-plan`；实施需要明确批准的范围 |
+| 选择处理单独报告的行为缺陷 | 交回 `engineering-change-plan` 做 Bug 归属和范围分诊；不要把修复标成重构，也不要在这里开始修复 |
+| 要求查看 F0YY 的完整笔记 | 原样读取并展示 `docs/features/F0YY.json` 的笔记，然后询问是否选择它 |
+| 要求按类别 X 再扫描一次 | 以 X 为筛选条件重新执行阶段 1–3 |
+| 拒绝所有候选 | 确认不会开始任何重构，然后停止 |
+| 回答含义不清 | 询问用户指的是哪个候选或哪个范围；不要假定一个选择，也不要凭空给出推荐 |
 
-## Exception handling
+## 异常处理
 
-| Condition | Required response |
+| 情况 | 必须的处理 |
 |---|---|
-| A record needed for the requested scan is invalid | Report its exact path, parse error and affected conclusion; do not repair it in this read-only workflow |
-| Many candidates match | Lead with the comparative conclusion and summarize the remaining candidates; preserve their source references and material uncertainty without a fixed severity quota |
+| 本次扫描需要的某条记录无效 | 报告它的准确路径、解析错误和受影响的结论；在这个只读流程中不修复它 |
+| 匹配到很多候选 | 先给出比较结论，再概述其余候选；保留它们的来源引用和实质性的不确定之处，不设固定的严重程度配额 |

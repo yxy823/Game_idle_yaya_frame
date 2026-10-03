@@ -1,13 +1,13 @@
-# Application Startup
+# 应用启动
 
-Treat application startup as a production API, and test it without mutating the production main scene for test convenience.
+把应用启动当作生产 API；测试它时，不为了方便测试而改动生产主场景。
 
-## Startup
+## 启动
 
-- **[REVIEW]** Changing `application/run/main_scene` changes application startup behavior.
-- **[MUST]** Do not temporarily change the production main scene setting to run tests, take screenshots or load fixtures.
-- **[PREFER]** The main scene owns the bootstrap and composition that application startup needs; it is not an arbitrary dump for global logic.
-- **[MUST]** Scenes and modules do not depend on `/root/Main/...` as a contract between modules.
-- **[REVIEW]** A custom `main_loop_type` is an architecture-level runtime change and requires validation on the target version.
-- **[MUST]** When `application/config/use_custom_user_dir` is `false`, changing `application/config/name` changes the default `user://` directory. Treat existing saves, settings, progression and other user data as a persistence migration, and validate compatibility or an explicit migration path.
-- **[MUST]** Do not enable `use_custom_user_dir` automatically to avoid that migration; preserve and validate the project's existing user-data namespace contract.
+- **[复核]** 修改 `application/run/main_scene` 会改变应用的启动行为。
+- **[必须]** 不要为了运行测试、截图或加载测试夹具而临时修改生产主场景设置。
+- **[优先]** 主场景负责应用启动所需的引导和组装；它不是随意堆放全局逻辑的地方。
+- **[必须]** 场景和模块之间不把 `/root/Main/...` 当作模块间的契约依赖。
+- **[复核]** 自定义 `main_loop_type` 是架构级的运行时修改，需要在目标版本上验证。
+- **[必须]** `application/config/use_custom_user_dir` 为 `false` 时，修改 `application/config/name` 会改变默认的 `user://` 目录。把已有的存档、设置、进度和其他用户数据当作持久化迁移处理，并验证兼容性或明确的迁移路径。
+- **[必须]** 不要为了回避这次迁移而自动启用 `use_custom_user_dir`；保留并验证项目已有的用户数据命名空间契约。

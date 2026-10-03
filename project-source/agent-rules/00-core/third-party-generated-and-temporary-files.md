@@ -1,35 +1,35 @@
-# Third-Party, Generated, Tool-Managed, Cache, and Temporary Files
+# 第三方、生成、工具管理、缓存与临时文件
 
-Classify both ownership and authority before editing.
+编辑前，先同时确定文件的所属方和权威角色。
 
-## Classification
+## 分类
 
-- **[MUST]** Before editing a non-obvious artifact, determine both its ownership (project, vendor, tool, test or unknown) and its authority role (source, configuration, generated, cache or temporary).
-- **[MUST]** Do not infer ownership solely from the extension, an `addons/` location, the filename or the Git tracking status.
-- **[MUST]** Git tracking and generated, source or cache status are independent. A committed generated artifact remains generated.
-- **[MUST]** Source ownership, Git tracking, Godot import visibility and inclusion in the production export are separate dimensions.
+- **[必须]** 编辑一个性质不明显的产物前，同时确定它的所属方（项目、第三方、工具、测试或未知）和权威角色（源文件、配置、生成产物、缓存或临时文件）。
+- **[必须]** 不仅凭扩展名、是否位于 `addons/`、文件名或 Git 跟踪状态推断所属方。
+- **[必须]** 是否被 Git 跟踪，与它是生成产物、源文件还是缓存，是相互独立的。已提交的生成产物仍然是生成产物。
+- **[必须]** 源文件归属、Git 跟踪、Godot 导入可见性和是否进入正式导出，是彼此独立的维度。
 
-## Vendor and third-party
+## 第三方与供应商代码
 
-- **[MUST]** Third-party and vendor implementation is an external dependency by default. Do not modify it merely for project lint or style, convenience, warning cleanup or a green test status.
-- **[REVIEW]** A necessary vendor fix must consider the upstream version and updates, an adapter or workaround, how long a patch or fork can be maintained, and licensing. Keep the local patch distinguishable from upstream.
-- **[MUST]** Modification of a third-party asset is governed by its actual license, its provenance and project policy, not by the vendor-code rules alone.
+- **[必须]** 第三方和供应商（vendor）实现默认是外部依赖。不为了项目的 lint 或风格、图方便、清理警告或让测试变绿而修改它。
+- **[复核]** 确有必要修复供应商代码时，要考虑上游版本与更新、适配层或变通做法、补丁或 fork 能维护多久，以及许可证。让本地补丁与上游代码可以区分。
+- **[必须]** 能否修改第三方素材，由它实际的许可证、来源和项目策略决定，不只看供应商代码的规则。
 
-## Generated and tool-managed
+## 生成文件与工具管理文件
 
-- **[MUST]** When a generated artifact needs to change, first locate its authoritative source, its schema or configuration and its generator. Fix the upstream cause and regenerate.
-- **[MUST]** Do not hand-patch generated output to avoid the formal pipeline.
-- **[MUST]** `<asset>.import` is Godot-managed import metadata with project configuration semantics. Do not treat it as ordinary source or as disposable cache.
-- **[MUST]** Do not cosmetically edit or repair the internal UID, remap or other generated fields in `.import`; change import configuration through the supported import workflow.
-- **[MUST]** `.godot/imported/` is rebuildable cache and is never authoritative. Do not edit it directly or copy it into production source.
-- **[MUST]** Rebuildable does not mean that the Agent may recursively delete the entire `.godot/` directory without a concrete diagnostic purpose and an impact review.
-- **[MUST]** Do not perform cache surgery. Use the supported refresh, reimport or clean-rebuild paths.
-- **[MUST]** Do not hide unexpected pipeline artifacts by adding `.gitignore` or `.gdignore` as the default fix. Diagnose whether the artifacts should exist.
+- **[必须]** 生成产物需要变化时，先找到它的权威来源、schema 或配置，以及生成器。修复上游原因后重新生成。
+- **[必须]** 不手工修补生成结果来绕开正式流程。
+- **[必须]** `<asset>.import` 是 Godot 管理的导入元数据，带有项目配置语义。不把它当作普通源文件，也不当作可随意丢弃的缓存。
+- **[必须]** 不为外观而编辑或修补 `.import` 中的内部 UID、remap 或其他生成字段；通过支持的导入流程修改导入配置。
+- **[必须]** `.godot/imported/` 是可以重建的缓存，永远不是权威来源。不直接编辑它，也不把它复制进正式源文件。
+- **[必须]** 可以重建，不代表 Agent 可以在没有具体诊断目的、也没有评估影响的情况下，递归删除整个 `.godot/` 目录。
+- **[必须]** 不手工改动缓存。使用支持的刷新、重新导入或清理重建方式。
+- **[必须]** 不把添加 `.gitignore` 或 `.gdignore` 作为隐藏意外流程产物的默认修复。先诊断这些产物是否应该存在。
 
-## Temporary, backup, and scratch
+## 临时、备份与草稿文件
 
-- **[MUST]** A temporary artifact needs a creating owner, a bounded purpose and a cleanup or lifetime policy.
-- **[MUST]** Clean only temporary artifacts that the task, test or project explicitly owns. Do not delete unknown `tmp*`, `backup*`, `old*` or similar files by name pattern.
-- **[PREFER]** Run destructive editor, import or serialization experiments in a test-owned scratch subtree or a temporary Godot project rather than mutating production content and hoping to restore it.
-- **[MUST]** Backup, autosave and recovery copies are not automatically the source of truth. They must not overwrite current work without explicit recovery intent.
-- **[MUST]** Generated-file headers and manifests are strong evidence of authority and provenance; the absence of a marker does not prove that a file is hand-authored source.
+- **[必须]** 临时产物需要有创建它的所属方、有限的用途，以及清理方式或存续期限。
+- **[必须]** 只清理任务、测试或项目明确拥有的临时产物。不按名称模式删除来历不明的 `tmp*`、`backup*`、`old*` 等文件。
+- **[优先]** 具有破坏性的编辑器、导入或序列化实验，在测试拥有的草稿子目录或临时 Godot 项目中进行，不改动正式内容再指望能恢复。
+- **[必须]** 备份、自动保存和恢复副本不会自动成为权威来源。没有明确的恢复意图时，不能用它们覆盖当前工作。
+- **[必须]** 生成文件的文件头和清单是判断权威性和来源的有力证据；没有这类标记，不能证明文件是手写的源文件。

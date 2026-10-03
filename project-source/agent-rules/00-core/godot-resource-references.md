@@ -1,36 +1,36 @@
-# Godot Resource and Identity References
+# Godot 资源与身份引用
 
-Keep identity domains distinct. They may map to each other, but they are not interchangeable.
+不同的身份域要分开。它们之间可以建立映射，但不能互相替代。
 
-## Identity domains
+## 身份域
 
-- **[MUST]** Use a stable Business ID for persistent gameplay and domain identity in saves, data references, commands, telemetry, replays and migrations.
-- **[MUST]** A Resource UID (`uid://`) is Godot Resource identity; it is not a gameplay Business ID.
-- **[MUST]** `res://` and `user://` paths are locations, not logical identity, unless a schema explicitly defines path semantics.
-- **[MUST]** NodePath and `%UniqueName` express SceneTree structural relationships, not persistent gameplay identity.
-- **[MUST]** The serialized scene Node `unique_id` of Godot 4.6 and later is scene and editor serialization identity. Do not use it as a Business ID, a runtime lookup API, a save ID or a network ID.
-- **[MUST]** RIDs and Object instance IDs are runtime identities for the current session only. Do not persist them or send them over the network as long-lived entity identity.
-- **[MUST]** RIDs and Object instance IDs are separate runtime identity domains and are not interchangeable.
+- **[必须]** 存档、数据引用、命令、遥测、回放和迁移中持久的玩法与领域身份，使用稳定的业务 ID（Business ID）。
+- **[必须]** Resource UID（`uid://`）是 Godot 的 Resource 身份，不是玩法上的业务 ID。
+- **[必须]** `res://` 和 `user://` 路径表示位置，不表示逻辑身份，除非某个 schema 明确定义了路径语义。
+- **[必须]** NodePath 和 `%UniqueName` 表达 SceneTree 中的结构关系，不是持久的玩法身份。
+- **[必须]** Godot 4.6 及以后版本中序列化的场景 Node `unique_id`，是场景与编辑器的序列化身份。不把它用作业务 ID、运行时查找 API、存档 ID 或网络 ID。
+- **[必须]** RID 和 Object 实例 ID 只是当前会话内的运行时身份。不持久化它们，也不把它们作为长期的实体身份在网络上传输。
+- **[必须]** RID 和 Object 实例 ID 是两个不同的运行时身份域，不能互相替代。
 
-## Resource references
+## 资源引用
 
-- **[PREFER]** For known editor-authored static dependencies, use typed Resource or PackedScene references instead of a bare String path plus `load()`.
-- **[MUST]** In Godot 4.7, do not assume that an `@export_file` String contains a `res://` path. Use explicit path semantics when raw path identity is required.
-- **[MUST]** Use the Godot ResourceUID and ResourceLoader APIs for UID and path mapping. Do not convert by string replacement, concatenation or guessing.
-- **[MUST]** Do not invent, copy, renumber or hand-repair Resource UIDs or scene Node `unique_id` values, including for cosmetic consistency.
-- **[MUST]** Successful UID resolution proves identity resolution only; it does not replace Resource type, schema or consumer validation.
-- **[MUST]** Moving or renaming a Resource or file does not automatically rename a Business ID. Business-ID migration and filesystem or resource migration are separate events.
+- **[优先]** 对于已知的、在编辑器中设置的静态依赖，使用带类型的 Resource 或 PackedScene 引用，而不是裸 String 路径加 `load()`。
+- **[必须]** 在 Godot 4.7 中，不假设 `@export_file` 的 String 一定是 `res://` 路径。需要原始路径身份时，使用明确的路径语义。
+- **[必须]** UID 与路径之间的映射使用 Godot 的 ResourceUID 和 ResourceLoader API。不通过字符串替换、拼接或猜测来转换。
+- **[必须]** 不编造、复制、重新编号或手工修补 Resource UID 或场景 Node 的 `unique_id` 值，即使只是为了外观一致。
+- **[必须]** UID 解析成功只证明身份能解析，不能代替对 Resource 类型、schema 或消费方的验证。
+- **[必须]** 移动或重命名 Resource 或文件，不会自动重命名业务 ID。业务 ID 迁移与文件系统或资源迁移是两件独立的事。
 
-## Scene references
+## 场景引用
 
-- **[MUST]** Renaming or reparenting a Node is a reference migration for serialized NodePaths, animation tracks, connections, script references, inherited overrides and other consumers.
-- **[PREFER]** Within a scene, use a direct typed Node reference or `%UniqueName` for stable access to key children when appropriate. Do not use a recursive `find_child()` merely to hide a structural dependency.
-- **[MUST]** A `%UniqueName` is scoped to its scene and owner contract; it is not a global service or a Business-ID namespace.
-- **[MUST]** Once a scene unique name is consumed, renaming or removing it is a change to the scene-local reference API.
-- **[PREFER]** For known Node dependencies assigned in the Inspector, use typed exported Node references rather than NodePath Strings when path semantics are not required.
+- **[必须]** 重命名 Node 或更换其父节点，是一次引用迁移，影响序列化的 NodePath、动画轨道、信号连接、脚本引用、继承场景中的覆盖以及其他消费方。
+- **[优先]** 在场景内部，合适时用带类型的直接 Node 引用或 `%UniqueName` 稳定地访问关键子节点。不用递归的 `find_child()` 来掩盖结构依赖。
+- **[必须]** `%UniqueName` 的作用范围是它所在的场景及其 owner 契约；它不是全局服务，也不是业务 ID 的命名空间。
+- **[必须]** 场景唯一名一旦被使用，重命名或移除它就是对场景内引用 API 的修改。
+- **[优先]** 对在检查器中指定的已知 Node 依赖，不需要路径语义时，使用带类型的导出 Node 引用，而不是 NodePath 字符串。
 
-## Schema and API clarity
+## Schema 与 API 命名
 
-- **[MUST]** Do not use one vague `id: String` to carry Business IDs, Resource UIDs, paths and NodePaths. Choose field names, API names and types that identify the identity domain.
-- **[MUST]** Do not mechanically migrate every `res://` String to `uid://`, or every UID back to a readable path. Choose according to whether the value means resource identity or location.
-- **[MUST]** Validate each identity domain with its own rules. A generic "ID exists" check cannot substitute for business-reference, resource, scene or runtime validation.
+- **[必须]** 不用一个含糊的 `id: String` 同时承载业务 ID、Resource UID、路径和 NodePath。选择能表明身份域的字段名、API 名和类型。
+- **[必须]** 不机械地把所有 `res://` 字符串迁移成 `uid://`，也不把所有 UID 改回可读路径。根据值的含义是资源身份还是位置来选择。
+- **[必须]** 每个身份域用自己的规则验证。笼统的“ID 存在”检查不能代替业务引用、资源、场景或运行时的验证。

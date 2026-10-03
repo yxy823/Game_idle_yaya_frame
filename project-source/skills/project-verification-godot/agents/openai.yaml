@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Scoped Verification"
-  short_description: "Run only the requested parse, test or scene check and report its actual scope and result"
+  display_name: "Godot 限定范围验证"
+  short_description: "只运行要求的解析、测试或场景检查，并报告实际范围和结果"
 
 policy:
   allow_implicit_invocation: true

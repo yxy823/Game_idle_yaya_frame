@@ -1,61 +1,65 @@
-# Writing guide
+# 写作指南
 
-Improve the explanation of the current Godot project without changing what its documents mean or authorize. Use the reader's task to decide the necessary context and detail.
+改善当前 Godot 项目的说明，但不改变文档的含义和它授予的权限。按读者要完成的事决定需要多少背景和细节。
 
-## Establish the document contract
+## 确定文档契约
 
-Identify the requested result and affected files from the current task. Read the relevant existing text and its factual sources before editing. Reuse settled decisions; ask only about a gap that changes the requested result. A code observation describes current behavior, not approval to change an intended game rule.
+从当前任务确认要交付的结果和受影响的文件。修改前先读要改的现有正文和它的事实来源。已经定下的决定直接复用；只在缺口会改变交付结果时才提问。从代码观察到的是当前行为，不等于批准修改预定的游戏规则。
 
-The following paths belong to the target project, not to the source framework or another Skill package. Read only the contracts relevant to the documents being written, reusing current context:
+下表的路径属于目标项目，不属于源框架或其他 Skill 包。只读取与本次所写文档有关的契约，并复用当前上下文已有的内容：
 
-| Document being written | Source of its content and constraints |
+| 正在编写的文档 | 内容与约束的来源 |
 | --- | --- |
-| Project README or tool instructions | The existing entry page, actual command or editor interface, and the project's local configuration and usage contract |
-| Existing GDD or Product explanation | `methodology/01-product-doc-structure.md`; for Product output, its current templates under `methodology/templates/` |
-| Feature records or design explanation | `methodology/02-feature-list-schema.md` and the affected Feature's actual sources and records |
-| Architecture or a technical decision record | `methodology/10-architecture-overview.md` and the relevant implemented responsibilities and accepted decisions |
-| Reusable project knowledge | `docs/knowledge/README.md`, the relevant topic and original task evidence |
-| Research or verification records | `methodology/09-records-reports-and-handoff.md`, the actual evidence and the owning task's research or verification contract |
+| 项目 README 或工具说明 | 现有入口页、实际的命令或编辑器界面，以及项目本地的配置和使用约定 |
+| 已有的 GDD 或 Product 说明 | `methodology/01-product-doc-structure.md`；输出 Product 时，另看 `methodology/templates/` 下的当前模板 |
+| Feature 记录或设计说明 | `methodology/02-feature-list-schema.md`，以及受影响 Feature 的实际来源和记录 |
+| 架构或技术决策记录 | `methodology/10-architecture-overview.md`，以及已实现的职责和已采纳的决策 |
+| 可复用的项目经验知识 | `docs/knowledge/README.md`、所属主题和原任务的证据 |
+| 调研或验证记录 | `methodology/09-records-reports-and-handoff.md`、实际证据，以及所属任务对调研或验证的约定 |
 
-Apply the target project's `AGENTS.md` and write durable output in its configured `document_language`. Use `methodology/05-document-language.md` when resolving language or rendering a template. Project identifiers and machine-readable structures keep their form whatever the language; reuse the project's terminology and templates. Missing design, approval or evidence remains a gap for the owning task; this writing method cannot supply it. In particular, it does not create a GDD from an idea or reconstruct approved game design from code.
+遵循目标项目的 `AGENTS.md`，长期保存的产出使用项目配置的 `document_language` 编写。确定语言或渲染模板时，使用 `methodology/05-document-language.md`。
 
-Preserve required template sections, fixed paths, IDs, field names, machine-readable structures and historical facts. An optional outline may omit irrelevant sections; a required Product section remains even when its answer is that it does not apply. Decide from the owning contract, not a general preference for shorter pages.
+- 项目标识符和机器可读结构不随语言改变形式；沿用项目的术语和模板。
+- 缺少的设计、批准或证据仍是所属任务的缺口，本写作方法不能补上。
+- 尤其是，它不会根据一个想法创建 GDD，也不会从代码反推出已批准的游戏设计。
 
-## Read additional guidance only when needed
+保留模板要求的栏目、固定路径、ID、字段名、机器可读结构和历史事实。可选大纲可以省略无关栏目；Product 的必填栏目即使答案是“不适用”也要保留。是否保留由文档所属的规范决定，不凭“页面越短越好”的一般偏好。
 
-- For several documents, unclear ownership, naming, navigation or repeated explanations, use [Document structure](document-structure.md).
-- For operational instructions, reproduction steps or a verification guide, use [Procedure writing](procedure-writing.md).
-- For a local wording correction, work in the current page and its necessary references. It does not imply a directory migration or repository-wide rewrite.
+## 按需读取其他参考
 
-## Explain the project clearly
+- 涉及多份文档、归属不清、命名、导航或重复说明时，读[文档结构](document-structure.md)。
+- 编写操作说明、复现步骤或验证指南时，读[操作说明写作](procedure-writing.md)。
+- 局部措辞修正只处理当前页面和必要的引用，不意味着要迁移目录或改写整个仓库。
 
-Open with the reader's immediate purpose or conclusion where the document's structure permits it. Keep a rule's explanation, applicability and important caveat together. Put a prerequisite or side effect next to the action it changes.
+## 把项目讲清楚
 
-Use the project's established names for scenes, resources, signals, features and domain concepts. Distinguish a packed scene, an instantiated node and its owner when that distinction matters to the explanation; do not invent a new term system for ordinary prose. Changes to gameplay meanings return to their design owner.
+文档结构允许时，开头先给出读者眼下的目的或结论。规则的解释、适用范围和重要的注意事项放在一起。前提条件或副作用紧挨着受它影响的动作。
 
-Choose the form that makes the relationship visible:
+场景、资源、信号、功能和领域概念沿用项目已有的名称。打包场景（packed scene）、实例化后的节点和它的所有者，在区分有意义时写清楚；普通行文不另造一套术语。要改变玩法含义，回到它的设计所属文档处理。
 
-- Use paragraphs for reasoning and consequences, lists for independent conditions, and numbered steps for real ordering dependencies.
-- Use tables when rows answer the same questions, such as a tool option's purpose and effect. Keep long rationale outside a cell.
-- Use diagrams when they clarify a relevant runtime flow or responsibility boundary. A diagram explains inspected relationships; it is not authority to redesign them.
+选择能让关系一目了然的形式：
 
-Apply these sentence-level rules:
+- 推理和后果用段落，彼此独立的条件用列表，真实存在先后依赖的操作用编号步骤。
+- 各行回答同一组问题时用表格，例如工具选项的用途和效果。较长的理由不放进单元格。
+- 图示用于说明运行流程或职责边界，前提是这能让说明更清楚。图示解释的是已核实的关系，不是重新设计这些关系的依据。
 
-- **One sentence, one job.** Give each sentence one action, condition or fact. When a sentence of about 40 words or more combines actions, conditions and exceptions, split it into short sentences or a list. Commands, paths and identifiers do not count toward the length.
-- **Explain a shared reminder once.** A general reminder gets its full explanation at its owning source. Elsewhere, keep one sentence and a link only where it prevents a real mistake, such as beside a destructive tool option or before a dependent step. [Document structure](document-structure.md#remove-duplicate-bodies-retain-useful-context) decides which repeated bodies to remove.
-- **Prefer concrete wording to officialese and compressed terms.** Name the actual file, field, Skill, section or action instead of abstract nouns such as "the owning contract", "durable" or "the work". Write full sentences with articles rather than telegraphic notes, and write three or more alternatives as "A, B or C" rather than a slash chain.
-- **Nest lists only for a real category-to-item relationship.** Keep lists one level deep by default. Nest only when each parent item is a category and its children are members of it; otherwise use paragraphs, numbered steps or a table.
+句子层面遵循以下规则：
 
-Write concrete statements with their conditions. For example, "the panel works" is insufficient in a verification note. If actually observed, describe which panel was opened, the input used, the displayed result and any uncovered state. Do not turn illustrative wording into a claim that the interaction ran.
+- **一句只做一件事。** 每句只写一个动作、条件或事实。一句话同时包含动作、条件和例外，且长度达到约 40 个英文单词（中文约 100 字）时，拆成短句或列表。命令、路径和标识符不计入长度。
+- **通用提醒只讲一次。** 通用提醒在它的所属位置完整解释一次。其他位置只在能防止真实错误时保留一句话和链接，例如紧挨着有破坏性的工具选项，或放在依赖它的步骤之前。哪些重复正文要删除，由[文档结构](document-structure.md#去掉重复正文保留有用的上下文)决定。
+- **用具体措辞，不用公文腔和压缩词。** 写出实际的文件、字段、Skill、小节或动作，不用“所属契约”“长期”“这项工作”这类抽象名词。写完整的句子（英文要带冠词），不写电报式短语；三个及以上的并列选项写成“A、B 或 C”，不用斜杠串联。
+- **只有真实的类别与成员关系才嵌套列表。** 列表默认只有一层。只有每个父项是一个类别、子项是它的成员时才嵌套；其他情况用段落、编号步骤或表格。
 
-Keep natural Markdown paragraphs without fixed-width wrapping. Preserve meaningful structure in lists, tables, code, diagrams and machine-readable templates. The language of these examples does not choose the project's output language.
+写出带条件的具体陈述。例如在验证记录里写“面板正常”是不够的。如果确实观察过，就写清打开了哪个面板、用了什么输入、显示了什么结果，以及还有哪些状态没有覆盖。不要把示例措辞写成交互确实运行过的说法。
 
-## Verify and finish the writing task
+Markdown 段落保持自然书写，不按固定宽度手工折行。列表、表格、代码、图示和机器可读模板中有意义的结构要保留。这里示例使用的语言不决定项目的输出语言。
 
-Compare the changed explanation with its sources: requirements stay requirements, proposals stay proposals, and a result states only what its evidence supports. Preserve the difference between expected behavior, current implementation and observed execution.
+## 核对并完成写作任务
 
-Check affected links, section anchors, identifiers and command examples. When an authorized move changes a path, account for its actual readers and tool consumers before completing the edit. Use existing applicable link, format or build checks under the target project's rules; do not import a framework command or claim a check that did not run.
+对照来源检查改写后的说明：需求仍是需求，提议仍是提议，结果只陈述证据能支持的内容。保留预期行为、当前实现和实际执行观察三者之间的区别。
 
-Documentation about a runtime result needs the relevant evidence. Pure wording or navigation work does not itself require launching Godot, regenerating a project or replaying unchanged tests. The owning workflow decides whether a source or contract change invalidates earlier verification. Leave unavailable checks explicit.
+检查受影响的链接、小节锚点、标识符和命令示例。已授权的移动改变了路径时，先处理该路径的实际读者和读取它的工具，再完成修改。按目标项目的规则使用项目里已有的链接、格式或构建检查；不要引入框架的命令，也不要声称运行过没有运行的检查。
 
-Return the edited documents, why the changes help, actual verification and material gaps. For analysis-only work, return the findings without writing. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+关于运行结果的文档需要对应的证据。单纯的措辞或导航修改本身不需要启动 Godot、重新生成项目或重放未改变的测试。来源或契约的变化是否让之前的验证失效，由所属工作流判断。无法完成的检查要明确写出。
+
+交付改好的文档、这些修改为什么有帮助、实际做过的核对，以及重要的缺口。只要求分析时，交付发现，不写入文件。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

@@ -1,25 +1,25 @@
-# Scene Structure and Ownership
+# 场景结构与归属
 
-The scene hierarchy expresses ownership, lifetime, transforms, dependencies and propagation.
+场景层级表达所有权、生命周期、变换、依赖和属性传播。
 
-## Editing
+## 编辑
 
-- **[PREFER]** Use the Godot editor, structured scene tooling or a generator for structural scene edits. Small deterministic text patches are acceptable when the serialization semantics are known and validated.
-- **[MUST]** Do not perform unrelated serialization normalization, section reordering, ID cleanup or cosmetic rewrites during a focused scene change.
-- **[MUST]** Do not impose hard limits on node count, tree depth or line count. A wrapper or subtree exists for ownership, layout or lifecycle reasons, not for metric compliance.
+- **[优先]** 结构性的场景编辑，使用 Godot 编辑器、结构化的场景工具或生成器。序列化语义已知、且结果经过验证时，可以接受小而确定的文本补丁。
+- **[必须]** 在聚焦的场景修改中，不做无关的序列化规范化、段落重排、ID 清理或外观性的重写。
+- **[必须]** 不对节点数、树深度或行数设硬性上限。包装节点或子树是为了所有权、布局或生命周期而存在，不是为了满足度量指标。
 
-## Hierarchy and ownership
+## 层级与归属
 
-- **[MUST]** Make the parent-child structure reflect ownership, lifetime, transform and dependency semantics.
-- **[MUST]** Distinguish `parent` from `owner`. Do not recursively set every Node's owner to the root as a shortcut.
-- **[MUST]** Keep a reusable scene self-contained around its intended public dependencies.
-- **[PREFER]** The root script coordinates the scene's public API. Child scripts represent an independent component or subtree responsibility.
-- **[MUST]** Do not remove legitimate Timer, AnimationPlayer or component Nodes merely to reduce the node count.
-- **[REVIEW]** Several independent writers to the same visual or gameplay property require explicit coordination; avoid hidden last-writer-wins behavior.
+- **[必须]** 父子结构要反映所有权、生命周期、变换和依赖的语义。
+- **[必须]** 区分 `parent` 和 `owner`。不图省事把每个 Node 的 owner 都递归设为根节点。
+- **[必须]** 可复用的场景围绕它有意公开的依赖保持自包含。
+- **[优先]** 根脚本协调场景的公共 API。子脚本代表独立组件或子树的职责。
+- **[必须]** 不为了减少节点数而移除合理的 Timer、AnimationPlayer 或组件 Node。
+- **[复核]** 多个相互独立的写入方修改同一个视觉或玩法属性时，需要明确的协调；避免隐藏的“最后写入者生效”行为。
 
-Scene composition can contain both game logic and presentation. When a scene crosses that boundary, use `docs/game-organization.md` to identify the state authority, the feedback and their connection; do not classify a whole scene by its visual appearance. Animation callbacks may supply gameplay timing, while the game-rule owner decides validity, cancellation and the resulting state changes. Keep the actual timing and lifetime contract explicit where it affects the feature.
+场景组合中可以同时包含游戏逻辑和游戏表现。一个场景跨越这条边界时，用 `docs/game-organization.md` 找出状态的权威所属方、反馈以及两者的连接；不按视觉外观给整个场景归类。动画回调可以提供玩法时机，而由游戏规则的所属方决定是否有效、是否取消以及由此产生的状态变化。在影响功能的地方，明确写出实际的时机和生命周期契约。
 
-## Propagation risks
+## 传播风险
 
-- **[REVIEW]** When reparenting or wrapping Nodes, review transform, process and pause, visibility, modulation, theme, owner and other inherited or propagated behavior.
-- **[MUST]** Crossing an instance or ownership boundary during reparenting is a structural migration and requires a review of consumers and references.
+- **[复核]** 更换 Node 的父节点或给它加一层包装时，检查变换、处理与暂停、可见性、调制（modulate）、主题、owner 以及其他继承或传播的行为。
+- **[必须]** 更换父节点时跨越实例边界或 owner 边界，属于结构迁移，需要检查消费方和引用。

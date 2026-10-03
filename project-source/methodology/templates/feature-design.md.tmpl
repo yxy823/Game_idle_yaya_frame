@@ -1,29 +1,29 @@
-# {{feature_id}} · Design and implementation
+# {{feature_id}} · 设计与实现
 
-*Use the sections that help explain this Feature under **Feature design and implementation notes** in `methodology/02-feature-list-schema.md`. This file is the fixed location for the implementation design and local decision rationale, whatever their length; Feature notes link here. Create the file when there is such content to save, and do not fill empty headings. Write prose in `document_language`.*
+*按 `methodology/02-feature-list-schema.md` 中 **Feature 设计与实现说明** 的说明，只使用有助于解释本 Feature 的章节。无论篇幅长短，实现设计和局部决策理由都固定写在这个文件里；Feature 的 notes 链接到这里。有这类内容需要保存时才创建本文件，不填写空标题。正文使用 `document_language`。*
 
-## Goal and boundaries
+## 目标与边界
 
-*Link the primary Product delivery, GDD or professional source, the Feature JSON and the relevant AC. Include the applicable GDD design and any secondary UI, art, audio, resource or localization references with their concrete constraints. Do not copy specifications, and do not hide requirements only in notes.*
+*链接主要的 Product 交付、GDD 或专业来源、Feature JSON 和涉及的 AC。写入适用的 GDD 设计，以及次要的 UI、美术、音频、资源或本地化参考及其具体约束。不复制规格正文，也不要把需求只藏在 notes 里。*
 
-## Current behavior and constraints
+## 当前行为与约束
 
-*Describe the relevant current implementation and its limitations. For each important constraint, explain what it protects and how it applies here, with relative links to project rules, applicable `agent-rules`, architecture and ADRs. Mark which statements are confirmed facts and which are assumptions, and name versions for version-sensitive external references.*
+*描述涉及的当前实现及其局限。对每条重要约束，说明它保护什么、在这里如何适用，并用相对链接指向项目规则、适用的 `agent-rules`、架构和 ADR。标出哪些说法是已确认的事实、哪些是假设；对受版本影响的外部参考写明版本。*
 
-## Proposed design
+## 拟议设计
 
-*Explain responsibilities, interfaces, dependency directions and who owns authoritative state. Record local choices and their reasons, and link important cross-Feature tradeoffs to their ADR. Mark unresolved choices clearly.*
+*说明职责、接口、依赖方向，以及权威状态由谁负责。记录局部选择及其理由；重要的跨 Feature 取舍链接到它的 ADR。清楚标出尚未决定的选择。*
 
-## Runtime and failure flows
+## 运行与失败流程
 
-*Trace the useful triggers, ordering, state changes, lifecycle boundaries, failures and recovery. Use a diagram only where it clarifies the flow.*
+*追踪有用的触发点、顺序、状态变化、生命周期边界、失败和恢复。只在图能让流程更清楚的地方使用图。*
 
-## Implementation and verification reasoning
+## 实现与验证思路
 
-*Describe the important implementation dependencies and why the planned verification covers the relevant risks. Executable test mappings and obligations stay in the Feature JSON and the Registry.*
+*描述重要的实现依赖，以及计划中的验证为什么能覆盖涉及的风险。可执行的测试映射和测试义务留在 Feature JSON 和测试登记表（Registry）中。*
 
-*When needed, state additional scoped checks here, such as performance, duration, display or listening checks, with their conditions and completion criteria. Link the original results instead of copying a second result table. These supplemental results are not gdUnit run evidence.*
+*需要时在这里写明额外的限定检查，例如性能、时长、显示或试听检查，并写清条件和完成标准。链接原始结果，不另抄一份结果表。这些补充结果不是 gdUnit 运行证据。*
 
-## Actual outcome and deviations
+## 实际结果与偏差
 
-*Before final verification, reconcile this design with what was implemented. Keep the important reasons for any approved change of plan, link the current subsystem documentation, and state remaining limitations. Feature status and current blockers stay in their own records.*
+*最终验证之前，把本设计与实际实现对齐。保留已批准的计划变更的重要理由，链接当前的子系统文档，并写明剩余的局限。Feature 状态和当前阻塞留在各自的记录中。*

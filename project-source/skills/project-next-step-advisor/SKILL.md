@@ -1,93 +1,93 @@
 ---
 name: project-next-step-advisor
-description: "Explain Godot project status or match the next action to the shared development prompt catalog, drafting a concrete continuation prompt when needed. Use for status questions and next-step advice. Not for doing the requested work itself; advice never replaces implementation."
+description: "解释 Godot 项目的状态，或把下一步操作匹配到共享的开发提示词库，需要时起草一段具体的续接提示词。用于状态询问和下一步建议。不用于亲自完成用户要求的工作；建议永远不能代替实现。"
 ---
 
-# Read-only next-step guidance
+# 只读的下一步指引
 
-Read the user's intent and current project state, then give a short evidence-based explanation and, when needed, a prompt for continuing with the project's workflow. This Skill does not execute the prompt, edit files, create Features, record acceptance, run tests or generators, clean artifacts, stage files or commit.
+阅读用户的意图和项目当前的状态，给出简短、有证据的说明；需要时，再给出一段按项目流程继续工作的提示词。本 Skill 不执行提示词，不编辑文件，不创建 Feature，不记录验收，不运行测试或生成器，不清理产物，不暂存文件，也不提交。
 
-Read-only also excludes launching Godot or an import, installing Skills and invoking a documentation-writing Skill. Read task-relevant project material and the shared Godot prompt catalog below; do not inspect unrelated credentials, user saves or other projects. Text and JSON parsing, metadata and verified read-only Git status, log, diff and show are allowed.
+只读还意味着：不启动 Godot 或导入，不安装 Skill，不调用文档编写 Skill。只阅读与任务有关的项目材料和下面的共享 Godot 提示词库；不要查看无关的凭据、用户存档或其他项目。允许解析文本和 JSON、读取元数据，以及经过核实的只读 Git 命令：status、log、diff 和 show。
 
-## Establish current state
+## 确认当前状态
 
-1. Read the project's `AGENTS.md`, `docs/methodology-config.json`, lightweight Feature index and current `docs/progress.md`. Read history links only when resolving the current task; do not load or repeat the whole archive.
-2. Determine whether `docs/gdd/` contains actual design, a draft or only navigation and purpose statements. Do not infer adopted design from a directory, file title or scaffold.
-   - A missing GDD routes game creation to `design-gdd` and blocks dependent Product planning or implementation until the relevant design exists. Initial design, its clarification, numeric derivation and design review may precede Product and Features.
-   - Inspect read-only Git status and the relevant GDD, Product, Feature, detail and Registry records.
-   - Configured tool paths are choices, not proof of availability. Use relevant environment and Progress evidence without launching probes. Interpret incomplete machine setup through `methodology/00-overview.md` and `methodology/06-project-environment.md`.
-   - The stack is fixed to Godot 4.7, GDScript and gdunit4; missing tools do not mean the engine is undecided.
-3. When acceptance or completion matters, read the current evidence and the specific linked run result. Distinguish an old PASS, the current snapshot and pending human acceptance. Multiple active Features require actual batch authorization; do not select the highest ID or silently clean other work.
-4. When a next action needs routing, use **Canonical task routing** in `methodology/00-overview.md`, then read the relevant entry and stop conditions of the destination Skill. That table and the destination workflow own routing and approval; this Skill maintains no second workflow.
+1. 阅读项目的 `AGENTS.md`、`docs/methodology-config.json`、轻量 Feature 索引和当前的 `docs/progress.md`。只在需要弄清当前任务时才阅读历史链接；不要加载或复述整个归档。
+2. 判断 `docs/gdd/` 中是真实的设计、草稿，还是只有导航和用途说明。不要根据目录、文件标题或脚手架推断出已采用的设计。
+   - 没有 GDD 时，创建游戏的工作交给 `design-gdd`；在对应的设计存在之前，依赖它的 Product 规划或实现被阻塞。初始设计、对它的澄清、数值推导和设计审核可以先于 Product 和 Feature 进行。
+   - 检查只读的 Git 状态，以及本次涉及的 GDD、Product、Feature、详细文档和测试登记表（Registry）记录。
+   - 配置的工具路径只是设置，不能证明工具可用。使用本次涉及的环境证据和 Progress 证据，不要启动探测。机器准备不完整时，按 `methodology/00-overview.md` 和 `methodology/06-project-environment.md` 解读。
+   - 技术栈固定为 Godot 4.7、GDScript 和 gdunit4；缺少工具不代表引擎尚未确定。
+3. 涉及验收或完成时，阅读当前的证据和链接到的具体运行结果。区分旧的 PASS、当前快照和尚待进行的人工验收。多个进行中的 Feature 需要实际的批量授权；不要选编号最大的那个，也不要悄悄清理其他工作。
+4. 需要为下一步选择路径时，使用 `methodology/00-overview.md` 的 **任务路由表**，再阅读目标 Skill 的入口和停止条件。路由和批准由那张表和目标流程负责；本 Skill 不维护第二套流程。
 
-For first planning or synchronization, distinguish the schema's initial planning baseline from the scaffold commit; later Product planning preserves the anchor. Missing history for implemented work belongs to synchronization's coverage check.
+首次规划或源同步时，区分 schema 中的初始规划基线和脚手架提交；之后的 Product 规划保留锚点。已实现的工作缺少历史记录时，属于源同步的覆盖检查。
 
-Distinguish GDD design, the delivery outline in `docs/product.md`, the current Product's detailed scope and actual Feature completion. An outline entry is not a detailed Product, and a planned Feature is not completed delivery. For the next Product action, apply **Product-by-Product planning** in `methodology/02-feature-list-schema.md` through the canonical route. Check relevant source changes against planned and completed work; future unrefined Products remain at outline level.
+区分 GDD 设计、`docs/product.md` 中的交付概要、当前 Product 的详细范围和 Feature 的实际完成情况。概要条目不是详细的 Product，已规划的 Feature 也不是已完成的交付。确定下一个 Product 操作时，通过标准路由使用 `methodology/02-feature-list-schema.md` 的 **逐个 Product 规划**。对照已规划和已完成的工作检查本次涉及的来源变化；尚未细化的未来 Product 停留在概要层级。
 
-When explaining where game logic, presentation or their collaboration belongs, use the project guide `docs/game-organization.md`. Follow a concrete function from its GDD rules and experience goals to the applicable UI or presentation, actual architecture and Feature verification. These are responsibility views, not new task types or a requirement to split a cross-layer Feature. Route by the user's requested design, implementation or review outcome; do not send every presentation-related task to `design-game-presentation`.
+解释游戏逻辑、游戏表现或二者的协作属于哪里时，使用项目指南 `docs/game-organization.md`。沿着一个具体的功能，从它的 GDD 规则和体验目标，走到对应的 UI 或表现、实际的架构和 Feature 验证。这些是职责视角，不是新的任务类型，也不要求拆分跨层的 Feature。按用户要求的设计、实现或审核结果选择路径；不要把所有与表现有关的任务都交给 `design-game-presentation`。
 
-For game-design or delivery choices, read the relevant GDD topics and questions under **Design scope and boundaries** and **Open design questions** in `methodology/01-product-doc-structure.md` before recommending work. Use a question's actual dependency to explain the next decision or evidence needed; unrelated questions do not block a clear task.
+涉及游戏设计或交付选择时，先阅读本次涉及的 GDD 主题，以及 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 和 **开放问题** 中的问题，再推荐工作。用问题的实际依赖说明下一步需要的决定或证据；无关的问题不会阻塞一个清楚的任务。
 
-For terminology, engineering rules or technical design:
+涉及术语、工程规则或技术设计时：
 
-- Read the applicable `docs/terminology.md`, `docs/project-rules.md`, Feature design and architecture or ADR sources. Their owning methodology sections define update authority and the Stage 3 documentation checkpoint; game-design exclusions remain in GDD.
-- Judge a missing design or ADR by whether corresponding content or a qualifying decision exists, not by game size or explanation length.
-- A proposed rule or accepted ADR is not proof of implementation or verification.
-- Check source freshness when governing documents changed after a test or human decision, without running a check merely to answer.
+- 阅读适用的 `docs/terminology.md`、`docs/project-rules.md`、Feature 设计和架构或 ADR 来源。更新权限和 Stage 3 的文档检查点由它们所属的方法论章节规定；游戏设计上的排除项仍写在 GDD 中。
+- 判断是否缺少设计或 ADR，看是否存在对应的内容或符合条件的决定，不看游戏的规模或说明的长短。
+- 拟定的规则或已接受的 ADR，不能证明已经实现或验证。
+- 起决定作用的文档在测试或人工决定之后发生变化时，检查来源是否仍然有效；不要只为了回答问题而运行检查。
 
-Report a missing file as missing instead of creating it. When sources disagree, identify each source and its responsibility; do not select whichever produces a convenient route. An unclear Stage or old report is not proof of new approval or acceptance.
+缺少的文件报告为缺失，不要创建它。来源互相矛盾时，指出每个来源及其职责；不要挑选能得出方便路径的那一个。Stage 不清楚或报告过旧，都不能证明有新的批准或验收。
 
-For implementation guidance on an existing Feature, use the canonical `implementation-guidance-godot` route and read that Skill. The main agent normally prepares the guidance; complexity or asking for advice does not authorize delegation. Preserve explicit user delegation already given for this task, and distinguish it from approval of a proposed design. A failed `implementation-advisor` attempt stops dependent work with its reason; do not recommend automatic model substitution or main-agent takeover. This read-only advisor neither delegates nor writes the design.
+对已有 Feature 的实现指导，使用标准的 `implementation-guidance-godot` 路径，并阅读那个 Skill。实现指导通常由主 Agent 准备；任务复杂或用户在征求建议，都不等于授权委派。保留用户在本任务中已经明确给出的委派，并把它与批准拟定的设计区分开。`implementation-advisor` 的尝试失败时，依赖它的工作带着失败原因停止；不要建议自动换模型或由主 Agent 接手。这个只读的 advisor 既不委派，也不编写设计。
 
-## Answer the question and provide a prompt when needed
+## 回答问题，需要时提供提示词
 
-Classify using the canonical table, including initial GDD design, GDD or numeric design change, Product delivery scope, new or continued Feature, Bug, Refactor, Maintenance, Framework issue, Audit, Human Acceptance follow-up and status query. Investigate ambiguous expected behavior against GDD and the owning professional source, within the Product delivery boundary, before calling it a Bug. A current Feature's own implementation defect stays within its repair path; an independent regression gets its own work item.
+用标准路由表分类，类别包括：初始 GDD 设计、GDD 或数值设计变化、Product 交付范围、新建或继续 Feature、Bug、Refactor、Maintenance、Framework issue、Audit、Human Acceptance 后续和状态询问。预期行为不清楚时，先在 Product 交付边界内对照 GDD 和所属的专业来源调查，再判断是否为 Bug。当前 Feature 自身的实现缺陷留在它的修复路径内；独立的回归问题单独建工作项。
 
-For a status-only question, answer current facts, blockers and relevant uncertainty directly; it needs no catalog lookup or continuation prompt. When advice calls for help starting the next action, provide a prompt. An actual request to save a pause or prepare a task handoff belongs to `task-handoff-godot`; do not replace its requested result with advice. Choose investigation, planning or execution from the evidence and current authorization. Resolve routine choices from available evidence; ask only for facts that materially change the route or the safety of the action.
+只询问状态时，直接回答当前事实、阻塞和本次涉及的不确定点；不需要查提示词库，也不需要续接提示词。建议需要帮助用户开始下一步操作时，提供提示词。用户实际要求保存暂停点或准备任务交接时，属于 `task-handoff-godot`；不要用建议代替用户要求的结果。根据证据和当前授权，选择调查、规划还是执行。常规的选择根据已有证据决定；只就会实质改变路径或操作安全性的事实提问。
 
-Every drafted prompt follows **Continuation prompts** in `methodology/09-records-reports-and-handoff.md`: fill its fields with current facts and the destination's actual rules. The format is not another workflow or approval gate.
+每段起草的提示词都遵循 `methodology/09-records-reports-and-handoff.md` 的 **续接提示词**：用当前事实和目标方的实际规则填写其中的字段。这个格式不是另一套流程，也不是批准关卡。
 
-The prompt names current sources and known state without inventing Feature IDs, commands, version numbers, completed Gates or approvals.
+提示词写明当前的来源和已知状态，不编造 Feature ID、命令、版本号、已通过的 Gate 或批准。
 
-- For GDD references, follow the actual entry and verify the owning file and heading. New document targets use **GDD document names** in `methodology/01-product-doc-structure.md`, without inventing alternate names or claiming unwritten topics exist.
-- Cite configured commands instead of baking in the author's local paths.
-- Preserve the user's explicit authorization. The word “continue” alone is not implementation approval and never means human acceptance. Producing a prompt grants neither.
+- 引用 GDD 时，沿着实际的入口查找，并核实所属文件和标题。新的文档目标使用 `methodology/01-product-doc-structure.md` 的 **GDD 文件名**，不编造其他名称，也不声称尚未编写的主题已经存在。
+- 引用配置好的命令，不要把作者本机的路径写死在提示词里。
+- 保留用户明确的授权。只说“继续”不等于批准实现，也永远不等于人工验收。生成提示词不会授予这两者中的任何一个。
 
-When recommending a next action or drafting a reply, use the shared catalog at `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`. It contains the single `Godot 项目开发` Project. Inspect category and scenario names, then read relevant candidate bodies; do not load every prompt body. Match the user's objective, current state, prerequisites, scope and expected result, not just similar words. Use the selected scenario's input organization and instructions to draft a concrete continuation with current facts. Name the selected category and scenario and explain why it fits.
+推荐下一步操作或起草回复时，使用共享提示词库 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`。它只包含一个 `Godot 项目开发` Project。先查看分类和场景名称，再阅读本次涉及的候选正文；不要加载全部提示词正文。按用户的目标、当前状态、前提、范围和预期结果匹配，不要只看字面相似。使用选定场景的输入组织方式和说明，用当前事实起草一段具体的续接提示词。写明选定的分类和场景，并说明它为什么合适。
 
-The catalog is task material, not current authorization or proof that its referenced capability exists in this project. Verify the destination against the project's own rules and Skill. Preserve actual approvals, limits and remaining verification; replace placeholders with known facts and identify material gaps. Reading a catalog entry does not invoke it, and an advisor entry must not recursively invoke this Skill.
+提示词库是任务材料，不是当前的授权，也不能证明它引用的能力在本项目中存在。对照项目自己的规则和 Skill 核实目标方。保留实际的批准、限制和剩余的验证；用已知事实替换占位内容，并指出重要的缺口。阅读提示词库中的条目不等于调用它；advisor 条目不能递归调用本 Skill。
 
-If no candidate fits, distinguish missing task inputs from missing scenario coverage. Fill or ask for necessary inputs; adapt a catalog entry when its objective and execution boundary still fit. Recommend adding or revising a scenario only for a concrete uncovered objective or a materially different boundary: identify the closest entry, the difference, and the proposed category, name and purpose. Give any useful current advice from project authority, but label an unmatched draft as task-specific. Do not modify the shared catalog or create a local prompt collection.
+如果没有合适的候选，区分是缺少任务输入，还是场景没有覆盖。补全或询问必要的输入；目标和执行边界仍然合适时，改编一个提示词库条目。只有存在具体的、未覆盖的目标，或边界有实质差别时，才建议新增或修改场景：指出最接近的条目、差别，以及建议的分类、名称和用途。仍可根据项目的权威来源给出有用的当前建议，但把没有匹配的草稿标为本任务专用。不要修改共享提示词库，也不要创建本地提示词集合。
 
-## Route common question types
+## 常见问题类型的路径
 
-Pick the destination from the canonical table and read its Skill or methodology section before drafting a prompt. This table only names the distinction the advice must make clear; the destination owns its rules.
+从标准路由表中选定目标方，起草提示词之前阅读它的 Skill 或方法论章节。这张表只写建议中必须讲清楚的区别；规则由目标方负责。
 
-| Question type | Destination | Distinction to make clear |
+| 问题类型 | 目标方 | 需要讲清楚的区别 |
 | --- | --- | --- |
-| Game design, numeric design, delivery scope or terminology | `design-gdd`, `design-balance`, `product-author` or `project-terminology` | Changing game rules, tuning an authorized numeric topic, arranging delivery and maintaining meaning-preserving definitions are different tasks. Initial design and draft review need no Product or Feature. |
-| A project-wide or specialized rule | The current task, under **Incremental rule maintenance** in `methodology/04-project-rules.md` | A local design does not automatically become a global rule. |
-| Supporting documentation inside an authorized Feature | That Feature | It does not open a new planning cycle. |
-| Feedback or an external report, or the cause of a concrete failure | `feedback-triage-godot` or `bug-diagnosis-godot` | Classifying feedback differs from finding a cause. Neither creates a Feature, relaxes requirements or authorizes a repair. |
-| The overall structure of a module, with no abnormal behavior | The current-state audit in `review-code` | This is an audit, not a diagnosis. |
-| Environment preparation, requested checks, human acceptance or evidence recovery | `project-environment-godot`, `project-verification-godot`, `manual-acceptance-godot` or `verification-evidence-godot` | Tool readiness, executed checks, actual user acceptance and evidence applicability are different facts. None adds a Feature, Stage or full delivery run. |
-| A requested UI or logic prototype | `prototype-godot` within the current Feature or an authorized experiment | Actual Godot execution and observations differ from planned checks and production acceptance. HTML is not the default substitute. |
-| Several unknowns whose answers affect one another | `wayfinder-godot`; a single ordinary question uses `project-grill-me` | Clear work stays with its owner. The advisor explains the route without exploring. |
-| A separate checkout, or bringing selected results back | `worktree-create-godot` or `worktree-integrate-godot` (a conflicted integration uses the latter's conditional reference) | A separate checkout does not isolate data, and integration neither selects a winner nor permits cleanup. Checks in an existing worktree need no creation step. |
-| External facts or approach comparison | **External research** in `methodology/09-records-reports-and-handoff.md` and the `researcher` role | The project's `researcher` role differs from the user-installed `anysearch` Skill. Cited research in `docs/research/` is not a confirmed requirement or local verification. |
-| An observable game moment, interface, asset or localization specification | The fixed owners in `methodology/11-specialist-workflows.md`, such as `design-game-presentation`, `design-ui-spec`, the asset specification Skills or `design-localization-spec` | Direction or specification, integration (`content-asset-integration`, `content-localization`) and review are separate. Asset production is reserved and has no Skill; do not invent one in a prompt. |
-| Formal review | The review Skills in an independent instance, under `methodology/12-independent-review.md` | No automatic review sequence. Author self-checking is not independent review, and a review is not human acceptance. |
-| Performance or soak measurement | `diagnostics-performance` or `diagnostics-soak-test` | Their results have their own coverage limits and are not passing gdUnit evidence. |
-| Inspecting a proposal, clarifying an undecided requirement or auditing implemented work | `plan-review-godot`, `project-grill-me` or a review Skill | These are three different requests. Plan inspection is not a required step before planning, implementation or completion; its findings neither authorize edits nor advance a Stage. |
-| Reflecting on actual task experience | `retro-godot` | A retrospective is optional and its findings do not authorize edits. |
-| Designing how recurring or anticipated work should be handled | `loop-me-godot` | Unlike a retrospective, it needs no prior failure, and it does not become a Stage. |
-| Pausing, switching or continuing in a new conversation | `task-handoff-godot` for a requested stop point or copyable handoff; resuming a recorded stop returns to the target task | Ordinary continuation needs no extra handoff or worktree. A non-empty Git status alone is not an ownership conflict. |
-| A framework defect found during project work | The framework maintenance repository or the project-tooling route in `engineering-change-plan` | Preserve the business work in progress. A newly chosen framework source does not require the previous project's Git history. |
+| 游戏设计、数值设计、交付范围或术语 | `design-gdd`、`design-balance`、`product-author` 或 `project-terminology` | 修改游戏规则、调优已获授权的数值主题、安排交付和维护不改变含义的定义，是不同的任务。初始设计和草稿审核不需要 Product 或 Feature。 |
+| 全项目或专项规则 | 当前任务，按 `methodology/04-project-rules.md` 的 **规则的增量维护** | 局部设计不会自动成为全局规则。 |
+| 已授权 Feature 内的支持文档 | 那个 Feature | 它不会开启新一轮规划。 |
+| 反馈或外部报告，或某个具体故障的原因 | `feedback-triage-godot` 或 `bug-diagnosis-godot` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |
+| 某个模块的整体结构，没有异常行为 | `review-code` 中的现状审核 | 这是审核，不是诊断。 |
+| 环境准备、要求的检查、人工验收或证据恢复 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 或 `verification-evidence-godot` | 工具就绪、已执行的检查、用户实际的验收和证据是否适用，是不同的事实。它们都不增加 Feature、Stage 或完整的交付运行。 |
+| 用户要求的 UI 或逻辑原型 | 当前 Feature 或已授权实验中的 `prototype-godot` | 实际的 Godot 运行和观察，不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
+| 多个答案互相影响的未知项 | `wayfinder-godot`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
+| 单独的工作目录，或把选定的成果带回来 | `worktree-create-godot` 或 `worktree-integrate-godot`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
+| 外部事实或方案比较 | `methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
+| 可观察的游戏表现、界面、资源或本地化规格 | `methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
+| 正式审核 | 按 `methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
+| 性能或长时间运行测量 | `diagnostics-performance` 或 `diagnostics-soak-test` | 它们的结果有自己的覆盖局限，不是 gdUnit 通过的证据。 |
+| 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review-godot`、`project-grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |
+| 反思实际的任务经历 | `retro-godot` | 复盘是可选的，它的发现不授权修改。 |
+| 设计怎样处理反复出现或可以预见的工作 | `loop-me-godot` | 与复盘不同，它不需要先有失败，也不会成为一个 Stage。 |
+| 暂停、切换或在新对话中继续 | 要求的停止点或可复制的交接使用 `task-handoff-godot`；从记录的停止点续接时回到目标任务 | 普通的继续不需要额外的交接或 worktree。Git 状态不为空本身不构成归属冲突。 |
+| 项目工作中发现的框架缺陷 | 框架维护仓库，或 `engineering-change-plan` 中的项目工具路径 | 保留进行中的业务工作。新选用的框架来源不需要之前项目的 Git 历史。 |
 
-Already authorized follow-up returns to its original owner. The advice itself runs, delegates, creates and integrates nothing.
+已经获准的后续工作回到它原来的负责方。建议本身不运行、不委派、不创建，也不集成任何东西。
 
-When advice concerns committing, read the relevant sections of `agent-rules/00-core/git-worktree-and-commits.md` and the task's actual commit conditions. Distinguish a validated logical change ready for an incremental commit from whole-Feature completion. Preserve any separately required acceptance or explicit commit permission; do not infer that permission from an acceptance result or a generic continuation request. This Skill only explains the next action and never stages or commits.
+建议涉及提交时，阅读 `agent-rules/00-core/git-worktree-and-commits.md` 中的相关章节和任务实际的提交条件。区分一个已验证、可以增量提交的逻辑修改和整个 Feature 的完成。保留任何另行要求的验收或明确的提交许可；不要从验收结果或笼统的继续请求中推断出这种许可。本 Skill 只说明下一步操作，从不暂存或提交。
 
-## Stop
+## 停止
 
-Check that the answer addresses the question with current facts, explains the selected scenario or genuine coverage gap when recommending an action, includes a prompt only when needed, and has performed no writes. Stop after the advice.
+检查回答是否用当前事实回应了问题；推荐操作时，是否说明了选定的场景或真实的覆盖缺口；是否只在需要时才提供提示词；是否没有做任何写入。给出建议后停止。

@@ -1,14 +1,25 @@
 ---
 name: diagnostics-soak-test
-description: "Run a bounded long-duration Godot scenario to investigate accumulation, lifecycle degradation or stability. Use for sustained execution, not general playtesting or code review."
+description: "运行一个有边界的长时间 Godot 场景，调查累积、生命周期退化或稳定性问题。用于持续运行；不用于一般试玩或代码审核。"
 ---
 
-# Soak testing
+# 长时间稳定性测试
 
-Follow `methodology/11-specialist-workflows.md` and the task's run authorization. Before starting, establish scenario, intended duration, workload, sampling, stop conditions and resource budget. Reuse existing decisions; resolve missing duration/budget when a long run would otherwise be unbounded.
+遵循 `methodology/11-specialist-workflows.md` 和任务的运行授权。开始之前，确定场景、预定时长、负载、采样方式、停止条件和资源预算。已有的决定直接沿用；如果不补上时长或预算，长测就会没有边界，这时先把它们确定下来。
 
-Exercise meaningful repeated lifecycle transitions and sustained behavior, such as scene reopen/close, spawn/despawn, idle simulation, save/load or reconnect, only where applicable. Use isolated user data and available representative inputs. Define the baseline and useful observations: memory/object counts, errors, latency, queue growth or drift. [diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md) supplies missing signals inside its own authorized scope; a test must not add invisible production diagnostics.
+只在适用时，反复执行有意义的生命周期转换和持续行为，例如：场景重开/关闭、生成/销毁、挂机模拟、存档/读档或重连。使用隔离的用户数据和手头有代表性的输入。定义基线和有用的观察指标：内存/对象数量、错误、延迟、队列增长或漂移。[diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md) 在它自己的授权范围内补充缺少的信号；测试不能添加看不见的生产环境诊断代码。
 
-Record exact version/dirty changes, environment, workload, elapsed runtime, sampling gaps, peak/trend evidence, stop reason and observed failures. Preserve raw logs with enough timing to reproduce the trigger. Do not invent hours from simulation speed or equate simulated time with wall-clock coverage.
+记录下列内容：
 
-On early interruption, report the actual completed duration and untested remainder. “No failure observed” applies only to executed scenarios and time. A failure leads to diagnosis and authorized repair, then relevant reruns; do not erase the first failure or certify a fix from a different diagnostic version. Results supplement the task's verification plan and never masquerade as gdUnit runs.
+- 准确的版本及未提交改动；
+- 环境；
+- 负载；
+- 实际运行时长；
+- 采样空缺；
+- 峰值和趋势证据；
+- 停止原因；
+- 观察到的故障。
+
+保留原始日志，并带上足以复现触发条件的时间信息。不要根据模拟速度推算出小时数，也不要把模拟时间等同于实际挂钟时间的覆盖。
+
+提前中断时，报告实际完成的时长和未测试的剩余部分。“未观察到故障”只适用于实际执行过的场景和时间。出现故障时，先诊断、再做已获授权的修复，然后重新运行相关测试；不要抹掉第一次故障，也不要用另一个诊断版本的结果认证修复。结果是任务验证计划的补充，绝不能冒充 gdUnit 运行。

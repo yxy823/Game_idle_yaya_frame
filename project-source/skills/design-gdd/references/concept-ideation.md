@@ -1,29 +1,29 @@
-# Concept exploration and validation questions
+# 概念探索与验证问题
 
-Use this reference when the direction is unsettled, alternatives need comparison or a central gameplay assumption needs a useful validation plan. Work from the current idea and constraints; do not reopen settled choices or restore explicitly excluded mechanics.
+方向尚未确定、需要比较备选方案，或者某个核心玩法假设需要一个有用的验证计划时，使用本参考。从当前的想法和约束出发；不要重新打开已确定的选择，也不要恢复已被明确排除的机制。
 
-## Find the design starting point
+## 找到设计的起点
 
-Start with the supplied mechanic, emotion, player fantasy, play situation or reference game. Identify what the player repeatedly does, the intended experience and the constraints that shape it. When the preference is unclear, ask about a concrete moment of play. When enough is known, propose a direction or draft immediately.
+从用户提供的机制、情绪、玩家幻想、游玩情境或参考游戏开始。找出玩家反复做的事、期望的体验，以及塑造它的约束。偏好不清楚时，围绕一个具体的游玩时刻提问。已知信息足够时，立即提出方向或草稿。
 
-Useful approaches include following a core action, reasoning backward from an experience goal or combining compatible elements. Choose an approach that answers the current question; there is no required ideation exercise or number of alternatives.
+可用的思路包括：沿着一个核心操作展开、从体验目标倒推，或者组合相容的元素。选择能回答当前问题的思路；没有必须做的构思练习，也没有规定的备选方案数量。
 
-## Compare meaningful alternatives
+## 比较有意义的备选方案
 
-Offer alternatives only when they differ in player decisions, the loop or another material consequence. For each, explain the player's activity, intended effect, fit with existing constraints, main cost or tradeoff and largest unverified assumption. Present them as lettered options under the shared questioning method, and explain the recommendation without recording it as the user's choice.
+只有在玩家决策、循环或其他重要后果上确有不同时，才提出备选方案。每个方案说明玩家做什么、预期效果、与已有约束是否契合、主要代价或取舍，以及最大的未验证假设。按共享提问方法把它们写成带字母的选项，说明推荐理由，但不要把推荐记录成用户的选择。
 
-When the user combines directions, check that their rules and scope fit together. Once a direction is adopted, develop it rather than reopening the choice. Use candidate wording where the user asked for exploration rather than a decision. If saving is authorized, save proposals at the owner chosen by **Candidate and unadopted ideas** in `methodology/01-product-doc-structure.md`; do not scatter speculative system drafts among adopted rules.
+用户组合多个方向时，检查它们的规则和范围能否配合。一个方向被采用后，就沿着它发展，不再重新讨论这个选择。用户要的是探索而不是决定时，使用候选的措辞。获准保存时，把建议保存在 `methodology/01-product-doc-structure.md` 的 **候选与未采纳想法** 选定的位置；不要把推测性的系统草稿散落在已采用的规则中。
 
-## Make the game concrete
+## 把游戏具体化
 
-Trace the relevant relationship between one action, a challenge, a play session and longer progress. Not every game needs all these timescales. Explain what each system receives, changes and produces where those relationships are unclear; detailed technical architecture is not needed to discuss the design.
+梳理一次操作、一个挑战、一次游玩和更长期的进展之间的关系，只梳理与本次有关的部分。不是每款游戏都需要所有这些时间尺度。这些关系不清楚时，说明每个系统接收什么、改变什么、产出什么；讨论设计不需要详细的技术架构。
 
-Distinguish what the current design must support, what may wait and what is intentionally excluded. Explain consequential tradeoffs at the relevant topic. Do not infer offline progress, prestige, endless play or increasingly complex stages merely from an incremental-game label.
+区分当前设计必须支持的、可以推迟的和有意排除的内容。在对应的主题中说明重要的取舍。不要只因为标签是“放置游戏”，就推断出离线进度、转生、无尽玩法或越来越复杂的关卡。
 
-## Plan the smallest useful validation
+## 规划最小的有用验证
 
-For a consequential unknown, state the assumption or requirement, a bounded situation that could test it, what to observe and what result would call for revision. Reuse available evidence or an existing suitable experiment when it answers the question.
+对一个有重要影响的未知项，写明假设或要求、一个可以检验它的有边界的情境、要观察什么，以及什么结果意味着需要修改。可用的证据或已有的合适实验能回答问题时，直接复用。
 
-Rule correctness, player comprehension and intended experience need different evidence. A coherent written loop does not demonstrate enjoyment, and a technical experiment cannot establish retention or market demand. Preserve hypotheses until evidence supports the corresponding claim.
+规则正确、玩家能理解和期望的体验，需要不同的证据。一个写得自洽的循环不能证明好玩，技术实验也不能证明留存或市场需求。在证据支持对应的论断之前，保留为假设。
 
-This design task may propose a prototype, calculation or observation. It does not automatically build a Godot prototype, change runtime files or require environment setup. Actual experiments proceed only under the appropriate authorized workflow; reuse the current authorization when the broader task already includes them.
+这项设计任务可以提出原型、计算或观察方案。它不会自动构建 Godot 原型、修改运行时文件或要求准备环境。实际的实验只在合适的已授权流程中进行；上层任务已经包含实验时，复用当前授权。

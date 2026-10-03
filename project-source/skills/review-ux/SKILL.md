@@ -1,14 +1,14 @@
 ---
 name: review-ux
-description: "Independently review interface usability, interaction clarity and accessibility in a specified flow. Use for a requested UX review. Not for UI design or general playtest analysis."
+description: "独立审核指定流程中的界面可用性、交互清晰度和无障碍。用于用户要求的 UX 审核。不用于 UI 设计或一般的试玩分析。"
 ---
 
-# UX review
+# UX 审核
 
-Apply `methodology/12-independent-review.md`. Read the relevant user goal, GDD behavior, Product delivery scope and UI specification, then inspect actual screen/interaction evidence for the requested flow and display/input conditions.
+按 `methodology/12-independent-review.md` 执行。阅读涉及的用户目标、GDD 行为、Product 交付范围和 UI 规格，再针对请求的流程以及显示与输入条件，检查实际的画面和交互证据。
 
-Trace whether actions are discoverable, state and feedback are understandable, navigation/focus is predictable, mistakes are recoverable and the flow supports the goal. Include relevant empty, loading, disabled, error, dense/long-text and repeated-entry states. Examine readable contrast, target size, input method and non-color cues where the task requires them; do not invent a certification standard.
+追踪：操作是否容易发现，状态和反馈是否容易理解，导航与焦点是否可预期，错误能否恢复，流程是否支持用户目标。包括涉及的空状态、加载、禁用、错误、内容密集或长文本，以及重复进入等状态。任务要求时，检查文字对比度、点击目标尺寸、输入方式和不依赖颜色的提示；不编造认证标准。
 
-Distinguish demonstrated interaction problems, requirement violations and design suggestions. Static mockups cannot establish keyboard/controller operation or timing, and screenshots alone cannot establish end-to-end usability. If actual interaction evidence is unavailable, limit the conclusion accordingly.
+区分已经演示出来的交互问题、对需求的违反和设计建议。静态效果图不能证明键盘或手柄操作及时机，单靠截图也不能证明端到端的可用性。没有实际交互证据时，相应地限定结论。
 
-Report the concrete user action, observed obstacle, consequence and evidence location. Do not redesign the screen. Gameplay motivation and retention playtesting are outside scope.
+报告具体的用户操作、观察到的障碍、后果和证据位置。不重新设计画面。玩法动机和留存方面的试玩不在范围内。

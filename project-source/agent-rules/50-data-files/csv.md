@@ -1,20 +1,20 @@
-# CSV Rules
+# CSV 规则
 
-CSV cells are text until the schema converts them, and headers are part of the schema API.
+CSV 单元格在 schema 转换之前都是文本，表头是 schema API 的一部分。
 
 ## Schema
 
-- **[MUST]** CSV header names are schema API. Missing, duplicate and unknown headers are errors unless an explicit extension schema permits them.
-- **[PREFER]** Use header-based mapping; positional schemas are acceptable only when deliberately specified.
-- **[MUST]** CSV cells start as Strings and use explicit, locale-independent type conversion.
-- **[MUST]** Define the encoding, delimiter, decimal, date, boolean-token and newline policies independently of the OS or Excel locale.
-- **[MUST]** Numeric text does not use locale thousands separators. Dates use ISO-style or typed semantics defined by the schema.
-- **[MUST]** When `FileAccess.get_csv_line()` and `store_csv_line()` are the parser and writer contract, authoring data uses UTF-8 and a delimiter of exactly one character. `get_csv_line()` does not accept `"` as the delimiter, and embedded quotes use doubled-quote escaping.
-- **[MUST]** If the authoring CSV exceeds the built-in `FileAccess` contract, convert it at build time to the canonical contract, or select and version an explicit alternative parser. Do not assume that Godot will interpret the wider dialect.
+- **[必须]** CSV 表头名称是 schema API。缺失、重复和未知的表头都是错误，除非明确的扩展 schema 允许。
+- **[优先]** 按表头映射；只有经过有意规定时，才可以使用按位置的 schema。
+- **[必须]** CSV 单元格一开始都是 String，通过明确的、与语言区域无关的类型转换得到其他类型。
+- **[必须]** 编码、分隔符、小数、日期、布尔词和换行策略的定义独立于操作系统或 Excel 的语言区域。
+- **[必须]** 数值文本不使用随语言区域变化的千位分隔符。日期使用 schema 定义的 ISO 风格或带类型的语义。
+- **[必须]** 以 `FileAccess.get_csv_line()` 和 `store_csv_line()` 作为解析与写出契约时，编写的数据使用 UTF-8，分隔符恰好是一个字符。`get_csv_line()` 不接受 `"` 作为分隔符，字段内的引号用双写引号转义。
+- **[必须]** 编写用的 CSV 超出内置 `FileAccess` 契约时，在构建时转换为规范契约，或选定一个明确的替代解析器并为它记录版本。不要假定 Godot 会理解更宽的方言。
 
-## Structure
+## 结构
 
-- **[PREFER]** Use a formal simple grammar only for small collections of atomic cells. Prefer relation or child tables for variable one-to-many data.
-- **[PREFER]** Use explicit columns for fixed compound values.
-- **[REVIEW]** If a CSV cell needs nested grammar, several escaping layers, recursive parsing or dynamic maps, reconsider the format.
-- **[MUST]** Do not impose a blanket "no multiline CSV fields" rule; quoted fields may legitimately contain line breaks when the parser supports them.
+- **[优先]** 只有原子单元格组成的小集合，才使用正式定义的简单语法。可变的一对多数据优先使用关联表或子表。
+- **[优先]** 固定的复合值使用明确的多列。
+- **[复核]** CSV 单元格需要嵌套语法、多层转义、递归解析或动态映射时，重新考虑数据格式。
+- **[必须]** 不要一刀切地规定“CSV 字段不能多行”；解析器支持时，带引号的字段可以合法地包含换行。

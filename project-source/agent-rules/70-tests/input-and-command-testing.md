@@ -1,35 +1,35 @@
-# Input and Command Testing
+# 输入与 Command 测试
 
-Separate physical input, Godot event routing, UI adapters and production business Commands.
+区分物理输入、Godot 事件路由、UI 适配层和生产业务 Command。
 
-## Input layers
+## 输入层次
 
-- **[MUST]** `Input.action_press()` and `Input.action_release()` test the polled action state; they do not prove event propagation through `_input()` or `_unhandled_input()`.
-- **[MUST]** Use `Input.parse_input_event()` or the runner's real event simulation when event routing or GUI consumption is the contract.
-- **[MUST]** `InputEventAction('attack')` proves action semantics, not the physical Key, Mouse or Joypad binding.
-- **[PREFER]** Gameplay business tests use semantic Actions or production Commands rather than binding to the current default key.
-- **[REVIEW]** Test physical bindings, modifiers, `exact_match`, deadzones, axis direction and device-specific behavior with actual physical InputEvents.
-- **[MUST]** When GUI consumption, focus, `mouse_filter` or Viewport routing matters, test through the real Viewport event path rather than calling handlers directly.
+- **[必须]** `Input.action_press()` 和 `Input.action_release()` 测试的是轮询得到的 Action 状态；它们不能证明事件经过 `_input()` 或 `_unhandled_input()` 的传播。
+- **[必须]** 事件路由或 GUI 消费是契约时，使用 `Input.parse_input_event()` 或运行器的真实事件模拟。
+- **[必须]** `InputEventAction('attack')` 证明的是 Action 语义，不是物理的 Key、Mouse 或 Joypad 绑定。
+- **[优先]** 玩法业务测试使用语义 Action 或生产 Command，不绑定到当前的默认按键。
+- **[复核]** 物理绑定、修饰键、`exact_match`、死区、轴方向和设备特有行为，用真实的物理 InputEvent 测试。
+- **[必须]** GUI 消费、焦点、`mouse_filter` 或 Viewport 路由有影响时，通过真实的 Viewport 事件路径测试，不直接调用处理函数。
 
-## UI versus business behavior
+## UI 行为与业务行为
 
-- **[MUST]** Treat UI interaction wiring, UI state and downstream business behavior as separate test targets.
-- **[MUST]** When the contract is "the user can click this control", directly emitting the control's signal or calling its handler is not sufficient evidence.
-- **[MUST]** Do not force business rules to be tested through the mouse or UI when a Command or domain API is the actual behavior boundary.
+- **[必须]** UI 交互连接、UI 状态和下游业务行为是不同的测试目标。
+- **[必须]** 契约是“用户能点击这个控件”时，直接发出控件的信号或调用其处理函数不算充分证据。
+- **[必须]** Command 或领域 API 才是实际的行为边界时，不要强制通过鼠标或 UI 测试业务规则。
 
-## Commands
+## Command
 
-- **[PREFER]** Automatable gameplay operations execute through production Command and API boundaries.
-- **[MUST]** Test and debug harnesses do not bypass production validation, state ownership, costs, phase checks or event emission by directly mutating internals.
-- **[MUST]** Commands express stable business intent, not an arbitrary `set_property`, `call_method` or reflective mutation.
-- **[REVIEW]** A fixture or scenario builder may establish a legal initial state quickly, but the setup and the operation under test are distinct.
-- **[MUST]** Normal fixture builders create states that satisfy the current domain invariants. Invalid or corrupt states are constructed only by tests that explicitly target recovery or validation.
-- **[MUST]** Text debug or console command harnesses parse, resolve and dispatch typed production Commands; they do not reimplement business logic.
-- **[MUST]** Parser tests and Command behavior tests are separate.
-- **[MUST]** Entity references in Commands use stable business or slot identities, not volatile SceneTree NodePaths or UI names.
-- **[MUST]** Separate mutating Commands from read-only Queries. Queries do not secretly repair, create or advance state.
-- **[PREFER]** Business assertions read authoritative domain snapshots or queries rather than inferring state from deep UI Nodes.
-- **[PREFER]** Fallible Commands return or emit structured, stable results; human-readable log text is not the only success or failure API.
-- **[MUST]** Tests of rejected Commands assert both the failure and the absence of any partial mutation of authoritative state.
-- **[PREFER]** Reproduce a complex bug from a legal initial scenario, deterministic seed and time inputs, and a sequence of production Commands.
-- **[MUST]** Input Action IDs and domain Command IDs are separate namespaces; adapters map contextual input intent to a business Command.
+- **[优先]** 可以自动化的玩法操作通过生产 Command 和 API 边界执行。
+- **[必须]** 测试与调试工具不通过直接修改内部状态，绕过生产校验、状态归属、成本、阶段检查或事件发出。
+- **[必须]** Command 表达稳定的业务意图，不是任意的 `set_property`、`call_method` 或反射式修改。
+- **[复核]** 测试夹具或场景构建器可以快速建立合法的初始状态，但准备过程与被测操作是两回事。
+- **[必须]** 普通的测试夹具构建器创建满足当前领域不变量的状态。只有明确针对恢复或校验的测试，才构造无效或损坏的状态。
+- **[必须]** 文本调试或控制台命令工具负责解析、解析引用并分派带类型的生产 Command；它们不重新实现业务逻辑。
+- **[必须]** 解析器测试与 Command 行为测试分开。
+- **[必须]** Command 中的实体引用使用稳定的业务身份或槽位身份，不使用易变的 SceneTree NodePath 或 UI 名称。
+- **[必须]** 会修改状态的 Command 与只读的 Query 分开。Query 不暗中修复、创建或推进状态。
+- **[优先]** 业务断言读取权威的领域快照或查询，不从深层 UI Node 推断状态。
+- **[优先]** 可能失败的 Command 返回或发出结构化、稳定的结果；人读的日志文本不是唯一的成功或失败 API。
+- **[必须]** 被拒绝的 Command 的测试，既断言失败，也断言权威状态没有发生任何部分修改。
+- **[优先]** 复杂 Bug 从合法的初始场景、确定的种子与时间输入，以及一串生产 Command 复现。
+- **[必须]** Input Action ID 和领域 Command ID 是不同的命名空间；适配层把带上下文的输入意图映射到业务 Command。

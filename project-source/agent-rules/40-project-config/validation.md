@@ -1,8 +1,14 @@
-# Project Configuration Validation
+# 项目配置验证
 
-A successfully parsed `project.godot` is only the lowest validation layer. The topic documents add their own evidence: a fresh process for persisted settings (`authoring-and-scope.md`) and Autoload changes (`autoloads.md`), fresh import and reimport for import defaults (`import-defaults.md`), and renderer or platform evidence for subsystem settings (`subsystem-settings.md`).
+`project.godot` 能成功解析只是最低一层的验证。各专题文档另有自己的证据要求：
 
-- **[MUST]** Validate changed settings against their Godot 4.7 name, type, legal values and semantics.
-- **[MUST]** Run concrete consumer tests for the affected settings domain.
-- **[MUST]** For Input changes, include the appropriate action and event-routing tests.
-- **[MUST]** Behavior of custom export features is also validated under `41-export-config`.
+- 持久化设置（`authoring-and-scope.md`）和 Autoload 修改（`autoloads.md`）需要新进程的证据。
+- 导入默认值（`import-defaults.md`）需要全新导入和重新导入的证据。
+- 子系统设置（`subsystem-settings.md`）需要渲染器或平台的证据。
+
+此外，所有项目配置修改都遵守：
+
+- **[必须]** 按 Godot 4.7 中的名称、类型、合法值和语义验证修改过的设置。
+- **[必须]** 对受影响的设置领域运行具体的使用方测试。
+- **[必须]** 修改 Input 时，包含对应的 Action 测试和事件路由测试。
+- **[必须]** 自定义导出 feature 的行为还要按 `41-export-config` 验证。

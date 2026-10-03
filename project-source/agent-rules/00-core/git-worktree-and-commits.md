@@ -1,67 +1,67 @@
-# Git Changes and Commits
+# Git 改动与提交
 
-Defines Git change preservation, staging and local commits for a single-user project. These rules apply to every task that may modify repository files; they do not establish multi-user change attribution.
+本页规定单人项目中的 Git 改动保留、暂存和本地提交。这些规则适用于每个可能修改仓库文件的任务；它们不建立多人协作下的改动归属机制。
 
-## Responsibility boundary
+## 职责边界
 
-- **[MUST]** The workflow that governs the task defines the required approval and validation, and its Completion Gate determines task completion. A local commit does not establish completion or human acceptance. Feature execution follows `methodology/03-execute-loop.md`, including its incremental commit boundary.
-- **[MUST]** This document defines logical commit boundaries, staging, message format and delivery reporting for authorized changes.
+- **[必须]** 管辖本任务的流程规定所需的批准和验证，由它的完成检查判断任务是否完成。本地提交不代表任务完成，也不代表人工验收。Feature 的执行遵循 `methodology/03-execute-loop.md`，包括其中的增量提交边界。
+- **[必须]** 本页规定已获授权的修改如何划分逻辑提交边界、如何暂存、提交说明的格式，以及如何汇报交付。
 
-## Inspect and preserve current changes
+## 检查并保留当前改动
 
-- **[MUST]** When the task designates a checkout, including an authorized worktree, work in it. Verify its actual path and Git state, then read, modify and validate project files there; do not substitute another checkout.
-- **[MUST]** Use a worktree only when the current scope and authorization call for one; do not create one by default.
-- **[MUST]** A separate checkout alone does not isolate tools, running processes, caches or runtime data. Assess the side effects that matter for the requested operation.
-- **[MUST]** At the start of a modifying task, inspect Git status and the relevant differences to understand existing work and the staging state.
-- **[MUST]** Preserve pre-existing unrelated content and its staging state. A non-empty Git status alone does not block an authorized task. Do not stash, restore, delete, overwrite or include unrelated changes merely to obtain a clean directory or a convenient commit.
-- **[MUST]** To pause, switch or resume work, use the task's designated checkout, the Feature and Progress records, the current HEAD and the relevant actual differences. Ordinary continuation in the same directory needs no new checkout.
-- **[MUST]** Reuse valid work, decisions and authorization; a new conversation does not start the task over. After verifying their scope, changes that belong to the same authorized task may be completed, validated and committed.
-- **[MUST]** Do not require per-file authorship proof or create an attribution ledger.
-- **[MUST]** Stop only the dependent mutation and explain the concrete overlap when the requested edit conflicts with existing content, the intended result is materially ambiguous, or a coherent validated commit cannot be separated from unrelated changes. Continue unaffected authorized work and read-only analysis until the overlap is resolved. Do not resolve a conflict by discarding existing work.
-- **[MUST]** If an unfinished merge or rebase, or a change of HEAD or branch, cannot be explained by the authorized task's operations, preserve the state and report it. Resolve the uncertainty before dependent writes or commits; do not automatically abort, reset or clean it up.
-- **[MUST]** Project writes require Git. Environment setup follows the same preservation, validation and local commit rules as other modifying tasks.
+- **[必须]** 任务指定了工作目录（包括已获授权的 worktree）时，在该目录中工作。先核对它的实际路径和 Git 状态，再在其中读取、修改和验证项目文件；不改用另一个工作目录。
+- **[必须]** 只有当前范围和授权需要时才使用 worktree；不默认创建。
+- **[必须]** 仅仅分出一个工作目录，并不能隔离工具、运行中的进程、缓存或运行时数据。评估本次操作真正需要关心的副作用。
+- **[必须]** 会修改文件的任务开始时，查看 Git 状态和相关差异，了解已有工作和暂存状态。
+- **[必须]** 保留事先存在的无关内容及其暂存状态。Git 状态非空本身不阻止已获授权的任务。不为了得到干净的目录或方便提交，而 stash、restore、删除、覆盖或纳入无关改动。
+- **[必须]** 暂停、切换或续接工作时，依据任务指定的工作目录、Feature 与 Progress（进度记录）、当前 HEAD 和实际差异。在同一目录中正常续接不需要新的工作目录。
+- **[必须]** 复用仍然有效的工作、决定和授权；换一次对话不等于任务从头开始。核实范围后，属于同一个已获授权任务的改动可以继续完成、验证并提交。
+- **[必须]** 不要求逐文件证明作者身份，也不建立改动归属台账。
+- **[必须]** 出现下列任一情况时，只停止依赖它的那部分修改，并说明具体在哪里重叠：所要求的修改与已有内容冲突；预期结果存在实质歧义；无法从无关改动中分离出一个连贯且已验证的提交。重叠解决前，继续不受影响的已授权工作和只读分析。不靠丢弃已有工作来解决冲突。
+- **[必须]** 如果存在未完成的合并或变基，或者 HEAD、分支发生了已授权任务的操作无法解释的变化，保留现场并汇报。在依赖该状态的写入或提交之前先弄清楚；不自动中止、重置或清理。
+- **[必须]** 写入项目需要 Git。环境准备与其他会修改文件的任务一样，遵循同样的保留、验证和本地提交规则。
 
-## Staging
+## 暂存
 
-- **[MUST]** Stage only paths or individual hunks that belong to the current logical change, including verified work resumed from the same task. Use explicit path arguments or an inspected hunk-selection mechanism.
-- **[MUST]** Do not use `git add .`, `git add -A`, `git commit -a`, broad globs or another command that can silently include unrelated work.
-- **[MUST]** Perform the validation required by the task and reuse results that still cover the current change. Committing adds no separate review gate: do not reread the complete staged diff or rerun passed checks for every commit. Check again only for new changes, failures, invalidated evidence or a concrete concern. Include the dependencies that the committed change needs.
-- **[MUST]** Report unresolved validation failures or missing evidence under the governing workflow. Do not claim that unexecuted checks passed, and do not delete valid tests, weaken assertions or bypass checks to obtain a pass.
+- **[必须]** 只暂存属于当前逻辑修改的路径或差异块，包括从同一任务续接、已核实的工作。使用明确的路径参数，或检查过的差异块选择方式。
+- **[必须]** 不使用 `git add .`、`git add -A`、`git commit -a`、宽泛的通配符或其他可能悄悄纳入无关工作的命令。
+- **[必须]** 执行任务要求的验证，复用仍然覆盖当前修改的结果。提交不另设审核关卡：不为每次提交重读完整的暂存差异，也不重跑已通过的检查。只有出现新的修改、失败、证据失效或具体疑虑时，才再次检查。把提交内容所需的依赖一并纳入。
+- **[必须]** 未解决的验证失败或缺失的证据，按管辖流程汇报。不声称未执行的检查已通过；不删除有效测试、削弱断言或绕过检查来换取通过。
 
-## Local commits
+## 本地提交
 
-- **[MUST]** Execute Features and create their eligible local commits in the task's target checkout. A branch named `main` or `master` does not by itself require switching branches. The branch name also does not waive change preservation, approval, acceptance, validation or Completion Gates.
-- **[MUST]** Automatically commit complete logical changes within the authorized task, without another confirmation. Choose boundaries as the work develops; a separate commit plan or review is not required.
-- **[MUST]** An explicit no-commit request or a user-defined commit condition takes precedence within its scope and continues across Skills and resumed conversations. When a task separately requires actual acceptance and explicit permission to commit, satisfy both: an accepted result alone grants no commit permission, and permission to commit alone supplies no acceptance. Reuse permission that is already explicit without asking again.
+- **[必须]** 在任务的目标工作目录中执行 Feature，并在那里创建符合条件的本地提交。分支名为 `main` 或 `master` 本身不要求切换分支。分支名也不能免除改动保留、批准、验收、验证或完成检查。
+- **[必须]** 在已获授权的任务内，完整的逻辑修改自动提交，不再次确认。随工作进展选择提交边界；不需要单独的提交计划或审核。
+- **[必须]** 明确的“不提交”要求或用户规定的提交条件，在其范围内优先，并延续到其他 Skill 和续接的对话中。任务分别要求实际验收和明确的提交许可时，两者都要满足：结果被接受本身不授予提交许可，获得提交许可本身也不构成验收。已经明确给出的许可直接复用，不再询问。
 
-### Commit boundaries
+### 提交边界
 
-- **[MUST]** One commit represents one independently understandable logical change, together with its necessary implementation, tests, references and documentation.
-- **[MUST]** Separate independent Features, Bugs and Refactors. Changes that share one root cause may stay together only when they must be implemented and verified together.
-- **[MUST]** One Feature may have several commits, and each later commit may depend on earlier committed work.
-- **[MUST]** Choose boundaries by coherent behavior and validation, not by time, file count, a fixed number of commits or separate "code", "test" and "docs" phases. A small task may need only one commit.
+- **[必须]** 一个提交代表一个可以独立理解的逻辑修改，连同它必要的实现、测试、引用和文档。
+- **[必须]** 相互独立的 Feature、Bug 和重构分开提交。共享同一根因的修改，只有在必须一起实现、一起验证时，才放在同一个提交中。
+- **[必须]** 一个 Feature 可以有多个提交，后面的提交可以依赖前面已提交的工作。
+- **[必须]** 按连贯的行为和验证划分边界，不按时间、文件数、固定的提交数量，或“代码”“测试”“文档”这样的阶段划分。小任务可能只需要一个提交。
 
-### Commit messages
+### 提交说明
 
-- **[MUST]** Use the subject format `<type>(<scope>): <Chinese behavior summary>`. The summary identifies the actual behavior or workflow change; do not use vague summaries such as "修复问题", "更新代码", "优化逻辑" or "调整内容".
-- **[PREFER]** Use an established concise type such as `feat`, `fix`, `refactor`, `test`, `perf`, `build`, `docs` or `chore`, and choose the narrowest stable scope. For an executed Feature, the Feature ID is the preferred scope.
-- **[MUST]** For a non-trivial change, write a concise body that states what changed, why it was needed, meaningful implementation decisions and the principal validation actually run. Do not mechanically enumerate files.
-- **[MUST]** Every commit for a Feature or an Engineering Feature, including incremental implementation and completion records, includes these two body lines:
-  - `Feature: <current Feature title>`, using the `title` of the matching entry in `docs/feature-list.json`;
-  - exactly one `Work item: <relative-path>` that points to the Feature detail record, for example `Work item: docs/features/F012.json`.
-- **[MUST]** Keep the subject specific to this commit's change instead of repeating only the overall Feature title.
-- **[MUST]** Record remaining work in the Feature and Progress records; a commit body has no required section for it. Mention a limitation only when it affects understanding or using this change, and do not describe a partial delivery as the whole Feature being complete.
-- **[MUST]** A task without a single Feature that owns it omits the `Feature:` and `Work item:` lines. Do not invent a name or path, and do not point them at implementation files.
+- **[必须]** 主题使用 `<type>(<scope>): <Chinese behavior summary>` 格式。摘要写明实际的行为或流程变化；不用“修复问题”“更新代码”“优化逻辑”“调整内容”这类笼统摘要。
+- **[优先]** 使用 `feat`、`fix`、`refactor`、`test`、`perf`、`build`、`docs`、`chore` 等常用的简洁类型，并选择最窄且稳定的范围。执行 Feature 时，优先用 Feature ID 作为 scope。
+- **[必须]** 非简单修改要写简洁的正文，说明改了什么、为什么需要、有意义的实现决定，以及实际运行过的主要验证。不机械罗列文件。
+- **[必须]** Feature 或工程 Feature 的每个提交，包括增量实现和完成记录的提交，正文都包含下面两行：
+  - `Feature: <current Feature title>`，取 `docs/feature-list.json` 中对应条目的 `title`；
+  - 恰好一行 `Work item: <relative-path>`，指向该 Feature 的详情记录，例如 `Work item: docs/features/F012.json`。
+- **[必须]** 主题写本次提交的具体修改，不只重复 Feature 的总标题。
+- **[必须]** 剩余工作记录在 Feature 与 Progress 中；提交正文没有必须写剩余工作的段落。只有限制会影响理解或使用本次修改时才提及；不把部分交付写成整个 Feature 已完成。
+- **[必须]** 没有单一 Feature 负责的任务，省略 `Feature:` 和 `Work item:` 两行。不编造名称或路径，也不让它们指向实现文件。
 
-### Correction and delivery
+### 修正与交付
 
-- **[MUST]** If a committed change needs correction, fix and validate it, then create a new correction commit; do not rewrite the existing commit.
-- **[MUST]** At task delivery, report this task's commit hashes or verified range, the validation actually run and any remaining uncommitted task changes. A logical commit does not mean that the whole task is complete.
-- **[MUST]** If repository state, permissions, identity, signing or hooks prevent a commit, preserve the work and report the actual failure and the uncommitted scope. Do not silently initialize a repository, change Git configuration or bypass checks to make committing succeed. Explicitly authorized project creation keeps its own repository-initialization contract.
+- **[必须]** 已提交的修改需要修正时，修复并验证后新建一个修正提交；不改写已有提交。
+- **[必须]** 交付任务时，汇报本任务的提交哈希或已核实的提交范围、实际运行的验证，以及本任务仍未提交的改动。一个逻辑提交不代表整个任务已完成。
+- **[必须]** 如果仓库状态、权限、身份、签名或钩子阻止提交，保留工作，汇报实际的失败原因和未提交的范围。不为了让提交成功而悄悄初始化仓库、修改 Git 配置或绕过检查。明确授权的项目创建，仍按其自身的仓库初始化契约执行。
 
-### Message example
+### 提交说明示例
 
-An illustrative incremental commit; replace the name, change and verification with actual facts. Body labels other than `Feature:` and `Work item:` are optional; omit redundant sections for simple changes.
+下面是一个示意性的增量提交；名称、修改和验证要换成实际情况。除 `Feature:` 和 `Work item:` 外，正文中的其他标签都是可选的；简单修改省略多余的段落。
 
 ```text
 feat(F012): 增加背包容量检查并拒绝超量入库
@@ -75,7 +75,7 @@ Feature: 增加背包物品管理
 Work item: docs/features/F012.json
 ```
 
-## Forbidden operations
+## 禁止的操作
 
-- **[MUST]** Do not automatically push, tag, amend, rebase, reset, modify Git remotes, bypass hooks with `--no-verify`, force-update history or use a destructive checkout or clean operation.
-- **[MUST]** Do not create, switch, merge or delete branches outside the current task's concrete authorization. Using a worktree alone does not authorize changes to another checkout or the removal of existing work.
+- **[必须]** 不自动执行 push、tag、amend、rebase、reset，不修改 Git 远程配置，不用 `--no-verify` 绕过钩子，不强制改写历史，也不使用破坏性的 checkout 或 clean 操作。
+- **[必须]** 不在当前任务的具体授权之外创建、切换、合并或删除分支。仅仅使用 worktree，并不授权修改另一个工作目录或移除已有工作。

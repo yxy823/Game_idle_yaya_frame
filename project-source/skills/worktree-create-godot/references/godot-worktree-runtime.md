@@ -1,33 +1,33 @@
-# Godot preparation in a separate checkout
+# 在独立检出目录中准备 Godot
 
-Read this page before an authorized editor, import, test, game or other writing operation in a worktree, including verification during result integration. Reuse still-valid observations; inspect only the data and tools that the operation can affect. Pure read-only source comparison does not require running Godot.
+在 worktree 里进行已获授权的编辑器、导入、测试、游戏或其他写入操作之前，先读本页；整合结果时的验证也包括在内。复用仍然有效的观察，只检查这次操作会影响的数据和工具。纯只读的源码比较不需要运行 Godot。
 
-Paths in code spans are relative to the target project root unless they are Godot resource paths or settings. Generic configuration and first-scan procedures remain in [project-environment-godot](../../project-environment-godot/SKILL.md), backed by `methodology/05-document-language.md` and `tools/README.md`.
+代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment-godot](../../project-environment-godot/SKILL.md) 负责，其依据是 `methodology/05-document-language.md` 和 `tools/README.md`。
 
-## Identify the actual resources and side effects
+## 确认实际涉及的资源和副作用
 
-| Area touched by this operation | What to establish |
+| 本次操作涉及的方面 | 需要确认的内容 |
 | --- | --- |
-| Versioned project content | The selected checkout contains the intended scripts, scenes, assets and required `.uid` / `.import` metadata. Its `res://` resolves from its own `project.godot`; shared Git storage does not mean both checkouts edit the same resource files. Inspect actual external links or paths when used. |
-| Local files and imports | Uncommitted, untracked and ignored files are not supplied by the selected commit. Check only required local dependencies. `.godot/` is ignored by this project; another checkout's import cache is not proof that this one is prepared. Use the existing scan contract when needed instead of copying or clearing caches by default. |
-| Executables and local configuration | Resolve the actual target paths and configured tools. Reuse a valid machine environment; do not copy an entire machine configuration, reinstall dependencies or change shared tool settings merely because the checkout is new. |
-| `user://` and test scratch data | Determine the actual directory and relevant file/cleanup operations. The same project settings can make multiple checkouts use the same user-data directory. Separate save slots do not isolate settings, caches or test cleanup. |
-| Project-external paths and services | Check absolute paths, report/log destinations, databases, ports or services only when the operation uses them. Identify existing processes that might write there before starting a conflicting run. |
+| 纳入版本管理的项目内容 | 选定的检出目录包含预定的脚本、场景、素材和必需的 `.uid` / `.import` 元数据。它的 `res://` 由它自己的 `project.godot` 解析；共用 Git 存储不代表两个检出目录编辑的是同一批资源文件。用到外部链接或路径时，检查实际的链接或路径。 |
+| 本地文件与导入 | 未提交、未跟踪和被忽略的文件不会由选定的提交提供。只检查必需的本地依赖。本项目忽略 `.godot/`；另一个检出目录的导入缓存不能证明这个目录已准备好。需要时使用已有的扫描约定，不要默认复制或清空缓存。 |
+| 可执行文件与本地配置 | 解析实际的目标路径和配置好的工具。复用有效的本机环境；不要只因检出目录是新的，就复制整套本机配置、重新安装依赖或修改共用的工具设置。 |
+| `user://` 与测试临时数据 | 确认实际的目录，以及相关的文件操作和清理操作。相同的项目设置可能让多个检出目录使用同一个用户数据目录。分开的存档槽位不能隔离设置、缓存或测试清理。 |
+| 项目外的路径与服务 | 只有操作用到时，才检查绝对路径、报告或日志的输出位置、数据库、端口或服务。启动可能冲突的运行之前，先找出可能正在向那里写入的现有进程。 |
 
-The bundled gdUnit4 uses `user://tmp`: inspect `addons/gdUnit4/src/core/GdUnitFileAccess.gd` and the suite cleanup in `addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteAfterStage.gd` when this runner is involved. Running only tests can therefore still affect another checkout's scratch files. Apply `agent-rules/70-tests/fixtures-and-isolation.md` to test-owned namespaces and cleanup; do not alter bundled runner code merely to make a worktree appear isolated.
+项目自带的 gdUnit4 使用 `user://tmp`：涉及这个运行器时，检查 `addons/gdUnit4/src/core/GdUnitFileAccess.gd`，以及 `addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteAfterStage.gd` 中的套件清理。因此即使只运行测试，也可能影响另一个检出目录的临时文件。测试自有的命名空间和清理遵循 `agent-rules/70-tests/fixtures-and-isolation.md`；不要只为了让 worktree 看起来隔离，就修改自带的运行器代码。
 
-## Choose a preparation method for the actual write
+## 按实际写入选择准备方法
 
-Prefer an existing project setting, save/test namespace or tool output option that covers the requested operation. Confirm both the write destination and any cleanup scope; serial execution alone does not protect saved data from a later destructive write. No single change proves that every other side effect is isolated.
+优先使用已有的项目设置、存档或测试命名空间，或能覆盖本次操作的工具输出选项。写入位置和清理范围都要确认；只靠串行执行，保护不了已保存的数据免受之后的破坏性写入。单独一项改动不能证明其他所有副作用都已隔离。
 
-For Godot-managed user data, the [official file-path documentation](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user) describes `application/config/use_custom_user_dir` and `application/config/custom_user_dir_name`. Within authorized experiment configuration, a distinct custom user directory is one available option; verify support and the actual result in the project's Godot version. It does not redirect arbitrary absolute paths or external services. Do not invent a universal command-line isolation flag or change the game's public name just to assume separation.
+对 Godot 管理的用户数据，[官方文件路径文档](https://docs.godotengine.org/en/stable/tutorials/io/data_paths.html#accessing-persistent-user-data-user)说明了 `application/config/use_custom_user_dir` 和 `application/config/custom_user_dir_name`。在已授权的实验配置范围内，使用一个不同的自定义用户目录是可选做法之一；要在项目使用的 Godot 版本中核实它是否支持以及实际效果。它不会重定向任意的绝对路径或外部服务。不要虚构一个通用的命令行隔离参数，也不要只为了假定已经分开就修改游戏的公开名称。
 
-Use the existing diagnostics or an authorized minimal probe to observe relevant resolved paths; `ProjectSettings.globalize_path("user://")` can expose Godot's user-data location. Account for the probe's own startup/import effects before running it. Where the operation may erase or overwrite data and a safe destination cannot yet be established, report the specific blocker and continue unaffected read-only or code work instead of testing against valuable shared data.
+用已有的诊断手段或已授权的最小探测，观察实际解析出的路径；`ProjectSettings.globalize_path("user://")` 可以显示 Godot 的用户数据位置。运行探测之前，先考虑它自身的启动和导入影响。操作可能擦除或覆盖数据、又还无法确定安全的写入位置时，报告这个具体的阻塞，继续不受影响的只读工作或代码工作，不要拿有价值的共用数据做测试。
 
-Keep any temporary configuration within the current task's allowed write scope. Preserve existing settings, explain what was changed and why, and exclude experiment-only settings from adopted game behavior unless their adoption is itself intended and verified. Do not create a general isolation subsystem, extra state file or blanket environment-copy procedure.
+临时配置限定在当前任务允许写入的范围内。保留已有设置，说明改了什么、为什么改。仅用于实验的设置不进入采纳的游戏行为，除非采纳它本身就是预定目标并已验证。不要创建通用的隔离子系统、额外的状态文件或整套复制环境的流程。
 
-## Report only demonstrated preparation
+## 只报告已证实的准备
 
-Separate inspected configuration from observed runtime paths, successful imports, actual test results and human acceptance. Record the relevant target and real evidence through existing task records and [verification-evidence-godot](../../verification-evidence-godot/SKILL.md) when evidence maintenance is needed. An unrun checkout is not validated isolation; a passing environment probe is not passing gameplay or test behavior.
+把检查过的配置，与观察到的运行时路径、成功的导入、实际的测试结果和人工验收分开报告。需要维护证据时，通过已有的任务记录和 [verification-evidence-godot](../../verification-evidence-godot/SKILL.md) 记录相关目标和真实证据。没有运行过的检出目录不算已验证的隔离；环境探测通过也不代表玩法或测试行为通过。
 
-When preparation is sufficient, return to the authorized operation. Broader delivery checks remain with its workflow and [project-verification-godot](../../project-verification-godot/SKILL.md); this reference does not require a full project run for every directory preparation.
+准备足够后，回到已获授权的操作。更大范围的交付检查仍由它的工作流和 [project-verification-godot](../../project-verification-godot/SKILL.md) 负责；本参考不要求每次准备目录都完整运行一遍项目。

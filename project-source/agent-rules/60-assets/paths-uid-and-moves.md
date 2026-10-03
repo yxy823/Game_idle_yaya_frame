@@ -1,21 +1,21 @@
-# Asset Paths, UIDs, and Moves
+# 资源路径、UID 与移动
 
-Move, rename, duplicate and delete assets with awareness of their identity, and keep Business IDs separate from asset identity.
+移动、重命名、复制和删除资源时注意它们的身份；业务 ID 与资源身份分开。
 
-## Moves
+## 移动
 
-- **[MUST]** Use UID-aware move and rename workflows for Resources and assets so that references can migrate.
-- **[MUST]** When moving or renaming the same logical asset outside the editor, move the base file together with its `.import` or `.uid` sidecar when one exists; separating them can lose identity or import metadata.
-- **[MUST]** When creating a distinct logical duplicate, do not copy the UID-bearing sidecar of the original. Prefer Godot's UID-aware duplication, so that the new asset receives a new identity through the supported workflow.
-- **[MUST]** After an external move or rename, run the required filesystem refresh and import to completion, and validate the affected UID and path references and dynamic path consumers.
-- **[MUST]** Distinguish a content update, a move or rename of the same asset, and a logical replacement with a new asset identity.
-- **[MUST]** Do not manually set, generate or repair UID identity for moved or duplicated assets, including in response to duplicate-UID diagnostics.
-- **[MUST]** Renaming a file or Resource does not automatically rename gameplay Business IDs.
-- **[MUST]** Path-based dynamic consumers and raw FileAccess paths require explicit migration, because UID resolution cannot repair arbitrary Strings.
+- **[必须]** Resource 和资源使用能识别 UID 的移动与重命名流程，让引用可以随之迁移。
+- **[必须]** 在编辑器之外移动或重命名同一个逻辑资源时，基础文件与它的 `.import` 或 `.uid` 附属文件（存在时）一起移动；分开可能丢失身份或导入元数据。
+- **[必须]** 创建一个独立的逻辑副本时，不要复制原资源带 UID 的附属文件。优先使用 Godot 能识别 UID 的复制功能，让新资源通过受支持的流程获得新身份。
+- **[必须]** 在外部移动或重命名之后，执行所需的文件系统刷新和导入直到完成，并验证受影响的 UID 与路径引用，以及按路径动态加载的使用方。
+- **[必须]** 区分三种情况：内容更新、同一资源的移动或重命名，以及用一个新资源身份进行的逻辑替换。
+- **[必须]** 不要手工设置、生成或修复被移动或复制资源的 UID 身份，包括在出现 UID 重复诊断时。
+- **[必须]** 重命名文件或 Resource 不会自动重命名玩法中的业务 ID。
+- **[必须]** 按路径动态加载的使用方和 FileAccess 原始路径需要明确迁移，因为 UID 解析无法修复任意 String。
 
-## Deletion
+## 删除
 
-A report of unused assets only finds candidates; deletion permission and scope follow [Deletion and derived outputs](../00-core/change-scope-and-ownership.md#deletion-and-derived-outputs) and [Task scope](../00-core/change-scope-and-ownership.md#task-scope).
+未使用资源的报告只能找出候选项；删除的许可与范围遵循 [删除与派生产物](../00-core/change-scope-and-ownership.md#删除与派生产物) 和 [任务范围](../00-core/change-scope-and-ownership.md#任务范围)。
 
-- **[MUST]** Before deleting an asset, check typed Resource references, scenes, scripts, dynamic path registries, remaps, localization, tests, mods and external contracts, and generated or source relationships, as applicable.
-- **[MUST]** When deleting a source asset, also handle its metadata and generated cache through the supported import workflow; do not manually curate `.godot/imported`.
+- **[必须]** 删除资源之前，按实际情况检查带类型的 Resource 引用、场景、脚本、动态路径注册表、重映射、本地化、测试、mod 与外部契约，以及生成关系或源文件关系。
+- **[必须]** 删除源资源时，通过受支持的导入流程一并处理它的元数据和生成缓存；不要手工整理 `.godot/imported`。

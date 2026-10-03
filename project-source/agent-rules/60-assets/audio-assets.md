@@ -1,22 +1,22 @@
-# Audio Assets
+# 音频资源
 
-Choose the codec, import settings and player mode from the clip's role, duration, seek and loop behavior, memory and platform requirements.
+根据音频片段的用途、时长、跳转与循环行为、内存和平台要求，选择编解码器、导入设置和播放器模式。
 
-## Format and role
+## 格式与用途
 
-- **[MUST]** Distinguish the source codec and import encoding from the sample or stream playback mode of the AudioStreamPlayer.
-- **[PREFER]** Short, frequent sound effects commonly use WAV or decoded sample paths; long music and voice commonly use compressed streaming such as Ogg, subject to platform and quality needs.
-- **[MUST]** Do not transcode one lossy source to another lossy format merely for consistency; preserve the best source master when one is available.
-- **[REVIEW]** WAV PCM, IMA ADPCM and QOA trade memory, quality, CPU cost, seeking and loop behavior differently in the target Godot version. IMA ADPCM is lossy and lower in quality, so do not prefer it mechanically.
-- **[MUST]** Validate the required seek, forward loop, ping-pong and backward behavior against the actual imported stream and configured player. Do not infer codec behavior from limitations that IMA ADPCM had in earlier Godot versions.
+- **[必须]** 区分源编解码器和导入编码，与 AudioStreamPlayer 的 sample 或 stream 播放模式。
+- **[优先]** 在满足平台和质量需求的前提下：短小且频繁的音效通常使用 WAV 或解码后的 sample 路径；长音乐和语音通常使用 Ogg 等压缩流式播放。
+- **[必须]** 不要只为了格式统一，把一种有损源转码为另一种有损格式；有最佳源母版时保留它。
+- **[复核]** 在目标 Godot 版本中，WAV PCM、IMA ADPCM 和 QOA 在内存、质量、CPU 开销、跳转和循环行为上的取舍各不相同。IMA ADPCM 是有损的、质量较低，不要机械地优先选它。
+- **[必须]** 用实际导入的音频流和配置好的播放器验证所需的跳转、正向循环、往返循环和反向播放行为。不要根据早期 Godot 版本中 IMA ADPCM 的限制推断编解码器行为。
 
-## Import settings
+## 导入设置
 
-- **[REVIEW]** Use Force 8-bit only for intentional low-fidelity or memory goals.
-- **[MUST]** Convert to mono only when stereo spatial information is not part of the asset.
-- **[MUST]** Reduce the sample rate only as far as the source spectrum, pitch and quality requirements allow.
-- **[MUST]** Normalize adjusts the content's gain; it is not a substitute for balancing in the mixer or buses.
-- **[REVIEW]** Trimming changes timeline, loop and cue semantics and is not free cleanup.
-- **[MUST]** Loop metadata follows the actual codec, import and player semantics, and the loop transition is validated.
-- **[MUST]** Add BPM metadata only when interactive music logic actually uses it.
-- **[MUST]** The file extension does not prove sample or stream behavior. Do not force sample mode merely because a file is WAV, or stream mode merely because it is Ogg or MP3. Validate the configured player, import and platform contract and the target export, especially for the Web.
+- **[复核]** 只有为了有意的低保真效果或内存目标，才使用 Force 8-bit。
+- **[必须]** 只有当立体声空间信息不属于该资源的内容时，才转为单声道。
+- **[必须]** 降低采样率不超出源频谱、音高和质量要求允许的程度。
+- **[必须]** Normalize 调整的是内容的增益；它不能代替在混音器或总线中做平衡。
+- **[复核]** 裁剪会改变时间线、循环和提示点的语义，不是无代价的清理。
+- **[必须]** 循环元数据遵循实际的编解码器、导入和播放器语义，并验证循环衔接。
+- **[必须]** 只有交互式音乐逻辑实际使用 BPM 元数据时，才添加它。
+- **[必须]** 文件扩展名不能证明 sample 或 stream 行为。不要因为文件是 WAV 就强制 sample 模式，也不要因为是 Ogg 或 MP3 就强制 stream 模式。验证配置的播放器、导入和平台契约以及目标导出，尤其是 Web 平台。

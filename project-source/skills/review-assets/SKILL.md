@@ -1,14 +1,14 @@
 ---
 name: review-assets
-description: "Independently audit scoped game assets for technical fit, references, imports and provenance records. Use for a requested asset inspection. Not for art or audio experience review (review-art, review-audio)."
+description: "独立审查限定范围的游戏资源，检查技术适配、引用、导入和来源记录。用于用户要求的资源检查。不用于美术或音频的体验审核（review-art、review-audio）。"
 ---
 
-# Asset audit
+# 资源审查
 
-Apply `methodology/12-independent-review.md`. Locate resource specifications through **Resource requirements and handoff** in `methodology/11-specialist-workflows.md`, including component-owned resources and the Bibles' shared-resource sections. Read those specifications, the current adopted combination where relevant, concrete asset rules, actual files/import settings and their runtime consumers. Candidate dependencies alone are not missing required assets; check the adopted and reviewed scope.
+按 `methodology/12-independent-review.md` 执行。通过 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 找到资源规格，包括组件自有的资源和各 Bible 中的共享资源章节。阅读这些规格、涉及时当前采纳的组合、具体的资源规则、实际的文件与导入设置，以及运行时的使用方。只是候选依赖，不算缺少必需资源；核对已采纳且在审核范围内的部分。
 
-Check missing or stale paths/UIDs, unused or duplicate assets where relevant, format and dimensions/channels/duration, transparency/cropping, animation data, import/compression settings and memory/storage implications against actual requirements. A large file is not automatically a defect; establish its use and cost. Check provenance and license records for the requested scope, marking unknown rights as unknown rather than giving invented legal clearance.
+对照实际需求检查：缺失或过时的路径与 UID、涉及时未使用或重复的资源、格式与尺寸、通道、时长、透明与裁切、动画数据、导入与压缩设置，以及内存与存储方面的影响。文件大不一定是缺陷；先弄清它的用途和代价。检查请求范围内的来源和许可记录，权利不明的标为未知，不编造法律上的许可结论。
 
-Inspect replacements across all relevant consumers. File presence and successful import do not establish visual or sound fitness or actual usage. Use `review-art` or `review-audio` within the same independent instance when that experience review was requested.
+替换资源时，检查所有涉及的使用方。文件存在、导入成功，都不能证明视觉或声音合适，也不能证明实际被使用。请求包含体验审核时，在同一个独立审核实例中使用 `review-art` 或 `review-audio`。
 
-Report source locations, affected consumers, concrete impact and unverified checks. Do not reimport, delete, deduplicate, rewrite provenance or repair references in the reviewed project.
+报告来源位置、受影响的使用方、具体影响和未验证的检查。不要在被审核的项目中重新导入、删除、去重、改写来源记录或修复引用。

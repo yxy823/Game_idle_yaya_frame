@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Prototype"
-  short_description: "Test scoped visual and logic questions in actual Godot"
+  display_name: "Godot 原型"
+  short_description: "在实际 Godot 中验证限定范围的视觉和逻辑问题"
 
 policy:
   allow_implicit_invocation: true

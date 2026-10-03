@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Manual Acceptance"
-  short_description: "Prepare manual acceptance material or record the user's actual result, keeping the original evidence and task scope"
+  display_name: "Godot 人工验收"
+  short_description: "准备人工验收材料或记录用户的实际结果，保留原始证据和任务范围"
 
 policy:
   allow_implicit_invocation: true

@@ -1,25 +1,25 @@
-# Integration Tests (L2)
+# 集成测试（L2）
 
-L2 tests keep the real collaborator or engine boundary that is the subject of the test.
+L2 测试保留作为测试对象的真实协作者或引擎边界。
 
-## Boundary
+## 边界
 
-- **[MUST]** An integration test preserves the real collaboration being validated: real components, real Godot Node, Resource, Signal and SceneTree semantics, or both.
-- **[MUST]** If every collaborator is mocked, the test is still a unit test.
-- **[PREFER]** Use the smallest representative fixture or scene that carries the real collaboration; do not boot the main scene automatically.
-- **[PREFER]** Test one clear integration boundary per TestCase where possible.
+- **[必须]** 集成测试保留被验证的真实协作：真实组件、真实的 Godot Node、Resource、Signal 和 SceneTree 语义，或两者兼有。
+- **[必须]** 所有协作者都被 mock 时，这个测试仍是单元测试。
+- **[优先]** 使用能承载真实协作的最小代表性测试夹具或场景；不要自动启动主场景。
+- **[优先]** 尽量每个 TestCase 只测试一个清晰的集成边界。
 
-## Fixture scenes
+## 测试夹具场景
 
-- **[PREFER]** Create test-only fixture scenes that compose real production subscenes and components with known dependencies.
-- **[MUST]** Do not maintain a copy of a full production scene as a parallel test scene that must be synchronized by hand.
-- **[MUST]** Fixture scenes provide composition and a known state; they do not reimplement production behavior.
-- **[PREFER]** Use the primary runner's Scene ownership, frame simulation, input synchronization and signal waiting rather than inventing another runtime for Scene tests.
-- **[REVIEW]** Direct property access or method invocation through the SceneRunner is for fixture setup, explicit white-box component tests or diagnostics. Do not use it to bypass production Commands and then claim that the business operation works.
+- **[优先]** 创建仅用于测试的夹具场景，用依赖已知的真实生产子场景和组件组合而成。
+- **[必须]** 不要维护一份完整生产场景的副本，作为需要手工同步的并行测试场景。
+- **[必须]** 夹具场景提供组合和已知状态；它们不重新实现生产行为。
+- **[优先]** 场景测试使用主要运行器提供的场景所有权、帧模拟、输入同步和信号等待，不另外发明一套运行时。
+- **[复核]** 通过 SceneRunner 直接访问属性或调用方法，只用于夹具准备、明确的白盒组件测试或诊断。不要用它绕过生产 Command，然后声称业务操作可用。
 
-## Doubles and assertions
+## 测试替身与断言
 
-- **[PREFER]** Replace external, platform and nondeterministic dependencies outside the current integration target with controlled Fakes or Stubs.
-- **[MUST]** Keep the core collaborators under test real.
-- **[PREFER]** L2 tests focus on representative cases of boundaries, wiring, lifecycle and serialization rather than duplicating the entire L1 input matrix.
-- **[REVIEW]** A heavily mocked module has representative L2 evidence proving that the production wiring still matches the mocked contract.
+- **[优先]** 当前集成目标之外的外部依赖、平台依赖和不确定性依赖，用受控的 Fake 或 Stub 替换。
+- **[必须]** 被测的核心协作者保持真实。
+- **[优先]** L2 测试聚焦边界、连接、生命周期和序列化的代表性用例，不重复整个 L1 输入矩阵。
+- **[复核]** 大量使用 mock 的模块要有代表性的 L2 证据，证明生产中的连接仍与被 mock 的契约一致。

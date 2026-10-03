@@ -1,62 +1,62 @@
-# 12 · Independent review
+# 12 · 独立审核
 
-This document is the common contract for every formal review. Review methods live in Skills:
+本文是所有正式审核的共同约定。审核方法写在 Skill 中：
 
-- `plan-review-godot` inspects design documents and proposals, including its GDD method;
-- `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization` and `review-balance` cover the other subjects.
+- `plan-review-godot` 检查设计文档和方案，包括其中的 GDD 审核方法；
+- `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization` 和 `review-balance` 覆盖其他对象。
 
-Select only the methods relevant to the user's requested scope; one independent instance can combine several. Reviews happen only when requested; they are never a mandatory pipeline.
+只选择与用户要求的范围相关的方法；一个独立的审核实例可以组合多种方法。审核只在被要求时进行，从来不是强制的流水线。
 
-## Trigger and independence
+## 触发与独立性
 
-The user chooses the timing and scope: one Feature, several Features, a commit range, a source or design document, or named files. Follow explicit static-only or other restrictions. Stage 6 coordinates a review requested during delivery; a separate review may happen before or after that stage. A completed review does not itself authorize repair, source changes or human acceptance.
+时机和范围由用户选择：一个 Feature、多个 Feature、一段提交范围、一份来源或设计文档，或指定的文件。遵守“只做静态审查”等明确的限制。交付期间被要求的审核由 Stage 6 协调；单独的审核也可以在这个阶段之前或之后进行。完成的审核本身不授权修复、修改来源或人工验收。
 
-Use a fresh instance that did not author the reviewed work. Loading a review Skill in the author's context is an author self-check, not independent review.
+使用一个没有参与编写被审工作的新实例。在作者自己的上下文中加载审核 Skill，只是作者自检，不是独立审核。
 
-To start the reviewer:
+启动审核实例：
 
-1. Select the `independent-reviewer` role defined in `.codex/agents/independent-reviewer.toml`. It is one reusable role for every specialty.
-2. Confirm that the current client supports the role and actually started the instance with it.
-3. Check the instance's context and effective permissions. Permission overrides from the parent session may apply to it again, so a TOML setting alone never proves isolation.
-4. If the client cannot provide a fresh review context, report that limit. Do not relabel the author's own pass as independent review.
+1. 选择 `.codex/agents/independent-reviewer.toml` 中定义的 `independent-reviewer` 角色。它是适用于所有专业的同一个可复用角色。
+2. 确认当前客户端支持该角色，并且确实用它启动了实例。
+3. 检查实例的上下文和实际权限。父会话的权限覆盖可能再次作用于它，所以仅凭 TOML 设置永远不能证明隔离。
+4. 客户端无法提供全新的审核上下文时，报告这一限制。不要把作者自己的检查改称为独立审核。
 
-When delegating, start without the full author conversation when the client supports that choice. Hand off only what the reviewer needs:
+委派时，如果客户端支持，不带上作者的完整对话来启动。只交给审核实例它需要的内容：
 
-| Input | Content |
+| 输入 | 内容 |
 | --- | --- |
-| Scope and decision | User request, questions to decide, applicable methods and exclusions |
-| Authoritative requirements | Exact source/rule paths, approved decisions and unresolved proposals distinguished |
-| Snapshot | Project directory, commit or range, and relevant uncommitted differences included in the reviewed result |
-| Raw evidence | Original test/measurement files, reproduction steps and environment; summaries labeled as claims |
-| Allowed validation | Permitted commands/run scope, isolated output location and effective permission limits |
+| 范围与待决定事项 | 用户的请求、要判断的问题、适用的方法和排除项 |
+| 权威要求 | 准确的来源和规则路径；区分已批准的决定和尚未解决的提议 |
+| 快照 | 项目目录、提交或提交范围，以及纳入被审结果的相关未提交差异 |
+| 原始证据 | 原始的测试或测量文件、复现步骤和环境；摘要标注为待核实的说法 |
+| 允许的验证 | 允许的命令和运行范围、隔离的输出位置，以及实际的权限限制 |
 
-Do not include a persuasive “why this must be correct” narrative or the verdict the author wants. Summaries help navigation but remain claims to verify against sources and artifacts. The reviewer chooses relevant files beyond the initial list when dependencies require it, without expanding the user's task scope.
+不要附上“为什么这一定正确”的说服性叙述，也不要附上作者期望的结论。摘要有助于导航，但仍是需要对照来源和产物核实的说法。依赖关系需要时，审核实例可以自行选择初始清单之外的相关文件，但不扩大用户的任务范围。
 
-## Read-only outcomes and isolated validation
+## 只读结论与隔离验证
 
-Reviewed source, assets, specifications, original acceptance records and original evidence are read-only to the reviewer. Do not fix, reformat, update requirements, replace evidence, record human acceptance, mark Features done or commit changes. These boundaries apply even if the actual sandbox grants broader writes.
+被审的源码、资源、规范、原始验收记录和原始证据，对审核实例都是只读的。不修复、不重新格式化、不更新需求、不替换证据、不记录人工验收、不把 Feature 标为完成，也不提交修改。即使实际的沙箱允许更大范围的写入，这些边界也适用。
 
-Necessary targeted verification is allowed within the user's review scope unless the user restricted it. Before running a command:
+在用户的审核范围内，允许进行必要的针对性验证，除非用户做了限制。运行命令之前：
 
-- Inspect its side effects. Direct all logs, caches, imports, test data and outputs away from the reviewed files.
-- Use an isolated copy or an authorized validation environment, under `reports/scratch/<task>/` where that is safe. A separate report path alone does not isolate a Godot import or a test that writes into source or user data.
-- Copy the exact reviewed snapshot, including relevant uncommitted files. A copy of HEAD alone misses those changes.
-- Do not run the command when its side effects cannot be contained or the permission is unavailable. Report the claim as unverified instead of bypassing the limit.
+- 检查它的副作用。把所有日志、缓存、导入结果、测试数据和输出都引到被审文件之外。
+- 使用隔离的副本或获得授权的验证环境；安全时放在 `reports/scratch/<task>/` 下。仅仅另设报告路径，不能隔离会写入源码或用户数据的 Godot 导入或测试。
+- 复制被审的准确快照，包括相关的未提交文件。只复制 HEAD 会漏掉这些改动。
+- 副作用无法控制或缺少权限时，不运行该命令。把对应的说法报告为未验证，不要绕过限制。
 
-Conversation output is normally enough. A saved review report goes under `reports/features/<ID>/` or `reports/maintenance/<task>/`, following [Reports and cleanup](09-records-reports-and-handoff.md#reports-and-cleanup). Never overwrite another run or the author's evidence, and do not add a review registry.
+通常在对话中输出就够了。保存的审核报告放在 `reports/features/<ID>/` 或 `reports/maintenance/<task>/` 下，按[报告与清理](09-records-reports-and-handoff.md#报告与清理)处理。绝不覆盖另一次运行或作者的证据，也不增加审核登记表。
 
-## Evidence and verdict
+## 证据与结论
 
-Determine whether each important claim has current, relevant evidence. Inspect what tests assert, which scenarios actually ran, raw failures, skipped or missing checks, and whether the environment and version apply. For measurements, check workload, sampling, comparable conditions and actual duration; separate diagnostic and delivery builds. Textual audio descriptions cannot replace listening evidence, and a resource filename cannot replace a displayed visual. Do not invent observed results when tools cannot expose them.
+判断每个重要说法是否有当前的、相关的证据。检查测试断言了什么、实际运行了哪些场景、原始的失败、被跳过或缺失的检查，以及环境和版本是否适用。对于测量，检查负载、采样、条件是否可比和实际持续时间；区分诊断构建和交付构建。音频的文字描述不能代替试听证据，资源文件名不能代替实际显示的画面。工具无法呈现结果时，不要虚构观察结果。
 
-Report actionable findings with severity, source location, concrete trigger and consequence. Distinguish:
+报告可操作的发现，写明严重程度、来源位置、具体触发条件和后果。区分：
 
-- contract violations from unapproved design suggestions;
-- uncertainty from a demonstrated defect;
-- inherited issues from introduced ones, when reviewing a change.
+- 违反契约与未经批准的设计建议；
+- 不确定之处与已证实的缺陷；
+- 审核一项修改时，遗留问题与新引入的问题。
 
-Avoid speculative findings without a plausible supported trigger. Evidence sufficiency belongs to the applicable review method; there is no separate `test-evidence-review` handoff.
+没有可信的、有依据的触发条件时，不报告推测性的发现。证据是否充分由适用的审核方法判断；没有单独的 `test-evidence-review` 交接。
 
-The result identifies the reviewed snapshot, methods and actual coverage, validation performed, findings, unverified requirements and limitations. “No findings” is bounded by that coverage. Returning a report completes the review task, but missing critical evidence cannot satisfy a required approval condition. Check whether reviewed artifacts changed during the review. If they did, narrow the conclusion to the inspected snapshot or re-review the affected changes; never apply an old verdict silently to new work.
+结果写明被审的快照、使用的方法和实际覆盖范围、做过的验证、发现、未验证的要求和局限。“没有发现”只在这个覆盖范围内成立。返回报告就完成了审核任务，但缺少关键证据时，不能满足必需的批准条件。检查被审的产物在审核期间是否发生变化。如果变了，把结论缩小到检查过的快照，或重新审核受影响的修改；绝不把旧结论悄悄套用到新工作上。
 
-Delivery can pass a requested review condition only when the agreed scope is adequately covered and the responsible task or the user has resolved blocking findings and limits. Repairs go back to the authorized author task for verification and any affected human acceptance. Further review follows the user's stated condition, not an automatic new cycle for every edit. Art, audio and UX review support, but never replace, the user's actual experience acceptance.
+只有约定的范围得到充分覆盖，且负责的任务或用户已经解决了阻塞性的发现和限制，交付才能通过被要求的审核条件。修复回到获得授权的作者任务，进行验证和受影响的人工验收。是否再次审核按用户说明的条件决定，不为每次编辑自动开启新一轮。美术、音频和 UX 审核起辅助作用，但永远不能代替用户对实际体验的验收。

@@ -1,37 +1,37 @@
-# Fixtures and Isolation
+# 测试夹具与隔离
 
-Every test can run alone, in any order and repeatedly, without leaking mutable state.
+每个测试都能单独运行、按任意顺序运行和重复运行，不泄漏可变状态。
 
-## Fresh state
+## 全新状态
 
-- **[MUST]** Mutable fixtures are created per test by default.
-- **[PREFER]** Suite-level shared fixtures are immutable or read-only, or use a proven complete reset protocol.
-- **[MUST]** Tests do not depend on declaration or runner order, or on whether another test has already run.
+- **[必须]** 可变的测试夹具默认按每个测试单独创建。
+- **[优先]** 套件级共享的测试夹具是不可变或只读的，或使用经过证明的完整重置协议。
+- **[必须]** 测试不依赖声明顺序或运行器的执行顺序，也不依赖另一个测试是否已经运行。
 
-## Nodes and Resources
+## Node 与 Resource
 
-- **[MUST]** Test-created Nodes and Scenes have a clear cleanup owner. `remove_child()` does not free a Node, and `queue_free()` is deferred.
-- **[MUST]** When correctness depends on completed deletion, wait for the real lifecycle condition rather than assuming that `queue_free()` is immediate.
-- **[MUST]** Do not mutate a cached definition or configuration Resource loaded through the normal ResourceLoader and assume that the next test reloads a clean copy.
-- **[REVIEW]** Overriding the ResourceLoader cache requires an explicit understanding of whether only the main Resource or its whole dependency graph needs isolation.
+- **[必须]** 测试创建的 Node 和场景有明确的清理负责方。`remove_child()` 不会释放 Node，`queue_free()` 是延迟执行的。
+- **[必须]** 正确性依赖删除已经完成时，等待真实的生命周期条件，不要假定 `queue_free()` 会立即生效。
+- **[必须]** 不要修改通过普通 ResourceLoader 加载并缓存的定义或配置 Resource，然后假定下一个测试会重新加载一份干净的副本。
+- **[复核]** 覆盖 ResourceLoader 缓存时，需要明确知道要隔离的只是主 Resource，还是它的整个依赖图。
 
-## Global state
+## 全局状态
 
-- **[MUST]** Restore or process-isolate mutable Autoload state, `static var` values, registries, caches, the InputMap, ProjectSettings, the Engine time scale, pause state and similar process-global state.
-- **[MUST]** Do not create arbitrary reflection or reset backdoors in production code solely for tests.
-- **[MUST]** If the chosen runner provides a verified snapshot and restore guarantee for a global facility, the project may rely on it; otherwise, take the snapshot and restore it explicitly.
-- **[MUST]** Persisting test changes into the production `project.godot` is governed by [Autoload and ProjectSettings](production-isolation.md#autoload-and-projectsettings).
+- **[必须]** 恢复可变的 Autoload 状态、`static var` 值、注册表、缓存、InputMap、ProjectSettings、Engine 时间缩放、暂停状态和类似的进程级全局状态，或用进程隔离它们。
+- **[必须]** 不要只为了测试，在生产代码中开任意的反射或重置后门。
+- **[必须]** 所选运行器对某个全局设施提供经过核实的快照与恢复保证时，项目可以依赖它；否则，明确地拍快照并恢复。
+- **[必须]** 把测试修改持久化到生产 `project.godot` 的问题，由 [Autoload 与 ProjectSettings](production-isolation.md#autoload-与-projectsettings) 管理。
 
-## Files and signals
+## 文件与信号
 
-- **[MUST]** Tests that write to `user://` use a test-owned namespace and never recursively clear the real `user://` directory.
-- **[MUST]** Tests clean only the paths and files they own.
-- **[MUST]** Signal, subscription and observer registrations that outlive a TestCase are restored or disconnected.
+- **[必须]** 写入 `user://` 的测试使用测试自己的命名空间，永远不递归清空真实的 `user://` 目录。
+- **[必须]** 测试只清理自己拥有的路径和文件。
+- **[必须]** 存活时间超过 TestCase 的信号、订阅和观察者注册要恢复或断开。
 
-## Input, async, and RNG cleanup
+## 输入、异步与 RNG 的清理
 
-- **[MUST]** Release every injected pressed Input action, even when assertions fail. Use teardown or owned helpers rather than only the normal success path.
-- **[MUST]** A TestCase ends without uncontrolled Timer or async work that could later mutate another test's state.
-- **[MUST]** Critical cleanup lives in runner teardown or ownership paths that execute after an assertion failure.
-- **[MUST]** If critical cleanup cannot restore a trustworthy baseline, fail or abort the affected test or suite rather than continuing with greens that only look trustworthy.
-- **[PREFER]** Use the runner's orphan and leak diagnostics for scene-heavy suites, but do not claim that Node orphan detection proves that every file, thread, signal and Resource is cleaned.
+- **[必须]** 即使断言失败，也要释放每一个注入的按下状态的 Input action。使用 teardown 或负责清理的辅助对象，不能只在正常成功路径上释放。
+- **[必须]** TestCase 结束时，不留下可能在之后修改其他测试状态的失控 Timer 或异步工作。
+- **[必须]** 关键清理放在断言失败后仍会执行的运行器 teardown 或所有权路径中。
+- **[必须]** 关键清理无法恢复可信的基线时，让受影响的测试或套件失败或中止，不要继续产生只是看起来可信的通过结果。
+- **[优先]** 场景较多的测试套件使用运行器的孤立节点和泄漏诊断，但不要声称 Node 孤立检测能证明每个文件、线程、信号和 Resource 都已清理。

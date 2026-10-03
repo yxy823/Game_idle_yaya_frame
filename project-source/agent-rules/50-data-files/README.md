@@ -1,16 +1,16 @@
-# 50 Data File Rules
+# 50 数据文件规则
 
-Applies to design and runtime data such as JSON, CSV, XLSX and YAML files, generated canonical data, schemas, migrations and data validators.
+适用于设计数据和运行时数据，例如 JSON、CSV、XLSX 和 YAML 文件，生成的规范数据，schema、迁移和数据校验器。
 
-| Document | Read when |
+| 文档 | 何时阅读 |
 | --- | --- |
-| `data-lifecycle-and-authority.md` | Any data change: the lifecycle from authoring source to gameplay, authority, error classes, runtime loading, packaging and trust boundaries |
-| `schema-and-types.md` | Defining or changing fields, semantic types or the structure of a data domain |
-| `identity-and-references.md` | Defining, renaming or referencing business IDs, aliases or relations |
-| `normalization-and-determinism.md` | Normalizing values or writing canonical output |
-| `generation-and-derived-data.md` | Writing or changing generators, derived fields or committed generated data |
-| `schema-evolution.md` | Changing `schema_version` or migrating persisted or external data |
-| `json.md` | Parsing, writing or trusting JSON |
-| `csv.md` | Parsing or authoring CSV |
-| `spreadsheet-and-yaml-authoring.md` | Authoring data in XLSX or YAML |
-| `validation.md` | Any data change: determine its applicable validation |
+| `data-lifecycle-and-authority.md` | 任何数据修改：从编写源到玩法使用的生命周期、权威来源、错误类别、运行时加载、打包和信任边界 |
+| `schema-and-types.md` | 定义或修改字段、语义类型或某个数据领域的结构 |
+| `identity-and-references.md` | 定义、重命名或引用业务 ID、别名或关联关系 |
+| `normalization-and-determinism.md` | 规范化取值或写出规范输出 |
+| `generation-and-derived-data.md` | 编写或修改生成器、派生字段或提交到仓库的生成数据 |
+| `schema-evolution.md` | 修改 `schema_version`，或迁移持久化数据或外部数据 |
+| `json.md` | 解析、写出或信任 JSON |
+| `csv.md` | 解析或编写 CSV |
+| `spreadsheet-and-yaml-authoring.md` | 用 XLSX 或 YAML 编写数据 |
+| `validation.md` | 任何数据修改：确定需要做哪些验证 |

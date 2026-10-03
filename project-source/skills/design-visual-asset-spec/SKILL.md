@@ -1,29 +1,35 @@
 ---
 name: design-visual-asset-spec
-description: "Specify concrete visual resources in their owning presentation, interface or shared design sections. Use for preparation requirements and file specifications. Not for artwork production, import or art review."
+description: "在所属的表现、界面或共享设计章节中写明具体视觉资源的规格。用于资源准备要求和文件规格。不用于美术制作、导入或美术审核。"
 ---
 
-# Visual asset specification
+# 视觉资源规格
 
-Follow `methodology/11-specialist-workflows.md` for ownership, authorization and source impacts. Its **Resource requirements and handoff** section selects the owning section (a presentation, UI or extracted component section, or **Shared resource specifications** in `docs/art/art-bible.md`), lists the common resource fields and explains how specifications move when the owner changes. Do not create a separate preparation list.
+归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **资源需求与交接** 章节负责：
 
-Read the relevant GDD requirements, the applicable Art Bible, the presentation alternative, the UI layout, the target viewport and scaling, and the inspected current assets. Reuse current resource identities and references. Reference GDD-owned details and shared art rules instead of copying them.
+- 选定所属章节：表现、UI 或已抽出组件的章节，或 `docs/art/art-bible.md` 中的 **共享资源规格**；
+- 列出资源的通用字段；
+- 说明归属变化时规格怎样迁移。
 
-## Visual fields
+不要另建一份准备清单。
 
-For each resource, specify:
+阅读本次涉及的 GDD 要求、适用的 Art Bible、表现方案、UI 布局、目标视口和缩放，以及检查过的现有资源。复用现有的资源标识和引用。GDD 中的细节和共享美术规则直接引用，不要复制。
 
-- purpose and states;
-- preparation status, the source or actual path and the target path;
-- expected on-screen or subject size, separate from source pixel dimensions;
-- aspect ratio, transparent padding, cropping, format and required variants.
+## 视觉字段
 
-For animation, identify the actual frame, timing and loop needs. For fonts or models, record their relevant character or geometry constraints instead of fictional pixel sizes.
+每个资源写明：
 
-## Keep the specification minimal
+- 用途和状态；
+- 准备状态、来源或实际路径，以及目标路径；
+- 预期的屏幕显示尺寸或主体尺寸，与源图像素尺寸分开写；
+- 宽高比、透明边距、裁切、格式和需要的变体。
 
-Separate required values, suggestions and measurements. Prefer assets, themes or procedural presentation that already meet the need. Do not add files for states the implementation can express without them. Identify available reference samples and missing deliverables; a filename is not a produced asset. A candidate's dependency is not an adopted preparation commitment.
+动画写明实际需要的帧、时间和循环。字体或模型记录本次涉及的字符或几何约束，不要写虚构的像素尺寸。
 
-Return actionable specifications, unknowns and destinations. Do not copy these specifications into Product tables. Visual-art production is a reserved capability with no Skill (methodology 11 **Design, production, integration and review**). `content-asset-integration` handles available files, and `review-art` or `review-assets` independently assesses appearance or technical fit.
+## 保持规格精简
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+把必需的值、建议和测量结果分开。优先使用已经能满足需要的资源、主题或程序化表现。实现不需要文件就能表达的状态，不要为它增加文件。指出可用的参考示例和缺少的交付物；文件名不是已制作的资源。候选方案的依赖，不是已采用的准备承诺。
+
+返回可执行的规格、未知项和目标位置。不要把这些规格复制到 Product 的表格中。视觉美术制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。现有文件由 `content-asset-integration` 处理；外观或技术适配由 `review-art` 或 `review-assets` 独立评估。
+
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

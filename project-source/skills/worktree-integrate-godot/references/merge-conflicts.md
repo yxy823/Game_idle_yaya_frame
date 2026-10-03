@@ -1,32 +1,32 @@
-# Resolve the existing integration conflict
+# 解决已有的整合冲突
 
-Read when the selected integration reports conflicts or the user asks to take over an interrupted merge or other conflicted integration. The parent Skill owns result selection, verification, adoption and cleanup boundaries. Git preservation, allowed operations and commit conditions remain in `agent-rules/00-core/git-worktree-and-commits.md`, relative to the actual project root.
+选定的整合报告冲突，或用户要求接手中断的合并或其他有冲突的整合时，读本页。结果选择、验证、采纳和清理边界由上层 Skill 负责。Git 状态的保留、允许的操作和提交条件仍以 `agent-rules/00-core/git-worktree-and-commits.md` 为准，该路径相对于实际的项目根目录。
 
-## Understand the operation already in progress
+## 弄清已在进行中的操作
 
-Identify the target directory, current branch/HEAD, operation type, source revisions, unresolved paths and existing staged or manual resolutions. Read the relevant history and current differences. Establish how this state relates to the authorized task before dependent writes; a conflict request does not authorize restarting an unrelated operation or discarding prior work.
+确认目标目录、当前分支或 HEAD、操作类型、来源修订、未解决的路径，以及已有的暂存内容或手动解决结果。阅读相关历史和当前差异。在进行依赖这些信息的写入之前，弄清这个状态与已授权任务的关系；处理冲突的请求不授权重新开始一个无关的操作，也不授权丢弃之前的工作。
 
-Distinguish permission to diagnose, permission to resolve files and permission to finalize the operation. Reuse concrete authority already given. An existing rebase is not a reason to start or continue rewriting history automatically; handle it only under the applicable explicit authorization and Core Git restrictions. If the user's intended operation or result is materially unclear, explain that specific gap while preserving the current state.
+区分三种许可：诊断、解决文件冲突、完成整个操作。复用已经给出的具体授权。已有的 rebase 不是自动开始或继续改写历史的理由；只在有明确授权且符合核心 Git 限制时处理它。如果用户预定的操作或结果在实质上不清楚，说明这个具体缺口，并保留当前状态。
 
-An abort is neither mandatory nor universally forbidden. Before an authorized abort or other recovery, establish its effects on pre-existing changes and partial resolutions; Git does not guarantee that abort can reconstruct all local work. Do not use abort, reset, stash or cleanup merely to obtain a clean starting point. A requested stop can leave the operation preserved with a clear recovery point.
+中止（abort）既不是必须的，也不是一律禁止的。在已获授权的中止或其他恢复操作之前，先弄清它对已有改动和部分解决结果的影响；Git 不保证中止能还原全部本地工作。不要只为了得到一个干净的起点就使用 abort、reset、stash 或清理。用户要求停下时，可以保留这次操作，并写清恢复点。
 
-## Reconcile intent, not just conflict markers
+## 调和意图，而不只是冲突标记
 
-Use the common ancestor and both revisions, relevant commit messages, current GDD/Product or Feature decisions, tests and affected implementation to understand why each change exists. Read only the sources needed for the conflicting behavior; do not require issue/PR records or invent a new conflict ledger.
+利用共同祖先和两边的修订、相关的提交说明、当前的 GDD/Product 或 Feature 决定、测试和受影响的实现，弄清每个改动为什么存在。只读取理解冲突行为所需的来源；不要求 issue/PR 记录，也不新建冲突台账。
 
-- Preserve compatible intentions and real dependencies rather than selecting an entire side for convenience. Interpret “ours” and “theirs” according to the actual operation; their labels alone do not identify the desired behavior.
-- For incompatible behavior, use the already agreed integration goal and authoritative decisions. If those do not determine the result, explain the concrete alternatives and leave that dependent resolution pending. Do not invent a third game rule or quietly change the selected outcome.
-- In Godot scenes, resources and configuration, inspect the affected paths, `.uid` / `.import` references, node relationships and values together. A file with markers removed can still refer to a missing resource or combine incompatible states. Preserve required metadata; do not regenerate identifiers or edit binary assets as text merely to silence a conflict.
-- Preserve unrelated local edits and prior valid resolutions. Stage only the inspected resolution scope under the Core Git contract. Resolving one file does not make every existing staged change eligible for the same commit.
+- 保留彼此兼容的意图和真实的依赖，不要图方便整边选择。按实际的操作理解“ours”和“theirs”；只看这两个标签判断不了想要的行为。
+- 行为互不兼容时，依据已经约定的整合目标和权威决定处理。如果它们不能决定结果，说明具体的备选方案，并让依赖这个选择的解决暂缓。不要编造第三种游戏规则，也不要悄悄改变已选定的结果。
+- 在 Godot 场景、资源和配置中，把受影响的路径、`.uid` / `.import` 引用、节点关系和取值放在一起检查。去掉冲突标记的文件仍可能引用不存在的资源，或拼合了互不兼容的状态。保留必需的元数据；不要只为了消除冲突就重新生成标识符，或把二进制素材当文本编辑。
+- 保留无关的本地编辑和之前有效的解决结果。按核心 Git 约定，只暂存检查过的解决范围。解决了一个文件，不代表所有已暂存的改动都可以放进同一个提交。
 
-If a required behavior change extends beyond reconciling the selected results, return that scope decision to its existing owner. Continue unaffected authorized resolutions; do not turn the conflict into a general refactor or automatically broaden acceptance criteria.
+如果必需的行为改动超出了调和选定结果的范围，把这个范围决定交回原负责方。继续不受影响的已授权解决工作；不要把冲突变成一次全面重构，也不要自动扩大验收条件。
 
-## Return a verified candidate or the exact remaining block
+## 返回已验证的候选结果或确切的剩余阻塞
 
-Inspect the resulting combined changes and unresolved Git state. Run the checks selected by the parent Skill for the actual affected result, retaining real failures and missing evidence. Restore coherent behavior within the authorized integration scope before finalization; do not weaken tests or relabel a failure to complete the operation.
+检查组合后的改动和尚未解决的 Git 状态。针对实际受影响的结果，运行上层 Skill 选定的检查，如实保留失败和缺失的证据。完成操作之前，在已授权的整合范围内恢复一致的行为；不要削弱测试，也不要换个说法把失败算作完成。
 
-Before a commit or a `--continue` operation, determine its actual effects and apply the parent Skill's verification, acceptance and explicit commit conditions. Do not automatically loop through all remaining rebase/cherry-pick steps or finish a merge just because the current text conflicts are gone. When conditions allow finalization, continue the already authorized integration; do not ask again only because resolution finished.
+在提交或执行 `--continue` 之前，先弄清它的实际效果，并应用上层 Skill 的验证、验收和明确提交条件。不要因为当前的文本冲突已经消失，就自动走完剩下的所有 rebase/cherry-pick 步骤或完成合并。条件允许完成时，继续已获授权的整合；不要只因为冲突解决完了就再问一次。
 
-Report what was reconciled, the evidence supporting the result and any unresolved decision, failed check or pending operation. Use existing Feature/Progress records only when needed for continuation, under `methodology/09-records-reports-and-handoff.md`; do not create a second status system.
+报告调和了什么、支持该结果的证据，以及任何未决的决定、失败的检查或待完成的操作。只有续接需要时，才按 `methodology/09-records-reports-and-handoff.md` 使用已有的 Feature 或 Progress 记录；不要建立第二套状态系统。
 
-Inspired by Matt Pocock's `resolving-merge-conflicts`: understand both changes and preserve their intended behavior. Rewritten for this project's Git, Godot, validation and authorization boundaries; no external Skill installation is required.
+思路来自 Matt Pocock 的 `resolving-merge-conflicts`：理解两边的改动，并保留它们预定的行为。已按本项目的 Git、Godot、验证和授权边界重写；不需要安装外部 Skill。

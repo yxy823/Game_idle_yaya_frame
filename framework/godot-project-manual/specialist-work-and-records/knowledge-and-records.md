@@ -88,7 +88,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 
 - **Feature 内的普通选择**：写在该 Feature 的设计稿里。
 - **理由已经写在别处**：不能因此跳过符合条件的 ADR；把当前正文迁到 ADR，更新引用，保留必要的历史。
-- **不属于任何 Feature 的技术决定**：按[独立技术决定](../../../project-source/methodology/10-architecture-overview.md#standalone-technical-decisions)保存，符合 ADR 条件的仍写 ADR，其余按作用范围写进架构文档的固定章节；不为此虚构 Feature。
+- **不属于任何 Feature 的技术决定**：按[独立技术决定](../../../project-source/methodology/10-architecture-overview.md#独立技术决定)保存，符合 ADR 条件的仍写 ADR，其余按作用范围写进架构文档的固定章节；不为此虚构 Feature。
 
 ADR 记录问题、约束、候选方案、决定、收益、成本、依据，以及什么情况下值得重新考虑。状态有 Proposed、Accepted、Superseded：被取代的 ADR 保留原来的理由并链接替代它的决定；Accepted 只表示决定已确认，不表示代码运行通过。已有具体授权时直接沿用，不需要额外批准。
 
@@ -141,7 +141,7 @@ ADR 记录问题、约束、候选方案、决定、收益、成本、依据，�
 - **结论与授权**：判断结论，以及已有的授权。
 - **删除或只改措辞时**：删除要说明谁承接了原来的作用，或为什么不再需要；只改措辞或链接时，说明含义和强度没有变化。
 
-规则变化后，先处理它对当前任务的实际影响，已有的具体授权继续有效；只有出现新的决定才需要等用户确认。修改原 Feature 中的辅助文档，不需要另开一个“必须先清空工作区”的任务。相关记录在最终验证前定稿；规则采纳得较晚时，也要检查哪些已有证据因此失效。细则见[规则增量维护](../../../project-source/methodology/04-project-rules.md#incremental-rule-maintenance)。
+规则变化后，先处理它对当前任务的实际影响，已有的具体授权继续有效；只有出现新的决定才需要等用户确认。修改原 Feature 中的辅助文档，不需要另开一个“必须先清空工作区”的任务。相关记录在最终验证前定稿；规则采纳得较晚时，也要检查哪些已有证据因此失效。细则见[规则增量维护](../../../project-source/methodology/04-project-rules.md#规则的增量维护)。
 
 ## 调研与项目知识
 
@@ -192,4 +192,4 @@ Progress 保存真实的停点和必要的链接；不能从“下一步：实�
 
 不建立 Handoff 文件、`CONTEXT.md` 或平行的任务状态表。
 
-权威依据：[产物生命周期](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#project-terminology)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[产物生命周期](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。

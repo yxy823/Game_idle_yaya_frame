@@ -1,58 +1,58 @@
-# Test Selection and Gates
+# 测试选择与验证档位
 
-Choose validation by the impact on behavior and dependencies. Focused tests give fast feedback; they are not automatically final evidence. The general evidence rules in [Validation policy](../00-core/validation-policy.md) also apply.
+按对行为和依赖的影响选择验证。聚焦测试提供快速反馈，但不自动成为最终证据。[验证策略](../00-core/validation-policy.md) 中的通用证据规则同样适用。
 
-## Gate ladder
+## 验证档位阶梯
 
-- **[MUST]** Select final tests by impact analysis, not only by file extension.
-- **[MUST]** Changes other than documentation run L0 validation of the changed artifacts plus the tests that cover the affected behavior.
-- **[MUST]** Do not declare completion after running only the new or modified TestCases; run the relevant existing affected suite as final task evidence.
-- **[PREFER]** During iteration, run a directly focused test for fast feedback.
-- **[MUST]** Use this escalation ladder: G0 Static/File -> G1 Focused -> G2 Affected Suite -> G3 Integration/Runtime/Fresh/Export -> G4 Full Automated Suite.
-- **[MUST]** Risk and impact triggers can escalate the required gate; do not downgrade it simply for speed.
+- **[必须]** 按影响分析选择最终测试，不只按文件扩展名选择。
+- **[必须]** 除文档以外的修改，运行对修改产物的 L0 验证，以及覆盖受影响行为的测试。
+- **[必须]** 不要只运行新增或修改的 TestCase 就宣布完成；运行受影响的已有测试套件，作为任务的最终证据。
+- **[优先]** 迭代期间，运行直接聚焦的测试以获得快速反馈。
+- **[必须]** 使用以下逐级升级的阶梯：G0 Static/File -> G1 Focused -> G2 Affected Suite -> G3 Integration/Runtime/Fresh/Export -> G4 Full Automated Suite（依次为静态与文件、聚焦测试、受影响套件、集成/运行时/新进程/导出、全部自动化套件）。
+- **[必须]** 风险和影响触发条件可以提升所需档位；不要只为了速度而降低档位。
 
-## Impact triggers
+## 影响触发条件
 
-- **[MUST]** Changes to a shared or public API, a signal or event payload or its timing, a Resource schema or default, a stable ID, an enum, a Command type, an Autoload API or a similar contract validate the known consumers.
-- **[MUST]** Signal and event changes validate the producer and its consumers; lifecycle or wiring across scenes usually requires L2 or L3 evidence.
-- **[MUST]** SceneTree lifecycle changes require real L2 SceneTree validation.
-- **[MUST]** Input and UI wiring changes require the corresponding real input route; no screenshot is required.
-- **[PREFER]** Command and domain changes run the Command and domain suites. Add UI or input runtime testing only when the adapter or wiring also changed.
-- **[MUST]** Changes to Autoload registration, startup or public state include the affected suites plus fresh-process startup.
-- **[MUST]** Behavior changes in `project.godot` include a fresh target Godot process.
-- **[MUST]** Import-pipeline changes include reimport or fresh-import evidence.
-- **[MUST]** Changes to data parser, schema, normalizer or generator infrastructure validate the full managed dataset, deterministic regeneration, reload and the affected runtime consumers.
-- **[MUST]** Changes to the defaults or schema of a shared base Scene or Resource validate representative instances and consumers.
-- **[MUST]** Changes to shared test infrastructure run all suites that depend on it; use the full suite when the impact is global or uncertain.
-- **[MUST]** Fixes for isolation or flaky behavior run the affected tests together and repeatedly; use the full suite when contamination across suites or global state is plausible.
-- **[MUST]** Export and packaging changes use the actual export and package gate of `41-export-config`.
-- **[MUST]** Renderer- or platform-specific behavior uses the target environment or an equivalent; a headless run does not prove renderer, window or platform semantics.
+- **[必须]** 修改共享或公开 API、信号或事件的载荷或时序、Resource 的 schema 或默认值、稳定 ID、枚举、Command 类型、Autoload API 或类似契约时，验证已知的使用方。
+- **[必须]** 修改信号和事件时，验证发出方和使用方；跨场景的生命周期或连接通常需要 L2 或 L3 证据。
+- **[必须]** 修改 SceneTree 生命周期时，需要真实的 L2 SceneTree 验证。
+- **[必须]** 修改输入和 UI 连接时，需要对应的真实输入路径；不需要截图。
+- **[优先]** 修改 Command 和领域时，运行 Command 和领域测试套件。只有适配层或连接也改变时，才补充 UI 或输入的运行时测试。
+- **[必须]** 修改 Autoload 的注册、启动或公开状态时，包含受影响的测试套件，以及一次新进程启动。
+- **[必须]** `project.godot` 的行为修改包含一次新的目标 Godot 进程。
+- **[必须]** 修改导入管线时，包含重新导入或全新导入的证据。
+- **[必须]** 修改数据解析器、schema、规范化器或生成器基础设施时，验证全部受管理的数据集、确定性的重新生成、重新加载，以及受影响的运行时使用方。
+- **[必须]** 修改共享的基础场景或 Resource 的默认值或 schema 时，验证有代表性的实例和使用方。
+- **[必须]** 修改共享的测试基础设施时，运行依赖它的所有测试套件；影响是全局的或不确定时，运行全量套件。
+- **[必须]** 修复隔离问题或不稳定行为时，把受影响的测试放在一起反复运行；可能存在跨套件污染或全局状态污染时，运行全量套件。
+- **[必须]** 导出和打包修改使用 `41-export-config` 的实际导出与打包验证。
+- **[必须]** 与渲染器或平台相关的行为，使用目标环境或等效环境；无头运行不能证明渲染器、窗口或平台语义。
 
-## Full-suite triggers
+## 全量套件触发条件
 
-- **[MUST]** Default to the full automated suite for changes to any of the following, or when consumers cannot be bounded confidently:
-  - shared core or domain primitives;
-  - global Event or Command infrastructure;
-  - the core behavior of the primary Autoloads;
-  - the test isolation framework;
-  - base schema or serialization infrastructure;
-  - broad generator infrastructure;
-  - large refactors across modules;
-  - known global contamination.
-- **[MUST]** The full suite means all automated tests of the project, not every platform or export matrix unless those target gates are separately triggered.
+- **[必须]** 修改以下任何一项，或无法有把握地划定使用方范围时，默认运行全部自动化套件：
+  - 共享的核心或领域基础构件；
+  - 全局 Event 或 Command 基础设施；
+  - 主要 Autoload 的核心行为；
+  - 测试隔离框架；
+  - 基础 schema 或序列化基础设施；
+  - 覆盖面广的生成器基础设施；
+  - 跨模块的大型重构；
+  - 已知的全局污染。
+- **[必须]** 全量套件指项目的全部自动化测试，不包括所有平台或导出矩阵，除非那些目标档位另行被触发。
 
-## Runner and discovery
+## 运行器与测试发现
 
-- **[MUST]** Check the official exit status or result of the primary runner; do not infer PASS from the last console line.
-- **[MUST]** Do not add ignore, skip or filter exclusions to bypass current failures.
-- **[MUST]** A targeted run confirms that the intended suite and TestCase were discovered and executed. A run that executes zero tests is not PASS.
-- **[MUST]** Changes to test sources validate parsing, discovery, the modified tests and the relevant existing suite.
-- **[MUST]** Impact analysis includes inheritance, signals and events, Resource and Scene references, registries, generated data, Autoload and global APIs, and dynamic resolution. A textual search alone is not sufficient proof.
-- **[PREFER]** When the exact impact is uncertain, apply [Failure handling](../00-core/validation-policy.md#failure-handling) and run a slightly broader subsystem suite.
+- **[必须]** 检查主要运行器的官方退出状态或结果；不要根据控制台最后一行推断 PASS。
+- **[必须]** 不要添加忽略、跳过或过滤排除来绕过当前的失败。
+- **[必须]** 定向运行要确认预期的测试套件和 TestCase 已被发现并执行。执行了零个测试的运行不是 PASS。
+- **[必须]** 修改测试源码时，验证解析、测试发现、修改过的测试，以及相关的已有测试套件。
+- **[必须]** 影响分析包括继承、信号与事件、Resource 和场景引用、注册表、生成数据、Autoload 与全局 API，以及动态解析。仅靠文本搜索不足以证明。
+- **[优先]** 准确影响不确定时，按 [失败处理](../00-core/validation-policy.md#失败处理) 处理，并运行范围稍大的子系统测试套件。
 
-## Workflow and reporting
+## 工作流程与报告
 
-- **[MUST]** Do not skip required local checks merely because CI may run them later.
-- **[MUST]** Do not rerun every expensive CI matrix on each local edit when it is unrelated to the change.
-- **[MUST]** After fixing a failure that a gate found, rerun under [Failure handling](../00-core/validation-policy.md#failure-handling).
-- **[MUST]** The final report also states the tests added or updated, in addition to the content required by [Completion and reporting](../00-core/completion-and-reporting.md#required-report-content).
+- **[必须]** 不要因为 CI 之后可能会运行，就跳过要求的本地检查。
+- **[必须]** 与修改无关时，不要在每次本地编辑后重跑所有昂贵的 CI 矩阵。
+- **[必须]** 修复某个档位发现的失败后，按 [失败处理](../00-core/validation-policy.md#失败处理) 重新运行。
+- **[必须]** 最终报告除了 [完成与报告](../00-core/completion-and-reporting.md#汇报必须包含的内容) 要求的内容外，还要写明新增或更新的测试。

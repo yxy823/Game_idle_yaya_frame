@@ -1,44 +1,44 @@
 ---
 name: product-spec-elicitor
-description: "Clarify Product delivery boundaries, order, dependencies and acceptance from current GDD design, and return a focused proposal without writing files. Use for delivery-scope questions. Not for game-design questions, which belong to design-gdd."
+description: "根据当前的 GDD 设计澄清 Product 的交付边界、顺序、依赖和验收，返回一份聚焦的方案，不写文件。用于交付范围的问题。不用于游戏设计问题，这类问题属于 design-gdd。"
 ---
 
-# Product delivery clarification
+# Product 交付澄清
 
-## Scope and inputs
+## 范围与输入
 
-Use the GDD prerequisite and source ownership in `methodology/01-product-doc-structure.md`. Clarify which actual GDD requirements the Product delivers. Missing or materially unresolved game design returns to `design-gdd` before dependent delivery choices; do not invent it through Product questions.
+按 `methodology/01-product-doc-structure.md` 中的 GDD 前提和来源归属执行。澄清 Product 交付哪些实际的 GDD 要求。游戏设计缺失或有重要部分尚未确定时，先交回 `design-gdd`，再处理依赖它的交付选择；不要通过 Product 的提问去编造设计。
 
-Read the caller's requested change, the applicable **Design scope and boundaries** in `methodology/01-product-doc-structure.md`, relevant GDD topics, engineering constraints in Project Rules and architecture decisions, the current Product outline or delivery document and facts about affected Features. Reuse confirmed answers and `document_language`. Actual implementation describes current behavior, not approved design.
+阅读调用方要求的修改、`methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界**、本次涉及的 GDD 主题、项目规则中的工程约束和架构决定、当前的 Product 概要或交付文档，以及受影响的 Feature 的事实。复用已确认的答案和 `document_language`。实际实现描述的是当前行为，不是已批准的设计。
 
-Use the [shared questioning method](../project-grill-me/SKILL.md#shared-questioning-method) for missing material decisions. Do not start another interview when supplied sources and authorization already settle the change. This Skill only returns proposals to `product-author`; it does not write GDD, Product or plan files.
+缺少重要决定时，使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。提供的来源和授权已经能确定修改时，不要再开一轮访谈。本 Skill 只把方案返回给 `product-author`；它不写 GDD、Product 或计划文件。
 
-## Clarify the relevant difference
+## 澄清有关的差异
 
-| Situation | Focus |
+| 情况 | 重点 |
 | --- | --- |
-| A Product delivery boundary or order needs clarification | Which existing GDD requirements this unit delivers, excludes or depends on; do not redesign the game or fully specify future units. |
-| A delivery depends on an unresolved game rule | Identify the owning GDD topic and the delivery decision it blocks, then return that design question to `design-gdd` or its scoped numeric owner `design-balance`. |
-| A reported bug exposes ambiguous intent | Separate actual behavior from confirmed expectations. Missing design returns to its owner; an explicit requirement violation returns to the unfinished Feature or engineering route without changing requirements. |
-| A cross-system delivery | Use the confirmed GDD rules between those systems to clarify inclusions, exclusions, integration dependencies and delivery acceptance. |
-| Presentation details need professional work | Identify the relevant UI/art/audio/localization question and its source owner under methodology 11. Do not duplicate their specifications here. |
+| Product 的交付边界或顺序需要澄清 | 这个单元交付、排除或依赖哪些已有的 GDD 要求；不要重新设计游戏，也不要完整规定未来的单元。 |
+| 交付依赖尚未确定的游戏规则 | 找出所属的 GDD 主题和它阻塞的交付决定，把这个设计问题交回 `design-gdd`，或交给负责限定数值范围的 `design-balance`。 |
+| 报告的 Bug 暴露出意图不清 | 把实际行为和已确认的预期分开。缺少的设计交回其负责方；明确违反要求的情况交回尚未完成的 Feature 或工程变更路径，不修改要求。 |
+| 跨系统的交付 | 用这些系统之间已确认的 GDD 规则，澄清包含、排除、接入依赖和交付验收。 |
+| 表现细节需要专业工作 | 按 methodology 11 找出本次涉及的 UI、美术、音频或本地化问题及其来源负责方。不要在这里重复它们的规格。 |
 
-Ask about delivery tradeoffs only when they change the current decision. Do not resolve a gameplay value or rule by inventing a delivery default. Reuse valid professional requirements and shared terminology; substantive meaning changes belong with the GDD owner, while meaning-preserving definitions can go to `project-terminology`.
+只有交付取舍会改变当前决定时才提问。不要通过编造交付默认值来决定玩法数值或规则。复用有效的专业要求和共享术语；实质性的含义变化属于 GDD 负责方，不改变含义的定义可以交给 `project-terminology`。
 
-For a dependency on a future Product, settle only what the current delivery needs from it. The future outline remains in `docs/product.md`; clarification does not create its full document or Feature plan.
+依赖未来的 Product 时，只确定当前交付需要它提供的部分。未来的概要仍保留在 `docs/product.md` 中；澄清不会创建它的完整文档或 Feature 计划。
 
-Deletion, foundational positioning changes and effects on completed behavior must be explicit. Reuse authorization that covers them and ask only about an unresolved material effect. Do not turn a defect report into permission to relax requirements.
+删除、基础定位的变化和对已完成行为的影响，必须明确写出。复用已经覆盖这些内容的授权，只就尚未解决的重要影响提问。不要把缺陷报告变成放宽要求的许可。
 
-## Return a reviewable proposal
+## 返回一份可审阅的方案
 
-Return a compact result in the configured document language, using a table or structured list when useful:
+用配置的文档语言返回一份简洁的结果，有用时使用表格或结构化列表：
 
-- The current delivery source and proposed change, with precise references to the adopted GDD requirements.
-- Any unresolved design, numeric, terminology or professional question that must return to its source owner.
-- Confirmed decisions, remaining proposals and blocking questions, kept distinct.
-- Effects on the current Product, existing Features/completed behavior and later pre-split entries; omit categories with no impact.
-- Required specialist input or validation questions, when applicable.
+- 当前的交付来源和建议的修改，附带对已采用 GDD 要求的精确引用。
+- 必须交回来源负责方的、尚未解决的设计、数值、术语或专业问题。
+- 已确认的决定、剩余的建议和阻塞性问题，三者分开写。
+- 对当前 Product、已有 Feature 或已完成行为，以及后续预拆分条目的影响；没有影响的类别省略。
+- 需要时列出需要的专业输入或验证问题。
 
-Do not reproduce unchanged source text, impose a fixed question count or create a second state record. The caller saves the approved change at its owner and handles the planning impact.
+不要复述未修改的来源正文，不要规定固定的问题数量，也不要另建一份状态记录。调用方把已批准的修改保存到所属位置，并处理对规划的影响。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

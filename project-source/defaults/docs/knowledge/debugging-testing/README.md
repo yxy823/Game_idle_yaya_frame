@@ -1,9 +1,9 @@
-# Debugging and testing experience
+# 调试与测试经验
 
-[Knowledge index](../README.md)
+[知识索引](../README.md)
 
-Use this topic for reproduction, diagnosis, test isolation, regression coverage and validation methods. Follow the [knowledge convention](../README.md).
+本主题收录复现、诊断、测试隔离、回归覆盖和验证方法。遵循[知识约定](../README.md)。
 
-## Entries
+## 条目
 
-No project entries yet. Add links and short descriptions here as notes are written.
+还没有项目条目。写出条目后，在这里添加链接和简短说明。

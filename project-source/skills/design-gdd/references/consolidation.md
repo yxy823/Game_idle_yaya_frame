@@ -1,25 +1,25 @@
-# Consolidate game-design material
+# 整合游戏设计材料
 
-Use this reference to combine scattered notes, GDD topics, supplied documents or adopted discussion results into a maintainable design. Consolidation remains authoring; a separate findings-only review uses `plan-review-godot`.
+把分散的笔记、GDD 主题、外部提供的文档或已采用的讨论结果，整合成便于维护的设计时，使用本参考。整合仍属于编写工作；只要求列出问题的独立审核使用 `plan-review-godot`。
 
-## Establish what each source supports
+## 确定每个来源能支持什么
 
-Read the relevant material and open questions, and identify each source's topic, current status and actual references. Distinguish adopted rules, candidate designs, implementation observations and measured evidence. User-designated authority and explicit decisions matter; a file's date, size or position in the directory does not settle a design conflict.
+阅读本次涉及的材料和开放问题，确定每个来源的主题、当前状态和实际引用。区分已采用的规则、候选设计、对实现的观察和实测证据。用户指定的权威来源和明确的决定是重要依据；文件的日期、大小或在目录中的位置，不能解决设计冲突。
 
-When implementation differs from adopted design, preserve that distinction rather than automatically rewriting the design to match it. For a material conflict, identify both claims, their locations, available adoption evidence and what depends on resolving it. Keep an unresolved choice visible and continue independent consolidation work.
+实现与已采用的设计不一致时，保留这个区别，不要自动改写设计去迎合实现。遇到重要冲突时，写明双方的说法、所在位置、可用的采用证据，以及哪些工作依赖它的解决。未决的选择保持可见，不受影响的整合工作继续进行。
 
-A small comparison in the conversation or affected topic is sufficient when needed. Do not create a new source ledger or record every file's metadata merely to organize the task.
+需要时，在对话或受影响的主题中做一个小的对比就够了。不要只为了组织任务就新建来源台账，或记录每个文件的元数据。
 
-## Consolidate without losing design
+## 整合时不丢失设计
 
-Use [Design document structure](design-docs.md) for the output; file naming, imported GDDs and migration follow **GDD document names** in `methodology/01-product-doc-structure.md`. Update affected file and heading references when moving content. Consolidate unresolved design conflicts into the open-questions document with their sources and effects, replacing duplicated question bodies with links. When authorized consolidation concerns overall scope, move that content and update its references; preserve unrelated structure. A single-file GDD does not need another copy or full conversion merely for a local consolidation.
+输出按[设计文档结构](design-docs.md)组织；文件命名、导入的 GDD 和迁移按 `methodology/01-product-doc-structure.md` 的 **GDD 文件名** 处理。移动内容时，更新受影响的文件和标题引用。未解决的设计冲突连同来源和影响整合到开放问题文档中，重复的问题正文改为链接。获准整合的内容涉及整体范围时，迁移这部分内容并更新引用；保留无关的结构。只做局部整合时，单文件的 GDD 不需要另存一份，也不需要整体转换。
 
-Give each retained rule an owning location. Preserve its exceptions, assumptions, numeric meaning, decision state and useful evidence even when the surrounding wording is compressed. Place system rules and numerical models under their fixed paths in methodology 01, and confirmed professional specifications under their owners in methodology 11; neither complexity nor original location changes that assignment. Collect confirmed term definitions and aliases from the supplied material into `docs/terminology.md` through `project-terminology` (`methodology/14-project-terminology.md`). Replace migrated bodies with references while keeping the task's protected original inputs as source material. Resolve unsettled meanings before recording them as confirmed definitions.
+每条保留下来的规则都有一个所属位置。即使周围的措辞被压缩，也要保留它的例外、假设、数值含义、决定状态和有用的证据。系统规则和数值模型放在 methodology 01 规定的固定路径；已确认的专业规格放在 methodology 11 规定的所属位置；复杂度和原来的位置都不改变这种分配。通过 `project-terminology`（`methodology/14-project-terminology.md`），把外部提供的材料中已确认的术语定义和别名收集到 `docs/terminology.md`。已迁移的正文改为引用，同时把任务中受保护的原始输入保留为来源材料。含义尚未确定的内容，先解决再记录为已确认的定义。
 
-Keep enough source-to-result information to verify that substantive content was retained or deliberately changed. A brief explanation is enough for a small consolidation; a larger migration may need a mapping table in the response or an existing task record. This does not require another artifact.
+保留足够的“来源到结果”信息，用来核实实质内容是被保留了，还是被有意修改了。小规模整合有一段简短说明就够了；较大的迁移可能需要在回复或已有的任务记录中给出对照表。这不要求另建产物。
 
-Save retained proposals at the owner chosen by **Candidate and unadopted ideas** in methodology 01, not in a speculative system topic. Check the new or updated entry, affected links and anchors, and cross-topic agreement in rules, terms and numbers. Only replace, archive or remove old material within the actual task's authorized scope. An explicit separate-copy request preserves the inputs; ordinary local editing has no separate-copy requirement.
+保留下来的建议保存在 methodology 01 的 **候选与未采纳想法** 选定的位置，不放进推测性的系统主题。检查新建或更新的入口、受影响的链接和锚点，以及各主题之间规则、术语和数字是否一致。只在实际任务的授权范围内替换、归档或删除旧材料。用户明确要求另存一份时，保留输入原样；普通的局部编辑没有另存一份的要求。
 
-## Deliver the consolidated design
+## 交付整合后的设计
 
-Provide the resulting entry or edited topics, explain material structural changes and adoption reasoning, and identify any unresolved conflict and its consequence. A proposal introduced during consolidation remains a proposal until adopted. State actual coverage and evidence limits rather than claiming that organized documentation proves gameplay or implementation.
+提供整合后的入口或编辑过的主题，说明重要的结构变化和采用理由，指出仍未解决的冲突及其后果。整合中提出的建议，在被采用之前仍然是建议。如实说明实际覆盖的范围和证据局限，不要声称整理好的文档证明了玩法或实现。

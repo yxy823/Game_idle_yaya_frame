@@ -1,25 +1,43 @@
-# Project knowledge
+# 项目知识
 
-Use this directory to reuse what actual project work has taught us: successful approaches, debugging methods and failure lessons. What belongs here rather than in Feature notes, Progress, ADRs or rules is defined in [Project knowledge](../../methodology/09-records-reports-and-handoff.md#project-knowledge).
+本目录用来复用实际项目工作中积累的经验：成功的做法、调试方法和失败教训。哪些内容放在这里，而不是放进 Feature 笔记、Progress、ADR 或规则，由 [项目知识](../../methodology/09-records-reports-and-handoff.md#项目知识) 规定。
 
-## Find relevant knowledge first
+## 先查找相关知识
 
-After understanding the current task and its governing rules, consult this index before choosing an approach, repeating an investigation, or searching external material. Follow the relevant topic indexes, then read the matching notes. Search by module, symptom, API, or tool when needed. Do not load the whole directory for every task; reuse already-read notes on continuation unless the task scope or relevant evidence changes.
+理解当前任务和约束它的规则之后，在下列情况前先查阅本索引：
 
-| Topic | Use it for |
+- 选择做法之前；
+- 重复一次调查之前；
+- 搜索外部资料之前。
+
+先进入相关主题的索引，再读匹配的条目。需要时按模块、症状、API 或工具搜索。不要每次任务都加载整个目录；续接时，已读过的条目直接复用，除非任务范围或相关证据发生了变化。
+
+| 主题 | 用途 |
 | --- | --- |
-| [Godot runtime](godot-runtime/README.md) | SceneTree, resources, signals, UI, animation, audio, physics and runtime/export behavior |
-| [GDScript](gdscript/README.md) | Types, language/API usage, code organization and script implementation techniques |
-| [Debugging and testing](debugging-testing/README.md) | Reproduction, diagnosis, fixtures, regression coverage and validation methods |
-| [Tools and pipelines](tools-pipeline/README.md) | PowerShell/Python helpers, data/import workflows, build and local tooling |
+| [Godot 运行时](godot-runtime/README.md) | SceneTree、资源、信号、UI、动画、音频、物理，以及运行时与导出后的行为 |
+| [GDScript](gdscript/README.md) | 类型、语言与 API 用法、代码组织和脚本实现技巧 |
+| [调试与测试](debugging-testing/README.md) | 复现、诊断、测试夹具、回归覆盖和验证方法 |
+| [工具与流水线](tools-pipeline/README.md) | PowerShell/Python 辅助脚本、数据与导入流程、构建和本地工具 |
 
-Prefer a demonstrated project approach when its conditions still fit. Knowledge is contextual evidence, not a new rule authority: current user intent, GDD design, Product delivery scope, accepted decisions, applicable engineering rules, and target-version API facts still govern the task. Verify a material conflict or version difference instead of repeating a historical workaround blindly. An empty topic or no matching entry is normal and does not block work.
+项目中已验证过的做法，在其前提条件仍然成立时优先采用。知识是带背景的证据，不是新的规则来源。下列内容仍然决定任务怎么做：
 
-## Organize entries
+- 用户当前的意图；
+- GDD 中的设计；
+- Product 的交付范围；
+- 已接受的决定；
+- 约束本任务的工程规则；
+- 目标版本的 API 事实。
 
-Keep one independently useful experience in a descriptively named Markdown file. Topic READMEs contain links and short descriptions, not all the entry bodies. Add a narrower subdirectory or a project-module topic when real content benefits from it; update the nearest index and its parent link when adding a topic. Do not create a folder for every Feature or copy the same entry into several topics. Cross-topic relevance uses links.
+遇到实质冲突或版本差异时先核实，不盲目重复历史上的变通做法。主题为空或没有匹配的条目是正常情况，不阻塞工作。
 
-The topic directories are:
+## 组织条目
+
+- 一条可以独立使用的经验写成一个 Markdown 文件，文件名说明内容。
+- 主题 README 只放链接和简短说明，不收录全部条目正文。
+- 真实内容需要时，再增加更细的子目录或按项目模块划分的主题；新增主题时，同时更新最近的索引和它在上级索引中的链接。
+- 不为每个 Feature 建一个文件夹，也不把同一条目复制到多个主题。跨主题的关联用链接表示。
+
+主题目录如下：
 
 ```text
 knowledge/
@@ -30,20 +48,31 @@ knowledge/
 `-- tools-pipeline/
 ```
 
-Each topic has its own README. Create further topics and entry files only when useful content exists. Keep paths stable; write new prose in the project's `document_language`.
+每个主题有自己的 README。只有存在有用的内容时，才创建更多主题和条目文件。保持路径稳定；新写的文字使用项目的 `document_language`。
 
-## Keep the useful context
+## 保留有用的背景
 
-An entry should explain the situation, the approach or lesson and why it helped, the conditions where it applies, and its supporting Feature, commit, test, report, or reference links. Record versions, platform and reproduction details when they affect the conclusion. Successful approaches need observed benefits and limits, not a fabricated root cause. Distinguish observations, hypotheses, and verified conclusions in ordinary prose; uncertainty is not proof.
+一条条目要说明：
 
-Link the original Feature, Progress or ADR record instead of copying its chronology. When guidance becomes an approved rule, link that rule instead of keeping a second copy here.
+- 当时的情况；
+- 采用的做法或得到的教训，以及它为什么有帮助；
+- 它适用的条件；
+- 支撑它的 Feature、提交、测试、报告或参考链接。
 
-## Maintain during authorized work
+版本、平台和复现细节会影响结论时，把它们记下来。成功的做法要写出观察到的收益和局限，不编造根本原因。在普通文字中区分观察、假设和已验证的结论；不确定的内容不能当作证明。
 
-When a task establishes a useful lesson or approach, first check for an existing entry and update or link it before creating another. Include task-owned knowledge and index edits in the task's normal documentation and commit work; no extra approval is needed for recording facts already within that authorized scope. A discussion-only or read-only task keeps its write boundary. Rule changes and cross-project reuse keep their existing authorization boundaries.
+链接原始的 Feature、Progress 或 ADR 记录，不复制其中的时间经过。某条指导成为已批准的规则后，链接那条规则，不在这里保留第二份。
 
-When creating or substantively updating an entry, apply [Organize entries](#organize-entries) and [Keep the useful context](#keep-the-useful-context).
+## 在已获授权的工作中维护
 
-Review entry accuracy and links before delivery. If evidence changes, correct the conclusion and its limits; do not silently turn an old result into a claim about a new version. No task must manufacture a new entry. Ordinary documentation review and the existing task workflow are sufficient.
+任务得出有用的教训或做法时，先查找是否已有条目，优先更新或链接已有条目，再考虑新建。
 
-Keep runnable helpers, fixtures, data and actual reports in their normal project locations and link them here. Correcting prose here is not a new verification run.
+- 属于本任务的知识条目和索引修改，随任务正常的文档和提交工作一起完成；记录已在授权范围内的事实不需要额外批准。
+- 只讨论或只读的任务保持其写入边界。
+- 修改规则和跨项目复用仍按原有的授权边界处理。
+
+新建或实质更新条目时，按[组织条目](#组织条目)和[保留有用的背景](#保留有用的背景)执行。
+
+交付前核对条目的准确性和链接。证据变化时，修正结论及其局限；不要悄悄把旧结果当作对新版本的结论。任何任务都不必为了交差而新写条目。普通的文档核对和任务已有的流程就够了。
+
+可运行的辅助脚本、测试夹具、数据和实际报告放在项目中它们平常所在的位置，在这里链接。修改这里的文字不算一次新的验证运行。

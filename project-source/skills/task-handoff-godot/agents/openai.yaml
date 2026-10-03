@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Task Handoff"
-  short_description: "Preserve task state and prepare scoped continuation text"
+  display_name: "Godot 任务交接"
+  short_description: "保存任务状态，并准备限定范围的续接文字"
 
 policy:
   allow_implicit_invocation: true

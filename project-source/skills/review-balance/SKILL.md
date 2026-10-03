@@ -1,14 +1,14 @@
 ---
 name: review-balance
-description: "Independently review proposed or adopted game formulas and values against stated strategy, progression and pacing goals. Use for a requested balance analysis. Not for numeric authoring (design-balance), tuning implementation or player playtest analysis."
+description: "对照已说明的策略、成长和节奏目标，独立审核拟议或已采纳的游戏公式与数值。用于用户要求的平衡分析。不用于数值编写（design-balance）、调参实现或玩家试玩分析。"
 ---
 
-# Balance review
+# 平衡审核
 
-Apply `methodology/12-independent-review.md`. Read the supplied GDD mechanics, formulas and pacing/strategy goals, plus the actual numeric data. Distinguish approved rules from draft proposals; numeric review may precede Product, Features or runtime implementation. Missing goals or inputs limit the conclusion and do not authorize inventing a desired balance.
+按 `methodology/12-independent-review.md` 执行。阅读提供的 GDD 机制、公式、节奏与策略目标，以及实际的数值数据。区分已批准的规则和草案提议；数值审核可以早于 Product、Feature 或运行时实现。缺少目标或输入会限制结论，但不授权编造想要的平衡。
 
-Analyze meaningful decision paths and boundary cases: dominant or useless options, positive feedback, resource sources/sinks, breakpoints, compounding, progression walls and interaction between mechanics. Use transparent calculations or scoped simulations when authorized; state assumptions, units, initial conditions, randomness and parameter ranges.
+分析有意义的决策路径和边界情况：占优或无用的选项、正反馈、资源的来源与消耗、断点、复利效应、成长瓶颈，以及机制之间的相互作用。获得授权时，使用透明的计算或限定范围的模拟；写明假设、单位、初始条件、随机性和参数范围。
 
-Compare plausible player strategies rather than one optimal trace. Check whether the model matches the reviewed rules and, when implementation is in scope, the actual runtime behavior; identify results that depend on unverified assumptions. Predicted pacing is not observed player enjoyment, comprehension or retention. General playtest analysis remains outside this framework scope.
+比较多种合理的玩家策略，而不只看一条最优路径。核对模型是否符合被审核的规则；实现在范围内时，也核对实际的运行时行为。指出依赖未验证假设的结果。预测的节奏不等于实际观察到的玩家乐趣、理解或留存。一般的试玩分析仍在本框架范围之外。
 
-Report supported exploits or rule failures separately from tuning suggestions. Keep raw calculations, results and confidence limits. Return scoped numeric authoring to `design-balance`, overall gameplay or experience changes to `design-gdd`, and code/resource repairs to the authorized implementation owner.
+把有依据的漏洞利用或规则失效与调参建议分开报告。保留原始计算、结果和置信限制。限定范围的数值编写交回 `design-balance`，整体玩法或体验的变更交回 `design-gdd`，代码与资源的修复交回已获授权的实现负责方。

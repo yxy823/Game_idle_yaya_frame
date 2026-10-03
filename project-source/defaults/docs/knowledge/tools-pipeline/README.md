@@ -1,9 +1,9 @@
-# Tools and pipelines experience
+# 工具与流水线经验
 
-[Knowledge index](../README.md)
+[知识索引](../README.md)
 
-Use this topic for PowerShell/Python helpers, data and import workflows, build and local tooling. Record machine-specific conditions when relevant. Follow the [knowledge convention](../README.md).
+本主题收录 PowerShell/Python 辅助脚本、数据与导入流程、构建和本地工具。条件与具体机器有关时，记下这些条件。遵循[知识约定](../README.md)。
 
-## Entries
+## 条目
 
-No project entries yet. Add links and short descriptions here as notes are written.
+还没有项目条目。写出条目后，在这里添加链接和简短说明。

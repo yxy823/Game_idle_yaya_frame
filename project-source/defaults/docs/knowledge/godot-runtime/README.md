@@ -1,9 +1,9 @@
-# Godot runtime experience
+# Godot 运行时经验
 
-[Knowledge index](../README.md)
+[知识索引](../README.md)
 
-Use this topic for SceneTree, resources, signals, UI, animation, audio, physics and runtime/export lessons. Add narrower topics, such as UI, when actual notes need them. Follow the [knowledge convention](../README.md).
+本主题收录 SceneTree、资源、信号、UI、动画、音频、物理以及运行时与导出方面的经验。实际条目需要时，再增加更细的主题，例如 UI。遵循[知识约定](../README.md)。
 
-## Entries
+## 条目
 
-No project entries yet. Add links and short descriptions here as notes are written.
+还没有项目条目。写出条目后，在这里添加链接和简短说明。

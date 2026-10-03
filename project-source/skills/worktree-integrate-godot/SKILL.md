@@ -1,36 +1,36 @@
 ---
 name: worktree-integrate-godot
-description: Integrate selected Godot worktree changes into the intended target, or resume an authorized integration that has conflicts. Checks the combined result; does not select an experiment's winner, create a worktree by default or automatically clean up branches.
+description: 把选定的 Godot worktree 改动整合到预定目标，或续接一次已获授权但出现冲突的整合。检查组合后的结果。不用于选出实验的胜出方案，默认不创建 worktree，也不自动清理分支。
 ---
 
-# Integrate selected Godot worktree results
+# 整合选定的 Godot worktree 成果
 
-Identify the adopted result, source revisions or authorized local changes, intended target branch and actual target checkout. Reuse the task's decisions and current repository evidence. A new integration starts after the result to adopt is clear; a direct request to resolve an existing conflict starts by identifying that operation and its intended result, not by launching another merge.
+确认四件事：采纳的结果、来源修订或已获授权的本地改动、预定的目标分支，以及实际的目标检出目录。复用任务已有的决定和当前仓库中的证据。新的整合在要采纳的结果明确之后才开始。如果用户直接要求解决一个已有的冲突，先确认这次操作和它预定的结果，不要再发起一次合并。
 
-Paths in code spans are project-relative. Read `agent-rules/00-core/git-worktree-and-commits.md` for authorization, current-change preservation, staging, verification and commits; this method creates no new Stage or completion rule.
+代码格式中的路径相对于项目根目录。授权、保留当前改动、暂存、验证和提交，读 `agent-rules/00-core/git-worktree-and-commits.md`；本方法不新增 Stage 或完成规则。
 
-## Establish a coherent candidate
+## 建立一致的候选结果
 
-Inspect source and target history, actual status and the relevant changes before dependent writes. Work in the intended target checkout, preserving its unrelated content and staging state. An unexplained in-progress operation or changed HEAD is a state to investigate, not permission to abort or reset. Worktree creation does not authorize writing to a different target.
+在进行依赖这些信息的写入之前，检查来源和目标的历史、实际状态和相关改动。在预定的目标检出目录里工作，保留其中无关的内容和暂存状态。无法解释的进行中操作或已变化的 HEAD，是需要调查的状态，不是中止或重置的许可。创建 worktree 不授权写入另一个目标。
 
-Bring over the selected result and its real dependencies: scripts, scenes, resources, required identifiers, tests and documentation may belong together. Exclude unrelated experiments and temporary runtime settings; explain an inseparable overlap instead of silently adopting the entire source. Git integrates revisions or selected changes, not two directory trees. Uncommitted or ignored source content needs separate inspection and authorized handling, not a transport commit to bypass its conditions.
+带过来的是选定的结果和它真实的依赖：脚本、场景、资源、必需的标识符、测试和文档可能需要一起带上。排除无关的实验和临时的运行时设置；无法分开的重叠部分要说明，不要悄悄采纳整个来源。Git 整合的是修订或选定的改动，不是两棵目录树。来源中未提交或被忽略的内容需要单独检查，并按授权处理；不要为了绕过它们的条件而做一次搬运提交。
 
-Choose the integration method from the actual history and selected scope. A whole-branch merge and selected-commit application have different effects; neither is a universal default. Inspect whether the chosen command will generate commits, advance the target ref or include other changes before executing it. A merge can commit automatically; `--no-commit` alone does not stop a fast-forward update, as described in the [Git merge contract](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---no-commit).
+根据实际历史和选定范围选择整合方式。整个分支合并和应用选定提交的效果不同，两者都不是通用的默认做法。执行前检查所选命令会不会生成提交、前移目标引用或带入其他改动。合并可能自动提交；如 [Git merge 文档](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---no-commit)所述，单靠 `--no-commit` 挡不住快进（fast-forward）更新。
 
-Where validation or acceptance must precede committing or adopting the result, retain a reviewable candidate without prematurely advancing the target or recording commits. Choose a suitable method under the actual task authorization; do not add an unrequested worktree, squash history or relax a Gate to make the command convenient. Creating a separate candidate checkout, if needed and authorized, uses [worktree-create-godot](../worktree-create-godot/SKILL.md).
+如果验证或验收必须先于提交或采纳结果，保留一个可供审核的候选结果，不要提前前移目标或记录提交。在实际的任务授权内选择合适的方式；不要为了让命令方便，就新增没被要求的 worktree、压缩（squash）历史或放宽关卡。确实需要且已获授权创建独立的候选检出目录时，使用 [worktree-create-godot](../worktree-create-godot/SKILL.md)。
 
-When conflicts occur, or the request is to resume an already conflicted integration, read [Resolve the existing integration conflict](references/merge-conflicts.md). It owns the conflict method; conflict-free integration does not require that reference.
+出现冲突，或请求是续接一次已经冲突的整合时，读[解决已有的整合冲突](references/merge-conflicts.md)。冲突处理方法由它负责；没有冲突的整合不需要读它。
 
-## Validate and adopt the combined result
+## 验证并采纳组合后的结果
 
-Use [project-verification-godot](../project-verification-godot/SKILL.md) for the owning task's applicable checks, including affected Godot scene/resource relationships. No text conflict does not prove that paths, node references, identifiers or behavior still work. Read the shared [Godot runtime preparation](../worktree-create-godot/references/godot-worktree-runtime.md) before relevant writing tools when target preparation or data destinations are missing or have changed.
+所属任务适用的检查，包括受影响的 Godot 场景与资源关系，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。没有文本冲突不能证明路径、节点引用、标识符或行为仍然正常。目标的准备情况或数据写入位置缺失或发生变化时，在运行相关的写入工具之前，读共用的 [Godot 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。
 
-The combined candidate needs evidence that applies to its actual content and obligations. Source-checkout success alone cannot stand in for target verification. Reuse still-valid results; renew only affected or missing checks. Use [verification-evidence-godot](../verification-evidence-godot/SKILL.md) for evidence applicability, reference/import recovery or interrupted runs, and [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md) for actual user acceptance when the owning task requires it.
+组合后的候选结果需要适用于它实际内容和义务的证据。来源检出目录里的成功不能代替对目标的验证。复用仍然有效的结果；只重新执行受影响或缺失的检查。证据是否适用、引用或导入的恢复、中断的运行，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)；所属任务要求实际用户验收时，使用 [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md)。
 
-Preserve explicit no-commit conditions. When the task requires both actual human acceptance and explicit permission to commit (**Local commits** in the Core Git rules), make no local commit, including an intermediate resolution or checkpoint commit, until both are met. Reuse prior explicit decisions, but do not treat a generic request to continue or integrate as replacing either special condition. When a condition is missing, complete permitted analysis or candidate preparation and report the blocked final action.
+保留明确的不提交条件。任务同时要求实际的人工验收和明确的提交许可时（核心 Git 规则的 **本地提交**），两个条件都满足之前，不做任何本地提交，包括解决冲突的中间提交或存档提交。复用之前明确做出的决定，但不要把一句笼统的“继续”或“整合”当成替代了其中任一特殊条件。缺少某个条件时，完成允许的分析或候选结果准备，并报告被阻塞的最后动作。
 
-Adopt and commit eligible results according to the Core Git contract, checking the actual target and resulting scope afterward. A conflict resolution or integrated local commit does not complete a Feature or supply human acceptance by itself. Report the source and target, adopted scope, resulting commits or remaining candidate changes, real checks and unresolved conditions. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+按核心 Git 约定采纳并提交符合条件的结果，之后核对实际的目标和最终范围。解决冲突或整合后的本地提交，本身不会完成 Feature，也不提供人工验收。报告来源和目标、采纳的范围、产生的提交或剩余的候选改动、真实的检查，以及尚未满足的条件。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
 
-## Preserve the source until cleanup is authorized
+## 获准清理之前保留来源
 
-Integration does not automatically authorize deleting the source worktree or branch. If cleanup is requested, account for remaining work, needed evidence and any task or process still using that checkout. For Codex-managed worktrees use the available host archive/recovery tools and their preservation contract; do not replace them with a deletion script. Do not promise that ignored local files are preserved without checking the actual tool contract.
+整合不会自动授权删除来源 worktree 或分支。用户要求清理时，先核对剩余的工作、需要保留的证据，以及仍在使用该检出目录的任务或进程。Codex 托管的 worktree，使用宿主提供的归档与恢复工具及其保留约定；不要用删除脚本代替它们。没有核实工具的实际约定之前，不要承诺被忽略的本地文件会被保留。

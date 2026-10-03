@@ -1,31 +1,31 @@
-# JSON Rules
+# JSON 规则
 
-Godot's JSON parser is useful but is not a strict standards validator. Preserve exact identity and reject ambiguities that lose information.
+Godot 的 JSON 解析器很实用，但不是严格的标准校验器。保留准确的身份，拒绝会丢失信息的歧义。
 
-## Parsing
+## 解析
 
-- **[MUST]** A successful parse does not mean that the data is valid against the schema or business rules.
-- **[MUST]** Production and canonical loaders use `JSON.parse()` and check the returned `Error` before consuming the parsed data.
-- **[MUST]** Do not use `result == null` as a general parse-failure test: valid JSON `null` and a failed `JSON.parse_string()` both produce null. Use `parse_string()` only for simple convenience paths where diagnostics are unimportant and the root schema explicitly excludes null.
-- **[MUST]** Authoritative and canonical JSON passes a strict, standards-compatible validation of the original source before Godot parses it; `JSON.parse()` alone is not strict validation.
-- **[MUST]** That strict pass rejects duplicate object keys before Dictionary conversion. It also rejects non-standard forms such as trailing commas, lax number grammar, illegal control characters in Strings and invalid Unicode, instead of accepting or cleaning them.
-- **[MUST]** A project that deliberately accepts Godot's relaxed JSON dialect declares that format and its trust and interoperability boundary explicitly. Do not mix that dialect with canonical interoperable JSON or label it as such.
+- **[必须]** 解析成功不代表数据符合 schema 或业务规则。
+- **[必须]** 生产加载器和规范加载器使用 `JSON.parse()`，并在使用解析结果之前检查返回的 `Error`。
+- **[必须]** 不要用 `result == null` 作为通用的解析失败判断：合法 JSON 的 `null` 和失败的 `JSON.parse_string()` 都会得到 null。只有在诊断信息不重要、且根 schema 明确排除 null 的简单便捷路径上，才使用 `parse_string()`。
+- **[必须]** 权威 JSON 和规范 JSON 在交给 Godot 解析之前，先对原始源文件做一次严格的、符合标准的校验；仅有 `JSON.parse()` 不算严格校验。
+- **[必须]** 这次严格校验在转换为 Dictionary 之前拒绝重复的对象键。它还拒绝非标准写法，例如尾随逗号、宽松的数字语法、String 中的非法控制字符和无效 Unicode，而不是接受或清理它们。
+- **[必须]** 项目有意接受 Godot 宽松的 JSON 方言时，明确声明该格式及其信任和互操作边界。不要把这种方言与可互操作的规范 JSON 混用，也不要把它标注为规范 JSON。
 
-## Numbers and keys
+## 数字与键
 
-- **[MUST]** Godot JSON numbers are doubles. Exact integer identity beyond the IEEE-754 range of safe consecutive integers (about ±2^53) must not use a JSON number; encode it as a decimal String or another exact format.
-- **[MUST]** Canonical JSON maps have an explicit String-key schema, because JSON serialization turns Dictionary keys into Strings.
-- **[MUST]** Do not use non-finite numeric values in canonical gameplay JSON.
+- **[必须]** Godot 的 JSON 数字是双精度浮点数。超出 IEEE-754 安全连续整数范围（约 ±2^53）的精确整数身份不能使用 JSON 数字；把它编码为十进制 String 或其他精确格式。
+- **[必须]** 规范 JSON 的映射有明确的 String 键 schema，因为 JSON 序列化会把 Dictionary 的键转为 String。
+- **[必须]** 规范的玩法 JSON 中不使用非有限数值。
 
-## Canonical writing
+## 规范写出
 
-- **[MUST]** A canonical writer that uses `JSON.stringify()` explicitly defines key ordering, `indent`, the output newline policy and numeric precision, including the `sort_keys` and `full_precision` arguments. Do not rely on writer defaults.
-- **[MUST]** Float data that requires exact round-trip decoding uses `full_precision = true`. Data with schema-defined quantization is rounded at the declared stage and written according to that quantization policy.
-- **[MUST]** Reject NaN and ±Inf before `JSON.stringify()`. Do not rely on Godot replacing infinity with `1e99999` or NaN with null.
+- **[必须]** 使用 `JSON.stringify()` 的规范写出器明确规定键的顺序、`indent`、输出换行策略和数值精度，包括 `sort_keys` 和 `full_precision` 参数。不要依赖写出器的默认值。
+- **[必须]** 需要精确往返解码的浮点数据使用 `full_precision = true`。schema 规定了量化的数据，在声明的阶段舍入，并按该量化策略写出。
+- **[必须]** 在 `JSON.stringify()` 之前拒绝 NaN 和 ±Inf。不要依赖 Godot 把无穷大替换为 `1e99999`、把 NaN 替换为 null。
 
-## Trust
+## 信任
 
-- **[MUST]** `JSON.from_native()` and `JSON.to_native()` are an engine-specific encoding contract, not an implicit substitute for a canonical JSON schema shared across systems.
-- **[MUST]** When Godot-native conversion is intentional, explicitly define and version the encoded subset of Variant types and the Godot compatibility boundary.
-- **[MUST]** Untrusted JSON is data-only by default. Do not enable arbitrary object reconstruction (`to_native(... allow_objects=true)` or an equivalent) for untrusted data.
-- **[MUST]** External fields such as `class_name`, script, scene or resource paths, and method or command names do not directly drive arbitrary loading, instantiation or code execution. Resolve validated stable IDs or enums through a project-owned allowlist or registry.
+- **[必须]** `JSON.from_native()` 和 `JSON.to_native()` 是引擎特有的编码契约，不能隐式代替跨系统共享的规范 JSON schema。
+- **[必须]** 有意使用 Godot 原生转换时，明确定义编码的 Variant 类型子集和 Godot 兼容边界，并为它们记录版本。
+- **[必须]** 不可信的 JSON 默认只作为数据。不要对不可信数据启用任意对象重建（`to_native(... allow_objects=true)` 或等效方式）。
+- **[必须]** `class_name`、脚本、场景或资源路径、方法名或命令名等外部字段，不直接驱动任意的加载、实例化或代码执行。经过校验的稳定 ID 或枚举，通过项目自己的允许清单或注册表解析。

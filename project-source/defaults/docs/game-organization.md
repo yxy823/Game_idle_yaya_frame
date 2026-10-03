@@ -1,6 +1,6 @@
 # 游戏职责与项目组织指南
 
-理解游戏功能、判断逻辑与表现的分工、查找设计资料或安排模块位置时，按需要查阅本指南。先明确职责和文档关系，再决定代码、场景与资源如何组织。游戏设计约束沿 GDD 的[设计范围与边界](../methodology/01-product-doc-structure.md#design-scope-and-boundaries)及所属主题读取；开发约束以[项目规则](project-rules.md)及下文链接的工程规则为准。本页提供共同概念、判断方法与示例。
+理解游戏功能、判断逻辑与表现的分工、查找设计资料或安排模块位置时，按需要查阅本指南。先明确职责和文档关系，再决定代码、场景与资源如何组织。游戏设计约束沿 GDD 的[设计范围与边界](../methodology/01-product-doc-structure.md#设计范围与边界)及所属主题读取；开发约束以[项目规则](project-rules.md)及下文链接的工程规则为准。本页提供共同概念、判断方法与示例。
 
 ## 游戏逻辑与表现
 
@@ -56,7 +56,7 @@ UI 文档从实际交互位置引用相关表现；角色死亡等非 UI 表现�
 
 本模型帮助理解职责、定位资料和作出设计判断。普通实现方式由 Agent 根据已确认需求、现有结构和验证结果选择；默认建议按适用条件使用，不把例子变成每个任务都必须采用的结构。职责清楚不意味着必须拆成特定数量的类、节点或文件。
 
-开发顺序按实际依赖安排，逻辑与表现分工不要求逻辑先行。界面原型可以先验证布局、资源和交互，再接入购买逻辑；原型里的演示数据不成为正式游戏状态。沿用[视觉原型约定](../methodology/13-prototypes.md#visual-prototype-before-dependent-implementation)与既有 Feature 验证流程，分别核对规则结果、表现要求和接入行为。
+开发顺序按实际依赖安排，逻辑与表现分工不要求逻辑先行。界面原型可以先验证布局、资源和交互，再接入购买逻辑；原型里的演示数据不成为正式游戏状态。沿用[视觉原型约定](../methodology/13-prototypes.md#依赖实现前的视觉原型)与既有 Feature 验证流程，分别核对规则结果、表现要求和接入行为。
 
 ## 先确定内容属于谁
 
@@ -105,11 +105,11 @@ game/mining/
 
 模块名称来自当前游戏：探索游戏可能需要 `world/` 与 `actors/`，放置游戏可能需要 `production/` 与 `upgrades/`。有需求再建立相应目录和实现。功能专属面板跟随功能，菜单等全局 UI 可归入 `game/ui/`。
 
-逻辑分层与目录分层分别判断：优先在所属游戏模块内部明确输入、规则与表现的职责。例如，`mining_rules.gd` 与 `mining_panel.gd` 可以同属 `game/mining/`，规则代码不依赖面板实现。再按内容规模与查找、维护需要细分目录；逻辑分层本身不要求新建根级 `core/`、`presentation/` 等目录。依赖方向沿用[项目架构原则](project-rules.md#22-core-architecture-principles)。
+逻辑分层与目录分层分别判断：优先在所属游戏模块内部明确输入、规则与表现的职责。例如，`mining_rules.gd` 与 `mining_panel.gd` 可以同属 `game/mining/`，规则代码不依赖面板实现。再按内容规模与查找、维护需要细分目录；逻辑分层本身不要求新建根级 `core/`、`presentation/` 等目录。依赖方向沿用[项目架构原则](project-rules.md#22-核心架构原则)。
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-and-organization.md)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#style-and-naming)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-and-organization.md)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 

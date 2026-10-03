@@ -1,24 +1,24 @@
-# Scene References, Groups, IDs, and Order
+# 场景引用、分组、ID 与顺序
 
-Treat serialized references and Godot-managed IDs as semantic data. The identity rules for Resource UIDs, NodePaths and `%UniqueName` are defined in [Godot resource and identity references](../00-core/godot-resource-references.md); this document adds what applies inside `.tscn` files.
+序列化的引用和 Godot 管理的 ID 是有语义的数据。Resource UID、NodePath 和 `%UniqueName` 的身份规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)；本页补充在 `.tscn` 文件内适用的要求。
 
-## Resource IDs
+## 资源 ID
 
-- **[MUST]** `ExtResource` and `SubResource` numeric IDs are file-local serialization identifiers. Do not copy or renumber them for aesthetics.
-- **[MUST]** Preserve the scene Node `unique_id` values of Godot 4.6 and later. Do not copy one value to duplicated Nodes or renumber values for readability.
-- **[MUST]** A legacy scene saved before Godot 4.6 may legitimately omit Node `unique_id`. Missing values alone are not corruption; do not synthesize, backfill or renumber them for format uniformity.
-- **[MUST]** SubResource order follows the actual dependencies; do not reorder it blindly.
-- **[MUST]** Do not reintroduce deprecated serialization fields, such as `load_steps` assumptions from earlier versions, into Godot 4.7 scenes.
+- **[必须]** `ExtResource` 和 `SubResource` 的数字 ID 是文件内的序列化标识。不为美观而复制或重新编号。
+- **[必须]** 保留 Godot 4.6 及以后版本中场景 Node 的 `unique_id` 值。不把同一个值复制给复制出来的 Node，也不为可读性重新编号。
+- **[必须]** Godot 4.6 之前保存的旧场景可以合法地没有 Node `unique_id`。仅缺少这些值不代表文件损坏；不为格式统一而生成、补填或重新编号。
+- **[必须]** SubResource 的顺序遵循实际的依赖关系；不盲目重排。
+- **[必须]** 不把已弃用的序列化字段（例如早期版本中关于 `load_steps` 的假设）重新引入 Godot 4.7 场景。
 
-## NodePath and rename
+## NodePath 与重命名
 
-- **[MUST]** Renaming or reparenting a Node is a [scene reference migration](../00-core/godot-resource-references.md#scene-references). In a `.tscn`, inspect and validate NodePath properties, animations, `node_paths`, connections, parents and owners, scripts, inherited overrides and code consumers.
-- **[MUST]** Before adding, copying or enabling `unique_name_in_owner` on a Node, verify that its name is unique across the complete owner scope, not merely among siblings. Do not let subtree duplication silently create a duplicate `%Name`.
-- **[MUST]** If a unique-name collision would occur, choose and migrate the affected name deliberately, update every `%Name` consumer and revalidate reference resolution.
+- **[必须]** 重命名 Node 或更换其父节点，是一次[场景引用迁移](../00-core/godot-resource-references.md#场景引用)。在 `.tscn` 中，检查并验证 NodePath 属性、动画、`node_paths`、信号连接、父节点与 owner、脚本、继承场景中的覆盖以及代码中的消费方。
+- **[必须]** 给 Node 添加、复制或启用 `unique_name_in_owner` 之前，确认它的名字在整个 owner 范围内唯一，而不只是在同级节点之间唯一。不让复制子树悄悄产生重复的 `%Name`。
+- **[必须]** 如果会出现唯一名冲突，有意识地选定并迁移受影响的名字，更新每一个使用该 `%Name` 的地方，并重新验证引用能否解析。
 
-## Groups and order
+## 分组与顺序
 
-- **[MUST]** Groups are behavior declarations, not decorative metadata. Do not remove or normalize them without analyzing their consumers.
-- **[MUST]** Do not create custom project groups whose names begin with `_`, because Godot uses underscore-prefixed names for internal conventions.
-- **[MUST]** Group naming and iteration order follow [Groups and layers](../40-project-config/groups-and-layers.md#groups).
-- **[MUST]** Sibling and index order may be semantic for drawing, layout, processing and serialized behavior, including in inherited and instanced scenes. Do not alphabetize, reorder or sort Nodes for aesthetics or text cleanliness.
+- **[必须]** 分组是行为声明，不是装饰性的元数据。不分析使用它的消费方，就不移除或规范化分组。
+- **[必须]** 不创建以 `_` 开头的自定义项目分组，因为 Godot 用下划线开头的名称表示内部约定。
+- **[必须]** 分组命名和遍历顺序遵循 [分组与层](../40-project-config/groups-and-layers.md#分组)。
+- **[必须]** 同级顺序和索引顺序，可能对绘制、布局、处理和序列化行为有语义，在继承场景和实例场景中也一样。不为美观或文本整洁而按字母排列、重排或排序 Node。

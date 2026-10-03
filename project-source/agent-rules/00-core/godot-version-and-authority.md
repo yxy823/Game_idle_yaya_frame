@@ -1,28 +1,28 @@
-# Godot Version and Authority
+# Godot 版本与依据
 
-Defines how target-version facts and engineering evidence are established.
+本页规定如何确认目标版本的事实，以及工程判断以什么为证据。
 
-## Target version
+## 目标版本
 
-- **[MUST]** The project's target version line is Godot 4.7. Project tooling and configuration own the exact approved patch executables.
-- **[MUST]** Do not change the target Godot version, the executable baseline, the renderer baseline or the upgrade state merely to simplify the current task.
-- **[MUST]** For API and engine semantics, prefer the versioned Godot 4.7 official documentation and class reference.
-- **[MUST]** Do not use `/latest/`, Godot 3.x or an example from another minor version as proof that an API or behavior exists in Godot 4.7. Treat it as discovery material and verify it against 4.7.
-- **[MUST]** Treat a minor or patch upgrade as migration work when behavior is version-sensitive. Do not assume that all Godot 4.x or all 4.7.x behavior is identical.
+- **[必须]** 项目的目标版本线是 Godot 4.7。获准使用的确切补丁版本可执行文件，由项目工具和配置规定。
+- **[必须]** 不为简化当前任务而修改目标 Godot 版本、可执行文件基线、渲染器基线或升级状态。
+- **[必须]** API 和引擎语义优先参考 Godot 4.7 版本的官方文档和类参考。
+- **[必须]** 不把 `/latest/` 文档、Godot 3.x 或其他次版本的示例，当作某个 API 或行为在 Godot 4.7 中存在的证明。只把它们当作查找线索，再对照 4.7 核实。
+- **[必须]** 行为与版本有关时，把次版本或补丁版本升级当作迁移工作。不假设所有 Godot 4.x 或所有 4.7.x 的行为都相同。
 
-## Authority and evidence
+## 权威来源与证据
 
-- **[MUST]** Versioned official Godot documentation defines the intended semantics of the target engine.
-- **[MUST]** The actual target Godot compiler, parser, importer, runtime, renderer and exporter provide executable evidence for the project.
-- **[MUST]** A discrepancy between documentation and runtime is a verification problem, not a shortcut to choose whichever behavior is convenient.
-- **[MUST]** For a material discrepancy, confirm the exact versions. Use a minimal reproduction plus migration notes, engine source or known issues as needed to classify it as an engine bug, a documentation defect, a patch difference, a configuration problem or project misuse.
-- **[REVIEW]** Isolate a workaround for a confirmed defect in the target engine version, and document the version and condition it applies to. Add a regression test where practical, and give it a recheck or removal condition when useful.
+- **[必须]** 对应版本的 Godot 官方文档规定目标引擎的预期语义。
+- **[必须]** 实际使用的目标 Godot 编译器、解析器、导入器、运行时、渲染器和导出器，为项目提供可执行的证据。
+- **[必须]** 文档与实际运行不一致是需要核实的问题，不是挑选方便行为的捷径。
+- **[必须]** 对实质性的不一致，先确认确切版本。按需要使用最小复现，加上迁移说明、引擎源码或已知问题，把它归类为引擎缺陷、文档缺陷、补丁版本差异、配置问题或项目误用。
+- **[复核]** 针对目标引擎版本中已确认缺陷的变通做法要隔离出来，并写明适用的版本和条件。可行时增加回归测试，有用时写明何时复查或移除。
 
-## External references
+## 外部参考
 
-- **[PREFER]** Mature third-party Godot projects may inform engineering practice, failure modes and validation strategy.
-- **[MUST]** Third-party practice does not override target Godot semantics, explicit project architecture or applicable Core `[MUST]` rules.
-- **[MUST]** Third-party plugin and tool documentation must match the version that the project actually uses; do not assume that the latest documentation matches the installed version.
-- **[PREFER]** Blogs, forums and community posts may identify candidate pitfalls. Verify their version-sensitive factual claims before turning them into project rules.
-- **[MUST]** When correctness depends on a version-sensitive Godot or tool fact and that fact is uncertain, verify it instead of guessing.
-- **[PREFER]** Record the exact tested Godot or tool version when the result is materially version-sensitive.
+- **[优先]** 成熟的第三方 Godot 项目可以为工程实践、失败模式和验证策略提供参考。
+- **[必须]** 第三方实践不能凌驾于目标 Godot 的语义、明确的项目架构或适用的核心 `[必须]` 规则之上。
+- **[必须]** 第三方插件和工具的文档必须与项目实际使用的版本一致；不假设最新文档与已安装版本相符。
+- **[优先]** 博客、论坛和社区帖子可以帮助发现可能的陷阱。把其中与版本有关的事实变成项目规则之前，先核实。
+- **[必须]** 正确性依赖于某个与版本有关的 Godot 或工具事实、而这个事实又不确定时，核实它，不靠猜。
+- **[优先]** 结果与版本实质相关时，记录实际测试用的确切 Godot 或工具版本。

@@ -1,13 +1,13 @@
-# 20 Scene (`.tscn`) Rules
+# 20 场景（`.tscn`）规则
 
-A `.tscn` file is serialized Godot scene state, not ordinary free-form text.
+`.tscn` 文件是序列化的 Godot 场景状态，不是可以随意编辑的普通文本。
 
-| Document | Read when |
+| 文档 | 何时阅读 |
 | --- | --- |
-| `structure-and-ownership.md` | Editing serialized scene state, the node hierarchy or ownership |
-| `instancing-inheritance-and-overrides.md` | Changing scene instances, inherited scenes or instance-local overrides |
-| `references-groups-and-order.md` | Changing ExtResource or SubResource IDs, Node `unique_id` values, NodePaths, unique names, groups, node names or sibling order |
-| `ui-and-scripts.md` | Changing UI layout or focus, script binding or signal connections |
-| `validation.md` | Any scene change: determine its applicable validation |
+| `structure-and-ownership.md` | 编辑序列化的场景状态、节点层级或 owner 归属 |
+| `instancing-inheritance-and-overrides.md` | 修改场景实例、继承场景或实例上的本地覆盖 |
+| `references-groups-and-order.md` | 修改 ExtResource 或 SubResource 的 ID、Node 的 `unique_id` 值、NodePath、唯一名、分组、节点名或同级顺序 |
+| `ui-and-scripts.md` | 修改 UI 布局或焦点、脚本绑定或信号连接 |
+| `validation.md` | 任何场景修改：确定需要哪些验证 |
 
-No project rule splits scenes by line count, node count or tree depth alone.
+项目规则不单凭行数、节点数或树深度拆分场景。

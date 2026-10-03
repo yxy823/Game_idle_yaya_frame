@@ -1,33 +1,33 @@
 ---
 name: worktree-create-godot
-description: Prepare or reuse a Godot Git worktree for an authorized task, with the intended source version and required local preparation. Use when a separate checkout is needed; does not choose the winning solution or integrate results.
+description: 为已获授权的任务准备或复用 Godot Git worktree，使用预定的源版本并完成必要的本地准备。用于需要独立检出目录时。不用于选出胜出方案或整合结果。
 ---
 
-# Prepare a Godot worktree
+# 准备 Godot worktree
 
-Establish why this task needs another checkout, its intended base and the work to continue there. Reuse the current request, repository state and existing records instead of asking for known inputs. A worktree does not create a Feature, a new Stage or missing game design. A request to compare approaches without implementation can end with a proposed arrangement.
+先确认三件事：这个任务为什么需要另一个检出目录、预定的基准是什么、要在那里继续哪些工作。复用当前请求、仓库状态和已有记录，不要再询问已知的输入。worktree 不会创建 Feature、新的 Stage 或缺失的游戏设计。只要求比较方案、不要求实现时，可以给出一份建议的安排就结束。
 
-Paths in code spans below are relative to the actual project root. Read `agent-rules/00-core/git-worktree-and-commits.md` for authorization, existing changes, staging and commits; this Skill does not replace that contract.
+下文代码格式中的路径相对于实际的项目根目录。授权、已有改动、暂存和提交，读 `agent-rules/00-core/git-worktree-and-commits.md`；本 Skill 不替代那份约定。
 
-## Establish the intended checkout
+## 确定预定的检出目录
 
-- Inspect the actual repository, relevant worktrees, branch/ref and current changes. Reuse a suitable active checkout when no ongoing task or process depends on it and its existing work has been accounted for. Ordinary task continuation does not itself require a new worktree.
-- Distinguish the selected committed base from unstaged, staged, untracked and ignored content. A new worktree does not automatically carry those local changes. If this task needs any of them, inspect and carry only the authorized content while preserving the source and its staging state; do not commit merely to make transport convenient.
-- Use available Codex managed-worktree tools before shell creation. Confirm the requested base against the tool's actual default, provide the intended ref where needed, and use the completed returned path. A pending operation or a registration failure with a usable returned checkout is not a reason to create another one. Use manual Git creation only when the managed capability is unavailable or the user explicitly requests it.
-- Keep branch creation and changes to other checkouts within the task's concrete authorization. After creation or selection, verify the actual directory, branch or detached commit and relevant status. Perform subsequent project reads, edits and checks in that target rather than silently substituting the main checkout.
+- 检查实际的仓库、相关的 worktree、分支或引用，以及当前改动。合适的现有检出目录满足两个条件时可以复用：没有进行中的任务或进程依赖它，它已有的工作也已核对清楚。普通的任务续接本身不需要新的 worktree。
+- 区分选定的已提交基准，与未暂存、已暂存、未跟踪和被忽略的内容。新 worktree 不会自动带上这些本地改动。如果任务需要其中某些内容，先检查，再只带入已获授权的部分，并保留来源及其暂存状态；不要只为了方便搬运而提交。
+- 先使用可用的 Codex 托管 worktree 工具，再考虑用 shell 创建。对照工具的实际默认值确认请求的基准，需要时提供预定的引用，并使用工具完成后返回的路径。操作仍在进行中，或登记失败但返回的检出目录可用，都不是再建一个的理由。只有托管能力不可用或用户明确要求时，才手动用 Git 创建。
+- 创建分支和改动其他检出目录，都限定在任务的具体授权内。创建或选定后，核实实际的目录、分支或游离提交（detached commit）以及相关状态。之后的项目读取、编辑和检查都在这个目标里进行，不要悄悄换回主检出目录。
 
-Explicit no-commit conditions continue here. When the task requires both actual human acceptance and explicit permission to commit (**Local commits** in `agent-rules/00-core/git-worktree-and-commits.md`), make no interim transport or checkpoint commit until both are met.
+明确的不提交条件在这里继续有效。任务同时要求实际的人工验收和明确的提交许可时（`agent-rules/00-core/git-worktree-and-commits.md` 的 **本地提交**），两个条件都满足之前，不做任何用于搬运或存档的中间提交。
 
-## Prepare only what the requested work needs
+## 只准备本次工作需要的内容
 
-Before an editor, import, test, game or other tool operation that may write, read [Godot worktree runtime preparation](references/godot-worktree-runtime.md). It owns the additional cross-checkout data considerations. A pure read-only source comparison needs no runtime preparation, and a separate directory alone proves no runtime isolation.
+运行编辑器、导入、测试、游戏或其他可能写入的工具操作之前，读 [Godot worktree 运行准备](references/godot-worktree-runtime.md)。跨检出目录的额外数据问题由它负责。纯只读的源码比较不需要运行准备；单独的目录本身也证明不了运行时已隔离。
 
-Use [project-environment-godot](../project-environment-godot/SKILL.md) for an actual configuration or first-scan dependency. Use [project-verification-godot](../project-verification-godot/SKILL.md) for checks required by the requested preparation or owning task. Reuse valid preparation, avoid a new readiness ledger, and do not expand directory creation into a full test suite or game launch.
+实际的配置或首次扫描依赖，使用 [project-environment-godot](../project-environment-godot/SKILL.md)。请求的准备或所属任务要求的检查，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。复用仍然有效的准备，不新建就绪状态台账，也不要把创建目录扩大成完整的测试套件或启动游戏。
 
-## Return the usable location and real limits
+## 返回可用的位置和真实的限制
 
-Report the actual target path, base/branch or commit, any authorized local content carried over, completed preparation and the next operation that is ready. If checkout creation succeeded but running remains blocked, name that distinction and the missing condition; do not call an unexecuted runtime check passed.
+报告实际的目标路径、基准与分支或提交、带入的已授权本地内容、已完成的准备，以及已经可以进行的下一个操作。如果检出目录创建成功但运行仍受阻，说明这个区别和缺少的条件；不要把没有执行的运行检查说成已通过。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**). The task continues in that checkout. Use existing Progress or Feature records only when durable continuation information is needed, under `methodology/09-records-reports-and-handoff.md`.
+完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。任务在这个检出目录里继续。只有需要长期保存续接信息时，才按 `methodology/09-records-reports-and-handoff.md` 使用已有的 Progress 或 Feature 记录。
 
-Integrating an adopted result belongs to [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md). Creation or later integration does not automatically authorize deleting a worktree or branch; preserve the checkout for its current work and follow the host's managed lifecycle tools if cleanup is requested.
+整合采纳的结果由 [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) 负责。创建或之后的整合都不会自动授权删除 worktree 或分支；为当前工作保留这个检出目录。用户要求清理时，使用宿主提供的托管生命周期工具。

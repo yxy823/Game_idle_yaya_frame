@@ -1,31 +1,31 @@
-# Methodology templates
+# methodology 模板
 
-These templates give the structure of files and fixed reply formats that the workflow creates later, such as a Product, a Feature detail or an ADR. They are the single structural source; there are no localized copies.
+这些模板给出流程之后要创建的文件和固定回复格式的结构，例如 Product、Feature 详情或 ADR。它们是结构的唯一来源；没有本地化副本。
 
-The project's starting ledgers (`docs/feature-list.json`, `docs/feature-list-revisions.json`, `docs/test-registry.json`, `docs/progress.md` and `docs/project-rules.md`) are not templates. Project creation copies them directly into `docs/`, and the project maintains them from then on.
+项目的初始台账（`docs/feature-list.json`、`docs/feature-list-revisions.json`、`docs/test-registry.json`、`docs/progress.md` 和 `docs/project-rules.md`）不是模板。项目创建时直接把它们复制进 `docs/`，之后由项目自行维护。
 
-## Rendering a template
+## 使用模板
 
-1. Read `document_language` from `docs/methodology-config.json` and resolve it under [document language](../05-document-language.md).
-2. Keep machine keys, enum values, IDs, paths, command strings and placeholders exactly as written.
-3. Write human-readable headings and prose in `document_language`. Keep every required section and constraint.
-4. Do not create a parallel tree of localized templates.
+1. 从 `docs/methodology-config.json` 读取 `document_language`，按[文档语言](../05-document-language.md)确定取值。
+2. 机器键、枚举值、ID、路径、命令字符串和占位符保持原样。
+3. 用 `document_language` 书写供人阅读的标题和正文。模板的标题与说明是中文；`document_language` 不是中文时，把它们渲染成该语言。保留每个必需的小节和约束。
+4. 不建立本地化模板的并行目录。
 
-Lines in *italics* are instructions to replace with project content; everything else is structure to keep. Write Markdown prose as natural paragraphs without fixed-width wrapping, and keep the line breaks that lists, tables, code and diagrams need. Do not reflow JSON or other structured templates.
+*斜体*的行是要替换成项目内容的说明；其余都是要保留的结构。Markdown 正文写成自然段落，不按固定宽度折行；列表、表格、代码和图需要的换行要保留。JSON 等结构化模板不要重新排版。
 
-## Templates
+## 模板一览
 
-| Template | Produces |
+| 模板 | 产出 |
 | --- | --- |
-| `product.md.tmpl` | `docs/product.md`: delivery pre-decomposition, GDD source mapping, boundaries, dependencies and suggested order |
-| `product-module.md.tmpl` | One `docs/product/NN-<delivery>.md`: the current Product's delivery scope, source links, integration and acceptance scenarios. Written only when that Product's turn arrives |
-| `feature-detail.json.tmpl` | A Product-derived Feature detail. It has no `engineering_change` field |
-| `engineering-feature-detail.json.tmpl` | A Bug, refactor or maintenance Feature detail, with the required `engineering_change` field |
-| `feature-design.md.tmpl` | Optional outline for `docs/features/F0XX-design.md`. Use only the sections that help; AC and test obligations stay in the Feature JSON |
-| `feature-completion-evidence.json.tmpl` | `docs/feature-completion-evidence.json`: the current Feature's test runs and, when required, its human acceptance, each tied to a Git revision and working-tree fingerprint. Reviews are not recorded here |
-| `manual-acceptance-checklist.json.tmpl` | The pending manual checks for one Feature, prepared and returned under the [manual acceptance file contract](../contracts/manual-acceptance-files.md) |
-| `feature-learning-summary.md.tmpl` | The reply format for Stage 8 learning feedback, including an explicit "nothing learned" outcome. It is not saved as a file |
-| `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional `docs/architecture.md` and subsystem maps: modules, responsibilities, dependencies and relevant runtime flows, kept separate from generated reference facts |
-| `architecture-decision-record.md.tmpl` | An optional ADR for one important technical choice. Feature notes and architecture maps link to it instead of copying it |
+| `product.md.tmpl` | `docs/product.md`：交付的预拆分、GDD 来源对应、边界、依赖和建议顺序 |
+| `product-module.md.tmpl` | 一份 `docs/product/NN-<delivery>.md`：当前 Product 的交付范围、来源链接、集成和验收场景。轮到该 Product 时才写 |
+| `feature-detail.json.tmpl` | 由 Product 派生的 Feature 详情。没有 `engineering_change` 字段 |
+| `engineering-feature-detail.json.tmpl` | Bug、重构或维护 Feature 的详情，带必需的 `engineering_change` 字段 |
+| `feature-design.md.tmpl` | `docs/features/F0XX-design.md` 的可选提纲。只使用有帮助的小节；AC 和测试义务留在 Feature JSON 中 |
+| `feature-completion-evidence.json.tmpl` | `docs/feature-completion-evidence.json`：当前 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和工作区指纹。审核不记录在这里 |
+| `manual-acceptance-checklist.json.tmpl` | 一个 Feature 待进行的人工检查，按[人工验收文件约定](../contracts/manual-acceptance-files.md)准备和返回 |
+| `feature-learning-summary.md.tmpl` | Stage 8 经验反馈的回复格式，包括明确的“无新增经验”结果。不保存为文件 |
+| `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 可选的 `docs/architecture.md` 和子系统地图：模块、职责、依赖和相关的运行流程，与生成的引用事实分开 |
+| `architecture-decision-record.md.tmpl` | 一份可选的 ADR，记录一项重要的技术选择。Feature notes 和架构地图链接到它，不复制它 |
 
-Field meanings and validation rules live in [the Feature list schema](../02-feature-list-schema.md), engineering Feature rules in [engineering change](../07-engineering-change.md), and test selection in [test traceability and evidence](../08-test-traceability-and-evidence.md). Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md); create an ADR only for a real decision.
+字段含义和校验规则见 [Feature 列表结构](../02-feature-list-schema.md)，工程 Feature 规则见[工程变更](../07-engineering-change.md)，测试选择见[测试追溯与证据](../08-test-traceability-and-evidence.md)。架构地图和 ADR 遵循[架构约定](../10-architecture-overview.md)；只为真实的决定创建 ADR。

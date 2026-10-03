@@ -1,39 +1,39 @@
 ---
 name: loop-me-godot
-description: Design a reusable way to handle recurring or anticipated Godot project work identified by the user. Clarifies triggers, inputs, decisions and delivery, and compares existing entries, Skills, documentation and tools. Historical task lessons belong to retro-godot; this entry does not automatically implement or schedule a workflow.
+description: 为用户指出的、在 Godot 项目中反复出现或预计会反复出现的工作，设计一种可复用的处理方式。厘清触发条件、输入、决定和交付结果，并与已有的入口、Skill、文档和工具作比较。历史任务的经验教训归 retro-godot；本入口不自动实现或排期某个工作流程。
 ---
 
-# Design recurring Godot project work
+# 设计重复出现的 Godot 项目工作
 
-Help the user decide how a named kind of repeated work should be handled next time. The work may already recur or be anticipated; no history of failure is required. Use at any relevant point in project development. This is not a new Stage or a mandatory planning step.
+帮助用户决定，某一类指定的重复工作下次该怎样处理。这类工作可以已经重复出现，也可以只是预计会出现；不要求有失败的历史。项目开发的任何阶段都可以使用。它不是新的 Stage，也不是必须的规划步骤。
 
-Use [retro-godot](../retro-godot/SKILL.md) for explaining what happened in actual development and identifying lessons. This Skill instead designs future handling of the user's specified recurring activity; do not widen it into reviewing all tasks or personal habits.
+解释实际开发中发生了什么、找出经验教训，用 [retro-godot](../retro-godot/SKILL.md)。本 Skill 则为用户指定的重复活动设计以后的处理方式；不要扩大成审查全部任务或个人习惯。
 
-## Understand the repeated activity
+## 理解这项重复活动
 
-Reuse the current goal, scope and decisions. For observed repetition, inspect relevant examples to separate stable inputs and judgments from per-run variation. For anticipated work, reason from expected inputs and usage, label assumptions, and do not invent past frequency or savings.
+复用当前的目标、范围和决定。对于已经观察到的重复，查看有代表性的实例，把稳定的输入和判断与每次都会变化的部分分开。对于预计出现的工作，从预期的输入和用法推理，标明哪些是假设；不编造过去的频率或节省的时间。
 
-Check the project-owned Skills, relevant workflow or domain rules, documentation and commands already covering the activity. Read only materials that affect this design. Compare clearer routing, reuse, a small extension and ordinary Agent judgment before proposing a new Skill or script.
+检查已经覆盖这项活动的项目自有 Skill、工作流程规则或领域规则、文档和命令。只读会影响这次设计的材料。在提出新 Skill 或脚本之前，先比较这几种做法：更清楚的路由、复用、小幅扩展，以及普通的 Agent 判断。
 
-## Describe one useful run
+## 描述一次有用的执行
 
-Explain the parts needed for this activity:
+说明这项活动需要的各个部分：
 
-- The condition that starts it, its target and the existing materials and variable inputs it needs.
-- Decisions the Agent can make from evidence and choices that require the user; prepare independent work before asking, and preserve valid decisions.
-- The reusable method, the owner of its detailed rules, and the conditions for reading that source.
-- The result delivered and how to judge success; address interruption, recovery and side effects when they are relevant.
+- 启动它的条件、它的对象，以及需要的已有材料和可变输入。
+- Agent 能凭证据做出的决定，以及需要用户做的选择；提问前先做完能独立完成的工作，保留仍然有效的决定。
+- 可复用的方法、详细规则的所属文档，以及何时去读那份文档。
+- 交付的结果和判断成功的标准；有需要时，说明中断、恢复和副作用。
 
-When a missing choice changes the method, use the discussion approach in [project-grill-me](../project-grill-me/SKILL.md). Group related choices and give grounded recommendations. Do not restart GDD/Product elicitation merely to design a working method or require every possible question to be settled. Ordinary implementation details remain Agent decisions.
+缺少的选择会改变方法时，使用 [project-grill-me](../project-grill-me/SKILL.md) 的讨论方式。把相关的选择归在一起，给出有依据的推荐。不要只为了设计工作方法就重新开始 GDD/Product 需求收集，也不要求把所有可能的问题都定下来。普通实现细节仍由 Agent 决定。
 
-## Choose the smallest useful home
+## 选择最小且有用的落点
 
-Keep repeatable task selection and judgment in a focused Skill, detailed rules in their project-owned authoritative source, and deterministic repeated operations in a tool only when its maintenance cost is justified. A short invocation or a clearer reference may be enough. Different situations can reuse the same ability without sharing one task's authorization or completion conditions.
+可重复的任务选择和判断放在一个聚焦的 Skill 里；详细规则放在项目自有的权威正文里；确定性的重复操作，只有维护成本值得时才做成工具。有时一段简短的调用说明或一处更清楚的引用就够了。不同情况可以复用同一能力，但不共用某个任务的授权或完成条件。
 
-For a proposed project-tool implementation, return to `methodology/07-engineering-change.md` and its existing task owner. For knowledge or stable constraints, use the applicable ownership rules in `methodology/04-project-rules.md` and `docs/knowledge/README.md`. Changed game intent belongs to the existing Product owner. A need to improve distributed framework materials is a recommendation for the framework-maintenance task, not permission to fetch or edit another repository.
+提出的方案需要实现项目工具时，回到 `methodology/07-engineering-change.md` 和它已有的任务负责方。知识或稳定约束，按 `methodology/04-project-rules.md` 和 `docs/knowledge/README.md` 中的归属规则处理。游戏意图的变化归已有的 Product 负责方。需要改进框架分发的材料时，作为建议交给框架维护任务，不代表可以拉取或修改另一个仓库。
 
-Deliver the proposed method in the conversation: concrete need, entry, inputs and outputs, key decisions, ownership of details, and remaining adoption choices. No additional mechanism may be the best result. Walk through a relevant example or a clearly labelled future case; static reasoning is not execution evidence.
+在对话中交付提出的方法：具体需求、入口、输入和输出、关键决定、细节的归属，以及仍待用户决定是否采用的选择。不增加任何机制也可能是最好的结果。用一个有代表性的实例，或明确标注的未来情形走一遍；静态推理不是执行证据。
 
-Do not automatically create workflow directories, personal profiles, reports, state ledgers, schedules or approval checkpoints. A design-only request ends with the proposal. Already authorized implementation continues through its existing owner with the task's validation, human acceptance and Git requirements. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+不自动创建工作流程目录、个人档案、报告、状态台账、排期或审批检查点。只要求设计的请求，以提出方案结束。已经获得授权的实现，通过已有负责方继续，并遵守任务的验证、人工验收和 Git 要求。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
 
-Inspired by Matt Pocock's `loop-me` idea of designing reusable handling for recurring activities; rewritten for Godot project work and its existing ownership and authorization boundaries.
+灵感来自 Matt Pocock 的 `loop-me` 思路：为重复出现的活动设计可复用的处理方式；这里针对 Godot 项目工作，以及项目已有的归属和授权边界重写。

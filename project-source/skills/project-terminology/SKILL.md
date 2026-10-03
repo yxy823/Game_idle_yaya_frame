@@ -1,37 +1,37 @@
 ---
 name: project-terminology
-description: "Record confirmed project term definitions, aliases and links in `docs/terminology.md` without changing behavior. Use for authorized terminology documentation, including a Feature's documentation checkpoint. Not for undecided meanings (project-grill-me) or behavior changes (design-gdd)."
+description: "在 `docs/terminology.md` 中记录已确认的项目术语定义、别名和链接，不改变行为。用于已获授权的术语文档工作，包括 Feature 的文档检查点。不用于含义尚未决定的术语（project-grill-me），也不用于行为变更（design-gdd）。"
 ---
 
-# Project terminology
+# 项目术语
 
-Maintain meaning-preserving definitions in the fixed file `docs/terminology.md`, as described in `methodology/14-project-terminology.md`, and maintain the links from documents that use them. `design-gdd` owns substantive game-design meaning, and `design-balance` owns scoped numeric design. Use `methodology/05-document-language.md` for saved wording and the project Git rules for writes and commits.
+按 `methodology/14-project-terminology.md` 的说明，在固定文件 `docs/terminology.md` 中维护不改变含义的定义，并维护使用这些术语的文档指向它的链接。实质的游戏设计含义由 `design-gdd` 负责，限定范围的数值设计由 `design-balance` 负责。保存的措辞按 `methodology/05-document-language.md`，写入和提交按项目的 Git 规则。
 
-## Check the inputs
+## 核对输入
 
-GDD creation may use this Skill for terms whose meanings are already settled; it needs no Product or completed GDD.
+创建 GDD 时，可以用本 Skill 记录含义已经确定的术语；不需要 Product，也不需要 GDD 已经完成。
 
-Read the requested definitions, the current `docs/terminology.md` and only the relevant idea, GDD, Product delivery and code sources. Reuse confirmed decisions and the current documentation authorization; do not repeat an interview. Code shows current behavior and cannot approve a new domain meaning.
+阅读请求的定义、当前的 `docs/terminology.md`，以及与之有关的想法、GDD、Product 交付和代码来源，其余不读。复用已确认的决定和当前的文档授权，不重复访谈。代码只说明当前行为，不能批准新的领域含义。
 
-Route decisions this Skill cannot make:
+本 Skill 不能做的决定，按下面转交：
 
-- A material meaning that is still undecided goes to `project-grill-me`.
-- A definition that would change game rules, values or flows returns to the GDD design owner before dependent definitions are edited.
-- Product delivery changes use `product-author`; changed Feature AC follow the planning workflow.
+- 实质含义仍未决定的，交给 `project-grill-me`。
+- 某个定义会改变游戏规则、数值或流程的，先退回 GDD 的设计负责方，再修改依赖它的定义。
+- Product 交付变更使用 `product-author`；Feature AC 发生变化的，按规划流程处理。
 
-## Write the definitions
+## 编写定义
 
-- Write confirmed project definitions only in `docs/terminology.md`, including terms that a single topic uses.
-- Move definitions from the authorized scope into that file and replace their old bodies with links, preserving source anchors. `methodology/14-project-terminology.md` covers original-source preservation, aliases, retirements and exclusions; detailed gameplay stays in GDD.
-- Target-locale wording belongs to **Term translations** in `docs/localization/localization-spec.md` through `design-localization-spec` (methodology 11 **Localization term translations**). Do not save a target-language glossary as aliases here.
-- Create the file when it is missing and confirmed definitions need saving. Without confirmed terms, do not invent entries.
+- 已确认的项目定义只写在 `docs/terminology.md` 中，只在单个主题里使用的术语也一样。
+- 把授权范围内的定义移进该文件，原处的正文改为链接，并保留来源锚点。原始来源的保留、别名、退役和排除规则见 `methodology/14-project-terminology.md`；玩法细节留在 GDD 中。
+- 目标语言的措辞通过 `design-localization-spec` 写在 `docs/localization/localization-spec.md` 的 **术语译名** 中（methodology 11 的 **本地化术语译名**）。不要把目标语言词表作为别名保存在这里。
+- 文件不存在、又有已确认的定义需要保存时，创建该文件。没有已确认的术语时，不编造条目。
 
-A meaning-preserving edit does not rename code, migrate data, run professional clarification, create Product delivery documents or Features, or synchronize plans.
+不改变含义的编辑不重命名代码、不迁移数据、不做专业澄清、不创建 Product 交付文档或 Feature，也不同步计划。
 
-## Validate and commit
+## 验证与提交
 
-Check the final wording against confirmed meanings and verify affected links. For a standalone request, commit the validated documentation under the project Git rules unless the user has set a different commit condition. Use `docs(terminology): <中文术语摘要>`; no Feature is invented.
+对照已确认的含义检查最终措辞，并核对受影响的链接。单独提出的请求，验证后按项目 Git 规则提交文档，除非用户另设了提交条件。提交主题使用 `docs(terminology): <中文术语摘要>`；不为此编造 Feature。
 
-Inside an authorized Product or Feature task, return the edited definitions and remaining gaps to its coordinator for the same logical commit.
+在已获授权的 Product 或 Feature 任务中，把修改后的定义和剩余缺口交回该任务的协调 Agent，放进同一个逻辑提交。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

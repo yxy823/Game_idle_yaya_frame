@@ -1,40 +1,40 @@
 ---
 name: design-game-presentation
-description: "Plan an observable game moment from experience goals or informal descriptions, define its component requirements and compare implementation approaches in presentation documents. Use for game-moment design and approach selection, including early GDD exploration. Not for writing runtime code or producing image and audio files."
+description: "从体验目标或口头描述出发规划一次可观察的游戏表现，在表现文档中定义其组件要求并比较实现方式。用于游戏表现设计和实现方式选择，包括早期的 GDD 探索。不用于编写运行时代码，也不用于制作图像和音频文件。"
 ---
 
-# Game presentation planning
+# 游戏表现规划
 
-Turn an intended experience into an actionable presentation design: what the player perceives, which parts communicate it, which techniques fit and which approach is currently adopted. This Skill plans game moments within the wider presentation layer; it does not own all UI or game logic.
+把期望的体验变成可执行的表现设计：玩家感知到什么、哪些组成部分传达它、哪些技术合适、当前采用哪种方案。本 Skill 规划整个表现层中的一次次游戏表现；它不负责全部 UI，也不负责游戏逻辑。
 
-**Game presentation documents** in `methodology/11-specialist-workflows.md` defines authority, document identity, component extraction, UI and GDD links, source impacts and acceptance entries. It also separates a business result, a current-state display and one-time feedback. Resource details follow **Resource requirements and handoff** in the same file. Write authorized documents in `document_language`; discussion-only work returns the proposal without saving it.
+`methodology/11-specialist-workflows.md` 的 **游戏表现文档** 规定了权限、文档划分、组件抽出、与 UI 和 GDD 的链接、来源影响和验收入口，也区分了业务结果、当前状态的显示和一次性反馈。资源细节按同一文件的 **资源需求与交接** 处理。已授权的文档使用 `document_language` 编写；只要求讨论时，返回方案，不保存。
 
-Read the relevant experience goal, GDD and UI context, current presentation documents and suitable project implementations. Begin with the observable trigger, sequence and end state. When the user has only an experience goal, propose a concrete presentation before choosing technology; this can support initial GDD exploration. Preserve confirmed requirements and keep proposals separate from adopted decisions. Ask only about gaps that would change the present decision.
+阅读本次涉及的体验目标、GDD 和 UI 上下文、当前的表现文档，以及项目中可以借鉴的实现。先从可观察的触发时刻、过程和结束状态入手。用户只给了体验目标时，先提出具体的表现，再选择技术；这也可以用于早期的 GDD 探索。保留已确认的要求，把建议和已采用的决定分开写。只就会改变当前决定的缺口提问。
 
-## From a moment to implementable requirements
+## 从一次表现到可实现的要求
 
-Decompose by meaningful behavior and independent control, not by asset file count. For a reward, icon flight, amount change and destination feedback may be separate parts that share a trigger. Describe what the player perceives and the relevant timing, space, repeat or cancel behavior and control relationships. Keep useful qualitative ranges until exact values are required or accepted; do not turn a colloquial adjective into an invented numeric specification.
+按有意义的行为和可独立控制的部分拆分，不按资源文件的数量拆分。例如一次奖励中，图标飞行、数量变化和目标位置反馈可以是共用一个触发条件的几个组成部分。描述玩家感知到什么，以及本次需要的时间、空间、重复或取消行为和控制关系。在确实需要或已被接受之前，保留有用的定性范围；不要把口语中的形容词变成自行编造的数值规格。
 
-Compare techniques only where there is a real choice. Prefer suitable existing implementations and simple property animation when they meet the requirement. A hybrid approach is normal. Alternatives may belong to the whole presentation or a component; record the chosen combination by reference, and do not imply that every candidate must be implemented. Separate a technique's limitations from a design decision that still needs the user.
+只在确实存在选择时才比较技术。现有实现或简单的属性动画能满足要求时，优先使用它们。混合使用多种方式很正常。备选方案可以属于整个表现，也可以属于某个组件；用引用的方式记录选定的组合，不要暗示每个候选方案都必须实现。把技术本身的局限与仍需用户决定的设计问题分开。
 
-| Current question | Read when needed |
+| 当前问题 | 需要时阅读 |
 | --- | --- |
-| Which implementation family fits the behavior, or whether to combine them | [Technique selection](references/technique-selection.md) |
-| A component needs surface, color, UV, mask, dissolve or screen-space behavior | [Shader requirements](references/shader-requirements.md) |
-| A component has many independently moving or evolving visual elements | [Particle requirements](references/particle-requirements.md) |
-| How to record component alternatives, mixed adoption and downstream links | [Item arrival example](references/presentation-example.md) |
+| 哪类实现方式适合这个行为，或者是否组合使用 | [选择实现方式](references/technique-selection.md) |
+| 某个组件涉及表面、颜色、UV、遮罩、溶解或屏幕空间效果 | [Shader 表现需求](references/shader-requirements.md) |
+| 某个组件包含许多独立运动或变化的视觉元素 | [粒子表现需求](references/particle-requirements.md) |
+| 怎样记录组件的备选方案、混合采用和下游链接 | [物品入包示例](references/presentation-example.md) |
 
-These references help normalize requirements, not mandate algorithms, node trees or source code. Do not require a custom particle Shader when existing materials can satisfy the effect. Detailed engineering guidance belongs to the owning implementation task and can be linked from its alternative.
+这些参考用来整理标准化的需求，不规定算法、节点树或源代码。现有材质能实现效果时，不要求自定义粒子 Shader。详细的工程指导属于所属的实现任务，可以从对应的备选方案链接过去。
 
-## Documents and continuation
+## 文档与后续工作
 
-- Check `docs/presentation/README.md`, then select the `docs/presentation/<scope>.md` body by trigger moment and player-perceived result. When methodology 11 requires extraction to `docs/presentation/components/<component-key>.md`, move the component body and update all affected references.
-- Keep alternative-specific resources inside that alternative unless the resource rules assign a shared owner. Coordinate visual and audio specifications with `design-visual-asset-spec` and `design-audio-asset-spec`. Missing files can stay explicit while planning continues.
-- Link each use as methodology 11 describes: a UI use at its interaction and in the UI's related-presentations section, a non-UI use from its GDD topic.
-- Only adopted requirements and the authorized approach enter Feature source, AC or design references. Presentations and Features need not correspond one-to-one.
+- 先查看 `docs/presentation/README.md`，再按触发时刻和玩家感知到的结果选定 `docs/presentation/<scope>.md` 正文。methodology 11 要求抽出到 `docs/presentation/components/<component-key>.md` 时，迁移组件正文，并更新所有受影响的引用。
+- 某个备选方案专用的资源写在该方案内，除非资源规则把它分配给共享的所属位置。视觉和音频规格分别与 `design-visual-asset-spec` 和 `design-audio-asset-spec` 协调。缺少的文件可以明确标出，规划继续进行。
+- 按 methodology 11 的说明链接每一处使用：UI 中的使用，链接写在对应交互处和 UI 文档的“关联游戏表现”章节；非 UI 的使用，从对应的 GDD 主题链接。
+- 只有已采用的要求和已授权的方案才写进 Feature 的来源、AC 或设计引用。表现和 Feature 不需要一一对应。
 
-This Skill neither produces image or audio files nor searches local asset libraries.
+本 Skill 不制作图像或音频文件，也不在本地资源库中检索素材。
 
-Return decisions, source links, concrete uncertainties and the next action the current task allows. A specific feasibility question can use `prototype-godot`. Actual integration uses the development task, with `content-asset-integration` for supplied files. Before final verification, the implementing task updates the adopted combination and the file and consumer links. Human acceptance stays in the linked report or completion record; planning or available code does not establish it.
+返回决定、来源链接、具体的不确定点，以及当前任务允许的下一步。具体的可行性问题可以使用 `prototype-godot`。实际接入由开发任务完成，外部提供的文件使用 `content-asset-integration`。在最终验证之前，由实现任务更新采用组合，以及文件和使用方的链接。人工验收结果留在链接的报告或完成记录中；完成规划或代码可用都不代表已经人工验收。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

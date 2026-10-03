@@ -1,22 +1,22 @@
-# Font Assets
+# 字体资源
 
-Font role, shaping, localization coverage, scaling and fallback are separate concerns.
+字体的用途、字形整形、本地化覆盖、缩放和回退是相互独立的关注点。
 
-## Font roles
+## 字体用途
 
-- **[MUST]** Classify a font's role as dynamic and scalable or as bitmap and pixel. Pixel-art presentation does not automatically require bitmap fonts.
-- **[MUST]** By default, share one source file for the same logical font and reuse it through Theme or Resource references. Do not duplicate source fonts or font Resources solely for different UI scenes or font sizes; font size is usually usage or theme state.
-- **[MUST]** Pixel clarity is a combined contract of the font, import settings, filtering, scaling and layout.
-- **[REVIEW]** Choose MSDF only after weighing the actual needs for dynamic scaling, large sizes, `Label3D` and outlines against its rendering cost and readability tradeoffs; it is not automatic for those uses.
-- **[MUST]** When using MSDF, validate readability at small sizes because hinting is unavailable, and check compatibility with self-intersecting or overlapping glyph outlines. Set `msdf_pixel_range` to at least twice the largest required outline size so that outlines are not clipped.
+- **[必须]** 把字体的用途归类为动态可缩放字体，或位图与像素字体。像素画风格的表现不自动要求使用位图字体。
+- **[必须]** 同一个逻辑字体默认共用一个源文件，通过 Theme 或 Resource 引用复用。不要只为不同的 UI 场景或字号复制源字体或字体 Resource；字号通常属于使用方或主题的状态。
+- **[必须]** 像素清晰度由字体、导入设置、过滤、缩放和布局共同组成契约。
+- **[复核]** 选择 MSDF 之前，把动态缩放、大字号、`Label3D` 和描边的实际需要，与它的渲染开销和可读性取舍一起权衡；这些用途不自动意味着要用 MSDF。
+- **[必须]** 使用 MSDF 时，由于无法使用 hinting，验证小字号下的可读性，并检查与自相交或重叠字形轮廓的兼容性。`msdf_pixel_range` 至少设为所需最大描边尺寸的两倍，避免描边被裁切。
 
-## Coverage and fallback
+## 覆盖与回退
 
-- **[MUST]** Fallback order is semantic; do not alphabetize fallbacks.
-- **[MUST]** Check localization coverage with representative real text, and validate shaping and layout, not just the presence of code points.
-- **[MUST]** Do not rely on system fallback as the only formal guarantee of language coverage.
-- **[MUST]** Do not preload every Unicode glyph by default; configure and preload only justified coverage.
-- **[PREFER]** Use FontVariation for the axes of variable fonts rather than duplicating source fonts.
-- **[REVIEW]** Simulated bold or slant may degrade the intended font design and needs visual review.
-- **[MUST]** An explicit `SystemFont` and a dynamic font's `allow_system_fallback` are separate mechanisms with different platform implications.
-- **[MUST]** A Unicode character is not necessarily one rendered glyph; shaping, language and script behavior matter.
+- **[必须]** 回退顺序有语义；不要按字母给回退字体排序。
+- **[必须]** 用有代表性的真实文本检查本地化覆盖，并验证字形整形和排版，不只检查码位是否存在。
+- **[必须]** 不要把系统回退当作语言覆盖的唯一正式保证。
+- **[必须]** 默认不预加载所有 Unicode 字形；只配置并预加载有理由的覆盖范围。
+- **[优先]** 可变字体的轴使用 FontVariation，不复制源字体。
+- **[复核]** 模拟粗体或模拟斜体可能损害字体原本的设计，需要视觉复核。
+- **[必须]** 显式的 `SystemFont` 和动态字体的 `allow_system_fallback` 是不同的机制，对平台的影响也不同。
+- **[必须]** 一个 Unicode 字符不一定渲染为一个字形；字形整形、语言和书写系统的行为都有影响。

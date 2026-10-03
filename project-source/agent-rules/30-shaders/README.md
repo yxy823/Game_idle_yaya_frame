@@ -1,28 +1,28 @@
-# 30 Shader Rules
+# 30 Shader 规则
 
-Applies to hand-written `.gdshader` and `.gdshaderinc` files for Godot 4.7.
+适用于 Godot 4.7 下手写的 `.gdshader` 和 `.gdshaderinc` 文件。
 
-There is no shader line-count limit. Split shaders by independent visual responsibility, reuse and validation needs.
+Shader 没有行数上限。按独立的视觉职责、复用需求和验证需求拆分 Shader。
 
-| Document | Read when |
+| 文档 | 何时阅读 |
 | --- | --- |
-| `language-and-structure.md` | Writing or changing any shader: `shader_type`, render modes, processor functions, varyings, or particle, sky, fog and `texture_blit` shaders |
-| `uniforms-and-material-contracts.md` | Adding or changing uniforms, material parameters, instance uniforms, `set_shader_parameter()` calls or shader time |
-| `coordinates-and-sampling.md` | Working with UV, screen, pixel or texel coordinates, atlases and regions, filtering, mipmaps, vertex transforms or screen and backbuffer sampling |
-| `color-alpha-and-blending.md` | Changing color-space handling, `source_color`, CanvasItem `COLOR`, alpha, blend modes or Spatial `ALPHA` |
-| `performance-and-stability.md` | Changing loops, sampling cost, branches and variants, precision, material reuse or first-use compilation stutter |
-| `includes-and-reuse.md` | Adding, changing, renaming or moving a `.gdshaderinc` |
-| `validation.md` | Any shader change: determine its applicable validation |
+| `language-and-structure.md` | 编写或修改任何 Shader：`shader_type`、渲染模式、处理函数、varying，以及粒子、天空、雾和 `texture_blit` Shader |
+| `uniforms-and-material-contracts.md` | 新增或修改 uniform、材质参数、实例 uniform、`set_shader_parameter()` 调用或 Shader 时间 |
+| `coordinates-and-sampling.md` | 处理 UV、屏幕、像素或纹素坐标，图集与区域，过滤，mipmap，顶点变换，或屏幕与后台缓冲采样 |
+| `color-alpha-and-blending.md` | 修改色彩空间处理、`source_color`、CanvasItem `COLOR`、alpha、混合模式或 Spatial `ALPHA` |
+| `performance-and-stability.md` | 修改循环、采样开销、分支与变体、精度、材质复用，或处理首次使用时的编译卡顿 |
+| `includes-and-reuse.md` | 新增、修改、重命名或移动 `.gdshaderinc` |
+| `validation.md` | 任何 Shader 修改：确定需要做哪些验证 |
 
-Global shader uniforms declared in ProjectSettings follow [Shader globals](../40-project-config/shader-globals.md).
+在 ProjectSettings 中声明的全局 Shader uniform 遵循 [Shader 全局变量](../40-project-config/shader-globals.md)。
 
-## Optional methods
+## 可选的方法参考
 
-The rules above define the engineering constraints. Use these technical references when their reasoning helps with the current question; the paths are relative to the project root.
+上面的规则规定工程约束。下列技术参考的思路对当前问题有帮助时再读；路径相对于项目根目录。
 
-| Current need | Reference |
+| 当前需要 | 参考 |
 | --- | --- |
-| Choose a Shader approach, a coordinate or data flow, or a rendering tradeoff | `.agents/skills/implementation-guidance-godot/references/shader-implementation-methods.md` |
-| Investigate Shader loading, material and parameter binding, visual data flow or rendering cost | `.agents/skills/bug-diagnosis-godot/references/shader-diagnostics.md` |
+| 选择 Shader 方案、坐标或数据流，或权衡渲染取舍 | `.agents/skills/implementation-guidance-godot/references/shader-implementation-methods.md` |
+| 排查 Shader 加载、材质与参数绑定、视觉数据流或渲染开销 | `.agents/skills/bug-diagnosis-godot/references/shader-diagnostics.md` |
 
-Each reference can be read on its own during authorized development, guidance, diagnosis or prototyping. Reading it supplies technical reasoning only; the current task keeps its own authorization and verification scope. Reading a reference does not start the workflow of the Skill that contains it. It also does not create a Feature, request the advisor, or permit running, editing or repairing anything.
+每份参考都可以在已获授权的开发、指导、诊断或原型工作中单独阅读。阅读它只提供技术思路，当前任务仍保持自己的授权和验证范围。阅读参考不会启动其所属 Skill 的工作流程，也不会创建 Feature、请求 advisor，或允许运行、编辑、修复任何内容。

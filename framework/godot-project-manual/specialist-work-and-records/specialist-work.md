@@ -62,7 +62,7 @@ GDD 写玩家应该获得什么感受、需要辨认出哪些对象；画风、�
 - 完整的句子和对话保存在运行资源中，不在 Markdown 里另存一份。
 - 概念定义和开发时查找用的别名，仍然写在 `docs/terminology.md`。
 
-规则见[本地化术语译名](../../../project-source/methodology/11-specialist-workflows.md#localization-term-translations)。
+规则见[本地化术语译名](../../../project-source/methodology/11-specialist-workflows.md#本地化术语译名)。
 
 ## 来源怎样约束任务
 
@@ -99,8 +99,8 @@ GDD、专业规格、表现正文和本地化要求，都要在最终验证前�
 
 - **按触发时刻和玩家感知划分**：商店购买和奖励领取若都是同一种“物品入包”反馈，共用 `docs/presentation/item-added.md`，各自说明来源上下文。“奖励揭晓”这种独立过程另写一份，它的结尾发生入包时，引用已有的正文。不会只因为使用的界面不同就拆成两份。
 - **正文按需组织**：目标与过程、组件的标准化需求、候选方案、资源规格、采用关系、实际实现和验收入口。
-- **共享组件**：组件只属于一份表现时，写在父文档的小节里；第二份独立的表现也需要同样的组件时，把共同的要求、候选方案和资源规格迁到 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现，不会触发这种迁移。迁出后只要还有使用方就保留原路径，各父表现只维护自己的过程、触发上下文、采用组合和验收入口。规则见[表现文档约定](../../../project-source/methodology/11-specialist-workflows.md#game-presentation-documents)。
-- **UI 文档的拆分**：按[界面文档边界](../../../project-source/methodology/11-specialist-workflows.md#ui-document-boundaries)，有独立进入、退出和交互流程的屏幕或弹层单独成文；从属的面板、标签页和 HUD 部件留在宿主文档的章节里。第二个界面也使用同一控件或对话框行为时，把共用正文迁到 `docs/ui/components/<component-key>-design.md`，调用处改为引用；只是外观相同，则引用 Art Bible。
+- **共享组件**：组件只属于一份表现时，写在父文档的小节里；第二份独立的表现也需要同样的组件时，把共同的要求、候选方案和资源规格迁到 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现，不会触发这种迁移。迁出后只要还有使用方就保留原路径，各父表现只维护自己的过程、触发上下文、采用组合和验收入口。规则见[表现文档约定](../../../project-source/methodology/11-specialist-workflows.md#游戏表现文档)。
+- **UI 文档的拆分**：按[界面文档边界](../../../project-source/methodology/11-specialist-workflows.md#ui-文档边界)，有独立进入、退出和交互流程的屏幕或弹层单独成文；从属的面板、标签页和 HUD 部件留在宿主文档的章节里。第二个界面也使用同一控件或对话框行为时，把共用正文迁到 `docs/ui/components/<component-key>-design.md`，调用处改为引用；只是外观相同，则引用 Art Bible。
 - **导航**：`docs/presentation/README.md` 列出各表现和共享组件之间的实际使用关系，具体要求写在各自的正文中。UI 界面或组件规格新增、改名或删除，或者导航中的用途、关联 Product、组件使用方发生变化时，`design-ui-spec` 同步维护 `docs/ui/README.md` 中受影响的条目，不需要审查无关的目录内容。
 
 ### 表现与任务、验收的关系
@@ -111,7 +111,7 @@ GDD、专业规格、表现正文和本地化要求，都要在最终验证前�
 
 ## 资源规格随所属设计保存
 
-资源规格的位置按[资源规格归属](../../../project-source/methodology/11-specialist-workflows.md#resource-requirements-and-handoff)确定：
+资源规格的位置按[资源规格归属](../../../project-source/methodology/11-specialist-workflows.md#资源需求与交接)确定：
 
 - 某个表现方案专用的资源，写在该方案中。
 - 某个界面专用的资源，写在该 UI 文档中。
@@ -152,7 +152,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件和待�
 
 ## 测量与实现
 
-具体的异常统一由 [bug-diagnosis-godot](../../../project-source/skills/bug-diagnosis-godot/SKILL.md) 按[因果诊断](../../../project-source/methodology/07-engineering-change.md#causal-diagnosis)处理：先看症状、预期和证据，再选择需要的专业方法。用户不需要先判断问题属于逻辑、表现还是两者的连接。
+具体的异常统一由 [bug-diagnosis-godot](../../../project-source/skills/bug-diagnosis-godot/SKILL.md) 按[因果诊断](../../../project-source/methodology/07-engineering-change.md#因果诊断)处理：先看症状、预期和证据，再选择需要的专业方法。用户不需要先判断问题属于逻辑、表现还是两者的连接。
 
 例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用 [Shader 诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
 

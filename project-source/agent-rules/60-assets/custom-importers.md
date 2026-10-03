@@ -1,15 +1,15 @@
-# Custom Importers
+# 自定义导入器
 
-Custom importers are first-class, deterministic dependencies of the build and the editor.
+自定义导入器是构建和编辑器的一级依赖，其结果是确定的。
 
-## Importers
+## 导入器
 
-- **[MUST]** The version and configuration of a custom importer or plugin are part of the dependency set for rebuilding assets.
-- **[MUST]** `_get_importer_name()` is the stable, unique importer ID. Do not rename it as incidental refactoring; when an identity change is intentional, migrate the affected import metadata and assets.
-- **[MUST]** Increment `_get_format_version()` when the contract of the imported Resource or output changes incompatibly, then verify that existing assets are reimported correctly. Do not hand-edit generated `.import` metadata to simulate the migration.
-- **[MUST]** An importer that depends on other imports defines `_get_import_order()` so that its dependencies are imported before it runs.
-- **[MUST]** Add every additional generated `res://` Resource path to `gen_files`. When a generated external Resource itself requires import, call `append_import_external_resource()` only during `_import()`, and check its returned `Error`.
-- **[MUST]** Return `true` from `_can_import_threaded()` only when the entire importer path, including dependencies, shared state, tools and generated outputs, is thread-safe.
-- **[MUST]** Keep importer output deterministic for the same declared source, configuration and tool versions.
-- **[MUST]** Validate custom importer changes with representative source roles and downstream Resource consumers, not only with importer unit logic. Fresh and batch imports also validate dependency order, registered and generated outputs, and concurrent behavior when threading is enabled.
-- **[MUST]** The production export cannot secretly require an editor-only importer to run at player startup; the exported runtime consumes the built, packaged representation.
+- **[必须]** 自定义导入器或插件的版本和配置，属于重建资源所需的依赖集合。
+- **[必须]** `_get_importer_name()` 是稳定且唯一的导入器 ID。不要在顺带的重构中重命名它；有意改变身份时，迁移受影响的导入元数据和资源。
+- **[必须]** 导入的 Resource 或输出的契约发生不兼容的变化时，递增 `_get_format_version()`，然后核实已有资源能正确重新导入。不要手工编辑生成的 `.import` 元数据来模拟迁移。
+- **[必须]** 依赖其他导入结果的导入器定义 `_get_import_order()`，保证它运行前依赖已导入。
+- **[必须]** 每个额外生成的 `res://` Resource 路径都加入 `gen_files`。生成的外部 Resource 本身需要导入时，只在 `_import()` 中调用 `append_import_external_resource()`，并检查它返回的 `Error`。
+- **[必须]** 只有整条导入器路径（包括依赖、共享状态、工具和生成的输出）都线程安全时，`_can_import_threaded()` 才返回 `true`。
+- **[必须]** 对相同的声明源文件、配置和工具版本，导入器的输出是确定的。
+- **[必须]** 验证自定义导入器的修改时，使用有代表性的各类源资源和下游的 Resource 使用方，不只验证导入器的单元逻辑。全新导入和批量导入还要验证依赖顺序、已登记和生成的输出，以及启用多线程时的并发行为。
+- **[必须]** 生产导出不能暗中要求在玩家启动时运行仅限编辑器的导入器；导出后的运行时使用已构建并打包的表示。

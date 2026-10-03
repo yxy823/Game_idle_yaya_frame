@@ -1,43 +1,43 @@
-# Numeric modeling and calculation checks
+# 数值建模与计算检查
 
-Use this reference to derive or diagnose the numeric relationships that matter to the current design. The listed systems are conditional lenses, not a checklist requiring every game to have an economy, combat or long-term growth.
+用本参考推导或诊断对当前设计重要的数值关系。下面列出的系统是按需使用的分析角度，不是清单；不要求每款游戏都有经济、战斗或长期成长。
 
-## Establish the calculation contract
+## 确定计算约定
 
-Identify the intended experience in observable or calculable terms, such as combat duration, resource scarcity, time to an unlock, attention demands or viability of a choice. State which aspects remain subjective and need observation.
+用可观察或可计算的方式说明期望的体验，例如战斗时长、资源稀缺程度、到达某个解锁的时间、对注意力的要求，或某个选择是否可行。写明哪些方面仍是主观的，需要观察。
 
-Use the relevant player skill, equipment/build, difficulty, failure cost, session length and randomness assumptions. For each consequential variable, make its unit, source, domain, limit, rounding and update point clear. Distinguish a target from a measured value, an existing value from a candidate, and adoption from verification. Record enough source context to understand which rules the calculation uses without adding a separate provenance ledger.
+使用与本次有关的玩家技巧、装备或配置、难度、失败代价、单次游玩时长和随机性假设。对每个关键变量，写清它的单位、来源、取值范围、上限、取整方式和更新时机。区分目标值和实测值、已有数值和候选值、采用和验证。记录足够的来源上下文，让人看懂计算用了哪些规则；不需要另建来源台账。
 
-When a rule is unresolved, a conditional model or comparison may still be useful. Say which result depends on that rule rather than silently resolving it. If the missing choice prevents a meaningful comparison, identify that specific gap and continue unaffected analysis.
+规则尚未确定时，有条件的模型或比较仍然可能有用。说明哪些结果依赖这条规则，不要悄悄替它做决定。如果缺少的选择让比较失去意义，指出这个具体缺口，继续完成不受影响的分析。
 
-## Keep resource and time quantities distinct
+## 区分资源量和时间量
 
-Balances, net production rates, cumulative acquisition and unlock progress are different quantities. State which the goal uses. Include relevant spending and capacity limits; a gross income target does not imply that the player can afford a purchase at the same time.
+余额、净产出速率、累计获得量和解锁进度是不同的量。写明目标用的是哪一个。把本次涉及的花费和容量上限算进去；总收入达到目标，不代表玩家同时买得起某样东西。
 
-Separate active input, online waiting, paused time and offline time according to the adopted rules. Processes may overlap. Do not add two durations when they occur simultaneously, or charge time twice because both an action and an automatic process are described.
+按已采用的规则，区分主动操作、在线等待、暂停时间和离线时间。多个过程可能同时进行。两个时长同时发生时不要相加；也不要因为同时描述了一个操作和一个自动过程，就把同一段时间算两次。
 
-For an investment, distinguish:
+对一项投资，区分：
 
-- Time until the purchase is affordable, given current balance and eligible income.
-- Time to recover the investment through its relevant incremental benefit.
-- Time to reach the actual stage or unlock target, including prerequisite purchases and their effect on income.
+- 买得起所需的时间：取决于当前余额和计入的收入。
+- 收回投资所需的时间：取决于它带来的增量收益。
+- 到达实际阶段或解锁目标所需的时间：包括前置购买及其对收入的影响。
 
-These are not interchangeable pacing measures. If a purchase changes the rate, calculate the periods before and after it separately. When the goal concerns cumulative spending or acquisition, preserve that definition rather than substituting the current balance.
+这三个节奏指标不能互相替代。购买会改变速率时，分别计算购买前后的两段时间。目标涉及累计花费或累计获得时，保持这个定义，不要换成当前余额。
 
-For example, suppose a purely illustrative model starts with 20 units, earns 2 units per second and allows a 100-unit upgrade that adds 1 unit per second. With no other spending or limits, affordability takes 40 seconds; simple incremental payback takes another 100 seconds. Neither number alone gives the time to a different unlock target. These assumptions and values are examples, not project defaults or industry benchmarks.
+例如，假设一个纯示意的模型：初始有 20 单位，每秒获得 2 单位；有一项花费 100 单位的升级，购买后每秒多获得 1 单位。没有其他花费或上限时，买得起需要 40 秒；按简单增量计算，回本还需要 100 秒。这两个数字单独都不能给出到达另一个解锁目标的时间。这些假设和数值只是示例，不是项目默认值，也不是行业基准。
 
-## Choose the relevant relationships
+## 选择需要检查的关系
 
-| System | Relationships and risks to examine |
+| 系统 | 要检查的关系和风险 |
 | --- | --- |
-| Combat | Effective output, incoming damage, survival and target turns/time. Include relevant hit rates, defenses, action loss, cooldowns, enemy count and phase changes. Average output alone may hide repeated failure or burst thresholds. |
-| Economy | Sources, sinks, stored quantities, conversion and caps. Start from the intended accumulation or spending pattern; income equaling expenditure is not a universal balance target. Check profitable cycles or constraints that invalidate apparent gains. |
-| Growth | Cost, benefit, prerequisites, unlocks, bottlenecks and time/attention investment. Check whether targets are reachable and what earlier investments do later. An upgrade's calculated benefit does not establish its subjective impact. |
-| Automation and offline progress, when adopted | Investment, replaced actions, production and remaining player decisions. Use the actual processes, efficiency, time or capacity limits. Do not assume that every online rule also runs offline. |
-| Reset or prestige, when adopted | Reward basis, cleared/retained state, recovery time and what changes in the next run. Compare the actual reset decision with continued play under the current scope. |
-| Randomness and strategy | Expected value, variation, important tails and player-visible risk/reward. Compare plausible strategies and dependencies, including dominant combinations or choices made useless by thresholds. A single optimal trace does not cover likely play. |
+| 战斗 | 有效输出、承受伤害、存活，以及目标回合数或时间。把本次涉及的命中率、防御、行动损失、冷却、敌人数量和阶段变化算进去。只看平均输出，可能掩盖反复失败或爆发阈值。 |
+| 经济 | 来源、消耗、存量、转换和上限。从期望的积累或花费模式出发；收入等于支出不是通用的平衡目标。检查是否存在可以刷取收益的循环，或者让表面收益失效的约束。 |
+| 成长 | 花费、收益、前置条件、解锁、瓶颈，以及时间和注意力的投入。检查目标是否可达，以及早期投资在后期起什么作用。升级算出来的收益，不能说明玩家主观上感受到的影响。 |
+| 自动化和离线进度（已采用时） | 投入、被替代的操作、产出，以及玩家仍需做出的决定。使用实际的过程、效率、时间或容量上限。不要假设每条在线规则在离线时也生效。 |
+| 重置或转生（已采用时） | 奖励依据、清空和保留的状态、恢复时间，以及下一轮有什么变化。在当前范围内，对比实际的重置决定和继续游玩。 |
+| 随机性与策略 | 期望值、波动、重要的极端情况，以及玩家能看到的风险和回报。对比玩家可能采用的策略和它们之间的依赖，包括占优组合，或因阈值而失去作用的选择。一条最优路线不能代表玩家的常见玩法。 |
 
-Simple identities can expose inconsistent accounting:
+简单的恒等式可以暴露核算上的不一致：
 
 ```text
 resource change = eligible inflows - outflows
@@ -46,20 +46,20 @@ approximately constant conditions:
   total effective output ≈ effective output per turn × turns
 ```
 
-Apply these only under their stated conditions. Use discrete updates, caps, floors, event order or phase changes when they affect the result. Continuous averages are insufficient if the actual rule can run out of a resource, miss an unlock or cross a sharp threshold.
+只在写明的条件下使用这些关系。离散更新、上限、下限、事件顺序或阶段变化影响结果时，要把它们算进去。如果实际规则可能耗尽资源、错过解锁或跨过明显的阈值，连续的平均值就不够用。
 
-## Compare scenarios and proposed changes
+## 比较情景和调整方案
 
-Select typical and consequential boundary situations from the actual question, such as a weak build, repeated poor luck, a capacity limit or a strategy that delays an investment. Check dimensions and arithmetic before interpreting the result. Compare alternative player choices where a tuning decision depends on them.
+根据实际问题，选择典型情况和关键的边界情况，例如较弱的配置、连续的坏运气、容量上限，或推迟某项投资的策略。解释结果之前，先检查量纲和算术。调优决定取决于玩家选择时，比较不同的选择。
 
-Explain which assumptions or parameters most affect the answer. A small sensitivity comparison often reveals whether a precise candidate value is justified. Prefer the simplest model that preserves the important relationship; do not create a general simulation framework for a calculation that a short computation can answer.
+说明哪些假设或参数对结果影响最大。做一次小规模的敏感性比较，常常就能看出某个精确的候选值是否站得住。优先使用能保留重要关系的最简单模型；一次简短计算能回答的问题，不要为它建立通用的模拟框架。
 
-Report the inputs, method and actual output of any computation or simulation. When randomness matters, disclose its relevant distribution, sample conditions and limits. A deterministic mock only checks that modeled relationship; it cannot prove engine timing, integration or player experience.
+报告每次计算或模拟的输入、方法和实际输出。随机性有影响时，说明它的分布、采样条件和局限。确定性的模拟只检查建模的那条关系，不能证明引擎时序、接入效果或玩家体验。
 
-For a proposed adjustment, show the original value, candidate value, expected direction of change and meaningful side effects. If reaching the goal requires a new mechanic or changed experience target, explain that dependency and return it to overall game design instead of hiding it in a formula.
+对于调整方案，列出原值、候选值、预期的变化方向和重要的副作用。如果达成目标需要新机制或改变体验目标，说明这个依赖，交回整体游戏设计处理，不要把它藏在公式里。
 
-## Separate evidence from the decision
+## 把证据和决定分开
 
-A user can adopt a candidate before it has been observed in play. A calculation can be correct while its experience hypothesis remains untested. Keep those distinctions visible in the source rather than introducing another shared status table.
+用户可以在试玩观察之前就采用一个候选值。计算可能是正确的，而它的体验假设仍未经检验。在来源文件中把这些区别写清楚，不要另建一张共享的状态表。
 
-State the next useful observation, the evidence to collect and what would justify changing the parameter or model. Actual observations retain their conditions and scope; unrun validation remains a plan. Recalculate affected claims when rules or inputs change, and avoid presenting results for an earlier model as verification of its replacement.
+写明下一步值得做的观察、要收集的证据，以及什么情况下应该修改参数或模型。实际的观察结果保留它的条件和范围；没有运行的验证仍然只是计划。规则或输入变化时，重新计算受影响的结论；不要把旧模型的结果当作新模型的验证。

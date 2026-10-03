@@ -1,72 +1,72 @@
 ---
 name: project-grill-me
-description: "Resolve material uncertainties in game ideas, GDD drafts, design tradeoffs or domain terms through focused questions. Use for clarifying a game-design choice or an ambiguous term. Not for Product delivery-boundary questions (product-spec-elicitor), recording settled terms (project-terminology) or clear requests, which continue their authorized workflow."
+description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计取舍或领域术语中的重要不确定点。用于澄清一个游戏设计选择或一个含义不清的术语。不用于 Product 交付边界问题（product-spec-elicitor）、记录已确定的术语（project-terminology），也不用于已经清楚的请求，这类请求继续走它已获授权的流程。"
 ---
 
-# Project grill-me
+# 项目追问（grill-me）
 
-## Scope
+## 范围
 
-Resolve material uncertainties within the requested discussion scope and return a useful conclusion or reviewable choice. Read relevant facts and existing decisions before asking. Do not write files merely because a decision was made, and do not insert an interview before a clear authorized action. Settled vocabulary goes directly to `project-terminology`; this Skill is not a mandatory entry to its documentation workflow.
+在要求的讨论范围内解决重要的不确定点，返回有用的结论或可审阅的选择。提问之前，先阅读本次涉及的事实和已有的决定。不要只因为做出了决定就写文件，也不要在一个清楚且已授权的操作之前插入访谈。已确定的用词直接交给 `project-terminology`；本 Skill 不是进入术语文档流程的必经入口。
 
-Follow source ownership in `methodology/01-product-doc-structure.md`. This questioning method may support initial game design or GDD drafts before Product and Features exist. Use the user's idea and constraints as inputs and keep proposals distinct from adopted design. Saving GDD content belongs to `design-gdd`; discussion does not bypass the design prerequisites of later planning or implementation.
+按 `methodology/01-product-doc-structure.md` 中的来源归属执行。在 Product 和 Feature 存在之前，这套提问方法就可以支持早期的游戏设计或 GDD 草稿。把用户的想法和约束作为输入，并把建议与已采用的设计分开。保存 GDD 内容属于 `design-gdd`；讨论不能绕过后续规划或实现的设计前提。
 
-When the user explicitly asks to save an idea for later, **Candidate and unadopted ideas** in methodology 01 selects its owner. This Skill saves only an idea with no current decision dependency, in `docs/unadopted-ideas.md` within that specific writing scope, or returns it to an already authorized `design-gdd` task. Current design comparisons and alternatives to adopted rules return to `design-gdd`. Do not create a GDD system, Product or Feature merely to retain an idea; without writing authorization, the idea stays in the conversation.
+用户明确要求把一个想法留到以后时，由 methodology 01 的 **候选与未采纳想法** 选定它的所属位置。本 Skill 只在这一具体的写入范围内，把与当前决定没有依赖关系的想法保存到 `docs/unadopted-ideas.md`，或者交回已获授权的 `design-gdd` 任务。当前的设计比较，以及已采用规则的备选方案，交回 `design-gdd`。不要只为了保留一个想法就创建 GDD 系统、Product 或 Feature；没有写入授权时，想法留在对话中。
 
-## Shared questioning method
+## 共享提问方法
 
-Apply this method to the user's current discussion goal, including its remaining material questions. Callers reuse question grouping, proportional depth, continuation and completion here while retaining their own scope and authority.
+把这套方法用于用户当前的讨论目标，包括其中剩余的重要问题。调用方复用这里的问题分组、适度的深度、续接和完成规则，同时保留自己的范围和权限。
 
-### Establish facts and group the current questions
+### 确认事实，对当前问题分组
 
-Read the supplied idea or relevant GDD topics, including applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md` for game-design or delivery questions. Read applicable Product delivery scope, engineering constraints in `docs/project-rules.md`, `docs/terminology.md` when present, and only the code, Feature design or architecture records needed for the question. Reuse explicit user decisions, including confirmed constraints not yet saved. Distinguish observed implementation, approved intent, assumptions and proposals; show conflicting sources instead of silently choosing a new meaning. Missing documents that have not yet been designed are normal; follow **Design scope and boundaries** for reading and saving instead of inventing exclusions.
+阅读用户提供的想法或本次涉及的 GDD 主题；游戏设计或交付问题还要阅读 `methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**。阅读适用的 Product 交付范围、`docs/project-rules.md` 中的工程约束、存在时的 `docs/terminology.md`，以及回答问题所需的代码、Feature 设计或架构记录，只读需要的部分。复用用户明确的决定，包括已确认但尚未保存的约束。区分观察到的实现、已批准的意图、假设和建议；来源互相冲突时，把冲突摆出来，不要悄悄选择一个新的含义。尚未设计的文档不存在是正常的；按 **设计范围与边界** 阅读和保存，不要编造排除项。
 
-For a discussion with several material choices, start with a brief overview of what is settled, which questions are currently known and which depend on earlier answers. This is the current picture, not a promised final question count or an exhaustive design tree. A single clear gap needs no extra overview.
+讨论中有多个重要选择时，先给出简短的概览：哪些已经确定，当前已知哪些问题，哪些问题依赖前面的答案。这只是当前的情况，不承诺最终的问题数量，也不是一棵穷尽的设计树。只有一个清楚的缺口时，不需要额外的概览。
 
-A clear request needs no extra question. A single material gap needs one question about that gap. Group related independent decisions that can already be answered into one understandable set with concrete options and recommendations. Resolve prerequisites before their dependent details, briefly identifying the topics waiting on them. Do not split a related set into repeated one- or two-question turns or impose a fixed question quota. Leave room for a custom answer without demanding unrelated choices.
+请求清楚时，不需要额外提问。只有一个重要缺口时，就这个缺口问一个问题。把已经可以回答的、彼此相关但互不依赖的决定，组成一组容易理解的问题，附上具体选项和推荐。先解决前提问题，再问依赖它们的细节，并简要说明哪些主题在等待这些前提。不要把一组相关的问题拆成反复的一两个问题一轮，也不要规定固定的问题配额。给自定义回答留出空间，不要求用户回答无关的选择。
 
-Use the available question mechanism and the user's conversation language, following actual tool limits without turning them into a fixed quota for the discussion. Keep each question visibly numbered and its selectable options labeled with letters, preserving the question text so the user can answer by number and letter; allow a custom answer. An open question need not have artificial options.
+使用可用的提问机制和用户的对话语言；遵守工具的实际限制，但不要把它变成讨论的固定配额。每个问题都有可见的编号，可选的选项用字母标注，并保留问题原文，让用户可以按“编号 + 字母”回答；允许自定义回答。开放式问题不需要硬凑选项。
 
-### Keep discussion depth proportionate
+### 讨论深度与影响相称
 
-Clarify uncertainty that would change the current goal, scope, observable behavior or a costly decision. State reasonable low-impact assumptions when they allow progress. Do not choose a material user tradeoff or treat silence as agreement. Ordinary implementation details remain Agent decisions.
+澄清会改变当前目标、范围、可观察行为或代价高昂的决定的不确定点。影响小的合理假设，如果能让工作推进，就直接写明。不要替用户做出重要的取舍，也不要把沉默当作同意。普通的实现细节仍由 Agent 决定。
 
-Check a proposed unusual case against the confirmed scope and constraints before asking about it:
+在询问一个被提出的少见情况之前，先对照已确认的范围和约束检查它：
 
-- A case excluded by those constraints needs no question. Explain the exclusion briefly only when relevant; reopen it only if the constraints change or concrete evidence contradicts them.
-- A possible case that does not materially affect the current decision can be left out or briefly noted with a bounded assumption. Do not turn speculative combinations or future capabilities into a mandatory discussion branch.
-- A rare but consequential case may need discussion. State its concrete trigger, the requirement or result it affects, and why resolving it now matters; recommend the smallest adequate handling. Rarity alone does not justify ignoring a credible failure of an essential requirement or an irreversible loss.
+- 已被这些约束排除的情况不需要提问。只在有关时简短说明排除的理由；只有约束变化或具体证据与之矛盾时，才重新讨论。
+- 可能出现、但对当前决定没有实质影响的情况，可以不提，或者附上有边界的假设简短注明。不要把推测出的组合或未来的能力变成必须讨论的分支。
+- 少见但后果严重的情况可能需要讨论。写明它的具体触发条件、它影响的要求或结果，以及为什么现在就要解决；推荐最小的足够处理方式。不能只因为少见，就忽略一个可信的、会让核心要求失败或造成不可逆损失的情况。
 
-When discussing a rare or extreme case, explicitly label it as such in the user's language and distinguish evidence from a hypothetical possibility. Say when its likelihood is unknown instead of inventing a probability. Ordinary boundaries such as an empty inventory, full capacity or insufficient funds are not rare merely because they are outside the happy path. If the user explicitly requests edge-case analysis, cover that scope while preserving these distinctions.
+讨论少见或极端情况时，用用户的语言明确标出它属于这类情况，并区分证据和假设的可能性。可能性未知时就说未知，不要编造概率。空背包、容量已满或资金不足这类普通边界，不会只因为不在顺利路径上就算少见。用户明确要求分析边界情况时，覆盖这个范围，同时保留上述区分。
 
-Use a relevant concrete situation to distinguish similar concepts, without enumerating every possible case. For inventory, an item definition, an owned item and a stack need separate names only when the distinction matters. A stacking rule belongs in GDD; the confirmed conceptual definitions belong in `docs/terminology.md`, written by the authorized owning task through `project-terminology`.
+用一个相关的具体情境区分相似的概念，不要列举所有可能的情况。以背包为例，只有当区别重要时，才需要给“物品定义”“拥有的物品”和“一叠物品”分别命名。堆叠规则属于 GDD；已确认的概念定义属于 `docs/terminology.md`，由获准的所属任务通过 `project-terminology` 写入。
 
-### Continue from answers and show progress
+### 根据回答继续，并显示进度
 
-Evaluate the user's answer against the relevant facts and constraints, state what it settles and identify any material gap it leaves. Then ask the next related set of unresolved questions whose prerequisites are ready in the same response. Do not stop at an acknowledgement or wait for the user to say "continue" while useful discussion remains within the original scope.
+对照本次涉及的事实和约束评估用户的回答，说明它确定了什么，指出它还留下哪些重要缺口。然后在同一条回复中，提出下一组前提已经满足的、相关的未决问题。在原定范围内仍有有用的讨论时，不要只回一句确认就停下，也不要等用户说“继续”。
 
-Answer an explanation request first, then return to the remaining discussion; asking for an explanation is not acceptance of a proposal. When an earlier decision changes, revisit only the answers that depended on it and preserve unaffected decisions. Respect an explicit request to explain only, pause, finish or narrow the scope.
+用户要求解释时，先解释，再回到剩余的讨论；要求解释不等于接受某个建议。之前的决定改变时，只重新检查依赖它的答案，保留不受影响的决定。尊重用户明确提出的只解释、暂停、结束或缩小范围的要求。
 
-After substantive progress, briefly say what is settled, what remains and what the next questions will resolve. Explain newly discovered questions or changed dependencies. Known remaining items may be counted, but do not invent a fixed total or a completion percentage. Keep this orientation in the conversation; do not create round counters, confidence scores, conversation-tracking ledgers, state files or formatting checks. Authorized GDD writing maintains `docs/gdd/open-questions.md` through `design-gdd`.
+取得实质进展后，简要说明哪些已经确定、还剩什么、下一组问题要解决什么。说明新发现的问题或变化了的依赖。可以给出已知剩余项的数量，但不要编造固定的总数或完成百分比。这些进度说明留在对话中；不要建立轮次计数、置信度评分、对话跟踪台账、状态文件或格式检查。获准的 GDD 写入通过 `design-gdd` 维护 `docs/gdd/open-questions.md`。
 
-### Finish against the discussion goal
+### 对照讨论目标结束
 
-An answered subquestion does not complete the whole discussion. Finish when the current scope is clear enough for the requested result or next step, with material choices resolved, explicitly deferred by the user or identified as needing evidence that discussion cannot supply. Do not manufacture further questions or require a fixed final approval phrase.
+回答了一个子问题，不代表整个讨论完成。当前范围清楚到足以支持要求的结果或下一步时就结束：重要的选择要么已经解决，要么被用户明确推迟，要么已确认需要讨论无法提供的证据。不要硬造更多问题，也不要要求固定的最终确认用语。
 
-State whether the requested discussion is complete, still awaiting a user choice, or limited by missing facts or validation. Summarize the useful conclusion and any remaining dependency; do not present a missing decision or untested hypothesis as resolved. Continue independent work still authorized, and return to the owning task when its next step is ready.
+说明要求的讨论是已经完成、仍在等待用户选择，还是受限于缺少的事实或验证。总结有用的结论和剩余的依赖；不要把缺少的决定或未经测试的假设说成已解决。继续进行仍在授权内的、不受影响的工作；所属任务的下一步准备好时，回到那个任务。
 
-Game-design discussion needs neither a ready Godot environment nor a detailed Product. Before preparing wording to be saved in a document, resolve `document_language` through `methodology/05-document-language.md`; ordinary conversation does not need it.
+游戏设计讨论既不需要准备好的 Godot 环境，也不需要详细的 Product。准备要保存进文档的措辞之前，按 `methodology/05-document-language.md` 确定 `document_language`；普通对话不需要。
 
-## Finish in the right place
+## 在正确的位置结束
 
-For discussion only, return the conclusion, its important reason and any remaining decision in ordinary prose. Identify useful confirmed conclusions that remain unsaved so they are not mistaken for project source content. Do not create a document or planning handoff merely to close the discussion.
+只讨论时，用普通的文字返回结论、重要的理由和剩余的决定。指出哪些已确认的有用结论还没有保存，避免它们被误认为项目的来源内容。不要只为了结束讨论就创建文档或规划交接。
 
-When the current request already authorizes subsequent work, return settled answers, relevant sources and remaining uncertainty to its coordinator so that work continues. Use `design-gdd` for initial game design and GDD rule changes, `design-balance` for numeric design within its boundary, `product-author` for Product delivery scope, `project-terminology` for meaning-preserving definitions, or the appropriate entry in `methodology/00-overview.md` for other work. The destination owns writing and its completion rules; do not ask again merely because the Skill changes. Technical structure and decision records follow `methodology/10-architecture-overview.md` within that work's authorization. Do not manufacture Product, Features or ADRs to conclude a conversation.
+当前请求已经授权后续工作时，把已确定的答案、本次涉及的来源和剩余的不确定点交回它的协调方，让那项工作继续进行。初始游戏设计和 GDD 规则变化使用 `design-gdd`，边界内的数值设计使用 `design-balance`，Product 交付范围使用 `product-author`，不改变含义的定义使用 `project-terminology`，其他工作使用 `methodology/00-overview.md` 中对应的入口。写入及其完成规则由接手的一方负责；不要只因为换了 Skill 就再问一遍。技术结构和决定记录在那项工作的授权范围内，按 `methodology/10-architecture-overview.md` 处理。不要为了结束一次对话而硬造 Product、Feature 或 ADR。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
 
-## Reuse inside scoped design work
+## 在限定范围的设计工作中复用
 
-Other Skills may reuse the shared questioning method above while keeping their own ownership and writing rules. Reading the method does not start this Skill's workflow; the reusing Skill continues its own task.
+其他 Skill 可以复用上面的共享提问方法，同时保留自己的归属和写入规则。阅读这个方法不会启动本 Skill 的流程；复用它的 Skill 继续自己的任务。
 
-Inspired by Matt Pocock's `grill-me` questioning approach; adapted for this Godot project's source ownership and authorization boundaries.
+提问方式受 Matt Pocock 的 `grill-me` 启发，并按本 Godot 项目的来源归属和授权边界做了调整。

@@ -1,25 +1,25 @@
-# Testing Strategy
+# 测试策略
 
-Static validation and behavioral tests are separate evidence. Use the lowest test level that proves the contract.
+静态验证和行为测试是两类不同的证据。使用能证明契约的最低测试层级。
 
-## Levels
+## 测试层级
 
-- **[MUST]** Do not use Godot Engine's internal `--test` infrastructure as the project's GDScript test framework.
-- **[MUST]** The project uses gdUnit4 as its fixed test runner; see [GdUnit4 runner profile](gdunit4-profile.md). Do not add a second framework merely because one test seems easier to write in it.
-- **[MUST]** Report static validation and behavioral tests separately; neither substitutes for the other.
-- **[PREFER]** Use the lowest test level that proves the required contract.
+- **[必须]** 不要把 Godot 引擎内部的 `--test` 基础设施当作项目的 GDScript 测试框架。
+- **[必须]** 项目固定使用 gdUnit4 作为测试运行器；见 [GdUnit4 运行器配置](gdunit4-profile.md)。不要只因为某个测试用别的框架看起来更好写，就引入第二个框架。
+- **[必须]** 静态验证和行为测试分开报告；两者不能互相代替。
+- **[优先]** 使用能证明所需契约的最低测试层级。
 
-## Distribution
+## 层级分布
 
-- **[PREFER]** Keep many L1 tests for pure and domain rules, appropriate L2 tests for real Godot collaboration, and a smaller number of high-value L3 flows.
-- **[MUST]** Do not upgrade every test to an end-to-end test from the main scene for perceived realism.
-- **[MUST]** A TestCase has a real observable verification result. A silent early return or a test that verifies nothing cannot count as PASS.
-- **[MUST]** A business bug fix that can be reliably automated adds or updates regression evidence. Purely visual or artistic defects default to manual visual acceptance.
-- **[MUST]** Expected values do not copy the production algorithm by default. Use known examples, tables, independent invariants or an explicitly maintained reference implementation.
-- **[MUST]** Tests primarily verify observable contracts rather than meaningless private implementation steps.
+- **[优先]** 纯规则和领域规则保留大量 L1 测试，真实的 Godot 协作使用适量的 L2 测试，高价值的 L3 流程数量较少。
+- **[必须]** 不要为了看起来更真实，把每个测试都升级为从主场景开始的端到端测试。
+- **[必须]** 每个 TestCase 都有真实可观察的验证结果。悄悄提前返回或什么都不验证的测试，不能算 PASS。
+- **[必须]** 能可靠自动化的业务 Bug 修复，新增或更新回归证据。纯视觉或美术缺陷默认使用人工视觉验收。
+- **[必须]** 预期值默认不照搬生产算法。使用已知示例、表格、独立的不变量，或明确维护的参考实现。
+- **[必须]** 测试主要验证可观察的契约，而不是没有意义的私有实现步骤。
 
-## Visual boundary
+## 视觉验证边界
 
-- **[MUST]** The framework does not impose a general screenshot, golden-image, pixel-diff, animation-similarity or subjective-layout gate. Do not introduce one as an implicit requirement of ordinary delivery.
-- **[REVIEW]** A task with an explicitly agreed objective rendering contract may use scoped screenshot or pixel checks as supplemental evidence. State the observable contract and the environment limits; such checks do not establish subjective visual acceptance or become a project-wide gate.
-- **[MUST]** Visual composition, artistic consistency, layout appearance and animation feel use manual acceptance.
+- **[必须]** 框架不设置通用的截图、基准图、像素差异、动画相似度或主观布局检查门槛。不要把这类检查作为普通交付的隐含要求引入。
+- **[复核]** 任务明确约定了客观的渲染契约时，可以使用限定范围的截图或像素检查作为补充证据。写明可观察的契约和环境限制；这类检查不能确立主观的视觉验收，也不能变成全项目的检查门槛。
+- **[必须]** 视觉构图、美术一致性、布局外观和动画手感使用人工验收。

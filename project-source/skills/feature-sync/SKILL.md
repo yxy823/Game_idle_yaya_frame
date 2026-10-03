@@ -1,48 +1,55 @@
 ---
 name: feature-sync
 description: >-
-  Synchronize existing Feature/test plans with committed GDD, Product delivery, professional specification or Project Rules changes. Use for source-impact analysis and current-plan realignment, not initial decomposition.
+  让已有的 Feature/测试计划与已提交的 GDD、Product 交付、专业规格或项目规则的变化保持一致。用于来源变化的影响分析和当前计划的重新对齐；不用于首次拆分。
 ---
 
-# Synchronize Feature list
+# 同步 Feature 列表
 
-Apply the [GDD prerequisite](../../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority), then run Stages 0–6 below. An existing plan does not substitute for GDD.
+先使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)，再执行下面的阶段 0–6。已有的计划不能代替 GDD。
 
-Identify source changes through Git diffs against a recorded anchor. Never infer historical change by comparing the current sources with the current plan. Without a usable anchor, or for a source now in scope whose coverage by the anchor is unknown, follow [Anchor recovery and current-document alignment](references/anchor-and-fallback.md). Synchronize actual effects on existing work under [Product-by-Product planning](../../../methodology/02-feature-list-schema.md#product-by-product-planning); a later Product's changed document is not a reason to decompose it now.
+通过与已记录锚点之间的 Git 差异找出来源变化。绝不通过比较当前来源和当前计划来推断历史变化。下列情况遵循[锚点恢复与当前文档对齐](references/anchor-and-fallback.md)：
 
-## Shared contracts
+- 没有可用的锚点；
+- 某个来源现在进入了范围，但不知道锚点是否覆盖过它。
 
-- **Plan files and schemas:** `docs/feature-list.json` (index), `docs/features/F0XX.json` (details), `docs/test-registry.json` and the append-only `docs/feature-list-revisions.json`, as defined in `methodology/02-feature-list-schema.md`. Registry semantics follow [Registry rules](../../../methodology/08-test-traceability-and-evidence.md#registry-rules). Read the full index; read details, Registry and the last revision entry when a Stage needs them.
-- **Language:** apply `methodology/05-document-language.md` to new prose; preserve completed history and original evidence untranslated.
-- **Git:** follow `agent-rules/00-core/git-worktree-and-commits.md` for change preservation, the target checkout, staging and commits.
-- **Source owners:** this workflow updates the plan, not the source documents. Game-design boundaries return to [design-gdd](../design-gdd/SKILL.md); engineering-rule writes follow the self-check in `methodology/04-project-rules.md`. Read **Design scope and boundaries** in methodology 01, `docs/project-rules.md` and affected Feature designs when explaining impacts. Completed Feature designs stay as history.
+按 [逐个 Product 规划](../../../methodology/02-feature-list-schema.md#逐个-product-规划) 同步对已有工作的实际影响；后续 Product 的文档发生变化，不是现在就拆分它的理由。
 
-## Sources watched
+## 共享约定
 
-- `docs/gdd/`: game-design intent, rules, states, values, version scope and design acceptance.
-- `docs/product.md` and the documented `docs/product/NN-xxx.md` files: delivery outlines, adopted scope, boundaries, dependencies and order.
-- `docs/project-rules.md` and its routed rule sources (`agent-rules/`): collaboration, architecture and technology constraints.
-- Professional sources in `docs/art/`, `docs/audio/`, `docs/ui/`, `docs/localization/` and `docs/presentation/`, plus other source paths found through actual references under **Discover and map sources** in `methodology/11-specialist-workflows.md`.
+- **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/F0XX.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
+- **语言：** 新写的文字使用 `methodology/05-document-language.md`；已完成的历史和原始证据保持原样，不翻译。
+- **Git：** 保留改动、目标工作目录、暂存和提交，遵循 `agent-rules/00-core/git-worktree-and-commits.md`。
+- **来源的负责方：** 本流程更新计划，不更新来源文档。游戏设计边界交回 [design-gdd](../design-gdd/SKILL.md)；工程规则的写入遵循 `methodology/04-project-rules.md` 中的自查。说明影响时，阅读 methodology 01 的 **设计范围与边界**、`docs/project-rules.md` 和受影响的 Feature 设计稿。已完成 Feature 的设计稿作为历史保留。
 
-Proposed wording is not a confirmed contract. A resource status or location change may be editorial for planning while still changing the completion fingerprint. Use `docs/terminology.md`, when present, to read the diff consistently; terminology is not a separate behavior source, and its meaning-preserving edits are editorial. Module files may be added, deleted, renamed (including numeric-prefix changes) or modified between synchronizations; handle all four cases.
+## 监视的来源
 
-## Stage 0: preflight and anchor
+- `docs/gdd/`：游戏设计意图、规则、状态、数值、版本范围和设计验收。
+- `docs/product.md` 和已写成文档的 `docs/product/NN-xxx.md`：交付大纲、已采用的范围、边界、依赖和顺序。
+- `docs/project-rules.md` 及其路由到的规则来源（`agent-rules/`）：协作、架构和技术约束。
+- `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` 和 `docs/presentation/` 中的专业来源，以及按 `methodology/11-specialist-workflows.md` 的 **查找与映射来源** 通过实际引用找到的其他来源路径。
 
-1. Read the index, revision log and Registry. A missing file requires repair before routing or writes. If the valid index has no Features, return to current Product preparation through [product-author](../product-author/SKILL.md) and authorized [feature-plan](../feature-plan/SKILL.md).
-2. Check Git. Report the current branch (`main` and `master` are valid) and do not change it. Inspect `git status --porcelain` and the relevant differences; preserve unrelated work and resolve actual overlapping plan edits before dependent writes.
-3. **Source-first rule:** every source document used by this synchronization, including approved repairs from Stage 3, must be committed in a separate, earlier commit before any dependent plan write. The diff and the next anchor then identify an actual committed state. Report a relevant uncommitted source and return it to its owner; an unrelated dirty path is not a blocker. If a source change is still uncommitted at Stage 4, or appears during plan writes, preserve it and stop dependent synchronization.
-4. Use `synced_at_commit` from the last `revision_log` entry as the anchor and verify that it is in the current history. This includes the `R000` baseline under [Initial planning baseline](../../../methodology/02-feature-list-schema.md#initial-planning-baseline), whose coverage is limited to its planned Product and adopted sources. Otherwise use [the reference](references/anchor-and-fallback.md).
-5. Report the branch, the anchor hash, date, subject and coverage basis (or the authorized fallback and inspected HEAD), and Feature counts by status.
+提议中的措辞不是已确认的约定。资源状态或位置的变化，对规划来说可能只是编辑性调整，但仍可能改变完成记录的内容指纹。存在 `docs/terminology.md` 时，用它统一解读差异；术语不是单独的行为来源，不改变含义的术语修改属于编辑性调整。两次同步之间，模块文件可能被新增、删除、重命名（包括数字前缀变化）或修改；四种情况都要处理。
 
-## Stage 1: user prior
+## 阶段 0：预检和锚点
 
-Reuse the user's change description when supplied; otherwise continue without one. Ask only if the inspected changes leave a material ambiguity about intent. Record an actual answer for Stage 2 and the revision entry, or `user_intent: null`; never invent one from the diff.
+1. 读取索引、修订记录和测试登记表。缺少任何文件时，先修复，再路由或写入。如果索引有效但没有 Feature，通过 [product-author](../product-author/SKILL.md) 和已获授权的 [feature-plan](../feature-plan/SKILL.md) 回到当前 Product 的准备工作。
+2. 检查 Git。报告当前分支（`main` 和 `master` 都有效），不要切换分支。查看 `git status --porcelain` 和相关差异；保留无关的工作，在依赖它的写入之前，先解决与计划实际重叠的编辑。
+3. **来源先提交规则：** 本次同步用到的每个来源文档，包括阶段 3 中获批的修复，都必须在任何依赖它的计划写入之前，单独、更早地提交。这样差异和下一个锚点才能对应一个实际已提交的状态。
+   - 报告未提交的相关来源，并把它交回其负责方；无关的未提交路径不构成阻塞。
+   - 到阶段 4 时某个来源改动仍未提交，或在写入计划期间出现，保留它，并停止依赖它的同步。
+4. 使用最后一条 `revision_log` 条目的 `synced_at_commit` 作为锚点，并确认它在当前历史中。这包括 [初始规划基线](../../../methodology/02-feature-list-schema.md#初始规划基线) 下的 `R000` 基线，它的覆盖范围只限于其规划的 Product 和已采用的来源。否则使用[参考文档](references/anchor-and-fallback.md)。
+5. 报告分支、锚点的哈希、日期、主题和覆盖依据（或已获授权的回退方式和检查的 HEAD），以及按状态统计的 Feature 数量。
 
-## Stage 2: Git-diff analysis
+## 阶段 1：用户的先验说明
 
-Stage 2 writes nothing.
+用户提供了变化说明时直接复用；没有提供时，不带说明继续。只有检查过的变化在意图上留下实质性的歧义时才询问。把实际的回答记下来，供阶段 2 和修订条目使用；没有回答时写 `user_intent: null`。绝不根据差异编造意图。
 
-### Collect the diff
+## 阶段 2：Git 差异分析
+
+阶段 2 不写入任何内容。
+
+### 收集差异
 
 ```powershell
 git diff --name-status -M <anchor> HEAD -- docs/gdd/
@@ -56,71 +63,94 @@ git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/l
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 ```
 
-Add any other source paths found through references. `-M` is mandatory, so that a rename such as `02-foo.md` to `03-foo.md` is not read as a deletion plus an addition.
+加上通过引用找到的其他来源路径。`-M` 必须带上，这样 `02-foo.md` 改名为 `03-foo.md` 这类重命名才不会被读成一次删除加一次新增。
 
-### Classify every hunk
+### 为每个差异块分类
 
-- **Substantive addition:** a new GDD rule, professional constraint or adopted delivery scope.
-- **Substantive revision:** changed behavior, value, condition or meaning.
-- **Substantive removal:** removed behavior, a newly explicit exclusion or a deleted module.
-- **Editorial adjustment:** wording, formatting, a typo or a pure rename. It changes no Feature. A rename with content changes is both a path correction and a substantive change.
+- **实质性新增：** 新的 GDD 规则、专业约束或已采用的交付范围。
+- **实质性修订：** 行为、数值、条件或含义发生变化。
+- **实质性删除：** 删除了行为、新增了明确的排除项，或删除了一个模块。
+- **编辑性调整：** 措辞、格式、错别字或纯重命名。它不改变任何 Feature。带内容变化的重命名，既是路径修正，也是实质性变化。
 
-### Map changes to Features
+### 把变化映射到 Feature
 
-- An addition to the current or already planned scope → propose the needed new Features, unless planning since the anchor already covers it.
-- An addition or revision confined to a later, unplanned Product → keep it in GDD and `docs/product.md` and defer its Features. If the whole diff is of this kind, report the deferred scope and stop without writes; a mixed diff mentions the deferred scope in its report.
-- A revision or removal → identify every affected Feature ID, using the primary `source`, AC and design references and shared applicability. Follow transitive dependents that the changed contract reaches, including consumers without a direct link.
+- 对当前范围或已规划范围的新增 → 提出需要的新 Feature，除非锚点之后的规划已经覆盖了它。
+- 只涉及后续、尚未规划的 Product 的新增或修订 → 留在 GDD 和 `docs/product.md` 中，推迟它的 Feature。如果整份差异都是这一类，报告被推迟的范围，然后停止，不写入；混合的差异在报告中提到被推迟的范围。
+- 修订或删除 → 使用主要的 `source`、AC 和设计引用以及共享的适用范围，找出每个受影响的 Feature ID。沿着被修改的约定能影响到的传递依赖继续追查，包括没有直接链接的使用方。
 
-A later Product's change can still affect existing work through a real shared contract; analyze that impact without decomposing the later Product. For a changed pending scope, consider a split or merge and report the source and replacement IDs, boundaries and dependency changes. Do not renumber Features.
+后续 Product 的变化仍可能通过真实共享的约定影响已有工作；分析这种影响，但不拆分后续 Product。待执行范围发生变化时，考虑拆分或合并，并报告来源 ID 和替代 ID、边界以及依赖的变化。不要给 Feature 重新编号。
 
-For a renamed or removed source file, list separately the repairs to source documents (with their owners) and the Feature `source`, AC or design-navigation updates kept with the plan. A path correction is not a substantive change. Do not repair either during analysis.
+来源文件被重命名或删除时，分别列出：
 
-### Analyze test impact
+- 对来源文档本身的修复（及其负责方）；
+- 随计划保存的 Feature `source`、AC 或设计导航的更新。
 
-- Compare every proposed `affected_components` ID with the Registry, and include new and conflicting component records in the proposal.
-- For each revised or removed Feature with implementation or tests, follow its dependents and the tests whose owning Feature or components overlap the change. Classify each test as `still_valid`, `superseded`, `needs_new_coverage` or `uncertain`.
-- For a proposed retirement, identify the reason, anchored source, replacement Feature and test IDs and revision ID under [File 4](../../../methodology/02-feature-list-schema.md#file-4-docstest-registryjson). A source change alone is not a reason to retire a test.
-- Follow **Requirement changes and stale tests** in methodology 08: read the affected test code, including unit tests without Registry IDs, and name the cleanup and the Feature that will own it.
+路径修正不是实质性变化。分析阶段两者都不修复。
 
-### Report
+### 分析测试影响
 
-Apply [Requirement coverage review](../../../methodology/02-feature-list-schema.md#requirement-coverage-review) in the conversation language. Include the anchor or fallback, editorial changes and path renames, substantive changes with affected IDs, statuses and proposed actions, downstream and test impacts, differences from the user's intent and unresolved decisions. Omit empty categories.
+- 把每个提议的 `affected_components` ID 与测试登记表比较，在方案中列出新的和存在冲突的组件记录。
+- 对每个已有实现或测试、且被修订或删除的 Feature，追查它的依赖方，以及所属 Feature 或组件与变化重叠的测试。把每个测试归为 `still_valid`、`superseded`、`needs_new_coverage` 或 `uncertain`。
+- 提议退役某个测试时，按 [File 4](../../../methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
+- 遵循 methodology 08 的 **需求变化与过时的测试**：阅读受影响的测试代码（包括没有测试登记表 ID 的单元测试），写明要做的清理以及负责它的 Feature。
 
-## Stage 3: user review and decision
+### 报告
 
-Compare the report's concrete actions with existing approval and ask only about unapproved material choices: scope, retirement, dependencies or similar. Keep approval for unchanged actions. A cancellation stops writes; general intent, silence or the report itself is not approval.
+用对话语言执行 [需求覆盖核对](../../../methodology/02-feature-list-schema.md#需求覆盖核对)。报告包括：
 
-Complete approved source-link repairs through the source's own Skill and commit them under the source-first rule before any Stage 4 write. Do not start a nested synchronization. If authorization or the commit is unavailable, report it and leave the plan unchanged. After a repair, re-read the affected sources and refresh the Stage 2 analysis against the original anchor or the fallback; the repair commit does not prove earlier coverage. Reuse unchanged approvals, resolve only newly affected choices, and start Stage 4 only when the sources and the analysis agree with the committed state.
+- 锚点或回退方式；
+- 编辑性变化和路径重命名；
+- 实质性变化，以及受影响的 ID、状态和建议的动作；
+- 下游影响和测试影响；
+- 与用户意图的差异；
+- 尚未解决的决定。
 
-## Stage 4: apply confirmed changes
+省略没有内容的类别。
 
-1. Merge approved new components with the [Test registry merge procedure](../feature-plan/SKILL.md#test-registry-docstest-registryjson) in `feature-plan`. Resolve conflicting records explicitly; never overwrite them.
-2. Apply the confirmed Feature, test and retirement changes with [Apply confirmed plan changes](references/apply-plan-changes.md). The index and its details change together.
+## 阶段 3：用户审阅与决定
 
-## Stage 5: record, validate and commit
+把报告中的具体动作与已有的批准比较，只询问尚未批准的实质性选择：范围、退役、依赖之类。没有变化的动作保留原有的批准。用户取消时停止写入；笼统的意图、沉默或报告本身都不算批准。
 
-1. Update the index time and append one version-2 revision under [File 3](../../../methodology/02-feature-list-schema.md#file-3-docsfeature-list-revisionsjson).
-   - Preserve the canonical `meta.generated_from` entries and add the GDD and professional locations actually considered, without claiming future scope. The revision itself does not go into index metadata.
-   - Use the readable summary fields and the typed `migrations` and `dependency_changes`; empty arrays are valid for an editorial synchronization.
-   - `synced_at_commit` is mandatory: the committed source state analyzed now, and the next anchor. `source_path_updates` keeps rename traceability.
-   - For the fallback, or for sources aligned only at HEAD, see [Record the revision](references/anchor-and-fallback.md#record-the-revision).
-2. Run `python -B tools/checks/check-feature-list.py`. Review the diff against the approved actions: preserved history, correct sources and anchor, real dependencies, and cleanup and replacement coverage assigned to the responsible Feature. Correct task-owned errors before committing.
-3. Stage only the task-owned plan files and approved Feature design navigation edits, as **Staging** in the Core Git rules requires. Commit `chore(feature-plan): <中文行为摘要>` unless the user requested no commit; the `feature-plan` scope names the plan files, as in initial planning. Summarize the anchor, plan changes and validation in the body, then check the post-commit status.
+获批的来源链接修复，通过来源自己的 Skill 完成，并按来源先提交规则，在阶段 4 的任何写入之前提交。不要嵌套启动另一次同步。无法取得授权或无法提交时，报告这一情况，保持计划不变。
 
-## Stage 6: handoff
+修复之后，重新阅读受影响的来源，并对照原来的锚点或回退方式刷新阶段 2 的分析；修复提交不能证明之前的覆盖。复用没有变化的批准，只解决新受影响的选择。只有来源和分析都与已提交的状态一致时，才开始阶段 4。
 
-Report the anchor, counts of added, obsoleted, regression and source-path-update records, the next eligible Feature (`python -B tools/checks/check-feature-list.py --eligible`) or the next Product to revisit, and rollback or regression warnings. Refresh the coverage correspondence with what was actually written. Distinguish plan alignment from pending implementation and verification; do not present deferred Products or unresolved gaps as synchronized, and keep follow-ups in the owning Feature or Progress.
+## 阶段 4：应用已确认的变化
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+1. 使用 `feature-plan` 中的[测试登记表合并步骤](../feature-plan/SKILL.md#测试登记表docstest-registryjson)合并获批的新组件。明确解决冲突的记录；绝不覆盖它们。
+2. 按[应用已确认的计划变化](references/apply-plan-changes.md)应用已确认的 Feature、测试和退役变化。索引和它的详情一起修改。
 
-## Exception handling
+## 阶段 5：记录、校验和提交
 
-| Condition | Required response |
+1. 更新索引时间，并按 [File 3](../../../methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
+   - 保留权威的 `meta.generated_from` 条目，加上实际考虑过的 GDD 和专业来源位置，不声称覆盖了未来的范围。修订本身不写进索引元数据。
+   - 使用可读的摘要字段，以及有类型的 `migrations` 和 `dependency_changes`；编辑性同步可以使用空数组。
+   - `synced_at_commit` 必须填写：它是本次分析的已提交来源状态，也是下一个锚点。`source_path_updates` 保留重命名的可追溯性。
+   - 使用回退方式，或某些来源只在 HEAD 上对齐时，见[记录修订](references/anchor-and-fallback.md#记录修订)。
+2. 运行 `python -B tools/checks/check-feature-list.py`。对照获批的动作审查差异：历史已保留，来源和锚点正确，依赖真实存在，清理和替代覆盖已分配给负责的 Feature。提交之前，修正本任务造成的错误。
+3. 按 Core Git 规则中 **暂存** 的要求，只暂存本任务负责的计划文件和获批的 Feature 设计稿导航修改。除非用户要求不提交，否则提交 `chore(feature-plan): <中文行为摘要>`；和首次规划一样，`feature-plan` 这个 scope 指的是计划文件。在正文中概括锚点、计划变化和校验，然后检查提交后的状态。
+
+## 阶段 6：交接
+
+报告下列内容：
+
+- 锚点；
+- 新增、废弃、回归和来源路径更新记录的数量；
+- 下一个可以开始的 Feature（`python -B tools/checks/check-feature-list.py --eligible`），或下一个需要重新审视的 Product；
+- 回滚或回归方面的警告。
+
+用实际写入的内容刷新覆盖对应关系。把计划对齐和尚待进行的实现与验证区分开；不要把被推迟的 Product 或未解决的缺口说成已同步，后续事项保留在所属的 Feature 或 Progress 中。
+
+完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
+
+## 异常处理
+
+| 情况 | 必须的处理 |
 |---|---|
-| No reliable anchor | Offer current-document alignment under [the reference](references/anchor-and-fallback.md) and disclose unknown history |
-| Changes too broad to classify | Narrow the scope with the user; do not recommend full regeneration because of file or line counts |
-| Diff conflicts with the user's intent | Pause, list the mismatches and ask about unintended source edits |
-| A current or documented Product source is missing | Report it and repair the source before dependent writes; a future outline entry has no file by design |
-| Pre-existing plan data is invalid | Report the original error and agree the repair scope; do not invent history |
-| This task wrote invalid JSON or a partial result | Inspect it, correct the task's own errors and revalidate; stop if recovery is unclear or overlaps preserved work |
-| A file or Git operation fails | Preserve the error; fix a task-owned invocation error, but never bypass a permission denial, reset history, discard work or expand scope |
+| 没有可靠的锚点 | 按[参考文档](references/anchor-and-fallback.md)提出当前文档对齐，并说明历史未知 |
+| 变化太广，无法分类 | 与用户一起缩小范围；不要因为文件数或行数而建议整体重新生成 |
+| 差异与用户的意图冲突 | 暂停，列出不一致之处，询问是否存在非预期的来源修改 |
+| 缺少当前或已写成文档的 Product 来源 | 报告缺失，并在依赖它的写入之前修复来源；未来大纲的条目本来就没有文件 |
+| 原有的计划数据无效 | 报告原始错误，并商定修复范围；不要编造历史 |
+| 本任务写入了无效的 JSON 或不完整的结果 | 检查它，修正本任务自己的错误并重新校验；恢复方式不清楚或与需要保留的工作重叠时，停止 |
+| 文件或 Git 操作失败 | 保留错误信息；修正本任务自己的调用错误，但绝不绕过权限拒绝、重置历史、丢弃工作或扩大范围 |

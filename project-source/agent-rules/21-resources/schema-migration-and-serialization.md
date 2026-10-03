@@ -1,20 +1,20 @@
-# Resource Schema, Migration, and Serialization
+# Resource Schema、迁移与序列化
 
-Treat exported Resource properties and their defaults as a persisted schema.
+把 Resource 的导出属性及其默认值当作持久化的 schema。
 
 ## Schema
 
-- **[MUST]** Migrate repository-controlled `.tres` files in one bulk migration and keep HEAD on the current schema. Do not maintain indefinite branches for legacy formats.
-- **[REVIEW]** Player, mod and other external persisted Resources may require explicit schema versioning and migrations.
-- **[MUST]** Differentiate optional fields with stable defaults from required fields. Missing required data is not silently repaired.
-- **[MUST]** Changing an exported default is a behavior and schema change, because previously serialized Resources may omit that field and inherit the new default.
-- **[MUST]** Renaming, removing or retyping a property, and changing the `class_name`, script or base type, require Resource migration and validation.
-- **[MUST]** Validate domain invariants beyond successful deserialization.
+- **[必须]** 仓库控制的 `.tres` 文件一次性批量迁移，让 HEAD 保持在当前 schema。不无限期维护旧格式的分支。
+- **[复核]** 玩家、mod 和其他外部持久化的 Resource，可能需要明确的 schema 版本和迁移。
+- **[必须]** 区分有稳定默认值的可选字段和必填字段。缺少必填数据时不悄悄修补。
+- **[必须]** 修改导出属性的默认值是行为与 schema 的变化，因为之前序列化的 Resource 可能省略了这个字段，会继承新的默认值。
+- **[必须]** 重命名、移除属性或修改属性类型，以及修改 `class_name`、脚本或基类型，都需要迁移并验证 Resource。
+- **[必须]** 在反序列化成功之外，还要验证领域不变量。
 
-## Construction and migration
+## 构造与迁移
 
-- **[MUST]** Do not hide serialized migration inside `_init()` side effects.
-- **[MUST]** Define persistable custom Resource classes in a file-level script, not in an inner class.
-- **[MUST]** A custom Resource that is persisted, created or edited in the Inspector, loaded through `ResourceLoader`, duplicated or made local to a scene has a serialization-safe `_init()`: every parameter has a default value, or the class defines no required constructor arguments.
-- **[MUST]** In these serialization paths, enforce business-required invariants through a factory, a validator, explicit initialization or a domain invariant check after construction, rather than through required `_init()` arguments.
-- **[MUST]** A failed persistent migration preserves the original artifact. Migrate in memory or in a temporary file, validate, then replace atomically.
+- **[必须]** 不把序列化迁移藏在 `_init()` 的副作用里。
+- **[必须]** 可持久化的自定义 Resource 类定义在文件级脚本中，不定义为内部类。
+- **[必须]** 被持久化、在检查器中创建或编辑、通过 `ResourceLoader` 加载、被复制或设为场景本地的自定义 Resource，要有对序列化安全的 `_init()`：每个参数都有默认值，或者这个类不定义必需的构造参数。
+- **[必须]** 在这些序列化路径中，业务上必需的不变量通过工厂、验证器、显式初始化或构造后的领域不变量检查来保证，不通过必需的 `_init()` 参数。
+- **[必须]** 持久化迁移失败时保留原始产物。先在内存或临时文件中迁移并验证，再原子替换。

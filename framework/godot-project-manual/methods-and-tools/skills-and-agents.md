@@ -100,7 +100,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 - **数值设计**：[design-balance](../../../project-source/skills/design-balance/SKILL.md) 从已知目标和规则推导数值方案，也可以调整已有模型的参数，并在写入授权内直接维护 GDD 中所属的数值正文。采纳的参数、写入的文件和验证状态分别记录；需要新增玩法或改变体验目标时，回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，用 `review-balance` 独立审核；设计者自己验算不算独立审核。普通的尺寸或数量记录不需要专门建模。
 - **反馈与诊断**：用户描述实际症状即可，Agent 根据证据追查逻辑、表现以及两者的连接，不需要用户先判断属于哪一层，也不会因为跨层就拆成多个 Bug。只要求调查时，交付证据和结论；已有具体的修复授权时，查清原因后回到原任务继续。
-- **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由](../../../project-source/methodology/00-overview.md#canonical-task-routing)统一规定。
+- **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
 - **原型**：[prototype-godot](../../../project-source/skills/prototype-godot/SKILL.md) 用可运行的 Godot 场景或逻辑实验回答本次的具体问题。原型观察到的结果不等于正式验收。
 - **暂停与续接**：[task-handoff-godot](../../../project-source/skills/task-handoff-godot/SKILL.md) 使用已有的 Progress、Feature 或任务记录。只要求暂停时，保存停点；需要换对话时，再生成可复制的续接文本。它不会自动创建对话、发送消息或另建交接台账。恢复已有停点时直接回到原任务，不需要再调用一次交接。
 - **显式调用更可靠**：description 帮助客户端按任务自动选择 Skill，但 Skill 文件存在、格式正确，不代表客户端一定会自动选中它。规范要求的调查和验证仍由原流程负责，不依赖自动发现。
@@ -185,6 +185,6 @@ advisor（`project-next-step-advisor`）根据项目自己的规则、状态和�
 
 提示词正文只在共享库中维护，advisor 每次读取当前内容，不需要导出副本。条目里写的“执行”不代表当前任务已获准；条目里出现某个 Skill 名称，也不代表本项目一定具备它。
 
-advisor 和 `task-handoff-godot` 起草的续接提示词，都遵循项目的 [Continuation prompts](../../../project-source/methodology/09-records-reports-and-handoff.md#continuation-prompts) 格式，不因任务简短而省略固定字段。等待人工验收、缺少决定、验证受阻，都要和“已完成”分开写。
+advisor 和 `task-handoff-godot` 起草的续接提示词，都遵循项目的 [续接提示词](../../../project-source/methodology/09-records-reports-and-handoff.md#续接提示词) 格式，不因任务简短而省略固定字段。等待人工验收、缺少决定、验证受阻，都要和“已完成”分开写。
 
 职责设计的长期评价规则见[职责设计准则](../../maintenance/design-guidelines/README.md)，项目实际的任务路由见[方法总览](../../../project-source/methodology/00-overview.md)。

@@ -1,34 +1,34 @@
 ---
 name: review-code
-description: "Independently inspect a module or code changes for defects and concrete maintenance problems. Use for a requested current-state audit or change review. Not for implementation or for selecting among recorded refactor candidates (engineering-refactor-select)."
+description: "独立检查某个模块或代码改动中的缺陷和具体的维护问题。用于用户要求的现状审计或改动审核。不用于实现，也不用于在已记录的重构候选中做选择（engineering-refactor-select）。"
 ---
 
-# Code review
+# 代码审核
 
-Apply `methodology/12-independent-review.md` in a fresh reviewer instance. Fix the reviewed snapshot and scope, then select the inputs for the requested object:
+在新的审核实例中按 `methodology/12-independent-review.md` 执行。先固定被审核的快照和范围，再按请求的对象选择输入：
 
-- Change review: establish the comparison baseline and inspect the combined final diff, relevant Feature/AC when present, affected callers and original verification.
-- Current-state audit: inspect the selected module, files or commit snapshot and direct callers. Use existing relevant requirements and evidence; do not require a diff or invent a Feature, AC or historical baseline. Follow the Audit route in `methodology/00-overview.md` without starting Feature delivery.
+- 改动审核：确定比较基线，检查合并后的最终差异、存在时涉及的 Feature 与 AC、受影响的调用方和原始验证结果。
+- 现状审计：检查选定的模块、文件或提交快照，以及直接调用方。使用已有的相关需求和证据；不要求差异，也不编造 Feature、AC 或历史基线。按 `methodology/00-overview.md` 中的审计路线执行，不启动 Feature 交付。
 
-A missing GDD does not stop either kind of review. A current-state audit can still give supported code-quality conclusions; requirement comparisons that need the GDD report that gap. When a GDD exists, apply **Design scope and boundaries** in `methodology/01-product-doc-structure.md` with the relevant GDD topics for game-behavior review. Read the applicable Product delivery and professional sources, terminology, accepted ADRs and engineering rules. Missing requirements or verification limit the corresponding conclusions; they do not prevent supported code-quality findings.
+缺少 GDD 不妨碍这两种审核。现状审计仍能给出有依据的代码质量结论；需要 GDD 才能做的需求对比，报告这个缺口。有 GDD 时，审核游戏行为要结合涉及的 GDD 主题，按 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 执行。阅读适用的 Product 交付和专业来源、术语、已接受的 ADR 和工程规则。缺少需求或验证会限制对应的结论，但不妨碍有依据的代码质量发现。
 
-Answer two separate questions in one scoped pass:
-- Requirements: does the result satisfy available approved requirements and AC, preserve required behavior and stay within authorization? Do available tests and human observations actually prove the claims on this snapshot? State what cannot be assessed when those sources are missing.
-- Code quality: are responsibilities, state ownership, lifecycle and dependencies coherent? Inspect supported defects and material maintenance costs: duplicated domain rules, misplaced dispatch, magic values, oversized responsibilities, presentation/domain coupling and relevant Godot anti-patterns. Avoid stylistic rewrites without a concrete impact.
+在一次限定范围的检查中，分别回答两个问题：
+- 需求：结果是否满足现有的已批准需求和 AC，是否保留了必需的行为，是否没有超出授权？现有的测试和人工观察能否在这个快照上真正证明这些说法？缺少这些来源时，写明哪些无法评估。
+- 代码质量：职责、状态归属、生命周期和依赖是否一致？检查有依据的缺陷和实质的维护成本：重复的领域规则、放错位置的分派、魔法值、过大的职责、表现与领域的耦合，以及涉及的 Godot 反模式。不做没有具体影响的风格性重写。
 
-When reviewing state models, pattern choices or serialization, apply the current design defaults in Part 2 of `docs/project-rules.md`. Assess the confirmed need, lifecycle and caller obligations against the added structure and whether a simpler implementation can fulfill the same responsibilities. Ground proposed changes in concrete failure risks or maintenance costs; a pattern's presence or absence alone is not a defect.
+审核状态模型、模式选择或序列化时，采用 `docs/project-rules.md` 第 2 部分的当前设计默认值。把已确认的需求、生命周期和调用方义务与新增的结构对照，并判断更简单的实现能否承担同样的职责。拟议的改动要以具体的失败风险或维护成本为依据；某个模式存在或不存在，本身都不是缺陷。
 
-For game logic/presentation boundaries, apply `docs/game-organization.md` to the actual behavior: who owns the business result, what local presentation state is needed, and what requests, state reads and events mean to consumers. Check relevant cancellation, restoration or repeated-use paths rather than enforcing a class count or communication pattern. Godot nodes and callbacks are not inherently presentation code; when animation supplies gameplay timing, assess how the code explicitly defines that timing and its result instead of treating that involvement alone as a defect.
+对于游戏逻辑与表现的边界，按 `docs/game-organization.md` 检查实际行为：业务结果由谁负责，需要哪些本地表现状态，请求、状态读取和事件对使用方意味着什么。检查涉及的取消、恢复或重复使用路径，而不是强求类的数量或通信方式。Godot 节点和回调并不天然属于表现代码；动画提供玩法时机时，评估代码如何明确定义这个时机及其结果，而不是因为动画参与了就认定为缺陷。
 
-For added or changed module boundaries, apply **Designing a module boundary** and, for a refactor, **Assessing a proposed refactor** in `methodology/10-architecture-overview.md`. Ground design findings in actual caller obligations, failure/lifetime risks or coordinated edits. A smell is an investigation clue, not a violation by itself; similar code shapes or necessary consumer updates do not alone justify a new abstraction or merged module.
+对于新增或变更的模块边界，按 `methodology/10-architecture-overview.md` 的 **设计模块边界** 执行；涉及重构时，还按其中的 **评估拟议的重构** 执行。设计方面的发现要以实际的调用方义务、失败与生命周期风险或需要协同修改的地方为依据。代码异味是调查线索，本身不算违规；相似的代码形状或必要的使用方更新，本身都不足以证明需要新的抽象或合并模块。
 
-In a current-state audit, follow a representative behavior through the selected scope and its direct callers.
+在现状审计中，沿一个有代表性的行为走过选定范围及其直接调用方。
 
-- Investigate why an ordinary change requires coordinated edits or why a layer exists: what caller obligation or useful behavior would be lost if it were removed?
-- Use change frequency or difficulty in following the code to choose where to inspect, not as proof of a defect.
-- Tie each proposed simplification to a concrete risk or maintenance cost. Keeping the current structure is a valid conclusion.
-- Do not turn a scoped request into an automatic repository-wide cleanup.
+- 调查为什么一次普通改动需要多处协同修改，或者某一层为什么存在：删掉它会失去哪项调用方义务或有用行为？
+- 改动频率或代码难以追踪，只用来决定检查哪里，不能作为缺陷的证明。
+- 每项拟议的简化都要对应具体的风险或维护成本。保留当前结构也是有效的结论。
+- 不要把限定范围的请求变成自动的全仓清理。
 
-For changed or removed interfaces and behaviors, inspect actual executable assertions, references, test discovery and retained coverage. Registry retirement alone cannot remove a stale test; unfinished required cleanup is `must_fix`. Check failure paths, repeated lifecycle use and the directly affected dependency boundary.
+对于变更或删除的接口和行为，检查实际的可执行断言、引用、测试发现和保留的覆盖。仅在测试登记表（Registry）中退役，不能移除一个过时的测试；必需的清理没有完成时，记为 `must_fix`。检查失败路径、生命周期的重复使用，以及直接受影响的依赖边界。
 
-Use `must_fix`, `suggest` and `acceptable` where useful, linking each finding to its requirement/rule and file/evidence. Give a short conclusion for each of the two questions; one cannot stand in for the other. A suggestion is not an approved requirement or automatic TODO.
+需要时使用 `must_fix`、`suggest` 和 `acceptable`，并把每条发现关联到对应的需求或规则，以及文件或证据。对两个问题各给出简短结论；一个不能代替另一个。建议不是已批准的需求，也不会自动成为待办。

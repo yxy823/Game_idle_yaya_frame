@@ -4,4 +4,4 @@
 
 ## 术语译名
 
-这里是已确认术语译名的唯一规格，由 `design-localization-spec` 维护。条目链接项目术语中的概念，说明目标语言、已采纳译名和适用语境；候选标为待定，完整句子与对话不复制到本页。实现与语言审核据此核对运行资源，具体约定见[本地化术语译名](../../methodology/11-specialist-workflows.md#localization-term-translations)。
+这里是已确认术语译名的唯一规格，由 `design-localization-spec` 维护。条目链接项目术语中的概念，说明目标语言、已采纳译名和适用语境；候选标为待定，完整句子与对话不复制到本页。实现与语言审核据此核对运行资源，具体约定见[本地化术语译名](../../methodology/11-specialist-workflows.md#本地化术语译名)。

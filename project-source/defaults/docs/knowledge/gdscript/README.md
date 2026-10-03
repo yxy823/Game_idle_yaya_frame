@@ -1,9 +1,9 @@
-# GDScript experience
+# GDScript 经验
 
-[Knowledge index](../README.md)
+[知识索引](../README.md)
 
-Use this topic for type and API usage, language pitfalls, script organization and implementation approaches. Follow the [knowledge convention](../README.md).
+本主题收录类型与 API 用法、语言陷阱、脚本组织和实现做法。遵循[知识约定](../README.md)。
 
-## Entries
+## 条目
 
-No project entries yet. Add links and short descriptions here as notes are written.
+还没有项目条目。写出条目后，在这里添加链接和简短说明。

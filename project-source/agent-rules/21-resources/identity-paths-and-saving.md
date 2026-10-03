@@ -1,22 +1,22 @@
-# Resource Identity, Paths, and Saving
+# Resource 身份、路径与保存
 
-Keep resource identity, business identity and filesystem location separate.
+把资源身份、业务身份和文件系统位置分开。
 
-## Identity
+## 身份
 
-- **[MUST]** The Resource UID, the `res://` path, `resource_name` and the gameplay Business ID are distinct identity domains.
-- **[MUST]** Move or rename Resources with a UID-aware workflow, as described in [Asset paths, UIDs, and moves](../60-assets/paths-uid-and-moves.md). UID handling follows [Resource references](../00-core/godot-resource-references.md#resource-references).
-- **[MUST]** Do not mutate `resource_path` manually to "fix" identity.
-- **[MUST]** Unused or unreferenced Resources are deletion candidates only; apply the [Core deletion rules](../00-core/change-scope-and-ownership.md#deletion-and-derived-outputs) before removal.
-- **[MUST]** Do not place Resources that the game requires at runtime under `.gdignore`.
+- **[必须]** Resource UID、`res://` 路径、`resource_name` 和玩法上的业务 ID 是不同的身份域。
+- **[必须]** 用能感知 UID 的流程移动或重命名 Resource，见 [资源路径、UID 与移动](../60-assets/paths-uid-and-moves.md)。UID 的处理遵循[资源引用](../00-core/godot-resource-references.md#资源引用)。
+- **[必须]** 不手工修改 `resource_path` 来“修复”身份。
+- **[必须]** 未使用或未被引用的 Resource 只是删除候选；删除前执行[核心规则中的删除规则](../00-core/change-scope-and-ownership.md#删除与派生产物)。
+- **[必须]** 不把游戏运行时需要的 Resource 放在 `.gdignore` 管辖的目录下。
 
-## Saving and generation
+## 保存与生成
 
-- **[MUST]** Gameplay and exported runtime persistence for saves, settings and mutable state uses `user://` or an explicitly defined external persistence domain.
-- **[MUST]** Gameplay and exported runtime code must not rely on modifying repository definition or configuration `.tres` files under `res://`. Keep runtime persistence separate from project definition data.
-- **[MUST]** Editor and tool authoring may intentionally write project Resources under `res://` as part of an explicit authoring workflow.
-- **[MUST]** Check the return status of `ResourceSaver`. Advanced save flags require deliberate review.
-- **[MUST]** Treat `ResourceSaver.save() == OK` as the status of the save operation only; it does not prove that a new Resource UID was correctly persisted.
-- **[MUST]** In the Godot 4.7 runtime, automatically generated Resource UIDs are not persisted as they are in Editor mode. A generated Resource that becomes an official repository artifact is created in an Editor or authoring context, or passes later validation of target-editor import and UID integrity. Do not guess, handwrite or reassign a UID to bypass this boundary.
-- **[MUST]** After saving generated project Resources, reload them through the production loader and validate the UID and path, the custom type, persisted values, dependencies and invariants.
-- **[MUST]** After external text edits to Resource files, refresh the filesystem or use a fresh process as needed, so that the editor cache does not produce a false green result.
+- **[必须]** 玩法代码和导出后的运行时代码，把存档、设置和可变状态持久化到 `user://`，或明确定义的外部持久化位置。
+- **[必须]** 玩法代码和导出后的运行时代码，不能依赖修改 `res://` 下仓库中的定义或配置 `.tres` 文件。运行时的持久化与项目定义数据分开。
+- **[必须]** 编辑器和工具在明确的编辑流程中，可以有意写入 `res://` 下的项目 Resource。
+- **[必须]** 检查 `ResourceSaver` 的返回状态。高级保存标志需要专门复核。
+- **[必须]** 把 `ResourceSaver.save() == OK` 只当作保存操作本身的状态；它不证明新的 Resource UID 已被正确持久化。
+- **[必须]** 在 Godot 4.7 运行时中，自动生成的 Resource UID 不会像在编辑器模式中那样被持久化。要成为仓库正式产物的生成 Resource，要么在编辑器或编辑环境中创建，要么之后通过目标编辑器的导入与 UID 完整性验证。不猜测、手写或重新分配 UID 来绕过这个边界。
+- **[必须]** 保存生成的项目 Resource 后，通过正式的加载器重新加载，验证 UID 与路径、自定义类型、持久化的值、依赖和不变量。
+- **[必须]** 在外部以文本方式编辑 Resource 文件后，按需刷新文件系统或使用新进程，避免编辑器缓存造成虚假的通过结果。

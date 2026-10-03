@@ -1,39 +1,39 @@
-# GDD review concerns
+# GDD 审查要点
 
-Use this reference for a requested review of a GDD draft, selected topic or whole design. Review the supplied scope and its necessary dependencies; Product and Feature documents need not exist. A formal independent review follows `methodology/12-independent-review.md`, including read-only sources, evidence limits and return to the author for repairs.
+用户要求审查 GDD 草稿、选定主题或整体设计时，使用本参考。审查所提供的范围及其必要的依赖；Product 和 Feature 文档不必已经存在。正式的独立审核遵循 `methodology/12-independent-review.md`，包括只读来源、证据局限，以及把修复交回作者。
 
-## Establish what the document must support
+## 明确文档要支持什么
 
-Identify the intended next use: exploring a concept, selecting a design direction, handing off rules for implementation or checking an existing design. Start with the game goal, core loop, adopted scope and exclusions. Read layered designs from their actual entry and follow relevant links, including relevant entries in `docs/gdd/open-questions.md` under **Open design questions** in methodology 01. Use them to judge missing decisions and evidence, not to assume that every listed question blocks this review. A single-file GDD remains valid and needs no migration for review. Report the actual documents read and inaccessible references.
+确认文档接下来的用途：探索概念、选择设计方向、把规则交给实现，还是检查已有设计。从游戏目标、核心循环、已采纳的范围和排除项开始。分层的设计从实际入口读起，顺着相关链接阅读，包括 methodology 01 的 **开放问题** 规定的 `docs/gdd/open-questions.md` 中与本次有关的条目。用这些条目判断缺少的决定和证据，不要假定列出的每个问题都会阻塞这次审查。单文件 GDD 仍然有效，审查时不需要迁移。报告实际读过的文档和无法访问的引用。
 
-Judge coverage by content, not matching chapter names. A topic may span several files or share a chapter with another topic. Say “not found in the inspected material” when coverage is partial; do not infer that the whole project lacks the design.
+按内容判断覆盖情况，不看章节名是否匹配。一个主题可能分布在几个文件里，也可能与另一个主题共用一章。覆盖不全时，写“在已检查的材料中未找到”；不要推断整个项目都缺少这项设计。
 
-## Examine relevant design concerns
+## 检查与本次有关的设计要点
 
-| Concern | Questions that can expose a consequential gap |
+| 要点 | 能暴露影响较大缺口的问题 |
 | --- | --- |
-| Concept and player | Are the player role, appeal, audience and play context clear enough for the current decision? Do platform, input, session duration and intended scale fit? |
-| Experience and design pillars | Do intended experiences connect to concrete player moments and guide tradeoffs? Are experience claims distinguished from hypotheses needing play evidence? |
-| Core loop | Do initial state, action, feedback, progress and continuation or ending form a coherent sequence? Can a representative play segment follow the stated rules, including relevant recovery, pause, exit and return behavior? |
-| Mechanics and boundaries | Are triggers, inputs, states, outcomes, exceptions and cross-system dependencies sufficient for the intended next step? Could two reasonable readers implement materially different behavior? |
-| Content and progression | Do content scale, teaching, challenge, unlocks and ending support the experience goals? Are target playtime and attention costs still visibly unverified where evidence is absent? |
-| Interaction and presentation | Are controls, camera, UI, state feedback and applicable accessibility needs clear? Can the planned art and audio convey important actions and outcomes? Detailed professional specifications retain their own owners. |
-| Scope and constraints | Are current version scope, necessary content, deferred work, exclusions and resource/platform constraints consistent? A GDD version boundary is distinct from a Product delivery unit. |
-| Numeric description | Are units, formulas, bounds, parameter sources, assumptions and evidence status interpretable? Check obvious contradictions or calculation errors; use [review-balance](../../review-balance/SKILL.md) for formal balance diagnosis and [design-balance](../../design-balance/SKILL.md) for authoring or derivation. |
-| Decisions and consistency | Do terminology, rules, values and decision status agree across the inspected sources? Do conflicting statements have an actual adoption basis? |
-| Document organization | Can the entry reach the needed rules, and is the owning location clear? Are links valid, or have duplicated descriptions drifted? |
-| Risk and verification | Are material unknowns and their consequences visible? Can important rules be checked, and are experience validation and implementation evidence distinguished? |
+| 概念和玩家 | 玩家角色、吸引力、受众和游玩情境，是否清楚到足以支持当前决定？平台、输入方式、单次游玩时长和预期规模是否匹配？ |
+| 体验和设计支柱 | 预期体验是否落到具体的玩家时刻，并能指导取舍？体验上的断言，是否与需要试玩证据的假设区分开？ |
+| 核心循环 | 初始状态、行动、反馈、进展，以及继续或结束，是否构成连贯的流程？一段有代表性的游玩，能否按写明的规则走通，包括恢复、暂停、退出和返回等行为？ |
+| 机制和边界 | 触发条件、输入、状态、结果、例外和跨系统依赖，是否足以支持下一步？两个讲道理的读者，会不会实现出明显不同的行为？ |
+| 内容和成长 | 内容规模、教学、挑战、解锁和结局，是否支撑体验目标？缺少证据时，目标游玩时长和注意力成本是否明确标为未验证？ |
+| 交互和表现 | 操作、镜头、UI、状态反馈和需要的无障碍要求是否清楚？规划的美术和音频，能否传达重要的行动和结果？详细的专业规格仍由各自的负责方维护。 |
+| 范围和约束 | 当前版本范围、必需内容、延后的工作、排除项，以及资源和平台约束是否一致？GDD 的版本边界与 Product 交付单元是两回事。 |
+| 数值描述 | 单位、公式、上下限、参数来源、假设和证据状态，是否能读懂？检查明显的矛盾或计算错误；正式的平衡诊断用 [review-balance](../../review-balance/SKILL.md)，编写或推导数值用 [design-balance](../../design-balance/SKILL.md)。 |
+| 决定和一致性 | 已检查的来源之间，术语、规则、数值和决定状态是否一致？互相冲突的说法，是否有实际的采纳依据？ |
+| 文档组织 | 能否从入口找到需要的规则？所属位置是否清楚？链接是否有效，重复的描述是否已经不一致？ |
+| 风险和验证 | 关键的未知项及其后果是否可见？重要规则能否检查？体验验证和实现证据是否区分开？ |
 
-Inspect conditional systems only when adopted: economy needs sources, sinks and conversions; progression and automation need unlocks and changes in participation; narrative needs player action and consequences; levels need objectives, reachability and challenges; persistence needs retained state and recovery. Do not require offline gains, prestige or another genre convention merely because similar games use it.
+只有已采纳相应系统时，才检查下列条件性内容：经济系统需要来源、消耗和转换；成长和自动化需要解锁条件和玩家参与方式的变化；叙事需要玩家行动及其后果；关卡需要目标、可达性和挑战；持久化需要保留的状态和恢复方式。不要仅因为同类游戏有离线收益、转生或其他类型惯例，就要求本作也有。
 
-## Match findings to the design stage
+## 按设计阶段判断问题
 
-Distinguish not applicable, undesigned, proposed and awaiting evidence. A concept draft may leave parameters and experience hypotheses open. An implementation handoff must resolve rule gaps that would produce materially different behavior. Marking a needed rule “TBD” does not remove its blocking effect; conversely, an explicit candidate is not a defect merely because it is unvalidated. User adoption is not proof of fun, balance or implementation success.
+区分四种情况：不适用、尚未设计、已提出、待证据验证。概念草稿可以暂不确定参数和体验假设。交给实现的设计，必须解决会导致明显不同行为的规则缺口。把需要的规则标为“待定”，并不消除它的阻塞影响；反过来，明确标出的候选值不会仅因未经验证就算缺陷。用户已采纳，不证明好玩、平衡或能成功实现。
 
-Test suspicious rules with a concrete normal-use or boundary scenario, reading the general rule, exceptions and trigger together. If a claimed failure depends on another undecided rule, report that missing prerequisite rather than asserting a conflict that has not been established. When documents disagree, cite both locations and their decision status; recency, length or parent/child position alone does not establish authority.
+可疑的规则，用一个具体的正常使用场景或边界场景检验，把通用规则、例外和触发条件放在一起读。如果所说的失败依赖另一条尚未决定的规则，就报告缺少的前提，不要断言一个尚未成立的冲突。文档之间说法不一致时，引用两处位置及其决定状态；仅凭更新时间、篇幅或上下级位置，不能确定哪一处有权威。
 
-## Return actionable findings
+## 给出可以处理的问题
 
-Use the parent Skill's finding contract and the formal review contract when applicable. Explain each issue's source, evidence, concrete effect, smallest useful correction and any decision still required. Rank by actual consequence: a core contradiction that prevents a coherent next step takes precedence over a local improvement or navigation issue. Keep suggestions separate from adopted design and do not impose a fixed finding count or a new score.
+按上级 Skill 的结论约定输出；适用时同时遵循正式审核约定。每个问题说明来源、证据、具体影响、最小且有用的修正，以及仍需做出的决定。按实际后果排序：会阻止下一步连贯进行的核心矛盾，优先于局部改进或导航问题。建议与已采纳的设计分开写；不规定固定的问题数量，也不引入新的评分。
 
-Conclude whether the inspected design supports its intended next use, the most consequential remaining gaps and which judgments require further source material, calculation or actual play. A document review cannot establish that the game runs, feels right or is balanced. Return repairs to [design-gdd](../../design-gdd/SKILL.md), scoped numeric authoring to `design-balance`, and delivery changes to [product-author](../../product-author/SKILL.md); the reviewer does not rewrite the GDD.
+最后说明：已检查的设计能否支持预期的下一步用途，影响最大的剩余缺口是什么，哪些判断还需要更多源材料、计算或实际试玩。文档审查不能证明游戏能运行、手感合适或数值平衡。修复交回 [design-gdd](../../design-gdd/SKILL.md)，限定范围的数值编写交给 `design-balance`，交付变化交给 [product-author](../../product-author/SKILL.md)；审查者不改写 GDD。

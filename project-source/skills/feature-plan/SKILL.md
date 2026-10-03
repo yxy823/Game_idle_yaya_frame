@@ -1,60 +1,95 @@
 ---
 name: feature-plan
-description: Decompose the current documented Product delivery scope into complete Features. Requires existing GDD sources; reuse existing plans and use feature-sync for changes.
+description: 把当前已写成文档的 Product 交付范围拆成完整的 Feature。需要已有的 GDD 来源；已有计划直接复用，变化交给 feature-sync。
 ---
 
-# Generate Feature list
+# 生成 Feature 列表
 
-## Authority and inputs
+## 依据与输入
 
-Use **Product-by-Product planning**, **Decomposition preview**, **Decomposition rules**, **Requirement coverage review** and the index/detail/revision/Registry contracts in `methodology/02-feature-list-schema.md`. This Skill owns the planning procedure and component merge below; it does not maintain another schema.
+使用 `methodology/02-feature-list-schema.md` 中的 **逐个 Product 规划**、**拆分预览**、**拆分规则**、**需求覆盖核对**，以及索引、详情、修订记录和测试登记表（Registry）的约定。本 Skill 负责下面的规划步骤和组件合并，不另外维护一套数据结构。
 
-When the requested scope already has implementation but lacks Feature records, also apply **Adopting existing implementation** in that specification. Reuse the actual implementation and tests in the proposal; planning does not mark the adopted work complete.
+请求的范围已有实现、但缺少 Feature 记录时，同时使用该规范中的 **接手已有实现**。在方案中复用实际的实现和测试；规划不会把被接纳的工作标为完成。
 
-Apply `methodology/05-document-language.md` before durable prose. Read `document_language` from the current configuration; preserve existing history. Before durable writes, apply the change-preservation and commit contract in `agent-rules/00-core/git-worktree-and-commits.md`.
+写入长期保存的文字之前，使用 `methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，使用 `agent-rules/00-core/git-worktree-and-commits.md` 中关于保留改动和提交的约定。
 
-Apply the [GDD prerequisite](../../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority). Read the current Product's approved delivery document and the actual GDD topics it adopts, with `docs/product.md` for boundaries, dependencies and order. If the current delivery document is missing, use [product-author](../product-author/SKILL.md) to detail that unit within existing authorization before planning. Consult relevant terminology, professional requirements and project rules. Later Products remain overview outlines; do not create their documents or Features. Reuse unchanged reading on continuation.
+使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
 
-Follow **Discover and map sources** in `methodology/11-specialist-workflows.md`: include applicable GDD, UI, presentation, art, audio, resource and localization requirements through actual links and shared applicability. Preserve one primary `source`; observable requirements and their sources belong in concrete AC, while implementation constraints and their sources belong in the fixed Feature design. Map each relevant requirement to an observable outcome and a verification action, not a generic “conforms to the Bible”. For presentations, map only adopted requirements and the authorized alternatives, allowing one task to cover several components or one presentation to support several tasks. `meta.generated_from` names actual source locations, not proof that every file or later Product has been planned.
+- 当前 Product 已批准的交付文档；
+- 它所采用的实际 GDD 主题；
+- `docs/product.md`，用于确定边界、依赖和顺序。
 
-| Existing artifact | Needed context |
+当前交付文档缺失时，在已有授权范围内先使用 [product-author](../product-author/SKILL.md) 细化这个单元，再开始规划。查阅相关的术语、专业要求和项目规则。后续的 Product 保持为总览中的大纲，不为它们创建文档或 Feature。续接时，内容未变的已读材料直接复用。
+
+遵循 `methodology/11-specialist-workflows.md` 的 **查找与映射来源**：通过实际链接和共享的适用范围，纳入适用的 GDD、UI、游戏表现、美术、音频、资源和本地化要求。
+
+- 保留一个主要的 `source`。
+- 可观察的要求及其来源写进具体的 AC；实现约束及其来源写进固定的 Feature 设计稿。
+- 把每条相关要求映射到一个可观察的结果和一个验证动作，不写笼统的“符合 Bible”。
+- 对游戏表现，只映射已采用的要求和已获授权的备选方案；允许一个任务覆盖多个组件，也允许一次表现支持多个任务。
+- `meta.generated_from` 写出实际的来源位置；它不证明每个文件或后续 Product 都已经规划过。
+
+| 已有产物 | 需要的上下文 |
 | --- | --- |
-| `docs/feature-list.json` | Full lightweight index: current Product, prior plan coverage, statuses, IDs and prerequisites |
-| `docs/features/F0XX.json` | Selected, prerequisite or potentially conflicting details |
-| `docs/feature-list-revisions.json` | Existing revision history/anchor; establish the eligible first baseline under the schema |
-| `docs/test-registry.json` | Existing component/test records before proposing additions |
+| `docs/feature-list.json` | 完整的轻量索引：当前 Product、此前计划的覆盖范围、状态、ID 和前置条件 |
+| `docs/features/F0XX.json` | 选中的、作为前置的或可能冲突的 Feature 详情 |
+| `docs/feature-list-revisions.json` | 已有的修订历史和锚点；按数据结构确定符合条件的首个基线 |
+| `docs/test-registry.json` | 提出新增之前已有的组件和测试记录 |
 
-An existing empty or populated ledger can receive the current Product's first plan. Reuse already planned scope and route its changes to [feature-sync](../feature-sync/SKILL.md). Do not replace earlier plans. Require the creator-supplied index, revision log and Registry under the canonical schema; a missing file requires repair before planning. Report a missing current or previously documented Product source; a future outline intentionally has no file and is not a mismatch.
+已有的台账无论为空还是已有内容，都可以接收当前 Product 的第一份计划。已经规划过的范围直接复用，它的变化交给 [feature-sync](../feature-sync/SKILL.md)。不要替换早先的计划。按权威数据结构，索引、修订记录和测试登记表都必须是创建器提供的文件；缺少任何一个，都要先修复再规划。报告缺失的当前 Product 来源或此前已写成文档的 Product 来源；未来的大纲本来就没有文件，不算不一致。
 
-## Plan and write
+## 规划与写入
 
-1. Identify the current Product and its approved scope from actual source and completion state. Establish needed runnable infrastructure only when it does not already exist. Apply **Design scope and boundaries**, accepted architecture constraints and **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md` to the actual scope and prerequisite order; production domain/presentation separation does not require developing business logic before an independent visual prototype. Check applicable `docs/project-rules.md` engineering constraints as well. Do not decompose a conflicting Product into an apparently valid plan; resolve the design/rule/Product choice through the existing owner. Identify implementation decisions to prepare for Stage 1. Their saved local reasoning uses the fixed Feature design, and a qualifying cross-Feature decision uses its ADR under methodology 10; do not choose a location by complexity or create empty records.
-2. Propose independently verifiable, session-sized outcomes under the canonical decomposition rules, including their outcome and prerequisite checks. Use the current Product as the primary delivery source and precise GDD/professional links in AC or design. Cover its complete necessary scope in this plan; do not encode class structure as game design or pre-plan later Products.
-3. Present the canonical **Decomposition preview** in the conversation, including Feature counts and every Feature's summary/dependencies, why this Product is next and the requirement coverage correspondence. Apply its confirmation and explicit autonomous-planning rules before any Registry or Feature-plan write; resolve missing material decisions.
-4. After Step 3 permits writing, establish the committed source state for an eligible first plan under **Initial planning baseline** in `methodology/02-feature-list-schema.md`. Then run the Registry merge below before any Feature-plan write. Continue only after a validated conflict-free merge.
-5. Append new index entries and only their detail files, using canonical initial planning values. Update index time, decomposition notes and actual newly used GDD and professional source locations in `meta.generated_from`. Preserve existing Features, unrelated metadata and revision history. After semantic coverage review, append only the eligible initial baseline under that contract before final validation. Later Product planning does not advance the synchronization anchor. Do not rewrite Registry data by hand after a successful merge.
-6. Complete validation and semantic review below. Refresh the same proposal with actual IDs and remaining work rather than creating another report file.
-7. Stage only the task-owned plan paths, as **Staging** in `agent-rules/00-core/git-worktree-and-commits.md` requires, and create the local commit `chore(feature-plan): <中文行为摘要>`. Omit `Work item` because this creates a plan. Do not stage a broad `docs/features/` path.
-8. Report the result and the first eligible Feature for this Product. Authorized implementation uses [feature-execute](../feature-execute/SKILL.md); planning success grants no later-Product scope. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围。只在可运行的基础设施尚不存在时才建立它。对实际范围和前置顺序，使用 `methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 **依赖实现前的视觉原型**；正式实现中领域与表现分开，并不要求在独立的视觉原型之前先开发业务逻辑。同时检查 `docs/project-rules.md` 中约束本任务的工程规则。不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
+2. 按权威拆分规则，提出可以独立验证、一次会话能完成的结果，包括每项的结果检查和前置条件检查。以当前 Product 作为主要交付来源，在 AC 或设计稿中写出准确的 GDD/专业来源链接。在这份计划中覆盖它必要的全部范围；不要把类结构当作游戏设计写进去，也不要预先规划后续 Product。
+3. 在对话中展示权威的 **拆分预览**：Feature 数量、每个 Feature 的摘要和依赖、为什么下一个是这个 Product，以及需求覆盖的对应关系。在写入任何测试登记表或 Feature 计划之前，执行其中关于确认和明确授权自主规划的规则；缺少实质性的决定时先解决。
+4. 第 3 步允许写入后，按 `methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
+5. 追加新的索引条目，并且只追加它们的详情文件，使用权威的初始规划值。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。语义覆盖审查之后、最终校验之前，按该约定只追加符合条件的初始基线。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
+6. 完成下面的校验和语义审查。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
+7. 按 `agent-rules/00-core/git-worktree-and-commits.md` 中 **暂存** 的要求，只暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <中文行为摘要>`。这次提交是在创建计划，所以省略 `Work item`。不要暂存整个 `docs/features/` 路径。
+8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
 
-## Test registry: `docs/test-registry.json`
+## 测试登记表：`docs/test-registry.json`
 
-This is the fixed project-relative location used by the merge helper, checker, test selector and completion check. Do not add a configurable path or repeat it in Feature-index metadata. Run the merge command from the project root.
+这是合并辅助工具、检查器、测试选择器和完成检查共同使用的固定项目相对路径。不要添加可配置的路径，也不要在 Feature 索引的元数据中重复它。从项目根目录运行合并命令。
 
-Use the project-supplied version-3 registry and version-2 revision log under `methodology/02-feature-list-schema.md`.
+按 `methodology/02-feature-list-schema.md`，使用项目自带的第 3 版测试登记表和第 2 版修订记录。
 
-Read and validate the registry before any Feature-plan write. Preserve every existing component object, test ID, test mapping, status, path/case, and `full_suite_on_change` value. Never reset `tests` to an empty array or remove an independent invariant when adding another Product's Features.
+写入任何 Feature 计划之前，先读取并校验测试登记表。保留每个已有的组件对象、测试 ID、测试映射、状态、路径/用例和 `full_suite_on_change` 值。为另一个 Product 添加 Feature 时，绝不能把 `tests` 重置为空数组，也不能删除独立的不变量。
 
-Create one candidate component entry for every generated `affected_components` ID that is not already represented. Set `unit_test_paths` to `[]` when no unit suite exists. Apply **Registry rules** in `methodology/08-test-traceability-and-evidence.md` for path requirements, registration timing and Required Test Set inclusion. Set `full_suite_on_change` to `false` for a new component unless Product/Project Rules explicitly identify it as cross-cutting. If a generated component ID already exists, reuse its complete existing record; if the planned contract requires different paths or a different full-suite flag, report that as a conflict instead of overwriting it.
+为每个尚未登记的生成 `affected_components` ID 创建一条候选组件条目：
 
-Use the project-owned merge helper from the repository root. The temporary candidate file contains a JSON array of complete component objects, or an object with a `components` array; it must not be committed.
+- 没有单元测试套件时，把 `unit_test_paths` 设为 `[]`。
+- 路径要求、登记时机和 Required Test Set 的纳入，按 `methodology/08-test-traceability-and-evidence.md` 的 **登记表规则** 处理。
+- 新组件的 `full_suite_on_change` 设为 `false`，除非 Product 或项目规则明确把它定为横跨多处的组件。
+- 生成的组件 ID 已经存在时，复用它完整的已有记录；如果规划的约定要求不同的路径或不同的全量测试标记，把它作为冲突报告，不要覆盖。
+
+从仓库根目录使用项目自带的合并辅助工具。临时候选文件包含一个由完整组件对象组成的 JSON 数组，或者一个带 `components` 数组的对象；这个文件不能提交。
 
 ```powershell
 python -B tools/features/merge-test-registry.py `
   --components <temporary-component-candidates.json>
 ```
 
-The helper requires the adjacent Feature index and revision log, then validates schema version, component records, repository boundaries and existence for current test paths, unique component/test IDs, and test-to-component mappings before writing. Path semantics follow [Registry rules](../../../methodology/08-test-traceability-and-evidence.md#registry-rules) in methodology 08, and historical-record semantics follow File 4 in `methodology/02-feature-list-schema.md`. Retired entries additionally require valid source/reason/replacement/revision relationships using the shared `tools/lib/feature_evolution.py` contract. A malformed existing registry, invalid or missing current test path, duplicate ID, missing component mapping, or non-identical candidate for an existing component is a blocking conflict. It writes only after the complete merge validates and preserves all existing test entries by value. Path existence does not prove test discovery; execution must confirm the registered suite actually runs tests.
+辅助工具要求同目录下有 Feature 索引和修订记录。写入之前，它会校验：
+
+- 数据结构版本；
+- 组件记录；
+- 仓库边界，以及当前测试路径是否存在；
+- 组件 ID 和测试 ID 是否唯一；
+- 测试到组件的映射。
+
+路径的含义遵循 methodology 08 的 [登记表规则](../../../methodology/08-test-traceability-and-evidence.md#登记表规则)，历史记录的含义遵循 `methodology/02-feature-list-schema.md` 的 File 4。已退役的条目还必须按共享的 `tools/lib/feature_evolution.py` 约定，具有有效的来源、原因、替代项和修订关系。
+
+下列情况是阻塞性冲突：
+
+- 已有测试登记表格式错误；
+- 当前测试路径无效或不存在；
+- ID 重复；
+- 缺少组件映射；
+- 已有组件的候选内容与现有记录不完全相同。
+
+只有完整的合并通过校验后，工具才会写入，并按原值保留所有已有的测试条目。路径存在不能证明测试能被发现；执行时必须确认登记的套件确实运行了测试。
 
 ```json
 {
@@ -70,17 +105,17 @@ The helper requires the adjacent Feature index and revision log, then validates 
 }
 ```
 
-## Validation and semantic review
+## 校验与语义审查
 
-After all related files are consistent, run:
+所有相关文件一致之后，运行：
 
 `python -B tools/checks/check-feature-list.py`
 
-This checks JSON parsing and cross-file invariants together. Use a separate syntax check only to diagnose an individual error. The Agent still reviews what the checker cannot establish:
+它会同时检查 JSON 解析和跨文件的不变量。只有在诊断某一个错误时，才单独做语法检查。检查器确定不了的内容，仍由 Agent 审查：
 
-- The chosen Product is current and unplanned; its required scope is covered without duplicate infrastructure, excluded behavior or premature later plans.
-- The written Feature count, boundaries and dependencies match the confirmed preview or the latest preview under explicit autonomous-planning authority.
-- Sources name the actual requirement sections; dependencies reflect real prerequisites and applicable architecture constraints.
-- New records use the schema's initial planning values, and the actual diff preserves previous Features, revision anchors, Registry records and independent invariants except for approved component additions and the eligible first baseline. Verify its source commit and covered scope; an existing plan with missing history is not a fresh empty ledger.
+- 选中的 Product 是当前的、尚未规划的；它要求的范围已经覆盖，没有重复的基础设施、被排除的行为或过早的后续计划。
+- 写入的 Feature 数量、边界和依赖，与已确认的预览一致；在明确的自主规划授权下，与最新的预览一致。
+- 来源写出了实际的需求小节；依赖反映了真实的前置条件和适用的架构约束。
+- 新记录使用数据结构的初始规划值。实际差异保留了之前的 Feature、修订锚点、测试登记表记录和独立的不变量；例外只有已批准的组件新增和符合条件的首个基线。核对它的来源提交和覆盖范围；缺少历史的已有计划不是全新的空台账。
 
-Resolve failed validation or a material semantic gap before reporting completion.
+校验失败或存在实质性的语义缺口时，先解决，再报告完成。

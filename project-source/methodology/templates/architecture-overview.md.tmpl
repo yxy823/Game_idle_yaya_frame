@@ -1,38 +1,38 @@
-# Architecture overview
+# 架构概览
 
-*Record the project's actual module structure and reading entries under `methodology/10-architecture-overview.md`. Generated reference facts do not decide the architecture.*
+*按 `methodology/10-architecture-overview.md` 记录项目实际的模块结构和阅读入口。自动生成的引用事实不决定架构。*
 
-## Modules and responsibility
+## 模块与职责
 
-| Module | Main location or reading entry | Responsibility | Owning boundary | Why this boundary exists |
+| 模块 | 主要位置或阅读入口 | 职责 | 所属边界 | 为什么设这条边界 |
 | --- | --- | --- | --- | --- |
 
-*Link a module README when one already gives useful navigation. Point to the actual startup and composition boundary and to the owners of persistent state when they help explain how the project fits together. Do not invent missing layers.*
+*已有模块 README 能提供有用的导航时，直接链接它。能帮助说明项目如何组合时，指出实际的启动与组装边界，以及持久状态的负责方。不编造并不存在的分层。*
 
-*Use `docs/game-organization.md` to explain logic, presentation and their actual collaboration within these modules, and link the relevant GDD, UI or game-presentation documents. Do not split the map into fixed layer directories or treat development tools as gameplay responsibilities.*
+*用 `docs/game-organization.md` 说明这些模块中的逻辑、表现及二者的实际协作，并链接涉及的 GDD、UI 或游戏表现文档。不要把这张地图拆成固定的分层目录，也不要把开发工具当作玩法职责。*
 
-*Briefly explain the problem each important boundary solves. Link local implementation rationale to its Feature design and cross-Feature rationale that meets the ADR conditions to its ADR. Do not copy full plans, invent missing decision history or create an ADR just to have something to link.*
+*简要说明每条重要边界解决的问题。局部的实现理由链接到它的 Feature 设计；满足 ADR 条件的跨 Feature 理由链接到它的 ADR。不复制完整方案，不编造缺失的决策历史，也不为了有东西可链接而创建 ADR。*
 
-## Allowed dependency directions
+## 允许的依赖方向
 
-*Describe the permitted directions between project-level modules and the reason for each constraint. Keep these rules separate from the key actual collaborations and their purpose. Record deliberate exceptions and who owns them. A full class-level graph is not required.*
+*说明项目级模块之间允许的依赖方向，以及每条约束的原因。这些规则与关键的实际协作及其目的分开写。记录有意保留的例外和负责它们的一方。不要求完整的类级依赖图。*
 
-## Subsystem contracts
+## 子系统约定
 
-*Link each documented subsystem's internal contracts at `architecture/<subsystem>.md`, using the subsystem's stable name from the module table. Keep this overview at project level; the length or complexity of an explanation does not change where it goes. Do not create empty subsystem files.*
+*用模块表中子系统的稳定名称，链接每个已记录子系统的内部约定，位置为 `architecture/<subsystem>.md`。本概览只写项目层面的内容；说明的长短或复杂程度不改变它该放的位置。不创建空的子系统文件。*
 
-## Important decisions
+## 重要决定
 
-*Link the relevant `architecture/adr-NNNN-<slug>.md` records when they exist. Tradeoffs and decision status stay in each ADR; this map describes the current structure. Omit this section when no ADR exists.*
+*存在 `architecture/adr-NNNN-<slug>.md` 记录时，链接涉及的那些。取舍和决定状态留在各自的 ADR 中；这张地图只描述当前结构。没有 ADR 时省略本节。*
 
-## Standalone technical decisions
+## 独立技术决定
 
-*Use this section only for adopted decisions that have no Feature, do not meet the ADR conditions, and apply at project level or across subsystems. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its scope, authorization and migration rules. Keep the decision rationale separate from implemented facts. Omit this section when there is no such decision.*
+*本节只用于已采纳、没有对应 Feature、不满足 ADR 条件、且作用于项目层面或跨子系统的决定。按 `methodology/10-architecture-overview.md` 中的 **独立技术决定** 执行，包括其中的范围、授权和迁移规则。决定理由与已实现的事实分开写。没有这类决定时省略本节。*
 
-## Extracted reference facts
+## 提取的引用事实
 
-*Optional generated facts live separately under `reports/maintenance/architecture-facts/`. Link them with the extractor, source snapshot, scope and limitations. An explicit resource, path or type reference shows that the reference exists; it does not prove an allowed dependency, runtime ownership or architectural intent.*
+*可选的自动生成事实单独保存在 `reports/maintenance/architecture-facts/`。链接它们时注明提取工具、源快照、范围和局限。显式的资源、路径或类型引用只说明引用存在，不能证明依赖被允许，也不能证明运行时归属或架构意图。*
 
-## Maintenance
+## 维护
 
-*Follow the **Navigation** and **Maintaining a map** sections of `methodology/10-architecture-overview.md` for content, change triggers and checks. Resolve conflicts with Product, project rules and approved decisions; do not silently replace human intent with generated output.*
+*内容、变更触发条件和检查方法按 `methodology/10-architecture-overview.md` 的 **导航** 和 **维护架构地图** 两节执行。与 Product、项目规则和已批准决定冲突时，先解决冲突；不要用自动生成的结果悄悄替代人的意图。*

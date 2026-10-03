@@ -1,3 +1,3 @@
 interface:
-  display_name: "Godot Worktree Setup"
-  short_description: "Prepare a Godot worktree from the specified base and check the environment and runtime data the task needs"
+  display_name: "Godot worktree 准备"
+  short_description: "从指定基准准备 Godot worktree，并核对任务所需的环境和运行时数据"

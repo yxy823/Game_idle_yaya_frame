@@ -1,19 +1,19 @@
-# Standardizing Shader presentation requirements
+# Shader 表现需求的标准化
 
-Describe the surface and visible change before implementation mathematics. Read only the topics relevant to the current component; this is not a required parameter form.
+先描述表面和可见的变化，再考虑实现用的数学。只阅读与当前组件有关的主题；这不是必须填写的参数表。
 
-| Topic | Useful requirement questions |
+| 主题 | 有用的需求问题 |
 | --- | --- |
-| Carrier and scope | What is drawn: one sprite, UI region, material surface or a screen region? Which neighboring objects must remain unaffected? |
-| Color and visibility | What becomes brighter, darker, tinted or transparent? Which original details and alpha edges remain visible? |
-| Regions and masks | Where does the effect start, stop or exclude content? Is the boundary soft/sharp, moving/fixed, tied to the object's texture or to another coordinate space? |
-| UV and texture behavior | Does the texture scroll, distort or repeat? How should seams, transparent padding and edges appear? Do source textures constrain the visible result? |
-| Dissolve, outline and procedural patterns | Describe the visible direction, distribution, edge appearance and beginning/end states. Do not assume a noise algorithm or outline sampling method. |
-| Time and external control | Is the effect autonomous, a one-shot event or driven by an external progress/value? What should pause, replay, cancellation and repeated triggering visibly do? |
-| Space and composition | Should the pattern follow the object, remain anchored in the world or cover the screen? Is it layered with a separate transform, particle or frame animation? |
+| 载体与范围 | 绘制的是什么：一个精灵、一块 UI 区域、一个材质表面，还是一块屏幕区域？哪些相邻对象必须不受影响？ |
+| 颜色与可见性 | 什么变亮、变暗、染色或变透明？哪些原有细节和透明边缘要保持可见？ |
+| 区域与遮罩 | 效果从哪里开始、到哪里结束、排除哪些内容？边界是柔和还是锐利、移动还是固定，与物体自身的纹理绑定还是与另一个坐标空间绑定？ |
+| UV 与纹理行为 | 纹理是否滚动、扭曲或重复？接缝、透明边距和边缘应该怎样显示？源纹理是否限制了可见结果？ |
+| 溶解、描边与程序化图案 | 描述可见的方向、分布、边缘外观以及开始和结束状态。不要预设噪声算法或描边采样方式。 |
+| 时间与外部控制 | 效果是自主运行、一次性事件，还是由外部的进度或数值驱动？暂停、重播、取消和重复触发时分别应该看到什么？ |
+| 空间与组合 | 图案应该跟随物体、固定在世界中，还是覆盖屏幕？它是否与单独的变换、粒子或帧动画叠加？ |
 
-Example translation: “受伤时闪一下，但轮廓不要糊掉” can become “on the confirmed hit event, briefly brighten/tint the character's opaque region while preserving silhouette and transparent edges; then return to its original appearance.” The exact duration, color and retrigger behavior remain proposed or unresolved until the current design establishes them. Do not invent a fixed number simply to fill a specification.
+转换示例：“受伤时闪一下，但轮廓不要糊掉”可以整理为“在确认命中的事件发生时，让角色的不透明区域短暂变亮或染色，保留轮廓和透明边缘；随后恢复原样”。在当前设计确定之前，具体的时长、颜色和重复触发行为仍是建议或待定。不要只为了填满规格而编造固定数字。
 
-Make rendering limits explicit where they affect the chosen approach. A Shader can make a surface appear displaced; collision, input areas, layout and game state require their own actual implementation when the requirement calls for them. A full-screen effect needs the real rendering context verified during implementation; do not silently treat it as a local sprite effect.
+渲染限制影响所选方案时，要明确写出。Shader 可以让表面看起来发生了位移；需求涉及碰撞、输入区域、布局和游戏状态时，它们各自需要真实的实现。全屏效果需要在实现时验证真实的渲染上下文；不要悄悄把它当作局部的精灵效果。
 
-Record texture/mask dependencies and their relevant specs in this alternative's resource section. Preserve semantic control needs such as “progress from intact to invisible,” while leaving uniform names, equations, blending setup and source code to the implementation unless an established integration interface requires them.
+纹理和遮罩依赖及其规格，记录在这个备选方案的资源章节中。保留语义上的控制需求，例如“进度从完整到不可见”；uniform 名称、公式、混合设置和源代码交给实现决定，除非已确定的接入接口要求它们。

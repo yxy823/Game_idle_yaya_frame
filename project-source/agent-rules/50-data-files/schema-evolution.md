@@ -1,19 +1,19 @@
-# Data Schema Evolution
+# 数据 Schema 演进
 
-Version data schemas deliberately, and migrate persisted and external compatibility boundaries explicitly.
+有意地为数据 schema 定版本，明确地迁移持久化数据和外部兼容边界。
 
-## Versioning
+## 版本
 
-- **[MUST]** `schema_version` is separate from the content revision, the game or build version and the Godot engine version.
-- **[MUST]** Balance or content changes alone do not bump the schema version.
-- **[MUST]** Migrate repository-controlled data in one bulk migration and keep HEAD on the current schema. Do not maintain indefinite branches for legacy formats.
-- **[MUST]** Player saves, mods and other external data that require compatibility have an explicit version-support and migration policy.
-- **[PREFER]** Write persistent migrations as small explicit steps from version N to N+1 rather than guessing from the data's shape.
-- **[MUST]** Unsupported future schema versions fail closed.
+- **[必须]** `schema_version` 独立于内容修订版本、游戏或构建版本，以及 Godot 引擎版本。
+- **[必须]** 仅修改数值平衡或内容时，不提升 schema 版本。
+- **[必须]** 仓库管理的数据一次性整体迁移，HEAD 保持在当前 schema。不要无限期地维护旧格式的分支逻辑。
+- **[必须]** 需要兼容的玩家存档、mod 和其他外部数据，有明确的版本支持与迁移策略。
+- **[优先]** 持久化迁移写成从版本 N 到 N+1 的小而明确的步骤，不根据数据形状猜测。
+- **[必须]** 不支持的未来 schema 版本失败关闭（拒绝加载）。
 
-## Migration
+## 迁移
 
-- **[MUST]** A persistent migration runs in memory or in a temporary file, validates the latest schema, semantics and references, and replaces the data atomically. A failure preserves the original.
-- **[MUST]** Changes of unit, scale, coordinate space or reference target are semantic schema migrations.
-- **[MUST]** Supported migration code is version-controlled and covered by real fixtures in earlier versions.
-- **[MUST]** Adding an optional field with a stable default may be compatible. Changes to required fields, renames, types, units and reference targets normally require migration.
+- **[必须]** 持久化迁移在内存或临时文件中执行，校验最新的 schema、语义和引用，然后原子地替换数据。失败时保留原数据。
+- **[必须]** 单位、刻度、坐标空间或引用目标的改变属于语义层面的 schema 迁移。
+- **[必须]** 仍受支持的迁移代码纳入版本控制，并用早期版本的真实夹具覆盖。
+- **[必须]** 新增一个带稳定默认值的可选字段可能是兼容的。修改必填字段、重命名、类型、单位和引用目标，通常需要迁移。

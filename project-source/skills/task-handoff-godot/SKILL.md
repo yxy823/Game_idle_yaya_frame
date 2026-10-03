@@ -1,22 +1,22 @@
 ---
 name: task-handoff-godot
-description: Preserve a Godot project's actual task stop point and prepare a scoped handoff for a pause, task switch or new conversation. Use for requested handoff records or continuation text; ordinary status questions do not require this workflow.
+description: 在暂停、切换任务或换新对话时，保存 Godot 项目任务的实际停止点，并准备限定范围的交接。用于用户要求的交接记录或续接文字；普通的状态询问不需要这个流程。
 ---
 
-# Prepare a project task handoff
+# 准备项目任务交接
 
-Use **Task handoff** in `methodology/09-records-reports-and-handoff.md` for shared content, record ownership and continuation boundaries. Match the requested result: a conversational summary, durable pause records, or records plus copyable text for a new conversation. Do not force all three outputs when only one is needed.
+共用内容、记录归属和续接边界，以 `methodology/09-records-reports-and-handoff.md` 的 **任务交接** 为准。按用户要求的结果交付：对话里的摘要、长期保存的暂停记录，或者记录加上可复制到新对话的文字。只需要其中一种时，不要三种都做。
 
-## Recover the real stop point
+## 找回真实的停止点
 
-Identify the current goal, intended next purpose and requested pause/switch from the conversation. Inspect relevant actual files and read-only Git state, then the existing Progress, owning Feature notes/design and original evidence needed to distinguish completed work from remaining obligations. Read history only when it resolves a current uncertainty.
+从对话中确认当前目标、下一步打算做什么，以及用户要求的暂停或切换。查看实际的文件和只读 Git 状态，再读已有的 Progress（进度记录）、所属 Feature 的 notes 和设计，以及区分已完成工作与剩余义务所需的原始证据。只在历史能解决当前的不确定之处时才读历史。
 
-Preserve accepted decisions and concrete authorization without treating old plans, report text or prior passing results as current approval or verification. State the first useful resumption action and what would block it. For a Feature, retain its actual Stage and outstanding verification/acceptance conditions under `methodology/03-execute-loop.md`; for work without a Feature, retain its original task scope without inventing one.
+保留已接受的决定和具体的授权，但不要把旧计划、报告文字或以前的通过结果当作当前的批准或验证。写明恢复工作时第一个有用的动作，以及什么会阻塞它。对于 Feature，按 `methodology/03-execute-loop.md` 保留它实际所在的 Stage，以及尚未满足的验证和验收条件；对于没有 Feature 的工作，保留它原来的任务范围，不为它编造 Feature。
 
-## Deliver the requested handoff
+## 交付要求的交接内容
 
-When saving a stop point is authorized, update only necessary existing records under the **Progress** and **Task handoff** contracts in methodology 09. Follow the project Git contract for those edits, including any current no-commit restriction. Link original evidence and keep task-owned scratch material needed to resume. Do not clean, complete or restart the implementation merely to make the handoff appear tidy.
+允许保存停止点时，只按 methodology 09 的 **Progress** 和 **任务交接** 约定更新必要的已有记录。这些修改遵循项目的 Git 约定，包括当前“不提交”之类的限制。链接原始证据，保留恢复工作所需的、属于本任务的临时材料。不要只为了让交接显得整齐，就去清理、补完或重新开始实现。
 
-When the user wants to continue in another conversation, apply **Continuation prompts** in methodology 09 and return copyable task-specific text with the next purpose, scope, effective authorization, necessary project-local sources and first action. If the user only wants a summary or saved pause, a full prompt is unnecessary. No framework prompt library, operating-system temporary file or separate handoff document is required.
+用户想在另一个对话中继续时，按 methodology 09 的 **续接提示词** 返回可复制的、针对本任务的文字，写明下一步目的、范围、有效的授权、必要的项目内来源和第一个动作。用户只要摘要或保存暂停点时，不需要完整的续接提示词。不需要框架提示词库、操作系统临时文件或单独的交接文档。
 
-Check the output against the actual stop point and report any unresolved gap. A requested pause ends implementation at that boundary until the user resumes it; an ordinary summary does not revoke remaining authorization in a continuing task. This Skill does not send the handoff or create or switch conversations.
+对照实际停止点检查输出，报告仍未解决的缺口。用户要求的暂停，会让实现停在该边界，直到用户恢复；普通的摘要不会撤销仍在进行的任务中剩余的授权。本 Skill 不发送交接内容，也不新建或切换对话。

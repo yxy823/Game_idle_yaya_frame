@@ -1,6 +1,6 @@
 interface:
-  display_name: "Game Design and GDD"
-  short_description: "Develop game ideas and maintain coherent GDD design"
+  display_name: "游戏设计与 GDD"
+  short_description: "发展游戏想法，维护一致的 GDD 设计"
 
 policy:
   allow_implicit_invocation: true

@@ -1,31 +1,31 @@
-# Texture and Image Assets
+# 纹理与图像资源
 
-Classify a texture's role before choosing its compression, mipmaps, filtering, alpha, color space or resizing behavior.
+选择压缩、mipmap、过滤、alpha、色彩空间或缩放行为之前，先给纹理的用途分类。
 
-## Roles
+## 用途
 
-- **[MUST]** Classify textures by actual use as pixel color, continuous color, palette or lookup, data, normal, HDR, SVG or vector, or CPU-readable.
-- **[PREFER]** Import pixel-exact color and source art losslessly. VRAM or lossy compression requires a deliberate review of quality and role.
-- **[MUST]** The mipmap policy follows minification and lookup semantics. Fixed or integer-scaled pixel UI often disables mipmaps; this is not a universal project rule.
-- **[MUST]** Filtering and repeat are primarily a sampling contract of the consumer, not one global image-format rule.
+- **[必须]** 按实际用途给纹理分类：像素颜色、连续颜色、调色板或查找表、数据、法线、HDR、SVG 或矢量，或需要 CPU 读取。
+- **[优先]** 像素精确的颜色和源美术无损导入。VRAM 压缩或有损压缩需要对质量和用途做有意的复核。
+- **[必须]** mipmap 策略遵循缩小和查找语义。固定尺寸或整数缩放的像素 UI 常常禁用 mipmap；这不是项目通用规则。
+- **[必须]** 过滤和重复主要是使用方的采样契约，不是一条全局的图像格式规则。
 
-## CPU access
+## CPU 访问
 
-- **[PREFER]** Import assets that need frequent CPU pixel access as `Image`, or maintain an explicit contract for a cached CPU-side `Image`.
-- **[MUST]** `Texture2D.get_image()` creates an `Image` from GPU data and is a readback from GPU to CPU. Do not call it every frame or at another high frequency, especially for large textures.
-- **[MUST]** When the same source needs both rendering and CPU analysis, define a cache or a lifecycle for both representations. Do not mechanically change the import type for an occasional one-off read.
+- **[优先]** 需要频繁在 CPU 上访问像素的资源导入为 `Image`，或为缓存在 CPU 侧的 `Image` 维护明确的契约。
+- **[必须]** `Texture2D.get_image()` 从 GPU 数据创建 `Image`，是一次从 GPU 到 CPU 的回读。不要每帧或以其他高频率调用它，大纹理尤其如此。
+- **[必须]** 同一个源既要渲染又要做 CPU 分析时，为两种表示定义缓存或生命周期。不要为一次偶尔的读取而机械地修改导入类型。
 
-## Special data
+## 特殊数据
 
-- **[MUST]** Palette, LUT and index textures preserve discrete sampling and avoid unintended filtering or mipmap interpolation.
-- **[REVIEW]** Alpha border processing helps color textures but may corrupt data or mask semantics; choose it by role.
-- **[REVIEW]** Premultiplied alpha on import is a contract shared by import, blending, materials and shaders.
-- **[MUST]** Normal maps are data. Follow the normal convention that Godot expects, and explicitly handle the inverted Y axis of DirectX-style maps when needed.
-- **[MUST]** Channel-packed textures have an explicit channel schema.
-- **[MUST]** PNG is not an HDR source format.
+- **[必须]** 调色板、LUT 和索引纹理保持离散采样，避免意外的过滤或 mipmap 插值。
+- **[复核]** Alpha 边缘处理对颜色纹理有帮助，但可能破坏数据或遮罩语义；按用途选择。
+- **[复核]** 导入时预乘 alpha 是导入、混合、材质和 Shader 共同遵守的契约。
+- **[必须]** 法线贴图是数据。遵循 Godot 期望的法线约定，需要时明确处理 DirectX 风格贴图反转的 Y 轴。
+- **[必须]** 通道打包的纹理有明确的通道 schema。
+- **[必须]** PNG 不是 HDR 源格式。
 
-## Resizing and vector images
+## 缩放与矢量图像
 
-- **[MUST]** Import Size Limit is destructive resampling. Do not apply it without review to pixel art, palette or index images, masks, atlases or exact lookup data.
-- **[MUST]** Where the project already uses external tooling that normalizes source art to exact sizes, that tooling remains the authority; do not replace it with import-time cubic resizing.
-- **[MUST]** SVG import considers the rasterization scale and DPI, dependencies on text-to-path conversion and fonts, and compatibility with the target ThorVG version.
+- **[必须]** Import Size Limit 是破坏性的重采样。未经复核，不要对像素画、调色板或索引图像、遮罩、图集或精确查找数据应用它。
+- **[必须]** 项目已经使用外部工具把源美术规范到精确尺寸时，该工具仍是权威；不要用导入时的三次插值缩放代替它。
+- **[必须]** SVG 导入要考虑光栅化比例和 DPI、对文字转路径和字体的依赖，以及与目标 ThorVG 版本的兼容性。

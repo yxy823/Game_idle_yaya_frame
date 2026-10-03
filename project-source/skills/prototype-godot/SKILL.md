@@ -1,37 +1,37 @@
 ---
 name: prototype-godot
-description: "Build or refine a scoped Godot visual or logic prototype that answers a concrete layout, interaction, state-transition or feasibility question. Use for a requested experiment or a visual prototype needed before dependent implementation. Not for Features that have no such open question."
+description: "构建或改进限定范围的 Godot 视觉或逻辑原型，回答一个具体的布局、交互、状态转换或可行性问题。用于用户要求的实验，或依赖它的实现开始前需要的视觉原型。不用于没有这类开放问题的 Feature。"
 ---
 
-# Answer a question with a Godot prototype
+# 用 Godot 原型回答问题
 
-Identify the question to settle, the current task's authorization and the evidence that would answer it. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`; an experiment does not create missing game design or approve a proposed rule. Discussion-only work can define the experiment without building it.
+先确定要解决的问题、当前任务的授权，以及什么证据能回答它。按 `methodology/01-product-doc-structure.md` 的 **GDD 前提与职责** 执行；实验不能补出缺失的游戏设计，也不能批准拟议的规则。只要求讨论时，可以只定义实验而不构建。
 
-## Read the matching prototype method
+## 阅读匹配的原型方法
 
-Use the matching section and keep its source ownership, validation and adoption rules:
+使用匹配的小节，并遵守其中的来源归属、验证和采纳规则：
 
-| Question | Read |
+| 问题 | 阅读 |
 | --- | --- |
-| Layout, scale, content density, representative assets or visual and interaction feedback | **Visual prototype before dependent implementation** in `methodology/13-prototypes.md`, including its scope, resources, validation and adoption |
-| Logic, state transitions or technical feasibility | **Scoped logic prototypes** in `methodology/13-prototypes.md`; read the visual section as well only when judging visual or perceptual qualities |
-| Resources must be prepared or supplied before the experiment can answer its question | **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` |
+| 布局、比例、内容密度、代表性素材，或视觉与交互反馈 | `methodology/13-prototypes.md` 的 **依赖实现前的视觉原型**，包括其中的范围、资源、验证和采纳 |
+| 逻辑、状态转换或技术可行性 | `methodology/13-prototypes.md` 的 **限定范围的逻辑原型**；只有在判断视觉或感知质量时，才同时阅读视觉一节 |
+| 实验要回答问题，必须先准备或提供资源 | `methodology/11-specialist-workflows.md` 的 **资源需求与交接** |
 
-Default to the project's own Godot environment and a small runnable scene. Follow the selected method to choose between isolated sample state and a necessary real engine path. HTML is not a default prototype format or a step before Godot verification. Read relevant professional sources and the affected engineering domains through the project `AGENTS.md`, without loading unrelated specifications.
+默认使用项目自己的 Godot 环境和一个可运行的小场景。按所选方法决定使用隔离的样例状态，还是必要的真实引擎路径。HTML 不是默认的原型格式，也不是 Godot 验证之前的一个步骤。通过项目 `AGENTS.md` 阅读涉及的专业来源和受影响的工程领域，不加载无关的规格。
 
-## Build and report within the task
+## 在任务范围内构建和报告
 
-Reuse a prototype that still answers the question. Build only the state, controls and observations the authorized experiment needs, and keep assumptions visible. Standalone work uses the scoped-experiment route in `methodology/00-overview.md`; delivery work uses the owning Feature's current plan. Runtime checks and changes stay within that task's actual permissions.
+仍能回答问题的原型直接复用。只构建获准实验需要的状态、控件和观察点，并让假设保持可见。单独的实验走 `methodology/00-overview.md` 中的限定实验路线；交付工作按所属 Feature 的当前计划进行。运行时检查和修改不超出该任务的实际权限。
 
-Return:
+返回：
 
-- the runnable entry;
-- the question answered and the actual observations;
-- unresolved limits;
-- the source owner that must adopt any decision.
+- 可运行的入口；
+- 回答了什么问题，以及实际观察到的结果；
+- 尚未解决的局限；
+- 需要采纳某项决定的来源负责方。
 
-When comparing a presentation alternative, link the experiment from that section. Adopted choices and actual file and consumer relationships return to the owning document before final verification. State what was not run or still needs human experience; a screenshot, static check or simulated state change covers only what it actually shows. Follow `methodology/13-prototypes.md` for notes or Progress, source updates and prototype disposition, without creating a second plan or status ledger.
+比较表现方案时，从对应章节链接这次实验。最终验证之前，采纳的选择以及实际的文件与使用方关系，要写回所属文档。写明哪些没有运行、哪些仍需人的实际体验；截图、静态检查或模拟的状态变化只覆盖它实际展示的内容。notes 或 Progress（进度记录）、来源更新和原型的后续处理按 `methodology/13-prototypes.md` 执行，不另建第二份计划或状态台账。
 
-A prototype's acceptance covers its agreed scope, not production readiness or later game behavior. Preserve necessary human feedback and do not infer it from successful execution.
+原型的验收只覆盖约定的范围，不代表达到正式产品质量，也不代表后续的游戏行为。保留必要的人工反馈，不能从运行成功推断出反馈。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

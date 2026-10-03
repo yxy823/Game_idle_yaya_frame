@@ -1,43 +1,43 @@
-# Rule Precedence and Routing
+# 规则优先级与路由
 
-Defines the semantics of rules inside this repository. It does not redefine the precedence of Codex, system, developer or user instructions.
+本页规定本仓库内规则的含义，不重新定义 Codex、系统、开发者或用户指令之间的优先级。
 
-## Normative levels
+## 规则强度
 
-- **[MUST]** `[MUST]` is mandatory unless a higher-priority external instruction or an explicit repository rule exception applies.
-- **[MUST]** `[REVIEW]` means that the operation may be valid but the named risk must be deliberately evaluated; it is not ignorable noise.
-- **[PREFER]** `[PREFER]` is the default engineering direction when no stronger project-specific reason conflicts with it.
-- **[MUST]** Do not introduce `MUST NOT`, `SHOULD`, `SHOULD NOT`, `MAY` or other normative levels. Express prohibitions as `[MUST] Do not ...`.
-- **[MUST]** Machine severity such as Warning or Critical is independent of `[MUST]`, `[REVIEW]` and `[PREFER]`.
+- **[必须]** `[必须]` 是强制要求，除非存在更高优先级的外部指令，或仓库规则明确写出的例外。
+- **[必须]** `[复核]` 表示这项操作可能是正确的，但必须有意识地评估所指出的风险；它不是可以忽略的提示。
+- **[优先]** `[优先]` 是默认的工程方向，在没有更有力的项目特定理由与之冲突时采用。
+- **[必须]** 不另设 `MUST NOT`、`SHOULD`、`SHOULD NOT`、`MAY` 等其他强度等级。禁止事项写成“`[必须]` 不……”。
+- **[必须]** Warning、Critical 等机器严重级别，与 `[必须]`、`[复核]`、`[优先]` 相互独立。
 
-## Module interaction
+## 模块之间的关系
 
-- **[MUST]** Root and Core rules define global invariants. A specialized module may explicitly refine a general rule inside its delegated scope, but it may not silently weaken an applicable Core `[MUST]`.
-- **[MUST]** Rule modules are additive by default. Cross-domain files and changes satisfy every applicable module.
-- **[MUST]** A narrower specialized rule takes precedence over a general recommendation only within the scope it explicitly covers.
-- **[MUST]** If two applicable `[MUST]` rules appear incompatible, inspect their scope, any explicit specialization, target Godot semantics and the designated project authority or configuration before treating them as a real conflict.
-- **[MUST]** If two `[MUST]` rules remain genuinely incompatible, do not choose the more convenient rule. Treat it as a specification or rule conflict and report the unresolved blocker instead of weakening policy.
+- **[必须]** 根规则和核心规则定义全局不变约束。专项模块可以在授权给它的范围内明确细化一条通用规则，但不能悄悄削弱适用的核心 `[必须]` 规则。
+- **[必须]** 规则模块默认相互叠加。跨领域的文件和修改要满足每一个适用的模块。
+- **[必须]** 更窄的专项规则只在它明确覆盖的范围内优先于通用建议。
+- **[必须]** 两条适用的 `[必须]` 规则看起来不相容时，先检查它们的范围、有无明确的专项细化、目标 Godot 语义，以及指定的项目权威来源或配置，再判断是否真的冲突。
+- **[必须]** 两条 `[必须]` 规则确实无法相容时，不挑更方便的那条。把它当作规格或规则冲突，汇报这个未解决的阻塞，而不是放宽规则。
 
-## Rule conflict protocol
+## 规则冲突的处理流程
 
-When applicable `[MUST]` rules remain impossible to satisfy simultaneously after the analysis above:
+按上面的分析之后，适用的 `[必须]` 规则仍然无法同时满足时：
 
-1. **[MUST]** The Agent that detects the conflict stops implementation in the affected scope before making further writes there.
-2. **[MUST]** Report every conflicting rule with its source path, and identify the affected files, behavior, and validation or completion Gates.
-3. **[MUST]** Do not silently choose one rule, weaken either rule or implement a workaround that bypasses the conflict.
-4. **[MUST]** Request explicit clarification or an approved update to the conflicting rule. Resume the affected implementation only after the conflict is resolved.
+1. **[必须]** 发现冲突的 Agent 停止受影响范围内的实现，不在那里继续写入。
+2. **[必须]** 汇报每一条冲突规则及其来源路径，并指出受影响的文件、行为，以及验证或完成检查。
+3. **[必须]** 不悄悄选用其中一条规则，不削弱任何一条规则，也不用绕开冲突的变通做法实现。
+4. **[必须]** 请求明确的澄清，或请求批准修改冲突的规则。冲突解决后，才恢复受影响的实现。
 
-## Suspected rule errors
+## 疑似规则错误
 
-Repository rules can contain factual errors, outdated version assumptions or overly broad applicability, even when no two rules conflict.
+即使没有两条规则相互冲突，仓库规则也可能包含事实错误、过时的版本假设或过宽的适用范围。
 
-- **[MUST]** When concrete evidence questions an applicable rule, check its scope and its factual and version assumptions. Then report the rule and its source, the limits of the evidence and the affected behavior to the user. Distinguish a rule defect from a justified departure that a `[PREFER]` permits; personal preference alone does not establish a defect.
-- **[MUST]** Assess code compliance and rule correctness separately. Handle proposed corrections under [incremental rule maintenance](../../methodology/04-project-rules.md#incremental-rule-maintenance). Do not silently edit or waive a rule. Reuse specific approval, and pause only the implementation that depends on an unresolved required decision.
+- **[必须]** 有具体证据质疑一条适用规则时，检查它的范围、事实前提和版本假设。然后向用户汇报：这条规则及其来源、证据的局限，以及受影响的行为。区分规则本身的缺陷与 `[优先]` 规则所允许的合理偏离；单凭个人偏好不能认定规则有缺陷。
+- **[必须]** 代码是否合规与规则是否正确分开评估。修正规则的提议按 [规则的增量维护](../../methodology/04-project-rules.md#规则的增量维护) 处理。不悄悄修改或豁免规则。复用已给出的具体批准，只暂停依赖未决必要决定的那部分实现。
 
-## Machine configuration and existing code
+## 机器配置与已有代码
 
-- **[MUST]** A designated machine-readable configuration is the single source of truth for exact values explicitly delegated to it, such as `gdlint.json` thresholds or an exact schema.
-- **[MUST]** Machine configuration states the currently configured value; it does not prove that the value is correct under project rules or Godot semantics.
-- **[MUST]** Existing implementation is evidence of current behavior and convention. It does not automatically override explicit current project rules or architecture.
-- **[MUST]** Existing tests are executable evidence of previously encoded behavior, not immutable authority over an explicitly changed requirement.
-- **[MUST]** Do not label a failing existing test "outdated" merely because it blocks implementation. Change it only when approved behavior changed or the test is demonstrated to be incorrect.
+- **[必须]** 对于明确委托给它的确切值（例如 `gdlint.json` 的阈值或某个确切的 schema），指定的机器可读配置是唯一权威来源。
+- **[必须]** 机器配置说明的是当前配置的值，不证明这个值符合项目规则或 Godot 语义。
+- **[必须]** 已有实现是当前行为和惯例的证据，不会自动凌驾于明确的现行项目规则或架构之上。
+- **[必须]** 已有测试是过去编码进去的行为的可执行证据，对于已明确变更的需求，它不是不可更改的权威。
+- **[必须]** 不能仅因为一个失败的已有测试阻碍实现，就把它称为“过时”。只有在批准的行为已经改变，或已证明测试本身有误时，才修改它。

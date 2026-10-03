@@ -1,36 +1,36 @@
 ---
 name: design-ui-spec
-description: "Design and maintain interface layout, states and interaction presentation in a UI specification. Use for wireframes and Godot prototype inputs. Not for art direction, implementation or UX review."
+description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 原型的输入。不用于美术方向、实现或 UX 审核。"
 ---
 
-# UI specification
+# UI 规格
 
-Follow `methodology/11-specialist-workflows.md` for ownership, authorization and source impacts. Its **UI document boundaries** section fixes the interface and component files and how a shared control moves to `docs/ui/components/<component-key>-design.md`. **What stays in the GDD** in that file covers moving interface specifications out of GDD. Write directly within the authorized scope in the configured `document_language`; discussion-only work returns a proposal.
+归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **UI 文档边界** 章节规定了界面文件和组件文件，以及共享控件怎样迁到 `docs/ui/components/<component-key>-design.md`。同一文件的 **留在 GDD 中的内容** 说明了怎样把界面规格从 GDD 中移出。在授权范围内直接写入，使用配置的 `document_language`；只要求讨论时，返回方案。
 
-GDD owns player behavior, and Product links adopted requirements for delivery. Reference GDD rules and goals instead of copying them. Keep protected source inputs intact. `product-author` does not save this specification on its behalf.
+GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规则和目标直接引用，不要复制。保持受保护的来源输入原样。`product-author` 不代为保存这份规格。
 
-Read the relevant GDD goals and actions, Product delivery scope, the current interface, the applicable Art Bible, display and input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
+阅读本次涉及的 GDD 目标和操作、Product 交付范围、当前界面、适用的 Art Bible、显示与输入条件，以及外部提供的代表性资源。复用已定的选择；只就会实质改变布局或交互的缺口提问。共享视觉风格属于 `design-art-direction`，文件级要求属于 `design-visual-asset-spec`，行为变化通过 `design-gdd` 回到 GDD。
 
-Select the interface or shared-control document under **UI document boundaries** before naming the output. When creating, renaming or removing an interface or component specification, or changing the purpose, Product association or component consumers shown in its navigation, read `docs/ui/README.md` and update the affected entry in the same authorized change. Do not turn this update into a directory-wide review.
+确定输出名称之前，先按 **UI 文档边界** 选定界面文档或共享控件文档。新建、改名或删除界面规格或组件规格，或者改变导航中显示的用途、关联 Product 或组件使用方时，阅读 `docs/ui/README.md`，并在同一个已授权的修改中更新受影响的条目。不要把这次更新变成对整个目录的审查。
 
-## Useful specification
+## 有用的规格
 
-Explain how hierarchy, grouping and feedback serve the current user goal. Provide an ASCII wireframe with realistic content, key actions and state differences. Draw separate states only when layouts differ substantially.
+说明层级、分组和反馈怎样服务于当前的用户目标。提供一份 ASCII 线框图，包含贴近实际的内容、关键操作和状态差异。只有布局差别很大时，才分别画出不同的状态。
 
-When an interaction affects game rules or business state, use the responsibility model in `docs/game-organization.md`. Link the governing game rule, distinguish the requested action from its accepted or rejected result, and describe the corresponding display. Hover, focus, panel expansion and display transitions may remain UI-local state. A displayed affordability hint does not replace the logic's purchase decision; actual wiring belongs to implementation.
+交互影响游戏规则或业务状态时，使用 `docs/game-organization.md` 中的职责模型。链接起决定作用的游戏规则，区分玩家发出的操作请求和它被接受或拒绝的结果，并描述对应的显示。悬停、焦点、面板展开和显示过渡可以作为 UI 内部状态。界面上显示的“买得起”提示不能代替逻辑中的购买判定；实际的连接属于实现。
 
-Use these conventions: `[button]`, `[[primary action]]`, `< input >`, `[option ▾]`, `[ ]` / `[x]`, image and icon labels, and `↕` for scrolling. Keep the primary action clear for each state. Mark focus, disabled, error, empty and dense states and input navigation where relevant; there is no requirement to design every possible future screen.
+使用以下记号：`[button]` 表示按钮，`[[primary action]]` 表示主操作，`< input >` 表示输入框，`[option ▾]` 表示下拉选项，`[ ]` / `[x]` 表示复选框，图片和图标用文字标注，`↕` 表示可滚动。每个状态的主操作都要清楚。需要时标出焦点、禁用、错误、空和密集状态，以及输入导航；不要求设计未来所有可能的屏幕。
 
-Distinguish confirmed display and readability constraints from trial values. Include the surrounding screen context, viewport and scaling conditions, representative text and resource references, source versus visible-subject scale, and unresolved questions for runtime evaluation. Node properties and incidental tuning stay in implementation.
+区分已确认的显示和可读性约束与试用值。写明周围的屏幕上下文、视口和缩放条件、代表性的文本和资源引用、源图尺寸与可见主体尺寸的区别，以及需要在运行时评估的未决问题。节点属性和顺手的微调留在实现中。
 
-Ordinary control states stay here. A complete game moment, such as collecting a reward, belongs to `design-game-presentation`. Link it from the UI document as **Game presentation documents** in methodology 11 describes; the UI document does not replace the presentation's adoption or implementation references.
+普通控件状态写在这里。一次完整的游戏表现（例如领取奖励）属于 `design-game-presentation`。按 methodology 11 的 **游戏表现文档** 的说明，从 UI 文档链接它；UI 文档不能代替表现文档中的采用关系或实现引用。
 
-## Handoff
+## 交接
 
-Apply **Visual prototype before dependent implementation** in `methodology/13-prototypes.md`. The specification supplies questions and inputs for an independently runnable Godot scene; it does not create that scene or prove usability. A requested HTML exploration is separate authorized experiment work and cannot replace Godot validation.
+按 `methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
 
-Coordinate visual resource sections with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`. **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the owning section; do not create a separate resource list. Adopt actual prototype observations only with the applicable user decision, updating the UI specification and routing any behavior change to GDD through `design-gdd`.
+视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用原型中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
 
-Return the source path, confirmed decisions, unresolved questions and relevant planning and prototype inputs. Formal UX review uses `review-ux` in a different instance; this Skill cannot grant human acceptance.
+返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和原型输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

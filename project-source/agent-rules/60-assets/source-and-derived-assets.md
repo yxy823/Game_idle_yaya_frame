@@ -1,29 +1,29 @@
-# Source and Derived Assets
+# 源资源与派生资源
 
-Keep editable source masters, import metadata, the generated cache, runtime Resources and export artifacts distinct, and connect them through a reproducible pipeline. The ownership and authority of `.import` files and `.godot/imported/` follow [Generated and tool-managed files](../00-core/third-party-generated-and-temporary-files.md#generated-and-tool-managed).
+可编辑的源母版、导入元数据、生成缓存、运行时 Resource 和导出产物保持区分，并通过可复现的管线连接起来。`.import` 文件和 `.godot/imported/` 的归属与权威性遵循[生成与工具管理的文件](../00-core/third-party-generated-and-temporary-files.md#生成文件与工具管理文件)。
 
-## Source masters and runtime assets
+## 源母版与运行时资源
 
-- **[MUST]** When they differ, define which file is the editable source master and which is the runtime asset.
-- **[MUST]** Runtime assets derived from source art record enough pipeline and provenance information to reproduce the transformation.
-- **[MUST]** Do not place runtime-required assets under `.gdignore` simply because source-art masters also exist.
-- **[MUST]** Do not assume that source art ignored by Git or kept only locally is cache. The asset pipeline defines authority; Git tracking alone does not.
+- **[必须]** 两者不同时，明确哪个文件是可编辑的源母版，哪个是运行时资源。
+- **[必须]** 从源美术派生的运行时资源，记录足以复现转换过程的管线与来源信息。
+- **[必须]** 不要仅因为同时存在源美术母版，就把运行时必需的资源放到 `.gdignore` 下。
+- **[必须]** 不要假定被 Git 忽略或只保存在本地的源美术是缓存。权威性由资源管线定义，不由是否被 Git 跟踪决定。
 
-## Imported assets
+## 已导入资源
 
-- **[MUST]** Source assets are authoritative content, and `.godot/imported` is a rebuildable generated cache.
-- **[MUST]** Load imported Resources through their source `res://` path and the ResourceLoader contract, not through direct `.godot/imported` paths.
-- **[MUST]** Raw assets that are not imported and are read through FileAccess are a separate runtime path; see [Ignored and raw files](ignored-and-raw-files.md).
-- **[MUST]** After external edits, refresh the filesystem or reimport before trusting runtime or editor evidence.
+- **[必须]** 源资源是权威内容，`.godot/imported` 是可重建的生成缓存。
+- **[必须]** 已导入的 Resource 通过它的源 `res://` 路径和 ResourceLoader 契约加载，不通过 `.godot/imported` 的直接路径加载。
+- **[必须]** 不导入、通过 FileAccess 读取的原始资源是另一条运行时路径；见[忽略文件与原始文件](ignored-and-raw-files.md)。
+- **[必须]** 在外部编辑之后，先刷新文件系统或重新导入，再相信运行时或编辑器中的证据。
 
-## Version control
+## 版本控制
 
-- **[PREFER]** Version-control source assets, the relevant `.import` metadata and project-owned importer and configuration files. Do not commit the `.godot/imported` cache.
-- **[MUST]** A clean, fresh rebuild reconstructs the imported runtime artifacts from the declared source and importer dependencies.
+- **[优先]** 对源资源、相关的 `.import` 元数据，以及项目自己的导入器和配置文件做版本控制。不要提交 `.godot/imported` 缓存。
+- **[必须]** 一次干净的全新重建能从声明的源文件和导入器依赖重新构建出导入后的运行时产物。
 
-## Variants and duplicates
+## 变体与副本
 
-- **[MUST]** Visual similarity alone does not prove that two assets are the same logical asset.
-- **[MUST]** Do not duplicate source assets merely to get different filter, repeat or material sampling behavior per use when consumer configuration can provide it.
-- **[MUST]** Share assets when their identity, lifecycle and change coupling are actually shared; separate them when they must evolve independently.
-- **[MUST]** Generated variants record their source and generation pipeline so that they can be reproduced.
+- **[必须]** 仅视觉上相似，不能证明两个资源是同一个逻辑资源。
+- **[必须]** 使用方的配置能提供不同的过滤、重复或材质采样行为时，不要为了每处用法的这些差异而复制源资源。
+- **[必须]** 资源的身份、生命周期和变更耦合确实共享时就共享资源；必须独立演进时就分开。
+- **[必须]** 生成的变体记录其源文件和生成管线，以便复现。

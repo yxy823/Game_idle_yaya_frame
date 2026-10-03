@@ -1,36 +1,36 @@
-# Change Scope and Ownership
+# 变更范围与归属
 
-Control how far a task may modify the repository while preserving existing work.
+本页规定一个任务可以把仓库改到什么程度，以及修改时怎样保留已有工作。
 
-## Locate the change before editing
+## 修改前先定位
 
-- **[MUST]** Read the relevant current implementation and its actual callers or resource consumers. Locate the code or data that owns the behavior; do not infer the change site from a filename, a symptom or a copied example.
-- **[MUST]** Identify the affected contracts, modules, data and validation routes before choosing the change. Trace the necessary dependencies; an unrelated whole-repository reading pass is not required.
-- **[PREFER]** Before implementation, briefly state the intended change, its material impact and the relevant validation. Reuse an approved plan that is still valid. This explanation is not an additional approval gate or a mandatory separate plan file.
+- **[必须]** 阅读当前的实现，以及实际调用它的代码或使用该资源的消费方。找到真正负责这项行为的代码或数据；不根据文件名、症状或复制来的示例推断修改位置。
+- **[必须]** 选择改法前，先确认受影响的契约、模块、数据和验证路径。追踪必要的依赖即可，不需要通读整个仓库中无关的内容。
+- **[优先]** 动手实现前，简短说明打算怎么改、会产生哪些实质影响、需要哪些验证。已批准且仍然有效的方案直接复用。这段说明不是额外的审批关卡，也不要求另写一份方案文件。
 
-## Task scope
+## 任务范围
 
-- **[MUST]** Make the smallest coherent change that completely satisfies the requested behavior. Minimal means minimal complete impact, not the smallest file count.
-- **[MUST]** Classify each change as a Requested Change, a Necessary Dependent Change or an Incidental Issue.
-- **[MUST]** Treat a dependent migration required for correctness as implicit task scope when the causal relationship is clear and the change is minimal. Expand validation to cover it.
-- **[MUST]** Do not modify Incidental Issues by default. Modify one only when it blocks the task, creates an immediate correctness or safety risk, or the user explicitly expands the scope. Otherwise, report it separately when it is useful.
-- **[MUST]** Already touching a file or directory is not a sufficient reason to expand scope.
-- **[MUST]** Do not perform unrelated renaming, formatting, directory reorganization, warning cleanup, dead-code cleanup, API modernization, scene normalization or refactoring.
+- **[必须]** 做能完整实现所要求行为的最小连贯修改。“最小”指完整解决问题时影响最小，不是文件数最少。
+- **[必须]** 把每项修改归为三类之一：请求的修改（Requested Change）、必要的连带修改（Necessary Dependent Change）、顺带发现的问题（Incidental Issue）。
+- **[必须]** 为保证正确性而必须做的连带迁移，在因果关系清楚、改动最小时，视为任务的隐含范围，并扩大验证覆盖它。
+- **[必须]** 默认不修改顺带发现的问题。只有它阻塞任务、立即造成正确性或安全风险，或用户明确扩大范围时，才修改。其他情况下，如果有用，单独汇报。
+- **[必须]** 已经改到某个文件或目录，不足以成为扩大范围的理由。
+- **[必须]** 不做无关的重命名、格式化、目录重组、警告清理、死代码清理、API 现代化、场景规范化或重构。
 
-## Existing work and shared contracts
+## 已有工作与共享契约
 
-- **[MUST]** Do not overwrite, reset, revert or delete unrelated existing project changes. Patch against the current state.
-- **[MUST]** Unknown or unrelated existing modifications are work to preserve, not garbage.
-- **[MUST]** Preserve existing public APIs, dependencies and local code style unless a concrete requirement makes a change necessary. Explain any necessary contract or dependency change and its consumers. Do not add a dependency merely for convenience when the existing stack is sufficient.
-- **[MUST]** A change to a shared or public contract migrates all known necessary consumers, or uses an explicitly designed staged compatibility mechanism.
-- **[MUST]** Lint or metric thresholds alone do not authorize structural refactoring. A split or refactor must improve a real responsibility, dependency or maintainability boundary.
-- **[MUST]** Do not build speculative general-purpose frameworks for hypothetical future consumers.
+- **[必须]** 不覆盖、重置、回退或删除项目中无关的已有改动。基于当前状态修改。
+- **[必须]** 来源不明或与任务无关的已有修改是需要保留的工作，不是垃圾。
+- **[必须]** 保留已有的公共 API、依赖和局部代码风格，除非具体需求使修改成为必要。说明任何必要的契约或依赖变化，以及受影响的消费方。现有技术栈够用时，不为图方便增加依赖。
+- **[必须]** 修改共享或公共契约时，迁移所有已知的必要消费方，或者使用明确设计的分阶段兼容机制。
+- **[必须]** 仅凭 lint 或度量阈值，不足以授权结构性重构。拆分或重构必须改善真实的职责、依赖或可维护性边界。
+- **[必须]** 不为假想的未来消费方预先搭建通用框架。
 
-## Deletion and derived outputs
+## 删除与派生产物
 
-- **[MUST]** Before deleting an artifact, confirm where relevant its owner, inbound consumers, dynamic references and registries, its generated or source relationship, and save, mod and data compatibility.
-- **[MUST]** A result such as `unused` or `unreferenced` only creates a deletion candidate; it does not grant permission to delete.
-- **[MUST]** When an authoritative source changes and project policy requires committed derived outputs, regenerate them through the formal pipeline and check that they are deterministic and not stale.
-- **[MUST]** If a tool produces a large unrelated serialization or formatting diff, inspect it and revert the unrelated changes where practical instead of accepting it wholesale.
+- **[必须]** 删除一个产物前，按实际情况确认：它的所属方、引用它的消费方、动态引用和登记表、它与生成或源文件的关系，以及对存档、mod 和数据兼容性的影响。
+- **[必须]** `unused`、`unreferenced` 这类结果只说明它是删除候选，不授予删除权限。
+- **[必须]** 权威来源发生变化、且项目规定派生产物要提交时，通过正式流程重新生成，并检查结果是确定性的、没有过期。
+- **[必须]** 如果工具产生了大量无关的序列化或格式差异，先检查这些差异，在可行时回退无关部分，不整体接受。
 
-Validation follows `validation-policy.md` and the applicable domain routes; final diff inspection follows `git-worktree-and-commits.md`. Reporting follows `completion-and-reporting.md`. These checks do not replace the acceptance or completion conditions of the workflow that governs the task.
+验证按 `validation-policy.md` 和适用的领域规则执行；最终的差异检查按 `git-worktree-and-commits.md` 执行；汇报按 `completion-and-reporting.md` 执行。这些检查不代替管辖本任务的流程中的验收条件或完成条件。

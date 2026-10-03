@@ -1,20 +1,20 @@
-# Scene Instancing, Inheritance, and Overrides
+# 场景实例化、继承与覆盖
 
-Preserve PackedScene identity and the distinction between shared source state and local overrides.
+保留 PackedScene 的实例身份，并区分共享的源状态和实例上的本地覆盖。
 
-## PackedScene instances
+## PackedScene 实例
 
-- **[MUST]** Preserve PackedScene instance identity unless the task intentionally localizes or unpacks the structure.
-- **[MUST]** Distinguish runtime instantiation from editor authoring. Runtime code normally uses `PackedScene.instantiate()`. An editor or Agent tool that creates a persistent instance in the currently edited scene instantiates it with the Godot 4.7 instance edit state, such as `PackedScene.GEN_EDIT_STATE_INSTANCE` in an editor build.
-- **[MUST]** When persisting that editor-authored instance, set the instance root's owner as the edited scene requires. Do not recursively replace the owners of its descendants with the current scene root; preserve the descendant ownership and the instance boundary encoded by the source PackedScene.
-- **[MUST]** Decide deliberately whether a change belongs in the source scene or in an instance-local override.
-- **[REVIEW]** `Editable Children` changes the instance boundary and requires a real reason. Do not enable it as a convenience for patching deep children.
-- **[MUST]** After a structural change to `Editable Children` or an inherited-scene override, save the scene and validate the instance identity, ownership and overrides again after a fresh reload. The current editor's in-memory tree is not sufficient evidence.
+- **[必须]** 保留 PackedScene 的实例身份，除非任务有意把结构本地化或拆开。
+- **[必须]** 区分运行时实例化和编辑器编辑。运行时代码通常使用 `PackedScene.instantiate()`。在当前编辑的场景中创建持久实例的编辑器工具或 Agent 工具，使用 Godot 4.7 的实例编辑状态来实例化，例如编辑器构建中的 `PackedScene.GEN_EDIT_STATE_INSTANCE`。
+- **[必须]** 持久保存这种在编辑器中创建的实例时，按被编辑场景的要求设置实例根节点的 owner。不把它所有子孙节点的 owner 递归替换为当前场景根节点；保留源 PackedScene 中编码的子孙 owner 关系和实例边界。
+- **[必须]** 有意识地决定一项修改属于源场景，还是属于实例上的本地覆盖。
+- **[复核]** `Editable Children` 会改变实例边界，需要有真实的理由。不为了方便修补深层子节点而启用它。
+- **[必须]** 对 `Editable Children` 或继承场景的覆盖做结构性修改后，保存场景，并在重新加载后再次验证实例身份、owner 归属和覆盖。当前编辑器内存中的树不足以作为证据。
 
-## Inherited scenes
+## 继承场景
 
-- **[MUST]** An inherited scene remains a base plus overrides. Shared behavior belongs in the base; derived-only behavior belongs in minimal overrides.
-- **[MUST]** Do not flatten an inherited scene or copy the full base state into the derived scene to simplify editing.
-- **[MUST]** When the base structure or names change, validate all derived scenes and their overrides.
+- **[必须]** 继承场景始终是“基础场景加覆盖”。共享的行为放在基础场景；只属于派生场景的行为放在最小的覆盖中。
+- **[必须]** 不为了方便编辑而把继承场景展平，或把基础场景的全部状态复制进派生场景。
+- **[必须]** 基础场景的结构或名称变化时，验证所有派生场景及其覆盖。
 
-Sibling order in instanced and inherited scenes follows [Groups and order](references-groups-and-order.md#groups-and-order).
+实例场景和继承场景中的同级顺序，遵循[分组与顺序](references-groups-and-order.md#分组与顺序)。

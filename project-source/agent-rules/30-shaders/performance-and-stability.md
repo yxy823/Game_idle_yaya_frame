@@ -1,24 +1,24 @@
-# Shader Performance and Stability
+# Shader 的性能与稳定性
 
-Optimize based on the measured workload and renderer semantics, not on blanket folklore.
+依据实测的工作负载和渲染器语义做优化，不依据笼统的经验说法。
 
-## Loops and sampling
+## 循环与采样
 
-- **[MUST]** Shader loops have provable termination. Dynamic or high-iteration fragment loops require review and bounded ranges for external uniforms.
-- **[REVIEW]** Evaluate texture-sample cost with screen coverage, instance count, texture behavior and target hardware, not with a universal maximum sample count.
-- **[REVIEW]** Procedural noise versus a texture lookup is a tradeoff between ALU, bandwidth and memory; do not declare either universally faster.
-- **[REVIEW]** Screen-texture effects include backbuffer copy costs and full-screen coverage costs.
-- **[REVIEW]** Evaluate multipass rendering (`next_pass`) by its total rendering cost and necessity; do not ban or prefer it mechanically.
+- **[必须]** Shader 循环的终止可以证明。动态循环或高迭代次数的 fragment 循环需要复核，并给外部 uniform 设定有界范围。
+- **[复核]** 评估纹理采样开销时，结合屏幕覆盖面积、实例数量、纹理行为和目标硬件，不用一个通用的最大采样次数。
+- **[复核]** 程序化噪声与纹理查找是 ALU、带宽和内存之间的取舍；不要断言哪一种总是更快。
+- **[复核]** 屏幕纹理效果包含后台缓冲复制开销和全屏覆盖开销。
+- **[复核]** 多通道渲染（`next_pass`）按总渲染开销和必要性评估；不要机械地禁止或偏好它。
 
-## Variants and precision
+## 变体与精度
 
-- **[REVIEW]** Runtime branches and preprocessor variants have tradeoffs that depend on the renderer and the number of variants. Do not mechanically rewrite everything to be branchless.
-- **[MUST]** Do not use precision modifiers as a default mobile optimization without evidence from the target.
-- **[MUST]** Do not compare computed floating-point control values for exact equality when numerical tolerance or representation makes that contract invalid.
+- **[复核]** 运行时分支和预处理器变体各有取舍，取决于渲染器和变体数量。不要机械地把所有代码改成无分支。
+- **[必须]** 没有目标平台的证据时，不要把精度修饰符当作默认的移动端优化。
+- **[必须]** 数值误差或表示方式使精确相等的契约不成立时，不要对计算得到的浮点控制值做精确相等比较。
 
-## Reuse and stutter
+## 复用与卡顿
 
-- **[PREFER]** Objects that use the same algorithm share shaders and material structure. Use per-instance parameters instead of duplicating a ShaderMaterial solely for per-object values.
-- **[REVIEW]** For critical first-use Shader, Material and Particle paths, consider the renderer-specific stutter caused by pipeline compilation, and consider warming them up.
-- **[MUST]** Preloading a Resource does not prove that its first render pipeline is compiled. Validate the actual first draw where stutter is relevant.
-- **[PREFER]** Use a Tween for interpolating object properties, an AnimationPlayer for authored timelines across several properties, shaders for per-pixel or per-vertex visuals, and particle shaders for GPU particle state, when each tool matches the effect.
+- **[优先]** 使用同一算法的对象共享 Shader 和材质结构。用逐实例参数代替只为逐对象取值而复制的 ShaderMaterial。
+- **[复核]** 对关键的首次使用的 Shader、Material 和 Particle 路径，考虑管线编译带来的、与渲染器相关的卡顿，并考虑预热。
+- **[必须]** 预加载 Resource 不能证明它的首个渲染管线已经编译。卡顿有影响时，验证实际的首次绘制。
+- **[优先]** 各工具与效果匹配时：插值对象属性用 Tween，跨多个属性的预制时间线用 AnimationPlayer，逐像素或逐顶点的视觉用 Shader，GPU 粒子状态用粒子 Shader。

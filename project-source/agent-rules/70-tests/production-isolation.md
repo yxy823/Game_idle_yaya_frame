@@ -1,31 +1,31 @@
-# Test and Production Isolation
+# 测试与生产的隔离
 
-Development tests remain loadable by Godot, while the production export stays independent of all test-only code and state.
+开发用的测试仍能被 Godot 加载，同时生产导出不依赖任何仅用于测试的代码和状态。
 
-## Test roots and export
+## 测试根目录与导出
 
-- **[MUST]** Do not put `.gdignore` in an active test root or one of its ancestors merely to exclude tests from production; the runner and Godot must still load test fixtures.
-- **[MUST]** The production export has an explicit exclusion policy for test roots, test fixtures, test-only generated artifacts and the test framework's editor addon.
-- **[MUST]** Production code, Resources and configuration do not depend on a test root or on the test framework's implementation.
-- **[MUST]** Production startup and export succeed when the test runtime is completely absent.
-- **[MUST]** When test roots, the test framework, export filters, test Autoloads or the project's test integration change, validate the isolation rules in this document.
+- **[必须]** 不要只为了把测试排除在生产之外，就在活跃的测试根目录或它的上级目录放 `.gdignore`；运行器和 Godot 仍须加载测试夹具。
+- **[必须]** 生产导出对测试根目录、测试夹具、仅用于测试的生成产物和测试框架的编辑器插件，有明确的排除策略。
+- **[必须]** 生产代码、Resource 和配置不依赖测试根目录或测试框架的实现。
+- **[必须]** 测试运行时完全不存在时，生产启动和导出仍然成功。
+- **[必须]** 测试根目录、测试框架、导出过滤器、测试 Autoload 或项目的测试集成发生变化时，验证本文的隔离规则。
 
-## Autoload and ProjectSettings
+## Autoload 与 ProjectSettings
 
-- **[MUST]** Test-only and editor-only Autoloads do not become production runtime dependencies. Plugin-owned test Autoloads follow the cleanup and export rules in [Editor plugins](../40-project-config/editor-plugins.md#plugins).
-- **[MUST]** Ordinary tests do not permanently add test-only Input Map entries, groups, shader globals, ProjectSettings or main-scene settings to the production `project.godot`.
+- **[必须]** 仅用于测试和仅用于编辑器的 Autoload 不成为生产运行时依赖。插件拥有的测试 Autoload 遵循[编辑器插件](../40-project-config/editor-plugins.md#插件)中的清理和导出规则。
+- **[必须]** 普通测试不向生产 `project.godot` 永久添加仅用于测试的 Input Map 条目、分组、Shader 全局变量、ProjectSettings 或主场景设置。
 
-## Generated files and vendor code
+## 生成文件与第三方代码
 
-- **[PREFER]** Tests write the mutable files they create to test-owned `user://` or temporary paths.
-- **[MUST]** Tests that must write under `res://` use a test-owned scratch subtree or an isolated fixture project, not production asset or data directories.
-- **[MUST]** Clean only scratch, import and UID artifacts that the tests own.
-- **[MUST]** Third-party test frameworks are vendor dependencies; do not modify their implementation for project style, lint or test convenience.
-- **[MUST]** Project-owned test GDScript still follows the applicable project GDScript and static-check rules. Framework-specific exceptions are scoped, not blanket lint exemptions.
+- **[优先]** 测试把自己创建的可变文件写到测试拥有的 `user://` 路径或临时路径。
+- **[必须]** 必须写入 `res://` 的测试，使用测试拥有的临时子目录或隔离的夹具项目，不写入生产资源或数据目录。
+- **[必须]** 只清理测试自己拥有的临时文件、导入产物和 UID 产物。
+- **[必须]** 第三方测试框架是第三方依赖；不要为了项目风格、lint 或测试方便修改它们的实现。
+- **[必须]** 项目自己的测试 GDScript 仍遵循项目的 GDScript 规则和静态检查规则。针对框架的例外要限定范围，不能是一揽子的 lint 豁免。
 
-## Coverage and performance policy
+## 覆盖率与性能策略
 
-- **[MUST]** The project has no project-wide coverage-percentage gate. Coverage may serve as auxiliary evidence but never substitutes for behavioral assertions, integration tests or runtime tests.
-- **[MUST]** The project has no generic performance threshold without a project-specific budget and target-hardware contract.
+- **[必须]** 项目没有全项目的覆盖率百分比门槛。覆盖率可以作为辅助证据，但永远不能代替行为断言、集成测试或运行时测试。
+- **[必须]** 没有项目专属的预算和目标硬件契约时，项目不设通用的性能阈值。
 
-Visual evidence and acceptance follow the [visual boundary](testing-strategy.md#visual-boundary).
+视觉证据和验收遵循[视觉验证边界](testing-strategy.md#视觉验证边界)。

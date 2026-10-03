@@ -1,95 +1,95 @@
-# 13 · Prototypes
+# 13 · 原型
 
-`prototype-godot` builds bounded Godot prototypes. This specification covers two kinds:
+`prototype-godot` 构建有边界的 Godot 原型。本规范涵盖两类原型：
 
-- [Visual prototype before dependent implementation](#visual-prototype-before-dependent-implementation): settle layout, resource scale and interaction readability before logic that depends on them.
-- [Scoped logic prototypes](#scoped-logic-prototypes): answer a specific interaction, state-transition or technical-feasibility question.
+- [依赖实现前的视觉原型](#依赖实现前的视觉原型)：在依赖布局、资源尺寸和交互可读性的逻辑之前，先把它们确定下来。
+- [限定范围的逻辑原型](#限定范围的逻辑原型)：回答一个具体的交互、状态转换或技术可行性问题。
 
-A prototype runs inside a planned Feature or an authorized experiment; [task routing](00-overview.md#canonical-task-routing) selects the entry. Prototype observations and tentative parameters are not approved GDD design or Feature acceptance. Stay within the agreed experiment budget; going beyond it requires the user's direction.
+原型在已规划的 Feature 或已获授权的实验中运行，入口由[任务路由](00-overview.md#任务路由表)选择。原型的观察结果和暂定参数不是已批准的 GDD 设计，也不是 Feature 的验收。不超出约定的实验预算；超出预算需要用户指示。
 
-## Visual prototype before dependent implementation
+## 依赖实现前的视觉原型
 
-A new interface, or a substantial change to an interface's layout or resources, needs a validated visual foundation before logic that depends on that interface is implemented.
+新界面，或界面布局、资源的较大改动，在实现依赖该界面的逻辑之前，需要先有经过验证的视觉基础。
 
-- Reuse an already validated layout when it covers the current scope.
-- Text or value changes, non-visual logic and unaffected modules do not need another prototype.
-- Work on the current interface or module in its surrounding screen context. Do not wait until all game art or all future screens are ready.
+- 已验证的布局覆盖当前范围时，直接复用。
+- 文字或数值的修改、非视觉逻辑和不受影响的模块，不需要再做原型。
+- 在周围的画面环境中处理当前界面或模块。不必等全部游戏美术或所有未来画面就绪。
 
-Follow this sequence:
+按以下顺序进行：
 
-1. Define the interface's purpose and main states.
-2. Collect representative resources and write initial specifications.
-3. Build an independent Godot visual prototype.
-4. Validate and adjust layout and scale.
-5. Implement the dependent production logic.
-6. Refine the visuals.
+1. 确定界面的用途和主要状态。
+2. 收集有代表性的资源，写出初始规格。
+3. 构建一个独立的 Godot 视觉原型。
+4. 验证并调整布局和尺寸。
+5. 实现依赖它的正式逻辑。
+6. 细化视觉效果。
 
-Resource specifications and layout may iterate together.
+资源规格和布局可以一起迭代。
 
-The Agent identifies the need for a visual prototype during planning and the Stage 1 resource preflight, or the user requests one directly. This is task reasoning, not a background trigger. Discussion-only work proposes the next step without writing files or building scenes. Implementation authorization covers in-scope preparation and building, but it never supplies the user's visual acceptance.
+Agent 在规划和 Stage 1 资源预检时识别是否需要视觉原型，或者由用户直接要求。这是任务中的判断，不是后台触发。只讨论的工作只提出下一步建议，不写文件，也不构建场景。实现授权覆盖范围内的准备和构建，但永远不能代替用户的视觉验收。
 
-### Scope and resources
+### 范围与资源
 
-Before building, identify:
+构建之前，先确定：
 
-- the questions the prototype must settle;
-- the target viewport or window and the relevant scaling conditions;
-- the core elements and states;
-- the available resources and the remaining gaps.
+- 原型必须解决的问题；
+- 目标视口或窗口，以及相关的缩放条件；
+- 核心元素和状态；
+- 现有资源和剩余缺口。
 
-The UI, presentation and asset specification Skills under [Specialist work and sources](11-specialist-workflows.md) specify these inputs. A written sketch or an HTML exploration does not verify the Godot result. When resources must be prepared or supplied first, use [Resource requirements and handoff](11-specialist-workflows.md#resource-requirements-and-handoff).
+这些输入由[专业工作与来源](11-specialist-workflows.md)中的 UI、表现和资源规格 Skill 规定。文字草图或 HTML 探索不能验证 Godot 中的结果。需要先准备或提供资源时，按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)处理。
 
-Use representative real images, fonts, video, music and sound effects where the interface calls for them:
+界面需要时，使用有代表性的真实图像、字体、视频、音乐和音效：
 
-- Choose samples that expose the actual aspect ratios, detail, text lengths and content density. Not every media type or the complete asset library is needed.
-- Distinguish the source pixel dimensions, the on-screen size and the visible subject size after transparent padding.
-- For audio, identify the duration, looping and feedback timing that matter to the experience.
-- Follow the project's asset provenance and import rules.
-- A missing sample leaves its check unverified. Name the gap and find a suitable sample or a substitute the user accepts. Text, silence or a placeholder filename does not prove the check.
+- 选择能暴露实际宽高比、细节、文字长度和内容密度的样本。不需要每种媒体类型，也不需要完整素材库。
+- 区分源像素尺寸、屏幕上的显示尺寸，以及去掉透明留边后的可见主体尺寸。
+- 音频要确定对体验有影响的时长、循环和反馈时机。
+- 遵循项目的资源来源记录和导入规则。
+- 缺少样本时，对应的检查保持未验证。说明缺口，并找到合适的样本或用户接受的替代品。文字、静音或占位文件名不能证明检查通过。
 
-Build the prototype as follows:
+按以下方式构建原型：
 
-- Create a clearly named, independently runnable `.tscn` in the project's scene organization, separate from production functionality.
-- Include the actual content regions, representative items, buttons and text in their surrounding layout.
-- Use local sample state. Add only the interactions needed for evaluation, such as hover, pressed, selected and disabled feedback, opening a panel, scrolling or preview playback.
-- Do not connect production game rules, persistence or live data flows. If project Autoloads would run those flows, isolate the prototype entry from their side effects.
-- A small local script is enough when native controls cannot express the required feedback.
+- 在项目的场景组织中创建一个名称清楚、可独立运行的 `.tscn`，与正式功能分开。
+- 在周围布局中放入实际的内容区域、有代表性的物品、按钮和文字。
+- 使用本地示例状态。只添加评估所需的交互，例如悬停、按下、选中和禁用反馈，打开面板、滚动或预览播放。
+- 不连接正式的游戏规则、持久化或实时数据流。如果项目的 Autoload 会运行这些流程，把原型入口与它们的副作用隔离开。
+- 原生控件无法表达所需反馈时，一个小的本地脚本就够了。
 
-Final backgrounds, decoration and palette are optional at this point. Readable contrast and distinguishable interaction states are required for evaluation. There is no fixed number of design variants; compare alternatives only when a real layout decision needs them.
+此时最终的背景、装饰和配色是可选的。评估需要可读的对比度和可区分的交互状态。设计变体没有固定数量；只有真实的布局决定需要时，才比较多个方案。
 
-### Validation and adoption
+### 验证与采纳
 
-Run the scene in the target project's confirmed Godot environment. At the agreed display conditions, check spatial relationships, resource scale and cropping, text readability, button usability and the relevant empty, dense and long-text states. Exercise the interactions and listen to the relevant samples. Static checks and screenshots support the evaluation; they do not replace actual operation and human judgment. Missing execution or human feedback stays explicitly unverified.
+在目标项目已确认的 Godot 环境中运行场景。在约定的显示条件下，检查空间关系、资源尺寸与裁切、文字可读性、按钮可用性，以及相关的空状态、密集状态和长文本状态。实际操作这些交互，并试听相关样本。静态检查和截图辅助评估，但不能代替实际操作和人的判断。缺少运行或人工反馈时，明确标为未验证。
 
-Record the results:
+记录结果：
 
-- Keep the entry scene, questions, observations, file disposition and links to the relevant presentation and resource sections in the current Feature notes, or in Progress for a standalone experiment.
-- Keep resource details in the design document that uses the resource.
-- Send each confirmed change to its source: game design to the GDD through `design-gdd` (or `design-balance` for scoped numerical design), delivery boundaries to Product, and layout, presentation, size, readability or sound specifications to their specialist document. Adoption follows the task's authorization and the source-change routes in [Specialist work and sources](11-specialist-workflows.md#ownership-and-decisions).
-- Node properties and tuning values stay in the scene, resources or implementation notes.
-- Do not maintain a second specification or a prototype status ledger.
+- 入口场景、问题、观察结果、文件处置方式，以及指向相关表现和资源章节的链接，记录在当前 Feature 的备注中；独立实验记录在 Progress 中。
+- 资源细节保存在使用该资源的设计文档中。
+- 每项已确认的变化交回它的来源：游戏设计通过 `design-gdd`（限定范围的数值设计通过 `design-balance`）写入 GDD，交付边界写入 Product，布局、表现、尺寸、可读性或声音规格写入对应的专业文档。采纳遵循任务授权和[专业工作与来源](11-specialist-workflows.md#归属与决策)中的来源修改路由。
+- 节点属性和调参数值留在场景、资源或实现说明中。
+- 不维护第二份规格，也不维护原型状态台账。
 
-During planned delivery, use an ordinary Feature for a visual foundation that can be reviewed on its own, and make dependent implementation wait for its manual acceptance when that Feature requires it. A narrow check may stay inside the current Feature, as long as the visual decision is settled before dependent logic. A standalone exploration the user explicitly requested follows the scoped-experiment route in [task routing](00-overview.md#canonical-task-routing). Prototype acceptance covers only its visual and interaction scope, never the later business behavior.
+在已规划的交付中，可以单独审查的视觉基础使用普通 Feature；该 Feature 要求人工验收时，依赖它的实现要等人工验收完成。范围很窄的检查可以留在当前 Feature 内，前提是视觉决定在依赖逻辑之前确定。用户明确要求的独立探索，按[任务路由](00-overview.md#任务路由表)中的限定范围实验路由处理。原型验收只覆盖它的视觉和交互范围，永远不覆盖后续的业务行为。
 
-After validation, reuse suitable layout nodes, themes and resources deliberately, and remove the sample-state wiring when adopting them into production. Keep a separate prototype only while it answers an open question; otherwise archive or remove it within the authorized scope. Record unresolved limits and keep the accepted decisions. Do not maintain competing production and prototype interfaces.
+验证之后，有意识地复用合适的布局节点、主题和资源；采纳到正式功能时，去掉示例状态的连接。单独的原型只在它还在回答某个开放问题时保留；否则在授权范围内归档或删除。记录尚未解决的限制，保留已接受的决定。不同时维护相互竞争的正式界面和原型界面。
 
-## Scoped logic prototypes
+## 限定范围的逻辑原型
 
-Use `prototype-godot` when an authorized experiment can settle a specific interaction, state-transition or technical-feasibility question. Before building, identify:
+已获授权的实验能解决一个具体的交互、状态转换或技术可行性问题时，使用 `prototype-godot`。构建之前，先确定：
 
-- the question;
-- the relevant confirmed GDD rules;
-- the observed result that would answer the question;
-- the bounded experiment.
+- 问题本身；
+- 相关的已确认 GDD 规则；
+- 能回答这个问题的观察结果；
+- 有边界的实验。
 
-Keep unsettled design choices as proposals; an experiment does not approve a new rule. Reuse a previous experiment when it still answers the question, and follow the scoped-experiment route in [task routing](00-overview.md#canonical-task-routing).
+未确定的设计选择保持为提议；实验不会批准新规则。之前的实验仍能回答这个问题时，复用它；并按[任务路由](00-overview.md#任务路由表)中的限定范围实验路由处理。
 
-Prefer a small, independently runnable Godot scene with only the state and interactions the question needs:
+优先使用一个小型、可独立运行的 Godot 场景，只包含问题需要的状态和交互：
 
-- Make the relevant state visible.
-- Support resetting to a known starting point.
-- Combine free operation with repeatable situations that expose the uncertainty. For a crafting queue, useful situations might include insufficient materials, pausing, or cancellation and refund. Include only the situations relevant to the confirmed question; there is no required number of cases or visual variants.
+- 让相关状态可见。
+- 支持重置到已知的起点。
+- 把自由操作和能暴露不确定点的可重复情境结合起来。以制作队列为例，有用的情境可能包括材料不足、暂停，或取消与返还。只包含与已确认问题有关的情境；用例数量和视觉变体都没有硬性要求。
 
-Local sample state is suitable for exploring a proposed interaction. If the question concerns actual signals, input, lifecycle, persistence or another engine integration, exercise the real path under the task's permissions and protect live data. A simulated transition cannot prove that an integration works. When judging layout, representative assets or perceptual quality, apply the [visual prototype requirements](#visual-prototype-before-dependent-implementation) as well. HTML is acceptable only for an explicitly requested engine-independent concept demonstration; it is not a required precursor or evidence of Godot behavior.
+本地示例状态适合探索一种提议的交互。如果问题涉及实际的信号、输入、生命周期、持久化或其他引擎集成，在任务权限内运行真实路径，并保护实时数据。模拟的转换不能证明集成可用。评判布局、有代表性的资源或感知质量时，同时应用[视觉原型的要求](#依赖实现前的视觉原型)。只有用户明确要求一个与引擎无关的概念演示时，才可以用 HTML；它不是必经的前置步骤，也不是 Godot 行为的证据。
 
-Report what the experiment answered, the actual observations and the remaining limits. Record and adopt results under [Validation and adoption](#validation-and-adoption): keep the entry and useful evidence in Feature notes or Progress, return accepted decisions to their source documents, and decide what happens to the sample code within the authorization. A successful experiment does not establish production readiness, required regression coverage or human acceptance. Do not make an experiment a prerequisite for work that has no relevant uncertainty.
+报告实验回答了什么、实际的观察结果和剩余的限制。按[验证与采纳](#验证与采纳)记录和采纳结果：入口和有用的证据保存在 Feature 备注或 Progress 中，已接受的决定交回各自的来源文档，示例代码如何处置在授权范围内决定。实验成功不代表可以投入正式使用，也不代表已有必需的回归测试覆盖或人工验收。不要让没有相关不确定点的工作以实验为前提。

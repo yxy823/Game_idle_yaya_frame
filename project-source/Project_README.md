@@ -2,7 +2,7 @@
 
 使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdUnit4，由一位项目使用者与 Agent 配合开发。项目名称、工具路径和具体玩法由当前项目决定。
 
-可以从游戏想法开始讨论和建立 GDD，也可以维护已有设计。交付规划与实现需要当前范围足够明确的真实设计；空模板不能代替 GDD。具体要求见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
+可以从游戏想法开始讨论和建立 GDD，也可以维护已有设计。交付规划与实现需要当前范围足够明确的真实设计；空模板不能代替 GDD。具体要求见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-前提与职责)。
 
 ## 从游戏功能开始阅读
 
@@ -20,7 +20,7 @@
 | 要做什么 | 从哪里开始 |
 | --- | --- |
 | 查找文档、台账或当前进度 | [项目文档目录](docs/README.md)，逐项说明用途 |
-| 选择讨论、设计、规划、开发或审核入口 | [任务路由](methodology/00-overview.md#canonical-task-routing)；项目约束见 [AGENTS.md](AGENTS.md) |
+| 选择讨论、设计、规划、开发或审核入口 | [任务路由](methodology/00-overview.md#任务路由表)；项目约束见 [AGENTS.md](AGENTS.md) |
 | 执行已批准的 Feature | [执行流程](methodology/03-execute-loop.md) |
 | 配置 Python 和 Godot | [项目环境](methodology/06-project-environment.md)；路径保存在 `docs/methodology-config.json` |
 | 选择文档语言 | [文档语言](methodology/05-document-language.md)；文档默认中文 |

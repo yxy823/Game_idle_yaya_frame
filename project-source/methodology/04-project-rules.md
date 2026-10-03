@@ -1,153 +1,153 @@
-# 04 · Project rules
+# 04 · 项目规则
 
-This document defines what `docs/project-rules.md` holds, how the rule sources divide their work, and how project rules are added, changed or removed.
+本文规定 `docs/project-rules.md` 保存什么、各规则来源怎样分工，以及项目规则怎样新增、修改和删除。
 
-## Responsibilities
+## 职责划分
 
-The repository uses these rule boundaries:
+仓库按下面的边界划分规则：
 
 ```text
 docs/project-rules.md
-  project-wide development constraints, collaboration and engineering principles
+  跨项目的开发约束、协作方式与工程原则
 
 AGENTS.md
-  root project router and repository execution instructions
+  项目根路由与仓库执行说明
 
 agent-rules/00-core/
-  global engineering invariants and rule precedence
+  全局工程不变量与规则优先级
 
-agent-rules/<specialized module>/
-  concrete Godot, GDScript, and domain semantics for that module
+agent-rules/<专业模块>/
+  该模块具体的 Godot、GDScript 与领域语义
 ```
 
-`methodology/` defines the Product and Feature workflow, Test Impact Review, traceability, human acceptance and completion gates. It does not become a second source for concrete engine or language behavior.
+`methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查。它不成为引擎或语言具体行为的第二份来源。
 
 ## `docs/project-rules.md`
 
-`docs/project-rules.md` is the project-level entry for engineering rules. It applies to every relevant Product, Feature, design and implementation.
+`docs/project-rules.md` 是工程规则的项目级入口，适用于每个涉及的 Product、Feature、设计和实现。
 
-- It separates mandatory constraints from recommendations and review conditions, using the `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/00-core/rule-precedence-and-routing.md`.
-- An ADR, Product or Feature design does not grant an exception by itself.
-- Conflicts follow the Core conflict protocol and external instruction precedence. Do not invent a total ordering of all documents.
+- 它把强制约束与建议、复核条件分开，按 `agent-rules/00-core/rule-precedence-and-routing.md` 中 `[必须]`、`[优先]`、`[复核]` 的含义标注。
+- ADR、Product 或 Feature 设计本身不授予例外。
+- 冲突按 Core 的冲突处理规程和外部指令优先级处理。不要给全部文档自创一套总排序。
 
-The file holds:
+这个文件保存：
 
-- confirmed development constraints that span Products or Features, including dependency restrictions and architecture invariants;
-- collaboration expectations and human-control boundaries;
-- workflow constraints that do not depend on the engine or language;
-- general architecture, dependency, state, data, error-handling and performance principles;
-- a short orientation to the repository rule sources.
+- 已确认、跨 Product 或跨 Feature 的开发约束，包括依赖限制和架构不变量；
+- 协作期望与人工控制的边界；
+- 与引擎和语言无关的流程约束；
+- 通用的架构、依赖、状态、数据、错误处理与性能原则；
+- 仓库各规则来源的简短导读。
 
-Keep enough scope and rationale with each constraint to apply it. Do not turn a local Feature choice into a global restriction, and do not prefill a blank project with unconfirmed technical promises.
+每条约束要带上足以执行它的适用范围和理由。不要把某个 Feature 的局部选择变成全局限制，也不要在空白项目里预填尚未确认的技术承诺。
 
-The file does not copy the current Project Environment Bootstrap status, executable paths, tool versions or concrete Godot and GDScript rules. Those facts stay in the configuration or the routed rule documents. Other content belongs elsewhere:
+这个文件不复制项目环境准备的当前状态、可执行文件路径、工具版本，也不复制具体的 Godot 与 GDScript 规则。这些事实留在配置或路由到的规则文档里。其他内容的归属如下：
 
-| Content | Owner |
+| 内容 | 所属文档 |
 | --- | --- |
-| Game-design scope, exclusions and version boundaries, even long-lived or cross-system ones | GDD [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries); link it instead of copying it |
-| Domain terms | `docs/terminology.md` |
-| Local game rules | Their GDD topics |
-| Delivery boundaries | Product |
-| Current structure | Architecture documents under [10 · Architecture overview](10-architecture-overview.md) |
-| Costly technical tradeoffs | ADRs, when the [ADR conditions](10-architecture-overview.md#architecture-decision-records) hold |
+| 游戏设计的范围、排除项和版本边界，即使长期有效或跨系统 | GDD 的 [设计范围与边界](01-product-doc-structure.md#设计范围与边界)；链接它，不复制 |
+| 领域术语 | `docs/terminology.md` |
+| 局部游戏规则 | 各自的 GDD 主题 |
+| 交付边界 | Product |
+| 当前结构 | [10 · 架构概览](10-architecture-overview.md)下的架构文档 |
+| 代价高的技术取舍 | 满足 [ADR 条件](10-architecture-overview.md#架构决策记录)时写 ADR |
 
-The stack-independent design defaults, such as separating game authority from presentation, explicit state transitions, composition, explicit dependencies, data-driven tuning, error handling and measuring before optimizing, are maintained in [`docs/project-rules.md`](../docs/project-rules.md) Part 2. Use `docs/game-organization.md` to interpret the logic and presentation responsibilities; that model does not prescribe directories or a communication mechanism.
+与技术栈无关的设计默认原则维护在 [`docs/project-rules.md`](../docs/project-rules.md) 第 2 部分，例如游戏权威状态与表现分离、显式的状态转换、组合、显式依赖、数据驱动的调参、错误处理、先测量再优化。逻辑与表现的职责用 `docs/game-organization.md` 来理解；这个模型不规定目录，也不规定通信机制。
 
-## Rule loading
+## 加载规则
 
-Load rules through the root `AGENTS.md` (**Engineering rule routing**) and [`agent-rules/00-core/README.md`](../agent-rules/00-core/README.md), reading only the matching sections and, where an affected module has one, its `validation.md`. Resolve real conflicts with the Core precedence protocol in `agent-rules/00-core/rule-precedence-and-routing.md`.
+通过根 `AGENTS.md` 的 **领域规则路由** 和 [`agent-rules/00-core/README.md`](../agent-rules/00-core/README.md) 加载规则，只读匹配的小节；受影响的模块有 `validation.md` 时一并读取。真实冲突按 `agent-rules/00-core/rule-precedence-and-routing.md` 中的 Core 优先级规程解决。
 
-## Implementing with prepared guidance
+## 按事先准备的指导实现
 
-When an approved Feature uses `implementation-guidance-godot`, the guidance follows the rule routes above and cites its sources in the Feature design. Guidance narrows what to read; it does not replace the sources or remove an obligation.
+已批准的 Feature 使用 `implementation-guidance-godot` 时，指导内容按上面的规则路由整理，并在 Feature 设计中注明来源。指导只缩小阅读范围，不替代来源，也不免除任何义务。
 
-- **The implementing Agent still reads** the guidance, the key original rule sections for its edits and validation, and the actual code, interfaces, callers and resource consumers involved. It distinguishes what it inspected directly from what the advisor reported.
-- **Before dependent implementation or resumption,** compare the guidance with the actual checkout and relevant changes. Revisit the affected sources when the goal, rules, code, interfaces, consumers or target-version facts change, when actual behavior contradicts the guidance, or when a dependency is missing. Source changes that affect the Feature's contract go through `feature-sync` first.
-- **Deviations:** the main Agent makes ordinary implementation choices within the approved design. For a material deviation, check the original sources and resolve the missing decision; consult the advisor again only within the explicit delegation. A proposed design cannot waive a rule, change AC, or establish verification or human acceptance.
+- **实现的 Agent 仍要阅读**：指导内容、本次修改和验证涉及的关键原规则小节，以及实际涉及的代码、接口、调用方和资源使用方。它要分清哪些内容是自己直接检查的，哪些是 advisor 报告的。
+- **在依赖它的实现或续接开始前**：把指导与任务实际的工作目录和相关变更对比。以下情况要重新查看受影响的来源：目标、规则、代码、接口、使用方或目标版本的事实发生变化；实际行为与指导矛盾；缺少某个依赖。影响 Feature 契约的来源变更先经过 `feature-sync`。
+- **偏离指导**：主 Agent 在已批准的设计内做普通的实现选择。出现实质性偏离时，核对原始来源，补齐缺少的决定；只在明确委托的范围内再次咨询 advisor。提出的设计不能豁免规则、修改 AC，也不能确立验证结果或人工验收。
 
-Final scope checks and evidence freshness follow [03 · Execute loop](03-execute-loop.md).
+最终的范围核对和证据时效按 [03 执行规范](03-execute-loop.md) 执行。
 
-## Contextual project knowledge
+## 情境性的项目知识
 
-`docs/knowledge/` stores contextual evidence from actual project tasks. It is not a source of mandatory engineering rules. Use the [knowledge README](../docs/knowledge/README.md) for lookup and entry maintenance.
+`docs/knowledge/` 保存来自实际项目任务的情境性证据，不是强制工程规则的来源。查找和维护条目按[知识库 README](../docs/knowledge/README.md)。
 
-An experience may be useful only under this project's particular conditions and still deserve a note. Recording knowledge does not authorize rule promotion; stable prescriptive guidance goes through [incremental rule maintenance](#incremental-rule-maintenance).
+某条经验可能只在本项目的特定条件下有用，也仍然值得记下。记录知识不授权把它提升为规则；稳定的规定性指导走[规则的增量维护](#规则的增量维护)。
 
-## Evolution and rule promotion
+## 经验的归宿与规则提升
 
-Each kind of learning has one place:
+每类经验只放一个地方：
 
-- concrete framework and language learning: the matching `agent-rules/<module>/` source, after explicit approval;
-- brief incident learning: Feature notes;
-- implementation decisions and their rationale: the Feature design;
-- reusable explanatory knowledge: its own topic under `docs/knowledge/`.
+- 具体的框架与语言经验：经明确批准后写进对应的 `agent-rules/<module>/` 来源；
+- 简短的事件经验：Feature notes；
+- 实现决定及其理由：Feature 设计；
+- 可复用的解释性知识：`docs/knowledge/` 下单独的主题。
 
-Promote only reusable, prescriptive guidance, under the contract below. Project Rules is not an incident log.
+只按下面的规程提升可复用、规定性的指导。项目规则不是事件日志。
 
-When a change would move a rule between these boundaries, check ownership and report the boundary change before editing. Do not create a parallel rule source to avoid the router.
+如果一项修改会让规则跨越上述边界，先核对归属，在编辑前报告边界变化。不要为了绕开路由另建一份并行的规则来源。
 
-## Incremental rule maintenance
+## 规则的增量维护
 
-This section is the single source for when rule changes are proposed and how they are approved and written.
+本节是规则修改何时提出、怎样批准和写入的唯一正文。
 
-### When to check
+### 何时检查
 
-The Agent looks for useful additions, amendments and removals at these points:
+Agent 在下列时机寻找值得新增、修订或删除的规则：
 
-- during Product and design work;
-- Stage 1 of `feature-execute`: surface rules that affect the proposal;
-- Stage 2: record changes that are already approved;
-- Stage 3 documentation checkpoint: resolve newly discovered material issues before dependent implementation and final verification;
-- Stage 5.5 for a Bug: assess the Guardrail under [Bug-learning promotion](07-engineering-change.md#bug-learning-promotion);
-- task completion: check whether reusable prescriptive learning is already covered by `agent-rules/`, and propose one generalized rule with its target module only when valuable guidance is missing.
+- Product 与设计工作期间；
+- `feature-execute` 的 Stage 1：提出会影响方案的规则；
+- Stage 2：记录已经批准的修改；
+- Stage 3 文档检查点：在依赖它的实现和最终验证之前，解决新发现的实质问题；
+- Bug 的 Stage 5.5：按[Bug 经验的提升](07-engineering-change.md#bug-经验的提升)评估 Guardrail；
+- 任务完成时：检查可复用的规定性经验是否已被 `agent-rules/` 覆盖；只在缺少有价值的指导时，提出一条概括后的规则并写明目标模块。
 
-Do not create a rule for every defect, duplicate an existing rule or promote Product detail. If no change is proposed, do not produce a report or placeholder. This is workflow judgment, not a Hook or an automatic rule generator.
+不要为每个缺陷都建规则，不要重复已有规则，也不要把 Product 细节提升为规则。没有提出修改时，不写报告，也不留占位。这是流程中的判断，不是 Hook，也不是自动生成规则的工具。
 
-### Self-check report
+### 自检报告
 
-Before writing any project-rule addition, deletion or edit, output a self-check report in the conversation.
+在写入任何项目规则的新增、删除或编辑之前，先在对话中输出自检报告。
 
-- The same report applies when a candidate belongs in `agent-rules` instead of `project-rules.md`; moving it does not bypass review.
-- One report may cover a batch but accounts for every changed rule.
-- A wording-only or link-only edit still gets a brief report stating that meaning, strength and scope are unchanged.
+- 候选规则应归入 `agent-rules` 而不是 `project-rules.md` 时，同样要写这份报告；换个位置不能绕过审查。
+- 一份报告可以覆盖一批修改，但要逐条说明每条改动的规则。
+- 只改措辞或链接的编辑也要写简短报告，说明含义、强度和范围都没有变化。
 
-| Report item | Required explanation |
+| 报告项 | 必须说明 |
 | --- | --- |
-| Rule and operation | Identify the rule or source and whether it is added, amended or removed. |
-| Before and after | Show the original and proposed wording; state explicitly when there is no original or the text is deleted. |
-| Reason and evidence | State the actual need, confirmed decision and available evidence; separate facts from inference. |
-| Project-level value and owner | Explain reuse beyond this Feature and why this belongs in Project Rules, a specialized rule, architecture, an ADR or local design. |
-| Scope and strength | State applicability, MUST, PREFER or REVIEW, and any explicit exception; expose semantic changes. |
-| Duplication and conflicts | Check current coverage and conflicts with rules, Product and accepted decisions. |
-| Impact and handling | Identify affected Product, Features, implementation and verification, or explain why none needs changing. |
-| Conclusion and authority | Recommend adoption, revision or rejection; distinguish decisions already authorized from those still required. |
+| 规则与操作 | 指明是哪条规则或哪个来源，以及是新增、修订还是删除。 |
+| 修改前后 | 列出原文和拟改写法；没有原文或正文被删除时明确写出。 |
+| 原因与证据 | 写明实际需求、已确认的决定和现有证据；区分事实与推断。 |
+| 项目级价值与归属 | 说明它在本 Feature 之外的复用价值，以及为什么归入项目规则、专业规则、架构、ADR 或局部设计。 |
+| 范围与强度 | 写明适用范围、属于 `[必须]`、`[优先]` 还是 `[复核]`，以及明确的例外；指出含义上的变化。 |
+| 重复与冲突 | 核对当前是否已有覆盖，是否与规则、Product 和已接受的决定冲突。 |
+| 影响与处理 | 指出受影响的 Product、Feature、实现和验证，或说明为什么都不需要改。 |
+| 结论与权限 | 建议采纳、修改或否决；区分已经获得授权的决定和仍需做出的决定。 |
 
-For a deletion, explain why the protected concern no longer applies or what now protects it.
+删除规则时，说明它原来保护的问题为什么不再存在，或现在由什么来保护。
 
-### Approval
+### 批准
 
-- Persisting an already agreed constraint or making a meaning-preserving edit needs no repeated approval.
-- New restrictions, removals and changes of meaning, strength, scope or exceptions require an explicit decision covering that change.
-- A general Feature implementation request does not authorize rule changes.
-- Cost, current style or local implementation convenience cannot alone waive a MUST.
-- When a real conflict is unresolved, stop only the affected work.
+- 把已经商定的约束写下来，或做不改变含义的编辑，不需要再次批准。
+- 新增限制、删除规则，以及修改含义、强度、范围或例外，都需要覆盖这项变化的明确决定。
+- 笼统的 Feature 实现请求不授权修改规则。
+- 成本、现有写法或局部实现的便利，单独都不能豁免一条 `[必须]` 规则。
+- 真实冲突尚未解决时，只停止受影响的工作。
 
-### Writing and follow-up
+### 写入与后续处理
 
-After approval, update the owning rule and the affected references. Merge duplicates instead of appending.
+批准后，更新规则所属的文档和受影响的引用。重复内容合并，不追加。
 
-- Assess the GDD, Product and planned or completed Features through `feature-sync` where the rule change affects their contracts.
-- During an active Feature, keep its task context and record the needed follow-up scope. The supporting synchronization is part of that authorized work and preserves its unfinished changes.
-- Resolve current conflicts and committed-source prerequisites before dependent plan writes. Complete authorized downstream synchronization before the next affected Feature.
+- 规则修改影响 GDD、Product 以及已计划或已完成 Feature 的契约时，通过 `feature-sync` 评估它们。
+- 在进行中的 Feature 里，保留它的任务上下文，并记录需要后续处理的范围。配套的源同步属于这项已获授权的工作，要保留它尚未完成的改动。
+- 在写入依赖它的计划之前，先解决当前冲突和已提交来源这一前提。在下一个受影响的 Feature 开始之前，完成已获授权的下游源同步。
 
-Workflow changes do not retroactively rewrite earlier approvals or evidence. State when an approved change applies, keep completed history, and reassess current design and tests where applicable. A blanket "next Feature only" policy cannot exempt current work from a newly confirmed hard constraint. Make final rule and design edits before Stage 4 when possible; later changes meet the normal source-freshness, verification and acceptance requirements.
+流程的修改不追溯改写之前的批准或证据。写明已批准的修改从何时生效，保留已完成的历史，必要时重新评估当前的设计和测试。笼统的“只从下一个 Feature 开始”不能让当前工作豁免一条新确认的硬性约束。尽量在 Stage 4 之前完成最终的规则与设计编辑；之后的修改要满足正常的来源时效、验证和验收要求。
 
-### Where records go
+### 记录放在哪里
 
-- The full self-check stays in the conversation by default.
-- Local rationale goes in the Feature design, important cross-Feature tradeoffs in an ADR, and necessary rule interpretation with the rule. Git holds the exact change history.
-- Progress holds only pending decisions and links.
-- An independent rule-maintenance task needs no artificial Feature.
-- Save a separate report file only when explicitly requested or needed for an agreed handoff. Do not create a rule registry or a duplicate history.
+- 完整的自检默认只留在对话中。
+- 局部理由写进 Feature 设计，重要的跨 Feature 取舍写进 ADR，必要的规则解释与规则写在一起。精确的修改历史由 Git 保存。
+- Progress 只记录待决定事项和链接。
+- 独立的规则维护任务不需要人为创建 Feature。
+- 只有在明确要求或商定的交接需要时，才另存报告文件。不建立规则登记表，也不保存重复的历史。
 
-After writing, compare the actual diff with the report and state the real validation and remaining work. This is an author self-check, not independent review or execution evidence.
+写入后，把实际差异与报告对比，说明真实的验证情况和剩余工作。这是作者自检，不是独立审核，也不是执行证据。

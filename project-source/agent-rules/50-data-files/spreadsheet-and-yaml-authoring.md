@@ -1,26 +1,26 @@
-# Spreadsheet and YAML Authoring
+# 电子表格与 YAML 编写
 
-XLSX and YAML are authoring and tooling formats unless the project explicitly adopts them as runtime dependencies.
+XLSX 和 YAML 是编写与工具格式，除非项目明确把它们作为运行时依赖。
 
 ## XLSX
 
-- **[MUST]** XLSX is design-time authoring by default, not a Godot runtime dependency.
-- **[MUST]** A row, column or cell position is not stable entity identity.
-- **[MUST]** Hidden rows and columns, color, font, border and other styles, and merged-cell presentation are not authoritative machine schema unless the schema explicitly says so.
-- **[MUST]** Merged cells in a machine table do not imply inheritance or repetition; tooling may read no value from merged cells other than the top-left one.
-- **[MUST]** The schema defines which entities are included; the physical used range and trailing blank rows carry no entity meaning.
-- **[MUST]** Exclude Office lock and temporary files from authoring discovery.
+- **[必须]** XLSX 默认是设计期的编写格式，不是 Godot 的运行时依赖。
+- **[必须]** 行、列或单元格位置不是稳定的实体身份。
+- **[必须]** 隐藏的行与列，颜色、字体、边框等样式，以及合并单元格的呈现，都不是权威的机器 schema，除非 schema 明确规定。
+- **[必须]** 机器表中的合并单元格不表示继承或重复；工具只读取合并单元格左上角的值，不读取其他位置的值。
+- **[必须]** 由 schema 决定包含哪些实体；物理上的已用范围和末尾的空行不代表实体。
+- **[必须]** 编写源发现过程中排除 Office 锁文件和临时文件。
 
-## Formula authority
+## 公式的权威性
 
-- **[MUST]** Do not assume that `openpyxl` calculates formulas; cached values may be stale.
-- **[PREFER]** Canonical inputs are literal authoritative values or values derived by the generator. Spreadsheet formulas may serve only as an authoring preview, unless an explicit formula-evaluation engine and version are part of the build contract.
-- **[MUST]** If spreadsheet formulas are authoritative, pin the recalculation engine or tool version and the CI and build behavior.
-- **[MUST]** External workbook links and volatile formulas (`NOW`, `TODAY`, `RAND` and similar) must not silently drive canonical output. Declare or eliminate those dependencies, and pass the determinism checks.
+- **[必须]** 不要假定 `openpyxl` 会计算公式；缓存的值可能已经过期。
+- **[优先]** 规范输入是字面的权威值，或由生成器派生的值。电子表格公式只能作为编写时的预览，除非构建契约中包含明确的公式求值引擎及其版本。
+- **[必须]** 电子表格公式是权威来源时，固定重新计算的引擎或工具版本，以及 CI 和构建行为。
+- **[必须]** 外部工作簿链接和易变公式（`NOW`、`TODAY`、`RAND` 等）不能悄悄驱动规范输出。声明或消除这些依赖，并通过确定性检查。
 
 ## YAML
 
-- **[MUST]** YAML is an authoring and tooling format by default. Direct runtime YAML requires an explicit parser dependency and dialect.
-- **[MUST]** Do not implement YAML parsing with line splitting or regular expressions.
-- **[MUST]** Declare a duplicate-key policy; duplicate mapping keys are errors.
-- **[MUST]** Anchors, aliases and merge keys are either explicitly supported and normalized before schema validation, or prohibited.
+- **[必须]** YAML 默认是编写与工具格式。运行时直接读取 YAML 需要明确的解析器依赖和方言。
+- **[必须]** 不要用按行拆分或正则表达式实现 YAML 解析。
+- **[必须]** 声明重复键策略；重复的映射键是错误。
+- **[必须]** 锚点、别名和合并键要么明确支持并在 schema 校验前规范化，要么禁止使用。

@@ -25,7 +25,7 @@
 ### GDD 的结构与位置
 
 - **入口**：`docs/gdd/README.md`。
-- **主题文件**：使用[标准文件名与职责](../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先规定的名称和多实例命名方式。位置由内容决定，不随游戏规模、篇幅或复杂程度变化。
+- **主题文件**：使用[标准文件名与职责](../../../project-source/methodology/01-product-doc-structure.md#gdd-文件名)中预先规定的名称和多实例命名方式。位置由内容决定，不随游戏规模、篇幅或复杂程度变化。
 - **按需创建**：保存设计时才按各主题的建立条件写入正文，不为填满目录而预建空文件。
 - **导入非标准 GDD**：已有主题暂时沿用原来的位置；新增的主题或系统使用标准路径，并从原入口链接过去。获准整体标准化时，同步修改受影响的文件和章节引用。
 - **修改已有设计**：只整理受影响的范围；路径或章节变化时，同步修改实际引用它们的地方。
@@ -34,7 +34,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 ### 设计范围与边界
 
-`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围、明确的排除项和版本边界。局部机制和表现的限制留在各自的主题里。建立和读写要求见[规范](../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。
+`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围、明确的排除项和版本边界。局部机制和表现的限制留在各自的主题里。建立和读写要求见[规范](../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)。
 
 例如：
 
@@ -54,7 +54,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 | 审核 | 判断设计能否支撑下一步 |
 | 调研或实验 | 确定要取得什么证据 |
 
-例如“背包满时，采集应该失败还是把资源掉在地上”还没决定，就记为一个开放问题，采集 Product 引用它说明交付为何受影响。决定之后，把规则写进所属的 GDD 主题，更新引用它的地方，再删除这个条目。与当前交付无关的问题可以一直保留；文件为空也不说明设计已经完整。读写规则见[开放问题规范](../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)。
+例如“背包满时，采集应该失败还是把资源掉在地上”还没决定，就记为一个开放问题，采集 Product 引用它说明交付为何受影响。决定之后，把规则写进所属的 GDD 主题，更新引用它的地方，再删除这个条目。与当前交付无关的问题可以一直保留；文件为空也不说明设计已经完整。读写规则见[开放问题规范](../../../project-source/methodology/01-product-doc-structure.md#开放问题)。
 
 ### 谁维护什么
 
@@ -69,7 +69,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 ### 候选值与未采纳的想法
 
-候选内容按[候选与未采纳想法](../../../project-source/methodology/01-product-doc-structure.md#candidate-and-unadopted-ideas)的规则分别存放：
+候选内容按[候选与未采纳想法](../../../project-source/methodology/01-product-doc-structure.md#候选与未采纳想法)的规则分别存放：
 
 - **正在比较、尚未决定的选择**：写进开放问题。
 - **已采纳规则的备选数值**：写在该规则或数值模型旁边。
@@ -91,7 +91,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 **Product 编号是稳定的身份，不是排序。** 新单元使用下一个可用编号；它成为别的单元的前置时，调整总览中的依赖和建议顺序，不重命名旧文件。删除或废弃时保留真实历史和替代关系，不为了编号连续而重排引用。
 
-**未决的交付选择只写一处**，规则见[交付决定归属](../../../project-source/methodology/01-product-doc-structure.md#delivery-decision-ownership)：
+**未决的交付选择只写一处**，规则见[交付决定归属](../../../project-source/methodology/01-product-doc-structure.md#交付决策的归属)：
 
 - 涉及多个 Product 的分工、前置或顺序，以及尚未细化的候选单元自身的选择，写在总览的“待解决规划决定”。
 - 只涉及一个已有详细文档的 Product，写在该文档的“开放决定”。
@@ -176,7 +176,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 其他注意事项：
 
 - 登记为 retired 的旧测试方法，只要还在被选中的套件里，仍然会执行。删除或替换它时要同时检查调用、文件、测试登记表和历史引用，不能抹掉失败的原件。
-- `blocked` 的具体原因和恢复条件写在 notes 里，不能用这个状态保留已失效的 ID 或已废弃的前置。正常等待尚未完成的依赖时，状态仍是 `pending`；已经开始实施的任务保持 `in_progress`，在执行记录中说明受阻情况。恢复状态不代表已经开始或完成实施，见[状态转换](../../../project-source/methodology/02-feature-list-schema.md#status-transitions)。
+- `blocked` 的具体原因和恢复条件写在 notes 里，不能用这个状态保留已失效的 ID 或已废弃的前置。正常等待尚未完成的依赖时，状态仍是 `pending`；已经开始实施的任务保持 `in_progress`，在执行记录中说明受阻情况。恢复状态不代表已经开始或完成实施，见[状态转换](../../../project-source/methodology/02-feature-list-schema.md#状态流转)。
 
 ## 先有实现、后补记录
 

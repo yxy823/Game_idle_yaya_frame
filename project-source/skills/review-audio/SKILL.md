@@ -1,14 +1,14 @@
 ---
 name: review-audio
-description: "Independently review music, sound effects and their in-game behavior against sound specifications, using actual listening evidence for perceptual claims. Use for a requested audio review. Not for producing or integrating audio."
+description: "对照声音规格独立审核音乐、音效及其游戏内表现；关于听感的结论以实际试听为依据。用于用户要求的音频审核。不用于制作或接入音频。"
 ---
 
-# Audio review
+# 音频审核
 
-Apply `methodology/12-independent-review.md`. Read applicable GDD triggers and direction, Sound Bible and resource specifications. Inspect playable samples and actual in-context playback for the claimed experience; identify how audio was heard.
+按 `methodology/12-independent-review.md` 执行。阅读适用的 GDD 触发条件和方向、Sound Bible 以及资源规格。针对所主张的体验，检查可播放的样本和实际情境中的播放；写明音频是怎样听到的。
 
-Check trigger/feedback alignment, transitions, loop joins, clipping/noise, overlap and priority, repetition fatigue, mix masking and meaningful silence as applicable. Distinguish source-file quality from runtime import/bus/mix behavior. Include relevant pause, scene change, repeated events and volume/mute conditions.
+适用时检查触发与反馈是否对齐、过渡、循环接缝、削波与噪声、叠加与优先级、重复疲劳、混音遮蔽，以及有意义的静默。区分源文件质量与运行时的导入、总线和混音行为。包括涉及的暂停、切换场景、重复事件，以及音量与静音条件。
 
-Signal statistics can support technical claims but do not prove perceived quality. If playback or actual listening is unavailable, report only checks actually possible and leave perceptual conclusions unverified. Never claim to have heard a filename, waveform summary or written style description.
+信号统计可以支撑技术结论，但不能证明听感质量。无法播放或无法实际试听时，只报告实际能做的检查，听感结论保持未验证。绝不声称从文件名、波形摘要或书面风格描述中“听到”了声音。
 
-Report reproducible time or event references and scope limits. Use `review-assets` for technical resource issues when relevant. Do not redesign the sound direction.
+报告可复现的时间点或事件引用，以及范围限制。涉及资源技术问题时使用 `review-assets`。不重新设计声音方向。

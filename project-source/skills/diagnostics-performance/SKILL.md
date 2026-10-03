@@ -1,14 +1,24 @@
 ---
 name: diagnostics-performance
-description: "Measure and diagnose a scoped Godot performance problem with reproducible workloads and comparable evidence. Use for profiling; instrumentation and fixes are separate authorized work."
+description: "用可复现的负载和可比较的证据，测量并诊断一个限定范围的 Godot 性能问题。用于性能剖析；埋点和修复是另外需要授权的工作。"
 ---
 
-# Performance profiling
+# 性能剖析
 
-Follow `methodology/11-specialist-workflows.md`, especially evidence limits. Clarify the actual symptom and workload from the task: frame-time spikes, startup/loading, simulation throughput, memory or another measured concern. Use approved budgets where present; do not invent a pass threshold.
+遵循 `methodology/11-specialist-workflows.md`，尤其是其中关于证据局限的要求。从任务中弄清实际的症状和负载：帧时间尖峰、启动/加载、模拟吞吐量、内存或其他需要测量的问题。有已批准的预算时使用它；不要编造通过阈值。
 
-Record the actual version/dirty state, Godot version, machine, execution mode, display conditions, workload and measurement tool. Select representative stable and transition scenarios; distinguish warm-up, import/editor work and steady runtime. Collect suitable distributions, spikes and trends rather than relying on average FPS alone. Retain raw captures and the comparison conditions.
+记录下列条件：
 
-Separate observation from causal explanation. Test one supported hypothesis within the authorized experiment scope; request [diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md) only if missing signals block discrimination. Temporary instrumentation changes the measured version and may perturb it. Do not generalize editor/debug measurements to a delivery configuration without evidence.
+- 实际的版本及未提交改动状态；
+- Godot 版本；
+- 机器；
+- 运行模式；
+- 显示条件；
+- 负载；
+- 测量工具。
 
-Return bottleneck evidence, confidence limits and prioritized repair proposals. An authorized fix follows the owning execution route and is remeasured against a comparable baseline with correctness checks. Profiling does not self-certify the fix or replace gdUnit results.
+选择有代表性的稳定场景和过渡场景；区分预热、导入/编辑器工作和稳定运行阶段。收集合适的分布、尖峰和趋势，不要只依赖平均 FPS。保留原始采集数据和比较条件。
+
+把观察和因果解释分开。在已授权的实验范围内，每次检验一个有依据的假设；只有缺少信号导致无法区分原因时，才请求 [diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md)。临时埋点会改变被测量的版本，也可能干扰测量结果。没有证据时，不要把编辑器或调试模式下的测量推广到交付配置。
+
+返回瓶颈的证据、置信度的局限和按优先级排列的修复建议。已获授权的修复按其所属的执行流程进行，然后在可比较的基线上重新测量，并做正确性检查。性能剖析不能自己认证修复，也不代替 gdUnit 的结果。

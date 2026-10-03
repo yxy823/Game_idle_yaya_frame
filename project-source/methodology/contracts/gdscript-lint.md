@@ -1,84 +1,84 @@
-# GDScript lint contracts and evidence
+# GDScript lint 的约定与证据
 
-The Godot parser and the bundled linter check different things. The parser decides whether a script compiles on the target Godot version. The linter reports style and size signals under the project's `gdlint.json`. The Agent runs both directly; there is no wrapper script.
+Godot 解析器和随附的 linter 检查的内容不同。解析器判断脚本能否在目标 Godot 版本上编译。linter 按项目的 `gdlint.json` 报告风格和规模方面的信号。Agent 直接运行这两者；没有包装脚本。
 
-This page explains how the Agent reads their results. The linter's patched behavior and implementation details are recorded in [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md).
+本页说明 Agent 怎样解读它们的结果。linter 打过补丁的行为和实现细节记录在 [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md)。
 
-Before running a Godot editor or import check, follow [Windows editor checks](../../agent-rules/00-core/validation-policy.md#windows-editor-checks).
+运行 Godot 编辑器检查或导入检查之前，按 [Windows 编辑器检查](../../agent-rules/00-core/validation-policy.md#windows-编辑器检查) 操作。
 
-## Direct execution
+## 直接运行
 
-Use the Godot executable recorded in `docs/methodology-config.json` and run from the project directory:
+使用 `docs/methodology-config.json` 中记录的 Godot 可执行文件，从项目目录运行：
 
 ```powershell
-# $godot is the configured executable path; run from the project directory.
+# $godot 是配置的可执行文件路径；从项目目录运行。
 & $godot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
 $LASTEXITCODE
-# Replace F001 with the actual Feature; use an unused run subdirectory if needed.
+# 把 F001 换成实际的 Feature；需要时使用一个未用过的运行子目录。
 $reportDirectory = 'reports/features/F001'
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
 & $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
 $LASTEXITCODE
 ```
 
-- With the Windows GUI executable, the PowerShell pipeline waits for the process. Read `$LASTEXITCODE` immediately; an empty exit value is not a successful check.
-- Parse the changed project scripts and the scripts that depend on them, according to the actual impact.
-- Run the lint CLI on the full `res://` scope, which respects `gdlint.json`. Dependency exclusions in that file do not waive checks when the task itself changes that dependency.
-- For work without a Feature, use `reports/maintenance/<task>/`. Saved parse output goes to the same task directory, not scratch. Choose paths and keep originals under [Reports and cleanup](../09-records-reports-and-handoff.md#reports-and-cleanup).
+- 使用 Windows GUI 可执行文件时，PowerShell 管道会等待进程结束。立即读取 `$LASTEXITCODE`；退出值为空不代表检查成功。
+- 按实际影响，解析改动过的项目脚本以及依赖它们的脚本。
+- lint CLI 对完整的 `res://` 范围运行，它遵循 `gdlint.json`。当任务本身修改了某个依赖时，该文件中对这个依赖的排除不能豁免检查。
+- 不属于 Feature 的工作使用 `reports/maintenance/<task>/`。保存的解析输出放在同一个任务目录，不放进 scratch。路径的选择和原件的保留按[报告与清理](../09-records-reports-and-handoff.md#报告与清理)处理。
 
-## Lint exit codes
+## lint 的退出码
 
-| Exit code | Meaning |
+| 退出码 | 含义 |
 | --- | --- |
-| 0 | Clean, or Info findings only |
-| 1 | Warning findings |
-| 2 | Critical findings |
-| 3 | Invalid or empty input, a missing or unreadable configuration file, an unknown `--check` ID, or a JSON output error |
+| 0 | 没有问题，或只有 Info 级发现 |
+| 1 | 有 Warning 级发现 |
+| 2 | 有 Critical 级发现 |
+| 3 | 输入无效或为空、配置文件缺失或无法读取、`--check` ID 未知，或 JSON 输出出错 |
 
-Exit 3 never becomes a successful run with a fallback policy or disabled checks. Display filters cannot change the verdict.
+退出码 3 永远不能借助降级策略或关闭检查变成一次成功的运行。显示过滤器不能改变结论。
 
-## Reading the results
+## 解读结果
 
-Check each command's exit code and original output immediately.
+立即检查每条命令的退出码和原始输出。
 
-- Keep failures. Do not overwrite a report still needed for an unresolved task; use a distinct filename or run subdirectory to keep an earlier run.
-- Report the actual checked scope, the Critical, Warning and Info counts, and any checks not run. An unknown count is not zero.
-- An unresolved required parse or lint failure blocks completion, even when the test-evidence helper passes. Tracking this is the Agent's job; there is no state file for it.
+- 保留失败结果。不要覆盖尚未解决的任务仍需要的报告；要保留之前的运行时，使用不同的文件名或运行子目录。
+- 报告实际检查的范围、Critical、Warning 和 Info 的数量，以及没有运行的检查。数量未知不等于零。
+- 必需的解析或 lint 失败尚未解决时，即使测试证据辅助工具通过，也会阻塞完成。跟踪这一点是 Agent 的工作；没有记录它的状态文件。
 
-### Metrics are signals
+### 指标只是信号
 
-Line counts, complexity and nesting are review signals, not proofs. Read the reported numbers and the function's responsibility before choosing a fix.
+行数、复杂度和嵌套深度是审核信号，不是证明。选择修复方式之前，先阅读报告的数值和函数的职责。
 
-| Field | Meaning |
+| 字段 | 含义 |
 | --- | --- |
-| `physical_lines` | Physical source lines, including blank lines and comments. Empty text has zero lines, a final newline adds no line, and CRLF and LF count the same. |
-| `code_lines` | Lines containing code or literal content after comments and strings are masked; blank and comment-only lines do not count. It is not a statement count. |
-| Function range | From the named declaration through its own body, including multiline signature lines. Following dedented members and the next function's documentation are excluded; a multiline string or expression does not end the function. |
-| `complexity` | One plus each `if`, `elif`, `for`, `while`, `match`, `and`, `or`, `&&` and `\|\|`; a ternary `if` counts once. Comments and strings do not count. It is a lexical indicator, not a control-flow proof; match arms and lambdas are not modeled separately. |
-| `max_nesting` | Relative indentation of body lines, ignoring comments and continuation lines. It is an indentation indicator, not an AST depth. |
+| `physical_lines` | 物理源码行数，包括空行和注释。空文本为零行，末尾的换行不增加行数，CRLF 和 LF 计数相同。 |
+| `code_lines` | 屏蔽注释和字符串之后，包含代码或字面量内容的行；空行和只有注释的行不计入。它不是语句数。 |
+| 函数范围 | 从具名声明开始，到它自己的函数体结束，包括多行签名的各行。不包括之后缩进更浅的成员和下一个函数的文档注释；多行字符串或表达式不会让函数提前结束。 |
+| `complexity` | 1 加上每个 `if`、`elif`、`for`、`while`、`match`、`and`、`or`、`&&` 和 `\|\|`；三元 `if` 计一次。注释和字符串不计入。它是词法上的指标，不是控制流证明；match 分支和 lambda 不单独建模。 |
+| `max_nesting` | 函数体各行的相对缩进，忽略注释和续行。它是缩进指标，不是 AST 深度。 |
 
-- `metrics.file_length` and `metrics.function_length` in `gdlint.json` select `physical` or `code`; a missing field means `physical`. Both values are always reported, and each function reports its selected `length_metric` and `line_count`.
-- Switching a threshold to `code` is a configuration change made through an engineering-change review. Do not silently reinterpret a threshold.
-- Keep necessary comments. Deleting explanation or splitting coherent work into forwarding functions is not a quality improvement.
-- Private, static and multiline methods are measured the same way. A private name does not exempt metrics or return-type checks. Engine virtual methods are exempt from the return-type check only through an explicit name list. Anonymous lambdas are not counted as named methods.
-- Unused-name checks are lexical heuristics. The native compiler's diagnostics stay authoritative.
-- Magic-number Info is a review signal. Check whether a named constant would improve the code; do not rename identifiers or change thresholds to silence a false positive. Digits inside identifiers such as `get_sha256` and inside strings are not reported.
+- `gdlint.json` 中的 `metrics.file_length` 和 `metrics.function_length` 选择 `physical` 或 `code`；字段缺失时为 `physical`。两种值都会报告，每个函数还会报告它选用的 `length_metric` 和 `line_count`。
+- 把某个阈值改成 `code` 属于配置修改，要经过工程变更评审。不要悄悄改变阈值的含义。
+- 保留必要的注释。删掉说明，或把连贯的工作拆成只做转发的函数，都不是质量改进。
+- 私有、静态和多行方法按同样的方式度量。私有名称不能豁免指标或返回类型检查。引擎虚方法只能通过明确的名称清单免除返回类型检查。匿名 lambda 不算作具名方法。
+- 未使用名称的检查是词法上的启发式判断。原生编译器的诊断仍是权威。
+- 魔法数字的 Info 是审核信号。检查用具名常量是否会让代码更好；不要为了消除误报而重命名标识符或修改阈值。`get_sha256` 这类标识符中的数字和字符串中的数字不会被报告。
 
 ### `engine-parameter-contract` Info
 
-Godot's `Logger._log_error` virtual callback requires eight parameters, so its arity is fixed by the engine. The linter still reports `params: 8` for that callback. When the project's parameter limit is lower, it adds `engine-parameter-contract` Info explaining that this one arity metric belongs to the engine interface.
+Godot 的 `Logger._log_error` 虚回调要求八个参数，所以它的参数个数由引擎决定。linter 对这个回调仍会报告 `params: 8`。当项目的参数上限更低时，它会追加一条 `engine-parameter-contract` Info，说明这一项参数个数指标属于引擎接口。
 
-- Leave the callback signature as the engine defines it.
-- The Info covers only the parameter count. Length, complexity, nesting and native signature validation still apply.
-- Any other eight-parameter method still gets the normal arity finding. Which declarations qualify is defined in [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md).
-- No filename, ignore directive or global threshold may be used to obtain this treatment.
+- 回调签名保持引擎定义的样子。
+- 这条 Info 只涉及参数个数。长度、复杂度、嵌套和原生签名校验仍然适用。
+- 其他任何八参数方法仍会得到正常的参数个数发现。哪些声明符合条件，见 [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md)。
+- 不能用文件名、忽略指令或全局阈值来获得这种处理。
 
-## Editor dock and resource import
+## 编辑器面板与资源导入
 
-The optional editor dock reads its analysis settings from the same `gdlint.json`. Personal display, export and filter preferences stay in editor settings. Opening the dock does not save the configuration; only explicit analysis-setting edits do. Generated projects do not enable the linter editor plugin by default.
+可选的编辑器面板从同一个 `gdlint.json` 读取分析设置。个人的显示、导出和过滤偏好保存在编辑器设置中。打开面板不会保存配置；只有明确编辑分析设置时才会保存。生成的项目默认不启用 linter 编辑器插件。
 
-Resource import is normal Godot editor work, not a Feature Stage or a step of static checking. If project preparation is incomplete, report the actual dependency or cache problem. Script parsing and lint do not prove that resources were imported.
+资源导入是普通的 Godot 编辑器工作，不是 Feature 的 Stage，也不是静态检查的一个步骤。项目准备未完成时，报告实际的依赖或缓存问题。脚本解析和 lint 不能证明资源已经导入。
 
-## Dependency maintenance
+## 依赖维护
 
-`addons/gdscript-linter/YAYA_PATCH.md` records the local changes and the upstream attribution. Preserve licensing. Test changed linter behavior with the configured engine; a version label or an earlier report does not prove that a new edit works.
+`addons/gdscript-linter/YAYA_PATCH.md` 记录本地修改和上游归属。保留许可信息。用配置的引擎测试改动后的 linter 行为；版本标签或之前的报告不能证明新的修改有效。

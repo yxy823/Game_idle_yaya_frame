@@ -1,203 +1,203 @@
-# 01 · GDD and Product document structure
+# 01 · GDD 与 Product 文档结构
 
-This specification defines the game design document (GDD) under `docs/gdd/` and the Product delivery documents `docs/product.md` and `docs/product/NN-<delivery>.md`. Related contracts:
+本规范定义 `docs/gdd/` 下的游戏设计文档（GDD），以及 Product 交付文档 `docs/product.md` 和 `docs/product/NN-<delivery>.md`。相关约定：
 
-- Professional specifications, UI and presentation documents, and resource handoff: [Specialist work and sources](11-specialist-workflows.md).
-- Visual and logic prototypes: [Prototypes](13-prototypes.md).
-- Project term definitions: [Project terminology](14-project-terminology.md).
+- 专业规格、UI 与表现文档、资源交接：[专业工作与来源](11-specialist-workflows.md)。
+- 视觉原型和逻辑原型：[原型](13-prototypes.md)。
+- 项目术语定义：[项目术语](14-project-terminology.md)。
 
-Write headings and prose in the configured `document_language` under [document language](05-document-language.md). Filenames and section semantics stay the same in every language.
+标题和正文使用 [文档语言](05-document-language.md) 中配置的 `document_language`。文件名和各章节的含义在任何语言下都不变。
 
-## GDD prerequisite and authority
+## GDD 前提与职责
 
-Use `design-gdd` to develop a game idea into a GDD, or to deepen, revise or consolidate the current design.
+用 `design-gdd` 把游戏想法发展成 GDD，或者深化、修改、整合当前设计。
 
-### Work that can start before a complete GDD
+### 完整 GDD 之前可以开始的工作
 
-The following work can proceed before a complete GDD, Product or Feature exists:
+在完整的 GDD、Product 或 Feature 出现之前，可以先做以下工作：
 
-- initial design discussion and the clarification that supports it;
-- numerical modeling and presentation exploration that support the initial design;
-- review of an actual draft.
+- 初步的设计讨论，以及支持讨论的澄清；
+- 支持初步设计的数值建模和表现探索；
+- 审查一份实际存在的草稿。
 
-Use the known goals, constraints and available draft, and keep assumptions and unresolved choices visible. Discussion alone writes nothing. A request to save a draft does not adopt every proposal in it. Design work does not require a ready Godot environment.
+工作时使用已知的目标、约束和现有草稿，并把假设和未决选择明确写出来。只讨论时不写任何文件。用户要求保存草稿，不等于采纳其中的每项提议。设计工作不需要就绪的 Godot 环境。
 
-During an authorized GDD authoring or consolidation task, supporting specialist work may save already confirmed specifications at their fixed locations under [Specialist work and sources](11-specialist-workflows.md), within the same writing scope. This exception does not cover unrelated specialist design or implementation.
+在已获授权的 GDD 编写或整合任务中，辅助的专业工作可以在同一写入范围内，把已确认的规格保存到[专业工作与来源](11-specialist-workflows.md)规定的固定位置。这项例外不包括无关的专业设计或实现。
 
-### Work that requires a substantive GDD
+### 需要实质 GDD 的工作
 
-Delivery planning, implementation, engineering repairs and runnable experiments require a substantive GDD under `docs/gdd/`. Other specialist work has the same prerequisite unless it is the early design support described above.
+交付规划、实现、工程修复和可运行的实验，都需要 `docs/gdd/` 下有实质 GDD。其他专业工作同样需要这个前提，上文所述的早期设计支持除外。
 
-- Read the GDD entry and the sections relevant to the task.
-- An empty directory, a directory-navigation README, a template or a page that only states its purpose is not a GDD.
-- If the GDD is missing, explain the missing design and the `design-gdd` route. Stop dependent development; do not invent gameplay or start a design interview the user did not ask for.
-- A status query may explain the current state without starting work.
+- 读取 GDD 入口，以及与任务有关的章节。
+- 空目录、目录导航 README、模板或只写明用途的页面，都不是 GDD。
+- 缺少 GDD 时，说明缺的是哪部分设计，以及 `design-gdd` 这条路由。停止依赖它的开发；不编造玩法，也不主动开始用户没有要求的设计访谈。
+- 查询状态时可以说明当前状态，不开始工作。
 
-### What the GDD owns
+### GDD 负责的内容
 
-The GDD owns game positioning, intended player experience, core loops, system rules, states, numeric behavior, content progression and game-version design scope. Use the [standard document names](#gdd-document-names), including [Design scope and boundaries](#design-scope-and-boundaries) and [Open design questions](#open-design-questions). The GDD entry links the actual source files.
+GDD 负责游戏定位、预期玩家体验、核心循环、系统规则、状态、数值行为、内容推进和游戏版本的设计范围。使用[标准文档名称](#gdd-文件名)，包括[设计范围与边界](#设计范围与边界)和[开放问题](#开放问题)。GDD 入口链接实际的源文件。
 
-- Keep the current organization unless a restructuring is authorized. Do not create empty chapters or duplicate bodies.
-- The GDD need not settle every future detail. The current delivery scope and its design dependencies must be clear before dependent planning or implementation.
-- When a design gap affects the current work, resolve it in its GDD topic and update its open question. Do not invent the missing rule in Product or Feature text.
+- 保持当前的组织方式，除非用户授权重组。不创建空章节，不重复正文。
+- GDD 不必确定未来的每个细节。但在依赖它的规划或实现开始之前，当前交付范围及其设计依赖必须清楚。
+- 设计缺口影响当前工作时，在对应的 GDD 主题中解决，并更新对应的开放问题。不在 Product 或 Feature 文本里编造缺失的规则。
 
-The GDD holds game rules and overall experience goals and links the professional documents for presentation, UI, art, audio, resources and localization. [Ownership and decisions](11-specialist-workflows.md#ownership-and-decisions) assigns those documents. Implementation design belongs in the Feature design, the current implemented structure in architecture, and executable behavior in code.
+GDD 保存游戏规则和整体体验目标，并链接表现、UI、美术、音频、资源和本地化的专业文档。这些文档的归属由[归属与决策](11-specialist-workflows.md#归属与决策)规定。实现设计写在 Feature 设计中，当前已实现的结构写在架构文档中，可执行的行为写在代码中。
 
-For example, for a shop purchase the GDD owns the purchase conditions, state effects and intended feedback. The shop UI specification and the item-arrival presentation describe how the player operates and perceives the purchase. Product selects a coherent delivery across those sources. Detailed collaboration and state ownership belong in architecture or the Feature design. `docs/game-organization.md` explains this split between logic and presentation; it does not make the GDD a logic-only document.
+例如商店购买：GDD 负责购买条件、状态影响和预期反馈；商店 UI 规格和物品到账表现描述玩家如何操作、如何感知这次购买；Product 从这些来源中选出一份连贯的交付；具体的协作关系和状态归属写在架构或 Feature 设计中。`docs/game-organization.md` 解释逻辑与表现的这种分工，但并不因此把 GDD 变成只写逻辑的文档。
 
-### Who writes the GDD
+### 谁来编写 GDD
 
-The GDD is a maintained project source. Within the user's concrete authorization:
+GDD 是持续维护的项目来源。在用户具体授权的范围内：
 
-- `design-gdd` owns overall game design and consistency across topics.
-- `design-balance` directly maintains numerical models, formulas, parameters and calculation explanations at their fixed GDD location. Ordinary specification values do not require numerical modeling.
-- `product-author` writes delivery documents, not game design.
+- `design-gdd` 负责整体游戏设计，以及各主题之间的一致性。
+- `design-balance` 直接在 GDD 的固定位置维护数值模型、公式、参数和计算说明。普通的规格数值不需要数值建模。
+- `product-author` 编写交付文档，不写游戏设计。
 
-The current task updates affected Product and professional documents and planned Features through their own Skills. No Skill has to relay another Skill's writes.
+当前任务通过各自的 Skill 更新受影响的 Product、专业文档和已规划的 Feature。任何 Skill 都不必替另一个 Skill 转交写入。
 
-### Proposals and adoption
+### 提案与采纳
 
-- A proposal is not accepted design. Adoption is also separate from calculation, runtime or experience verification.
-- File presence or a saved edit does not by itself confirm a choice. Saving a candidate never replaces an adopted value.
-- Changing an experience goal, adding a mechanic or altering another system to make a model work is an overall design decision for `design-gdd`.
-- Numerical design does not authorize edits to runtime code or resources.
-- When planned or completed work is affected, keep unrelated content and follow the source commit, synchronization and validation rules in [Specialist work and sources](11-specialist-workflows.md#ownership-and-decisions).
-- An initial GDD draft does not need Products, Features or synchronization records. The GDD needs no separate permission, tracking ledger or synchronization system.
+- 提案不是已采纳的设计。采纳也独立于计算、运行或体验验证。
+- 文件存在或保存了一次修改，本身都不能确认一个选择。保存候选值永远不会替换已采纳的值。
+- 为了让模型成立而修改体验目标、增加机制或改动另一个系统，属于整体设计决定，交给 `design-gdd`。
+- 数值设计不授权修改运行时代码或资源。
+- 已规划或已完成的工作受影响时，保留无关内容，并遵循[专业工作与来源](11-specialist-workflows.md#归属与决策)中关于来源提交、源同步和验证的规则。
+- GDD 初稿不需要 Product、Feature 或源同步记录。GDD 不需要单独的权限、跟踪台账或同步机制。
 
-### Before revising design or delivery scope
+### 修改设计或交付范围之前
 
-Check the relevant GDD design boundaries, the engineering constraints in `docs/project-rules.md` and the relevant accepted architecture decisions. A design request does not silently change an engineering rule; resolve such a conflict through [incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance).
+先核对 GDD 中的设计边界、`docs/project-rules.md` 中的工程约束，以及已接受的架构决定。设计请求不会悄悄改变工程规则；这类冲突按 [规则的增量维护](04-project-rules.md#规则的增量维护) 解决。
 
-## GDD document names
+## GDD 文件名
 
-New GDDs and authorized standardization use these exact filenames for the matching content; do not substitute similar names. Filenames stay the same in every document language; titles and prose follow `document_language`.
+新的 GDD 和获得授权的规范化整理，都对相应内容使用下表中的准确文件名，不用相近的名称代替。文件名在任何文档语言下都不变；标题和正文跟随 `document_language`。
 
-| Filename under `docs/gdd/` | Content |
+| `docs/gdd/` 下的文件名 | 内容 |
 | --- | --- |
-| `README.md` | GDD entry: a brief game introduction, the covered scope and links to the actual design files. |
-| `concept-and-experience.md` | Game concept, player context, intended experience, design principles, world premise, character identities and relationships, and the authored story outline. Narrative mechanics belong in their system file. |
-| `gameplay.md` | Core loop, representative play, relationships between systems and navigation to the game's systems. |
-| `systems/<system-key>.md` | One game system's mechanics, inputs, states, transitions, limits, rule scenarios and content-definition catalog, including branching or stateful narrative rules. Reference numerical models instead of copying them. |
-| `balance/<system-key>.md` | That system's numerical models: variables, formulas, parameter values, curves, calculation assumptions and derivations. |
-| `balance/cross-system.md` | Numerical models whose relationships span several systems. System-specific models stay in their own files and are referenced. |
-| `progression.md` | Content placement, teaching and challenge sequencing, progression goals and intended pacing. Reference content definitions and unlock rules in system files and curves in balance files. |
-| `presentation.md` | Game-level interaction, understanding, intended player feelings, recognition needs and feedback goals. Link the UI and presentation specifications, and the Art and Sound Bibles for visual style and sound standards. |
-| `design-scope-and-boundaries.md` | Overall design scope, confirmed exclusions and version boundaries, under [Design scope and boundaries](#design-scope-and-boundaries). |
-| `open-questions.md` | Current unresolved design choices and missing evidence, under [Open design questions](#open-design-questions). |
+| `README.md` | GDD 入口：简短的游戏介绍、覆盖范围，以及指向实际设计文件的链接。 |
+| `concept-and-experience.md` | 游戏概念、玩家情境、预期体验、设计原则、世界设定、角色身份与关系，以及作者编写的故事大纲。叙事机制写在其系统文件中。 |
+| `gameplay.md` | 核心循环、代表性的游玩过程、系统之间的关系，以及游戏各系统的导航。 |
+| `systems/<system-key>.md` | 一个游戏系统的机制、输入、状态、转换、限制、规则场景和内容定义目录，包括分支或有状态的叙事规则。引用数值模型，不复制。 |
+| `balance/<system-key>.md` | 该系统的数值模型：变量、公式、参数值、曲线、计算假设和推导。 |
+| `balance/cross-system.md` | 关系跨越多个系统的数值模型。单个系统的模型留在各自文件中，在这里引用。 |
+| `progression.md` | 内容投放、教学与挑战的顺序、推进目标和预期节奏。内容定义和解锁规则引用系统文件，曲线引用数值文件。 |
+| `presentation.md` | 游戏层面的交互、理解、预期玩家感受、识别需求和反馈目标。链接 UI 与表现规格，视觉风格和声音标准链接 Art Bible 与 Sound Bible。 |
+| `design-scope-and-boundaries.md` | 整体设计范围、已确认的排除项和版本边界，按[设计范围与边界](#设计范围与边界)编写。 |
+| `open-questions.md` | 当前未决的设计选择和缺少的证据，按[开放问题](#开放问题)编写。 |
 
-Use this structure from the first draft onward, whatever the game size, document length or complexity:
+无论游戏规模、文档长短或复杂度如何，从第一份草稿起就使用这个结构：
 
-- Create a file when its content is first written; do not prebuild empty topics. Keep the purpose statements of the initial pages and the first-write conditions of the scope document.
-- A system's rules always go in its `systems/<system-key>.md` file, including the first system in a draft. `gameplay.md` keeps the cross-system view and the links.
-- Numerical models always go in the `balance/` file that matches their system scope. An ordinary dimension or item count that is part of a rule stays with that rule. Named model variables, derived values and calculation explanations stay together in the balance file, and rules reference them.
+- 内容第一次写入时才创建文件，不预先建空主题。保留初始页面的用途说明，以及范围文档的首次写入条件。
+- 系统规则始终写在该系统的 `systems/<system-key>.md` 中，草稿里的第一个系统也一样。`gameplay.md` 保留跨系统视角和链接。
+- 数值模型始终写在与其系统范围匹配的 `balance/` 文件中。作为规则一部分的普通尺寸或物品数量，跟规则放在一起。命名的模型变量、派生值和计算说明放在一起写在数值文件中，由规则引用。
 
-System keys:
+系统键（system key）：
 
-- Give each distinct game system one stable lowercase hyphenated `system-key`, recorded with its link in `gameplay.md`. Reuse the same key for its balance file.
-- The key identifies the system, not its size, implementation module or writing session.
-- `cross-system` is reserved for the cross-system balance file.
-- Related models within one system share its balance file under separate headings. Do not split them into more files by complexity.
-- When a new system is confirmed, add its link to the gameplay navigation; do not create a separate registry. The GDD entry links the standard topics and the actual system and balance files.
+- 每个独立的游戏系统使用一个稳定的小写连字符 `system-key`，与其链接一起记录在 `gameplay.md` 中。它的数值文件沿用同一个键。
+- 键标识的是系统，不是系统的规模、实现模块或编写时的对话。
+- `cross-system` 保留给跨系统数值文件。
+- 同一系统内相关的模型放在该系统的数值文件中，用不同标题分开。不按复杂度拆成更多文件。
+- 确认一个新系统后，把它的链接加到玩法导航中，不另建登记表。GDD 入口链接各标准主题，以及实际的系统文件和数值文件。
 
-Content definitions follow the system that establishes their gameplay identity, even when another system consumes them. For example, ore types defined by mining stay in `systems/mining.md`; a shop references those definitions and owns its sale rules. Modeled prices and yields belong in the matching balance file, and their distribution across stages belongs in `progression.md`. Static world and character descriptions do not need an invented narrative system; choices, branches and story-state transitions do.
+内容定义跟随确立其玩法身份的系统，即使由另一个系统使用。例如由采矿定义的矿石种类留在 `systems/mining.md`；商店引用这些定义，并负责自己的出售规则。经过建模的价格和产量写在对应的数值文件中，它们在各阶段的分布写在 `progression.md` 中。静态的世界和角色描述不需要为此编造一个叙事系统；选择、分支和剧情状态转换才需要。
 
-Before naming an output or drafting a prompt for another task, read the current GDD entry. Reference the actual file and heading; do not assume that a standard topic already has content.
+为另一个任务命名输出或起草提示词之前，先读当前的 GDD 入口。引用实际的文件和标题，不要假定某个标准主题已经有内容。
 
-For an imported or differently organized GDD:
+导入的或组织方式不同的 GDD：
 
-- Edit a topic at its current location unless its migration is authorized.
-- New topics and new systems always use the standard paths above. Link them from the GDD entry and, for systems, from `gameplay.md`. Extending a rule in a current topic does not create a new topic.
-- This allows local additions without moving unrelated content or creating a second body.
-- When standardization or restructuring is authorized, move the affected content to its standard location and update every affected reference, including Product and Feature sources and professional documents.
-- Keep filenames and referenced headings while their meaning is unchanged. A necessary rename or move updates the affected paths and anchors in the same change.
+- 在主题当前所在的位置编辑，除非已授权迁移该主题。
+- 新主题和新系统始终使用上面的标准路径。从 GDD 入口链接它们；系统还要从 `gameplay.md` 链接。在当前主题中扩展一条规则，不算创建新主题。
+- 这样可以在局部补充内容，不必移动无关内容，也不会产生第二份正文。
+- 获得规范化整理或重组授权时，把受影响的内容移到标准位置，并更新所有受影响的引用，包括 Product、Feature 来源和专业文档。
+- 含义不变时，保留文件名和被引用的标题。确实需要改名或移动时，在同一次修改中更新受影响的路径和锚点。
 
-## Design scope and boundaries
+## 设计范围与边界
 
-`docs/gdd/design-scope-and-boundaries.md` is the fixed GDD document for **Design scope and boundaries** (`设计范围与边界` in Chinese). Keep the path stable, write the title and prose in `document_language`, and link it directly from the GDD entry.
+`docs/gdd/design-scope-and-boundaries.md` 是**设计范围与边界**（英文为 `Design scope and boundaries`）的固定 GDD 文档。路径保持不变，标题和正文使用 `document_language`，并从 GDD 入口直接链接。
 
-It owns the overall game-design scope, confirmed exclusions and version boundaries across game logic and presentation. Project Rules owns development constraints, collaboration and engineering principles; a long-lived or cross-system game-design boundary still belongs here.
+它负责横跨游戏逻辑与表现的整体游戏设计范围、已确认的排除项和版本边界。项目规则负责开发约束、协作和工程原则；长期有效或跨系统的游戏设计边界仍然写在这里。
 
-Keep the conditions, exceptions and useful reason with each boundary. Distinguish three cases:
+每条边界都保留它的条件、例外和有用的理由。区分三种情况：
 
-- an adopted exclusion;
-- a deferral limited to a named game version;
-- an unresolved choice or candidate.
+- 已采纳的排除；
+- 只针对某个指定游戏版本的推迟；
+- 未决的选择或候选。
 
-Missing design does not imply an exclusion.
+设计缺失不代表排除。
 
-Game versions use the names and scope defined in the GDD; do not invent a release sequence. Product links the version scope it delivers. Splitting or reordering delivery units does not change a game version, and Product keeps no separate version sequence.
+游戏版本使用 GDD 中定义的名称和范围，不编造发布顺序。Product 链接它所交付的版本范围。拆分交付单元或调整其顺序不改变游戏版本，Product 也不维护单独的版本序列。
 
-Local mechanism limits stay in their GDD topics. Local presentation or Shader constraints stay in the corresponding design or professional specification. Link them from this document only when that helps navigation. Do not collect every local rule here, and do not repeat a boundary's full body in Project Rules, Product, Feature or professional documents. When moving a boundary, update the affected references and replace the old body with a link within the authorized scope.
+局部的机制限制留在对应的 GDD 主题中。局部的表现或 Shader 约束留在对应的设计或专业规格中。只在有助于导航时才从本文档链接它们。不要把所有局部规则都收集到这里，也不要在项目规则、Product、Feature 或专业文档中重复某条边界的完整正文。移动一条边界时，在授权范围内更新受影响的引用，并把旧正文换成链接。
 
-How work uses this document:
+各项工作如何使用本文档：
 
-- For game-design discussion, delivery planning, implementation or review, read the relevant sections of this document and of the related GDD topics before proposing work or questions.
-- Apply confirmed boundaries when ruling out cases. Read Project Rules when engineering constraints affect the task.
-- Reuse unchanged context and explicit user decisions, including decisions not yet saved.
-- Pure engineering or status work does not need to load unrelated game-design material.
-- If this document has not been written yet, use the available design and confirmed constraints. A missing file does not invalidate substantive design or block discussion.
+- 游戏设计讨论、交付规划、实现或审核，在提出工作或问题之前，先读本文档以及相关 GDD 主题中与任务有关的章节。
+- 排除某种情况时，以已确认的边界为依据。工程约束影响任务时，再读项目规则。
+- 复用没有变化的上下文和用户明确的决定，包括尚未保存的决定。
+- 纯工程工作或状态查询不需要加载无关的游戏设计材料。
+- 本文档还没写时，使用现有设计和已确认的约束。文件缺失不会使实质设计失效，也不阻止讨论。
 
-How the document is written:
+本文档的编写方式：
 
-- When authorized GDD drafting first saves the game's design, `design-gdd` creates this document from the actual known scope and links it from the entry.
-- Authorized scope revisions maintain it and the necessary references as decisions settle. For a GDD that lacks this document, move only the affected scope content; do not reorganize unrelated topics.
-- Do not prefill an empty project with invented exclusions, or create a placeholder as evidence of completed design.
-- Settled decisions reuse the task's writing authorization. Changing an adopted boundary still needs the corresponding design decision.
-- Discussion-only work writes no files. When wrapping up, it names the confirmed conclusions that remain unsaved.
-- Supporting Skills return those conclusions to the current task; they do not start a separate rule-maintenance workflow.
+- 已获授权的 GDD 起草第一次保存游戏设计时，`design-gdd` 根据实际已知的范围创建本文档，并从入口链接它。
+- 随着决定逐步确定，已获授权的范围修改负责维护本文档和必要的引用。GDD 缺少本文档时，只移动受影响的范围内容，不重组无关主题。
+- 不给空项目预填编造的排除项，也不创建占位文件来证明设计已经完成。
+- 已确定的决定沿用任务的写入授权。修改已采纳的边界仍然需要相应的设计决定。
+- 只讨论的工作不写文件。收尾时说明哪些已确认的结论尚未保存。
+- 辅助 Skill 把这些结论交回当前任务，不另外开始规则维护流程。
 
-## Open design questions
+## 开放问题
 
-`docs/gdd/open-questions.md` is the fixed GDD document for **Open questions** (`开放问题` in Chinese). It owns the current unresolved game-design choices, and the missing facts or evidence that could change the design. Link it directly from the GDD entry, use descriptive question headings that other documents can reference, and write in `document_language`.
+`docs/gdd/open-questions.md` 是**开放问题**（英文为 `Open questions`）的固定 GDD 文档。它负责当前未决的游戏设计选择，以及可能改变设计的缺失事实或证据。从 GDD 入口直接链接它，用其他文档可以引用的描述性问题标题，并使用 `document_language` 编写。
 
-New projects include this file with only its purpose and an empty question list. An empty list is not substantive design, and it does not prove that all questions are settled. When authorized drafting starts from a GDD without this file, create it from the actual known questions without reorganizing unrelated topics.
+新项目附带这个文件，其中只有用途说明和空的问题列表。空列表不是实质设计，也不证明所有问题都已解决。已获授权的起草工作从一个缺少此文件的 GDD 开始时，根据实际已知的问题创建它，不重组无关主题。
 
-For each question, keep together:
+每个问题把以下内容放在一起：
 
-- the actual uncertainty;
-- links to the relevant topics and sources;
-- its effect on the design or on dependent work;
-- the decision or evidence needed to resolve it;
-- the compared alternatives or a working assumption, when known, following [Candidate and unadopted ideas](#candidate-and-unadopted-ideas).
+- 实际的不确定点；
+- 指向相关主题和来源的链接；
+- 它对设计或依赖工作的影响；
+- 解决它所需的决定或证据；
+- 已知时，写出比较过的方案或工作假设，按[候选与未采纳想法](#候选与未采纳想法)处理。
 
-Do not invent questions, or fixed IDs, scores, owners or workflow states to fill a template. Distinguish a user choice from a fact that needs investigation, calculation or play evidence. A question about a topic not yet written may describe that scope without linking a nonexistent file.
+不要为了填满模板而编造问题，或编造固定 ID、评分、负责人或流程状态。区分需要用户做的选择，和需要调查、计算或试玩证据的事实。关于尚未编写的主题的问题，可以描述该范围，不链接不存在的文件。
 
-Each game-design question has one body here. The GDD topic keeps the rule context, clearly marked working assumptions and a short link to the question. Product, Feature, professional documents and Progress link the question and explain their own dependency instead of copying it. Local delivery choices, implementation tradeoffs, execution blockers and unadopted ideas stay where they already belong; this document is not a second task backlog.
+每个游戏设计问题在这里只有一份正文。GDD 主题保留规则上下文、明确标注的工作假设和指向该问题的简短链接。Product、Feature、专业文档和 Progress 链接这个问题，并说明各自的依赖，不复制问题正文。局部的交付选择、实现取舍、执行阻塞和未采纳想法留在它们原本所属的位置；本文档不是第二份任务待办。
 
-Use the questions in the work that depends on them:
+依赖这些问题的工作这样使用它们：
 
-- GDD discussion, consolidation and scoped numerical design read the relevant questions and earlier answers before proposing more work. Authorized writing updates the affected entries.
-- Product and Feature planning, synchronization and implementation check the questions that affect the selected scope or its dependencies. State what must wait and continue independent work; an unrelated open question does not block delivery.
-- Design review checks whether remaining questions prevent the intended next use.
-- Research and authorized experiments use the relevant question to identify the needed evidence, then return the result to the design task. An observation does not by itself adopt a rule.
-- Status and continuation work use the relevant questions to explain the actual next decision.
-- Discussion-only and review-only work report findings without editing this file.
+- GDD 讨论、整合和限定范围的数值设计，在提出更多工作之前，先读相关的问题和之前的回答。已获授权的写入负责更新受影响的条目。
+- Product 和 Feature 的规划、源同步和实现，检查影响所选范围或其依赖的问题。说明哪些工作必须等待，并继续不受影响的工作；无关的开放问题不阻塞交付。
+- 设计审查检查剩余的问题是否妨碍预期的下一步使用。
+- 调研和已获授权的实验，根据相关问题确定需要的证据，再把结果交回设计任务。观察结果本身不能采纳一条规则。
+- 状态查询和续接工作，用相关问题说明实际的下一个决定。
+- 只讨论和只审查的工作报告发现，不编辑本文件。
 
-When a question is resolved within the current authorization:
+在当前授权范围内解决一个问题时：
 
-1. Put the adopted rule, its useful reason and its evidence limits in the GDD topic it belongs to.
-2. Update the live references to point to that result.
-3. Remove the resolved entry.
+1. 把采纳的规则、有用的理由和证据的局限写进它所属的 GDD 主题。
+2. 更新仍在使用的引用，让它们指向这个结果。
+3. 删除已解决的条目。
 
-A deliberately deferred uncertainty stays open with its effect and a useful revisit condition. An adopted exclusion or version deferral belongs in the scope document. Keep only current questions; Git keeps the history. An empty file means no recorded open questions, not proof of complete, adopted or validated design.
+有意推迟的不确定点保持开放，并写明它的影响和有用的重新讨论条件。已采纳的排除或版本推迟写在范围文档中。只保留当前的问题，历史由 Git 保存。空文件表示没有记录在案的开放问题，不证明设计完整、已采纳或已验证。
 
-## Candidate and unadopted ideas
+## 候选与未采纳想法
 
-Saving a proposal does not adopt it. Choose where to save it by what the current design needs, not by labels such as speculative, future or candidate:
+保存一个提案不等于采纳它。根据当前设计的需要选择保存位置，而不是根据“推测”“未来”“候选”这类标签：
 
-| Content being saved | Fixed location |
+| 要保存的内容 | 固定位置 |
 | --- | --- |
-| A current unresolved design choice, its compared alternatives and the evidence needed to choose | The corresponding question in `docs/gdd/open-questions.md`. A clearly marked working assumption used by the draft stays with its rule and links the question. |
-| Alternative values or calculations for an already adopted rule or model | `systems/<system-key>.md` for ordinary rule values, or the fixed `balance/` file for models and derivations. Mark the alternatives as unadopted and keep the adopted value. A pending choice in open questions links these values instead of copying them. Numerical derivations that support a compared mechanic also stay in the balance file; the design choice stays in open questions. |
-| An unadopted idea that no current design question depends on and that is not an alternative value of an adopted rule or model | `docs/unadopted-ideas.md`, with its useful reason, context and revisit condition when known. Do not create a system topic or an open question only to park it. |
+| 当前未决的设计选择、比较过的方案，以及做选择所需的证据 | `docs/gdd/open-questions.md` 中对应的问题。草稿使用的、明确标注的工作假设留在它的规则旁边，并链接该问题。 |
+| 已采纳规则或模型的备选数值或计算 | 普通规则数值写在 `systems/<system-key>.md`，模型和推导写在固定的 `balance/` 文件。把备选值标为未采纳，并保留已采纳的值。开放问题中的待定选择链接这些数值，不复制。支持比较某个机制的数值推导也留在数值文件中，设计选择本身留在开放问题中。 |
+| 当前没有任何设计问题依赖、也不是已采纳规则或模型备选值的未采纳想法 | `docs/unadopted-ideas.md`，已知时写明有用的理由、背景和重新讨论条件。不要只为了暂存它而创建系统主题或开放问题。 |
 
-For example, “possibly add prestige later; just keep the idea” belongs in `unadopted-ideas.md`. “Should this game's current loop include prestige?” belongs in open questions. A proposed reset-reward coefficient for an adopted prestige model stays beside that model's accepted values.
+例如，“以后可能加入转生，先把想法记下来”写进 `unadopted-ideas.md`；“本游戏当前的循环是否包含转生？”写进开放问题；为已采纳的转生模型提出的重置奖励系数，留在该模型已接受的数值旁边。
 
-When an idea becomes part of a current comparison, move its proposal into the corresponding question and leave only a link in the ideas file. On adoption, move the settled content to its GDD or professional document and replace any remaining idea entry with that link. When closing a question, keep an unchosen idea only if it is still worth retaining, at the location the table selects; remove obsolete alternatives instead of keeping a second current body. Product candidates follow [Delivery decision ownership](#delivery-decision-ownership), and presentation alternatives follow [Game presentation documents](11-specialist-workflows.md#game-presentation-documents); this section does not move them into the ideas file.
+当一个想法进入当前的比较时，把它的提案移到对应的问题中，想法文件里只留链接。采纳后，把已确定的内容移到 GDD 或专业文档中，并把剩下的想法条目换成指向它的链接。关闭一个问题时，未被选中的想法只有仍值得保留时才保留，放在上表选定的位置；过时的备选方案直接删除，不保留第二份当前正文。Product 候选遵循[交付决策的归属](#交付决策的归属)，表现方案的备选遵循[游戏表现文档](11-specialist-workflows.md#游戏表现文档)；本节不把它们移进想法文件。
 
-Within the current writing authorization, `design-gdd` maintains these locations. `project-grill-me` returns conclusions to `design-gdd`, or saves an idea in `docs/unadopted-ideas.md` when the user explicitly asks to park it. Discussion alone writes nothing. These records do not authorize implementation or replace the GDD prerequisite.
+在当前的写入授权范围内，由 `design-gdd` 维护这些位置。`project-grill-me` 把结论交回 `design-gdd`；用户明确要求暂存某个想法时，它把想法保存到 `docs/unadopted-ideas.md`。只讨论时不写任何文件。这些记录不授权实现，也不能代替 GDD 前提。
 
-## Design and delivery structure
+## 设计与交付结构
 
 ```text
 docs/
@@ -208,92 +208,92 @@ docs/
     └── 01-<delivery>.md    ← Written when this Product becomes current
 ```
 
-GDD describes the game; Product describes how the selected design is delivered in verifiable units. A Product may cover one system, part of a system or a coherent outcome across systems, and it need not match one GDD chapter. For example, manual gathering can be one Product while automation stays a later candidate in the same gathering design.
+GDD 描述游戏；Product 描述如何把选定的设计分成可验证的单元交付。一个 Product 可以覆盖一个系统、系统的一部分，或跨系统的一个连贯成果，不必对应 GDD 的某一章。例如，手动采集可以是一个 Product，而同一采集设计中的自动化仍是后续的候选。
 
-`product.md` pre-decomposes the agreed delivery horizon into short candidates. A `product/NN-<delivery>.md` document is written only when its Product becomes current, and its Features are planned before the next Product is detailed. [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) defines this order. A pre-decomposition is not a fixed commitment; adjust later candidates as delivery results change the intended sequence.
+`product.md` 把约定的交付规划范围预拆分成简短的候选。`product/NN-<delivery>.md` 只在对应 Product 成为当前 Product 时才编写，并且在细化下一个 Product 之前先规划完它的 Feature。这个顺序由 [逐个 Product 规划](02-feature-list-schema.md#逐个-product-规划) 规定。预拆分不是固定承诺；交付结果改变预期顺序时，调整后续候选。
 
-The initial `product.md` states only its purpose; it is neither design nor a delivery plan. Write delivery content from the [templates](templates/README.md). Find detailed Products through the links in `product.md` and the [Product filename](#product-filenames) pattern.
+初始的 `product.md` 只写明用途，它既不是设计，也不是交付计划。交付内容按[模板](templates/README.md)编写。通过 `product.md` 中的链接和 [Product 文件名](#product-文件名)规则找到已细化的 Product。
 
-Product documents describe the current delivery scope only. They have no change-history section; Git keeps earlier versions. When the reason for a current boundary or order helps later decisions, state it beside that boundary.
+Product 文档只描述当前的交付范围。它们没有变更历史章节，旧版本由 Git 保存。当前某条边界或顺序的理由对以后的决定有帮助时，把理由写在该边界旁边。
 
-### Delivery outcomes and prerequisites
+### 交付成果与前提
 
-Describe each Product by the observable capability it delivers, not only by a system, GDD chapter or code layer. Check that the boundary keeps a coherent result. For example, manual gathering may include collecting a resource, seeing the amount and handling the confirmed capacity limit. The precise rules still come from the GDD; this example adds no requirement to another Product.
+用 Product 交付的可观察能力来描述它，而不只是用系统、GDD 章节或代码层来描述。检查边界是否保留了一个连贯的结果。例如，手动采集可能包括收集资源、看到数量，以及处理已确认的容量上限。具体规则仍来自 GDD；这个例子不给其他 Product 增加要求。
 
-For each prerequisite:
+对每个前提：
 
-- Identify the result or decision it supplies, and which part of this delivery cannot proceed without it.
-- Distinguish a required prerequisite from a preferred work order.
-- Note when an already delivered capability satisfies it. A later Product's shared rule can be resolved without implementing that whole Product.
+- 说明它提供什么结果或决定，以及本次交付的哪一部分缺了它就无法推进。
+- 区分必需的前提和只是更好的工作顺序。
+- 已交付的能力已经满足某个前提时，写明这一点。后续 Product 中的共用规则可以先确定下来，不必实现整个 Product。
 
-Keep these reasons in the dependency and integration sections of the Product documents, not in a new ledger or state field.
+这些理由写在 Product 文档的依赖和集成章节中，不新建台账或状态字段。
 
-## When to create a Product
+## 何时创建 Product
 
-- **Create a Product** when a distinct, coherent outcome should be delivered and verified as the next unit. One system can span several Products, and one Product can integrate parts of several systems.
-- **Extend the current Product** when the adopted change stays within its delivery goal. Reassess the current Feature coverage instead of creating a duplicate plan.
-- **Revise a later candidate** in `product.md` when its boundary or order changes. Detail it only after the current Product's required Features are complete.
+- **新建 Product**：一个独立、连贯的成果应作为下一个单元交付并验证时。一个系统可以跨多个 Product，一个 Product 也可以集成多个系统的部分内容。
+- **扩展当前 Product**：已采纳的变化仍在当前交付目标之内时。重新评估当前 Feature 的覆盖，不新建重复的计划。
+- **修改后续候选**：`product.md` 中某个候选的边界或顺序变化时。等当前 Product 的必需 Feature 全部完成后再细化它。
 
-When the boundary is unclear, use `product-author`; it decides the route.
+边界不清楚时，使用 `product-author`，由它决定路由。
 
-## Product filenames
+## Product 文件名
 
-- Name each detailed Product `docs/product/NN-<delivery>.md`: a two-digit number, a hyphen, then a lowercase kebab-case ASCII slug naming the delivered outcome, such as `01-manual-gathering.md`, `02-gathering-automation.md` or `03-ore-selling.md`.
-- Allocate the filename when writing the current Product. The number is a stable identity, not the execution order; **Dependencies and suggested order** in `product.md` sets the order.
-- Never renumber. A new Product takes the next unused number, even when it is a prerequisite of an earlier Product.
-- Do not delete an obsolete Product document. Rename it in place in `docs/product/` by adding `_obsolete-` before the full filename, for example `_obsolete-03-ore-selling.md`. Its number stays allocated. Product discovery reads only filenames that start with the two-digit number, so renamed files are not current Products.
+- 每个细化的 Product 命名为 `docs/product/NN-<delivery>.md`：两位数字、一个连字符，再加一个小写 kebab-case ASCII 短名，说明交付的成果，例如 `01-manual-gathering.md`、`02-gathering-automation.md` 或 `03-ore-selling.md`。
+- 编写当前 Product 时分配文件名。编号是稳定的身份标识，不代表执行顺序；顺序由 `product.md` 中的**依赖与建议顺序**决定。
+- 永远不重新编号。新 Product 使用下一个未用过的编号，即使它是某个更早 Product 的前提。
+- 不删除作废的 Product 文档。在 `docs/product/` 中原地改名，在完整文件名前加上 `_obsolete-`，例如 `_obsolete-03-ore-selling.md`。它的编号仍然占用。查找 Product 时只读取以两位数字开头的文件名，因此改名后的文件不再是当前 Product。
 
-## Standard `product.md` sections
+## `product.md` 标准章节
 
-Write these sections in this order. A document rendered from the template keeps every template section; when a section does not apply, keep its heading and state that it does not apply. A project may add specialized sections, but the standard sections must stay easy to find.
+按下表顺序编写这些章节。从模板生成的文档保留模板的每个章节；某个章节不适用时，保留标题并写明不适用。项目可以增加专门的章节，但标准章节必须容易找到。
 
-| Section semantics | Required? | Content |
+| 章节含义 | 是否必需 | 内容 |
 | --- | --- | --- |
-| Design entry and delivery horizon | Yes | Link the actual GDD entry and the relevant game-version scope; identify which agreed scope this pre-decomposition covers. |
-| Product pre-decomposition | Yes | Each candidate's delivery outcome, rough included and deferred boundary, and precise GDD references. Link a detailed Product document only after it exists. |
-| Dependencies and suggested order | Yes | Prerequisite outcomes and the current recommended sequence, including cross-system decisions that affect the current Product. |
-| Planning decisions to resolve | Yes | Unresolved delivery choices that span several Products or concern a candidate without a detailed document, under [Delivery decision ownership](#delivery-decision-ownership). Link questions owned by the GDD or a detailed Product. |
+| 设计入口与交付规划范围 | 是 | 链接实际的 GDD 入口和相关的游戏版本范围；说明本次预拆分覆盖哪部分约定范围。 |
+| Product 预拆分 | 是 | 每个候选的交付成果、大致的包含和推迟边界，以及精确的 GDD 引用。只有细化的 Product 文档已经存在时才链接它。 |
+| 依赖与建议顺序 | 是 | 作为前提的成果和当前建议的顺序，包括影响当前 Product 的跨系统决定。 |
+| 待决定的规划问题 | 是 | 跨越多个 Product、或涉及尚无细化文档的候选的未决交付选择，按[交付决策的归属](#交付决策的归属)处理。由 GDD 或细化的 Product 负责的问题只链接。 |
 
-Do not repeat the GDD's positioning, target users, core-loop body, system inventory, game-version content or visual and audio direction; a short navigational summary is enough. The game-system inventory and the Product delivery list answer different questions and need not contain the same entries. Execution state stays in the Feature ledger and Progress, not in a Product status field.
+不重复 GDD 中的定位、目标用户、核心循环正文、系统清单、游戏版本内容或视觉与声音方向；一段简短的导航摘要就够了。游戏系统清单和 Product 交付列表回答的是不同的问题，条目不必相同。执行状态记录在 Feature 台账和 Progress 中，不在 Product 的状态字段中。
 
-## Standard `product/NN-<delivery>.md` sections
+## `product/NN-<delivery>.md` 标准章节
 
-Write this document only when its Product becomes current. The filename number identifies it; it does not set execution order or show implementation progress.
+只在对应 Product 成为当前 Product 时编写本文档。文件名中的编号用于标识它，不规定执行顺序，也不显示实现进度。
 
-A Product document makes the delivery boundary precise without copying game-design rules. A rendered template keeps its standard headings and marks sections that do not apply. Add delivery-specific sections when useful. Behavior, formulas, data definitions and state machines stay in their GDD source.
+Product 文档把交付边界写准确，但不复制游戏设计规则。从模板生成的文档保留标准标题，并标出不适用的章节。有用时可以增加针对本次交付的章节。行为、公式、数据定义和状态机留在它们的 GDD 来源中。
 
-| Section semantics | Content |
+| 章节含义 | 内容 |
 | --- | --- |
-| Delivery goal | The coherent, observable outcome this Product adds. |
-| Design sources | Precise GDD sections and relevant professional-document links, stating how each applies. |
-| Included and deferred scope | The adopted part of the design, its boundaries and the work intentionally left for later. An exclusion cannot silently change the design. |
-| Prerequisites and integration | Delivered outcomes, interfaces and shared rules this Product depends on, with links to their sources. |
-| Acceptance scenarios | End-to-end delivery scenarios and observable results derived from the sources. Feature planning owns task-sized AC and test mappings. |
-| Open decisions | Unresolved delivery choices confined to this Product, under [Delivery decision ownership](#delivery-decision-ownership). Link questions owned by the GDD or by `product.md`, and identify this delivery's dependent work. |
+| 交付目标 | 本 Product 新增的连贯、可观察的成果。 |
+| 设计来源 | 精确的 GDD 章节和相关专业文档的链接，并说明每项如何适用。 |
+| 包含与推迟的范围 | 设计中被采纳的部分、它的边界，以及有意留到以后的工作。排除项不能悄悄改变设计。 |
+| 前提与集成 | 本 Product 依赖的已交付成果、接口和共用规则，并链接它们的来源。 |
+| 验收场景 | 从来源推导出的端到端交付场景和可观察结果。任务粒度的 AC 和测试映射由 Feature 规划负责。 |
+| 待定决策 | 只限于本 Product 的未决交付选择，按[交付决策的归属](#交付决策的归属)处理。由 GDD 或 `product.md` 负责的问题只链接，并指出本次交付中依赖它的工作。 |
 
-### Delivery decision ownership
+### 交付决策的归属
 
-Store each unresolved delivery choice once, at the first matching row below. Other documents that depend on it state their own dependency without repeating the question.
+每个未决的交付选择只保存一次，位置取下表中第一条匹配的行。依赖它的其他文档说明各自的依赖，不重复问题。
 
-| Decision scope | Fixed location |
+| 决策范围 | 固定位置 |
 | --- | --- |
-| A game rule, intended experience or game-version design boundary is unresolved | `docs/gdd/open-questions.md`; Product only links it. |
-| The choice changes the allocation, prerequisites or relative order of two or more identified Products | `docs/product.md` → Planning decisions to resolve, even when one affected Product already has a detailed document. |
-| The choice is confined to one Product that has a detailed document | That `docs/product/NN-<delivery>.md` → Open decisions. |
-| The choice is confined to a candidate whose detailed document has not been written | `docs/product.md` → Planning decisions to resolve, until that Product is detailed. |
+| 游戏规则、预期体验或游戏版本的设计边界未决 | `docs/gdd/open-questions.md`；Product 只链接它。 |
+| 选择会改变两个或更多已确定 Product 之间的分配、前提或相对顺序 | `docs/product.md` → 待决定的规划问题，即使其中一个受影响的 Product 已有细化文档。 |
+| 选择只限于一个已有细化文档的 Product | 该 `docs/product/NN-<delivery>.md` → 待定决策。 |
+| 选择只限于一个尚未编写细化文档的候选 | `docs/product.md` → 待决定的规划问题，直到该 Product 被细化。 |
 
-For example, whether the current backpack delivery includes already-designed keyboard navigation belongs in that Product's Open decisions when no allocation to another Product is being decided. Assigning the same work between the backpack Product and an identified accessibility Product belongs in `product.md`. Leaving work for an unspecified future delivery does not make the first question cross-Product.
+例如，当前背包交付是否包含已经设计好的键盘导航：如果没有在决定把它分配给另一个 Product，这个问题写在该 Product 的“待定决策”中。如果要在背包 Product 和一个已确定的无障碍 Product 之间分配同一项工作，就写在 `product.md` 中。把工作留给一个未指定的未来交付，不会让前一个问题变成跨 Product 问题。
 
-Moving and closing decisions:
+移动和关闭决策：
 
-- When detailing a candidate, move its still-open local delivery questions from `product.md` into the new document and replace them with links. Cross-Product questions stay in `product.md`.
-- When a question's scope changes, move its body to the location that now matches and update live references in the same authorized edit.
-- When a question is resolved, write the adopted boundary, prerequisite or order in the matching Product section, with a short reason when useful. Remove the open entry and update affected references. Do not keep a second question ledger.
+- 细化一个候选时，把它仍未解决的局部交付问题从 `product.md` 移到新文档中，并在原处换成链接。跨 Product 的问题留在 `product.md`。
+- 问题的范围变化时，把它的正文移到现在匹配的位置，并在同一次已获授权的编辑中更新仍在使用的引用。
+- 问题解决时，把采纳的边界、前提或顺序写进匹配的 Product 章节，有用时附上简短理由。删除开放条目并更新受影响的引用。不保留第二份问题台账。
 
-## Anti-examples
+## 反例
 
-- Do not put implementation choices, such as a vector type or a pathfinding algorithm, in GDD or Product documents. They belong in Project Rules, code or implementation notes.
-- Do not copy GDD flows, states or numeric rules into Product. Link the precise source and explain how it applies to the delivery.
-- Do not describe numeric behavior with subjective terms such as “high damage”; settle the formula or concrete value in the GDD.
-- Do not use subjective acceptance language such as “renders smoothly”; state an observable threshold or outcome.
-- Do not put parked ideas in active requirements. Use [Candidate and unadopted ideas](#candidate-and-unadopted-ideas) to distinguish a current design question, an alternative rule value and an idea saved for later. None of these records adopts a requirement or authorizes development.
+- 不要把实现选择（例如向量类型或寻路算法）写进 GDD 或 Product 文档。它们属于项目规则、代码或实现说明。
+- 不要把 GDD 的流程、状态或数值规则复制到 Product 中。链接精确的来源，并说明它如何适用于本次交付。
+- 不要用“伤害很高”这类主观说法描述数值行为；在 GDD 中确定公式或具体数值。
+- 不要用“渲染流畅”这类主观验收措辞；写出可观察的阈值或结果。
+- 不要把暂存的想法放进有效需求。用[候选与未采纳想法](#候选与未采纳想法)区分当前的设计问题、规则的备选值和留待以后的想法。这些记录都不会采纳需求，也不授权开发。

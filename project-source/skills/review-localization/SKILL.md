@@ -1,14 +1,14 @@
 ---
 name: review-localization
-description: "Independently review locale coverage, translation fidelity and locale-sensitive presentation. Use for a requested localization review. Not for specification writing (design-localization-spec) or translation and runtime implementation (content-localization)."
+description: "独立审核语言区域覆盖、译文忠实度和受语言区域影响的显示。用于用户要求的本地化审核。不用于编写规格（design-localization-spec），也不用于翻译和运行时实现（content-localization）。"
 ---
 
-# Localization review
+# 本地化审核
 
-Apply `methodology/12-independent-review.md`. Read intended locales, source text, domain definitions and localization specification, then compare actual resources and displayed flows for the selected coverage.
+按 `methodology/12-independent-review.md` 执行。阅读目标语言区域、源文本、领域定义和本地化规格，再针对选定的覆盖范围，比较实际的资源和显示流程。
 
-Check omissions/fallback, mistranslation and consistency, variable/plural integrity, formatting, font coverage, line wrapping/truncation, locale switching and applicable direction/input conventions. Separate mechanically checked completeness from linguistic judgment and actual visual inspection. Scope language confidence; do not label untranslated meaning as correct merely because keys match.
+适用时检查遗漏与回退、误译与一致性、变量与复数的完整性、格式、字体覆盖、换行与截断、语言区域切换，以及书写方向与输入习惯。把机器检查的完整性、语言判断和实际的视觉检查分开。限定语言判断的把握范围；不能因为键名匹配，就把未翻译的含义标为正确。
 
-Source-language ambiguity goes back to its owner rather than being resolved by inventing translated behavior. Language coverage and convention changes belong to `design-localization-spec`; runtime fixes belong to `content-localization` under separate implementation authorization. Compare actual term usage with the **Term translations** section of `docs/localization/localization-spec.md` (methodology 11 **Localization term translations**) and the linked domain definitions. Proposed terminology is not an approved entry. A screenshot of one locale cannot validate other locale layouts.
+源语言有歧义时，交回其负责方，不靠编造译文行为来解决。语言覆盖和惯例的变更属于 `design-localization-spec`；运行时修复在单独的实现授权下属于 `content-localization`。把实际的术语用法与 `docs/localization/localization-spec.md` 的 **术语译名** 章节（methodology 11 的 **本地化术语译名**）以及其中链接的领域定义比较。拟议的术语不是已批准的条目。一个语言区域的截图不能验证其他语言区域的布局。
 
-Return locale and flow coverage, concrete key, text or screen references, findings and remaining human-language checks.
+返回语言区域与流程的覆盖范围、具体的键、文本或画面引用、发现，以及仍需人工完成的语言检查。

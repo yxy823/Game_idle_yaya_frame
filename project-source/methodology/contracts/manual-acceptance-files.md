@@ -1,80 +1,80 @@
-# Manual acceptance files
+# 人工验收文件
 
-This contract defines the Stage 4 checklist and the Stage 5 result file for a `manual` Feature. Each Feature's `verification.acceptance_mode` decides whether it applies; an `automated` Feature does not create an empty manual checklist. The project only exchanges files. No external application, launcher, service or tool-specific metadata is required or inspected.
+本约定规定 `manual` Feature 在 Stage 4 使用的清单和 Stage 5 使用的结果文件。是否适用由每个 Feature 的 `verification.acceptance_mode` 决定；`automated` Feature 不创建空的人工清单。项目只交换文件，不需要也不检查任何外部应用、启动器、服务或特定工具的元数据。
 
-## Definitions and preparation
+## 定义与准备
 
-The approved Feature defines the obligations in `acceptance_criteria[].verification.manual_checks` and `verification.manual_regression`. The Agent expands them into a checklist using [the checklist template](../templates/manual-acceptance-checklist.json.tmpl).
+已批准的 Feature 在 `acceptance_criteria[].verification.manual_checks` 和 `verification.manual_regression` 中定义人工义务。Agent 用[清单模板](../templates/manual-acceptance-checklist.json.tmpl)把它们展开成清单。
 
-- Give the entry scene, initial state, ordered inputs, observable expected feedback and any necessary reset.
-- Include timing, build or device, parameters or seed when relevant.
-- Check coverage against the AC and the actual implementation. Structural validation cannot prove the steps are sufficient.
-- Feature notes link the checklist and keep decisions; they do not copy its steps.
+- 写明入口场景、初始状态、按顺序的输入、可观察的预期反馈，以及必要的重置。
+- 有关时，写明时机、构建版本或设备、参数或随机种子。
+- 对照 AC 和实际实现检查覆盖情况。结构校验不能证明步骤足够。
+- Feature notes 链接清单并记录决定，不复制清单的步骤。
 
-Use UTF-8 JSON (a UTF-8 BOM is accepted), without comments, trailing commas or duplicate object keys. Input and result use the same structure:
+使用 UTF-8 JSON（接受 UTF-8 BOM），不带注释、尾随逗号或重复的对象键。输入和结果使用同一个结构：
 
-| Field | Contract |
+| 字段 | 约定 |
 | --- | --- |
-| `schema_version` | Number `1`. |
-| `feature_id` | The current `F0XX`. One file contains one Feature. |
-| `title`, `description` | Optional strings; human-readable content follows the project document language. |
-| `snapshot` | `null` in an unprepared draft; `prepare-manual` fills in `git_revision` and `working_tree_fingerprint`. Users keep these fields unchanged in the result. |
-| `tests` | Nonempty array covering every approved manual obligation. AC verified only automatically are not turned into manual work. |
-| `tests[].id` | Unique, nonempty and stable across the checklist and result, for example `F001-AC01-M01`. Do not match by title or array position. |
-| `tests[].source_ref` | `AC01/1` identifies the first manual check under AC01 (one-based); `manual_regression` identifies the Feature's manual regression obligation. Every current reference is covered, and several cases may cover one reference. These references belong to the bound snapshot, not to a separate registry. |
-| `tests[].title`, `tests[].expected_result` | Nonempty strings describing the operation and observable result. |
-| `tests[].preconditions`, `tests[].steps` | Arrays of nonempty strings; preconditions defaults to `[]`, steps requires at least one entry. |
-| `tests[].status`, `tests[].comment` | `pending`, `passed` or `failed` (default `pending`), and a string for actual observations (default empty). A new checklist has every status `pending` and every comment empty. |
+| `schema_version` | 数字 `1`。 |
+| `feature_id` | 当前的 `F0XX`。一个文件只包含一个 Feature。 |
+| `title`、`description` | 可选字符串；供人阅读的内容使用项目的文档语言。 |
+| `snapshot` | 未准备的草稿中为 `null`；`prepare-manual` 填入 `git_revision` 和 `working_tree_fingerprint`。用户在结果中保持这些字段不变。 |
+| `tests` | 非空数组，覆盖每一项已批准的人工义务。只靠自动验证的 AC 不转成人工工作。 |
+| `tests[].id` | 唯一、非空，在清单和结果中保持稳定，例如 `F001-AC01-M01`。不要按标题或数组位置匹配。 |
+| `tests[].source_ref` | `AC01/1` 表示 AC01 下的第一项人工检查（从 1 开始计数）；`manual_regression` 表示该 Feature 的人工回归义务。每个当前引用都要被覆盖，多个用例可以覆盖同一个引用。这些引用属于绑定的快照，不属于单独的登记表。 |
+| `tests[].title`、`tests[].expected_result` | 非空字符串，描述操作和可观察的结果。 |
+| `tests[].preconditions`、`tests[].steps` | 非空字符串组成的数组；preconditions 默认为 `[]`，steps 至少要有一项。 |
+| `tests[].status`、`tests[].comment` | 取 `pending`、`passed` 或 `failed`（默认 `pending`），以及记录实际观察的字符串（默认为空）。新清单中每个 status 都是 `pending`，每个 comment 都为空。 |
 
-Other fields are allowed and ignored by the acceptance logic, so do not put required acceptance meaning in them. The returned result keeps the known definitions and associations; only `status` and `comment` carry user edits. Changes to AC, steps or expected results go through the Feature revision route in `feature-sync`.
+允许出现其他字段，验收逻辑会忽略它们，所以不要把必需的验收含义放进其他字段。返回的结果保留已知的定义和对应关系；只有 `status` 和 `comment` 承载用户的编辑。修改 AC、步骤或预期结果，走 `feature-sync` 中的 Feature 修订路线。
 
-Keep both originals under `reports/manual-acceptance/`, normally `reports/manual-acceptance/F001/manual-acceptance-checklist.json` and `reports/manual-acceptance/F001/manual-acceptance-checklist.result.json`.
+两份原件都保存在 `reports/manual-acceptance/` 下，通常是 `reports/manual-acceptance/F001/manual-acceptance-checklist.json` 和 `reports/manual-acceptance/F001/manual-acceptance-checklist.result.json`。
 
-- For another attempt, use a separate directory when earlier evidence must stay.
-- These names are conventions; the explicit paths and the file content determine identity.
-- If a submitted result arrives elsewhere, copy it into this directory and keep the submitted original.
-- Do not overwrite the checklist with results.
-- Retention and Git handling follow [Reports and cleanup](../09-records-reports-and-handoff.md#reports-and-cleanup). Moving to another machine needs the referenced originals, not just a commit or a Markdown summary.
+- 再次验收时，如果必须保留之前的证据，使用单独的目录。
+- 这些文件名只是约定；身份由明确的路径和文件内容决定。
+- 提交的结果放在别处时，把它复制进这个目录，并保留提交的原件。
+- 不要用结果覆盖清单。
+- 保留与 Git 处理按[报告与清理](../09-records-reports-and-handoff.md#报告与清理)执行。换到另一台机器时，需要被引用的原件，而不只是一个提交或一份 Markdown 摘要。
 
-After writing the draft, bind it to the final implementation:
+写完草稿后，把它绑定到最终的实现：
 
 ```powershell
 python -B tools/features/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
 ```
 
-This validates coverage and records the actual snapshot. It does not invent steps or run tests. A prepared file cannot be bound again, so finish code and contract changes first. Which later edits invalidate the snapshot is defined by the [content fingerprint](../08-test-traceability-and-evidence.md#content-fingerprint).
+这一步校验覆盖情况并记录实际的快照。它不编造步骤，也不运行测试。准备过的文件不能再次绑定，所以先完成代码和契约的修改。哪些之后的编辑会让快照失效，由[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)决定。
 
-Give the user a clickable checklist path and a short explanation of how to run the checks and return the result. No second hand-maintained checklist or mandatory report is needed.
+给用户一个可点击的清单路径，并简短说明怎样执行检查、怎样返回结果。不需要第二份手工维护的清单，也不强制要求报告。
 
-## Receive actual user results
+## 接收用户的实际结果
 
-Read the user's submitted file and comments before recording it.
+记录之前，先阅读用户提交的文件和评论。
 
-- A submitted, valid result in which every required case is `passed` is the user's explicit acceptance of that checklist's scope. Do not ask for another acceptance phrase.
-- Contradictory or ambiguous comments need clarification of that specific issue.
-- The parser compares structure and status only. It does not check natural-language meaning, user identity or whether a person actually performed the actions.
-- Do not import Agent-generated passing samples, and do not treat a file found on disk as human acceptance.
+- 一份已提交的有效结果，如果每个必需用例都是 `passed`，就是用户对这份清单范围的明确接受。不要再要求一句接受的话。
+- 评论之间矛盾或含义不清时，只就那个具体问题请用户澄清。
+- 解析器只比较结构和状态。它不检查自然语言的含义、用户身份，也不检查是否真的有人执行了这些操作。
+- 不要导入 Agent 生成的通过样例，也不要把磁盘上找到的文件当作人工验收。
 
 ```powershell
 python -B tools/features/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json --result reports/manual-acceptance/F001/manual-acceptance-checklist.result.json
 ```
 
-The importer matches IDs and definitions with the unchanged original, checks the Feature and source references and the original snapshot against the current content, and derives the status:
+导入工具把 ID 和定义与未改动的原件匹配，对照当前内容检查 Feature、来源引用和原始快照，然后推导状态：
 
-- `accepted`: all cases passed;
-- `rejected`: any case failed;
-- `pending`: otherwise.
+- `accepted`：所有用例都通过；
+- `rejected`：有任一用例失败；
+- `pending`：其他情况。
 
-A successful command means the actual status was recorded. It does not mean acceptance passed or the Feature is done. An invalid file returns a nonzero exit code and leaves the recorded evidence unchanged. Stop that import and resolve the reported mismatch; do not fall back to an earlier acceptance.
+命令成功只表示实际状态已被记录，不表示验收通过或 Feature 已完成。无效文件会返回非零退出码，已记录的证据保持不变。停止这次导入并解决报告的不一致；不要退回到之前的验收。
 
-The completion evidence keeps the original snapshot and `human_acceptance.source` with project-relative `checklist` and `result` paths. Completion validation rereads those originals. Missing files, changed definitions, stale content or results that are no longer all `passed` block file-based acceptance. No per-item copy or second result ledger is created. Freshness follows the [content fingerprint](../08-test-traceability-and-evidence.md#content-fingerprint); reports are outside it, so saving user results does not invalidate the tested implementation.
+完成证据保存原始快照，以及带项目相对路径 `checklist` 和 `result` 的 `human_acceptance.source`。完成校验会重新读取这些原件。文件缺失、定义被改动、内容过时，或结果不再全部为 `passed`，都会阻塞基于文件的验收。不会创建逐项的副本或第二份结果台账。时效按[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)判断；报告不在指纹范围内，所以保存用户结果不会让已测试的实现失效。
 
-## Conversation and subsequent work
+## 对话中的决定与后续工作
 
-For an explicit decision given in the conversation, record it with `record-acceptance --feature F001 --status accepted|rejected`. The decision must apply to the actual current scope, and the record carries no file reference.
+用户在对话中给出明确决定时，用 `record-acceptance --feature F001 --status accepted|rejected` 记录。这个决定必须针对实际的当前范围，记录中不带文件引用。
 
-- Use either the file route or the conversation route for one decision; never require both.
-- Do not use a conversation entry to bypass an invalid file. The user must resolve the discrepancy or make a new, clear decision.
-- A minor deferral still needs explicit acceptance and a note.
+- 一个决定只用文件路线或对话路线中的一种；绝不要求两者都有。
+- 不要用对话记录绕过无效的文件。用户必须解决不一致，或做出一个新的、明确的决定。
+- 即使是次要的延后处理，也需要明确的接受和一条说明。
 
-Failures follow the [execute loop](../03-execute-loop.md) within the current implementation authorization; comments proposing new requirements do not authorize them. After a source or acceptance-contract change, reassess and renew the affected verification before completion. Editorial corrections to reports do not require rerunning business tests. Manual acceptance does not replace automated obligations, direct static checks, requested review conditions or the normal completion checks.
+失败按[执行规范](../03-execute-loop.md)在当前实现授权内处理；提出新需求的评论不授权这些需求。来源或验收契约变化后，在完成之前重新评估并重新进行受影响的验证。报告中的编辑性更正不需要重跑业务测试。人工验收不代替自动义务、直接的静态检查、被要求的审核条件或正常的完成检查。

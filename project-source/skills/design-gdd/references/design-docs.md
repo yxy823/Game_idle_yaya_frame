@@ -1,44 +1,44 @@
-# Design document structure and rule ownership
+# 设计文档结构与规则归属
 
-Use this reference when creating a GDD entry or topic, revising organization or deciding where a design rule belongs. [Design coverage](gdd-fields.md) describes the design questions; this page organizes their answers.
+创建 GDD 入口或主题、修改组织方式，或判断某条设计规则属于哪里时，使用本参考。[设计覆盖](gdd-fields.md)描述设计要回答的问题；本页组织这些问题的答案。
 
-## Use a navigable structure
+## 使用便于导航的结构
 
-For a new GDD, use `docs/gdd/README.md` and the fixed topic paths in **GDD document names** in `methodology/01-product-doc-structure.md`. That section owns the content-to-file mapping, system keys, reference rules and the handling of imported or differently organized GDDs. The scope and open-questions documents follow their own sections in methodology 01.
+新建 GDD 时，使用 `docs/gdd/README.md`，以及 `methodology/01-product-doc-structure.md` 的 **GDD 文件名** 中的固定主题路径。内容到文件的对应关系、系统键名、引用规则，以及导入的或组织方式不同的 GDD 怎样处理，都由该章节规定。范围文档和开放问题文档按 methodology 01 中各自的章节处理。
 
-The entry introduces the game and its reading path. Topics hold their assigned rules and decisions and link relevant open questions. Create a topic when its content is written; do not create empty topics or duplicate decision histories to fill the structure.
+入口介绍游戏和阅读路径。主题保存分配给它的规则和决定，并链接本次涉及的开放问题。写入内容时才创建主题；不要为了填满结构而创建空主题或复制决定历史。
 
-Use the configured `document_language` for titles and prose while keeping the standard filenames unchanged. Do not add numeric prefixes, translated filename variants, ad hoc topic locations, a version-number scheme or role and owner fields.
+标题和正文使用配置的 `document_language`，标准文件名保持不变。不要添加数字前缀、翻译过的文件名变体、临时的主题位置、版本编号方案，或角色与负责人字段。
 
-## Give each rule one owner
+## 每条规则只有一个所属位置
 
-Keep a rule's definition, meaningful exceptions and relevant decision or evidence limits together. Other pages link to that location and explain how they consume it. A short navigational summary is useful; maintaining another full rule body is not.
+规则的定义、有意义的例外，以及本次涉及的决定或证据局限放在一起。其他页面链接到这个位置，并说明自己怎样使用它。简短的导航摘要有用；另外维护一份完整的规则正文则不行。
 
-When changing a rule, inspect its affected systems, numeric assumptions, presentation requirements and validation scenarios. Update necessary references within authorization. Moving a file or renaming a heading also requires fixing affected paths and anchors. For planned consumers, follow the change route named in the Skill entry; document restructuring does not silently change implementation scope.
+修改规则时，检查受它影响的系统、数值假设、表现需求和验证情景。在授权范围内更新必要的引用。移动文件或修改标题时，也要修正受影响的路径和锚点。已规划的使用方，按 Skill 入口中写明的变更路径处理；文档重组不会悄悄改变实现范围。
 
-GDD owns the game's intended behavior. Product selects a deliverable scope and references GDD. Professional sources refine presentation or production requirements. Feature design and architecture explain implementation. Use these distinct purposes when deciding where content belongs instead of copying the same design into all four.
+GDD 负责游戏的预期行为。Product 选择一个可交付的范围并引用 GDD。专业来源细化表现或制作要求。Feature 设计和架构说明实现。按这些不同的用途判断内容属于哪里，不要把同一份设计复制到这四处。
 
-## Write an implementable topic at the right depth
+## 以合适的深度写出可实现的主题
 
-A useful system topic explains its purpose, player process, rules and relevant dependencies. Add sections only when they help answer the current design question:
+一个有用的系统主题说明它的目的、玩家流程、规则和本次涉及的依赖。只在有助于回答当前设计问题时增加小节：
 
-- Intended experience and current scope.
-- Triggers, player inputs, states, results, limits and recovery paths.
-- Specifications and existing numeric rules, with units and sources. Use `design-balance` for derived formulas or related parameter sets.
-- Interactions with other systems and visible feedback, linking their owning passages.
-- Observable rule scenarios and experience questions, keeping actual evidence separate from plans.
-- Working assumptions that still affect interpretation, with links to their unresolved choices in the open-questions document rather than a second question body.
+- 期望的体验和当前范围。
+- 触发条件、玩家输入、状态、结果、限制和恢复路径。
+- 规格和已有的数值规则，附带单位和来源。推导公式或相关的参数集使用 `design-balance`。
+- 与其他系统的交互和可见的反馈，链接到它们的所属段落。
+- 可观察的规则情景和体验问题，实际证据和计划分开写。
+- 仍影响理解的工作假设，链接到开放问题文档中对应的未决选择，不另写一份问题正文。
 
-For example, a candidate light-board design could say that clicking a cell toggles that cell only; the flow topic defines whether input remains available after all cells are lit. The display topic references that completion state for its message rather than redefining it. A sample play sequence can expose whether a mistaken click is recoverable. These are illustrative candidate rules, not adopted requirements or verified experience.
+例如，一个候选的点灯棋盘设计可以写明：点击一个格子只切换这个格子；流程主题定义所有格子点亮后是否还能继续输入。显示主题引用这个完成状态来显示提示，不重新定义它。一段示例游玩过程能暴露误点之后能否挽回。这些都是示意性的候选规则，不是已采用的要求，也不是已验证的体验。
 
-Ordinary dimensions and item counts can be specified directly when supported by the request. Do not treat every numeric field as a modeling project. Likewise, a written formula or time target is not evidence that its intended pacing has been observed.
+用户的要求能支撑时，普通的尺寸和物品数量可以直接写明。不要把每个数值字段都当成建模项目。同样，写下的公式或时间目标，不是预期节奏已经被观察到的证据。
 
-## Make principles useful for decisions
+## 让设计原则能指导决定
 
-A design principle should connect an experience to a real choice. For example, an adopted goal of unhurried experimentation might support reversible actions and clear recovery feedback; a candidate timer would then need a reason compatible with that goal. The example does not require every game to be forgiving.
+设计原则要把一种体验和一个真实的选择联系起来。例如，已采用“从容地尝试”这个目标，可以支持可撤销的操作和清楚的恢复反馈；这时如果候选设计中有计时器，就需要一个与该目标相容的理由。这个例子不要求每款游戏都宽容。
 
-Avoid principles that merely restate quality aspirations. Prefer a short explanation of what a principle changes or excludes. Use as many as the game needs to guide its current tradeoffs, without assigning a fixed count or score.
+避免只是重复质量愿望的原则。优先简短说明一条原则改变或排除了什么。原则的数量以足够指导当前的取舍为准，不规定固定数量或评分。
 
-## Deliver the current source
+## 交付当前的来源文件
 
-Link the actual entry or changed topic and explain important revisions and remaining limits. Check that the reader can find the requested design and that links, terms and decision states agree. Preserve evidence as evidence and proposals as proposals; document completion alone does not establish adoption, implementation or human acceptance.
+链接实际的入口或修改过的主题，说明重要的修改和剩余的局限。检查读者能否找到要求的设计，以及链接、术语和决定状态是否一致。证据保持为证据，建议保持为建议；文档写完本身不代表已采用、已实现或已人工验收。

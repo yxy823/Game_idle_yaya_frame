@@ -1,24 +1,24 @@
-# Export Resources and Filters
+# 导出资源与过滤器
 
-Export selection determines the real production package; editor visibility is not evidence of package content.
+导出选择决定真正的生产包内容；在编辑器中可见不能作为包内容的证据。
 
-## Packaging
+## 打包
 
-- **[MUST]** The Resource and filter policy is a runtime packaging contract.
-- **[MUST]** Raw non-Resource files opened through FileAccess (`.json`, `.csv`, `.txt` and similar) need an explicit export inclusion policy, or conversion to a packaged Resource.
-- **[MUST]** Files and directories whose names begin with `.` are not included in a Godot exported project, and include filters do not override this boundary. Runtime-required data must not depend on a dot-prefixed path.
-- **[MUST]** Verify runtime-required raw data in the actual package. A broad include filter or readability in the editor is not evidence that a dot-prefixed or otherwise filtered path was exported.
-- **[REVIEW]** When exporting only selected scenes or resources, audit dynamic loads, registries, runtime paths and raw-file dependencies that static dependency traversal may not discover.
-- **[MUST]** Do not use broad or unclear include and exclude filters merely to shrink or clean up the package.
+- **[必须]** Resource 与过滤器策略是运行时的打包契约。
+- **[必须]** 通过 FileAccess 打开的非 Resource 原始文件（`.json`、`.csv`、`.txt` 等），需要明确的导出包含策略，或转换为会被打包的 Resource。
+- **[必须]** 名称以 `.` 开头的文件和目录不会包含在 Godot 导出的项目中，包含过滤器也不能突破这个边界。运行时必需的数据不能依赖以点开头的路径。
+- **[必须]** 在实际的包中核实运行时必需的原始数据。宽泛的包含过滤器或在编辑器中能读取，都不能证明以点开头或被其他方式过滤的路径已经导出。
+- **[复核]** 只导出选定的场景或资源时，审查静态依赖遍历可能发现不了的动态加载、注册表、运行时路径和原始文件依赖。
+- **[必须]** 不要只为了缩小或清理包而使用宽泛或含义不清的包含与排除过滤器。
 
-## Dedicated server
+## 专用服务器
 
-- **[MUST]** Treat a dedicated-server preset as a distinct runtime artifact contract, not as a general optimization of package size.
-- **[REVIEW]** A dedicated-server export strips visual Resources or replaces them with placeholders, including `Material`, `Mesh`, `Texture2D`, `Texture3D` and `Cubemap`. Audit the server's runtime dependencies, and explicitly keep any Resource whose data is still required.
-- **[MUST]** Validate a dedicated-server change with the actual server export plus a defined server startup or smoke path; a normal client export does not prove the server artifact.
+- **[必须]** 把专用服务器预设当作一份独立的运行时产物契约，不当作通用的包体积优化。
+- **[复核]** 专用服务器导出会剥离视觉 Resource 或用占位符替换，包括 `Material`、`Mesh`、`Texture2D`、`Texture3D` 和 `Cubemap`。审查服务器的运行时依赖，并明确保留数据仍然需要的 Resource。
+- **[必须]** 验证专用服务器的修改时，使用实际的服务器导出，并执行一条明确的服务器启动或冒烟测试路径；普通客户端导出不能证明服务器产物。
 
-## Test and addon isolation
+## 测试与插件的隔离
 
-- **[MUST]** Classify addons and resources as test-only, editor-only or runtime-required before excluding them. `addons/` is not automatically safe to exclude wholesale.
-- **[MUST]** The production export excludes test roots, test fixtures and test-only frameworks and tooling according to project policy.
-- **[MUST]** Excluding a file does not remove project or runtime references to it. Validate that the production configuration has no dependency on excluded test or editor artifacts.
+- **[必须]** 排除插件和资源之前，先把它们分为仅测试用、仅编辑器用或运行时必需。`addons/` 并非整体排除就自动安全。
+- **[必须]** 生产导出按项目策略排除测试根目录、测试夹具，以及仅用于测试的框架和工具。
+- **[必须]** 排除文件不会删除项目或运行时对它的引用。验证生产配置不依赖被排除的测试或编辑器产物。

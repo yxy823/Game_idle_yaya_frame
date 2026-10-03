@@ -1,8 +1,8 @@
-# Shader Validation
+# Shader 验证
 
-- **[MUST]** Compile with the actual shader compiler of the target Godot 4.7; regex or third-party text parsing is not sufficient.
-- **[MUST]** Validate through the real ShaderMaterial, Node and render path, not only the isolated source.
-- **[MUST]** Validate the relevant renderer, HDR 2D, viewport, atlas and import settings where they are part of the effect contract.
-- **[MUST]** For screen-reading shaders, validate the real backbuffer and sampling path, including 2D tree order, `BackBufferCopy` region behavior and the 3D opaque and transparent capture boundaries. A successful shader compile alone is not sufficient.
+- **[必须]** 用目标 Godot 4.7 实际的 Shader 编译器编译；正则或第三方文本解析不算充分。
+- **[必须]** 通过真实的 ShaderMaterial、Node 和渲染路径验证，不只验证孤立的源码。
+- **[必须]** 渲染器、HDR 2D、视口、图集和导入设置属于效果契约时，验证这些设置。
+- **[必须]** 读取屏幕的 Shader 要验证真实的后台缓冲和采样路径，包括 2D 场景树顺序、`BackBufferCopy` 的区域行为，以及 3D 不透明与透明的捕获边界。仅 Shader 编译成功不算充分。
 
-Include consumers and particle state are validated as described in `includes-and-reuse.md` and `language-and-structure.md`. Rendering evidence follows the [visual boundary](../70-tests/testing-strategy.md#visual-boundary).
+include 使用方和粒子状态按 `includes-and-reuse.md` 与 `language-and-structure.md` 的说明验证。渲染证据遵循[视觉验证边界](../70-tests/testing-strategy.md#视觉验证边界)。

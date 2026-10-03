@@ -1,24 +1,24 @@
-# Data Identity and References
+# 数据身份与引用
 
-Business identity is stable schema data and is distinct from Godot, resource and runtime identity.
+业务身份是稳定的 schema 数据，与 Godot 身份、资源身份和运行时身份不同。
 
-## IDs
+## ID
 
-- **[MUST]** A Business ID is not a Resource UID, RID, Object instance ID, filesystem path, row number, cell position or display name.
-- **[MUST]** Canonical IDs satisfy their grammar directly. Do not silently trim, lowercase or repair invalid identifiers into a different ID.
-- **[MUST]** Once an ID is referenced or persisted, it is frozen unless an explicit migration occurs.
-- **[MUST]** Do not reuse a published or persisted ID for a different entity.
-- **[MUST]** Renaming an ID is a migration across all references and persisted compatibility boundaries.
-- **[MUST]** Legacy aliases live at migration and compatibility boundaries; the canonical runtime exposes the current ID. Do not allow alias cycles, ambiguity or chains.
+- **[必须]** 业务 ID 不是 Resource UID、RID、Object 实例 ID、文件系统路径、行号、单元格位置或显示名称。
+- **[必须]** 规范 ID 直接满足自己的语法。不要悄悄地裁剪空白、转为小写，或把无效标识符修补成另一个 ID。
+- **[必须]** ID 一旦被引用或持久化就冻结，除非进行明确的迁移。
+- **[必须]** 已发布或已持久化的 ID 不能复用给另一个实体。
+- **[必须]** 重命名 ID 是一次跨所有引用和持久化兼容边界的迁移。
+- **[必须]** 旧别名只存在于迁移和兼容边界；规范运行时只暴露当前 ID。别名不能成环、有歧义或形成链。
 
-## References
+## 引用
 
-- **[MUST]** A reference declares its target namespace or type, and whether it is required or optional.
-- **[MUST]** `optional` means that the field may be absent or null when its schema permits; it does not make a present non-null ID optional to resolve.
-- **[MUST]** By default, every present non-null reference resolves successfully and satisfies its relation invariants. A dangling required or optional reference is an error. Do not silently replace it with null or a default, fuzzy-match it or choose the closest entity.
-- **[MUST]** An unresolved reference is allowed only when the schema explicitly defines soft, external or late-bound semantics, together with its resolver and lifecycle validation policy.
-- **[MUST]** Existence is not enough: validate relation invariants such as the same tree or category, no self-reference and level constraints.
-- **[MUST]** Resolve static references centrally before gameplay, unless the architecture requires a dynamic resolver.
-- **[MUST]** Graph schemas declare a cycle policy and validate cycles before runtime.
-- **[MUST]** Collection order is semantic only when the schema says so; runtime code must not accidentally depend on the row order of the authoring source.
-- **[MUST]** Persisted enum identity is a stable explicit identity. Symbolic String IDs are generally preferable when the domain benefits from readability or extensibility.
+- **[必须]** 引用声明目标命名空间或类型，以及它是必填还是可选。
+- **[必须]** `optional` 表示在 schema 允许时字段可以缺失或为 null；它不表示一个已存在的非 null ID 可以解析不到。
+- **[必须]** 默认情况下，每个已存在的非 null 引用都能成功解析，并满足关联不变量。悬空的必填引用或可选引用都是错误。不要悄悄地替换为 null 或默认值、做模糊匹配或选最接近的实体。
+- **[必须]** 只有 schema 明确定义了软引用、外部引用或延迟绑定的语义，并给出解析器和生命周期校验策略时，才允许引用未解析。
+- **[必须]** 仅存在还不够：校验关联不变量，例如同一棵树或同一类别、不能自引用和层级约束。
+- **[必须]** 静态引用在进入玩法之前集中解析，除非架构需要动态解析器。
+- **[必须]** 图结构的 schema 声明成环策略，并在运行前校验环。
+- **[必须]** 只有 schema 规定时，集合顺序才有语义；运行时代码不能意外依赖编写源的行顺序。
+- **[必须]** 持久化的枚举身份是稳定、明确的身份。当领域受益于可读性或可扩展性时，通常更适合使用符号化的 String ID。

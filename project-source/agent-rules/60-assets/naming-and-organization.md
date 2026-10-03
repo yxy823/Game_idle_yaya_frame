@@ -1,19 +1,19 @@
-# Asset Naming and Organization
+# 资源命名与组织
 
-Organize assets by domain ownership and stable consumer semantics, without forcing one universal folder tree by file type.
+按领域归属和稳定的使用语义组织资源，不强制按文件类型建一棵通用的目录树。
 
-## Organization
+## 组织
 
-- **[MUST]** Project-owned Godot directories, scripts, scenes, Resources, shaders, runtime data and assets use lowercase English `snake_case` names. Follow vendor and tool contracts for required file and directory names; documentation and non-Godot tooling keep their own naming conventions.
-- **[MUST]** Existing project-owned content follows the same naming contract. Rename a violating file or directory only when the current task touches that object, and then update the affected references through the identity-preserving migration in [Paths, UIDs, and moves](paths-uid-and-moves.md). Do not keep the previous name as an alias or fallback path. Report other violations as Incidental Issues under [Task scope](../00-core/change-scope-and-ownership.md#task-scope).
-- **[MUST]** Avoid filenames that differ only in case; they are fragile across filesystems and platforms.
-- **[PREFER]** Organize assets by the domain, scene or feature that owns them when that keeps related scenes, scripts and assets together. Do not create giant buckets by extension as dogma.
-- **[PREFER]** Preserve vendor and package boundaries where they help with updates and provenance.
+- **[必须]** 项目自己的 Godot 目录、脚本、场景、Resource、Shader、运行时数据和资源，使用小写英文 `snake_case` 名称。第三方和工具要求的文件名、目录名按其契约保留；文档和非 Godot 工具沿用各自的命名约定。
+- **[必须]** 项目中已有的自有内容遵循同一命名契约。只有当前任务涉及某个违规的文件或目录时，才重命名它，并通过[资源路径、UID 与移动](paths-uid-and-moves.md)中保持身份的迁移方式更新受影响的引用。不保留旧名称作为别名或回退路径。其他违规按 [任务范围](../00-core/change-scope-and-ownership.md#任务范围) 作为顺带发现的问题报告。
+- **[必须]** 避免只有大小写不同的文件名；它们在不同文件系统和平台上很脆弱。
+- **[优先]** 能让相关的场景、脚本和资源放在一起时，按拥有资源的领域、场景或功能组织。不要教条地按扩展名建巨大的分类目录。
+- **[优先]** 第三方和资源包的边界有助于更新和追溯来源时，保留这些边界。
 
-## Semantic names
+## 语义化命名
 
-- **[PREFER]** Name files by their domain object and actual responsibility, such as `production_state.gd`, `producer_definition.gd` or `copper_ore_icon.png`. Use variants or sequence numbers only when they identify meaningful differences.
-- **[PREFER]** Keep a scene and its dedicated root script adjacent with the same basename. Shared scripts need not match every consuming scene; global `class_name` identity follows [GDScript naming](../10-gdscript/typing-and-api.md#style-and-naming).
-- **[PREFER]** Use role suffixes only when that role exists. `Manager` implies actual coordination or lifecycle management, not automatic Autoload registration; extensions already distinguish scenes, scripts and Resources.
+- **[优先]** 按领域对象和实际职责给文件命名，例如 `production_state.gd`、`producer_definition.gd` 或 `copper_ore_icon.png`。只有变体或序号能区分有意义的差异时才使用它们。
+- **[优先]** 场景和它专用的根脚本放在相邻位置，使用相同的基础文件名。共享脚本不必与每个使用它的场景同名；全局 `class_name` 的命名遵循 [GDScript 命名](../10-gdscript/typing-and-api.md#风格与命名)。
+- **[优先]** 只有确实承担某个角色时才使用角色后缀。`Manager` 意味着实际的协调或生命周期管理，不意味着自动注册为 Autoload；扩展名已经区分了场景、脚本和 Resource。
 
-For base directories, genre examples and ambiguous ownership choices, consult `docs/game-organization.md` in the generated project. The guide applies these rules without requiring every example directory or role to exist.
+基础目录、各类型游戏的示例和归属不明确时的取舍，参见生成项目中的 `docs/game-organization.md`。该指南应用这些规则，但不要求每个示例目录或角色都存在。

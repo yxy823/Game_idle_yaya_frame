@@ -1,10 +1,10 @@
-# 00 · Methodology overview
+# 00 · 方法总览
 
-> This is the entry to the project workflow: how the methodology, Skills, project documents and commands relate, and which entry handles each kind of task.
+> 本页是项目工作流程的入口：说明方法规范、Skill、项目文档和命令之间的关系，以及每类任务从哪个入口处理。
 
-The methodology covers game design from an idea onward, numerical modeling and tuning, Product delivery planning, Feature planning and implementation, engineering changes, automated testing, human acceptance, defect learning and local Git-safe handoff. Release management, store submission, public version announcements, deployment approval, publishing workflow, and distribution governance are outside the default methodology unless the user explicitly defines one of them as project work.
+方法规范覆盖以下工作：从想法开始的游戏设计、数值建模与调参、Product 交付规划、Feature 规划与实现、工程修改、自动化测试、人工验收、缺陷复盘，以及本地 Git 下的安全交接。版本发布管理、商店提交、公开版本公告、部署审批、发布流程和分发管理不在默认方法范围内，除非用户明确把其中某项定为项目工作。
 
-## Mental model: specification and execution
+## 规范与执行的关系
 
 ```text
 methodology/                         canonical workflow specification
@@ -17,110 +17,110 @@ methodology/                         canonical workflow specification
      └──────────────→ Commands       explicit validation when the task needs it
 ```
 
-- `methodology/` defines the workflow. Skills under `.agents/skills/` carry it out.
-- Project documents live under `docs/`; [docs/README.md](../docs/README.md) describes each file and directory. New projects ship pages that only state their purpose; their presence is not a GDD, a delivery plan or a decision.
-- `docs/methodology-config.json` holds `document_language` and the Python and Godot executable paths, under [document language](05-document-language.md) and [project environment](06-project-environment.md).
-- Commands under `tools/` run only when a task calls them. No tool runs automatically when a file changes or a reply ends.
+- `methodology/` 定义工作流程，`.agents/skills/` 下的 Skill 负责执行。
+- 项目文档放在 `docs/` 下，[docs/README.md](../docs/README.md) 说明每个文件和目录。新项目附带的页面只写明用途；这些页面存在，不代表已有 GDD、交付计划或决定。
+- `docs/methodology-config.json` 保存 `document_language` 以及 Python 和 Godot 可执行文件路径，分别按[文档语言](05-document-language.md)和[项目环境](06-project-environment.md)维护。
+- `tools/` 下的命令只在任务调用时运行。文件变化或回复结束时，不会自动运行任何工具。
 
-## Skill groups
+## Skill 分组
 
-| Group | Skills |
+| 分组 | Skill |
 | --- | --- |
-| Game design | `design-gdd`, `design-balance` |
-| Product delivery | `product-author`, `product-spec-elicitor` |
-| Clarification and terminology | `project-grill-me`, `wayfinder-godot`, `project-terminology` |
-| Professional design | `design-game-presentation`, `design-ui-spec`, `design-art-direction`, `design-audio-direction`, `design-visual-asset-spec`, `design-audio-asset-spec`, `design-localization-spec` |
-| Planning | `feature-plan`, `feature-sync`, `plan-review-godot` |
-| Delivery | `feature-execute`, `implementation-guidance-godot`, `prototype-godot` |
-| Engineering | `engineering-change-plan`, `engineering-refactor-select` |
-| Feedback and diagnosis | `feedback-triage-godot`, `bug-diagnosis-godot` |
-| Environment, verification and evidence | `project-environment-godot`, `project-verification-godot`, `manual-acceptance-godot`, `verification-evidence-godot` |
-| Integration and measurement | `content-asset-integration`, `content-localization`, `diagnostics-instrumentation`, `diagnostics-performance`, `diagnostics-soak-test` |
-| Independent review | `review-code`, `review-ux`, `review-art`, `review-audio`, `review-assets`, `review-localization`, `review-balance` |
-| Worktrees | `worktree-create-godot`, `worktree-integrate-godot` |
-| Guidance, handoff and improvement | `project-next-step-advisor`, `task-handoff-godot`, `retro-godot`, `loop-me-godot` |
-| Documentation writing | `technical-documentation-writing-godot` |
+| 游戏设计 | `design-gdd`、`design-balance` |
+| Product 交付 | `product-author`、`product-spec-elicitor` |
+| 澄清与术语 | `project-grill-me`、`wayfinder-godot`、`project-terminology` |
+| 专业设计 | `design-game-presentation`、`design-ui-spec`、`design-art-direction`、`design-audio-direction`、`design-visual-asset-spec`、`design-audio-asset-spec`、`design-localization-spec` |
+| 规划 | `feature-plan`、`feature-sync`、`plan-review-godot` |
+| 交付 | `feature-execute`、`implementation-guidance-godot`、`prototype-godot` |
+| 工程 | `engineering-change-plan`、`engineering-refactor-select` |
+| 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
+| 环境、验证与证据 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence-godot` |
+| 接入与测量 | `content-asset-integration`、`content-localization`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
+| 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
+| worktree | `worktree-create-godot`、`worktree-integrate-godot` |
+| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot` |
+| 文档编写 | `technical-documentation-writing-godot` |
 
-## Canonical task routing
+## 任务路由表
 
-This table is the single source for task routing. Guidance Skills read it together with the destination workflow; they keep no separate lifecycle or approval table. Every row that plans delivery, implements, repairs or runs an experiment needs a substantive GDD under [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority). The Boundary column says when to choose the entry and what it does not include.
+本表是任务路由的唯一依据。指引类 Skill 把本表和目标工作流程一起读，不另外维护生命周期表或审批表。凡是规划交付、实现、修复或运行实验的行，都需要满足 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)中的实质 GDD。“边界”列说明何时选这个入口，以及它不包含什么。
 
-| Task type | Entry | Boundary |
+| 任务类型 | 入口 | 边界 |
 | --- | --- | --- |
-| Develop a game idea, write or deepen a GDD, or consolidate design materials | `design-gdd` | Starts from the available goals and sources; no complete GDD, Product, Feature or ready engine is needed. Does not create a Product or Feature. |
-| Design or adjust numerical models, formulas and parameters | `design-balance` | Use for models and values, including on an early GDD draft. Gameplay changes go to `design-gdd`, runtime changes to implementation, and formal balance review to `review-balance`. |
-| Clarify a game-design choice, delivery boundary or ambiguous term | `project-grill-me`, or `product-spec-elicitor` for delivery questions | Use when a material uncertainty affects the current task. Discussion alone writes nothing. |
-| Resolve several material unknowns whose answers affect one another | `wayfinder-godot` | Use when the unknowns depend on each other. No compulsory interview, prototype, worktree or new record type; it does not widen the task's authorization. |
-| Assess feedback or an external report before choosing work | `feedback-triage-godot` | Use before deciding what work the feedback needs. Classification does not authorize a repair or create a Feature. |
-| Investigate the cause of a concrete abnormal behavior | `bug-diagnosis-godot` | Use for a specific failure. An investigation-only request does not permit implementation changes. |
-| Examine a GDD draft or document, or a Product or Feature proposal | `plan-review-godot` | Use for findings returned to the document's author; a GDD review needs no Product or Feature. Not a formal [independent review](12-independent-review.md), and not a mandatory gate. |
-| Reflect on actual task experience, including recurring friction | `retro-godot` | Use with evidence from real tasks. Returns suggestions only; no automatic rule edits, reports, checks or work items. |
-| Design how to handle a recurring or anticipated activity the user names | `loop-me-godot` | Use without waiting for a failure. Returns a design; adds no Stage and implements nothing. |
-| Investigate external facts or compare approaches | Coordinating agent, optionally delegating to `researcher` | Use when the answer needs external sources; see [External research](09-records-reports-and-handoff.md#external-research). No mandatory research Stage, new Feature or automatic adoption. |
-| Record or maintain settled project vocabulary | `project-terminology` | Use for meaning-preserving definitions under [Project terminology](14-project-terminology.md). Creates no Product plan and synchronizes no Features; behavior changes go to `design-gdd`. |
-| Maintain project-wide or specialized rules | Current authorized task, under [incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance) | Use for `docs/project-rules.md` or rule modules. Every proposed change is reported before writing; standalone rule work needs no Feature. |
-| Explain a Feature design or an important technical decision | Current planning or design task, under [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes) and [architecture and ADRs](10-architecture-overview.md) | Implementation design goes in the Feature design file; qualifying technical rationale goes in an ADR. Does not change Product scope or project rules. |
-| Choose visual or sound direction | `design-art-direction`, `design-audio-direction` | Use for the shared standards in the Art Bible or Sound Bible under [specialist work](11-specialist-workflows.md). Needs no complete game design; produces no assets. |
-| Plan a game moment from experience goals or a casual description, or compare its component approaches | `design-game-presentation` | Use for [presentation documents](11-specialist-workflows.md#game-presentation-documents); can support early GDD exploration. Does not include code, asset production or acceptance. |
-| Specify an interface or individual assets | `design-ui-spec`, `design-visual-asset-spec`, `design-audio-asset-spec` | Use for professional specifications that refine the GDD. Delivery scope stays in Product. |
-| Prepare visual art, music or sound effects | Reserved under [specialist work](11-specialist-workflows.md#design-production-integration-and-review) | No production Skill exists. Record the specifications and available resources. |
-| Define language coverage and locale conventions | `design-localization-spec` | Can stand alone. Game rules stay in the GDD and term definitions in `docs/terminology.md`. |
-| Integrate supplied assets or implement approved localization | `content-asset-integration`, `content-localization` | Use inside an authorized Feature or experiment to apply approved specifications; not standalone delivery. |
-| Add diagnostic signals, measure performance or run a soak scenario | `diagnostics-instrumentation`, `diagnostics-performance`, `diagnostics-soak-test` | Use to gather evidence. Measurement does not authorize a repair. |
-| Explicitly requested prototype or technical spike | `prototype-godot` in the target project | Use to answer one hypothesis under [Prototypes](13-prototypes.md). An independent experiment needs no Product or Feature; one inside a Feature keeps that Feature's workflow. |
-| Establish layout, resource scale and interaction readability before dependent logic | `prototype-godot`, within current Product delivery or an authorized experiment | Use under [Visual prototype before dependent implementation](13-prototypes.md#visual-prototype-before-dependent-implementation). Specifications supply the inputs; the runnable scene and human acceptance belong to execution. |
-| List and hand off the minimum resource files for a task | Current task, with `design-visual-asset-spec` or `design-audio-asset-spec` as needed | Use under [Resource requirements and handoff](11-specialist-workflows.md#resource-requirements-and-handoff). Does not produce or integrate assets. |
-| Prepare or reuse a separate checkout for an authorized task | `worktree-create-godot` | Use when the task needs another checkout. A separate path does not isolate runtime data. |
-| Bring an adopted worktree result into a target, or resume an interrupted or conflicted integration | `worktree-integrate-godot` | Use for the selected result and target. Does not choose between competing results or authorize cleanup. |
-| Pre-decompose delivery scope from a GDD | `product-author` | Writes only the requested `product.md` horizon. |
-| Revise game design | `design-gdd`, or `design-balance` for scoped numerical design | A design edit does not automatically create a Product or Feature. |
-| Revise current Product delivery scope | `product-author` | Future Products stay at pre-decomposition level. |
-| Implementation exists without adequate Product or Feature records | `product-author`, then the planning and delivery routes | Use under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation). Needs confirmed GDD design; does not invent history or authorize repairs beyond the stated gaps. |
-| Detail the next Product after current delivery completes | `product-author`, then `feature-plan` when authorized | Use after the current Product's required Features are complete, under [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning). |
-| Decompose the current Product | `feature-plan` | Plans only the current Product. |
-| Source synchronization | `feature-sync` | Use when committed GDD, Product, professional or rule sources changed. Does not perform initial decomposition. |
-| Continue current Feature | `feature-execute` | “Continue” alone does not supply a missing approval or acceptance. |
-| Execute an eligible planned Feature | `feature-execute` | Selects by the dependency order; Stage 1 approval still applies. |
-| Prepare implementation guidance for a planned Feature | `implementation-guidance-godot`, normally used by the main agent | Delegates to `implementation-advisor` only on explicit user request or still-valid task authorization, never because of complexity alone. |
-| Bug in the current unfinished Feature | That Feature's repair route | Repair within its scope with regression coverage. |
-| Independent Bug in completed behavior | `engineering-change-plan` in bug mode | Use when behavior violates a documented requirement; missing or changing expectations go to their design owner under [Classification boundary](07-engineering-change.md#classification-boundary). |
-| Refactor | `engineering-change-plan` in refactor mode | Behavior stays the same. Use `engineering-refactor-select` first only when the user asks to choose a smell. |
-| Maintenance | `engineering-change-plan` in maintenance mode | Use for technical success criteria, compatibility, migration and validation work. |
-| Project tooling issue | `engineering-change-plan` | Use for a problem in a project-owned tool. |
-| Audit | Matching review Skill in a fresh `independent-reviewer` instance | Use only for a requested formal review under [independent review](12-independent-review.md). Does not repair or supply human acceptance. |
-| Configure, update or recover project tools, or complete a needed first resource scan | `project-environment-godot` | Use under [project environment](06-project-environment.md). Does not prove game behavior or need a Feature. |
-| Run requested parsing, lint, existing tests or a scoped scene check | `project-verification-godot` | Use with or without a Feature. Reports actual results; does not repair, accept or complete delivery. |
-| Prepare pending human checks or record actual user acceptance | `manual-acceptance-godot` | Use under [manual acceptance files](contracts/manual-acceptance-files.md). Preparing checks is not acceptance; recording results does not advance a Stage or grant commit permission. |
-| Inspect, import or recover verification evidence | `verification-evidence-godot` | Use under [evidence and freshness](08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness). Routes only the reruns or human follow-up actually needed. |
-| Status query | Read-only explanation, or `project-next-step-advisor` | Does not start work or run readiness checks just to answer. |
-| Save a requested pause or prepare another conversation to continue the same task | `task-handoff-godot` | Creates no Feature, handoff ledger, conversation or message. |
+| 发展游戏想法、编写或深化 GDD、整合设计材料 | `design-gdd` | 从已有目标和来源开始，不需要完整的 GDD、Product、Feature 或就绪的引擎。不创建 Product 或 Feature。 |
+| 设计或调整数值模型、公式和参数 | `design-balance` | 用于模型和数值，GDD 还是早期草稿时也可以用。玩法变化交给 `design-gdd`，运行时修改交给实现，正式数值审核交给 `review-balance`。 |
+| 澄清游戏设计选择、交付边界或含义不清的术语 | `project-grill-me`；交付问题用 `product-spec-elicitor` | 当前任务受到关键不确定点影响时使用。只讨论时不写任何文件。 |
+| 解决几个答案相互影响的关键未知点 | `wayfinder-godot` | 未知点相互依赖时使用。不强制访谈、原型、worktree 或新记录类型，也不扩大任务授权。 |
+| 选定工作前先评估反馈或外部报告 | `feedback-triage-godot` | 在决定反馈需要什么工作之前使用。分类不授权修复，也不创建 Feature。 |
+| 调查一个具体异常行为的原因 | `bug-diagnosis-godot` | 用于具体故障。只要求调查时，不允许修改实现。 |
+| 检查 GDD 草稿或文档，或 Product、Feature 提案 | `plan-review-godot` | 发现返回给文档作者；审查 GDD 不需要 Product 或 Feature。它不是正式的[独立审核](12-independent-review.md)，也不是必经关卡。 |
+| 根据实际任务经验复盘，包括反复出现的阻力 | `retro-godot` | 需要来自真实任务的证据。只返回建议，不自动修改规则，也不自动生成报告、检查或工作项。 |
+| 为用户点名的反复出现或预期会出现的活动设计处理方式 | `loop-me-godot` | 不必等出现故障再用。返回一份设计，不增加 Stage，也不实现任何内容。 |
+| 调查外部事实或比较方案 | 协调 Agent，可委派给 `researcher` | 答案需要外部来源时使用，见 [外部调研](09-records-reports-and-handoff.md#外部调研)。没有强制的调研 Stage，不新建 Feature，不自动采纳结论。 |
+| 记录或维护已确定的项目词汇 | `project-terminology` | 按[项目术语](14-project-terminology.md)维护不改变含义的定义。不创建 Product 计划，不做 Feature 源同步；行为变化交给 `design-gdd`。 |
+| 维护项目通用规则或专项规则 | 当前已获授权的任务，按 [规则的增量维护](04-project-rules.md#规则的增量维护) 执行 | 用于 `docs/project-rules.md` 或规则模块。每项拟议修改都先报告再写入；单独的规则工作不需要 Feature。 |
+| 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计](02-feature-list-schema.md#feature-设计与实现说明) 和[架构与 ADR](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
+| 选择视觉或声音方向 | `design-art-direction`、`design-audio-direction` | 按[专业工作](11-specialist-workflows.md)维护 Art Bible 或 Sound Bible 中的共用标准。不需要完整的游戏设计，不产出资源。 |
+| 从体验目标或随口的描述规划一个游戏时刻，或比较其组成部分的方案 | `design-game-presentation` | 用于[游戏表现文档](11-specialist-workflows.md#游戏表现文档)，可以支持早期 GDD 探索。不包含代码、资源制作或验收。 |
+| 规定一个界面或单个资源 | `design-ui-spec`、`design-visual-asset-spec`、`design-audio-asset-spec` | 用于细化 GDD 的专业规格。交付范围仍由 Product 决定。 |
+| 准备美术、音乐或音效 | 按[专业工作](11-specialist-workflows.md#设计制作接入与审核)保留为预留能力 | 没有制作 Skill。记录规格和现有资源。 |
+| 确定语言覆盖范围和区域格式约定 | `design-localization-spec` | 可以单独进行。游戏规则留在 GDD，术语定义留在 `docs/terminology.md`。 |
+| 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
+| 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
+| 用户明确要求的原型或技术探针 | 在目标项目中使用 `prototype-godot` | 按[原型](13-prototypes.md)回答一个假设。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。 |
+| 在依赖逻辑之前确定布局、资源尺寸和交互可读性 | `prototype-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[依赖实现前的视觉原型](13-prototypes.md#依赖实现前的视觉原型)执行。规格提供输入；可运行的场景和人工验收属于执行阶段。 |
+| 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
+| 为已获授权的任务准备或复用另一个工作目录 | `worktree-create-godot` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
+| 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate-godot` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
+| 根据 GDD 预拆分交付范围 | `product-author` | 只写用户要求的 `product.md` 规划范围。 |
+| 修改游戏设计 | `design-gdd`；限定范围的数值设计用 `design-balance` | 修改设计不会自动创建 Product 或 Feature。 |
+| 修改当前 Product 的交付范围 | `product-author` | 后续 Product 保持在预拆分层级。 |
+| 已有实现，但缺少足够的 Product 或 Feature 记录 | 先用 `product-author`，再走规划和交付路由 | 按 [接手已有实现](02-feature-list-schema.md#接手已有实现) 执行。需要已确认的 GDD 设计；不编造历史，也不授权超出已说明缺口的修复。 |
+| 当前交付完成后细化下一个 Product | 先用 `product-author`，获得授权后再用 `feature-plan` | 当前 Product 的必需 Feature 全部完成后使用，按 [逐个 Product 规划](02-feature-list-schema.md#逐个-product-规划) 执行。 |
+| 拆分当前 Product | `feature-plan` | 只规划当前 Product。 |
+| 源同步 | `feature-sync` | 已提交的 GDD、Product、专业文档或规则来源发生变化时使用。不做首次拆分。 |
+| 继续当前 Feature | `feature-execute` | 只说“继续”，不能补上缺少的批准或验收。 |
+| 执行一个符合条件的已规划 Feature | `feature-execute` | 按依赖顺序选择；Stage 1 的批准仍然适用。 |
+| 为已规划的 Feature 准备实现指引 | `implementation-guidance-godot`，通常由主 Agent 使用 | 只有用户明确要求或任务授权仍然有效时，才委派给 `implementation-advisor`；不会仅因任务复杂就委派。 |
+| 当前未完成 Feature 中的 Bug | 该 Feature 的修复路由 | 在其范围内修复，并补上回归测试覆盖。 |
+| 已完成行为中的独立 Bug | `engineering-change-plan` 的 bug 模式 | 行为违反已记录的需求时使用；期望缺失或期望改变时，按 [分类边界](07-engineering-change.md#分类边界) 交给对应的设计负责方。 |
+| 重构 | `engineering-change-plan` 的 refactor 模式 | 行为保持不变。只有用户要求挑选代码坏味道时，才先用 `engineering-refactor-select`。 |
+| 维护 | `engineering-change-plan` 的 maintenance 模式 | 用于技术成功标准、兼容性、迁移和验证工作。 |
+| 项目工具问题 | `engineering-change-plan` | 用于项目自有工具中的问题。 |
+| 审计 | 在新的 `independent-reviewer` 实例中使用对应的审核 Skill | 只在用户要求正式审核时使用，按[独立审核](12-independent-review.md)执行。不修复，也不提供人工验收。 |
+| 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment-godot` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
+| 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification-godot` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
+| 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
+| 检查、导入或恢复验证证据 | `verification-evidence-godot` | 按 [证据与时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
+| 查询状态 | 只读说明，或 `project-next-step-advisor` | 不为回答问题而开始工作或运行就绪检查。 |
+| 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接台账、对话或消息。 |
 
-How to apply the table:
+使用本表时：
 
-- Choose investigation, planning or execution from the available evidence and the user's current authorization. The user's current authorization takes precedence over generic workflow wording.
-- Triage, diagnosis, environment work, verification, manual acceptance, evidence handling, wayfinding and worktree work are callable methods, not Stages or a fixed sequence. Use them when the task needs them, including for a direct bounded request.
-- A method's return does not end a broader authorized task, and does not turn a limited check into full delivery; see [Authorization and continuation](03-execute-loop.md#authorization-and-continuation).
-- Drafted task prompts use [Continuation prompts](09-records-reports-and-handoff.md#continuation-prompts).
-- Git operations follow `agent-rules/00-core/git-worktree-and-commits.md`.
+- 根据现有证据和用户当前的授权，选择调查、规划或执行。用户当前的授权优先于通用流程措辞。
+- 分类评估、诊断、环境工作、验证、人工验收、证据处理、多未知点探路（wayfinding）和 worktree 工作都是可调用的方法，不是 Stage，也没有固定顺序。任务需要时就用，包括用户直接提出的限定范围请求。
+- 一个方法返回，不代表更大范围的已授权任务结束，也不会把一次有限的检查变成完整交付；见 [授权与续接](03-execute-loop.md#授权与续接)。
+- 起草任务提示词时，按 [续接提示词](09-records-reports-and-handoff.md#续接提示词) 编写。
+- Git 操作遵循 `agent-rules/00-core/git-worktree-and-commits.md`。
 
-## Further reading
+## 延伸阅读
 
-| Topic | File |
+| 主题 | 文件 |
 | --- | --- |
-| GDD and Product documents: names, scope, open questions, candidate ideas and Product structure | [01-product-doc-structure.md](01-product-doc-structure.md) |
-| Feature ledger schema, revisions and Product-by-Product planning | [02-feature-list-schema.md](02-feature-list-schema.md) |
-| Stage 0–8 execution loop, authorization and continuation | [03-execute-loop.md](03-execute-loop.md) |
-| Project rules: responsibilities, loading and incremental maintenance | [04-project-rules.md](04-project-rules.md) |
-| Document language | [05-document-language.md](05-document-language.md) |
-| Tool configuration and Project Environment Bootstrap | [06-project-environment.md](06-project-environment.md) |
-| Bug, refactor and maintenance changes | [07-engineering-change.md](07-engineering-change.md) |
-| Test traceability, Test Impact Review, TDD and completion evidence | [08-test-traceability-and-evidence.md](08-test-traceability-and-evidence.md) |
-| Reports, research, knowledge, Progress and handoff | [09-records-reports-and-handoff.md](09-records-reports-and-handoff.md) |
-| Optional architecture overview and ADRs | [10-architecture-overview.md](10-architecture-overview.md) |
-| Specialist documents, source mapping, UI and presentation documents, and resource handoff | [11-specialist-workflows.md](11-specialist-workflows.md) |
-| Independent review | [12-independent-review.md](12-independent-review.md) |
-| Visual and logic prototypes | [13-prototypes.md](13-prototypes.md) |
-| Project terminology | [14-project-terminology.md](14-project-terminology.md) |
-| How the Agent reads parser and lint results | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
-| Manual acceptance checklist and result files | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
-| Templates for Products, Features, ADRs and other files | [templates/README.md](templates/README.md) |
+| GDD 与 Product 文档：名称、范围、开放问题、候选想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
+| Feature 台账结构、修订和逐个 Product 规划 | [02-feature-list-schema.md](02-feature-list-schema.md) |
+| Stage 0–8 执行循环、授权与续接 | [03-execute-loop.md](03-execute-loop.md) |
+| 项目规则：职责、加载和增量维护 | [04-project-rules.md](04-project-rules.md) |
+| 文档语言 | [05-document-language.md](05-document-language.md) |
+| 工具配置与项目环境准备 | [06-project-environment.md](06-project-environment.md) |
+| Bug、重构和维护修改 | [07-engineering-change.md](07-engineering-change.md) |
+| 测试追溯、测试影响评估、TDD 和完成证据 | [08-test-traceability-and-evidence.md](08-test-traceability-and-evidence.md) |
+| 报告、调研、知识、Progress（进度记录）和交接 | [09-records-reports-and-handoff.md](09-records-reports-and-handoff.md) |
+| 可选的架构概览和 ADR | [10-architecture-overview.md](10-architecture-overview.md) |
+| 专业文档、来源映射、UI 与表现文档，以及资源交接 | [11-specialist-workflows.md](11-specialist-workflows.md) |
+| 独立审核 | [12-independent-review.md](12-independent-review.md) |
+| 视觉原型和逻辑原型 | [13-prototypes.md](13-prototypes.md) |
+| 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
+| Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
+| 人工验收清单与结果文件 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
+| Product、Feature、ADR 等文件的模板 | [templates/README.md](templates/README.md) |

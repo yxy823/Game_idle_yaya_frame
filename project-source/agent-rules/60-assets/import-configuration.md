@@ -1,26 +1,26 @@
-# Import Configuration
+# 导入配置
 
-Import metadata, import types and import settings define the Resource API that consumers see. Treat `.import` files as tool-managed configuration that also contains generated identity and remap fields.
+导入元数据、导入类型和导入设置决定了使用方看到的 Resource API。把 `.import` 文件当作由工具管理的配置，其中还包含生成的身份字段和重映射字段。
 
-## Metadata
+## 元数据
 
-- **[MUST]** Change real import configuration through supported Godot import, editor or tooling workflows, and validate the reimport.
-- **[MUST]** The generated UID, path, destination, source and importer-version fields in `.import` are not repaired by hand; see [Generated and tool-managed files](../00-core/third-party-generated-and-temporary-files.md#generated-and-tool-managed).
-- **[MUST]** Moving, renaming or duplicating a source asset follows [Asset paths, UIDs, and moves](paths-uid-and-moves.md); a move or rename is not a content replacement.
+- **[必须]** 通过受支持的 Godot 导入、编辑器或工具流程修改真正的导入配置，并验证重新导入。
+- **[必须]** `.import` 中生成的 UID、路径、目标、源文件和导入器版本字段不手工修复；见[生成与工具管理的文件](../00-core/third-party-generated-and-temporary-files.md#生成文件与工具管理文件)。
+- **[必须]** 移动、重命名或复制源资源遵循[资源路径、UID 与移动](paths-uid-and-moves.md)；移动或重命名不等于替换内容。
 
-## Import type and settings
+## 导入类型与设置
 
-- **[MUST]** Changing the importer or import type changes the Resource API that consumers see, and requires validation with representative consumers.
-- **[MUST]** Changing the import mode, including Keep File and Skip File, changes export and runtime availability.
-- **[MUST]** Do not apply one import preset to all assets merely because they share an extension; classify them by runtime role.
-- **[MUST]** Review automatic import decisions such as Detect 3D, which alter mipmap and compression behavior, for textures shared by 2D and 3D paths.
-- **[MUST]** When Detect 3D automatically changes mipmap or compression settings and reimports a texture, investigate the resulting `.import` diff and the affected consumers before keeping or reverting it. Do not discard it as unexplained generated noise.
+- **[必须]** 修改导入器或导入类型会改变使用方看到的 Resource API，需要用有代表性的使用方验证。
+- **[必须]** 修改导入模式（包括 Keep File 和 Skip File）会改变导出和运行时的可用性。
+- **[必须]** 不要只因为扩展名相同，就对所有资源使用同一个导入预设；按运行时用途分类。
+- **[必须]** 对 2D 和 3D 路径共用的纹理，复核 Detect 3D 这类会改变 mipmap 和压缩行为的自动导入决定。
+- **[必须]** Detect 3D 自动修改了 mipmap 或压缩设置并重新导入纹理时，先查清由此产生的 `.import` 差异和受影响的使用方，再决定保留还是还原。不要把它当作无法解释的生成噪声丢弃。
 
-## Reimport and cache
+## 重新导入与缓存
 
-- **[MUST]** Use `reimport_files()` or another targeted reimport when an existing source asset or its `.import` metadata was changed externally.
-- **[MUST]** A newly created file, or a file whose type changed, first enters `EditorFileSystem` through `update_file()` or `scan()`. `update_file()` does not import the file; follow it with the required targeted reimport or the scan and import path.
-- **[MUST]** Do not start `reimport_files()` or another `scan()` while import or scan work is already in progress. Wait for the relevant filesystem or import completion state or signals before a dependent reload and validation.
-- **[MUST]** Changing importer defaults does not migrate assets that are already imported; follow [Project import defaults](../40-project-config/import-defaults.md) for migrating them.
-- **[MUST]** Do not directly edit cache hashes, imported textures, generated internal Resources or other `.godot/imported` artifacts.
-- **[REVIEW]** Deleting and rebuilding the cache is a diagnostic operation with a scope and an impact; it is not the default first response to an asset that looks stale.
+- **[必须]** 已有源资源或它的 `.import` 元数据在外部被修改后，使用 `reimport_files()` 或其他有针对性的重新导入。
+- **[必须]** 新建的文件或类型改变的文件，先通过 `update_file()` 或 `scan()` 进入 `EditorFileSystem`。`update_file()` 不会导入文件；之后还要执行所需的针对性重新导入，或走扫描与导入路径。
+- **[必须]** 导入或扫描工作正在进行时，不要启动 `reimport_files()` 或另一次 `scan()`。在依赖它的重新加载和验证之前，等待文件系统或导入的完成状态或信号。
+- **[必须]** 修改导入器默认值不会迁移已导入的资源；迁移它们遵循[项目导入默认值](../40-project-config/import-defaults.md)。
+- **[必须]** 不要直接编辑缓存哈希、导入后的纹理、生成的内部 Resource 或其他 `.godot/imported` 产物。
+- **[复核]** 删除并重建缓存是一项有范围、有影响的诊断操作；资源看起来过期时，它不是默认的第一反应。

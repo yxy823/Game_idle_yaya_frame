@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Technical Writing"
-  short_description: "Write clear Godot project docs within their contracts"
+  display_name: "Godot 技术写作"
+  short_description: "在文档契约内写出清楚的 Godot 项目文档"
 
 policy:
   allow_implicit_invocation: true

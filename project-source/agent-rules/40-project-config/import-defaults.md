@@ -1,12 +1,12 @@
-# Project Import Defaults
+# 项目导入默认值
 
-Import defaults are asset-pipeline policy, not a mechanism for repairing one asset.
+导入默认值是资源管线策略，不是修复单个资源的手段。
 
-## Import defaults
+## 导入默认值
 
-- **[REVIEW]** Changing import defaults changes the project's asset-pipeline policy and affects future and reimported assets.
-- **[MUST]** Pixel art does not imply universal nearest-filter or no-mipmap defaults. Choose defaults by actual asset roles and allow intentional exceptions.
-- **[MUST]** Changing project import defaults does not automatically migrate assets that are already imported. Their `.import` files and per-asset parameters can remain authoritative, so a reimport alone does not prove that the new default was adopted.
-- **[MUST]** For existing assets that should adopt the new policy, explicitly migrate their `.import` files, per-asset parameters or preset, then reimport and validate them.
-- **[MUST]** Validate the project default itself by freshly importing a representative new asset, and report that evidence separately from the migration of existing assets.
-- **[MUST]** Resources and files referenced by import defaults or custom importer configuration are startup dependencies of the project and the editor; keep them available.
+- **[复核]** 修改导入默认值会改变项目的资源管线策略，影响之后新导入和重新导入的资源。
+- **[必须]** 像素画不意味着全局使用最近邻过滤或不使用 mipmap 的默认值。按资源的实际用途选择默认值，并允许有意的例外。
+- **[必须]** 修改项目导入默认值不会自动迁移已导入的资源。它们的 `.import` 文件和单个资源的参数可能仍是权威来源，所以仅重新导入不能证明新默认值已被采用。
+- **[必须]** 已有资源需要采用新策略时，明确迁移它们的 `.import` 文件、单个资源参数或预设，然后重新导入并验证。
+- **[必须]** 通过全新导入一个有代表性的新资源来验证项目默认值本身，并把这项证据与已有资源的迁移分开报告。
+- **[必须]** 导入默认值或自定义导入器配置引用的 Resource 和文件，是项目和编辑器的启动依赖；保持它们可用。

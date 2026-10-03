@@ -1,29 +1,29 @@
 ---
 name: feature-execute
 description: >-
-  Execute one approved Feature through test impact review, TDD/verification, applicable human acceptance, optional user-requested independent review and completion. Return to the calling workflow for any further authorized work. English triggers: execute next feature, implement F0XX, continue feature. 中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
+  执行一个已批准的 Feature：测试影响评估、TDD/验证、适用的人工验收、用户要求时的独立审核和完成。还有其他已获授权的工作时，返回调用它的流程。英文触发：execute next feature, implement F0XX, continue feature。中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
 ---
 
-# Execute next Feature
+# 执行下一个 Feature
 
-## Procedure
+## 步骤
 
-Inspect relevant source changes and resolve their impacts before dependent execution. Use `methodology/03-execute-loop.md` as the sole Stage 0–8 procedure, including its shared contracts, approval packet, evidence commands, exception handling and authorized continuation. Read the shared contracts and current Stage, then follow every applicable Stage in order. On resumption, use the actual Feature/Progress state and current evidence to find the next required action; do not restart completed work or repeat unchanged context.
+先检查相关来源的变化并处理它们的影响，再执行依赖这些来源的工作。`methodology/03-execute-loop.md` 是 Stage 0–8 唯一的执行步骤，包括其中的共享约定、批准材料、证据命令、异常处理和已授权的续接。先阅读共享约定和当前 Stage，然后按顺序执行每个适用的 Stage。恢复工作时，根据 Feature/Progress 的实际状态和当前证据找到下一个必须的动作；不要重做已完成的工作，也不要重复读取没有变化的上下文。
 
-| Decision or action | Supporting authority |
+| 决定或动作 | 依据 |
 | --- | --- |
-| Select the current Product/Feature | **Stage 0 · select and load context** in `methodology/03-execute-loop.md`, with Product order from **Product-by-Product planning** in methodology 02 |
-| Read applicable implementation rules and knowledge | Project `AGENTS.md` and its task-specific routes |
-| Prepare needed implementation guidance for an existing Feature | [implementation-guidance-godot](../implementation-guidance-godot/SKILL.md); its explicit-request contract controls advisor delegation, while methodology 03 Stages 1C, 2 and 3 cover the design lifecycle |
-| Resolve document language or environment setup | `methodology/05-document-language.md` or `methodology/06-project-environment.md`, and current `docs/methodology-config.json` |
-| Plan tests, stale-test cleanup or runtime selection | Relevant sections of `methodology/08-test-traceability-and-evidence.md` |
-| Write Feature, Registry or completion fields | Relevant artifact contract in `methodology/02-feature-list-schema.md` |
-| Execute direct parsing/lint | `methodology/contracts/gdscript-lint.md` |
-| Record Bug diagnosis/learning | `methodology/07-engineering-change.md` and execute Stage 5.5 |
-| Archive execution or record architecture decisions | `methodology/09-records-reports-and-handoff.md` and, when applicable, `methodology/10-architecture-overview.md` |
-| Use professional sources, supporting specialist work or supplemental evidence | `methodology/11-specialist-workflows.md` |
-| Perform user-requested independent review | Stage 6 and `methodology/12-independent-review.md`; review methods live in separate Skills |
+| 选择当前的 Product/Feature | `methodology/03-execute-loop.md` 的 **Stage 0 · 选择 Feature 并加载上下文**，Product 顺序见 methodology 02 的 **逐个 Product 规划** |
+| 阅读适用的实现规则和知识 | 项目 `AGENTS.md` 及其按任务划分的入口 |
+| 为已有 Feature 准备需要的实施指导 | [implementation-guidance-godot](../implementation-guidance-godot/SKILL.md)；是否委派顾问由它的“明确要求”约定决定，设计稿的生命周期由 methodology 03 的 Stage 1C、2 和 3 负责 |
+| 确定文档语言或准备环境 | `methodology/05-document-language.md` 或 `methodology/06-project-environment.md`，以及当前的 `docs/methodology-config.json` |
+| 规划测试、清理过时测试或选择运行范围 | `methodology/08-test-traceability-and-evidence.md` 中的相关小节 |
+| 写入 Feature、测试登记表或完成字段 | `methodology/02-feature-list-schema.md` 中对应产物的约定 |
+| 直接执行解析/lint | `methodology/contracts/gdscript-lint.md` |
+| 记录 Bug 诊断和经验 | `methodology/07-engineering-change.md` 和执行规范的 Stage 5.5 |
+| 归档执行记录或记录架构决定 | `methodology/09-records-reports-and-handoff.md`，适用时还有 `methodology/10-architecture-overview.md` |
+| 使用专业来源、辅助性的专业工作或补充证据 | `methodology/11-specialist-workflows.md` |
+| 执行用户要求的独立审核 | Stage 6 和 `methodology/12-independent-review.md`；审核方法在单独的 Skill 中 |
 
-The execution specification owns optional Stage 6 review and all completion conditions. This Skill supplies no alternative check sequence or evidence format. The project command `tools/features/record-feature-completion.py` records and validates the evidence described there; it does not perform implementation, tests or review.
+可选的 Stage 6 审核和全部完成条件都由执行规范负责。本 Skill 不提供另一套检查顺序或证据格式。项目命令 `tools/features/record-feature-completion.py` 记录并校验那里描述的证据；它不负责实现、测试或审核。
 
-At Stage 8, report the completed Feature and the next action. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+到 Stage 8 时，报告已完成的 Feature 和下一个动作。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

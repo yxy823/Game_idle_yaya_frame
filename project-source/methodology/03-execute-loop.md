@@ -1,401 +1,429 @@
-# 03 · Stage 0–8 `feature-execute` loop
+# 03 · Stage 0–8 `feature-execute` 执行循环
 
-> This file defines how one Feature is delivered, from selection in Stage 0 to handoff in Stage 8. The `feature-execute` Skill runs this procedure. Implementation starts only after the Stage 1 approval. Stage 5 (human acceptance) applies only to the `manual` acceptance mode. Passing automated tests is evidence for completion; it never completes a Feature by itself.
+> 本文件规定一个 Feature 怎样交付：从 Stage 0 选择，到 Stage 8 交接。`feature-execute` Skill 执行这套流程。只有 Stage 1 获得批准后才开始实现。Stage 5（人工验收）只适用于 `manual` 验收模式。自动测试通过是完成的证据，但它本身永远不能让 Feature 完成。
 
-## Shared contracts
+## 通用约定
 
-- Require a substantive GDD under [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority). This applies to Product and engineering Features, including resumed work.
-- Read `docs/methodology-config.json` before writing project files. The conversation uses the user's current language; prose written to project files uses `document_language`.
-- Before the first coding Feature, complete the one-time [Project Environment Bootstrap](06-project-environment.md#project-environment-bootstrap). Stage 0 reuses the confirmed preparation and configured paths. Repeat the checks only after tool or configuration changes, or after an actual invocation failure.
-- Read the applicable active Project Rules through `AGENTS.md` and [the rule-loading contract](04-project-rules.md#rule-loading), including relevant `docs/project-rules.md` constraints. Keep a task-relevant snapshot for the Feature; you do not need to load unrelated sections or reread unchanged sources.
-- Follow `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve current changes, use the task records when resuming, and resolve concrete overlaps before dependent edits. A non-empty Git status is not a blocker by itself.
-- Read `docs/test-registry.json` when automated testing is enabled. Testing semantics are defined in [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md).
-- Release, publishing and deployment are outside this loop unless they are explicitly planned as project work.
+- 需要一份实质性的 GDD，见 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)。这适用于 Product Feature 和工程 Feature，包括续接的工作。
+- 写入项目文件前，先读 `docs/methodology-config.json`。对话使用用户当前的语言；写进项目文件的文字使用 `document_language`。
+- 第一个编码 Feature 开始前，完成一次性的[项目环境准备](06-project-environment.md#项目环境准备)。Stage 0 复用已确认的准备结果和已配置的路径。只有工具或配置变化后，或实际调用失败后，才重复检查。
+- 通过 `AGENTS.md` 和 [规则加载约定](04-project-rules.md#加载规则) 读取适用的有效项目规则，包括 `docs/project-rules.md` 中与本任务有关的约束。为这个 Feature 保留一份与任务有关的快照；不需要加载无关的小节，也不需要重读没变的来源。
+- 遵循 `agent-rules/00-core/git-worktree-and-commits.md`：检查并保留当前的改动；续接时使用任务记录；在依赖这些改动的编辑之前，解决具体的重叠。Git 状态非空本身不算阻塞。
+- 启用自动测试时，读取 `docs/test-registry.json`。测试的含义定义在 [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md)。
+- 发布、上架和部署不在本循环内，除非它们被明确规划为项目工作。
 
-### Authorization and continuation
+### 授权与续接
 
-Reuse concrete user decisions across Skills, Stages and turns.
+用户做出的具体决定，可以跨 Skill、跨 Stage、跨轮次复用。
 
-- Present the relevant plan and check that the authorization covers its actions, verification and scope. Ask only for a missing decision or a material change.
-- When a Skill returns, only that procedure ends; an end-to-end task that is already authorized continues.
-- In an authorized batch, complete each Feature's applicable verification, acceptance and commit before continuing. Independent review follows the user's chosen scope and timing under Stage 6.
-- Authorization to implement never supplies a missing human acceptance result.
+- 给出所涉及的计划，核对授权是否覆盖其中的动作、验证和范围。只在缺少决定或发生实质变化时询问。
+- 一个 Skill 返回时，结束的只是这段流程；已经获得授权的端到端任务继续进行。
+- 在已授权的批量任务中，每个 Feature 先完成所需的验证、验收和提交，再继续下一个。独立审核按用户在 Stage 6 选择的范围和时机进行。
+- 实现授权永远不能补上缺失的人工验收结果。
 
-For the initial decomposition of a Product, apply [Decomposition preview](02-feature-list-schema.md#decomposition-preview) before writing the plan. That section defines preview confirmation and explicit autonomous-planning authority, including continuation into a later Product.
+对 Product 做初始拆分时，写入计划前先执行[拆分预览](02-feature-list-schema.md#拆分预览)。该小节规定了预览确认和明确的自主规划授权，包括续接到后续 Product。
 
-### Incremental commits and whole-Feature review
+### 分步提交与整体 Feature 核对
 
-One Feature may contain several validated logical commits under `agent-rules/00-core/git-worktree-and-commits.md`. These commits keep `in_progress` and `completed_at: null`; only Stage 7 establishes completion. A clean worktree after a commit is not a reason to skip remaining work or start another Feature. When resuming, use the Feature and Progress records and Git history, including committed work as well as current differences.
+按 `agent-rules/00-core/git-worktree-and-commits.md`，一个 Feature 可以包含多个已验证的逻辑提交。
 
-Whenever this loop calls for the final diff or scope review, inspect the combined Feature change across all its commits and the remaining working-tree changes, not only the latest commit or the uncommitted diff. Start from the verified Git state before implementation and the task's own history; do not introduce a separate commit ledger.
+- 这些提交期间，Feature 保持 `in_progress` 和 `completed_at: null`；只有 Stage 7 才确立完成。
+- 提交后工作区干净，不是跳过剩余工作或开始另一个 Feature 的理由。
+- 续接时，使用 Feature 和 Progress 记录以及 Git 历史，既看已提交的工作，也看当前的差异。
 
-### Progress communication
+本循环要求检查最终差异或核对范围时，检查的是整个 Feature 的合并改动：它的所有提交加上工作区里剩余的改动，而不只是最新的提交或未提交的差异。从实现开始前已核实的 Git 状态和本任务自己的历史出发；不要另建提交台账。
 
-Report meaningful progress, failures, needed decisions and the final handoff in the conversation language. Combine adjacent routine steps when helpful; a message at every Stage boundary is not required. Keep the approval packet, the applicable human checklist and the final results visible. Natural wording is enough. Conversation text is not a machine protocol, proof of execution or a substitute for approval.
+### 进度沟通
 
-### Static-check summary
+用对话语言报告有意义的进展、失败、需要的决定和最终交接。相邻的常规步骤可以合并报告；不要求每个 Stage 边界都发消息。批准材料、所需的人工检查清单和最终结果要让用户看得到。自然的措辞就够了。对话文字不是机器协议，不能证明执行过，也不能代替批准。
 
-Only a Stage that actually runs static checks or lint reports their result table. Read the direct Godot parser and lint output, and include the scope and file count, Critical, Warning and Info counts, the actual process result and the report location. Report zero only when the output proves it; a failed command without a report has unavailable counts.
+### 静态检查汇总
 
-| Scope / files | Critical | Warning | Info | Process result | Report |
+只有实际运行了静态检查或 lint 的 Stage 才报告结果表。读取 Godot 解析器和 lint 的直接输出，表中包括：
+
+- 范围和文件数；
+- Critical、Warning 和 Info 的数量；
+- 实际的进程结果；
+- 报告位置。
+
+只有输出能证明时才报告为零；命令失败且没有报告时，数量记为不可用。
+
+| 范围 / 文件数 | Critical | Warning | Info | 进程结果 | 报告 |
 | --- | --- | --- | --- | --- | --- |
-| Actual scope and count | Actual | Actual | Actual | Actual exit/status | Original report/output path |
+| 实际范围和数量 | 实际值 | 实际值 | 实际值 | 实际退出码/状态 | 原始报告或输出路径 |
 
-Do not rerun global lint at every Stage. When reusing a result, name the run and the unchanged relevant source. The Agent checks whether later changes require another run. A table in the conversation does not replace an actual run.
+不要在每个 Stage 都重跑全局 lint。复用结果时，写明是哪一次运行，以及相关的源文件没有变化。由 Agent 判断后来的改动是否需要再跑一次。对话里的表格不代替实际运行。
 
-## Stage 0 · select and load context
+## Stage 0 · 选择 Feature 并加载上下文
 
-**Output:** exactly one current Feature and the context needed for its approval packet.
+**产出：**恰好一个当前 Feature，以及准备其批准材料所需的上下文。
 
-For Product-derived work, apply [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) and finish the current Product's required Features before moving to the next Product. Dependency eligibility does not decide the Product sequence. Keep later plans intact, and keep engineering repairs within their authorized route.
+对来自 Product 的工作，按[逐个 Product 规划](02-feature-list-schema.md#逐个-product-规划)执行：先完成当前 Product 所需的 Feature，再转到下一个 Product。依赖是否满足不决定 Product 的先后。保持后续计划不变，工程修复留在它已获授权的流程内。
 
-1. Read the lightweight index and select the Feature:
-   - Resume an `in_progress` Feature instead of starting another.
-   - Before selecting unstarted work, check whether the current authorized scope contains `blocked` Features. If it does, inspect their recorded blockers and recheck recovery under [Status transitions](02-feature-list-schema.md#status-transitions) before querying eligibility.
-   - Then select the Feature the user named, or a dependency-eligible `pending` Feature. `python -B tools/checks/check-feature-list.py --eligible` provides the validated selection. ID order only breaks ties, and a prerequisite may have a larger ID.
-2. Run `git status --porcelain` and inspect relevant differences. Preserve current changes. For a resumed `in_progress` Feature, recover its actual stop point from the Feature and Progress records and the current files, including committed work. Resolve conflicting edits or a materially unclear requested result before dependent writes; a clean directory or per-file authorship proof is not required.
-3. Read the confirmed configuration. Run `python -B tools/checks/check-project-environment.py --require-ready` at initialization, after tool or configuration changes, or to diagnose invocation failures. Routine Features reuse the confirmed paths; an incomplete setup still blocks coding.
-4. Read the context for this Feature as needed:
-   - the Feature detail, its `docs/features/F0XX-design.md` and the designs of relevant dependencies, when present;
-   - its primary source and the applicable GDD and professional sources under [Discover and map sources](11-specialist-workflows.md#discover-and-map-sources);
-   - relevant `docs/terminology.md` definitions and dependency details;
-   - current Progress, following its history links only when relevant;
-   - applicable Project Rules and routed `agent-rules`;
-   - the Test Registry and the principal implementation paths needed to bound the change;
-   - applicable architecture maps and ADRs under [the architecture convention](10-architecture-overview.md), including relevant ADRs when no map exists.
-5. The main Agent reads these sources itself. When guidance is explicitly delegated, the advisor may share the background investigation under [Implementing with prepared guidance](04-project-rules.md#implementing-with-prepared-guidance); the implementer still checks the original rules and the current code.
-6. Before proposing an approach or searching external references, follow [project knowledge lookup](../docs/knowledge/README.md#find-relevant-knowledge-first) for this Feature.
-7. If governing sources changed after the plan adopted them, handle their actual impact through `feature-sync` before dependent execution. An ordinary continuation request needs no separate synchronization phrase.
-8. Prepare a concise Context / Rules Snapshot: the Feature record, the principal GDD, Product and implementation paths read, useful knowledge references, the planned create, modify and delete paths, the applicable rule modules and materially constraining rules with their source paths, and the planned validation. There is no quota for the number of rules.
-9. Present this snapshot once in the Stage 1 packet, together with the Feature's identity and status, dependencies, source, criteria, affected components and engineering mode when present. When continuing, refer to it and show only material changes; do not repeat the packet at every Stage.
-10. Stop dependent work on contradictory acceptance criteria, invalid dependencies, unresolved GDD design or Product delivery scope, broken test-traceability data, or an unbounded set of planned files. If the GDD itself is missing, stop the development workflow under its prerequisite.
+1. 读取轻量索引并选择 Feature：
+   - 有 `in_progress` 的 Feature 时，续接它，不开始另一个。
+   - 选择尚未开始的工作之前，先检查当前授权范围内是否有 `blocked` 的 Feature。如果有，在查询可开始的 Feature 之前，查看它们记录的阻塞，并按[状态流转](02-feature-list-schema.md#状态流转)重新检查能否恢复。
+   - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
+2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。
+3. 读取已确认的配置。以下情况运行 `python -B tools/checks/check-project-environment.py --require-ready`：初始化时、工具或配置变化后、诊断调用失败时。常规 Feature 复用已确认的路径；准备未完成时，仍然不能开始编码。
+4. 按需读取这个 Feature 的上下文：
+   - Feature 详情、它的 `docs/features/F0XX-design.md`，以及相关依赖的设计稿（如果存在）；
+   - 它的主要来源，以及按 [查找与映射来源](11-specialist-workflows.md#查找与映射来源) 适用的 GDD 和专业来源；
+   - `docs/terminology.md` 中有关的定义和依赖的细节；
+   - 当前的 Progress，只在需要时才沿着它的历史链接去读；
+   - 适用的项目规则和按路由读取的 `agent-rules`；
+   - 测试登记表，以及界定本次改动所需的主要实现路径；
+   - 按 [架构约定](10-architecture-overview.md) 适用的架构图和 ADR；没有架构图时，也要读有关的 ADR。
+5. 主 Agent 自己阅读这些来源。明确委派实现指导时，advisor 可以按 [按事先准备的指导实现](04-project-rules.md#按事先准备的指导实现) 分担背景调查；实现者仍要核对原始规则和当前代码。
+6. 提出方案或搜索外部资料之前，先为这个 Feature 执行 [项目知识查找](../docs/knowledge/README.md#先查找相关知识)。
+7. 如果计划采用来源之后，起约束作用的来源又发生了变化，在依赖它们的执行之前，通过 `feature-sync` 处理实际影响。普通的续接请求不需要另说一句“请同步”。
+8. 准备一份简洁的 Context / Rules Snapshot（上下文与规则快照），包括：
+   - Feature 记录；
+   - 读过的主要 GDD、Product 和实现路径；
+   - 有用的知识引用；
+   - 计划创建、修改和删除的路径；
+   - 适用的规则模块，以及实质约束本次改动的规则及其来源路径；
+   - 计划的验证。
 
-## Stage 1 · Test Impact Review, resource preflight, and explicit approval
+   规则的数量没有配额。
+9. 在 Stage 1 的批准材料中展示一次这份快照，同时给出 Feature 的标识和状态、依赖、来源、条件、受影响的组件，以及工程模式（如果有）。续接时引用这份快照，只展示实质变化；不要在每个 Stage 重复整份材料。
+10. 遇到以下情况，停止依赖它们的工作：验收条件相互矛盾、依赖无效、GDD 设计或 Product 交付范围尚未确定、测试追溯数据损坏、计划修改的文件没有边界。如果 GDD 本身缺失，按它的前提要求停止开发流程。
 
-**Output:** implementation plan + verification plan + user decision.
+## Stage 1 · 测试影响评估、资源预检与明确批准
 
-First decide `verification.acceptance_mode` under [Acceptance mode](02-feature-list-schema.md#acceptance-mode). Explain the choice in the approval packet, then fill the automated mappings and the applicable manual checks or regressions.
+**产出：**实现计划 + 验证计划 + 用户的决定。
 
-### 1A. Determine the test scope
+先按[验收模式](02-feature-list-schema.md#验收模式)决定 `verification.acceptance_mode`。在批准材料中说明选择理由，然后填写自动测试映射，以及所需的人工检查或人工回归。
 
-Read and apply [Test Impact Review](08-test-traceability-and-evidence.md#test-impact-review) and [Runtime Test Impact selection](08-test-traceability-and-evidence.md#runtime-test-impact-selection). These sections define the Required, affected and full scopes. Using the current Feature, `affected_components`, the criterion verification and `docs/test-registry.json`, derive the Required and affected sets and decide whether full is required. Explain the selected scope and the reasons in the Stage 1 packet.
+### 1A. 确定测试范围
 
-The Required set keeps every registered suite of each affected component. Removing a registration or a deterministic requirement follows [Registry rules](08-test-traceability-and-evidence.md#registry-rules) and [Test Impact Review](08-test-traceability-and-evidence.md#test-impact-review); a runner exclusion cannot do it.
+阅读并执行 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 和 [运行时的测试影响选择](08-test-traceability-and-evidence.md#运行时的测试影响选择)。这两节定义了 Required、affected 和 full 三种范围。依据当前 Feature、`affected_components`、各条件的验证方式和 `docs/test-registry.json`，推导 Required 和 affected 集合，并决定是否需要 full。在 Stage 1 的批准材料中说明所选范围和理由。
 
-Also identify:
+Required 集合保留每个受影响组件已登记的全部测试套件。要移除某项登记或某个确定性要求，按 [登记表规则](08-test-traceability-and-evidence.md#登记表规则) 和 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 处理；运行器的排除参数做不到这一点。
 
-- additional related tests justified by dependency or API impact, with concrete reasons;
-- the acceptance and regression test IDs to create under TDD;
-- the unit suites to create after approval, without registering their future paths;
-- the cleanup of obsolete tests and current references for changed or removed contracts, after reading Feature notes and the affected test code under [Requirement changes and stale tests](08-test-traceability-and-evidence.md#requirement-changes-and-stale-tests); include it in the same plan and reuse an approval that covers this exact scope;
-- the criteria that remain manual-only, and why automation is not appropriate;
-- runtime verification outside gdUnit that the impact triggers in [Test Selection and Gates](../agent-rules/70-tests/test-selection-and-gates.md) require, such as a fresh Godot process or a reimport. Record it in this verification plan and report its actual result in Stage 4 and the handoff. It is not a full-suite reason, so do not add it to `full_suite_reasons`.
+还要确定：
 
-Identify additional professional verification obligations, such as measured performance under a named workload, an actual soak duration, or display and listening checks in context. State their conditions, completion criteria and evidence location in the AC or the Feature design; do not force them into gdUnit result fields.
+- 因依赖或 API 影响而需要追加的相关测试，并给出具体理由；
+- 按 TDD 要创建的验收测试和回归测试 ID；
+- 批准后要创建的单元测试套件，但不登记它们未来的路径；
+- 对于已修改或已移除的契约，过时测试和当前引用的清理。先读 Feature 的 notes 和受影响的测试代码，按 [需求变化与过时的测试](08-test-traceability-and-evidence.md#需求变化与过时的测试) 处理；把清理放进同一份计划，已有批准恰好覆盖这一范围时直接复用；
+- 仍只能人工验证的条件，以及不适合自动化的原因；
+- 按 [测试选择与验证档位](../agent-rules/70-tests/test-selection-and-gates.md) 的影响触发条件，gdUnit 之外还需要的运行时验证，例如启动一个新的 Godot 进程或重新导入。把它写进这份验证计划，并在 Stage 4 和交接时报告实际结果。它不是全量测试的理由，不要加进 `full_suite_reasons`。
 
-### 1B. Resources
+确定额外的专业验证义务，例如在指定负载下实测性能、实际的长时间运行（soak）时长，或在实际情境中检查显示和试听。在 AC 或 Feature 设计稿中写明它们的条件、完成标准和证据存放位置；不要硬塞进 gdUnit 的结果字段。
 
-1. Identify the implementation files and resources likely required, external dependencies, placeholders and impact outside the scope. When resource preparation needs a handoff, apply [Resource requirements and handoff](11-specialist-workflows.md#resource-requirements-and-handoff). Reuse the presentation, UI or shared design sections that own the resources, and check supplied files before dependent implementation.
-2. Record approved `_placeholder_` replacement needs in the resource section that owns them. When they are binding, link that section from the Feature AC or design; `notes` provide navigation. Do not duplicate the entries or treat preparation status as acceptance evidence.
-3. Explain any scope expansion before coding.
+### 1B. 资源
 
-For interface work, apply [Visual prototype before dependent implementation](13-prototypes.md#visual-prototype-before-dependent-implementation). Reuse a relevant accepted foundation, or resolve the missing prototype work and its actual dependencies before implementing dependent logic. For a prototype Feature, include representative resources, the independently runnable scene and the visual and interaction checks in the plan, and use the normal manual acceptance route. Approval of a prototype does not accept later production behavior.
+1. 确定可能需要的实现文件和资源、外部依赖、占位资源，以及对范围外的影响。资源准备需要交接时，按 [资源需求与交接](11-specialist-workflows.md#资源需求与交接) 处理。复用拥有这些资源的表现、UI 或共享设计章节，并在依赖它们的实现之前检查已提供的文件。
+2. 把已批准的 `_placeholder_` 替换需求记在拥有它们的资源章节中。这些需求有约束力时，从 Feature 的 AC 或设计稿链接该章节；`notes` 只提供导航。不要重复记录，也不要把准备状态当作验收证据。
+3. 编码前说明任何范围扩大。
 
-### 1C. Design decisions and guidance
+界面工作按 [依赖实现前的视觉原型](13-prototypes.md#依赖实现前的视觉原型) 处理。复用已接受的相关基础；否则在实现依赖它的逻辑之前，先解决缺失的原型工作及其实际依赖。原型 Feature 的计划要包含有代表性的资源、可独立运行的场景，以及视觉和交互检查，并走常规的人工验收流程。批准原型不等于接受之后的正式行为。
 
-When the plan adds a module, changes a public interface or moves responsibility, apply [Designing a module boundary](10-architecture-overview.md#designing-a-module-boundary) to the affected callers and contracts. Keep the reasoning in the current plan or a design record; an architecture map is not required.
+### 1C. 设计决定与实现指导
 
-When a game function changes, use `docs/game-organization.md` to check the affected logic, presentation and collaboration responsibilities:
+计划新增模块、修改公共接口或转移职责时，按 [设计模块边界](10-architecture-overview.md#设计模块边界) 核对受影响的调用方和契约。推理过程留在当前计划或设计记录里；不要求有架构图。
 
-- Identify the actual owner of any changed business state and the result that the feedback consumes. Distinguish it from local display or playback state.
-- Derive the necessary implementation order and verification from those contracts, including meaningful failure, cancellation and repeated-use paths.
-- Keep useful current APIs and Godot ownership and lifecycle semantics. This check adds no compulsory objects, event bus or extra document.
+游戏功能发生变化时，用 `docs/game-organization.md` 核对受影响的逻辑、表现和协作职责：
 
-Prepare the proposed implementation decisions and reasoning for the fixed [Feature design](02-feature-list-schema.md#feature-design-and-implementation-notes):
+- 找出每个被修改的业务状态的实际拥有者，以及反馈所使用的结果。把它与本地的显示或播放状态区分开。
+- 从这些契约推导必要的实现顺序和验证，包括有意义的失败、取消和重复使用路径。
+- 保留有用的现有 API，以及 Godot 的归属和生命周期语义。这项核对不强制增加对象、事件总线或额外文档。
 
-- A technical choice that meets the [ADR conditions](10-architecture-overview.md#architecture-decision-records) keeps its rationale in the ADR, and the design references it.
-- Reuse the record that owns each kind of content; do not choose another location based on length or complexity.
-- Return the proposal in the conversation. Do not save unapproved guidance as another guide or draft file. Stage 2 saves the approved content.
-- Surface unresolved terminology and project-rule conflicts before dependent implementation. Proposed rule changes follow the self-check and authorization in [Incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance).
-- Do not create empty records or request approval merely for their presence.
+为固定的 [Feature 设计稿](02-feature-list-schema.md#feature-设计与实现说明)准备拟定的实现决定和理由：
 
-Use `implementation-guidance-godot` when this Feature needs implementation guidance. The main Agent prepares it unless the current prompt or a still-valid authorization explicitly requests an implementation advisor; complexity alone does not delegate it. Use the same Context / Rules Snapshot, design contract and approval packet, not another planning Stage. Delegating the preparation does not approve the proposed design or implementation. Delegated questions, fixed-role selection and failure handling follow that Skill.
+- 满足 [ADR 条件](10-architecture-overview.md#架构决策记录) 的技术选择，理由写在 ADR 中，设计稿引用它。
+- 每类内容复用它的所属记录；不按长度或复杂程度另选位置。
+- 方案在对话中返回。不要把未批准的指导另存为指南或草稿文件。批准的内容由 Stage 2 保存。
+- 在依赖它们的实现之前，提出尚未解决的术语冲突和项目规则冲突。拟定的规则修改按 [规则的增量维护](04-project-rules.md#规则的增量维护) 自查并获得授权。
+- 不要创建空记录，也不要只为它们的存在请求批准。
 
-### 1D. Present approval packet
+这个 Feature 需要实现指导时，使用 `implementation-guidance-godot`。默认由主 Agent 准备；只有当前提示词或仍然有效的授权明确要求实现 advisor 时，才委派给它。复杂程度本身不构成委派理由。使用同一份 Context / Rules Snapshot、设计契约和批准材料，不另设规划 Stage。委派准备工作不等于批准拟定的设计或实现。委派的问题、固定角色的选择和失败处理，按该 Skill 执行。
 
-Present one concise packet containing:
+### 1D. 提交批准材料
 
-- Feature scope and affected components;
-- the Context / Rules Snapshot prepared in Stage 0;
-- material design choices and constraints, and any needed Feature design, ADR and rule-change decisions;
-- the Existing Safety Net to run before changes;
-- the TDD acceptance and regression tests and the unit suites to create;
-- the acceptance mode, its reason and the corresponding verification items;
-- the full-suite decision and its reason.
+给出一份简洁的批准材料，包含：
 
-Reuse an explicit approval that already covers this packet; otherwise ask for the missing decision to begin this Feature. Show material changes for approval without asking again about unchanged, already approved actions.
+- Feature 范围和受影响的组件；
+- Stage 0 准备的 Context / Rules Snapshot；
+- 实质性的设计选择和约束，以及需要做出的 Feature 设计稿、ADR 和规则修改决定；
+- 修改前要运行的 Existing Safety Net（已有安全网）；
+- 要创建的 TDD 验收测试、回归测试和单元测试套件；
+- 验收模式、选择理由和对应的验证项；
+- 是否运行全量测试及其理由。
 
-Without approval, do not implement and do not change the test plan in project files.
+已有明确批准覆盖这份材料时，直接复用；否则询问开始这个 Feature 所缺的决定。实质变化要展示出来请求批准；不变且已批准的动作不再重复询问。
 
-## Stage 2 · mark `in_progress` and persist verification plan
+没有批准时，不要实现，也不要修改项目文件中的测试计划。
 
-After approval:
+## Stage 2 · 标记 `in_progress` 并保存验证计划
 
-1. Set the selected index entry to `in_progress` with `completed_at: null`.
-2. Update `docs/progress.md` with the current Feature or batch, the Stage, blockers, pending decisions, the next allowed action, and links to the approved plan and evidence. Keep history in `docs/progress/`.
-3. Save the approved implementation design in `docs/features/F0XX-design.md` under [Feature design and implementation notes](02-feature-list-schema.md#feature-design-and-implementation-notes):
-   - Reuse a concrete approval that already covers the design; do not request it again.
-   - When an advisor prepared the design, the main Agent passes the approval and the assigned destination to the same advisor, which may write only that design file.
-   - The main Agent checks the design and maintains the Feature `notes` link, other record changes and commits.
-   - Explain the materially constraining rules and how they apply, with relative source links. Do not copy the whole snapshot or rule text. `notes` keep reminders and references, not a second design.
-4. Record already confirmed rule changes and ADRs at their own locations.
-5. Save the approved `verification.acceptance_mode`, criterion verification mappings, Bug regression IDs and `verification.test_impact` in the Feature detail:
-   - Store additional related tests as `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]`.
-   - Store approved full-suite escalations as `full_suite_reasons: ["<approved reason>"]`. Components with `full_suite_on_change: true` trigger full automatically and are not listed.
-   - The runner always reads this recorded scope; changing invocation arguments must not shrink the approved coverage. Removing an obligation requires an explicitly approved plan revision.
-6. Register the acceptance and regression tests that do not exist yet in `docs/test-registry.json` with `status: planned`.
-7. Add newly approved component entries to the Registry when required, with `unit_test_paths: []` if no unit suite exists.
-8. Run:
+获得批准后：
+
+1. 把所选的索引条目设为 `in_progress`，`completed_at: null`。
+2. 更新 `docs/progress.md`：当前 Feature 或批次、Stage、阻塞、待决定事项、下一个允许的动作，以及指向批准计划和证据的链接。历史保存在 `docs/progress/`。
+3. 按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明)，把批准的实现设计保存到 `docs/features/F0XX-design.md`：
+   - 已有具体批准覆盖这份设计时，直接复用，不再请求。
+   - 设计由 advisor 准备时，主 Agent 把批准和指定的保存位置交给同一个 advisor；它只能写这一个设计文件。
+   - 主 Agent 检查设计稿，并负责 Feature `notes` 中的链接、其他记录的修改和提交。
+   - 说明实质约束本次改动的规则及其应用方式，并附相对来源链接。不要复制整份快照或规则原文。`notes` 只保存提醒和引用，不是第二份设计。
+4. 已确认的规则修改和 ADR 记录到各自的位置。
+5. 把批准的 `verification.acceptance_mode`、各条件的验证映射、Bug 回归 ID 和 `verification.test_impact` 保存到 Feature 详情中：
+   - 追加的相关测试存为 `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]`。
+   - 批准的全量升级存为 `full_suite_reasons: ["<approved reason>"]`。`full_suite_on_change: true` 的组件会自动触发 full，不写在这里。
+   - 运行器总是读取这份记录的范围；修改调用参数不能缩小已批准的覆盖。移除某项义务需要经过明确批准的计划修订。
+6. 把尚不存在的验收测试和回归测试登记到 `docs/test-registry.json`，状态为 `status: planned`。
+7. 需要时，把新批准的组件条目加入测试登记表；没有单元测试套件时用 `unit_test_paths: []`。
+8. 运行：
 
    ```powershell
    python -B tools/checks/check-feature-list.py
    ```
 
-## Stage 3 · baseline, TDD, and implementation
+## Stage 3 · 基线、TDD 与实现
 
-Implement only the current Feature and its approved dependencies and repairs.
+只实现当前 Feature，以及它已批准的依赖和修复。
 
-Before producing validation output or temporary inputs, choose their locations under [Reports and cleanup](09-records-reports-and-handoff.md#reports-and-cleanup). Reuse those locations across the task, keeping distinct evidence separate when needed.
+生成验证输出或临时输入之前，按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 选定它们的位置。整个任务复用这些位置；需要时把不同的证据分开存放。
 
-Keep the Feature design aligned with the implementation and finalize it before Stage 4. Material changes follow [Authorization and continuation](#authorization-and-continuation); useful ordinary implementation details do not need another advisor round.
+让 Feature 设计稿与实现保持一致，并在 Stage 4 之前定稿。实质变化按[授权与续接](#授权与续接)处理；有用的普通实现细节不需要再请 advisor 一轮。
 
-### 3A. Existing Safety Net baseline
+### 3A. 已有安全网基线
 
-Before writing implementation code that changes behavior:
+在编写会改变行为的实现代码之前：
 
-1. Run the Existing Safety Net from Stage 1:
+1. 运行 Stage 1 确定的 Existing Safety Net：
 
    ```powershell
    python -B tools/testing/run-gdunit-tests.py --feature F0XX --phase baseline --scope auto
    ```
 
-   The baseline phase skips `planned` tests automatically because they do not exist yet. A valid empty safety net returns `not_required`, creates no run report and is not a test PASS.
-2. Run script parsing and lint directly if useful for the baseline.
-3. If a required test already fails, preserve the original error and report it before implementation. Do not attribute it to the current Feature or silently expand the scope.
+   baseline 阶段会自动跳过 `planned` 测试，因为它们还不存在。有效的空安全网返回 `not_required`，不生成运行报告，也不算测试 PASS。
+2. 如果对基线有用，直接运行脚本解析和 lint。
+3. 如果某个必需的测试已经失败，保留原始错误，并在实现之前报告。不要把它算到当前 Feature 头上，也不要悄悄扩大范围。
 
 ### 3B. RED
 
-Work in small cycles. Complete RED → GREEN → necessary refactor → passing relevant tests for one small observable behavior before starting the next. A large criterion may need several cycles. Planning test IDs in advance does not mean writing every test before any implementation.
+以小循环推进。一个小的可观察行为完成 RED → GREEN → 必要的重构 → 相关测试通过之后，再开始下一个。一个大的条件可能需要几个循环。提前规划测试 ID，不等于在任何实现之前写完所有测试。
 
-For each machine-verifiable criterion or Bug regression in the current cycle:
+对当前循环中每个可机器验证的条件或 Bug 回归：
 
-1. Create the test with its approved logical ID.
-2. Once the test exists, update its Registry entry with `path`, `case` and `status: active`.
-3. Run the narrowest supported selector.
-4. Confirm that the test fails because the intended behavior is missing or broken, not because of syntax, fixture, environment or unrelated setup failures.
+1. 用批准的逻辑 ID 创建测试。
+2. 测试存在后，在测试登记表中更新它的 `path`、`case`，并设为 `status: active`。
+3. 运行范围最窄的、受支持的选择器。
+4. 确认测试失败的原因是目标行为缺失或有错，而不是语法、夹具、环境或无关的准备步骤出错。
 
-If a meaningful RED state cannot be produced, explain why before implementation. Do not fake TDD evidence.
+如果无法产生有意义的 RED 状态，在实现之前说明原因。不要伪造 TDD 证据。
 
-When a unit suite approved in Stage 1 is created, add its repository-relative file or directory path to the component's `unit_test_paths` and to the Required Test Set. Register it only after the suite exists, then confirm discovery and execution through the configured runner.
+Stage 1 批准的单元测试套件创建后，把它相对仓库的文件或目录路径加入该组件的 `unit_test_paths` 和 Required Test Set。只有套件存在后才登记，然后通过配置的运行器确认它能被发现并执行。
 
-### 3C. GREEN and refactor
+### 3C. GREEN 与重构
 
-1. Implement the smallest coherent change that satisfies the current criterion or repair.
-2. Rerun the new test until it passes.
-3. Refactor locally without changing approved behavior.
-4. Rerun the tests that protect each meaningful refactor, then repeat the RED, GREEN and refactor cycle for the remaining behavior.
-5. Preserve accepted Product behavior outside the scope.
+1. 实现能满足当前条件或修复的最小连贯改动。
+2. 重跑新测试，直到通过。
+3. 在不改变已批准行为的前提下做局部重构。
+4. 每次有意义的重构后，重跑保护它的测试；然后对剩余行为重复 RED、GREEN 和重构循环。
+5. 保持范围外已接受的 Product 行为不变。
 
-When a coherent logical change becomes usable, run its relevant tests and direct parsing, lint or other applicable checks, then commit it automatically under the Core Git rules.
+一个连贯的逻辑改动可用后，运行它的相关测试，以及直接解析、lint 或其他适用检查，然后按 Core Git 规则自动提交。
 
-- Include the supporting tests, resources and record updates that keep the committed snapshot consistent.
-- Narrow validation must cover this change and the current behavior it affects. It does not replace the whole-Feature obligations in Stage 4.
-- Do not split a change that only works or can only be verified as a whole, and do not commit a failing RED state.
+- 一并提交支持它的测试、资源和记录更新，让提交的快照保持一致。
+- 范围较窄的验证必须覆盖这次改动及其影响的当前行为。它不代替 Stage 4 对整个 Feature 的义务。
+- 只能整体工作或只能整体验证的改动不要拆开；不要提交失败的 RED 状态。
 
-Pending Feature-level human acceptance does not block a validated logical commit, unless the user explicitly made acceptance, review or separate commit permission a condition for that commit. Apply such task-specific conditions under the Core Git contract across planning, implementation and continuation; acceptance does not replace separately required commit permission. A failure or missing prerequisite for this logical change still blocks its commit. Keep current progress and remaining work in the task records, and continue the authorized implementation and all applicable Stage 4–7 requirements.
+Feature 级的人工验收尚未完成，不阻止已验证的逻辑提交；除非用户明确把验收、审核或单独的提交许可设为该提交的条件。这类任务专属的条件，按 Core Git 契约在规划、实现和续接中执行；验收不代替单独要求的提交许可。这个逻辑改动本身失败或缺少前提时，仍然阻止它的提交。把当前进度和剩余工作记在任务记录中，继续已授权的实现，以及 Stage 4–7 的全部适用要求。
 
-Perform the approved cleanup of test code and current references together with the behavior change, under [Requirement changes and stale tests](08-test-traceability-and-evidence.md#requirement-changes-and-stale-tests). Registry retirement alone does not remove executable methods. Keep valid shared cases and historical records.
+按 [需求变化与过时的测试](08-test-traceability-and-evidence.md#需求变化与过时的测试)，把批准的测试代码和当前引用的清理与行为改动一起完成。只在测试登记表中退役，并不会移除可执行的方法。保留仍然有效的共享用例和历史记录。
 
-When implementation is complete, map the changed behavior to every criterion ID.
+实现完成后，把改动的行为对应到每个条件 ID。
 
-### 3D. Documentation checkpoint before final verification
+### 3D. 最终验证前的文档检查点
 
-Check whether this work:
+检查这次工作是否：
 
-- changed accepted game design or delivery scope;
-- added, renamed, retired or clarified project terminology;
-- changed the Feature design, the current architecture or recorded navigation;
-- produced an important technical decision;
-- revealed a useful project-rule change.
+- 修改了已接受的游戏设计或交付范围；
+- 新增、重命名、退役或澄清了项目术语；
+- 修改了 Feature 设计稿、当前架构或已记录的导航；
+- 产生了重要的技术决定；
+- 暴露出值得修改的项目规则。
 
-Update only useful, authorized content at the location that owns it. If nothing changed, do not create a document or an empty report.
+只在所属位置更新有用且已授权的内容。没有变化时，不要创建文档或空报告。
 
-| Content | Action and authority |
+| 内容 | 动作与权限 |
 | --- | --- |
-| GDD and Product delivery | `design-gdd` records approved overall game-design changes; `design-balance` maintains scoped numerical design in its GDD topic. `product-author` adjusts affected Product boundaries and source links. Future Products remain pre-decomposition candidates. Resolve the impact on current and already planned work through the source-commit and synchronization route. |
-| Project terminology | Invoke `project-terminology` within the current documentation authorization; definitions follow [the terminology contract](14-project-terminology.md). Changes in meaning go through the Product or design route that owns the term. |
-| Professional requirements and presentation adoption | The current task coordinates the applicable presentation, UI, art, audio and localization sources under [Specialist work and sources](11-specialist-workflows.md). Finalize resource status and locations, adopted component combinations and links to the actual implementation and consumers before verification. Link acceptance records without duplicating their results. Resolve substantive source impacts before dependent delivery. |
-| Feature design and current architecture | Reconcile the actual implementation and approved deviations in the Feature design. Update affected architecture contracts and navigation under [Maintaining a map](10-architecture-overview.md#maintaining-a-map), linking instead of duplicating. |
-| Important technical choices | Apply the ADR threshold and authorization; keep replaced decisions and evidence limits. |
-| Project or specialized rules | Apply [Incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance), including a self-check before writing each proposed change. Save settled constraints; unapproved candidates stay in the design or Progress, not in active rules. |
+| GDD 和 Product 交付 | `design-gdd` 记录已批准的整体游戏设计变更；`design-balance` 在其 GDD 主题中维护范围内的数值设计。`product-author` 调整受影响的 Product 边界和来源链接。未来的 Product 仍是预拆分候选。对当前和已规划工作的影响，通过来源提交和源同步流程解决。 |
+| 项目术语 | 在当前文档授权内调用 `project-terminology`；定义遵循 [术语约定](14-project-terminology.md)。含义变化走拥有该术语的 Product 或设计流程。 |
+| 专业需求与表现采用 | 当前任务按 [专业工作与来源](11-specialist-workflows.md) 协调适用的表现、UI、美术、音频和本地化来源。验证前定下资源状态和位置、采用的组件组合，以及指向实际实现和使用方的链接。链接验收记录，不复制其结果。在依赖它们的交付之前，解决来源的实质影响。 |
+| Feature 设计与当前架构 | 在 Feature 设计稿中对齐实际实现和已批准的偏差。按 [维护架构地图](10-architecture-overview.md#维护架构地图) 更新受影响的架构契约和导航，用链接代替复制。 |
+| 重要技术选择 | 按 ADR 的门槛和授权处理；保留被替换的决定和证据的局限。 |
+| 项目或专项规则 | 按 [规则的增量维护](04-project-rules.md#规则的增量维护) 处理，包括写入每项拟定修改前的自查。保存已确定的约束；未批准的候选留在设计稿或 Progress 中，不进入有效规则。 |
 
-Handle material conflicts when they are discovered instead of postponing them to this checkpoint. Return from supporting workflows to the current Feature; documentation routing must not restart Product planning or end authorized delivery.
+发现实质冲突时当场处理，不要拖到这个检查点。处理完辅助流程后回到当前 Feature；文档路由不能重新开始 Product 规划，也不能结束已授权的交付。
 
-Finalize these document edits before Stage 4. GDD, Product, terminology, professional specifications, presentation documents and their resource sections, rules, ADRs and design Markdown are part of the global source fingerprint described in [Artifact-backed completion and semantic freshness](08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness). A later change, even an editorial one or a change to a future GDD chapter, may invalidate current evidence. Complete the applicable verification and renewed acceptance after such a change; do not exempt these files or claim unchanged coverage.
+在 Stage 4 之前定稿这些文档修改。以下文件都计入全局来源指纹，见 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)：GDD、Product、术语、专业规格、表现文档及其资源章节、规则、ADR 和设计 Markdown。之后的任何修改，即使只是文字修改，或改的是未来的 GDD 章节，都可能使当前证据失效。这类修改之后，完成所需的验证并重新验收；不要豁免这些文件，也不要声称覆盖没有变化。
 
-## Stage 4 · automated verification and human checklist
+## Stage 4 · 自动验证与人工检查清单
 
-**Output:** machine evidence plus concrete human-verification instructions.
+**产出：**机器证据，加上具体的人工验证说明。
 
-Stage 4 uses these entry points:
+Stage 4 使用以下入口：
 
-- Direct parsing and lint use the confirmed Python and Godot paths from `docs/methodology-config.json`, as described in [GDScript lint](contracts/gdscript-lint.md).
-- Tests run through `tools/testing/run-gdunit-tests.py`, which reads the configured Godot path.
+- 直接解析和 lint 使用 `docs/methodology-config.json` 中已确认的 Python 和 Godot 路径，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
+- 测试通过 `tools/testing/run-gdunit-tests.py` 运行，它读取配置的 Godot 路径。
 
-Procedure:
+步骤：
 
-1. Run `python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`. It reads the current obligations and prints the selection, reasons, deduplication and full-suite escalation.
-   - It returns `not_required` only in the valid `manual` case defined in [Artifact-backed completion and semantic freshness](08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness). It then launches no Godot process and creates no run report. Skip step 6, keep `test_runs: []`, and continue with the applicable static checks and actual human acceptance.
-   - Missing paths, zero discovery and unresolved failed or unfinished final runs on the same snapshot still fail.
-2. Inspect the actual selected scope and test results. If full is required, run one real full suite whose executed set covers Required and affected; do not repeat equivalent runs only to fill different Gate fields. Otherwise run the affected union, including every Required item.
-3. Run Godot script parsing directly for the changed scripts and necessary dependants, then the bundled lint CLI as described in [GDScript lint](contracts/gdscript-lint.md). Inspect the actual output and exit codes. Do not add a Python wrapper, static manifest or import step.
-4. For a Bug, make sure each approved `F0XX-RTyy` test is active and passes, or that the approved `manual_regression` is concrete and repeatable.
-5. If Stage 1 required full, the current selection must report full as required, and the actual full result must pass. The selection derives full from components with `full_suite_on_change: true` and from the recorded `full_suite_reasons`; component triggers are not copied into `full_suite_reasons`. An unavailable or failed required full suite blocks completion; a reason or a transcript cannot turn it into PASS.
-6. When a run result was produced, record the actual Required, affected and full results, including failures:
+1. 运行 `python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
+   - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
+   - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
+2. 检查实际选中的范围和测试结果。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
+3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 约定](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
+4. 对 Bug，确认每个已批准的 `F0XX-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
+5. 如果 Stage 1 要求 full，当前的选择结果必须报告 full 为必需，且实际的 full 结果必须通过。选择逻辑从 `full_suite_on_change: true` 的组件和已记录的 `full_suite_reasons` 推导 full；组件触发不复制进 `full_suite_reasons`。必需的全量套件无法运行或失败时，阻止完成；理由或对话记录都不能把它变成 PASS。
+6. 产生了运行结果时，记录实际的 Required、affected 和 full 结果，包括失败：
 
    ```powershell
    python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>
    ```
 
-   `record-tests` validates the supplied run results and stores references to them. It neither runs nor validates static checks. The Agent assesses the direct parsing and lint output separately; a passing evidence helper cannot override a static failure. A failed import clears earlier test references and keeps the original reports.
+   `record-tests` 校验提供的运行结果，并保存对它们的引用。它既不运行静态检查，也不校验静态检查。Agent 单独评估直接解析和 lint 的输出；证据辅助工具通过，不能推翻静态检查的失败。导入失败会清除之前的测试引用，并保留原始报告。
 
-7. Any failing machine check returns to Stage 3. Do not enter Stage 5.
-8. Follow the approved acceptance mode. For `manual`, prepare the corresponding human checks. For `automated`, report the actual automated coverage of every criterion.
+7. 任何机器检查失败都回到 Stage 3。不要进入 Stage 5。
+8. 按批准的验收模式执行。`manual` 准备对应的人工检查。`automated` 报告每个条件实际的自动覆盖情况。
 
-For `manual`, expand the approved checks and applicable regression into a pending JSON checklist, bind it to the final content, and give its path to the user under [Manual acceptance files](contracts/manual-acceptance-files.md). That contract defines the fields, reproducible steps, result import, snapshot matching and the conversation fallback. Notes link the checklist and supporting observations instead of duplicating the steps. Screenshots and logs support the relevant action; they do not establish acceptance.
+对 `manual`，按 [人工验收文件](contracts/manual-acceptance-files.md)，把批准的检查和适用的回归展开成一份待完成的 JSON 检查清单，绑定到最终内容，并把路径告诉用户。该契约定义了字段、可复现的步骤、结果导入、快照匹配和对话中的备用方式。notes 链接检查清单和辅助观察，不复制步骤。截图和日志用于辅助相应动作；它们不能确立验收。
 
-Report the actual scope, failures and result paths in ordinary language.
+用普通的语言报告实际范围、失败和结果路径。
 
-Complete any additional performance, soak, display or listening obligations in the approved verification plan, and keep their original evidence separate. Follow [Finalization and evidence](11-specialist-workflows.md#finalization-and-evidence); these results are not gdUnit runs. Run any runtime verification outside gdUnit planned in Stage 1, such as a fresh Godot process or a reimport, and report its actual result. Passing the evidence helper alone does not prove these obligations, the static checks or human acceptance of the experience.
+完成已批准验证计划中额外的性能、长时间运行、显示或试听义务，并把它们的原始证据分开保存。按 [定稿与证据](11-specialist-workflows.md#定稿与证据) 处理；这些结果不是 gdUnit 运行。运行 Stage 1 计划的 gdUnit 之外的运行时验证，例如新的 Godot 进程或重新导入，并报告实际结果。仅凭证据辅助工具通过，不能证明这些义务、静态检查或对体验的人工验收。
 
-For `manual`, wait for Stage 5. For `automated`, skip Stage 5 and go to Stage 5.5 for a Bug, otherwise to Stage 6. Report manual acceptance as not required; do not record a human decision that never happened.
+`manual` 等待 Stage 5。`automated` 跳过 Stage 5：Bug 进入 Stage 5.5，其他进入 Stage 6。报告人工验收为不需要；不要记录从未发生的人工决定。
 
-## Stage 5 · explicit human acceptance (manual mode only)
+## Stage 5 · 明确的人工验收（仅 manual 模式）
 
-Receive the user's actual result file or explicit decision in the conversation under [Manual acceptance files](contracts/manual-acceptance-files.md). A valid, fully passed submission accepts its scope without another confirmation phrase.
+按 [人工验收文件](contracts/manual-acceptance-files.md)，接收用户实际的结果文件，或对话中的明确决定。一份有效且全部通过的提交即接受其范围，不需要再说一句确认的话。
 
-- Accepted result → record it through the applicable file or conversation route, then continue.
-- Any failure → record the rejection, update Progress, return to Stage 3 and repair within the current authorization, then repeat the applicable Stage 4 and Stage 5 verification.
-- Pending cases → keep the acceptance incomplete and report what remains; partial execution is not a pass.
-- Ambiguous response → ask whether any criterion remains unmet.
-- A minor deferral is valid only when the user explicitly accepts it and it is recorded in notes.
+- 已接受 → 通过适用的文件或对话方式记录，然后继续。
+- 任何失败 → 记录拒绝，更新 Progress，回到 Stage 3，在当前授权内修复，然后重复适用的 Stage 4 和 Stage 5 验证。
+- 有待完成的检查项 → 验收保持未完成，并报告还剩什么；只执行了一部分不算通过。
+- 回复含糊 → 询问是否还有未满足的条件。
+- 只有用户明确接受、并且记录在 notes 中时，轻微的推迟处理才有效。
 
-For a Bug Feature, accepted Stage 5 enters Stage 5.5. All others enter Stage 6.
+Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 
-## Stage 5.5 · Bug-learning capture
+## Stage 5.5 · 记录 Bug 经验
 
-Applies only to a Feature with `engineering_change: bug`.
+只适用于带 `engineering_change: bug` 的 Feature。
 
-1. Capture the local Feature note and assess Guardrail promotion under [Bug-learning promotion](07-engineering-change.md#bug-learning-promotion). Do not keep failed debugging guesses, redundant traces or incidental machine-local failures.
-2. Creating a promoted cross-Feature invariant requires the user's approval when it expands the accepted Feature scope.
-3. If an approved rule change at this point alters the snapshot or current obligations, repeat the applicable verification and acceptance before completion.
-4. Handle approved rule changes and any affected plans in Stage 8. Reuse the synchronization authority already given and the work already completed.
+1. 按 [Bug 经验的提升](07-engineering-change.md#bug-经验的提升) 记录 Feature 本地的说明，并评估是否提升为 Guardrail。不要保留失败的调试猜测、重复的追踪记录，或偶然出现的本机故障。
+2. 创建提升后的跨 Feature 不变量时，如果它扩大了已接受的 Feature 范围，需要用户批准。
+3. 如果此时批准的规则修改改变了快照或当前义务，在完成之前重复适用的验证和验收。
+4. 已批准的规则修改和受影响的计划在 Stage 8 处理。复用已经给出的源同步授权和已经完成的工作。
 
-## Stage 6 · optional independent review
+## Stage 6 · 可选的独立审核
 
-**Trigger:** an explicit user request for independent review. Otherwise continue to Stage 7 without a review record or a routine confirmation question. The author still checks the final diff against the AC, scope and applicable rules; this needs no general self-review Stage or report. Rule changes keep their own self-check under [Incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance).
+**触发条件：**用户明确要求独立审核。否则直接进入 Stage 7，不留审核记录，也不例行询问确认。作者仍要对照 AC、范围和适用规则检查最终差异；这不需要通用的自审 Stage 或报告。规则修改按 [规则的增量维护](04-project-rules.md#规则的增量维护) 保留各自的自查。
 
-The user chooses the scope and the timing: one Feature, several named Features, a commit range or an explicit diff.
+由用户选择范围和时机：一个 Feature、几个指定的 Feature、一段提交范围，或一份明确的差异。
 
-- A review after several completed Features uses the same procedure, independently of their delivery loops; it does not keep each Feature open.
-- If the user requires review before completion or continuation, honor that condition under [Authorization and continuation](#authorization-and-continuation).
-- An Agent may recommend review for a concrete concern, but cannot start it without the user's request.
-- Do not add per-Feature review switches, pending-review states or a review queue.
+- 完成几个 Feature 之后再审核，使用同样的流程，并独立于它们各自的交付循环；不需要让每个 Feature 保持未完成。
+- 用户要求在完成或续接之前审核时，按[授权与续接](#授权与续接)遵守这个条件。
+- Agent 可以因具体的顾虑建议审核，但没有用户的要求不能开始。
+- 不要增加按 Feature 的审核开关、待审核状态或审核队列。
 
-**Output:** findings for the selected combined scope, with evidence and limits.
+**产出：**针对所选合并范围的发现，附证据和局限。
 
-Use [Independent review](12-independent-review.md) for fresh context, neutral handoff inputs, effective permissions, isolated validation and completion limits. The `independent-reviewer` role loads only the requested applicable methods. `review-code` examines requirements and code quality; other review Skills cover UX, art, audio, assets, localization or balance when requested. One instance may combine methods; a separate pass per Skill or Feature is not required. When the author loads the same method, it is still only a self-check.
+按 [独立审核](12-independent-review.md) 处理全新上下文、中立的交接输入、实际权限、隔离的验证和完成的局限。`independent-reviewer` 角色只加载所请求的适用方法。`review-code` 检查需求和代码质量；其他审核 Skill 在被请求时覆盖 UX、美术、音频、资源、本地化或数值平衡。一个审核实例可以组合多种方法；不要求每个 Skill 或每个 Feature 单独审一遍。作者加载同样的方法，仍然只是自查。
 
-Deliver one report for the selected scope, mapping shared findings to the affected Features without duplication. Review-only work stops after the findings. Evaluate each problem and its proposed remedy separately, and reuse an authorization for a concrete repair where one was already given. Reports and permitted isolated validation outputs must not modify the reviewed artifacts, original evidence or acceptance records.
+为所选范围交付一份报告，把共有的发现对应到受影响的 Feature，不重复列出。只做审核的工作在给出发现后结束。分别评估每个问题和建议的改法；已经给过具体修复授权时，复用该授权。报告和允许的隔离验证输出不得修改被审核的产物、原始证据或验收记录。
 
-- For an unfinished Feature, confirmed in-scope defects return to Stage 3.
-- For completed Features, keep the completed history and follow the engineering change route.
-- Verify the repair and any invalidated Stage 4 evidence, and renew human acceptance when accepted behavior changes.
-- Re-review only when the requested review condition or a concrete unresolved finding requires it.
-- Do not continue past a confirmed completion-blocking defect or a failed required check just because review is optional.
+- 对未完成的 Feature，确认的范围内缺陷回到 Stage 3。
+- 对已完成的 Feature，保留已完成的历史，走工程变更流程。
+- 核实修复和任何失效的 Stage 4 证据；已接受的行为发生变化时，重新进行人工验收。
+- 只有在用户要求的审核条件或具体的未解决发现需要时，才重新审核。
+- 不要因为审核是可选的，就越过已确认会阻止完成的缺陷，或失败的必需检查。
 
-Record only accepted, useful follow-ups in the Feature notes; a `suggest` finding does not automatically create a TODO or task. The completion evidence contains no review counts. Isolated review output does not invalidate a current run. Before continuing, check that the reviewed snapshot is unchanged and that the user's required review coverage is met.
+只把已接受、有用的后续事项记在 Feature notes 中；`suggest` 级别的发现不会自动生成 TODO 或任务。完成证据不含审核次数。隔离的审核输出不会使当前运行失效。继续之前，确认被审核的快照没有变化，且已满足用户要求的审核覆盖。
 
-## Stage 7 · mark complete
+## Stage 7 · 标记完成
 
-**Entry:** all of the following hold:
+**进入条件：**以下各项全部成立：
 
-- Stage 4 evidence covers all current automated obligations, or the valid manual case without automated obligations returned `not_required`.
-- The required test evidence and, for `manual`, the explicit Stage 5 acceptance match the current semantic content fingerprint. The Git revision only records provenance: a commit that changes only status, time or history content grants no new acceptance and requires no rerun.
-- The Agent has checked the final diff against the AC and the scope.
-- The applicable direct parsing and lint, and any supplemental professional verification, passed.
-- Any explicit user review condition is satisfied.
+- Stage 4 证据覆盖当前全部自动义务；或者在没有自动义务的有效 manual 情形下，返回了 `not_required`。
+- 所需的测试证据，以及 `manual` 模式下 Stage 5 的明确验收，都与当前的语义内容指纹一致。Git 版本只记录来源：只改了状态、时间或历史内容的提交，不带来新的验收，也不要求重跑。
+- Agent 已对照 AC 和范围检查过最终差异。
+- 适用的直接解析和 lint，以及任何补充的专业验证，都已通过。
+- 用户明确提出的审核条件（如有）已满足。
 
-The evidence helper checks tests and applicable human acceptance only. It does not assess static or supplemental checks, perform a review, or decide whether a user condition is met.
+证据辅助工具只检查测试和适用的人工验收。它不评估静态检查或补充检查，不做审核，也不判断用户的条件是否满足。
 
-Before the completion commands, confirm that the Stage 3 documentation checkpoint and any later approved governing updates are complete. If a missing edit is made now, restore the applicable current verification and acceptance before marking completion. Do not postpone such edits until after the Feature is recorded as done.
+运行完成命令之前，确认 Stage 3 的文档检查点以及之后批准的约束性更新都已完成。如果此时才补上缺失的修改，在标记完成之前恢复适用的当前验证和验收。不要把这类修改推迟到 Feature 记为 done 之后。
 
-1. Run:
+1. 运行：
 
    ```powershell
    python -B tools/features/record-feature-completion.py validate --feature F0XX
    python -B tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 
-2. Record the verified result: set the Feature to `done` and set `completed_at` to the current ISO 8601 timestamp. The status field records completion; it does not prove tests, review or human acceptance.
-3. Run `python -B tools/checks/check-feature-list.py` on the final ledger. If implementation or contract changes invalidate the evidence, finish the relevant verification before delivery.
-4. Keep task reminders, Bug learning, accepted follow-ups and links in notes. Implementation decisions, their reasons and explanations of omitted edge cases belong in the Feature design; placeholder specifications stay in their resource section. Before committing, finalize useful knowledge and its index under [knowledge maintenance](../docs/knowledge/README.md#maintain-during-authorized-work), keeping [artifact ownership](09-records-reports-and-handoff.md#project-knowledge).
-5. Check this task's report locations, evidence links and the purpose of any retained scratch files under [Reports and cleanup](09-records-reports-and-handoff.md#reports-and-cleanup). Then archive the current execution history once under `docs/progress/<Feature-or-approved-batch>.md`, and leave only the current state and its history link in `docs/progress.md`. Feature notes keep TODOs and links to design decisions and applicable ADRs; do not duplicate the rationale or the execution history. Pure Markdown archiving does not affect test fingerprints.
-6. Confirm that the applicable test and acceptance evidence still covers the final change under the snapshot rules. Reuse valid results; run missing or invalidated checks instead of repeating identical verification because the Stage changed.
-7. Follow `agent-rules/00-core/git-worktree-and-commits.md` to commit the remaining validated implementation and completion records, with its Feature identity, staging and delivery reporting. Earlier logical commits remain part of this Feature's delivery; do not squash them or create an empty commit only to mark a Stage. The Core contract also defines the no-commit exception, the current-branch policy and prohibited Git operations.
+2. 记录已核实的结果：把 Feature 设为 `done`，并把 `completed_at` 设为当前的 ISO 8601 时间戳。状态字段记录完成，它不证明测试、审核或人工验收。
+3. 对最终台账运行 `python -B tools/checks/check-feature-list.py`。如果实现或契约的改动使证据失效，在交付前完成相应的验证。
+4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。
+5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
+6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
+7. 按 `agent-rules/00-core/git-worktree-and-commits.md` 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。Core 契约还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
 
-## Stage 8 · handoff and authorized continuation
+## Stage 8 · 交接与已获授权的续接
 
-1. If this task changed project or specialized rules, report the change and complete the needed `feature-sync` impact handling before the next affected Feature. Reuse the authorization and any synchronization already completed; edits that keep the meaning need no invented follow-up work. If an actual decision or required synchronization is not authorized, report that boundary and stop the dependent continuation.
-2. Otherwise check the current Product's remaining scope and the sources and statuses of its Features.
-   - If work remains, use [Stage 0 selection](#stage-0--select-and-load-context), including its blocked-work recovery check, to identify the next eligible `pending` Feature or the actual blocker.
-   - Only after the Product's required Features are complete, revisit the current GDD and the next pre-decomposition candidate. Use `product-author` to write its delivery document and then `feature-plan` to decompose it, or reuse its plan.
-   - Apply the authorization boundary in step 5. Having no eligible Feature does not prove that the Product is complete.
-3. Report the completed Feature, the relevant implementation and test changes, the verification evidence, its local commit hashes or verified commit range (or the explicit no-commit exception), the worktree status after the commit, the placeholder count, TODOs, and the next Feature or Product-planning step. When cleanup was required, state the actual obsolete-test and reference changes and any remaining work recorded in notes or Progress.
-4. Report reusable learning with `templates/feature-learning-summary.md.tmpl`:
-   - With no new reusable learning, state “No new reusable learning” (Chinese: “无新增可复用经验”). Do not invent an entry for every incident.
-   - Otherwise report one sentence or a few concise entries: the context, the useful approach or root cause, the coverage already in place, the applicability, and the actual or proposed destination (Knowledge, Agent Rule, Methodology, Tooling, Automated Check or Regression).
-   - Link knowledge or Bug-learning notes recorded before the commit instead of copying them or writing documentation after the commit.
-   - A project-specific approach can be reusable within the project without becoming a universal rule.
-   - A newly discovered tooling or rule change outside the scope is a separate authorized task.
-5. Continue with the next step only when it is within a concrete authorization and its prerequisites are met. Keep the Product order and each Feature's approval, acceptance and completion requirements. If the requested scope is complete, the user asked for a pause, or a necessary decision is missing, stop and name that boundary. Eligibility or completion alone grants no new scope.
+1. 如果本任务修改了项目规则或专项规则，报告这项修改，并在下一个受影响的 Feature 之前，完成所需的 `feature-sync` 影响处理。复用已有的授权和已完成的源同步；不改变含义的编辑不需要编造后续工作。如果实际需要的决定或必需的源同步没有获得授权，报告这个边界，并停止依赖它的续接。
+2. 否则，检查当前 Product 的剩余范围，以及它的各个 Feature 的来源和状态。
+   - 还有剩余工作时，用 [Stage 0 的选择步骤](#stage-0--选择-feature-并加载上下文)（包括其中对被阻塞工作的恢复检查），找出下一个可开始的 `pending` Feature，或实际的阻塞。
+   - 只有当前 Product 所需的 Feature 都完成后，才重新查看当前 GDD 和下一个预拆分候选。用 `product-author` 编写它的交付文档，再用 `feature-plan` 拆分它，或复用它已有的计划。
+   - 遵守第 5 步的授权边界。没有可开始的 Feature 不能证明 Product 已完成。
+3. 报告以下内容：
+   - 完成的 Feature；
+   - 有关的实现和测试改动；
+   - 验证证据；
+   - 本地提交哈希或已核实的提交范围（或明确的不提交例外）；
+   - 提交后的工作区状态；
+   - 占位资源数量、TODO；
+   - 下一个 Feature 或 Product 规划步骤。
 
-## Delivery of existing implementation
+   需要清理时，说明实际做出的过时测试和引用改动，以及记在 notes 或 Progress 中的剩余工作。
+4. 用 `templates/feature-learning-summary.md.tmpl` 报告可复用的经验：
+   - 没有新的可复用经验时，写“No new reusable learning”（中文：“无新增可复用经验”）。不要为每个事件都编一条。
+   - 否则用一句话或几条简洁的条目报告：背景、有用的做法或根因、已有的覆盖、适用范围，以及实际或建议的去处（Knowledge、Agent Rule、Methodology、Tooling、Automated Check 或 Regression）。
+   - 链接提交前已记录的知识或 Bug 经验说明，不复制它们，也不在提交后再写文档。
+   - 项目特有的做法可以在本项目内复用，不必成为通用规则。
+   - 新发现的、超出范围的工具或规则修改，是一个单独的、需要授权的任务。
+5. 只有下一步在具体的授权范围内且前提已满足时，才继续。保持 Product 顺序，以及每个 Feature 的批准、验收和完成要求。以下情况停止并说明边界：请求的范围已完成、用户要求暂停、缺少必要的决定。可开始或已完成本身不授予新的范围。
 
-This section applies to implementation adopted under [Adopting existing implementation](02-feature-list-schema.md#adopting-existing-implementation).
+## 已有实现的交付
 
-Use Stages 0–2 to confirm the current contract, the actual implementation coverage, the remaining work, the acceptance mode and the Test Impact Review, then save the approved plan. Completion evidence is recorded only when actual results exist. Reuse concrete authorization; a request to document the implementation alone does not authorize execution or repairs. Git change preservation and environment requirements are those of the [shared contracts](#shared-contracts).
+本节适用于按[接手已有实现](02-feature-list-schema.md#接手已有实现)接手的实现。
 
-In Stage 3, reuse behavior that already satisfies the confirmed AC:
+用 Stage 0–2 确认当前契约、实际的实现覆盖、剩余工作、验收模式和测试影响评估，然后保存批准的计划。只有存在实际结果时才记录完成证据。复用具体的授权；仅要求为实现写文档，不授权执行或修复。Git 改动保留和环境要求，按[通用约定](#通用约定)执行。
 
-- Map suitable tests through the Registry. Add missing checks against the intended behavior and meaningful boundaries, not assertions that merely mirror the implementation.
-- For unchanged adopted behavior, a newly written test may pass immediately. Record it as present verification, not as historical TDD.
-- Do not undo working behavior to create a RED run, and do not reconstruct a missing pre-implementation baseline.
-- Before any further behavior change or repair, apply the normal baseline and TDD contract to that remaining work. Failures found during adoption are real gaps; they do not permit weakening the contract or widening repairs.
+在 Stage 3 中，复用已经满足已确认 AC 的行为：
 
-For scope review, use the verified original changes when available, and inspect the current implementation against every adopted criterion. If the original baseline cannot be recovered, disclose that limit and review the relevant current implementation and its direct callers. An empty documentation-only diff proves no behavior. The snapshot at adoption establishes current evidence; it makes no claim about the original development process.
+- 通过测试登记表映射合适的测试。针对预期行为和有意义的边界补充缺失的检查，不写只是照搬实现的断言。
+- 对未改动的接手行为，新写的测试可能立即通过。把它记为当前具备的验证，不记为历史上的 TDD。
+- 不要为了制造 RED 运行而撤销正常工作的行为，也不要重建缺失的实现前基线。
+- 在任何进一步的行为改动或修复之前，对这部分剩余工作执行常规的基线和 TDD 契约。接手时发现的失败是真实的缺口；它们不允许削弱契约或扩大修复范围。
 
-Complete the applicable Stages 4–7 with evidence covering the current Product, the Feature and Registry contract, and the implementation. Earlier results must satisfy the snapshot and coverage rules; historical claims or notes cannot replace them. Required human acceptance and explicit review conditions still apply. Set `done` and `completed_at` only when Stage 7 succeeds, using the actual completion time. Keep a verified earlier implementation date in notes. Never backdate formal completion or replay implementation steps that are already satisfied.
+核对范围时，有已核实的原始改动就使用它们，并对照每个采用的条件检查当前实现。如果原始基线无法还原，说明这个局限，并检查有关的当前实现及其直接调用方。只改文档的空差异不能证明任何行为。接手时的快照确立当前证据；它不对原始开发过程做任何声明。
 
-## Exception handling
+完成适用的 Stage 4–7，证据要覆盖当前 Product、Feature 和测试登记表契约，以及实现。之前的结果必须满足快照和覆盖规则；历史声明或 notes 不能代替它们。所需的人工验收和明确的审核条件仍然适用。只有 Stage 7 成功时才设置 `done` 和 `completed_at`，使用实际的完成时间。已核实的更早实现日期记在 notes 中。永远不要倒填正式完成时间，也不要重放已经满足的实现步骤。
 
-| Condition | Required action |
+## 异常处理
+
+| 情况 | 必须采取的动作 |
 | --- | --- |
-| Acceptance criteria are ambiguous or contradictory | Route to the Product or Feature revision workflow that owns them; do not reinterpret them silently. |
-| A completed dependency is materially incomplete | Report the gap and obtain the user's direction. |
-| Implementation needs files or behavior outside the scope | Explain the expansion and obtain approval, or create another Feature. |
-| The Existing Safety Net fails before implementation | Preserve the original error and obtain direction; do not silently absorb an unrelated repair. |
-| The Test Registry is inconsistent | Stop and repair traceability before using it to choose tests. |
-| A test, command, file or Git operation fails | Preserve the original error; use only safe recovery defined by the workflow. |
-| The context is nearly exhausted | Save the current state in Progress before handing off the session. |
-| Unrelated work arrives during a Feature | Classify it separately; do not silently expand the current scope. |
+| 验收条件含糊或相互矛盾 | 转到拥有它们的 Product 或 Feature 修订流程；不要悄悄重新解释。 |
+| 已完成的依赖实质上不完整 | 报告缺口，并取得用户的指示。 |
+| 实现需要范围外的文件或行为 | 说明扩大的部分并获得批准，或另建一个 Feature。 |
+| 实现前 Existing Safety Net 失败 | 保留原始错误并取得指示；不要悄悄吸收无关的修复。 |
+| 测试登记表不一致 | 停下来，先修复追溯数据，再用它选择测试。 |
+| 测试、命令、文件或 Git 操作失败 | 保留原始错误；只使用流程规定的安全恢复方式。 |
+| 上下文快要用尽 | 交接会话前，把当前状态保存到 Progress。 |
+| Feature 进行中来了无关工作 | 单独分类；不要悄悄扩大当前范围。 |

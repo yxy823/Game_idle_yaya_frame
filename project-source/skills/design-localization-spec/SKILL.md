@@ -1,37 +1,37 @@
 ---
 name: design-localization-spec
-description: "Define or update the approved language coverage and locale conventions in the localization specification. Use for localization design decisions, including approved term translations. Not for translation resources or runtime locale support (content-localization)."
+description: "在本地化规范中定义或更新已批准的语言覆盖范围和语言区域惯例。用于本地化设计决定，包括已批准的术语译名。不用于翻译资源或运行时语言支持（content-localization）。"
 ---
 
-# Localization specification
+# 本地化规范
 
-Follow `methodology/11-specialist-workflows.md` for source ownership, authorization and requirement impacts. **What stays in the GDD** in that file covers moving localization specifications out of GDD. Maintain `docs/localization/localization-spec.md` within the requested design scope; discussion-only work returns a proposal. Write the specification in the configured `document_language`, which says nothing about the game's source or target languages.
+来源归属、授权和要求变化的影响，按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把本地化规格从 GDD 中移出。在要求的设计范围内维护 `docs/localization/localization-spec.md`；只要求讨论时，返回方案。规范使用配置的 `document_language` 编写；这个设置与游戏的源语言或目标语言无关。
 
-## Read and clarify
+## 阅读与澄清
 
-Read the relevant GDD and Product delivery scope, the current localization specification, shared terminology and affected interface constraints. Reuse settled decisions. Ask only about material gaps in:
+阅读本次涉及的 GDD 和 Product 交付范围、当前的本地化规范、共享术语和受影响的界面约束。复用已定的决定。只就以下方面的重要缺口提问：
 
-- source language, target locales and intended content coverage;
-- fallback and tone;
-- the meaning of variables and plurals;
-- locale-sensitive presentation, including formatting, fonts, long text and RTL where applicable.
+- 源语言、目标语言和计划覆盖的内容；
+- 回退和语气；
+- 变量和复数的含义；
+- 与语言区域有关的呈现，包括格式、字体、长文本，以及需要时的从右到左排版（RTL）。
 
-Separate confirmed requirements from unresolved choices and translation drafts.
+把已确认的要求与尚未决定的选择、翻译草稿分开。
 
-## Maintain the specification
+## 维护规范
 
-This file is the fixed owner of locale coverage, locale expressions and language conventions. Reference domain definitions instead of copying or redefining gameplay concepts.
+这个文件是语言覆盖范围、各语言区域的表达方式和语言惯例的固定所属位置。引用领域定义，不复制或重新定义玩法概念。
 
-Maintain the **Term translations** section as described in methodology 11 **Localization term translations**. Target-language names are not project-terminology aliases, and full translated strings stay in runtime resources.
+按 methodology 11 的 **本地化术语译名** 维护 **术语译名** 章节。目标语言中的名称不是项目术语的别名；完整的译文句子保存在运行时资源中。
 
-GDD keeps game rules and experience goals. Changed player behavior returns to `design-gdd`, and meaning-preserving domain definitions go to `project-terminology`.
+GDD 保留游戏规则和体验目标。玩家行为的变化交回 `design-gdd`；不改变含义的领域定义交给 `project-terminology`。
 
-Make the approved requirements concrete enough for implementation and verification, and state where each applies.
+把已批准的要求写得足够具体，能够指导实现和验证，并写明每条要求的适用范围。
 
-## Return
+## 返回
 
-Validate affected source links. Return the specification path, confirmed coverage and unresolved decisions. Handle effects on planned work through the change routes under **Writing and adoption** in methodology 11 within the current authorization. Standalone specification work needs no runnable implementation or invented Feature.
+验证受影响的来源链接。返回规范路径、已确认的覆盖范围和尚未决定的问题。对已规划工作的影响，在当前授权范围内按 methodology 11 的 **编写与采纳** 中的变更路径处理。单独的规范工作不需要可运行的实现，也不需要编造一个 Feature。
 
-Runtime changes, translation import and locale testing belong to `content-localization` inside an authorized Feature or scoped experiment. Independent language review belongs to `review-localization`.
+运行时修改、译文导入和语言测试，属于已授权的 Feature 或限定实验中的 `content-localization`。独立的语言审核属于 `review-localization`。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

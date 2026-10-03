@@ -1,34 +1,34 @@
 ---
 name: design-audio-direction
-description: "Define or revise shared music, ambience and sound-effect direction and feedback priorities in the Sound Bible. Use for shared sound standards. Not for concrete audio specifications (design-audio-asset-spec), asset production or audio review (review-audio)."
+description: "在 Sound Bible 中定义或修改共享的音乐、环境声和音效方向，以及反馈的优先级。用于共享的声音标准。不用于具体的音频规格（design-audio-asset-spec）、资源制作或音频审核（review-audio）。"
 ---
 
-# Sound direction (Sound Bible)
+# 声音方向（Sound Bible）
 
-Follow `methodology/11-specialist-workflows.md` for ownership, authorization and source impacts. **What stays in the GDD** in that file covers moving sound specifications out of GDD. Read the relevant GDD experience goals, feedback behavior, current audio conventions and available references.
+归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把声音规格从 GDD 中移出。阅读与本次有关的 GDD 体验目标、反馈行为、当前的音频惯例和可用的参考。
 
-## Maintain the Sound Bible
+## 维护 Sound Bible
 
-Keep shared sound specifications only in `docs/audio/sound-bible.md`. They cover:
+共享的声音规格只写在 `docs/audio/sound-bible.md`，内容包括：
 
-- sonic identity serving the GDD's experience goals;
-- the roles of music, ambience and effects;
-- the importance and coexistence of feedback;
-- transitions, repetition fatigue and silence;
-- accessibility needs, such as whether essential information also has a visual channel.
+- 服务于 GDD 体验目标的声音特征；
+- 音乐、环境声和音效各自的作用；
+- 各种反馈的重要程度和共存方式；
+- 过渡、重复疲劳和静默；
+- 无障碍需求，例如关键信息是否同时有视觉通道。
 
-GDD keeps intended player feelings, recognition needs and gameplay feedback triggers, and links this specification. Scope each rule to its applicable scenes or sound families.
+GDD 保留期望的玩家感受、辨认需求和玩法反馈的触发条件，并链接到这份规格。每条规则都写明适用的场景或声音类别。
 
-Describe useful timbre, texture, rhythm and dynamics in terms that can guide a concrete specification. Do not invent loudness targets, sample rates, technical bus topology or a complete soundtrack when they are not requirements. Changes to adopted game-design intent or behavior return to GDD through `design-gdd`; mixing implementation belongs to the authorized implementation task.
+用能指导具体规格的词语描述音色、质感、节奏和动态。响度目标、采样率、技术总线结构或完整配乐不是要求时，不要自行编造。修改已采用的游戏设计意图或行为，通过 `design-gdd` 回到 GDD 处理；混音实现属于已授权的实现任务。
 
-References establish direction only. Written descriptions are not listening evidence, and no generated examples are promised. Music and SFX production are reserved capabilities with no Skill (methodology 11 **Design, production, integration and review**).
+参考只用来确定方向。文字描述不是试听证据，也不承诺生成示例。音乐和音效制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。
 
-## Hand off
+## 交接
 
-- Concrete deliverables go to `design-audio-asset-spec`. When **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the Sound Bible, that Skill maintains the Bible's **Shared resource specifications** section; this Skill keeps the direction standards those entries reference. Do not create a second soundtrack or receiving catalog.
-- Supplied files go to `content-asset-integration`.
-- Formal evaluation uses `review-audio` in a different instance.
+- 具体交付物交给 `design-audio-asset-spec`。当 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Sound Bible 时，由那个 Skill 维护 Sound Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的方向标准。不要另建第二份配乐目录或接收目录。
+- 外部提供的文件交给 `content-asset-integration`。
+- 正式评估在另一个实例中使用 `review-audio`。
 
-Report the confirmed direction, applicable sources and gaps.
+报告已确认的方向、适用的来源和缺口。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

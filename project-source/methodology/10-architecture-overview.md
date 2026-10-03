@@ -1,132 +1,132 @@
-# 10 · Architecture overview
+# 10 · 架构概览
 
-The architecture documents record the current project structure and give reading entry points. They are not an approval Stage and do not replace Product, Project Rules or approved decisions.
+架构文档记录项目当前的结构，并提供阅读入口。它们不是审批 Stage，也不替代 Product、项目规则或已批准的决定。
 
-## Where architecture and decisions are recorded
+## 架构与决定记录在哪里
 
-This table is the single statement of where structure and decisions live; other documents link here.
+这张表是结构与决定存放位置的唯一说明；其他文档链接到这里。
 
-| Content | Location |
+| 内容 | 位置 |
 | --- | --- |
-| Project-level map: modules and their roles, startup and composition entry points, cross-module collaborations, permitted dependency directions | `docs/architecture.md` |
-| A subsystem's internal state owners, interfaces, dependencies and runtime flows, regardless of length | `docs/architecture/<subsystem>.md` |
-| One Feature's implementation design and local decisions with their rationale | `docs/features/F0XX-design.md` |
-| Rationale of a technical choice meeting the [ADR conditions](#architecture-decision-records) | `docs/architecture/adr-NNNN-<slug>.md` |
-| An adopted technical decision without a Feature that does not meet the ADR conditions | The **Standalone technical decisions** section of an architecture document, under [Standalone technical decisions](#standalone-technical-decisions) |
-| Navigation to these records | Feature notes and current Progress links |
+| 项目级地图：模块及其作用、启动与装配入口、跨模块协作、允许的依赖方向 | `docs/architecture.md` |
+| 一个子系统内部的状态负责方、接口、依赖和运行流程，不论篇幅长短 | `docs/architecture/<subsystem>.md` |
+| 一个 Feature 的实现设计，以及局部决定及其理由 | `docs/features/F0XX-design.md` |
+| 满足 [ADR 条件](#架构决策记录)的技术选择的理由 | `docs/architecture/adr-NNNN-<slug>.md` |
+| 不属于任何 Feature、也不满足 ADR 条件的已采纳技术决定 | 架构文档中的**独立技术决定**一节，见[独立技术决定](#独立技术决定) |
+| 通往这些记录的导航 | Feature notes 和当前 Progress 中的链接 |
 
-- New projects start with `docs/architecture.md` stating only its purpose. Fill it from the actual structure within authorized work; do not invent future modules.
-- The same locations apply from initial development through expansion. There is no separate arrangement for small projects.
-- Name each subsystem with a stable lowercase hyphenated name in the overview, link its document there, and reuse that name for the same subsystem.
-- Keep project-level summaries in the overview and internal contracts in the subsystem file.
-- Link the owning record instead of copying it. Later changes update the current map without rewriting a completed Feature as though it had always used the new design.
+- 新项目的 `docs/architecture.md` 起初只写明用途。在已获授权的工作中按实际结构填写；不要虚构将来的模块。
+- 从最初开发到后续扩展都使用同样的位置。小项目没有另一套安排。
+- 在概览中给每个子系统起一个稳定的小写连字符名称，在那里链接它的文档，并对同一子系统一直沿用这个名称。
+- 项目级摘要放在概览中，内部契约放在子系统文件中。
+- 链接所属记录，不复制它。之后的变化更新当前地图，而不是把已完成的 Feature 改写得好像它一直使用新设计。
 
-Map templates are [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl) and [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl).
+地图模板是 [architecture-overview.md.tmpl](templates/architecture-overview.md.tmpl) 和 [architecture-subsystem.md.tmpl](templates/architecture-subsystem.md.tmpl)。
 
-When a responsibility map is not enough, the subsystem document may trace key runtime flows: the trigger, participating modules, state owner and result, with the Godot boundary, lifecycle and failure handling that matter. Link actual implementation or verification evidence, and label proposed or unverified behavior. No fixed number of flows or diagrams is required.
+职责地图不够用时，子系统文档可以追踪关键的运行流程：触发方式、参与的模块、状态负责方和结果，以及有影响的 Godot 边界、生命周期和失败处理。链接实际的实现或验证证据，并标注哪些行为是拟议的或尚未验证的。不要求固定数量的流程或图。
 
-## Game responsibilities and collaboration
+## 游戏职责与协作
 
-Use the logic and presentation model in `docs/game-organization.md` to explain actual responsibilities within business modules. Link the relevant GDD rules and experience goals, UI and game-presentation specifications to implementation entry points. The map describes the current technical connections; it does not copy their requirements or require separate logic and presentation directories.
+用 `docs/game-organization.md` 中的逻辑与表现模型，说明业务模块内部实际的职责。把相关的 GDD 规则与体验目标、UI 和游戏表现规范链接到实现入口。地图描述当前的技术连接；它不复制这些需求，也不要求分开的逻辑目录和表现目录。
 
-For a cross-layer flow whose boundary needs explanation, identify the request, authoritative state owner, accepted/rejected result and presentation consumer. Distinguish reading current state from reacting to a one-time event, and view-local state from business state. Explain who connects participants and cancels pending work when that lifetime affects correctness. For example, a shop UI requests a purchase, the purchase operation coordinates wallet and inventory owners, and the UI uses the result for feedback; reopening the UI reads current state without implying another purchase.
+对于边界需要解释的跨层流程，指出请求、权威状态的负责方、接受或拒绝的结果，以及表现层的使用方。区分读取当前状态与响应一次性事件，区分视图局部状态与业务状态。当生命周期影响正确性时，说明由谁连接参与方、由谁取消待处理的工作。例如：商店 UI 请求购买，购买操作协调钱包和背包的负责方，UI 用结果给出反馈；重新打开 UI 时读取当前状态，并不意味着再买一次。
 
-Gameplay orchestration, presentation sequencing and scene assembly each have their actual owner; no additional control layer is required. Engine-dependent gameplay and animation timing may take part under an explicit validity and cancellation contract. Keep implementation choices that project rules allow. Document these relationships in the project or subsystem document that matches their scope; notes only link that explanation.
+玩法编排、表现的先后顺序和场景装配各有其实际的负责方；不需要额外的控制层。依赖引擎的玩法与动画时序，可以在明确的有效性与取消契约下参与其中。保留项目规则允许的实现选择。按这些关系的作用范围，把它们写进项目级或子系统文档；notes 只链接这份说明。
 
-## Navigation
+## 导航
 
-When using a map, give each module its main location and useful reading entry points: key scenes, scripts or resources, and relevant verification entries when helpful. Link an existing module README when it already provides that navigation. Keep this selective; do not inventory every file, function or test.
+使用地图时，给每个模块写出主要位置和有用的阅读入口：关键场景、脚本或资源，需要时加上相关的验证入口。已有模块 README 提供了这类导航时，直接链接它。只挑有用的写；不要逐一列出每个文件、函数或测试。
 
-At project level, point to the actual startup/composition boundary and persistent state owners when these help readers understand how modules fit together. Describe the structure that exists, without inventing a bootstrap or Autoload layer. In subsystem documents, keep basic navigation available even when runtime-flow detail is unnecessary.
+在项目级，如果有助于读者理解模块怎样组合在一起，指出实际的启动与装配边界和持久状态的负责方。描述已经存在的结构，不虚构 bootstrap 层或 Autoload 层。在子系统文档中，即使不需要运行流程的细节，也要保留基本的导航。
 
-Distinguish actual direct collaborators and the purpose of their interaction from permitted dependency directions. When using a diagram, identify what its arrows mean: code dependency, scene composition, inheritance or runtime messages, for example. Keep different relationships distinguishable; no fixed set of diagrams is required.
+区分实际直接协作的对象及其交互目的，与允许的依赖方向。使用图时，说明箭头的含义，例如代码依赖、场景组合、继承或运行时消息。不同的关系要能区分开；不要求固定的一组图。
 
-## Maintaining a map
+## 维护架构地图
 
-Maps describe current boundaries, responsibility owners and allowed dependencies, and link decision rationale where it is recorded. Update a map when its recorded responsibilities, ownership, collaborations, dependency constraints, paths or entry points change, including moves or renames that leave contracts intact. Implementation changes that do not affect mapped information need no map update or new diagram.
+地图描述当前的边界、职责负责方和允许的依赖，并链接记录了决策理由的位置。地图记录的职责、归属、协作、依赖约束、路径或入口发生变化时，更新地图，包括契约不变的移动或重命名。不影响地图信息的实现修改，不需要更新地图或新增图。
 
-Within the changed scope, check that links and reading entries still lead to the intended content, reconcile the overview and subsystem summaries, and keep affected diagrams consistent with the text. Stage 0 reads the relevant map if there is one, and review checks a changed boundary against it. A stale or missing optional map is a question for clarification or review, not a Gate failure.
+在修改范围内，检查链接和阅读入口仍然指向预期的内容，让概览与子系统摘要保持一致，并让受影响的图与文字一致。有地图时，Stage 0 阅读相关的地图；审核时对照它检查发生变化的边界。可选的地图过时或缺失，是需要澄清或审核的问题，不是关卡失败。
 
-## Designing a module boundary
+## 设计模块边界
 
-Apply the design defaults in `docs/project-rules.md` when adding a module, changing a public interface or moving responsibility. Assess the actual callers and confirmed behavior, whether or not an architecture map exists. An ordinary local function does not need a separate design exercise or artifact.
+新增模块、修改公开接口或转移职责时，应用 `docs/project-rules.md` 中的设计默认原则。不论有没有架构地图，都要评估实际的调用方和已确认的行为。普通的局部函数不需要单独的设计过程或产物。
 
-Read an interface as everything a caller must know: inputs and observable results, required configuration and call order, failure behavior, state ownership and lifetimes. For a Godot scene, this can include public signals, exported dependencies and when a pending operation becomes invalid. Identify which knowledge belongs to the caller and which repeated coordination the module could own. Hiding unrelated responsibilities behind one entry point does not make them cohesive.
+把接口理解为调用方必须知道的全部内容：输入和可观察的结果、必需的配置和调用顺序、失败行为、状态归属和生命周期。对 Godot 场景来说，这可能包括公开的信号、导出的依赖，以及待处理的操作何时失效。分清哪些知识属于调用方，哪些重复的协调工作可以由模块承担。把不相关的职责藏在同一个入口后面，并不会让它们变得内聚。
 
-Compare a direct implementation and existing responsibilities before adding an abstraction. Where materially different designs have real tradeoffs, compare their caller obligations, change locality and verification cost. Use only the alternatives needed to decide; this does not require a fixed number of designs, parallel reviewers or a new approval step.
+增加抽象之前，先与直接实现和现有职责比较。存在实质不同、确有取舍的设计时，比较它们对调用方的要求、修改的局部性和验证成本。只使用做决定所需的备选方案；不要求固定数量的设计、并行的审核者或新的审批步骤。
 
-| Illustrative Godot case | Design judgment |
+| Godot 示例 | 设计判断 |
 | --- | --- |
-| Several purchase buttons repeat price, balance and capacity checks, then coordinate payment and item delivery | Consider one purchase operation that coordinates the existing state owners through their APIs. Callers receive a defined result; failure effects and change notifications remain part of the contract. Price calculation, wallet and inventory can keep their separate responsibilities. |
-| A short scene coordinator owns subscriptions and invalidates pending work when the scene exits | Keep or deliberately relocate that ownership. Removing the node is useful only if callers do not inherit scattered cleanup and lifetime obligations. |
+| 几个购买按钮重复检查价格、余额和容量，然后协调付款和发放物品 | 考虑用一个购买操作，通过现有状态负责方的 API 协调它们。调用方得到定义明确的结果；失败的影响和变更通知仍是契约的一部分。价格计算、钱包和背包可以保持各自的职责。 |
+| 一个简短的场景协调器持有订阅，并在场景退出时让待处理的工作失效 | 保留这项归属，或有意识地转移它。只有调用方不会因此承担分散的清理和生命周期义务时，删掉这个节点才有意义。 |
 
-These examples illustrate the judgment; they are not required game systems or patterns. Record the resulting choices where the [table above](#where-architecture-and-decisions-are-recorded) assigns them.
+这些示例只用于说明判断方式，不是必须实现的游戏系统或模式。把得出的选择记录在[上面那张表](#架构与决定记录在哪里)规定的位置。
 
-## Assessing a proposed refactor
+## 评估拟议的重构
 
-Start from an observed maintenance difficulty or the next agreed change and apply the caller assessment above to the existing and proposed boundaries.
+从观察到的维护困难或下一项商定的修改出发，对现有边界和拟议边界应用上面的调用方评估。
 
-As a thought experiment, remove the layer and call its dependencies directly. If behavior stays intact and coordination becomes simpler, the layer may be an unnecessary forwarder. If its removal spreads validation, ordering, error handling or lifecycle knowledge across callers, that responsibility still needs a coherent home. Keep or relocate it instead of dissolving it into callers. Fewer files or shorter signatures alone do not establish an improvement.
+做一个思想实验：去掉这一层，直接调用它的依赖。如果行为保持不变、协调变得更简单，这一层可能只是不必要的转发者。如果去掉它会把校验、顺序、错误处理或生命周期知识分散到各个调用方，那么这项职责仍需要一个统一的归属。保留它或转移它，而不是把它拆散到调用方中。仅仅文件更少或签名更短，不能说明有所改进。
 
-Preserve useful separation between independent game rules and Godot scene orchestration. Check Node, Resource, Signal and SceneTree ownership and lifetimes before merging boundaries. A short scene owner that cancels pending work or manages signal subscriptions may carry a meaningful contract. Introduce a new substitution point only for a concrete runtime or testing need; neither hypothetical future platforms nor a fixed number of implementations determines its value.
+保留独立游戏规则与 Godot 场景编排之间有用的分离。合并边界之前，检查 Node、Resource、Signal 和 SceneTree 的归属与生命周期。一个负责取消待处理工作或管理信号订阅的简短场景负责方，可能承载着有意义的契约。只为具体的运行时或测试需要引入新的替换点；假想的未来平台和实现的数量都不能决定它的价值。
 
-Verify the behavior callers depend on under [08 · Test traceability and evidence](08-test-traceability-and-evidence.md): L1 for independent rules, L2 for real collaboration and relevant engine behavior. Keep Godot semantics real when they are what the test checks. Merging modules or adding a boundary test does not by itself justify deleting tests; keep needed scenarios and follow the Registry rules when retiring redundant cases.
+按 [08 · 测试追溯与证据](08-test-traceability-and-evidence.md)验证调用方依赖的行为：独立规则用 L1，真实协作和相关的引擎行为用 L2。当 Godot 语义正是测试要检查的内容时，保持它真实。合并模块或增加边界测试本身不构成删除测试的理由；保留需要的场景，退役冗余用例时遵循测试登记表规则。
 
-## Architecture Decision Records
+## 架构决策记录
 
-Record a technical choice in an ADR when it affects several Features or modules, or constrains later project-wide work, and all three conditions hold:
+一项技术选择影响多个 Feature 或模块，或约束之后的全项目工作，并且同时满足下面三个条件时，把它记录为 ADR：
 
-- Reversing the choice would require meaningful migration or rework.
-- A future maintainer could reasonably question the choice because its reasons cannot be recovered from the code alone.
-- Real alternatives were considered, with concrete reasons for accepting some costs and rejecting others.
+- 推翻这项选择需要可观的迁移或返工。
+- 将来的维护者有理由质疑这项选择，因为仅凭代码无法还原它的理由。
+- 确实考虑过其他方案，并有具体理由接受某些代价、否决其他方案。
 
-Read the relevant Feature design, architecture and current ADRs first, and reuse the ADR that already covers the same decision. A qualifying decision belongs in an ADR even when an explanation was written elsewhere earlier.
+先阅读相关的 Feature 设计、架构和现有 ADR，已有 ADR 覆盖同一决定时复用它。符合条件的决定即使之前在别处写过解释，也属于 ADR。
 
-- Decisions outside these conditions, including brief local choices, go in the Feature design. Work without a Feature uses [Standalone technical decisions](#standalone-technical-decisions).
-- Repeated discussion is a signal to check whether the rationale is missing or hard to find; it does not change where the rationale belongs.
-- Investigation findings stay evidence until a decision is adopted. A standalone investigation does not need an artificial Feature.
-- Do not invent alternatives to satisfy the conditions.
-- When a qualifying decision's current rationale sits in a Feature design or architecture document, move it into the ADR within authorization and replace it with a link. Keep referenced anchors and earlier records as history instead of creating a second current rationale.
+- 不满足这些条件的决定，包括简短的局部选择，写进 Feature 设计。不属于 Feature 的工作使用[独立技术决定](#独立技术决定)。
+- 反复讨论是一个信号，提示检查理由是否缺失或难以找到；它不改变理由应放的位置。
+- 调查结论在决定被采纳之前一直只是证据。独立的调查不需要人为创建 Feature。
+- 不要为了满足条件而虚构备选方案。
+- 符合条件的决定，其当前理由写在 Feature 设计或架构文档中时，在授权范围内把它移进 ADR，原处换成链接。被引用的锚点和之前的记录作为历史保留，不形成第二份当前理由。
 
-Use [architecture-decision-record.md.tmpl](templates/architecture-decision-record.md.tmpl) at `docs/architecture/adr-NNNN-<slug>.md`. Choose the next unused number from the current filenames. The template is available from project creation, but no placeholder ADR or architecture map is required before a real decision exists.
+使用 [architecture-decision-record.md.tmpl](templates/architecture-decision-record.md.tmpl)，写到 `docs/architecture/adr-NNNN-<slug>.md`。根据现有文件名选择下一个未用的编号。项目创建时就提供这个模板，但在真实决定出现之前，不需要占位的 ADR 或架构地图。
 
-During Feature work:
+在 Feature 工作中：
 
-- Stage 1 checks the scope and the three conditions to decide where the decision goes, and finds any current ADR.
-- Stage 2 records a decision confirmed before implementation.
-- Stage 3 records decisions discovered during implementation, before dependent work and final verification.
+- Stage 1 检查范围和三个条件，决定这项决定写在哪里，并找出已有的 ADR。
+- Stage 2 记录实现之前已确认的决定。
+- Stage 3 在依赖它的工作和最终验证之前，记录实现期间发现的决定。
 
-Authorized standalone technical design or investigation records a qualifying decision in an ADR without creating a Feature. Apply these same conditions regardless of game size or perceived complexity; do not create empty ADRs for decisions that have not arisen.
+已获授权的独立技术设计或调查，把符合条件的决定记录为 ADR，不创建 Feature。不论游戏规模大小或看起来多复杂，都使用同样的条件；不要为尚未出现的决定创建空 ADR。
 
-Likely candidates include a costly save-identity/migration model, cross-scene state ownership or a simulation strategy with real accuracy/performance tradeoffs. A local function, ordinary node layout or the already fixed Godot stack does not require a record by itself. Apply all three conditions rather than the topic name alone. GDD keeps game-design requirements, Product keeps delivery boundaries, and ADR keeps technical rationale. If feasibility changes game design or delivery scope, or conflicts with a project rule, resolve that through its owning workflow instead of using ADR acceptance as an override.
+可能的候选包括：代价高的存档标识与迁移模型、跨场景的状态归属，或在精度与性能之间确有取舍的模拟策略。局部函数、普通的节点布局或已经固定的 Godot 技术栈本身不需要记录。要用全部三个条件判断，而不只看主题名称。GDD 保存游戏设计需求，Product 保存交付边界，ADR 保存技术理由。如果可行性改变了游戏设计或交付范围，或与项目规则冲突，通过其所属的流程解决，而不是用 ADR 的接受来强行覆盖。
 
-Keep the problem and constraints, reasonable alternatives, decision, benefits and accepted costs, evidence links and useful revisit conditions. Detailed interfaces, protocols and test cases stay in the implementation, the subsystem documentation or the Feature and test records. There is no ADR count, line limit, periodic review date or additional completion Gate.
+记录问题与约束、合理的备选方案、决定、收益与接受的代价、证据链接和有用的重新评估条件。详细的接口、协议和测试用例留在实现、子系统文档或 Feature 与测试记录中。没有 ADR 数量、行数限制、定期复审日期或额外的完成关卡。
 
-Use these states as ordinary Markdown, without a separate status registry:
+以下状态写成普通 Markdown，不另设状态登记表：
 
-- `Proposed`: a candidate choice; the record does not grant implementation approval.
-- `Accepted`: the choice is confirmed within the task's authorization. Reuse an explicit decision already made; do not add another approval round. Acceptance records a decision, not proof that an API or runtime behavior was tested. Keep assumptions and any necessary verification visible.
-- `Superseded by <ADR link>`: an accepted choice has been replaced. Preserve its rationale, link the replacement, and link back from the new ADR. Clarifying wording does not require a new record; changing the decision does.
+- `Proposed`：候选的选择；这条记录不授予实现批准。
+- `Accepted`：这项选择在任务的授权范围内已确认。复用已经做出的明确决定；不要再加一轮批准。接受记录的是一个决定，不证明某个 API 或运行时行为已经测试过。保持假设和必要的验证清晰可见。
+- `Superseded by <ADR link>`：一项已接受的选择已被替换。保留它的理由，链接替代的 ADR，并从新 ADR 链接回来。澄清措辞不需要新记录；改变决定才需要。
 
-The architecture map links relevant ADRs without copying their rationale or status, and the Feature design links the ADRs that apply to it. Stage 0 reads relevant ADRs even when no map exists, and review checks consistency with accepted decisions. Without a qualifying decision, no ADR is needed; missing rationale for a qualifying decision is a documentation gap to resolve within the current task's scope and authorization.
+架构地图链接相关的 ADR，不复制它们的理由或状态；Feature 设计链接适用于它的 ADR。即使没有地图，Stage 0 也阅读相关的 ADR；审核时检查与已接受决定的一致性。没有符合条件的决定时，不需要 ADR；符合条件的决定缺少理由，是文档缺口，要在当前任务的范围和授权内解决。
 
-## Standalone technical decisions
+## 独立技术决定
 
-For work without a Feature, a technical decision meeting the ADR conditions still belongs in an ADR. When an adopted decision does not meet those conditions and saving it is authorized, use the **Standalone technical decisions** section in the architecture document determined below. This section records the decision and rationale, distinct from the map's current implemented facts; explain its scope, basis and unverified or unimplemented parts. Discussion-only work stays in the conversation.
+对不属于 Feature 的工作，满足 ADR 条件的技术决定仍然写进 ADR。已采纳的决定不满足这些条件、且获得保存授权时，写进按下表确定的架构文档中的**独立技术决定**一节。这一节记录决定及其理由，与地图中当前已实现的事实分开；写明它的作用范围、依据，以及尚未验证或尚未实现的部分。只做讨论的工作留在对话中。
 
-| Decision scope | Document |
+| 决定的作用范围 | 文档 |
 | --- | --- |
-| Exactly one identified subsystem | `docs/architecture/<subsystem>.md` |
-| Cross-subsystem or project-level scope, including decisions before subsystem boundaries are established | `docs/architecture.md` |
+| 恰好一个已确定的子系统 | `docs/architecture/<subsystem>.md` |
+| 跨子系统或项目级，包括子系统边界确立之前的决定 | `docs/architecture.md` |
 
-Write the section title in the configured document language and keep its references working. Do not invent a Feature, subsystem, separate guide or ADR just to have a file.
+这一节的标题用配置的文档语言书写，并保持指向它的引用有效。不要为了有个文件而虚构 Feature、子系统、单独的指南或 ADR。
 
-- Once the decision becomes part of a Feature's approved implementation design, move the current rationale into its `F0XX-design.md` at the authorized design-saving step and replace the architecture text with a link. Creating a pending Feature alone does not authorize that write.
-- Current structure stays in the map, and referenced history stays as it is.
-- If the decision later meets the ADR conditions, move its current rationale to an ADR under the rule above.
+- 一旦这项决定成为某个 Feature 已批准实现设计的一部分，就在获得授权保存设计的那一步，把当前理由移进该 Feature 的 `F0XX-design.md`，并把架构文档中的文字换成链接。只创建一个待开始的 Feature 不授权这次写入。
+- 当前结构留在地图中，被引用的历史保持原样。
+- 如果这项决定之后满足了 ADR 条件，按上面的规则把它的当前理由移进 ADR。
 
-## Extracted reference facts
+## 提取出的引用事实
 
-Automation can extract only supported facts: a Resource dependency, an explicit path reference, or a type reference actually recognized by its parser. Record the extractor/version, source snapshot, scanned scope and known blind spots. Dynamic loading, runtime signal connections and ownership generally cannot be inferred from text alone. Keep generated facts in a report directory such as `reports/maintenance/architecture-facts/<run>/`, under the [report lifecycle](09-records-reports-and-handoff.md#reports-and-cleanup).
+自动化只能提取有依据的事实：Resource 依赖、显式的路径引用，或解析器实际识别出的类型引用。记录提取工具及其版本、源码快照、扫描范围和已知盲区。动态加载、运行时的信号连接和归属关系，通常无法仅从文本推断。生成的事实保存在报告目录中，例如 `reports/maintenance/architecture-facts/<run>/`，按[报告的生命周期](09-records-reports-and-handoff.md#报告与清理)处理。
 
-Generated output is never the sole architectural authority. A diagram of observed references cannot authorize dependencies or establish causal behavior. Use a diagram only when it helps explain actual responsibilities or dependencies.
+生成的输出从来不是架构的唯一依据。观察到的引用关系图不能授权依赖，也不能确立因果行为。只在有助于解释实际职责或依赖时才使用图。

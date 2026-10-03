@@ -1,14 +1,22 @@
 ---
 name: diagnostics-instrumentation
-description: "Design or add narrowly scoped runtime diagnostics for an authorized Godot investigation: logs, counters, timings or debug displays. Does not itself benchmark, certify performance or authorize repairs."
+description: "为已获授权的 Godot 调查设计或添加范围很小的运行时诊断：日志、计数器、计时或调试显示。本身不做基准测试、不认证性能，也不授权修复。"
 ---
 
-# Diagnostic instrumentation
+# 诊断埋点
 
-Use `methodology/11-specialist-workflows.md`. Begin with the concrete question that existing evidence cannot answer: which transition occurred, what owns an object, why a request failed, where time is spent, or whether state accumulates. Read existing signals before adding more.
+使用 `methodology/11-specialist-workflows.md`。从现有证据回答不了的具体问题开始，例如：
 
-Choose the smallest signal that discriminates plausible causes. Define its unit, sampling/aggregation, context needed to interpret it and cost. Use existing logging/debug facilities; avoid a new diagnostics platform for one probe. Do not log secrets or unnecessary player data, flood per-frame logs, or introduce a reflection/property-mutation backdoor.
+- 发生了哪次状态转换；
+- 某个对象归谁所有；
+- 某个请求为什么失败；
+- 时间花在哪里；
+- 状态是否在累积。
 
-Persistent code/configuration changes require the current authorized task. Distinguish temporary instrumentation from retained support, specify activation and disable/cleanup behavior, and isolate diagnostic/test data. Verify the signal corresponds to the event it claims to measure and estimate measurement overhead.
+添加新信号之前，先阅读已有的信号。
 
-Return original signal locations, the observed version, limitations and remaining hypotheses. [diagnostics-performance](../diagnostics-performance/SKILL.md) or [diagnostics-soak-test](../diagnostics-soak-test/SKILL.md) may consume the signals; a bottleneck or leak claim needs measurement. Repair requires its existing task authority and a new relevant verification.
+选择能区分几种可能原因的最小信号。定义它的单位、采样或汇总方式、解读时需要的上下文以及开销。使用已有的日志和调试设施；不要为一次探测新建诊断平台。不要记录密钥或不必要的玩家数据，不要每帧刷屏输出日志，也不要引入能任意反射或修改属性的后门。
+
+持久的代码或配置修改需要当前已获授权的任务。区分临时埋点和保留下来的支持代码，写明怎样启用、怎样关闭或清理，并隔离诊断和测试数据。核实信号确实对应它声称测量的事件，并估计测量本身的开销。
+
+返回原始信号的位置、观察时的版本、局限和仍未排除的假设。[diagnostics-performance](../diagnostics-performance/SKILL.md) 或 [diagnostics-soak-test](../diagnostics-soak-test/SKILL.md) 可以使用这些信号；宣称存在瓶颈或泄漏需要测量支撑。修复需要已有任务的授权，以及一次新的相关验证。

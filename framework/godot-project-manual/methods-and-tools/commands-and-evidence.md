@@ -62,7 +62,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 - **候选格式**：完整组件对象的 JSON 数组，或含 `components` 数组的对象。
 - **调用方式**：Agent 把已批准的候选写入临时文件，再用 `--components <候选文件>` 调用；候选文件不提交。
 - **冲突处理**：已有同 ID 但内容不同的组件视为冲突，不会被覆盖。工具保留现有测试，并报告 `added_components` 与 `preserved_tests`。
-- **能力边界**：只合并组件，不生成测试。组件结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson)。
+- **能力边界**：只合并组件，不生成测试。组件结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)。
 
 ## 环境与台账检查
 
@@ -123,7 +123,7 @@ $LASTEXITCODE
 
 ## 测试范围怎样计算
 
-完整规则见测试规范的 [Test Impact Review](../../../project-source/methodology/08-test-traceability-and-evidence.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-test-traceability-and-evidence.md#runtime-test-impact-selection)，这里用中文说明各范围的组成：
+完整规则见测试规范的 [测试影响评估](../../../project-source/methodology/08-test-traceability-and-evidence.md#测试影响评估) 与 [运行时的测试影响选择](../../../project-source/methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)，这里用中文说明各范围的组成：
 
 ```text
 Required Test Set =
@@ -315,7 +315,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 
 指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档尽量在 Stage 3 完成。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读评审不改变内容。
 
-直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness)。
+直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见[专业来源与资源的测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
 
@@ -354,7 +354,7 @@ lint CLI 的结果约定：
 
 只做解析或 lint 时，不需要额外的导入步骤或包装程序。已授权的资源导入和新项目首次运行所需的扫描，按对应环境规范处理。
 
-通用交付不默认加截图或像素比较。任务明确约定了客观的渲染契约时，可以补充限定范围和环境的检查；构图、美术一致性和动画体验仍靠人工验收，边界见[视觉验证规则](../../../project-source/agent-rules/70-tests/testing-strategy.md#visual-boundary)。
+通用交付不默认加截图或像素比较。任务明确约定了客观的渲染契约时，可以补充限定范围和环境的检查；构图、美术一致性和动画体验仍靠人工验收，边界见[视觉验证规则](../../../project-source/agent-rules/70-tests/testing-strategy.md#视觉验证边界)。
 
 ## 工具退出码速查
 

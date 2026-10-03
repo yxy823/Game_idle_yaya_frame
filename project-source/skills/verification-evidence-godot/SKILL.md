@@ -1,33 +1,33 @@
 ---
 name: verification-evidence-godot
-description: Inspect, import or recover existing Godot test evidence when references, originals, freshness or interrupted runs need attention. Routes necessary reruns and manual acceptance to their owners; does not fabricate results or complete the Feature.
+description: 当引用、原件、是否过时或中断的运行需要处理时，检查、导入或恢复已有的 Godot 测试证据。必要的重跑和人工验收交给各自的负责方；不编造结果，也不完成 Feature。
 ---
 
-# Maintain actual verification evidence
+# 维护实际的验证证据
 
-Identify the requested evidence operation, actual Feature or diagnostic scope, current source state and referenced originals. Reuse existing records and task authorization; evidence maintenance creates no Feature, new Stage or parallel result ledger.
+确认请求的证据操作、实际的 Feature 或诊断范围、当前的源文件状态和被引用的原件。复用已有的记录和任务授权；维护证据不新建 Feature、新 Stage，也不另建平行的结果台账。
 
-## Distinguish the evidence problem
+## 分清证据问题
 
-Read **Artifact-backed completion and semantic freshness** in `methodology/08-test-traceability-and-evidence.md` and the matching operation under **调用** or **结果如何使用** in `tools/README.md`. These project-relative sources own evidence identity, coverage, import and recovery; do not reproduce their structure or edit verdicts by hand.
+阅读 `methodology/08-test-traceability-and-evidence.md` 的 **基于原始结果的完成判断与语义时效**，以及 `tools/README.md` 中 **调用** 或 **结果如何使用** 下匹配的操作。这些路径相对项目根目录；证据身份、覆盖范围、导入和恢复都以这些文件为准。不要照搬它们的结构，也不要手工修改判定结果。
 
-| Actual situation | Response within the existing contract |
+| 实际情况 | 在已有约定内的处理 |
 | --- | --- |
-| A real completed run needs importing, or its reference path was wrong | Read the actual originals and check current applicability; use the existing importer with valid references. A reference-only correction does not justify rerunning valid evidence |
-| A summary exists but an original is missing or damaged | Locate and inspect the actual original first. If it cannot support the result, report the gap and arrange only the verification needed to replace it; do not reconstruct passing evidence from prose |
-| Source or verification obligations changed | Apply the canonical content/freshness rules to determine what is invalid. Reuse still-valid evidence and renew affected obligations; commit time or a familiar filename does not establish freshness |
-| A run was interrupted, failed or may still be running | Inspect its real record, logs and process state before a new run or stop action. Preserve the attempt and respect process ownership and stop authorization; apply the canonical failure/recovery coverage instead of hiding it with an older or narrower success |
+| 一次真实完成的运行需要导入，或它的引用路径写错了 | 读取实际原件，检查它当前是否仍适用；用已有的导入工具和有效的引用导入。只修正引用时，不需要重跑仍然有效的证据 |
+| 有摘要，但原件缺失或损坏 | 先找到并检查实际原件。原件不能支持该结果时，报告缺口，只安排替换它所需的验证；不要根据文字描述重建通过的证据 |
+| 源文件或验证义务发生变化 | 按权威的内容和过期规则判断哪些已失效。复用仍然有效的证据，重新完成受影响的义务；提交时间或熟悉的文件名不能证明证据没有过期 |
+| 一次运行被中断、失败，或可能仍在运行 | 在新开运行或执行停止操作之前，先检查它真实的记录、日志和进程状态。保留这次尝试，尊重进程归属和停止授权；按权威的失败和恢复覆盖规则处理，不要用更早或范围更小的成功结果掩盖它 |
 
-Displaying a saved record and checking its current support for completion are different operations under `tools/README.md`. Select the operation the task needs and report its actual meaning. Focused/baseline results, static output and specialist measurements retain their own evidence limits; do not convert them into final gdUnit evidence or fabricate a report for `not_required`.
+按 `tools/README.md`，显示已保存的记录，与检查它当前能否支持完成，是两种不同的操作。选择任务需要的操作，并报告它实际代表什么。定向结果、基线结果、静态输出和专业测量各自保留证据局限；不要把它们转成最终的 gdUnit 证据，也不要为 `not_required` 编造报告。
 
-## Obtain only the missing evidence
+## 只补齐缺少的证据
 
-Use [project-verification-godot](../project-verification-godot/SKILL.md) when authorized recovery requires another static check, existing test run or scene check. Choose the scope required by the original failure or current obligations; do not default to a full rerun. Diagnosis or implementation changes return to their existing owner rather than becoming an evidence edit.
+已获授权的恢复需要再做静态检查、运行已有测试或检查场景时，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。按原始失败或当前义务要求的范围选择，不默认全部重跑。诊断或实现上的修改交回已有的负责方，不变成对证据的修改。
 
-If actual human results need preparing, recording or renewing, use [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md). An automated rerun cannot renew human acceptance. Preserve failures and referenced originals under **Reports and cleanup** in `methodology/09-records-reports-and-handoff.md`; no cleanup or reconstructed artifact may conceal a required failure.
+需要准备、记录或更新实际的人工结果时，使用 [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md)。自动重跑不能更新人工验收。失败和被引用的原件，按 `methodology/09-records-reports-and-handoff.md` 的 **报告与清理** 保留；任何清理或重建的产物，都不能掩盖必须报告的失败。
 
-## Return the supported result
+## 返回有依据的结果
 
-Report which originals and references were checked or updated, what remains valid, and what failed, is stale or is still missing. Successful recording or evidence validation does not establish direct static checks, user acceptance or whole-Feature completion beyond its actual coverage.
+报告检查或更新了哪些原件和引用，哪些仍然有效，哪些失败、已过时或仍然缺少。记录成功或证据校验通过，只在其实际覆盖范围内有效，不能证明直接的静态检查、用户验收或整个 Feature 已完成。
 
-Durable wording follows `methodology/05-document-language.md`; any repository writes follow `agent-rules/00-core/git-worktree-and-commits.md`, including the current task's acceptance and commit conditions. A narrow evidence-maintenance request does not authorize business changes or a completion transition. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+长期保存的文字按 `methodology/05-document-language.md` 书写；任何仓库写入按 `agent-rules/00-core/git-worktree-and-commits.md` 执行，包括当前任务的验收和提交条件。范围很窄的证据维护请求，不授权修改业务内容，也不授权转为完成状态。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

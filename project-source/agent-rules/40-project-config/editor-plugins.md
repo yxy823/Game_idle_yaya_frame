@@ -1,17 +1,17 @@
-# Editor Plugins
+# 编辑器插件
 
-Enabling an editor plugin adds code that runs in the editor, together with lifecycle responsibilities.
+启用编辑器插件会加入在编辑器中运行的代码，同时带来生命周期责任。
 
-## Plugins
+## 插件
 
-- **[REVIEW]** Enabling or adding an editor plugin adds code that runs in the editor. Verify its necessity and its compatibility with the Godot and tool versions.
-- **[MUST]** Do not permanently enable a plugin only to complete one Agent task.
-- **[MUST]** A plugin that is installed or present is not necessarily enabled; these are different states.
-- **[MUST]** Plugin enable and disable cleanup is symmetric. A plugin does not leave behind Autoloads, docks, settings or editor state that it owns.
-- **[MUST]** Excluding a plugin's files from export does not remove an Autoload entry persisted in `project.godot`. A plugin-owned Autoload, including a test-only one, needs symmetric unregistration or stripping from the export.
-- **[MUST]** Plugin cleanup does not delete user-owned project assets.
-- **[MUST]** Third-party addons follow the vendor rules; do not refactor their style by default.
-- **[MUST]** Validate persistent enablement in a fresh editor process, not only in the current editor's memory.
-- **[PREFER]** Maintained plugins survive enable, disable and enable again without duplicate or residual state.
-- **[MUST]** Editor-only plugin functionality cannot be a hidden prerequisite for exported gameplay unless an explicit runtime component is packaged.
-- **[MUST]** Distinguish editor execution from game execution under [Editor and tool code](../10-gdscript/editor-tools-static-state-and-concurrency.md#editor-and-tool-code); `Engine.is_editor_hint()` and OS or feature-tag detection answer different questions.
+- **[复核]** 启用或添加编辑器插件会加入在编辑器中运行的代码。核实它是否必要，以及与 Godot 和工具版本是否兼容。
+- **[必须]** 不要只为完成一次 Agent 任务而长期启用插件。
+- **[必须]** 插件已安装或存在，不代表已启用；这是两种不同的状态。
+- **[必须]** 插件启用和禁用时的清理是对称的。插件不留下它自己拥有的 Autoload、停靠面板、设置或编辑器状态。
+- **[必须]** 把插件文件排除在导出之外，不会删除持久化在 `project.godot` 中的 Autoload 条目。插件拥有的 Autoload（包括仅用于测试的）需要对称地注销，或从导出中剥离。
+- **[必须]** 插件清理不删除用户拥有的项目资源。
+- **[必须]** 第三方插件遵循第三方代码规则；默认不重构它们的代码风格。
+- **[必须]** 在新的编辑器进程中验证持久化的启用状态，不只看当前编辑器的内存。
+- **[优先]** 维护中的插件经过启用、禁用、再启用后，不产生重复或残留的状态。
+- **[必须]** 除非打包了明确的运行时组件，仅限编辑器的插件功能不能成为导出后玩法的隐性前提。
+- **[必须]** 按[编辑器与工具代码](../10-gdscript/editor-tools-static-state-and-concurrency.md#编辑器与工具代码)区分编辑器内执行和游戏内执行；`Engine.is_editor_hint()` 与操作系统或 feature tag 检测回答的是不同的问题。

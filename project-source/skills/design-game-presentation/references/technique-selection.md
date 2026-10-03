@@ -1,19 +1,19 @@
-# Selecting an implementation family
+# 选择实现方式
 
-Choose by the required observable behavior and existing project capabilities. This table suggests a starting point, not a mandatory architecture or exhaustive comparison exercise.
+根据需要的可观察行为和项目现有的能力选择。下表只提供起点，不是必须采用的架构，也不要求做详尽的比较。
 
-| Need | Useful starting point | Decision that matters |
+| 需求 | 可以从这里开始 | 需要做出的判断 |
 | --- | --- | --- |
-| Existing project effect already communicates the intended feedback | Reuse or adapt its public controls | Check actual behavior and consumers before assuming it fits; preserve the project's integration conventions. |
-| A few objects move, rotate, scale or change ordinary properties | Tween or existing property controls | Dynamic start/target values and interruption often favor Tween; distinguish actual transform changes from a visual illusion. |
-| Authored timing coordinates several tracks or repeatable property changes | AnimationPlayer or existing animation resources | Identify which timing is fixed and which values remain driven by game state. Do not prescribe track structure during requirements planning. |
-| A fixed authored sequence supplies shapes/details difficult to express procedurally | Sprite frames / an existing animation asset | Describe required timing, loop and orientation; note the external frames dependency and limitations on variation. Planning does not produce those images. |
-| An existing surface changes per-pixel appearance | Shader, often animated by another controller | Color, UV distortion, masking or dissolve can fit; rendering alone does not update collision, layout, damage or entity state. |
-| Many visual elements have independent birth, motion and lifetime | Particle system with suitable existing material/controls | Describe the population and lifecycle. Require custom processing only when ordinary capabilities cannot meet an actual requirement. |
-| Several of these behaviors contribute to the same moment | A combination of component approaches | Coordinate trigger, ordering, space and cancellation; reuse each component's specification. |
+| 项目中已有的效果已经能传达期望的反馈 | 复用或调整它公开的控制项 | 先检查实际行为和使用方，再判断是否合适；保持项目的接入惯例。 |
+| 少量对象移动、旋转、缩放或改变普通属性 | Tween 或已有的属性控制 | 起点和目标值是动态的、需要中断时，通常更适合 Tween；区分真实的变换变化和视觉上的错觉。 |
+| 制作好的时间轴要协调多条轨道或可重复的属性变化 | AnimationPlayer 或已有的动画资源 | 分清哪些时间是固定的，哪些数值仍由游戏状态驱动。规划需求时不要规定轨道结构。 |
+| 固定的制作好的序列，提供难以程序化表达的形状和细节 | 精灵帧或已有的动画资源 | 描述需要的时间、循环和朝向；注明外部帧资源的依赖和变化上的局限。规划不产出这些图像。 |
+| 已有表面的逐像素外观发生变化 | Shader，通常由另一个控制器驱动动画 | 适合颜色、UV 扭曲、遮罩或溶解；仅靠渲染不会更新碰撞、布局、伤害或实体状态。 |
+| 许多视觉元素各自出生、运动和消亡 | 粒子系统，配合合适的现有材质和控制 | 描述粒子群和生命周期。只有普通能力满足不了实际需求时，才要求自定义处理。 |
+| 以上几种行为共同构成同一次表现 | 组合多个组件的实现方式 | 协调触发、顺序、空间和取消；复用每个组件的规格。 |
 
-For example, a character death can combine a surface dissolve, detached sparks and a short property animation. The game rule that the character is dead remains GDD/runtime logic; the presentation describes how that state becomes perceptible. UI involvement is optional.
+例如，角色死亡可以组合表面溶解、脱离的火花和一段短暂的属性动画。“角色已死亡”这条游戏规则仍属于 GDD 和运行时逻辑；表现只描述这个状态怎样让玩家感知到。UI 不一定参与。
 
-Compare a candidate on perceptual fit, controllability, required files, reuse and meaningful runtime constraints. Do not claim measured performance from the technique's name or choose a universal winner. Use a scoped prototype only for a specific uncertainty such as acceptable density, interruption behavior or scale at the actual viewport.
+从感知上的契合度、可控性、需要的文件、复用程度和有意义的运行时约束几个方面比较候选方案。不要凭技术名称声称性能已经测量过，也不要选出一个通用的最佳方案。只针对具体的不确定点使用限定范围的原型，例如可接受的密度、中断行为，或在实际视口下的尺寸。
 
-Keep an exact engine property, renderer constraint or API as a requirement only when verified and material to the task. Otherwise leave it for implementation research. A useful planning result can say “sparks detach at the hit point and fade independently” without choosing a node tree or motion equation.
+只有经过核实、并且对任务有实质影响时，才把具体的引擎属性、渲染器限制或 API 写成需求；否则留给实现时研究。一个有用的规划结果可以写成“火花在命中点脱离，并各自淡出”，不需要选定节点树或运动方程。

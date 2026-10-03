@@ -1,67 +1,67 @@
-# Apply confirmed plan changes
+# 应用已确认的计划变化
 
-Use this reference in [feature-sync](../SKILL.md) Stage 4, after the Registry merge. Field shapes and initial planning values are defined in `methodology/02-feature-list-schema.md`. The actions below say what may change; they do not redefine fields or authorize rewriting completed behavior.
+在 [feature-sync](../SKILL.md) 阶段 4 中、测试登记表合并之后使用本参考。字段形态和初始规划值定义在 `methodology/02-feature-list-schema.md`。下面的动作说明哪些内容可以修改；它们不重新定义字段，也不授权改写已完成的行为。
 
-## Additions
+## 新增
 
-- Append new index entries and matching details with never-used IDs and the canonical initial values.
-- Make the source section precise, and explain when new behavior extends a completed capability.
-- Product-derived additions omit `engineering_change`. Preserve that field on engineering Features during source correction, note and status changes, or permitted pending revisions.
+- 用从未使用过的 ID 和权威的初始值，追加新的索引条目和对应的详情。
+- 写出准确的来源小节；新行为扩展了某项已完成的能力时，加以说明。
+- 由 Product 派生的新增省略 `engineering_change`。在修正来源、修改笔记和状态，或做允许的待执行修订时，工程 Feature 上的这个字段保持不变。
 
-## Removals
+## 删除
 
-Every removal appends a localized, timestamped removal reason to the detail `notes`.
+每次删除都在详情的 `notes` 中追加一条按文档语言书写、带时间戳的删除原因。
 
-| Current status | Confirmed action |
+| 当前状态 | 已确认的动作 |
 |---|---|
-| `pending` | Set index `status` to `obsolete` |
-| `blocked` | Set index `status` to `obsolete`; preserve the recorded blocker |
-| `in_progress` | Set index `status` to `obsolete`; warn that written code may require an explicitly authorized rollback |
-| `done` | Set index `status` to `obsolete_done`; preserve `id`, `description` and `acceptance_criteria`; append a new Feature that removes the implemented behavior, with dependencies chosen from actual impact |
-| `obsolete` or `obsolete_done` | Keep the status unchanged; note that the exclusion was confirmed again |
+| `pending` | 把索引的 `status` 设为 `obsolete` |
+| `blocked` | 把索引的 `status` 设为 `obsolete`；保留已记录的阻塞原因 |
+| `in_progress` | 把索引的 `status` 设为 `obsolete`；警告已写的代码可能需要经明确授权的回滚 |
+| `done` | 把索引的 `status` 设为 `obsolete_done`；保留 `id`、`description` 和 `acceptance_criteria`；追加一个新 Feature 来移除已实现的行为，其依赖根据实际影响选择 |
+| `obsolete` 或 `obsolete_done` | 状态保持不变；在笔记中说明这一排除再次得到确认 |
 
-Do not translate or substantively rewrite the removed `done` Feature. Its status transition and removal note record the confirmed deletion; the new removal Feature carries the implementation work.
+不要翻译或实质性改写被删除的 `done` Feature。它的状态转换和删除笔记记录了已确认的删除；实现工作由新的删除 Feature 承担。
 
-A Feature that becomes `obsolete` cannot keep `planned` Registry tests:
+变成 `obsolete` 的 Feature 不能保留状态为 `planned` 的测试登记表测试：
 
-- When the retirement has a replacement, retire those tests with provenance under Test traceability below.
-- When the Feature is retired without a replacement, delete its `planned` Registry entries; they were never implemented. See [File 4](../../../../methodology/02-feature-list-schema.md#file-4-docstest-registryjson) in methodology 02.
+- 退役有替代项时，按下面的[测试可追溯性更新](#测试可追溯性更新)带上出处退役这些测试。
+- Feature 退役且没有替代项时，删除它状态为 `planned` 的测试登记表条目；这些测试从未实现过。见 methodology 02 的 [File 4](../../../../methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
 
-## Revisions
+## 修订
 
-| Current status | Confirmed action |
+| 当前状态 | 已确认的动作 |
 |---|---|
-| `pending` | Before execution, update the detail `description`, `affected_components` and criterion text or IDs; keep still-valid planned verification mappings; explicitly retire superseded planned Registry entries; append a localized, timestamped revision note; change the index `title` only when affected |
-| `blocked` | Apply the `pending` action, then recheck the recorded blocker under [Status transitions](../../../../methodology/02-feature-list-schema.md#status-transitions); keep `blocked` while it remains, or restore `pending` with the resolved prerequisite and reason in `notes` |
-| `in_progress` | Apply the `pending` action and warn that the current implementation may need adjustment |
-| `done` | Do not modify the original index entry or detail. Append a new Feature that revises the implementation for the new rule, depends on the original ID and states the new behavior in its acceptance criteria |
-| `obsolete` or `obsolete_done` | Normally do nothing. If the user wants reactivation, require an explicit decision and append a new Feature |
+| `pending` | 在执行之前，更新详情中的 `description`、`affected_components` 以及验收条件的文本或 ID；保留仍然有效的已规划验证映射；明确退役被取代的已规划测试登记表条目；追加一条按文档语言书写、带时间戳的修订笔记；只有受影响时才修改索引的 `title` |
+| `blocked` | 执行 `pending` 的动作，然后按 [状态流转](../../../../methodology/02-feature-list-schema.md#状态流转) 重新检查已记录的阻塞原因；阻塞仍在时保持 `blocked`，否则恢复为 `pending`，并在 `notes` 中写明已解决的前提和原因 |
+| `in_progress` | 执行 `pending` 的动作，并警告当前实现可能需要调整 |
+| `done` | 不修改原来的索引条目或详情。追加一个新 Feature，按新规则修订实现；它依赖原来的 ID，并在验收条件中写明新行为 |
+| `obsolete` 或 `obsolete_done` | 通常不做任何事。用户想重新启用时，要求明确的决定，并追加一个新 Feature |
 
-## Source-path corrections
+## 来源路径修正
 
-- Correct affected primary `source` paths and secondary links in plan records or Feature design navigation, including historical navigation where needed. A link correction is not permission to rewrite completed requirements or decisions. Repairs to the source documents themselves belong to Stage 3.
-- Record primary Feature `source` changes in `source_path_updates` using its `{ feature, from, to }` shape. Record secondary document and link corrections in the ordinary report and revision summary; do not overload this field or add another registry.
-- A path correction is not a substantive revision.
+- 修正计划记录或 Feature 设计稿导航中受影响的主要 `source` 路径和次要链接，需要时也包括历史导航。修正链接不代表可以改写已完成的需求或决定。对来源文档本身的修复属于阶段 3。
+- 主要 Feature `source` 的变化，用 `{ feature, from, to }` 的形态记录在 `source_path_updates` 中。次要文档和链接的修正，写在普通报告和修订摘要中；不要给这个字段加上额外用途，也不要另建登记表。
+- 路径修正不是实质性修订。
 
-## Splits, merges and dependencies
+## 拆分、合并与依赖
 
-- Splits and merges follow the `split` and `merge` rows of the migration table under [File 3](../../../../methodology/02-feature-list-schema.md#file-3-docsfeature-list-revisionsjson): new Features get never-used IDs with independently testable scope, and the original entries stay as `obsolete` or `obsolete_done`. A completed source's description, criteria and historical mappings remain unchanged.
-- Rewrite affected pending and blocked dependencies to the actual replacement prerequisites, even when their IDs are larger. For blocked work, recheck the recorded recovery condition after the replacement; a valid but unfinished dependency leaves the restored work `pending` and not yet eligible.
-- Review in-progress work explicitly before changing its scope or dependencies. Do not rewrite completed dependency history.
-- Record each operation in `migrations` and each dependency edit in `dependency_changes` of the version-2 revision. Check both the migration graph and the execution graph for cycles, unknown IDs, self-dependencies and obsolete prerequisites.
-- Add, revise, split, merge and retire are incremental operations. Never regenerate the whole plan because an insertion would disturb numeric execution order.
+- 拆分和合并遵循 [File 3](../../../../methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 迁移表中的 `split` 和 `merge` 行：新 Feature 使用从未用过的 ID，范围可以独立测试；原来的条目保留为 `obsolete` 或 `obsolete_done`。已完成来源的描述、验收条件和历史映射保持不变。
+- 把受影响的待执行和被阻塞的依赖改写为实际的替代前提，即使它们的 ID 更大。对被阻塞的工作，替换之后重新检查已记录的恢复条件；依赖有效但尚未完成时，恢复后的工作为 `pending`，但还不能开始。
+- 修改进行中工作的范围或依赖之前，明确审查它。不要改写已完成的依赖历史。
+- 在第 2 版修订记录中，把每次操作记进 `migrations`，把每次依赖修改记进 `dependency_changes`。检查迁移图和执行图中是否有环、未知 ID、自依赖和已废弃的前提。
+- 新增、修订、拆分、合并和退役都是增量操作。绝不因为插入会打乱数字形式的执行顺序就重新生成整个计划。
 
-## Downstream regression
+## 下游回归
 
-Assign ordinary downstream verification to the Feature that implements this change, using **Test Impact Review** in `methodology/08-test-traceability-and-evidence.md`. Record the affected behavior, the tests or manual checks that already cover it and any coverage gap in that Feature's notes for Stage 1. Preserve test ownership; a note cannot decline required checks. Create another Feature only for a separate implementation, repair or independently agreed deliverable, not merely to rerun a dependent Feature's valid tests.
+普通的下游验证，按 `methodology/08-test-traceability-and-evidence.md` 的 **测试影响评估**，分配给实现这次变化的 Feature。在该 Feature 的笔记中记录受影响的行为、已经覆盖它的测试或人工检查以及覆盖缺口，供 Stage 1 使用。保留测试的归属；笔记不能拒绝必须做的检查。只有存在单独的实现、修复或独立商定的交付物时，才另建 Feature；仅仅为了重新运行某个依赖 Feature 仍然有效的测试，不另建 Feature。
 
-## Test traceability updates
+## 测试可追溯性更新
 
-Completed Feature criteria and test IDs are never rewritten in place; Product evolution creates a new Feature with new IDs. Registry retirement fields, schema versions and validation rules are defined under [File 4](../../../../methodology/02-feature-list-schema.md#file-4-docstest-registryjson) in methodology 02.
+已完成 Feature 的验收条件和测试 ID 绝不原地改写；Product 演进时创建带新 ID 的新 Feature。测试登记表的退役字段、数据结构版本和校验规则定义在 methodology 02 的 [File 4](../../../../methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
 
-- **Superseded active tests:** Stage 2 shows the exact test ID and its retirement relationship. After explicit Stage 3 confirmation, set `status: retired` and add the `retirement` object. Preserve the original ID, source mapping, path, case and completed evidence. Keeping a wrong assertion active to satisfy old history is prohibited.
-- **Test-code cleanup:** record approved test-code and current-reference cleanup in the `notes` of the new or unfinished Feature that owns it, with exact paths, methods and the intended action. Leave the implementation to [feature-execute](../../feature-execute/SKILL.md), and report it as pending until it is performed and verified. Do not delete historical Feature or Registry records.
-- **Still-valid tests:** regression and invariant tests that remain valid stay `active`; `feature-execute` later selects them through component intersection.
-- **Replacement IDs:** new Features declare `affected_components`, and ordinary new test IDs are finalized in `feature-execute` Stage 1 and 2. When an approved retirement needs replacement IDs, plan those IDs against the new criteria now and register them as `planned`, with `path: null` if needed. This does not authorize implementation or imply coverage; the replacement Feature must activate and execute them before completion.
-- **Retiring active tests without replacement** is blocked; the new removal Feature's contract verifies a removed behavior.
-- Keep `docs/test-registry.json` machine-readable; it is not a narrative revision log.
+- **被取代的活动测试：** 阶段 2 展示准确的测试 ID 和它的退役关系。经阶段 3 明确确认后，设置 `status: retired` 并添加 `retirement` 对象。保留原来的 ID、来源映射、路径、用例和已完成的证据。禁止为了迎合旧历史而让错误的断言保持活动。
+- **测试代码清理：** 把获批的测试代码清理和当前引用清理，记在负责它的新 Feature 或未完成 Feature 的 `notes` 中，写明准确的路径、方法和预定动作。实现交给 [feature-execute](../../feature-execute/SKILL.md)；在实际执行并验证之前，报告为待完成。不要删除历史上的 Feature 或测试登记表记录。
+- **仍然有效的测试：** 仍然有效的回归测试和不变量测试保持 `active`；`feature-execute` 之后通过组件交集选中它们。
+- **替代 ID：** 新 Feature 声明 `affected_components`，普通的新测试 ID 在 `feature-execute` 的 Stage 1 和 2 中确定。获批的退役需要替代 ID 时，现在就根据新的验收条件规划这些 ID，并以 `planned` 状态登记，需要时使用 `path: null`。这不授权实现，也不表示已经覆盖；替代 Feature 必须在完成之前启用并执行它们。
+- **没有替代项就退役活动测试** 是被禁止的；新的删除 Feature 的约定负责验证被移除的行为。
+- 保持 `docs/test-registry.json` 可被机器读取；它不是叙述式的修订日志。

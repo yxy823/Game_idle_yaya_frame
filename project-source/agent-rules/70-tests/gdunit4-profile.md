@@ -1,52 +1,52 @@
-# GdUnit4 Runner Profile
+# GdUnit4 运行器配置
 
-This file records the behavior of the project's fixed gdUnit4 runner that matters when writing and running tests. `docs/methodology-config.json` supplies the Godot executable and its observed version. Test selection, run records and completion evidence are defined in [methodology 08](../../methodology/08-test-traceability-and-evidence.md).
+本文记录项目固定使用的 gdUnit4 运行器在编写和运行测试时需要注意的行为。`docs/methodology-config.json` 提供 Godot 可执行文件及其实测版本。测试选择、运行记录和完成证据在 [methodology 08](../../methodology/08-test-traceability-and-evidence.md) 中规定。
 
-## Launch and process limits
+## 启动与进程限制
 
-The project-owned wrapper invokes the configured Godot executable directly:
+项目自己的包装脚本直接调用配置的 Godot 可执行文件：
 
 ```text
 <godot> --path <project> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <unique-run-directory> -a <target> [-c]
 ```
 
-Godot options precede the script path. This launch does not use the vendor batch launcher, `--remote-debug` or a default `--headless` switch.
+Godot 选项写在脚本路径之前。这种启动方式不使用第三方提供的批处理启动器、`--remote-debug` 或默认的 `--headless` 开关。
 
-- Each run has a finite wall-time limit, set with `--timeout-seconds` (120 seconds by default). A test that waits longer fails the run.
-- Standard input is closed, so tests cannot wait for console input.
-- stdout and stderr are written to one ordered log.
-- Each run keeps its engine log, discovery, JUnit and diagnostic reports in its own directory under `reports/gdunit-wrapper/`. Read them there when diagnosing a failure. Missing, ambiguous or stale JUnit cannot satisfy a run. The layout of run directories, `result.json` and the process and timeout handling are described in [Artifact-backed completion](../../methodology/08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness).
+- 每次运行都有有限的墙钟时间上限，用 `--timeout-seconds` 设置（默认 120 秒）。等待超过上限的测试会让本次运行失败。
+- 标准输入已关闭，所以测试不能等待控制台输入。
+- stdout 和 stderr 按顺序写入同一份日志。
+- 每次运行把引擎日志、测试发现、JUnit 和诊断报告保存在 `reports/gdunit-wrapper/` 下自己的目录中。诊断失败时到那里读取。缺失、有歧义或过期的 JUnit 不能让一次运行成立。运行目录的布局、`result.json` 以及进程与超时处理，见 [基于原件的完成判定](../../methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
-## Discovery and verdict
+## 测试发现与判定
 
-- **[MUST]** A GDScript test suite extends `GdUnitTestSuite`, and each test case uses the `test_` prefix that the runner requires for discovery.
-- **[MUST]** Focused execution confirms through the project's verdict wrapper that the required suite and test case were discovered and executed. A runner exit code alone does not prove this.
-- **[MUST]** Project test commands use the configured lookup root under `tests/` and the project-owned wrapper `tools/testing/run-gdunit-tests.py`, invoked as described in [Runtime Test Impact selection](../../methodology/08-test-traceability-and-evidence.md#runtime-test-impact-selection).
-- **[MUST]** The current runner profile monitors script errors, unexpected `push_error()`, unexpected `push_warning()`, orphans and flaky results. A run that executes zero tests is not PASS, as defined in [Runner and discovery](test-selection-and-gates.md#runner-and-discovery).
-- **[MUST]** The push-error monitor of the pinned runner also captures warnings. Declare expected errors or warnings with a scoped GdUnit expected-diagnostic assertion, and `await` it only when that assertion is a coroutine. Do not disable monitoring globally.
+- **[必须]** GDScript 测试套件继承 `GdUnitTestSuite`，每个测试用例使用运行器发现测试所要求的 `test_` 前缀。
+- **[必须]** 聚焦执行通过项目的判定包装脚本，确认要求的测试套件和测试用例已被发现并执行。仅凭运行器的退出码不能证明这一点。
+- **[必须]** 项目的测试命令使用 `tests/` 下配置的查找根目录，以及项目自己的包装脚本 `tools/testing/run-gdunit-tests.py`，调用方式见 [运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
+- **[必须]** 当前的运行器配置监控脚本错误、未预期的 `push_error()`、未预期的 `push_warning()`、孤立节点和不稳定结果。执行了零个测试的运行不是 PASS，见[运行器与测试发现](test-selection-and-gates.md#运行器与测试发现)。
+- **[必须]** 固定版本运行器的 push-error 监控也会捕获警告。用限定范围的 GdUnit 预期诊断断言声明预期的错误或警告；只有该断言是协程时才 `await` 它。不要全局关闭监控。
 
-### Diagnostics outside test bodies
+### 测试函数体之外的诊断
 
-In the pinned runner, `STARTED` precedes `before_test()`, and the monitor start that follows clears the diagnostics of that hook. Suite `after()` and exit cleanup also lack reliable JUnit diagnostic coverage. The wrapper therefore recognizes native Godot header, message and source-location records throughout the lifecycle, and test banners never disable these checks. This is not a search for error words in arbitrary output.
+在固定版本的运行器中，`STARTED` 早于 `before_test()`，随后启动的监控会清除这个钩子产生的诊断。套件的 `after()` 和退出清理同样缺少可靠的 JUnit 诊断覆盖。因此，包装脚本在整个生命周期中识别 Godot 原生的标题、消息和源码位置记录，测试横幅也不会关闭这些检查。这不是在任意输出中搜索错误字样。
 
-- The project-owned session hook `tools/testing/gdunit_diagnostic_session.gd` records diagnostics and positively matched scoped assertions in the current report's `diagnostics.jsonl`. It observes public execution contexts, signals and monitor entries without modifying vendor state.
-- Individual diagnostic IDs and source records bind each exemption to this run. An additional unmatched occurrence still fails.
-- Missing, incomplete or mismatched diagnostic evidence fails closed. Native records before the hook starts and after it shuts down are subject to the same check.
-- JUnit, a nonzero process exit and a timeout remain independent failure sources. The pinned JUnit writer omits orphan records, but the runner's orphan exit code 101 still makes the wrapper fail.
+- 项目自己的会话钩子 `tools/testing/gdunit_diagnostic_session.gd`，把诊断和正面匹配上的限定范围断言记录到当前报告的 `diagnostics.jsonl` 中。它观察公开的执行上下文、信号和监控条目，不修改第三方代码的状态。
+- 每条诊断 ID 和源记录把每项豁免绑定到本次运行。额外出现的未匹配诊断仍然导致失败。
+- 诊断证据缺失、不完整或不匹配时失败关闭。钩子启动之前和关闭之后的原生记录，受同样的检查。
+- JUnit、非零的进程退出码和超时仍是相互独立的失败来源。固定版本的 JUnit 写出器会省略孤立节点记录，但运行器的孤立节点退出码 101 仍会让包装脚本判定失败。
 
-## Coroutine assertions
+## 协程断言
 
-- **[MUST]** Await GdUnit coroutine assertions. In particular, `assert_signal(...).is_emitted(...)` and `is_not_emitted(...)` require `await`; omitting it can silently bypass the assertion.
-- **[MUST]** Coroutine assertions also follow the bounded-wait and observer-order rules in `time-randomness-and-async.md`.
+- **[必须]** await GdUnit 的协程断言。特别是 `assert_signal(...).is_emitted(...)` 和 `is_not_emitted(...)` 必须 `await`；省略它可能悄悄跳过断言。
+- **[必须]** 协程断言同样遵循 `time-randomness-and-async.md` 中关于有界等待和观察者顺序的规则。
 
-## Cleanup and ProjectSettings
+## 清理与 ProjectSettings
 
-- **[PREFER]** Register test-owned objects with `auto_free()`, or perform explicit teardown that completes before the test boundary.
-- **[MUST]** The pinned runner reports a false-positive orphan for a pending `queue_free()`. Wait for the real idle or deletion condition when needed; do not disable orphan detection as a workaround.
-- **[MUST]** Treat the runner's `ProjectSettings` snapshot as reliable only for restoring the value of a key that existed when the snapshot was taken and still exists at restore time.
-- **[MUST]** Tests that add or delete a `ProjectSettings` key use explicit cleanup or process isolation; they do not rely on the runner snapshot to restore the set of keys.
-- **[MUST]** A test that exercises persistence through `ProjectSettings.save()` runs in an explicitly isolated process with its own cleanup contract. Other tests follow the [Autoload and ProjectSettings rules](production-isolation.md#autoload-and-projectsettings).
+- **[优先]** 测试拥有的对象用 `auto_free()` 登记，或执行在测试边界之前完成的显式 teardown。
+- **[必须]** 固定版本的运行器会对尚未执行的 `queue_free()` 报告误报的孤立节点。需要时等待真实的空闲或删除条件；不要用关闭孤立节点检测来绕过。
+- **[必须]** 运行器的 `ProjectSettings` 快照只在以下情况下可靠：恢复的是拍快照时已存在、恢复时仍存在的键的值。
+- **[必须]** 新增或删除 `ProjectSettings` 键的测试使用显式清理或进程隔离；不依赖运行器快照恢复键的集合。
+- **[必须]** 通过 `ProjectSettings.save()` 测试持久化的测试，在明确隔离的进程中运行，并有自己的清理契约。其他测试遵循 [Autoload 与 ProjectSettings 规则](production-isolation.md#autoload-与-projectsettings)。
 
-## Runner version changes
+## 运行器版本变更
 
-- **[MUST]** When the configured runner version changes, revalidate discovery, diagnostic monitoring, report fields, coroutine behavior, orphan handling and `ProjectSettings` restoration. Remove version-specific workarounds only after that verification.
+- **[必须]** 配置的运行器版本改变时，重新验证测试发现、诊断监控、报告字段、协程行为、孤立节点处理和 `ProjectSettings` 恢复。只有完成这些核实后，才删除针对特定版本的绕行方案。

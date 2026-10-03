@@ -1,38 +1,38 @@
-# Time, Randomness, and Async Testing
+# 时间、随机性与异步测试
 
-Tests control the same clock, RNG and asynchronous semantics that the production behavior actually uses.
+测试控制的时钟、RNG 和异步语义，与生产行为实际使用的相同。
 
-## Time domains
+## 时间域
 
-- **[MUST]** Declare whether the behavior uses scaled gameplay time, physics time, unscaled monotonic elapsed time or wall-clock and calendar time. These are not interchangeable.
-- **[MUST]** Elapsed-time tests do not accidentally hard-code the render FPS unless the frame count itself is the contract.
-- **[MUST]** Physics behavior uses the real physics-tick path. Do not change the physics tick rate as a routine trick to speed up tests.
-- **[MUST]** Timer and SceneTreeTimer tests cover the process domain, pause behavior, time-scale behavior and the timeout result when those are part of the contract.
-- **[MUST]** Pause and `Engine.time_scale` are separate test dimensions.
-- **[MUST]** Duration and timeout correctness does not use an adjustable wall clock, and calendar or date behavior does not use monotonic ticks.
-- **[PREFER]** Use injected or controlled clocks, the runner's frame and time simulation, or controlled Timers instead of waiting real seconds.
+- **[必须]** 声明行为使用的是受缩放的玩法时间、物理时间、不受缩放的单调流逝时间，还是墙钟与日历时间。它们不能互换。
+- **[必须]** 流逝时间的测试不要意外地硬编码渲染 FPS，除非帧数本身就是契约。
+- **[必须]** 物理行为使用真实的物理帧路径。不要把修改物理帧率当作加速测试的常规手段。
+- **[必须]** Timer 和 SceneTreeTimer 的测试，在处理域、暂停行为、时间缩放行为和超时结果属于契约时，覆盖这些方面。
+- **[必须]** 暂停和 `Engine.time_scale` 是两个独立的测试维度。
+- **[必须]** 时长和超时的正确性不使用可调整的墙钟，日历或日期行为不使用单调计时。
+- **[优先]** 使用注入的或受控的时钟、运行器的帧与时间模拟或受控的 Timer，不真实地等待若干秒。
 
-## Tween and frame synchronization
+## Tween 与帧同步
 
-- **[MUST]** Tween tests advance controlled time or frames and assert the state or completion; do not sleep until a Tween finishes.
-- **[PREFER]** Assert intermediate Tween values only when they are a business contract, and use an appropriate float tolerance.
-- **[MUST]** A fixed `await` of N frames needs a lifecycle or processing reason; do not use a magic "two-frame" synchronization ritual.
-- **[MUST]** Do not fix a flaky test simply by increasing an arbitrary wall-clock sleep.
+- **[必须]** Tween 测试推进受控的时间或帧，并断言状态或完成情况；不要睡眠等待 Tween 结束。
+- **[优先]** 只有 Tween 的中间值是业务契约时才断言它们，并使用合适的浮点容差。
+- **[必须]** 固定 `await` N 帧需要生命周期或处理上的理由；不要使用“等两帧”这种魔法同步仪式。
+- **[必须]** 不要只靠加长任意的墙钟睡眠来修复不稳定的测试。
 
-## RNG and probability
+## RNG 与概率
 
-- **[MUST]** Tests that assert concrete random outcomes use an explicit deterministic seed or an injected RNG.
-- **[PREFER]** Use a `RandomNumberGenerator` per domain rather than uncontrolled global RNG for reproducible rules.
-- **[MUST]** Use the RNG's `seed` to initialize it, and use a captured `state` only to restore a previously captured RNG state.
-- **[MUST]** Do not freeze a long output sequence of the current Godot RNG as a permanent business API across versions, unless the project explicitly owns that RNG algorithm contract.
-- **[MUST]** Probability tests distinguish deterministic mapping and boundary checks from statistical or property checks; finite samples need not match theoretical probabilities exactly.
-- **[MUST]** Fuzz and property failures record enough of the seed and input to reproduce the case. Rerunning until green does not erase a flaky failure.
+- **[必须]** 断言具体随机结果的测试，使用明确的确定性种子或注入的 RNG。
+- **[优先]** 为了可复现的规则，每个领域使用一个 `RandomNumberGenerator`，不使用不受控的全局 RNG。
+- **[必须]** 用 RNG 的 `seed` 初始化它；捕获的 `state` 只用于恢复之前捕获的 RNG 状态。
+- **[必须]** 不要把当前 Godot RNG 的一长串输出冻结成跨版本的永久业务 API，除非项目明确拥有该 RNG 算法契约。
+- **[必须]** 概率测试区分确定性的映射与边界检查，以及统计检查或性质检查；有限样本不必与理论概率完全一致。
+- **[必须]** 模糊测试和性质测试失败时，记录足以复现该用例的种子和输入。反复重跑直到通过，并不能抹掉一次不稳定的失败。
 
-## Async
+## 异步
 
-- **[MUST]** Signal and async waits have a finite timeout or an equivalent runner failure mechanism.
-- **[MUST]** If a signal may emit synchronously, start observing before triggering it, or use a runner mechanism that cannot miss the event.
-- **[PREFER]** After receiving a signal, assert the required payload and post-state rather than treating its receipt as proof of the entire workflow.
-- **[MUST]** Threaded ResourceLoader tests wait on the official status or completion; do not guess completion with a sleep.
-- **[MUST]** Do not use `load_threaded_get()` as a polling API, because it may block.
-- **[MUST]** The test runner's timeout and a production or domain timeout are separate configuration with separate semantics.
+- **[必须]** 信号等待和异步等待有有限的超时，或等效的运行器失败机制。
+- **[必须]** 信号可能同步发出时，在触发之前开始观察，或使用不会错过事件的运行器机制。
+- **[优先]** 收到信号后，断言要求的载荷和事后状态，不把收到信号当作整个流程成功的证明。
+- **[必须]** 多线程 ResourceLoader 测试等待官方的状态或完成结果；不要用睡眠猜测已经完成。
+- **[必须]** 不要把 `load_threaded_get()` 当作轮询 API，因为它可能阻塞。
+- **[必须]** 测试运行器的超时与生产或领域的超时是不同的配置，语义也不同。

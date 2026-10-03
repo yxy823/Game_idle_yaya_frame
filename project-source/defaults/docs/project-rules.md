@@ -1,123 +1,135 @@
-# Project rules
+# 项目规则
 
-> Read applicable engineering constraints before revising GDD design, defining Product delivery scope, planning Features or choosing an implementation. Game-design scope and exclusions are in [Design scope and boundaries](../methodology/01-product-doc-structure.md#design-scope-and-boundaries).
+> 修订 GDD 设计、确定 Product 交付范围、规划 Feature 或选择实现方案之前，先阅读约束本任务的工程规则。游戏设计的范围与排除项见 [设计范围与边界](../methodology/01-product-doc-structure.md#设计范围与边界)。
 >
-> This file holds project-wide development constraints, collaboration expectations and general engineering principles. Concrete engine and language rules live under `agent-rules/`; see [Part 3](#part-3--project-rule-sources).
+> 本文件保存全项目的开发约束、协作要求和通用工程原则。具体的引擎与语言规则在 `agent-rules/` 下，见[第 3 部分](#第-3-部分--项目规则来源)。
 
-## Project-wide engineering constraints
+## 全项目工程约束
 
-Use the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/00-core/rule-precedence-and-routing.md`. MUST constraints apply to every relevant Product, Feature, design and implementation. A Product, Feature design or ADR cannot silently override them. Keep each constraint's scope and necessary rationale clear; technical details remain at their owning source.
+`[必须]`、`[优先]` 和 `[复核]` 的含义沿用 `agent-rules/00-core/rule-precedence-and-routing.md` 中的定义。`[必须]` 约束适用于每个受其约束的 Product、Feature、设计和实现。Product、Feature 设计或 ADR 不能悄悄推翻它们。写清每条约束的范围和必要理由；技术细节留在其所属来源。
 
-No project-specific engineering constraints have been confirmed yet. Add confirmed development constraints here when needed; do not invent technical commitments from examples. GDD owns game-design boundaries and exclusions, including long-lived ones; reference its owning passages rather than duplicating them here. Definitions belong in `docs/terminology.md`, delivery boundaries in Product and current architecture in its own documents.
+目前还没有确认任何项目专属的工程约束。需要时，把已确认的开发约束加在这里；不要从示例中编造技术承诺。游戏设计的边界和排除项（包括长期有效的）由 GDD 负责；引用 GDD 中的原文段落，不在这里重复。定义放在 `docs/terminology.md`，交付边界放在 Product，当前架构放在架构自己的文档。
 
-Rule additions, deletions and edits follow `methodology/04-project-rules.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
-
----
-
-# Part 1 · Collaboration contract
-
-> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-project-rules.md` and the Core precedence protocol. These requirements do not override system, developer or user instructions.
-
-## 1.1 Collaboration discipline
-
-1. **Avoid over-design.** Use the smallest complexity that satisfies current requirements. Do not add unused interfaces, unneeded patterns, or speculative extension points unless the user explicitly requests extensibility.
-2. **Confirm before acting on ambiguity.** When requirements are unclear or have multiple reasonable interpretations, state the current understanding and ask focused questions before writing substantial code.
-3. **Work in small steps.** Keep one change focused on one objective. Do not mix opportunistic refactoring into a bug fix or add behavior during a refactor.
-4. **Prefer consistency over personal improvement.** Existing naming, directory structure, and established patterns are the project standard. Do not replace them merely because another approach appears more elegant.
-5. **Disclose uncertainty honestly.** Mark uncertain APIs, version differences, and platform behavior as needing verification. Never invent an answer.
-6. **A rejected decision stays rejected.** Do not reintroduce a design or code approach the user rejected in a slightly different form.
-7. **Do not expand scope without approval.** Change only what the user and current Feature require. Report unrelated problems and let the user decide whether to address them.
-
-## 1.2 Workflow constraints
-
-Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/06-project-environment.md`; test semantics follow `methodology/08-test-traceability-and-evidence.md`. Do not maintain competing Stage instructions here.
-
-Inspect and preserve existing changes, continue work in the task's designated checkout, stage the intended scope and create eligible logical commits under `agent-rules/00-core/git-worktree-and-commits.md`.
-
-When rules change, state their approved applicability to current and later work under the incremental maintenance contract. Do not retroactively rewrite historical approvals, and do not assume current work is exempt from a newly confirmed hard constraint.
-
-Every placeholder file uses the `_placeholder_` prefix. Record its replacement need in the owning resource section of the UI, presentation or shared design document, and link it from the Feature AC or design that uses it; Feature notes only provide navigation.
-
-## 1.3 Reporting requirements
-
-Follow `agent-rules/00-core/completion-and-reporting.md` and the owning workflow's handoff. Explain material changes, actual verification and expected work left outside scope; include manual instructions only when applicable.
-
-## 1.4 Deviating from these rules
-
-Identify the exact rule, proposed deviation, reason and impact. Project style, migration cost or a mandatory platform convention may justify departing from a PREFER recommendation; they do not automatically waive a MUST. Unresolved mandatory conflicts follow the Core conflict protocol. A substantive rule change or exception requires explicit authority covering that choice and the self-check report above; reuse a decision already made instead of asking again.
+规则的新增、删除和修改遵循 `methodology/04-project-rules.md` 的 **规则的增量维护**，包括每次提出写入前必须在对话中完成的自查。保留已有的授权；实质修改要取得缺少的决定。Stage 3 的文档检查点在最终验证前检查是否有值得做的增量更新。没有发现值得做的修改时，不产出报告，也不新增规则。
 
 ---
 
-# Part 2 · General design and architecture
+# 第 1 部分 · 协作约定
 
-> These are stack-independent design defaults (`PREFER`), unless a separately identified project or specialized rule makes a specific constraint mandatory. Choose patterns for an actual need; do not automatically promote a local design choice into a project hard constraint.
+> 本部分规定必须遵守的协作要求。规则的权威和冲突按 `methodology/04-project-rules.md` 和 Core 优先级协议处理。这些要求不覆盖系统、开发者或用户的指令。
 
-## 2.1 Start with a focused function or existing method
+## 1.1 协作纪律
 
-Represent an ordinary operation with clear inputs, local intermediate values and an explicit result. Split only when responsibility, reuse or readability warrants it. Doing one thing does not itself justify a new class.
+1. **避免过度设计。** 用能满足当前需求的最小复杂度。除非用户明确要求可扩展性，不添加用不到的接口、不需要的模式或臆测的扩展点。
+2. **有歧义先确认再动手。** 需求不清楚或有多种合理理解时，先说明当前的理解，提出聚焦的问题，再写大量代码。
+3. **小步推进。** 一次修改只针对一个目标。修 Bug 时不顺手掺入重构，重构时不添加新行为。
+4. **一致性优先于个人偏好。** 已有的命名、目录结构和既定模式就是项目标准。不能只因为另一种做法看起来更优雅就替换它们。
+5. **如实说明不确定之处。** 不确定的 API、版本差异和平台行为要标为“需要核实”。绝不编造答案。
+6. **被否决的决定保持否决。** 用户否决过的设计或代码做法，不换个形式再提出来。
+7. **未经批准不扩大范围。** 只修改用户和当前 Feature 要求的内容。无关的问题报告给用户，由用户决定是否处理。
 
-Player and AI callers can reuse the same behavior API; the caller type alone does not justify a Command. Use a Command object when the current requirement needs an operation to be queued, undone, replayed, recorded or managed with an independent lifecycle. Keep only state that this lifecycle actually needs; do not promote all local variables into object fields.
+## 1.2 工作流程约束
 
-## 2.2 Core architecture principles
+Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-loop.md`。该规范负责：
 
-- **Separate game authority from presentation.** Game logic owns rules, business state and valid results; presentation translates them into player feedback and may own view-local state. Apply the responsibility model and examples in `docs/game-organization.md`; concrete state-mutation and dependency rules remain in `agent-rules/10-gdscript/structure-and-dependencies.md`.
-- **Make meaningful state transitions explicit.** Choose the simplest model that captures mutually exclusive states, valid transitions and entry/exit or cancellation responsibilities. An enum and a central transition function may suffice; separate state objects or nodes are useful when lifecycle, reuse or transition complexity warrants them.
-- **Make collaboration explicit.** Distinguish requests, current state and one-time events/results. Gameplay orchestration belongs with game rules; feedback orchestration belongs with presentation. Connect them through suitable existing APIs, signals or a coordinator according to ownership and lifetime, without requiring a fixed control layer or event bus.
-- **Prefer composition over inheritance.** Build behavior from focused components instead of a large all-purpose base-class hierarchy.
-- **Drive adjustable behavior from data.** Levels, skill values, and entity parameters belong in configuration or data when changing them should not require code changes.
-- **Isolate independent rules where useful.** Keep suitable calculations and rule decisions testable without the UI or engine. Preserve real Godot physics and lifecycle dependencies where the behavior needs them; engine objects do not by themselves make a responsibility presentational.
-- **Pass dependencies explicitly.** Constructor or function parameters make dependencies visible and replaceable in tests.
-- **Reduce what callers must know.** Keep related validation, ordering, failure handling and state coordination with a cohesive owner. Assess an interface by all the knowledge needed to use it correctly, including configuration and lifetime constraints; fewer files or public methods alone do not establish a better design.
-- **Serialize state for confirmed uses.** When saving, replay, transfer or diagnostics requires serialization, define a representation for the data that use needs. Other runtime state follows its ownership and lifecycle; keep core data clear and rules independently testable.
+- Context / Rules Snapshot；
+- 授权与续接；
+- 验收；
+- 可选的独立审核；
+- 验证与完成。
 
-## 2.3 Pattern guide
+环境准备遵循 `methodology/06-project-environment.md`；测试的含义遵循 `methodology/08-test-traceability-and-evidence.md`。不要在这里维护另一套与之竞争的 Stage 说明。
 
-Choose a pattern only when it solves a present problem more simply than an ordinary function or the existing project structure.
+按 `agent-rules/00-core/git-worktree-and-commits.md`：检查并保留已有的改动，在任务指定的工作目录中继续工作，暂存预定的范围，并创建符合条件的逻辑提交。
 
-| Situation | Preferred pattern |
+规则变化时，按增量维护约定说明它经批准后对当前和后续工作的适用范围。不追溯改写历史上的批准；也不要以为当前工作可以豁免新确认的硬性约束。
+
+每个占位文件都使用 `_placeholder_` 前缀。替换需求记录在 UI、游戏表现或共享设计文档中该资源所属的资源章节，并从使用它的 Feature AC 或设计链接过去；Feature 笔记只提供导航。
+
+## 1.3 报告要求
+
+遵循 `agent-rules/00-core/completion-and-reporting.md` 和所属工作流程的交接要求。说明实质性的改动、实际做过的验证，以及预计留在范围之外的工作；只在需要时附上人工操作说明。
+
+## 1.4 偏离这些规则
+
+写明具体是哪条规则、打算怎样偏离、原因和影响。
+
+- 项目风格、迁移成本或平台强制的约定，可以作为偏离 `[优先]` 建议的理由；它们不会自动豁免 `[必须]` 约束。
+- 未解决的强制性冲突按 Core 冲突协议处理。
+- 实质性的规则修改或例外，需要明确覆盖这一选择的授权和上文所述的自查报告；已经做过的决定直接沿用，不重复询问。
+
+---
+
+# 第 2 部分 · 通用设计与架构
+
+> 这些是与技术栈无关的默认设计做法（`[优先]`），除非另有单独标明的项目规则或专项规则把某条约束设为强制。按实际需要选择模式；不要把局部的设计选择自动升级为项目的硬性约束。
+
+## 2.1 从一个聚焦的函数或已有方法开始
+
+普通操作用一个函数表示：输入清楚，中间值是局部变量，结果明确返回。只有职责、复用或可读性确实需要时才拆分。“只做一件事”本身不是新建类的理由。
+
+玩家和 AI 可以调用同一个行为 API；调用方类型不同本身不是使用 Command 的理由。只有当前需求要求一个操作能排队、撤销、重放、记录，或需要独立的生命周期时，才使用 Command 对象。只保留这个生命周期真正需要的状态；不要把所有局部变量都提升为对象字段。
+
+## 2.2 核心架构原则
+
+- **游戏权威与表现分开。** 游戏逻辑负责规则、业务状态和有效结果；表现把它们转成玩家能感知的反馈，可以拥有只属于视图的状态。按 `docs/game-organization.md` 中的职责模型和示例处理；具体的状态修改和依赖规则仍在 `agent-rules/10-gdscript/structure-and-dependencies.md`。
+- **有意义的状态转换要明确。** 选最简单、又能表达互斥状态、合法转换以及进入/退出或取消职责的模型。一个枚举加一个集中的转换函数可能就够了；生命周期、复用或转换复杂度确实需要时，再使用独立的状态对象或节点。
+- **协作关系要明确。** 区分请求、当前状态和一次性的事件或结果。玩法编排归游戏规则，反馈编排归表现。按职责归属和生命周期，通过合适的已有 API、信号或协调者把它们连接起来；不强制要求固定的控制层或事件总线。
+- **组合优于继承。** 用聚焦的组件组合出行为，不建庞大的万能基类层级。
+- **可调整的行为由数据驱动。** 关卡、技能数值和实体参数，如果修改时不应改代码，就放进配置或数据。
+- **在有用的地方隔离独立规则。** 合适的计算和规则判断要能脱离 UI 或引擎测试。行为确实需要时，保留真实的 Godot 物理和生命周期依赖；用到引擎对象本身不会让一项职责变成表现职责。
+- **显式传递依赖。** 用构造函数或函数参数传入依赖，让依赖可见，并能在测试中替换。
+- **减少调用方需要知道的东西。** 相关的校验、顺序、失败处理和状态协调交给一个内聚的负责方。评价接口时，看正确使用它需要知道的全部知识，包括配置和生命周期约束；文件或公开方法更少，本身不代表设计更好。
+- **为已确认的用途序列化状态。** 保存、重放、传输或诊断需要序列化时，为该用途需要的数据定义表示方式。其他运行时状态按其职责归属和生命周期处理；保持核心数据清晰，规则可以独立测试。
+
+## 2.3 模式选择
+
+只有当一个模式比普通函数或项目已有结构更简单地解决当前问题时，才选用它。
+
+| 情况 | 优先使用的模式 |
 | --- | --- |
-| An ordinary action transforms inputs into an output | Focused function or existing method |
-| Several systems react to one event | Observer or event bus |
-| Behavior depends on legal state transitions or entry/exit responsibilities | Simplest explicit state model |
-| Operations need queuing, undo, replay, recording or an independent lifecycle | Command |
-| Measured allocation cost causes a performance problem | Consider an object pool |
-| An entity combines independent capabilities | Components; use ECS only when its added complexity is justified |
-| Presentation mirrors data | Read the model directly or subscribe to existing signals; snapshots only when needed |
-| Cross-module communication chains become too long | Event bus, used sparingly because pervasive events weaken type visibility |
+| 普通动作把输入转换成输出 | 聚焦的函数或已有方法 |
+| 多个系统响应同一个事件 | 观察者或事件总线 |
+| 行为取决于合法的状态转换或进入/退出职责 | 最简单的显式状态模型 |
+| 操作需要排队、撤销、重放、记录或独立的生命周期 | Command |
+| 测量到的分配开销造成性能问题 | 考虑对象池 |
+| 一个实体组合了多项独立能力 | 组件；只有增加的复杂度确实值得时才用 ECS |
+| 表现层映射数据 | 直接读取模型或订阅已有信号；只在需要时使用快照 |
+| 跨模块通信链过长 | 事件总线，谨慎使用，因为到处都用事件会削弱类型的可见性 |
 
-## 2.4 Anti-patterns
+## 2.4 反模式
 
-- **God Object:** one manager accumulates unrelated systems and responsibilities.
-- **Business logic in UI callbacks:** button handlers directly mutate domain rules that cannot be tested without the UI.
-- **Raw singletons everywhere:** global access hides dependencies and makes tests difficult.
-- **Scattered state:** many booleans replace an explicit state model.
-- **Premature abstraction:** an interface or extension point exists only for an imagined future implementation.
-- **Magic values in logic:** thresholds and tunable values are embedded instead of named or configured.
-- **Unclear operations:** mixed responsibilities or hidden inputs obscure a function; clarify its data flow and split coherent responsibilities without automatically introducing a Command.
+- **上帝对象（God Object）：** 一个管理器堆积了互不相关的系统和职责。
+- **业务逻辑写在 UI 回调里：** 按钮处理函数直接修改领域规则，离开 UI 就无法测试。
+- **到处都是裸单例：** 全局访问隐藏了依赖，让测试变难。
+- **状态分散：** 用一堆布尔值代替明确的状态模型。
+- **过早抽象：** 接口或扩展点只为想象中的未来实现而存在。
+- **逻辑中的魔法值：** 阈值和可调数值直接嵌在代码里，没有命名或放进配置。
+- **含义不清的操作：** 职责混杂或输入隐藏，让函数难以理解；理清它的数据流，按内聚的职责拆分，不要自动引入 Command。
 
-## 2.5 General code organization
+## 2.5 通用代码组织
 
-1. Organize by stable game domain rather than file type or delivery Feature ID. A `player/` area containing its data, view, and control code is preferable to distant `models/`, `views/`, and `controllers/` trees. Use `docs/game-organization.md` when choosing a module location or expanding the starter skeleton.
-2. Keep one core concept per file. Split when cohesion, responsibility, readability, or testability justify it; numeric thresholds such as file length limits belong to the linter configuration in the project-root `gdlint.json` and do not by themselves require a split.
-3. Keep entry points limited to assembly, dependency injection, and startup.
-4. Keep adjustable configuration in a focused config or data area owned by its module; shared use alone does not remove domain ownership.
-5. Do not create miscellaneous dumping grounds such as `utils.gd` or `helpers.gd`; name utilities by domain or responsibility.
+1. 按稳定的游戏领域组织，而不是按文件类型或交付用的 Feature ID。一个包含自身数据、视图和控制代码的 `player/` 区域，比分散在 `models/`、`views/` 和 `controllers/` 几棵树里更好。选择模块位置或扩展起始骨架时，参考 `docs/game-organization.md`。
+2. 一个文件只放一个核心概念。内聚性、职责、可读性或可测试性需要时再拆分；文件长度上限这类数值阈值属于项目根目录 `gdlint.json` 中的 linter 配置，本身不要求拆分。
+3. 入口只负责组装、依赖注入和启动。
+4. 可调整的配置放在所属模块的专门配置或数据区域；被多处共用不会取消它的领域归属。
+5. 不要建 `utils.gd`、`helpers.gd` 这类杂物堆；工具函数按领域或职责命名。
 
-## 2.6 Error handling
+## 2.6 错误处理
 
-- Distinguish expected failures from exceptional failures. A temporarily unavailable user action may be ignored or explained; corrupted persistent data should produce an explicit error and diagnostic record.
-- Never swallow an exception silently. Log it and explain why continuation is safe when it is intentionally tolerated.
-- Provide a recognizable fallback resource or an actionable error when an image, audio file, or configuration fails to load.
-- Use assertions during development to protect invariants that should never be violated.
+- 区分预期内的失败和异常失败。暂时不可用的用户操作可以忽略或给出说明；持久数据损坏应当给出明确的错误和诊断记录。
+- 绝不悄悄吞掉异常。有意容忍时，记录日志并说明为什么可以安全继续。
+- 图片、音频文件或配置加载失败时，提供可识别的回退资源或能指导处理的错误信息。
+- 开发期间用断言保护绝不应被破坏的不变量。
 
-## 2.7 Performance defaults
+## 2.7 默认性能做法
 
-- Measure before optimizing. Do not optimize from intuition alone.
-- Use object pools only for genuinely high-frequency allocation and destruction.
-- Do not sacrifice readability unless measurement identifies the code as a meaningful hotspot.
+- 先测量再优化。不要只凭直觉优化。
+- 只在确实高频的分配和销毁中使用对象池。
+- 除非测量确认这段代码是有意义的热点，否则不牺牲可读性。
 
 ---
 
-# Part 3 · Project rule sources
+# 第 3 部分 · 项目规则来源
 
-The root `AGENTS.md` routes each task to `agent-rules/00-core/` and the affected domain modules. Concrete engine and language rules stay there; do not copy them into this file. `methodology/` defines the Product and Feature workflow, test traceability, human acceptance and completion. Tool paths and the Project Environment Bootstrap are defined in [Project environment](../methodology/06-project-environment.md); do not record environment state here.
+根目录的 `AGENTS.md` 把每个任务路由到 `agent-rules/00-core/` 和受影响的领域模块。具体的引擎与语言规则留在那里，不要复制到本文件。`methodology/` 规定 Product 与 Feature 工作流程、测试可追溯性、人工验收和完成。工具路径和项目环境准备（Project Environment Bootstrap）在 [项目环境](../methodology/06-project-environment.md) 中规定；不要在这里记录环境状态。

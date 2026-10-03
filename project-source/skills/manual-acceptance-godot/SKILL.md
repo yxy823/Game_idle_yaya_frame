@@ -1,30 +1,30 @@
 ---
 name: manual-acceptance-godot
-description: Prepare a Godot Feature's pending manual checklist or record its actual user acceptance from a submitted result or explicit conversation. Does not perform the user's experience, infer acceptance or mark the Feature done.
+description: 为 Godot Feature 准备待验收的人工清单，或根据用户提交的结果、对话中的明确表态记录其实际验收结果。不代替用户体验，不推断验收结果，也不把 Feature 标为完成。
 ---
 
-# Prepare or record manual acceptance
+# 准备或记录人工验收
 
-Identify the actual Feature, current scope and requested operation. Use the existing approved acceptance mode and manual obligations; do not invent a Feature, new requirements or an empty checklist to make a request fit this method. Invocation depends on the needed capability and its inputs, not on starting the execution loop again.
+确认实际的 Feature、当前范围和请求的操作。沿用已批准的验收模式和人工验收义务；不为了套用本方法而编造 Feature、新需求或空清单。是否调用本方法，取决于需要的能力及其输入，不需要重新进入执行流程。
 
-## Use the matching part of the acceptance contract
+## 使用验收约定中对应的部分
 
-`methodology/contracts/manual-acceptance-files.md` owns the checklist, original files, snapshot binding, commands and result semantics. Read only the sections needed for the operation, plus the relevant Feature and actual source/result files.
+清单、原始文件、快照绑定、命令和结果含义，以 `methodology/contracts/manual-acceptance-files.md` 为准。只读这次操作需要的小节，以及涉及的 Feature 和实际的源文件、结果文件。
 
-| Requested operation | Read and apply |
+| 请求的操作 | 阅读并执行 |
 | --- | --- |
-| Prepare material for the user to try | **Definitions and preparation**: expand approved obligations into concrete pending checks, bind them to final implementation and provide the actual checklist path and return instructions |
-| Import the user's submitted JSON | **Receive actual user results**: read the submitted original and comments, verify its correspondence with the unchanged checklist and record the actual outcome |
-| Record an explicit conversational result | **Conversation and subsequent work**: tie the user's real decision to current scope and use the conversation route without fabricating a file submission |
+| 准备给用户试玩的材料 | **定义与准备**：把已批准的验收义务展开为具体的待验收检查项，绑定到最终实现，并提供实际的清单路径和交回方式 |
+| 导入用户提交的 JSON | **接收用户的实际结果**：读取提交的原件和备注，核对它与未改动的清单是否对应，并记录实际结果 |
+| 记录对话中的明确结果 | **对话中的决定与后续工作**：把用户的真实决定对应到当前范围，走对话记录的路线，不编造文件提交 |
 
-A valid fully passed user submission already accepts that checklist's scope; do not request another acceptance phrase. Resolve a contradictory comment or an unclear decision locally. Agent-generated results, silence and a request to continue do not supply human acceptance. Do not use a conversation entry to bypass an invalid file; follow the contract for an explicit resolution or a new clear user decision.
+一份有效且全部通过的用户提交，已经接受该清单覆盖的范围；不再要求用户说一句接受。备注与结果矛盾或决定不清楚时，就地解决。Agent 生成的结果、用户沉默和“继续”的请求，都不构成人工接受。不要用对话记录绕过无效的文件；按约定取得明确的处理结论，或用户新的明确决定。
 
-Keep the original checklist and user result distinct. A source or acceptance-contract change uses the existing freshness and renewal rules; do not rebind a prepared checklist or rewrite the user's observations. Automatic checks and screenshots can support the material but cannot perform the user's experience.
+原始清单和用户结果分开保存。源文件或验收约定变化时，按已有的过期和更新规则处理；不要把已准备的清单重新绑定，也不改写用户的观察。自动检查和截图可以辅助准备材料，但不能代替用户的体验。
 
-## Return the recorded outcome
+## 交回记录的结果
 
-Use the existing record helper and report what was prepared or actually recorded, its scope and the remaining uncertainty. A successful import may record `pending` or `rejected`; it is not evidence that acceptance passed or the Feature is done. Follow the acceptance contract for failures and subsequent work, returning implementation changes to their existing owner.
+使用已有的记录工具，报告准备了什么或实际记录了什么、覆盖的范围，以及仍不确定的地方。导入成功也可能记录为 `pending` 或 `rejected`；导入成功不证明验收通过或 Feature 已完成。失败和后续工作按验收约定处理，实现上的修改交回已有的负责方。
 
-Durable wording follows `methodology/05-document-language.md`; writes and commits follow `agent-rules/00-core/git-worktree-and-commits.md`. When the task requires both actual acceptance and explicit permission to commit, satisfy both under **Local commits** in the Core Git rules: neither supplies the other.
+长期保存的文字按 `methodology/05-document-language.md` 书写；写入和提交按 `agent-rules/00-core/git-worktree-and-commits.md` 执行。任务同时要求实际验收和明确的提交许可时，按核心 Git 规则中的 **本地提交** 两者都要满足：任何一个都不能代替另一个。
 
-Report the actual result and evidence. Recording-only work does not advance a Stage or declare delivery complete. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+报告实际结果和证据。只做记录的工作不推进 Stage，也不宣布交付完成。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

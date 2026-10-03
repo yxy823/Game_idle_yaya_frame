@@ -1,51 +1,51 @@
-# Operational instructions and verification guides
+# 操作说明与验证指南
 
-Use this reference for project tool instructions, reproduction guides and procedures someone must carry out. A Godot scene, a gameplay sequence, a Product acceptance scenario or a Feature design is not automatically an operational guide. Keep those documents' own structure and semantics.
+本参考用于项目工具说明、复现指南，以及需要有人实际执行的流程。Godot 场景、玩法流程、Product 验收场景或 Feature 设计并不自动算作操作指南；这些文档保持它们自己的结构和含义。
 
-## Follow the reader's task
+## 跟随读者的任务
 
-Start with the operation and the conditions that make it relevant. Explain the intended result and the scope of the procedure. Choose headings and detail for this task rather than imposing a fixed section count or another stage system.
+开头写明要做的操作，以及什么情况下需要它。说明预期结果和这套流程的范围。按这项任务选择标题和细节，不强加固定的小节数量或另一套阶段体系。
 
-Place prerequisites before the first action that needs them. Distinguish an expected branch from a blocker: a user choosing a scene to inspect is a normal step; missing required sample data may block only the check that uses it. Refer to the project workflow for real authorization and acceptance conditions.
+前提条件放在第一个需要它的动作之前。区分正常分支和阻塞：用户选择要检查哪个场景是正常步骤；缺少必需的样例数据，可能只阻塞用到它的那项检查。真实的授权和验收条件，引用项目工作流。
 
-For example, instructions for checking a reopened inventory panel might need the actual entry scene, saved-state fixture, input method and state to observe. An unrelated rendering or export procedure does not need those same prerequisites. Use inspected project facts, not this example, to decide the inputs.
+例如，检查重新打开的背包面板，可能需要写明实际的入口场景、存档状态夹具、输入方式和要观察的状态。无关的渲染或导出流程不需要这些前提。用已核实的项目事实决定输入，不要照搬这个例子。
 
-Write ordered steps when one result is needed by the next action. Group independent options or conditions together. Each consequential step should make clear what the reader operates, what changes, what result to inspect and how that result affects continuation. Ordinary short actions need no separate result table.
+一步的结果被下一步需要时，写成编号步骤。彼此独立的选项或条件归在一起。每个有后果的步骤都要写清：读者操作什么、什么会改变、检查什么结果，以及这个结果如何影响是否继续。普通的简短动作不需要单独的结果表。
 
-## Describe the actual tool or editor operation
+## 描述实际的工具或编辑器操作
 
-Check the current command entry, help, configuration or editor interface before documenting it. Name the actual script, scene, menu or control; do not invent a helper because its name would make the instructions shorter. Engine-sensitive claims follow the project's version and authority rules.
+写入说明之前，先核对当前的命令入口、帮助、配置或编辑器界面。写出实际的脚本、场景、菜单或控件名称；不要为了让说明更短而虚构一个辅助工具。与引擎相关的说法遵循项目的版本与权威来源规则。
 
-Where needed to execute safely and reproduce the result, state:
+为了安全执行并复现结果，在需要时写明：
 
-- The working directory and configured executable, with user-supplied values clearly distinguished from literal arguments.
-- The specific input scene, resource, data or target being operated on.
-- Outputs and side effects, including imports, generated files or changes to user data when the actual operation has them.
-- The observable result and where failures or original evidence are recorded.
+- 工作目录和配置好的可执行文件，并把用户自己填写的值与原样输入的参数区分开。
+- 被操作的具体输入场景、资源、数据或目标。
+- 输出和副作用；实际操作会导入资源、生成文件或修改用户数据时，要写出来。
+- 可观察的结果，以及失败信息或原始证据记录在哪里。
 
-Keep commands and code identifiers exact while explaining them in `document_language`. Show only commands supported by the current project. The documentation does not authorize running them; execution stays within the user's task and the project's validation rules.
+命令和代码标识符保持原样，用 `document_language` 解释它们。只展示当前项目支持的命令。文档本身不授权运行这些命令；是否运行由用户的任务和项目的验证规则决定。
 
-For a procedure that can alter saves or fixtures, identify the data it should use and the protection already required by its owning contract. Do not present a live user save as disposable test data. Describe recovery for the actual failure cases instead of adding a generic reset or cleanup command.
+可能改动存档或夹具的流程，要写明它应使用的数据，以及所属约定已经要求的保护措施。不要把用户正在使用的真实存档当成可以随意丢弃的测试数据。针对实际会出现的失败情况描述恢复方法，不要附加一个通用的重置或清理命令。
 
-## Match claims to evidence
+## 让结论与证据相符
 
-A verification guide states what is exercised and what each observation can establish. Preserve these distinctions when writing a result:
+验证指南写明实际检查了什么，以及每项观察能证明什么。记录结果时保留下表中的区别：
 
-| Evidence | Limit on the conclusion |
+| 证据 | 结论的限度 |
 | --- | --- |
-| A scene or resource file exists | Existence does not show that it imported, loaded or behaved correctly |
-| A parser, import or headless check completed | Report that check's actual coverage; it does not establish displayed layout, interaction or listening quality |
-| A recorded test or interaction exercised a case | Name the relevant version, conditions and coverage; do not extend one case to untested states |
-| The user accepted a visual or gameplay result | Record the actual accepted scope; a screenshot, automated pass or prepared checklist does not supply that decision |
+| 场景或资源文件存在 | 文件存在不说明它已导入、能加载或行为正确 |
+| 解析、导入或 headless 检查已完成 | 报告该检查实际覆盖的内容；它不能证明显示布局、交互或听感 |
+| 记录过的测试或交互覆盖了某个用例 | 写明对应的版本、条件和覆盖范围；不要把一个用例推广到未测试的状态 |
+| 用户接受了某个视觉或玩法结果 | 记录实际接受的范围；截图、自动测试通过或准备好的清单都不能代替这个决定 |
 
-For a display claim, relevant conditions may include viewport, scaling, locale, resource and input method. For timing or stability, the workload and actual observation period may matter. Include conditions that affect the claim rather than requiring a universal evidence checklist.
+对显示效果的结论，相关条件可能包括视口、缩放、语言区域、资源和输入方式。对时序或稳定性的结论，负载和实际观察时长可能有影响。写入会影响结论的条件即可，不要求一份通用的证据清单。
 
-Expected output in a procedure is an expectation, not a report that it occurred. Keep supplied summaries separate from original evidence. Preserve failed, skipped and unavailable checks when they qualify the outcome; do not turn an old run into verification of a changed result through wording.
+流程里的预期输出只是预期，不是“已经发生”的报告。别人提供的摘要与原始证据分开保存。失败、跳过和无法执行的检查会限定结论时，要保留下来；不要靠措辞把一次旧的运行说成对已改变结果的验证。
 
-## Explain interruption and completion
+## 说明中断与完成
 
-At a blocking point, state the missing fact, resource or decision, what remains valid, and where work can resume. Preserve the project's actual distinction between a diagnostic hypothesis, a confirmed cause and a verified repair. Saving a log is not proof of locating a defect.
+在阻塞点写明：缺少哪个事实、资源或决定，哪些内容仍然有效，以及从哪里恢复工作。保留项目实际使用的区分：诊断假设、已确认的原因和已验证的修复是三回事。保存了日志不等于定位了缺陷。
 
-End with the result this operation establishes and any remaining work. A tool returning zero, a document being saved and a Feature being delivered are different events. Use the owning workflow's completion conditions without adding another approval, report format or testing gate.
+结尾写明这次操作确立了什么结果，以及还剩哪些工作。工具返回 0、文档已保存、Feature 已交付是三件不同的事。使用所属工作流的完成条件，不另加审批、报告格式或测试关卡。
 
-Check the changed instructions against their current sources and applicable project checks. Retain unverified runtime claims as gaps when they cannot be checked within the present authorization. A documentation edit does not require repeating unaffected gameplay or tool operations merely to demonstrate that the prose was reorganized.
+对照当前来源和项目适用的检查核对修改后的说明。在当前授权内无法核实的运行时说法，保留为缺口。文档修改不要求为了证明文字重新组织过，就重复执行未受影响的玩法或工具操作。

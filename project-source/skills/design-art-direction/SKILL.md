@@ -1,33 +1,33 @@
 ---
 name: design-art-direction
-description: "Define or revise a game's shared visual direction, including its art style, in the Art Bible. Use for shared art standards. Not for individual asset specifications (design-visual-asset-spec) or art review (review-art)."
+description: "在 Art Bible 中定义或修改游戏共享的视觉方向，包括美术风格。用于共享的美术标准。不用于单个资源的规格（design-visual-asset-spec），也不用于美术审核（review-art）。"
 ---
 
-# Art direction (Art Bible)
+# 美术方向（Art Bible）
 
-Follow `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. **What stays in the GDD** in that file covers moving art standards out of GDD. Read the relevant GDD experience goals, Product delivery scope, current visual direction, UI constraints and supplied references, not every game module.
+归属、授权、来源影响和定稿按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把美术标准从 GDD 中移出。阅读与本次有关的 GDD 体验目标、Product 交付范围、当前视觉方向、UI 约束和外部提供的参考，不需要读完游戏的所有模块。
 
-## Choose the direction
+## 选择方向
 
-Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. A reference's useful properties are separate from permission or ability to reproduce it.
+选择的方向要适合实际的镜头、目标显示尺寸、玩家注意力和可用的制作条件。只有重要的选择尚未确定时，才比较多个方案。参考图中值得借鉴的特征，与是否有权或有能力复现它，是两回事。
 
-## Maintain the Art Bible
+## 维护 Art Bible
 
-Keep detailed shared art standards only in `docs/art/art-bible.md`. GDD keeps intended player feelings and recognition goals and links these standards. Coordinate a change to the game's adopted overall direction with `design-gdd`. Useful topics include:
+详细的共享美术标准只写在 `docs/art/art-bible.md`。GDD 保留期望的玩家感受和辨认目标，并链接到这些标准。修改游戏已采用的整体方向时，与 `design-gdd` 协调。可以写的主题包括：
 
-- visual language and the style choices that serve the GDD's experience goals, with practical inclusion and exclusion examples;
-- silhouette, shape, palette, contrast, typography and material or detail treatment where relevant to the current game;
-- perspective, scale, animation language and visual priority across asset families;
-- applicability and observable constraints that UI and resource specifications need.
+- 视觉语言，以及服务于 GDD 体验目标的风格选择，附上实际的“采用”和“排除”示例；
+- 轮廓、形状、色板、对比度、字体，以及材质或细节处理，只写当前游戏用得上的部分；
+- 透视、比例、动画语言，以及各类资源之间的视觉优先级；
+- 适用范围，以及 UI 和资源规格需要的可观察约束。
 
-Settle only the needed decisions; there is no full-game art catalog or required variant count. Mark confirmed requirements and open choices. Reference images are not produced sample assets. Visual-art production is a reserved capability with no Skill (methodology 11 **Design, production, integration and review**).
+只确定需要的决定；不要求覆盖整款游戏的美术目录，也不要求固定数量的变体。标明已确认的要求和尚未决定的选择。参考图不是已制作的示例资源。视觉美术制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。
 
-## Hand off
+## 交接
 
-- Concrete file specifications go to `design-visual-asset-spec`. When **Resource requirements and handoff** in `methodology/11-specialist-workflows.md` selects the Art Bible, that Skill maintains the Bible's **Shared resource specifications** section; this Skill maintains the style standards those entries reference.
-- Interface presentation goes to `design-ui-spec`. Effects on planned work use the change routes under **Writing and adoption** in methodology 11.
-- Formal evaluation uses a separate `review-art` instance; this Skill does not approve its own design.
+- 具体文件的规格交给 `design-visual-asset-spec`。当 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Art Bible 时，由那个 Skill 维护 Art Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的风格标准。
+- 界面表现交给 `design-ui-spec`。对已规划工作的影响，按 methodology 11 的 **编写与采纳** 中的变更路径处理。
+- 正式评估使用另一个 `review-art` 实例；本 Skill 不批准自己的设计。
 
-Return the maintained source, decisions and gaps.
+返回维护后的来源文件、决定和缺口。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

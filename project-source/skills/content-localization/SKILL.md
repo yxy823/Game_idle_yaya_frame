@@ -1,30 +1,30 @@
 ---
 name: content-localization
-description: "Implement translation resources and locale support against the approved localization specification in an authorized Godot task. Use for runtime translation and locale work. Not for language coverage or convention design (design-localization-spec) or independent review (review-localization)."
+description: "在已授权的 Godot 任务中，按已批准的本地化规范实现翻译资源和语言支持。用于运行时翻译和语言区域相关的工作。不用于设计语言覆盖或翻译惯例（design-localization-spec），也不用于独立审核（review-localization）。"
 ---
 
-# Localization implementation
+# 本地化实现
 
-Follow `methodology/11-specialist-workflows.md`. Read the approved `docs/localization/localization-spec.md`, including its **Term translations** section (methodology 11 **Localization term translations**). Also read relevant domain definitions, supplied translations and the current implementation.
+按 `methodology/11-specialist-workflows.md` 执行。阅读已批准的 `docs/localization/localization-spec.md`，包括其中的 **术语译名** 章节（methodology 11 的 **本地化术语译名**）。同时阅读本次涉及的领域定义、外部提供的译文和当前实现。
 
-Take target locales, source language and intended coverage from those confirmed decisions. `document_language` governs project documentation and does not set them.
+目标语言、源语言和计划覆盖范围，以这些已确认的决定为准。`document_language` 只决定项目文档的语言，不决定这些内容。
 
-Missing or changed language requirements return to `design-localization-spec` before dependent implementation. Preserve approved domain meanings and game rules. Unconfirmed translations remain drafts; implementation authorization does not decide disputed wording or language experience.
+语言要求缺失或发生变化时，先回到 `design-localization-spec` 处理，再做依赖它的实现。保留已批准的领域含义和游戏规则。未确认的译文仍是草稿；实现授权不能裁定有争议的用词或语言体验。
 
-## Implement
+## 实现
 
-Work in the owning authorized Feature or experiment.
+在所属的已授权 Feature 或实验中工作。
 
-- Inspect the project's Godot translation mechanism and its version-specific API before choosing file formats or changing it.
-- Preserve stable keys and placeholders, and keep translatable text separate from code.
-- Cover runtime-created text and the in-scope error and empty states.
-- Keep complete translated strings in runtime resources, applying the approved term wording. Do not create a second Markdown catalog of sentences or dialogue.
-- Check character and font coverage, fallback, long strings, numbers and dates, input labels and RTL only for applicable locales.
+- 选择文件格式或修改翻译机制之前，先检查项目使用的 Godot 翻译机制及其在当前版本中的 API。
+- 保持键名和占位符稳定，把可翻译文本与代码分开。
+- 覆盖运行时生成的文本，以及本次范围内的错误状态和空状态。
+- 完整的译文句子保存在运行时资源中，并使用已批准的术语译名。不要另建一份保存句子或对话的 Markdown 目录。
+- 字符与字体覆盖、回退、长文本、数字和日期、输入提示标签以及从右到左排版（RTL），只针对需要的语言检查。
 
-## Validate and return
+## 验证与返回
 
-Validate extraction or import and representative locale switching in actual display conditions. Describe the covered locales and screens. Mechanical completeness does not prove natural wording or cultural suitability. Escalate material ambiguities to the source owner.
+在实际显示条件下，验证文本提取或导入，以及有代表性的语言切换。写明覆盖了哪些语言和界面。机械上的完整不能证明用词自然或符合文化习惯。重大的歧义交给来源的负责方处理。
 
-Before final verification, finalize implementation and translation changes, and obtain any required specification changes from their owner. Return changed sources, resources and gaps. A separate `review-localization` instance audits the result; this Skill does not supply human acceptance of language or experience.
+在最终验证之前，完成实现和译文的修改；需要修改规范时，由规范的负责方完成。返回修改过的来源、资源和缺口。结果由另一个 `review-localization` 实例审核；本 Skill 不提供语言或体验方面的人工验收。
 
-Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
+返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

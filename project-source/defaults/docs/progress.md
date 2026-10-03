@@ -1,21 +1,21 @@
-# Project progress
+# 项目进度
 
-> Current handoff only. This document does not imply any approval or human acceptance. Detailed plans, decisions and evidence belong in their authoritative files; link them here. History bodies live under `progress/`.
+> 只记录当前的交接状态。本文档不代表任何批准或人工验收。详细的计划、决定和证据保存在各自的权威文件中，这里只放链接。历史正文放在 `progress/` 下。
 
-## Current state
+## 当前状态
 
-No active Feature. When work begins, record the current Feature or approved batch, its Stage and links to its approved test plan and current evidence.
+没有进行中的 Feature。开始工作后，记录当前的 Feature 或已批准的批次、所处的 Stage，以及指向其已批准测试计划和当前证据的链接。
 
-## Blockers
+## 阻塞
 
-None recorded.
+暂无记录。
 
-## Pending decisions
+## 待决定事项
 
-None recorded.
+暂无记录。
 
-## Next allowed action
+## 下一个允许的动作
 
-Follow the user's current request. To create or develop game design, use `design-gdd` with the available idea or material, and keep discussion-only or draft-writing boundaries. Delivery planning and implementation require substantive current-scope design under `docs/gdd/`; if it is missing, explain that prerequisite and the design route. Prepare the project environment before implementation.
+按用户当前的请求执行。要创建或推进游戏设计，用手头的想法或材料使用 `design-gdd`，并保持“只讨论”或“只写草稿”的边界。交付规划和实现需要 `docs/gdd/` 中有覆盖当前范围的实质设计；缺少时，说明这一前提和进入设计的路径。实现之前先准备项目环境。
 
-## History index
+## 历史索引

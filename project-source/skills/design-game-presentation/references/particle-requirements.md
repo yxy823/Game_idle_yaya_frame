@@ -1,18 +1,18 @@
-# Standardizing particle presentation requirements
+# 粒子表现需求的标准化
 
-Describe how the population appears and evolves. Split components when they need materially different lifetimes, spatial behavior or independent control; do not create a subsystem for every visual adjective.
+描述粒子群怎样出现和变化。组成部分需要明显不同的生命周期、空间行为或独立控制时，才拆成多个组件；不要为每个视觉形容词建一个子系统。
 
-| Topic | Useful requirement description |
+| 主题 | 有用的需求描述 |
 | --- | --- |
-| Emission and duration | Distinguish an almost simultaneous burst, a short visible emission window and continuous emission. Separate emitter duration from individual particle lifetime and the visible tail after emission stops. |
-| Population and motion | State perceived density, spread, direction, speed evolution and size/color/opacity changes as meaningful targets. Exact counts and values can remain proposed until a constraint or trial justifies them. |
-| Space and following | Identify origin/region, local versus world relationship, direction reference, whether already-born particles follow the source, and whether a moving target is tracked continuously or captured at trigger time. |
-| Repetition and external control | What triggers, pauses, scales or stops emission? On retrigger, does the effect restart, overlap or continue? On cancellation, do existing particles disappear or finish their tails? |
-| Rendering and dependencies | Identify visible shape, texture/frame needs, layering, transparency and overlap readability. Put resource specs in this alternative and link shared assets to their owner. |
-| Workload and reproducibility | If material, state expected simultaneous instances, visible density or a reproducibility requirement. Leave simulation rate, seed and GPU/custom processing choices to implementation unless the requirement actually fixes them. |
+| 发射与持续时间 | 区分几乎同时的一次爆发、短暂可见的发射窗口和持续发射。把发射器的持续时间、单个粒子的生命周期、停止发射后仍可见的尾迹分开写。 |
+| 数量与运动 | 把感知到的密度、扩散范围、方向、速度变化，以及大小、颜色、透明度的变化写成有意义的目标。具体数量和数值可以保持为建议值，直到有约束或试验结果支撑。 |
+| 空间与跟随 | 写明起点或区域、局部坐标还是世界坐标、方向参照、已发射的粒子是否跟随发射源，以及移动目标是持续追踪还是在触发时记下位置。 |
+| 重复与外部控制 | 什么会触发、暂停、缩放或停止发射？再次触发时，效果是重新开始、叠加还是继续？取消时，已有的粒子是立即消失还是播完尾迹？ |
+| 渲染与依赖 | 写明可见的形状、纹理或帧动画需求、层级、透明度和重叠时的可读性。资源规格写在这个备选方案中；共享资源链接到它的所属位置。 |
+| 负载与可复现性 | 如果有影响，写明预计同时存在的实例数、可见密度或可复现性要求。模拟速率、随机种子以及 GPU 或自定义处理的选择交给实现决定，除非需求确实固定了它们。 |
 
-Example: “角色跑动时脚下冒灰，停下就消失” leaves two decisions unresolved: does stopping end new emission while existing dust fades, or remove all dust immediately; and does emitted dust stay on the ground while the character moves away? Resolve the decisions that affect the intended result without demanding all engine parameters.
+例如“角色跑动时脚下冒灰，停下就消失”还有两个决定没有确定：停下时是停止产生新的灰尘、已有的灰尘慢慢消散，还是立刻清除全部灰尘；角色离开后，已经冒出的灰尘是否留在原地？解决影响预期结果的决定即可，不要求写出全部引擎参数。
 
-For sparks around a dissolving object, the surface dissolve and detached particles can share an external progress or trigger while keeping different lifetimes. Specify that relationship and the relevant cancellation behavior; their algorithms and node organization remain implementation work.
+物体溶解时周围冒出火花，表面溶解和脱离的粒子可以共用一个外部进度或触发条件，同时保持各自的生命周期。写清这种关系和需要的取消行为；它们的算法和节点组织仍属于实现工作。
 
-Prefer suitable built-in materials and current project capabilities when they meet the semantics. Do not mandate a handwritten particle Shader, a CPU/GPU choice, or a separate Shader conversation during planning. A texture that has not arrived is an explicit dependency of that candidate, not a reason to stop defining its motion or to claim the final effect has been evaluated.
+内置材质和项目现有能力能满足语义时，优先使用它们。规划阶段不要强制要求手写粒子 Shader、指定 CPU 或 GPU，或另开一个 Shader 讨论。尚未到位的纹理是该候选方案的明确依赖；它不是停止定义运动的理由，也不能据此声称最终效果已经评估过。

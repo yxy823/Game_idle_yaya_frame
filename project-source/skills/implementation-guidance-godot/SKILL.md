@@ -1,36 +1,48 @@
 ---
 name: implementation-guidance-godot
-description: Prepare or update source-linked implementation guidance for an existing Godot Feature, including engineering Features. Covers constraints, design, necessary dependency order and verification reasoning; does not implement the Feature or create one for work without a Feature.
+description: 为已有的 Godot Feature（包括工程 Feature）准备或更新附带来源链接的实施指导，内容包括约束、设计、必要的依赖顺序和验证思路。不实现 Feature，也不为没有 Feature 的工作新建 Feature。
 ---
 
-# Prepare Godot Feature implementation guidance
+# 准备 Godot Feature 的实施指导
 
-Use this method when implementation guidance is needed for an existing Feature. Apply the Feature's current scope, decisions and authorization. Work without a Feature is outside this entry; return to its existing task rather than creating a Feature to obtain guidance. A simple implementation can continue through its normal owner without this method.
+已有 Feature 需要实施指导时使用本方法。沿用该 Feature 当前的范围、决定和授权。没有 Feature 的工作不走这个入口：回到它原本的任务处理，不为了拿到指导而新建 Feature。简单的实现可以照常由原负责方继续，不必经过本方法。
 
-Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links and fixed file location, and Stages 1C, 2 and 3 in `methodology/03-execute-loop.md` for when the design is proposed, approved, saved and kept aligned. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
+代码格式中的路径相对目标项目根目录。按下列文件阅读：
 
-When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md).
+- 指导内容、相对来源链接和固定文件位置：`methodology/02-feature-list-schema.md` 的 **Feature 设计与实现说明**。
+- 设计何时提出、批准、保存并保持一致：`methodology/03-execute-loop.md` 的 Stage 1C、2 和 3。
+- 读取来源和判断指导是否过时：`methodology/04-project-rules.md` 的 **按事先准备的指导实现**。
 
-## Choose who prepares the guidance
+细节以这些约定为准；不另建指南、草稿文件、台账或状态格式。
 
-The main Agent may use this method itself. Delegate only when the current task prompt or still-valid session authorization explicitly requests an implementation advisor. Loading this Skill, a complex Feature or a request for detailed guidance does not by itself request delegation. Otherwise the main Agent prepares the needed design through the existing Feature workflow.
+选择 Shader 方案、数据流或渲染取舍时，阅读 [Shader 实现方法](references/shader-implementation-methods.md) 中与当前问题有关的小节。
 
-When delegation is explicitly requested, use `.codex/agents/implementation-advisor.toml` with its configured model and reasoning effort. Verify that the host can actually select that role and those settings; a role file alone does not prove they took effect. Provide the actual project/checkout, existing Feature, goal, known source paths, relevant Git state and uncommitted changes, approved decisions, unresolved questions and the assignment's permissions. Let the advisor inspect the necessary background instead of reading it all twice to prepare the handoff.
+## 决定由谁准备指导
 
-If the advisor cannot start, its configured model or reasoning effort is unavailable, or its execution fails, stop this guidance assignment and the implementation or other work that depends on it. Preserve existing materials and report the actual cause, completed work and what remains. Do not switch models, silently retry with different settings or let the main Agent take over the failed assignment. A later user decision may change that scope; existing implementation authorization is not a fallback authorization.
+主 Agent 可以自己使用本方法。只有当前任务提示词或仍然有效的会话授权明确要求实施顾问时，才委派。加载本 Skill、Feature 比较复杂或用户要求详细指导，本身都不算要求委派。不委派时，由主 Agent 在已有的 Feature 流程里准备所需设计。
 
-## Prepare the proposal and resolve material questions
+明确要求委派时，使用 `.codex/agents/implementation-advisor.toml`，并采用其中配置的模型和推理强度。确认宿主确实能选用这个角色和这些设置；只有角色文件，不能证明设置已经生效。向顾问提供：
 
-Follow the project's rule routes and the existing design contract. Establish the current implementation, interfaces and real consumers, then explain how applicable constraints shape this Feature's design and validation. Use the [shared questioning method](../project-grill-me/SKILL.md#shared-questioning-method) only for material missing decisions. Keep ordinary implementation details open to the implementing Agent rather than prescribing every function or edit.
+- 实际的项目和工作目录、已有的 Feature 和目标。
+- 已知的源文件路径、与任务有关的 Git 状态和未提交改动。
+- 已批准的决定、未解决的问题，以及这次委派的权限。
 
-A delegated advisor returns numbered questions with A/B-style choices, a recommendation and relevant tradeoffs, allowing a custom answer. The main Agent presents these questions in the current conversation's visible message body, not only in a question widget, and passes the user's answers back to the same advisor. Do not depend on direct interaction in a child-thread UI or start a new advisor for every answer. Reuse confirmed decisions; do not ask when the existing facts and authority already settle the question.
+必要的背景让顾问自己查看，主 Agent 不必为了交接先把背景全部读一遍。
 
-During the guidance assignment, inspect files, permitted read-only Git state and relevant external sources; plan verification without running Godot, imports, tests, prototypes or other experiments. The advisor does not edit business code, game requirements, Feature JSON, Registry, task state or acceptance, and does not commit or delegate again. Its only write exception is the assigned, approved Feature design under the lifecycle below. Missing runtime evidence remains a named verification need, not a fabricated observation.
+顾问无法启动、所配置的模型或推理强度不可用，或执行失败时，停止这次指导任务，以及依赖它的实现或其他工作。保留已有材料，报告真实原因、已完成的工作和剩余工作。不切换模型，不悄悄换设置重试，也不由主 Agent 接手失败的任务。之后用户可以另作决定、改变这个范围；已有的实现授权不能当作兜底授权。
 
-## Return guidance to the existing Feature
+## 准备方案并解决关键问题
 
-Return the reviewable proposal and genuinely missing decisions to the main Agent. After the existing approval covers the design, the same delegated advisor may save only the assigned `docs/features/F0XX-design.md` under Stage 2 of methodology 03, keeping the guidance-only boundary in methodology 02. The main Agent checks the result and owns any authorized Feature notes link, record updates and commits. Do not request the same approval again or use a saved file as proof of approval.
+遵循项目的规则路由和已有的设计约定。先弄清当前实现、接口和真实的使用方，再说明哪些约束如何影响这个 Feature 的设计和验证。只有缺少关键决定时，才使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。普通实现细节留给实现 Agent 决定，不规定每个函数或每处修改。
 
-The main Agent implements under [Implementing with prepared guidance](../../../methodology/04-project-rules.md#implementing-with-prepared-guidance). Consult the advisor again only within the existing explicit delegation scope.
+委派的顾问返回带编号的问题。每个问题给出 A/B 式选项、推荐项和主要取舍，并允许用户自定义回答。主 Agent 把这些问题写在当前对话可见的消息正文里，不只放在提问控件中，再把用户的回答交回同一个顾问。不依赖子线程界面里的直接交互，也不为每个回答新开一个顾问。复用已确认的决定；已有事实和授权已经能回答的问题，不再询问。
 
-Guidance-only work ends with its requested result; an authorized implementation continues in [feature-execute](../feature-execute/SKILL.md) at its current Stage. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**). The advisor's check of a design it helped author is not independent review. A requested formal review keeps the separate fresh-instance contract in `methodology/12-independent-review.md`.
+指导任务期间，可以查看文件、允许范围内的只读 Git 状态和与问题有关的外部资料；可以规划验证，但不运行 Godot、导入、测试、原型或其他实验。顾问不修改业务代码、游戏需求、Feature JSON、测试登记表、任务状态或验收，不提交，也不再委派。唯一的写入例外是下文生命周期中分配给它、且已批准的 Feature 设计。缺少的运行证据仍写成待完成的具体验证需求，不编造观察结果。
+
+## 把指导交回已有的 Feature
+
+把可供审阅的方案和确实缺少的决定交回主 Agent。已有批准覆盖该设计后，同一个委派顾问只能按 methodology 03 的 Stage 2 保存分配给它的 `docs/features/F0XX-design.md`，并遵守 methodology 02 中“只写指导”的边界。主 Agent 检查结果，并负责已获授权的 Feature notes 链接、记录更新和提交。不重复请求同一项批准，也不把已保存的文件当作已批准的证明。
+
+主 Agent 按 [按事先准备的指导实现](../../../methodology/04-project-rules.md#按事先准备的指导实现) 实现。只在已有的明确委派范围内再次咨询顾问。
+
+只要求指导的工作，交付所要求的结果后结束；已获授权的实现在 [feature-execute](../feature-execute/SKILL.md) 的当前 Stage 继续。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。顾问检查自己参与编写的设计，不算独立审核。用户要求正式审核时，仍按 `methodology/12-independent-review.md` 中另起新实例的约定执行。

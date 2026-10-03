@@ -34,7 +34,7 @@ tools/
 
 ## 首次 Godot 扫描
 
-适用条件见[环境配置约定](../methodology/06-project-environment.md#project-environment-bootstrap)。在已获准的首次 CLI 测试或项目脚本运行前，尚未由编辑器扫描的新项目可在项目根目录执行：
+适用条件见[环境配置约定](../methodology/06-project-environment.md#项目环境准备)。在已获准的首次 CLI 测试或项目脚本运行前，尚未由编辑器扫描的新项目可在项目根目录执行：
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json

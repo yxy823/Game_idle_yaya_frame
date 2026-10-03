@@ -1,135 +1,134 @@
-# 05 · Document language
+# 05 · 文档语言
 
-> This document defines which language each kind of project text uses. It keeps machine protocol values unlocalized and does not duplicate the workflow sources.
+> 本文规定项目里各类文字使用哪种语言。机器协议的值不本地化；本文不重复各流程来源的正文。
 
-## 1. Two language contexts
+## 1. 对话语言与文档语言
 
-The project separates two concepts:
+项目区分两个概念：
 
-- **Conversation language** is the language currently used between the user and the Agent. It belongs to the session and is not saved in the project.
-- **Document language** is the language of human-readable project documents. It is saved in the project and stays the same across sessions.
+- **对话语言**是用户与 Agent 当前交流使用的语言。它属于会话，不保存在项目里。
+- **文档语言**是项目中供人阅读的文档所用的语言。它保存在项目里，跨会话保持不变。
 
-Changing the conversation language does not change the language of project documents.
+切换对话语言不会改变项目文档的语言。
 
-## 2. Configuration contract
+## 2. 配置约定
 
-`docs/methodology-config.json` stores the document language in `document_language`. The same file stores the tool paths described in [06 · Project environment](06-project-environment.md); a language change keeps those settings unchanged.
+`docs/methodology-config.json` 用 `document_language` 字段保存文档语言。同一个文件还保存 [06 · 项目环境](06-project-environment.md)中说明的工具路径；修改语言时，这些设置保持不变。
 
-The value is a [BCP 47 language tag](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1). Verified values are:
+取值是一个 [BCP 47 语言标签](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1)。已验证的取值：
 
-- `en` for English
-- `zh-CN` for Simplified Chinese
+- `en`：英语
+- `zh-CN`：简体中文
 
-Other well-formed BCP 47 tags may be used on a best-effort basis. The Agent states that they are not covered by the verified language examples.
+其他格式正确的 BCP 47 标签可以尽力支持。使用时，Agent 要说明它们不在已验证的语言示例范围内。
 
-- Use conventional casing: lowercase language, title-case script and uppercase region.
-- Preserve the configured value as written; do not normalize it.
-- Empty values, whitespace and underscore forms such as `zh_CN` are invalid. Report the configuration error and resolve the intended valid tag before writing.
-- Private-use, grandfathered and other unusual tags are best-effort, not verified. Ask only if the user's intended language is unclear.
+- 按惯例书写大小写：语言小写，书写系统首字母大写，地区大写。
+- 按原样保留配置值，不做规范化。
+- 空值、空白字符和 `zh_CN` 这类下划线写法都无效。报告配置错误，确定用户想用的有效标签后再写入。
+- 私用标签、历史保留标签和其他少见标签只尽力支持，不算已验证。只有在用户想要的语言不清楚时才询问。
 
-The environment checker screens the form of the tag only:
+环境检查器只筛查标签的形式：
 
-- the primary subtag is two to eight ASCII letters, or an `i` or `x` prefix followed by subtags;
-- hyphen-separated subtags contain one to eight ASCII letters or digits;
-- whitespace, underscores and empty or overlong subtags are rejected, and the value is not normalized.
+- 主子标签是 2 到 8 个 ASCII 字母，或是 `i`、`x` 前缀后接子标签；
+- 用连字符分隔的子标签由 1 到 8 个 ASCII 字母或数字组成；
+- 拒绝空白字符、下划线、空子标签和过长的子标签，不对取值做规范化。
 
-The checker does not validate full BCP 47 subtag ordering or registry membership, and it does not choose a language. The Agent judges unusual tags and applies the configured language.
+检查器不验证完整的 BCP 47 子标签顺序，也不检查标签是否在注册表中，更不替用户选择语言。少见标签由 Agent 判断，并按配置的语言写作。
 
-## 3. Language selection
+## 3. 选择语言
 
-New projects use Simplified Chinese (`zh-CN`). The project creator writes this value into `docs/methodology-config.json`.
+新项目使用简体中文（`zh-CN`）。项目创建器把这个值写进 `docs/methodology-config.json`。
 
-- Read `document_language` before writing GDD, Product or Feature content. For a new project, keep `zh-CN` without asking the user to confirm it.
-- If the user explicitly asks for another document language before substantive content exists, save its valid BCP 47 tag and use it directly. That request needs no second confirmation. This also applies to an initial GDD draft and does not need Environment Bootstrap, a Godot run or a GDD.
-- For an established project, keep its configured language. A requested change follows [§9](#9-changing-an-established-document-language).
-- Reuse still-valid explicit decisions across Skills and sessions.
+- 写 GDD、Product 或 Feature 内容之前，先读取 `document_language`。新项目保持 `zh-CN`，不要求用户确认。
+- 用户在实质内容出现之前明确要求使用另一种文档语言时，保存对应的有效 BCP 47 标签并直接使用，不需要二次确认。这也适用于 GDD 的初稿，不需要先做项目环境准备、运行 Godot 或已有 GDD。
+- 已确立的项目保持其配置的语言。要求更改时按 [§9](#9-修改已确立项目的文档语言) 处理。
+- 仍然有效的明确决定在不同 Skill 和会话之间复用。
 
-Conversation language, country, IP address, timezone, operating-system locale and account location do not override the configured value. Ask only when an explicit request is ambiguous or conflicts with the current document scope. Do not turn the default into a recurring approval step.
+对话语言、国家、IP 地址、时区、操作系统区域设置和账号所在地，都不能覆盖配置值。只有明确的请求含义不清，或与当前文档范围冲突时才询问。不要把默认值变成反复审批的步骤。
 
-## 4. Content written in document_language
+## 4. 按 document_language 书写的内容
 
-The following human-readable project content uses `document_language`:
+下列供人阅读的项目内容使用 `document_language`：
 
-- authorized initial GDD drafts, additions or edits to GDD prose, Product delivery headings and prose, and professional specifications;
-- Feature titles, descriptions, acceptance criteria and human-readable source annotations;
-- Feature notes and revision-log explanations;
-- current Progress, linked execution archives, implementation decisions and saved handoff records;
-- project-specific prose added to generated documents.
+- 已获授权的 GDD 初稿、对 GDD 正文的新增或编辑、Product 交付的标题与正文，以及专业规范；
+- Feature 的标题、描述、验收条件和供人阅读的来源注释；
+- Feature notes 和修订记录中的说明；
+- 当前 Progress、链接的执行归档、实现决定和保存下来的交接记录；
+- 在生成的文档中新增的项目专属正文。
 
-The initial files contain purpose statements and directory navigation. They are not Product content. When adding actual project content to them, write in `document_language`; copying a file translates nothing.
+初始文件只包含用途说明和目录导航，不是 Product 内容。往其中加入实际项目内容时，用 `document_language` 写；复制文件本身不会翻译任何内容。
 
-Read `docs/progress.md` as the current state and history index, then load only the linked Feature or batch archive the task needs. New archives under `docs/progress/` use `document_language`; earlier history keeps its original language. Moving history keeps the original text and evidence links. Do not translate history or copy it into both Progress and Feature notes during archiving.
+把 `docs/progress.md` 当作当前状态和历史索引来读，只加载任务需要的那个 Feature 或批次归档。`docs/progress/` 下的新归档使用 `document_language`；之前的历史保留原来的语言。移动历史时保留原文和证据链接。归档时不翻译历史，也不把它同时复制到 Progress 和 Feature notes 里。
 
-Questions, explanations, reports and verification instructions shown to the user follow the current conversation language. This includes handoff and continuation prompts and their headings. Such text uses `document_language` only when it is also saved into a project document.
+展示给用户的提问、解释、报告和验证说明使用当前对话语言，包括交接与续接提示词及其标题。这类文字只有同时保存进项目文档时，才使用 `document_language`。
 
-Quoted interface text, proper nouns, code samples and external references may contain another language. A language check does not reject content only because some characters or examples use a different script.
+引用的界面文字、专有名词、代码示例和外部参考可以包含其他语言。语言检查不能仅因部分字符或示例使用了不同的书写系统就拒绝内容。
 
-## 5. Stable protocol elements
+## 5. 稳定的协议元素
 
-The following elements stay English or language-neutral in every project:
+下列元素在每个项目中都保持英文或与语言无关：
 
-- JSON keys and schema structure
-- Feature IDs such as `F009`
-- status values such as `pending`, `in_progress` and `done`
-- scope values such as `small`, `medium` and `large`
-- repository paths, structural filenames and ASCII slugs
-- Skill names and public command names
-- Conventional Commit types such as `feat`, `fix` and `docs`
-- placeholder prefixes such as `_placeholder_`
-- review severity values `must_fix`, `suggest` and `acceptable`
-- keys and status values in `docs/feature-completion-evidence.json`; its human-readable summaries follow the conversation language
-- test IDs (`F0XX-ACyy`, `F0XX-RTyy`, `INV-<DOMAIN>-NN`), component IDs, test kinds and status values, and Test Registry keys
-- ISO 8601 timestamps and programming-language identifiers
+- JSON 键和 schema 结构
+- Feature ID，例如 `F009`
+- 状态值，例如 `pending`、`in_progress` 和 `done`
+- 规模值，例如 `small`、`medium` 和 `large`
+- 仓库路径、结构性文件名和 ASCII slug
+- Skill 名称和公开的命令名
+- Conventional Commit 类型，例如 `feat`、`fix` 和 `docs`
+- 占位前缀，例如 `_placeholder_`
+- 审核严重程度值 `must_fix`、`suggest` 和 `acceptable`
+- `docs/feature-completion-evidence.json` 中的键和状态值；其中供人阅读的摘要使用对话语言
+- 测试 ID（`F0XX-ACyy`、`F0XX-RTyy`、`INV-<DOMAIN>-NN`）、组件 ID、测试种类与状态值，以及测试登记表（Registry）的键
+- ISO 8601 时间戳和编程语言标识符
 
-Translate meaning-bearing prose only. Keys, enum values, IDs, evidence strings, paths and identifiers stay unchanged.
+只翻译承载含义的正文。键、枚举值、ID、证据字符串、路径和标识符保持不变。
 
-## 6. Language of project files
+## 6. 项目文件的语言
 
-Each kind of file has one language:
+每类文件只有一种语言：
 
-| Files | Language |
+| 文件 | 语言 |
 | --- | --- |
-| Agent-read sources: `methodology/` (including `methodology/templates/`), `agent-rules/`, `.agents/skills/` and `.codex/agents/*.toml` | English, one canonical version |
-| Human-facing entries: `README.md`, `tools/README.md`, the `asset_workbench/` documents and component READMEs | Chinese |
-| `AGENTS.md` | English, except the **沟通与交付** and **使用说明的可读性** sections shared with the framework, which are Chinese |
-| Project documents under `docs/` | `document_language` |
+| 分发给项目的规范、Skill、模板、角色配置和说明：`methodology/`（含 `methodology/templates/`）、`agent-rules/`、`.agents/skills/`、`.codex/agents/*.toml`、`AGENTS.md`、`README.md`、`tools/README.md`、`asset_workbench/` 下的文档和组件 README | 中文 |
+| 机器协议：字段名、枚举值、ID、路径、命令和工具输出 | 英文，按 [§5](#5-稳定的协议元素) 保持不变 |
+| `docs/` 下的项目文档 | `document_language` |
 
-Most initial files under `docs/` are written in the default `zh-CN`. `docs/progress.md`, `docs/project-rules.md` and the `docs/knowledge/` READMEs start as English sources. Translate them only within an approved scope under [§8](#8-content-in-another-language).
+`docs/` 下的初始文件按默认的 `zh-CN` 写成。`document_language` 不是中文时，只在 [§8](#8-其他语言写成的内容) 的已批准范围内翻译这些文件。
 
-Task prompts written by the user may use the conversation language. Their language does not change the language of these sources or the configured `document_language`.
+用户写的任务提示词可以使用对话语言。提示词的语言不改变上述文件的语言，也不改变配置的 `document_language`。
 
-Do not create parallel trees such as `methodology.zh-CN/`, localized Skill bodies or translated rule libraries. A human-facing entry may have an explicitly approved translation, such as `README.zh-CN.md`; such a translation is not a workflow source.
+不要建立 `methodology.en/` 这类并行目录、本地化的 Skill 正文或翻译版规则库。面向人的入口可以有经明确批准的译本，例如 `README.en.md`；译本不是流程来源。
 
-When rendering an English template into another document language, keep every required section and its meaning. Rendering does not weaken, omit or reinterpret workflow requirements.
+模板以中文写成。`document_language` 不是中文时，Agent 按 [§4](#4-按-document_language-书写的内容) 把模板的标题与说明渲染成该语言，机器键保持不变。渲染时保留每个必需的小节及其含义，不削弱、省略或重新解释流程要求。
 
-## 7. Missing configuration is an error
+## 7. 缺少配置属于错误
 
-The project creator supplies `docs/methodology-config.json` with `document_language`. A missing file or field is a project-file error, not a separate project mode. Report it and fix the configuration before writing project documents. Do not guess the value from Product files or create a migration record.
+项目创建器提供带 `document_language` 的 `docs/methodology-config.json`。缺少这个文件或字段属于项目文件错误，不是另一种项目模式。先报告并修好配置，再写项目文档。不要根据 Product 文件猜测取值，也不要创建迁移记录。
 
-## 8. Content in another language
+## 8. 其他语言写成的内容
 
-New content uses the configured `document_language`. Text already written in another language does not change that setting. Translate existing sections only within an explicitly approved scope. Keep completed Features and revision records as they are unless their translation is also authorized.
+新内容使用配置的 `document_language`。已经用其他语言写成的文字不改变这个设置。只在明确批准的范围内翻译已有小节。已完成的 Feature 和修订记录保持原样，除非对它们的翻译也获得了授权。
 
-## 9. Changing an established document language
+## 9. 修改已确立项目的文档语言
 
-Editing the configuration field alone does not migrate a project's language. When the user explicitly asks for a different document language, give a scoped migration plan covering at least:
+只修改配置字段不会迁移项目的语言。用户明确要求换一种文档语言时，给出一份限定范围的迁移计划，至少包括：
 
-- active GDD, Product and professional documents and their headings;
-- natural-language fields of pending and in-progress Features;
-- current Progress state and links; historical archives are excluded unless explicitly approved;
-- source anchors and links affected by translated headings;
-- verification that machine protocol values stay unchanged.
+- 活动中的 GDD、Product 和专业文档及其标题；
+- 待开始和进行中 Feature 的自然语言字段；
+- 当前 Progress 的状态和链接；历史归档不在范围内，除非明确批准；
+- 受标题翻译影响的来源锚点和链接；
+- 验证机器协议的值保持不变。
 
-Do not start this migration only because the user changes the conversation language. Established projects are never translated automatically.
+不要仅因用户换了对话语言就开始这项迁移。已确立的项目从不自动翻译。
 
-## 10. Workflow obligations
+## 10. 工作流程的义务
 
-Every workflow that creates or updates project documents:
+每个创建或更新项目文档的流程都要：
 
-1. Reads `docs/methodology-config.json` before writing.
-2. Treats a missing file or missing `document_language` as an error under [§7](#7-missing-configuration-is-an-error).
-3. Writes human-readable content in `document_language`.
-4. Keeps the stable protocol elements in [§5](#5-stable-protocol-elements) unchanged.
-5. Stops and asks when an edit would start an unapproved language migration.
+1. 写入前读取 `docs/methodology-config.json`。
+2. 缺少该文件或 `document_language` 时，按 [§7](#7-缺少配置属于错误) 当作错误处理。
+3. 用 `document_language` 书写供人阅读的内容。
+4. 保持 [§5](#5-稳定的协议元素) 中的稳定协议元素不变。
+5. 编辑会开启未经批准的语言迁移时，停下来询问。
 
-These obligations apply to every Skill and to prompts used without a Skill.
+这些义务适用于每个 Skill，也适用于不经 Skill 直接使用的提示词。

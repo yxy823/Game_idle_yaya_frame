@@ -1,12 +1,12 @@
-# 41 Export Configuration Rules
+# 41 导出配置规则
 
-Covers `export_presets.cfg`, export targets, packaging filters, custom export features, the boundary for signing and secrets, `EditorExportPlugin` behavior and actual export validation. Runtime settings in `project.godot` remain under `40-project-config`.
+覆盖 `export_presets.cfg`、导出目标、打包过滤器、自定义导出 feature、签名与密钥的边界、`EditorExportPlugin` 的行为，以及实际导出验证。`project.godot` 中的运行时设置仍归 `40-project-config`。
 
-| Document | Read when |
+| 文档 | 何时阅读 |
 | --- | --- |
-| `presets-and-targets.md` | Adding or changing export presets, output paths, build modes, templates or target identity |
-| `resources-and-filters.md` | Changing export resource selection or filters, raw runtime files, dedicated-server exports or the isolation of test and editor addons |
-| `features-and-overrides.md` | Adding, renaming or reading custom export features, or reading preset-specific ProjectSettings |
-| `export-plugins-and-hooks.md` | Writing or changing an `EditorExportPlugin` |
-| `secrets-and-signing.md` | Handling export credentials, signing or notarization |
-| `validation.md` | Any export configuration change: determine its applicable validation |
+| `presets-and-targets.md` | 新增或修改导出预设、输出路径、构建模式、模板或目标身份 |
+| `resources-and-filters.md` | 修改导出资源的选择或过滤器、运行时读取的原始文件、专用服务器导出，或测试与编辑器插件的隔离 |
+| `features-and-overrides.md` | 新增、重命名或读取自定义导出 feature，或读取某个预设下的 ProjectSettings |
+| `export-plugins-and-hooks.md` | 编写或修改 `EditorExportPlugin` |
+| `secrets-and-signing.md` | 处理导出凭据、签名或公证 |
+| `validation.md` | 任何导出配置修改：确定需要做哪些验证 |

@@ -1,53 +1,53 @@
-# Shader implementation methods
+# Shader 实现方法
 
-Use this reference when a Shader approach, data flow or rendering tradeoff needs reasoning. A parameter-only adjustment may need only its existing parameter contract. Read the relevant sections for the current question rather than producing a complete algorithm plan for every change.
+需要推敲 Shader 方案、数据流或渲染取舍时，使用本参考。只调整参数时，可能只需要该参数已有的约定。针对当前问题阅读有关小节，不必为每次修改写一份完整的算法方案。
 
-This is a technical reference, independently usable by authorized implementation, guidance and prototype tasks. Reading it does not start the containing Skill's Feature workflow, create a Feature, request an advisor or authorize edits and runtime experiments. Keep the current task's scope and verification rules. Paths in code spans are relative to the target project root.
+这是一份技术参考，已获授权的实现、指导和原型任务都可以单独使用。阅读它不会启动所在 Skill 的 Feature 流程，不会新建 Feature、请求顾问，也不授权修改或运行实验。仍遵守当前任务的范围和验证规则。代码格式中的路径相对目标项目根目录。
 
-## Start from the intended effect and its actual surface
+## 从预期效果和实际作用对象出发
 
-Use the confirmed presentation requirements and current implementation to establish what the player should perceive, which parts must remain unchanged and what is still uncertain. When the presentation itself is undecided, use the existing presentation-planning entry; do not treat an algorithm choice as approval to change the experience.
+根据已确认的表现要求和当前实现，弄清三件事：玩家应该感知到什么，哪些部分必须保持不变，哪些还不确定。表现本身尚未确定时，走已有的表现规划入口；不要把选定算法当作批准改变体验。
 
-Identify the actual receiving object, shader type, material and relevant renderer, viewport and texture context. A sprite effect, mesh material, full-screen effect and particle simulation do not have interchangeable inputs or output responsibilities. Keep an existing non-Shader approach when it satisfies the requirement more directly; mixed Shader, animation and script control can be appropriate.
+确认实际接收效果的对象、Shader 类型、材质，以及与效果有关的渲染器、视口和纹理环境。精灵效果、网格材质、全屏效果和粒子模拟的输入和输出职责不能互换。如果已有的非 Shader 做法更直接地满足需求，就保留它；Shader、动画和脚本混合控制也可以是合适的做法。
 
-For a hit flash, for example, distinguish the confirmed hit result from the visual flash progress. The gameplay owner determines whether the hit occurred; the presentation controller can shape its progress and retrigger behavior, while the Shader turns those inputs into pixels. This does not prescribe a particular signal, controller object or clock implementation.
+以受击闪白为例，要区分已确认的命中结果和视觉上的闪白进度。是否命中由游戏逻辑的负责方决定；表现控制器可以决定闪白进度和重复触发时的行为；Shader 把这些输入变成像素。这里不规定具体使用哪个信号、控制器对象或计时实现。
 
-## Trace the data that produces the result
+## 追踪产生结果的数据
 
-Explain only the uncertain or consequential parts of the path:
+只解释不确定或影响较大的环节：
 
-- **Inputs and owners:** Which values come from textures, geometry, material parameters, scene configuration or runtime control? Who updates a progress value, and what happens on a repeated trigger or interruption?
-- **Spaces and units:** Where are coordinates, widths, offsets and distances defined? Where does a conversion happen? A texture-space outline and a constant screen-width outline can require different reasoning.
-- **Processing and transfer:** What is sampled or calculated, in which shader stage, and what must reach the next stage? Vertex outputs carried by varyings are interpolated for fragment use; choose this transfer only when that interpolation preserves the intended result. Object-space inputs alone do not justify moving a nonlinear or detailed calculation to the vertex stage. See the [Godot 4.7 shading language reference](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/shading_language.html#varyings).
-- **Outputs and composition:** What changes RGB, coverage or alpha? Which source details and modulation should survive? Check the actual blending and render context rather than judging the output expression alone.
+- **输入及其负责方：** 哪些值来自纹理、几何体、材质参数、场景配置或运行时控制？谁更新进度值？重复触发或中途打断时会怎样？
+- **空间和单位：** 坐标、宽度、偏移和距离在哪个空间定义？在哪里换算？纹理空间的描边和固定屏幕宽度的描边，推理方式可能不同。
+- **处理和传递：** 在哪个着色器阶段采样或计算什么？什么必须传到下一阶段？顶点阶段通过 varying 输出的值，会插值后供片元阶段使用；只有插值后仍能保持预期结果时，才选择这种传递。仅凭输入在物体空间，不足以把非线性或细节丰富的计算移到顶点阶段。参见 [Godot 4.7 着色语言参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/shading_language.html#varyings)。
+- **输出和合成：** 什么改变了 RGB、覆盖范围或 alpha？哪些源图细节和调制需要保留？检查实际的混合方式和渲染环境，不只看输出表达式。
 
-The existing rules own the engineering contracts: use `agent-rules/30-shaders/coordinates-and-sampling.md` for spaces, regions and sampling; `uniforms-and-material-contracts.md` in that directory for parameter and clock ownership; and `color-alpha-and-blending.md` for composition. This reference supplies ways to reason about choices, not a second rule checklist.
+工程约定以已有规则为准：空间、区域和采样见 `agent-rules/30-shaders/coordinates-and-sampling.md`；参数和时钟的负责方见同目录的 `uniforms-and-material-contracts.md`；合成见 `color-alpha-and-blending.md`。本参考只提供做选择时的思路，不是第二份规则清单。
 
-## Compare approaches for the requested effect
+## 按要求的效果比较方案
 
-These are useful decision points, not mandatory algorithms or deliverables.
+下表列出有用的判断点，不是必须采用的算法或必须交付的内容。
 
-| Effect | Questions that distinguish approaches | Consequences to consider |
+| 效果 | 区分方案的问题 | 需要考虑的后果 |
 | --- | --- | --- |
-| Tint or hit flash | Blend with source detail or replace its color? Which alpha or mask defines the affected area? Is progress externally controlled? | Preserving a silhouette and tinting the entire quad are different outcomes. Repeated hits may change the controller behavior without requiring another Shader. |
-| Outline | Inside or outside the silhouette? What defines width: texels, object units or screen pixels? Which neighborhood samples are needed? | Sampling radius and sample count affect cost and quality. Atlas boundaries, transparent padding and drawable geometry can constrain an outside outline. |
-| Dissolve | Which field is compared with progress? Which direction disappears? What must happen at both endpoints? Is there an edge band? | Threshold, edge color and coverage are separate choices. Texture-driven and procedural fields trade authoring control against calculation and sampling cost. |
-| Distortion or scrolling | Which texture or screen image is sampled? In which space is its offset defined? What happens outside the valid range? | Offset magnitude, repeat/filter behavior and available source pixels determine the result; screen sampling also depends on the actual capture path. |
-| Procedural pattern, noise or distance field | What scale is visible, and what should stay stable as the object, camera or time changes? | Detail can alias under movement or minification. Compare the simplest adequate field with texture lookup or additional calculation, based on the required appearance. |
-| 3D rim or view-dependent highlight | Are the normal and view direction meaningful in this stage and expressed in the same space? Does the effect change surface color, emission or transparency? | Normalize transformed/interpolated directions where the calculation requires it. A rim's brightness does not by itself imply transparent coverage. |
+| 着色或受击闪白 | 与源图细节混合，还是替换它的颜色？受影响区域由哪个 alpha 或遮罩决定？进度是否由外部控制？ | 保留轮廓和给整个四边形着色是不同的结果。连续受击可能需要改变控制器行为，但不一定需要另一个 Shader。 |
+| 描边 | 描在轮廓内还是轮廓外？宽度用纹素、物体单位还是屏幕像素衡量？需要采样哪些相邻像素？ | 采样半径和采样次数影响开销和质量。图集边界、透明留白和可绘制的几何范围可能限制外描边。 |
+| 溶解 | 用哪个场与进度比较？哪个方向先消失？两个端点必须是什么状态？有没有边缘带？ | 阈值、边缘颜色和覆盖范围是三个独立的选择。纹理驱动的场和程序化的场，在制作控制力与计算、采样开销之间取舍。 |
+| 扭曲或滚动 | 采样哪张纹理或哪幅屏幕图像？偏移在哪个空间定义？超出有效范围时怎样处理？ | 偏移幅度、重复和过滤方式，以及可用的源像素决定结果；屏幕采样还取决于实际的捕获路径。 |
+| 程序化图案、噪声或距离场 | 可见的尺度是多少？物体、镜头或时间变化时，什么应该保持稳定？ | 移动或缩小时，细节可能产生走样。按所需外观，把最简单够用的场与纹理查找或额外计算作比较。 |
+| 3D 边缘光或随视角变化的高光 | 法线和视线方向在这个阶段是否有意义，并且处在同一空间？效果改变的是表面颜色、自发光还是透明度？ | 计算需要时，对变换或插值后的方向做归一化。边缘光的亮度本身并不意味着透明覆盖。 |
 
-Check built-in availability and stage semantics against the target version's [CanvasItem](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html) or [Spatial](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html) reference as appropriate. Do not carry a built-in or rendering assumption from a different shader type into the implementation.
+内置变量是否可用、各阶段的语义，按目标版本的 [CanvasItem](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html) 或 [Spatial](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html) 参考核对。不要把另一种 Shader 类型的内置变量或渲染假设带进实现。
 
-## Fit the material and control path
+## 适配材质和控制路径
 
-Reuse existing material, animation and script consumers where they fit. Work out whether a changed value belongs to a shared material or to one displayed instance before changing its control path. `ShaderMaterial.set_shader_parameter()` uses the exact, case-sensitive uniform name; changing a shared material affects its users. The [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter) documents that behavior. Let the existing uniform rules determine suitable per-instance or resource arrangements rather than universally duplicating materials.
+已有的材质、动画和脚本使用方合适时，直接复用。改动某个值的控制路径之前，先弄清它属于共享材质，还是只属于一个显示实例。`ShaderMaterial.set_shader_parameter()` 使用准确的、区分大小写的 uniform 名称；修改共享材质会影响它的所有使用者。这一行为见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。按单实例还是按资源组织，由已有的 uniform 规则决定，不一律复制材质。
 
-Describe an additional texture's purpose, channel meaning, dimensions or density needs, transparency and sampling assumptions only as far as the chosen approach requires them. Put scheme-specific resource requirements in that scheme's presentation-document section, following the existing document ownership; this does not authorize image production or require a separate asset list.
+需要额外纹理时，只按所选方案的需要说明它的用途、通道含义、尺寸或密度要求、透明度和采样假设。某个方案专属的资源要求，按已有的文档归属写进该方案在表现文档中的小节；这不授权制作图像，也不要求另建素材清单。
 
-Consider expected texture reads, calculation, coverage, overdraw and simultaneous instances when they could distinguish candidates. A smaller expression is not proof of a faster effect. Use `agent-rules/30-shaders/performance-and-stability.md` and obtain measurements when the task actually needs performance evidence; do not introduce profiling as a prerequisite to an ordinary parameter change.
+开销可能区分候选方案时，考虑预计的纹理读取次数、计算量、覆盖面积、过度绘制和同时存在的实例数。表达式更短不能证明效果更快。按 `agent-rules/30-shaders/performance-and-stability.md` 处理；只有任务确实需要性能证据时才去测量，不把性能分析设为普通参数修改的前置条件。
 
-## Return the choice to the current task
+## 把选择交回当前任务
 
-When the change affects a documented presentation scheme, update its selected approach and actual implementation/consumer paths under the existing presentation-document contract. Keep necessary engineering reasoning in the owning Feature design or implementation location when one is needed; a small change need not create an additional design file. Candidates can remain unimplemented.
+修改影响到已记录的表现方案时，按已有的表现文档约定，更新该方案的选定做法，以及实际的实现路径和使用方路径。确有需要时，把必要的工程推理留在所属 Feature 的设计或实现说明位置；小改动不必另建设计文件。候选方案可以不实现。
 
-Plan validation against the actual target compiler, material and render path under `agent-rules/30-shaders/validation.md`, within the task's authorized scope. Compilation alone cannot establish the intended appearance. For an observed failure, use [Shader diagnostics](../../bug-diagnosis-godot/references/shader-diagnostics.md) to choose evidence that tests the current hypothesis; that reference does not change the task's authority or completion criteria.
+在任务已获授权的范围内，按 `agent-rules/30-shaders/validation.md`，针对实际的目标编译器、材质和渲染路径规划验证。编译通过本身不能证明外观符合预期。遇到已观察到的故障时，用 [Shader 诊断](../../bug-diagnosis-godot/references/shader-diagnostics.md) 选择能检验当前假设的证据；该参考不改变任务的授权或完成标准。

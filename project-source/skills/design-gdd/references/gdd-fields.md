@@ -1,48 +1,48 @@
-# GDD design coverage
+# GDD 设计覆盖
 
-Use this reference when drafting a full GDD, checking coverage or extending an existing design. These are design questions, not an interview checklist or a file-per-row template. **GDD document names** in `methodology/01-product-doc-structure.md` decides where each answer is saved; the last column below only names the main file. Several rows may belong to one standard topic. A local revision needs only its affected topics and dependencies.
+起草完整的 GDD、检查覆盖情况或扩展已有设计时，使用本参考。下面是设计问题，不是访谈清单，也不是每行一个文件的模板。每个答案保存在哪里，由 `methodology/01-product-doc-structure.md` 的 **GDD 文件名** 决定；下表最后一列只写主要文件。几行内容可能属于同一个标准主题。局部修改只需要处理受影响的主题和依赖。
 
-## Match depth to the requested result
+## 深度与要求的结果相匹配
 
-- A concept draft should make the game, intended experience and current choices understandable. Preserve assumptions and explain gaps; do not invent players, rules, dates, content counts or test results to fill a section.
-- A requested full GDD covers the applicable shared topics and the systems the game actually adopts. A populated directory does not establish completeness. An adopted system with missing rules is unfinished, not inapplicable.
-- A local change preserves sufficient context and updates its consequences without recreating the whole GDD.
-- Before dependent planning or implementation, clarify rules, states, feedback and observable results enough to avoid consequentially different implementations. Identify any remaining gap that blocks that use. Future unrelated design may remain open.
+- 概念草稿要让人看懂这款游戏、期望的体验和当前的选择。保留假设并说明缺口；不要为了填满章节而编造玩家、规则、日期、内容数量或测试结果。
+- 用户要求完整 GDD 时，覆盖适用的共享主题，以及游戏实际采用的系统。目录里填满了文件不代表完整。已采用但缺少规则的系统是未完成，而不是不适用。
+- 局部修改保留足够的上下文，更新它带来的后果，不重写整份 GDD。
+- 在依赖它的规划或实现开始之前，把规则、状态、反馈和可观察的结果写清楚，避免出现结果差别很大的不同实现。指出仍会阻塞该用途的缺口。无关的未来设计可以保持开放。
 
-The entry briefly identifies the game, concept, covered scope and reading path. Include adoption or evidence limits where they affect how the document should be used. Follow an existing useful version convention; do not introduce a version scheme, ownership fields or duplicated execution status.
+入口简要说明游戏、概念、覆盖的范围和阅读路径。采用情况或证据的局限影响文档用法时，一并写明。沿用已有的、有用的版本惯例；不要引入版本编号方案、负责人字段或重复的执行状态。
 
-## Shared design topics
+## 共享设计主题
 
-| Topic | Questions the design should answer | Main file under `docs/gdd/` |
+| 主题 | 设计要回答的问题 | `docs/gdd/` 下的主要文件 |
 | --- | --- | --- |
-| Concept and player context | What is the player doing and why might it appeal? What is the theme or player role, intended audience and play situation? Which platform, input and session expectations constrain the design? Unknown positioning remains a hypothesis. | `concept-and-experience.md` |
-| Intended experience and design principles | Which specific moments, motivations or feelings matter? Which principles guide choices and exclusions? Explain their consequence for rules or scope rather than asserting that the game should be fun. | `concept-and-experience.md` |
-| Core loop and representative play | What are the initial situation, player goal, visible information, recurring actions or waits, feedback and progress? How does play continue, finish, fail or recover where applicable? What happens when pausing, leaving or returning? Label a written play sequence as reasoning, not a playtest. | `gameplay.md` |
-| Mechanics and system relationships | What triggers a system, what inputs and state does it use, and what changes or outputs result? What limits and exceptions matter? How do systems affect each other? Record useful existing specifications with units, source and status. | `systems/`, `balance/` |
-| Content, progression and pacing | What kinds and amount of content are in scope? What activities, teaching, challenge, unlocks or rewards shape each relevant stage? How do player time and attention change? Explain a session's progression even when no long-term growth exists; time targets are not measurements. | `progression.md`, `systems/`, `balance/` |
-| Interaction and understanding | What view, controls, information, navigation and state feedback support the actions? What must a first-time or returning player understand? Address relevant input, reading, color, sound and reaction constraints. Detailed interface specifications may link their professional owner. | `presentation.md` |
-| Visual and audio intent | What should players feel, and which objects, actions and states must they recognize? What information must sound communicate? Link the Art/Sound Bibles for style, palette, texture, timbre and rhythm; keep only the player-facing goal here. | `presentation.md` |
-| Design scope and boundaries | What overall game scope and exclusions are adopted, and what is deferred only for a named version? Which actual resource, platform and design constraints apply? Keep this body in the fixed scope subdocument; local mechanism/presentation limits, delivery ordering and technical implementation detail remain with their own sources. | `design-scope-and-boundaries.md` |
-| Risks, unknowns and validation | Which assumptions could change the design, what consequence would be wrong, and what work depends on resolving them? Keep current questions in the open-questions document and link their affected topics. Rule checks identify initial conditions, action and expected result; experience checks identify observations that would support or challenge a hypothesis. Actual evidence states the tested conditions and limits. | `open-questions.md` |
-| Decisions and sources | Which consequential choices have been adopted, and on what basis? Where do conflicting claims or uncertain terms remain? Keep the necessary reason, source and evidence limits near the owning rule, linking unresolved questions; reuse existing terminology and resumption records instead of duplicating them. | Owning topic; `open-questions.md` |
+| 概念与玩家背景 | 玩家在做什么，为什么可能被吸引？主题或玩家角色、目标受众和游玩情境是什么？哪些平台、输入和单次游玩的预期约束设计？未知的定位仍然是假设。 | `concept-and-experience.md` |
+| 期望体验与设计原则 | 哪些具体的时刻、动机或感受重要？哪些原则指导取舍和排除？说明它们对规则或范围的影响，不要只断言游戏应该好玩。 | `concept-and-experience.md` |
+| 核心循环与代表性游玩过程 | 初始情境、玩家目标、可见信息、反复进行的操作或等待、反馈和进展分别是什么？游玩怎样继续、结束、失败或恢复（如适用）？暂停、离开或回来时会发生什么？写下的游玩过程要标明是推演，不是试玩。 | `gameplay.md` |
+| 机制与系统关系 | 什么触发一个系统，它使用哪些输入和状态，产生什么变化或输出？哪些限制和例外重要？系统之间怎样互相影响？有用的已有规格连同单位、来源和状态一起记录。 | `systems/`、`balance/` |
+| 内容、进程与节奏 | 范围内有哪些种类和多少数量的内容？哪些活动、教学、挑战、解锁或奖励塑造每个相关阶段？玩家的时间和注意力怎样变化？即使没有长期成长，也要说明单次游玩中的进程；时间目标不是测量结果。 | `progression.md`、`systems/`、`balance/` |
+| 交互与理解 | 哪些视角、操作、信息、导航和状态反馈支撑这些操作？首次游玩或回归的玩家必须理解什么？处理本次涉及的输入、阅读、颜色、声音和反应方面的约束。详细的界面规格可以链接到其专业负责方。 | `presentation.md` |
+| 视觉与听觉意图 | 玩家应该有什么感受，必须辨认出哪些对象、动作和状态？声音必须传达哪些信息？风格、色板、质感、音色和节奏链接到 Art Bible 和 Sound Bible；这里只保留面向玩家的目标。 | `presentation.md` |
+| 设计范围与边界 | 采用了哪些整体游戏范围和排除项，哪些只是推迟到某个具名版本？实际适用哪些资源、平台和设计约束？这部分正文保存在固定的范围子文档中；局部的机制和表现限制、交付顺序和技术实现细节留在各自的来源中。 | `design-scope-and-boundaries.md` |
+| 风险、未知项与验证 | 哪些假设可能改变设计，错了会有什么后果，哪些工作依赖它们的解决？当前的问题保存在开放问题文档中，并链接受影响的主题。规则检查写明初始条件、操作和预期结果；体验检查写明哪些观察会支持或挑战一个假设。实际证据写明测试条件和局限。 | `open-questions.md` |
+| 决定与来源 | 采用了哪些重要的选择，依据是什么？哪些地方仍有互相冲突的说法或不确定的用词？必要的理由、来源和证据局限放在所属规则旁边，并链接未解决的问题；复用已有的术语和续接记录，不要重复保存。 | 所属主题；`open-questions.md` |
 
-## Conditional systems
+## 按需的系统
 
-Use a row only when the system is adopted, being compared or materially relevant to the requested design. Genre labels do not require mechanics.
+只在系统已被采用、正在比较或与要求的设计有实质关系时使用对应的行。游戏类型标签不要求必须有某种机制。
 
-| System | Relevant additional questions | Main file under `docs/gdd/` |
+| 系统 | 需要补充回答的问题 | `docs/gdd/` 下的主要文件 |
 | --- | --- | --- |
-| Resources, economy, crafting or trade | What creates, consumes or converts each resource? What limits storage or access, and which investments compete? Distinguish balances, rates, cumulative gains and unlock progress. Formula derivation and related parameter sets use `design-balance`. | `systems/`, `balance/` |
-| Growth, upgrades or builds | What grows, at what cost and benefit? What are the prerequisites, unlocks, exclusions and bottlenecks? How do upgrades change play and the role of earlier content? Model dependent curves only as deeply as the current decision requires. | `systems/`, `balance/`, `progression.md` |
-| Incremental play, automation or waiting | Which actions belong to the player and which to automation? How is automation obtained and configured, what work does it replace and what decisions remain? If offline progress is adopted, define continuing or suspended processes, time/capacity limits and return feedback. If reset/prestige is adopted, define its reward basis, cleared and retained state and the next run's change. Neither is a default requirement. | `systems/`, `balance/` |
-| Combat, enemies or abilities | What are the combat objective, action timing, targeting, hit/defense relationship and state effects? How can players anticipate and respond? What happens after defeat? Clarify the roles of units, equipment or abilities before deriving their values. | `systems/`, `balance/` |
-| Levels, puzzles, exploration or generation | What are the goal, reachability constraints, challenge, solutions, teaching sequence and recovery points? For generation, what boundaries and fairness must the player perceive, and how are unsolvable outcomes handled? | `systems/`, `progression.md` |
-| Narrative, characters or world | What are the world premise, motivations, relationships and conflict? How are story and player actions connected, and what consequences do choices have? Expand dialogue or branching only when relevant. | `concept-and-experience.md`, `systems/`, `progression.md` |
-| Multiplayer, cooperation or competition, when explicitly in the game scope | What are the player roles, shared or opposing goals, state ownership and information visibility? What happens when players join, leave or disconnect, and who receives a result? Describe player-facing rules; this does not introduce a development-team workflow or network architecture. | `systems/`, `gameplay.md` |
-| Persistent progress | What is retained, when, and what can be reversed? How do failure, reset, exit and return affect saved progress? State player-visible recovery behavior when relevant; technical storage design belongs elsewhere. | `systems/` |
-| Monetization or ongoing content affecting play | What is acquired, how, and with which gameplay or fairness consequences? Define relevant reward triggers, content cycles and progress carry-over only when adopted. Do not invent revenue forecasts. | `systems/`, `progression.md`, `balance/` |
-| Language, device or platform constraints affecting experience | What text, voice, controls, readability or display constraints apply? Which interruptions or performance limits have visible consequences? Reference the appropriate professional requirements without prescribing an unrelated technical architecture. | `presentation.md` |
+| 资源、经济、制作或交易 | 什么产生、消耗或转换每种资源？什么限制存储或获取，哪些投入互相竞争？区分余额、速率、累计获得量和解锁进度。公式推导和相关的参数集使用 `design-balance`。 | `systems/`、`balance/` |
+| 成长、升级或配置 | 什么在成长，花费和收益是什么？前置条件、解锁、互斥和瓶颈是什么？升级怎样改变游玩方式和早期内容的作用？依赖它们的曲线只建模到当前决定需要的深度。 | `systems/`、`balance/`、`progression.md` |
+| 放置玩法、自动化或等待 | 哪些操作属于玩家，哪些属于自动化？自动化怎样获得和配置，替代了哪些工作，还剩哪些决定？采用离线进度时，定义哪些过程继续或暂停、时间和容量上限以及回来时的反馈。采用重置或转生时，定义奖励依据、清空和保留的状态以及下一轮的变化。两者都不是默认要求。 | `systems/`、`balance/` |
+| 战斗、敌人或技能 | 战斗目标、行动时机、目标选择、命中与防御的关系和状态效果是什么？玩家怎样预判和应对？失败之后会怎样？先明确单位、装备或技能的作用，再推导它们的数值。 | `systems/`、`balance/` |
+| 关卡、谜题、探索或程序生成 | 目标、可达性约束、挑战、解法、教学顺序和恢复点是什么？程序生成时，玩家必须感知到哪些边界和公平性，无解的结果怎样处理？ | `systems/`、`progression.md` |
+| 叙事、角色或世界观 | 世界前提、动机、关系和冲突是什么？故事和玩家操作怎样关联，选择会带来什么后果？只在需要时展开对话或分支。 | `concept-and-experience.md`、`systems/`、`progression.md` |
+| 多人、合作或对抗（明确属于游戏范围时） | 玩家角色、共同或对立的目标、状态归属和信息可见性是什么？玩家加入、离开或断线时会怎样，谁会收到结果？描述面向玩家的规则；这不引入开发团队的协作流程或网络架构。 | `systems/`、`gameplay.md` |
+| 持久进度 | 保留什么、什么时候保留、哪些可以撤销？失败、重置、退出和回来怎样影响已保存的进度？需要时写明玩家可见的恢复行为；技术上的存储设计属于别处。 | `systems/` |
+| 影响游玩的商业化或持续内容 | 获得什么、怎样获得，对玩法或公平性有什么影响？只在已采用时定义奖励触发、内容周期和进度继承。不要编造收入预测。 | `systems/`、`progression.md`、`balance/` |
+| 影响体验的语言、设备或平台约束 | 适用哪些文字、语音、操作、可读性或显示约束？哪些中断或性能限制会带来可见的后果？引用对应的专业要求，不规定无关的技术架构。 | `presentation.md` |
 
-## Check the design as a player sequence
+## 按玩家的游玩顺序检查设计
 
-For the changed scope, follow why a player enters, what they see, what they can choose or do, how the rules respond, how progress occurs and how play ends or resumes. Then check that the adopted systems, presentation needs, scope and unresolved questions have an owning location. This catches missing relationships without requiring one document per topic or a repeated full-game audit.
+对修改的范围，沿着玩家的视角走一遍：为什么进入、看到什么、能选择或做什么、规则怎样响应、进展怎样发生、游玩怎样结束或继续。然后检查已采用的系统、表现需求、范围和未解决的问题都有所属位置。这样能发现缺失的关系，不需要每个主题一个文档，也不需要反复做整款游戏的审查。

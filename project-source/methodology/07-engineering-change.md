@@ -1,252 +1,252 @@
-# 07 · Engineering change workflow
+# 07 · 工程变更流程
 
-> This document covers code and project changes that keep the confirmed game design and delivery intent unchanged: Bug repairs, refactors and maintenance. The `engineering-change-plan` Skill carries it out.
+> 本文说明不改变已确认游戏设计和交付意图的代码与项目修改：Bug 修复、重构和维护。由 `engineering-change-plan` Skill 执行。
 
-A substantive GDD is required under [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority). A technical repair, refactor or experiment is not a route around this prerequisite. Detailed Product documents are needed only when their delivery scope is relevant.
+项目必须已有实质 GDD，见 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)。技术修复、重构或实验都不能绕过这个前提。只有涉及某个 Product 的交付范围时，才需要它的详细 Product 文档。
 
-## Feedback assessment
+## 反馈评估
 
-Before treating a report as engineering work, compare the actual observation with the relevant confirmed contract and the current implementation. Reuse established facts, and ask only for missing information that changes the judgment. Check which of these applies:
+在把一份报告当作工程工作之前，先把实际观察与已确认的契约、当前实现对比。复用已经确定的事实，只询问会改变判断的缺失信息。判断属于下面哪种情况：
 
-- the reported capability already exists;
-- its entry point or explanation is hard to find;
-- the implementation violates the contract;
-- the user wants a different result.
+- 报告的能力其实已经存在；
+- 它的入口或说明难以找到；
+- 实现违反了契约；
+- 用户想要不同的结果。
 
-Code shows current behavior; it is not permission to redefine approved intent.
+代码只说明当前行为，不代表可以重新定义已批准的意图。
 
-Return a supported classification, its source and evidence, important uncertainty and the next owner.
+返回有依据的分类、它的来源与证据、重要的不确定之处，以及下一步由谁负责。
 
-- An unobserved failure stays unconfirmed; it is not disproved.
-- Missing expectations go back to their design or professional owner before a repair is chosen.
-- An explanation or navigation problem can end with the requested answer. Feedback assessment does not require a Feature or a rejection or backlog record.
-- Saved changes follow their owning document and the current authorization.
+- 没有观察到的故障保持“未确认”，不等于已被否定。
+- 缺少的预期要先退回给对应的设计或专业负责方，再选择修复方案。
+- 说明或导航问题可以以回答用户的问题结束。反馈评估不要求建 Feature，也不要求留下拒绝或待办记录。
+- 要保存的修改按其所属文档和当前授权处理。
 
-`feedback-triage-godot` provides this assessment as a direct entry. Engineering preparation must apply these checks even when no Skill was automatically selected. Once a defect and its ownership are established, use `bug-diagnosis-godot` for focused causal investigation when needed; do not repeat assessment merely because the entry changes.
+`feedback-triage-godot` 是这项评估的直接入口。即使没有自动选中任何 Skill，工程准备也必须做这些检查。缺陷及其归属确定后，需要时用 `bug-diagnosis-godot` 做聚焦的因果调查；不要只因换了入口就重做评估。
 
-## Classification boundary
+## 分类边界
 
-For work that requires an engineering change, choose exactly one mode:
+需要工程变更的工作，只选一种模式：
 
-| Mode | Use when | Governing contract |
+| 模式 | 适用情况 | 遵循的契约 |
 | --- | --- | --- |
-| `bug` | Implementation contradicts an explicit, confirmed GDD, Product delivery, professional or project-tool contract. | Restore the owning contract without changing approved intent. |
-| `refactor` | Internal structure should improve without changing accepted behavior. | Preserve behavior. |
-| `maintenance` | Dependency, build, tooling, tests, migration, logging, performance or comparable technical work is required. | Preserve behavior and compatibility unless a Product change is separately approved. |
+| `bug` | 实现与明确、已确认的 GDD、Product 交付、专业契约或项目工具契约相矛盾。 | 恢复所属契约，不改变已批准的意图。 |
+| `refactor` | 需要改善内部结构，且不改变已接受的行为。 | 保持行为不变。 |
+| `maintenance` | 需要依赖、构建、工具、测试、迁移、日志、性能或类似的技术工作。 | 保持行为和兼容性，除非另行批准了 Product 变更。 |
 
-Before classifying a bug, read the relevant authoritative source. Missing, contradictory or materially ambiguous expectations return to their owner:
+把问题归为 bug 之前，先读对应的权威来源。缺失、矛盾或有实质歧义的预期，退回给它的负责方：
 
-- `design-gdd` for overall game design;
-- `design-balance` for scoped numerical design;
-- `product-author` for delivery boundaries;
-- the corresponding specialist for professional requirements, under [Specialist work and sources](11-specialist-workflows.md).
+- 整体游戏设计：`design-gdd`；
+- 限定范围的数值设计：`design-balance`；
+- 交付边界：`product-author`；
+- 专业要求：对应的专业 Skill，见[专业工作与来源](11-specialist-workflows.md)。
 
-A confirmed GDD or professional contract can establish a defect without matching Product text. An unapproved suggestion cannot.
+已确认的 GDD 或专业契约可以单独确立一个缺陷，不需要 Product 中有对应文字。未经批准的建议不能确立缺陷。
 
-Distinguish game behavior from project tooling. A tooling defect cites the actual tool contract, stays engineering work and is repaired in the project-owned source. Do not invent Product requirements to describe it.
+区分游戏行为与项目工具。工具缺陷引用实际的工具契约，仍属于工程工作，在项目自有的源文件中修复。不要为描述它而虚构 Product 需求。
 
-## Bug ownership and routing
+## Bug 的归属与路由
 
-| Trigger | Owning work and route |
+| 触发情况 | 所属工作与路由 |
 | --- | --- |
-| Defect introduced inside the current unfinished Feature | Keep it in the current Feature and resume the applicable execute Stage; record the failure and rerun affected verification. No duplicate bug Feature merely to move its failure elsewhere. |
-| Independent regression of previously completed behavior | Create an approved `bug` Feature through this workflow, retaining original completed history. |
-| User wants a different observable behavior | `design-gdd` or the owning numerical/professional designer, even if the user calls it a bug; `product-author` handles changed delivery boundaries. |
-| User changes a professional requirement while behavior stays fixed | Its owning specialist updates the approved source and handles planned-work impacts; this is not a defect against the old contract. |
-| Project tooling blocker while business work is in progress | Preserve business WIP and its evidence; handle the tool repair as a bounded technical task within this project. |
-| Urgent repair | Preparation may be concise, and the user's authorization may cover several preparation steps. Required validation, applicable human acceptance, explicit user review conditions, completion checks and a traceable commit still apply. Urgency is not a waiver. |
+| 缺陷产生于当前尚未完成的 Feature 内部 | 留在当前 Feature 中，回到 execute 中适用的 Stage；记录失败并重跑受影响的验证。不要仅为把失败挪到别处而另建重复的 bug Feature。 |
+| 之前已完成的行为出现独立的回归 | 通过本流程创建一个已批准的 `bug` Feature，保留原有的完成历史。 |
+| 用户想要不同的可观察行为 | 即使用户称之为 bug，也交给 `design-gdd` 或所属的数值、专业设计方；交付边界的变化由 `product-author` 处理。 |
+| 用户修改专业要求，而行为本身不变 | 由所属的专业 Skill 更新已批准的来源，并处理对已计划工作的影响；这不是违反旧契约的缺陷。 |
+| 业务工作进行中遇到项目工具的阻塞 | 保留业务的进行中改动及其证据；把工具修复作为本项目内一项有边界的技术任务处理。 |
+| 紧急修复 | 准备工作可以从简，用户的授权可以覆盖多个准备步骤。必需的验证、适用的人工验收、用户明确的审核条件、完成检查和可追溯的提交仍然适用。紧急不等于豁免。 |
 
-Routing a current-Feature defect back to execution does not authorize a new scope; report material scope changes for approval. When switching to a bounded repair, follow [Git changes and commits](../agent-rules/00-core/git-worktree-and-commits.md) to preserve the paused work in the task's checkout and to resume it later from its records and actual changes.
+把当前 Feature 的缺陷路由回执行流程，不授权新的范围；范围的实质变化要报告并等待批准。切换到有边界的修复时，按 [Git 改动与提交](../agent-rules/00-core/git-worktree-and-commits.md) 在任务的工作目录中保留暂停的工作，之后根据其记录和实际改动续接。
 
-## Workflow
+## 流程
 
 ```text
-Engineering request
+工程请求
    ↓
-confirm the GDD exists; stop if missing
+确认 GDD 存在；缺失则停止
    ↓
-classify bug / refactor / maintenance
+分类为 bug / refactor / maintenance
    ↓
-collect only evidence needed to define safe work
+只收集定义安全工作所需的证据
    ↓
-propose smallest verifiable engineering Feature
+提出最小的可验证工程 Feature
    ↓
-EXPLICIT HUMAN APPROVAL
+明确的人工批准
    ↓
-register needed components; append index + detail; strict ledger validation
+登记所需组件；追加索引与详情；严格校验台账
    ↓
-handoff; stop if execution approval is still missing
+交接；仍缺执行批准时停止
    ↓
-explicit execution approval (already supplied or newly given)
+明确的执行批准（已经给出或新给出）
    ↓
 feature-execute
 ```
 
-This workflow never implements the change itself.
+本流程从不亲自实施变更。
 
-If the current request already explicitly approves the concrete repair plan and its execution, keep that authorization when handing off; no second invocation is required. A vague “continue” or urgency alone supplies no missing approval.
+如果当前请求已经明确批准了具体的修复方案及其执行，交接时保留这项授权，不需要再调用一次。含糊的“继续”或单纯的紧急情况，都不能补上缺少的批准。
 
-## Unified Bug workflow
+## 统一的 Bug 流程
 
 ```text
-Discovery
-→ Expected behavior and authoritative source
-→ Minimal reproduction
-→ Root cause
-→ Test Impact Review
-→ Regression RED
-→ Minimal repair
+发现
+→ 预期行为与权威来源
+→ 最小复现
+→ 根因
+→ 测试影响评估
+→ 回归 RED
+→ 最小修复
 → GREEN
-→ affected tests / required full suite
-→ Human Acceptance when required by the approved plan
-→ Bug-learning capture (Stage 5.5)
-→ Independent review only when requested at this point
-→ Completion Gate
-→ Commit
+→ 受影响的测试 / 必需的全量套件
+→ 已批准计划要求时进行人工验收
+→ 记录 Bug 经验（Stage 5.5）
+→ 仅在此时被要求时进行独立审核
+→ 完成检查
+→ 提交
 ```
 
-This chain runs inside the [execute loop](03-execute-loop.md) and adds no Stage of its own.
+这条链在[执行规范](03-execute-loop.md)内运行，不增加自己的 Stage。
 
-- **Discovery** collects actual and expected behavior and a repeatable trigger, or the observed conditions of an intermittent failure.
-- **Root cause:** establish the causal explanation before choosing the repair. Mark an unknown cause as unknown while investigating.
-- **Test Impact Review** records the affected components and the approved regression obligation.
-- **Regression RED** must fail for the defect itself. A parser error, setup failure or unrelated baseline failure does not count.
-- **Repair and GREEN:** apply the smallest complete fix, observe GREEN for the regression, then run the planned affected set and any required full suite. Reuse a real full run only when its snapshot and actual coverage include the subsets. A hand-entered count never replaces execution evidence.
-- **Bug-learning capture (Stage 5.5)** records the `BUG learning` note and assesses the Guardrail under [Bug-learning promotion](#bug-learning-promotion).
-- **Finish:** applicable human acceptance, user-requested independent review, the Completion Gate and a local traceable commit finish the repair, as defined in [03 · Execute loop](03-execute-loop.md) and [08 · Test traceability and evidence](08-test-traceability-and-evidence.md). A review repair that changes accepted behavior goes back through verification and applicable human acceptance. Stage 8 then reports brief reusable learning and continues within the remaining user authorization.
+- **发现**：收集实际行为、预期行为和可重复的触发方式；间歇性故障则收集观察到的条件。
+- **根因**：先确立因果解释，再选择修复。调查期间原因未知时，明确标为未知。
+- **测试影响评估**：记录受影响的组件和已批准的回归义务。
+- **回归 RED**：必须因缺陷本身而失败。解析错误、准备失败或无关的基线失败都不算。
+- **修复与 GREEN**：做最小的完整修复，看到回归测试 GREEN，再运行计划中的受影响集合和任何必需的全量套件。只有当一次真实的全量运行的快照和实际覆盖包含这些子集时，才能复用它。手工填写的计数永远不能代替执行证据。
+- **记录 Bug 经验（Stage 5.5）**：写下 `BUG learning` 记录，并按 [Bug 经验的提升](#bug-经验的提升)评估 Guardrail。
+- **收尾**：按 [03 执行规范](03-execute-loop.md)和 [08 · 测试追溯与证据](08-test-traceability-and-evidence.md)，以适用的人工验收、用户要求的独立审核、完成检查和一次可追溯的本地提交完成修复。审核引起的修复如果改变了已接受的行为，要重新验证并重新进行适用的人工验收。之后 Stage 8 简要报告可复用的经验，并在用户剩余的授权内继续。
 
-### Causal diagnosis
+### 因果诊断
 
-Define the failure by the user's exact observable symptom and its confirmed expectation. Record the relevant version, environment, inputs and actual evidence. A check for "does not crash" cannot establish that an action occurs exactly once or produces the right result. Reproduction may be automated or a repeatable human procedure; lack of an automated failing command does not prevent source inspection or hypothesis formation.
+用用户描述的确切可观察症状及其已确认的预期来定义故障。记录相关的版本、环境、输入和实际证据。“不崩溃”这类检查不能证明某个动作恰好发生一次或产生了正确结果。复现可以是自动化的，也可以是可重复的人工步骤；没有自动的失败命令，不妨碍检查源码或形成假设。
 
-For game behavior, follow the symptom and evidence through the relevant rules and business state, the presentation and their connections. The user need not first classify the failure as logic, presentation or cross-layer.
+对游戏行为，顺着症状和证据检查相关的规则与业务状态、表现，以及它们之间的连接。用户不需要先把故障分成逻辑、表现还是跨层问题。
 
-- Incorrect feedback may come from a wrong business result, a missing or repeated delivery, or the feedback implementation itself. A correct state change alone does not show which remaining part failed.
-- Choose domain-specific methods only when they help distinguish the current hypotheses.
-- These responsibilities guide one causal investigation. They do not split a symptom into separate Bugs, tasks or agents; the owning task stays as routed above.
+- 反馈不对，可能来自错误的业务结果、缺失或重复的传递，也可能来自反馈实现本身。仅凭状态变化正确，无法说明剩下哪一环出了问题。
+- 只在能帮助区分当前假设时，才选用领域专门的方法。
+- 这些职责划分用于指导一次因果调查。它们不把一个症状拆成多个 Bug、任务或 Agent；所属任务仍按上面的路由。
 
-Reduce irrelevant inputs, scene elements or steps while preserving the same failure. Change one relevant factor at a time when distinguishing causes, and retain the original scenario for later verification. For intermittent failures, report observed attempts, workload and conditions; do not invent determinism or require a fixed retry count.
+在保持同一故障的前提下，去掉无关的输入、场景元素或步骤。区分原因时一次只改变一个相关因素，并保留原始场景供之后验证。对间歇性故障，报告观察到的尝试次数、负载和条件；不要虚构确定性，也不要求固定的重试次数。
 
-Work with plausible causal hypotheses and observations that could distinguish or refute them. Inspect the affected code and current evidence first. Choose the smallest discriminating probe instead of speculative fixes or broad logging. Within their actual execution permissions:
+围绕可信的因果假设，以及能区分或推翻它们的观察来工作。先检查受影响的代码和现有证据。选择最小的、能区分假设的探查，不做投机性修复，也不大范围加日志。在实际拥有的执行权限内：
 
-- missing runtime signals may use `diagnostics-instrumentation`;
-- measured timing or resource problems may use `diagnostics-performance`;
-- sustained accumulation or stability questions may use `diagnostics-soak-test`.
+- 缺少运行时信号时，可以使用 `diagnostics-instrumentation`；
+- 有测量数据的时序或资源问题，可以使用 `diagnostics-performance`；
+- 持续累积或稳定性问题，可以使用 `diagnostics-soak-test`。
 
-Temporary diagnostics and retained evidence follow [Reports and cleanup](09-records-reports-and-handoff.md#reports-and-cleanup).
+临时诊断和保留的证据按[报告与清理](09-records-reports-and-handoff.md#报告与清理)处理。
 
-Explain the chain from the trigger to the defective state or operation and then to the observed result, citing the evidence. Separate a supported cause from a hypothesis or an unresolved gap. If the authorized investigation is blocked, report what is known, what is missing and the next discriminating check. A log capture alone does not mean the root cause was found. Keep the evidence in the Feature and Progress records and report locations, not in a second Bug ledger.
+说明从触发到出错的状态或操作、再到观察结果的因果链，并引用证据。把有依据的原因与假设、未解决的缺口分开。已获授权的调查受阻时，报告已知什么、缺少什么，以及下一项能区分假设的检查。仅有日志记录不等于找到了根因。证据保存在 Feature 和 Progress 记录中并报告位置，不另建第二份 Bug 台账。
 
-- An authorized repair follows the Unified Bug workflow above and rechecks the original scenario as well as the focused regression.
-- A diagnosis-only request returns the causal conclusion or an explicit investigation gap. It does not implement a repair.
-- An already authorized repair returns to its owning task without asking again because diagnosis ended. Missing decisions, scope changes and human acceptance keep their own boundaries.
+- 已获授权的修复按上面的统一 Bug 流程进行，除了聚焦的回归测试，还要复查原始场景。
+- 只要求诊断的请求，返回因果结论或明确的调查缺口，不实施修复。
+- 已获授权的修复在诊断结束后回到它所属的任务，不需要再次询问。缺少的决定、范围变化和人工验收仍按各自的边界处理。
 
-## Bug Feature contract
+## Bug Feature 契约
 
-Record:
+记录：
 
-- actual behavior;
-- expected outcome and the precise confirmed GDD, Product delivery, professional or project-tool source;
-- minimum reproduction or trigger;
-- root cause, or an explicit unknown during initial investigation;
-- affected semantic components and area when known;
-- whether deterministic automated regression coverage is feasible.
+- 实际行为；
+- 预期结果，以及精确的已确认 GDD、Product 交付、专业或项目工具来源；
+- 最小复现或触发方式；
+- 根因，或在初步调查期间明确写为未知；
+- 已知时，受影响的语义组件和区域；
+- 能否做确定性的自动回归覆盖。
 
-Acceptance criteria cover:
+验收条件覆盖：
 
-1. pre-fix reproduction when reasonably feasible;
-2. restoration of documented behavior;
-3. targeted regression test with a stable `F0XX-RTyy` logical ID when deterministically automatable;
-4. relevant automated checks after repair;
-5. explicit human acceptance in execute Stage 5 when the approved mode is manual; otherwise automated AC/regression verification is sufficient for this step.
+1. 在合理可行时，修复前的复现；
+2. 恢复文档规定的行为；
+3. 能确定性自动化时，带稳定 `F0XX-RTyy` 逻辑 ID 的针对性回归测试；
+4. 修复后的相关自动检查；
+5. 已批准的模式为 manual 时，execute Stage 5 中明确的人工验收；否则这一步只需自动的 AC 与回归验证。
 
-If automated regression is genuinely impractical, record the concrete reason and a repeatable human regression check. “Hard to test” is insufficient.
+自动回归确实不可行时，记录具体原因和一项可重复的人工回归检查。只写“难以测试”不够。
 
-The engineering template provides the nullable `bug_diagnosis` field.
+工程模板提供可为空的 `bug_diagnosis` 字段。
 
-- For an independent Bug, fill in `actual`, `expected`, `source`, `reproduction` (ordered, non-empty steps) and `root_cause`.
-- `root_cause` may be `null` while planning. Every `done` Bug needs a confirmed causal explanation there; the checker rejects a completed Bug without it.
-- Refactor and maintenance Features keep `bug_diagnosis` `null` or omit it. Never fill in fictional bug evidence.
-- A defect inside the current Feature uses that Feature's notes and linked execution archive and keeps the Feature's original classification.
+- 独立的 Bug 要填写 `actual`、`expected`、`source`、`reproduction`（有序且非空的步骤）和 `root_cause`。
+- 规划期间 `root_cause` 可以是 `null`。每个 `done` 的 Bug 都要在这里写明已确认的因果解释；检查器会拒绝没有它的已完成 Bug。
+- 重构和维护 Feature 的 `bug_diagnosis` 保持 `null` 或省略。绝不填写虚构的 bug 证据。
+- 当前 Feature 内部的缺陷使用该 Feature 的 notes 和链接的执行归档，并保持该 Feature 原来的分类。
 
-## Refactor Feature contract
+## 重构 Feature 契约
 
-Record the concrete smell, the affected area, the behavior that must stay unchanged, and the tests or verification protecting that behavior. If no target has been selected, `engineering-refactor-select` may rank candidates; after user selection, return here and create an approved Feature before implementation.
+记录具体的代码坏味道、受影响的区域、必须保持不变的行为，以及保护该行为的测试或验证。还没选定目标时，可以用 `engineering-refactor-select` 给候选项排序；用户选定后，回到这里创建已批准的 Feature，再开始实现。
 
-## Maintenance Feature contract
+## 维护 Feature 契约
 
-Record the technical objective, the reason, the affected technical boundary, the compatibility or invariant that must stay true, and any rollback or migration concern. Typical maintenance includes dependencies, build configuration, development tooling, test infrastructure, storage/schema migration, logging, and performance work.
+记录技术目标、原因、受影响的技术边界、必须保持成立的兼容性或不变量，以及任何回滚或迁移方面的顾虑。典型的维护包括依赖、构建配置、开发工具、测试基础设施、存储与 schema 迁移、日志和性能工作。
 
-## Feature write rules
+## Feature 写入规则
 
-Engineering Features use the normal Feature and test records: stable `ACxx` criteria, non-empty `affected_components` and verification mapped during execution, plus this detail field:
+工程 Feature 使用普通的 Feature 与测试记录：稳定的 `ACxx` 条件、非空的 `affected_components`、在执行期间映射的验证，外加下面这个详情字段：
 
 ```json
 "engineering_change": "bug"
 ```
 
-Allowed values are `bug`, `refactor`, and `maintenance`. Use the next sequential Feature ID; do not rewrite completed Feature definitions.
+允许的取值是 `bug`、`refactor` 和 `maintenance`。使用下一个连续的 Feature ID；不要改写已完成的 Feature 定义。
 
-Read `docs/test-registry.json` when proposing `affected_components`. After approval, register missing components before writing and validating the Feature:
+提出 `affected_components` 时读取 `docs/test-registry.json`。获批后，在写入和校验 Feature 之前登记缺少的组件：
 
-- Use the merge helper in [feature-plan](../.agents/skills/feature-plan/SKILL.md#test-registry-docstest-registryjson); the Registry rules themselves are in [08 · Registry rules](08-test-traceability-and-evidence.md#registry-rules).
-- Reuse current records without resetting tests, and report conflicting IDs.
-- A component without a unit suite uses `unit_test_paths: []`. Its `full_suite_on_change` defaults to `false` unless the approved contract requires otherwise.
-- Include these Registry changes in the same Feature-plan commit. Test mappings are still finalized during execution.
+- 使用 [feature-plan](../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson) 中的合并辅助工具；测试登记表本身的规则见 [08 · 登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
+- 复用已有记录，不重置测试；报告冲突的 ID。
+- 没有单元套件的组件写 `unit_test_paths: []`。除非已批准的契约另有要求，它的 `full_suite_on_change` 默认为 `false`。
+- 把这些测试登记表的改动放进同一个 Feature 计划提交。测试映射仍在执行期间最终确定。
 
-After the consistent set is written, validate:
+写完一组一致的内容后，运行校验：
 
 ```powershell
 python -B tools/checks/check-feature-list.py
 ```
 
-Then stage only this task's Feature-plan paths and create one local commit, unless the user explicitly asked for no commit. The subject format, the `Feature:` and `Work item:` body lines and the forbidden Git operations follow [Git changes and commits](../agent-rules/00-core/git-worktree-and-commits.md#local-commits).
+然后只暂存本任务的 Feature 计划路径，创建一个本地提交，除非用户明确要求不提交。主题格式、正文中的 `Feature:` 与 `Work item:` 行，以及禁止的 Git 操作，按 [Git 改动与提交](../agent-rules/00-core/git-worktree-and-commits.md#本地提交) 执行。
 
-Creating an engineering Feature does not add a `feature-list-revisions.json` entry, because no GDD, Product or professional source was synchronized.
+创建工程 Feature 不新增 `feature-list-revisions.json` 条目，因为没有同步任何 GDD、Product 或专业来源。
 
-## Bug-learning promotion
+## Bug 经验的提升
 
-Every completed Bug leaves local learning in its Feature notes:
+每个完成的 Bug 都要在它的 Feature notes 中留下局部经验：
 
 ```text
 BUG learning
-Root cause: <causal implementation defect>
-Trigger: <minimum trigger/precondition>
-Regression coverage: <F0XX-RTyy logical IDs, or approved manual regression reason/check>
-Guardrail: <general principle preventing the same defect class>
+Root cause: <实现上的因果缺陷>
+Trigger: <最小触发条件或前置条件>
+Regression coverage: <F0XX-RTyy 逻辑 ID，或已批准的人工回归原因与检查>
+Guardrail: <防止同类缺陷的一般原则>
 ```
 
-The local note records facts about this incident. Link `bug_diagnosis` or the execution archive for detailed evidence instead of copying the transcript. Regression IDs are also registered in `docs/test-registry.json`.
+这条局部记录写的是本次事件的事实。详细证据链接到 `bug_diagnosis` 或执行归档，不复制对话记录。回归 ID 同样登记在 `docs/test-registry.json` 中。
 
-This section is the single source for promoting a Guardrail:
+本节是 Guardrail 提升的唯一正文：
 
 ```text
 Bug Feature
-├── regression test → F0XX-RT01
-└── BUG learning Guardrail
-        ↓ explicit human approval only
-   Project or specialized rule / invariant
+├── 回归测试 → F0XX-RT01
+└── BUG learning 中的 Guardrail
+        ↓ 只在明确的人工批准后
+   项目规则或专业规则 / 不变量
         ↓
-   INV-<DOMAIN>-01 when machine-verifiable
+   可机器验证时写成 INV-<DOMAIN>-01
 ```
 
-A regression test proves that the concrete defect does not return. An invariant test (`INV-<DOMAIN>-NN`, under [08 · Test taxonomy](08-test-traceability-and-evidence.md#test-taxonomy)) proves a generalized cross-Feature rule. The two complement each other and may both exist. Check current rules before recommending a new one.
+回归测试证明这个具体缺陷不会再出现。不变量测试（`INV-<DOMAIN>-NN`，见 [08 · 测试分类](08-test-traceability-and-evidence.md#测试分类)）证明一条概括后的跨 Feature 规则。两者互补，可以同时存在。建议新规则之前先检查现有规则。
 
-Propose promotion of only the generalized `Guardrail` when at least one is true:
+只在至少满足下面一条时，才提议提升概括后的 `Guardrail`：
 
-- it applies across several Features or modules;
-- it expresses a project, language or engine invariant;
-- it captures an architectural or lifecycle invariant not already documented;
-- the defect recurred or needed repeated repair attempts;
-- tests cannot fully enforce it.
+- 它适用于多个 Feature 或模块；
+- 它表达的是项目、语言或引擎的不变量；
+- 它记录了尚未写进文档的架构或生命周期不变量；
+- 缺陷再次出现，或经过多次修复尝试；
+- 测试无法完全约束它。
 
-Promotion follows [incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance): check ownership and current rules, output the self-check before any addition, edit or deletion, and obtain the required explicit decision unless it is already authorized.
+提升按[规则的增量维护](04-project-rules.md#规则的增量维护)进行：核对归属和现有规则，在任何新增、编辑或删除之前输出自检，并取得所需的明确决定，已经获得授权的除外。
 
-- A rejected promotion leaves the local Bug note unchanged.
-- Local implementation constraints and their rationale, including brief explanations, go in the Feature design; notes link to it. Do not copy whole rule modules into notes.
-- Assess affected current and planned work, and complete the needed `feature-sync` handling before dependent work continues.
-- A late rule edit must meet the current verification and acceptance contract. It does not automatically apply only to the next Feature.
+- 提升被否决时，局部的 Bug 记录保持不变。
+- 局部实现约束及其理由，包括简短说明，写进 Feature 设计；notes 链接到它。不要把整个规则模块复制进 notes。
+- 评估受影响的当前工作和已计划工作，在依赖它的工作继续之前完成所需的 `feature-sync` 处理。
+- 后期的规则编辑必须满足当前的验证与验收契约，不会自动只适用于下一个 Feature。
 
-## Explicit exclusions
+## 明确排除的内容
 
-This workflow does not add publishing, release announcements, store submission, deployment approval, distribution or a public-release process.
+本流程不包含发布、发布公告、商店提交、部署审批、分发或公开发布流程。

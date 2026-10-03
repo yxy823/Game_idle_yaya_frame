@@ -8,7 +8,7 @@
 
 - 一次表现使用 `<scope>.md`，按“触发时刻与玩家感知的结果”命名。例如商店购买和奖励领取都表达同一次物品入包时，共用 `item-added.md`。
 - 被两份以上独立表现共用的组件，使用 `components/<component-key>.md`。
-- 命名、拆分、组件迁移和验收记录的具体规则见[游戏表现文档约定](../../methodology/11-specialist-workflows.md#game-presentation-documents)。编写时使用 `design-game-presentation`。
+- 命名、拆分、组件迁移和验收记录的具体规则见[游戏表现文档约定](../../methodology/11-specialist-workflows.md#游戏表现文档)。编写时使用 `design-game-presentation`。
 
 ## 表现与共享组件导航
 

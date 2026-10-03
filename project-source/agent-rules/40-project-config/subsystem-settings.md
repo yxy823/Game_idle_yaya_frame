@@ -1,49 +1,49 @@
-# Subsystem Settings
+# 子系统设置
 
-Audio, physics, localization and rendering settings are whole-project runtime contracts. Read the section for the subsystem whose settings change.
+音频、物理、本地化和渲染设置是整个项目的运行时契约。阅读要修改的子系统对应的小节。
 
-## Audio
+## 音频
 
-- **[MUST]** The configured default bus layout path is a project Resource dependency and must resolve and load.
-- **[MUST]** Audio bus names are cross-file APIs. Renaming or removing a bus migrates its AudioStreamPlayer, code, animation and mixer consumers.
-- **[MUST]** Do not assume that a missing bus fails loudly; the fallback to Master can silently hide migration errors.
-- **[MUST]** The configured driver, mix rate and latency are not necessarily the actual runtime device state. Validate on the platform and at runtime where relevant.
+- **[必须]** 配置的默认总线布局路径是项目的 Resource 依赖，必须能解析和加载。
+- **[必须]** 音频总线名称是跨文件的 API。重命名或删除总线时，迁移使用它的 AudioStreamPlayer、代码、动画和混音设置。
+- **[必须]** 不要假定缺失的总线会明显报错；回退到 Master 可能悄悄掩盖迁移错误。
+- **[必须]** 配置的驱动、混音采样率和延迟不一定是运行时的实际设备状态。有影响时，在目标平台和运行时验证。
 
-## Physics
+## 物理
 
-- **[REVIEW]** `physics_ticks_per_second` is a whole-project timing and simulation setting; do not change it to speed up tests.
-- **[REVIEW]** Changing `physics_ticks_per_second` can change damping and gameplay feel. Evaluate those effects instead of treating the change as pure precision or performance tuning.
-- **[MUST]** When substantially increasing the physics tick rate, check `max_physics_steps_per_frame` at low rendering FPS so that the simulation does not fall behind or slow down.
-- **[REVIEW]** Evaluate physics interpolation together with the display refresh rate and the render cadence, checking for jitter at nonstandard tick rates.
-- **[MUST]** Physics interpolation is a global simulation and rendering contract. When it changes, validate movement, camera and physics consumers.
-- **[REVIEW]** A physics backend change is a migration-level behavior change. Pin and validate the backend when project correctness depends on backend-specific behavior.
-- **[REVIEW]** Running physics on a separate thread changes API and threading constraints and requires a review of the code that crosses threads.
+- **[复核]** `physics_ticks_per_second` 是整个项目的时序与模拟设置；不要为了让测试更快而修改它。
+- **[复核]** 修改 `physics_ticks_per_second` 可能改变阻尼和玩法手感。评估这些影响，不要把它当作单纯的精度或性能调整。
+- **[必须]** 大幅提高物理帧率时，在渲染 FPS 较低的情况下检查 `max_physics_steps_per_frame`，避免模拟落后或变慢。
+- **[复核]** 物理插值要结合显示刷新率和渲染节奏评估，检查非标准物理帧率下的抖动。
+- **[必须]** 物理插值是全局的模拟与渲染契约。修改它时，验证移动、相机和物理的使用方。
+- **[复核]** 更换物理后端是迁移级的行为变化。项目正确性依赖某个后端的特有行为时，固定并验证该后端。
+- **[复核]** 在独立线程中运行物理会改变 API 与线程约束，需要复核跨线程的代码。
 
-## Localization
+## 本地化
 
-- **[MUST]** A translation file that exists in the project is not necessarily registered for runtime localization.
-- **[MUST]** Define the fallback locale deliberately; do not rely accidentally on English or the editor locale.
-- **[MUST]** Use locale identifiers that the target Godot version and the project's localization contract support.
-- **[MUST]** Locale overrides for tests are temporary test or runtime state, not persistent production project configuration.
-- **[MUST]** `internationalization/locale/test` also affects exported projects. Isolate Editor-only locale tests with an appropriate `editor` feature override or another test configuration, so that the test locale does not enter production exports.
-- **[MUST]** Translation remaps create a dependency between the source and each locale, and are migrated together.
-- **[PREFER]** Use pseudolocalization as a validation tool where UI localization coverage matters.
+- **[必须]** 项目中存在翻译文件，不代表它已注册用于运行时本地化。
+- **[必须]** 有意设定回退语言区域；不要碰巧依赖英语或编辑器的语言区域。
+- **[必须]** 使用目标 Godot 版本和项目本地化契约支持的语言区域标识符。
+- **[必须]** 测试用的语言区域覆盖是临时的测试或运行时状态，不是持久的生产项目配置。
+- **[必须]** `internationalization/locale/test` 也会影响导出的项目。仅在编辑器中运行的语言区域测试，用合适的 `editor` feature 覆盖或其他测试配置隔离，避免测试语言区域进入生产导出。
+- **[必须]** 翻译重映射在源资源和每个语言区域之间建立依赖，要一起迁移。
+- **[优先]** UI 本地化覆盖率有影响时，用伪本地化作为验证工具。
 
-## Renderer
+## 渲染器
 
-- **[MUST]** The configured renderer and driver are not necessarily the actual runtime renderer. Validate runtime behavior where it is renderer-specific.
-- **[REVIEW]** A renderer or driver change affects compatibility, performance and rendering across the whole project.
-- **[MUST]** Do not change the renderer baseline merely to simplify one shader or effect.
+- **[必须]** 配置的渲染器和驱动不一定是运行时实际使用的渲染器。运行时行为与渲染器相关时，验证运行时行为。
+- **[复核]** 更换渲染器或驱动会影响整个项目的兼容性、性能和渲染效果。
+- **[必须]** 不要只为了简化某个 Shader 或效果而改变渲染器基线。
 
-## Viewport, window, and stretch
+## 视口、窗口与拉伸
 
-- **[MUST]** The base viewport or render size and the initial window size are distinct concepts.
-- **[MUST]** Set the stretch mode and aspect deliberately, and validate both world camera and UI behavior.
-- **[PREFER]** Low-resolution pixel games often use viewport or integer-scale strategies, but do not impose a universal pixel-perfect configuration.
-- **[MUST]** Pixel snapping of transforms and pixel snapping of vertices are distinct settings, and UI pixel snapping is separate from both.
-- **[MUST]** Pixel-perfect output is a combined system of viewport, stretch, import, sampling and layout settings, not one checkbox.
-- **[MUST]** Runtime window preferences belong to user and runtime APIs and `user://`, not to permanent `project.godot` rewrites.
+- **[必须]** 基础视口或渲染尺寸与初始窗口尺寸是不同的概念。
+- **[必须]** 有意设定拉伸模式和宽高比处理，并同时验证世界相机和 UI 的表现。
+- **[优先]** 低分辨率像素游戏常用视口或整数缩放策略，但不要强加一套通用的像素完美配置。
+- **[必须]** 变换的像素吸附与顶点的像素吸附是不同的设置，UI 的像素吸附又与两者分开。
+- **[必须]** 像素完美的输出由视口、拉伸、导入、采样和布局设置共同组成，不是一个勾选框。
+- **[必须]** 运行时的窗口偏好属于用户与运行时 API 以及 `user://`，不通过永久改写 `project.godot` 保存。
 
 ## HDR
 
-- **[REVIEW]** HDR 2D is a global rendering contract that affects shader and color behavior, and requires representative render validation.
+- **[复核]** HDR 2D 是全局渲染契约，影响 Shader 和颜色行为，需要有代表性的渲染验证。

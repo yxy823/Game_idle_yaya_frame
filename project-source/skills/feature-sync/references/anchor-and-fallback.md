@@ -1,47 +1,52 @@
-# Anchor recovery and current-document alignment
+# 锚点恢复与当前文档对齐
 
-Use this reference from [feature-sync](../SKILL.md) Stage 0 when the last `revision_log` entry has no usable `synced_at_commit`, or before reusing an anchor for newly admitted GDD or professional sources. The record fields themselves are defined under [Synchronization records](../../../../methodology/02-feature-list-schema.md#synchronization-records) in methodology 02.
+在 [feature-sync](../SKILL.md) 阶段 0 中，下列情况使用本参考：
 
-## Recover an anchor from history
+- 最后一条 `revision_log` 条目没有可用的 `synced_at_commit`；
+- 要为新纳入的 GDD 或专业来源复用一个锚点之前。
 
-Inspect planning commits and their actual Product and Feature contents. Choose a verified source state that the relevant plan already reflects, early enough to include all unsynchronized changes to existing work.
+记录字段本身的定义见 methodology 02 的 [同步记录](../../../../methodology/02-feature-list-schema.md#同步记录)。
 
-The following do not prove source synchronization:
+## 从历史中恢复锚点
 
-- a commit that merely touches an index or detail file, updates notes or status, or adds an engineering Feature;
-- the first appearance of an empty copied index;
-- an empty diff from an unverified recent commit.
+检查规划提交以及其中实际的 Product 和 Feature 内容。选择一个经过核实、且相关计划已经反映了的来源状态；它要足够早，能包含对已有工作所有尚未同步的变化。
 
-Later Product planning must not silently advance the baseline for older work.
+下列情况不能证明发生过源同步：
 
-## Check sources with unknown coverage
+- 一个只是碰到了索引或详情文件、更新了笔记或状态，或者新增了一个工程 Feature 的提交；
+- 一个空的、由创建器复制来的索引第一次出现；
+- 一个未经核实的近期提交显示差异为空。
 
-A source that predates the anchor can still be unsynchronized. Before reusing an anchor for a GDD or professional source that the anchored synchronization did not cover, establish whether the affected plan actually incorporated them by comparing historical source and plan contents.
+后续 Product 的规划不能悄悄推进旧工作的基线。
 
-When coverage remains unknown, use the authorized current-document alignment below for that affected planned scope, alongside any verified diffs. Read the current GDD and professional sources whose coverage is unknown even when their diff is empty; widening the diff path list alone cannot prove coverage. Report the distinction, and do not advance the anchor as if the unknown history had been checked.
+## 检查覆盖情况未知的来源
 
-## Offer current-document alignment
+早于锚点的来源仍可能没有同步过。对于锚定的那次同步没有覆盖的 GDD 或专业来源，复用锚点之前，先比较历史上的来源和计划内容，确认受影响的计划是否真的纳入了它们。
 
-If no reliable baseline can be established, disclose the missing historical evidence and offer whole-document alignment of the current sources and the current plan. Continue only within explicit authorization; do not ask again if this concrete scope is already approved.
+覆盖情况仍然未知时，对受影响的已规划范围使用下面已获授权的当前文档对齐，并与已核实的差异一起处理。覆盖情况未知的当前 GDD 和专业来源，即使差异为空也要阅读；只扩大差异的路径列表不能证明覆盖。报告这一区别，不要像已经检查过未知历史那样推进锚点。
 
-During Stage 2:
+## 提出当前文档对齐
 
-- Read the complete current sources relevant to existing work and compare them with the current plan.
-- Report present alignment gaps and unknown history. Do not invent historical additions or removals.
-- Use the report title `Current-document alignment (historical baseline unverified; HEAD <hash>)`.
-- Skip the unavailable before/after diff. All scope, impact and Stage 3 approval rules still apply, including the deferred planning of later Products.
+如果无法建立可靠的基线，说明缺少的历史证据，并提出对当前来源和当前计划做整体文档对齐。只在明确的授权范围内继续；这个具体范围已经获批时，不再询问。
 
-## Record the revision
+在阶段 2 中：
 
-For an approved whole-document alignment:
+- 阅读与已有工作相关的完整当前来源，与当前计划比较。
+- 报告现在的对齐缺口和未知的历史。不要编造历史上的新增或删除。
+- 报告标题使用 `Current-document alignment (historical baseline unverified; HEAD <hash>)`。
+- 跳过无法获得的前后差异。所有关于范围、影响和阶段 3 批准的规则仍然适用，包括后续 Product 的推迟规划。
 
-- Use the actually inspected HEAD for both `anchor_commit` and `synced_at_commit`.
-- State in `summary` that current alignment established this baseline and that earlier source history is unknown. This records a new comparison point, not a reconstructed historical diff.
-- Support each migration with inspected content; unresolved historical claims stay unresolved.
-- Do not invent a commit, add tracking fields or rewrite older revisions.
+## 记录修订
 
-When verified historical differences and sources with unknown coverage are handled together:
+对获批的整体文档对齐：
 
-- Keep the verified before and after anchors for the known differences.
-- Identify in `summary` the sources that were aligned only at the current HEAD, and claim no historical diff for them.
-- Support each migration with an actually inspected before or after source. Unresolved source coverage blocks a claim of complete synchronization.
+- `anchor_commit` 和 `synced_at_commit` 都使用实际检查的 HEAD。
+- 在 `summary` 中说明这个基线由当前对齐建立，更早的来源历史未知。这记录的是一个新的比较点，不是重建出来的历史差异。
+- 每条迁移都要有检查过的内容支撑；未解决的历史说法保持未解决。
+- 不要编造提交、添加追踪字段或改写更早的修订。
+
+已核实的历史差异与覆盖情况未知的来源一起处理时：
+
+- 对已知的差异，保留已核实的前后锚点。
+- 在 `summary` 中写明哪些来源只在当前 HEAD 上做了对齐，对它们不声称存在历史差异。
+- 每条迁移都要有实际检查过的前或后来源支撑。来源覆盖情况未解决时，不能声称同步已完整。

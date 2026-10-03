@@ -1,18 +1,18 @@
-# 10 GDScript Rules
+# 10 GDScript 规则
 
-Applies to project-owned `.gd` files, including project-owned test scripts. Vendor addon code follows the Core vendor rules unless the task explicitly owns a patch or fork.
+适用于项目自有的 `.gd` 文件，包括项目自有的测试脚本。第三方插件代码遵循核心规则中的第三方规则，除非任务明确负责其补丁或 fork。
 
-Read the documents that match the change; a `.gd` file does not require every topic.
+阅读与修改内容匹配的文档即可；一个 `.gd` 文件不需要读遍所有主题。
 
-| Document | Read when |
+| 文档 | 何时阅读 |
 | --- | --- |
-| `typing-and-api.md` | Editing GDScript syntax, declarations, naming, exports, properties, public APIs or control flow; declaring signals or choosing the emit and connect API; consult its examples only when needed |
-| `structure-and-dependencies.md` | Changing responsibilities, dependency direction, communication between modules (Command down, signal up) or global services |
-| `state-resources-and-loading.md` | Changing state or Resource use, loading, error handling, time or randomness |
-| `godot-lifecycle-and-input.md` | Using node lifecycle callbacks, CharacterBody movement, signal connection lifetime, `await`, scene changes or input event handling |
-| `editor-tools-static-state-and-concurrency.md` | Changing `@tool` or editor code, static state, threads or Godot-specific performance behavior |
-| `validation.md` | Any GDScript change: determine its applicable validation |
+| `typing-and-api.md` | 编辑 GDScript 语法、声明、命名、导出、属性、公共 API 或控制流；声明信号，或选择 emit 与 connect 的 API；只在需要时查看其中的示例 |
+| `structure-and-dependencies.md` | 修改职责、依赖方向、模块间通信（命令向下，信号向上）或全局服务 |
+| `state-resources-and-loading.md` | 修改状态或 Resource 的使用、加载、错误处理、时间或随机数 |
+| `godot-lifecycle-and-input.md` | 使用节点生命周期回调、CharacterBody 移动、信号连接的生命周期、`await`、切换场景或输入事件处理 |
+| `editor-tools-static-state-and-concurrency.md` | 修改 `@tool` 或编辑器代码、静态状态、线程，或 Godot 特有的性能行为 |
+| `validation.md` | 任何 GDScript 修改：确定需要哪些验证 |
 
-Signal rules are split by question: declaring signals and the emit and connect API in `typing-and-api.md`; the direction of communication in `structure-and-dependencies.md`; connection lifetime and awaiting in `godot-lifecycle-and-input.md`; editor versus code connections in [Scene UI and script binding](../20-scenes/ui-and-scripts.md#signal-connection-style). Input Action semantics are defined in [InputMap configuration](../40-project-config/input-map.md).
+信号规则按问题分在不同文档：信号声明以及 emit 与 connect 的 API 在 `typing-and-api.md`；通信方向在 `structure-and-dependencies.md`；连接的生命周期与等待在 `godot-lifecycle-and-input.md`；编辑器连接与代码连接的选择在[场景 UI 与脚本绑定](../20-scenes/ui-and-scripts.md#信号连接方式)。输入动作（Input Action）的语义由 [InputMap 配置](../40-project-config/input-map.md) 规定。
 
-`gdlint.json` in the repository root owns the configured numeric linter thresholds.
+仓库根目录的 `gdlint.json` 负责配置 linter 的数值阈值。

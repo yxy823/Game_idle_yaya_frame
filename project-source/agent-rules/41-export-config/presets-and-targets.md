@@ -1,18 +1,18 @@
-# Export Presets and Targets
+# 导出预设与目标
 
-Treat export presets as build and distribution APIs.
+把导出预设当作构建与分发 API。
 
-## Presets
+## 预设
 
-- **[MUST]** `export_presets.cfg` is build and distribution configuration, not runtime `project.godot` configuration.
-- **[PREFER]** Use the Godot Export UI or supported APIs for structural preset edits. Small deterministic text changes require exact knowledge of the format and real export validation.
-- **[MUST]** A preset name consumed by the CLI, CI or build tooling is a build API; rename it only together with a consumer migration.
-- **[MUST]** Validate the build mode that is actually required. A debug export, a release export and a PCK-only export do not prove the same contract.
-- **[MUST]** A relative output path passed to a CLI `--export-*` command resolves from the project root, not from the shell's working directory. Resolve artifact checks against that project-root path.
-- **[PREFER]** Keep a committed preset `export_path` project-relative and under repository control. An external absolute artifact path is acceptable when explicit CI or build orchestration owns it; do not commit machine- or user-specific paths into the shared preset.
+- **[必须]** `export_presets.cfg` 是构建与分发配置，不是运行时的 `project.godot` 配置。
+- **[优先]** 结构性的预设修改使用 Godot 导出界面或受支持的 API。小而确定的文本修改需要准确掌握文件格式，并通过真实导出验证。
+- **[必须]** 被命令行、CI 或构建工具使用的预设名称是构建 API；只有同时迁移使用方时才能重命名。
+- **[必须]** 验证实际需要的构建模式。debug 导出、release 导出和仅 PCK 导出证明的不是同一个契约。
+- **[必须]** 传给命令行 `--export-*` 命令的相对输出路径从项目根目录解析，不从 shell 的工作目录解析。产物检查按这个基于项目根目录的路径进行。
+- **[优先]** 提交到仓库的预设 `export_path` 保持为项目相对路径，并处于仓库管理之下。由明确的 CI 或构建编排负责时，可以使用外部的绝对产物路径；不要把特定机器或特定用户的路径提交到共享预设中。
 
-## Target identity
+## 目标身份
 
-- **[REVIEW]** Published package, bundle and application identifiers are distribution identity. Changing them can create a new installed application identity and requires a release and update review.
-- **[MUST]** Do not alter the target platform, architecture, renderer, template or package identity as a cleanup or convenience change.
-- **[MUST]** Export templates and custom templates are compatible with the approved Godot executable and version used for validation.
+- **[复核]** 已发布的包名、bundle 标识和应用标识是分发身份。修改它们可能产生一个新的已安装应用身份，需要复核发布和更新的影响。
+- **[必须]** 不要以整理或图方便为由修改目标平台、架构、渲染器、模板或包身份。
+- **[必须]** 导出模板和自定义模板与验证所用的、经认可的 Godot 可执行文件及版本兼容。

@@ -1,21 +1,21 @@
-# Runtime Scene Tests (L3)
+# 运行时场景测试（L3）
 
-L3 tests verify critical runtime flows across several systems, starting from a legal scenario and using production-facing operations.
+L3 测试从合法场景出发，使用面向生产的操作，验证跨多个系统的关键运行时流程。
 
-## Scope
+## 适用范围
 
-- **[PREFER]** Cover critical, high-value gameplay flows that cross systems, not every local function.
-- **[MUST]** Drive the behavior under test through a real production-facing Command, API or input path.
-- **[MUST]** Fixture and scenario setup may establish legal preconditions quickly, but must not directly produce the result of the operation being tested.
-- **[PREFER]** Start from the legal scenario or checkpoint closest to the flow. Starting from the main scene is required only when application startup itself is the contract.
+- **[优先]** 覆盖跨系统的、关键且高价值的玩法流程，不覆盖每个局部函数。
+- **[必须]** 通过真实的、面向生产的 Command、API 或输入路径驱动被测行为。
+- **[必须]** 夹具和场景准备可以快速建立合法的前置条件，但不能直接产出被测操作的结果。
+- **[优先]** 从最接近该流程的合法场景或检查点开始。只有应用启动本身是契约时，才必须从主场景开始。
 
-## Reality and doubles
+## 真实实现与测试替身
 
-- **[MUST]** Core systems that belong to the tested runtime flow use their real production implementation.
-- **[REVIEW]** External, platform, network and telemetry boundaries outside the tested contract may use controlled Fakes that preserve the production interface.
-- **[PREFER]** Assert the authoritative final state and domain events, plus a small number of meaningful milestones that help locate failures.
-- **[MUST]** Do not lock down the order of all internal method calls unless that order is itself a business contract.
+- **[必须]** 属于被测运行时流程的核心系统使用真实的生产实现。
+- **[复核]** 被测契约之外的外部、平台、网络和遥测边界，可以使用保留生产接口的受控 Fake。
+- **[优先]** 断言权威的最终状态和领域事件，加上少量有助于定位失败的有意义的里程碑。
+- **[必须]** 不要锁定所有内部方法调用的顺序，除非这个顺序本身是业务契约。
 
-## Visual boundary
+## 视觉边界
 
-- **[MUST]** L3 behavior tests use deterministic assertions on runtime state, events, lifecycle and input. Supplemental rendering checks and manual visual acceptance follow the [visual boundary](testing-strategy.md#visual-boundary).
+- **[必须]** L3 行为测试对运行时状态、事件、生命周期和输入使用确定性的断言。补充的渲染检查和人工视觉验收遵循[视觉验证边界](testing-strategy.md#视觉验证边界)。

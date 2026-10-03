@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Plan Review"
-  short_description: "Review GDD designs and Godot plans with focused findings"
+  display_name: "Godot 方案审查"
+  short_description: "审查 GDD 设计和 Godot 方案，给出聚焦的结论"
 
 policy:
   allow_implicit_invocation: true

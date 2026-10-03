@@ -1,6 +1,6 @@
 interface:
-  display_name: "Game Presentation Planning"
-  short_description: "Plan game moments, component choices and adoption links"
+  display_name: "游戏表现规划"
+  short_description: "规划游戏表现、组件方案和采用关系"
 
 policy:
   allow_implicit_invocation: true

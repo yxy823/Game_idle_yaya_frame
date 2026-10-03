@@ -1,46 +1,46 @@
-# Document structure and ownership
+# 文档结构与归属
 
-Use this reference when readers cannot find an explanation, a document serves unrelated purposes, or several pages maintain the same facts. First identify the lookup problem and the actual consumers of the affected files.
+读者找不到说明、一份文档承担了互不相关的用途，或几份页面在维护同一批事实时，使用本参考。先弄清查找上的具体问题，以及受影响文件的实际读者和读取方。
 
-## Organize around project questions
+## 围绕项目问题组织
 
-Keep the project's prescribed locations for GDD, Product, Feature records, architecture, knowledge and evidence. Within the area open to organization, group pages by what readers need to understand or do. A navigation-only grouping is insufficient when a growing directory still hides unrelated material in one flat collection; a small coherent topic needs no extra hierarchy.
+GDD、Product、Feature 记录、架构、经验知识和证据保持在项目规定的位置。在允许整理的范围内，按读者需要理解或完成的事来分组页面。如果目录不断变大，仍把不相关的材料平铺在一起，只加一层导航分组是不够的；内容少而连贯的主题不需要额外层级。
 
-For example, a growing knowledge topic about scene lifecycle may benefit from separate entries for reconnecting signals and restoring a reopened interface. Each entry should answer a real recurring question and link its evidence. A short note about one incident may be better served by the existing entry. These are possible groupings, not mandatory file names or proof that this project has those defects.
+例如，一个关于场景生命周期的经验主题不断扩充后，可以把“重新连接信号”和“恢复重新打开的界面”拆成两个条目。每个条目都应回答一个真实且反复出现的问题，并链接到它的证据。只涉及一次事故的短记录，可能并入已有条目更合适。这些只是可能的分组方式，不是强制的文件名，也不证明本项目存在这些问题。
 
-Compare reusing the current page, improving its headings, splitting independent explanations, merging duplicates and moving files. Choose a directory change when its concrete navigation benefit justifies updating readers and references. A request to clarify one Feature description does not authorize moving the Feature ledger.
+比较几种做法：复用当前页面、改进它的标题、拆出独立的说明、合并重复内容、移动文件。只有当目录调整带来的具体导航收益值得更新读者和引用时，才调整目录。要求澄清某个 Feature 的描述，并不授权移动 Feature 台账。
 
-Before an authorized move or rename, inspect links, template references, source fields, identifiers and any tool that consumes the path. Preserve historical meaning and stable IDs. Update the affected references in the same task; use the project's actual compatibility policy instead of introducing redirects or a second path map.
+在已获授权的移动或重命名之前，检查链接、模板引用、来源字段、标识符，以及所有读取该路径的工具。保留历史含义和稳定的 ID。在同一任务里更新受影响的引用；遵循项目实际的兼容策略，不引入重定向或第二份路径映射。
 
-## Give each explanation an owner
+## 为每项说明确定所属文档
 
-Follow the local contracts identified in [Writing guide](writing-guide.md#establish-the-document-contract). Those contracts decide which document owns a rule, a delivery boundary, a technical choice or a result; this reference does not define a second schema.
+遵循[写作指南](writing-guide.md#确定文档契约)中确认的本地契约。由这些契约决定规则、交付边界、技术选择或结果分别由哪份文档负责；本参考不另定一套结构。
 
-A useful distinction in a Godot project is:
+在 Godot 项目里，下面的区分通常有用：
 
-- The governing design explains a gameplay rule, such as what limits inventory capacity.
-- Delivery and Feature documents explain the adopted scope and how it will be verified, linking that rule instead of keeping another copy of its formula.
-- A relevant architecture page explains the implemented responsibility or dependency, with links to an accepted decision when its rationale matters.
-- A knowledge entry explains a reusable lesson from actual work and links the original incident or evidence.
+- 负责的设计文档解释玩法规则，例如什么限制了背包容量。
+- 交付文档和 Feature 文档解释采纳的范围以及如何验证，链接到该规则，而不是另存一份规则公式。
+- 架构页面解释已实现的职责或依赖；理由重要时，链接到已采纳的决策。
+- 经验知识条目解释从实际工作中得到的可复用经验，并链接原始事故或证据。
 
-Use this distinction only where it matches the current owning sources. Do not create every document in order to explain a small change, move binding requirements into knowledge, or use a documentation rewrite to adopt a new technical design.
+只在这种区分符合当前所属来源时才使用它。不要为了解释一个小改动而把每类文档都建一遍，不要把有约束力的需求搬进经验知识，也不要借文档改写采纳新的技术设计。
 
-Keep live task state in its existing record. Historical verification and decisions retain their original version and limits. When a later source supersedes them, add the appropriate current reference or correction without rewriting history as though the newer behavior had always existed.
+进行中的任务状态保留在它现有的记录里。历史上的验证和决策保留当时的版本和限制。后来的来源取代它们时，补上当前的引用或更正，不要改写历史，好像新行为一直存在一样。
 
-## Make navigation useful
+## 让导航真正有用
 
-An entry page answers who it serves, what is available and where to continue. Topic indexes provide links and concise purposes; the linked pages carry the full explanations. Avoid duplicating an entire setup procedure in the project README and the tool guide merely to make both pages appear complete.
+入口页回答三件事：服务谁、有哪些内容、接下来去哪里。主题索引提供链接和简短用途；完整的说明放在被链接的页面里。不要为了让项目 README 和工具指南看起来都完整，就在两处各写一遍完整的安装配置步骤。
 
-Name a page for its object or task. "Inventory persistence contract" and "Reproduce an inventory restore failure" serve different questions; use such a distinction only when both documents are actually needed. Preserve conventional Feature file names and other identifiers required by project tools. Document titles and ordinary prose follow `document_language`.
+页面按它的对象或任务命名。“背包持久化约定”和“复现背包恢复失败”回答的是不同的问题；只有两份文档确实都需要时才这样区分。保留约定俗成的 Feature 文件名和项目工具需要的其他标识符。文档标题和普通正文遵循 `document_language`。
 
-For a reader who must perform one step, point to the relevant preparation, check or recovery section. A broad link to all project methodology makes the reader rediscover the route. Verify both that the target exists and that the linked section contains the needed information.
+读者只需执行某一步时，直接指向对应的准备、检查或恢复小节。笼统地链接到全部项目方法论，会让读者重新摸索路线。既要确认链接目标存在，也要确认被链接的小节确实包含所需的信息。
 
-## Remove duplicate bodies, retain useful context
+## 去掉重复正文，保留有用的上下文
 
-Keep a full rule, method or tool contract at its owning source. Elsewhere retain the local action, trigger, ordering dependency or warning needed to use it, plus an accurate link.
+完整的规则、方法或工具约定只保留在它的所属来源。其他位置保留使用它所需的本地动作、触发条件、先后依赖或警告，再加一个准确的链接。
 
-For example, a save/load verification guide may need to state which local scene and test data the current check uses. It can link the test runner's documented options instead of maintaining a second command reference. A Feature explanation may summarize the outcome of an acceptance criterion, but must not maintain a second editable set of criterion IDs or passing results.
+例如，存档读档的验证指南可能需要写明当前检查使用哪个本地场景和测试数据。它可以链接测试运行器已有的选项说明，而不是另维护一份命令参考。Feature 说明可以概括某条验收条件的结果，但不能再维护一套可编辑的验收条件 ID 或通过结果。
 
-Repeated words alone do not establish unnecessary duplication. Remove repeated definitions and full procedures when they add maintenance burden; do not shorten a pointer until its triggering condition or destination becomes unclear. How a retained reminder is worded follows **Explain a shared reminder once** in the [Writing guide](writing-guide.md#explain-the-project-clearly).
+措辞重复本身不能说明存在多余的重复。重复的定义和完整流程会增加维护负担时，才删除它们；指引不要缩短到触发条件或目标变得不清楚。保留下来的提醒怎么措辞，遵循[写作指南](writing-guide.md#把项目讲清楚)中的 **通用提醒只讲一次**。
 
-Check the revised reading path from the original user question to its answer. A successful reorganization preserves the relevant contract, makes the answer easier to locate and leaves no abandoned authoritative copy or broken consumer within scope.
+从用户最初的问题出发，沿修改后的阅读路径走到答案。一次成功的重组会保留原有的契约，让答案更容易找到，并且在范围内不留下被遗弃的权威副本或失效的读取方。

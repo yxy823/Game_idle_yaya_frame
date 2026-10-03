@@ -1,74 +1,74 @@
 ---
 name: product-author
-description: "Organize Product delivery scope from current GDD sources and coordinate authorized Feature planning or synchronization. Use for `docs/product.md` and the current Product document. Not for game design or GDD writing (design-gdd)."
+description: "根据当前的 GDD 来源整理 Product 交付范围，并协调已授权的 Feature 规划或源同步。用于 `docs/product.md` 和当前的 Product 文档。不用于游戏设计或 GDD 编写（design-gdd）。"
 ---
 
-# Product delivery authoring
+# Product 交付编写
 
-## Authority and entry
+## 权限与入口
 
-Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. Product delivery needs actual GDD content covering its scope; an empty directory, a page that only states its purpose, a Product or code does not substitute for it. If that design is missing or unresolved, return the design work to `design-gdd` within the current authorization before preparing the dependent Product. An unrelated unfinished GDD topic does not block a sufficiently defined delivery.
+GDD 前提、文档归属、Product 结构和模板，按 `methodology/01-product-doc-structure.md` 执行。Product 交付需要真实的 GDD 内容覆盖它的范围；空目录、只写了用途的页面、Product 或代码都不能代替它。如果这部分设计缺失或尚未确定，在当前授权范围内先把设计工作交回 `design-gdd`，再准备依赖它的 Product。无关的、尚未完成的 GDD 主题，不会阻塞一个已经定义清楚的交付。
 
-Within the current authorization, maintain Product as delivery scope and reference GDD as the game-design source. Read the actual GDD entry and follow its relevant topic links without duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order; apply **Delivery outcomes and prerequisites** in methodology 01 when judging those boundaries. Only the current unit receives `docs/product/NN-<delivery>.md`.
+在当前授权范围内，把 Product 维护为交付范围，并把 GDD 作为游戏设计来源引用。阅读实际的 GDD 入口，沿着本次涉及的主题链接阅读，不复制其中的规则。`docs/product.md` 把约定的范围对应到交付单元、依赖和计划顺序；判断这些边界时，按 methodology 01 的 **交付成果与前提** 执行。只有当前的交付单元才有 `docs/product/NN-<delivery>.md`。
 
-Apply `methodology/05-document-language.md`, the project Git rules, the relevant Project Rules and accepted architecture decisions. A file, a commit or observed code behavior does not approve a proposed design. Preserve explicit decisions and authorization; discussion-only requests return a proposal without writes.
+遵守 `methodology/05-document-language.md`、项目的 Git 规则、本次涉及的项目规则和已接受的架构决定。文件、提交或观察到的代码行为，都不代表拟定的设计已获批准。保留明确的决定和授权；只要求讨论时，返回方案，不写文件。
 
-## Select the requested result
+## 选择要求的结果
 
-Read the applicable **Design scope and boundaries** and **Open design questions** under `methodology/01-product-doc-structure.md`, relevant GDD topics, Product overview, lightweight Feature index and any affected detail/source documents. Use relevant open questions to identify unresolved delivery prerequisites and link them from the affected Product section; do not resolve a game rule by choosing a delivery default. Follow real dependencies; do not load all future design or all Feature details.
+阅读 `methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**、本次涉及的 GDD 主题、Product 总览、轻量 Feature 索引，以及受影响的详细文档或来源文档。用本次涉及的开放问题找出尚未解决的交付前提，并从受影响的 Product 章节链接它们；不要通过选择一个交付默认值来决定游戏规则。按真实的依赖阅读；不要加载全部未来设计或全部 Feature 详情。
 
-| Requested result | Work to perform |
+| 要求的结果 | 要做的工作 |
 | --- | --- |
-| Pre-split the agreed delivery scope | Create or revise only `docs/product.md`: outcomes, boundaries, GDD mappings, dependencies and order. Do not create every Product file or any Feature plan. |
-| Detail the current Product | Revisit the latest GDD and completed work, then write only the current delivery document from the canonical template. Resolve dependencies that affect this delivery without detailing future Products. |
-| Change game design | Return to `design-gdd`, or `design-balance` for an authorized explicit numeric topic; after the owning design changes, adjust affected delivery scope and existing plans. |
-| Change delivery boundaries or order without changing design | Update Product only; preserve GDD intent and evaluate affected existing Features. |
-| Formalize already implemented work | Compare the confirmed GDD with actual behavior; reuse suitable implementation under **Adopting existing implementation** in methodology 02. Records do not establish past approval or completion. |
-| Maintain meaning-preserving terminology | Use `project-terminology`; no new Product or Feature plan is needed. |
-| Repair an implementation that violates explicit requirements | Return to the unfinished Feature or `engineering-change-plan`; do not rewrite design to justify the defect. |
-| Change only a professional specification | Use its owner under methodology 11; coordinate a GDD change only if game design changes. |
+| 预拆分约定的交付范围 | 只创建或修改 `docs/product.md`：成果、边界、与 GDD 的对应、依赖和顺序。不创建全部 Product 文件，也不创建任何 Feature 计划。 |
+| 细化当前 Product | 重新查看最新的 GDD 和已完成的工作，然后按标准模板只编写当前的交付文档。解决影响本次交付的依赖，不细化未来的 Product。 |
+| 修改游戏设计 | 交回 `design-gdd`；获准的明确数值主题交给 `design-balance`。所属设计修改之后，再调整受影响的交付范围和已有计划。 |
+| 只改交付边界或顺序，不改设计 | 只更新 Product；保持 GDD 的意图，并评估受影响的已有 Feature。 |
+| 把已经实现的工作正式纳入 | 对比已确认的 GDD 和实际行为；按 methodology 02 的 **接手已有实现** 复用合适的实现。记录不能证明过去已获批准或已完成。 |
+| 维护不改变含义的术语 | 使用 `project-terminology`；不需要新的 Product 或 Feature 计划。 |
+| 修复违反明确要求的实现 | 交回尚未完成的 Feature 或 `engineering-change-plan`；不要为了给缺陷找理由而改写设计。 |
+| 只修改专业规格 | 按 methodology 11 交给它的所属负责方；只有游戏设计发生变化时，才协调修改 GDD。 |
 
-A Product is a verifiable delivery unit, not necessarily a complete game system or a GDD chapter. The overview may pre-split several units, but future units retain only their outline there. A GDD change does not automatically require future Product files.
+Product 是可验证的交付单元，不一定是完整的游戏系统或 GDD 的一章。总览可以预拆分出多个单元，但未来的单元在总览中只保留概要。GDD 变化不会自动要求创建未来的 Product 文件。
 
-## Resolve actual gaps
+## 解决真实的缺口
 
-Reuse clear requirements and settled answers. For a material ambiguity in delivery boundaries, order or integration, use `product-spec-elicitor` with the relevant source sections, requested change, current Product scope and existing decisions. It returns a proposal without writing. An unresolved game rule returns to `design-gdd`; numeric design within settled gameplay belongs to `design-balance`. A clear change needs no additional elicitation.
+复用清楚的要求和已定的答案。交付边界、顺序或接入方面有重要歧义时，把本次涉及的来源章节、要求的修改、当前 Product 范围和已有的决定交给 `product-spec-elicitor`。它返回方案，不写文件。尚未确定的游戏规则交回 `design-gdd`；已定玩法内的数值设计属于 `design-balance`。修改清楚时，不需要额外澄清。
 
-Distinguish a design change from a delivery choice. New gameplay rules, states, formulas and version design scope belong in GDD; Product identifies which requirements are being delivered, their boundaries and how they connect to existing work. Implementation decisions and rationale use the fixed Feature design, ADR or standalone-decision owner under methodology 10; current structure belongs in architecture and executable behavior in code.
+区分设计变化和交付选择。新的玩法规则、状态、公式和版本设计范围属于 GDD；Product 写明交付哪些要求、它们的边界，以及怎样与已有工作衔接。实现决定和理由按 methodology 10 写在固定的 Feature 设计、ADR 或独立决定文档中；当前结构写在架构文档中，可执行的行为写在代码中。
 
-Explain the effect of a foundational change, deletion or invalidation of completed behavior. Obtain only decisions not already covered by the user's concrete authorization. Do not silently remove an adopted requirement or use a speculative default as a confirmed rule.
+说明基础性修改、删除或使已完成行为失效会带来什么影响。只就用户的具体授权尚未覆盖的决定征求意见。不要悄悄删除已采用的要求，也不要把推测的默认值当作已确认的规则。
 
-## Coordinate professional requirements
+## 协调专业要求
 
-Presentation, UI, art, audio, resource and localization specifications have fixed owners under `methodology/11-specialist-workflows.md`; a specification first written in GDD still belongs to its professional owner, as that file explains. Link game rules and goals at their GDD source without copying them.
+表现、UI、美术、音频、资源和本地化规格，在 `methodology/11-specialist-workflows.md` 中有固定的所属位置；按该文件的说明，即使某项规格最初写在 GDD 中，它仍属于对应的专业负责方。游戏规则和目标链接到它们在 GDD 中的来源，不复制。
 
-For new interfaces or substantial layout or resource changes, use **Visual prototype before dependent implementation** in `methodology/13-prototypes.md`. Presentation planning uses `design-game-presentation`; prototype a presentation only when a concrete uncertainty needs runtime evidence. Resource handoffs use **Resource requirements and handoff** in `methodology/11-specialist-workflows.md`. Keep real samples, missing inputs and applicable visual/listening acceptance visible. Design documentation does not prove a prototype was operated or accepted.
+新界面，或布局、资源的较大变化，按 `methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。表现规划使用 `design-game-presentation`；只有具体的不确定点需要运行时证据时，才为表现做原型。资源交接按 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 处理。真实的示例、缺少的输入以及需要的视觉和听感验收，都要保持可见。设计文档不能证明原型已被运行或已被接受。
 
-Pass the configured document language, relevant facts and the current authorization to supporting work, and continue this task with its actual result.
+把配置的文档语言、本次涉及的事实和当前授权交给支持工作，并根据它的实际结果继续本任务。
 
-## Write and validate the sources
+## 编写并验证来源
 
-Use the Product templates and their semantics from `methodology/templates/README.md` only for the requested Product result.
+只为要求的 Product 结果，使用 `methodology/templates/README.md` 中的 Product 模板及其含义说明。
 
-- Reference substantive design at its owning GDD location and preserve its decision status. Do not maintain a second core loop, system inventory, version scope or rule set in Product; return required source changes to the design owner.
-- In the overview, preserve stable delivery identities and update boundaries, GDD links and dependencies. Future entries need no placeholder files, detailed AC or test registrations.
-- When the current Product is ready, create or revise its delivery document with precise source references, inclusions/exclusions, integration boundaries, delivery acceptance scenarios and material gaps. Observable acceptance can restate the result needed for verification, but rule definitions and values remain at their source.
-- Apply **Delivery decision ownership** in methodology 01 to unresolved choices. When detailing a candidate or changing a question's scope, move its body to the prescribed owner and update references in the same edit; do not leave parallel open-question bodies in the overview and detail.
-- Preserve existing records and filenames; a collision requires inspecting the actual owner rather than overwriting or allocating a duplicate. Meaning-preserving definitions use `project-terminology`.
-- Check source coverage, internal consistency and affected links. Distinguish unreadable material, unadopted proposals, implementation observations and actual user decisions.
+- 实质性的设计引用它在 GDD 中的所属位置，并保留它的决定状态。不要在 Product 中另外维护一份核心循环、系统清单、版本范围或规则集；需要修改来源时，交回设计负责方。
+- 在总览中，保持交付单元的标识稳定，更新边界、GDD 链接和依赖。未来的条目不需要占位文件、详细的 AC 或测试登记。
+- 当前 Product 准备好时，创建或修改它的交付文档，写明精确的来源引用、包含与排除的内容、接入边界、交付验收情景和重要缺口。可观察的验收条件可以复述验证所需的结果，但规则定义和数值仍保留在来源中。
+- 对尚未决定的选择，按 methodology 01 的 **交付决策的归属** 处理。细化候选值或改变问题的范围时，在同一次编辑中把正文迁到规定的所属位置并更新引用；不要在总览和详细文档中留下并行的开放问题正文。
+- 保留已有的记录和文件名；遇到冲突时，检查实际的所属文档，不要覆盖，也不要再分配一个重复的编号。不改变含义的定义使用 `project-terminology`。
+- 检查来源覆盖、内部一致性和受影响的链接。区分无法读取的材料、未采纳的建议、对实现的观察和用户的实际决定。
 
-Follow `agent-rules/00-core/git-worktree-and-commits.md` for staging only this task's paths or hunks and for validated local commits. Standalone source work uses `docs(product): <中文变更摘要>`; supporting work inside a Feature follows its existing commit boundary. Before initial planning or synchronization, satisfy the committed-source baseline in methodology 02. Report an unmet prerequisite, including a no-commit instruction; do not invent an anchor or absorb unrelated edits.
+按 `agent-rules/00-core/git-worktree-and-commits.md` 只暂存本任务的路径或差异块，并创建经过验证的本地提交。单独的来源工作使用 `docs(product): <中文变更摘要>`；Feature 内部的支持工作沿用它已有的提交边界。首次规划或源同步之前，满足 methodology 02 中“来源已提交”的基线要求。报告未满足的前提，包括用户要求不提交的情况；不要编造锚点，也不要吸收无关的修改。
 
-## Plan, synchronize and continue
+## 规划、源同步与继续
 
-Use **Product-by-Product planning** in methodology 02 and the current request to choose the next action:
+根据 methodology 02 的 **逐个 Product 规划** 和当前请求选择下一步：
 
-- A pre-split-only or document-only request ends at that requested result. It does not automatically authorize Feature planning.
-- When planning is authorized, detail the current Product first, then use `feature-plan` once to cover its complete necessary scope with multiple Features. Reuse an existing plan rather than regenerate it.
-- A substantive source change that affects already planned or completed work uses `feature-sync`. A changed future GDD topic can affect current consumers even when that future Product is unplanned.
-- If only future, unplanned scope changes, reflect the owning design result in the relevant overview outline; defer its Product document and Features until its turn.
-- Finish the current Product's required Features before detailing and planning the next. Revisit the next scope against the latest GDD and delivery results, continuing only within the current authorization.
+- 只要求预拆分或只要求写文档时，到要求的结果为止。这不会自动授权 Feature 规划。
+- 获准规划时，先细化当前 Product，再调用一次 `feature-plan`，用多个 Feature 覆盖它全部必要的范围。复用已有的计划，不要重新生成。
+- 实质性的来源变化影响已规划或已完成的工作时，使用 `feature-sync`。即使未来的 Product 尚未规划，修改未来的 GDD 主题也可能影响当前的使用方。
+- 如果只有未来的、尚未规划的范围发生变化，把所属设计的结果反映到总览中对应的概要里；它的 Product 文档和 Feature 推迟到轮到它时再写。
+- 先完成当前 Product 所需的 Feature，再细化和规划下一个。对照最新的 GDD 和交付结果重新查看下一个范围，只在当前授权范围内继续。
 
-Inspect actual planning/synchronization results; invocation is not success. Preserve completed history and use follow-up work for changed completed behavior. A failed synchronization leaves an explicit alignment gap.
+检查规划和源同步的实际结果；调用了不等于成功。保留已完成的历史，已完成的行为发生变化时用后续工作处理。源同步失败时，明确留下对齐缺口。
 
-Report changed sources and delivery scope, validation results, remaining material decisions, planning results when applicable and the next authorized action. Continue implementation through `feature-execute` when authorized, preserving actual human acceptance boundaries.
+报告修改过的来源和交付范围、验证结果、剩余的重要决定、适用时的规划结果，以及下一步已授权的操作。获准实现时，通过 `feature-execute` 继续，并保持人工验收的实际边界。

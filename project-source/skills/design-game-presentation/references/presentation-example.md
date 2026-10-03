@@ -1,28 +1,32 @@
-# Example: item arrival with component alternatives
+# 示例：带组件备选方案的物品入包
 
-This is an illustrative relationship map, not an approved game design or a document to copy into every project. Paths and choices below are examples; actual documents use verified project locations and `document_language`.
+这是一份示意性的关系图，不是已批准的游戏设计，也不是要复制到每个项目中的文档。下面的路径和选择都是示例；实际文档使用经过核实的项目位置和 `document_language`。
 
-Suppose a player should understand that an item has reached their inventory, whether from a reward claim or a shop purchase. `docs/ui/reward-panel-design.md` owns an independently opened reward overlay's layout and claim interaction; a panel embedded in another screen would instead be a section of that host. `docs/presentation/item-added.md` owns the shared item-arrival moment. Reward and shop UI documents link it at their use sites and in their final related-presentations navigation, retaining their own origin, target and trigger context.
+假设玩家需要明白一件物品已经进入背包，无论它来自奖励领取还是商店购买：
 
-| Presentation section | Example content |
+- `docs/ui/reward-panel-design.md` 负责一个可单独打开的奖励弹层的布局和领取交互；如果面板嵌在另一个屏幕中，它就是宿主文档里的一个章节。
+- `docs/presentation/item-added.md` 负责共用的物品入包表现。
+- 奖励和商店的 UI 文档在使用处和末尾的“关联游戏表现”导航中链接它，并各自保留自己的来源、目标和触发上下文。
+
+| 表现章节 | 示例内容 |
 | --- | --- |
-| Goal and observable process | After a confirmed item addition, make its arrival clear. Reference the GDD for when inventory state changes; animation completion does not invent that game rule. |
-| Icon flight requirements | Start from the source's visible position, reach the current screen's inventory indicator, and define what happens if the screen closes or another item arrives. |
-| Icon flight A | A small number of individually controlled icons using property animation; item icons also used by inventory/shop link the Art Bible's shared-resource section. |
-| Icon flight B | A denser particle-like visual flow; describe destination tracking, final readability and any texture dependency. Its image format/alpha/display needs and preparation status stay here. |
-| Destination feedback A / B | A short scale pulse or surface highlight on the receiving inventory indicator. Keep the common perceptual requirement above the alternatives and the differences inside each alternative. Ordinary button press/release behavior stays in the UI specification. |
-| Current use | Reward overlay: flight B + destination A. Shop: flight A + destination A. Only these authorized implementations need work; candidate B for the destination may remain a description. |
-| Implementation and consumers | Link each adopted component to its actual scene/resource/code or engineering design, and each screen to its real consumer. Mark unavailable implementations as not yet implemented; never invent existing files. |
-| Acceptance entry | Link the owning Feature's checks, runnable scenario and existing report/completion record for the specific screen and adopted combination. Do not copy acceptance results into a second table here. |
+| 目标与可观察过程 | 物品确认加入后，让玩家清楚看到它到达背包。背包状态何时变化，引用 GDD；动画播放完不能凭空产生这条游戏规则。 |
+| 图标飞行要求 | 从来源的可见位置出发，到达当前屏幕上的背包指示位置；写明屏幕关闭或另一件物品到达时怎样处理。 |
+| 图标飞行 A | 少量分别控制的图标，使用属性动画；背包和商店也在用的物品图标，链接 Art Bible 的共享资源章节。 |
+| 图标飞行 B | 更密集、类似粒子的视觉流；描述对目标位置的追踪、最终的可读性和纹理依赖。它的图像格式、透明度、显示需求和准备状态都写在这里。 |
+| 目标位置反馈 A / B | 接收位置的背包指示上出现一次短暂的缩放脉冲或表面高亮。共同的感知要求写在各备选方案之上，差异写在各方案内。普通按钮的按下和松开行为留在 UI 规格中。 |
+| 当前使用 | 奖励弹层：飞行 B + 目标反馈 A。商店：飞行 A + 目标反馈 A。只有这些已授权的实现需要开发；目标反馈的候选方案 B 可以只保留描述。 |
+| 实现与使用方 | 把每个已采用的组件链接到实际的场景、资源、代码或工程设计，把每个屏幕链接到真实的使用方。尚未实现的标为未实现；不要编造已存在的文件。 |
+| 验收入口 | 针对具体屏幕和采用组合，链接所属 Feature 的检查项、可运行的场景，以及已有的报告或完成记录。不要在这里另做一张表抄写验收结果。 |
 
-The development task can implement the parts together or spread them across existing tasks. If icon flight B is later replaced by A, update that screen's adopted combination and actual consumer links before final verification. Earlier B acceptance evidence remains historical evidence for its recorded version and scope.
+开发任务可以一起实现这些组成部分，也可以分散到已有的多个任务中。如果之后把图标飞行 B 换成 A，在最终验证之前更新该屏幕的采用组合和实际使用方链接。B 之前的验收证据，仍是它所记录的版本和范围内的历史证据。
 
-Other useful paths:
+其他常见的查找路径：
 
-- **Inventory item added:** start at the UI's item-arrival interaction, follow its presentation link, then its adopted component, actual implementation and acceptance entry.
-- **Character death:** start at the GDD's death behavior, follow the presentation and actual death consumer; no UI specification is required just to host the link.
-- **Texture still missing:** complete the alternative's behavior and resource specifications, mark the unavailable file, and continue independent planning. It remains a planning result until dependent implementation and actual experience checks become possible.
+- **背包物品入包**：从 UI 中的物品入包交互出发，沿表现链接找到采用的组件、实际实现和验收入口。
+- **角色死亡**：从 GDD 中的死亡行为出发，找到表现文档和实际处理死亡的使用方；不需要只为放一个链接而建 UI 规格。
+- **纹理仍然缺失**：完成该备选方案的行为和资源规格，标出尚未提供的文件，继续进行不受影响的规划。在依赖它的实现和实际体验检查能够进行之前，它仍然只是规划结果。
 
-Reward and shop are two consumers of the same `item-added.md` moment, so they do not trigger component extraction. A separate reward-reveal process may show an unknown reward before acceptance; if it ends with item arrival, it links `item-added.md` for that part.
+奖励和商店是同一个 `item-added.md` 表现的两个使用方，所以不会触发组件抽出。另一个独立的“奖励揭晓”过程可以在领取前展示未知奖励；如果它以物品入包结束，这部分链接到 `item-added.md`。
 
-If a distinct `item-offered.md` presentation communicates a confirmed item removal into an offering receptacle and explicitly reuses the same icon-flight requirements, move that partial component's common requirements, alternatives and component-only resources to `docs/presentation/components/icon-flight.md`. Both presentations reference it and retain their own trigger/result, sequence, adopted combination and acceptance entry. Item icons already owned by the Art Bible remain references. Update presentation navigation with the shared component and consumers; remove the old component body from `item-added.md`.
+如果另有一份独立的 `item-offered.md` 表现，用来表达已确认的物品被移入供奉容器，并且明确复用同样的图标飞行要求，就把这个组件的共同要求、备选方案和组件专用资源迁到 `docs/presentation/components/icon-flight.md`。两份表现都引用它，并各自保留自己的触发与结果、过程、采用组合和验收入口。已归 Art Bible 所有的物品图标仍然保持引用。在表现导航中补上共享组件及其使用方；从 `item-added.md` 中删除原来的组件正文。

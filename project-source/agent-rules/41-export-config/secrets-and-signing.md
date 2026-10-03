@@ -1,15 +1,15 @@
-# Export Secrets and Signing
+# 导出密钥与签名
 
-Keep shareable preset metadata separate from credentials and release secrets.
+可以共享的预设元数据与凭据、发布密钥分开保存。
 
-## Secrets
+## 密钥
 
-- **[MUST]** Do not commit export passwords, encryption keys, private keys, access tokens or other secrets into `export_presets.cfg`, tests, AGENTS files, ordinary project configuration or logs.
-- **[MUST]** Use Godot credential storage, supported environment variables or approved CI secret storage for sensitive export credentials.
-- **[MUST]** Classify fields by their actual confidentiality. Package and bundle IDs and certificate names are not automatically secrets, while passwords and private keys are.
-- **[MUST]** Do not print complete secret values in build or test diagnostics.
+- **[必须]** 不要把导出密码、加密密钥、私钥、访问令牌或其他密钥提交到 `export_presets.cfg`、测试、AGENTS 文件、普通项目配置或日志中。
+- **[必须]** 敏感的导出凭据使用 Godot 凭据存储、受支持的环境变量或经认可的 CI 密钥存储。
+- **[必须]** 按字段的实际保密程度分类。包名、bundle ID 和证书名称不自动算密钥，密码和私钥是密钥。
+- **[必须]** 不要在构建或测试诊断中打印完整的密钥值。
 
-## Signing
+## 签名
 
-- **[MUST]** If production signing or notarization credentials are unavailable, report the Release gate as blocked.
-- **[MUST]** Do not obtain a green Release export by silently disabling signing or notarization, switching to debug signing or using ad-hoc credentials, unless the task explicitly targets that mode.
+- **[必须]** 生产签名或公证凭据不可用时，报告 Release 验证受阻。
+- **[必须]** 除非任务明确以该模式为目标，不要通过悄悄禁用签名或公证、改用 debug 签名或使用临时凭据来让 Release 导出通过。

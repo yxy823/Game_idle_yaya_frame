@@ -1,21 +1,21 @@
-# Shader Uniform and Material Contracts
+# Shader 的 Uniform 与材质契约
 
-Uniforms are public APIs shared by the shader, materials and Resources, scenes, scripts, animations and project configuration.
+uniform 是公开 API，由 Shader、材质和 Resource、场景、脚本、动画及项目配置共同使用。
 
-## Uniform APIs
+## Uniform API
 
-- **[MUST]** When a uniform's name, type or meaning changes, migrate every material, scene, script, AnimationPlayer and tooling consumer.
-- **[MUST]** `set_shader_parameter()` calls match the Shader uniform's name and a compatible type exactly. A type mismatch may not produce a normal error and can lead to undefined behavior.
-- **[MUST]** Provide safe defaults and meaningful hints. The `source_color` hint follows [Color space](color-alpha-and-blending.md#color-space).
-- **[PREFER]** Use material uniforms for material-owned values, instance uniforms for true per-instance values where supported, and global uniforms for values truly shared across the project or environment.
-- **[MUST]** Per-instance uniforms are supported only for `canvas_item` and `spatial` shaders, do not support textures or arrays, and have a practical maximum of 16 per shader.
-- **[MUST]** With several materials on a 3D mesh, check that the corresponding per-instance uniforms use a consistent name, type and instance index across materials.
-- **[REVIEW]** Compatibility-renderer paths that dynamically index sampler arrays with instance data require renderer-specific validation; support in another renderer is not evidence of support here.
-- **[MUST]** Declare global uniforms in ProjectSettings under [Shader globals](../40-project-config/shader-globals.md); a default written in the shader declaration cannot be relied on.
-- **[MUST]** Do not build gameplay architecture on high-frequency CPU readback of GPU or global-uniform state.
+- **[必须]** uniform 的名称、类型或含义改变时，迁移每一个使用它的材质、场景、脚本、AnimationPlayer 和工具。
+- **[必须]** `set_shader_parameter()` 调用与 Shader uniform 的名称完全一致，类型兼容。类型不匹配可能不会产生正常报错，并可能导致未定义行为。
+- **[必须]** 提供安全的默认值和有意义的 hint。`source_color` hint 遵循[色彩空间](color-alpha-and-blending.md#色彩空间)。
+- **[优先]** 材质自身的值用材质 uniform；真正逐实例的值在支持时用实例 uniform；确实在整个项目或环境中共享的值用全局 uniform。
+- **[必须]** 逐实例 uniform 只支持 `canvas_item` 和 `spatial` Shader，不支持纹理和数组，每个 Shader 实际最多 16 个。
+- **[必须]** 3D 网格上有多个材质时，检查各材质中对应的逐实例 uniform 名称、类型和实例索引一致。
+- **[复核]** Compatibility 渲染器中用实例数据动态索引采样器数组的路径，需要针对该渲染器验证；其他渲染器支持不能作为这里支持的证据。
+- **[必须]** 全局 uniform 在 ProjectSettings 的 [Shader 全局变量](../40-project-config/shader-globals.md) 中声明；不能依赖 Shader 声明里写的默认值。
+- **[必须]** 不要把玩法架构建立在 CPU 高频回读 GPU 或全局 uniform 状态之上。
 
-## Time and authoritative values
+## 时间与权威值
 
-- **[MUST]** The built-in `TIME` is engine visual time with its own rollover and time-scale semantics. Do not use it for authoritative pause, replay or gameplay clocks.
-- **[PREFER]** Use an explicit custom time uniform when deterministic or pause-specific visual time is part of the contract.
-- **[MUST]** If both the CPU and the GPU need an authoritative value, keep ownership on the CPU or domain side and upload the value to the shader rather than reading shader state back as the authority.
+- **[必须]** 内置的 `TIME` 是引擎的视觉时间，有自己的回绕和时间缩放语义。不要用它做权威的暂停、回放或玩法时钟。
+- **[优先]** 确定性的视觉时间或与暂停相关的视觉时间属于契约时，使用明确的自定义时间 uniform。
+- **[必须]** CPU 和 GPU 都需要一个权威值时，所有权留在 CPU 或领域一侧，把值上传给 Shader；不要把 Shader 状态回读作为权威。

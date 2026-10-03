@@ -1,30 +1,30 @@
-# Unit Tests (L1)
+# 单元测试（L1）
 
-L1 tests verify a small rule or state unit without requiring the full real SceneTree lifecycle.
+L1 测试验证一个小的规则或状态单元，不需要完整的真实 SceneTree 生命周期。
 
-## Boundary
+## 边界
 
-- **[PREFER]** Keep stable business rules testable without booting the main scene or unrelated Autoload infrastructure.
-- **[MUST]** Do not start the whole application merely to test a pure calculation, validator, state transition or command rule.
-- **[MUST]** A Node type does not automatically make a test L2. The deciding factor is whether the tested contract requires the real SceneTree lifecycle.
+- **[优先]** 稳定的业务规则保持可测，不需要启动主场景或无关的 Autoload 基础设施。
+- **[必须]** 不要只为了测试纯计算、校验器、状态转换或命令规则，就启动整个应用。
+- **[必须]** 用到 Node 类型不会自动让测试变成 L2。决定因素是被测契约是否需要真实的 SceneTree 生命周期。
 
-## Parameterized and property tests
+## 参数化测试与性质测试
 
-- **[PREFER]** Use parameterized or table-driven tests for one shared contract with several inputs and expected outcomes.
-- **[MUST]** Do not combine unrelated business contracts into one giant parameter matrix.
-- **[PREFER]** Give parameter cases semantic names or context so that failures identify the business scenario.
-- **[PREFER]** Combine representative examples, boundary cases and invariant or property tests for complex rules.
+- **[优先]** 一个共同契约有多组输入和预期结果时，使用参数化测试或表驱动测试。
+- **[必须]** 不要把无关的业务契约合并成一个巨大的参数矩阵。
+- **[优先]** 给参数用例起有语义的名称或提供上下文，让失败时能看出是哪个业务场景。
+- **[优先]** 复杂规则结合使用有代表性的示例、边界用例，以及不变量或性质测试。
 
-## Doubles
+## 测试替身
 
-- **[PREFER]** Use Stubs, Mocks, Fakes or Spies only for dependencies outside the current test target.
-- **[MUST]** Do not mock the core behavior being tested.
-- **[MUST]** Do not mock Godot lifecycle, Signal, Resource or Input semantics and then claim that real Godot integration is verified.
-- **[REVIEW]** Spy and interaction assertions are appropriate only when the collaboration itself is part of the contract; do not verify every internal helper call.
-- **[PREFER]** A small in-memory Fake may be easier to maintain than complex mock choreography for simple stateful ports.
-- **[MUST]** Do not create a test that mirrors the production topology with every dependency stubbed and every internal call verified.
+- **[优先]** 只对当前测试目标之外的依赖使用 Stub、Mock、Fake 或 Spy。
+- **[必须]** 不要 mock 被测的核心行为。
+- **[必须]** 不要 mock Godot 的生命周期、Signal、Resource 或 Input 语义，然后声称已经验证了真实的 Godot 集成。
+- **[复核]** 只有协作本身属于契约时，才适合使用 Spy 和交互断言；不要验证每一次内部辅助调用。
+- **[优先]** 对于简单的有状态端口，小型的内存 Fake 可能比复杂的 mock 编排更容易维护。
+- **[必须]** 不要写一个镜像生产拓扑、所有依赖都被 stub、所有内部调用都被验证的测试。
 
-## Characterization before refactoring
+## 重构前的特征测试
 
-- **[PREFER]** Before refactoring stable legacy behavior with weak coverage, add minimal characterization tests.
-- **[MUST]** Do not freeze a known bug as correct behavior merely because a characterization test captured it.
+- **[优先]** 在重构覆盖薄弱的稳定旧行为之前，先补充最少的特征测试。
+- **[必须]** 不要只因为特征测试捕获了某个已知 Bug，就把它冻结为正确行为。

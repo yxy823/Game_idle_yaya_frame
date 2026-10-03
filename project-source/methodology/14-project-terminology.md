@@ -1,72 +1,72 @@
-# 14 · Project terminology
+# 14 · 项目术语
 
-This specification defines what the project terminology file contains, when terms are recorded and how term changes are handled.
+本规范定义项目术语文件包含什么、何时记录术语，以及如何处理术语变化。
 
-## Project terminology
+## 项目术语文件
 
-`docs/terminology.md` is the single authoritative file for confirmed project term definitions, canonical names, aliases and conceptual distinctions. `project-terminology` maintains it and the links to it. The location is fixed whether a term is used in one topic or across systems, Products, Features or conversations.
+`docs/terminology.md` 是已确认的项目术语定义、规范名称、别名和概念区分的唯一权威文件。`project-terminology` 维护它以及指向它的链接。无论一个术语只用在一个主题中，还是跨系统、Product、Feature 或对话使用，位置都固定在这里。
 
-- GDD, Product, Feature and professional documents use these terms and link their definitions. They do not keep separate domain glossaries or local authoritative definitions.
-- The terminology file explains what a project concept means and how its name differs from related names.
-- GDD owns the concept's detailed gameplay rules, conditions, flows, values, state transitions and intended experience. Professional documents own their specifications; architecture and code own implementation choices. A short definition may identify a concept by its role and link to the design document for its full behavior.
-- Target-locale wording belongs in the **Term translations** section of the localization specification, under [Localization term translations](11-specialist-workflows.md#localization-term-translations). A translated name is not a competing domain definition.
-- Ordinary explanatory prose and examples stay with the topic they explain.
+- GDD、Product、Feature 和专业文档使用这些术语，并链接其定义。它们不另外维护领域词表或局部的权威定义。
+- 术语文件解释一个项目概念是什么意思，以及它的名称与相近名称有什么区别。
+- GDD 负责该概念详细的玩法规则、条件、流程、数值、状态转换和预期体验。专业文档负责各自的规格；架构和代码负责实现选择。简短的定义可以用概念的作用来标识它，并链接到设计文档查看完整行为。
+- 目标语言中的用词写在本地化规范的**术语译名**章节，见[本地化术语译名](11-specialist-workflows.md#本地化术语译名)。译名不是另一份与之竞争的领域定义。
+- 普通的说明文字和示例，留在它们所解释的主题中。
 
-Do not create a second `UBIQUITOUS_LANGUAGE.md` or another parallel glossary. Do not turn the file into a general project-context document or a dictionary of ordinary words and engine APIs.
+不要再建一份 `UBIQUITOUS_LANGUAGE.md` 或其他并行词表。不要把这个文件变成通用的项目背景文档，或普通词语与引擎 API 的词典。
 
-New projects include this file with only its purpose. If the file is missing, create it when saving confirmed definitions. While no terms are confirmed, leave it without entries; do not invent entries or block unrelated design work.
+新项目附带这个文件，其中只有用途说明。文件缺失时，在保存已确认的定义时创建它。还没有确认任何术语时，文件中不写条目；不编造条目，也不阻塞无关的设计工作。
 
-Read the relevant definitions during clarification, planning, implementation and review when the file exists. Write it in `document_language` and keep stable IDs. Do not rename code or migrate saved data only to match terminology. A known code identifier may be recorded as an alias; this does not authorize code or save-data migration.
+文件存在时，在澄清、规划、实现和审核中读取相关定义。使用 `document_language` 编写，并保持 ID 稳定。不要只为了与术语一致而重命名代码或迁移存档数据。已知的代码标识符可以记录为别名；这不授权迁移代码或存档数据。
 
-## Clarify competing terms
+## 澄清有歧义的术语
 
-Clarify vocabulary when competing names or meanings would change a design or delivery decision. Read the current definitions first.
+名称或含义的分歧会改变设计或交付决定时，澄清词汇。先读当前的定义。
 
-- If one word describes different concepts, distinguish them with familiar names.
-- If several words mean the same thing, propose one consistent name.
-- Reuse an already clear definition instead of starting a glossary for every task.
+- 一个词描述了不同的概念时，用大家熟悉的名称把它们区分开。
+- 几个词表示同一件事时，提出一个统一的名称。
+- 复用已经清楚的定义，不为每个任务新建一份词表。
 
-Test a distinction with a concrete scenario. For example, when discussing inventory, distinguish an item definition, an owned item and a stack only if their identity or behavior differs. Asking whether two items with different modifiers can stack exposes a real decision; listing every possible item attribute does not. Record the accepted behavior in its GDD section, and derive delivery scope and AC from that section.
+用具体场景检验一个区分。例如讨论背包时，只有物品定义、拥有的物品和堆叠三者的身份或行为确实不同时，才区分它们。问“修饰词不同的两件物品能否堆叠”能暴露真实的决定；罗列物品的所有可能属性则不能。把接受的行为记录在对应的 GDD 章节中，交付范围和 AC 从该章节推导。
 
-When implementation exists, compare the relevant code with the stated meaning. Report a conflict with both sources: code describes what happens today and cannot silently redefine approved intent. A new meaning stays a proposal until the user settles the design choice through `design-gdd`.
+已有实现时，把相关代码与说明的含义对比。报告冲突时给出两个来源：代码描述的是现在实际发生的情况，不能悄悄重新定义已批准的意图。新的含义在用户通过 `design-gdd` 确定设计选择之前，始终只是提议。
 
-## Record terms during design work
+## 设计工作中记录术语
 
-Authorized GDD creation, revision and consolidation include recording the current scope's confirmed terms in `docs/terminology.md` through `project-terminology`, together with the affected links.
+已获授权的 GDD 创建、修改和整合，包括通过 `project-terminology` 把当前范围内已确认的术语记录到 `docs/terminology.md`，并更新受影响的链接。
 
-- Collect the definitions already present in the supplied design; do not wait for another system, Product or Feature to use them.
-- Reuse the task's writing authorization unless the user explicitly limits the writable files. Discussion-only work writes nothing.
-- Recording a term does not establish game design or authorize development.
+- 收集现有设计中已经存在的定义；不必等另一个系统、Product 或 Feature 用到它们。
+- 沿用任务的写入授权，除非用户明确限制了可写的文件。只讨论的工作不写任何文件。
+- 记录术语不确立游戏设计，也不授权开发。
 
-Use a compact structure and expand only where a distinction needs explanation:
+使用紧凑的结构，只在需要解释区分时展开：
 
-- Start with a short description of the covered domain when it helps the reader. Give each term a canonical name and a definition, normally one or two sentences. Include domain actions as well as nouns when their meanings matter. There is no word or term quota.
-- Explain conceptual relationships, aliases or commonly confused neighbors only when they prevent a real misunderstanding.
-- Link to the GDD section for detailed rules, flows, values and state transitions, and to Product and Feature records for delivery scope and AC. Keep implementation state ownership, Godot classes, storage formats and technical choices in architecture records or code.
-- Keep pending ideas, chat logs, current progress and task-local notes out of the file.
-- Move definitions from the authorized GDD or professional scope into this file and replace their bodies with links. Keep section anchors that Feature sources use, with a link at the old location. Original input materials that the task must preserve stay marked as source material; current definitions live only in the terminology file.
+- 有助于读者时，开头简短描述所覆盖的领域。每个术语给出一个规范名称和一条定义，通常一两句话。含义重要时，领域中的动作也和名词一样收录。词数和术语数量都没有指标。
+- 只有能避免真实误解时，才解释概念之间的关系、别名或容易混淆的相近概念。
+- 详细的规则、流程、数值和状态转换链接到 GDD 章节；交付范围和 AC 链接到 Product 和 Feature 记录。实现层面的状态归属、Godot 类、存储格式和技术选择，保存在架构记录或代码中。
+- 待定的想法、聊天记录、当前进度和任务内的笔记不写进这个文件。
+- 把已获授权的 GDD 或专业文档范围中的定义移到这个文件，并把原正文换成链接。保留 Feature 来源使用的章节锚点，并在旧位置放一个链接。任务必须保留的原始输入材料仍标为来源材料；当前定义只存在于术语文件中。
 
-## Responsibilities
+## 职责分工
 
-| Skill | Responsibility for terms |
+| Skill | 在术语方面的职责 |
 | --- | --- |
-| `project-terminology` | Meaning-preserving definitions in `docs/terminology.md` and the links to them |
-| `design-gdd` | Overall game design, including any change to what a term means for gameplay |
-| `design-balance` | Scoped numerical design |
-| `product-author` | Product delivery documents |
-| `project-grill-me` | Clarifies a term and returns the answer to the current task |
-| `product-spec-elicitor` | Clarifies delivery choices |
+| `project-terminology` | `docs/terminology.md` 中不改变含义的定义，以及指向它们的链接 |
+| `design-gdd` | 整体游戏设计，包括术语在玩法上含义的任何变化 |
+| `design-balance` | 限定范围的数值设计 |
+| `product-author` | Product 交付文档 |
+| `project-grill-me` | 澄清一个术语，并把答案交回当前任务 |
+| `product-spec-elicitor` | 澄清交付选择 |
 
-Using `project-terminology` during GDD writing does not start Product planning. Pure terminology maintenance may clarify a name, record an already agreed distinction, or move and link a definition. It does not need a new Product, Feature or Feature synchronization.
+在编写 GDD 期间使用 `project-terminology`，不会开始 Product 规划。纯粹的术语维护可以澄清一个名称、记录一个已经商定的区分，或者移动并链接一条定义。它不需要新的 Product、Feature 或 Feature 源同步。
 
-If a definition change alters actual intent or exposes an unresolved behavior choice, settle that choice through `design-gdd` first and synchronize affected work with `feature-sync`. Then update the terminology.
+如果修改定义会改变实际意图，或暴露出一个未决的行为选择，先通过 `design-gdd` 确定这个选择，并用 `feature-sync` 同步受影响的工作，再更新术语。
 
-## Incremental terminology maintenance
+## 增量维护术语
 
-Check for new terms, renames, retirements and clarified meanings during GDD and Product writing and at the Stage 3 documentation checkpoint before final verification. Save confirmed additions or changes in `docs/terminology.md`. If nothing changed, do not write the file or produce an empty report. Settled, meaning-preserving changes reuse the task's documentation authorization; discovering a new design choice does not approve it.
+在编写 GDD 和 Product 时，以及在最终验证之前的 Stage 3 文档检查点，检查是否有新术语、改名、废弃和含义的澄清。把已确认的新增或修改保存到 `docs/terminology.md`。没有变化时，不写这个文件，也不生成空报告。已确定且不改变含义的修改，沿用任务的文档写入授权；发现新的设计选择，不等于批准了它。
 
-- Add confirmed definitions, merge duplicates and repair links.
-- For a rename, keep the old name only while it helps readers find the canonical term.
-- For a retirement, keep a link to the replacement when historical references need it; otherwise remove the obsolete wording within scope.
-- Settle semantic changes through `design-gdd` first, as described in [Responsibilities](#responsibilities).
-- Keep only the current definitions here. Record the reason for a change in the GDD, Feature design or ADR where it belongs, or leave it to Git; do not keep a glossary change log.
+- 添加已确认的定义，合并重复项，修复链接。
+- 改名时，只在旧名称有助于读者找到规范术语时保留它。
+- 废弃时，历史引用需要的话，保留一个指向替代术语的链接；否则在范围内删除过时的措辞。
+- 语义变化先通过 `design-gdd` 确定，见[职责分工](#职责分工)。
+- 这里只保留当前定义。变化的理由写在所属的 GDD、Feature 设计或 ADR 中，或交给 Git 记录；不维护词表变更日志。

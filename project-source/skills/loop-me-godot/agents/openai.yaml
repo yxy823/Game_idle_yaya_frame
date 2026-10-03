@@ -1,6 +1,6 @@
 interface:
-  display_name: "Godot Loop Me"
-  short_description: "Design useful methods for recurring Godot project activities"
+  display_name: "Godot 重复工作设计"
+  short_description: "为反复出现的 Godot 项目活动设计实用的处理方法"
 
 policy:
   allow_implicit_invocation: true

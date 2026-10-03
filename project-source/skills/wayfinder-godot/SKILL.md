@@ -1,50 +1,71 @@
 ---
 name: wayfinder-godot
-description: Resolve linked uncertainties blocking an existing Godot project goal, following their actual dependencies. Choose discussion, factual research, scoped prototypes or comparable implementations as needed; clear tasks continue their existing owner without this entry.
+description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项目目标的、相互关联的不确定问题。按需选择讨论、事实调研、限定范围的原型或可比较的实现。目标清楚的任务不经过本入口，直接由原负责方继续。
 ---
 
-# Find a workable path through linked Godot questions
+# 在相互关联的 Godot 问题中找到可行路径
 
-Use this method when several material unknowns affect one another and solving one changes what can be decided next. It can support discussion, planning or implementation without adding a Stage or a mandatory entry before ordinary work. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md` to the actual destination: initial game-design questions return to [design-gdd](../design-gdd/SKILL.md), while dependent planning, engineering exploration and implementation need the relevant actual GDD. This method does not fill missing design through technical assumptions.
+几个关键未知相互影响、解决其中一个会改变下一步能决定什么时，使用本方法。它可以配合讨论、规划或实现，但不新增 Stage，也不是普通工作前的必经入口。
 
-## Establish the goal and the relevant unknowns
+按 `methodology/01-product-doc-structure.md` 的 **GDD 前提与职责** 判断问题的实际去向：
 
-Reuse the current request, confirmed decisions, exclusions and concrete authorization. Identify what this effort should achieve and what kind of result the user requested: conclusions, a choice supported by evidence, a bounded experiment, or continued implementation. Read relevant existing sources and task records, not a fixed document bundle or every past discussion.
+- 初始的游戏设计问题回到 [design-gdd](../design-gdd/SKILL.md)。
+- 依赖设计的规划、工程探索和实现，需要相关的 GDD 真实存在。
+- 本方法不用技术假设填补缺失的设计。
 
-Separate approved intent, observed implementation, evidence, assumptions and unresolved choices. Describe the questions that currently change the result and which answers they depend on. Keep still-vague in-scope concerns tentative until their prerequisites make them useful; do not pre-plan every future branch or restore excluded work through exploration.
+## 确定目标和相关的未知
 
-Work on questions whose prerequisites are available. Group related independent choices for the user, and advance independent factual investigation while an answer is pending. Do not answer a material user preference on the user's behalf or proceed with work that depends on a missing decision. Once evidence or a correction arrives, revisit only affected conclusions and dependencies; preserve unaffected decisions. There is no one-question-per-conversation rule or requirement to settle every possible question before progressing.
+复用当前请求、已确认的决定、排除项和具体授权。弄清这次要达成什么，以及用户要的是哪种结果：结论、有证据支持的选择、有边界的实验，或继续实现。读取与问题有关的现有来源和任务记录，不读取固定的一组文档，也不翻遍过去的每次讨论。
 
-## Select the method that can resolve the gap
+把已批准的意图、观察到的实现、证据、假设和未决的选择分开。写清哪些问题现在会改变结果，以及它们依赖哪些答案。范围内仍然模糊的问题先保持暂定，等它的前提成立、值得处理时再展开；不要预先规划未来的每个分支，也不要借探索恢复已被排除的工作。
 
-Use only the applicable row; these methods are not a sequence to invoke in full.
+先处理前提已经具备的问题：
 
-| Missing basis for the next decision | Method and boundary |
+- 把相关但彼此独立的选择归在一起交给用户决定。
+- 等待用户回答时，继续推进独立的事实调查。
+- 不替用户回答实质性的偏好问题，也不推进依赖缺失决定的工作。
+- 新证据或更正到来后，只重新检查受影响的结论和依赖，保留不受影响的决定。
+
+没有“每次对话只问一个问题”的规定，也不要求解决所有可能的问题后才能推进。
+
+## 选择能补上缺口的方法
+
+只使用适用的那一行；这些方法不是要依次全部调用的序列。
+
+| 下一个决定缺少的依据 | 方法与边界 |
 | --- | --- |
-| User preference, design boundary or consequential tradeoff | Use the [shared questioning method](../project-grill-me/SKILL.md#shared-questioning-method). Bring facts and concrete alternatives; ask only the decisions that matter, without restarting general GDD/Product elicitation. |
-| An API, third-party capability or the project's actual implementation | Read the relevant local sources first. When external facts are needed, follow **External research** in `methodology/09-records-reports-and-handoff.md` for lookups, delegation to `researcher` and saved sources. Research is not permission to experiment or adopt a requirement. |
-| Layout, interaction, state behavior or feasibility that discussion cannot establish | Use [prototype-godot](../prototype-godot/SKILL.md) for an authorized bounded Godot experiment. Define the question and observation needed; preserve actual human judgment and distinguish simulated behavior from the required real engine path. Discussion-only work may describe the experiment without building it. |
-| Several implementations need actual comparison and would overwrite each other or require separate working directories | Set comparable goals, representative inputs and observations before building alternatives. Use [worktree-create-godot](../worktree-create-godot/SKILL.md) only when the task needs and authorizes those directories; simpler experiments can use the existing checkout. A separate checkout does not prove runtime data isolation. |
-| A concrete proposal now exists and its assumptions or omissions need inspection | Use [plan-review-godot](../plan-review-godot/SKILL.md) within the requested review scope. Findings support a decision; they do not approve the proposal, implement it or create a compulsory gate. |
+| 用户偏好、设计边界或有后果的取舍 | 使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。带上事实和具体的备选方案；只问重要的决定，不重新开始一般性的 GDD/Product 需求收集。 |
+| 某个 API、第三方能力或项目的实际实现 | 先读本地的相关来源。需要外部事实时，按 `methodology/09-records-reports-and-handoff.md` 的 **外部调研** 查找资料、委托 `researcher` 和保存来源。调研不等于允许做实验或采纳需求。 |
+| 讨论无法确定的布局、交互、状态行为或可行性 | 已获授权的有边界 Godot 实验使用 [prototype-godot](../prototype-godot/SKILL.md)。先定义要回答的问题和需要的观察；保留真实的人工判断，并区分模拟行为与必需的真实引擎路径。只做讨论的工作可以描述实验，但不搭建它。 |
+| 几种实现需要实际比较，而且会互相覆盖或需要独立的工作目录 | 搭建备选方案前，先定好可比较的目标、有代表性的输入和观察项。只有任务需要并授权这些目录时，才使用 [worktree-create-godot](../worktree-create-godot/SKILL.md)；简单的实验可以用当前的检出目录。独立的检出目录不能证明运行时数据已隔离。 |
+| 已经有具体提案，需要检查它的假设或遗漏 | 在请求的审核范围内使用 [plan-review-godot](../plan-review-godot/SKILL.md)。审核发现用于支持决定，不代表批准提案、实施提案，也不构成强制关卡。 |
 
-Recheck the current scope before a method would write records, build an experiment, run a probe or create a worktree. Reuse authority that already covers the concrete action; a discussion-only or read-only limit remains binding. If a necessary action is not permitted or a prerequisite is unavailable, identify that specific gap and continue only independent work still in scope. Do not turn the limitation into an invented result or a blanket stop on unrelated authorized work.
+某个方法要写记录、搭建实验、运行探测或创建 worktree 之前，重新核对当前范围。已有授权覆盖该具体动作时直接复用；只讨论或只读的限制仍然有效。必要的动作未获允许或前提不具备时，指出这个具体缺口，只继续仍在范围内的独立工作。不要把这种限制写成编造的结果，也不要因此全面停下无关的已授权工作。
 
-For example, an inventory with many items may need a design choice about search before comparing list and grid layouts. Read existing item-count constraints and implementation facts first; only build comparable prototypes if they answer the remaining question. The task's size alone is not a reason to open several worktrees.
+例如，一个物品很多的背包，可能要先决定是否需要搜索，再比较列表和网格布局。先读取现有的物品数量约束和实现事实；只有可比较的原型能回答剩下的问题时才搭建它们。任务规模大本身不是打开多个 worktree 的理由。
 
-## Preserve findings in their existing home
+## 把发现保存到已有的归属位置
 
-Keep a one-off discussion in the conversation. When authorized continuity or durable work requires records, use the relevant sections of `methodology/09-records-reports-and-handoff.md`: Progress for current state, Feature notes for reminders and navigation, the fixed Feature design for local implementation decisions, research for retained external findings, and existing report locations for actual execution evidence. Link authoritative decisions and original evidence instead of copying them into a new exploration document.
+一次性的讨论留在对话里。已获授权的续接或长期工作需要记录时，使用 `methodology/09-records-reports-and-handoff.md` 的对应小节：
 
-Apply **Architecture Decision Records** in `methodology/10-architecture-overview.md` for a technical decision that meets its conditions; ordinary questions do not require an ADR. Adopted technical decisions without a Feature that do not qualify use **Standalone technical decisions** in the same specification when saving is authorized. Confirmed game intent, delivery scope and professional requirements still return to their GDD/Product or specialist owner. An exploration finding alone does not authorize those writes.
+- Progress（进度记录）保存当前状态。
+- Feature 备注保存提醒和导航。
+- 固定的 Feature 设计保存局部的实现决定。
+- 调研记录保存需要留存的外部发现。
+- 已有的报告位置保存实际的执行证据。
 
-Do not create an issue/ticket map, question ledger, claim state, research-only branch or parallel backlog for this method. Work without a Feature can use its existing task records; it need not manufacture a Feature or a new conversation to resolve the next question.
+链接到权威的决定和原始证据，不要把它们复制进一份新的探索文档。
 
-## Return the result and continue the owning task
+符合条件的技术决策，按 `methodology/10-architecture-overview.md` 的 **架构决策记录** 处理；普通问题不需要 ADR。不属于任何 Feature、又不满足 ADR 条件的已采纳技术决策，在允许保存时使用同一规范中的 **独立技术决定**。已确认的游戏意图、交付范围和专业需求，仍回到它们的 GDD/Product 或专业所属文档。仅凭探索得到的发现，不授权写入这些文档。
 
-Explain the current conclusion or reviewable alternatives, supporting sources and actual observations, remaining material uncertainty, and the next action with its real prerequisites. A plausible answer is not a verified result. Missing evidence or a user decision remains an explicit gap, not a resolved question.
+不要为本方法创建 issue/ticket 图、问题台账、认领状态、仅用于调研的分支或并行的待办列表。不属于 Feature 的工作可以使用它已有的任务记录；不需要为了解决下一个问题而硬造一个 Feature 或新开一次对话。
 
-Finish discussion-only work at its requested analytical result. When enough uncertainty is resolved for already authorized planning or implementation, return the findings to its existing owner under **Canonical task routing** in `methodology/00-overview.md` and continue that work. Do not ask for a fixed final confirmation or widen the scope because an attractive alternative appeared. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**). Any integration of selected worktree results follows the separate [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) contract and current authority; exploration does not authorize integration or cleanup by itself.
+## 返回结果并继续原任务
 
-For a single ordinary unresolved question, use [project-grill-me](../project-grill-me/SKILL.md) directly. [project-next-step-advisor](../project-next-step-advisor/SKILL.md) explains status and entry selection without advancing exploration; [loop-me-godot](../loop-me-godot/SKILL.md) designs handling for a recurring activity; [retro-godot](../retro-godot/SKILL.md) examines actual past experience. Clear authorized work continues through its existing owner without a wayfinding detour.
+说明当前的结论或可供审核的备选方案、支持它的来源和实际观察、仍然存在的重要不确定性，以及下一步动作和它真实的前提。一个看起来合理的答案不是已验证的结果。缺少的证据或用户决定仍是明确的缺口，不算已解决的问题。
 
-Inspired by Matt Pocock's `wayfinder` method of resolving decisions along their dependencies; rewritten for this Godot project's source ownership, evidence and authorization boundaries.
+只做讨论的工作，到达请求的分析结果就结束。不确定性已经消除到足以支持已获授权的规划或实现时，按 `methodology/00-overview.md` 的 **任务路由表** 把发现交回原负责方，并继续那项工作。不要索要固定的最终确认，也不要因为出现了诱人的备选方案就扩大范围。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。整合选定的 worktree 结果，遵循独立的 [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) 约定和当前授权；探索本身不授权整合或清理。
+
+只有一个普通的未决问题时，直接使用 [project-grill-me](../project-grill-me/SKILL.md)。[project-next-step-advisor](../project-next-step-advisor/SKILL.md) 解释状态和入口选择，但不推进探索；[loop-me-godot](../loop-me-godot/SKILL.md) 为反复出现的活动设计处理方式；[retro-godot](../retro-godot/SKILL.md) 回顾实际发生过的经历。目标清楚的已授权工作由原负责方直接继续，不绕道寻路。
+
+思路来自 Matt Pocock 沿依赖关系逐个解决决定的 `wayfinder` 方法；已按本 Godot 项目的来源归属、证据和授权边界重写。

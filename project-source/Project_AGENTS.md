@@ -1,6 +1,6 @@
-# Project instructions
+# 项目说明
 
-This project uses Windows 11, PowerShell 7, Godot 4.7, GDScript and gdUnit4. The actual tool paths are in `docs/methodology-config.json`. Whether a tool works depends on actual check results; do not infer installed tools from templates.
+本项目使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdUnit4。工具的实际路径写在 `docs/methodology-config.json`。工具能否使用以实际检查结果为准，不根据模板推断已安装了哪些工具。
 
 ## 沟通与交付
 
@@ -22,96 +22,113 @@ This project uses Windows 11, PowerShell 7, Godot 4.7, GDScript and gdUnit4. The
 
 所属规范继续决定字段、固定路径、文档语言、流程、授权、验收与完成条件；写作 Skill 不替代这些契约，也不改变机器可读结构。持久项目文档使用 `docs/methodology-config.json` 中的 `document_language`。
 
-## Workflow and authority
+## 工作流程与授权
 
-One project user works with an Agent. The workflow does not cover multi-user collaboration or tracking who made which change.
+项目由一位使用者与 Agent 配合开发。工作流程不涉及多人协作，也不追踪每处改动由谁完成。
 
-- Pausing, switching and resuming tasks in the same directory are supported, including from a new conversation.
-- Use a worktree only when the current task's scope and authorization call for one, under [Git changes and commits](agent-rules/00-core/git-worktree-and-commits.md). Tasks do not start in a worktree by default.
-- Bounded research and independent review use their own roles through the routes below.
+- 支持在同一目录内暂停、切换和续接任务，包括换到新对话后续接。
+- 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 改动与提交](agent-rules/00-core/git-worktree-and-commits.md)。任务默认不在 worktree 中开始。
+- 限定范围的调研和独立审核通过下表的入口使用各自的角色。
 
-| When you need to | Read |
+| 需要做的事 | 阅读 |
 | --- | --- |
-| Choose a workflow or the next allowed action | [Canonical task routing](methodology/00-overview.md#canonical-task-routing). Skills are under `.agents/skills/`; explicit commands are under `tools/` |
-| Create or maintain the GDD, numerical models or Product delivery plans | `methodology/01-product-doc-structure.md` |
-| Maintain project terminology | `methodology/14-project-terminology.md` |
-| Build a visual or logic prototype | `methodology/13-prototypes.md` |
-| Plan Features, order Products or change the Feature ledger | `methodology/02-feature-list-schema.md` |
-| Execute a Feature, including approvals, optional independent review and completion | `methodology/03-execute-loop.md` |
-| Interpret, apply or change project rules | `methodology/04-project-rules.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
-| Prepare Feature design and implementation guidance | The `implementation-guidance-godot` Skill |
-| Set the document language | `methodology/05-document-language.md` |
-| Configure tools or prepare the project environment | `methodology/06-project-environment.md` |
-| Fix a Bug, refactor or do maintenance | `methodology/07-engineering-change.md` |
-| Select tests, record current-run evidence or use the completion helper | `methodology/08-test-traceability-and-evidence.md`. Direct parsing and lint commands are in `methodology/contracts/gdscript-lint.md` |
-| Organize reports, temporary workspaces, Progress, history or cleanup | `methodology/09-records-reports-and-handoff.md` |
-| Maintain the optional architecture map or ADRs | `methodology/10-architecture-overview.md` |
-| Work on professional design, resources, localization, diagnostics or several requirement sources | `methodology/11-specialist-workflows.md` |
-| Run a formal review the user requested | `methodology/12-independent-review.md` |
-| Research external facts or approaches | **External research** in `methodology/09-records-reports-and-handoff.md` |
+| 选择工作流程或下一个允许的动作 | [任务路由表](methodology/00-overview.md#任务路由表)。Skill 在 `.agents/skills/`，显式命令在 `tools/` |
+| 创建或维护 GDD、数值模型或 Product 交付计划 | `methodology/01-product-doc-structure.md` |
+| 维护项目术语 | `methodology/14-project-terminology.md` |
+| 制作视觉或逻辑原型 | `methodology/13-prototypes.md` |
+| 规划 Feature、排定 Product 顺序或修改 Feature 台账 | `methodology/02-feature-list-schema.md` |
+| 执行 Feature，包括批准、可选的独立审核和完成 | `methodology/03-execute-loop.md` |
+| 解释、应用或修改项目规则 | `methodology/04-project-rules.md` 和 `agent-rules/00-core/rule-precedence-and-routing.md` |
+| 准备 Feature 的设计与实施指导 | `implementation-guidance-godot` Skill |
+| 设置文档语言 | `methodology/05-document-language.md` |
+| 配置工具或准备项目环境 | `methodology/06-project-environment.md` |
+| 修复 Bug、重构或做工程维护 | `methodology/07-engineering-change.md` |
+| 选择测试、记录本次运行的证据或使用完成辅助工具 | `methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `methodology/contracts/gdscript-lint.md` |
+| 整理报告、临时工作区、Progress、历史或清理 | `methodology/09-records-reports-and-handoff.md` |
+| 维护可选的架构图或 ADR | `methodology/10-architecture-overview.md` |
+| 处理专业设计、资源、本地化、诊断或多个需求来源 | `methodology/11-specialist-workflows.md` |
+| 执行用户要求的正式审核 | `methodology/12-independent-review.md` |
+| 调研外部事实或方案 | `methodology/09-records-reports-and-handoff.md` 的 **外部调研** |
 
-These rows are task routes, not a reading sequence. Follow the selected procedure and the references it needs; do not load every workflow. When a Skill returns, continue the task under [Authorization and continuation](methodology/03-execute-loop.md#authorization-and-continuation).
+这些行是任务入口，不是阅读顺序。按选中的流程及其需要的参考执行，不加载全部工作流程。Skill 返回后，按 [授权与续接](methodology/03-execute-loop.md#授权与续接) 继续任务。
 
-### Design prerequisite and sources to read
+### 设计前提与需阅读的来源
 
-Game design can start from an idea through `design-gdd`. Delivery planning, implementation, engineering work and runnable experiments need substantive GDD content that makes the current scope clear; a placeholder page does not count. The full rule is [GDD prerequisite and authority](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority). Product documents organize delivery and link to the GDD instead of copying its design.
+游戏设计可以从一个想法开始，使用 `design-gdd`。交付规划、实现、工程工作和可运行的实验，都需要能说清当前范围的实质 GDD 内容；只有占位内容的页面不算。完整规则见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-前提与职责)。Product 文档负责组织交付，链接到 GDD，不复制其中的设计。
 
-Before design discussion, planning, implementation or review, read what applies to the task:
+在设计讨论、规划、实现或审核之前，按任务阅读下列内容：
 
-- [Design scope and boundaries](methodology/01-product-doc-structure.md#design-scope-and-boundaries), the relevant [open design questions](methodology/01-product-doc-structure.md#open-design-questions) and the GDD topics that cover the subject.
-- Relevant definitions in `docs/terminology.md`.
-- Relevant Product and specialist sources, and accepted architecture decisions.
-- Relevant engineering constraints in `docs/project-rules.md`. A Product, Feature or ADR cannot silently waive them.
+- [设计范围与边界](methodology/01-product-doc-structure.md#设计范围与边界)、与本任务有关的[开放问题](methodology/01-product-doc-structure.md#开放问题)，以及覆盖该主题的 GDD 页面。
+- `docs/terminology.md` 中与本任务有关的定义。
+- 与本任务有关的 Product 和专业来源，以及已接受的架构决定。
+- `docs/project-rules.md` 中约束本任务的工程规则。Product、Feature 或 ADR 不能悄悄豁免这些规则。
 
-Starter pages that only describe a directory's purpose or a pending state are not confirmed requirements or definitions. Design discussion does not have to wait for every future detail or for detailed Product documents.
+只说明目录用途或待定状态的起始页面，不算已确认的需求或定义。设计讨论不必等待所有后续细节，也不必等待详细的 Product 文档。
 
-## Environment and Git
+## 环境与 Git
 
-Before the first coding Feature, complete the [Project Environment Bootstrap](methodology/06-project-environment.md#project-environment-bootstrap). Coding requires an environment confirmed by actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after a tool or configuration change, or to diagnose a failed tool invocation. Ordinary Features reuse the confirmed commands without rediscovering versions.
+第一个编码 Feature 开始前，完成 [项目环境准备](methodology/06-project-environment.md#项目环境准备)（项目环境准备）。编码需要一个经实际检查结果确认的环境。下列情况运行 `python -B tools/checks/check-project-environment.py --require-ready`：
 
-Before starting a Godot editor check, including `--headless --editor`, read and follow [Windows editor checks](agent-rules/00-core/validation-policy.md#windows-editor-checks).
+- 初次准备环境时；
+- 工具或配置变化后；
+- 诊断某次工具调用失败时。
 
-Every task that modifies files follows [Git changes and commits](agent-rules/00-core/git-worktree-and-commits.md): work in the task's designated checkout, preserve existing changes, stage only this task's paths and commit complete logical changes. A local commit does not establish completion or human acceptance.
+普通 Feature 直接复用已确认的命令，不重新探测版本。
 
-## Project knowledge and rule feedback
+启动任何 Godot 编辑器检查（包括 `--headless --editor`）之前，阅读并遵循 [Windows 编辑器检查](agent-rules/00-core/validation-policy.md#windows-编辑器检查)。
 
-Before choosing an approach in planning, investigation, implementation, debugging or review, consult [relevant project knowledge](docs/knowledge/README.md#find-relevant-knowledge-first). Empty topics do not block work. Knowledge cannot override accepted decisions or rules.
+每个会修改文件的任务都遵循 [Git 改动与提交](agent-rules/00-core/git-worktree-and-commits.md)：
 
-During authorized task documentation, record useful approaches and failure lessons under [knowledge maintenance](docs/knowledge/README.md#maintain-during-authorized-work). Read-only tasks keep their write boundary. When there is no useful new learning, no entry is needed. Finalize Feature notes and knowledge before the Stage 7 commit; Stage 8 links them.
+- 在任务指定的工作目录中工作；
+- 保留已有的改动；
+- 只暂存本任务的路径；
+- 按完整的逻辑改动提交。
 
-When work shows reusable prescriptive guidance that `agent-rules/` or `docs/project-rules.md` does not cover, propose it at the points and with the self-check defined in [incremental rule maintenance](methodology/04-project-rules.md#incremental-rule-maintenance). Do not edit rules without that approval.
+本地提交不代表任务完成，也不代表人工验收。
 
-## Engineering rule routing
+## 项目知识与规则反馈
 
-`methodology/` defines workflow and traceability. `agent-rules/` defines concrete engine and language rules. Resolve a real conflict with the Core precedence protocol in `agent-rules/00-core/rule-precedence-and-routing.md`. The numbered rule-module directories do not prescribe the project's own folder layout.
+在规划、调查、实现、调试或审核中选择做法之前，先查阅[相关的项目知识](docs/knowledge/README.md#先查找相关知识)。主题为空不阻塞工作。知识不能推翻已接受的决定或规则。
 
-For a modification or a relevant engineering decision, read `agent-rules/00-core/README.md` and the README of each affected domain below:
+在已获授权的任务文档工作中，按[知识维护](docs/knowledge/README.md#在已获授权的工作中维护)记录有用的做法和失败教训：
 
-- Read only the matching sections and the domain's validation document, not the whole directory.
-- Modules add up. For example, a test `.gd` file needs both the GDScript rules and the test rules.
-- On continuation, reuse rules already loaded if they have not changed. Read more only when the task or new evidence requires it.
+- 只读任务保持其写入边界。
+- 没有有用的新经验时，不需要写条目。
+- 在 Stage 7 提交之前定稿 Feature 笔记和知识条目；Stage 8 链接它们。
 
-| Changed artifact or domain | Rule entry |
+工作中发现 `agent-rules/` 或 `docs/project-rules.md` 尚未覆盖、可复用的规定性指导时，按 [规则的增量维护](methodology/04-project-rules.md#规则的增量维护) 规定的时机和自查方式提出。没有获得该批准，不修改规则。
+
+## 领域规则路由
+
+`methodology/` 规定工作流程和可追溯性，`agent-rules/` 规定具体的引擎与语言规则。真实冲突按 `agent-rules/00-core/rule-precedence-and-routing.md` 中的 Core 优先级协议解决。带编号的规则模块目录不规定项目自身的文件夹布局。
+
+做修改或与修改有关的工程决定时，阅读 `agent-rules/00-core/README.md`，以及下表中每个受影响领域的 README：
+
+- 只读匹配的小节和该领域的验证文档，不读整个目录。
+- 模块可以叠加。例如测试用的 `.gd` 文件同时需要 GDScript 规则和测试规则。
+- 续接时，已加载且未变化的规则直接复用。只有任务或新证据需要时才多读。
+
+| 修改的对象或领域 | 规则入口 |
 | --- | --- |
 | GDScript | `agent-rules/10-gdscript/README.md` |
-| Scene | `agent-rules/20-scenes/README.md` |
-| Resource | `agent-rules/21-resources/README.md` |
+| 场景 | `agent-rules/20-scenes/README.md` |
+| 资源 | `agent-rules/21-resources/README.md` |
 | Shader | `agent-rules/30-shaders/README.md` |
 | ProjectSettings | `agent-rules/40-project-config/README.md` |
-| Export configuration or pipeline | `agent-rules/41-export-config/README.md` |
-| Game data, schemas or data pipeline | `agent-rules/50-data-files/README.md` |
-| Assets or import pipeline | `agent-rules/60-assets/README.md` |
-| Tests, fixtures or runner | `agent-rules/70-tests/README.md` |
-| UID, path, NodePath, business ID or RID identity | `agent-rules/00-core/godot-resource-references.md` |
+| 导出配置或导出流水线 | `agent-rules/41-export-config/README.md` |
+| 游戏数据、数据结构定义或数据流水线 | `agent-rules/50-data-files/README.md` |
+| 素材或导入流水线 | `agent-rules/60-assets/README.md` |
+| 测试、测试夹具或测试运行器 | `agent-rules/70-tests/README.md` |
+| UID、路径、NodePath、业务 ID 或 RID 的身份 | `agent-rules/00-core/godot-resource-references.md` |
 
-If no dedicated module applies, use the relevant Core rules and the project's existing conventions, and read adjacent modules only where their topics overlap. Check the target Godot version's behavior when a change depends on version-sensitive engine behavior; ordinary Markdown edits do not need this. Do not extend the rule system as a side task of implementation.
+没有专门模块时，使用与本次修改有关的 Core 规则和项目已有的约定；只在主题重叠的地方阅读相邻模块。修改依赖随版本变化的引擎行为时，核对目标 Godot 版本的行为；普通的 Markdown 编辑不需要。不要在实现过程中顺带扩展规则体系。
 
-To decide where game logic and presentation responsibilities belong, where their design sources are, or where a module goes and what it is called, read the matching sections of `docs/game-organization.md`. It explains concepts and examples; naming and engine constraints stay in the rule modules above.
+要判断游戏逻辑和游戏表现的职责归属、它们的设计来源在哪里，或者模块放在哪里、叫什么名字，阅读 `docs/game-organization.md` 中匹配的小节。它解释概念并给出示例；命名和引擎约束仍以上面的规则模块为准。
 
-The Core directory also covers these topics:
+Core 目录还覆盖下列主题：
 
-- Scope, minimal complete changes and preserving existing work: `change-scope-and-ownership.md`.
-- Vendor, generated and temporary files: `third-party-generated-and-temporary-files.md`.
-- Validation and truthful completion reports: `validation-policy.md` and `completion-and-reporting.md`.
+- 范围、最小完整修改和保留已有工作：`change-scope-and-ownership.md`。
+- 第三方、生成和临时文件：`third-party-generated-and-temporary-files.md`。
+- 验证与如实的完成报告：`validation-policy.md` 和 `completion-and-reporting.md`。
 
-Preserve authoritative state, APIs, ownership and lifecycle boundaries. Test and debug tooling must not become a backdoor for arbitrary reflection or property changes.
+保持权威状态、API、职责归属和生命周期的边界。测试和调试工具不能成为任意反射或修改属性的后门。
