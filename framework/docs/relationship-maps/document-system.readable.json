@@ -1,0 +1,6203 @@
+{
+  "format": "graph-map-core",
+  "version": 1,
+  "documentId": "199d93b7-0961-4a37-80c5-2d32a4e025c0",
+  "nodes": [
+    {
+      "id": "doc-framework-entry",
+      "shape": "rounded-rect",
+      "x": 80,
+      "y": 240,
+      "width": 270,
+      "height": 88,
+      "label": "框架仓库入口\nREADME.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：框架用途、顶层目录、创建器与能力入口；framework/README.md 维护唯一的 framework/ 目录说明。\n位置：仓库 README.md。\n通过文档总入口查手册，通过根 AGENTS 查维护约定；这里只导航，不复制各专题正文。\n\n文件： README.md\n文件： framework/README.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-docs",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 240,
+      "width": 270,
+      "height": 88,
+      "label": "框架文档总入口\nREADME.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：统一导航操作手册、场景速查、关系图、维护说明与公共术语。\n位置：framework/docs/README.md。\n两册独立阅读，不互相引用，由本入口连接。\n\n文件： framework/docs/README.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-operation",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 100,
+      "width": 270,
+      "height": 88,
+      "label": "操作手册\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：解释框架对象、项目文档、配置、Skill、命令与证据。\n位置：framework/docs/operation-manual/。\n直接维护和阅读 Markdown，并引用权威源规范。\n\n文件： framework/docs/operation-manual/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/operation-manual/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-scenarios",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 320,
+      "width": 270,
+      "height": 88,
+      "label": "场景速查\nscenario-index.md · *.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：从当前情况找到处理步骤、同名提示词、输入和出口。\n位置：framework/prompt-scenarios/scenarios/。\n涵盖 Yaya 框架维护与 Godot 项目开发；与提示词按 Project、分类、名称一一对应，不由 JSON 自动生成正文。\n\n文件： framework/prompt-scenarios/scenarios/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/scenario-index.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-maintenance",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 540,
+      "width": 270,
+      "height": 88,
+      "label": "框架维护说明\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：材料位置、维护边界、文档同步、维护命令及验证说明。\n位置：framework/docs/framework-maintenance/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/docs/framework-maintenance/*.md\n文件： framework/commands/README.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-terms",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 760,
+      "width": 270,
+      "height": 88,
+      "label": "框架专用术语\nterminology.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：Yaya 框架特有或具有特定含义的术语及统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/docs/terminology.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/terminology.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-prompts",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 320,
+      "width": 270,
+      "height": 148,
+      "label": "任务提示词\ngodot-development-prompts.json\nyaya-maintenance-prompts.json",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt-scenarios/prompts/godot-development-prompts.json 与 framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开提示词与场景准则。\n\n文件： framework/prompt-scenarios/prompts/godot-development-prompts.json\n文件： framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-graphs",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 100,
+      "width": 270,
+      "height": 148,
+      "label": "场景图与文档关系图\ngame-development-workflow.readable.json\ndocument-system.readable.json",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/docs/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 定义两图共用的文件格式。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/docs/relationship-maps/README.md\n文件： framework/docs/relationship-maps/graph-map-format.md\n文件： framework/docs/relationship-maps/game-development-workflow.readable.json\n文件： framework/docs/relationship-maps/document-system.readable.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/relationship-maps/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-review",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 540,
+      "width": 270,
+      "height": 88,
+      "label": "职责设计准则\nresponsibility-design-guidelines.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/docs/framework-maintenance/responsibility-design-guidelines.md。\n长期准则只维护这一份；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/responsibility-design-guidelines.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-reports",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 540,
+      "width": 270,
+      "height": 88,
+      "label": "框架审核与验证报告\n*.md",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：按次保留的审核和实际验证记录。\n位置：tmp/reports/<任务>/，可按专题或检查轮次分层；原始运行证据仍按当次记录定位。\n需要继续工作的报告由框架待办链接；当次用途结束后清理，长期结论归正式文档。\n\n文件： tmp/reports/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-progress",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 540,
+      "width": 270,
+      "height": 88,
+      "label": "框架待办\nprogress.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n必要时链接实际依据；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/progress.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-rules",
+      "shape": "rounded-rect",
+      "x": 80,
+      "y": 650,
+      "width": 270,
+      "height": 88,
+      "label": "框架维护规则与 Skill\nAGENTS.md · SKILL.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护两个专项入口。\n位置：AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/AGENTS.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-distribution",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 1020,
+      "width": 270,
+      "height": 88,
+      "label": "项目分发源与复制映射\nproject-files.json",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：定义创建时复制与重命名的源文件、目录和目标。\n位置：project-source/ 与 framework/commands/project-files.json。\n创建后项目独立拥有副本；橙色跨区箭头只表示创建时复制，不表示持续同步。手册、完整提示词库和本图不随项目复制。\n\n文件： framework/commands/project-files.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/commands/project-files.json"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-templates",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 1020,
+      "width": 270,
+      "height": 88,
+      "label": "项目文档模板\nREADME.md · *.tmpl",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：Product、Feature、测试、进度、规则和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n少量模板由创建器复制为初始空记录；其他模板只在真实任务需要时采用，不自动创建业务文档。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-project-entry",
+      "shape": "rounded-rect",
+      "x": 80,
+      "y": 1470,
+      "width": 270,
+      "height": 88,
+      "label": "项目阅读入口\nREADME.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：生成项目的能力、文件和阅读导航。\n项目位置：README.md；本节点链接其分发源。\n项目独立使用自己的文档与规则；初始入口和空记录不代表已有真实设计、实现或验证结果。\n\n项目文件： README.md\n项目文件： docs/README.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/Project_README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-project-rules",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 1470,
+      "width": 270,
+      "height": 128,
+      "label": "项目规则与领域规则\nAGENTS.md · project-rules.md\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： agent-rules/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/Project_AGENTS.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-project-methods",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 1470,
+      "width": 270,
+      "height": 88,
+      "label": "项目 Skill 与流程规范\nSKILL.md · *.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： methodology/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/00-overview.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-tools",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 1470,
+      "width": 270,
+      "height": 88,
+      "label": "项目工具与示例说明\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：tools/README.md，以及 asset_workbench/examples/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： tools/**/*.md\n项目文件： asset_workbench/**/*.md\n项目文件： components/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/tools/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-configuration",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 1470,
+      "width": 270,
+      "height": 88,
+      "label": "环境与语言配置\nmethodology-config.json",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：文档语言、Python 与 Godot 可执行路径。\n项目位置：docs/methodology-config.json。\n初始值不代表环境已核实；实际检查结果进入初始化报告和必要的 Progress。\n\n项目文件： docs/methodology-config.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/Project_Workflow_Config.json"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-initialization",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 1470,
+      "width": 270,
+      "height": 88,
+      "label": "初始化检查报告\ninitialization.md",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：实际环境检查、观察到的版本、命令、成功和缺口。\n项目位置：reports/initialization.md；按实际环境任务产生。\n本节点链接环境规范，未指向一个已经生成的报告。配置正确与业务测试通过是不同事实。\n\n项目文件： reports/initialization.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/05-document-language.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-organization",
+      "shape": "rounded-rect",
+      "x": 80,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "游戏职责与文档指南\ngame-organization.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：解释规则、状态、表现、协作、文档与实现的对应关系。\n项目位置：docs/game-organization.md。\n按功能找到 GDD、UI、表现、架构、Product 和 Feature；示例不代表项目已经实现该功能。\n\n项目文件： docs/game-organization.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/game-organization.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-terminology",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "游戏业务术语\nterminology.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：全部已确认项目术语、标准名称、定义、别名和概念区别的唯一正文；仅用于一个主题的术语也在此维护。\n固定项目位置：docs/terminology.md；初始只有用途说明，GDD 编写或整合时同步保存已确认定义。\n目标语言用词归 docs/localization/localization-spec.md 的“术语译名”章节，引用本页概念；本页不维护另一份译名表。\nGDD 与其他使用方引用本页；详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/terminology.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-gdd",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "GDD 游戏设计正文\nREADME.md · **/*.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\ngameplay.md 保存整体循环与系统导航；系统规则固定在 systems/<system-key>.md，单系统数值模型在 balance/<system-key>.md，跨系统模型在 balance/cross-system.md，不按游戏规模、篇幅或复杂程度选择位置。\n世界观、角色与故事梗概归 concept-and-experience.md；内容定义随所属系统，progression.md 保存排布与节奏。导入 GDD 的已有主题在获准迁移前沿用原位置，新增主题或系统使用标准路径并从原入口链接。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计及其比较方案，供后续讨论、规划、审核和相关实验查阅影响与所需证据；决定后更新所属主题与使用方引用。备选数值引用所属规则/模型正文；没有当前问题依赖的设想归 docs/unadopted-ideas.md。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\nGDD 保存整体目标与游戏规则；专业规格固定归专业正文，获准编写与整合时归位当前范围内的已确认规格，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/gdd/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-product-overview",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "Product 总览\nproduct.md",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化候选的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/product.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-product",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "当前 Product\nNN-name.md",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景，以及仅涉及该单元的未决交付选择。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源；跨 Product 选择引用总览，游戏设计问题引用 GDD。Feature 据此细分任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/product/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-feature-index",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "Feature 索引\nfeature-list.json",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：轻量任务索引、依赖、状态和详情路径。\n项目位置：docs/feature-list.json；创建时为空。\n经 detail_path 进入各 Feature JSON；索引不复制验收条件与详细设计。\n\n项目文件： docs/feature-list.json\n项目文件： docs/features/README.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/feature-list.json.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-revisions",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 1830,
+      "width": 270,
+      "height": 88,
+      "label": "来源基线与计划修订\nfeature-list-revisions.json",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：记录规划实际采用的来源提交、后续同步及 Feature 演进关系。\n项目位置：docs/feature-list-revisions.json；初始为空。\n采用来源包括 GDD、Product、专业规格和项目规则。空白项目的初始提交不构成需求基线。\n\n项目文件： docs/feature-list-revisions.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/02-feature-list-schema.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-art",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 2190,
+      "width": 270,
+      "height": 88,
+      "label": "共享美术规范\nart-bible.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：共享视觉方向、约束和共用资源规格的固定正文；GDD 保留整体体验目标与引用。\n项目位置：docs/art/art-bible.md；初始方向待定。\n跨独立所有者共用的视觉文件规格与准备状态固定在本文件“共享资源规格”章节；专用于单个表现、界面或组件的资源仍随其正文。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/art/art-bible.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-ui",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 2190,
+      "width": 270,
+      "height": 112,
+      "label": "UI 与共享控件设计\n<interface>-design.md\n<component-key>-design.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；独立进入/退出且有自身流程的屏幕或弹层单独成文，从属面板、标签页和 HUD 部件在宿主分节。\n第二个界面使用同一控件或对话框行为时，共用正文迁入 docs/ui/components/<component-key>-design.md，消费者引用；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途、关联 Product 及组件消费者。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/ui/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-presentation",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 2190,
+      "width": 270,
+      "height": 104,
+      "label": "游戏表现与共享组件\n<scope>.md\n<component-key>.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/presentation/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-feature-design",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 2190,
+      "width": 270,
+      "height": 88,
+      "label": "Feature 局部设计\nF0XX-design.md",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：保存一项 Feature 的实施设计、局部技术决定与理由，解释该变更的边界、职责、接口、生命周期、失败处理、实现与验证理由。\n项目位置：docs/features/F0XX-design.md；有设计内容时创建，简短理由也固定使用此文件，不按复杂程度改写到 notes。\n从 Feature notes 进入，并引用 Feature/AC、来源、当前架构和适用 ADR；完成后保留该任务的历史事实。\n\n项目文件： docs/features/F[0-9][0-9][0-9]-design.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/feature-design.md.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-feature",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 2190,
+      "width": 270,
+      "height": 88,
+      "label": "Feature 详情\nF0XX.json",
+      "zIndex": 1,
+      "fill": "#F3E8FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：当前任务范围、组件影响、主来源、可观察 AC、验证义务和简短 notes。\n项目位置：docs/features/F0XX.json；真实规划后产生。\nsource 指向精确主来源，可观察要求及来源写入 AC，实施约束及来源写入同编号设计；notes 保存提醒、事件教训和导航，不保存另一份实施设计或决定理由。\n\n项目文件： docs/features/F[0-9][0-9][0-9].json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/feature-detail.json.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-test-registry",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 2190,
+      "width": 270,
+      "height": 88,
+      "label": "测试登记表\ntest-registry.json",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：测试身份、组件、实现位置和生命周期；为 AC、回归及测试影响提供可追溯映射。\n项目位置：docs/test-registry.json；初始为空。\n登记、真实实现、运行结果和完成证据分别记录；planned 条目不等于测试已通过。\n\n项目文件： docs/test-registry.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/test-registry.json.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-audio",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 2550,
+      "width": 270,
+      "height": 88,
+      "label": "共享声音规范\nsound-bible.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：共享声音方向、反馈层级和音频要求的固定正文；GDD 保留整体体验目标、玩法触发规则与引用。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，跨独立所有者共用的音频文件规格与准备状态固定在本文件“共享资源规格”章节，单个表现、界面或组件的专用资源仍随其正文。\n\n项目文件： docs/audio/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/audio/sound-bible.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-resource-spec",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 2550,
+      "width": 270,
+      "height": 88,
+      "label": "资源规格与准备\n所属设计的 *.md 章节",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源台账。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/01-product-doc-structure.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-architecture",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 2550,
+      "width": 270,
+      "height": 88,
+      "label": "项目架构\narchitecture.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：项目级模块、装配入口、跨模块协作与依赖方向。\n项目位置：docs/architecture.md；初始只有用途说明。\n子系统内部契约固定进入子系统文档，不按复杂程度分流；符合条件的技术决策理由归 ADR。\n无 Feature 且不符合 ADR 条件的已采用项目级或跨子系统决定，按架构规范保存到独立技术决定章节，区分决定与已实现事实；纳入 Feature 设计时按规定迁移并保留引用。\n链接实际 GDD/UI/表现和代码入口，不覆盖 Feature 的历史。\n\n项目文件： docs/architecture.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/architecture.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-manual",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 2550,
+      "width": 270,
+      "height": 148,
+      "label": "人工验收清单与结果\nmanual-acceptance-checklist.json\nmanual-acceptance-checklist.result.json",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：展开当前 Feature 的人工检查，保留准备清单与用户实际返回结果。\n项目位置：reports/manual-acceptance/<Feature-ID>/；仅 manual 验收按实际需要产生。\n结果绑定对应内容快照，完成证据引用原件；清单存在不代表用户已经接受。\n\n项目文件： reports/manual-acceptance/**/*.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/manual-acceptance-files.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-test-reports",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 2550,
+      "width": 270,
+      "height": 88,
+      "label": "自动测试原始报告\nresult.json · *.log · *.xml",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：保存真实 gdUnit 运行结果、日志及其原始报告。\n项目位置：reports/gdunit-wrapper/<Feature-ID>/run-<id>/ 或 focused/run-<id>/。\n由测试工具产生，完成证据记录真实运行入口；静态检查或补充测量不能伪装成 gdUnit 通过。\n\n项目文件： reports/gdunit-wrapper/**/*",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/tools/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-localization",
+      "shape": "rounded-rect",
+      "x": 500,
+      "y": 2910,
+      "width": 270,
+      "height": 88,
+      "label": "本地化规范\nlocalization-spec.md",
+      "zIndex": 1,
+      "fill": "#ECFDF5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：目标语言、表达和格式约定的固定正文；原先写在 GDD 的当前规格在获准整理时归位。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n“术语译名”章节固定保存目标语言、已采纳用词与语境，并引用 docs/terminology.md 的概念；design-localization-spec 维护，接入与审核读取同一份规格。完整句子与对话仍在运行翻译资源中。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/localization/localization-spec.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-ideas",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 2910,
+      "width": 270,
+      "height": 88,
+      "label": "未采纳想法\nunadopted-ideas.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/unadopted-ideas.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-subsystem",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 2910,
+      "width": 270,
+      "height": 88,
+      "label": "子系统说明\n<subsystem>.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n\n项目文件： docs/architecture/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/architecture-subsystem.md.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-completion",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 2910,
+      "width": 270,
+      "height": 112,
+      "label": "当前 Feature 完成证据\nfeature-completion-evidence.json",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：记录当前 Feature 的测试运行、适用人工验收及对应版本/内容快照。\n项目位置：docs/feature-completion-evidence.json；由现有记录工具按任务产生。\n引用测试、清单与返回结果原件；不是所有 Feature 的第二份状态表。历史执行事实通过 notes、Progress 归档及原证据保留。\n\n项目文件： docs/feature-completion-evidence.json",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/feature-completion-evidence.json.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-task-reports",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 2910,
+      "width": 270,
+      "height": 88,
+      "label": "任务报告与临时输入\n*.md · *.json · *.log",
+      "zIndex": 1,
+      "fill": "#FFF7ED",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时文档统一放项目根 tmp/<task>/，探针与验证副本放 reports/scratch/<task>/。临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*\n项目文件： tmp/**/*",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/09-artifact-lifecycle.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-research",
+      "shape": "rounded-rect",
+      "x": 920,
+      "y": 3270,
+      "width": 270,
+      "height": 88,
+      "label": "外部调研\n<topic>.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：可留存的外部问题、来源、结论、建议和未知项。\n项目位置：docs/research/<topic>.md；初始只有目录说明。\n从相关 Feature 设计、notes 或 Progress 进入，数量增加后补主题导航；结论经采纳才写回要求所属正文。\n\n项目文件： docs/research/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/research/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-adr",
+      "shape": "rounded-rect",
+      "x": 1760,
+      "y": 3270,
+      "width": 270,
+      "height": 88,
+      "label": "ADR 重要技术决定\nadr-NNNN-<slug>.md",
+      "zIndex": 1,
+      "fill": "#F1F5F9",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、候选、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/architecture-decision-record.md.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-progress",
+      "shape": "rounded-rect",
+      "x": 2180,
+      "y": 3270,
+      "width": 270,
+      "height": 88,
+      "label": "项目当前进度\nprogress.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接台账。\n\n项目文件： docs/progress.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/progress.md.tmpl"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-history",
+      "shape": "rounded-rect",
+      "x": 2600,
+      "y": 3270,
+      "width": 270,
+      "height": 88,
+      "label": "执行历史\n<key>.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：完成 Feature 或获准批次的一份执行历史。\n项目位置：docs/progress/<key>.md；完成后按需归档，从当前 Progress 进入。\n保留当时决定、验证范围和证据链接；未解决事项继续留在当前 Progress。\n\n项目文件： docs/progress/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/progress/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-knowledge",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 3630,
+      "width": 270,
+      "height": 88,
+      "label": "项目知识\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：可复用的实际经验、成功做法和失败教训。\n项目位置：docs/knowledge/，经总索引、主题索引进入单篇条目；初始只有导航。\n条目链接原始任务/证据，相关工作按需查阅；知识不替代当前需求、规则或真实验证。\n\n项目文件： docs/knowledge/**/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/knowledge/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "caption-framework",
+      "shape": "text",
+      "x": 80,
+      "y": -60,
+      "width": 680,
+      "height": 64,
+      "label": "框架维护仓库",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 30,
+        "color": "#1E3A8A",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "上区：框架使用说明、维护依据、待办、证据与分发源；不把维护材料作为生成项目的运行依赖。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "caption-project",
+      "shape": "text",
+      "x": 80,
+      "y": 1280,
+      "width": 1240,
+      "height": 64,
+      "label": "生成后的游戏项目 · 文档类型与记录职责",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 30,
+        "color": "#14532D",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "下区：每个节点是一类文档或所属章节，包含按需才创建的产物；本图不声称这些正文已存在于某个游戏项目中。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "legend-navigation",
+      "shape": "text",
+      "x": 1100,
+      "y": -100,
+      "width": 700,
+      "height": 64,
+      "label": "灰色虚线：阅读入口 → 目标",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#64748B",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "阅读辅助，不代表一份业务文档。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "legend-source",
+      "shape": "text",
+      "x": 1100,
+      "y": -30,
+      "width": 700,
+      "height": 64,
+      "label": "蓝色实线：要求 / 约定 → 使用方",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#2563EB",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "阅读辅助，不代表一份业务文档。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "legend-evidence",
+      "shape": "text",
+      "x": 1900,
+      "y": -100,
+      "width": 750,
+      "height": 64,
+      "label": "紫色虚线：记录 → 依据或证据",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#7C3AED",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "阅读辅助，不代表一份业务文档。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "legend-derived",
+      "shape": "text",
+      "x": 1900,
+      "y": -30,
+      "width": 750,
+      "height": 64,
+      "label": "橙色实线：来源 → 复制 / 派生结果",
+      "zIndex": 2,
+      "fill": "transparent",
+      "stroke": {
+        "color": "#CBD5E1",
+        "width": 0,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#C2410C",
+        "align": "left",
+        "fontFamily": "system",
+        "bold": true,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "note": "阅读辅助，不代表一份业务文档。",
+      "textSizing": "fixed",
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "relation-entry-terminology",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-terminology",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 215,
+          "y": 1630
+        },
+        {
+          "x": 635,
+          "y": 1630
+        }
+      ],
+      "label": "共享业务词义入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-scenarios-prompts",
+      "source": {
+        "node": "doc-scenarios",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-prompts",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1230,
+          "y": 470
+        },
+        {
+          "x": 1270,
+          "y": 470
+        }
+      ],
+      "label": "同名提示词正文",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-feature-index",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-feature-index",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 215,
+          "y": 1690
+        },
+        {
+          "x": 2315,
+          "y": 1690
+        }
+      ],
+      "label": "任务索引入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-ideas",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-ideas",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": -30,
+          "y": 1630
+        },
+        {
+          "x": -30,
+          "y": 3070
+        },
+        {
+          "x": 850,
+          "y": 3070
+        },
+        {
+          "x": 850,
+          "y": 2954
+        }
+      ],
+      "label": "暂未采纳的想法",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-localization",
+      "source": {
+        "node": "doc-gdd",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-localization",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 370,
+          "y": 1990
+        },
+        {
+          "x": 370,
+          "y": 2830
+        },
+        {
+          "x": 635,
+          "y": 2830
+        }
+      ],
+      "label": "按需求细化语言约定",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-entry-docs",
+      "source": {
+        "node": "doc-framework-entry",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-framework-docs",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "统一阅读入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-entry-rules",
+      "source": {
+        "node": "doc-framework-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-framework-rules",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "维护时查阅",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-entry-distribution",
+      "source": {
+        "node": "doc-framework-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-distribution",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 380,
+          "y": 900
+        },
+        {
+          "x": 380,
+          "y": 1064
+        }
+      ],
+      "label": "创建入口与清单",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-operation",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-operation",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "概念、配置与工具",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-scenarios",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-scenarios",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按当前问题查找",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-maintenance",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-maintenance",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "框架维护",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-terms",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-framework-terms",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 800,
+          "y": 700
+        },
+        {
+          "x": 800,
+          "y": 804
+        }
+      ],
+      "label": "公共词义",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-graphs",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-graphs",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "两类关系图入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-prompts-scenarios",
+      "source": {
+        "node": "doc-prompts",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-scenarios",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "同名、一一对应",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-prompts-graphs",
+      "source": {
+        "node": "doc-prompts",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-graphs",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "开发场景名称与衔接",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-rules-maintenance",
+      "source": {
+        "node": "doc-framework-rules",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-maintenance",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "维护边界与同步约定",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-maintenance-review",
+      "source": {
+        "node": "doc-maintenance",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-review",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "长期准则与报告入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-review-reports",
+      "source": {
+        "node": "doc-review",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-framework-reports",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按主题、日期查阅",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-progress-reports",
+      "source": {
+        "node": "doc-framework-progress",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-framework-reports",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "仍需引用的依据",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-maintenance-progress",
+      "source": {
+        "node": "doc-maintenance",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-framework-progress",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1055,
+          "y": 900
+        },
+        {
+          "x": 2315,
+          "y": 900
+        }
+      ],
+      "label": "查看剩余工作",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-distribution-templates",
+      "source": {
+        "node": "doc-distribution",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-templates",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "模板属于分发源",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-distribution-project",
+      "source": {
+        "node": "doc-distribution",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-project-entry",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 360,
+          "y": 1064
+        },
+        {
+          "x": 360,
+          "y": 1390
+        },
+        {
+          "x": 215,
+          "y": 1390
+        }
+      ],
+      "label": "创建时复制；项目随后独立",
+      "stroke": {
+        "color": "#C2410C",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#C2410C",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-templates-feature",
+      "source": {
+        "node": "doc-templates",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2990,
+          "y": 1064
+        },
+        {
+          "x": 2990,
+          "y": 2020
+        },
+        {
+          "x": 2510,
+          "y": 2020
+        },
+        {
+          "x": 2510,
+          "y": 2234
+        }
+      ],
+      "label": "真实规划时采用结构",
+      "stroke": {
+        "color": "#C2410C",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#C2410C",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.22,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-rules",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-project-rules",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "适用规则",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-rules-methods",
+      "source": {
+        "node": "doc-project-rules",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-project-methods",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按任务进入方法",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-methods-tools",
+      "source": {
+        "node": "doc-project-methods",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-tools",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "显式工具契约",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-tools-config",
+      "source": {
+        "node": "doc-tools",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-configuration",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "读取配置",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-config-init",
+      "source": {
+        "node": "doc-configuration",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-initialization",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "实际检查后记录",
+      "stroke": {
+        "color": "#C2410C",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#C2410C",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-organization",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-organization",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "从游戏功能开始",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-organization-gdd",
+      "source": {
+        "node": "doc-organization",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-gdd",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 215,
+          "y": 1750
+        },
+        {
+          "x": 1055,
+          "y": 1750
+        }
+      ],
+      "label": "需求与体验入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-organization-architecture",
+      "source": {
+        "node": "doc-organization",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-architecture",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 20,
+          "y": 1874
+        },
+        {
+          "x": 20,
+          "y": 2700
+        },
+        {
+          "x": 1680,
+          "y": 2700
+        },
+        {
+          "x": 1680,
+          "y": 2594
+        }
+      ],
+      "label": "实际实现与协作",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.73,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-terminology-gdd",
+      "source": {
+        "node": "doc-terminology",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-gdd",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "统一项目术语",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-overview",
+      "source": {
+        "node": "doc-gdd",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-product-overview",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按设计组织交付",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-overview-product",
+      "source": {
+        "node": "doc-product-overview",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-product",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前交付单元入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-product-feature",
+      "source": {
+        "node": "doc-product",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "细化当前交付任务",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-index-feature",
+      "source": {
+        "node": "doc-feature-index",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "detail_path",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-index-revisions",
+      "source": {
+        "node": "doc-feature-index",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-revisions",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "规划基线与演进",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-methods-feature",
+      "source": {
+        "node": "doc-project-methods",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1210,
+          "y": 1620
+        },
+        {
+          "x": 2500,
+          "y": 1620
+        },
+        {
+          "x": 2500,
+          "y": 2070
+        },
+        {
+          "x": 2315,
+          "y": 2070
+        }
+      ],
+      "label": "范围、AC 与验证契约",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.28,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-ui",
+      "source": {
+        "node": "doc-gdd",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-ui",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "细化界面与交互",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-art",
+      "source": {
+        "node": "doc-gdd",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-art",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 820,
+          "y": 1874
+        },
+        {
+          "x": 820,
+          "y": 2070
+        },
+        {
+          "x": 635,
+          "y": 2070
+        }
+      ],
+      "label": "细化视觉方向",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-audio",
+      "source": {
+        "node": "doc-gdd",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-audio",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 810,
+          "y": 1990
+        },
+        {
+          "x": 810,
+          "y": 2440
+        },
+        {
+          "x": 635,
+          "y": 2440
+        }
+      ],
+      "label": "细化声音方向",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-gdd-presentation",
+      "source": {
+        "node": "doc-gdd",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-presentation",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1055,
+          "y": 2020
+        },
+        {
+          "x": 1475,
+          "y": 2020
+        }
+      ],
+      "label": "非 UI 表现的入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-art-ui",
+      "source": {
+        "node": "doc-art",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-ui",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "共享视觉约束",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-audio-presentation",
+      "source": {
+        "node": "doc-audio",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-presentation",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 850,
+          "y": 2594
+        },
+        {
+          "x": 850,
+          "y": 2350
+        },
+        {
+          "x": 1475,
+          "y": 2350
+        }
+      ],
+      "label": "共享声音约束",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-localization-ui",
+      "source": {
+        "node": "doc-localization",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-ui",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 410,
+          "y": 2954
+        },
+        {
+          "x": 410,
+          "y": 2350
+        },
+        {
+          "x": 840,
+          "y": 2350
+        },
+        {
+          "x": 840,
+          "y": 2234
+        }
+      ],
+      "label": "语言、格式与显示约束",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.45,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-ui-presentation",
+      "source": {
+        "node": "doc-ui",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-presentation",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "实际触发位置与导航",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-ui-resource",
+      "source": {
+        "node": "doc-ui",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-resource-spec",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1055,
+          "y": 2594
+        }
+      ],
+      "label": "界面专用资源章节",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-presentation-resource",
+      "source": {
+        "node": "doc-presentation",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-resource-spec",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "方案所属资源章节",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-resource-design",
+      "source": {
+        "node": "doc-resource-spec",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-feature-design",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1680,
+          "y": 2594
+        },
+        {
+          "x": 1680,
+          "y": 2234
+        }
+      ],
+      "label": "采用的规格与缺口",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-presentation-design",
+      "source": {
+        "node": "doc-presentation",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-feature-design",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "采用方案的实施解释",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-feature-design",
+      "source": {
+        "node": "doc-feature",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-feature-design",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "notes 中的设计链接",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-design-architecture",
+      "source": {
+        "node": "doc-feature-design",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-architecture",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前结构与实际连接",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-architecture-subsystem",
+      "source": {
+        "node": "doc-architecture",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-subsystem",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "子系统内部契约",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-architecture-adr",
+      "source": {
+        "node": "doc-architecture",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-adr",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1660,
+          "y": 2594
+        },
+        {
+          "x": 1660,
+          "y": 3314
+        }
+      ],
+      "label": "重要技术取舍",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-subsystem-reports",
+      "source": {
+        "node": "doc-subsystem",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-task-reports",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1895,
+          "y": 2800
+        },
+        {
+          "x": 2735,
+          "y": 2800
+        }
+      ],
+      "label": "有用的验证入口",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.7,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-adr-research",
+      "source": {
+        "node": "doc-adr",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-research",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "需要时引用外部依据",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-ideas-gdd",
+      "source": {
+        "node": "doc-ideas",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-gdd",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 800,
+          "y": 2954
+        },
+        {
+          "x": 800,
+          "y": 1940
+        },
+        {
+          "x": 850,
+          "y": 1940
+        },
+        {
+          "x": 850,
+          "y": 1874
+        }
+      ],
+      "label": "进入比较或采纳后迁移并引用",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.35,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-research-gdd",
+      "source": {
+        "node": "doc-research",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-gdd",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1280,
+          "y": 3314
+        },
+        {
+          "x": 1280,
+          "y": 1874
+        }
+      ],
+      "label": "经采纳后更新所属要求",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.38,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-feature-registry",
+      "source": {
+        "node": "doc-feature",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-test-registry",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "测试 ID 与组件映射",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-feature-manual",
+      "source": {
+        "node": "doc-feature",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-manual",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "人工检查义务；仅 manual",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-test-reports-registry",
+      "source": {
+        "node": "doc-test-reports",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-test-registry",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "真实运行的测试身份",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-completion-tests",
+      "source": {
+        "node": "doc-completion",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-test-reports",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2735,
+          "y": 2954
+        }
+      ],
+      "label": "引用真实运行原件",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-completion-manual",
+      "source": {
+        "node": "doc-completion",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-manual",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "引用清单与实际结果",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-feature-completion",
+      "source": {
+        "node": "doc-feature",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-completion",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2110,
+          "y": 2234
+        },
+        {
+          "x": 2110,
+          "y": 2954
+        }
+      ],
+      "label": "按当前 Feature 身份关联",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-feature-task-reports",
+      "source": {
+        "node": "doc-feature",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-task-reports",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2960,
+          "y": 2360
+        },
+        {
+          "x": 2960,
+          "y": 2954
+        }
+      ],
+      "label": "补充测量与按需审核",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.6,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-progress-feature",
+      "source": {
+        "node": "doc-progress",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2080,
+          "y": 3314
+        },
+        {
+          "x": 2080,
+          "y": 2270
+        }
+      ],
+      "label": "当前任务入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-progress-history",
+      "source": {
+        "node": "doc-progress",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-history",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "完成历史入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-history-reports",
+      "source": {
+        "node": "doc-history",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-task-reports",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "保留原证据链接",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-progress-research",
+      "source": {
+        "node": "doc-progress",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-research",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2315,
+          "y": 3440
+        },
+        {
+          "x": 1055,
+          "y": 3440
+        }
+      ],
+      "label": "当前问题与相关资料",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-progress-reports",
+      "source": {
+        "node": "doc-progress",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-task-reports",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "当前状态的实际依据",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-progress-init",
+      "source": {
+        "node": "doc-progress",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-initialization",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 3040,
+          "y": 3314
+        },
+        {
+          "x": 3040,
+          "y": 1400
+        },
+        {
+          "x": 2500,
+          "y": 1400
+        },
+        {
+          "x": 2500,
+          "y": 1514
+        }
+      ],
+      "label": "需要续接的环境结果",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.3,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-progress",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-progress",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": -80,
+          "y": 1514
+        },
+        {
+          "x": -80,
+          "y": 3500
+        },
+        {
+          "x": 2315,
+          "y": 3500
+        }
+      ],
+      "label": "当前停点入口",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.35,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-knowledge",
+      "source": {
+        "node": "doc-project-entry",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-knowledge",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": -130,
+          "y": 1514
+        },
+        {
+          "x": -130,
+          "y": 3674
+        }
+      ],
+      "label": "按主题查阅经验",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.48,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-knowledge-reports",
+      "source": {
+        "node": "doc-knowledge",
+        "port": "right"
+      },
+      "target": {
+        "node": "doc-task-reports",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 3100,
+          "y": 3674
+        },
+        {
+          "x": 3100,
+          "y": 2954
+        }
+      ],
+      "label": "经验链接真实依据",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.4,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-knowledge-feature",
+      "source": {
+        "node": "doc-knowledge",
+        "port": "top"
+      },
+      "target": {
+        "node": "doc-feature",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 1475,
+          "y": 3550
+        },
+        {
+          "x": 2050,
+          "y": 3550
+        },
+        {
+          "x": 2050,
+          "y": 2320
+        },
+        {
+          "x": 2315,
+          "y": 2320
+        }
+      ],
+      "label": "原事件与局部决定",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.4,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-terminology-localization",
+      "source": {
+        "node": "doc-terminology",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-localization",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 380,
+          "y": 1874
+        },
+        {
+          "x": 380,
+          "y": 2954
+        }
+      ],
+      "label": "译名引用已确认概念",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    }
+  ],
+  "canvas": {
+    "gridSize": 10,
+    "gridVisible": false,
+    "snapToGrid": true
+  }
+}

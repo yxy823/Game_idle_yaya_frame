@@ -3,21 +3,21 @@
 本册解释框架、概念、配置、职责和工具用法。按需要查阅专题，不要求按目录顺序执行；具体场景的处理步骤不在本册重复。两本手册独立阅读，整体选择由框架文档总入口提供。
 
 - **框架基础**
-  - [框架、创建器与项目边界](框架基础/framework-and-project.md)：分发、创建器参数、副作用、环境就绪和已有项目的独立性。
-  - [游戏逻辑、表现与协作](框架基础/game-logic-and-presentation.md)：从商店购买理解职责，再找到设计、实际实现与验收；普通实现由 Agent 按需求选择。
-  - [项目对象与目录](框架基础/project-layout.md)：GDD、Product、Feature、Registry、证据、代码与报告的职责及读写关系。
-  - [配置参考](框架基础/configuration.md)：工具路径、文档语言、Godot、插件、lint 和文本约定。
+  - [框架、创建器与项目边界](foundations/framework-and-project.md)：分发、创建器参数、副作用、环境就绪和已有项目的独立性。
+  - [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：从商店购买理解职责，再找到设计、实际实现与验收；普通实现由 Agent 按需求选择。
+  - [项目对象与目录](foundations/project-layout.md)：GDD、Product、Feature、Registry、证据、代码与报告的职责及读写关系。
+  - [配置参考](foundations/configuration.md)：工具路径、文档语言、Godot、插件、lint 和文本约定。
 - **需求与任务**
-  - [需求、Feature 与规划基线](需求与任务/requirements-and-planning.md)：GDD 前提、交付预拆分、逐个 Product 细化、AC、依赖、基线与历史演进。
-  - [任务类型、开发阶段与完成语义](需求与任务/feature-lifecycle.md)：Bug/重构/维护/实验、Stage、授权、自动/人工验收、Git 和 Goal。
+  - [需求、Feature 与规划基线](requirements-and-tasks/requirements-and-planning.md)：GDD 前提、交付预拆分、逐个 Product 细化、AC、依赖、基线与历史演进。
+  - [任务类型、开发阶段与完成语义](requirements-and-tasks/feature-lifecycle.md)：Bug/重构/维护/实验、Stage、授权、自动/人工验收、Git 和 Goal。
 - **方法与工具**
-  - [Skill、Agent 与提示词](方法与工具/skills-and-agents.md)：方法职责、角色、集中提示词与 advisor 表达参考。
-  - [命令与验证证据](方法与工具/commands-and-evidence.md)：命令参数、测试范围、报告、完成记录、指纹及退出码。
-  - [错误与结果的含义](方法与工具/errors-and-results.md)：环境、台账、运行和证据输出的解释边界。
+  - [Skill、Agent 与提示词](methods-and-tools/skills-and-agents.md)：方法职责、角色、集中提示词与 advisor 表达参考。
+  - [命令与验证证据](methods-and-tools/commands-and-evidence.md)：命令参数、测试范围、报告、完成记录、指纹及退出码。
+  - [错误与结果的含义](methods-and-tools/errors-and-results.md)：环境、台账、运行和证据输出的解释边界。
 - **专业工作与记录**
-  - [专业来源与资源](专业工作与记录/specialist-work.md)：来源所有者、素材准备、原型、接入、测量与独立审核。
-  - [资源工作台](专业工作与记录/asset-workbench.md)：查看、试听、分析、A/B、组合、保存与消费工具用法。
-  - [知识、设计与记录](专业工作与记录/knowledge-and-records.md)：术语、设计、架构、ADR、规则、调研、知识、报告与续接信息。
+  - [专业来源与资源](specialist-work-and-records/specialist-work.md)：来源所有者、素材准备、原型、接入、测量与独立审核。
+  - [资源工作台](specialist-work-and-records/asset-workbench.md)：查看、试听、分析、A/B、组合、保存与消费工具用法。
+  - [知识、设计与记录](specialist-work-and-records/knowledge-and-records.md)：术语、设计、架构、ADR、规则、调研、知识、报告与续接信息。
 - **公共参考**
   - [框架与 Godot 项目术语](../terminology.md)：框架特有或具有特定含义的术语；游戏自身业务词汇仍由项目维护。
 

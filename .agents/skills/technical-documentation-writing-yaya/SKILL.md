@@ -7,7 +7,7 @@ description: 编写、更新或整理 Yaya 框架的说明文档，包括手册�
 
 将 Yaya 框架中已确认的事实和操作要求整理成容易查找、理解和执行的说明。覆盖框架 README、两册手册、维护说明、设计依据、审核报告及源材料的说明文字。编写方案讨论交付建议；获准修改完成相应文档及作者自查，不改变被说明对象的行为或验收标准，也不把自查称为正式审核。
 
-框架仓库中介绍 Godot 开发流程的手册仍属于本 Skill；实际生成项目中的 GDD、Product、Feature 等文档由该项目的写作 Skill 负责。编辑 AGENTS、Skill 或任务提示词时，本 Skill 只处理其中已确认内容的表达；规则行为的维护和自查按[规则与提示词文件维护约定](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#规则与提示词文件维护)，具体职责和流程仍由所属规范决定。
+框架仓库中介绍 Godot 开发流程的手册仍属于本 Skill；实际生成项目中的 GDD、Product、Feature 等文档由该项目的写作 Skill 负责。编辑 AGENTS、Skill 或任务提示词时，本 Skill 只处理其中已确认内容的表达；规则行为的维护和自查按[规则与提示词文件维护约定](../../../framework/docs/framework-maintenance/responsibility-design-guidelines.md#规则与提示词文件维护)，具体职责和流程仍由所属规范决定。
 
 ## 阅读入口
 

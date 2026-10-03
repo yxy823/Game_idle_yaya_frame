@@ -8,8 +8,8 @@ from pathlib import Path
 
 
 COMMAND = (Path(__file__).resolve().parents[3]
-           / "framework/docs/workflow-maps/check_document_graph_coverage.py")
-GRAPH = "framework/docs/workflow-maps/document-system.readable.json"
+           / "framework/commands/check_document_graph_coverage.py")
+GRAPH = "framework/docs/relationship-maps/document-system.readable.json"
 MANIFEST = "framework/commands/project-files.json"
 
 

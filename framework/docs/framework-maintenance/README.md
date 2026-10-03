@@ -4,12 +4,11 @@
 
 | 查阅内容 | 入口 |
 | --- | --- |
-| 材料归属、说明同步、验证选择和交付约定 | [修改空白项目与同步使用说明](updating-the-blank-project.md) |
-| 文档固定归属，以及 Skill、脚本、提示词与场景的职责判断 | [职责设计准则](baselines/skill-script-prompt-design.md) |
+| 材料归属、说明同步、验证选择和交付约定 | [维护与同步](maintenance-and-sync.md) |
+| 文档固定归属，Skill、脚本、提示词与场景的职责判断，审核结论与当次报告 | [职责设计准则](responsibility-design-guidelines.md) |
 | 源材料、工具回归、真实引擎和流程抽样的证据范围 | [框架的复制与运行验证](validating-framework.md) |
 | 编辑器效率插件的上游链接、安装版本、Godot 兼容性与升级核对 | [编辑器插件版本记录](editor-plugin-versions.md) |
-| 维护命令、复制清单、导出与路径检查工具 | [维护工具](../../README.md) |
+| 维护命令、复制清单与检查工具 | [维护命令](../../commands/README.md) |
 | 尚需推进的工作与真实验证缺口 | [框架待办](../../progress.md) |
-| 长期准则与当次报告的保留边界 | [复盘材料](review-materials.md) |
 
 验证文档中的带日期输出路径是夹具的实际默认值，不代表本轮运行结果；历史报告只证明对应版本，不替代当前验证。

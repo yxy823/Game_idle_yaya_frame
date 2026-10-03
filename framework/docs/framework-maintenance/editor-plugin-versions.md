@@ -45,40 +45,27 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提交的原文，仅补齐前述两个许可证文件。Kanban 的五个图标/文档 SVG 与 Signal Lens 的两个 PNG 所附 `.import` 文件采用外部 Godot 4.7.1 重导入后的设置，增加引擎默认的压缩与通道映射字段；不带入 `.godot` 缓存或用户偏好。没有给资源表格插件应用未经证实的退出修正。
 
-## Godot 验证
+## 当前兼容性状态
 
-### 2026-10-03 分屏与目标生命周期
+最近一次实测环境为 Windows、Godot `4.7.1.stable.official.a13da4feb`，在由创建器生成的独立外部项目中执行，图形运行使用 OpenGL Compatibility。原始日志、JSON 报告与退出码保存在对应外部项目的 `reports/`；本页只保留当前结论，验证过程与证据位置随本页的 Git 历史查阅。新的 Godot 或插件版本不能沿用这些结论。
 
-在新建外部项目 `D:/A_Games/Game_idle_yaya_frame_audit_validation_20261003`、Windows、Godot `4.7.1.stable.official.a13da4feb` 上验证。以下日志和 JSON 原件保存在该项目的 `reports/plugin-lifecycle-20261003/`；本轮结束后恢复默认插件列表并停用临时探针。
-
-| 检查范围 | 实际结果与证据 |
+| 检查范围 | 当前结论 |
 | --- | --- |
-| Script-IDE 分屏 | `script-ide-complete-headless` 与 `script-ide-complete-graphical` 的 `.log`、`.json` 各有 28 项断言通过，退出码均为 `0`；后者使用 OpenGL Compatibility。覆盖三轮开关、容器和 CodeEdit 实际释放、高亮器各自归属、逐行高亮一致、折叠后搜索及关闭后原编辑器高亮更新 |
-| 分屏释放负向对照 | `script-ide-no-release-negative.log`、`.json` 恢复原来的只移除行为，六项释放断言失败，退出码为 `1`；探针保留离树节点引用，因此不会把“树上已找不到”误当成释放 |
-| Signal Lens 销毁后切换 | `signal-lens-final-queued` 与 `signal-lens-final-immediate` 的 `.log`、`.json` 分别覆盖 `queue_free()` 和 `free()`，各 14 项断言通过，退出码均为 `0`；验证 A 销毁后选择 B、B 发出信号、活目标 B 切换 C 时解绑，以及清理。使用上游原源码，失效目标与 `null` 的比较成立 |
+| Script-IDE 分屏 | 应用本地修正后，headless 与图形回归均通过：多轮开关、容器与 CodeEdit 实际释放、高亮器各自归属、逐行高亮一致、折叠后搜索，以及关闭后原编辑器高亮更新；日志无脚本错误、泄漏或退出崩溃。恢复原“只移除”行为的负向对照会失败，说明释放断言有效 |
+| Signal Lens 目标生命周期 | 使用上游源码，`queue_free()` 与 `free()` 两种销毁方式下的目标切换、信号接收、解绑与清理均通过；失效目标与 `null` 的比较行为与 [Godot 4.7.1 的实现](https://github.com/godotengine/godot/blob/4.7.1-stable/core/variant/variant_op.h#L496-L501)一致 |
+| 五插件功能与启停 | 同时启用、Script-IDE 标签与 Inspector Tabs 注册、看板保存重载、表格资源加载、逐个停用再启用、Kanban 菜单与容器释放、表格界面释放、Signal Lens Autoload 添加与移除均通过 |
+| 默认组合启动与退出 | headless 启动/退出无脚本错误或泄漏诊断（gdUnit4 在 headless 下跳过插件主体，不覆盖其界面）；只含 Script-IDE、Inspector Tabs 与 Kanban 的图形启动/退出无错误 |
 
-Script-IDE 两种模式的最终日志均未出现脚本错误、泄漏或退出崩溃。此前 `script-ide-final-graphical.log` 曾记录 `gdscript-linter/dock.tscn` 的 `settings.svg` UID 回退警告，最终图形回归未再出现。项目及显式维护探针的 `lint-final.json` 返回 `2`，含 1 Critical、5 Warning、128 Info；`lint-baseline-probe-verified.json` 使用原编辑器探针时含 2 Critical、4 Warning。现存全插件探针长函数仍未消除，复杂度由 18 降为 15；四条输出警告来自两份探针的结果打印。这些诊断保留在报告中，不能把本轮 lint 写成全通过。
+### 未解决问题
 
-Signal Lens 的空值比较结果与 [Godot 4.7.1 的 `OperatorEvaluatorNotEqualObjectNil`](https://github.com/godotengine/godot/blob/4.7.1-stable/core/variant/variant_op.h#L496-L501) 一致：先获取仍有效的对象，再与空指针比较。本轮使用本地调试器验证目标与连接生命周期，未验证远程面板收包或人工交互。分屏的自动化图形检查也不替代人工观感验收；下述旧组合问题仍未关闭。
+- **gdUnit4 图形组合**：包含 gdUnit4 的完整默认图形组合仍有状态栏信号重复连接、退出时访问已释放实例及残留资源诊断。单独启用 gdUnit4 也会出现字体初始化与退出访问问题；重复连接尚未定位，本框架未修改 gdUnit4。
+- **资源表格退出泄漏**：单独启动无退出错误，与 gdUnit4 或其他新增插件组合时出现 ObjectDB、资源、纹理等泄漏；同步释放界面与空偏好对照均未消除，根因未确定，因此默认停用。
+- **维护探针 lint**：外部验证项目的 lint 仍报告插件生命周期探针的长函数与结果打印问题，不能写成 lint 全通过。
+- **人工验收缺口**：尚未验收 Script-IDE 分屏与搜索观感、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程面板收包与信号图；自动化探针的通过结论不覆盖这些范围。
 
-### 2026-09-27 五插件组合
+进程退出码为 `0` 不代表无错误，复核时同时读取报告和引擎日志。Inspector Tabs 首次缺少可选偏好文件时会普通打印 `ERROR LOADING SETTINGS FILE` 并使用默认设置，这与引擎的 `ERROR:`、`SCRIPT ERROR:` 诊断不同。
 
-2026-09-27 在 Windows、Godot `4.7.1.stable.official.a13da4feb` 上验证。外部项目为 `D:/A_Games/Game_idle_yaya_frame_plugins_test`，由创建器生成；引擎不在分发源目录启动。使用隔离的编辑器配置，图形运行采用 OpenGL Compatibility。原始日志保存在外部项目 `reports/editor-plugins-20260927/`，功能断言保存在 `reports/editor-plugin-lifecycle.json`。
-
-| 检查范围 | 实际结果与证据 |
-| --- | --- |
-| 五插件功能与生命周期 | `final-lifecycle-console.log` 中 26 项断言通过：同时启用、Script-IDE 标签与 Inspector Tabs 注册、看板保存重载、表格资源加载、逐个停用再启用、Kanban 菜单与容器释放、表格界面释放、Signal Lens Autoload 添加与移除。退出仍有资源泄漏，不能判为完整兼容 |
-| 最终默认组合的 headless 启动/退出 | `final-default-headless-console.log` 无脚本错误或泄漏诊断；gdUnit4 在 headless 模式会跳过编辑器插件主体，因此此结果不覆盖它的图形界面 |
-| 三个新增默认插件的图形启动/退出 | `native-new-default-only.log` 无错误或泄漏诊断；范围为 Script-IDE、Inspector Tabs、修正后的 Kanban |
-| 包含 gdUnit4 的完整默认图形组合 | `final-default-native-console.log` 仍有 gdUnit4 状态栏信号重复连接、退出时已释放实例访问及残留资源诊断，尚未通过无错误启动/退出检查 |
-| gdUnit4 图形对照 | `native-gdunit-baseline.log` 中仅启用原有 gdUnit4，也出现字体初始化 Nil 转 float、退出时已释放实例访问及残留资源。说明至少部分问题在原有插件单独运行时也存在；重复连接问题仍需单独定位，本次不修改 gdUnit4 |
-| 资源表格组合对照 | 单独启动资源表格无退出错误；与 gdUnit4 或其他新增插件组合时出现 ObjectDB、资源、纹理等退出泄漏。同步释放界面与空偏好对照均未消除问题；因此默认停用，根因未确定 |
-
-上述进程退出码均为 `0`，但错误日志已单独保留，退出码不代表全部检查通过。Inspector Tabs 首次缺少可选偏好文件时会普通打印 `ERROR LOADING SETTINGS FILE`，随后使用默认设置；这与引擎的 `ERROR:`、`SCRIPT ERROR:` 诊断不同。
-
-尚未做人工视觉与交互验收，包括 Script-IDE 分屏/搜索、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程信号图。该次 Signal Lens 只验证注册与启停，未验证运行中信号的远程捕获；这些范围不能沿用功能探针的通过结论。
-
-### 复用功能夹具
+## 验证夹具
 
 [editor_plugin_lifecycle_probe.gd](../../tests/external-project/plugins/editor_plugin_lifecycle_probe.gd) 只供已指定的外部验证项目临时使用，不进入项目复制清单。将它复制为外部项目的 `addons/editor_plugin_probe/plugin.gd`，同目录创建以下 `plugin.cfg`，导入后临时启用该插件并启动编辑器：
 
@@ -91,7 +78,7 @@ version="1.0"
 script="plugin.gd"
 ```
 
-夹具会切换五个插件、打开脚本和检查器、写入 `tests/editor_plugin_probe_data/` 下的临时看板与 Gradient 资源，并生成上述 JSON 报告后退出。结束时停用资源表格与 Signal Lens；还应在外部项目停用夹具，并恢复分发模板的默认插件列表。不要在有用户工作内容的项目直接运行。复核时同时读取报告、进程退出码和引擎日志。
+夹具会切换五个插件、打开脚本和检查器、写入 `tests/editor_plugin_probe_data/` 下的临时看板与 Gradient 资源，并生成 `reports/editor-plugin-lifecycle.json` 报告后退出。结束时停用资源表格与 Signal Lens；还应在外部项目停用夹具，并恢复分发模板的默认插件列表。不要在有用户工作内容的项目直接运行。复核时同时读取报告、进程退出码和引擎日志。
 
 只回归 Script-IDE 分屏时，临时启用 Script-IDE 与该探针，启动编辑器时在 `--` 后传 `--script-ide-split-only`。该模式不切换其他插件，报告的 `scope` 为 `script-ide-split`；报告仍写入 `reports/editor-plugin-lifecycle.json`，重复运行前保留需要的旧原件。
 
@@ -109,4 +96,4 @@ $LASTEXITCODE
 1. 从原始仓库的发布说明、对应 Godot 分支和资产库核对候选版本，选择确定提交；同时检查本页记录的包内版本差异与本地修正。
 2. 保留许可证和用户数据，只替换所属插件目录。目录名或插件入口变化时同步复制清单、默认 `project.godot` 与使用说明，不覆盖已有游戏项目。
 3. 在指定外部项目用目标 Godot 版本重新导入并启动全新编辑器，检查五插件共存、启用 → 停用 → 再启用，以及受变化影响的功能。Signal Lens 还需核对 Autoload 添加/移除；不能只凭退出码忽略脚本错误或泄漏日志。
-4. 更新本页的版本、固定源码、实测版本、范围及未解决问题，并同步受影响的手册说明。新的 Godot 或插件版本不能沿用旧版通过结论。
+4. 更新本页的版本、固定源码、当前兼容性结论与未解决问题，验证过程只留在外部项目报告与提交说明中，并同步受影响的手册说明。新的 Godot 或插件版本不能沿用旧版通过结论。

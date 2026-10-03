@@ -1,24 +1,87 @@
-# 维护命令清单
+# 维护命令
 
-本页是全部维护命令的唯一清单，包含随对象放置的命令及其位置；参数和详细用法见各 Python 命令的 `--help` 或[维护工具说明](../README.md)。
+本目录保存全部维护脚本与唯一复制清单 [project-files.json](project-files.json)，本页是命令用法的唯一说明。命令都在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存。参数细节以各命令的 `--help` 为准。
 
-与具体对象绑定的命令随对象放置。`commands/` 只放公共或无明确归属的命令。
-
-| 命令位置（相对 framework/） | 用途 |
+| 命令 | 用途 |
 | --- | --- |
-| [commands/create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交。 |
-| [commands/find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，按普通、导航和历史引用分类，列出孤立候选及引用文件、行号。 |
-| [docs/workflow-maps/check_document_graph_coverage.py](../docs/workflow-maps/check_document_graph_coverage.py) | 按文档图备注的文件路径检查文档覆盖；只读、显式调用，范围与结果含义见[图谱说明](../docs/workflow-maps/README.md#按需检查文档覆盖)。 |
-| [prompt_scenarios/tools/check_scenario_prompt_paths.py](../prompt_scenarios/tools/check_scenario_prompt_paths.py) | 默认读取 Godot 开发和 Yaya 维护两份提示词库，只读核对名称与场景文件路径是否一一对应。 |
-| [prompt_scenarios/tools/check_workflow_graph_names.py](../prompt_scenarios/tools/check_workflow_graph_names.py) | 只读核对流程图节点名与提示场景名；忽略 CR/LF 换行，输出匹配、差异、字段位置和候选名称。默认检查可读版 JSON，`--summary` 只显示统计。 |
-| [prompt_scenarios/tools/link_workflow_graph_scenarios.py](../prompt_scenarios/tools/link_workflow_graph_scenarios.py) | 为可读版 JSON 的节点写入或更新同名场景文件链接；先检查全部名称和文件，`--check` 只读检查。 |
-| [tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目。 |
+| [create_project.py](create_project.py) | 按复制清单创建空白项目，并建立独立 Git 仓库和初始提交 |
+| [check_scenario_prompt_paths.py](check_scenario_prompt_paths.py) | 只读核对两份提示词库的名称与场景文件路径是否一一对应 |
+| [check_workflow_graph_names.py](check_workflow_graph_names.py) | 只读核对开发场景图节点名与 Godot 提示词名称 |
+| [link_workflow_graph_scenarios.py](link_workflow_graph_scenarios.py) | 为开发场景图节点写入或更新同名场景文件链接；`--check` 只读 |
+| [check_document_graph_coverage.py](check_document_graph_coverage.py) | 按文档系统图登记的路径检查文档覆盖，只读、显式调用 |
+| [find_orphan_docs.py](find_orphan_docs.py) | 扫描文档的文本引用，列出孤立候选及引用文件、行号 |
+| [../tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py) | 对明确指定的外部项目运行现有工具回归，不创建或更新项目 |
 
-创建器的唯一复制映射为同目录的 [project-files.json](project-files.json)。按被测对象选择的维护夹具，其调用前提、参数和副作用见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。
+新增维护脚本放在本目录并在上表登记；回归测试与夹具放在 `framework/tests/`。
 
-在仓库根目录运行 `python -B framework/prompt_scenarios/tools/link_workflow_graph_scenarios.py`，默认更新可读版；用 `--graph` 指定其他图。脚本只修改节点的 `link`，会替换已有链接，名称不匹配或目标文件缺失时不写入。链接为当前仓库的绝对本地路径，仓库移动后重新运行即可；Graph_Map 仅展示和复制这些路径，不直接打开文件。
+## 创建空白项目
 
-两个 Godot 场景图命令默认读取 `framework/prompt_scenarios/prompts/godot-development-prompts.json`；`--prompts` 可指定待检查的单份 JSON。
+```powershell
+python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
+```
+
+创建器按清单预检、复制和重命名，再建立独立 Git 仓库与本地初始提交。目标路径、复制映射、失败处理与执行边界的完整契约见[框架、创建器与项目边界](../docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
+
+## 提示词与场景路径检查
+
+```powershell
+python -B framework/commands/check_scenario_prompt_paths.py
+```
+
+默认合并两份提示词库的名称，检查 `framework/prompt-scenarios/scenarios/<Project>/<分类>/<提示词名称>.md` 是否一一对应。名称与路径规则见[提示词与场景准则](../docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)。
+
+- **可选参数**：`--prompts <JSON> [<JSON> ...]`、`--scenarios <目录>`；每份只允许一个 Project，跨文件重复 Project 也会报错。
+- **检查范围**：只读检查缺少、多余、重复与非法路径；场景目录根级的 `README.md`、`scenario-index.md` 是导航排除项。
+- **退出码**：`0` 集合一致；`1` 缺少或多余；`2` 输入或结构错误。
+- **不检查**：正文 H1、具体步骤、授权与语义由作者自查；也不验证实际运行结果。
+
+## 检查场景图名称与链接
+
+```powershell
+python -B framework/commands/check_workflow_graph_names.py --summary
+python -B framework/commands/link_workflow_graph_scenarios.py --check
+```
+
+两个命令默认读取 `framework/prompt-scenarios/prompts/godot-development-prompts.json` 和开发场景图，`--prompts`、`--graph` 可分别指定其他文件。
+
+- **名称检查**：只忽略 CR/LF，报告缺少、多余、重名及节点 ID 重复；去掉 `--summary` 可查看字段位置和候选名称。
+- **链接写入**：去掉 `--check` 时只修改节点的 `link`，会替换已有链接；名称不匹配或目标文件缺失时不写入。链接是当前仓库的绝对本地路径，仓库移动后重新运行即可。只读审核不运行写入命令。
+
+两项检查都不覆盖完整格式、连线含义或显示效果；图的维护规则见[关系图说明](../docs/relationship-maps/README.md)。
+
+## 检查文档图覆盖
+
+仅在用户需要找出未纳入文档系统图的文件时运行：
+
+```powershell
+python -B framework/commands/check_document_graph_coverage.py
+```
+
+命令只读现有文件、复制清单和文档图，不更新图、不写报告、不生成项目。默认扫描框架与分发源的 Markdown、Markdown/JSON 文档模板，以及文档目录、提示词库、复制清单和项目环境配置中的 JSON，包含 README 与索引页；第三方插件、缓存、个人图谱次数、临时文档、代码配置和素材数据不在范围内。项目区核对分发源对应的目标路径，不扫描已有外部项目；尚未创建的可选产物不会被当作缺失。
+
+- **参数**：`--json` 列出每个文件命中的节点 ID；`--root` 指定框架仓库；`--graph` 指定图文件，相对路径以该仓库为基准。
+- **退出码**：`0` 全部覆盖；`1` 存在未覆盖文件；`2` 图或路径登记无法读取、格式错误。
+- **结果含义**：覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。它与下文的孤立文档检查回答不同问题。
+
+## 按需检查
+
+维护层回归使用系统临时目录，覆盖复制、路径映射、文档指纹与人工验收文件契约：
+
+```powershell
+python -B -m unittest discover -s framework/tests/repository -p test_*.py
+```
+
+文档指纹和人工文件测试只建立中立 Git 夹具，不创建业务项目或运行游戏；合成结果不证明真实人工体验。
+
+项目工具回归需要明确指定、且已对应本次修改的外部项目：
+
+```powershell
+python -B framework/tests/external-project/run_project_tool_tests.py --project D:\Games\MyGodotGame
+```
+
+这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不执行 Godot、人工验收或发布；所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
+
+真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
 
 ## 检查孤立文档
 
@@ -33,7 +96,7 @@ python -B framework/commands/find_orphan_docs.py
 | 默认不检查的路径（相对仓库根目录） | 原因 |
 | --- | --- |
 | `project-source/agent-rules/*` | 已认可由领域 README 按任务条件读取规则的路径。 |
-| `framework/prompt_scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
+| `framework/prompt-scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
 | `project-source/addons/sound_manager/UPSTREAM.md` | 保留的上游来源说明。 |
 | `project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md` | 保留的素材原始许可说明。 |
 | `project-source/addons/resources_spreadsheet_view/LICENSE.md` | 保留的第三方插件许可。 |
@@ -57,7 +120,7 @@ python -B framework/commands/find_orphan_docs.py
 
 继续使用现有检查，不把场景是否配对交给孤立文档的文本命中推断：
 
-- [提示词与场景路径检查](../README.md#提示词与场景路径检查)核对两份集中提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
-- 调整场景入口时，核对[场景索引](../prompt_scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
+- [提示词与场景路径检查](#提示词与场景路径检查)核对两份集中提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
+- 调整场景入口时，核对[场景索引](../prompt-scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
 
 路径检查不检查索引收录或正文。提示词或场景变更时按现有[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步，普通孤立文档扫描不会自动调用它。

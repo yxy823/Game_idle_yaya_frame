@@ -42,7 +42,7 @@ DEFAULT_EXCLUDE = [".git/*", ".godot/*", "tmp/*", "node_modules/*", "*/__pycache
 # 只排除检查目标；其指向其他文档的引用仍需参与统计。
 DEFAULT_TARGET_EXCLUDE = [
     "project-source/agent-rules/*",
-    "framework/prompt_scenarios/scenarios/*",
+    "framework/prompt-scenarios/scenarios/*",
     "project-source/addons/sound_manager/UPSTREAM.md",
     "project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md",
     "project-source/addons/resources_spreadsheet_view/LICENSE.md",

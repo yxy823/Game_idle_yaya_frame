@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from framework.prompt_scenarios.tools.link_workflow_graph_scenarios import main, update_links
+from framework.commands.link_workflow_graph_scenarios import main, update_links
 
 
 class WorkflowGraphLinksTests(unittest.TestCase):
@@ -87,7 +87,7 @@ class WorkflowGraphLinksTests(unittest.TestCase):
 
     def test_replace_failure_preserves_original_and_removes_temporary(self):
         before = self.graph.read_bytes()
-        with patch("framework.prompt_scenarios.tools.link_workflow_graph_scenarios.os.replace", side_effect=OSError("replace denied")):
+        with patch("framework.commands.link_workflow_graph_scenarios.os.replace", side_effect=OSError("replace denied")):
             with self.assertRaisesRegex(OSError, "replace denied"):
                 self.run_update()
         self.assertEqual(before, self.graph.read_bytes())

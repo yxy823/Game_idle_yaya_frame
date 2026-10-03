@@ -88,7 +88,7 @@ class OrphanDocsTests(unittest.TestCase):
     def test_accepted_paths_skip_targets_without_hiding_their_outgoing_references(self):
         accepted = (
             "project-source/agent-rules/10-gdscript/accepted-rule.md",
-            "framework/prompt_scenarios/scenarios/Example/Category/Accepted scenario.md",
+            "framework/prompt-scenarios/scenarios/Example/Category/Accepted scenario.md",
             "project-source/addons/sound_manager/UPSTREAM.md",
             "project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md",
             "project-source/addons/resources_spreadsheet_view/LICENSE.md",

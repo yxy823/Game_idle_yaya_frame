@@ -9,11 +9,9 @@
 ```text
 Game_idle_yaya_frame/
 ├── AGENTS.md                  当前维护约定
-├── framework/
-│   ├── commands/              创建器、唯一复制清单与全部命令索引
-│   ├── prompt_scenarios/      prompts/ 提示词、scenarios/ 场景与 tools/ 检查
-│   ├── docs/                  操作手册、关系图与框架维护说明
-│   └── tests/                 repository/ 维护回归与 external-project/ 外部夹具
+├── .agents/skills/            框架自用 Skill，不分发
+├── framework/                 维护材料，目录说明见 framework/README.md
+├── tmp/                       临时文档与当次报告，不纳入 Git
 └── project-source/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md
     ├── Project_README.md      复制为项目 README.md
@@ -38,17 +36,11 @@ Game_idle_yaya_frame/
 python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ```
 
-脚本按 [清单](framework/commands/project-files.json) 预检、复制和重命名，然后建立独立 Git 仓库与本地初始提交。
-
-- **目标目录**：位于框架之外，不存在或为空。
-- **路径要求**：完整路径不含中文或空白。
-- **失败处理**：保留现场，不自动清理或覆盖。
-
-默认显示名为 New Godot Project，主场景为 main/main.tscn，代码与文档是最小起点。创建器不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。默认工具位置不代表可用，配置中也没有“已就绪”状态字段。
+创建器按[复制清单](framework/commands/project-files.json)复制和重命名，再建立独立 Git 仓库与本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[框架、创建器与项目边界](framework/docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
 
 新项目预设 `docs/gdd/` 用途说明。创建后可以由 `design-gdd` 从想法形成设计，也可以导入并整理已有资料。新建 GDD 默认采用总览与主题文档，已有结构按需维护；开始依赖设计的规划或实现前，当前范围必须有足够明确的真实设计，目录说明和空模板不能代替它。
 
-工具契约和迁移边界见 [框架与项目](framework/docs/operation-manual/框架基础/framework-and-project.md)。创建后的具体操作从文档总入口选择场景，正文取自 [Godot 开发提示词库](framework/prompt_scenarios/prompts/godot-development-prompts.json)，在实际项目目录使用；维护工作使用 [Yaya 框架维护提示词库](framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json)。
+创建后的具体操作从文档总入口选择场景，正文取自 [Godot 开发提示词库](framework/prompt-scenarios/prompts/godot-development-prompts.json)，在实际项目目录使用；维护工作使用 [Yaya 框架维护提示词库](framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json)。
 
 ## 项目能力与边界
 
@@ -73,4 +65,4 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 
 按修改范围选择静态、工具或真实引擎验证。仅静态任务不创建项目、不启动 Godot 或测试；实际项目验证在明确指定且材料对应本次修改的外部项目进行，机器配置与业务内容不回灌空白默认值。
 
-修改源材料同时核对受影响说明、读写方、复制映射与夹具，具体见 [维护与同步](framework/docs/framework-maintenance/updating-the-blank-project.md)。维护命令见 [命令清单](framework/commands/README.md)，职责准则与审核入口见 [复盘材料](framework/docs/framework-maintenance/review-materials.md)。所有结果按实际执行范围报告，旧版本成功、未运行或人工未验收不能写成当前通过。
+修改源材料同时核对受影响说明、读写方、复制映射与夹具，具体见 [维护与同步](framework/docs/framework-maintenance/maintenance-and-sync.md)。维护目录见 [框架维护入口](framework/README.md)，命令见 [维护命令](framework/commands/README.md)，职责准则与审核入口见 [职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)。所有结果按实际执行范围报告，旧版本成功、未运行或人工未验收不能写成当前通过。

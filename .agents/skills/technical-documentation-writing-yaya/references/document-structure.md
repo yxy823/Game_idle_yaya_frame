@@ -19,7 +19,7 @@ framework/
     README.md
     operation-manual/        概念、对象、配置与工具
     framework-maintenance/   材料维护、职责准则与验证
-  prompt_scenarios/
+  prompt-scenarios/
     prompts/                集中提示词
     scenarios/              具体使用场景
 ```
