@@ -6,7 +6,24 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from framework.commands.prompts.check_scenario_prompt_paths import compare_paths, expected_paths, main
+import importlib.util
+import sys
+
+TOOLS = Path(__file__).resolve().parents[2] / "prompt-scenarios/tools"
+
+
+def load_tool(name):
+    """Load a prompt tool by path; its directory name is not an importable package."""
+    if str(TOOLS) not in sys.path:
+        sys.path.insert(0, str(TOOLS))
+    spec = importlib.util.spec_from_file_location(name, TOOLS / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+paths_tool = load_tool("check_scenario_prompt_paths")
+compare_paths, expected_paths, main = paths_tool.compare_paths, paths_tool.expected_paths, paths_tool.main
 
 
 class ScenarioPromptPathTests(unittest.TestCase):

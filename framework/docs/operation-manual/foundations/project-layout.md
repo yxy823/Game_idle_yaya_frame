@@ -69,7 +69,7 @@
 
 ## 复制与重命名
 
-完整映射只维护在 [project-files.json](../../../commands/project/project-files.json)。主要重命名与复制关系包括：
+完整映射只维护在 [project-files.json](../../../commands/project-files.json)。主要重命名与复制关系包括：
 
 - **项目入口：** `Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
 - **方法与角色：** `skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。

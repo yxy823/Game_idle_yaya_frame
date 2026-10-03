@@ -9,12 +9,13 @@
 | 路径 | 职责 |
 | --- | --- |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
-| [commands/](commands/README.md) | 全部维护脚本，按作用对象分为 `project/`（创建器与唯一复制清单）、`prompts/`（提示词、场景与场景图检查）、`documents/`（文档图覆盖与孤立文档检查）；README 是命令用法的唯一说明 |
+| [commands/](commands/README.md) | 创建器、唯一复制清单与跨多处使用的维护脚本；README 是全部维护命令用法的唯一说明，包括放在各对象目录中的脚本 |
 | [docs/](docs/README.md) | 文档总入口、框架术语和下列三类文档 |
 | [docs/operation-manual/](docs/operation-manual/README.md) | 操作手册：框架概念、配置、职责与工具用法，按专题分四个子目录 |
-| [docs/relationship-maps/](docs/relationship-maps/README.md) | 文档系统关系图、开发场景图，读图与维护说明，以及 [Graph_Map 文件格式](docs/relationship-maps/graph-map-format.md) |
+| [docs/relationship-maps/](docs/relationship-maps/README.md) | 文档系统关系图、开发场景图，读图与维护说明，[Graph_Map 文件格式](docs/relationship-maps/graph-map-format.md)，以及文档图覆盖检查脚本 |
 | [docs/framework-maintenance/](docs/framework-maintenance/README.md) | 维护与同步、职责设计准则、验证范围和插件版本记录 |
 | [prompt-scenarios/prompts/](prompt-scenarios/prompts/) | Godot 开发与 Yaya 维护两份集中提示词库 |
+| [prompt-scenarios/tools/](commands/README.md#提示词与场景路径检查) | 提示词与场景路径检查、场景图名称检查与链接维护脚本 |
 | [prompt-scenarios/scenarios/](prompt-scenarios/scenarios/README.md) | 场景速查手册：每条提示词对应的同名场景页、场景索引与编写要求 |
 | [tests/repository/](tests/repository/) | 从仓库根目录运行的维护回归 |
 | [tests/external-project/](tests/external-project/) | 需要指定外部项目的工具回归、工作台与插件夹具，不进入复制清单 |

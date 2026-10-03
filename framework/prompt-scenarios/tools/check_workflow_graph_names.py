@@ -4,7 +4,7 @@ Print a JSON report with matched, missing, unexpected and duplicate names. JSON
 pointers identify the exact graph field and prompt key; suggestions are evidence
 for a repair, never an automatic rename. This command does not modify files.
 
-Example: python -B framework/commands/prompts/check_workflow_graph_names.py --graph PATH
+Example: python -B framework/prompt-scenarios/tools/check_workflow_graph_names.py --graph PATH
 Exit codes: 0 = identical name multiset, 1 = differences, 2 = invalid input.
 """
 from __future__ import annotations

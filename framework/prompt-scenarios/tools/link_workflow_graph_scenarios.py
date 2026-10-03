@@ -18,14 +18,9 @@ from pathlib import Path
 import sys
 import tempfile
 
-if __package__:
-    from .check_workflow_graph_names import (
-        DEFAULT_GRAPH, ROOT, compare_names, normalize_label, unique_object,
-    )
-else:
-    from check_workflow_graph_names import (
-        DEFAULT_GRAPH, ROOT, compare_names, normalize_label, unique_object,
-    )
+from check_workflow_graph_names import (
+    DEFAULT_GRAPH, ROOT, compare_names, normalize_label, unique_object,
+)
 
 
 def scenario_path(root: Path, project: str, category: str, name: str) -> Path:

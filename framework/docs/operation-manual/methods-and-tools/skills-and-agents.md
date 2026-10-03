@@ -144,7 +144,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 advisor 根据项目自己的规则、状态和本次问题给出建议。它可以报告现状、判断下一步或拟一条已填写上下文的回复，但建议和候选不是实施授权，用户说“看看下一步”也不自动启动开发。
 
 - **核对现状：** 读取当前项目记录和相关证据，判断现在做到哪里、还需要解决什么。
-- **选择场景：** 直接读取本机的 [Godot 开发提示词库](../../../prompt-scenarios/prompts/godot-development-prompts.json)（固定绝对路径以 advisor Skill 为准），先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
+- **选择场景：** 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`，先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
 - **形成指令：** 说明选中了哪个场景及适用理由，把项目当前事实、文件和已有授权填入续接文本；具体执行仍核对项目自己的规则与目标 Skill。
 - **判断缺口：** 缺少输入时补齐信息；目标和执行边界相同则适配现有场景。只有真实缺少目标或边界明显不同，才建议新增或修改场景，说明最接近的条目、差异和建议用途；advisor 不修改共享库。
 

@@ -9,7 +9,7 @@
 | 术语 | 含义与边界 |
 | --- | --- |
 | 分发源 / `project-source/` | 创建器按复制清单复制到新游戏项目的源材料；在维护仓库中只作为源材料阅读，不启动其中的开发流程 |
-| 复制清单 | `framework/commands/project/project-files.json`；只决定创建时复制什么、复制到哪里，不承担升级或已有项目的同步 |
+| 复制清单 | `framework/commands/project-files.json`；只决定创建时复制什么、复制到哪里，不承担升级或已有项目的同步 |
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目，不再依赖框架仓库 |
 | Project | 提示词 JSON 的顶层名称，只有「Yaya 框架维护」和「Godot 项目开发」两个；与 Product、Feature 无关 |
 

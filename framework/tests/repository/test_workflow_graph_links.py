@@ -9,7 +9,24 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from framework.commands.prompts.link_workflow_graph_scenarios import main, update_links
+import importlib.util
+import sys
+
+TOOLS = Path(__file__).resolve().parents[2] / "prompt-scenarios/tools"
+
+
+def load_tool(name):
+    """Load a prompt tool by path; its directory name is not an importable package."""
+    if str(TOOLS) not in sys.path:
+        sys.path.insert(0, str(TOOLS))
+    spec = importlib.util.spec_from_file_location(name, TOOLS / f"{name}.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+link_tool = load_tool("link_workflow_graph_scenarios")
+main, update_links = link_tool.main, link_tool.update_links
 
 
 class WorkflowGraphLinksTests(unittest.TestCase):
@@ -87,7 +104,7 @@ class WorkflowGraphLinksTests(unittest.TestCase):
 
     def test_replace_failure_preserves_original_and_removes_temporary(self):
         before = self.graph.read_bytes()
-        with patch("framework.commands.prompts.link_workflow_graph_scenarios.os.replace", side_effect=OSError("replace denied")):
+        with patch.object(link_tool.os, "replace", side_effect=OSError("replace denied")):
             with self.assertRaisesRegex(OSError, "replace denied"):
                 self.run_update()
         self.assertEqual(before, self.graph.read_bytes())

@@ -16,7 +16,7 @@ from pathlib import Path, PurePosixPath
 
 
 DEFAULT_GRAPH = "framework/docs/relationship-maps/document-system.readable.json"
-MANIFEST = "framework/commands/project/project-files.json"
+MANIFEST = "framework/commands/project-files.json"
 SKIP_DIRECTORIES = {".git", ".godot", ".cache", "__pycache__", ".pytest_cache", "node_modules"}
 JSON_DIRECTORIES = (
     "framework/docs/", "framework/prompt-scenarios/prompts/",

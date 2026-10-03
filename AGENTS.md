@@ -37,7 +37,7 @@
 | 当前工作 | 执行依据 |
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存常规分发材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
-| 创建项目 | [创建器](framework/commands/project/create_project.py) 按 [复制清单](framework/commands/project/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
+| 创建项目 | [创建器](framework/commands/create_project.py) 按 [复制清单](framework/commands/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
 | 生成项目 | 项目独立拥有其文件，不接受自动同步；维护手册与提示词库不进入生成项目，项目 README 保持简短的自身使用导航。 |
 | 修改空白项目 | 先读 [文档总入口](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/maintenance-and-sync.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 使用手册 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册只维护 Markdown，不互相引用，由文档总入口导航。 |
@@ -71,7 +71,7 @@
 维护侧（根目录、`.agents/`、`framework/`）的目录由 [框架维护入口](framework/README.md#目录与职责) 统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表：
 
 - **一处目录说明**：根 README 只画顶层与 `project-source/`，`framework/README.md` 维护 `framework/` 的唯一目录表；其他 README 只说明自身内容，不重画上层目录树或别处的目录。
-- **一处命令说明**：维护脚本统一放在 `framework/commands/` 下按作用对象划分的子目录，参数、退出码和运行方式只写在 [维护命令](framework/commands/README.md)；其他文档说明何时运行并链接到对应小节。回归测试与夹具放在 `framework/tests/`，文档目录不放脚本。
+- **命令就近存放，一处说明**：只服务一个对象的维护脚本放在该对象的目录，例如提示词与场景图检查在 `framework/prompt-scenarios/tools/`，文档图覆盖检查在 `framework/docs/relationship-maps/`；创建器、复制清单和跨多处使用的脚本放在 `framework/commands/`。全部命令的参数、退出码和运行方式只写在 [维护命令](framework/commands/README.md)；其他文档说明何时运行并链接到对应小节。回归测试与夹具放在 `framework/tests/`。
 - **按职责落位**：新内容先并入职责、读者和变化原因相同的现有页面；确能独立时才新建。不为一两个文件增加子目录，不保留只做跳转或只剩一两段的薄页面。
 - **不登记分发清单**：维护文档按目录或命名模式指向 `project-source/`，不逐个列出分发的 Skill、模板或工具；它们的职责以分发材料自身为准。
 - **命名一致**：维护侧自主命名的目录和文档文件使用小写英文加连字符，Python、GDScript 等代码文件按语言约定使用下划线；场景目录与文件按提示词库的准确名称保留中文。

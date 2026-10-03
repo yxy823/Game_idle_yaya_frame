@@ -21,11 +21,11 @@
 在框架根目录使用已确认的 Python 3.12+ 调用：
 
 ```powershell
-python -B framework/commands/project/create_project.py --output D:\Games\MyGodotGame
+python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 ```
 
 - **参数：** `--output` 是目标项目目录；`-B` 是 Python 的禁止字节码缓存选项。
-- **准备与写入：** 创建器需要可用的 Git 和提交身份，按 [复制清单](../../../commands/project/project-files.json) 复制、重命名，随后建立独立 Git 仓库和本地初始提交。
+- **准备与写入：** 创建器需要可用的 Git 和提交身份，按 [复制清单](../../../commands/project-files.json) 复制、重命名，随后建立独立 Git 仓库和本地初始提交。
 - **执行边界：** 它不安装依赖、不运行环境检查或 Godot、不生成需求、不运行测试、不配置远程或推送。
 - **成功消息：** 复制数量是清单项数，不是实际文件总数。
 
@@ -39,7 +39,7 @@ python -B framework/commands/project/create_project.py --output D:\Games\MyGodot
 | 写入前检查 | 展开所有清单项；目录可以合并，重复目标文件和文件/目录冲突拒绝 |
 | 失败现场 | 预检失败不开始复制；复制或 Git 失败可能留下部分内容，不自动删除、回滚、重试覆盖 |
 
-具体参数与拒绝条件以 [创建器源码](../../../commands/project/create_project.py) 为准。项目名称、机器路径和文档语言在独立项目中配置，初始提交不是业务验证证据。
+具体参数与拒绝条件以 [创建器源码](../../../commands/create_project.py) 为准。项目名称、机器路径和文档语言在独立项目中配置，初始提交不是业务验证证据。
 
 ## 环境就绪的含义
 

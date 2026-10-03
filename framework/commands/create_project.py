@@ -54,7 +54,7 @@ def copy_project(source: Path, output: Path) -> int:
     if output.exists() and (not output.is_dir() or any(output.iterdir())):
         raise ValueError("Project path must be absent or an empty directory")
 
-    entries = json.loads((source / "framework/commands/project/project-files.json").read_text(encoding="utf-8"))
+    entries = json.loads((source / "framework/commands/project-files.json").read_text(encoding="utf-8"))
     copies = []
     for entry in entries:
         origin = relative_path(source, entry["source"])
@@ -127,7 +127,7 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path, help="New empty project directory")
     args = parser.parse_args()
     try:
-        count = create_project(Path(__file__).resolve().parents[3], args.output)
+        count = create_project(Path(__file__).resolve().parents[2], args.output)
     except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
         parser.exit(1, f"Creation failed: {error}\n")
     print(f"Created {args.output.resolve()} from {count} entries with an initial Git commit")

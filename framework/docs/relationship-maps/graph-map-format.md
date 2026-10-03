@@ -83,7 +83,7 @@
 
 本地链接由 Graph_Map 展示和复制，不直接打开文件，不把文件内容打包进 JSON。`target` 最长 8192 字符，不能是空白或含控制字符；本仓库的链接命令还会检查对应场景文件确实存在。仓库移动、场景分类或名称变化后，需要按当前路径更新链接。
 
-链接维护使用 [link_workflow_graph_scenarios.py](../../commands/prompts/link_workflow_graph_scenarios.py)，用法见[场景图名称与链接检查](../../commands/README.md#检查场景图名称与链接)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
+链接维护使用 [link_workflow_graph_scenarios.py](../../prompt-scenarios/tools/link_workflow_graph_scenarios.py)，用法见[场景图名称与链接检查](../../commands/README.md#检查场景图名称与链接)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
 
 上述附加字段以本轮核对的 Graph_Map `src/core/model.ts` 和 `docs/json-appearance.md` 为依据。日常场景维护保留已生效配置，不要求每次读取外部项目；确需新增字段或改变格式时，再核对实际查看器版本，不把同为 v1 当作支持所有外观配置的保证。
 

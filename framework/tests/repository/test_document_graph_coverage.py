@@ -8,9 +8,9 @@ from pathlib import Path
 
 
 COMMAND = (Path(__file__).resolve().parents[3]
-           / "framework/commands/documents/check_document_graph_coverage.py")
+           / "framework/docs/relationship-maps/check_document_graph_coverage.py")
 GRAPH = "framework/docs/relationship-maps/document-system.readable.json"
-MANIFEST = "framework/commands/project/project-files.json"
+MANIFEST = "framework/commands/project-files.json"
 
 
 class DocumentGraphCoverageTests(unittest.TestCase):
