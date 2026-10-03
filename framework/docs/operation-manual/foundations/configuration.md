@@ -21,11 +21,11 @@
 
 ## 路径与命令的写法
 
-以下是**配置片段示例**，不是可覆盖整个配置文件的完整配置；其中 Godot 路径必须换成该项目已经确认的值：
+以下是**配置片段示例**，不是可覆盖整个配置文件的完整配置；其中两个路径都必须换成该项目已经确认的值：
 
 ```json
 {
-  "python_executable": "C:\\Users\\89523\\anaconda3\\envs\\codex-python\\python.exe",
+  "python_executable": "C:\\Python312\\python.exe",
   "engine_executable": "C:\\Godot\\Godot.exe"
 }
 ```

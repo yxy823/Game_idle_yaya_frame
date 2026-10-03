@@ -38,8 +38,8 @@
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见 [框架待办](framework/progress.md)；`project-source/` 保存常规分发材料，其中的项目开发流程仅作为源材料阅读，不在维护仓库启用。 |
 | 创建项目 | [创建器](framework/commands/project/create_project.py) 按 [复制清单](framework/commands/project/project-files.json) 复制和重命名，然后建立独立 Git 仓库与本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级。 |
-| 生成项目 | 项目独立拥有其文件，不接受自动同步；维护手册与提示词库不进入生成项目。advisor 通过固定绝对路径只读引用本机 Godot 开发提示词库，项目 README 保持简短的自身使用导航。 |
-| 修改空白项目 | 先读 [使用手册](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/maintenance-and-sync.md) 查阅受影响专题、核对源材料并同步说明。 |
+| 生成项目 | 项目独立拥有其文件，不接受自动同步；维护手册与提示词库不进入生成项目，项目 README 保持简短的自身使用导航。 |
+| 修改空白项目 | 先读 [文档总入口](framework/docs/README.md)，再按 [维护与同步说明](framework/docs/framework-maintenance/maintenance-and-sync.md) 查阅受影响专题、核对源材料并同步说明。 |
 | 使用手册 | 操作手册维护框架、概念、配置与工具，具体场景归同名提示词对应的速查页；两册只维护 Markdown，不互相引用，由文档总入口导航。 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改。 |
 | 选择验证 | 只要求静态审查时，不生成项目、启动 Godot 或运行测试；实际项目验证在明确指定的外部项目执行。具体范围见 [验证说明](framework/docs/framework-maintenance/maintenance-and-sync.md#按修改选择验证范围)，确切命令见 [按需检查](framework/commands/README.md#按需检查)。 |
@@ -56,19 +56,15 @@
 
 临时文档统一保存在仓库根目录的 `tmp/`，可按任务、主题建立子目录；草稿、当次方案、审核报告和交接材料不得混入正式文档目录。长期有效的结论整理到职责所属正文后，删除不再需要的临时文档。框架报告的使用与清理见[当次报告的保存与清理](framework/docs/framework-maintenance/responsibility-design-guidelines.md#当次报告的保存与清理)。
 
-新增、实质调整职责或审核 Skill、脚本、提示词与场景时，按[职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)评价对应对象；普通局部修改不触发无关全量审核。长期准则与当次审核报告分开维护。
+### 修改时的联动检查
 
-整理文档或文件名不得顺带改变 Skill 行为。
-
-调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
-
-文档职责、路径、产物归属或实际引用关系变化时，使用 [提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步文档系统图中的对应节点与关系；普通正文措辞变化不触发全图维护。全仓文档覆盖扫描只在用户明确要求检查时运行。
-
-修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关 Godot 开发提示词及同名场景。使建议和来源引用与当前权威规范一致；仍适用的内容无需制造修改，不在 advisor 中复制另一套流程。
-
-在已指定的外部项目运行回归前，核对被测文件是否对应本次修复；需要同步时仅更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
-
-分别记录静态核对、工具回归、真实引擎运行与人工验收的实际结果；失败、未执行和旧版本通过记录不能写成当前修改已通过。
+- **职责评价**：新增、实质调整职责或审核 Skill、脚本、提示词与场景时，按[职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)评价对应对象；普通局部修改不触发无关全量审核。
+- **行为不变**：整理文档或文件名不得顺带改变 Skill 行为。
+- **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射与回归夹具，核对生成后的路径和语义一致，不留下仅部分工具支持的选项。
+- **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用 [提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步对应节点与关系；普通正文措辞变化不触发全图维护。全仓文档覆盖扫描只在用户明确要求时运行。
+- **advisor**：修改框架任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关 Godot 提示词及同名场景；仍适用的内容不制造修改，不在 advisor 中复制另一套流程。
+- **外部项目回归**：运行前核对被测文件是否对应本次修复；需要同步时只更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
+- **如实记录**：分别记录静态核对、工具回归、真实引擎运行与人工验收的实际结果；失败、未执行和旧版本通过记录不能写成当前修改已通过。
 
 ### 目录与入口组织
 

@@ -38,31 +38,18 @@ python -B framework/commands/project/create_project.py --output D:\Games\MyGodot
 
 创建器按[复制清单](framework/commands/project/project-files.json)复制和重命名，再建立独立 Git 仓库与本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[框架、创建器与项目边界](framework/docs/operation-manual/foundations/framework-and-project.md#创建器用法)。
 
-新项目预设 `docs/gdd/` 用途说明。创建后可以由 `design-gdd` 从想法形成设计，也可以导入并整理已有资料。新建 GDD 默认采用总览与主题文档，已有结构按需维护；开始依赖设计的规划或实现前，当前范围必须有足够明确的真实设计，目录说明和空模板不能代替它。
+新项目只带 `docs/gdd/` 的用途说明，不带任何游戏设计。创建后可以用 `design-gdd` 从想法形成设计，或导入整理已有资料；依赖设计的规划和实现开始前，当前范围必须有真实设计。
 
-创建后的具体操作从文档总入口选择场景，正文取自 [Godot 开发提示词库](framework/prompt-scenarios/prompts/godot-development-prompts.json)，在实际项目目录使用；维护工作使用 [Yaya 框架维护提示词库](framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json)。
+具体操作从[文档总入口](framework/docs/README.md)选择场景；提示词正文分别在 [Godot 开发提示词库](framework/prompt-scenarios/prompts/godot-development-prompts.json)（在游戏项目目录使用）和 [Yaya 框架维护提示词库](framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json)（在本仓库使用）。
 
 ## 项目能力与边界
 
-核心材料与专业方法按职责区分：
-
-- **设计与交付**：`design-gdd` 维护游戏设计，`design-balance` 推导并在授权内直接维护 GDD 数值主题；`product-author` 据此组织 Product 交付范围。当前 Product 轮到时才编写文档，并一次拆出完整必要 Feature，完成后再细化下一个 Product。设计采用、实际验证与人工接受分别判断。
-- **专业要求与实现**：由对应 Skill 负责。
-  - `project-terminology`：维护含义不变的定义。
-  - `design-localization-spec`：确定语言要求。
-  - `content-localization`：按要求实现。
-- **其他专项工作**：共享设计、资源准备、接入、测量和独立审核按需使用。
-
-工作台提供实际资源查看、试听、分析与组合试调，不自动成为游戏设计或验收结论。
-
-单人使用、任务续接、worktree 和素材制作的适用范围见[使用范围](framework/docs/README.md#使用范围)。独立调研和审核的角色与独立性要求见操作手册的 [Skill、Agent 与提示词](framework/docs/operation-manual/methods-and-tools/skills-and-agents.md)。
-
+- **开发方法**：生成项目自带一组 Skill，覆盖游戏设计、交付规划、实现、专项资源与本地化、诊断、验证和独立审核；每个 Skill 的职责见操作手册的 [Skill 职责速查](framework/docs/operation-manual/methods-and-tools/skills-and-agents.md#skill-职责速查)。
+- **工作台**：提供实际资源的查看、试听、分析与组合试调，结果不自动成为设计或验收结论。
 - **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不自动升级或同步。
-- **advisor 入口**：根据项目现状，通过固定绝对路径读取本机 Godot 开发提示词库，选择适用场景、起草具体指令并判断覆盖缺口；执行仍依据项目自己的规则与有效授权。
-- **脚本边界**：保存和检查实际成果，不设置逐动作 Hook、重复状态或发布资格。
+- **advisor**：根据项目现状，从本机 Godot 开发提示词库选择适用场景并起草具体指令；执行仍依据项目自己的规则与有效授权。
+- **适用范围**：单人使用、任务续接、worktree 和素材制作的边界见[使用范围](framework/docs/README.md#使用范围)。
 
-## 维护与验证
+## 维护
 
-按修改范围选择静态、工具或真实引擎验证。仅静态任务不创建项目、不启动 Godot 或测试；实际项目验证在明确指定且材料对应本次修改的外部项目进行，机器配置与业务内容不回灌空白默认值。
-
-修改源材料同时核对受影响说明、读写方、复制映射与夹具，具体见 [维护与同步](framework/docs/framework-maintenance/maintenance-and-sync.md)。维护目录见 [框架维护入口](framework/README.md)，命令见 [维护命令](framework/commands/README.md)，职责准则与审核入口见 [职责设计准则](framework/docs/framework-maintenance/responsibility-design-guidelines.md)。
+维护约定见 [AGENTS.md](AGENTS.md)，维护目录见 [框架维护入口](framework/README.md)，修改后要同步什么、选择哪种验证见 [维护与同步](framework/docs/framework-maintenance/maintenance-and-sync.md)。

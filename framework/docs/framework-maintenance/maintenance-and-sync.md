@@ -46,15 +46,13 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | 参数、测试选择、结果、指纹或错误 | [命令与证据](../operation-manual/methods-and-tools/commands-and-evidence.md)、[错误含义](../operation-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、tools/lib/verification_snapshot.py、完成校验与测试策略 |
 | 工作台、Analyzer、表现组件 | [资源工作台](../operation-manual/specialist-work-and-records/asset-workbench.md) | 对应工具、示例 README、消费接口及夹具 |
 | 术语、设计、架构、规则、研究、知识或 Progress | [知识与记录](../operation-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、生命周期、角色与领域规则 |
-| 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | 所属 Godot 开发或 Yaya 维护提示词库、Skill/methodology/CLI、场景职责清单 |
-
-框架路由、职责、产物、授权或完成机制改变时，同步核对 project-next-step-advisor 的 SKILL.md、相关 Godot 提示词与同名场景；只更新失效内容，不复制另一套流程。
+| 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | 所属 Godot 开发或 Yaya 维护提示词库、Skill/methodology/CLI、[场景编写要求](../../prompt-scenarios/scenarios/README.md) |
 
 框架的反馈核实、异常调查、方案检验和任务交接由当前 Agent 按本次要求及对应场景直接处理，复用已有事实、验证和记录。只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 项目使用自己的方法与记录；advisor 只读共享 Godot 提示词，不据此调用框架维护 Skill。
 
 修改分发 Skill 的职责、写入边界或入口时，以该 Skill 的 SKILL.md 及其引用的源规范为唯一正文，同步核对总路由、项目 README 与 advisor；不在 Project_AGENTS、手册或本页复制一套操作正文。
 
-路径或字段变化追到全部读写方、调用链、模板、复制映射和回归夹具。说明与源码冲突时分别判断实际行为及待修问题，不能只改一段文字掩盖未解决契约。
+路径、字段与 advisor 的联动按 AGENTS.md 的[修改时的联动检查](../../../AGENTS.md#修改时的联动检查)执行。说明与源码冲突时分别判断实际行为及待修问题，不能只改一段文字掩盖未解决契约。
 
 ## 文档同步应包含什么
 
@@ -68,16 +66,9 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 ### 说明的组织与措辞
 
-框架说明的详细写法维护在 [Yaya 框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中，本节保存框架的页面分工与检查约定。生成项目通过[本地写作入口](../../../project-source/Project_AGENTS.md#使用说明的可读性)使用创建时复制的 Godot 版 Skill；该包独立维护，使用时无需访问框架或框架版写作资料。
+框架说明的详细写法维护在 [Yaya 框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中，本节只保存检查约定。生成项目通过[本地写作入口](../../../project-source/Project_AGENTS.md#使用说明的可读性)使用创建时复制的 Godot 版 Skill；该包独立维护，使用时无需访问框架或框架版写作资料。
 
-| 位置 | 职责 |
-| --- | --- |
-| docs/README.md | 两册与维护说明的统一导航 |
-| operation-manual/ | 框架、概念、对象、配置与工具用法 |
-| framework/prompt-scenarios/scenarios/ | 每篇一个具体场景、一个同名专用提示词；11 类规则只显示有内容的栏目 |
-| framework-maintenance/ | 维护规范与验证工具说明，不保留另一套具体场景正文 |
-
-场景按 JSON 的 Project、分类、提示词名称直接对应目录/文件名，对应关系、栏目使用和编号要求维护在速查手册 README；11 类信息的定义与写法引用框架版 Skill 的流程参考，不作为 Godot 项目文档的默认结构。
+页面分工见[文档总入口](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景编写要求](../../prompt-scenarios/scenarios/README.md)。11 类信息的写法来自框架版写作 Skill 的流程参考，不作为 Godot 项目文档的默认结构。
 
 - **路径核对**：使用 [路径检查器](../../commands/README.md#提示词与场景路径检查) 核对路径集合。
 - **正文自查**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有条件和先后依赖。
@@ -102,7 +93,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 手册、维护说明、提示词库、框架自用 Skill 包和框架审核材料不加入项目复制清单，也不移动到 project-source/。Godot 版写作 Skill 是项目自身的分发材料，按普通项目 Skill 整包复制。项目 README 保持自身短导航；项目文件不接受自动同步。
 
-advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 作为本机共享场景入口。修改正文后无需导出；核对相关场景说明及 advisor 的实际匹配条件，执行规范和授权继续由项目持有。使用与维护见 [共享场景入口](../operation-manual/methods-and-tools/skills-and-agents.md#advisor-的共享场景入口)。
+advisor 直接读取本机的 Godot 提示词库，修改正文后无需导出；固定路径及其同步要求见 AGENTS.md 的[提示词维护](../../../AGENTS.md#提示词维护)，使用方法见[共享场景入口](../operation-manual/methods-and-tools/skills-and-agents.md#advisor-的共享场景入口)。
 
 项目动态续接提示词的通用格式维护在 [Continuation prompts](../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，由 advisor 和 task-handoff-godot 引用；框架集中提示词仍保留各场景的具体输入、授权和停点目的。普通暂停、换对话和已有停点恢复不合并为一条通用提示词，也不因新增 Skill 要求每个入口另建场景。
 
@@ -126,7 +117,6 @@ advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios
 ## 提交与交付
 
 提交与未完成事项遵循[根维护约定](../../../AGENTS.md#本地提交)，不在本页维护第二套规则。交付提供受影响文档入口与真实验证结果；文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
-
 
 ## 整体重检与详细报告
 

@@ -67,26 +67,6 @@ python -B framework/commands/documents/check_document_graph_coverage.py
 - **退出码**：`0` 全部覆盖；`1` 存在未覆盖文件；`2` 图或路径登记无法读取、格式错误。
 - **结果含义**：覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。它与下文的孤立文档检查回答不同问题。
 
-## 按需检查
-
-维护层回归使用系统临时目录，覆盖复制、路径映射、文档指纹与人工验收文件契约：
-
-```powershell
-python -B -m unittest discover -s framework/tests/repository -p test_*.py
-```
-
-文档指纹和人工文件测试只建立中立 Git 夹具，不创建业务项目或运行游戏；合成结果不证明真实人工体验。
-
-项目工具回归需要明确指定、且已对应本次修改的外部项目：
-
-```powershell
-python -B framework/tests/external-project/run_project_tool_tests.py --project D:\Games\MyGodotGame
-```
-
-这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不执行 Godot、人工验收或发布；所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
-
-真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
-
 ## 检查孤立文档
 
 在仓库根目录运行；使用 Python 标准库，不需要安装依赖：
@@ -114,7 +94,7 @@ python -B framework/commands/documents/find_orphan_docs.py
 | `HISTORY_ONLY` | 有历史引用、无普通引用；可以同时有导航引用。 |
 | `READ` | 存在导航、历史规则之外的普通文件引用；不证明实际读写或执行。 |
 
-分类按引用来源的路径或文件名判断，不分析正文语义。README 中的“在某种任务下读取此文档”属于有效的条件读取入口，也会被计为 `nav`；面向人的场景页、来源与许可说明也可能正常地通过索引或 README 查阅。已认可的对象按上表路径排除；其余 `NAV_ONLY` 仍需核对，不应为变成 `READ` 人为增加无用途的引用。对于必须参与执行的规则，应核对“上层任务入口 → 条件读取入口 → 规则正文”是否连通，以及读取条件是否明确；只有泛泛列名而没有适用条件时，仍需检查是否缺少实际使用入口。
+分类按引用来源的路径或文件名判断，不分析正文语义。README 中的“在某种任务下读取此文档”属于有效的条件读取入口，也会被计为 `nav`；面向人的场景页、来源与许可说明也可能正常地通过索引或 README 查阅。已认可的对象按上表路径排除；其余 `NAV_ONLY` 仍需核对，不应为变成 `READ` 人为增加无用途的引用。对必须参与执行的规则，还要核对“任务入口 → 条件读取入口 → 规则正文”是否连通。
 
 引用来源 `reader`、`nav`、`history` 分别指普通文件、导航类文件、历史材料，计数为命中行数。引用写法 `link`、`path`、`name` 分别指 Markdown 链接、路径文本、唯一文件名文本；路径后缀与文件名子串可能误指其他文件，仍需核对实际目标，不能据此删除文档。输出中的 `*` 只表示该行含读取或更新等动作词，不是实际执行证据。
 
@@ -128,3 +108,23 @@ python -B framework/commands/documents/find_orphan_docs.py
 - 调整场景入口时，核对[场景索引](../prompt-scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
 
 路径检查不检查索引收录或正文。提示词或场景变更时按现有[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步，普通孤立文档扫描不会自动调用它。
+
+## 按需检查
+
+维护层回归使用系统临时目录，覆盖复制、路径映射、文档指纹与人工验收文件契约：
+
+```powershell
+python -B -m unittest discover -s framework/tests/repository -p test_*.py
+```
+
+文档指纹和人工文件测试只建立中立 Git 夹具，不创建业务项目或运行游戏；合成结果不证明真实人工体验。
+
+项目工具回归需要明确指定、且已对应本次修改的外部项目：
+
+```powershell
+python -B framework/tests/external-project/run_project_tool_tests.py --project D:\Games\MyGodotGame
+```
+
+这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不执行 Godot、人工验收或发布；所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
+
+真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。

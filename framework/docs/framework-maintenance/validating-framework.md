@@ -111,18 +111,17 @@ script="gdscript_lint_editor_contracts.gd"
 相关套件的依赖与分工如下：
 
 - **后台与协议验证**：`asset_analyzer_test.gd` 同时需要同目录的 `analyzer_process_fixture.py` 和 `analyzer_protocol_cases.json`，三者放入 `tests/features/asset_analyzer/`。单独复制套件不能证明已具备运行条件。
-- **批量源格式契约**：由上表的独立套件维护。
 - **集合、规则和历史**：`asset_analysis_group_test.gd` 继续核对其余职责，不重复承担源格式用例。其取消隔离测试也依赖 `tests/features/asset_analyzer/analyzer_process_fixture.py`；即使不运行单项分析套件，也必须将该 worker 复制到这个规定路径。
 
 编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不证明逐采样同步。管理器对象预算与生命周期回归也不替代规模测量。
 
 ### Python 分析后端与内存边界
 
-这两项从框架根目录直接调用维护夹具，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../project-source/asset_workbench/analyzer/README.md)准备该项目的固定版本依赖；后端测试还需要调用解释器可导入 `jsonschema`，并保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，示例项目路径须替换为本次实际路径：
+这两项从框架根目录直接调用维护夹具，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../project-source/asset_workbench/analyzer/README.md)准备该项目的固定版本依赖；后端测试还需要调用解释器可导入 `jsonschema`，并保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，两个占位值替换为本次实际路径（解释器按个人规则或外部项目 `docs/methodology-config.json` 确认）：
 
 ```powershell
-$env:YAYA_TEST_PROJECT = 'D:/A_Games/YayaValidation'
-$validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
+$env:YAYA_TEST_PROJECT = '<外部验证项目绝对路径>'
+$validationPython = '<已确认的 Python 3.12+ 解释器路径>'
 ```
 
 | 夹具与命令（按需选择） | 检查及副作用 |
@@ -184,7 +183,3 @@ $validationPython = 'C:/Users/89523/anaconda3/envs/codex-python/python.exe'
 4. 核对四入口的 Cue、真实声部、组合/编排、停止/回收和工具目录缺席；结束后将临时预设恢复到原先不存在的状态。
 
 独立资源包运行不等于签名安装包、发行模板或其他平台已验证。
-
-### 查阅已有验证结果
-
-以往验证结果通过 Git 历史查阅。旧结果只适用于当时的版本和执行范围，不能代替本次运行或人工验收。
