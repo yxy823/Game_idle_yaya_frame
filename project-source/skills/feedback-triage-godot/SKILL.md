@@ -5,7 +5,7 @@ description: Verify a Godot project feedback report against confirmed intent and
 
 # Verify and route project feedback
 
-Return what the report means for this project: a supported defect, a changed requirement, an existing capability with a discovery/explanation problem, or an unresolved evidence gap. Apply **Feedback assessment**, **Classification boundary** and **Bug ownership and routing** in `methodology/07-engineering-change.md`; these own the assessment rules and subsequent work. Respect the existing GDD prerequisite there.
+Return what the report means for this project: a supported defect, a changed requirement, an existing capability with a discovery/explanation problem, or an unresolved evidence gap. Apply **Feedback assessment**, **Classification boundary** and **Bug ownership and routing** in `methodology/07-engineering-change.md`; these own the assessment rules and subsequent work.
 
 ## Establish the report
 

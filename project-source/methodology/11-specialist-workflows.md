@@ -34,7 +34,7 @@ Standalone and embedded specialist work follow [GDD prerequisite and authority](
 
 - The locations above follow content responsibility, regardless of game size or where the content was first drafted.
 - Not every document has to be filled.
-- New projects include purpose and pending-state files for the Art Bible, Sound Bible and localization specification, and navigation READMEs for UI and presentations. Their presence does not establish an adopted requirement or a produced asset.
+- New projects include the Art Bible, Sound Bible and localization specification with only their purpose and empty sections, and navigation READMEs for UI and presentations. Their presence does not establish an adopted requirement or a produced asset.
 
 ### What stays in the GDD
 
@@ -256,7 +256,7 @@ Visual-art, music and sound-effect production are reserved capabilities. No prod
 
 - Adopting numerical values into runtime resources or code also uses that implementation route; authorization for the numerical document alone does not cover it.
 - These Skills return to the calling task for verification, any required human acceptance and completion.
-- Standalone specification or investigation work need not invent a detailed Product or Feature. The GDD prerequisite and its early-design exception still apply.
+- Standalone specification or investigation work need not invent a detailed Product or Feature.
 - Diagnostic findings do not authorize repairs or new requirements.
 
 For comparing resources or tuning feedback timing, the project may use the optional [asset workbench example](../asset_workbench/examples/README.md), which lists its entries, controls and supported parameters. It is a development tool, not an asset-production Skill, an automatic analysis step, a Stage or evidence of human acceptance, and its example assets are not approved production content. Reuse the project's own presentation, data and audio APIs instead of forcing project objects into the example Cue.

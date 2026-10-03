@@ -14,7 +14,7 @@ This specification defines what the project terminology file contains, when term
 
 Do not create a second `UBIQUITOUS_LANGUAGE.md` or another parallel glossary. Do not turn the file into a general project-context document or a dictionary of ordinary words and engine APIs.
 
-New projects include a short purpose and pending-state file. If the file is missing, create it when saving confirmed definitions. While no terms are confirmed, keep the pending state; do not invent entries or block unrelated design work.
+New projects include this file with only its purpose. If the file is missing, create it when saving confirmed definitions. While no terms are confirmed, leave it without entries; do not invent entries or block unrelated design work.
 
 Read the relevant definitions during clarification, planning, implementation and review when the file exists. Write it in `document_language` and keep stable IDs. Do not rename code or migrate saved data only to match terminology. A known code identifier may be recorded as an alias; this does not authorize code or save-data migration.
 
@@ -36,7 +36,7 @@ Authorized GDD creation, revision and consolidation include recording the curren
 
 - Collect the definitions already present in the supplied design; do not wait for another system, Product or Feature to use them.
 - Reuse the task's writing authorization unless the user explicitly limits the writable files. Discussion-only work writes nothing.
-- Recording a term does not establish game design or authorize development. The [GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority) still applies.
+- Recording a term does not establish game design or authorize development.
 
 Use a compact structure and expand only where a distinction needs explanation:
 

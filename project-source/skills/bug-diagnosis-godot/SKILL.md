@@ -5,7 +5,7 @@ description: Investigate a specific Godot project defect through reproduction, d
 
 # Diagnose a project defect
 
-Establish how the reported trigger produces the incorrect result. Use **Causal diagnosis** in `methodology/07-engineering-change.md` for the investigation method; that specification also owns Bug routing, records and repair verification. Apply its existing GDD prerequisite and reuse an already established contract and ownership instead of restarting triage.
+Establish how the reported trigger produces the incorrect result. Use **Causal diagnosis** in `methodology/07-engineering-change.md` for the investigation method; that specification also owns Bug routing, records and repair verification. Reuse an already established contract and ownership instead of restarting triage.
 
 ## Choose the necessary evidence
 

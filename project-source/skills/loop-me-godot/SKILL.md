@@ -5,7 +5,7 @@ description: Design a reusable way to handle recurring or anticipated Godot proj
 
 # Design recurring Godot project work
 
-Help the user decide how a named kind of repeated work should be handled next time. The work may already recur or be anticipated; no history of failure is required. Use at any relevant point in project development, under the existing GDD prerequisite and authority in `methodology/01-product-doc-structure.md`. This is not a new Stage or a mandatory planning step.
+Help the user decide how a named kind of repeated work should be handled next time. The work may already recur or be anticipated; no history of failure is required. Use at any relevant point in project development. This is not a new Stage or a mandatory planning step.
 
 Use [retro-godot](../retro-godot/SKILL.md) for explaining what happened in actual development and identifying lessons. This Skill instead designs future handling of the user's specified recurring activity; do not widen it into reviewing all tasks or personal habits.
 

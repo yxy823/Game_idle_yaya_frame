@@ -5,7 +5,7 @@ description: Prepare or update source-linked implementation guidance for an exis
 
 # Prepare Godot Feature implementation guidance
 
-Use this method when implementation guidance is needed for an existing Feature. Apply the GDD prerequisite and the Feature's current scope, decisions and authorization. Work without a Feature is outside this entry; return to its existing task rather than creating a Feature to obtain guidance. A simple implementation can continue through its normal owner without this method.
+Use this method when implementation guidance is needed for an existing Feature. Apply the Feature's current scope, decisions and authorization. Work without a Feature is outside this entry; return to its existing task rather than creating a Feature to obtain guidance. A simple implementation can continue through its normal owner without this method.
 
 Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links and fixed file location, and Stages 1C, 2 and 3 in `methodology/03-execute-loop.md` for when the design is proposed, approved, saved and kept aligned. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
 

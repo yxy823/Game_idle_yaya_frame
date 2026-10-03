@@ -9,7 +9,7 @@ Maintain meaning-preserving definitions in the fixed file `docs/terminology.md`,
 
 ## Check the inputs
 
-Apply the GDD prerequisite in `methodology/01-product-doc-structure.md` to the actual task. GDD creation may use this Skill for terms whose meanings are already settled; it needs no Product or completed GDD.
+GDD creation may use this Skill for terms whose meanings are already settled; it needs no Product or completed GDD.
 
 Read the requested definitions, the current `docs/terminology.md` and only the relevant idea, GDD, Product delivery and code sources. Reuse confirmed decisions and the current documentation authorization; do not repeat an interview. Code shows current behavior and cannot approve a new domain meaning.
 

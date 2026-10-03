@@ -12,7 +12,7 @@ Read-only also excludes launching Godot or an import, installing Skills and invo
 ## Establish current state
 
 1. Read the project's `AGENTS.md`, `docs/methodology-config.json`, lightweight Feature index and current `docs/progress.md`. Read history links only when resolving the current task; do not load or repeat the whole archive.
-2. Determine whether `docs/gdd/` contains actual design, a draft or only navigation and pending-content notices. Do not infer adopted design from a directory, file title or scaffold.
+2. Determine whether `docs/gdd/` contains actual design, a draft or only navigation and purpose statements. Do not infer adopted design from a directory, file title or scaffold.
    - A missing GDD routes game creation to `design-gdd` and blocks dependent Product planning or implementation until the relevant design exists. Initial design, its clarification, numeric derivation and design review may precede Product and Features.
    - Inspect read-only Git status and the relevant GDD, Product, Feature, detail and Registry records.
    - Configured tool paths are choices, not proof of availability. Use relevant environment and Progress evidence without launching probes. Interpret incomplete machine setup through `methodology/00-overview.md` and `methodology/06-project-environment.md`.

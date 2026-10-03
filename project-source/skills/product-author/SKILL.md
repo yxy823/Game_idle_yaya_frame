@@ -7,7 +7,7 @@ description: "Organize Product delivery scope from current GDD sources and coord
 
 ## Authority and entry
 
-Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. Product delivery needs actual GDD content covering its scope; an empty directory, purpose notice, Product or code does not substitute for it. If that design is missing or unresolved, return the design work to `design-gdd` within the current authorization before preparing the dependent Product. An unrelated unfinished GDD topic does not block a sufficiently defined delivery.
+Use `methodology/01-product-doc-structure.md` for the GDD prerequisite, document ownership, Product structure and templates. Product delivery needs actual GDD content covering its scope; an empty directory, a page that only states its purpose, a Product or code does not substitute for it. If that design is missing or unresolved, return the design work to `design-gdd` within the current authorization before preparing the dependent Product. An unrelated unfinished GDD topic does not block a sufficiently defined delivery.
 
 Within the current authorization, maintain Product as delivery scope and reference GDD as the game-design source. Read the actual GDD entry and follow its relevant topic links without duplicating its rules. `docs/product.md` maps the agreed scope to delivery units, dependencies and intended order; apply **Delivery outcomes and prerequisites** in methodology 01 when judging those boundaries. Only the current unit receives `docs/product/NN-<delivery>.md`.
 

@@ -13,7 +13,7 @@ Keep editable source masters, import metadata, the generated cache, runtime Reso
 
 - **[MUST]** Source assets are authoritative content, and `.godot/imported` is a rebuildable generated cache.
 - **[MUST]** Load imported Resources through their source `res://` path and the ResourceLoader contract, not through direct `.godot/imported` paths.
-- **[MUST]** Raw assets that are not imported and are read through FileAccess are a separate runtime path. They follow the [export inclusion rules](../41-export-config/resources-and-filters.md#packaging).
+- **[MUST]** Raw assets that are not imported and are read through FileAccess are a separate runtime path; see [Ignored and raw files](ignored-and-raw-files.md).
 - **[MUST]** After external edits, refresh the filesystem or reimport before trusting runtime or editor evidence.
 
 ## Version control

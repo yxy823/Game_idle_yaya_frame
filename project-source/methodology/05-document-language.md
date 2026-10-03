@@ -56,7 +56,7 @@ The following human-readable project content uses `document_language`:
 - current Progress, linked execution archives, implementation decisions and saved handoff records;
 - project-specific prose added to generated documents.
 
-The initial files contain purpose notices, pending-state notices and directory navigation. They are not Product content. When replacing a notice with actual project content, write in `document_language`; copying a file translates nothing.
+The initial files contain purpose statements and directory navigation. They are not Product content. When adding actual project content to them, write in `document_language`; copying a file translates nothing.
 
 Read `docs/progress.md` as the current state and history index, then load only the linked Feature or batch archive the task needs. New archives under `docs/progress/` use `document_language`; earlier history keeps its original language. Moving history keeps the original text and evidence links. Do not translate history or copy it into both Progress and Feature notes during archiving.
 

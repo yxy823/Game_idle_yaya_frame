@@ -2,7 +2,7 @@
 
 > This is the entry to the project workflow: how the methodology, Skills, project documents and commands relate, and which entry handles each kind of task.
 
-The methodology covers game design from an idea onward, numerical modeling and tuning, Product delivery planning, Feature planning and implementation, engineering changes, automated testing, human acceptance, defect learning and local Git-safe handoff. Early design does not remove the GDD prerequisite for dependent development. Release management, store submission, public version announcements, deployment approval, publishing workflow, and distribution governance are outside the default methodology unless the user explicitly defines one of them as project work.
+The methodology covers game design from an idea onward, numerical modeling and tuning, Product delivery planning, Feature planning and implementation, engineering changes, automated testing, human acceptance, defect learning and local Git-safe handoff. Release management, store submission, public version announcements, deployment approval, publishing workflow, and distribution governance are outside the default methodology unless the user explicitly defines one of them as project work.
 
 ## Mental model: specification and execution
 
@@ -18,7 +18,7 @@ methodology/                         canonical workflow specification
 ```
 
 - `methodology/` defines the workflow. Skills under `.agents/skills/` carry it out.
-- Project documents live under `docs/`; [docs/README.md](../docs/README.md) describes each file and directory. New projects ship purpose and pending-state notices; their presence is not a GDD, a delivery plan or a decision.
+- Project documents live under `docs/`; [docs/README.md](../docs/README.md) describes each file and directory. New projects ship pages that only state their purpose; their presence is not a GDD, a delivery plan or a decision.
 - `docs/methodology-config.json` holds `document_language` and the Python and Godot executable paths, under [document language](05-document-language.md) and [project environment](06-project-environment.md).
 - Commands under `tools/` run only when a task calls them. No tool runs automatically when a file changes or a reply ends.
 

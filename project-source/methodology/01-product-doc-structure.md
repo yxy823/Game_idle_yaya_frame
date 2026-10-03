@@ -29,7 +29,7 @@ During an authorized GDD authoring or consolidation task, supporting specialist 
 Delivery planning, implementation, engineering repairs and runnable experiments require a substantive GDD under `docs/gdd/`. Other specialist work has the same prerequisite unless it is the early design support described above.
 
 - Read the GDD entry and the sections relevant to the task.
-- An empty directory, a directory-navigation README, a template or a pending-state notice is not a GDD.
+- An empty directory, a directory-navigation README, a template or a page that only states its purpose is not a GDD.
 - If the GDD is missing, explain the missing design and the `design-gdd` route. Stop dependent development; do not invent gameplay or start a design interview the user did not ask for.
 - A status query may explain the current state without starting work.
 
@@ -87,7 +87,7 @@ New GDDs and authorized standardization use these exact filenames for the matchi
 
 Use this structure from the first draft onward, whatever the game size, document length or complexity:
 
-- Create a file when its content is first written; do not prebuild empty topics. Keep the initial purpose notices and the first-write conditions of the scope document.
+- Create a file when its content is first written; do not prebuild empty topics. Keep the purpose statements of the initial pages and the first-write conditions of the scope document.
 - A system's rules always go in its `systems/<system-key>.md` file, including the first system in a draft. `gameplay.md` keeps the cross-system view and the links.
 - Numerical models always go in the `balance/` file that matches their system scope. An ordinary dimension or item count that is part of a rule stays with that rule. Named model variables, derived values and calculation explanations stay together in the balance file, and rules reference them.
 
@@ -150,7 +150,7 @@ How the document is written:
 
 `docs/gdd/open-questions.md` is the fixed GDD document for **Open questions** (`开放问题` in Chinese). It owns the current unresolved game-design choices, and the missing facts or evidence that could change the design. Link it directly from the GDD entry, use descriptive question headings that other documents can reference, and write in `document_language`.
 
-New projects include a purpose and pending-content notice. That notice is not substantive design, and it does not prove that all questions are settled. When authorized drafting starts from a GDD without this file, create it from the actual known questions without reorganizing unrelated topics.
+New projects include this file with only its purpose and an empty question list. An empty list is not substantive design, and it does not prove that all questions are settled. When authorized drafting starts from a GDD without this file, create it from the actual known questions without reorganizing unrelated topics.
 
 For each question, keep together:
 
@@ -212,7 +212,7 @@ GDD describes the game; Product describes how the selected design is delivered i
 
 `product.md` pre-decomposes the agreed delivery horizon into short candidates. A `product/NN-<delivery>.md` document is written only when its Product becomes current, and its Features are planned before the next Product is detailed. [Product-by-Product planning](02-feature-list-schema.md#product-by-product-planning) defines this order. A pre-decomposition is not a fixed commitment; adjust later candidates as delivery results change the intended sequence.
 
-The initial `product.md` contains only a purpose and pending-state notice; it is neither design nor a delivery plan. Write delivery content from the [templates](templates/README.md). Find detailed Products through the links in `product.md` and the [Product filename](#product-filenames) pattern.
+The initial `product.md` states only its purpose; it is neither design nor a delivery plan. Write delivery content from the [templates](templates/README.md). Find detailed Products through the links in `product.md` and the [Product filename](#product-filenames) pattern.
 
 Product documents describe the current delivery scope only. They have no change-history section; Git keeps earlier versions. When the reason for a current boundary or order helps later decisions, state it beside that boundary.
 

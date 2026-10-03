@@ -22,7 +22,7 @@ External data does not go directly from parser output into gameplay.
 
 - **[MUST]** Every data domain declares its authoritative authoring source and one canonical runtime representation.
 - **[MUST]** Gameplay consumes validated canonical configuration, not raw Dictionary, Array or Variant output from a parser.
-- **[MUST]** Definition and configuration data is read-only at runtime by default.
+- **[MUST]** Definition and configuration data is read-only at runtime by default, as for definition Resources in [Resource roles](../21-resources/roles-sharing-and-locality.md#roles).
 - **[MUST]** Raw Dictionary, Array and Variant values stay at parsing, migration, extension or genuinely dynamic boundaries; stable runtime schemas use typed models.
 - **[MUST]** Gameplay and runtime code do not write state back into design authoring sources such as XLSX, YAML or CSV files.
 

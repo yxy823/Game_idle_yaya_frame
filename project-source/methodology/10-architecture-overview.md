@@ -15,7 +15,7 @@ This table is the single statement of where structure and decisions live; other 
 | An adopted technical decision without a Feature that does not meet the ADR conditions | The **Standalone technical decisions** section of an architecture document, under [Standalone technical decisions](#standalone-technical-decisions) |
 | Navigation to these records | Feature notes and current Progress links |
 
-- New projects start with a purpose and pending-state notice in `docs/architecture.md`. Fill it from the actual structure within authorized work; do not invent future modules.
+- New projects start with `docs/architecture.md` stating only its purpose. Fill it from the actual structure within authorized work; do not invent future modules.
 - The same locations apply from initial development through expansion. There is no separate arrangement for small projects.
 - Name each subsystem with a stable lowercase hyphenated name in the overview, link its document there, and reuse that name for the same subsystem.
 - Keep project-level summaries in the overview and internal contracts in the subsystem file.

@@ -4,7 +4,7 @@ This document only connects the responsibilities of two rule sets. It does not r
 
 ## Authority boundary
 
-- **[MUST]** The Yaya Loop decides what to test, why to test it, which tests to select and when to run them. It also decides how tests relate to Features, Acceptance Criteria, Bugs and manual acceptance.
+- **[MUST]** The project workflow (methodology 03 and 08) decides what to test, why to test it, which tests to select and when to run them. It also decides how tests relate to Features, Acceptance Criteria, Bugs and manual acceptance.
 - **[MUST]** This directory governs the concrete Godot test implementation: the L0 to L3 levels, runner behavior, fixtures, isolation, mocks and spies, the SceneTree, input, signals, asynchronous behavior and diagnostics.
 - **[MUST]** The Required Test Set produced by the Test Impact Review is a minimum. The Godot impact gates in `test-selection-and-gates.md` may expand or escalate it, but they never silently remove tests from it.
 

@@ -5,7 +5,7 @@ description: Run requested Godot parsing, lint, existing automated tests or a sc
 
 # Run the requested verification
 
-Establish the requested check, target and permitted runtime actions from the current task. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`. Reuse configured tools and still-valid preparation; use [project-environment-godot](../project-environment-godot/SKILL.md) only for an actual environment dependency within the task's authorization.
+Establish the requested check, target and permitted runtime actions from the current task. Reuse configured tools and still-valid preparation; use [project-environment-godot](../project-environment-godot/SKILL.md) only for an actual environment dependency within the task's authorization.
 
 ## Select the matching check
 

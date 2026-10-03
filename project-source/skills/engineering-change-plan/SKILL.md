@@ -10,7 +10,7 @@ description: >-
 
 Follow `methodology/07-engineering-change.md` for classification, Bug ownership, mode-specific evidence and AC, Feature writes and Bug-learning promotion. Use the relevant artifact schema in `methodology/02-feature-list-schema.md` and the language contract in `methodology/05-document-language.md`. Before durable writes, apply `agent-rules/00-core/git-worktree-and-commits.md`.
 
-Apply the existing-GDD prerequisite in methodology 01 before project engineering work; a technical contract or empty ledger does not bypass it. This Skill prepares engineering work; [feature-execute](../feature-execute/SKILL.md) performs it. Preparation does not imply human acceptance.
+Apply the [GDD prerequisite](../../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority) before project engineering work. This Skill prepares engineering work; [feature-execute](../feature-execute/SKILL.md) performs it. Preparation does not imply human acceptance.
 
 ## Triage and proposal
 
