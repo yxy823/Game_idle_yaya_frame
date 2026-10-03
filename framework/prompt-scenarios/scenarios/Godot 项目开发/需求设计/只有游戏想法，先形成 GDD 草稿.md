@@ -40,7 +40,7 @@
 
 同一次编写按[专业来源归属](../../../../../project-source/methodology/11-specialist-workflows.md#ownership-and-decisions)保存本次已确定的专业规格。GDD 保留整体目标与玩法规则，专业规格进入对应固定正文；原先写在 GDD 的当前规格迁入所属位置并更新引用。
 
-同一次编写按[项目术语规范](../../../../../project-source/methodology/01-product-doc-structure.md#project-terminology)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
+同一次编写按[项目术语规范](../../../../../project-source/methodology/14-project-terminology.md#project-terminology)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
 
 ## 资源与文件影响
 

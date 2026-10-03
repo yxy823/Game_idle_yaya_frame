@@ -107,7 +107,7 @@ flowchart LR
 
 无图片时沿用白色矩形承载面，不补选图片。各对象保持独立材质和参数，源预设只读；“触发全部”从初态触发，再按各自声音/Shader 延迟播放。
 
-目前支持 2D `canvas_item` 及既定强度、颜色、时序参数；没有任意参数编辑、3D、全屏后处理或多 Shader 堆叠。候选配置、参数适用性、契约与许可见 [Shader 示例说明](../../../project-source/asset_workbench/examples/README.md#shader-与独立资源组合)。
+目前支持 2D `canvas_item` 及既定强度、颜色、时序参数；没有任意参数编辑、3D、全屏后处理或多 Shader 堆叠。候选配置与许可见 [Shader 示例说明](../../../project-source/asset_workbench/examples/README.md#shader-与独立资源组合)，参数适用性与契约见[反馈组件的 Shader 预设](../../../project-source/components/feedback/README.md#shader-预设)。
 
 ### 粒子与动画组合预览
 
@@ -117,7 +117,7 @@ flowchart LR
 
 粒子/运动重触发从头开始；声音与图标脉冲仍可重叠。持续粒子的发射时长与存活时间不同；停止全部立即隐藏并取消待播放内容，下次触发重置模拟。
 
-预设、局部/场景坐标、组合变换和层级在原生 Godot 场景/Animation 资源中制作，工作台不提供任意轨道编辑。参数与素材来源见 [粒子与动画说明](../../../project-source/asset_workbench/examples/README.md#粒子tween-与-animationplayer)。
+预设、局部/场景坐标、组合变换和层级在原生 Godot 场景/Animation 资源中制作，工作台不提供任意轨道编辑。素材来源见 [粒子与动画说明](../../../project-source/asset_workbench/examples/README.md#粒子tween-与-animationplayer)，参数限制见[反馈组件的粒子、动画与 Tween 限制](../../../project-source/components/feedback/README.md#粒子动画与-tween-的限制)。
 
 ### 局部管理与有限时间编排
 
@@ -128,7 +128,7 @@ flowchart LR
 - **时间窗口**：片段截止会截断声音和粒子余尾；错过的窗口不会补播，尚未结束的窗口从效果开头触发。
 - **播放预算**：示例只允许三个受管对象同时播放，延迟音频也占预算；它不是 GPU、显存或全场景声部保证。
 
-编排在原生 Godot Inspector 制作，工作台不提供时间轴编辑、暂停或跳转。消费场景可试验分组触发/取消和优先级。局部 Manager、句柄、时钟与 API 的实现说明集中在 [管理与编排说明](../../../project-source/asset_workbench/examples/README.md#场景局部管理与有限编排)。
+编排在原生 Godot Inspector 制作，工作台不提供时间轴编辑、暂停或跳转。消费场景可试验分组触发/取消和优先级。局部 Manager、句柄、时钟与 API 的契约见[反馈组件的场景局部管理与有限编排](../../../project-source/components/feedback/README.md#场景局部管理与有限编排)。
 
 ## 保存后验证消费场景
 
@@ -162,7 +162,7 @@ flowchart LR
 
 | 内容 | 位置与边界 |
 | --- | --- |
-| 可复用工作台、表现组件和薄播放封装 | `asset_workbench/ui/`、`components/feedback/`；通过复制成为项目自己的文件 |
+| 可复用工作台、表现组件和薄播放封装 | `asset_workbench/ui/`、`components/feedback/`（组件契约见其 [README](../../../project-source/components/feedback/README.md)）；通过复制成为项目自己的文件 |
 | 分析源代码与项目本地开发依赖 | `asset_workbench/analyzer/` 随框架复制；实际项目安装的 `reports/asset-analyzer/runtime/`、缓存和运行证据不进入框架 |
 | 可操作示例与许可 | `asset_workbench/examples/`；可替换或按引用检查后移除，不预设游戏需求 |
 | 音频第三方代码 | `addons/sound_manager/`；固定提交和 MIT 许可，默认不启用全局插件 |

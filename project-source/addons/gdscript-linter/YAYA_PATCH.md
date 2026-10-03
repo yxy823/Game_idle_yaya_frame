@@ -20,7 +20,7 @@ Changed files:
 
 The existing lexer masks single/double/triple-quoted strings, escapes and comments. No SHA-specific exemption, disabled rule, allowlist expansion or severity change is introduced. Actual decimal literals (including negative/fractional values) still produce diagnostics with their original value and line. Existing constant, enum/export and allowed-number handling stays unchanged. This remains a lexical check, not a complete Godot parser or a proof that every number needs a constant.
 
-Regression cases cover numeric suffixes in names, quoted and multiline text, comments, allowed values, real numeric literals, and the existing Logger/metric contracts. Run engine-dependent contracts in an external validation project using the configured Godot. A Python fixture alone does not establish runtime behavior. Direct project checks are described in `methodology/gdscript-lint.md`; there is no separate static wrapper or static manifest.
+Regression cases cover numeric suffixes in names, quoted and multiline text, comments, allowed values, real numeric literals, and the existing Logger/metric contracts. Run engine-dependent contracts in an external validation project using the configured Godot. A Python fixture alone does not establish runtime behavior. Direct project checks are described in `methodology/contracts/gdscript-lint.md`; there is no separate static wrapper or static manifest.
 
 ## Configuration and editor consistency (2026-09-22)
 

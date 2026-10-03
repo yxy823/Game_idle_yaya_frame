@@ -343,11 +343,8 @@ Completion evidence is checked by these commands; the Agent assesses the rest:
 
 A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-review) reuses current successful run results when no source or verification changed. If fixes change the snapshot, recalculate the current obligations, repeat the applicable Stage 4 verification (including the [`not_required`](#no-automated-obligations-not_required) case), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again only to fill a second field.
 
-Stage 1 first chooses `verification.acceptance_mode` from the requirement, then fills in the matching checks.
+Stage 1 first chooses `verification.acceptance_mode` under [Acceptance mode](02-feature-list-schema.md#acceptance-mode), then fills in the matching checks.
 
-- Visual presentation, animation, audio, sound, music, game feel and other human judgment require `manual`.
-- A requirement whose AC can all be checked automatically may use `automated`.
-- Empty lists or earlier PASS results never decide the mode.
 - Automated mode skips Stage 5 without recording fake human acceptance. Manual mode requires the user's actual file submission or explicit decision in the conversation, under [Manual acceptance files](contracts/manual-acceptance-files.md).
 
 ## Requirement changes and stale tests

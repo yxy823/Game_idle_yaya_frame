@@ -111,7 +111,7 @@ GDD、专业规格、表现正文和本地化要求，都要在最终验证前�
 
 ## 资源规格随所属设计保存
 
-资源规格的位置按[资源规格归属](../../../project-source/methodology/01-product-doc-structure.md#resource-requirements-and-handoff)确定：
+资源规格的位置按[资源规格归属](../../../project-source/methodology/11-specialist-workflows.md#resource-requirements-and-handoff)确定：
 
 - 某个表现方案专用的资源，写在该方案中。
 - 某个界面专用的资源，写在该 UI 文档中。

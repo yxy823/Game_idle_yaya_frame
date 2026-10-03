@@ -39,7 +39,7 @@
 | 位置 | 保存什么 | 谁维护 / 谁读取 |
 | --- | --- | --- |
 | `docs/product.md` | 交付预拆分：各交付单元的粗略边界、来源、依赖和建议顺序 | `product-author` / 规划 |
-| `docs/product/NN-name.md` | 当前交付单元的范围与衔接，轮到时才编写 | `product-author` / 规划与实现 |
+| `docs/product/NN-<delivery>.md` | 当前交付单元的范围与衔接，轮到时才编写 | `product-author` / 规划与实现 |
 | `docs/feature-list.json` | Feature 的 ID、标题、依赖、状态与详情入口 | 规划与执行 / 可开始任务判断、台账检查 |
 | `docs/features/F0XX.json` | 单个 Feature 的范围、AC、来源、验证义务与 notes | 规划与执行 / 测试选择、完成检查 |
 | `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |

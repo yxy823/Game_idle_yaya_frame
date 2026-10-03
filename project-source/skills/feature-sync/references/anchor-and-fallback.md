@@ -16,7 +16,7 @@ Later Product planning must not silently advance the baseline for older work.
 
 ## Check sources with unknown coverage
 
-A source that predates the anchor can still be unsynchronized. Before reusing an anchor for newly admitted GDD or professional sources, establish whether the affected plan actually incorporated them by comparing historical source and plan contents.
+A source that predates the anchor can still be unsynchronized. Before reusing an anchor for a GDD or professional source that the anchored synchronization did not cover, establish whether the affected plan actually incorporated them by comparing historical source and plan contents.
 
 When coverage remains unknown, use the authorized current-document alignment below for that affected planned scope, alongside any verified diffs. Read the current GDD and professional sources whose coverage is unknown even when their diff is empty; widening the diff path list alone cannot prove coverage. Report the distinction, and do not advance the anchor as if the unknown history had been checked.
 

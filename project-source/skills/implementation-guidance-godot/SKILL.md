@@ -7,7 +7,7 @@ description: Prepare or update source-linked implementation guidance for an exis
 
 Use this method when implementation guidance is needed for an existing Feature. Apply the GDD prerequisite and the Feature's current scope, decisions and authorization. Work without a Feature is outside this entry; return to its existing task rather than creating a Feature to obtain guidance. A simple implementation can continue through its normal owner without this method.
 
-Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links, proposal/approval lifecycle and fixed durable location. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
+Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links and fixed file location, and Stages 1C, 2 and 3 in `methodology/03-execute-loop.md` for when the design is proposed, approved, saved and kept aligned. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
 
 When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md).
 
@@ -29,8 +29,8 @@ During the guidance assignment, inspect files, permitted read-only Git state and
 
 ## Return guidance to the existing Feature
 
-Return the reviewable proposal and genuinely missing decisions to the main Agent. After the existing approval covers the design, the same delegated advisor may save only the assigned `docs/features/F0XX-design.md` under the design lifecycle in methodology 02, including its guidance-only boundary. The main Agent checks the result and owns any authorized Feature notes link, record updates and commits. Do not request the same approval again or use a saved file as proof of approval.
+Return the reviewable proposal and genuinely missing decisions to the main Agent. After the existing approval covers the design, the same delegated advisor may save only the assigned `docs/features/F0XX-design.md` under Stage 2 of methodology 03, keeping the guidance-only boundary in methodology 02. The main Agent checks the result and owns any authorized Feature notes link, record updates and commits. Do not request the same approval again or use a saved file as proof of approval.
 
-The main Agent reads the guidance, key applicable original rules and current code/interfaces/consumers under methodology 04. It handles ordinary implementation choices. Material deviations require checking their sources and resolving any missing decision; consult the advisor again only within the existing explicit delegation scope. Guidance does not replace authoritative requirements, verification, human acceptance or the final combined-change check.
+The main Agent implements under [Implementing with prepared guidance](../../../methodology/04-project-rules.md#implementing-with-prepared-guidance). Consult the advisor again only within the existing explicit delegation scope.
 
 Guidance-only work ends with its requested result; an authorized implementation continues in [feature-execute](../feature-execute/SKILL.md) at its current Stage. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**). The advisor's check of a design it helped author is not independent review. A requested formal review keeps the separate fresh-instance contract in `methodology/12-independent-review.md`.

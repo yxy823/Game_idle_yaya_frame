@@ -1042,7 +1042,7 @@
       "y": 1830,
       "width": 270,
       "height": 88,
-      "label": "当前 Product\nNN-name.md",
+      "label": "当前 Product\nNN-<delivery>.md",
       "zIndex": 1,
       "fill": "#F3E8FF",
       "stroke": {
@@ -1064,7 +1064,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景，以及仅涉及该单元的未决交付选择。\n项目位置：docs/product/NN-name.md；按当前规划创建。\n引用 GDD 和适用专业来源；跨 Product 选择引用总览，游戏设计问题引用 GDD。Feature 据此细分任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
+      "note": "职责：当前单元的目标、采用与暂缓范围、来源、前置衔接、验收场景，以及仅涉及该单元的未决交付选择。\n项目位置：docs/product/NN-<delivery>.md；按当前规划创建。\n引用 GDD 和适用专业来源；跨 Product 选择引用总览，游戏设计问题引用 GDD。Feature 据此细分任务，不复制游戏规则正文。\n\n项目文件： docs/product/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1881,7 +1881,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：可留存的外部问题、来源、结论、建议和未知项。\n项目位置：docs/research/<topic>.md；初始只有目录说明。\n从相关 Feature 设计、notes 或 Progress 进入，数量增加后补主题导航；结论经采纳才写回要求所属正文。\n\n项目文件： docs/research/*.md",
+      "note": "职责：可留存的外部问题、来源、结论、建议和未知项。\n项目位置：docs/research/<descriptive-topic>.md；有值得留存的调研时创建。\n从相关 Feature 设计、notes 或 Progress 进入，数量增加后补主题导航；结论经采纳才写回要求所属正文。\n\n项目文件： docs/research/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

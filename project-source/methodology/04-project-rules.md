@@ -40,7 +40,7 @@ The file holds:
 
 Keep enough scope and rationale with each constraint to apply it. Do not turn a local Feature choice into a global restriction, and do not prefill a blank project with unconfirmed technical promises.
 
-The file does not copy the current Environment Bootstrap status, executable paths, tool versions or concrete Godot and GDScript rules. Those facts stay in the configuration or the routed rule documents. Other content belongs elsewhere:
+The file does not copy the current Project Environment Bootstrap status, executable paths, tool versions or concrete Godot and GDScript rules. Those facts stay in the configuration or the routed rule documents. Other content belongs elsewhere:
 
 | Content | Owner |
 | --- | --- |

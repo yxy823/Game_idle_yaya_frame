@@ -48,7 +48,7 @@ One project user works with an Agent. The workflow does not cover multi-user col
 | Maintain the optional architecture map or ADRs | `methodology/10-architecture-overview.md` |
 | Work on professional design, resources, localization, diagnostics or several requirement sources | `methodology/11-specialist-workflows.md` |
 | Run a formal review the user requested | `methodology/12-independent-review.md` |
-| Research external facts or approaches | **External research** in `methodology/00-overview.md` |
+| Research external facts or approaches | **External research** in `methodology/09-records-reports-and-handoff.md` |
 
 These rows are task routes, not a reading sequence. Follow the selected procedure and the references it needs; do not load every workflow. When a Skill returns, continue the task under [Authorization and continuation](methodology/03-execute-loop.md#authorization-and-continuation).
 

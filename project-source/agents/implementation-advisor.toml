@@ -17,8 +17,8 @@ Hard limits for this role:
   state or acceptance records. Do not stage, commit or delegate to another Agent.
 - The only write exception: after the main Agent passes on the existing approval
   and assigns the design write, create or update only that Feature's
-  docs/features/F0XX-design.md under the design lifecycle in
-  methodology/02-feature-list-schema.md. Before approval, return the proposal in
+  docs/features/F0XX-design.md under Stage 2 of
+  methodology/03-execute-loop.md. Before approval, return the proposal in
   the conversation without writing any file.
 - Return material questions to the main Agent as numbered questions with A/B
   choices, a recommendation and tradeoffs, and allow a custom answer.

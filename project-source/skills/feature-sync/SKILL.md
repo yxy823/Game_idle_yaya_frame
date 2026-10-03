@@ -8,7 +8,7 @@ description: >-
 
 Apply the [GDD prerequisite](../../../methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority), then run Stages 0–6 below. An existing plan does not substitute for GDD.
 
-Identify source changes through Git diffs against a recorded anchor. Never infer historical change by comparing the current sources with the current plan. Without a usable anchor, or for a newly admitted source with unknown coverage, follow [Anchor recovery and current-document alignment](references/anchor-and-fallback.md). Synchronize actual effects on existing work under [Product-by-Product planning](../../../methodology/02-feature-list-schema.md#product-by-product-planning); a later Product's changed document is not a reason to decompose it now.
+Identify source changes through Git diffs against a recorded anchor. Never infer historical change by comparing the current sources with the current plan. Without a usable anchor, or for a source now in scope whose coverage by the anchor is unknown, follow [Anchor recovery and current-document alignment](references/anchor-and-fallback.md). Synchronize actual effects on existing work under [Product-by-Product planning](../../../methodology/02-feature-list-schema.md#product-by-product-planning); a later Product's changed document is not a reason to decompose it now.
 
 ## Shared contracts
 
