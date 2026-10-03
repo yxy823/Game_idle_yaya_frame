@@ -71,9 +71,9 @@
 
 完整映射只维护在 [project-files.json](../../project-creation/project-files.json)。主要重命名与复制关系包括：
 
-- **项目入口：** `Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
-- **方法与角色：** `skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
-- **其他材料：** 默认文档、工程规则、方法、代码、工具及插件按清单复制。
+- **项目入口**：`Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
+- **方法与角色**：`skills/ → .agents/skills/`、`agents/ → .codex/agents/`。新增 Skill 位于已选中的整个 skills 目录时无需重复列映射。
+- **其他材料**：默认文档、工程规则、方法、代码、工具及插件按清单复制。
 
 `framework/`、根维护规则和完整提示词库不进入项目。创建器不做变量渲染，不自动安装分析器依赖；复制选择不等于每个被复制组件已被项目采用。
 
@@ -99,8 +99,8 @@ GDD 的固定入口、标准主题名称与导入非标准 GDD 的处理见[需�
 
 Git 的默认范围如下，具体模式以 [默认 gitignore](../../../project-source/defaults/.gitignore) 为准。
 
-- **默认忽略：** Godot 缓存、派生翻译缓存、报告、`tmp/` 临时文档和本机秘密；`.env.example` / `.env.template` 可保留。
-- **按项目规则跟踪：** 源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
+- **默认忽略**：Godot 缓存、派生翻译缓存、报告、`tmp/` 临时文档和本机秘密；`.env.example` / `.env.template` 可保留。
+- **按项目规则跟踪**：源素材、必要 `.import`、`.gd.uid`、导出预设、插件、Skill 与正式文档。
 
 还需区分扫描、导入与证据保留：
 

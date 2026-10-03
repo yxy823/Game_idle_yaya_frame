@@ -12,6 +12,8 @@
 | 复制清单 | `framework/project-creation/project-files.json`；只决定创建时复制什么、复制到哪里，不承担升级或已有项目的同步 |
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目，不再依赖框架仓库 |
 | Project | 提示词 JSON 的顶层名称，只有「Yaya 框架维护」和「Godot 项目开发」两个；与 Product、Feature 无关 |
+| Godot 项目手册 | `framework/godot-project-manual/`，按对象解释生成项目里的概念、文档、配置与工具；简称“手册” |
+| 场景速查手册 | `framework/prompt-scenarios/scenarios/`，按“遇到什么情况”给出处理步骤，每篇对应一条同名提示词；单篇称“场景页” |
 
 ## 设计与交付
 
@@ -41,6 +43,8 @@
 | --- | --- |
 | Registry / 测试登记表 | `docs/test-registry.json`，登记测试身份、组件、实现位置和生命周期；登记不等于执行通过 |
 | 完成检查 | 任务正式完成前的整体核对；统一用这个词，不另称“交付检查”“收尾检查”，也不与一次人工验收混称 |
+| 人工验收 | 用户按清单实际运行、观察并给出结果的过程；结果可能是 accepted、rejected 或 pending |
+| 人工接受 | 人工验收的通过结果（accepted），是 manual 模式 Feature 完成的条件之一；实现授权、自动测试通过或用户未表态都不算接受 |
 | 完成记录 / 完成依据 | `docs/feature-completion-evidence.json`，引用实际验证原件和接受结果；文件存在本身不证明条件满足 |
 | 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |
 
