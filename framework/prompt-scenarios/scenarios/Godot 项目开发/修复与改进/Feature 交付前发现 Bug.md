@@ -17,7 +17,7 @@ Feature 交付前发现规则、表现或二者接入的 Bug。例如数值计�
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 修复与改进 → Feature 交付前发现 Bug”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 修复与改进 → Feature 交付前发现 Bug”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
 
 **S1｜记录问题与现场**
 
@@ -37,7 +37,7 @@ Feature 交付前发现规则、表现或二者接入的 Bug。例如数值计�
 
 **S4｜返回完成检查**
 
-当前 Agent 核对测试原件、当前接受与适用评审，检查最终差异没有无关改动，说明关键文件、修复理由及具体剩余风险。取得本次提交许可后，按本次提交约束返回原 Feature 的完成检查；尚缺许可时保留差异并报告待提交。
+当前 Agent 核对测试原件、当前内容上的人工接受，以及用户指定的评审结果；检查最终差异没有无关改动，说明关键文件、修复理由及具体剩余风险。取得本次提交许可后，按本次提交约束返回原 Feature 的完成检查；尚缺许可时保留差异并报告待提交。
 
 ## 步骤产出与状态变化
 
@@ -66,4 +66,4 @@ Feature 交付前发现规则、表现或二者接入的 Bug。例如数值计�
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)。本页达到出口后，仍已明确授权的后续工作按其所属场景继续；准备、诊断、规划或记录完成不替代 Feature 的正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)。

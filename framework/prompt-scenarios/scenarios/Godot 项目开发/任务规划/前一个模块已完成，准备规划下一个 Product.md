@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 任务规划 → 前一个模块已完成，准备规划下一个 Product”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 任务规划 → 前一个模块已完成，准备规划下一个 Product”。填入上述材料。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)。
 
 **S1｜核对模块顺序**
 
@@ -65,4 +65,4 @@ feature-plan 一次覆盖当前 Product 的完整必要范围，展示多个 Fea
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[计划与修订规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。本页达到出口后，仍已明确授权的后续工作按其所属场景继续；准备、诊断、规划或记录完成不替代 Feature 的正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[计划与修订规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。

@@ -15,7 +15,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目创建与接入 → 第一次运行项目，Godot 还没有完成资源扫描”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页由当前 Agent 使用项目自己的 `project-environment-godot` Skill；[源码入口](<../../../../../project-source/skills/project-environment-godot/SKILL.md>)仅供核对。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目创建与接入 → 第一次运行项目，Godot 还没有完成资源扫描”。填入上述材料。本页由当前 Agent 使用项目自己的 `project-environment-godot` Skill；[源码入口](<../../../../../project-source/skills/project-environment-godot/SKILL.md>)仅供核对。
 
 **S1｜核对扫描缺口**
 
@@ -51,4 +51,4 @@ Godot 生成 .godot 导入缓存；不新增包装脚本或每 Feature 扫描阶
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[项目工具用法](<../../../../../project-source/tools/README.md>)。本页达到出口后，仍已明确授权的后续工作按其所属场景继续；准备、诊断、规划或记录完成不替代 Feature 的正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[项目工具用法](<../../../../../project-source/tools/README.md>)。

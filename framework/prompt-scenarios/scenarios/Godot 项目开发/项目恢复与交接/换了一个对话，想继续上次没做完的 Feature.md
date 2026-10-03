@@ -15,7 +15,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目恢复与交接 → 换了一个对话，想继续上次没做完的 Feature”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目恢复与交接 → 换了一个对话，想继续上次没做完的 Feature”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
 
 **S1｜恢复真实停点**
 
@@ -53,4 +53,4 @@
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)。本页达到出口后，仍已明确授权的后续工作按其所属场景继续；准备、诊断、规划或记录完成不替代 Feature 的正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)。

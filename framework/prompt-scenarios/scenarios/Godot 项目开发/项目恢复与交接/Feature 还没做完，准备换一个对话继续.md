@@ -15,7 +15,7 @@ Feature 还没做完，准备换一个对话继续。需要的材料：
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目恢复与交接 → Feature 还没做完，准备换一个对话继续”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页由当前 Agent 使用现有规则和工具处理；需要独立审核的步骤明确交给独立实例。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目恢复与交接 → Feature 还没做完，准备换一个对话继续”。填入上述材料。
 
 **S1｜核对任务现场**
 

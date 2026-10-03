@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 验证与收尾 → 没有 Feature，只想运行指定组件的自动测试”。已有对话补齐实际材料即可，续接不重新索取已经存在的授权。 本页由当前 Agent 使用项目自己的 `project-verification-godot` Skill；[源码入口](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)仅供核对。
+使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 验证与收尾 → 没有 Feature，只想运行指定组件的自动测试”。本页由当前 Agent 使用项目自己的 `project-verification-godot` Skill；[源码入口](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)仅供核对。
 
 **S1｜确认实际目标**
 
@@ -66,4 +66,3 @@ $LASTEXITCODE
 
 依据：[testing/run-gdunit-tests.py](<../../../../../project-source/tools/testing/run-gdunit-tests.py>)。
 
-本页的分析、记录或验证结论只证明上述目标；后续写入与实施按仍有效的具体授权进入其所属场景，不由建议本身扩大范围。

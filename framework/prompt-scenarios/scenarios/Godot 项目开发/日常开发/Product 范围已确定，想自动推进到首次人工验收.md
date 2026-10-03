@@ -17,7 +17,7 @@ Product 范围已确定，想自动推进到首次人工验收。
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 日常开发 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料；已有对话直接补齐输入，不必重发入口。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)，具体执行者和切换位置见下文。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 日常开发 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
 
 **S1｜固定 Goal 范围**
 
