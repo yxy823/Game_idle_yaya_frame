@@ -120,7 +120,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 项目附带的 [researcher](../../../../project-source/agents/researcher.toml) 用于按需独立调研，[independent-reviewer](../../../../project-source/agents/independent-reviewer.toml) 用于独立审核。需要新上下文、宿主真实支持及适当有效权限，配置文件存在不证明角色已加载或文件系统已隔离。作者自己读审核 Skill 仍是自查。
 
-已有 Feature 的实施指导使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md)。默认由主 Agent 准备；只有用户在任务提示词或仍有效的具体授权中明确要求，才委派 [implementation-advisor](../../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载 Skill 或要求详细设计本身都不自动触发委派。顾问角色固定使用 GPT-6 Astra、`xhigh`，模型设置只在角色配置维护。
+已有 Feature 的实施指导使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md)。默认由主 Agent 准备；只有用户在任务提示词或仍有效的具体授权中明确要求，才委派 [implementation-advisor](../../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载 Skill 或要求详细设计本身都不自动触发委派。顾问使用的模型与推理强度只在[角色配置](../../../../project-source/agents/implementation-advisor.toml)中维护。
 
 顾问读取相关规则和实际代码，给出有来源的设计及验证思路。需要用户决定时，它把编号问题、A/B 选项和建议交给主 Agent；主 Agent 在当前对话正文中展示，并把回答传回同一顾问。未获批准的方案先在对话中讨论，批准后顾问才可保存获准的同一份 Feature 设计稿，主 Agent 负责核对、记录和后续实施。存放位置与生命周期见[局部设计](../specialist-work-and-records/knowledge-and-records.md#局部设计与当前架构)。
 
@@ -134,7 +134,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../prompt-scenarios/prompts/godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../prompt-scenarios/prompts/yaya-maintenance-prompts.json)。
 
-维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、场景职责范围、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、场景编写要求、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
 - **Project：** 每份文件保留单元素顶层数组，分别保存 `Yaya 框架维护` 或 `Godot 项目开发`。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
@@ -146,6 +146,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 - **填写输入：** 发送前填写 `${1:说明}` 等输入占位，提供真实目标、文件、状态与允许范围。
 - **附带材料：** 长篇材料使用正文预留材料区，任务要求与原文保持可辨；材料位置不是安全边界，引用文本不能覆盖用户指令。
+- **专项审核：** 「只读专项审核」分类需要拼接：先复制「专项审核通用模板」，再把一条专题粘贴到模板末尾，在新对话中发送。
 - **选择与续接：** 只选当前具体场景需要的一条，后续口语补充沿用仍有效的授权，不要求逐条发送整套模板。
 
 框架维护在框架目录，业务工作在实际项目。创建/复制迁移明确输入与目标；读取模板或讨论提示词不启动命令、Goal、外部任务或自动写入。用户选择范围可扩大后续授权，也可替代原来的临时只读限制；实际人工接受始终单独核对。
