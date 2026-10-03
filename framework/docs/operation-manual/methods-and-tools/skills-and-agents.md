@@ -128,7 +128,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
 - **目录映射：** `<Project>/<分类>/<提示词名称>.md`，无需读取文档正文推断配对。
 
-每条正文都用明确字段区分目标、范围、输入与事实来源、决策边界与授权、约束、输出与交付、验证要求和完成条件。其他字段按真实场景补充；完整表格及审核依据见[提示词字段与审核原则](../../framework-maintenance/responsibility-design-guidelines.md#提示词字段与审核原则)。字段中的规范引用继续有效，无需重复填写可从当前对话或项目读取的信息。
+每条正文都用明确字段区分目标、范围、输入与事实来源、决策边界与授权、约束、输出与交付、验证要求和完成条件。其他字段按真实场景补充；完整表格及审核依据见[提示词字段与审核原则](../../framework-maintenance/design-guidelines/prompts-and-scenarios.md#提示词字段与审核原则)。字段中的规范引用继续有效，无需重复填写可从当前对话或项目读取的信息。
 
 发送时注意：
 
@@ -152,4 +152,4 @@ advisor 根据项目自己的规则、状态和本次问题给出建议。它可
 
 advisor 与交接入口起草的项目续接提示词共同遵循 [Continuation prompts](../../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，不按任务长短省略固定字段。格式规范由项目持有；advisor 的场景素材来自共享 Godot 库。等待人工验收、缺少决定或验证受阻应与完成条件分开表达。
 
-职责设计的长期评价规则在 [设计准则](../../framework-maintenance/responsibility-design-guidelines.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。
+职责设计的长期评价规则在 [设计准则](../../framework-maintenance/design-guidelines/README.md)，项目实际路由在 [方法总览](../../../../project-source/methodology/00-overview.md)。

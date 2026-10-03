@@ -204,7 +204,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：材料位置、维护边界、文档同步、维护命令及验证说明。\n位置：framework/docs/framework-maintenance/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/docs/framework-maintenance/*.md\n文件： framework/commands/README.md",
+      "note": "职责：材料位置、维护边界、文档同步、维护命令、验证范围与外部项目夹具说明。\n位置：framework/docs/framework-maintenance/、framework/commands/README.md 与 framework/tests/external-project/ 各子目录 README。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/docs/framework-maintenance/*.md\n文件： framework/commands/README.md\n文件： framework/tests/external-project/*/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -294,7 +294,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/prompts-and-scenarios.md"
       },
       "appearance": {
         "opacity": 1,
@@ -333,11 +333,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/docs/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 定义两图共用的文件格式。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/docs/relationship-maps/README.md\n文件： framework/docs/relationship-maps/graph-map-format.md\n文件： framework/docs/relationship-maps/game-development-workflow.readable.json\n文件： framework/docs/relationship-maps/document-system.readable.json",
+      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 定义两图共用的文件格式。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/relationship-maps/README.md\n文件： framework/relationship-maps/graph-map-format.md\n文件： framework/relationship-maps/game-development-workflow.readable.json\n文件： framework/relationship-maps/document-system.readable.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/relationship-maps/README.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/relationship-maps/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -354,7 +354,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "职责设计准则\nresponsibility-design-guidelines.md",
+      "label": "职责设计准则\ndesign-guidelines/*.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -376,11 +376,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/docs/framework-maintenance/responsibility-design-guidelines.md。\n长期准则只维护这一份；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/responsibility-design-guidelines.md",
+      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/docs/framework-maintenance/design-guidelines/，README 导航，按文档、提示词与场景、Skill 与脚本、规则文件、审核与报告分页。\n长期准则只在这里维护；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/design-guidelines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/README.md"
       },
       "appearance": {
         "opacity": 1,
@@ -423,7 +423,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/responsibility-design-guidelines.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/docs/framework-maintenance/design-guidelines/reviews-and-reports.md"
       },
       "appearance": {
         "opacity": 1,

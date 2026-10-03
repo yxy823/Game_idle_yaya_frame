@@ -1,6 +1,6 @@
 # 文档关系图与开发场景图
 
-[文档入口](../README.md) · [文档系统关系图](document-system.readable.json) · [开发场景图](game-development-workflow.readable.json) · [文件格式](graph-map-format.md)
+[文档入口](../docs/README.md) · [文档系统关系图](document-system.readable.json) · [开发场景图](game-development-workflow.readable.json) · [文件格式](graph-map-format.md)
 
 本目录保存两张用途不同、使用同一 Graph_Map 格式的关系图。它们只在框架维护仓库保存，不进入生成项目，也不建立运行依赖或跨项目自动同步。
 
@@ -13,7 +13,7 @@
 
 ## 打开与保存
 
-在当前 Graph_Map 的 Windows Edge 页面中点击“打开图目录”，选择 `D:/A_Games/Game_idle_yaya_frame/framework/docs/relationship-maps`，再选择要看的图文件，一并读取该图和对应次数文件。打开会替换当前画布，有未保存内容时按查看器提示处理。点击“保存”或按 Ctrl+S 分别保存有修改的图和次数，单改次数不重写主图；“另存为”将两份文件保存到新目录，成功后切换关联。刷新后需重新打开目录，缩放和平移是临时视图状态。
+在当前 Graph_Map 的 Windows Edge 页面中点击“打开图目录”，选择 `D:/A_Games/Game_idle_yaya_frame/framework/relationship-maps`，再选择要看的图文件，一并读取该图和对应次数文件。打开会替换当前画布，有未保存内容时按查看器提示处理。点击“保存”或按 Ctrl+S 分别保存有修改的图和次数，单改次数不重写主图；“另存为”将两份文件保存到新目录，成功后切换关联。刷新后需重新打开目录，缩放和平移是临时视图状态。
 
 两张图使用不同的稳定 `documentId`。个人次数另存本目录的本地 JSON，不纳入 Git；新图没有次数文件时从全图 0 次开始。节点的本地链接由查看器展示和复制，不直接打开文件。
 
@@ -38,13 +38,13 @@
 
 ### 联系与孤立的判断
 
-当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业来源](../../../project-source/methodology/11-specialist-workflows.md)、[Feature 结构](../../../project-source/methodology/02-feature-list-schema.md)、[架构](../../../project-source/methodology/10-architecture-overview.md)及[产物生命周期](../../../project-source/methodology/09-artifact-lifecycle.md)。
+当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业来源](../../project-source/methodology/11-specialist-workflows.md)、[Feature 结构](../../project-source/methodology/02-feature-list-schema.md)、[架构](../../project-source/methodology/10-architecture-overview.md)及[产物生命周期](../../project-source/methodology/09-artifact-lifecycle.md)。
 
 “没有人链接它”“缺少必要来源”和“完全没有关联”是不同问题。报告等末端产物可以只有入口，不必人为添加回链或连到所有文档。图只展示现有契约中的主要关系，不能代替对具体游戏项目中实际正文、来源覆盖和证据原件的核对，也不能凭图中有线就认定关联已经落实。
 
 ### 维护与检查
 
-文档职责、路径、产物归属或实际引用契约改变时，由[提示词与关系图维护 Skill](../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)局部更新对应节点、备注、链接和连线；不把新增一份同类报告或 Feature 当作新增节点。节点改名保留 ID，不按文件数、排序或当前任务状态重画整个系统。图不保存另一套流程正文、任务状态或孤立文件台账。
+文档职责、路径、产物归属或实际引用契约改变时，由[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)局部更新对应节点、备注、链接和连线；不把新增一份同类报告或 Feature 当作新增节点。节点改名保留 ID，不按文件数、排序或当前任务状态重画整个系统。图不保存另一套流程正文、任务状态或孤立文件台账。
 
 文档图使用 `doc-`、`relation-` 标识文档节点与连线，`caption-`、`legend-` 标识阅读辅助。核对实际链接、全局 ID 唯一性、端点、单向箭头、节点尺寸和保存格式，并沿本次受影响的具体查找场景检查关系含义。开发场景的名称与链接脚本只处理场景图；文档图的全仓覆盖扫描按下文显式调用，不接入每次维护或提交。
 
@@ -59,17 +59,17 @@
 项目文件： docs/features/F[0-9][0-9][0-9].json
 ```
 
-`文件：` 后是框架仓库相对路径；`项目文件：` 后是生成项目相对路径。分发源到项目的换算只读取[复制清单](../../commands/project-files.json)，不另建源与目标映射。同一模板复制到两个位置时，两处分别检查。引用链接仍指向能打开的源文件或规范，路径登记可以描述尚未生成的可选产物。
+`文件：` 后是框架仓库相对路径；`项目文件：` 后是生成项目相对路径。分发源到项目的换算只读取[复制清单](../commands/project-files.json)，不另建源与目标映射。同一模板复制到两个位置时，两处分别检查。引用链接仍指向能打开的源文件或规范，路径登记可以描述尚未生成的可选产物。
 
 路径区分大小写，使用 `/`；`*`、`?`、`[0-9]` 只匹配当前目录的一段名称，独立的 `**` 匹配零层或多层目录。标题中的 `F0XX.json` 是给人阅读的示例，登记使用 `F` 加三位数字的模式；编号是否有效仍由 Feature 规范与检查器判断。按职责选择准确文件或类型目录，不能用整个仓库的通配规则掩盖遗漏。
 
 ### 按需检查文档覆盖
 
-用户需要找出未纳入文档图的文件时，才显式运行[文档覆盖检查](../../commands/README.md#检查文档图覆盖)；不接入每次维护或提交。覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。
+用户需要找出未纳入文档图的文件时，才显式运行[文档覆盖检查](../commands/README.md#检查文档图覆盖)；不接入每次维护或提交。覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。
 
 ## 游戏项目开发场景图
 
-[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../../prompt-scenarios/prompts/godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../../prompt-scenarios/scenarios/scenario-index.md)。
+[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../prompt-scenarios/scenarios/scenario-index.md)。
 
 图中保存为阅读调整的布局、文字换行、尺寸和连线外观，以及同名场景文件链接；节点不写备注，场景含义以提示词和场景页为准。已有名称检查和链接维护命令默认处理此文件；提示词顺序变化不要求重排整图。
 
@@ -98,12 +98,12 @@
 
 | 检查内容 | 本仓库依据 |
 | --- | --- |
-| 节点名称与完整集合 | [Godot 开发提示词库](../../prompt-scenarios/prompts/godot-development-prompts.json) |
-| 场景前提、出口和对应提示词 | [场景索引](../../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../../prompt-scenarios/scenarios/README.md#收录什么) |
-| 任务路由、Product 顺序与 GDD 前提 | [流程总览](../../../project-source/methodology/00-overview.md) |
-| 授权、验证、人工验收与完成 | [执行规范](../../../project-source/methodology/03-execute-loop.md) |
-| 专业工作职责 | [专业流程](../../../project-source/methodology/11-specialist-workflows.md) |
+| 节点名称与完整集合 | [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json) |
+| 场景前提、出口和对应提示词 | [场景索引](../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../prompt-scenarios/scenarios/README.md#收录什么) |
+| 任务路由、Product 顺序与 GDD 前提 | [流程总览](../../project-source/methodology/00-overview.md) |
+| 授权、验证、人工验收与完成 | [执行规范](../../project-source/methodology/03-execute-loop.md) |
+| 专业工作职责 | [专业流程](../../project-source/methodology/11-specialist-workflows.md) |
 
-场景集合或名称变化后，使用[场景图名称与链接检查](../../commands/README.md#检查场景图名称与链接)核对图文件。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步台账。
+场景集合或名称变化后，使用[场景图名称与链接检查](../commands/README.md#检查场景图名称与链接)核对图文件。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步台账。
 
 图内容变化还须核对既有 ID 稳定、节点及连线 ID 全局无重复、所有端点存在；按实际改动检查场景身份、连线条件、坐标、节点尺寸、折点及保存格式。

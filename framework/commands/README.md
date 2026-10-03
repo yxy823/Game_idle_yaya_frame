@@ -2,7 +2,7 @@
 
 本页是全部维护命令用法的唯一说明。命令都在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存。参数细节以各命令的 `--help` 为准。
 
-脚本跟随作用对象存放：只服务一个对象的放在该对象目录，创建器、复制清单和跨多处使用的放在本目录。
+脚本跟随作用对象存放：只服务一个对象的放在该对象目录下的 `tools/`，创建器、复制清单和跨多处使用的放在本目录。
 
 | 位置 | 命令 | 用途 |
 | --- | --- | --- |
@@ -12,7 +12,7 @@
 | `framework/prompt-scenarios/tools/` | [check_scenario_prompt_paths.py](../prompt-scenarios/tools/check_scenario_prompt_paths.py) | 只读核对两份提示词库的名称与场景文件路径是否一一对应 |
 | | [check_workflow_graph_names.py](../prompt-scenarios/tools/check_workflow_graph_names.py) | 只读核对开发场景图节点名与 Godot 提示词名称 |
 | | [link_workflow_graph_scenarios.py](../prompt-scenarios/tools/link_workflow_graph_scenarios.py) | 为开发场景图节点写入或更新同名场景文件链接；`--check` 只读 |
-| `framework/docs/relationship-maps/` | [check_document_graph_coverage.py](../docs/relationship-maps/check_document_graph_coverage.py) | 按文档系统图登记的路径检查文档覆盖，只读、显式调用 |
+| `framework/relationship-maps/tools/` | [check_document_graph_coverage.py](../relationship-maps/tools/check_document_graph_coverage.py) | 按文档系统图登记的路径检查文档覆盖，只读、显式调用 |
 
 外部项目的工具回归入口是 [tests/external-project/run_project_tool_tests.py](../tests/external-project/run_project_tool_tests.py)，用法见下文「按需检查」。
 
@@ -32,7 +32,7 @@ python -B framework/commands/create_project.py --output D:\Games\MyGodotGame
 python -B framework/prompt-scenarios/tools/check_scenario_prompt_paths.py
 ```
 
-默认合并两份提示词库的名称，检查 `framework/prompt-scenarios/scenarios/<Project>/<分类>/<提示词名称>.md` 是否一一对应。名称与路径规则见[提示词与场景准则](../docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)。
+默认合并两份提示词库的名称，检查 `framework/prompt-scenarios/scenarios/<Project>/<分类>/<提示词名称>.md` 是否一一对应。名称与路径规则见[提示词与场景准则](../docs/framework-maintenance/design-guidelines/prompts-and-scenarios.md)。
 
 - **可选参数**：`--prompts <JSON> [<JSON> ...]`、`--scenarios <目录>`；每份只允许一个 Project，跨文件重复 Project 也会报错。
 - **检查范围**：只读检查缺少、多余、重复与非法路径；场景目录根级的 `README.md`、`scenario-index.md` 是导航排除项。
@@ -51,14 +51,14 @@ python -B framework/prompt-scenarios/tools/link_workflow_graph_scenarios.py --ch
 - **名称检查**：只忽略 CR/LF，报告缺少、多余、重名及节点 ID 重复；去掉 `--summary` 可查看字段位置和候选名称。
 - **链接写入**：去掉 `--check` 时只修改节点的 `link`，会替换已有链接；名称不匹配或目标文件缺失时不写入。链接是当前仓库的绝对本地路径，仓库移动后重新运行即可。只读审核不运行写入命令。
 
-两项检查都不覆盖完整格式、连线含义或显示效果；图的维护规则见[关系图说明](../docs/relationship-maps/README.md)。
+两项检查都不覆盖完整格式、连线含义或显示效果；图的维护规则见[关系图说明](../relationship-maps/README.md)。
 
 ## 检查文档图覆盖
 
 仅在用户需要找出未纳入文档系统图的文件时运行：
 
 ```powershell
-python -B framework/docs/relationship-maps/check_document_graph_coverage.py
+python -B framework/relationship-maps/tools/check_document_graph_coverage.py
 ```
 
 命令只读现有文件、复制清单和文档图，不更新图、不写报告、不生成项目。默认扫描框架与分发源的 Markdown、Markdown/JSON 文档模板，以及文档目录、提示词库、复制清单和项目环境配置中的 JSON，包含 README 与索引页；第三方插件、缓存、个人图谱次数、临时文档、代码配置和素材数据不在范围内。项目区核对分发源对应的目标路径，不扫描已有外部项目；尚未创建的可选产物不会被当作缺失。
@@ -127,4 +127,4 @@ python -B framework/tests/external-project/run_project_tool_tests.py --project D
 
 这个入口只运行已有 unittest，不创建或配置项目、不写示例业务台账，也不执行 Godot、人工验收或发布；所测项目的机器配置与无关文件保留。仅静态任务不执行这些回归命令。
 
-真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，依赖、位置与结果边界见[专项验证说明](../docs/framework-maintenance/validating-framework.md#lint-与运行器专项入口)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。
+真实引擎、lint、gdUnit、Analyzer 协议、资源工作台、保存/恢复、渲染、规模和消费导出夹具按实际变化选择，放置位置、依赖与结果边界见各夹具目录的说明：[工具回归](../tests/external-project/tool-regression/README.md)、[资源工作台](../tests/external-project/workbench/README.md)、[编辑器插件](../tests/external-project/plugins/README.md)。Python 工具通过与真实引擎运行分别记录；夹具文件存在也不证明本轮已执行。

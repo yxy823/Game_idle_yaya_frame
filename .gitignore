@@ -5,5 +5,5 @@ __pycache__/
 reports/*
 !reports/.gdignore
 /tmp/
-/framework/docs/relationship-maps/graph-usage.json
-/framework/docs/relationship-maps/graph-usage.*.json
+/framework/relationship-maps/graph-usage.json
+/framework/relationship-maps/graph-usage.*.json

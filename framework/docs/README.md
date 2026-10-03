@@ -6,8 +6,8 @@
 | --- | --- |
 | 理解框架、游戏逻辑与表现、项目对象、配置和工具用法 | [操作手册](operation-manual/README.md) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](../prompt-scenarios/scenarios/scenario-index.md) |
-| 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档关系图说明](relationship-maps/README.md#文档系统关系图) · [图 JSON](relationship-maps/document-system.readable.json) |
-| 查看游戏项目开发场景之间的衔接关系 | [开发场景图说明](relationship-maps/README.md#游戏项目开发场景图) · [图 JSON](relationship-maps/game-development-workflow.readable.json) |
+| 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档关系图说明](../relationship-maps/README.md#文档系统关系图) · [图 JSON](../relationship-maps/document-system.readable.json) |
+| 查看游戏项目开发场景之间的衔接关系 | [开发场景图说明](../relationship-maps/README.md#游戏项目开发场景图) · [图 JSON](../relationship-maps/game-development-workflow.readable.json) |
 | 编写或修改单一场景 | [场景手册编写要求](../prompt-scenarios/scenarios/README.md) |
 | 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) |
 | 确认框架专用术语的含义和统一写法 | [术语](terminology.md) |

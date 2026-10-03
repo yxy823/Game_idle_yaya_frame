@@ -17,7 +17,7 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_GRAPH = ROOT / "framework/docs/relationship-maps/game-development-workflow.readable.json"
+DEFAULT_GRAPH = ROOT / "framework/relationship-maps/game-development-workflow.readable.json"
 
 
 def normalize_label(value: str) -> str:

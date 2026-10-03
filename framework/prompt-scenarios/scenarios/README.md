@@ -1,6 +1,6 @@
 # 场景速查手册的编写与维护
 
-本 README 面向编写者，约定场景的范围、标题、内容分类和维护方式。使用者从[场景索引](scenario-index.md)进入具体页面。场景按已确认的 Project、分类和同名专用提示词规则维护；新增和实质改变职责时先应用[职责设计准则](../../docs/framework-maintenance/responsibility-design-guidelines.md)。
+本 README 面向编写者，约定场景的范围、标题、内容分类和维护方式。使用者从[场景索引](scenario-index.md)进入具体页面。场景按已确认的 Project、分类和同名专用提示词规则维护；新增和实质改变职责时先应用[职责设计准则](../../docs/framework-maintenance/design-guidelines/README.md)。
 
 ## 收录什么
 
@@ -8,7 +8,7 @@
 
 收录范围遵循[使用范围](../../docs/README.md#使用范围)。常见流程中断、环境故障和证据恢复都在范围内；处理目标或恢复位置不同才拆页，具体错误码留在对应页内。
 
-每篇场景对应一条同名专用提示词，规则见[提示词与场景准则](../../docs/framework-maintenance/responsibility-design-guidelines.md#提示词与场景)。唯一的例外是「只读专项审核」：专题条目与「专项审核通用模板」拼接使用，专题页只说明拼接方法与完成标准。
+每篇场景对应一条同名专用提示词，规则见[提示词与场景准则](../../docs/framework-maintenance/design-guidelines/prompts-and-scenarios.md)。唯一的例外是「只读专项审核」：专题条目与「专项审核通用模板」拼接使用，专题页只说明拼接方法与完成标准。
 
 各领域当前的场景范围与责任边界如下；具体场景名称、前提与出口查[场景索引](scenario-index.md)，此处不登记名称、数量或路径。本表不是逐项必跑清单，篇数或路径匹配也不证明真实流程已经通过。
 
@@ -81,7 +81,7 @@
 
 提示词正文分别维护在 [Godot 开发提示词库](../prompts/godot-development-prompts.json)和 [Yaya 框架维护提示词库](../prompts/yaya-maintenance-prompts.json)，每份只含所属 Project。场景页链接到自己所属的库，面向使用者写准确入口名称、用途、所需输入、实际命令和必要的约束提醒。入口条件和完成条件可以用使用者的话在页内重述，便于不打开 JSON 也能判断是否适用、何时结束；提示词的授权、约束和执行原则不整段复制到页内，也不复述详细的 Git 提交规则。适用时写“遵循该入口当前有效的提交约束”，具体规则由对应入口维护。
 
-提示词字段要求见[字段与审核原则](../../docs/framework-maintenance/responsibility-design-guidelines.md#提示词字段与审核原则)；场景页仍用本页的 11 类信息组织，同步时核对输入、授权、验证和出口的含义一致。完成状态只写目标达成，受阻或待决定放在对应停点说明中。
+提示词字段要求见[字段与审核原则](../../docs/framework-maintenance/design-guidelines/prompts-and-scenarios.md#提示词字段与审核原则)；场景页仍用本页的 11 类信息组织，同步时核对输入、授权、验证和出口的含义一致。完成状态只写目标达成，受阻或待决定放在对应停点说明中。
 
 资源表按实际项目对象列读写影响；保护原验收条件、完成历史等核心约束，应在对应对象行明确。场景页只提供执行信息，未完成的编写工作记在框架待办中。
 

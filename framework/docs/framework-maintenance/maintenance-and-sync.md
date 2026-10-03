@@ -2,7 +2,7 @@
 
 [维护文档入口](README.md) · [框架规则](../../../AGENTS.md) · [维护命令](../../commands/README.md)
 
-本页保存框架维护的材料归属、说明同步和验证约定。具体任务入口由文档总入口统一导航，不在这里复写场景流程或正式提示词。
+本页保存框架维护的材料归属、说明同步与交付约定；验证范围见[框架的复制与运行验证](validating-framework.md)。具体任务入口由文档总入口统一导航，不在这里复写场景流程或正式提示词。
 
 ## 先判断修改属于哪里
 
@@ -13,23 +13,21 @@
 | 概念、配置与工具说明 | framework/docs/operation-manual/ |
 | 具体项目或维护场景 | framework/prompt-scenarios/scenarios/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
-| 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
-| 规则、Skill 与任务提示词文件维护 | 根 AGENTS.md 与本目录的 responsibility-design-guidelines.md，由当前任务直接处理 |
+| 框架自用 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
+| 规则、Skill 与任务提示词文件维护 | 根 AGENTS.md 与 [规则与提示词文件](design-guidelines/instruction-files.md)，由当前任务直接处理 |
 | 提示词、关联场景与关系图维护 | .agents/skills/prompt-and-graph-maintenance-yaya/，框架自用；按变化同步提示词导航、项目场景图或文档系统图，沿用各自规范 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | 分发给项目的 Godot Skill | project-source/skills/<名称>/，随 Skill 目录整包分发；各 Skill 的职责以其 SKILL.md 与 project-source/Project_AGENTS.md 的路由为准，本表不逐个登记 |
-| Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
-| 职责设计和审核事实 | 长期准则在 [responsibility-design-guidelines.md](responsibility-design-guidelines.md)，当次报告的保存与清理见其[同名小节](responsibility-design-guidelines.md#当次报告的保存与清理) |
+| 分发给项目的规则、方法与流程正文 | project-source/ 中的所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
+| 职责设计和审核事实 | 长期准则在 [design-guidelines/](design-guidelines/README.md)，当次报告的保存与清理见[审核与报告](design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
 | 框架共用术语 | framework/docs/terminology.md；项目自己的业务词汇不回灌此处 |
 | 正式操作提示词 | framework/prompt-scenarios/prompts/godot-development-prompts.json 与 framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json，按用途各自维护完整正文 |
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-框架规则、Skill 和任务提示词文件的维护与自查直接依据[职责设计准则](responsibility-design-guidelines.md#规则与提示词文件维护)。用户要求正式审核时，按同一准则核对范围、独立性与证据。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护不追加独立审核阶段。
+框架规则、Skill 和任务提示词文件的维护与自查直接依据[规则与提示词文件](design-guidelines/instruction-files.md)。用户要求正式审核时，按[审核与报告](design-guidelines/reviews-and-reports.md)核对范围、独立性与证据。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护不追加独立审核阶段。
 
-Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
-
-维护分发的 Godot 文件按领域读取 project-source/agent-rules/，授权、Git、验证地点和交付仍以本维护仓库规则为准。指定 worktree 时以其实际文件和状态为准，不据此启用生成项目的 Stage。
+`project-source/` 中的规则与 Skill 是待复制的源材料，在维护仓库只作为阅读对象，不启用项目开发 Stage；适用边界见 AGENTS.md 的[维护边界与查阅](../../../AGENTS.md#维护边界与查阅)。
 
 ## 找到受影响的说明
 
@@ -62,7 +60,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 - **结构变化**：更新入口、链接、锚点和相关图。
 - **仅内部实现变化**：使用契约不变时，核对后不必制造无意义修改。
 
-文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 保存；当次仍需使用的报告按[保留边界](responsibility-design-guidelines.md#当次报告的保存与清理)处理，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
+文档面向最终行为，不保留两套旧/新教程或空重定向页。历史原因由 Git 保存；当次仍需使用的报告按[保留边界](design-guidelines/reviews-and-reports.md#当次报告的保存与清理)处理，不建立说明版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
@@ -70,14 +68,11 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 页面分工见[文档总入口](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景编写要求](../../prompt-scenarios/scenarios/README.md)。11 类信息的写法来自框架版写作 Skill 的流程参考，不作为 Godot 项目文档的默认结构。
 
-- **路径核对**：使用 [路径检查器](../../commands/README.md#提示词与场景路径检查) 核对路径集合。
-- **正文自查**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有条件和先后依赖。
-
-路径匹配不证明内容或实际执行通过。
+场景正文由作者按本次变化核对标题、输入、单一目标、步骤与出口，调整列表时保留原有条件和先后依赖；路径检查只证明目录对应，见[路径校验的职责](design-guidelines/prompts-and-scenarios.md#路径校验的职责)。
 
 两本手册之间不互相引用，必要解释就地提供，权威规范、工具和公共术语仍可共同引用。修改时核对受影响的 Markdown 链接、锚点与导航。
 
-### 可复用写作 Skill 的维护
+### 两份写作 Skill 的分工
 
 [technical-documentation-writing-yaya](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 位于根目录的 `.agents/skills/`，服务整个框架的手册、场景、工具说明、维护设计和审核记录。[technical-documentation-writing-godot](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 位于项目 Skill 分发源中，服务实际游戏项目的 README、GDD、Product、Feature、架构、知识和操作说明。框架手册里介绍游戏开发的页面仍由框架版处理；项目中的实际文档由 Godot 版处理。
 
@@ -97,28 +92,11 @@ advisor 直接读取本机的 Godot 提示词库，修改正文后无需导出�
 
 项目动态续接提示词的通用格式维护在 [Continuation prompts](../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts)，由 advisor 和 task-handoff-godot 引用；框架集中提示词仍保留各场景的具体输入、授权和停点目的。普通暂停、换对话和已有停点恢复不合并为一条通用提示词，也不因新增 Skill 要求每个入口另建场景。
 
-## 按修改选择验证范围
+## 验证、提交与交付
 
-分发源、外部项目和维护夹具的具体边界见 [复制与运行验证](validating-framework.md)，命令见 [按需检查](../../commands/README.md#按需检查)。
+验证范围按[按修改选择验证范围](validating-framework.md#按修改选择验证范围)确定。提交与未完成事项遵循[根维护约定](../../../AGENTS.md#本地提交)，不在本页维护第二套规则。交付提供受影响文档入口与真实验证结果；文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
 
-| 修改 | 相称检查 |
-| --- | --- |
-| Markdown、目录与导航 | 对照源材料核对修改涉及的事实与示例、链接、锚点和导航；保留两册独立阅读边界 |
-| 提示词或场景 | JSON/名称/路径检查与对应正文自查；不将其写成已逐条执行 |
-| 创建器或清单 | 映射、边界及按需创建器回归 |
-| Python 项目工具 | 相关实现与调用静态核对，指定外部项目中的工具回归 |
-| Godot 代码、插件、场景或资源 | 按实际影响在指定外部项目运行真实引擎验证 |
-| 仅静态或只读请求 | 不生成项目、不启动 Godot、不运行测试 |
-
-文档指纹与人工验收回归可用中立临时 Git 夹具；不创建业务项目或替代真实人工体验。项目工具回归入口不替用户创建/更新项目，不启动引擎。已有结果只在对应最终内容与覆盖仍有效时复用，未执行部分明确保留。
-
-检查手册未被复制无需创建真实游戏，可静态展开清单核对。静态图源核对不是渲染或视觉验收。外部测试项目的机器路径、主场景、台账与历史不回灌默认值。
-
-## 提交与交付
-
-提交与未完成事项遵循[根维护约定](../../../AGENTS.md#本地提交)，不在本页维护第二套规则。交付提供受影响文档入口与真实验证结果；文档任务不宣称游戏运行通过，框架提交不更新已有游戏。
-
-## 整体重检与详细报告
+## 整体审核与专项审核的入口
 
 按目标选择已有场景，不在维护规范中复写执行步骤：
 
@@ -128,10 +106,10 @@ advisor 直接读取本机的 Godot 提示词库，修改正文后无需导出�
 - **核实收到的意见**：[外部意见复核](<../../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
 - **验证真实流程**：[小任务验证](<../../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
 
-总体判断依据为[根规则的核心原则](../../../AGENTS.md#核心决策原则)，文本与职责评价依据为[职责设计准则](responsibility-design-guidelines.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据为[根规则的核心原则](../../../AGENTS.md#核心决策原则)，文本与职责评价依据为[职责设计准则](design-guidelines/README.md)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
-## 后续用口语继续
+## 授权在后续对话中的延续
 
-同一会话的具体授权、职责、说明同步和如实验证要求继续有效。最新明确要求调整相应目标与范围，已被替代的临时只读、输出或停止条件不永久约束后续工作。
+同一会话中已给出的具体授权继续有效，说明同步与如实记录验证的要求也始终适用。用户最新的明确要求会调整目标与范围；已被替代的临时只读、输出或停止条件，不再约束后续工作。
 
 例如先只读分析，再明确说“按该方案修改这两处”，即可在所选范围实施；“这样改合适吗”仍是讨论。已批准且未变的决定不重复确认，新决定和实际人工验收分别处理。交接区分有效原则、当前限制与已替代要求，接收方依自己的实际文件与授权继续。
