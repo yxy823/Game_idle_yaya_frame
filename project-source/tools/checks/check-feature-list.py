@@ -180,9 +180,6 @@ def _validate_criterion(fid: str, pos: int, item: Any, path: Path) -> tuple[bool
     if not isinstance(ac_id, str) or not AC_RE.fullmatch(ac_id):
         _error(f"{label}.id must match AC followed by two digits")
         ok = False
-    elif ac_id != f"AC{pos + 1:02d}":
-        _error(f"{label}.id must be sequential; expected AC{pos + 1:02d}, found {ac_id}")
-        ok = False
     text = item.get("text")
     if not isinstance(text, str) or not text.strip():
         _error(f"{label}.text must be a non-empty string")
@@ -241,6 +238,7 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
         ok = False
     else:
         seen_ac: set[str] = set()
+        last_number = 0
         for pos, item in enumerate(criteria):
             c_ok, ac_id, automated = _validate_criterion(fid, pos, item, path)
             ok &= c_ok
@@ -249,6 +247,13 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
                 if ac_id in seen_ac:
                     _error(f"{_rel(path)} duplicate criterion id {ac_id}")
                     ok = False
+                elif match := AC_RE.fullmatch(ac_id):
+                    # Gaps are allowed so a removed AC's ID is never reused by a later criterion.
+                    number = int(match.group(1))
+                    if number <= last_number:
+                        _error(f"{_rel(path)}.acceptance_criteria[{pos}].id must increase; found {ac_id} after AC{last_number:02d}")
+                        ok = False
+                    last_number = max(last_number, number)
                 seen_ac.add(ac_id)
         info["criteria"] = seen_ac
 
@@ -416,6 +421,12 @@ def _validate_all(completion_feature: str | None = None) -> bool:
         except EvolutionError as exc:
             _error(str(exc))
             ok = False
+    if cat_ok and index_ok:
+        for tid, cat in registry_tests.items():
+            owner = test_identity(tid)[1]
+            if cat.get("status") == "planned" and owner in entries and entries[owner].get("status") not in {"pending", "in_progress", "blocked"}:
+                _error(f"planned test {tid} belongs to {entries[owner].get('status')} Feature {owner}; implement, retire or remove it")
+                ok = False
     if completion_feature is not None and completion_feature not in entries:
         _error(f"completion Feature {completion_feature} does not exist")
         ok = False

@@ -153,7 +153,7 @@ Engineering Feature:
 | `source` | One precise primary Product delivery, GDD or professional source; `infrastructure` for technical work with no single documentary source. Follow the source and secondary-reference contract in `11-specialist-workflows.md`. |
 | `notes` | String. Starts empty; later holds task reminders, placeholders, TODOs, deferred edges, brief bug learning and relative links to the Feature design or other owning records. Implementation decisions and their rationale belong in the design file under the contract below, regardless of explanation length. |
 | `engineering_change` | Optional. When present, exactly `bug`, `refactor`, or `maintenance`. Product-derived Features omit it. |
-| `bug_diagnosis` | Optional/null for compatibility. A non-null object is allowed only for `engineering_change: bug` and has exactly `actual`, `expected`, `source`, `reproduction`, `root_cause`. The first three are non-empty strings; reproduction is a non-empty ordered list of non-empty steps. Root cause may be null while investigating, but must be a non-empty confirmed cause for current completion. Non-Bug templates do not invent diagnostic evidence. |
+| `bug_diagnosis` | Allowed only for `engineering_change: bug`; null or omitted otherwise. The object has exactly `actual`, `expected`, `source`, `reproduction`, `root_cause`. The first three are non-empty strings; `reproduction` is a non-empty ordered list of unique, non-empty steps. `root_cause` may be null while investigating. Every `done` Bug, and the Bug being completed, must have a non-empty confirmed `root_cause`. Non-Bug templates do not invent diagnostic evidence. |
 
 Acceptance-criterion IDs are historical identifiers. Do not renumber criteria on a completed Feature. Product evolution creates a new Feature that changes/supersedes the old behavior.
 
@@ -296,11 +296,11 @@ Registry schema version 3 is the only supported format; revision history remains
 }
 ```
 
-Store this object under `retirement`, preserving the test's original ID, source Feature/criterion, and historical path/case. Its source and replacement must match the referenced version-2 migration (`from` contains the old source Feature; `to` contains the replacement Feature). Invariant retirements match the source and target without inventing a source Feature. Replacement test IDs must exist, belong to the replacement Feature and appear in its AC/regression verification mapping so the execution plan actually selects them. A replacement may be `planned` while its Feature is pending/in-progress/blocked; this is a visible coverage gap, never passing evidence. A completed replacement requires active coverage or another fully traceable retirement chain. Cycles, missing provenance, missing replacements, and planned coverage owned by completed/obsolete Features fail validation. Source deletion may remove a retired test file; active paths must still exist.
+Store this object under `retirement`, preserving the test's original ID, source Feature/criterion, and historical path/case. Its source and replacement must match the referenced version-2 migration (`from` contains the old source Feature; `to` contains the replacement Feature). Invariant retirements match the source and target without inventing a source Feature. Replacement test IDs must exist, belong to the replacement Feature and appear in its AC/regression verification mapping so the execution plan actually selects them. A replacement may be `planned` while its Feature is pending/in-progress/blocked; this is a visible coverage gap, never passing evidence. A completed replacement requires active coverage or another fully traceable retirement chain. Cycles, missing provenance and missing replacements fail validation. So does any `planned` test whose owning Feature is `done`, `obsolete` or `obsolete_done`: when a Feature is retired without replacement, remove its planned Registry entries, which were never implemented. Source deletion may remove a retired test file; active paths must still exist.
 
 `retired.path` may be null if the superseded planned test was never materialized. Preserve any already-known historical path instead of clearing it. Retirement does not automatically remove a runnable test function: implementation must deliberately replace/remove superseded assertions so full discovery executes the current contract.
 
-An approved revision of a pending/in-progress Feature may remove an old AC from its current detail. A retired acceptance test keeps the historical criterion encoded in its test ID without requiring the old AC to remain in the current detail; its source Feature and complete retirement/replacement provenance must still validate. Planned and active acceptance tests must reference a current AC. This does not authorize rewriting completed Feature history or treating planned replacement tests as passed.
+An approved revision of a pending/in-progress Feature may remove an old AC from its current detail. The remaining and new criteria keep increasing IDs and leave the removed number unused, so a later AC never takes over a retired test ID. A retired acceptance test keeps the historical criterion encoded in its test ID without requiring the old AC to remain in the current detail; its source Feature and complete retirement/replacement provenance must still validate. Planned and active acceptance tests must reference a current AC. This does not authorize rewriting completed Feature history or treating planned replacement tests as passed.
 
 Completed Feature criteria/test IDs and archived completion evidence are historical records. Do not rewrite them to simulate current behavior. The active safety net is selected from current `active` Registry records. Normal strict validation accepts historical `done` references to traceably retired tests, but current completion must pass `python -B tools/checks/check-feature-list.py --completion-feature F0XX`, which requires that Feature's own mapped automated tests to be active. Completion additionally requires actual execution evidence for automated obligations; retirement is never a substitute for passing tests. Retired entries without provenance fail validation; do not invent a reason or replacement to make them pass.
 
@@ -337,10 +337,12 @@ pending ──execute Stage 2──→ in_progress ──Stage 7 after applicabl
    ├──source synchronization retires work──→ obsolete
    └──invalid prerequisite──→ blocked
 
+in_progress ──source synchronization retires work──→ obsolete
+
 blocked ──prerequisite validity restored──→ pending
 blocked ──source synchronization retires work──→ obsolete
 
-done ──Product evolution removes implemented behavior──→ obsolete_done
+done ──source synchronization retires or replaces implemented behavior──→ obsolete_done
 ```
 
 `blocked` records a pending Feature whose required source decision, input or dependency contract is invalid or unavailable. Record the concrete blocker and the condition for recovery in its existing detail `notes`; it does not permit broken dependency IDs or obsolete prerequisites. An otherwise valid Feature waiting for an unfinished dependency remains `pending` and simply is not eligible. Work already in progress retains `in_progress` and records its blocker in the current execution record; do not discard that execution state by switching it to `blocked`.
@@ -363,7 +365,7 @@ The final ledger must satisfy all of the following:
 - Dependency graph is acyclic.
 - `description`, `source`, criterion text, and manual verification items are non-empty strings where present.
 - `affected_components` are unique valid component IDs.
-- Acceptance criterion IDs are unique and sequential within each newly written Feature.
+- Acceptance criterion IDs are unique and increase in list order within each Feature (AC01, AC02, …). Numbers may be skipped where an AC was removed; a removed number is never reused.
 - Automated acceptance test IDs match the owning Feature/criterion.
 - Bug regression test IDs match the owning Feature.
 - `notes` is a string.

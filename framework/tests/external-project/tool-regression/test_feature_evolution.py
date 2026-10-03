@@ -175,6 +175,29 @@ class FeatureEvolutionTests(unittest.TestCase):
         old["retirement"]["revision_id"] = "missing-revision"
         self.assertFalse(self.validate())
 
+    def test_acceptance_ids_may_skip_numbers_but_must_increase(self) -> None:
+        path = self.root / "docs/features/F002.json"
+        detail = json.loads(path.read_text(encoding="utf-8"))
+        third = {"id": "AC03", "text": "A later contract holds",
+                 "verification": {"automated_tests": [], "manual_checks": ["Inspect the later contract"]}}
+        detail["acceptance_criteria"].append(third)
+        detail["verification"]["acceptance_mode"] = "manual"
+        self.write("docs/features/F002.json", detail)
+        self.assertTrue(self.validate())  # AC02 was removed; its ID is not reused.
+        detail["acceptance_criteria"].reverse()
+        self.write("docs/features/F002.json", detail)
+        self.assertFalse(self.validate())
+
+    def test_planned_tests_cannot_belong_to_finished_or_obsolete_features(self) -> None:
+        self.registry["tests"].append({"id": "F002-RT01", "components": ["inventory"],
+            "path": None, "case": None, "status": "planned"})
+        for status in ("pending", "in_progress", "blocked"):
+            with self.subTest(status=status):
+                self.index["features"][1]["status"] = status
+                self.assertTrue(self.validate())
+        self.index["features"][1]["status"] = "obsolete"
+        self.assertFalse(self.validate())
+
     def test_current_acceptance_tests_still_require_an_existing_criterion(self) -> None:
         path = self.root / "docs/features/F002.json"
         detail = json.loads(path.read_text(encoding="utf-8"))

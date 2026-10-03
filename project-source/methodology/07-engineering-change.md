@@ -126,7 +126,7 @@ Acceptance criteria cover:
 
 If automated regression is genuinely impractical, record the concrete reason and a repeatable human regression check. “Hard to test” is insufficient.
 
-The engineering template provides nullable `bug_diagnosis`. For a new independent Bug, populate it with `actual`, `expected`, `source`, `reproduction` (ordered, non-empty steps), and `root_cause`. Root cause may be `null` while planning; it must be a confirmed causal explanation before completion. Refactor/maintenance keep it `null` or omit it, never fill fictional bug evidence. Older Bugs without this field remain readable; their existing notes are historical evidence, not automatically migrated. Current-Feature defects can use that Feature's notes and linked execution archive without changing its original Product/engineering classification.
+The engineering template provides nullable `bug_diagnosis`. For a new independent Bug, populate it with `actual`, `expected`, `source`, `reproduction` (ordered, non-empty steps), and `root_cause`. Root cause may be `null` while planning; it must be a confirmed causal explanation before completion. Refactor/maintenance keep it `null` or omit it, never fill fictional bug evidence. Every `done` Bug needs it; the checker rejects a completed Bug without a confirmed `root_cause`. Current-Feature defects can use that Feature's notes and linked execution archive without changing its original Product/engineering classification.
 
 ## Refactor Feature contract
 
