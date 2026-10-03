@@ -6,7 +6,7 @@
 
 | 要判断什么 | 页面 |
 | --- | --- |
-| 文档内容放在哪里、正文归谁、说明是否清楚易查 | [文档职责与文本编写](document-responsibilities.md) |
+| 文档内容放在哪里、目录怎样组织、正文归谁、说明是否清楚易查 | [文档职责、目录组织与文本编写](document-responsibilities.md) |
 | 提示词与同名场景是否一一对应，字段与审核标准 | [提示词与场景](prompts-and-scenarios.md) |
 | Skill 与脚本的职责是否清楚，是否需要拆分或合并 | [Skill 与脚本](skills-and-scripts.md) |
 | 编写或修改 AGENTS、Skill 与任务提示词 | [规则与提示词文件](instruction-files.md) |

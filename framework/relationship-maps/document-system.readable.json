@@ -376,7 +376,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：文档固定归属，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/maintenance/design-guidelines/，README 导航，按文档、提示词与场景、Skill 与脚本、规则文件、审核与报告分页。\n长期准则只在这里维护；报告只陈述对应版本的检查事实。\n\n文件： framework/maintenance/design-guidelines/*.md",
+      "note": "职责：文档固定归属与维护侧目录组织，Skill、脚本、提示词与场景的职责判断，规则与提示词文件维护，审核结论与当次报告的保存和清理。\n位置：framework/maintenance/design-guidelines/，README 导航，按文档、提示词与场景、Skill 与脚本、规则文件、审核与报告分页。\n长期准则只在这里维护；报告只陈述对应版本的检查事实。\n\n文件： framework/maintenance/design-guidelines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
