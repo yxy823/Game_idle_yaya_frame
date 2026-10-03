@@ -44,7 +44,7 @@
 
 修改分发材料或工具时：
 
-- **Godot 代码、场景、资源或测试**：按[领域规则路由](project-source/Project_AGENTS.md#engineering-rule-routing)核对适用的工程规则；任务授权、Git、验证范围与地点和交付，仍以本仓库规则为准。
+- **Godot 代码、场景、资源或测试**：按[领域规则路由](project-source/Project_AGENTS.md#领域规则路由)核对适用的工程规则；任务授权、Git、验证范围与地点和交付，仍以本仓库规则为准。
 - **代码或工具**：修改前按[变更准备与范围约定](project-source/agent-rules/00-core/change-scope-and-ownership.md)确认实际实现、影响范围和简短方案；验证和交付沿用本仓库约定，不因此启用生成项目的 Stage。
 
 ### 框架待办
