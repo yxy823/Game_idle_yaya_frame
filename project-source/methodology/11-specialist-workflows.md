@@ -1,108 +1,281 @@
 # 11 · Specialist work and sources
 
-This specification owns professional document authority, source discovery and handoffs. [Task routing](00-overview.md#canonical-task-routing) owns entry selection; the existing planning and execution workflows own delivery. A specialist Skill can be called alone or within an authorized task without creating another lifecycle.
+This specification defines where professional documents live, how planning and synchronization find their sources, and how resource requirements are handed off. [Task routing](00-overview.md#canonical-task-routing) selects the entry; [Feature planning](02-feature-list-schema.md) and the [execution loop](03-execute-loop.md) handle delivery. A specialist Skill can run alone or inside an authorized task; it does not start another lifecycle.
 
 ## Ownership and decisions
 
-Use the [game responsibility model](00-overview.md#game-logic-presentation-and-delivery) to understand the design, then use this table to find its authoritative document. Logic and presentation do not own two disjoint document sets: GDD contains overall rules and experience goals, and a Feature may deliver both. The presentation layer also includes ordinary UI and other feedback that need no separate game-presentation document.
+Game logic owns rules, business state and valid results. Presentation makes them perceptible and may own local interaction or playback state. `docs/game-organization.md` explains this responsibility model, and [architecture](10-architecture-overview.md) describes the actual implementation relationships.
 
-| Concern | Owner / fixed authoritative location |
+- The model describes responsibilities inside game modules. It does not prescribe directories or communication mechanisms, and it adds no task routes, Feature types, fields or Stages.
+- Presentation-only, logic-only and cross-layer describe a function's scope. Delivery boundaries and order still follow the [decomposition rules](02-feature-list-schema.md#decomposition-rules), including a visual prototype before logic that depends on its decisions.
+- Environment, tests, build tools and the delivery workflow are shared engineering support, not additional game layers.
+- Logic and presentation do not have separate document sets. The GDD holds the overall rules and experience goals, and one Feature may deliver both.
+- Ordinary UI and other feedback are part of presentation but need no separate game-presentation document. A presentation document describes one game moment, not the whole presentation layer.
+
+Use this table to find the authoritative document for each concern:
+
+| Concern | Skill and fixed location |
 | --- | --- |
-| Game positioning, experience, loops, behavior, rules, states and game-version scope | `design-gdd`: `docs/gdd/` design sources, including initial design from an idea |
+| Game positioning, experience, loops, behavior, rules, states and game-version scope | `design-gdd`: the design files under `docs/gdd/`, including initial design from an idea |
 | Numerical models, formulas, parameters, curves and calculation explanations | `design-balance`: the fixed balance files under [GDD document names](01-product-doc-structure.md#gdd-document-names), without a duplicate specification |
-| Delivery pre-decomposition, boundaries, dependencies and source mapping | `product-author`: `docs/product.md`; detail only the current `docs/product/NN-name.md` |
+| Delivery pre-decomposition, boundaries, dependencies and source mapping | `product-author`: `docs/product.md`, plus only the current `docs/product/NN-<delivery>.md` |
 | Shared visual specification refining the GDD's direction | `design-art-direction`: `docs/art/art-bible.md` |
 | Shared sound specification and feedback hierarchy refining the GDD | `design-audio-direction`: `docs/audio/sound-bible.md` |
 | Interface layout, states and interaction presentation | `design-ui-spec`: `docs/ui/<interface>-design.md`; shared controls use `docs/ui/components/<component-key>-design.md` under [UI document boundaries](#ui-document-boundaries) |
-| A game presentation's observable process, component requirements and approach selection | `design-game-presentation`: `docs/presentation/<scope>.md`; shared components use the fixed location under [Game presentation documents](#game-presentation-documents); UI or GDD sources link the relevant use |
-| Visual asset specifications | `design-visual-asset-spec`: owning presentation/UI resource sections or **Shared resource specifications** in `docs/art/art-bible.md`, selected by [Resource requirements and handoff](01-product-doc-structure.md#resource-requirements-and-handoff) |
-| SFX and music specifications | `design-audio-asset-spec`: owning presentation/UI resource sections or **Shared resource specifications** in `docs/audio/sound-bible.md`, selected by the same resource contract |
-| Localization coverage, locale conventions and approved term translations | `design-localization-spec`: `docs/localization/localization-spec.md`, including [Term translations](#localization-term-translations); domain definitions link to `docs/terminology.md`, and detailed game rules link to GDD |
-| Translation resources and runtime locale support | `content-localization`: approved translations, keys and locale-sensitive implementation in the authorized Feature/experiment |
+| A game presentation's observable process, component requirements and approach selection | `design-game-presentation`: `docs/presentation/<scope>.md`; shared components use the fixed location under [Game presentation documents](#game-presentation-documents); UI or GDD documents link each use |
+| Visual asset specifications | `design-visual-asset-spec`: the resource section of the presentation or UI document that uses the asset, or **Shared resource specifications** in `docs/art/art-bible.md`, selected by [Resource requirements and handoff](#resource-requirements-and-handoff) |
+| SFX and music specifications | `design-audio-asset-spec`: the resource section of the presentation or UI document that uses the sound, or **Shared resource specifications** in `docs/audio/sound-bible.md`, selected the same way |
+| Localization coverage, locale conventions and approved term translations | `design-localization-spec`: `docs/localization/localization-spec.md`, including [Term translations](#localization-term-translations). Domain definitions link to `docs/terminology.md`, and detailed game rules link to the GDD |
+| Translation resources and runtime locale support | `content-localization`: approved translations, keys and locale-sensitive implementation inside the authorized Feature or experiment |
 
-Apply [GDD creation and the development prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority) to standalone and embedded specialist work, including its early-design exception for GDD creation and supporting numerical modeling, clarification and draft review. Presentation exploration and saving settled professional specifications at their owners may support initial GDD design; runnable work still requires the relevant substantive design. The locations above are fixed by content responsibility, regardless of game size or where content was first drafted. This does not require filling every document. New projects include purpose/pending-state files for the Art Bible, Sound Bible and localization specification, plus directory navigation for UI and presentations; their presence establishes no adopted requirement or produced asset.
+### GDD prerequisite and fixed locations
 
-GDD retains game rules, intended player feelings and what players must recognize. Visual style, palette, typography and material treatment belong in the Art Bible; sonic identity, timbre, rhythm and feedback hierarchy in the Sound Bible; locale coverage and language conventions in the localization specification. For example, GDD may require a calm experience and recognizable rewards; low-saturation hand-drawn art and restrained acoustic textures are Bible standards linked from that goal. Interface specifications and complete presentation sequences use their corresponding paths. Save confirmed content in `document_language` at that owner, including during authorized GDD creation or consolidation. Move in-scope current specifications already embedded in GDD to their professional owner and replace the old bodies with references, preserving referenced anchors and protected original inputs. Product, Feature design and AC reference the same sources. A user's narrower write scope still applies; report the specific unsaved or unmoved content rather than silently keeping a competing current source.
+Standalone and embedded specialist work follow [GDD prerequisite and authority](01-product-doc-structure.md#gdd-prerequisite-and-authority), including its exception for early design support. Presentation exploration and saving settled professional specifications may support initial GDD design; runnable work still needs the relevant substantive design.
 
-Each owner may write its own documents within existing concrete authorization. File ownership does not authorize adopting an undecided requirement. Distinguish confirmed requirements, proposals and measured observations in the relevant text. An existing file or Git commit alone is not evidence of approval. Reuse the user's decisions; ask only for missing material choices. A narrow specialist edit does not authorize changing another owner's GDD rules, Product scope, another specialist's contract or the task's scope. `design-balance` directly maintains its scoped GDD numerical body without a mandatory `design-gdd` writing intermediary. Changes to experience goals, mechanics or other systems return to overall design. When another professional decision changes game behavior or accepted overall direction, coordinate the GDD update through `design-gdd` in the same task.
+- The locations above follow content responsibility, regardless of game size or where the content was first drafted.
+- Not every document has to be filled.
+- New projects include purpose and pending-state files for the Art Bible, Sound Bible and localization specification, and navigation READMEs for UI and presentations. Their presence does not establish an adopted requirement or a produced asset.
+
+### What stays in the GDD
+
+The GDD keeps game rules, intended player feelings and what players must recognize. Professional standards go to their documents:
+
+- visual style, palette, typography and material treatment: the Art Bible;
+- sonic identity, timbre, rhythm and feedback hierarchy: the Sound Bible;
+- locale coverage and language conventions: the localization specification;
+- interface specifications and complete presentation sequences: their UI and presentation paths.
+
+For example, the GDD may require a calm experience and recognizable rewards. Low-saturation hand-drawn art and restrained acoustic textures are Bible standards linked from that goal.
+
+When saving or consolidating:
+
+- Save confirmed content in `document_language` at its professional document, including during authorized GDD creation or consolidation.
+- Move in-scope current specifications that are embedded in the GDD to their professional document and replace the GDD bodies with links. Keep referenced anchors and any original inputs the task must preserve.
+- Product, Feature design and AC reference the same professional documents.
+- When the user limits the write scope, report the specific content left unsaved or unmoved. Do not silently keep two current versions.
+
+### Writing and adoption
+
+- Each Skill writes its own documents within the user's concrete authorization. Owning a file does not authorize adopting an undecided requirement.
+- Distinguish confirmed requirements, proposals and measured observations in the text. A file or a Git commit alone is not evidence of approval.
+- Reuse the user's decisions; ask only for missing material choices.
+- A narrow specialist edit does not authorize changing GDD rules, Product scope, another specialist's specification or the task's scope.
+- `design-balance` maintains its numerical GDD content directly, without routing the writes through `design-gdd`. Changes to experience goals, mechanics or other systems return to `design-gdd`.
+- When another professional decision changes game behavior or the accepted overall direction, update the GDD through `design-gdd` in the same task.
 
 | Change | Route |
 | --- | --- |
-| Confirmed professional requirement changes | Owning Skill updates its source; assess current and planned work through `feature-sync`. Changed overall game design updates the GDD via `design-gdd`, scoped numerical design via `design-balance`, and delivery boundaries via `product-author`. |
-| Implementation violates a confirmed professional requirement | Repair within the unfinished owning Feature, or use `engineering-change-plan` for an independent bug. Cite the professional source even when Product does not repeat it. |
-| A proposed improvement is not yet adopted | Return the proposal; do not use it as an AC, defect or implementation mandate. |
-| Sources conflict or lack a material decision | Resolve with the appropriate owner/user before dependent work; report both sources instead of silently picking one. |
+| A confirmed professional requirement changes | The Skill that owns the document updates it; `feature-sync` assesses current and planned work. A change to overall game design updates the GDD through `design-gdd`, scoped numerical design through `design-balance`, and delivery boundaries through `product-author`. |
+| Implementation violates a confirmed professional requirement | Repair it inside the unfinished Feature that delivers it, or use `engineering-change-plan` for an independent bug. Cite the professional document even when Product does not repeat it. |
+| A proposed improvement is not yet adopted | Return the proposal. Do not use it as an AC, a defect or an implementation mandate. |
+| Sources conflict or lack a material decision | Resolve it with the responsible Skill or the user before dependent work. Report both sources instead of silently picking one. |
 
-For standalone authorized specification work, validate affected links and commit the complete authorized source change under the project Git rules before a Git-based synchronization. Within an existing Feature, use its documentation checkpoint and commit; a Skill handoff does not start a new task or require a clean directory. If a substantive source change needs synchronization, retain its committed-source prerequisite. A no-commit instruction may leave that prerequisite unmet; report it. When synchronization discovers stale links in its source inputs, the owning entry repairs and commits them within the approved scope before any plan write, then returns to the same synchronization for refreshed source analysis. Plan-record references follow the synchronization Skill's own update and commit steps; a Markdown filename alone does not determine which responsibility applies.
+### Committing source changes before synchronization
+
+- For standalone authorized specification work, validate the affected links and commit the complete source change under the project Git rules before `feature-sync` compares Git history.
+- Inside a Feature, use its Stage 3 documentation checkpoint and commit. A Skill handoff does not start a new task or require a clean working directory.
+- A substantive source change that needs synchronization must be committed first. If a no-commit instruction leaves it uncommitted, report the unmet prerequisite.
+- When synchronization finds stale links in its source documents, the Skill that maintains those documents repairs and commits them within the approved scope before any plan write. Synchronization then restarts its source analysis on the refreshed documents.
+- Links inside plan records follow `feature-sync`'s own update and commit steps. A Markdown filename alone does not decide which Skill maintains a file.
 
 ## Discover and map sources
 
-The Feature `source` remains one precise primary source string: the current Product's delivery section for Product-derived work, a GDD or professional section when it directly owns the scoped change, or `infrastructure` for technical work without a single documentary source. Do not add a sources array or encode a list into this string. Record observable requirements as concrete AC with source links; record implementation constraints and their source links in the fixed Feature design. Notes provide navigation, not the body of a binding constraint.
+The Feature `source` stays one precise primary source string:
 
-At planning or synchronization, read the relevant GDD entry, applicable [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries) and [Open design questions](01-product-doc-structure.md#open-design-questions), and follow the primary source's actual references to game-design sections, UI, presentations, resource sections, art, audio and localization specifications. Check whether an open question prevents a current requirement or AC from being established; do not turn a working assumption into adopted design. Apply the same source reading when creating or reviewing professional requirements. Each shared source states its applicability in ordinary prose, such as all inventory icons or all interactive feedback; it need not list every Feature ID. Read the lightweight Feature index and Product dependencies to identify all already planned consumers, then inspect their details. Shared scope can apply even where a link is missing; repair missing references within scope instead of treating missing links as an exemption. Check renames, removed sections and stale links. Do not load every design or professional document for a task that cannot be affected.
+- the current Product's delivery section, for Product-derived work;
+- a GDD or professional section, when it directly defines the scoped change;
+- `infrastructure`, for technical work without a single documentary source.
 
-Translate each applicable requirement into a concrete, task-sized AC or a linked design constraint with a verification obligation. For example, name the icon states, target display size and recognition check instead of only saying “fits Art Bible”. Keep executable test mappings in Feature JSON/Registry; keep additional performance, duration, display or listening checks in the existing verification plan/design. No new schema field, dependency registry or duplicate acceptance ledger is needed.
+Do not add a sources array or encode a list into this string. Record observable requirements as concrete AC with source links. Record implementation constraints and their source links in the Feature design file. Notes provide navigation, not the body of a binding constraint.
 
-Synchronization includes actual GDD, Product and professional source paths, including presentations and their resource sections, in Git differences and current-source comparison. A previous `synced_at_commit` is not proof that a newly admitted source category was previously considered, even if its files predate that commit. Compare the historical sources and affected plan at the anchor when needed. If coverage cannot be established, use the existing current-document alignment route for already planned scope and report the unknown historical coverage. Do not invent an old baseline, add per-source receipts, or silently advance the anchor. Later Products remain concise pre-decomposition candidates until their turn; completed Feature history remains intact and changed completed work gets follow-up.
+At planning or synchronization:
+
+1. Read the relevant GDD entry, [Design scope and boundaries](01-product-doc-structure.md#design-scope-and-boundaries) and [Open design questions](01-product-doc-structure.md#open-design-questions). Check whether an open question prevents a current requirement or AC; do not turn a working assumption into adopted design.
+2. Follow the primary source's actual links to GDD sections, UI and presentation documents, resource sections, and art, audio and localization specifications.
+3. Read the Feature index and Product dependencies to find every planned consumer of a shared source, then read their details. Each shared source states in plain prose where it applies, such as "all inventory icons" or "all interactive feedback"; it need not list Feature IDs.
+4. Apply a shared source even where a link to it is missing. Repair missing links within scope instead of treating them as an exemption.
+5. Check for renames, removed sections and stale links.
+
+Use the same reading when creating or reviewing professional requirements. Do not load design or professional documents that cannot affect the task.
+
+Translate each requirement that applies into a concrete, task-sized AC, or into a linked design constraint with a verification obligation. For example, name the icon states, target display size and recognition check instead of only saying “fits the Art Bible”. Keep executable test mappings in the Feature JSON and the Registry. Keep additional performance, duration, display or listening checks in the Feature's verification plan or design. No new schema field, dependency registry or duplicate acceptance ledger is needed.
+
+Synchronization covers the actual GDD, Product and professional source paths, including presentation documents and their resource sections, in both the Git differences and the comparison with current sources.
+
+- A previous `synced_at_commit` proves only that the sources read at that synchronization were considered. A source category that synchronization did not read, such as presentation documents, may still be unsynchronized even when its files predate that commit.
+- When needed, compare the sources and the affected plan as they were at the anchor.
+- If coverage cannot be established, use `feature-sync`'s current-document alignment for the planned scope and report the unknown history.
+- Do not invent a baseline, add per-source receipts or silently advance the anchor.
+- Later Products stay short pre-decomposition candidates until their turn. Completed Feature history stays intact; a change to completed work gets a follow-up.
 
 ## Localization term translations
 
-Maintain the approved glossary in the **Term translations** section of `docs/localization/localization-spec.md` (`术语译名` in Chinese). `design-localization-spec` owns this section. Each needed entry links the canonical concept in `docs/terminology.md` and gives the target locale, chosen wording and any context-dependent distinction; preserve pending candidates as pending until the wording is adopted. Keep useful forbidden variants or inflection guidance only when they prevent an actual ambiguity. Do not copy domain definitions or establish a second term identity registry.
+Maintain the approved glossary in the **Term translations** section of `docs/localization/localization-spec.md` (`术语译名` in Chinese). `design-localization-spec` maintains this section.
 
-`docs/terminology.md` owns conceptual meaning, canonical project names and lookup aliases, including existing code names; it does not own target-locale wording decisions. The localization glossary owns those wording requirements. Runtime translation resources own the complete translated strings and implement the glossary's requirements; ordinary sentences and dialogue are not copied into a Markdown translation catalog. Documentation language does not choose the game's source or target locale.
+- Each entry links the canonical concept in `docs/terminology.md` and gives the target locale, the chosen wording and any context-dependent distinction.
+- Keep pending candidates marked as pending until the wording is adopted.
+- Keep forbidden variants or inflection guidance only when they prevent an actual ambiguity.
+- Do not copy domain definitions or create a second registry of term identities.
 
-`content-localization` reads the approved entries and applies them to actual strings; `review-localization` checks consistent use against the same section. A proposed term translation or conflict returns to `design-localization-spec` within the existing task authorization. A change to the underlying concept or gameplay returns to its design/terminology owner. During authorized consolidation, move in-scope target-language glossary bodies from GDD or project terminology into this section and update references; existing runtime strings remain implementation content, not another authoritative glossary.
+The documents divide the work as follows:
+
+- `docs/terminology.md` owns conceptual meaning, canonical project names and lookup aliases, including code names. It does not decide target-locale wording.
+- The localization glossary owns those wording requirements.
+- Runtime translation resources hold the complete translated strings and implement the glossary. Ordinary sentences and dialogue are not copied into a Markdown translation catalog.
+- The documentation language does not choose the game's source or target locale.
+
+`content-localization` applies the approved entries to actual strings, and `review-localization` checks consistent use against the same section. A proposed term translation or a conflict returns to `design-localization-spec` within the task's authorization. A change to the underlying concept or gameplay returns to `design-gdd` and [Project terminology](14-project-terminology.md). During authorized consolidation, move in-scope target-language glossary bodies from the GDD or the terminology file into this section and update references. Runtime strings remain implementation content, not another authoritative glossary.
 
 ## UI document boundaries
 
-Use one `docs/ui/<interface>-design.md` for each independently entered/exited screen or overlay with its own interaction flow. Use a stable lowercase English hyphenated key for that interface, independent of its scene filename, Product or writing session. A panel, tab, HUD part or local expansion that only operates inside its host flow stays in that host's section; hiding/showing a widget alone does not make it a separate interface. A shop's confirmation dialog with its own confirm/cancel flow has its own document; the shop's item list stays in the shop document.
+Use one `docs/ui/<interface>-design.md` for each screen or overlay that the player enters and leaves on its own and that has its own interaction flow. Give the interface a stable lowercase English hyphenated key, independent of its scene filename, Product or writing session.
 
-When a second distinct interface adopts or explicitly considers the same control/dialog behavior contract, move the common states, interaction rules and component-only resource specifications to `docs/ui/components/<component-key>-design.md`. Use a stable lowercase English hyphenated behavior key, such as `confirmation-dialog`, after checking `docs/ui/README.md`. If the dialog already had an interface document, migrate that body rather than keeping both. Consumers retain only their invocation context, supplied content, local differences and references. Shared appearance alone belongs in the Art Bible and does not require a behavior component document.
+- A panel, tab, HUD part or local expansion that works only inside its host flow stays in the host's document. Hiding or showing a widget does not by itself make a separate interface.
+- A shop's confirmation dialog with its own confirm and cancel flow has its own document; the shop's item list stays in the shop document.
 
-Keep a component within its sole interface until that reuse exists; do not create hypothetical shared controls. Once extracted, retain its path while any consumer remains. Maintain interface and component links, purpose, associated Products when any, and component consumers in `docs/ui/README.md`; do not create another component index. Moves update affected links and remove duplicate current bodies under existing authorization and artifact lifecycle rules. Complete game moments still use the presentation contract below.
+When a second distinct interface adopts or explicitly considers the same control or dialog behavior:
+
+1. Check `docs/ui/README.md`, then choose a stable lowercase English hyphenated behavior key, such as `confirmation-dialog`.
+2. Move the common states, interaction rules and component-only resource specifications to `docs/ui/components/<component-key>-design.md`. If the dialog already had an interface document, move that body instead of keeping both.
+3. Leave each consumer only its invocation context, supplied content, local differences and links.
+
+Shared appearance alone belongs in the Art Bible and does not need a behavior component document. Keep a component inside its only interface until such reuse exists; do not create hypothetical shared controls. Once extracted, the component keeps its path while any consumer remains.
+
+`docs/ui/README.md` lists interface and component links, their purpose, associated Products when any, and component consumers; do not create another component index. Moves update affected links and remove duplicate current bodies within the task's authorization and the [artifact lifecycle](09-records-reports-and-handoff.md). Complete game moments use the presentation rules below.
 
 ## Game presentation documents
 
-Plan around an observable game moment, such as collecting a reward or a character dying. Start from the experience goal and describe the trigger, visible/audible sequence and end condition before selecting techniques. A presentation can combine sprite frames, Shader, particles, Tween, AnimationPlayer or existing implementations. Choosing a technique does not authorize its implementation or the production of image/audio files.
+Plan around an observable game moment, such as an item arriving in the inventory or a character dying. Start from the experience goal and describe the trigger, the visible and audible sequence and the end condition before selecting techniques. A presentation can combine sprite frames, Shader, particles, Tween, AnimationPlayer or project implementations that already exist. Choosing a technique does not authorize implementing it or producing image or audio files.
 
-When feedback represents a game-state change, identify the business fact or accepted result it communicates, linking its GDD owner instead of redefining the rule. Distinguish a request or immediate interaction response from a confirmed success result. Current-state display and one-time event feedback may need different behavior: reopening a health panel shows current HP without replaying a past hit. Use `docs/game-organization.md` for this collaboration model; actual APIs, signal wiring and lifecycle ownership belong to architecture or the implementation design.
+When feedback represents a game-state change, identify the business fact or accepted result it communicates and link its GDD section instead of redefining the rule. Distinguish a request or an immediate interaction response from a confirmed success result. Current-state display and one-time event feedback may need different behavior: reopening a health panel shows current HP without replaying a past hit. `docs/game-organization.md` describes this collaboration model; actual APIs, signal wiring and lifecycle ownership belong in architecture or the implementation design.
 
-Determine a presentation's identity by its trigger moment and player-perceived result. Different sources of the same moment/result share one `docs/presentation/<scope>.md`; name the stable lowercase English hyphenated scope after that result, not a screen, Feature or implementation technique. Record source-specific triggers, targets and selected combinations inside that body. For example, item arrival after either a reward claim or a shop purchase uses `item-added.md` when both communicate the same confirmed arrival; differing origin screens alone do not justify `reward-collection.md` and `shop-purchase.md` copies.
+A presentation's identity is its trigger moment and the result the player perceives.
 
-A separately meaningful process with a different trigger/result, such as revealing an unknown reward before it is accepted, has its own scope. If that process ends with the existing item-arrival moment, reference `item-added.md` at that point instead of copying it or creating another component for the whole moment. Reuse of part of two distinct processes follows the component contract below. Check `docs/presentation/README.md` before assigning a scope. Use sections for the following information, expanding only useful current-scope detail:
+- Different sources of the same moment and result share one `docs/presentation/<scope>.md`. Name the stable lowercase English hyphenated scope after that result, not after a screen, Feature or technique. Record source-specific triggers, targets and selected combinations inside that document.
+- For example, item arrival after either a reward claim or a shop purchase uses `item-added.md` when both communicate the same confirmed arrival. Different origin screens alone do not justify separate `reward-collection.md` and `shop-purchase.md` copies.
+- A separately meaningful process with a different trigger or result, such as revealing an unknown reward before it is accepted, has its own scope. If that process ends with the item-arrival moment, link `item-added.md` at that point instead of copying it or creating a component for the whole moment.
+- Reuse of part of two distinct processes follows the component rules below.
+
+Check `docs/presentation/README.md` before assigning a scope. Use sections for the following information, and expand only the detail that is useful for the current scope:
 
 - **Goal and process:** the source requirement, applicable scenarios, observable sequence, confirmed constraints and unresolved choices.
-- **Components and standard requirements:** what each part must communicate, its timing, spatial relationship, triggers, retrigger/cancel behavior and externally controlled values when relevant. Distinguish shared requirements from an alternative's own constraints; do not prescribe algorithms or node organization without a real requirement.
-- **Alternatives:** candidates for the whole presentation or individual components, their suitability, tradeoffs, dependencies and resource specifications. A candidate can remain a description; no requirement to build every alternative. Component body placement follows the fixed contract below.
-- **Current adoption and implementation:** the selected combination for each relevant use, plus actual implementation and consumer paths when they exist. For example, reward collection may adopt icon flight B plus button feedback A; refer to those sections instead of duplicating a full specification for every combination. Distinguish proposed paths from actual files and unimplemented decisions from integrated behavior.
-- **Acceptance entry:** link the owning Feature/experiment, applicable acceptance conditions, runnable entry and existing report or completion record. Identify the alternative/combination and scenario that the evidence covers. Results remain in those existing records under [artifact lifecycle](09-records-reports-and-handoff.md), not a second acceptance ledger in this document.
+- **Components and standard requirements:** what each part must communicate, and when relevant its timing, spatial relationship, triggers, retrigger and cancel behavior, and externally controlled values. Distinguish shared requirements from one alternative's own constraints. Do not prescribe algorithms or node organization without a real requirement.
+- **Alternatives:** candidates for the whole presentation or for individual components, with their suitability, tradeoffs, dependencies and resource specifications. A candidate can remain a description; not every alternative must be built. Component bodies follow the placement rules below.
+- **Current adoption and implementation:** the selected combination for each relevant use, plus the actual implementation and consumer paths when they exist. For example, in `item-added.md` the reward overlay may adopt icon flight B plus destination feedback A; link those sections instead of repeating a full specification for every combination. Distinguish proposed paths from actual files, and unimplemented decisions from integrated behavior.
+- **Acceptance entry:** link the Feature or experiment that verifies the presentation, the acceptance conditions, the runnable entry and the report or completion record. Identify which alternative or combination and which scenario the evidence covers. Results stay in those records under the [artifact lifecycle](09-records-reports-and-handoff.md), not in a second acceptance ledger in this document.
 
-Keep a component's requirements, alternatives and alternative-specific resources in its parent presentation while it belongs to that presentation alone. Multiple UI consumers of the same presentation do not change this ownership. When a second distinct presentation adopts or explicitly considers the same component contract, move that component body to `docs/presentation/components/<component-key>.md` and replace every parent copy with a reference. Use one stable lowercase English hyphenated key identifying the component behavior, such as `icon-flight`; check the existing presentation navigation before assigning the key. Different techniques for that behavior remain alternatives inside the same component document.
+### Shared presentation components
 
-The shared component owns its common requirements, alternatives, resource specifications and actual shared implementation links. Each parent presentation owns its own sequence, trigger/target context, selected combination and acceptance entry, referencing the component's sections. Record the component link and its consuming presentations in `docs/presentation/README.md`, without another component index. Established shared components retain their fixed path while any presentation uses them, even if another consumer is removed; removal of the last use follows the existing artifact lifecycle. Do not create a shared component file for hypothetical future reuse or keep a second current body in the original parent.
+Keep a component's requirements, alternatives and alternative-specific resources in its parent presentation while only that presentation uses it. Several UI consumers of the same presentation do not change this.
 
-UI specifications link presentations at their actual use sites and include an end-of-document “Related game presentations” navigation section, localized through `document_language`. Ordinary control states can stay in the UI specification. Several interfaces can reference one shared presentation while retaining their own trigger and consumer information. Non-UI presentations link from the relevant GDD topic. Maintain `docs/presentation/README.md` as navigation to the actual bodies and upstream sources; do not keep binding requirements only in that index.
+When a second distinct presentation adopts or explicitly considers the same component behavior:
 
-Presentation documents and Features have no one-to-one relationship. Map only adopted requirements and currently authorized alternatives into the existing Feature source/AC/design and verification obligations. Detailed engineering guidance remains in the existing Feature design or implementation; link its actual path from the relevant alternative rather than copying code or algorithms here. Use `prototype-godot` to answer a concrete uncertainty, not as a compulsory step for every presentation.
+1. Check the presentation navigation, then choose one stable lowercase English hyphenated key that names the behavior, such as `icon-flight`.
+2. Move the component body to `docs/presentation/components/<component-key>.md`.
+3. Replace every parent copy with a link. Different techniques for that behavior stay as alternatives inside the component document.
 
-The current implementation task maintains effective technique, file, resource and consumer changes in the owning document before final verification. It may change implementation means while preserving confirmed presentation requirements within its authorization; changed goals or constraints use the source-change route above. Distinguish planning complete, implementation available and actual human acceptance. Replacing one component updates the adopted combination and current verification scope while preserving historical acceptance evidence and its original coverage.
+The shared component owns its common requirements, alternatives, resource specifications and links to the shared implementation. Each parent presentation owns its own sequence, trigger and target context, selected combination and acceptance entry, and links the component's sections. Record the component link and its consuming presentations in `docs/presentation/README.md`; do not create another component index.
+
+A shared component keeps its fixed path while any presentation uses it, even after another consumer is removed. Removing the last use follows the [artifact lifecycle](09-records-reports-and-handoff.md). Do not create a shared component file for hypothetical reuse, or keep a second current body in the original parent.
+
+### Links, Features and implementation updates
+
+UI specifications link presentations at their actual use sites and end with a “Related game presentations” navigation section, written in `document_language`. Ordinary control states can stay in the UI specification. Several interfaces can link one shared presentation and keep their own trigger and consumer information. Presentations without a UI use are linked from the relevant GDD topic. `docs/presentation/README.md` is navigation to the actual documents and upstream sources; do not keep binding requirements only in that index.
+
+Presentation documents and Features do not correspond one to one. Map only adopted requirements and currently authorized alternatives into the Feature source, AC, design and verification obligations. Detailed engineering guidance stays in the Feature design or the implementation; link its actual path from the relevant alternative instead of copying code or algorithms here. Use `prototype-godot` to answer a concrete uncertainty, not as a compulsory step for every presentation.
+
+The implementation task updates the presentation document with the effective technique, files, resources and consumers before final verification.
+
+- It may change the implementation means while keeping the confirmed presentation requirements, within its authorization. Changed goals or constraints use the change routes in [Writing and adoption](#writing-and-adoption).
+- Distinguish planning complete, implementation available and actual human acceptance.
+- Replacing one component updates the adopted combination and the current verification scope. Earlier acceptance evidence stays as history for the version and coverage it recorded.
+
+## Resource requirements and handoff
+
+Keep resource specifications and preparation information inside the design document that uses the resource. Choose the document from the actual or explicitly considered uses, including the component boundaries in [UI document boundaries](#ui-document-boundaries) and [Shared presentation components](#shared-presentation-components):
+
+| Resource use | Fixed location |
+| --- | --- |
+| Used by one presentation or one extracted presentation component only | Its `docs/presentation/<scope>.md` or `docs/presentation/components/<component-key>.md`. A dependency of one alternative stays in that alternative; requirements shared by its alternatives go in the common resource section. |
+| Used by one interface or one extracted UI component only, and no separate presentation covers the use | The resource section of its `docs/ui/<interface>-design.md` or `docs/ui/components/<component-key>-design.md`. |
+| Shared across several of the documents above, outside a single component | Visual resources: **Shared resource specifications** in `docs/art/art-bible.md`. Audio resources: the same section in `docs/audio/sound-bible.md` (`共享资源规格` in Chinese). |
+
+A shared component's own resources stay with that component; many callers do not by themselves make those resources global. An item icon used by the inventory, the shop and reward feedback belongs in the Art Bible's shared-resource section. A texture used only by a shared icon-flight alternative stays in that component. A general click sound used by independent interfaces belongs in the Sound Bible's shared-resource section.
+
+When added uses change where a resource belongs:
+
+- Move the affected specifications and preparation state together, update consumers and replace old bodies with links within the authorized scope.
+- `design-art-direction` and `design-audio-direction` own the Bibles' shared standards. `design-visual-asset-spec` and `design-audio-asset-spec` maintain the concrete file entries in the shared-resource sections.
+- Localized headings keep these section semantics.
+- Link each use to that body. Do not create a separate default resource-list directory, a list per Feature or a second receiving ledger. Product does not need to relay these writes.
+
+### Writing resource entries
+
+Read the current task, the relevant GDD and professional requirements, the selected or candidate alternative, the relevant project assets and any supplied source locations.
+
+- Include only files needed by the current scope or an explicitly discussed alternative.
+- Do not add future decoration, or separate files for states that themes or procedural presentation can already express.
+- Record unknown inputs instead of inventing resources, styles, dimensions or technical requirements.
+- A candidate alternative's dependencies are not automatically resources the project must prepare.
+
+Write in `document_language`, state the covered uses and link the source requirements. A compact table can hold short entries; longer specifications stay in the same section. If local resource IDs help references, keep them stable and unique in that document or section, and include the document path and anchor in cross-document links. No global ID counter or resource registry is needed.
+
+Record what is needed to prepare and inspect each actual resource:
+
+| Field | Meaning |
+| --- | --- |
+| Purpose and identity | Needed kind, covered uses, real or proposed filename, and links to the applicable shared style or source. Keep reusable filenames. |
+| Resource constraints | Required format and, where relevant, dimensions, transparency, aspect ratio, padding or cropping, frame timing, audio duration or looping, or other meaningful constraints. Distinguish source pixels from the expected display size, visible subject size or relative scale. Do not impose pixel fields on audio or unrelated media. |
+| Preparation and file mapping | Factual preparation status, the supplied source or actual location, the proposed or actual project target path, and the relation to runtime consumers. Mark missing files and sample or final status explicitly. |
+| Decisions and observations | Separate confirmed requirements, proposed values, measured values, values pending confirmation and fields that do not apply. Keep unresolved choices with the alternative they affect. |
+
+Reuse the project's file organization. Runtime assets stay outside ignored documentation folders. Link provenance records where relevant instead of copying them. Settings that only implement a requirement stay in the actual scenes, resources, code or engineering guidance.
+
+A non-final sample can be enough for a scoped prototype; state what it represents and what remains to be replaced. Missing textures do not prevent planning a spark's motion, density, duration and trigger. If the particle alternative needs a texture, describe its specifications in that alternative and mark the unavailable file. Only dependent implementation or final experience checks may be blocked; do not turn optional parameters or missing files into a barrier to useful planning.
+
+Link the relevant resource sections from Feature AC or design; notes or Progress provide navigation. Do not hide binding requirements only in process notes, and do not copy entire rows. A resource analysis alone does not change intent, authorize production or create Features. A material change follows the routes in [Writing and adoption](#writing-and-adoption).
+
+### Handing off and receiving files
+
+1. Hand off links to the resource sections, the missing specifications and files, and their intended destinations, so the user can prepare or supply them outside the project. Image and audio production and searching a local asset library are outside this capability.
+2. If the available resources are enough, continue authorized work without waiting.
+3. When files arrive, inspect their actual content and the relevant format, dimensions or duration. A filename or the user's report that a file was copied does not establish fit.
+4. Update the same sections and keep unresolved gaps visible.
+5. Copy or import only within the authorized scope, keeping source files and unrelated content.
+6. Finalize the preparation status and the actual file and consumer relationships before final task verification.
+
+Specification completion, file presence, successful import and human visual or audio acceptance are separate facts.
 
 ## Design, production, integration and review
 
-Design chooses the direction; specifications describe a concrete deliverable; production supplies or processes assets; `content-asset-integration` imports and connects available assets. Each can be requested independently. Reuse existing suitable assets before requesting new ones; a reference image or audio example is not a newly produced deliverable. Missing representative assets leave the corresponding visual/listening checks unverified.
+Design chooses the direction; specifications describe a concrete deliverable; production supplies or processes assets; `content-asset-integration` imports and connects available assets. Each can be requested independently. Reuse suitable project assets before requesting new ones; a reference image or audio example is not a produced deliverable. Missing representative assets leave the corresponding visual or listening checks unverified.
 
-Visual-art production, music production and sound-effect production are reserved capabilities only. Each will cover reuse and concrete generation/processing, but their methods and tool choices are deferred. They have no discoverable production Skill or agent in this version. Record a preparation gap and its specification; do not invoke a nonexistent Skill or silently promise asset generation in a Bible.
+Visual-art, music and sound-effect production are reserved capabilities. No production Skill or agent exists, and their methods and tools are undefined. Record the preparation gap and its specification; do not invoke a nonexistent Skill or promise asset generation in a Bible.
 
-`content-asset-integration`, `content-localization` and `diagnostics-instrumentation` may change resources, code or configuration only inside an authorized Feature or scoped experiment. Adopting numerical values into runtime resources or code also uses that implementation route; numerical-document authorization alone does not cover it. Return to the owning task for verification, applicable human acceptance and completion. Standalone specification or investigation work need not invent a detailed Product or Feature; the GDD prerequisite and its early-design exception remain as defined above. Diagnostic findings do not themselves authorize repairs or new requirements.
+`content-asset-integration`, `content-localization` and `diagnostics-instrumentation` may change resources, code or configuration only inside an authorized Feature or scoped experiment.
 
-Formal reviews use separate review Skills and an independent instance under [independent review](12-independent-review.md). No creation/measurement Skill certifies its own output as independently reviewed. Human experience acceptance remains the user's decision. Playtest analysis and release work are outside this scope.
+- Adopting numerical values into runtime resources or code also uses that implementation route; authorization for the numerical document alone does not cover it.
+- These Skills return to the calling task for verification, any required human acceptance and completion.
+- Standalone specification or investigation work need not invent a detailed Product or Feature. The GDD prerequisite and its early-design exception still apply.
+- Diagnostic findings do not authorize repairs or new requirements.
+
+For comparing resources or tuning feedback timing, the project may use the optional [asset workbench example](../asset_workbench/examples/README.md), which lists its entries, controls and supported parameters. It is a development tool, not an asset-production Skill, an automatic analysis step, a Stage or evidence of human acceptance, and its example assets are not approved production content. Reuse the project's own presentation, data and audio APIs instead of forcing project objects into the example Cue.
+
+Formal reviews use separate review Skills and an independent instance under [independent review](12-independent-review.md). No creation or measurement Skill certifies its own output as independently reviewed. Human experience acceptance remains the user's decision. Playtest analysis and release work are outside this scope.
 
 ## Finalization and evidence
 
-For resource comparison or feedback timing, the project may use the optional [asset workbench example](../asset_workbench/examples/README.md). It provides single-asset inspection/audition, on-demand image/audio source analysis and multi-object previews combining optional images, audio, Shader, particles and animation. Object/scene A/B trials, explicit Cue save targets and separate consumer scenes support tuning; the effects example also has local playback management and finite timeline playback. Scene layout and preset authoring stay in native Godot resources; this is not a general interface or timeline editor. See the example README for current entries, controls and supported parameters. Reuse an existing project's presentation/data/audio APIs instead of forcing its objects into the example Cue. Example assets are not approved production content. This is a development tool, not an asset-production Skill, automatic analysis step, new Stage, or evidence of human acceptance.
+Put binding requirements in their source documents under `docs/gdd/` or the relevant professional directory. Do not put the only body of a requirement in a general-purpose `README.md`, `docs/knowledge/`, `docs/research/` or `reports/`; a substantive GDD `README.md` entry is a source document. [Artifact-backed completion and semantic freshness](08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness) defines which of these files the completion fingerprint covers and when an edit invalidates evidence.
 
-Put binding requirements in their governing source locations: `docs/gdd/` or the applicable professional directory. GDD files, including a substantive `README.md` entry, participate in the completion fingerprint. Do not put the sole body of a requirement in general-purpose `README.md`, `docs/knowledge/`, `docs/research/` or `reports/`, which can be excluded from that fingerprint. Finalize applicable GDD, specifications, presentation adoption/implementation links and resource status/location updates at Stage 3's documentation checkpoint, before final verification. Record later human acceptance in the existing report/completion record linked by the presentation; do not append the result to governing prose after verification and treat the earlier evidence as current.
+- Finalize the GDD, specifications, presentation adoption and implementation links, and resource status and location updates at the Stage 3 documentation checkpoint, before final verification.
+- Record later human acceptance in the report or completion record that the presentation links. Do not append the result to the source documents after verification while still treating the earlier evidence as current.
+- Keep transient findings in the conversation, and original evidence or review reports under the [artifact lifecycle](09-records-reports-and-handoff.md).
 
-The existing fingerprint is global, not limited to a Feature's linked sources. Even editorial changes to a GDD or professional Markdown file, including future design chapters, may invalidate current completion evidence. Apply the existing revalidation rules; an editorial-only synchronization decision does not exempt the fingerprint. Historical completed Features are not automatically reopened. Keep transient findings in conversation, or original evidence/review reports under [artifact lifecycle](09-records-reports-and-handoff.md). No fine-grained fingerprints or second evidence system are introduced.
+Performance and long-run measurements record:
 
-Performance and long-run measurements identify the actual version/dirty changes, environment, scenario, workload, method, duration, termination reason and gaps. Separate temporary diagnostic instrumentation from the delivered version and re-measure when the change affects the claim. An interrupted soak run proves only its observed duration and scenarios; lack of a failure is not general proof. The gdUnit evidence adapter remains for actual gdUnit results only. Supplemental evidence satisfies its own planned obligations, not an invented gdUnit pass or an excuse to skip required tests. The owning task and reviewer assess its sufficiency.
+- the actual version and uncommitted changes;
+- the environment, scenario and workload;
+- the method, duration and termination reason;
+- the remaining gaps.
+
+Keep temporary diagnostic instrumentation separate from the delivered version, and measure again when the change affects the claim. An interrupted soak run proves only its observed duration and scenarios; the absence of a failure is not general proof. The gdUnit evidence adapter accepts actual gdUnit results only. Supplemental evidence satisfies its own planned obligations; it does not stand in for a gdUnit pass or excuse skipping required tests. The task that planned the measurement and the reviewer judge whether the evidence is sufficient.
