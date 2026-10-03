@@ -6,7 +6,7 @@ Improve the explanation of the current Godot project without changing what its d
 
 Identify the requested result and affected files from the current task. Read the relevant existing text and its factual sources before editing. Reuse settled decisions; ask only about a gap that changes the requested result. A code observation describes current behavior, not approval to change an intended game rule.
 
-The following paths belong to the target project. Read only the contracts relevant to the documents being written, reusing current context:
+The following paths belong to the target project, not to the source framework or another Skill package. Read only the contracts relevant to the documents being written, reusing current context:
 
 | Document being written | Source of its content and constraints |
 | --- | --- |
@@ -17,7 +17,7 @@ The following paths belong to the target project. Read only the contracts releva
 | Reusable project knowledge | `docs/knowledge/README.md`, the relevant topic and original task evidence |
 | Research or verification records | `methodology/09-records-reports-and-handoff.md`, the actual evidence and the owning task's research or verification contract |
 
-Apply the target project's `AGENTS.md` and configured document language. Use `methodology/05-document-language.md` when resolving language or rendering a template. Missing design, approval or evidence remains a gap for the owning task; this writing method cannot supply it. In particular, it does not create a GDD from an idea or reconstruct approved game design from code.
+Apply the target project's `AGENTS.md` and write durable output in its configured `document_language`. Use `methodology/05-document-language.md` when resolving language or rendering a template. Project identifiers and machine-readable structures keep their form whatever the language; reuse the project's terminology and templates. Missing design, approval or evidence remains a gap for the owning task; this writing method cannot supply it. In particular, it does not create a GDD from an idea or reconstruct approved game design from code.
 
 Preserve required template sections, fixed paths, IDs, field names, machine-readable structures and historical facts. An optional outline may omit irrelevant sections; a required Product section remains even when its answer is that it does not apply. Decide from the owning contract, not a general preference for shorter pages.
 
@@ -39,6 +39,13 @@ Choose the form that makes the relationship visible:
 - Use tables when rows answer the same questions, such as a tool option's purpose and effect. Keep long rationale outside a cell.
 - Use diagrams when they clarify a relevant runtime flow or responsibility boundary. A diagram explains inspected relationships; it is not authority to redesign them.
 
+Apply these sentence-level rules:
+
+- **One sentence, one job.** Give each sentence one action, condition or fact. When a sentence of about 40 words or more combines actions, conditions and exceptions, split it into short sentences or a list. Commands, paths and identifiers do not count toward the length.
+- **Explain a shared reminder once.** A general reminder gets its full explanation at its owning source. Elsewhere, keep one sentence and a link only where it prevents a real mistake, such as beside a destructive tool option or before a dependent step. [Document structure](document-structure.md#remove-duplicate-bodies-retain-useful-context) decides which repeated bodies to remove.
+- **Prefer concrete wording to officialese and compressed terms.** Name the actual file, field, Skill, section or action instead of abstract nouns such as "the owning contract", "durable" or "the work". Write full sentences with articles rather than telegraphic notes, and write three or more alternatives as "A, B or C" rather than a slash chain.
+- **Nest lists only for a real category-to-item relationship.** Keep lists one level deep by default. Nest only when each parent item is a category and its children are members of it; otherwise use paragraphs, numbered steps or a table.
+
 Write concrete statements with their conditions. For example, "the panel works" is insufficient in a verification note. If actually observed, describe which panel was opened, the input used, the displayed result and any uncovered state. Do not turn illustrative wording into a claim that the interaction ran.
 
 Keep natural Markdown paragraphs without fixed-width wrapping. Preserve meaningful structure in lists, tables, code, diagrams and machine-readable templates. The language of these examples does not choose the project's output language.
@@ -51,4 +58,4 @@ Check affected links, section anchors, identifiers and command examples. When an
 
 Documentation about a runtime result needs the relevant evidence. Pure wording or navigation work does not itself require launching Godot, regenerating a project or replaying unchanged tests. The owning workflow decides whether a source or contract change invalidates earlier verification. Leave unavailable checks explicit.
 
-Return the edited documents, why the changes help, actual verification and material gaps. For analysis-only work, return the findings without writing. For a supporting call, return to the current authorized task rather than treating the Skill's return as completion of the Feature or a new approval boundary.
+Return the edited documents, why the changes help, actual verification and material gaps. For analysis-only work, return the findings without writing. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

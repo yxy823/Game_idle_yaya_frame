@@ -5,7 +5,7 @@ description: Inspect, import or recover existing Godot test evidence when refere
 
 # Maintain actual verification evidence
 
-Identify the requested evidence operation, actual Feature or diagnostic scope, current source state and referenced originals. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`. Reuse existing records and task authorization; evidence maintenance creates no Feature, new Stage or parallel result ledger.
+Identify the requested evidence operation, actual Feature or diagnostic scope, current source state and referenced originals. Reuse existing records and task authorization; evidence maintenance creates no Feature, new Stage or parallel result ledger.
 
 ## Distinguish the evidence problem
 
@@ -30,4 +30,4 @@ If actual human results need preparing, recording or renewing, use [manual-accep
 
 Report which originals and references were checked or updated, what remains valid, and what failed, is stale or is still missing. Successful recording or evidence validation does not establish direct static checks, user acceptance or whole-Feature completion beyond its actual coverage.
 
-Durable wording follows `methodology/05-document-language.md`; any repository writes follow `agent-rules/00-core/git-worktree-and-commits.md`, including the current task's acceptance and commit conditions. Return the result to the owning task and continue already authorized follow-up there without a new approval merely because this method returned. A narrow evidence-maintenance request does not authorize business changes or a completion transition.
+Durable wording follows `methodology/05-document-language.md`; any repository writes follow `agent-rules/00-core/git-worktree-and-commits.md`, including the current task's acceptance and commit conditions. A narrow evidence-maintenance request does not authorize business changes or a completion transition. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

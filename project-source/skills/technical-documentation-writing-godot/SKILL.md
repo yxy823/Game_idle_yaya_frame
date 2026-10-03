@@ -18,6 +18,4 @@ These methods support the current task; they do not start another design or deli
 
 ## Local resources
 
-This package contains its complete writing methods and has no executable helpers. Read its references through the internal relative links. Project contract paths named there refer to the target project's own files, not to the source framework or another Skill package.
-
-Use the target project's configured `document_language` for durable output. Keep this Skill's English source, project identifiers and machine-readable structures unchanged by that language choice. Use the project's existing terminology, templates and applicable checks; this Skill introduces no installer, synchronization mechanism or additional approval gate.
+This package contains its complete writing methods and has no executable helpers; read its references through their relative links. It introduces no installer, synchronization mechanism or additional approval gate.

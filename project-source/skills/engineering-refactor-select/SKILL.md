@@ -6,7 +6,7 @@ description: >-
 
 # Pick one refactor smell
 
-Use this three-stage workflow to find unresolved code smells in Feature notes, compare their current value and cost, and recommend one when action is worthwhile. Explain when deferring is more useful. A user-selected problem returns to `engineering-change-plan` for an explicitly approved engineering task.
+Use this three-stage workflow to find unresolved code smells in Feature notes, compare their current value and cost, and recommend one when action is worthwhile. Explain when deferring is more useful. A user-selected problem returns to [engineering-change-plan](../engineering-change-plan/SKILL.md), which owns refactor triage and Feature creation.
 
 ## Language contract
 
@@ -24,7 +24,7 @@ This read-only report uses the conversation language and preserves extracted not
 1. Discover and select only. Do not write code, modify files, or commit. Report the recommendation or reason to defer, and wait for the user's choice.
 2. Explain relative priority using current evidence, expected benefit, and the cost of a safe change. Do not calculate numeric scores or create priority fields or a separate ledger.
 3. Cover the requested scope without hiding important candidates merely to shorten the report; do not expand a filtered request into a whole-project scan.
-4. Do not invoke another Skill. The user's next instruction controls the downstream refactor.
+4. Do not invoke another Skill, including [feature-plan](../feature-plan/SKILL.md), [feature-sync](../feature-sync/SKILL.md) or [feature-execute](../feature-execute/SKILL.md). After the user chooses, hand the selection back as **Response routing** describes; `engineering-change-plan` starts any further work, and `feature-execute` implements only after explicit Feature approval.
 
 ## Stage 1: scan
 
@@ -32,7 +32,7 @@ This read-only report uses the conversation language and preserves extracted not
 
 **Output:** an unranked list of confirmed unresolved candidates and any material uncertainty.
 
-1. Check `docs/features/`. If absent, report that there are no recorded Feature candidates and stop; selection does not require creating a plan.
+1. Check `docs/features/`. If it is absent, report that there are no recorded Feature candidates and stop; selection does not require creating a plan.
 2. Read `docs/feature-list.json` for titles, statuses and dependencies. Apply any requested Feature filter before loading details, then read the selected details' `notes`. A category filter selects matching findings within that scope; a project-wide category search may need all notes. Follow other details only to resolve a candidate's current validity or real dependency, not to broaden the scan.
 3. Split notes by line or sentence and extract any paragraph containing at least one stable marker:
    - `TODO`
@@ -77,7 +77,7 @@ Use a short table or paragraphs in the current conversation language. Give disti
 
 Recommend one candidate when its current benefit justifies the change and verification cost. Compare it with the alternatives. If none is worthwhile now, say so and explain why; an unresolved improvement can remain valid without becoming a current task. Do not invent a recommendation or mark deferred or uncertain findings as resolved.
 
-After the report, wait for the user's choice. Do not enter Plan mode, spawn an Explore agent, invoke another Skill, edit, or commit. Choosing a candidate alone is not implementation approval; retain any specific additional authorization the user actually supplies.
+After the report, wait for the user's choice under Global rules 1 and 4; do not start planning or delegate further investigation. Choosing a candidate alone is not implementation approval; retain any specific additional authorization the user actually supplies.
 
 ## Response routing
 
@@ -90,19 +90,9 @@ After the report, wait for the user's choice. Do not enter Plan mode, spawn an E
 | Declines all candidates | Confirm that no refactor will be started and stop |
 | Gives an ambiguous answer | Ask which candidate or scope the user means; do not assume a choice or manufacture a recommendation |
 
-## Relationship to other workflows
-
-- This is a selection entry point; a selected refactor returns to `engineering-change-plan` in `refactor` mode. Separately reported behavior defects follow its Bug triage rules.
-- Do not invoke `feature-plan`, `feature-sync`, or `feature-execute` directly from this workflow.
-- `engineering-change-plan` owns refactor triage and Feature creation; `feature-execute` implements only after explicit Feature approval.
-
 ## Exception handling
 
 | Condition | Required response |
 |---|---|
-| `docs/features/` is absent | Report no recorded Feature candidates and stop |
 | A record needed for the requested scan is invalid | Report its exact path, parse error and affected conclusion; do not repair it in this read-only workflow |
-| No confirmed unresolved candidate remains | Report no actionable recorded candidate and any uncertainty, then stop without a recommendation |
-| Valid candidates exist but none is worthwhile now | Explain why deferral is preferable; preserve the findings and do not force a selection |
 | Many candidates match | Lead with the comparative conclusion and summarize the remaining candidates; preserve their source references and material uncertainty without a fixed severity quota |
-| The user's selection is ambiguous | Ask which candidate or scope the user means; do not assume a choice |

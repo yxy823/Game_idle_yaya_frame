@@ -9,7 +9,7 @@ Use **Task handoff** in `methodology/09-records-reports-and-handoff.md` for shar
 
 ## Recover the real stop point
 
-Identify the current goal, intended next purpose and requested pause/switch from the conversation. Inspect relevant actual files and read-only Git state, then the existing Progress, owning Feature notes/design and original evidence needed to distinguish completed work from remaining obligations. Read history only when it resolves a current uncertainty. A handoff summary may report a missing GDD or other prerequisite; it does not bypass that prerequisite to start development.
+Identify the current goal, intended next purpose and requested pause/switch from the conversation. Inspect relevant actual files and read-only Git state, then the existing Progress, owning Feature notes/design and original evidence needed to distinguish completed work from remaining obligations. Read history only when it resolves a current uncertainty.
 
 Preserve accepted decisions and concrete authorization without treating old plans, report text or prior passing results as current approval or verification. State the first useful resumption action and what would block it. For a Feature, retain its actual Stage and outstanding verification/acceptance conditions under `methodology/03-execute-loop.md`; for work without a Feature, retain its original task scope without inventing one.
 
@@ -19,4 +19,4 @@ When saving a stop point is authorized, update only necessary existing records u
 
 When the user wants to continue in another conversation, apply **Continuation prompts** in methodology 09 and return copyable task-specific text with the next purpose, scope, effective authorization, necessary project-local sources and first action. If the user only wants a summary or saved pause, a full prompt is unnecessary. No framework prompt library, operating-system temporary file or separate handoff document is required.
 
-Check the output against the actual stop point and report any unresolved gap. A requested pause ends implementation at that boundary until the user resumes it; an ordinary summary does not revoke remaining authorization in a continuing task. This Skill does not send the handoff, create or switch conversations, grant acceptance or mark unfinished work complete.
+Check the output against the actual stop point and report any unresolved gap. A requested pause ends implementation at that boundary until the user resumes it; an ordinary summary does not revoke remaining authorization in a continuing task. This Skill does not send the handoff or create or switch conversations.

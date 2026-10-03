@@ -14,7 +14,7 @@ Apply the project GDD prerequisite before starting or resuming; an existing Feat
 | --- | --- |
 | Select the current Product/Feature | **Stage 0 · select and load context** in `methodology/03-execute-loop.md`, with Product order from **Product-by-Product planning** in methodology 02 |
 | Read applicable implementation rules and knowledge | Project `AGENTS.md` and its task-specific routes |
-| Prepare needed implementation guidance for an existing Feature | `implementation-guidance-godot`; its explicit-request contract controls advisor delegation, while methodology 02 owns the design lifecycle |
+| Prepare needed implementation guidance for an existing Feature | [implementation-guidance-godot](../implementation-guidance-godot/SKILL.md); its explicit-request contract controls advisor delegation, while methodology 02 owns the design lifecycle |
 | Resolve document language or environment setup | `methodology/05-document-language.md` or `methodology/06-project-environment.md`, and current `docs/methodology-config.json` |
 | Plan tests, stale-test cleanup or runtime selection | Relevant sections of `methodology/08-test-traceability-and-evidence.md` |
 | Write Feature, Registry or completion fields | Relevant artifact contract in `methodology/02-feature-list-schema.md` |
@@ -26,4 +26,4 @@ Apply the project GDD prerequisite before starting or resuming; an existing Feat
 
 The execution specification owns optional Stage 6 review and all completion conditions. This Skill supplies no alternative check sequence or evidence format. The project command `tools/features/record-feature-completion.py` records and validates the evidence described there; it does not perform implementation, tests or review.
 
-At Stage 8, return the completed Feature and next action to the caller under the specification's **Authorization and continuation** contract.
+At Stage 8, report the completed Feature and the next action. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

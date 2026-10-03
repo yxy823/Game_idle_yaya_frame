@@ -5,7 +5,7 @@ description: Prepare a Godot Feature's pending manual checklist or record its ac
 
 # Prepare or record manual acceptance
 
-Identify the actual Feature, current scope and requested operation. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`. Use the existing approved acceptance mode and manual obligations; do not invent a Feature, new requirements or an empty checklist to make a request fit this method. Invocation depends on the needed capability and its inputs, not on starting the execution loop again.
+Identify the actual Feature, current scope and requested operation. Use the existing approved acceptance mode and manual obligations; do not invent a Feature, new requirements or an empty checklist to make a request fit this method. Invocation depends on the needed capability and its inputs, not on starting the execution loop again.
 
 ## Use the matching part of the acceptance contract
 
@@ -25,6 +25,6 @@ Keep the original checklist and user result distinct. A source or acceptance-con
 
 Use the existing record helper and report what was prepared or actually recorded, its scope and the remaining uncertainty. A successful import may record `pending` or `rejected`; it is not evidence that acceptance passed or the Feature is done. Follow the acceptance contract for failures and subsequent work, returning implementation changes to their existing owner.
 
-Durable wording follows `methodology/05-document-language.md`; writes and commits follow `agent-rules/00-core/git-worktree-and-commits.md`. Preserve a task-specific requirement for explicit permission to commit: an accepted result does not itself grant that permission, and commit permission does not supply acceptance. Reuse either when already explicit.
+Durable wording follows `methodology/05-document-language.md`; writes and commits follow `agent-rules/00-core/git-worktree-and-commits.md`. When the task requires both actual acceptance and explicit permission to commit, satisfy both under **Local commits** in the Core Git rules: neither supplies the other.
 
-Return to the coordinating task with the actual result and evidence. Continue its remaining concrete authorization through the existing owner without asking again merely because this method returned; recording-only work does not independently advance Stage or declare delivery complete.
+Report the actual result and evidence. Recording-only work does not advance a Stage or declare delivery complete. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

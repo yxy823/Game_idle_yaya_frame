@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 人工验收"
+  display_name: "Godot Manual Acceptance"
   short_description: "准备人工验收材料或记录真实用户结果，保留原始证据与任务边界"
 
 policy:

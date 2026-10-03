@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 验证证据维护"
+  display_name: "Godot Verification Evidence"
   short_description: "核对、导入和恢复现有测试证据，仅为缺失或失效范围安排重验"
 
 policy:

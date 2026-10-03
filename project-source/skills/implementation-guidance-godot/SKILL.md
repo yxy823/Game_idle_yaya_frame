@@ -9,7 +9,7 @@ Use this method when implementation guidance is needed for an existing Feature. 
 
 Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links, proposal/approval lifecycle and fixed durable location. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
 
-When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md). That technical reference is also directly usable by authorized development or prototype tasks; reading it does not start this Feature-only guidance workflow or request an advisor.
+When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md).
 
 ## Choose who prepares the guidance
 
@@ -33,4 +33,4 @@ Return the reviewable proposal and genuinely missing decisions to the main Agent
 
 The main Agent reads the guidance, key applicable original rules and current code/interfaces/consumers under methodology 04. It handles ordinary implementation choices. Material deviations require checking their sources and resolving any missing decision; consult the advisor again only within the existing explicit delegation scope. Guidance does not replace authoritative requirements, verification, human acceptance or the final combined-change check.
 
-Return to [feature-execute](../feature-execute/SKILL.md) and its current Stage when the owning task already authorizes further work; guidance-only work ends with its requested result. The advisor's check of a design it helped author is not independent review. A requested formal review keeps the separate fresh-instance contract in `methodology/12-independent-review.md`.
+Guidance-only work ends with its requested result; an authorized implementation continues in [feature-execute](../feature-execute/SKILL.md) at its current Stage. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**). The advisor's check of a design it helped author is not independent review. A requested formal review keeps the separate fresh-instance contract in `methodology/12-independent-review.md`.

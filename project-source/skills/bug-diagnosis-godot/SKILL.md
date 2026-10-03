@@ -20,9 +20,9 @@ Use the relevant method only when its evidence answers the current question:
 | Missing signals about a transition, object owner or repeated operation | [diagnostics-instrumentation](../diagnostics-instrumentation/SKILL.md) |
 | Comparable timing, memory or workload measurements | [diagnostics-performance](../diagnostics-performance/SKILL.md) |
 | Accumulation or stability during sustained/repeated execution | [diagnostics-soak-test](../diagnostics-soak-test/SKILL.md) |
-| Evidence points to Shader loading, material/parameter binding, visual data flow or rendering cost | [Shader diagnostics](references/shader-diagnostics.md), a directly readable technical reference rather than another Skill workflow |
+| Evidence points to Shader loading, material/parameter binding, visual data flow or rendering cost | [Shader diagnostics](references/shader-diagnostics.md) |
 
-The same diagnosis can trace rule results, state, feedback and their connections under the canonical method. Neither a visual symptom nor reading a Shader reference requires the user to classify the defect's layer, split its record or grant further execution authority.
+The same diagnosis can trace rule results, state, feedback and their connections under the canonical method. A visual symptom does not require the user to classify the defect's layer or split its record.
 
 ## Return the diagnosis to the owning task
 
@@ -30,4 +30,4 @@ Report the symptom and expected source, useful trigger, causal conclusion with s
 
 Follow methodology 07 for durable Bug evidence and `methodology/09-records-reports-and-handoff.md` for retained results and temporary probes. Record only what the task needs in existing Feature/Progress locations. Preserve original failure evidence and make the state of temporary diagnostics explicit.
 
-A diagnosis-only request ends with the supported conclusion or a clear blocker; an unresolved cause remains unresolved. When repair is already authorized, return to its current Feature or [engineering-change-plan](../engineering-change-plan/SKILL.md) as the ownership contract requires, then continue the authorized work. Diagnosis neither creates a separate approval gate nor replaces regression verification, applicable human acceptance or the existing completion contract.
+A diagnosis-only request ends with the supported conclusion or a clear blocker; an unresolved cause remains unresolved. When repair is already authorized, hand the diagnosis to its current Feature or [engineering-change-plan](../engineering-change-plan/SKILL.md) as the ownership contract requires. Diagnosis neither creates a separate approval gate nor replaces regression verification, applicable human acceptance or the existing completion contract. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).

@@ -7,7 +7,7 @@ description: Integrate selected Godot worktree changes into the intended target,
 
 Identify the adopted result, source revisions or authorized local changes, intended target branch and actual target checkout. Reuse the task's decisions and current repository evidence. A new integration starts after the result to adopt is clear; a direct request to resolve an existing conflict starts by identifying that operation and its intended result, not by launching another merge.
 
-Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`. Paths in code spans are project-relative. Read `agent-rules/00-core/git-worktree-and-commits.md` for authorization, current-change preservation, staging, verification and commits; this method creates no new Stage or completion rule.
+Paths in code spans are project-relative. Read `agent-rules/00-core/git-worktree-and-commits.md` for authorization, current-change preservation, staging, verification and commits; this method creates no new Stage or completion rule.
 
 ## Establish a coherent candidate
 
@@ -27,9 +27,9 @@ Use [project-verification-godot](../project-verification-godot/SKILL.md) for the
 
 The combined candidate needs evidence that applies to its actual content and obligations. Source-checkout success alone cannot stand in for target verification. Reuse still-valid results; renew only affected or missing checks. Use [verification-evidence-godot](../verification-evidence-godot/SKILL.md) for evidence applicability, reference/import recovery or interrupted runs, and [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md) for actual user acceptance when the owning task requires it.
 
-Preserve explicit no-commit conditions. The existing Bug tasks that require actual human acceptance and explicit permission to commit still require both before any local commit, including intermediate resolution or checkpoint commits. Acceptance alone grants no commit permission; permission alone provides no acceptance. Reuse prior explicit decisions, but do not treat a generic request to continue or integrate as replacing either special condition. When a condition is missing, complete permitted analysis or candidate preparation and report the blocked final action.
+Preserve explicit no-commit conditions. When the task requires both actual human acceptance and explicit permission to commit (**Local commits** in the Core Git rules), make no local commit, including an intermediate resolution or checkpoint commit, until both are met. Reuse prior explicit decisions, but do not treat a generic request to continue or integrate as replacing either special condition. When a condition is missing, complete permitted analysis or candidate preparation and report the blocked final action.
 
-Adopt and commit eligible results according to the Core Git contract, checking the actual target and resulting scope afterward. A conflict resolution or integrated local commit does not complete a Feature or supply human acceptance by itself. Report the source and target, adopted scope, resulting commits or remaining candidate changes, real checks and unresolved conditions. Continue already authorized work through its owner without another confirmation merely because this method returned.
+Adopt and commit eligible results according to the Core Git contract, checking the actual target and resulting scope afterward. A conflict resolution or integrated local commit does not complete a Feature or supply human acceptance by itself. Report the source and target, adopted scope, resulting commits or remaining candidate changes, real checks and unresolved conditions. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
 
 ## Preserve the source until cleanup is authorized
 

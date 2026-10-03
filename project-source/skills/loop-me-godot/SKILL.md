@@ -34,6 +34,6 @@ For a proposed project-tool implementation, return to `methodology/07-engineerin
 
 Deliver the proposed method in the conversation: concrete need, entry, inputs and outputs, key decisions, ownership of details, and remaining adoption choices. No additional mechanism may be the best result. Walk through a relevant example or a clearly labelled future case; static reasoning is not execution evidence.
 
-Do not automatically create workflow directories, personal profiles, reports, state ledgers, schedules or approval checkpoints. A design-only request ends with the proposal. If implementation was already specifically authorized, return to its existing owner and continue applicable work without another confirmation merely because this Skill returned; preserve the task's validation, human acceptance and Git requirements.
+Do not automatically create workflow directories, personal profiles, reports, state ledgers, schedules or approval checkpoints. A design-only request ends with the proposal. Already authorized implementation continues through its existing owner with the task's validation, human acceptance and Git requirements. Return to the caller; a Skill's return does not end its authorized task (methodology 03 **Authorization and continuation**).
 
 Inspired by Matt Pocock's `loop-me` idea of designing reusable handling for recurring activities; rewritten for Godot project work and its existing ownership and authorization boundaries.

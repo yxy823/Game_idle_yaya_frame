@@ -41,6 +41,6 @@ Keep a full rule, method or tool contract at its owning source. Elsewhere retain
 
 For example, a save/load verification guide may need to state which local scene and test data the current check uses. It can link the test runner's documented options instead of maintaining a second command reference. A Feature explanation may summarize the outcome of an acceptance criterion, but must not maintain a second editable set of criterion IDs or passing results.
 
-Repeated words alone do not establish unnecessary duplication. A brief reminder beside a destructive tool option or before a dependent step can prevent a real mistake. Remove repeated definitions and full procedures when they add maintenance burden; do not shorten a pointer until its triggering condition or destination becomes unclear.
+Repeated words alone do not establish unnecessary duplication. Remove repeated definitions and full procedures when they add maintenance burden; do not shorten a pointer until its triggering condition or destination becomes unclear. How a retained reminder is worded follows **Explain a shared reminder once** in the [Writing guide](writing-guide.md#explain-the-project-clearly).
 
 Check the revised reading path from the original user question to its answer. A successful reorganization preserves the relevant contract, makes the answer easier to locate and leaves no abandoned authoritative copy or broken consumer within scope.
