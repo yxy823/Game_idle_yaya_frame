@@ -134,7 +134,7 @@ advisor 直接使用 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios
 
 - **检查当前工作区**：[本地静态审核](<../../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>)。
 - **先了解框架结构**：[框架结构总览](<../../prompt-scenarios/scenarios/Yaya 框架维护/只读专项审核/想先总览框架，再选择审核专题.md>)，直接从当前框架最新内容了解职责和入口，选择值得深入的专题；总览不承诺全面审核。
-- **深入核对专项问题**：从[只读专项审核](../../prompt-scenarios/scenarios/scenario-index.md#只读专项审核)选择一个预设专题，直接审核当前框架最新内容，无需填写参数。只报告影响本专题结论的证据缺口，不逐项罗列范围外领域；拿到结论后再决定修复或运行验证。
+- **深入核对专项问题**：从[只读专项审核](../../prompt-scenarios/scenarios/scenario-index.md#只读专项审核)选择一个专题，与「专项审核通用模板」拼接后使用，无需填写参数。
 - **核实收到的意见**：[外部意见复核](<../../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>)。
 - **验证真实流程**：[小任务验证](<../../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)，实际运行范围与静态结论分别记录。
 
