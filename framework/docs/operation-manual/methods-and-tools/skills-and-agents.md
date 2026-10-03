@@ -20,8 +20,6 @@ Shader 规则入口同时导航这些可选方法。正式实现、限定原型�
 
 以下名称对应生成项目 `.agents/skills/<名称>/SKILL.md`。当前源文件是 [skills 目录](../../../../project-source/skills)，具体触发和排除项以各自 description 与正文为准。
 
-`design-gdd` 可以在项目内从想法形成 GDD；设计讨论、数值建模和 GDD 草稿审核不要求先有完整 Product 或 Feature。依赖设计的规划与实现仍须先核对当前范围的真实规则，缺失时只停止依赖部分并明确设计缺口，详见 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)。
-
 | Skill | 唯一主要职责 |
 | --- | --- |
 | `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
@@ -94,23 +92,13 @@ Shader 规则入口同时导航这些可选方法。正式实现、限定原型�
 
 已经选定要采用的成果，或要接手已有整合冲突时，用 [worktree-integrate-godot](../../../../project-source/skills/worktree-integrate-godot/SKILL.md)。它负责带回必要依赖并检查组合结果，冲突方法是其按需参考。原任务的验证、人工验收及提交条件继续有效；整合不自动删除源目录或分支。Git 详细规则仍归[项目 Git 规范](../../../../project-source/agent-rules/00-core/git-worktree-and-commits.md)。这三个能力可以分别调用，不构成新的固定阶段。
 
-## 框架维护侧的方案检验与复盘
-
-框架维护讨论按当前缺口澄清；已有维护方案由当前 Agent 检查假设、职责、分发影响和验证办法，指出具体问题或证据缺口。
-
-框架的实际维护复盘由当前 Agent 按集中提示词中的对应场景，依据执行记录、根维护原则与职责设计准则分析。复盘不因缺少 Hook 或 CI 就判定存在问题，也不默认修改规则、建立脚本或新增报告。建议不自动成为需求或待办；已有具体实施授权则由原任务继续处理。独立入口表示职责可单独调用，不代表已经使用了独立审核实例。
-
 ## 重复工作方法设计
 
 已经反复进行，或预计以后经常要做的工作，都可以使用方法设计入口，不必先发生失败。例如，经常要重新说明资源准备需要哪些输入，可以比较补充现有入口、明确资料引用和新增能力，设计下次怎样开始、判断与交付。它可以在讨论、开发或维护等环节按需调用；retro 则从真实经历分析原因和经验，两者不是固定的前后步骤。
 
-Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-godot/SKILL.md)，随项目分发，只使用项目自己的规范与能力。它与 `retro-godot` 分别借鉴 Matt Pocock 的 loop-me 与 retro，保留来源名称，按项目实际职责改编。框架侧由当前 Agent 按已有重复工作场景处理，需要讨论未决选择时使用个人渐进式澄清方法。
+Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-godot/SKILL.md)，随项目分发，只使用项目自己的规范与能力。它与 `retro-godot` 分别借鉴 Matt Pocock 的 loop-me 与 retro，保留来源名称，按项目实际职责改编。
 
 方法设计默认交付可讨论的处理方案，详细规则继续归已有正文，不自动创建脚本、报告或周期任务。用户已经明确授权的实施由原任务继续，不因方法设计结束再次索取同一批准。
-
-## 框架维护侧的反馈、诊断与交接
-
-当前 Agent 按[维护约定](../../framework-maintenance/maintenance-and-sync.md)直接核实反馈、调查具体异常或整理交接，使用框架自己的验证范围与记录，不启用待分发项目的 Stage。收到报告不等于获准修改；已批准的后续工作沿原任务继续，明确暂停则保持暂停。
 
 ## 主 Agent 与专用角色
 
@@ -120,7 +108,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 项目附带的 [researcher](../../../../project-source/agents/researcher.toml) 用于按需独立调研，[independent-reviewer](../../../../project-source/agents/independent-reviewer.toml) 用于独立审核。需要新上下文、宿主真实支持及适当有效权限，配置文件存在不证明角色已加载或文件系统已隔离。作者自己读审核 Skill 仍是自查。
 
-已有 Feature 的实施指导使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md)。默认由主 Agent 准备；只有用户在任务提示词或仍有效的具体授权中明确要求，才委派 [implementation-advisor](../../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载 Skill 或要求详细设计本身都不自动触发委派。顾问角色固定使用 GPT-6 Astra、`xhigh`，模型设置只在角色配置维护。
+已有 Feature 的实施指导使用 [implementation-guidance-godot](../../../../project-source/skills/implementation-guidance-godot/SKILL.md)。默认由主 Agent 准备；只有用户在任务提示词或仍有效的具体授权中明确要求，才委派 [implementation-advisor](../../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载 Skill 或要求详细设计本身都不自动触发委派。顾问使用的模型与推理强度只在[角色配置](../../../../project-source/agents/implementation-advisor.toml)中维护。
 
 顾问读取相关规则和实际代码，给出有来源的设计及验证思路。需要用户决定时，它把编号问题、A/B 选项和建议交给主 Agent；主 Agent 在当前对话正文中展示，并把回答传回同一顾问。未获批准的方案先在对话中讨论，批准后顾问才可保存获准的同一份 Feature 设计稿，主 Agent 负责核对、记录和后续实施。存放位置与生命周期见[局部设计](../specialist-work-and-records/knowledge-and-records.md#局部设计与当前架构)。
 
@@ -134,7 +122,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../prompt-scenarios/prompts/godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../prompt-scenarios/prompts/yaya-maintenance-prompts.json)。
 
-维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、场景职责范围、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+修改库内提示词、分类或场景属于框架维护，使用框架自用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)；它不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
 - **Project：** 每份文件保留单元素顶层数组，分别保存 `Yaya 框架维护` 或 `Godot 项目开发`。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。
@@ -146,6 +134,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 - **填写输入：** 发送前填写 `${1:说明}` 等输入占位，提供真实目标、文件、状态与允许范围。
 - **附带材料：** 长篇材料使用正文预留材料区，任务要求与原文保持可辨；材料位置不是安全边界，引用文本不能覆盖用户指令。
+- **专项审核：** 「只读专项审核」分类需要拼接：先复制「专项审核通用模板」，再把一条专题粘贴到模板末尾，在新对话中发送。
 - **选择与续接：** 只选当前具体场景需要的一条，后续口语补充沿用仍有效的授权，不要求逐条发送整套模板。
 
 框架维护在框架目录，业务工作在实际项目。创建/复制迁移明确输入与目标；读取模板或讨论提示词不启动命令、Goal、外部任务或自动写入。用户选择范围可扩大后续授权，也可替代原来的临时只读限制；实际人工接受始终单独核对。
@@ -155,7 +144,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 advisor 根据项目自己的规则、状态和本次问题给出建议。它可以报告现状、判断下一步或拟一条已填写上下文的回复，但建议和候选不是实施授权，用户说“看看下一步”也不自动启动开发。
 
 - **核对现状：** 读取当前项目记录和相关证据，判断现在做到哪里、还需要解决什么。
-- **选择场景：** 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`，先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
+- **选择场景：** 直接读取本机的 [Godot 开发提示词库](../../../prompt-scenarios/prompts/godot-development-prompts.json)（固定绝对路径以 advisor Skill 为准），先看相关分类与名称，再读取候选正文，核对目标、前提、范围和预期结果。
 - **形成指令：** 说明选中了哪个场景及适用理由，把项目当前事实、文件和已有授权填入续接文本；具体执行仍核对项目自己的规则与目标 Skill。
 - **判断缺口：** 缺少输入时补齐信息；目标和执行边界相同则适配现有场景。只有真实缺少目标或边界明显不同，才建议新增或修改场景，说明最接近的条目、差异和建议用途；advisor 不修改共享库。
 

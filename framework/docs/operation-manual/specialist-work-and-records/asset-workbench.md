@@ -2,11 +2,11 @@
 
 [操作手册](../README.md)
 
-工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。 它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。
+工作台是项目内可按需运行的 Godot 开发场景，提供单项查看/试听和事件组合预览。它随框架复制，但不会初始化环境、设置主场景、生成 Product/Feature 或替代人工体验。
 
 ## 按当前任务进入
 
-实际游戏项目须先满足 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)，并完成 [环境配置](../foundations/configuration.md)，再打开所需场景按 F6。各入口独立运行，不必按顺序遍历。
+先完成[环境配置](../foundations/configuration.md)，再打开所需场景按 F6。查看、试听和比较素材不依赖 GDD；把结果用于正式游戏时，才按所属设计与任务核对要求。各入口独立运行，不必按顺序遍历。
 
 | 现在要做什么 | 从这里开始 | 完成检查 |
 | --- | --- | --- |

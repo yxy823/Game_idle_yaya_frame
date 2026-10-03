@@ -8,17 +8,13 @@
 
 | 对象 | 职责 |
 | --- | --- |
-| 框架根目录 | 维护约定、入口说明；不是游戏项目工作目录 |
-| `framework/` | 创建器、复制清单、完整提示词库、手册、回归夹具和审核材料；不复制给项目 |
-| `.agents/skills/` | 框架自用 Skill，包括 Yaya 框架文档写作；不分发给游戏项目 |
+| 框架根目录、`framework/`、`.agents/skills/` | 维护约定、创建器、提示词库、手册、回归夹具与框架自用 Skill；不是游戏项目工作目录，也不复制给项目。目录分工见[框架维护入口](../../../README.md#目录与职责) |
 | `project-source/` | 待复制代码、插件、默认文件、Skill、角色与方法；不在这里启动游戏开发流程或 Godot |
 | 外部生成项目 | 用自己的 `AGENTS.md`、`.agents/skills/`、`methodology/` 和工具开发；不查询框架状态或自动同步 |
 
 源材料自带最小 `main/main.tscn`、示例工作台和空业务台账，以及只有用途说明的 `docs/gdd/`。文件存在不证明环境已就绪、需求已确定、示例已验证或业务已完成。提示词库与手册不随项目复制；advisor 通过固定绝对路径只读使用本机 Godot 开发提示词库，结合项目事实选择场景并起草具体指令。
 
-创建后可以在项目内使用 `design-gdd` 从想法形成 GDD，也可以整合或修订已有设计。空白项目创建成功不代表设计已明确；依赖设计的规划或实现仍须有 `docs/gdd/` 中支撑当前范围的真实规则，Product 据此组织交付预拆分和当前范围。详见 [GDD 与交付规划](../requirements-and-tasks/requirements-and-planning.md)。
-
-项目 `AGENTS.md` 指向本地 `technical-documentation-writing-godot` Skill，创建器从项目分发源整包复制入口、元数据和参考。它面向游戏项目文档，与框架自用的 `technical-documentation-writing-yaya` 分别维护；两者可以独立修改，不跨包引用写作正文。已创建项目拥有自己的副本，后续更新由用户决定。
+空白项目创建成功不代表设计已明确。项目内用 `design-gdd` 形成或修订设计，依赖设计的工作以什么为前提见 [GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 
 ## 创建器用法
 
@@ -47,11 +43,7 @@ python -B framework/commands/project/create_project.py --output D:\Games\MyGodot
 
 ## 环境就绪的含义
 
-默认配置给出的工具位置是候选值。
-
-- **检查范围：** 普通环境检查只验证配置结构；`--require-ready` 进一步探测工具与必要路径，仍不表示测试、导入、场景启动或实际体验已经通过。
-- **Python：** Python 3.12+ 的实际解释器需单独确认，环境检查器不代做 Python 版本探测。
-- **Godot：** 当前目标为 4.7.x；实际版本来自工具输出。
+默认配置给出的工具位置是候选值。环境检查器的普通调用与 `--require-ready` 各检查什么、Python 版本为何需要单独确认，见[配置参考的检查能力边界](configuration.md#检查能力边界)；就绪检查通过仍不表示测试、导入、场景启动或实际体验已经通过。
 
 第一次 Godot 资源与全局类扫描、命令行测试、最小入口启动分别产生不同证据。缺少 `GdUnitTestCIRunner` 或测试基类时，测试可能尚未执行；不能记作业务断言失败。正常任务复用已有可用环境，不要求每次重做全项目导入。
 

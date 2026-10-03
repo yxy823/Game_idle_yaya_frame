@@ -12,7 +12,7 @@
 | --- | --- | --- |
 | `document_language` | `zh-CN` | 持久项目知识默认使用中文，无需再次确认；与当前聊天语言独立 |
 | `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
-| `python_executable` | `python` | 模板占位名称；准备环境时填写已确认解释器，当前机器使用个人规则指定的完整路径 |
+| `python_executable` | `python` | 模板占位名称；准备环境时改为已确认的 Python 3.12+ 解释器 |
 
 技术栈固定为 Godot 4.7、GDScript 和 gdUnit4，不另存三份标签。配置只保存文档语言与工具路径，实际版本与准备结果由检查输出和初始化报告记录；测试使用固定入口 `tools/testing/run-gdunit-tests.py`，执行时指定 Feature 和 scope，不重复保存整条命令。
 
@@ -139,4 +139,4 @@ CLI 和可选编辑器面板都以项目根 `gdlint.json` 为分析配置来源�
 - **缩进：** GDScript、Shader 及 Shader include 使用 Tab（显示宽度 4），Python 使用 4 空格，JSON/YAML 使用 2 空格。
 - **Windows 命令文件：** `.bat`、`.cmd` 使用 CRLF。
 
-`.gitattributes` 与上述换行约定一致，明确将 Godot 文本场景、资源、导入元数据及 SVG/glTF/OBJ 等可读资源按文本处理，将常见图片、音视频、字体、二进制模型和 Godot 二进制场景/资源按二进制处理。二进制标记不表示忽略文件，也不自动启用 Git LFS；默认忽略范围见 [Git、Godot 忽略文件与报告](project-layout.md#git-与-godot-扫描的区别)。跨机器调整时读取实际文件，不把控制台显示问题当作文件编码错误。
+`.gitattributes` 与上述换行约定一致，明确将 Godot 文本场景、资源、导入元数据及 SVG/glTF/OBJ 等可读资源按文本处理，将常见图片、音视频、字体、二进制模型和 Godot 二进制场景/资源按二进制处理。二进制标记不表示忽略文件，也不自动启用 Git LFS；默认忽略范围见 [Git 与 Godot 扫描的区别](project-layout.md#git-与-godot-扫描的区别)。跨机器调整时读取实际文件，不把控制台显示问题当作文件编码错误。

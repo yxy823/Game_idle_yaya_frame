@@ -6,7 +6,7 @@
 
 [表现层](../foundations/game-logic-and-presentation.md)涵盖界面、反馈和它们的实际运行职责；本页的 UI、游戏表现及共享方向文档，分别细化其中不同问题。游戏逻辑与表现共同来源于 GDD，专业文档不会替代业务规则的正文。
 
-专业工作按 [GDD 前提](../../../../project-source/methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority)判断实际依赖：设计讨论、数值草模和 GDD 草稿审核可以协助形成设计，接入、测量或实现前须有支撑本次行为的真实规则。不要求预先写完全部 GDD 或专业细节，也不把缺失的规则当成已经确定。
+专业规格可以与 GDD 一起逐步形成；接入、测量或实现前须有支撑本次行为的真实规则，判断方式见[需求与规划的 GDD 前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 
 ## 来源的唯一维护者
 

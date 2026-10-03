@@ -6,16 +6,14 @@
 
 ## 文档选择
 
+下表列出术语、设计、架构、知识与过程记录；GDD、Product、专业规格与项目规则的位置和维护者见[项目对象与目录](../foundations/project-layout.md#主要对象及读写关系)。
+
 | 材料 | 内容与边界 |
 | --- | --- |
-| `docs/gdd/` | 游戏目标、玩法规则与体验要求的正文；依赖设计的规划或实现须有足够明确的当前范围，目录说明和空模板不能替代 |
-| `docs/product.md` / `docs/product/NN-name.md` | 交付预拆分及当前交付范围；具体 Product 轮到时才写，链接 GDD 而不复制规则 |
-| `docs/ui/` / `docs/presentation/` | 界面布局、状态与交互 / 一次具体表现的过程、方案及采用关系；资源规格随所属章节保存，详见[专业来源](specialist-work.md) |
 | `docs/terminology.md` | 已确认项目术语、标准名称、定义、关系与别名的唯一正文；详细数值和行为归 GDD |
 | `docs/features/F0XX-design.md` | 该 Feature 的实施设计、局部技术决定与理由的固定正文，含职责、生命周期、接口、失败处理、顺序及验证理由；Feature JSON 仍拥有 AC 和验证义务 |
 | `docs/architecture.md` | 项目级模块关系、装配与依赖；按架构契约保存项目级独立技术决定，区分决定与当前结构 |
 | `docs/architecture/<subsystem>.md` | 子系统内部结构、状态、接口与运行流程；按架构契约保存该子系统的独立技术决定 |
-| `docs/project-rules.md` | 开发约束、协作与工程原则；强度区分 MUST / PREFER / REVIEW，游戏设计边界归 GDD |
 | `docs/architecture/adr-NNNN-<slug>.md` | 满足 ADR 条件的跨 Feature、跨模块或项目级技术决策理由 |
 | Feature notes | 任务提醒、简短事件教训、TODO 与正文链接；实施决定与理由归设计文件 |
 | `docs/knowledge/` | 可复用的项目实践及适用条件；不是规则或需求的替代正文 |
@@ -23,9 +21,9 @@
 | `docs/unadopted-ideas.md` | 没有当前待决设计问题依赖的设想及其原因；转为当前比较或采纳后迁移正文并保留去向链接，不构成开发承诺 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值模型与计算说明。系统规则固定在 `docs/gdd/systems/<system-key>.md`，单系统模型在 `docs/gdd/balance/<system-key>.md`，跨系统模型在 `docs/gdd/balance/cross-system.md`；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。世界观、角色与故事梗概归 `concept-and-experience.md`；内容定义目录随所属系统，排布与节奏归 `progression.md`。
+GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)：世界观、角色与故事梗概归 `concept-and-experience.md`，内容定义目录随所属系统，排布与节奏归 `progression.md`；草案、采用决定和实际验证状态分开表述。
 
-当前比较的设计选择保存在开放问题；已采纳规则的备选值随规则或模型保存，开放问题引用这些值；没有当前待决问题依赖的设想进入 `docs/unadopted-ideas.md`。`design-gdd` 在写作中维护这些归属，`project-grill-me` 可保存用户明确要求留待以后考虑的想法；纯讨论不写文件。迁移条件见[候选与未采纳想法](../../../../project-source/methodology/01-product-doc-structure.md#candidate-and-unadopted-ideas)。
+候选值与未采纳想法的分流见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)；除 `design-gdd` 外，`project-grill-me` 也可保存用户明确要求留待以后考虑的想法，纯讨论不写文件。
 
 项目术语定义固定由 `project-terminology` 维护在 `docs/terminology.md`，当前只用于一个主题的术语也使用这一位置。GDD 编写与整合一并保存当前范围内已确认的术语，并把其他正文中的重复定义改为引用；普通解释和例子仍留在对应主题，不另设词表。只有实质歧义才使用共用提问方法，已确认含义不重复访谈；没有已确认术语时保留用途说明。
 

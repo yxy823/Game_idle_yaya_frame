@@ -48,7 +48,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 | 术语、设计、架构、规则、研究、知识或 Progress | [知识与记录](../operation-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、生命周期、角色与领域规则 |
 | 场景输入、步骤、提示词或出口 | 对应 Project/分类/同名场景 | 所属 Godot 开发或 Yaya 维护提示词库、Skill/methodology/CLI、[场景编写要求](../../prompt-scenarios/scenarios/README.md) |
 
-框架的反馈核实、异常调查、方案检验和任务交接由当前 Agent 按本次要求及对应场景直接处理，复用已有事实、验证和记录。只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 项目使用自己的方法与记录；advisor 只读共享 Godot 提示词，不据此调用框架维护 Skill。
+框架的反馈核实、异常调查、方案检验、维护复盘、重复工作方法设计和任务交接由当前 Agent 按本次要求及对应场景直接处理，复用已有事实、验证和记录，不启用待分发项目的 Stage。复盘与方法设计默认交付分析和方案，不因缺少 Hook 或 CI 判定存在问题，也不自动修改规则、建立脚本或新增报告。只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 项目使用自己的方法与记录；advisor 只读共享 Godot 提示词，不据此调用框架维护 Skill。
 
 修改分发 Skill 的职责、写入边界或入口时，以该 Skill 的 SKILL.md 及其引用的源规范为唯一正文，同步核对总路由、项目 README 与 advisor；不在 Project_AGENTS、手册或本页复制一套操作正文。
 
