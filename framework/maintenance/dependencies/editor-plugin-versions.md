@@ -2,11 +2,18 @@
 
 [框架维护](../README.md)
 
-本页供框架维护者查找五个编辑器效率插件的上游、当前安装版本和升级检查依据。源码保存在 `project-source/addons/`，由[复制清单](../../project-creation/project-files.json)分发；本页只保留在 `framework/`，不复制到生成项目，也不建立自动升级或项目同步机制。
+本页记录随项目分发的五个编辑器效率插件：上游来源、当前安装的版本、本地修正、兼容性实测结果，以及升级时要核对什么。
+
+- **源码位置**：`project-source/addons/`，通过[复制清单](../../project-creation/project-files.json)分发。
+- **本页位置**：只在框架维护目录中，不复制到生成项目。
+- **不自动升级**：插件升级由维护任务手动完成，已有项目不会自动同步。
 
 ## 当前安装来源
 
-来源核对日期：2026-09-27。下表的“资产库 Godot 标签”是上游资产库声明，不能直接当作本框架 Godot 4.7 的实测结论。固定源码链接确定本次复制的内容；版本号与包内声明不一致时保留原值。
+来源核对日期：2026-09-27。阅读下表时注意：
+
+- “资产库 Godot 标签”是上游资产库的声明，不是本框架在 Godot 4.7 上的实测结论（实测见[当前兼容性状态](#当前兼容性状态)）。
+- “固定源码”链接决定了实际复制的内容；资产库版本号与包内声明不一致时，两者都按原值记录。
 
 | 插件与原始仓库 | 资产库版本 | 包内 `plugin.cfg` 版本 | 资产库 Godot 标签 | 本次固定源码 |
 | --- | --- | --- | --- | --- |
@@ -49,7 +56,7 @@ Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提
 
 ## 当前兼容性状态
 
-最近一次实测环境为 Windows、Godot `4.7.1.stable.official.a13da4feb`，在由创建器生成的独立外部项目中执行，图形运行使用 OpenGL Compatibility。原始日志、JSON 报告与退出码保存在对应外部项目的 `reports/`；本页只保留当前结论，验证过程与证据位置随本页的 Git 历史查阅。新的 Godot 或插件版本不能沿用这些结论。
+以下结论的实测环境：Windows，Godot `4.7.1.stable.official.a13da4feb`，在创建器生成的独立外部项目中运行，图形模式使用 OpenGL Compatibility。原始日志、JSON 报告和退出码保存在该外部项目的 `reports/` 中；验证过程见本页的 Git 历史。换用新的 Godot 或插件版本后，这些结论需要重新验证。
 
 | 检查范围 | 当前结论 |
 | --- | --- |
@@ -65,7 +72,7 @@ Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提
 - **维护探针 lint**：外部验证项目的 lint 仍报告插件生命周期探针的长函数与结果打印问题，不能写成 lint 全通过。
 - **人工验收缺口**：尚未验收 Script-IDE 分屏与搜索观感、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程面板收包与信号图；自动化探针的通过结论不覆盖这些范围。
 
-进程退出码为 `0` 不代表无错误，复核时同时读取报告和引擎日志。Inspector Tabs 首次缺少可选偏好文件时会普通打印 `ERROR LOADING SETTINGS FILE` 并使用默认设置，这与引擎的 `ERROR:`、`SCRIPT ERROR:` 诊断不同。
+复核时同时读取报告和引擎日志，进程退出码为 `0` 不代表没有错误。另外，Inspector Tabs 第一次运行、还没有偏好文件时，会打印 `ERROR LOADING SETTINGS FILE` 并使用默认设置；这只是普通输出，不是引擎的 `ERROR:` 或 `SCRIPT ERROR:` 诊断。
 
 ## 验证夹具
 

@@ -2,29 +2,56 @@
 
 [测试与夹具](../../README.md#按需检查) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
-## lint 与运行器专项检查
+本目录保存两类夹具：
 
-本目录的 GDScript 夹具验证 lint 与 gdUnit 运行器本身，不随新项目分发，也不要求每次维护都运行。同目录的 Python 工具回归由 [run_project_tool_tests.py](../run_project_tool_tests.py) 统一运行，用法见[维护命令的按需检查](../../README.md#按需检查)。先选择本次获准的外部项目，核对其 Godot、插件和被测工具；首次运行按[项目工具说明](../../../../project-source/tools/README.md#首次-godot-扫描)完成导入。
+- **Python 工具回归**（`test_*.py`）：由 [run_project_tool_tests.py](../run_project_tool_tests.py) 统一运行，用法见[按需检查](../../README.md#按需检查)。
+- **GDScript 夹具**：验证 lint 和 gdUnit 运行器本身，用法见下文。
 
-| 夹具 | 入口与用途 | 输出及副作用 |
-| --- | --- | --- |
-| `gdscript_lint_contracts.gd` | SceneTree 脚本；检查解析、度量、忽略指令及具体诊断规则 | `--` 后唯一参数是 JSON 报告路径；只在内存中构造被分析代码 |
-| `gdscript_lint_entry_contracts.gd` | SceneTree 脚本；检查 CLI 参数、配置拒绝、退出码与 JSON 一致性 | 同上；临时替换根目录 `gdlint.json`，创建 `gdlint-entry-contracts*` 文件，正常结束恢复。已有同名残留时拒绝运行，只用于可丢弃的外部项目 |
-| `gdscript_lint_editor_contracts.gd` | 临时 EditorPlugin；检查真实面板加载、控件保存及重建 | 参数为 `--lint-editor-contracts <报告路径>`；临时修改项目配置和本机 `code_quality/*` 编辑器设置，正常结束恢复，不能与其他编辑器实例并行 |
-| `gdunit_runner_contracts.gd` | gdUnit 套件；检查真实发现、参数化、预期错误和未处理的引擎错误 | 使用现有运行器及其 `result.json`；设置 `YAYA_RUNNER_REGRESSION_FAILURE=native` 的负向运行应失败，不能算业务测试失败或改报为通过 |
+它们都不随新项目分发，也不需要每次维护都运行。
 
-两个 SceneTree 夹具放到外部项目 `tests/contracts/`，报告父目录须先存在。在该项目根目录，用已配置的 Godot 执行所选文件，例如：
+## 运行前准备
+
+1. 选择本次获准使用的外部项目，核对它的 Godot、插件和被测工具版本与本次修改对应。
+2. 新项目第一次运行前，按[项目工具说明](../../../../project-source/tools/README.md#首次-godot-扫描)完成首次导入。
+3. 在外部项目根目录准备 Godot 路径变量（后续命令都使用它）：
 
 ```powershell
 $validationGodot = (Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json).engine_executable
 New-Item -ItemType Directory -Path 'reports/maintenance' -Force
+```
+
+每次运行使用新的报告文件名，不覆盖旧的证据。
+
+## 夹具一览
+
+| 夹具 | 检查什么 | 副作用 |
+| --- | --- | --- |
+| `gdscript_lint_contracts.gd` | lint 的解析、度量、忽略指令和具体诊断规则 | 只在内存中构造被分析的代码 |
+| `gdscript_lint_entry_contracts.gd` | lint CLI 的参数、配置拒绝、退出码和 JSON 一致性 | 临时替换根目录的 `gdlint.json`，并创建 `gdlint-entry-contracts*` 文件，正常结束时恢复。已有同名残留文件时拒绝运行；只能在可丢弃的外部项目中使用 |
+| `gdscript_lint_editor_contracts.gd` | 编辑器面板的真实加载、控件保存和重建 | 临时修改项目配置和本机的 `code_quality/*` 编辑器设置，正常结束时恢复；不能与其他编辑器实例同时运行 |
+| `gdunit_runner_contracts.gd` | 运行器对真实发现、参数化、预期错误和未处理引擎错误的处理 | 使用现有运行器和它的 `result.json` |
+
+## lint 规则与 CLI 夹具
+
+前两个夹具是 SceneTree 脚本：
+
+1. 复制到外部项目的 `tests/contracts/`。
+2. 在项目根目录运行。`--` 后面唯一的参数是 JSON 报告路径，报告的父目录要已经存在：
+
+```powershell
 & $validationGodot --headless --path . --script res://tests/contracts/gdscript_lint_contracts.gd -- reports/maintenance/lint-contracts.json | Out-Host
 $LASTEXITCODE
 ```
 
-每轮使用不覆盖旧证据的报告名。核对进程退出码与 JSON 的 `failures`；CLI 夹具内故意触发的拒绝由夹具断言核实，不凭日志出现错误字样就判整项失败。异常中断时先检查备份和临时文件，不能覆盖残留后重跑。
+3. 核对进程退出码和 JSON 中的 `failures`。CLI 夹具会故意触发一些拒绝，它们由夹具自己的断言核实；日志里出现“错误”字样不代表整项失败。
 
-编辑器夹具不能用 `--script` 启动。将它放到外部项目 `addons/maintenance_lint_contracts/`，在同目录建立临时 `plugin.cfg`：
+运行中途异常中断时，先检查备份和临时文件，不能覆盖残留文件后直接重跑。
+
+## lint 编辑器夹具
+
+编辑器夹具不能用 `--script` 启动，要作为临时插件运行：
+
+1. 把它放到外部项目的 `addons/maintenance_lint_contracts/`，在同一目录创建临时的 `plugin.cfg`：
 
 ```ini
 [plugin]
@@ -35,6 +62,24 @@ version="1.0"
 script="gdscript_lint_editor_contracts.gd"
 ```
 
-备份项目配置及相关编辑器设置，把这个插件加入项目的启用列表，再执行 `& $validationGodot --headless --editor --path . -- --lint-editor-contracts reports/maintenance/lint-editor-contracts.json | Out-Host`。检查退出码与报告；结束后恢复临时插件配置，异常中断还需恢复被测设置。不要在日常开发项目中做这一项检查。
+2. 备份项目配置和相关的编辑器设置，把这个插件加入项目的启用列表。
+3. 运行：
 
-运行器夹具放到 `tests/features/gdunit_runner/`。用配置中的 Python 调用 `tools/testing/run-gdunit-tests.py --target tests/features/gdunit_runner`，先确认正常运行通过；再仅为该进程设置上述负向环境变量，确认即使四个断言通过，未处理引擎错误仍使运行器失败。结束后恢复原环境变量，保留两次独立结果；不需要创建 Feature 或填写验收记录。
+```powershell
+& $validationGodot --headless --editor --path . -- --lint-editor-contracts reports/maintenance/lint-editor-contracts.json | Out-Host
+$LASTEXITCODE
+```
+
+4. 检查退出码和报告。
+5. 结束后恢复临时插件的配置；运行异常中断时，还要恢复被测的编辑器设置。
+
+不要在日常开发的项目中做这项检查。
+
+## 运行器夹具
+
+1. 把 `gdunit_runner_contracts.gd` 放到外部项目的 `tests/features/gdunit_runner/`。
+2. 用项目配置中的 Python 运行 `tools/testing/run-gdunit-tests.py --target tests/features/gdunit_runner`，确认正常运行通过。
+3. 只为这一次运行的进程设置环境变量 `YAYA_RUNNER_REGRESSION_FAILURE=native` 再运行一次。这次应该失败：即使四个断言都通过，未处理的引擎错误仍会让运行器报告失败。这个失败是预期结果，不算业务测试失败，也不能改报为通过。
+4. 结束后恢复原来的环境变量，两次运行的结果分别保留。
+
+这项检查不需要创建 Feature，也不需要填写验收记录。
