@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 方案审查"
+  display_name: "Godot Plan Review"
   short_description: "审查 GDD 设计和 Godot 方案，给出聚焦的结论"
 
 policy:

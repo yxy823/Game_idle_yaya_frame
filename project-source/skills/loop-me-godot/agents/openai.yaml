@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 重复工作设计"
+  display_name: "Godot Loop Me"
   short_description: "为反复出现的 Godot 项目活动设计实用的处理方法"
 
 policy:

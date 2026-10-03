@@ -1,5 +1,5 @@
 interface:
-  display_name: "游戏数值设计"
+  display_name: "Game Numeric Design"
   short_description: "推导游戏公式、数值和可解释的节奏模型"
 
 policy:

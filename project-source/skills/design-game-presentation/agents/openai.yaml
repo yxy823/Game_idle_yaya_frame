@@ -1,5 +1,5 @@
 interface:
-  display_name: "游戏表现规划"
+  display_name: "Game Presentation Planning"
   short_description: "规划游戏表现、组件方案和采用关系"
 
 policy:

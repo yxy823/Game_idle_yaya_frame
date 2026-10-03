@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 技术写作"
+  display_name: "Godot Technical Writing"
   short_description: "在文档契约内写出清楚的 Godot 项目文档"
 
 policy:

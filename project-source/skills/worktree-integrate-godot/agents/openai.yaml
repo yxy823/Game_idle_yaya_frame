@@ -1,3 +1,3 @@
 interface:
-  display_name: "Godot worktree 整合"
+  display_name: "Godot Worktree Integration"
   short_description: "整合选定的 Godot worktree 成果，解决冲突并检查组合后的结果"

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot Bug 诊断"
+  display_name: "Godot Bug Diagnosis"
   short_description: "用限定范围的证据把具体缺陷追到原因"
 
 policy:

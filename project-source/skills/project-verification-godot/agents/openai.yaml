@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 限定范围验证"
+  display_name: "Godot Scoped Verification"
   short_description: "只运行要求的解析、测试或场景检查，并报告实际范围和结果"
 
 policy:

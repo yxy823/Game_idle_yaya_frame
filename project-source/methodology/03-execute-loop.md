@@ -391,7 +391,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 
    需要清理时，说明实际做出的过时测试和引用改动，以及记在 notes 或 Progress 中的剩余工作。
 4. 用 `templates/feature-learning-summary.md.tmpl` 报告可复用的经验：
-   - 没有新的可复用经验时，写“No new reusable learning”（中文：“无新增可复用经验”）。不要为每个事件都编一条。
+   - 没有新的可复用经验时，写“无新增可复用经验”。不要为每个事件都编一条。
    - 否则用一句话或几条简洁的条目报告：背景、有用的做法或根因、已有的覆盖、适用范围，以及实际或建议的去处（Knowledge、Agent Rule、Methodology、Tooling、Automated Check 或 Regression）。
    - 链接提交前已记录的知识或 Bug 经验说明，不复制它们，也不在提交后再写文档。
    - 项目特有的做法可以在本项目内复用，不必成为通用规则。

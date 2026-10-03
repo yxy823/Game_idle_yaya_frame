@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 实施指导"
+  display_name: "Godot Implementation Guidance"
   short_description: "为已有 Feature 准备附带来源链接的实施指导"
 policy:
   allow_implicit_invocation: true

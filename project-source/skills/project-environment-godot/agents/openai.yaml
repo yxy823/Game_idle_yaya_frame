@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 环境准备"
+  display_name: "Godot Environment Setup"
   short_description: "配置、更新或恢复项目工具路径，并执行首次资源扫描"
 
 policy:

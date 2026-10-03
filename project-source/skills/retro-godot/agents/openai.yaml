@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 复盘"
+  display_name: "Godot Retro"
   short_description: "根据任务证据评估有用的 Godot 工作流改进"
 
 policy:

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 反馈分诊"
+  display_name: "Godot Feedback Triage"
   short_description: "核实反馈中描述的行为，并转交有依据的结论"
 
 policy:

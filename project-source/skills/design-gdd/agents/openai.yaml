@@ -1,5 +1,5 @@
 interface:
-  display_name: "游戏设计与 GDD"
+  display_name: "Game Design and GDD"
   short_description: "发展游戏想法，维护一致的 GDD 设计"
 
 policy:

@@ -1,5 +1,5 @@
 interface:
-  display_name: "Godot 验证证据"
+  display_name: "Godot Verification Evidence"
   short_description: "检查、导入和恢复已有的测试证据；只重跑缺少或已失效的范围"
 
 policy:
