@@ -1,17 +1,17 @@
 # Generated and Derived Data
 
-Separate parser, validator, normalizer, and generator responsibilities and keep generated output reproducible.
+Separate the responsibilities of parser, validator, normalizer and generator, and keep generated output reproducible.
 
 ## Pipeline
 
-- **[MUST]** Generators consume validated normalized input, not partially invalid raw structures.
-- **[MUST]** Input discovery is explicit; do not sweep arbitrary directories and accidentally ingest temp/vendor/unrelated files.
-- **[MUST]** Derived fields are recomputed from authoritative inputs. If materialized for runtime performance, they remain generated and are not hand-edited.
-- **[MUST]** Write canonical output to temp, validate completeness, then atomically replace committed/runtime artifact so failure cannot leave partially written or stale-success state.
+- **[MUST]** Generators consume validated, normalized input, not partially invalid raw structures.
+- **[MUST]** Input discovery is explicit. Do not sweep arbitrary directories and accidentally ingest temporary, vendor or unrelated files.
+- **[MUST]** Derived fields are recomputed from authoritative inputs. If they are materialized for runtime performance, they remain generated and are not hand-edited.
+- **[MUST]** Write canonical output to a temporary location, validate its completeness, then atomically replace the committed or runtime artifact, so that a failure cannot leave a partially written or stale "successful" state.
 
 ## Version-control policy
 
-- **[MUST]** If generated artifacts are committed, regeneration-check must match committed output and generated artifact is not hand-edited.
-- **[MUST]** If generated artifacts are not committed, a clean checkout can fully regenerate them from declared dependencies.
-- **[MUST]** A source-file hash can detect stale bytes but is not a semantic hash or schema version.
-- **[MUST]** Repeat-generation determinism is a validation target for generator/normalizer changes.
+- **[MUST]** If generated artifacts are committed, a regeneration check matches the committed output, and the generated artifact is not hand-edited.
+- **[MUST]** If generated artifacts are not committed, a clean checkout can fully regenerate them from the declared dependencies.
+- **[MUST]** A source-file hash can detect stale bytes, but it is not a semantic hash or a schema version.
+- **[MUST]** Repeat-generation determinism is a validation target for generator and normalizer changes.

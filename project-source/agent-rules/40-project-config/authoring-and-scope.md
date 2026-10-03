@@ -1,26 +1,32 @@
 # ProjectSettings Authoring and Scope
 
-`project.godot` is behavior configuration, not a text-cleanup target.
+`project.godot` is behavior configuration, not a target for text cleanup.
 
 ## Authoring
 
-- **[MUST]** Keep `project.godot` diffs minimal. Do not sort unrelated keys, expand every default, reorder sections, or normalize unrelated content.
-- **[MUST]** For built-in ProjectSettings, a missing key uses the target Godot 4.7 engine default; for a custom setting, absence from `project.godot` and `ProjectSettings.set_setting()` means the setting is not defined, so do not assume a Godot default.
-- **[MUST]** Treat effective ProjectSettings as layered: built-in engine default, explicit `project.godot` value, configured override source such as `override.cfg` or `application/config/project_settings_override`, then feature-tag override. Validate the actual effective value and its override source in a fresh process.
-- **[MUST]** `ProjectSettings.get_setting()` reads without automatically applying feature overrides; use `get_setting_with_override()` when the effective feature-overridden value is the contract.
-- **[REVIEW]** Explicitly pin a critical setting when project correctness must not drift with engine defaults; do not dump every default into the file.
-- **[MUST]** Before changing a setting, verify exact Godot 4.7 name, type, legal values, default/deprecation, and renderer/platform scope.
-- **[MUST]** Prefer ProjectSettings/Editor/structured tooling for structural settings changes. A small deterministic text patch is acceptable only with exact format knowledge and fresh-process validation.
+- **[MUST]** Keep `project.godot` diffs minimal. Do not sort unrelated keys, expand every default, reorder sections or normalize unrelated content.
+- **[MUST]** For a built-in ProjectSetting, a missing key uses the engine default of the target Godot 4.7. For a custom setting, absence from both `project.godot` and `ProjectSettings.set_setting()` means that the setting is not defined; do not assume a Godot default.
+- **[REVIEW]** Explicitly pin a critical setting when project correctness must not drift with engine defaults. Do not dump every default into the file.
+- **[MUST]** Before changing a setting, verify its exact Godot 4.7 name, type, legal values, default and deprecation status, and its renderer and platform scope.
+- **[MUST]** Prefer ProjectSettings, the Editor or structured tooling for structural settings changes. A small deterministic text patch is acceptable only with exact knowledge of the format and validation in a fresh process.
 
-## Runtime versus persisted config
+## Effective values and feature overrides
 
-- **[MUST]** ProjectSettings configuration is not necessarily current runtime state. Use DisplayServer/RenderingServer/AudioServer/etc. for runtime truth.
-- **[MUST]** Editor in-memory ProjectSettings is not proof that `project.godot` was persisted. Persistent changes require fresh-process evidence.
-- **[MUST]** EditorPlugin/tool changes intended to persist to `project.godot` must explicitly save through `ProjectSettings.save()` or an equivalent structured authoring tool, and check the returned `Error`.
-- **[MUST]** Persist ProjectSettings changes before launching a child/editor/game process that will read them; in-memory changes are not enough for Autoload, plugin, or other subprocess configuration.
-- **[MUST]** Player runtime settings normally persist under `user://` and use runtime APIs; gameplay does not rewrite project configuration.
+- **[MUST]** Treat effective ProjectSettings as layered: the built-in engine default, the explicit `project.godot` value, a configured override source such as `override.cfg` or `application/config/project_settings_override`, then a feature-tag override. Validate the actual effective value and its override source in a fresh process.
+- **[MUST]** `ProjectSettings.get_setting()` reads a setting without applying feature overrides. Use `get_setting_with_override()` when the effective, feature-overridden value is the contract.
+- **[MUST]** Use feature-tag overrides for differences between builds, platforms and environments, not for dynamic gameplay state.
+- **[MUST]** When the precedence between several feature overrides matters, verify the actual resolution in the target Godot instead of guessing.
+- **[MUST]** Naming, `debug` semantics, renaming and export validation of custom features follow [Export features and overrides](../41-export-config/features-and-overrides.md).
+
+## Runtime versus persisted configuration
+
+- **[MUST]** ProjectSettings configuration is not necessarily the current runtime state. Use DisplayServer, RenderingServer, AudioServer and similar server APIs for runtime truth.
+- **[MUST]** In-memory ProjectSettings in the Editor do not prove that `project.godot` was persisted. Persistent changes require evidence from a fresh process.
+- **[MUST]** EditorPlugin or tool changes intended to persist to `project.godot` explicitly save through `ProjectSettings.save()` or an equivalent structured authoring tool, and check the returned `Error`.
+- **[MUST]** Persist ProjectSettings changes before launching a child, editor or game process that will read them. In-memory changes are not enough for Autoload, plugin or other subprocess configuration.
+- **[MUST]** Player runtime settings normally persist under `user://` through runtime APIs; gameplay does not rewrite project configuration.
 
 ## Deletion and names
 
-- **[MUST]** Before deleting/renaming a Project Setting, Input action, Autoload, group, shader global, or layer name, migrate all consumers including dynamic registries where applicable.
-- **[MUST]** Named project-level settings are cross-file APIs once consumed.
+- **[MUST]** Before deleting or renaming a ProjectSetting, an Input Action, an Autoload, a group, a shader global or a layer name, migrate all consumers, including dynamic registries where applicable.
+- **[MUST]** Named project-level settings become cross-file APIs once they are consumed.

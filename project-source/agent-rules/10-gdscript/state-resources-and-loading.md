@@ -1,30 +1,31 @@
 # GDScript State, Resources, Loading, Errors, Time, and RNG
 
-Keep definition/config data, mutable runtime state, I/O, time, and randomness explicit.
+Keep definition and configuration data, mutable runtime state, I/O, time and randomness explicit.
 
 ## Resource and state semantics
 
 - **[MUST]** Choose Node, RefCounted, and Resource according to lifecycle and state semantics, not convenience.
-- **[MUST]** Definition/config Resources are runtime read-only by default. Mutable runtime state normally belongs to a separate authoritative state owner/model.
-- **[MUST]** Do not save runtime gameplay mutations back into project definition `.tres` files.
-- **[MUST]** When code relies on shared/cached Resources, respect ResourceLoader cache identity; do not assume repeated `load()` returns a fresh copy.
+- **[MUST]** Keep definition and configuration Resources read-only at runtime, as defined in [Resource roles](../21-resources/roles-sharing-and-locality.md#roles). Mutable runtime state normally belongs to a separate authoritative state owner or model, and runtime mutations are never saved back into project definition `.tres` files ([saving rules](../21-resources/identity-paths-and-saving.md#saving-and-generation)).
+- **[MUST]** When code relies on shared or cached Resources, respect ResourceLoader cache identity. Do not assume that a repeated `load()` returns a fresh copy.
 
 ## Loading
 
-- **[PREFER]** Use `preload()` for stable load-time dependencies and `load()`/ResourceLoader for runtime-selected dependencies.
-- **[MUST]** Do not perform first-time resource loads in hot loops or latency-sensitive paths without an explicit reason/preload strategy.
-- **[MUST]** Threaded ResourceLoader code uses the official request/status/get lifecycle; do not use `load_threaded_get()` as a polling operation.
+- **[PREFER]** Use `preload()` for stable load-time dependencies, and `load()` or ResourceLoader for dependencies selected at runtime.
+- **[MUST]** Do not perform first-time resource loads in hot loops or latency-sensitive paths without an explicit reason or preload strategy.
+- **[MUST]** Threaded ResourceLoader code uses the official request, status and get lifecycle. Do not use `load_threaded_get()` as a polling operation.
 
 ## Errors and determinism
 
-- **[MUST]** Recoverable business failure is represented through a real Result/return/state/event contract. Required node/resource/configuration failures remain distinguishable from successful empty values; defaults are only for inputs whose contract allows omission. `push_error()`/`push_warning()` are diagnostics, not control flow.
-- **[MUST]** Use `assert` only for development invariants. Assertion conditions must be side-effect free because assertions are ignored in non-debug/release builds.
-- **[MUST]** GDScript has no `throw`, `try`, `except`, or `finally`; use explicit return/null/result contracts and lifecycle callbacks for cleanup.
-- **[MUST]** Document typed Object returns that may be `null`, require callers to check them, and default collections to `[]` / `{}` rather than `null`.
-- **[PREFER]** Use deterministic, injectable or owned RNG for gameplay rules where reproducibility matters. Do not depend on uncontrolled global RNG state.
-- **[MUST]** Use explicit time domains. Gameplay-scaled time, physics time, monotonic elapsed time, and wall-clock/calendar time are not interchangeable.
-- **[MUST]** Shader/VFX/animation time is not authoritative gameplay state.
-- **[PREFER]** Keep pure rules deterministic: same explicit inputs and declared dependencies should produce the same result.
+- **[MUST]** Represent a recoverable business failure through a real result, return value, state or event contract.
+- **[MUST]** Keep failures of required Nodes, Resources and configuration distinguishable from successful empty values. Use defaults only for inputs whose contract allows omission.
+- **[MUST]** `push_error()` and `push_warning()` are diagnostics, not control flow.
+- **[MUST]** Use `assert` only for development invariants. Keep assertion conditions free of side effects, because release (non-debug) builds ignore assertions.
+- **[MUST]** GDScript has no `throw`, `try`, `except` or `finally`. Use explicit return, null or result contracts, and use lifecycle callbacks for cleanup.
+- **[MUST]** Document typed Object returns that may be `null`, and require callers to check them. Default collections to `[]` or `{}` rather than `null`.
+- **[PREFER]** Use a deterministic, injectable or owned RNG for gameplay rules where reproducibility matters. Do not depend on uncontrolled global RNG state.
+- **[MUST]** Use explicit time domains. Gameplay-scaled time, physics time, monotonic elapsed time and wall-clock or calendar time are not interchangeable.
+- **[MUST]** Shader, VFX and animation time is not authoritative gameplay state.
+- **[PREFER]** Keep pure rules deterministic: the same explicit inputs and declared dependencies produce the same result.
 
 ```gdscript
 # Development invariant; this assertion is not a runtime recovery path.

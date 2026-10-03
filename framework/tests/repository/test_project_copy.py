@@ -321,7 +321,7 @@ class ProjectCopyTests(unittest.TestCase):
                          {"checks", "features", "testing", "lib"})
         self.assertFalse((output / "examples").exists())
         self.assertEqual({path.name for path in (output / "asset_workbench").iterdir()},
-                         {"ui", "analyzer", "examples"})
+                         {"README.md", "ui", "analyzer", "examples"})
         self.assertFalse(any((output / ".agents/skills").glob("*-yaya")))
         self.assertFalse(any(output.rglob("__pycache__")))
         main_scene = output / "main/main.tscn"

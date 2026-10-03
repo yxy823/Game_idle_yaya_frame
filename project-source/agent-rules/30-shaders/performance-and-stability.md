@@ -1,24 +1,24 @@
 # Shader Performance and Stability
 
-Optimize based on measured workload and renderer semantics, not blanket folklore.
+Optimize based on the measured workload and renderer semantics, not on blanket folklore.
 
 ## Loops and sampling
 
-- **[MUST]** Shader loops have provable termination. Dynamic/high-iteration fragment loops require review and bounded external uniform ranges.
-- **[REVIEW]** Texture-sample cost is evaluated with screen coverage, instance count, texture behavior, and target hardware—not a universal sample-count maximum.
-- **[REVIEW]** Procedural noise versus texture lookup is an ALU/bandwidth/memory trade-off; do not declare one universally faster.
-- **[REVIEW]** Screen-texture effects include backbuffer/copy and full-screen coverage costs.
-- **[REVIEW]** Multipass/`next_pass` is evaluated by total rendering cost and necessity; do not ban or prefer multipass mechanically.
+- **[MUST]** Shader loops have provable termination. Dynamic or high-iteration fragment loops require review and bounded ranges for external uniforms.
+- **[REVIEW]** Evaluate texture-sample cost with screen coverage, instance count, texture behavior and target hardware, not with a universal maximum sample count.
+- **[REVIEW]** Procedural noise versus a texture lookup is a tradeoff between ALU, bandwidth and memory; do not declare either universally faster.
+- **[REVIEW]** Screen-texture effects include backbuffer copy costs and full-screen coverage costs.
+- **[REVIEW]** Evaluate multipass rendering (`next_pass`) by its total rendering cost and necessity; do not ban or prefer it mechanically.
 
 ## Variants and precision
 
-- **[REVIEW]** Runtime branches and preprocessor variants have renderer/variant trade-offs. Do not mechanically rewrite everything branchless.
-- **[MUST]** Do not use precision modifiers as a default mobile optimization without target evidence.
-- **[MUST]** Do not compare computed floating control values for exact equality when numerical tolerance/representation makes that contract invalid.
+- **[REVIEW]** Runtime branches and preprocessor variants have tradeoffs that depend on the renderer and the number of variants. Do not mechanically rewrite everything to be branchless.
+- **[MUST]** Do not use precision modifiers as a default mobile optimization without evidence from the target.
+- **[MUST]** Do not compare computed floating-point control values for exact equality when numerical tolerance or representation makes that contract invalid.
 
 ## Reuse and stutter
 
-- **[PREFER]** Algorithm-identical objects share shaders/material structure; use per-instance parameters instead of duplicating ShaderMaterial solely for per-object values.
-- **[REVIEW]** Critical first-use Shader/Material/Particle paths should consider renderer-specific pipeline compilation/warmup stutter.
-- **[MUST]** Resource preload does not prove first render pipeline is compiled; validate actual first draw where stutter is relevant.
-- **[PREFER]** Use Tween for object-property interpolation, AnimationPlayer for authored/multi-property timelines, shaders for per-pixel/vertex visuals, and Particle Shaders for GPU particle state when each tool matches the effect.
+- **[PREFER]** Objects that use the same algorithm share shaders and material structure. Use per-instance parameters instead of duplicating a ShaderMaterial solely for per-object values.
+- **[REVIEW]** For critical first-use Shader, Material and Particle paths, consider the renderer-specific stutter caused by pipeline compilation, and consider warming them up.
+- **[MUST]** Preloading a Resource does not prove that its first render pipeline is compiled. Validate the actual first draw where stutter is relevant.
+- **[PREFER]** Use a Tween for interpolating object properties, an AnimationPlayer for authored timelines across several properties, shaders for per-pixel or per-vertex visuals, and particle shaders for GPU particle state, when each tool matches the effect.

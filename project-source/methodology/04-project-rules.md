@@ -55,7 +55,7 @@ The stack-independent design defaults, such as separating game authority from pr
 
 ## Rule loading
 
-Load rules through the root `AGENTS.md` (**Engineering rule routing**) and [`agent-rules/00-core/README.md`](../agent-rules/00-core/README.md), reading only the matching sections and each affected module's `validation.md`. Resolve real conflicts with the Core precedence protocol in `agent-rules/00-core/rule-precedence-and-routing.md`.
+Load rules through the root `AGENTS.md` (**Engineering rule routing**) and [`agent-rules/00-core/README.md`](../agent-rules/00-core/README.md), reading only the matching sections and, where an affected module has one, its `validation.md`. Resolve real conflicts with the Core precedence protocol in `agent-rules/00-core/rule-precedence-and-routing.md`.
 
 ## Implementing with prepared guidance
 

@@ -1,35 +1,16 @@
 # 50 Data File Rules
 
-Applies to design/runtime data such as JSON, CSV, XLSX, YAML, generated canonical data, schemas, migrations, and data validators.
+Applies to design and runtime data such as JSON, CSV, XLSX and YAML files, generated canonical data, schemas, migrations and data validators.
 
-Canonical lifecycle:
-
-```text
-Authoring Source
--> Parse
--> Structural Schema Validation
--> Semantic Validation
--> Reference Resolution
--> Normalization
--> Canonical Runtime Configuration
--> Freeze
--> Gameplay Read-only Consumption
-```
-
-External data does not go directly from parser output into gameplay.
-
-Read:
-
-- `csv.md`
-- `data-lifecycle-and-authority.md`
-- `generation-and-derived-data.md`
-- `identity-and-references.md`
-- `json.md`
-- `normalization-and-determinism.md`
-- `runtime-loading-and-packaging.md`
-- `schema-and-types.md`
-- `schema-evolution.md`
-- `spreadsheet-and-yaml-authoring.md`
-- `validation.md` (always applies)
-
-Read the concrete documents that match the affected data format or lifecycle; `validation.md` always applies.
+| Document | Read when |
+| --- | --- |
+| `data-lifecycle-and-authority.md` | Any data change: the lifecycle from authoring source to gameplay, authority, error classes, runtime loading, packaging and trust boundaries |
+| `schema-and-types.md` | Defining or changing fields, semantic types or the structure of a data domain |
+| `identity-and-references.md` | Defining, renaming or referencing business IDs, aliases or relations |
+| `normalization-and-determinism.md` | Normalizing values or writing canonical output |
+| `generation-and-derived-data.md` | Writing or changing generators, derived fields or committed generated data |
+| `schema-evolution.md` | Changing `schema_version` or migrating persisted or external data |
+| `json.md` | Parsing, writing or trusting JSON |
+| `csv.md` | Parsing or authoring CSV |
+| `spreadsheet-and-yaml-authoring.md` | Authoring data in XLSX or YAML |
+| `validation.md` | Any data change: determine its applicable validation |

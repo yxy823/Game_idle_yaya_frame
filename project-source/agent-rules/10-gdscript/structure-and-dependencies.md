@@ -4,18 +4,18 @@ Keep ownership and dependency direction explicit rather than discovering collabo
 
 ## Responsibilities
 
-- **[MUST]** A script should have one primary responsibility. Do not split files mechanically only to satisfy a metric threshold; split on real responsibility/dependency boundaries.
-- **[MUST]** Mutable business state has one authoritative owner. Other systems mutate it through the owner-defined API/Command path. Presentation-local state such as hover or display interpolation belongs to its presentation owner and is not a second authority for gameplay values.
+- **[MUST]** Give each script one primary responsibility. Do not split files mechanically only to satisfy a metric threshold; split on real responsibility and dependency boundaries.
+- **[MUST]** Mutable business state has one authoritative owner. Other systems mutate it through the API or Command path that the owner defines. Presentation-local state such as hover or display interpolation belongs to its presentation owner and is not a second authority for gameplay values.
 - **[PREFER]** Prefer composition for independent capabilities. Use inheritance only for a stable `is-a` relationship and supported shared contract.
 - **[REVIEW]** Use abstract classes only where the target Godot version and architecture need a real abstract contract; do not create inheritance scaffolding for speculative reuse.
 
 ## Dependency direction
 
-- **[PREFER]** Use `$` or `%` for scene-internal references. Do not discover cross-module dependencies with deep parent/root paths or recursive `find_child()` searches.
+- **[PREFER]** Use `$` or `%` for references inside a scene. Do not discover cross-module dependencies with deep parent or root paths or with recursive `find_child()` searches.
 - **[MUST]** Cross-module dependencies use explicit APIs, dependency injection, a coordinator, or another intentional boundary.
-- **[MUST]** Use Command/API down and Event/Signal up as the default dependency direction. Sibling modules communicate through an owner/coordinator rather than reaching into each other.
-- For signal API choice and dynamic-boundary exceptions, apply [Exports, properties, and signals](typing-and-api.md#exports-properties-and-signals).
-- **[MUST]** Groups are behavior classification/broadcast mechanisms, not a hidden global service locator.
+- **[MUST]** Use Commands or API calls downward and events or signals upward as the default dependency direction. Sibling modules communicate through an owner or coordinator rather than reaching into each other.
+- **[MUST]** Choose the signal API, including dynamic-boundary exceptions, under [Exports, properties, and signals](typing-and-api.md#exports-properties-and-signals).
+- **[MUST]** Groups classify behavior and broadcast to members; they are not a hidden global service locator.
 
 ### Communication example
 
@@ -46,13 +46,12 @@ signal item_collected(item_id: String)
 
 func collect_item(item_id: String) -> void:
 	item_collected.emit(item_id)
-	return
 ```
 
 Do not replace this with `get_parent().get_node("HUD")` or a sibling lookup. If forwarding the signal through several Scene levels would create a signal maze, use the focused Autoload event-bus pattern described in `40-project-config/autoloads.md`.
 
 ## Global services and testability
 
-- **[MUST]** Autoload is for true global lifetime/ownership, not a convenience service locator for arbitrary dependencies.
-- **[MUST]** Test/debug adapters invoke the same production API/Command boundaries; do not create arbitrary reflection setters or universal `set_property` backdoors.
-- **[PREFER]** Separate independently testable rule calculations from SceneTree, I/O, VFX, and external services where that reflects the real architecture and improves testability. Gameplay that depends on physics or scene lifetime still owns its game-rule decisions; a Node is not automatically a presentation object.
+- **[MUST]** Use an Autoload only under the [Autoload scope rules](../40-project-config/autoloads.md#scope); it is not a convenience service locator.
+- **[MUST]** Test and debug adapters invoke the same production API and Command boundaries. Do not create arbitrary reflection setters or universal `set_property` backdoors.
+- **[PREFER]** Separate independently testable rule calculations from the SceneTree, I/O, VFX and external services where that reflects the real architecture and improves testability. Gameplay that depends on physics or scene lifetime still owns its game-rule decisions; a Node is not automatically a presentation object.

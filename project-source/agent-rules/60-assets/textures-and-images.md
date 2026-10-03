@@ -1,31 +1,31 @@
 # Texture and Image Assets
 
-Classify texture role before choosing compression, mipmaps, filtering, alpha, color-space, or resizing behavior.
+Classify a texture's role before choosing its compression, mipmaps, filtering, alpha, color space or resizing behavior.
 
 ## Roles
 
-- **[MUST]** Classify textures as Pixel Color, Continuous Color, Palette/Lookup, Data, Normal, HDR, SVG/vector, or CPU-readable according to actual use.
-- **[PREFER]** Pixel-exact color/source art uses lossless import; VRAM/lossy compression requires deliberate quality/role review.
-- **[MUST]** Mipmap policy follows minification/lookup semantics. Fixed/integer pixel UI often disables mipmaps; this is not a universal project rule.
-- **[MUST]** Filter/repeat is primarily a sampling/consumer contract, not one global image-format rule.
+- **[MUST]** Classify textures by actual use as pixel color, continuous color, palette or lookup, data, normal, HDR, SVG or vector, or CPU-readable.
+- **[PREFER]** Import pixel-exact color and source art losslessly. VRAM or lossy compression requires a deliberate review of quality and role.
+- **[MUST]** The mipmap policy follows minification and lookup semantics. Fixed or integer-scaled pixel UI often disables mipmaps; this is not a universal project rule.
+- **[MUST]** Filtering and repeat are primarily a sampling contract of the consumer, not one global image-format rule.
 
 ## CPU access
 
-- **[PREFER]** Assets requiring frequent CPU pixel access should import as `Image` or maintain an explicit cached CPU-side `Image` contract.
-- **[MUST]** `Texture2D.get_image()` creates an `Image` from GPU data and is a GPU-to-CPU readback; do not call it every frame or at other high frequency, especially for large textures.
-- **[MUST]** When the same source needs rendering and CPU analysis, define a cache or dual-representation lifecycle. Do not mechanically change import type for an occasional one-off read.
+- **[PREFER]** Import assets that need frequent CPU pixel access as `Image`, or maintain an explicit contract for a cached CPU-side `Image`.
+- **[MUST]** `Texture2D.get_image()` creates an `Image` from GPU data and is a readback from GPU to CPU. Do not call it every frame or at another high frequency, especially for large textures.
+- **[MUST]** When the same source needs both rendering and CPU analysis, define a cache or a lifecycle for both representations. Do not mechanically change the import type for an occasional one-off read.
 
 ## Special data
 
-- **[MUST]** Palette/LUT/index textures preserve discrete sampling and avoid unintended filtering/mipmap interpolation.
-- **[REVIEW]** Alpha border processing helps color textures but may corrupt data/mask semantics; choose by role.
-- **[REVIEW]** Premultiplied alpha import is a cross import/blend/material/shader contract.
-- **[MUST]** Normal maps are data; follow Godot expected normal convention and explicitly handle DirectX-style Y inversion when needed.
+- **[MUST]** Palette, LUT and index textures preserve discrete sampling and avoid unintended filtering or mipmap interpolation.
+- **[REVIEW]** Alpha border processing helps color textures but may corrupt data or mask semantics; choose it by role.
+- **[REVIEW]** Premultiplied alpha on import is a contract shared by import, blending, materials and shaders.
+- **[MUST]** Normal maps are data. Follow the normal convention that Godot expects, and explicitly handle the inverted Y axis of DirectX-style maps when needed.
 - **[MUST]** Channel-packed textures have an explicit channel schema.
 - **[MUST]** PNG is not an HDR source format.
 
-## Resize/vector
+## Resizing and vector images
 
-- **[MUST]** Import Size Limit is destructive resampling; do not apply it unreviewed to pixel art, palette/index, masks, atlases, or exact lookup data.
-- **[MUST]** External exact 32x32 normalization/source-art tooling remains authority where project already uses it; do not replace it with import-time cubic resizing.
-- **[MUST]** SVG import considers rasterization scale/DPI, text-to-path/font dependencies, and target ThorVG compatibility.
+- **[MUST]** Import Size Limit is destructive resampling. Do not apply it without review to pixel art, palette or index images, masks, atlases or exact lookup data.
+- **[MUST]** Where the project already uses external tooling that normalizes source art to exact sizes, that tooling remains the authority; do not replace it with import-time cubic resizing.
+- **[MUST]** SVG import considers the rasterization scale and DPI, dependencies on text-to-path conversion and fonts, and compatibility with the target ThorVG version.

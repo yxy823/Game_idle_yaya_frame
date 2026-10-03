@@ -1,6 +1,6 @@
 # 21 Resource (`.tres` / `Resource`) Rules
 
-Split Resources by identity, lifecycle, reuse, editor ownership, and schema semantics—not by line count.
+Split Resources by identity, lifecycle, reuse, editor ownership and schema semantics, not by line count.
 
 | Document | Read when |
 | --- | --- |

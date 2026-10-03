@@ -4,19 +4,19 @@ Normalization canonicalizes valid equivalent inputs; it does not repair invalid 
 
 ## Normalization
 
-- **[MUST]** Missing, null, empty String, zero, and false remain distinct according to schema.
-- **[MUST]** Whitespace normalization is field-specific; stable IDs with illegal surrounding whitespace are errors rather than silently trimmed identity.
-- **[REVIEW]** Unicode normalization is domain-specific; do not apply blanket NFC/NFKC without semantic review.
-- **[MUST]** Percentages/probabilities have one declared authoring scale and canonical scale; do not infer scale from value magnitude.
-- **[MUST]** Exact decimal authoring values such as money/precise percentages use decimal/fixed semantics at build boundary before optional runtime conversion.
-- **[MUST]** Rounding precision/mode/stage is explicit where it affects canonical values.
-- **[MUST]** Spreadsheet display precision is not authoritative numeric precision.
+- **[MUST]** Missing, null, an empty String, zero and false remain distinct according to the schema.
+- **[MUST]** Whitespace normalization is specific to each field. Stable IDs with illegal surrounding whitespace are errors rather than silently trimmed identities.
+- **[REVIEW]** Unicode normalization is domain-specific; do not apply blanket NFC or NFKC without a semantic review.
+- **[MUST]** Percentages and probabilities have one declared authoring scale and one canonical scale; do not infer the scale from the magnitude of a value.
+- **[MUST]** Exact decimal authoring values, such as money or precise percentages, use decimal or fixed-point semantics at the build boundary before any optional runtime conversion.
+- **[MUST]** Make the rounding precision, mode and stage explicit where they affect canonical values.
+- **[MUST]** The display precision of a spreadsheet is not the authoritative numeric precision.
 
 ## Canonical output
 
-- **[MUST]** Canonical serialization has stable key order, indentation/format, numeric precision, newline, and encoding rules.
-- **[MUST]** Sort map/object/set-like data only when schema declares it unordered; never sort semantic sequences for deterministic appearance.
-- **[MUST]** Do not emit generated timestamps, machine absolute paths, uncontrolled RNG/UUID, locale-dependent numbers/dates, or hash-map-order output.
-- **[MUST]** Generator randomness has an explicit seed input when randomness is part of generation.
-- **[MUST]** Same declared input + schema + generator + options yields same logical output and, where intended, stable bytes.
-- **[PREFER]** Use an input fingerprint (source/schema/generator/options) and semantic hash of normalized data when stale-detection value justifies it; do not confuse either with schema version.
+- **[MUST]** Canonical serialization has stable rules for key order, indentation and format, numeric precision, newlines and encoding.
+- **[MUST]** Sort map, object or set-like data only when the schema declares it unordered. Never sort semantic sequences for a deterministic appearance.
+- **[MUST]** Do not emit generated timestamps, absolute machine paths, uncontrolled RNG or UUID values, locale-dependent numbers or dates, or output in hash-map order.
+- **[MUST]** When randomness is part of generation, the generator takes an explicit seed as input.
+- **[MUST]** The same declared input, schema, generator and options yield the same logical output and, where intended, stable bytes.
+- **[PREFER]** Use an input fingerprint (of source, schema, generator and options) and a semantic hash of the normalized data when the value of detecting stale output justifies them. Do not confuse either with a schema version.

@@ -1,22 +1,22 @@
-# Feature 工作流与 Godot 测试集成
+# Feature Workflow and Godot Test Integration
 
-本文件只连接两套规则的职责，不替代本目录中的 Godot 测试实现规则，也不复制 `methodology/08-test-traceability-and-evidence.md`。
+This document only connects the responsibilities of two rule sets. It does not replace the Godot test implementation rules in this directory, and it does not copy `methodology/08-test-traceability-and-evidence.md`.
 
-## 权威边界
+## Authority boundary
 
-- **[MUST]** Yaya Loop 负责决定测试什么、为什么测试、选择哪些测试、何时执行， 以及测试如何关联 Feature、Acceptance Criterion、Bug 和人工验收。
-- **[MUST]** 本目录负责具体的 Godot 测试实现，包括 L0-L3 层级、runner 行为、 fixture、隔离、mock/spy、SceneTree、输入、Signal、异步和诊断处理。
-- **[MUST]** Test Impact Review 生成的 Required Test Set 是最低集合； `test-selection-and-gates.md` 中基于 Godot 影响范围的门禁可以扩大或升级该集合， 不能静默删减它。
+- **[MUST]** The Yaya Loop decides what to test, why to test it, which tests to select and when to run them. It also decides how tests relate to Features, Acceptance Criteria, Bugs and manual acceptance.
+- **[MUST]** This directory governs the concrete Godot test implementation: the L0 to L3 levels, runner behavior, fixtures, isolation, mocks and spies, the SceneTree, input, signals, asynchronous behavior and diagnostics.
+- **[MUST]** The Required Test Set produced by the Test Impact Review is a minimum. The Godot impact gates in `test-selection-and-gates.md` may expand or escalate it, but they never silently remove tests from it.
 
-## 追踪与物理组织
+## Traceability and physical organization
 
-- **[MUST]** 逻辑 ID、测试目录和实际路径/test case 映射遵循 [测试分类](../../methodology/08-test-traceability-and-evidence.md#test-taxonomy) 与 [Registry 规则](../../methodology/08-test-traceability-and-evidence.md#registry-rules)。
-- **[MUST]** Godot 的 L1 Unit、L2 Integration 和 L3 Runtime Scene 是测试技术 层级，不是与 Yaya 三个目录根互斥的物理目录。测试应放在其所保护契约对应的 Yaya 目录中。
+- **[MUST]** Logical IDs, test directories and the mapping to actual paths and test cases follow the [test taxonomy](../../methodology/08-test-traceability-and-evidence.md#test-taxonomy) and the [Registry rules](../../methodology/08-test-traceability-and-evidence.md#registry-rules).
+- **[MUST]** The Godot levels L1 Unit, L2 Integration and L3 Runtime Scene are technical test levels, not physical directories that compete with the three Yaya test roots. Place each test in the Yaya directory that matches the contract it protects.
 
-## 执行生命周期
+## Execution lifecycle
 
-- **[MUST]** 实现批准、基线和 RED/GREEN/refactor 遵循 [TDD 执行契约](../../methodology/08-test-traceability-and-evidence.md#tdd-execution-contract)； 验收、可选独立审查和完成条件由 [执行流程](../../methodology/03-execute-loop.md) 负责。
-- **[MUST]** runner、selector 和 full-suite 遵循 [Runner 边界](../../methodology/08-test-traceability-and-evidence.md#runner-boundary) 与实际项目配置； 本规则集的安装本身不安装或启用 gdUnit4。
-- **[MUST]** 脚本解析和 lint 的调用、参数与工具边界遵循 [直接静态检查契约](../../methodology/contracts/gdscript-lint.md)。
+- **[MUST]** Implementation approval, the baseline and the RED, GREEN and refactor steps follow the [TDD execution contract](../../methodology/08-test-traceability-and-evidence.md#tdd-execution-contract). Acceptance, optional independent review and completion conditions are governed by the [execution loop](../../methodology/03-execute-loop.md).
+- **[MUST]** Runner, selector and full-suite behavior follow the [Runner boundary](../../methodology/08-test-traceability-and-evidence.md#runner-boundary) and the actual project configuration. The project uses gdUnit4 as its fixed runner; see [GdUnit4 runner profile](gdunit4-profile.md).
+- **[MUST]** The invocation, arguments and tool boundary of script parsing and lint follow the [direct static check contract](../../methodology/contracts/gdscript-lint.md).
 
-如果两套适用的 `[MUST]` 规则仍无法同时满足，按 `agent-rules/00-core/rule-precedence-and-routing.md` 报告真实规则冲突，不得为了 通过测试而弱化任一门禁。
+If two applicable `[MUST]` rules still cannot be satisfied together, report a real rule conflict under [Rule precedence and routing](../00-core/rule-precedence-and-routing.md#rule-conflict-protocol). Do not weaken either gate to make tests pass.

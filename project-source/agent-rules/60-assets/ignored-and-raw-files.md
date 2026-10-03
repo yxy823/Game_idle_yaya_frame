@@ -1,15 +1,15 @@
 # Ignored and Raw Files
 
-`.gdignore`, raw FileAccess, Godot import visibility, Git, and export are separate concerns.
+`.gdignore`, raw FileAccess reads, Godot import visibility, Git and export are separate concerns.
 
 ## Ignored files
 
-- **[MUST]** A directory under `.gdignore` is not imported/visible to normal Godot Resource loading. Do not place runtime Resources there.
+- **[MUST]** A directory under `.gdignore` is not imported and is not visible to normal Godot Resource loading. Do not place runtime Resources there.
 - **[MUST]** Do not use `.gdignore` to hide tests that the test runner must load.
-- **[MUST]** Do not add `.gdignore` merely to suppress clutter without checking runtime/import dependencies.
-- **[MUST]** `.gdignore` and `.gitignore` have different semantics and are not substitutes.
+- **[MUST]** Do not add `.gdignore` merely to reduce clutter without checking runtime and import dependencies.
+- **[MUST]** `.gdignore` and `.gitignore` have different semantics and do not substitute for each other.
 
 ## Raw runtime files
 
-- **[MUST]** Gameplay must not rely on directory enumeration of imported source extensions as authoritative registry in exported builds.
-- **[MUST]** Raw FileAccess runtime assets/data follow `41-export-config` packaging rules.
+- **[MUST]** In exported builds, gameplay does not use directory enumeration of imported source extensions as an authoritative registry.
+- **[MUST]** Raw runtime assets and data read through FileAccess follow the [export inclusion rules](../41-export-config/resources-and-filters.md#packaging).
