@@ -32,7 +32,7 @@ When applicable `[MUST]` rules remain impossible to satisfy simultaneously after
 Repository rules can contain factual errors, outdated version assumptions or overly broad applicability, even when no two rules conflict.
 
 - **[MUST]** When concrete evidence questions an applicable rule, check its scope and factual/version assumptions, then report the rule/source, evidence limits and affected behavior to the user. Distinguish a rule defect from a justified departure permitted by a `[PREFER]`; personal preference alone does not establish a defect.
-- **[MUST]** Assess code compliance and rule correctness separately. Handle proposed corrections under [incremental rule maintenance](../../methodology/04-coding-rules-4-layers.md#incremental-rule-maintenance). Do not silently edit or waive a rule; reuse specific approval and pause only implementation that depends on an unresolved required decision.
+- **[MUST]** Assess code compliance and rule correctness separately. Handle proposed corrections under [incremental rule maintenance](../../methodology/04-project-rules.md#incremental-rule-maintenance). Do not silently edit or waive a rule; reuse specific approval and pause only implementation that depends on an unresolved required decision.
 
 ## Machine configuration and existing code
 

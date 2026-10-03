@@ -25,7 +25,7 @@ tools/
 
 ## 首次 Godot 扫描
 
-适用条件见 [环境配置约定](../methodology/05-document-language.md#project-environment-bootstrap)。 在已获准的首次 CLI 测试或项目脚本运行前，尚未由编辑器扫描的新项目可在项目根目录执行：
+适用条件见 [环境配置约定](../methodology/06-project-environment.md#project-environment-bootstrap)。 在已获准的首次 CLI 测试或项目脚本运行前，尚未由编辑器扫描的新项目可在项目根目录执行：
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
@@ -53,7 +53,7 @@ python -B tools/features/record-feature-completion.py record-tests --feature F00
 
 将上述 Python 换成配置中的实际解释器；仅需临时更换 Godot 时传入 `--godot-binary <路径>`。 测试的 `--target <path>` 用于 focused/TDD，`--phase baseline` 用于已有安全网。 `auto` 按批准范围选择 affected/full；没有独立计划文件。合法空基线或无自动测试义务的 manual 最终验证返回 0，并在 stdout 输出 `status: not_required` 的 JSON，不启动 Godot、不读取引擎配置或创建运行报告，也不调用 `record-tests`。这不表示测试通过；显式 full/必需用例、缺失路径及未解决的最终失败仍须处理。
 
-脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见 [直接检查说明](../methodology/gdscript-lint.md)。没有静态检查 Python 包装器、 静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
+脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见 [直接检查说明](../methodology/contracts/gdscript-lint.md)。没有静态检查 Python 包装器、 静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
 
 Feature 运行保存到 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行保存到 `reports/gdunit-wrapper/focused/run-<id>/`。每次测试只写一份 `result.json`，关联引擎日志、实际发现集合、JUnit 和诊断原件。 运行中、失败与通过都保存在该文件；完成检查从原件计算覆盖，不维护第二份尝试日志。 历史结果无法读取或头部无效时，启动阶段在 stderr 提示 `WARNING: invalid run history`， 保留原件并继续本次验证；警告不决定本次测试成败。当前快照读取失败仍保存本次 `failed` 结果并返回非零，不启动 Godot。 运行顺序和完成检查只读取当前 Feature 目录。目录内不可读、格式损坏或 Feature 不符的记录仍会阻止完成，须查明原因后按授权处理。正常的失败仍须由同 Feature/内容的后续充分验证解决。 目录或结果文件写入失败时如实报告 I/O 错误，不能声称结果已经保存。
 
@@ -74,7 +74,7 @@ flowchart TD
 
 `record-tests` 只导入测试报告。证据脚本通过不能证明静态检查已执行。 Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检查失败不能宣称完成。 失败报告和未完成任务需要的历史保留，不用旧成功掩盖后来失败。
 
-人工验收的清单准备、JSON 结果读取与口头反馈沿用完成记录入口，格式及确切命令见 [人工验收文件契约](../methodology/manual-acceptance-files.md)。命令成功只表示记录成功， 结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
+人工验收的清单准备、JSON 结果读取与口头反馈沿用完成记录入口，格式及确切命令见 [人工验收文件契约](../methodology/contracts/manual-acceptance-files.md)。命令成功只表示记录成功， 结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
 
 `show --feature F001` 只检查记录可读取、基本结构有效且属于 F001，然后显示原文数据。它不查询 Git、不重读测试或人工验收原件；待验收、已失效的引用不构成查看失败。判断当前测试与人工依据能否支持完成，使用 `validate --feature F001`。缺失、损坏或属于另一项 Feature 的记录仍使 `show` 返回非零，且不会修改原件。
 

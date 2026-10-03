@@ -185,6 +185,6 @@ advisor（`project-next-step-advisor`）根据项目自己的规则、状态和�
 
 提示词正文只在共享库中维护，advisor 每次读取当前内容，不需要导出副本。条目里写的“执行”不代表当前任务已获准；条目里出现某个 Skill 名称，也不代表本项目一定具备它。
 
-advisor 和 `task-handoff-godot` 起草的续接提示词，都遵循项目的 [Continuation prompts](../../../project-source/methodology/09-artifact-lifecycle.md#continuation-prompts) 格式，不因任务简短而省略固定字段。等待人工验收、缺少决定、验证受阻，都要和“已完成”分开写。
+advisor 和 `task-handoff-godot` 起草的续接提示词，都遵循项目的 [Continuation prompts](../../../project-source/methodology/09-records-reports-and-handoff.md#continuation-prompts) 格式，不因任务简短而省略固定字段。等待人工验收、缺少决定、验证受阻，都要和“已完成”分开写。
 
 职责设计的长期评价规则见[职责设计准则](../../maintenance/design-guidelines/README.md)，项目实际的任务路由见[方法总览](../../../project-source/methodology/00-overview.md)。

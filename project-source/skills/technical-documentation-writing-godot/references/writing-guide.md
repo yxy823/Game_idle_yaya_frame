@@ -15,7 +15,7 @@ The following paths belong to the target project. Read only the contracts releva
 | Feature records or design explanation | `methodology/02-feature-list-schema.md` and the affected Feature's actual sources and records |
 | Architecture or a technical decision record | `methodology/10-architecture-overview.md` and the relevant implemented responsibilities and accepted decisions |
 | Reusable project knowledge | `docs/knowledge/README.md`, the relevant topic and original task evidence |
-| Research or verification records | `methodology/09-artifact-lifecycle.md`, the actual evidence and the owning task's research or verification contract |
+| Research or verification records | `methodology/09-records-reports-and-handoff.md`, the actual evidence and the owning task's research or verification contract |
 
 Apply the target project's `AGENTS.md` and configured document language. Use `methodology/05-document-language.md` when resolving language or rendering a template. Missing design, approval or evidence remains a gap for the owning task; this writing method cannot supply it. In particular, it does not create a GDD from an idea or reconstruct approved game design from code.
 

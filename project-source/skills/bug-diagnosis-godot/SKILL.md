@@ -28,6 +28,6 @@ The same diagnosis can trace rule results, state, feedback and their connections
 
 Report the symptom and expected source, useful trigger, causal conclusion with supporting evidence, rejected alternatives when informative, and remaining uncertainty. State the actual investigation coverage and any required next check. Propose the smallest repair justified by the evidence; do not label a hypothesis as the root cause because its workaround made the symptom disappear.
 
-Follow methodology 07 for durable Bug evidence and `methodology/09-artifact-lifecycle.md` for retained results and temporary probes. Record only what the task needs in existing Feature/Progress locations. Preserve original failure evidence and make the state of temporary diagnostics explicit.
+Follow methodology 07 for durable Bug evidence and `methodology/09-records-reports-and-handoff.md` for retained results and temporary probes. Record only what the task needs in existing Feature/Progress locations. Preserve original failure evidence and make the state of temporary diagnostics explicit.
 
 A diagnosis-only request ends with the supported conclusion or a clear blocker; an unresolved cause remains unresolved. When repair is already authorized, return to its current Feature or [engineering-change-plan](../engineering-change-plan/SKILL.md) as the ownership contract requires, then continue the authorized work. Diagnosis neither creates a separate approval gate nor replaces regression verification, applicable human acceptance or the existing completion contract.

@@ -60,7 +60,7 @@ research date, applicable versions/environment and related task/design, then cov
 These are minimum information needs, not a machine schema; combine short sections
 and omit inapplicable metadata. Keep temporary drafts and source excerpts in
 tmp/<task>/; raw downloads and probes use reports/scratch/<task>/ under
-methodology/09-artifact-lifecycle.md. A simple lookup or a
+methodology/09-records-reports-and-handoff.md. A simple lookup or a
 conversation-only task can return findings without writing a file. If writing is
 unavailable, return the report content and disclose that it was not saved.
 
@@ -71,5 +71,5 @@ coordinating agent evaluates adoption and continues the authorized task, linking
 retained research from its existing design or Progress where useful. Accepted
 game-design requirements belong in GDD, delivery scope in Product, and other decisions in specialist sources, Feature design
 or an ADR, never solely in a research report. Research Markdown is reference material
-under methodology/09-artifact-lifecycle.md, not proof of project verification.
+under methodology/09-records-reports-and-handoff.md, not proof of project verification.
 """

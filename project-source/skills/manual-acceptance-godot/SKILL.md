@@ -9,7 +9,7 @@ Identify the actual Feature, current scope and requested operation. Apply **GDD 
 
 ## Use the matching part of the acceptance contract
 
-`methodology/manual-acceptance-files.md` owns the checklist, original files, snapshot binding, commands and result semantics. Read only the sections needed for the operation, plus the relevant Feature and actual source/result files.
+`methodology/contracts/manual-acceptance-files.md` owns the checklist, original files, snapshot binding, commands and result semantics. Read only the sections needed for the operation, plus the relevant Feature and actual source/result files.
 
 | Requested operation | Read and apply |
 | --- | --- |

@@ -1,31 +1,33 @@
 ---
 name: project-environment-godot
-description: Configure, update or recover a Godot project's tool environment, or complete its needed first resource scan. Does not create a project, repair game behavior or run a general verification suite.
+description: Configure, update or recover a Godot project's tool paths, or run its first Godot resource scan. Use when the user asks for environment setup, a tool moved or changed version, or a configured tool cannot be started. Not for creating a project, fixing game behavior or running a general verification suite.
 ---
 
 # Maintain the project environment
 
-Identify the requested environment change or preparation and reuse the actual configuration and prior results. Apply **GDD prerequisite and authority** in `methodology/01-product-doc-structure.md`. This capability can support an existing task or an explicit setup request; it creates no Feature or new Stage.
+Prepare or repair the tools this project runs with. [Project environment](../../../methodology/06-project-environment.md) defines the configuration and the Bootstrap steps; this Skill applies them and adds no other setup procedure. Environment work does not need a GDD, and it creates no Feature or Stage.
 
-## Read only the applicable contract
-
-Paths below are relative to the project root. `methodology/05-document-language.md` owns configuration and **Project Environment Bootstrap**; this Skill does not define another setup procedure.
+## Read the section for the current need
 
 | Current need | Read and apply |
 | --- | --- |
-| Initial environment configuration | **Configuration contract**, **Verification configuration** and **Project Environment Bootstrap**; consult **Language selection** for an explicit language change or ambiguity, not to reconfirm the configured default |
-| A tool location or version changed | **Verification configuration** and the affected Bootstrap checks; preserve unrelated settings and valid preparation |
-| A configured tool cannot be invoked | **Project Environment Bootstrap** for using the configured path, reporting its actual failure and changing a tool location only within the requested scope |
-| A newly copied project needs its first import/class scan | **Project Environment Bootstrap** and **首次 Godot 扫描** in `tools/README.md`; apply the project's actual process and permission constraints |
+| First setup of a new project | **Tool configuration** and **Project Environment Bootstrap**. The default document language is already set; read [language selection](../../../methodology/05-document-language.md#3-language-selection) only if the user asks for another language |
+| A tool moved or changed version | **Tool configuration**, then rerun the affected Bootstrap checks. Keep unrelated settings and preparation that is still valid |
+| A configured tool cannot be started | **Tool configuration**: report the actual failure; change the path only within the user's request |
+| The first import and class scan is needed | **Project Environment Bootstrap** step 2 and [首次 Godot 扫描](../../../tools/README.md#首次-godot-扫描) |
 
-Before an editor, import or other writing tool runs in a worktree, read [Godot worktree runtime preparation](../worktree-create-godot/references/godot-worktree-runtime.md) if relevant write or cleanup destinations are unknown or have changed. Reuse still-valid preparation; reading this reference neither invokes worktree creation nor requires a new checkout or full isolation routine for every environment check.
+If an editor or import run will write inside a worktree and you do not know where it writes or cleans up, read [Godot worktree runtime preparation](../worktree-create-godot/references/godot-worktree-runtime.md) first. Reading it does not create a worktree.
 
-Use configured executables and the existing environment checker. Check its real output rather than treating a prefilled path or file presence as readiness. Do not recreate the project, install dependencies or replace a tool choice merely because a check fails. Reuse a completed first scan; do not add a recurring import phase or clear caches to hide a failure.
+## Check with real output
 
-## Return the actual preparation result
+- Use the configured executables and `tools/checks/check-project-environment.py`. Judge readiness from the checker's actual output, not from a filled-in path or an existing file.
+- When a check fails, do not recreate the project, install dependencies or switch tools on your own. Report the failure.
+- Reuse a completed first scan. Do not add a recurring import step, and do not clear caches to hide a failure.
 
-Make only the authorized configuration or preparation changes and perform the matching checks. Configuration-only work can leave the first scan for the authorized first run under the Bootstrap contract; report that distinction. A successful probe or scan proves only its own result, not passing tests or game behavior.
+## Report and return
 
-Use the existing initialization report and Progress responsibilities in methodology 05, preserving prior evidence without adding a readiness flag or another state file. Durable writes follow its language contract and `agent-rules/00-core/git-worktree-and-commits.md`, including the current task's commit conditions.
+Make only the configuration or preparation changes the user asked for, and run the matching checks. If you configured paths but left the first scan for later, say so.
 
-Return what changed, what was actually checked and any remaining blocker to the owning task. Continue already authorized work through its existing owner without another confirmation merely because this method returned; setup success does not declare that task complete.
+Record the outcome in `reports/initialization.md` and Progress as described in **Project Environment Bootstrap**. Commit under `agent-rules/00-core/git-worktree-and-commits.md`, including any commit conditions the user set.
+
+Return what changed, what was actually checked and any remaining blocker. A successful check shows only that the tools are available, not that tests pass or the game works. If this Skill was called from another authorized task, continue that task; setup success does not complete it.

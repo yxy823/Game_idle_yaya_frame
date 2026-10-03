@@ -5,7 +5,7 @@ description: Preserve a Godot project's actual task stop point and prepare a sco
 
 # Prepare a project task handoff
 
-Use **Task handoff** in `methodology/09-artifact-lifecycle.md` for shared content, record ownership and continuation boundaries. Match the requested result: a conversational summary, durable pause records, or records plus copyable text for a new conversation. Do not force all three outputs when only one is needed.
+Use **Task handoff** in `methodology/09-records-reports-and-handoff.md` for shared content, record ownership and continuation boundaries. Match the requested result: a conversational summary, durable pause records, or records plus copyable text for a new conversation. Do not force all three outputs when only one is needed.
 
 ## Recover the real stop point
 

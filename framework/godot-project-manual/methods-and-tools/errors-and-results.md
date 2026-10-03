@@ -59,4 +59,4 @@
 
 场景启动、图片显示、声音试听、输入、长时间运行、资源包和导出依赖，各自都需要对应的实际结果。报告时把“未执行”“失败”“报告丢失”“只有旧版本成功”分别写清，不要合并成“没有问题”。
 
-工具的错误契约见[工具说明](../../../project-source/tools/README.md)、[测试策略](../../../project-source/methodology/08-testing-strategy.md)和[人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。
+工具的错误契约见[工具说明](../../../project-source/tools/README.md)、[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md)和[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。

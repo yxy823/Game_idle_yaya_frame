@@ -13,8 +13,8 @@ The following paths are project-relative. Read the branch needed for this reques
 
 | Requested result | Authoritative method |
 | --- | --- |
-| Script parsing or lint | **Direct execution** in `methodology/gdscript-lint.md`, including its required internal scan scope, exit codes and original-output handling |
-| Existing Feature tests | **Runtime Test Impact selection** in `methodology/08-testing-strategy.md`, the actual Feature/Registry obligations and the runner contract in `tools/README.md` |
+| Script parsing or lint | **Direct execution** in `methodology/contracts/gdscript-lint.md`, including its required internal scan scope, exit codes and original-output handling |
+| Existing Feature tests | **Runtime Test Impact selection** in `methodology/08-test-traceability-and-evidence.md`, the actual Feature/Registry obligations and the runner contract in `tools/README.md` |
 | A specified test suite/component without a Feature | The focused target route in `tools/README.md` and methodology 08; no Feature, plan or completion record is needed |
 | Actual startup or a specific scene/resource observation | The requested scene, relevant project engineering rules through `AGENTS.md` and actual configured Godot environment; first-scan instructions in `tools/README.md` only if preparation is missing |
 
@@ -22,7 +22,7 @@ For a check in an existing worktree, read [Godot worktree runtime preparation](.
 
 Run only the requested kinds of check, while retaining each method's required scope and existing obligations. A focused diagnostic run does not satisfy a broader delivery requirement. If the requested restriction conflicts with a required method or permission, explain the specific conflict instead of silently weakening the check or expanding the task.
 
-This method does not edit implementation, tests, AC or check policy to obtain a pass. Return failures to the existing owner; diagnosis or repair follows the task's actual authorization. Preserve original results under **Reports and cleanup** in `methodology/09-artifact-lifecycle.md`. Any permitted repository writes follow `agent-rules/00-core/git-worktree-and-commits.md` and the task's commit conditions.
+This method does not edit implementation, tests, AC or check policy to obtain a pass. Return failures to the existing owner; diagnosis or repair follows the task's actual authorization. Preserve original results under **Reports and cleanup** in `methodology/09-records-reports-and-handoff.md`. Any permitted repository writes follow `agent-rules/00-core/git-worktree-and-commits.md` and the task's commit conditions.
 
 ## Report and continue
 

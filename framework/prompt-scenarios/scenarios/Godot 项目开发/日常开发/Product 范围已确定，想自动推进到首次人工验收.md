@@ -53,4 +53,4 @@ GDD 缺失时说明缺口并停止，不初始化设计。局部原型确认只�
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[人工验收文件契约](<../../../../../project-source/methodology/manual-acceptance-files.md>)。本段 Goal 以首个完整人工验收交接或授权范围全部完成为出口，不跨过本次明确的人工交接边界继续开发。用户后续要求继续时核对实际验收结果与仍有效的授权；交接材料就绪不代表该 Feature 已验收或正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[人工验收文件契约](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md>)。本段 Goal 以首个完整人工验收交接或授权范围全部完成为出口，不跨过本次明确的人工交接边界继续开发。用户后续要求继续时核对实际验收结果与仍有效的授权；交接材料就绪不代表该 Feature 已验收或正式完成。

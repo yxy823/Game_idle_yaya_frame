@@ -184,4 +184,4 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 例如 GDD 已确认“初始资源为 0，每次点击加 1”，Product 可以选择交付“手动收集”，Feature 再用“初始值”和“连续点击后的结果”两条 AC 关联真实测试。这个例子只演示对象之间怎样连接，不代表任何项目已批准这些数值、文件名、Feature ID 或测试结果。
 
-权威结构见 [Product 规范](../../../project-source/methodology/01-product-doc-structure.md)、[Feature 规范](../../../project-source/methodology/02-feature-list-schema.md)和[测试策略](../../../project-source/methodology/08-testing-strategy.md)。
+权威结构见 [Product 规范](../../../project-source/methodology/01-product-doc-structure.md)、[Feature 规范](../../../project-source/methodology/02-feature-list-schema.md)和[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md)。

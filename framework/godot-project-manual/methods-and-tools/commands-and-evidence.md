@@ -123,7 +123,7 @@ $LASTEXITCODE
 
 ## 测试范围怎样计算
 
-完整规则见测试规范的 [Test Impact Review](../../../project-source/methodology/08-testing-strategy.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-testing-strategy.md#runtime-test-impact-selection)，这里用中文说明各范围的组成：
+完整规则见测试规范的 [Test Impact Review](../../../project-source/methodology/08-test-traceability-and-evidence.md#test-impact-review) 与 [Runtime Test Impact selection](../../../project-source/methodology/08-test-traceability-and-evidence.md#runtime-test-impact-selection)，这里用中文说明各范围的组成：
 
 ```text
 Required Test Set =
@@ -260,7 +260,7 @@ $LASTEXITCODE
 
 ### 导入人工验收结果
 
-人工清单和结果文件都保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/manual-acceptance-files.md)。`--result` 必须与 `--checklist` 配对使用，不能和表示口头决定的 `--status` 混用。
+人工清单和结果文件都保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。`--result` 必须与 `--checklist` 配对使用，不能和表示口头决定的 `--status` 混用。
 
 - 有效且全部通过的结果文件，本身就是该范围的人工接受；备注里有实质矛盾时先向用户澄清。
 - 命令退出 0 表示如实记录了状态；`pending` 和 `rejected` 都不能完成任务。
@@ -315,7 +315,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 
 指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档尽量在 Stage 3 完成。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读评审不改变内容。
 
-直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-testing-strategy.md#artifact-backed-completion-and-semantic-freshness)。
+直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md#artifact-backed-completion-and-semantic-freshness)。
 
 性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见[专业来源与资源的测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
 
@@ -364,4 +364,4 @@ lint CLI 的结果约定：
 | gdUnit 运行器 | 0 成功；1 运行失败；2 参数错误 |
 | lint CLI | 见上节 |
 
-实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[lint 契约](../../../project-source/methodology/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[lint 契约](../../../project-source/methodology/contracts/gdscript-lint.md)。

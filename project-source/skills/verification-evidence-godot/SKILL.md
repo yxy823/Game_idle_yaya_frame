@@ -9,7 +9,7 @@ Identify the requested evidence operation, actual Feature or diagnostic scope, c
 
 ## Distinguish the evidence problem
 
-Read **Artifact-backed completion and semantic freshness** in `methodology/08-testing-strategy.md` and the matching operation under **调用** or **结果如何使用** in `tools/README.md`. These project-relative sources own evidence identity, coverage, import and recovery; do not reproduce their structure or edit verdicts by hand.
+Read **Artifact-backed completion and semantic freshness** in `methodology/08-test-traceability-and-evidence.md` and the matching operation under **调用** or **结果如何使用** in `tools/README.md`. These project-relative sources own evidence identity, coverage, import and recovery; do not reproduce their structure or edit verdicts by hand.
 
 | Actual situation | Response within the existing contract |
 | --- | --- |
@@ -24,7 +24,7 @@ Displaying a saved record and checking its current support for completion are di
 
 Use [project-verification-godot](../project-verification-godot/SKILL.md) when authorized recovery requires another static check, existing test run or scene check. Choose the scope required by the original failure or current obligations; do not default to a full rerun. Diagnosis or implementation changes return to their existing owner rather than becoming an evidence edit.
 
-If actual human results need preparing, recording or renewing, use [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md). An automated rerun cannot renew human acceptance. Preserve failures and referenced originals under **Reports and cleanup** in `methodology/09-artifact-lifecycle.md`; no cleanup or reconstructed artifact may conceal a required failure.
+If actual human results need preparing, recording or renewing, use [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md). An automated rerun cannot renew human acceptance. Preserve failures and referenced originals under **Reports and cleanup** in `methodology/09-records-reports-and-handoff.md`; no cleanup or reconstructed artifact may conceal a required failure.
 
 ## Return the supported result
 

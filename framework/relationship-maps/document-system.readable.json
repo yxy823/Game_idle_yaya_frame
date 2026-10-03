@@ -591,7 +591,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Product、Feature、测试、进度、规则和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n少量模板由创建器复制为初始空记录；其他模板只在真实任务需要时采用，不自动创建业务文档。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
+      "note": "职责：Product、Feature、完成证据、人工验收清单和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n只在真实任务需要时采用，不自动创建业务文档；初始台账、进度与项目规则由 defaults/docs/ 直接复制，不是模板。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -720,7 +720,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： methodology/*.md",
+      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： methodology/*.md\n项目文件： methodology/contracts/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -810,7 +810,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/Project_Workflow_Config.json"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/methodology-config.json"
       },
       "appearance": {
         "opacity": 1,
@@ -1111,7 +1111,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/feature-list.json.tmpl"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/feature-list.json"
       },
       "appearance": {
         "opacity": 1,
@@ -1412,7 +1412,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/test-registry.json.tmpl"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/test-registry.json"
       },
       "appearance": {
         "opacity": 1,
@@ -1584,7 +1584,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/manual-acceptance-files.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/contracts/manual-acceptance-files.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1842,7 +1842,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/09-artifact-lifecycle.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/09-records-reports-and-handoff.md"
       },
       "appearance": {
         "opacity": 1,
@@ -1971,7 +1971,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/methodology/templates/progress.md.tmpl"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/defaults/docs/progress.md"
       },
       "appearance": {
         "opacity": 1,

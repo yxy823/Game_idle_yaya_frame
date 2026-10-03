@@ -23,7 +23,7 @@
 | 选择讨论、设计、规划、开发或审核入口 | [任务路由](methodology/00-overview.md#canonical-task-routing)；项目约束见 [AGENTS.md](AGENTS.md) |
 | 执行已批准的 Feature | [执行流程](methodology/03-execute-loop.md) |
 | 配置 Python、Godot 和文档语言 | [环境与语言约定](methodology/05-document-language.md)；配置在 `docs/methodology-config.json`，文档默认中文 |
-| 运行环境检查、测试或静态检查 | [工具说明](tools/README.md)；GDScript 解析与 lint 见[直接检查说明](methodology/gdscript-lint.md) |
+| 运行环境检查、测试或静态检查 | [工具说明](tools/README.md)；GDScript 解析与 lint 见[直接检查说明](methodology/contracts/gdscript-lint.md) |
 | 预览与接入图像、音频、Shader、粒子或动画 | [资源工作台示例](asset_workbench/examples/README.md)，可按 F6 运行；示例素材不代表正式游戏素材 |
 
 `main/main.tscn` 是最小启动入口；游戏功能放在 `game/`，复用能力与共享素材分别放在 `components/`、`assets/`，测试放在 `tests/`。具体归属见[组织指南](docs/game-organization.md)。

@@ -31,34 +31,7 @@ Yaya Loop recommends conventional BCP 47 casing: lowercase language, title-case 
 
 The environment checker performs basic lexical screening: an ASCII alphabetic primary subtag of two to eight letters, or an `i`/`x` prefix followed by subtags; hyphen-separated subtags contain one to eight ASCII letters or digits. It rejects whitespace, underscores and empty/overlong subtags without normalizing the value. This does not validate complete BCP 47 subtag ordering or registry membership. The Agent resolves unusual-tag validity and applies the configured language; the checker does not decide language preferences.
 
-### Verification configuration
-
-`docs/methodology-config.json` also stores the machine settings used by `feature-execute`:
-
-- `python_executable`: Complete Python executable path or name used by project tools. It contains no script path or appended arguments; no automatic Hook is registered.
-- `engine_executable`: complete Godot executable file path, absolute or relative to the project root, without shell quotes or arguments; no PATH lookup.
-
-These values are machine-facing configuration and must not be translated when `document_language` changes. A document-language migration preserves them byte-for-byte unless the user separately changes the project's verification setup.
-
-The Test Registry always lives at `docs/test-registry.json`, relative to the project root. Its location is shared by the merger, checker, test selector and completion check; it is not a configuration field or duplicated Feature-index metadata.
-
-### Project Environment Bootstrap
-
-Bootstrap means the Agent prepares this project's environment in response to an explicit setup request. The [existing GDD prerequisite](01-product-doc-structure.md#gdd-prerequisite-and-authority) applies before this project-development work. Use the configuration contract below; there is no separate setup program.
-
-Configuration stores tool choices, not derived readiness or an observed version. The checker probes Godot and reports its actual version; keep useful output in the existing initialization report.
-
-Use the user-configured `engine_executable` directly without rediscovering it. If that path is unavailable, report the reason; change it only when the user requests a new tool location. A prefilled path is not readiness. Store the Python executable in `python_executable`. The fixed test entry is `tools/testing/run-gdunit-tests.py`; it reads the configured Godot path unless `--godot-binary` explicitly overrides it for that run. Script parsing and lint use Godot/addon entrypoints directly as described in `gdscript-lint.md`. The plan-aware test runner accepts scope arguments; focused and affected scopes do not need separate configuration copies. No plugin source/hash inventory, timestamp, working-directory field or stored blocker list is needed; commands run from the project root.
-
-The Agent confirms the tools and dependencies. Before the first CLI run that needs project scripts in a newly copied project, let the configured Godot editor finish its normal resource import and global class scan if this project has not already been opened. Follow the [first scan instructions](../tools/README.md#首次-godot-扫描). Configuration-only setup may defer this to the authorized first run and must report that it was not executed. Reuse completed preparation on later Features; do not add an import wrapper or a per-Feature import phase. Record the actual setup process and findings in `reports/initialization.md`. Append a new entry when that report already exists; preserve earlier failures. This is a human-readable task report, not a machine gate or another state file. The default project `.gitignore` keeps this report local; committing Progress does not include the linked report. Check the project's actual ignore rules; include the report in version control only within the user's explicit scope. Progress keeps the current result, blockers, next step and report link. After configuring the tool paths, run:
-
-```powershell
-python -B tools/checks/check-project-environment.py --require-ready
-```
-
-Without the flag, the checker validates configuration structure and allows an empty Godot path without claiming tool availability. With it, the checker requires existing Python/Godot executable files, the fixed test runner file, and a successful live Godot 4.7.x version probe. It prints the observed version; there is no saved readiness flag or exact patch-version lock. File presence does not prove a successful test run. It does not prepare editor caches, install dependencies, execute tests, script parsing or lint, initialize Git or claim those checks passed. If setup fails, report the actual reason in Progress and the initialization report; do not save a second status or error list in configuration.
-
-The same runner uses `--scope full` to select `tests/` recursively. A required full suite still needs an actual successful full run. A successful readiness check proves only the availability it actually checked; Stage 4 proves actual test and static results. Subsequent Features reuse the configured commands rather than rediscovering installations.
+Tool paths in the same file are covered in [project environment](06-project-environment.md).
 
 ## 3. Language selection
 
@@ -144,18 +117,3 @@ Every workflow that creates or updates durable project knowledge must:
 5. Stop and ask when an edit would create an unapproved language migration.
 
 These obligations apply equally to native agent integrations and agent-agnostic Prompts.
-
-## 11. Initial release boundaries
-
-The first international release verifies English and Simplified Chinese project knowledge. It does not require:
-
-- a runtime localization framework or translation service
-- localized copies of canonical workflow sources
-- localized tool error registries
-- automatic translation of an existing project
-- region-specific variants of English
-- verified output for every BCP 47 language tag
-
-Support claims in public documentation must not exceed behavior covered by Bootstrap checks, repository tests, and documented smoke scenarios.
-
-Run the canonical English, Simplified Chinese and conversation/document-language mismatch scenarios in [06-document-language-smoke-scenarios.md](./06-document-language-smoke-scenarios.md) before expanding public support claims.

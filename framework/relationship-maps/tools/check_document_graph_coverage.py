@@ -29,7 +29,7 @@ def is_document(path: str) -> bool:
     lower = path.lower()
     return (
         lower.endswith((".md", ".md.tmpl", ".json.tmpl"))
-        or path in {MANIFEST, "project-source/Project_Workflow_Config.json"}
+        or path == MANIFEST
         or (lower.endswith(".json") and path.startswith(JSON_DIRECTORIES)
             and not PurePosixPath(path).name.startswith("graph-usage."))
     )

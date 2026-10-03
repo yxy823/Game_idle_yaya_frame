@@ -53,7 +53,7 @@ As a thought experiment, remove the layer and call its dependencies directly. If
 
 Preserve useful separation between independent game rules and Godot scene orchestration. Check Node, Resource, Signal and SceneTree ownership and lifetimes before merging boundaries. A short scene owner that cancels pending work or manages signal subscriptions may carry a meaningful contract. Introduce a new substitution point only for a concrete runtime or testing need; neither hypothetical future platforms nor a fixed number of implementations determines its value.
 
-Verify the behavior callers depend on using the existing [testing strategy](08-testing-strategy.md): L1 for independent rules, L2 for real collaboration and relevant engine behavior. Keep Godot semantics real when they are the subject of the test. Merging modules or adding a boundary test does not by itself justify deleting existing tests; retain needed scenarios and follow the existing test and registry maintenance rules when retiring redundant cases.
+Verify the behavior callers depend on using the existing [testing strategy](08-test-traceability-and-evidence.md): L1 for independent rules, L2 for real collaboration and relevant engine behavior. Keep Godot semantics real when they are the subject of the test. Merging modules or adding a boundary test does not by itself justify deleting existing tests; retain needed scenarios and follow the existing test and registry maintenance rules when retiring redundant cases.
 
 ## Architecture Decision Records
 
@@ -96,6 +96,6 @@ Use the document's configured language for the section title and preserve its re
 
 ## Extracted reference facts
 
-Automation can extract only supported facts: a Resource dependency, an explicit path reference, or a type reference actually recognized by its parser. Record the extractor/version, source snapshot, scanned scope and known blind spots. Dynamic loading, runtime signal connections and ownership generally cannot be inferred from text alone. Keep generated facts in an owned artifact directory such as `reports/maintenance/architecture-facts/<run>/`, under the [report lifecycle](09-artifact-lifecycle.md#reports-and-cleanup).
+Automation can extract only supported facts: a Resource dependency, an explicit path reference, or a type reference actually recognized by its parser. Record the extractor/version, source snapshot, scanned scope and known blind spots. Dynamic loading, runtime signal connections and ownership generally cannot be inferred from text alone. Keep generated facts in an owned artifact directory such as `reports/maintenance/architecture-facts/<run>/`, under the [report lifecycle](09-records-reports-and-handoff.md#reports-and-cleanup).
 
 Generated output is never the sole architectural authority. A diagram of observed references cannot authorize dependencies or establish causal behavior. Use a diagram only when it helps explain actual responsibilities or dependencies.

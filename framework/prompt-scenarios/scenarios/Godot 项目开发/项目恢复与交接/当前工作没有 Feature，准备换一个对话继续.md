@@ -57,6 +57,6 @@
 
 ## 流程关联与衔接关系
 
-依据：[methodology/09-artifact-lifecycle.md](<../../../../../project-source/methodology/09-artifact-lifecycle.md>)。
+依据：[methodology/09-records-reports-and-handoff.md](<../../../../../project-source/methodology/09-records-reports-and-handoff.md>)。
 
 本页完成后停止原工作的实施。原授权保留为后续范围依据；收到用户明确续接指令后，再从记录的真实停点恢复。

@@ -75,7 +75,7 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 - **用户结果**：用户在另一个文件中填写 passed / failed / pending 和观察记录；不能通过改 ID、步骤或预期来消除失败。
 - **何时算接受**：所有有效的必需项都通过、反馈中没有矛盾，就已经表示接受，不需要再向用户要一次同样的确认。
 
-记录方式有两种：用户明确的口头结论，或结果 JSON 文件。原件缺失、版本失效或反馈有歧义时，如实保留缺口；导入命令成功，记录的状态也可能是 rejected 或 pending。automated 模式不生成空清单，也不伪造接受。文件契约和命令见[人工验收文件](../../../project-source/methodology/manual-acceptance-files.md)与[命令与验证证据](../methods-and-tools/commands-and-evidence.md#导入人工验收结果)。
+记录方式有两种：用户明确的口头结论，或结果 JSON 文件。原件缺失、版本失效或反馈有歧义时，如实保留缺口；导入命令成功，记录的状态也可能是 rejected 或 pending。automated 模式不生成空清单，也不伪造接受。文件契约和命令见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)与[命令与验证证据](../methods-and-tools/commands-and-evidence.md#导入人工验收结果)。
 
 测试运行器返回 `not_required` 的条件很严格：有效的 manual 计划确实没有自动测试义务，且没有未解决的失败或未结束的最终运行。它不是跳过测试的开关，直接静态检查、专项检查和人工要求照常适用。
 

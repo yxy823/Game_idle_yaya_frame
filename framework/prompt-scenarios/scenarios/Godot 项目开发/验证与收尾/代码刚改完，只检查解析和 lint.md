@@ -21,7 +21,7 @@
 
 **S1｜核对直接命令**
 
-当前 Agent 读取 methodology/gdscript-lint.md 和配置，确认实际插件与参数，不另建包装。
+当前 Agent 读取 methodology/contracts/gdscript-lint.md 和配置，确认实际插件与参数，不另建包装。
 
 **S2｜执行限定检查**
 
@@ -73,4 +73,4 @@ $LASTEXITCODE
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-testing-strategy.md>)、[原生解析与 lint 命令](<../../../../../project-source/methodology/gdscript-lint.md>)。本入口只承担解析与 lint 检查，不由检查结果授予修复权限。用户本次明确只验证时，在结果交付后结束该范围；若检查属于已授权完整任务的步骤，按仍有效的具体授权进入后续所属流程，不因检查结束重复确认。当前明确限制不能由旧授权撤销，检查结果也不代替 Feature 正式完成。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md>)、[原生解析与 lint 命令](<../../../../../project-source/methodology/contracts/gdscript-lint.md>)。本入口只承担解析与 lint 检查，不由检查结果授予修复权限。用户本次明确只验证时，在结果交付后结束该范围；若检查属于已授权完整任务的步骤，按仍有效的具体授权进入后续所属流程，不因检查结束重复确认。当前明确限制不能由旧授权撤销，检查结果也不代替 Feature 正式完成。

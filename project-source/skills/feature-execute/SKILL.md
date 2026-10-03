@@ -15,12 +15,12 @@ Apply the project GDD prerequisite before starting or resuming; an existing Feat
 | Select the current Product/Feature | **Stage 0 · select and load context** in `methodology/03-execute-loop.md`, with Product order from **Product-by-Product planning** in methodology 02 |
 | Read applicable implementation rules and knowledge | Project `AGENTS.md` and its task-specific routes |
 | Prepare needed implementation guidance for an existing Feature | `implementation-guidance-godot`; its explicit-request contract controls advisor delegation, while methodology 02 owns the design lifecycle |
-| Resolve document language or environment setup | `methodology/05-document-language.md` and current `docs/methodology-config.json` |
-| Plan tests, stale-test cleanup or runtime selection | Relevant sections of `methodology/08-testing-strategy.md` |
+| Resolve document language or environment setup | `methodology/05-document-language.md` or `methodology/06-project-environment.md`, and current `docs/methodology-config.json` |
+| Plan tests, stale-test cleanup or runtime selection | Relevant sections of `methodology/08-test-traceability-and-evidence.md` |
 | Write Feature, Registry or completion fields | Relevant artifact contract in `methodology/02-feature-list-schema.md` |
-| Execute direct parsing/lint | `methodology/gdscript-lint.md` |
+| Execute direct parsing/lint | `methodology/contracts/gdscript-lint.md` |
 | Record Bug diagnosis/learning | `methodology/07-engineering-change.md` and execute Stage 5.5 |
-| Archive execution or record architecture decisions | `methodology/09-artifact-lifecycle.md` and, when applicable, `methodology/10-architecture-overview.md` |
+| Archive execution or record architecture decisions | `methodology/09-records-reports-and-handoff.md` and, when applicable, `methodology/10-architecture-overview.md` |
 | Use professional sources, supporting specialist work or supplemental evidence | `methodology/11-specialist-workflows.md` |
 | Perform user-requested independent review | Stage 6 and `methodology/12-independent-review.md`; review methods live in separate Skills |
 

@@ -283,7 +283,7 @@ Append replacement IDs without renumbering or deleting old entries. Review all d
 }
 ```
 
-Registry semantics and ID formats are canonicalized in [08-testing-strategy.md](./08-testing-strategy.md#registry-rules). The logical ID determines the test's kind, owning Feature and acceptance criterion; do not store these a second time. Feature references encoded in IDs must resolve to existing Features.
+Registry semantics and ID formats are canonicalized in [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md#registry-rules). The logical ID determines the test's kind, owning Feature and acceptance criterion; do not store these a second time. Feature references encoded in IDs must resolve to existing Features.
 
 Registry schema version 3 is the only supported format; revision history remains version 2. No old-format parsing or automatic migration is provided. Every retired entry requires explicit retirement provenance:
 
@@ -304,7 +304,7 @@ An approved revision of a pending/in-progress Feature may remove an old AC from 
 
 Completed Feature criteria/test IDs and archived completion evidence are historical records. Do not rewrite them to simulate current behavior. The active safety net is selected from current `active` Registry records. Normal strict validation accepts historical `done` references to traceably retired tests, but current completion must pass `python -B tools/checks/check-feature-list.py --completion-feature F0XX`, which requires that Feature's own mapped automated tests to be active. Completion additionally requires actual execution evidence for automated obligations; retirement is never a substitute for passing tests. Retired entries without provenance fail validation; do not invent a reason or replacement to make them pass.
 
-`unit_test_paths` is an array of component unit-suite paths; the example assumes the inventory suite exists. Path requirements, empty-suite handling and registration timing follow [Registry rules](08-testing-strategy.md#registry-rules).
+`unit_test_paths` is an array of component unit-suite paths; the example assumes the inventory suite exists. Path requirements, empty-suite handling and registration timing follow [Registry rules](08-test-traceability-and-evidence.md#registry-rules).
 
 Component suite paths and active test paths must stay inside the repository after resolution. Registration and selection reject absolute paths, drive-qualified paths, parent traversal and links resolving outside the repository. Registry paths are repository-relative, without a `res://` prefix. Planned and retired test entries retain the existing nullable/historical path contract; they do not require an existing executable file.
 
@@ -312,7 +312,7 @@ Component suite paths and active test paths must stay inside the repository afte
 
 This repository-owned JSON file holds the current Feature's completion evidence. PASS requires a real result.json, original JUnit/discovery/diagnostics and actual test set matched against the approved Required/affected/full plan. Caller-supplied pass counts cannot create PASS. A valid manual plan with no Required/affected tests and no full-suite obligation keeps `test_runs: []` and derives `not_required`, not PASS; actual human acceptance and applicable static checks still apply. Unresolved failed or unfinished final runs on the same snapshot still block completion. Test and applicable human acceptance evidence must match the current semantic snapshot. Production, tests, configuration, GDD, Product, professional sources, Project Rules, Feature AC/verification and Registry semantics participate in that snapshot. Pure status/completion timestamps, Feature notes and Progress/history archival do not invalidate business test evidence.
 
-The current evidence schema is version 8. It keeps real test-run references plus applicable human acceptance. Required/affected/full test conclusions are calculated from those artifacts rather than persisted again. Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in `methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in [08-testing-strategy.md](./08-testing-strategy.md). The normal command is:
+The current evidence schema is version 8. It keeps real test-run references plus applicable human acceptance. Required/affected/full test conclusions are calculated from those artifacts rather than persisted again. Static checks are executed and assessed directly by the Agent, outside this file. The schema is shown in `methodology/templates/feature-completion-evidence.json.tmpl`; the execution contract is in [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md). The normal command is:
 
 ```powershell
 python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json

@@ -10,13 +10,13 @@ Use the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/
 
 No project-specific engineering constraints have been confirmed in this blank project. Add confirmed development constraints here when needed; do not invent technical commitments from examples. GDD owns game-design boundaries and exclusions, including long-lived ones; reference its owning passages rather than duplicating them here. Definitions belong in `docs/terminology.md`, delivery boundaries in Product and current architecture in its own documents.
 
-Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
+Rule additions, deletions and edits follow `methodology/04-project-rules.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
 
 ---
 
 # Part 1 · Collaboration contract
 
-> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-coding-rules-4-layers.md` and the Core precedence protocol; these requirements do not override external instructions.
+> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-project-rules.md` and the Core precedence protocol; these requirements do not override external instructions.
 
 ## 1.1 Collaboration discipline
 
@@ -30,7 +30,7 @@ Rule additions, deletions and edits follow `methodology/04-coding-rules-4-layers
 
 ## 1.2 Workflow constraints
 
-Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/05-document-language.md`; test semantics follow `methodology/08-testing-strategy.md`. Do not maintain competing Stage instructions here.
+Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/05-document-language.md`; test semantics follow `methodology/08-test-traceability-and-evidence.md`. Do not maintain competing Stage instructions here.
 
 Inspect and preserve existing changes, continue work in the same project directory, stage the intended scope and create eligible logical commits under `agent-rules/00-core/git-worktree-and-commits.md`.
 
@@ -134,7 +134,7 @@ The project root `AGENTS.md` is the rule router and records the repository workf
 
 ## 3.2 Loading and conflicts
 
-Use the reading route above and `methodology/04-coding-rules-4-layers.md`. Apply the Core precedence protocol to real conflicts; do not load unrelated topics or treat a general preference as permission to weaken a mandatory rule.
+Use the reading route above and `methodology/04-project-rules.md`. Apply the Core precedence protocol to real conflicts; do not load unrelated topics or treat a general preference as permission to weaken a mandatory rule.
 
 This template must not create a second concrete-rule tree or copy current engine, language, tool, or project status into `docs/project-rules.md`.
 

@@ -43,7 +43,7 @@ New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
 $LASTEXITCODE
 ```
 
-For work without a Feature, use `reports/maintenance/<task>/`. Choose paths and retain originals under [Reports and cleanup](09-artifact-lifecycle.md#reports-and-cleanup); saved parsing output follows the same task directory, not scratch.
+For work without a Feature, use `reports/maintenance/<task>/`. Choose paths and retain originals under [Reports and cleanup](../09-records-reports-and-handoff.md#reports-and-cleanup); saved parsing output follows the same task directory, not scratch.
 
 For PowerShell with the Windows GUI executable, the pipeline waits for the process; read `$LASTEXITCODE` immediately. An empty exit value is not a successful check.
 

@@ -26,7 +26,7 @@ Reviewed source, assets, specifications, original acceptance records and origina
 
 Necessary targeted verification is allowed within the user's review scope unless restricted. Before running it, inspect side effects and direct all logs, caches, imports, test data and outputs away from the reviewed artifacts. Use an isolated safe copy or an existing authorized validation environment, and the existing `reports/scratch/<task>/` convention where safe. A separate report path alone does not isolate a Godot import or test that writes into source/user data. Preserve the exact reviewed snapshot when copying, including relevant uncommitted files; a copy of HEAD alone omits those changes. Do not run a command when its side effects cannot be contained or its permission is unavailable. Report the resulting unverified claim instead of bypassing limits.
 
-Keep retained review reports under the existing `reports/features/<ID>/` or `reports/maintenance/<task>/` locations; conversation output is normally sufficient. Never overwrite another run or the author's evidence. Follow [artifact lifecycle](09-artifact-lifecycle.md) without adding a review registry.
+Keep retained review reports under the existing `reports/features/<ID>/` or `reports/maintenance/<task>/` locations; conversation output is normally sufficient. Never overwrite another run or the author's evidence. Follow [artifact lifecycle](09-records-reports-and-handoff.md) without adding a review registry.
 
 ## Evidence and verdict
 

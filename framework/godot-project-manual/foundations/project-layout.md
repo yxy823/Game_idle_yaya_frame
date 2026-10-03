@@ -107,7 +107,9 @@
 
 ## 模板与按需记录
 
-`methodology/templates/` 提供以下格式参考：Product、Feature、工程变更、Feature 详情 / 索引 / 修订、测试登记、完成依据、人工清单、Progress、知识、项目规则、架构和 ADR。模板只是格式参考，不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
+`methodology/templates/` 提供之后按需创建的文件格式：Product、Feature 详情（含工程变更）、Feature 设计、完成依据、人工验收清单、架构和 ADR，另有 Stage 8 学习反馈的回复格式。模板不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
+
+Feature 索引、修订记录、测试登记、Progress 和项目规则不是模板：创建项目时直接复制为 `docs/` 下的初始文件，之后由项目自己维护。
 
 GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。Product 模板用来组织交付，不能代替 GDD。
 

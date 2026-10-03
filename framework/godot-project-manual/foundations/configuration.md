@@ -6,13 +6,13 @@
 
 ## 环境与流程配置
 
-初始来源是 [Project_Workflow_Config.json](../../../project-source/Project_Workflow_Config.json)。
+初始来源是 [defaults/docs/methodology-config.json](../../../project-source/defaults/docs/methodology-config.json)。
 
 | 字段 | 初始值 | 含义与修改注意事项 |
 | --- | --- | --- |
 | `document_language` | `zh-CN` | 持久项目知识默认使用中文，无需再次确认；与当前聊天语言独立 |
 | `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
-| `python_executable` | `python` | 模板占位名称；准备环境时改为已确认的 Python 3.12+ 解释器 |
+| `python_executable` | `python` | 初始命令名；准备环境时改为已确认的 Python 3.12+ 解释器 |
 
 配置文件只保存文档语言和两个工具路径。其他信息都有固定位置，不写进配置：
 
@@ -105,7 +105,7 @@ $LASTEXITCODE
 
 ## GDScript lint 默认配置
 
-实际文件是 [defaults/gdlint.json](../../../project-source/defaults/gdlint.json)，指标含义见 [lint 契约](../../../project-source/methodology/gdscript-lint.md)。
+实际文件是 [defaults/gdlint.json](../../../project-source/defaults/gdlint.json)，指标含义见 [lint 契约](../../../project-source/methodology/contracts/gdscript-lint.md)。
 
 | 配置 | 当前值 |
 | --- | --- |

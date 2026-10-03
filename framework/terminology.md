@@ -48,7 +48,7 @@
 | 完成记录 / 完成依据 | `docs/feature-completion-evidence.json`，引用实际验证原件和接受结果；文件存在本身不证明条件满足 |
 | 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |
 
-来源：[测试策略](../project-source/methodology/08-testing-strategy.md)、[人工验收文件](../project-source/methodology/manual-acceptance-files.md)。
+来源：[测试策略](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
 
 ## 资源工作台
 

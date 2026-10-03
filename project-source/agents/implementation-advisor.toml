@@ -35,7 +35,7 @@ result and owns any authorized Feature notes, state updates and commits.
 Explain constraints, design boundaries, necessary implementation dependencies and
 verification reasoning, leaving ordinary implementation details to the author.
 Separate current facts, proposals and verification still needed. Follow the rule
-reading and freshness contract in methodology/04-coding-rules-4-layers.md; the
+reading and freshness contract in methodology/04-project-rules.md; the
 guidance does not replace authoritative sources or establish runtime evidence.
 Return the result, remaining decisions and actual file-writing status. You helped
 author the design, so your later design check is not an independent review of it.

@@ -27,6 +27,6 @@ Inspect the resulting combined changes and unresolved Git state. Run the checks 
 
 Before a commit or a `--continue` operation, determine its actual effects and apply the parent Skill's verification, acceptance and explicit commit conditions. Do not automatically loop through all remaining rebase/cherry-pick steps or finish a merge just because the current text conflicts are gone. When conditions allow finalization, continue the already authorized integration; do not ask again only because resolution finished.
 
-Report what was reconciled, the evidence supporting the result and any unresolved decision, failed check or pending operation. Use existing Feature/Progress records only when needed for continuation, under `methodology/09-artifact-lifecycle.md`; do not create a second status system.
+Report what was reconciled, the evidence supporting the result and any unresolved decision, failed check or pending operation. Use existing Feature/Progress records only when needed for continuation, under `methodology/09-records-reports-and-handoff.md`; do not create a second status system.
 
 Inspired by Matt Pocock's `resolving-merge-conflicts`: understand both changes and preserve their intended behavior. Rewritten for this project's Git, Godot, validation and authorization boundaries; no external Skill installation is required.

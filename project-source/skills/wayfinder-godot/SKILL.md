@@ -33,7 +33,7 @@ For example, an inventory with many items may need a design choice about search 
 
 ## Preserve findings in their existing home
 
-Keep a one-off discussion in the conversation. When authorized continuity or durable work requires records, use the relevant sections of `methodology/09-artifact-lifecycle.md`: Progress for current state, Feature notes for reminders and navigation, the fixed Feature design for local implementation decisions, research for retained external findings, and existing report locations for actual execution evidence. Link authoritative decisions and original evidence instead of copying them into a new exploration document.
+Keep a one-off discussion in the conversation. When authorized continuity or durable work requires records, use the relevant sections of `methodology/09-records-reports-and-handoff.md`: Progress for current state, Feature notes for reminders and navigation, the fixed Feature design for local implementation decisions, research for retained external findings, and existing report locations for actual execution evidence. Link authoritative decisions and original evidence instead of copying them into a new exploration document.
 
 Apply **Architecture Decision Records** in `methodology/10-architecture-overview.md` for a technical decision that meets its conditions; ordinary questions do not require an ADR. Adopted technical decisions without a Feature that do not qualify use **Standalone technical decisions** in the same specification when saving is authorized. Confirmed game intent, delivery scope and professional requirements still return to their GDD/Product or specialist owner. An exploration finding alone does not authorize those writes.
 

@@ -89,7 +89,7 @@ Discovery
 
 This chain uses the existing execute loop; it adds no independent Stage. Triage collects actual/expected behavior and a repeatable trigger, or the observed conditions of an intermittent failure. Establish the causal explanation before choosing the repair; mark unknown causes as unknown while investigating. Record the affected components and the approved regression obligation in Test Impact Review. A parser error, setup failure or unrelated baseline failure is not the intended regression RED. Apply the smallest complete fix, observe GREEN for the regression, then execute the planned affected set and necessary full suite. Reuse a real full run only when its snapshot and actual coverage cover the subsets. No hand-entered count can stand in for execution evidence.
 
-Applicable human acceptance, user-requested independent review, the Completion Gate and a local traceable commit finish the repair under `03-execute-loop.md` and `08-testing-strategy.md`. A review repair that changes accepted behavior returns through verification and applicable human acceptance. Stage 8 then reports brief reusable learning and follows the remaining user authorization under the execution loop's handoff contract.
+Applicable human acceptance, user-requested independent review, the Completion Gate and a local traceable commit finish the repair under `03-execute-loop.md` and `08-test-traceability-and-evidence.md`. A review repair that changes accepted behavior returns through verification and applicable human acceptance. Stage 8 then reports brief reusable learning and follows the remaining user authorization under the execution loop's handoff contract.
 
 ### Causal diagnosis
 
@@ -99,7 +99,7 @@ For game behavior, follow the symptom and evidence through the relevant rules/bu
 
 Reduce irrelevant inputs, scene elements or steps while preserving the same failure. Change one relevant factor at a time when distinguishing causes, and retain the original scenario for later verification. For intermittent failures, report observed attempts, workload and conditions; do not invent determinism or require a fixed retry count.
 
-Use plausible causal hypotheses with observations that could distinguish or refute them. Inspect the affected code and existing evidence first. Choose the smallest discriminating probe instead of trying speculative fixes or adding broad logging. Missing runtime signals may use `diagnostics-instrumentation`; measured timing/resource problems may use `diagnostics-performance`, and sustained accumulation or stability questions may use `diagnostics-soak-test`, within their actual execution permissions. Temporary diagnostics and retained evidence follow [artifact lifecycle](09-artifact-lifecycle.md).
+Use plausible causal hypotheses with observations that could distinguish or refute them. Inspect the affected code and existing evidence first. Choose the smallest discriminating probe instead of trying speculative fixes or adding broad logging. Missing runtime signals may use `diagnostics-instrumentation`; measured timing/resource problems may use `diagnostics-performance`, and sustained accumulation or stability questions may use `diagnostics-soak-test`, within their actual execution permissions. Temporary diagnostics and retained evidence follow [artifact lifecycle](09-records-reports-and-handoff.md).
 
 Explain the chain from trigger to defective state or operation and then to the observed result, citing the evidence. Separate a supported cause from a hypothesis or an unresolved gap. If the authorized investigation is blocked, report what is known, what is missing and the next discriminating check; a log capture alone does not mean the root cause was found. Keep applicable evidence in the existing Feature/Progress records and report locations, not a second Bug ledger.
 
@@ -168,7 +168,7 @@ Regression coverage: <F0XX-RTyy logical IDs, or approved manual regression reaso
 Guardrail: <general principle preventing the same defect class>
 ```
 
-The local record is factual incident knowledge. Link to `bug_diagnosis` or the execution archive for detailed evidence instead of copying the incident transcript. Regression IDs are also registered in `docs/test-registry.json`. Project Rules are prescriptive global knowledge. If an approved Guardrail becomes machine-verifiable across Features, it may also become an `INV-<DOMAIN>-NN` invariant under `08-testing-strategy.md`. Check existing rules before recommending a new rule.
+The local record is factual incident knowledge. Link to `bug_diagnosis` or the execution archive for detailed evidence instead of copying the incident transcript. Regression IDs are also registered in `docs/test-registry.json`. Project Rules are prescriptive global knowledge. If an approved Guardrail becomes machine-verifiable across Features, it may also become an `INV-<DOMAIN>-NN` invariant under `08-test-traceability-and-evidence.md`. Check existing rules before recommending a new rule.
 
 Propose promotion of only the generalized `Guardrail` when at least one is true:
 
@@ -178,7 +178,7 @@ Propose promotion of only the generalized `Guardrail` when at least one is true:
 - the defect recurred or needed repeated repair attempts;
 - tests cannot fully enforce it.
 
-Promotion follows [incremental rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Save local implementation constraints and rationale in the fixed Feature design, including brief explanations; notes reference that body. Do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `feature-sync` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
+Promotion follows [incremental rule maintenance](04-project-rules.md#incremental-rule-maintenance): check ownership and existing rules, output the self-check before any add/edit/delete, and obtain the required explicit decision unless already authorized. A rejected promotion leaves the local Bug note untouched. Save local implementation constraints and rationale in the fixed Feature design, including brief explanations; notes reference that body. Do not copy whole rule modules into notes. Assess affected current and planned work, and complete needed `feature-sync` handling before dependent continuation. Late governing edits must satisfy the current verification and acceptance contract; they do not automatically apply only to the next Feature.
 
 ## Explicit exclusions
 

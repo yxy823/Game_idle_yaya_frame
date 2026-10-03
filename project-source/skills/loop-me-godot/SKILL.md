@@ -30,7 +30,7 @@ When a missing choice changes the method, use the discussion approach in [projec
 
 Keep repeatable task selection and judgment in a focused Skill, detailed rules in their project-owned authoritative source, and deterministic repeated operations in a tool only when its maintenance cost is justified. A short invocation or a clearer reference may be enough. Different situations can reuse the same ability without sharing one task's authorization or completion conditions.
 
-For a proposed project-tool implementation, return to `methodology/07-engineering-change.md` and its existing task owner. For knowledge or stable constraints, use the applicable ownership rules in `methodology/04-coding-rules-4-layers.md` and `docs/knowledge/README.md`. Changed game intent belongs to the existing Product owner. A need to improve distributed framework materials is a recommendation for the framework-maintenance task, not permission to fetch or edit another repository.
+For a proposed project-tool implementation, return to `methodology/07-engineering-change.md` and its existing task owner. For knowledge or stable constraints, use the applicable ownership rules in `methodology/04-project-rules.md` and `docs/knowledge/README.md`. Changed game intent belongs to the existing Product owner. A need to improve distributed framework materials is a recommendation for the framework-maintenance task, not permission to fetch or edit another repository.
 
 Deliver the proposed method in the conversation: concrete need, entry, inputs and outputs, key decisions, ownership of details, and remaining adoption choices. No additional mechanism may be the best result. Walk through a relevant example or a clearly labelled future case; static reasoning is not execution evidence.
 

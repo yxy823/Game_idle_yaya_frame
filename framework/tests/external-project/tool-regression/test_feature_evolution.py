@@ -16,6 +16,7 @@ from unittest import mock
 
 
 ROOT = PROJECT_ROOT
+FRAMEWORK_DEFAULT_DOCS = Path(__file__).resolve().parents[4] / "project-source/defaults/docs"
 sys.path.insert(0, str(ROOT))
 SPEC = importlib.util.spec_from_file_location("evolution_checker", ROOT / "tools/checks/check-feature-list.py")
 assert SPEC and SPEC.loader
@@ -295,7 +296,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         (fresh / "docs").mkdir(parents=True)
         (fresh / "tools").mkdir()
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
-            source = ROOT / f"methodology/templates/{name}.json.tmpl"
+            source = FRAMEWORK_DEFAULT_DOCS / f"{name}.json"
             (fresh / f"docs/{name}.json").write_bytes(source.read_bytes())
         for relative in ("tools/__init__.py", "tools/lib/__init__.py",
 "tools/checks/check-feature-list.py", "tools/lib/feature_evolution.py",

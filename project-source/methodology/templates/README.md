@@ -1,41 +1,31 @@
 # Methodology templates
 
-These templates define the durable files rendered by the workflow. Templates are canonical structure, not localized copies.
+These templates give the structure of files and fixed reply formats that the workflow creates later, such as a Product, a Feature detail or an ADR. They are the single structural source; there are no localized copies.
 
-Before rendering any template:
+The project's starting ledgers (`docs/feature-list.json`, `docs/feature-list-revisions.json`, `docs/test-registry.json`, `docs/progress.md` and `docs/project-rules.md`) are not templates. Project creation copies them directly into `docs/`, and the project maintains them from then on.
 
-1. Read `docs/methodology-config.json` and resolve `document_language` according to `../05-document-language.md`.
-2. Preserve machine keys, enum values, IDs, paths, command strings, and placeholders exactly.
-3. Render human-readable headings/prose in `document_language` while preserving every required section and semantic constraint.
-4. Do not create parallel localized template trees.
+## Rendering a template
 
-Markdown prose uses natural paragraphs without fixed-width hard wrapping. Keep blank lines between paragraphs and preserve semantic line breaks in lists, tables, code, diagrams and other structured content. Do not reflow JSON or other structured templates as prose.
+1. Read `document_language` from `docs/methodology-config.json` and resolve it under [document language](../05-document-language.md).
+2. Keep machine keys, enum values, IDs, paths, command strings and placeholders exactly as written.
+3. Write human-readable headings and prose in `document_language`. Keep every required section and constraint.
+4. Do not create a parallel tree of localized templates.
+
+Lines in *italics* are instructions to replace with project content; everything else is structure to keep. Write Markdown prose as natural paragraphs without fixed-width wrapping, and keep the line breaks that lists, tables, code and diagrams need. Do not reflow JSON or other structured templates.
 
 ## Templates
 
-| Template | Purpose |
+| Template | Produces |
 | --- | --- |
-| `product.md.tmpl` | Delivery pre-decomposition, GDD source mapping, boundaries, dependencies and suggested order. |
-| `product-module.md.tmpl` | Current Product delivery scope, source links, integration and acceptance scenarios; written only when its turn arrives. |
-| `feature-list.json.tmpl` | Lightweight Feature index. |
-| `feature-detail.json.tmpl` | Product-derived Feature detail. It intentionally omits `engineering_change`. |
-| `feature-design.md.tmpl` | Optional outline for a detailed `docs/features/F0XX-design.md`; select useful sections, keep AC/test obligations in JSON and link current architecture/ADRs. |
-| `engineering-feature-detail.json.tmpl` | Bug/refactor/maintenance Feature detail with required `engineering_change`. |
-| `feature-list-revisions.json.tmpl` | Versioned governing-source migration log for GDD, Product, professional sources and Project Rules, preserving historical entries and typed evolution relationships. |
-| `test-registry.json.tmpl` | Empty machine-readable component/test traceability registry used by Test Impact Review. |
-| `feature-completion-evidence.json.tmpl` | Current-Feature test and applicable human-acceptance evidence, with Git revision and working-tree fingerprint; no review counts. |
-| `manual-acceptance-checklist.json.tmpl` | Pending manual checks expanded from one Feature; preparation and returned results follow [the file contract](../manual-acceptance-files.md). |
-| `progress.md.tmpl` | Current state, blockers, pending decisions, next legal action and a history index; history bodies live separately. |
-| `project-rules.md.tmpl` | Development constraints, collaboration and engineering defaults, with rule strengths, incremental maintenance and links to specialized rules. Copied directly to `docs/project-rules.md`; game-design boundaries remain in GDD. |
-| `feature-learning-summary.md.tmpl` | Concise feedback inside existing Stage 8, including an explicit no-learning outcome. |
-| `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional human-owned module/responsibility/dependency maps and relevant subsystem runtime flows, separate from generated reference facts. |
-| `architecture-decision-record.md.tmpl` | Optional rationale for one important technical choice; Feature notes and architecture maps link it without copying its body. |
+| `product.md.tmpl` | `docs/product.md`: delivery pre-decomposition, GDD source mapping, boundaries, dependencies and suggested order |
+| `product-module.md.tmpl` | One `docs/product/NN-<delivery>.md`: the current Product's delivery scope, source links, integration and acceptance scenarios. Written only when that Product's turn arrives |
+| `feature-detail.json.tmpl` | A Product-derived Feature detail. It has no `engineering_change` field |
+| `engineering-feature-detail.json.tmpl` | A Bug, refactor or maintenance Feature detail, with the required `engineering_change` field |
+| `feature-design.md.tmpl` | Optional outline for `docs/features/F0XX-design.md`. Use only the sections that help; AC and test obligations stay in the Feature JSON |
+| `feature-completion-evidence.json.tmpl` | `docs/feature-completion-evidence.json`: the current Feature's test runs and, when required, its human acceptance, each tied to a Git revision and working-tree fingerprint. Reviews are not recorded here |
+| `manual-acceptance-checklist.json.tmpl` | The pending manual checks for one Feature, prepared and returned under the [manual acceptance file contract](../contracts/manual-acceptance-files.md) |
+| `feature-learning-summary.md.tmpl` | The reply format for Stage 8 learning feedback, including an explicit "nothing learned" outcome. It is not saved as a file |
+| `architecture-overview.md.tmpl`, `architecture-subsystem.md.tmpl` | Optional `docs/architecture.md` and subsystem maps: modules, responsibilities, dependencies and relevant runtime flows, kept separate from generated reference facts |
+| `architecture-decision-record.md.tmpl` | An optional ADR for one important technical choice. Feature notes and architecture maps link to it instead of copying it |
 
-The authoritative Feature/test field semantics and invariants live in `../02-feature-list-schema.md`; engineering mode semantics live in `../07-engineering-change.md`; test selection and TDD semantics live in `../08-testing-strategy.md`. Delivery planning and implementation require substantive current-scope GDD under `../01-product-doc-structure.md#gdd-prerequisite-and-authority`. Initial game design uses `design-gdd`; these delivery templates do not substitute for it.
-
-Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md). Create an ADR only when a real decision warrants it, not when copying a project.
-
-Lint metric semantics, the controlled vendor patch and executable contract checks are documented in `../gdscript-lint.md`.
-
-
-Project configuration is stored in `docs/methodology-config.json`. Use the templates above when a task needs Product, Feature, test or history records.
+Field meanings and validation rules live in [the Feature list schema](../02-feature-list-schema.md), engineering Feature rules in [engineering change](../07-engineering-change.md), and test selection in [test traceability and evidence](../08-test-traceability-and-evidence.md). Architecture maps and ADRs follow [the architecture convention](../10-architecture-overview.md); create an ADR only for a real decision.

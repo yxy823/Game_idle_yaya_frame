@@ -18,7 +18,7 @@ Use the artifact schemas, Product order and evolution invariants in `methodology
 
 Git change preservation, task continuation in the target checkout and commit mechanics follow `agent-rules/00-core/git-worktree-and-commits.md`. The stages below own the committed-source comparison, approval and synchronized plan; use relevant rule sections through project `AGENTS.md` when interpreting a changed engineering contract.
 
-Read applicable **Design scope and boundaries** in `methodology/01-product-doc-structure.md`, engineering constraints in `docs/project-rules.md` and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the governing source: game-design boundaries return to `design-gdd`, while engineering-rule writes follow the self-check and authorization in `methodology/04-coding-rules-4-layers.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
+Read applicable **Design scope and boundaries** in `methodology/01-product-doc-structure.md`, engineering constraints in `docs/project-rules.md` and affected Feature designs when explaining plan impacts. This workflow updates the ledger, not the governing source: game-design boundaries return to `design-gdd`, while engineering-rule writes follow the self-check and authorization in `methodology/04-project-rules.md`. Preserve completed Feature designs as history; current architecture and later Feature designs carry subsequent changes.
 
 ## Ledger structure
 
@@ -140,7 +140,7 @@ Compare every proposed `affected_components` ID with the current Registry. Inclu
 
 For every substantively revised or removed Feature with existing implementation or tests, list its direct dependents and follow relevant downstream effects. Also read `docs/test-registry.json` and identify tests whose ID-derived owning Feature or components overlap the changed behavior. Classify each affected test as `still_valid`, `superseded`, `needs_new_coverage`, or `uncertain`. For proposed retirement, identify its reason, anchored governing source, replacement Feature/test IDs, and revision ID using `methodology/02-feature-list-schema.md`. Do not retire or rewrite a test merely because a source changed; include the proposed test action in the Stage 2 report and require Stage 3 confirmation.
 
-Follow **Requirement changes and stale tests** in `methodology/08-testing-strategy.md`: read affected test code, including unit tests without Registry IDs. Include necessary assertion/method/file cleanup, affected current references or registrations, and its owning Feature in the same report. Retiring Registry metadata does not remove cases from a selected suite.
+Follow **Requirement changes and stale tests** in `methodology/08-test-traceability-and-evidence.md`: read affected test code, including unit tests without Registry IDs. Include necessary assertion/method/file cleanup, affected current references or registrations, and its owning Feature in the same report. Retiring Registry metadata does not remove cases from a selected suite.
 
 ### 2.5 Report the diff
 
@@ -220,7 +220,7 @@ Do not translate or substantively rewrite the removed `done` Feature. Its status
 
 ### Downstream regression
 
-Assign ordinary downstream verification to the Feature implementing this change, using **Test Impact Review** in `methodology/08-testing-strategy.md`. Record the affected behavior, existing tests or manual checks, and any coverage gap in that Feature's notes for Stage 1. Preserve existing test ownership; required checks cannot be declined through a note. Create another Feature only for a separate implementation, repair or independently agreed deliverable, not merely to rerun a dependent Feature's valid tests.
+Assign ordinary downstream verification to the Feature implementing this change, using **Test Impact Review** in `methodology/08-test-traceability-and-evidence.md`. Record the affected behavior, existing tests or manual checks, and any coverage gap in that Feature's notes for Stage 1. Preserve existing test ownership; required checks cannot be declined through a note. Create another Feature only for a separate implementation, repair or independently agreed deliverable, not merely to rerun a dependent Feature's valid tests.
 
 
 ### Test traceability updates

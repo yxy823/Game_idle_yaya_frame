@@ -16,7 +16,7 @@ Professional documents own presentation, UI, art, audio, resource and localizati
 
 The [logic/presentation responsibility model](00-overview.md#game-logic-presentation-and-delivery) does not turn the GDD into a logic-only document. For a shop purchase, the GDD owns purchase conditions, state effects and intended feedback; the shop UI and item-acquisition presentation refine how the player operates and perceives it. Product selects a coherent delivery across those sources. Keep detailed collaboration and state-owner implementation in architecture or the relevant Feature design, linking their actual paths when available.
 
-Before revising design or delivery scope, check the applicable GDD design boundaries below, engineering constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A design request does not silently amend an engineering rule. Resolve such conflicts through [project rule maintenance](04-coding-rules-4-layers.md#incremental-rule-maintenance).
+Before revising design or delivery scope, check the applicable GDD design boundaries below, engineering constraints in `docs/project-rules.md` and relevant accepted architecture decisions. A design request does not silently amend an engineering rule. Resolve such conflicts through [project rule maintenance](04-project-rules.md#incremental-rule-maintenance).
 
 ## GDD document names
 

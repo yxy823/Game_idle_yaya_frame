@@ -60,4 +60,4 @@ Feature 已能体验，需要准备人工验收清单。
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-testing-strategy.md>)、[人工验收文件契约](<../../../../../project-source/methodology/manual-acceptance-files.md>)。
+依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md>)、[人工验收文件契约](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md>)。

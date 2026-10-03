@@ -246,7 +246,7 @@ Stage 4 imports verified run results into `docs/feature-completion-evidence.json
 
 A requested [Stage 6 review](03-execute-loop.md#stage-6--optional-independent-review) reuses current successful run results without source or verification changes. If fixes change the snapshot, recalculate the current obligations, repeat applicable Stage 4 verification (including the no-automated-obligations case above), then renew affected acceptance. A successful full run covers Required and affected; do not run Required again merely to fill a second Gate field.
 
-Stage 1 first chooses `verification.acceptance_mode` from the requirement, then fills the corresponding checks. Visual presentation, animation, audio/sound/music, game feel and other human judgment require `manual`; requirements whose AC can all be checked automatically may use `automated`. Empty lists or existing PASS results never decide the mode. Automated mode omits Stage 5 without recording fake human acceptance; manual mode still requires the user's actual file submission or explicit conversational decision under [Manual acceptance files](manual-acceptance-files.md).
+Stage 1 first chooses `verification.acceptance_mode` from the requirement, then fills the corresponding checks. Visual presentation, animation, audio/sound/music, game feel and other human judgment require `manual`; requirements whose AC can all be checked automatically may use `automated`. Empty lists or existing PASS results never decide the mode. Automated mode omits Stage 5 without recording fake human acceptance; manual mode still requires the user's actual file submission or explicit conversational decision under [Manual acceptance files](contracts/manual-acceptance-files.md).
 
 ## Requirement changes and stale tests
 

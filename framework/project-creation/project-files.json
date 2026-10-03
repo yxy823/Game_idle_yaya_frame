@@ -76,10 +76,6 @@
     "target": "README.md"
   },
   {
-    "source": "project-source/Project_Workflow_Config.json",
-    "target": "docs/methodology-config.json"
-  },
-  {
     "source": "project-source/defaults/.editorconfig",
     "target": ".editorconfig"
   },
@@ -98,26 +94,6 @@
   {
     "source": "project-source/defaults/reports",
     "target": "reports"
-  },
-  {
-    "source": "project-source/methodology/templates/feature-list.json.tmpl",
-    "target": "docs/feature-list.json"
-  },
-  {
-    "source": "project-source/methodology/templates/feature-list-revisions.json.tmpl",
-    "target": "docs/feature-list-revisions.json"
-  },
-  {
-    "source": "project-source/methodology/templates/test-registry.json.tmpl",
-    "target": "docs/test-registry.json"
-  },
-  {
-    "source": "project-source/methodology/templates/progress.md.tmpl",
-    "target": "docs/progress.md"
-  },
-  {
-    "source": "project-source/methodology/templates/project-rules.md.tmpl",
-    "target": "docs/project-rules.md"
   },
   {
     "source": "project-source/defaults/gdlint.json",

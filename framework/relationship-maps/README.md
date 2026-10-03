@@ -61,7 +61,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ### 联系与孤立的判断
 
-当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业来源](../../project-source/methodology/11-specialist-workflows.md)、[Feature 结构](../../project-source/methodology/02-feature-list-schema.md)、[架构](../../project-source/methodology/10-architecture-overview.md)及[产物生命周期](../../project-source/methodology/09-artifact-lifecycle.md)。
+当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业来源](../../project-source/methodology/11-specialist-workflows.md)、[Feature 结构](../../project-source/methodology/02-feature-list-schema.md)、[架构](../../project-source/methodology/10-architecture-overview.md)及[产物生命周期](../../project-source/methodology/09-records-reports-and-handoff.md)。
 
 “没有被链接”“缺少必要来源”和“完全没有关联”是三种不同的问题。报告这类末端产物只需要有入口，不必人为添加回链。图只画出契约中的主要关系；某个项目里实际的正文、来源覆盖和证据原件，仍要在项目中核对。
 

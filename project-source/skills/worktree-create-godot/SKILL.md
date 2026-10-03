@@ -28,6 +28,6 @@ Use [project-environment-godot](../project-environment-godot/SKILL.md) for an ac
 
 Report the actual target path, base/branch or commit, any authorized local content carried over, completed preparation and the next operation that is ready. If checkout creation succeeded but running remains blocked, name that distinction and the missing condition; do not call an unexecuted runtime check passed.
 
-Continue the existing authorized task in that checkout without another confirmation merely because this Skill returned. Preparation does not prove the experiment or Feature succeeded. Use existing Progress or Feature records only when durable continuation information is needed, under `methodology/09-artifact-lifecycle.md`.
+Continue the existing authorized task in that checkout without another confirmation merely because this Skill returned. Preparation does not prove the experiment or Feature succeeded. Use existing Progress or Feature records only when durable continuation information is needed, under `methodology/09-records-reports-and-handoff.md`.
 
 Integrating an adopted result belongs to [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md). Creation or later integration does not automatically authorize deleting a worktree or branch; preserve the checkout for its current work and follow the host's managed lifecycle tools if cleanup is requested.

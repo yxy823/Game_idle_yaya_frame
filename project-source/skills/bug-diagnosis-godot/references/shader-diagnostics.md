@@ -2,7 +2,7 @@
 
 Use this reference when evidence points to Shader compilation, material/parameter binding, visual data flow or rendering cost. Start with the actual symptom and confirmed expectation; a missing effect can originate in gameplay, event delivery or presentation control before the Shader is involved. The user need not identify that boundary in advance.
 
-This is a technical reference, independently usable by the current authorized diagnosis, implementation or prototype task. Reading it does not invoke the containing Skill's full workflow, create a Feature or authorize diagnostic edits, running Godot or repairing the defect. **Causal diagnosis** in `methodology/07-engineering-change.md` owns the investigation and Bug records; `methodology/09-artifact-lifecycle.md` owns temporary probes and retained evidence. Paths in code spans are relative to the target project root.
+This is a technical reference, independently usable by the current authorized diagnosis, implementation or prototype task. Reading it does not invoke the containing Skill's full workflow, create a Feature or authorize diagnostic edits, running Godot or repairing the defect. **Causal diagnosis** in `methodology/07-engineering-change.md` owns the investigation and Bug records; `methodology/09-records-reports-and-handoff.md` owns temporary probes and retained evidence. Paths in code spans are relative to the target project root.
 
 ## Select a branch from the evidence
 

@@ -7,7 +7,7 @@ description: Prepare or update source-linked implementation guidance for an exis
 
 Use this method when implementation guidance is needed for an existing Feature. Apply the GDD prerequisite and the Feature's current scope, decisions and authorization. Work without a Feature is outside this entry; return to its existing task rather than creating a Feature to obtain guidance. A simple implementation can continue through its normal owner without this method.
 
-Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links, proposal/approval lifecycle and fixed durable location. Read **Implementing with prepared guidance** in `methodology/04-coding-rules-4-layers.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
+Paths in code spans are relative to the target project root. Read **Feature design and implementation notes** in `methodology/02-feature-list-schema.md` for the guidance content, relative source links, proposal/approval lifecycle and fixed durable location. Read **Implementing with prepared guidance** in `methodology/04-project-rules.md` for source reading and freshness. These contracts own the details; do not create another guide, draft file, ledger or status format.
 
 When choosing a Shader approach, data flow or rendering tradeoff, read the relevant sections of [Shader implementation methods](references/shader-implementation-methods.md). That technical reference is also directly usable by authorized development or prototype tasks; reading it does not start this Feature-only guidance workflow or request an advisor.
 

@@ -86,3 +86,4 @@
 | lint 规则、lint CLI 与编辑器面板、gdUnit 运行器 | [工具回归夹具](../../tests/external-project/tool-regression/README.md) |
 | 资源工作台、Analyzer、渲染、规模与独立导出 | [资源工作台验证夹具](../../tests/external-project/workbench/README.md) |
 | 编辑器效率插件的启停与生命周期 | [编辑器插件验证夹具](../../tests/external-project/plugins/README.md) |
+| 文档语言约定，或扩大已验证的语言范围 | [文档语言冒烟场景](../../tests/external-project/document-language/README.md) |

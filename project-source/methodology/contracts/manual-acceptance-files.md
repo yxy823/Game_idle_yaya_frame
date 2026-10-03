@@ -4,7 +4,7 @@ This contract supplies the Stage 4 checklist and Stage 5 results for a `manual` 
 
 ## Definitions and preparation
 
-The approved Feature owns `acceptance_criteria[].verification.manual_checks` and `verification.manual_regression`. The Agent expands those obligations using [the checklist template](templates/manual-acceptance-checklist.json.tmpl). Provide the entry scene, initial state, ordered inputs, observable expected feedback and necessary reset in the checklist. Include timing, build/device, parameters or seed when relevant. Check semantic coverage against the AC and actual implementation; structural validation cannot prove the steps are sufficient. Notes link the checklist and retain decisions rather than duplicating its steps.
+The approved Feature owns `acceptance_criteria[].verification.manual_checks` and `verification.manual_regression`. The Agent expands those obligations using [the checklist template](../templates/manual-acceptance-checklist.json.tmpl). Provide the entry scene, initial state, ordered inputs, observable expected feedback and necessary reset in the checklist. Include timing, build/device, parameters or seed when relevant. Check semantic coverage against the AC and actual implementation; structural validation cannot prove the steps are sufficient. Notes link the checklist and retain decisions rather than duplicating its steps.
 
 Use UTF-8 JSON (a UTF-8 BOM is accepted), without comments, trailing commas or duplicate object keys. Input and result use the same structure:
 
