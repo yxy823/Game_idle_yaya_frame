@@ -1,6 +1,6 @@
 # Project instructions
 
-本项目使用 Windows 11 / PowerShell 7、Godot 4.7 / GDScript / gdunit4。实际工具路径以 `docs/methodology-config.json` 为准，环境可用性以真实检查结果为准，不从模板推断本机已安装的工具。
+This project uses Windows 11, PowerShell 7, Godot 4.7, GDScript and gdUnit4. The actual tool paths are in `docs/methodology-config.json`. Whether a tool works depends on actual check results; do not infer installed tools from templates.
 
 ## 沟通与交付
 
@@ -24,56 +24,72 @@
 
 ## Workflow and authority
 
-This framework supports one project user working with an Agent. Multi-user collaboration and change-attribution workflows are outside scope. Same-directory task pauses, switches and new-conversation continuation remain supported. Worktree use follows the current task's scope and authorization under `agent-rules/00-core/git-worktree-and-commits.md`; it is not default task setup. Bounded research and independent reviewer instances retain their existing contracts.
+One project user works with an Agent. The workflow does not cover multi-user collaboration or tracking who made which change.
 
-| Need | Read and follow |
+- Pausing, switching and resuming tasks in the same directory are supported, including from a new conversation.
+- Use a worktree only when the current task's scope and authorization call for one, under [Git changes and commits](agent-rules/00-core/git-worktree-and-commits.md). Tasks do not start in a worktree by default.
+- Bounded research and independent review use their own roles through the routes below.
+
+| When you need to | Read |
 | --- | --- |
-| Choose a workflow or the next authorized action | `methodology/00-overview.md`; Skills are under `.agents/skills/`, explicit commands under `tools/` |
-| Create or maintain GDD, design numerical models, plan Product delivery or maintain terminology | `methodology/01-product-doc-structure.md`; `design-gdd` owns overall game design, `design-balance` its scoped numerical design, `product-author` delivery documents and `project-terminology` confirmed definitions and links |
-| Feature planning, Product order or ledger evolution | `methodology/02-feature-list-schema.md` |
-| Execute a Feature, approvals, optional independent review and completion | `methodology/03-execute-loop.md`, including **Authorization and continuation** |
-| Rule responsibilities, interpretation or promotion | `methodology/04-project-rules.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
-| Feature design and implementation guidance | `implementation-guidance-godot` uses the fixed `docs/features/F0XX-design.md` under `methodology/02-feature-list-schema.md`; JSON keeps AC and verification obligations. Delegate to `implementation-advisor` only when explicitly requested by the user or still authorized for this task; otherwise the main agent prepares the guidance. |
-| Document language or initial environment configuration | `methodology/05-document-language.md` |
-| Bug, refactor or maintenance | `methodology/07-engineering-change.md` |
-| Test impact, current-run evidence or completion helper use | `methodology/08-test-traceability-and-evidence.md`; direct parsing/lint commands are in `methodology/contracts/gdscript-lint.md` |
-| Report organization, temporary workspaces, Progress, history or cleanup | `methodology/09-records-reports-and-handoff.md` |
-| Optional architecture map and ADRs | `methodology/10-architecture-overview.md` |
-| Professional design, resources, localization, diagnostics or multiple requirement sources | `methodology/11-specialist-workflows.md`; specialists own their documents and return to existing task delivery |
-| User-requested formal review | `methodology/12-independent-review.md`; fresh independent instance using `.codex/agents/independent-reviewer.toml` when supported and the applicable review Skills |
-| External facts or approach research | **External research** in `methodology/00-overview.md`; the coordinating agent decides whether to search directly or delegate to `.codex/agents/researcher.toml` |
+| Choose a workflow or the next allowed action | [Canonical task routing](methodology/00-overview.md#canonical-task-routing). Skills are under `.agents/skills/`; explicit commands are under `tools/` |
+| Create or maintain the GDD, numerical models or Product delivery plans | `methodology/01-product-doc-structure.md` |
+| Maintain project terminology | `methodology/14-project-terminology.md` |
+| Build a visual or logic prototype | `methodology/13-prototypes.md` |
+| Plan Features, order Products or change the Feature ledger | `methodology/02-feature-list-schema.md` |
+| Execute a Feature, including approvals, optional independent review and completion | `methodology/03-execute-loop.md` |
+| Interpret, apply or change project rules | `methodology/04-project-rules.md` and `agent-rules/00-core/rule-precedence-and-routing.md` |
+| Prepare Feature design and implementation guidance | The `implementation-guidance-godot` Skill |
+| Set the document language | `methodology/05-document-language.md` |
+| Configure tools or prepare the project environment | `methodology/06-project-environment.md` |
+| Fix a Bug, refactor or do maintenance | `methodology/07-engineering-change.md` |
+| Select tests, record current-run evidence or use the completion helper | `methodology/08-test-traceability-and-evidence.md`. Direct parsing and lint commands are in `methodology/contracts/gdscript-lint.md` |
+| Organize reports, temporary workspaces, Progress, history or cleanup | `methodology/09-records-reports-and-handoff.md` |
+| Maintain the optional architecture map or ADRs | `methodology/10-architecture-overview.md` |
+| Work on professional design, resources, localization, diagnostics or several requirement sources | `methodology/11-specialist-workflows.md` |
+| Run a formal review the user requested | `methodology/12-independent-review.md` |
+| Research external facts or approaches | **External research** in `methodology/00-overview.md` |
 
-These entries are task routes, not a mandatory reading sequence. Follow the selected procedure and its applicable references; do not load every workflow. There are no automatic tool events or Hooks to grant permission.
+These rows are task routes, not a reading sequence. Follow the selected procedure and the references it needs; do not load every workflow. When a Skill returns, continue the task under [Authorization and continuation](methodology/03-execute-loop.md#authorization-and-continuation).
 
-Game design may start from an idea through `design-gdd`, with scoped clarification, numerical modeling and draft review as needed. Apply `methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority`: delivery planning, implementation, engineering work and runnable experiments require substantive GDD content and sufficiently clear current-scope design. A placeholder does not satisfy that prerequisite. GDD is a maintained project source within existing authorization; Product documents organize delivery and reference its design rather than duplicating it.
+### Design prerequisite and sources to read
 
-For game-design discussion, planning, implementation or review, apply [Design scope and boundaries](methodology/01-product-doc-structure.md#design-scope-and-boundaries), relevant [Open design questions](methodology/01-product-doc-structure.md#open-design-questions) and the owning GDD topics. Apply relevant `docs/project-rules.md` engineering constraints when defining Product intent, planning Features and designing or implementing changes. A local Product, Feature or ADR cannot silently waive them. Proposed engineering-rule additions, removals or edits use the conversational self-check in `methodology/04-project-rules.md`; GDD design boundaries use their GDD writing contract. Reuse explicit decisions and obtain only missing authority for a substantive change. Stage 3 checks useful terminology, design, architecture/ADR and rule updates before final verification; it does not require an artifact for every category.
+Game design can start from an idea through `design-gdd`. Delivery planning, implementation, engineering work and runnable experiments need substantive GDD content that makes the current scope clear; a placeholder page does not count. The full rule is [GDD prerequisite and authority](methodology/01-product-doc-structure.md#gdd-prerequisite-and-authority). Product documents organize delivery and link to the GDD instead of copying its design.
 
-Read relevant terminology definitions, available GDD, Product/professional sources and accepted architecture decisions for the work. Initial purpose/pending-state notices are not confirmed requirements or definitions. Design discussion need not wait for all future details or detailed Product documents; dependent planning and implementation require sufficiently clear current-scope design. Source writing and implementation use their owning workflows; a Skill return does not cancel a broader concrete authorization.
+Before design discussion, planning, implementation or review, read what applies to the task:
+
+- [Design scope and boundaries](methodology/01-product-doc-structure.md#design-scope-and-boundaries), the relevant [open design questions](methodology/01-product-doc-structure.md#open-design-questions) and the GDD topics that cover the subject.
+- Relevant definitions in `docs/terminology.md`.
+- Relevant Product and specialist sources, and accepted architecture decisions.
+- Relevant engineering constraints in `docs/project-rules.md`. A Product, Feature or ADR cannot silently waive them.
+
+Starter pages that only describe a directory's purpose or a pending state are not confirmed requirements or definitions. Design discussion does not have to wait for every future detail or for detailed Product documents.
 
 ## Environment and Git
 
-Before the first coding Feature, complete the Agent-led Project Environment setup under the language/configuration contract above. Coding requires confirmed environment preparation based on actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after tool/configuration changes or to diagnose actual invocation failures; ordinary Features reuse confirmed commands without version discovery.
+Before the first coding Feature, complete the [Project Environment Bootstrap](methodology/06-project-environment.md#project-environment-bootstrap). Coding requires an environment confirmed by actual check results. Run `python -B tools/checks/check-project-environment.py --require-ready` during setup, after a tool or configuration change, or to diagnose a failed tool invocation. Ordinary Features reuse the confirmed commands without rediscovering versions.
 
-启动 Godot 编辑器检查（包括 `--headless --editor`）前，读取并遵循[编辑器检查约定](agent-rules/00-core/validation-policy.md#windows-editor-checks)。
+Before starting a Godot editor check, including `--headless --editor`, read and follow [Windows editor checks](agent-rules/00-core/validation-policy.md#windows-editor-checks).
 
-Every modifying task follows `agent-rules/00-core/git-worktree-and-commits.md`: inspect and preserve actual differences and unrelated staging state, continue from current records in the task's target checkout, and commit complete logical changes with the applicable Feature identity. Reuse valid task checks; committing does not require a separate review. Non-empty Git status alone does not block a task; actual overlapping edits or an inseparable commit require resolving the concrete conflict. User-defined no-commit and commit-permission conditions retain their stated scope across continuation. Implementation approval, actual human acceptance and any separately required commit permission remain distinct; automated results cannot supply a missing human decision.
+Every task that modifies files follows [Git changes and commits](agent-rules/00-core/git-worktree-and-commits.md): work in the task's designated checkout, preserve existing changes, stage only this task's paths and commit complete logical changes. A local commit does not establish completion or human acceptance.
 
 ## Project knowledge and rule feedback
 
-Before choosing an approach in planning, investigation, implementation, debugging or review, consult [relevant project knowledge](docs/knowledge/README.md#find-relevant-knowledge-first). Empty topics do not block work; knowledge cannot override accepted decisions or rules.
+Before choosing an approach in planning, investigation, implementation, debugging or review, consult [relevant project knowledge](docs/knowledge/README.md#find-relevant-knowledge-first). Empty topics do not block work. Knowledge cannot override accepted decisions or rules.
 
-During authorized task documentation, retain useful approaches and failure lessons under [knowledge maintenance](docs/knowledge/README.md#maintain-during-authorized-work). Read-only tasks retain their write boundary. If there is no useful new learning, no entry is required. Finalize Feature notes and knowledge before the Stage 7 commit; Stage 8 links them.
+During authorized task documentation, record useful approaches and failure lessons under [knowledge maintenance](docs/knowledge/README.md#maintain-during-authorized-work). Read-only tasks keep their write boundary. When there is no useful new learning, no entry is needed. Finalize Feature notes and knowledge before the Stage 7 commit; Stage 8 links them.
 
-At completion, check whether reusable prescriptive learning is already covered by `agent-rules/`. If valuable guidance is missing, propose one generalized rule, its target module and a real example only when useful. Do not create a rule for every defect, duplicate an existing rule, promote Product detail or edit rules without explicit approval.
+When work shows reusable prescriptive guidance that `agent-rules/` or `docs/project-rules.md` does not cover, propose it at the points and with the self-check defined in [incremental rule maintenance](methodology/04-project-rules.md#incremental-rule-maintenance). Do not edit rules without that approval.
 
 ## Engineering rule routing
 
-Workflow and traceability semantics belong to `methodology/`; concrete engine and language semantics belong to `agent-rules/`. Use the root/Core precedence protocol for a real conflict. Rule-module directories do not prescribe project filesystem layout.
+`methodology/` defines workflow and traceability. `agent-rules/` defines concrete engine and language rules. Resolve a real conflict with the Core precedence protocol in `agent-rules/00-core/rule-precedence-and-routing.md`. The numbered rule-module directories do not prescribe the project's own folder layout.
 
-When reasoning about game logic/presentation responsibilities, locating their design sources, or choosing module locations/names, consult the matching sections of `docs/game-organization.md`. The guide connects responsibilities, documents and business modules; it does not prescribe extra task types or a fixed implementation structure. Reuse unchanged guidance; concrete naming and engine constraints remain in the relevant rule modules below.
+For a modification or a relevant engineering decision, read `agent-rules/00-core/README.md` and the README of each affected domain below:
 
-For modifications or relevant engineering decisions, use `agent-rules/00-core/README.md` and each affected domain below. Read the matching concrete sections and applicable validation documents, not the entire directory. Modules are additive: a test `.gd` needs relevant GDScript and test rules. Reuse already loaded, unchanged material on continuation; expand only when the task or evidence requires it.
+- Read only the matching sections and the domain's validation document, not the whole directory.
+- Modules add up. For example, a test `.gd` file needs both the GDScript rules and the test rules.
+- On continuation, reuse rules already loaded if they have not changed. Read more only when the task or new evidence requires it.
 
 | Changed artifact or domain | Rule entry |
 | --- | --- |
@@ -82,12 +98,20 @@ For modifications or relevant engineering decisions, use `agent-rules/00-core/RE
 | Resource | `agent-rules/21-resources/README.md` |
 | Shader | `agent-rules/30-shaders/README.md` |
 | ProjectSettings | `agent-rules/40-project-config/README.md` |
-| Export configuration/pipeline | `agent-rules/41-export-config/README.md` |
+| Export configuration or pipeline | `agent-rules/41-export-config/README.md` |
 | Game data, schemas or data pipeline | `agent-rules/50-data-files/README.md` |
 | Assets or import pipeline | `agent-rules/60-assets/README.md` |
 | Tests, fixtures or runner | `agent-rules/70-tests/README.md` |
 | UID, path, NodePath, business ID or RID identity | `agent-rules/00-core/godot-resource-references.md` |
 
-If no dedicated module applies, use relevant Core rules and project conventions; consult adjacent rules only where their semantics overlap. Verify target Godot semantics when the change involves version-sensitive engine behavior, not for ordinary Markdown or unrelated artifact work. Do not expand the rule system as an incidental implementation task.
+If no dedicated module applies, use the relevant Core rules and the project's existing conventions, and read adjacent modules only where their topics overlap. Check the target Godot version's behavior when a change depends on version-sensitive engine behavior; ordinary Markdown edits do not need this. Do not extend the rule system as a side task of implementation.
 
-Scope, minimal complete changes and preservation follow `agent-rules/00-core/change-scope-and-ownership.md`; vendor/generated ownership follows `third-party-generated-and-temporary-files.md` in that directory. Validation and truthful completion reporting follow `validation-policy.md` and `completion-and-reporting.md` there. Preserve authoritative state, API, ownership and lifecycle boundaries; test/debug tooling must not become an arbitrary reflection or property-mutation backdoor.
+To decide where game logic and presentation responsibilities belong, where their design sources are, or where a module goes and what it is called, read the matching sections of `docs/game-organization.md`. It explains concepts and examples; naming and engine constraints stay in the rule modules above.
+
+The Core directory also covers these topics:
+
+- Scope, minimal complete changes and preserving existing work: `change-scope-and-ownership.md`.
+- Vendor, generated and temporary files: `third-party-generated-and-temporary-files.md`.
+- Validation and truthful completion reports: `validation-policy.md` and `completion-and-reporting.md`.
+
+Preserve authoritative state, APIs, ownership and lifecycle boundaries. Test and debug tooling must not become a backdoor for arbitrary reflection or property changes.

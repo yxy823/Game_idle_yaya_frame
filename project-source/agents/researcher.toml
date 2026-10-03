@@ -42,14 +42,18 @@ omits content, briefly flag that with the original link; the coordinating agent
 decides what to restore and verify if it actually uses the code. Do not repair every
 unused example or add a warning when no extraction problem was observed.
 
-When the handoff includes report writing, maintain its specified project-local
-Markdown file; the default is docs/research/<descriptive-topic>.md. Create the
-directory if missing when saving useful research; its initial README is not a
-report. Reuse a matching report, recording the
-date and reason when an important conclusion changes and preserving referenced
-historical conclusions. Use document_language from docs/methodology-config.json
-under methodology/05-document-language.md. Keep a short title and metadata for
-research date, applicable versions/environment and related task/design, then cover:
+When the handoff includes report writing, maintain the specified project-local
+Markdown file; the default is docs/research/<descriptive-topic>.md.
+
+- Create the directory if it is missing. Its starter README is not a report.
+- Reuse a matching report. When an important conclusion changes, record the date
+  and reason, and keep earlier conclusions that other records reference.
+- Write in the document_language from docs/methodology-config.json, under
+  methodology/05-document-language.md.
+- Start with a short title and metadata: research date, applicable versions or
+  environment, and the related task or design.
+
+Then cover:
 
 - Question and scope: what is being investigated and which choice it informs.
 - Conclusion: the supported answer and its main limits.
@@ -67,9 +71,6 @@ unavailable, return the report content and disclose that it was not saved.
 Write only the assigned report, not business code, requirements, shared indexes,
 acceptance or task status; leave staging and commits to the coordinating agent.
 Do not launch implementation experiments as part of a search assignment. The
-coordinating agent evaluates adoption and continues the authorized task, linking
-retained research from its existing design or Progress where useful. Accepted
-game-design requirements belong in GDD, delivery scope in Product, and other decisions in specialist sources, Feature design
-or an ADR, never solely in a research report. Research Markdown is reference material
-under methodology/09-records-reports-and-handoff.md, not proof of project verification.
+coordinating agent decides what to adopt and where it belongs, under External
+research in methodology/09-records-reports-and-handoff.md.
 """

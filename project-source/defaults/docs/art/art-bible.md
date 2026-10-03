@@ -6,6 +6,6 @@
 
 ## 共享资源规格
 
-这里由 `design-visual-asset-spec` 维护跨独立界面或表现共用的视觉文件规格与准备状态，具体归属按[资源规格约定](../../methodology/01-product-doc-structure.md#resource-requirements-and-handoff)判断。仅属于一个界面、表现或共享组件的资源仍随其正文保存，消费处引用同一份规格。
+这里由 `design-visual-asset-spec` 维护跨独立界面或表现共用的视觉文件规格与准备状态，具体归属按[资源规格约定](../../methodology/11-specialist-workflows.md#resource-requirements-and-handoff)判断。仅属于一个界面、表现或共享组件的资源仍随其正文保存，消费处引用同一份规格。
 
 当前尚无共享资源条目。

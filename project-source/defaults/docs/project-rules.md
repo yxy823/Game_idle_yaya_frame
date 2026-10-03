@@ -1,14 +1,14 @@
 # Project rules
 
-> Read applicable engineering constraints before revising existing GDD design, defining Product delivery scope, planning Features or choosing an implementation. Read game-design scope and exclusions through [Design scope and boundaries](../methodology/01-product-doc-structure.md#design-scope-and-boundaries). Reuse unchanged reading under the project `AGENTS.md` router.
+> Read applicable engineering constraints before revising GDD design, defining Product delivery scope, planning Features or choosing an implementation. Game-design scope and exclusions are in [Design scope and boundaries](../methodology/01-product-doc-structure.md#design-scope-and-boundaries).
 >
-> **Structure:** This file owns project-wide development constraints, collaboration and engineering principles. The root `AGENTS.md` routes rules; `agent-rules/00-core/` owns engineering invariants and conflict handling; specialized modules own concrete engine/language semantics.
+> This file holds project-wide development constraints, collaboration expectations and general engineering principles. Concrete engine and language rules live under `agent-rules/`; see [Part 3](#part-3--project-rule-sources).
 
 ## Project-wide engineering constraints
 
 Use the existing `[MUST]`, `[PREFER]` and `[REVIEW]` meanings from `agent-rules/00-core/rule-precedence-and-routing.md`. MUST constraints apply to every relevant Product, Feature, design and implementation. A Product, Feature design or ADR cannot silently override them. Keep each constraint's scope and necessary rationale clear; technical details remain at their owning source.
 
-No project-specific engineering constraints have been confirmed in this blank project. Add confirmed development constraints here when needed; do not invent technical commitments from examples. GDD owns game-design boundaries and exclusions, including long-lived ones; reference its owning passages rather than duplicating them here. Definitions belong in `docs/terminology.md`, delivery boundaries in Product and current architecture in its own documents.
+No project-specific engineering constraints have been confirmed yet. Add confirmed development constraints here when needed; do not invent technical commitments from examples. GDD owns game-design boundaries and exclusions, including long-lived ones; reference its owning passages rather than duplicating them here. Definitions belong in `docs/terminology.md`, delivery boundaries in Product and current architecture in its own documents.
 
 Rule additions, deletions and edits follow `methodology/04-project-rules.md` **Incremental rule maintenance**, including the mandatory conversational self-check before every proposed write. Preserve existing authorization; obtain the missing decision for substantive changes. The Stage 3 documentation checkpoint checks for useful incremental updates before final verification. If no useful change is identified, do not produce a report or new rule.
 
@@ -16,7 +16,7 @@ Rule additions, deletions and edits follow `methodology/04-project-rules.md` **I
 
 # Part 1 · Collaboration contract
 
-> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-project-rules.md` and the Core precedence protocol; these requirements do not override external instructions.
+> This part defines mandatory collaboration requirements. Rule authority and conflicts follow `methodology/04-project-rules.md` and the Core precedence protocol. These requirements do not override system, developer or user instructions.
 
 ## 1.1 Collaboration discipline
 
@@ -30,13 +30,13 @@ Rule additions, deletions and edits follow `methodology/04-project-rules.md` **I
 
 ## 1.2 Workflow constraints
 
-Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/05-document-language.md`; test semantics follow `methodology/08-test-traceability-and-evidence.md`. Do not maintain competing Stage instructions here.
+Feature implementation uses `feature-execute` and the canonical `methodology/03-execute-loop.md`. That specification owns the Context / Rules Snapshot, authorization and continuation, acceptance, optional independent review, verification and completion. Environment preparation follows `methodology/06-project-environment.md`; test semantics follow `methodology/08-test-traceability-and-evidence.md`. Do not maintain competing Stage instructions here.
 
-Inspect and preserve existing changes, continue work in the same project directory, stage the intended scope and create eligible logical commits under `agent-rules/00-core/git-worktree-and-commits.md`.
+Inspect and preserve existing changes, continue work in the task's designated checkout, stage the intended scope and create eligible logical commits under `agent-rules/00-core/git-worktree-and-commits.md`.
 
 When rules change, state their approved applicability to current and later work under the incremental maintenance contract. Do not retroactively rewrite historical approvals, and do not assume current work is exempt from a newly confirmed hard constraint.
 
-Every placeholder uses the `_placeholder_` prefix and is recorded in Feature notes.
+Every placeholder file uses the `_placeholder_` prefix. Record its replacement need in the owning resource section of the UI, presentation or shared design document, and link it from the Feature AC or design that uses it; Feature notes only provide navigation.
 
 ## 1.3 Reporting requirements
 
@@ -98,10 +98,10 @@ Choose a pattern only when it solves a present problem more simply than an ordin
 ## 2.5 General code organization
 
 1. Organize by stable game domain rather than file type or delivery Feature ID. A `player/` area containing its data, view, and control code is preferable to distant `models/`, `views/`, and `controllers/` trees. Use `docs/game-organization.md` when choosing a module location or expanding the starter skeleton.
-2. Keep one core concept per file. Split when cohesion, responsibility, readability, or testability justify it; numeric thresholds belong to the project's machine-readable validation configuration and do not automatically authorize a split.
+2. Keep one core concept per file. Split when cohesion, responsibility, readability, or testability justify it; numeric thresholds such as file length limits belong to the linter configuration in the project-root `gdlint.json` and do not by themselves require a split.
 3. Keep entry points limited to assembly, dependency injection, and startup.
 4. Keep adjustable configuration in a focused config or data area owned by its module; shared use alone does not remove domain ownership.
-5. Do not create miscellaneous dumping grounds such as `utils.py` or `helpers.ts`; name utilities by domain or responsibility.
+5. Do not create miscellaneous dumping grounds such as `utils.gd` or `helpers.gd`; name utilities by domain or responsibility.
 
 ## 2.6 Error handling
 
@@ -120,24 +120,4 @@ Choose a pattern only when it solves a present problem more simply than an ordin
 
 # Part 3 · Project rule sources
 
-> Concrete engine, language, and domain behavior is maintained in the repository's routed rule documents rather than copied into this template.
-
-## 3.1 Repository routing
-
-The project root `AGENTS.md` is the rule router and records the repository workflow. It directs the agent to:
-
-- `agent-rules/00-core/` for global engineering invariants and precedence;
-- each affected specialized `agent-rules/<module>/` README for its concrete Godot, GDScript, or domain rules;
-- the sections matching those READMEs' topic conditions, including each affected module's `validation.md`.
-
-`methodology/` remains the source for Product/Feature workflow, Test Impact Review, traceability, human acceptance, and completion gates.
-
-## 3.2 Loading and conflicts
-
-Use the reading route above and `methodology/04-project-rules.md`. Apply the Core precedence protocol to real conflicts; do not load unrelated topics or treat a general preference as permission to weaken a mandatory rule.
-
-This template must not create a second concrete-rule tree or copy current engine, language, tool, or project status into `docs/project-rules.md`.
-
-## 3.3 Environment Bootstrap
-
-`docs/methodology-config.json` owns the document language and Python/Godot executable paths. Actual setup findings and the observed engine version belong in the initialization report and current Progress under `methodology/05-document-language.md`; configuration does not store readiness flags or verification command strings. Do not infer or duplicate the current environment state here.
+The root `AGENTS.md` routes each task to `agent-rules/00-core/` and the affected domain modules. Concrete engine and language rules stay there; do not copy them into this file. `methodology/` defines the Product and Feature workflow, test traceability, human acceptance and completion. Tool paths and the Project Environment Bootstrap are defined in [Project environment](../methodology/06-project-environment.md); do not record environment state here.

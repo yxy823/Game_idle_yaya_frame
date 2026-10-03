@@ -1,27 +1,29 @@
 # {{feature_id}} · Design and implementation
 
-Use the relevant sections to explain this Feature under `methodology/02-feature-list-schema.md`. Implementation design and local decision rationale have this fixed location regardless of length; notes link here. Create the file when there is such content to save, without filling empty headings. Render prose in `document_language`.
+*Use the sections that help explain this Feature under **Feature design and implementation notes** in `methodology/02-feature-list-schema.md`. This file is the fixed location for the implementation design and local decision rationale, whatever their length; Feature notes link here. Create the file when there is such content to save, and do not fill empty headings. Write prose in `document_language`.*
 
 ## Goal and boundaries
 
-Link the primary Product delivery, GDD or professional source, Feature JSON and relevant AC. Include applicable GDD design and secondary UI, art, audio, resource or localization references and their concrete constraints without copying specifications or hiding requirements solely in notes.
+*Link the primary Product delivery, GDD or professional source, the Feature JSON and the relevant AC. Include the applicable GDD design and any secondary UI, art, audio, resource or localization references with their concrete constraints. Do not copy specifications, and do not hide requirements only in notes.*
 
-## Existing behavior and constraints
+## Current behavior and constraints
 
-Describe the relevant implementation and limitations. For each material constraint, explain what it protects and how it applies here; use relative links to project rules, applicable `agent-rules`, architecture and ADRs. Distinguish confirmed facts from assumptions and identify versions for sensitive external references.
+*Describe the relevant current implementation and its limitations. For each important constraint, explain what it protects and how it applies here, with relative links to project rules, applicable `agent-rules`, architecture and ADRs. Mark which statements are confirmed facts and which are assumptions, and name versions for version-sensitive external references.*
 
 ## Proposed design
 
-Explain responsibilities, interfaces, dependency directions and authoritative state ownership. Record local choices and reasons; link important cross-Feature tradeoffs to their ADR. Clearly identify unresolved choices.
+*Explain responsibilities, interfaces, dependency directions and who owns authoritative state. Record local choices and their reasons, and link important cross-Feature tradeoffs to their ADR. Mark unresolved choices clearly.*
 
 ## Runtime and failure flows
 
-Trace the useful triggers, ordering, state changes, lifecycle boundaries, failures and recovery. Use a diagram only where it clarifies the flow.
+*Trace the useful triggers, ordering, state changes, lifecycle boundaries, failures and recovery. Use a diagram only where it clarifies the flow.*
 
 ## Implementation and verification reasoning
 
-Describe meaningful implementation dependencies and why verification covers the relevant risks. Keep executable test mappings and obligations in Feature JSON/Registry. State any additional scoped performance, duration, display or listening checks here when needed, including conditions and completion criteria; link original results rather than copying a second result table. Supplemental results are not gdUnit run evidence.
+*Describe the important implementation dependencies and why the planned verification covers the relevant risks. Executable test mappings and obligations stay in the Feature JSON and the Registry.*
+
+*When needed, state additional scoped checks here, such as performance, duration, display or listening checks, with their conditions and completion criteria. Link the original results instead of copying a second result table. These supplemental results are not gdUnit run evidence.*
 
 ## Actual outcome and deviations
 
-Before final verification, reconcile the design with what was implemented. Preserve material reasons for an approved change of plan, link current subsystem documentation, and state remaining limitations. Feature status and current blockers remain in their existing records.
+*Before final verification, reconcile this design with what was implemented. Keep the important reasons for any approved change of plan, link the current subsystem documentation, and state remaining limitations. Feature status and current blockers stay in their own records.*

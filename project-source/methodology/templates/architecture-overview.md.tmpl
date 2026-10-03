@@ -1,38 +1,38 @@
 # Architecture overview
 
-> Human-owned project map. Record actual project-level structure and reading entries under the architecture convention; generated reference facts do not define architecture authority.
+*Record the project's actual module structure and reading entries under `methodology/10-architecture-overview.md`. Generated reference facts do not decide the architecture.*
 
 ## Modules and responsibility
 
-| Module | Main location / reading entry | Responsibility | Owning boundary | Why this boundary exists |
+| Module | Main location or reading entry | Responsibility | Owning boundary | Why this boundary exists |
 | --- | --- | --- | --- | --- |
 
-Link an existing module README when it already provides useful navigation. Point to the actual startup/composition boundary and persistent state owners when they help explain how the project fits together; do not invent missing layers.
+*Link a module README when one already gives useful navigation. Point to the actual startup and composition boundary and to the owners of persistent state when they help explain how the project fits together. Do not invent missing layers.*
 
-Use `docs/game-organization.md` to explain logic, presentation and their actual collaboration within these modules. Link relevant GDD, UI or game-presentation sources; do not split the map into fixed layer directories or treat development tools as gameplay responsibilities.
+*Use `docs/game-organization.md` to explain logic, presentation and their actual collaboration within these modules, and link the relevant GDD, UI or game-presentation documents. Do not split the map into fixed layer directories or treat development tools as gameplay responsibilities.*
 
-Briefly explain the problem each material boundary choice solves; link local implementation rationale to its Feature design and qualifying cross-Feature rationale to its ADR. Do not copy full plans, invent missing decision history or create an ADR just to supply a link.
+*Briefly explain the problem each important boundary solves. Link local implementation rationale to its Feature design and cross-Feature rationale that meets the ADR conditions to its ADR. Do not copy full plans, invent missing decision history or create an ADR just to have something to link.*
 
 ## Allowed dependency directions
 
-Describe the permitted directions between project-level modules and the reason for each constraint. Distinguish these constraints from key actual collaborations and their purpose. Record deliberate exceptions and their owner. Do not require a full class-level graph.
+*Describe the permitted directions between project-level modules and the reason for each constraint. Keep these rules separate from the key actual collaborations and their purpose. Record deliberate exceptions and who owns them. A full class-level graph is not required.*
 
 ## Subsystem contracts
 
-Link each documented subsystem's internal contracts at `architecture/<subsystem>.md`, using its stable name from the module list. Keep the overview at project level; explanation length and complexity do not select the location. Do not create empty subsystem files.
+*Link each documented subsystem's internal contracts at `architecture/<subsystem>.md`, using the subsystem's stable name from the module table. Keep this overview at project level; the length or complexity of an explanation does not change where it goes. Do not create empty subsystem files.*
 
 ## Important decisions
 
-Link relevant `architecture/adr-NNNN-<slug>.md` records when they exist. Keep tradeoffs and decision status in each ADR; this map describes the current structure. Omit this section when no ADR is needed.
+*Link the relevant `architecture/adr-NNNN-<slug>.md` records when they exist. Tradeoffs and decision status stay in each ADR; this map describes the current structure. Omit this section when no ADR exists.*
 
 ## Standalone technical decisions
 
-Use this section only for adopted decisions without a Feature that do not meet the ADR conditions and have project-level or cross-subsystem scope. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its fixed scope, authorization and migration rules. Keep decision rationale separate from actual implemented facts; omit the section when no matching content exists.
+*Use this section only for adopted decisions that have no Feature, do not meet the ADR conditions, and apply at project level or across subsystems. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its scope, authorization and migration rules. Keep the decision rationale separate from implemented facts. Omit this section when there is no such decision.*
 
-## Extracted facts
+## Extracted reference facts
 
-Optional generated facts live separately under `reports/maintenance/architecture-facts/`. Label extractor, source snapshot, scope and limitations. Explicit resource, path or type references are evidence of references, not proof of allowed dependencies, runtime ownership or architectural intent.
+*Optional generated facts live separately under `reports/maintenance/architecture-facts/`. Link them with the extractor, source snapshot, scope and limitations. An explicit resource, path or type reference shows that the reference exists; it does not prove an allowed dependency, runtime ownership or architectural intent.*
 
 ## Maintenance
 
-Follow the Navigation and Maintaining a map sections of `methodology/10-architecture-overview.md` for content, change triggers and checks. Resolve conflicts with Product, Project Rules and approved decisions; do not silently replace human intent with generated output.
+*Follow the **Navigation** and **Maintaining a map** sections of `methodology/10-architecture-overview.md` for content, change triggers and checks. Resolve conflicts with Product, project rules and approved decisions; do not silently replace human intent with generated output.*

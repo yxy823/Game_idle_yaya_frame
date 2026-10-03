@@ -1,6 +1,6 @@
 # Project knowledge
 
-Use this directory to reuse what actual project work has taught us: successful approaches, debugging methods, and failure lessons. It starts with navigation only; no entry claims that this project has already verified a technique or encountered a defect.
+Use this directory to reuse what actual project work has taught us: successful approaches, debugging methods and failure lessons. What belongs here rather than in Feature notes, Progress, ADRs or rules is defined in [Project knowledge](../../methodology/09-records-reports-and-handoff.md#project-knowledge).
 
 ## Find relevant knowledge first
 
@@ -19,7 +19,7 @@ Prefer a demonstrated project approach when its conditions still fit. Knowledge 
 
 Keep one independently useful experience in a descriptively named Markdown file. Topic READMEs contain links and short descriptions, not all the entry bodies. Add a narrower subdirectory or a project-module topic when real content benefits from it; update the nearest index and its parent link when adding a topic. Do not create a folder for every Feature or copy the same entry into several topics. Cross-topic relevance uses links.
 
-The initial hierarchy is:
+The topic directories are:
 
 ```text
 knowledge/
@@ -30,13 +30,13 @@ knowledge/
 `-- tools-pipeline/
 ```
 
-Each initial topic has its own README. Additional topic and entry files are created only when useful content exists. Paths remain stable; new prose follows the project's `document_language` setting.
+Each topic has its own README. Create further topics and entry files only when useful content exists. Keep paths stable; write new prose in the project's `document_language`.
 
 ## Keep the useful context
 
 An entry should explain the situation, the approach or lesson and why it helped, the conditions where it applies, and its supporting Feature, commit, test, report, or reference links. Record versions, platform and reproduction details when they affect the conclusion. Successful approaches need observed benefits and limits, not a fabricated root cause. Distinguish observations, hypotheses, and verified conclusions in ordinary prose; uncertainty is not proof.
 
-Feature notes retain brief incident learning, TODOs and links to decisions in the Feature design; Progress retains current state and history links. Knowledge owns the extracted reusable explanation and links the original record instead of copying its chronology. Technical choices meeting the architecture convention's conditions have their rationale in ADRs. Stable prescriptive guidance can be proposed for `agent-rules/` under its existing approval rules; then link that rule rather than maintaining another copy here.
+Link the original Feature, Progress or ADR record instead of copying its chronology. When guidance becomes an approved rule, link that rule instead of keeping a second copy here.
 
 ## Maintain during authorized work
 
@@ -46,4 +46,4 @@ When creating or substantively updating an entry, apply [Organize entries](#orga
 
 Review entry accuracy and links before delivery. If evidence changes, correct the conclusion and its limits; do not silently turn an old result into a claim about a new version. No task must manufacture a new entry. Ordinary documentation review and the existing task workflow are sufficient.
 
-Keep runnable helpers, fixtures, data and actual reports in their existing project locations and link them here. This directory's Markdown is explanatory knowledge, not executable input, GDD design, Product delivery requirements, rules or validation contracts. Correcting prose alone is not a new gameplay verification run; changes to code, tests or governing contracts still require their applicable checks.
+Keep runnable helpers, fixtures, data and actual reports in their normal project locations and link them here. Correcting prose here is not a new verification run.

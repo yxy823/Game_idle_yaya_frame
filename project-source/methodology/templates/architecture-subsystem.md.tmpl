@@ -2,37 +2,37 @@
 
 ## Responsibility and owner
 
-State the subsystem's responsibility and the owner of its authoritative state. Where relevant, distinguish game logic, presentation and view-local state using `docs/game-organization.md`; one business subsystem may include both game responsibilities.
+*State the subsystem's responsibility and the owner of its authoritative state. Where relevant, separate game logic, presentation and view-local state using `docs/game-organization.md`; one business subsystem may contain both logic and presentation.*
 
-Give its main location and useful scene, script or resource reading entries, linking an existing module README where sufficient. Link relevant verification entries when useful; keep test details in their existing records. This navigation remains useful even when the optional runtime-flow section is omitted.
+*Give its main location and useful scene, script or resource entry points, or link a module README when that is enough. Link relevant verification entries when useful; test details stay in their own records. Keep this navigation even when the optional runtime-flow section is omitted.*
 
 ## Boundaries and allowed dependencies
 
-Identify key actual direct collaborators and what the subsystem uses them for. Distinguish these from permitted dependency directions; explain why the boundaries exist and any approved exceptions. Link back to `../architecture.md`.
+*Name the key direct collaborators and what the subsystem uses each one for. Keep these separate from the permitted dependency directions. Explain why the boundaries exist and list any approved exceptions. Link back to `../architecture.md`.*
 
-Summarize key reasons needed to understand the current subsystem; link local implementation rationale to its Feature design and qualifying cross-Feature rationale to its ADR. Preserve historical decisions in their owning records; do not invent missing rationale or create an ADR just to fill this map.
+*Summarize the reasons needed to understand the current subsystem. Link local implementation rationale to its Feature design and cross-Feature rationale that meets the ADR conditions to its ADR. Earlier decisions stay in their own records; do not invent missing rationale or create an ADR just to fill this map.*
 
 ## Key runtime flows (optional)
 
-Describe flows whose ordering, ownership or failure behavior matters across modules. Trace the trigger, participating modules, authoritative state change and observable result, with links to the relevant implementation. Use a short sequence or diagram only when it helps explain the flow.
+*Describe flows whose ordering, ownership or failure behavior matters across modules. Trace the trigger, participating modules, authoritative state change and observable result, with links to the implementation. Use a short sequence or diagram only when it helps.*
 
-Include the details that affect this subsystem:
+*Include the details that affect this subsystem:*
 
-- Where Node, Resource, SceneTree or file I/O enters the flow, and where domain logic stays independent of the engine.
-- How requests, accepted/rejected results, current state and one-time feedback connect. Link their owning requirements; explain animation timing or interruption conditions when they affect game-rule validity.
-- Who creates and owns runtime state, resources and subscriptions, and who releases or cancels them on completion, scene exit or interruption.
-- Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or presentation.
+- *Where Node, Resource, SceneTree or file I/O enters the flow, and where domain logic stays independent of the engine.*
+- *How requests, accepted or rejected results, current state and one-time feedback connect. Link the requirements that define them. Explain animation timing or interruption conditions when they affect whether a game rule applies.*
+- *Who creates and owns runtime state, resources and subscriptions, and who releases or cancels them on completion, scene exit or interruption.*
+- *Where failure is detected and handled, what remains valid, and how failure or recovery reaches the caller or the presentation.*
 
-Distinguish observed behavior from proposed or unverified flows. Inspect the actual call path; dynamic signals and loading may require runtime verification. Link interface definitions, implementation plans and tests in their existing records. Omit this section when the flow is already clear from local code.
+*Mark which behavior has been observed and which is proposed or unverified. Inspect the actual call path; dynamic signals and loading may need runtime verification. Link interface definitions, implementation plans and tests where they already live. Omit this section when the local code already makes the flow clear.*
 
 ## Standalone technical decisions
 
-Use this section only for adopted decisions without a Feature that do not meet the ADR conditions and belong to this one subsystem. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its fixed scope, authorization and migration rules. Keep decision rationale separate from actual implemented facts; omit the section when no matching content exists.
+*Use this section only for adopted decisions that have no Feature, do not meet the ADR conditions, and belong to this one subsystem. Follow **Standalone technical decisions** in `methodology/10-architecture-overview.md`, including its scope, authorization and migration rules. Keep the decision rationale separate from implemented facts. Omit this section when there is no such decision.*
 
-## Reliable extracted facts
+## Extracted reference facts
 
-Link optional generated facts with extractor, snapshot and scope. They do not replace the human-owned responsibility and dependency contract above.
+*Link optional generated facts with the extractor, snapshot and scope. They do not replace the responsibility and dependency description above.*
 
 ## Maintenance
 
-Follow the Navigation and Maintaining a map sections of `methodology/10-architecture-overview.md` for content, change triggers and checks.
+*Follow the **Navigation** and **Maintaining a map** sections of `methodology/10-architecture-overview.md` for content, change triggers and checks.*
