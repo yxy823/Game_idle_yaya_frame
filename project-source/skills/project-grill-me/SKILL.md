@@ -11,6 +11,8 @@ Resolve material uncertainties within the requested discussion scope and return 
 
 Follow source ownership in `methodology/01-product-doc-structure.md`. This questioning method may support initial game design or GDD drafts before Product and Features exist. Use the user's idea and constraints as inputs and keep proposals distinct from adopted design. Durable GDD authoring belongs to `design-gdd`; discussion does not bypass the design prerequisites of later planning or implementation.
 
+When the user explicitly asks to save an idea for later, apply **Candidate and unadopted ideas** in that contract. An idea with no current decision dependency belongs in `docs/unadopted-ideas.md`; save it within that specific writing scope or return it to an already authorized `design-gdd` task. Current design comparisons and adopted-rule alternatives return to their specified owners. Do not create a new GDD system, Product or Feature merely to retain an idea; discussion without writing authorization stays in the conversation.
+
 ## Shared questioning method
 
 Apply this method to the user's current discussion goal, including its remaining material questions. Callers reuse question grouping, proportional depth, continuation and completion here while retaining their own scope and authority.

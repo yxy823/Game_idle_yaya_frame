@@ -8,7 +8,7 @@ metadata:
 
 # Audio asset specification
 
-Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Maintain audio requirements inside the owning presentation alternative, interface document or shared sound design section under **Resource requirements and handoff** in `methodology/01-product-doc-structure.md`. Expand complex resource details there and reference shared requirements once; do not create a separate preparation list. Follow `document_language`.
+Use `methodology/11-specialist-workflows.md` for ownership, authorization, source impacts and finalization. Select the presentation, UI or extracted component section under **Resource requirements and handoff** in `methodology/01-product-doc-structure.md`. Audio resources shared outside a single such owner use **Shared resource specifications** in `docs/audio/sound-bible.md` (`共享资源规格` in Chinese). Move specifications and preparation state together when their use changes the owner, replacing consumer copies with links. Expand complex resource details there and reference shared requirements once; do not create a separate preparation list. Follow `document_language`.
 
 Read confirmed GDD triggers and Product delivery scope, applicable Sound Bible, related entries and actual sample references. Use `design-audio-direction` for detailed shared sound standards. Reference GDD-owned direction, triggers and values rather than copying them into another source. Reuse settled decisions, and clarify only material gaps. Do not add a cue to every interaction or assume voice-over. An unknown value may remain pending while other useful specification work continues.
 

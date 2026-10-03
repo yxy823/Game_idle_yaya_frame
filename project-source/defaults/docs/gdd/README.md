@@ -6,6 +6,10 @@
 
 系统规则固定使用 `systems/<system-key>.md`；系统数值模型使用相同键的 `balance/<system-key>.md`，跨系统数值模型使用 `balance/cross-system.md`。`gameplay.md` 保存核心循环、系统关系和入口链接。按上述标准命名契约区分内容职责，游戏规模、篇幅和复杂程度不改变位置；没有实际内容时不预建文件。
 
+世界观、角色关系与故事梗概归 `concept-and-experience.md`；有分支或状态的叙事规则归所属系统。内容定义目录随定义其游戏身份的系统保存，模型数值归对应 `balance/`，`progression.md` 只维护排布、教学与节奏。导入非标准 GDD 后，已有主题在获准迁移前沿用原位置；新增主题或系统使用标准路径，并从原入口链接，不为局部新增重组旧正文。
+
+当前需要比较的设计选择归开放问题；已采纳规则的备选值随所属规则或模型保存；没有当前待决问题依赖的设想归[未采纳想法](../unadopted-ideas.md)。具体迁移与写入边界见[候选与未采纳想法规约](../../methodology/01-product-doc-structure.md#candidate-and-unadopted-ideas)。
+
 GDD 同时说明游戏逻辑与表现目标；界面细节和一次具体表现分别链接到 [UI 设计](../ui/README.md)与[游戏表现](../presentation/README.md)。例如商店主题保存购买规则和成功反馈目标，再引用界面、获得物品的表现以及实际接入说明。整体查找关系见[游戏职责与项目组织](../game-organization.md)。
 
 共享视觉规格、声音规格和本地化要求分别由[美术规范](../art/art-bible.md)、[声音规范](../audio/sound-bible.md)和[本地化规范](../localization/localization-spec.md)保存。编写或整合 GDD 时按[专业来源规范](../../methodology/11-specialist-workflows.md)归位当前范围内的已确认规格，本目录引用其正文。

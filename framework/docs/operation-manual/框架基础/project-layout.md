@@ -81,7 +81,7 @@
 
 `methodology/templates/` 提供 Product、Feature、工程变更、详情/索引/修订、测试登记、完成证据、人工清单、Progress、知识、项目规则、架构和 ADR 的格式参考。它们不是需要一次性填满的任务清单。正式 JSON 保留所属契约必需字段；Feature 设计使用固定文件，按内容省略不适用章节。
 
-新建 GDD 使用 `docs/gdd/README.md` 入口及[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中指定的主题名称和多实例命名模式，`design-gdd` 按实际内容创建所需主题，不为凑目录建立空文件。已有单文件或分层结构的局部修改不强制整套迁移；获准标准化时同步受影响的文件与章节引用。系统规则固定在 `docs/gdd/systems/<system-key>.md`；数值模型固定在 `docs/gdd/balance/<system-key>.md`，跨系统模型使用 `balance/cross-system.md`。位置由内容和作用域决定，不按游戏规模、篇幅或复杂程度选择。Product 模板用于组织交付，不能替代 GDD。
+新建 GDD 使用 `docs/gdd/README.md` 入口及[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中指定的主题名称和多实例命名模式，`design-gdd` 按实际内容创建所需主题，不为凑目录建立空文件。导入单文件或其他非标准 GDD 后，已有主题在获准迁移前沿用原位置，新增主题或系统使用标准路径并从原入口链接；局部新增不强制整套迁移。获准标准化时同步受影响的文件与章节引用。系统规则固定在 `docs/gdd/systems/<system-key>.md`；数值模型固定在 `docs/gdd/balance/<system-key>.md`，跨系统模型使用 `balance/cross-system.md`。位置由内容和作用域决定，不按游戏规模、篇幅或复杂程度选择。Product 模板用于组织交付，不能替代 GDD。
 
 | 产物 | 位置与注意事项 |
 | --- | --- |

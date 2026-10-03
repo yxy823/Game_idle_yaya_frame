@@ -8,13 +8,13 @@
 | --- | --- |
 | [gdd/](gdd/README.md) | 游戏目标、玩法规则与体验设计；后续交付引用这里的真实设计 |
 | [gdd/open-questions.md](gdd/open-questions.md) | 当前设计中尚未解决、会影响后续决定的问题 |
-| [unadopted-ideas.md](unadopted-ideas.md) | 尚未采纳的候选想法，不代表开发承诺；与当前必须解决的开放问题分开 |
+| [unadopted-ideas.md](unadopted-ideas.md) | 没有当前待决设计问题依赖的设想；已采纳规则的备选值仍随规则保存，不代表开发承诺 |
 | [terminology.md](terminology.md) | 本游戏已确认术语、定义与别名的唯一正文 |
-| [ui/](ui/README.md) | 界面布局、状态与交互设计 |
+| [ui/](ui/README.md) | 独立界面及跨界面共享控件的布局、状态与交互设计 |
 | [presentation/](presentation/README.md) | 一次游戏表现的目标、组成部分、时序与采用方案 |
-| [art/art-bible.md](art/art-bible.md) | 共用的美术方向与视觉规范 |
-| [audio/sound-bible.md](audio/sound-bible.md) | 共用的音乐、音效与声音规范 |
-| [localization/localization-spec.md](localization/localization-spec.md) | 游戏本地化范围、目标语言与表达格式；不同于开发文档的语言设置 |
+| [art/art-bible.md](art/art-bible.md) | 共用的美术方向、视觉规范与共享资源规格 |
+| [audio/sound-bible.md](audio/sound-bible.md) | 共用的声音方向、反馈规范与共享资源规格 |
+| [localization/localization-spec.md](localization/localization-spec.md) | 游戏本地化范围、目标语言、术语译名与表达格式；不同于开发文档的语言设置 |
 | [product.md](product.md)、[product/](product/README.md) | 交付范围与推进顺序总览，以及当前交付单元的详细要求 |
 | [features/](features/README.md) | 单项 Feature 的任务详情、验收条件及按需编写的局部设计 |
 

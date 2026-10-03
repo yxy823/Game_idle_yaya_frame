@@ -18,17 +18,21 @@
 | 已确认项目术语的定义与别名 | 固定为 `docs/terminology.md`；GDD 与专业来源引用 | `project-terminology` |
 | 共享视觉方向 | `docs/art/art-bible.md` | `design-art-direction` |
 | 共享声音方向 | `docs/audio/sound-bible.md` | `design-audio-direction` |
-| 界面布局、状态及其表现引用 | `docs/ui/<interface>-design.md` | `design-ui-spec` |
+| 界面布局、状态及其表现引用 | `docs/ui/<interface>-design.md`；共用控件行为在 `docs/ui/components/<component-key>-design.md` | `design-ui-spec` |
 | 一次游戏表现的过程、组件要求、候选与采用组合 | `docs/presentation/<scope>.md`；跨表现共享组件按下文固定存放 | `design-game-presentation`；实现任务同步实际文件和接入关系 |
-| 具体视觉资源准备要求 | 所属表现方案、界面或共享视觉设计章节 | `design-visual-asset-spec` |
-| 具体音频资源准备要求 | 所属表现方案、界面或共享声音设计章节 | `design-audio-asset-spec` |
-| 语言覆盖、回退、排版与翻译惯例 | `docs/localization/localization-spec.md` | `design-localization-spec` |
+| 具体视觉资源准备要求 | 所属表现/UI/组件的资源章节；跨独立所有者的共用资源固定在 `docs/art/art-bible.md` 的“共享资源规格” | `design-visual-asset-spec` |
+| 具体音频资源准备要求 | 所属表现/UI/组件的资源章节；跨独立所有者的共用资源固定在 `docs/audio/sound-bible.md` 的“共享资源规格” | `design-audio-asset-spec` |
+| 语言覆盖、术语译名、回退、排版与翻译惯例 | `docs/localization/localization-spec.md` | `design-localization-spec` |
 | 已定要求的实际资源接入 | 当前 Feature/实验的资源、引用与配置 | `content-asset-integration` |
 | 已定本地化要求的运行实现 | 翻译资源、字体、界面适配与语言逻辑 | `content-localization` |
+
+GDD 记录玩家应获得的感受和需要辨识的对象；画风、色板、质感等视觉标准归 Art Bible，音色、节奏与声音特征归 Sound Bible。例如“安静且奖励可辨识”是体验目标，“低饱和手绘”是美术标准，两者通过引用关联。
 
 专业文档把 GDD 的设计意图细化为可使用、可验证的规格，正文固定由上述所属文件维护；GDD 保留整体目标、玩法规则与引用。获准编写或整合 GDD 时，本次已确定的专业规格一并归位，原先写在 GDD 的当前规格迁入所属位置，不按首次写入位置或游戏复杂程度决定归属。Product 选择交付范围并保存必要引用。专业 Skill 直接维护自己的正文；数值主题同样不要求 `design-gdd` 代为保存。专业工作若需要改变整体玩法规则或已确认体验目标，则由 `design-gdd` 协调该设计决定，交付范围变化再由 `product-author` 处理。维护职责不授权自行采用未决要求；本地化翻译用词也不能改玩法语义。
 
 数值设计从目标体验、单位、边界、规则与已知数据出发，交付可复算的公式、参数及典型和关键边界情景。候选值、已采用值与实际验证状态分别标明；普通规格中的数字不自动成为数值建模任务。计算成立不证明游戏已经平衡或有趣，数值写入也不授权修改运行资源或代码。独立数值审核继续由 `review-balance` 承担。
+
+本地化规范的“术语译名”章节是目标语言用词的唯一规格，条目引用项目术语定义并说明语言、已采纳译名与适用语境。`design-localization-spec` 维护这份表，`content-localization` 在运行译文中使用，`review-localization` 据此检查一致性；完整句子与对话仍在运行资源中，不在 Markdown 维护第二份。概念定义和开发查找别名继续归 `docs/terminology.md`，具体边界见[本地化术语译名](../../../../project-source/methodology/11-specialist-workflows.md#localization-term-translations)。
 
 ## 来源如何约束任务
 
@@ -40,21 +44,25 @@ GDD、规格、表现正文及本地化要求在最终验证前完成本轮必�
 
 ## 用一次游戏表现连接设计与实现
 
-例如，设计“奖励领取”时，界面文档说明领取按钮在哪里、什么状态可以点击；表现文档说明领取成功后图标如何飞行、数字如何变化、按钮如何反馈。先从体验目标或口语描述形成可观察过程，再选择已有实现、序列帧、Shader、粒子、Tween 或 AnimationPlayer。Shader 与粒子参考帮助整理标准需求，具体算法、节点和代码由实施任务决定。
+例如，设计领取后的物品入包反馈时，界面文档说明领取按钮在哪里、什么状态可以点击；`item-added.md` 说明入包确认后图标如何飞行、数字如何变化、目标位置如何反馈。先从体验目标或口语描述形成可观察过程，再选择已有实现、序列帧、Shader、粒子、Tween 或 AnimationPlayer。Shader 与粒子参考帮助整理标准需求，具体算法、节点和代码由实施任务决定。
 
 能否领取、发放数量和重复领取规则由游戏逻辑决定；表现使用有效结果，不能在图标到达时再次发放奖励。普通控件的悬停、焦点或展开状态可以在 UI 文档中说明，不必为表现层的每一处行为单独建立游戏表现文档。
 
 | 场景 | 从哪里找到什么 |
 | --- | --- |
 | 背包物品入包 | 从 UI 的实际交互位置或末尾“关联游戏表现”导航，找到表现正文、采用方案、实现和验收入口 |
-| 奖励领取的组成部分有多个方案 | 图标飞行 A/B、按钮反馈 A/B 分别说明；当前采用“图标飞行 B＋按钮反馈 A”，引用各部分，不重复整套组合正文 |
+| 奖励领取的组成部分有多个方案 | 图标飞行 A/B、目标反馈 A/B 分别说明；当前采用“图标飞行 B＋目标反馈 A”，引用各部分，不重复整套组合正文 |
 | 多个界面共用奖励反馈 | 共用一份表现正文，各界面保留自己的触发、采用组合和消费位置 |
 | 角色死亡 | 从相关 GDD 章节及表现总览找到正文，无需为此创建 UI 文档 |
 | 替换一个组成部分的技术 | 当前任务保留已确认要求，同步采用组合及真实路径，再完成适用验证；目标改变按设计变更处理 |
 
+表现以触发时刻和玩家感知结果确定范围：商店购买与奖励领取若都是同一种物品入包反馈，共用 `docs/presentation/item-added.md`，各自说明来源上下文。奖励揭晓等独立过程另写一份，结尾发生物品入包时引用已有正文。不会只因消费界面不同就拆出两份表现。
+
 表现正文按需要组织目标与过程、组件标准需求、候选方案、资源规格、采用关系、实际实现和验收入口。组件仅属于一份表现时在父文档内分节；第二份独立表现使用相同组件要求时，将共同要求、候选及其资源规格迁入固定的 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现不会触发这次迁移。建立后的共享组件仍有消费者时保留原路径，各父表现只维护自己的过程、触发与目标上下文、采用组合和验收入口。具体身份与生命周期见[表现文档约定](../../../../project-source/methodology/11-specialist-workflows.md#game-presentation-documents)。
 
-`docs/presentation/README.md` 导航到表现及共享组件，列出实际使用关系；绑定要求写在各自正文中。UI 规格新增、改名或移除，以及导航中的用途或关联 Product 变化时，`design-ui-spec` 同步读取 `docs/ui/README.md` 并维护受影响导航条目，无需审查无关目录内容。
+UI 按[界面文档边界](../../../../project-source/methodology/11-specialist-workflows.md#ui-document-boundaries)划分：有独立进入、退出和交互流程的屏幕或弹层单独成文，从属面板、标签页与 HUD 部件留在宿主章节。第二个界面使用同一控件或对话框行为时，共用正文迁入 `docs/ui/components/<component-key>-design.md`，调用处引用；仅共享外观则仍引用 Art Bible。
+
+`docs/presentation/README.md` 导航到表现及共享组件，列出实际使用关系；绑定要求写在各自正文中。UI 界面或组件规格新增、改名或移除，以及导航中的用途、关联 Product 或组件消费者变化时，`design-ui-spec` 同步读取 `docs/ui/README.md` 并维护受影响导航条目，无需审查无关目录内容。
 
 表现与开发任务不要求一一对应，只把已采纳要求和当前获准方案接入现有 Feature 的来源、AC 或设计。候选可以只保留描述，不要求全部制作。有具体不确定性才用 Godot 原型验证；正式实现沿用已有开发任务。
 
@@ -62,7 +70,7 @@ GDD、规格、表现正文及本地化要求在最终验证前完成本轮必�
 
 ## 资源规格随所属设计保存
 
-方案专用纹理等资源写入该方案章节，界面专用资源写入界面文档，共用资源写入对应共享视觉或声音设计章节；消费处引用同一正文。没有独立资源清单的默认目录，也不按 Feature 或收件批次另建台账。
+按[资源规格归属](../../../../project-source/methodology/01-product-doc-structure.md#resource-requirements-and-handoff)确定位置：表现方案专用资源随方案，界面专用资源随 UI，已抽出的共享组件专用资源随组件。跨这些独立所有者共用的视觉、音频资源，分别固定在 `docs/art/art-bible.md`、`docs/audio/sound-bible.md` 的“共享资源规格”章节。用途扩展导致归属改变时，一并迁移规格和准备状态，消费处改为引用同一正文。没有独立资源清单的默认目录，也不按 Feature 或收件批次另建台账。
 
 资源条目按实际需要说明用途、文件名、格式、相关尺寸或时长、透明/循环等约束、准备状态、源与目标位置和真实文件关系。视觉资源区分源像素、显示尺寸和透明留白后的主体尺度；音频不填无意义的像素字段。需要资源 ID 时只在所属文档或章节内保持稳定，跨文档引用带路径与章节。候选值、已确认要求和实测信息分开写，来源与许可不明时保留缺口。
 

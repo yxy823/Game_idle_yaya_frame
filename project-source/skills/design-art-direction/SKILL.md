@@ -9,12 +9,12 @@ Use `methodology/11-specialist-workflows.md` for ownership, authorization, sourc
 
 Choose a direction that supports the actual camera, target display size, player attention and available production constraints. Compare alternatives only when a material choice is unresolved. Distinguish a reference's useful properties from permission or ability to reproduce it.
 
-Maintain shared detailed art standards only in `docs/art/art-bible.md`; GDD retains overall experience and visual goals and references these standards. Move current in-scope art standards already embedded in GDD to the Art Bible under methodology 11's ownership contract. A change to the game's adopted overall direction is coordinated with `design-gdd`. Useful specification topics include:
-- visual language and intended mood, with practical inclusion/exclusion examples;
+Maintain shared detailed art standards only in `docs/art/art-bible.md`; GDD retains intended player feelings and recognition goals and references these standards. Move current in-scope art standards already embedded in GDD to the Art Bible under methodology 11's ownership contract. A change to the game's adopted overall direction is coordinated with `design-gdd`. Useful specification topics include:
+- visual language and the style choices serving the GDD's experience goals, with practical inclusion/exclusion examples;
 - silhouette, shape, palette, contrast, typography and material/detail treatment where relevant to the current game;
 - perspective, scale, animation language and visual priority across asset families;
 - applicability and observable constraints needed by UI and resource specifications.
 
 Only settle needed decisions; no full-game art catalog or mandatory variant count. Identify confirmed requirements and open choices. Existing references are not produced sample assets. Actual visual-art production is reserved, not implemented.
 
-Hand concrete files to `design-visual-asset-spec`, interface presentation to `design-ui-spec`, and source impacts to existing planning. Formal evaluation uses a separate `review-art` instance; this Skill does not approve its own design. Return the maintained source, decisions and gaps, then continue the owning task.
+Hand concrete file specifications to `design-visual-asset-spec`: it maintains the Bible's **Shared resource specifications** section when the resource contract in methodology 01 selects this owner. This Skill maintains the shared style standards those entries reference; do not duplicate file entries in another catalog. Hand interface presentation to `design-ui-spec` and source impacts to existing planning. Formal evaluation uses a separate `review-art` instance; this Skill does not approve its own design. Return the maintained source, decisions and gaps, then continue the owning task.

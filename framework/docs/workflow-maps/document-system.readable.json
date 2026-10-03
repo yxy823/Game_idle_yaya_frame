@@ -978,7 +978,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：全部已确认项目术语、标准名称、定义、别名和概念区别的唯一正文；仅用于一个主题的术语也在此维护。\n固定项目位置：docs/terminology.md；初始只有用途说明，GDD 编写或整合时同步保存已确认定义。\nGDD 与其他使用方引用本页；详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
+      "note": "职责：全部已确认项目术语、标准名称、定义、别名和概念区别的唯一正文；仅用于一个主题的术语也在此维护。\n固定项目位置：docs/terminology.md；初始只有用途说明，GDD 编写或整合时同步保存已确认定义。\n目标语言用词归 docs/localization/localization-spec.md 的“术语译名”章节，引用本页概念；本页不维护另一份译名表。\nGDD 与其他使用方引用本页；详细行为引用 GDD，交付范围引用 Product/Feature，不在词表重复数值和完整规则。\n\n项目文件： docs/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1021,7 +1021,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\ngameplay.md 保存整体循环与系统导航；系统规则固定在 systems/<system-key>.md，单系统数值模型在 balance/<system-key>.md，跨系统模型在 balance/cross-system.md，不按游戏规模、篇幅或复杂程度选择位置。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计，后续讨论、交付规划、审核和相关实验使用其中的影响与所需证据，决定后更新所属主题与使用方引用。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\nGDD 保存整体目标与游戏规则；专业规格固定归专业正文，获准编写与整合时归位当前范围内的已确认规格，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
+      "note": "职责：定位、体验、核心循环、玩法、状态、数值、内容与版本范围。\n项目位置：docs/gdd/；初始有目录和开放问题的用途说明，真实主题正文由设计工作产生。\ngameplay.md 保存整体循环与系统导航；系统规则固定在 systems/<system-key>.md，单系统数值模型在 balance/<system-key>.md，跨系统模型在 balance/cross-system.md，不按游戏规模、篇幅或复杂程度选择位置。\n世界观、角色与故事梗概归 concept-and-experience.md；内容定义随所属系统，progression.md 保存排布与节奏。导入 GDD 的已有主题在获准迁移前沿用原位置，新增主题或系统使用标准路径并从原入口链接。\n实际保存 GDD 时建立 design-scope-and-boundaries.md（设计范围与边界），集中整体范围、排除项与版本边界；局部限制留在所属主题。\nopen-questions.md（开放问题）集中当前未决设计及其比较方案，供后续讨论、规划、审核和相关实验查阅影响与所需证据；决定后更新所属主题与使用方引用。备选数值引用所属规则/模型正文；没有当前问题依赖的设想归 docs/unadopted-ideas.md。\n术语定义统一引用 docs/terminology.md，GDD 不另设词表；编写与整合包含当前范围的已确认术语整理。\nGDD 保存整体目标与游戏规则；专业规格固定归专业正文，获准编写与整合时归位当前范围内的已确认规格，界面和一次表现按实际用途链接。\n\n项目文件： docs/gdd/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1236,7 +1236,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：共享视觉方向、约束和共用资源规格的固定正文；GDD 保留整体体验目标与引用。\n项目位置：docs/art/art-bible.md；初始方向待定。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
+      "note": "职责：共享视觉方向、约束和共用资源规格的固定正文；GDD 保留整体体验目标与引用。\n项目位置：docs/art/art-bible.md；初始方向待定。\n跨独立所有者共用的视觉文件规格与准备状态固定在本文件“共享资源规格”章节；专用于单个表现、界面或组件的资源仍随其正文。\nUI、表现及其资源章节按适用范围引用，不把同一规范复制进每个任务。\n\n项目文件： docs/art/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1256,8 +1256,8 @@
       "x": 920,
       "y": 2190,
       "width": 270,
-      "height": 88,
-      "label": "UI 设计\n<interface>-design.md",
+      "height": 112,
+      "label": "UI 与共享控件设计\n<interface>-design.md\n<component-key>-design.md",
       "zIndex": 1,
       "fill": "#ECFDF5",
       "stroke": {
@@ -1279,7 +1279,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途和关联 Product。\n\n项目文件： docs/ui/*.md",
+      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；独立进入/退出且有自身流程的屏幕或弹层单独成文，从属面板、标签页和 HUD 部件在宿主分节。\n第二个界面使用同一控件或对话框行为时，共用正文迁入 docs/ui/components/<component-key>-design.md，消费者引用；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途、关联 Product 及组件消费者。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1322,7 +1322,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
+      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1494,7 +1494,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：共享声音方向、反馈层级和音频要求的固定正文；GDD 保留整体体验目标、玩法触发规则与引用。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，声音文件准备规格随实际使用章节保存。\n\n项目文件： docs/audio/*.md",
+      "note": "职责：共享声音方向、反馈层级和音频要求的固定正文；GDD 保留整体体验目标、玩法触发规则与引用。\n项目位置：docs/audio/sound-bible.md；初始方向待定。\n具体界面或表现引用共享要求，跨独立所有者共用的音频文件规格与准备状态固定在本文件“共享资源规格”章节，单个表现、界面或组件的专用资源仍随其正文。\n\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1537,7 +1537,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现或共享组件方案、UI 文档或共享视觉/声音设计中的资源章节；没有独立默认资源台账。\nFeature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源台账。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1709,7 +1709,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：目标语言、表达和格式约定的固定正文；原先写在 GDD 的当前规格在获准整理时归位。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
+      "note": "职责：目标语言、表达和格式约定的固定正文；原先写在 GDD 的当前规格在获准整理时归位。\n项目位置：docs/localization/localization-spec.md；初始需求与语言待定。\n“术语译名”章节固定保存目标语言、已采纳用词与语境，并引用 docs/terminology.md 的概念；design-localization-spec 维护，接入与审核读取同一份规格。完整句子与对话仍在运行翻译资源中。\n业务含义引用 GDD/术语，UI 和实现按适用要求消费；翻译资源不是另一份游戏规则。\n\n项目文件： docs/localization/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1752,7 +1752,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保留尚未采纳的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\n采用后链接相应 GDD、Product 或专业来源；保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
+      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -5371,7 +5371,7 @@
           "y": 1874
         }
       ],
-      "label": "采纳后链接正式来源",
+      "label": "进入比较或采纳后迁移并引用",
       "stroke": {
         "color": "#7C3AED",
         "width": 1.5,
@@ -6338,6 +6338,61 @@
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
         "labelPosition": 0.4,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-terminology-localization",
+      "source": {
+        "node": "doc-terminology",
+        "port": "left"
+      },
+      "target": {
+        "node": "doc-localization",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 380,
+          "y": 1874
+        },
+        {
+          "x": 380,
+          "y": 2954
+        }
+      ],
+      "label": "译名引用已确认概念",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,

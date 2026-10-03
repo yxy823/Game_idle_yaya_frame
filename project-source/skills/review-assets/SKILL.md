@@ -5,7 +5,7 @@ description: "Independently audit scoped game assets for technical fit, referenc
 
 # Asset audit
 
-Apply `methodology/12-independent-review.md`. Read resource specifications in their owning presentation alternative, UI or shared design sections, the current adopted combination where relevant, concrete asset rules, actual files/import settings and their runtime consumers. Candidate dependencies alone are not missing required assets; check the adopted and reviewed scope.
+Apply `methodology/12-independent-review.md`. Locate resource specifications through **Resource requirements and handoff** in `methodology/01-product-doc-structure.md`, including component-owned resources and the Bibles' shared-resource sections. Read those specifications, the current adopted combination where relevant, concrete asset rules, actual files/import settings and their runtime consumers. Candidate dependencies alone are not missing required assets; check the adopted and reviewed scope.
 
 Check missing or stale paths/UIDs, unused or duplicate assets where relevant, format and dimensions/channels/duration, transparency/cropping, animation data, import/compression settings and memory/storage implications against actual requirements. A large file is not automatically a defect; establish its use and cost. Check provenance and license records for the requested scope, marking unknown rights as unknown rather than giving invented legal clearance.
 

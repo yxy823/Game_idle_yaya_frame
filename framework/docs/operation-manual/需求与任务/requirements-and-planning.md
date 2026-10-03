@@ -8,7 +8,7 @@ GDD 说明游戏设计，Product 组织交付范围，Feature 分配实现与验
 
 ## GDD 是项目开发的前提
 
-项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。新 GDD 以 `docs/gdd/README.md` 为固定入口，主题使用[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先确定的名称与多实例命名模式，不按游戏规模、篇幅或复杂程度选择位置；包括 `design-scope-and-boundaries.md`（设计范围与边界）和 `open-questions.md`（开放问题）。实际保存设计时按各文档的建立条件补充正文，不为填满目录预建空文件。相同职责沿用名称；修改已有设计时只整理受影响范围，需要调整路径或引用章节时同步实际使用方。
+项目内可以使用 `design-gdd` 从想法形成 GDD、整理外部资料或修订已有设计，不需要先准备完整 GDD 或 Product。新 GDD 以 `docs/gdd/README.md` 为固定入口，主题使用[标准文件名与职责](../../../../project-source/methodology/01-product-doc-structure.md#gdd-document-names)中预先确定的名称与多实例命名模式，不按游戏规模、篇幅或复杂程度选择位置；包括 `design-scope-and-boundaries.md`（设计范围与边界）和 `open-questions.md`（开放问题）。实际保存设计时按各文档的建立条件补充正文，不为填满目录预建空文件。相同职责沿用名称；导入非标准 GDD 后，已有主题沿用原位置，新增主题或系统使用标准路径并从原入口链接。修改已有设计时只整理受影响范围，需要调整路径或引用章节时同步实际使用方。
 
 `docs/gdd/open-questions.md` 是固定的《开放问题》文件，集中当前设计尚未确定的选择与证据缺口。条目链接相关主题，说明影响及需要什么才能解决；GDD 入口直接引用它。后续设计讨论据此继续问题，Product/Feature 规划判断哪些工作受阻，审核判断设计能否支撑下一步，相关调研或实验据此确定要取得的证据。具体读写和解决后处理见[开放问题规范](../../../../project-source/methodology/01-product-doc-structure.md#open-design-questions)。
 
@@ -22,7 +22,7 @@ GDD 保存游戏定位、体验目标、核心循环、系统规则、状态与�
 
 `design-gdd` 负责 GDD 整体设计和跨主题一致性；`design-balance` 负责模型、公式、参数、曲线与计算说明，可在具体写入授权内直接维护所属数值主题。若调参需要新增玩法或改变体验目标，先回到整体设计决策。`product-author` 只负责交付预拆分和当前 Product，`product-spec-elicitor` 澄清交付取舍，不代写 GDD。来源变化仍须分析专业规格与既有 Feature 的实际影响。
 
-保存候选值、采纳参数和验证效果是不同事实。获准保存草案可以写入清楚标记的候选，不自动替换已确认设计；已有具体采用与写入授权直接沿用，不为 Skill 切换重复批准。模型可复算不等于玩家体验已验证。
+候选内容按[候选与未采纳想法](../../../../project-source/methodology/01-product-doc-structure.md#candidate-and-unadopted-ideas)分流：当前比较归开放问题，已采纳规则的备选值归所属规则或模型，没有当前待决问题依赖的设想归 `docs/unadopted-ideas.md`。保存候选值、采纳参数和验证效果是不同事实。获准保存草案可以写入清楚标记的候选，不自动替换已确认设计；已有具体采用与写入授权直接沿用，不为 Skill 切换重复批准。模型可复算不等于玩家体验已验证。
 
 ## Product 和专业来源
 

@@ -25,13 +25,13 @@ New GDDs and authorized standardization use these fixed filenames for the matchi
 | Filename under `docs/gdd/` | Owning responsibility |
 | --- | --- |
 | `README.md` | GDD entry: brief game introduction, covered scope and links to the actual design sources. |
-| `concept-and-experience.md` | Game concept, player context, intended experience and design principles. |
+| `concept-and-experience.md` | Game concept, player context, intended experience, design principles, world premise, character identities/relationships and authored story outline. Narrative mechanics belong to their system file. |
 | `gameplay.md` | Core loop, representative play, cross-system relationships and navigation to the game's systems. |
-| `systems/<system-key>.md` | One game system's mechanics, inputs, states, transitions, limits and rule scenarios; reference numerical models rather than copying them. |
+| `systems/<system-key>.md` | One game system's mechanics, inputs, states, transitions, limits, rule scenarios and content-definition catalog, including branching/stateful narrative rules. Reference numerical models rather than copying them. |
 | `balance/<system-key>.md` | That system's numerical models: variables, formulas, parameter values, curves, calculation assumptions and derivations. |
 | `balance/cross-system.md` | Numerical models whose relationships span multiple systems; system-specific models remain at their own keys and are referenced. |
-| `progression.md` | Content, teaching and challenge sequencing, progression goals and intended pacing; reference concrete unlock rules in system files and curves in balance files. |
-| `presentation.md` | Game-level interaction, understanding, visual/audio intent and feedback goals; link detailed UI and game-presentation specifications instead of duplicating them. |
+| `progression.md` | Content placement, teaching and challenge sequencing, progression goals and intended pacing; reference content definitions and unlock rules in system files and curves in balance files. |
+| `presentation.md` | Game-level interaction, understanding, intended player feelings, recognition needs and feedback goals. Link UI/presentation specifications and the Art/Sound Bibles for visual style and sound-language standards. |
 | `design-scope-and-boundaries.md` | Overall design scope, confirmed exclusions and version boundaries, under the contract below. |
 | `open-questions.md` | Current unresolved design choices and missing evidence, under the contract below. |
 
@@ -39,7 +39,9 @@ Use this structure from initial design through later expansion, regardless of ga
 
 Use one stable lowercase hyphenated `system-key` for each distinct game system, recorded with its actual system link in `gameplay.md`; reuse the same key for its balance file. The key identifies the system, not its size, implementation module or writing session. Reserve `cross-system` for the cross-system balance file. Related models within one system share its balance file using headings; do not invent additional file choices or split them by complexity. When a new system identity is confirmed, add its link within the existing gameplay navigation rather than creating a separate registry. The GDD entry links the standard topics and the actual system/balance sources.
 
-Read the existing GDD entry before naming an output or drafting a consumer prompt. Reference the actual owning file and relevant heading; do not infer that a standard topic already has content. A local edit or review of an existing differently organized GDD does not itself authorize renaming it. When standardization or restructuring is authorized, move affected content to its owning location and update all affected references, including Product/Feature sources and professional documents; keep one body, not aliases or parallel copies. Preserve filenames and referenced headings while their meaning is unchanged. A necessary rename or move must carry its affected paths and anchors with it.
+Content definitions follow the system that establishes their gameplay identity, even when another system consumes them. For example, ore types defined by mining stay in `systems/mining.md`; a shop references those definitions and owns its sale rules. Modeled prices/yields belong in the matching balance source, while their stage distribution belongs in `progression.md`. Static world and character descriptions do not require inventing a narrative system; choices, branches and story-state transitions do.
+
+Read the existing GDD entry before naming an output or drafting a consumer prompt. Reference the actual owning file and relevant heading; do not infer that a standard topic already has content. In an imported or differently organized GDD, edit an existing topic at its current owner unless its migration is authorized. New topics and new systems always use the standard paths above, with links from the existing entry and, for systems, `gameplay.md`; extending an existing rule is not a new topic. This permits a local addition without relocating unrelated legacy content or creating a second body. When standardization or restructuring is authorized, move affected content to its owning location and update all affected references, including Product/Feature sources and professional documents. Preserve filenames and referenced headings while their meaning is unchanged. A necessary rename or move must carry its affected paths and anchors with it.
 
 ## Design scope and boundaries
 
@@ -57,7 +59,7 @@ When authorized GDD drafting first saves the game's design, `design-gdd` creates
 
 `docs/gdd/open-questions.md` is the fixed GDD document for **Open questions** (`开放问题` in Chinese). It owns the current unresolved game-design choices and missing facts or evidence that could change the design. Link it directly from the GDD entry, use descriptive question headings that consumers can reference, and write in `document_language`. New projects include a purpose/pending-content notice; it is not substantive design or proof that all questions have been settled. When authorized drafting starts from an existing GDD without this file, establish it from the actual known questions without reorganizing unrelated topics.
 
-Keep each question's actual uncertainty, relevant topic/source links, effect on design or dependent work, and the decision or evidence needed to resolve it together. Include useful alternatives or a working assumption when known; do not invent questions or fixed IDs, scores, owners or workflow states to fill a template. Distinguish a user choice from a fact requiring investigation, calculation or play evidence. A question about a topic not yet written may describe that scope without linking a nonexistent file.
+Keep each question's actual uncertainty, relevant topic/source links, effect on design or dependent work, and the decision or evidence needed to resolve it together. Include the alternatives being compared for that question or a working assumption when known, following [Candidate and unadopted ideas](#candidate-and-unadopted-ideas); do not invent questions or fixed IDs, scores, owners or workflow states to fill a template. Distinguish a user choice from a fact requiring investigation, calculation or play evidence. A question about a topic not yet written may describe that scope without linking a nonexistent file.
 
 Game-design questions have one body here. Their GDD topics retain the rule context, clearly qualified working assumptions and a short link to the relevant question. Product, Feature, professional sources and Progress reference the question and explain their own dependency rather than copying it. Local delivery choices, implementation tradeoffs, execution blockers and unadopted ideas remain with their existing owners; this document is not a second task backlog.
 
@@ -69,6 +71,22 @@ Use the questions in the work that depends on them:
 - Status and continuation work use relevant questions to explain the actual next decision. Discussion-only and review-only work report findings without editing this file.
 
 As a question is resolved within existing authorization, put the adopted rule, useful reason and evidence limits in the owning design topic, update affected live references to that result, and remove the resolved entry. A deliberately deferred uncertainty remains open with its effect and useful revisit condition; an adopted exclusion or version deferral belongs in the scope document. Keep only current questions, using Git for history. No entries means no recorded open questions, not proof of complete, adopted or validated design.
+
+## Candidate and unadopted ideas
+
+Saving a proposal does not adopt it. Route its content by what the current design needs, not by labels such as speculative, future or candidate:
+
+| Content being saved | Fixed owner |
+| --- | --- |
+| A current unresolved design choice, its compared alternatives and the evidence needed to choose | The corresponding question in `docs/gdd/open-questions.md`. A qualified working assumption used by the draft stays with its owning rule and links this question. |
+| Alternative values or calculations attached to an already adopted rule/model | The owning `systems/<system-key>.md` for ordinary rule values, or the fixed `balance/` source for models and derivations. Mark alternatives unadopted and preserve the adopted value. A pending choice in open questions links these values rather than copying them. Numerical derivations supporting a compared mechanic likewise stay in the fixed balance source; the design choice stays in open questions. |
+| An unadopted idea with no current unresolved design question depending on it and no role as an alternative value of an adopted rule/model | `docs/unadopted-ideas.md`, with its useful reason, context and revisit condition when known. Do not create a system topic or an open question merely to park it. |
+
+For example, “possibly add prestige later; just keep the idea” belongs in `unadopted-ideas.md`. “Should this game's current loop include prestige?” belongs in open questions. A proposed reset reward coefficient for an adopted prestige model stays beside that model's accepted values.
+
+When an idea becomes part of a current comparison, move its proposal body into the corresponding question and leave only a useful destination link in the idea file. On adoption, move the settled content to its GDD or professional owner and replace any retained idea entry with that link. When closing a question, keep an unchosen idea only if it is still worth retaining, at the owner selected above; remove obsolete alternatives instead of maintaining a second current body. Existing delivery candidates and professional technique alternatives retain their own contracts; this section does not move them into an ideas backlog.
+
+Within existing writing authority, `design-gdd` maintains these destinations and `project-grill-me` returns conclusions to that owner or saves an explicitly requested parked idea in `docs/unadopted-ideas.md`. Discussion alone writes nothing. These records neither authorize implementation nor replace the GDD prerequisite.
 
 ## Design and delivery structure
 
@@ -184,7 +202,17 @@ Report what the experiment answered, the actual observations and remaining limit
 
 ## Resource requirements and handoff
 
-Maintain resource specifications and preparation information inside the design that owns their use. A resource needed only by one presentation alternative belongs in that alternative's section; an interface-specific resource belongs in its UI document; a shared resource belongs in the corresponding shared visual or sound design section. Link shared uses to that body. Do not create a separate default resource-list directory, a list per Feature, or a second receiving ledger. The current task coordinates these sections with `design-visual-asset-spec` and `design-audio-asset-spec`; no Product-writing intermediary is needed.
+Maintain resource specifications and preparation information inside the design that owns their use. Determine the owner from the actual or explicitly considered uses, including the UI/presentation component boundaries in methodology 11:
+
+| Resource use | Fixed owner |
+| --- | --- |
+| Confined to one presentation or one extracted presentation component | Its `docs/presentation/<scope>.md` or `docs/presentation/components/<component-key>.md`: keep an alternative-only dependency in that alternative, and requirements shared by its alternatives in the common resource section. |
+| Confined to one interface or one extracted UI component, with no separate presentation owning the use | Its `docs/ui/<interface>-design.md` or `docs/ui/components/<component-key>-design.md` resource section. |
+| Shared across independent owners above, outside a single component contract | Visual resources: **Shared resource specifications** in `docs/art/art-bible.md`; audio resources: the same section in `docs/audio/sound-bible.md` (`共享资源规格` in Chinese). |
+
+A shared component's own resources stay with that component; many callers do not by themselves make those resources global. An item icon used by inventory, shop and reward feedback belongs in the Art Bible's shared-resource section, while a texture used only by a shared icon-flight alternative stays in that component. A general click sound used by independent interfaces belongs in the Sound Bible's shared-resource section.
+
+When additional uses change the owner, move the affected specifications and preparation state together, update consumers and replace old bodies with references within the authorized scope. Style/direction Skills own the Bibles' shared standards; `design-visual-asset-spec` and `design-audio-asset-spec` maintain concrete file entries in their shared-resource sections. Localized headings retain these section semantics. Link uses to that body; do not create a separate default resource-list directory, a list per Feature or a second receiving ledger. No Product-writing intermediary is needed.
 
 Read the current task, applicable GDD and professional requirements, selected or candidate alternative, relevant existing assets and supplied source locations. Include only files needed by the current scope or explicitly discussed alternative. Do not add future decoration or separate files for states that existing themes or procedural presentation can express. Record unknown inputs rather than inventing resources, styles, dimensions or technical requirements. A candidate alternative's dependencies are not automatically resources the project must prepare.
 
@@ -215,7 +243,7 @@ Test the distinction with a concrete scenario. For example, when discussing inve
 
 When implementation exists, compare the relevant code with the stated meaning. Surface conflicts with both sources: code describes what happens today and cannot silently redefine approved intent. A new meaning remains a proposal until the user resolves the material Product choice.
 
-`docs/terminology.md` is the single authoritative file for confirmed project term definitions, canonical names, aliases and conceptual distinctions. This location is fixed whether a term is used in one topic or across systems, Products, Features or conversations. GDD, Product, Feature and professional documents use these terms and link their definitions; they do not maintain separate glossaries or authoritative local definitions. Ordinary explanatory prose and examples remain with the topic they explain.
+`docs/terminology.md` is the single authoritative file for confirmed project term definitions, canonical names, aliases and conceptual distinctions. This location is fixed whether a term is used in one topic or across systems, Products, Features or conversations. GDD, Product, Feature and professional documents use these terms and link their definitions; they do not maintain separate domain glossaries or authoritative local definitions. Target-locale wording belongs to the localization specification's **Term translations** section under [Localization term translations](11-specialist-workflows.md#localization-term-translations); a translated name is not a competing domain definition. Ordinary explanatory prose and examples remain with the topic they explain.
 
 The terminology file explains what a project concept means and how its name differs from related names. GDD owns its detailed gameplay rules, conditions, flows, values, state transitions and intended experience. Professional documents own their specifications and architecture/code own implementation choices. A short definition may identify a concept by its role, but links to the owning design for its full behavior. Do not create a second `UBIQUITOUS_LANGUAGE.md` or parallel glossary, or turn terminology into a general project-context document or dictionary of ordinary words and engine APIs.
 
@@ -263,4 +291,4 @@ When the boundary is unclear, use `product-author`; it owns the routing decision
 - Do not copy GDD flows, states or numeric rules into Product. Link the precise source and explain its delivery applicability.
 - Do not describe numeric behavior with subjective terms such as “high damage”; resolve the applicable formula or concrete value in the GDD.
 - Do not use subjective acceptance language such as “renders smoothly”; state an observable threshold or outcome.
-- Do not put speculative future ideas in active requirements. Keep them in `docs/unadopted-ideas.md` until adopted into the existing GDD; that file is not a route for starting development without a GDD.
+- Do not put parked ideas in active requirements. Use [Candidate and unadopted ideas](#candidate-and-unadopted-ideas) to distinguish a current design question, an alternative rule value and an idea saved for later; none of these records alone adopts a requirement or authorizes development.

@@ -20,10 +20,12 @@
 | Feature notes | 任务提醒、简短事件教训、TODO 与正文链接；实施决定与理由归设计文件 |
 | `docs/knowledge/` | 可复用的项目实践及适用条件；不是规则或需求的替代正文 |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项；不是项目已经实测的经验 |
-| `docs/unadopted-ideas.md` | 暂未采纳的设想及其原因；不构成开发承诺，采纳后链接 GDD、Product 交付范围或对应专业来源 |
+| `docs/unadopted-ideas.md` | 没有当前待决设计问题依赖的设想及其原因；转为当前比较或采纳后迁移正文并保留去向链接，不构成开发承诺 |
 | `docs/progress.md` | 当前任务/阶段、真实阻塞、未决项、下一步及资料链接 |
 
-GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值模型与计算说明。系统规则固定在 `docs/gdd/systems/<system-key>.md`，单系统模型在 `docs/gdd/balance/<system-key>.md`，跨系统模型在 `docs/gdd/balance/cross-system.md`；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。
+GDD 由 `design-gdd` 负责整体设计，`design-balance` 直接维护获准的数值模型与计算说明。系统规则固定在 `docs/gdd/systems/<system-key>.md`，单系统模型在 `docs/gdd/balance/<system-key>.md`，跨系统模型在 `docs/gdd/balance/cross-system.md`；两者引用同一份实际规则，不在报告或 Product 中维护副本。《设计范围与边界》集中整体范围、排除项和版本边界，局部限制留在所属主题；具体读写契约见[设计范围与边界](../../../../project-source/methodology/01-product-doc-structure.md#design-scope-and-boundaries)。草案、采用决定和实际验证状态分开表述。世界观、角色与故事梗概归 `concept-and-experience.md`；内容定义目录随所属系统，排布与节奏归 `progression.md`。
+
+当前比较的设计选择保存在开放问题；已采纳规则的备选值随规则或模型保存，开放问题引用这些值；没有当前待决问题依赖的设想进入 `docs/unadopted-ideas.md`。`design-gdd` 在写作中维护这些归属，`project-grill-me` 可保存用户明确要求留待以后考虑的想法；纯讨论不写文件。迁移条件见[候选与未采纳想法](../../../../project-source/methodology/01-product-doc-structure.md#candidate-and-unadopted-ideas)。
 
 项目术语定义固定由 `project-terminology` 维护在 `docs/terminology.md`，当前只用于一个主题的术语也使用这一位置。GDD 编写与整合一并保存当前范围内已确认的术语，并把其他正文中的重复定义改为引用；普通解释和例子仍留在对应主题，不另设词表。只有实质歧义才使用共用提问方法，已确认含义不重复访谈；没有已确认术语时保留用途说明。
 

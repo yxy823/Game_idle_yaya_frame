@@ -8,11 +8,13 @@ metadata:
 
 # UI specification
 
-Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain `docs/ui/<interface>-design.md` directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reference GDD rules and goals; maintain interface specifications only in their fixed UI file, moving authorized current-scope specifications out of GDD and updating references. Keep protected source inputs intact; `product-author` is not this specification's saving intermediary.
+Follow `methodology/11-specialist-workflows.md` for professional ownership, authorization and source impacts. Maintain the fixed interface/component files under **UI document boundaries** directly within the authorized scope, using the configured `document_language`. Discussion-only work returns a proposal. GDD owns player behavior; Product links adopted requirements for delivery. Reference GDD rules and goals; maintain interface specifications only in their fixed UI file, moving authorized current-scope specifications out of GDD and updating references. Keep protected source inputs intact; `product-author` is not this specification's saving intermediary.
 
 Read the relevant GDD goals/actions and Product delivery scope, existing interface, applicable Art Bible, display/input conditions and supplied representative resources. Reuse settled choices; ask only about gaps that materially change layout or interaction. Shared visual style belongs to `design-art-direction`, file-level requirements to `design-visual-asset-spec`, and behavior changes to GDD through `design-gdd`.
 
-When creating, renaming or removing a UI specification, or changing the purpose or Product association shown in its navigation, read `docs/ui/README.md` and maintain the affected navigation entry under its existing contract in the same authorized change. Do not turn this maintenance into a directory-wide review.
+Select the interface and shared-control boundary using **UI document boundaries** in methodology 11 before naming the output. Independently entered/exited screens and overlays have their own file; subordinate panels and HUD parts stay with their host. A second interface using the same control/dialog contract triggers migration to `docs/ui/components/<component-key>-design.md`, with consumers referencing that body. Shared style alone remains in the Art Bible.
+
+When creating, renaming or removing an interface/component specification, or changing the purpose, Product association or component consumers shown in its navigation, read `docs/ui/README.md` and maintain the affected entry in the same authorized change. Do not turn this maintenance into a directory-wide review.
 
 ## Useful specification
 
@@ -30,6 +32,6 @@ Keep ordinary control states here. For a complete game moment such as collecting
 
 Apply **Visual prototype before dependent implementation** in `methodology/01-product-doc-structure.md`. The spec supplies questions and inputs for an independently runnable Godot scene; it does not create that scene or prove usability. A requested HTML exploration is separate authorized experiment work and cannot substitute for Godot validation.
 
-Coordinate resource sections with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`: interface-only resources stay here, presentation-alternative dependencies stay in that alternative, and shared resources link to their shared design owner. Use **Resource requirements and handoff** in methodology 01 without a separate resource list. Adopt actual prototype observations only with the applicable user decision, updating the owning UI specification and routing any behavior changes to GDD through `design-gdd`.
+Coordinate resource sections with `design-visual-asset-spec` and audio requirements with `design-audio-asset-spec`. Use **Resource requirements and handoff** in methodology 01 to select the interface, component or presentation owner; resources shared outside one such owner link the **Shared resource specifications** section in `docs/art/art-bible.md` or `docs/audio/sound-bible.md`. Do not create a separate resource list. Adopt actual prototype observations only with the applicable user decision, updating the owning UI specification and routing any behavior changes to GDD through `design-gdd`.
 
 Return the source path, confirmed decisions, unresolved questions and relevant planning/prototype inputs. Continue the owning authorized task. Formal UX review uses `review-ux` in a different instance; this Skill cannot grant human acceptance.
