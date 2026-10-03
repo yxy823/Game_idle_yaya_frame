@@ -225,7 +225,7 @@
       "y": 760,
       "width": 270,
       "height": 88,
-      "label": "框架公共术语\nterminology.md",
+      "label": "框架专用术语\nterminology.md",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -247,7 +247,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：框架和工程公共概念的含义与统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/docs/terminology.md",
+      "note": "职责：Yaya 框架特有或具有特定含义的术语及统一写法。\n位置：framework/docs/terminology.md。\n两册共用正文；具体游戏业务词汇归各项目 docs/terminology.md。\n\n文件： framework/docs/terminology.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

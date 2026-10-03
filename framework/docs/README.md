@@ -10,7 +10,7 @@
 | 查看游戏项目开发场景之间的衔接关系 | [开发场景图与 JSON 格式](workflow-maps/README.md#游戏项目开发场景图) · [图 JSON](workflow-maps/game-development-workflow.readable.json) |
 | 编写或修改单一场景 | [场景手册编写要求](../prompt_scenarios/scenarios/README.md) |
 | 修改框架、同步说明或选择验证 | [框架维护](framework-maintenance/README.md) |
-| 确认框架与项目公共术语的含义和统一写法 | [术语](terminology.md) |
+| 确认框架专用术语的含义和统一写法 | [术语](terminology.md) |
 
 ## 目录与分工
 
@@ -18,7 +18,7 @@
 framework/
 ├── docs/
 │   ├── README.md                   统一入口
-│   ├── terminology.md              两册共用的框架与工程术语
+│   ├── terminology.md              两册共用的框架专用术语
 │   ├── workflow-maps/              文档系统关系图、开发场景图与格式说明
 │   ├── operation-manual/           框架、概念、配置、职责与工具专题
 │   │   ├── README.md               专题索引
