@@ -1,5 +1,0 @@
-interface:
-  display_name: "Yaya Codex 指令编写"
-  short_description: "编写、修改并自查 Yaya 框架 Codex 指令，保持引用、授权与完成边界"
-policy:
-  allow_implicit_invocation: true

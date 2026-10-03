@@ -376,7 +376,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：导航长期设计准则、场景覆盖与仍保留的当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n长期准则包括文档内容的固定归属，以及 Skill、脚本与提示词的职责；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/review-materials.md\n文件： framework/docs/framework-maintenance/baselines/*.md",
+      "note": "职责：导航长期设计准则、规则与提示词文件维护依据、场景覆盖及当次审核材料。\n位置：framework/docs/framework-maintenance/review-materials.md、framework/docs/framework-maintenance/baselines/。\n长期准则包括文档内容的固定归属，以及 Skill、脚本与提示词的职责；报告只陈述对应版本的检查事实。\n\n文件： framework/docs/framework-maintenance/review-materials.md\n文件： framework/docs/framework-maintenance/baselines/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -505,7 +505,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前维护约束、条件阅读和框架专项能力入口。\n位置：AGENTS.md、.agents/skills/。\n框架 Skill 供维护仓库使用，不随生成项目复制；Skill 自带的参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
+      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护两个专项入口。\n位置：AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

@@ -1,3 +1,0 @@
-interface:
-  display_name: "Yaya Codex 指令审核"
-  short_description: "只读正式审核 Yaya 框架 Codex 指令，核对触发、引用、职责和授权边界"

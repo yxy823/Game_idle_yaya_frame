@@ -14,18 +14,15 @@
 | 具体项目或维护场景 | framework/prompt_scenarios/scenarios/ 的对应 Project |
 | 项目内简短导航 | project-source/Project_README.md |
 | 框架维护、供用户自行复用的 Skill | 仓库根目录的 .agents/skills/；所需参考、配套脚本及私有依赖随各 Skill 保存，不整包分发给项目 |
-| Codex 指令编写、修改与作者自查 | .agents/skills/writing-for-agents-yaya/，框架自用，不分发 |
-| Codex 指令正式只读审核 | .agents/skills/review-agent-instructions-yaya/，独立入口与非作者实例，共享设计参考，不分发 |
+| 规则、Skill 与任务提示词文件维护 | 根 AGENTS.md 与 baselines/skill-script-prompt-design.md，由当前任务直接处理 |
 | 提示词、关联场景与关系图维护 | .agents/skills/prompt-and-graph-maintenance-yaya/，框架自用；按变化同步提示词导航、项目场景图或文档系统图，沿用各自规范 |
 | 框架文档写作 | .agents/skills/technical-documentation-writing-yaya/，框架自用，不分发 |
 | Godot 项目文档写作 | project-source/skills/technical-documentation-writing-godot/，独立维护，随 Skill 目录整包分发 |
-| 框架方案检验 | .agents/skills/plan-review-yaya/，框架自用；维护复盘与重复工作讨论由当前 Agent 按已有场景及适用方法处理 |
 | Godot 方案检验与开发复盘 | project-source/skills/plan-review-godot/ 与 project-source/skills/retro-godot/，随 Skill 目录整包分发 |
 | Godot 游戏设计与数值设计 | project-source/skills/design-gdd/ 与 design-balance/；GDD 草稿或完整文档审核使用 plan-review-godot 的条件参考，数值正式审核仍归 review-balance |
 | Godot 重复工作方法设计 | project-source/skills/loop-me-godot/，随项目分发，使用项目自己的规范与能力 |
 | Godot 相互依赖问题的探索 | project-source/skills/wayfinder-godot/，随项目分发；按实际缺口选择讨论、调研或实验，记录仍归现有规范 |
 | Godot worktree 准备与成果整合 | project-source/skills/worktree-create-godot/ 与 worktree-integrate-godot/，分别拥有准备和整合入口；冲突方法归整合入口的 references/merge-conflicts.md |
-| 框架反馈核实、异常诊断与任务交接 | .agents/skills/feedback-triage-yaya/、bug-diagnosis-yaya/ 与 task-handoff-yaya/，框架自用 |
 | Godot 反馈核实、异常诊断、任务交接与原型 | project-source/skills/feedback-triage-godot/、bug-diagnosis-godot/、task-handoff-godot/ 与 prototype-godot/，随 Skill 目录整包分发 |
 | Godot 环境准备、限定检查、人工验收与证据处理 | project-source/skills/project-environment-godot/、project-verification-godot/、manual-acceptance-godot/ 与 verification-evidence-godot/，随 Skill 目录整包分发；详细契约仍归各入口引用的原规范 |
 | Skill、规则和流程正文 | 所属源规范；只有任务涉及行为时调整，整理目录不隐含行为修改 |
@@ -35,7 +32,7 @@
 | 维护约束与未完成工作 | 根 AGENTS.md / framework/progress.md |
 | 已有游戏的独有修改 | 明确指定的外部项目，不自动回灌或同步 |
 
-框架指令的编写、修改与作者自查使用 [Codex 指令编写 Skill](../../../.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](../../../.agents/skills/review-agent-instructions-yaya/SKILL.md)，按职责准则核对独立实例。两者引用同一份设计参考，不在一个 Skill 内切换实现与正式审核。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。职责评价、提示词字段与审核覆盖仍由[职责设计准则](baselines/skill-script-prompt-design.md)定义，按需查阅；拆分入口不新增每次修改必经的审核阶段。
+框架规则、Skill 和任务提示词文件的维护与自查直接依据[职责设计准则](baselines/skill-script-prompt-design.md#规则与提示词文件维护)。用户要求正式审核时，按同一准则核对范围、独立性与证据。整理已确认说明的表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护不追加独立审核阶段。
 
 Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可读性与共用工程约定适用于维护；项目开发 Stage 不在维护仓库启用。查看 Skill 源材料不等于当前任务进入该 Skill 流程。
 
@@ -62,7 +59,7 @@ Project_AGENTS.md 是待复制源规则。根规则明确引用的沟通、可�
 
 游戏设计正文由 design-gdd 创建、整合或维护，design-balance 可直接维护获准的 GDD 数值主题及计算说明；product-author 只管理交付范围，product-spec-elicitor 只澄清交付取舍。新建 GDD 默认分层，已有结构按需维护；设计与草稿审核不以 Product/Feature 已存在为前提，依赖设计的开发仍需当前规则明确。维护入口时核对设计、采用、写入和验证各自边界，不把专项写入变成整体玩法决策或正式审核。
 
-核实反馈与外部报告使用框架自用的 [feedback-triage-yaya](../../../.agents/skills/feedback-triage-yaya/SKILL.md)；调查具体异常原因使用 [bug-diagnosis-yaya](../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)；保存停点或准备新对话交接使用 [task-handoff-yaya](../../../.agents/skills/task-handoff-yaya/SKILL.md)。它们按当前授权调用相关规范，不新增必经阶段；只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 对应入口使用项目自己的方法与记录；advisor 只读共享 Godot 提示词，不据此调用框架维护 Skill。
+框架的反馈核实、异常调查、方案检验和任务交接由当前 Agent 按本次要求及对应场景直接处理，复用已有事实、验证和记录。只读、只诊断或明确暂停的请求保留原边界，已有具体修复授权由原任务继续。Godot 项目使用自己的方法与记录；advisor 只读共享 Godot 提示词，不据此调用框架维护 Skill。
 
 Godot worktree 的共同运行准备只维护在 `worktree-create-godot/references/godot-worktree-runtime.md`，整合、环境和验证入口按实际写入位置与已有准备条件引用。准备、整合与 wayfinder 不组成固定顺序，也不另设框架版；Git、验证、验收和记录继续由原规范拥有。维护这些职责时同步总路由、项目 README 与 advisor，不在 Project_AGENTS 或手册复制一套操作正文。
 

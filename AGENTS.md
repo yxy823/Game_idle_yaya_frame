@@ -72,9 +72,9 @@
 
 ## AGENTS.md、Skill 与任务提示词编写
 
-编写、修改及作者自查本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，使用 [Codex 指令编写 Skill](.agents/skills/writing-for-agents-yaya/SKILL.md)；正式只读审核使用 [Codex 指令审核 Skill](.agents/skills/review-agent-instructions-yaya/SKILL.md)。两者分工、独立实例和共享正文遵循[职责设计准则](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#能力划分与正式审核)，不把作者自查称为独立审核。
+维护本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，按[规则与提示词文件维护约定](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#规则与提示词文件维护)核对实际变化并自查。用户要求独立审核时，按[正式审核的独立性](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#能力划分与正式审核)执行。
 
-编写或调整指令时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
+维护上述规则和提示词文件时，按 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra) 与本仓库已确认边界执行以下约束。
 
 | 关注点 | 编写要求 |
 | --- | --- |
@@ -89,7 +89,7 @@
 
 ## 提示词维护
 
-新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用；正式提示词审核交给 [review-agent-instructions-yaya](.agents/skills/review-agent-instructions-yaya/SKILL.md)。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
+新增、修改、重命名、调整分类或删除集中提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、项目场景图与 advisor 引用。用户要求正式审核时，按[审核覆盖与结论](framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#审核覆盖与结论)交付。详细规范继续由条件引用的材料维护，这些框架入口不随 Godot 项目分发。
 
 任务提示词按用途分别维护在 [Godot 开发提示词库](framework/prompt_scenarios/prompts/godot-development-prompts.json)与 [Yaya 框架维护提示词库](framework/prompt_scenarios/prompts/yaya-maintenance-prompts.json)，不把提示词正文混入 README、规则或工具说明。advisor 直接读取 `D:/A_Games/Game_idle_yaya_frame/framework/prompt_scenarios/prompts/godot-development-prompts.json`，结合项目事实选择场景、起草具体指令，并判断真实的场景覆盖缺口；提示词不授予当前任务权限，advisor 不修改共享库。
 

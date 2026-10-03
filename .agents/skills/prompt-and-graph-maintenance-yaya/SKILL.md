@@ -7,7 +7,7 @@ description: 维护 Yaya 的集中提示词、同名场景及两张关系图。�
 
 在框架仓库内完成本次提示词或文档体系变更的必要联动，保持正文、场景和图谱一致；本 Skill 不随游戏项目分发。复用现有图文件、工具与唯一复制清单，不维护并行正文或映射副本。
 
-沿用当前任务的具体对象与授权，完成获准修改、维护自查、必要验证和交付。正式指令或提示词审核交给 [review-agent-instructions-yaya](../review-agent-instructions-yaya/SKILL.md)，不在本入口切换为审核模式。读取模板不表示执行其中任务，也不从模板的授权措辞取得当前写入权限。
+沿用当前任务的具体对象与授权，完成获准修改、维护自查、必要验证和交付。用户要求正式审核时，按[审核覆盖与结论](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#审核覆盖与结论)只读核对，不执行本维护入口的文件同步。读取模板不表示执行其中任务，也不从模板的授权措辞取得当前写入权限。
 
 ## 定位本次入口
 
@@ -15,7 +15,7 @@ description: 维护 Yaya 的集中提示词、同名场景及两张关系图。�
 
 处理文档职责、路径、产物归属或实际引用关系时，读取[文档图维护约定](../../../framework/docs/workflow-maps/README.md#维护与检查)，定位本次涉及的节点及其实际源文件，完成对应图谱更新。只改文档图时，不加载无关提示词、场景或 advisor；普通正文措辞变化且上述关系未变时无需改图。
 
-编写、修改和作者自查指令使用 [writing-for-agents-yaya](../writing-for-agents-yaya/SKILL.md)；说明文字使用[框架文档编写 Skill](../technical-documentation-writing-yaya/SKILL.md)。提示词的结构、命名、一对一关系、字段与内容判断以[提示词与场景准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)为正文；运行、提交和持续授权沿用[根约定](../../../AGENTS.md)及本次明确例外，不在此重写通用流程。
+规则与提示词文件的维护和自查按[维护约定](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#规则与提示词文件维护)；说明文字使用[框架文档编写 Skill](../technical-documentation-writing-yaya/SKILL.md)。提示词的结构、命名、一对一关系、字段与内容判断以[提示词与场景准则](../../../framework/docs/framework-maintenance/baselines/skill-script-prompt-design.md#提示词与场景)为正文；运行、提交和持续授权沿用[根约定](../../../AGENTS.md)及本次明确例外，不在此重写通用流程。
 
 ## 按实际变化同步
 
@@ -32,7 +32,7 @@ description: 维护 Yaya 的集中提示词、同名场景及两张关系图。�
 
 ## 核对与交付
 
-提示词或同名场景发生变化时，按[提示词与场景路径检查](../../../framework/README.md#提示词与场景路径检查)运行现有配对工具；它只核对名称与文件路径，不检查正文 H1、语义、授权、图文件或实际执行。所需正式指令审核由审核入口承担，其他验证按上述维护规范选取；维护自查不冒充独立审核，区分已读范围、实际执行和未验证部分。
+提示词或同名场景发生变化时，按[提示词与场景路径检查](../../../framework/README.md#提示词与场景路径检查)运行现有配对工具；它只核对名称与文件路径，不检查正文 H1、语义、授权、图文件或实际执行。作者核对受影响正文，其他验证按上述维护规范选取；维护自查不冒充独立审核，区分已读范围、实际执行和未验证部分。
 
 场景图变化按其[依据与检查](../../../framework/docs/workflow-maps/README.md#依据与检查)及[现有图工具](../../../framework/commands/README.md)核对名称集合、ID、端点、关系与场景文件链接。名称检查和链接检查不证明完整图格式或连线语义正确，也不证明查看器中的布局体验。
 

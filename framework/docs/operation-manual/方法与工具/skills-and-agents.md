@@ -95,7 +95,7 @@ Shader 规则入口同时导航这些可选方法。正式实现、限定原型�
 
 ## 框架维护侧的方案检验与复盘
 
-框架维护讨论继续使用个人的渐进式澄清 Skill；它不随项目分发。已有维护方案可交给 [plan-review-yaya](../../../../.agents/skills/plan-review-yaya/SKILL.md)，检查假设、职责、分发影响和验证办法，指出具体问题或证据缺口。
+框架维护讨论按当前缺口澄清；已有维护方案由当前 Agent 检查假设、职责、分发影响和验证办法，指出具体问题或证据缺口。
 
 框架的实际维护复盘由当前 Agent 按集中提示词中的对应场景，依据执行记录、根维护原则与职责设计准则分析。复盘不因缺少 Hook 或 CI 就判定存在问题，也不默认修改规则、建立脚本或新增报告。建议不自动成为需求或待办；已有具体实施授权则由原任务继续处理。独立入口表示职责可单独调用，不代表已经使用了独立审核实例。
 
@@ -109,13 +109,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 ## 框架维护侧的反馈、诊断与交接
 
-以下三个入口只在框架维护仓库使用，与 Godot 版分别维护，不随项目分发：
-
-- [feedback-triage-yaya](../../../../.agents/skills/feedback-triage-yaya/SKILL.md)：核实反馈或外部报告，区分当前问题、已有覆盖、设计取舍与证据缺口，提出处理归属。
-- [bug-diagnosis-yaya](../../../../.agents/skills/bug-diagnosis-yaya/SKILL.md)：对具体维护异常调查因果关系，按本次获准的静态或运行范围取得证据。
-- [task-handoff-yaya](../../../../.agents/skills/task-handoff-yaya/SKILL.md)：核对真实停点与有效授权，按请求整理既有记录或生成可复制交接；明确要求只读时不写文件。
-
-三者使用框架自己的维护、验证和记录约定，不启用待分发项目的 Stage。收到报告不等于获准修改；已批准的后续工作沿原任务继续，明确暂停则保持暂停。
+当前 Agent 按[维护约定](../../framework-maintenance/updating-the-blank-project.md)直接核实反馈、调查具体异常或整理交接，使用框架自己的验证范围与记录，不启用待分发项目的 Stage。收到报告不等于获准修改；已批准的后续工作沿原任务继续，明确暂停则保持暂停。
 
 ## 主 Agent 与专用角色
 
@@ -139,7 +133,7 @@ Godot 项目使用 [loop-me-godot](../../../../project-source/skills/loop-me-god
 
 正式可发送正文按用途分开维护：[Godot 开发提示词库](../../../prompt_scenarios/prompts/godot-development-prompts.json)、[Yaya 框架维护提示词库](../../../prompt_scenarios/prompts/yaya-maintenance-prompts.json)。
 
-维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、覆盖清单、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
+维护库内的提示词、分类或场景时，使用框架专用的 [prompt-and-graph-maintenance-yaya](../../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)。它根据实际变化核对同名场景、索引、场景职责范围、Godot 场景图与 advisor 的相关说明；文档职责、路径或引用关系变化时，也由该入口维护文档系统图中的文件名、路径和关系。详细写法和工具契约仍引用原有规范，普通局部修改不要求通读全部场景，全仓文档覆盖扫描只在明确要求时运行。该 Skill 不随游戏项目分发，也不用于临时对话中的提示词或项目内续接文本。
 
 - **Project：** 每份文件保留单元素顶层数组，分别保存 `Yaya 框架维护` 或 `Godot 项目开发`。
 - **名称与正文：** 各自 `categories` 下的叶子键是提示词名称，字符串值是正文。

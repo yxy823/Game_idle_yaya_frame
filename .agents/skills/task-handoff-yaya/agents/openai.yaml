@@ -1,6 +1,0 @@
-interface:
-  display_name: "Yaya 框架任务交接"
-  short_description: "准备框架任务的新对话交接，保留真实停点、有效授权、证据与恢复第一步"
-
-policy:
-  allow_implicit_invocation: true
