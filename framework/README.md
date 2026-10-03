@@ -55,7 +55,7 @@ python -B framework/prompt_scenarios/tools/check_scenario_prompt_paths.py
   - `0`：集合一致。
   - `1`：缺少或多余。
   - `2`：输入或结构错误。
-- **内容审核**：正文 H1、具体步骤、授权、语义和运行结果不在此工具检查范围内，仍须另行核对。
+- **检查边界**：正文 H1、具体步骤、授权与语义由作者自查；本工具不检查这些内容，也不验证实际运行结果。
 
 新增或修改正文后核对同名场景及[场景索引](prompt_scenarios/scenarios/scenario-index.md)，只同步实际变化；填写输入、角色与使用边界见 [Skill、Agent 与提示词](docs/operation-manual/方法与工具/skills-and-agents.md)。完整提示词留在 JSON，不复制到 README 或规则中。后续口语续接遵循 [会话约定](docs/framework-maintenance/updating-the-blank-project.md#后续用口语继续)。
 
