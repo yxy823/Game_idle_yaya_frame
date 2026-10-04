@@ -4,6 +4,23 @@
 
 本目录保存面向全仓文档的维护检查脚本。命令在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存，参数细节以 `--help` 为准。
 
+## 检查链接与锚点
+
+文档移动、改名、改标题或整理后，在仓库根目录运行：
+
+```powershell
+python -B framework/maintenance/tools/check_repository_links.py
+```
+
+分发材料中的链接按生成项目的目录编写，在源目录里直接解析会失真。所以脚本分两部分检查：
+
+- **维护侧**：仓库中 `project-source/` 以外的 Markdown。
+- **分发侧**：按[复制清单](../../project-creation/project-files.json)复制到系统临时目录后的项目，报告中的路径映射回 `project-source/` 的源文件。
+
+两部分都调用分发给项目的 [check-markdown-links.py](../../../project-source/tools/checks/check-markdown-links.py)，检查规则与默认排除见[项目工具说明](../../../project-source/tools/README.md#check-markdown-linkspy)。临时副本不初始化 Git，运行后删除。
+
+退出码：`0` 没有失效链接；`1` 存在失效链接。
+
 ## 检查孤立文档
 
 在仓库根目录运行；使用 Python 标准库，不需要安装依赖：

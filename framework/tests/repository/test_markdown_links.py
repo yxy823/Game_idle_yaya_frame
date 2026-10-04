@@ -1,0 +1,70 @@
+"""Check the distributed Markdown link checker through its public CLI."""
+import json
+import subprocess
+import sys
+import tempfile
+import unittest
+from pathlib import Path
+
+
+COMMAND = Path(__file__).resolve().parents[3] / "project-source/tools/checks/check-markdown-links.py"
+
+
+class MarkdownLinkTests(unittest.TestCase):
+    def setUp(self):
+        self.area = tempfile.TemporaryDirectory(prefix="markdown_links_")
+        self.addCleanup(self.area.cleanup)
+        self.root = Path(self.area.name)
+
+    def write(self, name, body):
+        path = self.root / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(body, encoding="utf-8")
+
+    def run_cli(self, *args):
+        process = subprocess.run(
+            [sys.executable, "-B", str(COMMAND), "--root", str(self.root), "--json", *args],
+            capture_output=True, encoding="utf-8", check=False, timeout=30,
+        )
+        self.assertIn(process.returncode, (0, 1), process.stderr)
+        return process.returncode, json.loads(process.stdout)
+
+    def broken(self, *args):
+        return {(row["file"], row["target"], row["reason"]) for row in self.run_cli(*args)[1]["broken"]}
+
+    def test_github_style_anchors_resolve_for_chinese_code_and_duplicate_headings(self):
+        self.write("docs/guide.md",
+                   "# 标题：Git 与提交\n## Stage 7 `record` 说明\n## 重复\n## 重复\n<a id=\"custom\"></a>\n")
+        self.write("docs/with space/notes.md", "# Notes\n")
+        self.write("index.md",
+                   "[a](docs/guide.md#标题git-与提交) [b](docs/guide.md#stage-7-record-说明)\n"
+                   "[c](docs/guide.md#重复-1) [d](docs/guide.md#custom) [e](#local)\n"
+                   "[f](<docs/with space/notes.md#notes>) [g](docs/with%20space/) [h](https://example.com)\n"
+                   "## Local\n")
+        code, result = self.run_cli()
+        self.assertEqual(code, 0, result["broken"])
+        self.assertEqual(result["links"], 7)
+
+    def test_missing_targets_anchors_and_reference_definitions_are_reported(self):
+        self.write("docs/guide.md", "# Guide\n")
+        self.write("index.md",
+                   "[a](docs/missing.md) [b](docs/guide.md#absent) [c](/docs/guide.md)\n"
+                   "[ref]: docs/gone.md\n")
+        self.assertEqual(self.broken(), {
+            ("index.md", "docs/missing.md", "target does not exist"),
+            ("index.md", "docs/guide.md#absent", "anchor not found in target"),
+            ("index.md", "/docs/guide.md", "root-relative path is not portable"),
+            ("index.md", "docs/gone.md", "target does not exist"),
+        })
+
+    def test_code_and_excluded_directories_are_not_scanned(self):
+        self.write("index.md", "`[a](missing.md)`\n```\n[b](missing.md)\n```\n")
+        self.write("addons/plugin/README.md", "[c](missing.md)\n")
+        self.write("tmp/draft.md", "[d](missing.md)\n")
+        self.write("notes/old.md", "[e](missing.md)\n")
+        self.assertEqual(self.broken("--exclude", "notes"), set())
+        self.assertEqual(len(self.broken()), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -14,6 +14,7 @@ tools/
 | --- | --- |
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
+| [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成依据 |
@@ -80,6 +81,29 @@ python -B tools/features/record-feature-completion.py record-tests --feature F00
 | `--require-ready` | 额外核对工具文件、固定测试入口和实际 Godot 版本 | 只检查配置结构 |
 
 退出码：`0` 配置有效（带 `--require-ready` 时表示已就绪）；`2` 配置无效、未就绪或参数错误。
+
+### check-markdown-links.py
+
+移动、重命名文档或修改标题后运行，也可以在整理文档后整体运行一次：
+
+```powershell
+python -B tools/checks/check-markdown-links.py
+```
+
+检查范围：
+
+- **检查的链接**：行内链接、`<路径>` 写法与引用式定义中的本地目标；目标是 Markdown 文件且带 `#锚点` 时，再核对锚点。
+- **锚点规则**：按 GitHub 规则由标题生成，即去掉标点和格式符号、转小写、空格变 `-`，中文保留；重名标题依次加 `-1`、`-2`。`<a id="…">` 也算锚点。
+- **不检查**：外部网址、代码块和行内代码里的内容。以 `/` 开头的路径不可移植，直接报告。
+- **默认排除**：任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`addons`、`__pycache__` 的目录中的 Markdown 不检查；指向这些目录的链接仍会核对目标。
+
+| 参数 | 作用 | 默认值 |
+| --- | --- | --- |
+| `--root <目录>` | 要检查的目录 | 脚本所在项目 |
+| `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
+| `--json` | 以 JSON 输出文件数、链接数和失效列表 | 逐行输出 |
+
+退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。
 
 ### run-gdunit-tests.py
 
