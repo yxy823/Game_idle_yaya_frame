@@ -205,6 +205,8 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 
 `implementation-guidance-godot` Skill 把为某个 Feature 请求的实现指导写进同一个文件，工程 Feature 也一样。主 Agent 可以自己准备指导；交给 advisor 准备需要该 Skill 规定的明确授权。不属于任何 Feature 的工作按 [独立技术决定](10-architecture-overview.md#独立技术决定) 处理，不要虚构一个 Feature，也不要在 `reports/` 下另写指南。
 
+设计稿开头是“对外接口与接入要点”：后续 Feature 接入时需要的接口、信号、完成约定和已知的坑，几行就够。依赖它的 Feature 先读这一节，需要时再读全文。Feature 完成时按实际实现更新它。
+
 设计稿解释本次改动：
 
 - 目标和边界，并链接 Product 和 AC；
@@ -213,7 +215,7 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 - 职责、接口和状态归属；
 - 重要的运行、失败和生命周期流程；
 - 必要的实现顺序，以及验证方式的理由；
-- 实际结果和有意义的偏差。
+- 实际结果和有意义的偏差。观察写明是实测还是推断，推断的标为待核实。
 
 写清必要的依赖关系，不写逐个函数的做法；普通实现细节由实现的 Agent 决定。有用的解释需要多长就写多长。[feature-design.md.tmpl](templates/feature-design.md.tmpl) 是可选提纲；不适用的小节可以省略。
 
@@ -583,6 +585,8 @@ python -B tools/checks/check-feature-list.py
 - 范围较窄的检查可以留在已规划的 Feature 内。
 - 复用已验证的基础。
 - 不要让无关逻辑等待全部美术，也不要新建单独的原型状态或类型。
+- 接入视觉基础的 Feature，在 notes 写明原型接入后的去留，默认保留为对照工具，规则见[视觉原型的验证与采纳](13-prototypes.md#验证与采纳)。
+- AC 涉及玩家可见的动画或反馈时，核对它的参数在表现文档或 UI 规格中有所属位置；没有时，先交给 `design-game-presentation` 或 `design-ui-spec` 补上，不让参数只留在设计稿里。
 
 ## 需求覆盖核对
 
