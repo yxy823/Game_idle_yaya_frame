@@ -4,7 +4,7 @@ Godot 解析器和随附的 linter 检查的内容不同。解析器判断脚本
 
 本页说明 Agent 怎样解读它们的结果。linter 打过补丁的行为和实现细节记录在 [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md)。
 
-运行 Godot 编辑器检查或导入检查之前，按 [Windows 编辑器检查](../../agent-rules/00-core/validation-policy.md#windows-编辑器检查) 操作。
+运行 Godot 编辑器检查或导入检查之前，按 [Windows 编辑器检查](../../agent-rules/00-core/windows-editor-check.md) 操作。
 
 ## 直接运行
 

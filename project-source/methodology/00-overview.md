@@ -121,7 +121,6 @@ methodology/                         canonical workflow specification
 | 独立审核 | [12-independent-review.md](12-independent-review.md) |
 | 视觉原型和逻辑原型 | [13-prototypes.md](13-prototypes.md) |
 | 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
-| 任务范围、完成汇报 | [15-task-scope-and-reporting.md](15-task-scope-and-reporting.md) |
 | Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
 | 人工验收清单与结果文件 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
 | Product、Feature、ADR 等文件的模板 | [templates/README.md](templates/README.md) |

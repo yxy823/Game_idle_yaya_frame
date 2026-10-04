@@ -20,7 +20,7 @@ agent-rules/<专业模块>/
   该模块具体的 Godot、GDScript 与领域语义
 ```
 
-`methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查，以及[任务范围与完成汇报](15-task-scope-and-reporting.md)、[Git 与提交](../AGENTS.md#git-与提交)。它不成为引擎或语言具体行为的第二份来源。
+`methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查，以及[任务范围](../AGENTS.md#任务范围)、[Git 与提交](../AGENTS.md#git-与提交)、[验证与完成汇报](../AGENTS.md#验证与完成汇报)。它不成为引擎或语言具体行为的第二份来源。
 
 ## `docs/project-rules.md`
 
