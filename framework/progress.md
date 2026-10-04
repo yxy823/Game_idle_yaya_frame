@@ -3,7 +3,6 @@
 ## 三消 Demo 实测问题修复
 
 - **待人工确认**：Godot 编辑器开着时 Agent 修改了 `project.godot`，编辑器窗口重新获得焦点时会不会提示“文件已在外部修改”。自动化无法测试，需要用户在编辑器中试一次；结果决定 [tools README](../project-source/tools/README.md#resave_godot_filesgd) 中“先重新加载当前项目”的提醒是否需要调整。
-- **临时材料**：本机工作清单 `tmp/match-three-validation/`（问题清单、步骤记录、提示词）在用户确认不再需要后删除。
 
 ## Godot 项目手册补充教程线
 
