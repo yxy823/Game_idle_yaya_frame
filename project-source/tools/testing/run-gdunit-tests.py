@@ -46,7 +46,7 @@ def _build_command(args: argparse.Namespace, report_root: Path) -> list[str]:
     command = [str((REPO_ROOT / engine).resolve()), "--path", str(REPO_ROOT),
                "--debug", "--ignore-error-breaks", "--script", RUNNER_SCRIPT,
                "-rd", str(report_root)]
-    for target in getattr(args, "targets", [args.target]):
+    for target in args.targets:
         command.extend(["-a", target])
     if args.continue_run:
         command.append("-c")
@@ -126,7 +126,7 @@ def _run_tests(args: argparse.Namespace) -> int:
         if selection_error is not None:
             raise selection_error
         result["command"] = _build_command(args, directory)
-        result["selectors"] = getattr(args, "targets", [args.target])
+        result["selectors"] = args.targets
         write_json(directory / "result.json", result)
         if not Path(result["command"][0]).is_file():
             raise ValueError(f"Godot executable not found: {result['command'][0]}")
@@ -165,7 +165,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--godot-binary", help="Override the configured Godot executable for this run")
     selection = parser.add_mutually_exclusive_group()
-    selection.add_argument("--target", default="tests")
+    selection.add_argument("--target", action="append",
+                           help="Suite file or directory; repeat to run several in one run (default: tests)")
     selection.add_argument("--feature", help="Read the current Feature/Test Registry directly")
     parser.add_argument("--phase", choices=("baseline", "final"), default="final")
     parser.add_argument("--scope", choices=("auto", "required", "affected", "full"), default="auto")
@@ -178,6 +179,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Maximum test-process wall time (default: 120 seconds).",
     )
     args = parser.parse_args(list(argv))
+    # 重复的 --target 全部运行，按首次出现的顺序去重；--feature 的选择器在测试选择后填入。
+    args.targets = [] if args.feature else list(dict.fromkeys(args.target or ["tests"]))
     try:
         run_history_directory(REPO_ROOT, args.feature)
     except ValueError as error:

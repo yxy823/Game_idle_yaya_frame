@@ -116,7 +116,7 @@ python -B tools/checks/check-markdown-links.py
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--feature F0XX` | 从当前 Feature 与测试登记表选择测试；与 `--target` 互斥 | 不使用 |
-| `--target <路径>` | focused/TDD 运行指定路径；不产生完成证据 | `tests` |
+| `--target <路径>` | focused/TDD 运行指定路径；可重复，多个路径在同一次运行中全部执行；不产生完成证据 | `tests` |
 | `--scope <范围>` | 仅在 `--feature` 时决定选择范围：`required` 为必需测试集，`affected` 为受影响测试（含必需测试集），`full` 为 `tests/` 全量，`auto` 在需要全量升级时运行 `full`，否则运行 `affected` | `auto` |
 | `--phase <阶段>` | `baseline` 跳过尚未实现的 `planned` 测试，用于已有安全网，不能支持完成；`final` 为最终验证 | `final` |
 | `--require-test <套件路径>::<用例>` | 要求本次运行实际执行该用例，否则判为失败；同时禁止返回 `not_required` | 不要求 |

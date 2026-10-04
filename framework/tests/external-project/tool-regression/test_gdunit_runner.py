@@ -72,11 +72,19 @@ class GdUnitRunnerTests(unittest.TestCase):
             "--debug", "--ignore-error-breaks", "--script", runner.RUNNER_SCRIPT,
         ])
         self.assertEqual(command[7:], [
-            "-rd", str(self.root / "reports with spaces"), "-a", args.target, "-c",
+            "-rd", str(self.root / "reports with spaces"), "-a", "tests/with spaces/test_case.gd", "-c",
         ])
         self.assertNotIn("--headless", command)
         self.assertNotIn("--remote-debug", command)
         self.assertEqual(args.require_test, "tests/with spaces/test_case.gd::test_case")
+
+    def test_repeated_targets_all_run_in_order_without_duplicates(self) -> None:
+        args = runner._parse_args(["--godot-binary", sys.executable, "--target", "tests/a.gd",
+                                   "--target", "tests/b.gd", "--target", "tests/a.gd"])
+        self.assertEqual(args.targets, ["tests/a.gd", "tests/b.gd"])
+        command = runner._build_command(args, self.root / "reports")
+        self.assertEqual(command[-4:], ["-a", "tests/a.gd", "-a", "tests/b.gd"])
+        self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).targets, ["tests"])
 
     def test_console_summary_lists_failures_and_falls_back_to_output_tail(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
