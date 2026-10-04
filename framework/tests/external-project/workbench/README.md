@@ -35,6 +35,8 @@
 | 消费依赖与启动恢复 | `asset_consumer_boundary_test.gd`、`asset_workbench_recovery_test.gd` | 四类入口未入树释放、显式 Cue 依赖、最近保存值、缺 Cue 恢复、不支持项/重复/容量反馈 |
 | 批量源格式契约 | `asset_analysis_source_contract_test.gd` | 独立检查当前源格式配置、配置变化与错误恢复；历史结果读取不依赖当前源格式配置 |
 
+`asset_workbench_test.gd` 的 `test_analysis_identity_survives_browsing_and_late_completion` 会实际启动 Analyzer：运行前按 [Analyzer 安装说明](../../../../project-source/asset_workbench/analyzer/README.md)在外部项目安装依赖。没装时 Analyzer 按设计返回 `dependency_missing`，这个用例因此失败，不代表工作台有问题。
+
 保存测试在各自测试目录或上表指定的报告目录写临时 Cue/资源，不修改示例 Cue。冷释放与已入树后的装卸是不同分支，不能互相替代。
 
 相关套件的依赖与分工如下：
