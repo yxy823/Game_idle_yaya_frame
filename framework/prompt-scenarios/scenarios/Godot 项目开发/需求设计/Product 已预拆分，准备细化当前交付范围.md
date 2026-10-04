@@ -47,4 +47,4 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 ## 流程关联与衔接关系
 
-依据：[GDD 与 Product 分工](<../../../../../project-source/methodology/01-product-doc-structure.md>)、[规划规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。需要正式规划时按有效授权进入相应 Feature 规划入口，完整覆盖当前 Product 的必要范围；该 Product 全部必要 Feature 真实完成后再细化下一项。
+依据：[GDD 与 Product 分工](<../../../../../project-source/methodology/01-product-doc-structure.md>)、[规划规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。当前 Product 包含新界面、而 Art Bible 只有占位时，先用[美术方向](<当前资产的美术方向不明确，需要定下来.md>)定下方向，再规划视觉基础。需要正式规划时按有效授权进入相应 Feature 规划入口，完整覆盖当前 Product 的必要范围；该 Product 全部必要 Feature 真实完成后再细化下一项。
