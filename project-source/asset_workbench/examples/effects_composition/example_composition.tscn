@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
-[ext_resource type="PackedScene" path="res://asset_workbench/examples/effects_composition/example_effect_cluster.tscn" id="2"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/effects_composition/example_dual_group_timeline.tres" id="3"]
+[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/effects_composition/example_effect_cluster.tscn" id="2"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_dual_group_timeline.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)

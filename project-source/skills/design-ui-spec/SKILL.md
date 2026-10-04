@@ -5,7 +5,7 @@ description: "在 UI 规格中设计并维护界面布局、状态和交互表�
 
 # UI 规格
 
-归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **UI 文档边界** 章节规定了界面文件和组件文件，以及共享控件怎样迁到 `docs/ui/components/<component-key>-design.md`。同一文件的 **留在 GDD 中的内容** 说明了怎样把界面规格从 GDD 中移出。在授权范围内直接写入，使用配置的 `document_language`；只要求讨论时，返回方案。
+归属、授权和来源影响按 `yaya/methodology/11-specialist-workflows.md` 执行。该文件的 **UI 文档边界** 章节规定了界面文件和组件文件，以及共享控件怎样迁到 `docs/ui/components/<component-key>-design.md`。同一文件的 **留在 GDD 中的内容** 说明了怎样把界面规格从 GDD 中移出。在授权范围内直接写入，使用配置的 `document_language`；只要求讨论时，返回方案。
 
 GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规则和目标直接引用，不要复制。保持受保护的来源输入原样。`product-author` 不代为保存这份规格。
 
@@ -27,9 +27,9 @@ GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规�
 
 ## 交接
 
-按 `methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
+按 `yaya/methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
 
-视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用原型中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
+视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用原型中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
 
 返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和原型输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
 

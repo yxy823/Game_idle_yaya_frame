@@ -5,22 +5,22 @@ description: 配置、更新或恢复 Godot 项目的工具路径，或执行项
 
 # 维护项目环境
 
-准备或修复本项目运行所用的工具。配置和 Bootstrap 步骤由[项目环境](../../../methodology/06-project-environment.md)规定；本 Skill 执行这些步骤，不增加其他准备流程。环境工作不需要 GDD，也不创建 Feature 或 Stage。
+准备或修复本项目运行所用的工具。配置和 Bootstrap 步骤由[项目环境](../../../yaya/methodology/06-project-environment.md)规定；本 Skill 执行这些步骤，不增加其他准备流程。环境工作不需要 GDD，也不创建 Feature 或 Stage。
 
 ## 按当前需要阅读对应章节
 
 | 当前需要 | 阅读并执行 |
 | --- | --- |
-| 新项目首次准备 | **工具配置** 和 **项目环境准备**。默认文档语言已经设置好；只有用户要求使用其他语言时，才阅读[语言选择](../../../methodology/05-document-language.md#3-选择语言) |
+| 新项目首次准备 | **工具配置** 和 **项目环境准备**。默认文档语言已经设置好；只有用户要求使用其他语言时，才阅读[语言选择](../../../yaya/methodology/05-document-language.md#3-选择语言) |
 | 某个工具移动了位置或换了版本 | 先读 **工具配置**，再重新运行受影响的 Bootstrap 检查。保留无关的设置和仍然有效的准备结果 |
 | 已配置的工具无法启动 | **工具配置**：报告实际的失败；只在用户要求的范围内修改路径 |
-| 需要首次导入和类扫描 | **项目环境准备** 的第 2 步，以及[首次 Godot 扫描](../../../tools/README.md#首次-godot-扫描) |
+| 需要首次导入和类扫描 | **项目环境准备** 的第 2 步，以及[首次 Godot 扫描](../../../yaya/tools/README.md#首次-godot-扫描) |
 
 如果编辑器或导入过程会在 worktree 内写入文件，而你不清楚它写到哪里、怎样清理，先阅读 [Godot worktree 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。阅读它不会创建 worktree。
 
 ## 用真实输出检查
 
-- 使用已配置的可执行文件和 `tools/checks/check-project-environment.py`。根据检查器的实际输出判断是否就绪，不要根据填好的路径或已存在的文件判断。
+- 使用已配置的可执行文件和 `yaya/tools/checks/check-project-environment.py`。根据检查器的实际输出判断是否就绪，不要根据填好的路径或已存在的文件判断。
 - 检查失败时，不要自行重建项目、安装依赖或更换工具。报告这次失败。
 - 已完成的首次扫描直接复用。不要增加定期导入的步骤，也不要用清除缓存来掩盖失败。
 

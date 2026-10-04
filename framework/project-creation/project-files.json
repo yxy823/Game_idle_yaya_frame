@@ -17,15 +17,15 @@
   },
   {
     "source": "project-source/methodology",
-    "target": "methodology"
+    "target": "yaya/methodology"
   },
   {
     "source": "project-source/tools",
-    "target": "tools"
+    "target": "yaya/tools"
   },
   {
     "source": "project-source/agent-rules",
-    "target": "agent-rules"
+    "target": "yaya/agent-rules"
   },
   {
     "source": "project-source/addons/gdUnit4",
@@ -65,7 +65,7 @@
   },
   {
     "source": "project-source/asset_workbench",
-    "target": "asset_workbench"
+    "target": "yaya/asset_workbench"
   },
   {
     "source": "project-source/Project_AGENTS.md",

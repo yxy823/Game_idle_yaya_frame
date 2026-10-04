@@ -15,9 +15,9 @@ import unittest
 
 REPO_ROOT = PROJECT_ROOT
 MERGE_HELPER = (
-    REPO_ROOT / "tools/features/merge-test-registry.py"
+    REPO_ROOT / "yaya/tools/features/merge-test-registry.py"
 )
-CHECKER = REPO_ROOT / "tools/checks/check-feature-list.py"
+CHECKER = REPO_ROOT / "yaya/tools/checks/check-feature-list.py"
 
 
 class UnitTestPathsTests(unittest.TestCase):
@@ -67,11 +67,11 @@ class UnitTestPathsTests(unittest.TestCase):
         )
 
     def _strict(self) -> subprocess.CompletedProcess[str]:
-        checker = self.root / "tools/checks/check-feature-list.py"
+        checker = self.root / "yaya/tools/checks/check-feature-list.py"
         # 只物化校验器所需的包和模块，夹具布局与生成项目一致。
-        for relative in ("tools/__init__.py", "tools/lib/__init__.py",
-"tools/checks/check-feature-list.py", "tools/lib/feature_evolution.py",
-                         "tools/lib/test_selection.py"):
+        for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
+"yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
+                         "yaya/tools/lib/test_selection.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
@@ -103,9 +103,9 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(self._registry()["components"], [component])
 
     def test_default_project_is_script_owner_not_another_project_in_cwd(self) -> None:
-        for relative in ("tools/__init__.py", "tools/lib/__init__.py",
-                         "tools/features/merge-test-registry.py", "tools/lib/atomic_json.py",
-                         "tools/lib/feature_evolution.py", "tools/lib/test_selection.py"):
+        for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
+                         "yaya/tools/features/merge-test-registry.py", "yaya/tools/lib/atomic_json.py",
+                         "yaya/tools/lib/feature_evolution.py", "yaya/tools/lib/test_selection.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
@@ -118,7 +118,7 @@ class UnitTestPathsTests(unittest.TestCase):
         foreign_registry = foreign / "docs/test-registry.json"
         original = foreign_registry.read_bytes()
         result = subprocess.run(
-            [sys.executable, "-B", str(self.root / "tools/features/merge-test-registry.py"),
+            [sys.executable, "-B", str(self.root / "yaya/tools/features/merge-test-registry.py"),
              "--components", "components.json"],
             cwd=foreign, text=True, capture_output=True, check=False,
         )

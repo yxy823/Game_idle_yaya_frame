@@ -26,7 +26,7 @@ enabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg", "res://addons/scrip
 [gdunit4]
 
 hooks/session_hooks=Dictionary[String, bool]({
-"res://tools/testing/gdunit_diagnostic_session.gd": true
+"res://yaya/tools/testing/gdunit_diagnostic_session.gd": true
 })
 report/godot/push_error=true
 report/godot/script_error=true

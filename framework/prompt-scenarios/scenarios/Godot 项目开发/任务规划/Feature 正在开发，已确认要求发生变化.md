@@ -29,7 +29,7 @@ Feature 正在开发，已确认要求发生变化。
 
 **S3｜检查并交接**
 
-调用项目 tools/checks/check-feature-list.py，检查 ID、引用与覆盖后提交，交回获准执行。
+调用项目 yaya/tools/checks/check-feature-list.py，检查 ID、引用与覆盖后提交，交回获准执行。
 
 项目工具命令的使用要求：
 

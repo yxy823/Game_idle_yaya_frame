@@ -2,10 +2,10 @@
   "group_version": 1,
   "name": "example_feedback_sources",
   "assets": [
-    {"path": "res://asset_workbench/examples/assets/example_trophy.png", "type": "image"},
-    {"path": "res://asset_workbench/examples/assets/example_star.png", "type": "image"},
-    {"path": "res://asset_workbench/examples/assets/example_confirmation_a.ogg", "type": "audio"},
-    {"path": "res://asset_workbench/examples/assets/example_confirmation_b.ogg", "type": "audio"}
+    {"path": "res://yaya/asset_workbench/examples/assets/example_trophy.png", "type": "image"},
+    {"path": "res://yaya/asset_workbench/examples/assets/example_star.png", "type": "image"},
+    {"path": "res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg", "type": "audio"},
+    {"path": "res://yaya/asset_workbench/examples/assets/example_confirmation_b.ogg", "type": "audio"}
   ],
   "parameters": {"silence_dbfs": -50},
   "rules": [

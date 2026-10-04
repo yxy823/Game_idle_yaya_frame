@@ -15,18 +15,18 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 2. 判断 `docs/gdd/` 中是真实的设计、草稿，还是只有导航和用途说明。不要根据目录、文件标题或脚手架推断出已采用的设计。
    - 没有 GDD 时，创建游戏的工作交给 `design-gdd`；在对应的设计存在之前，依赖它的 Product 规划或实现被阻塞。初始设计、对它的澄清、数值推导和设计审核可以先于 Product 和 Feature 进行。
    - 检查只读的 Git 状态，以及本次涉及的 GDD、Product、Feature、详细文档和测试登记表（Registry）记录。
-   - 配置的工具路径只是设置，不能证明工具可用。使用本次涉及的环境证据和 Progress 证据，不要启动探测。机器准备不完整时，按 `methodology/00-overview.md` 和 `methodology/06-project-environment.md` 解读。
+   - 配置的工具路径只是设置，不能证明工具可用。使用本次涉及的环境证据和 Progress 证据，不要启动探测。机器准备不完整时，按 `yaya/methodology/00-overview.md` 和 `yaya/methodology/06-project-environment.md` 解读。
    - 技术栈固定为 Godot 4.7、GDScript 和 gdunit4；缺少工具不代表引擎尚未确定。
 3. 涉及验收或完成时，阅读当前的证据和链接到的具体运行结果。区分旧的 PASS、当前快照和尚待进行的人工验收。有多个进行中的 Feature 时，先看 Progress 记录的各自停点和等待对象：等待的外部输入已经到达的那一项优先续接；没有记录等待对象时，需要实际的批量授权才能同时推进。不要选编号最大的那个，也不要悄悄清理其他工作。
-4. 需要为下一步选择路径时，使用 `methodology/00-overview.md` 的 **任务路由表**，再阅读目标 Skill 的入口和停止条件。路由和批准由那张表和目标流程负责；本 Skill 不维护第二套流程。
+4. 需要为下一步选择路径时，使用 `yaya/methodology/00-overview.md` 的 **任务路由表**，再阅读目标 Skill 的入口和停止条件。路由和批准由那张表和目标流程负责；本 Skill 不维护第二套流程。
 
 首次规划或源同步时，区分 schema 中的初始规划基线和脚手架提交；之后的 Product 规划保留锚点。已实现的工作缺少历史记录时，属于源同步的覆盖检查。
 
-区分 GDD 设计、`docs/product.md` 中的交付概要、当前 Product 的详细范围和 Feature 的实际完成情况。概要条目不是详细的 Product，已规划的 Feature 也不是已完成的交付。确定下一个 Product 操作时，通过标准路由使用 `methodology/02-feature-list-schema.md` 的 **逐个 Product 规划**。对照已规划和已完成的工作检查本次涉及的来源变化；尚未细化的未来 Product 停留在概要层级。
+区分 GDD 设计、`docs/product.md` 中的交付概要、当前 Product 的详细范围和 Feature 的实际完成情况。概要条目不是详细的 Product，已规划的 Feature 也不是已完成的交付。确定下一个 Product 操作时，通过标准路由使用 `yaya/methodology/02-feature-list-schema.md` 的 **逐个 Product 规划**。对照已规划和已完成的工作检查本次涉及的来源变化；尚未细化的未来 Product 停留在概要层级。
 
 解释游戏逻辑、游戏表现或二者的协作属于哪里时，使用项目指南 `docs/game-organization.md`。沿着一个具体的功能，从它的 GDD 规则和体验目标，走到对应的 UI 或表现、实际的架构和 Feature 验证。这些是职责视角，不是新的任务类型，也不要求拆分跨层的 Feature。按用户要求的设计、实现或审核结果选择路径；不要把所有与表现有关的任务都交给 `design-game-presentation`。
 
-涉及游戏设计或交付选择时，先阅读本次涉及的 GDD 主题，以及 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 和 **开放问题** 中的问题，再推荐工作。用问题的实际依赖说明下一步需要的决定或证据；无关的问题不会阻塞一个清楚的任务。
+涉及游戏设计或交付选择时，先阅读本次涉及的 GDD 主题，以及 `yaya/methodology/01-product-doc-structure.md` 的 **设计范围与边界** 和 **开放问题** 中的问题，再推荐工作。用问题的实际依赖说明下一步需要的决定或证据；无关的问题不会阻塞一个清楚的任务。
 
 涉及术语、工程规则或技术设计时：
 
@@ -45,11 +45,11 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 
 只询问状态时，直接回答当前事实、阻塞和本次涉及的不确定点；不需要查提示词库，也不需要续接提示词。建议需要帮助用户开始下一步操作时，提供提示词。用户实际要求保存暂停点或准备任务交接时，属于 `task-handoff-godot`；不要用建议代替用户要求的结果。根据证据和当前授权，选择调查、规划还是执行。常规的选择根据已有证据决定；只就会实质改变路径或操作安全性的事实提问。
 
-每段起草的提示词都遵循 `methodology/09-records-reports-and-handoff.md` 的 **续接提示词**：用当前事实和目标方的实际规则填写其中的字段。这个格式不是另一套流程，也不是批准关卡。
+每段起草的提示词都遵循 `yaya/methodology/09-records-reports-and-handoff.md` 的 **续接提示词**：用当前事实和目标方的实际规则填写其中的字段。这个格式不是另一套流程，也不是批准关卡。
 
 提示词写明当前的来源和已知状态，不编造 Feature ID、命令、版本号、已通过的 Gate 或批准。
 
-- 引用 GDD 时，沿着实际的入口查找，并核实所属文件和标题。新的文档目标使用 `methodology/01-product-doc-structure.md` 的 **GDD 文件名**，不编造其他名称，也不声称尚未编写的主题已经存在。
+- 引用 GDD 时，沿着实际的入口查找，并核实所属文件和标题。新的文档目标使用 `yaya/methodology/01-product-doc-structure.md` 的 **GDD 文件名**，不编造其他名称，也不声称尚未编写的主题已经存在。
 - 引用配置好的命令，不要把作者本机的路径写死在提示词里。
 - 保留用户明确的授权。只说“继续”不等于批准实现，也永远不等于人工验收。生成提示词不会授予这两者中的任何一个。
 
@@ -66,7 +66,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 问题类型 | 目标方 | 需要讲清楚的区别 |
 | --- | --- | --- |
 | 游戏设计、数值设计、交付范围或术语 | `design-gdd`、`design-balance`、`product-author` 或 `project-terminology` | 修改游戏规则、调优已获授权的数值主题、安排交付和维护不改变含义的定义，是不同的任务。初始设计和草稿审核不需要 Product 或 Feature。 |
-| 全项目或专项规则 | 当前任务，按 `methodology/04-project-rules.md` 的 **规则的增量维护** | 局部设计不会自动成为全局规则。 |
+| 全项目或专项规则 | 当前任务，按 `yaya/methodology/04-project-rules.md` 的 **规则的增量维护** | 局部设计不会自动成为全局规则。 |
 | 已授权 Feature 内的支持文档 | 那个 Feature | 它不会开启新一轮规划。 |
 | 反馈或外部报告，或某个具体故障的原因 | `feedback-triage-godot` 或 `bug-diagnosis-godot` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |
 | 某个模块的整体结构，没有异常行为 | `review-code` 中的现状审核 | 这是审核，不是诊断。 |
@@ -74,9 +74,9 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 用户要求的 UI 或逻辑原型 | 当前 Feature 或已授权实验中的 `prototype-godot` | 实际的 Godot 运行和观察，不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
 | 多个答案互相影响的未知项 | `wayfinder-godot`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
 | 单独的工作目录，或把选定的成果带回来 | `worktree-create-godot` 或 `worktree-integrate-godot`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
-| 外部事实或方案比较 | `methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
-| 可观察的游戏表现、界面、资源或本地化规格 | `methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
-| 正式审核 | 按 `methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
+| 外部事实或方案比较 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
+| 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
+| 正式审核 | 按 `yaya/methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
 | 性能或长时间运行测量 | `diagnostics-performance` 或 `diagnostics-soak-test` | 它们的结果有自己的覆盖局限，不是 gdUnit 通过的证据。 |
 | 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review-godot`、`project-grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |
 | 反思实际的任务经历 | `retro-godot` | 复盘是可选的，它的发现不授权修改。 |

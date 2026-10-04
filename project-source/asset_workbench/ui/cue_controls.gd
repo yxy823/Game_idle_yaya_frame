@@ -4,9 +4,9 @@ extends VBoxContainer
 
 signal edited
 
-const ShaderControls = preload("res://asset_workbench/ui/shader_controls.gd")
-const EffectControls = preload("res://asset_workbench/ui/effect_controls.gd")
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const ShaderControls = preload("res://yaya/asset_workbench/ui/shader_controls.gd")
+const EffectControls = preload("res://yaya/asset_workbench/ui/effect_controls.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var _textures: Array[Texture2D] = []
 var _sounds: Array[AudioStream] = []

@@ -29,7 +29,7 @@ Feature 已能体验，需要准备人工验收清单。
 
 **S3｜绑定版本并交付**
 
-用配置 Python 调用 tools/features/record-feature-completion.py prepare-manual --feature <ID> --checklist <清单路径>，给出可点击路径及返回方式。
+用配置 Python 调用 yaya/tools/features/record-feature-completion.py prepare-manual --feature <ID> --checklist <清单路径>，给出可点击路径及返回方式。
 
 项目工具命令的使用要求：
 

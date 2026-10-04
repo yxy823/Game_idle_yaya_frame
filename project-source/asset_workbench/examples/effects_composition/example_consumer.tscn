@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
-[ext_resource type="PackedScene" path="res://asset_workbench/examples/effects_composition/example_composition.tscn" id="1"]
-[ext_resource type="Script" path="res://asset_workbench/examples/effects_composition/example_managed_consumer.gd" id="2"]
+[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/effects_composition/example_composition.tscn" id="1"]
+[ext_resource type="Script" path="res://yaya/asset_workbench/examples/effects_composition/example_managed_consumer.gd" id="2"]
 
 [node name="ExampleEffectsConsumer" instance=ExtResource("1")]
 script = ExtResource("2")

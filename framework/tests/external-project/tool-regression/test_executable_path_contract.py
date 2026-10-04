@@ -14,7 +14,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-TOOLS = (PROJECT_ROOT / "tools")
+TOOLS = (PROJECT_ROOT / "yaya/tools")
 SPEC = importlib.util.spec_from_file_location("environment_path_contract", TOOLS / "checks/check-project-environment.py")
 environment = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(environment)
@@ -25,7 +25,7 @@ class ExecutablePathContractTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory(prefix="yaya path contract ")
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        runner = self.root / "tools/testing/run-gdunit-tests.py"
+        runner = self.root / "yaya/tools/testing/run-gdunit-tests.py"
         runner.parent.mkdir(parents=True)
         runner.write_text("# Runner path fixture\n", encoding="utf-8")
         self.executable = self.root / "Tool Folder" / "工具 python.exe"

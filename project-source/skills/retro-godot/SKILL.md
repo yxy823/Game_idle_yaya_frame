@@ -36,11 +36,11 @@ description: "复查实际的 Godot 开发工作和验证记录，找出有用�
 
 | 主题 | 负责的材料或工作流 |
 | --- | --- |
-| 任务特有的事件、设计选择或待办工作 | 按 `methodology/09-records-reports-and-handoff.md`：事件提醒写在 Feature notes，实现选择写在 Feature 设计，当前待办写在 Progress（进度记录）；保留历史事实。 |
+| 任务特有的事件、设计选择或待办工作 | 按 `yaya/methodology/09-records-reports-and-handoff.md`：事件提醒写在 Feature notes，实现选择写在 Feature 设计，当前待办写在 Progress（进度记录）；保留历史事实。 |
 | 可复用的情境技巧或失败教训 | `docs/knowledge/README.md` 及其涉及的主题；先查是否已有条目。知识说明证据和条件，不新增强制行为。 |
-| 稳定的开发约束或具体的工程规则 | 由 `methodology/04-project-rules.md` 判断写进 `docs/project-rules.md` 还是适用的 `agent-rules/` 模块，写入前的自查和授权也按它执行。游戏设计上的排除项按 methodology 01 的 **设计范围与边界** 处理，即使它长期有效或跨系统。 |
-| 工作流、Skill 指引、命令或配置 | 项目实际拥有的源文件及其调用方。已获授权的项目工具修改按 `methodology/07-engineering-change.md` 执行。任务路由属于 `methodology/00-overview.md` 的 **任务路由表**；`AGENTS.md` 把受影响的工程领域路由到 Core 和专项规则入口。针对框架源材料的建议交回框架维护任务，不跨仓库写入，也不去获取框架材料。 |
-| 当前技术结构或重要的跨 Feature 决定 | `methodology/10-architecture-overview.md`；普通的局部选择不要求 ADR。 |
+| 稳定的开发约束或具体的工程规则 | 由 `yaya/methodology/04-project-rules.md` 判断写进 `docs/project-rules.md` 还是适用的 `yaya/agent-rules/` 模块，写入前的自查和授权也按它执行。游戏设计上的排除项按 methodology 01 的 **设计范围与边界** 处理，即使它长期有效或跨系统。 |
+| 工作流、Skill 指引、命令或配置 | 项目实际拥有的源文件及其调用方。已获授权的项目工具修改按 `yaya/methodology/07-engineering-change.md` 执行。任务路由属于 `yaya/methodology/00-overview.md` 的 **任务路由表**；`AGENTS.md` 把受影响的工程领域路由到 Core 和专项规则入口。针对框架源材料的建议交回框架维护任务，不跨仓库写入，也不去获取框架材料。 |
+| 当前技术结构或重要的跨 Feature 决定 | `yaya/methodology/10-architecture-overview.md`；普通的局部选择不要求 ADR。 |
 | 游戏设计意图、交付范围或已有 Feature 计划发生变化 | [design-gdd](../design-gdd/SKILL.md) 负责游戏设计，[design-balance](../design-balance/SKILL.md) 负责限定范围的数值设计，[product-author](../product-author/SKILL.md) 负责交付范围；受影响的已有计划使用 [feature-sync](../feature-sync/SKILL.md)。不要为了解释一次失败的实现而放宽需求。 |
 
 结果留在对话中。本 Skill 不自动修改规则、代码、工具、知识、状态或审批记录，不生成报告，也不把建议变成待办列表。复盘发现不能改写过去的决定，不能推进 Stage，不能补上缺失的验收，也不能证明实现成功。

@@ -13,20 +13,20 @@ docs/project-rules.md
 AGENTS.md
   项目根路由与仓库执行说明
 
-agent-rules/00-core/
+yaya/agent-rules/00-core/
   全局工程不变量与规则优先级
 
-agent-rules/<专业模块>/
+yaya/agent-rules/<专业模块>/
   该模块具体的 Godot、GDScript 与领域语义
 ```
 
-`methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查，以及[任务范围](../AGENTS.md#任务范围)、[Git 与提交](../AGENTS.md#git-与提交)、[验证与完成汇报](../AGENTS.md#验证与完成汇报)。它不成为引擎或语言具体行为的第二份来源。
+`yaya/methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查，以及[任务范围](../../AGENTS.md#任务范围)、[Git 与提交](../../AGENTS.md#git-与提交)、[验证与完成汇报](../../AGENTS.md#验证与完成汇报)。它不成为引擎或语言具体行为的第二份来源。
 
 ## `docs/project-rules.md`
 
 `docs/project-rules.md` 是工程规则的项目级入口，适用于每个涉及的 Product、Feature、设计和实现。
 
-- 条目写法与 `agent-rules/` 一致，见[规则的写法](../agent-rules/00-core/rule-precedence-and-routing.md#规则的写法)：条目默认是要遵守的要求；写“建议：”的是默认做法，有理由可以偏离，并在汇报中说明。
+- 条目写法与 `yaya/agent-rules/` 一致，见[规则的写法](../agent-rules/00-core/rule-precedence-and-routing.md#规则的写法)：条目默认是要遵守的要求；写“建议：”的是默认做法，有理由可以偏离，并在汇报中说明。
 - ADR、Product 或 Feature 设计本身不授予例外。
 - 冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)和外部指令的优先级处理。不要给全部文档自创一套总排序。
 
@@ -51,11 +51,11 @@ agent-rules/<专业模块>/
 | 当前结构 | [10 · 架构概览](10-architecture-overview.md)下的架构文档 |
 | 代价高的技术取舍 | 满足 [ADR 条件](10-architecture-overview.md#架构决策记录)时写 ADR |
 
-与技术栈无关的设计默认原则维护在 [`docs/project-rules.md`](../docs/project-rules.md) 第 2 部分，例如游戏权威状态与表现分离、显式的状态转换、组合、显式依赖、数据驱动的调参、错误处理、先测量再优化。逻辑与表现的职责用 `docs/game-organization.md` 来理解；这个模型不规定目录，也不规定通信机制。
+与技术栈无关的设计默认原则维护在 [`docs/project-rules.md`](../../docs/project-rules.md) 第 2 部分，例如游戏权威状态与表现分离、显式的状态转换、组合、显式依赖、数据驱动的调参、错误处理、先测量再优化。逻辑与表现的职责用 `docs/game-organization.md` 来理解；这个模型不规定目录，也不规定通信机制。
 
 ## 加载规则
 
-通过根 `AGENTS.md` 的 **领域规则路由** 和 [`agent-rules/00-core/README.md`](../agent-rules/00-core/README.md) 加载规则，只读匹配的小节，并读受影响模块 README 末尾的验证节。真实冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。
+通过根 `AGENTS.md` 的 **领域规则路由** 和 [`yaya/agent-rules/00-core/README.md`](../agent-rules/00-core/README.md) 加载规则，只读匹配的小节，并读受影响模块 README 末尾的验证节。真实冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。
 
 ## 按事先准备的指导实现
 
@@ -69,7 +69,7 @@ agent-rules/<专业模块>/
 
 ## 情境性的项目知识
 
-`docs/knowledge/` 保存来自实际项目任务的情境性证据，不是强制工程规则的来源。查找和维护条目按[知识库 README](../docs/knowledge/README.md)。
+`docs/knowledge/` 保存来自实际项目任务的情境性证据，不是强制工程规则的来源。查找和维护条目按[知识库 README](../../docs/knowledge/README.md)。
 
 某条经验可能只在本项目的特定条件下有用，也仍然值得记下。记录知识不授权把它提升为规则；稳定的规定性指导走[规则的增量维护](#规则的增量维护)。
 
@@ -77,7 +77,7 @@ agent-rules/<专业模块>/
 
 每类经验只放一个地方：
 
-- 具体的框架与语言经验：经明确批准后写进对应的 `agent-rules/<module>/` 来源；
+- 具体的框架与语言经验：经明确批准后写进对应的 `yaya/agent-rules/<module>/` 来源；
 - 简短的事件经验：Feature notes；
 - 实现决定及其理由：Feature 设计；
 - 可复用的解释性知识：`docs/knowledge/` 下单独的主题。
@@ -99,7 +99,7 @@ Agent 在下列时机寻找值得新增、修订或删除的规则：
 - Stage 2：记录已经批准的修改；
 - Stage 3 文档检查点：在依赖它的实现和最终验证之前，解决新发现的实质问题；
 - Bug 的 Stage 5.5：按[Bug 经验的提升](07-engineering-change.md#bug-经验的提升)评估 Guardrail；
-- 任务完成时：检查可复用的规定性经验是否已被 `agent-rules/` 覆盖；只在缺少有价值的指导时，提出一条概括后的规则并写明目标模块。
+- 任务完成时：检查可复用的规定性经验是否已被 `yaya/agent-rules/` 覆盖；只在缺少有价值的指导时，提出一条概括后的规则并写明目标模块。
 
 不要为每个缺陷都建规则，不要重复已有规则，也不要把 Product 细节提升为规则。没有提出修改时，不写报告，也不留占位。这是流程中的判断，不是 Hook，也不是自动生成规则的工具。
 

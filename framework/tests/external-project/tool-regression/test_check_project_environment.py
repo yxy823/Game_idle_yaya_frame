@@ -12,7 +12,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-TOOLS_DIR = (PROJECT_ROOT / "tools")
+TOOLS_DIR = (PROJECT_ROOT / "yaya/tools")
 SPEC = importlib.util.spec_from_file_location(
     "check_project_environment", TOOLS_DIR / "checks/check-project-environment.py"
 )
@@ -25,7 +25,7 @@ class ProjectEnvironmentTests(unittest.TestCase):
     def setUp(self) -> None:
         self.temporary = tempfile.TemporaryDirectory()
         self.repo_root = Path(self.temporary.name)
-        runner = self.repo_root / "tools/testing/run-gdunit-tests.py"
+        runner = self.repo_root / "yaya/tools/testing/run-gdunit-tests.py"
         runner.parent.mkdir(parents=True)
         runner.write_text("# Runner path fixture\n", encoding="utf-8")
 
@@ -87,13 +87,13 @@ class ProjectEnvironmentTests(unittest.TestCase):
         self.assertIn("engine executable is not configured", errors)
 
     def test_missing_fixed_runner_blocks_readiness(self) -> None:
-        (self.repo_root / "tools/testing/run-gdunit-tests.py").unlink()
+        (self.repo_root / "yaya/tools/testing/run-gdunit-tests.py").unlink()
         with mock.patch.object(check_project_environment, "_read_engine_version",
                                return_value=("4.7.1.stable", None)):
             errors = check_project_environment._readiness_errors(
                 self._config(sys.executable), self.repo_root
             )
-        self.assertEqual(errors, ["test runner is missing: tools/testing/run-gdunit-tests.py"])
+        self.assertEqual(errors, ["test runner is missing: yaya/tools/testing/run-gdunit-tests.py"])
 
     def test_unsupported_engine_version_is_rejected(self) -> None:
         config = self._config(sys.executable)

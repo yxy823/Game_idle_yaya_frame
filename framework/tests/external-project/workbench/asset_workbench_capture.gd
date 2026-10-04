@@ -2,7 +2,7 @@ extends SceneTree
 
 ## External-project render check. Needs a real renderer; it is not human acceptance.
 
-const GameScene = preload("res://asset_workbench/examples/single/example_game.tscn")
+const GameScene = preload("res://yaya/asset_workbench/examples/single/example_game.tscn")
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/"
 
 var _layout_failed: bool = false
@@ -26,7 +26,7 @@ func _capture() -> void:
 
 func _capture_entry(entry: String) -> void:
 	root.size = Vector2i(1600, 900)
-	var path := "res://asset_workbench/examples/" + entry + "/example_workbench.tscn"
+	var path := "res://yaya/asset_workbench/examples/" + entry + "/example_workbench.tscn"
 	var workbench: Control = load(path).instantiate()
 	root.add_child(workbench)
 	await process_frame

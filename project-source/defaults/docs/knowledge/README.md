@@ -1,6 +1,6 @@
 # 项目知识
 
-本目录用来复用实际项目工作中积累的经验：成功的做法、调试方法和失败教训。哪些内容放在这里，而不是放进 Feature 笔记、Progress、ADR 或规则，由 [项目知识](../../methodology/09-records-reports-and-handoff.md#项目知识) 规定。
+本目录用来复用实际项目工作中积累的经验：成功的做法、调试方法和失败教训。哪些内容放在这里，而不是放进 Feature 笔记、Progress、ADR 或规则，由 [项目知识](../../yaya/methodology/09-records-reports-and-handoff.md#项目知识) 规定。
 
 ## 先查找相关知识
 

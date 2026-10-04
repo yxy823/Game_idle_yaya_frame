@@ -28,6 +28,6 @@ description: 为已获授权的任务准备或复用 Godot Git worktree，使用
 
 报告实际的目标路径、基准与分支或提交、带入的已授权本地内容、已完成的准备，以及已经可以进行的下一个操作。如果检出目录创建成功但运行仍受阻，说明这个区别和缺少的条件；不要把没有执行的运行检查说成已通过。
 
-完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。任务在这个检出目录里继续。只有需要长期保存续接信息时，才按 `methodology/09-records-reports-and-handoff.md` 使用已有的 Progress 或 Feature 记录。
+完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。任务在这个检出目录里继续。只有需要长期保存续接信息时，才按 `yaya/methodology/09-records-reports-and-handoff.md` 使用已有的 Progress 或 Feature 记录。
 
 整合采纳的结果由 [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) 负责。创建或之后的整合都不会自动授权删除 worktree 或分支；为当前工作保留这个检出目录。用户要求清理时，使用宿主提供的托管生命周期工具。

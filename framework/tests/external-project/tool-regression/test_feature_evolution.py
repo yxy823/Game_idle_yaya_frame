@@ -17,8 +17,8 @@ from unittest import mock
 
 ROOT = PROJECT_ROOT
 FRAMEWORK_DEFAULT_DOCS = Path(__file__).resolve().parents[4] / "project-source/defaults/docs"
-sys.path.insert(0, str(ROOT))
-SPEC = importlib.util.spec_from_file_location("evolution_checker", ROOT / "tools/checks/check-feature-list.py")
+sys.path.insert(0, str(ROOT / "yaya"))
+SPEC = importlib.util.spec_from_file_location("evolution_checker", ROOT / "yaya/tools/checks/check-feature-list.py")
 assert SPEC and SPEC.loader
 checker = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(checker)
@@ -155,7 +155,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_passing_check_prints_verdict_but_eligible_prints_only_json(self) -> None:
         self.validate()
-        command = [sys.executable, "-B", str(ROOT / "tools/checks/check-feature-list.py"), "--repo-root", str(self.root)]
+        command = [sys.executable, "-B", str(ROOT / "yaya/tools/checks/check-feature-list.py"), "--repo-root", str(self.root)]
         passed = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(passed.returncode, 0, passed.stderr)
         self.assertEqual(passed.stdout.strip(), "FEATURE LIST CHECK: PASS")
@@ -172,7 +172,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.retire()
         self.assertTrue(self.validate())
         self.assertFalse(self.validate(completion="F001"))
-        result = subprocess.run([sys.executable, "-B", str(ROOT / "tools/checks/check-feature-list.py"),
+        result = subprocess.run([sys.executable, "-B", str(ROOT / "yaya/tools/checks/check-feature-list.py"),
             "--repo-root", str(self.root), "--completion-feature", "F001"],
             cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
@@ -332,7 +332,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.retire()
         self.registry["tests"][0]["path"] = "tests/removed_historical_test.gd"
         self.assertTrue(self.validate())
-        helper = ROOT / "tools/features/merge-test-registry.py"
+        helper = ROOT / "yaya/tools/features/merge-test-registry.py"
         self.write("components.json", [])
         command = [sys.executable, "-B", str(helper), "--repo-root", str(self.root),
                    "--components", "components.json"]
@@ -351,17 +351,16 @@ class FeatureEvolutionTests(unittest.TestCase):
     def test_templates_materialize_a_new_project_with_current_ledger_validation(self) -> None:
         fresh = self.root / "fresh"
         (fresh / "docs").mkdir(parents=True)
-        (fresh / "tools").mkdir()
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
             source = FRAMEWORK_DEFAULT_DOCS / f"{name}.json"
             (fresh / f"docs/{name}.json").write_bytes(source.read_bytes())
-        for relative in ("tools/__init__.py", "tools/lib/__init__.py",
-"tools/checks/check-feature-list.py", "tools/lib/feature_evolution.py",
-                         "tools/lib/test_selection.py"):
+        for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
+"yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
+                         "yaya/tools/lib/test_selection.py"):
             destination = fresh / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((ROOT / relative).read_bytes())
-        result = subprocess.run([sys.executable, "-B", str(fresh / "tools/checks/check-feature-list.py"), "--eligible"],
+        result = subprocess.run([sys.executable, "-B", str(fresh / "yaya/tools/checks/check-feature-list.py"), "--eligible"],
                                 cwd=fresh, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), [])
@@ -377,7 +376,7 @@ class FeatureEvolutionTests(unittest.TestCase):
             (fresh / "docs/features" / path.name).write_bytes(path.read_bytes())
         for path in (self.root / "tests").glob("*.gd"):
             (fresh / "tests" / path.name).write_bytes(path.read_bytes())
-        command = [sys.executable, "-B", str(fresh / "tools/checks/check-feature-list.py")]
+        command = [sys.executable, "-B", str(fresh / "yaya/tools/checks/check-feature-list.py")]
         result = subprocess.run(command, cwd=fresh, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         result = subprocess.run(command + ["--completion-feature", "F001"], cwd=fresh, capture_output=True, text=True)
@@ -395,7 +394,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertTrue(self.validate())
 
     def test_engineering_template_has_no_fabricated_bug_diagnosis_for_other_modes(self) -> None:
-        template = (ROOT / "methodology/templates/engineering-feature-detail.json.tmpl").read_text(encoding="utf-8")
+        template = (ROOT / "yaya/methodology/templates/engineering-feature-detail.json.tmpl").read_text(encoding="utf-8")
         values = {"feature_id": "F003", "description": "Maintain a documented contract", "component_id": "inventory",
                   "acceptance_criterion": "The contract is preserved", "source_or_infrastructure": "infrastructure"}
         for mode in ("bug", "refactor", "maintenance"):
@@ -408,7 +407,7 @@ class FeatureEvolutionTests(unittest.TestCase):
             valid, _, _ = checker._validate_detail(self.root / "docs/features/F003.json", detail)
             self.assertTrue(valid)
 
-        product = (ROOT / "methodology/templates/feature-detail.json.tmpl").read_text(encoding="utf-8")
+        product = (ROOT / "yaya/methodology/templates/feature-detail.json.tmpl").read_text(encoding="utf-8")
         for key, value in (values | {"source": "docs/product.md#contract"}).items():
             product = product.replace("{{" + key + "}}", value)
         detail = json.loads(product)
@@ -493,7 +492,7 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_neutral_ledger_cli_validates_explicit_root_without_host_project_data(self) -> None:
         self.assertTrue(self.validate())
-        result = subprocess.run([sys.executable, "-B", str(ROOT / "tools/checks/check-feature-list.py"),
+        result = subprocess.run([sys.executable, "-B", str(ROOT / "yaya/tools/checks/check-feature-list.py"),
                                  "--repo-root", str(self.root)],
                                 cwd=self.root, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

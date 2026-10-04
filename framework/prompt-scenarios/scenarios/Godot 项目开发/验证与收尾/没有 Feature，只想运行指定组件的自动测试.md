@@ -25,7 +25,7 @@
 
 **S2｜运行目标测试**
 
-在项目根目录以配置 Python 调用 `tools/testing/run-gdunit-tests.py --target <实际测试文件或目录>`；此时不传互斥的 `--feature`。读取退出码、实际用例与报告。
+在项目根目录以配置 Python 调用 `yaya/tools/testing/run-gdunit-tests.py --target <实际测试文件或目录>`；此时不传互斥的 `--feature`。读取退出码、实际用例与报告。
 
 **S3｜交付组件结果**
 
@@ -38,7 +38,7 @@
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
 $projectPython = $projectConfig.python_executable
-& $projectPython -B tools/testing/run-gdunit-tests.py --target 'tests/<实际组件目录>'
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --target 'tests/<实际组件目录>'
 $LASTEXITCODE
 ```
 

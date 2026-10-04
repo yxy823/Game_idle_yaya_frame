@@ -2,7 +2,7 @@
 extends SceneTree
 
 ## Re-save project.godot and text scenes/resources with Godot's own serializer.
-## Usage: --headless --path <project> --script res://tools/godot/resave_godot_files.gd -- <path> [...]
+## Usage: --headless --path <project> --script res://yaya/tools/godot/resave_godot_files.gd -- <path> [...]
 
 
 func _initialize() -> void:

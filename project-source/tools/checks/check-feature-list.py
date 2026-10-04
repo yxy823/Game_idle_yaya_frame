@@ -21,7 +21,7 @@ from tools.lib.feature_evolution import (
     validate_registry, validate_retirements, validate_revisions,
 )
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 INDEX_FILE = REPO_ROOT / "docs" / "feature-list.json"
 REVISIONS_FILE = REPO_ROOT / "docs" / "feature-list-revisions.json"
 TEST_REGISTRY_FILE = REPO_ROOT / TEST_REGISTRY_PATH

@@ -1,6 +1,6 @@
 # GDScript 结构与依赖
 
-明确状态归谁、依赖朝哪个方向，不通过 SceneTree 搜索去发现协作对象。职责模型与示例见 [docs/game-organization.md](../../docs/game-organization.md)。
+明确状态归谁、依赖朝哪个方向，不通过 SceneTree 搜索去发现协作对象。职责模型与示例见 [docs/game-organization.md](../../../docs/game-organization.md)。
 
 ## 职责
 
@@ -38,7 +38,7 @@ func _on_player_item_collected(item_id: StringName) -> void:
 
 ## Command 与 Query
 
-这里的 Command 指会修改状态的业务操作入口，可以是所属方的普通方法，也可以是 Command 对象。何时需要 Command 对象见 [docs/project-rules.md](../../docs/project-rules.md)。
+这里的 Command 指会修改状态的业务操作入口，可以是所属方的普通方法，也可以是 Command 对象。何时需要 Command 对象见 [docs/project-rules.md](../../../docs/project-rules.md)。
 
 - Command 表达稳定的业务意图，例如 `buy_upgrade(upgrade_id)`。不提供 `set_property`、`call_method` 这类任意修改或反射式入口。
 - 修改状态的 Command 与只读的 Query 分开。Query 不顺带修复、创建或推进状态。

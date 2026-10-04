@@ -36,7 +36,7 @@
 
 ## 阅读约定
 
-- **路径**：本册中的 `docs/`、`tools/` 等路径都相对生成后的游戏项目根目录。示例里的 ID、路径和输出只是示意，使用时换成实际对象。
+- **路径**：本册中的 `docs/`、`yaya/tools/` 等路径都相对生成后的游戏项目根目录。示例里的 ID、路径和输出只是示意，使用时换成实际对象。
 - **证据**：手册只解释工具和契约，不提供任何已运行的证据。各种结果分别能证明什么，见[命令与验证证据](methods-and-tools/commands-and-evidence.md#每种结果能证明什么)。
 - **适用范围**：见[框架入口的使用范围](../README.md#使用范围)。
 - **权威来源**：行为以项目自身的 [AGENTS 源](../../project-source/Project_AGENTS.md)、[方法总览](../../project-source/methodology/00-overview.md)、[Skill](../../project-source/skills/) 和[工具说明](../../project-source/tools/README.md)为准。本册与它们不一致时，以它们为准并修正本册。

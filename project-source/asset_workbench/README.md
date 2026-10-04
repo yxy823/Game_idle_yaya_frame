@@ -8,4 +8,4 @@
 | `analyzer/` | 可选的源文件分析后端（Python），独立于音频播放，不写回 Cue | [Analyzer 说明](analyzer/README.md)，依赖与许可见 [DEPENDENCIES.md](analyzer/DEPENDENCIES.md) |
 | `examples/` | 四个可运行的工作台与消费场景、示例 Cue、预设和素材 | [示例说明](examples/README.md) |
 
-工作台与示例共用的表现组件位于 `components/feedback/`，见[表现反馈组件](../components/feedback/README.md)。
+工作台与示例共用的表现组件位于 `components/feedback/`，见[表现反馈组件](../../components/feedback/README.md)。

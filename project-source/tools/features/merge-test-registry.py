@@ -15,7 +15,7 @@ from tools.lib.feature_evolution import (
 )
 from tools.lib.test_selection import read_json_value, SelectionError
 
-DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
 class RegistryError(ValueError):

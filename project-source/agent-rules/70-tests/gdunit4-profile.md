@@ -7,13 +7,13 @@
 所有测试都通过包装脚本运行，从项目根目录执行：
 
 ```text
-python -B tools/testing/run-gdunit-tests.py --target tests/unit/<suite>.gd
-python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
+python -B yaya/tools/testing/run-gdunit-tests.py --target tests/unit/<suite>.gd
+python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ```
 
 `--target` 用于迭代和诊断，不产生完成证据；`--feature` 的范围选项见[运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
 
-- 包装脚本用 `docs/methodology-config.json` 中的 Godot 可执行文件，以 `--path <项目> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <运行目录>` 启动。
+- 包装脚本用 `docs/methodology-config.json` 中的 Godot 可执行文件，以 `--path <项目> --debug --ignore-error-breaks --script res://yaya/tools/testing/gdunit_evidence_runner.gd -rd <运行目录>` 启动。
 - 每个选择器生成一个 `-a <路径>` 参数。`--continue` 对应 gdUnit 的 `-c`；不加时，gdUnit 在第一个失败处停止，后面的用例不执行。先写失败测试时要看到每个用例各自的失败原因，加 `--continue`。
 - 不使用 `--headless`：gdUnit 在无头模式下拒绝运行，因为 InputEvent 不会传递。测试窗口以最小化方式运行。
 - 进程归属依赖 Windows Job Object，只支持 Windows。
@@ -56,7 +56,7 @@ python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 ## 诊断监控
 
-`project.godot` 的 `[gdunit4]` 节开启了 `report/godot/push_error`、`report/godot/script_error` 和 `report/verbose_orphans`，并注册了会话钩子 `tools/testing/gdunit_diagnostic_session.gd`。注意：gdUnit 的 push_error 监控同时记录 `push_warning()`。
+`project.godot` 的 `[gdunit4]` 节开启了 `report/godot/push_error`、`report/godot/script_error` 和 `report/verbose_orphans`，并注册了会话钩子 `yaya/tools/testing/gdunit_diagnostic_session.gd`。注意：gdUnit 的 push_error 监控同时记录 `push_warning()`。
 
 包装脚本另外解析 `engine.log` 中的原生记录，即 `ERROR`、`WARNING`、`SCRIPT ERROR`、`SHADER ERROR` 标题加 `at:` 源码位置行。解析覆盖整个进程生命周期，包括 gdUnit 自身监控不到的 `before_test()`、`after()` 和退出清理阶段。这不是在任意输出中搜索错误字样。
 
@@ -108,4 +108,4 @@ gdUnit 在每个套件和每个用例前后为 ProjectSettings 拍快照。恢�
 
 ## 运行器版本变更
 
-更新 `addons/gdUnit4/`，或修改 `tools/testing/` 与 `[gdunit4]` 配置时，重新核对：测试发现与 `discovery.json`、JUnit 字段、诊断监控与会话钩子、协程断言、孤立节点退出码，以及 ProjectSettings 快照的行为。核对完成之前，不删除针对旧版本的绕行代码。
+更新 `addons/gdUnit4/`，或修改 `yaya/tools/testing/` 与 `[gdunit4]` 配置时，重新核对：测试发现与 `discovery.json`、JUnit 字段、诊断监控与会话钩子、协程断言、孤立节点退出码，以及 ProjectSettings 快照的行为。核对完成之前，不删除针对旧版本的绕行代码。

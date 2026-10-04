@@ -9,8 +9,8 @@ signal selection_changed
 signal operation_reported(message: String)
 
 const AudioPlayback = preload("res://components/feedback/audio_playback.gd")
-const Backdrop = preload("res://asset_workbench/ui/preview_backdrop.gd")
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Backdrop = preload("res://yaya/asset_workbench/ui/preview_backdrop.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 const AUDITION_GAIN_DB: float = -12.0
 
 var _assets: Array[Resource] = []

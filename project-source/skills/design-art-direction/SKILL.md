@@ -5,7 +5,7 @@ description: "在 Art Bible 中定义或修改游戏共享的视觉方向，包�
 
 # 美术方向（Art Bible）
 
-归属、授权、来源影响和定稿按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把美术标准从 GDD 中移出。阅读与本次有关的 GDD 体验目标、Product 交付范围、当前视觉方向、UI 约束和外部提供的参考，不需要读完游戏的所有模块。
+归属、授权、来源影响和定稿按 `yaya/methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把美术标准从 GDD 中移出。阅读与本次有关的 GDD 体验目标、Product 交付范围、当前视觉方向、UI 约束和外部提供的参考，不需要读完游戏的所有模块。
 
 ## 选择方向
 
@@ -24,7 +24,7 @@ description: "在 Art Bible 中定义或修改游戏共享的视觉方向，包�
 
 ## 交接
 
-- 具体文件的规格交给 `design-visual-asset-spec`。当 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Art Bible 时，由那个 Skill 维护 Art Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的风格标准。
+- 具体文件的规格交给 `design-visual-asset-spec`。当 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Art Bible 时，由那个 Skill 维护 Art Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的风格标准。
 - 界面表现交给 `design-ui-spec`。对已规划工作的影响，按 methodology 11 的 **编写与采纳** 中的变更路径处理。
 - 正式评估使用另一个 `review-art` 实例；本 Skill 不批准自己的设计。
 

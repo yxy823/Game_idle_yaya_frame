@@ -66,7 +66,7 @@
 
 ## 项目知识
 
-`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [organization](../docs/knowledge/README.md#组织条目) 和 [条目维护](../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
+`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [organization](../../docs/knowledge/README.md#组织条目) 和 [条目维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
 
 知识 Markdown 及其索引不影响测试证据，见[内容指纹](08-test-traceability-and-evidence.md#内容指纹)。可运行的脚本、夹具和数据放在项目的正式目录中。
 

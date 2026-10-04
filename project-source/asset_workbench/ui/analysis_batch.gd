@@ -4,9 +4,9 @@ extends Node
 
 signal changed
 
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
-const Service = preload("res://asset_workbench/ui/analysis_service.gd")
-const Source = preload("res://asset_workbench/ui/analysis_source.gd")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
+const Service = preload("res://yaya/asset_workbench/ui/analysis_service.gd")
+const Source = preload("res://yaya/asset_workbench/ui/analysis_source.gd")
 
 var service: Service
 var group: Dictionary = Group.empty()

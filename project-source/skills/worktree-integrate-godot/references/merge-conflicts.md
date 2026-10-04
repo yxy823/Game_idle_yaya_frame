@@ -27,6 +27,6 @@
 
 在提交或执行 `--continue` 之前，先弄清它的实际效果，并应用上层 Skill 的验证、验收和明确提交条件。不要因为当前的文本冲突已经消失，就自动走完剩下的所有 rebase/cherry-pick 步骤或完成合并。条件允许完成时，继续已获授权的整合；不要只因为冲突解决完了就再问一次。
 
-报告调和了什么、支持该结果的证据，以及任何未决的决定、失败的检查或待完成的操作。只有续接需要时，才按 `methodology/09-records-reports-and-handoff.md` 使用已有的 Feature 或 Progress 记录；不要建立第二套状态系统。
+报告调和了什么、支持该结果的证据，以及任何未决的决定、失败的检查或待完成的操作。只有续接需要时，才按 `yaya/methodology/09-records-reports-and-handoff.md` 使用已有的 Feature 或 Progress 记录；不要建立第二套状态系统。
 
 思路来自 Matt Pocock 的 `resolving-merge-conflicts`：理解两边的改动，并保留它们预定的行为。已按本项目的 Git、Godot、验证和授权边界重写；不需要安装外部 Skill。

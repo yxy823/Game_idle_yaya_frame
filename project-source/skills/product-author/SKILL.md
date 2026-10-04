@@ -7,15 +7,15 @@ description: "根据当前的 GDD 来源整理 Product 交付范围，并协调�
 
 ## 权限与入口
 
-GDD 前提、文档归属、Product 结构和模板，按 `methodology/01-product-doc-structure.md` 执行。Product 交付需要真实的 GDD 内容覆盖它的范围；空目录、只写了用途的页面、Product 或代码都不能代替它。如果这部分设计缺失或尚未确定，在当前授权范围内先把设计工作交回 `design-gdd`，再准备依赖它的 Product。无关的、尚未完成的 GDD 主题，不会阻塞一个已经定义清楚的交付。
+GDD 前提、文档归属、Product 结构和模板，按 `yaya/methodology/01-product-doc-structure.md` 执行。Product 交付需要真实的 GDD 内容覆盖它的范围；空目录、只写了用途的页面、Product 或代码都不能代替它。如果这部分设计缺失或尚未确定，在当前授权范围内先把设计工作交回 `design-gdd`，再准备依赖它的 Product。无关的、尚未完成的 GDD 主题，不会阻塞一个已经定义清楚的交付。
 
 在当前授权范围内，把 Product 维护为交付范围，并把 GDD 作为游戏设计来源引用。阅读实际的 GDD 入口，沿着本次涉及的主题链接阅读，不复制其中的规则。`docs/product.md` 把约定的范围对应到交付单元、依赖和计划顺序；判断这些边界时，按 methodology 01 的 **交付成果与前提** 执行。只有当前的交付单元才有 `docs/product/NN-<delivery>.md`。
 
-遵守 `methodology/05-document-language.md`、项目的 Git 规则、本次涉及的项目规则和已接受的架构决定。文件、提交或观察到的代码行为，都不代表拟定的设计已获批准。保留明确的决定和授权；只要求讨论时，返回方案，不写文件。
+遵守 `yaya/methodology/05-document-language.md`、项目的 Git 规则、本次涉及的项目规则和已接受的架构决定。文件、提交或观察到的代码行为，都不代表拟定的设计已获批准。保留明确的决定和授权；只要求讨论时，返回方案，不写文件。
 
 ## 选择要求的结果
 
-阅读 `methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**、本次涉及的 GDD 主题、Product 总览、轻量 Feature 索引，以及受影响的详细文档或来源文档。用本次涉及的开放问题找出尚未解决的交付前提，并从受影响的 Product 章节链接它们；不要通过选择一个交付默认值来决定游戏规则。按真实的依赖阅读；不要加载全部未来设计或全部 Feature 详情。
+阅读 `yaya/methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**、本次涉及的 GDD 主题、Product 总览、轻量 Feature 索引，以及受影响的详细文档或来源文档。用本次涉及的开放问题找出尚未解决的交付前提，并从受影响的 Product 章节链接它们；不要通过选择一个交付默认值来决定游戏规则。按真实的依赖阅读；不要加载全部未来设计或全部 Feature 详情。
 
 | 要求的结果 | 要做的工作 |
 | --- | --- |
@@ -40,15 +40,15 @@ Product 是可验证的交付单元，不一定是完整的游戏系统或 GDD �
 
 ## 协调专业要求
 
-表现、UI、美术、音频、资源和本地化规格，在 `methodology/11-specialist-workflows.md` 中有固定的所属位置；按该文件的说明，即使某项规格最初写在 GDD 中，它仍属于对应的专业负责方。游戏规则和目标链接到它们在 GDD 中的来源，不复制。
+表现、UI、美术、音频、资源和本地化规格，在 `yaya/methodology/11-specialist-workflows.md` 中有固定的所属位置；按该文件的说明，即使某项规格最初写在 GDD 中，它仍属于对应的专业负责方。游戏规则和目标链接到它们在 GDD 中的来源，不复制。
 
-新界面，或布局、资源的较大变化，按 `methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。表现规划使用 `design-game-presentation`；只有具体的不确定点需要运行时证据时，才为表现做原型。资源交接按 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 处理。真实的示例、缺少的输入以及需要的视觉和听感验收，都要保持可见。设计文档不能证明原型已被运行或已被接受。
+新界面，或布局、资源的较大变化，按 `yaya/methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。表现规划使用 `design-game-presentation`；只有具体的不确定点需要运行时证据时，才为表现做原型。资源交接按 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 处理。真实的示例、缺少的输入以及需要的视觉和听感验收，都要保持可见。设计文档不能证明原型已被运行或已被接受。
 
 把配置的文档语言、本次涉及的事实和当前授权交给支持工作，并根据它的实际结果继续本任务。
 
 ## 编写并验证来源
 
-只为要求的 Product 结果，使用 `methodology/templates/README.md` 中的 Product 模板及其含义说明。
+只为要求的 Product 结果，使用 `yaya/methodology/templates/README.md` 中的 Product 模板及其含义说明。
 
 - 实质性的设计引用它在 GDD 中的所属位置，并保留它的决定状态。不要在 Product 中另外维护一份核心循环、系统清单、版本范围或规则集；需要修改来源时，交回设计负责方。
 - 在总览中，保持交付单元的标识稳定，更新边界、GDD 链接和依赖。未来的条目不需要占位文件、详细的 AC 或测试登记。

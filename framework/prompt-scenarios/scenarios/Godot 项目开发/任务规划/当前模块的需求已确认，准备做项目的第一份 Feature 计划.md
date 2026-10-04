@@ -33,7 +33,7 @@
 
 **S4｜检查并交付**
 
-用项目 Python 调用 tools/checks/check-feature-list.py，再加 --eligible 查询可执行候选，核对覆盖后提交计划。
+用项目 Python 调用 yaya/tools/checks/check-feature-list.py，再加 --eligible 查询可执行候选，核对覆盖后提交计划。
 
 项目工具命令的使用要求：
 

@@ -591,7 +591,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Product、Feature、完成证据、人工验收清单和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n只在真实任务需要时采用，不自动创建业务文档；初始 Feature 记录、进度与项目规则由 defaults/docs/ 直接复制，不是模板。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
+      "note": "职责：Product、Feature、完成证据、人工验收清单和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：yaya/methodology/templates/。\n只在真实任务需要时采用，不自动创建业务文档；初始 Feature 记录、进度与项目规则由 defaults/docs/ 直接复制，不是模板。\n\n项目文件： yaya/methodology/templates/README.md\n项目文件： yaya/methodology/templates/*.tmpl",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -677,7 +677,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： agent-rules/**/*.md",
+      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、yaya/agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： yaya/agent-rules/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -720,7 +720,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： methodology/*.md\n项目文件： methodology/contracts/*.md",
+      "note": "职责：任务路由、规划、设计、实施、专业工作、验证、记录和续接方法。\n项目位置：.agents/skills/、yaya/methodology/，角色配置在 .codex/agents/。\nSkill 按任务引用规范与包内参考，不复制另一套文档正文；具体授权由当前任务决定。\n\n项目文件： .agents/skills/**/*.md\n项目文件： yaya/methodology/*.md\n项目文件： yaya/methodology/contracts/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -763,7 +763,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：tools/README.md，以及 asset_workbench/examples/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： tools/**/*.md\n项目文件： asset_workbench/**/*.md\n项目文件： components/**/*.md",
+      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：yaya/tools/README.md，以及 yaya/asset_workbench/examples/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： yaya/tools/**/*.md\n项目文件： yaya/asset_workbench/**/*.md\n项目文件： components/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

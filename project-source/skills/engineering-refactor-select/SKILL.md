@@ -10,7 +10,7 @@ description: >-
 
 ## 语言约定
 
-这份只读报告使用对话语言，摘录的笔记原文保持原样。它不需要先设置文档语言。之后获得授权、写入长期笔记的一方，遵循 `methodology/05-document-language.md`。
+这份只读报告使用对话语言，摘录的笔记原文保持原样。它不需要先设置文档语言。之后获得授权、写入长期笔记的一方，遵循 `yaya/methodology/05-document-language.md`。
 
 ## 范围
 
@@ -65,7 +65,7 @@ description: >-
 
 确认原因相同的发现可以共用一次比较和同一个最小处理方式；保留所有来源 Feature ID、摘录和路径。原因不同的发现即使涉及同一个文件，也要分开。说明各项处理之间的真实依赖，但不要把依赖当作严重程度的加分。
 
-如果当前证据表明已接受的行为已经坏了，把这个缺陷和保持行为不变的重构候选分开。指向 `engineering-change-plan` 和 `methodology/07-engineering-change.md` 中的 Bug 归属规则；只有一个旧的 `BUG` 标记是不够的。这份报告既不创建 Bug 任务，也不开始修复。
+如果当前证据表明已接受的行为已经坏了，把这个缺陷和保持行为不变的重构候选分开。指向 `engineering-change-plan` 和 `yaya/methodology/07-engineering-change.md` 中的 Bug 归属规则；只有一个旧的 `BUG` 标记是不够的。这份报告既不创建 Bug 任务，也不开始修复。
 
 ## 阶段 3：报告、推荐并停止
 

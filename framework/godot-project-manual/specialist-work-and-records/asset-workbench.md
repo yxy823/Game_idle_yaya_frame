@@ -29,7 +29,7 @@ flowchart LR
 
 ## 查看与独立试听
 
-1. 打开 `asset_workbench/examples/single/example_workbench.tscn`，按 F6。
+1. 打开 `yaya/asset_workbench/examples/single/example_workbench.tscn`，按 F6。
 2. 在左侧“资源候选”筛选并选择文件，查看摘要；音频可独立试听或停止试听。
 3. 确定要使用该候选时，才点击“应用到对象 A/B”，继续在当前入口 [预览与试调](#组合预览与试调)。
 
@@ -81,7 +81,7 @@ flowchart LR
 
 ## 组合预览与试调
 
-**选择入口**：已打开工作台时继续当前入口；需要三对象示例时，打开 `asset_workbench/examples/composition/example_workbench.tscn` 按 F6。不同入口各自持有配置，不能靠切换入口转移草稿。
+**选择入口**：已打开工作台时继续当前入口；需要三对象示例时，打开 `yaya/asset_workbench/examples/composition/example_workbench.tscn` 按 F6。不同入口各自持有配置，不能靠切换入口转移草稿。
 
 1. 多对象入口先在中央点击目标，这会选中并触发它；单对象入口直接使用当前对象。
 2. 确认 Inspector 顶部对象名称和当前 A/B，再应用候选或修改右侧参数。对象之间保留各自草稿。
@@ -103,7 +103,7 @@ flowchart LR
 
 ### Shader 与独立资源组合
 
-打开 `asset_workbench/examples/shader_composition/example_workbench.tscn`，可试调外描边、溶解与无图片噪声三个预设。图片、声音与 Shader 分别替换或留空，全空配置也允许保存；单对象和普通组合入口同样支持可选绑定。
+打开 `yaya/asset_workbench/examples/shader_composition/example_workbench.tscn`，可试调外描边、溶解与无图片噪声三个预设。图片、声音与 Shader 分别替换或留空，全空配置也允许保存；单对象和普通组合入口同样支持可选绑定。
 
 无图片时沿用白色矩形承载面，不补选图片。各对象保持独立材质和参数，源预设只读；“触发全部”从初态触发，再按各自声音/Shader 延迟播放。
 
@@ -111,7 +111,7 @@ flowchart LR
 
 ### 粒子与动画组合预览
 
-打开 `asset_workbench/examples/effects_composition/example_workbench.tscn`，在 Inspector 选择粒子、Tween 或 AnimationPlayer 片段，仍只编辑当前对象当前草稿。两个组合实例展示六个对象；共用 Cue 的对象也独立持有 A/B。
+打开 `yaya/asset_workbench/examples/effects_composition/example_workbench.tscn`，在 Inspector 选择粒子、Tween 或 AnimationPlayer 片段，仍只编辑当前对象当前草稿。两个组合实例展示六个对象；共用 Cue 的对象也独立持有 A/B。
 
 图像、声音、Shader、粒子与片段分别可选；粒子可使用自己的贴图，运动目标为空时不补素材。运行实例和材质按对象隔离，动画不移动名称或选中边框。
 
@@ -162,9 +162,9 @@ flowchart LR
 
 | 内容 | 位置与边界 |
 | --- | --- |
-| 可复用工作台、表现组件和薄播放封装 | `asset_workbench/ui/`、`components/feedback/`（组件契约见其 [README](../../../project-source/components/feedback/README.md)）；通过复制成为项目自己的文件 |
-| 分析源代码与项目本地开发依赖 | `asset_workbench/analyzer/` 随框架复制；实际项目安装的 `reports/asset-analyzer/runtime/`、缓存和运行证据不进入框架 |
-| 可操作示例与许可 | `asset_workbench/examples/`；可替换或按引用检查后移除，不预设游戏需求 |
+| 可复用工作台、表现组件和薄播放封装 | `yaya/asset_workbench/ui/`、`components/feedback/`（组件契约见其 [README](../../../project-source/components/feedback/README.md)）；通过复制成为项目自己的文件 |
+| 分析源代码与项目本地开发依赖 | `yaya/asset_workbench/analyzer/` 随框架复制；实际项目安装的 `reports/asset-analyzer/runtime/`、缓存和运行证据不进入框架 |
+| 可操作示例与许可 | `yaya/asset_workbench/examples/`；可替换或按引用检查后移除，不预设游戏需求 |
 | 音频第三方代码 | `addons/sound_manager/`；固定提交和 MIT 许可，默认不启用全局插件 |
 | 框架回归用例和维护报告 | 只在 `framework/`；运行时按范围放入指定外部测试项目 |
 | 本机路径、正式主场景、生产导出设置 | 初始化后的实际项目；不得把测试项目的这些设置复制回框架默认值 |

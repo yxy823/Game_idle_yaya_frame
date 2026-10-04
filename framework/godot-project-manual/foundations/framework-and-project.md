@@ -10,7 +10,7 @@
 | --- | --- | --- |
 | 框架仓库（根目录、`framework/`、`.agents/skills/`） | 维护约定、创建器、手册、提示词库、回归夹具和框架自用 Skill，目录见[框架入口](../../README.md#目录与职责) | 维护框架；这里不是游戏开发目录，内容也不复制给项目 |
 | `project-source/` | 待复制的代码、插件、默认文件、Skill、角色配置与方法规范 | 只作为源材料编辑；不在这里启动游戏开发流程或 Godot |
-| 生成的项目 | 项目自己的 `AGENTS.md`、`.agents/skills/`、`methodology/` 和工具 | 在这里开发游戏；它不读取框架状态，也不与框架同步 |
+| 生成的项目 | 项目自己的 `AGENTS.md`、`.agents/skills/`、`yaya/methodology/` 和工具 | 在这里开发游戏；它不读取框架状态，也不与框架同步 |
 
 新项目从源材料中得到这些起点：最小入口 `main/main.tscn`、示例工作台、空的 Feature 记录，以及只有用途说明的 `docs/gdd/`。这些只是起点：环境还没配置，游戏设计也是空的。在项目里用 `design-gdd` 形成设计；依赖设计的工作需要满足什么前提，见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 

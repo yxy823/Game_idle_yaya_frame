@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="FeedbackParticlePreset" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://components/feedback/feedback_particle_preset.gd" id="1"]
-[ext_resource type="PackedScene" path="res://asset_workbench/examples/effects_composition/example_world_stream.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/effects_composition/example_world_stream.tscn" id="2"]
 
 [resource]
 script = ExtResource("1")

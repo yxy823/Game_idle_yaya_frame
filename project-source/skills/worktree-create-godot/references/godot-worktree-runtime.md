@@ -2,7 +2,7 @@
 
 在 worktree 里进行已获授权的编辑器、导入、测试、游戏或其他写入操作之前，先读本页；整合结果时的验证也包括在内。复用仍然有效的观察，只检查这次操作会影响的数据和工具。纯只读的源码比较不需要运行 Godot。
 
-代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment-godot](../../project-environment-godot/SKILL.md) 负责，其依据是 `methodology/05-document-language.md` 和 `tools/README.md`。
+代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment-godot](../../project-environment-godot/SKILL.md) 负责，其依据是 `yaya/methodology/05-document-language.md` 和 `yaya/tools/README.md`。
 
 ## 确认实际涉及的资源和副作用
 
@@ -14,7 +14,7 @@
 | `user://` 与测试临时数据 | 确认实际的目录，以及相关的文件操作和清理操作。相同的项目设置可能让多个检出目录使用同一个用户数据目录。分开的存档槽位不能隔离设置、缓存或测试清理。 |
 | 项目外的路径与服务 | 只有操作用到时，才检查绝对路径、报告或日志的输出位置、数据库、端口或服务。启动可能冲突的运行之前，先找出可能正在向那里写入的现有进程。 |
 
-项目自带的 gdUnit4 使用 `user://tmp`：涉及这个运行器时，检查 `addons/gdUnit4/src/core/GdUnitFileAccess.gd`，以及 `addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteAfterStage.gd` 中的套件清理。因此即使只运行测试，也可能影响另一个检出目录的临时文件。测试自有的命名空间和清理遵循 `agent-rules/70-tests/fixtures-and-isolation.md`；不要只为了让 worktree 看起来隔离，就修改自带的运行器代码。
+项目自带的 gdUnit4 使用 `user://tmp`：涉及这个运行器时，检查 `addons/gdUnit4/src/core/GdUnitFileAccess.gd`，以及 `addons/gdUnit4/src/core/execution/stages/GdUnitTestSuiteAfterStage.gd` 中的套件清理。因此即使只运行测试，也可能影响另一个检出目录的临时文件。测试自有的命名空间和清理遵循 `yaya/agent-rules/70-tests/fixtures-and-isolation.md`；不要只为了让 worktree 看起来隔离，就修改自带的运行器代码。
 
 ## 按实际写入选择准备方法
 

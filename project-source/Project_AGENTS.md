@@ -32,33 +32,33 @@
 
 | 需要做的事 | 阅读 |
 | --- | --- |
-| 选择工作流程或下一个允许的动作 | [任务路由表](methodology/00-overview.md#任务路由表)。Skill 在 `.agents/skills/`，显式命令在 `tools/` |
-| 创建或维护 GDD、数值模型或 Product 交付计划 | `methodology/01-product-doc-structure.md` |
-| 维护项目术语 | `methodology/14-project-terminology.md` |
-| 制作视觉或逻辑原型 | `methodology/13-prototypes.md` |
-| 规划 Feature、排定 Product 顺序或修改 Feature 记录 | `methodology/02-feature-list-schema.md` |
-| 执行 Feature，包括批准、可选的独立审核和完成 | `methodology/03-execute-loop.md` |
-| 解释、应用或修改项目规则 | `methodology/04-project-rules.md` 和 `agent-rules/00-core/rule-precedence-and-routing.md` |
+| 选择工作流程或下一个允许的动作 | [任务路由表](yaya/methodology/00-overview.md#任务路由表)。Skill 在 `.agents/skills/`，显式命令在 `yaya/tools/` |
+| 创建或维护 GDD、数值模型或 Product 交付计划 | `yaya/methodology/01-product-doc-structure.md` |
+| 维护项目术语 | `yaya/methodology/14-project-terminology.md` |
+| 制作视觉或逻辑原型 | `yaya/methodology/13-prototypes.md` |
+| 规划 Feature、排定 Product 顺序或修改 Feature 记录 | `yaya/methodology/02-feature-list-schema.md` |
+| 执行 Feature，包括批准、可选的独立审核和完成 | `yaya/methodology/03-execute-loop.md` |
+| 解释、应用或修改项目规则 | `yaya/methodology/04-project-rules.md` 和 `yaya/agent-rules/00-core/rule-precedence-and-routing.md` |
 | 准备 Feature 的设计与实施指导 | `implementation-guidance-godot` Skill |
-| 设置文档语言 | `methodology/05-document-language.md` |
-| 配置工具或准备项目环境 | `methodology/06-project-environment.md` |
-| 修复 Bug、重构或做工程维护 | `methodology/07-engineering-change.md` |
-| 选择测试、记录本次运行的证据或使用完成辅助工具 | `methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `methodology/contracts/gdscript-lint.md` |
-| 整理报告、临时工作区、Progress、历史或清理 | `methodology/09-records-reports-and-handoff.md` |
-| 维护可选的架构图或 ADR | `methodology/10-architecture-overview.md` |
-| 处理专业设计、资源、本地化、诊断或多个需求来源 | `methodology/11-specialist-workflows.md` |
-| 执行用户要求的正式审核 | `methodology/12-independent-review.md` |
-| 调研外部事实或方案 | `methodology/09-records-reports-and-handoff.md` 的 **外部调研** |
+| 设置文档语言 | `yaya/methodology/05-document-language.md` |
+| 配置工具或准备项目环境 | `yaya/methodology/06-project-environment.md` |
+| 修复 Bug、重构或做工程维护 | `yaya/methodology/07-engineering-change.md` |
+| 选择测试、记录本次运行的证据或使用完成辅助工具 | `yaya/methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `yaya/methodology/contracts/gdscript-lint.md` |
+| 整理报告、临时工作区、Progress、历史或清理 | `yaya/methodology/09-records-reports-and-handoff.md` |
+| 维护可选的架构图或 ADR | `yaya/methodology/10-architecture-overview.md` |
+| 处理专业设计、资源、本地化、诊断或多个需求来源 | `yaya/methodology/11-specialist-workflows.md` |
+| 执行用户要求的正式审核 | `yaya/methodology/12-independent-review.md` |
+| 调研外部事实或方案 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** |
 
-这些行是任务入口，不是阅读顺序。按选中的流程及其需要的参考执行，不加载全部工作流程。Skill 返回后，按 [授权与续接](methodology/03-execute-loop.md#授权与续接) 继续任务。
+这些行是任务入口，不是阅读顺序。按选中的流程及其需要的参考执行，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
 
 ### 设计前提与需阅读的来源
 
-游戏设计可以从一个想法开始，使用 `design-gdd`。交付规划、实现、工程工作和可运行的实验，都需要能说清当前范围的实质 GDD 内容；只有占位内容的页面不算。完整规则见 [GDD 前提与职责](methodology/01-product-doc-structure.md#gdd-前提与职责)。Product 文档负责组织交付，链接到 GDD，不复制其中的设计。
+游戏设计可以从一个想法开始，使用 `design-gdd`。交付规划、实现、工程工作和可运行的实验，都需要能说清当前范围的实质 GDD 内容；只有占位内容的页面不算。完整规则见 [GDD 前提与职责](yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。Product 文档负责组织交付，链接到 GDD，不复制其中的设计。
 
 在设计讨论、规划、实现或审核之前，按任务阅读下列内容：
 
-- [设计范围与边界](methodology/01-product-doc-structure.md#设计范围与边界)、与本任务有关的[开放问题](methodology/01-product-doc-structure.md#开放问题)，以及覆盖该主题的 GDD 页面。
+- [设计范围与边界](yaya/methodology/01-product-doc-structure.md#设计范围与边界)、与本任务有关的[开放问题](yaya/methodology/01-product-doc-structure.md#开放问题)，以及覆盖该主题的 GDD 页面。
 - `docs/terminology.md` 中与本任务有关的定义。
 - 与本任务有关的 Product 和专业来源，以及已接受的架构决定。
 - `docs/project-rules.md` 中约束本任务的工程规则。Product、Feature 或 ADR 不能悄悄豁免这些规则。
@@ -67,7 +67,7 @@
 
 ## 环境
 
-第一个编码 Feature 开始前，完成 [项目环境准备](methodology/06-project-environment.md#项目环境准备)（项目环境准备）。编码需要一个经实际检查结果确认的环境。下列情况运行 `python -B tools/checks/check-project-environment.py --require-ready`：
+第一个编码 Feature 开始前，完成 [项目环境准备](yaya/methodology/06-project-environment.md#项目环境准备)（项目环境准备）。编码需要一个经实际检查结果确认的环境。下列情况运行 `python -B yaya/tools/checks/check-project-environment.py --require-ready`：
 
 - 初次准备环境时；
 - 工具或配置变化后；
@@ -75,11 +75,11 @@
 
 普通 Feature 直接复用已确认的命令，不重新探测版本。
 
-在 Codex 受限沙箱中启动任何 Godot 进程（编辑器检查、gdUnit 测试、脚本解析、lint）之前，阅读并遵循 [Codex 沙箱中运行 Godot](agent-rules/00-core/windows-godot-sandbox.md)。
+在 Codex 受限沙箱中启动任何 Godot 进程（编辑器检查、gdUnit 测试、脚本解析、lint）之前，阅读并遵循 [Codex 沙箱中运行 Godot](yaya/agent-rules/00-core/windows-godot-sandbox.md)。
 
 ## 任务范围
 
-本节适用于每个会修改项目文件的任务。批准、验收和完成条件由所属流程决定，Feature 见 [03 执行规范](methodology/03-execute-loop.md)。
+本节适用于每个会修改项目文件的任务。批准、验收和完成条件由所属流程决定，Feature 见 [03 执行规范](yaya/methodology/03-execute-loop.md)。
 
 ### 修改前先定位
 
@@ -96,14 +96,14 @@
   - **顺带发现的问题**：默认不改。只在它阻塞任务、立即带来正确性或安全风险，或用户扩大范围时才改；有用时单独汇报。
 - 已经改到某个文件，不是扩大范围的理由。不做无关的重命名、格式化、目录调整、警告清理、死代码清理、API 现代化、场景规范化或重构。
 - 保留已有的公共 API、依赖和局部代码风格。修改共享契约时，迁移全部已知的消费方，并在汇报中说明。
-- 现有技术栈够用时不增加依赖。不为假想的未来消费方预先搭建通用框架。结构拆分的依据见[结构与依赖](agent-rules/10-gdscript/structure-and-dependencies.md)。
+- 现有技术栈够用时不增加依赖。不为假想的未来消费方预先搭建通用框架。结构拆分的依据见[结构与依赖](yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
 
 ### 删除与派生产物
 
 - 删除一个产物前，确认它的所属方、引用方（包括动态引用和登记表）、它与源文件或生成器的关系，以及对存档和数据兼容的影响。
 - `unused`、`unreferenced` 一类检查结果只说明它是删除候选，不授予删除权限。
 - 权威来源变化、且项目规定派生产物要提交时，用正式流程重新生成，并检查结果是确定的、没有过期。
-- 工具产生大量无关的序列化或格式差异时，先检查这些差异，可行时回退无关部分，不整体接受。例外：项目自己的记录工具把 Feature 记录 JSON 写回标准格式（见 `methodology/02-feature-list-schema.md` 的 **文件结构**）造成的差异随本次提交，不手工回退。
+- 工具产生大量无关的序列化或格式差异时，先检查这些差异，可行时回退无关部分，不整体接受。例外：项目自己的记录工具把 Feature 记录 JSON 写回标准格式（见 `yaya/methodology/02-feature-list-schema.md` 的 **文件结构**）造成的差异随本次提交，不手工回退。
 
 ## Git 与提交
 
@@ -130,7 +130,7 @@
 - 主题使用 `<type>(<scope>): <摘要>`。`type` 用 `feat`、`fix`、`refactor`、`test`、`perf`、`build`、`docs`、`chore` 等英文类型；`scope` 选最窄且稳定的范围，执行 Feature 时用 Feature ID；摘要使用 `docs/methodology-config.json` 的 `document_language`（默认中文），写实际的行为变化，不写“修复问题”“更新代码”这类笼统的话。
 - 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
 - Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
-- 本地提交不代表任务完成或人工验收；Feature 的完成由 [03 执行规范](methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
+- 本地提交不代表任务完成或人工验收；Feature 的完成由 [03 执行规范](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
 - 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
 
 示例：
@@ -153,13 +153,13 @@ Work item: docs/features/F012.json
 
 ## 验证与完成汇报
 
-以下验证规则适用于各规则模块。测试范围（Required、affected、full）和测试运行的失败条件见 [08 · 测试追溯与证据](methodology/08-test-traceability-and-evidence.md)；各模块需要的验证写在模块 README 末尾的验证节。
+以下验证规则适用于各规则模块。测试范围（Required、affected、full）和测试运行的失败条件见 [08 · 测试追溯与证据](yaya/methodology/08-test-traceability-and-evidence.md)；各模块需要的验证写在模块 README 末尾的验证节。
 
 ### 选择与组合
 
 - 每个改动的产物都要满足所有适用模块的验证要求，这些要求相互叠加。
 - 运行适用于这次修改的验证，不运行所有能想到的昂贵检查。影响范围不确定时，选稍宽一些的相关范围，不声称一个缺乏依据的最小范围。
-- 使用项目已配置的入口：`tools/` 下的命令，以及 [GDScript lint 约定](methodology/contracts/gdscript-lint.md) 中的解析和 lint 命令。不编造不受支持的检查器，不为填满清单安装新的工具链。
+- 使用项目已配置的入口：`yaya/tools/` 下的命令，以及 [GDScript lint 约定](yaya/methodology/contracts/gdscript-lint.md) 中的解析和 lint 命令。不编造不受支持的检查器，不为填满清单安装新的工具链。
 - 一类验证不代替另一类，除非项目规则明确规定它们对受影响的契约等价。上层检查通过不抵消下层的失败。
 - 只有实际执行并成功结束的检查才算通过。按工具的退出码或结构化结果判断，不根据控制台文字猜测。包装脚本不能用退出码 0 掩盖底层检查的失败。
 
@@ -173,7 +173,7 @@ Work item: docs/features/F012.json
 
 - 证据只证明它实际运行到的环境。规则要求新进程、新导入、新导出或目标运行时的证据时，已有编辑器或会话的结果不能代替。
 - 人工验收和自动验证是不同的证据，不把其中一种汇报成另一种。
-- 日志、JUnit 报告和临时导出等验证产物按[临时文件规则](agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。
+- 日志、JUnit 报告和临时导出等验证产物按[临时文件规则](yaya/agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。
 
 ### 汇报验证结果
 
@@ -194,7 +194,7 @@ Work item: docs/features/F012.json
 - 关键的改动文件或文件组，以及为什么需要这些修改。不罗列全部文件，也不复述差异；
 - 验证结果，按[汇报验证结果](#汇报验证结果)写；
 - 本任务的提交哈希或已核实的提交范围，以及本任务仍未提交的改动；
-- 视觉修改中仍需人工验收的方面，见[视觉验证边界](agent-rules/70-tests/test-levels.md#视觉验证边界)；
+- 视觉修改中仍需人工验收的方面，见[视觉验证边界](yaya/agent-rules/70-tests/test-levels.md#视觉验证边界)；
 - 有用的顺带发现，与本任务的失败分开写，避免被误认为本任务造成的回归。
 
 只汇报当前状态，不把尚未执行的后续工作写成会自动发生的事。只在存在具体的未验证条件、限制或推迟处理的问题时写剩余风险。不为标注“不适用”而逐一列出无关的验证类别。
@@ -211,13 +211,13 @@ Work item: docs/features/F012.json
 
 项目规则、知识条目或其他项目文档中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、应该怎么做。
 
-工作中发现 `agent-rules/` 或 `docs/project-rules.md` 尚未覆盖、可复用的规定性指导时，按 [规则的增量维护](methodology/04-project-rules.md#规则的增量维护) 规定的时机和自查方式提出。没有获得该批准，不修改规则。
+工作中发现 `yaya/agent-rules/` 或 `docs/project-rules.md` 尚未覆盖、可复用的规定性指导时，按 [规则的增量维护](yaya/methodology/04-project-rules.md#规则的增量维护) 规定的时机和自查方式提出。没有获得该批准，不修改规则。
 
 ## 领域规则路由
 
-`methodology/` 规定工作流程和可追溯性，任务范围、Git、验证与完成汇报写在本文件；`agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
+`yaya/methodology/` 规定工作流程和可追溯性，任务范围、Git、验证与完成汇报写在本文件；`yaya/agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
 
-做修改或与修改有关的工程决定时，先读 `agent-rules/00-core/README.md`，再读下表中每个受影响领域的 README：
+做修改或与修改有关的工程决定时，先读 `yaya/agent-rules/00-core/README.md`，再读下表中每个受影响领域的 README：
 
 - 按 README 的路由表只读匹配的文件和小节，不读整个目录。需要的验证写在模块 README 末尾的验证节。
 - 模块可以叠加。例如测试用的 `.gd` 文件同时适用 GDScript 规则和测试规则。
@@ -225,18 +225,18 @@ Work item: docs/features/F012.json
 
 | 修改的对象或领域 | 规则入口 |
 | --- | --- |
-| GDScript | `agent-rules/10-gdscript/README.md` |
-| 场景 | `agent-rules/20-scenes/README.md` |
-| 资源 | `agent-rules/21-resources/README.md` |
-| Shader | `agent-rules/30-shaders/README.md` |
-| ProjectSettings | `agent-rules/40-project-config/README.md` |
-| 导出配置或导出流水线 | `agent-rules/41-export-config/README.md` |
-| 游戏数据、数据结构定义或数据流水线 | `agent-rules/50-data-files/README.md` |
-| 素材或导入流水线 | `agent-rules/60-assets/README.md` |
-| 测试、测试夹具或测试运行器 | `agent-rules/70-tests/README.md` |
-| UID、路径、NodePath、业务 ID 或 RID 的身份 | `agent-rules/00-core/godot-resource-references.md` |
+| GDScript | `yaya/agent-rules/10-gdscript/README.md` |
+| 场景 | `yaya/agent-rules/20-scenes/README.md` |
+| 资源 | `yaya/agent-rules/21-resources/README.md` |
+| Shader | `yaya/agent-rules/30-shaders/README.md` |
+| ProjectSettings | `yaya/agent-rules/40-project-config/README.md` |
+| 导出配置或导出流水线 | `yaya/agent-rules/41-export-config/README.md` |
+| 游戏数据、数据结构定义或数据流水线 | `yaya/agent-rules/50-data-files/README.md` |
+| 素材或导入流水线 | `yaya/agent-rules/60-assets/README.md` |
+| 测试、测试夹具或测试运行器 | `yaya/agent-rules/70-tests/README.md` |
+| UID、路径、NodePath、业务 ID 或 RID 的身份 | `yaya/agent-rules/00-core/godot-resource-references.md` |
 
-常见任务读哪些（路径相对于 `agent-rules/`）：
+常见任务读哪些（路径相对于 `yaya/agent-rules/`）：
 
 | 任务 | 阅读 |
 | --- | --- |
@@ -246,6 +246,6 @@ Work item: docs/features/F012.json
 | 新增或修改游戏数据及其定义 | `21-resources/README.md`；`50-data-files/README.md` |
 | 在 Codex 沙箱中运行任何 Godot 进程 | `00-core/windows-godot-sandbox.md` |
 
-没有专门模块时，使用 `00-core` 规则和项目已有的约定，只在主题重叠处读相邻模块。修改依赖随版本变化的引擎行为时，按 [Godot 版本与依据](agent-rules/00-core/godot-version-and-authority.md) 核对 Godot 4.7 的行为；普通的 Markdown 编辑不需要。不在实现过程中顺带扩展规则体系。
+没有专门模块时，使用 `00-core` 规则和项目已有的约定，只在主题重叠处读相邻模块。修改依赖随版本变化的引擎行为时，按 [Godot 版本与依据](yaya/agent-rules/00-core/godot-version-and-authority.md) 核对 Godot 4.7 的行为；普通的 Markdown 编辑不需要。不在实现过程中顺带扩展规则体系。
 
 要判断游戏逻辑和游戏表现的职责归属、它们的设计来源，或模块的位置和命名，读 `docs/game-organization.md` 中匹配的小节。它解释概念并给出示例；命名和引擎约束仍以上面的规则模块为准。

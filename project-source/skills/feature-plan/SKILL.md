@@ -7,13 +7,13 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 ## 依据与输入
 
-使用 `methodology/02-feature-list-schema.md` 中的 **逐个 Product 规划**、**拆分预览**、**拆分规则**、**需求覆盖核对**，以及索引、详情、修订记录和测试登记表（Registry）的约定。本 Skill 负责下面的规划步骤和组件合并，不另外维护一套数据结构。
+使用 `yaya/methodology/02-feature-list-schema.md` 中的 **逐个 Product 规划**、**拆分预览**、**拆分规则**、**需求覆盖核对**，以及索引、详情、修订记录和测试登记表（Registry）的约定。本 Skill 负责下面的规划步骤和组件合并，不另外维护一套数据结构。
 
 请求的范围已有实现、但缺少 Feature 记录时，同时使用该规范中的 **接手已有实现**。在方案中复用实际的实现和测试；规划不会把被接纳的工作标为完成。
 
-写入长期保存的文字之前，使用 `methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交** 中关于保留改动和提交的约定。
+写入长期保存的文字之前，使用 `yaya/methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交** 中关于保留改动和提交的约定。
 
-使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
+使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
 
 - 当前 Product 已批准的交付文档；
 - 它所采用的实际 GDD 主题；
@@ -21,7 +21,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 当前交付文档缺失时，在已有授权范围内先使用 [product-author](../product-author/SKILL.md) 细化这个单元，再开始规划。查阅相关的术语、专业要求和项目规则。后续的 Product 保持为总览中的大纲，不为它们创建文档或 Feature。续接时，内容未变的已读材料直接复用。
 
-遵循 `methodology/11-specialist-workflows.md` 的 **查找与映射来源**：通过实际链接和共享的适用范围，纳入适用的 GDD、UI、游戏表现、美术、音频、资源和本地化要求。
+遵循 `yaya/methodology/11-specialist-workflows.md` 的 **查找与映射来源**：通过实际链接和共享的适用范围，纳入适用的 GDD、UI、游戏表现、美术、音频、资源和本地化要求。
 
 - 保留一个主要的 `source`。
 - 可观察的要求及其来源写进具体的 AC；实现约束及其来源写进固定的 Feature 设计稿。
@@ -40,11 +40,11 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 ## 规划与写入
 
-1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围。只在可运行的基础设施尚不存在时才建立它。对实际范围和前置顺序，使用 `methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 **依赖实现前的视觉原型**；正式实现中领域与表现分开，并不要求在独立的视觉原型之前先开发业务逻辑。规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，在规划方案中建议先用 `design-art-direction` 定下美术方向（建议，不阻塞规划）。同时检查 `docs/project-rules.md` 中约束本任务的工程规则。不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
+1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围。只在可运行的基础设施尚不存在时才建立它。对实际范围和前置顺序，使用 `yaya/methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 **依赖实现前的视觉原型**；正式实现中领域与表现分开，并不要求在独立的视觉原型之前先开发业务逻辑。规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，在规划方案中建议先用 `design-art-direction` 定下美术方向（建议，不阻塞规划）。同时检查 `docs/project-rules.md` 中约束本任务的工程规则。不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
 2. 按权威拆分规则，提出可以独立验证、一次会话能完成的结果，包括每项的结果检查和前置条件检查。以当前 Product 作为主要交付来源，在 AC 或设计稿中写出准确的 GDD/专业来源链接。在这份计划中覆盖它必要的全部范围；不要把类结构当作游戏设计写进去，也不要预先规划后续 Product。
 3. 在对话中展示权威的 **拆分预览**：Feature 数量、每个 Feature 的摘要和依赖、为什么下一个是这个 Product，以及需求覆盖的对应关系。在写入任何测试登记表或 Feature 计划之前，执行其中关于确认和明确授权自主规划的规则；缺少实质性的决定时先解决。
-4. 第 3 步允许写入后，按 `methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
-5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。语义覆盖审查之后、最终校验之前，按该约定只追加符合条件的初始基线。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
+4. 第 3 步允许写入后，按 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
+5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `yaya/methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。语义覆盖审查之后、最终校验之前，按该约定只追加符合条件的初始基线。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
 6. 完成下面的校验和语义审查。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
 7. 按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。开始时已有改动的，不要暂存整个 `docs/features/` 路径。
 8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
@@ -53,21 +53,21 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 这是合并辅助工具、检查器、测试选择器和完成检查共同使用的固定项目相对路径。不要添加可配置的路径，也不要在 Feature 索引的元数据中重复它。从项目根目录运行合并命令。
 
-按 `methodology/02-feature-list-schema.md`，使用项目自带的第 3 版测试登记表和第 2 版修订记录。
+按 `yaya/methodology/02-feature-list-schema.md`，使用项目自带的第 3 版测试登记表和第 2 版修订记录。
 
 写入任何 Feature 计划之前，先读取并校验测试登记表。保留每个已有的组件对象、测试 ID、测试映射、状态、路径/用例和 `full_suite_on_change` 值。为另一个 Product 添加 Feature 时，绝不能把 `tests` 重置为空数组，也不能删除独立的不变量。
 
 为每个尚未登记的生成 `affected_components` ID 创建一条候选组件条目：
 
 - 没有单元测试套件时，把 `unit_test_paths` 设为 `[]`。
-- 路径要求、登记时机和 Required Test Set 的纳入，按 `methodology/08-test-traceability-and-evidence.md` 的 **登记表规则** 处理。
+- 路径要求、登记时机和 Required Test Set 的纳入，按 `yaya/methodology/08-test-traceability-and-evidence.md` 的 **登记表规则** 处理。
 - 新组件的 `full_suite_on_change` 设为 `false`，除非 Product 或项目规则明确把它定为横跨多处的组件。
 - 生成的组件 ID 已经存在时，复用它完整的已有记录；如果规划的约定要求不同的路径或不同的全量测试标记，把它作为冲突报告，不要覆盖。
 
 从仓库根目录使用项目自带的合并辅助工具。临时候选文件包含一个由完整组件对象组成的 JSON 数组，或者一个带 `components` 数组的对象；它放在 `reports/scratch/<task>/`（见 methodology 09 的 **报告与清理**），不提交。
 
 ```powershell
-python -B tools/features/merge-test-registry.py `
+python -B yaya/tools/features/merge-test-registry.py `
   --components <temporary-component-candidates.json>
 ```
 
@@ -79,7 +79,7 @@ python -B tools/features/merge-test-registry.py `
 - 组件 ID 和测试 ID 是否唯一；
 - 测试到组件的映射。
 
-路径的含义遵循 methodology 08 的 [登记表规则](../../../methodology/08-test-traceability-and-evidence.md#登记表规则)，历史记录的含义遵循 `methodology/02-feature-list-schema.md` 的 File 4。已退役的条目还必须按共享的 `tools/lib/feature_evolution.py` 约定，具有有效的来源、原因、替代项和修订关系。
+路径的含义遵循 methodology 08 的 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)，历史记录的含义遵循 `yaya/methodology/02-feature-list-schema.md` 的 File 4。已退役的条目还必须按共享的 `yaya/tools/lib/feature_evolution.py` 约定，具有有效的来源、原因、替代项和修订关系。
 
 下列情况是阻塞性冲突：
 
@@ -109,7 +109,7 @@ python -B tools/features/merge-test-registry.py `
 
 所有相关文件一致之后，运行：
 
-`python -B tools/checks/check-feature-list.py`
+`python -B yaya/tools/checks/check-feature-list.py`
 
 它会同时检查 JSON 解析和跨文件的不变量。只有在诊断某一个错误时，才单独做语法检查。检查器确定不了的内容，仍由 Agent 审查：
 

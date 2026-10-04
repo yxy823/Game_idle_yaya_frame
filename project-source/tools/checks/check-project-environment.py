@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 from typing import Any, Iterable
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG = REPO_ROOT / "docs" / "methodology-config.json"
 UNCONFIGURED = {"", "unconfigured"}
 # Lexical screening only; full BCP 47 validity and unusual tags remain an Agent check.
@@ -142,8 +142,8 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
             if not re.match(r"^4\.7(?:\.\d+)?(?:\.|$)", observed_version):
                 errors.append("engine executable must report Godot 4.7.x")
 
-    if not (repo_root / "tools/testing/run-gdunit-tests.py").is_file():
-        errors.append("test runner is missing: tools/testing/run-gdunit-tests.py")
+    if not (repo_root / "yaya/tools/testing/run-gdunit-tests.py").is_file():
+        errors.append("test runner is missing: yaya/tools/testing/run-gdunit-tests.py")
 
     return errors
 

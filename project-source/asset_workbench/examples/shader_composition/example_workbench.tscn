@@ -1,15 +1,15 @@
 [gd_scene load_steps=7 format=3]
 
-[ext_resource type="PackedScene" path="res://asset_workbench/examples/composition/example_workbench.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/composition/example_workbench.tscn" id="1"]
 [ext_resource type="Script" path="res://components/feedback/feedback_shader_preset.gd" id="2"]
-[ext_resource type="PackedScene" path="res://asset_workbench/examples/shader_composition/example_composition.tscn" id="3"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/shader_composition/example_dissolve_preset.tres" id="5"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/shader_composition/example_noise_preset.tres" id="6"]
+[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/shader_composition/example_composition.tscn" id="3"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve_preset.tres" id="5"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_noise_preset.tres" id="6"]
 
 [node name="ExampleShaderWorkbench" instance=ExtResource("1")]
-cue_path = "res://asset_workbench/examples/shader_composition/example_outline_cue.tres"
-game_scene_path = "res://asset_workbench/examples/shader_composition/example_composition.tscn"
+cue_path = "res://yaya/asset_workbench/examples/shader_composition/example_outline_cue.tres"
+game_scene_path = "res://yaya/asset_workbench/examples/shader_composition/example_composition.tscn"
 composition_scene = ExtResource("3")
 shader_candidates = Array[ExtResource("2")]([ExtResource("4"), ExtResource("5"), ExtResource("6")])
 workbench_title = "Asset Workbench · Shader 组合"

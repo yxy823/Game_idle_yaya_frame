@@ -2,7 +2,7 @@
 
 Godot 解析器和随附的 linter 检查的内容不同。解析器判断脚本能否在目标 Godot 版本上编译。linter 按项目的 `gdlint.json` 报告风格和规模方面的信号。Agent 直接运行这两者；没有包装脚本。
 
-本页说明 Agent 怎样解读它们的结果。linter 打过补丁的行为和实现细节记录在 [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md)。
+本页说明 Agent 怎样解读它们的结果。linter 打过补丁的行为和实现细节记录在 [YAYA_PATCH.md](../../../addons/gdscript-linter/YAYA_PATCH.md)。
 
 在 Codex 受限沙箱中运行解析、lint、编辑器检查或导入检查之前，按 [Codex 沙箱中运行 Godot](../../agent-rules/00-core/windows-godot-sandbox.md) 操作。
 
@@ -71,7 +71,7 @@ Godot 的 `Logger._log_error` 虚回调要求八个参数，所以它的参数�
 
 - 回调签名保持引擎定义的样子。
 - 这条 Info 只涉及参数个数。长度、复杂度、嵌套和原生签名校验仍然适用。
-- 其他任何八参数方法仍会得到正常的参数个数发现。哪些声明符合条件，见 [YAYA_PATCH.md](../../addons/gdscript-linter/YAYA_PATCH.md)。
+- 其他任何八参数方法仍会得到正常的参数个数发现。哪些声明符合条件，见 [YAYA_PATCH.md](../../../addons/gdscript-linter/YAYA_PATCH.md)。
 - 不能用文件名、忽略指令或全局阈值来获得这种处理。
 
 ## 编辑器面板与资源导入

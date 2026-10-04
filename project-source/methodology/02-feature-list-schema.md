@@ -94,7 +94,7 @@ Feature 数量从 `features` 数组计算。详情文件、修订日志和测试
 Feature ID 记录的是分配顺序，不是执行顺序：
 
 - 一个 `pending` Feature 的全部前置 Feature 都是 `done` 时，它才可以开始。多个 Feature 都可开始时，ID 顺序只用于在其他条件相同时排定先后。
-- `python -B tools/checks/check-feature-list.py --eligible` 会校验 Feature 记录，并以 JSON 输出可开始的 Feature 集合。
+- `python -B yaya/tools/checks/check-feature-list.py --eligible` 会校验 Feature 记录，并以 JSON 输出可开始的 Feature 集合。
 - `pending`、`in_progress` 或 `blocked` 的 Feature 不能依赖 `obsolete` 或 `obsolete_done` 的 Feature。源同步会把它改接到替代 Feature 上。
 - 已完成 Feature 的依赖作为历史保持不变。
 
@@ -438,7 +438,7 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 
 ## 文件 5：`docs/features/F0XX-evidence.json`
 
-每个 Feature 有自己的完成证据文件，以 schema 版本 9 保存它的测试运行引用和人工验收记录，结构见[模板](templates/feature-completion-evidence.json.tmpl)。第一次记录时由工具创建；各 Feature 互不覆盖，等待验收期间推进别的 Feature 也不会丢失原 Feature 的记录。只能通过 `tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature F0XX` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
+每个 Feature 有自己的完成证据文件，以 schema 版本 9 保存它的测试运行引用和人工验收记录，结构见[模板](templates/feature-completion-evidence.json.tmpl)。第一次记录时由工具创建；各 Feature 互不覆盖，等待验收期间推进别的 Feature 也不会丢失原 Feature 的记录。只能通过 `yaya/tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature F0XX` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 ## notes 中的 Bug 经验
 
@@ -487,7 +487,7 @@ done ──source synchronization retires or replaces implemented behavior──
 
 ## 机器校验的不变量
 
-字段规则列在上面的各张表中。`python -B tools/checks/check-feature-list.py` 还会跨字段、跨文件检查以下规则：
+字段规则列在上面的各张表中。`python -B yaya/tools/checks/check-feature-list.py` 还会跨字段、跨文件检查以下规则：
 
 - **文件：**索引、修订日志和测试登记表都存在。它们和每个 `docs/features/F*.json` 都能解析为 JSON，且没有重复键。
 - **索引与详情：**索引 ID 的集合等于详情文件名主干的集合，每个详情的 `id` 等于其文件名主干。
@@ -504,12 +504,12 @@ done ──source synchronization retires or replaces implemented behavior──
 
 `--completion-feature F0XX` 对正在完成的 Feature 应用 done 规则，并且要求它引用的每个测试（包括追加测试）都是 `active`。
 
-`tools/lib/test_selection.py` 中的测试选择由运行器和 `record-feature-completion.py` 使用。它在最终阶段还额外要求每个条件至少有一个自动测试或人工检查。
+`yaya/tools/lib/test_selection.py` 中的测试选择由运行器和 `record-feature-completion.py` 使用。它在最终阶段还额外要求每个条件至少有一个自动测试或人工检查。
 
 一起编辑相关文件后，在仓库根目录运行严格校验器：
 
 ```powershell
-python -B tools/checks/check-feature-list.py
+python -B yaya/tools/checks/check-feature-list.py
 ```
 
 它总是检查完整的 Feature 记录。

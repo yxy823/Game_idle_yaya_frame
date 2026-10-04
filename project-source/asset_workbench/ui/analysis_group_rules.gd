@@ -4,7 +4,7 @@ extends VBoxContainer
 
 signal edited
 
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
 
 var rules: Array = []
 var _metrics: OptionButton = OptionButton.new()

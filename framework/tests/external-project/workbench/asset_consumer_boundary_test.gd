@@ -3,13 +3,13 @@ extends GdUnitTestSuite
 ## E7: consumers own cold-created nodes and declare their saved resources without editor tools.
 
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const Game = preload("res://asset_workbench/examples/single/example_reward_game.gd")
-const Session = preload("res://asset_workbench/ui/preview_session.gd")
+const Game = preload("res://yaya/asset_workbench/examples/single/example_reward_game.gd")
+const Session = preload("res://yaya/asset_workbench/ui/preview_session.gd")
 const CONSUMERS: Array[PackedScene] = [
-	preload("res://asset_workbench/examples/single/example_game.tscn"),
-	preload("res://asset_workbench/examples/composition/example_composition.tscn"),
-	preload("res://asset_workbench/examples/shader_composition/example_composition.tscn"),
-	preload("res://asset_workbench/examples/effects_composition/example_consumer.tscn"),
+	preload("res://yaya/asset_workbench/examples/single/example_game.tscn"),
+	preload("res://yaya/asset_workbench/examples/composition/example_composition.tscn"),
+	preload("res://yaya/asset_workbench/examples/shader_composition/example_composition.tscn"),
+	preload("res://yaya/asset_workbench/examples/effects_composition/example_consumer.tscn"),
 ]
 const EXPECTED_CUES: Array = [
 	["single/example_feedback.tres"],
@@ -62,11 +62,11 @@ func test_consumer_resource_dependencies_include_every_cue_without_workbench_too
 	for index: int in CONSUMERS.size():
 		var dependencies := _dependencies(CONSUMERS[index].resource_path, false)
 		for cue: String in EXPECTED_CUES[index]:
-			assert_array(dependencies).contains(["res://asset_workbench/examples/" + cue])
+			assert_array(dependencies).contains(["res://yaya/asset_workbench/examples/" + cue])
 		for path: String in _dependencies(CONSUMERS[index].resource_path, true):
-			assert_bool(path.begins_with("res://tools/")
-				or path.begins_with("res://asset_workbench/ui/")
-				or path.begins_with("res://asset_workbench/analyzer/")) \
+			assert_bool(path.begins_with("res://yaya/tools/")
+				or path.begins_with("res://yaya/asset_workbench/ui/")
+				or path.begins_with("res://yaya/asset_workbench/analyzer/")) \
 				.override_failure_message("Consumer requires editor tool: " + path).is_false()
 
 

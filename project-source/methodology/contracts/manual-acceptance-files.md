@@ -37,7 +37,7 @@
 写完草稿后，把它绑定到最终的实现：
 
 ```powershell
-python -B tools/features/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B yaya/tools/features/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
 ```
 
 这一步校验覆盖情况，记录实际的快照和检查项定义的哈希。它不编造步骤，也不运行测试。准备过的文件不能再次绑定，所以先完成代码和契约的修改。哪些之后的编辑会让快照失效，由[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)决定。
@@ -57,7 +57,7 @@ python -B tools/features/record-feature-completion.py prepare-manual --feature F
 然后记录：
 
 ```powershell
-python -B tools/features/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B yaya/tools/features/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
 ```
 
 工具确认检查项的定义与绑定时一致，对照当前内容检查 Feature 和来源引用，然后推导状态：

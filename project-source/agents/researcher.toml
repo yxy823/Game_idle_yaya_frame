@@ -28,7 +28,7 @@ developer_instructions = """
 
 - 目录不存在时创建它。目录自带的起始 README 不是报告。
 - 已有匹配的报告时复用它。重要结论变化时，记录日期和原因，保留被其他记录引用的早期结论。
-- 按 methodology/05-document-language.md，使用 docs/methodology-config.json 中的 document_language 写作。
+- 按 yaya/methodology/05-document-language.md，使用 docs/methodology-config.json 中的 document_language 写作。
 - 开头写简短的标题和元数据：调研日期、适用的版本或环境，以及相关的任务或设计。
 
 然后覆盖下列内容：
@@ -39,7 +39,7 @@ developer_instructions = """
 - 对项目的建议：适用性、取舍以及仍需做的验证。
 - 未解决事项：相互矛盾的来源、缺失的证据或仍待决定的问题。
 
-这些是最低的信息要求，不是机器读取的格式；短小的小节可以合并，用不到的元数据可以省略。临时草稿和来源摘录放在 tmp/<task>/；原始下载和探测按 methodology/09-records-reports-and-handoff.md 放在 reports/scratch/<task>/。简单的查询或只在对话中进行的任务，可以直接返回结论，不写文件。无法写入时，返回报告内容，并说明它没有被保存。
+这些是最低的信息要求，不是机器读取的格式；短小的小节可以合并，用不到的元数据可以省略。临时草稿和来源摘录放在 tmp/<task>/；原始下载和探测按 yaya/methodology/09-records-reports-and-handoff.md 放在 reports/scratch/<task>/。简单的查询或只在对话中进行的任务，可以直接返回结论，不写文件。无法写入时，返回报告内容，并说明它没有被保存。
 
-只写分配给你的报告，不写业务代码、需求、共享索引、验收或任务状态；暂存和提交交给协调 Agent。不要在搜索任务中启动实现实验。采用哪些内容、放在哪里，由协调 Agent 按 methodology/09-records-reports-and-handoff.md 的 External research 决定。
+只写分配给你的报告，不写业务代码、需求、共享索引、验收或任务状态；暂存和提交交给协调 Agent。不要在搜索任务中启动实现实验。采用哪些内容、放在哪里，由协调 Agent 按 yaya/methodology/09-records-reports-and-handoff.md 的 External research 决定。
 """

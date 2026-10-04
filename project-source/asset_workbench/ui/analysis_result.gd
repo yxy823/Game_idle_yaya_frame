@@ -3,7 +3,7 @@ extends RefCounted
 ## Only this normalized contract crosses the process/UI boundary.
 
 const STATES: Array[String] = ["available", "not_applicable", "unsupported", "failed"]
-const Schema = preload("res://asset_workbench/ui/analysis_schema.gd")
+const Schema = preload("res://yaya/asset_workbench/ui/analysis_schema.gd")
 
 
 static func failure(path: String, kind: String, code: String, message: String) -> Dictionary:

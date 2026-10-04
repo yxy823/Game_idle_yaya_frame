@@ -20,12 +20,12 @@ import unittest
 from unittest import mock
 
 SPEC = importlib.util.spec_from_file_location(
-    "gdunit_runner_process_tests", (PROJECT_ROOT / "tools") / "testing/run-gdunit-tests.py"
+    "gdunit_runner_process_tests", (PROJECT_ROOT / "yaya/tools") / "testing/run-gdunit-tests.py"
 )
 assert SPEC is not None and SPEC.loader is not None
 runner = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = runner
-with mock.patch.object(sys, "path", [str(PROJECT_ROOT), *sys.path]):
+with mock.patch.object(sys, "path", [str(PROJECT_ROOT / "yaya"), *sys.path]):
     SPEC.loader.exec_module(runner)
 
 STARTED = "res://tests/test_example.gd > test_case STARTED\n"

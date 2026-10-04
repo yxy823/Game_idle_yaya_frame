@@ -21,7 +21,7 @@
 
 **S1｜核对直接命令**
 
-当前 Agent 读取 methodology/contracts/gdscript-lint.md 和配置，确认实际插件与参数，不另建包装。
+当前 Agent 读取 yaya/methodology/contracts/gdscript-lint.md 和配置，确认实际插件与参数，不另建包装。
 
 **S2｜执行限定检查**
 

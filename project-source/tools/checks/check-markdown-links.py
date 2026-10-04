@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 from urllib.parse import unquote
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
+REPO_ROOT = Path(__file__).resolve().parents[3]
 # 按目录名在任意层级排除：版本库、引擎缓存、临时材料、Agent 客户端数据和第三方插件。
 DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
 

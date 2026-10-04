@@ -4,14 +4,14 @@ extends Window
 
 signal compare_requested(first: Dictionary, second: Dictionary)
 
-const Batch = preload("res://asset_workbench/ui/analysis_batch.gd")
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
-const Source = preload("res://asset_workbench/ui/analysis_source.gd")
-const Statistics = preload("res://asset_workbench/ui/analysis_group_statistics.gd")
-const Scan = preload("res://asset_workbench/ui/analysis_group_scan.gd")
-const Rules = preload("res://asset_workbench/ui/analysis_group_rules.gd")
-const Appearance = preload("res://asset_workbench/ui/workbench_theme.gd")
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Batch = preload("res://yaya/asset_workbench/ui/analysis_batch.gd")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
+const Source = preload("res://yaya/asset_workbench/ui/analysis_source.gd")
+const Statistics = preload("res://yaya/asset_workbench/ui/analysis_group_statistics.gd")
+const Scan = preload("res://yaya/asset_workbench/ui/analysis_group_scan.gd")
+const Rules = preload("res://yaya/asset_workbench/ui/analysis_group_rules.gd")
+const Appearance = preload("res://yaya/asset_workbench/ui/workbench_theme.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var batch: Batch = Batch.new()
 var _scan: Scan = Scan.new()

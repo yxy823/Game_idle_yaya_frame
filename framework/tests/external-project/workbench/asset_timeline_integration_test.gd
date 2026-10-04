@@ -2,11 +2,11 @@ extends GdUnitTestSuite
 
 ## E6 entry-point integration; the audio wait proves cancelled delays cannot play later.
 
-const Workbench = preload("res://asset_workbench/examples/effects_composition/example_workbench.tscn")
-const Consumer = preload("res://asset_workbench/examples/effects_composition/example_consumer.tscn")
-const CompositionPanel = preload("res://asset_workbench/ui/composition_panel.gd")
+const Workbench = preload("res://yaya/asset_workbench/examples/effects_composition/example_workbench.tscn")
+const Consumer = preload("res://yaya/asset_workbench/examples/effects_composition/example_consumer.tscn")
+const CompositionPanel = preload("res://yaya/asset_workbench/ui/composition_panel.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const SOUND = preload("res://asset_workbench/examples/assets/example_confirmation_a.ogg")
+const SOUND = preload("res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg")
 
 
 func test_workbench_uses_current_trial_and_stop_cancels_loop_and_delayed_audio() -> void:

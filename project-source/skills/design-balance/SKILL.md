@@ -9,11 +9,11 @@ description: "根据明确的目标、规则草稿或数据推导、调整游戏
 
 ## 输入与权限
 
-明确的体验目标，加上足以写出有用模型的规则草稿，就是有效的输入。早期数值设计不要求 GDD、Product 或 Feature 已经完整，见 `methodology/01-product-doc-structure.md` 的 **GDD 前提与职责**。GDD 已经存在时，从它的入口找到本次涉及的规则、数值来源和依赖，不要只凭总览建模。
+明确的体验目标，加上足以写出有用模型的规则草稿，就是有效的输入。早期数值设计不要求 GDD、Product 或 Feature 已经完整，见 `yaya/methodology/01-product-doc-structure.md` 的 **GDD 前提与职责**。GDD 已经存在时，从它的入口找到本次涉及的规则、数值来源和依赖，不要只凭总览建模。
 
 提取实际的目标、约束、变量和可用证据。分清哪些来源描述已采用的规则、候选规则、已观察到的实现或实测结果，并保留它们的范围和假设。只有缺少的决定会实质改变目标或模型时才提问；否则写明有边界的假设并继续。需要澄清时，在本 Skill 的范围内使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。依赖规则草稿的模型仍然是有条件的。
 
-在用户的具体授权范围内，把模型维护在该系统范围和键名对应的固定数值文件中，文件名见 `methodology/01-product-doc-structure.md` 的 **GDD 文件名**。模型的长短或复杂度不决定存放位置。该章节也说明了组织方式不同的 GDD 怎样处理。获准整合时，把嵌在其他位置的模型迁到对应的数值文件，原处留下引用。需要迁移但超出本次写入范围的，在报告中说明。标题和正文使用 `document_language` 编写（`methodology/05-document-language.md`）。只要求讨论时，在对话中交付模型。
+在用户的具体授权范围内，把模型维护在该系统范围和键名对应的固定数值文件中，文件名见 `yaya/methodology/01-product-doc-structure.md` 的 **GDD 文件名**。模型的长短或复杂度不决定存放位置。该章节也说明了组织方式不同的 GDD 怎样处理。获准整合时，把嵌在其他位置的模型迁到对应的数值文件，原处留下引用。需要迁移但超出本次写入范围的，在报告中说明。标题和正文使用 `document_language` 编写（`yaya/methodology/05-document-language.md`）。只要求讨论时，在对话中交付模型。
 
 新推导的结果和调优数值一开始都是候选值。只有用户做出决定，才标为已采用。验证证据分开记录：计算、模拟和实际观察的结果证明的是不同的事。备选数值和暂缓的想法放在 methodology 01 的 **候选与未采纳想法** 中；暂缓的未来机制交回 `design-gdd`，不写成推测性的数值文件。不要悄悄替换已采用的数值。保存候选模型不等于采用它；已采用的数值也可能还没有体验证据。
 
@@ -29,12 +29,12 @@ description: "根据明确的目标、规则草稿或数据推导、调整游戏
 
 ## 写回并协调后续影响
 
-公式、数值、决定状态和计算假设一起保存在所属的 GDD 位置。阅读并维护 `methodology/01-product-doc-structure.md` 的 **开放问题** 中受影响的数值问题，保留仍需采用决定或试玩证据的不确定项。直接更新已授权的数值段落和相关链接；不会只因为所属文档是 GDD，就另外需要整体设计的批准。
+公式、数值、决定状态和计算假设一起保存在所属的 GDD 位置。阅读并维护 `yaya/methodology/01-product-doc-structure.md` 的 **开放问题** 中受影响的数值问题，保留仍需采用决定或试玩证据的不确定项。直接更新已授权的数值段落和相关链接；不会只因为所属文档是 GDD，就另外需要整体设计的批准。
 
 - 新机制或体验目标的变化属于 [design-gdd](../design-gdd/SKILL.md)。说明冲突或建议的取舍，并把当前授权带到那项工作中；不要把调优请求当成采用另一种游戏设计的许可。
-- 数值来源的变化影响已规划或已完成的工作时，按 `methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理。在任务授权范围内，受影响的 Product 范围与 `product-author` 协调，已规划的使用方与 `feature-sync` 协调。不要只为了完成一个独立模型就创建 Product 或 Feature 文档。
-- 值得长期保存的领域定义，使用 `project-terminology`；文档措辞使用 `technical-documentation-writing-godot`。真实的暂停或阻塞，按 `methodology/09-records-reports-and-handoff.md` 写入 Progress 或任务记录。这些是按需使用的支持，不是必须依次调用的 Skill 链。
-- 独立的数值审核使用 [review-balance](../review-balance/SKILL.md)。作者自己的计算检查不是正式的独立审核；用户要求正式审核时，按 `methodology/12-independent-review.md` 使用另一个非作者实例。
+- 数值来源的变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理。在任务授权范围内，受影响的 Product 范围与 `product-author` 协调，已规划的使用方与 `feature-sync` 协调。不要只为了完成一个独立模型就创建 Product 或 Feature 文档。
+- 值得长期保存的领域定义，使用 `project-terminology`；文档措辞使用 `technical-documentation-writing-godot`。真实的暂停或阻塞，按 `yaya/methodology/09-records-reports-and-handoff.md` 写入 Progress 或任务记录。这些是按需使用的支持，不是必须依次调用的 Skill 链。
+- 独立的数值审核使用 [review-balance](../review-balance/SKILL.md)。作者自己的计算检查不是正式的独立审核；用户要求正式审核时，按 `yaya/methodology/12-independent-review.md` 使用另一个非作者实例。
 
 数值设计的授权不会自动授权修改运行时代码、数据或资源。已经获准的实现，按所属流程使用足够清楚的已采用设计继续进行，并照常承担验证和人工验收义务。设计验证情景不会自动构建原型。
 

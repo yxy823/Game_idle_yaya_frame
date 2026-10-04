@@ -17,7 +17,7 @@ Game_idle_yaya_frame/
     ├── Project_README.md      复制为项目 README.md
     ├── skills/                专项开发、规划、设计与审核方法
     ├── agents/                researcher 与 independent-reviewer 配置
-    ├── methodology/           流程契约与模板
+    ├── methodology/           流程契约与模板（复制到项目 yaya/ 下，下同）
     ├── agent-rules/           Godot 工程语义
     ├── tools/                 项目检查、测试、记录与共享实现
     ├── asset_workbench/       ui/ 工作台、analyzer/ 分析后端与 examples/ 示例

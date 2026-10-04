@@ -1,14 +1,14 @@
 extends GdUnitTestSuite
 
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
-const Statistics = preload("res://asset_workbench/ui/analysis_group_statistics.gd")
-const Batch = preload("res://asset_workbench/ui/analysis_batch.gd")
-const Scan = preload("res://asset_workbench/ui/analysis_group_scan.gd")
-const Service = preload("res://asset_workbench/ui/analysis_service.gd")
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
-const Workbench = preload("res://asset_workbench/examples/single/example_workbench.tscn")
-const EXAMPLE: String = "res://asset_workbench/examples/example_analysis_group.json"
-const IMAGE: String = "res://asset_workbench/examples/assets/example_star.png"
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
+const Statistics = preload("res://yaya/asset_workbench/ui/analysis_group_statistics.gd")
+const Batch = preload("res://yaya/asset_workbench/ui/analysis_batch.gd")
+const Scan = preload("res://yaya/asset_workbench/ui/analysis_group_scan.gd")
+const Service = preload("res://yaya/asset_workbench/ui/analysis_service.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
+const Workbench = preload("res://yaya/asset_workbench/examples/single/example_workbench.tscn")
+const EXAMPLE: String = "res://yaya/asset_workbench/examples/example_analysis_group.json"
+const IMAGE: String = "res://yaya/asset_workbench/examples/assets/example_star.png"
 const FAULT: String = "res://tests/features/asset_analyzer/analyzer_process_fixture.py"
 
 var _service: Service

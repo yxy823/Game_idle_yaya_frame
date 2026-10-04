@@ -2,7 +2,7 @@
 extends GdUnitTestSessionHook
 
 ## Observe diagnostic consumption without clearing or replacing GdUnit monitors.
-const DiagnosticLogger = preload("res://tools/testing/gdunit_diagnostic_logger.gd")
+const DiagnosticLogger = preload("res://yaya/tools/testing/gdunit_diagnostic_logger.gd")
 const ASSERT_IMPLEMENTATION := "res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd"
 const SCOPED_METHOD_KINDS: Dictionary[String, String] = {
 	"is_push_error": "error", "is_push_warning": "warning", "is_runtime_error": "script_error",

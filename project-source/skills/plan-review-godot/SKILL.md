@@ -5,7 +5,7 @@ description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或
 
 # Godot 方案审查
 
-对照预期结果和项目当前的约束，审查用户提供的设计或方案。GDD 审查可以在 Product 或 Feature 出现之前进行，覆盖早期草稿、单个主题或整套文档。审查实际提供的材料；缺少设计只会限制能得出的结论，不代表可以替用户编写设计。Product 和 Feature 审查仍需要 `methodology/01-product-doc-structure.md` 规定的设计来源。这是用户要求时才使用的审查方法，不是每个任务的必经步骤。正式的独立审核还要遵循 `methodology/12-independent-review.md`；只加载本 Skill 不构成独立性。
+对照预期结果和项目当前的约束，审查用户提供的设计或方案。GDD 审查可以在 Product 或 Feature 出现之前进行，覆盖早期草稿、单个主题或整套文档。审查实际提供的材料；缺少设计只会限制能得出的结论，不代表可以替用户编写设计。Product 和 Feature 审查仍需要 `yaya/methodology/01-product-doc-structure.md` 规定的设计来源。这是用户要求时才使用的审查方法，不是每个任务的必经步骤。正式的独立审核还要遵循 `yaya/methodology/12-independent-review.md`；只加载本 Skill 不构成独立性。
 
 ## 明确当前要回答的问题
 
@@ -41,8 +41,8 @@ description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或
 | Product 交付文档的变化 | [product-author](../product-author/SKILL.md)；其中关键的交付不确定性，在该工作内用 [product-spec-elicitor](../product-spec-elicitor/SKILL.md) 处理。 |
 | 当前 Product 的首次拆分 | [feature-plan](../feature-plan/SKILL.md)，保持它已有的方案和写入约定。 |
 | 影响已有 Feature 规划的变化 | [feature-sync](../feature-sync/SKILL.md)，按它关于实际来源、基线和规划演变的约定处理；审查结论本身不构成历史来源的变化。 |
-| 当前 Feature 的详细实现设计 | [feature-execute](../feature-execute/SKILL.md)，遵循 `methodology/02-feature-list-schema.md` 中固定的设计约定。 |
-| 专业规格的变化 | 按 `methodology/11-specialist-workflows.md` 交给负责该专业的 Skill；GDD 意图和详细的专业要求留在各自已有的来源。 |
+| 当前 Feature 的详细实现设计 | [feature-execute](../feature-execute/SKILL.md)，遵循 `yaya/methodology/02-feature-list-schema.md` 中固定的设计约定。 |
+| 专业规格的变化 | 按 `yaya/methodology/11-specialist-workflows.md` 交给负责该专业的 Skill；GDD 意图和详细的专业要求留在各自已有的来源。 |
 | 普通的未决项目问题 | [project-grill-me](../project-grill-me/SKILL.md)；普通的澄清不强加方案审查。 |
 
 本 Skill 只返回分析；不修改源文档、代码、规则、规划记录或任务状态，它的结论也不改变已批准或已冻结的决定。只要求审查的请求，以给出审查结论结束。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

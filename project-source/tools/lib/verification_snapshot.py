@@ -60,7 +60,7 @@ def _is_fingerprint_input(relative_path: str) -> bool:
     # 普通 README 只作使用导航；契约目录中的同名文件仍是验证输入。
     if normalized.rsplit("/", 1)[-1].casefold() == "readme.md":
         return normalized.casefold().startswith((
-            ".agents/", "agent-rules/", "methodology/", "docs/gdd/", "docs/product/", "docs/features/",
+            ".agents/", "yaya/agent-rules/", "yaya/methodology/", "docs/gdd/", "docs/product/", "docs/features/",
         ))
     # 经验与调研正文只作参考；可执行文件和需求/规则仍参与验证绑定。
     return not (normalized.startswith(("docs/progress/", "docs/knowledge/", "docs/research/")) and normalized.endswith(".md"))

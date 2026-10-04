@@ -6,28 +6,28 @@ description: >-
 
 # 同步 Feature 列表
 
-先使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)，再执行下面的阶段 0–6。已有的计划不能代替 GDD。
+先使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)，再执行下面的阶段 0–6。已有的计划不能代替 GDD。
 
 通过与已记录锚点之间的 Git 差异找出来源变化。绝不通过比较当前来源和当前计划来推断历史变化。下列情况遵循[锚点恢复与当前文档对齐](references/anchor-and-fallback.md)：
 
 - 没有可用的锚点；
 - 某个来源现在进入了范围，但不知道锚点是否覆盖过它。
 
-按 [逐个 Product 规划](../../../methodology/02-feature-list-schema.md#逐个-product-规划) 同步对已有工作的实际影响；后续 Product 的文档发生变化，不是现在就拆分它的理由。
+按 [逐个 Product 规划](../../../yaya/methodology/02-feature-list-schema.md#逐个-product-规划) 同步对已有工作的实际影响；后续 Product 的文档发生变化，不是现在就拆分它的理由。
 
 ## 共享约定
 
-- **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/F0XX.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
-- **语言：** 新写的文字使用 `methodology/05-document-language.md`；已完成的历史和原始证据保持原样，不翻译。
+- **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/F0XX.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `yaya/methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
+- **语言：** 新写的文字使用 `yaya/methodology/05-document-language.md`；已完成的历史和原始证据保持原样，不翻译。
 - **Git：** 保留改动、目标工作目录、暂存和提交，遵循 `AGENTS.md` 的 **Git 与提交**。
-- **来源的负责方：** 本流程更新计划，不更新来源文档。游戏设计边界交回 [design-gdd](../design-gdd/SKILL.md)；工程规则的写入遵循 `methodology/04-project-rules.md` 中的自查。说明影响时，阅读 methodology 01 的 **设计范围与边界**、`docs/project-rules.md` 和受影响的 Feature 设计稿。已完成 Feature 的设计稿作为历史保留。
+- **来源的负责方：** 本流程更新计划，不更新来源文档。游戏设计边界交回 [design-gdd](../design-gdd/SKILL.md)；工程规则的写入遵循 `yaya/methodology/04-project-rules.md` 中的自查。说明影响时，阅读 methodology 01 的 **设计范围与边界**、`docs/project-rules.md` 和受影响的 Feature 设计稿。已完成 Feature 的设计稿作为历史保留。
 
 ## 监视的来源
 
 - `docs/gdd/`：游戏设计意图、规则、状态、数值、版本范围和设计验收。
 - `docs/product.md` 和已写成文档的 `docs/product/NN-xxx.md`：交付大纲、已采用的范围、边界、依赖和顺序。
-- `docs/project-rules.md` 及其路由到的规则来源（`agent-rules/`）：协作、架构和技术约束。
-- `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` 和 `docs/presentation/` 中的专业来源，以及按 `methodology/11-specialist-workflows.md` 的 **查找与映射来源** 通过实际引用找到的其他来源路径。
+- `docs/project-rules.md` 及其路由到的规则来源（`yaya/agent-rules/`）：协作、架构和技术约束。
+- `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` 和 `docs/presentation/` 中的专业来源，以及按 `yaya/methodology/11-specialist-workflows.md` 的 **查找与映射来源** 通过实际引用找到的其他来源路径。
 
 提议中的措辞不是已确认的约定。资源状态或位置的变化，对规划来说可能只是编辑性调整，但仍可能改变完成记录的内容指纹。存在 `docs/terminology.md` 时，用它统一解读差异；术语不是单独的行为来源，不改变含义的术语修改属于编辑性调整。两次同步之间，模块文件可能被新增、删除、重命名（包括数字前缀变化）或修改；四种情况都要处理。
 
@@ -38,7 +38,7 @@ description: >-
 3. **来源先提交规则：** 本次同步用到的每个来源文档，包括阶段 3 中获批的修复，都必须在任何依赖它的计划写入之前，单独、更早地提交。这样差异和下一个锚点才能对应一个实际已提交的状态。
    - 报告未提交的相关来源，并把它交回其负责方；无关的未提交路径不构成阻塞。
    - 到阶段 4 时某个来源改动仍未提交，或在写入计划期间出现，保留它，并停止依赖它的同步。
-4. 使用最后一条 `revision_log` 条目的 `synced_at_commit` 作为锚点，并确认它在当前历史中。这包括 [初始规划基线](../../../methodology/02-feature-list-schema.md#初始规划基线) 下的 `R000` 基线，它的覆盖范围只限于其规划的 Product 和已采用的来源。否则使用[参考文档](references/anchor-and-fallback.md)。
+4. 使用最后一条 `revision_log` 条目的 `synced_at_commit` 作为锚点，并确认它在当前历史中。这包括 [初始规划基线](../../../yaya/methodology/02-feature-list-schema.md#初始规划基线) 下的 `R000` 基线，它的覆盖范围只限于其规划的 Product 和已采用的来源。否则使用[参考文档](references/anchor-and-fallback.md)。
 5. 报告分支、锚点的哈希、日期、主题和覆盖依据（或已获授权的回退方式和检查的 HEAD），以及按状态统计的 Feature 数量。
 
 ## 阶段 1：用户的先验说明
@@ -58,7 +58,7 @@ git diff <anchor> HEAD -- docs/product.md
 git diff --stat -M <anchor> HEAD -- docs/product/
 git diff --name-status -M <anchor> HEAD -- docs/product/
 git diff -M <anchor> HEAD -- docs/product/
-git diff <anchor> HEAD -- docs/project-rules.md agent-rules/
+git diff <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
 git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 ```
@@ -91,12 +91,12 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
 
 - 把每个提议的 `affected_components` ID 与测试登记表比较，在方案中列出新的和存在冲突的组件记录。
 - 对每个已有实现或测试、且被修订或删除的 Feature，追查它的依赖方，以及所属 Feature 或组件与变化重叠的测试。把每个测试归为 `still_valid`、`superseded`、`needs_new_coverage` 或 `uncertain`。
-- 提议退役某个测试时，按 [File 4](../../../methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
+- 提议退役某个测试时，按 [File 4](../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
 - 遵循 methodology 08 的 **需求变化与过时的测试**：阅读受影响的测试代码（包括没有测试登记表 ID 的单元测试），写明要做的清理以及负责它的 Feature。
 
 ### 报告
 
-用对话语言执行 [需求覆盖核对](../../../methodology/02-feature-list-schema.md#需求覆盖核对)。报告包括：
+用对话语言执行 [需求覆盖核对](../../../yaya/methodology/02-feature-list-schema.md#需求覆盖核对)。报告包括：
 
 - 锚点或回退方式；
 - 编辑性变化和路径重命名；
@@ -122,12 +122,12 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
 
 ## 阶段 5：记录、校验和提交
 
-1. 更新索引时间，并按 [File 3](../../../methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
+1. 更新索引时间，并按 [File 3](../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
    - 保留权威的 `meta.generated_from` 条目，加上实际考虑过的 GDD 和专业来源位置，不声称覆盖了未来的范围。修订本身不写进索引元数据。
    - 使用可读的摘要字段，以及有类型的 `migrations` 和 `dependency_changes`；编辑性同步可以使用空数组。
    - `synced_at_commit` 必须填写：它是本次分析的已提交来源状态，也是下一个锚点。`source_path_updates` 保留重命名的可追溯性。
    - 使用回退方式，或某些来源只在 HEAD 上对齐时，见[记录修订](references/anchor-and-fallback.md#记录修订)。
-2. 运行 `python -B tools/checks/check-feature-list.py`。对照获批的动作审查差异：历史已保留，来源和锚点正确，依赖真实存在，清理和替代覆盖已分配给负责的 Feature。提交之前，修正本任务造成的错误。
+2. 运行 `python -B yaya/tools/checks/check-feature-list.py`。对照获批的动作审查差异：历史已保留，来源和锚点正确，依赖真实存在，清理和替代覆盖已分配给负责的 Feature。提交之前，修正本任务造成的错误。
 3. 按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求，暂存本任务负责的计划文件和获批的 Feature 设计稿导航修改。除非用户要求不提交，否则提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）；和首次规划一样，`feature-plan` 这个 scope 指的是计划文件。在正文中概括锚点、计划变化和校验，然后检查提交后的状态。
 
 ## 阶段 6：交接
@@ -136,7 +136,7 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
 
 - 锚点；
 - 新增、废弃、回归和来源路径更新记录的数量；
-- 下一个可以开始的 Feature（`python -B tools/checks/check-feature-list.py --eligible`），或下一个需要重新审视的 Product；
+- 下一个可以开始的 Feature（`python -B yaya/tools/checks/check-feature-list.py --eligible`），或下一个需要重新审视的 Product；
 - 回滚或回归方面的警告。
 
 用实际写入的内容刷新覆盖对应关系。把计划对齐和尚待进行的实现与验证区分开；不要把被推迟的 Product 或未解决的缺口说成已同步，后续事项保留在所属的 Feature 或 Progress 中。

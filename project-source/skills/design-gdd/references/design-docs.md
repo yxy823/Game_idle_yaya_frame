@@ -4,7 +4,7 @@
 
 ## 使用便于导航的结构
 
-新建 GDD 时，使用 `docs/gdd/README.md`，以及 `methodology/01-product-doc-structure.md` 的 **GDD 文件名** 中的固定主题路径。内容到文件的对应关系、系统键名、引用规则，以及导入的或组织方式不同的 GDD 怎样处理，都由该章节规定。范围文档和开放问题文档按 methodology 01 中各自的章节处理。
+新建 GDD 时，使用 `docs/gdd/README.md`，以及 `yaya/methodology/01-product-doc-structure.md` 的 **GDD 文件名** 中的固定主题路径。内容到文件的对应关系、系统键名、引用规则，以及导入的或组织方式不同的 GDD 怎样处理，都由该章节规定。范围文档和开放问题文档按 methodology 01 中各自的章节处理。
 
 入口介绍游戏和阅读路径。主题保存分配给它的规则和决定，并链接本次涉及的开放问题。写入内容时才创建主题；不要为了填满结构而创建空主题或复制决定历史。
 

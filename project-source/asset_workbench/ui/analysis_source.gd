@@ -2,7 +2,7 @@ extends RefCounted
 
 ## Shared source-file contract. Godot resources are not implicitly flattened or exported.
 
-const CAPABILITIES_PATH: String = "res://asset_workbench/analyzer/capabilities.json"
+const CAPABILITIES_PATH: String = "res://yaya/asset_workbench/analyzer/capabilities.json"
 
 static var capabilities: Dictionary = {}
 

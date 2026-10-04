@@ -22,7 +22,7 @@ from tools.lib.feature_completion_evidence import (
 from tools.lib.atomic_json import write_json
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
 
-DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
 FEATURE_ID_RE = re.compile(r"F\d{3}")
 
 

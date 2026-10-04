@@ -5,7 +5,7 @@
 - 最后一条 `revision_log` 条目没有可用的 `synced_at_commit`；
 - 要为新纳入的 GDD 或专业来源复用一个锚点之前。
 
-记录字段本身的定义见 methodology 02 的 [同步记录](../../../../methodology/02-feature-list-schema.md#同步记录)。
+记录字段本身的定义见 methodology 02 的 [同步记录](../../../../yaya/methodology/02-feature-list-schema.md#同步记录)。
 
 ## 从历史中恢复锚点
 

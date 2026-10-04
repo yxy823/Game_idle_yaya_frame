@@ -12,8 +12,8 @@ import subprocess
 import tempfile
 import unittest
 
-TOOLS = (PROJECT_ROOT / "tools")
-sys.path.insert(0, str(PROJECT_ROOT))
+TOOLS = (PROJECT_ROOT / "yaya/tools")
+sys.path.insert(0, str(PROJECT_ROOT / "yaya"))
 from tools.lib import feature_completion_evidence, verification_snapshot
 from tools.lib.atomic_json import write_json
 from gdunit_report_fixture import make_run

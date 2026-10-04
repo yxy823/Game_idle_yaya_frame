@@ -2,7 +2,7 @@ extends RefCounted
 
 ## Executes the vocabulary used by the shared schema, not a second field contract.
 
-const SCHEMA_PATH: String = "res://asset_workbench/analyzer/result.schema.json"
+const SCHEMA_PATH: String = "res://yaya/asset_workbench/analyzer/result.schema.json"
 
 static var _schema: Dictionary = {}
 

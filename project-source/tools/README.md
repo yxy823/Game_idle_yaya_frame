@@ -3,7 +3,7 @@
 这些命令由 Agent 或使用者显式调用，不监听编辑、对话或工具事件。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
-tools/
+yaya/tools/
 ├── checks/      环境与 Feature 记录检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
@@ -24,7 +24,7 @@ tools/
 命名约定：
 
 - Python 入口脚本使用连字符命名（如 `run-gdunit-tests.py`），只作为命令运行，不被其他代码导入；GDScript 脚本按 GDScript 约定使用下划线。
-- `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
+- `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`yaya/tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
 - Skill 只引用这些命令并说明调用时机，不另写命令副本。
 
 资源工作台的分析后端不属于本目录，见[资源工作台说明](../asset_workbench/README.md)。
@@ -59,10 +59,10 @@ $LASTEXITCODE
 `python_executable` 支持完整路径、项目相对路径或 PATH 中的命令名；`engine_executable` 使用完整路径或项目相对文件路径，不查询 PATH。两者都不包含 shell 引号或参数。
 
 ```powershell
-python -B tools/checks/check-project-environment.py --require-ready
-python -B tools/checks/check-feature-list.py
-python -B tools/testing/run-gdunit-tests.py --feature F001 --scope auto
-python -B tools/features/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/F001/run-ID/result.json
+python -B yaya/tools/checks/check-project-environment.py --require-ready
+python -B yaya/tools/checks/check-feature-list.py
+python -B yaya/tools/testing/run-gdunit-tests.py --feature F001 --scope auto
+python -B yaya/tools/features/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/F001/run-ID/result.json
 ```
 
 参数名以各脚本的 `--help` 为准。除特别说明外，`--repo-root` 默认是脚本所在的项目，相对路径以目标项目为准，不依赖命令启动时所在的目录。
@@ -93,7 +93,7 @@ python -B tools/features/record-feature-completion.py record-tests --feature F00
 移动、重命名文档或修改标题后运行，也可以在整理文档后整体运行一次：
 
 ```powershell
-python -B tools/checks/check-markdown-links.py
+python -B yaya/tools/checks/check-markdown-links.py
 ```
 
 检查范围：
@@ -165,7 +165,7 @@ python -B tools/checks/check-markdown-links.py
 Agent 用文本方式修改了 `project.godot`、`.tscn` 或 `.tres` 后，让 Godot 按自己的格式重新保存一次。这样文件与编辑器保存的格式一致，之后用户在编辑器里保存时，差异只反映真正的设置变化。
 
 ```powershell
-& $projectGodot --headless --path . --script res://tools/godot/resave_godot_files.gd -- project.godot res://main/main.tscn | Out-Host
+& $projectGodot --headless --path . --script res://yaya/tools/godot/resave_godot_files.gd -- project.godot res://main/main.tscn | Out-Host
 $LASTEXITCODE
 ```
 

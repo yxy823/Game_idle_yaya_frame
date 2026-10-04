@@ -5,7 +5,7 @@ extends VBoxContainer
 signal action_requested(action: StringName)
 signal appearance_changed(dark: bool, checker: bool)
 
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var assets: VBoxContainer
 var preview: VBoxContainer

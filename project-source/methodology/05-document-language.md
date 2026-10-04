@@ -90,7 +90,7 @@
 
 | 文件 | 语言 |
 | --- | --- |
-| 分发给项目的规范、Skill、模板、角色配置和说明：`methodology/`（含 `methodology/templates/`）、`agent-rules/`、`.agents/skills/`、`.codex/agents/*.toml`、`AGENTS.md`、`README.md`、`tools/README.md`、`asset_workbench/` 下的文档和组件 README | 中文 |
+| 分发给项目的规范、Skill、模板、角色配置和说明：`yaya/methodology/`（含 `yaya/methodology/templates/`）、`yaya/agent-rules/`、`.agents/skills/`、`.codex/agents/*.toml`、`AGENTS.md`、`README.md`、`yaya/tools/README.md`、`yaya/asset_workbench/` 下的文档和组件 README | 中文 |
 | 机器协议：字段名、枚举值、ID、路径、命令和工具输出 | 英文，按 [§5](#5-稳定的协议元素) 保持不变 |
 | `docs/` 下的项目文档 | `document_language` |
 

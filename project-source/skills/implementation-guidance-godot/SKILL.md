@@ -9,9 +9,9 @@ description: 为已有的 Godot Feature（包括工程 Feature）准备或更新
 
 代码格式中的路径相对目标项目根目录。按下列文件阅读：
 
-- 指导内容、相对来源链接和固定文件位置：`methodology/02-feature-list-schema.md` 的 **Feature 设计与实现说明**。
-- 设计何时提出、批准、保存并保持一致：`methodology/03-execute-loop.md` 的 Stage 1C、2 和 3。
-- 读取来源和判断指导是否过时：`methodology/04-project-rules.md` 的 **按事先准备的指导实现**。
+- 指导内容、相对来源链接和固定文件位置：`yaya/methodology/02-feature-list-schema.md` 的 **Feature 设计与实现说明**。
+- 设计何时提出、批准、保存并保持一致：`yaya/methodology/03-execute-loop.md` 的 Stage 1C、2 和 3。
+- 读取来源和判断指导是否过时：`yaya/methodology/04-project-rules.md` 的 **按事先准备的指导实现**。
 
 细节以这些约定为准；不另建指南、草稿文件、记录文件或状态格式。
 
@@ -43,6 +43,6 @@ description: 为已有的 Godot Feature（包括工程 Feature）准备或更新
 
 把可供审阅的方案和确实缺少的决定交回主 Agent。已有批准覆盖该设计后，同一个委派顾问只能按 methodology 03 的 Stage 2 保存分配给它的 `docs/features/F0XX-design.md`，并遵守 methodology 02 中“只写指导”的边界。主 Agent 检查结果，并负责已获授权的 Feature notes 链接、记录更新和提交。不重复请求同一项批准，也不把已保存的文件当作已批准的证明。
 
-主 Agent 按 [按事先准备的指导实现](../../../methodology/04-project-rules.md#按事先准备的指导实现) 实现。只在已有的明确委派范围内再次咨询顾问。
+主 Agent 按 [按事先准备的指导实现](../../../yaya/methodology/04-project-rules.md#按事先准备的指导实现) 实现。只在已有的明确委派范围内再次咨询顾问。
 
-只要求指导的工作，交付所要求的结果后结束；已获授权的实现在 [feature-execute](../feature-execute/SKILL.md) 的当前 Stage 继续。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。顾问检查自己参与编写的设计，不算独立审核。用户要求正式审核时，仍按 `methodology/12-independent-review.md` 中另起新实例的约定执行。
+只要求指导的工作，交付所要求的结果后结束；已获授权的实现在 [feature-execute](../feature-execute/SKILL.md) 的当前 Stage 继续。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。顾问检查自己参与编写的设计，不算独立审核。用户要求正式审核时，仍按 `yaya/methodology/12-independent-review.md` 中另起新实例的约定执行。

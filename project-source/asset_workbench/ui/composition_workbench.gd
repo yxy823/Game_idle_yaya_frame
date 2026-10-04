@@ -1,8 +1,8 @@
-extends "res://asset_workbench/ui/workbench.gd"
+extends "res://yaya/asset_workbench/ui/workbench.gd"
 
 ## Independent scene entry; shares controls and analysis, never opens the single-object scene.
 
-const CompositionPanel = preload("res://asset_workbench/ui/composition_panel.gd")
+const CompositionPanel = preload("res://yaya/asset_workbench/ui/composition_panel.gd")
 
 @export var composition_scene: PackedScene
 

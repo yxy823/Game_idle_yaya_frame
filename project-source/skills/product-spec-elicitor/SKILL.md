@@ -7,9 +7,9 @@ description: "根据当前的 GDD 设计澄清 Product 的交付边界、顺序�
 
 ## 范围与输入
 
-按 `methodology/01-product-doc-structure.md` 中的 GDD 前提和来源归属执行。澄清 Product 交付哪些实际的 GDD 要求。游戏设计缺失或有重要部分尚未确定时，先交回 `design-gdd`，再处理依赖它的交付选择；不要通过 Product 的提问去编造设计。
+按 `yaya/methodology/01-product-doc-structure.md` 中的 GDD 前提和来源归属执行。澄清 Product 交付哪些实际的 GDD 要求。游戏设计缺失或有重要部分尚未确定时，先交回 `design-gdd`，再处理依赖它的交付选择；不要通过 Product 的提问去编造设计。
 
-阅读调用方要求的修改、`methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界**、本次涉及的 GDD 主题、项目规则中的工程约束和架构决定、当前的 Product 概要或交付文档，以及受影响的 Feature 的事实。复用已确认的答案和 `document_language`。实际实现描述的是当前行为，不是已批准的设计。
+阅读调用方要求的修改、`yaya/methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界**、本次涉及的 GDD 主题、项目规则中的工程约束和架构决定、当前的 Product 概要或交付文档，以及受影响的 Feature 的事实。复用已确认的答案和 `document_language`。实际实现描述的是当前行为，不是已批准的设计。
 
 缺少重要决定时，使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。提供的来源和授权已经能确定修改时，不要再开一轮访谈。本 Skill 只把方案返回给 `product-author`；它不写 GDD、Product 或计划文件。
 

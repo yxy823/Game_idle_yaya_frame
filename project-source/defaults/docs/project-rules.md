@@ -1,22 +1,22 @@
 # 项目规则
 
-> 修订 GDD 设计、确定 Product 交付范围、规划 Feature 或选择实现方案之前，先阅读约束本任务的工程规则。游戏设计的范围与排除项见 [设计范围与边界](../methodology/01-product-doc-structure.md#设计范围与边界)。
+> 修订 GDD 设计、确定 Product 交付范围、规划 Feature 或选择实现方案之前，先阅读约束本任务的工程规则。游戏设计的范围与排除项见 [设计范围与边界](../yaya/methodology/01-product-doc-structure.md#设计范围与边界)。
 >
-> 本文件保存全项目的开发约束、协作要求和通用工程原则。具体的引擎与语言规则在 `agent-rules/` 下，见[第 3 部分](#第-3-部分--项目规则来源)。
+> 本文件保存全项目的开发约束、协作要求和通用工程原则。具体的引擎与语言规则在 `yaya/agent-rules/` 下，见[第 3 部分](#第-3-部分--项目规则来源)。
 
 ## 全项目工程约束
 
-条目写法与 `agent-rules/` 一致，见[规则的写法](../agent-rules/00-core/rule-precedence-and-routing.md#规则的写法)：条目默认是要遵守的要求，适用于每个受其约束的 Product、Feature、设计和实现；写“建议：”的是默认做法，有理由可以偏离，并在汇报中说明。Product、Feature 设计或 ADR 不能悄悄推翻这些要求。写清每条约束的范围和必要理由；技术细节留在其所属来源。
+条目写法与 `yaya/agent-rules/` 一致，见[规则的写法](../yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则的写法)：条目默认是要遵守的要求，适用于每个受其约束的 Product、Feature、设计和实现；写“建议：”的是默认做法，有理由可以偏离，并在汇报中说明。Product、Feature 设计或 ADR 不能悄悄推翻这些要求。写清每条约束的范围和必要理由；技术细节留在其所属来源。
 
 目前还没有确认任何项目专属的工程约束。需要时，把已确认的开发约束加在这里；不要从示例中编造技术承诺。游戏设计的边界和排除项（包括长期有效的）由 GDD 负责；引用 GDD 中的原文段落，不在这里重复。定义放在 `docs/terminology.md`，交付边界放在 Product，当前架构放在架构自己的文档。
 
-规则的新增、删除和修改遵循 `methodology/04-project-rules.md` 的 **规则的增量维护**，包括每次提出写入前必须在对话中完成的自查。保留已有的授权；实质修改要取得缺少的决定。Stage 3 的文档检查点在最终验证前检查是否有值得做的增量更新。没有发现值得做的修改时，不产出报告，也不新增规则。
+规则的新增、删除和修改遵循 `yaya/methodology/04-project-rules.md` 的 **规则的增量维护**，包括每次提出写入前必须在对话中完成的自查。保留已有的授权；实质修改要取得缺少的决定。Stage 3 的文档检查点在最终验证前检查是否有值得做的增量更新。没有发现值得做的修改时，不产出报告，也不新增规则。
 
 ---
 
 # 第 1 部分 · 协作约定
 
-> 本部分规定必须遵守的协作要求。规则的权威和冲突按 `methodology/04-project-rules.md` 和[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)处理。这些要求不覆盖系统、开发者或用户的指令。
+> 本部分规定必须遵守的协作要求。规则的权威和冲突按 `yaya/methodology/04-project-rules.md` 和[规则冲突的处理流程](../yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)处理。这些要求不覆盖系统、开发者或用户的指令。
 
 ## 1.1 协作纪律
 
@@ -30,7 +30,7 @@
 
 ## 1.2 工作流程约束
 
-Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-loop.md`。该规范负责：
+Feature 实现使用 `feature-execute` 和权威规范 `yaya/methodology/03-execute-loop.md`。该规范负责：
 
 - Context / Rules Snapshot；
 - 授权与续接；
@@ -38,7 +38,7 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 - 可选的独立审核；
 - 验证与完成。
 
-环境准备遵循 `methodology/06-project-environment.md`；测试的含义遵循 `methodology/08-test-traceability-and-evidence.md`。不要在这里维护另一套与之竞争的 Stage 说明。
+环境准备遵循 `yaya/methodology/06-project-environment.md`；测试的含义遵循 `yaya/methodology/08-test-traceability-and-evidence.md`。不要在这里维护另一套与之竞争的 Stage 说明。
 
 按 [Git 与提交](../AGENTS.md#git-与提交)：检查并保留已有的改动，在任务指定的工作目录中继续工作，暂存预定的范围，并创建符合条件的逻辑提交。
 
@@ -55,7 +55,7 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 写明具体是哪条规则、打算怎样偏离、原因和影响。
 
 - 项目风格、迁移成本或平台强制的约定，可以作为偏离“建议：”条目的理由；它们不会自动豁免要求。
-- 要求之间未解决的冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)处理。
+- 要求之间未解决的冲突按[规则冲突的处理流程](../yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)处理。
 - 实质性的规则修改或例外，需要明确覆盖这一选择的授权和上文所述的自查报告；已经做过的决定直接沿用，不重复询问。
 
 ---
@@ -72,7 +72,7 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 
 ## 2.2 核心架构原则
 
-- **游戏权威与表现分开。** 游戏逻辑负责规则、业务状态和有效结果；表现把它们转成玩家能感知的反馈，可以拥有只属于视图的状态。按 `docs/game-organization.md` 中的职责模型和示例处理；具体的状态修改和依赖规则仍在 `agent-rules/10-gdscript/structure-and-dependencies.md`。
+- **游戏权威与表现分开。** 游戏逻辑负责规则、业务状态和有效结果；表现把它们转成玩家能感知的反馈，可以拥有只属于视图的状态。按 `docs/game-organization.md` 中的职责模型和示例处理；具体的状态修改和依赖规则仍在 `yaya/agent-rules/10-gdscript/structure-and-dependencies.md`。
 - **有意义的状态转换要明确。** 选最简单、又能表达互斥状态、合法转换以及进入/退出或取消职责的模型。一个枚举加一个集中的转换函数可能就够了；生命周期、复用或转换复杂度确实需要时，再使用独立的状态对象或节点。
 - **协作关系要明确。** 区分请求、当前状态和一次性的事件或结果。玩法编排归游戏规则，反馈编排归表现。按职责归属和生命周期，通过合适的已有 API、信号或协调者把它们连接起来；不强制要求固定的控制层或事件总线。
 - **组合优于继承。** 用聚焦的组件组合出行为，不建庞大的万能基类层级。
@@ -132,4 +132,4 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 
 # 第 3 部分 · 项目规则来源
 
-根目录的 `AGENTS.md` 把每个任务路由到 `agent-rules/00-core/` 和受影响的领域模块。具体的引擎与语言规则留在那里，不要复制到本文件。`methodology/` 规定 Product 与 Feature 工作流程、测试可追溯性、人工验收和完成。工具路径和项目环境准备（Project Environment Bootstrap）在 [项目环境](../methodology/06-project-environment.md) 中规定；不要在这里记录环境状态。
+根目录的 `AGENTS.md` 把每个任务路由到 `yaya/agent-rules/00-core/` 和受影响的领域模块。具体的引擎与语言规则留在那里，不要复制到本文件。`yaya/methodology/` 规定 Product 与 Feature 工作流程、测试可追溯性、人工验收和完成。工具路径和项目环境准备（Project Environment Bootstrap）在 [项目环境](../yaya/methodology/06-project-environment.md) 中规定；不要在这里记录环境状态。

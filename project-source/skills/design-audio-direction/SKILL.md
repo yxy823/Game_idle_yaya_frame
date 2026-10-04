@@ -5,7 +5,7 @@ description: "在 Sound Bible 中定义或修改共享的音乐、环境声和�
 
 # 声音方向（Sound Bible）
 
-归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把声音规格从 GDD 中移出。阅读与本次有关的 GDD 体验目标、反馈行为、当前的音频惯例和可用的参考。
+归属、授权和来源影响按 `yaya/methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把声音规格从 GDD 中移出。阅读与本次有关的 GDD 体验目标、反馈行为、当前的音频惯例和可用的参考。
 
 ## 维护 Sound Bible
 
@@ -25,7 +25,7 @@ GDD 保留期望的玩家感受、辨认需求和玩法反馈的触发条件，�
 
 ## 交接
 
-- 具体交付物交给 `design-audio-asset-spec`。当 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Sound Bible 时，由那个 Skill 维护 Sound Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的方向标准。不要另建第二份配乐目录或接收目录。
+- 具体交付物交给 `design-audio-asset-spec`。当 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Sound Bible 时，由那个 Skill 维护 Sound Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的方向标准。不要另建第二份配乐目录或接收目录。
 - 外部提供的文件交给 `content-asset-integration`。
 - 正式评估在另一个实例中使用 `review-audio`。
 

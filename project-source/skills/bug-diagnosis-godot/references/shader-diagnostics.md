@@ -4,8 +4,8 @@
 
 这是一份技术参考，当前已获授权的诊断、实现或原型任务都可以单独使用它。阅读它不会启动所在 Skill 的完整流程，不会创建 Feature，也不授权诊断用的修改、运行 Godot 或修复缺陷。
 
-- 调查方法和 Bug 记录由 `methodology/07-engineering-change.md` 的 **因果诊断** 负责。
-- 临时探测和保留的证据由 `methodology/09-records-reports-and-handoff.md` 负责。
+- 调查方法和 Bug 记录由 `yaya/methodology/07-engineering-change.md` 的 **因果诊断** 负责。
+- 临时探测和保留的证据由 `yaya/methodology/09-records-reports-and-handoff.md` 负责。
 - 代码格式中的路径相对于目标项目根目录。
 
 ## 按证据选择排查分支
@@ -21,7 +21,7 @@
 | 时序或重复触发不对 | 依次追查触发条件、控制器状态、传给 Shader 的值，再到 Shader 中的时间/进度计算。不要只凭视觉症状就推断是 Shader 缺陷。 |
 | 效果开销大 | 建立可比较的负载；需要测量时使用已有的性能诊断。比较相关的覆盖面积、overdraw、采样次数或同时存在的实例数；不要根据源码长度推断开销。 |
 
-适用的工程约束沿用 `agent-rules/30-shaders/README.md` 这条入口。例如，`ShaderMaterial.set_shader_parameter()` 区分大小写，并且会更新共享材质的所有使用者；见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。编辑器中显示的源路径，或者一条没有变化的日志，本身都不能证明运行中的对象用上了最新的修改。
+适用的工程约束沿用 `yaya/agent-rules/30-shaders/README.md` 这条入口。例如，`ShaderMaterial.set_shader_parameter()` 区分大小写，并且会更新共享材质的所有使用者；见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。编辑器中显示的源路径，或者一条没有变化的日志，本身都不能证明运行中的对象用上了最新的修改。
 
 ## 让一个可疑关系变得可见
 
@@ -52,6 +52,6 @@
 
 ## 恢复并验证正式路径
 
-探测回答了它的问题后，恢复为调查引入的临时输出、赋值、诊断常量和资源。按已有的产物策略保留有用的失败证据。确认实际使用的是预期的 Shader 版本以及真实的材质/控制路径，再按 `agent-rules/30-shaders/README.md` 和当前任务的验证边界，检查原始触发条件和相关的回归用例。
+探测回答了它的问题后，恢复为调查引入的临时输出、赋值、诊断常量和资源。按已有的产物策略保留有用的失败证据。确认实际使用的是预期的 Shader 版本以及真实的材质/控制路径，再按 `yaya/agent-rules/30-shaders/README.md` 和当前任务的验证边界，检查原始触发条件和相关的回归用例。
 
 只读调查可以在不运行、不修改任何东西的情况下结束；如实记录这一覆盖范围。探测成功不能证明恢复后的实现可以正常工作。加载的是否为最新版本、真实的渲染路径或原因本身仍未验证时，准确报告这一缺口。把客观的不符、审美判断和未测试的假设分开，把发现交回所属任务，不为 Shader 部分单独再建一条 Bug 记录。

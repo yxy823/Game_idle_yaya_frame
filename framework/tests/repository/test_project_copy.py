@@ -316,11 +316,11 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertEqual((output / "docs/presentation/README.md").read_bytes(),
                          (repository / "project-source/defaults/docs/presentation/README.md").read_bytes())
         self.assertFalse((output / "docs/resource-requirements").exists())
-        self.assertFalse((output / "agent-rules/00-core/documentation").exists())
-        self.assertEqual({path.name for path in (output / "tools").iterdir() if path.is_dir()},
+        self.assertFalse((output / "yaya/agent-rules/00-core/documentation").exists())
+        self.assertEqual({path.name for path in (output / "yaya/tools").iterdir() if path.is_dir()},
                          {"checks", "features", "godot", "testing", "lib"})
         self.assertFalse((output / "examples").exists())
-        self.assertEqual({path.name for path in (output / "asset_workbench").iterdir()},
+        self.assertEqual({path.name for path in (output / "yaya/asset_workbench").iterdir()},
                          {"README.md", "ui", "analyzer", "examples"})
         self.assertFalse(any((output / ".agents/skills").glob("*-yaya")))
         self.assertFalse(any(output.rglob("__pycache__")))
@@ -342,22 +342,22 @@ class ProjectCopyTests(unittest.TestCase):
         for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
             self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
         for relative in (
-            "asset_workbench/examples/single/example_workbench.tscn",
-            "asset_workbench/examples/single/example_game.tscn",
-            "asset_workbench/examples/composition/example_workbench.tscn",
-            "asset_workbench/examples/composition/example_composition.tscn",
+            "yaya/asset_workbench/examples/single/example_workbench.tscn",
+            "yaya/asset_workbench/examples/single/example_game.tscn",
+            "yaya/asset_workbench/examples/composition/example_workbench.tscn",
+            "yaya/asset_workbench/examples/composition/example_composition.tscn",
             "components/feedback/audio_playback.gd",
-            "asset_workbench/ui/workbench.gd",
-            "asset_workbench/analyzer/worker.py",
+            "yaya/asset_workbench/ui/workbench.gd",
+            "yaya/asset_workbench/analyzer/worker.py",
             "addons/sound_manager/abstract_audio_player_pool.gd",
         ):
             self.assertEqual((output / relative).read_bytes(),
-                             (repository / "project-source" / relative).read_bytes())
-        assets = list((output / "asset_workbench/examples/assets").iterdir())
+                             (repository / "project-source" / relative.removeprefix("yaya/")).read_bytes())
+        assets = list((output / "yaya/asset_workbench/examples/assets").iterdir())
         self.assertTrue(assets)
         self.assertTrue(all(path.name.startswith("example_") for path in assets))
-        self.assertFalse((output / "asset_workbench/examples/example_workbench.tscn").exists())
-        single = (output / "asset_workbench/examples/single/example_workbench.tscn").read_text()
+        self.assertFalse((output / "yaya/asset_workbench/examples/example_workbench.tscn").exists())
+        single = (output / "yaya/asset_workbench/examples/single/example_workbench.tscn").read_text()
         self.assertNotIn("composition", single)
 
 

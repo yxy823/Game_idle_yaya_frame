@@ -9,7 +9,7 @@ description: 为 Godot Feature 准备待验收的人工清单，或把用户在�
 
 ## 使用验收约定中对应的部分
 
-清单、快照绑定、命令和结果含义，以 `methodology/contracts/manual-acceptance-files.md` 为准。只读这次操作需要的小节，以及涉及的 Feature、实际的源文件和清单。
+清单、快照绑定、命令和结果含义，以 `yaya/methodology/contracts/manual-acceptance-files.md` 为准。只读这次操作需要的小节，以及涉及的 Feature、实际的源文件和清单。
 
 | 请求的操作 | 阅读并执行 |
 | --- | --- |
@@ -25,6 +25,6 @@ description: 为 Godot Feature 准备待验收的人工清单，或把用户在�
 
 使用已有的记录工具，报告准备了什么或实际记录了什么、覆盖的范围，以及仍不确定的地方。记录成功也可能是 `pending` 或 `rejected`；记录成功不证明验收通过或 Feature 已完成。失败和后续工作按验收约定处理，实现上的修改交回已有的负责方。
 
-长期保存的文字按 `methodology/05-document-language.md` 书写；写入和提交按 `AGENTS.md` 的 **Git 与提交** 执行。任务同时要求实际验收和明确的提交许可时，按核心 Git 规则中的 **本地提交** 两者都要满足：任何一个都不能代替另一个。
+长期保存的文字按 `yaya/methodology/05-document-language.md` 书写；写入和提交按 `AGENTS.md` 的 **Git 与提交** 执行。任务同时要求实际验收和明确的提交许可时，按核心 Git 规则中的 **本地提交** 两者都要满足：任何一个都不能代替另一个。
 
 报告实际结果和证据。只做记录的工作不推进 Stage，也不宣布交付完成。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

@@ -4,7 +4,7 @@ extends VBoxContainer
 
 signal edited
 
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var _presets: Array[FeedbackParticlePreset] = []
 var _clips: Array[Animation] = []

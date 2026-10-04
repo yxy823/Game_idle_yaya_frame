@@ -2,7 +2,7 @@ extends RefCounted
 
 ## Serializable membership and project rules, separate from source measurements.
 
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
 const MAX_ASSETS: int = 512
 const MAX_RULES: int = 64
 const MAX_JSON_BYTES: int = 33554432

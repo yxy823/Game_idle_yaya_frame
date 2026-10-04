@@ -6,7 +6,7 @@
 
 - 聚焦的场景修改不顺带做序列化规范化、段落重排、ID 清理或格式化。
 - 不为减少节点数而移除合理的 Timer、AnimationPlayer、包装节点或组件节点。
-- 场景可以同时包含游戏逻辑和表现。跨越这条边界时，按 [docs/game-organization.md](../../docs/game-organization.md) 找出状态的权威所属方；动画回调可以提供时机，是否生效由游戏规则的所属方决定。
+- 场景可以同时包含游戏逻辑和表现。跨越这条边界时，按 [docs/game-organization.md](../../../docs/game-organization.md) 找出状态的权威所属方；动画回调可以提供时机，是否生效由游戏规则的所属方决定。
 
 ## 层级与 owner
 

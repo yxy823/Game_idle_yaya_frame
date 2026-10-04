@@ -11,7 +11,7 @@ import json
 import tempfile
 import unittest
 
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(PROJECT_ROOT / "yaya"))
 from tools.lib.test_run_evidence import (
     RunEvidenceError, expected_gdunit_cases, require_coverage, verify_runtime_discovery,
 )

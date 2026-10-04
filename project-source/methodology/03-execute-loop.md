@@ -81,9 +81,9 @@
    - 有 `in_progress` 的 Feature 时，续接它，不开始另一个。
    - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。
    - 选择尚未开始的工作之前，先检查当前授权范围内是否有 `blocked` 的 Feature。如果有，在查询可开始的 Feature 之前，查看它们记录的阻塞，并按[状态流转](02-feature-list-schema.md#状态流转)重新检查能否恢复。
-   - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
+   - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B yaya/tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
 2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。
-3. 读取已确认的配置。以下情况运行 `python -B tools/checks/check-project-environment.py --require-ready`：初始化时、工具或配置变化后、诊断调用失败时。常规 Feature 复用已确认的路径；准备未完成时，仍然不能开始编码。
+3. 读取已确认的配置。以下情况运行 `python -B yaya/tools/checks/check-project-environment.py --require-ready`：初始化时、工具或配置变化后、诊断调用失败时。常规 Feature 复用已确认的路径；准备未完成时，仍然不能开始编码。
 4. 按需读取这个 Feature 的上下文：
    - Feature 详情、它的 `docs/features/F0XX-design.md`，以及相关依赖的设计稿（如果存在）。依赖的设计稿先读开头的“对外接口与接入要点”，需要时再往下读；
    - 它的主要来源，以及按 [查找与映射来源](11-specialist-workflows.md#查找与映射来源) 适用的 GDD 和专业来源；
@@ -93,7 +93,7 @@
    - 测试登记表，以及界定本次改动所需的主要实现路径；
    - 按 [架构约定](10-architecture-overview.md) 适用的架构图和 ADR；没有架构图时，也要读有关的 ADR。
 5. 主 Agent 自己阅读这些来源。明确委派实现指导时，advisor 可以按 [按事先准备的指导实现](04-project-rules.md#按事先准备的指导实现) 分担背景调查；实现者仍要核对原始规则和当前代码。
-6. 提出方案或搜索外部资料之前，先为这个 Feature 执行 [项目知识查找](../docs/knowledge/README.md#先查找相关知识)。
+6. 提出方案或搜索外部资料之前，先为这个 Feature 执行 [项目知识查找](../../docs/knowledge/README.md#先查找相关知识)。
 7. 如果计划采用来源之后，起约束作用的来源又发生了变化，在依赖它们的执行之前，通过 `feature-sync` 处理实际影响。普通的续接请求不需要另说一句“请同步”。
 8. 准备一份简洁的 Context / Rules Snapshot（上下文与规则快照），包括：
    - Feature 记录；
@@ -197,7 +197,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 8. 运行：
 
    ```powershell
-   python -B tools/checks/check-feature-list.py
+   python -B yaya/tools/checks/check-feature-list.py
    ```
 
 ## Stage 3 · 基线、TDD 与实现
@@ -215,7 +215,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 1. 运行 Stage 1 确定的 Existing Safety Net：
 
    ```powershell
-   python -B tools/testing/run-gdunit-tests.py --feature F0XX --phase baseline --scope auto
+   python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --phase baseline --scope auto
    ```
 
    baseline 阶段会自动跳过 `planned` 测试，因为它们还不存在。有效的空安全网返回 `not_required`，不生成运行报告，也不算测试 PASS。
@@ -291,11 +291,11 @@ Feature 级的人工验收尚未完成，不阻止已验证的逻辑提交；除
 Stage 4 使用以下入口：
 
 - 直接解析和 lint 使用 `docs/methodology-config.json` 中已确认的 Python 和 Godot 路径，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
-- 测试通过 `tools/testing/run-gdunit-tests.py` 运行，它读取配置的 Godot 路径。
+- 测试通过 `yaya/tools/testing/run-gdunit-tests.py` 运行，它读取配置的 Godot 路径。
 
 步骤：
 
-1. 运行 `python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
+1. 运行 `python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
    - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
    - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
 2. 检查实际选中的范围和测试结果。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
@@ -305,7 +305,7 @@ Stage 4 使用以下入口：
 6. 产生了运行结果时，记录实际的 Required、affected 和 full 结果，包括失败：
 
    ```powershell
-   python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>
+   python -B yaya/tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>
    ```
 
    `record-tests` 校验提供的运行结果，并保存对它们的引用。它既不运行静态检查，也不校验静态检查。Agent 单独评估直接解析和 lint 的输出；证据辅助工具通过，不能推翻静态检查的失败。导入失败会清除之前的测试引用，并保留原始报告。
@@ -384,13 +384,13 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 1. 运行：
 
    ```powershell
-   python -B tools/features/record-feature-completion.py validate --feature F0XX
-   python -B tools/checks/check-feature-list.py --completion-feature F0XX
+   python -B yaya/tools/features/record-feature-completion.py validate --feature F0XX
+   python -B yaya/tools/checks/check-feature-list.py --completion-feature F0XX
    ```
 
 2. 记录已核实的结果：把 Feature 设为 `done`，并把 `completed_at` 设为当前的 ISO 8601 时间戳。状态字段记录完成，它不证明测试、审核或人工验收。
-3. 对最终的 Feature 记录运行 `python -B tools/checks/check-feature-list.py`。如果实现或契约的改动使证据失效，在交付前完成相应的验证。
-4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
+3. 对最终的 Feature 记录运行 `python -B yaya/tools/checks/check-feature-list.py`。如果实现或契约的改动使证据失效，在交付前完成相应的验证。
+4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
 7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。

@@ -78,7 +78,7 @@ $LASTEXITCODE
 ## 运行器夹具
 
 1. 把 `gdunit_runner_contracts.gd` 放到外部项目的 `tests/features/gdunit_runner/`。
-2. 用项目配置中的 Python 运行 `tools/testing/run-gdunit-tests.py --target tests/features/gdunit_runner`，确认正常运行通过。
+2. 用项目配置中的 Python 运行 `yaya/tools/testing/run-gdunit-tests.py --target tests/features/gdunit_runner`，确认正常运行通过。
 3. 只为这一次运行的进程设置环境变量 `YAYA_RUNNER_REGRESSION_FAILURE=native` 再运行一次。这次应该失败：即使四个断言都通过，未处理的引擎错误仍会让运行器报告失败。这个失败是预期结果，不算业务测试失败，也不能改报为通过。
 4. 结束后恢复原来的环境变量，两次运行的结果分别保留。
 

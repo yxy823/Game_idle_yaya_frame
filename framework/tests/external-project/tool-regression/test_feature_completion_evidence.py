@@ -13,8 +13,8 @@ import subprocess
 import tempfile
 import unittest
 
-TOOLS = (PROJECT_ROOT / "tools")
-sys.path.insert(0, str(PROJECT_ROOT))
+TOOLS = (PROJECT_ROOT / "yaya/tools")
+sys.path.insert(0, str(PROJECT_ROOT / "yaya"))
 from tools.lib import feature_completion_evidence, verification_snapshot
 from tools.lib.atomic_json import write_json
 class FeatureCompletionEvidenceTests(unittest.TestCase):
@@ -95,7 +95,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertNotIn("code_smell", data)
         self.assertEqual(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0], True)
         result = subprocess.run(
-            [sys.executable, "-B", str(PROJECT_ROOT / "tools/features/record-feature-completion.py"),
+            [sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-feature-completion.py"),
              "--repo-root", str(self.root), "validate", "--feature", "F001"],
             capture_output=True, text=True,
         )
@@ -167,7 +167,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         path = self.root / feature_completion_evidence.evidence_relative_path("F001")
         self.assertFalse(path.exists())
         result = subprocess.run(
-            [sys.executable, "-B", str(PROJECT_ROOT / "tools/features/record-feature-completion.py"),
+            [sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-feature-completion.py"),
              "--repo-root", str(self.root), "record-tests", "--feature", "F001", "--run", str(report)],
             capture_output=True, text=True,
         )
@@ -674,7 +674,7 @@ func test_plain():
             derive_test_evidence(self.root, "F001", [reference])
 
     def test_gate_template_matches_the_single_completion_record(self):
-        template = json.loads((PROJECT_ROOT / "methodology/templates/feature-completion-evidence.json.tmpl").read_text())
+        template = json.loads((PROJECT_ROOT / "yaya/methodology/templates/feature-completion-evidence.json.tmpl").read_text())
         self.assertEqual(template, feature_completion_evidence.empty_evidence(None, {"git_revision": None,
             "working_tree_fingerprint": None}))
 

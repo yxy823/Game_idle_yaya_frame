@@ -8,13 +8,13 @@ description: >-
 
 ## 依据
 
-分类、Bug 归属、各模式需要的证据和 AC、Feature 写入以及 Bug 经验的提升，遵循 `methodology/07-engineering-change.md`。产物使用 `methodology/02-feature-list-schema.md` 中对应的数据结构，语言遵循 `methodology/05-document-language.md`。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交**。
+分类、Bug 归属、各模式需要的证据和 AC、Feature 写入以及 Bug 经验的提升，遵循 `yaya/methodology/07-engineering-change.md`。产物使用 `yaya/methodology/02-feature-list-schema.md` 中对应的数据结构，语言遵循 `yaya/methodology/05-document-language.md`。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交**。
 
-开始项目工程工作之前，使用 [GDD 前提](../../../methodology/01-product-doc-structure.md#gdd-前提与职责)。本 Skill 准备工程工作；[feature-execute](../feature-execute/SKILL.md) 执行它。准备工作不代表人工验收。
+开始项目工程工作之前，使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。本 Skill 准备工程工作；[feature-execute](../feature-execute/SKILL.md) 执行它。准备工作不代表人工验收。
 
 ## 分诊与方案
 
-阅读约束本任务的 `docs/project-rules.md`、路由到的工程规则，以及相关的已有 Feature 设计稿和架构决定。调查或修改游戏行为时，还要使用 `methodology/01-product-doc-structure.md` 的 **设计范围与边界** 以及相关的 GDD 和专业来源。提出的工程规则修改遵循 `methodology/04-project-rules.md` 中的自查和授权；技术修复不能悄悄修改工程约束或游戏设计边界。
+阅读约束本任务的 `docs/project-rules.md`、路由到的工程规则，以及相关的已有 Feature 设计稿和架构决定。调查或修改游戏行为时，还要使用 `yaya/methodology/01-product-doc-structure.md` 的 **设计范围与边界** 以及相关的 GDD 和专业来源。提出的工程规则修改遵循 `yaya/methodology/04-project-rules.md` 中的自查和授权；技术修复不能悄悄修改工程约束或游戏设计边界。
 
 把一份报告当作变更处理之前，先使用 methodology 07 的 **反馈评估**，即使没有选用分诊 Skill 也要这样做。[feedback-triage-godot](../feedback-triage-godot/SKILL.md) 以直接入口的形式提供同样的检查。缺陷需要查找原因时，通过 [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md) 使用其中的 **因果诊断**，只收集本次准备需要的证据。已完成的评估和诊断直接复用；按 Bug 约定，缺少的因果证据可以在初始方案中明确标为缺失。
 
@@ -22,7 +22,7 @@ description: >-
    - GDD 意图有变化或含义不清：[design-gdd](../design-gdd/SKILL.md)；
    - 限定范围的数值设计：[design-balance](../design-balance/SKILL.md)；
    - 交付范围：[product-author](../product-author/SKILL.md)；
-   - 专业要求有变化或含义不清：`methodology/11-specialist-workflows.md` 中对应的专业入口。
+   - 专业要求有变化或含义不清：`yaya/methodology/11-specialist-workflows.md` 中对应的专业入口。
 
    按权威归属表，未完成的工作中引入的缺陷留在那个 Feature 中处理。
 2. 按工程规范，只收集所选模式必需的证据。未确认的根本原因保持为未知。没有指定具体内容的重构，使用 [engineering-refactor-select](../engineering-refactor-select/SKILL.md)，带着选中的候选回到这里。

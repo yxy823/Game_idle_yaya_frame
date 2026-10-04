@@ -27,4 +27,4 @@
 ## 第三方测试框架
 
 - 不为风格、lint 或测试方便修改 `addons/gdUnit4/`。
-- 项目自己的测试 GDScript 和 `tools/testing/*.gd` 遵循项目的 GDScript 与 lint 规则。确需例外时逐处限定，不整体豁免。
+- 项目自己的测试 GDScript 和 `yaya/tools/testing/*.gd` 遵循项目的 GDScript 与 lint 规则。确需例外时逐处限定，不整体豁免。

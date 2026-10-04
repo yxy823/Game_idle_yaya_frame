@@ -9,7 +9,7 @@ description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计�
 
 在要求的讨论范围内解决重要的不确定点，返回有用的结论或可审阅的选择。提问之前，先阅读本次涉及的事实和已有的决定。不要只因为做出了决定就写文件，也不要在一个清楚且已授权的操作之前插入访谈。已确定的用词直接交给 `project-terminology`；本 Skill 不是进入术语文档流程的必经入口。
 
-按 `methodology/01-product-doc-structure.md` 中的来源归属执行。在 Product 和 Feature 存在之前，这套提问方法就可以支持早期的游戏设计或 GDD 草稿。把用户的想法和约束作为输入，并把建议与已采用的设计分开。保存 GDD 内容属于 `design-gdd`；讨论不能绕过后续规划或实现的设计前提。
+按 `yaya/methodology/01-product-doc-structure.md` 中的来源归属执行。在 Product 和 Feature 存在之前，这套提问方法就可以支持早期的游戏设计或 GDD 草稿。把用户的想法和约束作为输入，并把建议与已采用的设计分开。保存 GDD 内容属于 `design-gdd`；讨论不能绕过后续规划或实现的设计前提。
 
 用户明确要求把一个想法留到以后时，由 methodology 01 的 **候选与未采纳想法** 选定它的所属位置。本 Skill 只在这一具体的写入范围内，把与当前决定没有依赖关系的想法保存到 `docs/unadopted-ideas.md`，或者交回已获授权的 `design-gdd` 任务。当前的设计比较，以及已采用规则的备选方案，交回 `design-gdd`。不要只为了保留一个想法就创建 GDD 系统、Product 或 Feature；没有写入授权时，想法留在对话中。
 
@@ -19,7 +19,7 @@ description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计�
 
 ### 确认事实，对当前问题分组
 
-阅读用户提供的想法或本次涉及的 GDD 主题；游戏设计或交付问题还要阅读 `methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**。阅读适用的 Product 交付范围、`docs/project-rules.md` 中的工程约束、存在时的 `docs/terminology.md`，以及回答问题所需的代码、Feature 设计或架构记录，只读需要的部分。复用用户明确的决定，包括已确认但尚未保存的约束。区分观察到的实现、已批准的意图、假设和建议；来源互相冲突时，把冲突摆出来，不要悄悄选择一个新的含义。尚未设计的文档不存在是正常的；按 **设计范围与边界** 阅读和保存，不要编造排除项。
+阅读用户提供的想法或本次涉及的 GDD 主题；游戏设计或交付问题还要阅读 `yaya/methodology/01-product-doc-structure.md` 中适用的 **设计范围与边界** 和 **开放问题**。阅读适用的 Product 交付范围、`docs/project-rules.md` 中的工程约束、存在时的 `docs/terminology.md`，以及回答问题所需的代码、Feature 设计或架构记录，只读需要的部分。复用用户明确的决定，包括已确认但尚未保存的约束。区分观察到的实现、已批准的意图、假设和建议；来源互相冲突时，把冲突摆出来，不要悄悄选择一个新的含义。尚未设计的文档不存在是正常的；按 **设计范围与边界** 阅读和保存，不要编造排除项。
 
 讨论中有多个重要选择时，先给出简短的概览：哪些已经确定，当前已知哪些问题，哪些问题依赖前面的答案。这只是当前的情况，不承诺最终的问题数量，也不是一棵穷尽的设计树。只有一个清楚的缺口时，不需要额外的概览。
 
@@ -55,13 +55,13 @@ description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计�
 
 说明要求的讨论是已经完成、仍在等待用户选择，还是受限于缺少的事实或验证。总结有用的结论和剩余的依赖；不要把缺少的决定或未经测试的假设说成已解决。继续进行仍在授权内的、不受影响的工作；所属任务的下一步准备好时，回到那个任务。
 
-游戏设计讨论既不需要准备好的 Godot 环境，也不需要详细的 Product。准备要保存进文档的措辞之前，按 `methodology/05-document-language.md` 确定 `document_language`；普通对话不需要。
+游戏设计讨论既不需要准备好的 Godot 环境，也不需要详细的 Product。准备要保存进文档的措辞之前，按 `yaya/methodology/05-document-language.md` 确定 `document_language`；普通对话不需要。
 
 ## 在正确的位置结束
 
 只讨论时，用普通的文字返回结论、重要的理由和剩余的决定。指出哪些已确认的有用结论还没有保存，避免它们被误认为项目的来源内容。不要只为了结束讨论就创建文档或规划交接。
 
-当前请求已经授权后续工作时，把已确定的答案、本次涉及的来源和剩余的不确定点交回它的协调方，让那项工作继续进行。初始游戏设计和 GDD 规则变化使用 `design-gdd`，边界内的数值设计使用 `design-balance`，Product 交付范围使用 `product-author`，不改变含义的定义使用 `project-terminology`，其他工作使用 `methodology/00-overview.md` 中对应的入口。写入及其完成规则由接手的一方负责；不要只因为换了 Skill 就再问一遍。技术结构和决定记录在那项工作的授权范围内，按 `methodology/10-architecture-overview.md` 处理。不要为了结束一次对话而硬造 Product、Feature 或 ADR。
+当前请求已经授权后续工作时，把已确定的答案、本次涉及的来源和剩余的不确定点交回它的协调方，让那项工作继续进行。初始游戏设计和 GDD 规则变化使用 `design-gdd`，边界内的数值设计使用 `design-balance`，Product 交付范围使用 `product-author`，不改变含义的定义使用 `project-terminology`，其他工作使用 `yaya/methodology/00-overview.md` 中对应的入口。写入及其完成规则由接手的一方负责；不要只因为换了 Skill 就再问一遍。技术结构和决定记录在那项工作的授权范围内，按 `yaya/methodology/10-architecture-overview.md` 处理。不要为了结束一次对话而硬造 Product、Feature 或 ADR。
 
 返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
 

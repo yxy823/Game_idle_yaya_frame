@@ -1,6 +1,6 @@
 # 游戏职责与项目组织指南
 
-理解游戏功能、判断逻辑与表现的分工、查找设计资料或安排模块位置时，按需要查阅本指南。先明确职责和文档关系，再决定代码、场景与资源如何组织。游戏设计约束沿 GDD 的[设计范围与边界](../methodology/01-product-doc-structure.md#设计范围与边界)及所属主题读取；开发约束以[项目规则](project-rules.md)及下文链接的工程规则为准。本页提供共同概念、判断方法与示例。
+理解游戏功能、判断逻辑与表现的分工、查找设计资料或安排模块位置时，按需要查阅本指南。先明确职责和文档关系，再决定代码、场景与资源如何组织。游戏设计约束沿 GDD 的[设计范围与边界](../yaya/methodology/01-product-doc-structure.md#设计范围与边界)及所属主题读取；开发约束以[项目规则](project-rules.md)及下文链接的工程规则为准。本页提供共同概念、判断方法与示例。
 
 ## 游戏逻辑与表现
 
@@ -21,7 +21,7 @@
 - **当前状态**说明现在是什么，可用于界面打开、重新连接或载入后的显示恢复。
 - **一次性事件或结果**说明刚发生什么，用于本次飘字、音效、闪烁等反馈。读取当前生命值不等于又受了一次伤；需要补播时由具体需求明确约定。
 
-玩家输入只是触发来源之一，AI、计时器和游戏流程也会调用逻辑。选择普通方法、已有 API、Signal 或必要的协调者，取决于实际依赖、结果传递和生命周期；职责模型不要求新增通信机制。双方的创建、连接与退出清理由实际组装所有者负责，具体规则见[依赖与协作](../agent-rules/10-gdscript/structure-and-dependencies.md)。
+玩家输入只是触发来源之一，AI、计时器和游戏流程也会调用逻辑。选择普通方法、已有 API、Signal 或必要的协调者，取决于实际依赖、结果传递和生命周期；职责模型不要求新增通信机制。双方的创建、连接与退出清理由实际组装所有者负责，具体规则见[依赖与协作](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
 
 ### 编排和 Godot 对象按实际职责判断
 
@@ -46,7 +46,7 @@
 | 实际模块、状态所有者、调用与连接 | [项目架构](architecture.md)及必要的子系统说明 | 谁校验并执行购买、谁管理余额与物品、界面怎样获得结果 |
 | 本次交付、局部设计与验证 | [Product](product.md)、[Feature](features/README.md)及其关联记录 | 本次完成哪些购买行为、反馈与检查，实际验收覆盖什么 |
 
-这些例子不代表项目已有商店或已确定设计。记录随实际工作产生，具体来源归属见[专业来源约定](../methodology/11-specialist-workflows.md)。一项要求保留一个正文，其他文档引用它；当前实现关系由实施任务同步，验收结果归既有记录。
+这些例子不代表项目已有商店或已确定设计。记录随实际工作产生，具体来源归属见[专业来源约定](../yaya/methodology/11-specialist-workflows.md)。一项要求保留一个正文，其他文档引用它；当前实现关系由实施任务同步，验收结果归既有记录。
 
 UI 文档从实际交互位置引用相关表现；角色死亡等非 UI 表现可直接从 GDD 引用。架构或任务设计链接实际接入关系，不把规则、表现规格和实现说明混成同一份清单。
 
@@ -56,7 +56,7 @@ UI 文档从实际交互位置引用相关表现；角色死亡等非 UI 表现�
 
 本模型帮助理解职责、定位资料和作出设计判断。普通实现方式由 Agent 根据已确认需求、现有结构和验证结果选择；默认建议按适用条件使用，不把例子变成每个任务都必须采用的结构。职责清楚不意味着必须拆成特定数量的类、节点或文件。
 
-开发顺序按实际依赖安排，逻辑与表现分工不要求逻辑先行。界面原型可以先验证布局、资源和交互，再接入购买逻辑；原型里的演示数据不成为正式游戏状态。沿用[视觉原型约定](../methodology/13-prototypes.md#依赖实现前的视觉原型)与既有 Feature 验证流程，分别核对规则结果、表现要求和接入行为。
+开发顺序按实际依赖安排，逻辑与表现分工不要求逻辑先行。界面原型可以先验证布局、资源和交互，再接入购买逻辑；原型里的演示数据不成为正式游戏状态。沿用[视觉原型约定](../yaya/methodology/13-prototypes.md#依赖实现前的视觉原型)与既有 Feature 验证流程，分别核对规则结果、表现要求和接入行为。
 
 ## 先确定内容属于谁
 
@@ -109,7 +109,7 @@ game/mining/
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 
@@ -124,12 +124,12 @@ game/mining/
 | `Store` | 明确的存储、持久化或数据访问边界 | `SaveStore`、`save_store.gd` |
 | `Manager` | 对多个所属对象或共同生命周期的真实协调 | `FeedbackManager`、`feedback_manager.gd` |
 
-小模块可能只需要一个场景和脚本。使用职责词不要求同时增加 `class_name`、继承层、Resource 类型或 Autoload；职责能说清时，用具体名称代替笼统的 `utils.gd`。Resource 的角色与可变性见[资源职责、共享与局部性](../agent-rules/21-resources/roles-sharing-and-locality.md)。
+小模块可能只需要一个场景和脚本。使用职责词不要求同时增加 `class_name`、继承层、Resource 类型或 Autoload；职责能说清时，用具体名称代替笼统的 `utils.gd`。Resource 的角色与可变性见[资源职责、共享与局部性](../yaya/agent-rules/21-resources/roles-sharing-and-locality.md)。
 
 ## 生命周期与文件位置分别判断
 
 Autoload 按真实生命周期选择，文件仍按职责归属。例如，需要跨场景存续的存档服务可以留在 `game/saving/`；场景局部协调者则跟随其所属场景。`Manager` 后缀不表示全局生命周期，放进 `components/` 也不自动证明它已经独立。
 
-需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
+需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 
-当实际边界需要说明时，按[架构约定](../methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。
+当实际边界需要说明时，按[架构约定](../yaya/methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。

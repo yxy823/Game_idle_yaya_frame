@@ -5,7 +5,7 @@ description: "在本地化规范中定义或更新已批准的语言覆盖范围
 
 # 本地化规范
 
-来源归属、授权和要求变化的影响，按 `methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把本地化规格从 GDD 中移出。在要求的设计范围内维护 `docs/localization/localization-spec.md`；只要求讨论时，返回方案。规范使用配置的 `document_language` 编写；这个设置与游戏的源语言或目标语言无关。
+来源归属、授权和要求变化的影响，按 `yaya/methodology/11-specialist-workflows.md` 执行。该文件的 **留在 GDD 中的内容** 说明了怎样把本地化规格从 GDD 中移出。在要求的设计范围内维护 `docs/localization/localization-spec.md`；只要求讨论时，返回方案。规范使用配置的 `document_language` 编写；这个设置与游戏的源语言或目标语言无关。
 
 ## 阅读与澄清
 

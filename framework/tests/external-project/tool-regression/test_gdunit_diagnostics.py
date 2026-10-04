@@ -16,12 +16,12 @@ import xml.etree.ElementTree as ET
 from unittest import mock
 
 
-TOOLS = (PROJECT_ROOT / "tools")
+TOOLS = (PROJECT_ROOT / "yaya/tools")
 SPEC = importlib.util.spec_from_file_location("gdunit_lifecycle_replay", TOOLS / "testing/run-gdunit-tests.py")
 assert SPEC is not None and SPEC.loader is not None
 runner = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = runner
-with mock.patch.object(sys, "path", [str(PROJECT_ROOT), *sys.path]):
+with mock.patch.object(sys, "path", [str(PROJECT_ROOT / "yaya"), *sys.path]):
     SPEC.loader.exec_module(runner)
     from tools.lib.gdunit_diagnostics import DiagnosticEvidenceError, unexpected_diagnostics
 

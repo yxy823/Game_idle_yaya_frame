@@ -3,14 +3,14 @@ extends Node
 signal completed(task_id: int, result: Dictionary)
 signal state_changed(task_id: int, state: String)
 
-const Job = preload("res://asset_workbench/ui/analysis_job.gd")
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
-const Source = preload("res://asset_workbench/ui/analysis_source.gd")
-const Schema = preload("res://asset_workbench/ui/analysis_schema.gd")
+const Job = preload("res://yaya/asset_workbench/ui/analysis_job.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
+const Source = preload("res://yaya/asset_workbench/ui/analysis_source.gd")
+const Schema = preload("res://yaya/asset_workbench/ui/analysis_schema.gd")
 const JOB_DIRECTORY: String = "res://reports/asset-analyzer/jobs"
 
 var executable: String
-var worker_path: String = "res://asset_workbench/analyzer/worker.py"
+var worker_path: String = "res://yaya/asset_workbench/analyzer/worker.py"
 var timeout_seconds: float = 30.0
 var max_concurrent: int = 2
 var memory_budget_mib: int = -1  # Use the shared default after successful contract loading.

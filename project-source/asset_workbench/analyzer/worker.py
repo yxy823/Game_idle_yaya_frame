@@ -37,7 +37,7 @@ def parameters(given):
 
 def backends(runtime, asset_type):
     if not runtime.is_dir():
-        raise ImportError("Install asset_workbench/analyzer/requirements.txt into " + str(runtime))
+        raise ImportError("Install yaya/asset_workbench/analyzer/requirements.txt into " + str(runtime))
     sys.path.insert(0, str(runtime))
     pins = dict(line.split("==") for line in Path(__file__).with_name("requirements.txt").read_text().splitlines())
     packages = ("av", "numpy", "pyloudnorm", "scipy") if asset_type == "audio" else ("Pillow", "numpy")
@@ -151,7 +151,7 @@ def main():
             raise AnalysisError("memory_budget_setup", str(error)) from error
         os.environ["OPENBLAS_NUM_THREADS"] = "1"
         os.environ["OMP_NUM_THREADS"] = "1"
-        project = Path(__file__).resolve().parents[2]
+        project = Path(__file__).resolve().parents[3]
         data = analyze(request, project, temporary)
         data["execution"] = {"memory_limit_mib": memory_mib} | process_memory()
     except AnalysisError as error:

@@ -1,14 +1,14 @@
 extends Control
 
-const Session = preload("res://asset_workbench/ui/preview_session.gd")
-const Browser = preload("res://asset_workbench/ui/asset_browser.gd")
-const Controls = preload("res://asset_workbench/ui/cue_controls.gd")
+const Session = preload("res://yaya/asset_workbench/ui/preview_session.gd")
+const Browser = preload("res://yaya/asset_workbench/ui/asset_browser.gd")
+const Controls = preload("res://yaya/asset_workbench/ui/cue_controls.gd")
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const Appearance = preload("res://asset_workbench/ui/workbench_theme.gd")
-const Backdrop = preload("res://asset_workbench/ui/preview_backdrop.gd")
-const AnalysisPanel = preload("res://asset_workbench/ui/analysis_panel.gd")
-const BatchPanel = preload("res://asset_workbench/ui/analysis_batch_panel.gd")
-const Layout = preload("res://asset_workbench/ui/workbench_layout.gd")
+const Appearance = preload("res://yaya/asset_workbench/ui/workbench_theme.gd")
+const Backdrop = preload("res://yaya/asset_workbench/ui/preview_backdrop.gd")
+const AnalysisPanel = preload("res://yaya/asset_workbench/ui/analysis_panel.gd")
+const BatchPanel = preload("res://yaya/asset_workbench/ui/analysis_batch_panel.gd")
+const Layout = preload("res://yaya/asset_workbench/ui/workbench_layout.gd")
 
 @export_file("*.tres") var cue_path: String
 @export_file("*.tscn") var game_scene_path: String

@@ -5,8 +5,8 @@ extends Node
 signal found(paths: Array[String])
 signal finished(message: String)
 
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
-const Source = preload("res://asset_workbench/ui/analysis_source.gd")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
+const Source = preload("res://yaya/asset_workbench/ui/analysis_source.gd")
 const ENTRY_LIMIT: int = 50000
 
 var active: bool = false

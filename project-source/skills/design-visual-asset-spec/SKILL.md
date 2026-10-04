@@ -5,7 +5,7 @@ description: "在所属的表现、界面或共享设计章节中写明具体视
 
 # 视觉资源规格
 
-归属、授权和来源影响按 `methodology/11-specialist-workflows.md` 执行。该文件的 **资源需求与交接** 章节负责：
+归属、授权和来源影响按 `yaya/methodology/11-specialist-workflows.md` 执行。该文件的 **资源需求与交接** 章节负责：
 
 - 选定所属章节：表现、UI 或已抽出组件的章节，或 `docs/art/art-bible.md` 中的 **共享资源规格**；
 - 判断是否需要文件条目，按准备和检查需要选择信息；

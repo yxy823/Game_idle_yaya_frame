@@ -2,8 +2,8 @@ extends SceneTree
 
 ## Real rendered UI, real worker results. This is evidence, not human acceptance.
 
-const Workbench = preload("res://asset_workbench/examples/single/example_workbench.tscn")
-const ASSETS: String = "res://asset_workbench/examples/assets/"
+const Workbench = preload("res://yaya/asset_workbench/examples/single/example_workbench.tscn")
+const ASSETS: String = "res://yaya/asset_workbench/examples/assets/"
 const OUTPUT: String = "res://reports/asset-workbench-ui-20260922/analysis/"
 
 var _failed: bool = false

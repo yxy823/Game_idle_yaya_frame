@@ -5,7 +5,7 @@ description: "在已授权的 Godot 任务中，按已批准的本地化规范�
 
 # 本地化实现
 
-按 `methodology/11-specialist-workflows.md` 执行。阅读已批准的 `docs/localization/localization-spec.md`，包括其中的 **术语译名** 章节（methodology 11 的 **本地化术语译名**）。同时阅读本次涉及的领域定义、外部提供的译文和当前实现。
+按 `yaya/methodology/11-specialist-workflows.md` 执行。阅读已批准的 `docs/localization/localization-spec.md`，包括其中的 **术语译名** 章节（methodology 11 的 **本地化术语译名**）。同时阅读本次涉及的领域定义、外部提供的译文和当前实现。
 
 目标语言、源语言和计划覆盖范围，以这些已确认的决定为准。`document_language` 只决定项目文档的语言，不决定这些内容。
 

@@ -51,11 +51,11 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 
 | 入口 | 常用参数 | 读写与副作用 |
 | --- | --- | --- |
-| `tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
-| `tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
-| `tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
-| `tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
-| `tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
+| `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
+| `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
+| `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
+| `yaya/tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
+| `yaya/tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
 
 组件合并器的输入与行为：
 
@@ -69,11 +69,11 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 在当前终端完成[调用准备](#调用准备)后运行：
 
 ```powershell
-& $projectPython -B tools/checks/check-project-environment.py --require-ready
+& $projectPython -B yaya/tools/checks/check-project-environment.py --require-ready
 $LASTEXITCODE
-& $projectPython -B tools/checks/check-feature-list.py
+& $projectPython -B yaya/tools/checks/check-feature-list.py
 $LASTEXITCODE
-& $projectPython -B tools/checks/check-feature-list.py --eligible
+& $projectPython -B yaya/tools/checks/check-feature-list.py --eligible
 $LASTEXITCODE
 ```
 
@@ -95,19 +95,19 @@ Feature 记录检查读取完整的 Feature 索引、详情、测试登记表和
 
 ```powershell
 # Stage 3 基线：运行已有安全网，不含尚未创建的 planned 测试。
-& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --phase baseline --scope auto
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --feature $featureId --phase baseline --scope auto
 $LASTEXITCODE
 ```
 
 ```powershell
 # TDD 或定点诊断：换成实际存在的套件或目录。
-& $projectPython -B tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
 $LASTEXITCODE
 ```
 
 ```powershell
 # Stage 4 最终验证：按当前 Feature、测试登记表和已批准范围选择测试。
-& $projectPython -B tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
 $LASTEXITCODE
 ```
 
@@ -211,7 +211,7 @@ flowchart TD
 
 ### 子命令
 
-入口为 `tools/features/record-feature-completion.py`。下表是参数速查，用来记录真实结果，不是批量填写“通过”的步骤：
+入口为 `yaya/tools/features/record-feature-completion.py`。下表是参数速查，用来记录真实结果，不是批量填写“通过”的步骤：
 
 | 子命令 | 何时使用 |
 | --- | --- |
@@ -234,14 +234,14 @@ flowchart TD
 只有一个有效运行时：
 
 ```powershell
-& $projectPython -B tools/features/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-id/result.json"
+& $projectPython -B yaya/tools/features/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-id/result.json"
 $LASTEXITCODE
 ```
 
 需要同时保留两个运行时，在一次调用中写两个 `--run`（路径同样是占位）：
 
 ```powershell
-& $projectPython -B tools/features/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-first/result.json" --run "reports/gdunit-wrapper/$featureId/run-actual-second/result.json"
+& $projectPython -B yaya/tools/features/record-feature-completion.py record-tests --feature $featureId --run "reports/gdunit-wrapper/$featureId/run-actual-first/result.json" --run "reports/gdunit-wrapper/$featureId/run-actual-second/result.json"
 $LASTEXITCODE
 ```
 
@@ -270,9 +270,9 @@ $LASTEXITCODE
 在当前终端完成[调用准备](#调用准备)后运行下面两条命令；直接解析、lint 和用户指定的评审条件由 Agent 另外确认：
 
 ```powershell
-& $projectPython -B tools/features/record-feature-completion.py validate --feature $featureId
+& $projectPython -B yaya/tools/features/record-feature-completion.py validate --feature $featureId
 $LASTEXITCODE
-& $projectPython -B tools/checks/check-feature-list.py --completion-feature $featureId
+& $projectPython -B yaya/tools/checks/check-feature-list.py --completion-feature $featureId
 $LASTEXITCODE
 ```
 
@@ -296,7 +296,7 @@ $LASTEXITCODE
 | `docs/features/` 下的 JSON、Feature 索引、测试登记表、修订记录、`methodology-config.json` | 先解析 JSON、排序对象键再计算；数组顺序保留，下表列出的过程字段除外 |
 | `docs/features/F0XX-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工验收契约单独核对，仍不能随意改写 |
 | `docs/progress/`、`docs/knowledge/`、`docs/research/` 下的 `.md` 文件 | 不纳入；这些目录里的非 Markdown 文件仍纳入 |
-| 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
+| 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`yaya/agent-rules/`、`yaya/methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
 
 不纳入只是计算规则，不是存放许可：正式需求、规则和可执行输入不能为了避开指纹而放进这些位置。知识目录只存参考经验，普通 README 只写用法和导航；其他 Markdown 没有豁免。
 

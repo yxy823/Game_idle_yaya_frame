@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
 [ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="2"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_trophy.tres" id="3_trophy"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_star.tres" id="4_star"]
-[ext_resource type="Resource" path="res://asset_workbench/examples/composition/example_composition_bonus.tres" id="5_bonus"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_trophy.tres" id="3_trophy"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_star.tres" id="4_star"]
+[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_bonus.tres" id="5_bonus"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)

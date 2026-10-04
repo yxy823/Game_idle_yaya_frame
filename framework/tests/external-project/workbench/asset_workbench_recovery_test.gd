@@ -2,18 +2,18 @@ extends GdUnitTestSuite
 
 ## E7: run only in the designated external project; fixtures belong to this suite's directory.
 
-const Single = preload("res://asset_workbench/examples/single/example_workbench.tscn")
-const Composition = preload("res://asset_workbench/examples/composition/example_workbench.tscn")
+const Single = preload("res://yaya/asset_workbench/examples/single/example_workbench.tscn")
+const Composition = preload("res://yaya/asset_workbench/examples/composition/example_workbench.tscn")
 const ShaderWorkbench = preload(
-	"res://asset_workbench/examples/shader_composition/example_workbench.tscn")
-const Effects = preload("res://asset_workbench/examples/effects_composition/example_workbench.tscn")
-const BatchPanel = preload("res://asset_workbench/ui/analysis_batch_panel.gd")
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
-const Session = preload("res://asset_workbench/ui/preview_session.gd")
-const CUE = preload("res://asset_workbench/examples/single/example_feedback.tres")
-const IMAGE = preload("res://asset_workbench/examples/assets/example_trophy.png")
-const STAR = preload("res://asset_workbench/examples/assets/example_star.png")
-const SOUND = preload("res://asset_workbench/examples/assets/example_confirmation_a.ogg")
+	"res://yaya/asset_workbench/examples/shader_composition/example_workbench.tscn")
+const Effects = preload("res://yaya/asset_workbench/examples/effects_composition/example_workbench.tscn")
+const BatchPanel = preload("res://yaya/asset_workbench/ui/analysis_batch_panel.gd")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
+const Session = preload("res://yaya/asset_workbench/ui/preview_session.gd")
+const CUE = preload("res://yaya/asset_workbench/examples/single/example_feedback.tres")
+const IMAGE = preload("res://yaya/asset_workbench/examples/assets/example_trophy.png")
+const STAR = preload("res://yaya/asset_workbench/examples/assets/example_star.png")
+const SOUND = preload("res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg")
 
 var _workbenches: Array[Control] = []
 var _owned_files: Array[String] = []

@@ -56,7 +56,7 @@
 | 业务工作进行中遇到项目工具的阻塞 | 保留业务的进行中改动及其证据；把工具修复作为本项目内一项有边界的技术任务处理。 |
 | 紧急修复 | 准备工作可以从简，用户的授权可以覆盖多个准备步骤。必需的验证、适用的人工验收、用户明确的审核条件、完成检查和可追溯的提交仍然适用。紧急不等于豁免。 |
 
-把当前 Feature 的缺陷路由回执行流程，不授权新的范围；范围的实质变化要报告并等待批准。切换到有边界的修复时，按 [Git 与提交](../AGENTS.md#git-与提交) 在任务的工作目录中保留暂停的工作，之后根据其记录和实际改动续接。
+把当前 Feature 的缺陷路由回执行流程，不授权新的范围；范围的实质变化要报告并等待批准。切换到有边界的修复时，按 [Git 与提交](../../AGENTS.md#git-与提交) 在任务的工作目录中保留暂停的工作，之后根据其记录和实际改动续接。
 
 ## 流程
 
@@ -189,7 +189,7 @@ feature-execute
 
 提出 `affected_components` 时读取 `docs/test-registry.json`。获批后，在写入和校验 Feature 之前登记缺少的组件：
 
-- 使用 [feature-plan](../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson) 中的合并辅助工具；测试登记表本身的规则见 [08 · 登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
+- 使用 [feature-plan](../../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson) 中的合并辅助工具；测试登记表本身的规则见 [08 · 登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 - 复用已有记录，不重置测试；报告冲突的 ID。
 - 没有单元套件的组件写 `unit_test_paths: []`。除非已批准的契约另有要求，它的 `full_suite_on_change` 默认为 `false`。
 - 把这些测试登记表的改动放进同一个 Feature 计划提交。测试映射仍在执行期间最终确定。
@@ -197,10 +197,10 @@ feature-execute
 写完一组一致的内容后，运行校验：
 
 ```powershell
-python -B tools/checks/check-feature-list.py
+python -B yaya/tools/checks/check-feature-list.py
 ```
 
-然后按 [Git 与提交](../AGENTS.md#暂存) 暂存本任务的 Feature 计划路径，创建一个本地提交，除非用户明确要求不提交。主题格式、正文中的 `Feature:` 与 `Work item:` 行，以及禁止的 Git 操作，按 [Git 与提交](../AGENTS.md#提交) 执行。
+然后按 [Git 与提交](../../AGENTS.md#暂存) 暂存本任务的 Feature 计划路径，创建一个本地提交，除非用户明确要求不提交。主题格式、正文中的 `Feature:` 与 `Work item:` 行，以及禁止的 Git 操作，按 [Git 与提交](../../AGENTS.md#提交) 执行。
 
 创建工程 Feature 不新增 `feature-list-revisions.json` 条目，因为没有同步任何 GDD、Product 或专业来源。
 

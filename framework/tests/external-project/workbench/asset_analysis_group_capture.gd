@@ -1,8 +1,8 @@
 extends SceneTree
 
-const Workbench = preload("res://asset_workbench/examples/single/example_workbench.tscn")
-const Composition = preload("res://asset_workbench/examples/composition/example_workbench.tscn")
-const Group = preload("res://asset_workbench/ui/analysis_group.gd")
+const Workbench = preload("res://yaya/asset_workbench/examples/single/example_workbench.tscn")
+const Composition = preload("res://yaya/asset_workbench/examples/composition/example_workbench.tscn")
+const Group = preload("res://yaya/asset_workbench/ui/analysis_group.gd")
 const DIRECTORY: String = "res://reports/asset-workbench-ui-20260922/group/"
 
 var _failed: bool = false
@@ -94,7 +94,7 @@ func _batch_capture(workbench: Control) -> void:
 
 
 func _load_batch_fixture(panel: Window) -> Array[String]:
-	var example := Group.read_json("res://asset_workbench/examples/example_analysis_group.json")
+	var example := Group.read_json("res://yaya/asset_workbench/examples/example_analysis_group.json")
 	_check(not example.has("error"), "Cannot read batch fixture: " + example.get("error", ""))
 	if example.has("error"):
 		return []
@@ -111,7 +111,7 @@ func _load_batch_fixture(panel: Window) -> Array[String]:
 
 func _unsupported_source_capture(workbench: Control, panel: Window) -> void:
 	var atlas := AtlasTexture.new()
-	atlas.atlas = load("res://asset_workbench/examples/assets/example_star.png")
+	atlas.atlas = load("res://yaya/asset_workbench/examples/assets/example_star.png")
 	var assets: Array[Resource] = [atlas]
 	var count: int = panel.batch.group.assets.size()
 	panel.call("open_assets", assets)

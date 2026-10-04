@@ -20,8 +20,8 @@ from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory, derive_test_evidence
 from tools.lib.test_selection import build_selection, execution_selectors, read_json
 
-REPO_ROOT = Path(__file__).resolve().parents[2]
-RUNNER_SCRIPT = "res://tools/testing/gdunit_evidence_runner.gd"
+REPO_ROOT = Path(__file__).resolve().parents[3]
+RUNNER_SCRIPT = "res://yaya/tools/testing/gdunit_evidence_runner.gd"
 DEFAULT_TIMEOUT_SECONDS = 120.0
 SUMMARY_FAILURES_PER_CASE = 5
 SUMMARY_DETAIL_LINES = 6

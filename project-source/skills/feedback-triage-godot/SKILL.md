@@ -12,7 +12,7 @@ description: 对照已确认的意图和当前行为核实一份 Godot 项目反
 - 能力已经存在，只是不容易发现或需要解释；
 - 尚未解决的证据缺口。
 
-使用 `methodology/07-engineering-change.md` 中的 **反馈评估**、**分类边界** 和 **Bug 的归属与路由**；评估规则和后续工作都由它们负责。
+使用 `yaya/methodology/07-engineering-change.md` 中的 **反馈评估**、**分类边界** 和 **Bug 的归属与路由**；评估规则和后续工作都由它们负责。
 
 ## 弄清反馈内容
 

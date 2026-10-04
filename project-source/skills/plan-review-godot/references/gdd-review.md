@@ -1,6 +1,6 @@
 # GDD 审查要点
 
-用户要求审查 GDD 草稿、选定主题或整体设计时，使用本参考。审查所提供的范围及其必要的依赖；Product 和 Feature 文档不必已经存在。正式的独立审核遵循 `methodology/12-independent-review.md`，包括只读来源、证据局限，以及把修复交回作者。
+用户要求审查 GDD 草稿、选定主题或整体设计时，使用本参考。审查所提供的范围及其必要的依赖；Product 和 Feature 文档不必已经存在。正式的独立审核遵循 `yaya/methodology/12-independent-review.md`，包括只读来源、证据局限，以及把修复交回作者。
 
 ## 明确文档要支持什么
 

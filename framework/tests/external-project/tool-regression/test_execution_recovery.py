@@ -60,7 +60,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_missing_executable_is_recorded_before_preflight_and_blocks_old_pass(self):
         plan, passed = make_run(self.root)
-        spec = importlib.util.spec_from_file_location("attempt_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        spec = importlib.util.spec_from_file_location("attempt_runner", PROJECT_ROOT / "yaya/tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
@@ -100,7 +100,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
     def test_auto_selection_read_failure_recovers_without_new_full_obligation(self):
         plan, old_pass = make_run(self.root)
         previous = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
-        spec = importlib.util.spec_from_file_location("selection_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        spec = importlib.util.spec_from_file_location("selection_runner", PROJECT_ROOT / "yaya/tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
@@ -168,7 +168,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 self.assertIn(str(failed), str(failure.exception))
 
     def test_invalid_history_warns_without_blocking_launch_or_hiding_current_failure(self):
-        self.write("tools/testing/gdunit_evidence_runner.gd", "extends SceneTree\n")
+        self.write("yaya/tools/testing/gdunit_evidence_runner.gd", "extends SceneTree\n")
         plan, old_pass = make_run(self.root)
         old_bytes = old_pass.read_bytes()
         history = json.loads(old_bytes)
@@ -180,7 +180,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                     json.dumps({**history, "run_id": "run-other"})]
         payloads.extend(json.dumps({**history, "sequence": value})
                         for value in (None, True, 0, -1, "2"))
-        spec = importlib.util.spec_from_file_location("history_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        spec = importlib.util.spec_from_file_location("history_runner", PROJECT_ROOT / "yaya/tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
@@ -283,7 +283,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.assertEqual((directory / "result.json").read_bytes(), original)
 
     def test_snapshot_error_stops_runner_before_launch(self):
-        spec = importlib.util.spec_from_file_location("snapshot_runner", PROJECT_ROOT / "tools/testing/run-gdunit-tests.py")
+        spec = importlib.util.spec_from_file_location("snapshot_runner", PROJECT_ROOT / "yaya/tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)

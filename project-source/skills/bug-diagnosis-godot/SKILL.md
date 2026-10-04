@@ -5,7 +5,7 @@ description: 通过复现、可区分的假设和因果证据调查 Godot 项目
 
 # 诊断项目缺陷
 
-查清报告中的触发条件怎样产生错误结果。调查方法使用 `methodology/07-engineering-change.md` 的 **因果诊断**；Bug 的路由、记录和修复验证也由该规范负责。已经确定的契约和职责归属直接沿用，不重新分诊。
+查清报告中的触发条件怎样产生错误结果。调查方法使用 `yaya/methodology/07-engineering-change.md` 的 **因果诊断**；Bug 的路由、记录和修复验证也由该规范负责。已经确定的契约和职责归属直接沿用，不重新分诊。
 
 ## 选择需要的证据
 
@@ -39,6 +39,6 @@ description: 通过复现、可区分的假设和因果证据调查 Godot 项目
 
 说明实际的调查覆盖范围，以及还必须做的检查。提出证据能支撑的最小修复。不要因为某个变通做法让症状消失了，就把一个假设称为根本原因。
 
-长期保存的 Bug 证据按 methodology 07 处理；保留的结果和临时探测按 `methodology/09-records-reports-and-handoff.md` 处理。只在已有的 Feature/Progress 位置记录任务需要的内容。保留原始的失败证据，并写明临时诊断代码当前的状态。
+长期保存的 Bug 证据按 methodology 07 处理；保留的结果和临时探测按 `yaya/methodology/09-records-reports-and-handoff.md` 处理。只在已有的 Feature/Progress 位置记录任务需要的内容。保留原始的失败证据，并写明临时诊断代码当前的状态。
 
 只要求诊断的请求，以有依据的结论或明确的阻塞结束；原因未查清就写未查清。修复已获授权时，按职责归属约定把诊断交给当前 Feature 或 [engineering-change-plan](../engineering-change-plan/SKILL.md)。诊断不另设审批关卡，也不代替回归验证、适用的人工验收或已有的完成约定。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

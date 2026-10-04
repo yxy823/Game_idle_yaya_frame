@@ -11,13 +11,13 @@
 | 正在编写的文档 | 内容与约束的来源 |
 | --- | --- |
 | 项目 README 或工具说明 | 现有入口页、实际的命令或编辑器界面，以及项目本地的配置和使用约定 |
-| 已有的 GDD 或 Product 说明 | `methodology/01-product-doc-structure.md`；输出 Product 时，另看 `methodology/templates/` 下的当前模板 |
-| Feature 记录或设计说明 | `methodology/02-feature-list-schema.md`，以及受影响 Feature 的实际来源和记录 |
-| 架构或技术决策记录 | `methodology/10-architecture-overview.md`，以及已实现的职责和已采纳的决策 |
+| 已有的 GDD 或 Product 说明 | `yaya/methodology/01-product-doc-structure.md`；输出 Product 时，另看 `yaya/methodology/templates/` 下的当前模板 |
+| Feature 记录或设计说明 | `yaya/methodology/02-feature-list-schema.md`，以及受影响 Feature 的实际来源和记录 |
+| 架构或技术决策记录 | `yaya/methodology/10-architecture-overview.md`，以及已实现的职责和已采纳的决策 |
 | 可复用的项目经验知识 | `docs/knowledge/README.md`、所属主题和原任务的证据 |
-| 调研或验证记录 | `methodology/09-records-reports-and-handoff.md`、实际证据，以及所属任务对调研或验证的约定 |
+| 调研或验证记录 | `yaya/methodology/09-records-reports-and-handoff.md`、实际证据，以及所属任务对调研或验证的约定 |
 
-遵循目标项目的 `AGENTS.md`，长期保存的产出使用项目配置的 `document_language` 编写。确定语言或渲染模板时，使用 `methodology/05-document-language.md`。
+遵循目标项目的 `AGENTS.md`，长期保存的产出使用项目配置的 `document_language` 编写。确定语言或渲染模板时，使用 `yaya/methodology/05-document-language.md`。
 
 - 项目标识符和机器可读结构不随语言改变形式；沿用项目的术语和模板。
 - 缺少的设计、批准或证据仍是所属任务的缺口，本写作方法不能补上。

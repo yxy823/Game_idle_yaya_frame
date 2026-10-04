@@ -92,16 +92,16 @@ class DocumentGraphCoverageTests(unittest.TestCase):
     def test_copy_manifest_expands_both_template_destinations_without_writing(self):
         source = "project-source/methodology/templates/feature-list.json.tmpl"
         self.write(source, "{}")
-        self.manifest(("project-source/methodology", "methodology"),
+        self.manifest(("project-source/methodology", "yaya/methodology"),
                       (source, "docs/feature-list.json"))
-        self.graph("项目文件： methodology/templates/*.tmpl")
+        self.graph("项目文件： yaya/methodology/templates/*.tmpl")
         before = {p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}
         rows = self.results(exit_code=1)
         self.assertEqual([r["path"] for r in rows if not r["nodes"]], ["docs/feature-list.json"])
         self.assertEqual({r["path"] for r in rows if r["source"] == source},
-                         {"methodology/templates/feature-list.json.tmpl", "docs/feature-list.json"})
+                         {"yaya/methodology/templates/feature-list.json.tmpl", "docs/feature-list.json"})
         self.assertEqual({p: p.read_bytes() for p in self.root.rglob("*") if p.is_file()}, before)
-        self.graph("项目文件： methodology/templates/*.tmpl\n项目文件： docs/feature-list.json")
+        self.graph("项目文件： yaya/methodology/templates/*.tmpl\n项目文件： docs/feature-list.json")
         self.results()
 
     def test_invalid_registration_and_wrong_graph_fail_instead_of_reporting_coverage(self):

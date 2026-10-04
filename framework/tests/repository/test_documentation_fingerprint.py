@@ -40,7 +40,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
     def test_usage_readme_add_edit_remove_and_staging_preserve_source_binding(self):
         before = self.fingerprint()
         for name in (
-            "README.md", "scenarios/reset_sequence/README.md", "tools/README.md",
+            "README.md", "scenarios/reset_sequence/README.md", "yaya/tools/README.md",
             "docs/README.md", "docs/guides/readme.md", "modules/counter/ReadMe.md",
         ):
             with self.subTest(name=name):
@@ -198,9 +198,9 @@ class DocumentationFingerprintTests(unittest.TestCase):
             ("docs/product.md", "New required behavior\n"),
             ("docs/product/README.md", "Required module behavior\n"),
             ("docs/features/README.md", "Feature contract\n"),
-            ("agent-rules/rule.md", "New mandatory contract\n"),
-            ("agent-rules/70-tests/README.md", "Required test rules\n"),
-            ("methodology/templates/README.md", "Required template contract\n"),
+            ("yaya/agent-rules/rule.md", "New mandatory contract\n"),
+            ("yaya/agent-rules/70-tests/README.md", "Required test rules\n"),
+            ("yaya/methodology/templates/README.md", "Required template contract\n"),
             (".agents/skills/task/README.md", "Required Skill behavior\n"),
             ("docs/knowledge-other/note.md", "Outside the knowledge boundary\n"),
             ("docs/features/F001.json", json.dumps({

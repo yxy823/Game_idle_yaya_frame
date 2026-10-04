@@ -1,6 +1,6 @@
 # 美术、音频、Shader 与粒子动画组合预览示例
 
-这是可删除、可替换的开发示例，不是项目 Product、正式玩法或已验收资源。使用前按项目 README 完成环境准备；示例不会设置项目主场景，也不会自动启动。示例使用的表现组件契约见[表现反馈组件](../../components/feedback/README.md)。
+这是可删除、可替换的开发示例，不是项目 Product、正式玩法或已验收资源。使用前按项目 README 完成环境准备；示例不会设置项目主场景，也不会自动启动。示例使用的表现组件契约见[表现反馈组件](../../../components/feedback/README.md)。
 
 ## 打开与操作
 
@@ -17,7 +17,7 @@
 
 ```powershell
 $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.engine_executable --path . 'res://asset_workbench/examples/single/example_workbench.tscn' | Out-Host
+& $config.engine_executable --path . 'res://yaya/asset_workbench/examples/single/example_workbench.tscn' | Out-Host
 ```
 
 先完成正常导入。
@@ -83,7 +83,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 
 保存仍只写当前对象的 Cue，重载和独立场景 `shader_composition/example_composition.tscn` 读取同一数据。共享的 Shader、纹理、音频及材质预设不会被试调修改。源文件分析只收集已选择的图片和声音，跳过空项，不分析 Shader 源码、材质或最终渲染画面。
 
-接入另一个 Shader 的预设要求和时序契约，见[表现反馈组件的 Shader 预设](../../components/feedback/README.md#shader-预设)。
+接入另一个 Shader 的预设要求和时序契约，见[表现反馈组件的 Shader 预设](../../../components/feedback/README.md#shader-预设)。
 
 ## 分组与批量检查
 
@@ -116,7 +116,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 - Inspector 显示预设 `local_coords` 的含义；本例同时提供局部跟随与场景坐标两种粒子。
 - 只启用运动而没有图像、Shader 或粒子时，画面上没有可见目标；该配置仍然有效，不会补入隐藏素材。
 
-本例的动画片段为 `example_wobble_animation.tres`，可在 Godot 编辑器中制作片段，工作台只负责选择和调整速度。新增粒子、动画预设的取值范围与制作限制见[表现反馈组件](../../components/feedback/README.md#粒子动画与-tween-的限制)。
+本例的动画片段为 `example_wobble_animation.tres`，可在 Godot 编辑器中制作片段，工作台只负责选择和调整速度。新增粒子、动画预设的取值范围与制作限制见[表现反馈组件](../../../components/feedback/README.md#粒子动画与-tween-的限制)。
 
 ### 组合复用、保存和消费
 
@@ -126,7 +126,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 - 重载只丢弃选中对象的两份草稿。
 - 全场景保存按[可交互组合场景](#可交互组合场景)中的规则处理同一文件的一致或分歧草稿，不按遍历顺序覆盖。
 
-“打开消费场景”运行 `example_consumer.tscn`。它继承组合场景，改变两个组合根的摆放、旋转和缩放，读取同一批已保存的 Cue，不依赖工作台或框架路径。`Core` 的 `z_index=1`，另两个为 0。组合的停止与登记规则见[表现反馈组件的组合与登记](../../components/feedback/README.md#组合与登记)。
+“打开消费场景”运行 `example_consumer.tscn`。它继承组合场景，改变两个组合根的摆放、旋转和缩放，读取同一批已保存的 Cue，不依赖工作台或框架路径。`Core` 的 `z_index=1`，另两个为 0。组合的停止与登记规则见[表现反馈组件的组合与登记](../../../components/feedback/README.md#组合与登记)。
 
 粒子候选是三个明确的预设，片段候选为一个，没有按并发实例数复制候选。`example_burst_cue.tres`、`example_animation_cue.tres`、`example_stream_cue.tres` 作为单一机制的独立示例保留。示例不附带性能测量结果，不能作为任何设备或任意素材的性能保证；没有全项目扫描或预设数据库。
 
@@ -139,7 +139,7 @@ $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | Convert
 - 消费场景读取同一编排和**已保存的 Cue**，提供播放与循环、受管触发 A 组、高优先级 B 组、取消受管 A 组及停止全部，便于单独检查调度。示例最多同时管理 3 个对象。
 - 工作台只播放编排定义，没有时间轴编辑或保存按钮；“保存当前方案/全场景”仍只写 Cue。
 
-Manager 的句柄、预算、取消规则与编排的调度规则见[表现反馈组件的场景局部管理与有限编排](../../components/feedback/README.md#场景局部管理与有限编排)。
+Manager 的句柄、预算、取消规则与编排的调度规则见[表现反馈组件的场景局部管理与有限编排](../../../components/feedback/README.md#场景局部管理与有限编排)。
 
 ## 示例文件
 
@@ -165,7 +165,7 @@ Manager 的句柄、预算、取消规则与编排的调度规则见[表现反�
 
 ## 消费接入与导出
 
-四个消费入口只使用自身场景、表现组件和局部音频实现，不依赖工作台、Analyzer、框架路径或就绪流程。Cue 的绑定方式见[表现反馈组件的 Cue 与消费绑定](../../components/feedback/README.md#cue-与消费绑定)。
+四个消费入口只使用自身场景、表现组件和局部音频实现，不依赖工作台、Analyzer、框架路径或就绪流程。Cue 的绑定方式见[表现反馈组件的 Cue 与消费绑定](../../../components/feedback/README.md#cue-与消费绑定)。
 
 选择“场景及依赖”导出时：
 
@@ -173,7 +173,7 @@ Manager 的句柄、预算、取消规则与编排的调度规则见[表现反�
 2. 保留实际使用的第三方许可，例如 SoundManager 的 `LICENSE` 和 Shader 的 `example_shaders_license.txt`，可随包包含或放在发行说明中。
 3. 用导出包独立启动消费场景，核对图像、声音、材质、粒子、动画、编排与停止。编辑器里 F6 成功不能代替导出验证。项目不预填生产导出配置。
 
-使用全资源导出时，排除仅用于开发的 `asset_workbench/ui/`、`asset_workbench/analyzer/`、测试与 `reports/`。只有正式场景已不引用示例时，才能排除整个 `asset_workbench/examples/`；不能只因文件有 `example_` 前缀就忽略真实引用。保留正式场景实际依赖的组件、音频实现、素材和许可。
+使用全资源导出时，排除仅用于开发的 `yaya/asset_workbench/ui/`、`yaya/asset_workbench/analyzer/`、测试与 `reports/`。只有正式场景已不引用示例时，才能排除整个 `yaya/asset_workbench/examples/`；不能只因文件有 `example_` 前缀就忽略真实引用。保留正式场景实际依赖的组件、音频实现、素材和许可。
 
 ## 素材来源与许可
 

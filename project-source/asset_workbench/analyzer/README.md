@@ -10,7 +10,7 @@ Analyzer 在开发期离线分析图像与音频的源文件。Godot 导入后�
 
 ```powershell
 $config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.python_executable -B -m pip install --only-binary=:all: --target 'reports/asset-analyzer/runtime' -r 'asset_workbench/analyzer/requirements.txt'
+& $config.python_executable -B -m pip install --only-binary=:all: --target 'reports/asset-analyzer/runtime' -r 'yaya/asset_workbench/analyzer/requirements.txt'
 $LASTEXITCODE
 ```
 
@@ -37,7 +37,7 @@ $LASTEXITCODE
 4. 成员表显示源文件、类型、状态、缓存及问题摘要。选中成员后先看警告和依据，再按需展开统计或规则；完整路径可从集合菜单查看复制。按住 Ctrl 选中两项同类结果，点“分析对比 A/B（选中两项）”，会复用原窗口和图表，不重复分析。
 5. 同类统计显示有效样本数、最小值、中位数和最大值。类型、单位、Schema、Analyzer 或后端版本、分析参数不同的结果分开统计，表格第一列的 tooltip 保留版本与参数。不可用、缺失和失败的值不进入统计，也不当作零或规则通过。
 6. 分析后，从指标下拉框添加 `Minimum`、`Maximum` 或 `Max distance from median` 规则，阈值使用该指标的原单位。中位数偏差需要至少 3 个可比测量，否则显示 unmeasured。规则直接用现有数据检查，不改变底层算法或素材；最多 64 条。
-7. 集合菜单的“保存集合与规则”把分组保存为项目内的 `.json`；“加载集合（替换当前集合）”读取并验证后替换当前分组及结果。示例见 `asset_workbench/examples/example_analysis_group.json`。`parameters` 沿用后端的参数协议，可设置静音阈值等，重分析后生效。
+7. 集合菜单的“保存集合与规则”把分组保存为项目内的 `.json`；“加载集合（替换当前集合）”读取并验证后替换当前分组及结果。示例见 `yaya/asset_workbench/examples/example_analysis_group.json`。`parameters` 沿用后端的参数协议，可设置静音阈值等，重分析后生效。
 8. “保存分析结果快照”写入 `reports/asset-analyzer/history/batch-*.json`；“打开历史快照”标记 HISTORICAL 与原保存时间，不代表当前文件。重分析会检查内容哈希；导出的资源身份使用项目相对路径。分组与快照共用 32 MiB 上限（含 UTF-8 编码及格式化开销）；超限时保留已有文件和当前结果，可缩小分组后重试。
 
 分组是轻量 JSON，不另建数据库或业务资产关系：
@@ -105,7 +105,7 @@ $LASTEXITCODE
 - 缺少解释器或依赖、无法解码、超限、超时、异常退出、空输出和协议损坏，都显示为结构化错误，不关闭工作台。
 - 文件在分析过程中改变时，拒绝写缓存并要求重试。
 - Godot 侧的能力配置与结果 Schema 在首次需要时加载，成功后在进程内复用。文件缺失、JSON 损坏或必需结构无效时返回 `analyzer_config` 并指出文件，预览与播放仍可继续。加载失败不缓存，恢复正确文件后可以重试；加载成功后再修改契约，需要重启工作台进程，不提供自动热重载。
-- Analyzer 只在开发环境运行，正式导出排除 `asset_workbench/analyzer/` 与工作台；音频播放与正式组件没有 Python 依赖。
+- Analyzer 只在开发环境运行，正式导出排除 `yaya/asset_workbench/analyzer/` 与工作台；音频播放与正式组件没有 Python 依赖。
 
 ## 结构与协议
 

@@ -15,7 +15,7 @@
 
 按原样使用配置的 `engine_executable`，不要另找 Godot 安装。路径不可用时，报告原因。用户要求 Agent 准备环境时，Agent 可以把找到的 Python 和 Godot 路径写进这个文件。执行其他任务时，只有用户要求使用新的工具位置才修改路径。路径已填写不代表工具已经可用。
 
-命令从项目根目录运行。测试入口固定为 `tools/testing/run-gdunit-tests.py`；它读取配置的 Godot 路径，`--godot-binary` 只在单次运行中覆盖该路径。脚本解析和 lint 直接调用 Godot 和 linter 插件，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
+命令从项目根目录运行。测试入口固定为 `yaya/tools/testing/run-gdunit-tests.py`；它读取配置的 Godot 路径，`--godot-binary` 只在单次运行中覆盖该路径。脚本解析和 lint 直接调用 Godot 和 linter 插件，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
 
 ## 项目环境准备
 
@@ -26,7 +26,7 @@
 3. **检查是否就绪。** 运行：
 
    ```powershell
-   python -B tools/checks/check-project-environment.py --require-ready
+   python -B yaya/tools/checks/check-project-environment.py --require-ready
    ```
 
 4. **记录结果。** 把做了什么、发现了什么写进 `reports/initialization.md`。文件已存在时，追加一条新记录，保留之前的失败。Progress 记录当前结果、阻塞、下一步和指向该报告的链接。

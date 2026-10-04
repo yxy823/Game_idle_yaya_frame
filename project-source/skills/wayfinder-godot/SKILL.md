@@ -7,7 +7,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 几个关键未知相互影响、解决其中一个会改变下一步能决定什么时，使用本方法。它可以配合讨论、规划或实现，但不新增 Stage，也不是普通工作前的必经入口。
 
-按 `methodology/01-product-doc-structure.md` 的 **GDD 前提与职责** 判断问题的实际去向：
+按 `yaya/methodology/01-product-doc-structure.md` 的 **GDD 前提与职责** 判断问题的实际去向：
 
 - 初始的游戏设计问题回到 [design-gdd](../design-gdd/SKILL.md)。
 - 依赖设计的规划、工程探索和实现，需要相关的 GDD 真实存在。
@@ -35,7 +35,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 | 下一个决定缺少的依据 | 方法与边界 |
 | --- | --- |
 | 用户偏好、设计边界或有后果的取舍 | 使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。带上事实和具体的备选方案；只问重要的决定，不重新开始一般性的 GDD/Product 需求收集。 |
-| 某个 API、第三方能力或项目的实际实现 | 先读本地的相关来源。需要外部事实时，按 `methodology/09-records-reports-and-handoff.md` 的 **外部调研** 查找资料、委托 `researcher` 和保存来源。调研不等于允许做实验或采纳需求。 |
+| 某个 API、第三方能力或项目的实际实现 | 先读本地的相关来源。需要外部事实时，按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 查找资料、委托 `researcher` 和保存来源。调研不等于允许做实验或采纳需求。 |
 | 讨论无法确定的布局、交互、状态行为或可行性 | 已获授权的有边界 Godot 实验使用 [prototype-godot](../prototype-godot/SKILL.md)。先定义要回答的问题和需要的观察；保留真实的人工判断，并区分模拟行为与必需的真实引擎路径。只做讨论的工作可以描述实验，但不搭建它。 |
 | 几种实现需要实际比较，而且会互相覆盖或需要独立的工作目录 | 搭建备选方案前，先定好可比较的目标、有代表性的输入和观察项。只有任务需要并授权这些目录时，才使用 [worktree-create-godot](../worktree-create-godot/SKILL.md)；简单的实验可以用当前的检出目录。独立的检出目录不能证明运行时数据已隔离。 |
 | 已经有具体提案，需要检查它的假设或遗漏 | 在请求的审核范围内使用 [plan-review-godot](../plan-review-godot/SKILL.md)。审核发现用于支持决定，不代表批准提案、实施提案，也不构成强制关卡。 |
@@ -46,7 +46,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 ## 把发现保存到已有的归属位置
 
-一次性的讨论留在对话里。已获授权的续接或长期工作需要记录时，使用 `methodology/09-records-reports-and-handoff.md` 的对应小节：
+一次性的讨论留在对话里。已获授权的续接或长期工作需要记录时，使用 `yaya/methodology/09-records-reports-and-handoff.md` 的对应小节：
 
 - Progress（进度记录）保存当前状态。
 - Feature 备注保存提醒和导航。
@@ -56,7 +56,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 链接到权威的决定和原始证据，不要把它们复制进一份新的探索文档。
 
-符合条件的技术决策，按 `methodology/10-architecture-overview.md` 的 **架构决策记录** 处理；普通问题不需要 ADR。不属于任何 Feature、又不满足 ADR 条件的已采纳技术决策，在允许保存时使用同一规范中的 **独立技术决定**。已确认的游戏意图、交付范围和专业需求，仍回到它们的 GDD/Product 或专业所属文档。仅凭探索得到的发现，不授权写入这些文档。
+符合条件的技术决策，按 `yaya/methodology/10-architecture-overview.md` 的 **架构决策记录** 处理；普通问题不需要 ADR。不属于任何 Feature、又不满足 ADR 条件的已采纳技术决策，在允许保存时使用同一规范中的 **独立技术决定**。已确认的游戏意图、交付范围和专业需求，仍回到它们的 GDD/Product 或专业所属文档。仅凭探索得到的发现，不授权写入这些文档。
 
 不要为本方法创建 issue/ticket 图、问题记录文件、认领状态、仅用于调研的分支或并行的待办列表。不属于 Feature 的工作可以使用它已有的任务记录；不需要为了解决下一个问题而硬造一个 Feature 或新开一次对话。
 
@@ -64,7 +64,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 说明当前的结论或可供审核的备选方案、支持它的来源和实际观察、仍然存在的重要不确定性，以及下一步动作和它真实的前提。一个看起来合理的答案不是已验证的结果。缺少的证据或用户决定仍是明确的缺口，不算已解决的问题。
 
-只做讨论的工作，到达请求的分析结果就结束。不确定性已经消除到足以支持已获授权的规划或实现时，按 `methodology/00-overview.md` 的 **任务路由表** 把发现交回原负责方，并继续那项工作。不要索要固定的最终确认，也不要因为出现了诱人的备选方案就扩大范围。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。整合选定的 worktree 结果，遵循独立的 [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) 约定和当前授权；探索本身不授权整合或清理。
+只做讨论的工作，到达请求的分析结果就结束。不确定性已经消除到足以支持已获授权的规划或实现时，按 `yaya/methodology/00-overview.md` 的 **任务路由表** 把发现交回原负责方，并继续那项工作。不要索要固定的最终确认，也不要因为出现了诱人的备选方案就扩大范围。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。整合选定的 worktree 结果，遵循独立的 [worktree-integrate-godot](../worktree-integrate-godot/SKILL.md) 约定和当前授权；探索本身不授权整合或清理。
 
 只有一个普通的未决问题时，直接使用 [project-grill-me](../project-grill-me/SKILL.md)。[project-next-step-advisor](../project-next-step-advisor/SKILL.md) 解释状态和入口选择，但不推进探索；[loop-me-godot](../loop-me-godot/SKILL.md) 为反复出现的活动设计处理方式；[retro-godot](../retro-godot/SKILL.md) 回顾实际发生过的经历。目标清楚的已授权工作由原负责方直接继续，不绕道寻路。
 

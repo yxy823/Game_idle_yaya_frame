@@ -3,7 +3,7 @@ extends RefCounted
 ## Comparable cohorts retain type, units, analysis parameters and backend identity.
 ## Differences are measurements or explicit rules, never an aesthetic score.
 
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
 
 
 static func columns(results: Dictionary) -> Dictionary:

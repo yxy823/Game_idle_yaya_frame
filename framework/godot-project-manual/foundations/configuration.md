@@ -17,7 +17,7 @@
 配置文件只保存文档语言和两个工具路径。其他信息都有固定位置，不写进配置：
 
 - **技术栈**：固定为 Godot 4.7、GDScript 和 gdUnit4，不在配置中另存标签；实际安装的版本以检查输出和初始化报告为准。
-- **测试入口**：固定为 `tools/testing/run-gdunit-tests.py`，运行时再指定 Feature 和 scope。
+- **测试入口**：固定为 `yaya/tools/testing/run-gdunit-tests.py`，运行时再指定 Feature 和 scope。
 - **测试登记表**：固定为 `docs/test-registry.json`，合并工具、Feature 记录检查、测试选择和完成检查都读这个位置。
 - **测试目录**：测试都放在 `tests/` 下，分为 `unit/`、`features/`、`invariants/`。full 运行整个 `tests/`，其他范围按登记表的映射选择。
 
@@ -43,7 +43,7 @@
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
 $projectPython = $projectConfig.python_executable
-& $projectPython -B tools/checks/check-project-environment.py --require-ready
+& $projectPython -B yaya/tools/checks/check-project-environment.py --require-ready
 $LASTEXITCODE
 ```
 
@@ -58,7 +58,7 @@ $LASTEXITCODE
 
 ## 检查能力边界
 
-`tools/checks/check-project-environment.py` 只读取配置，不写入任何状态。
+`yaya/tools/checks/check-project-environment.py` 只读取配置，不写入任何状态。
 
 - **普通调用**：检查字段结构和语言标签的基本形式；Godot 路径暂时为空也能通过。
 - **`--require-ready`**：再按下表实际探测工具，判断环境是否就绪。
@@ -68,7 +68,7 @@ $LASTEXITCODE
 | --- | --- | --- |
 | Python | 解析路径或 PATH 命令，确认指向一个文件 | 实际运行该解释器，确认是 Python 3.12+ 且依赖齐全；检查器不探测 Python 版本 |
 | Godot | 解析路径并启动 `--version`，要求进程成功且版本为 4.7.x；打印实际版本，不锁定补丁版本 | 路径不可用时说明原因；资源、脚本和测试能否运行要实际调用才知道 |
-| 测试入口 | 确认 `tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试 |
+| 测试入口 | 确认 `yaya/tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试 |
 | `document_language` | 检查字符、子段与连接符的基本形式 | 完整标签是否有效，是否符合默认中文或用户指定的语言 |
 
 就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析、lint 或初始化 Git。新项目还需要经过哪些步骤，见[环境就绪的含义](framework-and-project.md#环境就绪的含义)。

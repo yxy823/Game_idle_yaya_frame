@@ -2,7 +2,7 @@ extends RefCounted
 
 ## Own one process and its files. The worker starts no descendants.
 
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
 const MAX_OUTPUT: int = 2097152
 
 var request: Dictionary

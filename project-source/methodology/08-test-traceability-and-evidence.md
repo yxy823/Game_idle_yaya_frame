@@ -1,6 +1,6 @@
 # 08 · 测试追溯与证据
 
-> 本文决定一项修改需要哪些测试、为什么选它们，以及它们的结果怎样算作完成证据。怎样编写 Godot 测试见 [agent-rules/70-tests](../agent-rules/70-tests/README.md)；gdUnit 运行器的实现细节见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
+> 本文决定一项修改需要哪些测试、为什么选它们，以及它们的结果怎样算作完成证据。怎样编写 Godot 测试见 [yaya/agent-rules/70-tests](../agent-rules/70-tests/README.md)；gdUnit 运行器的实现细节见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
 ## 目标
 
@@ -161,7 +161,7 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 
 ## 运行时的测试影响选择
 
-运行器通过 `tools/lib/test_selection.py` 读取当前 Feature 和测试登记表。没有单独的计划命令、计划文件或计划哈希。
+运行器通过 `yaya/tools/lib/test_selection.py` 读取当前 Feature 和测试登记表。没有单独的计划命令、计划文件或计划哈希。
 
 Stage 1 获批后，Stage 2 把额外的义务保存在 Feature 的 `verification.test_impact` 中：
 
@@ -173,7 +173,7 @@ Stage 1 获批后，Stage 2 把额外的义务保存在 Feature 的 `verificatio
 从项目根目录用配置的 Python 解释器运行：
 
 ```text
-python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
+python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ```
 
 运行器使用 `docs/methodology-config.json` 中的 Godot 路径。`--godot-binary <path>` 是可选的单次覆盖。
@@ -241,7 +241,7 @@ python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ### 记录结果
 
 ```powershell
-python -B tools/features/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
+python -B yaya/tools/features/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
 ```
 
 - 只有覆盖义务需要多次不同的运行时，才重复 `--run`。一次全量运行就覆盖 Required 和 affected。
@@ -273,7 +273,7 @@ python -B tools/features/record-feature-completion.py record-tests --feature F0X
 - `docs/knowledge/` 和 `docs/research/` 下的说明性 Markdown；
 - 修订记录条目的时间戳、摘要和 notes；
 - 运行产物和报告；
-- 普通的 `README.md` 文件（不区分大小写），但 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/` 和 `docs/features/` 下的除外，因为它们保存的是说明或约束性契约。
+- 普通的 `README.md` 文件（不区分大小写），但 `.agents/`、`yaya/agent-rules/`、`yaya/methodology/`、`docs/gdd/`、`docs/product/` 和 `docs/features/` 下的除外，因为它们保存的是说明或约束性契约。
 
 由此可知：
 
@@ -337,8 +337,8 @@ RED、GREEN 和重构按每一个小的可观察行为进行，而不是先写�
 完成证据由下列命令检查，其余由 Agent 评估：
 
 - 有自动义务时，Stage 4 把核实过的运行结果导入该 Feature 的 `docs/features/F0XX-evidence.json`。需要人工验收时，Stage 5 记录清单中实际的人工结论。
-- `tools/features/record-feature-completion.py validate --feature F0XX` 检查这份证据。
-- `tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
+- `yaya/tools/features/record-feature-completion.py validate --feature F0XX` 检查这份证据。
+- `yaya/tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
 - 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[执行规范](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。
 
 被要求的 [Stage 6 审核](03-execute-loop.md#stage-6--可选的独立审核)在源码和验证都没有变化时，复用当前成功的运行结果。修复改变了快照时，重新计算当前义务，重复适用的 Stage 4 验证（包括 [`not_required`](#没有自动义务not_required) 的情况），然后重新进行受影响的验收。一次成功的全量运行覆盖 Required 和 affected；不要只为填第二个字段而再跑一次 Required。

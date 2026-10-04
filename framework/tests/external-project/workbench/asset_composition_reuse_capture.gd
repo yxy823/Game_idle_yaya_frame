@@ -3,8 +3,8 @@ extends SceneTree
 ## E3 real pixels: emitted particles follow local transforms or remain in scene space.
 
 const Presenter = preload("res://components/feedback/feedback_presenter.gd")
-const Consumer = preload("res://asset_workbench/examples/effects_composition/example_consumer.tscn")
-const BASE: String = "res://asset_workbench/examples/effects_composition/"
+const Consumer = preload("res://yaya/asset_workbench/examples/effects_composition/example_consumer.tscn")
+const BASE: String = "res://yaya/asset_workbench/examples/effects_composition/"
 const REPORT: String = "res://reports/asset-workbench-e3-e4-20260922/"
 
 var _failed: bool = false

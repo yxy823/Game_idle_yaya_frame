@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from project_context import PROJECT_ROOT
 
-TOOLS = PROJECT_ROOT / "asset_workbench/analyzer"
+TOOLS = PROJECT_ROOT / "yaya/asset_workbench/analyzer"
 sys.path.insert(0, str(TOOLS))
 sys.path.insert(0, str(PROJECT_ROOT / "reports/asset-analyzer/runtime"))
 
@@ -175,7 +175,7 @@ class AnalyzerTests(unittest.TestCase):
     def test_missing_dependencies(self):
         with self.assertRaises(ImportError):
             worker.backends(self.root / "missing", "audio")
-        isolated = self.root / "asset_workbench/analyzer"
+        isolated = self.root / "yaya/asset_workbench/analyzer"
         isolated.mkdir(parents=True)
         for source in TOOLS.iterdir():
             if source.suffix in {".py", ".json", ".txt"}:

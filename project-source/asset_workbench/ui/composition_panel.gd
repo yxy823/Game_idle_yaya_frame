@@ -7,11 +7,11 @@ signal analysis_requested(assets: Array[Resource])
 signal stop_requested
 signal operation_reported(message: String)
 
-const Session = preload("res://asset_workbench/ui/preview_session.gd")
+const Session = preload("res://yaya/asset_workbench/ui/preview_session.gd")
 const Stage = preload("res://components/feedback/feedback_composition.gd")
 const ObjectView = preload("res://components/feedback/feedback_object.gd")
-const Appearance = preload("res://asset_workbench/ui/workbench_theme.gd")
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Appearance = preload("res://yaya/asset_workbench/ui/workbench_theme.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var scene_resource: PackedScene
 var sound_candidates: Array[AudioStream] = []

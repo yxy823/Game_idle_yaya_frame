@@ -5,12 +5,12 @@ description: "在已授权的 Godot 任务中导入、替换或接入现有的�
 
 # 资源接入
 
-范围和归属按 `methodology/11-specialist-workflows.md` 执行。运行时修改属于当前已授权的 Feature 或限定实验；验证和完成回到那里处理。
+范围和归属按 `yaya/methodology/11-specialist-workflows.md` 执行。运行时修改属于当前已授权的 Feature 或限定实验；验证和完成回到那里处理。
 
 ## 阅读要求和文件
 
-- 按 `methodology/11-specialist-workflows.md` 的 **资源需求与交接** 找到资源章节的所属位置：所属的表现方案、UI 规格或共享设计章节。阅读其中受影响的资源章节，以及当前采用的方案和实际源文件。
-- 阅读 `agent-rules/60-assets/` 中与本次资源有关的规则、资源引用规则，以及场景与资源规则。
+- 按 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 找到资源章节的所属位置：所属的表现方案、UI 规格或共享设计章节。阅读其中受影响的资源章节，以及当前采用的方案和实际源文件。
+- 阅读 `yaya/agent-rules/60-assets/` 中与本次资源有关的规则、资源引用规则，以及场景与资源规则。
 - 根据现有记录确认资源来源和使用限制。来源不明是缺口，不要自行编造许可。
 - 按资源类型检查实际的类型、尺寸、透明度、时长、声道或动画属性。
 

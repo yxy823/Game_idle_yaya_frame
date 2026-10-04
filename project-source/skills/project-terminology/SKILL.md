@@ -5,7 +5,7 @@ description: "在 `docs/terminology.md` 中记录已确认的项目术语定义�
 
 # 项目术语
 
-按 `methodology/14-project-terminology.md` 的说明，在固定文件 `docs/terminology.md` 中维护不改变含义的定义，并维护使用这些术语的文档指向它的链接。实质的游戏设计含义由 `design-gdd` 负责，限定范围的数值设计由 `design-balance` 负责。保存的措辞按 `methodology/05-document-language.md`，写入和提交按项目的 Git 规则。
+按 `yaya/methodology/14-project-terminology.md` 的说明，在固定文件 `docs/terminology.md` 中维护不改变含义的定义，并维护使用这些术语的文档指向它的链接。实质的游戏设计含义由 `design-gdd` 负责，限定范围的数值设计由 `design-balance` 负责。保存的措辞按 `yaya/methodology/05-document-language.md`，写入和提交按项目的 Git 规则。
 
 ## 核对输入
 
@@ -22,7 +22,7 @@ description: "在 `docs/terminology.md` 中记录已确认的项目术语定义�
 ## 编写定义
 
 - 已确认的项目定义只写在 `docs/terminology.md` 中，只在单个主题里使用的术语也一样。
-- 把授权范围内的定义移进该文件，原处的正文改为链接，并保留来源锚点。原始来源的保留、别名、退役和排除规则见 `methodology/14-project-terminology.md`；玩法细节留在 GDD 中。
+- 把授权范围内的定义移进该文件，原处的正文改为链接，并保留来源锚点。原始来源的保留、别名、退役和排除规则见 `yaya/methodology/14-project-terminology.md`；玩法细节留在 GDD 中。
 - 目标语言的措辞通过 `design-localization-spec` 写在 `docs/localization/localization-spec.md` 的 **术语译名** 中（methodology 11 的 **本地化术语译名**）。不要把目标语言词表作为别名保存在这里。
 - 文件不存在、又有已确认的定义需要保存时，创建该文件。没有已确认的术语时，不编造条目。
 

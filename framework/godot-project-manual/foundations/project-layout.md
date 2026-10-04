@@ -14,8 +14,8 @@
 | --- | --- | --- |
 | `README.md` | 项目导航 | 项目维护者 / 用户与 Agent |
 | `AGENTS.md` | Agent 的约束与任务路由 | 项目维护者 / 所有执行 Agent |
-| `agent-rules/` | 按领域划分的工程规则 | 所属规则 / 执行与审核时按任务读取 |
-| `methodology/` | 开发与验证流程契约、模板 | 所属规范 / 执行与审核时按任务读取 |
+| `yaya/agent-rules/` | 按领域划分的工程规则 | 所属规则 / 执行与审核时按任务读取 |
+| `yaya/methodology/` | 开发与验证流程契约、模板 | 所属规范 / 执行与审核时按任务读取 |
 | `.agents/skills/` | 各项专门方法（Skill） | 所属 Skill / 主 Agent 按任务选用 |
 | `.codex/agents/` | researcher、independent-reviewer 等角色配置 | 所属配置 / 宿主加载；文件存在不代表宿主已加载 |
 | `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
@@ -69,17 +69,20 @@
 ├── game/                     游戏独有模块、场景、状态与资源
 ├── components/               实际可复用能力
 ├── assets/                   共享资产（按真实需要组织）
-├── asset_workbench/
-│   ├── ui/                   编辑期资源试调工具
-│   ├── analyzer/             图像/音频源文件分析
-│   └── examples/             可独立运行的分发示例
 ├── addons/                   第三方插件及已记录补丁
-├── tools/
-│   ├── checks/               环境与 Feature 记录检查
-│   ├── features/             组件合并与完成记录命令
-│   ├── godot/                由 Godot 执行的项目文件维护脚本
-│   ├── lib/                  验证快照、解析及共享实现
-│   └── testing/              gdUnit 运行、报告与验证支持
+├── yaya/                     框架随项目提供的流程、规则、工具与资源工作台
+│   ├── methodology/          开发与验证流程契约、模板
+│   ├── agent-rules/          按领域划分的工程规则
+│   ├── asset_workbench/
+│   │   ├── ui/               编辑期资源试调工具
+│   │   ├── analyzer/         图像/音频源文件分析
+│   │   └── examples/         可独立运行的分发示例
+│   └── tools/
+│       ├── checks/           环境与 Feature 记录检查
+│       ├── features/         组件合并与完成记录命令
+│       ├── godot/            由 Godot 执行的项目文件维护脚本
+│       ├── lib/              验证快照、解析及共享实现
+│       └── testing/          gdUnit 运行、报告与验证支持
 └── tests/
     ├── unit/                 组件级自动测试
     ├── features/             Feature 验收与回归
@@ -92,6 +95,7 @@
 
 其他说明：
 
+- `yaya/` 集中存放框架随项目复制的流程、规则、工具和资源工作台。复制后它们属于项目，可以按需修改；游戏的代码、场景、文档和测试不放进 `yaya/`。`reports/` 保存本项目的运行原件和验收记录，留在根目录。
 - 四个资源工作台及其消费示例不会替换正式的主场景。
 - `.git/` 由创建器建立；`.godot/`、运行报告、测试套件和设计正文都在实际工作中产生。
 - 初始的 GDD 目录只有用途说明，空测试目录和占位 Product 也不包含任何结果。
@@ -108,7 +112,7 @@
 
 ## 模板与按需记录
 
-`methodology/templates/` 提供之后按需创建的文件格式：Product、Feature 详情（含工程变更）、Feature 设计、完成依据、人工验收清单、架构和 ADR，另有 Stage 8 学习反馈的回复格式。模板不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
+`yaya/methodology/templates/` 提供之后按需创建的文件格式：Product、Feature 详情（含工程变更）、Feature 设计、完成依据、人工验收清单、架构和 ADR，另有 Stage 8 学习反馈的回复格式。模板不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
 
 Feature 索引、修订记录、测试登记、Progress 和项目规则不是模板：创建项目时直接复制为 `docs/` 下的初始文件，之后由项目自己维护。
 

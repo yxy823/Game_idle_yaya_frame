@@ -4,12 +4,12 @@ extends Window
 
 signal results_changed
 
-const Service = preload("res://asset_workbench/ui/analysis_service.gd")
-const Result = preload("res://asset_workbench/ui/analysis_result.gd")
-const Chart = preload("res://asset_workbench/ui/analysis_chart.gd")
-const Appearance = preload("res://asset_workbench/ui/workbench_theme.gd")
-const Source = preload("res://asset_workbench/ui/analysis_source.gd")
-const Widgets = preload("res://asset_workbench/ui/workbench_widgets.gd")
+const Service = preload("res://yaya/asset_workbench/ui/analysis_service.gd")
+const Result = preload("res://yaya/asset_workbench/ui/analysis_result.gd")
+const Chart = preload("res://yaya/asset_workbench/ui/analysis_chart.gd")
+const Appearance = preload("res://yaya/asset_workbench/ui/workbench_theme.gd")
+const Source = preload("res://yaya/asset_workbench/ui/analysis_source.gd")
+const Widgets = preload("res://yaya/asset_workbench/ui/workbench_widgets.gd")
 
 var service: Service = Service.new()
 var results: Array[Dictionary] = [{}, {}]
