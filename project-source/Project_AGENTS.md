@@ -27,7 +27,7 @@
 项目由一位使用者与 Agent 配合开发。工作流程不涉及多人协作，也不追踪每处改动由谁完成。
 
 - 支持在同一目录内暂停、切换和续接任务，包括换到新对话后续接。
-- 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](methodology/15-task-scope-git-and-reporting.md#git-与提交)。任务默认不在 worktree 中开始。
+- 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](#git-与提交)。任务默认不在 worktree 中开始。
 - 限定范围的调研和独立审核通过下表的入口使用各自的角色。
 
 | 需要做的事 | 阅读 |
@@ -43,7 +43,7 @@
 | 设置文档语言 | `methodology/05-document-language.md` |
 | 配置工具或准备项目环境 | `methodology/06-project-environment.md` |
 | 修复 Bug、重构或做工程维护 | `methodology/07-engineering-change.md` |
-| 确定修改范围、保留已有改动、本地提交或写完成汇报 | `methodology/15-task-scope-git-and-reporting.md` |
+| 确定修改范围或写完成汇报 | `methodology/15-task-scope-and-reporting.md` |
 | 选择测试、记录本次运行的证据或使用完成辅助工具 | `methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `methodology/contracts/gdscript-lint.md` |
 | 整理报告、临时工作区、Progress、历史或清理 | `methodology/09-records-reports-and-handoff.md` |
 | 维护可选的架构图或 ADR | `methodology/10-architecture-overview.md` |
@@ -66,7 +66,7 @@
 
 只说明目录用途或待定状态的起始页面，不算已确认的需求或定义。设计讨论不必等待所有后续细节，也不必等待详细的 Product 文档。
 
-## 环境与 Git
+## 环境
 
 第一个编码 Feature 开始前，完成 [项目环境准备](methodology/06-project-environment.md#项目环境准备)（项目环境准备）。编码需要一个经实际检查结果确认的环境。下列情况运行 `python -B tools/checks/check-project-environment.py --require-ready`：
 
@@ -78,14 +78,51 @@
 
 启动任何 Godot 编辑器检查（包括 `--headless --editor`）之前，阅读并遵循 [Windows 编辑器检查](agent-rules/00-core/validation-policy.md#windows-编辑器检查)。
 
-每个会修改文件的任务都遵循 [Git 与提交](methodology/15-task-scope-git-and-reporting.md#git-与提交)：
+## Git 与提交
 
-- 在任务指定的工作目录中工作；
-- 保留已有的改动；
-- 只暂存本任务的路径；
-- 按完整的逻辑改动提交。
+每个会修改文件的任务都按本节使用 Git，环境准备任务也一样。写入项目需要 Git 仓库。
 
-本地提交不代表任务完成，也不代表人工验收。
+### 开始修改前
+
+- 在任务指定的工作目录中工作，运行一次 `git status`，记下工作区是否干净。
+- 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据。
+- 存在未完成的合并或变基，或者 HEAD、分支出现本任务无法解释的变化时，保留现场并汇报。弄清之前，不做依赖该状态的写入或提交，也不自动中止、重置或清理。
+- 续接时（包括换到新对话），依据工作目录、Feature 与 Progress、当前 HEAD 和实际差异。同一任务留下的改动，核实范围后可以继续完成、验证和提交。
+
+### 暂存
+
+- **开始时工作区干净**：之后出现的改动都属于本任务，可以用 `git add -A` 暂存。提交前看一眼 `git status`，有运行产物或缓存混入时排除它们，必要时补充 `.gitignore`。
+- **开始时已有改动**：保留它们及其暂存状态，来源不明的改动也是要保留的工作。只按明确的路径或检查过的差异块暂存本任务的改动，不用 `git add -A`、`git add .` 或 `git commit -a`。无法分离出连贯的提交时，只停下受影响的部分并说明重叠位置；不为方便提交而 stash、restore、删除或覆盖已有改动。
+- 提交不另设审核关卡。复用仍然覆盖当前修改的验证结果，出现新的修改、失败或证据失效时才重新检查。
+
+### 提交
+
+- 已授权任务中的完整逻辑修改自动提交，不再次确认；在 `main` 或 `master` 上不要求切换分支。用户明确要求不提交或规定了提交条件时照办，这些设置跨 Skill、换对话后仍然有效。
+- 实现授权、人工验收结果和提交许可是三件不同的事，互不代替。任务同时要求人工验收和明确的提交许可时，两者都满足后才提交；已经给出的许可直接复用。
+- 一个提交是一个能独立理解的逻辑修改，带上必要的实现、测试、引用和文档。相互独立的 Feature、Bug 和重构分开提交；一个 Feature 可以有多个提交。按连贯的行为和验证划分，不按时间、文件数或“代码”“测试”“文档”划分。
+- 主题使用 `<type>(<scope>): <摘要>`。`type` 用 `feat`、`fix`、`refactor`、`test`、`perf`、`build`、`docs`、`chore` 等英文类型；`scope` 选最窄且稳定的范围，执行 Feature 时用 Feature ID；摘要使用 `docs/methodology-config.json` 的 `document_language`（默认中文），写实际的行为变化，不写“修复问题”“更新代码”这类笼统的话。
+- 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
+- Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
+- 本地提交不代表任务完成或人工验收；Feature 的完成由 [03 执行规范](methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
+- 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
+
+示例：
+
+```text
+feat(F012): 增加背包容量检查并拒绝超量入库
+
+Feature: 增加背包物品管理
+
+入库前检查剩余容量，超量时返回失败并保持原有物品数量。
+验证：容量边界与失败后数量不变的测试通过；解析和 lint 通过。
+
+Work item: docs/features/F012.json
+```
+
+### 禁止的操作
+
+- 不自动执行 push、tag、amend、rebase、reset，不修改远程配置，不用 `--no-verify`，不强制改写历史，不使用破坏性的 checkout 或 clean。
+- 不在当前任务的具体授权之外创建、切换、合并或删除分支。使用 worktree 不授权修改另一个工作目录，也不授权移除已有工作。
 
 ## 项目知识与规则反馈
 
@@ -101,7 +138,7 @@
 
 ## 领域规则路由
 
-`methodology/` 规定工作流程和可追溯性，包括[任务范围、Git 与完成汇报](methodology/15-task-scope-git-and-reporting.md)；`agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
+`methodology/` 规定工作流程和可追溯性，包括[任务范围与完成汇报](methodology/15-task-scope-and-reporting.md)；`agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
 
 做修改或与修改有关的工程决定时，先读 `agent-rules/00-core/README.md`，再读下表中每个受影响领域的 README：
 

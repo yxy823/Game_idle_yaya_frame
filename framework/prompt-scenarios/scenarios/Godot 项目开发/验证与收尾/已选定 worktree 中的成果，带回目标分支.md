@@ -48,4 +48,4 @@
 
 ## 流程关联与衔接关系
 
-需要先建立试验目录时使用[创建 worktree 场景](<../任务规划/想保留当前实现，另开 worktree 尝试另一种方案.md>)；只需独立代码审核时进入[变更审核](<这次变更已准备好，需要独立代码审核.md>)。操作边界以[项目 Git 规范](../../../../../project-source/methodology/15-task-scope-git-and-reporting.md#git-与提交)和原任务为准。
+需要先建立试验目录时使用[创建 worktree 场景](<../任务规划/想保留当前实现，另开 worktree 尝试另一种方案.md>)；只需独立代码审核时进入[变更审核](<这次变更已准备好，需要独立代码审核.md>)。操作边界以[项目 Git 规范](../../../../../project-source/Project_AGENTS.md#git-与提交)和原任务为准。

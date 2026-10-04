@@ -10,4 +10,4 @@
 | `godot-resource-references.md` | 选择或修改业务 ID、Resource UID、资源路径、NodePath、`%UniqueName` 或场景引用 |
 | `third-party-generated-and-temporary-files.md` | 涉及 `addons/` 或其他第三方文件、生成文件、`.import`、`.godot/`、备份或临时文件 |
 
-任务范围、Git 与提交、完成汇报是流程规则，见 [15 · 任务范围、Git 与完成汇报](../../methodology/15-task-scope-git-and-reporting.md)。
+任务范围与完成汇报是流程规则，见 [15 · 任务范围与完成汇报](../../methodology/15-task-scope-and-reporting.md)；Git 与提交见 [AGENTS.md](../../AGENTS.md#git-与提交)。

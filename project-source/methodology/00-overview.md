@@ -101,7 +101,7 @@ methodology/                         canonical workflow specification
 - 分类评估、诊断、环境工作、验证、人工验收、证据处理、多未知点探路（wayfinding）和 worktree 工作都是可调用的方法，不是 Stage，也没有固定顺序。任务需要时就用，包括用户直接提出的限定范围请求。
 - 一个方法返回，不代表更大范围的已授权任务结束，也不会把一次有限的检查变成完整交付；见 [授权与续接](03-execute-loop.md#授权与续接)。
 - 起草任务提示词时，按 [续接提示词](09-records-reports-and-handoff.md#续接提示词) 编写。
-- Git 操作遵循 `methodology/15-task-scope-git-and-reporting.md`。
+- Git 操作遵循 `AGENTS.md` 的 **Git 与提交**。
 
 ## 延伸阅读
 
@@ -121,7 +121,7 @@ methodology/                         canonical workflow specification
 | 独立审核 | [12-independent-review.md](12-independent-review.md) |
 | 视觉原型和逻辑原型 | [13-prototypes.md](13-prototypes.md) |
 | 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
-| 任务范围、Git 与提交、完成汇报 | [15-task-scope-git-and-reporting.md](15-task-scope-git-and-reporting.md) |
+| 任务范围、完成汇报 | [15-task-scope-and-reporting.md](15-task-scope-and-reporting.md) |
 | Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
 | 人工验收清单与结果文件 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
 | Product、Feature、ADR 等文件的模板 | [templates/README.md](templates/README.md) |

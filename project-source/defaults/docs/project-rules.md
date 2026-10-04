@@ -40,7 +40,7 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 
 环境准备遵循 `methodology/06-project-environment.md`；测试的含义遵循 `methodology/08-test-traceability-and-evidence.md`。不要在这里维护另一套与之竞争的 Stage 说明。
 
-按 [Git 与提交](../methodology/15-task-scope-git-and-reporting.md#git-与提交)：检查并保留已有的改动，在任务指定的工作目录中继续工作，暂存预定的范围，并创建符合条件的逻辑提交。
+按 [Git 与提交](../AGENTS.md#git-与提交)：检查并保留已有的改动，在任务指定的工作目录中继续工作，暂存预定的范围，并创建符合条件的逻辑提交。
 
 规则变化时，按增量维护约定说明它经批准后对当前和后续工作的适用范围。不追溯改写历史上的批准；也不要以为当前工作可以豁免新确认的硬性约束。
 
@@ -48,7 +48,7 @@ Feature 实现使用 `feature-execute` 和权威规范 `methodology/03-execute-l
 
 ## 1.3 报告要求
 
-遵循[完成汇报](../methodology/15-task-scope-git-and-reporting.md#完成汇报)和所属工作流程的交接要求。说明实质性的改动、实际做过的验证，以及预计留在范围之外的工作；只在需要时附上人工操作说明。
+遵循[完成汇报](../methodology/15-task-scope-and-reporting.md#完成汇报)和所属工作流程的交接要求。说明实质性的改动、实际做过的验证，以及预计留在范围之外的工作；只在需要时附上人工操作说明。
 
 ## 1.4 偏离这些规则
 

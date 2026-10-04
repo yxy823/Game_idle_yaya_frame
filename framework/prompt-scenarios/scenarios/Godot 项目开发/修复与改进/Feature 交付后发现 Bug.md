@@ -27,7 +27,7 @@
 
 当前 Agent 先使用 `engineering-change-plan` 的 bug 模式建立独立任务和 `bug_diagnosis`，再使用 `feature-execute` 修复；原 Feature 历史保持真实。
 
-- 按[共用变更规则](../../../../../project-source/methodology/15-task-scope-git-and-reporting.md#任务范围)控制影响，保持无需变化的 API、依赖和代码风格。
+- 按[共用变更规则](../../../../../project-source/methodology/15-task-scope-and-reporting.md#任务范围)控制影响，保持无需变化的 API、依赖和代码风格。
 - 为实际缺陷补必要回归；无法自动覆盖时保留原因与可重复的人工路径。
 - 本专用入口在适用验证完成、用户明确实际验收通过且明确允许本次提交前，不创建任何本地提交，包括计划和阶段性 checkpoint。修复授权、验收通过或普通“继续”不单独构成提交许可；已有明确许可沿用。
 

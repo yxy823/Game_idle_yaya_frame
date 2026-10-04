@@ -43,7 +43,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 
 - **怎样引用**：在该 Feature JSON 的 notes 中使用相对链接 `[设计说明](F0XX-design.md)`。
 - **何时写、何时改**：方案获批后保存；实际实现与设计不一致时同步修改。
-- **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../methodology/15-task-scope-git-and-reporting.md`。
+- **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../methodology/15-task-scope-and-reporting.md`。
 
 需要实施指导时，[implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md) 也写这同一份设计稿：
 

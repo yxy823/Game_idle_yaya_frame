@@ -7,3 +7,4 @@ reports/*
 /tmp/
 /framework/relationship-maps/graph-usage.json
 /framework/relationship-maps/graph-usage.*.json
+/.claude/worktrees/
