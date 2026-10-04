@@ -4958,6 +4958,48 @@
         "shadow": false,
         "wrap": true
       }
+    },
+    {
+      "id": "scene-120",
+      "shape": "rounded-rect",
+      "x": 3120,
+      "y": 1965.5,
+      "width": 200,
+      "height": 61,
+      "label": "同一个测试时过时不过，\n需要修正测试本身",
+      "zIndex": 1,
+      "fill": "#fff2e5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/修复与改进/同一个测试时过时不过，需要修正测试本身.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
     }
   ],
   "edges": [
@@ -15547,6 +15589,144 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "等验收期间\n切换到别的 Feature",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-076-scene-120",
+      "source": {
+        "node": "scene-076",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-120",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "测试时过时不过",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-048-scene-120",
+      "source": {
+        "node": "scene-048",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-120",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "原因在测试本身",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-120-scene-047",
+      "source": {
+        "node": "scene-120",
+        "port": "right"
+      },
+      "target": {
+        "node": "scene-047",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "查明是游戏行为有误",
       "stroke": {
         "color": "#8994A5",
         "width": 2,
