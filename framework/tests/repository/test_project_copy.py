@@ -318,7 +318,7 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertFalse((output / "docs/resource-requirements").exists())
         self.assertFalse((output / "agent-rules/00-core/documentation").exists())
         self.assertEqual({path.name for path in (output / "tools").iterdir() if path.is_dir()},
-                         {"checks", "features", "testing", "lib"})
+                         {"checks", "features", "godot", "testing", "lib"})
         self.assertFalse((output / "examples").exists())
         self.assertEqual({path.name for path in (output / "asset_workbench").iterdir()},
                          {"README.md", "ui", "analyzer", "examples"})

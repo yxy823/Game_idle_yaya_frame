@@ -7,8 +7,10 @@
 - `project.godot` 的差异保持最小：不给无关的键排序，不展开默认值，不调整节的顺序。
 - 修改设置前，核实它在 Godot 4.7 中的准确名称、类型、合法值、默认值和弃用状态。
 - 注意：自定义设置既不在 `project.godot` 中、也没有用 `ProjectSettings.set_setting()` 设置时，`get_setting()` 返回 `null` 或调用方给的默认值。
-- 项目正确性依赖某个引擎默认值时，把这个设置显式写进 `project.godot`。
+- 项目正确性依赖某个引擎默认值时，在测试或启动检查中断言它的生效值。不靠把默认值写进 `project.godot` 来固定它：Godot 保存时会删除等于默认值的设置。
 - 建议：结构性的修改通过编辑器或 ProjectSettings API 完成。手工文本补丁只用于小而确定的修改。
+- 手工修改 `project.godot` 后，用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 让 Godot 按自己的格式重新保存一次。
+- 编辑器开着时，它内存里的项目设置不会重新读取磁盘，之后在编辑器里保存会覆盖手工修改。修改了 `project.godot` 时，在交付中提醒用户先使用“项目 → 重新加载当前项目”。
 
 ## 生效值与 Feature 覆盖
 

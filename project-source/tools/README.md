@@ -7,6 +7,7 @@ tools/
 ├── checks/      环境与 Feature 记录检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
+├── godot/       由 Godot 执行的项目文件维护脚本
 └── lib/         共享实现
 ```
 
@@ -18,10 +19,11 @@ tools/
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成依据 |
+| [resave_godot_files.gd](godot/resave_godot_files.gd) | 用 Godot 自己的格式重新保存 `project.godot` 和指定的 `.tscn`、`.tres` |
 
 命名约定：
 
-- 入口脚本使用连字符命名（如 `run-gdunit-tests.py`），只作为命令运行，不被其他代码导入。
+- Python 入口脚本使用连字符命名（如 `run-gdunit-tests.py`），只作为命令运行，不被其他代码导入；GDScript 脚本按 GDScript 约定使用下划线。
 - `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
 - Skill 只引用这些命令并说明调用时机，不另写命令副本。
 
@@ -47,6 +49,8 @@ $LASTEXITCODE
 - 按项目 `AGENTS.md` 的本机权限约束执行；`Out-Host` 用于等待 Windows GUI 程序结束。
 - 读取退出码和扫描、导入诊断。失败时保留原文，并停止依赖这次准备的运行。
 - 正常完成后执行原定测试或脚本；扫描成功本身不证明用例或业务行为通过。
+
+新增脚本或资源后，Godot 在下一次扫描时才为它们生成 `.uid`；`.uid` 计入内容指纹，所以先用上面的命令扫描一次，再做最终测试运行，避免运行结束后才生成的 `.uid` 让证据失效。
 
 首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[资产规则](../agent-rules/60-assets/README.md)和[引用规则](../agent-rules/00-core/godot-resource-references.md)处理；首次扫描为插件资源生成的 `.import` 随项目提交。
 
@@ -153,6 +157,21 @@ python -B tools/checks/check-markdown-links.py
 
 人工验收的清单格式、怎样在清单中记录用户的结论，以及确切命令见[人工验收文件契约](../methodology/contracts/manual-acceptance-files.md)。命令成功只表示记录成功，结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
 
+### resave_godot_files.gd
+
+Agent 用文本方式修改了 `project.godot`、`.tscn` 或 `.tres` 后，让 Godot 按自己的格式重新保存一次。这样文件与编辑器保存的格式一致，之后用户在编辑器里保存时，差异只反映真正的设置变化。
+
+```powershell
+& $projectGodot --headless --path . --script res://tools/godot/resave_godot_files.gd -- project.godot res://main/main.tscn | Out-Host
+$LASTEXITCODE
+```
+
+- `--` 之后列出要重新保存的文件：`project.godot`，或 `res://` 下的 `.tscn`、`.tres`。
+- `project.godot` 重新保存时，等于引擎默认值的设置会被删除；依赖默认值时按[项目设置规则](../agent-rules/40-project-config/authoring-and-scope.md#编写)在测试中断言生效值。
+- 场景和资源保存回原路径，已有的资源 ID 保留；文字里的 `\n` 转义会改写成真实换行，只发生一次。
+- 退出码：`0` 全部保存成功；`1` 有文件无法加载或保存，原因见 `ERROR` 输出；`2` 没有传入文件。
+- 编辑器开着时，它内存里的项目设置不会重新读取磁盘；之后用户在编辑器里保存，会覆盖这次修改。所以修改了 `project.godot` 时，提醒用户先在编辑器里使用“项目 → 重新加载当前项目”。
+
 ### 静态检查与资源导入
 
 脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见[直接检查说明](../methodology/contracts/gdscript-lint.md)。没有静态检查的 Python 包装器、静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
@@ -199,7 +218,7 @@ flowchart TD
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 
-`testing/` 中的 Godot 脚本是 gdUnit 运行扩展，不是 Agent 动作 Hook：
+`godot/resave_godot_files.gd` 只在显式调用时运行，用法见上文。`testing/` 中的 Godot 脚本是 gdUnit 运行扩展，不是 Agent 动作 Hook：
 
 - `gdunit_evidence_runner.gd` 启动测试并记录发现；
 - `gdunit_diagnostic_session.gd` 关联运行诊断；

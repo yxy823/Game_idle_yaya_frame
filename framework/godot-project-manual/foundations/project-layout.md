@@ -77,6 +77,7 @@
 ├── tools/
 │   ├── checks/               环境与 Feature 记录检查
 │   ├── features/             组件合并与完成记录命令
+│   ├── godot/                由 Godot 执行的项目文件维护脚本
 │   ├── lib/                  验证快照、解析及共享实现
 │   └── testing/              gdUnit 运行、报告与验证支持
 └── tests/

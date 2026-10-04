@@ -13,7 +13,7 @@
 - 检查 `ResourceSaver.save()` 的返回值。返回 `OK` 只说明写入成功，不说明 UID 已正确持久化。
 - 注意：游戏运行时（非编辑器）保存 Resource，新生成的 UID 不会被保存。要成为仓库正式文件的生成 Resource，在编辑器或 `@tool` 流程中生成，或生成后在编辑器中导入并检查 UID。不手写或猜测 UID。
 - 保存生成的项目 Resource 后，用 `ResourceLoader` 重新加载，检查 UID 与路径、自定义类型、字段值和依赖。
-- 在编辑器外以文本方式修改 `.tres` 后，让编辑器重新扫描文件系统，或在新的 Godot 进程中验证，避免读到编辑器缓存中的旧内容。
+- 在编辑器外以文本方式修改 `.tres` 后，让编辑器重新扫描文件系统，或在新的 Godot 进程中验证，避免读到编辑器缓存中的旧内容；再用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 重新保存一次，让文件与编辑器保存的格式一致。
 
 ## Schema
 
