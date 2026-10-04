@@ -14,7 +14,7 @@ python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 `--target` 用于迭代和诊断，不产生完成证据；`--feature` 的范围选项见[运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
 
 - 包装脚本用 `docs/methodology-config.json` 中的 Godot 可执行文件，以 `--path <项目> --debug --ignore-error-breaks --script res://tools/testing/gdunit_evidence_runner.gd -rd <运行目录>` 启动。
-- 每个选择器生成一个 `-a <路径>` 参数。`--continue` 对应 gdUnit 的 `-c`；不加时，gdUnit 在第一个失败处停止。
+- 每个选择器生成一个 `-a <路径>` 参数。`--continue` 对应 gdUnit 的 `-c`；不加时，gdUnit 在第一个失败处停止，后面的用例不执行。先写失败测试时要看到每个用例各自的失败原因，加 `--continue`。
 - 不使用 `--headless`：gdUnit 在无头模式下拒绝运行，因为 InputEvent 不会传递。测试窗口以最小化方式运行。
 - 进程归属依赖 Windows Job Object，只支持 Windows。
 - `--timeout-seconds` 设置墙钟上限，默认 120 秒。超时即失败，并结束本次创建的整个进程树。
@@ -49,6 +49,9 @@ python -B tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 - 不用跳过、`-i` 忽略列表或过滤来绕过失败。被跳过的用例本身就让运行失败。
 - `project.godot` 设置了 `flaky_check_enable=false`，失败的用例不会重试。不要打开重试来掩盖不稳定。
 - `await` 每一个协程断言，包括 `assert_signal(...).is_emitted()`、`is_not_emitted()` 和 `assert_error(...)` 的各个匹配方法。漏写 `await` 时，测试不等断言完成就继续，失败可能不被计入。
+- `GdUnitSceneRunner` 的 `await_input_processed()` 等方法在抽象基类中声明，经 `scene_runner()` 的返回类型调用时，`await` 会触发 `REDUNDANT_AWAIT` 警告。需要等待输入处理时，写 `var runner := scene_runner(SCENE) as GdUnitSceneRunnerImpl` 再等待；等待信号时用套件的 `await_signal_on()`。不删除必需的等待，也不修改插件。
+- 局部变量和参数不要用基类生命周期方法的名字：`before`、`after`、`before_test`、`after_test`。同名会触发 `SHADOWED_VARIABLE_BASE_CLASS` 警告，见[常见警告](../10-gdscript/typing-and-api.md#常见警告)。
+- 同一套件的各个用例共用一个套件实例，成员变量不会在用例之间自动清空。每个用例自己的记录在 `before_test()` 中重建，或放进用例开始时新建的对象。不要把已释放的节点留在成员数组里，需要的属性在节点存活时先取出。
 
 ## 诊断监控
 
@@ -86,7 +89,7 @@ func test_remove_unknown_item_reports_error() -> void:
 
 - 运行结束时仍有孤立节点，gdUnit 返回 101，包装脚本判失败。没有可接受的“基线”孤立节点。
 - JUnit 报告不记录孤立节点，定位时读 `engine.log` 中 gdUnit 的孤立节点输出。
-- 测试创建的 Node 用 `auto_free()` 登记，或在 `after_test()` 中释放。
+- 测试创建的 Node 用 `auto_free()` 登记，或在 `after_test()` 中释放。`scene_runner()` 只自动释放它从场景路径实例化的场景；传入手动创建的节点时，仍要用 `auto_free()` 登记。
 - 注意：已移出场景树、但 `queue_free()` 还没执行的 Node 也算孤立节点。需要时 `await await_idle_frame()` 等待删除完成，不关闭孤立节点检测。
 - 孤立节点检测不能证明文件、信号、线程、Timer 和 Resource 已经清理，这些按 [fixtures-and-isolation.md](fixtures-and-isolation.md) 处理。
 

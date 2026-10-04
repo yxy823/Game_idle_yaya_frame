@@ -29,7 +29,7 @@ product-author 编写当前 Product 的纳入与排除范围、来源映射和�
 
 **S3｜展示本次完整拆分**
 
-feature-plan 一次覆盖当前 Product 的完整必要范围，展示多个 Feature 的范围、依赖、AC 和验证安排；沿用有效规划授权。
+feature-plan 一次覆盖当前 Product 的完整必要范围，展示多个 Feature 的范围、依赖、AC 和验证安排。用户已明确授权自主拆分时，展示后直接写入；否则等用户确认这份拆分。
 
 **S4｜追加并检查**
 

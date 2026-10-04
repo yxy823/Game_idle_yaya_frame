@@ -75,7 +75,7 @@
 
 普通 Feature 直接复用已确认的命令，不重新探测版本。
 
-启动任何 Godot 编辑器检查（包括 `--headless --editor`）之前，阅读并遵循 [Windows 编辑器检查](agent-rules/00-core/windows-editor-check.md)。
+在 Codex 受限沙箱中启动任何 Godot 进程（编辑器检查、gdUnit 测试、脚本解析、lint）之前，阅读并遵循 [Codex 沙箱中运行 Godot](agent-rules/00-core/windows-godot-sandbox.md)。
 
 ## 任务范围
 
@@ -242,7 +242,7 @@ Work item: docs/features/F012.json
 | 重命名或移动节点、场景、资源 | `00-core/godot-resource-references.md`；`20-scenes/README.md`；移动资源文件时再读 `60-assets/README.md` |
 | 导入或替换图片、音频、字体 | `60-assets/README.md`；涉及 `.import` 或生成文件时读 `00-core/third-party-generated-and-temporary-files.md` |
 | 新增或修改游戏数据及其定义 | `21-resources/README.md`；`50-data-files/README.md` |
-| 运行 Godot 编辑器检查 | `00-core/windows-editor-check.md` |
+| 在 Codex 沙箱中运行任何 Godot 进程 | `00-core/windows-godot-sandbox.md` |
 
 没有专门模块时，使用 `00-core` 规则和项目已有的约定，只在主题重叠处读相邻模块。修改依赖随版本变化的引擎行为时，按 [Godot 版本与依据](agent-rules/00-core/godot-version-and-authority.md) 核对 Godot 4.7 的行为；普通的 Markdown 编辑不需要。不在实现过程中顺带扩展规则体系。
 

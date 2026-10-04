@@ -4,7 +4,7 @@
 
 | 文件 | 何时阅读 |
 | --- | --- |
-| `windows-editor-check.md` | 在本机 Windows 运行 Godot 编辑器检查（包括 `--headless --editor`）之前 |
+| `windows-godot-sandbox.md` | 在本机 Windows 的 Codex 受限沙箱中启动任何 Godot 进程（编辑器检查、gdUnit 测试、脚本解析、lint）之前，或 Godot 在沙箱中崩溃、报证书库错误时 |
 | `rule-precedence-and-routing.md` | 同时适用多个模块、规则看起来冲突，或怀疑某条规则有错 |
 | `godot-version-and-authority.md` | 行为与 Godot 或工具版本有关且不确定、评估升级，或文档与实际运行不一致 |
 | `godot-resource-references.md` | 选择或修改业务 ID、Resource UID、资源路径、NodePath、`%UniqueName` 或场景引用 |

@@ -18,7 +18,7 @@
 
 - 给出所涉及的计划，核对授权是否覆盖其中的动作、验证和范围。只在缺少决定或发生实质变化时询问。
 - 一个 Skill 返回时，结束的只是这段流程；已经获得授权的端到端任务继续进行。
-- 在已授权的批量任务中，每个 Feature 先完成所需的验证、验收和提交，再继续下一个。独立审核按用户在 Stage 6 选择的范围和时机进行。
+- 在已授权的批量任务中，每个 Feature 先完成所需的验证、验收和提交，再继续下一个；只在等待外部输入时，按 [Stage 0 第 1 步的例外](#stage-0--选择-feature-并加载上下文)先推进别的 Feature。独立审核按用户在 Stage 6 选择的范围和时机进行。
 - 实现授权永远不能补上缺失的人工验收结果。
 
 对 Product 做初始拆分时，写入计划前先执行[拆分预览](02-feature-list-schema.md#拆分预览)。该小节规定了预览确认和明确的自主规划授权，包括续接到后续 Product。
@@ -62,6 +62,7 @@
 
 1. 读取轻量索引并选择 Feature：
    - 有 `in_progress` 的 Feature 时，续接它，不开始另一个。
+   - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。
    - 选择尚未开始的工作之前，先检查当前授权范围内是否有 `blocked` 的 Feature。如果有，在查询可开始的 Feature 之前，查看它们记录的阻塞，并按[状态流转](02-feature-list-schema.md#状态流转)重新检查能否恢复。
    - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
 2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。
@@ -210,7 +211,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 
 1. 用批准的逻辑 ID 创建测试。
 2. 测试存在后，在测试登记表中更新它的 `path`、`case`，并设为 `status: active`。
-3. 运行范围最窄的、受支持的选择器。
+3. 运行范围最窄的、受支持的选择器。一次检查多个用例时加 `--continue`，否则运行在第一个失败处停止。第一次在本任务中编写测试前，先读 [gdUnit4 运行器与诊断](../agent-rules/70-tests/gdunit4-profile.md#编写测试时的约定)的编写约定和诊断监控：任何未声明的警告都会让运行失败。
 4. 确认测试失败的原因是目标行为缺失或有错，而不是语法、夹具、环境或无关的准备步骤出错。
 
 如果无法产生有意义的 RED 状态，在实现之前说明原因。不要伪造 TDD 证据。
@@ -297,7 +298,7 @@ Stage 4 使用以下入口：
 
 完成已批准验证计划中额外的性能、长时间运行、显示或试听义务，并把它们的原始证据分开保存。按 [定稿与证据](11-specialist-workflows.md#定稿与证据) 处理；这些结果不是 gdUnit 运行。运行 Stage 1 计划的 gdUnit 之外的运行时验证，例如新的 Godot 进程或重新导入，并报告实际结果。仅凭证据辅助工具通过，不能证明这些义务、静态检查或对体验的人工验收。
 
-`manual` 等待 Stage 5。`automated` 跳过 Stage 5：Bug 进入 Stage 5.5，其他进入 Stage 6。报告人工验收为不需要；不要记录从未发生的人工决定。
+`manual` 等待 Stage 5；等待期间可以按 [Stage 0 第 1 步的例外](#stage-0--选择-feature-并加载上下文)推进别的 Feature。`automated` 跳过 Stage 5：Bug 进入 Stage 5.5，其他进入 Stage 6。报告人工验收为不需要；不要记录从未发生的人工决定。
 
 ## Stage 5 · 明确的人工验收（仅 manual 模式）
 
@@ -368,7 +369,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 
 2. 记录已核实的结果：把 Feature 设为 `done`，并把 `completed_at` 设为当前的 ISO 8601 时间戳。状态字段记录完成，它不证明测试、审核或人工验收。
 3. 对最终的 Feature 记录运行 `python -B tools/checks/check-feature-list.py`。如果实现或契约的改动使证据失效，在交付前完成相应的验证。
-4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。
+4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
 7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。Core 契约还规定了不提交的例外、当前分支策略和禁止的 Git 操作。

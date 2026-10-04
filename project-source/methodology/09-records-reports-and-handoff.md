@@ -76,6 +76,8 @@
 
 `docs/progress.md` 包含当前状态、阻塞、待决定事项、下一个允许的动作和历史索引。它链接已批准的计划和证据，不复制其正文。普通的 Markdown 标题就够了；不需要机器标记或规定的解析格式。
 
+按 [Stage 0 的等待例外](03-execute-loop.md#stage-0--选择-feature-并加载上下文)同时有多个进行中的 Feature 时，当前状态为每个 Feature 各写一条：所处 Stage、停点、正在等待的对象（例如“等人工验收结果”），以及输入到达后的第一个动作。
+
 初始的 `docs/progress/README.md` 说明这个目录，并链接回当前 Progress；它不是归档，也不是另一份历史索引。
 
 已完成的 Feature 或已批准批次的历史，由 Agent 一次性归档到 `docs/progress/<key>.md`，并在当前 Progress 文档中保留链接。保留剩余的阻塞、待决定事项、原始历史和证据链接。不要推断批准，不要覆盖归档，也不要重复之前的历史。新正文用 `document_language` 写；移动历史不需要翻译它。

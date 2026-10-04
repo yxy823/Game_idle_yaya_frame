@@ -40,3 +40,16 @@
 - 行为身份用枚举、`StringName` 或带类型的 ID，不用显示文本。
 - 建议：键集合不固定的映射用 Dictionary；字段固定的记录用带类型的类或 Resource，不到处传匿名 Dictionary。
 - 修改公共函数、信号、枚举、`class_name`、持久化标识符或稳定字段时，同时迁移所有消费方，按 [Godot 资源与身份引用](../00-core/godot-resource-references.md) 检查受影响的引用。
+
+## 常见警告
+
+测试运行器把任何未声明的引擎警告判为失败（见[诊断监控](../70-tests/gdunit4-profile.md#诊断监控)），所以警告和错误一样要在写代码时避开。按警告名修正来源，不用 `@warning_ignore` 绕过。
+
+| 警告 | 触发写法 | 改法 |
+| --- | --- | --- |
+| `INTEGER_DIVISION` | 两个 `int` 相除，例如 `index / WIDTH` | 写明取整方式：向零取整用 `int(float(a) / b)`，向下取整用 `floori(float(a) / b)`。绝对值超过 2^53 的整数会损失精度，这时先确认是否真的需要除法 |
+| `SHADOWED_VARIABLE_BASE_CLASS` | 局部变量或参数与基类的成员、方法同名，例如 Node 脚本里的 `name`、`position`，gdUnit 套件里的 `before`、`after` | 换一个名字，例如 `original`、`target_position` |
+| `UNUSED_SIGNAL` | 声明了信号，但本类从不发出 | 实现发出它的代码，或删掉声明；为以后的 Feature 预留的信号，等那个 Feature 再声明 |
+| `REDUNDANT_AWAIT` | 对静态类型上声明为普通方法的调用写 `await`，例如经抽象基类调用实际是协程的方法 | 不删除实际需要的等待；改用声明为协程或信号的 API，或把对象转换为实现类型后再等待。gdUnit 的具体写法见[编写测试时的约定](../70-tests/gdunit4-profile.md#编写测试时的约定) |
+
+另一个相关的解析错误：对 `preload` 得到的脚本常量直接调用 `Script` 的实例方法（例如 `get_script_signal_list()`），会被当成调用类的静态方法而报错，整个文件无法加载。先赋给带类型的变量，例如 `var script: Script = BoardRules`，再调用。
