@@ -119,10 +119,11 @@ python -B tools/checks/check-markdown-links.py
 | `--phase <阶段>` | `baseline` 跳过尚未实现的 `planned` 测试，用于已有安全网，不能支持完成；`final` 为最终验证 | `final` |
 | `--require-test <套件路径>::<用例>` | 要求本次运行实际执行该用例，否则判为失败；同时禁止返回 `not_required` | 不要求 |
 | `--continue` | 传给 gdUnit 的 `-c`：遇到失败后继续执行完整测试集 | 首个失败即停止 |
+| `--verbose` | 把 Godot 的完整输出打印到控制台 | 只打印摘要：用例数、每个未通过用例的位置与原因，以及 `engine.log` 路径；找不到 JUnit 报告时打印输出的最后 20 行 |
 | `--timeout-seconds <秒>` | 测试进程的最长墙钟时间，须为大于 0 的有限数 | `120` |
 | `--godot-binary <路径>` | 仅为本次运行临时替换 Godot 可执行文件 | 配置中的 `engine_executable` |
 
-需要全量时，`--scope auto` 会按批准范围自动升级为 `full`；显式 `--scope full` 用于在迭代中主动运行全量。没有独立的计划文件。
+完整输出始终保存在运行目录的 `engine.log`；摘要不够判断时先读它，不必重跑。需要全量时，`--scope auto` 会按批准范围自动升级为 `full`；显式 `--scope full` 用于在迭代中主动运行全量。没有独立的计划文件。
 
 退出码：`0` 测试通过，或返回 `not_required`；`1` 测试失败、选择失败、超时或结果与计划不符；`2` 参数错误。
 

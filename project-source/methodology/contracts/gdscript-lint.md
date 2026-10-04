@@ -17,11 +17,12 @@ $LASTEXITCODE
 # 把 F001 换成实际的 Feature；需要时使用一个未用过的运行子目录。
 $reportDirectory = 'reports/features/F001'
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
-& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
+& $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Null
 $LASTEXITCODE
 ```
 
 - 使用 Windows GUI 可执行文件时，PowerShell 管道会等待进程结束。立即读取 `$LASTEXITCODE`；退出值为空不代表检查成功。
+- lint 的结果从 `--output` 指定的报告读取，先看其中的 `summary`；用 `Out-Null` 丢弃标准输出，避免整份 JSON 打到终端，错误输出仍会显示。
 - 按实际影响，解析改动过的项目脚本以及依赖它们的脚本。
 - lint CLI 对完整的 `res://` 范围运行，它遵循 `gdlint.json`。当任务本身修改了某个依赖时，该文件中对这个依赖的排除不能豁免检查。
 - 不属于 Feature 的工作使用 `reports/maintenance/<task>/`。保存的解析输出放在同一个任务目录，不放进 scratch。路径的选择和原件的保留按[报告与清理](../09-records-reports-and-handoff.md#报告与清理)处理。

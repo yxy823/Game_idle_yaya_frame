@@ -78,6 +78,33 @@ class GdUnitRunnerTests(unittest.TestCase):
         self.assertNotIn("--remote-debug", command)
         self.assertEqual(args.require_test, "tests/with spaces/test_case.gd::test_case")
 
+    def test_console_summary_lists_failures_and_falls_back_to_output_tail(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            output = "\n".join(f"line {index}" for index in range(30))
+            fallback = runner._summary(directory, output)
+            self.assertIn("No single JUnit report", fallback)
+            self.assertIn("line 29", fallback)
+            self.assertNotIn("line 9\n", fallback)
+            report = directory / "report_1/results.xml"
+            report.parent.mkdir()
+            report.write_text(
+                '<testsuites><testsuite name="s">'
+                '<testcase classname="probe_test" name="test_ok"/>'
+                '<testcase classname="probe_test" name="test_bad">'
+                '<failure message="FAILED: res://tests/probe_test.gd:5"><![CDATA[\nExpecting:\n 2\n but was\n 1\n'
+                "\tat 'test_bad' in res://tests/probe_test.gd:5\n]]></failure></testcase>"
+                '<testcase classname="probe_test" name="test_skip"><skipped/></testcase>'
+                "</testsuite></testsuites>", encoding="utf-8")
+            summary = runner._summary(directory, output)
+        self.assertIn("Tests: 3 cases, 2 not passed", summary)
+        self.assertIn("FAILED probe_test.test_bad", summary)
+        self.assertIn("res://tests/probe_test.gd:5  Expecting: 2 but was 1", summary)
+        self.assertIn("SKIPPED probe_test.test_skip", summary)
+        self.assertNotIn("test_ok", summary)
+        self.assertNotIn("line 29", summary)
+        self.assertIn("engine.log", summary)
+
     def test_timeout_default_override_and_invalid_values(self) -> None:
         self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).timeout_seconds, 120)
         self.assertEqual(runner._positive_seconds("0.25"), 0.25)

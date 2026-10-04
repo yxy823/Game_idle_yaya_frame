@@ -2,6 +2,23 @@
 
 > 本文件规定一个 Feature 怎样交付：从 Stage 0 选择，到 Stage 8 交接。`feature-execute` Skill 执行这套流程。只有 Stage 1 获得批准后才开始实现。Stage 5（人工验收）只适用于 `manual` 验收模式。自动测试通过是完成的证据，但它本身永远不能让 Feature 完成。
 
+## 按 Stage 阅读
+
+本文较长。先读通用约定，再只读当前所在的 Stage；进入下一个 Stage 时再读它，续接时从实际停点读起。
+
+| 当前要做的事 | 阅读 |
+| --- | --- |
+| 开始或续接一个 Feature | [通用约定](#通用约定)、[Stage 0](#stage-0--选择-feature-并加载上下文) |
+| 准备批准材料 | [Stage 1](#stage-1--测试影响评估资源预检与明确批准) |
+| 获得批准，开始实现 | [Stage 2](#stage-2--标记-in_progress-并保存验证计划)、[Stage 3](#stage-3--基线tdd-与实现) |
+| 最终验证 | [3D 文档检查点](#3d-最终验证前的文档检查点)、[Stage 4](#stage-4--自动验证与人工检查清单) |
+| 等待或记录人工验收 | [Stage 5](#stage-5--明确的人工验收仅-manual-模式) |
+| Bug Feature 验收后 | [Stage 5.5](#stage-55--记录-bug-经验) |
+| 用户要求独立审核 | [Stage 6](#stage-6--可选的独立审核) |
+| 标记完成、交接与续接 | [Stage 7](#stage-7--标记完成)、[Stage 8](#stage-8--交接与已获授权的续接) |
+| 接手已有实现 | [已有实现的交付](#已有实现的交付) |
+| 出现异常 | [异常处理](#异常处理) |
+
 ## 通用约定
 
 - 需要一份实质性的 GDD，见 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)。这适用于 Product Feature 和工程 Feature，包括续接的工作。

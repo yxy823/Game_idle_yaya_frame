@@ -7,6 +7,7 @@ import json
 import math
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -22,6 +23,9 @@ from tools.lib.test_selection import build_selection, execution_selectors, read_
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RUNNER_SCRIPT = "res://tools/testing/gdunit_evidence_runner.gd"
 DEFAULT_TIMEOUT_SECONDS = 120.0
+SUMMARY_FAILURES_PER_CASE = 5
+SUMMARY_DETAIL_LINES = 6
+SUMMARY_TAIL_LINES = 20
 
 
 @dataclass(frozen=True)
@@ -51,6 +55,35 @@ def _build_command(args: argparse.Namespace, report_root: Path) -> list[str]:
 
 def _run_process(command: list[str], log_path: Path, timeout: float) -> ProcessResult:
     return ProcessResult(*run_owned_process(command, REPO_ROOT, log_path, timeout))
+
+
+# 控制台默认只给结论需要的信息；完整输出始终保存在运行目录的 engine.log。
+def _summary(directory: Path, output: str) -> str:
+    log_line = f"Engine log: {directory / 'engine.log'}"
+    reports = list(directory.glob("report_*/results.xml"))
+    if len(reports) != 1:
+        tail = output.splitlines()[-SUMMARY_TAIL_LINES:]
+        return "\n".join(["No single JUnit report; last engine output lines:", *tail, log_line])
+    try:
+        cases = list(ET.parse(reports[0]).getroot().iter("testcase"))
+    except ET.ParseError as error:
+        return f"Cannot read JUnit report {reports[0]}: {error}\n{log_line}"
+    lines, not_passed = [], 0
+    for case in cases:
+        problems = [*case.iter("failure"), *case.iter("error")]
+        skipped = case.find("skipped") is not None
+        if not problems and not skipped:
+            continue
+        not_passed += 1
+        label = "FAILED" if problems else "SKIPPED"
+        lines.append(f"{label} {case.get('classname')}.{case.get('name')}")
+        for problem in problems[:SUMMARY_FAILURES_PER_CASE]:
+            detail = " ".join([line.strip() for line in (problem.text or "").splitlines()
+                               if line.strip() and not line.strip().startswith("at '")][:SUMMARY_DETAIL_LINES])
+            lines.append(f"  {problem.get('message', '').removeprefix('FAILED: ')}  {detail}")
+        if len(problems) > SUMMARY_FAILURES_PER_CASE:
+            lines.append(f"  ... {len(problems) - SUMMARY_FAILURES_PER_CASE} more")
+    return "\n".join([f"Tests: {len(cases)} cases, {not_passed} not passed", *lines, log_line])
 
 
 def _startup_diagnostics(output: str) -> list[str]:
@@ -100,7 +133,8 @@ def _run_tests(args: argparse.Namespace) -> int:
         if not (REPO_ROOT / RUNNER_SCRIPT.removeprefix("res://")).is_file():
             raise ValueError(f"GdUnit runner not found: {RUNNER_SCRIPT}")
         completed = _run_process(result["command"], directory / "engine.log", args.timeout_seconds)
-        print(completed.output, end="" if completed.output.endswith("\n") else "\n")
+        text = completed.output if args.verbose else _summary(directory, completed.output)
+        print(text, end="" if text.endswith("\n") else "\n")
         process = {"returncode": completed.returncode, "timed_out": completed.timed_out,
                    "pid": completed.pid, "engine_pid": None}
         discovery = read_json(directory / "discovery.json")
@@ -137,6 +171,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser.add_argument("--scope", choices=("auto", "required", "affected", "full"), default="auto")
     parser.add_argument("--require-test")
     parser.add_argument("--continue", dest="continue_run", action="store_true")
+    parser.add_argument("--verbose", action="store_true",
+                        help="Print the full engine output instead of the summary; engine.log keeps it either way.")
     parser.add_argument(
         "--timeout-seconds", type=_positive_seconds, default=DEFAULT_TIMEOUT_SECONDS,
         help="Maximum test-process wall time (default: 120 seconds).",
