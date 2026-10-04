@@ -134,6 +134,34 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.index["features"][2]["depends_on"] = ["F002"]
         self.assertFalse(self.validate())
 
+    def test_initial_baseline_records_added_features_and_intent(self) -> None:
+        baseline = {"schema_version": 2, "revision_id": "R000", "revised_at": "2026-01-01T00:00:00Z",
+                    "anchor_commit": "b" * 40, "synced_at_commit": "b" * 40, "user_intent": None,
+                    "summary": "First plan", "added": ["F001", "F002"],
+                    "migrations": [], "dependency_changes": []}
+        later = self.revisions["revision_log"][0]
+        self.revisions["revision_log"] = [baseline, later]
+        self.assertTrue(self.validate())
+        for change in ({"added": []}, {"added": ["F001", "F001"]}, {"added": ["F009"]},
+                       {"user_intent": 3}, {"migrations": later["migrations"]}):
+            with self.subTest(change=change):
+                self.revisions["revision_log"] = [{**baseline, **change}, later]
+                self.assertFalse(self.validate())
+        missing_intent = {key: value for key, value in baseline.items() if key != "user_intent"}
+        self.revisions["revision_log"] = [missing_intent, later]
+        self.assertFalse(self.validate())
+        self.revisions["revision_log"] = [later, baseline]
+        self.assertFalse(self.validate())
+
+    def test_passing_check_prints_verdict_but_eligible_prints_only_json(self) -> None:
+        self.validate()
+        command = [sys.executable, "-B", str(ROOT / "tools/checks/check-feature-list.py"), "--repo-root", str(self.root)]
+        passed = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
+        self.assertEqual(passed.returncode, 0, passed.stderr)
+        self.assertEqual(passed.stdout.strip(), "FEATURE LIST CHECK: PASS")
+        eligible = subprocess.run([*command, "--eligible"], cwd=ROOT, capture_output=True, text=True)
+        self.assertIsInstance(json.loads(eligible.stdout), list)
+
     def test_evidence_and_design_files_beside_details_are_not_read_as_details(self) -> None:
         self.assertTrue(self.validate())
         self.write("docs/features/F001-evidence.json", {"schema_version": 9, "feature_id": "F001"})

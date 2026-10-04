@@ -198,6 +198,20 @@ def eligible_features(entries: dict[str, dict]) -> list[str]:
                   and all(entries.get(dep, {}).get("status") == "done" for dep in entry.get("depends_on", [])))
 
 
+# 初始基线只记录第一份计划新增的 Feature；它不是来源变化，所以不带迁移。
+def _initial_baseline(revision: dict, label: str, entries: dict[str, dict], index: int) -> None:
+    if index != 0:
+        raise EvolutionError(f"{label}: R000 must be the first revision")
+    if "user_intent" not in revision or not (revision["user_intent"] is None or isinstance(revision["user_intent"], str)):
+        raise EvolutionError(f"{label}.user_intent must be present as a string or null")
+    added = revision.get("added")
+    if (not isinstance(added, list) or not added or len(set(added)) != len(added)
+            or any(not isinstance(fid, str) or fid not in entries for fid in added)):
+        raise EvolutionError(f"{label}.added must list the existing Feature IDs this first plan added, without duplicates")
+    if revision["migrations"] or revision["dependency_changes"]:
+        raise EvolutionError(f"{label} records the initial plan; migrations and dependency_changes must be empty")
+
+
 def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
     if not isinstance(data, dict) or not isinstance(data.get("revision_log"), list):
         raise EvolutionError("feature-list-revisions must contain a revision_log array")
@@ -229,6 +243,8 @@ def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
         changes = revision.get("dependency_changes")
         if not isinstance(migrations, list) or not isinstance(changes, list):
             raise EvolutionError(f"{label} requires migrations and dependency_changes arrays")
+        if rid == "R000":
+            _initial_baseline(revision, label, entries, index)
         for pos, migration in enumerate(migrations):
             ml = f"{label}.migrations[{pos}]"
             if not isinstance(migration, dict) or set(migration) != {"kind", "from", "to", "reason", "source"}:

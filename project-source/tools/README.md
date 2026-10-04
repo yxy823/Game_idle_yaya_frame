@@ -75,6 +75,8 @@ python -B tools/features/record-feature-completion.py record-tests --feature F00
 | `--completion-feature F0XX` | 另外要求该 Feature 当前映射的自动测试均为 `active` | 不检查 |
 | `--eligible` | 通过检查后，以 JSON 输出依赖已满足的待开始 Feature | 不输出 |
 
+通过时打印 `FEATURE LIST CHECK: PASS`；带 `--eligible` 时标准输出只有 JSON，便于直接解析。
+
 退出码：`0` 检查通过；`2` Feature 记录无效或参数错误。
 
 ### check-project-environment.py

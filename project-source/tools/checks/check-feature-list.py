@@ -484,8 +484,11 @@ def main() -> int:
     if not _validate_all(completion_feature=args.completion_feature):
         return 2
     if args.eligible:
+        # --eligible 的标准输出只有 JSON，供调用方直接解析。
         data, _ = _load_json(INDEX_FILE)
         print(json.dumps(eligible_features({entry["id"]: entry for entry in data["features"]})))
+    else:
+        print("FEATURE LIST CHECK: PASS")
     return 0
 
 
