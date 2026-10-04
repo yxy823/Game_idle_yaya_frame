@@ -8,7 +8,7 @@
 | `gdunit4-profile.md` | 运行 `tools/testing/run-gdunit-tests.py` 或解读其失败；测试预期的错误或警告；处理孤立节点或 ProjectSettings；修改 gdUnit4 配置、版本或 `tools/testing/` |
 | `test-selection-and-gates.md` | 在 Feature 流程中运行测试，或判断哪些 Godot 改动需要 gdUnit 之外的验证或 full 运行 |
 | `fixtures-and-isolation.md` | 创建或修改测试夹具；测试创建 Node、修改全局状态、写文件或连接信号 |
-| `time-randomness-and-async.md` | 测试时间、帧、Tween、随机数、信号等待或多线程加载 |
+| `time-randomness-and-async.md` | 测试时间、帧、动画（Tween、AnimationPlayer）、随机数、信号等待或多线程加载；断言动画过程或时长时必读 |
 | `input-and-command-testing.md` | 测试输入、UI 交互或 Command |
 | `production-isolation.md` | 修改测试目录、导出过滤、测试或编辑器 Autoload；测试写入 `res://`、`user://` 或 `project.godot`；生产代码需要为测试开接口 |
 
