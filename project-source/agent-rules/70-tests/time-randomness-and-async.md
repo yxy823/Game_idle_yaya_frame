@@ -27,11 +27,17 @@
 - 信号可能在触发调用内同步发出时，先用 `monitor_signals()` 开始收集，再触发，再断言。否则 `assert_signal()` 从断言开始才收集，会错过已经发出的信号：
 
 ```gdscript
+const SignalAssertImpl := preload("res://addons/gdUnit4/src/asserts/GdUnitSignalAssertImpl.gd")
+
+
 func test_reset_emits_changed() -> void:
 	var wallet := monitor_signals(Wallet.new()) as Wallet
 	wallet.reset()
-	await assert_signal(wallet).is_emitted("changed")
+	var signal_assert := assert_signal(wallet) as SignalAssertImpl
+	await signal_assert.is_emitted("changed")
 ```
+
+转换类型的原因见 [gdUnit4 运行器与诊断](gdunit4-profile.md#编写测试时的约定)。
 
 - 注意：`monitor_signals()` 默认对该对象调用 `auto_free()`。
 - 收到信号后，再断言要求的载荷和事后状态，不把收到信号当作整个流程成功的证明。
