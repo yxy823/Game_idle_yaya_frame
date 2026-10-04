@@ -48,7 +48,7 @@ $LASTEXITCODE
 - 读取退出码和扫描、导入诊断。失败时保留原文，并停止依赖这次准备的运行。
 - 正常完成后执行原定测试或脚本；扫描成功本身不证明用例或业务行为通过。
 
-首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[资产规则](../agent-rules/60-assets/README.md)和[引用规则](../agent-rules/00-core/godot-resource-references.md)处理。
+首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[资产规则](../agent-rules/60-assets/README.md)和[引用规则](../agent-rules/00-core/godot-resource-references.md)处理；首次扫描为插件资源生成的 `.import` 随项目提交。
 
 ## 调用
 

@@ -15,6 +15,9 @@ __pycache__/
 # 临时文档按任务保存在此目录
 /tmp/
 
+# Kanban Tasks 插件的个人灵感看板，只保存在本机
+/kanban_tasks_data.kanban
+
 # 本地环境变量；示例文件可提交，勿填写真实凭据
 .env
 .env.*

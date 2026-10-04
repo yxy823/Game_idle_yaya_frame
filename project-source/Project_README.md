@@ -37,7 +37,7 @@
 | 插件 | 使用入口与用途 |
 | --- | --- |
 | Script-IDE | Script 编辑区的标签页、成员大纲和快速搜索；偏好在编辑器设置的 `Plugin / Script Ide` 中调整 |
-| Inspector Tabs | 检查器属性分类标签；在高级编辑器设置的 `Inspector Tabs` 中调整布局或切换滚动定位模式 |
-| Kanban Tasks | 顶部 `Tasks` 工作区；个人灵感看板默认保存到项目根的 `kanban_tasks_data.kanban`，与开发任务记录各自独立，无同步关系 |
+| Inspector Tabs | 检查器属性分类标签；在高级编辑器设置的 `Inspector Tabs` 中调整布局或切换滚动定位模式。设置保存在本机 Godot 编辑器配置目录的 `InspectorTabsPluginSettings.cfg`；这份文件不存在时，每次启动会打印 `ERROR LOADING SETTINGS FILE`，这条日志无害；在编辑器设置里改动任一 Inspector Tabs 设置后，插件会写出这份文件，之后不再打印 |
+| Kanban Tasks | 顶部 `Tasks` 工作区；个人灵感看板默认保存到项目根的 `kanban_tasks_data.kanban`，只留在本机，已被 `.gitignore` 忽略；与开发任务记录各自独立，无同步关系 |
 | Edit Resources as Table | 启用后进入顶部 `ResourceTables` 工作区，以表格浏览和编辑 Resource；当前组合在退出编辑器时有资源泄漏诊断，因此默认停用 |
 | Signal Lens | 启用后在调试器中查看运行中节点的信号连接与触发；插件会注册 `SignalLens` Autoload，停用时移除，发行导出前先停用 |
