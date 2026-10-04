@@ -393,7 +393,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
-7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。Core 契约还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
+7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
 
 ## Stage 8 · 交接与已获授权的续接
 
