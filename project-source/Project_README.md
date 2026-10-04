@@ -19,7 +19,7 @@
 
 | 要做什么 | 从哪里开始 |
 | --- | --- |
-| 查找文档、台账或当前进度 | [项目文档目录](docs/README.md)，逐项说明用途 |
+| 查找文档、Feature 记录或当前进度 | [项目文档目录](docs/README.md)，逐项说明用途 |
 | 选择讨论、设计、规划、开发或审核入口 | [任务路由](methodology/00-overview.md#任务路由表)；项目约束见 [AGENTS.md](AGENTS.md) |
 | 执行已批准的 Feature | [执行流程](methodology/03-execute-loop.md) |
 | 配置 Python 和 Godot | [项目环境](methodology/06-project-environment.md)；路径保存在 `docs/methodology-config.json` |

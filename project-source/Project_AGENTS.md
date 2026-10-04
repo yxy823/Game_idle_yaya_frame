@@ -36,7 +36,7 @@
 | 创建或维护 GDD、数值模型或 Product 交付计划 | `methodology/01-product-doc-structure.md` |
 | 维护项目术语 | `methodology/14-project-terminology.md` |
 | 制作视觉或逻辑原型 | `methodology/13-prototypes.md` |
-| 规划 Feature、排定 Product 顺序或修改 Feature 台账 | `methodology/02-feature-list-schema.md` |
+| 规划 Feature、排定 Product 顺序或修改 Feature 记录 | `methodology/02-feature-list-schema.md` |
 | 执行 Feature，包括批准、可选的独立审核和完成 | `methodology/03-execute-loop.md` |
 | 解释、应用或修改项目规则 | `methodology/04-project-rules.md` 和 `agent-rules/00-core/rule-precedence-and-routing.md` |
 | 准备 Feature 的设计与实施指导 | `implementation-guidance-godot` Skill |

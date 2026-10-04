@@ -12,7 +12,7 @@
 | `project-source/` | 待复制的代码、插件、默认文件、Skill、角色配置与方法规范 | 只作为源材料编辑；不在这里启动游戏开发流程或 Godot |
 | 生成的项目 | 项目自己的 `AGENTS.md`、`.agents/skills/`、`methodology/` 和工具 | 在这里开发游戏；它不读取框架状态，也不与框架同步 |
 
-新项目从源材料中得到这些起点：最小入口 `main/main.tscn`、示例工作台、空的业务台账，以及只有用途说明的 `docs/gdd/`。这些只是起点：环境还没配置，游戏设计也是空的。在项目里用 `design-gdd` 形成设计；依赖设计的工作需要满足什么前提，见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
+新项目从源材料中得到这些起点：最小入口 `main/main.tscn`、示例工作台、空的 Feature 记录，以及只有用途说明的 `docs/gdd/`。这些只是起点：环境还没配置，游戏设计也是空的。在项目里用 `design-gdd` 形成设计；依赖设计的工作需要满足什么前提，见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 
 手册和提示词库不复制到项目。项目里的 advisor 通过固定的绝对路径直接读取本机的 Godot 开发提示词库，结合项目现状选择场景并起草指令。
 
@@ -71,7 +71,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 - **保留**：业务代码、素材、UID、导入设置、许可证、Feature 身份与依赖，以及真实的完成历史。
 - **按实际意图合并**：机器路径、主场景和定制过的配置。
-- **不能覆盖业务记录**：空白的默认台账不能用来替换已有的业务记录。
+- **不能覆盖业务记录**：空白的默认 Feature 记录不能用来替换已有的业务记录。
 
 迁移报告可以放在 `reports/maintenance/framework-migration/migration.md`。已有文件没有依据时不覆盖。历史测试只证明历史版本；无法恢复的旧决定、基线或原件保持“未知”，不能补造过去的审批、TDD、验收或完成时间。替换框架和交付业务功能是两件不同的事，框架也不提供持续升级。
 

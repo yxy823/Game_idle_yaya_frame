@@ -2,7 +2,7 @@
 
 这些模板给出流程之后要创建的文件和固定回复格式的结构，例如 Product、Feature 详情或 ADR。它们是结构的唯一来源；没有本地化副本。
 
-项目的初始台账（`docs/feature-list.json`、`docs/feature-list-revisions.json`、`docs/test-registry.json`、`docs/progress.md` 和 `docs/project-rules.md`）不是模板。项目创建时直接把它们复制进 `docs/`，之后由项目自行维护。
+项目的初始 Feature 记录（`docs/feature-list.json`、`docs/feature-list-revisions.json`、`docs/test-registry.json`、`docs/progress.md` 和 `docs/project-rules.md`）不是模板。项目创建时直接把它们复制进 `docs/`，之后由项目自行维护。
 
 ## 使用模板
 

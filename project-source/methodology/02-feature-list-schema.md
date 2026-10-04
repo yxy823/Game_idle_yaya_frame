@@ -26,7 +26,7 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
 
 `docs/test-registry.json` 是测试登记表（Registry），供机器读取，把组件映射到可复用的测试。给人读的值使用 `document_language`；机器协议字段保持不变。
 
-项目创建时会提供索引、修订日志和测试登记表，三者都是空数组。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题；不要用重新初始化的空台账代替丢失的记录。
+项目创建时会提供索引、修订日志和测试登记表，三者都是空数组。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题；不要用重新初始化的空 Feature 记录代替丢失的记录。
 
 ## 文件 1：`docs/feature-list.json`
 
@@ -79,7 +79,7 @@ Feature 数量从 `features` 数组计算。详情文件、修订日志和测试
 Feature ID 记录的是分配顺序，不是执行顺序：
 
 - 一个 `pending` Feature 的全部前置 Feature 都是 `done` 时，它才可以开始。多个 Feature 都可开始时，ID 顺序只用于在其他条件相同时排定先后。
-- `python -B tools/checks/check-feature-list.py --eligible` 会校验台账，并以 JSON 输出可开始的 Feature 集合。
+- `python -B tools/checks/check-feature-list.py --eligible` 会校验 Feature 记录，并以 JSON 输出可开始的 Feature 集合。
 - `pending`、`in_progress` 或 `blocked` 的 Feature 不能依赖 `obsolete` 或 `obsolete_done` 的 Feature。源同步会把它改接到替代 Feature 上。
 - 已完成 Feature 的依赖作为历史保持不变。
 
@@ -200,7 +200,7 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 
 - 这类内容再短也存在这里。不要在 JSON `notes` 里放一份简写，也不要按复杂程度另选文档。
 - `notes` 只放提醒和相对链接 `[Design](F0XX-design.md)`。
-- 有设计内容要保存时再创建这个文件；不要求空文件。不要再加 JSON 记录或设计状态台账。
+- 有设计内容要保存时再创建这个文件；不要求空文件。不要再加 JSON 记录或设计状态记录文件。
 - Stage 0 读取所选 Feature 及其相关依赖的设计稿。
 
 `implementation-guidance-godot` Skill 把为某个 Feature 请求的实现指导写进同一个文件，工程 Feature 也一样。主 Agent 可以自己准备指导；交给 advisor 准备需要该 Skill 规定的明确授权。不属于任何 Feature 的工作按 [独立技术决定](10-architecture-overview.md#独立技术决定) 处理，不要虚构一个 Feature，也不要在 `reports/` 下另写指南。
@@ -260,7 +260,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 1. 写计划之前，确认所采用的每个 GDD、Product、专业和规则来源，都已经通过各自的流程和授权提交。
 2. 把来源的 HEAD 解析成完整的提交哈希。如果来源无法提交，或采用的状态不清楚，报告缺少的前提。不要用脚手架提交代替。
-3. 核对已写计划的语义覆盖后，追加下面这条记录。把它纳入最终的台账校验和计划提交。
+3. 核对已写计划的语义覆盖后，追加下面这条记录。把它纳入最终的 Feature 记录校验和计划提交。
 4. 定稿前，确认所采用来源的内容仍与记录的提交一致。
 
 | 字段 | 初始值 |
@@ -273,7 +273,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 不要创建引用自身的计划提交、单独的基线文件或新的 schema 字段。基线只覆盖已规划的范围和实际采用的来源，不覆盖所有 Product，也不覆盖 HEAD 上的所有文件。
 
-之后的 Product 规划保留完整的修订日志，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。台账里已有 Feature 但没有基线时，不要只因为日志为空就补加 `R000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
+之后的 Product 规划保留完整的修订日志，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。Feature 记录里已有 Feature 但没有基线时，不要只因为日志为空就补加 `R000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
 
 ### 同步记录
 
@@ -493,7 +493,7 @@ done ──source synchronization retires or replaces implemented behavior──
 python -B tools/checks/check-feature-list.py
 ```
 
-它总是检查完整的台账。
+它总是检查完整的 Feature 记录。
 
 ## 逐个 Product 规划
 
@@ -509,7 +509,7 @@ python -B tools/checks/check-feature-list.py
 4. 先完成当前 Product 所需的 Feature，再拆分下一个 Product。核对 Feature 的实际完成情况和剩余范围。以下情况都不能证明实现已完成：没有可开始的 Feature、计划为空、Product 文档自称已完成。`pending`、`in_progress` 和 `blocked` 的工作都算未完成；明确撤回的范围按退役规则处理。
 5. 完成后，对照当前 GDD 和已经学到的东西，重新审视下一个候选。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
 
-`feature-plan` 以追加到同一台账的方式，写入第一个及之后每个 Product 的初始拆分。它从当前已用的最大 ID 之后分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
+`feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它从当前已用的最大 ID 之后分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
 
 `feature-sync` 对照已规划和已完成的工作，分析 GDD、Product、专业和项目规则来源的变化，包括实际的下游依赖。
 
@@ -517,13 +517,13 @@ python -B tools/checks/check-feature-list.py
 - 这个候选成为当前 Product 时，完整阅读它所依据的 GDD 和专业设计，即使这些编辑早于最近一次同步锚点。
 - 全局的来源锚点不能证明每个 Product 都已细化或拆分。`meta.generated_from` 只列出来源位置，不表示覆盖范围。
 
-使用 Product 顺序、Feature 的来源和状态，以及普通的 Progress 记录。不要新增 Product 队列、登记表、完成标记或第二份台账。这条规则保护已有计划不被改动；它不授权删除未来的 Feature，也不授权改写已完成的历史。
+使用 Product 顺序、Feature 的来源和状态，以及普通的 Progress 记录。不要新增 Product 队列、登记表、完成标记或第二份 Feature 记录。这条规则保护已有计划不被改动；它不授权删除未来的 Feature，也不授权改写已完成的历史。
 
 ### 拆分预览
 
 每个当前 Product 做初始拆分时，在写入它的 Feature 索引条目、详情、修订日志或测试登记表（包括组件合并）之前，先在对话中给出简洁的预览。Product 编写或接手已有实现时调用规划，也同样适用。把预览作为规划方案的一部分给出：
 
-- 指明 Product 及其批准的范围。说明要新增的 Feature 数量，以及台账前后的总数。区分复用的工作和新增的条目。数量从完整的结果推导，不按预设配额。
+- 指明 Product 及其批准的范围。说明要新增的 Feature 数量，以及 Feature 记录前后的总数。区分复用的工作和新增的条目。数量从完整的结果推导，不按预设配额。
 - 用紧凑的表格或列表列出每个拟定的 Feature：暂定标签、标题、一句话的范围和可观察结果、前置 Feature。说明选择这个粒度的理由，以及排除项和尚未决定的选择。
 - 在同一份方案中附上[需求覆盖核对](#需求覆盖核对)；预览不代替覆盖核对或详细的 AC。
 
@@ -531,7 +531,7 @@ python -B tools/checks/check-feature-list.py
 
 用户在限定范围内明确授权自主拆分并续接时，写入前展示预览，然后不再等待批准直接继续。授予这种权限的 Goal 也算数；仅仅使用 Goal 模式不算。这个例外也覆盖该授权内刷新的预览。缺失的 Product 决定和范围变化仍需要用户决定。
 
-写入并校验后，用实际的 ID、数量和剩余工作刷新同一份方案。接受预览只授权记录计划；它不授权后续实现，也不代替人工验收。不要新增预览文件、批准字段或状态；台账校验器不检查这一步。
+写入并校验后，用实际的 ID、数量和剩余工作刷新同一份方案。接受预览只授权记录计划；它不授权后续实现，也不代替人工验收。不要新增预览文件、批准字段或状态；Feature 记录校验器不检查这一步。
 
 ## 接手已有实现
 
@@ -551,7 +551,7 @@ python -B tools/checks/check-feature-list.py
 
 缺失的历史保持未知；不要编造更早的 Feature、批准、RED 运行或验收日期。已完成的记录及其证据按常规的演进规则保留。
 
-只做文档的任务，在完成已授权的 Product 和计划写入、所需检查和提交后结束。把已实现的范围与正式完成分开报告。已授权的交付按[已有实现的交付](03-execute-loop.md#已有实现的交付)从当前状态核实并完成。不要为这种情况新增状态、接手台账或证据格式。
+只做文档的任务，在完成已授权的 Product 和计划写入、所需检查和提交后结束。把已实现的范围与正式完成分开报告。已授权的交付按[已有实现的交付](03-execute-loop.md#已有实现的交付)从当前状态核实并完成。不要为这种情况新增状态、接手记录文件或证据格式。
 
 ## 拆分规则
 
@@ -597,7 +597,7 @@ python -B tools/checks/check-feature-list.py
 
 - 写出每个未映射的需求、尚未决定的选择，以及剩余的实现或验证。不要把不完整的计划称为已完全同步。
 - 明确写出已批准的排除项和推迟的范围。
-- 可执行的后续事项放在负责的 Feature 或当前 Progress 中并附链接，不放进单独的覆盖台账。
+- 可执行的后续事项放在负责的 Feature 或当前 Progress 中并附链接，不放进单独的覆盖记录文件。
 
 规划对齐不代表行为已经实现或测试过。
 

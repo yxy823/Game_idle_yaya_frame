@@ -1,4 +1,4 @@
-# 中立台账回归检查依赖、修订和退役语义，不以某个游戏的编号顺序建立规则。
+# 中立 Feature 记录回归检查依赖、修订和退役语义，不以某个游戏的编号顺序建立规则。
 from __future__ import annotations
 import sys
 from pathlib import Path

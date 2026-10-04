@@ -34,13 +34,13 @@
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化出的共享方向与专业规格 | 对应的 design Skill / GDD 保存整体目标并引用这些正文 |
 | `docs/presentation/` | 一次游戏表现的过程、组件、候选方案、采用组合、实现与验收入口；方案专用的资源规格写在对应章节 | `design-game-presentation` 与实现任务 / UI 文档和 GDD 引用；README 只做导航 |
 
-### 交付规划与任务台账
+### 交付规划与 Feature 记录
 
 | 位置 | 保存什么 | 谁维护 / 谁读取 |
 | --- | --- | --- |
 | `docs/product.md` | 交付预拆分：各交付单元的粗略边界、来源、依赖和建议顺序 | `product-author` / 规划 |
 | `docs/product/NN-<delivery>.md` | 当前交付单元的范围与衔接，轮到时才编写 | `product-author` / 规划与实现 |
-| `docs/feature-list.json` | Feature 的 ID、标题、依赖、状态与详情入口 | 规划与执行 / 可开始任务判断、台账检查 |
+| `docs/feature-list.json` | Feature 的 ID、标题、依赖、状态与详情入口 | 规划与执行 / 可开始任务判断、Feature 记录检查 |
 | `docs/features/F0XX.json` | 单个 Feature 的范围、AC、来源、验证义务与 notes | 规划与执行 / 测试选择、完成检查 |
 | `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
 | `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
@@ -75,7 +75,7 @@
 │   └── examples/             可独立运行的分发示例
 ├── addons/                   第三方插件及已记录补丁
 ├── tools/
-│   ├── checks/               环境与 Feature 台账检查
+│   ├── checks/               环境与 Feature 记录检查
 │   ├── features/             组件合并与完成记录命令
 │   ├── lib/                  验证快照、解析及共享实现
 │   └── testing/              gdUnit 运行、报告与验证支持

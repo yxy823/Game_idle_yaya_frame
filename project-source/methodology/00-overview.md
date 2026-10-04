@@ -93,7 +93,7 @@ methodology/                         canonical workflow specification
 | 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
 | 检查、导入或恢复验证证据 | `verification-evidence-godot` | 按 [证据与时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
 | 查询状态 | 只读说明，或 `project-next-step-advisor` | 不为回答问题而开始工作或运行就绪检查。 |
-| 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接台账、对话或消息。 |
+| 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接记录文件、对话或消息。 |
 
 使用本表时：
 
@@ -108,7 +108,7 @@ methodology/                         canonical workflow specification
 | 主题 | 文件 |
 | --- | --- |
 | GDD 与 Product 文档：名称、范围、开放问题、候选想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
-| Feature 台账结构、修订和逐个 Product 规划 | [02-feature-list-schema.md](02-feature-list-schema.md) |
+| Feature 记录结构、修订和逐个 Product 规划 | [02-feature-list-schema.md](02-feature-list-schema.md) |
 | Stage 0–8 执行循环、授权与续接 | [03-execute-loop.md](03-execute-loop.md) |
 | 项目规则：职责、加载和增量维护 | [04-project-rules.md](04-project-rules.md) |
 | 文档语言 | [05-document-language.md](05-document-language.md) |

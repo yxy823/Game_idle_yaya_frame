@@ -21,7 +21,7 @@
 
 **S1｜核对首次入口**
 
-当前 Agent 用 feature-plan 读取 GDD、当前 Product 交付范围与顺序，确认空台账与规划工作区条件。
+当前 Agent 用 feature-plan 读取 GDD、当前 Product 交付范围与顺序，确认空 Feature 记录与规划工作区条件。
 
 **S2｜展示并确认拆分**
 
@@ -57,11 +57,11 @@ docs/feature-list.json、docs/features/、docs/test-registry.json 和首次修�
 
 ## 阻塞、异常与范围变化
 
-GDD 缺失、当前 Product 尚未细化、设计未定、台账不空或来源不能核实时停在实际缺口，不重建历史。
+GDD 缺失、当前 Product 尚未细化、设计未定、Feature 记录不为空或来源不能核实时停在实际缺口，不重建历史。
 
 ## 完成状态与验证标准
 
-来源、AC、登记与 R000 一致，完整台账检查通过且计划提交明确。
+来源、AC、登记与 R000 一致，完整的 Feature 记录检查通过且计划提交明确。
 
 ## 流程关联与衔接关系
 

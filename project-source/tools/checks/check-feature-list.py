@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""显式检查 Feature 台账与测试引用；检查当前完整一致性。"""
+"""显式检查 Feature 记录与测试引用；检查当前完整一致性。"""
 # 沿用 Skill 中的现有调用路径；不读取工具事件或拦截写入。
 from __future__ import annotations
 

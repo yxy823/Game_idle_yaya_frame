@@ -4,7 +4,7 @@
 
 ```text
 tools/
-├── checks/      环境与台账检查
+├── checks/      环境与 Feature 记录检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
 └── lib/         共享实现
@@ -27,7 +27,7 @@ tools/
 
 资源工作台的分析后端不属于本目录，见[资源工作台说明](../asset_workbench/README.md)。
 
-台账检查、登记表合并和运行选择共用同一套 JSON 解码规则：
+Feature 记录检查、登记表合并和运行选择共用同一套 JSON 解码规则：
 
 - 重复对象键、非标准数值（`NaN`、`Infinity`）以及解析后溢出为无穷的浮点数（如 `1e400`）都会报错；
 - 合并器在写回前拒绝这类输入，并保留原件；共享 JSON 写入也拒绝非有限数值；
@@ -71,7 +71,7 @@ python -B tools/features/record-feature-completion.py record-tests --feature F00
 | `--completion-feature F0XX` | 另外要求该 Feature 当前映射的自动测试均为 `active` | 不检查 |
 | `--eligible` | 通过检查后，以 JSON 输出依赖已满足的待开始 Feature | 不输出 |
 
-退出码：`0` 检查通过；`2` 台账无效或参数错误。
+退出码：`0` 检查通过；`2` Feature 记录无效或参数错误。
 
 ### check-project-environment.py
 
@@ -190,7 +190,7 @@ flowchart TD
 | 文件 | 职责 |
 | --- | --- |
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
-| `test_selection.py` | 根据已确定的验收方案和台账选择测试；不从空清单猜测验收方式 |
+| `test_selection.py` | 根据已确定的验收方案和 Feature 记录选择测试；不从空清单猜测验收方式 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `feature_completion_evidence.py` | 完成记录的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
 | `verification_snapshot.py` | Git 提交与当前内容指纹；测试和人工依据共用，不判断任务完成 |

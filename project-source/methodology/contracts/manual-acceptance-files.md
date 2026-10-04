@@ -67,7 +67,7 @@ python -B tools/features/record-feature-completion.py record-acceptance --featur
 
 命令成功只表示实际状态已被记录，不表示验收通过或 Feature 已完成。无效文件会返回非零退出码，已记录的证据保持不变。停止这次导入并解决报告的不一致；不要退回到之前的验收。
 
-完成证据保存原始快照，以及带项目相对路径 `checklist` 和 `result` 的 `human_acceptance.source`。完成校验会重新读取这些原件。文件缺失、定义被改动、内容过时，或结果不再全部为 `passed`，都会阻塞基于文件的验收。不会创建逐项的副本或第二份结果台账。时效按[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)判断；报告不在指纹范围内，所以保存用户结果不会让已测试的实现失效。
+完成证据保存原始快照，以及带项目相对路径 `checklist` 和 `result` 的 `human_acceptance.source`。完成校验会重新读取这些原件。文件缺失、定义被改动、内容过时，或结果不再全部为 `passed`，都会阻塞基于文件的验收。不会创建逐项的副本或第二份结果记录文件。时效按[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)判断；报告不在指纹范围内，所以保存用户结果不会让已测试的实现失效。
 
 ## 对话中的决定与后续工作
 

@@ -13,7 +13,7 @@ description: 为已有的 Godot Feature（包括工程 Feature）准备或更新
 - 设计何时提出、批准、保存并保持一致：`methodology/03-execute-loop.md` 的 Stage 1C、2 和 3。
 - 读取来源和判断指导是否过时：`methodology/04-project-rules.md` 的 **按事先准备的指导实现**。
 
-细节以这些约定为准；不另建指南、草稿文件、台账或状态格式。
+细节以这些约定为准；不另建指南、草稿文件、记录文件或状态格式。
 
 选择 Shader 方案、数据流或渲染取舍时，阅读 [Shader 实现方法](references/shader-implementation-methods.md) 中与当前问题有关的小节。
 

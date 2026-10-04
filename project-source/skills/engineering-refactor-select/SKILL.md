@@ -22,7 +22,7 @@ description: >-
 ## 全局规则
 
 1. 只发现和挑选。不写代码、不修改文件、不提交。报告推荐项或暂缓的理由，然后等待用户选择。
-2. 用当前证据、预期收益和安全修改的成本说明相对优先级。不计算数值分数，不创建优先级字段或单独的台账。
+2. 用当前证据、预期收益和安全修改的成本说明相对优先级。不计算数值分数，不创建优先级字段或单独的记录文件。
 3. 覆盖用户要求的范围，不为缩短报告而隐藏重要的候选；不要把带筛选条件的请求扩大成全项目扫描。
 4. 不调用其他 Skill，包括 [feature-plan](../feature-plan/SKILL.md)、[feature-sync](../feature-sync/SKILL.md) 和 [feature-execute](../feature-execute/SKILL.md)。用户选定后，按[回复处理](#回复处理)交回选择；后续工作由 `engineering-change-plan` 发起，`feature-execute` 只有在 Feature 获得明确批准后才实施。
 

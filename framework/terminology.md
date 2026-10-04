@@ -24,6 +24,7 @@
 | Product 总览 | `docs/product.md`，保存预拆分结果：交付范围、来源、依赖与建议顺序；不等于 GDD 的游戏总览 |
 | 预拆分 | 在 Product 总览中粗分全部约定交付范围；轮到某个 Product 时才细化其正文并拆 Feature |
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |
+| Feature 记录 | [Feature 结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成依据；“Feature 记录检查”指 `tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |
 | Stage | Feature 执行规范里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |
 
 来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)。

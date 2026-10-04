@@ -591,7 +591,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Product、Feature、完成证据、人工验收清单和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n只在真实任务需要时采用，不自动创建业务文档；初始台账、进度与项目规则由 defaults/docs/ 直接复制，不是模板。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
+      "note": "职责：Product、Feature、完成证据、人工验收清单和可选架构记录的结构。\n源：project-source/methodology/templates/；项目：methodology/templates/。\n只在真实任务需要时采用，不自动创建业务文档；初始 Feature 记录、进度与项目规则由 defaults/docs/ 直接复制，不是模板。\n\n项目文件： methodology/templates/README.md\n项目文件： methodology/templates/*.tmpl",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1494,7 +1494,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源台账。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源记录文件。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接台账。\n\n项目文件： docs/progress.md",
+      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接记录文件。\n\n项目文件： docs/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
