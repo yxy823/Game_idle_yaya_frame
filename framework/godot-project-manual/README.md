@@ -4,7 +4,13 @@
 
 ## 第一次阅读
 
-建议按这个顺序读：
+想先跟着一个真实项目走一遍，从教程开始：
+
+1. [从空白项目到第一份 Feature 计划](tutorial/01-blank-project-to-feature-plan.md)：创建项目、配置环境、整合 GDD、拆分 Product、定美术方向、做第一份计划。
+2. [完成第一个 Feature](tutorial/02-first-feature-to-done.md)：视觉样例、等待验收期间并行推进、记录验收与收尾。
+3. [修正时过时不过的测试](tutorial/03-fix-a-flaky-test.md)：交付后用维护任务修正不稳定的测试。
+
+想先理解概念，按这个顺序读参考页：
 
 1. [框架、创建器与项目边界](foundations/framework-and-project.md)：项目从哪里来，创建后和框架是什么关系。
 2. [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：用一次商店购买理解一个功能由哪些职责组成。
@@ -15,6 +21,7 @@
 
 ## 全部专题
 
+- **教程**：以三消示例项目串起主线的三篇教程，见[第一次阅读](#第一次阅读)。
 - **框架基础**
   - [框架、创建器与项目边界](foundations/framework-and-project.md)：分发方式、创建器用法、环境就绪的含义，以及已有项目怎样采用框架。
   - [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：逻辑与表现的职责划分，以及怎样从设计找到实现与验收。
