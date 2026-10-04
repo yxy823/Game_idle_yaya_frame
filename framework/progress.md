@@ -1,9 +1,5 @@
 # 框架待办
 
-## 三消 Demo 实测问题修复
-
-- **待人工确认**：Godot 编辑器开着时 Agent 修改了 `project.godot`，编辑器窗口重新获得焦点时会不会提示“文件已在外部修改”。自动化无法测试，需要用户在编辑器中试一次；结果决定 [tools README](../project-source/tools/README.md#resave_godot_filesgd) 中“先重新加载当前项目”的提醒是否需要调整。
-
 ## Godot 项目手册补充教程线
 
 - **问题**：[Godot 项目手册](godot-project-manual/README.md)目前以按专题查阅的参考页为主，缺少带着读者从创建项目一路做到第一个 Feature 完成的递进式教程。
