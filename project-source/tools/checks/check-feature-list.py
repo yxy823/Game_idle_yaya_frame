@@ -388,7 +388,8 @@ def _validate_all(completion_feature: str | None = None) -> bool:
     details: dict[str, dict[str, Any]] = {}
     detail_ids: set[str] = set()
     if DETAILS_DIR.exists():
-        for path in sorted(DETAILS_DIR.glob("F*.json")):
+        # 同目录还有设计稿与 F0XX-evidence.json，只读取 F0XX.json 详情。
+        for path in sorted(p for p in DETAILS_DIR.glob("F*.json") if re.fullmatch(r"F\d{3}\.json", p.name)):
             data, loaded = _load_json(path)
             ok &= loaded
             if not loaded:

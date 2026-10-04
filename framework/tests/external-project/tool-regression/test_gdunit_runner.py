@@ -145,7 +145,7 @@ class GdUnitRunnerTests(unittest.TestCase):
                 engine.assert_not_called()
             self.assertEqual(json.loads(output.getvalue().splitlines()[-1])["status"], "not_required")
         self.assertFalse((self.root / "reports").exists())
-        self.assertFalse((self.root / "docs/feature-completion-evidence.json").exists())
+        self.assertFalse((self.root / "docs/features/F001-evidence.json").exists())
 
     def test_empty_final_cannot_hide_failed_run(self) -> None:
         self._manual_plan()

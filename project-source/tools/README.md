@@ -139,19 +139,19 @@ python -B tools/checks/check-markdown-links.py
 
 ### record-feature-completion.py
 
-`--repo-root <目录>` 写在子命令之前，默认是脚本所在项目。所有子命令都要求 `--feature F0XX`。
+`--repo-root <目录>` 写在子命令之前，默认是脚本所在项目。所有子命令都要求 `--feature F0XX`，记录写在该 Feature 自己的 `docs/features/F0XX-evidence.json`，第一次记录时创建。
 
 | 子命令 | 其他参数 | 作用 |
 | --- | --- | --- |
 | `prepare-manual` | `--checklist <文件>`（必填，位于 `reports/manual-acceptance` 下的待验收清单） | 把清单绑定到当前快照，准备人工验收 |
 | `record-tests` | `--run <result.json>`（必填，可重复，用于多次不重叠的真实运行） | 导入真实测试结果引用；被拒绝时清除旧引用，原始报告保留 |
-| `record-acceptance` | `--status accepted\|rejected`，或 `--result <文件> --checklist <文件>`（二选一；`--result` 与 `--checklist` 必须同时提供） | 记录口头决定，或导入用户提交的结果 JSON |
+| `record-acceptance` | `--checklist <文件>`（必填，已绑定的清单，状态已按用户的结论填写）；`--confirm-unrelated-changes`（可选，绑定之后变化的文件都不涉及本 Feature 时使用） | 从清单的状态推导并记录验收结论；同一结论重复记录时给出提示 |
 | `show` | 无 | 显示该 Feature 的已存记录，不判断能否完成 |
 | `validate` | 无 | 检查当前测试与人工依据能否支持完成 |
 
 退出码：`0` 成功（`validate` 表示依据有效）；`2` 依据不足、记录无效、输入被拒绝或参数错误。
 
-人工验收的清单格式、结果 JSON 与确切命令见[人工验收文件契约](../methodology/contracts/manual-acceptance-files.md)。命令成功只表示记录成功，结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
+人工验收的清单格式、怎样在清单中记录用户的结论，以及确切命令见[人工验收文件契约](../methodology/contracts/manual-acceptance-files.md)。命令成功只表示记录成功，结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
 
 ### 静态检查与资源导入
 

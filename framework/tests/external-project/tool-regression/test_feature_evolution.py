@@ -134,6 +134,12 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.index["features"][2]["depends_on"] = ["F002"]
         self.assertFalse(self.validate())
 
+    def test_evidence_and_design_files_beside_details_are_not_read_as_details(self) -> None:
+        self.assertTrue(self.validate())
+        self.write("docs/features/F001-evidence.json", {"schema_version": 9, "feature_id": "F001"})
+        (self.root / "docs/features/F001-design.md").write_text("# Design\n", encoding="utf-8")
+        self.assertTrue(self.validate())
+
     def test_historical_done_can_retire_with_traceable_replacement(self) -> None:
         self.retire()
         self.assertTrue(self.validate())

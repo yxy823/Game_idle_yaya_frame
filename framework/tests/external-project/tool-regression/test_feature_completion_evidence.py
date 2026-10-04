@@ -69,8 +69,25 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data = feature_completion_evidence.empty_evidence("F001", snapshot)
         data.update(recorded_at=verification_snapshot.utc_now(),
                     test_runs=[result_reference(self.root, test_path)])
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         return data
+
+    def manual_checklist_acceptance(self) -> dict:
+        """Bind a checklist for the current manual checks and record the user's pass in its statuses."""
+        from tools.lib.manual_acceptance import prepare_checklist, read_checklist
+        detail = json.loads((self.root / "docs/features/F001.json").read_text(encoding="utf-8"))
+        tests = [{"id": f"F001-{criterion['id']}-M{index:02d}", "source_ref": f"{criterion['id']}/{index}",
+                  "title": check, "steps": ["Observe"], "expected_result": check}
+                 for criterion in detail["acceptance_criteria"]
+                 for index, check in enumerate(criterion["verification"].get("manual_checks", []), 1)]
+        path = self.write_json("reports/manual-acceptance/F001/manual-acceptance-checklist.json",
+                               {"schema_version": 1, "feature_id": "F001", "snapshot": None, "tests": tests})
+        prepare_checklist(self.root, "F001", path)
+        value = json.loads(path.read_text(encoding="utf-8"))
+        for test in value["tests"]:
+            test.update(status="passed", comment="来自对话：接受")
+        write_json(path, value)
+        return {**read_checklist(self.root, "F001", path), "recorded_at": verification_snapshot.utc_now()}
 
     def test_automated_completion_needs_no_review_or_fabricated_human_acceptance(self):
         data = self.completion_fixture()
@@ -93,7 +110,11 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertFalse(valid)
         self.assertIn("human acceptance", message)
         data["human_acceptance"].update(status="accepted", **verification_snapshot.current_snapshot(self.root))
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/features/F001-evidence.json", data)
+        # 没有清单原件的“已接受”不算人工验收。
+        self.assertIn("checklist path", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
+        data["human_acceptance"] = self.manual_checklist_acceptance()
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
 
     def completion_command(self, command: str):
@@ -134,7 +155,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
                       json.dumps({**valid, "test_runs": None}),
                       json.dumps({**valid, "human_acceptance": None})):
             with self.subTest(value=value):
-                path = self.write("docs/feature-completion-evidence.json", value)
+                path = self.write("docs/features/F001-evidence.json", value)
                 original = path.read_bytes()
                 shown = self.completion_command("show")
                 self.assertEqual(shown.returncode, 2, shown.stdout + shown.stderr)
@@ -143,7 +164,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
 
     def test_first_report_import_creates_completion_record_without_initialization(self):
         _, report = self.run_fixture()
-        path = self.root / feature_completion_evidence.EVIDENCE_RELATIVE_PATH
+        path = self.root / feature_completion_evidence.evidence_relative_path("F001")
         self.assertFalse(path.exists())
         result = subprocess.run(
             [sys.executable, "-B", str(PROJECT_ROOT / "tools/features/record-feature-completion.py"),
@@ -162,7 +183,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.write_json("docs/features/F001.json", self.detail)
         data = self.completion_fixture()
         data["human_acceptance"].update(status="accepted", working_tree_fingerprint="sha256:old-content")
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("human acceptance does not match", message)
@@ -207,10 +228,10 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         snapshot = verification_snapshot.current_snapshot(self.root)
         data = feature_completion_evidence.empty_evidence("F001", snapshot)
         data["recorded_at"] = verification_snapshot.utc_now()
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         self.assertIn("human acceptance", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
-        data["human_acceptance"].update(status="accepted", **snapshot)
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        data["human_acceptance"] = self.manual_checklist_acceptance()
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         self.assertNotIn("code_smell", data)
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
         self.write("game.gd", "extends Node\nvar changed = true\n")
@@ -315,7 +336,7 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         data["full_suite"] = {"status": "pass"}
         data["human_acceptance"]["status"] = "accepted"
         data["gate_status"] = "pass"
-        write_json(self.root / "docs/feature-completion-evidence.json", data)
+        write_json(self.root / "docs/features/F001-evidence.json", data)
         valid, message = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
         self.assertFalse(valid)
         self.assertIn("test run evidence is invalid: no real test run result was supplied", message)

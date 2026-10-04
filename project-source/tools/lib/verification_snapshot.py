@@ -3,15 +3,17 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 EXCLUDED_EXACT_PATHS = {
-    "docs/feature-completion-evidence.json",
     "docs/progress.md",
 }
+# 每个 Feature 的完成证据是验证输出，不是被验证的内容。
+EVIDENCE_PATH_RE = re.compile(r"docs/features/F\d{3}-evidence\.json")
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
 
 
@@ -51,7 +53,7 @@ def git_revision(repo_root: Path) -> str:
 
 def _is_fingerprint_input(relative_path: str) -> bool:
     normalized = relative_path.replace("\\", "/").removeprefix("./")
-    if normalized in EXCLUDED_EXACT_PATHS:
+    if normalized in EXCLUDED_EXACT_PATHS or EVIDENCE_PATH_RE.fullmatch(normalized):
         return False
     if normalized.startswith("reports/"):
         return False
@@ -152,6 +154,23 @@ def working_tree_fingerprint(repo_root: Path) -> str:
         digest.update(b"\0")
 
     return f"sha256:{digest.hexdigest()}"
+
+
+def changed_paths_since(repo_root: Path, revision: str) -> list[str]:
+    """List fingerprint inputs that differ between a recorded commit and the current working tree.
+
+    Changes that were still uncommitted when the revision was recorded are listed too,
+    so the result can over-report but never hides a changed input.
+    """
+    tracked = _run_git(repo_root, "diff", "--name-only", "--no-renames", "-z", revision, "--")
+    untracked = _run_git(repo_root, "ls-files", "--others", "--exclude-standard", "-z")
+    paths = set()
+    for raw in (tracked, untracked):
+        for path in raw.decode("utf-8", errors="surrogateescape").split("\0"):
+            normalized = path.replace("\\", "/")
+            if normalized and _is_fingerprint_input(normalized):
+                paths.add(normalized)
+    return sorted(paths)
 
 
 def current_snapshot(repo_root: Path) -> dict[str, str]:

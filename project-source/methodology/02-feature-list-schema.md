@@ -8,11 +8,11 @@ docs/
 ├── features/
 │   ├── F001.json
 │   ├── F001-design.md       # Optional detailed design for this Feature
+│   ├── F001-evidence.json   # Completion evidence, created by the recording tool
 │   ├── F002.json
 │   └── ...
 ├── feature-list-revisions.json
-├── test-registry.json
-└── feature-completion-evidence.json
+└── test-registry.json
 ```
 
 Feature 索引保持轻量。每个 Feature 的详情文件保存：
@@ -417,9 +417,9 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 
 已完成 Feature 的条件、测试 ID 和已归档的完成证据都是历史记录。不要为了模仿当前行为而改写它们。哪些测试构成有效的安全网，以及正在完成的 Feature 可以引用哪些状态的测试，定义在 [登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 
-## 文件 5：`docs/feature-completion-evidence.json`
+## 文件 5：`docs/features/F0XX-evidence.json`
 
-这个文件以 schema 版本 8 保存当前 Feature 的完成证据，结构见[模板](templates/feature-completion-evidence.json.tmpl)。只能通过 `tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature F0XX` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
+每个 Feature 有自己的完成证据文件，以 schema 版本 9 保存它的测试运行引用和人工验收记录，结构见[模板](templates/feature-completion-evidence.json.tmpl)。第一次记录时由工具创建；各 Feature 互不覆盖，等待验收期间推进别的 Feature 也不会丢失原 Feature 的记录。只能通过 `tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature F0XX` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 ## notes 中的 Bug 经验
 

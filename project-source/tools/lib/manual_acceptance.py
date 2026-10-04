@@ -1,12 +1,13 @@
 """Tool-neutral manual checklist preparation and result validation."""
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
 
 from tools.lib.atomic_json import write_json
-from tools.lib.verification_snapshot import EvidenceError, current_snapshot
+from tools.lib.verification_snapshot import EvidenceError, changed_paths_since, current_snapshot
 from tools.lib.test_selection import acceptance_mode
 
 
@@ -105,6 +106,19 @@ def _document(data: dict[str, Any], feature: str, obligations: set[str]) -> dict
     return by_id
 
 
+
+
+def _definition_digest(data: dict[str, Any], tests: dict[str, dict]) -> str:
+    """Hash what the user is asked to check, matched by ID; status and comment stay editable."""
+    definition = {
+        "title": data.get("title", ""),
+        "description": data.get("description", ""),
+        "tests": [{field: tests[key][field] for field in DEFINITION_FIELDS} for key in sorted(tests)],
+    }
+    encoded = json.dumps(definition, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    return f"sha256:{hashlib.sha256(encoded).hexdigest()}"
+
+
 def prepare_checklist(root: Path, feature: str, checklist: Path) -> Path:
     """Bind an Agent-authored pending checklist once; never rebind old results."""
     path = report_path(root, checklist)
@@ -116,48 +130,45 @@ def prepare_checklist(root: Path, feature: str, checklist: Path) -> Path:
     if any(test["status"] != "pending" or test["comment"] for test in tests.values()):
         raise EvidenceError("new checklist must contain only pending tests with empty comments")
     data["tests"] = list(tests.values())
-    data["snapshot"] = snapshot
+    data["snapshot"] = {**snapshot, "definition_sha256": _definition_digest(data, tests)}
     if current_snapshot(root)["working_tree_fingerprint"] != snapshot["working_tree_fingerprint"]:
         raise EvidenceError("source changed while preparing manual checklist")
     write_json(path, data)
     return path
 
 
-def read_result(root: Path, feature: str, checklist: Path, result: Path,
-                snapshot: dict[str, str] | None = None) -> dict[str, Any]:
-    """Compare original definitions and current content, then derive item status.
+def read_checklist(root: Path, feature: str, checklist: Path, snapshot: dict[str, str] | None = None, *,
+                   confirm_unrelated_changes: bool = False) -> dict[str, Any]:
+    """Derive the acceptance decision from the statuses recorded in the bound checklist.
 
-    The Agent must separately resolve contradictory comments and confirm that
-    the file is the user's actual submission. This parser cannot judge prose.
+    The Agent must separately confirm that every status reflects the user's actual
+    decision and resolve contradictory comments. This parser cannot judge prose.
+    When content changed after binding, the changed inputs are returned only after
+    the Agent confirmed that none of them affects this Feature's checked scope.
     """
-    original_path, result_path = report_path(root, checklist), report_path(root, result)
-    if original_path == result_path:
-        raise EvidenceError("checklist and result must be separate files")
+    path = report_path(root, checklist)
     before = snapshot or current_snapshot(root)
-    obligations = _obligations(root, feature)
-    original, returned = _read(original_path), _read(result_path)
-    planned = _document(original, feature, obligations)
-    actual = _document(returned, feature, obligations)
-    origin = original.get("snapshot")
+    data = _read(path)
+    tests = _document(data, feature, _obligations(root, feature))
+    origin = data.get("snapshot")
     if not isinstance(origin, dict) or any(not isinstance(origin.get(key), str) or not origin[key]
-                                           for key in ("git_revision", "working_tree_fingerprint")):
+                                           for key in ("git_revision", "working_tree_fingerprint", "definition_sha256")):
         raise EvidenceError("checklist has no prepared snapshot")
-    if returned.get("snapshot") != origin or origin["working_tree_fingerprint"] != before["working_tree_fingerprint"]:
-        raise EvidenceError("manual acceptance does not match the checklist/current content snapshot")
-    if any(test["status"] != "pending" or test["comment"] for test in planned.values()):
-        raise EvidenceError("original checklist must remain pending and unchanged")
-    if planned.keys() != actual.keys():
-        raise EvidenceError("manual result has missing or extra test IDs")
-    for field in ("title", "description"):
-        if original.get(field, "") != returned.get(field, ""):
-            raise EvidenceError(f"manual result changed document {field}")
-    for key, test in planned.items():
-        if any(test[field] != actual[key][field] for field in DEFINITION_FIELDS):
-            raise EvidenceError(f"manual result changed test definition: {key}")
-    statuses = {test["status"] for test in actual.values()}
+    if origin["definition_sha256"] != _definition_digest(data, tests):
+        raise EvidenceError("checklist definitions changed after binding; only status and comment may be edited")
+    decision: dict[str, Any] = {}
+    if origin["working_tree_fingerprint"] != before["working_tree_fingerprint"]:
+        changed = changed_paths_since(root, origin["git_revision"])
+        if not confirm_unrelated_changes:
+            raise EvidenceError(
+                "content changed after the checklist was bound; check whether these files affect this Feature "
+                f"and rerun with --confirm-unrelated-changes only if none does: {changed}")
+        decision["unrelated_changes"] = changed
+    statuses = {test["status"] for test in tests.values()}
     status = "rejected" if "failed" in statuses else "pending" if "pending" in statuses else "accepted"
     if current_snapshot(root)["working_tree_fingerprint"] != before["working_tree_fingerprint"]:
-        raise EvidenceError("source changed while reading manual result")
-    return {"status": status, **{key: origin[key] for key in ("git_revision", "working_tree_fingerprint")},
-            "source": {"checklist": original_path.relative_to(root.resolve()).as_posix(),
-                       "result": result_path.relative_to(root.resolve()).as_posix()}}
+        raise EvidenceError("source changed while reading manual checklist")
+    return {"status": status, "git_revision": before["git_revision"],
+            "working_tree_fingerprint": before["working_tree_fingerprint"],
+            "bound_fingerprint": origin["working_tree_fingerprint"], **decision,
+            "source": {"checklist": path.relative_to(root.resolve()).as_posix()}}

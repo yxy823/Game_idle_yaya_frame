@@ -178,7 +178,7 @@ reports/gdunit-wrapper/F001/run-<id>/
 
 ### 从运行结果到完成状态
 
-Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时创建完成依据文件 `docs/feature-completion-evidence.json`，Stage 7 检查完成条件。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
+Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时为该 Feature 创建完成依据文件 `docs/features/F0XX-evidence.json`，Stage 7 检查完成条件。每个 Feature 一份，互不覆盖。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
 
 ```mermaid
 flowchart TD
@@ -217,9 +217,8 @@ flowchart TD
 | --- | --- |
 | `record-tests --feature F001 --run <result.json>` | 导入真实的最终 Feature 运行；多个运行在同一次调用中列出多个 `--run`，整组替换旧引用 |
 | `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定的清单不能重新绑定 |
-| `record-acceptance --feature F001 --checklist <清单.json> --result <结果.json>` | 读取用户的真实结果，与原清单和当前内容对照，记录 accepted、rejected 或 pending |
-| `record-acceptance --feature F001 --status accepted` | manual 模式下，用户已明确接受当前范围 |
-| `record-acceptance --feature F001 --status rejected` | 记录用户的拒绝和需要修复的内容 |
+| `record-acceptance --feature F001 --checklist <清单.json>` | 清单的状态已按用户的结论填写后，核对定义未变并记录 accepted、rejected 或 pending |
+| `record-acceptance ... --confirm-unrelated-changes` | 绑定之后项目又有变化，Agent 逐个核对工具列出的文件都不涉及本 Feature 后使用；变化文件会写进记录 |
 | `show --feature F001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
 | `validate --feature F001` | 检查当前内容对应的完成依据是否满足 |
 
@@ -258,11 +257,11 @@ $LASTEXITCODE
 
 这里的退出码 0 只表示“不需要自动测试”，不是测试通过。
 
-### 导入人工验收结果
+### 记录人工验收结论
 
-人工清单和结果文件都保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。`--result` 必须与 `--checklist` 配对使用，不能和表示口头决定的 `--status` 混用。
+清单本身就是验收记录，保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。你在对话里说“通过”或指出问题，Agent 把结论写进清单对应项的状态和备注；你也可以自己改清单。两种方式记到同一个地方，不另存结果文件。
 
-- 有效且全部通过的结果文件，本身就是该范围的人工接受；备注里有实质矛盾时先向用户澄清。
+- 清单全部通过，就是该范围的人工接受；备注里有实质矛盾时先向用户澄清。
 - 命令退出 0 表示如实记录了状态；`pending` 和 `rejected` 都不能完成任务。
 - 导入无效时命令以非零退出，并保留已有记录。Agent 要处理本次错误，不能退回使用旧的接受记录。
 
@@ -295,7 +294,7 @@ $LASTEXITCODE
 | GDD、Product、术语、专业规格与表现文档、项目规则、Feature 设计稿、架构与 ADR | 按原始字节纳入；换行、措辞或排版变化即使不改行为，也会改变指纹 |
 | 源码、测试、配置和其他未列出的文件 | 纳入路径与内容；增删、移动都会改变指纹 |
 | `docs/features/` 下的 JSON、Feature 索引、测试登记表、修订记录、`methodology-config.json` | 先解析 JSON、排序对象键再计算；数组顺序保留，下表列出的过程字段除外 |
-| `docs/feature-completion-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工原件契约单独核对，仍不能随意改写 |
+| `docs/features/F0XX-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工验收契约单独核对，仍不能随意改写 |
 | `docs/progress/`、`docs/knowledge/`、`docs/research/` 下的 `.md` 文件 | 不纳入；这些目录里的非 Markdown 文件仍纳入 |
 | 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`agent-rules/`、`methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
 

@@ -45,7 +45,7 @@
 | `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
 | `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
 | `docs/feature-list-revisions.json` | 规划实际覆盖的来源基线与修订记录 | 规划与同步 / 不是“最新 Git 提交”的别名 |
-| `docs/feature-completion-evidence.json` | 完成依据：验证原件的引用与内容绑定 | 完成记录工具 / 第一次记录真实结果时创建 |
+| `docs/features/F0XX-evidence.json` | 一个 Feature 的完成依据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
 
 ### 架构、知识与过程记录
 

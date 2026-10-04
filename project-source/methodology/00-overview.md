@@ -122,5 +122,5 @@ methodology/                         canonical workflow specification
 | 视觉原型和逻辑原型 | [13-prototypes.md](13-prototypes.md) |
 | 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
 | Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
-| 人工验收清单与结果文件 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
+| 人工验收清单与结论记录 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |
 | Product、Feature、ADR 等文件的模板 | [templates/README.md](templates/README.md) |

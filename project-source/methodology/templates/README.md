@@ -22,8 +22,8 @@
 | `feature-detail.json.tmpl` | 由 Product 派生的 Feature 详情。没有 `engineering_change` 字段 |
 | `engineering-feature-detail.json.tmpl` | Bug、重构或维护 Feature 的详情，带必需的 `engineering_change` 字段 |
 | `feature-design.md.tmpl` | `docs/features/F0XX-design.md` 的可选提纲。只使用有帮助的小节；AC 和测试义务留在 Feature JSON 中 |
-| `feature-completion-evidence.json.tmpl` | `docs/feature-completion-evidence.json`：当前 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和工作区指纹。审核不记录在这里 |
-| `manual-acceptance-checklist.json.tmpl` | 一个 Feature 待进行的人工检查，按[人工验收文件约定](../contracts/manual-acceptance-files.md)准备和返回 |
+| `feature-completion-evidence.json.tmpl` | `docs/features/F0XX-evidence.json`：一个 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和工作区指纹。审核不记录在这里 |
+| `manual-acceptance-checklist.json.tmpl` | 一个 Feature 的人工检查及用户的结论，按[人工验收文件约定](../contracts/manual-acceptance-files.md)准备和记录 |
 | `feature-learning-summary.md.tmpl` | Stage 8 经验反馈的回复格式，包括明确的“无新增经验”结果。不保存为文件 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 可选的 `docs/architecture.md` 和子系统地图：模块、职责、依赖和相关的运行流程，与生成的引用事实分开 |
 | `architecture-decision-record.md.tmpl` | 一份可选的 ADR，记录一项重要的技术选择。Feature notes 和架构地图链接到它，不复制它 |

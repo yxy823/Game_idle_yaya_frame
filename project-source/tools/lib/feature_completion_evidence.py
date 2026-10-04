@@ -10,8 +10,12 @@ from typing import Any
 
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot
 
-SCHEMA_VERSION = 8
-EVIDENCE_RELATIVE_PATH = Path("docs/feature-completion-evidence.json")
+SCHEMA_VERSION = 9
+
+
+def evidence_relative_path(feature_id: str) -> Path:
+    """Each Feature keeps its own record next to its detail and design files."""
+    return Path(f"docs/features/{feature_id}-evidence.json")
 
 
 def empty_evidence(feature_id: str | None = None, snapshot: dict[str, str] | None = None) -> dict[str, Any]:
@@ -35,7 +39,7 @@ def empty_evidence(feature_id: str | None = None, snapshot: dict[str, str] | Non
     }
 
 
-def load_evidence(path: Path) -> dict[str, Any]:
+def load_evidence(path: Path, feature_id: str) -> dict[str, Any]:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
@@ -48,47 +52,57 @@ def load_evidence(path: Path) -> dict[str, Any]:
         raise EvidenceError(f"unsupported gate evidence schema_version: {data.get('schema_version')!r}")
     if not isinstance(data.get("feature_id"), str) or not re.fullmatch(r"F\d{3}", data["feature_id"]):
         raise EvidenceError("gate evidence feature_id must match F0XX")
+    if data["feature_id"] != feature_id:
+        raise EvidenceError(f"gate evidence belongs to {data['feature_id']!r}, not {feature_id}")
     if not isinstance(data.get("test_runs"), list) or not isinstance(data.get("human_acceptance"), dict):
         raise EvidenceError("gate evidence requires test_runs and human_acceptance")
     return data
 
 
-def evidence_for_snapshot(path: Path, feature_id: str, snapshot: dict[str, str]) -> dict[str, Any]:
+def evidence_for_snapshot(repo_root: Path, feature_id: str, snapshot: dict[str, str]) -> dict[str, Any]:
+    path = repo_root / evidence_relative_path(feature_id)
     try:
-        current = load_evidence(path)
+        current = load_evidence(path, feature_id)
     except EvidenceError as exc:
         if isinstance(exc.__cause__, FileNotFoundError):
             return empty_evidence(feature_id, snapshot)
         raise
-    if current["feature_id"] != feature_id:
-        return empty_evidence(feature_id, snapshot)
     current["git_revision"] = snapshot["git_revision"]
     current["working_tree_fingerprint"] = snapshot["working_tree_fingerprint"]
     return current
 
 
-def _matches_snapshot(result: Any, data: dict[str, Any]) -> bool:
-    return (
-        isinstance(result, dict)
-        and result.get("working_tree_fingerprint") == data.get("working_tree_fingerprint")
-    )
+def _manual_acceptance_problem(repo_root: Path, feature_id: str, acceptance: Any,
+                               snapshot: dict[str, str]) -> str | None:
+    if not isinstance(acceptance, dict) or acceptance.get("status") != "accepted":
+        return "explicit human acceptance is not recorded"
+    if acceptance.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
+        return "human acceptance does not match the current code snapshot"
+    # 清单是验收结论的唯一原件；完成时重读，状态或定义之后被改都会阻塞完成。
+    try:
+        from tools.lib.manual_acceptance import read_checklist
+        source = acceptance.get("source")
+        if not isinstance(source, dict) or set(source) != {"checklist"} or not isinstance(source["checklist"], str):
+            raise EvidenceError("manual acceptance source requires the checklist path")
+        decision = read_checklist(repo_root, feature_id, Path(source["checklist"]), snapshot,
+                                  confirm_unrelated_changes=True)
+        if decision["status"] != "accepted":
+            raise EvidenceError("manual checklist is no longer fully passed")
+        if decision.get("bound_fingerprint") != acceptance.get("bound_fingerprint"):
+            raise EvidenceError("manual checklist binding changed after acceptance was recorded")
+    except (EvidenceError, ValueError, OSError, KeyError, TypeError) as exc:
+        return f"manual acceptance evidence is invalid: {exc}"
+    return None
 
 
 # 检查测试与适用的人工接受；静态检查和用户指定的评审条件由 Agent 单独核对。
-def validate_completion_evidence(
-    repo_root: Path,
-    feature_id: str,
-    evidence_path: Path | None = None,
-) -> tuple[bool, str]:
-    evidence_path = evidence_path or repo_root / EVIDENCE_RELATIVE_PATH
+def validate_completion_evidence(repo_root: Path, feature_id: str) -> tuple[bool, str]:
     try:
-        data = load_evidence(evidence_path)
+        data = load_evidence(repo_root / evidence_relative_path(feature_id), feature_id)
         snapshot = current_snapshot(repo_root)
     except EvidenceError as exc:
         return False, str(exc)
 
-    if data.get("feature_id") != feature_id:
-        return False, f"gate evidence belongs to {data.get('feature_id')!r}, not {feature_id}"
     if data.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
         return False, "working tree changed after verification"
     try:
@@ -98,27 +112,11 @@ def validate_completion_evidence(
         derive_test_evidence(repo_root, feature_id, data.get("test_runs"))
     except (ValueError, OSError, TypeError, KeyError) as exc:
         return False, f"test run evidence is invalid: {exc}"
-    acceptance = data.get("human_acceptance")
     # 验收方式是 Stage 1 的需求判断；这里不从空清单或测试通过反推该决定。
     if mode == "manual":
-        if not isinstance(acceptance, dict) or acceptance.get("status") != "accepted":
-            return False, "explicit human acceptance is not recorded"
-        if not _matches_snapshot(acceptance, data):
-            return False, "human acceptance does not match the current code snapshot"
-        if "source" in acceptance:
-            # 文件结果保留原件，完成时重读；口头决定不虚构文件来源。
-            try:
-                from tools.lib.manual_acceptance import read_result
-                source = acceptance["source"]
-                if not isinstance(source, dict) or set(source) != {"checklist", "result"}:
-                    raise EvidenceError("manual source requires checklist and result paths")
-                if any(not isinstance(value, str) or not value for value in source.values()):
-                    raise EvidenceError("manual source paths must be nonempty strings")
-                decision = read_result(repo_root, feature_id, Path(source["checklist"]), Path(source["result"]), snapshot)
-                if decision["status"] != "accepted":
-                    raise EvidenceError("manual result is no longer fully passed")
-            except (EvidenceError, ValueError, OSError, KeyError, TypeError) as exc:
-                return False, f"manual result evidence is invalid: {exc}"
+        problem = _manual_acceptance_problem(repo_root, feature_id, data.get("human_acceptance"), snapshot)
+        if problem:
+            return False, problem
     if not isinstance(data.get("recorded_at"), str) or not data["recorded_at"]:
         return False, "gate evidence has no execution timestamp"
     try:

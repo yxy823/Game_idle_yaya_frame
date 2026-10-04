@@ -14,8 +14,8 @@ from typing import Any, Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.feature_completion_evidence import (
-    EVIDENCE_RELATIVE_PATH,
     evidence_for_snapshot,
+    evidence_relative_path,
     load_evidence,
     validate_completion_evidence,
 )
@@ -33,17 +33,10 @@ def _feature_id(value: str) -> str:
     return normalized
 
 
-def _result_snapshot(snapshot: dict[str, str]) -> dict[str, str]:
-    return {
-        "git_revision": snapshot["git_revision"],
-        "working_tree_fingerprint": snapshot["working_tree_fingerprint"],
-    }
-
-
 def _load_for_write(repo_root: Path, feature_id: str) -> tuple[Path, dict[str, Any], dict[str, str]]:
     snapshot = current_snapshot(repo_root)
-    path = repo_root / EVIDENCE_RELATIVE_PATH
-    data = evidence_for_snapshot(path, feature_id, snapshot)
+    path = repo_root / evidence_relative_path(feature_id)
+    data = evidence_for_snapshot(repo_root, feature_id, snapshot)
     return path, data, snapshot
 
 
@@ -70,15 +63,16 @@ def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
     return 0
 
 
-# 接受来源由明确人工决定提供；测试通过或 Agent 总结不能自行变成人工接受。
+# 接受来源是清单中按用户实际决定填写的状态；测试通过或 Agent 总结不能自行变成人工接受。
 def _record_acceptance(repo_root: Path, args: argparse.Namespace) -> int:
-    from tools.lib.manual_acceptance import read_result
+    from tools.lib.manual_acceptance import read_checklist
 
     path, data, snapshot = _load_for_write(repo_root, args.feature)
-    if args.result:
-        decision = read_result(repo_root, args.feature, args.checklist, args.result, snapshot)
-    else:
-        decision = {"status": args.status, **_result_snapshot(snapshot)}
+    decision = read_checklist(repo_root, args.feature, args.checklist, snapshot,
+                              confirm_unrelated_changes=args.confirm_unrelated_changes)
+    previous = data.get("human_acceptance") or {}
+    if all(previous.get(key) == decision.get(key) for key in ("status", "working_tree_fingerprint", "source")):
+        print("NOTE: the same acceptance decision is already recorded for this snapshot.", file=sys.stderr)
     data["human_acceptance"] = {**decision, "recorded_at": utc_now()}
     _save(path, data)
     print(f"Human acceptance recorded: {decision['status']}; this is not Feature completion.")
@@ -92,10 +86,7 @@ def _validate(repo_root: Path, feature_id: str) -> int:
 
 
 def _show(repo_root: Path, feature_id: str) -> int:
-    path = repo_root / EVIDENCE_RELATIVE_PATH
-    data = load_evidence(path)
-    if data["feature_id"] != feature_id:
-        raise EvidenceError(f"gate evidence belongs to {data['feature_id']!r}, not {feature_id}")
+    data = load_evidence(repo_root / evidence_relative_path(feature_id), feature_id)
     print(json.dumps(data, indent=2, ensure_ascii=False))
     return 0
 
@@ -117,20 +108,17 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
 
     acceptance = subparsers.add_parser("record-acceptance")
     acceptance.add_argument("--feature", required=True, type=_feature_id)
-    decision = acceptance.add_mutually_exclusive_group(required=True)
-    decision.add_argument("--status", choices=("accepted", "rejected"), help="Explicit conversational decision.")
-    decision.add_argument("--result", type=Path, help="User-submitted manual result JSON.")
-    acceptance.add_argument("--checklist", type=Path, help="Unchanged original checklist for --result.")
+    acceptance.add_argument("--checklist", required=True, type=Path,
+                            help="Bound checklist whose status fields hold the user's actual decision.")
+    acceptance.add_argument("--confirm-unrelated-changes", action="store_true",
+                            help="Content changed after binding and none of the listed files affects this Feature.")
 
     show = subparsers.add_parser("show", help="Read the matching record; does not validate completion.")
     show.add_argument("--feature", required=True, type=_feature_id)
 
     validate = subparsers.add_parser("validate", help="Validate current test and acceptance evidence.")
     validate.add_argument("--feature", required=True, type=_feature_id)
-    args = parser.parse_args(list(argv))
-    if args.command == "record-acceptance" and bool(args.result) != bool(args.checklist):
-        parser.error("--result and --checklist must be supplied together; --status cannot use --checklist")
-    return args
+    return parser.parse_args(list(argv))
 
 
 def main() -> int:

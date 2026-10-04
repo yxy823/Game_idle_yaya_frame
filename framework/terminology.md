@@ -46,7 +46,7 @@
 | 完成检查 | 任务正式完成前的整体核对；统一用这个词，不另称“交付检查”“收尾检查”，也不与一次人工验收混称 |
 | 人工验收 | 用户按清单实际运行、观察并给出结果的过程；结果可能是 accepted、rejected 或 pending |
 | 人工接受 | 人工验收的通过结果（accepted），是 manual 模式 Feature 完成的条件之一；实现授权、自动测试通过或用户未表态都不算接受 |
-| 完成记录 / 完成依据 | `docs/feature-completion-evidence.json`，引用实际验证原件和接受结果；文件存在本身不证明条件满足 |
+| 完成记录 / 完成依据 | 每个 Feature 的 `docs/features/F0XX-evidence.json`，引用实际验证原件和人工验收清单；文件存在本身不证明条件满足 |
 | 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |
 
 来源：[测试策略](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。

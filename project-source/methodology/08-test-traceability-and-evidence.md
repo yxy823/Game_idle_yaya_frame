@@ -336,7 +336,7 @@ RED、GREEN 和重构按每一个小的可观察行为进行，而不是先写�
 
 完成证据由下列命令检查，其余由 Agent 评估：
 
-- 有自动义务时，Stage 4 把核实过的运行结果导入 `docs/feature-completion-evidence.json`。需要人工验收时，Stage 5 记录实际的人工验收。
+- 有自动义务时，Stage 4 把核实过的运行结果导入该 Feature 的 `docs/features/F0XX-evidence.json`。需要人工验收时，Stage 5 记录清单中实际的人工结论。
 - `tools/features/record-feature-completion.py validate --feature F0XX` 检查这份证据。
 - `tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
 - 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[执行规范](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。

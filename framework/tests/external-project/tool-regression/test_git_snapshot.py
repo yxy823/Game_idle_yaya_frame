@@ -119,7 +119,7 @@ class GitSnapshotTests(unittest.TestCase):
         verified = derive_test_evidence(self.root, "F001", references)
         evidence = feature_completion_evidence.empty_evidence("F001", verification_snapshot.current_snapshot(self.root))
         evidence.update(test_runs=references, **verified)
-        write_json(self.root / feature_completion_evidence.EVIDENCE_RELATIVE_PATH, evidence)
+        write_json(self.root / feature_completion_evidence.evidence_relative_path("F001"), evidence)
         task_files = [".gitignore", "source.gd", "tests", "docs"]
         self.git("add", *task_files)
         self.git("commit", "-m", "Fixture verified changes")

@@ -78,7 +78,7 @@
 - Conventional Commit 类型，例如 `feat`、`fix` 和 `docs`
 - 占位前缀，例如 `_placeholder_`
 - 审核严重程度值 `must_fix`、`suggest` 和 `acceptable`
-- `docs/feature-completion-evidence.json` 中的键和状态值；其中供人阅读的摘要使用对话语言
+- `docs/features/F0XX-evidence.json` 中的键和状态值；其中供人阅读的摘要使用对话语言
 - 测试 ID（`F0XX-ACyy`、`F0XX-RTyy`、`INV-<DOMAIN>-NN`）、组件 ID、测试种类与状态值，以及测试登记表（Registry）的键
 - ISO 8601 时间戳和编程语言标识符
 
