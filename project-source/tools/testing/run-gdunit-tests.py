@@ -17,7 +17,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.atomic_json import write_json
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
-from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory, derive_test_evidence
+from tools.lib.test_run_evidence import (
+    start_run, finish_run, run_history_directory, derive_test_evidence, expected_gdunit_cases,
+)
 from tools.lib.test_selection import build_selection, deduplicate_selectors, execution_selectors, read_json
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -127,6 +129,7 @@ def _run_tests(args: argparse.Namespace) -> int:
     try:
         if selection_error is not None:
             raise selection_error
+        expected_gdunit_cases(REPO_ROOT, args.targets)  # 继承链错误在启动 Godot 之前报告
         result["command"] = _build_command(args, directory)
         result["selectors"] = args.targets
         write_json(directory / "result.json", result)

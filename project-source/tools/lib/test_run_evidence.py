@@ -102,6 +102,10 @@ def _without_strings(source: str) -> str:
     return token.sub(lambda match: "".join("\n" if char == "\n" else " " for char in match.group()), source)
 
 
+def _declared_tests(source: str) -> list[str]:
+    return re.findall(r"^(?:static\s+)?func\s+(test_\w+)\s*\(", _without_strings(source), re.MULTILINE)
+
+
 def _gdscript_paths(directory: Path) -> list[Path]:
     """Use Godot-visible directories for script class and suite discovery."""
     paths = []
@@ -173,6 +177,11 @@ class _SuiteInheritance:
                 else:
                     parent = self.class_path(base[3])
                     result = parent is not None and self.is_suite(parent, visiting | {path})
+                if result and _declared_tests(self.source(parent)):
+                    # 继承来的 test_ 在每个子套件里重复运行，结果无法归属到唯一的测试身份。
+                    raise RunEvidenceError(
+                        f"suite base script declares test_ methods: {parent.relative_to(self.root).as_posix()}; "
+                        "keep shared assertions in helper functions called from each suite")
         self.resolved[path] = result
         return result
 
@@ -195,8 +204,7 @@ def expected_gdunit_cases(root: Path, selectors: list[str]) -> list[dict[str, st
     for path in sorted(paths):
         if path.suffix != ".gd":
             raise RunEvidenceError(f"GdUnit selector is not a GDScript suite: {path}")
-        source = _without_strings(inheritance.source(path))
-        names = re.findall(r"^(?:static\s+)?func\s+(test_\w+)\s*\(", source, re.MULTILINE)
+        names = _declared_tests(inheritance.source(path))
         if not names or not inheritance.is_suite(path):
             continue
         relative = path.relative_to(root).as_posix()

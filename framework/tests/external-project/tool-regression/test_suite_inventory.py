@@ -76,6 +76,12 @@ class SuiteInventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "does not exist"):
             expected_gdunit_cases(self.root, ["tests"])
 
+    def test_suite_base_declaring_test_methods_is_rejected(self) -> None:
+        self.write("tests/base.gd", "extends GdUnitTestSuite\nfunc test_shared():\n\tpass\n")
+        self.write("tests/child_test.gd", 'extends "res://tests/base.gd"\nfunc test_own():\n\tpass\n')
+        with self.assertRaisesRegex(RunEvidenceError, "base script declares test_ methods: tests/base.gd"):
+            expected_gdunit_cases(self.root, ["tests"])
+
     def test_omitted_or_skipped_genuine_suite_still_fails_coverage(self) -> None:
         self.write("tests/suite.gd", "extends GdUnitTestSuite\nfunc test_real():\n\tpass\n")
         declarations = expected_gdunit_cases(self.root, ["tests"])
