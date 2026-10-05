@@ -5,4 +5,4 @@
 - **内容数据 Skill 未试用**：`content-data-authoring` 与场景“规则和公式已确定，需要批量制作关卡或内容表”只做了静态检查；Demo 没有关卡系统，放置类项目还没有。下一步：有放置类项目或带关卡的三消项目时，按场景在 Feature 中走一遍内容制作与检查，按结果修正 Skill 和两份参考。
 - **游戏文本未试用**：规范 11 的「玩家可见文本」与场景“需要撰写或修改游戏内文本”只做了静态检查。下一步：项目第一次需要写教程、说明或界面文案时，按场景走一遍，确认语气约定和放置位置是否好用。
 - **引擎与插件升级未实测**：规范 07 的「引擎与插件升级」和两个场景只做了静态检查，手头没有新的补丁版本或插件版本可升。下一步：出现 Godot 4.7.x 新补丁或某个插件的新版本时，在 Demo 按场景走一遍，按结果修正。
-- **工作台真实分析用例在 Demo 失败**：`asset_analysis_panel_test` 的 `test_workbench_still_previews_after_analyzer_failure` 与 `asset_workbench_test` 的 `test_analysis_identity_survives_browsing_and_late_completion` 在 Demo（Godot 4.7.1，Analyzer 依赖已装）中真实分析返回 `failed`，期望 `success`；换回 7dd7b65 之前的工作台代码同样失败，与全局审核修正无关。下一步：在 Demo 单独运行一次 Analyzer worker，读取结果中的错误码，判断是环境问题还是 Analyzer 缺陷。
+- **Demo 未安装 Analyzer 运行环境**：Analyzer 只从 `reports/asset-analyzer/runtime` 加载 `yaya/asset_workbench/analyzer/requirements.txt` 中的依赖，Demo 没有安装，所以真实分析返回 `failed`。受影响的有：Analyzer 后端测试 22 项中的 17 项（含全局审核 E1 修改的 stdin 用例），以及工作台、分析面板、分析分组套件中各 1 项真实分析用例。其余工作台套件已在 Demo 通过。下一步：经用户批准下载后，按 Analyzer README 安装运行环境，再跑这些用例。

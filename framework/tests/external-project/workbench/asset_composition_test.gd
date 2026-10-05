@@ -30,13 +30,14 @@ func after_test() -> void:
 func test_object_click_selects_real_instance_and_preserves_each_trial() -> void:
 	var objects: Array = _panel.stage.objects
 	assert_int(objects.size()).is_equal(3)
+	var other_scale: float = objects[1].cue.icon_scale
 	objects[0].pressed.emit()
 	assert_str(_workbench.cue_path).is_equal(objects[0].cue_path)
 	_workbench.session.current().icon_scale = 1.6
 	_workbench.call("_refresh")
 	assert_float(objects[0].cue.icon_scale).is_equal(1.6)
 	objects[1].pressed.emit()
-	assert_float(_workbench.session.current().icon_scale).is_equal(0.8)
+	assert_float(_workbench.session.current().icon_scale).is_equal(other_scale)
 	objects[0].pressed.emit()
 	assert_float(_workbench.session.current().icon_scale).is_equal(1.6)
 	assert_str(_workbench.get("_target").text).contains(str(objects[0].cue_path).get_file())
@@ -52,10 +53,14 @@ func test_batch_gain_updates_only_active_trials_and_keeps_assets_unmodified() ->
 	var source := FileAccess.get_file_as_string(session.target_path)
 	var texture := session.saved.texture
 	var sound := session.saved.sound
+	var other_gains := {}
+	for key: Variant in _panel.sessions:
+		other_gains[key] = (_panel.sessions[key] as Session).drafts[1].gain_db
 	_panel.call("apply_gain", -25.0)
-	for current: Session in _panel.sessions.values():
+	for key: Variant in _panel.sessions:
+		var current: Session = _panel.sessions[key]
 		assert_float(current.current().gain_db).is_equal(-25.0)
-		assert_float(current.drafts[1].gain_db).is_equal(-18.0)
+		assert_float(current.drafts[1].gain_db).is_equal(other_gains[key])
 		assert_object(current.drafts[1].sound).is_not_same(current.drafts[0].sound)
 		assert_bool(current.is_dirty()).is_true()
 	assert_object(session.current().texture).is_same(texture)

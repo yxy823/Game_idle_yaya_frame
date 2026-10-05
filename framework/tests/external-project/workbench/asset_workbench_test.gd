@@ -39,11 +39,13 @@ func after_test() -> void:
 
 
 func test_trials_do_not_mutate_saved_or_other_alternative() -> void:
+	var saved_gain := _session.saved.gain_db
+	var other_gain := _session.drafts[1].gain_db
 	_session.current().gain_db = -24.0
 	_session.current().texture = load("res://yaya/asset_workbench/examples/assets/example_star.png")
 	assert_bool(_session.is_dirty()).is_true()
-	assert_float(_session.saved.gain_db).is_equal(-12.0)
-	assert_float(_session.drafts[1].gain_db).is_equal(-12.0)
+	assert_float(_session.saved.gain_db).is_equal(saved_gain)
+	assert_float(_session.drafts[1].gain_db).is_equal(other_gain)
 	assert_object(_session.saved.texture).is_same(_cue.texture)
 	_session.reset_current()
 	assert_bool(_session.is_dirty()).is_false()
@@ -206,19 +208,13 @@ func test_ab_buttons_restore_trials_and_stop_repeat() -> void:
 func test_example_ab_actually_plays_different_streams_until_copied() -> void:
 	var workbench: Control = auto_free(WorkbenchScene.instantiate())
 	add_child(workbench)
-	_button(workbench, "触发").pressed.emit()
-	await get_tree().create_timer(0.12).timeout
-	assert_array(_playing_sound_paths(workbench)).is_equal([
+	assert_array(await _paths_at_sound_start(workbench, "触发")).is_equal([
 		"res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg"])
-	_button(workbench, "B").pressed.emit()
-	await get_tree().create_timer(0.12).timeout
-	assert_array(_playing_sound_paths(workbench)).is_equal([
+	assert_array(await _paths_at_sound_start(workbench, "B")).is_equal([
 		"res://yaya/asset_workbench/examples/assets/example_confirmation_b.ogg"])
 	assert_bool(workbench.session.is_dirty()).is_true()
 	workbench.call("_dispatch_action", &"copy")
-	_button(workbench, "A").pressed.emit()
-	await get_tree().create_timer(0.12).timeout
-	assert_array(_playing_sound_paths(workbench)).is_equal([
+	assert_array(await _paths_at_sound_start(workbench, "A")).is_equal([
 		"res://yaya/asset_workbench/examples/assets/example_confirmation_b.ogg"])
 	workbench.stop_all()
 
@@ -319,3 +315,20 @@ func _button(root: Node, text: String) -> Button:
 			return button
 	assert_bool(false).override_failure_message("Missing button: " + text).is_true()
 	return null
+
+
+# 在声音真正开始的那一刻记录正在播放的文件，不用固定等待去赶只有零点几秒的短音频。
+func _paths_at_sound_start(workbench: Control, button_text: String) -> Array[String]:
+	var started: Array = []
+	var presenter: Node = workbench.get("presenter")
+	var record := func() -> void: started.append(_playing_sound_paths(workbench))
+	presenter.connect("sound_started", record)
+	_button(workbench, button_text).pressed.emit()
+	var deadline := Time.get_ticks_msec() + 2000
+	while started.is_empty() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	presenter.disconnect("sound_started", record)
+	var paths: Array[String] = []
+	if not started.is_empty():
+		paths.assign(started[0])
+	return paths

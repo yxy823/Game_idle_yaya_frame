@@ -185,12 +185,14 @@ func test_invalid_detached_and_queued_targets_are_rejected_without_displacing_ac
 	invalid.configure(cue)
 	assert_int(manager.request(invalid, &"", 10)).is_zero()
 	assert_bool(manager.is_active(valid)).is_true()
+	# 优先级高于现有播放，拒绝只能来自目标本身无效，不是预算已满。
 	var detached := Presenter.new()
-	assert_int(manager.request(detached)).is_zero()
+	assert_int(manager.request(detached, &"", 10)).is_zero()
 	detached.free()
 	var queued := _presenter()
 	queued.queue_free()
-	assert_int(manager.request(queued)).is_zero()
+	assert_int(manager.request(queued, &"", 10)).is_zero()
+	assert_bool(manager.is_active(valid)).is_true()
 	assert_int(manager.request(null)).is_zero()
 	await get_tree().process_frame
 

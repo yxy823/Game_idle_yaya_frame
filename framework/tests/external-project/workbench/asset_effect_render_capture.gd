@@ -52,8 +52,10 @@ func _check_particles() -> void:
 		_save(effect, kind + "-visible.png")
 		var count := _visible_pixels(effect)
 		_check(_visible_pixels(before) == 0 and count > 10, kind + " must draw real particles")
+		# 0.9 秒时第一次的发射已结束、粒子还在；再过 0.4 秒它们都已消失，看得到的只能是重新触发的粒子。
+		await create_timer(0.7).timeout
 		presenter.trigger()
-		await create_timer(0.15).timeout
+		await create_timer(0.4).timeout
 		_check(_visible_pixels(await _read_surface(viewport)) > 0, kind + " must restart visibly")
 		presenter.stop()
 		_check(_visible_pixels(await _read_surface(viewport)) == 0, kind + " stop must clear output")

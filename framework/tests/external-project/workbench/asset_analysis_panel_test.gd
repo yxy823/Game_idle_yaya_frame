@@ -42,9 +42,7 @@ func test_workbench_still_previews_after_analyzer_failure() -> void:
 	await get_tree().process_frame
 	await get_tree().process_frame
 	assert_str(panel.get("results")[0].status).is_equal("failed")
-	workbench.call("_trigger_once")
-	await get_tree().create_timer(0.12).timeout
-	assert_int(workbench.get("presenter").active_voice_count()).is_greater(0)
+	assert_int(await _voices_at_sound_start(workbench)).is_greater(0)
 	assert_object(workbench.get("session").current().sound).is_not_null()
 	workbench.call("stop_all")
 	panel.get("service").executable = _service.executable
@@ -160,9 +158,7 @@ func _check_contract_failures(workbench: Control) -> void:
 			assert_str(panel.results[0].status).is_equal("failed")
 			assert_str(panel.results[0].errors[0].code).is_equal("analyzer_config")
 			assert_str(panel.results[0].errors[0].message).contains(path)
-			workbench.call("_trigger_once")
-			await get_tree().create_timer(0.12).timeout
-			assert_int(workbench.presenter.active_voice_count()).is_greater(0)
+			assert_int(await _voices_at_sound_start(workbench)).is_greater(0)
 			workbench.call("stop_all")
 			_restore_contract(path)
 		panel.call("open_asset", load(IMAGE))
@@ -228,3 +224,17 @@ func _assert_panel_sources(panel: Window, paths: Array[String]) -> void:
 		var expected := ProjectSettings.globalize_path(paths[index])
 		assert_str(actual.replace("\\", "/").simplify_path()).is_equal(
 			expected.replace("\\", "/").simplify_path())
+
+
+# 在声音真正开始的那一刻记录活动声部数，不用固定等待去赶只有零点几秒的短音频。
+func _voices_at_sound_start(workbench: Control) -> int:
+	var voices: Array[int] = []
+	var presenter: Node = workbench.get("presenter")
+	var record := func() -> void: voices.append(int(presenter.call("active_voice_count")))
+	presenter.connect("sound_started", record)
+	workbench.call("_trigger_once")
+	var deadline := Time.get_ticks_msec() + 2000
+	while voices.is_empty() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	presenter.disconnect("sound_started", record)
+	return voices[0] if not voices.is_empty() else -1

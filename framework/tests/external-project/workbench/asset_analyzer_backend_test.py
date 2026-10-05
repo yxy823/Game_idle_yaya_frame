@@ -314,8 +314,13 @@ class AnalyzerTests(unittest.TestCase):
         with subprocess.Popen([sys.executable, "-B", str(TOOLS / "worker.py"), "--parent-pid",
                                str(os.getpid()), "--request", str(self.request)], stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
-            output, errors = process.communicate(timeout=5)
-            self.assertEqual(process.returncode, 0, errors)
+            # 工作台在清理前一直开着 stdin；communicate() 会先关闭它，测不到 stdin 阻塞。
+            try:
+                returncode = process.wait(timeout=5)
+            finally:
+                process.stdin.close()
+            output, errors = process.stdout.read(), process.stderr.read()
+            self.assertEqual(returncode, 0, errors)
             data = json.loads(output)
             self.assertEqual(data["status"], "success")
             self.created_cache.append(data["cache"]["key"])

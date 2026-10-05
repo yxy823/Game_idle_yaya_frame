@@ -3,6 +3,7 @@ extends GdUnitTestSuite
 
 const FAILURE_ENV := "YAYA_RUNNER_REGRESSION_FAILURE"
 const EXPECTED_ERROR := "intentional scoped runner regression"
+const ErrorAssertImpl := preload("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd")
 
 
 func before() -> void:
@@ -20,4 +21,5 @@ func test_parameterized(value: int, _test_parameters: Array = [[1], [2]]) -> voi
 
 
 func test_scoped_expected_error() -> void:
-	assert_error(func() -> void: push_error(EXPECTED_ERROR)).is_push_error(EXPECTED_ERROR)
+	var error_assert := assert_error(func() -> void: push_error(EXPECTED_ERROR)) as ErrorAssertImpl
+	await error_assert.is_push_error(EXPECTED_ERROR)

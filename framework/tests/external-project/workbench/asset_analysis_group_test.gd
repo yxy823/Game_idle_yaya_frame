@@ -353,9 +353,7 @@ func test_batch_failure_keeps_event_preview_and_close_cleans_tasks() -> void:
 	for _index: int in 5:
 		await get_tree().process_frame
 	assert_str(batch.results[IMAGE].status).is_equal("failed")
-	workbench.call("_trigger_once")
-	await get_tree().create_timer(0.12).timeout
-	assert_int(workbench.presenter.active_voice_count()).is_greater(0)
+	assert_int(await _voices_at_sound_start(workbench)).is_greater(0)
 	workbench.call("stop_all")
 	batch.run()
 	panel.call("_close")
@@ -389,3 +387,17 @@ func _wait_for_batch() -> void:
 	while _batch.busy() and Time.get_ticks_msec() < deadline:
 		await get_tree().process_frame
 	assert_bool(_batch.busy()).is_false()
+
+
+# 在声音真正开始的那一刻记录活动声部数，不用固定等待去赶只有零点几秒的短音频。
+func _voices_at_sound_start(workbench: Control) -> int:
+	var voices: Array[int] = []
+	var presenter: Node = workbench.get("presenter")
+	var record := func() -> void: voices.append(int(presenter.call("active_voice_count")))
+	presenter.connect("sound_started", record)
+	workbench.call("_trigger_once")
+	var deadline := Time.get_ticks_msec() + 2000
+	while voices.is_empty() and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	presenter.disconnect("sound_started", record)
+	return voices[0] if not voices.is_empty() else -1

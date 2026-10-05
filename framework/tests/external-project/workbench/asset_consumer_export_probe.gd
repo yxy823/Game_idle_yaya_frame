@@ -131,11 +131,15 @@ func _consume(index: int) -> void:
 
 
 func _release_scene(scene: Node, presenters: Array[Node], path: String) -> void:
+	# 场景有公开的 stop() 时只调用它再检查，不能由探针替它停掉 presenter。
 	if scene.has_method("stop"):
 		scene.call("stop")
-	for presenter: Node in presenters:
-		presenter.call("stop")
-		_check(not presenter.call("is_playing"), path + ": stopped")
+		for presenter: Node in presenters:
+			_check(not presenter.call("is_playing"), path + ": scene stop stopped presenters")
+	else:
+		for presenter: Node in presenters:
+			presenter.call("stop")
+			_check(not presenter.call("is_playing"), path + ": stopped")
 	scene.free()
 	await process_frame
 	_check(int(Performance.get_monitor(Performance.OBJECT_ORPHAN_NODE_COUNT)) == 0,
