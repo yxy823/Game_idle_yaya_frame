@@ -256,7 +256,7 @@ Product 文档只描述当前的交付范围。它们没有变更历史章节，
 
 不重复 GDD 中的定位、目标用户、核心循环正文、系统清单、游戏版本内容或视觉与声音方向；一段简短的导航摘要就够了。游戏系统清单和 Product 交付列表回答的是不同的问题，条目不必相同。执行状态记录在 Feature 记录和 Progress 中，不在 Product 的状态字段中。
 
-`product.md` 中“当前 Product”的标注只是导航，指向正在交付的单元。当前 Product 的必需 Feature 全部完成后，标注随之更新：有下一个候选时，由细化它的 `product-author` 把标注移到新的当前 Product；没有剩余候选时，由完成最后一个 Feature 的任务在 Stage 8 删掉标注，并写明全部候选都已交付。更新标注不改变边界或顺序。
+`product.md` 不标注哪个候选是当前 Product，也不写“已交付”。当前在交付哪个 Product 写在 Progress 的当前状态里：`product.md` 参与内容指纹，在其中更新交付状态，会让刚完成验证的 Feature 证据落后于实际内容。
 
 ## `product/NN-<delivery>.md` 标准章节
 
