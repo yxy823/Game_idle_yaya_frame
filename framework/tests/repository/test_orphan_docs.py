@@ -60,6 +60,15 @@ class OrphanDocsTests(unittest.TestCase):
                          {"used": "READ", "navigation": "NAV_ONLY",
                           "historical": "HISTORY_ONLY", "alone": "NONE"})
 
+    def test_claude_files_are_neither_targets_nor_reference_sources(self):
+        self.write("docs/current.md", "# Current")
+        self.write(".claude/worktrees/old/docs/obsolete.md", "Read docs/current.md")
+        self.write(".claude/notes.md", "Read docs/current.md")
+        rows = self.results()
+        self.assertEqual(set(rows), {"docs/current.md"})
+        self.assertEqual(rows["docs/current.md"]["verdict"], "NONE")
+        self.assertEqual(rows["docs/current.md"]["refs"], [])
+
     def test_bare_file_names_only_count_when_unique(self):
         self.write("first/shared.md", "# First")
         self.write("second/shared.md", "# Second")
