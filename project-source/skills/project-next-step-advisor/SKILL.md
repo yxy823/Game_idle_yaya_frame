@@ -75,7 +75,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 多个答案互相影响的未知项 | `wayfinder-godot`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
 | 单独的工作目录，或把选定的成果带回来 | `worktree-create-godot` 或 `worktree-integrate-godot`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
 | 外部事实或方案比较 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
-| 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
+| 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）、已实现效果的试调（`feel-tuning-godot`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
 | 正式审核 | 按 `yaya/methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
 | 性能或长时间运行测量 | `diagnostics-performance` 或 `diagnostics-soak-test` | 它们的结果有自己的覆盖局限，不是 gdUnit 通过的证据。 |
 | 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review-godot`、`project-grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |

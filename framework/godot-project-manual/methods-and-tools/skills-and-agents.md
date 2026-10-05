@@ -62,6 +62,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `design-audio-direction` | 共享声音方向与反馈层次 |
 | `design-ui-spec` | 界面布局、状态、界面专用资源章节及相关游戏表现导航 |
 | `design-game-presentation` | 从体验目标规划一次游戏表现，标准化组件需求、比较候选并记录采用及实际实现关系 |
+| `feel-tuning-godot` | 和用户一起反复试调已实现的特效、反馈与操作手感，把采用的值写回运行时资源和所属文档 |
 | `design-visual-asset-spec` | 具体视觉资源的准备和交付要求 |
 | `design-audio-asset-spec` | 具体音效/音乐的准备和交付要求 |
 | `design-localization-spec` | 语言覆盖、回退、文本与字体等本地化要求 |

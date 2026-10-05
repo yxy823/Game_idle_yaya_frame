@@ -5000,6 +5000,90 @@
         "shadow": false,
         "wrap": true
       }
+    },
+    {
+      "id": "scene-121",
+      "shape": "rounded-rect",
+      "x": 2667,
+      "y": 2405.5,
+      "width": 210,
+      "height": 61,
+      "label": "特效已经做出来，\n需要和我一起调到满意",
+      "zIndex": 1,
+      "fill": "#e8f4ef",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/特效已经做出来，需要和我一起调到满意.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "scene-122",
+      "shape": "rounded-rect",
+      "x": 2667,
+      "y": 2525.5,
+      "width": 210,
+      "height": 61,
+      "label": "操作手感不对，\n需要调整参数",
+      "zIndex": 1,
+      "fill": "#e8f4ef",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/操作手感不对，需要调整参数.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
     }
   ],
   "edges": [
@@ -15727,6 +15811,107 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "查明是游戏行为有误",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-035-scene-121",
+      "source": {
+        "node": "scene-035",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-121",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "效果已实现，需要一起调参",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-035-scene-122",
+      "source": {
+        "node": "scene-035",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-122",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2630,
+          "y": 2296
+        },
+        {
+          "x": 2630,
+          "y": 2556
+        }
+      ],
+      "label": "手感需要调参",
       "stroke": {
         "color": "#8994A5",
         "width": 2,
