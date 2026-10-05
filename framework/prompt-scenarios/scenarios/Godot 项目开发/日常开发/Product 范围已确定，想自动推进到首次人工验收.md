@@ -4,12 +4,14 @@
 
 ## 触发场景与使用时机
 
-Product 范围已确定，想自动推进到首次人工验收。
+例如 Product 预拆分已经确认，你希望 Agent 作为 Codex Goal 连续完成规划、实现和提交，直到第一个需要你亲自体验的 Feature 准备好再停下。
 
-需要的材料：
+需要的材料（都可选）：
 
-- 推进范围：当前 Product 范围、排除项。
-- 执行授权：已有授权。
+- 推进范围：本次纳入的 Product 及排除项。不提供时取预拆分中约定的交付范围。
+- 已有的具体限制：例如不提交、指定独立评审。没有就省略。
+
+GDD、预拆分顺序、Progress 和 Feature 状态由 Agent 直接读取。
 
 ## 前置条件与适用范围
 
@@ -25,7 +27,7 @@ Product 范围已确定，想自动推进到首次人工验收。
 
 **S2｜逐个推进 Product**
 
-先依据最新 GDD 细化已轮到的 Product，再一次拆出其完整必要范围的多个 Feature；展示拆分后按目标自主授权继续。必要游戏设计问题由 design-gdd 处理，交付取舍使用 product-spec-elicitor，沿用本次范围和有效决定。当前 Product 全部必要 Feature 真实完成后，再复核并细化下一个；实现、必要验证与本地提交沿现有流程。
+先依据最新 GDD 细化已轮到的 Product，再把其完整必要范围拆成所需数量的 Feature；展示拆分后按目标自主授权继续。必要游戏设计问题由 design-gdd 处理，交付取舍使用 product-spec-elicitor，沿用本次范围和有效决定。当前 Product 全部必要 Feature 真实完成后，再复核并细化下一个；实现、必要验证与本地提交沿现有流程。
 
 **S3｜交接首个人工验收**
 
@@ -35,9 +37,9 @@ manual Feature 先完成全部适用自主工作，提供可运行入口与绑�
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 目标与可自主工作的范围明确 |
-| S2 | 当前 Product 的实际工作持续推进 |
-| S3 | 待验收 Feature 保持未完成 |
+| S1 | 本次纳入的 Product 与排除项已列出；Goal 已创建或沿用 |
+| S2 | 每个 Product 的拆分预览；已完成 Feature 的完成记录和提交哈希 |
+| S3 | 可运行的体验入口和绑定当前版本的 pending 清单路径；该 Feature 仍为未完成 |
 
 ## 资源与文件影响
 
@@ -53,4 +55,4 @@ GDD 缺失时说明缺口并停止，不初始化设计。局部原型确认只�
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[人工验收文件契约](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md>)。本段 Goal 以首个完整人工验收交接或授权范围全部完成为出口，不跨过本次明确的人工交接边界继续开发。用户后续要求继续时核对实际验收结果与仍有效的授权；交接材料就绪不代表该 Feature 已验收或正式完成。
+依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)，人工验收文件的[定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)。本段 Goal 以首个完整人工验收交接或授权范围全部完成为出口，不跨过本次明确的人工交接边界继续开发。你给出验收结果后，用[人工验收已有结果，继续原 Goal](<人工验收已有结果，继续原 Goal.md>)接着推进。

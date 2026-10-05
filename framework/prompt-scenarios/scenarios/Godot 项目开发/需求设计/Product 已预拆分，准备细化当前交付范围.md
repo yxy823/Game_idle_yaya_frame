@@ -4,12 +4,14 @@
 
 ## 触发场景与使用时机
 
-Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Feature 规划使用的交付范围。
+`docs/product.md` 里排在前面的 Product 所需 Feature 都已完成（或这是第一项），下一项“背包整理”还没有 `docs/product/NN-<delivery>.md`，需要先写出它的交付范围，才能拆分 Feature。
 
 需要的材料：
 
-- 当前单元：Product 预拆分、前置完成依据和已确认交付边界。
-- 设计与现状：相关完整 GDD、专业规格及已实现功能。
+- 要细化的 Product：预拆分中的候选名称，例如“背包整理”；不写时，Agent 按预拆分顺序和已有 Feature 的完成情况确定下一项，并在回复中说明。
+- 对话中已确认、尚未保存的交付边界（可选）：用原话写，例如“这次不做键盘导航”。
+
+其余（GDD、预拆分、专业规格、已有实现和 Feature 状态）由 Agent 直接读取。
 
 ## 前置条件与适用范围
 
@@ -27,7 +29,7 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 编写 docs/product/NN-<delivery>.md，记录 GDD 与专业来源映射、已有功能衔接和交付场景，必要时更新总览本项边界与链接。GDD 保存游戏设计正文，Product 不复制玩法、状态或数值。
 
-按[交付决定归属](../../../../../project-source/methodology/01-product-doc-structure.md#交付决策的归属)，将总览中仅涉及本项的未决交付问题正文迁入详情，总览保留引用；跨 Product 分工、前置或顺序问题继续归总览，游戏设计问题引用 GDD 开放问题。
+按[交付决策的归属](../../../../../project-source/methodology/01-product-doc-structure.md#交付决策的归属)，将总览中仅涉及本项的未决交付问题正文迁入详情，总览保留引用；跨 Product 分工、前置或顺序问题继续归总览，游戏设计问题引用 GDD 开放问题。
 
 **S3｜检查可规划性**
 
@@ -35,7 +37,7 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 ## 资源与文件影响
 
-写入当前 Product 详细文档及总览对应项。必要设计变化保存至已有 GDD 或所属专业规格；不创建未来 Product 详细文档、Feature、AC 或测试登记。
+写入当前 Product 详细文档及总览对应项；当前 Product 或下一步因此改变时，更新 Progress 的当前状态（`product.md` 不标注当前 Product）。必要设计变化保存至已有 GDD 或所属专业规格；不创建未来 Product 详细文档、Feature、AC 或测试登记。
 
 ## 阻塞、异常与范围变化
 
@@ -43,8 +45,8 @@ Product 已有交付预拆分，当前这一项已经轮到，需要写出供 Fe
 
 ## 完成状态与验证标准
 
-当前 Product 的交付范围、来源、衔接和交付场景已明确保存，可支持一次完整 Feature 拆分；本页没有生成任务。
+当前 Product 的交付范围、来源、衔接和交付场景已保存在 `docs/product/NN-<delivery>.md`，可支持一次完整 Feature 拆分。
 
 ## 流程关联与衔接关系
 
-依据：[GDD 与 Product 分工](<../../../../../project-source/methodology/01-product-doc-structure.md>)、[规划规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。当前 Product 包含新界面、而 Art Bible 只有占位时，先用[美术方向](<当前资产的美术方向不明确，需要定下来.md>)定下方向，再规划视觉基础。需要正式规划时按有效授权进入相应 Feature 规划入口，完整覆盖当前 Product 的必要范围；该 Product 全部必要 Feature 真实完成后再细化下一项。
+依据：[`product/NN-<delivery>.md` 标准章节](<../../../../../project-source/methodology/01-product-doc-structure.md#productnn-md-标准章节>)、[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)。当前 Product 包含新界面、而 Art Bible 只有占位时，可以建议先用[美术方向](<当前资产的美术方向不明确，需要定下来.md>)定下方向；这只是建议，不阻塞规划。拆分 Feature 时，项目的第一份计划用[第一份 Feature 计划](<../任务规划/当前模块的需求已确认，准备做项目的第一份 Feature 计划.md>)；该 Product 全部必要 Feature 真实完成后，再细化下一项。

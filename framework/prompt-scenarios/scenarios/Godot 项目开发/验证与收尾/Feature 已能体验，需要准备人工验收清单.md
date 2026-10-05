@@ -4,12 +4,14 @@
 
 ## 触发场景与使用时机
 
-Feature 已能体验，需要准备人工验收清单。
+F012 的背包界面已经实现完、代码不再改动，它的验收模式是 manual，需要一份清单让你按步骤实际体验。
 
 需要的材料：
 
-- 任务与人工义务：manual Feature、批准的 manual_checks 与必要 manual_regression。
-- 体验入口：运行入口。
+- Feature ID（可空）：不提供时用当前对话中正在执行的 Feature。
+- 体验入口（可空）：从哪个场景或菜单进入、需要的初始存档或参数；不知道时由 Agent 从实现查找。
+
+人工检查项（`manual_checks`、`manual_regression`）由 Agent 从 Feature 直接读取。
 
 ## 前置条件与适用范围
 
@@ -21,11 +23,11 @@ Feature 已能体验，需要准备人工验收清单。
 
 **S1｜核对人工义务**
 
-当前 Agent 按 manual-acceptance-files.md 检查全部人工 AC 和回归，不给 automated 任务生成空清单。
+当前 Agent 按[人工验收文件](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)核对 Feature 的 `verification.acceptance_mode` 和全部 `manual_checks`、`manual_regression`，不给 automated 任务生成空清单。
 
 **S2｜编写待验清单**
 
-在 reports/manual-acceptance/ 写 pending JSON，说明入口、初始条件、实际动作、预期和重置。
+用 `yaya/methodology/templates/manual-acceptance-checklist.json.tmpl` 在 `reports/manual-acceptance/F0XX/` 写清单，全部 status 为 `pending`，写明入口、初始条件、实际动作、预期和重置；Feature notes 链接清单，不复制步骤。
 
 **S3｜绑定版本并交付**
 
@@ -42,13 +44,13 @@ Feature 已能体验，需要准备人工验收清单。
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 清单范围对应真实人工义务 |
-| S2 | 用户可按步骤实际体验 |
-| S3 | 清单绑定当前稳定内容 |
+| S1 | 要覆盖的人工检查项清单已列出 |
+| S2 | 清单文件已写好，每项都有 `source_ref` 且为 `pending`；Feature notes 已链接清单 |
+| S3 | `prepare-manual` 退出码为 0，清单的 `snapshot` 已填入 |
 
 ## 资源与文件影响
 
-当前 pending 清单和完成记录中的必要版本绑定会写入；不记录接受。
+写入清单，`prepare-manual` 在清单的 `snapshot` 中绑定当前版本；Feature notes 增加清单链接。不写完成记录，不记录接受。
 
 ## 阻塞、异常与范围变化
 
@@ -60,4 +62,4 @@ Feature 已能体验，需要准备人工验收清单。
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md>)、[人工验收文件契约](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md>)。
+依据：[人工验收文件的定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)、[Stage 4 · 自动验证与人工检查清单](<../../../../../project-source/methodology/03-execute-loop.md#stage-4--自动验证与人工检查清单>)。

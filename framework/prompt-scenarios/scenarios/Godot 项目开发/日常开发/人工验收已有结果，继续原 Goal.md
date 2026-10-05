@@ -4,12 +4,13 @@
 
 ## 触发场景与使用时机
 
-人工验收已有结果，继续原 Goal。
+例如上一段 Goal 停在 F006 的人工验收，你已经试玩，在清单里填了结论，或在对话里说了哪几项通过、哪几项不行，现在要接着推进。
 
 需要的材料：
 
-- 原范围与当前任务：原 Goal 范围、当前 Feature 与有效授权。
-- 实际体验结果：用户实际结果。
+- 验收结论：对话原话，或你已修改的清单路径。
+
+原 Goal 范围、当前 Feature 和清单由 Agent 从 Progress 与 Feature 记录读取；范围或限制有变化时再说明。
 
 ## 前置条件与适用范围
 
@@ -17,11 +18,11 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 日常开发 → 人工验收已有结果，继续原 Goal”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 日常开发 → 人工验收已有结果，继续原 Goal”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)、[$manual-acceptance-godot](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)；继续推进时沿用原 Goal 的 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)。
 
 **S1｜核对实际人工结果**
 
-当前 Agent 读取原清单或明确口头决定及当前版本，按适用入口记录，不能把继续指令代替接受。
+当前 Agent 读取原清单或对话原话及当前版本，用 manual-acceptance-godot 按[记录用户的结论](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#记录用户的结论>)记录，不能把继续指令代替接受。
 
 **S2｜处理当前任务**
 
@@ -35,9 +36,9 @@
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 本次接受或失败范围明确 |
-| S2 | 当前任务完成条件真实满足；修复后仍需再次验收时，体验入口和当前版本的 pending 清单已备好，在此交接，不进入 S3 |
-| S3 | 目标范围及真实人工停点保持一致 |
+| S1 | 清单中各检查项的状态与原话已记录 |
+| S2 | 已接受时为完成记录和提交哈希；修复后仍需再次验收时，体验入口和当前版本的 pending 清单已备好，在此交接，不进入 S3 |
+| S3 | 下一个人工交接的体验入口与 pending 清单，或原范围全部完成的记录 |
 
 ## 资源与文件影响
 
@@ -53,4 +54,4 @@
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[人工验收文件契约](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md>)。
+依据：人工验收文件的[记录用户的结论](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#记录用户的结论>)，methodology 03 的[Stage 5 · 明确的人工验收（仅 manual 模式）](<../../../../../project-source/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式>)。

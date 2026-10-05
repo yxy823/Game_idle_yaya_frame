@@ -4,12 +4,13 @@
 
 ## 触发场景与使用时机
 
-当前模块的需求已确认，准备做项目的第一份 Feature 计划。
+例如 GDD 和 `docs/product/01-*.md` 都已确认并提交，`docs/feature-list.json` 里还没有任何 Feature；现在要一次拆出当前 Product 的全部 Feature。
 
 需要的材料：
 
-- 规划依据：已细化的当前 Product、相关 GDD 和专业来源。
-- 规划范围：本次规划范围。
+- 自主拆分授权（可选）：明确写“授权自主拆分，展示后直接写入”时，Agent 展示拆分预览后不再等待确认。不写时停在预览，等你确认这份拆分。
+
+GDD、当前 Product、专业来源和空的 Feature 记录由 Agent 直接读取。
 
 ## 前置条件与适用范围
 
@@ -25,31 +26,35 @@
 
 **S2｜展示并确认拆分**
 
-一次覆盖当前 Product 的完整必要范围，展示多个 Feature 的数量、逐项范围、AC、依赖和验证。用户已明确授权自主拆分时，展示后直接写入；否则停在这里，等用户确认这份拆分。
+一次覆盖当前 Product 的完整必要范围，按[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)展示，包括需求覆盖核对；Feature 数量从完整范围推导。有自主拆分授权时展示后直接写入；否则停在这里，等你确认这份拆分。
 
 **S3｜固定来源并写计划**
 
-来源按规范先提交，写索引、详情、测试登记与仅覆盖采用范围的 R000。
+来源按规范先提交，写索引、详情、组件登记（测试 ID 在执行时登记），以及只覆盖采用范围的 R000，见[初始规划基线](<../../../../../project-source/methodology/02-feature-list-schema.md#初始规划基线>)。
 
 **S4｜检查并交付**
 
-用项目 Python 调用 yaya/tools/checks/check-feature-list.py，再加 --eligible 查询可执行候选，核对覆盖后提交计划。
+在游戏项目根目录运行：
 
-项目工具命令的使用要求：
+```powershell
+$projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
+$projectPython = $projectConfig.python_executable
+& $projectPython -B yaya/tools/checks/check-feature-list.py
+$LASTEXITCODE
+& $projectPython -B yaya/tools/checks/check-feature-list.py --eligible
+$LASTEXITCODE
+```
 
-- 工作目录：实际游戏项目根目录。
-- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
-- 参数：尖括号参数替换为实际值。
-- 结果边界：命令成功只证明该操作完成。
+第一条打印 `FEATURE LIST CHECK: PASS` 且退出码为 0，只证明 Feature 记录的结构、引用和依赖一致，不证明需求覆盖；第二条的标准输出是依赖已满足的待开始 Feature 的 JSON。核对覆盖后提交计划。
 
 ## 步骤产出与状态变化
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 首次规划条件成立 |
-| S2 | 写入前的具体拆分在授权内 |
-| S3 | 计划与真实来源锚点一致 |
-| S4 | 有效计划和首项候选可定位 |
+| S1 | 当前 Product 已确定，Feature 索引与修订确认为空 |
+| S2 | 拆分预览与需求覆盖核对已展示；已获确认或已有自主拆分授权 |
+| S3 | 索引、详情、组件登记和 R000 已写入，R000 的锚点是来源提交 |
+| S4 | `FEATURE LIST CHECK: PASS`、可开始的 Feature 列表和计划提交哈希 |
 
 ## 资源与文件影响
 
@@ -65,4 +70,4 @@ GDD 缺失、当前 Product 尚未细化、设计未定、Feature 记录不为�
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[计划与修订规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。
+依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)、[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)和[初始规划基线](<../../../../../project-source/methodology/02-feature-list-schema.md#初始规划基线>)。

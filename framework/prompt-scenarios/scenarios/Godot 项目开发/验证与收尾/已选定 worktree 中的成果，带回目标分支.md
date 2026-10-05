@@ -28,7 +28,7 @@
 
 **S3｜验证组合并交付**
 
-使用 [project-verification-godot](../../../../../project-source/skills/project-verification-godot/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence-godot](../../../../../project-source/skills/verification-evidence-godot/SKILL.md)。按原任务的提交、验收条件交付，更新必要记录。
+使用 [project-verification-godot](../../../../../project-source/skills/project-verification-godot/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence-godot](../../../../../project-source/skills/verification-evidence-godot/SKILL.md)；原任务要求实际人工验收时，用 [manual-acceptance-godot](../../../../../project-source/skills/manual-acceptance-godot/SKILL.md) 为组合结果准备清单。按原任务的提交、验收条件交付，更新必要记录。
 
 ## 资源与文件影响
 
@@ -36,7 +36,7 @@
 
 ## 条件分支与路径规则
 
-整合可以没有冲突；出现冲突也不改变采用成果的目标。两个 Bug 入口仍须实际人工验收与明确提交许可，不通过 merge、cherry-pick 或 checkpoint 绕过。已有许可直接复用，不重复索取。
+整合可以没有冲突；出现冲突也不改变采用成果的目标。原任务同时要求实际人工验收与明确提交许可时（[提交](../../../../../project-source/Project_AGENTS.md#提交)），两者都满足前不做任何本地提交，包括解决冲突的中间提交和 checkpoint 提交，也不通过 merge、cherry-pick 的自动提交绕过。已有许可直接复用，不重复索取。
 
 ## 阻塞、异常与范围变化
 

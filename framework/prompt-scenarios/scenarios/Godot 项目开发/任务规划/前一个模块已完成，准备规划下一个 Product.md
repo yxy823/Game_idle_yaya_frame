@@ -4,12 +4,14 @@
 
 ## 触发场景与使用时机
 
-前一个模块已完成，准备规划下一个 Product。
+例如 Product 01 的必要 Feature 都已 `done`，预拆分里排第二的 Product 02 还只有一行大纲；现在要细化它并拆出它的 Feature。
 
 需要的材料：
 
-- 规划对象与前置：下一 Product、已完成前置模块。
-- 当前记录：现有计划与修订。
+- 下一个 Product（可选）：预拆分中的名称或编号。不提供时按预拆分顺序取轮到的那一个。
+- 自主拆分授权（可选）：明确写“授权自主拆分，展示后直接写入”时，Agent 展示拆分预览后不再等待确认。不写时停在预览，等你确认这份拆分。
+
+前一个 Product 的完成情况、GDD、预拆分顺序和现有计划由 Agent 直接读取。
 
 ## 前置条件与适用范围
 
@@ -29,31 +31,33 @@ product-author 编写当前 Product 的纳入与排除范围、来源映射和�
 
 **S3｜展示本次完整拆分**
 
-feature-plan 一次覆盖当前 Product 的完整必要范围，展示多个 Feature 的范围、依赖、AC 和验证安排。用户已明确授权自主拆分时，展示后直接写入；否则等用户确认这份拆分。
+feature-plan 一次覆盖当前 Product 的完整必要范围，按[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)展示，包括需求覆盖核对；Feature 数量从完整范围推导。有自主拆分授权时展示后直接写入；否则等你确认这份拆分。
 
 **S4｜追加并检查**
 
-追加新 ID 与详情，保留旧索引、历史和同步锚点；调用 check-feature-list.py 检查并提交。
+追加新 ID、详情和必要的组件登记（测试 ID 在执行时登记），保留旧索引、历史和同步锚点。然后在游戏项目根目录运行：
 
-项目工具命令的使用要求：
+```powershell
+$projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
+$projectPython = $projectConfig.python_executable
+& $projectPython -B yaya/tools/checks/check-feature-list.py
+$LASTEXITCODE
+```
 
-- 工作目录：实际游戏项目根目录。
-- Python 与调用形式：使用 `docs/methodology-config.json` 中的 `python_executable`，按 `& $projectPython -B <脚本路径> <参数>` 调用，每次立即检查 `$LASTEXITCODE`。
-- 参数：尖括号参数替换为实际值。
-- 结果边界：命令成功只证明该操作完成。
+打印 `FEATURE LIST CHECK: PASS` 且退出码为 0，只证明 Feature 记录的结构、引用和依赖一致，不证明需求覆盖或实现完成。检查通过后提交计划。
 
 ## 步骤产出与状态变化
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 下一个模块确实具备规划条件 |
-| S2 | 当前交付范围与最新设计一致 |
-| S3 | 完整拆分有当前来源依据 |
-| S4 | 新计划与旧历史并存一致 |
+| S1 | 前一个 Product 的必要 Feature 均为 `done`；下一个 Product 已确定 |
+| S2 | 当前 Product 交付文档已写好并提交 |
+| S3 | 拆分预览与需求覆盖核对已展示；已获确认或已有自主拆分授权 |
+| S4 | 新 Feature ID 已追加，旧记录无差异；`FEATURE LIST CHECK: PASS` 和计划提交哈希 |
 
 ## 资源与文件影响
 
-编写当前 Product 及必要来源引用，追加 Feature 与必要测试登记；不提前细化未来 Product，不重置 R000 或历史同步锚点。
+编写当前 Product 及必要来源引用，追加 Feature 与必要的组件登记；不提前细化未来 Product，不重置 R000 或历史同步锚点。
 
 ## 阻塞、异常与范围变化
 
@@ -65,4 +69,4 @@ feature-plan 一次覆盖当前 Product 的完整必要范围，展示多个 Fea
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[计划与修订规范](<../../../../../project-source/methodology/02-feature-list-schema.md>)。
+依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)和[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)。

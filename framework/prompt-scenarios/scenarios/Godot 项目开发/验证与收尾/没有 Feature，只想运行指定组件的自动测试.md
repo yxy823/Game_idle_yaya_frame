@@ -4,12 +4,12 @@
 
 ## 触发场景与使用时机
 
-没有 Feature，只想运行指定组件的自动测试。
+改了一个不属于任何 Feature 的通用组件（例如存档序列化工具），想运行 `tests/` 下对应的测试，看它是否仍然通过。
 
-准备材料：
+需要的材料：
 
-- 测试对象：已有测试目标路径、所属组件。
-- 影响与授权：改动范围和测试授权。
+- 测试目标（可空）：`tests/` 下的测试文件或目录路径，可以给多个；不提供时由 Agent 按改动找出对应的测试，找不到时再问。
+- 运行限制（可空）：例如不得写入真实存档、限时完成；不写则按运行器默认执行。
 
 ## 前置条件与适用范围
 
@@ -46,9 +46,9 @@ $LASTEXITCODE
 
 | 步骤 | 继续条件 |
 | --- | --- |
-| S1 | 测试对象是存在的路径 |
-| S2 | 本次运行已真实结束 |
-| S3 | 结果未伪装成 Feature 交付 |
+| S1 | 要运行的测试路径已列出，且都存在 |
+| S2 | `reports/gdunit-wrapper/focused/run-<id>/result.json` 已生成，退出码已读取 |
+| S3 | 报告列出实际执行、失败、跳过的用例数和原始报告路径 |
 
 ## 资源与文件影响
 
@@ -64,5 +64,5 @@ $LASTEXITCODE
 
 ## 流程关联与衔接关系
 
-依据：[testing/run-gdunit-tests.py](<../../../../../project-source/tools/testing/run-gdunit-tests.py>)。
+依据：[run-gdunit-tests.py](<../../../../../project-source/tools/README.md#run-gdunit-testspy>)、[运行记录](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md#运行记录>)（聚焦运行不授予完成）。
 

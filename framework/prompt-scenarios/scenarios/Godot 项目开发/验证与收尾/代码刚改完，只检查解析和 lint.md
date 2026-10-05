@@ -4,12 +4,12 @@
 
 ## 触发场景与使用时机
 
-代码刚改完，只检查解析和 lint。
+改完几个 GDScript，提交前只想知道它们能否编译、lint 有没有 Critical 或 Warning，暂时不跑自动测试。
 
 需要的材料：
 
-- 检查对象：改动脚本、当前版本。
-- 检查授权：允许的静态检查范围。
+- 要检查的脚本（可空）：`res://` 路径；不提供时由 Agent 从未提交的改动找出改过的脚本。
+- 所属 Feature（可空）：Feature ID，决定报告目录；不提供时按维护任务保存到 `reports/maintenance/<task>/`。
 
 ## 前置条件与适用范围
 
@@ -21,24 +21,16 @@
 
 **S1｜核对直接命令**
 
-当前 Agent 读取 yaya/methodology/contracts/gdscript-lint.md 和配置，确认实际插件与参数，不另建包装。
+当前 Agent 读取 `yaya/methodology/contracts/gdscript-lint.md` 的[直接运行](<../../../../../project-source/methodology/contracts/gdscript-lint.md#直接运行>)和 `docs/methodology-config.json`，确定要解析的脚本（改动脚本及依赖它们的脚本）和报告目录，不另建包装。
 
 **S2｜执行限定检查**
 
 在项目根目录以配置 Godot 执行：
 
-- 解析检查：对变更脚本及必要依赖执行 --headless --path . --check-only --script res://<脚本>。
-- lint：随后对完整 res:// 运行 addons/gdscript-linter/analyzer/analyze-cli.gd。
+- 解析检查：对选定脚本逐个执行 `--headless --path . --check-only --script res://<脚本>`，用 `Out-Host` 等待后立即读取退出码。
+- lint：随后对完整 `res://` 运行 `addons/gdscript-linter/analyzer/analyze-cli.gd`，按 `gdlint.json` 检查全项目；标准输出用 `Out-Null` 丢弃，读取退出码后从 `lint.json` 的 `summary` 读取 Critical、Warning 和 Info 数量。
 
-每条命令经 Out-Host 等待后立即读取退出码。
-
-**S3｜报告覆盖**
-
-说明解析、lint 各自结果与未执行部分；不把静态结果等同功能测试。
-
-- 参数与报告：替换尖括号参数，报告目录不能覆盖仍需保留的原件；无 Feature 时使用 reports/maintenance/<任务>/。
-- 检查范围：解析检查选定脚本，lint 按 gdlint.json 检查全项目。
-- lint 退出码：3 表示输入或配置错误，2 表示 Critical，1 表示 Warning，0 才是无 Critical/Warning。
+替换尖括号参数，报告目录不能覆盖仍需保留的原件；无 Feature 时使用 `reports/maintenance/<任务>/`。
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
@@ -47,21 +39,27 @@ $projectGodot = $projectConfig.engine_executable
 $LASTEXITCODE
 $reportDirectory = 'reports/features/<实际FeatureID>/<本次目录>'
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
-& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
+& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Null
 $LASTEXITCODE
 ```
+
+lint 退出码：3 表示输入或配置错误，2 表示 Critical，1 表示 Warning，0 才是无 Critical/Warning。
+
+**S3｜报告覆盖**
+
+分别报告解析和 lint 的退出码、实际检查的脚本、`summary` 中的数量和未执行部分。
 
 ## 步骤产出与状态变化
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 命令对应当前工具契约 |
-| S2 | 静态错误有原始输出 |
-| S3 | 结论与实际检查匹配 |
+| S1 | 要解析的脚本清单和报告目录已确定 |
+| S2 | 每条解析命令的退出码已读取，`lint.json` 已生成 |
+| S3 | 报告列出解析退出码、lint 退出码和 Critical/Warning/Info 数量 |
 
 ## 资源与文件影响
 
-原代码只读，运行仅产生必要诊断；不自动导入、修复或写完成状态。
+原代码只读，写入 `lint.json` 和必要的解析输出；不自动导入、修复或写完成状态。
 
 ## 阻塞、异常与范围变化
 
@@ -73,4 +71,4 @@ $LASTEXITCODE
 
 ## 流程关联与衔接关系
 
-依据：[项目路由依据](<../../../../../project-source/methodology/00-overview.md>)、[测试与证据规范](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md>)、[原生解析与 lint 命令](<../../../../../project-source/methodology/contracts/gdscript-lint.md>)。本入口只承担解析与 lint 检查，不由检查结果授予修复权限。用户本次明确只验证时，在结果交付后结束该范围；若检查属于已授权完整任务的步骤，按仍有效的具体授权进入后续所属流程，不因检查结束重复确认。当前明确限制不能由旧授权撤销，检查结果也不代替 Feature 正式完成。
+依据：[lint 的退出码](<../../../../../project-source/methodology/contracts/gdscript-lint.md#lint-的退出码>)、[解读结果](<../../../../../project-source/methodology/contracts/gdscript-lint.md#解读结果>)。本入口只承担解析与 lint 检查，不由检查结果授予修复权限。

@@ -4,11 +4,9 @@
 
 ## 触发场景与使用时机
 
-当前工作没有 Feature，需要先暂停并保存停点。准备材料：
+一次没有建立 Feature 的调研、讨论或审核要先停一停，不换对话，但要留下之后能接着做的记录。
 
-- **任务范围**：真实任务目标与现有授权。
-- **执行现场**：执行方法、原件与进行中的命令。
-- **暂停信息**：暂停原因。
+需要的材料：暂停原因（一句话）；有正在运行、需要保留的命令时说明是哪个。任务目标、授权、方法和原件由 Agent 从对话和项目文件核对。
 
 ## 前置条件与适用范围
 
@@ -20,7 +18,7 @@
 
 **S1｜停止当前实施**
 
-当前 Agent 使用 [task-handoff-godot](../../../../../project-source/skills/task-handoff-godot/SKILL.md) 停止继续当前工作，核实正在执行的查询、读取或获准命令；记录实际状态，不假定启动已结束。本次只保存停点，不要求新对话交接文本。
+当前 Agent 使用 [task-handoff-godot](../../../../../project-source/skills/task-handoff-godot/SKILL.md) 停止继续当前工作，核实正在执行的查询、读取或获准命令；记录实际状态，不假定已启动的命令已经结束。本次只保存停点，不要求新对话交接文本。
 
 **S2｜记录恢复所需信息**
 
@@ -46,6 +44,6 @@
 
 ## 流程关联与衔接关系
 
-依据：[yaya/methodology/09-records-reports-and-handoff.md](<../../../../../project-source/methodology/09-records-reports-and-handoff.md>)。
+依据：[任务交接](<../../../../../project-source/methodology/09-records-reports-and-handoff.md#任务交接>)、[Progress](<../../../../../project-source/methodology/09-records-reports-and-handoff.md#progress>)。
 
 本页完成后停止原工作的实施。原授权保留为后续范围依据；收到用户明确续接指令后，再从记录的真实停点恢复。
