@@ -130,7 +130,11 @@ def prepare_checklist(root: Path, feature: str, checklist: Path) -> Path:
     if any(test["status"] != "pending" or test["comment"] for test in tests.values()):
         raise EvidenceError("new checklist must contain only pending tests with empty comments")
     data["tests"] = list(tests.values())
-    data["snapshot"] = {**snapshot, "definition_sha256": _definition_digest(data, tests)}
+    data["snapshot"] = {
+        **snapshot,
+        "uncommitted_paths": changed_paths_since(root, snapshot["git_revision"], []),
+        "definition_sha256": _definition_digest(data, tests),
+    }
     if current_snapshot(root)["working_tree_fingerprint"] != snapshot["working_tree_fingerprint"]:
         raise EvidenceError("source changed while preparing manual checklist")
     write_json(path, data)
@@ -154,11 +158,12 @@ def read_checklist(root: Path, feature: str, checklist: Path, snapshot: dict[str
     if not isinstance(origin, dict) or any(not isinstance(origin.get(key), str) or not origin[key]
                                            for key in ("git_revision", "working_tree_fingerprint", "definition_sha256")):
         raise EvidenceError("checklist has no prepared snapshot")
+    _strings(origin.get("uncommitted_paths"), "snapshot.uncommitted_paths")
     if origin["definition_sha256"] != _definition_digest(data, tests):
         raise EvidenceError("checklist definitions changed after binding; only status and comment may be edited")
     decision: dict[str, Any] = {}
     if origin["working_tree_fingerprint"] != before["working_tree_fingerprint"]:
-        changed = changed_paths_since(root, origin["git_revision"])
+        changed = changed_paths_since(root, origin["git_revision"], origin["uncommitted_paths"])
         if not confirm_unrelated_changes:
             raise EvidenceError(
                 "content changed after the checklist was bound; check whether these files affect this Feature "

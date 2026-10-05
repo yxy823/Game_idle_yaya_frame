@@ -123,6 +123,8 @@ class ManualAcceptanceFileTests(unittest.TestCase):
             lambda d: d["tests"][0].update(id="new-id"),
             lambda d: d.update(snapshot=None),
             lambda d: d["snapshot"].update(definition_sha256="sha256:other"),
+            lambda d: d["snapshot"].pop("uncommitted_paths"),
+            lambda d: d["snapshot"].update(uncommitted_paths="implementation.txt"),
         )
         for mutation in mutations:
             value = copy.deepcopy(original)
@@ -160,6 +162,34 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         self.assertTrue(evidence.validate_completion_evidence(self.root, "F001")[0])
         (self.root / "implementation.txt").write_text("version two", encoding="utf-8")
         self.assertFalse(evidence.validate_completion_evidence(self.root, "F001")[0])
+
+    def test_reverted_uncommitted_input_needs_confirmation_and_is_recorded(self):
+        implementation = self.root / "implementation.txt"
+        implementation.write_text("version two", encoding="utf-8")
+        value = self.decide()
+        self.assertIn("implementation.txt", value["snapshot"]["uncommitted_paths"])
+        implementation.write_text("version one", encoding="utf-8")
+        result = self.record(expected=2)
+        self.assertIn("implementation.txt", result.stderr)
+        self.assertFalse(self.evidence_path.exists())
+        self.record("--confirm-unrelated-changes")
+        acceptance = self.load(self.evidence_path)["human_acceptance"]
+        self.assertEqual(acceptance["status"], "accepted")
+        self.assertIn("implementation.txt", acceptance["unrelated_changes"])
+
+    def test_deleted_untracked_input_needs_confirmation_and_is_recorded(self):
+        untracked = self.root / "other_feature.gd"
+        untracked.write_text("extends Node", encoding="utf-8")
+        value = self.decide()
+        self.assertIn("other_feature.gd", value["snapshot"]["uncommitted_paths"])
+        untracked.unlink()
+        result = self.record(expected=2)
+        self.assertIn("other_feature.gd", result.stderr)
+        self.assertFalse(self.evidence_path.exists())
+        self.record("--confirm-unrelated-changes")
+        acceptance = self.load(self.evidence_path)["human_acceptance"]
+        self.assertEqual(acceptance["status"], "accepted")
+        self.assertIn("other_feature.gd", acceptance["unrelated_changes"])
 
     def test_content_identical_commit_and_usage_readme_preserve_acceptance(self):
         self.decide()

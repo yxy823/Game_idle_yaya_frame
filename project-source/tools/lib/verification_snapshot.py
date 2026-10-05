@@ -156,15 +156,16 @@ def working_tree_fingerprint(repo_root: Path) -> str:
     return f"sha256:{digest.hexdigest()}"
 
 
-def changed_paths_since(repo_root: Path, revision: str) -> list[str]:
-    """List fingerprint inputs that differ between a recorded commit and the current working tree.
+def changed_paths_since(repo_root: Path, revision: str, uncommitted_paths: list[str]) -> list[str]:
+    """List possible changed fingerprint inputs since binding to a working tree.
 
-    Changes that were still uncommitted when the revision was recorded are listed too,
-    so the result can over-report but never hides a changed input.
+    Include both current differences from the commit and the differences recorded
+    at binding, so reverted edits and deleted untracked files are not missed.
+    The union can include inputs whose content has not changed since binding.
     """
     tracked = _run_git(repo_root, "diff", "--name-only", "--no-renames", "-z", revision, "--")
     untracked = _run_git(repo_root, "ls-files", "--others", "--exclude-standard", "-z")
-    paths = set()
+    paths = set(uncommitted_paths)
     for raw in (tracked, untracked):
         for path in raw.decode("utf-8", errors="surrogateescape").split("\0"):
             normalized = path.replace("\\", "/")

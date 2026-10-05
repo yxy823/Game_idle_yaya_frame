@@ -18,7 +18,7 @@
 | `schema_version` | 数字 `1`。 |
 | `feature_id` | 当前的 `F0XX`。一个文件只包含一个 Feature。 |
 | `title`、`description` | 可选字符串；供人阅读的内容使用项目的文档语言。 |
-| `snapshot` | 未准备的草稿中为 `null`；`prepare-manual` 填入 `git_revision`、`working_tree_fingerprint` 和检查项定义的哈希 `definition_sha256`。之后不手工修改。 |
+| `snapshot` | 未准备的草稿中为 `null`；`prepare-manual` 填入 `git_revision`、`working_tree_fingerprint` 和检查项定义的哈希 `definition_sha256`。必需字段 `uncommitted_paths` 保存绑定时与该提交不同的指纹输入路径（含未跟踪文件），去重排序，不参与定义哈希。之后不手工修改。 |
 | `tests` | 非空数组，覆盖每一项已批准的人工义务。只靠自动验证的 AC 不转成人工工作。 |
 | `tests[].id` | 唯一、非空，在整个验收过程中保持稳定，例如 `F001-AC01-M01`。不要按标题或数组位置匹配。 |
 | `tests[].source_ref` | `AC01/1` 表示 AC01 下的第一项人工检查（从 1 开始计数）；`manual_regression` 表示该 Feature 的人工回归义务。每个当前引用都要被覆盖，多个用例可以覆盖同一个引用。这些引用属于绑定的快照，不属于单独的登记表。 |
