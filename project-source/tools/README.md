@@ -4,7 +4,7 @@
 
 ```text
 yaya/tools/
-├── checks/      环境与 Feature 记录检查
+├── checks/      环境、Feature 记录与文件格式检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
 ├── godot/       由 Godot 执行的项目文件维护脚本
@@ -16,6 +16,7 @@ yaya/tools/
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
+| [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps` |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成依据 |
@@ -169,6 +170,20 @@ python -B yaya/tools/checks/check-markdown-links.py
 
 退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。
 
+### check-godot-resource-format.py
+
+以文本方式写过 `.tscn`、`.tres` 却漏了[重新保存](#resave_godot_filesgd)，下次打开编辑器时会被改写，产生与当前工作无关的差异。本检查在 Feature 完成时运行，也可以在重存后单独运行：
+
+```powershell
+python -B yaya/tools/checks/check-godot-resource-format.py
+```
+
+- **检查内容**：文件头带 `uid`、不含 `load_steps`，每条 `[ext_resource]` 带 `uid`。
+- **默认范围**：项目内全部 `.tscn`、`.tres`；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录和含 `.gdignore` 的目录。也可以在参数中列出相对项目根目录的文件，只查这些。
+- **局限**：只发现漏掉重存这一种情况；编辑器保存时的其他格式调整不在检查范围内。
+
+退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因，用 `resave_godot_files.gd` 重存后重跑；`2` 文件读取失败。
+
 ### run-gdunit-tests.py
 
 | 参数 | 作用 | 默认值 |
@@ -242,7 +257,7 @@ $LASTEXITCODE
 
 ### 静态检查与资源导入
 
-脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见[直接检查说明](../methodology/contracts/gdscript-lint.md)。没有静态检查的 Python 包装器、静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
+脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见[直接检查说明](../methodology/contracts/gdscript-lint.md)。它们没有 Python 包装器、静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
 
 ### 运行结果的保存
 

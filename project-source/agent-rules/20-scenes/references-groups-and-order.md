@@ -6,7 +6,7 @@ Resource UID、场景节点的 `unique_id`、NodePath 和 `%UniqueName` 的身�
 
 - `ExtResource` 和 `SubResource` 的 ID 是文件内的引用标识，不为美观复制或重新编号。SubResource 的先后顺序跟随依赖关系，不手工重排。
 - Godot 4.6 起，`.tscn` 的 `[node]` 条目带有 `unique_id`；保存场景时，Godot 给缺少或重复该值的节点分配新值。手工编辑文本时不改写、不重新编号已有的值。复制 `[node]` 条目时删去复制来的 `unique_id`，不自己编造新值。没有 `unique_id` 的节点合法，不手工补填。
-- 以文本方式新建或修改 `.tscn` 后，用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 规范化保存格式与资源 UID。
+- 以文本方式新建或修改 `.tscn` 后，用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 规范化保存格式与资源 UID；漏掉的由 [`check-godot-resource-format.py`](../../tools/README.md#check-godot-resource-formatpy) 报告。
 - Godot 4.6 起，场景和资源文件头不再写 `load_steps`，加载时也不读取它。不手工添加或维护 `load_steps`。
 
 ## NodePath 与重命名
