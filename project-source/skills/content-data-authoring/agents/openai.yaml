@@ -1,0 +1,6 @@
+interface:
+  display_name: "Content Data Authoring"
+  short_description: "按已确认的规则和公式批量制作内容数据并建立校验"
+
+policy:
+  allow_implicit_invocation: true

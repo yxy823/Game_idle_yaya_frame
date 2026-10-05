@@ -66,6 +66,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 问题类型 | 目标方 | 需要讲清楚的区别 |
 | --- | --- | --- |
 | 游戏设计、数值设计、交付范围或术语 | `design-gdd`、`design-balance`、`product-author` 或 `project-terminology` | 修改游戏规则、调优已获授权的数值主题、安排交付和维护不改变含义的定义，是不同的任务。初始设计和草稿审核不需要 Product 或 Feature。 |
+| 批量内容数据或内容校验 | 已授权 Feature 中的 `content-data-authoring` | 制作具体内容不同于修改规则或公式；没有 Feature 时先走规划路由。 |
 | 全项目或专项规则 | 当前任务，按 `yaya/methodology/04-project-rules.md` 的 **规则的增量维护** | 局部设计不会自动成为全局规则。 |
 | 已授权 Feature 内的支持文档 | 那个 Feature | 它不会开启新一轮规划。 |
 | 反馈或外部报告，或某个具体故障的原因 | `feedback-triage-godot` 或 `bug-diagnosis-godot` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |

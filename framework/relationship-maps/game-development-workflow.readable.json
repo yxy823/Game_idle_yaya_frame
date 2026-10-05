@@ -5210,6 +5210,90 @@
         "shadow": false,
         "wrap": true
       }
+    },
+    {
+      "id": "scene-126",
+      "shape": "rounded-rect",
+      "x": 2667,
+      "y": 2645.5,
+      "width": 210,
+      "height": 61,
+      "label": "需要撰写或修改\n游戏内文本",
+      "zIndex": 1,
+      "fill": "#e8f4ef",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/需要撰写或修改游戏内文本.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "scene-127",
+      "shape": "rounded-rect",
+      "x": 2667,
+      "y": 2765.5,
+      "width": 210,
+      "height": 61,
+      "label": "规则和公式已确定，\n需要批量制作关卡或内容表",
+      "zIndex": 1,
+      "fill": "#e8f4ef",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/规则和公式已确定，需要批量制作关卡或内容表.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
     }
   ],
   "edges": [
@@ -16222,6 +16306,116 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "需离开编辑器运行",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-035-scene-126",
+      "source": {
+        "node": "scene-035",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-126",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2630,
+          "y": 2296
+        },
+        {
+          "x": 2630,
+          "y": 2676.0
+        }
+      ],
+      "label": "需要写游戏内文字",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-035-scene-127",
+      "source": {
+        "node": "scene-035",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-127",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2630,
+          "y": 2296
+        },
+        {
+          "x": 2630,
+          "y": 2796.0
+        }
+      ],
+      "label": "需要制作内容数据",
       "stroke": {
         "color": "#8994A5",
         "width": 2,

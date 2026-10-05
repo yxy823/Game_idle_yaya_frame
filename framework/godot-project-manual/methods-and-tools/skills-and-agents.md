@@ -67,6 +67,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `design-audio-asset-spec` | 具体音效/音乐的准备和交付要求 |
 | `design-localization-spec` | 语言覆盖、回退、文本与字体等本地化要求 |
 | `content-asset-integration` | 对照既定要求接入真实资源及消费者 |
+| `content-data-authoring` | 在 Feature 中按已确认的规则和公式批量制作关卡、表格等内容数据，并建立内容不变量检查 |
 | `content-localization` | 按已确认规格接入翻译、字体与语言运行支持 |
 | `diagnostics-instrumentation` | 为明确问题提供有单位、用途和开销的观测信号 |
 | `diagnostics-performance` | 可比较的性能测量与瓶颈诊断 |

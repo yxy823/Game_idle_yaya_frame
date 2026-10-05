@@ -1,6 +1,6 @@
 ---
 name: design-balance
-description: "根据明确的目标、规则草稿或数据推导、调整游戏公式、参数模型和节奏曲线，并在已授权的 GDD 数值文件中维护。用于公式或参数推导、经济与成长模型、数值诊断或调优。不用于记录普通尺寸或已有数值，也不用于独立数值审核（review-balance）或运行时实现。"
+description: "根据明确的目标、规则草稿或数据推导、调整游戏公式、参数模型和节奏曲线，并在已授权的 GDD 数值文件中维护。用于公式或参数推导、经济与成长模型、数值诊断或调优。不用于记录普通尺寸或已有数值，也不用于独立数值审核（review-balance）、批量编写具体内容数据（content-data-authoring）或运行时实现。"
 ---
 
 # 游戏数值设计
@@ -34,6 +34,7 @@ description: "根据明确的目标、规则草稿或数据推导、调整游戏
 - 新机制或体验目标的变化属于 [design-gdd](../design-gdd/SKILL.md)。说明冲突或建议的取舍，并把当前授权带到那项工作中；不要把调优请求当成采用另一种游戏设计的许可。
 - 数值来源的变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理。在任务授权范围内，受影响的 Product 范围与 `product-author` 协调，已规划的使用方与 `feature-sync` 协调。不要只为了完成一个独立模型就创建 Product 或 Feature 文档。
 - 值得长期保存的领域定义，使用 `project-terminology`；文档措辞使用 `technical-documentation-writing-godot`。真实的暂停或阻塞，按 `yaya/methodology/09-records-reports-and-handoff.md` 写入 Progress 或任务记录。这些是按需使用的支持，不是必须依次调用的 Skill 链。
+- 公式或目标区间变化影响已有内容数据时，由已授权 Feature 中的 [content-data-authoring](../content-data-authoring/SKILL.md) 重新生成并检查；`balance/` 不复制每行数值。
 - 独立的数值审核使用 [review-balance](../review-balance/SKILL.md)。作者自己的计算检查不是正式的独立审核；用户要求正式审核时，按 `yaya/methodology/12-independent-review.md` 使用另一个非作者实例。
 
 数值设计的授权不会自动授权修改运行时代码、数据或资源。已经获准的实现，按所属流程使用足够清楚的已采用设计继续进行，并照常承担验证和人工验收义务。设计验证情景不会自动构建原型。

@@ -35,7 +35,7 @@ yaya/methodology/                         canonical workflow specification
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
 | 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
 | 环境、验证与证据 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence-godot` |
-| 接入与测量 | `content-asset-integration`、`content-localization`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
+| 接入与测量 | `content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
 | worktree | `worktree-create-godot`、`worktree-integrate-godot` |
 | 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot` |
@@ -67,6 +67,7 @@ yaya/methodology/                         canonical workflow specification
 | 准备美术、音乐或音效 | 按[专业工作](11-specialist-workflows.md#设计制作接入与审核)保留为预留能力 | 没有制作 Skill。记录规格和现有资源。 |
 | 确定语言覆盖范围和区域格式约定 | `design-localization-spec` | 可以单独进行。游戏规则留在 GDD，术语定义留在 `docs/terminology.md`。 |
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
+| 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
 | 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
 | 用户明确要求的原型或技术探针 | 在目标项目中使用 `prototype-godot` | 按[原型](13-prototypes.md)回答一个假设。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。 |
 | 在依赖逻辑之前确定布局、资源尺寸和交互可读性 | `prototype-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[依赖实现前的视觉原型](13-prototypes.md#依赖实现前的视觉原型)执行。规格提供输入；可运行的场景和人工验收属于执行阶段。 |

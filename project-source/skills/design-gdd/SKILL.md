@@ -1,6 +1,6 @@
 ---
 name: design-gdd
-description: "发展游戏想法，共同创作、起草、修改或整合 GDD 设计。用于从一个想法、一次对话或已有材料出发的整体游戏设计。不用于 Product 交付规划（product-author）、数值建模（design-balance）或独立审核。"
+description: "发展游戏想法，共同创作、起草、修改或整合 GDD 设计。用于从一个想法、一次对话或已有材料出发的整体游戏设计。不用于 Product 交付规划（product-author）、数值建模（design-balance）、批量内容数据（content-data-authoring）或独立审核。"
 ---
 
 # 游戏设计与 GDD 编写
@@ -41,6 +41,7 @@ GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明�
 
 - 普通规格和已有数值直接记录。公式推导、参数模型、经济或成长曲线和调优，使用 [design-balance](../design-balance/SKILL.md)。把本次涉及的目标、规则草稿和当前授权交给它；早期的数值探索不要求 GDD 已经完整。
 - 交付边界、依赖和顺序属于 [product-author](../product-author/SKILL.md)。
+- 具体关卡、表格等内容实例，在已授权的 Feature 中由 [content-data-authoring](../content-data-authoring/SKILL.md) 制作；GDD 只保留种类目录和规则，并链接数据文件。
 - 详细的游戏表现、UI、美术、音频、资源和本地化规格，属于 `yaya/methodology/11-specialist-workflows.md` 中规定的固定所属位置。该文件也规定了首次创建 GDD 时怎样保存这些规格，以及整合时怎样把它们从 GDD 中迁出。游戏规则和整体体验目标留在 GDD；非 UI 的表现从对应的 GDD 主题链接。
 - 设计变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理，并在当前授权范围内使用 `feature-sync`。尚未规划的未来想法，不需要 Product 文档或 Feature 计划。
 - 在获准创建、修改或整合 GDD 时，按 `yaya/methodology/14-project-terminology.md` 使用 [project-terminology](../project-terminology/SKILL.md)，把当前范围内已确认的术语保存到 `docs/terminology.md`，并从 GDD 链接过去。术语维护属于同一个写入任务；GDD 不另外保留一份词表。文档措辞或组织使用 [technical-documentation-writing-godot](../technical-documentation-writing-godot/SKILL.md)；它不决定设计。
