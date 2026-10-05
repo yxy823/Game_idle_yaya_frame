@@ -40,6 +40,33 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 
 ## Feature 的执行阶段
 
+下图是阶段之间的走向，下表是每个阶段的产出。
+
+```mermaid
+flowchart TD
+    s0["Stage 0 上下文"] --> s1["Stage 1 方案"]
+    s1 -->|你批准| s2["Stage 2 保存计划"]
+    s2 --> s3["Stage 3 实现与文档检查"]
+    s3 --> s4["Stage 4 最终验证"]
+    s4 -->|机器检查失败| s3
+    s4 --> mode{"验收方式"}
+    mode -->|manual| s5["Stage 5 人工验收"]
+    s5 -->|任何一项失败| s3
+    bug{"是 Bug 修复？"}
+    s5 -->|全部通过| bug
+    mode -->|automated| bug
+    bug -->|是| s55["Stage 5.5 记录 Bug 经验"]
+    review{"你要求了独立评审？"}
+    bug -->|否| review
+    s55 --> review
+    review -->|是| s6["Stage 6 独立评审"]
+    s6 -->|发现范围内缺陷| s3
+    s7["Stage 7 完成记录"]
+    s6 -->|没有阻止完成的缺陷| s7
+    review -->|否| s7
+    s7 --> s8["Stage 8 交接"]
+```
+
 | 阶段 | 产出 |
 | --- | --- |
 | 0 上下文 | 明确当前目标、来源、规则、已有改动、有效授权和必要环境 |

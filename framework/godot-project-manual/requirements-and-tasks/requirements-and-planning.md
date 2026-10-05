@@ -148,6 +148,18 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 ## 基线与需求修订
 
+基线记录计划已经吸收到哪个来源版本，也叫锚点。下图是锚点在规划和同步之间怎样传递：
+
+```mermaid
+flowchart TD
+    first["第一次规划<br/>feature-plan"] -->|写入 R000，锚点 = 采纳的来源版本| anchor[("当前锚点")]
+    later["规划后续 Product<br/>feature-plan"] -.->|只追加 Feature，不移动锚点| anchor
+    change["需求变化：先修改来源并提交"] --> sync["feature-sync<br/>比较锚点到当前 HEAD 的来源差异"]
+    anchor --> sync
+    sync --> revise["按受影响的对象修订计划<br/>见下文“需求修订”"]
+    revise -->|追加修订记录，synced_at_commit 成为新锚点| anchor
+```
+
 ### 基线
 
 - **R000**：第一次规划时记录当时真正采纳、已经提交、并被计划吸收的 GDD、Product、专业与规则来源。创建器生成的初始提交不是需求基线。
