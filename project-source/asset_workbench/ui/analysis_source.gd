@@ -24,6 +24,9 @@ static func initialize() -> String:
 		return "Invalid JSON in %s: %s" % [CAPABILITIES_PATH, parser.get_error_message()]
 	if not _valid_capabilities(parser.data):
 		return "Invalid source formats or memory budgets in " + CAPABILITIES_PATH
+	for field: String in ["defaults", "limits"]:
+		if not parser.data.get(field) is Dictionary:
+			return "Missing or invalid %s dictionary in %s" % [field, CAPABILITIES_PATH]
 	capabilities = parser.data
 	return ""
 

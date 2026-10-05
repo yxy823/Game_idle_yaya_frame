@@ -70,7 +70,7 @@ Tween 位移层与动画片段变换层互相嵌套，作用于图像或 Shader 
 | --- | --- |
 | `feedback_playback_manager.gd` | 可选的场景内 Node。`request(presenter, group, priority)` 返回本 Manager 内有效的整数句柄，0 表示拒绝。句柄拥有整个对象的一次独占播放（包括延迟音频），不代表可以单独取消每个叠加声部 |
 | 预算与回收 | 默认上限 8 个受管对象。满额时只接受严格更高优先级的请求，抢占最低优先级中最早的句柄；其他请求被拒绝并反馈，不排队。自然结束、取消或目标退出时释放句柄；不销毁现有对象，也不建立新对象池 |
-| 取消与直接播放 | `cancel(handle)`、`cancel_group(group)`、`stop_all()` 只取消这个 Manager 仍拥有的播放。直接 `trigger()` 接管同一目标时先停止受管播放，之后手动快速触发仍允许声音重叠。旧句柄不能停止新播放；未受管对象仍可直接使用 Presenter |
+| 取消与直接播放 | `cancel(handle)`、`cancel_group(group)`、`stop_all()` 只取消这个 Manager 仍拥有的播放。直接 `trigger()` 接管同一目标时先停止受管播放，之后手动快速触发仍允许声音重叠，包括连续触发同一 `AudioStreamRandomizer`；各声部使用独立播放器，自然结束与停止沿用上游池回收。旧句柄不能停止新播放；未受管对象仍可直接使用 Presenter |
 | `FeedbackTimeline` / `FeedbackTimelineClip` | 原生 `.tres` 保存长度及片段数组；每个片段只有相对对象路径、起点、持续时间和优先级。长度最多 120 s，1–128 个片段。同一目标的窗口不可重叠，可首尾相接；不支持绝对路径、父级路径或 `%` 别名 |
 | `feedback_timeline_player.gd` | 一个场景帧时钟负责窗口的开始、截止及循环。截止立即取消该句柄，可能截短声音或粒子余尾；效果提早结束不会补触发。Tween、AnimationPlayer、粒子及声音仍由各自组件推进 |
 

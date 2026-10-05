@@ -8,15 +8,19 @@ const ObjectView = preload("res://components/feedback/feedback_object.gd")
 var _workbench: Control
 var _panel: Control
 var _owned: Array[String] = []
+var _window_size: Vector2i
 
 
 func before_test() -> void:
+	_window_size = get_tree().root.size
+	get_tree().root.size = Vector2i(1600, 900)
 	_workbench = auto_free(Workbench.instantiate())
 	add_child(_workbench)
 	_panel = _workbench.get("_composition")
 
 
 func after_test() -> void:
+	get_tree().root.size = _window_size
 	_workbench.call("stop_all")
 	for path: String in _owned:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(path))

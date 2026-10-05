@@ -27,6 +27,8 @@
 | 变化范围 | 套件文件 | 主要核对 |
 | --- | --- | --- |
 | 基础试调与保存 | `asset_workbench_test.gd` | 草稿隔离、磁盘冲突、无效/边界参数、保存消费、延迟取消、重叠上限、浏览与绑定、A/B/连续触发、主题不改数据 |
+| 单项分析后台与协议 | `asset_analyzer_test.gd` | 真实后端、缓存、进程生命周期、结果协议、源预检与内存预约 |
+| 分析窗口与图表 | `asset_analysis_panel_test.gd` | 分析失败后的预览、旧结果保留、A/B 来源、重分析、比较条件及图表缩放；放入 `tests/features/asset_analyzer/` |
 | 多对象工作台 | `asset_composition_test.gd` | 对象选择、独立草稿、批量增益、部分保存与消费；运行前建立 `reports/asset-analyzer/`，临时 Cue 在该目录创建并清理 |
 | Shader 组合 | `asset_shader_composition_test.gd` | Shader 重启、结束/停止恢复、独立资源保存与消费；套件必须放在 `tests/features/asset_shader_composition/`，其 `test-shader-cue.tres` 会被写入并删除，运行前确认不存在 |
 | 粒子、Tween 与动画 | `asset_effect_composition_test.gd` | 延迟/结束/停止、变换归属、重触发与退出取消、字段保存及源分析边界 |
@@ -41,7 +43,7 @@
 
 相关套件的依赖与分工如下：
 
-- **后台与协议验证**：`asset_analyzer_test.gd` 同时需要同目录的 `analyzer_process_fixture.py` 和 `analyzer_protocol_cases.json`，三者放入 `tests/features/asset_analyzer/`。单独复制套件不能证明已具备运行条件。
+- **后台与协议验证**：`asset_analyzer_test.gd` 与 `asset_analysis_panel_test.gd` 都放入 `tests/features/asset_analyzer/`，共用该目录的 `analyzer_process_fixture.py`；后台套件还需要同目录的 `analyzer_protocol_cases.json`。两套中的真实分析用例都需要外部项目已安装 Analyzer 依赖；单独复制套件不能证明已具备运行条件。
 - **集合、规则和历史**：`asset_analysis_group_test.gd` 继续核对其余职责，不重复承担源格式用例。其取消隔离测试也依赖 `tests/features/asset_analyzer/analyzer_process_fixture.py`；即使不运行单项分析套件，也必须将该 worker 复制到这个规定路径。
 
 编排边界测试关闭该播放器的自动 process 后显式推进时间；声音取消另用真实场景时钟等待，不证明逐采样同步。管理器对象预算与生命周期回归也不替代规模测量。

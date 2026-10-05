@@ -168,7 +168,7 @@ func _load_session() -> void:
 	var issue := session.open(cue_path)
 	if not issue.is_empty():
 		if session.saved == null:
-			_state.text = "未加载有效 Cue"
+			_refresh()
 		_set_status(issue)
 		return
 	# A keeps the saved cue; B changes only the sound so the example is immediately comparable.
@@ -181,10 +181,16 @@ func _load_session() -> void:
 
 
 func _refresh() -> void:
+	var loaded := session.saved != null
+	_controls.visible = loaded
+	_ui.display_context(_current_object_name(), session.active_index if loaded else -1,
+		loaded and session.is_dirty(), cue_path)
+	_browser.set_apply_target(_current_object_name(), session.active_index)
+	if not loaded:
+		_set_status(session.load_error)
+		return
 	_controls.display(session.current())
 	_preview_trial()
-	_ui.display_context(_current_object_name(), session.active_index, session.is_dirty(), cue_path)
-	_browser.set_apply_target(_current_object_name(), session.active_index)
 
 
 func _preview_trial() -> void:

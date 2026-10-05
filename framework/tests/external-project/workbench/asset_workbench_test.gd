@@ -13,9 +13,12 @@ const CUE_PATH: String = "res://yaya/asset_workbench/examples/single/example_fee
 var _session: Session
 var _cue: FeedbackCue
 var _fixture_path: String = ""
+var _window_size: Vector2i
 
 
 func before_test() -> void:
+	_window_size = get_tree().root.size
+	get_tree().root.size = Vector2i(1600, 900)
 	_fixture_path = get_script().resource_path.get_base_dir().path_join(
 		"asset-workbench-cue-%d-%d.tres" % [OS.get_process_id(), Time.get_ticks_usec()])
 	_cue = ResourceLoader.load(CUE_PATH, "", ResourceLoader.CACHE_MODE_IGNORE) as FeedbackCue
@@ -26,6 +29,7 @@ func before_test() -> void:
 
 
 func after_test() -> void:
+	get_tree().root.size = _window_size
 	_session = null
 	_cue = null
 	if FileAccess.file_exists(_fixture_path):
@@ -125,9 +129,23 @@ func test_pool_has_bounded_overlap_and_recovers_after_stop() -> void:
 	var playback: Playback = auto_free(Playback.new())
 	add_child(playback)
 	var bus_gain := AudioServer.get_bus_volume_db(0)
+	var randomizer := AudioStreamRandomizer.new()
+	randomizer.add_stream(0, _cue.sound)
+	assert_int(playback.play(randomizer, -24.0, 1.0, &"Master")).is_equal(OK)
+	var first: AudioStreamPlayer = playback.get("_pool").busy_players[0]
+	var playing := first.get_stream_playback()
+	assert_int(playback.play(randomizer, -24.0, 1.0, &"Master")).is_equal(OK)
+	assert_int(playback.active_voice_count()).is_equal(2)
+	assert_object(playback.get("_pool").busy_players[1]).is_not_same(first)
+	assert_bool(first.playing).is_true()
+	assert_object(first.get_stream_playback()).is_same(playing)
+	var deadline := Time.get_ticks_msec() + 5000
+	while playback.active_voice_count() > 0 and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_int(playback.active_voice_count()).is_zero()
 	for _index: int in Playback.MAX_VOICES:
-		assert_int(playback.play(_cue.sound, -24.0, 1.0, &"Master")).is_equal(OK)
-	assert_int(playback.play(_cue.sound, -24.0, 1.0, &"Master")).is_equal(ERR_BUSY)
+		assert_int(playback.play(randomizer, -24.0, 1.0, &"Master")).is_equal(OK)
+	assert_int(playback.play(randomizer, -24.0, 1.0, &"Master")).is_equal(ERR_BUSY)
 	playback.stop_all()
 	assert_int(playback.active_voice_count()).is_equal(0)
 	assert_int(playback.play(_cue.sound, -6.0, 1.0, &"Master")).is_equal(OK)
@@ -231,25 +249,43 @@ func test_analysis_identity_survives_browsing_and_late_completion() -> void:
 	var workbench: Control = auto_free(WorkbenchScene.instantiate())
 	add_child(workbench)
 	var panel: Window = workbench.get("_analysis")
-	panel.call("open_asset", workbench.session.current().sound)
-	panel.call("_analyze", 0)
+	var paths: Array[String] = [
+		"res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg",
+		"res://yaya/asset_workbench/examples/assets/example_confirmation_b.ogg"]
+	for index: int in 2:
+		panel.call("open_asset", load(paths[index]))
+		panel.call("_analyze", index)
 	var deadline := Time.get_ticks_msec() + 15000
-	while panel.results[0].is_empty() and Time.get_ticks_msec() < deadline:
+	while panel.get("_tasks") != [0, 0] and Time.get_ticks_msec() < deadline:
 		await get_tree().process_frame
-	var result: Dictionary = panel.results[0]
-	assert_str(result.get("status", "")).is_equal("success")
+	assert_bool(panel.get("_tasks") == [0, 0]).is_true()
+	var first: Dictionary = panel.results[0]
+	var second: Dictionary = panel.results[1]
+	_assert_analysis_sources(panel, paths)
 	panel.set("_tasks", [987654, 0] as Array[int])
-	panel.call("open_results", result, result)
+	panel.call("open_results", first, second)
 	var path := "res://yaya/asset_workbench/examples/assets/example_star.png"
 	panel.call("_completed", 987654, Result.failure(path, "image", "cancelled", "old task"))
-	assert_str(panel.results[0].asset.path).is_equal(result.asset.path)
+	_assert_analysis_sources(panel, paths)
 	panel.call("open_asset", load(path))
 	assert_str(panel.get("_selection_label").text).contains("example_star.png")
 	assert_str(panel.get("_summaries")[0].text).contains("example_confirmation_a.ogg")
 	assert_str(panel.get("_summaries")[0].text).not_contains("example_star.png")
+	assert_str(panel.get("_summaries")[1].text).contains("example_confirmation_b.ogg")
 	assert_str(panel.call("source_status", path)).contains("未分析")
 	assert_bool(workbench.session.is_dirty()).is_false()
 	panel.call("_close")
+
+
+func _assert_analysis_sources(panel: Window, paths: Array[String]) -> void:
+	for index: int in 2:
+		var result: Dictionary = panel.results[index]
+		assert_str(result.get("status", "")).is_equal("success")
+		assert_str(str(result.get("asset", {}).get("type", ""))).is_equal("audio")
+		var actual := ProjectSettings.globalize_path(str(result.get("asset", {}).get("path", "")))
+		var expected := ProjectSettings.globalize_path(paths[index])
+		assert_str(actual.replace("\\", "/").simplify_path()).is_equal(
+			expected.replace("\\", "/").simplify_path())
 
 
 func _playing_sound_paths(root: Node) -> Array[String]:

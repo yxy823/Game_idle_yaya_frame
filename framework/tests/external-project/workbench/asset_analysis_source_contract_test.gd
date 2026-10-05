@@ -127,6 +127,41 @@ func test_history_does_not_require_current_source_or_supported_extension() -> vo
 	assert_float(_batch.results[missing].metrics.luma_mean.value).is_equal(0.2)
 
 
+func test_missing_worker_dictionaries_fail_before_launch_and_allow_retry() -> void:
+	_capability_original = FileAccess.get_file_as_bytes(Source.CAPABILITIES_PATH)
+	var outcomes: Dictionary[int, Dictionary] = {}
+	var states: Array[String] = []
+	var service: Service = _batch.service
+	service.completed.connect(func(id: int, data: Dictionary) -> void: outcomes[id] = data)
+	service.state_changed.connect(func(_id: int, state: String) -> void: states.append(state))
+	for field: String in ["defaults", "limits"]:
+		var declared: Dictionary = JSON.parse_string(_capability_original.get_string_from_utf8())
+		declared.erase(field)
+		var file := FileAccess.open(Source.CAPABILITIES_PATH, FileAccess.WRITE)
+		assert_bool(file.store_string(JSON.stringify(declared))).is_true()
+		file.close()
+		Source.capabilities.clear()
+		states.clear()
+		var task := service.submit(IMAGE, "image")
+		var job: RefCounted = service.get("_jobs")[task]
+		var deadline := Time.get_ticks_msec() + 2000
+		while not outcomes.has(task) and Time.get_ticks_msec() < deadline:
+			await get_tree().process_frame
+		assert_bool(outcomes.has(task)).is_true()
+		assert_str(outcomes[task].errors[0].code).is_equal("analyzer_config")
+		assert_str(outcomes[task].errors[0].message).contains(field)
+		assert_str(outcomes[task].errors[0].message).contains(Source.CAPABILITIES_PATH)
+		assert_bool(Source.capabilities.is_empty()).is_true()
+		assert_bool(states.has("running")).is_false()
+		assert_bool(job.process.is_empty()).is_true()
+		assert_int(job.get("_started")).is_zero()
+		assert_bool(FileAccess.file_exists(job.request_path)).is_false()
+	_restore_capability_file()
+	assert_str(Source.initialize()).is_empty()
+	assert_bool(Source.capabilities.has("defaults")).is_true()
+	assert_bool(Source.capabilities.has("limits")).is_true()
+
+
 func _measurement(value: float) -> Dictionary:
 	var data := Result.failure("res://example.png", "image", "fixture", "fixture")
 	data.status = "success"

@@ -17,9 +17,16 @@ const SOUND = preload("res://yaya/asset_workbench/examples/assets/example_confir
 
 var _workbenches: Array[Control] = []
 var _owned_files: Array[String] = []
+var _window_size: Vector2i
+
+
+func before_test() -> void:
+	_window_size = get_tree().root.size
+	get_tree().root.size = Vector2i(1600, 900)
 
 
 func after_test() -> void:
+	get_tree().root.size = _window_size
 	for workbench: Control in _workbenches:
 		workbench.call("stop_all")
 		workbench.get("_batch").batch.cancel()
@@ -77,6 +84,54 @@ func test_missing_initial_cue_does_not_start_trigger_or_repeat() -> void:
 	assert_bool(workbench.get("_repeat").is_stopped()).is_true()
 	assert_int(workbench.presenter.active_effect_count()).is_zero()
 	assert_int(workbench.presenter.active_voice_count()).is_zero()
+
+
+func test_composition_keeps_failed_object_selectable_and_recovers_after_reload() -> void:
+	var workbench: Control = auto_free(Composition.instantiate())
+	_workbenches.append(workbench)
+	var paths := _composition_with_invalid_cue(workbench)
+	workbench.cue_path = paths[0]
+	add_child(workbench)
+	var panel: Control = workbench.get("_composition")
+	var first: Session = workbench.session
+	first.current().gain_db = -31.0
+	panel.stage.objects[1].pressed.emit()
+	assert_str(workbench.cue_path).is_equal(paths[1])
+	assert_object(workbench.session.saved).is_null()
+	assert_array(workbench.session.drafts).is_empty()
+	assert_bool(workbench.get("_controls").visible).is_false()
+	assert_str(workbench.get("_state").text).contains("未加载")
+	assert_str(workbench.get("_status").text).contains(workbench.session.load_error)
+	assert_str(workbench.get("_target").tooltip_text).is_equal(paths[1])
+	panel.save_all()
+	assert_str(workbench.get("_status").text).contains("2/3")
+	assert_str(workbench.get("_status").text).contains(paths[1])
+	assert_str(workbench.get("_status").text).contains(panel.object_name())
+	assert_int(ResourceSaver.save(CUE.trial_copy(), paths[1])).is_equal(OK)
+	workbench.get("_reload_dialog").confirmed.emit()
+	assert_object(workbench.session.saved).is_not_null()
+	assert_str(workbench.session.load_error).is_empty()
+	assert_int(workbench.session.drafts.size()).is_equal(2)
+	assert_bool(workbench.get("_controls").visible).is_true()
+	assert_float(first.current().gain_db).is_equal(-31.0)
+	panel.save_all()
+	assert_str(workbench.get("_status").text).contains("3/3")
+	assert_str(workbench.get("_status").text).not_contains("未加载")
+
+
+func _composition_with_invalid_cue(workbench: Control) -> Array[String]:
+	var stage: Control = auto_free(workbench.composition_scene.instantiate())
+	var paths: Array[String] = []
+	for index: int in stage.object_nodes.size():
+		var cue: FeedbackCue = CUE.trial_copy()
+		if index == 1:
+			cue.gain_db = 1.0
+		paths.append(_save_cue(cue))
+		stage.get_node(stage.object_nodes[index]).cue_resource = load(paths[index])
+	var packed := PackedScene.new()
+	assert_int(packed.pack(stage)).is_equal(OK)
+	workbench.composition_scene = packed
+	return paths
 
 
 func test_saved_atlas_cue_reports_only_its_analyzable_sound_without_mutation() -> void:

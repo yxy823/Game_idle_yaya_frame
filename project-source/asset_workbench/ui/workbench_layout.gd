@@ -65,10 +65,13 @@ func display_context(object_name: String, index: int, dirty: bool, path: String)
 	_object_name.text = "当前对象：" + object_name
 	_object_name.tooltip_text = object_name
 	state.text = "未保存更改" if dirty else "与已保存 Cue 一致"
+	if index < 0:
+		state.text = "未加载有效 Cue"
 	state.theme_type_variation = "DirtyState" if dirty else "Label"
 	for trial: int in _trials.size():
 		_trials[trial].set_pressed_no_signal(trial == index)
-	var context := "%s · 对象 %s · %s" % [object_name, "A" if index == 0 else "B", state.text]
+	var alternative := "未加载" if index < 0 else ("A" if index == 0 else "B")
+	var context := "%s · 对象 %s · %s" % [object_name, alternative, state.text]
 	_playback_name.text = "当前对象：" + context
 	target.text = "保存目标：%s\n仅写当前 Cue；影响引用它的消费场景。" % path.get_file()
 	target.tooltip_text = path

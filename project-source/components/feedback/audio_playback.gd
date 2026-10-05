@@ -23,9 +23,12 @@ func play(stream: AudioStream, gain_db: float, pitch: float, bus: StringName) ->
 	if active_voice_count() >= MAX_VOICES:
 		return ERR_BUSY
 	# Immediate play avoids an upstream deferred play surviving a same-frame stop.
-	var player: AudioStreamPlayer = _pool.prepare(stream, bus)
+	var player: AudioStreamPlayer = _pool.get_available_player()
+	player.stream = stream
+	player.bus = bus
 	player.volume_db = gain_db
 	player.pitch_scale = pitch
+	_pool.mark_player_as_busy(player)
 	player.play()
 	return OK
 

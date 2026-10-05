@@ -89,12 +89,40 @@ static func write_json(path: String, data: Dictionary) -> String:
 	var encoded := (JSON.stringify(data, "  ") + "\n").to_utf8_buffer()
 	if encoded.size() > MAX_JSON_BYTES:
 		return "JSON exceeds 32 MiB. Split the group; no file was written."
+	var temporary := path + ".%d-%d.tmp" % [OS.get_process_id(), Time.get_ticks_usec()]
+	while FileAccess.file_exists(temporary) or DirAccess.dir_exists_absolute(temporary):
+		temporary += ".tmp"
+	var issue := _write_verified(temporary, encoded)
+	if issue.is_empty():
+		# Godot 4.7.1 on Windows deletes an existing target before moving the new file.
+		var error := DirAccess.rename_absolute(temporary, path)
+		if error != OK:
+			issue = "Cannot replace %s: %s" % [path, error_string(error)]
+	if FileAccess.file_exists(temporary):
+		var error := DirAccess.remove_absolute(temporary)
+		if error != OK:
+			issue += " Cannot remove %s: %s" % [temporary, error_string(error)]
+	return issue
+
+
+static func _write_verified(path: String, encoded: PackedByteArray) -> String:
 	var file := FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
-		return "Cannot write " + path
-	file.store_buffer(encoded)
-	file.flush()
-	return "" if file.get_error() == OK else "Writing JSON failed."
+		return "Cannot write %s: %s" % [path, error_string(FileAccess.get_open_error())]
+	var stored := file.store_buffer(encoded)
+	var error := file.get_error()
+	file.close()
+	if not stored or error != OK:
+		return "Writing %s failed: %s" % [path, error_string(error)]
+	file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		return "Cannot verify %s: %s" % [path, error_string(FileAccess.get_open_error())]
+	var actual := file.get_buffer(encoded.size() + 1)
+	error = file.get_error()
+	file.close()
+	if error != OK and error != ERR_FILE_EOF:
+		return "Reading %s failed: %s" % [path, error_string(error)]
+	return "" if actual == encoded else "Written bytes do not match: " + path
 
 
 static func snapshot_error(value: Variant) -> String:

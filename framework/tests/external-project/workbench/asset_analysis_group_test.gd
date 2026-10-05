@@ -15,9 +15,12 @@ var _service: Service
 var _batch: Batch
 var _files: Array[String] = []
 var _directories: Array[String] = []
+var _window_size: Vector2i
 
 
 func before_test() -> void:
+	_window_size = get_tree().root.size
+	get_tree().root.size = Vector2i(1600, 900)
 	_service = auto_free(Service.new())
 	add_child(_service)
 	_batch = auto_free(Batch.new())
@@ -26,6 +29,7 @@ func before_test() -> void:
 
 
 func after_test() -> void:
+	get_tree().root.size = _window_size
 	_batch.cancel()
 	for path: String in _files:
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(path))
@@ -238,6 +242,25 @@ func test_group_json_round_trip_and_bad_json_retains_state() -> void:
 	file.close()
 	assert_str(Group.read_json(path).error).contains("Invalid JSON")
 	assert_int(_batch.group.assets.size()).is_equal(4)
+
+
+func test_failed_group_replace_preserves_original_and_removes_temporary_file() -> void:
+	var directory := _owned_directory("locked-group-")
+	var path := directory.path_join("group.json")
+	_files.append(path)
+	assert_str(Group.write_json(path, Group.empty())).is_empty()
+	var original := FileAccess.get_file_as_bytes(path)
+	var held := FileAccess.open(path, FileAccess.READ)
+	assert_object(held).is_not_null()
+	var changed := Group.empty()
+	changed.name = "replacement"
+	var issue := Group.write_json(path, changed)
+	var after := FileAccess.get_file_as_bytes(path)
+	var remaining := DirAccess.get_files_at(directory)
+	held.close()
+	assert_str(issue).contains("Cannot replace")
+	assert_bool(after == original).is_true()
+	assert_array(remaining).is_equal(PackedStringArray(["group.json"]))
 
 
 func test_snapshot_utf8_size_limit_round_trips_and_rejects_before_overwrite() -> void:

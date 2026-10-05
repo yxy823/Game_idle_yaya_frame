@@ -17,6 +17,9 @@ var _selected: Resource
 var _tasks: Array[int] = [0, 0]
 var _paths: Array[String] = ["", ""]
 var _kinds: Array[String] = ["", ""]
+var _retained: Array[bool] = [false, false]
+var _attempt_states: Array[String] = ["", ""]
+var _attempt_errors: Array[String] = ["", ""]
 var _selection_label: Label = Label.new()
 var _status: Label = Label.new()
 var _details: Label = Label.new()
@@ -71,6 +74,9 @@ func open_results(first: Dictionary, second: Dictionary) -> void:
 	_tasks = [0, 0]
 	_selected = null
 	results = [first.duplicate(true), second.duplicate(true)]
+	_retained = [false, false]
+	_attempt_states = ["", ""]
+	_attempt_errors = ["", ""]
 	for index: int in 2:
 		_paths[index] = ProjectSettings.localize_path(results[index].asset.path)
 		_kinds[index] = results[index].asset.type
@@ -166,8 +172,14 @@ func _analyze(index: int) -> void:
 		_status.text = "Select an asset in the existing browser first."
 		return
 	var source := Source.describe(_selected)
-	service.cancel(_tasks[index])
+	var previous := _tasks[index]
 	_tasks[index] = 0
+	service.cancel(previous)
+	_retained[index] = false
+	_attempt_states[index] = ""
+	_attempt_errors[index] = ""
+	if _paths[index] != source.path or _kinds[index] != source.type:
+		results[index] = {}
 	_kinds[index] = source.type
 	if not source.issue.is_empty():
 		_paths[index] = ""
@@ -183,6 +195,9 @@ func _analyze(index: int) -> void:
 		results[other] = {}
 		_paths[other] = ""
 		_kinds[other] = ""
+		_retained[other] = false
+		_attempt_states[other] = ""
+		_attempt_errors[other] = ""
 	_submit(index, false)
 
 
@@ -198,21 +213,31 @@ func _reanalyze_both() -> void:
 
 func _stale(index: int) -> bool:
 	var data: Dictionary = results[index]
-	return data.get("status") in ["success", "partial"] and data.get(
-		"parameters", {}).get("silence_dbfs") != _threshold.value
+	return _usable(data) and (_retained[index] or data.get(
+		"parameters", {}).get("silence_dbfs") != _threshold.value)
+
+
+func _usable(data: Dictionary) -> bool:
+	return data.get("status") in ["success", "partial"]
 
 
 func _comparison_reason() -> String:
 	var reason := Result.comparison_reason(results[0], results[1])
 	for index: int in 2:
-		if _stale(index) and results[index].status in ["success", "partial"]:
-			reason += " %s STALE: settings changed." % ["A", "B"][index]
+		if _stale(index):
+			reason += " %s 旧结果 (STALE)：尚未取得当前分析结果。" % ["A", "B"][index]
 	return reason.strip_edges()
 
 
 func _submit(index: int, force: bool) -> void:
-	service.cancel(_tasks[index])
-	results[index] = {}
+	var previous := _tasks[index]
+	_tasks[index] = 0
+	service.cancel(previous)
+	_retained[index] = _usable(results[index])
+	if not _retained[index]:
+		results[index] = {}
+	_attempt_states[index] = "queued"
+	_attempt_errors[index] = ""
 	_tasks[index] = service.submit(_paths[index], _kinds[index],
 		{"silence_dbfs": _threshold.value}, force)
 	_status.text = "%s queued: %s" % [["A", "B"][index], _paths[index].get_file()]
@@ -223,7 +248,14 @@ func _completed(task_id: int, data: Dictionary) -> void:
 	var index := _tasks.find(task_id)
 	if index < 0:
 		return
-	results[index] = data
+	_attempt_states[index] = str(data.status)
+	var messages: Array[String] = []
+	for issue: Dictionary in data.get("errors", []):
+		messages.append(str(issue.message))
+	_attempt_errors[index] = "；".join(messages)
+	if _usable(data) or not _usable(results[index]):
+		results[index] = data
+	_retained[index] = not _usable(data) and _usable(results[index])
 	_tasks[index] = 0
 	_status.text = "分析 %s · %s：%s" % [["A", "B"][index],
 		str(data.get("asset", {}).get("path", _paths[index])).get_file(), data.get("status", "未知")]
@@ -233,8 +265,10 @@ func _completed(task_id: int, data: Dictionary) -> void:
 func _state_changed(task_id: int, state: String) -> void:
 	var index := _tasks.find(task_id)
 	if index >= 0:
+		_attempt_states[index] = state
 		_status.text = "分析 %s · %s：%s；预览和播放仍可使用。" % [
 			["A", "B"][index], _paths[index].get_file(), state]
+		_refresh()
 
 
 func _update_comparison_notice() -> void:
@@ -246,7 +280,7 @@ func _update_comparison_notice() -> void:
 		_comparison.text = reason + " Reanalyze both before comparing."
 	for index: int in 2:
 		_table.set_column_title(index + 1, "分析 " + ["A", "B"][index]
-			+ (" [STALE]" if _stale(index) else ""))
+			+ (" [旧结果 / STALE]" if _stale(index) else ""))
 
 
 func _refresh() -> void:
@@ -284,20 +318,24 @@ func source_status(path: String) -> String:
 	for index: int in 2:
 		var source: String = results[index].get("asset", {}).get("path", _paths[index])
 		if not path.is_empty() and ProjectSettings.localize_path(source) == path:
-			var state: String = "分析中" if _tasks[index] > 0 else str(
-				results[index].get("status", "未分析"))
-			states.append(["A", "B"][index] + " " + ("已过期 (STALE)" if _stale(index) else state))
+			states.append(["A", "B"][index] + " " + _result_state(index))
 	return "；".join(states) if not states.is_empty() else "未分析（当前无结果）"
+
+
+func _result_state(index: int) -> String:
+	var state: String = _attempt_states[index]
+	if state.is_empty():
+		state = str(results[index].get("status", "未分析"))
+	return state + (" [旧结果 / STALE]" if _stale(index) else "")
 
 
 func _summary(index: int) -> String:
 	var data := results[index]
 	var asset: Dictionary = data.get("asset", {})
 	var path: String = asset.get("path", _paths[index])
-	var state: String = "分析中" if _tasks[index] > 0 else str(data.get("status", "未分析"))
 	var heading := "分析 %s · %s · %s · %s" % [["A", "B"][index],
 		path.get_file() if not path.is_empty() else "未指定源资源",
-		asset.get("type", _kinds[index]), state + (" [STALE]" if _stale(index) else "")]
+		asset.get("type", _kinds[index]), _result_state(index)]
 	var metrics: Dictionary = data.get("metrics", {})
 	var core := {"width": "源图宽", "height": "源图高", "transparent_ratio": "全透明像素占比",
 		"duration": "时长", "sample_peak": "采样峰值", "rms": "RMS", "integrated_loudness": "综合响度"}
@@ -313,6 +351,8 @@ func _issue_summary(index: int) -> String:
 	if data.is_empty():
 		return ""
 	var issues: Array[String] = []
+	if _retained[index] and not _attempt_errors[index].is_empty():
+		issues.append("本次分析：" + _attempt_errors[index])
 	for issue: Dictionary in data.get("warnings", []) + data.get("errors", []):
 		issues.append(str(issue.message))
 	issues.append_array(Result.rule_messages(data, _edge_rule.value))
@@ -326,8 +366,11 @@ func _result_details(index: int) -> String:
 		return "%s: no result" % ["A", "B"][index]
 	var lines: Array[String] = ["%s: %s | %s | cache %s" % [["A", "B"][index],
 		data.asset.path, data.status, "HIT" if data.cache.hit else "MISS"],
+		"当前任务：" + _result_state(index),
 		"Backend: " + JSON.stringify(data.analyzer.backend),
 		"Parameters: " + JSON.stringify(data.get("parameters", {}))]
+	if _retained[index] and not _attempt_errors[index].is_empty():
+		lines.append("本次分析：" + _attempt_errors[index])
 	for issue: Dictionary in data.warnings + data.errors:
 		lines.append(str(issue.message))
 	lines.append_array(Result.rule_messages(data, _edge_rule.value))

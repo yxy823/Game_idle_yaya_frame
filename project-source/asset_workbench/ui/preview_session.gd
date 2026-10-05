@@ -6,11 +6,19 @@ var target_path: String = ""
 var active_index: int = 0
 var drafts: Array[FeedbackCue] = []
 var saved: FeedbackCue
+var load_error: String = ""
 
 var _disk_text: String = ""
 
 
 func open(path: String) -> String:
+	if saved == null:
+		target_path = path
+	load_error = _open_validated(path)
+	return load_error
+
+
+func _open_validated(path: String) -> String:
 	if not path.begins_with("res://") or not path.ends_with(".tres"):
 		return "Choose an existing project .tres cue."
 	if not FileAccess.file_exists(path):

@@ -43,10 +43,10 @@ func _ready() -> void:
 func _load_sessions() -> void:
 	for object: ObjectView in stage.objects:
 		var session := Session.new()
+		sessions[String(stage.get_path_to(object))] = session
 		var issue := session.open(object.cue_path)
 		if issue.is_empty():
 			_seed_alternative(session)
-			sessions[String(stage.get_path_to(object))] = session
 		else:
 			_report(issue)
 	_update_scene_state()
@@ -72,6 +72,8 @@ func select_object(path: String) -> void:
 		stage.highlight(path)
 		session_selected.emit(sessions[path])
 		_status.text = "已选择：" + object_name(path)
+		if sessions[path].saved == null:
+			_status.text += "；未加载：" + sessions[path].load_error
 		var shared: int = 0
 		for session: Session in sessions.values():
 			shared += int(session.target_path == sessions[path].target_path)
@@ -80,7 +82,7 @@ func select_object(path: String) -> void:
 
 
 func update_trial(path: String) -> void:
-	if stage != null:
+	if stage != null and sessions[path].saved != null:
 		stage.preview(path, sessions[path].current())
 	_update_scene_state()
 
@@ -106,13 +108,19 @@ func _update_scene_state() -> void:
 	if _scene_state == null:
 		return
 	var indices: Array[int] = []
+	var unloaded: int = 0
 	for session: Session in sessions.values():
+		if session.saved == null:
+			unloaded += 1
+			continue
 		if session.active_index not in indices:
 			indices.append(session.active_index)
 	var uniform := indices[0] if indices.size() == 1 else -1
 	for index: int in _scene_trials.size():
 		_scene_trials[index].set_pressed_no_signal(index == uniform)
 	_scene_state.text = "全场景：" + (["A", "B"][uniform] if uniform >= 0 else "混合方案")
+	if unloaded > 0:
+		_scene_state.text += "；%d 个对象未加载" % unloaded
 
 
 func select_all_alternatives(index: int) -> void:
@@ -120,11 +128,13 @@ func select_all_alternatives(index: int) -> void:
 	stage.stop()
 	for path: String in sessions:
 		var session := sessions[path]
+		if session.saved == null:
+			continue
 		session.active_index = index
 		update_trial(path)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
-	_report("所有对象已切换到方案 %s；尚未保存。" % ("A" if index == 0 else "B"))
+	_report("已加载对象已切换到方案 %s；未加载对象跳过，尚未保存。" % ("A" if index == 0 else "B"))
 
 
 func trigger_all() -> void:
@@ -156,17 +166,21 @@ func apply_gain(value: float) -> void:
 	_gain.set_value_no_signal(value)
 	for path: String in sessions:
 		var session := sessions[path]
+		if session.saved == null:
+			continue
 		session.current().gain_db = value
 		update_trial(path)
 	if sessions.has(_selected_path):
 		session_selected.emit(sessions[_selected_path])
-	_report("已将 %.1f dB 增益应用到各对象的当前方案，尚未保存。" % value)
+	_report("已将 %.1f dB 增益应用到已加载对象的当前方案；未加载对象跳过，尚未保存。" % value)
 
 
 func assets(selected_only: bool) -> Array[Resource]:
 	var output: Array[Resource] = []
 	for path: String in sessions:
 		if selected_only and path != _selected_path:
+			continue
+		if sessions[path].saved == null:
 			continue
 		var cue: FeedbackCue = sessions[path].current()
 		for asset: Resource in [cue.texture, cue.sound]:
@@ -181,8 +195,13 @@ func save_all() -> void:
 	var saved: int = 0
 	var issues: Array[String] = []
 	var files: Dictionary[String, Array] = {}
-	for session: Session in sessions.values():
-		files.get_or_add(session.target_path, []).append(session)
+	for object_path: String in sessions:
+		var session := sessions[object_path]
+		if session.saved == null:
+			issues.append("%s (%s)：未加载：%s" % [
+				object_name(object_path), session.target_path, session.load_error])
+		if not session.target_path.is_empty():
+			files.get_or_add(session.target_path, []).append(session)
 	for path: String in files:
 		var group: Array[Session] = []
 		group.assign(files[path])
@@ -198,6 +217,9 @@ func save_all() -> void:
 
 
 func _save_shared_file(group: Array[Session]) -> String:
+	for session: Session in group:
+		if session.saved == null:
+			return "该文件有未加载的对象，未写入。"
 	var first: Session = group[0]
 	for session: Session in group:
 		if not session.current().same_values(first.current()):
