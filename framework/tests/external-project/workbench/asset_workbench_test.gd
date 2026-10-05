@@ -65,6 +65,21 @@ func test_save_is_reloaded_by_actual_game_consumer() -> void:
 	assert_bool(game.cue.same_values(_session.current())).is_true()
 
 
+func test_editing_one_number_keeps_untouched_off_step_values() -> void:
+	var controls: Control = auto_free(load("res://yaya/asset_workbench/ui/cue_controls.gd").new())
+	add_child(controls)
+	controls.call("build", [] as Array[Texture2D], [] as Array[AudioStream])
+	var cue := _session.current()
+	cue.animation_seconds = 0.333
+	controls.call("display", cue)
+	controls.call("apply_to", cue)
+	assert_float(cue.animation_seconds).is_equal(0.333)
+	(controls.get("_gain") as SpinBox).value = -15.0
+	controls.call("apply_to", cue)
+	assert_float(cue.gain_db).is_equal(-15.0)
+	assert_float(cue.animation_seconds).is_equal(0.333)
+
+
 func test_external_edit_blocks_save_and_keeps_trial() -> void:
 	var edited := FileAccess.get_file_as_string(_fixture_path) + "\n; external editor change\n"
 	var file := FileAccess.open(_fixture_path, FileAccess.WRITE)
