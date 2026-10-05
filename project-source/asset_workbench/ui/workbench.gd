@@ -10,8 +10,8 @@ const AnalysisPanel = preload("res://yaya/asset_workbench/ui/analysis_panel.gd")
 const BatchPanel = preload("res://yaya/asset_workbench/ui/analysis_batch_panel.gd")
 const Layout = preload("res://yaya/asset_workbench/ui/workbench_layout.gd")
 
-@export_file("*.tres") var cue_path: String
-@export_file("*.tscn") var game_scene_path: String
+@export_file_path("*.tres") var cue_path: String
+@export_file_path("*.tscn") var game_scene_path: String
 @export var texture_candidates: Array[Texture2D] = []
 @export var sound_candidates: Array[AudioStream] = []
 @export var shader_candidates: Array[FeedbackShaderPreset] = []

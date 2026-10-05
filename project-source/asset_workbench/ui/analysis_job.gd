@@ -84,10 +84,14 @@ func fail(code: String, message: String) -> void:
 func cleanup() -> void:
 	if not process.is_empty():
 		if OS.is_process_running(process.pid):
-			OS.kill(process.pid)
+			var kill_error := OS.kill(process.pid)
+			if kill_error != OK:
+				push_warning("Analyzer process %d could not be stopped: %s" % [process.pid, error_string(kill_error)])
 		(process.stdio as FileAccess).close()
 		(process.stderr as FileAccess).close()
 		process.clear()
 	for path: String in [request_path, request_path.get_basename() + ".cache.tmp"]:
 		if FileAccess.file_exists(path):
-			DirAccess.remove_absolute(path)
+			var remove_error := DirAccess.remove_absolute(path)
+			if remove_error != OK:
+				push_warning("Analyzer temporary file was not removed: %s (%s)" % [path, error_string(remove_error)])

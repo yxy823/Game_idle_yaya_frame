@@ -57,13 +57,13 @@ func build(presets: Array[FeedbackParticlePreset], clips: Array[Animation],
 func display(cue: FeedbackCue) -> void:
 	var preset := cue.particle_preset
 	_select_resources(cue)
-	_particle_scale.set_value_no_signal(cue.particle_scale)
-	_delay.set_value_no_signal(cue.particle_delay_seconds)
-	_emission.set_value_no_signal(cue.particle_emission_seconds)
+	Widgets.show_number(_particle_scale, cue.particle_scale)
+	Widgets.show_number(_delay, cue.particle_delay_seconds)
+	Widgets.show_number(_emission, cue.particle_emission_seconds)
 	_tween.set_pressed_no_signal(cue.tween_enabled)
-	_distance.set_value_no_signal(cue.tween_distance)
-	_duration.set_value_no_signal(cue.tween_seconds)
-	_speed.set_value_no_signal(cue.animation_speed)
+	Widgets.show_number(_distance, cue.tween_distance)
+	Widgets.show_number(_duration, cue.tween_seconds)
+	Widgets.show_number(_speed, cue.animation_speed)
 	_particle_scale.editable = preset != null
 	_delay.editable = preset != null
 	_emission.editable = preset != null and not preset.is_one_shot()
@@ -78,13 +78,13 @@ func apply_to(cue: FeedbackCue) -> void:
 		cue.particle_preset = null if _particle.selected == 0 else _presets[_particle.selected - 1]
 	if _clip.selected >= 0:
 		cue.animation_clip = null if _clip.selected == 0 else _clips[_clip.selected - 1]
-	cue.particle_scale = _edited_value(_particle_scale, cue.particle_scale)
-	cue.particle_delay_seconds = _edited_value(_delay, cue.particle_delay_seconds)
-	cue.particle_emission_seconds = _edited_value(_emission, cue.particle_emission_seconds)
+	cue.particle_scale = Widgets.edited_number(_particle_scale, cue.particle_scale)
+	cue.particle_delay_seconds = Widgets.edited_number(_delay, cue.particle_delay_seconds)
+	cue.particle_emission_seconds = Widgets.edited_number(_emission, cue.particle_emission_seconds)
 	cue.tween_enabled = _tween.button_pressed
-	cue.tween_distance = _edited_value(_distance, cue.tween_distance)
-	cue.tween_seconds = _edited_value(_duration, cue.tween_seconds)
-	cue.animation_speed = _edited_value(_speed, cue.animation_speed)
+	cue.tween_distance = Widgets.edited_number(_distance, cue.tween_distance)
+	cue.tween_seconds = Widgets.edited_number(_duration, cue.tween_seconds)
+	cue.animation_speed = Widgets.edited_number(_speed, cue.animation_speed)
 
 
 func _select_resources(cue: FeedbackCue) -> void:
@@ -130,10 +130,8 @@ func _number(parent: GridContainer, title: String, spin: SpinBox, limits: Array[
 	spin.min_value = limits[0]
 	spin.max_value = limits[1]
 	spin.step = limits[2]
-	spin.value_changed.connect(func(_value: float) -> void: edited.emit())
+	spin.value_changed.connect(func(_value: float) -> void:
+		Widgets.mark_edited(spin)
+		edited.emit())
 	Widgets.field(parent, title, spin)
 
-
-func _edited_value(spin: SpinBox, current: float) -> float:
-	# Range step rounding must not turn an unrelated binding edit into a changed scalar.
-	return current if is_equal_approx(spin.value, current) else spin.value

@@ -43,10 +43,10 @@ func display(cue: FeedbackCue) -> void:
 		_presets.append(preset)
 		_choice.add_item(preset.display_name)
 	_choice.select(_presets.find(preset) + 1)
-	_strength.set_value_no_signal(cue.shader_strength)
+	Widgets.show_number(_strength, cue.shader_strength)
 	_color.color = cue.shader_color
-	_delay.set_value_no_signal(cue.shader_delay_seconds)
-	_duration.set_value_no_signal(cue.shader_duration_seconds)
+	Widgets.show_number(_delay, cue.shader_delay_seconds)
+	Widgets.show_number(_duration, cue.shader_duration_seconds)
 	_strength.editable = preset != null and not preset.amount_uniform.is_empty()
 	_color.disabled = preset == null or preset.color_uniform.is_empty()
 	_delay.editable = preset != null
@@ -66,10 +66,10 @@ func display(cue: FeedbackCue) -> void:
 func apply_to(cue: FeedbackCue) -> void:
 	if _choice.selected >= 0:
 		cue.shader_preset = null if _choice.selected == 0 else _presets[_choice.selected - 1]
-	cue.shader_strength = _strength.value
+	cue.shader_strength = Widgets.edited_number(_strength, cue.shader_strength)
 	cue.shader_color = _color.color
-	cue.shader_delay_seconds = _delay.value
-	cue.shader_duration_seconds = _duration.value
+	cue.shader_delay_seconds = Widgets.edited_number(_delay, cue.shader_delay_seconds)
+	cue.shader_duration_seconds = Widgets.edited_number(_duration, cue.shader_duration_seconds)
 
 
 func _update_references(preset: FeedbackShaderPreset) -> void:
@@ -107,5 +107,7 @@ func _number(parent: GridContainer, title: String, spin: SpinBox, limits: Array[
 	spin.min_value = limits[0]
 	spin.max_value = limits[1]
 	spin.step = limits[2]
-	spin.value_changed.connect(func(_value: float) -> void: edited.emit())
+	spin.value_changed.connect(func(_value: float) -> void:
+		Widgets.mark_edited(spin)
+		edited.emit())
 	Widgets.field(parent, title, spin)

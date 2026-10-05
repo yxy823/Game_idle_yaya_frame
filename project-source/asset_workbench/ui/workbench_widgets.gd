@@ -62,3 +62,18 @@ static func show_text(parent: Node, title: String, text: String) -> void:
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
 	dialog.popup_centered()
+
+
+# SpinBox 会按 step 取整显示的值。只有用户改过的数值才写回 Cue，
+# 否则编辑别的字段时，手写在 .tres 里、不在步长上的合法值会被悄悄改掉。
+static func show_number(spin: SpinBox, value: float) -> void:
+	spin.set_value_no_signal(value)
+	spin.set_meta("edited", false)
+
+
+static func mark_edited(spin: SpinBox) -> void:
+	spin.set_meta("edited", true)
+
+
+static func edited_number(spin: SpinBox, current: float) -> float:
+	return spin.value if spin.get_meta("edited", false) else current

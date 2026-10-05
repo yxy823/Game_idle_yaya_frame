@@ -182,8 +182,15 @@ func _analyze(index: int) -> void:
 		results[index] = {}
 	_kinds[index] = source.type
 	if not source.issue.is_empty():
-		_paths[index] = ""
-		results[index] = Result.failure(source.path, source.type, source.issue.code, source.issue.message)
+		var failure := Result.failure(source.path, source.type, source.issue.code, source.issue.message)
+		# 同一来源预检失败时保留上次可用的结果，与分析失败后的处理一致；换了来源时 results 已在上面清空。
+		if _usable(results[index]):
+			_retained[index] = true
+			_attempt_states[index] = str(failure.status)
+			_attempt_errors[index] = str(source.issue.message)
+		else:
+			_paths[index] = ""
+			results[index] = failure
 		_refresh()
 		return
 	_paths[index] = source.path

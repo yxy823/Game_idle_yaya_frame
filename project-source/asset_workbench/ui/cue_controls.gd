@@ -75,11 +75,11 @@ func display(cue: FeedbackCue) -> void:
 	_sound.select(_sounds.find(cue.sound) + 1)
 	_texture.tooltip_text = cue.texture.resource_path if cue.texture != null else "无图像"
 	_sound.tooltip_text = cue.sound.resource_path if cue.sound != null else "无音频"
-	_scale.set_value_no_signal(cue.icon_scale)
-	_duration.set_value_no_signal(cue.animation_seconds)
-	_gain.set_value_no_signal(cue.gain_db)
-	_pitch.set_value_no_signal(cue.pitch_scale)
-	_delay.set_value_no_signal(cue.delay_seconds)
+	Widgets.show_number(_scale, cue.icon_scale)
+	Widgets.show_number(_duration, cue.animation_seconds)
+	Widgets.show_number(_gain, cue.gain_db)
+	Widgets.show_number(_pitch, cue.pitch_scale)
+	Widgets.show_number(_delay, cue.delay_seconds)
 	_bus.select(AudioServer.get_bus_index(cue.bus))
 	_shader.display(cue)
 	_effects.display(cue)
@@ -90,11 +90,11 @@ func apply_to(cue: FeedbackCue) -> void:
 		cue.texture = null if _texture.selected == 0 else _textures[_texture.selected - 1]
 	if _sound.selected >= 0:
 		cue.sound = null if _sound.selected == 0 else _sounds[_sound.selected - 1]
-	cue.icon_scale = _scale.value
-	cue.animation_seconds = _duration.value
-	cue.gain_db = _gain.value
-	cue.pitch_scale = _pitch.value
-	cue.delay_seconds = _delay.value
+	cue.icon_scale = Widgets.edited_number(_scale, cue.icon_scale)
+	cue.animation_seconds = Widgets.edited_number(_duration, cue.animation_seconds)
+	cue.gain_db = Widgets.edited_number(_gain, cue.gain_db)
+	cue.pitch_scale = Widgets.edited_number(_pitch, cue.pitch_scale)
+	cue.delay_seconds = Widgets.edited_number(_delay, cue.delay_seconds)
 	if _bus.selected >= 0:
 		cue.bus = _bus.get_item_text(_bus.selected)
 	_shader.apply_to(cue)
@@ -113,5 +113,7 @@ func _number(parent: GridContainer, title: String, spin: SpinBox, limits: Array[
 	spin.min_value = limits[0]
 	spin.max_value = limits[1]
 	spin.step = limits[2]
-	spin.value_changed.connect(func(_value: float) -> void: edited.emit())
+	spin.value_changed.connect(func(_value: float) -> void:
+		Widgets.mark_edited(spin)
+		edited.emit())
 	Widgets.field(parent, title, spin)
