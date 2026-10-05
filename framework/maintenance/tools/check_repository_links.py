@@ -64,7 +64,9 @@ def check_prompt_references(root: Path) -> tuple[int, list[dict]]:
         for project in json.loads("\n".join(lines)):
             for items in project["categories"].values():
                 for name, text in items.items():
-                    line = next(i for i, row in enumerate(lines, start=1) if f'"{name}":' in row)
+                    # 行号只用于显示；JSON 排版不同（如冒号前有空格）时退回 0，不中断检查。
+                    line = next((i for i, row in enumerate(lines, start=1)
+                                 if re.search(re.escape(json.dumps(name, ensure_ascii=False)) + r"\s*:", row)), 0)
 
                     def report(target: str, reason: str) -> None:
                         broken.append({"file": display, "line": line, "target": f"{name}: {target}", "reason": reason})

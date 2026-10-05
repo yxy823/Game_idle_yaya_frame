@@ -90,7 +90,11 @@ def matches(rel: str, patterns: list[str]) -> bool:
 
 def walk(root: Path, exclude: list[str]) -> list[str]:
     files = []
-    for cur, dirs, names in os.walk(root, followlinks=False):
+    def fail(error: OSError) -> None:
+        raise error
+
+    # 读不了的目录要报错，不能当成里面没有文档。
+    for cur, dirs, names in os.walk(root, followlinks=False, onerror=fail):
         rel_dir = Path(cur).relative_to(root).as_posix()
         dirs[:] = [d for d in dirs
                    if not matches(f"{'' if rel_dir == '.' else rel_dir + '/'}{d}/x", exclude)]
@@ -149,7 +153,11 @@ def main() -> int:
     nav = DEFAULT_NAV if args.nav is None else args.nav
     history = DEFAULT_HISTORY if args.history is None else args.history
 
-    all_files = walk(root, exclude)
+    try:
+        all_files = walk(root, exclude)
+    except OSError as error:
+        print(f"无法读取目录：{error}", file=sys.stderr)
+        return 2
     base_count: dict[str, int] = {}
     for f in all_files:
         b = norm(f).rsplit("/", 1)[-1]

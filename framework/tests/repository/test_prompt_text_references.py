@@ -42,6 +42,11 @@ class PromptTextReferenceTests(unittest.TestCase):
         })
         self.assertEqual(self.broken(), set())
 
+    def test_key_spacing_does_not_stop_the_check(self):
+        body = '[{"project": "P", "categories": {"C": {"好" : "读 AGENTS.md 和 framework/maintenance/missing.md"}}}]'
+        self.write("framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json", body)
+        self.assertEqual(self.broken(), {("yaya-maintenance-prompts.json", "好: framework/maintenance/missing.md", "target does not exist")})
+
     def test_missing_paths_and_headings_are_reported(self):
         self.library("yaya-maintenance-prompts.json", {
             "坏": "读 framework/maintenance/sync.md 的「后续用口语继续」、「授权在后续对话中的延续」，"
