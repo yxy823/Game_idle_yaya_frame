@@ -38,7 +38,7 @@ class MalformedRecordTests(unittest.TestCase):
         records, errors = test_run_evidence._run_records(self.root, None)
         self.assertEqual(records, [])
         self.assertEqual(len(errors), 1)
-        self.assertIn("must be a JSON object", errors[0])
+        self.assertIn("expected JSON object", errors[0])
 
     def test_process_that_is_not_an_object_fails_the_run_check(self) -> None:
         with self.assertRaisesRegex(test_run_evidence.RunEvidenceError, "process record must be an object"):

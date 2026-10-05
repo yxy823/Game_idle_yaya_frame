@@ -286,8 +286,6 @@ def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[s
             if not path.exists():
                 continue
             record = read_json(path)
-            if not isinstance(record, dict):
-                raise RunEvidenceError("run result must be a JSON object")
             if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
                 raise RunEvidenceError("unsupported run result schema")
             if record.get("run_id") != path.parent.name:
