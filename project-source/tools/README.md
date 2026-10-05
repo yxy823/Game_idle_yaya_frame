@@ -227,7 +227,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 | --- | --- | --- |
 | `prepare-manual` | `--checklist <文件>`（必填，位于 `reports/manual-acceptance` 下的待验收清单） | 把清单绑定到当前快照，准备人工验收 |
 | `record-tests` | `--run <result.json>`（必填，可重复，用于多次不重叠的真实运行） | 导入真实测试结果引用；被拒绝时清除旧引用，原始报告保留 |
-| `record-acceptance` | `--checklist <文件>`（必填，已绑定的清单，状态已按用户的结论填写）；`--confirm-unrelated-changes`（可选，绑定之后变化的文件都不涉及本 Feature 时使用） | 从清单的状态推导并记录验收结论；同一结论重复记录时给出提示 |
+| `record-acceptance` | `--checklist <文件>`（必填，已绑定的清单，状态已按用户的结论填写）；`--confirm-unrelated-changes`（可选，核对工具列出的可能变化的文件后，真正改过的都不涉及本 Feature 时使用） | 从清单的状态推导并记录验收结论；同一结论重复记录时给出提示 |
 | `show` | 无 | 显示该 Feature 的已存记录，不判断能否完成 |
 | `validate` | 无 | 检查当前测试与人工依据能否支持完成 |
 

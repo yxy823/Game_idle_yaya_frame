@@ -70,10 +70,10 @@ python -B yaya/tools/features/record-feature-completion.py record-acceptance --f
 
 ### 绑定之后内容又有变化
 
-清单绑定之后项目内容又变了，例如等待验收期间按[等待例外](../03-execute-loop.md#stage-0--选择-feature-并加载上下文)完成了另一个 Feature，`record-acceptance` 会停下，并列出绑定之后变化的文件。
+清单绑定之后项目内容又变了，例如等待验收期间按[等待例外](../03-execute-loop.md#stage-0--选择-feature-并加载上下文)完成了另一个 Feature，`record-acceptance` 会停下，并列出绑定之后可能变化的文件。这份清单宁多勿漏：除了绑定提交之后确实改过的文件，还包括绑定时尚未提交的全部路径，其中可能有内容一直没变的文件，例如本 Feature 绑定时还没提交、之后原样提交的代码。
 
-- 逐个核对这些文件。都不涉及本 Feature 实际检查的范围（它自己改过的代码、场景、资源，以及它依赖的专业文档和规格）时，加 `--confirm-unrelated-changes` 重新记录。变化文件的清单会写进验收记录，供之后核对。
-- 只要有一个文件涉及本 Feature，就不能沿用这次验收：按 Stage 4 重新验证，准备新的清单，请用户重新验收。
+- 逐个核对这些文件。先确认它绑定之后是否真的改过；只是把绑定时的内容原样提交的，按没有变化处理。真正改过的文件都不涉及本 Feature 实际检查的范围（它自己改过的代码、场景、资源，以及它依赖的专业文档和规格）时，加 `--confirm-unrelated-changes` 重新记录。清单会写进验收记录，供之后核对。
+- 有一个真正改过的文件涉及本 Feature，或者无法确认它是否改过时，不能沿用这次验收：按 Stage 4 重新验证，准备新的清单，请用户重新验收。
 - 自动测试不沿用：回到原 Feature 时，在当前内容上重新运行并记录。
 
 完成证据在 `human_acceptance.source.checklist` 中保存清单的项目相对路径。完成校验会重新读取清单：文件缺失、定义被改动，或状态不再全部为 `passed`，都会阻塞完成。时效按[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)判断；报告不在指纹范围内，所以修改清单中的状态不会让已测试的实现失效。

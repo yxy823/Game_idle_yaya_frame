@@ -219,7 +219,7 @@ flowchart TD
 | `record-tests --feature F001 --run <result.json>` | 导入真实的最终 Feature 运行；多个运行在同一次调用中列出多个 `--run`，整组替换旧引用 |
 | `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定的清单不能重新绑定 |
 | `record-acceptance --feature F001 --checklist <清单.json>` | 清单的状态已按用户的结论填写后，核对定义未变并记录 accepted、rejected 或 pending |
-| `record-acceptance ... --confirm-unrelated-changes` | 绑定之后项目又有变化，Agent 逐个核对工具列出的文件都不涉及本 Feature 后使用；变化文件会写进记录 |
+| `record-acceptance ... --confirm-unrelated-changes` | 绑定之后项目又有变化，Agent 逐个核对工具列出的文件后使用：列表可能包含绑定时未提交、之后没改过的文件，真正改过的都不涉及本 Feature 时才可用；列表会写进记录 |
 | `show --feature F001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
 | `validate --feature F001` | 检查当前内容对应的完成依据是否满足 |
 
