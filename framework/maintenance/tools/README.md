@@ -19,6 +19,13 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 两部分都调用分发给项目的 [check-markdown-links.py](../../../project-source/tools/checks/check-markdown-links.py)，检查规则与默认排除见[项目工具说明](../../../project-source/tools/README.md#check-markdown-linkspy)。临时副本不初始化 Git，运行后删除。
 
+另外检查两份[提示词库](../../prompt-scenarios/prompts/)正文中的纯文本引用：
+
+- **路径**：以 `framework/`、`project-source/`、`.agents/` 开头的路径要存在，含 `*` 的按通配匹配。生成项目内的路径（如 `docs/`、`yaya/`）不核对。
+- **标题**：`<文件> 的「标题」` 写法中，标题要是该 Markdown 文件中的标题。不带目录的文件名（如 `AGENTS.md`）只在维护提示词库中按仓库根目录解析；Godot 提示词中的同名文件指生成项目里的文件，跳过。
+
+失效项以 `<提示词库>:<条目所在行>  <条目名>: <引用>` 报告。检查只能发现不存在的路径和标题，引用是否重复、是否指向正确的对象仍由作者核对。
+
 退出码：`0` 没有失效链接；`1` 存在失效链接。
 
 ## 检查孤立文档
