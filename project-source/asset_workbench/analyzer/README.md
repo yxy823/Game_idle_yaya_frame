@@ -10,7 +10,7 @@ Analyzer 运行在一个只装它锁定依赖的独立 Python 3.12 环境中，�
 
 1. 用户在终端建环境（需要联网）：`conda create --name yaya-analyzer python=3.12 --yes`。
 2. 用户运行 `conda env list`，找到 `yaya-analyzer` 的目录；解释器是其中的 `python.exe`，例如 `C:/Users/<用户名>/anaconda3/envs/yaya-analyzer/python.exe`。
-3. 用户在项目根目录安装锁定依赖（需要联网）：
+3. 用户把锁定依赖装进这个环境（需要联网）。依赖装在环境里，不在项目中；在项目根目录执行只是为了用相对路径找到锁定文件，在别处执行时把它换成锁定文件的绝对路径：
 
    ```powershell
    & '<解释器路径>' -m pip install --only-binary=:all: -r 'yaya/asset_workbench/analyzer/requirements.txt'
