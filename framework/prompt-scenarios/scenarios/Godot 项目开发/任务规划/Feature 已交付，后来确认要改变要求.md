@@ -15,7 +15,7 @@
 
 ## 前置条件与适用范围
 
-受影响 Feature 已交付，相关 GDD、专业规格或 Product 交付范围已按确认决定改好并提交；本次只同步计划，不实现新行为。
+受影响 Feature 已交付，相关 GDD、专业规格或 Product 交付范围已按确认决定改好并提交；本次只同步计划，不实现新行为。同一来源变化还影响其他状态的 Feature 时，在同一次同步中按 feature-sync 对各状态的动作一并处理，不分批推进锚点。
 
 ## 执行步骤
 
@@ -31,7 +31,7 @@
 
 **S3｜追加独立任务**
 
-按[修订](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#修订>)中 `done` 一行追加依赖原 ID 的新 Feature，在 AC 中写明新行为；按[下游回归](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#下游回归>)把消费者回归分配给它。原 Feature 的索引、详情和完成记录不改。
+按[修订](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#修订>)中 `done` 一行追加依赖原 ID 的新 Feature，在 AC 中写明新行为；按[下游回归](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#下游回归>)把消费者回归分配给它。原 Feature 的 AC、描述和完成记录不改；确认删除原要求时，按[删除](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#删除>)把它设为 `obsolete_done` 并追加删除原因。
 
 **S4｜记录、检查并提交**
 
@@ -52,13 +52,13 @@ $LASTEXITCODE
 | --- | --- |
 | S1 | 影响报告：锚点、实质变化、受影响 ID 与状态、测试影响 |
 | S2 | 未批准动作已有用户决定 |
-| S3 | 新 Feature ID、依赖、AC 和回归安排已写入；原 Feature 记录无差异 |
+| S3 | 新 Feature ID、依赖、AC 和回归安排已写入；原 Feature 的 AC、描述和完成记录无差异 |
 | S4 | `FEATURE LIST CHECK: PASS` 和计划提交哈希 |
 
 ## 资源与文件影响
 
 - 修改：追加新 Feature 的索引条目与详情、必要的测试登记，以及本次修订记录。
-- 读取与保留：GDD、Product 交付范围与专业来源只读；原 Feature 的索引、详情和完成记录不改。
+- 读取与保留：GDD、Product 交付范围与专业来源只读；原 Feature 的 AC、描述和完成记录不改，删除、拆分或合并时只改状态并追加笔记。
 
 ## 阻塞、异常与范围变化
 
