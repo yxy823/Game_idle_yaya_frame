@@ -36,7 +36,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 | `docs/feature-list-revisions.json` | 已有的修订历史和锚点；按数据结构确定符合条件的首个基线 |
 | `docs/test-registry.json` | 提出新增之前已有的组件和测试记录 |
 
-已有的 Feature 记录无论为空还是已有内容，都可以接收当前 Product 的第一份计划。已经规划过的范围直接复用，它的变化交给 [feature-sync](../feature-sync/SKILL.md)。不要替换早先的计划。按权威数据结构，索引、修订记录和测试登记表都必须是创建器提供的文件；缺少任何一个，都要先按 `yaya/methodology/02-feature-list-schema.md` 规定的初始内容恢复，再规划；02 没有给出初始内容的文件，报告缺失，不自行编造。报告缺失的当前 Product 来源或此前已写成文档的 Product 来源；未来的大纲本来就没有文件，不算不一致。
+已有的 Feature 记录无论为空还是已有内容，都可以接收当前 Product 的第一份计划。已经规划过的范围直接复用，它的变化交给 [feature-sync](../feature-sync/SKILL.md)。不要替换早先的计划。按权威数据结构，索引、修订记录和测试登记表都必须是创建器提供的文件；缺少任何一个，先按 `yaya/methodology/02-feature-list-schema.md` 的 **文件结构** 恢复，再规划：优先从 Git 恢复，不用初始内容覆盖已有的历史；无法恢复时报告缺失，不自行编造。报告缺失的当前 Product 来源或此前已写成文档的 Product 来源；未来的大纲本来就没有文件，不算不一致。
 
 ## 规划与写入
 

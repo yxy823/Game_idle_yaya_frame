@@ -31,7 +31,7 @@
 
 | 当前状态 | 已确认的动作 |
 |---|---|
-| `pending` | 在执行之前，更新详情中的 `description`、`affected_components` 以及验收条件的文本或 ID；保留仍然有效的已规划验证映射；明确退役被取代的已规划测试登记表条目；追加一条按文档语言书写、带时间戳的修订笔记；只有受影响时才修改索引的 `title` |
+| `pending` | 在执行之前，更新详情中的 `description`、`affected_components` 以及验收条件的文本或 ID；保留仍然有效的已规划验证映射；明确退役被取代的已规划测试登记表条目，被撤回且没有替代的条件按 methodology 02 删除其 `planned` 条目；追加一条按文档语言书写、带时间戳的修订笔记；只有受影响时才修改索引的 `title` |
 | `blocked` | 执行 `pending` 的动作，然后按 [状态流转](../../../../yaya/methodology/02-feature-list-schema.md#状态流转) 重新检查已记录的阻塞原因；阻塞仍在时保持 `blocked`，否则恢复为 `pending`，并在 `notes` 中写明已解决的前提和原因 |
 | `in_progress` | 执行 `pending` 的动作，并警告当前实现可能需要调整 |
 | `done` | 不修改原来的索引条目或详情。追加一个新 Feature，按新规则修订实现；它依赖原来的 ID，并在验收条件中写明新行为 |

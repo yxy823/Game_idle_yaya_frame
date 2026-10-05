@@ -33,7 +33,7 @@ description: >-
 
 ## 阶段 0：预检和锚点
 
-1. 读取索引、修订记录和测试登记表。缺少任何文件时，先按 `yaya/methodology/02-feature-list-schema.md` 规定的初始内容恢复，再路由或写入；02 没有给出初始内容的文件，报告缺失，不自行编造。如果索引有效但没有 Feature，通过 [product-author](../product-author/SKILL.md) 和已获授权的 [feature-plan](../feature-plan/SKILL.md) 回到当前 Product 的准备工作。
+1. 读取索引、修订记录和测试登记表。缺少任何文件时，先按 `yaya/methodology/02-feature-list-schema.md` 的 **文件结构** 恢复，再路由或写入：优先从 Git 恢复，不用初始内容覆盖已有的历史；无法恢复时报告缺失，不自行编造。如果索引有效但没有 Feature，通过 [product-author](../product-author/SKILL.md) 和已获授权的 [feature-plan](../feature-plan/SKILL.md) 回到当前 Product 的准备工作。
 2. 检查 Git。报告当前分支（`main` 和 `master` 都有效），不要切换分支。查看 `git status --porcelain` 和相关差异；保留无关的工作，在依赖它的写入之前，先解决与计划实际重叠的编辑。
 3. **来源先提交规则：** 本次同步用到的每个来源文档，包括阶段 3 中获批的修复，都必须在任何依赖它的计划写入之前，单独、更早地提交。这样差异和下一个锚点才能对应一个实际已提交的状态。
    - 报告未提交的相关来源，并把它交回其负责方；无关的未提交路径不构成阻塞。
