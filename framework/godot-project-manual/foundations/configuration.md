@@ -13,8 +13,9 @@
 | `document_language` | `zh-CN` | 持久项目知识默认使用中文，无需再次确认；与当前聊天语言独立 |
 | `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `python_executable` | `python` | 初始命令名；准备环境时改为已确认的 Python 3.12+ 解释器 |
+| `analyzer_python_executable` | 不预填 | 可选；资源 Analyzer 专用环境的解释器，要用 Analyzer 时才填写 |
 
-配置文件只保存文档语言和两个工具路径。其他信息都有固定位置，不写进配置：
+配置文件只保存文档语言和工具路径。其他信息都有固定位置，不写进配置：
 
 - **技术栈**：固定为 Godot 4.7、GDScript 和 gdUnit4，不在配置中另存标签；实际安装的版本以检查输出和初始化报告为准。
 - **测试入口**：固定为 `yaya/tools/testing/run-gdunit-tests.py`，运行时再指定 Feature 和 scope。
@@ -47,10 +48,10 @@ $projectPython = $projectConfig.python_executable
 $LASTEXITCODE
 ```
 
-两个路径字段接受的写法不同：
+路径字段接受的写法不同：
 
 - **`engine_executable`**：必须指向实际文件，可以是绝对路径或相对项目根目录的路径；不会到 PATH 中查找同名程序。环境检查和测试运行器用同一种方式解析。
-- **`python_executable`**：可以是完整路径、相对项目根目录的路径，或 PATH 中的命令名。
+- **`python_executable`**、**`analyzer_python_executable`**：可以是完整路径、相对项目根目录的路径，或 PATH 中的命令名。
 
 测试运行器默认使用配置中的 Godot 路径，临时换用其他版本时传入 `--godot-binary <路径>`，示例见[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。
 

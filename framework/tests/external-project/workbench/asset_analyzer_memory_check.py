@@ -13,7 +13,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from project_context import PROJECT_ROOT
 
-sys.path.insert(0, str(PROJECT_ROOT / "reports/asset-analyzer/runtime"))
 import numpy as np
 from PIL import Image
 

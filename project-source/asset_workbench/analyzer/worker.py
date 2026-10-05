@@ -1,7 +1,8 @@
 """One owned background process per request; stdout is exactly one JSON result.
 
-Install pinned wheels into reports/asset-analyzer/runtime. This is a development
-tool, not an exported game dependency. It starts no child processes.
+Runs in the dedicated Analyzer Python environment configured as analyzer_python_executable,
+with the pinned wheels installed. This is a development tool, not an exported game
+dependency. It starts no child processes.
 """
 
 import argparse
@@ -35,19 +36,18 @@ def parameters(given):
     return params
 
 
-def backends(runtime, asset_type):
-    if not runtime.is_dir():
-        raise ImportError("Install yaya/asset_workbench/analyzer/requirements.txt into " + str(runtime))
-    sys.path.insert(0, str(runtime))
+def backends(asset_type):
     pins = dict(line.split("==") for line in Path(__file__).with_name("requirements.txt").read_text().splitlines())
     packages = ("av", "numpy", "pyloudnorm", "scipy") if asset_type == "audio" else ("Pillow", "numpy")
-    installed = {d.metadata["Name"].lower(): d.version
-                 for d in importlib.metadata.distributions(path=[str(runtime)])}
     versions = {}
     for package in packages:
-        actual = installed.get(package.lower())
+        try:
+            actual = importlib.metadata.version(package)
+        except importlib.metadata.PackageNotFoundError:
+            actual = None
         if actual != pins[package]:
-            raise ImportError(f"Expected {package}=={pins[package]}, found {actual}")
+            raise ImportError(f"Expected {package}=={pins[package]} in the Analyzer environment "
+                              f"{sys.executable}, found {actual}")
         versions[package] = actual
     if asset_type == "audio":
         import av
@@ -65,7 +65,7 @@ def analyze(request, project, temporary):
     kind = request["asset_type"]
     check_source(path, kind)
     params = parameters(request.get("parameters", {}))
-    backend = backends(project / "reports/asset-analyzer/runtime", kind)
+    backend = backends(kind)
     content = digest(path)
     identity = {"path": str(path), "sha256": content, "parameters": params, "backend": backend,
                 "schema": SCHEMA_VERSION, "analyzer": kind, "version": ANALYZER_VERSION}

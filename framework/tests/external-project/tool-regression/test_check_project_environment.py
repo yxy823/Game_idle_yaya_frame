@@ -109,6 +109,19 @@ class ProjectEnvironmentTests(unittest.TestCase):
             self.assertEqual(check_project_environment._readiness_errors(
                 self._config(sys.executable), self.repo_root), [])
 
+    def test_optional_analyzer_python_is_checked_only_when_configured(self) -> None:
+        config = self._config(sys.executable)
+        config["analyzer_python_executable"] = ""
+        self.assertTrue(check_project_environment._schema_errors(config, self.repo_root))
+        config["analyzer_python_executable"] = "missing/analyzer-python.exe"
+        self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
+        with mock.patch.object(check_project_environment, "_read_engine_version",
+                               return_value=("4.7.1.stable", None)):
+            errors = check_project_environment._readiness_errors(config, self.repo_root)
+            self.assertTrue(any("Analyzer Python executable is unavailable" in error for error in errors))
+            config["analyzer_python_executable"] = sys.executable
+            self.assertEqual(check_project_environment._readiness_errors(config, self.repo_root), [])
+
     def test_readiness_uses_observed_engine_version(self) -> None:
         config = self._config(sys.executable)
         completed = subprocess.CompletedProcess(

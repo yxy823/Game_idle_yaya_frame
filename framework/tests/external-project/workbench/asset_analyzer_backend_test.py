@@ -20,7 +20,6 @@ from project_context import PROJECT_ROOT
 
 TOOLS = PROJECT_ROOT / "yaya/asset_workbench/analyzer"
 sys.path.insert(0, str(TOOLS))
-sys.path.insert(0, str(PROJECT_ROOT / "reports/asset-analyzer/runtime"))
 
 import jsonschema
 from PIL import Image
@@ -173,13 +172,20 @@ class AnalyzerTests(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
 
     def test_missing_dependencies(self):
-        with self.assertRaises(ImportError):
-            worker.backends(self.root / "missing", "audio")
+        missing = worker.importlib.metadata.PackageNotFoundError
+        with patch.object(worker.importlib.metadata, "version", side_effect=missing("av")):
+            with self.assertRaises(ImportError):
+                worker.backends("audio")
+        # 环境里的版本与锁定文件不一致时，worker 报 dependency_missing，不用其他版本分析。
         isolated = self.root / "yaya/asset_workbench/analyzer"
         isolated.mkdir(parents=True)
         for source in TOOLS.iterdir():
             if source.suffix in {".py", ".json", ".txt"}:
                 shutil.copyfile(source, isolated / source.name)
+        pins = (isolated / "requirements.txt").read_text(encoding="utf-8").splitlines()
+        (isolated / "requirements.txt").write_text(
+            "\n".join("numpy==0.0.0" if line.startswith("numpy==") else line for line in pins) + "\n",
+            encoding="utf-8")
         self.request.write_text(json.dumps({"path": str(self.audio()), "asset_type": "audio"}),
                                 encoding="utf-8")
         process = subprocess.run([sys.executable, "-B", str(isolated / "worker.py"),

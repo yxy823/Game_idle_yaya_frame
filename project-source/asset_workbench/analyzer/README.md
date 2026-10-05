@@ -4,19 +4,24 @@ Analyzer 在开发期离线分析图像与音频的源文件。Godot 导入后�
 
 ## 准备与使用
 
-使用项目 `docs/methodology-config.json` 中的 `python_executable`。已在 Windows 11 x64、Python 3.12 与 Godot 4.7.1 上验证；项目环境检查接受 Godot 4.7.x，其他 Python 或 Godot 版本需另行验证。依赖只在需要分析的项目中安装，创建项目时不会自动安装。
+Analyzer 运行在一个只装它锁定依赖的独立 Python 3.12 环境中，项目 `docs/methodology-config.json` 的 `analyzer_python_executable` 指向这个环境的解释器。同一台电脑上的项目共用这个环境，只需安装一次；它与 `python_executable` 分开，锁定的版本不会影响项目其他工具。已在 Windows 11 x64、Python 3.12 与 Godot 4.7.1 上验证。创建项目时不会自动配置。
 
-在项目根目录执行：
+第一次在这台电脑上使用时：
 
-```powershell
-$config = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
-& $config.python_executable -B -m pip install --only-binary=:all: --target 'reports/asset-analyzer/runtime' -r 'yaya/asset_workbench/analyzer/requirements.txt'
-$LASTEXITCODE
-```
+1. 用户在终端建环境（需要联网）：`conda create --name yaya-analyzer python=3.12 --yes`。
+2. 用户运行 `conda env list`，找到 `yaya-analyzer` 的目录；解释器是其中的 `python.exe`，例如 `C:/Users/<用户名>/anaconda3/envs/yaya-analyzer/python.exe`。
+3. 用户在项目根目录安装锁定依赖（需要联网）：
 
-- 安装到新目录时使用锁定的 Windows wheel，不需要 WSL、FFmpeg CLI 或本地编译。
-- 这条命令不会升级已有的 Python 环境；分析运行时不联网。
-- 不要在已有依赖目录中混装版本。升级时关闭工作台，移走旧的 `runtime`，按新的锁定文件安装并回归。
+   ```powershell
+   & '<解释器路径>' -m pip install --only-binary=:all: -r 'yaya/asset_workbench/analyzer/requirements.txt'
+   $LASTEXITCODE
+   ```
+
+4. Agent 或用户在每个要用 Analyzer 的项目的配置中写入 `"analyzer_python_executable": "<解释器路径>"`。之后的项目只做这一步。
+
+- 只安装 Windows wheel，不需要 WSL、FFmpeg CLI 或本地编译；分析运行时不联网。
+- 这个环境里只装锁定文件中的包。锁定文件变了（例如框架更新了版本），关闭工作台，在同一环境中按新文件重新执行第 3 步，再回归使用它的项目；各项目锁定的版本不同时，为它们分别建环境。
+- 没有配置、依赖缺失或版本与锁定文件不一致时，分析结果分别为 `process_missing` 或 `dependency_missing`，预览、试听和保存不受影响。
 
 单项分析的操作：
 
@@ -93,9 +98,8 @@ $LASTEXITCODE
 
 ## 缓存与运行目录
 
-`reports/asset-analyzer/` 已被项目忽略，Godot 不导入其中的 wheel 和缓存：
+`reports/asset-analyzer/` 已被项目忽略，Godot 不导入其中的缓存：
 
-- `runtime/`：可重新安装的本项目依赖，不随项目复制，也不进入正式游戏导出。
 - `cache/<key>.json`：可检查、可删除。键包含规范路径、源内容 SHA-256、参数、Analyzer 类型与版本、全部后端版本和 Schema 版本。读取时先按共同 Schema 校验，再比对 asset、analyzer、parameters 与本次完整身份。缺字段、类型错误、语义不一致或超过 2 MiB 的缓存会被忽略并重算，成功后原子替换；失败或部分失败的结果不缓存。
 - `jobs/`：请求与写缓存的短期文件。完成、取消、超时和工作台退出时都清理自己的文件；worker 检测父进程退出，避免引擎异常退出后留下计算进程。
 - `history/`：用户显式保存的批量分析快照。不会自动淘汰，也不代表资源当前仍是相同内容；需要长期版本管理时由项目选择归档位置。

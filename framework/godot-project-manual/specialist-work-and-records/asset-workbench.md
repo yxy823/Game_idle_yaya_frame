@@ -53,7 +53,7 @@ flowchart LR
 
 ## 分析图像与音频源文件
 
-**前置**：按 [Analyzer 说明](../../../project-source/asset_workbench/analyzer/README.md) 准备依赖和项目 `python_executable`。创建器不安装依赖。缺少分析依赖不妨碍预览和播放。
+**前置**：按 [Analyzer 说明](../../../project-source/asset_workbench/analyzer/README.md) 准备本机共用的 Analyzer 环境，并在项目配置中填写 `analyzer_python_executable`。创建器不安装依赖。缺少分析依赖不妨碍预览和播放。
 
 1. 选择候选，点击“分析候选源文件”；在独立窗口中使用“分析对比 A/B”。
 2. 先核对两侧文件名、类型和状态，再查看问题摘要、指标及图表。更换候选不会给旧结果换名。
@@ -163,7 +163,7 @@ flowchart LR
 | 内容 | 位置与边界 |
 | --- | --- |
 | 可复用工作台、表现组件和薄播放封装 | `yaya/asset_workbench/ui/`、`components/feedback/`（组件契约见其 [README](../../../project-source/components/feedback/README.md)）；通过复制成为项目自己的文件 |
-| 分析源代码与项目本地开发依赖 | `yaya/asset_workbench/analyzer/` 随框架复制；实际项目安装的 `reports/asset-analyzer/runtime/`、缓存和运行证据不进入框架 |
+| 分析源代码与开发依赖 | `yaya/asset_workbench/analyzer/` 随框架复制；依赖装在本机共用的 Analyzer 环境中；项目的分析缓存和运行证据不进入框架 |
 | 可操作示例与许可 | `yaya/asset_workbench/examples/`；可替换或按引用检查后移除，不预设游戏需求 |
 | 音频第三方代码 | `addons/sound_manager/`；固定提交和 MIT 许可，默认不启用全局插件 |
 | 框架回归用例和维护报告 | 只在 `framework/`；运行时按范围放入指定外部测试项目 |

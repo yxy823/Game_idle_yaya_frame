@@ -4,12 +4,13 @@
 
 ## 工具配置
 
-`docs/methodology-config.json` 保存两项供项目工具使用的机器设置：
+`docs/methodology-config.json` 保存供项目工具使用的机器设置：
 
 | 字段 | 取值 |
 | --- | --- |
 | `python_executable` | 运行项目工具所用的 Python 可执行文件路径或命令名。不含脚本路径和参数。 |
 | `engine_executable` | Godot 可执行文件的完整路径，可以是绝对路径，也可以相对项目根目录。不含 shell 引号和参数；不会在 `PATH` 中查找。 |
+| `analyzer_python_executable` | 可选。资源 Analyzer 专用 Python 环境的解释器，写法同 `python_executable`。只在项目要用 Analyzer 时填写，安装方法见 `yaya/asset_workbench/analyzer/README.md`。 |
 
 这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 

@@ -109,6 +109,8 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
 
     if not isinstance(config.get("engine_executable"), str):
         errors.append("engine_executable must be a string")
+    if "analyzer_python_executable" in config and not _nonempty_string(config["analyzer_python_executable"]):
+        errors.append("analyzer_python_executable, when present, must be a non-empty executable path or name")
     return errors
 
 
@@ -144,6 +146,11 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
 
     if not (repo_root / "yaya/tools/testing/run-gdunit-tests.py").is_file():
         errors.append("test runner is missing: yaya/tools/testing/run-gdunit-tests.py")
+
+    # Analyzer 是可选工具：只在配置了专用环境时核对它存在，不核对其中的依赖版本。
+    analyzer = config.get("analyzer_python_executable")
+    if _nonempty_string(analyzer) and not _executable_exists(analyzer, repo_root):
+        errors.append(f"Analyzer Python executable is unavailable: {analyzer!r}")
 
     return errors
 

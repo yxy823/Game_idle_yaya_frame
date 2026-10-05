@@ -26,7 +26,7 @@ func _ready() -> void:
 		var config: Variant = JSON.parse_string(
 			FileAccess.get_file_as_string("res://docs/methodology-config.json"))
 		if config is Dictionary:
-			executable = str(config.get("python_executable", ""))
+			executable = str(config.get("analyzer_python_executable", ""))
 
 
 func submit(path: String, kind: String, parameters: Dictionary = {}, force: bool = false) -> int:
@@ -100,7 +100,7 @@ func _start_next() -> void:
 	elif command.is_empty() or (
 			command.is_absolute_path() and not FileAccess.file_exists(command)):
 		job.fail("process_missing",
-			"Set an available Python path or command in docs/methodology-config.json")
+			"Set analyzer_python_executable in docs/methodology-config.json to the Analyzer environment's Python")
 	elif not FileAccess.file_exists(worker_path):
 		job.fail("worker_missing", "Analyzer worker file is missing")
 	elif DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path(JOB_DIRECTORY)) != OK:

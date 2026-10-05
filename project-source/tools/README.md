@@ -14,7 +14,7 @@ yaya/tools/
 | 入口 | 用途 |
 | --- | --- |
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
-| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
+| [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps` |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
@@ -143,7 +143,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--config <文件>` | 要检查的配置文件；项目根目录取该文件的上两级 | `docs/methodology-config.json` |
-| `--require-ready` | 额外核对工具文件、固定测试入口和实际 Godot 版本 | 只检查配置结构 |
+| `--require-ready` | 额外核对工具文件（含已配置的 `analyzer_python_executable`，不核对其中的依赖版本）、固定测试入口和实际 Godot 版本 | 只检查配置结构 |
 
 退出码：`0` 配置有效（带 `--require-ready` 时表示已就绪）；`2` 配置无效、未就绪或参数错误。
 
