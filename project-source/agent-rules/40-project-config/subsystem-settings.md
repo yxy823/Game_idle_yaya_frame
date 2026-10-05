@@ -28,6 +28,7 @@
 
 ## 视口、窗口与拉伸
 
+- **显示基线由项目决定**：基础视口尺寸、拉伸模式与宽高比处理、渲染器合称显示基线，按 GDD 的目标平台、输入方式和美术风格选择，在第一个有画面的原型或 Feature 开工前确定。新项目的默认值（1600×900、`canvas_items`、`expand`，渲染器未设置即 Forward+）只是起点，不代表已经决定。决定写进 `docs/architecture.md` 的“独立技术决定”；渲染器的选择满足 ADR 条件时写成 ADR（见 `yaya/methodology/10-architecture-overview.md`）。常见取舍：界面多、要适配多种窗口的游戏用 `canvas_items` + `expand`；像素风用 `viewport` 加整数缩放；只面向 PC 的 2D 游戏、或要导出网页时，优先考虑 Compatibility 渲染器，需要 Forward+ 专有效果时再换。
 - 基础视口尺寸（`display/window/size/viewport_width`、`viewport_height`）与初始窗口尺寸是不同的设置。
 - 明确设置拉伸模式和宽高比处理，并同时检查世界相机和 UI。
 - 像素完美输出由视口、拉伸、导入、采样和布局共同决定。变换的像素吸附、顶点的像素吸附和 UI 的像素吸附是三个独立的设置。

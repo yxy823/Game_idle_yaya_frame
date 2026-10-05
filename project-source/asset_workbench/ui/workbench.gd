@@ -34,9 +34,13 @@ var _analysis: AnalysisPanel
 var _batch: BatchPanel
 var _target: Label
 var _ui: Layout
+var _game_scale_mode: Window.ContentScaleMode
 
 
 func _ready() -> void:
+	# The narrow-window layout needs real window pixels, not the game's stretched canvas.
+	_game_scale_mode = get_window().content_scale_mode
+	get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 	# UI nodes gain their parents below; cold scene instances must not create detached trees.
 	_browser = Browser.new()
 	_controls = Controls.new()
@@ -77,6 +81,7 @@ func _refresh_source_status() -> void:
 
 func _exit_tree() -> void:
 	stop_all()
+	get_window().content_scale_mode = _game_scale_mode
 
 
 func stop_all() -> void:
