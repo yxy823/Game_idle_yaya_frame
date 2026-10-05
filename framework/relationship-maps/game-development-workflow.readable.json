@@ -5294,6 +5294,48 @@
         "shadow": false,
         "wrap": true
       }
+    },
+    {
+      "id": "scene-128",
+      "shape": "rounded-rect",
+      "x": 720,
+      "y": 1290,
+      "width": 184,
+      "height": 61,
+      "label": "GDD 或方案草稿已写好，\n先检查缺口和冲突",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/需求设计/GDD 或方案草稿已写好，先检查缺口和冲突.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
     }
   ],
   "edges": [
@@ -16440,6 +16482,103 @@
         "targetMarkerSize": 14,
         "labelPosition": 0.5,
         "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-115-scene-128",
+      "source": {
+        "node": "scene-115",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-128",
+        "port": "left"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 473.5,
+          "y": 1320.5
+        }
+      ],
+      "label": "草稿需要先检查",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-116-scene-128",
+      "source": {
+        "node": "scene-116",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-128",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "草稿需要先检查",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 20.5,
         "labelPadding": 2,
         "rounded": true,
         "radius": 6,
