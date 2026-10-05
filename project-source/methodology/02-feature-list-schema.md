@@ -201,6 +201,7 @@ Stage 1 在填写验证列表之前决定 `verification.acceptance_mode`。依�
 GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找与映射来源](11-specialist-workflows.md#查找与映射来源)：
 
 - 来自 Product 的 Feature 用其当前的 Product 交付章节作为 `source`，并在 AC 或设计稿中链接所依据的 GDD 设计。
+- `source` 和 `source_path_updates` 中的路径都相对 `docs/`，例如 `product/04-building.md#wooden-wall`；修订记录 `migrations[].source.path` 相对仓库根目录；Markdown 链接相对所在文档。
 - 次要来源从 AC 或设计稿中链接。不要为它们新增 JSON 字段，也不要在 `source` 里放多个路径。
 - 校验器只检查 `source` 是非空文本。由负责规划的 Agent 核实来源存在、有权威性并覆盖该 Feature。
 - 有约束力的需求永远不能只写在 `notes` 里；`notes` 只保存过程信息。
