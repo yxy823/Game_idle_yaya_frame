@@ -164,17 +164,22 @@ python -B yaya/tools/checks/check-markdown-links.py
 
 ### resave_godot_files.gd
 
-Agent 用文本方式修改了 `project.godot`、`.tscn` 或 `.tres` 后，让 Godot 按自己的格式重新保存一次。这样文件与编辑器保存的格式一致，之后用户在编辑器里保存时，差异只反映真正的设置变化。
+Agent 以文本方式新建或修改 `project.godot`、`.tscn` 或 `.tres` 后，调用本工具重新保存。工具在编辑器模式下补齐场景和资源的文件头与外部引用 UID，移除 `load_steps`；重复重存保持稳定。
 
 ```powershell
-& $projectGodot --headless --path . --script res://yaya/tools/godot/resave_godot_files.gd -- project.godot res://main/main.tscn | Out-Host
+& $projectGodot --headless --editor --path . --script res://yaya/tools/godot/resave_godot_files.gd -- project.godot res://main/main.tscn | Out-Host
 $LASTEXITCODE
 ```
 
 - `--` 之后列出要重新保存的文件：`project.godot`，或 `res://` 下的 `.tscn`、`.tres`。
+- 新建的依赖场景或资源也要一起传入，已有但尚无 UID 的依赖同样需要列出。工具只重存传入文件，不自动扩展依赖列表。
+- 工具等待编辑器扫描和导入完成，再重存场景和资源；随后主动重扫并重存第二轮，补齐同批资源之间的引用 UID。调用方不需要另跑两轮命令。
 - `project.godot` 重新保存时，等于引擎默认值的设置会被删除；依赖默认值时按[项目设置规则](../agent-rules/40-project-config/authoring-and-scope.md#编写)在测试中断言生效值。
+- `project.godot` 只在首轮保存，不参与资源的第二轮重存。
 - 场景和资源保存回原路径，已有的资源 ID 保留；文字里的 `\n` 转义会改写成真实换行，只发生一次。
-- 退出码：`0` 全部保存成功；`1` 有文件无法加载或保存，原因见 `ERROR` 输出；`2` 没有传入文件。
+- 真正在编辑器中编辑并保存场景，还可能生成节点 `unique_id` 或省略默认属性；本工具不承诺这次编辑器保存后没有文本差异。
+- 退出码：`0` 全部保存成功；`1` 路径不支持或有文件无法加载、保存，原因见 `ERROR` 输出；`2` 未在编辑器模式运行或没有传入文件。
+- 编辑器模式退出时可能打印 RID 或 ObjectDB 泄漏信息，这是引擎退出时的输出，不代表保存失败；以退出码和上面的 `ERROR` 为准。
 - 编辑器开着时，用户切回编辑器窗口，Godot 会弹出“文件已在 Godot 外部被修改”，列出 `project.godot`。选“从磁盘重新加载”即可读到这次修改；选“忽略外部修改”后再在编辑器里保存，会覆盖这次修改。所以修改了 `project.godot` 时，在交付中提醒用户看到这个提示时选“从磁盘重新加载”。
 
 ### 静态检查与资源导入

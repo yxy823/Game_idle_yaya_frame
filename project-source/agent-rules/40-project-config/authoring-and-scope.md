@@ -9,7 +9,7 @@
 - 注意：自定义设置既不在 `project.godot` 中、也没有用 `ProjectSettings.set_setting()` 设置时，`get_setting()` 返回 `null` 或调用方给的默认值。
 - 项目正确性依赖某个引擎默认值时，在测试或启动检查中断言它的生效值。不靠把默认值写进 `project.godot` 来固定它：Godot 保存时会删除等于默认值的设置。
 - 建议：结构性的修改通过编辑器或 ProjectSettings API 完成。手工文本补丁只用于小而确定的修改。
-- 手工修改 `project.godot` 后，用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 让 Godot 按自己的格式重新保存一次。
+- 以文本方式新建或修改 `project.godot` 后，用 [`resave_godot_files.gd`](../../tools/README.md#resave_godot_filesgd) 让 Godot 按自己的格式重新保存。
 - 编辑器开着时，用户切回编辑器窗口会看到“文件已在 Godot 外部被修改”的提示。选“从磁盘重新加载”才会读到手工修改；选“忽略外部修改”后再保存，会覆盖它。修改了 `project.godot` 时，在交付中提醒用户看到这个提示时选“从磁盘重新加载”。
 
 ## 生效值与 Feature 覆盖
