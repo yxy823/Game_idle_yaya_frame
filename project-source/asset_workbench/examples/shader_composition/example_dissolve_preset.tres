@@ -1,10 +1,9 @@
-[gd_resource type="Resource" script_class="FeedbackShaderPreset" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="FeedbackShaderPreset" format=3 uid="uid://kspibimsktwu"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_shader_preset.gd" id="1"]
-[ext_resource type="Shader" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve.gdshader" id="2"]
+[ext_resource type="Script" uid="uid://ysgkt4yy650a" path="res://components/feedback/feedback_shader_preset.gd" id="1"]
+[ext_resource type="Shader" uid="uid://ccto3rhjg8sth" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve.gdshader" id="2"]
 
 [sub_resource type="Gradient" id="Gradient"]
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="Mask"]
 gradient = SubResource("Gradient")

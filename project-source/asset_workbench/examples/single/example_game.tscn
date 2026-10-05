@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://cmn2oekcugsi4"]
 
-[ext_resource type="Script" path="res://yaya/asset_workbench/examples/single/example_reward_game.gd" id="1_script"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/single/example_feedback.tres" id="2_cue"]
+[ext_resource type="Script" uid="uid://dpc2epiyr0vlc" path="res://yaya/asset_workbench/examples/single/example_reward_game.gd" id="1_script"]
+[ext_resource type="Resource" uid="uid://dberay2wjawan" path="res://yaya/asset_workbench/examples/single/example_feedback.tres" id="2_cue"]
 
 [node name="ExampleRewardGame" type="Control"]
 layout_mode = 3

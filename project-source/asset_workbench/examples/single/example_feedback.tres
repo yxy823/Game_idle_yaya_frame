@@ -1,16 +1,10 @@
-[gd_resource type="Resource" script_class="FeedbackCue" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="FeedbackCue" format=3 uid="uid://dberay2wjawan"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1_cue"]
-[ext_resource type="Texture2D" path="res://yaya/asset_workbench/examples/assets/example_trophy.png" id="2_texture"]
-[ext_resource type="AudioStream" path="res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg" id="3_sound"]
+[ext_resource type="Script" uid="uid://oe75o5rsynph" path="res://components/feedback/feedback_cue.gd" id="1_cue"]
+[ext_resource type="Texture2D" uid="uid://cpxf32agc1wob" path="res://yaya/asset_workbench/examples/assets/example_trophy.png" id="2_texture"]
+[ext_resource type="AudioStream" uid="uid://c3dbmp7epml1p" path="res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg" id="3_sound"]
 
 [resource]
 script = ExtResource("1_cue")
 texture = ExtResource("2_texture")
 sound = ExtResource("3_sound")
-icon_scale = 1.0
-animation_seconds = 0.5
-gain_db = -12.0
-pitch_scale = 1.0
-delay_seconds = 0.08
-bus = &"Master"

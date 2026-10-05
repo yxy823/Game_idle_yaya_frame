@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://budc5tp8fg2vo"]
 
-[ext_resource type="Texture2D" path="res://yaya/asset_workbench/examples/effects_composition/example_particle_spotlight.png" id="1_brsak"]
+[ext_resource type="Texture2D" uid="uid://bibqdd772dfnh" path="res://yaya/asset_workbench/examples/effects_composition/example_particle_spotlight.png" id="1_brsak"]
 
 [sub_resource type="Gradient" id="Gradient_3foej"]
 offsets = PackedFloat32Array(0.112977006, 0.27328235, 0.4278625)

@@ -3,6 +3,7 @@
 import importlib.util
 import json
 import os
+import re
 import subprocess
 import tempfile
 import tomllib
@@ -338,6 +339,35 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertFalse((output / "yaya/asset_workbench/examples/example_workbench.tscn").exists())
         single = (output / "yaya/asset_workbench/examples/single/example_workbench.tscn").read_text()
         self.assertNotIn("composition", single)
+
+    def test_distribution_resources_have_uids_and_scanned_addon_images_have_imports(self):
+        source = Path(__file__).resolve().parents[3] / "project-source"
+        uids = set()
+        for path in sorted(source.rglob("*")):
+            if path.suffix not in {".tscn", ".tres"} or path.relative_to(source).parts[0] == "addons":
+                continue
+            with self.subTest(resource=path.relative_to(source).as_posix()):
+                text = path.read_text(encoding="utf-8")
+                self.assertNotRegex(text, r"\bload_steps\s*=")
+                lines = text.splitlines()
+                uid = re.search(r'\buid="(uid://[a-z0-9]+)"', lines[0])
+                self.assertIsNotNone(uid)
+                self.assertNotIn(uid[1], uids)
+                uids.add(uid[1])
+                for line in lines:
+                    if line.startswith("[ext_resource "):
+                        self.assertRegex(line, r'\buid="uid://[a-z0-9]+"')
+        for directory, children, files in os.walk(source / "addons"):
+            if ".gdignore" in files:
+                children.clear()
+                continue
+            children[:] = [name for name in children if not name.startswith(".")]
+            for name in files:
+                path = Path(directory) / name
+                if path.suffix.lower() in {".png", ".svg", ".jpg", ".jpeg", ".webp", ".bmp",
+                                           ".tga", ".hdr", ".exr", ".dds", ".ktx"}:
+                    with self.subTest(image=path.relative_to(source).as_posix()):
+                        self.assertTrue(path.with_name(path.name + ".import").is_file())
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="FeedbackCue" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="FeedbackCue" format=3 uid="uid://857dlw0uksj2"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_stream_preset.tres" id="2"]
+[ext_resource type="Script" uid="uid://oe75o5rsynph" path="res://components/feedback/feedback_cue.gd" id="1"]
+[ext_resource type="Resource" uid="uid://calpvqfe05ais" path="res://yaya/asset_workbench/examples/effects_composition/example_stream_preset.tres" id="2"]
 
 [resource]
 script = ExtResource("1")

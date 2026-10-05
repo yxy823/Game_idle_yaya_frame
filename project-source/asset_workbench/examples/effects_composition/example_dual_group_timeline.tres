@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="FeedbackTimeline" load_steps=11 format=3]
+[gd_resource type="Resource" script_class="FeedbackTimeline" format=3 uid="uid://bie4n4s6us1ah"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_timeline.gd" id="1"]
-[ext_resource type="Script" path="res://components/feedback/feedback_timeline_clip.gd" id="2"]
+[ext_resource type="Script" uid="uid://7563y2se1fe5" path="res://components/feedback/feedback_timeline.gd" id="1"]
+[ext_resource type="Script" uid="uid://cyic3gn1ypdkg" path="res://components/feedback/feedback_timeline_clip.gd" id="2"]
 
 [sub_resource type="Resource" id="CoreA"]
 script = ExtResource("2")

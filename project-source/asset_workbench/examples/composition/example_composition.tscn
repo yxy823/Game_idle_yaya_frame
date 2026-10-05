@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://dbat2e6vce2ep"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
-[ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="2"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_trophy.tres" id="3_trophy"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_star.tres" id="4_star"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/composition/example_composition_bonus.tres" id="5_bonus"]
+[ext_resource type="Script" uid="uid://cgat1l35ly5xr" path="res://components/feedback/feedback_composition.gd" id="1"]
+[ext_resource type="Script" uid="uid://x86x6ynfa5dj" path="res://components/feedback/feedback_object.gd" id="2"]
+[ext_resource type="Resource" uid="uid://cppq0pw64hbhw" path="res://yaya/asset_workbench/examples/composition/example_composition_trophy.tres" id="3_trophy"]
+[ext_resource type="Resource" uid="uid://gno5d180bg5n" path="res://yaya/asset_workbench/examples/composition/example_composition_star.tres" id="4_star"]
+[ext_resource type="Resource" uid="uid://bncf0cperqj8h" path="res://yaya/asset_workbench/examples/composition/example_composition_bonus.tres" id="5_bonus"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)
@@ -15,10 +15,10 @@ border_width_bottom = 1
 border_color = Color(0.3, 0.3, 0.3, 1)
 
 [sub_resource type="Theme" id="Theme"]
-Label/colors/font_color = Color(0, 0, 0, 1)
-Button/styles/normal = SubResource("Style")
 Button/styles/hover = SubResource("Style")
+Button/styles/normal = SubResource("Style")
 Button/styles/pressed = SubResource("Style")
+Label/colors/font_color = Color(0, 0, 0, 1)
 
 [node name="ExampleRewardRoom" type="Control"]
 layout_mode = 3

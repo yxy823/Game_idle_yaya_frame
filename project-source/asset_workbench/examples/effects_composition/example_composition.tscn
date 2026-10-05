@@ -1,8 +1,8 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene format=3 uid="uid://cnksj4guotwe8"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_composition.gd" id="1"]
-[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/effects_composition/example_effect_cluster.tscn" id="2"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_dual_group_timeline.tres" id="3"]
+[ext_resource type="Script" uid="uid://cgat1l35ly5xr" path="res://components/feedback/feedback_composition.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://dkw0rvqcf35cq" path="res://yaya/asset_workbench/examples/effects_composition/example_effect_cluster.tscn" id="2"]
+[ext_resource type="Resource" uid="uid://bie4n4s6us1ah" path="res://yaya/asset_workbench/examples/effects_composition/example_dual_group_timeline.tres" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="Style"]
 bg_color = Color(0.95, 0.95, 0.95, 1)
@@ -13,10 +13,10 @@ border_width_bottom = 1
 border_color = Color(0.3, 0.3, 0.3, 1)
 
 [sub_resource type="Theme" id="Theme"]
-Label/colors/font_color = Color(0, 0, 0, 1)
-Button/styles/normal = SubResource("Style")
 Button/styles/hover = SubResource("Style")
+Button/styles/normal = SubResource("Style")
 Button/styles/pressed = SubResource("Style")
+Label/colors/font_color = Color(0, 0, 0, 1)
 
 [node name="ExampleEffectsRoom" type="Control"]
 layout_mode = 3

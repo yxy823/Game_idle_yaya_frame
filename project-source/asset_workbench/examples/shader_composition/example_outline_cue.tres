@@ -1,9 +1,9 @@
-[gd_resource type="Resource" script_class="FeedbackCue" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="FeedbackCue" format=3 uid="uid://bk4254mpjdbso"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_cue.gd" id="1"]
-[ext_resource type="Texture2D" path="res://yaya/asset_workbench/examples/assets/example_trophy.png" id="2"]
-[ext_resource type="AudioStream" path="res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg" id="3"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
+[ext_resource type="Script" uid="uid://oe75o5rsynph" path="res://components/feedback/feedback_cue.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cpxf32agc1wob" path="res://yaya/asset_workbench/examples/assets/example_trophy.png" id="2"]
+[ext_resource type="AudioStream" uid="uid://c3dbmp7epml1p" path="res://yaya/asset_workbench/examples/assets/example_confirmation_a.ogg" id="3"]
+[ext_resource type="Resource" uid="uid://dxas8054xjurv" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
 
 [resource]
 script = ExtResource("1")

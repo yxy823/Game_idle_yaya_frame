@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://bw3h7a8g6eb68"]
 
-[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/composition/example_composition.tscn" id="1"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_cue.tres" id="2_outline"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve_cue.tres" id="3_dissolve"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_noise_cue.tres" id="4_noise"]
+[ext_resource type="PackedScene" uid="uid://dbat2e6vce2ep" path="res://yaya/asset_workbench/examples/composition/example_composition.tscn" id="1"]
+[ext_resource type="Resource" uid="uid://bk4254mpjdbso" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_cue.tres" id="2_outline"]
+[ext_resource type="Resource" uid="uid://c1i6c5tm3y68k" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve_cue.tres" id="3_dissolve"]
+[ext_resource type="Resource" uid="uid://qtl3dpp4mwrd" path="res://yaya/asset_workbench/examples/shader_composition/example_noise_cue.tres" id="4_noise"]
 
 [node name="ExampleShaderRoom" instance=ExtResource("1")]
 

@@ -1,11 +1,11 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene format=3 uid="uid://ka6rmg31n2c0"]
 
-[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/composition/example_workbench.tscn" id="1"]
-[ext_resource type="Script" path="res://components/feedback/feedback_shader_preset.gd" id="2"]
-[ext_resource type="PackedScene" path="res://yaya/asset_workbench/examples/shader_composition/example_composition.tscn" id="3"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve_preset.tres" id="5"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/shader_composition/example_noise_preset.tres" id="6"]
+[ext_resource type="PackedScene" uid="uid://hlw1fytmkxy6" path="res://yaya/asset_workbench/examples/composition/example_workbench.tscn" id="1"]
+[ext_resource type="Script" uid="uid://ysgkt4yy650a" path="res://components/feedback/feedback_shader_preset.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://bw3h7a8g6eb68" path="res://yaya/asset_workbench/examples/shader_composition/example_composition.tscn" id="3"]
+[ext_resource type="Resource" uid="uid://dxas8054xjurv" path="res://yaya/asset_workbench/examples/shader_composition/example_outline_preset.tres" id="4"]
+[ext_resource type="Resource" uid="uid://kspibimsktwu" path="res://yaya/asset_workbench/examples/shader_composition/example_dissolve_preset.tres" id="5"]
+[ext_resource type="Resource" uid="uid://baonssmfm54pt" path="res://yaya/asset_workbench/examples/shader_composition/example_noise_preset.tres" id="6"]
 
 [node name="ExampleShaderWorkbench" instance=ExtResource("1")]
 cue_path = "res://yaya/asset_workbench/examples/shader_composition/example_outline_cue.tres"

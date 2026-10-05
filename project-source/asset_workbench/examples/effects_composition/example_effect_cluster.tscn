@@ -1,9 +1,9 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://dkw0rvqcf35cq"]
 
-[ext_resource type="Script" path="res://components/feedback/feedback_object.gd" id="1"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_core_cue.tres" id="2_core"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_local_cue.tres" id="3_local"]
-[ext_resource type="Resource" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_world_cue.tres" id="4_world"]
+[ext_resource type="Script" uid="uid://x86x6ynfa5dj" path="res://components/feedback/feedback_object.gd" id="1"]
+[ext_resource type="Resource" uid="uid://csr3gv76mbgf" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_core_cue.tres" id="2_core"]
+[ext_resource type="Resource" uid="uid://857dlw0uksj2" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_local_cue.tres" id="3_local"]
+[ext_resource type="Resource" uid="uid://cmd06fk3gej6m" path="res://yaya/asset_workbench/examples/effects_composition/example_cluster_world_cue.tres" id="4_world"]
 
 [node name="ExampleEffectCluster" type="Control"]
 custom_minimum_size = Vector2(340, 270)
