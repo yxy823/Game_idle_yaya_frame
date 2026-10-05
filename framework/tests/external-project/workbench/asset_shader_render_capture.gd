@@ -130,7 +130,7 @@ func _check_reachable(column: ScrollContainer, control: Control) -> void:
 	await process_frame
 	_check(column.get_global_rect().encloses(control.get_global_rect()),
 		"Shader duration must be reachable vertically.")
-	_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(control.get_global_rect()),
+	_check(root.get_visible_rect().encloses(control.get_global_rect()),
 		"Shader duration must be reachable horizontally.")
 
 

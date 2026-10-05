@@ -113,7 +113,7 @@ func _check_running_layout(workbench: Control, resolution: Vector2i) -> void:
 	for field: String in ["_scene_state", "_timeline_state"]:
 		var label: Label = panel.get(field)
 		_check(label.get_line_count() == 1, "Playback status wrapped into a vertical label.")
-		_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(label.get_global_rect()),
+		_check(root.get_visible_rect().encloses(label.get_global_rect()),
 			"Playback status escaped the viewport.")
 
 
@@ -233,7 +233,7 @@ func _button(owner_node: Node, caption: String) -> Button:
 		return null
 	var result := visible_buttons[0]
 	_check(not result.disabled, "Button is disabled: " + caption)
-	_check(Rect2(Vector2.ZERO, Vector2(root.size)).grow(1).encloses(result.get_global_rect()),
+	_check(root.get_visible_rect().grow(1).encloses(result.get_global_rect()),
 		"Button escaped viewport: " + caption)
 	result.grab_focus()
 	_check(root.gui_get_focus_owner() == result, "Button is not focusable: " + caption)

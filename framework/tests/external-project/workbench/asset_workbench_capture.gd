@@ -37,7 +37,7 @@ func _capture_entry(entry: String) -> void:
 	candidates.item_selected.emit(0)
 	workbench.presenter.trigger()
 	await create_timer(0.15).timeout
-	_check_fixed_actions(workbench, root.size)
+	_check_fixed_actions(workbench)
 	await _save_frame(entry + "-light.png")
 	workbench.stop_all()
 	workbench.call("_set_dark_theme", true)
@@ -74,13 +74,13 @@ func _check_compact_window(workbench: Control, resolution: Vector2i, entry: Stri
 	await process_frame
 	var layout: Control = workbench.get("_ui")
 	var parameters := workbench.find_child("ParameterColumn", true, false) as ScrollContainer
-	var viewport := Rect2(Vector2.ZERO, Vector2(resolution))
+	var viewport := root.get_visible_rect()
 	_check(root.size == resolution, "The requested client size was overridden.")
 	for index: int in 3:
 		layout.call("_show_region", index)
 		await process_frame
 		await process_frame
-		_check_fixed_actions(workbench, resolution)
+		_check_fixed_actions(workbench)
 		if index == 0:
 			var list: ItemList = workbench.get("_browser").get("_list")
 			_check(viewport.encloses(list.get_global_rect()), "Candidates escaped viewport")
@@ -89,7 +89,7 @@ func _check_compact_window(workbench: Control, resolution: Vector2i, entry: Stri
 			list.ensure_current_is_visible()
 			await process_frame
 			await process_frame
-			_check_fixed_actions(workbench, resolution)
+			_check_fixed_actions(workbench)
 			await _save_frame("%s-audio-%dx%d.png" % [entry, resolution.x, resolution.y])
 			list.select(0)
 			list.item_selected.emit(0)
@@ -98,7 +98,7 @@ func _check_compact_window(workbench: Control, resolution: Vector2i, entry: Stri
 		elif index == 2:
 			var shader: Control = workbench.get("_controls").get("_shader")
 			await _check_reachable(parameters, shader.get("_duration"))
-			_check_fixed_actions(workbench, resolution)
+			_check_fixed_actions(workbench)
 		var suffix := "%s-%dx%d-%d.png" % [entry, resolution.x, resolution.y, index]
 		await _save_frame(suffix)
 
@@ -151,8 +151,8 @@ func _check_reachable(column: ScrollContainer, control: Control) -> void:
 		"Control cannot be reached vertically: " + str(control.name))
 
 
-func _check_fixed_actions(workbench: Control, resolution: Vector2i) -> void:
-	var viewport := Rect2(Vector2.ZERO, Vector2(resolution)).grow(1)
+func _check_fixed_actions(workbench: Control) -> void:
+	var viewport := root.get_visible_rect().grow(1)
 	var body: Control = workbench.find_child("WorkbenchBody", true, false)
 	_check(viewport.encloses(body.get_global_rect()), "Workspace escaped viewport")
 	_check(viewport.encloses(workbench.get("_status").get_global_rect()), "Status escaped viewport")

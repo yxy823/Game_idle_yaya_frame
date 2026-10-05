@@ -191,7 +191,7 @@ func _check_buttons(workbench: Control) -> void:
 		var button := node as Button
 		if button.is_visible_in_tree() and button.text in counts:
 			counts[button.text] += 1
-			_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(button.get_global_rect()),
+			_check(root.get_visible_rect().encloses(button.get_global_rect()),
 				"Main action must remain visible: " + button.text)
 	_check(counts["停止全部"] == 1 and counts["保存当前方案"] == 1, "One visible stop and save")
 
@@ -201,7 +201,7 @@ func _check_reachable(column: ScrollContainer, control: Control) -> void:
 	await process_frame
 	_check(column.get_global_rect().encloses(control.get_global_rect()),
 		"Effect field must scroll into view")
-	_check(Rect2(Vector2.ZERO, Vector2(root.size)).encloses(control.get_global_rect()),
+	_check(root.get_visible_rect().encloses(control.get_global_rect()),
 		"Effect field must fit the viewport")
 
 
