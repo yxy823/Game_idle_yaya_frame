@@ -401,6 +401,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 2. 否则，检查当前 Product 的剩余范围，以及它的各个 Feature 的来源和状态。
    - 还有剩余工作时，用 [Stage 0 的选择步骤](#stage-0--选择-feature-并加载上下文)（包括其中对被阻塞工作的恢复检查），找出下一个可开始的 `pending` Feature，或实际的阻塞。
    - 只有当前 Product 所需的 Feature 都完成后，才重新查看当前 GDD 和下一个预拆分候选。用 `product-author` 编写它的交付文档，再用 `feature-plan` 拆分它，或复用它已有的计划。
+   - 当前 Product 所需的 Feature 都已完成、也没有剩余候选时，按 [`product.md` 标准章节](01-product-doc-structure.md#productmd-标准章节)更新“当前 Product”的标注。
    - 遵守第 5 步的授权边界。没有可开始的 Feature 不能证明 Product 已完成。
 3. 报告以下内容：
    - 完成的 Feature；
