@@ -11,7 +11,7 @@
 | 位置 | 写什么 | 不写什么 |
 | --- | --- | --- |
 | `docs/terminology.md` | 已确认的项目术语：标准名称、定义、关系与别名 | 详细数值和行为规则（写在 GDD） |
-| `docs/features/F0XX-design.md` | 该 Feature 的实施设计、局部技术决定与理由：职责、生命周期、接口、失败处理、实施顺序和验证理由 | AC 与验证义务（写在 Feature JSON） |
+| `docs/features/F0XX-design.md` | 该 Feature 的实施设计、局部技术决定与理由：职责、生命周期、接口、失败处理、实施顺序和验证理由 | AC、测试映射等结构化验证字段（写在 Feature JSON）；范围内额外的性能、时长、显示或试听检查可以写在这里 |
 | `docs/architecture.md` | 项目级的模块关系、装配与依赖，以及项目级的独立技术决定（与当前结构分开写） | 子系统内部细节 |
 | `docs/architecture/<subsystem>.md` | 子系统内部的结构、状态、接口与运行流程，以及该子系统的独立技术决定 | 项目级关系 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 符合 ADR 条件的跨 Feature、跨模块或项目级技术决定的理由 | Feature 内部的普通选择 |

@@ -2,7 +2,7 @@
 
 在 worktree 里进行已获授权的编辑器、导入、测试、游戏或其他写入操作之前，先读本页；整合结果时的验证也包括在内。复用仍然有效的观察，只检查这次操作会影响的数据和工具。纯只读的源码比较不需要运行 Godot。
 
-代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment-godot](../../project-environment-godot/SKILL.md) 负责，其依据是 `yaya/methodology/05-document-language.md` 和 `yaya/tools/README.md`。
+代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment-godot](../../project-environment-godot/SKILL.md) 负责，其依据是 `yaya/methodology/06-project-environment.md` 和 `yaya/tools/README.md`。
 
 ## 确认实际涉及的资源和副作用
 

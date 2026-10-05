@@ -124,7 +124,7 @@ GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[�
 | --- | --- | --- |
 | 初始化结果 | `reports/initialization.md` | 之后只追加新结果 |
 | gdUnit 运行原件 | `reports/gdunit-wrapper/<Feature-ID 或 focused>/run-<id>/` | 保留真实结果，包括失败 |
-| 人工清单与结果 | `reports/manual-acceptance/` | 原清单和用户结果分开保存 |
+| 人工验收清单 | `reports/manual-acceptance/` | 用户结论写回同一份清单的 `status` 和 `comment`，不另建结果文件，见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md) |
 | Feature 自定义结果 | `reports/features/<Feature-ID>/` | — |
 | 其他维护报告 | `reports/maintenance/<任务>/` | — |
 | 临时文档 | 项目根目录 `tmp/<任务>/` | 草稿、当次方案、交接副本与资料摘录，可按主题分层；不放进正式目录 |
