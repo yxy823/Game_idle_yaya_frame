@@ -192,4 +192,4 @@ Progress 保存真实的停点和必要的链接；不能从“下一步：实�
 
 不建立 Handoff 文件、`CONTEXT.md` 或平行的任务状态表。
 
-权威依据：[产物生命周期](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[记录、报告与交接](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
