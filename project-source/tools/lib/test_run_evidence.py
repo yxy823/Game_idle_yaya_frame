@@ -274,9 +274,20 @@ def run_history_directory(root: Path, feature_id: str | None) -> Path:
 def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[str]]:
     """Read usable run headers and report errors without discarding their paths."""
     records, errors = [], []
-    for path in run_history_directory(root, feature_id).glob("run-*/result.json"):
+    history = run_history_directory(root, feature_id)
+    # 不用 glob：它会静默跳过无法读取的子目录，漏掉的失败记录会让旧的通过被当作有效。
+    try:
+        candidates = sorted(child / "result.json" for child in history.iterdir()
+                            if child.name.startswith("run-")) if history.exists() else []
+    except OSError as error:
+        return [], [f"cannot list run history {history}: {error}"]
+    for path in candidates:
         try:
+            if not path.exists():
+                continue
             record = read_json(path)
+            if not isinstance(record, dict):
+                raise RunEvidenceError("run result must be a JSON object")
             if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
                 raise RunEvidenceError("unsupported run result schema")
             if record.get("run_id") != path.parent.name:
@@ -356,6 +367,8 @@ def result_reference(root: Path, path: Path) -> dict[str, str]:
 def _checked_cases(root: Path, directory: Path, result: dict) -> list[dict]:
     """Use raw reports once; result.json does not duplicate their case arrays."""
     process = result.get("process") or {}
+    if not isinstance(process, dict):
+        raise RunEvidenceError("run process record must be an object")
     if process.get("returncode") != 0 or process.get("timed_out") is not False:
         raise RunEvidenceError("test process failed or timed out")
     files = {}
@@ -400,8 +413,13 @@ def finish_run(root: Path, directory: Path, result: dict, *,
         paths.update(junit=reports[0], diagnostics=reports[0].parent / "diagnostics.jsonl")
     else:
         result["errors"].append(f"expected one current JUnit report, found {len(reports)}")
-    result["artifacts"] = {key: artifact_reference(directory, path)
-                           for key, path in paths.items() if path.is_file()}
+    result["artifacts"] = {}
+    for key, path in paths.items():
+        try:
+            if path.is_file():
+                result["artifacts"][key] = artifact_reference(directory, path)
+        except OSError as error:
+            result["errors"].append(f"cannot read run artifact {path.name}: {error}")
     try:
         if not result["errors"]:
             cases = _checked_cases(root, directory, result)

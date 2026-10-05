@@ -93,6 +93,8 @@ def _impact_options(value: Any) -> dict[str, Any]:
 def acceptance_mode(detail: dict[str, Any]) -> str:
     """Read the planned acceptance decision; check lists are its outputs, not its cause."""
     verification = detail.get("verification", {})
+    if not isinstance(verification, dict):
+        raise SelectionError("Feature verification must be an object")
     mode = verification.get("acceptance_mode")
     if mode not in {"automated", "manual"}:
         raise SelectionError("Feature verification.acceptance_mode must be decided as automated or manual")

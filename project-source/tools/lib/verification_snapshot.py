@@ -85,6 +85,8 @@ def semantic_json(relative_path: str, data: Any) -> Any:
             for feature in result.get("features", [])
         ]
     if relative_path in {"docs/feature-list.json", "docs/test-registry.json"}:
+        if not isinstance(data.get("meta", {}), dict):
+            raise EvidenceError(f"{relative_path} meta must be an object")
         result["meta"] = {key: value for key, value in data.get("meta", {}).items()
                           if key not in PROCESS_FIELDS and not key.endswith("_at")}
     if relative_path == "docs/feature-list-revisions.json":
