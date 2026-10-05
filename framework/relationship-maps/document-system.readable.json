@@ -1795,7 +1795,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录一个 Feature 的测试运行、适用人工验收及对应版本/内容快照；每个 Feature 一份，互不覆盖。\n项目位置：docs/features/F0XX-evidence.json；由现有记录工具在该 Feature 第一次记录时产生。\n引用测试运行原件与人工验收清单；不是所有 Feature 的第二份状态表。历史执行事实通过 notes、Progress 归档及原证据保留。\n\n项目文件： docs/features/F0XX-evidence.json",
+      "note": "职责：记录一个 Feature 的测试运行、适用人工验收及对应版本/内容快照；每个 Feature 一份，互不覆盖。\n项目位置：docs/features/F0XX-evidence.json；由现有记录工具在该 Feature 第一次记录时产生。\n引用测试运行原件与人工验收清单；不是所有 Feature 的第二份状态表。历史执行事实通过 notes、Progress 归档及原证据保留。\n\n项目文件： docs/features/F[0-9][0-9][0-9]-evidence.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
