@@ -226,10 +226,12 @@ flowchart TD
 
 ### 导入测试结果
 
-在当前终端完成[调用准备](#调用准备)，并确认运行器输出的 `result.json` 确实已写入。调用前注意两个副作用：
-
-- 每次 `record-tests` 都用本次传入的全部 `--run` **整组替换**当前测试引用，不会累加。需要同时保留的运行必须一次列全。
-- 导入校验失败时会**清除旧的测试引用**，原始报告仍然保留。要处理失败原因，不能改写结果文件来绕过。
+1. 在当前终端完成[调用准备](#调用准备)。
+2. 确认运行器输出的 `result.json` 确实已写入。
+3. 运行 `record-tests`，命令见下面两个示例。调用前注意两个副作用：
+   - 每次 `record-tests` 都用本次传入的全部 `--run` **整组替换**当前测试引用，不会累加。需要同时保留的运行必须一次列全。
+   - 导入校验失败时会**清除旧的测试引用**，原始报告仍然保留。要处理失败原因，不能改写结果文件来绕过。
+4. 核对退出码与实际结果。
 
 只有一个有效运行时：
 
@@ -245,7 +247,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-导入后核对退出码与实际结果。完成依据文件在第一次记录测试结果或人工验收结果时自动创建，不需要提前建空记录；已有文件损坏或格式不受支持时会报错，不会被覆盖。独立评审的范围和时机由用户决定。
+完成依据文件在第一次记录测试结果或人工验收结果时自动创建，不需要提前建空记录；已有文件损坏或格式不受支持时会报错，不会被覆盖。独立评审的范围和时机由用户决定。
 
 ### 不需要自动测试的情况
 
@@ -332,12 +334,13 @@ $LASTEXITCODE
 # 换成实际 Feature；需要保留多轮结果时，使用尚未用过的子目录。
 $reportDirectory = "reports/features/$featureId"
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
-& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Host
+& $projectGodot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Null
 $LASTEXITCODE
 ```
 
 - **报告目录**：不属于某个 Feature 的工作使用 `reports/maintenance/<任务>/`。不要覆盖仍被引用的报告，目录选择见[报告与历史](../specialist-work-and-records/knowledge-and-records.md#报告与历史)。
-- **等待进程**：Godot 在 Windows 上是 GUI 程序，`| Out-Host` 让 PowerShell 等它结束，之后立即读取退出码。
+- **等待进程**：Godot 在 Windows 上是 GUI 程序，`| Out-Host` 或 `| Out-Null` 让 PowerShell 等它结束，之后立即读取退出码。
+- **lint 的输出**：结果从 `--output` 指定的报告读取，先看其中的 `summary`；`Out-Null` 丢弃标准输出，避免整份 JSON 打到终端，错误输出仍会显示。
 - **lint 范围**：扫描完整 `res://` 并遵循项目配置；改了默认被排除的依赖时，仍要单独验证那处改动。
 
 lint CLI 的结果约定：
