@@ -44,17 +44,17 @@ $LASTEXITCODE
 
 对应 07 的第 3 步。你安装新版本和导出模板后告诉 Agent 路径；当前 Agent 用 `project-environment-godot` 把 `docs/methodology-config.json` 中的 `engine_executable` 改为新路径，并运行 `yaya/tools/checks/check-project-environment.py --require-ready`，确认观察到的版本就是目标版本。
 
-**S4｜让编辑器重存并确认不再改写**
+**S4｜扫描导入并确认稳定**
 
-对应 07 的第 4、5 步。当前 Agent 在项目根目录用新版本运行两次编辑器重存（`$projectGodot` 的取法见[首次 Godot 扫描](<../../../../../project-source/tools/README.md#首次-godot-扫描>)）：
+对应 07 的第 4、5 步。当前 Agent 在项目根目录用新版本运行两次编辑器扫描（`$projectGodot` 的取法见[首次 Godot 扫描](<../../../../../project-source/tools/README.md#首次-godot-扫描>)）：
 
 ```powershell
-& $projectGodot --headless --editor --path . --quit-after 300 | Out-Host
+& $projectGodot --headless --editor --path . --quit | Out-Host
 $LASTEXITCODE
 git status --short
 ```
 
-第一次之后，只有格式变化、新增 `.uid` 或 `.import` 时单独提交，提交说明写“Godot <新版本> 重新保存”；出现内容变化时先查原因。第二次之后 `git status` 应该没有任何变化。
+第一次之后，只有 `.import`、新增 `.uid` 这类导入元数据时单独提交，提交说明写“Godot <新版本> 重新导入”；出现其他变化时先查原因。第二次与运行前相比没有新增或改写的文件；S3 的配置修改要到 S6 才提交，所以不要求整个工作区干净。扫描不会重新保存已有的 `.tscn`、`.tres`，不需要批量重存。
 
 **S5｜完整验证并结束**
 
@@ -67,25 +67,25 @@ git status --short
 | S1 | 维护 Feature（新旧版本、要保持的行为、回滚方式）已获批写入，`check-feature-list` PASS |
 | S2 | 旧版本的全量测试结果和已有失败；版本说明的核对清单，或“已核对，无相关变化” |
 | S3 | 配置中的 Godot 路径已改为新版本；`--require-ready` 的实际输出和观察到的版本 |
-| S4 | 重存产生的文件已单独提交或已查明原因；第二次重存后 `git status` 无变化 |
+| S4 | 扫描生成的导入元数据已单独提交或已查明原因；第二次扫描没有新的文件变化 |
 | S5 | 解析、lint、全量测试与基线的对比、冒烟检查（和本地导出检查）的实际结果；配置提交的哈希；Feature notes 中的版本记录 |
 
 ## 资源与文件影响
 
 - `docs/methodology-config.json` 中的 `engine_executable`，以及 `reports/initialization.md` 的追加记录。
-- 编辑器重存改写的 `.tscn`、`.tres`、`.uid`、`.import` 等文件，单独成一个提交。
+- 编辑器扫描生成的 `.uid`、`.import` 等导入元数据，单独成一个提交。
 - 维护 Feature 记录和测试运行报告。
 - 旧版本的可执行文件保留在原位置，不删除。
 
 ## 阻塞、异常与范围变化
 
 - **新版本还没装**：S3 停下，说明需要安装的可执行文件和导出模板版本，等你装好后继续。
-- **重存出现内容变化，或验证结果比基线差**：先查原因，属于项目代码需要适配新版本的，在本 Feature 内修复；无法解决时把配置改回旧版本路径并新建一个提交，不改写历史，Feature 保持未完成。
+- **扫描出现导入元数据以外的变化，或验证结果比基线差**：先查原因，属于项目代码需要适配新版本的，在本 Feature 内修复；无法解决时把配置改回旧版本路径并新建一个提交，不改写历史，Feature 保持未完成。
 - **目标版本实际是次版本或主版本**：不开始升级，改走框架迁移。
 
 ## 完成状态与验证标准
 
-项目配置指向目标版本，编辑器重存后文件稳定，解析、lint、全量测试、主场景启动（和本地导出）的结果不差于升级前的基线，维护 Feature 按完成条件交付，旧可执行文件位置已记录。
+项目配置指向目标版本，第二次扫描没有新的文件变化，解析、lint、全量测试、主场景启动（和本地导出）的结果不差于升级前的基线，维护 Feature 按完成条件交付，旧可执行文件位置已记录。
 
 ## 流程关联与衔接关系
 
