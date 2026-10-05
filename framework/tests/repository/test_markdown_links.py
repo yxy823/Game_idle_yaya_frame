@@ -45,6 +45,14 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertEqual(code, 0, result["broken"])
         self.assertEqual(result["links"], 7)
 
+    def test_angle_brackets_inside_inline_code_stay_in_the_anchor(self):
+        self.write("docs/spec.md", "## `product/NN-<delivery>.md` 标准章节\n## 说明 <span>附注</span>\n")
+        self.write("index.md", "[a](docs/spec.md#productnn-deliverymd-标准章节) [b](docs/spec.md#说明-附注)\n")
+        code, result = self.run_cli()
+        self.assertEqual(code, 0, result["broken"])
+        self.write("index.md", "[a](docs/spec.md#productnn-md-标准章节)\n")
+        self.assertEqual(self.broken(), {("index.md", "docs/spec.md#productnn-md-标准章节", "anchor not found in target")})
+
     def test_missing_targets_anchors_and_reference_definitions_are_reported(self):
         self.write("docs/guide.md", "# Guide\n")
         self.write("index.md",

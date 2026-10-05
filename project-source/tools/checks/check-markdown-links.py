@@ -36,7 +36,9 @@ class BrokenLink:
 def heading_slug(text: str) -> str:
     """GitHub style: drop markup and punctuation, lowercase, spaces to hyphens."""
     text = re.sub(r"!?\[([^\]]*)\]\([^)]*\)", r"\1", text)
-    text = re.sub(r"<[^>]+>", "", text)
+    # 行内代码里的 <name> 是可见文字，GitHub 会保留；只删除代码以外的 HTML 标签。
+    parts = re.split(r"(`+[^`]*`+)", text)
+    text = "".join(part if part.startswith("`") else re.sub(r"<[^>]+>", "", part) for part in parts)
     text = text.replace("`", "").replace("*", "")
     kept = []
     for character in text.lower():
