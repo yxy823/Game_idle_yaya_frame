@@ -2,6 +2,30 @@
 
 `framework/` 保存维护这套 Godot 起始框架所需的全部材料：Godot 项目手册、场景速查手册与提示词、关系图、框架维护文档、创建器和各类检查工具。这些材料不复制到生成项目；框架自用 Skill 在仓库根目录的 `.agents/skills/`，维护约定以根 [AGENTS.md](../AGENTS.md) 为准。
 
+## 框架做什么
+
+这套框架用创建器生成一个 Godot 项目，项目里带好开发流程、Agent 规则、Skill 和检查工具。你用场景速查找到提示词交给 Agent，Agent 按下图的主线把想法一步步做成经过验收的功能。图中方框里是负责这一步的 Skill。
+
+```mermaid
+flowchart TD
+    creator["创建器<br/>create_project.py"] --> project["生成的 Godot 项目<br/>AGENTS.md、yaya/、.agents/skills/、docs/"]
+    you(["你：在场景速查中找到提示词"]) --> gdd
+    project --> gdd
+    subgraph loop["项目内的开发主线"]
+        gdd["游戏设计与专业规格<br/>design-gdd 等"] --> product["划分交付单元 Product<br/>product-author"]
+        product --> plan["拆成 Feature 计划<br/>feature-plan"]
+        plan --> execute["执行一个 Feature<br/>feature-execute，Stage 0–8"]
+        execute --> accept{"自动测试通过；<br/>需要人工验收时由你确认"}
+        accept -->|通过| done["Feature 完成"]
+        accept -->|不通过| execute
+        done -->|下一个 Feature| execute
+        gdd -.->|设计改了| sync["同步计划<br/>feature-sync"]
+        sync -.-> plan
+    end
+```
+
+这张图只画主线。不知道下一步该做什么时，项目里的 `project-next-step-advisor` 会根据当前状态给出建议。各文档和职责之间的完整关系见[文档系统关系图](relationship-maps/README.md#文档系统关系图)。
+
 ## 按需要找入口
 
 | 需要什么 | 入口 |
