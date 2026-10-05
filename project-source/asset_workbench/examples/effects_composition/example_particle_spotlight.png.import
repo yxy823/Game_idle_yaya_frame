@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bibqdd772dfnh"
-path="res://.godot/imported/example_particle_spotlight.png-1474a8219896bc9f7bd3615d5a415cf7.ctex"
+path="res://.godot/imported/example_particle_spotlight.png-58700c6137febc8148ed72801b51d5a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset_workbench/examples/effects_composition/example_particle_spotlight.png"
-dest_files=["res://.godot/imported/example_particle_spotlight.png-1474a8219896bc9f7bd3615d5a415cf7.ctex"]
+source_file="res://yaya/asset_workbench/examples/effects_composition/example_particle_spotlight.png"
+dest_files=["res://.godot/imported/example_particle_spotlight.png-58700c6137febc8148ed72801b51d5a1.ctex"]
 
 [params]
 
