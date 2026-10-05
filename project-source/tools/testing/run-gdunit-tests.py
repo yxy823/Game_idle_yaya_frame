@@ -92,6 +92,7 @@ def _startup_diagnostics(output: str) -> list[str]:
 
 def _run_tests(args: argparse.Namespace) -> int:
     selection_error = None
+    coverage_args = {}
     try:
         if args.feature:
             selection = build_selection(REPO_ROOT, args.feature, phase=args.phase)
@@ -109,6 +110,7 @@ def _run_tests(args: argparse.Namespace) -> int:
                                   "reason": "no automated test obligations"}))
                 return 0
             args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
+            coverage_args["obligations"] = selection["required" if args.scope == "required" else "affected"]
     except (ValueError, OSError, KeyError, TypeError, RuntimeError) as error:
         selection_error = error
 
@@ -146,7 +148,7 @@ def _run_tests(args: argparse.Namespace) -> int:
     except (ValueError, OSError, KeyError, TypeError, RuntimeError) as error:
         errors.append(str(error))
     result = finish_run(REPO_ROOT, directory, result, process=process, errors=errors,
-                        required_test=args.require_test)
+                        required_test=args.require_test, **coverage_args)
     if result["status"] != "passed":
         print("TEST VERDICT: FAIL - " + "; ".join(result["errors"]), file=sys.stderr)
         return 1

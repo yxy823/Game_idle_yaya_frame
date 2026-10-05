@@ -382,7 +382,7 @@ def _checked_cases(root: Path, directory: Path, result: dict) -> list[dict]:
 
 def finish_run(root: Path, directory: Path, result: dict, *,
                process: dict | None = None, errors: list[str] | None = None,
-               required_test: str | None = None) -> dict:
+               required_test: str | None = None, obligations: list[dict] | None = None) -> dict:
     """Finalize the same file even on failure; preserve all raw artifacts."""
     result["process"] = process
     result["errors"] = list(errors or [])
@@ -397,6 +397,8 @@ def finish_run(root: Path, directory: Path, result: dict, *,
     try:
         if not result["errors"]:
             cases = _checked_cases(root, directory, result)
+            if obligations is not None:
+                require_coverage(cases, obligations)
             if required_test:
                 path, separator, case = required_test.rpartition("::")
                 if not separator or not path or not case:
@@ -426,10 +428,13 @@ def verify_run(root: Path, reference: dict[str, str], selection: dict,
         raise RunEvidenceError("invalid run result schema or identity")
     if result.get("feature_id") != selection["feature_id"] or result.get("phase") != "final":
         raise RunEvidenceError("run belongs to another Feature or is not final verification")
-    if result.get("snapshot", {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
-        raise RunEvidenceError("source changed after the recorded run")
     if result.get("status") != "passed" or result.get("errors") != []:
         raise RunEvidenceError("test run failed or did not finish")
+    run_snapshot = result.get("snapshot")
+    if not isinstance(run_snapshot, dict):
+        raise RunEvidenceError("run snapshot must be an object")
+    if run_snapshot.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
+        raise RunEvidenceError("source changed after the recorded run")
     if execution_selectors(root, selection, result["scope"]) != result["selectors"]:
         raise RunEvidenceError("run selectors differ from current required scope")
     cases = _checked_cases(root, path.parent, result)

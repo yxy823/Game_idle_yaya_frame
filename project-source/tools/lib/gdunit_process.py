@@ -165,7 +165,8 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
             if remaining <= 0:
                 wait = 258
                 break
-            wait = api.WaitForSingleObject(process.process, min(math.ceil(remaining * 1000), 20))
+            wait_ms = math.ceil(min(remaining, 0.02) * 1000)
+            wait = api.WaitForSingleObject(process.process, wait_ms)
             if wait != 258:
                 break
         if wait not in (0, 258):

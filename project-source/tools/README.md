@@ -129,6 +129,8 @@ python -B yaya/tools/checks/check-markdown-links.py
 
 退出码：`0` 测试通过，或返回 `not_required`；`1` 测试失败、选择失败、超时或结果与计划不符；`2` 参数错误。
 
+所选范围的登记用例缺失时报告 FAIL。
+
 `not_required` 的条件与含义：
 
 - 只在使用 `--feature`、未指定 `--scope full` 或 `--require-test`，且必需、受影响测试集均为空、也没有全量义务时出现。合法的空基线，或无自动测试义务的 manual 最终验证，属于这种情况。

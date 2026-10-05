@@ -11,7 +11,7 @@ import ctypes
 import importlib.util
 import io
 import json
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import os
 import subprocess
 import tempfile
@@ -219,6 +219,71 @@ class GdUnitRunnerTests(unittest.TestCase):
                 self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001", *extra])), 1)
                 engine.assert_not_called()
 
+    def test_selected_registry_cases_must_execute_without_expanding_required_scope(self) -> None:
+        detail = self._manual_plan()
+        detail["verification"]["acceptance_mode"] = "automated"
+        detail["acceptance_criteria"][0]["verification"] = {
+            "automated_tests": ["F001-AC01"], "manual_checks": []}
+        (self.root / "docs/features/F001.json").write_text(json.dumps(detail), encoding="utf-8")
+        registry_path = self.root / "docs/test-registry.json"
+        registry = json.loads(registry_path.read_text(encoding="utf-8"))
+        registry["components"][0]["full_suite_on_change"] = True
+        registry["tests"] = [
+            {"id": "F001-AC01", "components": ["example"], "path": "tests/contract.gd",
+             "case": "test_current", "status": "active"},
+            {"id": "F002-AC01", "components": ["example"], "path": "tests/contract.gd",
+             "case": "test_removed", "status": "active"},
+        ]
+        registry_path.write_text(json.dumps(registry), encoding="utf-8")
+        (self.root / "tests/contract.gd").write_text(
+            "extends GdUnitTestSuite\nfunc test_current():\n\tpass\n", encoding="utf-8")
+        script = self.root / runner.RUNNER_SCRIPT.removeprefix("res://")
+        script.parent.mkdir(parents=True)
+        script.touch()
+        reports = []
+
+        def run_process(command, log_path, timeout):
+            directory = log_path.parent
+            reports.append(directory / "result.json")
+            report = directory / "report_1"
+            report.mkdir()
+            log_path.write_text("", encoding="utf-8")
+            (directory / "discovery.json").write_text(json.dumps({
+                "schema_version": 1, "run_id": directory.name, "engine_pid": 123,
+                "cases": [{"id": "tests/contract.gd::test_current", "path": "tests/contract.gd",
+                           "case": "test_current", "method": "test_current"}],
+            }), encoding="utf-8")
+            (report / "results.xml").write_text(
+                '<testsuites tests="1" failures="0" skipped="0" flaky="0">'
+                '<testsuite name="contract" package="tests" tests="1" failures="0" errors="0" skipped="0" flaky="0">'
+                '<testcase name="test_current"/></testsuite></testsuites>', encoding="utf-8")
+            (report / "diagnostics.jsonl").write_text(
+                json.dumps({"event": "session_start", "schema_version": 1,
+                            "report_path": str(report), "engine_pid": 123}) + "\n"
+                + json.dumps({"event": "session_end"}) + "\n", encoding="utf-8")
+            return runner.ProcessResult(0, False, 123, "", (123,))
+
+        for scope in ("required", "affected", "full", "auto"):
+            with self.subTest(scope=scope):
+                output, errors = io.StringIO(), io.StringIO()
+                args = runner._parse_args(["--feature", "F001", "--scope", scope,
+                                           "--godot-binary", sys.executable])
+                with mock.patch.object(runner, "_run_process", side_effect=run_process), \
+                        redirect_stdout(output), redirect_stderr(errors):
+                    code = runner._run_tests(args)
+                result = json.loads(reports[-1].read_text(encoding="utf-8"))
+                self.assertIsNotNone(result["finished_at"])
+                if scope == "required":
+                    self.assertEqual(code, 0, errors.getvalue())
+                    self.assertEqual(result["status"], "passed")
+                    self.assertIn("TEST VERDICT: PASS", output.getvalue())
+                else:
+                    self.assertEqual(code, 1)
+                    self.assertEqual(result["status"], "failed")
+                    self.assertEqual(result["errors"], [
+                        "required test/suite was not discovered: tests/contract.gd::test_removed"])
+                    self.assertIn("TEST VERDICT: FAIL", errors.getvalue())
+
     def test_missing_registered_path_is_not_an_empty_selection(self) -> None:
         self._manual_plan()
         path = self.root / "docs/test-registry.json"
@@ -309,6 +374,16 @@ class GdUnitRunnerTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 7)
         self.assertFalse(result.timed_out)
+
+    def test_large_finite_timeout_allows_quick_process_exit(self) -> None:
+        log = self.root / "large-timeout.log"
+        result = runner._run_process(
+            [sys.executable, "-c", "print('finished')"], log, runner._positive_seconds("1e308"),
+        )
+        self.assertEqual(result.returncode, 0)
+        self.assertFalse(result.timed_out)
+        self.assertEqual(result.output.strip(), "finished")
+        self.assertEqual(log.read_text(encoding="utf-8"), result.output)
 
     def test_pre_monitor_error_is_not_hidden_by_runner_banner_or_suite_start(self) -> None:
         output = "GdUnit4 Comandline Tool\nRun Test Suite: res://tests/test_example.gd\n"

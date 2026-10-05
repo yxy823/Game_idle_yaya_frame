@@ -12,6 +12,7 @@ import os
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 TOOLS = (PROJECT_ROOT / "yaya/tools")
 sys.path.insert(0, str(PROJECT_ROOT / "yaya"))
@@ -176,6 +177,39 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertEqual(stored["feature_id"], "F001")
         self.assertTrue(stored["test_runs"][0]["path"].startswith("reports/gdunit-wrapper/F001/run-"))
         self.assertTrue(feature_completion_evidence.validate_completion_evidence(self.root, "F001")[0])
+
+    def test_invalid_run_snapshot_rejects_import_and_clears_old_references(self):
+        from tools.lib.test_run_evidence import start_run
+
+        previous = self.completion_fixture()
+        evidence_path = self.root / feature_completion_evidence.evidence_relative_path("F001")
+        directory = self.root / "reports/gdunit-wrapper/F001/run-invalid-snapshot"
+        directory.mkdir()
+        with mock.patch("tools.lib.test_run_evidence.current_snapshot",
+                        side_effect=verification_snapshot.EvidenceError("snapshot unavailable")):
+            failed = start_run(self.root, directory, "F001", "final", "full")
+        report = directory / "result.json"
+        for status, snapshot in (("failed", None), ("failed", []), ("passed", None),
+                                 ("passed", []), ("passed", "invalid")):
+            with self.subTest(status=status, snapshot=snapshot):
+                write_json(evidence_path, previous)
+                write_json(report, {**failed, "status": status, "snapshot": snapshot,
+                                    "errors": failed["errors"] if status == "failed" else []})
+                original = report.read_bytes()
+                result = subprocess.run(
+                    [sys.executable, "-B", str(TOOLS / "features/record-feature-completion.py"),
+                     "--repo-root", str(self.root), "record-tests", "--feature", "F001", "--run", str(report)],
+                    capture_output=True, text=True,
+                )
+                self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                self.assertNotIn("Traceback", result.stderr)
+                self.assertIn("test run failed or did not finish" if status == "failed"
+                              else "run snapshot must be an object", result.stderr)
+                stored = json.loads(evidence_path.read_text(encoding="utf-8"))
+                self.assertEqual(stored["test_runs"], [])
+                self.assertEqual(stored["human_acceptance"], previous["human_acceptance"])
+                self.assertEqual(report.read_bytes(), original)
+                self.assertTrue((self.root / previous["test_runs"][0]["path"]).is_file())
 
     def test_manual_acceptance_must_still_cover_current_content_without_review(self):
         self.detail["verification"]["acceptance_mode"] = "manual"
