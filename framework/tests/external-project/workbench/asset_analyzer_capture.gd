@@ -58,17 +58,31 @@ func _compact(panel: Window) -> void:
 
 
 func _compare(panel: Window, first: String, second: String) -> void:
+	var paths: Array[String] = [ASSETS + first, ASSETS + second]
+	var kinds: Array[String] = []
 	for index: int in 2:
-		panel.call("open_asset", load(ASSETS + [first, second][index]))
+		var asset := load(paths[index])
+		kinds.append("audio" if asset is AudioStream else "image")
+		panel.call("open_asset", asset)
 		panel.call("_analyze", index)
 		panel.call("_reanalyze", index)
 	var deadline := Time.get_ticks_msec() + 15000
 	while panel.get("_tasks") != [0, 0] and Time.get_ticks_msec() < deadline:
 		await process_frame
-	for data: Dictionary in panel.get("results"):
-		if data.get("status") != "success":
+	var results: Array[Dictionary] = panel.get("results")
+	if panel.get("_tasks") != [0, 0] or results.size() != 2:
+		_failed = true
+		push_error("A/B analysis must finish with exactly two results")
+		return
+	for index: int in 2:
+		var data: Dictionary = results[index]
+		var source: Dictionary = data.get("asset", {})
+		var actual := ProjectSettings.globalize_path(String(source.get("path", "")).replace("\\", "/")).simplify_path()
+		var expected := ProjectSettings.globalize_path(paths[index]).replace("\\", "/").simplify_path()
+		if data.get("status") != "success" or actual != expected or source.get("type") != kinds[index]:
 			_failed = true
-			push_error("Actual analysis did not succeed: " + JSON.stringify(data))
+			push_error("Analysis slot %s expected %s (%s): %s" % [
+				["A", "B"][index], expected, kinds[index], JSON.stringify(data)])
 
 
 func _save(panel: Window, filename: String) -> void:

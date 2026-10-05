@@ -67,10 +67,13 @@ func test_continuous_emission_drains_and_stop_hides_immediately() -> void:
 	cue.particle_emission_seconds = 0.15
 	presenter.configure(cue)
 	presenter.trigger()
-	var emitter: GPUParticles2D = presenter.get("_particles").get("_emitter")
-	await get_tree().create_timer(0.25).timeout
+	var particles: Node2D = presenter.get("_particles")
+	var emitter: GPUParticles2D = particles.get("_emitter")
+	particles.set_process(false)
+	particles.call("_process", 0.25)
 	assert_bool(emitter.emitting).is_false()
 	assert_bool(emitter.visible).is_true()
+	particles.set_process(true)
 	await get_tree().create_timer(0.9).timeout
 	assert_bool(emitter.visible).is_false()
 	assert_int(presenter.active_effect_count()).is_zero()
@@ -113,7 +116,13 @@ func test_tween_and_clip_have_distinct_layers_and_restore_their_transforms() -> 
 	var motion: Node2D = presenter.get("_motion")
 	var tween_root: Node2D = motion.get("_tween_root")
 	var content: Node2D = motion.get("content")
-	await get_tree().create_timer(0.2).timeout
+	var player: AnimationPlayer = motion.get("_player")
+	var original_mode := player.callback_mode_process
+	player.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
+	var tween: Tween = motion.get("_tween")
+	tween.pause()
+	tween.custom_step(0.25)
+	player.advance(0.25)
 	assert_float(tween_root.position.y).is_less(0.0)
 	assert_bool(content.transform != Transform2D.IDENTITY).is_true()
 	assert_bool(presenter.position == Vector2(15, 25)).is_true()
@@ -121,6 +130,7 @@ func test_tween_and_clip_have_distinct_layers_and_restore_their_transforms() -> 
 	presenter.stop()
 	assert_bool(tween_root.position == Vector2.ZERO).is_true()
 	assert_bool(content.transform == Transform2D.IDENTITY).is_true()
+	player.callback_mode_process = original_mode
 	presenter.trigger()
 	await get_tree().create_timer(1.0).timeout
 	assert_int(presenter.active_effect_count()).is_zero()

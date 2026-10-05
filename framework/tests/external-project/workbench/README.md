@@ -112,7 +112,21 @@ $validationPython = '<已确认的 Python 3.12+ 解释器路径>'
 
 1. 使用测试预设选择四消费场景及依赖，包含表现脚本、局部音频池和许可；排除工作台、Analyzer、测试及维护材料。
 2. 通过 Godot `--export-pack` 输出到本轮报告区，保留原始失败包和日志。
-3. 从报告目录用 `--main-pack` 启动探针，在 `--` 后传唯一的绝对 JSON 输出路径。从项目根启动会让源文件掩盖缺漏，不构成同样的验证。
-4. 核对四入口的 Cue、真实声部、组合/编排、停止/回收和工具目录缺席；结束后将临时预设恢复到原先不存在的状态。
+3. 从报告目录用 `--main-pack` 启动探针，在 `--` 后依次传绝对 JSON 输出路径、外部项目根目录中 `export_presets.cfg` 的绝对路径。从项目根启动会让源文件掩盖缺漏，不构成同样的验证。
+4. 核对四入口的 Cue、真实声部、组合/编排、停止/回收，以及预设要求的许可证存在、排除目录缺席；结束后将临时预设恢复到原先不存在的状态。
+
+下面的命令使用已配置的 `$validationGodot`；`$validationProject`、`$reportDirectory` 和 `$probeScript` 分别是外部项目、当次报告目录和探针脚本的绝对路径。先准备这些路径并安装测试预设，再执行：
+
+```powershell
+& $validationGodot --headless --path $validationProject --export-pack 'Asset consumer boundary check' "$reportDirectory/asset-consumer.zip" | Out-Host
+Push-Location -LiteralPath $reportDirectory
+try {
+    & $validationGodot --headless --main-pack "$reportDirectory/asset-consumer.zip" --script $probeScript -- "$reportDirectory/export-probe.json" "$validationProject/export_presets.cfg" | Out-Host
+} finally {
+    Pop-Location
+}
+```
+
+探针读取预设的 `include_filter` 和 `exclude_filter`，不维护另一份路径清单。许可证规则只支持当前使用的精确路径和 `目录/*license*`；通配项递归展开源目录中的全部匹配文件，再逐个检查包内路径。排除规则只支持当前的 `目录/*`。读取失败、许可证规则零匹配或不支持的过滤形式均判失败；通过时退出码为 0，JSON 中 `passed` 为 `true`。这证明包符合指定预设，不判断预设本身是否遗漏必要规则。
 
 独立资源包运行不等于签名安装包、发行模板或其他平台已验证。
