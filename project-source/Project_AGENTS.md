@@ -30,29 +30,9 @@
 
 - 支持在同一目录内暂停、切换和续接任务，包括换到新对话后续接。
 - 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](#git-与提交)。任务默认不在 worktree 中开始。
-- 限定范围的调研和独立审核通过下表的入口使用各自的角色。
+- 限定范围的调研和独立审核使用各自的角色，入口见任务路由表。
 
-| 需要做的事 | 阅读 |
-| --- | --- |
-| 选择工作流程或下一个允许的动作 | [任务路由表](yaya/methodology/00-overview.md#任务路由表)。Skill 在 `.agents/skills/`，显式命令在 `yaya/tools/` |
-| 创建或维护 GDD、数值模型或 Product 交付计划 | `yaya/methodology/01-product-doc-structure.md` |
-| 维护项目术语 | `yaya/methodology/14-project-terminology.md` |
-| 制作视觉或逻辑原型 | `yaya/methodology/13-prototypes.md` |
-| 规划 Feature、排定 Product 顺序或修改 Feature 记录 | `yaya/methodology/02-feature-list-schema.md` |
-| 执行 Feature，包括批准、可选的独立审核和完成 | `yaya/methodology/03-execute-loop.md` |
-| 解释、应用或修改项目规则 | `yaya/methodology/04-project-rules.md` 和 `yaya/agent-rules/00-core/rule-precedence-and-routing.md` |
-| 准备 Feature 的设计与实施指导 | `implementation-guidance-godot` Skill |
-| 设置文档语言 | `yaya/methodology/05-document-language.md` |
-| 配置工具或准备项目环境 | `yaya/methodology/06-project-environment.md` |
-| 修复 Bug、重构或做工程维护 | `yaya/methodology/07-engineering-change.md` |
-| 选择测试、记录本次运行的证据或使用完成辅助工具 | `yaya/methodology/08-test-traceability-and-evidence.md`。直接的解析和 lint 命令在 `yaya/methodology/contracts/gdscript-lint.md` |
-| 整理报告、临时工作区、Progress、历史或清理 | `yaya/methodology/09-records-reports-and-handoff.md` |
-| 维护可选的架构图或 ADR | `yaya/methodology/10-architecture-overview.md` |
-| 处理专业设计、资源、本地化、诊断或多个需求来源 | `yaya/methodology/11-specialist-workflows.md` |
-| 执行用户要求的正式审核 | `yaya/methodology/12-independent-review.md` |
-| 调研外部事实或方案 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** |
-
-这些行是任务入口，不是阅读顺序。按选中的流程及其需要的参考执行，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
+选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
 
 ### 设计前提与需阅读的来源
 
@@ -217,37 +197,6 @@ Work item: docs/features/F012.json
 
 ## 领域规则路由
 
-`yaya/methodology/` 规定工作流程和可追溯性，任务范围、Git、验证与完成汇报写在本文件；`yaya/agent-rules/` 规定具体的引擎与语言规则。规则冲突按[规则冲突的处理流程](yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。带编号的规则模块目录不规定项目自身的目录布局。
+`yaya/methodology/` 规定工作流程和可追溯性，任务范围、Git、验证与完成汇报写在本文件；`yaya/agent-rules/` 规定具体的引擎与语言规则。
 
-做修改或与修改有关的工程决定时，先读 `yaya/agent-rules/00-core/README.md`，再读下表中每个受影响领域的 README：
-
-- 按 README 的路由表只读匹配的文件和小节，不读整个目录。需要的验证写在模块 README 末尾的验证节。
-- 模块可以叠加。例如测试用的 `.gd` 文件同时适用 GDScript 规则和测试规则。
-- 续接时，已读且未变化的规则直接复用。只有任务或新证据需要时才多读。
-
-| 修改的对象或领域 | 规则入口 |
-| --- | --- |
-| GDScript | `yaya/agent-rules/10-gdscript/README.md` |
-| 场景 | `yaya/agent-rules/20-scenes/README.md` |
-| 资源 | `yaya/agent-rules/21-resources/README.md` |
-| Shader | `yaya/agent-rules/30-shaders/README.md` |
-| ProjectSettings | `yaya/agent-rules/40-project-config/README.md` |
-| 导出配置或导出流水线 | `yaya/agent-rules/41-export-config/README.md` |
-| 游戏数据、数据结构定义或数据流水线 | `yaya/agent-rules/50-data-files/README.md` |
-| 素材或导入流水线 | `yaya/agent-rules/60-assets/README.md` |
-| 测试、测试夹具或测试运行器 | `yaya/agent-rules/70-tests/README.md` |
-| UID、路径、NodePath、业务 ID 或 RID 的身份 | `yaya/agent-rules/00-core/godot-resource-references.md` |
-
-常见任务读哪些（路径相对于 `yaya/agent-rules/`）：
-
-| 任务 | 阅读 |
-| --- | --- |
-| 改 `.gd` 并加单元测试 | `00-core/README.md`；`10-gdscript/README.md` 与 `typing-and-api.md`；`70-tests/README.md` 与 `test-levels.md` |
-| 重命名或移动节点、场景、资源 | `00-core/godot-resource-references.md`；`20-scenes/README.md`；移动资源文件时再读 `60-assets/README.md` |
-| 导入或替换图片、音频、字体 | `60-assets/README.md`；涉及 `.import` 或生成文件时读 `00-core/third-party-generated-and-temporary-files.md` |
-| 新增或修改游戏数据及其定义 | `21-resources/README.md`；`50-data-files/README.md` |
-| 在 Codex 沙箱中运行任何 Godot 进程 | `00-core/windows-godot-sandbox.md` |
-
-没有专门模块时，使用 `00-core` 规则和项目已有的约定，只在主题重叠处读相邻模块。修改依赖随版本变化的引擎行为时，按 [Godot 版本与依据](yaya/agent-rules/00-core/godot-version-and-authority.md) 核对 Godot 4.7 的行为；普通的 Markdown 编辑不需要。不在实现过程中顺带扩展规则体系。
-
-要判断游戏逻辑和游戏表现的职责归属、它们的设计来源，或模块的位置和命名，读 `docs/game-organization.md` 中匹配的小节。它解释概念并给出示例；命名和引擎约束仍以上面的规则模块为准。
+做修改或与修改有关的工程决定时，先读 [`yaya/agent-rules/README.md`](yaya/agent-rules/README.md)：它列出各领域的规则入口和常见任务的阅读组合。只读匹配的文件和小节；一处修改可能同时适用几个模块；规则冲突按[规则冲突的处理流程](yaya/agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。

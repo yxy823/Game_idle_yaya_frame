@@ -55,7 +55,7 @@ yaya/agent-rules/<专业模块>/
 
 ## 加载规则
 
-通过根 `AGENTS.md` 的 **领域规则路由** 和 [`yaya/agent-rules/00-core/README.md`](../agent-rules/00-core/README.md) 加载规则，只读匹配的小节，并读受影响模块 README 末尾的验证节。真实冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。
+通过 [`yaya/agent-rules/README.md`](../agent-rules/README.md) 和 [`yaya/agent-rules/00-core/README.md`](../agent-rules/00-core/README.md) 加载规则，只读匹配的小节，并读受影响模块 README 末尾的验证节。真实冲突按[规则冲突的处理流程](../agent-rules/00-core/rule-precedence-and-routing.md#规则冲突的处理流程)解决。
 
 ## 按事先准备的指导实现
 
