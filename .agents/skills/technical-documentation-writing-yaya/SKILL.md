@@ -1,6 +1,6 @@
 ---
 name: technical-documentation-writing-yaya
-description: 编写、更新或整理 Yaya 框架的说明文档，包括 Godot 项目手册、场景速查手册、tools/ 用法说明、维护文档和审核报告；框架代码或配置变更后的文档同步也适用。改善表达与组织，不替代指令行为设计、代码或职责审核；生成 Godot 项目的文档写作及仅阅读文档不触发。
+description: 编写、更新或整理 Yaya 框架的说明文档，包括 Godot 项目手册、场景速查手册、tools/ 用法说明、维护文档和审核报告，以及 `project-source/` 分发源材料中的说明文字；框架代码或配置变更后的文档同步也适用。改善表达与组织，不替代指令行为设计、代码或职责审核；生成 Godot 项目的文档写作及仅阅读文档不触发。
 ---
 
 # Yaya 框架文档编写与整理
@@ -27,7 +27,10 @@ description: 编写、更新或整理 Yaya 框架的说明文档，包括 Godot 
 
 ## 从哪里开始
 
-先读[框架写作指南](references/writing-guide.md)，确定本次范围、表达方式和检查边界。指南会按任务类型链接到页面组织和流程写作的参考；普通的单页润色不需要加载无关的专题。
+先读[框架写作指南](references/writing-guide.md)，确定本次范围、表达方式和检查边界。普通的单页润色读这一份就够。需要时再读：
+
+- [框架文档结构](references/document-structure.md)：整理整套手册或维护材料，处理页面分工、命名、术语或正文去重时。
+- [流程与场景文档](references/procedure-writing.md)：编写操作步骤、维护流程或场景页时。
 
 ## 资源与依据
 

@@ -30,7 +30,7 @@ GDD 保留游戏规则和体验目标。玩家行为的变化交回 `design-gdd`
 
 ## 返回
 
-验证受影响的来源链接。返回规范路径、已确认的覆盖范围和尚未决定的问题。对已规划工作的影响，在当前授权范围内按 methodology 11 的 **编写与采纳** 中的变更路径处理。单独的规范工作不需要可运行的实现，也不需要编造一个 Feature。
+验证受影响的来源链接（用 `python -B yaya/tools/checks/check-markdown-links.py`）。返回规范路径、已确认的覆盖范围和尚未决定的问题。对已规划工作的影响，在当前授权范围内按 methodology 11 的 **编写与采纳** 中的变更路径处理。单独的规范工作不需要可运行的实现，也不需要编造一个 Feature。
 
 运行时修改、译文导入和语言测试，属于已授权的 Feature 或限定实验中的 `content-localization`。独立的语言审核属于 `review-localization`。
 

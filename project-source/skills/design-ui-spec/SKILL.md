@@ -1,6 +1,6 @@
 ---
 name: design-ui-spec
-description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 原型的输入。不用于美术方向、实现或 UX 审核。"
+description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 原型的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
 ---
 
 # UI 规格

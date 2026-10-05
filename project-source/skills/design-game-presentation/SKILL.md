@@ -1,6 +1,6 @@
 ---
 name: design-game-presentation
-description: "从体验目标或口头描述出发规划一次可观察的游戏表现，在表现文档中定义其组件要求并比较实现方式。用于游戏表现设计和实现方式选择，包括早期的 GDD 探索。不用于编写运行时代码，也不用于制作图像和音频文件。"
+description: "从体验目标或口头描述出发规划一次可观察的游戏表现，在表现文档中定义其组件要求并比较实现方式。用于游戏表现设计和实现方式选择，包括早期的 GDD 探索。不用于编写运行时代码，也不用于制作图像和音频文件或普通界面布局和控件状态（design-ui-spec）。"
 ---
 
 # 游戏表现规划
@@ -30,7 +30,7 @@ description: "从体验目标或口头描述出发规划一次可观察的游戏
 
 - 先查看 `docs/presentation/README.md`，再按触发时刻和玩家感知到的结果选定 `docs/presentation/<scope>.md` 正文。methodology 11 要求抽出到 `docs/presentation/components/<component-key>.md` 时，迁移组件正文，并更新所有受影响的引用。
 - 某个备选方案专用的资源写在该方案内，除非资源规则把它分配给共享的所属位置。视觉和音频规格分别与 `design-visual-asset-spec` 和 `design-audio-asset-spec` 协调。缺少的文件可以明确标出，规划继续进行。
-- 按 methodology 11 的说明链接每一处使用：UI 中的使用，链接写在对应交互处和 UI 文档的“关联游戏表现”章节；非 UI 的使用，从对应的 GDD 主题链接。
+- 按 methodology 11 的说明链接每一处使用：UI 中的使用，链接写在对应交互处和 UI 文档的“相关游戏表现”章节；非 UI 的使用，从对应的 GDD 主题链接。
 - 只有已采用的要求和已授权的方案才写进 Feature 的来源、AC 或设计引用。表现和 Feature 不需要一一对应。
 
 本 Skill 不制作图像或音频文件，也不在本地资源库中检索素材。
