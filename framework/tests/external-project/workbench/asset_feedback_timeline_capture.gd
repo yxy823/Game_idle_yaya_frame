@@ -250,7 +250,8 @@ func _wait_position(player: TimelinePlayer, requested: float) -> void:
 
 
 func _object_region(presenter: Presenter) -> Rect2i:
-	var transform := presenter.get_global_transform_with_canvas()
+	# 截图是窗口像素；拉伸模式下画布坐标要先乘上拉伸变换。
+	var transform := root.get_stretch_transform() * presenter.get_global_transform_with_canvas()
 	var box := Rect2(transform * Vector2.ZERO, Vector2.ZERO)
 	for point: Vector2 in [Vector2(presenter.size.x, 0.0), presenter.size,
 			Vector2(0.0, presenter.size.y)]:
