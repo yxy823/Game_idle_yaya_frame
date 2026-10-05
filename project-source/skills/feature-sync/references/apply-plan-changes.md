@@ -25,7 +25,7 @@
 变成 `obsolete` 的 Feature 不能保留状态为 `planned` 的测试登记表测试：
 
 - 退役有替代项时，按下面的[测试可追溯性更新](#测试可追溯性更新)带上出处退役这些测试。
-- Feature 退役且没有替代项时，删除它状态为 `planned` 的测试登记表条目，同时从它的 AC 和回归映射中删掉这些测试 ID，并把 `acceptance_mode` 设回 `null`。见 methodology 02 的 [File 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
+- Feature 退役且没有替代项时，删除它状态为 `planned` 的测试登记表条目，同时从它的 AC 和回归映射中删掉这些测试 ID，并把 `acceptance_mode` 设回 `null`。见 methodology 02 的 [文件 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
 
 ## 修订
 
@@ -45,7 +45,7 @@
 
 ## 拆分、合并与依赖
 
-- 拆分和合并遵循 [File 3](../../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 迁移表中的 `split` 和 `merge` 行：新 Feature 使用从未用过的 ID，范围可以独立测试；原来的条目保留为 `obsolete` 或 `obsolete_done`。已完成来源的描述、验收条件和历史映射保持不变。
+- 拆分和合并遵循 [文件 3](../../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 迁移表中的 `split` 和 `merge` 行：新 Feature 使用从未用过的 ID，范围可以独立测试；原来的条目保留为 `obsolete` 或 `obsolete_done`。已完成来源的描述、验收条件和历史映射保持不变。
 - 把受影响的待执行和被阻塞的依赖改写为实际的替代前提，即使它们的 ID 更大。对被阻塞的工作，替换之后重新检查已记录的恢复条件；依赖有效但尚未完成时，恢复后的工作为 `pending`，但还不能开始。
 - 修改进行中工作的范围或依赖之前，明确审查它。不要改写已完成的依赖历史。
 - 在第 2 版修订记录中，把每次操作记进 `migrations`，把每次依赖修改记进 `dependency_changes`。检查迁移图和执行图中是否有环、未知 ID、自依赖和已废弃的前提。
@@ -57,7 +57,7 @@
 
 ## 测试可追溯性更新
 
-已完成 Feature 的验收条件和测试 ID 绝不原地改写；Product 演进时创建带新 ID 的新 Feature。测试登记表的退役字段、数据结构版本和校验规则定义在 methodology 02 的 [File 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
+已完成 Feature 的验收条件和测试 ID 绝不原地改写；Product 演进时创建带新 ID 的新 Feature。测试登记表的退役字段、数据结构版本和校验规则定义在 methodology 02 的 [文件 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
 
 - **被取代的活动测试：** 阶段 2 展示准确的测试 ID 和它的退役关系。经阶段 3 明确确认后，设置 `status: retired` 并添加 `retirement` 对象。保留原来的 ID、来源映射、路径、用例和已完成的证据。禁止为了迎合旧历史而让错误的断言保持活动。
 - **测试代码清理：** 把获批的测试代码清理和当前引用清理，记在负责它的新 Feature 或未完成 Feature 的 `notes` 中，写明准确的路径、方法和预定动作。实现交给 [feature-execute](../../feature-execute/SKILL.md)；在实际执行并验证之前，报告为待完成。不要删除历史上的 Feature 或测试登记表记录。

@@ -33,7 +33,7 @@ description: >-
 
 ## 阶段 0：预检和锚点
 
-1. 读取索引、修订记录和测试登记表。缺少任何文件时，先修复，再路由或写入。如果索引有效但没有 Feature，通过 [product-author](../product-author/SKILL.md) 和已获授权的 [feature-plan](../feature-plan/SKILL.md) 回到当前 Product 的准备工作。
+1. 读取索引、修订记录和测试登记表。缺少任何文件时，先按 `yaya/methodology/02-feature-list-schema.md` 规定的初始内容恢复，再路由或写入；02 没有给出初始内容的文件，报告缺失，不自行编造。如果索引有效但没有 Feature，通过 [product-author](../product-author/SKILL.md) 和已获授权的 [feature-plan](../feature-plan/SKILL.md) 回到当前 Product 的准备工作。
 2. 检查 Git。报告当前分支（`main` 和 `master` 都有效），不要切换分支。查看 `git status --porcelain` 和相关差异；保留无关的工作，在依赖它的写入之前，先解决与计划实际重叠的编辑。
 3. **来源先提交规则：** 本次同步用到的每个来源文档，包括阶段 3 中获批的修复，都必须在任何依赖它的计划写入之前，单独、更早地提交。这样差异和下一个锚点才能对应一个实际已提交的状态。
    - 报告未提交的相关来源，并把它交回其负责方；无关的未提交路径不构成阻塞。
@@ -58,7 +58,8 @@ git diff <anchor> HEAD -- docs/product.md
 git diff --stat -M <anchor> HEAD -- docs/product/
 git diff --name-status -M <anchor> HEAD -- docs/product/
 git diff -M <anchor> HEAD -- docs/product/
-git diff <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
+git diff --name-status -M <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
+git diff -M <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
 git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 ```
@@ -91,7 +92,7 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
 
 - 把每个提议的 `affected_components` ID 与测试登记表比较，在方案中列出新的和存在冲突的组件记录。
 - 对每个已有实现或测试、且被修订或删除的 Feature，追查它的依赖方，以及所属 Feature 或组件与变化重叠的测试。把每个测试归为 `still_valid`、`superseded`、`needs_new_coverage` 或 `uncertain`。
-- 提议退役某个测试时，按 [File 4](../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
+- 提议退役某个测试时，按 [文件 4](../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
 - 遵循 methodology 08 的 **需求变化与过时的测试**：阅读受影响的测试代码（包括没有测试登记表 ID 的单元测试），写明要做的清理以及负责它的 Feature。
 
 ### 报告
@@ -122,7 +123,7 @@ git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ d
 
 ## 阶段 5：记录、校验和提交
 
-1. 更新索引时间，并按 [File 3](../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
+1. 更新索引时间，并按 [文件 3](../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
    - 保留权威的 `meta.generated_from` 条目，加上实际考虑过的 GDD 和专业来源位置，不声称覆盖了未来的范围。修订本身不写进索引元数据。
    - 使用可读的摘要字段，以及有类型的 `migrations` 和 `dependency_changes`；编辑性同步可以使用空数组。
    - `synced_at_commit` 必须填写：它是本次分析的已提交来源状态，也是下一个锚点。`source_path_updates` 保留重命名的可追溯性。

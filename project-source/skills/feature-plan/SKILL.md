@@ -36,16 +36,22 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 | `docs/feature-list-revisions.json` | 已有的修订历史和锚点；按数据结构确定符合条件的首个基线 |
 | `docs/test-registry.json` | 提出新增之前已有的组件和测试记录 |
 
-已有的 Feature 记录无论为空还是已有内容，都可以接收当前 Product 的第一份计划。已经规划过的范围直接复用，它的变化交给 [feature-sync](../feature-sync/SKILL.md)。不要替换早先的计划。按权威数据结构，索引、修订记录和测试登记表都必须是创建器提供的文件；缺少任何一个，都要先修复再规划。报告缺失的当前 Product 来源或此前已写成文档的 Product 来源；未来的大纲本来就没有文件，不算不一致。
+已有的 Feature 记录无论为空还是已有内容，都可以接收当前 Product 的第一份计划。已经规划过的范围直接复用，它的变化交给 [feature-sync](../feature-sync/SKILL.md)。不要替换早先的计划。按权威数据结构，索引、修订记录和测试登记表都必须是创建器提供的文件；缺少任何一个，都要先按 `yaya/methodology/02-feature-list-schema.md` 规定的初始内容恢复，再规划；02 没有给出初始内容的文件，报告缺失，不自行编造。报告缺失的当前 Product 来源或此前已写成文档的 Product 来源；未来的大纲本来就没有文件，不算不一致。
 
 ## 规划与写入
 
-1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围。只在可运行的基础设施尚不存在时才建立它。对实际范围和前置顺序，使用 `yaya/methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 `yaya/methodology/13-prototypes.md` 中的 **依赖实现前的视觉原型**；正式实现中领域与表现分开，并不要求在独立的视觉原型之前先开发业务逻辑。规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，在规划方案中建议先用 `design-art-direction` 定下美术方向（建议，不阻塞规划）。同时检查 `docs/project-rules.md` 中约束本任务的工程规则。不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
+1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围：
+   - 只在可运行的基础设施尚不存在时才建立它。
+   - 对实际范围和前置顺序，使用 `yaya/methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 `yaya/methodology/13-prototypes.md` 中的 **依赖实现前的视觉原型**；正式实现中领域与表现分开，并不要求在独立的视觉原型之前先开发业务逻辑。
+   - 规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，在规划方案中建议先用 `design-art-direction` 定下美术方向（建议，不阻塞规划）。
+   - 同时检查 `docs/project-rules.md` 中约束本任务的工程规则。
+   - 不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。
+   - 找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
 2. 按权威拆分规则，提出可以独立验证、一次会话能完成的结果，包括每项的结果检查和前置条件检查。以当前 Product 作为主要交付来源，在 AC 或设计稿中写出准确的 GDD/专业来源链接。在这份计划中覆盖它必要的全部范围；不要把类结构当作游戏设计写进去，也不要预先规划后续 Product。
 3. 在对话中展示权威的 **拆分预览**：Feature 数量、每个 Feature 的摘要和依赖、为什么下一个是这个 Product，以及需求覆盖的对应关系。在写入任何测试登记表或 Feature 计划之前，执行其中关于确认和明确授权自主规划的规则；缺少实质性的决定时先解决。
 4. 第 3 步允许写入后，按 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
-5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `yaya/methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。语义覆盖审查之后、最终校验之前，按该约定只追加符合条件的初始基线。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
-6. 完成下面的校验和语义审查。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
+5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `yaya/methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
+6. 按下面「校验与语义审查」的顺序，依次完成语义覆盖审查、追加符合条件的 `R000` 和运行检查器。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
 7. 按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。开始时已有改动的，不要暂存整个 `docs/features/` 路径。
 8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
 
@@ -79,7 +85,7 @@ python -B yaya/tools/features/merge-test-registry.py `
 - 组件 ID 和测试 ID 是否唯一；
 - 测试到组件的映射。
 
-路径的含义遵循 methodology 08 的 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)，历史记录的含义遵循 `yaya/methodology/02-feature-list-schema.md` 的 File 4。已退役的条目还必须按共享的 `yaya/tools/lib/feature_evolution.py` 约定，具有有效的来源、原因、替代项和修订关系。
+路径的含义遵循 methodology 08 的 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)，历史记录的含义遵循 `yaya/methodology/02-feature-list-schema.md` 的 **文件 4**。已退役的条目还必须按共享的 `yaya/tools/lib/feature_evolution.py` 约定，具有有效的来源、原因、替代项和修订关系。
 
 下列情况是阻塞性冲突：
 
@@ -91,27 +97,29 @@ python -B yaya/tools/features/merge-test-registry.py `
 
 只有完整的合并通过校验后，工具才会写入，并按原值保留所有已有的测试条目。路径存在不能证明测试能被发现；执行时必须确认登记的套件确实运行了测试。
 
+候选文件示例：
+
 ```json
 {
-  "meta": {"schema_version": 3},
   "components": [
     {
       "id": "inventory",
       "unit_test_paths": [],
       "full_suite_on_change": false
     }
-  ],
-  "tests": []
+  ]
 }
 ```
 
 ## 校验与语义审查
 
-所有相关文件一致之后，运行：
+所有相关文件一致之后，按下面的顺序完成：
 
-`python -B yaya/tools/checks/check-feature-list.py`
+1. **语义覆盖审查**：检查器确定不了的内容，由 Agent 审查下面列出的各项。
+2. **追加初始基线**：符合 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线** 条件时，按该节第 3 步追加 `R000`；不符合时跳过。
+3. **运行检查器**：`python -B yaya/tools/checks/check-feature-list.py`。它会同时检查 JSON 解析和跨文件的不变量。只有在诊断某一个错误时，才单独做语法检查。
 
-它会同时检查 JSON 解析和跨文件的不变量。只有在诊断某一个错误时，才单独做语法检查。检查器确定不了的内容，仍由 Agent 审查：
+语义覆盖审查的内容：
 
 - 选中的 Product 是当前的、尚未规划的；它要求的范围已经覆盖，没有重复的基础设施、被排除的行为或过早的后续计划。
 - 写入的 Feature 数量、边界和依赖，与已确认的预览一致；在明确的自主规划授权下，与最新的预览一致。
