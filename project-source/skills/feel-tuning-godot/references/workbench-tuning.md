@@ -1,6 +1,11 @@
 # 用资源工作台调特效
 
-适用于用表现反馈组件实现的特效和反馈：对象通过 `FeedbackCue` 读取图像、音频、Shader、粒子、动画和 Tween 参数。工作台的操作、保存规则和导出排除写在 `yaya/asset_workbench/examples/README.md`，组件的绑定方式写在 `components/feedback/README.md`；这里只说明调优时怎么用。
+适用于用表现反馈组件实现的特效和反馈：对象通过 `FeedbackCue` 读取图像、音频、Shader、粒子、动画和 Tween 参数。这里只说明调优时怎么用，工作台和组件的约束按当前操作阅读：
+
+- 第一次操作工作台：[打开与操作](../../../../yaya/asset_workbench/examples/README.md#打开与操作)。
+- 准备入口、绑定 Cue：[Cue 与消费绑定](../../../../components/feedback/README.md#cue-与消费绑定)。
+- 更换粒子、动画或 Tween 预设：[粒子、动画与 Tween 的限制](../../../../components/feedback/README.md#粒子动画与-tween-的限制)。
+- 保存方案之前：[保存的边界](../../../../yaya/asset_workbench/examples/README.md#保存的边界)。
 
 效果没有使用表现反馈组件时，不要为了调参把它迁移到这套组件，按 [调操作手感与普通参数](gameplay-tuning.md) 处理。
 
