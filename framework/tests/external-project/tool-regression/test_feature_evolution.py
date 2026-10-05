@@ -143,7 +143,8 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.revisions["revision_log"] = [baseline, later]
         self.assertTrue(self.validate())
         for change in ({"added": []}, {"added": ["F001", "F001"]}, {"added": ["F009"]},
-                       {"user_intent": 3}, {"migrations": later["migrations"]}):
+                       {"user_intent": 3}, {"migrations": later["migrations"]},
+                       {"synced_at_commit": "a" * 40}):
             with self.subTest(change=change):
                 self.revisions["revision_log"] = [{**baseline, **change}, later]
                 self.assertFalse(self.validate())
@@ -152,6 +153,50 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertFalse(self.validate())
         self.revisions["revision_log"] = [later, baseline]
         self.assertFalse(self.validate())
+
+    def test_invalid_json_field_types_return_field_diagnostics(self) -> None:
+        self.index["features"][1]["depends_on"] = ["F001"]
+        self.index["features"][2]["depends_on"] = ["F002"]
+        self.revisions["revision_log"].insert(0, {
+            "schema_version": 2, "revision_id": "R000", "revised_at": "2026-01-01T00:00:00Z",
+            "anchor_commit": "b" * 40, "synced_at_commit": "b" * 40, "user_intent": None,
+            "summary": "First plan", "added": ["F001", "F002", "F003"],
+            "migrations": [], "dependency_changes": [],
+        })
+        self.assertTrue(self.validate())
+        cases = (
+            ("docs/feature-list.json", ("features", 0, "status"), [], "F001.status"),
+            ("docs/feature-list.json", ("features", 1, "status"), {}, "F002.status"),
+            ("docs/feature-list.json", ("features", 0, "estimated_scope"), {}, "F001.estimated_scope"),
+            ("docs/features/F003.json", ("engineering_change",), [], "engineering_change"),
+            ("docs/feature-list-revisions.json", ("revision_log", 0, "added"), [{}], "revision_log[0].added"),
+        )
+        originals = {name: json.loads((self.root / name).read_text(encoding="utf-8"))
+                     for name, _, _, _ in cases}
+        self.write("components.json", [])
+        registry_path = self.root / "docs/test-registry.json"
+        registry_before = registry_path.read_bytes()
+        for name, keys, value, diagnostic in cases:
+            with self.subTest(field=diagnostic):
+                for original_name, original in originals.items():
+                    self.write(original_name, original)
+                changed = copy.deepcopy(originals[name])
+                parent = changed
+                for key in keys[:-1]:
+                    parent = parent[key]
+                parent[keys[-1]] = value
+                self.write(name, changed)
+                commands = [[sys.executable, "-B", str(ROOT / "yaya/tools/checks/check-feature-list.py"),
+                             "--repo-root", str(self.root)]]
+                if keys[-1] == "added":
+                    commands.append([sys.executable, "-B", str(ROOT / "yaya/tools/features/merge-test-registry.py"),
+                                     "--repo-root", str(self.root), "--components", "components.json"])
+                for command in commands:
+                    result = subprocess.run(command, cwd=self.root, capture_output=True, text=True)
+                    self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
+                    self.assertIn(diagnostic, result.stderr)
+                    self.assertNotIn("Traceback", result.stderr)
+                    self.assertEqual(registry_path.read_bytes(), registry_before)
 
     def test_passing_check_prints_verdict_but_eligible_prints_only_json(self) -> None:
         self.validate()
@@ -265,11 +310,19 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_replacement_must_be_mapped_into_its_features_verification_plan(self) -> None:
         self.retire()
+        replacement_id = "F003-AC01-02"
+        self.registry["tests"].append({**self.registry["tests"][2], "id": replacement_id,
+                                       "case": "test_replacement"})
+        self.registry["tests"][0]["retirement"]["replacement"]["test_ids"] = [replacement_id]
         path = self.root / "docs/features/F003.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
-        detail["acceptance_criteria"][0]["verification"]["automated_tests"] = []
+        with mock.patch.object(checker, "_error") as errors:
+            self.assertFalse(self.validate())
+        errors.assert_called_once_with(
+            f"retired test F001-AC01 replacement {replacement_id} is not mapped in Feature F003 verification")
+        detail["acceptance_criteria"][0]["verification"]["automated_tests"].append(replacement_id)
         self.write("docs/features/F003.json", detail)
-        self.assertFalse(self.validate())
+        self.assertTrue(self.validate())
 
     def test_migrations_reject_wrong_cardinality_missing_ids_and_unsafe_sources(self) -> None:
         base = copy.deepcopy(self.revisions["revision_log"][0]["migrations"][0])
@@ -469,13 +522,22 @@ class FeatureEvolutionTests(unittest.TestCase):
 
     def test_external_extra_scope_cannot_impersonate_replacement_verification(self) -> None:
         self.retire()
+        replacement_id = "F003-AC01-02"
+        self.registry["tests"].append({**self.registry["tests"][2], "id": replacement_id,
+                                       "case": "test_replacement"})
+        self.registry["tests"][0]["retirement"]["replacement"]["test_ids"] = [replacement_id]
         path = self.root / "docs/features/F003.json"
         detail = json.loads(path.read_text(encoding="utf-8"))
-        detail["acceptance_criteria"][0]["verification"]["automated_tests"] = []
-        detail["verification"]["test_impact"] = {"additional_tests": [{"id": "F003-AC01", "reason": "Additional investigation"}],
+        detail["verification"]["test_impact"] = {"additional_tests": [{"id": replacement_id, "reason": "Additional investigation"}],
                                                   "full_suite_reasons": []}
         self.write("docs/features/F003.json", detail)
-        self.assertFalse(self.validate())
+        with mock.patch.object(checker, "_error") as errors:
+            self.assertFalse(self.validate())
+        errors.assert_called_once_with(
+            f"retired test F001-AC01 replacement {replacement_id} is not mapped in Feature F003 verification")
+        detail["acceptance_criteria"][0]["verification"]["automated_tests"].append(replacement_id)
+        self.write("docs/features/F003.json", detail)
+        self.assertTrue(self.validate())
 
     def test_neutral_projection_accepts_safe_later_dependency_without_rewriting_fixture(self) -> None:
         original = copy.deepcopy(self.index)

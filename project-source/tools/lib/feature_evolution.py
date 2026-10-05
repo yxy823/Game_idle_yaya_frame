@@ -202,12 +202,11 @@ def eligible_features(entries: dict[str, dict]) -> list[str]:
 def _initial_baseline(revision: dict, label: str, entries: dict[str, dict], index: int) -> None:
     if index != 0:
         raise EvolutionError(f"{label}: R000 must be the first revision")
+    if revision["anchor_commit"] != revision["synced_at_commit"]:
+        raise EvolutionError(f"{label}: R000 anchor_commit and synced_at_commit must be equal")
     if "user_intent" not in revision or not (revision["user_intent"] is None or isinstance(revision["user_intent"], str)):
         raise EvolutionError(f"{label}.user_intent must be present as a string or null")
-    added = revision.get("added")
-    if (not isinstance(added, list) or not added or len(set(added)) != len(added)
-            or any(not isinstance(fid, str) or fid not in entries for fid in added)):
-        raise EvolutionError(f"{label}.added must list the existing Feature IDs this first plan added, without duplicates")
+    _feature_ids(revision.get("added"), f"{label}.added", entries, nonempty=True)
     if revision["migrations"] or revision["dependency_changes"]:
         raise EvolutionError(f"{label} records the initial plan; migrations and dependency_changes must be empty")
 

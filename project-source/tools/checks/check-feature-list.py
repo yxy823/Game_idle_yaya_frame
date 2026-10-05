@@ -114,15 +114,18 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
             _error(f"{fid}.title must be a non-empty string")
             ok = False
         status = entry.get("status")
-        if status not in ALLOWED_STATUS:
+        status_valid = isinstance(status, str) and status in ALLOWED_STATUS
+        if not status_valid:
             _error(f"{fid}.status {status!r} is invalid")
             ok = False
         scope = entry.get("estimated_scope")
-        if scope not in ALLOWED_SCOPE:
+        if not isinstance(scope, str) or scope not in ALLOWED_SCOPE:
             _error(f"{fid}.estimated_scope {scope!r} is invalid; final values are small or medium")
             ok = False
         deps_ok, deps = _unique_string_list(entry.get("depends_on"), f"{fid}.depends_on")
         ok &= deps_ok
+        if not status_valid:
+            continue
         completed_at = entry.get("completed_at")
         if status in {"done", "obsolete_done"}:
             if not isinstance(completed_at, str) or not completed_at.strip() or not _valid_iso8601(completed_at):
@@ -143,7 +146,9 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
             elif dep == fid:
                 _error(f"{fid} cannot depend on itself")
                 ok = False
-            elif entry.get("status") in {"pending", "in_progress", "blocked"} and entries[dep].get("status") in {"obsolete", "obsolete_done"}:
+            elif (isinstance(entry.get("status"), str) and isinstance(entries[dep].get("status"), str)
+                  and entry["status"] in {"pending", "in_progress", "blocked"}
+                  and entries[dep]["status"] in {"obsolete", "obsolete_done"}):
                 _error(f"{fid}.depends_on references obsolete prerequisite {dep}; synchronize its replacement")
                 ok = False
 
@@ -306,7 +311,8 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
         _error(f"{_rel(path)}.notes must be a string")
         ok = False
     engineering_change = data.get("engineering_change")
-    if engineering_change is not None and engineering_change not in ALLOWED_ENGINEERING_CHANGE:
+    if engineering_change is not None and (not isinstance(engineering_change, str)
+                                           or engineering_change not in ALLOWED_ENGINEERING_CHANGE):
         _error(f"{_rel(path)}.engineering_change {engineering_change!r} is invalid")
         ok = False
     diagnosis = data.get("bug_diagnosis")
