@@ -255,11 +255,11 @@ func test_failed_group_replace_preserves_original_and_removes_temporary_file() -
 	var changed := Group.empty()
 	changed.name = "replacement"
 	var issue := Group.write_json(path, changed)
-	var after := FileAccess.get_file_as_bytes(path)
+	var reloaded := FileAccess.get_file_as_bytes(path)
 	var remaining := DirAccess.get_files_at(directory)
 	held.close()
 	assert_str(issue).contains("Cannot replace")
-	assert_bool(after == original).is_true()
+	assert_bool(reloaded == original).is_true()
 	assert_array(remaining).is_equal(PackedStringArray(["group.json"]))
 
 

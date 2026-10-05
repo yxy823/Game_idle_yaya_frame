@@ -8,6 +8,7 @@ import shutil
 import struct
 import subprocess
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
 import wave
@@ -321,11 +322,19 @@ class AnalyzerTests(unittest.TestCase):
                                str(os.getpid()), "--request", str(self.request)], stdin=subprocess.PIPE,
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
             # 工作台在清理前一直开着 stdin；communicate() 会先关闭它，测不到 stdin 阻塞。
+            # 输出要边运行边读走，否则结果写满 Windows 管道缓冲后 worker 会卡在写入上。
+            streams = {}
+            readers = [threading.Thread(target=lambda name=name: streams.__setitem__(
+                name, getattr(process, name).read())) for name in ("stdout", "stderr")]
+            for reader in readers:
+                reader.start()
             try:
                 returncode = process.wait(timeout=5)
             finally:
                 process.stdin.close()
-            output, errors = process.stdout.read(), process.stderr.read()
+                for reader in readers:
+                    reader.join(timeout=5)
+            output, errors = streams.get("stdout", b""), streams.get("stderr", b"")
             self.assertEqual(returncode, 0, errors)
             data = json.loads(output)
             self.assertEqual(data["status"], "success")
