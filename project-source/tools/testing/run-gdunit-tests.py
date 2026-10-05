@@ -18,7 +18,7 @@ from tools.lib.atomic_json import write_json
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import start_run, finish_run, run_history_directory, derive_test_evidence
-from tools.lib.test_selection import build_selection, execution_selectors, read_json
+from tools.lib.test_selection import build_selection, deduplicate_selectors, execution_selectors, read_json
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RUNNER_SCRIPT = "res://yaya/tools/testing/gdunit_evidence_runner.gd"
@@ -179,9 +179,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Maximum test-process wall time (default: 120 seconds).",
     )
     args = parser.parse_args(list(argv))
-    # 重复的 --target 全部运行，按首次出现的顺序去重；--feature 的选择器在测试选择后填入。
-    args.targets = [] if args.feature else list(dict.fromkeys(args.target or ["tests"]))
     try:
+        args.targets = [] if args.feature else deduplicate_selectors(REPO_ROOT, args.target or ["tests"])
         run_history_directory(REPO_ROOT, args.feature)
     except ValueError as error:
         parser.error(str(error))

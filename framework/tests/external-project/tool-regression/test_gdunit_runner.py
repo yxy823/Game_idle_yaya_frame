@@ -57,11 +57,15 @@ class GdUnitRunnerTests(unittest.TestCase):
         temporary = tempfile.TemporaryDirectory(prefix="gdunit-wrapper-unit-")
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name)
+        (self.root / "tests").mkdir()
         patcher = mock.patch.object(runner, "REPO_ROOT", self.root)
         patcher.start()
         self.addCleanup(patcher.stop)
 
     def test_direct_command_preserves_engine_and_gdunit_argument_boundaries(self) -> None:
+        suite = self.root / "tests/with spaces/test_case.gd"
+        suite.parent.mkdir(parents=True)
+        suite.touch()
         args = runner._parse_args([
             "--godot-binary", sys.executable, "--target", "tests/with spaces/test_case.gd",
             "--require-test", "tests/with spaces/test_case.gd::test_case", "--continue",
@@ -79,12 +83,28 @@ class GdUnitRunnerTests(unittest.TestCase):
         self.assertEqual(args.require_test, "tests/with spaces/test_case.gd::test_case")
 
     def test_repeated_targets_all_run_in_order_without_duplicates(self) -> None:
+        for name in ("a.gd", "b.gd"):
+            (self.root / "tests" / name).touch()
         args = runner._parse_args(["--godot-binary", sys.executable, "--target", "tests/a.gd",
                                    "--target", "tests/b.gd", "--target", "tests/a.gd"])
         self.assertEqual(args.targets, ["tests/a.gd", "tests/b.gd"])
         command = runner._build_command(args, self.root / "reports")
         self.assertEqual(command[-4:], ["-a", "tests/a.gd", "-a", "tests/b.gd"])
         self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).targets, ["tests"])
+
+    def test_overlapping_targets_execute_only_the_parent_directory(self) -> None:
+        suite = self.root / "tests/features/F013/held_tween_clock_test.gd"
+        suite.parent.mkdir(parents=True)
+        suite.touch()
+        targets = ["tests/features/F013", "tests/features/F013/held_tween_clock_test.gd",
+                   "res://tests/features/F013", "tests\\features\\F013", "tests/features",
+                   "res://tests/features", "tests/features"]
+        args = runner._parse_args(["--godot-binary", sys.executable,
+                                   *[argument for target in targets for argument in ("--target", target)]])
+        self.assertEqual(args.targets, ["tests/features"])
+        command = runner._build_command(args, self.root / "reports")
+        self.assertEqual(command[-2:], ["-a", "tests/features"])
+        self.assertEqual(command.count("-a"), 1)
 
     def test_console_summary_lists_failures_and_falls_back_to_output_tail(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
