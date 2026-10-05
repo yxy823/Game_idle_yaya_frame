@@ -135,6 +135,11 @@ func _unused_scopes() -> void:
 	_expect(_count(report, "unused-variable") == 1, "static local checked")
 	var code := "static func words(value: int) -> String:\n\treturn \"value\" # value\n"
 	_expect(_count(_analyze(code), "unused-parameter") == 1, "comments and strings are not usages")
+	var one_line := _analyze("func choose(flag: bool) -> int: return 3 if flag else 4\n")
+	_expect(_count(one_line, "unused-parameter") == 0, "one-line body uses its parameter")
+	if one_line.functions.size() == 1:
+		_expect(one_line.functions[0].complexity == 2, "one-line body counts its ternary")
+		_expect(not one_line.functions[0].has("inline_body"), "inline body is not exported")
 
 
 # Exercise the analyzer path, including its existing multiline lexer.

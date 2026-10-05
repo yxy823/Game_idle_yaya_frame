@@ -35,3 +35,10 @@ Config saving retains all supported analysis fields, including metrics and field
 ## Updating upstream
 
 Compare the pinned upstream base, these local changes, and the proposed new upstream version. Preserve licensing and inspect each listed changed file. If upstream fixes the same defect, use its implementation after the same positive/negative regressions pass and remove the redundant local patch. If the defect remains, carry only the still-needed change; if upstream APIs or lexing change, review the integration rather than overwriting or blindly applying old edits. Update this file with the new base and retained changes. Do not add a patch manager, upgrade state machine, or compatibility layer.
+
+## One-line bodies and invalid editor configuration (2026-10-05)
+
+- `analyzer/source-map.gd`: code after the signature colon of a one-line function (`func f(x): return x`) is part of the body. Complexity and emptiness count it; `checkers/unused-checker.gd` searches it for parameter usage, so such parameters are no longer reported as unused. `checkers/function-checker.gd` does not export the internal `inline_body` field.
+- `dock.gd`: when `gdlint.json` failed to load, Scan shows the configuration error and runs no analysis instead of reporting results from default or partially loaded settings. Saving settings still relies on the existing `save_to_json` error output.
+
+`framework/tests/external-project/tool-regression/gdscript_lint_contracts.gd` covers the one-line case.

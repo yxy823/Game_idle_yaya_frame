@@ -80,6 +80,8 @@ static func functions(lines: Array) -> Array[Dictionary]:
 				ending = j
 		var body: Array[String] = []
 		var nesting_body: Array[String] = []
+		if not str(signature.inline).is_empty():
+			body.append(signature.inline)
 		for j in range(signature.end + 1, ending + 1):
 			# Continued expressions and string payload indentation are not control nesting.
 			body.append(code[j])
@@ -90,6 +92,7 @@ static func functions(lines: Array) -> Array[Dictionary]:
 			"params": signature.parameters.size(), "parameter_names": signature.parameters,
 			"parameter_types": signature.parameter_types, "return_type": signature.return_type,
 			"has_return_type": signature.has_return_type, "body": body, "nesting_body": nesting_body,
+			"inline_body": signature.inline,
 			"physical_lines": ending - i + 1, "code_lines": count_code(code.slice(i, ending + 1))
 		})
 	return declarations
@@ -146,8 +149,11 @@ static func _signature(code: Array, start: int) -> Dictionary:
 					_append_parameter(parameters, parameter_types, current)
 					var tail := line.substr(j + 1).strip_edges()
 					var return_type := tail.trim_prefix("->").split(":")[0].strip_edges() if tail.begins_with("->") else ""
+					# Code after the signature colon is the body of a one-line function.
+					var colon := tail.find(":")
+					var inline := tail.substr(colon + 1).strip_edges() if colon >= 0 else ""
 					return {"end": i, "parameters": parameters, "parameter_types": parameter_types,
-						"has_return_type": "->" in tail, "return_type": return_type}
+						"has_return_type": "->" in tail, "return_type": return_type, "inline": inline}
 			if character == "," and depth == 1:
 				_append_parameter(parameters, parameter_types, current)
 				current = ""
@@ -155,7 +161,8 @@ static func _signature(code: Array, start: int) -> Dictionary:
 				current += character
 		current += " "
 	# Invalid syntax is rejected by the native parser; retain a bounded diagnostic model.
-	return {"end": start, "parameters": [], "parameter_types": [], "has_return_type": false, "return_type": ""}
+	return {"end": start, "parameters": [], "parameter_types": [], "has_return_type": false, "return_type": "",
+		"inline": ""}
 
 
 static func _append_parameter(parameters: Array[String], types: Array[String], text: String) -> void:

@@ -30,14 +30,17 @@ func check_unused(lines: Array, add_issue_callback: Callable) -> void:
 			if config.check_unused_variables:
 				_extract_variable_declaration(code[i], i + 1)
 				_extract_for_loop_variable(code[i], i + 1)
-		_find_scoped_usages(code, function.signature_end, function.end_line)
+		_find_scoped_usages(code, function.signature_end, function.end_line, function.inline_body)
 		_report_unused(add_issue_callback)
 
 
-func _find_scoped_usages(code: Array, start: int, end: int) -> void:
+func _find_scoped_usages(code: Array, start: int, end: int, inline_body: String = "") -> void:
 	for declaration in _declarations:
 		var usage := RegEx.new()
 		usage.compile("\\b" + str(declaration.name) + "\\b")
+		if usage.search(inline_body) != null:
+			declaration.used = true
+			continue
 		for i in range(start, end):
 			if i + 1 != declaration.line and usage.search(code[i]) != null:
 				declaration.used = true

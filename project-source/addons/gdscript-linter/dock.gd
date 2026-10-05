@@ -697,6 +697,13 @@ func _start_analysis_after_render() -> void:
 
 
 func _run_analysis() -> void:
+	# An invalid gdlint.json must not produce an ordinary report from default or partial settings.
+	if not current_config.configuration_error.is_empty():
+		current_result = null
+		results_label.text = "[color=red]gdlint.json is invalid: %s. Fix the file and reload the project; no analysis was run.[/color]" % current_config.configuration_error
+		scan_button.disabled = false
+		_hide_busy_overlay()
+		return
 	var analyzer = CodeAnalyzerScript.new(current_config)
 	current_result = analyzer.analyze_directory("res://")
 

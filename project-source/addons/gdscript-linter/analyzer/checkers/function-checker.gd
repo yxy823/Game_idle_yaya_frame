@@ -75,6 +75,7 @@ func _finalize_function(func_data: Dictionary, body_lines: Array, file_result, a
 	func_data["length_metric"] = config.function_length_metric
 	func_data.erase("body")
 	func_data.erase("nesting_body")
+	func_data.erase("inline_body")
 	file_result.add_function(func_data)
 
 	_check_function_length(func_data, line_count, add_pinned_issue_callback)
