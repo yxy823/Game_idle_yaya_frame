@@ -170,6 +170,7 @@ class LifecycleEvidenceTests(unittest.TestCase):
         script = self.root / runner.RUNNER_SCRIPT.removeprefix("res://")
         script.parent.mkdir(parents=True)
         script.touch()
+        (self.root / "tests").mkdir()
         def failed_process(command, log, timeout):
             log.write_text("original startup failure", encoding="utf-8")
             return runner.ProcessResult(7, False, 123, "original startup failure", (123,))
