@@ -17,8 +17,8 @@ MANIFEST = REPO_ROOT / "framework/project-creation/project-files.json"
 PROMPT_DIR = "framework/prompt-scenarios/prompts"
 # 提示词正文中的框架仓库路径；生成项目内的路径（docs/、yaya/ 等）不在这里核对。
 PROMPT_PATH = re.compile(r"(?<![\w/.-])((?:framework|project-source|\.agents)/[\w./*\-一-鿿]+)")
-# 「<文件> 的「标题」、「标题」」写法；不带目录的文件名只在维护提示词库中按仓库根目录解析。
-PROMPT_HEADING = re.compile(r"((?:(?:framework|project-source|\.agents)/[\w./\-]+)?[\w\-]+\.md) 的((?:「[^」]+」、?)+)")
+# 「<文件> 的「标题」、「标题」」写法（“的”可省略）；不带目录的文件名只在维护提示词库中按仓库根目录解析。
+PROMPT_HEADING = re.compile(r"((?:(?:framework|project-source|\.agents)/[\w./\-]+)?[\w\-]+\.md) ?(?:的 ?)?((?:「[^」]+」、?)+)")
 sys.path.insert(0, str(REPO_ROOT / "framework/project-creation/tools"))
 
 from create_project import copy_project  # noqa: E402

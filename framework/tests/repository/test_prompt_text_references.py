@@ -45,12 +45,14 @@ class PromptTextReferenceTests(unittest.TestCase):
     def test_missing_paths_and_headings_are_reported(self):
         self.library("yaya-maintenance-prompts.json", {
             "坏": "读 framework/maintenance/sync.md 的「后续用口语继续」、「授权在后续对话中的延续」，"
-                  "AGENTS.md 的「不存在」，以及 framework/gone.md。",
+                  "AGENTS.md 的「不存在」，framework/maintenance/sync.md「无此节」，以及 framework/gone.md。",
         })
         self.assertEqual(self.broken(), {
             ("yaya-maintenance-prompts.json", "坏: framework/maintenance/sync.md 的「后续用口语继续」",
              "heading not found in target"),
             ("yaya-maintenance-prompts.json", "坏: AGENTS.md 的「不存在」", "heading not found in target"),
+            ("yaya-maintenance-prompts.json", "坏: framework/maintenance/sync.md 的「无此节」",
+             "heading not found in target"),
             ("yaya-maintenance-prompts.json", "坏: framework/gone.md", "target does not exist"),
         })
 
