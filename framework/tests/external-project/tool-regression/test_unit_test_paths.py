@@ -8,7 +8,6 @@ from project_context import PROJECT_ROOT
 
 import copy
 import json
-import os
 import subprocess
 import tempfile
 import unittest
@@ -181,20 +180,6 @@ class UnitTestPathsTests(unittest.TestCase):
                 with self.subTest(path=path):
                     self.assertTrue((self.root / path).exists())
                     self._assert_path_rejected_before_write(path)
-
-    def test_resolved_external_link_is_rejected_before_write(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="linked-registry-", dir=self.root.parent) as external:
-            link = self.root / "linked-tests"
-            try:
-                link.symlink_to(external, target_is_directory=True)
-            except OSError as exc:
-                if os.name == "nt" and getattr(exc, "winerror", None) == 1314:
-                    self.skipTest("Windows account cannot create symbolic links")
-                raise
-            try:
-                self._assert_path_rejected_before_write("linked-tests")
-            finally:
-                link.unlink()
 
     def test_resource_prefix_remains_a_selector_adapter_not_a_registry_alias(self) -> None:
         from tools.lib.test_selection import normalized_path

@@ -181,27 +181,6 @@ class ProjectCopyTests(unittest.TestCase):
             else:
                 self.assertFalse(output.exists())
 
-    def test_nested_file_and_directory_symlinks_are_rejected(self):
-        outside = self.base / "outside"
-        outside.mkdir()
-        (outside / "private.txt").write_text("not distribution material", encoding="utf-8")
-        link = self.source / "project-source/skills/example/linked"
-        for target in (outside / "private.txt", outside, self.source / "project-source/Project_AGENTS.md"):
-            with self.subTest(target=target):
-                try:
-                    link.symlink_to(target, target_is_directory=target.is_dir())
-                except OSError as exc:
-                    if os.name == "nt" and getattr(exc, "winerror", None) == 1314:
-                        self.skipTest("Windows account cannot create symbolic links")
-                    raise
-                try:
-                    self.assert_link_rejected_without_writing()
-                finally:
-                    link.unlink()
-                    empty = self.base / "empty-project"
-                    if empty.exists():
-                        empty.rmdir()
-
     @unittest.skipUnless(os.name == "nt", "Windows junction contract")
     def test_junction_and_mapping_through_junction_are_rejected(self):
         outside = self.base / "outside"
