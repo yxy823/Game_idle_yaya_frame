@@ -14,9 +14,11 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 | 要求的结果 | 权威方法 |
 | --- | --- |
 | 脚本解析或 lint | `yaya/methodology/contracts/gdscript-lint.md` 中的 **直接运行**，包括它要求的内部扫描范围、退出码和原始输出的处理方式 |
-| 已有 Feature 的测试 | `yaya/methodology/08-test-traceability-and-evidence.md` 中的 **运行时的测试影响选择**、该 Feature 和测试登记表（Registry）中的实际义务，以及 `yaya/tools/README.md` 中的运行器约定 |
-| 没有 Feature 时指定的测试套件或组件 | `yaya/tools/README.md` 和 methodology 08 中的定向目标路线；不需要 Feature、计划或完成记录 |
-| 实际启动，或观察指定的场景、资源 | 要求的场景、通过 `AGENTS.md` 找到的项目工程规则，以及实际配置的 Godot 环境；只有缺少准备时，才按 `yaya/tools/README.md` 中的首次扫描说明处理 |
+| 已有 Feature 的测试 | 用 `yaya/tools/testing/run-gdunit-tests.py --feature`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；选择依据见 `yaya/methodology/08-test-traceability-and-evidence.md` 的 **运行时的测试影响选择**，以及该 Feature 和测试登记表（Registry）中的实际义务 |
+| 没有 Feature 时指定的测试套件或组件 | 用同一入口的 `--target`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；不需要 Feature、计划或完成记录 |
+| 实际启动，或观察指定的场景、资源 | 要求的场景、通过 `AGENTS.md` 找到的项目工程规则，以及实际配置的 Godot 环境；启动方法见 `yaya/tools/README.md` 的 **启动场景冒烟检查**，只有缺少准备时，才按同一文件的 **首次 Godot 扫描** 处理 |
+
+运行 gdUnit 测试只用上述入口，不直接调用 `addons/gdUnit4/runtest.*`，也不用 `--headless` 直接运行 gdUnit。测试失败需要解读时，读 `yaya/agent-rules/70-tests/gdunit4-profile.md`。
 
 在已有的 worktree 中检查时，如果有关数据或清理去向未知或发生了变化，在运行会写入的工具之前，先读 [Godot worktree 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。这包括测试和编辑器、导入操作，不只是运行游戏。复用仍然有效的准备结果；该参考不要求调用创建 Skill、另建工作目录，也不要求把这次检查扩大成完整的交付运行。
 

@@ -54,6 +54,21 @@ $LASTEXITCODE
 
 首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[资产规则](../agent-rules/60-assets/README.md)和[引用规则](../agent-rules/00-core/godot-resource-references.md)处理；首次扫描为插件资源生成的 `.import` 随项目提交。
 
+## 启动场景冒烟检查
+
+确认一个场景能加载并运行若干帧时，在项目根目录执行（`$projectGodot` 的取法同上一节）：
+
+```powershell
+& $projectGodot --headless --path . res://main/main.tscn --quit-after 120 2>&1 | Tee-Object -FilePath <日志路径> | Out-Host
+$LASTEXITCODE
+```
+
+- 把 `res://main/main.tscn` 换成要检查的场景；`--quit-after` 是运行的帧数上限，到达后 Godot 自行退出。
+- `| Out-Host` 让 PowerShell 等 Godot 结束后再读退出码；`2>&1` 把错误输出一起写进日志。日志目录按 [09 的报告与清理](../methodology/09-records-reports-and-handoff.md#报告与清理) 选择。
+- 退出码非 `0` 表示启动失败，例如场景文件不存在或无法加载。
+- 退出码 `0` 不代表没有脚本错误：脚本解析错误和运行时脚本错误都只打印在输出里，退出码仍是 `0`。所以要检查输出中的 `ERROR`、`SCRIPT ERROR` 和紧随其后的 `at:` 行（错误所在的文件和行号）。
+- 这项检查只证明场景能加载并运行到帧数上限。`--headless` 不渲染画面，不能说明画面正确；能启动也不等于人工验收。
+
 ## 调用
 
 `python_executable` 支持完整路径、项目相对路径或 PATH 中的命令名；`engine_executable` 使用完整路径或项目相对文件路径，不查询 PATH。两者都不包含 shell 引号或参数。

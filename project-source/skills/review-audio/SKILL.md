@@ -5,7 +5,7 @@ description: "对照声音规格独立审核音乐、音效及其游戏内表现
 
 # 音频审核
 
-按 `yaya/methodology/12-independent-review.md` 执行。阅读适用的 GDD 触发条件和方向、Sound Bible 以及资源规格。针对所主张的体验，检查可播放的样本和实际情境中的播放；写明音频是怎样听到的。
+按 `yaya/methodology/12-independent-review.md` 执行。阅读适用的 GDD 触发条件和方向、Sound Bible 以及资源规格。来源位置按 `yaya/methodology/11-specialist-workflows.md` 的 **归属与决策** 查找；只有空章节的 Bible 不构成审核标准。针对所主张的体验，检查可播放的样本和实际情境中的播放；写明音频是怎样听到的。
 
 适用时检查触发与反馈是否对齐、过渡、循环接缝、削波与噪声、叠加与优先级、重复疲劳、混音遮蔽，以及有意义的静默。区分源文件质量与运行时的导入、总线和混音行为。包括涉及的暂停、切换场景、重复事件，以及音量与静音条件。
 

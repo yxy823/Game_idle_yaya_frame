@@ -5,7 +5,7 @@ description: "为已获授权的 Godot 调查设计或添加范围很小的运�
 
 # 诊断埋点
 
-使用 `yaya/methodology/11-specialist-workflows.md`。从现有证据回答不了的具体问题开始，例如：
+使用 `yaya/methodology/11-specialist-workflows.md` 的 **设计、制作、接入与审核** 和 **定稿与证据**；原始数据按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **报告与清理** 保存。从现有证据回答不了的具体问题开始，例如：
 
 - 发生了哪次状态转换；
 - 某个对象归谁所有；
