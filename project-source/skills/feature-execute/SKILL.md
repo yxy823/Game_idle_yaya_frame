@@ -1,14 +1,14 @@
 ---
 name: feature-execute
 description: >-
-  执行一个已批准的 Feature：测试影响评估、TDD/验证、适用的人工验收、用户要求时的独立审核和完成。还有其他已获授权的工作时，返回调用它的流程。英文触发：execute next feature, implement F0XX, continue feature。中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
+  执行一个已规划的 Feature（执行批准在 Stage 1 取得）：测试影响评估、TDD/验证、适用的人工验收、用户要求时的独立审核和完成。还有其他已获授权的工作时，返回调用它的流程。英文触发：execute next feature, implement F0XX, continue feature。中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
 ---
 
 # 执行下一个 Feature
 
 ## 步骤
 
-先检查相关来源的变化并处理它们的影响，再执行依赖这些来源的工作。`yaya/methodology/03-execute-loop.md` 是 Stage 0–8 唯一的执行步骤，包括其中的共享约定、批准材料、证据命令、异常处理和已授权的续接。先阅读共享约定和当前 Stage，然后按顺序执行每个适用的 Stage。恢复工作时，根据 Feature/Progress 的实际状态和当前证据找到下一个必须的动作；不要重做已完成的工作，也不要重复读取没有变化的上下文。
+先检查相关来源的变化并处理它们的影响，再执行依赖这些来源的工作。`yaya/methodology/03-execute-loop.md` 是 Stage 0–8 唯一的执行步骤，包括其中的通用约定、批准材料、证据命令、异常处理和已授权的续接。先阅读通用约定和当前 Stage，然后按顺序执行每个适用的 Stage。恢复工作时，根据 Feature/Progress 的实际状态和当前证据找到下一个必须的动作；不要重做已完成的工作，也不要重复读取没有变化的上下文。
 
 | 决定或动作 | 依据 |
 | --- | --- |
