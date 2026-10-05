@@ -182,7 +182,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 - **默认范围**：项目内全部 `.tscn`、`.tres`；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录和含 `.gdignore` 的目录。也可以在参数中列出相对项目根目录的文件，只查这些。
 - **局限**：只发现漏掉重存这一种情况；编辑器保存时的其他格式调整不在检查范围内。
 
-退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因，用 `resave_godot_files.gd` 重存后重跑；`2` 文件读取失败。
+退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因，用 `resave_godot_files.gd` 重存后重跑；`2` 项目根目录不存在或文件读取失败。
 
 ### run-gdunit-tests.py
 

@@ -51,6 +51,9 @@ def main() -> int:
     parser.add_argument("--root", type=Path, default=REPO_ROOT)
     args = parser.parse_args()
     root = args.root.resolve()
+    if not root.is_dir():
+        print(f"ERROR: project root is not a directory: {root}", file=sys.stderr)
+        return 2
     try:
         files = [root / path for path in args.paths] if args.paths else resource_files(root)
         report = [(path, line, reason) for path in files for line, reason in problems(path)]

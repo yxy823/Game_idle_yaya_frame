@@ -51,6 +51,12 @@ class GodotResourceFormatTests(unittest.TestCase):
         result = self.run_check()
         self.assertEqual(result.returncode, 0, result.stdout)
 
+    def test_missing_root_is_an_error_not_an_empty_pass(self) -> None:
+        self.root = self.root / "missing"
+        result = self.run_check()
+        self.assertEqual(result.returncode, 2)
+        self.assertNotIn("OK", result.stdout)
+
 
 if __name__ == "__main__":
     unittest.main()
