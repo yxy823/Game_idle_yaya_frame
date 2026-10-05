@@ -11,6 +11,10 @@ description: "在已授权的 Feature 或限定范围的实验中，和用户一
 
 - 要调的效果已经实现、能运行，参数放在资源、场景或导出变量中，可以单独修改。参数还写死在代码里时，先在当前授权内把它们提到资源或导出变量。
 - 调整属于一个已授权的 Feature（通常在 Stage 3），或用户要求的限定范围实验。没有这类授权时，只给出调整建议，不改文件。
+- 效果所属的 Feature 已经完成，用户之后才觉得要调：修改已确认的值属于专业需求变化，按 `yaya/methodology/11-specialist-workflows.md` 的 [编写与采纳](../../../yaya/methodology/11-specialist-workflows.md#编写与采纳) 中的变化路由处理，不在已完成的 Feature 上直接改。做法：
+  1. 负责该参数所在文档的 Skill（表现参数用 `design-game-presentation`）把要调的参数改为“待定，由调优确定”，写明用户反馈的问题；
+  2. 按同一文件的 [源同步前先提交来源修改](../../../yaya/methodology/11-specialist-workflows.md#源同步前先提交来源修改) 提交文档修改后，`feature-sync` 为这项变化建立新的 Feature，AC 写成用户实际体验后接受调整结果；
+  3. 在新 Feature 的 Stage 3 用本 Skill 调整，采用的值按同一节中“Feature 按 AC 填写来源中已列为待定的参数”写回。
 - 用户在 Stage 5 人工验收时提出“再调一下”，按 `yaya/methodology/03-execute-loop.md` 的 [Stage 5](../../../yaya/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 记录未通过的检查项，回到 Stage 3 用本 Skill 调整，之后重做 Stage 4 和 Stage 5。
 
 ## 一轮怎么做
