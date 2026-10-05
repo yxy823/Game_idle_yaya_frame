@@ -46,6 +46,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ## 编写测试时的约定
 
 - 套件直接或经 `class_name`、脚本路径间接继承 `GdUnitTestSuite`，测试方法以 `test_` 开头。包装脚本按源码声明核对执行；无法解析的 `extends` 表达式直接失败。
+- 共享基类只放辅助函数和生命周期方法，不写 `test_` 方法；要复用同一组断言，在每个套件里各写一个 `test_` 方法去调用它。继承来的 `test_` 方法在多个套件中可能得到相同的测试身份，无法形成完成证据。
 - 不用跳过、`-i` 忽略列表或过滤来绕过失败。被跳过的用例本身就让运行失败。
 - `project.godot` 设置了 `flaky_check_enable=false`，失败的用例不会重试。不要打开重试来掩盖不稳定。
 - `await` 每一个协程断言，包括 `assert_signal(...).is_emitted()`、`is_not_emitted()` 和 `assert_error(...)` 的各个匹配方法。漏写 `await` 时，测试不等断言完成就继续，失败可能不被计入。

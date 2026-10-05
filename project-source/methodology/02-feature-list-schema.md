@@ -424,7 +424,7 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 - 只有当替代测试所属的 Feature 是 `pending`、`in_progress` 或 `blocked` 时，替代测试才可以是 `planned`。这是一个可见的覆盖缺口，永远不算通过的证据。已完成的替代 Feature 需要 active 的覆盖，或另一条完全可追溯的退役链。
 - 退役链不能成环。缺少出处或缺少替代时校验失败；不要为了通过校验编造理由或替代。
 
-所属 Feature 为 `done`、`obsolete` 或 `obsolete_done` 的 `planned` 测试也会校验失败。Feature 被退役且没有替代时，删除它在测试登记表中的 `planned` 条目，这些测试从未实现。
+所属 Feature 为 `done`、`obsolete` 或 `obsolete_done` 的 `planned` 测试也会校验失败。Feature 被退役且没有替代时，一次完成三件事：删除它在测试登记表中的 `planned` 条目（这些测试从未实现）；从它的 AC 和回归映射中删掉这些测试 ID；把 `verification.acceptance_mode` 设回 `null`。只删登记会留下指向不存在测试的引用，校验失败。AC 正文、人工检查描述和退役原因保留。作废的 Feature 不进入完成判断，`null` 是它的合法状态。
 
 被取代的测试从未写过时，已退役测试的 `path` 可以是 `null`。已知的历史路径要保留，不要清空。删除来源时可以一并删掉已退役的测试文件。退役不会移除可运行的测试函数：实现时要有意替换或删除被取代的断言，这样完整发现运行的才是当前契约。
 

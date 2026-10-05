@@ -25,7 +25,7 @@
 变成 `obsolete` 的 Feature 不能保留状态为 `planned` 的测试登记表测试：
 
 - 退役有替代项时，按下面的[测试可追溯性更新](#测试可追溯性更新)带上出处退役这些测试。
-- Feature 退役且没有替代项时，删除它状态为 `planned` 的测试登记表条目；这些测试从未实现过。见 methodology 02 的 [File 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
+- Feature 退役且没有替代项时，删除它状态为 `planned` 的测试登记表条目，同时从它的 AC 和回归映射中删掉这些测试 ID，并把 `acceptance_mode` 设回 `null`。见 methodology 02 的 [File 4](../../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson)。
 
 ## 修订
 

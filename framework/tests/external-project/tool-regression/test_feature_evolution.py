@@ -355,6 +355,19 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertTrue(self.validate())
         self.assertEqual([f["id"] for f in self.index["features"]], ["F001", "F002", "F003"])
 
+    def test_retiring_without_replacement_clears_planned_tests_mappings_and_mode(self) -> None:
+        self.registry["tests"][1].update(path=None, case=None, status="planned")
+        self.revisions["revision_log"][0]["migrations"][0].update(kind="retire", **{"from": ["F002"], "to": []})
+        self.index["features"][1]["status"] = "obsolete"
+        del self.registry["tests"][1]
+        self.assertFalse(self.validate())
+        path = self.root / "docs/features/F002.json"
+        detail = json.loads(path.read_text(encoding="utf-8"))
+        detail["acceptance_criteria"][0]["verification"]["automated_tests"] = []
+        detail["verification"]["acceptance_mode"] = None
+        self.write("docs/features/F002.json", detail)
+        self.assertTrue(self.validate())
+
     def test_retirement_chains_preserve_history_and_migration_cycles_fail(self) -> None:
         self.retire()
         old = self.registry["tests"][0]["retirement"]
