@@ -69,6 +69,49 @@ $LASTEXITCODE
 - 退出码 `0` 不代表没有脚本错误：脚本解析错误和运行时脚本错误都只打印在输出里，退出码仍是 `0`。所以要检查输出中的 `ERROR`、`SCRIPT ERROR` 和紧随其后的 `at:` 行（错误所在的文件和行号）。
 - 这项检查只证明场景能加载并运行到帧数上限。`--headless` 不渲染画面，不能说明画面正确；能启动也不等于人工验收。
 
+## 本地导出检查
+
+导出一个 debug 包，在本机独立运行，确认游戏离开编辑器也能正常工作。这不是发布：不涉及签名、商店或分发配置。
+
+**一次性准备**：
+
+- **导出模板**：版本必须和项目的 Godot 一致，在编辑器的“编辑器 → 管理导出模板”中下载安装，由用户完成。
+- **导出预设**：新项目没有 `export_presets.cfg`。第一次导出前，在项目根目录写一份只含一个 Windows Desktop 预设的最小文件，名称 `Windows Local`，导出路径留空：
+
+  ```ini
+  [preset.0]
+
+  name="Windows Local"
+  platform="Windows Desktop"
+  runnable=true
+  export_filter="all_resources"
+  include_filter=""
+  exclude_filter="tests/*, addons/gdUnit4/*, reports/*, dev/*, yaya/tools/*, yaya/asset_workbench/ui/*, yaya/asset_workbench/analyzer/*"
+  export_path=""
+
+  [preset.0.options]
+
+  binary_format/embed_pck=false
+  ```
+
+  排除的依据见 [资源与过滤](../agent-rules/41-export-config/resources-and-filters.md) 和 [测试目录与导出](../agent-rules/70-tests/production-isolation.md#测试目录与导出)。没有写出的字段由 Godot 使用默认值，写好后直接用实际导出验证，通过后提交。注意：`[preset.0.options]` 下至少要有一个键，空段会被当成不存在，导出时报 `Cannot get keys from nonexistent section`。之后结构性的预设修改，在编辑器的“项目 → 导出”中进行。
+
+**导出并启动**（在项目根目录执行，`$projectGodot` 的取法见[首次 Godot 扫描](#首次-godot-扫描)）：
+
+```powershell
+$exportDirectory = 'reports/exports/<日期>'
+New-Item -ItemType Directory -Path $exportDirectory -Force | Out-Null
+& $projectGodot --headless --path . --export-debug 'Windows Local' "$exportDirectory/game.exe" 2>&1 | Tee-Object -FilePath "$exportDirectory/export.log" | Out-Host
+$LASTEXITCODE
+& "$exportDirectory/game.exe" --headless --quit-after 120 2>&1 | Tee-Object -FilePath "$exportDirectory/run.log" | Out-Host
+$LASTEXITCODE
+```
+
+- 输出放在 `reports/exports/` 下：这个目录不进 Git，也不会被 Godot 当成项目资源扫描。目标目录必须事先存在，否则导出失败。
+- 导出成功时，目录中有 `game.exe`、`game.pck` 和 `game.console.exe`（带控制台窗口的启动器，双击它可以看到运行输出）。导出退出码非 `0`、缺少这些文件，或日志中有退出时资源泄漏提示（`leaked`、`still in use`、`PagedAllocator`）以外的 `ERROR`，表示导出有问题；常见原因是缺少对应版本的导出模板，或预设名称写错。
+- 导出包的启动检查和[启动场景冒烟检查](#启动场景冒烟检查)一样：退出码 `0` 不代表没有脚本错误，要检查输出中的 `ERROR`、`SCRIPT ERROR` 和 `at:` 行。常见的问题是运行时用到的文件被过滤掉了，或者代码引用了 `res://` 下只在编辑器中存在的路径。
+- 这项检查只证明导出包能启动并运行到帧数上限。画面、声音和操作是否正常，需要用户直接双击 `game.exe` 实际试玩。
+
 ## 调用
 
 `python_executable` 支持完整路径、项目相对路径或 PATH 中的命令名；`engine_executable` 使用完整路径或项目相对文件路径，不查询 PATH。两者都不包含 shell 引号或参数。

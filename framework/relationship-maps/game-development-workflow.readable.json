@@ -5084,6 +5084,132 @@
         "shadow": false,
         "wrap": true
       }
+    },
+    {
+      "id": "scene-123",
+      "shape": "rounded-rect",
+      "x": 872,
+      "y": 2495.5,
+      "width": 216,
+      "height": 61,
+      "label": "想把 Godot 升级到\n新的补丁版本",
+      "zIndex": 1,
+      "fill": "#fff2e5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/修复与改进/想把 Godot 升级到新的补丁版本.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "scene-124",
+      "shape": "rounded-rect",
+      "x": 872,
+      "y": 2585.5,
+      "width": 216,
+      "height": 61,
+      "label": "某个插件需要升级",
+      "zIndex": 1,
+      "fill": "#fff2e5",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/修复与改进/某个插件需要升级.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "scene-125",
+      "shape": "rounded-rect",
+      "x": 2876,
+      "y": 1705.5,
+      "width": 168,
+      "height": 61,
+      "label": "想导出一个包\n在本机试玩",
+      "zIndex": 1,
+      "fill": "#eaf2ff",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/验证与收尾/想导出一个包在本机试玩.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
     }
   ],
   "edges": [
@@ -15912,6 +16038,190 @@
         }
       ],
       "label": "手感需要调参",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-005-scene-123",
+      "source": {
+        "node": "scene-005",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-123",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "要升级 Godot 版本",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-123-scene-043",
+      "source": {
+        "node": "scene-123",
+        "port": "top"
+      },
+      "target": {
+        "node": "scene-043",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "次版本或主版本等框架迁移",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-123-scene-124",
+      "source": {
+        "node": "scene-123",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "scene-124",
+        "port": "top"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "引擎与插件分开升级",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "both",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "block",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-077-scene-125",
+      "source": {
+        "node": "scene-077",
+        "port": "left"
+      },
+      "target": {
+        "node": "scene-125",
+        "port": "right"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "需离开编辑器运行",
       "stroke": {
         "color": "#8994A5",
         "width": 2,

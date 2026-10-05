@@ -17,6 +17,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 | 已有 Feature 的测试 | 用 `yaya/tools/testing/run-gdunit-tests.py --feature`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；选择依据见 `yaya/methodology/08-test-traceability-and-evidence.md` 的 **运行时的测试影响选择**，以及该 Feature 和测试登记表（Registry）中的实际义务 |
 | 没有 Feature 时指定的测试套件或组件 | 用同一入口的 `--target`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；不需要 Feature、计划或完成记录 |
 | 实际启动，或观察指定的场景、资源 | 要求的场景、通过 `AGENTS.md` 找到的项目工程规则，以及实际配置的 Godot 环境；启动方法见 `yaya/tools/README.md` 的 **启动场景冒烟检查**，只有缺少准备时，才按同一文件的 **首次 Godot 扫描** 处理 |
+| 导出一个包并在本机启动 | `yaya/tools/README.md` 的 **本地导出检查**；修改了导出配置时，再按 `yaya/agent-rules/41-export-config/README.md` 的 **验证** 检查对应的产物 |
 
 运行 gdUnit 测试只用上述入口，不直接调用 `addons/gdUnit4/runtest.*`，也不用 `--headless` 直接运行 gdUnit。测试失败需要解读时，读 `yaya/agent-rules/70-tests/gdunit4-profile.md`。
 
