@@ -26,8 +26,11 @@
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |
 | Feature 记录 | [Feature 结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成依据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |
 | Stage | Feature 执行规范里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |
+| 画面演示台 | `dev/showcase/visual/<主题>/` 下假逻辑、真画面的场景：单方案验证界面的视觉基础，或比较画面、音效、交互动效候选；不运行正式规则代码，候选可以长期保留，验收不覆盖后续业务行为 |
+| 逻辑演示台 | `dev/showcase/logic/<主题>/` 下真实一小块规则、占位画面的场景：比较会改变游戏结果的规则候选，或试验一个玩法提议；不批准新规则，选中的规则写进 GDD 后由 Feature 正式实现 |
+| 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |
 
-来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)。
+来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)、[演示台与技术验证](../project-source/methodology/13-prototypes.md)。
 
 ## 游戏职责
 

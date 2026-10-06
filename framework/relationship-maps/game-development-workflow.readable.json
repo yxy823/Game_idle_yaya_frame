@@ -1480,7 +1480,7 @@
       "y": 1565.5,
       "width": 200,
       "height": 61,
-      "label": "界面布局已经确定，\n想先做一个能点击的原型",
+      "label": "界面布局已经确定，\n想先做一个能点击的画面演示台",
       "zIndex": 1,
       "fill": "#e8f4ef",
       "stroke": {
@@ -1505,7 +1505,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的原型.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/日常开发/界面布局已经确定，想先做一个能点击的画面演示台.md"
       },
       "appearance": {
         "opacity": 1,
@@ -6647,7 +6647,7 @@
       "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
-      "label": "布局已确认且原型获准",
+      "label": "布局已确认且演示台获准",
       "stroke": {
         "color": "#8994A5",
         "width": 2,
@@ -8493,7 +8493,7 @@
           "y": 2352
         }
       ],
-      "label": "原型判断完成，\n继续所属 Feature",
+      "label": "演示台判断完成，\n继续所属 Feature",
       "stroke": {
         "color": "#8994A5",
         "width": 2,

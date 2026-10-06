@@ -69,8 +69,8 @@ yaya/methodology/                         canonical workflow specification
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
 | 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
 | 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
-| 用户明确要求的原型或技术探针 | 在目标项目中使用 `prototype-godot` | 按[原型](13-prototypes.md)回答一个假设。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。 |
-| 在依赖逻辑之前确定布局、资源尺寸和交互可读性 | `prototype-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[依赖实现前的视觉原型](13-prototypes.md#依赖实现前的视觉原型)执行。规格提供输入；可运行的场景和人工验收属于执行阶段。 |
+| 用户明确要求的演示台或技术验证 | 在目标项目中使用 `prototype-godot` | 按[演示台与技术验证](13-prototypes.md)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。 |
+| 在依赖逻辑之前确定布局、资源尺寸和交互可读性 | `prototype-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[画面演示台](13-prototypes.md#画面演示台)的单方案验证执行。规格提供输入；可运行的场景和人工验收属于执行阶段。 |
 | 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
 | 为已获授权的任务准备或复用另一个工作目录 | `worktree-create-godot` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
 | 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate-godot` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
@@ -121,7 +121,7 @@ yaya/methodology/                         canonical workflow specification
 | 可选的架构概览和 ADR | [10-architecture-overview.md](10-architecture-overview.md) |
 | 专业文档、来源映射、UI 与表现文档，以及资源交接 | [11-specialist-workflows.md](11-specialist-workflows.md) |
 | 独立审核 | [12-independent-review.md](12-independent-review.md) |
-| 视觉原型和逻辑原型 | [13-prototypes.md](13-prototypes.md) |
+| 画面演示台、逻辑演示台和技术验证 | [13-prototypes.md](13-prototypes.md) |
 | 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
 | Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
 | 人工验收清单与结论记录 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |

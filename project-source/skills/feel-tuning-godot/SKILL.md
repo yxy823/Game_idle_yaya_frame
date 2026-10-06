@@ -1,6 +1,6 @@
 ---
 name: feel-tuning-godot
-description: "在已授权的 Feature 或限定范围的实验中，和用户一起反复试调已经实现的特效、反馈或操作手感，直到用户满意，并把采用的值写回运行时资源和所属文档。用于“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、回答布局或可行性问题的原型（prototype-godot），也不用于记录验收结论（manual-acceptance-godot）。"
+description: "在已授权的 Feature 或限定范围的实验中，和用户一起反复试调已经实现的特效、反馈或操作手感，直到用户满意，并把采用的值写回运行时资源和所属文档。用于“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、比较画面或规则候选、回答布局或可行性问题的演示台与技术验证（prototype-godot），也不用于记录验收结论（manual-acceptance-godot）。"
 ---
 
 # 特效与手感调优

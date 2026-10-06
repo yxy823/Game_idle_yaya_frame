@@ -42,7 +42,7 @@ Product 是可验证的交付单元，不一定是完整的游戏系统或 GDD �
 
 表现、UI、美术、音频、资源和本地化规格，在 `yaya/methodology/11-specialist-workflows.md` 中有固定的所属位置；按该文件的说明，即使某项规格最初写在 GDD 中，它仍属于对应的专业负责方。游戏规则和目标链接到它们在 GDD 中的来源，不复制。
 
-新界面，或布局、资源的较大变化，按 `yaya/methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。表现规划使用 `design-game-presentation`；只有具体的不确定点需要运行时证据时，才为表现做原型。资源交接按 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 处理。真实的示例、缺少的输入以及需要的视觉和听感验收，都要保持可见。设计文档不能证明原型已被运行或已被接受。
+新界面，或布局、资源的较大变化，按 `yaya/methodology/13-prototypes.md` 的 **画面演示台** 中的单方案验证执行。表现规划使用 `design-game-presentation`；只有具体的不确定点需要运行时证据时，才为表现做画面演示台或技术验证。资源交接按 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 处理。真实的示例、缺少的输入以及需要的视觉和听感验收，都要保持可见。设计文档不能证明演示台已被运行或已被接受。
 
 把配置的文档语言、本次涉及的事实和当前授权交给支持工作，并根据它的实际结果继续本任务。
 

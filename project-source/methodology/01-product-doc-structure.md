@@ -3,7 +3,7 @@
 本规范定义 `docs/gdd/` 下的游戏设计文档（GDD），以及 Product 交付文档 `docs/product.md` 和 `docs/product/NN-<delivery>.md`。相关约定：
 
 - 专业规格、UI 与表现文档、资源交接：[专业工作与来源](11-specialist-workflows.md)。
-- 视觉原型和逻辑原型：[原型](13-prototypes.md)。
+- 画面演示台、逻辑演示台和技术验证：[演示台与技术验证](13-prototypes.md)。
 - 项目术语定义：[项目术语](14-project-terminology.md)。
 
 标题和正文使用 [文档语言](05-document-language.md) 中配置的 `document_language`。文件名和各章节的含义在任何语言下都不变。

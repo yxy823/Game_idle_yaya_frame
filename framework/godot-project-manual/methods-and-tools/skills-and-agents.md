@@ -20,7 +20,7 @@
 | --- | --- |
 | 工程约束 | [Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求；条目默认必须遵守，写“建议：”的是可偏离的默认做法 |
 | 可复用的方法 | [实现方法参考](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
-| 当前游戏的方案与证据 | 表现目标和采用的方案写在对应的游戏表现文档；需要详细工程设计时写在 Feature 设计稿；原型、诊断与验证证据留在原任务的记录中，见[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md) |
+| 当前游戏的方案与证据 | 表现目标和采用的方案写在对应的游戏表现文档；需要详细工程设计时写在 Feature 设计稿；演示台、技术验证、诊断与其他验证证据留在原任务的记录中，见[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md) |
 
 Shader 规则的入口会链接这些方法参考。正式实现、原型和排错都可以直接读它们：参考文件放在某个 Skill 的 `references/` 目录下，不代表要启动那个 Skill 的完整流程、建 Feature 或委派顾问。读参考也不改变当前任务的授权和完成条件，参考里的具体数值不会因此成为通用规则。
 
@@ -39,7 +39,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `project-verification-godot` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
 | `manual-acceptance-godot` | 为实际 Feature 准备待验收清单，或登记用户真实给出的验收结果 |
 | `verification-evidence-godot` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
-| `prototype-godot` | 在当前 Feature 或获准实验中制作并检查真实 Godot UI/逻辑原型 |
+| `prototype-godot` | 在当前 Feature 或获准实验中制作并检查画面演示台、逻辑演示台或技术验证 |
 | `worktree-create-godot` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
 | `worktree-integrate-godot` | 将已选成果带入目标，处理已有整合冲突并验证组合后的结果 |
 | `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
@@ -103,7 +103,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 - **数值设计**：[design-balance](../../../project-source/skills/design-balance/SKILL.md) 从已知目标和规则推导数值方案，也可以调整已有模型的参数，并在写入授权内直接维护 GDD 中所属的数值正文。采纳的参数、写入的文件和验证状态分别记录；需要新增玩法或改变体验目标时，回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，用 `review-balance` 独立审核；设计者自己验算不算独立审核。普通的尺寸或数量记录不需要专门建模。
 - **反馈与诊断**：用户描述实际症状即可，Agent 根据证据追查逻辑、表现以及两者的连接，不需要用户先判断属于哪一层，也不会因为跨层就拆成多个 Bug。只要求调查时，交付证据和结论；已有具体的修复授权时，查清原因后回到原任务继续。
 - **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
-- **原型**：[prototype-godot](../../../project-source/skills/prototype-godot/SKILL.md) 用可运行的 Godot 场景或逻辑实验回答本次的具体问题。原型观察到的结果不等于正式验收。
+- **演示台与技术验证**：[prototype-godot](../../../project-source/skills/prototype-godot/SKILL.md) 用画面演示台、逻辑演示台或技术验证回答本次的具体问题。观察到的结果不等于正式验收。
 - **暂停与续接**：[task-handoff-godot](../../../project-source/skills/task-handoff-godot/SKILL.md) 使用已有的 Progress、Feature 或任务记录。只要求暂停时，保存停点；需要换对话时，再生成可复制的续接文本。它不会自动创建对话、发送消息或另建交接记录文件。恢复已有停点时直接回到原任务，不需要再调用一次交接。
 - **显式调用更可靠**：description 帮助客户端按任务自动选择 Skill，但 Skill 文件存在、格式正确，不代表客户端一定会自动选中它。规范要求的调查和验证仍由原流程负责，不依赖自动发现。
 
@@ -111,7 +111,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 | Skill | 什么时候用 | 说明 |
 | --- | --- | --- |
-| [wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) | 几个问题互相牵连，要先解决一个才能判断下一个。例如背包容量会影响搜索需求和列表性能 | 按当前缺口选择讨论、事实调查或限定原型，不需要把所有方法都走一遍。普通澄清、检验已有方案或目标清楚的实施任务不必先经过它。只讨论时交付结论；已有实施授权时，问题解决后回到原任务。结论与证据的存放见[探索结果与工作目录](../specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) |
+| [wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) | 几个问题互相牵连，要先解决一个才能判断下一个。例如背包容量会影响搜索需求和列表性能 | 按当前缺口选择讨论、事实调查、演示台或技术验证，不需要把所有方法都走一遍。普通澄清、检验已有方案或目标清楚的实施任务不必先经过它。只讨论时交付结论；已有实施授权时，问题解决后回到原任务。结论与证据的存放见[探索结果与工作目录](../specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) |
 | [worktree-create-godot](../../../project-source/skills/worktree-create-godot/SKILL.md) | 确实需要另一个工作目录 | 准备或复用指定版本的 checkout。目录分开不代表运行数据也分开，具体准备方法只在它的[运行参考](../../../project-source/skills/worktree-create-godot/references/godot-worktree-runtime.md)中维护；环境与验证入口遇到写入位置不明或变化时，也直接引用这份参考 |
 | [worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) | 已选定要采用的成果，或要接手已有的整合冲突 | 带回必要的依赖并检查合并后的结果。原任务的验证、人工验收和提交条件仍然有效；整合后不会自动删除源目录或分支。Git 细则见[项目 Git 规范](../../../project-source/Project_AGENTS.md#git-与提交) |
 

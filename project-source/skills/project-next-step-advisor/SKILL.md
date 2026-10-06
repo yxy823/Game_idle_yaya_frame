@@ -72,7 +72,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 反馈或外部报告，或某个具体故障的原因 | `feedback-triage-godot` 或 `bug-diagnosis-godot` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |
 | 某个模块的整体结构，没有异常行为 | `review-code` 中的现状审核 | 这是审核，不是诊断。 |
 | 环境准备、要求的检查、人工验收或证据恢复 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 或 `verification-evidence-godot` | 工具就绪、已执行的检查、用户实际的验收和证据是否适用，是不同的事实。它们都不增加 Feature、Stage 或完整的交付运行。 |
-| 用户要求的 UI 或逻辑原型 | 当前 Feature 或已授权实验中的 `prototype-godot` | 实际的 Godot 运行和观察，不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
+| 用户要求的画面演示台、逻辑演示台或技术验证 | 当前 Feature 或已授权实验中的 `prototype-godot` | 实际的 Godot 运行和观察，不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
 | 多个答案互相影响的未知项 | `wayfinder-godot`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
 | 单独的工作目录，或把选定的成果带回来 | `worktree-create-godot` 或 `worktree-integrate-godot`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
 | 外部事实或方案比较 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |

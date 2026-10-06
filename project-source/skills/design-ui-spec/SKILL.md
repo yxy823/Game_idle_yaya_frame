@@ -1,6 +1,6 @@
 ---
 name: design-ui-spec
-description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 原型的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
+description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 画面演示台的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
 ---
 
 # UI 规格
@@ -27,10 +27,10 @@ GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规�
 
 ## 交接
 
-按 `yaya/methodology/13-prototypes.md` 的 **依赖实现前的视觉原型** 执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
+按 `yaya/methodology/13-prototypes.md` 的 **画面演示台** 中的单方案验证执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
 
-视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用原型中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
+视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用画面演示台中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
 
-返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和原型输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
+返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和画面演示台输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
 
 返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

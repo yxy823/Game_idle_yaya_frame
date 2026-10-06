@@ -24,7 +24,7 @@ Agent 按 Stage 0～8 执行，各阶段的产出见[Feature 的执行阶段](..
 
 ## 视觉样例怎样做
 
-示例的样例（`9218fde`）是一个独立运行的场景 `game/board/prototype/board_visual_prototype.tscn`。它只用本地示例状态展示 8×8 棋盘、背景与格色、6 色棋子、按钮预留区、选中标识和两种轻抖，不接正式的游戏规则。
+示例的样例（`9218fde`）是一个独立运行的场景 `game/board/prototype/board_visual_prototype.tscn`。它只用本地示例状态展示 8×8 棋盘、背景与格色、6 色棋子、按钮预留区、选中标识和两种轻抖，不接正式的游戏规则。这个示例早于[画面演示台](../../../project-source/methodology/13-prototypes.md#画面演示台)约定，场景放在 `game/` 下；现在同类场景放在 `dev/showcase/visual/<主题>/`。
 
 **参数在验收前写进规格**：窗口尺寸、布局、色值、轻抖的幅度和时长，Agent 在请你验收之前，就作为待验收值写进 `docs/ui/game-board-design.md` 和 `docs/art/art-bible.md`。
 
