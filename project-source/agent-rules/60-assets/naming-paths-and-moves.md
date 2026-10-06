@@ -16,7 +16,7 @@
 
 - 建议在编辑器的文件系统面板中移动、重命名和复制，让 Godot 更新引用。
 - 在编辑器外移动或重命名时：
-  - 素材与同名的 `.import` 文件一起移动，脚本和 Shader 与同名的 `.uid` 文件一起移动，分开会丢失 UID 或导入设置；
+  - 素材与同名的 `.import` 文件一起移动，脚本和 Shader 与同名的 `.uid` 文件一起移动，分开会丢失 UID 或导入设置；新加入的素材、脚本和 Shader 运行一次 Godot 扫描，把生成的 `.import`、`.uid` 一起提交；
   - 移动后让 Godot 扫描和导入（见[重新导入](import-configuration.md#重新导入)），检查有没有缺失依赖的报错。
 - 在编辑器外复制出一个独立的新素材时，不复制原文件的 `.import` 或 `.uid`，让 Godot 为新文件生成新的 UID。UID 的规则见[资源引用](../00-core/godot-resource-references.md#资源引用)。
 - 注意：UID 只能修复 Resource 引用。脚本中按字符串路径 `load()` 的代码、`FileAccess` 读取的路径和数据文件中的路径，需要逐个更新。

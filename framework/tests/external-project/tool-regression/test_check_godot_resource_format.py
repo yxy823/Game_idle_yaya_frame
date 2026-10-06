@@ -48,8 +48,31 @@ class GodotResourceFormatTests(unittest.TestCase):
     def test_editor_saved_files_pass(self) -> None:
         self.write("game/ok.tscn", '[gd_scene format=3 uid="uid://abc"]\n\n'
                    '[ext_resource type="Script" uid="uid://def" path="res://a.gd" id="1"]\n')
+        self.write("game/a.gd", "extends Node\n")
+        self.write("game/a.gd.uid", "uid://def\n")
         result = self.run_check()
         self.assertEqual(result.returncode, 0, result.stdout)
+
+    def test_script_or_shader_without_uid_is_reported(self) -> None:
+        self.write("game/new.gd", "extends Node\n")
+        self.write("game/glow.gdshader", "shader_type canvas_item;\n")
+        self.write("addons/vendor/plugin.gd", "extends Node\n")
+        result = self.run_check()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("game/new.gd: missing .uid file", result.stdout)
+        self.assertIn("game/glow.gdshader: missing .uid file", result.stdout)
+        self.assertNotIn("addons/", result.stdout)
+
+    def test_asset_without_import_is_reported(self) -> None:
+        self.write("assets/new.png", "not really a png")
+        self.write("assets/click.WAV", "not really audio")
+        self.write("assets/old.png", "not really a png")
+        self.write("assets/old.png.import", "[remap]\n")
+        result = self.run_check()
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("assets/new.png: missing .import file", result.stdout)
+        self.assertIn("assets/click.WAV: missing .import file", result.stdout)
+        self.assertNotIn("assets/old.png:", result.stdout)
 
     def test_missing_root_is_an_error_not_an_empty_pass(self) -> None:
         self.root = self.root / "missing"

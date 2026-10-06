@@ -25,6 +25,7 @@
 | --- | --- |
 | 任何 `.gd` 修改 | 用 Godot 4.7 `--check-only` 解析改动的脚本和依赖它们的脚本；第三方解析器的结果不能代替 |
 | 任何 `.gd` 修改 | 对整个 `res://` 运行 lint CLI，范围和阈值由根目录的 `gdlint.json` 决定 |
+| 新建 `.gd` | `--check-only` 不生成 `.uid`；运行 [首次 Godot 扫描](../../tools/README.md#首次-godot-扫描)的命令生成同名 `.uid`，与脚本一起提交。漏掉的由 [`check-godot-resource-format.py`](../../tools/README.md#check-godot-resource-formatpy) 发现 |
 | 行为变化 | 运行 [08 测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md#测试影响评估) 选定的范围：Required、affected 或 full |
 | 生命周期、Node、Resource、Input、Autoload 或线程的运行时语义变化 | 在上一行的测试中包含真实 SceneTree 路径上的集成或运行时测试 |
 

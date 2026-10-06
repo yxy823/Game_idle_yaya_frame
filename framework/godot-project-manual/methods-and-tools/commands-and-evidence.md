@@ -53,7 +53,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | --- | --- | --- |
 | `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
 | `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
-| `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的 `.tscn`、`.tres`，跳过插件与 Godot 忽略的目录 |
+| `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件与 Godot 忽略的目录 |
 | `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
 | `yaya/tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
 | `yaya/tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |

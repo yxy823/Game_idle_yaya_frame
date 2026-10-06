@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Check that .tscn/.tres files carry editor-saved UIDs and no load_steps."""
-# 只读检查：以文本方式编写后忘了用 resave_godot_files.gd 重存的文件，下次打开编辑器会被改写。
+"""Check editor-saved .tscn/.tres headers, script/shader .uid files and asset .import files."""
+# 只读检查：以文本方式编写后忘了用 resave_godot_files.gd 重存的文件，下次打开编辑器会被改写；
+# 新建脚本、Shader 或素材后没运行 Godot 扫描，就没有 .uid 或 .import，之后的扫描会冒出未提交的文件。
 from __future__ import annotations
 
 import argparse
@@ -15,10 +16,15 @@ HEADER = re.compile(r"^\[gd_(?:scene|resource)\b")
 UID = re.compile(r'\buid="uid://[^"]+"')
 
 
-def resource_files(root: Path) -> list[Path]:
+UID_SIDECAR_SUFFIXES = {".gd", ".gdshader"}
+IMPORT_SIDECAR_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".bmp", ".tga",
+                           ".wav", ".ogg", ".mp3", ".ttf", ".otf"}
+
+
+def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
     files = []
     for path in root.rglob("*"):
-        if path.suffix not in {".tscn", ".tres"} or not path.is_file():
+        if path.suffix.lower() not in suffixes or not path.is_file():
             continue
         parents = path.relative_to(root).parents
         if any(part in EXCLUDED_DIRECTORY_NAMES for part in path.relative_to(root).parts[:-1]):
@@ -55,17 +61,35 @@ def main() -> int:
         print(f"ERROR: project root is not a directory: {root}", file=sys.stderr)
         return 2
     try:
-        files = [root / path for path in args.paths] if args.paths else resource_files(root)
+        if args.paths:
+            listed = [root / path for path in args.paths]
+            files = [path for path in listed if path.suffix in {".tscn", ".tres"}]
+            sources = [path for path in listed if path.suffix in UID_SIDECAR_SUFFIXES]
+            assets = [path for path in listed if path.suffix.lower() in IMPORT_SIDECAR_SUFFIXES]
+        else:
+            files = resource_files(root, {".tscn", ".tres"})
+            sources = resource_files(root, UID_SIDECAR_SUFFIXES)
+            assets = resource_files(root, IMPORT_SIDECAR_SUFFIXES)
         report = [(path, line, reason) for path in files for line, reason in problems(path)]
+        missing_uid = [path for path in sources if not path.with_name(path.name + ".uid").is_file()]
+        missing_import = [path for path in assets if not path.with_name(path.name + ".import").is_file()]
     except (OSError, UnicodeDecodeError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
         return 2
     for path, line, reason in report:
         print(f"{path.relative_to(root).as_posix()}:{line}: {reason}")
+    for path in missing_uid:
+        print(f"{path.relative_to(root).as_posix()}: missing .uid file")
+    for path in missing_import:
+        print(f"{path.relative_to(root).as_posix()}: missing .import file")
     if report:
         print("Resave these files with yaya/tools/godot/resave_godot_files.gd, then rerun this check.")
+    if missing_uid or missing_import:
+        print("Run the first Godot scan command in yaya/tools/README.md, commit the generated .uid/.import files, then rerun this check.")
+    if report or missing_uid or missing_import:
         return 1
-    print(f"OK: {len(files)} scene/resource files")
+    print(f"OK: {len(files)} scene/resource files, {len(sources)} scripts/shaders with .uid, "
+          f"{len(assets)} assets with .import")
     return 0
 
 
