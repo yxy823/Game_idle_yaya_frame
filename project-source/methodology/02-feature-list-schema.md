@@ -597,7 +597,7 @@ python -B yaya/tools/checks/check-feature-list.py
 - 不明显的依赖，在拆分预览或 Feature 设计稿中解释，不新增 schema 字段或单独的清单。
 - 复用已完成的前置 Feature，以及 [Product 前提的区分](01-product-doc-structure.md#交付成果与前提)。
 
-界面工作按[画面演示台](13-prototypes.md#画面演示台)的单方案验证处理：
+界面工作按[画面演示台](13-prototypes.md#画面演示台)处理：外观已经选定时做单方案验证；外观或表现还有待比较的候选时，先规划一个在画面演示台比较候选并选定的 Feature。
 
 - 把所需的独立视觉基础规划成普通 Feature，并让需要其决定的逻辑通过 `depends_on` 链接到它。
 - 视觉基础 Feature 要确定参数时，AC 写成“把画面演示台实际使用的参数作为待验收值写入<专业文档的对应小节>”，不写“写回确认后的参数”；写入时机和采纳方式见[验证与采纳](13-prototypes.md#验证与采纳)。

@@ -43,7 +43,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 1. 根据实际来源和完成状态，确定当前 Product 及其已批准的范围：
    - 只在可运行的基础设施尚不存在时才建立它。
    - 对实际范围和前置顺序，使用 `yaya/methodology/01-product-doc-structure.md` 中的 **设计范围与边界**、已接受的架构约束和 `yaya/methodology/13-prototypes.md` 中的 **画面演示台**；正式实现中领域与表现分开，并不要求在独立的画面演示台之前先开发业务逻辑。
-   - 规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，在规划方案中建议先用 `design-art-direction` 定下美术方向（建议，不阻塞规划）。
+   - 规划视觉基础 Feature 时，如果 `docs/art/art-bible.md` 只有占位或零散的方向，或者外观、表现还没选定，在拆分预览中说明两种做法并请用户选：用户看描述就能决定的，先用 `design-art-direction` 定下方向；需要看画面比较的，规划一个“在画面演示台比较候选并选定”的 Feature，列出候选维度（例如形状、配色、特效），选定结果再由负责的 Skill 写入来源，依赖它的视觉基础与实现排在其后。
    - 同时检查 `docs/project-rules.md` 中约束本任务的工程规则。
    - 不要把一个存在冲突的 Product 拆成看似有效的计划；设计、规则或 Product 上的选择交给其已有的负责方解决。
    - 找出需要在 Stage 1 准备的实现决定：它们保存下来的局部推理写进固定的 Feature 设计稿，符合条件的跨 Feature 决定按 methodology 10 写进 ADR；不要按复杂程度选择位置，也不要创建空记录。
