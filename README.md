@@ -1,6 +1,6 @@
 # Yaya Godot 项目起点
 
-这里维护一套供 Windows / PowerShell 使用的 Godot 起始文件、开发方法与工具。使用者与 Agent 在单人项目中协作，让需求、任务、实际验证和交接有清楚的依据。
+这里维护一套供 Windows / PowerShell 使用的 Godot 起始文件、开发方法与工具，生成的游戏只面向 Windows PC 和鼠标键盘。使用者与 Agent 在单人项目中协作，让需求、任务、实际验证和交接有清楚的依据。
 
 [框架入口](framework/README.md) 导航 Godot 项目手册、场景速查手册、关系图和框架维护说明。两本手册独立阅读；手册与完整提示词库不进入新项目，项目 README 保持自身的简短导航。
 

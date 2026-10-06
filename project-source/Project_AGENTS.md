@@ -1,6 +1,6 @@
 # 项目说明
 
-本项目使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdUnit4。工具的实际路径写在 `docs/methodology-config.json`。工具能否使用以实际检查结果为准，不根据模板推断已安装了哪些工具。
+本游戏只面向 Windows PC，只支持鼠标和键盘操作，不支持手柄、触屏和其他平台。开发环境使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdUnit4。工具的实际路径写在 `docs/methodology-config.json`。工具能否使用以实际检查结果为准，不根据模板推断已安装了哪些工具。
 
 ## 沟通与交付
 

@@ -95,7 +95,7 @@ $LASTEXITCODE
 | --- | --- | --- |
 | application | 名称 `New Godot Project`；features 包含 `4.7` | 表示目标版本和显示名，不证明工具已安装 |
 | application | `run/main_scene="res://main/main.tscn"` | 已有最小入口供后续组装；没有预置玩法，创建时不运行 |
-| display/window | viewport 默认 `1600×900`，拉伸 `canvas_items` + `expand`；渲染器未设置（Forward+） | 只是起点。第一个有画面的原型或 Feature 开工前，项目按目标平台和美术风格确定显示基线，见[视口、窗口与拉伸](../../../project-source/agent-rules/40-project-config/subsystem-settings.md#视口窗口与拉伸)。工作台运行时临时关闭拉伸、按窗口实际像素布局，退出时恢复；编辑器嵌入运行仍受宿主区域约束 |
+| display/window | viewport 默认 `1600×900`，拉伸 `canvas_items` + `expand`；渲染器未设置（Forward+） | 只是起点。第一个有画面的原型或 Feature 开工前，项目按美术风格和目标显示器比例确定显示基线（平台固定为 Windows PC），见[视口、窗口与拉伸](../../../project-source/agent-rules/40-project-config/subsystem-settings.md#视口窗口与拉伸)。工作台运行时临时关闭拉伸、按窗口实际像素布局，退出时恢复；编辑器嵌入运行仍受宿主区域约束 |
 | editor_plugins | 启用 gdUnit4、Script-IDE、Inspector Tabs、Kanban Tasks | 其余随带插件按需启用，具体用途与限制见下文 |
 | gdunit4 session_hooks | 使用 `gdunit_diagnostic_session.gd` | 测试运行关联真实引擎诊断 |
 | gdunit4 report | 打开 push error、script error 和 orphan 诊断 | 测试需要保留引擎错误事实 |
