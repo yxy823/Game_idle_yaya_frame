@@ -43,8 +43,6 @@ DEFAULT_EXCLUDE = [".git/*", ".claude/*", ".godot/*", "tmp/*", "node_modules/*",
 DEFAULT_TARGET_EXCLUDE = [
     "project-source/agent-rules/*",
     "framework/prompt-scenarios/scenarios/*",
-    "project-source/addons/sound_manager/UPSTREAM.md",
-    "project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md",
     "project-source/addons/resources_spreadsheet_view/LICENSE.md",
 ]
 DEFAULT_SEARCH_EXT = {".md", ".json", ".py", ".gd", ".toml", ".yaml", ".yml", ".tmpl",

@@ -36,7 +36,6 @@
   - [错误与结果的含义](methods-and-tools/errors-and-results.md)：按现象查工具输出的含义和处理办法。
 - **专业工作与记录**
   - [专业来源与资源](specialist-work-and-records/specialist-work.md)：各类专业规格的维护者、资源规格、原型、接入、测量与独立审核。
-  - [资源工作台](specialist-work-and-records/asset-workbench.md)：查看、试听、分析、A/B 比较、组合与保存资源的操作。
   - [知识、设计与记录](specialist-work-and-records/knowledge-and-records.md)：术语、Feature 设计稿、架构、ADR、规则、调研、知识、报告与续接信息放在哪里。
 - **公共参考**
   - [框架与 Godot 项目术语](../terminology.md)：框架特有或有特定含义的术语。游戏自身的业务词汇由项目自己维护。

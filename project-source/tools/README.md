@@ -28,7 +28,7 @@ yaya/tools/
 - `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`yaya/tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
 - Skill 只引用这些命令并说明调用时机，不另写命令副本。
 
-资源工作台的分析后端不属于本目录，见[资源工作台说明](../asset_workbench/README.md)。
+`analyzer/` 是图像与音频源文件的分析后端，在单独的 Python 环境中用命令行运行，见 [Analyzer 说明](analyzer/README.md)。
 
 Feature 记录检查、登记表合并和运行选择共用同一套 JSON 解码规则：
 
@@ -87,7 +87,7 @@ $LASTEXITCODE
   runnable=true
   export_filter="all_resources"
   include_filter=""
-  exclude_filter="tests/*, addons/gdUnit4/*, reports/*, dev/*, yaya/tools/*, yaya/asset_workbench/ui/*, yaya/asset_workbench/analyzer/*"
+  exclude_filter="tests/*, addons/gdUnit4/*, reports/*, dev/*, yaya/tools/*"
   export_path=""
 
   [preset.0.options]

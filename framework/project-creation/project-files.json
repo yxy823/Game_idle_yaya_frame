@@ -36,10 +36,6 @@
     "target": "addons/gdscript-linter"
   },
   {
-    "source": "project-source/addons/sound_manager",
-    "target": "addons/sound_manager"
-  },
-  {
     "source": "project-source/addons/script-ide",
     "target": "addons/script-ide"
   },
@@ -58,14 +54,6 @@
   {
     "source": "project-source/addons/signal_lens",
     "target": "addons/signal_lens"
-  },
-  {
-    "source": "project-source/components/feedback",
-    "target": "components/feedback"
-  },
-  {
-    "source": "project-source/asset_workbench",
-    "target": "yaya/asset_workbench"
   },
   {
     "source": "project-source/Project_AGENTS.md",
@@ -110,6 +98,10 @@
   {
     "source": "project-source/defaults/assets",
     "target": "assets"
+  },
+  {
+    "source": "project-source/defaults/components",
+    "target": "components"
   },
   {
     "source": "project-source/defaults/tests",

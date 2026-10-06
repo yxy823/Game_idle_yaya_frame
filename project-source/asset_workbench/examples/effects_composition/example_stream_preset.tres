@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="FeedbackParticlePreset" format=3 uid="uid://calpvqfe05ais"]
-
-[ext_resource type="Script" uid="uid://bdgvurir7llyu" path="res://components/feedback/feedback_particle_preset.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://budc5tp8fg2vo" path="res://yaya/asset_workbench/examples/effects_composition/example_particle_stream.tscn" id="2"]
-
-[resource]
-script = ExtResource("1")
-display_name = "持续粒子"
-emitter_scene = ExtResource("2")

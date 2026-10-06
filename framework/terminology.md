@@ -51,13 +51,10 @@
 
 来源：[测试策略](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
 
-## 资源工作台
+## Analyzer
 
 | 术语 | 含义与边界 |
 | --- | --- |
-| 工作台 | 编辑期查看、试听、比较和保存资源组合的工具；临时草稿与已保存的 Cue 分开 |
-| Cue | 工作台保存的配置资源，记录所选素材与表现参数；不是素材本身 |
-| 消费入口 | 运行时读取已保存 Cue 的场景或代码，区别于工作台的编辑入口 |
-| Analyzer | 分析图像、音频源文件的工具；结果不代替实际渲染、听感或性能测量 |
+| Analyzer | 分析图像、音频源文件的命令行工具；结果不代替实际渲染、听感或性能测量 |
 
-来源：[工作台与消费示例](../project-source/asset_workbench/examples/README.md)。
+来源：[Analyzer 说明](../project-source/tools/analyzer/README.md)。

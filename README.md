@@ -19,8 +19,7 @@ Game_idle_yaya_frame/
     ├── agents/                researcher 与 independent-reviewer 配置
     ├── methodology/           流程契约与模板（复制到项目 yaya/ 下，下同）
     ├── agent-rules/           Godot 工程语义
-    ├── tools/                 项目检查、测试、记录与共享实现
-    ├── asset_workbench/       ui/ 工作台、analyzer/ 分析后端与 examples/ 示例
+    ├── tools/                 项目检查、测试、记录、共享实现与 analyzer/ 源素材分析
     ├── addons/                随项目提供的插件及补丁
     └── defaults/              Godot、lint、文本默认文件，以及 docs/ 下的初始文档与配置
 ```
@@ -44,7 +43,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 ## 项目能力与边界
 
 - **开发方法**：生成项目自带一组 Skill，覆盖游戏设计、交付规划、实现、专项资源与本地化、诊断、验证和独立审核；每个 Skill 的职责见 Godot 项目手册的 [Skill 职责速查](framework/godot-project-manual/methods-and-tools/skills-and-agents.md#skill-职责速查)。
-- **工作台**：提供实际资源的查看、试听、分析与组合试调，结果不自动成为设计或验收结论。
+- **Analyzer**：分析图像和音频源文件，结果不自动成为设计或验收结论。
 - **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不自动升级或同步。
 - **advisor**：根据项目现状，从本机 Godot 开发提示词库选择适用场景并起草具体指令；执行仍依据项目自己的规则与有效授权。
 - **适用范围**：单人使用、任务续接、worktree 和素材制作的边界见[使用范围](framework/README.md#使用范围)。

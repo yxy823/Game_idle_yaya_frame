@@ -46,8 +46,6 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 | --- | --- |
 | `project-source/agent-rules/*` | 已认可由领域 README 按任务条件读取规则的路径。 |
 | `framework/prompt-scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
-| `project-source/addons/sound_manager/UPSTREAM.md` | 保留的上游来源说明。 |
-| `project-source/asset_workbench/examples/effects_composition/example_brackeys_license.md` | 保留的素材原始许可说明。 |
 | `project-source/addons/resources_spreadsheet_view/LICENSE.md` | 保留的第三方插件许可。 |
 
 目录通配也包含子目录。这张表维护在脚本的 `DEFAULT_TARGET_EXCLUDE` 中，只排除列出的路径，不是对所有 `NAV_ONLY` 结果的豁免；终端和 JSON 输出的 `target_exclusions` 会列出本次生效的排除规则。

@@ -25,14 +25,13 @@
 | 配置 Python 和 Godot | [项目环境](yaya/methodology/06-project-environment.md)；路径保存在 `docs/methodology-config.json` |
 | 选择文档语言 | [文档语言](yaya/methodology/05-document-language.md)；文档默认中文 |
 | 运行环境检查、测试或静态检查 | [工具说明](yaya/tools/README.md)；GDScript 解析与 lint 见[直接检查说明](yaya/methodology/contracts/gdscript-lint.md) |
-| 预览与接入图像、音频、Shader、粒子或动画 | [资源工作台](yaya/asset_workbench/README.md)；可运行的示例见[示例说明](yaya/asset_workbench/examples/README.md)，示例素材不代表正式游戏素材 |
-| 使用可复用的反馈组件 | [反馈组件说明](components/feedback/README.md) |
+| 检查图像或音频源文件 | [Analyzer 说明](yaya/tools/analyzer/README.md) |
 
-`main/main.tscn` 是最小启动入口；游戏功能放在 `game/`，复用能力与共享素材分别放在 `components/`、`assets/`，测试放在 `tests/`。`yaya/` 是框架随项目提供的流程、规则、工具和资源工作台，游戏内容不放进去。具体归属见[组织指南](docs/game-organization.md)。环境就绪、测试通过和人工验收各自需要实际证据，文件存在不能代替。
+`main/main.tscn` 是最小启动入口；游戏功能放在 `game/`，复用能力与共享素材分别放在 `components/`、`assets/`，测试放在 `tests/`。`yaya/` 是框架随项目提供的流程、规则和工具，游戏内容不放进去。具体归属见[组织指南](docs/game-organization.md)。环境就绪、测试通过和人工验收各自需要实际证据，文件存在不能代替。
 
 ## 编辑器效率插件
 
-在 Godot 的“项目 → 项目设置 → 插件”中启用或停用。默认启用 Script-IDE、Inspector Tabs 和 Kanban Tasks；Edit Resources as Table 与 Signal Lens 已安装，按需启用。gdUnit4 保持启用，GDScript linter 面板和 SoundManager 全局插件保持停用。
+在 Godot 的“项目 → 项目设置 → 插件”中启用或停用。默认启用 Script-IDE、Inspector Tabs 和 Kanban Tasks；Edit Resources as Table 与 Signal Lens 已安装，按需启用。gdUnit4 保持启用，GDScript linter 面板保持停用。
 
 | 插件 | 使用入口与用途 |
 | --- | --- |

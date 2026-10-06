@@ -81,7 +81,7 @@ class DocumentGraphCoverageTests(unittest.TestCase):
         excluded = {"framework/relationship-maps/guide.html", "framework/relationship-maps/graph-usage.personal.json",
                     "framework/relationship-maps/.cache/cache.md", "project-source/addons/plugin/README.md",
                     "project-source/tools/config.json", "project-source/defaults/gdlint.json",
-                    "project-source/asset_workbench/examples/group.json"}
+                    "project-source/tools/analyzer/capabilities.json"}
         for path in included | excluded:
             self.write(path, "{}")
         self.graph("文件： framework/relationship-maps/**/*.md\n文件： framework/relationship-maps/settings.json",

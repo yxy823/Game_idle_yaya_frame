@@ -43,7 +43,7 @@
 | 探索、worktree 准备或成果整合 | [Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[知识与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
 | 专业文档维护者、资源、语言或独立审核 | [专业来源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
 | 参数、测试选择、结果、指纹或错误 | [命令与证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
-| 工作台、Analyzer、表现组件 | [资源工作台](../godot-project-manual/specialist-work-and-records/asset-workbench.md) | 对应工具、示例 README、调用接口和夹具 |
+| Analyzer | [Analyzer 说明](../../project-source/tools/analyzer/README.md) | 请求格式、依赖记录和后端测试 |
 | 术语、设计、架构、规则、调研、知识或 Progress | [知识与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、产物生命周期、角色和领域规则 |
 | 场景的输入、步骤、提示词或出口 | 对应 Project / 分类下的同名场景页 | 所属提示词库、Skill / methodology / CLI、[场景编写要求](../prompt-scenarios/scenarios/README.md) |
 
