@@ -298,7 +298,7 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertFalse((output / "docs/resource-requirements").exists())
         self.assertFalse((output / "yaya/agent-rules/00-core/documentation").exists())
         self.assertEqual({path.name for path in (output / "yaya/tools").iterdir() if path.is_dir()},
-                         {"checks", "features", "godot", "testing", "lib", "analyzer"})
+                         {"checks", "features", "godot", "testing", "lib", "analyzer", "ui-trial"})
         self.assertFalse((output / "examples").exists())
         for removed in ("yaya/asset_workbench", "components/feedback", "addons/sound_manager"):
             self.assertFalse((output / removed).exists(), removed)

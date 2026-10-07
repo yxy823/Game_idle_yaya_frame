@@ -8,6 +8,7 @@ yaya/tools/
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
 ├── godot/       由 Godot 执行的项目文件维护脚本
+├── ui-trial/    在项目副本中按界面任务试用界面，及界面静态扫描
 └── lib/         共享实现
 ```
 
@@ -21,6 +22,7 @@ yaya/tools/
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
 | [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成依据 |
 | [resave_godot_files.gd](godot/resave_godot_files.gd) | 用 Godot 自己的格式重新保存 `project.godot` 和指定的 `.tscn`、`.tres` |
+| [ui-trial/](ui-trial/README.md) | 准备改名的项目副本，在副本中运行驱动脚本按界面任务试用界面（带看门狗与外层超时），以及界面静态扫描 |
 
 命名约定：
 

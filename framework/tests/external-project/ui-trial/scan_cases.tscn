@@ -1,0 +1,144 @@
+[gd_scene format=3]
+
+[node name="ScanCases" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="IconOnly" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="IconWithTip" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 10.0
+offset_right = 110.0
+offset_bottom = 50.0
+tooltip_text = "设置"
+
+[node name="Vague" type="Button" parent="."]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 50.0
+text = "OK"
+
+[node name="Clear" type="Button" parent="."]
+layout_mode = 0
+offset_left = 270.0
+offset_top = 10.0
+offset_right = 390.0
+offset_bottom = 50.0
+text = "Start game"
+
+[node name="SaveA" type="Button" parent="."]
+layout_mode = 0
+offset_left = 410.0
+offset_top = 10.0
+offset_right = 530.0
+offset_bottom = 50.0
+text = "Save"
+
+[node name="SaveB" type="Button" parent="."]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 10.0
+offset_right = 670.0
+offset_bottom = 50.0
+text = "Save"
+
+[node name="Tiny" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 100.0
+offset_right = 26.0
+offset_bottom = 116.0
+tooltip_text = "Zoom in"
+
+[node name="DeleteSave" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 200.0
+offset_right = 170.0
+offset_bottom = 240.0
+text = "Delete save"
+
+[node name="LoadSave" type="Button" parent="."]
+layout_mode = 0
+offset_left = 174.0
+offset_top = 200.0
+offset_right = 334.0
+offset_bottom = 240.0
+text = "Load save"
+
+[node name="ResetOptions" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 300.0
+offset_right = 170.0
+offset_bottom = 340.0
+text = "Reset options"
+
+[node name="ApplyOptions" type="Button" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 300.0
+offset_right = 360.0
+offset_bottom = 340.0
+text = "Apply options"
+
+[node name="MarkedDanger" type="Button" parent="."]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 300.0
+offset_right = 560.0
+offset_bottom = 340.0
+text = "Run batch"
+metadata/ui_trial_role = "danger"
+
+[node name="NextToMarked" type="Button" parent="."]
+layout_mode = 0
+offset_left = 562.0
+offset_top = 300.0
+offset_right = 722.0
+offset_bottom = 340.0
+text = "Preview batch"
+
+[node name="LockedNoTip" type="Button" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 400.0
+offset_right = 170.0
+offset_bottom = 440.0
+disabled = true
+text = "Upgrade"
+
+[node name="LockedWithTip" type="Button" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 400.0
+offset_right = 360.0
+offset_bottom = 440.0
+tooltip_text = "Needs 100 gold"
+disabled = true
+text = "Upgrade armor"
+
+[node name="HiddenBlank" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 400.0
+offset_top = 400.0
+offset_right = 410.0
+offset_bottom = 410.0
+
+[node name="SavedDialog" type="AcceptDialog" parent="."]
+position = Vector2i(400, 450)
+size = Vector2i(200, 100)
+visible = true
+dialog_text = "Saved"
