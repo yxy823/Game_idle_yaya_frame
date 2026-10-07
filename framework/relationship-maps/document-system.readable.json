@@ -419,7 +419,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按次保留的审核和实际验证记录。\n位置：tmp/reports/<任务>/，可按专题或检查轮次分层；原始运行证据仍按当次记录定位。\n需要继续工作的报告由框架待办链接；当次用途结束后清理，长期结论归正式文档。\n\n文件： tmp/reports/**/*.md",
+      "note": "职责：按次保留的审核、复盘和实际验证记录。\n位置：tmp/reports/<任务>/，可按专题或检查轮次分层；原始运行证据仍按当次记录定位。\n需要继续工作的报告由框架待办链接；当次用途结束后清理，长期结论归正式文档。\n\n文件： tmp/reports/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -505,7 +505,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护两个专项入口。\n位置：AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
+      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护、框架复盘三个专项入口。\n位置：AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -3082,6 +3082,61 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "维护边界与同步约定",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-rules-reports",
+      "source": {
+        "node": "doc-framework-rules",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-framework-reports",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 215,
+          "y": 860
+        },
+        {
+          "x": 1895,
+          "y": 860
+        }
+      ],
+      "label": "复盘报告的内容与位置",
       "stroke": {
         "color": "#2563EB",
         "width": 2,

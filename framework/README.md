@@ -39,6 +39,7 @@ flowchart TD
 | 编写或修改单一场景 | [场景手册编写要求](prompt-scenarios/scenarios/README.md) |
 | 编写或整理框架说明 | [Yaya 框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) |
 | 修改提示词、场景或关系图 | [提示词与关系图维护 Skill](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) |
+| 一次框架修改或 demo 试验后复盘，判断哪些地方值得改、改在哪里 | [Yaya 框架复盘 Skill](../.agents/skills/framework-retro-yaya/SKILL.md) |
 | 创建空白项目、运行检查或回归 | 下文[维护命令](#维护命令) |
 | 确认框架专用术语的含义和统一写法 | [框架术语](terminology.md) |
 

@@ -22,6 +22,7 @@
 | 框架自用 Skill | 仓库根目录的 `.agents/skills/`。参考资料、配套脚本和私有依赖都放在各 Skill 目录内，不分发给项目 |
 | 提示词、场景与关系图的维护方法 | `.agents/skills/prompt-and-graph-maintenance-yaya/` |
 | 框架文档的写作方法 | `.agents/skills/technical-documentation-writing-yaya/` |
+| 框架修改与试验的复盘方法 | `.agents/skills/framework-retro-yaya/` |
 | 维护约束与未完成的工作 | 根 `AGENTS.md` 与 `framework/progress.md` |
 | 某个已有游戏独有的修改 | 在明确指定的外部项目中进行，不写回框架，也不自动同步 |
 
