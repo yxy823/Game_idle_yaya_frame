@@ -31,7 +31,7 @@ GDD、预拆分顺序、Progress 和 Feature 状态由 Agent 直接读取。
 
 **S3｜交接首个人工验收**
 
-manual Feature 先完成全部适用自主工作，提供可运行入口与绑定当前版本的 pending 清单，再结束本段 Goal。
+manual Feature 先完成全部适用自主工作，提供可运行入口与绑定当前版本的 pending 清单，再结束本段 Goal。界面按[界面的开发顺序](../../../../../project-source/methodology/13-debug-console-and-validation.md#界面的开发顺序)拆成骨架、视觉决策、完整逻辑三个 Feature；视觉决策 Feature 的交接点更早：候选和固定局面在调试台就绪后，Agent 给出 `dev/debug/README.md` 中的启动命令，停下等你在调试台比较并采纳到游戏。
 
 ## 步骤产出与状态变化
 
@@ -39,7 +39,7 @@ manual Feature 先完成全部适用自主工作，提供可运行入口与绑�
 | --- | --- |
 | S1 | 本次纳入的 Product 与排除项已列出；Goal 已创建或沿用 |
 | S2 | 每个 Product 的拆分预览；已完成 Feature 的完成记录和提交哈希 |
-| S3 | 可运行的体验入口和绑定当前版本的 pending 清单路径；该 Feature 仍为未完成 |
+| S3 | 可运行的体验入口和绑定当前版本的 pending 清单路径，视觉决策 Feature 为调试台启动命令和要比较的插槽；该 Feature 仍为未完成 |
 
 ## 资源与文件影响
 
@@ -47,7 +47,7 @@ manual Feature 先完成全部适用自主工作，提供可运行入口与绑�
 
 ## 阻塞、异常与范围变化
 
-GDD 缺失时说明缺口并停止，不初始化设计。局部画面演示台确认只阻塞依赖实现，不算整段目标完成；预算耗尽或阻塞不是达成。
+GDD 缺失时说明缺口并停止，不初始化设计。预算耗尽或阻塞不是达成。
 
 ## 完成状态与验证标准
 

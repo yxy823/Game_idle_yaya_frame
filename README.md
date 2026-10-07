@@ -21,7 +21,7 @@ Game_idle_yaya_frame/
     ├── agent-rules/           Godot 工程语义
     ├── tools/                 项目检查、测试、记录、共享实现与 analyzer/ 源素材分析
     ├── addons/                随项目提供的插件及补丁
-    └── defaults/              Godot、lint、文本默认文件，以及 docs/ 下的初始文档与配置
+    └── defaults/              Godot、lint、文本默认文件，docs/ 下的初始文档与配置，以及 dev/ 下的调试台共享代码
 ```
 
 源项目规则使用不同文件名，避免在维护仓库被误当作当前自动指令。维护遵循根 [AGENTS.md](AGENTS.md)，不会在 project-source/ 启动游戏开发流程。

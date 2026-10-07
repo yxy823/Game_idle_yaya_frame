@@ -9,7 +9,7 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 需要的材料：
 
 - Feature ID（可空）：不提供时用当前对话中正在执行的 Feature。
-- 体验入口（可空）：从哪个场景或菜单进入、需要的初始存档或参数；不知道时由 Agent 从实现查找。
+- 体验入口（可空）：从哪个场景或菜单进入、需要的初始存档或参数；不知道时由 Agent 从实现查找。Feature 涉及调试台（视觉决策或调参）时，入口是调试入口与固定局面，启动命令直接引用项目 `dev/debug/README.md` 中那一条。
 
 人工检查项（`manual_checks`、`manual_regression`）由 Agent 从 Feature 直接读取。
 
@@ -27,7 +27,7 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 **S2｜编写待验清单**
 
-用 `yaya/methodology/templates/manual-acceptance-checklist.json.tmpl` 在 `reports/manual-acceptance/F0XX/` 写清单，全部 status 为 `pending`，写明入口、初始条件、实际动作、预期和重置；Feature notes 链接清单，不复制步骤。
+用 `yaya/methodology/templates/manual-acceptance-checklist.json.tmpl` 在 `reports/manual-acceptance/F0XX/` 写清单，全部 status 为 `pending`，写明入口、初始条件、实际动作、预期和重置；涉及调试台时，检查项针对采纳后的游戏原值，不针对插槽预设或组合；Feature notes 链接清单，不复制步骤。
 
 **S3｜绑定版本并交付**
 

@@ -763,7 +763,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：显式检查、测试、记录和资源工具的命令、输入输出与限制。\n项目位置：yaya/tools/README.md，以及 yaya/tools/analyzer/README.md 等已有工具入口。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： yaya/tools/**/*.md\n项目文件： yaya/asset_workbench/**/*.md\n项目文件： components/**/*.md",
+      "note": "职责：显式检查、测试、记录、资源工具与调试台的命令、输入输出与限制。\n项目位置：yaya/tools/README.md，以及 yaya/tools/analyzer/README.md 等已有工具入口；调试台的启动命令与本项目登记在 dev/debug/README.md，通用机制与界面任务在 dev/debug/_shared/。\n工具结果进入约定报告；使用说明本身不证明运行已经完成。\n\n项目文件： yaya/tools/**/*.md\n项目文件： dev/debug/**/*.md\n项目文件： components/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

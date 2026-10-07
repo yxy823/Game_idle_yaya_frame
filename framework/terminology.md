@@ -26,11 +26,29 @@
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |
 | Feature 记录 | [Feature 结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成依据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |
 | Stage | Feature 执行规范里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |
-| 画面演示台 | `dev/showcase/visual/<主题>/` 下假逻辑、真画面的场景：单方案验证界面的视觉基础，或比较画面、音效、交互动效候选；不运行正式规则代码，候选可以长期保留，验收不覆盖后续业务行为 |
-| 逻辑演示台 | `dev/showcase/logic/<主题>/` 下真实一小块规则、占位画面的场景：比较会改变游戏结果的规则候选，或试验一个玩法提议；不批准新规则，选中的规则写进 GDD 后由 Feature 正式实现 |
 | 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |
 
-来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)、[演示台与技术验证](../project-source/methodology/13-prototypes.md)。
+来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)、[调试台与技术验证](../project-source/methodology/13-debug-console-and-validation.md)。
+
+## 调试台
+
+| 术语 | 含义与边界 |
+| --- | --- |
+| 调试台 | 从调试入口 `dev/debug/debug_main.tscn` 启动真实游戏，在独立窗口中调参、比较候选并采纳到游戏的开发工具；依赖只从 `dev/` 指向游戏，游戏代码、`tests/` 和正式导出都不引用它 |
+| 调试对象 | 游戏里的一个界面，或跨界面共用的 `global`；对应 `game/<对象>/` 与 `dev/debug/<对象>/`，键名与界面文档一致 |
+| 插槽 | 调试对象中一个可调的部分，固定绑定一份调参资源，编号为 `<对象>/<资源相对路径>` |
+| 候选 | 插槽的一种实现，例如一个特效场景、一个音效或一段规则脚本；没采纳时放在 `dev/debug/<对象>/slots/<插槽>/<候选>/`。替换规则实现的叫逻辑候选 |
+| 调参资源 | `game/<对象>/tuning/` 下游戏运行时读取的独立 `.tres`；只有调试台在运行中修改它，文档链接它而不抄数值 |
+| 插槽预设 | 一个插槽的一套命名设定，保存在插槽的 `presets/` 下；只是候选设定，游戏和测试不读取，也不进内容指纹 |
+| 组合 | 一个调试对象各插槽所用预设的引用集合，保存在 `combos/` 下；空引用表示游戏原值 |
+| 游戏原值 | 游戏文件里保存的调参资源取值，也就是不开调试台时游戏使用的值；对比的默认对象，也是人工验收的对象 |
+| 采纳到游戏 | 用户在调试台确认一次，把当前设定写进游戏文件，候选还在 `dev/` 时先移进 `game/`；之后由 Agent 收尾提交。采纳不等于人工接受 |
+| 固定局面 | 按游戏存档格式保存、含随机种子的一份可重播状态，由调试对象登记，走游戏自己的读档路径进入 |
+| 试播动作 | 插槽登记的“点一下就看到效果”的动作，免得在游戏里等效果自然出现 |
+| 界面任务 | 按“想做的事”写下的一条界面操作路径：目标、步骤、应看到的反馈；游戏界面写在 UI 规格，调试台写在 `dev/debug/_shared/usage-scenarios.md` |
+| 按界面任务试用 | 在改名的项目副本中用 `ui-trial` 程序驱动界面，逐条走界面任务并分级记录问题；不代替用户的人工验收 |
+
+来源：[调试台与技术验证](../project-source/methodology/13-debug-console-and-validation.md)、[调试台共享代码](../project-source/defaults/dev/debug/_shared/README.md)、[按界面任务试用](../project-source/tools/ui-trial/README.md)。
 
 ## 游戏职责
 
