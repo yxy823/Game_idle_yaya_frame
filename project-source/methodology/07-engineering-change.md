@@ -177,6 +177,14 @@ feature-execute
 
 记录技术目标、原因、受影响的技术边界、必须保持成立的兼容性或不变量，以及任何回滚或迁移方面的顾虑。典型的维护包括依赖、构建配置、开发工具、测试基础设施、存储与 schema 迁移、日志和性能工作。
 
+### 调试台的修改
+
+修改调试台本身，例如 `dev/debug/_shared/` 的共享代码、主题或调试入口，或者调整调试窗口的按钮布局，按 maintenance 模式建 Feature。在已有 Feature 中为新界面登记插槽、候选或固定局面不属于这里，随该 Feature 完成。
+
+- `affected_components` 包含 `debug_console`，测试按组件选择，组件的定义见[调试台组件](08-test-traceability-and-evidence.md#调试台组件)。
+- 调试台的界面行为变化时，同步更新 `dev/debug/_shared/usage-scenarios.md` 中受影响的界面任务；共享机制变化时，同步 `dev/debug/_shared/README.md`。
+- 界面有变化时，Stage 4 在人工清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工检查清单)。
+
 ## Feature 写入规则
 
 工程 Feature 使用普通的 Feature 与测试记录：稳定的 `ACxx` 条件、非空的 `affected_components`、在执行期间映射的验证，外加下面这个详情字段：

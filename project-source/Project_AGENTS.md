@@ -94,6 +94,7 @@
 ### 开始修改前
 
 - 在任务指定的工作目录中工作，运行一次 `git status`，记下工作区是否干净。
+- 存在 `dev/debug/adoption-log.md` 时，其中列出的改动是用户在调试台中的采纳。这是“保留已有改动、不替用户提交”的例外：先用 `debug-console-godot` 收尾，只暂存这些采纳涉及的路径并提交，再开始本次任务。之后是否需要源同步，按 [完成后再调值](yaya/methodology/13-debug-console-and-validation.md#完成后再调值) 判断。
 - 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据；在已有 worktree 中运行编辑器、导入、测试等会写入的工具前，读 [worktree 运行准备](.agents/skills/worktree-create-godot/references/godot-worktree-runtime.md)。
 - 存在未完成的合并或变基，或者 HEAD、分支出现本任务无法解释的变化时，保留现场并汇报。弄清之前，不做依赖该状态的写入或提交，也不自动中止、重置或清理。
 - 续接时（包括换到新对话），依据工作目录、Feature 与 Progress、当前 HEAD 和实际差异。同一任务留下的改动，核实范围后可以继续完成、验证和提交。

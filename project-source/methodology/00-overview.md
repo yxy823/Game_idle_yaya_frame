@@ -31,7 +31,7 @@ yaya/methodology/                         canonical workflow specification
 | 澄清与术语 | `project-grill-me`、`wayfinder-godot`、`project-terminology` |
 | 专业设计 | `design-game-presentation`、`design-ui-spec`、`design-art-direction`、`design-audio-direction`、`design-visual-asset-spec`、`design-audio-asset-spec`、`design-localization-spec` |
 | 规划 | `feature-plan`、`feature-sync`、`plan-review-godot` |
-| 交付 | `feature-execute`、`implementation-guidance-godot`、`prototype-godot` |
+| 交付 | `feature-execute`、`implementation-guidance-godot`、`debug-console-godot`、`technical-validation-godot` |
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
 | 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
 | 环境、验证与证据 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence-godot` |
@@ -62,15 +62,15 @@ yaya/methodology/                         canonical workflow specification
 | 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计](02-feature-list-schema.md#feature-设计与实现说明) 和[架构与 ADR](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
 | 选择视觉或声音方向 | `design-art-direction`、`design-audio-direction` | 按[专业工作](11-specialist-workflows.md)维护 Art Bible 或 Sound Bible 中的共用标准。不需要完整的游戏设计，不产出资源。 |
 | 从体验目标或随口的描述规划一个游戏时刻，或比较其组成部分的方案 | `design-game-presentation` | 用于[游戏表现文档](11-specialist-workflows.md#游戏表现文档)，可以支持早期 GDD 探索。不包含代码、资源制作或验收。 |
-| 和用户一起反复试调已实现的特效、反馈或操作手感 | `feel-tuning-godot`，在已获授权的 Feature 或实验中使用 | 用户实际观看或操作后判断；采用的值写回运行时资源，玩家可感知的参数在 Stage 4 之前写进所属文档。不是人工验收。 |
+| 和用户一起反复试调已实现的特效、反馈或操作手感 | `debug-console-godot`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
 | 规定一个界面或单个资源 | `design-ui-spec`、`design-visual-asset-spec`、`design-audio-asset-spec` | 用于细化 GDD 的专业规格。交付范围仍由 Product 决定。 |
 | 准备美术、音乐或音效 | 按[专业工作](11-specialist-workflows.md#设计制作接入与审核)保留为预留能力 | 没有制作 Skill。记录规格和现有资源。 |
 | 确定语言覆盖范围和区域格式约定 | `design-localization-spec` | 可以单独进行。游戏规则留在 GDD，术语定义留在 `docs/terminology.md`。 |
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
 | 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
 | 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
-| 用户明确要求的演示台或技术验证 | 在目标项目中使用 `prototype-godot` | 按[演示台与技术验证](13-prototypes.md)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。 |
-| 在依赖逻辑之前确定布局、资源尺寸和交互可读性 | `prototype-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[画面演示台](13-prototypes.md#画面演示台)的单方案验证执行。规格提供输入；可运行的场景和人工验收属于执行阶段。 |
+| 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `debug-console-godot`；技术验证用 `technical-validation-godot` | 按[调试台与技术验证](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
+| 骨架之后在调试台做视觉决策 | `feature-execute` 配合 `debug-console-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)：骨架、视觉决策、完整逻辑三个 Feature。规格提供输入；调试台中的比较、采纳和人工验收属于执行阶段。 |
 | 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
 | 为已获授权的任务准备或复用另一个工作目录 | `worktree-create-godot` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
 | 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate-godot` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
@@ -121,7 +121,7 @@ yaya/methodology/                         canonical workflow specification
 | 可选的架构概览和 ADR | [10-architecture-overview.md](10-architecture-overview.md) |
 | 专业文档、来源映射、UI 与表现文档，以及资源交接 | [11-specialist-workflows.md](11-specialist-workflows.md) |
 | 独立审核 | [12-independent-review.md](12-independent-review.md) |
-| 画面演示台、逻辑演示台和技术验证 | [13-prototypes.md](13-prototypes.md) |
+| 调试台、界面的开发顺序、逻辑候选、完成后再调值和技术验证 | [13-debug-console-and-validation.md](13-debug-console-and-validation.md) |
 | 项目术语 | [14-project-terminology.md](14-project-terminology.md) |
 | Agent 如何读取解析器和 lint 结果 | [contracts/gdscript-lint.md](contracts/gdscript-lint.md) |
 | 人工验收清单与结论记录 | [contracts/manual-acceptance-files.md](contracts/manual-acceptance-files.md) |

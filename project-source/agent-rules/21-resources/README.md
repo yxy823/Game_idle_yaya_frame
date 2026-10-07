@@ -2,8 +2,8 @@
 
 | 文档 | 何时阅读 |
 | --- | --- |
-| [roles-sharing-and-locality.md](roles-sharing-and-locality.md) | 任何 Resource 修改 |
-| [identity-saving-and-schema.md](identity-saving-and-schema.md) | 移动、重命名或保存 Resource，生成 `.tres`，修改自定义 Resource 的导出属性、默认值、`class_name` 或 `_init()` |
+| [roles-sharing-and-locality.md](roles-sharing-and-locality.md) | 任何 Resource 修改，包括新增或修改 `game/<对象>/tuning/` 下的调参资源 |
+| [identity-saving-and-schema.md](identity-saving-and-schema.md) | 移动、重命名或保存 Resource，生成 `.tres`，修改自定义 Resource 的导出属性、默认值、`class_name` 或 `_init()`，收尾调试台的采纳 |
 
 ## 验证
 

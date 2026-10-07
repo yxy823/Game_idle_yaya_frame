@@ -5,7 +5,7 @@
 ## 角色
 
 - 每个 Resource 归为一类：定义或配置数据、实例本地状态、有意共享的运行时可变状态。
-- 定义与配置类 Resource（包括 `res://` 下的 `.tres`）在运行时只读。它们会被所有加载者共享，运行时修改会影响每个使用者。可变的运行时状态由单独的所属方或模型持有，保存位置见[保存](identity-saving-and-schema.md#保存)。
+- 定义与配置类 Resource（包括 `res://` 下的 `.tres`）在运行时只读。它们会被所有加载者共享，运行时修改会影响每个使用者。唯一的例外是调试台修改[调参资源](#调参资源)。可变的运行时状态由单独的所属方或模型持有，保存位置见[保存](identity-saving-and-schema.md#保存)。
 - 外部 `.tres` 还是内嵌的 SubResource，不能说明它是共享的还是唯一的；按实际引用关系判断。
 - 建议：物品、技能、关卡配置这类可在检查器中编辑的定义，用带类型的自定义 Resource，存为文本 `.tres`。不需要手工转成 `.res`：项目设置 `editor/export/convert_text_resources_to_binary` 默认开启，导出时会转为二进制。
 - 因为导出后扩展名可能变化，代码用 `load()` 或 `ResourceLoader` 读取 Resource，不用 `FileAccess` 按路径读取 `.tres` 文本。
@@ -21,6 +21,18 @@
 			max_level = value
 			emit_changed()
 ```
+
+## 调参资源
+
+调参资源是 `game/<对象>/tuning/**/*.tres` 下供调试台修改的配置类 Resource，保存参数、选中的候选和候选参数。它在流程中的用途见[调参资源](../../methodology/13-debug-console-and-validation.md#调参资源)。
+
+- 每份调参资源是独立的 `.tres` 文件，不内嵌在 `.tscn` 中。曲线、渐变作为它的内嵌子资源，不单独存文件。
+- 运行时只有调试台修改它；游戏代码按只读使用。
+- 调参字段的 setter 调用 `emit_changed()`，写法见[变更通知](#变更通知)。持久状态（尺寸、主题色、循环中的音乐）的使用方连接 `changed` 后重新应用；一次性效果在每次触发时读取。
+- 游戏不对调参资源调用 `duplicate()`，也不开启 `resource_local_to_scene`。调试台修改的是加载缓存中的那个实例，副本收不到修改。
+- 一份资源只属于一个插槽，一个插槽只绑一份资源；不同用途的参数混在一份资源中时，拆成两份。
+- 有候选的插槽声明一个候选字段 `candidate`（`PackedScene`、`AudioStream`、`Script` 或按顺序播放的一组音效）和 `candidate_params: Resource`。候选自带的参数放在 `candidate_params` 中，它的脚本随候选放置；有多个可替换部分时拆成多个插槽。
+- 字段的值是另一份调参资源时，这是共享参数的链接，只在它所属的插槽中调。
 
 ## 复制
 

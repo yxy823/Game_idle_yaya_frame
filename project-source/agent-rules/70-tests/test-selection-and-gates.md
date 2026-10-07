@@ -26,6 +26,7 @@
 | 改动 | 额外验证 |
 | --- | --- |
 | 公开 API、信号载荷或时序、Resource 的 schema 或默认值、稳定 ID、枚举、Command 类型、Autoload API | 已知使用方的测试。跨场景的信号连接或生命周期，用集成或运行时场景测试 |
+| `game/`、`main/`、`components/` 下的任何文件，或 `project.godot` | 依赖方向不变量测试 `INV-DEBUG_CONSOLE-01`，写进 `verification.test_impact.additional_tests`，理由写“改动了游戏文件，检查游戏不引用 dev/”。定义见[调试台组件](../../methodology/08-test-traceability-and-evidence.md#调试台组件) |
 | SceneTree 生命周期 | 使用真实 SceneTree 的集成测试 |
 | 输入或 UI 连接 | 走真实输入路径的测试，见 [input-and-command-testing.md](input-and-command-testing.md)。不需要截图 |
 | Command 或领域规则 | Command 和领域测试。适配层或连接也改变时，才加输入或 UI 测试 |

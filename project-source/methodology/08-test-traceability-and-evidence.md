@@ -26,6 +26,8 @@ tests/
 
 `regression` 说明测试的来历，不是第四个目录。回归测试放在它所保护的那一层，通常是 `features/F0XX/`，偶尔是 `unit/<component>/`。
 
+调试台自身的测试是唯一的例外，放在 `dev/debug/` 下：共享代码的测试在 `dev/debug/_shared/tests/`，本项目调试对象的测试在 `dev/debug/<对象>/tests/`。因为 `tests/` 下的测试不依赖 `dev/`，调试台测试不能放进 `tests/`；依赖方向测试检查的是游戏，所以留在 `tests/invariants/`。全量运行同时选择 `tests/` 和 `dev/debug/`，见[运行时的测试影响选择](#运行时的测试影响选择)。
+
 逻辑 ID 说明一个已登记的测试为什么存在：
 
 - `F012-AC01` 或 `F012-AC01-02`：Feature F012 条件 AC01 的自动验收验证。
@@ -124,6 +126,15 @@ Feature 详情使用稳定的验收条件 ID：
 - 正在完成的 Feature 只能引用 `active` 且可解析的自动测试。已完成的 Feature 可以保留对 retired 测试的映射，只要它们能按 schema 的替代契约追溯。
 - retired 测试保留它的 ID，并记录原因、Product 变更来源或修订，以及替代的 Feature 或测试。它不进入活动的安全网。严格校验会检查这条替代链；完成检查仍要求当前 Feature 有 active 的直接验证。
 - 移动测试文件时更新 `path`；逻辑测试 ID 保持不变。
+
+### 调试台组件
+
+新项目的测试登记表预置组件 `debug_console`，本节是它的唯一定义：
+
+- **覆盖范围**：调试入口 `dev/debug/debug_main.*`、项目挂钩 `dev/debug/debug_project.gd`、共享代码 `dev/debug/_shared/`，以及本项目的调试对象 `dev/debug/<对象>/`。游戏中的调参资源属于各自的游戏组件，不属于它。
+- **登记的测试**：`unit_test_paths` 为 `["dev/debug/_shared/tests"]`；项目新增调试对象的专有测试时，把 `dev/debug/<对象>/tests` 加进同一列表。依赖方向测试登记为 active 不变量 `INV-DEBUG_CONSOLE-01`（`tests/invariants/debug_dependency_test.gd`），组件为 `debug_console`。
+- **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面。调试台本身的修改按[工程变更流程](07-engineering-change.md#调试台的修改)建维护 Feature。
+- 只改游戏代码时，依赖方向测试由[测试选择与 Godot 验证](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
 
 ## 测试影响评估
 
@@ -376,4 +387,4 @@ GDD 设计、Product 交付范围或专业要求变化时，之前的测试不�
 
 [项目环境准备](06-project-environment.md#项目环境准备)通过检查之后，固定的运行器从 `docs/methodology-config.json` 读取 Godot 可执行文件，并根据 Feature 和测试登记表选择测试。GdUnit 的发现机制、参数、JUnit 身份和会话诊断构成这套实现。证据导入会校验实际的 gdUnit 报告。没有可配置的适配器，也没有测试根目录或命令的第二份副本。
 
-gdUnit4 插件位于 `addons/gdUnit4/`，项目测试放在 `tests/unit`、`tests/features` 和 `tests/invariants` 这几个根目录下。这套分类是项目约定，不是 gdUnit4 对目录的要求。
+gdUnit4 插件位于 `addons/gdUnit4/`，项目测试放在 `tests/unit`、`tests/features` 和 `tests/invariants` 这几个根目录下，调试台测试放在 `dev/debug/` 下。这套分类是项目约定，不是 gdUnit4 对目录的要求。

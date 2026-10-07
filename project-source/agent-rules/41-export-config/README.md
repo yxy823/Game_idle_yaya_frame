@@ -5,7 +5,7 @@
 | 文件 | 何时阅读 |
 | --- | --- |
 | `presets-and-targets.md` | 任何导出配置修改都读：预设、输出路径、构建模式、模板、目标身份、导出凭据与签名 |
-| `resources-and-filters.md` | 修改导出的资源选择或过滤器，新增运行时通过 `FileAccess` 读取的原始文件，或排除测试与编辑器插件 |
+| `resources-and-filters.md` | 修改导出的资源选择或过滤器，新增运行时通过 `FileAccess` 读取的原始文件，排除测试与编辑器插件，或发布前清理调试台留下的未用实现 |
 | `features-and-export-plugins.md` | 新增、重命名或读取自定义导出 feature，按预设读取 ProjectSettings，或编写、修改 `EditorExportPlugin` |
 
 ## 验证

@@ -1,6 +1,0 @@
-interface:
-  display_name: "Godot Prototype"
-  short_description: "在实际 Godot 中用演示台和技术验证回答画面、规则和可行性问题"
-
-policy:
-  allow_implicit_invocation: true

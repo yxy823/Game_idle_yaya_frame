@@ -1,6 +1,0 @@
-interface:
-  display_name: "Feel Tuning"
-  short_description: "和用户一起反复试调特效、反馈与操作手感"
-
-policy:
-  allow_implicit_invocation: true
