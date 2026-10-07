@@ -35,7 +35,7 @@
   - [命令与验证证据](methods-and-tools/commands-and-evidence.md)：每种结果能证明什么，命令参数、测试范围、运行报告、完成记录与内容指纹。
   - [错误与结果的含义](methods-and-tools/errors-and-results.md)：按现象查工具输出的含义和处理办法。
 - **专业工作与记录**
-  - [专业来源与资源](specialist-work-and-records/specialist-work.md)：各类专业规格的维护者、资源规格、画面演示台、接入、测量与独立审核。
+  - [专业来源与资源](specialist-work-and-records/specialist-work.md)：各类专业规格的维护者、资源规格、调试台与实际接入、测量与独立审核。
   - [知识、设计与记录](specialist-work-and-records/knowledge-and-records.md)：术语、Feature 设计稿、架构、ADR、规则、调研、知识、报告与续接信息放在哪里。
 - **公共参考**
   - [框架与 Godot 项目术语](../terminology.md)：框架特有或有特定含义的术语。游戏自身的业务词汇由项目自己维护。

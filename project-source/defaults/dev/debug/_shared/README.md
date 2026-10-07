@@ -163,7 +163,7 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
    $LASTEXITCODE
    ```
 
-5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`，删除 `adopted.tres` 和已空的候选目录；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
+5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`，删除 `adopted.tres` 和已空的候选目录（删除前确认候选的许可说明已随素材移进 `game/`，`adopted.tres` 里的来源与许可摘要已写进设计文档的资源条目）；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
 6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试和依赖方向测试。
 7. 提交，并删除 `adoption-log.md` 中已处理的行；全部处理完时删除该文件。
 
@@ -179,6 +179,6 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 
 ## 测试
 
-- **共享测试**：`_shared/tests/` 只用 [fixtures/sample/](tests/fixtures/sample/) 下的样例游戏与样例调试对象（`game/` 与 `debug/` 两棵目录分别代替项目的 `game/` 与 `dev/debug/`），不读本项目的游戏文件。采纳测试与[使用场景走查](tests/usage_scenario_test.gd)把样例复制到 `user://` 下再移动，不改 `dev/` 与 `game/` 的真实文件；走查把每一步看到的文字写进引擎日志。
+- **共享测试**：`_shared/tests/` 只用 [fixtures/sample/](tests/fixtures/sample/) 下的样例游戏与样例调试对象（`game/` 与 `debug/` 两棵目录分别代替项目的 `game/` 与 `dev/debug/`），不读本项目的游戏文件。采纳测试与[界面任务测试](tests/usage_scenario_test.gd)把样例复制到 `user://` 下再移动，不改 `dev/` 与 `game/` 的真实文件；界面任务测试把每一步看到的文字写进引擎日志。
 - **对象专有测试**：放在 `dev/debug/<对象>/tests/`，测试本项目的 `debug_target.gd`、`slot.gd` 与 `debug_project.gd`。
 - **调试入口启动检查**：[fresh_load.gd](tests/fixtures/fresh_load.gd) 在新进程中启动真实的调试入口，检查全部调试资源能载入、窗口常驻、主场景打开、调试对象跟随。游戏会读写自己的 `user://` 数据，所以在项目副本里运行：`& $projectGodot --headless --path <项目副本> --script res://dev/debug/_shared/tests/fixtures/fresh_load.gd`。

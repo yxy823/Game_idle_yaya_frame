@@ -14,7 +14,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 1. 阅读项目的 `AGENTS.md`、`docs/methodology-config.json`、轻量 Feature 索引和当前的 `docs/progress.md`。只在需要弄清当前任务时才阅读历史链接；不要加载或复述整个归档。
 2. 判断 `docs/gdd/` 中是真实的设计、草稿，还是只有导航和用途说明。不要根据目录、文件标题或脚手架推断出已采用的设计。
    - 没有 GDD 时，创建游戏的工作交给 `design-gdd`；在对应的设计存在之前，依赖它的 Product 规划或实现被阻塞。初始设计、对它的澄清、数值推导和设计审核可以先于 Product 和 Feature 进行。
-   - 检查只读的 Git 状态，以及本次涉及的 GDD、Product、Feature、详细文档和测试登记表（Registry）记录。
+   - 检查只读的 Git 状态，以及本次涉及的 GDD、Product、Feature、详细文档和测试登记表（Registry）记录。存在 `dev/debug/adoption-log.md` 时，说明用户在调试台有待收尾的采纳，下一步先按 `debug-console-godot` 收尾提交。
    - 配置的工具路径只是设置，不能证明工具可用。使用本次涉及的环境证据和 Progress 证据，不要启动探测。机器准备不完整时，按 `yaya/methodology/00-overview.md` 和 `yaya/methodology/06-project-environment.md` 解读。
    - 技术栈固定为 Godot 4.7、GDScript 和 gdunit4；缺少工具不代表引擎尚未确定。
 3. 涉及验收或完成时，阅读当前的证据和链接到的具体运行结果。区分旧的 PASS、当前快照和尚待进行的人工验收。有多个进行中的 Feature 时，先看 Progress 记录的各自停点和等待对象：等待的外部输入已经到达的那一项优先续接；没有记录等待对象时，需要实际的批量授权才能同时推进。不要选编号最大的那个，也不要悄悄清理其他工作。
@@ -72,11 +72,11 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 | 反馈或外部报告，或某个具体故障的原因 | `feedback-triage-godot` 或 `bug-diagnosis-godot` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |
 | 某个模块的整体结构，没有异常行为 | `review-code` 中的现状审核 | 这是审核，不是诊断。 |
 | 环境准备、要求的检查、人工验收或证据恢复 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 或 `verification-evidence-godot` | 工具就绪、已执行的检查、用户实际的验收和证据是否适用，是不同的事实。它们都不增加 Feature、Stage 或完整的交付运行。 |
-| 用户要求的画面演示台、逻辑演示台或技术验证 | 当前 Feature 或已授权实验中的 `prototype-godot` | 实际的 Godot 运行和观察，不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
+| 在调试台比较候选、做视觉决策、调参与采纳，或做技术验证 | 当前 Feature 或已授权实验中的 `debug-console-godot`（候选、调参、采纳与收尾）或 `technical-validation-godot`（引擎可行性） | 游戏还没有对应的骨架时，先建骨架 Feature。采纳到游戏不等于验收通过；技术验证的观察不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
 | 多个答案互相影响的未知项 | `wayfinder-godot`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
 | 单独的工作目录，或把选定的成果带回来 | `worktree-create-godot` 或 `worktree-integrate-godot`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
 | 外部事实或方案比较 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
-| 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）、已实现效果的试调（`feel-tuning-godot`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
+| 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）、已实现效果的试调（`debug-console-godot`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
 | 正式审核 | 按 `yaya/methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
 | 性能或长时间运行测量 | `diagnostics-performance` 或 `diagnostics-soak-test` | 它们的结果有自己的覆盖局限，不是 gdUnit 通过的证据。 |
 | 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review-godot`、`project-grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |

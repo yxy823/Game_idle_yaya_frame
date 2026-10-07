@@ -20,7 +20,8 @@
 | 解析或 lint 通过 | 执行过的静态范围没有问题 | 运行行为、资源、导出或人工质量合格 |
 | 完成依据校验通过 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立评审或导出包已检查 |
 | 人工清单已生成 | 待验收材料已交给用户 | 用户已验收或已接受 |
-| 演示台观察可接受 | 演示台范围内的效果可行 | 正式规则已接入、正式验收已通过 |
+| 用户在调试台采纳到游戏 | 选定的参数和实现已写进游戏文件，是用户当时的选择 | 已收尾提交、测试通过或人工验收通过；人工验收另外检查收尾后的游戏原值 |
+| 技术验证得出“可行” | 该做法在验证的版本、环境和条件下可行 | 正式功能已实现或已通过验收 |
 
 判断时还要遵守三条规则：
 
@@ -53,10 +54,11 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | --- | --- | --- |
 | `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
 | `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
-| `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件与 Godot 忽略的目录 |
+| `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件、Godot 忽略的目录，以及调试台的插槽预设与组合 |
 | `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
 | `yaya/tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
 | `yaya/tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
+| `yaya/tools/ui-trial/prepare-trial-copy.py`、`run-ui-trial.py` | `--copy`、`--script`、`--window` | 在项目外建立并同步改名的项目副本，只在副本中启动 Godot 运行驱动脚本，输出写进副本的 `reports/ui-trial/`；`--window` 会在用户桌面上打开真实窗口。参数与退出码见 [ui-trial 说明](../../../project-source/tools/ui-trial/README.md) |
 
 组件合并器的输入与行为：
 

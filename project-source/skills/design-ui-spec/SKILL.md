@@ -1,6 +1,6 @@
 ---
 name: design-ui-spec
-description: "在 UI 规格中设计并维护界面布局、状态和交互表现。用于线框图和 Godot 画面演示台的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
+description: "在 UI 规格中设计并维护界面布局、状态、交互表现和界面任务。用于线框图、界面任务，以及骨架和调试台视觉决策的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
 ---
 
 # UI 规格
@@ -25,12 +25,23 @@ GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规�
 
 普通控件状态写在这里。一次完整的游戏表现（例如领取奖励）属于 `design-game-presentation`。按 methodology 11 的 **游戏表现文档** 的说明，从 UI 文档链接它；UI 文档不能代替表现文档中的采用关系或实现引用。
 
+## 界面任务
+
+每份界面规格都有“界面任务”小节，按用户想做的事列出这个界面要支持的任务。它是 `yaya/methodology/03-execute-loop.md` 的 [Stage 4](../../../yaya/methodology/03-execute-loop.md#stage-4--自动验证与人工检查清单) 作者侧试用和 [review-ux](../review-ux/SKILL.md#按界面任务试用) 的输入。
+
+- **选哪些任务**：覆盖经常做的、会改动数据或不可逆的、第一次使用必经的任务；不按控件逐个罗列。
+- **每个任务写**：目标（用用户自己的话）、起点（从哪个界面、什么状态开始）、步骤（每步一个鼠标或键盘操作）、每步应看到的反馈、怎样算完成，以及试用要点（容易误解的词、相邻的危险操作、失败或空状态）。
+- **要求**：任何一步需要用户懂系统内部（目录、文件、引擎报错、内部字段名）才能完成，都是设计缺陷，在规格中改掉，不写进步骤。界面任务涉及的游戏规则链接 GDD，不复制。
+- **何时更新**：界面的布局、入口或流程变化时，同步修改受影响的任务。
+
+调试台自己的界面任务写在 `dev/debug/_shared/usage-scenarios.md`，不写进 UI 规格。
+
 ## 交接
 
-按 `yaya/methodology/13-prototypes.md` 的 **画面演示台** 中的单方案验证执行。规格为一个能单独运行的 Godot 场景提供问题和输入；它不创建这个场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替 Godot 验证。
+新界面按 `yaya/methodology/13-debug-console-and-validation.md` 的[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)推进：先做最小的真实骨架，再在调试台做视觉决策，最后补完整逻辑。规格为这些 Feature 提供问题、输入和界面任务；它不创建场景，也不能证明可用性。用户要求的 HTML 探索是另一项已授权的实验工作，不能代替在 Godot 中的验证。
 
-视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。只有在用户做出相应决定后，才采用画面演示台中的实际观察结果：更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
+视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。用户在调试台采纳的设定保存在调参资源中，规格链接它，不抄写数值；采纳带来的布局或交互变化更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
 
-返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和画面演示台输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
+返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和视觉决策输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
 
 返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

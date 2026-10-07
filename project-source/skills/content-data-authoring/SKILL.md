@@ -1,6 +1,6 @@
 ---
 name: content-data-authoring
-description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值公式和节奏目标，批量编写或生成游戏实际读取的具体内容数据，例如三消关卡、放置类的生产者、升级与解锁表，并为内容建立可机器检查的不变量。用于制作、扩充或重新生成内容数据，以及规划和编写内容校验。不用于新机制或规则（design-gdd）、公式与曲线推导（design-balance）、独立数值审核（review-balance）、和用户试调已实现的手感（feel-tuning-godot）或接入美术与音频资源（content-asset-integration），也不负责数据加载器和 schema 代码的实现。"
+description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值公式和节奏目标，批量编写或生成游戏实际读取的具体内容数据，例如三消关卡、放置类的生产者、升级与解锁表，并为内容建立可机器检查的不变量。用于制作、扩充或重新生成内容数据，以及规划和编写内容校验。不用于新机制或规则（design-gdd）、公式与曲线推导（design-balance）、独立数值审核（review-balance）、和用户试调已实现的手感（debug-console-godot）或接入美术与音频资源（content-asset-integration），也不负责数据加载器和 schema 代码的实现。"
 ---
 
 # 内容数据编写
@@ -64,7 +64,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 ## 需要人判断的部分
 
 - 难度手感、节奏、新鲜感和数字增长的爽感，由用户实际游玩判断。Agent 列出值得用户重点体验的具体内容，例如自动对局通过率最低的几关，或长时间无物可买的时间段。
-- 用户要调已实现的手感参数，用 `feel-tuning-godot`；要改目标区间或公式，交给 `design-balance`；要改规则或新增元素，交给 `design-gdd`。
+- 用户要调已实现的手感参数，用 `debug-console-godot`；要改目标区间或公式，交给 `design-balance`；要改规则或新增元素，交给 `design-gdd`。
 - 用户试玩时说“这样可以”，不等于人工验收。正式验收按 Feature 的验收模式在 Stage 5 进行。
 
 ## 验证与返回

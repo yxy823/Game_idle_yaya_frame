@@ -28,6 +28,7 @@ description: >-
 - `docs/product.md` 和已写成文档的 `docs/product/NN-xxx.md`：交付大纲、已采用的范围、边界、依赖和顺序。
 - `docs/project-rules.md` 及其路由到的规则来源（`yaya/agent-rules/`）：协作、架构和技术约束。
 - `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` 和 `docs/presentation/` 中的专业来源，以及按 `yaya/methodology/11-specialist-workflows.md` 的 **查找与映射来源** 通过实际引用找到的其他来源路径。
+- 被专业文档或 Feature AC 链接的调参资源 `game/<对象>/tuning/**/*.tres`：已验收的取值。调试台采纳后由收尾提交，再按 `yaya/methodology/13-debug-console-and-validation.md` 的 **完成后再调值** 进入本流程，差异就是资源的取值变化。
 
 提议中的措辞不是已确认的约定。资源状态或位置的变化，对规划来说可能只是编辑性调整，但仍可能改变完成记录的内容指纹。存在 `docs/terminology.md` 时，用它统一解读差异；术语不是单独的行为来源，不改变含义的术语修改属于编辑性调整。两次同步之间，模块文件可能被新增、删除、重命名（包括数字前缀变化）或修改；四种情况都要处理。
 
@@ -63,6 +64,7 @@ git diff --name-status -M <anchor> HEAD -- docs/project-rules.md yaya/agent-rule
 git diff -M <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
 git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
+git diff --name-status -M <anchor> HEAD -- game/*/tuning/
 ```
 
 先看提交列表：标题表明是某个 Feature 写回自身参数、框架同步或已有计划覆盖的规划时，只核对对应差异确实如此，把精力留给其余变化。加上通过引用找到的其他来源路径。`-M` 必须带上，这样 `02-foo.md` 改名为 `03-foo.md` 这类重命名才不会被读成一次删除加一次新增。
