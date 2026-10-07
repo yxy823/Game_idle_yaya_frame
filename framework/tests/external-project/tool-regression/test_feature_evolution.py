@@ -10,6 +10,7 @@ import copy
 import importlib.util
 import json
 import subprocess
+import shutil
 import tempfile
 import unittest
 from unittest import mock
@@ -420,6 +421,9 @@ class FeatureEvolutionTests(unittest.TestCase):
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
             source = FRAMEWORK_DEFAULT_DOCS / f"{name}.json"
             (fresh / f"docs/{name}.json").write_bytes(source.read_bytes())
+        # 默认登记表登记了调试台的单元测试目录与依赖方向不变量，新项目随附这些文件。
+        shutil.copytree(FRAMEWORK_DEFAULT_DOCS.parent / "dev/debug/_shared/tests", fresh / "dev/debug/_shared/tests")
+        shutil.copytree(FRAMEWORK_DEFAULT_DOCS.parent / "tests", fresh / "tests")
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
 "yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
                          "yaya/tools/lib/test_selection.py"):
@@ -437,7 +441,6 @@ class FeatureEvolutionTests(unittest.TestCase):
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
             (fresh / f"docs/{name}.json").write_bytes((self.root / f"docs/{name}.json").read_bytes())
         (fresh / "docs/features").mkdir()
-        (fresh / "tests").mkdir()
         for path in (self.root / "docs/features").glob("*.json"):
             (fresh / "docs/features" / path.name).write_bytes(path.read_bytes())
         for path in (self.root / "tests").glob("*.gd"):
