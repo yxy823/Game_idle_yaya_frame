@@ -44,8 +44,10 @@ func _build_bar() -> PanelContainer:
 	_unsaved = Kit.row(6)
 	_unsaved.add_child(Kit.dot())
 	_unsaved.add_child(Kit.label("", &"WarnText"))
+	_unsaved.visible = false
 	line.add_child(_unsaved)
 	_combo_note = Kit.label("组合未保存", &"HintText")
+	_combo_note.visible = false
 	line.add_child(_combo_note)
 	message = Kit.elided("", &"HintText")
 	message.mouse_filter = Control.MOUSE_FILTER_PASS

@@ -31,7 +31,7 @@ GDD、预拆分顺序、Progress 和 Feature 状态由 Agent 直接读取。
 
 **S3｜交接首个人工验收**
 
-manual Feature 先完成全部适用自主工作，提供可运行入口与绑定当前版本的 pending 清单，再结束本段 Goal。界面按[界面的开发顺序](../../../../../project-source/methodology/13-debug-console-and-validation.md#界面的开发顺序)拆成骨架、视觉决策、完整逻辑三个 Feature；视觉决策 Feature 的交接点更早：候选和固定局面在调试台就绪后，Agent 给出 `dev/debug/README.md` 中的启动命令，停下等你在调试台比较并采纳到游戏。
+manual Feature 先完成全部适用自主工作，提供可运行入口与绑定当前版本的 pending 清单，再结束本段 Goal。界面按[界面的开发顺序](../../../../../project-source/methodology/13-debug-console-and-validation.md#界面的开发顺序)拆成骨架、视觉决策、完整逻辑三个 Feature；视觉决策 Feature 的交接点更早：候选和固定局面在调试台就绪后，Agent 给出 `dev/debug/README.md` 中的启动命令，停下等你在调试台比较并采纳到游戏。本段 Goal 在此结束；不依赖视觉参数的工作在下一段 Goal 中继续。
 
 ## 步骤产出与状态变化
 

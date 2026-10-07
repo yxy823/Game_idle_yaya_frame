@@ -53,7 +53,7 @@ description: >-
 ### 收集差异
 
 ```powershell
-git log --format='%h %s' <anchor>..HEAD -- docs/gdd/ docs/product.md docs/product/ docs/project-rules.md yaya/agent-rules/ docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
+git log --format='%h %s' <anchor>..HEAD -- docs/gdd/ docs/product.md docs/product/ docs/project-rules.md yaya/agent-rules/ docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/ game/*/tuning/
 git diff --name-status -M <anchor> HEAD -- docs/gdd/
 git diff -M <anchor> HEAD -- docs/gdd/
 git diff <anchor> HEAD -- docs/product.md
@@ -65,9 +65,10 @@ git diff -M <anchor> HEAD -- docs/project-rules.md yaya/agent-rules/
 git diff --name-status -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 git diff -M <anchor> HEAD -- docs/art/ docs/audio/ docs/ui/ docs/localization/ docs/presentation/
 git diff --name-status -M <anchor> HEAD -- game/*/tuning/
+git diff -M <anchor> HEAD -- game/*/tuning/
 ```
 
-先看提交列表：标题表明是某个 Feature 写回自身参数、框架同步或已有计划覆盖的规划时，只核对对应差异确实如此，把精力留给其余变化。加上通过引用找到的其他来源路径。`-M` 必须带上，这样 `02-foo.md` 改名为 `03-foo.md` 这类重命名才不会被读成一次删除加一次新增。
+先看提交列表：标题表明是某个 Feature 采纳到游戏、框架同步或已有计划覆盖的规划时，只核对对应差异确实如此，把精力留给其余变化。加上通过引用找到的其他来源路径。`-M` 必须带上，这样 `02-foo.md` 改名为 `03-foo.md` 这类重命名才不会被读成一次删除加一次新增。
 
 ### 为每个差异块分类
 

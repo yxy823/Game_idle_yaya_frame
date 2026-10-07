@@ -101,7 +101,7 @@
 2. **视觉决策**：Agent 用 `debug-console-godot` 登记插槽、候选和固定局面；用户在调试台比较、调参并采纳到游戏。外观已经选定时只有一个候选，用户在调试台确认布局、裁切、可读和可点击。
 3. **完整逻辑**：补完其余规则。只有读取视觉参数（例如动画时长）的部分等待视觉决策验收，其余部分可以并行。
 
-三步对应三个 Feature，拆法与 AC 写法见[拆分规则](02-feature-list-schema.md#拆分规则)，Stage 中的位置见[资源](03-execute-loop.md#1b-资源)。文字或数值的修改、非视觉逻辑和不受影响的模块，不需要这个顺序；已验证的布局覆盖当前范围时直接复用。
+三步对应三个 Feature，拆法与 AC 写法见[拆分规则](02-feature-list-schema.md#拆分规则)，Stage 中的位置见[资源](03-execute-loop.md#1b-资源)。文字或数值的修改、非视觉逻辑和不受影响的模块，不需要这个顺序；已验证的布局覆盖当前范围时直接复用。范围较窄的视觉检查可以留在已规划的 Feature 内，不另拆三个 Feature，前提是视觉决定在依赖它的逻辑之前采纳。
 
 视觉决策开始之前，先确定：
 
@@ -135,15 +135,17 @@
 
 本节是 Feature 完成后再改调参资源时的唯一路由。用户随时可以在调试台调值并采纳到游戏；采纳本身不需要先通知 Agent。
 
-1. **先收尾提交**：Agent 发现 `dev/debug/adoption-log.md` 时，先用 `debug-console-godot` 按[收尾步骤](../../dev/debug/_shared/README.md#收尾步骤)完成收尾并提交，再做别的任务。这样被写入的资源作为来源已经提交。
+1. **先收尾提交**：Agent 发现 `dev/debug/adoption-log.md` 时，按 `AGENTS.md` 的[开始修改前](../../AGENTS.md#开始修改前)收尾。这样被写入的资源作为来源已经提交。
 2. **查找链接它的文档**：在 `docs/` 下搜索每份被写入的调参资源的路径，查看哪些 GDD、UI 规格、表现文档、Feature 设计稿或 Feature AC 链接了它。
 3. **按命中情况处理**：
 
 | 命中情况 | 处理 |
 | --- | --- |
-| 被已完成 Feature 的文档或 AC 链接 | 报告受影响的 Feature，运行 `feature-sync`。被文档链接的调参资源属于[查找与映射来源](11-specialist-workflows.md#查找与映射来源)中的来源，`feature-sync` 从资源的 Git 差异建立变更；已完成 Feature 的验收记录保持历史，需要重新验收时由新的 Feature 完成。 |
+| 被已完成 Feature 的来源文档（GDD、UI 规格、表现文档等）或 AC 链接 | 报告受影响的 Feature，运行 `feature-sync`。被文档链接的调参资源属于[查找与映射来源](11-specialist-workflows.md#查找与映射来源)中的来源，`feature-sync` 从资源的 Git 差异建立变更；已完成 Feature 的验收记录保持历史，需要重新验收时由新的 Feature 完成。 |
 | 只被进行中的 Feature 链接 | 留在该 Feature 内处理：Stage 3 中的采纳是正常工作；人工清单绑定之后的采纳等于拒绝本次验收，见 [Stage 5](03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式)。 |
 | 没有被任何文档或 AC 链接 | 收尾提交即完成，不需要源同步。 |
+
+参数还写死在已完成 Feature 的代码里时，把它提到调参资源属于重构，按[重构 Feature 契约](07-engineering-change.md#重构-feature-契约)处理。
 
 用户也可以直接说“收尾调试台采纳”，从第 1 步开始。
 

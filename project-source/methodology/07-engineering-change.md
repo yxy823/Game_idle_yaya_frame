@@ -184,6 +184,7 @@ feature-execute
 - `affected_components` 包含 `debug_console`，测试按组件选择，组件的定义见[调试台组件](08-test-traceability-and-evidence.md#调试台组件)。
 - 调试台的界面行为变化时，同步更新 `dev/debug/_shared/usage-scenarios.md` 中受影响的界面任务；共享机制变化时，同步 `dev/debug/_shared/README.md`。
 - 界面有变化时，Stage 4 在人工清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工检查清单)。
+- 改了调试入口、主题或窗口时，在项目副本里运行调试入口启动检查 `dev/debug/_shared/tests/fixtures/fresh_load.gd`，命令见[测试](../../dev/debug/_shared/README.md#测试)。
 
 ## Feature 写入规则
 

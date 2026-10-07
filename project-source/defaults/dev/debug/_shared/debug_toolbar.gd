@@ -59,6 +59,7 @@ func _init() -> void:
 	line.add_child(Kit.spacer())
 	lock_chip = Kit.chip("已锁定参数", "lock")
 	lock_chip.tooltip_text = "播放或暂停时参数已锁定，回到待播放后可改"
+	lock_chip.visible = false
 	line.add_child(lock_chip)
 	_build_status(line)
 

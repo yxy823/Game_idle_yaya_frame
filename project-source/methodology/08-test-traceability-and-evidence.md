@@ -133,8 +133,8 @@ Feature 详情使用稳定的验收条件 ID：
 
 - **覆盖范围**：调试入口 `dev/debug/debug_main.*`、项目挂钩 `dev/debug/debug_project.gd`、共享代码 `dev/debug/_shared/`，以及本项目的调试对象 `dev/debug/<对象>/`。游戏中的调参资源属于各自的游戏组件，不属于它。
 - **登记的测试**：`unit_test_paths` 为 `["dev/debug/_shared/tests"]`；项目新增调试对象的专有测试时，把 `dev/debug/<对象>/tests` 加进同一列表。依赖方向测试登记为 active 不变量 `INV-DEBUG_CONSOLE-01`（`tests/invariants/debug_dependency_test.gd`），组件为 `debug_console`。
-- **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面。调试台本身的修改按[工程变更流程](07-engineering-change.md#调试台的修改)建维护 Feature。
-- 只改游戏代码时，依赖方向测试由[测试选择与 Godot 验证](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
+- **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[工程变更流程](07-engineering-change.md#调试台的修改)建维护 Feature。
+- 只改游戏代码、不新建调参资源或字段时，依赖方向测试由[测试选择与 Godot 验证](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
 
 ## 测试影响评估
 

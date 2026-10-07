@@ -5,7 +5,7 @@ description: "独立审核指定流程中的界面可用性、交互清晰度和
 
 # UX 审核
 
-按 `yaya/methodology/12-independent-review.md` 执行。阅读涉及的用户目标、GDD 行为、Product 交付范围和 UI 规格（来源位置按 `yaya/methodology/11-specialist-workflows.md` 的 **归属与决策** 查找；只有空章节的 Bible 不构成审核标准），再针对请求的流程以及显示与输入条件，检查实际的画面和交互证据。
+独立审核按 `yaya/methodology/12-independent-review.md` 执行；作者在 Stage 4 按界面任务试用时只借用本 Skill 的试用方法和问题分级，不受独立审核的约束。阅读涉及的用户目标、GDD 行为、Product 交付范围和 UI 规格（来源位置按 `yaya/methodology/11-specialist-workflows.md` 的 **归属与决策** 查找；只有空章节的 Bible 不构成审核标准），再针对请求的流程以及显示与输入条件，检查实际的画面和交互证据。
 
 追踪：操作是否容易发现，状态和反馈是否容易理解，导航与焦点是否可预期，错误能否恢复，流程是否支持用户目标。包括涉及的空状态、加载、禁用、错误、内容密集或长文本，以及重复进入等状态。任务要求时，检查文字对比度、点击目标尺寸、输入方式和不依赖颜色的提示；不编造认证标准。
 

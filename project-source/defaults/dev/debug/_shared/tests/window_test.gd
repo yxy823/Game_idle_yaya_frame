@@ -309,6 +309,10 @@ func test_status_bar_says_when_targets_or_the_debug_save_are_missing() -> void:
 	assert_array(bare.session.targets).is_empty()
 	assert_str(bare.status.message.text).is_equal(
 		"还没有调试对象：在 dev/debug/<对象>/ 下添加；调试会话可能写入真实存档：在 dev/debug/debug_project.gd 设置调试存档位置")
+	# Nothing is edited or playing yet, so neither state may be claimed.
+	assert_bool(bare.status._combo_note.visible).is_false()
+	assert_bool(bare.status._unsaved.visible).is_false()
+	assert_bool(bare.toolbar.lock_chip.visible).is_false()
 	bare.queue_free()
 	await get_tree().process_frame
 	await get_tree().process_frame

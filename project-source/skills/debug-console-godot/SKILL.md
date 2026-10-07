@@ -1,6 +1,6 @@
 ---
 name: debug-console-godot
-description: "在已授权的 Feature 或限定范围的实验中，用游戏内调试台和用户一起比较候选、做视觉决策、试调已实现的特效、反馈或操作手感，并在用户采纳到游戏后收尾提交；也负责为调试对象登记插槽、候选、固定局面和试播动作。用于骨架之后在调试台定画面，以及“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、引擎可行性问题（technical-validation-godot）、修改调试台共享代码本身，也不用于记录验收结论（manual-acceptance-godot）。"
+description: "在已授权的 Feature 或限定范围的实验中，用游戏内调试台和用户一起比较候选、做视觉决策、试调已实现的特效、反馈或操作手感，并在用户采纳到游戏后收尾提交；对话开始时发现已存在的 dev/debug/adoption-log.md，也用本 Skill 收尾，不需要另外授权；也负责为调试对象登记插槽、候选、固定局面和试播动作。用于骨架之后在调试台定画面，以及“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、引擎可行性问题（technical-validation-godot）、修改调试台共享代码本身，也不用于记录验收结论（manual-acceptance-godot）。"
 ---
 
 # 调试台：比较候选、调参与采纳
@@ -12,11 +12,11 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 
 ## 前提
 
-- 调整属于一个已授权的 Feature（通常在 Stage 3），或用户要求的限定范围实验。没有这类授权时，只给出调整建议，不改文件。
+- 调整属于一个已授权的 Feature（通常在 Stage 3），或用户要求的限定范围实验。没有这类授权时，只给出调整建议，不改文件。例外：收尾已存在的 `dev/debug/adoption-log.md` 不需要另外授权，依据是 `AGENTS.md` 的[开始修改前](../../../AGENTS.md#开始修改前)。
 - 游戏里已经有要调的系统，哪怕只是最小的真实骨架。还没有时，按[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)先建骨架 Feature，不在 `dev/` 里写假系统。
 - **先查上游的定性词**：开调之前，看 GDD、Product 和表现文档里有没有限定这个参数的说法，例如“少量粒子”“轻微震动”。用户想要的方向可能超出它时，先问用户：只调参数、保留这个说法，还是改需求本身。改需求由 `design-gdd`、`product-author` 等负责方修改来源，再经 `feature-sync` 同步，不在调参中顺手改掉。
 - 效果所属的 Feature 已经完成，用户之后才要调：按 13 号的[完成后再调值](../../../yaya/methodology/13-debug-console-and-validation.md#完成后再调值)执行。
-- 用户在 Stage 5 人工验收时可以随意试调和另存预设；又采纳了新值时，按 `yaya/methodology/03-execute-loop.md` 的 [Stage 5](../../../yaya/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 记为未通过，回到 Stage 3 用本 Skill 调整并收尾，再重做 Stage 4 和 Stage 5。
+- 用户在 Stage 5 人工验收时可以随意试调和另存预设；又采纳了新值时，按 `yaya/methodology/03-execute-loop.md` 的 [Stage 5](../../../yaya/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 作为拒绝处理：这份清单不记录结论，在 Progress 记下采纳内容。
 - 修改调试台共享代码或界面本身不属于本 Skill，按 `yaya/methodology/07-engineering-change.md` 的[维护 Feature 契约](../../../yaya/methodology/07-engineering-change.md#维护-feature-契约)建维护 Feature。
 
 ## 把调整对象接进调试台
@@ -27,7 +27,7 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 2. **插槽说明与试播动作**：每个插槽和参数都要有中文名，写在 `dev/debug/<对象>/slots/<插槽路径>/slot.gd`；真实游戏里要等很久才出现的效果，登记“点一下就看到”的试播动作。
 3. **固定局面**：需要反复看同一段流程时，在 `dev/debug/<对象>/debug_target.gd` 登记固定局面。原则见 13 号的[固定局面、试播与测试状态](../../../yaya/methodology/13-debug-console-and-validation.md#固定局面试播与测试状态)。
 4. **调试存档**：项目还没按自己的存档系统改写 `dev/debug/debug_project.gd` 时，先改写它（见[入口与项目挂钩](../../../dev/debug/_shared/README.md#入口与项目挂钩)），否则调试会话会写进用户的真实存档。
-5. **登记与测试**：在[项目的调试台说明](../../../dev/debug/README.md#调试对象与候选)登记调试对象、插槽、候选和固定局面；对象专有的测试放在 `dev/debug/<对象>/tests/`。
+5. **登记与测试**：在[项目的调试台说明](../../../dev/debug/README.md#调试对象与候选)登记调试对象、插槽、候选和固定局面；对象专有的测试放在 `dev/debug/<对象>/tests/`，并把这个目录加进 `debug_console` 的 `unit_test_paths`，见 `yaya/methodology/08-test-traceability-and-evidence.md` 的[调试台组件](../../../yaya/methodology/08-test-traceability-and-evidence.md#调试台组件)。
 
 ## 候选
 

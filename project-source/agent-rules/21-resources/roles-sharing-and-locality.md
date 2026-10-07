@@ -33,6 +33,7 @@
 - 一份资源只属于一个插槽，一个插槽只绑一份资源；不同用途的参数混在一份资源中时，拆成两份。
 - 有候选的插槽声明一个候选字段 `candidate`（`PackedScene`、`AudioStream`、`Script` 或按顺序播放的一组音效）和 `candidate_params: Resource`。候选自带的参数放在 `candidate_params` 中，它的脚本随候选放置；有多个可替换部分时拆成多个插槽。
 - 字段的值是另一份调参资源时，这是共享参数的链接，只在它所属的插槽中调。
+- 新建调参资源或新增字段时，同时在对应的 `dev/debug/<对象>/slots/<插槽路径>/slot.gd` 补 `TITLE` 和 `FIELDS`，枚举字段补 `VALUES`（常量见[调试台共享代码](../../../dev/debug/_shared/README.md#调试对象插槽与候选)），并把 `debug_console` 写进该 Feature 的 `affected_components`，见[调试台组件](../../methodology/08-test-traceability-and-evidence.md#调试台组件)。调试台的共享测试要求每个插槽和参数都有中文名。
 
 ## 复制
 
