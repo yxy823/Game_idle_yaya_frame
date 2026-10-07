@@ -90,6 +90,12 @@ class UiTrialEngineTests(unittest.TestCase):
         self.assertNotIn("all steps done", steps)
         self.assertLess(elapsed, 15)
 
+    def test_require_null_fails_with_node_not_found(self) -> None:
+        result, steps, _output, _elapsed = self.run_trial("missing_node_driver.gd")
+        self.assertEqual(result.returncode, 1, result.stdout + result.stderr)
+        self.assertIn("FAIL: node not found: got null", steps)
+        self.assertNotIn("engine error", steps)
+
     def test_actions_click_read_and_key_injection(self) -> None:
         result, steps, _output, _elapsed = self.run_trial("actions_driver.gd")
         self.assertEqual(result.returncode, 1, result.stdout + result.stderr)

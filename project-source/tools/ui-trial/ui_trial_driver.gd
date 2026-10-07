@@ -205,9 +205,15 @@ func find(target: String, from: Node = null) -> Node:
 	return base.find_child(target, true, false)
 
 
-## 和 find 相同，找不到时让试用失败。
+## 和 find 相同，找不到时让试用失败。target 是 null（例如上一步 find 没找到）时同样按找不到处理。
 func require(target: Variant, from: Node = null) -> Node:
-	var node: Node = target if target is Node else find(String(target), from)
+	if target is Node:
+		return target
+	if not (target is String or target is StringName or target is NodePath):
+		fail("node not found: got %s instead of a node, node name or path"
+			% ("null" if target == null else type_string(typeof(target))))
+		return null
+	var node := find(String(target), from)
 	if node == null:
 		fail("node not found: %s" % target)
 	return node

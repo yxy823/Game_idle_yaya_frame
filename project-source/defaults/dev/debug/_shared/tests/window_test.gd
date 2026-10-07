@@ -319,6 +319,74 @@ func test_status_bar_says_when_targets_or_the_debug_save_are_missing() -> void:
 	DirAccess.remove_absolute(empty)
 
 
+## "另存" never overwrites silently: the name box offers a free name, and a taken name asks
+## first, naming the combos that use it. "换个名字" writes nothing.
+func test_save_preset_as_an_existing_name_asks_before_overwriting() -> void:
+	var directory := "user://tests/debug-save-as-%d" % Time.get_ticks_usec()
+	_window.session.store.root = directory
+	var slot := _slot(EFFECT)
+	slot.preset_name = "甲"
+	assert_int(_window.session.store.save_slot(slot, "甲").error).is_equal(OK)
+	assert_int(_window.session.save_combo("组A").error).is_equal(OK)
+	var path: String = _window.session.store.preset_path(slot.id, "甲")
+	var original := FileAccess.get_file_as_bytes(path)
+	slot.live.candidate_params.size += 10.0
+	_window.session.select_slot(slot)
+	_window._slot_command("另存")
+	assert_str(_name_box().text).is_equal("甲-2")
+	_name_box().text = "甲"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	assert_str(_window.dialogs.current.dialog_text).starts_with(
+		"预设 甲 已存在，保存会覆盖它。它被 1 个组合使用（组A），覆盖后它们也会变。")
+	_assert_overwrite_buttons()
+	_window.dialogs.button("换个名字").pressed.emit()
+	assert_array(FileAccess.get_file_as_bytes(path)).is_equal(original)
+	assert_str(_name_box().text).is_equal("甲-2")
+	_name_box().text = "甲"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	_window.dialogs.button("覆盖").pressed.emit()
+	assert_str(_window.status.message.text).is_equal("已保存预设 甲，游戏文件不变")
+	assert_array(FileAccess.get_file_as_bytes(path)).is_not_equal(original)
+	slot.preset_name = ""
+	_window.session.forget_combo()
+	_remove(directory)
+
+
+func test_save_combo_as_an_existing_name_asks_before_overwriting() -> void:
+	var directory := "user://tests/debug-save-combo-as-%d" % Time.get_ticks_usec()
+	_window.session.store.root = directory
+	assert_int(_window.session.save_combo("组A").error).is_equal(OK)
+	var path: String = _window.session.store.combo_path(_window.session.active.id, "组A")
+	var original := FileAccess.get_file_as_bytes(path)
+	_window.presets.save_combo("另存组合")
+	assert_str(_name_box().text).is_equal("组A-2")
+	_name_box().text = "组A"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	assert_str(_window.dialogs.current.dialog_text).starts_with("组合 组A 已存在，保存会覆盖它。")
+	_assert_overwrite_buttons()
+	_window.dialogs.button("换个名字").pressed.emit()
+	assert_array(FileAccess.get_file_as_bytes(path)).is_equal(original)
+	assert_str(_name_box().text).is_equal("组A-2")
+	_window.dialogs.button("取消").pressed.emit()
+	_window.session.forget_combo()
+	_remove(directory)
+
+
+func _name_box() -> LineEdit:
+	return _window.dialogs.current.find_children("*", "LineEdit", true, false)[0] as LineEdit
+
+
+func _assert_overwrite_buttons() -> void:
+	var order: PackedStringArray = []
+	var styles: Array[StringName] = []
+	for button in _window.dialogs.current.get_ok_button().get_parent().get_children():
+		if button is Button and button.visible:
+			order.append(button.text)
+			styles.append(button.theme_type_variation)
+	assert_array(order).contains_exactly(["覆盖", "换个名字", "取消"])
+	assert_array(styles).contains_exactly([&"DangerButton", &"", &""])
+
+
 func _labels(node: Node) -> PackedStringArray:
 	var texts: PackedStringArray = []
 	for label: Label in node.find_children("*", "Label", true, false):

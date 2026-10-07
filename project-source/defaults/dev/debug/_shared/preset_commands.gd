@@ -2,8 +2,8 @@ extends RefCounted
 ## The debug window's combo and slot-preset commands: load, save and delete, each reported in
 ## plain words. Saving only writes dev/ drafts; the game files stay as they are. Loading over
 ## unsaved edits, saving a combo over unsaved slots and overwriting a preset used by combos
-## all ask first. Saving several slots at once never overwrites a preset another combo uses:
-## it saves a new preset beside it and says so.
+## all ask first, and so does a typed name that already exists. Saving several slots at once
+## never overwrites a preset another combo uses: it saves a new preset beside it and says so.
 
 const Session := preload("res://dev/debug/_shared/debug_session.gd")
 const Slot := preload("res://dev/debug/_shared/slot.gd")
@@ -118,9 +118,22 @@ func _other_combos(slot_id: String, preset: String, own_combo: String) -> Packed
 
 
 func _free_name(slot_id: String, base: String) -> String:
+	return _free(base, func(value: String) -> String:
+		return _session.store.preset_path(slot_id, value))
+
+
+func _free_combo_name(base: String) -> String:
+	return _free(base, func(value: String) -> String:
+		return _session.store.combo_path(_session.active.id, value))
+
+
+## `base`, or "<base>-2", "<base>-3"… when a file of that name exists; empty stays empty.
+static func _free(base: String, path_of: Callable) -> String:
+	if base.is_empty():
+		return base
 	var free := base
 	var number := 2
-	while FileAccess.file_exists(_session.store.preset_path(slot_id, free)):
+	while FileAccess.file_exists(path_of.call(free)):
 		free = "%s-%d" % [base, number]
 		number += 1
 	return free
@@ -175,11 +188,23 @@ func save_combo(action: String) -> void:
 		"一并保存", "保存组合")
 
 
-func _name_combo(overwrite: bool, dirty: Array[Slot]) -> void:
+func _name_combo(overwrite: bool, dirty: Array[Slot], base: String = "") -> void:
 	if overwrite:
 		_save_combo(_session.combo_name, dirty)
 	else:
-		_dialogs.ask_name(_session.combo_name, _save_combo.bind(dirty), "保存组合")
+		_dialogs.ask_name(_free_combo_name(base if not base.is_empty() else _session.combo_name),
+			_combo_named.bind(dirty), "保存组合")
+
+
+## A typed name that already exists is an overwrite: ask before replacing that combo.
+func _combo_named(value: String, dirty: Array[Slot]) -> void:
+	if not Store.valid_name(value) \
+			or not FileAccess.file_exists(_session.store.combo_path(_session.active.id, value)):
+		_save_combo(value, dirty)
+		return
+	_dialogs.ask("组合 %s 已存在，保存会覆盖它。" % value, [
+		["覆盖", Dialogs.DANGER, _save_combo.bind(value, dirty)],
+		["换个名字", Dialogs.PLAIN, _name_combo.bind(false, dirty, value)]])
 
 
 func _save_combo(value: String, dirty: Array[Slot]) -> void:
@@ -190,7 +215,7 @@ func _save_combo(value: String, dirty: Array[Slot]) -> void:
 	for slot in dirty:
 		if slot.preset_name.is_empty():
 			unnamed.append(slot)
-			slot.preset_name = value
+			slot.preset_name = _free_name(slot.id, value)
 	var saved := save_dirty(dirty, value, value)
 	if not saved.ok:
 		for slot in unnamed:
@@ -248,9 +273,25 @@ func save_preset(slot: Slot, action: String) -> void:
 		["覆盖", Dialogs.DANGER, _save_preset.bind(slot.preset_name, slot)]])
 
 
-func _ask_preset_name(slot: Slot) -> void:
-	_dialogs.ask_name(slot.preset_name, _save_preset.bind(slot),
-		"保存 %s 的预设" % slot.display_name())
+func _ask_preset_name(slot: Slot, base: String = "") -> void:
+	_dialogs.ask_name(_free_name(slot.id, base if not base.is_empty() else slot.preset_name),
+		_preset_named.bind(slot), "保存 %s 的预设" % slot.display_name())
+
+
+## A typed name that already exists is an overwrite: ask first and name the combos using it.
+func _preset_named(value: String, slot: Slot) -> void:
+	if not Store.valid_name(value) or not FileAccess.file_exists(_session.store.preset_path(slot.id,
+			value)):
+		_save_preset(value, slot)
+		return
+	var names: PackedStringArray = []
+	for path: String in _session.store.references(slot.id, value).get("paths", []):
+		names.append(path.get_file().get_basename())
+	var uses := "" if names.is_empty() \
+		else "它被 %d 个组合使用（%s），覆盖后它们也会变。" % [names.size(), "、".join(names)]
+	_dialogs.ask("预设 %s 已存在，保存会覆盖它。%s" % [value, uses], [
+		["覆盖", Dialogs.DANGER, _save_preset.bind(value, slot)],
+		["换个名字", Dialogs.PLAIN, _ask_preset_name.bind(slot, value)]])
 
 
 func _save_preset(value: String, slot: Slot) -> void:
