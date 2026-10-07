@@ -6,6 +6,8 @@ const PINS := "user://debug/pinned-slots.json"
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Codec := preload("res://dev/debug/_shared/preset_codec.gd")
 const Playback := preload("res://dev/debug/_shared/playback_controller.gd")
+const Controls := preload("res://dev/debug/_shared/property_controls.gd")
+const Dialogs := preload("res://dev/debug/_shared/debug_dialogs.gd")
 const Params := preload("res://dev/debug/_shared/tests/fixtures/params.gd")
 const SAMPLE := "res://dev/debug/_shared/tests/fixtures/sample/"
 const EFFECT := "sample/feedback/effect"
@@ -370,6 +372,134 @@ func test_save_combo_as_an_existing_name_asks_before_overwriting() -> void:
 	_window.dialogs.button("取消").pressed.emit()
 	_window.session.forget_combo()
 	_remove(directory)
+
+
+## slot.gd's value_text words the value box and the revert tooltip; typing still sees numbers.
+func test_value_text_words_the_value_box_and_the_revert_tooltip() -> void:
+	var timing := _slot("sample/timing")
+	_window.slot_list.items[timing.id].pressed.emit()
+	var number := _row("hold").find_children("*", "SpinBox", true, false)[0] as SpinBox
+	await get_tree().process_frame
+	assert_str(number.get_line_edit().text).is_equal("300 ms")
+	number.value = 0.45
+	await get_tree().process_frame
+	assert_str(number.get_line_edit().text).is_equal("450 ms")
+	assert_float(timing.live.hold).is_equal_approx(0.45, 0.0001)
+	assert_str(_row("hold").revert.tooltip_text).is_equal("还原这一项（游戏原值：300 ms）")
+
+
+func test_target_dropdown_shows_each_targets_title() -> void:
+	var names: PackedStringArray = []
+	var menu: PopupMenu = _window.toolbar.target.get_popup()
+	for index in range(menu.item_count):
+		names.append(menu.get_item_text(index))
+	assert_array(names).contains_exactly_in_any_order(["样例", "全局"])
+	assert_str(_window.toolbar.target.value_label.text).is_equal("样例")
+	assert_str(_window.toolbar.target.tooltip_text).is_equal(
+		"调试对象：列表显示它和“全局”的插槽；切换场景时自动跟随")
+
+
+func test_empty_list_names_the_filter_and_the_search() -> void:
+	var list: Control = _window.slot_list
+	list.search.text = "不存在的插槽"
+	list.refresh(true)
+	assert_str(_empty_hint()).is_equal(
+		"筛选“全部”、搜索“不存在的插槽”：没有符合条件的插槽。清空搜索框可看到所有插槽")
+	list.set_filter(list.Filter.MODIFIED)
+	assert_str(_empty_hint()).is_equal("筛选“已修改”、搜索“不存在的插槽”：没有符合条件的插槽。"
+		+ "点“全部”并清空搜索框可看到所有插槽")
+	list.search.text = ""
+	list.set_filter(list.Filter.PINNED)
+	assert_str(_empty_hint()).is_equal("筛选“钉选”：没有符合条件的插槽。点“全部”可看到所有插槽")
+
+
+## A result clears after real seconds or on the next edit; open details and the startup notes stay.
+func test_status_result_clears_on_edit_and_timeout_but_keeps_open_details_and_notes() -> void:
+	var status: Control = _window.status
+	assert_bool(status.clear_timer.ignore_time_scale).is_true()
+	_window.report({"error": OK, "text": "已保存预设 甲，游戏文件不变"})
+	assert_bool(status.clear_timer.is_stopped()).is_false()
+	status.clear_timer.timeout.emit()
+	assert_str(status.message.text).is_empty()
+	_window.slot_list.items[EFFECT].pressed.emit()
+	_window.report({"error": OK, "text": "已保存预设 甲，游戏文件不变"})
+	var size := _row("candidate_params/size").find_children("*", "SpinBox", true, false)[0] as SpinBox
+	size.value += 5.0
+	assert_str(status.message.text).is_empty()
+	_window.report({"error": ERR_INVALID_DATA, "message": "res://dev/x.tres"})
+	status.details.pressed.emit()
+	status.clear_timer.timeout.emit()
+	size.value += 5.0
+	assert_str(status.message.text).is_not_empty()
+	status.details.pressed.emit()
+	assert_bool(status.clear_timer.is_stopped()).is_false()
+	_window.configure("")
+	assert_bool(status.clear_timer.is_stopped()).is_true()
+	status.clear_timer.timeout.emit()
+	size.value += 5.0
+	_window.report({"error": OK})
+	assert_str(status.message.text).is_equal(_window.NO_SAVE_HOOK)
+
+
+## Locked dropdowns and row buttons say why; unlocking brings back their own tooltips.
+func test_locked_controls_explain_why_and_get_their_tooltips_back() -> void:
+	var sfx := _slot("sample/feedback/sound")
+	_window.slot_list.items[sfx.id].pressed.emit()
+	sfx.live.volume_db += 3.0
+	var revert: Button = _row("volume_db").revert
+	var tooltip := revert.tooltip_text
+	assert_str(tooltip).is_equal("还原这一项（游戏原值：-6.0）")
+	var mode := _row("pitch_mode").find_children("*", "OptionButton", true, false)[0] as OptionButton
+	_window.playback.state = Playback.State.PAUSED
+	_window.playback.changed.emit()
+	assert_bool(mode.disabled and revert.disabled).is_true()
+	assert_str(mode.tooltip_text).is_equal(_window.LOCKED_PLAYING)
+	assert_str(revert.tooltip_text).is_equal(_window.LOCKED_PLAYING)
+	_window.playback.cancel()
+	assert_bool(mode.disabled or revert.disabled).is_false()
+	assert_str(mode.tooltip_text).is_empty()
+	assert_str(revert.tooltip_text).is_equal(tooltip)
+	var check := CheckBox.new()
+	Controls.set_locked(check, true, "原因")
+	assert_str(check.tooltip_text).is_equal("原因")
+	Controls.set_locked(check, false, "原因")
+	assert_str(check.tooltip_text).is_empty()
+	check.free()
+
+
+## "一并保存" lists where each unsaved slot goes, including a new name beside a preset that
+## another combo uses.
+func test_saving_a_combo_with_unsaved_slots_lists_their_presets_first() -> void:
+	var directory := "user://tests/debug-combo-plan-%d" % Time.get_ticks_usec()
+	_window.session.store.root = directory
+	var effect := _slot(EFFECT)
+	var sound := _slot("sample/feedback/sound")
+	assert_int(_window.session.store.save_slot(effect, "甲").error).is_equal(OK)
+	assert_int(_window.session.save_combo("组A").error).is_equal(OK)
+	_window.session.forget_combo()
+	effect.live.candidate_params.size += 10.0
+	sound.live.volume_db += 3.0
+	_window.presets.save_combo("另存组合")
+	_name_box().text = "组B"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	assert_str(_window.dialogs.current.dialog_text.replace(Dialogs.WORD_JOINER, "").strip_edges()) \
+		.is_equal("组合只记录每个插槽用哪个预设，有未保存改动的插槽要先存成预设。“一并保存”会：\n"
+			+ "· 点击特效：预设 甲 被组合 组A 使用，改存为新预设 甲-组B\n"
+			+ "· 按钮音效：新建预设 组B\n\n然后保存组合 组B。游戏文件不变。")
+	assert_bool(FileAccess.file_exists(_window.session.store.combo_path("sample", "组B"))).is_false()
+	_window.dialogs.button("一并保存").pressed.emit()
+	assert_str(_window.status.message.text).is_equal("已保存组合 组B，游戏文件不变；"
+		+ "预设 甲 被组合 组A 使用，已把 点击特效 的改动另存为 甲-组B")
+	assert_str(effect.preset_name).is_equal("甲-组B")
+	assert_str(sound.preset_name).is_equal("组B")
+	effect.preset_name = ""
+	sound.preset_name = ""
+	_window.session.forget_combo()
+	_remove(directory)
+
+
+func _empty_hint() -> String:
+	return (_window.slot_list.find_child("Empty", true, false) as Label).text
 
 
 func _name_box() -> LineEdit:

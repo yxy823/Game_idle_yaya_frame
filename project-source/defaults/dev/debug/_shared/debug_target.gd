@@ -35,12 +35,21 @@ static func _catalog(directory: String, prefix: String, output: Dictionary) -> v
 		_catalog(directory.path_join(child), prefix + child + "/", output)
 
 
+## The adapter may declare TITLE "商店" for the target dropdown; the id when it names none.
+func title() -> String:
+	var shown := String(_constant("TITLE", ""))
+	return shown if not shown.is_empty() else id
+
+
 ## The adapter may declare CATEGORIES {"shop/feedback": "反馈"}; "" when it names none.
 func category_title(path: String) -> String:
+	return String(_constant("CATEGORIES", {}).get(path, ""))
+
+
+func _constant(constant_name: String, fallback: Variant) -> Variant:
 	var script := adapter.get_script() as Script if adapter != null else null
-	var titles: Dictionary = script.get_script_constant_map().get("CATEGORIES", {}) \
-		if script != null else {}
-	return String(titles.get(path, ""))
+	return script.get_script_constant_map().get(constant_name, fallback) if script != null \
+		else fallback
 
 
 func activate(debug_root: String = "res://dev/debug") -> Dictionary:

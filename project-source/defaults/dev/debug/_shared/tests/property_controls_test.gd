@@ -4,6 +4,8 @@ const Controls := preload("res://dev/debug/_shared/property_controls.gd")
 const Params := preload("res://dev/debug/_shared/tests/fixtures/params.gd")
 const Stub := preload("res://dev/debug/_shared/tests/fixtures/editor_stub.gd")
 
+var _described: Array = []
+
 
 func test_ranges_integer_float_color_bool_enum_and_vector_controls() -> void:
 	var params := Params.new()
@@ -49,3 +51,49 @@ func test_registered_editor_binds_same_resource_and_obeys_lock_contract() -> voi
 		assert_bool(editor.locked).is_true()
 		Controls.set_locked(editor, false)
 		assert_bool(editor.locked).is_false()
+
+
+func test_named_values_come_first_then_the_described_text_then_the_number() -> void:
+	var params := Params.new()
+	var editors: Dictionary[String, Callable] = {}
+	_described.clear()
+	for field in Controls.fields(params):
+		if field.name != "ranged_int":
+			continue
+		var row := auto_free(Controls.create(field, 4, _ignore, editors, {4: "四档"}, _rank)) \
+			as HBoxContainer
+		add_child(row)
+		var number := row.get_child(1) as SpinBox
+		await get_tree().process_frame
+		assert_str(number.get_line_edit().text).is_equal("四档")
+		number.value = 8
+		await get_tree().process_frame
+		assert_str(number.get_line_edit().text).is_equal("第 8 档")
+		assert_int(typeof(_described.back())).is_equal(TYPE_INT)
+		number.value = 6
+		await get_tree().process_frame
+		assert_str(number.get_line_edit().text).is_equal("6")
+	assert_array(_described).not_contains([4])
+
+
+func _ignore(_value: Variant) -> void:
+	pass
+
+
+## Names every value but 6, which keeps the default format.
+func _rank(value: Variant) -> String:
+	_described.append(value)
+	return "" if value == 6 else "第 %d 档" % value
+
+
+func test_whole_float_reads_without_decimals_after_the_value_changes() -> void:
+	var params := Params.new()
+	for field in Controls.fields(params):
+		if field.name != "ranged_float":
+			continue
+		var row := auto_free(Controls.create(field, 1.5, _ignore)) as HBoxContainer
+		add_child(row)
+		var number := row.get_child(1) as SpinBox
+		number.value = 2.0
+		await get_tree().process_frame
+		assert_str(number.get_line_edit().text).is_equal("2 s")

@@ -102,7 +102,7 @@ func configure(save_path: String) -> void:
 	if save_path.is_empty():
 		notes.append(NO_SAVE_HOOK)
 	if not notes.is_empty():
-		report({"error": OK, "text": "；".join(notes)})
+		report({"error": OK, "text": "；".join(notes), "keep": true})
 
 
 func _build_ui() -> void:
@@ -182,6 +182,7 @@ func _build_tuning_page() -> VBoxContainer:
 	panel = SlotPanel.new()
 	panel.requested.connect(_slot_command)
 	panel.reported.connect(report)
+	panel.edited.connect(func() -> void: status.clear_result())
 	panel.register_editor("Curve", CurveEditor.new)
 	panel.register_editor("Gradient", GradientEditor.new)
 	body.add_child(panel)
@@ -232,8 +233,12 @@ func _slot_selected(slot: Slot) -> void:
 func _select_target(identity: String) -> void:
 	if playback.locked():
 		return
+	var shown := identity
+	for target: RefCounted in session.targets:
+		if target.id == identity:
+			shown = target.title()
 	var result := session.select_target(identity)
-	report(Messages.outcome(result, "", "没能打开调试对象 " + identity,
+	report(Messages.outcome(result, "", "没能打开调试对象 " + shown,
 		"它的调参文件读不出来，请让 Agent 检查"))
 	if result.error != OK:
 		return

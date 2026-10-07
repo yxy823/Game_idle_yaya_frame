@@ -319,6 +319,17 @@ func field_caption(field_name: String, fallback: String) -> String:
 	return String(captions.get(field_name, fallback))
 
 
+## A value in the slot's own words: VALUES {"field_name": {stored value: "中文"}} first, then
+## slot.gd's optional value_text(field_name, value); "" when neither names it.
+func value_text(field_name: String, value: Variant) -> String:
+	var captions: Dictionary = constant("VALUES", {}).get(field_name, {})
+	if captions.has(value):
+		return String(captions[value])
+	if actions != null and actions.has_method("value_text"):
+		return String(actions.value_text(field_name, value))
+	return ""
+
+
 ## slot.gd may declare CANDIDATES {"uid://…": "中文名"} for candidates the game adopted; a
 ## candidate just moved into game/ keeps its descriptor's name; otherwise the file name is shown.
 func candidate_title(candidate: Resource) -> String:

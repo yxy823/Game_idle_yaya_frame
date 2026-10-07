@@ -5,6 +5,7 @@ extends MarginContainer
 signal revert_requested(path: String)
 
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
+const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const LABEL_WIDTH := 96.0
 const ROW_HEIGHT := 30.0
 const TALL_PADDING := 6
@@ -52,7 +53,7 @@ func set_modified(value: bool, tooltip: String) -> void:
 	modified = value
 	caption.theme_type_variation = &"FieldLabelModified" if value else &"FieldLabel"
 	revert.visible = value
-	revert.tooltip_text = tooltip
+	Messages.usable_tooltip(revert, tooltip)
 	queue_redraw()
 
 

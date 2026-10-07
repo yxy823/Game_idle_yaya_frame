@@ -169,10 +169,27 @@ func _rebuild(visible_ids: PackedStringArray) -> void:
 			items[slot.id] = item
 			_list.add_child(item)
 	if visible_ids.is_empty():
-		var empty := Kit.label("没有符合条件的插槽", &"HintText")
+		var empty := Kit.label(empty_text(), &"HintText")
+		empty.name = "Empty"
 		empty.custom_minimum_size.y = Kit.CONTROL
 		empty.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		empty.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		_list.add_child(empty)
+
+
+## Says which filter and search hide every slot, and how to see them again.
+func empty_text() -> String:
+	var conditions: PackedStringArray = ["筛选“%s”" % FILTERS[filter]]
+	var fixes: PackedStringArray = []
+	if filter != Filter.ALL:
+		fixes.append("点“全部”")
+	var text := search.text.strip_edges()
+	if not text.is_empty():
+		conditions.append("搜索“%s”" % text)
+		fixes.append("清空搜索框")
+	if fixes.is_empty():
+		return "这个调试对象还没有插槽"
+	return "%s：没有符合条件的插槽。%s可看到所有插槽" % ["、".join(conditions), "并".join(fixes)]
 
 
 func _group_header(category: String, count: int) -> Button:

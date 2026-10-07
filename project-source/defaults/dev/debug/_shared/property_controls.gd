@@ -1,5 +1,6 @@
 extends RefCounted
 
+const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const COLUMN_GAP := 12
 const VALUE_WIDTH := 72.0
 const VALUE_HEIGHT := 24.0
@@ -58,9 +59,11 @@ static func layout(control: Control) -> Control:
 	return cell
 
 
-## `captions` names enum values for people: {stored value: "中文"}.
+## `captions` names enum values and special numbers for people: {stored value: "中文"}.
+## `describe(value) -> String` writes other values of a number box, "" for the default format.
 static func create(property: Dictionary, value: Variant, changed: Callable,
-		editors: Dictionary[String, Callable] = {}, captions: Dictionary = {}) -> Control:
+		editors: Dictionary[String, Callable] = {}, captions: Dictionary = {},
+		describe: Callable = Callable()) -> Control:
 	var kind := String(property["hint_string"])
 	if value is Resource:
 		kind = value.get_class()
@@ -73,7 +76,7 @@ static func create(property: Dictionary, value: Variant, changed: Callable,
 	match property["type"]:
 		TYPE_INT, TYPE_FLOAT:
 			if property["hint"] == PROPERTY_HINT_RANGE:
-				return _range_control(property, value, changed, captions)
+				return _range_control(property, value, changed, captions, describe)
 			if property["type"] == TYPE_INT:
 				var integer := LineEdit.new()
 				integer.text = str(value)
@@ -82,6 +85,7 @@ static func create(property: Dictionary, value: Variant, changed: Callable,
 						changed.call(text.to_int()))
 				return integer
 			var number := _number(float(value))
+			_name_values(number, captions, describe, false)
 			number.value_changed.connect(changed)
 			return number
 		TYPE_COLOR:
@@ -122,18 +126,27 @@ static func _number(value: float) -> SpinBox:
 
 
 ## SpinBox writes whole floats as "30.0 fps"; after it updates, show "30 fps" instead.
-## SpinBox keeps a replaced text until its value changes again.
+## SpinBox keeps a replaced text until its value changes again. A value change queues SpinBox's
+## own text update after this call, so the tidy waits one more deferred step to come after it.
 static func tidy_later(number: SpinBox) -> void:
-	(func() -> void: _tidy(number)).call_deferred()
+	(func() -> void: (func() -> void: _tidy(number)).call_deferred()).call_deferred()
 
 
+## Named special values first, then the slot's own wording, then the number itself.
 static func _tidy(number: SpinBox) -> void:
 	var edit := number.get_line_edit() if is_instance_valid(number) else null
-	if edit == null or edit.has_focus() or not is_equal_approx(number.value, roundf(number.value)):
+	if edit == null or edit.has_focus():
 		return
+	var whole := is_equal_approx(number.value, roundf(number.value))
 	var captions: Dictionary = number.get_meta(&"captions", {})
-	if captions.has(roundi(number.value)):
+	if whole and captions.has(roundi(number.value)):
 		edit.text = String(captions[roundi(number.value)])
+		return
+	var described := _described(number)
+	if not described.is_empty():
+		edit.text = described
+		return
+	if not whole:
 		return
 	var parts: PackedStringArray = [str(roundi(number.value))]
 	if not number.prefix.is_empty():
@@ -143,9 +156,20 @@ static func _tidy(number: SpinBox) -> void:
 	edit.text = " ".join(parts)
 
 
+## What the slot says for the current value; "" when it says nothing.
+static func _described(number: SpinBox) -> String:
+	var describe: Callable = number.get_meta(&"describe", Callable())
+	if not describe.is_valid():
+		return ""
+	var value: Variant = number.value
+	if number.get_meta(&"integer", false):
+		value = roundi(number.value)
+	return String(describe.call(value))
+
+
 ## `captions` replaces special whole values in the box, for example {-1: "未设置"}.
 static func _range_control(property: Dictionary, value: Variant, changed: Callable,
-		captions: Dictionary) -> Control:
+		captions: Dictionary, describe: Callable) -> Control:
 	var hints := String(property["hint_string"]).split(",")
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", COLUMN_GAP)
@@ -171,10 +195,10 @@ static func _range_control(property: Dictionary, value: Variant, changed: Callab
 			number.suffix = hint.trim_prefix("suffix:")
 	number.set_value_no_signal(float(value))
 	slider.set_value_no_signal(float(value))
-	_name_values(number, captions)
+	var integer: bool = property["type"] == TYPE_INT
+	_name_values(number, captions, describe, integer)
 	row.add_child(slider)
 	row.add_child(number)
-	var integer: bool = property["type"] == TYPE_INT
 	slider.value_changed.connect(func(next: float) -> void:
 		number.set_value_no_signal(next)
 		tidy_later(number)
@@ -185,10 +209,14 @@ static func _range_control(property: Dictionary, value: Variant, changed: Callab
 	return row
 
 
-## Whole values named in `captions` show their name in the box, e.g. -1 as "未设置".
-static func _name_values(number: SpinBox, captions: Dictionary) -> void:
+## Whole values named in `captions` show their name in the box, e.g. -1 as "未设置"; other
+## values show what `describe` returns, e.g. MIDI 72 as "C5".
+static func _name_values(number: SpinBox, captions: Dictionary, describe: Callable,
+		integer: bool) -> void:
 	number.set_meta(&"captions", captions)
-	if not captions.is_empty():
+	number.set_meta(&"describe", describe)
+	number.set_meta(&"integer", integer)
+	if not captions.is_empty() or describe.is_valid():
 		tidy_later(number)
 
 
@@ -257,15 +285,16 @@ static func _readonly(property: Dictionary) -> Control:
 	return label
 
 
-static func set_locked(control: Node, locked: bool) -> void:
+## Locked buttons, dropdowns and check boxes say `reason` when hovered.
+static func set_locked(control: Node, locked: bool, reason: String = "") -> void:
 	if control.has_method("set_locked"):
 		control.set_locked(locked)
 		return
 	if control is BaseButton:
-		control.disabled = locked
+		Messages.explain(control, locked, reason)
 	elif control is LineEdit or control is SpinBox:
 		control.editable = not locked
 	elif control is Slider:
 		control.editable = not locked
 	for child in control.get_children():
-		set_locked(child, locked)
+		set_locked(child, locked, reason)

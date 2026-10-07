@@ -38,7 +38,6 @@ func _init() -> void:
 	var line := Kit.row(8)
 	add_child(line)
 	target = Select.new("target", "")
-	target.tooltip_text = "调试对象：列表显示它和 global 的插槽；切换场景时自动跟随"
 	target.chosen.connect(func(index: int) -> void:
 		target_selected.emit(_session.targets[index].id))
 	line.add_child(target)
@@ -107,16 +106,20 @@ static func _divider() -> VSeparator:
 func configure(session: Session) -> void:
 	_session = session
 	var names: PackedStringArray = []
+	var shared := "global"
 	for item: RefCounted in session.targets:
-		names.append(item.id)
+		names.append(item.title())
+		if item.id == "global":
+			shared = item.title()
 	target.set_items(names, 0)
+	Messages.usable_tooltip(target, "调试对象：列表显示它和“%s”的插槽；切换场景时自动跟随" % shared)
 
 
 func target_changed() -> void:
 	var names: PackedStringArray = []
 	var current := 0
 	for index in range(_session.targets.size()):
-		names.append(_session.targets[index].id)
+		names.append(_session.targets[index].title())
 		if _session.targets[index] == _session.active:
 			current = index
 	target.set_items(names, current)

@@ -1,15 +1,21 @@
 extends VBoxContainer
 ## The status bar: unsaved count, combo note, the last result in plain words and its "详情"
-## button, which opens the raw details above the bar; the ` hint sits at the right.
+## button, which opens the raw details above the bar; the ` hint sits at the right. A result
+## clears after CLEAR_SECONDS of real time, or when a parameter changes, unless its details are
+## open; a note shown with "keep" stays until a result with something to say replaces it.
 
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const STATUS_HEIGHT := 26.0
 const DETAIL_HEIGHT := 96.0
+const CLEAR_SECONDS := 10.0
 
 var message: Label
 var details: Button
 var detail_text: Label
+## Clears the shown result; counts real seconds, not the game's playback speed.
+var clear_timer: Timer
+var _kept: bool = false
 var _detail_panel: PanelContainer
 var _unsaved: HBoxContainer
 var _combo_note: Label
@@ -35,6 +41,12 @@ func _init() -> void:
 	_detail_panel.visible = false
 	add_child(_detail_panel)
 	add_child(_build_bar())
+	clear_timer = Timer.new()
+	clear_timer.one_shot = true
+	clear_timer.ignore_time_scale = true
+	clear_timer.wait_time = CLEAR_SECONDS
+	clear_timer.timeout.connect(clear_result)
+	add_child(clear_timer)
 
 
 func _build_bar() -> PanelContainer:
@@ -68,6 +80,10 @@ func _build_bar() -> PanelContainer:
 func set_details_open(value: bool) -> void:
 	_detail_panel.visible = value and details.visible
 	details.icon = Kit.icon("chevron-down" if _detail_panel.visible else "chevron-up")
+	# Closing the details starts the wait again.
+	if not _detail_panel.visible and not _kept and not message.text.is_empty() \
+			and clear_timer.is_inside_tree():
+		clear_timer.start()
 
 
 func set_counts(unsaved: int, combo_dirty: bool) -> void:
@@ -87,6 +103,9 @@ func show_result(result: Dictionary) -> void:
 	var raw := String(result.get("detail", ""))
 	if raw.is_empty() and (error != OK or not result.get("issues", PackedStringArray()).is_empty()):
 		raw = Messages.detail(result)
+	if _kept and text.is_empty() and raw.is_empty():
+		return
+	_kept = result.get("keep", false)
 	message.text = text
 	message.tooltip_text = text
 	if error != OK:
@@ -95,4 +114,12 @@ func show_result(result: Dictionary) -> void:
 		message.remove_theme_color_override("font_color")
 	detail_text.text = raw
 	details.visible = not raw.is_empty()
+	clear_timer.stop()
 	set_details_open(false)
+
+
+## Removes the shown result; kept notes and results with open details stay.
+func clear_result() -> void:
+	if _kept or _detail_panel.visible or message.text.is_empty():
+		return
+	show_result({"error": OK})

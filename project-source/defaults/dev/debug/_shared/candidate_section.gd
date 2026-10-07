@@ -10,6 +10,7 @@ const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Codec := preload("res://dev/debug/_shared/preset_codec.gd")
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
 const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const ROW_HEIGHT := 32.0
 const LOCKED_ALPHA := 0.6
 
@@ -40,10 +41,10 @@ func _init(slot: Slot) -> void:
 		rows.append(row)
 
 
-## Locked rows keep showing the selection but ignore the mouse.
-func set_locked(value: bool) -> void:
+## Locked rows keep showing the selection but ignore the mouse; trial buttons say `reason`.
+func set_locked(value: bool, reason: String = "") -> void:
 	for trial in trials:
-		trial.disabled = value
+		Messages.explain(trial, value, reason)
 	for row in rows:
 		row.mouse_filter = Control.MOUSE_FILTER_IGNORE if value else Control.MOUSE_FILTER_STOP
 		row.modulate.a = LOCKED_ALPHA if value and not row.button_pressed else 1.0

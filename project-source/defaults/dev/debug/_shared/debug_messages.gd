@@ -68,11 +68,17 @@ static func explain(control: Control, disabled: bool, why: String) -> void:
 		control.set_meta(&"usable_tooltip", control.tooltip_text)
 	if control is BaseButton:
 		(control as BaseButton).disabled = disabled
-	control.tooltip_text = why if disabled and not why.is_empty() \
-		else String(control.get_meta(&"usable_tooltip"))
+	var explained := disabled and not why.is_empty()
+	if explained:
+		control.set_meta(&"disabled_reason", why)
+	else:
+		control.remove_meta(&"disabled_reason")
+	control.tooltip_text = why if explained else String(control.get_meta(&"usable_tooltip"))
 
 
-## Sets the tooltip shown while the control can be used.
+## Sets the tooltip shown while the control can be used; while explain() keeps the control
+## disabled with a reason, the reason stays and this text comes back once it is enabled.
 static func usable_tooltip(control: Control, text: String) -> void:
 	control.set_meta(&"usable_tooltip", text)
-	control.tooltip_text = text
+	if not control.has_meta(&"disabled_reason"):
+		control.tooltip_text = text

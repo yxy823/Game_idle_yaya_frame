@@ -2,6 +2,8 @@ extends RefCounted
 ## Adapter of the sample debug target: its main scene, fixtures and how playback knows a pass
 ## has ended; the shared code never names the sample game's script or signals.
 
+## Name in the target dropdown.
+const TITLE := "样例"
 const MAIN_SCENE := "res://dev/debug/_shared/tests/fixtures/sample/game/sample/sample_main.tscn"
 const GAME := preload("res://dev/debug/_shared/tests/fixtures/sample/game/sample/sample_game.gd")
 const FIXTURES: Dictionary[String, String] = {

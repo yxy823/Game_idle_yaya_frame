@@ -4,6 +4,8 @@ extends VBoxContainer
 signal requested(action: String)
 signal reported(result: Dictionary)
 signal analysis_changed(slot_id: String, candidate: Resource)
+## A parameter control changed a value.
+signal edited()
 
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Controls := preload("res://dev/debug/_shared/property_controls.gd")
@@ -245,7 +247,8 @@ func _add_resource(list: VBoxContainer, resource: Resource, prefix: String) -> v
 			continue
 		var callback := _value_changed.bind(resource, field)
 		var control := Controls.create(property, resource.get(property.name), callback, editors,
-			slot.constant("VALUES", {}).get(field, {}))
+			slot.constant("VALUES", {}).get(field, {}),
+			func(value: Variant) -> String: return slot.value_text(field, value))
 		var tall := control.has_method("set_expanded")
 		var row := ParamRow.new(prefix + field, slot.field_caption(field, property.caption),
 			Controls.layout(control), tall)
@@ -261,7 +264,7 @@ func _add_expand_button(row: ParamRow, editor: Control) -> void:
 	expand.pressed.connect(func() -> void:
 		editor.set_expanded(not editor.expanded)
 		expand.icon = Kit.icon("arrows-minimize" if editor.expanded else "arrows-maximize")
-		expand.tooltip_text = "收起完整编辑器" if editor.expanded else "展开完整编辑器")
+		Messages.usable_tooltip(expand, "收起完整编辑器" if editor.expanded else "展开完整编辑器"))
 	row.tools.add_child(expand)
 	row.tools.move_child(expand, 0)
 
@@ -271,6 +274,7 @@ func _value_changed(value: Variant, resource: Resource, field: String) -> void:
 		resource.set(field, value)
 		refresh_state()
 		_emit_analysis()
+		edited.emit()
 
 
 func _revert(path: String) -> void:
@@ -306,30 +310,36 @@ func _show_preset(modified: bool) -> void:
 		preset_select.set_value(shown + ("（已修改）" if modified else ""))
 
 
+## Names the saved value the way the value box shows it: the slot's words first.
 func _revert_tooltip(path: String) -> String:
 	var value: Variant = slot.saved_value(path)
-	var shown := ""
-	if value is float:
-		shown = String.num(value, 3)
-	elif value is int or value is bool or value is String:
-		shown = str(value)
-	elif value is Color:
-		shown = "#" + (value as Color).to_html()
+	var shown := slot.value_text(path.get_file(), value) if value != null else ""
+	if shown.is_empty():
+		shown = _plain(value)
 	if shown.is_empty():
 		return "还原这一项（回到%s）" % _preset_label()
 	return "还原这一项（%s：%s）" % [_preset_label(), shown]
+
+
+static func _plain(value: Variant) -> String:
+	if value is float:
+		return String.num(value, 3)
+	if value is int or value is bool or value is String:
+		return str(value)
+	if value is Color:
+		return "#" + (value as Color).to_html()
+	return ""
 
 
 func set_locked(value: bool) -> void:
 	var changed := locked != value
 	locked = value
 	for row in rows:
-		Controls.set_locked(row, value)
+		Controls.set_locked(row, value, lock_reason)
 	for tool in _tools:
-		Controls.set_locked(tool, value)
-		Messages.explain(tool, value, lock_reason)
+		Controls.set_locked(tool, value, lock_reason)
 	if _candidates != null:
-		_candidates.set_locked(value)
+		_candidates.set_locked(value, lock_reason)
 	var reason := "先在左侧选择一个插槽" if slot == null else lock_reason
 	Messages.explain(adopt, value or slot == null, reason)
 	Messages.explain(_adopt_menu, value or slot == null, reason)

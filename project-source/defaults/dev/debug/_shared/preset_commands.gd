@@ -18,8 +18,8 @@ const LOAD_QUESTION := "有 %d 个插槽的改动还没保存（%s），载入%s
 	+ "“保存”把改动存成预设（还没有预设的插槽存成“载入前-日期时间”），游戏文件不变。"
 const CLOSE_QUESTION := "有 %d 个插槽的改动还没保存，关闭后会丢失。\n\n" \
 	+ "“保存”把改动存成预设（还没有预设的插槽存成“关闭前-日期时间”），游戏文件不变。"
-const COMBO_QUESTION := "组合只记录每个插槽用哪个预设，要先把改动存成预设。\n\n" \
-	+ "%s有未保存的改动。“一并保存”把它们存进各自的预设（还没有预设的，用组合的名字新建预设），再保存组合。"
+const COMBO_QUESTION := "组合只记录每个插槽用哪个预设，有未保存改动的插槽要先存成预设。" \
+	+ "“一并保存”会：\n%s\n\n然后保存组合 %s。游戏文件不变。"
 
 var _session: Session
 var _dialogs: Dialogs
@@ -85,26 +85,53 @@ func _report_load(result: Dictionary, shown: String, saved: PackedStringArray, f
 ## preset beside it. Returns {"ok", "notes"}; the first failure is reported and stops.
 func save_dirty(slots: Array[Slot], prefix: String, own_combo: String = "") -> Dictionary:
 	var stamp := Time.get_datetime_string_from_system().replace("-", "").replace(":", "")
-	var notes: PackedStringArray = []
+	var fresh := prefix + "-" + stamp.replace("T", "-")
+	var named := func(_unnamed: Slot) -> String: return fresh
+	return _save_plan(_plan(slots, named, own_combo,
+		own_combo if not own_combo.is_empty() else prefix))
+
+
+## Where each slot's edits go: its loaded preset, or `new_name(slot)` when it has none. A preset
+## that a combo other than `own_combo` uses keeps its values; the edits go to a free
+## "<preset>-<suffix>" beside it. Entries: {"slot", "kept", "users", "preset"}.
+func _plan(slots: Array[Slot], new_name: Callable, own_combo: String,
+		suffix: String) -> Array[Dictionary]:
+	var plan: Array[Dictionary] = []
 	for slot in slots:
-		var preset := slot.preset_name if not slot.preset_name.is_empty() \
-			else prefix + "-" + stamp.replace("T", "-")
-		var users := _other_combos(slot.id, preset, own_combo)
-		var kept := preset
-		if not users.is_empty():
-			preset = _free_name(slot.id, preset + "-" + (own_combo if not own_combo.is_empty()
-				else prefix))
-		var result := _session.store.save_slot(slot, preset)
+		var kept: String = slot.preset_name if not slot.preset_name.is_empty() \
+			else new_name.call(slot)
+		var users := _other_combos(slot.id, kept, own_combo)
+		plan.append({"slot": slot, "kept": kept, "users": users, "preset": kept
+			if users.is_empty() else _free_name(slot.id, kept + "-" + suffix)})
+	return plan
+
+
+func _save_plan(plan: Array[Dictionary]) -> Dictionary:
+	var notes: PackedStringArray = []
+	for entry in plan:
+		var slot: Slot = entry.slot
+		var result := _session.store.save_slot(slot, entry.preset)
 		if result.error != OK:
 			_report.call(Messages.outcome(result, "", "没能保存%s的预设" % slot.display_name(), BUSY))
 			return {"ok": false, "notes": notes}
-		if users.is_empty():
-			notes.append("已把 %s 的改动存进预设 %s" % [slot.display_name(), preset])
+		if entry.users.is_empty():
+			notes.append("已把 %s 的改动存进预设 %s" % [slot.display_name(), entry.preset])
 		else:
-			notes.append("预设 %s 被组合 %s 使用，已把 %s 的改动另存为 %s" % [kept,
-				"、".join(users), slot.display_name(), preset])
+			notes.append("预设 %s 被组合 %s 使用，已把 %s 的改动另存为 %s" % [entry.kept,
+				"、".join(entry.users), slot.display_name(), entry.preset])
 	_session.invalidate_compare()
 	return {"ok": true, "notes": notes}
+
+
+## One line of the "一并保存" question: where this slot's edits go.
+static func _plan_line(entry: Dictionary) -> String:
+	var slot: Slot = entry.slot
+	if not entry.users.is_empty():
+		return "· %s：预设 %s 被组合 %s 使用，改存为新预设 %s" % [slot.display_name(), entry.kept,
+			"、".join(entry.users), entry.preset]
+	if slot.preset_name.is_empty():
+		return "· %s：新建预设 %s" % [slot.display_name(), entry.preset]
+	return "· %s：存进预设 %s" % [slot.display_name(), entry.preset]
 
 
 ## Combos other than `own_combo` of the active target that use the preset, by name.
@@ -176,57 +203,59 @@ func _slot(identity: String) -> Slot:
 	return null
 
 
-## "保存组合" overwrites the current combo; without one, and for "另存组合", it asks a name.
-## A combo only records which preset each slot uses, so unsaved slots are saved first.
+## "保存组合" overwrites the current combo; without one, and for "另存组合", it asks a name
+## first. A combo only records which preset each slot uses, so unsaved slots are saved with it,
+## after one confirmation that lists the preset each slot goes to.
 func save_combo(action: String) -> void:
-	var overwrite := action == "保存组合" and not _session.combo_name.is_empty()
-	var dirty := _dirty(_session.slots)
-	if dirty.is_empty():
-		_name_combo(overwrite, dirty)
-		return
-	_dialogs.confirm(COMBO_QUESTION % _names(dirty), _name_combo.bind(overwrite, dirty),
-		"一并保存", "保存组合")
-
-
-func _name_combo(overwrite: bool, dirty: Array[Slot], base: String = "") -> void:
-	if overwrite:
-		_save_combo(_session.combo_name, dirty)
+	if action == "保存组合" and not _session.combo_name.is_empty():
+		_confirm_combo(_session.combo_name)
 	else:
-		_dialogs.ask_name(_free_combo_name(base if not base.is_empty() else _session.combo_name),
-			_combo_named.bind(dirty), "保存组合")
+		_name_combo(_session.combo_name)
+
+
+func _name_combo(base: String) -> void:
+	_dialogs.ask_name(_free_combo_name(base), _combo_named, "保存组合")
 
 
 ## A typed name that already exists is an overwrite: ask before replacing that combo.
-func _combo_named(value: String, dirty: Array[Slot]) -> void:
+func _combo_named(value: String) -> void:
 	if not Store.valid_name(value) \
 			or not FileAccess.file_exists(_session.store.combo_path(_session.active.id, value)):
-		_save_combo(value, dirty)
+		_confirm_combo(value)
 		return
 	_dialogs.ask("组合 %s 已存在，保存会覆盖它。" % value, [
-		["覆盖", Dialogs.DANGER, _save_combo.bind(value, dirty)],
-		["换个名字", Dialogs.PLAIN, _name_combo.bind(false, dirty, value)]])
+		["覆盖", Dialogs.DANGER, _confirm_combo.bind(value)],
+		["换个名字", Dialogs.PLAIN, _name_combo.bind(value)]])
 
 
-func _save_combo(value: String, dirty: Array[Slot]) -> void:
+## Unsaved slots without a preset get one named after the combo.
+func _confirm_combo(value: String) -> void:
 	if not Store.valid_name(value):
 		_report.call({"error": ERR_INVALID_PARAMETER, "text": "没能保存组合：" + BAD_NAME})
 		return
-	var unnamed: Array[Slot] = []
-	for slot in dirty:
-		if slot.preset_name.is_empty():
-			unnamed.append(slot)
-			slot.preset_name = _free_name(slot.id, value)
-	var saved := save_dirty(dirty, value, value)
-	if not saved.ok:
-		for slot in unnamed:
-			slot.preset_name = ""
+	var named := func(slot: Slot) -> String: return _free_name(slot.id, value)
+	var plan := _plan(_dirty(_session.slots), named, value, value)
+	if plan.is_empty():
+		_save_combo(value, plan)
 		return
-	var parts: PackedStringArray = [Messages.outcome(_session.save_combo(value),
-		"已保存组合 " + value + "，游戏文件不变", "没能保存组合 " + value, BUSY).text]
+	var lines: PackedStringArray = []
+	for entry in plan:
+		lines.append(_plan_line(entry))
+	_dialogs.confirm(COMBO_QUESTION % ["\n".join(lines), value], _save_combo.bind(value, plan),
+		"一并保存", "保存组合")
+
+
+func _save_combo(value: String, plan: Array[Dictionary]) -> void:
+	var saved := _save_plan(plan)
+	if not saved.ok:
+		return
+	var outcome := Messages.outcome(_session.save_combo(value),
+		"已保存组合 " + value + "，游戏文件不变", "没能保存组合 " + value, BUSY)
+	var parts: PackedStringArray = [outcome.text]
 	for note: String in saved.notes:
 		if note.begins_with("预设 "):
 			parts.append(note)
-	_report.call({"error": OK, "text": "；".join(parts)})
+	_report.call({"error": outcome.error, "text": "；".join(parts), "detail": outcome.detail})
 	_rebind.call()
 
 

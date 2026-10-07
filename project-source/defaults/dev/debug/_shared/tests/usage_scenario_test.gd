@@ -116,18 +116,19 @@ func test_adopt_a_sound_compare_an_edit_and_open_analysis() -> void:
 	assert_bool(_window.pages[1].visible and not _window.pages[0].visible).is_true()
 
 
-## Scenario 8 with an unsaved slot: one confirmation saves its preset and the combo.
+## Scenario 8 with an unsaved slot: after the name, one confirmation lists where the slot's
+## edits go and saves its preset and the combo.
 func _save_a_combo_with_unsaved_slots() -> void:
 	_sound.live.volume_db = -9.0
 	_window.compare.save_as.pressed.emit()
-	var question: String = _question()
-	_see("场景 8 有未保存插槽时另存组合", question)
-	assert_str(question).contains("“按钮音效”有未保存的改动")
-	assert_str(_window.dialogs.current.get_ok_button().text).is_equal("一并保存")
-	_window.dialogs.current.get_ok_button().pressed.emit()
 	assert_str(_window.dialogs.current.title).is_equal("保存组合")
 	var name_box := _window.dialogs.current.find_children("*", "LineEdit", true, false)[0] as LineEdit
 	name_box.text = "晶体"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	var question: String = _question()
+	_see("场景 8 有未保存插槽时另存组合", question)
+	assert_str(question).contains("“一并保存”会：\n· 按钮音效：新建预设 晶体\n\n然后保存组合 晶体。")
+	assert_str(_window.dialogs.current.get_ok_button().text).is_equal("一并保存")
 	_window.dialogs.current.get_ok_button().pressed.emit()
 	_see("场景 8 保存组合结果", _status())
 	assert_str(_status()).is_equal("已保存组合 晶体，游戏文件不变")
@@ -153,9 +154,12 @@ func _overwrite_a_preset_used_by_a_combo() -> void:
 func _save_another_combo_keeps_the_first() -> void:
 	_sound.live.volume_db = -15.0
 	_window.compare.save_as.pressed.emit()
-	_window.dialogs.current.get_ok_button().pressed.emit()
 	var name_box := _window.dialogs.current.find_children("*", "LineEdit", true, false)[0] as LineEdit
 	name_box.text = "粒子"
+	_window.dialogs.current.get_ok_button().pressed.emit()
+	var question: String = _question()
+	_see("一并保存的确认框列出另存的新预设", question)
+	assert_str(question).contains("· 按钮音效：预设 晶体 被组合 晶体 使用，改存为新预设 晶体-粒子")
 	_window.dialogs.current.get_ok_button().pressed.emit()
 	_see("一并保存时预设被别的组合使用", _status())
 	assert_str(_status()).is_equal("已保存组合 粒子，游戏文件不变；预设 晶体 被组合 晶体 使用，"
