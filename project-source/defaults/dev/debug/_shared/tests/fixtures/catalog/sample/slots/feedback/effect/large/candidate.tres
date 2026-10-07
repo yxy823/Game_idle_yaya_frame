@@ -1,0 +1,17 @@
+[gd_resource type="Resource" format=3 uid="uid://bn8co8mw6wi5y"]
+
+[ext_resource type="Script" uid="uid://b7sfmunvg85xp" path="res://dev/debug/_shared/candidate_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "测试候选：较大圆环"
+candidate_uid = "uid://cyp5gf4i57642"
+default_params = {
+"fields": {
+"fps": 30.0,
+"frame_count": 27,
+"size": 160.0
+},
+"script_uid": "uid://8pb4rl38n02h"
+}
+license_note = "仅用于目录测试；复用样例游戏的圆环。"

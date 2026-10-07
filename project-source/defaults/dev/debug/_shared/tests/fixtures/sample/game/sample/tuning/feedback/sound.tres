@@ -1,0 +1,8 @@
+[gd_resource type="Resource" format=3 uid="uid://carqcq44rabda"]
+
+[ext_resource type="Script" uid="uid://br8eotefjl7bj" path="res://dev/debug/_shared/tests/fixtures/sample/game/sample/tuning/feedback/sound_tuning.gd" id="1"]
+[ext_resource type="AudioStream" uid="uid://da0gfd213jcjc" path="res://dev/debug/_shared/tests/fixtures/sample/game/sample/feedback/sound/beep/beep.wav" id="2"]
+
+[resource]
+script = ExtResource("1")
+candidate = ExtResource("2")

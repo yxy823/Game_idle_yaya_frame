@@ -2,6 +2,20 @@
   "meta": {
     "schema_version": 3
   },
-  "components": [],
-  "tests": []
+  "components": [
+    {
+      "id": "debug_console",
+      "unit_test_paths": ["dev/debug/_shared/tests"],
+      "full_suite_on_change": false
+    }
+  ],
+  "tests": [
+    {
+      "id": "INV-DEBUG_CONSOLE-01",
+      "components": ["debug_console"],
+      "path": "tests/invariants/debug_dependency_test.gd",
+      "case": null,
+      "status": "active"
+    }
+  ]
 }

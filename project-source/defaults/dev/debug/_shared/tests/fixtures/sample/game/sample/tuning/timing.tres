@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://cj8n44wbtmc8i"]
+
+[ext_resource type="Script" uid="uid://dkrjlyardji25" path="res://dev/debug/_shared/tests/fixtures/sample/game/sample/tuning/timing_tuning.gd" id="1"]
+
+[sub_resource type="Curve" id="Curve_motion"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[resource]
+script = ExtResource("1")
+motion_curve = SubResource("Curve_motion")

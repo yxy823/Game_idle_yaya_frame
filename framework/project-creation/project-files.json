@@ -104,6 +104,10 @@
     "target": "components"
   },
   {
+    "source": "project-source/defaults/dev",
+    "target": "dev"
+  },
+  {
     "source": "project-source/defaults/tests",
     "target": "tests"
   },

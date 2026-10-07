@@ -308,14 +308,21 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertEqual(main_scene.read_bytes(),
                          (repository / "project-source/defaults/main/main.tscn").read_bytes())
         self.assertFalse((output / "main/main.gd").exists())
-        for relative in ("game", "assets", "components", "tests/unit", "tests/features", "tests/invariants"):
+        for relative in ("game", "assets", "components", "tests/unit", "tests/features"):
             with self.subTest(directory=relative):
                 directory = output / relative
                 self.assertEqual({path.name for path in directory.iterdir()}, {".gitkeep"})
+        # The only distributed test is the debug console's dependency-direction invariant.
+        self.assertEqual({path.name for path in (output / "tests/invariants").iterdir()},
+                         {"debug_dependency_test.gd", "debug_dependency_test.gd.uid"})
+        self.assertTrue((output / "dev/debug/debug_main.tscn").is_file())
+        self.assertTrue((output / "dev/debug/_shared/README.md").is_file())
         for relative in ("main", "game", "assets", "tests"):
             self.assertFalse(any((output / relative).rglob(".gdignore")), relative)
-        for name, key in (("feature-list.json", "features"), ("test-registry.json", "tests")):
-            self.assertEqual(json.loads((output / "docs" / name).read_text(encoding="utf-8"))[key], [])
+        self.assertEqual(json.loads((output / "docs/feature-list.json").read_text(encoding="utf-8"))["features"], [])
+        registry = json.loads((output / "docs/test-registry.json").read_text(encoding="utf-8"))
+        self.assertEqual([component["id"] for component in registry["components"]], ["debug_console"])
+        self.assertEqual([test["id"] for test in registry["tests"]], ["INV-DEBUG_CONSOLE-01"])
         for relative in ("gdd/README.md", "gdd/open-questions.md", "product.md", "product/README.md"):
             self.assertEqual((output / "docs" / relative).read_bytes(),
                              (repository / "project-source/defaults/docs" / relative).read_bytes())

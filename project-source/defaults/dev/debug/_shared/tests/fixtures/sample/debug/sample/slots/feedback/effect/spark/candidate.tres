@@ -1,0 +1,16 @@
+[gd_resource type="Resource" format=3 uid="uid://c1te8hw1abb68"]
+
+[ext_resource type="Script" uid="uid://b7sfmunvg85xp" path="res://dev/debug/_shared/candidate_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "火花"
+candidate_uid = "uid://c1l6f73dxgaku"
+default_params = {
+"fields": {
+"count": 8,
+"speed": 240.0
+},
+"script_uid": "uid://cad7q7klkaine"
+}
+license_note = "测试用场景，随框架分发。"

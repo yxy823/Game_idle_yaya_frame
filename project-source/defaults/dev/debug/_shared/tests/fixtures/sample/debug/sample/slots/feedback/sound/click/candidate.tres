@@ -1,0 +1,9 @@
+[gd_resource type="Resource" format=3 uid="uid://bstfuunkrw2y8"]
+
+[ext_resource type="Script" uid="uid://b7sfmunvg85xp" path="res://dev/debug/_shared/candidate_definition.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "咔哒 · click"
+candidate_uid = "uid"
+license_note = "测试用合成音，随框架分发；见同目录 README.md。"

@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://caf08tcxdtlf"]
+
+[ext_resource type="Script" uid="uid://br2fx1si3ktg8" path="res://dev/debug/_shared/debug_window.gd" id="1"]
+[ext_resource type="Theme" uid="uid://dtwh7vnhmvyk1" path="res://dev/debug/_shared/debug_theme.tres" id="2"]
+
+[node name="DebugWindow" type="Window"]
+title = "游戏调试台"
+size = Vector2i(1000, 760)
+min_size = Vector2i(800, 560)
+visible = false
+process_mode = 3
+gui_embed_subwindows = true
+theme = ExtResource("2")
+script = ExtResource("1")

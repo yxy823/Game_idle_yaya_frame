@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c1l6f73dxgaku"]
+
+[ext_resource type="Script" uid="uid://ye3lt6kihwxj" path="res://dev/debug/_shared/tests/fixtures/sample/debug/sample/slots/feedback/effect/spark/spark_effect.gd" id="1"]
+
+[node name="SparkEffect" type="Node2D"]
+script = ExtResource("1")
