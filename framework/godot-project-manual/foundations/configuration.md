@@ -72,6 +72,8 @@ $LASTEXITCODE
 | 测试入口 | 确认 `yaya/tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试 |
 | `document_language` | 检查字符、子段与连接符的基本形式 | 完整标签是否有效，是否符合默认中文或用户指定的语言 |
 
+资源 Analyzer 使用独立的 Python 3.13 环境；按 [Analyzer 安装说明](../../../project-source/tools/analyzer/README.md#准备与使用)核对具体版本和依赖，与普通工具的 Python 分开检查。
+
 就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析、lint 或初始化 Git。新项目还需要经过哪些步骤，见[环境就绪的含义](framework-and-project.md#环境就绪的含义)。
 
 ## 文档语言

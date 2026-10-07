@@ -60,9 +60,9 @@ def analyze(path, params):
         "sample_rate": metric(rate, "Hz"), "channels": metric(channels), "channel_layout": metric(layout),
         "bit_depth": metric(bits, "bit") if bits else unavailable(
             "not_applicable", "Lossy/unknown source precision; decoded float is not source bit depth", "bit"),
-        "true_peak": unavailable("unsupported", "No oversampled true-peak backend", "dBTP"),
-        "pitch": unavailable("unsupported", "Advanced tonal analysis is not installed", "Hz"),
-        "tempo": unavailable("unsupported", "Advanced musical analysis is not installed", "BPM"),
+        "true_peak": unavailable("unsupported", "True-peak module not selected", "dBTP"),
+        "pitch": unavailable("unsupported", "Pitch module not selected", "Hz"),
+        "tempo": unavailable("unsupported", "Tempo analysis is not implemented", "BPM"),
     }
     metrics.update(levels)
     metrics.update(loudness(statistics, rate, channels))

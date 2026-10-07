@@ -1,13 +1,17 @@
 {
   "base": {
     "schema_version": 1, "status": "success", "asset": {"path": "example.png", "type": "image"},
-    "analyzer": {"id": "image_basic", "version": 2, "backend": {"example": "1.0"}, "supported_types": ["image"], "supported_metrics": ["example"]},
+    "analyzer": {"id": "image_basic", "version": 3, "backend": {"example": "1.0"}, "supported_types": ["image"], "supported_metrics": ["example"], "modules": ["image_cvd_grid"]},
     "metrics": {"example": {"status": "available", "value": 1.0, "unit": "px", "reason": ""}},
     "series": {"example": {"status": "available", "kind": "histogram", "x": [0, 1], "y": [0.2, 0.8], "x_unit": "px", "y_unit": "ratio"}},
     "warnings": [{"code": "example", "message": "Example warning"}], "errors": [],
     "parameters": {}, "cache": {"hit": false, "key": "example"}
   },
   "cases": [
+    {"name": "modules item type", "path": ["analyzer", "modules"], "value": [1], "valid": false},
+    {"name": "modules array type", "path": ["analyzer", "modules"], "value": "image_cvd_grid", "valid": false},
+    {"name": "pitch note string", "path": ["metrics", "example", "value"], "value": "D7", "valid": true},
+    {"name": "PNG object value", "path": ["metrics", "example", "value"], "value": {"path": "cache/key/cvd-grid.png", "panels": ["normal", "gray", "protan", "deutan"]}, "valid": true},
     {"name": "valid change", "path": ["status"], "value": "partial", "valid": true},
     {"name": "schema missing", "path": ["schema_version"], "remove": true, "valid": false},
     {"name": "schema bool", "path": ["schema_version"], "value": true, "valid": false},

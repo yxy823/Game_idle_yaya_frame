@@ -3,7 +3,7 @@
 from schema_validation import validate_result
 
 SCHEMA_VERSION = 1
-ANALYZER_VERSION = 2
+ANALYZER_VERSION = 3
 METRIC_STATES = {"available", "not_applicable", "unsupported", "failed"}
 AUDIO_METRICS = (
     "format", "codec", "duration", "sample_rate", "channels", "channel_layout",

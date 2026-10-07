@@ -102,3 +102,22 @@ def envelopes(blocks, frames, rate, channels, points):
     levels = np.sqrt(sums / (np.diff(edges) * channels))
     return {"peak_envelope": sequence(times, peaks.tolist(), "s", "linear full scale"),
             "rms_envelope": sequence(times, levels.tolist(), "s", "linear full scale")}
+
+
+def windows(blocks, length, hop, *, partial=False):
+    """Keep only decoder-sized data and overlap; positions use original samples."""
+    pending = None
+    position = 0
+    for block in blocks:
+        pending = block if pending is None else np.concatenate((pending, block))
+        while len(pending) >= length:
+            yield position, pending[:length]
+            pending = pending[hop:]
+            position += hop
+    if partial and pending is not None and len(pending):
+        yield position, pending
+
+
+def channel_mean_power(samples):
+    """Power averaging preserves opposite-phase channels; waveform mixing does not."""
+    return np.einsum("ij,ij->i", samples, samples, dtype=np.float64) / samples.shape[1]

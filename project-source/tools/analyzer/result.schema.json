@@ -13,7 +13,8 @@
       "id": {"type": "string"}, "version": {"type": "integer"},
       "backend": {"type": "object", "description": "Backend names mapped to exact versions, including linked codec library versions"},
       "supported_types": {"type": "array", "items": {"type": "string"}},
-      "supported_metrics": {"type": "array", "items": {"type": "string"}}
+      "supported_metrics": {"type": "array", "items": {"type": "string"}},
+      "modules": {"type": "array", "items": {"type": "string"}}
     }},
     "metrics": {"type": "object", "additionalProperties": {"$ref": "#/$defs/metric"}},
     "series": {"type": "object", "additionalProperties": {"$ref": "#/$defs/series"}},
