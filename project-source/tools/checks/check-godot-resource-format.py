@@ -9,6 +9,10 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from tools.lib.verification_snapshot import DEBUG_CONSOLE_SAVES_RE
+
 REPO_ROOT = Path(__file__).resolve().parents[3]
 # 第三方插件按原样保留，不要求符合本项目的保存格式。
 EXCLUDED_DIRECTORY_NAMES = {".git", ".godot", ".claude", "tmp", "reports", "addons"}
@@ -28,6 +32,9 @@ def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
             continue
         parents = path.relative_to(root).parents
         if any(part in EXCLUDED_DIRECTORY_NAMES for part in path.relative_to(root).parts[:-1]):
+            continue
+        # 调试台运行时保存的预设与组合不经编辑器重存，不写 UID。
+        if DEBUG_CONSOLE_SAVES_RE.fullmatch(path.relative_to(root).as_posix()):
             continue
         # Godot 不导入含 .gdignore 的目录，其中的文件不会被编辑器改写。
         if any((root / parent / ".gdignore").is_file() for parent in parents):

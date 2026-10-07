@@ -453,6 +453,21 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertEqual(derived["full_suite"]["status"], "pass")
         self.assertEqual(derived["required_test_set"]["total"], 1)
 
+    def test_full_suite_adds_debug_console_tests_only_when_the_directory_exists(self) -> None:
+        from tools.lib.test_run_evidence import derive_test_evidence, result_reference
+        self.registry["components"][0]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
+        plan, path = self.run_fixture()
+        self.assertEqual(plan["full_suite"]["selectors"], ["tests"])
+        self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["status"], "passed")
+        self.write("dev/debug/_shared/tests/console_test.gd",
+                   "extends GdUnitTestSuite\nfunc test_console():\n\tpass\n")
+        plan, path = self.run_fixture()
+        self.assertEqual(plan["full_suite"]["selectors"], ["tests", "dev/debug"])
+        self.assertEqual(json.loads(path.read_text(encoding="utf-8"))["selectors"], ["dev/debug", "tests"])
+        derived = derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
+        self.assertEqual(derived["full_suite"]["status"], "pass")
+
     def test_full_run_with_no_cases_cannot_pass(self) -> None:
         from tools.lib.test_run_evidence import RunEvidenceError, derive_test_evidence, result_reference
         self.manual_without_automated_obligations()

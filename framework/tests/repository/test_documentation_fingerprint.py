@@ -191,6 +191,34 @@ class DocumentationFingerprintTests(unittest.TestCase):
         self.write("docs/features/F001-design.md", "Icons must be readable at 24px\n")
         self.assertNotEqual(before, self.fingerprint())
 
+    def test_debug_console_saves_and_pending_adoption_log_preserve_binding(self):
+        before = self.fingerprint()
+        for name in (
+            "dev/debug/board/slots/removal/sfx/presets/loud.tres",
+            "dev/debug/global/slots/ui-volume/presets/quiet.tres",
+            "dev/debug/board/combos/calm.tres",
+            "dev/debug/adoption-log.md",
+        ):
+            with self.subTest(name=name):
+                saved = self.write(name, "Saved by the debug console\n")
+                self.assertEqual(before, self.fingerprint())
+                self.git("add", name)
+                saved.write_text("Saved again\n", encoding="utf-8")
+                self.assertEqual(before, self.fingerprint())
+
+    def test_debug_console_queue_tuning_code_and_fixture_presets_still_invalidate(self):
+        for name in (
+            "dev/debug/adoption-queue/move-01.json",
+            "game/board/tuning/removal/sfx.tres",
+            "dev/debug/_shared/preset_store.gd",
+            "dev/debug/_shared/tests/fixtures/sample/debug/sample/slots/feedback/presets/a.tres",
+            "dev/debug/_shared/tests/fixtures/sample/debug/sample/combos/a.tres",
+        ):
+            with self.subTest(name=name):
+                before = self.fingerprint()
+                self.write(name, "Changed content\n")
+                self.assertNotEqual(before, self.fingerprint())
+
     def test_contracts_and_source_outside_knowledge_still_invalidate(self):
         for name, content in (
             ("main.gd", "extends Node\nvar changed: bool = true\n"),

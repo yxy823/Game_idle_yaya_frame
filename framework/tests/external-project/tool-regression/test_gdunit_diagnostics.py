@@ -136,11 +136,11 @@ class LifecycleEvidenceTests(unittest.TestCase):
             log.write_text(output, encoding="utf-8")
             return runner.ProcessResult(exit_code, timed_out, 123, output, (123,))
 
-        args = runner._parse_args(["--godot-binary", sys.executable])
+        # 默认目标按夹具根目录解析，不读取外部项目自己的 tests/ 与 dev/debug/。
         with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
             runner, "_run_process", side_effect=process
         ), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            code = runner._run_tests(args)
+            code = runner._run_tests(runner._parse_args(["--godot-binary", sys.executable]))
         verdict_path = self.report.parent.parent / "result.json"
         return code, json.loads(verdict_path.read_text(encoding="utf-8"))
 
@@ -174,10 +174,9 @@ class LifecycleEvidenceTests(unittest.TestCase):
         def failed_process(command, log, timeout):
             log.write_text("original startup failure", encoding="utf-8")
             return runner.ProcessResult(7, False, 123, "original startup failure", (123,))
-        args = runner._parse_args(["--godot-binary", sys.executable])
         with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
                 runner, "_run_process", side_effect=failed_process):
-            self.assertEqual(runner._run_tests(args), 1)
+            self.assertEqual(runner._run_tests(runner._parse_args(["--godot-binary", sys.executable])), 1)
         path = next((self.root / "reports/gdunit-wrapper/focused").glob("run-*/result.json"))
         result = json.loads(path.read_text())
         self.assertEqual(result["process"]["returncode"], 7)

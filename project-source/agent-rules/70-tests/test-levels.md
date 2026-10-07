@@ -8,7 +8,7 @@
 | 集成测试 | 真实协作：组件之间，或与 Node、Resource、Signal、SceneTree 的协作 | 被验证的协作者保持真实。全部协作者都被 mock 时仍是单元测试 |
 | 运行时场景测试 | 跨系统的关键玩法流程 | 从合法场景出发，经生产 Command、API 或输入路径驱动 |
 
-层级只决定测试怎样写，不决定放在哪个目录。测试按保护的对象放进 `tests/unit`、`tests/features` 或 `tests/invariants`，见[测试分类](../../methodology/08-test-traceability-and-evidence.md#测试分类)。
+层级只决定测试怎样写，不决定放在哪个目录。测试按保护的对象放进 `tests/unit`、`tests/features` 或 `tests/invariants`，见[测试分类](../../methodology/08-test-traceability-and-evidence.md#测试分类)；调试台自身的测试在 `dev/debug/` 下，全量运行同时包含 `tests/` 与 `dev/debug/`。
 
 ## 通用要求
 

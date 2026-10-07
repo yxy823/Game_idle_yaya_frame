@@ -72,6 +72,11 @@ def deduplicate_selectors(root: Path, paths: list[str]) -> list[str]:
     return result
 
 
+# 全量 = tests/ 加调试台目录；项目没有 dev/debug/ 时只选 tests/。
+def full_suite_selectors(root: Path) -> list[str]:
+    return ["tests", *(["dev/debug"] if (root / "dev/debug").is_dir() else [])]
+
+
 def _impact_options(value: Any) -> dict[str, Any]:
     if not isinstance(value, dict) or set(value) != {"additional_tests", "full_suite_reasons"}:
         raise SelectionError("test impact requires additional_tests and full_suite_reasons arrays")
@@ -197,7 +202,7 @@ def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dic
               "required": stable(required), "affected": stable(affected),
               "selectors": deduplicate_selectors(root, [item["path"] for item in affected.values()]),
               "full_suite": {"required": bool(full_reasons), "reasons": sorted(set(full_reasons)),
-                             "selectors": ["tests"]}}
+                             "selectors": full_suite_selectors(root)}}
     return result
 
 

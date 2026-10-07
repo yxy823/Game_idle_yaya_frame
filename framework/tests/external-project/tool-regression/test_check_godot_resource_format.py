@@ -45,6 +45,20 @@ class GodotResourceFormatTests(unittest.TestCase):
         self.assertNotIn("addons/", result.stdout)
         self.assertNotIn("samples/", result.stdout)
 
+    def test_debug_console_saves_are_skipped_but_other_debug_resources_are_checked(self) -> None:
+        saved = '[gd_resource type="Resource" format=3]\n\n[ext_resource type="Script" path="res://a.gd" id="1"]\n'
+        self.write("dev/debug/board/slots/removal/sfx/presets/loud.tres", saved)
+        self.write("dev/debug/board/combos/calm.tres", saved)
+        self.write("dev/debug/board/slots/removal/sfx/glass/candidate.tres", saved)
+        self.write("dev/debug/_shared/tests/fixtures/sample/debug/sample/combos/a.tres", saved)
+        result = self.run_check()
+        self.assertEqual(result.returncode, 1)
+        self.assertNotIn("presets/", result.stdout)
+        self.assertNotIn("dev/debug/board/combos/", result.stdout)
+        self.assertIn("dev/debug/board/slots/removal/sfx/glass/candidate.tres:1: header has no uid", result.stdout)
+        self.assertIn("dev/debug/_shared/tests/fixtures/sample/debug/sample/combos/a.tres:1: header has no uid",
+                      result.stdout)
+
     def test_editor_saved_files_pass(self) -> None:
         self.write("game/ok.tscn", '[gd_scene format=3 uid="uid://abc"]\n\n'
                    '[ext_resource type="Script" uid="uid://def" path="res://a.gd" id="1"]\n')

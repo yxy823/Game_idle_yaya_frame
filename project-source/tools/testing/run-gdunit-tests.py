@@ -20,7 +20,9 @@ from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import (
     start_run, finish_run, run_history_directory, derive_test_evidence, expected_gdunit_cases,
 )
-from tools.lib.test_selection import build_selection, deduplicate_selectors, execution_selectors, read_json
+from tools.lib.test_selection import (
+    build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors, read_json,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RUNNER_SCRIPT = "res://yaya/tools/testing/gdunit_evidence_runner.gd"
@@ -171,7 +173,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser.add_argument("--godot-binary", help="Override the configured Godot executable for this run")
     selection = parser.add_mutually_exclusive_group()
     selection.add_argument("--target", action="append",
-                           help="Suite file or directory; repeat to run several in one run (default: tests)")
+                           help="Suite file or directory; repeat to run several in one run "
+                                "(default: tests plus dev/debug when present)")
     selection.add_argument("--feature", help="Read the current Feature/Test Registry directly")
     parser.add_argument("--phase", choices=("baseline", "final"), default="final")
     parser.add_argument("--scope", choices=("auto", "required", "affected", "full"), default="auto")
@@ -185,7 +188,8 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     )
     args = parser.parse_args(list(argv))
     try:
-        args.targets = [] if args.feature else deduplicate_selectors(REPO_ROOT, args.target or ["tests"])
+        args.targets = [] if args.feature else deduplicate_selectors(
+            REPO_ROOT, args.target or full_suite_selectors(REPO_ROOT))
         run_history_directory(REPO_ROOT, args.feature)
     except ValueError as error:
         parser.error(str(error))

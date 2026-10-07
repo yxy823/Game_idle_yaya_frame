@@ -181,7 +181,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 | 选项 | 含义 |
 | --- | --- |
 | `--scope auto`（默认） | 运行包含 Required 的 affected 集合；需要全量时升级为一次 full 运行。 |
-| `--scope required`、`affected`、`full` | 用于迭代的显式范围。`full` 递归选择 `tests/`；空的分层目录不增加义务。 |
+| `--scope required`、`affected`、`full` | 用于迭代的显式范围。`full` 递归选择 `tests/`，项目有 `dev/debug/` 时同时选择它；空的分层目录不增加义务。 |
 | `--phase baseline` | 排除尚不存在的 planned 测试。baseline 运行从不授权完成。 |
 | `--target <path>` | 聚焦诊断或 TDD 诊断。它从不产生完成证据。 |
 
@@ -273,6 +273,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 - `docs/knowledge/` 和 `docs/research/` 下的说明性 Markdown；
 - 修订记录条目的时间戳、摘要和 notes；
 - 运行产物和报告；
+- 调试台运行时保存的插槽预设（`dev/debug/*/slots/**/presets/`）、组合（`dev/debug/*/combos/`）和待收尾记录 `dev/debug/adoption-log.md`；`dev/debug/adoption-queue/` 中排队的采纳仍参与指纹，因为排队的移动之后会改写游戏文件；
 - 普通的 `README.md` 文件（不区分大小写），但 `.agents/`、`yaya/agent-rules/`、`yaya/methodology/`、`docs/gdd/`、`docs/product/` 和 `docs/features/` 下的除外，因为它们保存的是说明或约束性契约。
 
 由此可知：

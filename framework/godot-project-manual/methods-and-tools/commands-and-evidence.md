@@ -114,7 +114,7 @@ $LASTEXITCODE
 
 | 参数 | 说明 |
 | --- | --- |
-| `--feature` / `--target` | 两者互斥；都不传时 target 默认为 `tests` |
+| `--feature` / `--target` | 两者互斥；都不传时 target 默认为 `tests`，项目有 `dev/debug` 时加上它 |
 | `--phase` | `baseline` 或 `final`，默认 `final`。基线和 `--target` 运行只用于建立基线或调试，不能作为 Feature 的完成依据 |
 | `--timeout-seconds` | 默认 120，必须是大于 0 的有限数 |
 | `--require-test` | 格式为 `<suite-path>::<test-case>`，要求原始报告确实包含该用例 |
@@ -143,7 +143,7 @@ affected = Required + 与影响组件相交的 active 验收测试
 | `auto` | 默认运行 affected；当前计划要求全量时升级为 full |
 | `required` | 只运行 Required，适合局部迭代；最终验证仍要满足 affected 或 full |
 | `affected` | Required 加相关验收测试 |
-| `full` | 递归运行 `tests/` 并核对必需覆盖；空的分层目录不算义务，但测试总数为零仍然失败 |
+| `full` | 递归运行 `tests/`，以及存在时的 `dev/debug/`，并核对必需覆盖；空的分层目录不算义务，但测试总数为零仍然失败 |
 
 以下情况要按规范运行 full：影响组件设置了 `full_suite_on_change`、计划中有已批准的 `full_suite_reasons`、改动影响范围很广的工具链，或影响范围无法界定。“工程维护”这个任务标签本身不触发 full。附加测试及理由保存在 Feature 的 `verification.test_impact` 中，没有单独的计划文件。
 
@@ -301,6 +301,7 @@ $LASTEXITCODE
 | `docs/features/` 下的 JSON、Feature 索引、测试登记表、修订记录、`methodology-config.json` | 先解析 JSON、排序对象键再计算；数组顺序保留，下表列出的过程字段除外 |
 | `docs/features/F0XX-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工验收契约单独核对，仍不能随意改写 |
 | `docs/progress/`、`docs/knowledge/`、`docs/research/` 下的 `.md` 文件 | 不纳入；这些目录里的非 Markdown 文件仍纳入 |
+| 调试台的插槽预设、组合与 `dev/debug/adoption-log.md` | 不纳入；它们是调试过程中的草稿与收尾记录，验收针对游戏调参资源。`dev/debug/adoption-queue/` 仍纳入 |
 | 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`yaya/agent-rules/`、`yaya/methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
 
 不纳入只是计算规则，不是存放许可：正式需求、规则和可执行输入不能为了避开指纹而放进这些位置。知识目录只存参考经验，普通 README 只写用法和导航；其他 Markdown 没有豁免。

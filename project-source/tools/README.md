@@ -181,7 +181,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 ```
 
 - **检查内容**：`.tscn`、`.tres` 的文件头带 `uid`、不含 `load_steps`，每条 `[ext_resource]` 带 `uid`；`.gd`、`.gdshader` 旁边有同名 `.uid` 文件；`.png`、`.jpg`、`.jpeg`、`.webp`、`.svg`、`.bmp`、`.tga`、`.wav`、`.ogg`、`.mp3`、`.ttf`、`.otf` 旁边有同名 `.import` 文件。
-- **默认范围**：项目内上述类型的全部文件；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录和含 `.gdignore` 的目录。也可以在参数中列出相对项目根目录的文件，只查这些。
+- **默认范围**：项目内上述类型的全部文件；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录、含 `.gdignore` 的目录，以及调试台运行时保存的插槽预设与组合（`dev/debug/*/slots/**/presets/`、`dev/debug/*/combos/`）。也可以在参数中列出相对项目根目录的文件，只查这些。
 - **局限**：只发现漏掉重存和漏掉扫描这两种情况；编辑器保存时的其他格式调整，以及 `.uid`、`.import` 是否已经提交，不在检查范围内，提交前仍看 `git status`。
 
 退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因：格式问题用 `resave_godot_files.gd` 重存，缺 `.uid` 或 `.import` 就运行[首次 Godot 扫描](#首次-godot-扫描)的命令并提交生成的文件，然后重跑；`2` 项目根目录不存在或文件读取失败。
@@ -191,8 +191,8 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--feature F0XX` | 从当前 Feature 与测试登记表选择测试；与 `--target` 互斥 | 不使用 |
-| `--target <路径>` | focused/TDD 运行指定路径；可重复，多个路径在同一次运行中全部执行，重叠的目标只运行一次；不产生完成证据 | `tests` |
-| `--scope <范围>` | 仅在 `--feature` 时决定选择范围：`required` 为必需测试集，`affected` 为受影响测试（含必需测试集），`full` 为 `tests/` 全量，`auto` 在需要全量升级时运行 `full`，否则运行 `affected` | `auto` |
+| `--target <路径>` | focused/TDD 运行指定路径；可重复，多个路径在同一次运行中全部执行，重叠的目标只运行一次；不产生完成证据 | `tests`，项目有 `dev/debug` 时加上它 |
+| `--scope <范围>` | 仅在 `--feature` 时决定选择范围：`required` 为必需测试集，`affected` 为受影响测试（含必需测试集），`full` 为 `tests/` 全量（项目有 `dev/debug/` 时包含它），`auto` 在需要全量升级时运行 `full`，否则运行 `affected` | `auto` |
 | `--phase <阶段>` | `baseline` 跳过尚未实现的 `planned` 测试，用于已有安全网，不能支持完成；`final` 为最终验证 | `final` |
 | `--require-test <套件路径>::<用例>` | 要求本次运行实际执行该用例，否则判为失败；同时禁止返回 `not_required` | 不要求 |
 | `--continue` | 传给 gdUnit 的 `-c`：遇到失败后继续执行完整测试集 | 首个失败即停止 |

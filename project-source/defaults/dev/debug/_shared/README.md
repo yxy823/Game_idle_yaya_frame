@@ -107,7 +107,7 @@ entries = {
 - **载入**：逐项核对插槽、字段名、类型、候选及参数脚本，对不上的项改用游戏原值，插槽仍记着这个预设并标“（已修改）”；候选缺失时候选和参数一起回退。字段改名会作为旧字段与缺失字段报告，不按位置错配。
 - **删除**：删除预设先列出引用它的组合，确认后这些条目改为空字符串；删除组合也需确认。
 
-预设和组合由调试台在运行中保存，文件头和外部引用没有 UID，资源格式检查会报出它们；它们不是游戏资源，不需要补 UID。
+预设和组合由调试台在运行中保存，文件头和外部引用没有 UID；它们不是游戏资源，不需要补 UID，资源格式检查跳过它们，修改它们也不改变内容指纹。
 
 ## 分析
 
@@ -164,7 +164,7 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
    ```
 
 5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`，删除 `adopted.tres` 和已空的候选目录；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
-6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`（预设与组合的报错见[插槽预设与组合](#插槽预设与组合)），再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试和依赖方向测试。
+6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试和依赖方向测试。
 7. 提交，并删除 `adoption-log.md` 中已处理的行；全部处理完时删除该文件。
 
 ## 从编辑器启动

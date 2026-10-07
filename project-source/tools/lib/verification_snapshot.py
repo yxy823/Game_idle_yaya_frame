@@ -11,7 +11,10 @@ from typing import Any
 
 EXCLUDED_EXACT_PATHS = {
     "docs/progress.md",
+    "dev/debug/adoption-log.md",
 }
+# 调试台运行时保存的插槽预设与组合：只供调试会话读写，不是游戏资源，也不写 UID。
+DEBUG_CONSOLE_SAVES_RE = re.compile(r"dev/debug/[^/]+/(?:slots/(?:[^/]+/)*presets|combos)/.+")
 # 每个 Feature 的完成证据是验证输出，不是被验证的内容。
 EVIDENCE_PATH_RE = re.compile(r"docs/features/F\d{3}-evidence\.json")
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
@@ -53,7 +56,8 @@ def git_revision(repo_root: Path) -> str:
 
 def _is_fingerprint_input(relative_path: str) -> bool:
     normalized = relative_path.replace("\\", "/").removeprefix("./")
-    if normalized in EXCLUDED_EXACT_PATHS or EVIDENCE_PATH_RE.fullmatch(normalized):
+    if (normalized in EXCLUDED_EXACT_PATHS or EVIDENCE_PATH_RE.fullmatch(normalized)
+            or DEBUG_CONSOLE_SAVES_RE.fullmatch(normalized)):
         return False
     if normalized.startswith("reports/"):
         return False

@@ -91,6 +91,8 @@ class GdUnitRunnerTests(unittest.TestCase):
         command = runner._build_command(args, self.root / "reports")
         self.assertEqual(command[-4:], ["-a", "tests/a.gd", "-a", "tests/b.gd"])
         self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).targets, ["tests"])
+        (self.root / "dev/debug").mkdir(parents=True)
+        self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).targets, ["dev/debug", "tests"])
 
     def test_overlapping_targets_execute_only_the_parent_directory(self) -> None:
         suite = self.root / "tests/features/F013/held_tween_clock_test.gd"
