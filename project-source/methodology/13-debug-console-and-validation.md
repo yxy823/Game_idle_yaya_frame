@@ -85,7 +85,7 @@
 
 - 存档位置可配置，主场景开始时才读档，Autoload 的 `_ready` 不读档、不开自动保存，见 [Autoload](../agent-rules/40-project-config/autoloads-and-plugins.md#autoload)；
 - 随机数可设种子，见[随机数](../agent-rules/10-gdscript/state-resources-and-loading.md#随机数)；
-- 有“这一遍结束”的信号，供调试台循环播放和锁定参数使用；需要等特效或音频播完时，同时提供尾部反馈是否结束的查询。
+- 有“这一遍结束”的信号，供调试台循环播放和锁定参数使用；没有自然结束的玩法（例如放置类主循环），由固定局面规定一遍的时长或结束条件；需要等特效或音频播完时，同时提供尾部反馈是否结束的查询。
 
 `debug_target.gd` 的登记方式见[固定局面与播放](../../dev/debug/_shared/README.md#固定局面与播放)。
 

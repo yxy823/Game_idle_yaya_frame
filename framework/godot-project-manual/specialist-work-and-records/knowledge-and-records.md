@@ -19,7 +19,7 @@
 | `docs/knowledge/` | 可复用的项目实践及其适用条件 | 规则或需求的正文 |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项 | 项目自己实测得到的经验 |
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；变成当前比较的选择或被采纳时，迁走正文并留下去向链接 | 开发承诺 |
-| `docs/progress.md` | 当前任务和阶段、真实的阻塞、未决项、下一步和资料链接 | 已完成任务的完整历史 |
+| `docs/progress.md` | 当前任务和阶段、真实的阻塞、待决定事项、下一步和资料链接 | 已完成任务的完整历史 |
 
 GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
 
@@ -97,7 +97,7 @@ ADR 记录问题、约束、备选方案、决定、收益、成本、依据，�
 [wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) 的结论按本页的分工存放：
 
 - 一次性的讨论可以只留在对话里。
-- 需要续接、并且获准记录时，在 Progress 中保存当前问题、未决项、下一步和材料链接。
+- 需要续接、并且获准记录时，在 Progress 中保存当前问题、待决定事项、下一步和材料链接。
 - 局部的实施决定写进 Feature 设计稿，notes 只保留提醒和引用。
 - 外部调研的结论写进研究资料，真实运行的结果放在已有的报告位置。
 - 重要的技术决定仍按 ADR 阈值判断；采纳的游戏规则和交付边界回到各自的 GDD 和 Product。

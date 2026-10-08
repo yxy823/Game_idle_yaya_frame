@@ -1,6 +1,6 @@
 # 框架维护与说明同步
 
-[框架维护](README.md) · [框架规则](../../AGENTS.md) · [维护命令](../README.md#维护命令)
+[框架维护](README.md) · [框架维护约定](../../AGENTS.md) · [维护命令](../README.md#维护命令)
 
 本页回答维护框架时的三个问题：这次修改属于哪里、改完要同步哪些说明、怎样交付。验证范围见[框架验证范围](validation/validation-scope.md)。具体的任务步骤在场景速查手册，由[框架入口](../README.md)导航，本页不重复。
 
@@ -40,7 +40,7 @@
 | 复制、目录、重命名、初始化边界 | [框架与项目](../godot-project-manual/foundations/framework-and-project.md)、[项目目录](../godot-project-manual/foundations/project-layout.md) | 创建器、复制清单、默认文件 |
 | 环境字段、插件或 lint 默认值 | [配置](../godot-project-manual/foundations/configuration.md)、[错误含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 配置源文件、检查器、插件及补丁 |
 | Product、AC、依赖、规划与历史 | [需求与规划](../godot-project-manual/requirements-and-tasks/requirements-and-planning.md) | methodology、模板、规划与同步 Skill、检查器 |
-| Stage、验收、任务类型、完成或持续授权 | [任务与阶段](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md) | 执行规范、Feature Skill、工程规范 |
+| Stage、验收、任务类型、完成或持续授权 | [任务与阶段](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md) | Stage 0–8 `feature-execute` 执行循环、Feature Skill、工程规则 |
 | 探索、worktree 准备或成果整合 | [Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[知识与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
 | 专业文档维护者、资源、语言或独立审核 | [专业来源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
 | 参数、测试选择、结果、指纹或错误 | [命令与证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
@@ -112,7 +112,7 @@
 ## 验证、提交与交付
 
 - **验证**：按[按修改选择验证范围](validation/validation-scope.md#按修改选择验证范围)确定。
-- **提交与未完成事项**：遵循[根维护约定的本地提交](../../AGENTS.md#本地提交)，本页不另写规则。
+- **提交与未完成事项**：遵循根 `AGENTS.md` 的[本地提交](../../AGENTS.md#本地提交)，本页不另写规则。
 - **交付**：给出受影响的文档入口和真实的验证结果。文档任务不能宣称游戏运行通过；框架的提交也不会更新已有的游戏项目。
 
 ## 整体审核与专项审核的入口
@@ -127,7 +127,7 @@
 | 核实收到的审核意见 | [核实外部审核意见](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
 | 用一个小任务验证真实流程 | [小任务验证](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
-总体判断依据[根规则的核心原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 授权在后续对话中的延续
 

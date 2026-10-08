@@ -77,7 +77,7 @@ GDD 保留游戏规则、预期的玩家感受，以及玩家必须识别的内�
 
 ### 源同步前先提交来源修改
 
-- 单独的已获授权规格工作，在 `feature-sync` 比较 Git 历史之前，先用 [`check-markdown-links.py`](../tools/README.md#check-markdown-linkspy) 校验受影响的链接和锚点，并按项目 Git 规则提交完整的来源修改。
+- 单独的已获授权规格工作，在 `feature-sync` 比较 Git 历史之前，先用 [`check-markdown-links.py`](../tools/README.md#check-markdown-linkspy) 校验受影响的链接和锚点，并按项目 `AGENTS.md` 的「Git 与提交」提交完整的来源修改。
 - 在 Feature 内部，使用该 Feature 的 Stage 3 文档检查点和提交。Skill 之间的交接不会开始新任务，也不要求工作区干净。
 - 需要源同步的实质来源修改必须先提交。如果“不提交”的指示使它保持未提交，报告这个未满足的前提。
 - 源同步发现其来源文档中有失效链接时，由维护这些文档的 Skill 在批准范围内修复并提交，然后才写入任何计划。之后源同步基于更新后的文档重新开始来源分析。

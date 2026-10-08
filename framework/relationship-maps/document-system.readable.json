@@ -462,7 +462,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n链接下一步所依据的文件或提交；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
+      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定事项和下一步。\n位置：framework/progress.md。\n链接下一步所依据的文件或提交；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前任务、阻塞、待决定项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接记录文件。\n\n项目文件： docs/progress.md",
+      "note": "职责：当前任务、阻塞、待决定事项、下一步、必要资料及历史入口。\n项目位置：docs/progress.md。\n链接计划和原始证据，不复制报告；非 Feature 任务也用它承接当前状态，不另建交接记录文件。\n\n项目文件： docs/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

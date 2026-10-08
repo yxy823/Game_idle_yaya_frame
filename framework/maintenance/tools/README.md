@@ -24,7 +24,7 @@ python -B framework/maintenance/tools/check_repository_links.py
 - **维护侧**：仓库中 `project-source/` 以外的 Markdown。
 - **分发侧**：按[复制清单](../../project-creation/project-files.json)复制到系统临时目录后的项目，报告中的路径映射回 `project-source/` 的源文件。
 
-两部分都调用分发给项目的 [check-markdown-links.py](../../../project-source/tools/checks/check-markdown-links.py)，检查规则与默认排除见[项目工具说明](../../../project-source/tools/README.md#check-markdown-linkspy)。临时副本不初始化 Git，运行后删除。
+两部分都调用分发给项目的 [check-markdown-links.py](../../../project-source/tools/checks/check-markdown-links.py)，检查规则与默认排除见项目检查与测试工具的[check-markdown-links.py](../../../project-source/tools/README.md#check-markdown-linkspy)。临时副本不初始化 Git，运行后删除。
 
 另外检查两份[提示词库](../../prompt-scenarios/prompts/)正文中的纯文本引用：
 
@@ -46,7 +46,7 @@ python -B project-source/tools/checks/check-terminology.py --terms framework/ter
 
 只检查本次改过的文件时，把文件直接写在命令后面，改过的提示词 JSON 也一样，例如 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md AGENTS.md framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。不用 `--include` 选单个文件：不带目录的 `--include README.md` 会选中所有目录中的 `README.md`。
 
-这项检查只比对文字，不解析链接，所以直接扫描源目录，不需要像链接检查那样先复制成生成项目。检查规则、参数、输出格式和退出码见[项目工具说明](../../../project-source/tools/README.md#check-terminologypy)。
+这项检查只比对文字，不解析链接，所以直接扫描源目录，不需要像链接检查那样先复制成生成项目。检查规则、参数、输出格式和退出码见项目检查与测试工具的[check-terminology.py](../../../project-source/tools/README.md#check-terminologypy)。
 
 ## 检查措辞
 
@@ -58,7 +58,7 @@ python -B project-source/tools/checks/check-wording.py --include "*.md" --includ
 python -B project-source/tools/checks/check-wording.py --list
 ```
 
-第一条列出硬性命中和待复核的命中，第二条只查全仓规则文件中的硬性命中，第三条列出全部检查项。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、模板 `project-source/defaults/docs/project-rules.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。配置格式、判定方式、参数和退出码见[项目工具说明](../../../project-source/tools/README.md#check-wordingpy)。
+第一条列出硬性命中和待复核的命中，第二条只查全仓规则文件中的硬性命中，第三条列出全部检查项。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、模板 `project-source/defaults/docs/project-rules.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。配置格式、判定方式、参数和退出码见项目检查与测试工具的[check-wording.py](../../../project-source/tools/README.md#check-wordingpy)。
 
 ## 提交钩子
 
@@ -78,13 +78,13 @@ python -B project-source/tools/checks/check-wording.py --list
 git config core.hooksPath .githooks
 ```
 
-生成项目使用分发源中的另一份钩子，由创建器启用，见[项目工具说明](../../../project-source/tools/README.md#提交钩子)。
+生成项目使用分发源中的另一份钩子，由创建器启用，见项目检查与测试工具的[提交钩子](../../../project-source/tools/README.md#提交钩子)。
 
 ## 用词提示钩子
 
 仓库根目录的 `.claude/settings.json` 注册 Claude Code 的 `UserPromptSubmit` 钩子，运行分发源中的 `project-source/tools/checks/check-prompt-terminology.py --terms framework/terminology.md`：用户消息中有[框架术语](../../terminology.md)登记的不用说法时，提示 Agent 按根 `AGENTS.md` 的用词对照规则列出对照表；钩子不拦截消息，也不记录。这份配置随仓库提交，Claude Code 打开本仓库时直接生效，不需要另外启用；用户本机的 `.claude/settings.local.json` 不受影响。
 
-提示内容、不输出的情况和退出码见[项目工具说明](../../../project-source/tools/README.md#用词提示钩子)。生成项目从分发源 `project-source/defaults/.claude/settings.json` 得到自己的一份，读取项目的 `docs/terminology.md`。
+提示内容、不输出的情况和退出码见项目检查与测试工具的[用词提示钩子](../../../project-source/tools/README.md#用词提示钩子)。生成项目从分发源 `project-source/defaults/.claude/settings.json` 得到自己的一份，读取项目的 `docs/terminology.md`。
 
 ## 检查孤立文档
 

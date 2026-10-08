@@ -1,4 +1,4 @@
-# 框架与 Godot 项目术语
+# 框架术语
 
 本页只收录 Yaya 框架特有、或在本框架中有特定含义的术语，两本手册共用这一份。通用开发常识、Godot 基础概念和一看就懂的名称不收录；操作要求和完成规则由所属规范维护。
 
@@ -10,7 +10,9 @@
 
 | 术语 | 含义与边界 | 不用的说法 |
 | --- | --- | --- |
-| 框架仓库 | 本仓库 `D:/A_Games/Game_idle_yaya_frame`，保存维护材料和分发源 | 维护仓库、框架维护仓库 |
+| 框架仓库 | 本仓库 `D:/A_Games/Game_idle_yaya_frame`，保存维护材料和分发源 | 维护仓库、框架维护仓库、框架维护源 |
+| 根 `AGENTS.md` | 框架仓库根目录的 `AGENTS.md`，框架维护任务的规则入口；链接只指向文件时，链接文字用它的标题「框架维护约定」。不指生成项目的 `AGENTS.md`，也不指工程规则；「框架规则」既可能指它也可能指工程规则，所以不用 | 根规则、根约定、根维护约定、框架规则 |
+| 工程规则 | `project-source/agent-rules/` 中按领域保存的 Godot 引擎与语言规则，创建项目时复制到 `yaya/agent-rules/`；入口是[工程规则目录](../project-source/agent-rules/README.md) |  |
 | 分发源 / `project-source/` | 创建器按复制清单复制到新游戏项目的源材料；在框架仓库中只作为源材料阅读，不启动其中的开发流程 | 分发材料、分发源材料、分发包 |
 | 复制清单 | `framework/project-creation/project-files.json`；只决定创建时复制什么、复制到哪里，不承担升级或已有项目的同步 |  |
 | 复制映射 | 复制清单中的一条 `source` → `target` 对应关系；`source` 相对框架仓库根目录，`target` 相对生成项目根目录 |  |
@@ -33,7 +35,7 @@
 | 预拆分 | 在 Product 总览中粗分全部约定交付范围；轮到某个 Product 时才细化其正文并拆 Feature |  |
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |  |
 | Feature 记录 | [Feature 结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成证据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |  |
-| Stage | Feature 执行规范里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |  |
+| Stage | [Stage 0–8 `feature-execute` 执行循环](../project-source/methodology/03-execute-loop.md)里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |  |
 | 独立审核 | Stage 6：用户明确要求时，在全新上下文中按用户指定的范围和时机审核变更，方法见[独立审核](../project-source/methodology/12-independent-review.md)；用户没要求时跳过 | 独立评审、独立审查 |
 | 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案 |
 | 待决定事项 | Progress 中的同名一节，列出需要用户决定才能继续的事项；GDD 中设计层面没定下的问题称“开放问题” |  |

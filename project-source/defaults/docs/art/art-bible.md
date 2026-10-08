@@ -4,4 +4,4 @@
 
 ## 共享资源规格
 
-这里由 `design-visual-asset-spec` 维护跨独立界面或表现共用的视觉文件规格与准备状态，具体归属按[资源规格约定](../../yaya/methodology/11-specialist-workflows.md#资源需求与交接)判断。仅属于一个界面、表现或共享组件的资源仍随其正文保存，消费处引用同一份规格。
+这里由 `design-visual-asset-spec` 维护跨独立界面或表现共用的视觉文件规格与准备状态，具体归属按[资源需求与交接](../../yaya/methodology/11-specialist-workflows.md#资源需求与交接)判断。仅属于一个界面、表现或共享组件的资源仍随其正文保存，消费处引用同一份规格。

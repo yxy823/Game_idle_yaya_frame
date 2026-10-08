@@ -114,7 +114,7 @@ entries = {
 
 ## 分析
 
-调试台按 [analyzer 协议](../../../yaya/tools/analyzer/README.md#运行一次分析)在后台调用 worker：读取 `docs/methodology-config.json` 的 `analyzer_python_executable`，在 `reports/asset-analyzer/jobs/debug/` 写请求文件，每帧检查进程是否结束，结束后读取结果并删除请求与结果文件；游戏不等待 worker。没有配置时分析区只显示“未配置 analyzer”，其他功能不受影响。
+调试台按资源 Analyzer 的[运行一次分析](../../../yaya/tools/analyzer/README.md#运行一次分析)在后台调用 worker：读取 `docs/methodology-config.json` 的 `analyzer_python_executable`，在 `reports/asset-analyzer/jobs/debug/` 写请求文件，每帧检查进程是否结束，结束后读取结果并删除请求与结果文件；游戏不等待 worker。没有配置时分析区只显示“未配置 analyzer”，其他功能不受影响。
 
 - **音效候选**：插槽的当前候选是 AudioStream 时，“实现”与“参数”之间显示基础音高、时长、峰值、真峰值、RMS、20 ms 最大 RMS、起音、衰减和频谱重心；每个文件在一次会话中只分析一次。插槽的 `analysis_extras` 可以在这里加动作和说明。
 - **截图分析**：位于“分析”页，截取游戏窗口的根视口，存为 `reports/asset-analyzer/jobs/debug/game-*.png`，显示正常、灰度、红色盲、绿色盲四格。

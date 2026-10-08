@@ -239,4 +239,4 @@
 
 编写与修改遵循[本册编写要求](README.md)。目录对应由框架的 `check_scenario_prompt_paths.py` 核对；路径通过不代表正文语义或真实运行已经通过。
 
-框架特有或具有特定含义的用语见[框架与 Godot 项目术语](../../terminology.md)。
+框架特有或具有特定含义的用语见[框架术语](../../terminology.md)。

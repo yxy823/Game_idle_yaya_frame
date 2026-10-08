@@ -322,7 +322,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 
 指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档在最终验证之前的 Stage 3 文档检查点定稿。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读审核不改变内容。
 
-直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
+直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及测试追溯与证据中的[基于原始结果的完成判断与语义时效](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见[专业来源与资源的测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
 

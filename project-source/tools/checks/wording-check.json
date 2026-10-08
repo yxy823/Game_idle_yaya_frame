@@ -117,7 +117,7 @@
       "level": "review",
       "scope": "all",
       "pattern": "未决项|待决定项|未决问题",
-      "suggestion": "Progress 中写“待决定事项”；GDD 用“开放问题”"
+      "suggestion": "Progress 中写“待决定事项”；GDD 用“开放问题”；Product 总览用“待决定的规划问题”，细化的 Product 用“待定决策”"
     },
     {
       "name": "做出+决定",

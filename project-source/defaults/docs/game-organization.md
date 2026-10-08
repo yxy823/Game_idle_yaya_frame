@@ -46,7 +46,7 @@
 | 实际模块、状态所有者、调用与连接 | [项目架构](architecture.md)及必要的子系统说明 | 谁校验并执行购买、谁管理余额与物品、界面怎样获得结果 |
 | 本次交付、局部设计与验证 | [Product](product.md)、[Feature](features/README.md)及其关联记录 | 本次完成哪些购买行为、反馈与检查，实际验收覆盖什么 |
 
-这些例子不代表项目已有商店或已确定设计。记录随实际工作产生，具体来源归属见[专业来源约定](../yaya/methodology/11-specialist-workflows.md)。一项要求保留一个正文，其他文档引用它；当前实现关系由实施任务同步，验收结果归既有记录。
+这些例子不代表项目已有商店或已确定设计。记录随实际工作产生，具体来源归属见[专业工作与来源](../yaya/methodology/11-specialist-workflows.md)。一项要求保留一个正文，其他文档引用它；当前实现关系由实施任务同步，验收结果归既有记录。
 
 UI 文档从实际交互位置引用相关表现；角色死亡等非 UI 表现可直接从 GDD 引用。架构或任务设计链接实际接入关系，不把规则、表现规格和实现说明混成同一份清单。
 
@@ -137,4 +137,4 @@ Autoload 按真实生命周期选择，文件仍按职责归属。例如，需�
 
 需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 
-当实际边界需要说明时，按[架构约定](../yaya/methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。
+当实际边界需要说明时，按[架构概览](../yaya/methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。

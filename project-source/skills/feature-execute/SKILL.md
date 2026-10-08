@@ -19,11 +19,11 @@ description: >-
 | 规划测试、清理过时测试或选择运行范围 | `yaya/methodology/08-test-traceability-and-evidence.md` 中的相关小节 |
 | 写入 Feature、测试登记表或完成字段 | `yaya/methodology/02-feature-list-schema.md` 中对应产物的约定 |
 | 直接执行解析/lint | `yaya/methodology/contracts/gdscript-lint.md` |
-| 记录 Bug 诊断和经验 | `yaya/methodology/07-engineering-change.md` 和执行规范的 Stage 5.5 |
+| 记录 Bug 诊断和经验 | `yaya/methodology/07-engineering-change.md` 和 `yaya/methodology/03-execute-loop.md` 的 Stage 5.5 |
 | 归档执行记录或记录架构决定 | `yaya/methodology/09-records-reports-and-handoff.md`，适用时还有 `yaya/methodology/10-architecture-overview.md` |
 | 使用专业来源、辅助性的专业工作或补充证据 | `yaya/methodology/11-specialist-workflows.md` |
 | 执行用户要求的独立审核 | Stage 6 和 `yaya/methodology/12-independent-review.md`；审核方法在单独的 Skill 中 |
 
-可选的 Stage 6 审核和全部完成条件都由执行规范负责。本 Skill 不提供另一套检查顺序或证据格式。项目命令 `yaya/tools/features/record-feature-completion.py` 记录并校验那里描述的证据；它不负责实现、测试或审核。
+可选的 Stage 6 审核和全部完成条件都由 `yaya/methodology/03-execute-loop.md` 负责。本 Skill 不提供另一套检查顺序或证据格式。项目命令 `yaya/tools/features/record-feature-completion.py` 记录并校验那里描述的证据；它不负责实现、测试或审核。
 
 到 Stage 8 时，报告已完成的 Feature 和下一个动作。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

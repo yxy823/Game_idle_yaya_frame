@@ -73,7 +73,7 @@
 
 ## 任务范围
 
-本节适用于每个会修改项目文件的任务。批准、验收和完成条件由所属流程决定，Feature 见 [03 执行规范](yaya/methodology/03-execute-loop.md)。
+本节适用于每个会修改项目文件的任务。批准、验收和完成条件由所属流程决定，Feature 见 [Stage 0–8 `feature-execute` 执行循环](yaya/methodology/03-execute-loop.md)。
 
 ### 修改前先定位
 
@@ -97,7 +97,7 @@
 - 删除一个产物前，确认它的所属方、引用方（包括动态引用和登记表）、它与源文件或生成器的关系，以及对存档和数据兼容的影响。
 - `unused`、`unreferenced` 一类检查结果只说明它是删除候选，不授予删除权限。
 - 权威来源变化、且项目规定派生产物要提交时，用正式流程重新生成，并检查结果是确定的、没有过期。
-- 工具产生无关的序列化或格式差异时，先检查这些差异，可行时回退无关部分，不整体接受。例外：项目自己的记录工具把 Feature 记录 JSON 写回标准格式（见 `yaya/methodology/02-feature-list-schema.md` 的 **文件结构**）造成的差异随本次提交，不手工回退。
+- 工具产生无关的序列化或格式差异时，先检查这些差异，可行时回退无关部分，不整体接受；不能用 Git 回退时（例如派活方禁止 Git 写操作），列出这些差异交给主 Agent，不手工改写。例外：项目自己的记录工具把 Feature 记录 JSON 写回标准格式（见 `yaya/methodology/02-feature-list-schema.md` 的 **文件结构**）造成的差异随本次提交，不手工回退。
 
 ### 收尾时核对受影响的文档
 
@@ -153,7 +153,7 @@ Feature 中各类内容的动作与权限见 [3D 文档检查点](yaya/methodolo
 - 主题使用 `<type>(<scope>): <摘要>`。`type` 用 `feat`、`fix`、`refactor`、`test`、`perf`、`build`、`docs`、`chore` 等英文类型；`scope` 选最窄且稳定的范围，执行 Feature 时用 Feature ID；摘要使用 `docs/methodology-config.json` 的 `document_language`（默认中文），写实际的行为变化，不写“修复问题”“更新代码”这类笼统的话。
 - 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
 - Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
-- 本地提交不代表任务完成或人工验收；Feature 的完成由 [03 执行规范](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
+- 本地提交不代表任务完成或人工验收；Feature 的完成由 [Stage 0–8 `feature-execute` 执行循环](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
 - [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞、链接或资源格式问题时，按输出改正本次改过的文件，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
 - 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
 
@@ -183,7 +183,7 @@ Work item: docs/features/F012.json
 
 - 每个改动的产物都要满足所有适用模块的验证要求，这些要求相互叠加。
 - 运行适用于这次修改的验证，不运行所有能想到的昂贵检查。影响范围不确定时，把可能受影响的相关模块也纳入验证，不声称一个缺乏依据的最小范围。
-- 使用项目已配置的入口：`yaya/tools/` 下的命令，以及 [GDScript lint 约定](yaya/methodology/contracts/gdscript-lint.md) 中的解析和 lint 命令。不编造不受支持的检查器，不为填满清单安装新的工具链。
+- 使用项目已配置的入口：`yaya/tools/` 下的命令，以及 [GDScript lint 的约定与证据](yaya/methodology/contracts/gdscript-lint.md) 中的解析和 lint 命令。不编造不受支持的检查器，不为填满清单安装新的工具链。
 - 一类验证不代替另一类，除非项目规则明确规定它们对受影响的契约等价。上层检查通过不抵消下层的失败。
 - 只有实际执行并成功结束的检查才算通过。按工具的退出码或结构化结果判断，不根据控制台文字猜测。包装脚本不能用退出码 0 掩盖底层检查的失败。
 
