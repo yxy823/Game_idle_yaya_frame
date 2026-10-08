@@ -163,6 +163,30 @@ class ProjectCopyTests(unittest.TestCase):
         count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"], cwd=output, text=True).strip()
         self.assertEqual(count, "2")
 
+    def test_real_creation_hook_rejects_skill_change_until_both_copies_match(self):
+        repository = Path(__file__).resolve().parents[3]
+        output = self.base / "skill-copies"
+        path = os.pathsep.join((str(Path(sys.executable).parent), os.environ.get("PATH", "")))
+        with patch.dict(os.environ, {**GIT_ENVIRONMENT, "PATH": path}):
+            create_project(repository, output)
+
+            def commit():
+                subprocess.run(["git", "add", "-A"], cwd=output, check=True)
+                return subprocess.run(["git", "commit", "-m", "chore: 调整 Skill 配置"], cwd=output,
+                                      capture_output=True, encoding="utf-8", check=False)
+
+            # 非文档文件也要触发：只改 Codex 那份的 openai.yaml。
+            relative = "bug-diagnosis-godot/agents/openai.yaml"
+            codex_copy = output / ".agents/skills" / relative
+            codex_copy.write_bytes(codex_copy.read_bytes() + b"\n# local note\n")
+            rejected = commit()
+            self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
+            self.assertIn("Skill 目录一致性检查", rejected.stderr)
+
+            (output / ".claude/skills" / relative).write_bytes(codex_copy.read_bytes())
+            accepted = commit()
+            self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+
     def test_real_agent_mappings_preserve_roles_without_global_config(self):
         repository = Path(__file__).resolve().parents[3]
         manifest = json.loads((repository / "framework/project-creation/project-files.json").read_text(encoding="utf-8"))
@@ -321,6 +345,11 @@ class ProjectCopyTests(unittest.TestCase):
             with self.subTest(writing_skill_file=relative):
                 self.assertEqual((writing_skill / relative).read_bytes(),
                                  (writing_sources / relative).read_bytes())
+        codex_skills, claude_skills = output / ".agents/skills", output / ".claude/skills"
+        self.assertEqual({path.relative_to(claude_skills).as_posix(): path.read_bytes()
+                          for path in claude_skills.rglob("*") if path.is_file()},
+                         {path.relative_to(codex_skills).as_posix(): path.read_bytes()
+                          for path in codex_skills.rglob("*") if path.is_file()})
         for name in ("technical-documentation-writing", "technical-documentation-writing-yaya"):
             self.assertFalse((output / ".agents/skills" / name).exists(), name)
         presentation_sources = repository / "project-source/skills/design-game-presentation"

@@ -26,7 +26,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 - **参数**：`--output` 是目标项目目录；`-B` 让 Python 不生成字节码缓存。
 - **前提**：需要可用的 Git 和已配置的提交身份。
-- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，再创建本地初始提交。初始提交也经过[提交钩子](../../../project-source/tools/README.md#提交钩子)的术语、措辞、链接和资源格式检查。
+- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，再创建本地初始提交。初始提交也经过[提交钩子](../../../project-source/tools/README.md#提交钩子)的术语、措辞、链接、资源格式和 Skill 目录一致性检查。
 - **不做什么**：不安装依赖、不运行环境检查或 Godot、不生成需求、不运行测试、不配置远程或推送。
 - **成功消息**：显示的复制数量是清单条目数，不是实际文件数。
 
@@ -86,7 +86,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 - 项目 `README.md`；
 - `dev/debug/` 中 `_shared/` 以外的文件，例如插槽、`debug_project.gd` 和项目自己的 `dev/debug/README.md`。
 
-复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.codex/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
+复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.claude/skills/`、`.codex/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
 
 1. 在[复制清单](../../project-creation/project-files.json)中，找到每个要对齐的项目路径对应的 `source`。目录条目按目录内的相对路径逐文件对应。
 2. 逐文件比对框架源文件和项目文件，例如 `git diff --no-index <框架源文件> <项目文件>`，列出有差异的文件，以及框架新增或删除的文件。

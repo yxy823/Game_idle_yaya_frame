@@ -1,6 +1,6 @@
 #!/bin/sh
 # 项目的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）、链接检查和链接文字检查；
-# 暂存了场景、资源、脚本、Shader 或素材时，运行资源格式检查。
+# 暂存了场景、资源、脚本、Shader 或素材时，运行资源格式检查；暂存了 Skill 时，检查两份 Skill 目录是否一致。
 # 创建器已设置 core.hooksPath；重新 clone 后运行 git config core.hooksPath .githooks。说明见 yaya/tools/README.md 的「提交钩子」。
 cd "$(git rev-parse --show-toplevel)" || exit 1
 export PYTHONUTF8=1
@@ -16,9 +16,19 @@ changed=$(git diff --cached --name-only -z --diff-filter=ACMRD -- '*.md' '*.json
 # 文件清单从标准输入传入，避免文件很多时超出命令行长度；路径里的中文和空格原样保留。
 present=$(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' '*.json' | tr '\0' '\n')
 godot=$(staged_godot_files | tr '\0' '\n')
-[ -n "$changed" ] || [ -n "$godot" ] || exit 0
+skills=$(git diff --cached --name-only -- .agents/skills .claude/skills)
+[ -n "$changed" ] || [ -n "$godot" ] || [ -n "$skills" ] || exit 0
 
 failed=""
+# Codex 读 .agents/skills，Claude Code 读 .claude/skills，两份必须相同；比较的是暂存区中两个目录的树。
+if [ -n "$skills" ]; then
+    codex_tree=$(git write-tree --prefix=.agents/skills/ 2>/dev/null)
+    claude_tree=$(git write-tree --prefix=.claude/skills/ 2>/dev/null)
+    if [ -z "$codex_tree" ] || [ "$codex_tree" != "$claude_tree" ]; then
+        echo "两份 Skill 目录不一致：.agents/skills 与 .claude/skills 的暂存内容不同。" >&2
+        failed="$failed Skill 目录一致性检查"
+    fi
+fi
 if [ -n "$present" ]; then
     python -B yaya/tools/checks/check-terminology.py --files-from - <<EOF || failed="$failed 术语检查"
 $present
@@ -41,6 +51,7 @@ if [ -n "$failed" ]; then
     echo "提交被拒绝，未通过：$failed。" >&2
     echo "按上面列出的位置修改：不用的说法改为 docs/terminology.md 中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题；链接文字改为目标的章节标题或一级标题，文件说明写在链接外面。" >&2
     echo "资源格式检查列出的场景和资源用 yaya/tools/godot/resave_godot_files.gd 重存；缺 .uid 或 .import 时运行 yaya/tools/README.md「首次 Godot 扫描」的命令，把生成的文件一起暂存。" >&2
+    echo "Skill 目录不一致时，把改过的那份完整复制到另一份，例如改的是 .agents/skills 就在 PowerShell 运行 robocopy .agents\\skills .claude\\skills /MIR，再暂存两个目录。" >&2
     echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
     exit 1
 fi

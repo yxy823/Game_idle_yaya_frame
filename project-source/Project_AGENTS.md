@@ -44,7 +44,7 @@
 - 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](#git-与提交)。任务默认不在 worktree 中开始。
 - 限定范围的调研和独立审核使用各自的角色，入口见任务路由表。
 
-选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
+选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，`.claude/skills/` 是供 Claude Code 读取的相同副本，修改 Skill 时两个目录一起改；显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
 
 ### 设计前提与需阅读的来源
 
@@ -154,7 +154,7 @@ Feature 中各类内容的动作与权限见 [3D. 最终验证前的文档检查
 - 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
 - Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
 - 本地提交不代表任务完成或人工验收；Feature 的完成由 [Stage 0–8 `feature-execute` 执行循环](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
-- [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞、链接、链接文字或资源格式问题时，按输出改正本次改过的文件，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
+- [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞、链接、链接文字、资源格式或 Skill 目录不一致问题时，按输出改正本次改过的文件，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
 - 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
 
 示例：

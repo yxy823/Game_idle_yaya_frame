@@ -96,7 +96,7 @@
 
 - **各自独立**：两份 Skill 各有自己的 `SKILL.md`、`agents/openai.yaml` 和完整参考，可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步；唯一的例外是[措辞检查](../../project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明，它只维护在 Godot 版，框架版链接它，因为措辞检查在框架仓库和生成项目中读的是同一份配置；相似的原则可以各写一份。各自产物的实际契约由所属规范决定，写作 Skill 不另造流程。
 - **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。框架仓库只启用框架版；Godot 版在这里只是待分发的源文件。
-- **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/`，Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
+- **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/` 和 `.claude/skills/`（两份副本的原因见[复制与重命名](../godot-project-manual/foundations/project-layout.md#复制与重命名)），Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
 - **结构**：GDD、Product、Feature 及其验收场景使用各自的结构，不套用框架场景页的 11 类栏目或 S1 编号。
 - **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目，已创建的项目是否更新由用户决定，对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/framework-and-project.md#让项目里的框架副本与框架对齐)。
 - **依赖**：两份都只通过内部相对路径读取参考，不需要执行脚本、私有运行时或同步工具。
