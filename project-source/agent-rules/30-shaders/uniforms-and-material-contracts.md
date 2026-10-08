@@ -7,7 +7,7 @@ uniform 是跨文件的 API：材质、场景、脚本、动画轨道和项目�
 - 改 uniform 的名称、类型或含义时，迁移每个使用它的材质、场景、脚本、AnimationPlayer 轨道和工具。
 - `set_shader_parameter()` 的参数名区分大小写，与 Shader 中的 uniform 名完全一致，不是检查器中首字母大写的显示名。传入值的类型与 uniform 类型对应。
 - 注意：修改 ShaderMaterial 的 uniform 会影响所有共用这个材质的对象。
-- 给 uniform 提供安全的默认值和合适的 hint。`source_color` 的用法见[颜色与 Alpha](coordinates-sampling-and-color.md#颜色与-alpha)。
+- 给 uniform 提供安全的默认值，并按它的用途加 hint。`source_color` 的用法见[颜色与 Alpha](coordinates-sampling-and-color.md#颜色与-alpha)。
 - 建议：逐对象不同的值用实例 uniform，不为每个对象复制 ShaderMaterial；整个项目共享的值用全局 uniform。
 
 ## 实例 uniform

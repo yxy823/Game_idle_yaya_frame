@@ -559,7 +559,7 @@ python -B yaya/tools/checks/check-feature-list.py
 在 Product 或 Feature 记录之前就已存在实现时，交付规划之前仍需要一份实质性的 GDD。
 
 - 如果没有 GDD，在用户的范围内把设计缺口交回 `design-gdd`。代码可以为这项工作提供参考，但不能悄悄变成已批准的设计。
-- 依据足够清楚的设计，用 `product-author` 划定当前交付边界。批准的游戏设计变更通过 `design-gdd` 处理，范围内的数值变更通过 `design-balance` 处理。
+- 依据规则、状态、反馈和可观察结果都已写明的设计，用 `product-author` 划定当前交付边界。批准的游戏设计变更通过 `design-gdd` 处理，范围内的数值变更通过 `design-balance` 处理。
 - 对所请求的当前交付应用逐个 Product 规划。已有实现不免除前置 Feature 的完成要求，也不扩大规划范围。后续候选保持在预拆分层级。
 
 已有 Feature 覆盖该结果时，复用它。没有覆盖时，围绕可独立验证的结果创建普通的、来自 Product 的 Feature；不要按想象中的历史编码步骤拆，也不要每个源文件建一个 Feature。从已确认的意图推导 AC。在常规的需求覆盖核对中，把每个条件映射到实现、可用的测试和剩余缺口。不要为了迁就缺陷而削弱 AC，也不要只为重跑测试而创建重复工作。

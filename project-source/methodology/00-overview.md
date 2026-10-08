@@ -77,7 +77,7 @@ yaya/methodology/                         canonical workflow specification
 | 根据 GDD 预拆分交付范围 | `product-author` | 只写用户要求的 `product.md` 规划范围。 |
 | 修改游戏设计 | `design-gdd`；限定范围的数值设计用 `design-balance` | 修改设计不会自动创建 Product 或 Feature。 |
 | 修改当前 Product 的交付范围 | `product-author` | 后续 Product 保持在预拆分层级。 |
-| 已有实现，但缺少足够的 Product 或 Feature 记录 | 先用 `product-author`，再走规划和交付路由 | 按 [接手已有实现](02-feature-list-schema.md#接手已有实现) 执行。需要已确认的 GDD 设计；不编造历史，也不授权超出已说明缺口的修复。 |
+| 已有实现，但缺少覆盖它的 Product 或 Feature 记录 | 先用 `product-author`，再走规划和交付路由 | 按 [接手已有实现](02-feature-list-schema.md#接手已有实现) 执行。需要已确认的 GDD 设计；不编造历史，也不授权超出已说明缺口的修复。 |
 | 当前交付完成后细化下一个 Product | 先用 `product-author`，获得授权后再用 `feature-plan` | 当前 Product 的必需 Feature 全部完成后使用，按 [逐个 Product 规划](02-feature-list-schema.md#逐个-product-规划) 执行。 |
 | 拆分当前 Product | `feature-plan` | 只规划当前 Product。 |
 | 源同步 | `feature-sync` | 已提交的 GDD、Product、专业文档或规则来源发生变化时使用。不做首次拆分。 |

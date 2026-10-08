@@ -40,7 +40,7 @@
 
 ## 适配材质和控制路径
 
-已有的材质、动画和脚本使用方合适时，直接复用。改动某个值的控制路径之前，先弄清它属于共享材质，还是只属于一个显示实例。`ShaderMaterial.set_shader_parameter()` 使用准确的、区分大小写的 uniform 名称；修改共享材质会影响它的所有使用者。这一行为见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。按单实例还是按资源组织，由已有的 uniform 规则决定，不一律复制材质。
+已有的材质、动画和脚本使用方能满足需求时，直接复用。改动某个值的控制路径之前，先弄清它属于共享材质，还是只属于一个显示实例。`ShaderMaterial.set_shader_parameter()` 使用准确的、区分大小写的 uniform 名称；修改共享材质会影响它的所有使用者。这一行为见 [Godot 4.7 ShaderMaterial API](https://docs.godotengine.org/en/4.7/classes/class_shadermaterial.html#class-shadermaterial-method-set-shader-parameter)。按单实例还是按资源组织，由已有的 uniform 规则决定，不一律复制材质。
 
 需要额外纹理时，只按所选方案的需要说明它的用途、通道含义、尺寸或密度要求、透明度和采样假设。某个方案专属的资源要求，按已有的文档归属写进该方案在表现文档中的小节；这不授权制作图像，也不要求另建素材清单。
 

@@ -30,4 +30,4 @@
 
 把检查过的配置，与观察到的运行时路径、成功的导入、实际的测试结果和人工验收分开报告。需要维护证据时，通过已有的任务记录和 [verification-evidence-godot](../../verification-evidence-godot/SKILL.md) 记录相关目标和真实证据。没有运行过的检出目录不算已验证的隔离；环境探测通过也不代表玩法或测试行为通过。
 
-准备足够后，回到已获授权的操作。更大范围的验证仍由它的工作流和 [project-verification-godot](../../project-verification-godot/SKILL.md) 负责；本参考不要求每次准备目录都完整运行一遍项目。
+确认完本次操作涉及的方面后，回到已获授权的操作。更大范围的验证仍由它的工作流和 [project-verification-godot](../../project-verification-godot/SKILL.md) 负责；本参考不要求每次准备目录都完整运行一遍项目。
