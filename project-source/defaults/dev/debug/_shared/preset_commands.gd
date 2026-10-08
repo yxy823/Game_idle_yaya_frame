@@ -1,5 +1,5 @@
-# gdlint:ignore-file:file-length=407
-# 保留原因：预设与组合的载入、保存、删除及确认对话放在一处读；可移出的载入问题措辞会让通用消息模块依赖插槽。用户同意于 2026-10-08。
+# gdlint:ignore-file:file-length=433
+# 保留原因：预设与组合的载入、保存、删除及确认对话放在一处读；可移出的载入问题措辞会让通用消息模块依赖插槽。增加到 433 行的是各命令的失败处理，与预设命令放在一起读。用户同意于 2026-10-08，433 行同意于 2026-10-09。
 extends RefCounted
 ## The debug window's combo and slot-preset commands: load, save and delete, each reported in
 ## plain words. Saving only writes dev/ drafts; the game files stay as they are. Loading over

@@ -69,9 +69,15 @@ func _run(report_path: String) -> void:
 	_dock.settings_controls.max_params_spin.value = 8
 	_expect(FileAccess.get_file_as_string(CONFIG_PATH) == "{ malformed JSON",
 		"saving a control cannot overwrite an invalid external config")
-	# Like the CLI, a missing or unopenable project config blocks Scan; a restored one scans.
+	_expect_scan_blocked("malformed config")
+	# A missing project config is created with the defaults and scans; an existing one that
+	# cannot be opened blocks Scan.
 	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove project config")
-	_expect_scan_blocked("missing config")
+	_expect(_scan_with_new_dock() != null, "missing config scans with the defaults")
+	var created: Variant = JSON.parse_string(FileAccess.get_file_as_string(CONFIG_PATH))
+	_expect(created is Dictionary and created.get("limits", {}).get("max_parameters") \
+			== CONFIG.new().max_parameters, "missing config is created with the default values")
+	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove created config")
 	_expect(DirAccess.make_dir_absolute(CONFIG_PATH) == OK, "create unopenable config")
 	_expect_scan_blocked("unopenable config")
 	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove unopenable config")

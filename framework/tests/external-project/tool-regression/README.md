@@ -28,7 +28,7 @@ New-Item -ItemType Directory -Path 'reports/maintenance' -Force
 | --- | --- | --- |
 | `gdscript_lint_contracts.gd` | lint 的解析、度量、忽略指令和具体诊断规则 | 只在内存中构造被分析的代码 |
 | `gdscript_lint_entry_contracts.gd` | lint CLI 的参数、配置拒绝、退出码和 JSON 一致性，报告与配置写入失败时保留原文件，以及读不了的目录（用悬空的目录联接模拟） | 临时替换根目录的 `gdlint.json`，并创建 `gdlint-entry-contracts*` 文件，正常结束时恢复。已有同名残留文件时拒绝运行；只能在可丢弃的外部项目中使用 |
-| `gdscript_lint_editor_contracts.gd` | 编辑器面板的真实加载、配置缺失或打不开时阻止扫描、控件保存和重建 | 临时修改项目配置和本机的 `code_quality/*` 编辑器设置，正常结束时恢复；不能与其他编辑器实例同时运行 |
+| `gdscript_lint_editor_contracts.gd` | 编辑器面板的真实加载、配置缺失时用默认值新建、配置损坏或打不开时阻止扫描、控件保存和重建 | 临时修改项目配置和本机的 `code_quality/*` 编辑器设置，正常结束时恢复；不能与其他编辑器实例同时运行 |
 | `gdunit_runner_contracts.gd` | 运行器对真实发现、参数化、预期错误和未处理引擎错误的处理 | 使用现有运行器和它的 `result.json` |
 
 ## lint 规则与 CLI 夹具

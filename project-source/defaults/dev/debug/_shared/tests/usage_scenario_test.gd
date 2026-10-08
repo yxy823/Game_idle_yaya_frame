@@ -165,10 +165,9 @@ func _save_another_combo_keeps_the_first() -> void:
 	assert_str(_status()).is_equal("已保存组合 粒子，游戏文件不变；预设 晶体 被组合 晶体 使用，"
 		+ "已把 按钮音效 的改动另存为 晶体-粒子")
 	assert_str(_sound.preset_name).is_equal("晶体-粒子")
-	var first: Dictionary = _window.session.store.stored_fields(_sound, "晶体")
-	assert_float(first.value.volume_db).is_equal(-3.0)
-	var presets: Dictionary = _window.session.store.combo_presets("sample", "晶体", _window.session.slots)
-	assert_str(presets[_sound.id]).is_equal("晶体")
+	var first: Dictionary = _window.session.store.check_combo("sample", "晶体", _window.session.slots)
+	assert_str(first.names[_sound.id]).is_equal("晶体")
+	assert_float(first.values[_sound.id].volume_db).is_equal(-3.0)
 
 
 ## The current combo's own preset is not "used by another combo": saving before a load
@@ -180,8 +179,8 @@ func _save_into_the_current_combos_preset() -> void:
 	_window.dialogs.current.get_ok_button().pressed.emit()
 	_see("当前组合自己的预设直接保存", _status())
 	assert_str(_status()).is_equal("已把 按钮音效 的改动存进预设 晶体-粒子；已载入游戏原值")
-	var stored: Dictionary = _window.session.store.stored_fields(_sound, "晶体-粒子")
-	assert_float(stored.value.volume_db).is_equal(-12.0)
+	var stored: Dictionary = _window.session.store.check_slot(_sound, "晶体-粒子")
+	assert_float(stored.values.volume_db).is_equal(-12.0)
 
 
 ## Loading over unsaved edits with "保存": the status says where the edits went.

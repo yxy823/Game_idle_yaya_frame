@@ -68,7 +68,10 @@ Analysis thresholds, checks, metrics and scan scope come from the project's
 `gdlint.json`. Existing machine-level analysis settings are ignored. The dock
 stores personal display, export, filter and Claude preferences in `EditorSettings`.
 
-Opening or rebuilding the dock does not save the config. Changing an analysis
+Opening or rebuilding the dock does not rewrite an existing config. When
+`gdlint.json` is missing, opening the dock creates it with the default values; the
+CLI never creates it. When the file exists but cannot be read or parsed, the dock
+neither saves over it nor scans. Changing an analysis
 setting writes the project configuration while retaining untouched analysis values
 and unknown JSON fields. It does not write a machine-level analysis override.
 An invalid loaded configuration cannot be saved over by the dock. The bundled

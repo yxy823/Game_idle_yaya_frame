@@ -70,20 +70,6 @@ func check_slot(slot: Slot, preset_name: String) -> Dictionary:
 	return checked
 
 
-## Packed fields of a preset as stored, or of the game file for an empty name; no checks.
-func stored_fields(slot: Slot, preset_name: String) -> Dictionary:
-	if preset_name.is_empty():
-		var defaults := slot.disk_defaults()
-		return Codec.pack_fields(defaults) if defaults != null \
-			else {"error": ERR_CANT_OPEN, "message": slot.game_path}
-	var path := preset_path(slot.id, preset_name)
-	var preset := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Preset \
-		if FileAccess.file_exists(path) else null
-	if preset == null or preset.slot_id != slot.id:
-		return {"error": ERR_FILE_NOT_FOUND, "message": path}
-	return {"error": OK, "value": preset.fields}
-
-
 func _fallback(slot: Slot, fields: Dictionary, defaults: Resource, issue: String) -> Dictionary:
 	var checked := Codec.check_fields(slot.live, fields, defaults)
 	checked.issues.append(issue)
@@ -142,18 +128,6 @@ func check_combo(target: String, combo_name: String, slots: Array[Slot]) -> Dict
 			if not values.has(identity):
 				issues.append(identity + ": Unknown slot")
 	return {"error": OK, "values": values, "names": names, "partial": partial, "issues": issues}
-
-
-## Preset name per slot as the combo references it; missing or invalid items are "".
-func combo_presets(target: String, combo_name: String, slots: Array[Slot]) -> Dictionary:
-	var loaded := _read_combo(target, combo_name)
-	var result: Dictionary = {}
-	for slot in slots:
-		var entry := "" if loaded.combo == null or loaded.invalid \
-			else String(loaded.combo.entries.get(slot.id, ""))
-		var name_part := _reference_name(slot.id, entry)
-		result[slot.id] = "" if name_part == "!invalid" else name_part
-	return result
 
 
 func _read_combo(target: String, combo_name: String) -> Dictionary:

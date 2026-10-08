@@ -206,10 +206,15 @@ func _setup_background() -> void:
 
 func _init_config_and_settings_panel() -> void:
 	current_config = AnalysisConfigScript.new()
-	# Same rule as the CLI: a missing or unreadable project config blocks Scan.
-	if not current_config.load_from_json("res://gdlint.json") \
+	var config_path := "res://gdlint.json"
+	# A missing project config is created with the defaults. An existing one that cannot be read
+	# or parsed blocks Scan, as in the CLI, and save_to_json refuses to overwrite it.
+	if not FileAccess.file_exists(config_path) and not DirAccess.dir_exists_absolute(config_path):
+		if not current_config.save_to_json(config_path):
+			current_config.configuration_error = "Could not create config: " + config_path
+	elif not current_config.load_from_json(config_path) \
 			and current_config.configuration_error.is_empty():
-		current_config.configuration_error = "Could not load config: res://gdlint.json"
+		current_config.configuration_error = "Could not load config: " + config_path
 	var reset_icon = load("res://addons/gdscript-linter/icons/arrow-reset.svg")
 	var card_builder = SettingsCardBuilderScript.new(reset_icon)
 	card_builder.build_settings_panel(settings_panel, settings_controls)
