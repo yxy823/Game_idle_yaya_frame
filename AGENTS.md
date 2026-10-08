@@ -61,7 +61,7 @@
 
 | 当前工作 | 依据 |
 | --- | --- |
-| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 保存分发材料，其中的项目开发流程只作为源材料阅读，不在维护仓库启用 |
+| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 是分发源，其中的项目开发流程只作为源材料阅读，不在维护仓库启用 |
 | 创建项目 | [创建器](framework/project-creation/tools/create_project.py)按[复制清单](framework/project-creation/project-files.json)复制和重命名，然后建立独立的 Git 仓库和本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级 |
 | 生成项目 | 项目独立拥有自己的文件，不接受自动同步；手册与提示词库不进入项目，项目 README 只保留简短的自身导航 |
 | 修改空白项目 | 先读[框架入口](framework/README.md)，再按[维护与同步](framework/maintenance/maintenance-and-sync.md)查阅受影响的专题、核对源材料并同步说明 |
@@ -69,7 +69,7 @@
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改 |
 | 选择验证 | 只要求静态审查时，不生成项目、不启动 Godot、不运行测试；实际项目验证在明确指定的外部项目中执行。范围见[验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，命令见[按需检查](framework/tests/README.md#按需检查) |
 
-修改分发材料或工具时：
+修改分发源或工具时：
 
 - **Godot 代码、场景、资源或测试**：按[工程规则目录](project-source/agent-rules/README.md)核对适用的工程规则；任务授权、Git、验证范围与地点和交付，仍以本仓库规则为准。
 - **代码或工具**：修改前按[变更准备与范围约定](project-source/Project_AGENTS.md#任务范围)确认实际实现、影响范围和简短方案；验证和交付沿用本仓库约定，不因此启用生成项目的 Stage。
@@ -111,7 +111,7 @@
 - **脚本放在 `tools/`**：脚本放在所属对象目录下的 `tools/`，不与数据或文档平铺；参数、退出码和运行方式写在同目录的 README。没有单一对象的全仓检查放在 `framework/maintenance/tools/`。`framework/README.md` 的「维护命令」只做索引，其他文档说明何时运行并链接到对应 README。回归测试放在 `framework/tests/repository/`，外部项目夹具的放置与运行写在 `framework/tests/external-project/` 各子目录的 README。
 - **一处目录说明**：根 README 只画顶层与 `project-source/`，`framework/README.md` 维护 `framework/` 唯一的目录表；其他 README 只说明自身内容，不重画上层或别处的目录。
 - **按职责落位**：新内容先并入职责、读者和变化原因相同的现有页面，确能独立时才新建；不保留只做跳转或只剩一两段的薄页面。
-- **不登记分发清单**：维护文档按目录或命名模式指向 `project-source/`，不逐个列出分发的 Skill、模板或工具；它们的职责以分发材料自身为准。
+- **不登记分发清单**：维护文档按目录或命名模式指向 `project-source/`，不逐个列出分发的 Skill、模板或工具；它们的职责以这些文件自身为准。
 - **命名一致**：维护侧自主命名的目录和文档使用小写英文加连字符；Python、GDScript 等代码文件按语言约定使用下划线；场景目录与文件保留提示词库中的准确中文名称。
 - **正式文档只写现状**：带日期的验证过程、审核记录和迁移说明放在 `tmp/`、外部项目报告或提交说明里；正式文档只写当前结论、未解决问题和核对方法。
 

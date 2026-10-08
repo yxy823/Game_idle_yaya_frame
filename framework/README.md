@@ -34,7 +34,7 @@ flowchart TD
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](prompt-scenarios/scenarios/scenario-index.md) |
 | 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档系统关系图](relationship-maps/README.md#文档系统关系图) |
 | 查看游戏项目开发场景之间的衔接关系 | [开发场景图](relationship-maps/README.md#游戏项目开发场景图) |
-| 修改框架或分发材料，判断要同步哪些说明、选择哪种验证 | [框架维护](maintenance/README.md) |
+| 修改框架或分发源，判断要同步哪些说明、选择哪种验证 | [框架维护](maintenance/README.md) |
 | 新增或调整文档、Skill、脚本、提示词与场景的职责 | [职责设计准则](maintenance/design-guidelines/README.md) |
 | 编写或修改单一场景 | [场景手册编写要求](prompt-scenarios/scenarios/README.md) |
 | 编写或整理框架说明 | [Yaya 框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) |

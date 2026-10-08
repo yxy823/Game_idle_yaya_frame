@@ -12,7 +12,7 @@
 python -B framework/maintenance/tools/check_repository_links.py
 ```
 
-分发材料中的链接按生成项目的目录编写，在源目录里直接解析会失真。所以脚本分两部分检查：
+分发源中的链接按生成项目的目录编写，在源目录里直接解析会失真。所以脚本分两部分检查：
 
 - **维护侧**：仓库中 `project-source/` 以外的 Markdown。
 - **分发侧**：按[复制清单](../../project-creation/project-files.json)复制到系统临时目录后的项目，报告中的路径映射回 `project-source/` 的源文件。

@@ -8,7 +8,7 @@
 
 | 要改的内容 | 位置 |
 | --- | --- |
-| 项目分发材料 | `project-source/`；路径变化时同时核对复制清单 |
+| 分发源 | `project-source/`；路径变化时同时核对复制清单 |
 | 分发给项目的规则、方法与流程正文 | `project-source/` 中的所属规范。只有任务涉及行为时才改；整理目录不代表修改行为 |
 | 分发给项目的 Godot Skill | `project-source/skills/<名称>/`，整个目录随项目分发。各 Skill 的职责以其 `SKILL.md` 和 `project-source/Project_AGENTS.md` 的路由为准，本表不逐个登记 |
 | 项目内的简短导航 | `project-source/Project_README.md` |
@@ -105,7 +105,7 @@
 ## 保持初始化边界
 
 - **不进入项目的材料**：手册、维护说明、提示词库、框架自用 Skill 和框架审核材料，都不加入复制清单，也不移到 `project-source/`。
-- **随项目分发的材料**：Godot 版写作 Skill 属于项目自己的分发材料，按普通项目 Skill 整包复制。项目 README 保持自己的简短导航；项目文件不接受自动同步。
+- **随项目分发的材料**：Godot 版写作 Skill 是分发给项目的 Skill，按普通项目 Skill 整包复制。项目 README 保持自己的简短导航；项目文件不接受自动同步。
 - **advisor**：直接读取本机的 Godot 提示词库，修改提示词正文后不需要导出。固定路径及其同步要求见 `AGENTS.md` 的[提示词维护](../../AGENTS.md#提示词维护)，用法见[advisor 的共享场景入口](../godot-project-manual/methods-and-tools/skills-and-agents.md#advisor-的共享场景入口)。
 - **续接提示词**：项目中动态生成的续接提示词，格式统一维护在 [续接提示词](../../project-source/methodology/09-records-reports-and-handoff.md#续接提示词)，由 advisor 和 `task-handoff-godot` 引用；框架的集中提示词仍各自保留具体场景的输入、授权和停点目的。普通暂停、换对话和恢复已有停点不合并成一条通用提示词，新增 Skill 也不要求每个入口都建场景。
 
