@@ -113,7 +113,7 @@
 3. 只在所属位置更新有用且已授权的内容。需要新决定或超出本次授权的修改，写进完成汇报的待确认。没有变化时，不要创建文档或空报告。
 4. 移动、重命名文档或修改标题后，用 [`check-markdown-links.py`](yaya/tools/README.md#check-markdown-linkspy) 校验链接和锚点。
 
-写过或改过文档的任务（包括只改措辞的），收尾时还要对本次改过的文档运行 [`check-terminology.py`](yaya/tools/README.md#check-terminologypy)，把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。改过的文档可以用 `git status --short -- "*.md"` 列出，每个文件写一个 `--include`：
+写过或改过文档的任务（包括只改措辞的），收尾时还要对本次改过的文档运行 [`check-terminology.py`](yaya/tools/README.md#check-terminologypy)，把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。改过的文档可以用 `git status --short -- "*.md"` 列出，每个文件写一个 `--include`（也支持 `.json`，只查字符串值）：
 
 ```powershell
 python -B yaya/tools/checks/check-terminology.py --include <改过的文档> --include <另一个文档>

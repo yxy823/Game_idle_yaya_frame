@@ -30,12 +30,14 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 ## 检查术语用词
 
-修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓（包括 `project-source/`）：
+修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓的 Markdown（包括 `project-source/`）和两份提示词库。提示词库的正文会原样显示在用户的快捷浮窗里，所以也要检查：
 
 ```powershell
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --discover
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json"
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --discover
 ```
+
+只检查本次改过的文件时，每个文件写一个 `--include`，改过的提示词 JSON 也用 `--include` 加上，例如 `--include framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。
 
 这项检查只比对文字，不解析链接，所以直接扫描源目录，不需要像链接检查那样先复制成生成项目。检查规则、参数、输出格式和退出码见[项目工具说明](../../../project-source/tools/README.md#check-terminologypy)。
 

@@ -94,7 +94,7 @@
 - **行为不变**：整理文档或文件名，不能顺带改变 Skill 的行为。
 - **被证明错误的内容**：规则、提示词、文档或示例中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、怎么做。
 - **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
-- **术语用词**：写完或改过文档后，对本次改过的文档运行 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include <文件>`（每个文件一个 `--include`），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[维护工具](framework/maintenance/tools/README.md#检查术语用词)。
+- **术语用词**：写完或改过文档后，对本次改过的文档运行 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include <文件>`（每个文件一个 `--include`；改过提示词 JSON 时同样用 `--include` 加上该 JSON 文件），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[维护工具](framework/maintenance/tools/README.md#检查术语用词)。
 - **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
 - **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用[提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
 - **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。

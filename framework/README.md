@@ -101,7 +101,7 @@ flowchart TD
 | `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
 | `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
 | `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [维护工具](maintenance/tools/README.md#检查链接与锚点) |
-| `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓文档中登记为“不用的说法”的写法；`--discover` 另列候选写法 | [维护工具](maintenance/tools/README.md#检查术语用词) |
+| `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [维护工具](maintenance/tools/README.md#检查术语用词) |
 | `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
 | `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
 

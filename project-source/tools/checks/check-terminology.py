@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Report terminology problems: forbidden wordings registered in the terms file, and optional candidate variants."""
 # 只读检查：不改写文件。代码、引号内的文字和术语自己的定义行不算出现，因为写作规范会把禁用词当例子列出。
+# .json 文件只查字符串值：每个值当作一段 Markdown，否则 JSON 自身的双引号会让所有文字都算作引号内。
 from __future__ import annotations
 
 import argparse
@@ -24,6 +25,7 @@ CELL_SPLIT = re.compile(r"(?<!\\)\|")
 LIST_SPLIT = re.compile(r"[、,，]")
 LINK_TARGET = re.compile(r"(?<=\]\()[^)]*(?=\))")
 ENTRY_LINE = re.compile(r"^ {0,3}(#{2,6}\s|[-*+]\s|\d+[.)]\s|\|)")
+JSON_STRING = re.compile(r'"(?:[^"\\]|\\.)*"')
 CJK = re.compile(r"[\u3400-\u9fff]")
 ASCII_TERM = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
 ASCII_RUN = re.compile(r"(?<![A-Za-z0-9_-])[A-Za-z][A-Za-z0-9_-]*")
@@ -32,6 +34,10 @@ STOP_CHARACTERS = set("的了和与及或中里在是时等也都就而并把被
 
 
 class TermsFileError(Exception):
+    pass
+
+
+class DocumentError(Exception):
     pass
 
 
@@ -49,6 +55,8 @@ class Document:
     path: str
     original: list[str]
     masked: list[str | None]  # None 表示整行在代码块里
+    lines: list[int]  # 每行在源文件中的行号；JSON 字符串值拆出的多行共用该值所在的行号
+    offsets: list[int]  # 列号偏移：Markdown 为 0，JSON 为该行在字符串值内的起点
 
 
 @dataclass
@@ -148,11 +156,10 @@ def mask_line(line: str) -> str:
     return QUOTED.sub(lambda match: " " * len(match.group(0)), line)
 
 
-def read_document(path: Path, display: str) -> Document:
-    original = path.read_text(encoding="utf-8").splitlines()
+def mask_markdown(lines: list[str]) -> list[str | None]:
     masked: list[str | None] = []
     fence: str | None = None
-    for line in original:
+    for line in lines:
         fence_match = FENCE.match(line)
         if fence is not None:
             if fence_match and fence_match.group(1)[0] == fence[0] and len(fence_match.group(1)) >= len(fence):
@@ -164,7 +171,39 @@ def read_document(path: Path, display: str) -> Document:
             masked.append(None)
             continue
         masked.append(mask_line(line))
-    return Document(display, original, masked)
+    return masked
+
+
+def read_json_document(text: str, display: str) -> Document:
+    """Treat every JSON string value (not keys) as its own Markdown text, located at the line it starts on."""
+    try:
+        json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise DocumentError(f"{display}:{exc.lineno}:{exc.colno}: JSON 解析失败：{exc.msg}") from exc
+    document = Document(display, [], [], [], [])
+    line_number, counted = 1, 0
+    for match in JSON_STRING.finditer(text):
+        if text[match.end():].lstrip().startswith(":"):
+            continue
+        line_number += text.count("\n", counted, match.start())
+        counted = match.start()
+        parts = json.loads(match.group(0)).split("\n")
+        offset = 0
+        for part, masked in zip(parts, mask_markdown(parts)):
+            document.original.append(part)
+            document.masked.append(masked)
+            document.lines.append(line_number)
+            document.offsets.append(offset)
+            offset += len(part) + 1
+    return document
+
+
+def read_document(path: Path, display: str) -> Document:
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() == ".json":
+        return read_json_document(text, display)
+    original = text.splitlines()
+    return Document(display, original, mask_markdown(original), list(range(1, len(original) + 1)), [0] * len(original))
 
 
 def scanned_files(root: Path, includes: list[str], excluded_names: set[str], excluded_paths: list[Path]) -> list[Path]:
@@ -198,19 +237,19 @@ def context_snippet(line: str, column: int, width: int) -> str:
 
 
 def lines_for(term: Term, documents: list[Document]):
-    """Yield (document, line number, masked text) outside code, skipping the term's own definition line."""
+    """Yield (document, line index, masked text) outside code, skipping the term's own definition line."""
     for document in documents:
-        for number, masked in enumerate(document.masked, start=1):
-            if masked is None or f"{document.path}:{number}" == term.definition:
+        for index, masked in enumerate(document.masked):
+            if masked is None or f"{document.path}:{document.lines[index]}" == term.definition:
                 continue
-            yield document, number, masked
+            yield document, index, masked
 
 
 def check_forbidden(terms: list[Term], documents: list[Document], options: argparse.Namespace) -> list[Finding]:
     findings = []
     for term in terms:
         phrases = sorted(set(term.forbidden), key=len, reverse=True)
-        for document, number, masked in lines_for(term, documents):
+        for document, index, masked in lines_for(term, documents):
             taken: list[tuple[int, int]] = []
             for phrase in phrases:
                 for match in re.finditer(re.escape(phrase), masked):
@@ -218,11 +257,10 @@ def check_forbidden(terms: list[Term], documents: list[Document], options: argpa
                     if any(span[0] < end and start < span[1] for start, end in taken):
                         continue
                     taken.append(span)
-                    column = span[0] + 1
-                    line = document.original[number - 1]
                     findings.append(Finding(
-                        document.path, number, column, "TERM-FORBIDDEN", term.name, phrase, term.name, term.definition,
-                        context_snippet(line, column, options.context_width),
+                        document.path, document.lines[index], document.offsets[index] + span[0] + 1, "TERM-FORBIDDEN",
+                        term.name, phrase, term.name, term.definition,
+                        context_snippet(document.original[index], span[0] + 1, options.context_width),
                         f"「{phrase}」是不用的说法，应改为「{term.name}」（定义见 {term.definition}）",
                     ))
     return findings
@@ -267,12 +305,13 @@ def discover_candidates(terms: list[Term], documents: list[Document], options: a
     known = {alias for term in terms for alias in term.aliases} | {phrase for term in terms for phrase in term.forbidden}
     # 同一候选词归到与它公共前缀最长的术语（同长取术语文件中靠前的），避免在几个术语下重复列出。
     owners: dict[str, tuple[int, int, Term]] = {}
-    occurrences: dict[tuple[str, str], set[tuple[str, int, int]]] = defaultdict(set)
+    # 每处出现记为 (路径, 行号, 列号, 行序号, 行内列号)，后两项用于取上下文。
+    occurrences: dict[tuple[str, str], set[tuple[str, int, int, int, int]]] = defaultdict(set)
     for order, term in enumerate(terms):
         for alias in term.aliases:
             if alias in term.code_aliases:
                 continue
-            for document, number, masked in lines_for(term, documents):
+            for document, index, masked in lines_for(term, documents):
                 for start, word in _variants(alias, masked, options):
                     if word in known:
                         continue
@@ -282,17 +321,18 @@ def discover_candidates(terms: list[Term], documents: list[Document], options: a
                     rank = (_common_prefix(word, alias), -order)
                     if word not in owners or rank > owners[word][:2]:
                         owners[word] = (*rank, term)
-                    occurrences[(term.name, word)].add((document.path, number, start + 1))
+                    occurrences[(term.name, word)].add((document.path, document.lines[index],
+                                                        document.offsets[index] + start + 1, index, start + 1))
     document_lines = {document.path: document.original for document in documents}
     findings = []
     for word, (_, _, term) in owners.items():
         places = sorted(occurrences[(term.name, word)])
         if len(places) < options.min_count:
             continue
-        for path, number, column in places:
+        for path, number, column, index, inline in places:
             findings.append(Finding(
                 path, number, column, "TERM-CANDIDATE", term.name, word, term.name, term.definition,
-                context_snippet(document_lines[path][number - 1], column, options.context_width),
+                context_snippet(document_lines[path][index], inline, options.context_width),
                 f"「{word}」与术语「{term.name}」开头相同，可能是另一种写法（定义见 {term.definition}）",
             ))
     return findings
@@ -359,7 +399,7 @@ def main(argv: list[str] | None = None) -> int:
         files = scanned_files(root, args.include or ["*.md"], set(DEFAULT_EXCLUDED_DIRECTORY_NAMES),
                               [Path(value) for value in args.exclude])
         documents = [read_document(path, path.relative_to(root).as_posix()) for path in files]
-    except TermsFileError as exc:
+    except (TermsFileError, DocumentError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
     except (OSError, UnicodeDecodeError) as exc:

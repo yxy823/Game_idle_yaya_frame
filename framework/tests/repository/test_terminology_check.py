@@ -87,6 +87,23 @@ class TerminologyCheckTests(unittest.TestCase):
             self.assertLessEqual(fields, row.keys())
         self.assertEqual(result["summary"]["forbidden"], 1)
 
+    def test_json_string_values_are_checked_and_keys_are_not(self):
+        self.write("prompts.json",
+                   '{\n  "分发材料": {\n    "说明": "第一行\\n修改分发材料时，不写「分发包」。"\n  }\n}\n')
+        process = self.run_cli("--include", "*.json")
+        self.assertEqual(process.returncode, 1, process.stderr)
+        rows = [line for line in process.stdout.splitlines() if ": [TERM-FORBIDDEN]" in line]
+        self.assertEqual(len(rows), 1, process.stdout)
+        self.assertTrue(rows[0].startswith("prompts.json:3:7: [TERM-FORBIDDEN] "), rows[0])
+        self.assertIn("「分发材料」", rows[0])
+        self.assertTrue(rows[0].endswith("| 修改分发材料时，不写「分发包」。"), rows[0])
+
+    def test_invalid_json_exits_2(self):
+        self.write("prompts.json", '{"说明": "分发材料",}\n')
+        process = self.run_cli("--include", "*.json")
+        self.assertEqual(process.returncode, 2, process.stdout)
+        self.assertIn("prompts.json:1:", process.stderr)
+
     def test_terms_written_as_headings_exit_2(self):
         self.write("docs/terminology.md", "# 项目术语\n\n用途说明。\n\n## 资源\n\n### 晶石\n\n游戏中唯一的资源。\n")
         process = self.run_cli()
