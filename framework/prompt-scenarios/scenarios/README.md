@@ -12,7 +12,7 @@
 - 按 Project 区分在哪个仓库执行，不把框架维护的操作带进游戏项目。
 - 对应一条同名的专用提示词，规则见[提示词与场景准则](../../maintenance/design-guidelines/prompts-and-scenarios.md)。唯一的例外是「只读专项审核」：专题条目要与「专项审核通用模板」拼接使用，专题页只说明拼接方法和完成标准。
 
-用户能辨认的入口不同时才拆成两页。区分条件只有 Agent 查得到时（例如测试证据为什么失效、Feature 是否已正式交付），合并为一页，由 Agent 判断是哪一种后走对应的处理路径。具体的错误码写在对应页内。
+用户能辨认的入口不同时才拆成两页，判断方法见[入口按用户能否辨认划分](../../maintenance/design-guidelines/prompts-and-scenarios.md#一条提示词对应一篇场景)和[入口的情境分层](../../maintenance/design-guidelines/prompts-and-scenarios.md#入口的情境分层)。具体的错误码写在对应页内。
 
 当前各领域的覆盖范围如下。具体有哪些场景、各自的前提和出口，以[场景索引](scenario-index.md)为准，这里不登记名称、数量或路径。
 
