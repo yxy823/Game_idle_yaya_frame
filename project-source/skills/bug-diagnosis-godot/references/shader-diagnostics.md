@@ -32,7 +32,7 @@
 | 坐标是否处于预期的空间和范围？ | 把相关的坐标分量映射成可见的颜色或简单网格。 | 超出范围的值需要有意义的显示映射。在接缝或重复区域出现不连续可能是正常的。 |
 | 采样的来源是否正确？ | 显示原始采样的 RGB，或把采样的 alpha 显示成灰度。 | 把来源内容与调制、后续遮罩和混合区分开。灰度 alpha 探测必须可见，不能意外地把它自己的零值也藏起来。 |
 | 阈值或遮罩是否选中了预期区域？ | 单独显示标量场、遮罩或边缘带。 | 核对预期的端点和极性；全黑或全白的结果不一定是错的。 |
-| 方向或辅助缓冲的数据是否有意义？ | 当实际的 Shader 类型和阶段提供这些数据时，查看经过适当映射的法线、方向、深度或屏幕采样。 | 有符号或非颜色数据需要解读。不要编造不存在的内置变量，也不要假设屏幕/深度来源包含了每个对象。 |
+| 方向或辅助缓冲的数据是否有意义？ | 当实际的 Shader 类型和阶段提供这些数据时，查看映射到可显示颜色范围后的法线、方向、深度或屏幕采样。 | 有符号或非颜色数据需要解读。不要编造不存在的内置变量，也不要假设屏幕/深度来源包含了每个对象。 |
 
 在 CanvasItem 的 fragment 处理中，传入的 `COLOR` 合并了顶点颜色/调制和默认纹理；把它和原始纹理采样比较，可以把这些因素分开。见 [Godot 4.7 CanvasItem 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#color-and-texture)。构造探测时，要明确它对合成方式的改变：读写 `ALPHA` 的 Spatial Shader 会进入透明管线，所以加上这个输出可能改变正在调查的行为。见 [Godot 4.7 Spatial 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html#fragment-built-ins)。
 

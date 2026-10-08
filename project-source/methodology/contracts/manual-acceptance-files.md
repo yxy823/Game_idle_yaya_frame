@@ -29,7 +29,7 @@
 
 允许出现其他字段，验收逻辑会忽略它们，所以不要把必需的验收含义放进其他字段。绑定之后，`id`、`source_ref`、`title`、`preconditions`、`steps`、`expected_result` 以及文件的 `title`、`description` 都不能再改；修改 AC、步骤或预期结果，走 `feature-sync` 中的 Feature 修订路线，并准备新的清单。
 
-清单保存在 `reports/manual-acceptance/` 下，通常是 `reports/manual-acceptance/F001/manual-acceptance-checklist.json`。
+清单保存在 `reports/manual-acceptance/` 下，例如 `reports/manual-acceptance/F001/manual-acceptance-checklist.json`。
 
 - 再次验收时，如果必须保留之前的清单，使用单独的目录。
 - 文件名只是约定；身份由明确的路径和文件内容决定。

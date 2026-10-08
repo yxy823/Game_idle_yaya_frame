@@ -83,7 +83,7 @@ res://
 | 负责启动应用或连接顶层模块吗？ | 放在 `main/`，具体行为仍由所属模块实现。 |
 | 实现当前游戏特有的概念或策略吗？ | 放在 `game/` 中有明确名称的模块；设置、存档、全局 UI 也属于当前游戏的功能。 |
 | 消费者能否在不引入当前游戏规则、不查找其全局对象的情况下使用它？ | 确实需要独立复用时放在 `components/`，否则先留在当前模块。 |
-| 只供一个模块或场景使用吗？ | 场景、专属脚本、美术、声音与配置尽量放在所属模块附近。 |
+| 只供一个模块或场景使用吗？ | 场景、专属脚本、美术、声音与配置默认放在所属模块的目录内。 |
 | 素材确实跨模块共享吗？ | 放在 `assets/`，或选择更明确的共同归属，例如仅用于 UI 的字体和主题可放在 `game/ui/`。 |
 | 来自插件或外部包吗？ | 保留包的边界和命名契约。 |
 
@@ -114,7 +114,7 @@ game/mining/
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本尽量同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 

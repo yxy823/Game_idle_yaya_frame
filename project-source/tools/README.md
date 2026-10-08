@@ -61,7 +61,7 @@ $LASTEXITCODE
 
 ## 启动场景冒烟检查
 
-确认一个场景能加载并运行若干帧时，在项目根目录执行（`$projectGodot` 的取法同上一节）：
+确认一个场景能加载并运行指定帧数时，在项目根目录执行（`$projectGodot` 的取法同上一节）：
 
 ```powershell
 & $projectGodot --headless --path . res://main/main.tscn --quit-after 120 2>&1 | Tee-Object -FilePath <日志路径> | Out-Host
