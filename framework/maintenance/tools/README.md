@@ -50,14 +50,15 @@ python -B project-source/tools/checks/check-terminology.py --terms framework/ter
 
 ## 检查措辞
 
-写完或改过文档后，在仓库根目录运行分发给项目的措辞检查，用 `--words` 指定分发源中的词表，它在生成项目中的默认位置在框架仓库里不存在：
+写完或改过文档后，在仓库根目录运行分发给项目的措辞检查；它默认读取脚本同目录的配置 `project-source/tools/checks/wording-check.json`，框架仓库和生成项目用的是同一份配置：
 
 ```powershell
-python -B project-source/tools/checks/check-wording.py --words project-source/skills/technical-documentation-writing-godot/references/writing-guide.md <改过的文件>
-python -B project-source/tools/checks/check-wording.py --words project-source/skills/technical-documentation-writing-godot/references/writing-guide.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --level hard
+python -B project-source/tools/checks/check-wording.py <改过的文件>
+python -B project-source/tools/checks/check-wording.py --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --level hard
+python -B project-source/tools/checks/check-wording.py --list
 ```
 
-第一条列出硬性的词和待复核的词，第二条只查全仓规则文件中的硬性的词。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。词表、判定方式、参数和退出码见[项目工具说明](../../../project-source/tools/README.md#check-wordingpy)。
+第一条列出硬性命中和待复核的命中，第二条只查全仓规则文件中的硬性命中，第三条列出全部检查项。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、模板 `project-source/defaults/docs/project-rules.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。配置格式、判定方式、参数和退出码见[项目工具说明](../../../project-source/tools/README.md#check-wordingpy)。
 
 ## 提交钩子
 
@@ -66,7 +67,7 @@ python -B project-source/tools/checks/check-wording.py --words project-source/sk
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
 | [术语检查](#检查术语用词)，`--terms framework/terminology.md` | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
-| [措辞检查](#检查措辞) `--level hard` | 同上 | 规则文件中有硬性的词 |
+| [措辞检查](#检查措辞) `--level hard` | 同上 | 规则文件中有硬性检查项的命中 |
 | [仓库链接检查](#检查链接与锚点) | 整个仓库，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
 
 没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查工作区中的文件内容，不是暂存区；它用 PATH 中的 `python` 运行检查。被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。

@@ -18,7 +18,7 @@ yaya/tools/
 | 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | 链接检查 [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
-| 措辞检查 [check-wording.py](checks/check-wording.py) | 按写作指南的措辞检查词表，找出规则文件中不用的词（如表示要求的“应”）和全部文档中待复核的含糊词、空动词 |
+| 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法；`--list` 列出全部检查项 |
 | 资源格式检查 [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
 | 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
@@ -124,7 +124,7 @@ $LASTEXITCODE
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
 | [术语检查](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
-| [措辞检查](#check-wordingpy) `--level hard` | 同上 | 有硬性的词 |
+| [措辞检查](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
 | [链接检查](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
 
 没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
@@ -250,30 +250,48 @@ python -B yaya/tools/checks/check-wording.py <改过的文档>
 python -B yaya/tools/checks/check-wording.py --level hard
 ```
 
-词表是 Godot 项目文档编写 Skill 写作指南中的[措辞检查词表](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查词表)，列为 `| 词 | 级别 | 适用范围 | 推荐写法 |`。增删词只改这张表，不改脚本。检查分两层：
+检查项写在同目录的配置 [wording-check.json](checks/wording-check.json) 中，写法与级别的说明见 Godot 项目文档编写 Skill 写作指南的[措辞检查](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)。增删检查项或例外只改配置，不改脚本；用 `--list` 查看全部检查项：
 
-- **硬性**（`WORDING-HARD`）：级别为“硬性”的词出现在适用范围内的每一处。有一处就返回 `1`。
-- **待复核**（`WORDING-REVIEW`）：级别为“待复核”的词的每一处，只列出供作者看上下文判断，不影响退出码。`--level hard` 时不运行这一层。
+```powershell
+python -B yaya/tools/checks/check-wording.py --list
+```
 
-适用范围有两种：“全部文档”指扫描到的每个文件；“规则文件”按路径判定，满足任一条即是：
+配置的格式为 `{"checks": [检查项, …]}`，每个检查项正好有以下字段，都是非空字符串：
 
-- 文件名为 `AGENTS.md` 或 `Project_AGENTS.md`，或路径是 `docs/project-rules.md`；
+| 字段 | 含义 |
+| --- | --- |
+| `name` | 检查项名称，出现在报告和 `--list` 中 |
+| `level` | `hard` 硬性或 `review` 待复核 |
+| `scope` | `rule-files` 只查规则文件，`all` 查扫描到的每个文件 |
+| `pattern` | 一条 Python 正则，匹配要找的写法；例外用前向、后向断言写在正则里，例如 `(?<![对相])应(?![用对])` 不匹配“对应”“应用” |
+| `suggestion` | 推荐写法，出现在报告和 `--list` 中 |
+
+检查分两层：
+
+- **硬性**（`WORDING-HARD`）：`level` 为 `hard` 的检查项在适用范围内的每一处命中。有一处就返回 `1`。
+- **待复核**（`WORDING-REVIEW`）：`level` 为 `review` 的检查项的每一处命中，只列出供作者看上下文判断，不影响退出码。`--level hard` 时不运行这一层。
+
+每个检查项的正则逐行单独扫描遮蔽后的文字；同一位置被多个检查项命中时，各报告一次。
+
+规则文件按路径判定，满足任一条即是：
+
+- 文件名为 `AGENTS.md` 或 `Project_AGENTS.md`，或路径是 `docs/project-rules.md`（框架仓库中的模板 `project-source/defaults/docs/project-rules.md` 同样算）；
 - 路径中有名为 `agent-rules` 或 `methodology` 的目录，例如 `yaya/agent-rules/`、`yaya/methodology/`；
 - Skill 包中的 `SKILL.md` 和 `references/` 下的文件，即 `skills/<Skill 名>/SKILL.md` 与 `skills/<Skill 名>/references/**`；
 - 名为 `prompts` 的目录中的 `.json` 文件，即提示词库。
 
-单字词容易落在别的词语里，例如“应用”“对应”“相应”“适宜”“事宜”中的“应”“宜”并不表示要求。所以脚本为每个单字词维护一份词语清单（`COMPOUNDS`），落在清单中某个词语里的字不算出现，其余位置照常报告，例如“应该”“不应”“理应”“不宜”都会报告。清单只排除确定不表示要求的词语；表示要求的用法偶尔写成清单中的词语（如“应用”恰好表示“应当使用”）时会漏报，这类情况靠作者阅读时发现并改写。词表新增单字词时，同时在脚本中补它的词语清单。
-
-除[共同约定](#术语检查与措辞检查的共同约定)中不算出现的位置外，词表自己的表格行也不算出现。
+正则只能排除写出来的例外：表示要求的用法偶尔落在例外里（如“应用”恰好表示“应当使用”）时会漏报，这类情况靠作者阅读时发现并改写。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
-| `--words <文件>` | 含措辞检查词表的文件；相对路径按 `--root` 解析。读取第一张表头正好为 `词`、`级别`、`适用范围`、`推荐写法` 的表 | `.agents/skills/technical-documentation-writing-godot/references/writing-guide.md` |
+| `--config <文件>` | 措辞检查配置；相对路径按 `--root` 解析 | 脚本同目录的 `wording-check.json` |
 | `--level <层>` | `all` 两层都报告；`hard` 只报告硬性 | `all` |
+| `--list` | 把配置中的检查项列成表格（名称、级别、范围、推荐写法）后退出，不扫描文档 | 不使用 |
+| `--verbose` | 与 `--list` 一起用时，表格另加正则一列 | 不使用 |
 
-其余参数见[共同约定](#术语检查与措辞检查的共同约定)。说明写出发现的词、推荐写法和词表中的行号。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`word`、`level`、`scope`、`suggestion`、`definition`、`context` 和 `message`。
+其余参数见[共同约定](#术语检查与措辞检查的共同约定)。说明写出命中的文字、检查项名称和推荐写法。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`check`、`found`、`level`、`scope`、`suggestion`、`context` 和 `message`。
 
-退出码：`0` 没有硬性的词（可能列出了待复核的词）；`1` 发现硬性的词；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、词表文件不存在，或找不到词表、某行列数不对、级别或适用范围不是上面列出的值。工具不修改文档。
+退出码：`0` 没有硬性命中（可能列出了待复核的命中），或 `--list` 正常列出；`1` 发现硬性命中；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、配置文件不存在或无法解析：不是合法 JSON、缺少 `checks` 列表、检查项字段不对、`level` 或 `scope` 不是上面列出的值、`pattern` 不是合法的正则。工具不修改文档。
 
 ### check-godot-resource-format.py
 

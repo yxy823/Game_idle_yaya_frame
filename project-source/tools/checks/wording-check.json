@@ -1,0 +1,123 @@
+{
+  "checks": [
+    {
+      "name": "应",
+      "level": "hard",
+      "scope": "rule-files",
+      "pattern": "(?<![对相响反适供回呼感效答顺照因报内])应(?![用对急变答聘征届酬邀验援])",
+      "suggestion": "按要求的强度改用“必须”“不得”“可以”“不必”“默认”或“优先”；操作步骤直接写动作"
+    },
+    {
+      "name": "宜",
+      "level": "hard",
+      "scope": "rule-files",
+      "pattern": "(?<![适便事合权时相机])宜(?![人居])",
+      "suggestion": "按要求的强度改用“必须”“不得”“可以”“不必”“默认”或“优先”；操作步骤直接写动作"
+    },
+    {
+      "name": "务必",
+      "level": "hard",
+      "scope": "rule-files",
+      "pattern": "(?<!任)务必",
+      "suggestion": "改用“必须”"
+    },
+    {
+      "name": "建议（表达要求）",
+      "level": "review",
+      "scope": "rule-files",
+      "pattern": "不建议|(?<![的出条项改和或与及、告核证究计])建议(?:先|优先|把|将|使用|采用|用|只|尽量|避免|保持(?!为)|改为|改用|直接)(?![^，。；：、\\s|]{0,6}的)",
+      "suggestion": "如果在表达要求，按强度改用“必须”“不得”“默认”“优先”，或写成“建议：”开头的条目；给用户的建议、名词“建议”不用改"
+    },
+    {
+      "name": "尽量",
+      "level": "review",
+      "scope": "all",
+      "pattern": "尽量",
+      "suggestion": "写出做到什么程度，或改用“优先”并写明何时可以不这样做"
+    },
+    {
+      "name": "最好",
+      "level": "review",
+      "scope": "all",
+      "pattern": "最好(?!的)",
+      "suggestion": "改用“优先”或“默认”，并写明何时可以改变"
+    },
+    {
+      "name": "适当",
+      "level": "review",
+      "scope": "all",
+      "pattern": "适当",
+      "suggestion": "写出数字、名称或条件；不知道数字时删掉"
+    },
+    {
+      "name": "基本上/大致",
+      "level": "review",
+      "scope": "all",
+      "pattern": "基本上|大致|大体",
+      "suggestion": "写出例外是什么；没有例外时删掉"
+    },
+    {
+      "name": "若干/一些",
+      "level": "review",
+      "scope": "all",
+      "pattern": "若干|一些",
+      "suggestion": "写出数量或列出对象"
+    },
+    {
+      "name": "较为/比较/较",
+      "level": "review",
+      "scope": "all",
+      "pattern": "较为|比较(?=[好大小快慢高低难易简复重轻稳长短清明]|多(?![个种]))(?!复用|明确)|(?<![比相])较(?=[多少大小快慢高低长短宽窄重轻好差早晚])",
+      "suggestion": "写出比较的对象和程度，或删掉"
+    },
+    {
+      "name": "很",
+      "level": "review",
+      "scope": "all",
+      "pattern": "很(?=[多少大小久窄宽广难快慢高低长短])",
+      "suggestion": "写出数字或比较对象"
+    },
+    {
+      "name": "通常/一般",
+      "level": "review",
+      "scope": "all",
+      "pattern": "通常|一般(?![的性])",
+      "suggestion": "写出例外情况；没有例外时删掉"
+    },
+    {
+      "name": "大概/稍微/左右",
+      "level": "review",
+      "scope": "all",
+      "pattern": "大概|稍微|(?<=[0-9０-９%个秒帧次行天周倍万千百十])\\s?左右",
+      "suggestion": "写出数字或范围"
+    },
+    {
+      "name": "进行+动作",
+      "level": "review",
+      "scope": "all",
+      "pattern": "进行(?:处理|修改|调整|优化|检查|分析|测试|验证|计算|比较|评估|审核|审查|确认|记录|说明|讨论|核对|实施|更新|替换|重构|排查)",
+      "suggestion": "直接写动作，例如写“压缩日志”，不写“对日志进行压缩”"
+    },
+    {
+      "name": "对…进行",
+      "level": "review",
+      "scope": "all",
+      "pattern": "(?<![相针面绝核])对(?![比齐应照象话外于方称接])[^。；;，,！？\\n]{1,10}?进行",
+      "suggestion": "直接写动作"
+    },
+    {
+      "name": "做出+决定",
+      "level": "review",
+      "scope": "all",
+      "pattern": "做出(?:决定|修改|调整|选择|判断)",
+      "suggestion": "直接写动词，例如写“决定”，不写“做出决定”"
+    },
+    {
+      "name": "加以/予以",
+      "level": "review",
+      "scope": "all",
+      "pattern": "(?:加以|予以)(?:处理|说明|区分|修改|确认)|处理一下",
+      "suggestion": "直接写动作"
+    }
+  ]
+}

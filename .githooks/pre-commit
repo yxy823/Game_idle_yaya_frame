@@ -15,8 +15,7 @@ if [ -n "$present" ]; then
     python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --files-from - <<EOF || failed="$failed 术语检查"
 $present
 EOF
-    python -B project-source/tools/checks/check-wording.py --level hard \
-        --words project-source/skills/technical-documentation-writing-godot/references/writing-guide.md --files-from - <<EOF || failed="$failed 措辞检查"
+    python -B project-source/tools/checks/check-wording.py --level hard --files-from - <<EOF || failed="$failed 措辞检查"
 $present
 EOF
 fi
@@ -25,7 +24,7 @@ python -B framework/maintenance/tools/check_repository_links.py || failed="$fail
 if [ -n "$failed" ]; then
     echo "" >&2
     echo "提交被拒绝，未通过：$failed。" >&2
-    echo "按上面列出的位置修改：不用的说法改为术语表中的正式名称；规则文件里的「应」「宜」按措辞检查词表改写；失效的链接改到存在的文件和标题。" >&2
+    echo "按上面列出的位置修改：不用的说法改为术语表中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题。" >&2
     echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
     exit 1
 fi
