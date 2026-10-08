@@ -5,7 +5,7 @@
 | 文档 | 何时阅读 |
 | --- | --- |
 | [typing-and-api.md](typing-and-api.md) | 任何 `.gd` 修改 |
-| [structure-and-dependencies.md](structure-and-dependencies.md) | 新增脚本或模块，修改职责、依赖方向、模块间通信、Autoload 使用、Command 与 Query 或调试控制台 |
+| [structure-and-dependencies.md](structure-and-dependencies.md) | 新增脚本或模块，修改职责、依赖方向、模块间通信、Autoload 使用、Command 与 Query，或调试台或其他调试工具 |
 | [state-resources-and-loading.md](state-resources-and-loading.md) | 代码读写 Resource、加载资源、处理加载或 I/O 失败，或使用时间、计时与随机数 |
 | [godot-lifecycle-and-input.md](godot-lifecycle-and-input.md) | 使用节点生命周期回调、`await`、计时器、Tween 或 AnimationPlayer、播放完成信号、切换场景，或接收输入 |
 | [editor-tools-static-state-and-concurrency.md](editor-tools-static-state-and-concurrency.md) | 使用 `@tool` 或编辑器 API、`static var`、对象池或线程 |
