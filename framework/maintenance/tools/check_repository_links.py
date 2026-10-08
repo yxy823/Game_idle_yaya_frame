@@ -94,14 +94,20 @@ def check_prompt_references(root: Path) -> tuple[int, list[dict]]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
+    parser.add_argument(
+        "--check-link-text",
+        action="store_true",
+        help="also report (without failing) links whose text is not the target heading or file title",
+    )
+    args = parser.parse_args(argv)
+    extra = ("--check-link-text",) if args.check_link_text else ()
     entries = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source")
+    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source", *extra)
     with tempfile.TemporaryDirectory(prefix="yaya-link-check-") as directory:
         project = Path(directory) / "project"
         copy_project(REPO_ROOT, project)
-        generated = run_checker(project)
+        generated = run_checker(project, *extra)
 
     prompt_references, prompt_broken = check_prompt_references(REPO_ROOT)
 
@@ -111,11 +117,19 @@ def main(argv: list[str] | None = None) -> int:
     broken.extend(prompt_broken)
     for item in broken:
         print(f"{item['file']}:{item['line']}  {item['target']}  {item['reason']}")
-    print(
+    summary = (
         f"维护侧 {maintenance['files']} 个文件、{maintenance['links']} 个本地链接；"
         f"生成项目 {generated['files']} 个文件、{generated['links']} 个本地链接；"
         f"提示词正文 {prompt_references} 处路径与标题引用；失效 {len(broken)} 个"
     )
+    if args.check_link_text:
+        mismatched = maintenance["link_text"] + [
+            {**item, "file": source_path(item["file"], entries)} for item in generated["link_text"]
+        ]
+        for item in mismatched:
+            print(f"{item['file']}:{item['line']}  [{item['rule']}] [{item['text']}]({item['target']})  标题：{item['expected']}")
+        summary += f"；链接文字与标题不符 {len(mismatched)} 个（只报告）"
+    print(summary)
     return 1 if broken else 0
 
 

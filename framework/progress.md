@@ -2,7 +2,7 @@
 
 ## 待决定事项
 
-- **链接文字与目标标题不一致的检查（暂不实施）**：带锚点的链接用了自拟叫法、不是目标标题时，链接检查只核对目标文件和锚点存在，查不出。前提：先统一规则范围。[规则与提示词文件](maintenance/design-guidelines/instruction-files.md#触发与按需阅读)中「引用用带锚点的链接」一条要求引用章节时用实际标题，两份写作指南（`.agents/skills/technical-documentation-writing-yaya/references/writing-guide.md`、`project-source/skills/technical-documentation-writing-godot/references/writing-guide.md`）只要求链接到规范文件时用文件标题，脚本没有可判定的依据。规模：一次性启发式统计，1079 个带锚点的链接中 190 个两种标题都不符合，未抽查误报率（依据 `tmp/reports/script-candidates/script-candidates-review-20261008.md` 第 4 节 C1）。下一步：用户定下统一后的规则写法，再抽查误报率，决定是否给 `check-markdown-links.py` 加只报告、不拦截的选项。
+- **链接文字批量修正**：规则已统一为框架文档写作指南[表达与排版](../.agents/skills/technical-documentation-writing-yaya/references/writing-guide.md#表达与排版)中「链接文字用目标标题」一条（Godot 版写作指南同步），链接检查已有只报告的 `--check-link-text` 选项。全仓报出 884 处、272 个文件，其中 385 处用 Skill 名、文件名或目录名作链接文字，规则还没决定是否允许；数据与抽样见 `tmp/reports/link-text-check/link-text-scan-20261008.md`。下一步：用户根据扫描结果决定 Skill 名、文件名或目录名是否列为允许的变体，以及批量修正还是编辑到相关文件时再改。
 
 ## 验证缺口
 

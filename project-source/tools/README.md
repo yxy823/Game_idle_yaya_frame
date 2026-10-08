@@ -200,6 +200,13 @@ python -B yaya/tools/checks/check-markdown-links.py
 | `--root <目录>` | 要检查的目录 | 脚本所在项目 |
 | `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
 | `--json` | 以 JSON 输出文件数、链接数和失效列表 | 逐行输出 |
+| `--check-link-text` | 另外列出链接文字与目标标题不符的链接，规则名 `LINK-TEXT`，只报告、不影响退出码；JSON 输出多一个 `link_text` 列表 | 不检查链接文字 |
+
+`--check-link-text` 按 Godot 项目文档编写 Skill 写作指南的[把项目讲清楚](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#把项目讲清楚)中「链接文字用目标标题」一条比较，去掉行内代码标记、`*` 和首尾空白、不区分大小写后：
+
+- **带锚点的链接**（包括页内的 `#锚点`）：链接文字要包含锚点所在章节的标题。
+- **只链到 Markdown 文件的链接**：链接文字要包含该文件的一级标题，标题开头的“NN · ”编号可以省略；文件没有一级标题时不比较。
+- **不比较**：图片、引用式定义、外部网址、非 Markdown 目标，以及只由链接和“·”组成的导航行。
 
 退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。
 

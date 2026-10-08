@@ -73,6 +73,19 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertEqual(self.broken("--exclude", "notes"), set())
         self.assertEqual(len(self.broken()), 1)
 
+    def test_link_text_option_reports_text_without_target_heading_and_keeps_exit_code(self):
+        self.write("docs/08-testing.md", "# 08 · 测试与验证\n## 测试影响评估\n")
+        self.write("index.md",
+                   "[返回](docs/08-testing.md) · [规范](docs/08-testing.md#测试影响评估)\n"
+                   "08 号规范的[测试影响评估](docs/08-testing.md#测试影响评估)，"
+                   "见[测试与验证](docs/08-testing.md)和[`测试影响评估`](docs/08-testing.md#测试影响评估)。\n"
+                   "按[测试规范](docs/08-testing.md#测试影响评估)执行。\n")
+        code, result = self.run_cli("--check-link-text")
+        self.assertEqual(code, 0)
+        self.assertEqual([(row["line"], row["text"], row["rule"]) for row in result["link_text"]],
+                         [(3, "测试规范", "LINK-TEXT")])
+        self.assertNotIn("link_text", self.run_cli()[1])
+
 
 if __name__ == "__main__":
     unittest.main()
