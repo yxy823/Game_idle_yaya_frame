@@ -36,7 +36,7 @@
 
 在 CanvasItem 的 fragment 处理中，传入的 `COLOR` 合并了顶点颜色/调制和默认纹理；把它和原始纹理采样比较，可以把这些因素分开。见 [Godot 4.7 CanvasItem 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#color-and-texture)。构造探测时，要明确它对合成方式的改变：读写 `ALPHA` 的 Spatial Shader 会进入透明管线，所以加上这个输出可能改变正在调查的行为。见 [Godot 4.7 Spatial 参考](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/spatial_shader.html#fragment-built-ins)。
 
-例如，受击闪光把精灵的透明矩形区域染成了红色时，先确认应该由哪个 alpha 保住轮廓。只在需要区分“输入有问题”和“输出合成有问题”时，才比较采样 alpha 和效果遮罩。不要只因为症状出现在受击之后就重写受击计算；也不要用一张绕开正式混合路径的诊断图，宣称已经修好了 alpha。
+例如，受击闪光把精灵的透明矩形区域染成了红色时，先确认由哪个 alpha 保住轮廓。只在需要区分“输入有问题”和“输出合成有问题”时，才比较采样 alpha 和效果遮罩。不要只因为症状出现在受击之后就重写受击计算；也不要用一张绕开正式混合路径的诊断图，宣称已经修好了 alpha。
 
 ## 时间干扰比较时，先固定比较条件
 
