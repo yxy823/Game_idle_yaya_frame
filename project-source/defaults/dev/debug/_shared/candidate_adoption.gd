@@ -16,6 +16,8 @@ const QUEUE := "adoption-queue"
 const DESCRIPTOR := Slot.DESCRIPTOR
 const DEFERRED_EXTENSIONS: Array[String] = ["gd", "tscn", "scn", "tres", "res", "gdshader"]
 const TEXT_EXTENSIONS: Array[String] = ["gd", "tscn", "tres", "gdshader"]
+## Shown after each rule slot: a chosen rule goes into the GDD before it is adopted.
+const LOGIC_REMINDER := "· 这是规则变化：采纳前先让 Agent 把规则写进 GDD"
 const LOG_HEADER := "# 待 Agent 收尾的采纳\n\n调试台每次采纳到游戏都在这里追加一行；Agent 按[收尾步骤](_shared/README.md#收尾步骤)收尾并提交后，删除已处理的行。\n\n"
 
 
@@ -81,6 +83,8 @@ static func confirm_text(slots: Array[Slot], plans: Dictionary) -> String:
 			actions.append("· 把%s改回 %s" % [slot.display_name(), _switch_name(slot)])
 		else:
 			actions.append("· 把%s的当前设定写入游戏" % slot.display_name())
+		if slot.constant("LOGIC", false):
+			actions.append(LOGIC_REMINDER)
 		var replaced := _replaced(slot)
 		if replaced != null:
 			actions.append("· 原来的 %s 留在 %s/，之后仍可在“实现”里选回" % [

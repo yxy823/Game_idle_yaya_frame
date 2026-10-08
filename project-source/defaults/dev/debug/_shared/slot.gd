@@ -369,7 +369,7 @@ func restore(state: Dictionary) -> Dictionary:
 
 
 ## A constant of the slot's slot.gd: TITLE, FIELDS, CANDIDATES, VALUES ({"field_name":
-## {stored value: "中文"}} for enum options and special numbers) or ADOPT_DIRECTORY.
+## {stored value: "中文"}} for enum options and special numbers), ADOPT_DIRECTORY or LOGIC.
 func constant(constant_name: String, fallback: Variant) -> Variant:
 	var script := actions.get_script() as Script if actions != null else null
 	return script.get_script_constant_map().get(constant_name, fallback) if script != null else fallback

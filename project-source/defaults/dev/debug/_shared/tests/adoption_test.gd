@@ -127,6 +127,22 @@ func _assert_ring_selectable(slot: Slot, ring: String) -> void:
 	assert_str(Adoption.adopt_all(slots, plans).text).is_equal("已采纳：点击特效改回 圆环")
 
 
+func test_rule_slot_confirmation_reminds_to_write_the_rule_into_the_gdd() -> void:
+	var slot := _fixture.sound_slot()
+	var slots: Array[Slot] = [slot]
+	assert_str(Adoption.confirm_text(slots, {})).not_contains(Adoption.LOGIC_REMINDER)
+	var rule := GDScript.new()
+	rule.source_code = "extends RefCounted
+const TITLE := \"消除规则\"
+const LOGIC := true
+"
+	assert_int(rule.reload()).is_equal(OK)
+	slot.actions = rule.new()
+	assert_str(Adoption.confirm_text(slots, {})).contains(
+		"· 把消除规则的当前设定写入游戏
+· 这是规则变化：采纳前先让 Agent 把规则写进 GDD")
+
+
 func test_adopting_a_game_value_cancels_a_queued_move() -> void:
 	var slot := _fixture.effect_slot()
 	_fixture.select(slot, "spark")

@@ -55,7 +55,7 @@ dev/debug/shop/
 
 候选是插槽目录的直接子目录中名为 `candidate.tres` 的描述文件，`presets/` 不算。描述资源用 [candidate_definition.gd](candidate_definition.gd)：`display_name`、`candidate_uid`（候选场景、脚本或音频的 UID 字符串）、`default_params`（`{"script_uid": "uid://…", "fields": {"字段名": 值}}`，无参数时为空 Dictionary）、`license_note`、`source_url`。
 
-有候选的调参资源同时声明 `candidate` 与 `candidate_params`：选择候选时两者一起替换，通用参数保持原值。候选与游戏当前的实现必须同类：游戏没有设置实现时才允许“未设置”；脚本或场景的根脚本要和游戏的实现继承同一个最上层 `class_name`；没有 `class_name` 时比较引擎基类。“实现”区第一项是游戏当前采纳的实现，标“游戏在用”；其后是游戏目录中其他已采纳过的实现（`CANDIDATES` 与刚采纳的 `adopted.tres`），仍可选回；最后是 `dev/` 下的候选。
+有候选的调参资源同时声明 `candidate` 与 `candidate_params`：选择候选时两者一起替换，通用参数保持原值。没有参数的规则或素材也要声明 `candidate_params`（值留空）：调试台切换候选、选回游戏原值时总是成对写入这两个字段，缺少 `candidate_params` 时切换会报“它的文件或参数和这个插槽对不上”。候选与游戏当前的实现必须同类：游戏没有设置实现时才允许“未设置”；脚本或场景的根脚本要和游戏的实现继承同一个最上层 `class_name`；没有 `class_name` 时比较引擎基类。“实现”区第一项是游戏当前采纳的实现，标“游戏在用”；其后是游戏目录中其他已采纳过的实现（`CANDIDATES` 与刚采纳的 `adopted.tres`），仍可选回；最后是 `dev/` 下的候选。
 
 插槽的 `slot.gd` 可以声明：
 
@@ -65,8 +65,9 @@ dev/debug/shop/
 | `FIELDS` | `{"字段名": "中文名"}`，也覆盖该插槽各候选的参数字段。共享测试要求每个插槽和参数都有中文名。 |
 | `VALUES` | `{"字段名": {存储值: "中文名"}}`，给枚举选项和数值框的特殊值命名。 |
 | `value_text(field_name, value)` | 数值框和“还原这一项”提示显示值的方式，例如把 MIDI 音高 72 写成“C5”；先查 `VALUES`，返回空字符串时按默认格式（数字加单位）显示。两处用同一套写法。输入时仍是数字。 |
-| `CANDIDATES` | `{"uid://…": {"name": "中文名", "params": "uid://参数脚本"}}`，登记游戏目录中的实现，用于命名和选回。 |
+| `CANDIDATES` | `{"uid://…": {"name": "中文名", "params": "uid://参数脚本"}}`，登记游戏目录中的实现，用于命名和选回；没有参数的实现只写 `name`。 |
 | `ADOPT_DIRECTORY` | 采纳的候选移到 `game/<对象>/<ADOPT_DIRECTORY>/<候选名>/`；默认是插槽路径改成下划线。 |
+| `LOGIC` | 设为 `true` 表示本插槽是规则插槽（逻辑候选）：采纳确认框在这个插槽下加一行“这是规则变化：采纳前先让 Agent 把规则写进 GDD”。 |
 | `action_names()`、`run(action, live, scene)` | 试播按钮，显示在“实现”区标题右侧；`run` 返回带 `error` 的结果。 |
 | `analysis_extras(live, metrics)` | 分析区的动作：返回 `action`、`icon`、`tooltip`、`reason`（非空时按钮禁用并显示原因）、`apply`（Callable，返回状态栏文字）和 `notes`。 |
 
@@ -165,8 +166,8 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
    $LASTEXITCODE
    ```
 
-5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`，删除 `adopted.tres` 和已空的候选目录（删除前确认候选的许可说明已随素材移进 `game/`，`adopted.tres` 里的来源与许可摘要已写进设计文档的资源条目）；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
-6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试和依赖方向测试。
+5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`（没有参数的候选只写 `name`，不写参数脚本），删除 `adopted.tres` 和已空的候选目录（删除前确认候选的许可说明已随素材移进 `game/`，`adopted.tres` 里的来源与许可摘要已写进设计文档的资源条目）；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
+6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试、依赖方向测试和 `dev/debug/<对象>/tests/` 下的对象测试（对象测试按 UID 定位候选，采纳移动后应照常通过）。
 7. 删除 `adoption-log.md` 中已处理的行，全部处理完时删除该文件。
 
 第 5、7 步的删除被权限拦截时，不要换别的方式绕过：把完整的删除命令交给用户执行，其余步骤照常继续。

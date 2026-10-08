@@ -177,7 +177,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 
 ### 逻辑候选与技术验证
 
-- **逻辑候选**：游戏已有骨架时，规则的不同做法也可以做成调试台的候选，由调参资源持有规则实例。这条做法还没有在真实项目中用过，第一次使用时验证并修正，见[逻辑候选](../../../project-source/methodology/13-debug-console-and-validation.md#逻辑候选)。游戏还没有对应骨架时，先建骨架 Feature。
+- **逻辑候选**：游戏已有骨架时，规则的不同做法也可以做成调试台的候选，由调参资源持有规则实例；规则基类、候选和规则测试的写法见[逻辑候选](../../../project-source/methodology/13-debug-console-and-validation.md#逻辑候选)。游戏还没有对应骨架时，先建骨架 Feature。
 - **纯数值问题**：由 `design-balance` 推导，不需要做候选。
 - **引擎可行性**：性能、中断、生命周期这类问题用[技术验证](../../../project-source/methodology/13-debug-console-and-validation.md#技术验证)回答，不进调试台。
 
