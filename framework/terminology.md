@@ -24,6 +24,7 @@
 | Project | 提示词 JSON 的顶层名称，只有「Yaya 框架维护」和「Godot 项目开发」两个；与 Product、Feature 无关 |  |
 | Godot 项目手册 | `framework/godot-project-manual/`，按对象解释生成项目里的概念、文档、配置与工具；简称“手册” |  |
 | 场景速查手册 | `framework/prompt-scenarios/scenarios/`，按“遇到什么情况”给出处理步骤，每篇对应一条同名提示词；单篇称“场景页” |  |
+| 主 Agent | 与用户对话、派出子智能体、审核实例或 Codex 这类外部 Agent 的一方，负责交代范围、核对交回的结果和提交；不指游戏代码里连接多个对象的协调者 | 协调 Agent |
 
 ## 设计与交付
 

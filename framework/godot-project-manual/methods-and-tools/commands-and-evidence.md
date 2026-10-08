@@ -353,7 +353,7 @@ lint CLI 的结果约定：
 
 | 项目 | 约定 |
 | --- | --- |
-| 退出码 | 0 无问题或只有 Info；1 有 Warning；2 有 Critical；3 输入无效、没有发现文件、配置错误或 JSON 报告写入失败 |
+| 退出码 | 0 无问题或只有 Info；1 有 Warning；2 有 Critical；3 输入无效、没有发现文件、配置错误或 JSON 报告写入失败。只有 2 和 3 算 lint 失败、阻塞完成；1 只列出 Warning 数量 |
 | `--severity`、`--top` | 只影响显示，不改变实际判定 |
 | `--output` | 支持 JSON 和 HTML；默认文件名 `code_quality_report.html` 只用于 HTML |
 | 报告内容 | 写明实际范围以及 Critical、Warning、Info 的数量；未知数量不能写成 0 |

@@ -84,11 +84,15 @@ def load_checks(path: Path, display: str) -> list[Check]:
 
 
 def is_rule_file(path: str) -> bool:
-    """Rule files: AGENTS files, agent rules, methodology, project rules, Skill bodies and references, prompt libraries."""
+    """Rule files: AGENTS files, agent rules, methodology, project rules, Skill bodies and references, prompt libraries,
+    and the framework's scenario guide and design guidelines."""
     parts = PurePosixPath(path).parts
     name = parts[-1]
     if name in ("AGENTS.md", "Project_AGENTS.md") or path in ("docs/project-rules.md",
-                                                               "project-source/defaults/docs/project-rules.md"):
+                                                               "project-source/defaults/docs/project-rules.md",
+                                                               "framework/prompt-scenarios/scenarios/README.md"):
+        return True
+    if path.startswith("framework/maintenance/design-guidelines/"):
         return True
     if any(part in ("agent-rules", "methodology") for part in parts[:-1]):
         return True

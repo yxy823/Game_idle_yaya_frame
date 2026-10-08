@@ -80,9 +80,11 @@ class WordingCheckTests(unittest.TestCase):
 
     def test_hard_check_applies_only_to_rule_files(self):
         self.write("docs/guide.md", "这里应运行检查。\n")
+        self.write("framework/prompt-scenarios/scenarios/demo/page.md", "这里应运行检查。\n")
         rule_files = ("yaya/agent-rules/00-core/rule.md", "yaya/methodology/03.md", "docs/project-rules.md",
                       "project-source/defaults/docs/project-rules.md", ".agents/skills/demo/SKILL.md",
-                      ".agents/skills/demo/references/a.md")
+                      ".agents/skills/demo/references/a.md", "framework/prompt-scenarios/scenarios/README.md",
+                      "framework/maintenance/design-guidelines/README.md")
         for rule_file in rule_files:
             self.write(rule_file, "这里应运行检查。\n")
         process = self.run_cli("--level", "hard")

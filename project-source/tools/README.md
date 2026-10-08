@@ -290,7 +290,8 @@ python -B yaya/tools/checks/check-wording.py --list
 - 文件名为 `AGENTS.md` 或 `Project_AGENTS.md`，或路径是 `docs/project-rules.md`（框架仓库中的模板 `project-source/defaults/docs/project-rules.md` 同样算）；
 - 路径中有名为 `agent-rules` 或 `methodology` 的目录，例如 `yaya/agent-rules/`、`yaya/methodology/`；
 - Skill 包中的 `SKILL.md` 和 `references/` 下的文件，即 `skills/<Skill 名>/SKILL.md` 与 `skills/<Skill 名>/references/**`；
-- 名为 `prompts` 的目录中的 `.json` 文件，即提示词库。
+- 名为 `prompts` 的目录中的 `.json` 文件，即提示词库；
+- 框架仓库中的 `framework/prompt-scenarios/scenarios/README.md` 和 `framework/maintenance/design-guidelines/` 下的文件。
 
 正则只能排除写出来的例外：表示要求的用法偶尔落在例外里（如“应用”恰好表示“应当使用”）时会漏报，这类情况靠作者阅读时发现并改写。
 

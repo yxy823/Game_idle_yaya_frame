@@ -58,7 +58,7 @@ python -B project-source/tools/checks/check-wording.py --include "*.md" --includ
 python -B project-source/tools/checks/check-wording.py --list
 ```
 
-第一条列出硬性命中和待复核的命中，第二条只查全仓规则文件中的硬性命中，第三条列出全部检查项。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、模板 `project-source/defaults/docs/project-rules.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。配置格式、判定方式、参数和退出码见项目检查与测试工具的[check-wording.py](../../../project-source/tools/README.md#check-wordingpy)。
+第一条列出硬性命中和待复核的命中，第二条只查全仓规则文件中的硬性命中，第三条列出全部检查项。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、模板 `project-source/defaults/docs/project-rules.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`、两份提示词库，以及框架侧的场景速查手册入口 `framework/prompt-scenarios/scenarios/README.md` 和 `framework/maintenance/design-guidelines/` 下的文件。配置格式、判定方式、参数和退出码见项目检查与测试工具的[check-wording.py](../../../project-source/tools/README.md#check-wordingpy)。
 
 ## 提交钩子
 
