@@ -28,6 +28,17 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 退出码：`0` 没有失效链接；`1` 存在失效链接。
 
+## 检查术语用词
+
+修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓（包括 `project-source/`）：
+
+```powershell
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --discover
+```
+
+这项检查只比对文字，不解析链接，所以直接扫描源目录，不需要像链接检查那样先复制成生成项目。检查规则、参数、输出格式和退出码见[项目工具说明](../../../project-source/tools/README.md#check-terminologypy)。
+
 ## 检查孤立文档
 
 在仓库根目录运行；使用 Python 标准库，不需要安装依赖：

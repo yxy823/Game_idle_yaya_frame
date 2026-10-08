@@ -17,6 +17,7 @@ yaya/tools/
 | [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
 | [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
+| [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
 | [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
 | [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
@@ -171,6 +172,38 @@ python -B yaya/tools/checks/check-markdown-links.py
 | `--json` | 以 JSON 输出文件数、链接数和失效列表 | 逐行输出 |
 
 退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。
+
+### check-terminology.py
+
+在 `docs/terminology.md` 中登记或修改“不用的说法”后运行，也可以在整理文档后整体运行一次；术语文件的写法见[项目术语规范](../methodology/14-project-terminology.md#不用的说法)：
+
+```powershell
+python -B yaya/tools/checks/check-terminology.py
+python -B yaya/tools/checks/check-terminology.py --discover
+```
+
+检查分两层：
+
+- **不用的说法**（`TERM-FORBIDDEN`，默认执行）：读出术语表“不用的说法”一列的每个写法，报告它在扫描范围内的每处出现。只认表头同时含“术语”和“不用的说法”的表；“术语”格中用 `/` 分开的写法都是允许的别名。
+- **候选写法**（`TERM-CANDIDATE`，加 `--discover` 执行）：中文术语默认取开头“术语字数减 1”个字（最少 2 个字，`--prefix-length` 可改），找出开头相同、结尾不同、出现至少 `--min-count` 次的词，例如“分发源”与“分发材料”；在“的”“中”“和”等虚词处截断，连续超过 `--max-length` 个字的长串当作短语跳过。以术语某个允许写法整体开头的复合词（如“调试台采纳”）默认不列，加 `--include-compounds` 才列出。英文术语只找大小写不同或加 `s`、`es` 的整词，含 `-`、`_` 的标识符不算。已登记的术语、别名和不用的说法不列为候选。这一层误报多，只作人工核对的线索，不影响退出码。
+
+不算出现的位置：代码块、行内代码、链接目标，`「」`、`“”`、`""` 引号里的文字，以及术语文件中该术语自己那一行。所以要在正文中举例某个不用的说法时，把它放进引号或行内代码。默认排除的目录与 `check-markdown-links.py` 相同。
+
+| 参数 | 作用 | 默认值 |
+| --- | --- | --- |
+| `--root <目录>` | 要扫描的目录 | 当前目录 |
+| `--terms <文件>` | 术语文件；相对路径按 `--root` 解析 | `docs/terminology.md` |
+| `--include <通配>` | 要扫描的文件，含 `/` 时按相对路径匹配，否则按文件名匹配；可重复 | `*.md` |
+| `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
+| `--discover` | 另外输出候选写法 | 不输出 |
+| `--prefix-length`、`--min-count`、`--max-length` | 候选写法与中文术语相同的开头字数、最少出现次数、最大字数 | 术语字数减 1（最少 2）、`2`、`6` |
+| `--include-compounds` | 候选写法也列出以术语整体开头的复合词 | 不列出 |
+| `--context-width` | 每条结果附带的上下文最多字数 | `80` |
+| `--json` | 以 JSON 输出汇总、每条结果和候选分组 | 逐行输出 |
+
+文本输出每条结果一行，格式固定为 `路径:行号:列号: [规则编号] 说明 | 上下文`：路径相对 `--root`，列号从 1 开始按字符计，上下文是该行去掉首尾空白后的片段，过长时截断并加 `…`。不用的说法的说明写出发现的写法、应改为的正式名称和术语文件中的定义位置。候选写法按术语分组，先用一行 `术语 → 候选词（次数）、…` 汇总，再逐条列出位置。最后一行是汇总：扫描的文件数和两层各自的数量。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`term`、`found`、`suggestion`、`definition`、`context` 和 `message`。
+
+退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、术语文件不存在或表格无法解析（如某行的列数少于表头）。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
 
 ### check-godot-resource-format.py
 
