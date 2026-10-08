@@ -1,5 +1,5 @@
 #!/bin/sh
-# 项目的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）和链接检查；
+# 项目的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）、链接检查和链接文字检查；
 # 暂存了场景、资源、脚本、Shader 或素材时，运行资源格式检查。
 # 创建器已设置 core.hooksPath；重新 clone 后运行 git config core.hooksPath .githooks。说明见 yaya/tools/README.md 的「提交钩子」。
 cd "$(git rev-parse --show-toplevel)" || exit 1
@@ -29,6 +29,7 @@ EOF
 fi
 if [ -n "$changed" ]; then
     python -B yaya/tools/checks/check-markdown-links.py || failed="$failed 链接检查"
+    python -B yaya/tools/checks/check-link-text.py || failed="$failed 链接文字检查"
 fi
 # 资源格式检查只接受文件参数，xargs 按命令行长度分批运行；插件目录等默认范围外的文件由检查自己跳过。
 if [ -n "$godot" ]; then
@@ -38,7 +39,7 @@ fi
 if [ -n "$failed" ]; then
     echo "" >&2
     echo "提交被拒绝，未通过：$failed。" >&2
-    echo "按上面列出的位置修改：不用的说法改为 docs/terminology.md 中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题。" >&2
+    echo "按上面列出的位置修改：不用的说法改为 docs/terminology.md 中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题；链接文字改为目标的章节标题或一级标题，文件说明写在链接外面。" >&2
     echo "资源格式检查列出的场景和资源用 yaya/tools/godot/resave_godot_files.gd 重存；缺 .uid 或 .import 时运行 yaya/tools/README.md「首次 Godot 扫描」的命令，把生成的文件一起暂存。" >&2
     echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
     exit 1

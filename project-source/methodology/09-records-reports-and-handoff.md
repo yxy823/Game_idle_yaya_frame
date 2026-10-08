@@ -66,7 +66,7 @@
 
 ## 项目知识
 
-`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [组织条目](../../docs/knowledge/README.md#组织条目) 和 [条目维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
+`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [组织条目](../../docs/knowledge/README.md#组织条目) 和 [在已获授权的工作中维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
 
 知识 Markdown 及其索引不影响测试证据，见[内容指纹](08-test-traceability-and-evidence.md#内容指纹)。可运行的脚本、夹具和数据放在项目的正式目录中。
 
@@ -78,13 +78,13 @@
 
 当前状态只写仍在进行、正在等待或接下来要做的事，包括当前在交付哪个 Product。Feature 完成并归档后，从当前状态删掉它的条目，只在历史索引保留归档链接；测试数、证据这类完成细节留在归档里。每次更新时，顺带删掉已经不成立的说法，例如已处理掉的文件、已解决的阻塞。
 
-按 [Stage 0 的等待例外](03-execute-loop.md#stage-0--选择-feature-并加载上下文)同时有多个进行中的 Feature 时，当前状态为每个 Feature 各写一条：所处 Stage、停点、正在等待的对象（例如“等人工验收结果”），以及输入到达后的第一个动作。
+按 [Stage 0 · 选择 Feature 并加载上下文](03-execute-loop.md#stage-0--选择-feature-并加载上下文)中的等待例外同时有多个进行中的 Feature 时，当前状态为每个 Feature 各写一条：所处 Stage、停点、正在等待的对象（例如“等人工验收结果”），以及输入到达后的第一个动作。
 
 初始的 `docs/progress/README.md` 说明这个目录，并链接回当前 Progress；它不是归档，也不是另一份历史索引。
 
 已完成的 Feature 或已批准批次的历史，由 Agent 一次性归档到 `docs/progress/<key>.md`，并在当前 Progress 文档中保留链接。保留剩余的阻塞、待决定事项、原始历史和证据链接。不要推断批准，不要覆盖归档，也不要重复之前的历史。新正文用 `document_language` 写；移动历史不需要翻译它。
 
-归档保存执行历史，Progress 保存当前状态。Feature notes 保存任务提醒、回归链接、TODO 和导航。实现设计和局部决定按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 写在 `docs/features/F0XX-design.md`；ADR 和独立技术决定按 [10 · 架构概览](10-architecture-overview.md#架构决策记录)处理。链接这些记录，不要把同一段叙述贴进 Progress 或 notes。
+归档保存执行历史，Progress 保存当前状态。Feature notes 保存任务提醒、回归链接、TODO 和导航。实现设计和局部决定按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 写在 `docs/features/F0XX-design.md`；ADR 和独立技术决定按 10 号规范的[架构决策记录](10-architecture-overview.md#架构决策记录)处理。链接这些记录，不要把同一段叙述贴进 Progress 或 notes。
 
 ## 任务交接
 

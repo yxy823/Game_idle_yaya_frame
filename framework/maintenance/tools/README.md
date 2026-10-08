@@ -9,7 +9,7 @@
 | 仓库链接检查 [check_repository_links.py](check_repository_links.py) | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 |
 | 孤立文档扫描 [find_orphan_docs.py](find_orphan_docs.py) | 扫描全仓文档的文本引用，列出孤立候选 |
 
-术语检查、措辞检查是分发给项目的脚本，在框架仓库中指定框架的术语表和词表运行，见[检查术语用词](#检查术语用词)与[检查措辞](#检查措辞)；三项检查在提交时由[提交钩子](#提交钩子)自动运行。用户每次向 Claude Code 发消息时，[用词提示钩子](#用词提示钩子)按框架术语检查消息正文。
+术语检查、措辞检查是分发给项目的脚本，在框架仓库中指定框架的术语表和词表运行，见[检查术语用词](#检查术语用词)与[检查措辞](#检查措辞)；这两项与链接检查、链接文字检查在提交时由[提交钩子](#提交钩子)自动运行。用户每次向 Claude Code 发消息时，[用词提示钩子](#用词提示钩子)按框架术语检查消息正文。
 
 ## 检查链接与锚点
 
@@ -33,7 +33,7 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 失效项以 `<提示词库>:<条目所在行>  <条目名>: <引用>` 报告。检查只能发现不存在的路径和标题，引用是否重复、是否指向正确的对象仍由作者核对。
 
-加 `--check-link-text` 时，两部分另外运行分发给项目的 [check-link-text.py](../../../project-source/tools/checks/check-link-text.py)，与链接检查共用同一份临时副本，列出链接文字与目标标题不符的链接，分发侧的路径同样映射回源文件；提示词正文不比较链接文字。比较规则见项目检查与测试工具的[check-link-text.py](../../../project-source/tools/README.md#check-link-textpy)。这个选项不在提交钩子中运行。
+加 `--check-link-text` 时，两部分另外运行分发给项目的 [check-link-text.py](../../../project-source/tools/checks/check-link-text.py)，与链接检查共用同一份临时副本，列出链接文字与目标标题不符的链接，分发侧的路径同样映射回源文件；提示词正文不比较链接文字。比较规则见项目检查与测试工具的[check-link-text.py](../../../project-source/tools/README.md#check-link-textpy)。[提交钩子](#提交钩子)在不带选项的链接检查通过后，再带这个选项运行一次。
 
 退出码：`0` 没有失效链接，加 `--check-link-text` 时也没有不符合的链接文字；`1` 存在失效链接或不符合的链接文字。
 
@@ -64,13 +64,14 @@ python -B project-source/tools/checks/check-wording.py --list
 
 ## 提交钩子
 
-仓库根目录的 `.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件时，它依次运行三项检查，任何一项失败就拒绝提交：
+仓库根目录的 `.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件时，它依次运行四项检查，任何一项失败就拒绝提交：
 
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
 | [检查术语用词](#检查术语用词)，`--terms framework/terminology.md` | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
 | [检查措辞](#检查措辞) `--level hard` | 同上 | 规则文件中有硬性检查项的命中 |
 | [检查链接与锚点](#检查链接与锚点) | 整个仓库，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
+| 链接文字检查：同一脚本加 `--check-link-text` | 同上；链接检查通过后才运行，因为带这个选项时失效链接也会让脚本失败，分开运行才能分别报告两项 | 有链接文字与目标标题不符的链接 |
 
 没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查工作区中的文件内容，不是暂存区；它用 PATH 中的 `python` 运行检查。被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。
 
@@ -155,4 +156,4 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 - [提示词与场景路径检查](../../prompt-scenarios/tools/README.md#提示词与场景路径检查)核对两份集中提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
 - 调整场景入口时，核对[场景速查索引](../../prompt-scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
 
-路径检查不检查索引收录或正文。提示词或场景变更时按现有[提示词与关系图维护 Skill](../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步，普通孤立文档扫描不会自动调用它。
+路径检查不检查索引收录或正文。提示词或场景变更时按现有的 [prompt-and-graph-maintenance-yaya](../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步，普通孤立文档扫描不会自动调用它。

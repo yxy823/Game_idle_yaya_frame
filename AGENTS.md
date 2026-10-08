@@ -49,12 +49,12 @@
 - **错误与估算：** 客观说明错误位置、已知原因和修复或排查办法，分清事实、推测与未知。同样的失败不盲目重试，先核对关键假设，有新证据再试。耗时估算有依据时用分钟、小时等单位或范围，写明影响估算的条件。整理任务卡、报告或用户提供的材料时，来源没写的数值、范围或后续行为列入待确认，不自行补全。
 - **提问与授权：** 沿用具体授权，Agent 能完成的工作继续完成；缺少关键信息、决定或实际人工验收时请用户介入，优先提出最关键的问题。可能造成重要数据损失且现有授权未覆盖的操作，执行前确认；已明确批准的同一动作不重复询问。
 
-生成项目的 [AGENTS.md 源文件](project-source/Project_AGENTS.md#沟通与交付)有同样一节。两者作用域不同、各自生效，修改其中一份时同步另一份。
+生成项目的 AGENTS.md 源文件有同样的[沟通与交付](project-source/Project_AGENTS.md#沟通与交付)一节。两者作用域不同、各自生效，修改其中一份时同步另一份。
 
 ## 使用说明的可读性
 
-- **写作方法**：编写或整理框架文档时，使用 [Yaya 框架文档编写 Skill](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按文档类型读取其中的参考。框架手册的专有分工见[说明的组织与措辞](framework/maintenance/maintenance-and-sync.md#说明的组织与措辞)。
-- **两份写作 Skill**：框架版与分发给项目的 [Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护，除[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明只维护在 Godot 版外不跨包引用，分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
+- **写作方法**：编写或整理框架文档时，使用 [technical-documentation-writing-yaya](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按文档类型读取其中的参考。框架手册的专有分工见[说明的组织与措辞](framework/maintenance/maintenance-and-sync.md#说明的组织与措辞)。
+- **两份写作 Skill**：框架版与分发给项目的 [technical-documentation-writing-godot](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护，除[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明只维护在 Godot 版外不跨包引用，分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
 - **术语**：框架与生成项目共用的术语写法维护在[框架术语](framework/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，两者不混成同一份词表。
 
 ## 维护边界与查阅
@@ -96,7 +96,7 @@
 - **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
 - **术语用词**：写完或改过文档后，对本次改过的文档运行术语检查 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md <文件> <文件>…`（改过的提示词 JSON 同样列出），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[检查术语用词](framework/maintenance/tools/README.md#检查术语用词)；提交时[提交钩子](framework/maintenance/tools/README.md#提交钩子)还会检查一次。
 - **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
-- **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用[提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
+- **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
 - **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
 - **外部项目回归**：运行前核对被测文件是否对应本次修复；需要同步时只更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
 - **如实记录**：静态核对、工具回归、真实引擎运行与人工验收的结果分别记录；失败、未执行和旧版本的通过不能写成当前修改已通过。
@@ -104,7 +104,7 @@
 
 ### 目录与入口组织
 
-维护侧（根目录、`.agents/`、`framework/`）的目录由[框架入口](framework/README.md#目录与职责)统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表；判断步骤与常见反例见[职责设计准则的目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织)。
+维护侧（根目录、`.agents/`、`framework/`）的目录由框架入口的[目录与职责](framework/README.md#目录与职责)统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表；判断步骤与常见反例见[职责设计准则的目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织)。
 
 - **按对象划分顶层**：`framework/` 的顶层目录按材料讲述的对象划分（生成的 Godot 项目、提示词与场景、关系图、框架维护、项目创建、测试），不设 `docs/` 这类只按文件类型归堆的目录。
 - **按功能建子目录**：同一目录内的文件功能不同时，按功能建子目录，即使目前只有一两个文件；功能相同的文件放在一起。子目录名直接表达功能，例如 `design-guidelines/`、`validation/`、`dependencies/`、`tools/`。

@@ -17,7 +17,7 @@
 | 具体的项目开发或框架维护场景 | `framework/prompt-scenarios/scenarios/` 下对应的 Project |
 | 正式的提示词 | `framework/prompt-scenarios/prompts/` 下的两份提示词库，各自维护完整正文 |
 | 框架共用术语 | `framework/terminology.md`；项目自己的业务词汇不写回这里 |
-| 职责设计准则与审核报告 | 长期准则在 [design-guidelines/](design-guidelines/README.md)；当次报告的保存与清理见[审核与报告](design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
+| 职责设计准则与审核报告 | 长期准则在 [design-guidelines/](design-guidelines/README.md)；当次报告见[当次报告的保存与清理](design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
 | 规则、Skill 与任务提示词文件的编写 | 根 `AGENTS.md` 与[规则与提示词文件](design-guidelines/instruction-files.md) |
 | 框架自用 Skill | 仓库根目录的 `.agents/skills/`。参考资料、配套脚本和私有依赖都放在各 Skill 目录内，不分发给项目 |
 | 提示词、场景与关系图的维护方法 | `.agents/skills/prompt-and-graph-maintenance-yaya/` |
@@ -28,7 +28,7 @@
 
 几条通用原则：
 
-- **编写与审核**：维护规则、Skill 和任务提示词文件时，按[规则与提示词文件](design-guidelines/instruction-files.md)自查；整理已确认说明的表达和组织，使用[框架文档编写 Skill](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护由作者自查，不额外安排独立审核；用户要求正式审核时，按[审核与报告](design-guidelines/reviews-and-reports.md)进行。
+- **编写与审核**：维护规则、Skill 和任务提示词文件时，按[规则与提示词文件](design-guidelines/instruction-files.md)自查；整理已确认说明的表达和组织，使用 [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护由作者自查，不额外安排独立审核；用户要求正式审核时，按[审核与报告](design-guidelines/reviews-and-reports.md)进行。
 - **`project-source/` 只是源材料**：其中的规则和 Skill 在框架仓库里只供阅读，不启用项目开发的 Stage，适用边界见 `AGENTS.md` 的[维护边界与查阅](../../AGENTS.md#维护边界与查阅)。
 
 ## 找到受影响的说明
@@ -72,7 +72,7 @@
 
 ### 说明的组织与措辞
 
-框架说明的详细写法在 [Yaya 框架文档编写 Skill](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中维护，本节只列检查要点：
+框架说明的详细写法在 [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中维护，本节只列检查要点：
 
 - **页面分工**：见[两本手册的分工](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md)。
 - **11 类信息**：来自框架版写作 Skill 的流程参考，只用于框架的场景页，不作为 Godot 项目文档的默认结构。
@@ -80,7 +80,7 @@
 - **两本手册不互相引用**：必要的解释就地写出；权威规范、工具和公共术语两册都可以引用。
 - **链接**：修改时核对受影响的 Markdown 链接、锚点和导航。
 
-生成项目通过[项目内的写作入口](../../project-source/Project_AGENTS.md#使用说明的可读性)使用创建时复制的 Godot 版写作 Skill。它独立维护，使用时不需要访问框架。
+生成项目按项目 AGENTS.md 的[使用说明的可读性](../../project-source/Project_AGENTS.md#使用说明的可读性)使用创建时复制的 Godot 版写作 Skill。它独立维护，使用时不需要访问框架。
 
 ### 两份写作 Skill 的分工
 
@@ -127,7 +127,7 @@
 | 核实收到的审核意见 | [收到外部审核意见，先核实哪些值得修改](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
 | 用一个小任务验证真实流程 | [想用一个小任务实际验证框架流程](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
-总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务推演和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 授权在后续对话中的延续
 

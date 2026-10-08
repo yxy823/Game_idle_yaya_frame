@@ -1,6 +1,6 @@
 # 项目检查与测试工具
 
-这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中四项检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
+这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中五项检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
 yaya/tools/
@@ -128,6 +128,7 @@ $LASTEXITCODE
 | [check-terminology.py](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
 | [check-wording.py](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
 | [check-markdown-links.py](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效；本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 有失效链接 |
+| [check-link-text.py](#check-link-textpy) | 同上，因为改标题会让其他文档中的链接文字过时 | 有链接文字与目标标题不符的链接 |
 | [check-godot-resource-format.py](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
 
 暂存的文件都不属于这些类型时直接通过。资源格式检查拦住的是不经 Feature 完成步骤的改动，例如实验或 Feature 外的修复：场景和资源用 [`resave_godot_files.gd`](#resave_godot_filesgd) 重存，缺 `.uid` 或 `.import` 时运行[首次 Godot 扫描](#首次-godot-扫描)的命令，把生成的文件一起暂存。钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
@@ -411,7 +412,7 @@ $LASTEXITCODE
 - `--` 之后列出要重新保存的文件：`project.godot`，或 `res://` 下的 `.tscn`、`.tres`。
 - 新建的依赖场景或资源也要一起传入，已有但尚无 UID 的依赖同样需要列出。工具只重存传入文件，不自动扩展依赖列表。
 - 工具等待编辑器扫描和导入完成，再重存场景和资源；随后主动重扫并重存第二轮，补齐同批资源之间的引用 UID。调用方不需要另跑两轮命令。
-- `project.godot` 重新保存时，等于引擎默认值的设置会被删除；依赖默认值时按[项目设置规则](../agent-rules/40-project-config/authoring-and-scope.md#编写)在测试中断言生效值。
+- `project.godot` 重新保存时，等于引擎默认值的设置会被删除；依赖默认值时按项目设置规则的[编写](../agent-rules/40-project-config/authoring-and-scope.md#编写)一节，在测试中断言生效值。
 - `project.godot` 只在首轮保存，不参与资源的第二轮重存。
 - 场景和资源保存回原路径，已有的资源 ID 保留；文字里的 `\n` 转义会改写成真实换行，只发生一次。
 - 真正在编辑器中编辑并保存场景，还可能生成节点 `unique_id` 或省略默认属性；本工具不承诺这次编辑器保存后没有文本差异。

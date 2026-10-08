@@ -1,9 +1,5 @@
 # 框架待办
 
-## 待推进的工作
-
-- **链接文字批量修正**：规则见框架文档写作指南[表达与排版](../.agents/skills/technical-documentation-writing-yaya/references/writing-guide.md#表达与排版)中「链接文字用目标标题」一条（Godot 版写作指南同步），只链到文件时逐字写目标的 Skill 名、文件名或目录名也合规。检查由分发的 `check-link-text.py` 负责，框架侧用 `check_repository_links.py --check-link-text` 同时查维护侧和生成项目。目前还有 142 处、82 个文件不符合，需要改句子或逐条判断，清单见 `tmp/reports/link-text-check/link-text-remaining-20261008.md`。下一步：按清单改写句子，全部修正后把链接文字检查作为单独一步加进两份提交钩子（`.githooks/pre-commit` 与 `project-source/defaults/.githooks/pre-commit`）。
-
 ## 验证缺口
 
 - **内容数据 Skill 未试用**：`content-data-authoring` 与场景“规则和公式已确定，需要批量制作关卡或内容表”只做了静态检查；`Game_Match_Three` 没有关卡系统。下一步：下一个放置类试用项目制作生产项内容表时，按场景在 Feature 中走一遍内容制作与检查，按结果修正 Skill 和两份参考。

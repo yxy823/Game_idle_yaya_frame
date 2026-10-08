@@ -20,7 +20,7 @@
 | 项目规则 | 生成项目的 `docs/project-rules.md`，记录这个项目自己的开发约束和工程原则 | Project Rules |
 | 外部项目 | 维护者指定、用来实际验证框架的 Godot 项目；回归和试用只在其中运行，不在框架仓库中运行 |  |
 | 目标项目 | 工具或 Skill 实际作用的那个项目：创建器 `--output` 指定的输出目录、复制迁移建立的新项目，或分发 Skill 中路径所相对的生成项目；用作验证对象时称外部项目 |  |
-| 走查 | 审核报告的主体方法：带 2–3 个具体任务，按实际文件逐步走一遍，记录每一步读到什么、卡在哪里 |  |
+| 推演 | 审核报告的主体方法：带 2–3 个具体任务，按实际文件逐步推演，记录每一步读到什么、卡在哪里 | 走查 |
 | Project | 提示词 JSON 的顶层名称，只有「Yaya 框架维护」和「Godot 项目开发」两个；与 Product、Feature 无关 |  |
 | Godot 项目手册 | `framework/godot-project-manual/`，按对象解释生成项目里的概念、文档、配置与工具；简称“手册” |  |
 | 场景速查手册 | `framework/prompt-scenarios/scenarios/`，按“遇到什么情况”给出处理步骤，每篇对应一条同名提示词；单篇称“场景页” |  |
@@ -35,7 +35,7 @@
 | Product 总览 | `docs/product.md`，保存预拆分结果：交付范围、来源、依赖与建议顺序；不等于 GDD 的游戏总览 |  |
 | 预拆分 | 在 Product 总览中粗分全部约定交付范围；轮到某个 Product 时才细化其正文并拆 Feature |  |
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |  |
-| Feature 记录 | [Feature 结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成证据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |  |
+| Feature 记录 | 02 号规范的[文件结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成证据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |  |
 | Stage | [Stage 0–8 `feature-execute` 执行循环](../project-source/methodology/03-execute-loop.md)里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |  |
 | 独立审核 | Stage 6：用户明确要求时，在全新上下文中按用户指定的范围和时机审核变更，方法见[独立审核](../project-source/methodology/12-independent-review.md)；用户没要求时跳过 | 独立评审、独立审查 |
 | 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案 |

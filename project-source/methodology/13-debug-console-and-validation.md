@@ -24,7 +24,7 @@
 
 ### 入口与依赖方向
 
-- **调试入口**是 `dev/debug/debug_main.tscn`。它先挂上调试窗口，再切到项目的主场景；平时运行主场景，调试时启动调试入口。启动命令只写在[本项目的调试台](../../dev/debug/README.md#启动)，其他文档引用它。
+- **调试入口**是 `dev/debug/debug_main.tscn`。它先挂上调试窗口，再切到项目的主场景；平时运行主场景，调试时启动调试入口。启动命令只写在本项目调试台说明的[启动](../../dev/debug/README.md#启动)一节，其他文档引用它。
 - **项目挂钩** `dev/debug/debug_project.gd` 属于项目自己：按项目的存档系统把调试会话的存档指到只供调试的 `user://` 文件。没有改写时调试会话可能写入真实存档，调试窗口会提示。游戏要为此提供可配置的存档位置，见 [Autoload](../agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 - **依赖只能从 `dev/` 指向游戏**：`game/`、`main/`、`components/` 和 `project.godot` 不引用 `dev/` 下的路径、UID 或类名；游戏和 `tests/` 不读取预设与组合。调试台不用 Autoload 挂载，因为 Autoload 写在 `project.godot` 中，会让游戏引用 `dev/`。依赖方向由默认登记的不变量测试 `tests/invariants/debug_dependency_test.gd` 检查。
 - **正式导出**整体排除 `dev/`，见[导出资源与过滤器](../agent-rules/41-export-config/resources-and-filters.md)。
@@ -35,7 +35,7 @@
 
 | 层 | 编号例子 | 含义 |
 | --- | --- | --- |
-| 调试对象 | `shop`、`global` | 游戏里的一个界面，或跨界面共用的 `global`。键名与 `game/<对象>/` 一致，与 UI 规格界面键的对应见[界面规格目录](../../docs/ui/README.md#文件放在哪里) |
+| 调试对象 | `shop`、`global` | 游戏里的一个界面，或跨界面共用的 `global`。键名与 `game/<对象>/` 一致，与 UI 规格界面键的对应见界面规格目录说明的[文件放在哪里](../../docs/ui/README.md#文件放在哪里) |
 | 插槽 | `shop/feedback/sound` | 调试对象中一个可调的部分，对应 `game/<对象>/tuning/` 下的一份调参资源，目录层级即类别 |
 | 候选 | `shop/feedback/sound` 下的“明亮” | 插槽的一种实现：场景、脚本、音效或图片。没采纳时放在 `dev/debug/` 中，采纳后移进 `game/` |
 

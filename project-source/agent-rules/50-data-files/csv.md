@@ -5,7 +5,7 @@ CSV 适合每行一个实体、每格一个标量值的表格数据，例如数�
 ## 导入方式
 
 - 注意：Godot 默认用翻译导入器（`csv_translation`）导入 `res://` 下的 `.csv` 文件，会把它当作翻译表处理。作为数据读取的 CSV，在导入面板把 Import As 改为 “Keep File (exported as is)”，对应 `.import` 中的 `importer="keep"`。
-- 运行时读取的 CSV 是否进入导出包，遵循[导出包含规则](../41-export-config/resources-and-filters.md#打包)。
+- 运行时读取的 CSV 是否进入导出包，遵循导出配置规则中的[打包](../41-export-config/resources-and-filters.md#打包)。
 
 ## 编写
 

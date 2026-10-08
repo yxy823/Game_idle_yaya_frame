@@ -64,12 +64,12 @@ yaya/methodology/                         canonical workflow specification
 | 从体验目标或随口的描述规划一个游戏时刻，或比较其组成部分的方案 | `design-game-presentation` | 用于[游戏表现文档](11-specialist-workflows.md#游戏表现文档)，可以支持早期 GDD 探索。不包含代码、资源制作或验收。 |
 | 和用户一起反复试调已实现的特效、反馈或操作手感 | `debug-console-godot`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
 | 规定一个界面或单个资源 | `design-ui-spec`、`design-visual-asset-spec`、`design-audio-asset-spec` | 用于细化 GDD 的专业规格。交付范围仍由 Product 决定。 |
-| 准备美术、音乐或音效 | 按[专业工作](11-specialist-workflows.md#设计制作接入与审核)保留为预留能力 | 没有制作 Skill。记录规格和现有资源。 |
+| 准备美术、音乐或音效 | 按 11 号规范的[设计、制作、接入与审核](11-specialist-workflows.md#设计制作接入与审核)保留为预留能力 | 没有制作 Skill。记录规格和现有资源。 |
 | 确定语言覆盖范围和区域格式约定 | `design-localization-spec` | 可以单独进行。游戏规则留在 GDD，术语定义留在 `docs/terminology.md`。 |
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
 | 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
 | 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
-| 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `debug-console-godot`；技术验证用 `technical-validation-godot` | 按[调试台与技术验证](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
+| 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `debug-console-godot`；技术验证用 `technical-validation-godot` | 按 13 号规范的[选择方式](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
 | 骨架之后在调试台做视觉决策 | `feature-execute` 配合 `debug-console-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)：骨架、视觉决策、完整逻辑三个 Feature。规格提供输入；调试台中的比较、采纳和人工验收属于执行阶段。 |
 | 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
 | 为已获授权的任务准备或复用另一个工作目录 | `worktree-create-godot` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |

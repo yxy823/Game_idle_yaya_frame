@@ -12,9 +12,9 @@
 
 信号规则按问题分在不同文档：
 
-- 声明与 emit、connect 的 API：[typing-and-api.md](typing-and-api.md#导出属性与信号)。
-- 通信方向：[structure-and-dependencies.md](structure-and-dependencies.md#依赖方向)。
-- 连接的生命周期与等待：[godot-lifecycle-and-input.md](godot-lifecycle-and-input.md#信号与异步)。
+- 声明与 emit、connect 的 API：`typing-and-api.md` 的[导出、属性与信号](typing-and-api.md#导出属性与信号)。
+- 通信方向：`structure-and-dependencies.md` 的[依赖方向](structure-and-dependencies.md#依赖方向)。
+- 连接的生命周期与等待：`godot-lifecycle-and-input.md` 的[信号与异步](godot-lifecycle-and-input.md#信号与异步)。
 - 在代码还是编辑器中连接：[信号连接方式](../20-scenes/ui-and-scripts.md#信号连接方式)。
 
 ## 验证

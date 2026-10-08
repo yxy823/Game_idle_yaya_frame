@@ -39,7 +39,7 @@ description: >-
 3. **来源先提交规则：** 本次同步用到的每个来源文档，包括阶段 3 中获批的修复，都必须在任何依赖它的计划写入之前，单独、更早地提交。这样差异和下一个锚点才能对应一个实际已提交的状态。
    - 报告未提交的相关来源，并把它交回其负责方；无关的未提交路径不构成阻塞。
    - 到阶段 4 时某个来源改动仍未提交，或在写入计划期间出现，保留它，并停止依赖它的同步。
-4. 使用最后一条 `revision_log` 条目的 `synced_at_commit` 作为锚点，并确认它在当前历史中。这包括 [初始规划基线](../../../yaya/methodology/02-feature-list-schema.md#初始规划基线) 下的 `R000` 基线，它的覆盖范围只限于其规划的 Product 和已采用的来源。否则使用[参考文档](references/anchor-and-fallback.md)。
+4. 使用最后一条 `revision_log` 条目的 `synced_at_commit` 作为锚点，并确认它在当前历史中。这包括 [初始规划基线](../../../yaya/methodology/02-feature-list-schema.md#初始规划基线) 下的 `R000` 基线，它的覆盖范围只限于其规划的 Product 和已采用的来源。否则使用参考[锚点恢复与当前文档对齐](references/anchor-and-fallback.md)。
 5. 报告分支、锚点的哈希、日期、主题和覆盖依据（或已获授权的回退方式和检查的 HEAD），以及按状态统计的 Feature 数量。
 
 ## 阶段 1：用户的先验说明
@@ -122,7 +122,7 @@ git diff -M <anchor> HEAD -- game/*/tuning/
 
 ## 阶段 4：应用已确认的变化
 
-1. 使用 `feature-plan` 中的[测试登记表合并步骤](../feature-plan/SKILL.md#测试登记表docstest-registryjson)合并获批的新组件。明确解决冲突的记录；绝不覆盖它们。
+1. 使用 `feature-plan` 中[测试登记表：`docs/test-registry.json`](../feature-plan/SKILL.md#测试登记表docstest-registryjson)一节的合并步骤合并获批的新组件。明确解决冲突的记录；绝不覆盖它们。
 2. 按[应用已确认的计划变化](references/apply-plan-changes.md)应用已确认的 Feature、测试和退役变化。索引和它的详情一起修改。
 
 ## 阶段 5：记录、校验和提交
@@ -152,7 +152,7 @@ git diff -M <anchor> HEAD -- game/*/tuning/
 
 | 情况 | 必须的处理 |
 |---|---|
-| 没有可靠的锚点 | 按[参考文档](references/anchor-and-fallback.md)提出当前文档对齐，并说明历史未知 |
+| 没有可靠的锚点 | 按[锚点恢复与当前文档对齐](references/anchor-and-fallback.md)提出当前文档对齐，并说明历史未知 |
 | 变化太广，无法分类 | 与用户一起缩小范围；不要因为文件数或行数而建议整体重新生成 |
 | 差异与用户的意图冲突 | 暂停，列出不一致之处，询问是否存在非预期的来源修改 |
 | 缺少当前或已写成文档的 Product 来源 | 报告缺失，并在依赖它的写入之前修复来源；未来大纲的条目本来就没有文件 |

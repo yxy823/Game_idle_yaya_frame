@@ -84,7 +84,7 @@ func test_reset_emits_changed() -> void:
 	await signal_assert.is_emitted("changed")
 ```
 
-转换类型的原因见 [gdUnit4 运行器与诊断](gdunit4-profile.md#编写测试时的约定)。
+转换类型的原因见 gdUnit4 运行器与诊断规则中的[编写测试时的约定](gdunit4-profile.md#编写测试时的约定)。
 
 - 注意：`monitor_signals()` 默认对该对象调用 `auto_free()`。
 - 收到信号后，再断言要求的载荷和事后状态，不把收到信号当作整个流程成功的证明。

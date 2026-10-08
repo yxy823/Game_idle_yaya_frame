@@ -24,7 +24,7 @@
 
 **S2｜带回选定成果并处理实际冲突**
 
-在正确目标实施授权范围内的整合。只有冲突出现时才读取 [冲突处理参考](../../../../../project-source/skills/worktree-integrate-godot/references/merge-conflicts.md)，按双方意图和已确认目标解决；未决定的业务矛盾保留为具体选择，不能靠“全部取某一方”掩盖。
+在正确目标实施授权范围内的整合。只有冲突出现时才读取参考[解决已有的整合冲突](../../../../../project-source/skills/worktree-integrate-godot/references/merge-conflicts.md)，按双方意图和已确认目标解决；未决定的业务矛盾保留为具体选择，不能靠“全部取某一方”掩盖。
 
 **S3｜验证组合并交付**
 

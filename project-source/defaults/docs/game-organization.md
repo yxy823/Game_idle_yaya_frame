@@ -76,7 +76,7 @@ res://
 └── tests/                 按实际需要添加的项目测试
 ```
 
-文档、工具和明确标记的示例保留各自位置。`dev/` 存放只在开发时使用的场景和脚本，例如 `dev/debug/` 下的调试台；导出时整体排除，`main/`、`game/`、`components/` 和 `project.godot` 不能引用其中的文件，依赖方向见[调试台](../yaya/methodology/13-debug-console-and-validation.md#入口与依赖方向)。`main/main.tscn` 是配置好的启动场景；入口存在不代表环境就绪、已有玩法或已经运行成功。
+文档、工具和明确标记的示例保留各自位置。`dev/` 存放只在开发时使用的场景和脚本，例如 `dev/debug/` 下的调试台；导出时整体排除，`main/`、`game/`、`components/` 和 `project.godot` 不能引用其中的文件，依赖方向见 13 号规范的[入口与依赖方向](../yaya/methodology/13-debug-console-and-validation.md#入口与依赖方向)。`main/main.tscn` 是配置好的启动场景；入口存在不代表环境就绪、已有玩法或已经运行成功。
 
 | 判断问题 | 建议归属 |
 | --- | --- |
@@ -114,7 +114,7 @@ game/mining/
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构、实例与归属](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见资源规则的[命名与组织](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、GDScript 规则的[风格与命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构、实例与归属](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 

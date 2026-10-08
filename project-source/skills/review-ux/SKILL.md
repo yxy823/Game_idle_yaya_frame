@@ -17,7 +17,7 @@ description: "独立审核指定流程中的界面可用性、交互清晰度和
 
 在项目副本里用程序驱动界面，按用户想做的事逐个走一遍，找出要停下来猜、走错路或做不成的地方。本 Skill 的审核和 `yaya/methodology/03-execute-loop.md` 的 [Stage 4 · 自动验证与人工验收清单](../../../yaya/methodology/03-execute-loop.md#stage-4--自动验证与人工验收清单) 作者侧试用都用这个方法；作者侧试用由实现者自己完成，不算独立审核，也不代替人工验收。
 
-**输入**：游戏界面的界面任务写在 UI 规格的“界面任务”小节，写法见 [design-ui-spec](../design-ui-spec/SKILL.md#界面任务)；调试台的界面任务和通用标准在 `dev/debug/_shared/usage-scenarios.md`。要试的界面还没有界面任务时，按请求的流程列出要试的任务，在报告中注明由试用者补写，不替 UI 规格的负责方写进规格。
+**输入**：游戏界面的界面任务写在 UI 规格的“界面任务”小节，写法见 design-ui-spec 的[界面任务](../design-ui-spec/SKILL.md#界面任务)；调试台的界面任务和通用标准在 `dev/debug/_shared/usage-scenarios.md`。要试的界面还没有界面任务时，按请求的流程列出要试的任务，在报告中注明由试用者补写，不替 UI 规格的负责方写进规格。
 
 **工具**：用 `yaya/tools/ui-trial/` 准备改名的项目副本、编写驱动脚本、运行和静态扫描，参数、退出码和限制见[按界面任务试用工具](../../../yaya/tools/ui-trial/README.md)。
 

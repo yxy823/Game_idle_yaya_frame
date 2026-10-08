@@ -444,7 +444,7 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 
 ## notes 中的 Bug 经验
 
-带 `engineering_change: bug` 的 Feature 通过自动验证、并完成所需的人工验收后，追加一段简洁的 `BUG learning`，字段见[标准字段](07-engineering-change.md#bug-经验的提升)。
+带 `engineering_change: bug` 的 Feature 通过自动验证、并完成所需的人工验收后，追加一段简洁的 `BUG learning`，字段见 07 号规范的[Bug 经验的提升](07-engineering-change.md#bug-经验的提升)。
 
 不要保存走不通的调试记录或临时猜测。
 
@@ -518,7 +518,7 @@ python -B yaya/tools/checks/check-feature-list.py
 
 ## 逐个 Product 规划
 
-先满足 [GDD 前提](01-product-doc-structure.md#gdd-前提与职责)。在 `docs/product.md` 中预拆分约定的交付范围，然后按实际执行顺序，一次细化并交付一个 Product。
+先满足 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)中的前提。在 `docs/product.md` 中预拆分约定的交付范围，然后按实际执行顺序，一次细化并交付一个 Product。
 
 - Feature 的规划单位是当前的 `docs/product/NN-<delivery>.md`，连同它批准的范围和 GDD 引用。
 - `docs/product.md` 保存候选边界、来源映射、依赖和建议顺序。
@@ -595,7 +595,7 @@ python -B yaya/tools/checks/check-feature-list.py
 
 - 保留真实的依赖和适用的架构约束；不要把编号或偏好的顺序写成依赖。
 - 不明显的依赖，在拆分预览或 Feature 设计稿中解释，不新增 schema 字段或单独的清单。
-- 复用已完成的前置 Feature，以及 [Product 前提的区分](01-product-doc-structure.md#交付成果与前提)。
+- 复用已完成的前置 Feature，以及 01 号规范的[交付成果与前提](01-product-doc-structure.md#交付成果与前提)对前提的区分。
 
 新界面或使已有截图、验收失效的界面改动，按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)拆成三个普通 Feature：
 

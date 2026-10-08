@@ -4,7 +4,7 @@
 
 本目录保存 Analyzer Python 后端的维护夹具，适用于修改 `project-source/tools/analyzer/` 的后端、协议或内存限制。外部项目需要已有对应版本的 `yaya/tools/analyzer/`。
 
-两项夹具都从框架根目录直接调用，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按 [Analyzer 安装说明](../../../../project-source/tools/analyzer/README.md)准备 Python 3.13.16 的 `yaya-analyzer-2` 环境，把对应版本的 Analyzer（含 features/）同步到已授权外部项目。后端夹具另需 `pip install --only-binary=:all: jsonschema`，只供回归使用；保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，两个占位值替换为本次实际路径（解释器使用外部项目 `docs/methodology-config.json` 中的 `analyzer_python_executable`）：
+两项夹具都从框架根目录直接调用，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按[资源 Analyzer](../../../../project-source/tools/analyzer/README.md)的说明准备 Python 3.13.16 的 `yaya-analyzer-2` 环境，把对应版本的 Analyzer（含 features/）同步到已授权外部项目。后端夹具另需 `pip install --only-binary=:all: jsonschema`，只供回归使用；保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，两个占位值替换为本次实际路径（解释器使用外部项目 `docs/methodology-config.json` 中的 `analyzer_python_executable`）：
 
 ```powershell
 $env:YAYA_TEST_PROJECT = '<外部验证项目绝对路径>'

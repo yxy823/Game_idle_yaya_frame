@@ -49,7 +49,7 @@ yaya/agent-rules/<专业模块>/
 | 局部游戏规则 | 各自的 GDD 主题 |
 | 交付边界 | Product |
 | 当前结构 | [架构概览](10-architecture-overview.md)下的架构文档 |
-| 代价高的技术取舍 | 满足 [ADR 条件](10-architecture-overview.md#架构决策记录)时写 ADR |
+| 代价高的技术取舍 | 满足[架构决策记录](10-architecture-overview.md#架构决策记录)中的条件时写 ADR |
 
 与技术栈无关的设计默认原则维护在 [`docs/project-rules.md`](../../docs/project-rules.md) 第 2 部分，例如游戏权威状态与表现分离、显式的状态转换、组合、显式依赖、数据驱动的调参、错误处理、先测量再优化。逻辑与表现的职责用 `docs/game-organization.md` 来理解；这个模型不规定目录，也不规定通信机制。
 
@@ -69,7 +69,7 @@ yaya/agent-rules/<专业模块>/
 
 ## 情境性的项目知识
 
-`docs/knowledge/` 保存来自实际项目任务的情境性证据，不是强制工程规则的来源。查找和维护条目按[知识库 README](../../docs/knowledge/README.md)。
+`docs/knowledge/` 保存来自实际项目任务的情境性证据，不是强制工程规则的来源。查找和维护条目按知识库 README [项目知识](../../docs/knowledge/README.md)。
 
 某条经验可能只在本项目的特定条件下有用，也仍然值得记下。记录知识不授权把它提升为规则；稳定的规定性指导走[规则的增量维护](#规则的增量维护)。
 

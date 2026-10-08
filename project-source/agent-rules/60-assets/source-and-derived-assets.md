@@ -27,5 +27,5 @@
 - 注意：放有 `.gdignore` 的目录不会被导入，`load()` 和 ResourceLoader 也找不到其中的文件。不把运行时需要的素材、Resource，或测试运行器要加载的测试放进这类目录。
 - `.gdignore` 控制 Godot 是否导入，`.gitignore` 控制 Git 是否跟踪，两者不能互相替代。
 - 只为减少杂乱添加 `.gdignore` 前，先确认目录中没有运行时或导入依赖。
-- 运行时通过 `FileAccess` 读取的原始文件不经过导入，是否进入导出包遵循[导出包含规则](../41-export-config/resources-and-filters.md#打包)。
+- 运行时通过 `FileAccess` 读取的原始文件不经过导入，是否进入导出包遵循导出配置规则中的[打包](../41-export-config/resources-and-filters.md#打包)。
 - 导出后的游戏不通过列出目录中的源文件（如 `*.png`）发现素材：导出包中不含已导入的源文件，只有导入结果和 `.import` 重映射文件。需要素材清单时，在数据或 Resource 中显式登记。

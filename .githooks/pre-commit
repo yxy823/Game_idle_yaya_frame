@@ -1,5 +1,5 @@
 #!/bin/sh
-# 框架仓库的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）和链接检查。
+# 框架仓库的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）、链接检查和链接文字检查。
 # 启用：git config core.hooksPath .githooks。说明见 framework/maintenance/tools/README.md 的「提交钩子」。
 cd "$(git rev-parse --show-toplevel)" || exit 1
 export PYTHONUTF8=1
@@ -19,12 +19,17 @@ EOF
 $present
 EOF
 fi
-python -B framework/maintenance/tools/check_repository_links.py || failed="$failed 仓库链接检查"
+# 带 --check-link-text 时，失效链接也会让同一脚本失败；所以链接检查通过后再单独检查链接文字，两项失败分开报告。
+if python -B framework/maintenance/tools/check_repository_links.py; then
+    python -B framework/maintenance/tools/check_repository_links.py --check-link-text || failed="$failed 链接文字检查"
+else
+    failed="$failed 仓库链接检查"
+fi
 
 if [ -n "$failed" ]; then
     echo "" >&2
     echo "提交被拒绝，未通过：$failed。" >&2
-    echo "按上面列出的位置修改：不用的说法改为术语表中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题。" >&2
+    echo "按上面列出的位置修改：不用的说法改为术语表中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题；链接文字改为目标的章节标题或一级标题，文件说明写在链接外面。" >&2
     echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
     exit 1
 fi

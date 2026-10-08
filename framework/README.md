@@ -52,10 +52,10 @@ flowchart TD
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |
-| [prompt-scenarios/](prompt-scenarios/scenarios/README.md) | `prompts/` 两份集中提示词库；`scenarios/` 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词、场景与场景图的检查和链接脚本 |
+| `prompt-scenarios/` | `prompts/` 两份集中提示词库；[scenarios/](prompt-scenarios/scenarios/README.md) 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词、场景与场景图的检查和链接脚本 |
 | [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、开发场景图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查脚本 |
 | [maintenance/](maintenance/README.md) | 框架维护文档：维护与同步；`design-guidelines/` 职责设计准则；`validation/` 验证范围；`dependencies/` 第三方插件版本记录；`tools/` 仓库链接检查与孤立文档扫描，README 另说明术语检查、措辞检查和两个钩子 |
-| [project-creation/](project-creation/tools/README.md) | 唯一复制清单 `project-files.json`；`tools/` 创建器 |
+| `project-creation/` | 唯一复制清单 `project-files.json`；[tools/](project-creation/tools/README.md) 创建器 |
 | [tests/](tests/README.md) | `repository/` 从仓库根目录运行的维护回归；`external-project/` 需要指定外部项目的工具回归、Analyzer、插件与文档语言夹具，各子目录 README 说明放置与运行 |
 
 两本手册独立阅读、不互相引用：Godot 项目手册讲“项目里的东西是什么、怎么用”，场景速查手册讲“现在遇到这种情况该怎么处理”。场景速查手册与提示词同放在 `prompt-scenarios/`，便于按名称一一对应；关系图同时服务两者，单独放在 `relationship-maps/`。
@@ -103,7 +103,7 @@ flowchart TD
 | 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [检查链接与锚点](maintenance/tools/README.md#检查链接与锚点) |
 | 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [检查术语用词](maintenance/tools/README.md#检查术语用词) |
 | 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [检查措辞](maintenance/tools/README.md#检查措辞) |
-| 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）和仓库链接检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [提交钩子](maintenance/tools/README.md#提交钩子) |
+| 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）、仓库链接检查和链接文字检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [提交钩子](maintenance/tools/README.md#提交钩子) |
 | 用词提示钩子 `.claude/settings.json` | 用户每次向 Claude Code 发消息时，按框架术语检查消息正文，有不用的说法时提示 Agent 列出用词对照表；不拦截消息 | [用词提示钩子](maintenance/tools/README.md#用词提示钩子) |
 | 孤立文档扫描 `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
 | 回归测试 `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |

@@ -48,7 +48,7 @@
 
 规则、Skill 与任务提示词文件的编写要求见[规则与提示词文件](instruction-files.md)，正式审核见[审核与报告](reviews-and-reports.md)。
 
-已确认的框架说明文字，其表达与组织使用[框架文档编写 Skill](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)；生成项目的写法由独立的 [Godot 文档编写 Skill](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责。下表保留审核问题与框架特有要求。
+已确认的框架说明文字，其表达与组织使用 [technical-documentation-writing-yaya](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)；生成项目的写法由独立的 [technical-documentation-writing-godot](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责。下表保留审核问题与框架特有要求。
 
 | 维度 | 检查问题 |
 | --- | --- |

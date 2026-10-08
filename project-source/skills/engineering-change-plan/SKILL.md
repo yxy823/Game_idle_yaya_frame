@@ -41,7 +41,7 @@ description: >-
 
 ## 写入与交接
 
-获得批准后，在写入 Feature 计划之前，按 `feature-plan` 中的[测试登记表合并步骤](../feature-plan/SKILL.md#测试登记表docstest-registryjson)合并缺少的组件。候选格式、冲突处理和已有记录的保留都由该步骤负责。临时候选文件不提交。
+获得批准后，在写入 Feature 计划之前，按 `feature-plan` 中[测试登记表：`docs/test-registry.json`](../feature-plan/SKILL.md#测试登记表docstest-registryjson)一节的合并步骤合并缺少的组件。候选格式、冲突处理和已有记录的保留都由该步骤负责。临时候选文件不提交。
 
 使用权威的初始规划值，追加索引条目和对应的工程详情；保留已完成的历史和工程分类。这次操作不追加修订记录条目，因为没有发生针对权威来源的同步。
 

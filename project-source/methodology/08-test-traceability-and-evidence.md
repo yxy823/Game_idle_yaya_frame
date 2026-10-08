@@ -134,7 +134,7 @@ Feature 详情使用稳定的验收条件 ID：
 - **覆盖范围**：调试入口 `dev/debug/debug_main.*`、项目挂钩 `dev/debug/debug_project.gd`、共享代码 `dev/debug/_shared/`，以及本项目的调试对象 `dev/debug/<对象>/`。游戏中的调参资源属于各自的游戏组件，不属于它。
 - **登记的测试**：`unit_test_paths` 为 `["dev/debug/_shared/tests"]`；项目新增调试对象的专有测试时，把 `dev/debug/<对象>/tests` 加进同一列表。依赖方向测试登记为 active 不变量 `INV-DEBUG_CONSOLE-01`（`tests/invariants/debug_dependency_test.gd`），组件为 `debug_console`。
 - **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[调试台的修改](07-engineering-change.md#调试台的修改)建维护 Feature。
-- 只改游戏代码、不新建调参资源或字段时，依赖方向测试由[测试选择与 Godot 验证](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
+- 只改游戏代码、不新建调参资源或字段时，依赖方向测试由测试选择规则中的[扩大验证的 Godot 改动](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
 
 ## 测试影响评估
 
@@ -353,7 +353,7 @@ RED、GREEN 和重构按每一个小的可观察行为进行，而不是先写�
 - `yaya/tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
 - 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。
 
-被要求的 [Stage 6 审核](03-execute-loop.md#stage-6--可选的独立审核)在源码和验证都没有变化时，复用当前成功的运行结果。修复改变了快照时，重新计算当前义务，重复适用的 Stage 4 验证（包括 [`not_required`](#没有自动义务not_required) 的情况），然后重新进行受影响的验收。一次成功的全量运行覆盖 Required 和 affected；不要只为填第二个字段而再跑一次 Required。
+[Stage 6 · 可选的独立审核](03-execute-loop.md#stage-6--可选的独立审核)中被要求的审核，在源码和验证都没有变化时，复用当前成功的运行结果。修复改变了快照时，重新计算当前义务，重复适用的 Stage 4 验证（包括[没有自动义务：`not_required`](#没有自动义务not_required)的情况），然后重新进行受影响的验收。一次成功的全量运行覆盖 Required 和 affected；不要只为填第二个字段而再跑一次 Required。
 
 Stage 1 先按 [验收模式](02-feature-list-schema.md#验收模式) 选择 `verification.acceptance_mode`，再填写对应的检查。
 

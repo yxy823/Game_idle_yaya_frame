@@ -9,7 +9,7 @@
 3. 你说出验收结论，Agent 记进清单；
 4. Agent 收尾，把 F001 标记为完成。
 
-示例项目、提交编号和路径的读法见[教程一](01-blank-project-to-feature-plan.md#示例项目与阅读方式)。
+示例项目、提交编号和路径的读法见教程一的[示例项目与阅读方式](01-blank-project-to-feature-plan.md#示例项目与阅读方式)。
 
 ## 开始执行 F001
 
@@ -61,7 +61,7 @@ Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格�
 - 新 Feature 的依赖已经满足。
 - 新 Feature 要改的文件和原 Feature 不重叠。
 
-**怎样发起**：使用「现状、暂停与续接 → 当前任务已经暂停，准备切换到另一项工作」，材料填已暂停的 F001、目标 F002，以及你允许切换的授权。规则见[Stage 0 的等待例外](../../../project-source/methodology/03-execute-loop.md#stage-0--选择-feature-并加载上下文)。
+**怎样发起**：使用「现状、暂停与续接 → 当前任务已经暂停，准备切换到另一项工作」，材料填已暂停的 F001、目标 F002，以及你允许切换的授权。规则见 [Stage 0 · 选择 Feature 并加载上下文](../../../project-source/methodology/03-execute-loop.md#stage-0--选择-feature-并加载上下文)中的等待例外。
 
 **示例怎样做的**：F001 等验收期间，F002（生成合格的初始棋盘，`dfc3e78`）和 F003（结算一轮消除与连锁，`3c673ab`）都完成了。它们没有改动 F001 的样例、清单或参数。
 

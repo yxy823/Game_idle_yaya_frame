@@ -67,7 +67,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ### 维护与检查
 
-文档职责、路径、产物归属或实际引用契约改变时，由[提示词与关系图维护 Skill](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)局部更新对应节点、备注、链接和连线；不把新增一份同类报告或 Feature 当作新增节点。节点改名保留 ID，不按文件数、排序或当前任务状态重画整个系统。图不保存另一套流程正文、任务状态或孤立文件清单。
+文档职责、路径、产物归属或实际引用契约改变时，由 [prompt-and-graph-maintenance-yaya](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 局部更新对应节点、备注、链接和连线；不把新增一份同类报告或 Feature 当作新增节点。节点改名保留 ID，不按文件数、排序或当前任务状态重画整个系统。图不保存另一套流程正文、任务状态或孤立文件清单。
 
 文档图使用 `doc-`、`relation-` 标识文档节点与连线，`caption-`、`legend-` 标识阅读辅助。核对实际链接、全局 ID 唯一性、端点、单向箭头、节点尺寸和保存格式，并沿本次受影响的具体查找场景检查关系含义。开发场景的名称与链接脚本只处理场景图；文档图的全仓覆盖扫描按下文显式调用，不接入每次维护或提交。
 
@@ -88,7 +88,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ### 按需检查文档覆盖
 
-用户需要找出未纳入文档图的文件时，才显式运行[文档覆盖检查](tools/README.md#检查文档图覆盖)；不接入每次维护或提交。覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。
+用户需要找出未纳入文档图的文件时，才按[检查文档图覆盖](tools/README.md#检查文档图覆盖)显式运行检查；不接入每次维护或提交。覆盖只表示路径归入了某个职责节点，正文是否被使用、引用是否正确仍须另行判断。
 
 ## 游戏项目开发场景图
 
@@ -117,16 +117,16 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ## 依据与检查
 
-开发场景图的业务依据如下；文档图的来源与检查范围见上文“文档系统关系图”，格式依据见 [Graph_Map 文件格式](graph-map-format.md#依据与校验)。
+开发场景图的业务依据如下；文档图的来源与检查范围见上文“文档系统关系图”，格式依据见 Graph_Map 文件格式的[依据与校验](graph-map-format.md#依据与校验)。
 
 | 检查内容 | 本仓库依据 |
 | --- | --- |
 | 节点名称与完整集合 | [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json) |
-| 场景前提、出口和对应提示词 | [场景速查索引](../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../prompt-scenarios/scenarios/README.md#收录什么) |
+| 场景前提、出口和对应提示词 | [场景速查索引](../prompt-scenarios/scenarios/scenario-index.md)、场景编写要求的[收录什么](../prompt-scenarios/scenarios/README.md#收录什么) |
 | 任务路由、Product 顺序与 GDD 前提 | [方法总览](../../project-source/methodology/00-overview.md) |
 | 授权、验证、人工验收与完成 | [Stage 0–8 `feature-execute` 执行循环](../../project-source/methodology/03-execute-loop.md) |
 | 专业工作职责 | [专业工作与来源](../../project-source/methodology/11-specialist-workflows.md) |
 
-场景集合或名称变化后，使用[场景图名称与链接检查](../prompt-scenarios/tools/README.md#检查场景图名称与链接)核对图文件。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步记录文件。
+场景集合或名称变化后，按[检查场景图名称与链接](../prompt-scenarios/tools/README.md#检查场景图名称与链接)核对图文件。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步记录文件。
 
 图内容变化还须核对既有 ID 稳定、节点及连线 ID 全局无重复、所有端点存在；按实际改动检查场景身份、连线条件、坐标、节点尺寸、折点及保存格式。

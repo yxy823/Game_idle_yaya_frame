@@ -6,9 +6,9 @@
 
 想先跟着一个真实项目走一遍，从教程开始：
 
-1. [从空白项目到第一份 Feature 计划](tutorial/01-blank-project-to-feature-plan.md)：创建项目、配置环境、整合 GDD、拆分 Product、定美术方向、做第一份计划。
-2. [完成第一个 Feature](tutorial/02-first-feature-to-done.md)：视觉样例、等待验收期间并行推进、记录验收与收尾。
-3. [修正时过时不过的测试](tutorial/03-fix-a-flaky-test.md)：交付后用维护任务修正不稳定的测试。
+1. [教程一：从空白项目到第一份 Feature 计划](tutorial/01-blank-project-to-feature-plan.md)，内容包括创建项目、配置环境、整合 GDD、拆分 Product、定美术方向和做第一份计划。
+2. [教程二：完成第一个 Feature：视觉样例、等待验收与收尾](tutorial/02-first-feature-to-done.md)，等待验收期间先并行推进别的 Feature。
+3. [教程三：交付后维护：修正时过时不过的测试](tutorial/03-fix-a-flaky-test.md)，用维护任务修正不稳定的测试。
 
 想先理解概念，按这个顺序读参考页：
 
@@ -45,5 +45,5 @@
 - **路径**：本册中的 `docs/`、`yaya/tools/` 等路径都相对生成后的游戏项目根目录。示例里的 ID、路径和输出只是示意，使用时换成实际对象。
 - **证据**：手册只解释工具和契约，不提供任何已运行的证据。各种结果分别能证明什么，见[每种结果能证明什么](methods-and-tools/commands-and-evidence.md#每种结果能证明什么)。
 - **适用范围**：见[框架入口的使用范围](../README.md#使用范围)。
-- **权威来源**：行为以项目自身的 [AGENTS 源](../../project-source/Project_AGENTS.md)、[方法总览](../../project-source/methodology/00-overview.md)、[Skill](../../project-source/skills/) 和[项目检查与测试工具](../../project-source/tools/README.md)为准。本册与它们不一致时，以它们为准并修正本册。
+- **权威来源**：行为以项目自身的 AGENTS 源文件 [Project_AGENTS.md](../../project-source/Project_AGENTS.md)、[方法总览](../../project-source/methodology/00-overview.md)、[Skill](../../project-source/skills/) 和[项目检查与测试工具](../../project-source/tools/README.md)为准。本册与它们不一致时，以它们为准并修正本册。
 - **分发**：本册、完整提示词库和维护文档都不复制到生成项目，也不与项目同步。

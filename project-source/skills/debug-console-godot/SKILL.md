@@ -27,7 +27,7 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 2. **插槽说明与试播动作**：每个插槽和参数都要有中文名，写在 `dev/debug/<对象>/slots/<插槽路径>/slot.gd`；真实游戏里要等很久才出现的效果，登记“点一下就看到”的试播动作。
 3. **固定局面**：需要反复看同一段流程时，在 `dev/debug/<对象>/debug_target.gd` 登记固定局面。原则见 13 号的[固定局面、试播与测试状态](../../../yaya/methodology/13-debug-console-and-validation.md#固定局面试播与测试状态)。
 4. **调试存档**：项目还没按自己的存档系统改写 `dev/debug/debug_project.gd` 时，先改写它（见[入口与项目挂钩](../../../dev/debug/_shared/README.md#入口与项目挂钩)），否则调试会话会写进用户的真实存档。
-5. **登记与测试**：在[项目的调试台说明](../../../dev/debug/README.md#调试对象与候选)登记调试对象、插槽、候选和固定局面；对象专有的测试放在 `dev/debug/<对象>/tests/`，并把这个目录加进 `debug_console` 的 `unit_test_paths`，见 `yaya/methodology/08-test-traceability-and-evidence.md` 的[调试台组件](../../../yaya/methodology/08-test-traceability-and-evidence.md#调试台组件)。
+5. **登记与测试**：在项目调试台说明的[调试对象与候选](../../../dev/debug/README.md#调试对象与候选)中登记调试对象、插槽、候选和固定局面；对象专有的测试放在 `dev/debug/<对象>/tests/`，并把这个目录加进 `debug_console` 的 `unit_test_paths`，见 `yaya/methodology/08-test-traceability-and-evidence.md` 的[调试台组件](../../../yaya/methodology/08-test-traceability-and-evidence.md#调试台组件)。
 
 ## 候选
 

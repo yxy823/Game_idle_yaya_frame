@@ -38,7 +38,7 @@
 
 获准写入时，按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
 
-同一次编写按[专业来源归属](../../../../../project-source/methodology/11-specialist-workflows.md#归属与决策)保存本次已确定的专业规格。GDD 保留整体目标与玩法规则，专业规格进入对应固定正文；原先写在 GDD 的当前规格迁入所属位置并更新引用。
+同一次编写按 11 号规范的[归属与决策](../../../../../project-source/methodology/11-specialist-workflows.md#归属与决策)保存本次已确定的专业规格。GDD 保留整体目标与玩法规则，专业规格进入对应固定正文；原先写在 GDD 的当前规格迁入所属位置并更新引用。
 
 同一次编写按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
 

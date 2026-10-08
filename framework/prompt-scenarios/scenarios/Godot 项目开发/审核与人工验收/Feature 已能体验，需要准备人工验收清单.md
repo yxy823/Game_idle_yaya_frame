@@ -19,11 +19,11 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → Feature 已能体验，需要准备人工验收清单”。填入上述材料。本页由当前 Agent 使用项目自己的 `manual-acceptance-godot` Skill；[源码入口](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)仅供核对。
+使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → Feature 已能体验，需要准备人工验收清单”。填入上述材料。本页由当前 Agent 使用项目自己的 [$manual-acceptance-godot](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
 
 **S1｜核对人工义务**
 
-当前 Agent 按[人工验收文件](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)核对 Feature 的 `verification.acceptance_mode` 和全部 `manual_checks`、`manual_regression`，不给 automated 任务生成空清单。
+当前 Agent 按人工验收文件契约的[定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)核对 Feature 的 `verification.acceptance_mode` 和全部 `manual_checks`、`manual_regression`，不给 automated 任务生成空清单。
 
 **S2｜编写待验清单**
 

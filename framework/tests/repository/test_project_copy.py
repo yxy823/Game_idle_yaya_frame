@@ -139,7 +139,9 @@ class ProjectCopyTests(unittest.TestCase):
             terminology = output / "docs/terminology.md"
             with terminology.open("a", encoding="utf-8", newline="\n") as handle:
                 handle.write("| 晶石 | 游戏中唯一的资源 | 水晶 |\n")
-            (output / "docs/guide.md").write_text("# 指南\n\n收集水晶。\n", encoding="utf-8", newline="\n")
+            # 链接文字不是目标的一级标题“项目术语”，链接文字检查拒绝。
+            (output / "docs/guide.md").write_text("# 指南\n\n收集水晶。\n\n见[词表](terminology.md)。\n",
+                                                 encoding="utf-8", newline="\n")
             rules = output / "docs/project-rules.md"
             rules.write_text(rules.read_text(encoding="utf-8") + "\n提交前应运行检查。\n", encoding="utf-8", newline="\n")
             rejected = commit()
@@ -148,9 +150,12 @@ class ProjectCopyTests(unittest.TestCase):
             self.assertIn("docs/guide.md:3:3: [TERM-FORBIDDEN]", report)
             self.assertIn("docs/project-rules.md:", report)
             self.assertIn("[WORDING-HARD]", report)
+            self.assertIn("docs/guide.md:5  [LINK-TEXT]", report)
+            self.assertIn("链接文字检查", report)
             self.assertIn("提交被拒绝", report)
 
-            (output / "docs/guide.md").write_text("# 指南\n\n收集晶石。\n", encoding="utf-8", newline="\n")
+            (output / "docs/guide.md").write_text("# 指南\n\n收集晶石。\n\n见[项目术语](terminology.md)。\n",
+                                                 encoding="utf-8", newline="\n")
             rules.write_text(rules.read_text(encoding="utf-8").replace("提交前应运行检查。", "提交前运行检查。"),
                              encoding="utf-8", newline="\n")
             accepted = commit()

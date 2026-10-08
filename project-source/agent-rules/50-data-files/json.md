@@ -6,7 +6,7 @@
 
 - 生产加载器使用 `JSON` 实例的 `parse()`，先检查返回的 `Error`。失败时用 `get_error_line()` 和 `get_error_message()` 报告位置。
 - 不用 `JSON.parse_string()` 的返回值是否为 `null` 判断失败：合法的 JSON `null` 也返回 `null`。
-- 解析成功只说明语法可接受。结构和取值仍按 [schema](schema-identity-and-migration.md) 校验。
+- 解析成功只说明语法可接受。结构和取值仍按[数据 schema、身份与迁移](schema-identity-and-migration.md)中的 schema 校验。
 - 注意：Godot 的解析器比 JSON 标准宽松，以下写法都不报错：
   - 对象中的重复键，后出现的值静默覆盖前一个；
   - 对象和数组末尾多余的逗号。
