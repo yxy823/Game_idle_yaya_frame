@@ -169,6 +169,8 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试和依赖方向测试。
 7. 删除 `adoption-log.md` 中已处理的行，全部处理完时删除该文件。
 
+第 5、7 步的删除被权限拦截时，不要换别的方式绕过：把完整的删除命令交给用户执行，其余步骤照常继续。
+
 `adoption-log.md` 不进版本库，只是 Agent 收尾的待办信号。收尾改动的提交范围见 `AGENTS.md` 的[开始修改前](../../../AGENTS.md#开始修改前)。`dev/debug/` 下新增或改动的插槽预设与组合属于用户的调试草稿，收尾时随采纳一并提交；没有采纳时，用户要求或下次收尾时提交。
 
 ## 从编辑器启动
