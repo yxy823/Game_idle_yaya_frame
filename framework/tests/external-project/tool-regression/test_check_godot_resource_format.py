@@ -25,8 +25,8 @@ class GodotResourceFormatTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(text, encoding="utf-8")
 
-    def run_check(self) -> subprocess.CompletedProcess[str]:
-        return subprocess.run([sys.executable, "-B", str(SCRIPT), "--root", str(self.root)],
+    def run_check(self, *paths: str) -> subprocess.CompletedProcess[str]:
+        return subprocess.run([sys.executable, "-B", str(SCRIPT), "--root", str(self.root), *paths],
                               capture_output=True, text=True, encoding="utf-8")
 
     def test_unsaved_text_resource_is_reported_outside_excluded_directories(self) -> None:
@@ -87,6 +87,18 @@ class GodotResourceFormatTests(unittest.TestCase):
         self.assertIn("assets/new.png: missing .import file", result.stdout)
         self.assertIn("assets/click.WAV: missing .import file", result.stdout)
         self.assertNotIn("assets/old.png:", result.stdout)
+
+    def test_listed_files_skip_excluded_locations(self) -> None:
+        # 提交钩子把全部暂存文件列为参数，插件和 Godot 忽略的目录仍不检查。
+        self.write("game/bad.tscn", UNSAVED)
+        self.write("addons/vendor/bad.tscn", UNSAVED)
+        self.write("samples/.gdignore", "")
+        self.write("samples/bad.tscn", UNSAVED)
+        result = self.run_check("game/bad.tscn", "addons/vendor/bad.tscn", "samples/bad.tscn")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("game/bad.tscn:1: header has no uid", result.stdout)
+        self.assertNotIn("addons/", result.stdout)
+        self.assertNotIn("samples/", result.stdout)
 
     def test_missing_root_is_an_error_not_an_empty_pass(self) -> None:
         self.root = self.root / "missing"

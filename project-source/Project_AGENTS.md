@@ -154,7 +154,7 @@ Feature 中各类内容的动作与权限见 [3D 文档检查点](yaya/methodolo
 - 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
 - Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
 - 本地提交不代表任务完成或人工验收；Feature 的完成由 [03 执行规范](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
-- [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞或链接问题时，按输出改正本次改过的文档，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
+- [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞、链接或资源格式问题时，按输出改正本次改过的文件，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
 - 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
 
 示例：

@@ -2,7 +2,7 @@
 
 [框架维护](../README.md)
 
-本页记录随项目分发的五个编辑器效率插件：上游来源、当前安装的版本、本地修正、兼容性实测结果，以及升级时要核对什么。
+本页是随项目分发的全部第三方编辑器插件的唯一登记处：五个编辑器效率插件，以及测试用的 gdUnit4 和静态检查用的 GDScript linter。记录上游来源、当前安装的版本、本地修正、兼容性实测结果，以及升级时要核对什么。
 
 - **源码位置**：`project-source/addons/`，通过[复制清单](../../project-creation/project-files.json)分发。
 - **本页位置**：只在框架维护目录中，不复制到生成项目。
@@ -27,6 +27,15 @@ Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能
 
 五个插件均采用 MIT 许可证。保留包内许可证，包括 Kanban 的 `uuid/LICENSE`。Inspector Tabs 与 Signal Lens 的资产库源码包遗漏根许可证，本次从各自同一固定提交的原始 `LICENSE` 补入插件目录；不改许可证正文。
 
+### 测试与静态检查插件
+
+两者不属于效率插件，在项目中的用法见 Godot 项目手册的[插件和文本约定](../../godot-project-manual/foundations/configuration.md#插件和文本约定)。表中是仓库保存的版本，不代表上游最新版本。
+
+| 插件与原始仓库 | 包内 `plugin.cfg` 版本 | 固定源码 | 本地修改 |
+| --- | --- | --- | --- |
+| [gdUnit4](https://github.com/MikeSchulze/gdUnit4) | `6.2.0` | 未记录 | 没有修改源码，只补入插件图片的 `.import` 文件 |
+| [GDScript linter](https://github.com/graydwarf/godot-gdscript-linter) | `3.3.0` | [aeeae7d9](https://github.com/graydwarf/godot-gdscript-linter/tree/aeeae7d9af260f5e17f7c95ab5e77790d48e46e2) | Yaya 补丁，原因和修改的文件见 [YAYA_PATCH.md](../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前核对补丁和许可证 |
+
 ## 分发与启用
 
 | 分发目录（相对生成项目） | 默认状态 | 使用与维护要点 |
@@ -43,7 +52,7 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 ## 本地修正
 
-本地修改限定在下列 Kanban 与 Script-IDE 源码，包内版本分别保留 `2.1` 与 `2.2.5`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
+五个效率插件的本地修改限定在下列 Kanban 与 Script-IDE 源码（linter 补丁见[测试与静态检查插件](#测试与静态检查插件)），包内版本分别保留 `2.1` 与 `2.2.5`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
 
 | 文件 | 原问题与本地处理 |
 | --- | --- |

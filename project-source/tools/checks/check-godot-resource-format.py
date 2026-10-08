@@ -25,22 +25,20 @@ IMPORT_SIDECAR_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".bmp", ".t
                            ".wav", ".ogg", ".mp3", ".ttf", ".otf"}
 
 
+def excluded(root: Path, path: Path) -> bool:
+    relative = path.relative_to(root)
+    if any(part in EXCLUDED_DIRECTORY_NAMES for part in relative.parts[:-1]):
+        return True
+    # 调试台运行时保存的预设与组合不经编辑器重存，不写 UID。
+    if DEBUG_CONSOLE_SAVES_RE.fullmatch(relative.as_posix()):
+        return True
+    # Godot 不导入含 .gdignore 的目录，其中的文件不会被编辑器改写。
+    return any((root / parent / ".gdignore").is_file() for parent in relative.parents)
+
+
 def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
-    files = []
-    for path in root.rglob("*"):
-        if path.suffix.lower() not in suffixes or not path.is_file():
-            continue
-        parents = path.relative_to(root).parents
-        if any(part in EXCLUDED_DIRECTORY_NAMES for part in path.relative_to(root).parts[:-1]):
-            continue
-        # 调试台运行时保存的预设与组合不经编辑器重存，不写 UID。
-        if DEBUG_CONSOLE_SAVES_RE.fullmatch(path.relative_to(root).as_posix()):
-            continue
-        # Godot 不导入含 .gdignore 的目录，其中的文件不会被编辑器改写。
-        if any((root / parent / ".gdignore").is_file() for parent in parents):
-            continue
-        files.append(path)
-    return sorted(files)
+    return sorted(path for path in root.rglob("*")
+                  if path.suffix.lower() in suffixes and path.is_file() and not excluded(root, path))
 
 
 def problems(path: Path) -> list[tuple[int, str]]:
@@ -69,7 +67,8 @@ def main() -> int:
         return 2
     try:
         if args.paths:
-            listed = [root / path for path in args.paths]
+            # 列出的文件同样跳过默认范围排除的位置，提交钩子因此可以直接传入全部暂存文件。
+            listed = [path for path in (root / name for name in args.paths) if not excluded(root, path)]
             files = [path for path in listed if path.suffix in {".tscn", ".tres"}]
             sources = [path for path in listed if path.suffix in UID_SIDECAR_SUFFIXES]
             assets = [path for path in listed if path.suffix.lower() in IMPORT_SIDECAR_SUFFIXES]

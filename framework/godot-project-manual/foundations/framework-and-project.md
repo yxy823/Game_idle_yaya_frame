@@ -26,7 +26,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 - **参数**：`--output` 是目标项目目录；`-B` 让 Python 不生成字节码缓存。
 - **前提**：需要可用的 Git 和已配置的提交身份。
-- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，再创建本地初始提交。初始提交也经过[提交钩子](../../../project-source/tools/README.md#提交钩子)的术语、措辞和链接检查。
+- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，再创建本地初始提交。初始提交也经过[提交钩子](../../../project-source/tools/README.md#提交钩子)的术语、措辞、链接和资源格式检查。
 - **不做什么**：不安装依赖、不运行环境检查或 Godot、不生成需求、不运行测试、不配置远程或推送。
 - **成功消息**：显示的复制数量是清单条目数，不是实际文件数。
 

@@ -134,7 +134,7 @@ CLI 和可选的编辑器面板都以项目根目录的 `gdlint.json` 为准：
 
 ## 插件和文本约定
 
-随项目分发的 gdUnit4 版本为 `6.2.0`，GDScript linter 为 `3.3.0`（以各自 `plugin.cfg` 为准）。这是仓库中保存的版本，不代表上游最新版本。linter 有本地修改，原因和范围记录在 [YAYA_PATCH.md](../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)，升级前要核对补丁和许可证。
+随项目分发的 gdUnit4 用于测试，GDScript linter 用于静态检查；linter 带有本地补丁，版本以各自的 `plugin.cfg` 为准。
 
 空白项目还附带五个编辑器效率插件：
 
@@ -145,7 +145,7 @@ CLI 和可选的编辑器面板都以项目根目录的 `gdlint.json` 为准：
 | Edit Resources as Table 2 | 安装但停用 | 在当前插件组合中退出时有泄漏诊断，需要时再启用 |
 | Signal Lens | 安装但停用 | 启用时注册调试用 Autoload，停用时移除 |
 
-这些插件的上游、固定版本、兼容性实测与升级核对记录在[编辑器插件版本记录](../../maintenance/dependencies/editor-plugin-versions.md)，该记录只在框架维护目录，不进入生成项目；项目里的简短说明见 [README](../../../project-source/Project_README.md#编辑器效率插件)。
+以上七个插件的上游、固定版本、本地修改、兼容性实测与升级核对统一记录在[编辑器插件版本与兼容性记录](../../maintenance/dependencies/editor-plugin-versions.md)，该记录只在框架维护目录，不进入生成项目；项目里的简短说明见 [README](../../../project-source/Project_README.md#编辑器效率插件)。
 
 `.editorconfig` 约定：
 

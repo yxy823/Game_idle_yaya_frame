@@ -1,6 +1,6 @@
 # 项目检查与测试工具
 
-这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中三项检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
+这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中四项检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
 yaya/tools/
@@ -120,17 +120,18 @@ $LASTEXITCODE
 
 ## 提交钩子
 
-`.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件时，它依次运行三项检查，任何一项失败就拒绝提交：
+`.githooks/pre-commit` 在每次 `git commit` 时运行，按本次暂存的文件类型选择检查，任何一项失败就拒绝提交：
 
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
 | [术语检查](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
 | [措辞检查](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
-| [链接检查](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
+| [链接检查](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效；本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 有失效链接 |
+| [资源格式检查](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
 
-没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
+暂存的文件都不属于这些类型时直接通过。资源格式检查拦住的是不经 Feature 完成步骤的改动，例如实验或 Feature 外的修复：场景和资源用 [`resave_godot_files.gd`](#resave_godot_filesgd) 重存，缺 `.uid` 或 `.import` 时运行[首次 Godot 扫描](#首次-godot-扫描)的命令，把生成的文件一起暂存。钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
 
-被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。创建器已经在新项目中设置好钩子；重新 clone 项目后，在项目根目录运行一次：
+被拒绝后，按输出中的位置改正文件，重新 `git add` 再提交。创建器已经在新项目中设置好钩子；重新 clone 项目后，在项目根目录运行一次：
 
 ```powershell
 git config core.hooksPath .githooks
@@ -306,14 +307,14 @@ python -B yaya/tools/checks/check-wording.py --list
 
 ### check-godot-resource-format.py
 
-以文本方式写过 `.tscn`、`.tres` 却漏了[重新保存](#resave_godot_filesgd)，下次打开编辑器时会被改写；新建脚本、Shader 或素材后没有运行 Godot 扫描，就没有 `.uid` 或 `.import`，之后的扫描会冒出未提交的文件。两者都会产生与当前工作无关的差异。本检查在 Feature 完成时运行，也可以在重存后单独运行：
+以文本方式写过 `.tscn`、`.tres` 却漏了[重新保存](#resave_godot_filesgd)，下次打开编辑器时会被改写；新建脚本、Shader 或素材后没有运行 Godot 扫描，就没有 `.uid` 或 `.import`，之后的扫描会冒出未提交的文件。两者都会产生与当前工作无关的差异。本检查在 Feature 完成时运行，[提交钩子](#提交钩子)也会对暂存的文件运行它；也可以在重存后单独运行：
 
 ```powershell
 python -B yaya/tools/checks/check-godot-resource-format.py
 ```
 
 - **检查内容**：`.tscn`、`.tres` 的文件头带 `uid`、不含 `load_steps`，每条 `[ext_resource]` 带 `uid`；`.gd`、`.gdshader` 旁边有同名 `.uid` 文件；`.png`、`.jpg`、`.jpeg`、`.webp`、`.svg`、`.bmp`、`.tga`、`.wav`、`.ogg`、`.mp3`、`.ttf`、`.otf` 旁边有同名 `.import` 文件。
-- **默认范围**：项目内上述类型的全部文件；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录、含 `.gdignore` 的目录，以及调试台运行时保存的插槽预设与组合（`dev/debug/*/slots/**/presets/`、`dev/debug/*/combos/`）。也可以在参数中列出相对项目根目录的文件，只查这些。
+- **默认范围**：项目内上述类型的全部文件；跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports`、`addons` 的目录、含 `.gdignore` 的目录，以及调试台运行时保存的插槽预设与组合（`dev/debug/*/slots/**/presets/`、`dev/debug/*/combos/`）。也可以在参数中列出相对项目根目录的文件，只查这些；列出的文件落在上述排除位置时同样跳过。
 - **局限**：只发现漏掉重存和漏掉扫描这两种情况；编辑器保存时的其他格式调整，以及 `.uid`、`.import` 是否已经提交，不在检查范围内，提交前仍看 `git status`。
 
 退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因：格式问题用 `resave_godot_files.gd` 重存，缺 `.uid` 或 `.import` 就运行[首次 Godot 扫描](#首次-godot-扫描)的命令并提交生成的文件，然后重跑；`2` 项目根目录不存在或文件读取失败。
