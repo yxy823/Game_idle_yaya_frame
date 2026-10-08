@@ -27,7 +27,7 @@
 
 **S2｜保存交付范围**
 
-编写 docs/product/NN-<delivery>.md，记录 GDD 与专业来源映射、已有功能衔接和交付场景，必要时更新总览本项边界与链接。GDD 保存游戏设计正文，Product 不复制玩法、状态或数值。
+编写 docs/product/NN-<delivery>.md，记录 GDD 与专业来源映射、已有功能衔接和交付场景；总览中本项的边界或链接与详情不一致时，同步更新总览。GDD 保存游戏设计正文，Product 不复制玩法、状态或数值。
 
 按[交付决策的归属](../../../../../project-source/methodology/01-product-doc-structure.md#交付决策的归属)，将总览中仅涉及本项的未决交付问题正文迁入详情，总览保留引用；跨 Product 分工、前置或顺序问题继续归总览，游戏设计问题引用 GDD 开放问题。
 

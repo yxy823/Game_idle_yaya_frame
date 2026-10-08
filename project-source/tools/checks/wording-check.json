@@ -50,6 +50,13 @@
       "suggestion": "写出数字、名称或条件；不知道数字时删掉"
     },
     {
+      "name": "必要时",
+      "level": "review",
+      "scope": "all",
+      "pattern": "必要时",
+      "suggestion": "写出触发条件，或改用“需要时”"
+    },
+    {
       "name": "基本上/大致",
       "level": "review",
       "scope": "all",

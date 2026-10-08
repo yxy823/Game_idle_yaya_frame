@@ -42,7 +42,7 @@
 
 如果动画在推进，导致前后几次观察无法比较，就把相关的进度或诊断用时间输入固定下来，并对齐会影响结果的场景、相机、视口、触发条件和初始化条件。这是一次有针对性的比较，不能证明整个运行时是确定性的。
 
-暂停场景不会冻结 Shader 内置的 `TIME`；[Godot 4.7 CanvasItem 时间约定](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#global-built-ins)记载了这一区别。比较需要时，在已有的时钟约定内使用受控的输入。必要时重置其他相关状态，不要以为固定了时间也就重置了粒子模拟或玩法。
+暂停场景不会冻结 Shader 内置的 `TIME`；[Godot 4.7 CanvasItem 时间约定](https://docs.godotengine.org/en/4.7/tutorials/shaders/shader_reference/canvas_item_shader.html#global-built-ins)记载了这一区别。比较需要时，在已有的时钟约定内使用受控的输入。粒子模拟、玩法等其他状态也影响比较结果时，一并重置它们；固定时间不会重置这些状态。
 
 图片可以保存有用的证据，但不是每个缺陷都需要截图或黄金图像系统。证据要与结论对应：
 
