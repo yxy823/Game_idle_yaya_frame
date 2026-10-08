@@ -9,6 +9,7 @@ const Writer := preload("res://dev/debug/_shared/default_writer.gd")
 const Params := preload("res://dev/debug/_shared/tests/fixtures/params.gd")
 const Session := preload("res://dev/debug/_shared/debug_session.gd")
 const Target := preload("res://dev/debug/_shared/debug_target.gd")
+const Commands := preload("res://dev/debug/_shared/preset_commands.gd")
 const ErrorAssert := preload("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd")
 
 var _directory: String
@@ -137,6 +138,78 @@ func test_delete_lists_cross_target_references_and_changes_them_to_game_values()
 		ResourceLoader.CACHE_MODE_IGNORE) as Combo
 	assert_str(combo.entries[_slot.id]).is_empty()
 	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "shared"))).is_false()
+
+
+## A combo file that cannot be read stops saving a preset another combo may use.
+func test_saving_stops_when_a_combo_cannot_be_read() -> void:
+	_slot.live.count = 4
+	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "uses-shared", [_slot]).error).is_equal(OK)
+	assert_int(ResourceSaver.save(Curve.new(), _store.combo_path("sample", "broken"))).is_equal(OK)
+	_slot.live.count = 9
+	var reports: Array[Dictionary] = []
+	var commands := Commands.new(_session(), null, func(result: Dictionary) -> void:
+		reports.append(result), func() -> void: pass)
+	commands.save_preset(_slot, "保存")
+	var slots: Array[Slot] = [_slot]
+	assert_bool(commands.save_dirty(slots, "关闭前").ok).is_false()
+	assert_int(reports.size()).is_equal(2)
+	for result in reports:
+		assert_str(result.text).is_equal("没能检查哪些组合用到这个预设：文件内容和当前参数对不上。"
+			+ "有组合文件读不出来，预设和当前改动都没有变。请让 Agent 检查")
+	var stored := ResourceLoader.load(_store.preset_path(_slot.id, "shared"), "",
+		ResourceLoader.CACHE_MODE_IGNORE) as Preset
+	assert_int(stored.fields.count).is_equal(4)
+	assert_bool(_slot.is_dirty()).is_true()
+
+
+func test_failed_preset_delete_puts_the_combos_back() -> void:
+	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "first", [_slot]).error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "second", [_slot]).error).is_equal(OK)
+	var preset := _store.preset_path(_slot.id, "shared")
+	# A read-only file cannot be deleted on Windows.
+	assert_int(FileAccess.set_read_only_attribute(preset, true)).is_equal(OK)
+	var result := _store.delete_slot(_slot.id, "shared")
+	assert_int(FileAccess.set_read_only_attribute(preset, false)).is_equal(OK)
+	assert_int(result.error).is_not_equal(OK)
+	assert_bool(result.has("unrestored")).is_false()
+	assert_bool(FileAccess.file_exists(preset)).is_true()
+	for combo_name: String in ["first", "second"]:
+		var combo := ResourceLoader.load(_store.combo_path("sample", combo_name), "",
+			ResourceLoader.CACHE_MODE_IGNORE) as Combo
+		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#shared")
+
+
+## Missing presets, changed field types and unreadable combos show game values and are named;
+## they never count as "the same".
+func test_compare_names_the_items_it_could_not_read() -> void:
+	var session := _session()
+	_slot.live.count = 5
+	assert_int(_store.save_slot(_slot, "five").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "five-combo", [_slot]).error).is_equal(OK)
+	assert_int(DirAccess.remove_absolute(_store.preset_path(_slot.id, "five"))).is_equal(OK)
+	var preset := Preset.new()
+	preset.slot_id = _slot.id
+	preset.fields = Codec.pack_fields(_slot.live).value
+	preset.fields.count = "five"
+	assert_int(ResourceSaver.save(preset, _store.preset_path(_slot.id, "typed"))).is_equal(OK)
+	_store.load_slot(_slot, "typed")
+	assert_int(_store.save_combo("sample", "typed-combo", [_slot]).error).is_equal(OK)
+	assert_int(ResourceSaver.save(Curve.new(), _store.combo_path("sample", "broken"))).is_equal(OK)
+	_slot.live.count = 7
+	for combo_name: String in ["five-combo", "typed-combo"]:
+		session.choose_compare(combo_name, false)
+		assert_int(session.compare_differences()).is_equal(1)
+		assert_str(session.toggle_compare(false).text).is_equal("正在显示：组合 %s（只读，按 ` 回到当前改动）"
+			% combo_name + "；其中 1 项读不出来，按游戏原值比较")
+		assert_int(_slot.live.count).is_equal(3)
+		session.toggle_compare(false)
+		assert_int(_slot.live.count).is_equal(7)
+	_slot.live.count = 3
+	session.choose_compare("broken", false)
+	assert_str(session.toggle_compare(false).text).is_equal(
+		"当前设定和组合 broken完全相同；其中 1 项读不出来，按游戏原值比较")
 
 
 func test_default_writer_keeps_uid_and_serializes_subresources() -> void:

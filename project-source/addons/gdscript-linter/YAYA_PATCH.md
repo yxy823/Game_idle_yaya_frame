@@ -42,3 +42,12 @@ Compare the pinned upstream base, these local changes, and the proposed new upst
 - `dock.gd`: when `gdlint.json` failed to load, Scan shows the configuration error and runs no analysis instead of reporting results from default or partially loaded settings. Saving settings still relies on the existing `save_to_json` error output.
 
 `framework/tests/external-project/tool-regression/gdscript_lint_contracts.gd` covers the one-line case.
+
+## Missing editor config, interrupted writes and unreadable directories (2026-10-09)
+
+- `dock.gd`: a missing or unopenable `gdlint.json` blocks Scan the same way an invalid one does. The dock fills `configuration_error` when the loader returns false without a reason, the same rule as `analyze-cli.gd`; the generic loader keeps its optional-file behavior for other callers. Reloading the project after restoring the file scans again.
+- `analyzer/analysis-config.gd`: `write_text_replacing` writes the whole text to `<path>.tmp`, checks the write, then replaces the target. `save_to_json` uses it, so a failed write keeps the previous config and returns false with the existing error output.
+- `analyzer/analyze-cli.gd`: the JSON report goes through the same helper; a failed write prints `Cannot write JSON report` and exits 3 instead of leaving a truncated report.
+- `analyzer/code-analyzer.gd`: a directory that cannot be opened adds `Cannot open directory: <path>` to `input_errors` in both directory walks, so the CLI exits 3 even when sibling directories still provide scripts.
+
+`framework/tests/external-project/tool-regression/gdscript_lint_entry_contracts.gd` covers the blocked report and config writes and a dangling junction beside a readable directory; `gdscript_lint_editor_contracts.gd` covers the missing and unopenable editor config and the restored one.

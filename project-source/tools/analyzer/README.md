@@ -129,7 +129,7 @@ worker 一次只分析一个文件，不做排队、超时和批量比较；需�
 请求与输出：
 
 - 输入为 JSON 文件，包含 `path`、`asset_type`（`audio` 或 `image`）、可选 `modules`、`parameters` 与 `force`。
-- 单份 UTF-8 JSON 上限 2 MiB；`--output` 时原子写文件且 stdout 为空，省略时写 stdout；stderr 只用于诊断。
+- 请求文件和结果的单份 UTF-8 JSON 都以 2 MiB 为上限；请求超限、不是 JSON 对象，或 `path`、`asset_type` 不是字符串时，返回错误码为 `invalid_request` 的 failed 结果；`--output` 时原子写文件且 stdout 为空，省略时写 stdout；stderr 只用于诊断。
 - 结果包含 `schema_version`、`status`、`asset`、`analyzer`、`metrics`、`series`、`warnings`、`errors` 和 `cache`。`analyzer.backend` 是后端名称到具体版本的映射（含 FFmpeg 库版本），承担 backend_version 的含义，便于组合多个库。协议不直接暴露后端的私有输出。
 
 指标与序列条目示例：

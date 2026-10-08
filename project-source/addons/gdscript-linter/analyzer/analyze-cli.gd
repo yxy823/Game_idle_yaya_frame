@@ -336,13 +336,11 @@ func _output_json(result) -> void:
 	payload["presentation_filtered"] = not _severity_filter.is_empty() or _top_limit > 0
 	var serialized := JSON.stringify(payload, "\t")
 	if not _output_file.is_empty():
-		var output := FileAccess.open(_output_file, FileAccess.WRITE)
-		if output == null:
-			printerr("Cannot write JSON report: " + _output_file)
+		var failure: String = AnalysisConfigClass.write_text_replacing(_output_file, serialized + "\n")
+		if not failure.is_empty():
+			printerr("Cannot write JSON report: " + failure)
 			_exit_code = 3
 			return
-		output.store_string(serialized + "\n")
-		output.close()
 	print(serialized)
 
 # gdlint:ignore-function:print-statement,long-function - CLI clickable output

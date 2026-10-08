@@ -34,6 +34,7 @@ var _draft_contents: Dictionary = {}
 var _combo_baseline: Dictionary = {}
 var _pins: PackedStringArray = []
 var _compare_key: String = "!"
+var _compare_checked: Dictionary = {}
 var _compare_contents: Dictionary = {}
 
 
@@ -47,6 +48,8 @@ func select_target(identity: String) -> Dictionary:
 	if target == null:
 		return {"error": ERR_DOES_NOT_EXIST, "message": identity,
 			"text": "找不到调试对象 %s：游戏里没有它的调参文件" % identity}
+	# The previous target's slots keep their unsaved edits; a shown comparison gives them back.
+	_leave_compare()
 	var activated: Dictionary = target.activate(debug_root)
 	if activated.error != OK:
 		return activated
@@ -66,9 +69,6 @@ func select_target(identity: String) -> Dictionary:
 	selected = null
 	combo_name = ""
 	compare_combo = ""
-	comparing = false
-	pending_compare = false
-	_draft.clear()
 	_combo_baseline = references()
 	invalidate_compare()
 	changed.emit()
@@ -161,21 +161,28 @@ func compare_name() -> String:
 func choose_compare(value: String, locked: bool) -> Dictionary:
 	compare_combo = value
 	invalidate_compare()
+	var loaded := {"error": OK, "text": "对比对象改为" + compare_name()}
 	if comparing and not pending_compare:
 		if locked:
 			_reload_compare = true
 		else:
-			_load_compare()
+			var shown := _load_compare()
+			if shown.error != OK or not shown.issues.is_empty():
+				loaded = shown
 	changed.emit()
-	return {"error": OK, "text": "对比对象改为" + compare_name()}
+	return loaded
 
 
 ## Switches between the current edits and the comparison. With nothing to compare it only
 ## hints; while playback is locked the switch waits for the next pass.
 func toggle_compare(deferred: bool) -> Dictionary:
 	if not comparing and not pending_compare and compare_differences() == 0:
-		return {"error": OK, "text": "还没有改动可对比" if compare_combo.is_empty()
-			else "当前设定和%s完全相同" % compare_name()}
+		var checked := _compare_result()
+		if checked.error != OK:
+			return _unreadable(checked)
+		var same := "还没有改动可对比" if compare_combo.is_empty() \
+			else "当前设定和%s完全相同" % compare_name()
+		return {"error": OK, "issues": checked.issues, "text": same + _fallback_note(checked)}
 	pending_compare = not pending_compare
 	changed.emit()
 	if not deferred:
@@ -199,12 +206,7 @@ func _apply_compare() -> Dictionary:
 	pending_compare = false
 	_reload_compare = false
 	if comparing:
-		comparing = false
-		for slot in slots:
-			if _draft.has(slot.id):
-				slot.restore(_draft[slot.id])
-		_draft.clear()
-		_draft_contents.clear()
+		_leave_compare()
 		changed.emit()
 		return {"error": OK, "text": "正在显示：当前改动"}
 	_draft.clear()
@@ -215,13 +217,56 @@ func _apply_compare() -> Dictionary:
 	return _load_compare()
 
 
-func _load_compare() -> Dictionary:
-	var stored := _compare_fields()
+## Puts the current edits back when the comparison is shown and drops any pending switch.
+func _leave_compare() -> void:
+	if comparing:
+		for slot in slots:
+			if _draft.has(slot.id):
+				slot.restore(_draft[slot.id])
+	comparing = false
+	pending_compare = false
+	_reload_compare = false
+	_draft.clear()
+	_draft_contents.clear()
+
+
+## Slots of every target opened in this session, each once: unsaved edits stay in the live
+## resources after switching targets, so closing checks all of them.
+func opened_slots() -> Array[Slot]:
+	var result: Array[Slot] = []
+	for target: RefCounted in targets:
+		result.append_array(target.slots)
 	for slot in slots:
-		if stored.has(slot.id):
-			slot.apply_values(stored[slot.id])
+		if not slot in result:
+			result.append(slot)
+	return result
+
+
+## Shows the comparison as loading would: unreadable items show the game values and are named;
+## when it cannot be read at all, the current edits stay shown.
+func _load_compare() -> Dictionary:
+	invalidate_compare()
+	var checked := _compare_result()
+	if checked.error != OK:
+		_leave_compare()
+		changed.emit()
+		return _unreadable(checked)
+	for slot in slots:
+		Codec.apply_fields(slot.live, checked.values[slot.id])
 	changed.emit()
-	return {"error": OK, "text": "正在显示：" + compare_name() + "（只读，按 ` 回到当前改动）"}
+	return {"error": OK, "issues": checked.issues, "text": "正在显示：" + compare_name()
+		+ "（只读，按 ` 回到当前改动）" + _fallback_note(checked)}
+
+
+func _unreadable(checked: Dictionary) -> Dictionary:
+	return {"error": checked.error, "message": checked.get("message", ""),
+		"text": "没能显示%s：有插槽的游戏调参文件读不出来，仍是当前改动。请让 Agent 查看详情" % compare_name()}
+
+
+## "；其中 2 项读不出来，按游戏原值比较" when items of the comparison fell back.
+static func _fallback_note(checked: Dictionary) -> String:
+	var issues: PackedStringArray = checked.get("issues", PackedStringArray())
+	return "" if issues.is_empty() else "；其中 %d 项读不出来，按游戏原值比较" % issues.size()
 
 
 func apply_pending_compare() -> void:
@@ -232,12 +277,7 @@ func apply_pending_compare() -> void:
 ## Fields that differ between the current edits and the comparison; the current edits are
 ## the saved draft while the comparison is shown.
 func compare_differences() -> int:
-	if _compare_key != compare_combo:
-		_compare_contents.clear()
-		var stored := _compare_fields()
-		for identity: String in stored:
-			_compare_contents[identity] = Codec.content(stored[identity])
-		_compare_key = compare_combo
+	_compare_result()
 	var count := 0
 	for slot in slots:
 		var current: Variant = slot.current_content()
@@ -272,17 +312,26 @@ func invalidate_compare() -> void:
 	_draft_contents.clear()
 
 
-## Packed fields per slot of the comparison: game values, or the presets a combo names.
-func _compare_fields() -> Dictionary:
-	var names: Dictionary = {}
-	if not compare_combo.is_empty():
-		names = store.combo_presets(active.id, compare_combo, slots)
-	var result: Dictionary = {}
+## Whether the comparison could be read; items that fell back still count as readable.
+func compare_readable() -> bool:
+	return _compare_result().error == OK
+
+
+## The comparison checked the way loading a combo checks it (game values for ""), with the
+## content of each slot for counting differences; cached until invalidate_compare().
+func _compare_result() -> Dictionary:
+	if _compare_key == compare_combo:
+		return _compare_checked
+	_compare_key = compare_combo
+	_compare_contents.clear()
+	_compare_checked = store.check_combo(active.id if active != null else "", compare_combo, slots)
+	if _compare_checked.error != OK:
+		return _compare_checked
 	for slot in slots:
-		var stored := store.stored_fields(slot, String(names.get(slot.id, "")))
-		if stored.error == OK:
-			result[slot.id] = stored.value
-	return result
+		var packed := Codec.pack_values(_compare_checked.values[slot.id])
+		if packed.error == OK:
+			_compare_contents[slot.id] = Codec.content(packed.value)
+	return _compare_checked
 
 
 func _slot_changed() -> void:

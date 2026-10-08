@@ -200,7 +200,7 @@ class GdUnitRunnerTests(unittest.TestCase):
                 self.assertEqual(runner._run_tests(runner._parse_args(
                     ["--feature", "F001", "--scope", scope])), 0)
                 engine.assert_not_called()
-            self.assertEqual(json.loads(output.getvalue().splitlines()[-1])["status"], "not_required")
+            self.assertEqual(json.loads(output.getvalue())["status"], "not_required")
         self.assertFalse((self.root / "reports").exists())
         self.assertFalse((self.root / "docs/features/F001-evidence.json").exists())
 

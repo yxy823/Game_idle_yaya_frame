@@ -6,11 +6,16 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from project_context import PROJECT_ROOT
 
+import importlib.util
+import io
 import os
+import shutil
 import stat
 import subprocess
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
+from unittest import mock
 
 TOOLS = PROJECT_ROOT / "yaya/tools/ui-trial"
 PROJECT = '; Engine configuration file.\nconfig_version=5\n\n[application]\n\nconfig/name="Demo \\"Q\\""\n{extra}\n[display]\n\nwindow/size/viewport_width=800\n'
@@ -58,6 +63,44 @@ class UiTrialCopyTests(unittest.TestCase):
         self.assertTrue((self.copy / "reports/ui-trial/drivers/walk.gd").is_file())
         self.assertTrue((self.copy / "reports/.gdignore").is_file())
         self.assertIn('config/name="Demo \\"Q\\""', (self.source / "project.godot").read_text(encoding="utf-8"))
+
+    def test_worktree_git_file_is_not_copied_and_a_copy_of_it_is_removed(self) -> None:
+        shutil.rmtree(self.source / ".git")
+        pointer = "gitdir: D:/repo/.git/worktrees/game\n"
+        self.write(self.source / ".git", pointer)
+        # A copy prepared before this fix holds the source worktree's pointer.
+        self.write(self.copy / "project.godot", PROJECT.format(extra=""))
+        self.write(self.copy / ".git", pointer)
+        result = self.prepare()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertFalse((self.copy / ".git").exists())
+        # The copy's own Git data is kept on the next sync.
+        own = "gitdir: D:/other/.git/worktrees/trial\n"
+        self.write(self.copy / ".git", own)
+        result = self.prepare()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual((self.copy / ".git").read_text(encoding="utf-8"), own)
+
+    def test_an_unreadable_directory_stops_the_sync(self) -> None:
+        locked = self.source / "game/locked"
+        self.write(locked / "hidden.gd", "extends Node\n")
+        spec = importlib.util.spec_from_file_location("prepare_trial_copy", TOOLS / "prepare-trial-copy.py")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        self.addCleanup(sys.modules.pop, spec.name, None)
+        spec.loader.exec_module(module)
+        real = os.scandir
+
+        def scandir(path="."):
+            if Path(path) == locked:
+                raise PermissionError(13, "Access is denied", str(path))
+            return real(path)
+
+        errors = io.StringIO()
+        with mock.patch.object(os, "scandir", scandir), redirect_stderr(errors), redirect_stdout(io.StringIO()):
+            code = module.main(["--project", str(self.source), "--copy", str(self.copy)])
+        self.assertEqual(code, 1)
+        self.assertIn("sync stopped", errors.getvalue())
 
     def test_failed_rename_aborts_before_sync_and_the_runner_refuses_the_copy(self) -> None:
         locked = self.copy / "project.godot"

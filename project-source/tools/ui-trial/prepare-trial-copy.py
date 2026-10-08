@@ -30,6 +30,11 @@ def _skipped(relative: Path) -> bool:
     return bool(relative.parts) and (relative.parts[0] in SKIPPED_TOP_LEVEL or ".git" in relative.parts)
 
 
+def _fail(error: OSError) -> None:
+    # 读不了的目录要停止同步，不能当成里面没有文件。
+    raise error
+
+
 def _same_file(source: Path, target: Path) -> bool:
     if not target.is_file():
         return False
@@ -39,19 +44,20 @@ def _same_file(source: Path, target: Path) -> bool:
 
 def _sync(source: Path, copy: Path) -> tuple[int, int]:
     copied = removed = 0
-    for directory, folders, files in os.walk(source):
+    for directory, folders, files in os.walk(source, onerror=_fail):
         relative = Path(directory).relative_to(source)
         folders[:] = [name for name in folders if not _skipped(relative / name)]
         (copy / relative).mkdir(parents=True, exist_ok=True)
         for name in files:
-            if relative == Path(".") and name == PROJECT_FILE:
+            # worktree 的 .git 是指向源仓库管理目录的文件，同样不复制。
+            if relative == Path(".") and name == PROJECT_FILE or _skipped(relative / name):
                 continue
             target = copy / relative / name
             if not _same_file(Path(directory) / name, target):
                 shutil.copy2(Path(directory) / name, target)
                 copied += 1
     # 源项目里已删除的文件也从副本删除，避免旧脚本或旧的全局类留在副本里。
-    for directory, folders, files in os.walk(copy, topdown=True):
+    for directory, folders, files in os.walk(copy, topdown=True, onerror=_fail):
         relative = Path(directory).relative_to(copy)
         kept = []
         for name in folders:
@@ -64,12 +70,21 @@ def _sync(source: Path, copy: Path) -> tuple[int, int]:
                 removed += 1
         folders[:] = kept
         for name in files:
-            if relative == Path(".") and name == PROJECT_FILE:
+            if relative == Path(".") and name == PROJECT_FILE or _skipped(relative / name):
                 continue
             if not (source / relative / name).is_file():
                 (Path(directory) / name).unlink()
                 removed += 1
-    return copied, removed
+    return copied, removed + _remove_copied_git_pointer(source, copy)
+
+
+def _remove_copied_git_pointer(source: Path, copy: Path) -> int:
+    """旧版本复制过源 worktree 的 .git 文件；只删内容与源完全相同的那份，副本自己的 Git 数据不动。"""
+    pointer, origin = copy / ".git", source / ".git"
+    if pointer.is_file() and origin.is_file() and pointer.read_bytes() == origin.read_bytes():
+        pointer.unlink()
+        return 1
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

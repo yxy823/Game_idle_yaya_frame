@@ -1,11 +1,15 @@
 """Check the distributed terminology checker through its public CLI."""
+import importlib.util
+import io
 import json
 import os
 import subprocess
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
 from pathlib import Path
+from unittest import mock
 
 
 COMMAND = Path(__file__).resolve().parents[3] / "project-source/tools/checks/check-terminology.py"
@@ -111,6 +115,36 @@ class TerminologyCheckTests(unittest.TestCase):
         process = self.run_cli()
         self.assertEqual(process.returncode, 2, process.stdout)
         self.assertIn("docs/terminology.md:5: 术语文件无法解析", process.stderr)
+
+    def test_table_without_the_forbidden_column_exits_2(self):
+        self.write("docs/terminology.md", "# 术语\n\n| 术语 | 含义与边界 | 不用说法 |\n| --- | --- | --- |\n"
+                   "| 分发源 | 复制到新项目的源材料 | 分发材料 |\n")
+        self.write("guide.md", "修改分发材料时同步说明。\n")
+        process = self.run_cli()
+        self.assertEqual(process.returncode, 2, process.stdout)
+        self.assertIn("术语文件无法解析", process.stderr)
+
+    def test_an_unreadable_directory_exits_2(self):
+        self.write("readable/guide.md", "# 指南\n")
+        self.write("locked/guide.md", "修改分发材料时同步说明。\n")
+        locked = self.root / "locked"
+        spec = importlib.util.spec_from_file_location("check_terminology", COMMAND)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        self.addCleanup(sys.modules.pop, spec.name, None)
+        spec.loader.exec_module(module)
+        real = os.scandir
+
+        def scandir(path="."):
+            if Path(path) == locked:
+                raise PermissionError(13, "Access is denied", str(path))
+            return real(path)
+
+        errors = io.StringIO()
+        with mock.patch.object(os, "scandir", scandir), redirect_stderr(errors), redirect_stdout(io.StringIO()):
+            code = module.main(["--root", str(self.root)])
+        self.assertEqual(code, 2)
+        self.assertIn("cannot list", errors.getvalue())
 
     def test_purpose_text_with_empty_table_header_exits_0(self):
         self.write("docs/terminology.md",

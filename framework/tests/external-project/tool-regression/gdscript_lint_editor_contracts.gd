@@ -69,11 +69,35 @@ func _run(report_path: String) -> void:
 	_dock.settings_controls.max_params_spin.value = 8
 	_expect(FileAccess.get_file_as_string(CONFIG_PATH) == "{ malformed JSON",
 		"saving a control cannot overwrite an invalid external config")
+	# Like the CLI, a missing or unopenable project config blocks Scan; a restored one scans.
+	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove project config")
+	_expect_scan_blocked("missing config")
+	_expect(DirAccess.make_dir_absolute(CONFIG_PATH) == OK, "create unopenable config")
+	_expect_scan_blocked("unopenable config")
+	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove unopenable config")
+	_write(CONFIG_PATH, JSON.stringify(_project_settings(), "  "))
+	_expect(_scan_with_new_dock() != null, "restored config scans after reloading the dock")
 	_restore()
 	await _wait_for_filesystem()
 	_write(report_path, JSON.stringify({"checks": _checks, "failures": _failures,
 		"engine": Engine.get_version_info()}, "  ") + "\n")
 	get_tree().quit(0 if _failures.is_empty() else 1)
+
+
+func _expect_scan_blocked(label: String) -> void:
+	_expect(_scan_with_new_dock() == null, label + " runs no analysis")
+	_expect("no analysis was run" in _dock.results_label.text, label + " explains the config problem")
+
+
+## A dock opened after the config changed, as reloading the project creates it.
+func _scan_with_new_dock() -> Variant:
+	if is_instance_valid(_dock):
+		remove_control_from_bottom_panel(_dock)
+		_dock.free()
+	_dock = DOCK.instantiate()
+	add_control_to_bottom_panel(_dock, "Lint contract fixture")
+	_dock._run_analysis()
+	return _dock.current_result
 
 
 func _wait_for_filesystem() -> void:

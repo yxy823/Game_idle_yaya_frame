@@ -8,8 +8,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from project_context import PROJECT_ROOT
 
 import json
+import os
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(PROJECT_ROOT / "yaya"))
 from tools.lib.test_run_evidence import (
@@ -60,6 +62,19 @@ class SuiteInventoryTests(unittest.TestCase):
         self.write("tests/by_script.gd", "extends 'res://addons/gdUnit4/src/GdUnitTestSuite.gd' # base\nfunc test_script():\n\tpass\n")
         self.assertEqual({case["case"] for case in expected_gdunit_cases(self.root, ["tests"])},
                          {"test_inline", "test_script"})
+
+    def test_an_unreadable_directory_stops_the_inventory(self) -> None:
+        self.write("tests/readable/suite.gd", "extends GdUnitTestSuite\nfunc test_real():\n\tpass\n")
+        locked = self.write("tests/locked/suite.gd", "extends GdUnitTestSuite\nfunc test_hidden():\n\tpass\n").parent
+        real = os.scandir
+
+        def scandir(path="."):
+            if Path(path) == locked:
+                raise PermissionError(13, "Access is denied", str(path))
+            return real(path)
+
+        with mock.patch.object(os, "scandir", scandir), self.assertRaisesRegex(RunEvidenceError, "cannot list"):
+            expected_gdunit_cases(self.root, ["tests"])
 
     def test_godot_ignored_sample_is_not_required_as_an_active_suite(self) -> None:
         self.write("tests/active.gd", "extends GdUnitTestSuite\nfunc test_active():\n\tpass\n")

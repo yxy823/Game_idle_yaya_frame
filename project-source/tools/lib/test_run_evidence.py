@@ -108,8 +108,11 @@ def _declared_tests(source: str) -> list[str]:
 
 def _gdscript_paths(directory: Path) -> list[Path]:
     """Use Godot-visible directories for script class and suite discovery."""
+    def fail(error: OSError) -> None:
+        raise RunEvidenceError(f"cannot list {error.filename}: {error.strerror}") from error
+
     paths = []
-    for current, directories, files in os.walk(directory):
+    for current, directories, files in os.walk(directory, onerror=fail):
         directories[:] = [name for name in directories if not name.startswith(".")]
         if ".gdignore" in files:
             directories.clear()

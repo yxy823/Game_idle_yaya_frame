@@ -105,6 +105,23 @@ func test_missing_parameter_script_and_missing_uid_are_explicit_failures() -> vo
 	assert_int(Codec.decode({"script_uid": ResourceUID.id_to_text(uid), "fields": {}}).error).is_not_equal(OK)
 
 
+## Plain values that look like references come back unchanged, also as keys and nested.
+func test_values_shaped_like_references_round_trip_as_plain_values() -> void:
+	for plain: Variant in ["uid://label", {"slot_id": "display-choice"}, {"literal": "uid://x"},
+			{"script_uid": "uid://p", "fields": {}}, ["uid://in-array", {"slot_id": 1}]]:
+		var encoded := Codec.encode(plain)
+		assert_int(encoded.error).is_equal(OK)
+		assert_that(Codec.decode(encoded.value).value).is_equal(plain)
+	var params := Params.new()
+	params.mapping = {"uid://key": {"nested": [{"slot_id": "a/b"}, "uid://value"]}}
+	params.sequence = [{"literal": {"slot_id": "x"}}]
+	var packed := Codec.pack_fields(params)
+	var checked := Codec.check_fields(params, packed.value, Params.new())
+	assert_array(checked.issues).is_empty()
+	assert_that(checked.values.mapping).is_equal(params.mapping)
+	assert_that(checked.values.sequence).is_equal(params.sequence)
+
+
 ## Links between tuning resources are stored by slot id, which maps back to the same path.
 func test_tuning_paths_and_slot_ids_map_both_ways() -> void:
 	var path := "res://game/shop/tuning/feedback/sound.tres"

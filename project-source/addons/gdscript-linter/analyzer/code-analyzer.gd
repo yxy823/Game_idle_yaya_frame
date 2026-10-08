@@ -234,6 +234,7 @@ func _scan_directory(path: String) -> void:
 	var dir := DirAccess.open(normalized_path)
 	if not dir:
 		push_error("Failed to open directory: %s" % path)
+		result.input_errors.append("Cannot open directory: " + path)
 		return
 
 	if config.respect_gdignore and dir.file_exists(".gdignore"):
@@ -267,6 +268,8 @@ func _collect_gd_files(path: String) -> Array[String]:
 		normalized_path = path.replace("/", "\\")
 	var dir := DirAccess.open(normalized_path)
 	if not dir:
+		# An unreadable directory is missing input, not an empty one.
+		result.input_errors.append("Cannot open directory: " + path)
 		return files
 
 	if config.respect_gdignore and dir.file_exists(".gdignore"):

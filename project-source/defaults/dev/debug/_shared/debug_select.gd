@@ -14,6 +14,11 @@ var min_width: float = 0.0:
 	set(value):
 		min_width = value
 		_fit()
+## 0 for no limit; a longer value is cut with "…" so the controls beside it stay visible.
+var max_width: float = 0.0:
+	set(value):
+		max_width = value
+		_fit()
 var _content: HBoxContainer
 
 
@@ -36,6 +41,8 @@ func _init(icon_name: String = "", caption: String = "", small: bool = false) ->
 		_content.add_child(Kit.label(caption, &"HintText"))
 	value_label = Kit.label("", &"StatusText" if small else &"")
 	value_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	value_label.clip_text = true
+	value_label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	value_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	if small:
 		value_label.add_theme_color_override("font_color", Kit.color(&"tx1"))
@@ -50,7 +57,7 @@ func _notification(what: int) -> void:
 
 
 ## Button sizes itself in native code, so the width is set here: at least `min_width`,
-## wider when the value needs it.
+## wider when the value needs it, up to `max_width`.
 func _fit() -> void:
 	if not is_inside_tree():
 		return
@@ -62,7 +69,8 @@ func _fit() -> void:
 		else:
 			needed += label.get_theme_font(&"font").get_string_size(label.text,
 				HORIZONTAL_ALIGNMENT_LEFT, -1, label.get_theme_font_size(&"font_size")).x
-	custom_minimum_size.x = maxf(min_width, ceilf(needed))
+	var width := maxf(min_width, ceilf(needed))
+	custom_minimum_size.x = minf(width, max_width) if max_width > 0.0 else width
 
 
 ## Each entry becomes a radio item whose id is its index.

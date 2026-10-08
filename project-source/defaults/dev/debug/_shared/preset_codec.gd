@@ -1,6 +1,11 @@
 extends RefCounted
 ## Only this reflection boundary uses Variant. External resources stay UID strings.
 
+## Wraps a plain string or dictionary that looks like a reference ("uid://…", or a dictionary
+## with a key from REFERENCE_KEYS), so it comes back as the same plain value.
+const LITERAL := "literal"
+const REFERENCE_KEYS: Array[String] = ["script_uid", "slot_id", LITERAL]
+
 
 static func fields(resource: Resource) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
@@ -13,11 +18,19 @@ static func fields(resource: Resource) -> Array[Dictionary]:
 static func pack_fields(resource: Resource) -> Dictionary:
 	var values: Dictionary = {}
 	for field in fields(resource):
-		var encoded := encode(resource.get(field.name), field.name == "candidate_params")
+		values[String(field.name)] = resource.get(field.name)
+	return pack_values(values)
+
+
+## Packs field values by name the way pack_fields packs a resource's fields.
+static func pack_values(values: Dictionary) -> Dictionary:
+	var packed: Dictionary = {}
+	for key: String in values:
+		var encoded := encode(values[key], key == "candidate_params")
 		if encoded.error != OK:
 			return encoded
-		values[String(field.name)] = encoded.value
-	return {"error": OK, "value": values}
+		packed[key] = encoded.value
+	return {"error": OK, "value": packed}
 
 
 static func encode(value: Variant, inline_params: bool = false) -> Dictionary:
@@ -25,9 +38,21 @@ static func encode(value: Variant, inline_params: bool = false) -> Dictionary:
 		return {"error": OK, "value": value.duplicate_deep(Resource.DEEP_DUPLICATE_INTERNAL)}
 	if value is Resource:
 		return _encode_resource(value, inline_params)
+	if value is String and value.begins_with("uid://"):
+		return {"error": OK, "value": {LITERAL: value}}
 	if value is Array or value is Dictionary:
-		return _encode_container(value)
+		var container := _encode_container(value)
+		if container.error == OK and value is Dictionary and _looks_like_reference(value):
+			container.value = {LITERAL: container.value}
+		return container
 	return {"error": OK, "value": value}
+
+
+static func _looks_like_reference(value: Dictionary) -> bool:
+	for key: String in REFERENCE_KEYS:
+		if value.has(key):
+			return true
+	return false
 
 
 static func _encode_resource(value: Resource, inline_params: bool) -> Dictionary:
@@ -100,6 +125,9 @@ static func decode(value: Variant) -> Dictionary:
 
 
 static func _decode_dictionary(value: Dictionary) -> Dictionary:
+	if value.has(LITERAL):
+		var plain: Variant = value[LITERAL]
+		return _decode_container(plain) if plain is Dictionary else {"error": OK, "value": plain}
 	if value.has("script_uid"):
 		return _decode_params(value)
 	if value.has("slot_id"):

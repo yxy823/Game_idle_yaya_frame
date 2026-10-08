@@ -7,6 +7,8 @@ const CONFIG_PATH := "res://gdlint.json"
 const BACKUP_PATH := "res://gdlint-entry-contracts.backup"
 const SOURCE_PATH := "res://gdlint-entry-contracts-source.gd"
 const OUTPUT_PATH := "res://gdlint-entry-contracts-output.json"
+const DIRECTORY_PATH := "res://gdlint-entry-contracts-directory"
+const CONFIG := preload("res://addons/gdscript-linter/analyzer/analysis-config.gd")
 
 var _checks: int = 0
 var _failures: Array[String] = []
@@ -16,7 +18,8 @@ var _runs: Array[Dictionary] = []
 func _initialize() -> void:
 	var args := OS.get_cmdline_user_args()
 	if args.size() != 1 or FileAccess.file_exists(BACKUP_PATH) \
-			or FileAccess.file_exists(SOURCE_PATH) or FileAccess.file_exists(OUTPUT_PATH):
+			or FileAccess.file_exists(SOURCE_PATH) or FileAccess.file_exists(OUTPUT_PATH) \
+			or DirAccess.dir_exists_absolute(DIRECTORY_PATH):
 		printerr("Supply one report path and a disposable fixture without contract leftovers.")
 		quit(3)
 		return
@@ -28,6 +31,8 @@ func _initialize() -> void:
 	_write(SOURCE_PATH, "func sample() -> int:\n\tvar number: int = 37\n\treturn number\n")
 	_missing_config_contracts()
 	_valid_and_invalid_filters()
+	_unwritable_output_contracts()
+	_unreadable_directory_contracts()
 	_remove(CONFIG_PATH)
 	_remove(SOURCE_PATH)
 	_remove(OUTPUT_PATH)
@@ -71,12 +76,55 @@ func _valid_and_invalid_filters() -> void:
 	_expect_failure(_run_cli([]), "Invalid JSON config", "invalid default config")
 
 
-func _run_cli(options: Array[String]) -> Dictionary:
+## A report or config that cannot be written completely fails and leaves the old file.
+func _unwritable_output_contracts() -> void:
+	_write(CONFIG_PATH, JSON.stringify({"limits": {
+		"function_lines": 2, "function_lines_critical": 5}}))
+	# A directory where the temporary file goes makes the write fail, without ACL changes.
+	_expect(DirAccess.make_dir_absolute(OUTPUT_PATH + ".tmp") == OK, "block temporary report")
+	var result := _run_cli([])
+	_expect(result.code == 3, "unwritable report returns exit 3")
+	_expect("Cannot write JSON report" in result.output, "unwritable report is explained")
+	_expect(not FileAccess.file_exists(OUTPUT_PATH), "unwritable report publishes nothing")
+	_remove(OUTPUT_PATH + ".tmp")
+	var config := CONFIG.new()
+	_expect(config.load_from_json(CONFIG_PATH), "load config before saving")
+	var before := FileAccess.get_file_as_string(CONFIG_PATH)
+	_expect(DirAccess.make_dir_absolute(CONFIG_PATH + ".tmp") == OK, "block temporary config")
+	_expect(not config.save_to_json(CONFIG_PATH), "unwritable config save returns false")
+	_expect(FileAccess.get_file_as_string(CONFIG_PATH) == before, "failed config save keeps the original")
+	_remove(CONFIG_PATH + ".tmp")
+	_expect(config.save_to_json(CONFIG_PATH), "config save replaces the existing file")
+	_expect(FileAccess.get_file_as_string(CONFIG_PATH) != before, "replaced config holds every field")
+
+
+## A directory the linter cannot open is an input error, even beside readable scripts.
+func _unreadable_directory_contracts() -> void:
+	_expect(DirAccess.make_dir_recursive_absolute(DIRECTORY_PATH.path_join("readable")) == OK,
+		"create readable directory")
+	_write(DIRECTORY_PATH.path_join("readable/sample.gd"), "extends Node\n")
+	var link := ProjectSettings.globalize_path(DIRECTORY_PATH.path_join("locked")).replace("/", "\\")
+	var target := ProjectSettings.globalize_path(DIRECTORY_PATH + "-target").replace("/", "\\")
+	_expect(DirAccess.make_dir_absolute(target) == OK, "create junction target")
+	# A junction whose target is gone is listed as a directory that cannot be opened.
+	_expect(OS.execute("cmd.exe", ["/c", "mklink", "/J", link, target]) == 0, "create junction")
+	_expect(DirAccess.remove_absolute(target) == OK, "remove junction target")
+	var result := _run_cli([], DIRECTORY_PATH)
+	_expect(result.code == 3, "unreadable directory returns exit 3")
+	_expect("Cannot open directory: " + DIRECTORY_PATH.path_join("locked") in result.output,
+		"unreadable directory is named")
+	_expect(DirAccess.remove_absolute(link) == OK, "remove junction")
+	_remove(DIRECTORY_PATH.path_join("readable/sample.gd"))
+	_remove(DIRECTORY_PATH.path_join("readable"))
+	_remove(DIRECTORY_PATH)
+
+
+func _run_cli(options: Array[String], input: String = SOURCE_PATH) -> Dictionary:
 	_remove(OUTPUT_PATH)
 	var args := PackedStringArray(["--headless", "--path", ProjectSettings.globalize_path("res://"),
 		"--script", CLI, "--", "--json", "--output", OUTPUT_PATH])
 	args.append_array(PackedStringArray(options))
-	args.append(SOURCE_PATH)
+	args.append(input)
 	var output: Array = []
 	var code := OS.execute(OS.get_executable_path(), args, output, true)
 	var result := {"options": options, "code": code, "output": "\n".join(PackedStringArray(output))}

@@ -95,22 +95,27 @@ func save_dirty(slots: Array[Slot], prefix: String, own_combo: String = "") -> D
 
 ## Where each slot's edits go: its loaded preset, or `new_name(slot)` when it has none. A preset
 ## that a combo other than `own_combo` uses keeps its values; the edits go to a free
-## "<preset>-<suffix>" beside it. Entries: {"slot", "kept", "users", "preset"}.
+## "<preset>-<suffix>" beside it. {"error", "entries"}: {"slot", "kept", "users", "preset"}.
 func _plan(slots: Array[Slot], new_name: Callable, own_combo: String,
-		suffix: String) -> Array[Dictionary]:
+		suffix: String) -> Dictionary:
 	var plan: Array[Dictionary] = []
 	for slot in slots:
 		var kept: String = slot.preset_name if not slot.preset_name.is_empty() \
 			else new_name.call(slot)
 		var users := _other_combos(slot.id, kept, own_combo)
-		plan.append({"slot": slot, "kept": kept, "users": users, "preset": kept
-			if users.is_empty() else _free_name(slot.id, kept + "-" + suffix)})
-	return plan
+		if users.error != OK:
+			return users
+		plan.append({"slot": slot, "kept": kept, "users": users.names, "preset": kept
+			if users.names.is_empty() else _free_name(slot.id, kept + "-" + suffix)})
+	return {"error": OK, "entries": plan}
 
 
-func _save_plan(plan: Array[Dictionary]) -> Dictionary:
+func _save_plan(plan: Dictionary) -> Dictionary:
 	var notes: PackedStringArray = []
-	for entry in plan:
+	if plan.error != OK:
+		_report_unchecked(plan)
+		return {"ok": false, "notes": notes}
+	for entry: Dictionary in plan.entries:
 		var slot: Slot = entry.slot
 		var result := _session.store.save_slot(slot, entry.preset)
 		if result.error != OK:
@@ -136,14 +141,22 @@ static func _plan_line(entry: Dictionary) -> String:
 	return "· %s：存进预设“%s”" % [slot.display_name(), entry.preset]
 
 
-## Combos other than `own_combo` of the active target that use the preset, by name.
-func _other_combos(slot_id: String, preset: String, own_combo: String) -> PackedStringArray:
+## Combos other than `own_combo` of the active target that use the preset: {"error", "names"}.
+func _other_combos(slot_id: String, preset: String, own_combo: String) -> Dictionary:
 	var names: PackedStringArray = []
 	var own := _session.store.combo_path(_session.active.id, own_combo)
-	for path: String in _session.store.references(slot_id, preset).get("paths", []):
+	var used := _session.store.references(slot_id, preset)
+	for path: String in used.get("paths", []):
 		if path != own:
 			names.append(path.get_file().get_basename())
-	return names
+	used.names = names
+	return used
+
+
+## A combo file that cannot be read stops saving or deleting before anything changes.
+func _report_unchecked(result: Dictionary) -> void:
+	_report.call(Messages.outcome(result, "", "没能检查哪些组合用到这个预设",
+		"有组合文件读不出来，预设和当前改动都没有变。请让 Agent 检查"))
 
 
 func _free_name(slot_id: String, base: String) -> String:
@@ -237,17 +250,20 @@ func _confirm_combo(value: String) -> void:
 		return
 	var named := func(slot: Slot) -> String: return _free_name(slot.id, value)
 	var plan := _plan(_dirty(_session.slots), named, value, value)
-	if plan.is_empty():
+	if plan.error != OK:
+		_report_unchecked(plan)
+		return
+	if plan.entries.is_empty():
 		_save_combo(value, plan)
 		return
 	var lines: PackedStringArray = []
-	for entry in plan:
+	for entry: Dictionary in plan.entries:
 		lines.append(_plan_line(entry))
 	_dialogs.confirm(COMBO_QUESTION % ["\n".join(lines), value], _save_combo.bind(value, plan),
 		"一并保存", "保存组合")
 
 
-func _save_combo(value: String, plan: Array[Dictionary]) -> void:
+func _save_combo(value: String, plan: Dictionary) -> void:
 	var saved := _save_plan(plan)
 	if not saved.ok:
 		return
@@ -291,7 +307,10 @@ func save_preset(slot: Slot, action: String) -> void:
 		_ask_preset_name(slot)
 		return
 	var used := _session.store.references(slot.id, slot.preset_name)
-	var combos: PackedStringArray = used.get("paths", PackedStringArray())
+	if used.error != OK:
+		_report_unchecked(used)
+		return
+	var combos: PackedStringArray = used.paths
 	if combos.is_empty():
 		_save_preset(slot.preset_name, slot)
 		return
@@ -315,8 +334,12 @@ func _preset_named(value: String, slot: Slot) -> void:
 			value)):
 		_save_preset(value, slot)
 		return
+	var used := _session.store.references(slot.id, value)
+	if used.error != OK:
+		_report_unchecked(used)
+		return
 	var names: PackedStringArray = []
-	for path: String in _session.store.references(slot.id, value).get("paths", []):
+	for path: String in used.paths:
 		names.append(path.get_file().get_basename())
 	var uses := "" if names.is_empty() \
 		else "它被 %d 个组合使用（%s），覆盖后它们也会变。" % [names.size(), _quoted_list(names)]
@@ -341,8 +364,7 @@ func confirm_delete_preset(slot: Slot) -> void:
 		return
 	var result := _session.store.references(slot.id, slot.preset_name)
 	if result.error != OK:
-		_report.call(Messages.outcome(result, "", "没能检查哪些组合用到这个预设",
-			"有组合文件读不出来，请让 Agent 检查"))
+		_report_unchecked(result)
 		return
 	var names: PackedStringArray = []
 	for path: String in result.paths:
@@ -356,8 +378,12 @@ func confirm_delete_preset(slot: Slot) -> void:
 func _delete_preset(slot: Slot) -> void:
 	var deleted := slot.preset_name
 	var result := _session.store.delete_slot(slot.id, deleted)
+	var kept: PackedStringArray = []
+	for path: String in result.get("unrestored", []):
+		kept.append(path.get_file().get_basename())
 	_report.call(Messages.outcome(result, "已删除预设 " + deleted, "没能删除预设 " + deleted,
-		BUSY))
+		"预设和用到它的组合都没有变。" + BUSY if kept.is_empty()
+			else "组合%s已改用游戏原值，没能改回。请让 Agent 查看详情" % _quoted_list(kept)))
 	if result.error != OK:
 		return
 	_session.store.load_slot(slot, "")
@@ -365,9 +391,9 @@ func _delete_preset(slot: Slot) -> void:
 	_rebind.call()
 
 
-## Runs `quit` at once without unsaved edits; otherwise asks: save then quit, quit, or cancel.
+## Runs `quit` at once when no opened target has unsaved edits; else asks: save, quit or cancel.
 func ask_before_closing(quit: Callable) -> void:
-	var dirty := _dirty(_session.slots)
+	var dirty := _dirty(_session.opened_slots())
 	if dirty.is_empty():
 		quit.call()
 		return

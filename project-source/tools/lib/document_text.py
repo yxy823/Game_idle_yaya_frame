@@ -118,8 +118,12 @@ def _excluded(relative: Path, excluded_names: set[str], excluded_paths: list[Pat
 
 
 def scanned_files(root: Path, includes: list[str], excluded_names: set[str], excluded_paths: list[Path]) -> list[Path]:
+    def fail(error: OSError) -> None:
+        # 读不了的目录要报错，不能当成里面没有文件。
+        raise DocumentError(f"cannot list {error.filename}: {error.strerror}") from error
+
     files = []
-    for directory, subdirectories, names in os.walk(root):
+    for directory, subdirectories, names in os.walk(root, onerror=fail):
         relative_directory = Path(directory).relative_to(root)
         subdirectories[:] = sorted(
             name for name in subdirectories

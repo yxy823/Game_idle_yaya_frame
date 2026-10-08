@@ -333,6 +333,25 @@ class AnalyzerTests(unittest.TestCase):
                 stdout_result = self.run_worker(source, "image", modules=[])
                 self.assertEqual(stdout_result["status"], expected)
 
+    def test_invalid_requests_return_structured_failures_in_both_modes(self):
+        schema = json.loads((TOOLS / "result.schema.json").read_text(encoding="utf-8"))
+        cases = {"[]": "invalid_request", "null": "invalid_request",
+                 '{"path": "a.wav", "asset_type": []}': "invalid_request",
+                 '{"path": 5, "asset_type": "audio"}': "invalid_request",
+                 '{"path": "' + "x" * (2 * 1024**2) + '", "asset_type": "audio"}': "invalid_request"}
+        for text, code in cases.items():
+            self.request.write_text(text, encoding="utf-8")
+            output = self.root / "invalid.result.json"
+            for command in ([], ["--output", str(output)]):
+                with self.subTest(request=text[:40], output=bool(command)):
+                    process = subprocess.run([sys.executable, "-B", str(TOOLS / "worker.py"), "--request",
+                                              str(self.request), *command], capture_output=True, timeout=60)
+                    self.assertEqual(process.returncode, 0, process.stderr)
+                    result = json.loads(output.read_bytes() if command else process.stdout)
+                    jsonschema.validate(result, schema)
+                    self.assertEqual(result["status"], "failed")
+                    self.assertEqual(result["errors"][0]["code"], code)
+
     def test_cross_volume_request_and_destination_temporaries(self):
         import atomic_output
         self.assertEqual(PROJECT_ROOT.drive.upper(), "D:")

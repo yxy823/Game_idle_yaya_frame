@@ -102,10 +102,13 @@ def _run_tests(args: argparse.Namespace) -> int:
             selection = build_selection(REPO_ROOT, args.feature, phase=args.phase)
             if args.scope == "auto":
                 args.scope = "full" if selection["full_suite"]["required"] else "affected"
-            print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True)
-            if (args.scope != "full" and not args.require_test
-                    and not selection["required"] and not selection["affected"]
-                    and not selection["full_suite"]["required"]):
+            not_required = (args.scope != "full" and not args.require_test
+                            and not selection["required"] and not selection["affected"]
+                            and not selection["full_suite"]["required"])
+            # not_required 时 stdout 只有结果 JSON，选择说明改到 stderr。
+            print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True,
+                  file=sys.stderr if not_required else sys.stdout)
+            if not_required:
                 # Final selection validates manual acceptance; also retain unresolved failures.
                 if args.phase == "final":
                     derive_test_evidence(REPO_ROOT, args.feature, [])

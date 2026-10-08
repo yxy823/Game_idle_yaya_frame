@@ -170,8 +170,10 @@ func refresh(locked: bool) -> void:
 	_paint_side(compare_side, _compare_name, target, comparing)
 	compare_menu.theme_type_variation = &"IconButtonOnAccent" if comparing else &"IconButton"
 	var count := _session.compare_differences()
-	Kit.chip_text(differences, "%d 处不同" % count)
-	differences.tooltip_text = "当前改动和%s相比有 %d 项设定不同" % [_session.compare_name(), count]
+	var readable := _session.compare_readable()
+	Kit.chip_text(differences, "%d 处不同" % count if readable else "无法对比")
+	differences.tooltip_text = "当前改动和%s相比有 %d 项设定不同" % [_session.compare_name(), count] \
+		if readable else "%s读不出来，按 ` 看原因" % _session.compare_name()
 	pending.visible = _session.pending_compare
 	Kit.chip_text(pending, "下一遍切到" + _session.next_side())
 	_paint_combo(locked, comparing)

@@ -312,15 +312,29 @@ func save_to_json(path: String) -> bool:
 				existing_data[section] = data[section]
 		data = existing_data
 
-	var json_string := JSON.stringify(data, "\t")
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	if not file:
-		push_error("GDLint: Failed to save config to %s: %s" % [path, FileAccess.get_open_error()])
+	var failure := write_text_replacing(path, JSON.stringify(data, "\t"))
+	if not failure.is_empty():
+		push_error("GDLint: Failed to save config: " + failure)
 		return false
-
-	file.store_string(json_string)
-	file.close()
 	return true
+
+
+# Writes the whole text to a temporary file beside `path`, then replaces `path`, so a failed
+# write leaves the original. Returns "" on success, otherwise what failed.
+static func write_text_replacing(path: String, text: String) -> String:
+	var temporary := path + ".tmp"
+	var file := FileAccess.open(temporary, FileAccess.WRITE)
+	if not file:
+		return "cannot write %s: %s" % [temporary, error_string(FileAccess.get_open_error())]
+	var stored := file.store_string(text)
+	file.close()
+	var error := OK if stored else ERR_FILE_CANT_WRITE
+	if error == OK:
+		error = DirAccess.rename_absolute(temporary, path)
+	if error != OK:
+		DirAccess.remove_absolute(temporary)
+		return "cannot replace %s: %s" % [path, error_string(error)]
+	return ""
 
 
 # Load configuration from JSON file

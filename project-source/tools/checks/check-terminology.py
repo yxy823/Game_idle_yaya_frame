@@ -96,19 +96,19 @@ def parse_terms(path: Path, display: str) -> list[Term]:
         header = split_cells(line)
         term_column = next((i for i, cell in enumerate(header) if "术语" in cell), None)
         forbidden_column = next((i for i, cell in enumerate(header) if "不用的说法" in cell), None)
+        # 两列都有才是术语表；缺“不用的说法”列的表只算有条目，否则检查会空跑通过。
+        valid = term_column is not None and forbidden_column is not None
         index += 2
         while index < len(lines) and lines[index].lstrip().startswith("|"):
-            if term_column is not None:
+            if valid:
                 cells = split_cells(lines[index])
                 if len(cells) < len(header):
                     raise TermsFileError(f"{display}:{index + 1}: 表格行有 {len(cells)} 列，表头有 {len(header)} 列")
                 aliases = split_aliases(cells[term_column])
                 if not aliases:
                     raise TermsFileError(f"{display}:{index + 1}: 术语格为空")
-                forbidden = []
-                if forbidden_column is not None:
-                    forbidden = [item.strip().replace("`", "") for item in LIST_SPLIT.split(cells[forbidden_column])]
-                    forbidden = [item for item in forbidden if item]
+                forbidden = [item.strip().replace("`", "") for item in LIST_SPLIT.split(cells[forbidden_column])]
+                forbidden = [item for item in forbidden if item]
                 code = {alias for alias in aliases if f"`{alias}`" in cells[term_column]}
                 name = next((alias for alias in aliases if alias not in code), aliases[0])
                 terms.append(Term(name, aliases, sorted(code), forbidden, f"{display}:{index + 1}"))

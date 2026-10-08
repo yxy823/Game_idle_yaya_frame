@@ -18,6 +18,8 @@ const HEADER_HEIGHT := 52.0
 const FOOTER_HEIGHT := 48.0
 const SAVE_AS_ID := 1000
 const DELETE_ID := 1001
+## Widest the preset dropdown gets, so saving and reverting stay inside the inspector.
+const PRESET_WIDTH := 200.0
 const EXCLUDED: Array[String] = ["candidate", "candidate_params"]
 
 var slot: Slot
@@ -187,7 +189,7 @@ func _parameter_section() -> VBoxContainer:
 	var block := Kit.section("参数")
 	var header := block.get_child(0) as HBoxContainer
 	preset_select = Select.new("", "预设", true)
-	preset_select.tooltip_text = "插槽预设：选择后载入它的全部参数"
+	preset_select.max_width = PRESET_WIDTH
 	preset_select.chosen.connect(_preset_chosen)
 	header.add_child(preset_select)
 	_refresh_presets()
@@ -223,6 +225,9 @@ func _refresh_presets() -> void:
 	var captions: PackedStringArray = ["游戏原值"]
 	captions.append_array(_preset_names)
 	preset_select.set_items(captions, _preset_names.find(slot.preset_name) + 1)
+	# A long name is cut in the dropdown; the tooltip keeps it whole.
+	Messages.usable_tooltip(preset_select, "插槽预设：选择后载入它的全部参数（当前：%s）"
+		% preset_select.selected_text())
 	var menu := preset_select.get_popup()
 	menu.add_separator()
 	menu.add_item("另存为新预设…", SAVE_AS_ID)

@@ -17,7 +17,7 @@ import threading
 
 from protocol import ANALYZER_VERSION, SCHEMA_VERSION, failure, result, unavailable, validate
 from source_probe import CAPABILITIES, AnalysisError, check_source
-from atomic_output import OWNED_TEMPORARIES, WRITE_LOCK, encode_result, write_result
+from atomic_output import MAX_RESULT_BYTES, OWNED_TEMPORARIES, WRITE_LOCK, encode_result, write_result
 from feature_runner import artifacts_valid, describe, run_features, select_modules
 
 DEFAULTS = CAPABILITIES["defaults"]
@@ -152,6 +152,17 @@ def read_cache(path, key, identity, selected):
     return None
 
 
+def read_request(path):
+    """A request is one JSON object of at most 2 MiB with string path and asset_type."""
+    if path.stat().st_size > MAX_RESULT_BYTES:
+        raise AnalysisError("invalid_request", "Request exceeds 2 MiB")
+    request = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(request, dict) or not isinstance(request.get("path"), str) \
+            or not isinstance(request.get("asset_type"), str):
+        raise AnalysisError("invalid_request", "Request must be a JSON object with string path and asset_type")
+    return request
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--request", required=True, type=Path)
@@ -161,7 +172,7 @@ def main():
     request = {}
     memory_mib = 0
     try:
-        request = json.loads(args.request.read_text(encoding="utf-8"))
+        request = read_request(args.request)
         if args.parent_pid:
             threading.Thread(target=watch_parent,
                              args=(args.parent_pid, args.request), daemon=True).start()

@@ -215,20 +215,34 @@ func references(slot_id: String, preset_name: String) -> Dictionary:
 	return {"error": OK, "paths": result}
 
 
-## Call only after the UI has shown references and received confirmation.
+## Call only after the UI has shown references and received confirmation. All or nothing: a
+## failure puts back the combos already changed; "unrestored" lists those it could not.
 func delete_slot(slot_id: String, preset_name: String) -> Dictionary:
 	var referenced := references(slot_id, preset_name)
 	if referenced.error != OK:
 		return referenced
-	var updated: PackedStringArray = []
+	var updated: Dictionary[String, Combo] = {}
+	var result := {"error": OK}
 	for path: String in referenced.paths:
 		var combo := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Combo
 		combo.entries[slot_id] = ""
-		var error := _save(combo, path)
-		if error != OK:
-			return {"error": error, "message": path, "updated": updated}
-		updated.append(path)
-	return {"error": DirAccess.remove_absolute(preset_path(slot_id, preset_name))}
+		result = {"error": _save(combo, path), "message": path}
+		if result.error != OK:
+			break
+		updated[path] = combo
+	if result.error == OK:
+		var preset := preset_path(slot_id, preset_name)
+		result = {"error": DirAccess.remove_absolute(preset), "message": preset}
+	if result.error == OK:
+		return result
+	var unrestored: PackedStringArray = []
+	for path: String in updated:
+		updated[path].entries[slot_id] = slot_id + "#" + preset_name
+		if _save(updated[path], path) != OK:
+			unrestored.append(path)
+	if not unrestored.is_empty():
+		result.unrestored = unrestored
+	return result
 
 
 func delete_combo(target: String, combo_name: String) -> Error:

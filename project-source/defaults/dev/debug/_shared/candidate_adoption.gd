@@ -143,6 +143,7 @@ static func _shown_files(files: PackedStringArray) -> PackedStringArray:
 static func adopt_all(slots: Array[Slot], plans: Dictionary) -> Dictionary:
 	var switched := _switches(slots, plans)
 	var deferred: PackedStringArray = []
+	var moved_names: PackedStringArray = []
 	var moved_to := ""
 	for identity: String in plans:
 		var adoption: Dictionary = plans[identity]
@@ -151,8 +152,9 @@ static func adopt_all(slots: Array[Slot], plans: Dictionary) -> Dictionary:
 			continue
 		var moved := move(adoption)
 		if moved.error != OK:
-			return Messages.outcome(moved, "", "没能把 %s 移入游戏" % adoption.name,
-				"游戏文件没有改动。请让 Agent 查看详情")
+			Uids.refresh_cache(moved_to)
+			return _move_failed(moved, adoption, moved_names)
+		moved_names.append(adoption.name)
 		moved_to = adoption.destination
 	# One import covers every move; two at once would write the same .godot cache.
 	var note := Uids.refresh_cache(moved_to)
@@ -166,15 +168,45 @@ static func adopt_all(slots: Array[Slot], plans: Dictionary) -> Dictionary:
 		if queued.error != OK:
 			return Messages.outcome(queued, "", "没能把 %s 排进下次启动的移动" % plans[identity].name,
 				"其他设定已写入游戏。请让 Agent 查看详情")
+	var problems: PackedStringArray = []
+	var unlogged: PackedStringArray = []
 	for slot in slots:
-		append_log(slot.debug_root, log_line(slot, plans.get(slot.id, {})))
-		if not plans.has(slot.id):
-			cancel(slot)
+		var line := log_line(slot, plans.get(slot.id, {}))
+		if append_log(slot.debug_root, line) != OK:
+			unlogged.append(line)
+		if not plans.has(slot.id) and cancel(slot) != OK:
+			problems.append("排队的 %s 没能撤回，下次启动仍会把它移入游戏并改写%s：关掉占用 %s 的程序后再采纳一次"
+				% [queued_candidate(slot), slot.display_name(), Messages.relative(queue_path(slot))])
 		# The game file now holds these values, so the slot shows "游戏原值" again.
 		slot.preset_name = ""
 		slot.mark_saved()
-	return {"error": OK, "text": "已采纳：" + _adopted_text(slots, plans, switched)
-		+ ("。" + note if not note.is_empty() else "")}
+	if not unlogged.is_empty():
+		problems.append("待收尾记录没能写进 %s：请让 Agent 按详情补记" % LOG)
+	var text := "已采纳：" + _adopted_text(slots, plans, switched)
+	if problems.is_empty():
+		return {"error": OK, "text": text + ("。" + note if not note.is_empty() else "")}
+	return {"error": ERR_FILE_CANT_WRITE, "text": text + "。但" + "；".join(problems),
+		"detail": "\n".join(unlogged)}
+
+
+## The move of one candidate failed: says which files stayed where and which candidates of
+## this adoption already moved; the game's tuning files are not written yet.
+static func _move_failed(moved: Dictionary, adoption: Dictionary,
+		moved_names: PackedStringArray) -> Dictionary:
+	var stranded: PackedStringArray = moved.get("stranded", PackedStringArray())
+	var parts: PackedStringArray = [String(moved.text) if moved.has("text") else "没能把 %s 移入游戏：%s" % [
+		adoption.name, Messages.reason(moved.error)]]
+	if not stranded.is_empty():
+		parts.append("%s 已移到 %s/，没能放回" % ["、".join(stranded),
+			Messages.relative(adoption.destination)])
+	elif not moved.has("text"):
+		parts.append("它的文件都还在原处")
+	if not moved_names.is_empty():
+		parts.append("这次采纳中 %s 已移入游戏" % "、".join(moved_names))
+	var retry: bool = stranded.is_empty() and not moved.has("text") and moved.error != ERR_ALREADY_EXISTS
+	var fix := "关掉占用这些文件的程序后再采纳一次" if retry else "请让 Agent 查看详情"
+	return {"error": moved.error, "message": moved.get("message", ""),
+		"text": "；".join(parts) + "。游戏的调参文件没有写入。" + fix}
 
 
 ## "按钮音效改为 风铃 · chime；点击特效改回 圆环；界面音量的当前设定已写入游戏".
@@ -198,18 +230,23 @@ static func _adopted_text(slots: Array[Slot], plans: Dictionary, switched: Dicti
 	return "；".join(parts)
 
 
+## Moves one candidate; when it does not load from its new place, its files go back.
 static func move(adoption: Dictionary) -> Dictionary:
 	var moved := _move_files(adoption.source, adoption.destination, adoption.files)
 	if moved.error != OK:
 		return moved
 	Uids.remap(adoption.destination, adoption.files)
-	_retire_descriptor(adoption.source)
 	var slot: Slot = adoption.slot
 	var path := String(adoption.destination) + String(adoption.candidate_path).trim_prefix(adoption.source)
-	var fresh := ResourceLoader.load(path)
+	var fresh := ResourceLoader.load(path) if ResourceLoader.exists(path) else null
 	if fresh == null:
-		return {"error": ERR_CANT_OPEN, "message": path, "text": "没能采纳“%s”：移入游戏后读不出来。请让 Agent 检查 %s" % [
-			adoption.name, Messages.relative(adoption.destination)]}
+		var stranded := _move_back(adoption.source, adoption.destination, adoption.files)
+		Uids.remap(adoption.source, adoption.files)
+		var back := "文件已放回 %s/" % Messages.relative(adoption.source) if stranded.is_empty() \
+			else "%s 留在了 %s/" % ["、".join(stranded), Messages.relative(adoption.destination)]
+		return {"error": ERR_CANT_OPEN, "message": path, "text": "没能采纳“%s”：移入游戏后读不出来，%s" % [
+			adoption.name, back]}
+	_retire_descriptor(adoption.source)
 	slot.live.set("candidate", fresh)
 	return {"error": OK}
 
@@ -249,9 +286,10 @@ static func queued_candidate(slot: Slot) -> String:
 
 
 ## A later adoption of another implementation replaces a queued one.
-static func cancel(slot: Slot) -> void:
-	if FileAccess.file_exists(queue_path(slot)):
-		DirAccess.remove_absolute(queue_path(slot))
+static func cancel(slot: Slot) -> Error:
+	if not FileAccess.file_exists(queue_path(slot)):
+		return OK
+	return DirAccess.remove_absolute(queue_path(slot))
 
 
 ## Runs at the debug start before any game resource is loaded; failed requests stay queued.
@@ -262,6 +300,7 @@ static func run_queue(debug_root: String) -> Dictionary:
 	var details: PackedStringArray = []
 	if not DirAccess.dir_exists_absolute(directory):
 		return {"error": OK, "done": done}
+	var problems: PackedStringArray = []
 	for file in DirAccess.get_files_at(directory):
 		var path := directory.path_join(file)
 		var request := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Request
@@ -271,13 +310,22 @@ static func run_queue(debug_root: String) -> Dictionary:
 			failed.append(request.candidate_name if request != null else file)
 			details.append(Messages.detail(result))
 			continue
-		DirAccess.remove_absolute(path)
 		done.append(request.candidate_name)
+		if result.log != OK:
+			details.append(result.line)
+			problems.append("%s 的待收尾记录没能写进 %s，请让 Agent 按详情补记" % [request.candidate_name, LOG])
+		if DirAccess.remove_absolute(path) != OK:
+			details.append(path)
+			problems.append("%s 的排队记录没能删除，下次启动会再写一次游戏文件：请让 Agent 删除 %s" % [
+				request.candidate_name, Messages.relative(path)])
 	DirAccess.remove_absolute(directory)
 	var note := Uids.refresh_cache(debug_root) if not done.is_empty() else ""
 	if not failed.is_empty():
+		problems.insert(0, "上次排队采纳的 %s 没能移入游戏：文件移动或写入失败，下次启动再试。请让 Agent 查看详情"
+			% "、".join(failed))
+	if not problems.is_empty():
 		return {"error": ERR_CANT_CREATE, "done": done, "detail": "\n".join(details),
-			"text": "上次排队采纳的 %s 没能移入游戏：文件移动或写入失败。请让 Agent 查看详情" % "、".join(failed)}
+			"text": "；".join(problems)}
 	return {"error": OK, "done": done, "note": note}
 
 
@@ -289,7 +337,9 @@ static func _run(request: Request, debug_root: String) -> Dictionary:
 	var moved := _move_files(request.source, request.destination, remaining)
 	if moved.error != OK:
 		return moved
-	_rewrite_paths(request.source, request.destination, request.files)
+	var rewritten := _rewrite_paths(request.source, request.destination, request.files)
+	if rewritten.error != OK:
+		return rewritten
 	Uids.remap(request.destination, request.files)
 	var slot := Slot.new()
 	var error := slot.configure(request.target_id, request.slot_path, request.game_path, debug_root)
@@ -303,10 +353,10 @@ static func _run(request: Request, debug_root: String) -> Dictionary:
 	if error != OK:
 		return {"error": error, "message": slot.game_path}
 	_retire_descriptor(request.source)
-	append_log(debug_root, "%s（%s）· 排队的 %s 已移入 %s，写入 %s" % [request.slot_id,
+	var line := "%s（%s）· 排队的 %s 已移入 %s，写入 %s" % [request.slot_id,
 		slot.display_name(), request.candidate_name, Messages.relative(request.destination),
-		Messages.relative(slot.game_path)])
-	return {"error": OK}
+		Messages.relative(slot.game_path)]
+	return {"error": OK, "log": append_log(debug_root, line), "line": line}
 
 
 ## One line per adoption, for the Agent's follow-up; the file only lists unfinished work.
@@ -318,11 +368,11 @@ static func append_log(debug_root: String, line: String) -> Error:
 		return FileAccess.get_open_error()
 	if exists:
 		file.seek_end()
-	else:
-		file.store_string(LOG_HEADER)
-	file.store_string("- %s · %s\n" % [Time.get_datetime_string_from_system(false, true), line])
+	var text := ("" if exists else LOG_HEADER) \
+		+ "- %s · %s\n" % [Time.get_datetime_string_from_system(false, true), line]
+	var stored := file.store_string(text)
 	file.close()
-	return OK
+	return OK if stored else ERR_FILE_CANT_WRITE
 
 
 ## The log line for one adopted slot: which candidate moved where and which file was written.
@@ -349,30 +399,55 @@ static func _files(directory: String, prefix: String) -> PackedStringArray:
 	return result
 
 
+## Moves every file or none: all targets must be free first, and when one move fails the
+## files already moved go back. "stranded" names those that could not go back.
 static func _move_files(source: String, destination: String, files: PackedStringArray) -> Dictionary:
-	if DirAccess.dir_exists_absolute(destination) and files.size() > 0 \
-			and FileAccess.file_exists(destination.path_join(files[0])):
-		return {"error": ERR_ALREADY_EXISTS, "message": destination}
+	for file in files:
+		if FileAccess.file_exists(destination.path_join(file)):
+			return {"error": ERR_ALREADY_EXISTS, "message": destination.path_join(file)}
+	var moved: PackedStringArray = []
 	for file in files:
 		var target := destination.path_join(file)
 		var error := DirAccess.make_dir_recursive_absolute(target.get_base_dir())
 		if error == OK:
 			error = DirAccess.rename_absolute(source.path_join(file), target)
 		if error != OK:
-			return {"error": error, "message": source.path_join(file) + " -> " + target}
+			return {"error": error, "message": source.path_join(file) + " -> " + target,
+				"stranded": _move_back(source, destination, moved)}
+		moved.append(file)
 	return {"error": OK}
 
 
+## Puts moved files back and removes the then empty destination; returns those still moved.
+static func _move_back(source: String, destination: String, moved: PackedStringArray) -> PackedStringArray:
+	var stranded: PackedStringArray = []
+	for file in moved:
+		if DirAccess.rename_absolute(destination.path_join(file), source.path_join(file)) != OK:
+			stranded.append(file)
+	DirAccess.remove_absolute(destination)
+	return stranded
+
+
 ## Moved scripts and scenes still name their siblings by the old directory; the editor's own
-## move rewrites these the same way.
-static func _rewrite_paths(source: String, destination: String, files: PackedStringArray) -> void:
+## move rewrites these the same way. Stops at the first file it cannot read or write.
+static func _rewrite_paths(source: String, destination: String, files: PackedStringArray) -> Dictionary:
 	for file in files:
 		if not file.get_extension() in TEXT_EXTENSIONS:
 			continue
 		var path := destination.path_join(file)
-		var text := FileAccess.get_file_as_string(path)
+		var input := FileAccess.open(path, FileAccess.READ)
+		if input == null:
+			return {"error": FileAccess.get_open_error(), "message": "Cannot read " + path}
+		var text := input.get_as_text()
+		input.close()
 		var updated := text.replace(source + "/", destination + "/")
-		if updated != text:
-			var output := FileAccess.open(path, FileAccess.WRITE)
-			output.store_string(updated)
-			output.close()
+		if updated == text:
+			continue
+		var output := FileAccess.open(path, FileAccess.WRITE)
+		if output == null:
+			return {"error": FileAccess.get_open_error(), "message": "Cannot write " + path}
+		var stored := output.store_string(updated)
+		output.close()
+		if not stored:
+			return {"error": ERR_FILE_CANT_WRITE, "message": "Cannot write " + path}
+	return {"error": OK}
