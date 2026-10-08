@@ -75,4 +75,24 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 迁移报告可以放在 `reports/maintenance/framework-migration/migration.md`。已有文件没有依据时不覆盖。历史测试只证明历史版本；无法恢复的旧决定、基线或原件保持“未知”，不能补造过去的审批、TDD、验收或完成时间。替换框架和交付业务功能是两件不同的事，框架也不提供持续升级。
 
+## 让项目里的框架副本与框架对齐
+
+创建项目时，复制清单把框架的规则、方法规范、Skill、工具、插件和调试台共享代码复制进项目，这些文件是框架副本。之后框架改了它们，已有项目不会自动更新；是否对齐、对齐哪些文件，由用户决定。
+
+下面这些文件由创建器给出起点后，内容属于项目，对齐时保留项目版本，不按框架覆盖：
+
+- `docs/`，包括 GDD、Progress、术语和机器配置 `docs/methodology-config.json`；
+- `game/`、`main/`、`assets/`、`components/`、`tests/`、`reports/` 和 `project.godot`；
+- 项目 `README.md`；
+- `dev/debug/` 中 `_shared/` 以外的文件，例如插槽、`debug_project.gd` 和项目自己的 `dev/debug/README.md`。
+
+复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.codex/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
+
+1. 在[复制清单](../../project-creation/project-files.json)中，找到每个要对齐的项目路径对应的 `source`。目录条目按目录内的相对路径逐文件对应。
+2. 逐文件比对框架源文件和项目文件，例如 `git diff --no-index <框架源文件> <项目文件>`，列出有差异的文件，以及框架新增或删除的文件。
+3. 在项目里运行 `git log --oneline -- <项目文件>`，确认项目有没有改过这个副本。只有创建时的初始提交，才整份覆盖；项目改过时不覆盖，把两边的差异交给用户决定保留什么。
+4. 核对框架版本中的相对链接和标题锚点在项目里都存在。链接指向项目还没有的文件时，把那个文件也列入本次对齐，或交给用户决定。
+5. 用框架版本整份覆盖项目文件，不逐段合并。框架删除的文件，确认项目里没有引用后再删除。
+6. 在项目里运行 `python -B yaya/tools/checks/check-markdown-links.py`，确认链接和锚点没有失效；对齐了代码、工具或插件时，再运行受影响的测试。最后按项目的提交约定提交。
+
 相关专题：[配置参考](configuration.md)、[项目对象与目录](project-layout.md)、[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。
