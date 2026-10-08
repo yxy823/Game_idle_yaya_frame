@@ -29,4 +29,4 @@
 | 行为变化 | 运行 [08 测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md#测试影响评估) 选定的范围：Required、affected 或 full |
 | 生命周期、Node、Resource、Input、Autoload 或线程的运行时语义变化 | 在上一行的测试中包含真实 SceneTree 路径上的集成或运行时测试 |
 
-不为通过检查而新增或扩大 `gdlint:ignore*`、`@warning_ignore` 或排除项，也不为此修改 `gdlint.json`。
+不为通过检查而新增或扩大 `gdlint:ignore*`、`@warning_ignore` 或排除项，也不为此修改 `gdlint.json`。唯一例外是用户在讨论中同意保留的指标超标，写法见[用户同意保留的超标](../../methodology/contracts/gdscript-lint.md#用户同意保留的超标)；Agent 不能自行新增这种例外，也不能调高已有的钉住值。
