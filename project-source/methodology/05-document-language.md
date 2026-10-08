@@ -13,7 +13,7 @@
 
 ## 2. 配置约定
 
-`docs/methodology-config.json` 用 `document_language` 字段保存文档语言。同一个文件还保存 [06 · 项目环境](06-project-environment.md)中说明的工具路径；修改语言时，这些设置保持不变。
+`docs/methodology-config.json` 用 `document_language` 字段保存文档语言。同一个文件还保存 [项目环境](06-project-environment.md)中说明的工具路径；修改语言时，这些设置保持不变。
 
 取值是一个 [BCP 47 语言标签](https://www.rfc-editor.org/rfc/rfc5646.html#section-2.1)。已验证的取值：
 

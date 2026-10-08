@@ -1,6 +1,6 @@
 # gdUnit4 运行器与诊断
 
-项目固定使用 `addons/gdUnit4/` 中的 gdUnit4，版本以其 `plugin.cfg` 为准。测试的选择和完成证据见 [methodology 08](../../methodology/08-test-traceability-and-evidence.md)；本文写包装脚本的实际行为，以及编写测试时要配合的地方。
+项目固定使用 `addons/gdUnit4/` 中的 gdUnit4，版本以其 `plugin.cfg` 为准。测试的选择和完成证据见 [测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md)；本文写包装脚本的实际行为，以及编写测试时要配合的地方。
 
 ## 运行方式
 

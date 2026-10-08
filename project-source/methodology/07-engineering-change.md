@@ -105,7 +105,7 @@ feature-execute
 → 提交
 ```
 
-这条链在[执行规范](03-execute-loop.md)内运行，不增加自己的 Stage。
+这条链在[Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)内运行，不增加自己的 Stage。
 
 - **发现**：收集实际行为、预期行为和可重复的触发方式；间歇性故障则收集观察到的条件。
 - **根因**：先确立因果解释，再选择修复。调查期间原因未知时，明确标为未知。
@@ -113,7 +113,7 @@ feature-execute
 - **回归 RED**：必须因缺陷本身而失败。解析错误、准备失败或无关的基线失败都不算。
 - **修复与 GREEN**：做最小的完整修复，看到回归测试 GREEN，再运行计划中的受影响集合和任何必需的全量套件。只有当一次真实的全量运行的快照和实际覆盖包含这些子集时，才能复用它。手工填写的计数永远不能代替执行证据。
 - **记录 Bug 经验（Stage 5.5）**：写下 `BUG learning` 记录，并按 [Bug 经验的提升](#bug-经验的提升)评估 Guardrail。
-- **收尾**：按 [03 执行规范](03-execute-loop.md)和 [08 · 测试追溯与证据](08-test-traceability-and-evidence.md)，以适用的人工验收、用户要求的独立审核、完成检查和一次可追溯的本地提交完成修复。审核引起的修复如果改变了已接受的行为，要重新验证并重新进行适用的人工验收。之后 Stage 8 简要报告可复用的经验，并在用户剩余的授权内继续。
+- **收尾**：按 [Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)和 [测试追溯与证据](08-test-traceability-and-evidence.md)，以适用的人工验收、用户要求的独立审核、完成检查和一次可追溯的本地提交完成修复。审核引起的修复如果改变了已接受的行为，要重新验证并重新进行适用的人工验收。之后 Stage 8 简要报告可复用的经验，并在用户剩余的授权内继续。
 
 ### 因果诊断
 
@@ -183,7 +183,7 @@ feature-execute
 
 - `affected_components` 包含 `debug_console`，测试按组件选择，组件的定义见[调试台组件](08-test-traceability-and-evidence.md#调试台组件)。
 - 调试台的界面行为变化时，同步更新 `dev/debug/_shared/usage-scenarios.md` 中受影响的界面任务；共享机制变化时，同步 `dev/debug/_shared/README.md`。
-- 界面有变化时，Stage 4 在人工清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工检查清单)。
+- 界面有变化时，Stage 4 在准备人工验收清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工验收清单)。
 - 改了调试入口、主题或窗口时，在项目副本里运行调试入口启动检查 `dev/debug/_shared/tests/fixtures/fresh_load.gd`，命令见[测试](../../dev/debug/_shared/README.md#测试)。
 
 ## Feature 写入规则

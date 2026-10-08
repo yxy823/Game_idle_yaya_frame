@@ -18,8 +18,8 @@
 | focused / baseline 测试通过 | 指定范围在本次运行成功 | 最终 Required / affected / full 已满足 |
 | 最终测试通过 | 选中的自动测试在当前内容上成功 | 解析、lint、性能、画面、声音或手感合格 |
 | 解析或 lint 通过 | 执行过的静态范围没有问题 | 运行行为、资源、导出或人工质量合格 |
-| 完成依据校验通过 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立评审或导出包已检查 |
-| 人工清单已生成 | 待验收材料已交给用户 | 用户已验收或已接受 |
+| 完成证据校验通过 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立审核或导出包已检查 |
+| 人工验收清单已生成 | 待验收材料已交给用户 | 用户已验收或已接受 |
 | 用户在调试台采纳到游戏 | 选定的参数和实现已写进游戏文件，是用户当时的选择 | 已收尾提交、测试通过或人工验收通过；人工验收另外检查收尾后的游戏原值 |
 | 技术验证得出“可行” | 该做法在验证的版本、环境和条件下可行 | 正式功能已实现或已通过验收 |
 
@@ -117,7 +117,7 @@ $LASTEXITCODE
 | 参数 | 说明 |
 | --- | --- |
 | `--feature` / `--target` | 两者互斥；都不传时 target 默认为 `tests`，项目有 `dev/debug` 时加上它 |
-| `--phase` | `baseline` 或 `final`，默认 `final`。基线和 `--target` 运行只用于建立基线或调试，不能作为 Feature 的完成依据 |
+| `--phase` | `baseline` 或 `final`，默认 `final`。基线和 `--target` 运行只用于建立基线或调试，不能作为 Feature 的完成证据 |
 | `--timeout-seconds` | 默认 120，必须是大于 0 的有限数 |
 | `--require-test` | 格式为 `<suite-path>::<test-case>`，要求原始报告确实包含该用例 |
 | `--continue` | 传给 gdUnit 的 `-c`；与“继续一个 Yaya 任务”或“复用上次报告”无关 |
@@ -177,11 +177,11 @@ reports/gdunit-wrapper/F001/run-<id>/
 - 参数化用例以实际展开后的集合为准；源码里有 `test_*` 方法，不代表它真的执行了。
 - JUnit 显示成功，也可能同时存在引擎错误或未完成的运行，以运行器的整体结果为准。
 
-## 记录完成依据
+## 记录完成证据
 
 ### 从运行结果到完成状态
 
-Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时为该 Feature 创建完成依据文件 `docs/features/F0XX-evidence.json`，Stage 7 检查完成条件。每个 Feature 一份，互不覆盖。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
+Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时为该 Feature 创建完成证据文件 `docs/features/F0XX-evidence.json`，Stage 7 检查完成条件。每个 Feature 一份，互不覆盖。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
 
 ```mermaid
 flowchart TD
@@ -193,9 +193,9 @@ flowchart TD
     J -.->|引用与哈希| O
     J -->|指定真实 --run 路径| T[Agent 调用 record-tests]
     O -->|重读并校验覆盖| T
-    T -->|保存结果引用| E[完成依据 JSON]
+    T -->|保存结果引用| E[完成证据 JSON]
     U[用户实际人工反馈] -->|manual 时由 Agent 导入| E
-    E -->|validate 重读原件与当前内容| C[完成依据检查结果]
+    E -->|validate 重读原件与当前内容| C[完成证据检查结果]
     A[Agent 直接执行解析与 lint] -->|读取实际退出码和输出| D[Agent 综合最终判断]
     C --> D
     V[Feature 记录完成检查与用户指定评审结果] --> D
@@ -207,10 +207,10 @@ flowchart TD
 | 环节 | 输入 → 产出 | 判定方式 |
 | --- | --- | --- |
 | 测试运行器 | 当前 Feature、测试登记表、配置与源码 → 运行目录、`result.json` 与报告 | 等进程结束后读取结果、发现集合、覆盖与诊断；只打印路径不代表文件已保存 |
-| `record-tests` | 最终运行的 `result.json` 路径 → 完成依据中的路径与哈希引用 | 重新核对当前内容、原件、覆盖和未解决的失败 |
+| `record-tests` | 最终运行的 `result.json` 路径 → 完成证据中的路径与哈希引用 | 重新核对当前内容、原件、覆盖和未解决的失败 |
 | 人工结果导入 | 绑定当前内容的清单 + 用户结果，或用户明确的口头决定 → 人工记录 | 命令成功只代表记录成功，状态仍可能是 pending 或 rejected |
-| `validate` | 当前契约与完成依据 → 只读结论 | 重新计算测试义务并读取原件，核对适用的人工接受 |
-| Agent 更新 Feature 记录 | 完成依据、直接解析与 lint、AC 与差异、Feature 记录、用户指定的评审条件 | 全部满足后写入 done 和真实完成时间，再检查最终的 Feature 记录 |
+| `validate` | 当前契约与完成证据 → 只读结论 | 重新计算测试义务并读取原件，核对适用的人工接受 |
+| Agent 更新 Feature 记录 | 完成证据、直接解析与 lint、AC 与差异、Feature 记录、用户指定的评审条件 | 全部满足后写入 done 和真实完成时间，再检查最终的 Feature 记录 |
 
 ### 子命令
 
@@ -223,7 +223,7 @@ flowchart TD
 | `record-acceptance --feature F001 --checklist <清单.json>` | 清单的状态已按用户的结论填写后，核对定义未变并记录 accepted、rejected 或 pending |
 | `record-acceptance ... --confirm-unrelated-changes` | 绑定之后项目又有变化，Agent 逐个核对工具列出的文件后使用：列表可能包含绑定时未提交、之后没改过的文件，真正改过的都不涉及本 Feature 时才可用；列表会写进记录 |
 | `show --feature F001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
-| `validate --feature F001` | 检查当前内容对应的完成依据是否满足 |
+| `validate --feature F001` | 检查当前内容对应的完成证据是否满足 |
 
 `show` 退出 0 只表示记录可读取：没有通过的测试、仍在等待人工结果的记录也能正常展示。判断能否完成要用 `validate`。两者都不改 Feature 状态；记录结构损坏或身份不匹配时都会报错。
 
@@ -250,27 +250,27 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-完成依据文件在第一次记录测试结果或人工验收结果时自动创建，不需要提前建空记录；已有文件损坏或格式不受支持时会报错，不会被覆盖。独立评审的范围和时机由用户决定。
+完成证据文件在第一次记录测试结果或人工验收结果时自动创建，不需要提前建空记录；已有文件损坏或格式不受支持时会报错，不会被覆盖。独立审核的范围和时机由用户决定。
 
 ### 不需要自动测试的情况
 
 运行器会自己判断是否有需要运行的测试，统一调用即可：
 
 - **适用条件**：有效的 manual 计划中 Required 和 affected 都为空、且不要求全量时，退出码为 0，并输出含 `status: not_required` 的 JSON。合法的空基线同样返回 `not_required`。
-- **运行与记录**：这时不启动 Godot、不写报告，也不调用 `record-tests`。之后用真实的人工验收结果创建完成记录，其中 `test_runs: []`。
+- **运行与记录**：这时不启动 Godot、不写报告，也不调用 `record-tests`。之后用真实的人工验收结果创建完成证据，其中 `test_runs: []`。
 - **仍会报错的情况**：显式指定 `--scope full` 或 `--require-test`、映射无效、路径缺失，或当前内容上还有未解决的最终失败。
 
 这里的退出码 0 只表示“不需要自动测试”，不是测试通过。
 
 ### 记录人工验收结论
 
-清单本身就是验收记录，保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。你在对话里说“通过”或指出问题，Agent 把结论写进清单对应项的状态和备注；你也可以自己改清单。两种方式记到同一个地方，不另存结果文件。
+清单本身就是验收记录，保存在 `reports/manual-acceptance/`，格式和命令示例见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)。你在对话里说“通过”或指出问题，Agent 把结论写进清单对应项的状态和备注；你也可以自己改清单。两种方式记到同一个地方，不另存结果文件。
 
 - 清单全部通过，就是该范围的人工接受；备注里有实质矛盾时先向用户澄清。
 - 命令退出 0 表示如实记录了状态；`pending` 和 `rejected` 都不能完成任务。
 - 导入无效时命令以非零退出，并保留已有记录。Agent 要处理本次错误，不能退回使用旧的接受记录。
 
-### 检查完成依据与 Feature 记录
+### 检查完成证据与 Feature 记录
 
 在当前终端完成[调用准备](#调用准备)后运行下面三条命令；直接解析、lint 和用户指定的评审条件由 Agent 另外确认：
 
@@ -283,7 +283,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-其他失败的含义见[错误与结果的含义](errors-and-results.md#测试与完成依据)。
+其他失败的含义见[错误与结果的含义](errors-and-results.md#测试与完成证据)。
 
 ## 内容指纹与失效判断
 
@@ -372,4 +372,4 @@ lint CLI 的结果约定：
 | gdUnit 运行器 | 0 成功；1 运行失败；2 参数错误 |
 | lint CLI | 见上节 |
 
-实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成依据入口](../../../project-source/tools/features/record-feature-completion.py)、[lint 契约](../../../project-source/methodology/contracts/gdscript-lint.md)。
+实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成记录工具](../../../project-source/tools/features/record-feature-completion.py)、[GDScript lint 的约定与证据](../../../project-source/methodology/contracts/gdscript-lint.md)。

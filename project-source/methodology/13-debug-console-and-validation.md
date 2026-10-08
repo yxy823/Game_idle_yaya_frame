@@ -144,7 +144,7 @@
 | 命中情况 | 处理 |
 | --- | --- |
 | 被已完成 Feature 的来源文档（GDD、UI 规格、表现文档等）或 AC 链接 | 报告受影响的 Feature，运行 `feature-sync`。被文档链接的调参资源属于[查找与映射来源](11-specialist-workflows.md#查找与映射来源)中的来源，`feature-sync` 从资源的 Git 差异建立变更；已完成 Feature 的验收记录保持历史，需要重新验收时由新的 Feature 完成。 |
-| 只被进行中的 Feature 链接 | 留在该 Feature 内处理：Stage 3 中的采纳是正常工作；人工清单绑定之后的采纳等于拒绝本次验收，见 [Stage 5](03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式)。 |
+| 只被进行中的 Feature 链接 | 留在该 Feature 内处理：Stage 3 中的采纳是正常工作；人工验收清单绑定之后的采纳等于拒绝本次验收，见 [Stage 5](03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式)。 |
 | 没有被任何文档或 AC 链接 | 收尾提交即完成，不需要源同步。 |
 
 参数还写死在已完成 Feature 的代码里时，把它提到调参资源属于重构，按[重构 Feature 契约](07-engineering-change.md#重构-feature-契约)处理。
@@ -161,8 +161,8 @@
 
 ## 验收
 
-- **验收针对游戏原值**：人工验收检查的是采纳后游戏文件中的值，不是某个预设或组合。Feature 在 Stage 3 中、人工清单绑定之前完成采纳和收尾，见[最终验证前的文档检查点](03-execute-loop.md#3d-最终验证前的文档检查点)。清单的入口写调试入口和固定局面，见[人工验收文件](contracts/manual-acceptance-files.md)。
+- **验收针对游戏原值**：人工验收检查的是采纳后游戏文件中的值，不是某个预设或组合。Feature 在 Stage 3 中、人工验收清单绑定之前完成采纳和收尾，见[最终验证前的文档检查点](03-execute-loop.md#3d-最终验证前的文档检查点)。清单的入口写调试入口和固定局面，见[人工验收文件](contracts/manual-acceptance-files.md)。
 - **验收中改值等于拒绝**：用户在验收期间可以随意试调和另存预设，不影响证据；但又采纳了新值，就等于拒绝本次验收，按 [Stage 5](03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 回到 Stage 3。
-- **作者先试用**：Feature 改动了有界面任务的界面或调试台界面时，Agent 在人工清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工检查清单)。
+- **作者先试用**：Feature 改动了有界面任务的界面或调试台界面时，Agent 在准备人工验收清单之前按界面任务试用，见 [Stage 4](03-execute-loop.md#stage-4--自动验证与人工验收清单)。
 - **调试台的观察不是验收**：用户在调试台中满意、Agent 的截图或试用通过，都不代替人工验收；技术验证的结论也不代表已有必需的回归测试覆盖。不要让没有相关不确定点的工作以调试台或技术验证为前提。
 - **删除带测试的内容**：删除登记过测试的调试对象、候选或探针前，按[需求变化与过时的测试](08-test-traceability-and-evidence.md#需求变化与过时的测试)退役这些测试。

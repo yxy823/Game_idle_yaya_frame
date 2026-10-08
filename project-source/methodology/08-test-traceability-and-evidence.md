@@ -133,7 +133,7 @@ Feature 详情使用稳定的验收条件 ID：
 
 - **覆盖范围**：调试入口 `dev/debug/debug_main.*`、项目挂钩 `dev/debug/debug_project.gd`、共享代码 `dev/debug/_shared/`，以及本项目的调试对象 `dev/debug/<对象>/`。游戏中的调参资源属于各自的游戏组件，不属于它。
 - **登记的测试**：`unit_test_paths` 为 `["dev/debug/_shared/tests"]`；项目新增调试对象的专有测试时，把 `dev/debug/<对象>/tests` 加进同一列表。依赖方向测试登记为 active 不变量 `INV-DEBUG_CONSOLE-01`（`tests/invariants/debug_dependency_test.gd`），组件为 `debug_console`。
-- **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[工程变更流程](07-engineering-change.md#调试台的修改)建维护 Feature。
+- **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[调试台的修改](07-engineering-change.md#调试台的修改)建维护 Feature。
 - 只改游戏代码、不新建调参资源或字段时，依赖方向测试由[测试选择与 Godot 验证](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
 
 ## 测试影响评估
@@ -215,7 +215,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 源码声明只用来发现遗漏的套件，从不证明执行。声明扫描通过直接继承、仓库脚本路径和项目的 `class_name` 基类来解析 `GdUnitTestSuite` 的继承关系。套件之外名为 `test_*` 的辅助方法不算义务；无法解析的基类表达式会导致失败，而不是静默丢掉一个套件。
 
-同一快照上一次成功的全量运行满足 Required 和 affected 集合，不需要重跑它们。必需的全量升级没有成功的全量结果时，保持阻塞。人工清单或手工填写的 `approved_unavailable` 标签都不能把它变成自动 PASS。
+同一快照上一次成功的全量运行满足 Required 和 affected 集合，不需要重跑它们。必需的全量升级没有成功的全量结果时，保持阻塞。人工验收清单或手工填写的 `approved_unavailable` 标签都不能把它变成自动 PASS。
 
 ## 基于原始结果的完成判断与语义时效
 
@@ -224,7 +224,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 最终验证时，只有在 `manual` 验收计划有效、Required 和 affected 集合都为空、且没有全量义务时，运行器才返回 `not_required`。
 
 - 正常调用运行器。它检查当前计划和同一快照上尚未解决的失败，然后以退出码 0 结束，在 stdout 输出 JSON 状态。它不启动 Godot，不读取引擎配置，也不创建运行报告。
-- 这种结果不调用 `record-tests`。记录实际的人工验收时会创建完成记录，其中 `test_runs: []`。适用的静态检查仍然必需。
+- 这种结果不调用 `record-tests`。记录实际的人工验收时会创建完成证据，其中 `test_runs: []`。适用的静态检查仍然必需。
 - baseline 选择也可能为空，因为新的 planned 测试还不存在。
 - 显式的 `--scope full` 或 `--require-test` 仍然要求真实运行，[什么情况下运行失败](#什么情况下运行失败)中的失败条件仍然适用。
 - `not_required` 从不清除之前失败或未完成的最终运行。
@@ -258,7 +258,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 - 只有覆盖义务需要多次不同的运行时，才重复 `--run`。一次全量运行就覆盖 Required 和 affected。
 - 辅助工具根据当前 Feature、测试登记表和原始报告计算覆盖。调用方提供的通过标签或总数不能产生 PASS。
 - 导入失败会清除之前的引用。
-- 完成记录（格式见 [Feature 完成证据](02-feature-list-schema.md#文件-5docsfeaturesf0xx-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
+- 完成证据（格式见 [Feature 完成证据](02-feature-list-schema.md#文件-5docsfeaturesf0xx-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
 - 解析和 lint 结果由 Agent 直接评估。
 
 哈希、与当前源码的绑定和运行身份，用来发现意外的过时复用或被改动的文件。这些可在本地编辑的记录不是防止有人改写全部证据的安全签名。文件修改时间和时钟精度从不授权完成。不要为了得到绿色结果而加 sleep，或重跑没有变化的失败。
@@ -351,7 +351,7 @@ RED、GREEN 和重构按每一个小的可观察行为进行，而不是先写�
 - 有自动义务时，Stage 4 把核实过的运行结果导入该 Feature 的 `docs/features/F0XX-evidence.json`。需要人工验收时，Stage 5 记录清单中实际的人工结论。
 - `yaya/tools/features/record-feature-completion.py validate --feature F0XX` 检查这份证据。
 - `yaya/tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
-- 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[执行规范](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。
+- 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。
 
 被要求的 [Stage 6 审核](03-execute-loop.md#stage-6--可选的独立审核)在源码和验证都没有变化时，复用当前成功的运行结果。修复改变了快照时，重新计算当前义务，重复适用的 Stage 4 验证（包括 [`not_required`](#没有自动义务not_required) 的情况），然后重新进行受影响的验收。一次成功的全量运行覆盖 Required 和 affected；不要只为填第二个字段而再跑一次 Required。
 

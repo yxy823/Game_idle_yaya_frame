@@ -11,7 +11,7 @@
 | 开始或续接一个 Feature | [通用约定](#通用约定)、[Stage 0](#stage-0--选择-feature-并加载上下文) |
 | 准备批准材料 | [Stage 1](#stage-1--测试影响评估资源预检与明确批准) |
 | 获得批准，开始实现 | [Stage 2](#stage-2--标记-in_progress-并保存验证计划)、[Stage 3](#stage-3--基线tdd-与实现) |
-| 最终验证 | [3D 文档检查点](#3d-最终验证前的文档检查点)、[Stage 4](#stage-4--自动验证与人工检查清单) |
+| 最终验证 | [3D 文档检查点](#3d-最终验证前的文档检查点)、[Stage 4](#stage-4--自动验证与人工验收清单) |
 | 等待或记录人工验收 | [Stage 5](#stage-5--明确的人工验收仅-manual-模式) |
 | Bug Feature 验收后 | [Stage 5.5](#stage-55--记录-bug-经验) |
 | 用户要求独立审核 | [Stage 6](#stage-6--可选的独立审核) |
@@ -24,9 +24,9 @@
 - 需要一份实质性的 GDD，见 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)。这适用于 Product Feature 和工程 Feature，包括续接的工作。
 - 写入项目文件前，先读 `docs/methodology-config.json`。对话使用用户当前的语言；写进项目文件的文字使用 `document_language`。
 - 第一个编码 Feature 开始前，完成一次性的[项目环境准备](06-project-environment.md#项目环境准备)。Stage 0 复用已确认的准备结果和已配置的路径。只有工具或配置变化后，或实际调用失败后，才重复检查。
-- 通过 `AGENTS.md` 和 [规则加载约定](04-project-rules.md#加载规则) 读取适用的有效项目规则，包括 `docs/project-rules.md` 中与本任务有关的约束。为这个 Feature 保留一份与任务有关的快照；不需要加载无关的小节，也不需要重读没变的来源。
+- 通过 `AGENTS.md` 和 [加载规则](04-project-rules.md#加载规则) 读取适用的有效项目规则，包括 `docs/project-rules.md` 中与本任务有关的约束。为这个 Feature 保留一份与任务有关的快照；不需要加载无关的小节，也不需要重读没变的来源。
 - 遵循 `AGENTS.md` 的 **Git 与提交**：检查并保留当前的改动；续接时使用任务记录；在依赖这些改动的编辑之前，解决具体的重叠。Git 状态非空本身不算阻塞。
-- 启用自动测试时，读取 `docs/test-registry.json`。测试的含义定义在 [08-test-traceability-and-evidence.md](./08-test-traceability-and-evidence.md)。
+- 启用自动测试时，读取 `docs/test-registry.json`。测试的含义定义在 [测试追溯与证据](./08-test-traceability-and-evidence.md)。
 - 发布、上架和部署不在本循环内，除非它们被明确规划为项目工作。
 
 ### 授权与续接
@@ -52,7 +52,7 @@
 
 ### 进度沟通
 
-用对话语言报告有意义的进展、失败、需要的决定和最终交接。相邻的常规步骤可以合并报告；不要求每个 Stage 边界都发消息。批准材料、所需的人工检查清单和最终结果要让用户看得到。自然的措辞就够了。对话文字不是机器协议，不能证明执行过，也不能代替批准。
+用对话语言报告有意义的进展、失败、需要的决定和最终交接。相邻的常规步骤可以合并报告；不要求每个 Stage 边界都发消息。批准材料、所需的人工验收清单和最终结果要让用户看得到。自然的措辞就够了。对话文字不是机器协议，不能证明执行过，也不能代替批准。
 
 ### 静态检查汇总
 
@@ -91,7 +91,7 @@
    - 当前的 Progress，只在需要时才沿着它的历史链接去读；
    - 适用的项目规则和按路由读取的 `agent-rules`；
    - 测试登记表，以及界定本次改动所需的主要实现路径；
-   - 按 [架构约定](10-architecture-overview.md) 适用的架构图和 ADR；没有架构图时，也要读有关的 ADR。
+   - 按 [架构概览](10-architecture-overview.md) 适用的架构图和 ADR；没有架构图时，也要读有关的 ADR。
 5. 主 Agent 自己阅读这些来源。明确委派实现指导时，advisor 可以按 [按事先准备的指导实现](04-project-rules.md#按事先准备的指导实现) 分担背景调查；实现者仍要核对原始规则和当前代码。
 6. 提出方案或搜索外部资料之前，先为这个 Feature 执行 [项目知识查找](../../docs/knowledge/README.md#先查找相关知识)。
 7. 如果计划采用来源之后，起约束作用的来源又发生了变化，在依赖它们的执行之前，通过 `feature-sync` 处理实际影响。普通的续接请求不需要另说一句“请同步”。
@@ -266,7 +266,7 @@ Feature 级的人工验收尚未完成，不阻止已验证的逻辑提交；除
 | 内容 | 动作与权限 |
 | --- | --- |
 | GDD 和 Product 交付 | `design-gdd` 记录已批准的整体游戏设计变更；`design-balance` 在其 GDD 主题中维护范围内的数值设计。`product-author` 调整受影响的 Product 边界和来源链接。未来的 Product 仍是预拆分候选。对当前和已规划工作的影响，通过来源提交和源同步流程解决。 |
-| 项目术语 | 在当前文档授权内调用 `project-terminology`；定义遵循 [术语约定](14-project-terminology.md)。含义变化走拥有该术语的 Product 或设计流程。 |
+| 项目术语 | 在当前文档授权内调用 `project-terminology`；定义遵循 [项目术语](14-project-terminology.md)。含义变化走拥有该术语的 Product 或设计流程。 |
 | 专业需求与表现采用 | 当前任务按 [专业工作与来源](11-specialist-workflows.md) 协调适用的表现、UI、美术、音频和本地化来源。实现中新定的、玩家可见的表现参数（例如动画时长、缓动方式）放进调参资源，所属的表现或 UI 文档在本检查点链接这份资源，不抄数值，见[调参资源](13-debug-console-and-validation.md#调参资源)；不只写在设计稿里。验证前定下资源状态和位置、采用的组件组合，以及指向实际实现和使用方的链接。链接验收记录，不复制其结果。在依赖它们的交付之前，解决来源的实质影响。 |
 | Feature 设计与当前架构 | 在 Feature 设计稿中对齐实际实现和已批准的偏差。按 [维护架构地图](10-architecture-overview.md#维护架构地图) 更新受影响的架构契约和导航，用链接代替复制。 |
 | 重要技术选择 | 按 ADR 的门槛和授权处理；保留被替换的决定和证据的局限。 |
@@ -274,17 +274,17 @@ Feature 级的人工验收尚未完成，不阻止已验证的逻辑提交；除
 
 发现实质冲突时当场处理，不要拖到这个检查点。处理完辅助流程后回到当前 Feature；文档路由不能重新开始 Product 规划，也不能结束已授权的交付。
 
-用户在调试台中为本 Feature 采纳的设定，也在本检查点完成：采纳到游戏，再用 `debug-console-godot` 按收尾步骤补 UID、检查并提交，之后才准备并绑定人工清单，见[验收](13-debug-console-and-validation.md#验收)。视觉决策 Feature 还没有采纳时，这里是一个等待用户的停点：Agent 准备好插槽、候选与固定局面，给出项目 `dev/debug/README.md` 的启动命令后停下，Goal 推进按人工交接结束本段；用户采纳后从收尾继续。
+用户在调试台中为本 Feature 采纳的设定，也在本检查点完成：采纳到游戏，再用 `debug-console-godot` 按收尾步骤补 UID、检查并提交，之后才准备并绑定人工验收清单，见[验收](13-debug-console-and-validation.md#验收)。视觉决策 Feature 还没有采纳时，这里是一个等待用户的停点：Agent 准备好插槽、候选与固定局面，给出项目 `dev/debug/README.md` 的启动命令后停下，Goal 推进按人工交接结束本段；用户采纳后从收尾继续。
 
 在 Stage 4 之前定稿这些文档修改。以下文件都计入全局来源指纹，见 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)：GDD、Product、术语、专业规格、表现文档及其资源章节、规则、ADR 和设计 Markdown。之后的任何修改，即使只是文字修改，或改的是未来的 GDD 章节，都可能使当前证据失效。这类修改之后，完成所需的验证并重新验收；不要豁免这些文件，也不要声称覆盖没有变化。
 
-## Stage 4 · 自动验证与人工检查清单
+## Stage 4 · 自动验证与人工验收清单
 
 **产出：**机器证据，加上具体的人工验证说明。
 
 Stage 4 使用以下入口：
 
-- 直接解析和 lint 使用 `docs/methodology-config.json` 中已确认的 Python 和 Godot 路径，见 [GDScript lint 约定](contracts/gdscript-lint.md)。
+- 直接解析和 lint 使用 `docs/methodology-config.json` 中已确认的 Python 和 Godot 路径，见 [GDScript lint 的约定与证据](contracts/gdscript-lint.md)。
 - 测试通过 `yaya/tools/testing/run-gdunit-tests.py` 运行，它读取配置的 Godot 路径。
 
 步骤：
@@ -293,7 +293,7 @@ Stage 4 使用以下入口：
    - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
    - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
 2. 检查实际选中的范围和测试结果。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
-3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 约定](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
+3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 的约定与证据](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
 4. 对 Bug，确认每个已批准的 `F0XX-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
 5. 如果 Stage 1 要求 full，当前的选择结果必须报告 full 为必需，且实际的 full 结果必须通过。选择逻辑从 `full_suite_on_change: true` 的组件和已记录的 `full_suite_reasons` 推导 full；组件触发不复制进 `full_suite_reasons`。必需的全量套件无法运行或失败时，阻止完成；理由或对话记录都不能把它变成 PASS。
 6. 产生了运行结果时，记录实际的 Required、affected 和 full 结果，包括失败：
@@ -305,7 +305,7 @@ Stage 4 使用以下入口：
    `record-tests` 校验提供的运行结果，并保存对它们的引用。它既不运行静态检查，也不校验静态检查。Agent 单独评估直接解析和 lint 的输出；证据辅助工具通过，不能推翻静态检查的失败。导入失败会清除之前的测试引用，并保留原始报告。
 
 7. 任何机器检查失败都回到 Stage 3。不要进入 Stage 5。
-8. Feature 改动了 UI 规格中列有界面任务的界面，或改动了调试台的界面时，在准备人工清单之前由 Agent 按界面任务试用：在项目副本中用 [`ui-trial`](../tools/ui-trial/README.md) 程序驱动界面，逐个走完受影响的界面任务，试用方法和问题分级按 `review-ux`。界面任务来自 UI 规格，调试台的界面任务在 `dev/debug/_shared/usage-scenarios.md`。发现的问题回到 Stage 3 修复；决定不修的小问题在交给用户时列出。试用不代替人工验收，也不是独立审核。
+8. Feature 改动了 UI 规格中列有界面任务的界面，或改动了调试台的界面时，在准备人工验收清单之前由 Agent 按界面任务试用：在项目副本中用 [`ui-trial`](../tools/ui-trial/README.md) 程序驱动界面，逐个走完受影响的界面任务，试用方法和问题分级按 `review-ux`。界面任务来自 UI 规格，调试台的界面任务在 `dev/debug/_shared/usage-scenarios.md`。发现的问题回到 Stage 3 修复；决定不修的小问题在交给用户时列出。试用不代替人工验收，也不是独立审核。
 9. 按批准的验收模式执行。`manual` 准备对应的人工检查。`automated` 报告每个条件实际的自动覆盖情况。
 
 对 `manual`，按 [人工验收文件](contracts/manual-acceptance-files.md)，把批准的检查和适用的回归展开成一份待完成的 JSON 检查清单，绑定到最终内容，并把路径告诉用户。该契约定义了字段、可复现的步骤、怎样在清单中记录用户的结论，以及快照匹配。notes 链接检查清单和辅助观察，不复制步骤。截图和日志用于辅助相应动作；它们不能确立验收。
@@ -390,7 +390,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按 [知识维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 定稿有用的知识及其索引，并遵守 [产物归属](09-records-reports-and-handoff.md#项目知识)。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
-7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成记录，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
+7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成证据，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
 
 ## Stage 8 · 交接与已获授权的续接
 

@@ -37,11 +37,11 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 ## 检查术语用词
 
-修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓的 Markdown（包括 `project-source/`）和两份提示词库。提示词库的正文会原样显示在用户的快捷浮窗里，所以也要检查：
+修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓的 Markdown（包括 `project-source/`）、两份提示词库和关系图数据。提示词库的正文会原样显示在用户的快捷浮窗里；关系图的节点说明也是给人读的文字，提交钩子会检查暂存的这两类 JSON，全仓检查时也要包括：
 
 ```powershell
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json"
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --discover
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json"
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json" --discover
 ```
 
 只检查本次改过的文件时，把文件直接写在命令后面，改过的提示词 JSON 也一样，例如 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md AGENTS.md framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。不用 `--include` 选单个文件：不带目录的 `--include README.md` 会选中所有目录中的 `README.md`。

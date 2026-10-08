@@ -34,14 +34,14 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 ### 设计范围与边界
 
-`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围、明确的排除项和版本边界。局部机制和表现的限制留在各自的主题里。建立和读写要求见[规范](../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)。
+`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围、明确的排除项和版本边界。局部机制和表现的限制留在各自的主题里。建立和读写要求见 GDD 与 Product 文档结构的[设计范围与边界](../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)。
 
 例如：
 
 - 已确认只做单机，讨论时就可以直接排除多人同步问题。
 - “本版本不做交易”只约束这个版本；“交易玩法尚未决定”也不等于永久排除。
 
-各 Skill 先从 GDD 入口找到适用的边界，再读具体主题；开发约束和工程原则另见项目的 Project Rules。
+各 Skill 先从 GDD 入口找到适用的边界，再读具体主题；开发约束和工程原则另见项目规则。
 
 ### 开放问题
 
@@ -54,7 +54,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 | 审核 | 判断设计能否支撑下一步 |
 | 调研或实验 | 确定要取得什么证据 |
 
-例如“背包满时，采集应该失败还是把资源掉在地上”还没决定，就记为一个开放问题，采集 Product 引用它说明交付为何受影响。决定之后，把规则写进所属的 GDD 主题，更新引用它的地方，再删除这个条目。与当前交付无关的问题可以一直保留；文件为空也不说明设计已经完整。读写规则见[开放问题规范](../../../project-source/methodology/01-product-doc-structure.md#开放问题)。
+例如“背包满时，采集应该失败还是把资源掉在地上”还没决定，就记为一个开放问题，采集 Product 引用它说明交付为何受影响。决定之后，把规则写进所属的 GDD 主题，更新引用它的地方，再删除这个条目。与当前交付无关的问题可以一直保留；文件为空也不说明设计已经完整。读写规则见 GDD 与 Product 文档结构的[开放问题](../../../project-source/methodology/01-product-doc-structure.md#开放问题)。
 
 ### 谁维护什么
 
@@ -108,7 +108,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 | 详情 | `docs/features/F0XX.json`：范围、来源、可观察的 AC、组件和验证义务 |
 | AC | 一个可以客观判断的预期结果；ID 在需求演进中保持不变 |
 | 组件 | 一段可复用的真实影响范围，用来把实现和相关测试连起来；不是每个文件一个组件 |
-| 验证方式 | `manual` 或 `automated`，按要求选择；规划时未定可以是 `null`。人工清单为空不能反推为 automated |
+| 验证方式 | `manual` 或 `automated`，按要求选择；规划时未定可以是 `null`。人工验收清单为空不能反推为 automated |
 | notes | 任务提醒、事件教训、TODO 和正文链接 |
 | `F0XX-design.md` | 实施设计、局部决定和理由；不代替 AC、测试义务或专业要求 |
 
@@ -135,7 +135,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
   2. **视觉决策**：依赖骨架，因为调试台要在真实状态上比较候选；AC 写采纳后调参资源的取值并链接这份资源，人工验收。
   3. **完整逻辑**：依赖骨架。只有读取视觉参数（例如采集动画时长）的部分才依赖视觉决策，其余规则可以和视觉决策同时进行。
 
-  拆法与 AC 写法见 [Feature 规范](../../../project-source/methodology/02-feature-list-schema.md)，顺序的理由见[界面的开发顺序](../../../project-source/methodology/13-debug-console-and-validation.md#界面的开发顺序)。
+  拆法与 AC 写法见 [Feature 列表与测试追溯结构](../../../project-source/methodology/02-feature-list-schema.md)，顺序的理由见[界面的开发顺序](../../../project-source/methodology/13-debug-console-and-validation.md#界面的开发顺序)。
 - **只有依赖都已完成的 pending 任务才可以开始**（eligible）。没有可开始的任务，也可能只是依赖受阻，不能推断当前 Product 已经交付。
 - **“逻辑 / 表现 / 跨层”只描述范围**，不是 Feature 类型，也不是拆分规则。一个购买 Feature 可以同时包含条件判断、扣费和获得反馈，各写可观察的 AC；也可以按真正能独立交付的结果拆开。不能仅因为跨层就安排两个 Agent，或规定必须先完成全部逻辑。有明确技术结果的 Feature 也不必附带界面。
 
@@ -202,4 +202,4 @@ flowchart TD
 
 例如 GDD 已确认“初始资源为 0，每次点击加 1”，Product 可以选择交付“手动收集”，Feature 再用“初始值”和“连续点击后的结果”两条 AC 关联真实测试。这个例子只演示对象之间怎样连接，不代表任何项目已批准这些数值、文件名、Feature ID 或测试结果。
 
-权威结构见 [Product 规范](../../../project-source/methodology/01-product-doc-structure.md)、[Feature 规范](../../../project-source/methodology/02-feature-list-schema.md)和[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md)。
+权威结构见 [GDD 与 Product 文档结构](../../../project-source/methodology/01-product-doc-structure.md)、[Feature 列表与测试追溯结构](../../../project-source/methodology/02-feature-list-schema.md)和[测试追溯与证据](../../../project-source/methodology/08-test-traceability-and-evidence.md)。

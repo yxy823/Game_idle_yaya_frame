@@ -1,6 +1,6 @@
 ---
 name: review-assets
-description: "独立审查限定范围的游戏资源，检查技术适配、引用、导入和来源记录。用于用户要求的资源检查。不用于美术或音频的体验审核（review-art、review-audio）。"
+description: "独立审核限定范围的游戏资源，检查技术适配、引用、导入和来源记录。用于用户要求的资源检查。不用于美术或音频的体验审核（review-art、review-audio）。"
 ---
 
 # 资源审查

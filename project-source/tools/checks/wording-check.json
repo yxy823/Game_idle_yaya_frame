@@ -113,6 +113,13 @@
       "suggestion": "直接写动作"
     },
     {
+      "name": "未决项/待决定项",
+      "level": "review",
+      "scope": "all",
+      "pattern": "未决项|待决定项|未决问题",
+      "suggestion": "Progress 中写“待决定事项”；GDD 用“开放问题”"
+    },
+    {
       "name": "做出+决定",
       "level": "review",
       "scope": "all",

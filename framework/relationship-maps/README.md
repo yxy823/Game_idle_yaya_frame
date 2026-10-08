@@ -30,7 +30,7 @@
 
 ## 文档系统关系图
 
-上区是框架维护仓库，下区是生成后的游戏项目。节点按文档职责或产物类型组织，例如 GDD、Product、Feature、原始测试报告；不是全仓文件清单。“资源规格与准备”代表所属设计中的章节，Feature notes 归入任务详情，不为画图额外拆出文档。
+上区是框架仓库，下区是生成后的游戏项目。节点按文档职责或产物类型组织，例如 GDD、Product、Feature、原始测试报告；不是全仓文件清单。“资源规格与准备”代表所属设计中的章节，Feature notes 归入任务详情，不为画图额外拆出文档。
 
 每个文档节点：
 
@@ -61,7 +61,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ### 联系与孤立的判断
 
-当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业来源](../../project-source/methodology/11-specialist-workflows.md)、[Feature 结构](../../project-source/methodology/02-feature-list-schema.md)、[架构](../../project-source/methodology/10-architecture-overview.md)及[记录、报告与交接](../../project-source/methodology/09-records-reports-and-handoff.md)。
+当前规范要求各材料有合适的入口和用途：设计由所属目录或来源文档进入，Feature 由任务索引进入，局部设计从 notes 进入，报告由所属任务或 Progress 引用，知识条目从主题索引进入。正文维护一份，使用方引用它；规范依据见[专业工作与来源](../../project-source/methodology/11-specialist-workflows.md)、[Feature 列表与测试追溯结构](../../project-source/methodology/02-feature-list-schema.md)、[架构概览](../../project-source/methodology/10-architecture-overview.md)及[记录、报告与交接](../../project-source/methodology/09-records-reports-and-handoff.md)。
 
 “没有被链接”“缺少必要来源”和“完全没有关联”是三种不同的问题。报告这类末端产物只需要有入口，不必人为添加回链。图只画出契约中的主要关系；某个项目里实际的正文、来源覆盖和证据原件，仍要在项目中核对。
 
@@ -123,9 +123,9 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 | --- | --- |
 | 节点名称与完整集合 | [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json) |
 | 场景前提、出口和对应提示词 | [场景索引](../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../prompt-scenarios/scenarios/README.md#收录什么) |
-| 任务路由、Product 顺序与 GDD 前提 | [流程总览](../../project-source/methodology/00-overview.md) |
-| 授权、验证、人工验收与完成 | [执行规范](../../project-source/methodology/03-execute-loop.md) |
-| 专业工作职责 | [专业流程](../../project-source/methodology/11-specialist-workflows.md) |
+| 任务路由、Product 顺序与 GDD 前提 | [方法总览](../../project-source/methodology/00-overview.md) |
+| 授权、验证、人工验收与完成 | [Stage 0–8 `feature-execute` 执行循环](../../project-source/methodology/03-execute-loop.md) |
+| 专业工作职责 | [专业工作与来源](../../project-source/methodology/11-specialist-workflows.md) |
 
 场景集合或名称变化后，使用[场景图名称与链接检查](../prompt-scenarios/tools/README.md#检查场景图名称与链接)核对图文件。两项检查都不覆盖完整格式、连线含义、正文语义或显示效果；不新增一套检查脚本或同步记录文件。
 

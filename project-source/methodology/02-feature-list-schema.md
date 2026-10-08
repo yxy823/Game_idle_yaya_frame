@@ -479,13 +479,13 @@ done ──source synchronization retires or replaces implemented behavior──
 - 恢复本身不开始执行，也不建立完成。
 - 确认撤回时使用 `obsolete`，并把原来的阻塞原因和退役原因作为历史保留。
 
-`in_progress → done` 的流转遵循[执行循环](03-execute-loop.md)的 Stage 7。它要求：
+`in_progress → done` 的流转遵循[Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)的 Stage 7。它要求：
 
 - 已决定的验收计划；
 - 需要的测试和直接静态检查；
 - 用户明确提出的审核条件（如有）。
 
-按 Stage 6，独立审核是可选的；完成记录不含审核次数。Agent 针对当前代码快照运行明确的证据检查，并记录实际结果。
+按 Stage 6，独立审核是可选的；完成证据不含审核次数。Agent 针对当前代码快照运行明确的证据检查，并记录实际结果。
 
 ## 机器校验的不变量
 
@@ -604,7 +604,7 @@ python -B yaya/tools/checks/check-feature-list.py
 - **完整逻辑**：只有读取视觉参数（例如动画时长）的部分通过 `depends_on` 等待视觉决策，其余部分可以拆成不依赖它的 Feature 并行完成。
 - 不需要这个顺序的情况，以及可以留在已规划 Feature 内的视觉检查，见[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)。
 - 不要让无关逻辑等待全部美术，也不要为调试台新建 Feature 状态或类型。
-- 修改调试台本身（`dev/debug/_shared/` 的共享代码或调试入口）按[工程变更流程](07-engineering-change.md#调试台的修改)建维护 Feature，组件见[调试台组件](08-test-traceability-and-evidence.md#调试台组件)。
+- 修改调试台本身（`dev/debug/_shared/` 的共享代码或调试入口）按[调试台的修改](07-engineering-change.md#调试台的修改)建维护 Feature，组件见[调试台组件](08-test-traceability-and-evidence.md#调试台组件)。
 - AC 涉及玩家可见的动画或反馈时，核对表现文档或 UI 规格中有它的所属小节，并由小节链接承载参数的调参资源；没有时，先交给 `design-game-presentation` 或 `design-ui-spec` 补上，不让参数只留在设计稿里。
 
 ## 需求覆盖核对

@@ -29,7 +29,7 @@
 几条通用原则：
 
 - **编写与审核**：维护规则、Skill 和任务提示词文件时，按[规则与提示词文件](design-guidelines/instruction-files.md)自查；整理已确认说明的表达和组织，使用[框架文档编写 Skill](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护由作者自查，不额外安排独立审核；用户要求正式审核时，按[审核与报告](design-guidelines/reviews-and-reports.md)进行。
-- **`project-source/` 只是源材料**：其中的规则和 Skill 在维护仓库里只供阅读，不启用项目开发的 Stage，适用边界见 `AGENTS.md` 的[维护边界与查阅](../../AGENTS.md#维护边界与查阅)。
+- **`project-source/` 只是源材料**：其中的规则和 Skill 在框架仓库里只供阅读，不启用项目开发的 Stage，适用边界见 `AGENTS.md` 的[维护边界与查阅](../../AGENTS.md#维护边界与查阅)。
 
 ## 找到受影响的说明
 
@@ -95,7 +95,7 @@
 维护时注意：
 
 - **各自独立**：两份 Skill 各有自己的 `SKILL.md`、`agents/openai.yaml` 和完整参考，可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步；唯一的例外是[措辞检查](../../project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明，它只维护在 Godot 版，框架版链接它，因为措辞检查在框架仓库和生成项目中读的是同一份配置；相似的原则可以各写一份。各自产物的实际契约由所属规范决定，写作 Skill 不另造流程。
-- **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。维护仓库只启用框架版；Godot 版在这里只是待分发的源文件。
+- **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。框架仓库只启用框架版；Godot 版在这里只是待分发的源文件。
 - **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/`，Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
 - **结构**：GDD、Product、Feature 及其验收场景使用各自的结构，不套用框架场景页的 11 类栏目或 S1 编号。
 - **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目，已创建的项目是否更新由用户决定，对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/framework-and-project.md#让项目里的框架副本与框架对齐)。
@@ -124,7 +124,7 @@
 | 检查当前工作区是否自洽 | [本地静态审核](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>) |
 | 先了解框架结构，再选专题 | [框架结构总览](<../prompt-scenarios/scenarios/Yaya 框架维护/只读专项审核/想先总览框架，再选择审核专题.md>)；总览不承诺全面审核 |
 | 深入核对某个专项问题 | 从[只读专项审核](../prompt-scenarios/scenarios/scenario-index.md#只读专项审核)选一个专题，与「专项审核通用模板」拼接后使用，不需要填参数 |
-| 核实收到的审核意见 | [外部意见复核](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>) |
+| 核实收到的审核意见 | [核实外部审核意见](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>) |
 | 用一个小任务验证真实流程 | [小任务验证](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
 总体判断依据[根规则的核心原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。

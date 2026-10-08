@@ -50,7 +50,7 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 ## 资源与文件影响
 
-写入清单，`prepare-manual` 在清单的 `snapshot` 中绑定当前版本；Feature notes 增加清单链接。不写完成记录，不记录接受。
+写入清单，`prepare-manual` 在清单的 `snapshot` 中绑定当前版本；Feature notes 增加清单链接。不写完成证据，不记录接受。
 
 ## 阻塞、异常与范围变化
 
@@ -62,4 +62,4 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 ## 流程关联与衔接关系
 
-依据：[人工验收文件的定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)、[Stage 4 · 自动验证与人工检查清单](<../../../../../project-source/methodology/03-execute-loop.md#stage-4--自动验证与人工检查清单>)。
+依据：[人工验收文件的定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)、[Stage 4 · 自动验证与人工验收清单](<../../../../../project-source/methodology/03-execute-loop.md#stage-4--自动验证与人工验收清单>)。

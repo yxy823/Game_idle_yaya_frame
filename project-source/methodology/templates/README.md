@@ -23,9 +23,9 @@
 | `engineering-feature-detail.json.tmpl` | Bug、重构或维护 Feature 的详情，带必需的 `engineering_change` 字段 |
 | `feature-design.md.tmpl` | `docs/features/F0XX-design.md` 的可选提纲。只使用有帮助的小节；AC 和测试义务留在 Feature JSON 中 |
 | `feature-completion-evidence.json.tmpl` | `docs/features/F0XX-evidence.json`：一个 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和工作区指纹。审核不记录在这里 |
-| `manual-acceptance-checklist.json.tmpl` | 一个 Feature 的人工检查及用户的结论，按[人工验收文件约定](../contracts/manual-acceptance-files.md)准备和记录 |
+| `manual-acceptance-checklist.json.tmpl` | 一个 Feature 的人工检查及用户的结论，按[人工验收文件](../contracts/manual-acceptance-files.md)准备和记录 |
 | `feature-learning-summary.md.tmpl` | Stage 8 经验反馈的回复格式，包括明确的“无新增经验”结果。不保存为文件 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 可选的 `docs/architecture.md` 和子系统地图：模块、职责、依赖和相关的运行流程，与生成的引用事实分开 |
 | `architecture-decision-record.md.tmpl` | 一份可选的 ADR，记录一项重要的技术选择。Feature notes 和架构地图链接到它，不复制它 |
 
-字段含义和校验规则见 [Feature 列表结构](../02-feature-list-schema.md)，工程 Feature 规则见[工程变更](../07-engineering-change.md)，测试选择见[测试追溯与证据](../08-test-traceability-and-evidence.md)。架构地图和 ADR 遵循[架构约定](../10-architecture-overview.md)；只为真实的决定创建 ADR。
+字段含义和校验规则见 [Feature 列表与测试追溯结构](../02-feature-list-schema.md)，工程 Feature 规则见[工程变更流程](../07-engineering-change.md)，测试选择见[测试追溯与证据](../08-test-traceability-and-evidence.md)。架构地图和 ADR 遵循[架构概览](../10-architecture-overview.md)；只为真实的决定创建 ADR。

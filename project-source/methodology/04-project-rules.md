@@ -48,7 +48,7 @@ yaya/agent-rules/<专业模块>/
 | 领域术语 | `docs/terminology.md` |
 | 局部游戏规则 | 各自的 GDD 主题 |
 | 交付边界 | Product |
-| 当前结构 | [10 · 架构概览](10-architecture-overview.md)下的架构文档 |
+| 当前结构 | [架构概览](10-architecture-overview.md)下的架构文档 |
 | 代价高的技术取舍 | 满足 [ADR 条件](10-architecture-overview.md#架构决策记录)时写 ADR |
 
 与技术栈无关的设计默认原则维护在 [`docs/project-rules.md`](../../docs/project-rules.md) 第 2 部分，例如游戏权威状态与表现分离、显式的状态转换、组合、显式依赖、数据驱动的调参、错误处理、先测量再优化。逻辑与表现的职责用 `docs/game-organization.md` 来理解；这个模型不规定目录，也不规定通信机制。
@@ -65,7 +65,7 @@ yaya/agent-rules/<专业模块>/
 - **在依赖它的实现或续接开始前**：把指导与任务实际的工作目录和相关变更对比。以下情况要重新查看受影响的来源：目标、规则、代码、接口、使用方或目标版本的事实发生变化；实际行为与指导矛盾；缺少某个依赖。影响 Feature 契约的来源变更先经过 `feature-sync`。
 - **偏离指导**：主 Agent 在已批准的设计内做普通的实现选择。出现实质性偏离时，核对原始来源，补齐缺少的决定；只在明确委托的范围内再次咨询 advisor。提出的设计不能豁免规则、修改 AC，也不能确立验证结果或人工验收。
 
-最终的范围核对和证据时效按 [03 执行规范](03-execute-loop.md) 执行。
+最终的范围核对和证据时效按 [Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md) 执行。
 
 ## 情境性的项目知识
 

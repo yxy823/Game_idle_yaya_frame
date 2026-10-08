@@ -84,7 +84,7 @@
 
 已完成的 Feature 或已批准批次的历史，由 Agent 一次性归档到 `docs/progress/<key>.md`，并在当前 Progress 文档中保留链接。保留剩余的阻塞、待决定事项、原始历史和证据链接。不要推断批准，不要覆盖归档，也不要重复之前的历史。新正文用 `document_language` 写；移动历史不需要翻译它。
 
-归档保存执行历史，Progress 保存当前状态。Feature notes 保存任务提醒、回归链接、TODO 和导航。实现设计和局部决定按 [Feature 设计约定](02-feature-list-schema.md#feature-设计与实现说明) 写在 `docs/features/F0XX-design.md`；ADR 和独立技术决定按 [10 · 架构概览](10-architecture-overview.md#架构决策记录)处理。链接这些记录，不要把同一段叙述贴进 Progress 或 notes。
+归档保存执行历史，Progress 保存当前状态。Feature notes 保存任务提醒、回归链接、TODO 和导航。实现设计和局部决定按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 写在 `docs/features/F0XX-design.md`；ADR 和独立技术决定按 [10 · 架构概览](10-architecture-overview.md#架构决策记录)处理。链接这些记录，不要把同一段叙述贴进 Progress 或 notes。
 
 ## 任务交接
 

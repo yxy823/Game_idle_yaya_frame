@@ -11,7 +11,7 @@
 
 ## 验证
 
-测试范围按 [Required、affected 与 full](../../methodology/08-test-traceability-and-evidence.md) 选择；下表列出数据修改在此之外需要的检查。
+测试范围按 [测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md) 选择；下表列出数据修改在此之外需要的检查。
 
 | 改动 | 需要的验证 |
 | --- | --- |

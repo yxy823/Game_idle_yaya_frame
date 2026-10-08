@@ -1,13 +1,13 @@
 # 测试选择与 Godot 验证
 
-测试范围只有 [methodology 08](../../methodology/08-test-traceability-and-evidence.md) 的 Required Test Set、affected 集合和 full 全量套件。选择规则、全量条件、零测试与运行失败条件，都以 08 为准。本文补充两件事：在 Feature 流程中怎样运行测试，以及哪些 Godot 改动需要扩大验证。
+测试范围只有 [测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md) 的 Required Test Set、affected 集合和 full 全量套件。选择规则、全量条件、零测试与运行失败条件，都以 08 为准。本文补充两件事：在 Feature 流程中怎样运行测试，以及哪些 Godot 改动需要扩大验证。
 
 ## 职责分工
 
-- 08 和 [执行流程](../../methodology/03-execute-loop.md) 决定测什么、何时运行，以及测试与 Feature、验收条件、Bug 和人工验收的关系。本模块规定测试怎样写、怎样运行。
+- 08 和 [Stage 0–8 `feature-execute` 执行循环](../../methodology/03-execute-loop.md) 决定测什么、何时运行，以及测试与 Feature、验收条件、Bug 和人工验收的关系。本模块规定测试怎样写、怎样运行。
 - 单元、集成和运行时场景测试是写法上的层级（见 [test-levels.md](test-levels.md)），不是测试目录。目录和登记表映射见[测试分类](../../methodology/08-test-traceability-and-evidence.md#测试分类)和[登记表规则](../../methodology/08-test-traceability-and-evidence.md#登记表规则)。
 - Required Test Set 是下限。本文的条件只能扩大验证，不能从中删除测试。
-- 实现批准、基线和 RED、GREEN、重构步骤，遵循 [TDD 执行约定](../../methodology/08-test-traceability-and-evidence.md#tdd-执行约定)。解析和 lint 遵循[直接静态检查约定](../../methodology/contracts/gdscript-lint.md)。
+- 实现批准、基线和 RED、GREEN、重构步骤，遵循 [TDD 执行约定](../../methodology/08-test-traceability-and-evidence.md#tdd-执行约定)。解析和 lint 遵循[GDScript lint 的约定与证据](../../methodology/contracts/gdscript-lint.md)。
 
 ## 运行测试
 

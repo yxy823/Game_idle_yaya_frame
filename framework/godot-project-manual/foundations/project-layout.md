@@ -32,7 +32,7 @@
 | `docs/terminology.md` | 已确认的项目术语定义（唯一正文） | `project-terminology` / 所有文档；详细玩法规则仍在 GDD |
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；不是开发承诺 | 需求讨论 / 采纳时迁移到正式位置并留链接 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化出的共享方向与专业规格 | 对应的 design Skill / GDD 保存整体目标并引用这些正文 |
-| `docs/presentation/` | 一次游戏表现的过程、组件、候选方案、采用组合、实现与验收入口；方案专用的资源规格写在对应章节 | `design-game-presentation` 与实现任务 / UI 文档和 GDD 引用；README 只做导航 |
+| `docs/presentation/` | 一次游戏表现的过程、组件、备选方案、采用组合、实现与验收入口；方案专用的资源规格写在对应章节 | `design-game-presentation` 与实现任务 / UI 文档和 GDD 引用；README 只做导航 |
 
 ### 交付规划与 Feature 记录
 
@@ -45,7 +45,7 @@
 | `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
 | `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
 | `docs/feature-list-revisions.json` | 规划实际覆盖的来源基线与修订记录 | 规划与同步 / 不是“最新 Git 提交”的别名 |
-| `docs/features/F0XX-evidence.json` | 一个 Feature 的完成依据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
+| `docs/features/F0XX-evidence.json` | 一个 Feature 的完成证据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
 
 ### 架构、知识与过程记录
 
@@ -113,7 +113,7 @@
 
 ## 模板与按需记录
 
-`yaya/methodology/templates/` 提供之后按需创建的文件格式：Product、Feature 详情（含工程变更）、Feature 设计、完成依据、人工验收清单、架构和 ADR，另有 Stage 8 学习反馈的回复格式。模板不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
+`yaya/methodology/templates/` 提供之后按需创建的文件格式：Product、Feature 详情（含工程变更）、Feature 设计、完成证据、人工验收清单、架构和 ADR，另有 Stage 8 学习反馈的回复格式。模板不需要一次填满；正式 JSON 保留所属契约要求的字段，Feature 设计稿按实际内容省略不适用的章节。
 
 Feature 索引、修订记录、测试登记、Progress 和项目规则不是模板：创建项目时直接复制为 `docs/` 下的初始文件，之后由项目自己维护。
 
@@ -125,7 +125,7 @@ GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[�
 | --- | --- | --- |
 | 初始化结果 | `reports/initialization.md` | 之后只追加新结果 |
 | gdUnit 运行原件 | `reports/gdunit-wrapper/<Feature-ID 或 focused>/run-<id>/` | 保留真实结果，包括失败 |
-| 人工验收清单 | `reports/manual-acceptance/` | 用户结论写回同一份清单的 `status` 和 `comment`，不另建结果文件，见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md) |
+| 人工验收清单 | `reports/manual-acceptance/` | 用户结论写回同一份清单的 `status` 和 `comment`，不另建结果文件，见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md) |
 | Feature 自定义结果 | `reports/features/<Feature-ID>/` | — |
 | 其他维护报告 | `reports/maintenance/<任务>/` | — |
 | 临时文档 | 项目根目录 `tmp/<任务>/` | 草稿、当次方案、交接副本与资料摘录，可按主题分层；不放进正式目录 |

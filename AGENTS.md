@@ -61,7 +61,7 @@
 
 | 当前工作 | 依据 |
 | --- | --- |
-| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 是分发源，其中的项目开发流程只作为源材料阅读，不在维护仓库启用 |
+| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 是分发源，其中的项目开发流程只作为源材料阅读，不在框架仓库启用 |
 | 创建项目 | [创建器](framework/project-creation/tools/create_project.py)按[复制清单](framework/project-creation/project-files.json)复制和重命名，复制提交钩子目录，在初始化新仓库时设置 `core.hooksPath`，然后建立本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级 |
 | 生成项目 | 项目独立拥有自己的文件，不接受自动同步；手册与提示词库不进入项目，项目 README 只保留简短的自身导航 |
 | 修改空白项目 | 先读[框架入口](framework/README.md)，再按[维护与同步](framework/maintenance/maintenance-and-sync.md)查阅受影响的专题、核对源材料并同步说明 |

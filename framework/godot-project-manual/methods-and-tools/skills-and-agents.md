@@ -37,7 +37,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
 | `project-environment-godot` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
 | `project-verification-godot` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
-| `manual-acceptance-godot` | 为实际 Feature 准备待验收清单，或登记用户真实给出的验收结果 |
+| `manual-acceptance-godot` | 为实际 Feature 准备人工验收清单，或登记用户真实给出的验收结果 |
 | `verification-evidence-godot` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
 | `technical-validation-godot` | 在当前 Feature 或获准实验中用技术验证回答引擎可行性问题，例如信号与生命周期、输入路由、存档集成或渲染性能 |
 | `worktree-create-godot` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
@@ -105,7 +105,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 - **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
 - **调试台**：[debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 负责在调试台里比较候选、调参，以及用户采纳到游戏之后的收尾提交。采纳到游戏不等于验收通过，见[每种结果能证明什么](commands-and-evidence.md#每种结果能证明什么)；概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
 - **技术验证**：[technical-validation-godot](../../../project-source/skills/technical-validation-godot/SKILL.md) 在真实引擎里回答“既定做法能否实现”，不进调试台。验证结论不等于正式验收。
-- **按界面任务试用**：[review-ux](../../../project-source/skills/review-ux/SKILL.md) 写明怎样按界面任务试用：读 UI 规格中的界面任务（调试台自己的界面任务在 `dev/debug/_shared/usage-scenarios.md`），在改名的项目副本中用 [ui-trial](../../../project-source/tools/ui-trial/README.md) 工具程序驱动界面，按阻断、困惑、小问题分级报告。用户要求 UX 审核时使用它；Feature 改动了有界面任务的界面或调试台界面时，作者在 Stage 4 准备人工清单之前也用同一方法自己试用一遍，这是作者自查，不算独立审核。
+- **按界面任务试用**：[review-ux](../../../project-source/skills/review-ux/SKILL.md) 写明怎样按界面任务试用：读 UI 规格中的界面任务（调试台自己的界面任务在 `dev/debug/_shared/usage-scenarios.md`），在改名的项目副本中用 [ui-trial](../../../project-source/tools/ui-trial/README.md) 工具程序驱动界面，按阻断、困惑、小问题分级报告。用户要求 UX 审核时使用它；Feature 改动了有界面任务的界面或调试台界面时，作者在 Stage 4 准备人工验收清单之前也用同一方法自己试用一遍，这是作者自查，不算独立审核。
 - **暂停与续接**：[task-handoff-godot](../../../project-source/skills/task-handoff-godot/SKILL.md) 使用已有的 Progress、Feature 或任务记录。只要求暂停时，保存停点；需要换对话时，再生成可复制的续接文本。它不会自动创建对话、发送消息或另建交接记录文件。恢复已有停点时直接回到原任务，不需要再调用一次交接。
 - **显式调用更可靠**：description 帮助客户端按任务自动选择 Skill，但 Skill 文件存在、格式正确，不代表客户端一定会自动选中它。规范要求的调查和验证仍由原流程负责，不依赖自动发现。
 

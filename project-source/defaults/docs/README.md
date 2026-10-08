@@ -36,7 +36,7 @@
 
 以下内容按实际工作产生，不预先建立：
 
-- 每个 Feature 的完成依据 `features/F0XX-evidence.json`；
+- 每个 Feature 的完成证据 `features/F0XX-evidence.json`；
 - GDD、UI、表现等目录下的具体设计正文；
 - `architecture/` 下的子系统说明和架构决定。
 

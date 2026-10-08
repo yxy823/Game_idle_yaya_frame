@@ -24,7 +24,7 @@
 
 **S2｜讨论关键选择并形成草稿**
 
-围绕目标体验、玩家过程、核心循环和当前相关规则展开，说明各机制如何产生预期体验。有关键选择需要共同决定时，使用 [GDD 共创方法](../../../../../project-source/skills/design-gdd/references/gdd-dialogue.md)，结合玩家情境提出问题与候选方案，说明取舍和推荐理由；需要构思或比较玩法方向时再读[构思方法](../../../../../project-source/skills/design-gdd/references/concept-ideation.md)。
+围绕目标体验、玩家过程、核心循环和当前相关规则展开，说明各机制如何产生预期体验。有关键选择需要共同决定时，使用 [GDD 共创方法](../../../../../project-source/skills/design-gdd/references/gdd-dialogue.md)，结合玩家情境提出问题与备选方案，说明取舍和推荐理由；需要构思或比较玩法方向时再读[构思方法](../../../../../project-source/skills/design-gdd/references/concept-ideation.md)。
 
 等待回答时继续不依赖该决定的整理；回答后推进当前范围内下一项关键问题。已经明确的内容直接整理，不重复访谈。数值模型确实需要展开时再使用 [design-balance](../../../../../project-source/skills/design-balance/SKILL.md)。
 
@@ -36,11 +36,11 @@
 
 草稿保存不结束尚未完成的共创。仍需用户决定的关键选择应继续进入讨论；用户明确要求先交一版草稿时，可以先交付可读草稿并列明假设与缺口。
 
-获准写入时，按[开放问题规范](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
+获准写入时，按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
 
 同一次编写按[专业来源归属](../../../../../project-source/methodology/11-specialist-workflows.md#归属与决策)保存本次已确定的专业规格。GDD 保留整体目标与玩法规则，专业规格进入对应固定正文；原先写在 GDD 的当前规格迁入所属位置并更新引用。
 
-同一次编写按[项目术语规范](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
+同一次编写按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
 
 ## 资源与文件影响
 

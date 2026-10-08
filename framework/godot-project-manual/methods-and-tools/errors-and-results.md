@@ -32,7 +32,7 @@
 | 用 planned 或 retired 测试支撑当前完成 | 当前完成必须有 active 的真实测试映射；退役测试只用于追溯历史 | 为当前 Feature 补上 active 的验证 |
 | 改了 AC 之后测试通过 | 新的预期是否已被正式采纳，需要用户的真实决定 | 先确认需求变更；测试变绿不代表需求获准 |
 
-## 测试与完成依据
+## 测试与完成证据
 
 | 现象 | 含义 | 该怎么做 |
 | --- | --- | --- |
@@ -44,7 +44,7 @@
 | 报告写入失败，或只打印了路径 | 打印路径不代表文件存在 | 如实报告实际输出和缺失范围 |
 | `record-tests` 非零退出 | 本次导入失败，旧的测试引用已被清除；原始报告仍在 | 修正问题后重新导入；不能手填哈希或通过次数 |
 | `show` 退出 0 | 记录结构和 Feature 身份匹配，可以展示 | 不代表能完成；用 `validate` 判断 |
-| `validate` 退出 0 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立评审、性能和导出包仍需各自确认 |
+| `validate` 退出 0 | 测试引用与适用的人工接受满足记录契约 | 直接静态检查、独立审核、性能和导出包仍需各自确认 |
 | `record-acceptance` 退出 0 | 状态已如实记录，可能是 accepted、rejected 或 pending | 只有 accepted 才满足人工接受 |
 | 人工验收记录失败 | 清单缺失、检查项定义被改、覆盖不全，或绑定后内容有变化；旧记录被保留 | 按报告处理本次问题；绑定后有变化时逐个核对变化文件；旧记录不能抵消这次错误 |
 | 运行器返回 `not_required` | 有效的 manual 计划没有自动测试义务，也没有阻断条件 | 这不是测试通过；人工验收等其他义务照常进行 |
@@ -59,4 +59,4 @@
 
 场景启动、图片显示、声音试听、输入、长时间运行、资源包和导出依赖，各自都需要对应的实际结果。报告时把“未执行”“失败”“报告丢失”“只有旧版本成功”分别写清，不要合并成“没有问题”。
 
-工具的错误契约见[工具说明](../../../project-source/tools/README.md)、[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md)和[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。
+工具的错误契约见[工具说明](../../../project-source/tools/README.md)、[测试追溯与证据](../../../project-source/methodology/08-test-traceability-and-evidence.md)和[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)。

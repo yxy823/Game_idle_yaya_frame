@@ -87,7 +87,7 @@ $LASTEXITCODE
 - **模板与 Skill**：分发的规范、Skill 和模板都是中文。之后生成的内容按配置的语言填写；配置不是中文时，Agent 把模板的标题和说明写成该语言，保留章节结构和机器键，不另建翻译版的模板或 Skill。
 - **迁移已有文档**：改变已有项目的文档语言时，要同时处理活动文档、标题锚点和历史范围；只改配置字段不算完成迁移。
 
-环境检查器只检查语言标签的基本形式：会拒绝 `zh_CN`、含空白、有空子段或子段超过八个字符的写法，并保留原值的大小写。它不校验 BCP 47 的完整子段顺序或注册信息；特殊标签由 Agent 按语言规范核对，只有要求不清楚或互相冲突时才向用户确认。规范正文见[文档语言约定](../../../project-source/methodology/05-document-language.md)。
+环境检查器只检查语言标签的基本形式：会拒绝 `zh_CN`、含空白、有空子段或子段超过八个字符的写法，并保留原值的大小写。它不校验 BCP 47 的完整子段顺序或注册信息；特殊标签由 Agent 按语言规范核对，只有要求不清楚或互相冲突时才向用户确认。规范正文见[文档语言](../../../project-source/methodology/05-document-language.md)。
 
 ## Godot 默认配置
 
@@ -108,7 +108,7 @@ $LASTEXITCODE
 
 ## GDScript lint 默认配置
 
-实际文件是 [defaults/gdlint.json](../../../project-source/defaults/gdlint.json)，指标含义见 [lint 契约](../../../project-source/methodology/contracts/gdscript-lint.md)。
+实际文件是 [defaults/gdlint.json](../../../project-source/defaults/gdlint.json)，指标含义见 [GDScript lint 的约定与证据](../../../project-source/methodology/contracts/gdscript-lint.md)。
 
 | 配置 | 当前值 |
 | --- | --- |

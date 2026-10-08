@@ -15,7 +15,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 | --- | --- |
 | 脚本解析或 lint | `yaya/methodology/contracts/gdscript-lint.md` 中的 **直接运行**，包括它要求的内部扫描范围、退出码和原始输出的处理方式 |
 | 已有 Feature 的测试 | 用 `yaya/tools/testing/run-gdunit-tests.py --feature`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；选择依据见 `yaya/methodology/08-test-traceability-and-evidence.md` 的 **运行时的测试影响选择**，以及该 Feature 和测试登记表（Registry）中的实际义务 |
-| 没有 Feature 时指定的测试套件或组件 | 用同一入口的 `--target`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；不需要 Feature、计划或完成记录 |
+| 没有 Feature 时指定的测试套件或组件 | 用同一入口的 `--target`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**；不需要 Feature、计划或完成证据 |
 | 实际启动，或观察指定的场景、资源 | 要求的场景、通过 `AGENTS.md` 找到的项目工程规则，以及实际配置的 Godot 环境；启动方法见 `yaya/tools/README.md` 的 **启动场景冒烟检查**，只有缺少准备时，才按同一文件的 **首次 Godot 扫描** 处理 |
 | 导出一个包并在本机启动 | `yaya/tools/README.md` 的 **本地导出检查**；修改了导出配置时，再按 `yaya/agent-rules/41-export-config/README.md` 的 **验证** 检查对应的产物 |
 
@@ -31,4 +31,4 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 报告实际的检查对象、命令、退出码、原始证据路径、结果和未执行的范围。区分检查通过、失败、中断，以及运行器合法返回的 `not_required` 结果。场景能启动或自动测试通过，都不构成实际的人工验收。
 
-任务还要求导入或修复自动化证据时，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)。否则直接返回结果，不制造完成记录。只要求检查的请求，可以在如实报告失败后结束；这不代表被检查的工作已经通过。所属任务继续已经获得授权的工作，并按已有约定判断是否完成，不新增 Stage，也不重复请求批准。
+任务还要求导入或修复自动化证据时，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)。否则直接返回结果，不制造完成证据。只要求检查的请求，可以在如实报告失败后结束；这不代表被检查的工作已经通过。所属任务继续已经获得授权的工作，并按已有约定判断是否完成，不新增 Stage，也不重复请求批准。

@@ -13,7 +13,7 @@
 
 ## 前置条件与适用范围
 
-目标是现有组件的实际自动测试，没有 Feature ID；不创建虚构任务或完成记录。
+目标是现有组件的实际自动测试，没有 Feature ID；不创建虚构任务或完成证据。
 
 ## 执行步骤
 
@@ -29,11 +29,11 @@
 
 **S3｜交付组件结果**
 
-交付运行器输出的真实 result.json 和原始报告，区分失败、跳过与零测试。没有 Feature 时不调用 record-tests 建立完成依据。
+交付运行器输出的真实 result.json 和原始报告，区分失败、跳过与零测试。没有 Feature 时不调用 record-tests 建立完成证据。
 
 - 位置与参数：示例在游戏项目根目录执行，将测试目标换成现有文件或目录；`--target` 与 `--feature` 互斥。
 - 结果：退出码为零仍需读取实际用例和原始报告。
-- 状态边界：此模式按实际目标执行，不添加 Feature 完成记录。
+- 状态边界：此模式按实际目标执行，不添加 Feature 完成证据。
 
 ```powershell
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json

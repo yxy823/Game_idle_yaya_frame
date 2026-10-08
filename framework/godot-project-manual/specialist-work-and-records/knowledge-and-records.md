@@ -74,7 +74,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 - 观察到的、推断的、建议的和已实现的行为要分开写。
 - 职责、路径、入口和理由引用各自所属的正文。旧设计如果准确记录了过去的状态，保留为历史，不要改写成“一直如此”。
 
-设计新的核心对象或调整结构时，依据已确认的行为、状态与生命周期、调用方的负担和真实的依赖来判断，比较复用、不改、局部修正、删除或合并、必要的新增这几种做法。API 更短、文件更少或用了某种设计模式，本身都不算收益；枚举状态、Command、序列化或新的管理层只为实际用途服务，不为假想的未来预建体系。方法见[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+设计新的核心对象或调整结构时，依据已确认的行为、状态与生命周期、调用方的负担和真实的依赖来判断，比较复用、不改、局部修正、删除或合并、必要的新增这几种做法。API 更短、文件更少或用了某种设计模式，本身都不算收益；枚举状态、Command、序列化或新的管理层只为实际用途服务，不为假想的未来预建体系。方法见[架构概览](../../../project-source/methodology/10-architecture-overview.md)。
 
 ## ADR 的阈值
 
@@ -82,7 +82,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 
 - 撤销它有实质成本。
 - 只看源码和当前结构，难以还原当初为什么这样做。
-- 确实存在其他候选方案和重要的取舍。
+- 确实存在其他备选方案和重要的取舍。
 
 其他情况：
 
@@ -90,7 +90,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 - **理由已经写在别处**：不能因此跳过符合条件的 ADR；把当前正文迁到 ADR，更新引用，保留必要的历史。
 - **不属于任何 Feature 的技术决定**：按[独立技术决定](../../../project-source/methodology/10-architecture-overview.md#独立技术决定)保存，符合 ADR 条件的仍写 ADR，其余按作用范围写进架构文档的固定章节；不为此虚构 Feature。
 
-ADR 记录问题、约束、候选方案、决定、收益、成本、依据，以及什么情况下值得重新考虑。状态有 Proposed、Accepted、Superseded：被取代的 ADR 保留原来的理由并链接替代它的决定；Accepted 只表示决定已确认，不表示代码运行通过。已有具体授权时直接沿用，不需要额外批准。
+ADR 记录问题、约束、备选方案、决定、收益、成本、依据，以及什么情况下值得重新考虑。状态有 Proposed、Accepted、Superseded：被取代的 ADR 保留原来的理由并链接替代它的决定；Accepted 只表示决定已确认，不表示代码运行通过。已有具体授权时直接沿用，不需要额外批准。
 
 ## 探索结果与工作目录
 
@@ -192,4 +192,4 @@ Progress 保存真实的停点和必要的链接；不能从“下一步：实�
 
 不建立 Handoff 文件、`CONTEXT.md` 或平行的任务状态表。
 
-权威依据：[记录、报告与交接](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[记录、报告与交接](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。

@@ -462,7 +462,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n必要时链接实际依据；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
+      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定项和下一步。\n位置：framework/progress.md。\n链接下一步所依据的文件或提交；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -677,7 +677,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、yaya/agent-rules/。\n游戏设计边界归 GDD，Project Rules 按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： yaya/agent-rules/**/*.md",
+      "note": "职责：开发约束、协作与工程原则，以及按领域读取的工程语义。\n项目位置：AGENTS.md、docs/project-rules.md、yaya/agent-rules/。\n游戏设计边界归 GDD，项目规则按需引用；详细流程与模板归 methodology，具体方法归项目 Skill。\n\n项目文件： AGENTS.md\n项目文件： docs/project-rules.md\n项目文件： yaya/agent-rules/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1279,7 +1279,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、候选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
+      "note": "职责：一次完整表现的过程、组成部分、备选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1494,7 +1494,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源记录文件。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。候选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
+      "note": "职责：记录实际用途所需文件、规格、准备缺口、收到的位置及消费者。\n位置：所属表现、UI 或共享组件内的资源章节；跨独立所有者共用的视觉/音频分别在 art/art-bible.md、audio/sound-bible.md 的“共享资源规格”章节；没有独立默认资源记录文件。\n用途扩展改变归属时迁移规格与准备状态，消费处保留引用。Feature AC/设计引用这些章节。备选方案的资源不自动成为必须制作的内容。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md\n项目文件： docs/art/*.md\n项目文件： docs/audio/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -2074,7 +2074,7 @@
       "y": -60,
       "width": 680,
       "height": 64,
-      "label": "框架维护仓库",
+      "label": "框架仓库",
       "zIndex": 2,
       "fill": "transparent",
       "stroke": {

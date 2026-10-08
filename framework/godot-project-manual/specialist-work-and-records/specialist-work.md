@@ -26,7 +26,7 @@
 | 共享视觉方向 | `docs/art/art-bible.md` | `design-art-direction` |
 | 共享声音方向 | `docs/audio/sound-bible.md` | `design-audio-direction` |
 | 界面布局、状态及相关表现的引用 | `docs/ui/<interface>-design.md`；多个界面共用的控件写在 `docs/ui/components/<component-key>-design.md` | `design-ui-spec` |
-| 一次游戏表现的过程、组件要求、候选方案与采用组合 | `docs/presentation/<scope>.md`；多份表现共用的组件见下文 | `design-game-presentation`；实现任务负责同步实际文件和接入关系 |
+| 一次游戏表现的过程、组件要求、备选方案与采用组合 | `docs/presentation/<scope>.md`；多份表现共用的组件见下文 | `design-game-presentation`；实现任务负责同步实际文件和接入关系 |
 | 具体视觉资源的准备要求 | 写在所属表现、UI 或组件的资源章节；多个独立所有者共用的资源写在 `docs/art/art-bible.md` 的“共享资源规格” | `design-visual-asset-spec` |
 | 具体音频资源的准备要求 | 写在所属表现、UI 或组件的资源章节；多个独立所有者共用的资源写在 `docs/audio/sound-bible.md` 的“共享资源规格” | `design-audio-asset-spec` |
 | 语言覆盖、术语译名、回退、排版与翻译惯例 | `docs/localization/localization-spec.md` | `design-localization-spec` |
@@ -99,16 +99,16 @@ GDD、专业规格、表现正文和本地化要求，都要在最终验证前�
 ### 表现文档怎样拆分
 
 - **按触发时刻和玩家感知划分**：商店购买和奖励领取若都是同一种“物品入包”反馈，共用 `docs/presentation/item-added.md`，各自说明来源上下文。“奖励揭晓”这种独立过程另写一份，它的结尾发生入包时，引用已有的正文。不会只因为使用的界面不同就拆成两份。
-- **正文按需组织**：目标与过程、组件的标准化需求、候选方案、资源规格、采用关系、实际实现和验收入口。
-- **共享组件**：组件只属于一份表现时，写在父文档的小节里；第二份独立的表现也需要同样的组件时，把共同的要求、候选方案和资源规格迁到 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现，不会触发这种迁移。迁出后只要还有使用方就保留原路径，各父表现只维护自己的过程、触发上下文、采用组合和验收入口。规则见[表现文档约定](../../../project-source/methodology/11-specialist-workflows.md#游戏表现文档)。
+- **正文按需组织**：目标与过程、组件的标准化需求、备选方案、资源规格、采用关系、实际实现和验收入口。
+- **共享组件**：组件只属于一份表现时，写在父文档的小节里；第二份独立的表现也需要同样的组件时，把共同的要求、备选方案和资源规格迁到 `docs/presentation/components/<component-key>.md`，原正文改为引用。多个界面引用同一份表现，不会触发这种迁移。迁出后只要还有使用方就保留原路径，各父表现只维护自己的过程、触发上下文、采用组合和验收入口。规则见专业工作与来源的[游戏表现文档](../../../project-source/methodology/11-specialist-workflows.md#游戏表现文档)。
 - **UI 文档的拆分**：按[界面文档边界](../../../project-source/methodology/11-specialist-workflows.md#ui-文档边界)，有独立进入、退出和交互流程的屏幕或弹层单独成文；从属的面板、标签页和 HUD 部件留在宿主文档的章节里。第二个界面也使用同一控件或对话框行为时，把共用正文迁到 `docs/ui/components/<component-key>-design.md`，调用处改为引用；只是外观相同，则引用 Art Bible。
 - **导航**：`docs/presentation/README.md` 列出各表现和共享组件之间的实际使用关系，具体要求写在各自的正文中。UI 界面或组件规格新增、改名或删除，或者导航中的用途、关联 Product、组件使用方发生变化时，`design-ui-spec` 同步维护 `docs/ui/README.md` 中受影响的条目，不需要审查无关的目录内容。
 
 ### 表现与任务、验收的关系
 
-- 表现文档和开发任务不需要一一对应。只把已采纳的要求和当前获准的方案接入现有 Feature 的来源、AC 或设计稿；候选方案可以只有描述，不必全部做出来。
+- 表现文档和开发任务不需要一一对应。只把已采纳的要求和当前获准的方案接入现有 Feature 的来源、AC 或设计稿；备选方案可以只有描述，不必全部做出来。
 - 有具体的不确定之处时，才在调试台比较候选的密度、尺寸和观感，或用技术验证确认性能、中断等引擎行为；比较和采纳都在已授权的 Feature 内进行。
-- “规划完成”“实现可用”“用户人工接受”要分别说明。表现文档链接到原任务的验收条件、运行入口和已有报告或完成记录，结果本身留在原记录里。替换方案之后，旧记录保持原来的版本和覆盖范围；不要把验收结果抄回表现正文，再声称它覆盖了修改后的文档。
+- “规划完成”“实现可用”“用户人工接受”要分别说明。表现文档链接到原任务的验收条件、运行入口和已有报告或完成证据，结果本身留在原记录里。替换方案之后，旧记录保持原来的版本和覆盖范围；不要把验收结果抄回表现正文，再声称它覆盖了修改后的文档。
 
 ## 资源规格随所属设计保存
 
@@ -183,7 +183,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 
 ### 修改调试台本身
 
-`dev/debug/_shared/` 随项目复制后属于项目。修改调试台的代码或界面按[工程变更](../../../project-source/methodology/07-engineering-change.md)建维护 Feature，测试按组件 `debug_console` 选择；改了界面时同步 `usage-scenarios.md`，并在 Stage 4 按界面任务试用。
+`dev/debug/_shared/` 随项目复制后属于项目。修改调试台的代码或界面按[工程变更流程](../../../project-source/methodology/07-engineering-change.md)建维护 Feature，测试按组件 `debug_console` 选择；改了界面时同步 `usage-scenarios.md`，并在 Stage 4 按界面任务试用。
 
 ### 接入素材
 
@@ -243,4 +243,4 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 
 报告已交付、审核条件已满足、用户已人工接受，是三件不同的事。问题的优先级不授予修复权限；但已确认会阻断完成的问题，也不能因为“审核是可选的”而忽略。
 
-权威规则见[专业职责规范](../../../project-source/methodology/11-specialist-workflows.md)和[独立审核规范](../../../project-source/methodology/12-independent-review.md)。
+权威规则见[专业工作与来源](../../../project-source/methodology/11-specialist-workflows.md)和[独立审核](../../../project-source/methodology/12-independent-review.md)。

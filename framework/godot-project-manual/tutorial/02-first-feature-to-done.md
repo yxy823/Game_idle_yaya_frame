@@ -28,7 +28,7 @@ Agent 按 Stage 0～8 执行，各阶段的产出见[Feature 的执行阶段](..
 
 1. **骨架**：先在游戏里做棋盘最小的真实状态，外观用占位。格子尺寸、色值、轻抖的幅度和时长放进 `game/board/tuning/` 下的调参资源。
 2. **在调试台定画面**：Agent 为棋盘登记插槽、候选和固定局面。你用项目 `dev/debug/README.md` 中的启动命令打开调试台，比较候选、调参，满意后点“采纳到游戏”。
-3. **收尾再验收**：Agent 收尾提交，再准备验收清单。
+3. **收尾再验收**：Agent 收尾提交，再准备人工验收清单。
 
 **文档只链接资源**：`docs/ui/game-board-design.md` 和 `docs/art/art-bible.md` 链接采纳后的调参资源，不另抄一份数值，所以文档和游戏不会出现两套参数。
 
@@ -49,7 +49,7 @@ F001 的每条 AC 都带有人工检查项。Stage 4 时，Agent 把它们整理
 
 > 点击棋子后所在格四角出现中性浅色标识，同一时刻只有一处，转选时标识移到新格，棋子本身不被高亮。
 
-Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格式见[人工验收文件契约](../../../project-source/methodology/contracts/manual-acceptance-files.md)。
+Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格式见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)。
 
 ## 等待验收时先做别的 Feature
 
@@ -101,11 +101,11 @@ Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格�
 
 **Agent 收尾时做什么**：
 
-1. **Stage 7**：检查完成依据和 Feature 记录，全部满足后把 F001 标记为 `done` 并写入完成时间。F001 没有自动测试义务，测试运行器返回 `not_required`，这表示“不需要自动测试”，不是“测试通过”。
+1. **Stage 7**：检查完成证据和 Feature 记录，全部满足后把 F001 标记为 `done` 并写入完成时间。F001 没有自动测试义务，测试运行器返回 `not_required`，这表示“不需要自动测试”，不是“测试通过”。
 2. **归档**：把执行历史移到 `docs/progress/F001.md`。`docs/progress.md` 的当前状态删掉 F001 的条目，只在历史索引留一个链接。
 3. **Stage 8**：报告交付内容，找出下一个可以开始的 Feature。示例中是 F004 和 F005。
 
-示例的收尾提交是 `5373eea`。命令与完成依据的关系见[记录完成依据](../methods-and-tools/commands-and-evidence.md#记录完成依据)。
+示例的收尾提交是 `5373eea`。命令与完成证据的关系见[记录完成证据](../methods-and-tools/commands-and-evidence.md#记录完成证据)。
 
 **示例的教训**：示例是单独发登记提示词记录验收的，登记完 F001 一直停在进行中，又续接了一次才走完 Stage 7、8。单独登记时，记得接着发续接提示词。
 

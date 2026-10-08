@@ -1,6 +1,6 @@
 # 人工验收文件
 
-本约定规定 `manual` Feature 在 Stage 4 准备、在 Stage 5 记录结论的人工验收清单。清单本身就是验收记录：用户的结论写在其中每项的 `status` 和 `comment` 里，不另建结果文件。是否适用由每个 Feature 的 `verification.acceptance_mode` 决定；`automated` Feature 不创建空的人工清单。项目只交换文件，不需要也不检查任何外部应用、启动器、服务或特定工具的元数据。
+本约定规定 `manual` Feature 在 Stage 4 准备、在 Stage 5 记录结论的人工验收清单。清单本身就是验收记录：用户的结论写在其中每项的 `status` 和 `comment` 里，不另建结果文件。是否适用由每个 Feature 的 `verification.acceptance_mode` 决定；`automated` Feature 不创建空的人工验收清单。项目只交换文件，不需要也不检查任何外部应用、启动器、服务或特定工具的元数据。
 
 ## 定义与准备
 
@@ -81,4 +81,4 @@ python -B yaya/tools/features/record-feature-completion.py record-acceptance --f
 
 ## 后续工作
 
-失败按[执行规范](../03-execute-loop.md)在当前实现授权内处理。用户在验收期间从调试台采纳了新值时，按 [Stage 5](../03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 作为拒绝处理。提出新需求的评论不授权这些需求。即使是次要的延后处理，也需要用户明确接受并写一条说明。来源或验收契约变化后，在完成之前重新评估并重新进行受影响的验证。报告中的编辑性更正不需要重跑业务测试。人工验收不代替自动义务、直接的静态检查、被要求的审核条件或正常的完成检查。
+失败按[Stage 0–8 `feature-execute` 执行循环](../03-execute-loop.md)在当前实现授权内处理。用户在验收期间从调试台采纳了新值时，按 [Stage 5](../03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 作为拒绝处理。提出新需求的评论不授权这些需求。即使是次要的延后处理，也需要用户明确接受并写一条说明。来源或验收契约变化后，在完成之前重新评估并重新进行受影响的验证。报告中的编辑性更正不需要重跑业务测试。人工验收不代替自动义务、直接的静态检查、被要求的审核条件或正常的完成检查。

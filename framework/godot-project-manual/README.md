@@ -25,14 +25,14 @@
 - **框架基础**
   - [框架、创建器与项目边界](foundations/framework-and-project.md)：分发方式、创建器用法、环境就绪的含义，以及已有项目怎样采用框架。
   - [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：逻辑与表现的职责划分，以及怎样从设计找到实现与验收。
-  - [项目对象与目录](foundations/project-layout.md)：GDD、Product、Feature、测试登记表、完成记录、代码与报告的位置和读写关系。
+  - [项目对象与目录](foundations/project-layout.md)：GDD、Product、Feature、测试登记表、完成证据、代码与报告的位置和读写关系。
   - [配置参考](foundations/configuration.md)：工具路径、文档语言、Godot 默认配置、插件、lint 与文本格式。
 - **需求与任务**
   - [需求、Feature 与规划基线](requirements-and-tasks/requirements-and-planning.md)：GDD 前提、交付预拆分、逐个细化 Product、AC、依赖、基线与需求修订。
   - [任务类型、开发阶段与完成语义](requirements-and-tasks/feature-lifecycle.md)：Bug、重构、维护与实验的区别，Stage、自动与人工验收、Git 和持续任务。
 - **方法与工具**
   - [Skill、Agent 与提示词](methods-and-tools/skills-and-agents.md)：每个 Skill 的职责、专用角色、集中提示词与 advisor。
-  - [命令与验证证据](methods-and-tools/commands-and-evidence.md)：每种结果能证明什么，命令参数、测试范围、运行报告、完成记录与内容指纹。
+  - [命令与验证证据](methods-and-tools/commands-and-evidence.md)：每种结果能证明什么，命令参数、测试范围、运行报告、完成证据与内容指纹。
   - [错误与结果的含义](methods-and-tools/errors-and-results.md)：按现象查工具输出的含义和处理办法。
 - **专业工作与记录**
   - [专业来源与资源](specialist-work-and-records/specialist-work.md)：各类专业规格的维护者、资源规格、调试台与实际接入、测量与独立审核。

@@ -228,7 +228,7 @@ GDD 描述游戏；Product 描述如何把选定的设计分成可验证的单�
 
 `product.md` 把约定的交付规划范围预拆分成简短的候选。`product/NN-<delivery>.md` 只在对应 Product 成为当前 Product 时才编写，并且在细化下一个 Product 之前先规划完它的 Feature。这个顺序由 [逐个 Product 规划](02-feature-list-schema.md#逐个-product-规划) 规定。预拆分不是固定承诺；交付结果改变预期顺序时，调整后续候选。细化之前，候选以候选名称作为标识，其他文档用这个名称引用它；细化时才分配 `NN` 编号和文件名。
 
-初始的 `product.md` 只写明用途，它既不是设计，也不是交付计划。交付内容按[模板](templates/README.md)编写。通过 `product.md` 中的链接和 [Product 文件名](#product-文件名)规则找到已细化的 Product。
+初始的 `product.md` 只写明用途，它既不是设计，也不是交付计划。交付内容按[methodology 模板](templates/README.md)编写。通过 `product.md` 中的链接和 [Product 文件名](#product-文件名)规则找到已细化的 Product。
 
 Product 文档只描述当前的交付范围。它们没有变更历史章节，旧版本由 Git 保存。当前某条边界或顺序的理由对以后的决定有帮助时，把理由写在该边界旁边。
 

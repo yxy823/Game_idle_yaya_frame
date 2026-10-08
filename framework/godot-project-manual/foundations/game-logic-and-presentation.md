@@ -44,7 +44,7 @@
 | 为什么这样设计，哪些行为与反馈成立 | GDD | 购买规则、价格规则、失败条件和获得物品的体验目标 |
 | 当前交付多少 | Product | 本次交付哪些商店能力，哪些内容暂缓 |
 | 界面怎样组织 | UI 设计文档 | 商品排列、余额显示、按钮状态和交互，引用购买成功表现 |
-| 一次反馈怎样展开 | 游戏表现文档 | 图标飞行、数字变化、声音的过程、候选方案及当前采用组合 |
+| 一次反馈怎样展开 | 游戏表现文档 | 图标飞行、数字变化、声音的过程、备选方案及当前采用组合 |
 | 实际由谁维护状态、怎样连接 | 架构或必要的 Feature 设计 | 购买操作、余额与背包所有者、界面消费者和运行入口 |
 | 本次做到什么、怎样判断完成 | Feature 与验证记录 | 规则与反馈的 AC、相关测试、人工检查及真实验收结果 |
 
@@ -66,4 +66,4 @@ Agent 必须守住的是状态归属、有效结果和文档一致性。至于�
 
 验证也按要求来选：购买规则可以用自动测试检查成功、余额不足和重复点击等情况；接入部分检查真实结果是否正确传给界面、重新打开界面时是否显示当前状态；动画、声音和手感则通过人工验收确认。各类证据能证明什么，见[命令与验证证据](../methods-and-tools/commands-and-evidence.md#每种结果能证明什么)。
 
-继续查阅：[项目对象与目录](project-layout.md)、[需求与规划](../requirements-and-tasks/requirements-and-planning.md)、[架构规范](../../../project-source/methodology/10-architecture-overview.md)。
+继续查阅：[项目对象与目录](project-layout.md)、[需求与规划](../requirements-and-tasks/requirements-and-planning.md)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。
