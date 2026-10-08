@@ -26,7 +26,7 @@
 | 任何 `.gd` 修改 | 用 Godot 4.7 `--check-only` 解析改动的脚本和依赖它们的脚本；第三方解析器的结果不能代替 |
 | 任何 `.gd` 修改 | 对整个 `res://` 运行 lint CLI，范围和阈值由根目录的 `gdlint.json` 决定 |
 | 新建 `.gd` | `--check-only` 不生成 `.uid`；运行 [首次 Godot 扫描](../../tools/README.md#首次-godot-扫描)的命令生成同名 `.uid`，与脚本一起提交。漏掉的由 [`check-godot-resource-format.py`](../../tools/README.md#check-godot-resource-formatpy) 发现 |
-| 行为变化 | 运行 [08 测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md#测试影响评估) 选定的范围：Required、affected 或 full |
+| 行为变化 | 运行测试追溯与证据中[测试影响评估](../../methodology/08-test-traceability-and-evidence.md#测试影响评估)选定的范围：Required、affected 或 full |
 | 生命周期、Node、Resource、Input、Autoload 或线程的运行时语义变化 | 在上一行的测试中包含真实 SceneTree 路径上的集成或运行时测试 |
 
 不为通过检查而新增或扩大 `gdlint:ignore*`、`@warning_ignore` 或排除项，也不为此修改 `gdlint.json`。唯一例外是用户在讨论中同意保留的指标超标，写法见[用户同意保留的超标](../../methodology/contracts/gdscript-lint.md#用户同意保留的超标)；Agent 不能自行新增这种例外，也不能调高已有的钉住值。

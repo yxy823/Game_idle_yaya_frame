@@ -4,7 +4,7 @@
 
 游戏自身的业务术语不放这里，固定保存在生成项目的 `docs/terminology.md`，由 `project-terminology` 维护。
 
-表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[术语文件的格式](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[维护工具](maintenance/tools/README.md#检查术语用词)。
+表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[术语文件的格式](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[检查术语用词](maintenance/tools/README.md#检查术语用词)。
 
 ## 框架对象
 
@@ -70,7 +70,7 @@
 | 游戏逻辑 / 游戏表现 | 理解一个功能时的两类职责：逻辑负责规则、状态与有效结果，表现负责界面、动画、特效、声音和镜头等玩家感知。用于找到对应的文档和实现，不是必须拆开的任务类型 |  |
 | 游戏表现文档 | `docs/presentation/` 中描述一次具体表现的文档：过程、要求、备选方案、采用关系及实现与验收入口 |  |
 
-来源：[游戏组织指南](../project-source/defaults/docs/game-organization.md)、[专业工作与来源](../project-source/methodology/11-specialist-workflows.md)。
+来源：[游戏职责与项目组织指南](../project-source/defaults/docs/game-organization.md)、[专业工作与来源](../project-source/methodology/11-specialist-workflows.md)。
 
 ## 验证记录
 

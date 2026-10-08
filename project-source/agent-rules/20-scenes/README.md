@@ -18,7 +18,7 @@
 | 重命名、移动节点或修改 `%UniqueName` | 检查[NodePath 与重命名](references-groups-and-order.md#nodepath-与重命名)列出的每类引用 |
 | 修改焦点流程 | 检查[焦点与模态对话框](ui-and-scripts.md#焦点与模态对话框)列出的打开、关闭、再次打开和焦点目标消失的情况 |
 | 修改所有权、实例化、更换父节点或节点释放 | 运行时在 Remote 场景树和 Monitors 的 Orphan Nodes 中确认没有残留节点 |
-| 行为变化 | 运行 [08 测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md#测试影响评估) 选定的范围：Required、affected 或 full |
+| 行为变化 | 运行测试追溯与证据中[测试影响评估](../../methodology/08-test-traceability-and-evidence.md#测试影响评估)选定的范围：Required、affected 或 full |
 
 建议：可复用的独立场景，额外用“运行当前场景”（F6）单独运行。单独运行失败时，区分两种原因：
 

@@ -13,4 +13,4 @@
 | 修改类、属性、默认值或 schema | 加载所有受影响的仓库 Resource，并检查有代表性的消费方 |
 | 复制 Resource 的代码 | 测试副本中的共享与复制关系，见[复制](roles-sharing-and-locality.md#复制) |
 | 生成或保存 Resource | 按[保存](identity-saving-and-schema.md#保存)一节重新加载并检查 |
-| 行为变化 | 运行 [08 测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md#测试影响评估) 选定的范围：Required、affected 或 full |
+| 行为变化 | 运行测试追溯与证据中[测试影响评估](../../methodology/08-test-traceability-and-evidence.md#测试影响评估)选定的范围：Required、affected 或 full |
