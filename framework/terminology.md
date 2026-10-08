@@ -4,7 +4,7 @@
 
 游戏自身的业务术语不放这里，固定保存在生成项目的 `docs/terminology.md`，由 `project-terminology` 维护。
 
-表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[项目术语规范](../project-source/methodology/14-project-terminology.md#不用的说法)，检查命令见[维护工具](maintenance/tools/README.md#检查术语用词)。
+表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[项目术语规范](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[维护工具](maintenance/tools/README.md#检查术语用词)。
 
 ## 框架对象
 

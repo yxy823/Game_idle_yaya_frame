@@ -23,6 +23,7 @@ TABLE_SEPARATOR = re.compile(r"^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)*\|?\s*$
 CELL_SPLIT = re.compile(r"(?<!\\)\|")
 LIST_SPLIT = re.compile(r"[、,，]")
 LINK_TARGET = re.compile(r"(?<=\]\()[^)]*(?=\))")
+ENTRY_LINE = re.compile(r"^ {0,3}(#{2,6}\s|[-*+]\s|\d+[.)]\s|\|)")
 CJK = re.compile(r"[\u3400-\u9fff]")
 ASCII_TERM = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
 ASCII_RUN = re.compile(r"(?<![A-Za-z0-9_-])[A-Za-z][A-Za-z0-9_-]*")
@@ -91,6 +92,7 @@ def split_aliases(cell: str) -> list[str]:
 def parse_terms(path: Path, display: str) -> list[Term]:
     lines = path.read_text(encoding="utf-8").splitlines()
     terms: list[Term] = []
+    entry_line: int | None = None  # 第一处条目：二级及以下小标题、列表项或表格数据行
     fence: str | None = None
     index = 0
     while index < len(lines):
@@ -106,6 +108,8 @@ def parse_terms(path: Path, display: str) -> list[Term]:
             index += 1
             continue
         if not (line.lstrip().startswith("|") and index + 1 < len(lines) and TABLE_SEPARATOR.match(lines[index + 1])):
+            if entry_line is None and ENTRY_LINE.match(line):
+                entry_line = index + 1
             index += 1
             continue
         header = split_cells(line)
@@ -127,7 +131,13 @@ def parse_terms(path: Path, display: str) -> list[Term]:
                 code = {alias for alias in aliases if f"`{alias}`" in cells[term_column]}
                 name = next((alias for alias in aliases if alias not in code), aliases[0])
                 terms.append(Term(name, aliases, sorted(code), forbidden, f"{display}:{index + 1}"))
+            elif entry_line is None:
+                entry_line = index + 1
             index += 1
+    if not terms and entry_line is not None:
+        # 有条目却没读出术语，多半是用了小标题或列表；照常通过会让检查空跑。
+        raise TermsFileError(f"{display}:{entry_line}: 术语文件无法解析：有条目却没有从表格读出术语，"
+                             "请按项目术语规范的“术语文件的格式”改用 | 术语 | 含义与边界 | 不用的说法 | 表格")
     return terms
 
 

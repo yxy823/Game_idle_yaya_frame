@@ -87,6 +87,18 @@ class TerminologyCheckTests(unittest.TestCase):
             self.assertLessEqual(fields, row.keys())
         self.assertEqual(result["summary"]["forbidden"], 1)
 
+    def test_terms_written_as_headings_exit_2(self):
+        self.write("docs/terminology.md", "# 项目术语\n\n用途说明。\n\n## 资源\n\n### 晶石\n\n游戏中唯一的资源。\n")
+        process = self.run_cli()
+        self.assertEqual(process.returncode, 2, process.stdout)
+        self.assertIn("docs/terminology.md:5: 术语文件无法解析", process.stderr)
+
+    def test_purpose_text_with_empty_table_header_exits_0(self):
+        self.write("docs/terminology.md",
+                   "# 项目术语\n\n用途说明。\n\n| 术语 | 含义与边界 | 不用的说法 |\n| --- | --- | --- |\n")
+        process = self.run_cli()
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

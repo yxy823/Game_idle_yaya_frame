@@ -175,7 +175,7 @@ python -B yaya/tools/checks/check-markdown-links.py
 
 ### check-terminology.py
 
-在 `docs/terminology.md` 中登记或修改“不用的说法”后运行，也可以在整理文档后整体运行一次；术语文件的写法见[项目术语规范](../methodology/14-project-terminology.md#不用的说法)：
+在 `docs/terminology.md` 中登记或修改“不用的说法”后运行，也可以在整理文档后整体运行一次；术语文件的写法见[项目术语规范](../methodology/14-project-terminology.md#术语文件的格式)：
 
 ```powershell
 python -B yaya/tools/checks/check-terminology.py
@@ -203,7 +203,7 @@ python -B yaya/tools/checks/check-terminology.py --discover
 
 文本输出每条结果一行，格式固定为 `路径:行号:列号: [规则编号] 说明 | 上下文`：路径相对 `--root`，列号从 1 开始按字符计，上下文是该行去掉首尾空白后的片段，过长时截断并加 `…`。不用的说法的说明写出发现的写法、应改为的正式名称和术语文件中的定义位置。候选写法按术语分组，先用一行 `术语 → 候选词（次数）、…` 汇总，再逐条列出位置。最后一行是汇总：扫描的文件数和两层各自的数量。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`term`、`found`、`suggestion`、`definition`、`context` 和 `message`。
 
-退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、术语文件不存在或表格无法解析（如某行的列数少于表头）。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
+退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、术语文件不存在或无法解析：表格某行的列数少于表头，或文件有条目（`##` 及以下小标题、列表项、表格数据行）却没有从表格读出任何术语，例如每个术语写成一个 `###` 小标题。只有标题、说明段落和空表头的术语文件（新项目模板）正常通过。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
 
 ### check-godot-resource-format.py
 

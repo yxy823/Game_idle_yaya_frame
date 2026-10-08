@@ -25,7 +25,7 @@ description: "在 `docs/terminology.md` 中记录已确认的项目术语定义�
 - 把授权范围内的定义移进该文件，原处的正文改为链接，并保留来源锚点。原始来源的保留、别名、退役和排除规则见 `yaya/methodology/14-project-terminology.md`；玩法细节留在 GDD 中。
 - 目标语言的措辞通过 `design-localization-spec` 写在 `docs/localization/localization-spec.md` 的 **术语译名** 中（methodology 11 的 **本地化术语译名**）。不要把目标语言词表作为别名保存在这里。
 - 文件不存在、又有已确认的定义需要保存时，创建该文件。没有已确认的术语时，不编造条目。
-- 同一概念不再使用的写法登记在术语表的“不用的说法”列，登记或统一用词后运行 `python -B yaya/tools/checks/check-terminology.py`（methodology 14 的 **不用的说法**）。
+- 术语写成 `| 术语 | 含义与边界 | 不用的说法 |` 表格，每个术语一行，不用小标题或列表逐条写。同一概念不再使用的写法登记在“不用的说法”列，登记或统一用词后运行 `python -B yaya/tools/checks/check-terminology.py`（methodology 14 的 **术语文件的格式**）。
 
 不改变含义的编辑不重命名代码、不迁移数据、不做专业澄清、不创建 Product 交付文档或 Feature，也不同步计划。
 
