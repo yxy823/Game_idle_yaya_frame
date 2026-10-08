@@ -70,7 +70,7 @@ func test_fade_out_lasts_at_least_contract_time() -> void:
 
 ## 信号与异步
 
-- 信号等待都有超时。`assert_signal()` 默认等待 2000 毫秒，可用 `wait_until()` 调整；`await_signal_on()` 也有超时参数。
+- 信号等待都有超时。`assert_signal()` 默认等待 2000 毫秒，可以用 `wait_until()` 调整；`await_signal_on()` 也有超时参数。
 - 信号可能在触发调用内同步发出时，先用 `monitor_signals()` 开始收集，再触发，再断言。否则 `assert_signal()` 从断言开始才收集，会错过已经发出的信号：
 
 ```gdscript

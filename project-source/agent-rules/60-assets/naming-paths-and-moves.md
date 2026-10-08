@@ -14,12 +14,12 @@
 
 ## 移动、重命名与复制
 
-- 建议在编辑器的文件系统面板中移动、重命名和复制，让 Godot 更新引用。
+- 建议：在编辑器的文件系统面板中移动、重命名和复制，让 Godot 更新引用。
 - 在编辑器外移动或重命名时：
   - 素材与同名的 `.import` 文件一起移动，脚本和 Shader 与同名的 `.uid` 文件一起移动，分开会丢失 UID 或导入设置；新加入的素材、脚本和 Shader 运行一次 Godot 扫描，把生成的 `.import`、`.uid` 一起提交；
   - 移动后让 Godot 扫描和导入（见[重新导入](import-configuration.md#重新导入)），检查有没有缺失依赖的报错。
 - 在编辑器外复制出一个独立的新素材时，不复制原文件的 `.import` 或 `.uid`，让 Godot 为新文件生成新的 UID。UID 的规则见[资源引用](../00-core/godot-resource-references.md#资源引用)。
-- 注意：UID 只能修复 Resource 引用。脚本中按字符串路径 `load()` 的代码、`FileAccess` 读取的路径和数据文件中的路径，需要逐个更新。
+- 注意：UID 只能修复 Resource 引用。脚本中按字符串路径 `load()` 的代码、`FileAccess` 读取的路径和数据文件中的路径，必须逐个更新。
 - 重命名文件不会改变业务 ID。业务 ID 的迁移见[业务 ID 与引用](../50-data-files/schema-identity-and-migration.md#业务-id-与引用)。
 - 修改前分清是哪一种：
   - 替换内容：路径和 UID 不变；

@@ -2,7 +2,7 @@
 
 [职责设计准则](README.md)
 
-维护 `AGENTS.md`、Skill、任务提示词和条件引用时，先读当前正文和必要的调用方，再按实际变化逐项核对下面的内容。写法可参考 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)，但以本仓库已确认的边界为准。
+维护 `AGENTS.md`、Skill、任务提示词和条件引用时，先读当前正文和必要的调用方，再按实际变化逐项核对下面的内容。写法可以参考 [OpenAI 的 Astra 指令设计建议](https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra)，但以本仓库已确认的边界为准。
 
 ## 内容放在哪里
 
