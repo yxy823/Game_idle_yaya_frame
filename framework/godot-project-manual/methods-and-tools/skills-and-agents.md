@@ -135,7 +135,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 ### 调研与独立审核角色
 
-项目附带 [researcher](../../../project-source/agents/researcher.toml)（按需独立调研）和 [independent-reviewer](../../../project-source/agents/independent-reviewer.toml)（独立审核）。使用它们需要全新的上下文、宿主程序的实际支持和合适的权限；配置文件存在不代表宿主已加载这个角色。作者自己按审核 Skill 读一遍，仍然只是自查。
+项目附带 [researcher](../../../project-source/agents/researcher.toml)（按需独立调研）和 [independent-reviewer](../../../project-source/agents/independent-reviewer.toml)（独立审核）。使用它们需要全新的上下文、宿主程序的实际支持，以及角色工作所需的权限：researcher 能调用搜索或文档获取工具，independent-reviewer 能读取被审核的文件；配置文件存在不代表宿主已加载这个角色。作者自己按审核 Skill 读一遍，仍然只是自查。
 
 调研可以使用用户级的 anysearch，框架不复制它的实现、密钥或个人路径。工具不可用时，按角色规则选用其他实际可用的渠道并说明限制；找不到来源时如实说明，不写成已查证。调研方法和报告格式由角色配置维护，长期保存位置见[调研与项目知识](../specialist-work-and-records/knowledge-and-records.md#调研与项目知识)。
 
