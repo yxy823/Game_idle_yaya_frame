@@ -121,11 +121,11 @@
 
 | 目的 | 场景 |
 | --- | --- |
-| 检查当前工作区是否自洽 | [本地静态审核](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想检查本地框架是否自洽，先做静态审核.md>) |
+| 检查当前工作区是否自洽 | [本地静态审核](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想检查本地框架是否自洽，先做静态审核.md>) |
 | 先了解框架结构，再选专题 | [框架结构总览](<../prompt-scenarios/scenarios/Yaya 框架维护/只读专项审核/想先总览框架，再选择审核专题.md>)；总览不承诺全面审核 |
 | 深入核对某个专项问题 | 从[只读专项审核](../prompt-scenarios/scenarios/scenario-index.md#只读专项审核)选一个专题，与「专项审核通用模板」拼接后使用，不需要填参数 |
-| 核实收到的审核意见 | [核实外部审核意见](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/收到外部审核意见，先核实哪些值得修改.md>) |
-| 用一个小任务验证真实流程 | [小任务验证](<../prompt-scenarios/scenarios/Yaya 框架维护/维护与复盘/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
+| 核实收到的审核意见 | [核实外部审核意见](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
+| 用一个小任务验证真实流程 | [小任务验证](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
 总体判断依据[根规则的核心原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
