@@ -12,7 +12,7 @@ description: "在已授权的 Godot 任务中导入、替换或接入现有的�
 - 按 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 找到资源章节的所属位置：所属的表现方案、UI 规格或共享设计章节。阅读其中受影响的资源章节，以及当前采用的方案和实际源文件。
 - 按 `yaya/agent-rules/README.md` 的“常见任务读哪些”中“导入或替换图片、音频、字体”一行阅读；移动或重命名资源时加读 `yaya/agent-rules/00-core/godot-resource-references.md`。
 - 根据现有记录确认资源来源和使用限制。来源不明是缺口，不要自行编造许可。
-- 素材要先在调试台和其他候选比较时，按 `debug-console-godot` 的[候选](../debug-console-godot/SKILL.md#候选)放置并写明来源与许可；用户采纳后由调试台移进游戏目录，本 Skill 只接入已选定的文件。
+- 素材要先在调试台和其他候选比较时，本 Skill 把它接入为候选：按 `debug-console-godot` 的[候选](../debug-console-godot/SKILL.md#候选)放进候选目录，写明来源与许可，检查下面的文件属性，只建立调试台候选的使用关系，不改游戏的引用；接入后返回 `debug-console-godot`。用户采纳后由调试台把候选移进游戏目录，不需要本 Skill 再接入一次。不经过调试台比较时，本 Skill 接入用户已确认的最终文件。
 - 按资源类型检查实际的类型、尺寸、透明度、时长、声道或动画属性。
 
 ## 接入

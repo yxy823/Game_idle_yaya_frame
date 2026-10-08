@@ -89,7 +89,7 @@ yaya/methodology/                         canonical workflow specification
 | 重构 | `engineering-change-plan` 的 refactor 模式 | 行为保持不变。只有用户要求挑选代码坏味道时，才先用 `engineering-refactor-select`。 |
 | 维护 | `engineering-change-plan` 的 maintenance 模式 | 用于技术成功标准、兼容性、迁移和验证工作。 |
 | 项目工具问题 | `engineering-change-plan` | 用于项目自有工具中的问题。 |
-| 审计 | 在新的 `independent-reviewer` 实例中使用对应的审核 Skill | 只在用户要求正式审核时使用，按[独立审核](12-independent-review.md)执行。不修复，也不提供人工验收。 |
+| 独立审核 | 在新的 `independent-reviewer` 实例中使用对应的审核 Skill | 只在用户要求正式审核时使用，按[独立审核](12-independent-review.md)执行。不修复，也不提供人工验收。 |
 | 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment-godot` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
 | 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification-godot` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
 | 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |

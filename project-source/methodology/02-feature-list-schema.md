@@ -219,7 +219,7 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 - 有设计内容要保存时再创建这个文件；不要求空文件。不要再加 JSON 记录或设计状态记录文件。
 - Stage 0 读取所选 Feature 及其相关依赖的设计稿。
 
-`implementation-guidance-godot` Skill 把为某个 Feature 请求的实现指导写进同一个文件，工程 Feature 也一样。主 Agent 可以自己准备指导；交给 advisor 准备需要该 Skill 规定的明确授权。不属于任何 Feature 的工作按 [独立技术决定](10-architecture-overview.md#独立技术决定) 处理，不要虚构一个 Feature，也不要在 `reports/` 下另写指南。
+`implementation-guidance-godot` Skill 把为某个 Feature 请求的实现指导写进同一个文件，工程 Feature 也一样。主 Agent 可以自己准备指导；交给 `implementation-advisor` 准备需要该 Skill 规定的明确授权。不属于任何 Feature 的工作按 [独立技术决定](10-architecture-overview.md#独立技术决定) 处理，不要虚构一个 Feature，也不要在 `reports/` 下另写指南。
 
 设计稿开头是“对外接口与接入要点”：后续 Feature 接入时需要的接口、信号、完成约定和已知的坑，几行就够。依赖它的 Feature 先读这一节，需要时再读全文。Feature 完成时按实际实现更新它。
 

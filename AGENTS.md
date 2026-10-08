@@ -67,7 +67,7 @@
 | 修改空白项目 | 先读[框架入口](framework/README.md)，再按[框架维护与说明同步](framework/maintenance/maintenance-and-sync.md)查阅受影响的专题、核对源材料并同步说明 |
 | 使用手册 | Godot 项目手册解释生成项目的概念、文档对象、配置与工具；具体场景写在同名提示词对应的场景页。两册只维护 Markdown，不互相引用，由框架入口导航 |
 | 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改 |
-| 选择验证 | 只要求静态审查时，不生成项目、不启动 Godot、不运行测试；实际项目验证在明确指定的外部项目中执行。范围见[按修改选择验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，命令见[按需检查](framework/tests/README.md#按需检查) |
+| 选择验证 | 只要求静态审查时，不生成项目、不启动 Godot、不运行测试；实际项目验证在明确指定的外部项目中执行。范围见[按修改选择验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，命令见[按需检查](framework/tests/README.md#按需检查)。派活时由主 Agent 按本次修改从验证范围选出验证要求交给实施者；外部项目中的 gdUnit 测试按 [gdUnit4 运行器与诊断](project-source/agent-rules/70-tests/gdunit4-profile.md)运行，不用统一的“结束时跑全量”“只看新增 Critical”或“一律无头运行”代替 |
 
 修改分发源或工具时：
 

@@ -25,7 +25,7 @@ description: >-
    - 专业要求有变化或含义不清：`yaya/methodology/11-specialist-workflows.md` 中对应的专业入口。
 
    按权威归属表，未完成的工作中引入的缺陷留在那个 Feature 中处理。
-2. 按工程规范，只收集所选模式必需的证据。未确认的根本原因保持为未知。没有指定具体内容的重构，使用 [engineering-refactor-select](../engineering-refactor-select/SKILL.md)，带着选中的候选回到这里。
+2. 按工程变更流程，只收集所选模式必需的证据。未确认的根本原因保持为未知。没有指定具体内容的重构，使用 [engineering-refactor-select](../engineering-refactor-select/SKILL.md)，带着选中的候选回到这里。
 3. 阅读 Feature 索引和相关详情。如果这项工作依赖一个尚未规划的当前 Product，先用 [feature-plan](../feature-plan/SKILL.md) 完成这个前提。独立的工具工作使用其已写成文档的技术约定；只要项目已经有实际的 GDD，它可以在没有详细业务 Product 的情况下，向一个有效的空 Feature 记录追加工程 Feature。阅读测试登记表（Test Registry），提出可以复用的或新的受影响组件。
 4. 提出能独立验证的最小 Feature；`large` 的工作要拆分。展示 ID、标题、模式、依赖、受影响的组件、稳定的验收条件、预计涉及的文件或区域，以及验证义务。已有批准覆盖这份方案时直接沿用，只解决缺少的实质性决定。
 
@@ -45,6 +45,6 @@ description: >-
 
 使用权威的初始规划值，追加索引条目和对应的工程详情；保留已完成的历史和工程分类。这次操作不追加修订记录条目，因为没有发生针对权威来源的同步。
 
-校验和本地计划提交遵循工程规范的 **Feature 写入规则**。宣布计划就绪之前，对照已批准的范围、组件登记和被保留的历史检查实际差异。提交中写上所属 Feature 的 `Work item` 引用。
+校验和本地计划提交遵循工程变更流程的 **Feature 写入规则**。宣布计划就绪之前，对照已批准的范围、组件登记和被保留的历史检查实际差异。提交中写上所属 Feature 的 `Work item` 引用。
 
 报告创建的 Feature 和剩余工作。把 Bug 的复现与回归义务以及权威的经验记录要求传给执行阶段；准备阶段不运行测试，也不登记验收。只有具体范围已获授权时，执行才继续使用 `feature-execute`；否则停在缺少的决定上。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。

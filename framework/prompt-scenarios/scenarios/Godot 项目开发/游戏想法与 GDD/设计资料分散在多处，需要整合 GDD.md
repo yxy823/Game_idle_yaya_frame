@@ -28,7 +28,7 @@
 
 按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)把尚未解决的设计冲突归入固定文件，保留来源、影响和所需决定，主题只保留必要上下文与引用。后续讨论和规划据此处理依赖；已解决项的结果写回所属主题并更新引用。
 
-按[候选与未采纳想法](../../../../../project-source/methodology/01-product-doc-structure.md#候选与未采纳想法)归位候选：当前比较进入开放问题，已采纳规则的备选值随所属规则或模型，没有当前待决问题依赖的设想保存到 `docs/unadopted-ideas.md`。保留原始资料作为来源，现行正文不重复保存。
+按[备选方案与未采纳想法](../../../../../project-source/methodology/01-product-doc-structure.md#备选方案与未采纳想法)归位：当前比较进入开放问题，已采纳规则的备选值随所属规则或模型，没有当前待决问题依赖的设想保存到 `docs/unadopted-ideas.md`。保留原始资料作为来源，现行正文不重复保存。
 
 本次资料中已确定的专业规格按[留在 GDD 中的内容](../../../../../project-source/methodology/11-specialist-workflows.md#留在-gdd-中的内容)迁入对应固定正文，GDD 保留整体目标、玩法规则与引用；首次写在哪里不改变职责。
 

@@ -182,6 +182,7 @@ Work item: docs/features/F012.json
 ### 选择与组合
 
 - 每个改动的产物都要满足所有适用模块的验证要求，这些要求相互叠加。
+- 派活时，主 Agent 按本次修改确定验证要求，并把所属入口交给实施者：测试范围按 08 号规范的[测试影响评估](yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)，lint 结果按 lint 约定的[lint 的退出码](yaya/methodology/contracts/gdscript-lint.md#lint-的退出码)，gdUnit 的运行方式按 [gdUnit4 运行器与诊断](yaya/agent-rules/70-tests/gdunit4-profile.md)。不用统一的“结束时跑全量”“只看新增 Critical”或“一律无头运行”代替这些规定。
 - 运行适用于这次修改的验证，不运行所有能想到的昂贵检查。影响范围不确定时，把可能受影响的相关模块也纳入验证，不声称一个缺乏依据的最小范围。
 - 使用项目已配置的入口：`yaya/tools/` 下的命令，以及 [GDScript lint 的约定与证据](yaya/methodology/contracts/gdscript-lint.md) 中的解析和 lint 命令。不编造不受支持的检查器，不为填满清单安装新的工具链。
 - 一类验证不代替另一类，除非项目规则明确规定它们对受影响的契约等价。上层检查通过不抵消下层的失败。

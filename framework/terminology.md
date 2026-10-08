@@ -38,6 +38,8 @@
 | Feature 记录 | 02 号规范的[文件结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成证据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |  |
 | Stage | [Stage 0–8 `feature-execute` 执行循环](../project-source/methodology/03-execute-loop.md)里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |  |
 | 独立审核 | Stage 6：用户明确要求时，在全新上下文中按用户指定的范围和时机审核变更，方法见[独立审核](../project-source/methodology/12-independent-review.md)；用户没要求时跳过 | 独立评审、独立审查 |
+| 现状审核 | `review-code` 的一种模式：不依赖差异或 Feature，审核选定模块的当前状态；审核一次改动的模式称“改动审核” | 现状审计 |
+| 代码坏味道 | 代码中提示可能存在维护问题的结构特征，是审核和挑选重构目标时的调查线索，本身不算违规 | 代码异味 |
 | 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案 |
 | 待决定事项 | Progress 中的同名一节，列出需要用户决定才能继续的事项；GDD 中设计层面没定下的问题称“开放问题” |  |
 | 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |  |

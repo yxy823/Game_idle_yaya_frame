@@ -11,7 +11,7 @@ description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计�
 
 按 `yaya/methodology/01-product-doc-structure.md` 中的来源归属执行。在 Product 和 Feature 存在之前，这套提问方法就可以支持早期的游戏设计或 GDD 草稿。把用户的想法和约束作为输入，并把建议与已采用的设计分开。保存 GDD 内容属于 `design-gdd`；讨论不能绕过后续规划或实现的设计前提。
 
-用户明确要求把一个想法留到以后时，由 methodology 01 的 **候选与未采纳想法** 选定它的所属位置。本 Skill 只在这一具体的写入范围内，把与当前决定没有依赖关系的想法保存到 `docs/unadopted-ideas.md`，或者交回已获授权的 `design-gdd` 任务。当前的设计比较，以及已采用规则的备选方案，交回 `design-gdd`。不要只为了保留一个想法就创建 GDD 系统、Product 或 Feature；没有写入授权时，想法留在对话中。
+用户明确要求把一个想法留到以后时，由 methodology 01 的 **备选方案与未采纳想法** 选定它的所属位置。本 Skill 只在这一具体的写入范围内，把与当前决定没有依赖关系的想法保存到 `docs/unadopted-ideas.md`，或者交回已获授权的 `design-gdd` 任务。当前的设计比较，以及已采用规则的备选方案，交回 `design-gdd`。不要只为了保留一个想法就创建 GDD 系统、Product 或 Feature；没有写入授权时，想法留在对话中。
 
 ## 共享提问方法
 
