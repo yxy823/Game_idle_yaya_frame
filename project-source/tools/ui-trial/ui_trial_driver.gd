@@ -7,6 +7,7 @@ const TRIAL_SUFFIX := " trial"
 const EXIT_FAILED := 1
 const EXIT_WATCHDOG := 2
 const EXIT_REFUSED := 3
+const ErrorLogger := preload("res://yaya/tools/ui-trial/ui_trial_error_logger.gd")
 
 ## 看门狗秒数；命令行 --ui-trial-watchdog=N 覆盖。脚本卡住或报错后不退出时，由它结束进程。
 var watchdog_seconds: float = 120.0
@@ -19,33 +20,7 @@ var _finished: bool = false
 var _step_count: int = 0
 var _started_msec: int = 0
 var _steps_file: FileAccess
-var _logger: _ErrorLogger
-
-
-## 引擎报出的错误（含脚本运行错误、push_error）都让试用失败退出；警告只记录。
-class _ErrorLogger:
-	extends Logger
-
-	var on_error: Callable
-
-	func _log_error(
-		function: String,
-		file: String,
-		line: int,
-		code: String,
-		rationale: String,
-		_editor_notify: bool,
-		error_type: int,
-		_script_backtraces: Array[ScriptBacktrace]
-	) -> void:
-		var text := rationale if not rationale.is_empty() else code
-		var where := "%s:%d %s" % [file, line, function]
-		var report := on_error.bind(error_type == ERROR_TYPE_WARNING, "%s (%s)" % [text, where])
-		# 主线程上立即结束，避免出错的协程返回后被当成正常完成。
-		if OS.get_thread_caller_id() == OS.get_main_thread_id():
-			report.call()
-		else:
-			report.call_deferred()
+var _logger: ErrorLogger
 
 
 ## 子类覆盖：写试用步骤，可以 await。正常返回即视为完成。
@@ -67,7 +42,7 @@ func _initialize() -> void:
 		_log("REFUSED: project name '%s' does not end with '%s'; run prepare-trial-copy.py" % [name, TRIAL_SUFFIX])
 		_finish(EXIT_REFUSED)
 		return
-	_logger = _ErrorLogger.new()
+	_logger = ErrorLogger.new()
 	_logger.on_error = _engine_reported
 	OS.add_logger(_logger)
 	create_timer(watchdog_seconds, true, false, true).timeout.connect(_watchdog_expired)

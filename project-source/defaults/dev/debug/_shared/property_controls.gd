@@ -285,9 +285,10 @@ static func set_locked(control: Node, locked: bool, reason: String = "") -> void
 	if control.has_method("set_locked"):
 		control.set_locked(locked)
 		return
-	if control is LineEdit or control is SpinBox or control is Slider:
+	var editable := control is LineEdit or control is SpinBox or control is Slider
+	if editable:
 		control.editable = not locked
-	if control is BaseButton or control is LineEdit or control is SpinBox or control is Slider:
+	if editable or control is BaseButton:
 		Messages.explain(control, locked, reason)
 	if control is SpinBox:
 		# Its text field is internal, so get_children() skips it, but the pointer hovers there.

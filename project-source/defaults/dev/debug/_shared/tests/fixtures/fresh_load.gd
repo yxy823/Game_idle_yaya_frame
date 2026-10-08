@@ -12,12 +12,7 @@ func _initialize() -> void:
 
 
 func _run() -> void:
-	var paths: PackedStringArray = []
-	_catalog("res://dev/debug", paths)
-	for path in paths:
-		var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
-		_check(resource != null, "Cannot load " + path)
-		_check(ResourceLoader.get_resource_uid(path) != ResourceUID.INVALID_ID, "Missing UID " + path)
+	_check_resources()
 	var boot := BOOT.instantiate()
 	root.add_child(boot)
 	current_scene = boot
@@ -40,6 +35,16 @@ func _run() -> void:
 	for issue in _failures:
 		push_error(issue)
 	quit(0 if _failures.is_empty() else 1)
+
+
+## Every debug scene and resource loads from disk and has a UID.
+func _check_resources() -> void:
+	var paths: PackedStringArray = []
+	_catalog("res://dev/debug", paths)
+	for path in paths:
+		var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
+		_check(resource != null, "Cannot load " + path)
+		_check(ResourceLoader.get_resource_uid(path) != ResourceUID.INVALID_ID, "Missing UID " + path)
 
 
 func _catalog(directory: String, output: PackedStringArray) -> void:

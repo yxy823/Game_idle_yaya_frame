@@ -54,14 +54,19 @@ static func scan_node(root_node: Node) -> Array:
 		if size.x > 0.0 and (size.x < MIN_TARGET or size.y < MIN_TARGET):
 			findings.append(_finding("S04", control, root_node,
 				"点击区域 %d×%d，小于 %d×%d" % [size.x, size.y, MIN_TARGET, MIN_TARGET]))
-		var nearest := _nearest(control, controls) if _is_danger(control) else {}
-		if not nearest.is_empty() and nearest.gap < DANGER_GAP:
-			var other: Control = nearest.control
-			var other_name := _text(other) if not _text(other).is_empty() else String(other.name)
-			findings.append(_finding("S05", control, root_node,
-				"危险按钮与“%s”只隔 %d 像素，容易误点" % [other_name, nearest.gap]))
+		findings.append_array(_danger_findings(control, controls, root_node))
 	findings.append_array(_duplicate_findings(controls, root_node))
 	return findings
+
+
+static func _danger_findings(control: Control, controls: Array, root_node: Node) -> Array:
+	var nearest := _nearest(control, controls) if _is_danger(control) else {}
+	if nearest.is_empty() or nearest.gap >= DANGER_GAP:
+		return []
+	var other: Control = nearest.control
+	var other_name := _text(other) if not _text(other).is_empty() else String(other.name)
+	return [_finding("S05", control, root_node,
+		"危险按钮与“%s”只隔 %d 像素，容易误点" % [other_name, nearest.gap])]
 
 
 static func _button_findings(button: BaseButton, root_node: Node) -> Array:
