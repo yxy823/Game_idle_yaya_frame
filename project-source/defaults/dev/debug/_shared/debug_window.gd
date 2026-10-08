@@ -1,3 +1,5 @@
+# gdlint:ignore-file:file-length=422
+# 保留原因：调试窗口的组装入口，把会话、播放、工具栏、面板和对话框连起来；可移出的只有约 30 行屏幕尺寸代码，移出后窗口里还要留转发函数。用户同意于 2026-10-08。
 extends Window
 
 const Session := preload("res://dev/debug/_shared/debug_session.gd")

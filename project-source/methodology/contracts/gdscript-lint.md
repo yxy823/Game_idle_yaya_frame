@@ -76,6 +76,8 @@ $LASTEXITCODE
 
 - 钉住值默认是当前的实际值；用户在讨论中给出更高的值时用用户的值。
 - 实际值超过钉住值时 lint 重新报告；Agent 不能自行调高钉住值，要重新和用户讨论。实际值降回上限以内时，lint 提示例外已不需要，删掉这两行。
+- 一个文件钉住多项指标时，每项各写一行 `gdlint:ignore-file`，共用一行理由。`file-length` 的实际值包括这几行注释本身。
+- 没有数值的检查（例如 `print-statement`）钉不了数值：只在那一行行尾写 `# gdlint:ignore-line:<检查ID>`，上一行写理由。这样只放过这一行，同一文件里新增的同类问题照样报告。
 - 只钉住讨论过的那一项指标，不用不带数值或不带检查 ID 的 `gdlint:ignore-file`，不为此修改 `gdlint.json`。
 
 ### `engine-parameter-contract` Info

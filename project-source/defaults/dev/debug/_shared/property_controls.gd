@@ -1,3 +1,5 @@
+# gdlint:ignore-file:too-many-params=6
+# 保留原因：create 的 6 个参数各有含义，打包成字典失去类型检查，合并取值名称与描述函数会改变下拉框和数值框的显示。用户同意于 2026-10-08。
 extends RefCounted
 
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")

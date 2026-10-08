@@ -105,7 +105,8 @@ func is_finished() -> bool:
 
 func _log(text: String) -> void:
 	var line := "[ui-trial %7.2fs] %s" % [(Time.get_ticks_msec() - _started_msec) / 1000.0, text]
-	print(line)
+	# 保留原因：步骤与引擎报错按时间交错写进 engine.log，看报错前执行到哪一步。用户同意于 2026-10-08。
+	print(line)  # gdlint:ignore-line:print-statement
 	if _steps_file != null:
 		_steps_file.store_line(line)
 		_steps_file.flush()
