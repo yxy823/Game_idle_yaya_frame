@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.document_text import (  # noqa: E402
     FENCE, TABLE_SEPARATOR, Document, DocumentError, add_scan_arguments, closes_fence, context_snippet,
-    display_path, finding_line, read_documents, selected_files, split_cells,
+    display_path, finding_line, markdown_document, read_documents, selected_files, split_cells,
 )
 
 LIST_SPLIT = re.compile(r"[、,，]")
@@ -258,6 +258,8 @@ def main(argv: list[str] | None = None) -> int:
                         help="also list candidates that start with a whole allowed wording of the term")
     parser.add_argument("--min-count", type=int, default=2, help="minimum occurrences for a candidate (default: 2)")
     parser.add_argument("--max-length", type=int, default=6, help="maximum characters in a candidate (default: 6)")
+    parser.add_argument("--stdin-text", action="store_true",
+                        help="check UTF-8 Markdown text read from standard input instead of files; reported as <stdin>")
     args = parser.parse_args(argv)
 
     root = args.root.resolve()
@@ -266,14 +268,20 @@ def main(argv: list[str] | None = None) -> int:
     if ((args.prefix_length is not None and (args.prefix_length < 1 or args.max_length <= args.prefix_length))
             or args.min_count < 1 or args.max_length < 3 or args.context_width < 10):
         parser.error("--prefix-length and --min-count must be >= 1, --max-length >= 3 and > --prefix-length, --context-width >= 10")
+    if args.stdin_text and (args.paths or args.files_from is not None):
+        parser.error("--stdin-text cannot be combined with FILE or --files-from")
     terms_path = args.terms if args.terms.is_absolute() else root / args.terms
     if not terms_path.is_file():
         print(f"error: terms file not found: {terms_path}", file=sys.stderr)
         return 2
     try:
         terms = parse_terms(terms_path, display_path(terms_path, root))
-        files = selected_files(root, args)
-        documents = read_documents(root, files)
+        if args.stdin_text:
+            files = [Path("<stdin>")]
+            documents = [markdown_document(sys.stdin.buffer.read().decode("utf-8"), "<stdin>")]
+        else:
+            files = selected_files(root, args)
+            documents = read_documents(root, files)
     except (TermsFileError, DocumentError, OSError, UnicodeDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

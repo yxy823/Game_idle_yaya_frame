@@ -10,6 +10,7 @@
 Game_idle_yaya_frame/
 ├── AGENTS.md                  当前维护约定
 ├── .githooks/                本仓库的提交钩子，新 clone 后用 git config core.hooksPath .githooks 启用
+├── .claude/settings.json      Claude Code 的用词提示钩子，用户消息中有不用的说法时提示 Agent
 ├── .agents/skills/            框架自用 Skill，不分发
 ├── framework/                 手册、提示词与场景、关系图、维护文档、创建器与测试，目录说明见 framework/README.md
 ├── tmp/                       临时文档与当次报告，不纳入 Git

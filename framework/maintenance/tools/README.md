@@ -9,7 +9,7 @@
 | 仓库链接检查 [check_repository_links.py](check_repository_links.py) | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 |
 | 孤立文档扫描 [find_orphan_docs.py](find_orphan_docs.py) | 扫描全仓文档的文本引用，列出孤立候选 |
 
-术语检查、措辞检查是分发给项目的脚本，在框架仓库中指定框架的术语表和词表运行，见[检查术语用词](#检查术语用词)与[检查措辞](#检查措辞)；三项检查在提交时由[提交钩子](#提交钩子)自动运行。
+术语检查、措辞检查是分发给项目的脚本，在框架仓库中指定框架的术语表和词表运行，见[检查术语用词](#检查术语用词)与[检查措辞](#检查措辞)；三项检查在提交时由[提交钩子](#提交钩子)自动运行。用户每次向 Claude Code 发消息时，[用词提示钩子](#用词提示钩子)按框架术语检查消息正文。
 
 ## 检查链接与锚点
 
@@ -79,6 +79,12 @@ git config core.hooksPath .githooks
 ```
 
 生成项目使用分发源中的另一份钩子，由创建器启用，见[项目工具说明](../../../project-source/tools/README.md#提交钩子)。
+
+## 用词提示钩子
+
+仓库根目录的 `.claude/settings.json` 注册 Claude Code 的 `UserPromptSubmit` 钩子，运行分发源中的 `project-source/tools/checks/check-prompt-terminology.py --terms framework/terminology.md`：用户消息中有[框架术语](../../terminology.md)登记的不用说法时，提示 Agent 按根 `AGENTS.md` 的用词对照规则列出对照表；钩子不拦截消息，也不记录。这份配置随仓库提交，Claude Code 打开本仓库时直接生效，不需要另外启用；用户本机的 `.claude/settings.local.json` 不受影响。
+
+提示内容、不输出的情况和退出码见[项目工具说明](../../../project-source/tools/README.md#用词提示钩子)。生成项目从分发源 `project-source/defaults/.claude/settings.json` 得到自己的一份，读取项目的 `docs/terminology.md`。
 
 ## 检查孤立文档
 

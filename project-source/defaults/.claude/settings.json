@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -B \"$CLAUDE_PROJECT_DIR/yaya/tools/checks/check-prompt-terminology.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

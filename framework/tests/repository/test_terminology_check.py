@@ -1,5 +1,6 @@
 """Check the distributed terminology checker through its public CLI."""
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -8,6 +9,7 @@ from pathlib import Path
 
 
 COMMAND = Path(__file__).resolve().parents[3] / "project-source/tools/checks/check-terminology.py"
+PROMPT_HOOK = COMMAND.with_name("check-prompt-terminology.py")
 
 TERMS = (
     "# 术语\n"
@@ -32,10 +34,10 @@ class TerminologyCheckTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(body, encoding="utf-8")
 
-    def run_cli(self, *args):
+    def run_cli(self, *args, input=None):
         return subprocess.run(
             [sys.executable, "-B", str(COMMAND), "--root", str(self.root), *args],
-            capture_output=True, encoding="utf-8", check=False, timeout=30,
+            input=input, capture_output=True, encoding="utf-8", check=False, timeout=30,
         )
 
     def test_forbidden_wording_is_reported_with_position_and_exit_code_1(self):
@@ -115,6 +117,34 @@ class TerminologyCheckTests(unittest.TestCase):
                    "# 项目术语\n\n用途说明。\n\n| 术语 | 含义与边界 | 不用的说法 |\n| --- | --- | --- |\n")
         process = self.run_cli()
         self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+
+    def test_stdin_text_reports_forbidden_wording_as_stdin(self):
+        process = self.run_cli("--stdin-text", "--json", input="第一行\n改一下分发包。\n")
+        self.assertEqual(process.returncode, 1, process.stderr)
+        rows = json.loads(process.stdout)["findings"]
+        self.assertEqual([(row["path"], row["line"], row["found"]) for row in rows], [("<stdin>", 2, "分发包")])
+        clean = self.run_cli("--stdin-text", input="修改分发源。")
+        self.assertEqual(clean.returncode, 0, clean.stdout + clean.stderr)
+
+    def run_hook(self, payload, terms="docs/terminology.md"):
+        return subprocess.run(
+            [sys.executable, "-B", str(PROMPT_HOOK), "--terms", terms],
+            input=payload.encode("utf-8"), capture_output=True, check=False, timeout=30,
+            env={**os.environ, "CLAUDE_PROJECT_DIR": str(self.root)},
+        )
+
+    def test_prompt_hook_prints_hint_only_for_forbidden_wording_and_always_exits_0(self):
+        hit = self.run_hook(json.dumps({"prompt": "先看看\n分发材料怎么改"}))
+        self.assertEqual(hit.returncode, 0, hit.stderr)
+        self.assertEqual(hit.stdout.decode("utf-8"),
+                         "用户消息中有已登记的不用说法：分发材料 → 分发源（第 2 行，定义见 docs/terminology.md:5）。"
+                         "按用词对照规则，在回复最前面列出对照表。\n")
+        for payload, terms in ((json.dumps({"prompt": "修改分发源"}), "docs/terminology.md"),
+                               ("{not json", "docs/terminology.md"),
+                               (json.dumps({"prompt": "分发材料"}), "docs/missing.md")):
+            with self.subTest(payload=payload, terms=terms):
+                process = self.run_hook(payload, terms)
+                self.assertEqual((process.returncode, process.stdout), (0, b""))
 
 
 if __name__ == "__main__":

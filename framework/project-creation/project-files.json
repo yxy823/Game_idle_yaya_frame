@@ -80,6 +80,10 @@
     "target": ".githooks"
   },
   {
+    "source": "project-source/defaults/.claude",
+    "target": ".claude"
+  },
+  {
     "source": "project-source/defaults/docs",
     "target": "docs"
   },

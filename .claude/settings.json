@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -B \"$CLAUDE_PROJECT_DIR/project-source/tools/checks/check-prompt-terminology.py\" --terms framework/terminology.md",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

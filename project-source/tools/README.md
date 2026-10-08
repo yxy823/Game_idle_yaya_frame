@@ -1,6 +1,6 @@
 # 项目检查与测试工具
 
-这些命令由 Agent 或使用者显式调用，不监听编辑、对话或工具事件；只有[提交钩子](#提交钩子)在 `git commit` 时自动运行其中三项检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
+这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中三项检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
 yaya/tools/
@@ -18,6 +18,7 @@ yaya/tools/
 | 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | 链接检查 [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
+| 用词提示钩子 [check-prompt-terminology.py](checks/check-prompt-terminology.py) | Claude Code 的用户消息钩子：消息中有不用的说法时，提示 Agent 在回复最前面列出用词对照表 |
 | 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法；`--list` 列出全部检查项 |
 | 资源格式检查 [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
 | 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
@@ -135,6 +136,15 @@ $LASTEXITCODE
 git config core.hooksPath .githooks
 ```
 
+## 用词提示钩子
+
+`.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[术语检查](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
+
+- **有命中**：向 Agent 附加一段提示，列出每处的原文、正式名称、在消息中的行号和术语定义位置，并提醒按 `AGENTS.md` 的用词对照规则，在回复最前面列出对照表。
+- **没有命中，或术语文件缺失、无法解析、钩子出错**：不输出任何内容。
+
+钩子总是以退出码 `0` 结束，不拦截用户消息，也不记录消息或 Agent 的动作。它只认术语文件中已登记的不用说法；没有登记的写法和一词多义仍要 Agent 自己核对。消息里放在引号或行内代码中的写法不算出现，规则见[共同约定](#术语检查与措辞检查的共同约定)。钩子命令使用 PATH 中的 `python`；找不到时 Claude Code 只会报告钩子失败，消息照常发送。
+
 ## 调用
 
 `python_executable` 支持完整路径、项目相对路径或 PATH 中的命令名；`engine_executable` 使用完整路径或项目相对文件路径，不查询 PATH。两者都不包含 shell 引号或参数。
@@ -233,13 +243,14 @@ python -B yaya/tools/checks/check-terminology.py --discover
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--terms <文件>` | 术语文件；相对路径按 `--root` 解析 | `docs/terminology.md` |
+| `--stdin-text` | 从标准输入读一段 UTF-8 文字，当作 Markdown 检查，结果中的路径写成 `<stdin>`；不能与 `<文件>` 或 `--files-from` 同用 | 检查文件 |
 | `--discover` | 另外输出候选写法 | 不输出 |
 | `--prefix-length`、`--min-count`、`--max-length` | 候选写法与中文术语相同的开头字数、最少出现次数、最大字数 | 术语字数减 1（最少 2）、`2`、`6` |
 | `--include-compounds` | 候选写法也列出以术语整体开头的复合词 | 不列出 |
 
 其余参数见[共同约定](#术语检查与措辞检查的共同约定)。不用的说法的说明写出发现的写法、应改为的正式名称和术语文件中的定义位置。候选写法按术语分组，先用一行 `术语 → 候选词（次数）、…` 汇总，再逐条列出位置。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`term`、`found`、`suggestion`、`definition`、`context` 和 `message`，另有候选分组。
 
-退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、术语文件不存在或无法解析：表格某行的列数少于表头，或文件有条目（`##` 及以下小标题、列表项、表格数据行）却没有从表格读出任何术语，例如每个术语写成一个 `###` 小标题。只有标题、说明段落和空表头的术语文件（新项目模板）正常通过。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
+退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、`--stdin-text` 读到的不是 UTF-8 文字、术语文件不存在或无法解析：表格某行的列数少于表头，或文件有条目（`##` 及以下小标题、列表项、表格数据行）却没有从表格读出任何术语，例如每个术语写成一个 `###` 小标题。只有标题、说明段落和空表头的术语文件（新项目模板）正常通过。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
 
 ### check-wording.py
 

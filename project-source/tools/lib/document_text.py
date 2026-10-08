@@ -100,12 +100,16 @@ def read_json_document(text: str, display: str) -> Document:
     return document
 
 
+def markdown_document(text: str, display: str) -> Document:
+    original = text.splitlines()
+    return Document(display, original, mask_markdown(original), list(range(1, len(original) + 1)), [0] * len(original))
+
+
 def read_document(path: Path, display: str) -> Document:
     text = path.read_text(encoding="utf-8")
     if path.suffix.lower() == ".json":
         return read_json_document(text, display)
-    original = text.splitlines()
-    return Document(display, original, mask_markdown(original), list(range(1, len(original) + 1)), [0] * len(original))
+    return markdown_document(text, display)
 
 
 def _excluded(relative: Path, excluded_names: set[str], excluded_paths: list[Path]) -> bool:
