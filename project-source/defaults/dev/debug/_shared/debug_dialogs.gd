@@ -33,6 +33,8 @@ func ask(text: String, actions: Array, title: String = "请确认", body: Contro
 	# The trailing line keeps the same gap above the buttons in every dialog.
 	dialog.dialog_text = unbroken_quotes(text) + ("\n" if not text.is_empty() else "")
 	dialog.dialog_autowrap = true
+	# A quoted name longer than a whole line still breaks at the line end instead of running out.
+	dialog.get_label().autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_add_buttons(dialog, actions)
 	if body != null:
 		dialog.add_child(body)
@@ -88,7 +90,7 @@ func ask_name(value: String, callback: Callable, title: String = "输入保存�
 
 
 ## Names in “…” never wrap inside: a word joiner (U+2060) sits between their characters, so
-## “载入前-日期时间” moves to the next line as a whole.
+## “载入前-日期时间” moves to the next line as a whole; only a name longer than a line breaks.
 static func unbroken_quotes(text: String) -> String:
 	var result := text
 	for found in RegEx.create_from_string("“([^“”]+)”").search_all(text):

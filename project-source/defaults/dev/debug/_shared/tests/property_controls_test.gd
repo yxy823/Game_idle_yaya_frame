@@ -86,6 +86,7 @@ func _rank(value: Variant) -> String:
 	return "" if value == 6 else "第 %d 档" % value
 
 
+## value_text() writes what the box shows, so other places naming a value read the same.
 func test_whole_float_reads_without_decimals_after_the_value_changes() -> void:
 	var params := Params.new()
 	for field in Controls.fields(params):
@@ -94,6 +95,9 @@ func test_whole_float_reads_without_decimals_after_the_value_changes() -> void:
 		var row := auto_free(Controls.create(field, 1.5, _ignore)) as HBoxContainer
 		add_child(row)
 		var number := row.get_child(1) as SpinBox
+		await get_tree().process_frame
+		assert_str(number.get_line_edit().text).is_equal("1.5 s")
 		number.value = 2.0
 		await get_tree().process_frame
 		assert_str(number.get_line_edit().text).is_equal("2 s")
+		assert_str(Controls.value_text(number, 1.5)).is_equal("1.5 s")

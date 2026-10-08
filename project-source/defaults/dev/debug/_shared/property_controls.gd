@@ -132,39 +132,34 @@ static func tidy_later(number: SpinBox) -> void:
 	(func() -> void: (func() -> void: _tidy(number)).call_deferred()).call_deferred()
 
 
-## Named special values first, then the slot's own wording, then the number itself.
 static func _tidy(number: SpinBox) -> void:
 	var edit := number.get_line_edit() if is_instance_valid(number) else null
-	if edit == null or edit.has_focus():
-		return
-	var whole := is_equal_approx(number.value, roundf(number.value))
+	if edit != null and not edit.has_focus():
+		edit.text = value_text(number, number.value)
+
+
+## How `number` writes `value`, in the box and wherever else that value is named: named special
+## values first, then the slot's own wording, then the number with the box's prefix and suffix.
+static func value_text(number: SpinBox, value: float) -> String:
+	var whole := is_equal_approx(value, roundf(value))
 	var captions: Dictionary = number.get_meta(&"captions", {})
-	if whole and captions.has(roundi(number.value)):
-		edit.text = String(captions[roundi(number.value)])
-		return
-	var described := _described(number)
-	if not described.is_empty():
-		edit.text = described
-		return
-	if not whole:
-		return
-	var parts: PackedStringArray = [str(roundi(number.value))]
+	if whole and captions.has(roundi(value)):
+		return String(captions[roundi(value)])
+	var describe: Callable = number.get_meta(&"describe", Callable())
+	if describe.is_valid():
+		var stored: Variant = value
+		if number.get_meta(&"integer", false):
+			stored = roundi(value)
+		var described := String(describe.call(stored))
+		if not described.is_empty():
+			return described
+	var parts: PackedStringArray = [str(roundi(value)) if whole
+		else String.num(value, step_decimals(number.step))]
 	if not number.prefix.is_empty():
 		parts.insert(0, number.prefix)
 	if not number.suffix.is_empty():
 		parts.append(number.suffix)
-	edit.text = " ".join(parts)
-
-
-## What the slot says for the current value; "" when it says nothing.
-static func _described(number: SpinBox) -> String:
-	var describe: Callable = number.get_meta(&"describe", Callable())
-	if not describe.is_valid():
-		return ""
-	var value: Variant = number.value
-	if number.get_meta(&"integer", false):
-		value = roundi(number.value)
-	return String(describe.call(value))
+	return " ".join(parts)
 
 
 ## `captions` replaces special whole values in the box, for example {-1: "未设置"}.
@@ -285,16 +280,17 @@ static func _readonly(property: Dictionary) -> Control:
 	return label
 
 
-## Locked buttons, dropdowns and check boxes say `reason` when hovered.
+## Locked buttons, dropdowns, check boxes, sliders and value boxes say `reason` when hovered.
 static func set_locked(control: Node, locked: bool, reason: String = "") -> void:
 	if control.has_method("set_locked"):
 		control.set_locked(locked)
 		return
-	if control is BaseButton:
+	if control is LineEdit or control is SpinBox or control is Slider:
+		control.editable = not locked
+	if control is BaseButton or control is LineEdit or control is SpinBox or control is Slider:
 		Messages.explain(control, locked, reason)
-	elif control is LineEdit or control is SpinBox:
-		control.editable = not locked
-	elif control is Slider:
-		control.editable = not locked
+	if control is SpinBox:
+		# Its text field is internal, so get_children() skips it, but the pointer hovers there.
+		Messages.explain(control.get_line_edit(), locked, reason)
 	for child in control.get_children():
 		set_locked(child, locked, reason)

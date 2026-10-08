@@ -338,8 +338,8 @@ func test_save_preset_as_an_existing_name_asks_before_overwriting() -> void:
 	assert_str(_name_box().text).is_equal("甲-2")
 	_name_box().text = "甲"
 	_window.dialogs.current.get_ok_button().pressed.emit()
-	assert_str(_window.dialogs.current.dialog_text).starts_with(
-		"预设 甲 已存在，保存会覆盖它。它被 1 个组合使用（组A），覆盖后它们也会变。")
+	assert_str(_window.dialogs.current.dialog_text.replace(Dialogs.WORD_JOINER, "")).starts_with(
+		"预设“甲”已存在，保存会覆盖它。它被 1 个组合使用（“组A”），覆盖后它们也会变。")
 	_assert_overwrite_buttons()
 	_window.dialogs.button("换个名字").pressed.emit()
 	assert_array(FileAccess.get_file_as_bytes(path)).is_equal(original)
@@ -364,7 +364,8 @@ func test_save_combo_as_an_existing_name_asks_before_overwriting() -> void:
 	assert_str(_name_box().text).is_equal("组A-2")
 	_name_box().text = "组A"
 	_window.dialogs.current.get_ok_button().pressed.emit()
-	assert_str(_window.dialogs.current.dialog_text).starts_with("组合 组A 已存在，保存会覆盖它。")
+	assert_str(_window.dialogs.current.dialog_text.replace(Dialogs.WORD_JOINER, "")).starts_with(
+		"组合“组A”已存在，保存会覆盖它。")
 	_assert_overwrite_buttons()
 	_window.dialogs.button("换个名字").pressed.emit()
 	assert_array(FileAccess.get_file_as_bytes(path)).is_equal(original)
@@ -441,23 +442,30 @@ func test_status_result_clears_on_edit_and_timeout_but_keeps_open_details_and_no
 	assert_str(status.message.text).is_equal(_window.NO_SAVE_HOOK)
 
 
-## Locked dropdowns and row buttons say why; unlocking brings back their own tooltips.
+## Locked dropdowns, row buttons, sliders and value boxes say why; unlocking brings back their
+## own tooltips.
 func test_locked_controls_explain_why_and_get_their_tooltips_back() -> void:
 	var sfx := _slot("sample/feedback/sound")
 	_window.slot_list.items[sfx.id].pressed.emit()
 	sfx.live.volume_db += 3.0
 	var revert: Button = _row("volume_db").revert
 	var tooltip := revert.tooltip_text
-	assert_str(tooltip).is_equal("还原这一项（游戏原值：-6.0）")
+	assert_str(tooltip).is_equal("还原这一项（游戏原值：-6 dB）")
 	var mode := _row("pitch_mode").find_children("*", "OptionButton", true, false)[0] as OptionButton
+	var slider := _row("volume_db").find_children("*", "HSlider", true, false)[0] as HSlider
+	var box := (_row("volume_db").find_children("*", "SpinBox", true, false)[0] as SpinBox) \
+		.get_line_edit()
 	_window.playback.state = Playback.State.PAUSED
 	_window.playback.changed.emit()
 	assert_bool(mode.disabled and revert.disabled).is_true()
-	assert_str(mode.tooltip_text).is_equal(_window.LOCKED_PLAYING)
-	assert_str(revert.tooltip_text).is_equal(_window.LOCKED_PLAYING)
+	assert_bool(slider.editable or box.editable).is_false()
+	for control: Control in [mode, revert, slider, box]:
+		assert_str(control.tooltip_text).is_equal(_window.LOCKED_PLAYING)
 	_window.playback.cancel()
 	assert_bool(mode.disabled or revert.disabled).is_false()
-	assert_str(mode.tooltip_text).is_empty()
+	assert_bool(slider.editable and box.editable).is_true()
+	for control: Control in [mode, slider, box]:
+		assert_str(control.tooltip_text).is_empty()
 	assert_str(revert.tooltip_text).is_equal(tooltip)
 	var check := CheckBox.new()
 	Controls.set_locked(check, true, "原因")
@@ -484,8 +492,8 @@ func test_saving_a_combo_with_unsaved_slots_lists_their_presets_first() -> void:
 	_window.dialogs.current.get_ok_button().pressed.emit()
 	assert_str(_window.dialogs.current.dialog_text.replace(Dialogs.WORD_JOINER, "").strip_edges()) \
 		.is_equal("组合只记录每个插槽用哪个预设，有未保存改动的插槽要先存成预设。“一并保存”会：\n"
-			+ "· 点击特效：预设 甲 被组合 组A 使用，改存为新预设 甲-组B\n"
-			+ "· 按钮音效：新建预设 组B\n\n然后保存组合 组B。游戏文件不变。")
+			+ "· 点击特效：预设“甲”被组合“组A”使用，改存为新预设“甲-组B”\n"
+			+ "· 按钮音效：新建预设“组B”\n\n然后保存组合“组B”。游戏文件不变。")
 	assert_bool(FileAccess.file_exists(_window.session.store.combo_path("sample", "组B"))).is_false()
 	_window.dialogs.button("一并保存").pressed.emit()
 	assert_str(_window.status.message.text).is_equal("已保存组合 组B，游戏文件不变；"

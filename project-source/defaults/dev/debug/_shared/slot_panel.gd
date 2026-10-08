@@ -300,7 +300,7 @@ func refresh_state() -> void:
 	_show_preset(not modified.is_empty() or slot.differs_from_preset)
 	for row in rows:
 		var on := row.path in modified
-		row.set_modified(on, _revert_tooltip(row.path) if on else "")
+		row.set_modified(on, _revert_tooltip(row) if on else "")
 
 
 ## The preset dropdown names the loaded preset, marked when the values differ from it.
@@ -310,12 +310,18 @@ func _show_preset(modified: bool) -> void:
 		preset_select.set_value(shown + ("（已修改）" if modified else ""))
 
 
-## Names the saved value the way the value box shows it: the slot's words first.
-func _revert_tooltip(path: String) -> String:
-	var value: Variant = slot.saved_value(path)
-	var shown := slot.value_text(path.get_file(), value) if value != null else ""
-	if shown.is_empty():
-		shown = _plain(value)
+## Names the saved value the way the value box shows it; rows without one use the slot's
+## words or the plain value.
+func _revert_tooltip(row: ParamRow) -> String:
+	var value: Variant = slot.saved_value(row.path)
+	var boxes := row.find_children("*", "SpinBox", true, false)
+	var shown := ""
+	if (value is float or value is int) and boxes.size() == 1:
+		shown = Controls.value_text(boxes[0], value)
+	elif value != null:
+		shown = slot.value_text(row.path.get_file(), value)
+		if shown.is_empty():
+			shown = _plain(value)
 	if shown.is_empty():
 		return "还原这一项（回到%s）" % _preset_label()
 	return "还原这一项（%s：%s）" % [_preset_label(), shown]

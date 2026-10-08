@@ -19,7 +19,7 @@ const LOAD_QUESTION := "有 %d 个插槽的改动还没保存（%s），载入%s
 const CLOSE_QUESTION := "有 %d 个插槽的改动还没保存，关闭后会丢失。\n\n" \
 	+ "“保存”把改动存成预设（还没有预设的插槽存成“关闭前-日期时间”），游戏文件不变。"
 const COMBO_QUESTION := "组合只记录每个插槽用哪个预设，有未保存改动的插槽要先存成预设。" \
-	+ "“一并保存”会：\n%s\n\n然后保存组合 %s。游戏文件不变。"
+	+ "“一并保存”会：\n%s\n\n然后保存组合“%s”。游戏文件不变。"
 
 var _session: Session
 var _dialogs: Dialogs
@@ -37,20 +37,20 @@ func _init(session: Session, dialogs: Dialogs, report: Callable, rebind: Callabl
 
 func load_combo(value: String) -> void:
 	var shown := "组合 " + value if not value.is_empty() else "游戏原值"
-	_ask_before_loading(_session.slots, shown, func(saved: PackedStringArray) -> void:
+	_ask_before_loading(_session.slots, _quoted("组合", value), func(saved: PackedStringArray) -> void:
 		_report_load(_session.load_combo(value), shown, saved,
 			"组合文件可能已被删除，重新选择一个组合"))
 
 
 func load_preset(slot: Slot, preset: String) -> void:
 	var shown := "预设 " + preset if not preset.is_empty() else "游戏原值"
-	_ask_before_loading([slot], shown, func(saved: PackedStringArray) -> void:
+	_ask_before_loading([slot], _quoted("预设", preset), func(saved: PackedStringArray) -> void:
 		_report_load(_session.store.load_slot(slot, preset), shown, saved,
 			"预设文件可能已被删除，重新选择一个预设"))
 
 
 ## Unsaved edits of `slots` would be replaced: save them, drop them, or keep everything.
-## `apply` receives what was saved first, for the status text.
+## `shown` names what is loaded; `apply` receives what was saved first, for the status text.
 func _ask_before_loading(slots: Array[Slot], shown: String, apply: Callable) -> void:
 	var dirty := _dirty(slots)
 	if dirty.is_empty():
@@ -127,11 +127,11 @@ func _save_plan(plan: Array[Dictionary]) -> Dictionary:
 static func _plan_line(entry: Dictionary) -> String:
 	var slot: Slot = entry.slot
 	if not entry.users.is_empty():
-		return "· %s：预设 %s 被组合 %s 使用，改存为新预设 %s" % [slot.display_name(), entry.kept,
-			"、".join(entry.users), entry.preset]
+		return "· %s：预设“%s”被组合%s使用，改存为新预设“%s”" % [slot.display_name(),
+			entry.kept, _quoted_list(entry.users), entry.preset]
 	if slot.preset_name.is_empty():
-		return "· %s：新建预设 %s" % [slot.display_name(), entry.preset]
-	return "· %s：存进预设 %s" % [slot.display_name(), entry.preset]
+		return "· %s：新建预设“%s”" % [slot.display_name(), entry.preset]
+	return "· %s：存进预设“%s”" % [slot.display_name(), entry.preset]
 
 
 ## Combos other than `own_combo` of the active target that use the preset, by name.
@@ -223,7 +223,7 @@ func _combo_named(value: String) -> void:
 			or not FileAccess.file_exists(_session.store.combo_path(_session.active.id, value)):
 		_confirm_combo(value)
 		return
-	_dialogs.ask("组合 %s 已存在，保存会覆盖它。" % value, [
+	_dialogs.ask("组合“%s”已存在，保存会覆盖它。" % value, [
 		["覆盖", Dialogs.DANGER, _confirm_combo.bind(value)],
 		["换个名字", Dialogs.PLAIN, _name_combo.bind(value)]])
 
@@ -260,7 +260,7 @@ func _save_combo(value: String, plan: Array[Dictionary]) -> void:
 
 
 func confirm_delete_combo() -> void:
-	_dialogs.confirm("删除组合 %s？各插槽的预设不会被删除。" % _session.combo_name,
+	_dialogs.confirm("删除组合“%s”？各插槽的预设不会被删除。" % _session.combo_name,
 		_delete_combo, "删除", "请确认", Dialogs.DANGER)
 
 
@@ -296,8 +296,8 @@ func save_preset(slot: Slot, action: String) -> void:
 	var names: PackedStringArray = []
 	for path in combos:
 		names.append(path.get_file().get_basename())
-	_dialogs.ask("预设 %s 被 %d 个组合使用（%s），覆盖后它们也会变。" % [slot.preset_name,
-		combos.size(), "、".join(names)], [
+	_dialogs.ask("预设“%s”被 %d 个组合使用（%s），覆盖后它们也会变。" % [slot.preset_name,
+		combos.size(), _quoted_list(names)], [
 		["另存为新预设", Dialogs.PRIMARY, _ask_preset_name.bind(slot)],
 		["覆盖", Dialogs.DANGER, _save_preset.bind(slot.preset_name, slot)]])
 
@@ -317,8 +317,8 @@ func _preset_named(value: String, slot: Slot) -> void:
 	for path: String in _session.store.references(slot.id, value).get("paths", []):
 		names.append(path.get_file().get_basename())
 	var uses := "" if names.is_empty() \
-		else "它被 %d 个组合使用（%s），覆盖后它们也会变。" % [names.size(), "、".join(names)]
-	_dialogs.ask("预设 %s 已存在，保存会覆盖它。%s" % [value, uses], [
+		else "它被 %d 个组合使用（%s），覆盖后它们也会变。" % [names.size(), _quoted_list(names)]
+	_dialogs.ask("预设“%s”已存在，保存会覆盖它。%s" % [value, uses], [
 		["覆盖", Dialogs.DANGER, _save_preset.bind(value, slot)],
 		["换个名字", Dialogs.PLAIN, _ask_preset_name.bind(slot, value)]])
 
@@ -346,8 +346,8 @@ func confirm_delete_preset(slot: Slot) -> void:
 	for path: String in result.paths:
 		names.append(path.get_file().get_basename())
 	var uses := "没有组合用到它。" if names.is_empty() \
-		else "用到它的组合会改用游戏原值：%s。" % "、".join(names)
-	_dialogs.confirm("删除预设 %s？%s" % [slot.preset_name, uses], _delete_preset.bind(slot),
+		else "用到它的组合会改用游戏原值：%s。" % _quoted_list(names)
+	_dialogs.confirm("删除预设“%s”？%s" % [slot.preset_name, uses], _delete_preset.bind(slot),
 		"删除", "请确认", Dialogs.DANGER)
 
 
@@ -386,8 +386,20 @@ func _dirty(slots: Array[Slot]) -> Array[Slot]:
 	return result
 
 
+## Names in confirmations sit in “…”, so a long name moves to the next line as a whole.
+static func _quoted(kind: String, value: String) -> String:
+	return "%s“%s”" % [kind, value] if not value.is_empty() else "游戏原值"
+
+
+static func _quoted_list(names: PackedStringArray) -> String:
+	var quoted: PackedStringArray = []
+	for value in names:
+		quoted.append("“%s”" % value)
+	return "、".join(quoted)
+
+
 static func _names(slots: Array[Slot]) -> String:
 	var names: PackedStringArray = []
 	for slot in slots:
-		names.append("“%s”" % slot.display_name())
-	return "、".join(names)
+		names.append(slot.display_name())
+	return _quoted_list(names)
