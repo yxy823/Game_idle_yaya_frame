@@ -95,14 +95,16 @@ flowchart TD
 
 | 命令 | 用途 | 用法 |
 | --- | --- | --- |
-| `project-creation/tools/create_project.py` | 按复制清单创建空白项目，建立独立 Git 仓库和初始提交 | [创建空白项目](project-creation/tools/README.md) |
-| `prompt-scenarios/tools/check_scenario_prompt_paths.py` | 只读核对两份提示词库与场景文件路径是否一一对应 | [提示词与场景工具](prompt-scenarios/tools/README.md#提示词与场景路径检查) |
-| `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
-| `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
-| `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
-| `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [维护工具](maintenance/tools/README.md#检查链接与锚点) |
-| `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [维护工具](maintenance/tools/README.md#检查术语用词) |
-| `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
-| `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
+| 创建器 `project-creation/tools/create_project.py` | 按复制清单创建空白项目，启用提交钩子，建立独立 Git 仓库和初始提交 | [创建空白项目](project-creation/tools/README.md) |
+| 提示词与场景路径检查 `prompt-scenarios/tools/check_scenario_prompt_paths.py` | 只读核对两份提示词库与场景文件路径是否一一对应 | [提示词与场景工具](prompt-scenarios/tools/README.md#提示词与场景路径检查) |
+| 场景图名称检查 `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
+| 场景图链接写入 `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
+| 文档图覆盖检查 `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
+| 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [维护工具](maintenance/tools/README.md#检查链接与锚点) |
+| 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [维护工具](maintenance/tools/README.md#检查术语用词) |
+| 措辞检查 `project-source/tools/checks/check-wording.py --words <Godot 版写作指南>` | 按措辞检查词表找出规则文件中不用的词和全部文档中待复核的词 | [维护工具](maintenance/tools/README.md#检查措辞) |
+| 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）和仓库链接检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [维护工具](maintenance/tools/README.md#提交钩子) |
+| 孤立文档扫描 `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
+| 回归测试 `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
 
 维护脚本只处理可重复的文件与数据操作，任务范围与结果意义由 Agent 判断；不增加逐动作监督、重复状态、发布资格或自动同步。总体取舍依据[根规则的核心原则](../AGENTS.md#核心决策原则)。

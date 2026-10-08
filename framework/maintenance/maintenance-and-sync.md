@@ -94,7 +94,7 @@
 
 维护时注意：
 
-- **各自独立**：两份 Skill 各有自己的 `SKILL.md`、`agents/openai.yaml` 和完整参考，可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步；相似的原则可以各写一份。各自产物的实际契约由所属规范决定，写作 Skill 不另造流程。
+- **各自独立**：两份 Skill 各有自己的 `SKILL.md`、`agents/openai.yaml` 和完整参考，可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步；唯一的例外是[措辞检查词表](../../project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查词表)，它只维护在 Godot 版，框架版链接它，因为措辞检查在框架仓库和生成项目中读的是同一张表；相似的原则可以各写一份。各自产物的实际契约由所属规范决定，写作 Skill 不另造流程。
 - **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。维护仓库只启用框架版；Godot 版在这里只是待分发的源文件。
 - **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/`，Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
 - **结构**：GDD、Product、Feature 及其验收场景使用各自的结构，不套用框架场景页的 11 类栏目或 S1 编号。

@@ -70,6 +70,7 @@
 │   └── <对象>/tuning/        调参资源：调试台可以修改的参数与实现（按需建立）
 ├── components/               实际可复用能力
 ├── assets/                   共享资产（按真实需要组织）
+├── .githooks/                提交钩子：提交时检查文档的术语、措辞和链接
 ├── addons/                   第三方插件及已记录补丁
 ├── dev/                      只用于开发的内容，导出时排除
 │   └── debug/                调试台：调试入口、共享代码、项目挂钩与各调试对象的候选
@@ -77,7 +78,7 @@
 │   ├── methodology/          开发与验证流程契约、模板
 │   ├── agent-rules/          按领域划分的工程规则
 │   └── tools/
-│       ├── checks/           环境与 Feature 记录检查
+│       ├── checks/           环境、Feature 记录、文件格式、链接、术语与措辞检查
 │       ├── features/         组件合并与完成记录命令
 │       ├── godot/            由 Godot 执行的项目文件维护脚本
 │       ├── lib/              验证快照、解析及共享实现
@@ -97,7 +98,7 @@
 
 - `yaya/` 集中存放框架随项目复制的流程、规则和工具。复制后它们属于项目，可以按需修改；游戏的代码、场景、文档和测试不放进 `yaya/`。`reports/` 保存本项目的运行原件和验收记录，留在根目录。
 - `dev/debug/` 随项目复制：调试入口、`_shared/` 下的共享代码与测试、项目挂钩 `debug_project.gd`，以及项目自己的调试台说明 `dev/debug/README.md`（唯一的启动命令写在那里）。依赖只能从 `dev/` 指向游戏：`game/`、`main/`、`components/` 和 `project.godot` 不引用 `dev/`，`tests/invariants/` 中的依赖方向测试检查这一点。调试台的测试留在 `dev/debug/` 下，全量测试也运行它们。概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
-- `.git/` 由创建器建立；`.godot/`、运行报告、测试套件和设计正文都在实际工作中产生。
+- `.git/` 由创建器建立，并把 `core.hooksPath` 设为 `.githooks`；`.godot/`、运行报告、测试套件和设计正文都在实际工作中产生。
 - 初始的 GDD 目录只有用途说明，空测试目录和占位 Product 也不包含任何结果。
 
 ## 复制与重命名

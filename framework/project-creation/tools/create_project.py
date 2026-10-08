@@ -108,11 +108,13 @@ def copy_project(source: Path, output: Path) -> int:
 
 
 def create_project(source: Path, output: Path) -> int:
-    """复制完成后提交新项目文件；Git 失败时保留现场并向调用方报错。"""
+    """复制完成后启用提交钩子并提交新项目文件；Git 或钩子失败时保留现场并向调用方报错。"""
     count = copy_project(source, output)
     output = output.resolve()
     initial_paths = sorted(path.name for path in output.iterdir())
     subprocess.run(["git", "init"], cwd=output, check=True)
+    # 提交钩子随清单复制到 .githooks/；先启用它，初始提交也经过同样的检查。
+    subprocess.run(["git", "config", "core.hooksPath", ".githooks"], cwd=output, check=True)
     subprocess.run(["git", "add", "--", *initial_paths], cwd=output, check=True)
     subprocess.run(
         ["git", "commit", "-m", "chore(init): 创建空白 Godot 项目"],

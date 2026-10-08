@@ -2,7 +2,14 @@
 
 [框架入口](../../README.md#维护命令)
 
-本目录保存面向全仓文档的维护检查脚本。命令在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存，参数细节以 `--help` 为准。
+本目录保存面向全仓文档的维护检查脚本，并说明框架仓库怎样使用分发给项目的术语检查、措辞检查，以及提交钩子。命令在仓库根目录、使用已确认的 Python 3.12+ 运行；`-B` 禁止生成字节码缓存，参数细节以 `--help` 为准。
+
+| 工具 | 用途 |
+| --- | --- |
+| 仓库链接检查 [check_repository_links.py](check_repository_links.py) | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 |
+| 孤立文档扫描 [find_orphan_docs.py](find_orphan_docs.py) | 扫描全仓文档的文本引用，列出孤立候选 |
+
+术语检查、措辞检查是分发给项目的脚本，在框架仓库中指定框架的术语表和词表运行，见[检查术语用词](#检查术语用词)与[检查措辞](#检查措辞)；三项检查在提交时由[提交钩子](#提交钩子)自动运行。
 
 ## 检查链接与锚点
 
@@ -37,9 +44,40 @@ python -B project-source/tools/checks/check-terminology.py --terms framework/ter
 python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --discover
 ```
 
-只检查本次改过的文件时，每个文件写一个 `--include`，改过的提示词 JSON 也用 `--include` 加上，例如 `--include framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。
+只检查本次改过的文件时，把文件直接写在命令后面，改过的提示词 JSON 也一样，例如 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md AGENTS.md framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。不用 `--include` 选单个文件：不带目录的 `--include README.md` 会选中所有目录中的 `README.md`。
 
 这项检查只比对文字，不解析链接，所以直接扫描源目录，不需要像链接检查那样先复制成生成项目。检查规则、参数、输出格式和退出码见[项目工具说明](../../../project-source/tools/README.md#check-terminologypy)。
+
+## 检查措辞
+
+写完或改过文档后，在仓库根目录运行分发给项目的措辞检查，用 `--words` 指定分发源中的词表，它在生成项目中的默认位置在框架仓库里不存在：
+
+```powershell
+python -B project-source/tools/checks/check-wording.py --words project-source/skills/technical-documentation-writing-godot/references/writing-guide.md <改过的文件>
+python -B project-source/tools/checks/check-wording.py --words project-source/skills/technical-documentation-writing-godot/references/writing-guide.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --level hard
+```
+
+第一条列出硬性的词和待复核的词，第二条只查全仓规则文件中的硬性的词。框架仓库按同一套路径规则识别规则文件：根 `AGENTS.md`、`project-source/Project_AGENTS.md`、`project-source/agent-rules/`、`project-source/methodology/`、两处 `skills/` 中的 `SKILL.md` 与 `references/`，以及两份提示词库。词表、判定方式、参数和退出码见[项目工具说明](../../../project-source/tools/README.md#check-wordingpy)。
+
+## 提交钩子
+
+仓库根目录的 `.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件时，它依次运行三项检查，任何一项失败就拒绝提交：
+
+| 检查 | 范围 | 失败条件 |
+| --- | --- | --- |
+| [术语检查](#检查术语用词)，`--terms framework/terminology.md` | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
+| [措辞检查](#检查措辞) `--level hard` | 同上 | 规则文件中有硬性的词 |
+| [仓库链接检查](#检查链接与锚点) | 整个仓库，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
+
+没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查工作区中的文件内容，不是暂存区；它用 PATH 中的 `python` 运行检查。被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。
+
+钩子不随 clone 自动启用。新 clone 本仓库后，在仓库根目录运行一次：
+
+```powershell
+git config core.hooksPath .githooks
+```
+
+生成项目使用分发源中的另一份钩子，由创建器启用，见[项目工具说明](../../../project-source/tools/README.md#提交钩子)。
 
 ## 检查孤立文档
 

@@ -76,6 +76,10 @@
     "target": ".gitignore"
   },
   {
+    "source": "project-source/defaults/.githooks",
+    "target": ".githooks"
+  },
+  {
     "source": "project-source/defaults/docs",
     "target": "docs"
   },

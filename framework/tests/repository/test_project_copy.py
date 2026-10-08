@@ -5,6 +5,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 import tempfile
 import tomllib
 import unittest
@@ -12,6 +13,14 @@ from pathlib import Path
 from unittest.mock import patch
 
 CREATOR = Path(__file__).resolve().parents[2] / "project-creation/tools/create_project.py"
+GIT_ENVIRONMENT = {
+    "GIT_CONFIG_GLOBAL": os.devnull,
+    "GIT_CONFIG_NOSYSTEM": "1",
+    "GIT_AUTHOR_NAME": "Creator Test",
+    "GIT_AUTHOR_EMAIL": "creator@example.invalid",
+    "GIT_COMMITTER_NAME": "Creator Test",
+    "GIT_COMMITTER_EMAIL": "creator@example.invalid",
+}
 _SPEC = importlib.util.spec_from_file_location("create_project", CREATOR)
 create_project_module = importlib.util.module_from_spec(_SPEC)
 _SPEC.loader.exec_module(create_project_module)
@@ -99,15 +108,7 @@ class ProjectCopyTests(unittest.TestCase):
 
     def test_creation_leaves_one_local_commit_and_clean_worktree(self):
         output = self.base / "project"
-        environment = {
-            "GIT_CONFIG_GLOBAL": os.devnull,
-            "GIT_CONFIG_NOSYSTEM": "1",
-            "GIT_AUTHOR_NAME": "Creator Test",
-            "GIT_AUTHOR_EMAIL": "creator@example.invalid",
-            "GIT_COMMITTER_NAME": "Creator Test",
-            "GIT_COMMITTER_EMAIL": "creator@example.invalid",
-        }
-        with patch.dict(os.environ, environment):
+        with patch.dict(os.environ, GIT_ENVIRONMENT):
             self.assertEqual(create_project(self.source, output), len(self.entries))
 
         def git(*args):
@@ -116,10 +117,46 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertEqual(git("rev-list", "--count", "HEAD"), "1")
         self.assertEqual(git("status", "--porcelain"), "")
         self.assertEqual(git("remote"), "")
+        self.assertEqual(git("config", "--local", "core.hooksPath"), ".githooks")
         self.assertEqual(
             set(git("ls-tree", "-r", "--name-only", "HEAD").splitlines()),
             {"AGENTS.md", ".agents/skills/example/SKILL.md"},
         )
+
+    def test_real_creation_hook_rejects_wording_problems_until_they_are_fixed(self):
+        repository = Path(__file__).resolve().parents[3]
+        output = self.base / "hooked"
+        # 钩子调用 PATH 中的 python；让它与运行测试的解释器一致。
+        path = os.pathsep.join((str(Path(sys.executable).parent), os.environ.get("PATH", "")))
+        with patch.dict(os.environ, {**GIT_ENVIRONMENT, "PATH": path}):
+            create_project(repository, output)
+
+            def commit():
+                subprocess.run(["git", "add", "-A"], cwd=output, check=True)
+                return subprocess.run(["git", "commit", "-m", "docs: 登记术语"], cwd=output,
+                                      capture_output=True, encoding="utf-8", check=False)
+
+            terminology = output / "docs/terminology.md"
+            with terminology.open("a", encoding="utf-8", newline="\n") as handle:
+                handle.write("| 晶石 | 游戏中唯一的资源 | 水晶 |\n")
+            (output / "docs/guide.md").write_text("# 指南\n\n收集水晶。\n", encoding="utf-8", newline="\n")
+            rules = output / "docs/project-rules.md"
+            rules.write_text(rules.read_text(encoding="utf-8") + "\n提交前应运行检查。\n", encoding="utf-8", newline="\n")
+            rejected = commit()
+            self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
+            report = rejected.stdout + rejected.stderr
+            self.assertIn("docs/guide.md:3:3: [TERM-FORBIDDEN]", report)
+            self.assertIn("docs/project-rules.md:", report)
+            self.assertIn("[WORDING-HARD]", report)
+            self.assertIn("提交被拒绝", report)
+
+            (output / "docs/guide.md").write_text("# 指南\n\n收集晶石。\n", encoding="utf-8", newline="\n")
+            rules.write_text(rules.read_text(encoding="utf-8").replace("提交前应运行检查。", "提交前运行检查。"),
+                             encoding="utf-8", newline="\n")
+            accepted = commit()
+            self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+        count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"], cwd=output, text=True).strip()
+        self.assertEqual(count, "2")
 
     def test_real_agent_mappings_preserve_roles_without_global_config(self):
         repository = Path(__file__).resolve().parents[3]
@@ -259,6 +296,8 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
         self.assertIn("window/size/viewport_width=1600", settings)
         self.assertIn("window/size/viewport_height=900", settings)
+        self.assertEqual((output / ".githooks/pre-commit").read_bytes(),
+                         (repository / "project-source/defaults/.githooks/pre-commit").read_bytes())
         for name in (".git", ".godot", "framework", "godot-development-prompts.json",
                      "yaya-maintenance-prompts.json"):
             self.assertFalse((output / name).exists(), name)

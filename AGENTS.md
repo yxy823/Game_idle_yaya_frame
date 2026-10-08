@@ -16,7 +16,7 @@
 
 另外三条基本约束：
 
-- **不监督 Agent 的每个动作**：不为此增加 Agent 动作 Hook、重复状态、来源哈希清单、收据、评分或发布资格；只保留针对实际成果的必要验证。
+- **不监督 Agent 的每个动作**：不为此增加重复状态、来源哈希清单、收据、评分或发布资格；只保留针对实际成果的必要验证。Git 提交钩子可以检查提交的内容，例如术语、措辞和链接，不记录或评价 Agent 的动作。
 - **只面向 Godot**：只支持已确定的 Godot 技术栈，不为其他引擎、平台或旧项目预留兼容机制，也不做向后兼容。
 - **只做 Windows PC**：生成的游戏统一面向 Windows PC，只支持鼠标和键盘操作，不支持手柄、触屏和其他平台；不按项目单独设置平台。
 - **单人项目**：框架面向一位使用者与 Agent 配合开发。多人协作和改动归属处理不在设计与场景范围内，不为此扩展流程、工具或配置。同一目录内的暂停、切换和换对话续接仍然支持；是否使用 worktree 由当前任务范围与授权决定，不因普通暂停或换对话默认创建。按需调研和独立审核 Agent 沿用现有约定。
@@ -31,7 +31,7 @@
   - 可能指多个对象、且每种都能用几行答完时，每种理解各占一行，正文分别作答。
   - 可能指多个对象、且理解错会白做工时（例如要修改文件或长篇分析），只放这张表并请用户选定，用户确定前不做其余内容。
   - 用户确定含义后，有写入授权时，把含义记进术语文件。
-- **具体措辞：** 用数字、名称或条件代替“适当”“显著”“基本上”“若干”“较为”这类含糊词；写出实际动作，不用“处理”“优化”“调整”这类空动词，也不用“进行”“加以”“予以”“做出”包装动作，例如写“删掉重复的检查”，不写“对检查进行优化”。主语换了就写出来，“它”“这”“该”只在指代唯一时使用；因果、条件和转折用“因为”“所以”“如果”“但”写明。一个名词前最多两个“的”；同一个概念在一次回复中只用一个词；不用“开箱即用”“无缝”“一站式”这类套话。
+- **具体措辞：** 用数字、名称或条件代替含糊的程度词，写出实际动作，不用空动词和包装动词，例如写“删掉重复的检查”，不写“对检查进行优化”；要避免的词列在[措辞检查词表](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查词表)。主语换了就写出来，“它”“这”“该”只在指代唯一时使用；因果、条件和转折用“因为”“所以”“如果”“但”写明。一个名词前最多两个“的”；同一个概念在一次回复中只用一个词；不用“开箱即用”“无缝”“一站式”这类套话。
 - **同题就近讲完整：** 同一主题的建议、必要理由和适用边界放在一起，不拆散到“优点、缺点、建议、另外”等位置让读者自行拼接。确需跨节提及时，用短提醒或明确引用，不重复完整论述。
 - **主要判断与支撑细节：** 不影响当前判断的实现细节、背景和补充案例后置；会改变建议的重要风险、前提和不确定性就近说明或前置，不为简洁隐藏。保留必要证据和来源，用户要求详细解释时充分展开。
 - **按内容组织：** 简单问题直接回答，不为凑结构增加章节；长回复用能直接说明主题的标题，每个段落或条目围绕一个主要问题。操作流程用编号步骤，每步写清执行者和一个可判断完成的动作，以动词开头，条件写在指令前（“如果报错，先运行……”），有风险的操作把警告放在那一步之前；需要按相同维度对照对象或方案时，可以使用表格；多项内容按主题或用途分组。向用户提问时，遵循个人沟通规则及当前 Skill 的具体提问要求。评估、解释类回答不必逐段套用“执行者、动作、完成标准”，不以固定字数、段落数或条目数代替可读性判断。
@@ -54,7 +54,7 @@
 ## 使用说明的可读性
 
 - **写作方法**：编写或整理框架文档时，使用 [Yaya 框架文档编写 Skill](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按文档类型读取其中的参考。框架手册的专有分工见[说明的组织与措辞](framework/maintenance/maintenance-and-sync.md#说明的组织与措辞)。
-- **两份写作 Skill**：框架版与分发给项目的 [Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护、不跨包引用，分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
+- **两份写作 Skill**：框架版与分发给项目的 [Godot 项目文档编写 Skill](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护，除[措辞检查词表](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查词表)只维护在 Godot 版外不跨包引用，分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
 - **术语**：框架与生成项目共用的术语写法维护在[框架术语](framework/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，两者不混成同一份词表。
 
 ## 维护边界与查阅
@@ -62,7 +62,7 @@
 | 当前工作 | 依据 |
 | --- | --- |
 | 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 是分发源，其中的项目开发流程只作为源材料阅读，不在维护仓库启用 |
-| 创建项目 | [创建器](framework/project-creation/tools/create_project.py)按[复制清单](framework/project-creation/project-files.json)复制和重命名，然后建立独立的 Git 仓库和本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级 |
+| 创建项目 | [创建器](framework/project-creation/tools/create_project.py)按[复制清单](framework/project-creation/project-files.json)复制和重命名，复制提交钩子目录，在初始化新仓库时设置 `core.hooksPath`，然后建立本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级 |
 | 生成项目 | 项目独立拥有自己的文件，不接受自动同步；手册与提示词库不进入项目，项目 README 只保留简短的自身导航 |
 | 修改空白项目 | 先读[框架入口](framework/README.md)，再按[维护与同步](framework/maintenance/maintenance-and-sync.md)查阅受影响的专题、核对源材料并同步说明 |
 | 使用手册 | Godot 项目手册解释生成项目的概念、文档对象、配置与工具；具体场景写在同名提示词对应的场景页。两册只维护 Markdown，不互相引用，由框架入口导航 |
@@ -94,7 +94,7 @@
 - **行为不变**：整理文档或文件名，不能顺带改变 Skill 的行为。
 - **被证明错误的内容**：规则、提示词、文档或示例中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、怎么做。
 - **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
-- **术语用词**：写完或改过文档后，对本次改过的文档运行 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include <文件>`（每个文件一个 `--include`；改过提示词 JSON 时同样用 `--include` 加上该 JSON 文件），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[维护工具](framework/maintenance/tools/README.md#检查术语用词)。
+- **术语用词**：写完或改过文档后，对本次改过的文档运行术语检查 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md <文件> <文件>…`（改过的提示词 JSON 同样列出），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[维护工具](framework/maintenance/tools/README.md#检查术语用词)；提交时[提交钩子](framework/maintenance/tools/README.md#提交钩子)还会检查一次。
 - **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
 - **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用[提示词与关系图维护 Skill](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
 - **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
@@ -132,6 +132,7 @@ advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prom
 **提交前**
 
 - 开始修改时运行一次 `git status`，记下工作区是否干净；同一任务之前留下的改动可以继续完成并提交。
+- [提交钩子](framework/maintenance/tools/README.md#提交钩子)拒绝提交时，按输出改正本次改过的文档，重新暂存后再提交；报出的位置不在本次改动内时，保留修改并报告。
 - 发现未完成的合并、变基等状态，或 HEAD、分支出现当前操作无法解释的变化时，保留现场并报告，核对清楚后再继续依赖该状态的写入和提交。
 - **开始时工作区干净**：之后出现的改动都属于本任务，可以用 `git add -A` 暂存；提交前看一眼 `git status`，排除混入的运行产物或缓存。
 - **开始时已有改动**：保留它们及其暂存状态，只暂存本项明确的路径或差异块，不用 `git add -A`、`git add .` 或 `git commit -a`；无法分开时说明冲突并保留现场。

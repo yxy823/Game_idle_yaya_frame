@@ -1,0 +1,31 @@
+#!/bin/sh
+# 项目的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）和链接检查。
+# 创建器已设置 core.hooksPath；重新 clone 后运行 git config core.hooksPath .githooks。说明见 yaya/tools/README.md 的「提交钩子」。
+cd "$(git rev-parse --show-toplevel)" || exit 1
+export PYTHONUTF8=1
+
+# 新增、修改、改名后的文件交给术语与措辞检查；删除的文件也会让别处的链接失效，所以只用来决定是否运行链接检查。
+changed=$(git diff --cached --name-only -z --diff-filter=ACMRD -- '*.md' '*.json' | tr '\0' '\n')
+[ -n "$changed" ] || exit 0
+# 文件清单从标准输入传入，避免文件很多时超出命令行长度；路径里的中文和空格原样保留。
+present=$(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' '*.json' | tr '\0' '\n')
+
+failed=""
+if [ -n "$present" ]; then
+    python -B yaya/tools/checks/check-terminology.py --files-from - <<EOF || failed="$failed 术语检查"
+$present
+EOF
+    python -B yaya/tools/checks/check-wording.py --level hard --files-from - <<EOF || failed="$failed 措辞检查"
+$present
+EOF
+fi
+python -B yaya/tools/checks/check-markdown-links.py || failed="$failed 链接检查"
+
+if [ -n "$failed" ]; then
+    echo "" >&2
+    echo "提交被拒绝，未通过：$failed。" >&2
+    echo "按上面列出的位置修改：不用的说法改为 docs/terminology.md 中的正式名称；规则文件里的「应」「宜」按措辞检查词表改写；失效的链接改到存在的文件和标题。" >&2
+    echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
+    exit 1
+fi
+exit 0

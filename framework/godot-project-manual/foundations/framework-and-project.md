@@ -26,7 +26,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 - **参数**：`--output` 是目标项目目录；`-B` 让 Python 不生成字节码缓存。
 - **前提**：需要可用的 Git 和已配置的提交身份。
-- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库并创建本地初始提交。
+- **做什么**：按[复制清单](../../project-creation/project-files.json)复制和重命名文件，然后建立独立的 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，再创建本地初始提交。初始提交也经过[提交钩子](../../../project-source/tools/README.md#提交钩子)的术语、措辞和链接检查。
 - **不做什么**：不安装依赖、不运行环境检查或 Godot、不生成需求、不运行测试、不配置远程或推送。
 - **成功消息**：显示的复制数量是清单条目数，不是实际文件数。
 
@@ -40,7 +40,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 | 符号链接 | 待复制的路径必须是普通文件或目录；符号链接和 Windows junction 在预检时拒绝，防止借链接复制其他位置的内容 |
 | 缓存文件 | 复制目录时跳过 `__pycache__/`、`.pytest_cache/` 及 `.pyc`、`.pyo`；复制范围不受 `.gitignore` 影响，源码、素材、`.uid` 和 `.import` 都保留 |
 | 冲突检查 | 写入前展开全部清单项；目录可以合并，同一目标文件重复或文件与目录冲突时拒绝 |
-| 失败处理 | 预检失败时不复制任何文件；复制或 Git 步骤失败可能留下部分内容，创建器不会删除、回滚或重试 |
+| 失败处理 | 预检失败时不复制任何文件；复制、Git 步骤或提交钩子失败可能留下部分内容，创建器不会删除、回滚或重试 |
 
 参数与拒绝条件以[创建器源码](../../project-creation/tools/create_project.py)为准。项目名称、机器路径和文档语言在生成后的项目里配置。
 
