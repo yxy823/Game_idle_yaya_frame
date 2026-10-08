@@ -35,7 +35,7 @@ class ScenarioPromptPathTests(unittest.TestCase):
         self.scenarios = self.root / "scenarios"
         self.scenarios.mkdir()
         self.data = [{"project": "Godot 项目开发", "categories": {
-            "修复与改进": {"Feature 交付前发现 Bug": "在当前任务内处理缺陷。"}}}]
+            "修复与改进": {"发现 Bug，需要修复": "在当前任务内处理缺陷。"}}}]
         self.save()
 
     def save(self):
@@ -47,18 +47,18 @@ class ScenarioPromptPathTests(unittest.TestCase):
         path.write_bytes(contents)
 
     def test_exact_paths_need_no_readable_body_or_metadata(self):
-        self.page("Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md")
+        self.page("Godot 项目开发/修复与改进/发现 Bug，需要修复.md")
         self.page("README.md")
         self.page("scenario-index.md")
         self.assertEqual(compare_paths([self.prompts], self.scenarios), {
             "expected": 1, "matched": 1, "missing": [], "unexpected": []})
 
     def test_wrong_category_and_legacy_paths_are_reported(self):
-        self.page("Godot 项目开发/其他分类/Feature 交付前发现 Bug.md")
+        self.page("Godot 项目开发/其他分类/发现 Bug，需要修复.md")
         self.page("issues/current-feature/bug-after-tests.md")
         report = compare_paths([self.prompts], self.scenarios)
         self.assertEqual(report["matched"], 0)
-        self.assertEqual(report["missing"], ["Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md"])
+        self.assertEqual(report["missing"], ["Godot 项目开发/修复与改进/发现 Bug，需要修复.md"])
         self.assertEqual(len(report["unexpected"]), 2)
 
     def test_only_root_navigation_is_excluded(self):
@@ -76,7 +76,7 @@ class ScenarioPromptPathTests(unittest.TestCase):
         maintenance = self.root / "yaya-maintenance-prompts.json"
         maintenance.write_text(json.dumps([{"project": "Yaya 框架维护", "categories": {
             "维护与复盘": {"修复框架": "修复已确认的问题。"}}}], ensure_ascii=False), encoding="utf-8")
-        self.page("Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md")
+        self.page("Godot 项目开发/修复与改进/发现 Bug，需要修复.md")
         self.page("Yaya 框架维护/维护与复盘/修复框架.md")
         report = compare_paths([maintenance, self.prompts], self.scenarios)
         self.assertEqual(report, {"expected": 2, "matched": 2, "missing": [], "unexpected": []})
@@ -124,7 +124,7 @@ class ScenarioPromptPathTests(unittest.TestCase):
         args = ["--prompts", str(self.prompts), "--scenarios", str(self.scenarios)]
         with contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(main(args), 1)
-            self.page("Godot 项目开发/修复与改进/Feature 交付前发现 Bug.md")
+            self.page("Godot 项目开发/修复与改进/发现 Bug，需要修复.md")
             self.assertEqual(main(args), 0)
         self.prompts.write_text("{", encoding="utf-8")
         with contextlib.redirect_stderr(io.StringIO()):
