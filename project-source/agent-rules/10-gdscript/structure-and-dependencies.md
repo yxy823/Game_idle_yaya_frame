@@ -13,7 +13,7 @@
 - 父节点或协调者向下调用子模块的 API；子模块向上发出信号，不用 `get_parent()` 查找或修改父节点。同级模块经由所属方或协调者通信，不直接访问彼此。
 - 场景内部的引用用 `$Child` 或 `%UniqueName`。跨模块依赖用导出引用、注入或协调者，不用深层父路径、`/root/...` 路径或递归的 `find_child()`。
 - 分组用于分类和广播，不用作隐藏的服务定位器。
-- 只按 [Autoload 适用范围](../40-project-config/autoloads-and-plugins.md#autoload) 使用 Autoload。信号需要穿过多层场景转发时，按其中的事件总线做法处理。
+- 只按 Autoload 与编辑器插件中的[Autoload](../40-project-config/autoloads-and-plugins.md#autoload)一节使用 Autoload。信号需要穿过多层场景转发时，按其中的事件总线做法处理。
 
 下面的父节点负责接线：收到拾取事件后先更新背包，再通知 HUD。示例假设拾取一定成功；加入可能失败时，先处理失败结果，再决定是否显示成功反馈。
 

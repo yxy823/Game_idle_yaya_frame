@@ -15,7 +15,7 @@ description: "在已授权的 Godot 任务中，按已批准的本地化规范�
 
 在所属的已授权 Feature 或限定范围的实验中工作。没有这样的 Feature 或实验时，按 `yaya/methodology/00-overview.md` 的 **任务路由表** 说明需要的入口，不直接修改运行时文件。
 
-- 默认使用 Godot 内置的 CSV 翻译：翻译表放在 `game/localization/`，第一列是键，之后每种语言一列（列名为语言区域代码，例如 `zh_CN`），按 Godot 的翻译导入器导入，生成的翻译文件登记到项目设置，见[本地化设置](../../../yaya/agent-rules/40-project-config/subsystem-settings.md#本地化)。项目已经采用其他机制时沿用它；改换格式或机制之前，先检查当前 Godot 版本的翻译 API。
+- 默认使用 Godot 内置的 CSV 翻译：翻译表放在 `game/localization/`，第一列是键，之后每种语言一列（列名为语言区域代码，例如 `zh_CN`），按 Godot 的翻译导入器导入，生成的翻译文件登记到项目设置，见子系统设置中的[本地化](../../../yaya/agent-rules/40-project-config/subsystem-settings.md#本地化)。项目已经采用其他机制时沿用它；改换格式或机制之前，先检查当前 Godot 版本的翻译 API。
 - 键名格式为 `<区域>.<对象>.<用途>`：全部小写 ASCII，每段用下划线连接单词。区域是界面或调试对象的键，与 `game/<对象>/` 一致，多处共用的文字用 `common`；对象是界面上的元素或游戏实体；用途说明这段文字的作用，例如 `label`、`button`、`tooltip`、`title`、`desc`。例如 `main.producer_row.buy_button`、`offline_summary.dialog.title`、`common.confirm.button`。
 - 键表示文字的用途，改措辞不改键；键被代码引用后保持不变。含数值或名称的句子用整句加命名占位符（例如 `{amount}`），在代码里填入，不拼接句子片段。场景和数据文件的显示字段只存键。
 - 覆盖运行时生成的文本，以及本次范围内的错误状态和空状态。

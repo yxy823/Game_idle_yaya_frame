@@ -135,6 +135,6 @@ game/mining/
 
 Autoload 按真实生命周期选择，文件仍按职责归属。例如，需要跨场景存续的存档服务可以留在 `game/saving/`；场景局部协调者则跟随其所属场景。`Manager` 后缀不表示全局生命周期，放进 `components/` 也不自动证明它已经独立。
 
-需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[GDScript 结构与依赖](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
+需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[GDScript 结构与依赖](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与 Autoload 与编辑器插件中的[Autoload](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 
 当实际边界需要说明时，按[架构概览](../yaya/methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。

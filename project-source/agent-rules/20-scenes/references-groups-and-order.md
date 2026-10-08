@@ -11,7 +11,7 @@ Resource UID、场景节点的 `unique_id`、NodePath 和 `%UniqueName` 的身�
 
 ## NodePath 与重命名
 
-重命名节点或更换父节点是一次[场景引用迁移](../00-core/godot-resource-references.md#场景引用)。在 `.tscn` 中检查：
+重命名节点或更换父节点要迁移[场景引用](../00-core/godot-resource-references.md#场景引用)。在 `.tscn` 中检查：
 
 - NodePath 属性和 `node_paths` 列表；
 - 动画轨道路径；

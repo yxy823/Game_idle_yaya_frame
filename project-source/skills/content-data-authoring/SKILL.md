@@ -41,7 +41,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 
 ## 编写或生成
 
-- **格式**：每行一个实体的表格用 CSV，需要在检查器中编辑的定义用 `.tres`，嵌套结构用 JSON。规则见 [CSV 的编写](../../../yaya/agent-rules/50-data-files/csv.md#编写)、[JSON 的规范写出](../../../yaya/agent-rules/50-data-files/json.md#规范写出) 和 [Resource 的角色](../../../yaya/agent-rules/21-resources/roles-sharing-and-locality.md#角色)。
+- **格式**：每行一个实体的表格用 CSV，需要在检查器中编辑的定义用 `.tres`，嵌套结构用 JSON。规则见 CSV 规则的[编写](../../../yaya/agent-rules/50-data-files/csv.md#编写)、JSON 规则的[规范写出](../../../yaya/agent-rules/50-data-files/json.md#规范写出)和 Resource 角色、共享与复制中的[角色](../../../yaya/agent-rules/21-resources/roles-sharing-and-locality.md#角色)。
 - **ID 与引用**：实体用稳定的业务 ID，互相引用写 ID，见 [业务 ID 与引用](../../../yaya/agent-rules/50-data-files/schema-identity-and-migration.md#业务-id-与引用)。字段、单位和取值范围按 [字段与取值](../../../yaya/agent-rules/50-data-files/schema-identity-and-migration.md#字段与取值) 写进 schema 需求，交给 Feature 实现。
 - **手写还是生成**：数量少、每条都要单独设计的内容手写，例如教学关和最初几个生产者；数量多、能按公式或规则推出的内容生成。手写文件和生成产物分开存放。
 - **确定性生成**：种子是生成器的输入参数；同样的输入连续生成两次，输出逐字节一致；先写临时文件并校验，再替换目标文件。其余要求见 [生成与派生数据](../../../yaya/agent-rules/50-data-files/data-lifecycle-and-authority.md#生成与派生数据)。
@@ -51,7 +51,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 
 分两层：
 
-1. **结构层**：用生产加载器加载修改后的全部数据，没有错误；字段、类型、ID 或引用规则变化时补失败用例。见 [50 数据文件规则的验证](../../../yaya/agent-rules/50-data-files/README.md#验证)。
+1. **结构层**：用生产加载器加载修改后的全部数据，没有错误；字段、类型、ID 或引用规则变化时补失败用例。见 50 数据文件规则的[验证](../../../yaya/agent-rules/50-data-files/README.md#验证)。
 2. **内容层**：对错明确的内容约束，例如成本单调、前置条件不成环、目标在结构上可达、自动对局通过率落在目标带内。具体检查项见两份参考。
 
 检查放在哪里：

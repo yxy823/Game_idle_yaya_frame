@@ -34,7 +34,7 @@ class LinkTextTests(unittest.TestCase):
         self.assertEqual(process.returncode, 1 if result["findings"] else 0)
         return [(row["file"], row["line"], row["text"], row["rule"]) for row in result["findings"]]
 
-    def test_text_must_contain_target_heading_or_file_title(self):
+    def test_text_must_be_target_heading_or_file_title(self):
         self.write("docs/08-testing.md", "# 08 · 测试与验证\n## 测试影响评估\n")
         self.write("index.md",
                    "[返回](docs/08-testing.md) · [规范](docs/08-testing.md#测试影响评估)\n"
@@ -43,6 +43,26 @@ class LinkTextTests(unittest.TestCase):
                    "按[测试规范](docs/08-testing.md#测试影响评估)执行，[本页](#本页说明)另述。\n"
                    "## 本页说明\n")
         self.assertEqual(self.findings(), [("index.md", 3, "测试规范", "LINK-TEXT"), ("index.md", 3, "本页", "LINK-TEXT")])
+
+    def test_text_with_words_around_the_heading_is_reported(self):
+        self.write("docs/08-testing.md", "# 08 · 测试与验证\n## 测试影响评估\n")
+        self.write("index.md",
+                   "# 索引\n\n"
+                   "见[08 · 测试与验证](docs/08-testing.md)、[测试与验证](docs/08-testing.md)、"
+                   "[ *测试影响评估* ](docs/08-testing.md#测试影响评估)。\n"
+                   "见[08 的测试影响评估](docs/08-testing.md#测试影响评估)、[测试影响评估说明](docs/08-testing.md#测试影响评估)、"
+                   "[测试与验证规范](docs/08-testing.md)。\n")
+        self.assertEqual([row[2] for row in self.findings()], ["08 的测试影响评估", "测试影响评估说明", "测试与验证规范"])
+
+    def test_navigation_lines_are_exempt_only_at_the_page_top(self):
+        self.write("docs/guide.md", "# 指南\n## 步骤\n")
+        self.write("index.md",
+                   "[返回](docs/guide.md)\n"
+                   "# 索引\n\n"
+                   "[上级](docs/guide.md) · [做法](docs/guide.md#步骤)\n\n"
+                   "正文。\n\n"
+                   "[做法](docs/guide.md#步骤)\n")
+        self.assertEqual(self.findings(), [("index.md", 8, "做法", "LINK-TEXT")])
 
     def test_target_skill_file_and_directory_names_are_accepted_without_anchor(self):
         self.write("skills/task-handoff/SKILL.md", "# 准备任务交接\n## 输出\n")

@@ -4,7 +4,7 @@
 
 ## Resource 与加载
 
-- 定义与配置类 Resource 在运行时只读，规则见 [Resource 角色](../21-resources/roles-sharing-and-locality.md#角色)。
+- 定义与配置类 Resource 在运行时只读，规则见 Resource 角色、共享与复制中的[角色](../21-resources/roles-sharing-and-locality.md#角色)。
 - `load()` 和 `preload()` 返回 ResourceLoader 缓存中的同一个实例。需要独立副本时显式复制，复制方式见[复制](../21-resources/roles-sharing-and-locality.md#复制)。
 - 建议：编写时就确定的依赖用 `preload()` 或导出引用；运行时才选定的用 `load()`。不在逐帧路径中首次加载资源。
 - 后台加载用 `ResourceLoader.load_threaded_request()`，再用 `load_threaded_get_status()` 查询进度，状态为 `THREAD_LOAD_LOADED` 后才调用 `load_threaded_get()`。加载未完成时调用 `load_threaded_get()` 会阻塞调用线程，不能拿它轮询。

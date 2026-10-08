@@ -5,7 +5,7 @@
 ## 通用约定
 
 - **规则侧**：重力、补充、匹配、元素行为和目标类型写在 `docs/gdd/systems/`，难度目标写在 `docs/gdd/balance/` 与 `progression.md`；**数据侧**：每一关的布局、目标、步数和关卡顺序。数据里只放 ID、枚举和数值，不写新规则。
-- **格式**：棋盘有嵌套结构，用 JSON 或 `.tres`，不塞进 CSV 单元格，见 [CSV 的编写](../../../../yaya/agent-rules/50-data-files/csv.md#编写)。棋盘可以写成每行一个字符串，每个字符对应一个枚举值；字符与枚举的对应写在 schema 中，不靠猜。JSON 的解析与写出见 [解析](../../../../yaya/agent-rules/50-data-files/json.md#解析) 和 [规范写出](../../../../yaya/agent-rules/50-data-files/json.md#规范写出)。
+- **格式**：棋盘有嵌套结构，用 JSON 或 `.tres`，不塞进 CSV 单元格，见 CSV 规则的[编写](../../../../yaya/agent-rules/50-data-files/csv.md#编写)。棋盘可以写成每行一个字符串，每个字符对应一个枚举值；字符与枚举的对应写在 schema 中，不靠猜。JSON 的解析与写出见 [解析](../../../../yaya/agent-rules/50-data-files/json.md#解析) 和 [规范写出](../../../../yaya/agent-rules/50-data-files/json.md#规范写出)。
 - **位置**：关卡数据放在所属模块下，例如 `game/<module>/levels/`。
 - **自动对局**：通过率之类的检查用固定种子和写明的策略（随机、贪心等）运行，复用正式的匹配与结算代码。补充棋子随机时，一般无法证明一关“一定有解”，只能报告在这些种子下的结果。
 
@@ -29,7 +29,7 @@
 
 ## 障碍
 
-- **分界**：障碍的行为、层数含义和与其他元素的交互归 `systems/`；每关障碍的位置和层数归数据。障碍的定义适合做成 `.tres`，见 [Resource 的角色](../../../../yaya/agent-rules/21-resources/roles-sharing-and-locality.md#角色)。
+- **分界**：障碍的行为、层数含义和与其他元素的交互归 `systems/`；每关障碍的位置和层数归数据。障碍的定义适合做成 `.tres`，见 Resource 角色、共享与复制中的[角色](../../../../yaya/agent-rules/21-resources/roles-sharing-and-locality.md#角色)。
 - **机器可检查**：
   - 引用的障碍 ID 都能找到，见 [业务 ID 与引用](../../../../yaya/agent-rules/50-data-files/schema-identity-and-migration.md#业务-id-与引用)；
   - 层数在该障碍定义的范围内；

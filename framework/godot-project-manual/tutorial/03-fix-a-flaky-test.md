@@ -47,7 +47,7 @@ Agent 逐帧记录后发现，交换动画开始的那一帧，时间间隔就�
 - 测试按固定的小步长（1/128 秒）一步步推进动画；
 - 每推进一步就检查一次状态，直到动画播完。
 
-这样每次运行看到的过程完全相同。游戏代码一行没改，用的是 Godot 动画（Tween）自带的暂停和手动推进接口（`d24e93b`）。写法和示例代码见[动画与 Tween 的测试规则](../../../project-source/agent-rules/70-tests/time-randomness-and-async.md#动画与-tween)。
+这样每次运行看到的过程完全相同。游戏代码一行没改，用的是 Godot 动画（Tween）自带的暂停和手动推进接口（`d24e93b`）。写法和示例代码见时间、随机数与异步测试中的[动画与 Tween](../../../project-source/agent-rules/70-tests/time-randomness-and-async.md#动画与-tween)。
 
 **3. 验证：既要稳定，也要仍然有效**
 

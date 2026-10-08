@@ -53,13 +53,14 @@ def _strip_inline_code(line: str) -> str:
 def scan(path: Path) -> ScannedFile:
     """Read a Markdown file's anchors, links and first H1.
 
-    Link text is None where it is not compared: reference definitions, images and navigation lines.
+    Link text is None where it is not compared: reference definitions, images and navigation lines at the page top.
     """
     anchors: dict[str, str | None] = {}
     slug_counts: dict[str, int] = {}
     links: list[tuple[int, str, str | None]] = []
     title: str | None = None
     fence: str | None = None
+    top = True  # 到目前为止只有空行、一级标题和导航行
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         fence_match = FENCE.match(line)
         if fence is not None:
@@ -68,6 +69,7 @@ def scan(path: Path) -> ScannedFile:
             continue
         if fence_match:
             fence = fence_match.group(1)
+            top = False
             continue
         anchors.update(dict.fromkeys(HTML_ANCHOR.findall(line)))
         heading = HEADING.match(line)
@@ -82,8 +84,14 @@ def scan(path: Path) -> ScannedFile:
         definition = REFERENCE_DEFINITION.match(line)
         if definition:
             links.append((number, definition.group(1), None))
+            top = False
             continue
-        links.extend((number, target, text) for target, text in _inline_targets(line))
+        targets, navigation = _inline_targets(line)
+        if top and navigation:
+            targets = [(target, None) for target, _ in targets]
+        elif line.strip() and not (heading and len(heading.group(1)) == 1):
+            top = False
+        links.extend((number, target, text) for target, text in targets)
     return ScannedFile(anchors, links, title)
 
 
@@ -113,8 +121,8 @@ def _link_open(line: str, close: int) -> int:
     return -1
 
 
-def _inline_targets(original: str) -> list[tuple[str, str | None]]:
-    """Return (target, link text) pairs; text is None for images and on navigation lines."""
+def _inline_targets(original: str) -> tuple[list[tuple[str, str | None]], bool]:
+    """Return (target, link text) pairs, text None for images, and whether the line holds only links and '·'."""
     line = _strip_inline_code(original)
     targets: list[tuple[str, str | None]] = []
     spans: list[tuple[int, int]] = []
@@ -151,13 +159,11 @@ def _inline_targets(original: str) -> list[tuple[str, str | None]]:
             end += 1
         add(start, line[index:end], end)
         start = line.find("](", end)
-    # 导航行（一行只有链接和“·”，例如场景页顶部的返回链接）可以用缩写，不比较链接文字。
+    # 页面顶部的导航行（一行只有链接和“·”，例如场景页的返回链接）可以用缩写，由 scan 判断是否在顶部。
     residue = list(line)
     for begin, finish in spans:
         residue[begin:finish] = " " * (finish - begin)
-    if spans and not "".join(residue).replace("·", "").strip():
-        return [(target, None) for target, _ in targets]
-    return targets
+    return targets, bool(spans) and not "".join(residue).replace("·", "").strip()
 
 
 def split_target(raw: str) -> tuple[str, str] | None:

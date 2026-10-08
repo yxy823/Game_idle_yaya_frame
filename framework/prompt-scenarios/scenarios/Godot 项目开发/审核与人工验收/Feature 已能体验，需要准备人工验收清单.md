@@ -62,4 +62,4 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 ## 流程关联与衔接关系
 
-依据：[人工验收文件的定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)、[Stage 4 · 自动验证与人工验收清单](<../../../../../project-source/methodology/03-execute-loop.md#stage-4--自动验证与人工验收清单>)。
+依据：人工验收文件的[定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)、[Stage 4 · 自动验证与人工验收清单](<../../../../../project-source/methodology/03-execute-loop.md#stage-4--自动验证与人工验收清单>)。

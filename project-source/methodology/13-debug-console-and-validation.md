@@ -1,6 +1,6 @@
 # 13 · 调试台与技术验证
 
-本文规定两件事：在游戏内调试台中比较候选、调参并采纳到游戏，以及用技术验证回答既定做法能否在真实引擎中实现。调试台的工作由 `debug-console-godot` 执行，技术验证由 `technical-validation-godot` 执行，入口由[任务路由表](00-overview.md#任务路由表)选择。本文只写原则与流程；调试台的具体机制（`slot.gd` 常量、预设格式、收尾命令）写在[调试台共享代码说明](../../dev/debug/_shared/README.md)，本项目的调试对象与启动命令写在[本项目的调试台](../../dev/debug/README.md)。
+本文规定两件事：在游戏内调试台中比较候选、调参并采纳到游戏，以及用技术验证回答既定做法能否在真实引擎中实现。调试台的工作由 `debug-console-godot` 执行，技术验证由 `technical-validation-godot` 执行，入口由[任务路由表](00-overview.md#任务路由表)选择。本文只写原则与流程；调试台的具体机制（`slot.gd` 常量、预设格式、收尾命令）写在[调试台共享代码](../../dev/debug/_shared/README.md)的说明中，本项目的调试对象与启动命令写在[本项目的调试台](../../dev/debug/README.md)。
 
 ## 选择方式
 

@@ -71,7 +71,7 @@ $LASTEXITCODE
 ```
 
 - 把 `res://main/main.tscn` 换成要检查的场景；`--quit-after` 是运行的帧数上限，到达后 Godot 自行退出。
-- `| Out-Host` 让 PowerShell 等 Godot 结束后再读退出码；`2>&1` 把错误输出一起写进日志。日志目录按 [09 的报告与清理](../methodology/09-records-reports-and-handoff.md#报告与清理) 选择。
+- `| Out-Host` 让 PowerShell 等 Godot 结束后再读退出码；`2>&1` 把错误输出一起写进日志。日志目录按 09 号规范的[报告与清理](../methodology/09-records-reports-and-handoff.md#报告与清理)选择。
 - 退出码非 `0` 表示启动失败，例如场景文件不存在或无法加载。
 - 退出码 `0` 不代表没有脚本错误：脚本解析错误和运行时脚本错误都只打印在输出里，退出码仍是 `0`。所以要检查输出中的 `ERROR`、`SCRIPT ERROR` 和紧随其后的 `at:` 行（错误所在的文件和行号）。
 - 这项检查只证明场景能加载并运行到帧数上限。`--headless` 不渲染画面，不能说明画面正确；能启动也不等于人工验收。
@@ -216,9 +216,9 @@ python -B yaya/tools/checks/check-link-text.py
 
 按 Godot 项目文档编写 Skill 写作指南的[把项目讲清楚](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#把项目讲清楚)中「链接文字用目标标题」一条比较。满足下面任一条的链接合规，其余每处以规则名 `LINK-TEXT` 报告：
 
-- **带锚点的链接**（包括页内的 `#锚点`）：链接文字包含锚点所在章节的标题。比较时去掉行内代码标记、`*`，空白合并为一个空格，不区分大小写。
-- **只链到 Markdown 文件的链接**：链接文字按上一条的方式包含该文件的一级标题，标题开头的“NN · ”编号可以省略；或者链接文字去掉反引号、首尾空白、开头的 `$` 和结尾的 `/` 后，按 `/` 分段，与目标路径的最后几段逐段相同（区分大小写），最后一段可以是文件名、去掉扩展名的文件名或目标所在的目录名。例如链到 `skills/design-gdd/SKILL.md` 时，`design-gdd`、`$design-gdd`、`SKILL.md`、`design-gdd/SKILL.md` 都合规；链到 `research/README.md` 时，`research/` 合规。
-- **不比较**：图片、引用式定义、外部网址、非 Markdown 目标、目标或锚点不存在的链接（由 [check-markdown-links.py](#check-markdown-linkspy) 报告）、`<a id>` 锚点、没有一级标题的文件，以及只由链接和“·”组成的导航行。
+- **带锚点的链接**（包括页内的 `#锚点`）：链接文字等于锚点所在章节的标题，前后多出任何文字都报告，例如标题是“启动”时，“启动命令”“项目的启动”都不合规；文件说明写在链接外面。比较时去掉行内代码标记、`*` 和首尾空白，中间的空白合并为一个空格，不区分大小写。
+- **只链到 Markdown 文件的链接**：链接文字按上一条的方式等于该文件的一级标题，标题开头的“NN · ”编号可以省略；或者链接文字去掉反引号、首尾空白、开头的 `$` 和结尾的 `/` 后，按 `/` 分段，与目标路径的最后几段逐段相同（区分大小写），最后一段可以是文件名、去掉扩展名的文件名或目标所在的目录名。例如链到 `skills/design-gdd/SKILL.md` 时，`design-gdd`、`$design-gdd`、`SKILL.md`、`design-gdd/SKILL.md` 都合规；链到 `research/README.md` 时，`research/` 合规。
+- **不比较**：图片、引用式定义、外部网址、非 Markdown 目标、目标或锚点不存在的链接（由 [check-markdown-links.py](#check-markdown-linkspy) 报告）、`<a id>` 锚点、没有一级标题的文件，以及页面顶部只由链接和“·”组成的导航行。页面顶部指这一行之前只有空行、一级标题和其他导航行；正文中只由链接组成的行照常比较。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |

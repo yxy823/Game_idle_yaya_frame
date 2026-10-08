@@ -80,7 +80,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-环境检查器各模式检查什么，见[配置参考的检查能力边界](../foundations/configuration.md#检查能力边界)。
+环境检查器各模式检查什么，见配置参考的[检查能力边界](../foundations/configuration.md#检查能力边界)。
 
 Feature 记录检查读取完整的 Feature 索引、详情、测试登记表和修订关系，核对 ID、字段、引用、路径、依赖与历史规则。它已经包含 JSON 解析，规划或同步完成后运行这一个入口即可；单文件语法检查只在定位具体错误时使用。需求覆盖、真实依赖和历史保留这些语义，仍由 Agent 核对。
 
@@ -324,7 +324,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 
 直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及测试追溯与证据中的[基于原始结果的完成判断与语义时效](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
-性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见[专业来源与资源的测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
+性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见专业来源与资源的[测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
 
 ## 脚本解析与 lint
 

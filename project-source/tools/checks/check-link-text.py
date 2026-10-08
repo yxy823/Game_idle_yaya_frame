@@ -35,11 +35,11 @@ def _normalize(text: str) -> str:
     return " ".join(text.replace("`", "").replace("*", "").split()).casefold()
 
 
-def _contains_heading(text: str, expected: str, number_optional: bool) -> bool:
+def _is_heading(text: str, expected: str, number_optional: bool) -> bool:
     candidates = {_normalize(expected)}
     if number_optional:
         candidates.add(_normalize(TITLE_NUMBER.sub("", expected)))
-    return any(candidate in _normalize(text) for candidate in candidates)
+    return _normalize(text) in candidates
 
 
 def _names_target(text: str, target: Path) -> bool:
@@ -82,7 +82,7 @@ def check_link_text(root: Path, files: list[Path]) -> tuple[int, list[LinkTextMi
             if not expected:  # 锚点不存在、<a id> 锚点或文件没有一级标题
                 continue
             compared += 1
-            if _contains_heading(text, expected, number_optional=not anchor):
+            if _is_heading(text, expected, number_optional=not anchor):
                 continue
             if not anchor and _names_target(text, target.resolve()):
                 continue

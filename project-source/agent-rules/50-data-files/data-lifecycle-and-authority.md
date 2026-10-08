@@ -6,7 +6,7 @@
 
 - 每个数据领域写明唯一的权威编写源，即由人编辑的那个文件，以及运行时使用的规范表示。
 - 玩法读取经过校验的带类型模型（自定义 Resource 或类），不读取解析得到的原始 Dictionary、Array 或 Variant。原始值只出现在解析、迁移等边界代码中。
-- 定义数据在运行时只读，规则见 [Resource 的角色](../21-resources/roles-sharing-and-locality.md#角色)。
+- 定义数据在运行时只读，规则见 Resource 角色、共享与复制中的[角色](../21-resources/roles-sharing-and-locality.md#角色)。
 - 运行时代码不把状态写回 `res://` 下的编写源。玩家状态写入存档。
 - 建议：数据不需要在外部表格中编辑时，直接做成自定义 Resource（`.tres`），通过 ResourceLoader 加载，省去原始文件的解析与打包问题。项目附带的 “Edit Resources as Table” 插件（`addons/resources_spreadsheet_view/`）可以用表格批量编辑同一目录下的 Resource。
 
@@ -22,7 +22,7 @@
 - 项目自带的数据可信。玩家存档、mod 等 `user://` 或外部数据不可信：
   - 解析前限制文件大小；
   - 解析后校验结构、类型和取值范围；
-  - 其中的字段不直接决定加载哪个脚本、场景或资源路径，见 [JSON 的信任规则](json.md#信任)。
+  - 其中的字段不直接决定加载哪个脚本、场景或资源路径，见 JSON 规则的[信任](json.md#信任)。
 
 ## 生成与派生数据
 

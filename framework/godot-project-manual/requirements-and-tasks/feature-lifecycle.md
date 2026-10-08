@@ -142,4 +142,4 @@ Goal 只是让工作持续进行的方式，本身不授予额外权限：
 - **视觉决策等用户在调试台选定时**：只暂停依赖该决定的部分，不能因此宣称最终验收材料已经齐备。
 - **结束状态**：失败、预算用完或前置受阻都不是成功完成；后续怎么走，取决于用户给出的结果和是否继续授权。
 
-独立审核的范围、真实性与修复权限见[专业来源与资源的独立审核](../specialist-work-and-records/specialist-work.md#独立审核)，工程任务的分类见[工程变更流程](../../../project-source/methodology/07-engineering-change.md)。
+独立审核的范围、真实性与修复权限见专业来源与资源的[独立审核](../specialist-work-and-records/specialist-work.md#独立审核)，工程任务的分类见[工程变更流程](../../../project-source/methodology/07-engineering-change.md)。

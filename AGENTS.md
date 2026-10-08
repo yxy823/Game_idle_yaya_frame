@@ -104,7 +104,7 @@
 
 ### 目录与入口组织
 
-维护侧（根目录、`.agents/`、`framework/`）的目录由框架入口的[目录与职责](framework/README.md#目录与职责)统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表；判断步骤与常见反例见[职责设计准则的目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织)。
+维护侧（根目录、`.agents/`、`framework/`）的目录由框架入口的[目录与职责](framework/README.md#目录与职责)统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表；判断步骤与常见反例见职责设计准则的[目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织)。
 
 - **按对象划分顶层**：`framework/` 的顶层目录按材料讲述的对象划分（生成的 Godot 项目、提示词与场景、关系图、框架维护、项目创建、测试），不设 `docs/` 这类只按文件类型归堆的目录。
 - **按功能建子目录**：同一目录内的文件功能不同时，按功能建子目录，即使目前只有一两个文件；功能相同的文件放在一起。子目录名直接表达功能，例如 `design-guidelines/`、`validation/`、`dependencies/`、`tools/`。

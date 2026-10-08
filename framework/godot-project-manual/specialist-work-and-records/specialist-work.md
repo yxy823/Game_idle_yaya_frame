@@ -164,7 +164,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 | 游戏原值 | 游戏文件里保存的值。对比只在“当前改动”和游戏原值（或某个组合）之间切换 |
 | 固定局面、试播动作 | 固定局面是一份游戏存档，每次从同一状态和随机种子开始播放；试播动作是插槽登记的“点一下就看到效果”的操作 |
 
-依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码说明](../../../project-source/defaults/dev/debug/_shared/README.md)中维护；用户在调试台能完成的 13 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见[调试台与技术验证](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
+依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码](../../../project-source/defaults/dev/debug/_shared/README.md)的说明中维护；用户在调试台能完成的 13 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见 13 号规范的[调试台](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
 
 调参只在调试台里改。也可以从 Godot 编辑器启动调试入口，但编辑器检查器显示的是编辑器自己的副本，从编辑器停止（F8）会丢掉未保存的改动，见[从编辑器启动](../../../project-source/defaults/dev/debug/_shared/README.md#从编辑器启动)。
 
@@ -197,7 +197,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 
 具体的异常统一由 [bug-diagnosis-godot](../../../project-source/skills/bug-diagnosis-godot/SKILL.md) 按[因果诊断](../../../project-source/methodology/07-engineering-change.md#因果诊断)处理：先看症状、预期和证据，再选择需要的专业方法。用户不需要先判断问题属于逻辑、表现还是两者的连接。
 
-例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用 [Shader 诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
+例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用参考文件 [Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
 
 修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)，同时遵守 [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
 

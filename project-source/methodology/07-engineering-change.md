@@ -198,7 +198,7 @@ feature-execute
 
 提出 `affected_components` 时读取 `docs/test-registry.json`。获批后，在写入和校验 Feature 之前登记缺少的组件：
 
-- 使用 feature-plan 中[测试登记表：`docs/test-registry.json`](../../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)一节的合并辅助工具；测试登记表本身的规则见 [08 · 登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
+- 使用 feature-plan 中[测试登记表：`docs/test-registry.json`](../../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)一节的合并辅助工具；测试登记表本身的规则见 08 号规范的[登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 - 复用已有记录，不重置测试；报告冲突的 ID。
 - 没有单元套件的组件写 `unit_test_paths: []`。除非已批准的契约另有要求，它的 `full_suite_on_change` 默认为 `false`。
 - 把这些测试登记表的改动放进同一个 Feature 计划提交。测试映射仍在执行期间最终确定。
@@ -209,7 +209,7 @@ feature-execute
 python -B yaya/tools/checks/check-feature-list.py
 ```
 
-然后按 AGENTS.md 中[暂存](../../AGENTS.md#暂存)一节的要求，暂存本任务的 Feature 计划路径，创建一个本地提交，除非用户明确要求不提交。主题格式、正文中的 `Feature:` 与 `Work item:` 行，以及禁止的 Git 操作，按 [Git 与提交](../../AGENTS.md#提交) 执行。
+然后按 AGENTS.md 中[暂存](../../AGENTS.md#暂存)一节的要求，暂存本任务的 Feature 计划路径，创建一个本地提交，除非用户明确要求不提交。主题格式、正文中的 `Feature:` 与 `Work item:` 行，以及禁止的 Git 操作，按 AGENTS.md 中[提交](../../AGENTS.md#提交)一节执行。
 
 创建工程 Feature 不新增 `feature-list-revisions.json` 条目，因为没有同步任何 GDD、Product 或专业来源。
 
@@ -239,7 +239,7 @@ Bug Feature
    可机器验证时写成 INV-<DOMAIN>-01
 ```
 
-回归测试证明这个具体缺陷不会再出现。不变量测试（`INV-<DOMAIN>-NN`，见 [08 · 测试分类](08-test-traceability-and-evidence.md#测试分类)）证明一条概括后的跨 Feature 规则。两者互补，可以同时存在。建议新规则之前先检查现有规则。
+回归测试证明这个具体缺陷不会再出现。不变量测试（`INV-<DOMAIN>-NN`，见 08 号规范的[测试分类](08-test-traceability-and-evidence.md#测试分类)）证明一条概括后的跨 Feature 规则。两者互补，可以同时存在。建议新规则之前先检查现有规则。
 
 只在至少满足下面一条时，才提议提升概括后的 `Guardrail`：
 

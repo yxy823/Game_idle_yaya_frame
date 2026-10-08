@@ -46,7 +46,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 ## 环境就绪的含义
 
-默认配置里的工具路径只是候选值，要在项目里确认。环境检查器的普通模式和 `--require-ready` 各检查什么、为什么 Python 版本要单独确认，见[配置参考的检查能力边界](configuration.md#检查能力边界)。
+默认配置里的工具路径只是候选值，要在项目里确认。环境检查器的普通模式和 `--require-ready` 各检查什么、为什么 Python 版本要单独确认，见配置参考的[检查能力边界](configuration.md#检查能力边界)。
 
 新项目要依次经过三步，每一步都是单独的证据：
 
