@@ -39,7 +39,7 @@ GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明�
 
 按实际任务选择支持能力：
 
-- 普通规格和已有数值直接记录。公式推导、参数模型、经济或成长曲线和调优，使用 [design-balance](../design-balance/SKILL.md)。把本次涉及的目标、规则草稿和当前授权交给它；早期的数值探索不要求 GDD 已经完整。
+- 普通规格和已有数值直接记录。规则需要、但还没建模的参数，按 methodology 01 的 **数值放在哪里** 先写成标明“未建模”的占位值。公式推导、参数模型、经济或成长曲线和调优，使用 [design-balance](../design-balance/SKILL.md)。把本次涉及的目标、规则草稿和当前授权交给它；早期的数值探索不要求 GDD 已经完整。
 - 交付边界、依赖和顺序属于 [product-author](../product-author/SKILL.md)。
 - 具体关卡、表格等内容实例，在已授权的 Feature 中由 [content-data-authoring](../content-data-authoring/SKILL.md) 制作；GDD 只保留种类目录和规则，并链接数据文件。
 - 详细的游戏表现、UI、美术、音频、资源和本地化规格，属于 `yaya/methodology/11-specialist-workflows.md` 中规定的固定所属位置。该文件也规定了首次创建 GDD 时怎样保存这些规格，以及整合时怎样把它们从 GDD 中迁出。游戏规则和整体体验目标留在 GDD；非 UI 的表现从对应的 GDD 主题链接。

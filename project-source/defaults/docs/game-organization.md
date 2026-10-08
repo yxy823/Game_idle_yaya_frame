@@ -42,7 +42,7 @@
 | 游戏目标、规则、状态和体验要求 | [GDD](gdd/README.md) | 商品可购买条件、扣费与入包规则、成功和失败要传达的信息 |
 | 界面布局、状态与操作方式 | [UI 设计](ui/README.md) | 商品如何排列、价格与按钮状态、购买结果如何呈现在界面 |
 | 一次具体表现的过程、候选方案与采用组合 | [游戏表现](presentation/README.md) | 购买成功后的图标飞行、背包入口的到达反馈及采用的组件方案 |
-| 共享视觉、声音和语言要求 | [美术](art/art-bible.md)、[声音](audio/sound-bible.md)、[本地化](localization/localization-spec.md) | 共用的图标风格、反馈声音与价格显示约定 |
+| 共享视觉、声音和语言要求 | [美术](art/art-bible.md)、[声音](audio/sound-bible.md)、[本地化](localization/localization-spec.md) | 共用的图标风格、反馈声音与价格在各语言中的分隔符写法 |
 | 实际模块、状态所有者、调用与连接 | [项目架构](architecture.md)及必要的子系统说明 | 谁校验并执行购买、谁管理余额与物品、界面怎样获得结果 |
 | 本次交付、局部设计与验证 | [Product](product.md)、[Feature](features/README.md)及其关联记录 | 本次完成哪些购买行为、反馈与检查，实际验收覆盖什么 |
 

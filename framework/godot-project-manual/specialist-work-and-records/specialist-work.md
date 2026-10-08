@@ -52,7 +52,7 @@ GDD 写玩家应该获得什么感受、需要辨认出哪些对象；画风、�
 - 候选值、已采用的值和实际验证状态分开标注。
 - 普通规格中出现的数字，不会自动变成数值建模任务。
 - 计算成立不代表游戏已经平衡或有趣；写入数值也不授权修改运行时的资源或代码。
-- 每一关、每一行的内容数值以 `game/` 下的数据文件为准，由 `content-data-authoring` 在 Feature 中制作；`balance/` 只保留公式和目标区间。
+- 一个参数的取值放在调参资源、`game/` 下的数据文件还是 `balance/`，见[数值放在哪里](../../../project-source/methodology/01-product-doc-structure.md#数值放在哪里)；每一关、每一行的内容数据由 `content-data-authoring` 在 Feature 中制作。
 - 独立的数值审核由 `review-balance` 负责。
 
 ### 术语译名
