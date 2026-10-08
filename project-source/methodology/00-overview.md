@@ -59,7 +59,7 @@ yaya/methodology/                         canonical workflow specification
 | 调查外部事实或比较方案 | 主 Agent，可以委派给 `researcher` | 答案需要外部来源时使用，见 [外部调研](09-records-reports-and-handoff.md#外部调研)。没有强制的调研 Stage，不新建 Feature，不自动采纳结论。 |
 | 记录或维护已确定的项目词汇 | `project-terminology` | 按[项目术语](14-project-terminology.md)维护不改变含义的定义。不创建 Product 计划，不做 Feature 源同步；行为变化交给 `design-gdd`。 |
 | 维护项目通用规则或专项规则 | 当前已获授权的任务，按 [规则的增量维护](04-project-rules.md#规则的增量维护) 执行 | 用于 `docs/project-rules.md` 或规则模块。每项拟议修改都先报告再写入；单独的规则工作不需要 Feature。 |
-| 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计](02-feature-list-schema.md#feature-设计与实现说明) 和[架构概览](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
+| 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 和[架构概览](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
 | 选择视觉或声音方向 | `design-art-direction`、`design-audio-direction` | 按[专业工作与来源](11-specialist-workflows.md)维护 Art Bible 或 Sound Bible 中的共用标准。不需要完整的游戏设计，不产出资源。 |
 | 从体验目标或随口的描述规划一个游戏时刻，或比较其组成部分的方案 | `design-game-presentation` | 用于[游戏表现文档](11-specialist-workflows.md#游戏表现文档)，可以支持早期 GDD 探索。不包含代码、资源制作或验收。 |
 | 和用户一起反复试调已实现的特效、反馈或操作手感 | `debug-console-godot`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
@@ -93,7 +93,7 @@ yaya/methodology/                         canonical workflow specification
 | 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment-godot` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
 | 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification-godot` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
 | 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
-| 检查、导入或恢复验证证据 | `verification-evidence-godot` | 按 [证据与时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
+| 检查、导入或恢复验证证据 | `verification-evidence-godot` | 按 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
 | 查询状态 | 只读说明，或 `project-next-step-advisor` | 不为回答问题而开始工作或运行就绪检查。 |
 | 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接记录文件、对话或消息。 |
 

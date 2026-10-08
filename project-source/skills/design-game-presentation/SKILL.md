@@ -20,9 +20,9 @@ description: "从体验目标或口头描述出发规划一次可观察的游戏
 | 当前问题 | 需要时阅读 |
 | --- | --- |
 | 哪类实现方式适合这个行为，或者是否组合使用 | [选择实现方式](references/technique-selection.md) |
-| 某个组件涉及表面、颜色、UV、遮罩、溶解或屏幕空间效果 | [Shader 表现需求](references/shader-requirements.md) |
-| 某个组件包含许多独立运动或变化的视觉元素 | [粒子表现需求](references/particle-requirements.md) |
-| 怎样记录组件的备选方案、混合采用和下游链接 | [物品入包示例](references/presentation-example.md) |
+| 某个组件涉及表面、颜色、UV、遮罩、溶解或屏幕空间效果 | [Shader 表现需求的标准化](references/shader-requirements.md) |
+| 某个组件包含许多独立运动或变化的视觉元素 | [粒子表现需求的标准化](references/particle-requirements.md) |
+| 怎样记录组件的备选方案、混合采用和下游链接 | [示例：带组件备选方案的物品入包](references/presentation-example.md) |
 
 这些参考用来整理标准化的需求，不规定算法、节点树或源代码。现有材质能实现效果时，不要求自定义粒子 Shader。详细的工程指导属于所属的实现任务，可以从对应的备选方案链接过去。
 

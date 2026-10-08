@@ -6,7 +6,7 @@ description: >-
 
 # 同步 Feature 列表
 
-先使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)，再执行下面的阶段 0–6。已有的计划不能代替 GDD。
+先使用 [GDD 前提与职责](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)，再执行下面的阶段 0–6。已有的计划不能代替 GDD。
 
 通过与已记录锚点之间的 Git 差异找出来源变化。绝不通过比较当前来源和当前计划来推断历史变化。下列情况遵循[锚点恢复与当前文档对齐](references/anchor-and-fallback.md)：
 
@@ -96,7 +96,7 @@ git diff -M <anchor> HEAD -- game/*/tuning/
 
 - 把每个提议的 `affected_components` ID 与测试登记表比较，在方案中列出新的和存在冲突的组件记录。
 - 对每个已有实现或测试、且被修订或删除的 Feature，追查它的依赖方，以及所属 Feature 或组件与变化重叠的测试。把每个测试归为 `still_valid`、`superseded`、`needs_new_coverage` 或 `uncertain`。
-- 提议退役某个测试时，按 [文件 4](../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
+- 提议退役某个测试时，按 [文件 4：`docs/test-registry.json`](../../../yaya/methodology/02-feature-list-schema.md#文件-4docstest-registryjson) 写明原因、锚定的来源、替代的 Feature 和测试 ID 以及修订 ID。仅有来源变化，不是退役测试的理由。
 - 遵循 methodology 08 的 **需求变化与过时的测试**：阅读受影响的测试代码（包括没有测试登记表 ID 的单元测试），写明要做的清理以及负责它的 Feature。
 
 ### 报告
@@ -127,7 +127,7 @@ git diff -M <anchor> HEAD -- game/*/tuning/
 
 ## 阶段 5：记录、校验和提交
 
-1. 更新索引时间，并按 [文件 3](../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
+1. 更新索引时间，并按 [文件 3：`docs/feature-list-revisions.json`](../../../yaya/methodology/02-feature-list-schema.md#文件-3docsfeature-list-revisionsjson) 追加一条第 2 版修订记录。
    - 保留权威的 `meta.generated_from` 条目，加上实际考虑过的 GDD 和专业来源位置，不声称覆盖了未来的范围。修订本身不写进索引元数据。
    - 使用可读的摘要字段，以及有类型的 `migrations` 和 `dependency_changes`；编辑性同步可以使用空数组。
    - `synced_at_commit` 必须填写：它是本次分析的已提交来源状态，也是下一个锚点。`source_path_updates` 保留重命名的可追溯性。

@@ -6,7 +6,7 @@
 
 ## 该写在哪里
 
-下表列出术语、设计、架构、知识和过程记录的位置；GDD、Product、专业规格和项目规则的位置见[项目对象与目录](../foundations/project-layout.md#主要对象及读写关系)。
+下表列出术语、设计、架构、知识和过程记录的位置；GDD、Product、专业规格和项目规则的位置见[主要对象及读写关系](../foundations/project-layout.md#主要对象及读写关系)。
 
 | 位置 | 写什么 | 不写什么 |
 | --- | --- | --- |
@@ -21,7 +21,7 @@
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；变成当前比较的选择或被采纳时，迁走正文并留下去向链接 | 开发承诺 |
 | `docs/progress.md` | 当前任务和阶段、真实的阻塞、待决定事项、下一步和资料链接 | 已完成任务的完整历史 |
 
-GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
+GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
 
 候选值和暂不采纳的想法怎样分流，见[需求与规划的候选值与未采纳的想法](../requirements-and-tasks/requirements-and-planning.md#候选值与未采纳的想法)。除 `design-gdd` 外，`project-grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。
 
@@ -65,7 +65,7 @@ GDD 内部的主题分工见[需求与规划](../requirements-and-tasks/requirem
 
 两者都根据已有事实补充，按作用范围（项目级还是子系统级）选择文件，而不是按复杂度。
 
-架构记录的是真实的协作关系，不重新定义玩法（参见[逻辑与表现的职责](../foundations/game-logic-and-presentation.md)）。以商店为例：GDD 写购买条件，UI 文档写商店操作，表现文档写获得物品的反馈；架构说明哪个对象处理购买、谁维护余额和背包、界面怎样读取状态并响应结果。某个任务改变了这些连接时，实施理由写进它的设计稿，当前结构按作用范围更新到对应的架构文档。不需要为了“逻辑 / 表现”两层而虚构模块或预建空文档。
+架构记录的是真实的协作关系，不重新定义玩法（参见[游戏逻辑、表现与协作](../foundations/game-logic-and-presentation.md)）。以商店为例：GDD 写购买条件，UI 文档写商店操作，表现文档写获得物品的反馈；架构说明哪个对象处理购买、谁维护余额和背包、界面怎样读取状态并响应结果。某个任务改变了这些连接时，实施理由写进它的设计稿，当前结构按作用范围更新到对应的架构文档。不需要为了“逻辑 / 表现”两层而虚构模块或预建空文档。
 
 画结构图时：
 
@@ -141,7 +141,7 @@ ADR 记录问题、约束、备选方案、决定、收益、成本、依据，�
 - **结论与授权**：判断结论，以及已有的授权。
 - **删除或只改措辞时**：删除要说明谁承接了原来的作用，或为什么不再需要；只改措辞或链接时，说明含义和强度没有变化。
 
-规则变化后，先处理它对当前任务的实际影响，已有的具体授权继续有效；只有出现新的决定才需要等用户确认。修改原 Feature 中的辅助文档，不需要另开一个“必须先清空工作区”的任务。相关记录在最终验证前定稿；规则在最终测试或人工接受之后才采纳时（例如 Stage 5.5），也要检查哪些已有证据因此失效。细则见[规则增量维护](../../../project-source/methodology/04-project-rules.md#规则的增量维护)。
+规则变化后，先处理它对当前任务的实际影响，已有的具体授权继续有效；只有出现新的决定才需要等用户确认。修改原 Feature 中的辅助文档，不需要另开一个“必须先清空工作区”的任务。相关记录在最终验证前定稿；规则在最终测试或人工接受之后才采纳时（例如 Stage 5.5），也要检查哪些已有证据因此失效。细则见[规则的增量维护](../../../project-source/methodology/04-project-rules.md#规则的增量维护)。
 
 ## 调研与项目知识
 
@@ -192,4 +192,4 @@ Progress 保存真实的停点和必要的链接；不能从“下一步：实�
 
 不建立 Handoff 文件、`CONTEXT.md` 或平行的任务状态表。
 
-权威依据：[记录、报告与交接](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。
+权威依据：[记录、报告与交接](../../../project-source/methodology/09-records-reports-and-handoff.md)、[项目术语文件](../../../project-source/methodology/14-project-terminology.md#项目术语文件)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。

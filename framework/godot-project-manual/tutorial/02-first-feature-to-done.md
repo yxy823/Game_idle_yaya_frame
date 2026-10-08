@@ -1,6 +1,6 @@
 # 教程二：完成第一个 Feature：视觉样例、等待验收与收尾
 
-[Godot 项目手册](../README.md) · 上一篇：[从空白项目到第一份 Feature 计划](01-blank-project-to-feature-plan.md) · 下一篇：[修正时过时不过的测试](03-fix-a-flaky-test.md)
+[Godot 项目手册](../README.md) · 上一篇：[教程一：从空白项目到第一份 Feature 计划](01-blank-project-to-feature-plan.md) · 下一篇：[教程三：交付后维护：修正时过时不过的测试](03-fix-a-flaky-test.md)
 
 本篇接着三消示例，完成第一个 Feature：F001 棋盘主界面的视觉样例。它需要你亲眼看过才能定下参数，正好走完一个 Feature 的全部环节：
 
@@ -113,4 +113,4 @@ Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格�
 
 示例接着用同样的方式完成了 F004～F007，然后按教程一的第 4、6 步细化第二个 Product（死局恢复与洗牌），拆出并完成 F008～F012。
 
-两个 Product 交付之后，示例在测试中发现一个时过时不过的测试，见下一篇：[修正时过时不过的测试](03-fix-a-flaky-test.md)。
+两个 Product 交付之后，示例在测试中发现一个时过时不过的测试，见下一篇：[教程三：交付后维护：修正时过时不过的测试](03-fix-a-flaky-test.md)。

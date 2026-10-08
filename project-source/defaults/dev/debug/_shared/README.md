@@ -1,6 +1,6 @@
 # 调试台共享代码
 
-调试台从调试入口启动真实游戏，在独立窗口中修改游戏正在使用的调参资源、切换候选、比较、播放固定局面、查看 analyzer 分析，并把满意的设定采纳到游戏。本目录是各项目共用的代码、主题、图标与测试；本项目有哪些调试对象、怎样启动，见[项目的调试台说明](../README.md)。按“你想做的事”列出的 13 个界面任务见[调试台使用场景](usage-scenarios.md)。
+调试台从调试入口启动真实游戏，在独立窗口中修改游戏正在使用的调参资源、切换候选、比较、播放固定局面、查看 analyzer 分析，并把满意的设定采纳到游戏。本目录是各项目共用的代码、主题、图标与测试；本项目有哪些调试对象、怎样启动，见[本项目的调试台](../README.md)。按“你想做的事”列出的 13 个界面任务见[调试台使用场景](usage-scenarios.md)。
 
 ## 入口与项目挂钩
 
@@ -166,7 +166,7 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
    $LASTEXITCODE
    ```
 
-5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`（没有参数的候选只写 `name`，不写参数脚本），删除 `adopted.tres` 和已空的候选目录（删除前确认候选的许可说明已随素材移进 `game/`，`adopted.tres` 里的来源与许可摘要已写进设计文档的资源条目）；被替换的实现是否从游戏目录删除，由用户决定。更新[项目的调试台说明](../README.md)中的候选登记。
+5. 把 `adopted.tres` 的 `display_name` 和 `default_params.script_uid` 写进该插槽 `slot.gd` 的 `CANDIDATES`（没有参数的候选只写 `name`，不写参数脚本），删除 `adopted.tres` 和已空的候选目录（删除前确认候选的许可说明已随素材移进 `game/`，`adopted.tres` 里的来源与许可摘要已写进设计文档的资源条目）；被替换的实现是否从游戏目录删除，由用户决定。更新[本项目的调试台](../README.md)中的候选登记。
 6. 检查 UID 未变化、字段与依赖仍正确，运行 `check-godot-resource-format.py`，再按[测试影响评估](../../../yaya/methodology/08-test-traceability-and-evidence.md#测试影响评估)选择要跑的测试，至少包括写入资源所属组件的测试、依赖方向测试和 `dev/debug/<对象>/tests/` 下的对象测试（对象测试按 UID 定位候选，采纳移动后应照常通过）。
 7. 删除 `adoption-log.md` 中已处理的行，全部处理完时删除该文件。
 

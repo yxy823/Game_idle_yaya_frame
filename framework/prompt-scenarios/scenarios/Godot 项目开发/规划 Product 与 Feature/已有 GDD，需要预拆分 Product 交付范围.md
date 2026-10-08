@@ -47,4 +47,4 @@ docs/gdd/ 已有实际游戏设计正文。空目录、仅作目录导航的 REA
 
 ## 流程关联与衔接关系
 
-依据：[设计与交付结构](<../../../../../project-source/methodology/01-product-doc-structure.md#设计与交付结构>)、[`product.md` 标准章节](<../../../../../project-source/methodology/01-product-doc-structure.md#productmd-标准章节>)。预拆分完成后，细化第一项用[当前 Product 细化](<Product 已预拆分，准备细化当前交付范围.md>)。
+依据：[设计与交付结构](<../../../../../project-source/methodology/01-product-doc-structure.md#设计与交付结构>)、[`product.md` 标准章节](<../../../../../project-source/methodology/01-product-doc-structure.md#productmd-标准章节>)。预拆分完成后，细化第一项用[Product 已预拆分，准备细化当前交付范围](<Product 已预拆分，准备细化当前交付范围.md>)。

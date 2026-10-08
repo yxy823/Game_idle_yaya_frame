@@ -95,7 +95,7 @@
 | --- | --- | --- |
 | Analyzer | 分析图像、音频源文件的命令行工具；结果不代替实际渲染、听感或性能测量 |  |
 
-来源：[Analyzer 说明](../project-source/tools/analyzer/README.md)。
+来源：[资源 Analyzer](../project-source/tools/analyzer/README.md)。
 
 ## 动作用词
 

@@ -33,12 +33,12 @@ flowchart TD
 | 理解生成的 Godot 项目：项目边界、游戏逻辑与表现、文档对象、配置、Skill 和工具用法 | [Godot 项目手册](godot-project-manual/README.md) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](prompt-scenarios/scenarios/scenario-index.md) |
 | 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档系统关系图](relationship-maps/README.md#文档系统关系图) |
-| 查看游戏项目开发场景之间的衔接关系 | [开发场景图](relationship-maps/README.md#游戏项目开发场景图) |
+| 查看游戏项目开发场景之间的衔接关系 | [游戏项目开发场景图](relationship-maps/README.md#游戏项目开发场景图) |
 | 修改框架或分发源，判断要同步哪些说明、选择哪种验证 | [框架维护](maintenance/README.md) |
 | 新增或调整文档、Skill、脚本、提示词与场景的职责 | [职责设计准则](maintenance/design-guidelines/README.md) |
-| 编写或修改单一场景 | [场景手册编写要求](prompt-scenarios/scenarios/README.md) |
-| 编写或整理框架说明 | [Yaya 框架文档编写 Skill](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) |
-| 修改提示词、场景或关系图 | [提示词与关系图维护 Skill](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) |
+| 编写或修改单一场景 | [场景速查手册的编写与维护](prompt-scenarios/scenarios/README.md) |
+| 编写或整理框架说明 | [Yaya 框架文档编写与整理](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) |
+| 修改提示词、场景或关系图 | [Yaya 提示词与关系图维护](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) |
 | 一次框架修改或 demo 试验后复盘，判断哪些地方值得改、改在哪里 | [Yaya 框架复盘 Skill](../.agents/skills/framework-retro-yaya/SKILL.md) |
 | 创建空白项目、运行检查或回归 | 下文[维护命令](#维护命令) |
 | 确认框架专用术语的含义和统一写法 | [框架术语](terminology.md) |
@@ -72,7 +72,7 @@ flowchart TD
 - **场景速查手册**：按“要处理什么事情”分组，覆盖 Godot 项目开发与 Yaya 框架维护两个 Project。
   - 场景名称：写清当前状态，方便从目录选择。
   - 单篇范围：一个目标，对应一条同名专用提示词；目录与文件名直接使用提示词库中的 Project、分类和提示词名称。
-  - 信息栏目：保留 11 类分类规则，只展示有内容的栏目。编写要求见[场景手册编写要求](prompt-scenarios/scenarios/README.md)。
+  - 信息栏目：保留 11 类分类规则，只展示有内容的栏目。编写要求见[场景速查手册的编写与维护](prompt-scenarios/scenarios/README.md)。
 
 ## 使用范围
 
@@ -95,16 +95,16 @@ flowchart TD
 
 | 命令 | 用途 | 用法 |
 | --- | --- | --- |
-| 创建器 `project-creation/tools/create_project.py` | 按复制清单创建空白项目，启用提交钩子，建立独立 Git 仓库和初始提交 | [创建空白项目](project-creation/tools/README.md) |
-| 提示词与场景路径检查 `prompt-scenarios/tools/check_scenario_prompt_paths.py` | 只读核对两份提示词库与场景文件路径是否一一对应 | [提示词与场景工具](prompt-scenarios/tools/README.md#提示词与场景路径检查) |
-| 场景图名称检查 `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
-| 场景图链接写入 `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [提示词与场景工具](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
+| 创建器 `project-creation/tools/create_project.py` | 按复制清单创建空白项目，启用提交钩子，建立独立 Git 仓库和初始提交 | [项目创建工具](project-creation/tools/README.md) |
+| 提示词与场景路径检查 `prompt-scenarios/tools/check_scenario_prompt_paths.py` | 只读核对两份提示词库与场景文件路径是否一一对应 | [提示词与场景路径检查](prompt-scenarios/tools/README.md#提示词与场景路径检查) |
+| 场景图名称检查 `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
+| 场景图链接写入 `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
 | 文档图覆盖检查 `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
-| 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [维护工具](maintenance/tools/README.md#检查链接与锚点) |
-| 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [维护工具](maintenance/tools/README.md#检查术语用词) |
-| 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [维护工具](maintenance/tools/README.md#检查措辞) |
-| 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）和仓库链接检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [维护工具](maintenance/tools/README.md#提交钩子) |
-| 用词提示钩子 `.claude/settings.json` | 用户每次向 Claude Code 发消息时，按框架术语检查消息正文，有不用的说法时提示 Agent 列出用词对照表；不拦截消息 | [维护工具](maintenance/tools/README.md#用词提示钩子) |
+| 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [检查链接与锚点](maintenance/tools/README.md#检查链接与锚点) |
+| 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [检查术语用词](maintenance/tools/README.md#检查术语用词) |
+| 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [检查措辞](maintenance/tools/README.md#检查措辞) |
+| 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）和仓库链接检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [提交钩子](maintenance/tools/README.md#提交钩子) |
+| 用词提示钩子 `.claude/settings.json` | 用户每次向 Claude Code 发消息时，按框架术语检查消息正文，有不用的说法时提示 Agent 列出用词对照表；不拦截消息 | [用词提示钩子](maintenance/tools/README.md#用词提示钩子) |
 | 孤立文档扫描 `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
 | 回归测试 `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
 

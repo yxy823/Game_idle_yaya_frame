@@ -1,6 +1,6 @@
 # Analyzer 依赖与许可记录
 
-运行环境为 Windows x64 / CPython **3.13.16**，环境名 **yaya-analyzer-2**。全部运行依赖和传递依赖的版本以 [requirements.txt](requirements.txt) 为准；不解析 latest/stable 别名。安装和配置步骤见 [README](README.md#准备与使用)。不同依赖代次使用不同环境名，避免重装同名环境破坏旧项目的 Analyzer 副本。
+运行环境为 Windows x64 / CPython **3.13.16**，环境名 **yaya-analyzer-2**。全部运行依赖和传递依赖的版本以 [requirements.txt](requirements.txt) 为准；不解析 latest/stable 别名。安装和配置步骤见 [准备与使用](README.md#准备与使用)。不同依赖代次使用不同环境名，避免重装同名环境破坏旧项目的 Analyzer 副本。
 
 | 依赖 | 固定版本 / 许可证 | 用途与核对来源 |
 | --- | --- | --- |

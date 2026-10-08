@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import importlib.util
 import json
 import re
 import subprocess
@@ -13,6 +12,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CHECKER = REPO_ROOT / "project-source/tools/checks/check-markdown-links.py"
+TEXT_CHECKER = REPO_ROOT / "project-source/tools/checks/check-link-text.py"
 MANIFEST = REPO_ROOT / "framework/project-creation/project-files.json"
 PROMPT_DIR = "framework/prompt-scenarios/prompts"
 # 提示词正文中的框架仓库路径；生成项目内的路径（docs/、yaya/ 等）不在这里核对。
@@ -20,17 +20,15 @@ PROMPT_PATH = re.compile(r"(?<![\w/.-])((?:framework|project-source|\.agents)/[\
 # 「<文件> 的「标题」、「标题」」写法（“的”可省略）；不带目录的文件名只在维护提示词库中按仓库根目录解析。
 PROMPT_HEADING = re.compile(r"((?:(?:framework|project-source|\.agents)/[\w./\-]+)?[\w\-]+\.md) ?(?:的 ?)?((?:「[^」]+」、?)+)")
 sys.path.insert(0, str(REPO_ROOT / "framework/project-creation/tools"))
+sys.path.insert(0, str(REPO_ROOT / "project-source"))
 
 from create_project import copy_project  # noqa: E402
-
-_spec = importlib.util.spec_from_file_location("check_markdown_links", CHECKER)
-markdown_links = sys.modules[_spec.name] = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(markdown_links)
+from tools.lib.markdown_links import heading_slug, scan  # noqa: E402
 
 
-def run_checker(root: Path, *extra: str) -> dict:
+def run_checker(root: Path, *extra: str, checker: Path = CHECKER) -> dict:
     completed = subprocess.run(
-        [sys.executable, "-B", str(CHECKER), "--root", str(root), "--json", *extra],
+        [sys.executable, "-B", str(checker), "--root", str(root), "--json", *extra],
         capture_output=True,
         text=True,
         encoding="utf-8",
@@ -84,10 +82,10 @@ def check_prompt_references(root: Path) -> tuple[int, list[dict]]:
                         target = root / path
                         if not target.is_file():
                             continue
-                        anchors = markdown_links._scan(target)[0]
+                        anchors = scan(target).anchors
                         for heading in re.findall(r"「([^」]+)」", match.group(2)):
                             count += 1
-                            if markdown_links.heading_slug(heading) not in anchors:
+                            if heading_slug(heading) not in anchors:
                                 report(f"{path} 的「{heading}」", "heading not found in target")
     return count, broken
 
@@ -97,17 +95,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--check-link-text",
         action="store_true",
-        help="also report (without failing) links whose text is not the target heading or file title",
+        help="also run check-link-text.py on both parts; mismatching link text then fails the check",
     )
     args = parser.parse_args(argv)
-    extra = ("--check-link-text",) if args.check_link_text else ()
     entries = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source", *extra)
+    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source")
+    if args.check_link_text:
+        maintenance_text = run_checker(REPO_ROOT, "--exclude", "project-source", checker=TEXT_CHECKER)
     with tempfile.TemporaryDirectory(prefix="yaya-link-check-") as directory:
         project = Path(directory) / "project"
         copy_project(REPO_ROOT, project)
-        generated = run_checker(project, *extra)
+        generated = run_checker(project)
+        if args.check_link_text:
+            generated_text = run_checker(project, checker=TEXT_CHECKER)
 
     prompt_references, prompt_broken = check_prompt_references(REPO_ROOT)
 
@@ -122,15 +123,16 @@ def main(argv: list[str] | None = None) -> int:
         f"生成项目 {generated['files']} 个文件、{generated['links']} 个本地链接；"
         f"提示词正文 {prompt_references} 处路径与标题引用；失效 {len(broken)} 个"
     )
+    mismatched: list[dict] = []
     if args.check_link_text:
-        mismatched = maintenance["link_text"] + [
-            {**item, "file": source_path(item["file"], entries)} for item in generated["link_text"]
+        mismatched = maintenance_text["findings"] + [
+            {**item, "file": source_path(item["file"], entries)} for item in generated_text["findings"]
         ]
         for item in mismatched:
             print(f"{item['file']}:{item['line']}  [{item['rule']}] [{item['text']}]({item['target']})  标题：{item['expected']}")
-        summary += f"；链接文字与标题不符 {len(mismatched)} 个（只报告）"
+        summary += f"；链接文字与标题不符 {len(mismatched)} 个"
     print(summary)
-    return 1 if broken else 0
+    return 1 if broken or mismatched else 0
 
 
 if __name__ == "__main__":

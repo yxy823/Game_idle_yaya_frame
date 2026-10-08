@@ -1,6 +1,6 @@
 # 50 数据文件规则
 
-适用于游戏的设计数据和运行时数据文件（JSON、CSV），生成的规范数据，以及数据的 schema、迁移和校验代码。定义数据做成自定义 Resource（`.tres`）时，同时阅读 [21 Resource 规则](../21-resources/README.md)。
+适用于游戏的设计数据和运行时数据文件（JSON、CSV），生成的规范数据，以及数据的 schema、迁移和校验代码。定义数据做成自定义 Resource（`.tres`）时，同时阅读 [21 Resource（`.tres` / `Resource`）规则](../21-resources/README.md)。
 
 | 文档 | 何时阅读 |
 | --- | --- |

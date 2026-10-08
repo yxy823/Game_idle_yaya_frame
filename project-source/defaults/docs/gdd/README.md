@@ -14,6 +14,6 @@
 | 备选值与暂不采纳的设想放在哪里 | [候选与未采纳想法](../../yaya/methodology/01-product-doc-structure.md#候选与未采纳想法)，暂不采纳的设想记在[未采纳想法](../unadopted-ideas.md) |
 | 什么情况下可以开始交付规划与实现 | [GDD 前提与职责](../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责) |
 | 术语定义 | [项目术语](../terminology.md)，规范见[项目术语](../../yaya/methodology/14-project-terminology.md) |
-| 界面、表现、美术、声音与本地化规格 | [UI 设计](../ui/README.md)、[游戏表现](../presentation/README.md)、[美术规范](../art/art-bible.md)、[声音规范](../audio/sound-bible.md)、[本地化规范](../localization/localization-spec.md)；归属见[专业工作与来源](../../yaya/methodology/11-specialist-workflows.md) |
-| 交付拆分与推进顺序 | [Product 总览](../product.md) |
-| 逻辑、表现与实现文档之间的关系 | [游戏职责与项目组织](../game-organization.md) |
+| 界面、表现、美术、声音与本地化规格 | [界面规格目录](../ui/README.md)、[游戏表现目录](../presentation/README.md)、[美术圣经](../art/art-bible.md)、[声音圣经](../audio/sound-bible.md)、[本地化规范](../localization/localization-spec.md)；归属见[专业工作与来源](../../yaya/methodology/11-specialist-workflows.md) |
+| 交付拆分与推进顺序 | [Product 交付总览](../product.md) |
+| 逻辑、表现与实现文档之间的关系 | [游戏职责与项目组织指南](../game-organization.md) |

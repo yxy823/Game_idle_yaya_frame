@@ -14,12 +14,12 @@
 | 复制或 Git 失败后留下了目录 | 创建器不会自动回滚 | 根据原始输出判断哪些步骤已完成，不能因为目录存在就报告创建成功 |
 | 普通配置检查成功 | 只说明字段结构正确；Godot 路径暂时为空也会通过 | 需要确认可用时运行 `--require-ready` |
 | Godot 文件存在但就绪检查失败 | 实际启动失败、返回码异常，或版本不是 4.7.x | 核对路径指向的真实程序；目录名里的版本号不算数 |
-| 路径写法错误 | Godot 路径按项目根目录解析，不能带 shell 引号、参数或只写命令名；Python 可以写已确认的 PATH 命令名 | 按[配置参考](../foundations/configuration.md#路径与命令的写法)修正 |
+| 路径写法错误 | Godot 路径按项目根目录解析，不能带 shell 引号、参数或只写命令名；Python 可以写已确认的 PATH 命令名 | 按[路径与命令的写法](../foundations/configuration.md#路径与命令的写法)修正 |
 | CLI 报告缺少测试基类或运行器全局类 | 首次资源与类扫描可能还没完成，测试其实没有执行 | 先完成首次扫描；就绪检查不包含扫描 |
 | Windows 上读不到退出码 | 很可能没有等 Godot 进程结束 | 使用命令示例中的 `| Out-Host`；空值不能当作 0 |
 | 权限、AppData、缓存或沙箱错误 | 环境限制，与业务逻辑无关 | 先按实际环境规则定位；不要因此改业务断言、删除未核实的目录，或断定引擎有错 |
 
-创建器的完整契约见[框架、创建器与项目边界](../foundations/framework-and-project.md#创建器用法)。
+创建器的完整契约见[创建器用法](../foundations/framework-and-project.md#创建器用法)。
 
 ## Feature 记录与任务
 
@@ -59,4 +59,4 @@
 
 场景启动、图片显示、声音试听、输入、长时间运行、资源包和导出依赖，各自都需要对应的实际结果。报告时把“未执行”“失败”“报告丢失”“只有旧版本成功”分别写清，不要合并成“没有问题”。
 
-工具的错误契约见[工具说明](../../../project-source/tools/README.md)、[测试追溯与证据](../../../project-source/methodology/08-test-traceability-and-evidence.md)和[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)。
+工具的错误契约见[项目检查与测试工具](../../../project-source/tools/README.md)、[测试追溯与证据](../../../project-source/methodology/08-test-traceability-and-evidence.md)和[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)。

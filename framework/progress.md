@@ -1,8 +1,8 @@
 # 框架待办
 
-## 待决定事项
+## 待推进的工作
 
-- **链接文字批量修正**：规则已统一为框架文档写作指南[表达与排版](../.agents/skills/technical-documentation-writing-yaya/references/writing-guide.md#表达与排版)中「链接文字用目标标题」一条（Godot 版写作指南同步），链接检查已有只报告的 `--check-link-text` 选项。全仓报出 884 处、272 个文件，其中 385 处用 Skill 名、文件名或目录名作链接文字，规则还没决定是否允许；数据与抽样见 `tmp/reports/link-text-check/link-text-scan-20261008.md`。下一步：用户根据扫描结果决定 Skill 名、文件名或目录名是否列为允许的变体，以及批量修正还是编辑到相关文件时再改。
+- **链接文字批量修正**：规则见框架文档写作指南[表达与排版](../.agents/skills/technical-documentation-writing-yaya/references/writing-guide.md#表达与排版)中「链接文字用目标标题」一条（Godot 版写作指南同步），只链到文件时逐字写目标的 Skill 名、文件名或目录名也合规。检查由分发的 `check-link-text.py` 负责，框架侧用 `check_repository_links.py --check-link-text` 同时查维护侧和生成项目。目前还有 142 处、82 个文件不符合，需要改句子或逐条判断，清单见 `tmp/reports/link-text-check/link-text-remaining-20261008.md`。下一步：按清单改写句子，全部修正后把链接文字检查作为单独一步加进两份提交钩子（`.githooks/pre-commit` 与 `project-source/defaults/.githooks/pre-commit`）。
 
 ## 验证缺口
 

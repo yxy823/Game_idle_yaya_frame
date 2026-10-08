@@ -6,10 +6,10 @@
 
 | 当前任务 | 阅读 |
 | --- | --- |
-| 规划一个 Product 的 Feature | [逐个 Product 规划](#逐个-product-规划)、[拆分预览](#拆分预览)、[拆分规则](#拆分规则)、[需求覆盖核对](#需求覆盖核对)，以及要写入的[索引](#文件-1docsfeature-listjson)、[详情](#文件-2docsfeaturesf0xxjson)和[测试登记表](#文件-4docstest-registryjson) |
+| 规划一个 Product 的 Feature | [逐个 Product 规划](#逐个-product-规划)、[拆分预览](#拆分预览)、[拆分规则](#拆分规则)、[需求覆盖核对](#需求覆盖核对)，以及要写入的[文件 1：`docs/feature-list.json`](#文件-1docsfeature-listjson)、[文件 2：`docs/features/F0XX.json`](#文件-2docsfeaturesf0xxjson)和[文件 4：`docs/test-registry.json`](#文件-4docstest-registryjson) |
 | 写第一份计划的基线 | [初始规划基线](#初始规划基线) |
 | 源同步 | [同步记录](#同步记录)、[状态流转](#状态流转)、[已退役的测试](#已退役的测试) |
-| 执行 Feature 时查字段 | [详情字段](#详情字段)、[验收模式](#验收模式)、[Feature 设计与实现说明](#feature-设计与实现说明)、[完成证据](#文件-5docsfeaturesf0xx-evidencejson) |
+| 执行 Feature 时查字段 | [详情字段](#详情字段)、[验收模式](#验收模式)、[Feature 设计与实现说明](#feature-设计与实现说明)、[文件 5：`docs/features/F0XX-evidence.json`](#文件-5docsfeaturesf0xx-evidencejson) |
 | 接手已有实现 | [接手已有实现](#接手已有实现) |
 | 工具报错 | [机器校验的不变量](#机器校验的不变量) |
 
@@ -180,7 +180,7 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 | `verification.test_impact.additional_tests` | `{ "id": "...", "reason": "..." }` 对象的数组；测试 ID 来自测试登记表且不重复，理由非空。可以引用其他 Feature 的测试。准备阶段被引用的测试可以是 `planned`，但本 Feature 完成时必须是 `active`。追加测试不改变测试归属，也不代替本 Feature 自己的 AC 与回归映射。 |
 | `verification.test_impact.full_suite_reasons` | 在自动触发条件之外，批准运行全量测试的理由，不重复、非空。`full_suite_on_change: true` 的组件会自动触发全量，不写在这里。空数组表示没有额外升级。 |
 | `source` | 一个精确的主要来源：Product 交付章节、GDD 章节或专业规格。没有单一来源文档的技术工作用 `infrastructure`。见下文的来源规则。 |
-| `notes` | 字符串，初始为空。保存任务提醒、占位、TODO、推迟处理的边界情况、简短的 Bug 经验，以及指向 Feature 设计稿或其他记录的相对链接。实现决定及其理由不论长短，都写进 [Feature 设计稿](#feature-设计与实现说明)。 |
+| `notes` | 字符串，初始为空。保存任务提醒、占位、TODO、推迟处理的边界情况、简短的 Bug 经验，以及指向 Feature 设计稿或其他记录的相对链接。实现决定及其理由不论长短，都写进 [Feature 设计与实现说明](#feature-设计与实现说明)。 |
 | `engineering_change` | 可选。出现时只能是 `bug`、`refactor` 或 `maintenance`。来自 Product 的 Feature 不写这个字段。 |
 | `bug_diagnosis` | 只允许与 `engineering_change: bug` 一起出现；其他情况为 `null` 或省略。对象只能有 `actual`、`expected`、`source`、`reproduction` 和 `root_cause`。`actual`、`expected`、`source` 是非空字符串。`reproduction` 是非空的有序步骤列表，步骤不重复、非空。调查期间 `root_cause` 可以是 `null`。每个 `done` 的 Bug，以及正在完成的 Bug，都需要非空且已确认的 `root_cause`。不是 Bug 的 Feature 不编造诊断证据。 |
 
@@ -250,7 +250,7 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 
 按 [专业工作与来源](11-specialist-workflows.md)，设计稿也可以说明范围内额外的测量、时长、显示或试听义务。
 
-Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3 让它与实现保持一致。这些步骤分别定义在 [Stage 1C](03-execute-loop.md#1c-设计决定与实现指导)、[Stage 2](03-execute-loop.md#stage-2--标记-in_progress-并保存验证计划) 和 [Stage 3](03-execute-loop.md#stage-3--基线tdd-与实现)。
+Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3 让它与实现保持一致。这些步骤分别定义在 [1C. 设计决定与实现指导](03-execute-loop.md#1c-设计决定与实现指导)、[Stage 2 · 标记 `in_progress` 并保存验证计划](03-execute-loop.md#stage-2--标记-in_progress-并保存验证计划) 和 [Stage 3 · 基线、TDD 与实现](03-execute-loop.md#stage-3--基线tdd-与实现)。
 
 已获授权的任务只交付实现指导时：
 
@@ -502,7 +502,7 @@ done ──source synchronization retires or replaces implemented behavior──
 - **测试影响：**`test_impact` 出现时，只能有 `additional_tests` 和 `full_suite_reasons`。
 - **已完成的 Feature：**`done` 的 Feature 有已决定的 `acceptance_mode`。它引用的每个测试都是 `active`，或是可追溯的 `retired`。
 - **已完成的 Bug：**`done` 的 Bug 有 `regression_tests` 或 `manual_regression`，并且 `bug_diagnosis.root_cause` 非空。
-- **修订与退役：**规则见[文件 3](#文件-3docsfeature-list-revisionsjson) 和[已退役的测试](#已退役的测试)。
+- **修订与退役：**规则见[文件 3：`docs/feature-list-revisions.json`](#文件-3docsfeature-list-revisionsjson) 和[已退役的测试](#已退役的测试)。
 
 `--completion-feature F0XX` 对正在完成的 Feature 应用 done 规则，并且要求它引用的每个测试（包括追加测试）都是 `active`。
 

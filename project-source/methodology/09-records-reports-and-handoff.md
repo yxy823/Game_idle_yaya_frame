@@ -27,7 +27,7 @@
 
 ### 保留临时材料
 
-创建临时材料时，按[临时文件生命周期规则](../agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理。临时材料必须在任务结束或交接后继续保留时，在 Feature notes 或 Progress 中记录它的用途和释放条件，例如某项待完成的验收或调查结束时。任务正常收尾时，检查任务实际的输出位置和证据链接，指出仍需要的临时材料。Progress 和 Feature 记录是阅读入口；不另建报告索引或保留记录文件。
+创建临时材料时，按[临时、备份与草稿文件](../agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理。临时材料必须在任务结束或交接后继续保留时，在 Feature notes 或 Progress 中记录它的用途和释放条件，例如某项待完成的验收或调查结束时。任务正常收尾时，检查任务实际的输出位置和证据链接，指出仍需要的临时材料。Progress 和 Feature 记录是阅读入口；不另建报告索引或保留记录文件。
 
 ### 整理和清理报告
 
@@ -66,7 +66,7 @@
 
 ## 项目知识
 
-`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [organization](../../docs/knowledge/README.md#组织条目) 和 [条目维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
+`docs/knowledge/` 保存来自项目工作的可复用解释。Feature notes 保存简短的事件经验，并链接到 Feature 设计中的局部决定。事件记录是情境性证据，不是 Product 需求、工程规则或可执行的输入。按知识库 README 中的 [组织条目](../../docs/knowledge/README.md#组织条目) 和 [条目维护](../../docs/knowledge/README.md#在已获授权的工作中维护) 处理。
 
 知识 Markdown 及其索引不影响测试证据，见[内容指纹](08-test-traceability-and-evidence.md#内容指纹)。可运行的脚本、夹具和数据放在项目的正式目录中。
 

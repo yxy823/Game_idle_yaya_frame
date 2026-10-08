@@ -21,11 +21,11 @@ GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明�
 
 | 当前需要 | 参考 |
 | --- | --- |
-| 寻找或比较玩法方向；找出值得验证的问题 | [概念探索](references/concept-ideation.md) |
-| 通过提问、回答和逐版草稿共同创作 | [GDD 对话](references/gdd-dialogue.md) |
-| 起草完整的 GDD，或判断它在当前阶段的覆盖情况 | [设计覆盖](references/gdd-fields.md) |
-| 组织或修改入口、主题页和规则的归属 | [设计文档结构](references/design-docs.md) |
-| 整合笔记或解决互相冲突的设计来源 | [材料整合](references/consolidation.md) |
+| 寻找或比较玩法方向；找出值得验证的问题 | [概念探索与验证问题](references/concept-ideation.md) |
+| 通过提问、回答和逐版草稿共同创作 | [GDD 共同创作](references/gdd-dialogue.md) |
+| 起草完整的 GDD，或判断它在当前阶段的覆盖情况 | [GDD 设计覆盖](references/gdd-fields.md) |
+| 组织或修改入口、主题页和规则的归属 | [设计文档结构与规则归属](references/design-docs.md) |
+| 整合笔记或解决互相冲突的设计来源 | [整合游戏设计材料](references/consolidation.md) |
 
 这些参考服务于当前的设计任务，不是必须依次执行的步骤。提问时使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)，不启动 `project-grill-me` 自己的独立流程。
 

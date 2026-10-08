@@ -20,7 +20,7 @@ description: 为已获授权的任务准备或复用 Godot Git worktree，使用
 
 ## 只准备本次工作需要的内容
 
-运行编辑器、导入、测试、游戏或其他可能写入的工具操作之前，读 [Godot worktree 运行准备](references/godot-worktree-runtime.md)。跨检出目录的额外数据问题由它负责。纯只读的源码比较不需要运行准备；单独的目录本身也证明不了运行时已隔离。
+运行编辑器、导入、测试、游戏或其他可能写入的工具操作之前，读 [在独立检出目录中准备 Godot](references/godot-worktree-runtime.md)。跨检出目录的额外数据问题由它负责。纯只读的源码比较不需要运行准备；单独的目录本身也证明不了运行时已隔离。
 
 实际的配置或首次扫描依赖，使用 [project-environment-godot](../project-environment-godot/SKILL.md)。请求的准备或所属任务要求的检查，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。复用仍然有效的准备，不新建就绪状态记录文件，也不要把创建目录扩大成完整的测试套件或启动游戏。
 

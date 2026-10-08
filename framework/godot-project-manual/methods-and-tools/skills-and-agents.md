@@ -18,8 +18,8 @@
 
 | 内容 | 位置与用途 |
 | --- | --- |
-| 工程约束 | [Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求；条目默认必须遵守，写“建议：”的是可偏离的默认做法 |
-| 可复用的方法 | [实现方法参考](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
+| 工程约束 | [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求；条目默认必须遵守，写“建议：”的是可偏离的默认做法 |
+| 可复用的方法 | [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
 | 当前游戏的方案与证据 | 表现目标和采用的方案写在对应的游戏表现文档；需要详细工程设计时写在 Feature 设计稿；在调试台选定的参数保存在游戏的调参资源中，文档链接它，不另抄数值；技术验证、诊断与其他验证证据留在原任务的记录中，见[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md) |
 
 Shader 规则的入口会链接这些方法参考。正式实现、原型和排错都可以直接读它们：参考文件放在某个 Skill 的 `references/` 目录下，不代表要启动那个 Skill 的完整流程、建 Feature 或委派顾问。读参考也不改变当前任务的授权和完成条件，参考里的具体数值不会因此成为通用规则。
@@ -102,7 +102,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 - **数值设计**：[design-balance](../../../project-source/skills/design-balance/SKILL.md) 从已知目标和规则推导数值方案，也可以调整已有模型的参数，并在写入授权内直接维护 GDD 中所属的数值正文。采纳的参数、写入的文件和验证状态分别记录；需要新增玩法或改变体验目标时，回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，用 `review-balance` 独立审核；设计者自己验算不算独立审核。普通的尺寸或数量记录不需要专门建模。
 - **反馈与诊断**：用户描述实际症状即可，Agent 根据证据追查逻辑、表现以及两者的连接，不需要用户先判断属于哪一层，也不会因为跨层就拆成多个 Bug。只要求调查时，交付证据和结论；已有具体的修复授权时，查清原因后回到原任务继续。
-- **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
+- **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由表](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
 - **调试台**：[debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 负责在调试台里比较候选、调参，以及用户采纳到游戏之后的收尾提交。采纳到游戏不等于验收通过，见[每种结果能证明什么](commands-and-evidence.md#每种结果能证明什么)；概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
 - **技术验证**：[technical-validation-godot](../../../project-source/skills/technical-validation-godot/SKILL.md) 在真实引擎里回答“既定做法能否实现”，不进调试台。验证结论不等于正式验收。
 - **按界面任务试用**：[review-ux](../../../project-source/skills/review-ux/SKILL.md) 写明怎样按界面任务试用：读 UI 规格中的界面任务（调试台自己的界面任务在 `dev/debug/_shared/usage-scenarios.md`），在改名的项目副本中用 [ui-trial](../../../project-source/tools/ui-trial/README.md) 工具程序驱动界面，按阻断、困惑、小问题分级报告。用户要求 UX 审核时使用它；Feature 改动了有界面任务的界面或调试台界面时，作者在 Stage 4 准备人工验收清单之前也用同一方法自己试用一遍，这是作者自查，不算独立审核。

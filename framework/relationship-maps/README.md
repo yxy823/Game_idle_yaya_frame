@@ -92,7 +92,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 
 ## 游戏项目开发场景图
 
-[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景索引](../prompt-scenarios/scenarios/scenario-index.md)。
+[game-development-workflow.readable.json](game-development-workflow.readable.json) 展示 [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json)的全部场景及其衔接关系，不包含 `Yaya 框架维护` 场景。节点只显示提示场景名称，不复制提示词正文，不新增阶段、判断、标题或说明节点。具体操作仍查对应提示词或[场景速查索引](../prompt-scenarios/scenarios/scenario-index.md)。
 
 图中保存为阅读调整的布局、文字换行、尺寸和连线外观，以及同名场景文件链接；节点不写备注，场景含义以提示词和场景页为准。已有名称检查和链接维护命令默认处理此文件；提示词顺序变化不要求重排整图。
 
@@ -122,7 +122,7 @@ Progress 保留当前停点，完成历史和知识条目各自引用原记录�
 | 检查内容 | 本仓库依据 |
 | --- | --- |
 | 节点名称与完整集合 | [Godot 开发提示词库](../prompt-scenarios/prompts/godot-development-prompts.json) |
-| 场景前提、出口和对应提示词 | [场景索引](../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../prompt-scenarios/scenarios/README.md#收录什么) |
+| 场景前提、出口和对应提示词 | [场景速查索引](../prompt-scenarios/scenarios/scenario-index.md)、[场景范围](../prompt-scenarios/scenarios/README.md#收录什么) |
 | 任务路由、Product 顺序与 GDD 前提 | [方法总览](../../project-source/methodology/00-overview.md) |
 | 授权、验证、人工验收与完成 | [Stage 0–8 `feature-execute` 执行循环](../../project-source/methodology/03-execute-loop.md) |
 | 专业工作职责 | [专业工作与来源](../../project-source/methodology/11-specialist-workflows.md) |

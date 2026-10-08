@@ -13,7 +13,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 写入长期保存的文字之前，使用 `yaya/methodology/05-document-language.md`。从当前配置读取 `document_language`；保留已有的历史。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交** 中关于保留改动和提交的约定。
 
-使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
+使用 [GDD 前提与职责](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。阅读下列来源：
 
 - 当前 Product 已批准的交付文档；
 - 它所采用的实际 GDD 主题；

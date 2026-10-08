@@ -14,10 +14,10 @@
 
 | 主题 | 用途 |
 | --- | --- |
-| [Godot 运行时](godot-runtime/README.md) | SceneTree、资源、信号、UI、动画、音频、物理，以及运行时与导出后的行为 |
-| [GDScript](gdscript/README.md) | 类型、语言与 API 用法、代码组织和脚本实现技巧 |
-| [调试与测试](debugging-testing/README.md) | 复现、诊断、测试夹具、回归覆盖和验证方法 |
-| [工具与流水线](tools-pipeline/README.md) | PowerShell/Python 辅助脚本、数据与导入流程、构建和本地工具 |
+| [Godot 运行时经验](godot-runtime/README.md) | SceneTree、资源、信号、UI、动画、音频、物理，以及运行时与导出后的行为 |
+| [GDScript 经验](gdscript/README.md) | 类型、语言与 API 用法、代码组织和脚本实现技巧 |
+| [调试与测试经验](debugging-testing/README.md) | 复现、诊断、测试夹具、回归覆盖和验证方法 |
+| [工具与流水线经验](tools-pipeline/README.md) | PowerShell/Python 辅助脚本、数据与导入流程、构建和本地工具 |
 
 项目中已验证过的做法，在其前提条件仍然成立时优先采用。知识是带背景的证据，不是新的规则来源。下列内容仍然决定任务怎么做：
 

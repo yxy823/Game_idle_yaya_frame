@@ -24,6 +24,6 @@ Resource UID、场景节点的 `unique_id`、NodePath 和 `%UniqueName` 的身�
 
 ## 分组与顺序
 
-- 分组是行为声明。移除或改名分组前，找出所有调用 `is_in_group()`、`get_nodes_in_group()`、`call_group()` 的消费方。分组命名和遍历顺序遵循[分组](../40-project-config/subsystem-settings.md#分组与层)。
+- 分组是行为声明。移除或改名分组前，找出所有调用 `is_in_group()`、`get_nodes_in_group()`、`call_group()` 的消费方。分组命名和遍历顺序遵循[分组与层](../40-project-config/subsystem-settings.md#分组与层)。
 - 不创建以 `_` 开头的自定义分组；Godot 用下划线开头的分组名做内部用途。
 - 同级顺序决定 2D 绘制顺序、Container 布局、处理顺序和焦点顺序，在实例和继承场景中也一样。不为美观按字母重排节点。

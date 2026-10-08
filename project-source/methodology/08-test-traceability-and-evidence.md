@@ -258,7 +258,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 - 只有覆盖义务需要多次不同的运行时，才重复 `--run`。一次全量运行就覆盖 Required 和 affected。
 - 辅助工具根据当前 Feature、测试登记表和原始报告计算覆盖。调用方提供的通过标签或总数不能产生 PASS。
 - 导入失败会清除之前的引用。
-- 完成证据（格式见 [Feature 完成证据](02-feature-list-schema.md#文件-5docsfeaturesf0xx-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
+- 完成证据（格式见 [文件 5：`docs/features/F0XX-evidence.json`](02-feature-list-schema.md#文件-5docsfeaturesf0xx-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
 - 解析和 lint 结果由 Agent 直接评估。
 
 哈希、与当前源码的绑定和运行身份，用来发现意外的过时复用或被改动的文件。这些可在本地编辑的记录不是防止有人改写全部证据的安全签名。文件修改时间和时钟精度从不授权完成。不要为了得到绿色结果而加 sleep，或重跑没有变化的失败。

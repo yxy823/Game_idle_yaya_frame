@@ -3,8 +3,8 @@
 ## 身份与路径
 
 - Resource UID、`res://` 路径、`resource_name` 和玩法上的业务 ID 是不同的身份域，规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)。
-- 移动或重命名 Resource，按[资源路径、UID 与移动](../60-assets/naming-paths-and-moves.md#移动重命名与复制)使用能保持 UID 的流程。不手工修改 `resource_path` 来修复身份。
-- 游戏运行时需要的 Resource 不放在含 `.gdignore` 的目录下：编辑器不扫描这类目录，其中的文件不会被导入，也不会进入导出包。`.gdignore` 的使用见[源文件与派生资源](../60-assets/source-and-derived-assets.md)。
+- 移动或重命名 Resource，按[移动、重命名与复制](../60-assets/naming-paths-and-moves.md#移动重命名与复制)使用能保持 UID 的流程。不手工修改 `resource_path` 来修复身份。
+- 游戏运行时需要的 Resource 不放在含 `.gdignore` 的目录下：编辑器不扫描这类目录，其中的文件不会被导入，也不会进入导出包。`.gdignore` 的使用见[源素材与派生素材](../60-assets/source-and-derived-assets.md)。
 
 ## 保存
 

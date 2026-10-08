@@ -23,7 +23,7 @@ description: 把选定的 Godot worktree 改动整合到预定目标，或续接
 
 ## 验证并采纳组合后的结果
 
-所属任务适用的检查，包括受影响的 Godot 场景与资源关系，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。没有文本冲突不能证明路径、节点引用、标识符或行为仍然正常。目标的准备情况或数据写入位置缺失或发生变化时，在运行相关的写入工具之前，读共用的 [Godot 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。
+所属任务适用的检查，包括受影响的 Godot 场景与资源关系，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。没有文本冲突不能证明路径、节点引用、标识符或行为仍然正常。目标的准备情况或数据写入位置缺失或发生变化时，在运行相关的写入工具之前，读共用的 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。
 
 组合后的候选结果需要适用于它实际内容和义务的证据。来源检出目录里的成功不能代替对目标的验证。复用仍然有效的结果；只重新执行受影响或缺失的检查。证据是否适用、引用或导入的恢复、中断的运行，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)；所属任务要求实际人工验收时，使用 [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md)。
 

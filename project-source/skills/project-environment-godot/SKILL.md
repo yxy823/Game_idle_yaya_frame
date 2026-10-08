@@ -11,12 +11,12 @@ description: 配置、更新或恢复 Godot 项目的工具路径，或执行项
 
 | 当前需要 | 阅读并执行 |
 | --- | --- |
-| 新项目首次准备 | **工具配置** 和 **项目环境准备**。默认文档语言已经设置好；只有用户要求使用其他语言时，才阅读[语言选择](../../../yaya/methodology/05-document-language.md#3-选择语言) |
+| 新项目首次准备 | **工具配置** 和 **项目环境准备**。默认文档语言已经设置好；只有用户要求使用其他语言时，才阅读[3. 选择语言](../../../yaya/methodology/05-document-language.md#3-选择语言) |
 | 某个工具移动了位置或换了版本 | 先读 **工具配置**，再运行下面「用真实输出检查」中的就绪检查。保留无关的设置和仍然有效的准备结果。Godot 换成新的补丁版本或升级插件时，按 `yaya/methodology/07-engineering-change.md` 的 **引擎与插件升级** 作为维护 Feature 进行；本 Skill 只承担其中修改路径和就绪检查这一步 |
 | 已配置的工具无法启动 | **工具配置**：报告实际的失败；只在用户要求的范围内修改路径 |
 | 需要首次导入和类扫描 | **项目环境准备** 的第 2 步，以及[首次 Godot 扫描](../../../yaya/tools/README.md#首次-godot-扫描) |
 
-如果编辑器或导入过程会在 worktree 内写入文件，而你不清楚它写到哪里、怎样清理，先阅读 [Godot worktree 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。阅读它不会创建 worktree。
+如果编辑器或导入过程会在 worktree 内写入文件，而你不清楚它写到哪里、怎样清理，先阅读 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。阅读它不会创建 worktree。
 
 ## 用真实输出检查
 

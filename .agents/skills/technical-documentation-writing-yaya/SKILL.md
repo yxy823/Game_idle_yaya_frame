@@ -27,10 +27,10 @@ description: 编写、更新或整理 Yaya 框架的说明文档，包括 Godot 
 
 ## 从哪里开始
 
-先读[框架写作指南](references/writing-guide.md)，确定本次范围、表达方式和检查边界。普通的单页润色读这一份就够。需要时再读：
+先读[框架文档写作指南](references/writing-guide.md)，确定本次范围、表达方式和检查边界。普通的单页润色读这一份就够。需要时再读：
 
-- [框架文档结构](references/document-structure.md)：整理整套手册或维护材料，处理页面分工、命名、术语或正文去重时。
-- [流程与场景文档](references/procedure-writing.md)：编写操作步骤、维护流程或场景页时。
+- [框架文档结构与正文归属](references/document-structure.md)：整理整套手册或维护材料，处理页面分工、命名、术语或正文去重时。
+- [框架流程与场景文档](references/procedure-writing.md)：编写操作步骤、维护流程或场景页时。
 
 ## 资源与依据
 

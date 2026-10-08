@@ -11,8 +11,8 @@ description: 编写、更新或整理 Godot 项目文档，包括受代码或配
 
 [写作指南](references/writing-guide.md)负责当前文档的契约、措辞和核对。普通修改读这一份就够。需要时它会指向：
 
-- [文档结构](references/document-structure.md)：需要处理组织方式、命名、归属或重复内容时。
-- [操作说明写作](references/procedure-writing.md)：需要说明如何操作项目工具、复现问题或执行检查时。
+- [文档结构与归属](references/document-structure.md)：需要处理组织方式、命名、归属或重复内容时。
+- [操作说明与验证指南](references/procedure-writing.md)：需要说明如何操作项目工具、复现问题或执行检查时。
 
 这些方法服务于当前任务，不会另外启动设计或交付流程。尚未决定的玩法需求和无法完成的验证要如实保留，不能靠措辞把它们写成已解决。
 

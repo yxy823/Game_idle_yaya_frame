@@ -21,7 +21,7 @@
 - **当前状态**说明现在是什么，可用于界面打开、重新连接或载入后的显示恢复。
 - **一次性事件或结果**说明刚发生什么，用于本次飘字、音效、闪烁等反馈。读取当前生命值不等于又受了一次伤；需要补播时由具体需求明确约定。
 
-玩家输入只是触发来源之一，AI、计时器和游戏流程也会调用逻辑。选择普通方法、已有 API、Signal 或必要的协调者，取决于实际依赖、结果传递和生命周期；职责模型不要求新增通信机制。双方的创建、连接与退出清理由实际组装所有者负责，具体规则见[依赖与协作](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
+玩家输入只是触发来源之一，AI、计时器和游戏流程也会调用逻辑。选择普通方法、已有 API、Signal 或必要的协调者，取决于实际依赖、结果传递和生命周期；职责模型不要求新增通信机制。双方的创建、连接与退出清理由实际组装所有者负责，具体规则见[GDScript 结构与依赖](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
 
 ### 编排和 Godot 对象按实际职责判断
 
@@ -39,12 +39,12 @@
 
 | 要了解什么 | 查阅位置 | 商店购买示例 |
 | --- | --- | --- |
-| 游戏目标、规则、状态和体验要求 | [GDD](gdd/README.md) | 商品可购买条件、扣费与入包规则、成功和失败要传达的信息 |
-| 界面布局、状态与操作方式 | [UI 设计](ui/README.md) | 商品如何排列、价格与按钮状态、购买结果如何呈现在界面 |
-| 一次具体表现的过程、备选方案与采用组合 | [游戏表现](presentation/README.md) | 购买成功后的图标飞行、背包入口的到达反馈及采用的组件方案 |
-| 共享视觉、声音和语言要求 | [美术](art/art-bible.md)、[声音](audio/sound-bible.md)、[本地化](localization/localization-spec.md) | 共用的图标风格、反馈声音与价格在各语言中的分隔符写法 |
+| 游戏目标、规则、状态和体验要求 | [游戏设计文档目录](gdd/README.md) | 商品可购买条件、扣费与入包规则、成功和失败要传达的信息 |
+| 界面布局、状态与操作方式 | [界面规格目录](ui/README.md) | 商品如何排列、价格与按钮状态、购买结果如何呈现在界面 |
+| 一次具体表现的过程、备选方案与采用组合 | [游戏表现目录](presentation/README.md) | 购买成功后的图标飞行、背包入口的到达反馈及采用的组件方案 |
+| 共享视觉、声音和语言要求 | [美术圣经](art/art-bible.md)、[声音圣经](audio/sound-bible.md)、[本地化规范](localization/localization-spec.md) | 共用的图标风格、反馈声音与价格在各语言中的分隔符写法 |
 | 实际模块、状态所有者、调用与连接 | [项目架构](architecture.md)及必要的子系统说明 | 谁校验并执行购买、谁管理余额与物品、界面怎样获得结果 |
-| 本次交付、局部设计与验证 | [Product](product.md)、[Feature](features/README.md)及其关联记录 | 本次完成哪些购买行为、反馈与检查，实际验收覆盖什么 |
+| 本次交付、局部设计与验证 | [Product 交付总览](product.md)、[Feature 文档目录](features/README.md)及其关联记录 | 本次完成哪些购买行为、反馈与检查，实际验收覆盖什么 |
 
 这些例子不代表项目已有商店或已确定设计。记录随实际工作产生，具体来源归属见[专业工作与来源](../yaya/methodology/11-specialist-workflows.md)。一项要求保留一个正文，其他文档引用它；当前实现关系由实施任务同步，验收结果归既有记录。
 
@@ -110,11 +110,11 @@ game/mining/
 
 模块名称来自当前游戏：探索游戏可能需要 `world/` 与 `actors/`，放置游戏可能需要 `production/` 与 `upgrades/`。有需求再建立相应目录和实现。功能专属面板跟随功能，菜单等全局 UI 可归入 `game/ui/`。
 
-逻辑分层与目录分层分别判断：优先在所属游戏模块内部明确输入、规则与表现的职责。例如，`mining_rules.gd` 与 `mining_panel.gd` 可以同属 `game/mining/`，规则代码不依赖面板实现。再按内容规模与查找、维护需要细分目录；逻辑分层本身不要求新建根级 `core/`、`presentation/` 等目录。依赖方向沿用[项目架构原则](project-rules.md#22-核心架构原则)。
+逻辑分层与目录分层分别判断：优先在所属游戏模块内部明确输入、规则与表现的职责。例如，`mining_rules.gd` 与 `mining_panel.gd` 可以同属 `game/mining/`，规则代码不依赖面板实现。再按内容规模与查找、维护需要细分目录；逻辑分层本身不要求新建根级 `core/`、`presentation/` 等目录。依赖方向沿用[2.2 核心架构原则](project-rules.md#22-核心架构原则)。
 
 ## 用领域与职责命名
 
-先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
+先表达领域概念，需要区分时再补充职责。项目自有 Godot 文件与目录使用英文 `snake_case`，类名与场景节点名使用 `PascalCase`；场景与专属脚本同名，例如 `mining_panel.tscn` 与 `mining_panel.gd`。第三方原名和工具要求的约定名称按其契约保留。具体要求见[资源命名](../yaya/agent-rules/60-assets/naming-paths-and-moves.md#命名与组织)、[GDScript 命名](../yaya/agent-rules/10-gdscript/typing-and-api.md#风格与命名)与[场景结构、实例与归属](../yaya/agent-rules/20-scenes/structure-and-ownership.md)。
 
 以下是可选的职责词，按真实需要采用：
 
@@ -129,12 +129,12 @@ game/mining/
 | `Store` | 明确的存储、持久化或数据访问边界 | `SaveStore`、`save_store.gd` |
 | `Manager` | 对多个所属对象或共同生命周期的真实协调 | `FeedbackManager`、`feedback_manager.gd` |
 
-小模块可能只需要一个场景和脚本。使用职责词不要求同时增加 `class_name`、继承层、Resource 类型或 Autoload；职责能说清时，用具体名称代替笼统的 `utils.gd`。Resource 的角色与可变性见[资源职责、共享与局部性](../yaya/agent-rules/21-resources/roles-sharing-and-locality.md)。
+小模块可能只需要一个场景和脚本。使用职责词不要求同时增加 `class_name`、继承层、Resource 类型或 Autoload；职责能说清时，用具体名称代替笼统的 `utils.gd`。Resource 的角色与可变性见[Resource 角色、共享与复制](../yaya/agent-rules/21-resources/roles-sharing-and-locality.md)。
 
 ## 生命周期与文件位置分别判断
 
 Autoload 按真实生命周期选择，文件仍按职责归属。例如，需要跨场景存续的存档服务可以留在 `game/saving/`；场景局部协调者则跟随其所属场景。`Manager` 后缀不表示全局生命周期，放进 `components/` 也不自动证明它已经独立。
 
-需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[依赖规则](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
+需要跨模块协作时，先指出状态归谁、调用哪个 API、由谁连接双方。组装放在相关父级或协调者，不为接线方便把游戏规则引入通用组件。实现细节沿用[GDScript 结构与依赖](../yaya/agent-rules/10-gdscript/structure-and-dependencies.md)与[Autoload 规则](../yaya/agent-rules/40-project-config/autoloads-and-plugins.md#autoload)。
 
 当实际边界需要说明时，按[架构概览](../yaya/methodology/10-architecture-overview.md)维护项目的可选架构文档。新增目录本身不要求创建架构地图、ADR 或额外验证阶段。

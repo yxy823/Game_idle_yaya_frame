@@ -237,6 +237,6 @@
 
 场景只覆盖框架[使用范围](../../README.md#使用范围)内的工作。
 
-编写与修改遵循[本册编写要求](README.md)。目录对应由框架的 `check_scenario_prompt_paths.py` 核对；路径通过不代表正文语义或真实运行已经通过。
+编写与修改遵循[场景速查手册的编写与维护](README.md)。目录对应由框架的 `check_scenario_prompt_paths.py` 核对；路径通过不代表正文语义或真实运行已经通过。
 
 框架特有或具有特定含义的用语见[框架术语](../../terminology.md)。

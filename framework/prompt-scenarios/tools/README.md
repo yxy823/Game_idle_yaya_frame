@@ -29,4 +29,4 @@ python -B framework/prompt-scenarios/tools/link_workflow_graph_scenarios.py --ch
 - **名称检查**：只忽略 CR/LF，报告缺少、多余、重名及节点 ID 重复；去掉 `--summary` 可查看字段位置和候选名称。
 - **链接写入**：去掉 `--check` 时只修改节点的 `link`，会替换已有链接；名称不匹配或目标文件缺失时不写入。链接是当前仓库的绝对本地路径，仓库移动后重新运行即可。只读审核不运行写入命令。
 
-两项检查都不覆盖完整格式、连线含义或显示效果；图的维护规则见[关系图说明](../../relationship-maps/README.md)。
+两项检查都不覆盖完整格式、连线含义或显示效果；图的维护规则见[文档关系图与开发场景图](../../relationship-maps/README.md)。

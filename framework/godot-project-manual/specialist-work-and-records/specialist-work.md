@@ -11,7 +11,7 @@
 
 一个任务只用到它需要的部分。项目里有 Art Bible 或 Sound Bible 的占位文件，不代表要先把整款游戏的美术和声音都设计完。
 
-本页的 UI 文档、游戏表现文档和共享方向文档，分别细化[游戏表现](../foundations/game-logic-and-presentation.md)中的不同问题。逻辑和表现都来源于 GDD，专业文档不替代游戏规则的正文。专业规格可以和 GDD 一起逐步形成；但开始接入、测量或实现前，本次行为必须有真实的规则支撑，判断方式见 [GDD 前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
+本页的 UI 文档、游戏表现文档和共享方向文档，分别细化[游戏逻辑、表现与协作](../foundations/game-logic-and-presentation.md)中的不同问题。逻辑和表现都来源于 GDD，专业文档不替代游戏规则的正文。专业规格可以和 GDD 一起逐步形成；但开始接入、测量或实现前，本次行为必须有真实的规则支撑，判断方式见 [GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 
 ## 各类来源由谁维护
 
@@ -199,7 +199,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 
 例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用 [Shader 诊断参考](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
 
-修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)，同时遵守 [Shader 工程规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
+修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)，同时遵守 [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
 
 ### 诊断用的 Skill
 

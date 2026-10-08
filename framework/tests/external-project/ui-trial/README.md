@@ -2,7 +2,7 @@
 
 [测试与夹具](../../README.md#按需检查) · [工具说明](../../../../project-source/tools/ui-trial/README.md)
 
-本目录用真实 Godot 验证 `yaya/tools/ui-trial/` 的驱动基类、运行脚本和静态扫描。副本改名与拒绝运行的检查不需要 Godot，放在[工具回归](../tool-regression/README.md)的 `test_ui_trial_copy.py`，随统一入口运行。
+本目录用真实 Godot 验证 `yaya/tools/ui-trial/` 的驱动基类、运行脚本和静态扫描。副本改名与拒绝运行的检查不需要 Godot，放在[工具回归夹具](../tool-regression/README.md)的 `test_ui_trial_copy.py`，随统一入口运行。
 
 ## 运行
 

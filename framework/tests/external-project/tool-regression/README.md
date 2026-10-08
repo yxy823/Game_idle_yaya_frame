@@ -12,7 +12,7 @@
 ## 运行前准备
 
 1. 选择本次获准使用的外部项目，核对它的 Godot、插件和被测工具版本与本次修改对应。
-2. 新项目第一次运行前，按[项目工具说明](../../../../project-source/tools/README.md#首次-godot-扫描)完成首次导入。
+2. 新项目第一次运行前，按[首次 Godot 扫描](../../../../project-source/tools/README.md#首次-godot-扫描)完成首次导入。
 3. 在外部项目根目录准备 Godot 路径变量（后续命令都使用它）：
 
 ```powershell

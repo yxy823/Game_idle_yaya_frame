@@ -23,7 +23,7 @@
 项目环境准备（Project Environment Bootstrap）是用户要求准备环境时，由 Agent 为本项目准备运行环境。它是 Agent 执行的一项任务，不是单独的安装程序，也不依赖 GDD。
 
 1. **确认工具。** 检查 Python 和 Godot 的路径以及所需依赖，把路径写进配置。用户提供了项目名称时，把 `project.godot` 的 `application/config/name` 改为它。以文本方式新建或修改 `project.godot` 后，用 [`resave_godot_files.gd`](../tools/README.md#resave_godot_filesgd) 重新保存。
-2. **运行首次 Godot 扫描。** 项目从未打开过时，在第一条需要项目脚本的命令之前，让配置的 Godot 编辑器完成资源导入和全局类扫描。按[首次扫描说明](../tools/README.md#首次-godot-扫描)操作。只要求填写配置的环境准备请求，可以把扫描留到第一次获准的运行；这时要说明扫描尚未运行。之后的 Feature 复用已完成的扫描；没有导入包装脚本，也没有逐个 Feature 的导入步骤。
+2. **运行首次 Godot 扫描。** 项目从未打开过时，在第一条需要项目脚本的命令之前，让配置的 Godot 编辑器完成资源导入和全局类扫描。按[首次 Godot 扫描](../tools/README.md#首次-godot-扫描)操作。只要求填写配置的环境准备请求，可以把扫描留到第一次获准的运行；这时要说明扫描尚未运行。之后的 Feature 复用已完成的扫描；没有导入包装脚本，也没有逐个 Feature 的导入步骤。
 3. **检查是否就绪。** 运行：
 
    ```powershell

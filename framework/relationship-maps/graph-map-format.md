@@ -2,7 +2,7 @@
 
 [关系图说明](README.md) · [框架入口](../README.md)
 
-本页定义两张关系图共用的 Graph_Map JSON 结构、可选字段、保存格式和本地使用次数文件。图的阅读含义与维护规则见[关系图说明](README.md)；只有查看器格式变化时才需要修改本页。
+本页定义两张关系图共用的 Graph_Map JSON 结构、可选字段、保存格式和本地使用次数文件。图的阅读含义与维护规则见[文档关系图与开发场景图](README.md)；只有查看器格式变化时才需要修改本页。
 
 ## 文件结构
 
@@ -81,7 +81,7 @@
 
 本地链接由 Graph_Map 展示和复制，不直接打开文件，不把文件内容打包进 JSON。`target` 最长 8192 字符，不能是空白或含控制字符；本仓库的链接命令还会检查对应场景文件确实存在。仓库移动、场景分类或名称变化后，需要按当前路径更新链接。
 
-链接维护使用 [link_workflow_graph_scenarios.py](../prompt-scenarios/tools/link_workflow_graph_scenarios.py)，用法见[场景图名称与链接检查](../prompt-scenarios/tools/README.md#检查场景图名称与链接)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
+链接维护使用 [link_workflow_graph_scenarios.py](../prompt-scenarios/tools/link_workflow_graph_scenarios.py)，用法见[检查场景图名称与链接](../prompt-scenarios/tools/README.md#检查场景图名称与链接)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
 
 上述附加字段以 Graph_Map 的 `src/core/model.ts` 和 `docs/json-appearance.md` 为依据。日常维护保留已经生效的配置，不需要每次查阅查看器源码；确实要新增字段或改变格式时，再核对实际使用的查看器版本——同为 v1 不代表支持所有外观配置。
 

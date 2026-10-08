@@ -55,4 +55,4 @@
 
 ## 流程关联与衔接关系
 
-依据：[玩家可见文本](<../../../../../project-source/methodology/11-specialist-workflows.md#玩家可见文本>)、[本地化术语译名](<../../../../../project-source/methodology/11-specialist-workflows.md#本地化术语译名>)、[最终验证前的文档检查点](../../../../../project-source/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)。
+依据：[玩家可见文本](<../../../../../project-source/methodology/11-specialist-workflows.md#玩家可见文本>)、[本地化术语译名](<../../../../../project-source/methodology/11-specialist-workflows.md#本地化术语译名>)、[3D. 最终验证前的文档检查点](../../../../../project-source/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)。

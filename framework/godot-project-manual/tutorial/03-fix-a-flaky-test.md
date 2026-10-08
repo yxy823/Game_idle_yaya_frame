@@ -1,6 +1,6 @@
 # 教程三：交付后维护：修正时过时不过的测试
 
-[Godot 项目手册](../README.md) · 上一篇：[完成第一个 Feature](02-first-feature-to-done.md)
+[Godot 项目手册](../README.md) · 上一篇：[教程二：完成第一个 Feature：视觉样例、等待验收与收尾](02-first-feature-to-done.md)
 
 本篇讲交付之后的一类常见维护：同一份代码，某个测试有时通过、有时失败。示例项目的两个 Product 都交付后遇到了这种情况，用一个维护任务 F013 修好。示例项目的读法见[教程一](01-blank-project-to-feature-plan.md#示例项目与阅读方式)。
 

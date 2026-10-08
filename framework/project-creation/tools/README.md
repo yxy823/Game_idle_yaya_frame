@@ -10,4 +10,4 @@
 python -B framework/project-creation/tools/create_project.py --output D:\Games\MyGodotGame
 ```
 
-创建器按清单预检、复制和重命名，再建立独立 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，然后创建本地初始提交；初始提交同样经过提交钩子的检查。目标路径、复制映射、失败处理与执行边界的完整契约见[框架、创建器与项目边界](../../godot-project-manual/foundations/framework-and-project.md#创建器用法)。
+创建器按清单预检、复制和重命名，再建立独立 Git 仓库，把 `core.hooksPath` 设为复制过去的 `.githooks`，然后创建本地初始提交；初始提交同样经过提交钩子的检查。目标路径、复制映射、失败处理与执行边界的完整契约见[创建器用法](../../godot-project-manual/foundations/framework-and-project.md#创建器用法)。

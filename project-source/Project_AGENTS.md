@@ -90,7 +90,7 @@
   - **顺带发现的问题**：默认不改。只在它阻塞任务、立即带来正确性或安全风险，或用户扩大范围时才改；有用时单独汇报。
 - 已经改到某个文件，不是扩大范围的理由。不做无关的重命名、格式化、目录调整、警告清理、死代码清理、API 现代化、场景规范化或重构。
 - 保留已有的公共 API、依赖和局部代码风格。修改共享契约时，迁移全部已知的消费方，并在汇报中说明。
-- 现有技术栈够用时不增加依赖。不为假想的未来消费方预先搭建通用框架。结构拆分的依据见[结构与依赖](yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
+- 现有技术栈够用时不增加依赖。不为假想的未来消费方预先搭建通用框架。结构拆分的依据见[GDScript 结构与依赖](yaya/agent-rules/10-gdscript/structure-and-dependencies.md)。
 
 ### 删除与派生产物
 
@@ -113,7 +113,7 @@
 3. 只在所属位置更新有用且已授权的内容。需要新决定或超出本次授权的修改，写进完成汇报的待确认。没有变化时，不要创建文档或空报告。
 4. 移动、重命名文档或修改标题后，用 [`check-markdown-links.py`](yaya/tools/README.md#check-markdown-linkspy) 校验链接和锚点。
 
-写过或改过文档的任务（包括只改措辞的），收尾时还要对本次改过的文档运行[术语检查](yaya/tools/README.md#check-terminologypy)，把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。改过的文档可以用 `git status --short -- "*.md"` 列出，直接写在命令后面（也支持 `.json`，只查字符串值）：
+写过或改过文档的任务（包括只改措辞的），收尾时还要对本次改过的文档运行[check-terminology.py](yaya/tools/README.md#check-terminologypy)，把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。改过的文档可以用 `git status --short -- "*.md"` 列出，直接写在命令后面（也支持 `.json`，只查字符串值）：
 
 ```powershell
 python -B yaya/tools/checks/check-terminology.py <改过的文档> <另一个文档>
@@ -121,7 +121,7 @@ python -B yaya/tools/checks/check-terminology.py <改过的文档> <另一个文
 
 提交时，[提交钩子](yaya/tools/README.md#提交钩子)还会对暂存的文档运行术语检查、措辞检查和链接检查。
 
-Feature 中各类内容的动作与权限见 [3D 文档检查点](yaya/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)。
+Feature 中各类内容的动作与权限见 [3D. 最终验证前的文档检查点](yaya/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)。
 
 ## Git 与提交
 
@@ -135,7 +135,7 @@ Feature 中各类内容的动作与权限见 [3D 文档检查点](yaya/methodolo
   - **用户或派活的主 Agent 要求不提交时**：按其范围执行，只完成收尾的文件修改并报告；被派的子智能体交回主 Agent 提交收尾，再开始本次任务。
   - **收尾受阻时**（例如编辑器不关、测试失败）：报告受阻的步骤，只停下依赖收尾结果的工作。
   - **只读任务**：只报告存在未收尾的采纳，不收尾。
-- 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据；在已有 worktree 中运行编辑器、导入、测试等会写入的工具前，读 [worktree 运行准备](.agents/skills/worktree-create-godot/references/godot-worktree-runtime.md)。
+- 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据；在已有 worktree 中运行编辑器、导入、测试等会写入的工具前，读 [在独立检出目录中准备 Godot](.agents/skills/worktree-create-godot/references/godot-worktree-runtime.md)。
 - 存在未完成的合并或变基，或者 HEAD、分支出现本任务无法解释的变化时，保留现场并汇报。弄清之前，不做依赖该状态的写入或提交，也不自动中止、重置或清理。
 - 续接时（包括换到新对话），依据工作目录、Feature 与 Progress、当前 HEAD 和实际差异。同一任务留下的改动，核实范围后可以继续完成、验证和提交。
 
@@ -197,7 +197,7 @@ Work item: docs/features/F012.json
 
 - 证据只证明它实际运行到的环境。规则要求新进程、新导入、新导出或目标运行时的证据时，已有编辑器或会话的结果不能代替。
 - 人工验收和自动验证是不同的证据，不把其中一种汇报成另一种。
-- 日志、JUnit 报告和临时导出等验证产物按[临时文件规则](yaya/agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。
+- 日志、JUnit 报告和临时导出等验证产物按[临时、备份与草稿文件](yaya/agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。
 
 ### 汇报验证结果
 

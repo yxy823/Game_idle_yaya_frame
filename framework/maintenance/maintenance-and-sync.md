@@ -37,16 +37,16 @@
 
 | 变化 | Godot 项目手册中的专题 | 以什么为准 |
 | --- | --- | --- |
-| 复制、目录、重命名、初始化边界 | [框架与项目](../godot-project-manual/foundations/framework-and-project.md)、[项目目录](../godot-project-manual/foundations/project-layout.md) | 创建器、复制清单、默认文件 |
-| 环境字段、插件或 lint 默认值 | [配置](../godot-project-manual/foundations/configuration.md)、[错误含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 配置源文件、检查器、插件及补丁 |
-| Product、AC、依赖、规划与历史 | [需求与规划](../godot-project-manual/requirements-and-tasks/requirements-and-planning.md) | methodology、模板、规划与同步 Skill、检查器 |
-| Stage、验收、任务类型、完成或持续授权 | [任务与阶段](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md) | Stage 0–8 `feature-execute` 执行循环、Feature Skill、工程规则 |
-| 探索、worktree 准备或成果整合 | [Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[知识与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
-| 专业文档维护者、资源、语言或独立审核 | [专业来源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill 与角色](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
-| 参数、测试选择、结果、指纹或错误 | [命令与证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
-| Analyzer | [Analyzer 说明](../../project-source/tools/analyzer/README.md) | 请求格式、依赖记录和后端测试 |
-| 术语、设计、架构、规则、调研、知识或 Progress | [知识与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、产物生命周期、角色和领域规则 |
-| 场景的输入、步骤、提示词或出口 | 对应 Project / 分类下的同名场景页 | 所属提示词库、Skill / methodology / CLI、[场景编写要求](../prompt-scenarios/scenarios/README.md) |
+| 复制、目录、重命名、初始化边界 | [框架、创建器与项目边界](../godot-project-manual/foundations/framework-and-project.md)、[项目对象与目录](../godot-project-manual/foundations/project-layout.md) | 创建器、复制清单、默认文件 |
+| 环境字段、插件或 lint 默认值 | [配置参考](../godot-project-manual/foundations/configuration.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 配置源文件、检查器、插件及补丁 |
+| Product、AC、依赖、规划与历史 | [需求、Feature 与规划基线](../godot-project-manual/requirements-and-tasks/requirements-and-planning.md) | methodology、模板、规划与同步 Skill、检查器 |
+| Stage、验收、任务类型、完成或持续授权 | [任务类型、开发阶段与完成语义](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md) | Stage 0–8 `feature-execute` 执行循环、Feature Skill、工程规则 |
+| 探索、worktree 准备或成果整合 | [逐步探索与 worktree](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[探索结果与工作目录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
+| 专业文档维护者、资源、语言或独立审核 | [专业来源与资源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill、Agent 与提示词](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
+| 参数、测试选择、结果、指纹或错误 | [命令与验证证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
+| Analyzer | [资源 Analyzer](../../project-source/tools/analyzer/README.md) | 请求格式、依赖记录和后端测试 |
+| 术语、设计、架构、规则、调研、知识或 Progress | [知识、设计与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、产物生命周期、角色和领域规则 |
+| 场景的输入、步骤、提示词或出口 | 对应 Project / 分类下的同名场景页 | 所属提示词库、Skill / methodology / CLI、[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md) |
 
 其他需要同步的情况：
 
@@ -68,13 +68,13 @@
 - **结构变了**：更新入口、链接、锚点和相关的关系图。
 - **只是内部实现变了**：使用契约不变时，核对后不需要为改而改。
 
-文档只描述现在的行为，不同时保留新旧两套教程，也不留空的跳转页。历史原因由 Git 保存；当次仍需要的报告按[保留边界](design-guidelines/reviews-and-reports.md#当次报告的保存与清理)处理。不为说明文档建立版本状态、同步收据、来源哈希清单或发布资格。
+文档只描述现在的行为，不同时保留新旧两套教程，也不留空的跳转页。历史原因由 Git 保存；当次仍需要的报告按[当次报告的保存与清理](design-guidelines/reviews-and-reports.md#当次报告的保存与清理)处理。不为说明文档建立版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
 框架说明的详细写法在 [Yaya 框架文档编写 Skill](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中维护，本节只列检查要点：
 
-- **页面分工**：见[框架入口的两本手册分工](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景编写要求](../prompt-scenarios/scenarios/README.md)。
+- **页面分工**：见[两本手册的分工](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md)。
 - **11 类信息**：来自框架版写作 Skill 的流程参考，只用于框架的场景页，不作为 Godot 项目文档的默认结构。
 - **场景正文**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有的条件和先后顺序。路径检查只证明目录对应，见[路径校验的职责](design-guidelines/prompts-and-scenarios.md#路径校验的职责)。
 - **两本手册不互相引用**：必要的解释就地写出；权威规范、工具和公共术语两册都可以引用。
@@ -121,11 +121,11 @@
 
 | 目的 | 场景 |
 | --- | --- |
-| 检查当前工作区是否自洽 | [本地静态审核](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想检查本地框架是否自洽，先做静态审核.md>) |
+| 检查当前工作区是否自洽 | [想检查本地框架是否自洽，先做静态审核](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想检查本地框架是否自洽，先做静态审核.md>) |
 | 觉得框架有问题，但不确定从哪里查起 | [框架好像有问题，先判断从哪里查起](<../prompt-scenarios/scenarios/Yaya 框架维护/只读专项审核/框架好像有问题，先判断从哪里查起.md>)；按症状、卡住的任务和已有记录推荐 1–3 个现有入口，没有线索时先做结构总览；不承诺全面审核 |
 | 深入核对某个专项问题 | 从[只读专项审核](../prompt-scenarios/scenarios/scenario-index.md#只读专项审核)选一个专题，与「专项审核通用模板」拼接后使用，不需要填参数 |
-| 核实收到的审核意见 | [核实外部审核意见](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
-| 用一个小任务验证真实流程 | [小任务验证](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
+| 核实收到的审核意见 | [收到外部审核意见，先核实哪些值得修改](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
+| 用一个小任务验证真实流程 | [想用一个小任务实际验证框架流程](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
 总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务走查和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 

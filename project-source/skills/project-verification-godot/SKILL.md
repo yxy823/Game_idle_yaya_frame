@@ -21,7 +21,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 运行 gdUnit 测试只用上述入口，不直接调用 `addons/gdUnit4/runtest.*`，也不用 `--headless` 直接运行 gdUnit。测试失败需要解读时，读 `yaya/agent-rules/70-tests/gdunit4-profile.md`。
 
-在已有的 worktree 中检查时，如果有关数据或清理去向未知或发生了变化，在运行会写入的工具之前，先读 [Godot worktree 运行准备](../worktree-create-godot/references/godot-worktree-runtime.md)。这包括测试和编辑器、导入操作，不只是运行游戏。复用仍然有效的准备结果；该参考不要求调用创建 Skill、另建工作目录，也不要求把这次检查扩大成完整的交付运行。
+在已有的 worktree 中检查时，如果有关数据或清理去向未知或发生了变化，在运行会写入的工具之前，先读 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。这包括测试和编辑器、导入操作，不只是运行游戏。复用仍然有效的准备结果；该参考不要求调用创建 Skill、另建工作目录，也不要求把这次检查扩大成完整的交付运行。
 
 只运行要求的检查种类，同时保留每种方法要求的范围和已有义务。一次定向的诊断运行，不能满足更大的交付要求。要求的限制与必需的方法或权限冲突时，说明具体冲突，不要悄悄降低检查标准或扩大任务。
 

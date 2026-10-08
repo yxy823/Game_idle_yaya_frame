@@ -24,7 +24,7 @@
 
 **S2｜讨论关键选择并形成草稿**
 
-围绕目标体验、玩家过程、核心循环和当前相关规则展开，说明各机制如何产生预期体验。有关键选择需要共同决定时，使用 [GDD 共创方法](../../../../../project-source/skills/design-gdd/references/gdd-dialogue.md)，结合玩家情境提出问题与备选方案，说明取舍和推荐理由；需要构思或比较玩法方向时再读[构思方法](../../../../../project-source/skills/design-gdd/references/concept-ideation.md)。
+围绕目标体验、玩家过程、核心循环和当前相关规则展开，说明各机制如何产生预期体验。有关键选择需要共同决定时，使用 [GDD 共同创作](../../../../../project-source/skills/design-gdd/references/gdd-dialogue.md)，结合玩家情境提出问题与备选方案，说明取舍和推荐理由；需要构思或比较玩法方向时再读[概念探索与验证问题](../../../../../project-source/skills/design-gdd/references/concept-ideation.md)。
 
 等待回答时继续不依赖该决定的整理；回答后推进当前范围内下一项关键问题。已经明确的内容直接整理，不重复访谈。数值模型确实需要展开时再使用 [design-balance](../../../../../project-source/skills/design-balance/SKILL.md)。
 
@@ -58,4 +58,4 @@
 
 ## 流程关联与衔接关系
 
-资料已有多份且需要统一正文时，使用[整合 GDD](<设计资料分散在多处，需要整合 GDD.md>)。体验目标和机制已足以建模时，可以进入[数值模型设计](<体验目标已明确，需要设计数值模型.md>)。只有当前设计已采用且明确，并获准安排交付，才转入 [Product 预拆分](<../规划 Product 与 Feature/已有 GDD，需要预拆分 Product 交付范围.md>)。
+资料已有多份且需要统一正文时，使用[设计资料分散在多处，需要整合 GDD](<设计资料分散在多处，需要整合 GDD.md>)。体验目标和机制已足以建模时，可以进入[体验目标已明确，需要设计数值模型](<体验目标已明确，需要设计数值模型.md>)。只有当前设计已采用且明确，并获准安排交付，才转入 [已有 GDD，需要预拆分 Product 交付范围](<../规划 Product 与 Feature/已有 GDD，需要预拆分 Product 交付范围.md>)。

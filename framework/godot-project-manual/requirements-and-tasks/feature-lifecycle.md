@@ -36,7 +36,7 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 2. **修改时**：完成最小而完整的目标；不需要变化的 API、依赖和代码风格保持不变；契约确实要变时，同步修改实际使用方；不顺手改无关代码。
 3. **交付前**：完成相关测试和项目支持的静态检查，检查最终差异；说明关键文件、修改理由、实际做了哪些验证，以及有依据的剩余风险。
 
-规则正文见[变更准备与范围](../../../project-source/Project_AGENTS.md#任务范围)、[验证与完成汇报](../../../project-source/Project_AGENTS.md#验证与完成汇报)。这些要求不会扩大只读任务的权限。
+规则正文见[任务范围](../../../project-source/Project_AGENTS.md#任务范围)、[验证与完成汇报](../../../project-source/Project_AGENTS.md#验证与完成汇报)。这些要求不会扩大只读任务的权限。
 
 ## Feature 的执行阶段
 
@@ -103,7 +103,7 @@ flowchart TD
 - **何时算接受**：所有有效的必需项都通过、反馈中没有矛盾，就已经表示接受，不需要再向用户要一次同样的确认。
 - **涉及调试台时**：清单的入口是项目 `dev/debug/README.md` 中的启动命令和登记的固定局面，检查的是收尾后的游戏原值，插槽预设和组合不算验收内容。验收中用户又在调试台采纳了新值，本轮按不通过处理：回到 Stage 3 收尾，再重跑 Stage 4。规则见Stage 0–8 `feature-execute` 执行循环的[Stage 5 · 明确的人工验收（仅 manual 模式）](../../../project-source/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式)。
 
-无论结论来自对话还是用户自己编辑，都记在清单里，用同一个命令记录。清单缺失、定义被改或反馈有歧义时，如实保留缺口；记录命令成功，记录的状态也可能是 rejected 或 pending。automated 模式不生成空清单，也不伪造接受。文件契约和命令见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)与[命令与验证证据](../methods-and-tools/commands-and-evidence.md#记录人工验收结论)。
+无论结论来自对话还是用户自己编辑，都记在清单里，用同一个命令记录。清单缺失、定义被改或反馈有歧义时，如实保留缺口；记录命令成功，记录的状态也可能是 rejected 或 pending。automated 模式不生成空清单，也不伪造接受。文件契约和命令见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)与[记录人工验收结论](../methods-and-tools/commands-and-evidence.md#记录人工验收结论)。
 
 测试运行器返回 `not_required` 的条件很严格：有效的 manual 计划确实没有自动测试义务，且没有未解决的失败或未结束的最终运行。它不是跳过测试的开关，直接静态检查、专项检查和人工要求照常适用。
 
@@ -132,7 +132,7 @@ flowchart TD
 - 提交不设额外的审核关卡；提交后发现问题，新建一个修正提交，不改写历史。
 - Feature 提交的主题写成 `<type>(F0XX): <中文行为摘要>`，正文用 `Feature:` 写真实标题，用 `Work item:` 指向详情文件；不属于任何 Feature 的任务不虚构这些字段。
 
-提交边界、暂存保护、提交说明和禁止操作的唯一正文是 [Git 规则](../../../project-source/Project_AGENTS.md#git-与提交)。
+提交边界、暂存保护、提交说明和禁止操作的唯一正文是 [Git 与提交](../../../project-source/Project_AGENTS.md#git-与提交)。
 
 ## 持续任务（Goal）
 

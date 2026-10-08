@@ -20,7 +20,7 @@
 | `.codex/agents/` | researcher、independent-reviewer 等角色配置 | 所属配置 / 宿主加载；文件存在不代表宿主已加载 |
 | `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
 | `docs/project-rules.md` | 项目的开发约束与工程原则；条目默认必须遵守，写“建议：”的可有理由地偏离 | 获准的规则修改 / 受影响的工作 |
-| `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
+| `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏职责与项目组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
 
 ### 设计与专业规格
 
@@ -118,7 +118,7 @@
 
 Feature 索引、修订记录、测试登记、Progress 和项目规则不是模板：创建项目时直接复制为 `docs/` 下的初始文件，之后由项目自己维护。
 
-GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[需求与规划](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。Product 模板用来组织交付，不能代替 GDD。
+GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。Product 模板用来组织交付，不能代替 GDD。
 
 各类产物的存放位置：
 

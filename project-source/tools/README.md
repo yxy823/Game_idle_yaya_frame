@@ -17,6 +17,7 @@ yaya/tools/
 | Feature 记录检查 [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
 | 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | 链接检查 [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
+| 链接文字检查 [check-link-text.py](checks/check-link-text.py) | 列出链接文字不是目标标题、也不是目标 Skill 名、文件名或目录名的链接 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
 | 用词提示钩子 [check-prompt-terminology.py](checks/check-prompt-terminology.py) | Claude Code 的用户消息钩子：消息中有不用的说法时，提示 Agent 在回复最前面列出用词对照表 |
 | 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法；`--list` 列出全部检查项 |
@@ -33,7 +34,7 @@ yaya/tools/
 - `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`yaya/tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
 - Skill 只引用这些命令并说明调用时机，不另写命令副本。
 
-`analyzer/` 是图像与音频源文件的分析后端，在单独的 Python 环境中用命令行运行，见 [Analyzer 说明](analyzer/README.md)。
+`analyzer/` 是图像与音频源文件的分析后端，在单独的 Python 环境中用命令行运行，见 [资源 Analyzer](analyzer/README.md)。
 
 Feature 记录检查、登记表合并和运行选择共用同一套 JSON 解码规则：
 
@@ -58,7 +59,7 @@ $LASTEXITCODE
 
 新增脚本或资源后，Godot 在下一次扫描时才为它们生成 `.uid`；`.uid` 计入内容指纹，所以先用上面的命令扫描一次，再做最终测试运行，避免运行结束后才生成的 `.uid` 让证据失效。
 
-首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[资产规则](../agent-rules/60-assets/README.md)和[引用规则](../agent-rules/00-core/godot-resource-references.md)处理；首次扫描为插件资源生成的 `.import` 随项目提交。
+首次测试若报找不到 `GdUnitTestCIRunner` 或 `GdUnitTestSuite`，先核对项目是否已完成扫描。没有发现或执行用例的解析失败，不是 TDD 的业务 RED。完成扫描后仍失败时，继续核对插件文件和具体解析错误，不反复扫描或删除缓存来掩盖原因。生成的 `.import`、`.uid` 与 `.godot` 按[60 素材与导入规则](../agent-rules/60-assets/README.md)和[Godot 资源与身份引用](../agent-rules/00-core/godot-resource-references.md)处理；首次扫描为插件资源生成的 `.import` 随项目提交。
 
 ## 启动场景冒烟检查
 
@@ -100,7 +101,7 @@ $LASTEXITCODE
   binary_format/embed_pck=false
   ```
 
-  排除的依据见 [资源与过滤](../agent-rules/41-export-config/resources-and-filters.md) 和 [测试目录与导出](../agent-rules/70-tests/production-isolation.md#测试目录与导出)。没有写出的字段由 Godot 使用默认值，写好后直接用实际导出验证，通过后提交。注意：`[preset.0.options]` 下至少要有一个键，空段会被当成不存在，导出时报 `Cannot get keys from nonexistent section`。之后结构性的预设修改，在编辑器的“项目 → 导出”中进行。
+  排除的依据见 [导出资源与过滤器](../agent-rules/41-export-config/resources-and-filters.md) 和 [测试目录与导出](../agent-rules/70-tests/production-isolation.md#测试目录与导出)。没有写出的字段由 Godot 使用默认值，写好后直接用实际导出验证，通过后提交。注意：`[preset.0.options]` 下至少要有一个键，空段会被当成不存在，导出时报 `Cannot get keys from nonexistent section`。之后结构性的预设修改，在编辑器的“项目 → 导出”中进行。
 
 **导出并启动**（在项目根目录执行，`$projectGodot` 的取法见[首次 Godot 扫描](#首次-godot-扫描)）：
 
@@ -124,10 +125,10 @@ $LASTEXITCODE
 
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
-| [术语检查](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
-| [措辞检查](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
-| [链接检查](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效；本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 有失效链接 |
-| [资源格式检查](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
+| [check-terminology.py](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
+| [check-wording.py](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
+| [check-markdown-links.py](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效；本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 有失效链接 |
+| [check-godot-resource-format.py](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
 
 暂存的文件都不属于这些类型时直接通过。资源格式检查拦住的是不经 Feature 完成步骤的改动，例如实验或 Feature 外的修复：场景和资源用 [`resave_godot_files.gd`](#resave_godot_filesgd) 重存，缺 `.uid` 或 `.import` 时运行[首次 Godot 扫描](#首次-godot-扫描)的命令，把生成的文件一起暂存。钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
 
@@ -139,12 +140,12 @@ git config core.hooksPath .githooks
 
 ## 用词提示钩子
 
-`.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[术语检查](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
+`.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[check-terminology.py](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
 
 - **有命中**：向 Agent 附加一段提示，列出每处的原文、正式名称、在消息中的行号和术语定义位置，并提醒按 `AGENTS.md` 的用词对照规则，在回复最前面列出对照表。
 - **没有命中，或术语文件缺失、无法解析、钩子出错**：不输出任何内容。
 
-钩子总是以退出码 `0` 结束，不拦截用户消息，也不记录消息或 Agent 的动作。它只认术语文件中已登记的不用说法；没有登记的写法和一词多义仍要 Agent 自己核对。消息里放在引号或行内代码中的写法不算出现，规则见[共同约定](#术语检查与措辞检查的共同约定)。钩子命令使用 PATH 中的 `python`；找不到时 Claude Code 只会报告钩子失败，消息照常发送。
+钩子总是以退出码 `0` 结束，不拦截用户消息，也不记录消息或 Agent 的动作。它只认术语文件中已登记的不用说法；没有登记的写法和一词多义仍要 Agent 自己核对。消息里放在引号或行内代码中的写法不算出现，规则见[术语检查与措辞检查的共同约定](#术语检查与措辞检查的共同约定)。钩子命令使用 PATH 中的 `python`；找不到时 Claude Code 只会报告钩子失败，消息照常发送。
 
 ## 调用
 
@@ -200,19 +201,39 @@ python -B yaya/tools/checks/check-markdown-links.py
 | `--root <目录>` | 要检查的目录 | 脚本所在项目 |
 | `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
 | `--json` | 以 JSON 输出文件数、链接数和失效列表 | 逐行输出 |
-| `--check-link-text` | 另外列出链接文字与目标标题不符的链接，规则名 `LINK-TEXT`，只报告、不影响退出码；JSON 输出多一个 `link_text` 列表 | 不检查链接文字 |
 
-`--check-link-text` 按 Godot 项目文档编写 Skill 写作指南的[把项目讲清楚](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#把项目讲清楚)中「链接文字用目标标题」一条比较，去掉行内代码标记、`*` 和首尾空白、不区分大小写后：
+退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。链接文字是否用了目标标题由 [check-link-text.py](#check-link-textpy) 检查。
 
-- **带锚点的链接**（包括页内的 `#锚点`）：链接文字要包含锚点所在章节的标题。
-- **只链到 Markdown 文件的链接**：链接文字要包含该文件的一级标题，标题开头的“NN · ”编号可以省略；文件没有一级标题时不比较。
-- **不比较**：图片、引用式定义、外部网址、非 Markdown 目标，以及只由链接和“·”组成的导航行。
+### check-link-text.py
 
-退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。
+链接文字检查。写完或改过文档后运行，找出链接文字不是目标标题的链接：
+
+```powershell
+python -B yaya/tools/checks/check-link-text.py <改过的文档>
+python -B yaya/tools/checks/check-link-text.py
+```
+
+按 Godot 项目文档编写 Skill 写作指南的[把项目讲清楚](../../.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#把项目讲清楚)中「链接文字用目标标题」一条比较。满足下面任一条的链接合规，其余每处以规则名 `LINK-TEXT` 报告：
+
+- **带锚点的链接**（包括页内的 `#锚点`）：链接文字包含锚点所在章节的标题。比较时去掉行内代码标记、`*`，空白合并为一个空格，不区分大小写。
+- **只链到 Markdown 文件的链接**：链接文字按上一条的方式包含该文件的一级标题，标题开头的“NN · ”编号可以省略；或者链接文字去掉反引号、首尾空白、开头的 `$` 和结尾的 `/` 后，按 `/` 分段，与目标路径的最后几段逐段相同（区分大小写），最后一段可以是文件名、去掉扩展名的文件名或目标所在的目录名。例如链到 `skills/design-gdd/SKILL.md` 时，`design-gdd`、`$design-gdd`、`SKILL.md`、`design-gdd/SKILL.md` 都合规；链到 `research/README.md` 时，`research/` 合规。
+- **不比较**：图片、引用式定义、外部网址、非 Markdown 目标、目标或锚点不存在的链接（由 [check-markdown-links.py](#check-markdown-linkspy) 报告）、`<a id>` 锚点、没有一级标题的文件，以及只由链接和“·”组成的导航行。
+
+| 参数 | 作用 | 默认值 |
+| --- | --- | --- |
+| `<文件>…` | 只检查列出的文件（相对 `--root`），不扫描整个目录；不是 `.md` 的文件、位于默认排除目录或 `--exclude` 中的文件跳过 | 扫描 `--root` |
+| `--files-from <清单>` | 另外检查清单中列出的文件，每行一个路径；`-` 从标准输入读取。清单为空时不检查任何文件 | 不使用 |
+| `--root <目录>` | 要检查的目录 | 脚本所在项目 |
+| `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
+| `--json` | 以 JSON 输出文件数、比较的链接数和 `findings` 列表，每条含 `file`、`line`、`target`、`text`、`expected`、`rule` | 逐行输出 |
+
+只检查列出的文件时，仍按需读取它们链接到的文件的标题。默认排除的目录与 `check-markdown-links.py` 相同。文本输出每处一行 `路径:行号  [LINK-TEXT] [链接文字](目标)  标题：目标标题`，最后一行汇总。
+
+退出码：`0` 没有不符合的链接；`1` 有不符合的链接；`2` 参数错误、列出的文件不存在或读取错误。工具不修改文档；按结果把链接文字改成目标标题，或把文件说明移到链接外面。
 
 ### 术语检查与措辞检查的共同约定
 
-[术语检查](#check-terminologypy)和[措辞检查](#check-wordingpy)按同一套规则读取文档，共用 `lib/document_text.py`：
+[check-terminology.py](#check-terminologypy)和[check-wording.py](#check-wordingpy)按同一套规则读取文档，共用 `lib/document_text.py`：
 
 - **不算出现的位置**：代码块、行内代码、链接目标，`「」`、`“”`、`""` 引号里的文字。所以要在正文中举例某个不用的写法时，把它放进引号或行内代码。默认排除的目录与 `check-markdown-links.py` 相同。
 - **JSON 文件**：只检查字符串值，键名不查；每个字符串值当作一段 Markdown，按上面的规则检查，值里的 `\n` 视为换行。报告的行号是该字符串值在 JSON 文件中所在的行；列号是从字符串值解码后的第一个字符算起的字符位置（`\n` 算 1 个字符），不是 JSON 原文中的列。
@@ -246,7 +267,7 @@ python -B yaya/tools/checks/check-terminology.py --discover
 - **不用的说法**（`TERM-FORBIDDEN`，默认执行）：读出术语表“不用的说法”一列的每个写法，报告它在扫描范围内的每处出现。只认表头同时含“术语”和“不用的说法”的表；“术语”格中用 `/` 分开的写法都是允许的别名。
 - **候选写法**（`TERM-CANDIDATE`，加 `--discover` 执行）：中文术语默认取开头“术语字数减 1”个字（最少 2 个字，`--prefix-length` 可改），找出开头相同、结尾不同、出现至少 `--min-count` 次的词，例如“分发源”与“分发材料”；在“的”“中”“和”等虚词处截断，连续超过 `--max-length` 个字的长串当作短语跳过。以术语某个允许写法整体开头的复合词（如“调试台采纳”）默认不列，加 `--include-compounds` 才列出。英文术语只找大小写不同或加 `s`、`es` 的整词，含 `-`、`_` 的标识符不算。已登记的术语、别名和不用的说法不列为候选。这一层误报多，只作人工核对的线索，不影响退出码。
 
-除[共同约定](#术语检查与措辞检查的共同约定)中不算出现的位置外，术语文件中该术语自己那一行也不算出现。`--discover` 对 JSON 同样适用。
+除[术语检查与措辞检查的共同约定](#术语检查与措辞检查的共同约定)中不算出现的位置外，术语文件中该术语自己那一行也不算出现。`--discover` 对 JSON 同样适用。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
@@ -256,7 +277,7 @@ python -B yaya/tools/checks/check-terminology.py --discover
 | `--prefix-length`、`--min-count`、`--max-length` | 候选写法与中文术语相同的开头字数、最少出现次数、最大字数 | 术语字数减 1（最少 2）、`2`、`6` |
 | `--include-compounds` | 候选写法也列出以术语整体开头的复合词 | 不列出 |
 
-其余参数见[共同约定](#术语检查与措辞检查的共同约定)。不用的说法的说明写出发现的写法、应改为的正式名称和术语文件中的定义位置。候选写法按术语分组，先用一行 `术语 → 候选词（次数）、…` 汇总，再逐条列出位置。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`term`、`found`、`suggestion`、`definition`、`context` 和 `message`，另有候选分组。
+其余参数见[术语检查与措辞检查的共同约定](#术语检查与措辞检查的共同约定)。不用的说法的说明写出发现的写法、应改为的正式名称和术语文件中的定义位置。候选写法按术语分组，先用一行 `术语 → 候选词（次数）、…` 汇总，再逐条列出位置。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`term`、`found`、`suggestion`、`definition`、`context` 和 `message`，另有候选分组。
 
 退出码：`0` 没有不用的说法；`1` 发现不用的说法；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、`--stdin-text` 读到的不是 UTF-8 文字、术语文件不存在或无法解析：表格某行的列数少于表头，或文件有条目（`##` 及以下小标题、列表项、表格数据行）却没有从表格读出任何术语，例如每个术语写成一个 `###` 小标题。只有标题、说明段落和空表头的术语文件（新项目模板）正常通过。工具不修改文档；按结果逐处改写后重跑。候选写法要逐个看上下文，确认指同一概念后再统一。
 
@@ -309,13 +330,13 @@ python -B yaya/tools/checks/check-wording.py --list
 | `--list` | 把配置中的检查项列成表格（名称、级别、范围、推荐写法）后退出，不扫描文档 | 不使用 |
 | `--verbose` | 与 `--list` 一起用时，表格另加正则一列 | 不使用 |
 
-其余参数见[共同约定](#术语检查与措辞检查的共同约定)。说明写出命中的文字、检查项名称和推荐写法。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`check`、`found`、`level`、`scope`、`suggestion`、`context` 和 `message`。
+其余参数见[术语检查与措辞检查的共同约定](#术语检查与措辞检查的共同约定)。说明写出命中的文字、检查项名称和推荐写法。`--json` 的每条结果含 `path`、`line`、`column`、`rule`、`check`、`found`、`level`、`scope`、`suggestion`、`context` 和 `message`。
 
 退出码：`0` 没有硬性命中（可能列出了待复核的命中），或 `--list` 正常列出；`1` 发现硬性命中；`2` 参数错误、列出的文件不存在、扫描的 JSON 文件解析失败、配置文件不存在或无法解析：不是合法 JSON、缺少 `checks` 列表、检查项字段不对、`level` 或 `scope` 不是上面列出的值、`pattern` 不是合法的正则。工具不修改文档。
 
 ### check-godot-resource-format.py
 
-以文本方式写过 `.tscn`、`.tres` 却漏了[重新保存](#resave_godot_filesgd)，下次打开编辑器时会被改写；新建脚本、Shader 或素材后没有运行 Godot 扫描，就没有 `.uid` 或 `.import`，之后的扫描会冒出未提交的文件。两者都会产生与当前工作无关的差异。本检查在 Feature 完成时运行，[提交钩子](#提交钩子)也会对暂存的文件运行它；也可以在重存后单独运行：
+以文本方式写过 `.tscn`、`.tres` 却漏了[resave_godot_files.gd](#resave_godot_filesgd)，下次打开编辑器时会被改写；新建脚本、Shader 或素材后没有运行 Godot 扫描，就没有 `.uid` 或 `.import`，之后的扫描会冒出未提交的文件。两者都会产生与当前工作无关的差异。本检查在 Feature 完成时运行，[提交钩子](#提交钩子)也会对暂存的文件运行它；也可以在重存后单独运行：
 
 ```powershell
 python -B yaya/tools/checks/check-godot-resource-format.py
@@ -438,7 +459,8 @@ flowchart TD
 | `test_selection.py` | 根据已确定的验收方案和 Feature 记录选择测试；不从空清单猜测验收方式 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `feature_completion_evidence.py` | 完成证据的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
-| `document_text.py` | 术语检查与措辞检查共用的文档读取、引号与代码遮蔽、文件选择和输出格式 |
+| `document_text.py` | 术语检查与措辞检查共用的文档读取、引号与代码遮蔽、文件选择和输出格式；链接文字检查复用其中的文件选择 |
+| `markdown_links.py` | 链接检查与链接文字检查共用的标题与锚点解析、链接及链接文字提取、Markdown 文件枚举与排除 |
 | `verification_snapshot.py` | Git 提交与当前内容指纹；测试和人工依据共用，不判断任务完成 |
 | `atomic_json.py` | 关闭文件流后原子替换 JSON，失败时保留目标原件并清理临时文件 |
 | `manual_acceptance.py` | 人工验收清单覆盖与快照绑定、逐项结果对照和原件复核 |

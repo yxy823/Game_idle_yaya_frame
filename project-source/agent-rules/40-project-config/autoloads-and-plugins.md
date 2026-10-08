@@ -10,7 +10,7 @@
 - 列表顺序决定实例化顺序。存在启动依赖时不按字母重排。建议：复杂的启动依赖用明确的初始化方法表达，不依赖碰巧形成的 `_ready` 顺序。
 - Autoload 对外提供查询方法、有业务含义的命令和信号，不让外部直接改字段。它启动时不依赖主场景或 HUD 已经存在，运行期间不释放自己。
 - 注意：每次运行游戏都会实例化 Autoload，包括 headless 测试和 `-s` 脚本；带 `@tool` 的 Autoload 还会在编辑器中运行。启动代码保持轻量，不假定窗口、存档或网络已就绪。
-- 测试用的 Autoload 不写进生产 `project.godot`，见[测试与生产隔离](../70-tests/production-isolation.md#autoload-与-projectsettings)。
+- 测试用的 Autoload 不写进生产 `project.godot`，见[Autoload 与 ProjectSettings](../70-tests/production-isolation.md#autoload-与-projectsettings)。
 - Autoload 不指向 `dev/` 下的脚本或场景。正式导出排除 `dev/`，调试台由调试入口挂载，见[入口与依赖方向](../../methodology/13-debug-console-and-validation.md#入口与依赖方向)。
 - 负责存档的 Autoload 在 `_ready` 中不读档、不开自动保存，由主场景开始时触发读档。存档位置可配置，例如提供设置存档路径的方法：调试入口的项目挂钩 `dev/debug/debug_project.gd` 在切到主场景之前，用它把存档指到只供调试的 `user://` 文件，固定局面因此不会覆盖真实进度。
 

@@ -10,7 +10,7 @@ description: >-
 
 分类、Bug 归属、各模式需要的证据和 AC、Feature 写入以及 Bug 经验的提升，遵循 `yaya/methodology/07-engineering-change.md`。产物使用 `yaya/methodology/02-feature-list-schema.md` 中对应的数据结构，语言遵循 `yaya/methodology/05-document-language.md`。长期写入之前，遵循 `AGENTS.md` 的 **Git 与提交**。
 
-开始项目工程工作之前，使用 [GDD 前提](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。本 Skill 准备工程工作；[feature-execute](../feature-execute/SKILL.md) 执行它。准备工作不代表人工验收。
+开始项目工程工作之前，使用 [GDD 前提与职责](../../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责)。本 Skill 准备工程工作；[feature-execute](../feature-execute/SKILL.md) 执行它。准备工作不代表人工验收。
 
 ## 分诊与方案
 

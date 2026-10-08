@@ -42,11 +42,11 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 ```
 
-- `python_executable` 应已改为确认过的解释器，见[配置参考](../foundations/configuration.md#环境与流程配置)。
+- `python_executable` 应已改为确认过的解释器，见[环境与流程配置](../foundations/configuration.md#环境与流程配置)。
 - `F001` 和示例脚本路径都要换成实际存在的任务与文件。
 - 每条原生命令后立即读取 `$LASTEXITCODE`。
 
-新项目第一次运行 CLI 测试或项目脚本前，先按[首次扫描说明](../../../project-source/tools/README.md#首次-godot-扫描)完成编辑器扫描；环境检查通过不包含这一步。
+新项目第一次运行 CLI 测试或项目脚本前，先按[首次 Godot 扫描](../../../project-source/tools/README.md#首次-godot-扫描)完成编辑器扫描；环境检查通过不包含这一步。
 
 ## 命令一览
 
@@ -58,14 +58,14 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
 | `yaya/tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
 | `yaya/tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
-| `yaya/tools/ui-trial/prepare-trial-copy.py`、`run-ui-trial.py` | `--copy`、`--script`、`--window` | 在项目外建立并同步改名的项目副本，只在副本中启动 Godot 运行驱动脚本，输出写进副本的 `reports/ui-trial/`；`--window` 会在用户桌面上打开真实窗口。参数与退出码见 [ui-trial 说明](../../../project-source/tools/ui-trial/README.md) |
+| `yaya/tools/ui-trial/prepare-trial-copy.py`、`run-ui-trial.py` | `--copy`、`--script`、`--window` | 在项目外建立并同步改名的项目副本，只在副本中启动 Godot 运行驱动脚本，输出写进副本的 `reports/ui-trial/`；`--window` 会在用户桌面上打开真实窗口。参数与退出码见 [按界面任务试用](../../../project-source/tools/ui-trial/README.md) |
 
 组件合并器的输入与行为：
 
 - **候选格式**：完整组件对象的 JSON 数组，或含 `components` 数组的对象。
 - **调用方式**：Agent 把已批准的候选写入临时文件，再用 `--components <候选文件>` 调用；候选文件不提交。
 - **冲突处理**：已有同 ID 但内容不同的组件视为冲突，不会被覆盖。工具保留现有测试，并报告 `added_components` 与 `preserved_tests`。
-- **能力边界**：只合并组件，不生成测试。组件结构见 [feature-plan](../../../project-source/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)。
+- **能力边界**：只合并组件，不生成测试。组件结构见 [测试登记表：`docs/test-registry.json`](../../../project-source/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)。
 
 ## 环境与 Feature 记录检查
 
@@ -283,7 +283,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-其他失败的含义见[错误与结果的含义](errors-and-results.md#测试与完成证据)。
+其他失败的含义见[测试与完成证据](errors-and-results.md#测试与完成证据)。
 
 ## 内容指纹与失效判断
 
@@ -362,7 +362,7 @@ lint CLI 的结果约定：
 
 只做解析或 lint 时，不需要额外的导入步骤或包装程序。已授权的资源导入和新项目首次运行所需的扫描，按对应环境规范处理。
 
-通用交付不默认加截图或像素比较。任务明确约定了客观的渲染契约时，可以补充限定范围和环境的检查；构图、美术一致性和动画体验仍靠人工验收，边界见[视觉验证规则](../../../project-source/agent-rules/70-tests/test-levels.md#视觉验证边界)。
+通用交付不默认加截图或像素比较。任务明确约定了客观的渲染契约时，可以补充限定范围和环境的检查；构图、美术一致性和动画体验仍靠人工验收，边界见[视觉验证边界](../../../project-source/agent-rules/70-tests/test-levels.md#视觉验证边界)。
 
 ## 工具退出码速查
 
@@ -372,4 +372,4 @@ lint CLI 的结果约定：
 | gdUnit 运行器 | 0 成功；1 运行失败；2 参数错误 |
 | lint CLI | 见上节 |
 
-实现来源：[项目工具说明](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成记录工具](../../../project-source/tools/features/record-feature-completion.py)、[GDScript lint 的约定与证据](../../../project-source/methodology/contracts/gdscript-lint.md)。
+实现来源：[项目检查与测试工具](../../../project-source/tools/README.md)、[测试运行器](../../../project-source/tools/testing/run-gdunit-tests.py)、[完成记录工具](../../../project-source/tools/features/record-feature-completion.py)、[GDScript lint 的约定与证据](../../../project-source/methodology/contracts/gdscript-lint.md)。

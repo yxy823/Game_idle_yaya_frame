@@ -8,7 +8,7 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 调试台从调试入口启动真实游戏，在独立窗口中修改游戏正在使用的调参资源。判断好坏的是用户；Agent 负责把要调的东西接进调试台、提出改哪些参数、记录每一轮，并在用户采纳后让改动成为正式文件。
 
 - **原则与流程**：`yaya/methodology/13-debug-console-and-validation.md` 的[调试台](../../../yaya/methodology/13-debug-console-and-validation.md#调试台)、[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)和[逻辑候选](../../../yaya/methodology/13-debug-console-and-validation.md#逻辑候选)。
-- **机制**：插槽、预设、采纳与收尾的具体写法见[调试台共享代码](../../../dev/debug/_shared/README.md)；本项目的启动命令和已登记的调试对象见[项目的调试台说明](../../../dev/debug/README.md)。
+- **机制**：插槽、预设、采纳与收尾的具体写法见[调试台共享代码](../../../dev/debug/_shared/README.md)；本项目的启动命令和已登记的调试对象见[本项目的调试台](../../../dev/debug/README.md)。
 
 ## 前提
 
@@ -16,7 +16,7 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 - 游戏里已经有要调的系统，哪怕只是最小的真实骨架。还没有时，按[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)先建骨架 Feature，不在 `dev/` 里写假系统。
 - **先查上游的定性词**：开调之前，看 GDD、Product 和表现文档里有没有限定这个参数的说法，例如“少量粒子”“轻微震动”。用户想要的方向可能超出它时，先问用户：只调参数、保留这个说法，还是改需求本身。改需求由 `design-gdd`、`product-author` 等负责方修改来源，再经 `feature-sync` 同步，不在调参中顺手改掉。
 - 效果所属的 Feature 已经完成，用户之后才要调：按 13 号的[完成后再调值](../../../yaya/methodology/13-debug-console-and-validation.md#完成后再调值)执行。
-- 用户在 Stage 5 人工验收时可以随意试调和另存预设；又采纳了新值时，按 `yaya/methodology/03-execute-loop.md` 的 [Stage 5](../../../yaya/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 作为拒绝处理：这份清单不记录结论，在 Progress 记下采纳内容。
+- 用户在 Stage 5 人工验收时可以随意试调和另存预设；又采纳了新值时，按 `yaya/methodology/03-execute-loop.md` 的 [Stage 5 · 明确的人工验收（仅 manual 模式）](../../../yaya/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式) 作为拒绝处理：这份清单不记录结论，在 Progress 记下采纳内容。
 - 修改调试台共享代码或界面本身不属于本 Skill，按 `yaya/methodology/07-engineering-change.md` 的[维护 Feature 契约](../../../yaya/methodology/07-engineering-change.md#维护-feature-契约)建维护 Feature。
 
 ## 把调整对象接进调试台
@@ -59,7 +59,7 @@ description: "在已授权的 Feature 或限定范围的实验中，用游戏内
 
 1. **收尾**：存在 `dev/debug/adoption-log.md` 时，按[收尾步骤](../../../dev/debug/_shared/README.md#收尾步骤)让文件成为正式资源并提交。项目的 Godot 编辑器开着时，先请用户保存并关闭编辑器。第 5 步删除 `adopted.tres` 之前，把采纳的外部素材的来源与许可摘要写进使用它的设计文档的资源条目。
 2. **文档只链接资源**：玩家能感知的表现参数，例如动画时长、节奏、缓动，所属的表现或 UI 文档按 13 号的[调参资源](../../../yaya/methodology/13-debug-console-and-validation.md#调参资源)链接资源、不抄数值；换了表现方案中的某个组成部分时，同时更新表现文档的“当前采纳与实现”。采纳的逻辑候选还改了代码结构或调用方式时，按 `AGENTS.md` 的[收尾时核对受影响的文档](../../../AGENTS.md#收尾时核对受影响的文档)核对 Feature 设计稿和架构。
-3. **时机**：采纳和收尾在 Stage 3 的[最终验证前的文档检查点](../../../yaya/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)完成，人工验收清单绑定之前不再改。Stage 4 之后再采纳，之前的验证证据就失效了，要重做受影响的验证和验收。
+3. **时机**：采纳和收尾在 Stage 3 的[3D. 最终验证前的文档检查点](../../../yaya/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)完成，人工验收清单绑定之前不再改。Stage 4 之后再采纳，之前的验证证据就失效了，要重做受影响的验证和验收。
 4. **已完成 Feature 的资源**：收尾提交后，按[完成后再调值](../../../yaya/methodology/13-debug-console-and-validation.md#完成后再调值)检查被写入的资源是否被已完成 Feature 的文档或 AC 链接。
 
 预设和组合只在调试台里使用，不是游戏的值，也不进验收绑定；游戏和测试都不读取它们。
