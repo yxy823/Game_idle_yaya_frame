@@ -198,7 +198,7 @@ flowchart TD
     E -->|validate 重读原件与当前内容| C[完成证据检查结果]
     A[Agent 直接执行解析与 lint] -->|读取实际退出码和输出| D[Agent 综合最终判断]
     C --> D
-    V[Feature 记录完成检查与用户指定评审结果] --> D
+    V[Feature 记录完成检查与用户指定审核结果] --> D
     D -->|全部适用条件满足才写入| S[Feature 索引 done 与完成时间]
 ```
 
@@ -210,7 +210,7 @@ flowchart TD
 | `record-tests` | 最终运行的 `result.json` 路径 → 完成证据中的路径与哈希引用 | 重新核对当前内容、原件、覆盖和未解决的失败 |
 | 人工结果导入 | 绑定当前内容的清单 + 用户结果，或用户明确的口头决定 → 人工记录 | 命令成功只代表记录成功，状态仍可能是 pending 或 rejected |
 | `validate` | 当前契约与完成证据 → 只读结论 | 重新计算测试义务并读取原件，核对适用的人工接受 |
-| Agent 更新 Feature 记录 | 完成证据、直接解析与 lint、AC 与差异、Feature 记录、用户指定的评审条件 | 全部满足后写入 done 和真实完成时间，再检查最终的 Feature 记录 |
+| Agent 更新 Feature 记录 | 完成证据、直接解析与 lint、AC 与差异、Feature 记录、用户指定的审核条件 | 全部满足后写入 done 和真实完成时间，再检查最终的 Feature 记录 |
 
 ### 子命令
 
@@ -272,7 +272,7 @@ $LASTEXITCODE
 
 ### 检查完成证据与 Feature 记录
 
-在当前终端完成[调用准备](#调用准备)后运行下面三条命令；直接解析、lint 和用户指定的评审条件由 Agent 另外确认：
+在当前终端完成[调用准备](#调用准备)后运行下面三条命令；直接解析、lint 和用户指定的审核条件由 Agent 另外确认：
 
 ```powershell
 & $projectPython -B yaya/tools/features/record-feature-completion.py validate --feature $featureId
@@ -320,7 +320,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 - **notes 中链接的设计稿**：notes 本身不参与，但被链接的 `F0XX-design.md` 文件仍按原始字节纳入。
 - **Git 提交号**：另作来源记录。只提交了过程字段、指纹没有变化时，不会因为提交号变化要求重跑或重新验收。
 
-指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档在最终验证之前的 Stage 3 文档检查点定稿。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读评审不改变内容。
+指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档在最终验证之前的 Stage 3 文档检查点定稿。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读审核不改变内容。
 
 直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及[测试策略](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 

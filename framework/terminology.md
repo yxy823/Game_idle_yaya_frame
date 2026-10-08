@@ -4,7 +4,7 @@
 
 游戏自身的业务术语不放这里，固定保存在生成项目的 `docs/terminology.md`，由 `project-terminology` 维护。
 
-表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[项目术语规范](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[维护工具](maintenance/tools/README.md#检查术语用词)。
+表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[术语文件的格式](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[维护工具](maintenance/tools/README.md#检查术语用词)。
 
 ## 框架对象
 
@@ -39,7 +39,7 @@
 | 待决定事项 | Progress 中的同名一节，列出需要用户决定才能继续的事项；GDD 中设计层面没定下的问题称“开放问题” |  |
 | 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |  |
 
-来源：[需求与交付结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 结构](../project-source/methodology/02-feature-list-schema.md)、[执行规范](../project-source/methodology/03-execute-loop.md)、[调试台与技术验证](../project-source/methodology/13-debug-console-and-validation.md)。
+来源：[GDD 与 Product 文档结构](../project-source/methodology/01-product-doc-structure.md)、[Feature 列表与测试追溯结构](../project-source/methodology/02-feature-list-schema.md)、[Stage 0–8 `feature-execute` 执行循环](../project-source/methodology/03-execute-loop.md)、[调试台与技术验证](../project-source/methodology/13-debug-console-and-validation.md)。
 
 ## 调试台
 
@@ -70,7 +70,7 @@
 | 游戏逻辑 / 游戏表现 | 理解一个功能时的两类职责：逻辑负责规则、状态与有效结果，表现负责界面、动画、特效、声音和镜头等玩家感知。用于找到对应的文档和实现，不是必须拆开的任务类型 |  |
 | 游戏表现文档 | `docs/presentation/` 中描述一次具体表现的文档：过程、要求、备选方案、采用关系及实现与验收入口 |  |
 
-来源：[游戏组织指南](../project-source/defaults/docs/game-organization.md)、[专业来源约定](../project-source/methodology/11-specialist-workflows.md)。
+来源：[游戏组织指南](../project-source/defaults/docs/game-organization.md)、[专业工作与来源](../project-source/methodology/11-specialist-workflows.md)。
 
 ## 验证记录
 
@@ -84,7 +84,7 @@
 | 完成证据 | 每个 Feature 的 `docs/features/F0XX-evidence.json`，引用实际验证原件和人工验收清单；文件存在本身不证明条件满足。写入它的 `yaya/tools/features/record-feature-completion.py` 称“完成记录工具”，“完成记录”不作为这份文件的名称 | 完成依据 |
 | 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |  |
 
-来源：[测试策略](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
+来源：[测试追溯与证据](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
 
 ## Analyzer
 

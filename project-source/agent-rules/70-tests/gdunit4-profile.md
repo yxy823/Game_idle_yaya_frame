@@ -34,7 +34,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 结论只看 `result.json` 的 `status`，以及脚本最后输出的 `TEST VERDICT: PASS` 或 `TEST VERDICT: FAIL - <原因>`。不要根据 gdUnit 的退出码或控制台末行推断通过。失败时先读 `result.json` 的 `errors`，再读同目录的 `engine.log`。
 
-包装脚本在以下情况判失败，完整的失败条件见 08 的[什么情况下运行失败](../../methodology/08-test-traceability-and-evidence.md#什么情况下运行失败)：
+包装脚本在以下情况判失败，完整的失败条件见测试追溯与证据的[什么情况下运行失败](../../methodology/08-test-traceability-and-evidence.md#什么情况下运行失败)：
 
 - Godot 进程退出码不是 0，或超时。gdUnit 有失败用例时返回 100，只有孤立节点时返回 101，两者都失败。
 - JUnit 报告缺失或不止一份，或者计数与用例节点不一致。
