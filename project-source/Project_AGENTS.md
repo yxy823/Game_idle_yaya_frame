@@ -44,7 +44,7 @@
 - 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](#git-与提交)。任务默认不在 worktree 中开始。
 - 限定范围的调研和独立审核使用各自的角色，入口见任务路由表。
 
-选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，`.claude/skills/` 是供 Claude Code 读取的相同副本，修改 Skill 时两个目录一起改；显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
+选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，`.claude/skills/` 是供 Claude Code 读取的相同副本，修改 Skill 时两个目录一起改；角色配置同样有 Codex 的 `.codex/agents/*.toml` 和 Claude Code 的 `.claude/agents/*.md` 两种格式，说明正文相同，修改时一起改；显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
 
 ### 设计前提与需阅读的来源
 

@@ -17,7 +17,7 @@
 | `yaya/agent-rules/` | 按领域划分的工程规则 | 所属规则 / 执行与审核时按任务读取 |
 | `yaya/methodology/` | 开发与验证流程契约、模板 | 所属规范 / 执行与审核时按任务读取 |
 | `.agents/skills/`、`.claude/skills/` | 各项专门方法（Skill），两个目录内容相同 | 所属 Skill / 主 Agent 按任务选用：Codex 读前者，Claude Code 读后者 |
-| `.codex/agents/` | researcher、independent-reviewer 等角色配置 | 所属配置 / 宿主加载；文件存在不代表宿主已加载 |
+| `.codex/agents/`、`.claude/agents/` | researcher、independent-reviewer 等角色配置，同一角色的两种格式说明正文相同 | 所属配置 / 宿主加载：Codex 读前者，Claude Code 读后者；文件存在不代表宿主已加载 |
 | `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
 | `docs/project-rules.md` | 项目的开发约束与工程原则；条目默认必须遵守，写“建议：”的可有理由地偏离 | 获准的规则修改 / 受影响的工作 |
 | `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏职责与项目组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
@@ -107,8 +107,9 @@
 完整映射只维护在 [project-files.json](../../project-creation/project-files.json)，主要关系如下：
 
 - **项目入口**：`Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
-- **方法与角色**：`skills/ → .agents/skills/` 和 `.claude/skills/`、`agents/ → .codex/agents/`。新增的 Skill 只要放在 skills 目录内，就会随整个目录复制，不需要单独加映射。
+- **方法与角色**：`skills/ → .agents/skills/` 和 `.claude/skills/`、`agents/*.toml → .codex/agents/`、`agents/*.md → .claude/agents/`。新增的 Skill 只要放在 skills 目录内，就会随整个目录复制，不需要单独加映射。
 - **Skill 的两份副本**：Codex 只从 `.agents/skills/` 发现 Skill，Claude Code 只从 `.claude/skills/` 发现，所以项目里保存两份相同的内容，这是唯一正文原则的例外。不用目录链接代替副本：Windows 的 junction 会被 Git 顺着链接重复提交，忽略它又不会随 Git 进入新建的 worktree。修改 Skill 时两个目录一起改；只改了一份就提交时，[提交钩子](../../../project-source/tools/README.md#提交钩子)拒绝提交。
+- **角色的两种格式**：Codex 读 `.codex/agents/` 下的 TOML，Claude Code 读 `.claude/agents/` 下带 YAML 头的 Markdown，格式不同，不能共用一个文件。两份的名称、描述和说明正文相同，只有模型与推理强度按各自宿主填写；框架仓库的复制器回归测试检查分发源的两份一致，新增角色时两种格式都要加文件和复制映射。
 - **其他材料**：默认文档、工程规则、方法、代码、工具和插件按清单复制。
 
 `framework/`、框架根目录的维护规则和完整提示词库不进入项目。创建器不替换模板变量，也不安装分析器依赖；某个组件被复制进来，不代表项目已经开始使用它。

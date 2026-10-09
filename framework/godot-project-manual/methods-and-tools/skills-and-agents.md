@@ -135,7 +135,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 ### 调研与独立审核角色
 
-项目附带 [researcher](../../../project-source/agents/researcher.toml)（按需独立调研）和 [independent-reviewer](../../../project-source/agents/independent-reviewer.toml)（独立审核）。使用它们需要全新的上下文、宿主程序的实际支持，以及角色工作所需的权限：researcher 能调用搜索或文档获取工具，independent-reviewer 能读取被审核的文件；配置文件存在不代表宿主已加载这个角色。作者自己按审核 Skill 读一遍，仍然只是自查。
+项目附带 [researcher](../../../project-source/agents/researcher.toml)（按需独立调研）和 [independent-reviewer](../../../project-source/agents/independent-reviewer.toml)（独立审核）。每个角色在 `project-source/agents/` 中有 Codex 的 `.toml` 和 Claude Code 的 `.md` 两种格式，说明正文相同，原因见[复制与重命名](../foundations/project-layout.md#复制与重命名)。使用它们需要全新的上下文、宿主程序的实际支持，以及角色工作所需的权限：researcher 能调用搜索或文档获取工具，independent-reviewer 能读取被审核的文件；配置文件存在不代表宿主已加载这个角色。作者自己按审核 Skill 读一遍，仍然只是自查。
 
 调研可以使用用户级的 anysearch，框架不复制它的实现、密钥或个人路径。工具不可用时，按角色规则选用其他实际可用的渠道并说明限制；找不到来源时如实说明，不写成已查证。调研方法和报告格式由角色配置维护，长期保存位置见[调研与项目知识](../specialist-work-and-records/knowledge-and-records.md#调研与项目知识)。
 
@@ -143,7 +143,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 已有 Feature 需要实施指导时，使用 [implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md)。
 
-- **谁来准备**：默认由主 Agent 自己准备。只有用户在任务提示词或仍有效的授权中明确要求，才委派给 [implementation-advisor](../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载了这个 Skill、或要求写详细设计，都不会自动触发委派。顾问使用的模型和推理强度只在角色配置中维护。
+- **谁来准备**：默认由主 Agent 自己准备。只有用户在任务提示词或仍有效的授权中明确要求，才委派给 [implementation-advisor](../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载了这个 Skill、或要求写详细设计，都不会自动触发委派。顾问使用的模型和推理强度只在角色配置中维护，Codex 与 Claude Code 两种格式各填自己宿主的模型。
 - **顾问做什么**：读取相关规则和实际代码，给出有来源依据的设计和验证思路。需要用户决定时，顾问把编号问题、A/B 选项和建议交给主 Agent，主 Agent 在当前对话中展示，再把用户的回答传回同一个顾问。方案获批前只在对话中讨论；获批后，顾问才能把这份方案保存为 Feature 设计稿（位置见[局部设计与当前架构](../specialist-work-and-records/knowledge-and-records.md#局部设计与当前架构)）。
 - **顾问不做什么**：不运行 Godot、测试或实验；不修改业务实现、Feature JSON、测试登记表、状态或验收记录；不提交。
 - **主 Agent 的职责**：阅读设计稿、关键的适用规则和实际要改的代码及其使用方，但不需要重复顾问的全部背景调研；之后负责核对、记录和实施。

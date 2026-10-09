@@ -18,7 +18,7 @@ Game_idle_yaya_frame/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md
     ├── Project_README.md      复制为项目 README.md
     ├── skills/                专项开发、规划、设计与审核方法
-    ├── agents/                researcher 与 independent-reviewer 配置
+    ├── agents/                Agent 角色配置，Codex 与 Claude Code 各一种格式
     ├── methodology/           流程契约与模板（复制到项目 yaya/ 下，下同）
     ├── agent-rules/           Godot 工程语义
     ├── tools/                 项目检查、测试、记录、共享实现与 analyzer/ 源素材分析

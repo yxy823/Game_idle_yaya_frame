@@ -213,6 +213,25 @@ class ProjectCopyTests(unittest.TestCase):
                 self.assertTrue(role["developer_instructions"])
         self.assertFalse((output / ".codex/config.toml").exists())
 
+    def test_codex_and_claude_roles_share_name_description_and_instructions(self):
+        repository = Path(__file__).resolve().parents[3]
+        manifest = json.loads((repository / "framework/project-creation/project-files.json").read_text(encoding="utf-8"))
+        targets = {item["source"]: item["target"] for item in manifest}
+        roles = sorted((repository / "project-source/agents").glob("*.toml"))
+        self.assertTrue(roles)
+        for toml_path in roles:
+            with self.subTest(role=toml_path.stem):
+                codex = tomllib.loads(toml_path.read_text(encoding="utf-8"))
+                claude_path = toml_path.with_suffix(".md")
+                frontmatter, body = re.fullmatch(r"---\n(.*?)\n---\n\n(.*)",
+                                                 claude_path.read_text(encoding="utf-8"), re.S).groups()
+                fields = dict(line.split(": ", 1) for line in frontmatter.splitlines())
+                self.assertEqual(fields["name"], codex["name"])
+                self.assertEqual(json.loads(fields["description"]), codex["description"])
+                self.assertEqual(body.strip(), codex["developer_instructions"].strip())
+                self.assertEqual(targets[f"project-source/agents/{toml_path.name}"], f".codex/agents/{toml_path.name}")
+                self.assertEqual(targets[f"project-source/agents/{claude_path.name}"], f".claude/agents/{claude_path.name}")
+
     def test_bad_destination_fails_before_source_read(self):
         for name in ["Bad Project", "中文项目", "Parent Space/Child", "父目录/Child"]:
             with self.subTest(name=name), self.assertRaises(ValueError):

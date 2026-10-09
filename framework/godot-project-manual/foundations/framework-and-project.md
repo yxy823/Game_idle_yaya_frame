@@ -86,7 +86,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 - 项目 `README.md`；
 - `dev/debug/` 中 `_shared/` 以外的文件，例如插槽、`debug_project.gd` 和项目自己的 `dev/debug/README.md`。
 
-复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.claude/skills/`、`.codex/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
+复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.claude/skills/`、`.codex/agents/`、`.claude/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
 
 1. 在[复制清单](../../project-creation/project-files.json)中，找到每个要对齐的项目路径对应的 `source`。目录条目按目录内的相对路径逐文件对应。
 2. 逐文件比对框架源文件和项目文件，例如 `git diff --no-index <框架源文件> <项目文件>`，列出有差异的文件，以及框架新增或删除的文件。

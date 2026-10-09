@@ -21,7 +21,7 @@ description: 为已有的 Godot Feature（包括工程 Feature）准备或更新
 
 主 Agent 可以自己使用本方法。只有当前任务提示词或仍然有效的会话授权明确要求实施顾问时，才委派。加载本 Skill、Feature 比较复杂或用户要求详细指导，本身都不算要求委派。不委派时，由主 Agent 在已有的 Feature 流程里准备所需设计。
 
-明确要求委派时，使用 `.codex/agents/implementation-advisor.toml`，并采用其中配置的模型和推理强度。确认宿主确实能选用这个角色和这些设置；只有角色文件，不能证明设置已经生效。向顾问提供：
+明确要求委派时，Codex 使用 `.codex/agents/implementation-advisor.toml`，Claude Code 使用 `.claude/agents/implementation-advisor.md`，并采用其中配置的模型和推理强度。确认宿主确实能选用这个角色和这些设置；只有角色文件，不能证明设置已经生效。向顾问提供：
 
 - 实际的项目和工作目录、已有的 Feature 和目标。
 - 已知的源文件路径、与任务有关的 Git 状态和未提交改动。

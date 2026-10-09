@@ -20,6 +20,18 @@
     "target": ".codex/agents/implementation-advisor.toml"
   },
   {
+    "source": "project-source/agents/independent-reviewer.md",
+    "target": ".claude/agents/independent-reviewer.md"
+  },
+  {
+    "source": "project-source/agents/researcher.md",
+    "target": ".claude/agents/researcher.md"
+  },
+  {
+    "source": "project-source/agents/implementation-advisor.md",
+    "target": ".claude/agents/implementation-advisor.md"
+  },
+  {
     "source": "project-source/methodology",
     "target": "yaya/methodology"
   },
