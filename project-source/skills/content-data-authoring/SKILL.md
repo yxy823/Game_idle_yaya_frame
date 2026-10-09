@@ -58,7 +58,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 
 - **gdUnit 不变量测试**：放在 `tests/invariants/content/`，通过生产加载器读取正式数据，逻辑 ID 写成 `INV-CONTENT-NN`。运行用 `run-gdunit-tests.py`，参数见 [run-gdunit-tests.py](../../../yaya/tools/README.md#run-gdunit-testspy)。
 - **长耗时的检查**：大量模拟或求解在测试超时内跑不完时，做成 `dev/tools/` 下显式运行的无头脚本（`extends SceneTree`），参数固定，成功退出码为 0，失败为 1。诊断写出文件、实体 ID、字段、实际值和违反的约束，见 [错误](../../../yaya/agent-rules/50-data-files/data-lifecycle-and-authority.md#错误)。测试中保留一个能在超时内跑完的子集，例如少量固定种子。
-- **何时固定下来**：结果能明确判对错、输入格式稳定、做错的代价高或人工容易漏，三条同时满足时，才写成长期保留的测试或脚本。一次性的探索计算不保存为检查，结论写进 Feature 记录。
+- **何时固定下来**：按[保存常用脚本](../../../yaya/methodology/09-records-reports-and-handoff.md#保存常用脚本)的三条条件判断是否写成长期保留的测试或脚本。一次性的探索计算不保存为检查，结论写进 Feature 记录。
 - **概率性检查**：自动对局或随机模拟的结果是计算证据，写明使用的策略、种子数量和局限。它不能证明真人玩家的难度感受。
 
 ## 需要人判断的部分
