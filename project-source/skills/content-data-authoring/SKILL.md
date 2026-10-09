@@ -35,7 +35,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 
 - 每行数值以数据文件为准。`balance/` 只保留公式和目标区间，不复制行数据；GDD 主题链接数据文件的路径。
 - 每个数据领域写明唯一的编写源和运行时表示，见 [权威来源](../../../yaya/agent-rules/50-data-files/data-lifecycle-and-authority.md#权威来源)。
-- 用生成器产出时，生成参数（种子、数量、公式参数）和生成器放在一起，作为生成器的输入。生成产物提交到仓库，不手工修改；要改就改参数或生成器，再重新生成。
+- 用生成器产出时，生成器放在 `dev/tools/`，登记要求见[保存常用脚本](../../../yaya/methodology/09-records-reports-and-handoff.md#保存常用脚本)；生成参数（种子、数量、公式参数）和生成器放在一起，作为生成器的输入。生成产物提交到仓库，不手工修改；要改就改参数或生成器，再重新生成。
 - 数据跟随所属的游戏模块，按 `docs/game-organization.md` 放在 `game/<module>/` 下；内容增多后再在模块内建 `data/` 或 `levels/`。
 - `balance/` 中的公式或目标区间变化后，按新公式更新生成器或数据，并重跑全部受影响的检查。
 
@@ -57,7 +57,7 @@ description: "在已授权的 Feature 中，按已确认的 GDD 规则、数值�
 检查放在哪里：
 
 - **gdUnit 不变量测试**：放在 `tests/invariants/content/`，通过生产加载器读取正式数据，逻辑 ID 写成 `INV-CONTENT-NN`。运行用 `run-gdunit-tests.py`，参数见 [run-gdunit-tests.py](../../../yaya/tools/README.md#run-gdunit-testspy)。
-- **长耗时的检查**：大量模拟或求解在测试超时内跑不完时，做成所属模块内显式运行的无头脚本（`extends SceneTree`），参数固定，成功退出码为 0，失败为 1。诊断写出文件、实体 ID、字段、实际值和违反的约束，见 [错误](../../../yaya/agent-rules/50-data-files/data-lifecycle-and-authority.md#错误)。测试中保留一个能在超时内跑完的子集，例如少量固定种子。
+- **长耗时的检查**：大量模拟或求解在测试超时内跑不完时，做成 `dev/tools/` 下显式运行的无头脚本（`extends SceneTree`），参数固定，成功退出码为 0，失败为 1。诊断写出文件、实体 ID、字段、实际值和违反的约束，见 [错误](../../../yaya/agent-rules/50-data-files/data-lifecycle-and-authority.md#错误)。测试中保留一个能在超时内跑完的子集，例如少量固定种子。
 - **何时固定下来**：结果能明确判对错、输入格式稳定、做错的代价高或人工容易漏，三条同时满足时，才写成长期保留的测试或脚本。一次性的探索计算不保存为检查，结论写进 Feature 记录。
 - **概率性检查**：自动对局或随机模拟的结果是计算证据，写明使用的策略、种子数量和局限。它不能证明真人玩家的难度感受。
 

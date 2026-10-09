@@ -174,7 +174,7 @@ Work item: docs/features/F012.json
 
 - 证据只证明它实际运行到的环境。规则要求新进程、新导入、新导出或目标运行时的证据时，已有编辑器或会话的结果不能代替。
 - 人工验收和自动验证是不同的证据，不把其中一种汇报成另一种。
-- 日志、JUnit 报告和临时导出等验证产物按[临时、备份与草稿文件](yaya/agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。
+- 日志、JUnit 报告和临时导出等验证产物按[临时、备份与草稿文件](yaya/agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理，不变成正式源文件。命令辅助脚本放在哪里、何时提出保存为项目脚本，见[保存常用脚本](yaya/methodology/09-records-reports-and-handoff.md#保存常用脚本)。
 
 ### 汇报验证结果
 
