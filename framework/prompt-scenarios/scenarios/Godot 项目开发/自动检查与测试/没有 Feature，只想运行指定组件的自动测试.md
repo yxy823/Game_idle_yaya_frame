@@ -17,7 +17,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 自动检查与测试 → 没有 Feature，只想运行指定组件的自动测试”。本页由当前 Agent 使用项目自己的 [$project-verification-godot](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
+使用[预设提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 自动检查与测试 → 没有 Feature，只想运行指定组件的自动测试”。本页由当前 Agent 使用项目自己的 [$project-verification-godot](<../../../../../project-source/skills/project-verification-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
 
 **S1｜确认实际目标**
 

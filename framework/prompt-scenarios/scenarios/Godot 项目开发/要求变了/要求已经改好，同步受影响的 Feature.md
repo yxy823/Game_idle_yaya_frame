@@ -37,7 +37,7 @@ GDD、专业规格或 Product 交付范围已按新决定改好并提交，或�
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 要求变了 → 要求已经改好，同步受影响的 Feature”。填入上述材料。本页使用 [$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 要求变了 → 要求已经改好，同步受影响的 Feature”。填入上述材料。本页使用 [$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)。
 
 **S1｜分析来源差异**
 

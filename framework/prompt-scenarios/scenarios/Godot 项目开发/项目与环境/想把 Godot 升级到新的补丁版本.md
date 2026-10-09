@@ -23,7 +23,7 @@ Godot 发布了同一次版本内的修复版，例如项目在用 4.7.1，4.7.2
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目与环境 → 想把 Godot 升级到新的补丁版本”。填入上述材料。本页先由当前 Agent 使用 [$engineering-change-plan](<../../../../../project-source/skills/engineering-change-plan/SKILL.md>) 建立维护 Feature，再用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>) 实施；具体做法按 07 的[升级 Godot 补丁版本](<../../../../../project-source/methodology/07-engineering-change.md#升级-godot-补丁版本>)逐步执行，每步的检查通过后再继续。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目与环境 → 想把 Godot 升级到新的补丁版本”。填入上述材料。本页先由当前 Agent 使用 [$engineering-change-plan](<../../../../../project-source/skills/engineering-change-plan/SKILL.md>) 建立维护 Feature，再用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>) 实施；具体做法按 07 的[升级 Godot 补丁版本](<../../../../../project-source/methodology/07-engineering-change.md#升级-godot-补丁版本>)逐步执行，每步的检查通过后再继续。
 
 **S1｜建立升级的维护 Feature**
 

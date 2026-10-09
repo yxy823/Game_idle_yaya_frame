@@ -19,7 +19,7 @@ docs/gdd/ 已有实际游戏设计正文。空目录、仅作目录导航的 REA
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → 已有 GDD，需要预拆分 Product 交付范围”。填入上述材料。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要交付取舍使用 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → 已有 GDD，需要预拆分 Product 交付范围”。填入上述材料。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要交付取舍使用 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清。
 
 **S1｜核对设计与采用范围**
 

@@ -16,7 +16,7 @@ Feature 做到一半停下了，现在要接着做。可能是上一个对话太
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 现状、暂停与续接 → 继续上次没做完的 Feature”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 现状、暂停与续接 → 继续上次没做完的 Feature”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
 
 **S1｜恢复真实停点**
 

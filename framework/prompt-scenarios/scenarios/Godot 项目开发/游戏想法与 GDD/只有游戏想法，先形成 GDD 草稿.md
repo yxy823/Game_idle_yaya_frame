@@ -14,7 +14,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 游戏想法与 GDD → 只有游戏想法，先形成 GDD 草稿”。
+使用[预设提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 游戏想法与 GDD → 只有游戏想法，先形成 GDD 草稿”。
 
 **S1｜确定当前要讲清的设计**
 

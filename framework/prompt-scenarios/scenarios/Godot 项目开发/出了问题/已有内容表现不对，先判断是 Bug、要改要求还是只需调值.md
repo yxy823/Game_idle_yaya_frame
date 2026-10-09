@@ -26,7 +26,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 出了问题 → 已有内容表现不对，先判断是 Bug、要改要求还是只需调值”。
+使用[预设提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 出了问题 → 已有内容表现不对，先判断是 Bug、要改要求还是只需调值”。
 
 **S1｜弄清反馈与双方事实**
 

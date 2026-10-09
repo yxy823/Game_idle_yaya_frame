@@ -153,7 +153,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 
 继续使用现有检查，不把场景是否配对交给孤立文档的文本命中推断：
 
-- [提示词与场景路径检查](../../prompt-scenarios/tools/README.md#提示词与场景路径检查)核对两份集中提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
+- [提示词与场景路径检查](../../prompt-scenarios/tools/README.md#提示词与场景路径检查)核对两份预设提示词库与同名场景页：新增提示词但缺少场景，或新增场景但没有对应提示词，都会返回 `1`。
 - 调整场景入口时，核对[场景速查索引](../../prompt-scenarios/scenarios/scenario-index.md)是否包含对应页面、链接是否有效。
 
 路径检查不检查索引收录或正文。提示词或场景变更时按现有的 [prompt-and-graph-maintenance-yaya](../../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步，普通孤立文档扫描不会自动调用它。

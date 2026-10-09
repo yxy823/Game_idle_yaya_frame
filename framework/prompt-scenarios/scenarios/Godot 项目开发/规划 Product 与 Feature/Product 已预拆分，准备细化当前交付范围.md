@@ -19,7 +19,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → Product 已预拆分，准备细化当前交付范围”。填入上述材料。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要交付范围问题由 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清；游戏设计变化交给 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → Product 已预拆分，准备细化当前交付范围”。填入上述材料。当前 Agent 使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)，必要交付范围问题由 [$product-spec-elicitor](<../../../../../project-source/skills/product-spec-elicitor/SKILL.md>) 澄清；游戏设计变化交给 [design-gdd](../../../../../project-source/skills/design-gdd/SKILL.md)。
 
 **S1｜复核当前范围**
 

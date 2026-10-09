@@ -24,7 +24,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 出了问题 → 发现 Bug，需要修复”。填入上述材料。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 出了问题 → 发现 Bug，需要修复”。填入上述材料。
 
 **S1｜判断交付状态并记录现场**
 

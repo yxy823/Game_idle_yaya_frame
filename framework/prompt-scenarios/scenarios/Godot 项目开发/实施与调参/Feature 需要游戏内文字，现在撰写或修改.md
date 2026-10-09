@@ -18,7 +18,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 实施与调参 → Feature 需要游戏内文字，现在撰写或修改”。填入上述材料。本页由所属 Feature 的执行使用 [$feature-execute](../../../../../project-source/skills/feature-execute/SKILL.md)，写法按[玩家可见文本](<../../../../../project-source/methodology/11-specialist-workflows.md#玩家可见文本>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 实施与调参 → Feature 需要游戏内文字，现在撰写或修改”。填入上述材料。本页由所属 Feature 的执行使用 [$feature-execute](../../../../../project-source/skills/feature-execute/SKILL.md)，写法按[玩家可见文本](<../../../../../project-source/methodology/11-specialist-workflows.md#玩家可见文本>)。
 
 **S1｜读约束**
 

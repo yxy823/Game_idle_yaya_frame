@@ -16,7 +16,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 实施与调参 → 已选定 worktree 中的成果，带回目标分支”。提供已知来源、目标、选定成果及相关证据；复用已有明确决定。
+使用[预设提示词库](../../../prompts/godot-development-prompts.json)中的“Godot 项目开发 → 实施与调参 → 已选定 worktree 中的成果，带回目标分支”。提供已知来源、目标、选定成果及相关证据；复用已有明确决定。
 
 **S1｜核实范围与可用整合方式**
 

@@ -19,7 +19,7 @@ GDD、预拆分顺序、Progress 和 Feature 状态由 Agent 直接读取。
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 实施与调参 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 实施与调参 → Product 范围已确定，想自动推进到首次人工验收”。填入上述材料。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)、[$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)。
 
 **S1｜固定 Goal 范围**
 

@@ -18,7 +18,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → 人工验收已有结果，继续原 Goal”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)、[$manual-acceptance-godot](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)；继续推进时沿用原 Goal 的 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → 人工验收已有结果，继续原 Goal”。填入上述材料。本页使用 [$feature-execute](<../../../../../project-source/skills/feature-execute/SKILL.md>)、[$manual-acceptance-godot](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)；继续推进时沿用原 Goal 的 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)、[$feature-sync](<../../../../../project-source/skills/feature-sync/SKILL.md>)。
 
 **S1｜核对实际人工结果**
 

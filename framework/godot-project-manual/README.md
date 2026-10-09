@@ -31,7 +31,7 @@
   - [需求、Feature 与规划基线](requirements-and-tasks/requirements-and-planning.md)：GDD 前提、交付预拆分、逐个细化 Product、AC、依赖、基线与需求修订。
   - [任务类型、开发阶段与完成语义](requirements-and-tasks/feature-lifecycle.md)：Bug、重构、维护与实验的区别，Stage、自动与人工验收、Git 和持续任务。
 - **方法与工具**
-  - [Skill、Agent 与提示词](methods-and-tools/skills-and-agents.md)：每个 Skill 的职责、专用角色、集中提示词与 advisor。
+  - [Skill、Agent 与提示词](methods-and-tools/skills-and-agents.md)：每个 Skill 的职责、专用角色、预设提示词与 advisor。
   - [命令与验证证据](methods-and-tools/commands-and-evidence.md)：每种结果能证明什么，命令参数、测试范围、运行报告、完成证据与内容指纹。
   - [错误与结果的含义](methods-and-tools/errors-and-results.md)：按现象查工具输出的含义和处理办法。
 - **专业工作与记录**

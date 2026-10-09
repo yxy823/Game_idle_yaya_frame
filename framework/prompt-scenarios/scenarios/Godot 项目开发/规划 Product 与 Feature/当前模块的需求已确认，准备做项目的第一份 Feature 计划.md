@@ -18,7 +18,7 @@ GDD、当前 Product、专业来源和空的 Feature 记录由 Agent 直接读�
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → 当前模块的需求已确认，准备做项目的第一份 Feature 计划”。填入上述材料。本页使用 [$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → 当前模块的需求已确认，准备做项目的第一份 Feature 计划”。填入上述材料。本页使用 [$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)。
 
 **S1｜核对首次入口**
 

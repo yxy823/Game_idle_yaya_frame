@@ -18,7 +18,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 游戏想法与 GDD → GDD 或方案草稿已写好，先检查缺口和冲突”。填入上述材料。本页使用 [$plan-review-godot](../../../../../project-source/skills/plan-review-godot/SKILL.md)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 游戏想法与 GDD → GDD 或方案草稿已写好，先检查缺口和冲突”。填入上述材料。本页使用 [$plan-review-godot](../../../../../project-source/skills/plan-review-godot/SKILL.md)。
 
 **S1｜确定检查的问题**
 

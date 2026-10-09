@@ -14,7 +14,7 @@
 
 ## 执行步骤
 
-使用[集中提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目与环境 → 第一次运行项目，Godot 还没有完成资源扫描”。填入上述材料。本页由当前 Agent 使用项目自己的 [$project-environment-godot](<../../../../../project-source/skills/project-environment-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 项目与环境 → 第一次运行项目，Godot 还没有完成资源扫描”。填入上述材料。本页由当前 Agent 使用项目自己的 [$project-environment-godot](<../../../../../project-source/skills/project-environment-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
 
 **S1｜核对扫描缺口**
 
