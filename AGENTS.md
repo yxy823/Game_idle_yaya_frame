@@ -1,133 +1,50 @@
 # 框架维护约定
 
-本仓库维护一套 Godot 起始框架。本机环境与审批遵循当前生效的个人规则；文本格式以 [.editorconfig](.editorconfig)、[.gitattributes](.gitattributes) 为准。
+本仓库维护一套 Godot 起始框架：`framework/` 是维护材料，`.agents/skills/` 是框架自用 Skill，`project-source/` 是复制进生成项目的分发源。`project-source/` 里的规则、流程和 Skill 在本仓库只作为源材料阅读，不启用项目开发的 Stage。文本格式以 [.editorconfig](.editorconfig)、[.gitattributes](.gitattributes) 为准；术语按[框架术语](framework/terminology.md)。
+
+## 基本约束
+
+- **只面向 Godot**：只支持已确定的 Godot 技术栈，不为其他引擎、平台或旧项目预留兼容，也不做向后兼容。
+- **只做 Windows PC**：生成的游戏只支持鼠标和键盘，不支持手柄、触屏和其他平台，不按项目单独设置平台。
+- **单人项目**：一位使用者与 Agent 配合开发，多人协作和改动归属处理不在设计与场景范围内，不为此扩展流程、工具或配置。同一目录内的暂停、切换和换对话续接仍然支持；是否使用 worktree 由当前任务范围与授权决定，不因普通暂停或换对话默认创建。按需调研 Agent 和独立审核 Agent 仍可使用，独立审核按[正式审核的独立性](framework/maintenance/design-guidelines/reviews-and-reports.md#正式审核的独立性)执行。
+- **不监督 Agent 的每个动作**：不增加重复状态、来源哈希清单、收据、评分或发布资格，只保留针对实际成果的验证；提交钩子可以检查提交内容，不记录或评价 Agent 的动作。
+- **提问与授权**：沿用具体授权，Agent 能完成的工作继续完成；缺少关键信息、决定或实际人工验收时请用户介入，优先提出最关键的问题。可能造成重要数据损失且现有授权未覆盖的操作，执行前确认；已明确批准的同一动作不重复询问。生成项目的 `project-source/Project_AGENTS.md`「工作流程与授权」有同样一条，修改其中一份时同步另一份。
 
 ## 核心决策原则
 
-| 原则 | 必须执行的要求 |
-| --- | --- |
-| 目标驱动 | 先从用户要完成的事情识别关键决策和交付物，再检查现有能力能否覆盖，最后决定复用、补充还是新增。 |
-| 背景与场景核对 | 讨论新增能力或文档前，先说明相关的现有背景、已有职责、新增位置和上下游关系，再讨论内部细节。收尾时用一个具体使用场景走一遍，确认用户能从需求找到设计、从设计找到实现与验收。 |
-| 唯一正文与集中维护 | 同一作用域内的同一事实、规则或决定，只在职责所属位置维护一份权威正文；其他位置引用它，按需保留简短提醒。新增或调整文档职责时，按[文档职责与固定归属](framework/maintenance/design-guidelines/document-responsibilities.md#文档职责与固定归属)确定固定路径或命名模式，区分“何时创建”与“放在哪里”。新增或拆分前先核对已有归属，优先复用；确需迁移时同步引用并删除旧正文，不留并行维护的副本。 |
-| 按职责组织，权衡拆合成本 | 围绕共同目标、变化原因和使用场景组织内容与能力。需要一起理解、修改或完成的部分优先放在一起；职责或使用条件能独立、且拆开能减少无关阅读、依赖或维护牵连时，再分开。综合考虑查找、跳转、交接和维护成本，不单凭文件长短、数量或步骤多少决定拆合。具体判断见[职责设计准则](framework/maintenance/design-guidelines/README.md)。 |
-| 奥卡姆剃刀 | 先比较复用、合并、删除与局部修正；普通文件、现有命令或 Agent 判断已经够用时，不增加脚本、依赖或流程层；同一类临时脚本反复出现时，按[何时把临时脚本做成工具](framework/maintenance/design-guidelines/skills-and-scripts.md#何时把临时脚本做成工具)判断是否保存。 |
-| 第一性原理 | 从当前需求、真实问题和已知约束推导方案，重新判断既有机制是否必要；现有实现或历史投入不是必须保留的理由。 |
-| 最小完整修改 | 在本次授权范围内，选择能完整解决问题的最小方案，保留必要的能力与约束；不以最少行数或文件数为目标，也不借修复扩大任务。 |
-
-另外三条基本约束：
-
-- **不监督 Agent 的每个动作**：不为此增加重复状态、来源哈希清单、收据、评分或发布资格；只保留针对实际成果的必要验证。Git 提交钩子可以检查提交的内容，例如术语、措辞和链接，不记录或评价 Agent 的动作。Claude Code 的[用词提示钩子](framework/maintenance/tools/README.md#用词提示钩子)只提示用户消息中已登记的不用说法，不拦截消息，也不记录。
-- **只面向 Godot**：只支持已确定的 Godot 技术栈，不为其他引擎、平台或旧项目预留兼容机制，也不做向后兼容。
-- **只做 Windows PC**：生成的游戏统一面向 Windows PC，只支持鼠标和键盘操作，不支持手柄、触屏和其他平台；不按项目单独设置平台。
-- **单人项目**：框架面向一位使用者与 Agent 配合开发。多人协作和改动归属处理不在设计与场景范围内，不为此扩展流程、工具或配置。同一目录内的暂停、切换和换对话续接仍然支持；是否使用 worktree 由当前任务范围与授权决定，不因普通暂停或换对话默认创建。按需调研 Agent 和独立审核 Agent 仍可使用，独立审核按[正式审核的独立性](framework/maintenance/design-guidelines/reviews-and-reports.md#正式审核的独立性)执行。
-
-## 沟通与交付
-
-回复格式按使用者的个人沟通规则，包括表达方式、提问格式、完成汇报与排查结论的小标题和状态词，本文件不另写一份：Claude Code 读 `~/.claude/CLAUDE.md`，Codex 读 `~/.codex/AGENTS.md`。本节只写本项目补充的要求。
-
-- **措辞检查：** 回复和文档中要避免的写法见[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)。
-- **提问与授权：** 沿用具体授权，Agent 能完成的工作继续完成；缺少关键信息、决定或实际人工验收时请用户介入，优先提出最关键的问题。可能造成重要数据损失且现有授权未覆盖的操作，执行前确认；已明确批准的同一动作不重复询问。
-
-生成项目的 AGENTS.md 源文件有同样的[沟通与交付](project-source/Project_AGENTS.md#沟通与交付)一节，修改其中一份时同步另一份。
-
-## 使用说明的可读性
-
-- **写作方法**：编写或整理框架文档时，使用 [technical-documentation-writing-yaya](.agents/skills/technical-documentation-writing-yaya/SKILL.md)，按文档类型读取其中的参考。框架手册的专有分工见[说明的组织与措辞](framework/maintenance/maintenance-and-sync.md#说明的组织与措辞)。
-- **两份写作 Skill**：框架版与分发给项目的 [technical-documentation-writing-godot](project-source/skills/technical-documentation-writing-godot/SKILL.md) 各自独立维护，除[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明只维护在 Godot 版外不跨包引用，分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
-- **术语**：框架与生成项目共用的术语写法维护在[框架术语](framework/terminology.md)；游戏自身的业务词汇由生成项目的 `docs/terminology.md` 维护，两者不混成同一份词表。
+- **目标驱动**：先从用户要完成的事识别关键决策和交付物，再看现有能力能否覆盖，最后决定复用、补充还是新增。
+- **背景与场景核对**：讨论新增能力或文档前，先说明现有背景、已有职责、新增位置和上下游；收尾时用一个具体场景走一遍，确认能从需求找到设计、实现与验收。
+- **唯一正文与集中维护**：同一事实只在职责所属位置写一份正文，其他位置引用；迁移时同步引用并删除旧正文。归属怎么定见[文档职责与固定归属](framework/maintenance/design-guidelines/document-responsibilities.md#文档职责与固定归属)。
+- **按职责组织，权衡拆合成本**：按共同目标、变化原因和使用场景决定拆合，不单凭文件长短或数量，见[职责设计准则](framework/maintenance/design-guidelines/README.md)。
+- **奥卡姆剃刀**：先比较复用、合并、删除与局部修正；现有文件、命令或 Agent 判断够用时，不加脚本、依赖或流程层；临时脚本是否保存见[何时把临时脚本做成工具](framework/maintenance/design-guidelines/skills-and-scripts.md#何时把临时脚本做成工具)。
+- **第一性原理**：从当前需求和已知约束推导方案；现有实现或历史投入不是必须保留的理由。
+- **最小完整修改**：在授权范围内选能完整解决问题的最小方案，保留必要的能力与约束，不以行数或文件数为目标，也不借修复扩大任务。
 
 ## 维护边界与查阅
 
-| 当前工作 | 依据 |
+下表列出“做这类工作前先读哪里”。只读本次用得到的行，不把整张表当成每轮前置阅读。
+
+| 做这类工作前 | 先读 |
 | --- | --- |
-| 框架维护 | `framework/` 保存维护材料，框架自用 Skill 在 `.agents/skills/`，未完成事项见[框架待办](framework/progress.md)。`project-source/` 是分发源，其中的项目开发流程只作为源材料阅读，不在框架仓库启用 |
-| 创建项目 | [创建器](framework/project-creation/tools/create_project.py)按[复制清单](framework/project-creation/project-files.json)复制和重命名，复制提交钩子目录，在初始化新仓库时设置 `core.hooksPath`，然后建立本地初始提交；不附带环境探测、Bootstrap、测试、远程推送、来源记录或升级 |
-| 生成项目 | 项目独立拥有自己的文件，不接受自动同步；手册与提示词库不进入项目，项目 README 只保留简短的自身导航 |
-| 修改空白项目 | 先读[框架入口](framework/README.md)，再按[框架维护与说明同步](framework/maintenance/maintenance-and-sync.md)查阅受影响的专题、核对源材料并同步说明 |
-| 使用手册 | Godot 项目手册解释生成项目的概念、文档对象、配置与工具；具体场景写在同名提示词对应的场景页。两册只维护 Markdown，不互相引用，由框架入口导航 |
-| 审核及后续讨论 | 外部报告先核对当前文件和版本，分别判断问题与改法；用户明确选择实施范围后才修改 |
-| 选择验证 | 只要求静态审查时，不生成项目、不启动 Godot、不运行测试；实际项目验证在明确指定的外部项目中执行。范围见[按修改选择验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，命令见[按需检查](framework/tests/README.md#按需检查)。派活时由主 Agent 按本次修改从验证范围选出验证要求交给实施者；外部项目中的 gdUnit 测试按 [gdUnit4 运行器与诊断](project-source/agent-rules/70-tests/gdunit4-profile.md)运行，不用统一的“结束时跑全量”“只看新增 Critical”或“一律无头运行”代替 |
-
-修改分发源或工具时：
-
-- **Godot 代码、场景、资源或测试**：按[工程规则目录](project-source/agent-rules/README.md)核对适用的工程规则；任务授权、Git、验证范围与地点和交付，仍以本仓库规则为准。
-- **代码或工具**：修改前按[任务范围](project-source/Project_AGENTS.md#任务范围)确认实际实现、影响范围和简短方案；验证和交付沿用本仓库约定，不因此启用生成项目的 Stage。
-
-### 框架待办
-
-框架维护任务开始或续接时，按当前主题核对 [framework/progress.md](framework/progress.md)：
-
-- **只保留**：仍需推进的工作、真实的验证缺口、阻塞和必要的待决定事项，写明下一步和必要依据。条目不授予实施权限。
-- **及时删除**：完成并通过必要验证的事项立即删除；还有人工验收时，只保留具体的待验收项。无待办时清空文件。
-- **不保留历史**：历史由 Git 保存，不写完成记录、成果汇总或长期搁置的设想。
-- **何时更新**：相关状态发生实质变化时，在本次允许写入的范围内及时更新，提交或交接前核对一致。只读任务在回复中指出需要更新的条目；没有实质变化不为改而改。
-
-## 文件命名与修改
-
-- **命名**：自主命名的文件要能直接看出用途，包含必要的所属领域与具体职责，例如 `test-registry.json` 表示测试登记表。工具要求的约定文件名和第三方原始名称按各自契约保留。
-- **临时文档**：统一放在仓库根目录的 `tmp/`，可以按任务、主题建子目录；文件名带实际日期后缀，例如 `demo-issue-list-20261004.md`。草稿、当次方案、审核报告和交接材料不放进正式文档目录。长期有效的结论整理进职责所属的正文后，删除不再需要的临时文档。框架报告的使用与清理见[当次报告的保存与清理](framework/maintenance/design-guidelines/reviews-and-reports.md#当次报告的保存与清理)。
-
-### 修改时的联动检查
-
-- **职责评价**：新增、实质调整职责，或审核 Skill、脚本、提示词与场景时，按[职责设计准则](framework/maintenance/design-guidelines/README.md)评价对应对象；普通局部修改不触发无关的全量审核。
-- **行为不变**：整理文档或文件名，不能顺带改变 Skill 的行为。
-- **被证明错误的内容**：规则、提示词、文档或示例中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、怎么做。
-- **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
-- **术语用词**：写完或改过文档后，对本次改过的文档运行术语检查 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md <文件> <文件>…`（改过的提示词 JSON 同样列出），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[检查术语用词](framework/maintenance/tools/README.md#检查术语用词)；提交时[提交钩子](framework/maintenance/tools/README.md#提交钩子)还会检查一次。
-- **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
-- **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
-- **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
-- **外部项目回归**：运行前核对被测文件是否对应本次修复；需要同步时只更新授权范围内的具体文件，保留目标项目的机器配置与无关内容。
-- **如实记录**：静态核对、工具回归、真实引擎运行与人工验收的结果分别记录；失败、未执行和旧版本的通过不能写成当前修改已通过。
-- **重复的症状先找根因**：同一类问题第二次出现时，先停下来查它为什么反复出现，再决定修具体文件还是修源头，不连续修补单个实例。例如新项目扫描后总冒出新的 `.uid`、`.import` 或格式差异，要追到分发源的写法或工具，而不是每次补交一批文件。
-
-### 目录与入口组织
-
-维护侧（根目录、`.agents/`、`framework/`）的目录由框架入口的[目录与职责](framework/README.md#目录与职责)统一说明。新增、移动、拆分或合并文件前，先按下列约束确定位置，并同步该表；判断步骤与常见反例见职责设计准则的[目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织)。
-
-- **按对象划分顶层**：`framework/` 的顶层目录按材料讲述的对象划分（生成的 Godot 项目、提示词与场景、关系图、框架维护、项目创建、测试），不设 `docs/` 这类只按文件类型归堆的目录。
-- **按功能建子目录**：同一目录内的文件功能不同时，按功能建子目录，即使目前只有一两个文件；功能相同的文件放在一起。子目录名直接表达功能，例如 `design-guidelines/`、`validation/`、`dependencies/`、`tools/`。
-- **脚本放在 `tools/`**：脚本放在所属对象目录下的 `tools/`，不与数据或文档平铺；参数、退出码和运行方式写在同目录的 README。没有单一对象的全仓检查放在 `framework/maintenance/tools/`。`framework/README.md` 的「维护命令」只做索引，其他文档说明何时运行并链接到对应 README。回归测试放在 `framework/tests/repository/`，外部项目夹具的放置与运行写在 `framework/tests/external-project/` 各子目录的 README。
-- **一处目录说明**：根 README 只画顶层与 `project-source/`，`framework/README.md` 维护 `framework/` 唯一的目录表；其他 README 只说明自身内容，不重画上层或别处的目录。
-- **按职责落位**：新内容先并入职责、读者和变化原因相同的现有页面，确能独立时才新建；不保留只做跳转或只剩一两段的薄页面。
-- **不登记分发清单**：维护文档按目录或命名模式指向 `project-source/`，不逐个列出分发的 Skill、模板或工具；它们的职责以这些文件自身为准。
-- **命名一致**：维护侧自主命名的目录和文档使用小写英文加连字符；Python、GDScript 等代码文件按语言约定使用下划线；场景目录与文件保留提示词库中的准确中文名称。
-- **正式文档只写现状**：带日期的验证过程、审核记录和迁移说明放在 `tmp/`、外部项目报告或提交说明里；正式文档只写当前结论、未解决问题和核对方法。
-
-## AGENTS.md、Skill 与任务提示词编写
-
-维护本框架的 AGENTS.md、Skill、任务提示词和条件引用规则时，按[规则与提示词文件](framework/maintenance/design-guidelines/instruction-files.md)核对实际变化并自查；内容归属、触发、按需阅读、流程粒度、授权与完成、阻塞说明等要求都在那里。用户要求独立审核时，按[正式审核的独立性](framework/maintenance/design-guidelines/reviews-and-reports.md#正式审核的独立性)执行。
-
-## 提示词维护
-
-新增、修改、重命名、调整分类或删除预设提示词时，使用框架自用的 [prompt-and-graph-maintenance-yaya](.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、开发场景图与 advisor 引用。两份提示词库的结构、一对一场景和命名规则见[提示词与场景准则](framework/maintenance/design-guidelines/prompts-and-scenarios.md)；提示词正文不写进 README、规则或工具说明。
-
-advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 只读使用 Godot 提示词库。移动或改名该文件时，同步 `project-source/skills/project-next-step-advisor/SKILL.md`；已创建的项目是否更新由用户决定。
+| 修改框架的任何文件 | [框架入口](framework/README.md)，再按[框架维护与说明同步](framework/maintenance/maintenance-and-sync.md)判断修改属于哪里；开始修改前读一遍其中的[修改时的联动检查](framework/maintenance/maintenance-and-sync.md#修改时的联动检查)，提交前再逐条核对。修改框架自己的工具时，同样按[修改分发源](framework/maintenance/maintenance-and-sync.md#修改分发源)中“代码或工具”一条先确认范围 |
+| 修改 `project-source/` 下的文件 | [修改分发源](framework/maintenance/maintenance-and-sync.md#修改分发源)。生成项目的规则源文件是 `project-source/Project_AGENTS.md`，创建项目时复制为项目的 `AGENTS.md`，在本仓库只作为源材料阅读 |
+| 框架维护任务开始或续接；修改 `framework/progress.md` 或提示词库 | [framework/AGENTS.md](framework/AGENTS.md)（Claude Code 读取 `framework/` 下的文件时会自动加载它；Codex 只在工作目录位于 `framework/` 时自动读到，所以这里显式要求先读） |
+| 新增、移动、拆分、合并或命名文件 | [目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织) |
+| 选择验证范围，或派活时写验证要求 | [按修改选择验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，它优先于个人规则里的验证默认值 |
+| 编写或整理框架文档；回复和文档要避开的写法 | [technical-documentation-writing-yaya](.agents/skills/technical-documentation-writing-yaya/SKILL.md)；[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)；两份写作 Skill 的分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工) |
+| 编写或修改 AGENTS.md、Skill、任务提示词 | [规则与提示词文件](framework/maintenance/design-guidelines/instruction-files.md) |
+| 核实外部审核报告；用户要求独立审核 | [审核与报告](framework/maintenance/design-guidelines/reviews-and-reports.md) |
+| 判断授权是否延续、何时停下问用户 | [授权在后续对话中的延续](framework/maintenance/maintenance-and-sync.md#授权在后续对话中的延续) |
+| 写草稿、当次方案、报告或交接材料 | 给用户看或用于交接的文档放在仓库根目录 `tmp/`，按任务建子目录；任务目录名或文件名带实际日期，例如 `tmp/idle-demo-trial-20261008/` 或 `demo-issue-list-20261004.md`。中间脚本和输出放会话自己的临时目录。不放进正式文档目录；长期有效的结论写回职责所属的正文后再删除，保存与清理见[当次报告的保存与清理](framework/maintenance/design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
 
 ## 本地提交
 
-会修改文件的获准任务，按可验证的逻辑成果自动创建本地提交，不需要再次询问；用户或派活的主 Agent 明确要求不提交或规定了提交条件时，按其具体范围执行。被派的子智能体被禁止 Git 写操作、又要连续完成多个逻辑成果时，每个成果做到可以提交时停下，交回主 Agent 提交，再继续下一个。
+会修改文件的获准任务，按可验证的逻辑成果自动创建本地提交，不再询问；用户或派活的主 Agent 规定了不提交或提交条件时，按其范围执行。被派的子智能体被禁止 Git 写操作、又要连续完成多个成果时，每个成果做到可提交就停下，交回主 Agent 提交。
 
-**提交前**
+开始修改前读[本地提交的做法](framework/maintenance/maintenance-and-sync.md#本地提交的做法)，提交前再按它核对：开始时记录工作区状态、怎样暂存、钩子拒绝后怎么办、提交说明格式和交付时说明什么。
 
-- 开始修改时运行一次 `git status`，记下工作区是否干净；同一任务之前留下的改动可以继续完成并提交。
-- [提交钩子](framework/maintenance/tools/README.md#提交钩子)拒绝提交时，按输出改正本次改过的文档，重新暂存后再提交；报出的位置不在本次改动内时，保留修改并报告。
-- 发现未完成的合并、变基等状态，或 HEAD、分支出现当前操作无法解释的变化时，保留现场并报告，核对清楚后再继续依赖该状态的写入和提交。
-- **开始时工作区干净**：之后出现的改动都属于本任务，可以用 `git add -A` 暂存；提交前看一眼 `git status`，排除混入的运行产物或缓存。
-- **开始时已有改动**：保留它们及其暂存状态，只暂存本项明确的路径或差异块，不用 `git add -A`、`git add .` 或 `git commit -a`；无法分开时说明冲突并保留现场。
-
-**提交内容**
-
-- 按完整的逻辑成果组织提交，带上必要的实现、测试、引用和说明；不按文件数或“代码、测试、文档”机械分批。
-- 验证按任务的实际改动与必要范围执行，复用仍有效的结果。提交不另设审核关卡，不要求每次重读完整的暂存差异或重跑已通过的检查；出现新的改动、失败或证据失效时才补充核对。
-- 主题采用 `<type>(<scope>): <中文摘要>`，说明实际的行为变化；非简单修改在正文说明原因、关键取舍和真实的验证结果。
-
-**提交后**
-
-- 交付时说明本次的提交、实际做过的验证，以及本任务还没提交的修改。
-- 提交后发现问题，新建修正提交，不改写历史。本地提交不等于任务完成或实际人工验收。
-
-**禁止的操作**
+禁止：
 
 - 不使用 `--no-verify`；不自动 push、tag、amend、rebase、reset、切换分支或修改远程配置；不用 stash 或 clean 整理提交。
-- 非仓库、权限、身份、签名或钩子等原因阻止提交时，保留修改并报告，不为了补救而擅自 init 或改配置。用户明确要求创建项目时，创建器仍按其契约初始化新仓库。
+- 提交后发现问题，新建修正提交，不改写历史。
+- 非仓库、权限、身份、签名或钩子等原因阻止提交时，保留修改并报告，不擅自 init 或改配置；用户明确要求创建项目时，创建器仍按其契约初始化新仓库。

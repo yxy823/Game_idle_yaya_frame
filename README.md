@@ -48,7 +48,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 - **Analyzer**：分析图像和音频源文件，结果不自动成为设计或验收结论。
 - **项目独立性**：项目独立拥有代码、配置、文档与 Git 历史，不自动升级或同步。
 - **advisor**：根据项目现状，从本机 Godot 开发提示词库选择适用场景并起草具体指令；执行仍依据项目自己的规则与有效授权。
-- **适用范围**：单人使用、任务续接、worktree 和素材制作的边界见[使用范围](framework/README.md#使用范围)。
+- **适用范围**：单人使用、任务续接和 worktree 的边界见根 AGENTS.md 的[基本约束](AGENTS.md#基本约束)，素材制作与发布的边界见[使用范围](framework/README.md#使用范围)。
 
 ## 维护
 

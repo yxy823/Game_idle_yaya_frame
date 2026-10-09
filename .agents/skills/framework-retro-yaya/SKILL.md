@@ -65,6 +65,6 @@ description: 用户要求复盘一次框架修改、demo 试验、反复返工�
 
 ## 交付之后
 
-在对话中给出报告路径、最优先的 1–3 条建议和需要用户选择的范围，然后停下等用户选择。用户选定范围后，按归属转给对应的维护任务实施，验证与提交按根 `AGENTS.md` 执行；修改提示词、场景或关系图时使用 [prompt-and-graph-maintenance-yaya](../prompt-and-graph-maintenance-yaya/SKILL.md)。选定后仍有未完成的部分，才按[框架待办](../../../AGENTS.md#框架待办)记录；建议本身不自动变成待办。报告的用途结束后按保存与清理的约定删除。
+在对话中给出报告路径、最优先的 1–3 条建议和需要用户选择的范围，然后停下等用户选择。用户选定范围后，按归属转给对应的维护任务实施，验证与提交按根 `AGENTS.md` 执行；修改提示词、场景或关系图时使用 [prompt-and-graph-maintenance-yaya](../prompt-and-graph-maintenance-yaya/SKILL.md)。选定后仍有未完成的部分，才按[框架待办](../../../framework/AGENTS.md#框架待办)记录；建议本身不自动变成待办。报告的用途结束后按保存与清理的约定删除。
 
 本 Skill 返回不结束它所在的已授权任务，已有的具体授权按[授权在后续对话中的延续](../../../framework/maintenance/maintenance-and-sync.md#授权在后续对话中的延续)继续有效。

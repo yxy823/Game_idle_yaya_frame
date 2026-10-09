@@ -49,6 +49,7 @@ flowchart TD
 
 | 路径 | 职责 |
 | --- | --- |
+| [AGENTS.md](AGENTS.md) | 只对 `framework/` 重要的规则：框架待办的维护方式、提示词维护；Claude Code 读取 `framework/` 下的文件时自动加载，在 `framework/` 启动的 Codex 自动读取，其他情况按根 `AGENTS.md` 的路由表读取 |
 | [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |
@@ -76,10 +77,8 @@ flowchart TD
 
 ## 使用范围
 
-本节是框架适用范围的唯一说明，其他页面只链接到这里。
+只面向 Godot、只做 Windows PC、单人项目等每次都要遵守的约束，正文在根 `AGENTS.md` 的[基本约束](../AGENTS.md#基本约束)；本节只补充素材和发布的覆盖范围。
 
-- **使用方式**：一位使用者与 Agent 配合开发，不包括多人协作或改动归属处理；worktree 使用按具体任务需要与授权判断，不作为通用前置。
-- **任务续接**：支持同一目录中的暂停、切换与新对话恢复；按需调研与独立审核仍可使用。
 - **素材工作**：覆盖准备要求、接收和检查；视觉美术、音乐与音效制作保持待扩展边界。
 - **暂不覆盖**：打包发布流程尚未确定。
 

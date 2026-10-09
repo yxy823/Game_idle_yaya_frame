@@ -505,7 +505,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护、框架复盘三个专项入口。\n位置：AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： .agents/skills/**/*.md",
+      "note": "职责：当前维护约束，以及框架文档编写、提示词与关系图维护、框架复盘三个专项入口。\n位置：AGENTS.md、framework/AGENTS.md、.agents/skills/。\n规则与提示词文件的维护依据归职责设计准则；框架 Skill 不随生成项目复制，自带参考由各包按条件引用。\n\n文件： AGENTS.md\n文件： framework/AGENTS.md\n文件： .agents/skills/**/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

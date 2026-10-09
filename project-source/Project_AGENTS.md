@@ -2,16 +2,11 @@
 
 本游戏只面向 Windows PC，只支持鼠标和键盘操作，不支持手柄、触屏和其他平台。开发环境使用 Windows 11、PowerShell 7、Godot 4.7、GDScript 和 gdUnit4。工具的实际路径写在 `docs/methodology-config.json`。工具能否使用以实际检查结果为准，不根据模板推断已安装了哪些工具。
 
-## 沟通与交付
-
-回复格式按使用者的个人沟通规则，包括表达方式、提问格式、完成汇报与排查结论的小标题和状态词，本文件不另写一份：Claude Code 读 `~/.claude/CLAUDE.md`，Codex 读 `~/.codex/AGENTS.md`。本节只写本项目补充的要求。
-
-- **措辞检查：** 回复和文档中要避免的写法见[措辞检查](.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)。
-- **提问与授权：** 沿用具体授权，Agent 能完成的工作继续完成；缺少关键信息、决定或实际人工验收时请用户介入，优先提出最关键的问题。可能造成重要数据损失且现有授权未覆盖的操作，执行前确认；已明确批准的同一动作不重复询问。
+回复格式（表达方式、提问格式、完成汇报与排查结论的小标题、状态词）按使用者的个人沟通规则，本文件不另写一份：Claude Code 读 `~/.claude/CLAUDE.md`，Codex 读 `~/.codex/AGENTS.md`。
 
 ## 使用说明的可读性
 
-编写、更新或整理项目文档时，使用本地 [technical-documentation-writing-godot](.agents/skills/technical-documentation-writing-godot/SKILL.md)，按本次文档类型读取其中的参考。适用于 README、使用说明及需求、设计、知识和报告中的自然语言文字。
+编写、更新或整理项目文档时，使用本地 [technical-documentation-writing-godot](.agents/skills/technical-documentation-writing-godot/SKILL.md)，按本次文档类型读取其中的参考。适用于 README、使用说明及需求、设计、知识和报告中的自然语言文字。回复和文档中要避免的写法见[措辞检查](.agents/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)。
 
 所属规范继续决定字段、固定路径、文档语言、流程、授权、验收与完成条件；写作 Skill 不替代这些契约，也不改变机器可读结构。持久项目文档使用 `docs/methodology-config.json` 中的 `document_language`。
 
@@ -22,6 +17,7 @@
 - 支持在同一目录内暂停、切换和续接任务，包括换到新对话后续接。
 - 只有当前任务的范围和授权需要时才使用 worktree，并遵循 [Git 与提交](#git-与提交)。任务默认不在 worktree 中开始。
 - 限定范围的调研和独立审核使用各自的角色，入口见任务路由表。
+- 沿用具体授权，Agent 能完成的工作继续完成；缺少关键信息、决定或实际人工验收时请用户介入，优先提出最关键的问题。可能造成重要数据损失且现有授权未覆盖的操作，执行前确认；已明确批准的同一动作不重复询问。
 
 选择工作流程或下一个允许的动作时，读 [任务路由表](yaya/methodology/00-overview.md#任务路由表)；各工作流程文件分别负责什么，见同页的[延伸阅读](yaya/methodology/00-overview.md#延伸阅读)。Skill 在 `.agents/skills/`，`.claude/skills/` 是供 Claude Code 读取的相同副本，修改 Skill 时两个目录一起改；角色配置同样有 Codex 的 `.codex/agents/*.toml` 和 Claude Code 的 `.claude/agents/*.md` 两种格式，说明正文相同，修改时一起改；显式命令在 `yaya/tools/`。只读选中的流程及其需要的参考，不加载全部工作流程。Skill 返回后，按 [授权与续接](yaya/methodology/03-execute-loop.md#授权与续接) 继续任务。
 
@@ -193,7 +189,7 @@ Work item: docs/features/F012.json
 
 任务何时算完成，由所属流程的完成检查决定。存在未解决的完成阻塞时，不把任务标为完成。已验证的逻辑修改仍可以按 [Git 与提交](#git-与提交) 提交，并如实汇报剩余工作和人工验收情况。
 
-汇报写结果和证据，不复述 Agent 的内部过程，按使用者个人沟通规则中完成汇报的小标题组织（见[沟通与交付](#沟通与交付)）。按任务规模包含：
+汇报写结果和证据，不复述 Agent 的内部过程，按使用者个人沟通规则中完成汇报的小标题组织（见[项目说明](#项目说明)开头）。按任务规模包含：
 
 - 结论：行为、架构或配置上的实质变化，包括重要的连带迁移；
 - 改动：关键的改动文件或文件组，以及为什么需要这些修改。不罗列全部文件，也不复述差异；
