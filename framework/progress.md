@@ -4,12 +4,11 @@
 
 方法规范把美术、音乐和音效制作留为预留能力（`project-source/methodology/11-specialist-workflows.md`「设计、制作、接入与审核」）。2026-10-10 与用户定下：制作放在框架外的独立工坊，按媒体各一个项目、多个游戏共用；音频用 `D:/A_Games/Studio_Audio_Production`，美术用 `D:/A_Games/Studio_Image_2D_Production`。执行由 Codex 完成、主 Agent 监工，每步做完再开下一步：
 
-1. 复审 `Studio_Audio_Production` 的文字和结构：它照很早以前的框架写成，用户要求复审。
-2. 音频技术验证：在工坊中用 Python 合成 `Game_Idle_Demo_V2` 的“购买与升级成功音效”，做清脆金币、柔和木质、上行和弦 3 个候选；用 `D:/A_Games/Studio Game Audio Analyzer`（GAA）测量。同时实测三项：单个短音效分析一次的耗时（关掉报告前后各测一次）、调试台现有 9 个音频数在 GAA 中有没有对应字段、游戏中途退出时 GAA 进程会怎样。不修改 `Game_Idle_Demo_V2`。
-3. GAA 审核与重构：用户说明 GAA 的思路是重点，代码质量和规范不一定完整，允许大规模重构。先派智能体审核，再按审核结果重构。
-4. 调试台的音频分析改为直接调用 GAA，直接读 GAA 的字段；框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分。GAA 一侧要增加只输出 JSON 的模式，结果文件写完再一次性发布，需要时再加 `--parent-pid`。
-5. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
-6. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
+1. 音频技术验证：按工坊规则（已于工坊提交 `767c9d8` 改写，支持代码合成、GAA 测量和交接）在 `works/idle-demo-v2/purchase-success/` 中用 Python 合成 `Game_Idle_Demo_V2` 的“购买与升级成功音效”，做清脆金币、柔和木质、上行和弦 3 个候选；用 `D:/A_Games/Studio Game Audio Analyzer`（GAA）测量，本机 `codex-python` 环境已装 GAA 0.3.0。同时实测三项：单个短音效分析一次的耗时（关掉报告前后各测一次）、调试台现有 9 个音频数在 GAA 中有没有对应字段、游戏中途退出时 GAA 进程会怎样。不修改 `Game_Idle_Demo_V2`。
+2. GAA 审核与重构：用户说明 GAA 的思路是重点，代码质量和规范不一定完整，允许大规模重构。先派智能体审核，再按审核结果重构。
+3. 调试台的音频分析改为直接调用 GAA，直接读 GAA 的字段；框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分。GAA 一侧要增加只输出 JSON 的模式，结果文件写完再一次性发布，需要时再加 `--parent-pid`。
+4. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
+5. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
 
 ## 验证缺口
 
