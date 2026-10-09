@@ -74,7 +74,8 @@
 ├── .claude/                 Claude Code 配置：用户消息中有不用的说法时提示 Agent；skills/ 是供 Claude Code 读取的 Skill 副本
 ├── addons/                   第三方插件及已记录补丁
 ├── dev/                      只用于开发的内容，导出时排除
-│   └── debug/                调试台：调试入口、共享代码、项目挂钩与各调试对象的候选
+│   ├── debug/                调试台：调试入口、共享代码、项目挂钩与各调试对象的候选
+│   └── tools/                项目自己的常用命令脚本，README 是脚本列表
 ├── yaya/                     框架随项目提供的流程、规则与工具
 │   ├── methodology/          开发与验证流程契约、模板
 │   ├── agent-rules/          按领域划分的工程规则

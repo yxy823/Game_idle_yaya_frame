@@ -84,7 +84,8 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 - `docs/`，包括 GDD、Progress、术语和机器配置 `docs/methodology-config.json`；
 - `game/`、`main/`、`assets/`、`components/`、`tests/`、`reports/` 和 `project.godot`；
 - 项目 `README.md`；
-- `dev/debug/` 中 `_shared/` 以外的文件，例如插槽、`debug_project.gd` 和项目自己的 `dev/debug/README.md`。
+- `dev/debug/` 中 `_shared/` 以外的文件，例如插槽、`debug_project.gd` 和项目自己的 `dev/debug/README.md`；
+- `dev/tools/`，包括其中的脚本列表 `README.md`。
 
 复制清单中的其他目标都是框架副本，例如 `AGENTS.md`、`yaya/`、`.agents/skills/`、`.claude/skills/`、`.codex/agents/`、`.claude/agents/`、`addons/` 和 `dev/debug/_shared/`。用户决定对齐时，在项目里按下面的步骤做：
 
