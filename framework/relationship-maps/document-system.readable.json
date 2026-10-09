@@ -262,6 +262,49 @@
       }
     },
     {
+      "id": "doc-framework-qa",
+      "shape": "rounded-rect",
+      "x": 1340,
+      "y": 760,
+      "width": 270,
+      "height": 88,
+      "label": "Q&A\nREADME.md · *.md",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：用户在讨论中问过、以后还会用到的问题，按主题分文件。\n位置：framework/qa/，按需新增主题文件。\n框架做法只写结论并链接规范、手册或规则正文；通用专业知识在这里写完整。\n\n文件： framework/qa/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/qa/README.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
       "id": "doc-prompts",
       "shape": "rounded-rect",
       "x": 1340,
@@ -2898,6 +2941,61 @@
         }
       ],
       "label": "公共词义",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-docs-qa",
+      "source": {
+        "node": "doc-framework-docs",
+        "port": "bottom"
+      },
+      "target": {
+        "node": "doc-framework-qa",
+        "port": "bottom"
+      },
+      "mode": "fixed",
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 635,
+          "y": 900
+        },
+        {
+          "x": 1475,
+          "y": 900
+        }
+      ],
+      "label": "用户问答",
       "stroke": {
         "color": "#64748B",
         "width": 1.5,

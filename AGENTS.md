@@ -35,6 +35,7 @@
 | 编写或修改 AGENTS.md、Skill、任务提示词 | [规则与提示词文件](framework/maintenance/design-guidelines/instruction-files.md) |
 | 核实外部审核报告；用户要求独立审核 | [审核与报告](framework/maintenance/design-guidelines/reviews-and-reports.md) |
 | 判断授权是否延续、何时停下问用户 | [授权在后续对话中的延续](framework/maintenance/maintenance-and-sync.md#授权在后续对话中的延续) |
+| 讨论中用户的追问暴露出理解缺口，或问到以后还会用到的专业知识 | [Q&A](framework/qa/README.md)，按其中「什么时候添加」直接添加问答，不必先问 |
 | 写草稿、当次方案、报告或交接材料 | 给用户看或用于交接的文档放在仓库根目录 `tmp/`，按任务建子目录；任务目录名或文件名带实际日期，例如 `tmp/idle-demo-trial-20261008/` 或 `demo-issue-list-20261004.md`。中间脚本和输出放会话自己的临时目录。不放进正式文档目录；长期有效的结论写回职责所属的正文后再删除，保存与清理见[当次报告的保存与清理](framework/maintenance/design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
 
 ## 本地提交
