@@ -85,7 +85,7 @@ git config core.hooksPath .githooks
 
 ## 用词提示钩子
 
-仓库根目录的 `.claude/settings.json` 注册 Claude Code 的 `UserPromptSubmit` 钩子，运行分发源中的 `project-source/tools/checks/check-prompt-terminology.py --terms framework/terminology.md`：用户消息中有[框架术语](../../terminology.md)登记的不用说法时，提示 Agent 按根 `AGENTS.md` 的用词对照规则列出对照表；钩子不拦截消息，也不记录。这份配置随仓库提交，Claude Code 打开本仓库时直接生效，不需要另外启用；用户本机的 `.claude/settings.local.json` 不受影响。
+仓库根目录的 `.claude/settings.json` 注册 Claude Code 的 `UserPromptSubmit` 钩子，运行分发源中的 `project-source/tools/checks/check-prompt-terminology.py --terms framework/terminology.md`：用户消息中有[框架术语](../../terminology.md)登记的不用说法时，提示 Agent 按个人沟通规则中的用词对照规则列出对照表；钩子不拦截消息，也不记录。这份配置随仓库提交，Claude Code 打开本仓库时直接生效，不需要另外启用；用户本机的 `.claude/settings.local.json` 不受影响。
 
 提示内容、不输出的情况和退出码见项目检查与测试工具的[用词提示钩子](../../../project-source/tools/README.md#用词提示钩子)。生成项目从分发源 `project-source/defaults/.claude/settings.json` 得到自己的一份，读取项目的 `docs/terminology.md`。
 

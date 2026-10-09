@@ -150,7 +150,7 @@ git config core.hooksPath .githooks
 
 `.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[check-terminology.py](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
 
-- **有命中**：向 Agent 附加一段提示，列出每处的原文、正式名称、在消息中的行号和术语定义位置，并提醒按 `AGENTS.md` 的用词对照规则，在回复最前面列出对照表。
+- **有命中**：向 Agent 附加一段提示，列出每处的原文、正式名称、在消息中的行号和术语定义位置，并提醒按个人沟通规则中的用词对照规则，在回复最前面列出对照表。
 - **没有命中，或术语文件缺失、无法解析、钩子出错**：不输出任何内容。
 
 钩子总是以退出码 `0` 结束，不拦截用户消息，也不记录消息或 Agent 的动作。它只认术语文件中已登记的不用说法；没有登记的写法和一词多义仍要 Agent 自己核对。消息里放在引号或行内代码中的写法不算出现，规则见[术语检查与措辞检查的共同约定](#术语检查与措辞检查的共同约定)。钩子命令使用 PATH 中的 `python`；找不到时 Claude Code 只会报告钩子失败，消息照常发送。
