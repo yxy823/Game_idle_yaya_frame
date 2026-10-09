@@ -225,7 +225,7 @@ class ProjectCopyTests(unittest.TestCase):
                 claude_path = toml_path.with_suffix(".md")
                 frontmatter, body = re.fullmatch(r"---\n(.*?)\n---\n\n(.*)",
                                                  claude_path.read_text(encoding="utf-8"), re.S).groups()
-                fields = dict(line.split(": ", 1) for line in frontmatter.splitlines())
+                fields = dict(re.findall(r"^(name|description): (.*)$", frontmatter, re.M))
                 self.assertEqual(fields["name"], codex["name"])
                 self.assertEqual(json.loads(fields["description"]), codex["description"])
                 self.assertEqual(body.strip(), codex["developer_instructions"].strip())

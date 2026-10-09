@@ -18,7 +18,7 @@
 - **Bug 诊断与修复未实测**：“发现异常，先定位原因”“发现 Bug，需要修复”两个场景（含交付前后两条路线）及 `bug-diagnosis-godot` 没有真实使用。下一步：用 `Game_Match_Three` 待办中 F012 的约 0.5 秒帧停顿试用定位场景。
 - **玩家行为埋点（待讨论）**：记录真实玩家在哪个界面停留多久、点了什么，用于分析可用性，可能做成通用模板。它要在游戏里常驻记录模块，涉及正式版本是否保留、数据存放和隐私，和开发期的自动界面检查分开设计。可参考 `tmp/godot-ui-flow-eval/` 的记录器与指标。下一步：用户提出时单独讨论。
 - **复用已有实现的规则未实测**：`project-source/Project_AGENTS.md`「修改前先定位」新增“新写逻辑前先搜索同用途的已有实现，能用就调用”，依据只是用户感觉 Agent 修 Bug 时会重复实现，没有真实案例；也可能让变化原因不同的功能共用同一个函数。下一步：下一个试用项目出现修 Bug 或新增逻辑时，核对 Agent 是否先搜索、复用是否合适，按结果保留或改写。
-- **Claude Code 版 Agent 角色未实测**：`project-source/agents/*.md` 按官方文档的子智能体格式写成，复制到生成项目的 `.claude/agents/`；还没在真实项目里确认 Claude Code 能列出这三个角色、主 Agent 能按名称委派，以及 implementation-advisor 的 `model: opus`、`effort: xhigh` 实际生效。下一步：下一个试用项目第一次需要独立审核或调研时，用 Claude Code 委派对应角色并核对。
+- **Claude Code 版 Agent 角色未实测**：`project-source/agents/*.md` 按官方文档的子智能体格式写成，复制到生成项目的 `.claude/agents/`；还没在真实项目里确认 Claude Code 能列出这三个角色、主 Agent 能按名称委派，以及 implementation-advisor 的 `model: opus`、`effort: xhigh`、`disallowedTools: Agent` 和 `skills` 预加载实际生效。下一步：下一个试用项目第一次需要独立审核或调研时，用 Claude Code 委派对应角色并核对。
 - **其余未触发的能力**：音频全线、独立审核（review-*）、worktree、重构流程、本地化接入目标语言都没有真实使用，项目需要时再按场景试用。完整对照见 `tmp/coverage-audit-20261006/coverage-report-20261006.md`。
 
 ## 待决定

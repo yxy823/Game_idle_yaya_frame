@@ -109,7 +109,7 @@
 - **项目入口**：`Project_AGENTS.md → AGENTS.md`、`Project_README.md → README.md`。
 - **方法与角色**：`skills/ → .agents/skills/` 和 `.claude/skills/`、`agents/*.toml → .codex/agents/`、`agents/*.md → .claude/agents/`。新增的 Skill 只要放在 skills 目录内，就会随整个目录复制，不需要单独加映射。
 - **Skill 的两份副本**：Codex 只从 `.agents/skills/` 发现 Skill，Claude Code 只从 `.claude/skills/` 发现，所以项目里保存两份相同的内容，这是唯一正文原则的例外。不用目录链接代替副本：Windows 的 junction 会被 Git 顺着链接重复提交，忽略它又不会随 Git 进入新建的 worktree。修改 Skill 时两个目录一起改；只改了一份就提交时，[提交钩子](../../../project-source/tools/README.md#提交钩子)拒绝提交。
-- **角色的两种格式**：Codex 读 `.codex/agents/` 下的 TOML，Claude Code 读 `.claude/agents/` 下带 YAML 头的 Markdown，格式不同，不能共用一个文件。两份的名称、描述和说明正文相同，只有模型与推理强度按各自宿主填写；框架仓库的复制器回归测试检查分发源的两份一致，新增角色时两种格式都要加文件和复制映射。
+- **角色的两种格式**：Codex 读 `.codex/agents/` 下的 TOML，Claude Code 读 `.claude/agents/` 下带 YAML 头的 Markdown，格式不同，不能共用一个文件。两份的名称、描述和说明正文相同；文件头按各自宿主填写模型、推理强度和宿主特有的设置，例如 Claude Code 版 implementation-advisor 用 `disallowedTools: Agent` 禁止再委派，并用 `skills` 预加载 implementation-guidance-godot。Codex 只在项目被标为受信任时加载 `.codex/agents/`，文件中的模型与推理强度优先于主 Agent 的启动参数；框架仓库的复制器回归测试检查分发源的两份一致，新增角色时两种格式都要加文件和复制映射。
 - **其他材料**：默认文档、工程规则、方法、代码、工具和插件按清单复制。
 
 `framework/`、框架根目录的维护规则和完整提示词库不进入项目。创建器不替换模板变量，也不安装分析器依赖；某个组件被复制进来，不代表项目已经开始使用它。

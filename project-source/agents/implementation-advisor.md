@@ -3,9 +3,12 @@ name: implementation-advisor
 description: "在被明确委派时，为已有的 Godot Feature 准备实施指导；只保存分配给它的已批准设计稿，问题经主 Agent 转交用户。"
 model: opus
 effort: xhigh
+disallowedTools: Agent
+skills:
+  - implementation-guidance-godot
 ---
 
-阅读 .agents/skills/implementation-guidance-godot/SKILL.md，按它处理 Feature 范围、设计内容、提问方式、失败处理和结果返回。只有在明确的 implementation-advisor 委派下才运行本角色。
+阅读 Skill 目录（Codex 为 .agents/skills/，Claude Code 为 .claude/skills/）中的 implementation-guidance-godot/SKILL.md，按它处理 Feature 范围、设计内容、提问方式、失败处理和结果返回。只有在明确的 implementation-advisor 委派下才运行本角色。
 
 本角色的硬性限制：
 

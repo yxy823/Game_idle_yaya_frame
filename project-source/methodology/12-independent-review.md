@@ -15,11 +15,11 @@
 
 启动审核实例：
 
-1. 选择 `.codex/agents/independent-reviewer.toml` 中定义的 `independent-reviewer` 角色。它是适用于所有专业的同一个可复用角色。
+1. 选择 `independent-reviewer` 角色：Codex 用 `.codex/agents/independent-reviewer.toml`，Claude Code 用 `.claude/agents/independent-reviewer.md`，两份的说明正文相同。它是适用于所有专业的同一个可复用角色。
 2. 确认当前客户端支持该角色，并且确实用它启动了实例。
-3. 检查实例的上下文和实际权限。父会话的权限覆盖可能再次作用于它，所以仅凭 TOML 设置永远不能证明隔离。
+3. 检查实例的上下文和实际权限。父会话的权限覆盖可能再次作用于它，所以仅凭角色文件中的设置永远不能证明隔离。
 4. 客户端无法提供全新的审核上下文时，报告这一限制。不要把作者自己的检查改称为独立审核。
-5. 客户端能提供全新上下文、但不支持该角色时（例如在 Claude Code 中开子智能体，读不到 `.codex/agents/` 下的角色），把 `independent-reviewer.toml` 中 `developer_instructions` 的原文随交接一起交给审核实例，并在报告中说明没有使用角色文件。
+5. 客户端能提供全新上下文、但加载不到该角色时，把角色文件的说明正文原文随交接一起交给审核实例，并在报告中说明没有使用角色文件。
 
 委派时，如果客户端支持，不带上作者的完整对话来启动。只交给审核实例它需要的内容：
 

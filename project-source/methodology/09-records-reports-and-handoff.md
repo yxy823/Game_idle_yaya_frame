@@ -52,7 +52,7 @@
 
 保存下来的外部调研结论放在 `docs/research/<descriptive-topic>.md`，只在保存有用的调研时创建。初始的目录 README 只做导航。
 
-- `.codex/agents/researcher.toml` 中的 `researcher` 角色规定报告的最低内容和搜索指导。主 Agent 分派报告，并决定采纳什么。
+- `researcher` 角色（Codex 为 `.codex/agents/researcher.toml`，Claude Code 为 `.claude/agents/researcher.md`，说明正文相同）规定报告的最低内容和搜索指导。主 Agent 分派报告，并决定采纳什么。
 - 通过 Feature 设计、notes 或 Progress 的链接导航。只在报告数量多到需要时，才在目录 README 中添加报告链接。
 - 报告是普通的、纳入版本控制的 Markdown。`reports/` 仍是本地执行证据和临时材料的位置。
 
