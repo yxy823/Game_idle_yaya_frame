@@ -53,6 +53,14 @@
 
 **依据**：手册[资源规格随所属设计保存](../godot-project-manual/specialist-work-and-records/specialist-work.md#资源规格随所属设计保存)一节末尾的字体说明、[字体素材](../../project-source/agent-rules/60-assets/font-assets.md)
 
+### 调试台自己能测量音频和图片吗？
+
+**结论**：不能。调试台显示的测量数字都来自资源 Analyzer，调试台只负责在后台调用它并显示结果。
+
+**为什么**：资源 Analyzer 是随每个生成项目分发的离线分析程序，放在项目的 `yaya/tools/analyzer/`，一次分析一个音频或图片文件。调试台用到它的地方有两处：音效候选旁边显示时长、音高、峰值等几个数，以及“分析”页的截图色盲四宫格。所以，比较“调试台的测量”和其他测量工具时，实际比较的是资源 Analyzer；没有配置 Analyzer 时，调试台的分析区只显示“未配置 analyzer”，其他功能照常可用。
+
+**依据**：[资源 Analyzer](../../project-source/tools/analyzer/README.md)、[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)
+
 ## 用代码制作资源
 
 ### 能用代码生成音效和音乐吗？能做到什么程度？
