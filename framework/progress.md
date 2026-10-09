@@ -4,7 +4,7 @@
 
 方法规范把美术、音乐和音效制作留为预留能力（`project-source/methodology/11-specialist-workflows.md`「设计、制作、接入与审核」）。2026-10-10 与用户定下：制作放在框架外的独立工坊，按媒体各一个项目、多个游戏共用；音频用 `D:/A_Games/Studio_Audio_Production`，美术用 `D:/A_Games/Studio_Image_2D_Production`。执行由 Codex 完成、主 Agent 监工，每步做完再开下一步。
 
-已完成：工坊规则改写（工坊提交 `767c9d8`）；音频技术验证，3 个候选 WAV 在 `D:/A_Games/Studio_Audio_Production/works/idle-demo-v2/purchase-success/exports/`（工坊提交 `cbd6ff0`），待用户试听。验证中的实测结论（原始证据在工坊被忽略的 `reports/idle-demo-v2/purchase-success/20261010/`）：
+已完成：工坊规则改写（工坊提交 `767c9d8`）；音频技术验证，3 个候选 WAV 在 `D:/A_Games/Studio_Audio_Production/works/idle-demo-v2/purchase-success/exports/`（工坊提交 `cbd6ff0`）。用户单独试听后选定 `chord.wav` 可用（工坊提交 `0845338`），说明代码合成能做出可用的界面短音效；它在游戏中是否合适，要等 `Game_Idle_Demo_V2` 的素材接入 Feature（F005）把它作为外部文件接入后确认，接入属于该试用项目，不在本计划内。验证中的实测结论（原始证据在工坊被忽略的 `reports/idle-demo-v2/purchase-success/20261010/`）：
 
 - GAA 分析 0.32 秒音效：默认中位 4.2 秒，`--no-plots` 中位 2.8 秒，本机第一次运行 22 秒；调试台不能同步等待。
 - 调试台 9 个音频数在 GAA `analysis.json` 中都有对应字段，但音高（频率范围 65–2000 Hz）和频谱重心算法与框架 Analyzer 不同；GAA 没有音名字段；状态用 `ok`、`estimate`、`insufficient_data`，调试台现在只认 `available`。
