@@ -50,7 +50,7 @@
 
 - **文档链接资源，不抄数值**：UI 规格、表现文档或 Feature AC 需要某个取值时，链接这份资源文件；Feature 设计稿也不复制调试窗口里看到的数值。规划时尚未确定的参数同样由调参资源承载，来源文档链接它并写明由哪个 Feature 确定。参数该放调参资源、数据文件还是 GDD 的数值文件，见[数值放在哪里](01-product-doc-structure.md#数值放在哪里)。
 - **测试不写死调优值**：测试对照参数所在的资源，见[测试层级](../agent-rules/70-tests/test-levels.md)。
-- **工程约束**：独立文件、运行时只由调试台修改、setter 发出 `changed`、不复制、一份资源一个插槽，见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)。
+- **工程约束**：独立文件、运行时只由调试台修改、setter 发出 `changed`、不复制、不通过常量读字段、一份资源一个插槽，见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)。
 
 一次性效果（特效、音效）每次触发时读取参数；持久状态（格子尺寸、主题色、循环中的音乐）由使用方监听资源的 `changed` 后重新应用。所以改动在下一次使用时生效，不需要重启游戏。
 

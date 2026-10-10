@@ -40,6 +40,49 @@ func test_slot_directories_have_matching_game_tuning_resources() -> void:
 	assert_array(issues).is_empty()
 
 
+## GDScript folds CONST.field reads at compile time, so the game would never see the debug
+## console's live changes. Game code reads tuning resources through a variable or get().
+func test_game_does_not_read_tuning_fields_through_constants() -> void:
+	var sources: Dictionary[String, String] = {}
+	for root: String in ["res://game", "res://main", "res://components"]:
+		_collect(root, sources)
+	var issues: PackedStringArray = []
+	for path: String in sources:
+		if path.get_extension() == "gd":
+			issues.append_array(_tuning_constant_reads(path, sources[path]))
+	assert_array(issues).is_empty()
+
+
+func test_tuning_constant_scanner_flags_field_reads_only() -> void:
+	var text := ('const TUNING := preload("res://game/shop/tuning/sound.tres")\n'
+		+ 'var tuning: Resource = TUNING\n'
+		+ 'func a(): return TUNING.volume_db\n'
+		+ 'func b(): return TUNING.get("volume_db")\n'
+		+ 'func c(): TUNING.changed.connect(a)\n')
+	assert_array(_tuning_constant_reads("sample.gd", text)).has_size(1)
+	assert_array(_tuning_constant_reads("sample.gd",
+		'const ICON := preload("res://game/shop/icon.png")\nfunc a(): return ICON.get_size()\n')).is_empty()
+
+
+func _tuning_constant_reads(path: String, text: String) -> PackedStringArray:
+	var issues: PackedStringArray = []
+	var constants := RegEx.create_from_string(
+		"(?m)^\\s*const\\s+(\\w+)\\s*(?::\\s*\\w+\\s*)?:?=\\s*preload\\(\\s*\"([^\"]+)\"")
+	for found in constants.search_all(text):
+		var target := found.get_string(2)
+		if target.begins_with("uid://"):
+			var identity := ResourceUID.text_to_id(target)
+			target = ResourceUID.get_id_path(identity) if ResourceUID.has_id(identity) else ""
+		if not ("/tuning/" in target and target.get_extension() == "tres"):
+			continue
+		var constant := found.get_string(1)
+		var reads := RegEx.create_from_string("\\b" + constant + "\\.([A-Za-z_]\\w*)\\b(?!\\s*\\()")
+		for read in reads.search_all(text):
+			if read.get_string(1) != "changed":
+				issues.append("%s: %s.%s" % [path, constant, read.get_string(1)])
+	return issues
+
+
 func test_scanner_detects_text_uid_class_symbols_and_accepts_game_paths() -> void:
 	var uids: Dictionary[String, String] = {
 		"uid://sampledev": "res://dev/debug/example.tres",

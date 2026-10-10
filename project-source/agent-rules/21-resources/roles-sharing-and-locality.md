@@ -30,6 +30,7 @@
 - 运行时只有调试台修改它；游戏代码按只读使用。
 - 调参字段的 setter 调用 `emit_changed()`，写法见[变更通知](#变更通知)。持久状态（尺寸、主题色、循环中的音乐）的使用方连接 `changed` 后重新应用；一次性效果在每次触发时读取。
 - 游戏不对调参资源调用 `duplicate()`，也不开启 `resource_local_to_scene`。调试台修改的是加载缓存中的那个实例，副本收不到修改。
+- 注意：不通过常量读调参资源的字段。`const TUNING := preload(...)` 之后写 `TUNING.volume_db`，Godot 4.7.1 的 GDScript 会在编译时把它换成当时的值，调试台运行中的修改到不了游戏，界面上也不报错。先赋给成员变量再读，例如 `var tuning: Resource = TUNING` 后读 `tuning.volume_db`；调用方法（如 `TUNING.get("volume_db")`）和连接 `changed` 不受影响。`tests/invariants/debug_dependency_test.gd` 检查 `game/`、`main/`、`components/` 下的脚本。
 - 一份资源只属于一个插槽，一个插槽只绑一份资源；不同用途的参数混在一份资源中时，拆成两份。
 - 有候选的插槽声明一个候选字段 `candidate`（`PackedScene`、`AudioStream`、`Script` 或按顺序播放的一组音效）和 `candidate_params: Resource`。候选自带的参数放在 `candidate_params` 中，它的脚本随候选放置；有多个可替换部分时拆成多个插槽。
 - 字段的值是另一份调参资源时，这是共享参数的链接，只在它所属的插槽中调。

@@ -14,8 +14,11 @@ const TIMING := preload("res://dev/debug/_shared/tests/fixtures/sample/game/samp
 ## debug_project.gd points the real save at a debug-only file.
 static var save_path: String = ""
 
+## Tuning is read through variables: GDScript folds CONST.field at compile time, so reads
+## through the constants would miss what the debug console changes at runtime.
 var sound: Resource = SOUND
 var effect: Resource = EFFECT
+var timing: Resource = TIMING
 var rng := RandomNumberGenerator.new()
 var draws: Array[int] = []
 var rounds_played: int = 0
@@ -40,7 +43,7 @@ func start() -> void:
 func play_round(number: int) -> void:
 	rounds_played = number
 	var wait := create_tween()
-	wait.tween_interval(TIMING.hold)
+	wait.tween_interval(timing.hold)
 	wait.tween_callback(_finish if number >= _rounds else play_round.bind(number + 1))
 	draws.append(rng.randi_range(0, 99))
 	if effect.candidate != null:
