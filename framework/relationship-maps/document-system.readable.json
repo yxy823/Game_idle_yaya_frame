@@ -2331,7 +2331,7 @@
         "hidden": false
       },
       "textPadding": {
-        "horizontal": 0,
+        "horizontal": 2,
         "vertical": 0
       },
       "note": "阅读辅助，不代表一份业务文档。",
@@ -2737,7 +2737,7 @@
       "source": {
         "kind": "node",
         "node": "doc-framework-entry",
-        "port": "bottom"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -2747,11 +2747,15 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 380,
-          "y": 900
+          "x": 406,
+          "y": 284
         },
         {
-          "x": 380,
+          "x": 406,
+          "y": 1064
+        },
+        {
+          "x": 444,
           "y": 1064
         }
       ],
@@ -2801,7 +2805,20 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 810,
+          "y": 284
+        },
+        {
+          "x": 810,
+          "y": 144
+        },
+        {
+          "x": 880,
+          "y": 144
+        }
+      ],
       "label": "概念、配置与工具",
       "stroke": {
         "color": "#64748B",
@@ -2895,7 +2912,20 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 810,
+          "y": 284
+        },
+        {
+          "x": 810,
+          "y": 584
+        },
+        {
+          "x": 880,
+          "y": 584
+        }
+      ],
       "label": "框架维护",
       "stroke": {
         "color": "#64748B",
@@ -2934,7 +2964,7 @@
       "source": {
         "kind": "node",
         "node": "doc-framework-docs",
-        "port": "bottom"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -2944,11 +2974,15 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 800,
-          "y": 700
+          "x": 810,
+          "y": 284
         },
         {
-          "x": 800,
+          "x": 810,
+          "y": 804
+        },
+        {
+          "x": 880,
           "y": 804
         }
       ],
@@ -2988,14 +3022,15 @@
     {
       "id": "relation-docs-qa",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-qa",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3430,7 +3465,7 @@
       "source": {
         "kind": "node",
         "node": "doc-maintenance",
-        "port": "bottom"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -3440,12 +3475,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1055,
-          "y": 900
+          "x": 1230,
+          "y": 584
+        },
+        {
+          "x": 1230,
+          "y": 668
         },
         {
           "x": 2315,
-          "y": 900
+          "y": 668
         }
       ],
       "label": "查看剩余工作",
@@ -3543,16 +3582,20 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 360,
+          "x": 460,
           "y": 1064
         },
         {
-          "x": 360,
-          "y": 1390
+          "x": 47,
+          "y": 1064
+        },
+        {
+          "x": 47,
+          "y": 1430
         },
         {
           "x": 215,
-          "y": 1390
+          "y": 1430
         }
       ],
       "label": "创建时复制；项目随后独立",
@@ -4512,7 +4555,7 @@
       "source": {
         "kind": "node",
         "node": "doc-gdd",
-        "port": "bottom"
+        "port": "left"
       },
       "target": {
         "kind": "node",
@@ -4522,16 +4565,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 810,
-          "y": 1990
+          "x": 864,
+          "y": 1874
         },
         {
-          "x": 810,
-          "y": 2440
+          "x": 864,
+          "y": 2494
         },
         {
           "x": 635,
-          "y": 2440
+          "y": 2494
         }
       ],
       "label": "细化声音方向",
@@ -5358,19 +5401,11 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 800,
+          "x": 880,
           "y": 2954
         },
         {
-          "x": 800,
-          "y": 1940
-        },
-        {
-          "x": 850,
-          "y": 1940
-        },
-        {
-          "x": 850,
+          "x": 880,
           "y": 1874
         }
       ],
@@ -5619,8 +5654,16 @@
       "path": "orthogonal",
       "vertices": [
         {
+          "x": 2506,
+          "y": 2966
+        },
+        {
+          "x": 2506,
+          "y": 2694
+        },
+        {
           "x": 2735,
-          "y": 2954
+          "y": 2694
         }
       ],
       "label": "引用真实运行原件",
@@ -5708,7 +5751,7 @@
       "source": {
         "kind": "node",
         "node": "doc-feature",
-        "port": "left"
+        "port": "bottom"
       },
       "target": {
         "kind": "node",
@@ -5718,12 +5761,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2110,
-          "y": 2234
+          "x": 2315,
+          "y": 2302
         },
         {
-          "x": 2110,
-          "y": 2954
+          "x": 2156,
+          "y": 2302
+        },
+        {
+          "x": 2156,
+          "y": 2966
         }
       ],
       "label": "按当前 Feature 身份关联",
@@ -6073,7 +6120,7 @@
       "source": {
         "kind": "node",
         "node": "doc-progress",
-        "port": "right"
+        "port": "top"
       },
       "target": {
         "kind": "node",
@@ -6083,19 +6130,15 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 3040,
-          "y": 3314
+          "x": 2315,
+          "y": 3230
         },
         {
-          "x": 3040,
-          "y": 1400
+          "x": 2490,
+          "y": 3230
         },
         {
-          "x": 2500,
-          "y": 1400
-        },
-        {
-          "x": 2500,
+          "x": 2490,
           "y": 1514
         }
       ],
@@ -6309,7 +6352,7 @@
       "source": {
         "kind": "node",
         "node": "doc-knowledge",
-        "port": "top"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -6319,20 +6362,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1475,
-          "y": 3550
+          "x": 1650,
+          "y": 3674
         },
         {
-          "x": 2050,
-          "y": 3550
-        },
-        {
-          "x": 2050,
-          "y": 2320
+          "x": 1650,
+          "y": 2318
         },
         {
           "x": 2315,
-          "y": 2320
+          "y": 2318
         }
       ],
       "label": "原事件与局部决定",
