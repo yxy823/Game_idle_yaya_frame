@@ -19,6 +19,7 @@
    - `codex-python` 环境改为可编辑安装 GAA。
    - archive 中被跟踪的缓存与副本移出 Git，文档压成 README、CLI 参考、输出契约、指标参考和 CHANGELOG。
    - 执行用 `gpt-6.1-sol` + `xhigh`。
+   - 阶段一已完成（GAA 提交 `f669942`，版本 0.4.0）：`analyze --json-only --result-file` 只发布一个结果文件，含 9 项指标与 `contract_version` 1.0；锁记 PID 并可回收；`--parent-pid` 中断后退出码 6；`codex-python` 已改为可编辑安装。实测后台分析约 2.25 秒、`--version --json` 0.10 秒；全量测试 216 通过、1 跳过（符号链接权限）。下一步：阶段二。
 2. 调试台的音频分析改为直接调用 GAA，直接读 GAA 的字段；框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分。GAA 一侧要增加只输出 JSON 的模式，结果文件写完再一次性发布，需要时再加 `--parent-pid`。
 3. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
 4. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
