@@ -5,12 +5,6 @@ from schema_validation import validate_result
 SCHEMA_VERSION = 1
 ANALYZER_VERSION = 3
 METRIC_STATES = {"available", "not_applicable", "unsupported", "failed"}
-AUDIO_METRICS = (
-    "format", "codec", "duration", "sample_rate", "channels", "channel_layout",
-    "bit_depth", "sample_peak", "rms", "crest_factor", "integrated_loudness",
-    "loudness_range", "true_peak", "silence_intervals", "leading_silence",
-    "trailing_silence", "pitch", "tempo",
-)
 IMAGE_METRICS = (
     "format", "width", "height", "aspect_ratio", "mode", "has_alpha",
     "transparent_ratio", "opaque_ratio", "translucent_ratio", "alpha_mean",
@@ -35,8 +29,7 @@ def sequence(x, y, x_unit, y_unit, kind="line"):
 
 
 def result(path, asset_type, backend=None):
-    supported = {"audio": AUDIO_METRICS, "image": IMAGE_METRICS}.get(asset_type, ())
-    supported = [name for name in supported if name not in {"true_peak", "pitch", "tempo"}]
+    supported = list(IMAGE_METRICS) if asset_type == "image" else []
     return {
         "schema_version": SCHEMA_VERSION, "status": "success",
         "asset": {"path": str(path), "type": asset_type},

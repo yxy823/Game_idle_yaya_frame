@@ -21,8 +21,9 @@ func action_names() -> PackedStringArray:
 
 ## The analysis section shows `action` in its header and `notes` below the metrics.
 func analysis_extras(live: Resource, metrics: Dictionary) -> Dictionary:
-	var peak: Dictionary = metrics.get("sample_peak", {})
-	var reason := "" if peak.get("status") == "available" else "没有算出峰值"
+	var peak: Dictionary = metrics.get("peak_dbfs", {})
+	var usable: bool = peak.get("status") in ["ok", "estimate"] and peak.get("value") != null
+	var reason := "" if usable else "没有算出峰值"
 	var notes: PackedStringArray = []
 	if reason.is_empty():
 		notes.append("归一后音量 %.1f dB" % -float(peak.value))

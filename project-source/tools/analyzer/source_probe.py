@@ -14,7 +14,7 @@ class AnalysisError(Exception):
 
 def check_source(path, kind):
     if kind not in CAPABILITIES["sources"]:
-        raise AnalysisError("unsupported_type", "Supported types: audio, image")
+        raise AnalysisError("unsupported_type", "Supported type: image")
     if not path.is_file() or path.suffix.lower() in {".tres", ".res", ".tscn"}:
         raise AnalysisError("source_not_file", "Analyze an existing source media file, not an embedded/indirect Godot resource")
     if path.suffix.lower().lstrip(".") not in CAPABILITIES["sources"][kind]["extensions"]:
@@ -24,8 +24,8 @@ def check_source(path, kind):
 def decode_error(error):
     """Only recognized backend conditions are classified as corruption/unsupported."""
     name = type(error).__name__
-    if name in {"UnidentifiedImageError", "InvalidDataError", "EOFError"}:
+    if name in {"UnidentifiedImageError", "EOFError"}:
         return AnalysisError("corrupt_file", str(error))
-    if name in {"DecoderNotFoundError", "DemuxerNotFoundError", "NotImplementedError"}:
+    if name == "NotImplementedError":
         return AnalysisError("unsupported_format", str(error))
     return AnalysisError("decode_failed", str(error))

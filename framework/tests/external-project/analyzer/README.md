@@ -2,22 +2,37 @@
 
 [测试与夹具](../../README.md#按需检查) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
-本目录保存 Analyzer Python 后端的维护夹具，适用于修改 `project-source/tools/analyzer/` 的后端、协议或内存限制。外部项目需要已有对应版本的 `yaya/tools/analyzer/`。
+本目录保存图像 Analyzer 后端夹具，以及调试台调用 GAA 摘要的进程替身。夹具只在明确指定的外部验证项目使用，不进入复制清单。
 
-两项夹具都从框架根目录直接调用，通过 `YAYA_TEST_PROJECT` 选择已授权外部项目，不复制为业务测试。先按[资源 Analyzer](../../../../project-source/tools/analyzer/README.md)的说明准备 Python 3.13.16 的 `yaya-analyzer-2` 环境，把对应版本的 Analyzer（含 features/）同步到已授权外部项目。后端夹具另需 `pip install --only-binary=:all: jsonschema`，只供回归使用；保留夹具旁的 `analyzer_protocol_cases.json`。建立外部项目的 `reports/asset-analyzer/` 后运行，两个占位值替换为本次实际路径（解释器使用外部项目 `docs/methodology-config.json` 中的 `analyzer_python_executable`）：
+## 图像后端与内存
+
+外部项目需要已有对应版本的 `yaya/tools/analyzer/`。两个 Python 夹具从框架根目录调用，通过 YAYA_TEST_PROJECT 选择项目，不复制为业务测试。
+
+按[准备与使用](../../../../project-source/tools/analyzer/README.md#准备与使用)准备 Python 3.13.16 的 yaya-analyzer-2 环境；后端夹具另需 jsonschema。保留夹具旁的 analyzer_protocol_cases.json，先建立外部项目的 `reports/asset-analyzer/`：
 
 ```powershell
 $env:YAYA_TEST_PROJECT = '<外部验证项目绝对路径>'
-$validationPython = '<Analyzer 环境的解释器路径>'
+$validationPython = '<该项目 analyzer_python_executable 的实际路径>'
+& $validationPython -B framework/tests/external-project/analyzer/asset_analyzer_backend_test.py
+& $validationPython -B framework/tests/external-project/analyzer/asset_analyzer_memory_check.py
 ```
 
-| 夹具与命令（按需选择） | 检查及副作用 |
-| --- | --- |
-| `& $validationPython -B framework/tests/external-project/analyzer/asset_analyzer_backend_test.py` | 基础指标、文件/stdout 输出、C 盘请求与 D 盘缓存、模块选择与失败保留、模块缓存身份及 PNG 删除重算、同图双 worker 与 PNG/JSON 占用后发布、合成信号的新指标与共同协议；清理专属临时媒体、JSON 和 PNG 缓存，以 unittest 结果与退出码判断 |
-| `& $validationPython -B framework/tests/external-project/analyzer/asset_analyzer_memory_check.py` | Windows 内存限制、8MP 四宫格、边界音频、双图像 worker；隔离副本的全部音频模块含 10 秒 pYIN 冷/热各一次；清理本次媒体和 JSON/PNG 缓存，固定写入外部项目 `reports/asset-analyzer/memory-check.json` |
+- **后端夹具**：基础图像指标、源格式拒绝、模块选择和失败保留、结果 Schema、文件/stdout 输出、缓存身份、PNG 删除重算、同图双 worker、PNG/JSON 被占用后的发布、父进程退出和正常完成。以 unittest 计数及退出码判断。
+- **内存夹具**：8MP 四宫格、两个并发图像 worker、Windows 内存分配拒绝。固定写入外部项目 `reports/asset-analyzer/memory-check.json`；运行前保留仍需使用的旧报告。以进程退出码、三条测量记录和分配拒绝断言判断。
+- 两项夹具清理自己创建的媒体及缓存。跨盘用例要求项目位于 D 盘，请求写在 C 盘 LOCALAPPDATA/Temp，并检查临时文件与目标同目录。结束后恢复原 YAYA_TEST_PROJECT 环境变量。
 
-内存测量会覆盖同名报告，先保留仍需使用的旧结果。检查真实进程退出码、内存记录和分配拒绝断言，不把一次测量推广为所有素材或设备的性能保证。结束后恢复原 `YAYA_TEST_PROJECT` 环境变量。
+这些检查不启动 Godot，不证明调试台界面或人工体验通过。
 
-跨盘夹具要求外部项目在 D 盘，请求写入 C 盘 LOCALAPPDATA/Temp，并核对原子写临时文件与目标同目录。pYIN 冷运行使用报告区的专属 Analyzer 副本和空 Numba 目录；热运行 force 重算，避免测到结果缓存。生产副本的 numba-cache 保留，隔离副本随临时目录清理。
+## GAA 进程替身
 
-合成信号证明指标计算和状态契约；真实素材分析及 Godot 后台调用、界面回显分别验收。这两项夹具不启动 Godot 窗口。
+1. 把 `gaa_service_contracts.gd` 复制到外部项目 `dev/debug/_shared/tests/`，把 `gaa_summary_stub.py` 复制到其 `fixtures/`。
+2. 在项目配置中填写普通 Python 的绝对路径。套件使用该解释器，通过服务已有的 launch 替换点，把 GAA 模块入口换成假脚本。
+3. 在外部项目根目录运行项目包装脚本：
+
+   ```powershell
+   & '<项目 python_executable>' -B yaya/tools/testing/run-gdunit-tests.py --target dev/debug/_shared/tests/gaa_service_contracts.gd --continue
+   ```
+
+套件使用真实子进程，覆盖等待发布、成功结果、失败、中断和无结果文件。假脚本接受 GAA 的摘要参数，并额外接受测试用 `--case` 和 `--release-file`；它只输出固定指标，不进行音频测量。等待发布由释放文件控制，测试结束清理结果、释放文件和所属子进程。
+
+界面字段、状态、音名和截图的替身测试保留在分发的 `dev/debug/_shared/tests/analysis_test.gd`。真实 GAA 集成另在外部项目运行：用服务分析 WAV，核对九项字段、运行身份和契约版本。真实集成通过与人工试听、观察分别记录。

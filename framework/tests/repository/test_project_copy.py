@@ -338,7 +338,8 @@ class ProjectCopyTests(unittest.TestCase):
         output = self.base / "real-copy"
         copy_project(repository, output)
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
-        self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable"})
+        self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable",
+                                       "audio_analyzer_python_executable"})
         self.assertIsInstance(config["engine_executable"], str)
         settings = (output / "project.godot").read_text(encoding="utf-8")
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
@@ -425,6 +426,14 @@ class ProjectCopyTests(unittest.TestCase):
         for relative in ("worker.py", "capabilities.json", "result.schema.json", "requirements.txt"):
             self.assertEqual((output / "yaya/tools/analyzer" / relative).read_bytes(),
                              (repository / "project-source/tools/analyzer" / relative).read_bytes())
+        analyzer = output / "yaya/tools/analyzer"
+        self.assertFalse((analyzer / "audio_adapter.py").exists())
+        self.assertFalse((analyzer / "audio_statistics.py").exists())
+        self.assertEqual(list((analyzer / "features").glob("audio_*.py")), [])
+        self.assertTrue((analyzer / "image_adapter.py").is_file())
+        self.assertTrue((analyzer / "features/image_cvd_grid.py").is_file())
+        self.assertEqual(set(json.loads((analyzer / "capabilities.json").read_text())["sources"]), {"image"})
+        self.assertEqual(config["audio_analyzer_python_executable"], "")
 
     def test_distribution_resources_have_uids_and_scanned_addon_images_have_imports(self):
         source = Path(__file__).resolve().parents[3] / "project-source"

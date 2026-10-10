@@ -2,17 +2,14 @@
 
 import json
 import copy
-import math
 import os
 import shutil
-import struct
 import subprocess
 import tempfile
 import threading
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from unittest.mock import patch
-import wave
 
 import sys
 from pathlib import Path
@@ -22,7 +19,7 @@ from project_context import PROJECT_ROOT
 
 TOOLS = PROJECT_ROOT / "yaya/tools/analyzer"
 sys.path.insert(0, str(TOOLS))
-for variable in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NUMBA_NUM_THREADS"):
+for variable in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS"):
     os.environ[variable] = "1"
 
 import jsonschema
@@ -30,7 +27,6 @@ import numpy as np
 from PIL import Image
 import worker
 from protocol import validate
-
 
 class AnalyzerTests(unittest.TestCase):
     def setUp(self):
@@ -48,19 +44,6 @@ class AnalyzerTests(unittest.TestCase):
             directory = PROJECT_ROOT / "reports/asset-analyzer/cache" / key
             if directory.is_dir():
                 shutil.rmtree(directory)
-
-    def audio(self, seconds=1.0, amplitude=0.5, padding=0.1):
-        path = self.root / "音效 sample.wav"
-        rate = 16000
-        count = int(seconds * rate)
-        values = [int(amplitude * 32767 * math.sin(2 * math.pi * 400 * i / rate))
-                  if padding * rate <= i < count - padding * rate else 0 for i in range(count)]
-        with wave.open(str(path), "wb") as stream:
-            stream.setnchannels(1)
-            stream.setsampwidth(2)
-            stream.setframerate(rate)
-            stream.writeframes(struct.pack("<" + "h" * len(values), *values))
-        return path
 
     def image(self, mode="RGBA"):
         path = self.root / "颜色 sample.png"
@@ -92,43 +75,6 @@ class AnalyzerTests(unittest.TestCase):
             self.created_cache.append(result["cache"]["key"])
         return result
 
-    def test_audio_levels_metadata_silence_and_series(self):
-        result = self.run_worker(self.audio(), "audio")
-        self.assertEqual(result["status"], "success")
-        metrics = result["metrics"]
-        self.assertAlmostEqual(metrics["sample_peak"]["value"], -6.02, delta=0.02)
-        self.assertAlmostEqual(metrics["rms"]["value"], -10, delta=0.08)
-        self.assertEqual(metrics["bit_depth"]["value"], 16)
-        self.assertEqual(metrics["sample_rate"]["value"], 16000)
-        self.assertEqual(metrics["integrated_loudness"]["status"], "available")
-        self.assertAlmostEqual(metrics["leading_silence"]["value"], .1, delta=.001)
-        self.assertEqual(len(metrics["silence_intervals"]["value"]), 2)
-        self.assertEqual(len(result["series"]["peak_envelope"]["x"]), 256)
-
-    def test_short_audio_and_advanced_states(self):
-        metrics = self.run_worker(self.audio(.01, padding=0), "audio")["metrics"]
-        self.assertEqual(metrics["integrated_loudness"]["status"], "not_applicable")
-        self.assertEqual(metrics["true_peak"]["status"], "available")
-        self.assertEqual(metrics["pitch"]["status"], "not_applicable")
-        self.assertIsNone(metrics["pitch"]["value"])
-
-    def test_silence_has_no_fake_finite_loudness(self):
-        metrics = self.run_worker(self.audio(4, amplitude=0), "audio")["metrics"]
-        for key in ("sample_peak", "rms", "integrated_loudness", "loudness_range"):
-            self.assertEqual(metrics[key]["status"], "not_applicable", key)
-            self.assertIsNone(metrics[key]["value"])
-        self.assertEqual(metrics["leading_silence"]["value"], 4)
-
-    def test_near_silence_is_gated(self):
-        metrics = self.run_worker(self.audio(amplitude=0.0001), "audio")["metrics"]
-        self.assertEqual(metrics["rms"]["status"], "available")
-        self.assertEqual(metrics["integrated_loudness"]["status"], "not_applicable")
-
-    def test_long_audio_loudness_range(self):
-        metrics = self.run_worker(self.audio(4), "audio")["metrics"]
-        self.assertEqual(metrics["loudness_range"]["status"], "available")
-        self.assertGreaterEqual(metrics["loudness_range"]["value"], 0)
-
     def test_alpha_visible_colors_and_histograms(self):
         result = self.run_worker(self.image(), "image")
         metrics = result["metrics"]
@@ -150,13 +96,16 @@ class AnalyzerTests(unittest.TestCase):
         self.assertEqual(metrics["dominant_color"]["status"], "not_applicable")
 
     def test_corrupt_and_unsupported_files(self):
-        path = self.root / "broken.wav"
+        path = self.root / "broken.png"
         path.write_bytes(b"not media")
-        for kind in ("audio", "image"):
-            result = self.run_worker(path, kind)
-            self.assertEqual(result["status"], "failed")
-            self.assertTrue(all(m["status"] == "failed" for m in result["metrics"].values()))
-        self.assertEqual(self.run_worker(path, "document")["errors"][0]["code"], "unsupported_type")
+        result = self.run_worker(path, "image")
+        self.assertEqual(result["status"], "failed")
+        self.assertTrue(all(m["status"] == "failed" for m in result["metrics"].values()))
+        for kind in ("audio", "document"):
+            rejected = self.run_worker(path, kind)
+            self.assertEqual(rejected["errors"][0]["code"], "unsupported_type")
+            self.assertEqual(rejected["analyzer"]["supported_types"], [])
+            self.assertEqual(rejected["metrics"], {})
 
     def test_cache_hit_force_content_and_parameters_invalidation(self):
         path = self.image()
@@ -183,14 +132,14 @@ class AnalyzerTests(unittest.TestCase):
     def test_limits_and_invalid_parameters(self):
         result = self.run_worker(self.image(), "image", parameters={"max_image_pixels": 1})
         self.assertEqual(result["status"], "failed")
-        result = self.run_worker(self.audio(), "audio", parameters={"silence_dbfs": 100})
+        result = self.run_worker(self.image(), "image", parameters={"palette_size": 100})
         self.assertEqual(result["status"], "failed")
 
     def test_missing_dependencies(self):
         missing = worker.importlib.metadata.PackageNotFoundError
-        with patch.object(worker.importlib.metadata, "version", side_effect=missing("av")):
+        with patch.object(worker.importlib.metadata, "version", side_effect=missing("Pillow")):
             with self.assertRaises(ImportError):
-                worker.backends("audio")
+                worker.backends()
         # 隔离副本只加入一个不存在的依赖，验证真实进程的缺包出口。
         isolated = self.root / "yaya/tools/analyzer"
         shutil.copytree(TOOLS, isolated, ignore=shutil.ignore_patterns("__pycache__"))
@@ -198,7 +147,7 @@ class AnalyzerTests(unittest.TestCase):
         (isolated / "requirements.txt").write_text(
             "\n".join(pins) + "\nyaya-missing-backend-fixture==0.0.0\n",
             encoding="utf-8")
-        self.request.write_text(json.dumps({"path": str(self.audio()), "asset_type": "audio"}),
+        self.request.write_text(json.dumps({"path": str(self.image()), "asset_type": "image"}),
                                 encoding="utf-8")
         process = subprocess.run([sys.executable, "-B", str(isolated / "worker.py"),
                                   "--request", str(self.request)], capture_output=True, timeout=10)
@@ -224,13 +173,13 @@ class AnalyzerTests(unittest.TestCase):
             self.assertNotEqual(first["cache"]["key"], changed["cache"]["key"])
 
     def test_metric_failure_retains_other_measurements(self):
-        import audio_adapter
-        request = {"path": str(self.audio()), "asset_type": "audio"}
-        with patch.object(audio_adapter.pyloudnorm.Meter, "integrated_loudness", side_effect=ValueError("fixture")):
+        import features.image_cvd_grid as module
+        request = {"path": str(self.image()), "asset_type": "image", "force": True}
+        with patch.object(module, "run", side_effect=RuntimeError("fixture")):
             result = worker.analyze(request, PROJECT_ROOT)
         self.assertEqual(result["status"], "partial")
-        self.assertEqual(result["metrics"]["integrated_loudness"]["status"], "failed")
-        self.assertEqual(result["metrics"]["sample_peak"]["status"], "available")
+        self.assertEqual(result["metrics"]["cvd_grid"]["status"], "failed")
+        self.assertEqual(result["metrics"]["width"]["status"], "available")
 
     def test_semantically_corrupt_cache_is_recomputed(self):
         path = self.image()
@@ -242,7 +191,7 @@ class AnalyzerTests(unittest.TestCase):
             lambda data: data["cache"].update(hit="yes"),
             lambda data: data["warnings"][0].pop("code"),
             lambda data: data["analyzer"].update(version=99),
-            lambda data: data["parameters"].update(silence_dbfs=-10),
+            lambda data: data["parameters"].update(palette_size=2),
             lambda data: data["asset"].update(path="wrong.png"),
             lambda data: data["series"]["alpha_histogram"]["y"].__setitem__(0, float("nan")),
             lambda data: data["metrics"]["width"].update(value=10**400),
@@ -264,13 +213,6 @@ class AnalyzerTests(unittest.TestCase):
         png = self.root / "corrupt.png"
         png.write_bytes(b"not an image")
         self.assertEqual(self.run_worker(png, "image")["errors"][0]["code"], "corrupt_file")
-
-    def test_loudness_budget_preserves_streaming_basic_metrics(self):
-        data = self.run_worker(self.audio(), "audio", parameters={"max_loudness_samples": 100})
-        self.assertEqual(data["status"], "success")
-        self.assertEqual(data["metrics"]["integrated_loudness"]["status"], "unsupported")
-        self.assertEqual(data["metrics"]["rms"]["status"], "available")
-        self.assertEqual(data["execution"]["memory_limit_mib"], 384)
 
     def test_large_palette_is_explicitly_sampled(self):
         path = self.root / "larger.png"
@@ -313,18 +255,6 @@ class AnalyzerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate(data)
 
-    def write_audio(self, samples, rate=48000):
-        samples = np.asarray(samples)
-        if samples.ndim == 1:
-            samples = samples[:, None]
-        path = self.root / "synthetic.wav"
-        with wave.open(str(path), "wb") as stream:
-            stream.setnchannels(samples.shape[1])
-            stream.setsampwidth(2)
-            stream.setframerate(rate)
-            stream.writeframes((np.clip(samples, -1, 1) * 32767).astype("<i2").tobytes())
-        return path
-
     def test_output_success_failure_and_stdout_compatibility(self):
         for source, expected in ((self.image(), "success"), (self.root / "missing.png", "failed")):
             with self.subTest(expected=expected):
@@ -336,9 +266,9 @@ class AnalyzerTests(unittest.TestCase):
     def test_invalid_requests_return_structured_failures_in_both_modes(self):
         schema = json.loads((TOOLS / "result.schema.json").read_text(encoding="utf-8"))
         cases = {"[]": "invalid_request", "null": "invalid_request",
-                 '{"path": "a.wav", "asset_type": []}': "invalid_request",
-                 '{"path": 5, "asset_type": "audio"}': "invalid_request",
-                 '{"path": "' + "x" * (2 * 1024**2) + '", "asset_type": "audio"}': "invalid_request"}
+                 '{"path": "a.png", "asset_type": []}': "invalid_request",
+                 '{"path": 5, "asset_type": "image"}': "invalid_request",
+                 '{"path": "' + "x" * (2 * 1024**2) + '", "asset_type": "image"}': "invalid_request"}
         for text, code in cases.items():
             self.request.write_text(text, encoding="utf-8")
             output = self.root / "invalid.result.json"
@@ -371,24 +301,16 @@ class AnalyzerTests(unittest.TestCase):
                 self.assertEqual(temporary.parent, target.parent)
                 self.assertEqual(target.drive.upper(), "D:")
 
-    def test_module_selection_unknown_and_failure_retains_basics(self):
-        path = self.audio()
-        default = self.run_worker(path, "audio")
-        self.assertIn("audio_pitch", default["analyzer"]["modules"])
-        basic = self.run_worker(path, "audio", modules=[])
+    def test_module_selection_and_unknown_modules(self):
+        path = self.image()
+        default = self.run_worker(path, "image")
+        self.assertEqual(default["analyzer"]["modules"], ["image_cvd_grid"])
+        basic = self.run_worker(path, "image", modules=[])
         self.assertEqual(basic["analyzer"]["modules"], [])
-        self.assertNotIn("max_rms_10ms", basic["metrics"])
-        chosen = self.run_worker(path, "audio", modules=["audio_max_rms"])
-        self.assertEqual(chosen["analyzer"]["modules"], ["audio_max_rms"])
-        self.assertEqual(chosen["metrics"]["max_rms_10ms"]["status"], "available")
-        self.assertEqual(self.run_worker(path, "audio", modules=["unknown"])["errors"][0]["code"], "invalid_modules")
-        import features.audio_max_rms as module
-        with patch.object(module, "run", side_effect=RuntimeError("synthetic module failure")):
-            failed = worker.analyze({"path": str(path), "asset_type": "audio", "force": True,
-                                     "modules": ["audio_max_rms"]}, PROJECT_ROOT)
-        self.assertEqual(failed["status"], "partial")
-        self.assertEqual(failed["metrics"]["sample_peak"]["status"], "available")
-        self.assertEqual(failed["metrics"]["max_rms_10ms"]["status"], "failed")
+        self.assertNotIn("cvd_grid", basic["metrics"])
+        chosen = self.run_worker(path, "image", modules=["image_cvd_grid"])
+        self.assertEqual(chosen["metrics"]["cvd_grid"]["status"], "available")
+        self.assertEqual(self.run_worker(path, "image", modules=["unknown"])["errors"][0]["code"], "invalid_modules")
 
     def test_concurrent_same_image_workers_publish_consistent_results(self):
         # Exercise the actual Windows replacement conflict for both artifact types.
@@ -434,92 +356,29 @@ class AnalyzerTests(unittest.TestCase):
             self.assertEqual(first[field], second[field], field)
 
     def test_unselected_modules_do_not_import_calculation_libraries(self):
-        for source, kind, excluded in ((self.audio(), "audio", ("librosa", "numba")),
-                                       (self.image(), "image", ("skimage",))):
-            self.request.write_text(json.dumps({"path": str(source), "asset_type": kind, "modules": []}), encoding="utf-8")
-            output = self.root / "lazy.result.json"
-            script = ("import sys,runpy; sys.path.insert(0," + repr(str(TOOLS)) + "); "
-                      "sys.argv=" + repr([str(TOOLS / "worker.py"), "--request", str(self.request), "--output", str(output)]) + "; "
-                      "namespace=runpy.run_path(sys.argv[0]); assert namespace['main']()==0; "
-                      "assert not any(p in sys.modules for p in " + repr(excluded) + ")")
-            process = subprocess.run([sys.executable, "-B", "-c", script], capture_output=True, timeout=30)
-            self.assertEqual(process.returncode, 0, process.stderr)
-            self.assertEqual(process.stdout, b"")
-            self.created_cache.append(json.loads(output.read_bytes())["cache"]["key"])
+        self.request.write_text(json.dumps({"path": str(self.image()), "asset_type": "image", "modules": []}), encoding="utf-8")
+        output = self.root / "lazy.result.json"
+        script = ("import sys,runpy; sys.path.insert(0," + repr(str(TOOLS)) + "); "
+                  "sys.argv=" + repr([str(TOOLS / "worker.py"), "--request", str(self.request), "--output", str(output)]) + "; "
+                  "namespace=runpy.run_path(sys.argv[0]); assert namespace['main']()==0; "
+                  "assert 'skimage' not in sys.modules")
+        process = subprocess.run([sys.executable, "-B", "-c", script], capture_output=True, timeout=30)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertEqual(process.stdout, b"")
+        self.created_cache.append(json.loads(output.read_bytes())["cache"]["key"])
 
-    def test_module_sets_order_and_missing_png_invalidate_cache(self):
-        path = self.audio()
-        one = self.run_worker(path, "audio", modules=["audio_max_rms"])
-        pair = self.run_worker(path, "audio", modules=["audio_max_rms", "audio_energy_duration"])
-        reversed_pair = self.run_worker(path, "audio", modules=["audio_energy_duration", "audio_max_rms"])
-        self.assertNotEqual(one["cache"]["key"], pair["cache"]["key"])
-        self.assertEqual(pair["cache"]["key"], reversed_pair["cache"]["key"])
-        self.assertTrue(reversed_pair["cache"]["hit"])
+    def test_module_sets_and_missing_png_invalidate_cache(self):
         image = self.image()
-        first = self.run_worker(image, "image")
+        basic = self.run_worker(image, "image", modules=[])
+        first = self.run_worker(image, "image", modules=["image_cvd_grid"])
+        duplicate = self.run_worker(image, "image", modules=["image_cvd_grid", "image_cvd_grid"])
+        self.assertNotEqual(basic["cache"]["key"], first["cache"]["key"])
+        self.assertEqual(first["cache"]["key"], duplicate["cache"]["key"])
+        self.assertTrue(duplicate["cache"]["hit"])
         Path(first["metrics"]["cvd_grid"]["value"]["path"]).unlink()
         rebuilt = self.run_worker(image, "image")
         self.assertFalse(rebuilt["cache"]["hit"])
         self.assertTrue(Path(rebuilt["metrics"]["cvd_grid"]["value"]["path"]).is_file())
-
-    def test_max_rms_loudest_channel_complete_windows(self):
-        signal = np.zeros((24000, 2))
-        signal[4800:5280] = (.2, .8)
-        metrics = self.run_worker(self.write_audio(signal), "audio", modules=["audio_max_rms"])["metrics"]
-        for ms, amplitude in ((10, .8), (20, .8 / math.sqrt(2)), (50, .8 / math.sqrt(5))):
-            self.assertAlmostEqual(metrics[f"max_rms_{ms}ms"]["value"], 20 * math.log10(amplitude), delta=.003)
-        short = self.run_worker(self.write_audio(np.ones(240) * .5), "audio", modules=["audio_max_rms"])["metrics"]
-        for name in ("max_rms_10ms", "max_rms_20ms", "max_rms_50ms"):
-            self.assertEqual(short[name]["status"], "not_applicable")
-
-    def test_known_envelope_crossings_and_energy_duration(self):
-        envelope = np.r_[np.zeros(10), np.linspace(0, 1, 101), np.linspace(1, 0, 201), np.zeros(20)]
-        source = self.write_audio(np.repeat(envelope * .8, 48))
-        metrics = self.run_worker(source, "audio", modules=["audio_attack_decay", "audio_energy_duration"])["metrics"]
-        self.assertAlmostEqual(metrics["attack_10_90"]["value"], .080, delta=.002)
-        self.assertAlmostEqual(metrics["decay_to_10"]["value"], .181, delta=.002)
-        # Analytic triangular-envelope energy quantiles, with 1 ms discretization.
-        self.assertAlmostEqual(metrics["energy_duration_95"]["value"], .191, delta=.002)
-
-    def test_spectrum_tones_bands_and_antiphase_stereo(self):
-        time = np.arange(24000) / 48000
-        mono = .5 * np.sin(2 * np.pi * 1000 * time)
-        first = self.run_worker(self.write_audio(mono), "audio", modules=["audio_spectrum"])["metrics"]
-        self.assertAlmostEqual(first["spectral_centroid"]["value"], 1000, delta=5)
-        self.assertGreater(first["band_energy_ratios"]["value"][2]["ratio"], .995)
-        antiphase = self.run_worker(self.write_audio(np.column_stack((mono, -mono))), "audio",
-                                    modules=["audio_spectrum"])["metrics"]
-        self.assertAlmostEqual(antiphase["spectral_centroid"]["value"], first["spectral_centroid"]["value"], delta=.01)
-        dual = .25 * np.sin(2 * np.pi * 93.75 * time) + .5 * np.sin(2 * np.pi * 3000 * time)
-        metrics = self.run_worker(self.write_audio(dual), "audio", modules=["audio_spectrum"])["metrics"]
-        self.assertAlmostEqual(metrics["spectral_centroid"]["value"], 2031.25, delta=10)
-        self.assertAlmostEqual(metrics["band_energy_ratios"]["value"][0]["ratio"], .2, delta=.01)
-        self.assertAlmostEqual(metrics["band_energy_ratios"]["value"][3]["ratio"], .8, delta=.01)
-
-    def test_true_peak_intersample_and_chunk_equivalence(self):
-        from scipy.signal import resample_poly
-        from features.audio_true_peak import true_peak_estimate
-        signal = (.9 * np.sin(np.pi / 2 * np.arange(70000) + np.pi / 4)).astype(np.float32)[:, None]
-        expected = max(float(np.abs(signal).max()), float(np.abs(resample_poly(signal, 4, 1, axis=0)).max()))
-        actual = true_peak_estimate((signal[start:start + 1001] for start in range(0, len(signal), 1001)), 1)
-        self.assertAlmostEqual(actual, expected, delta=1e-6)
-        data = self.run_worker(self.write_audio(signal), "audio", modules=["audio_true_peak"])
-        self.assertGreater(data["metrics"]["true_peak"]["value"], data["metrics"]["sample_peak"]["value"] + 2)
-
-    def test_pyin_a4_d7_noise_short_and_two_periods(self):
-        time = np.arange(16000) / 16000
-        for frequency, note in ((440, "A4"), (2349.318, "D7")):
-            with self.subTest(note=note):
-                source = self.write_audio(.5 * np.sin(2 * np.pi * frequency * time), rate=16000)
-                metrics = self.run_worker(source, "audio", modules=["audio_pitch"])["metrics"]
-                self.assertEqual(metrics["pitch_note"]["value"], note)
-                self.assertGreater(metrics["pitch_confidence"]["value"], .5)
-                self.assertNotIn("less than two periods", self.last_stderr)
-        noise = np.random.default_rng(31).normal(0, .15, 16000)
-        for signal in (noise, np.ones(160) * .2):
-            metrics = self.run_worker(self.write_audio(signal, rate=16000), "audio", modules=["audio_pitch"])["metrics"]
-            self.assertEqual(metrics["pitch"]["status"], "not_applicable")
-            self.assertIsNone(metrics["pitch"]["value"])
 
     def test_cvd_neutral_gray_panel_order_and_readable_png(self):
         path = self.root / "cvd.png"
@@ -536,7 +395,7 @@ class AnalyzerTests(unittest.TestCase):
                     self.assertTrue(all(abs(a - b) <= 1 for a, b in zip(pixel, target)), (pixel, target))
 
     def test_parent_exit_terminates_worker_and_cleans_request(self):
-        self.request.write_text(json.dumps({"path": str(self.audio()), "asset_type": "audio"}),
+        self.request.write_text(json.dumps({"path": str(self.image()), "asset_type": "image"}),
                                 encoding="utf-8")
         with subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"]) as parent:
             with subprocess.Popen([sys.executable, "-B", str(TOOLS / "worker.py"), "--parent-pid",
@@ -571,7 +430,6 @@ class AnalyzerTests(unittest.TestCase):
             data = json.loads(output)
             self.assertEqual(data["status"], "success")
             self.created_cache.append(data["cache"]["key"])
-
 
 if __name__ == "__main__":
     unittest.main()

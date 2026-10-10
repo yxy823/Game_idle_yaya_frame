@@ -96,9 +96,10 @@
 
 | 术语 | 含义与边界 | 不用的说法 |
 | --- | --- | --- |
-| Analyzer | 分析图像、音频源文件的命令行工具；结果不代替实际渲染、听感或性能测量 |  |
+| Analyzer | 随生成项目分发的图像源文件分析工具；结果不代替实际渲染或性能测量 |  |
+| Game Audio Analyzer / GAA | 本机安装的音频分析工具；调试台调用其后台摘要并显示指标，结果不代替实际听感 |  |
 
-来源：[资源 Analyzer](../project-source/tools/analyzer/README.md)。
+来源：[资源 Analyzer](../project-source/tools/analyzer/README.md)、[分析](../project-source/defaults/dev/debug/_shared/README.md#分析)。
 
 ## 动作用词
 

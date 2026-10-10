@@ -114,9 +114,12 @@ entries = {
 
 ## 分析
 
-调试台按资源 Analyzer 的[运行一次分析](../../../yaya/tools/analyzer/README.md#运行一次分析)在后台调用 worker：读取 `docs/methodology-config.json` 的 `analyzer_python_executable`，在 `reports/asset-analyzer/jobs/debug/` 写请求文件，每帧检查进程是否结束，结束后读取结果并删除请求与结果文件；游戏不等待 worker。没有配置时分析区只显示“未配置 analyzer”，其他功能不受影响。
+调试台用一个服务管理两个后台进程入口：音频调用本机安装的 Game Audio Analyzer（GAA），图像按资源 Analyzer 的[运行一次分析](../../../yaya/tools/analyzer/README.md#运行一次分析)调用项目自带的 worker。服务在 `reports/asset-analyzer/jobs/debug/` 为每次任务生成唯一结果路径，传入 Godot 自身的 `--parent-pid`，每帧检查进程是否结束，再读取并删除任务结果；图像另有请求文件，用完一起删除。游戏不等待分析进程。
 
-- **音效候选**：插槽的当前候选是 AudioStream 时，“实现”与“参数”之间显示基础音高、时长、峰值、真峰值、RMS、20 ms 最大 RMS、起音、衰减和频谱重心；每个文件在一次会话中只分析一次。插槽的 `analysis_extras` 可以在这里加动作和说明。
+- **音频配置与契约**：`docs/methodology-config.json` 的 `audio_analyzer_python_executable` 指向已安装 GAA 的 Python 解释器绝对路径。缺省或空字符串时显示“未配置 GAA”。服务运行 `<python> -B -m game_audio_analyzer analyze <源文件> --json-only --result-file <唯一路径> --run-id <任务 ID> --parent-pid <Godot PID>`，先创建结果父目录。读取结果时先检查 `contract_version` 主版本为 2，再核对 `kind=audio_summary`、`run_id`、`status=completed` 和 `exit_code=0`，最后读取指标。版本不符显示“GAA 版本不兼容”；没有可读结果时显示“GAA 已退出，但没有可读结果”，悬停可见解释器和结果路径。
+- **图像配置**：`analyzer_python_executable` 指向图像 Analyzer 的专用环境。未配置时截图分析显示“未配置 analyzer”。两个配置独立，某个后端未配置不影响其他功能。解释器存在不代表相应 Python 包可用。
+
+- **音效候选**：选择 AudioStream 候选后自动分析，在“实现”与“参数”之间显示基础音高、时长、峰值、真峰值、RMS、20 ms 最大 RMS、起音、衰减和频谱重心；每个文件在一次会话中只分析一次。单项 `ok` 显示数值，`estimate` 标明估算，其他状态显示原因，`null` 不换成零；悬停显示 GAA 的 `note`。音名由有效的 `f0_median_hz` 按十二平均律、A4=440 Hz 换算，不适用时不显示音名。插槽的 `analysis_extras(live, metrics)` 直接接收 GAA 指标字典，例如“峰值归一”读取 `peak_dbfs` 的状态和数值。
 - **截图分析**：位于“分析”页，截取游戏窗口的根视口，存为 `reports/asset-analyzer/jobs/debug/game-*.png`，显示正常、灰度、红色盲、绿色盲四格。
 
 ## 采纳到游戏与收尾

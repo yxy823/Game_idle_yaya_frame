@@ -10,7 +10,8 @@
 | --- | --- |
 | `python_executable` | 运行项目工具所用的 Python 可执行文件路径或命令名。不含脚本路径和参数。 |
 | `engine_executable` | Godot 可执行文件的完整路径，可以是绝对路径，也可以相对项目根目录。不含 shell 引号和参数；不会在 `PATH` 中查找。 |
-| `analyzer_python_executable` | 可选。资源 Analyzer 专用 Python 环境的解释器，写法同 `python_executable`。只在项目要用 Analyzer 时填写，安装方法见 `yaya/tools/analyzer/README.md`。 |
+| `analyzer_python_executable` | 可选。图像 Analyzer 专用 Python 环境的解释器，写法同 `python_executable`。只在项目要分析图像时填写，安装方法见[准备与使用](../tools/analyzer/README.md#准备与使用)。 |
+| `audio_analyzer_python_executable` | 可选，默认空字符串。已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对文件路径，不含参数。缺省或空字符串表示未配置，调试台音频分析区显示“未配置 GAA”，其他功能照常。后台调用见[分析](../../dev/debug/_shared/README.md#分析)。 |
 
 这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 
@@ -39,6 +40,6 @@
 | 模式 | 检查内容 |
 | --- | --- |
 | 不带 `--require-ready` | 配置结构。允许 Godot 路径为空，不声称工具可用。 |
-| 带 `--require-ready` | Python 和 Godot 可执行文件存在，测试运行器文件存在，并实际探测 Godot 版本，结果为 4.7.x。它会打印观察到的版本。 |
+| 带 `--require-ready` | Python 和 Godot 可执行文件存在，测试运行器文件存在；已配置的图像 Analyzer 和 GAA 解释器存在。实际探测 Godot 版本，要求为 4.7.x，并打印观察到的版本。 |
 
-这项检查不准备编辑器缓存、不安装依赖、不运行测试、不解析脚本、不运行 lint，也不初始化 Git。通过它只说明工具可用；实际结果由 Stage 4 的测试、解析和 lint 运行证明。准备失败时，把原因记在 Progress 和初始化报告里，不写进配置文件。
+这项检查不准备编辑器缓存、不安装或探测 Python 包、不运行测试、不解析脚本、不运行 lint，也不初始化 Git。通过它只说明所列路径和 Godot 版本检查通过；实际结果由 Stage 4 的测试、解析和 lint 运行证明。准备失败时，把原因记在 Progress 和初始化报告里，不写进配置文件。

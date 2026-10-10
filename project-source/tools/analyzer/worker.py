@@ -41,7 +41,7 @@ def parameters(given, selected):
     return params
 
 
-def backends(asset_type):
+def backends():
     expected_python = CAPABILITIES["runtime"]["python"]
     if tuple(map(int, expected_python.split("."))) != sys.version_info[:3]:
         raise ImportError(f"Expected Python {expected_python}, found {sys.version.split()[0]}")
@@ -56,9 +56,6 @@ def backends(asset_type):
             raise ImportError(f"Expected {package}=={pins[package]} in the Analyzer environment "
                               f"{sys.executable}, found {actual}")
         versions[package] = actual
-    if asset_type == "audio":
-        import av
-        versions["ffmpeg_libraries"] = {name: list(version) for name, version in av.library_versions.items()}
     return versions
 
 
@@ -67,25 +64,20 @@ def digest(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def configure_runtime(project):
-    # These must be set before NumPy/SciPy/Numba import, including in-process tests.
-    for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "NUMBA_NUM_THREADS"):
+def configure_runtime():
+    # Set before NumPy/SciPy imports, including in-process image tests.
+    for name in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS"):
         os.environ[name] = "1"
-    pins = dict(line.split("==") for line in Path(__file__).with_name("requirements.txt").read_text().splitlines())
-    tag = "py313-" + "-".join(name + pins[name] for name in ("librosa", "numba", "llvmlite"))
-    directory = project / "reports/asset-analyzer/numba-cache" / tag
-    directory.mkdir(parents=True, exist_ok=True)
-    os.environ["NUMBA_CACHE_DIR"] = str(directory)
 
 
 def analyze(request, project):
-    configure_runtime(project)
+    configure_runtime()
     path = Path(request["path"]).resolve()
     kind = request["asset_type"]
     check_source(path, kind)
     selected = select_modules(request, kind)
     params = parameters(request.get("parameters", {}), selected)
-    backend = backends(kind)
+    backend = backends()
     content = digest(path)
     identity = {"path": str(path), "sha256": content, "parameters": params, "backend": backend,
                 "schema": SCHEMA_VERSION, "analyzer": kind, "version": ANALYZER_VERSION,
@@ -96,10 +88,7 @@ def analyze(request, project):
         cached = read_cache(cache, key, identity, selected)
         if cached:
             return cached
-    if kind == "audio":
-        from audio_adapter import analyze as run
-    else:
-        from image_adapter import analyze as run
+    from image_adapter import analyze as run
     try:
         metrics, series, notes = run(path, params)
     except Exception as error:

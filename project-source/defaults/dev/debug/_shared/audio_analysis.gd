@@ -1,5 +1,5 @@
 extends VBoxContainer
-## Shows analyzer metrics for the selected slot's audio candidate; each file runs once per session.
+## Shows GAA metrics for the selected audio candidate; each file runs once per session.
 
 ## `result` is the status-bar result of the analysis action, e.g. "已填入基础音高 B6".
 signal edited(result: Dictionary)
@@ -9,11 +9,14 @@ const Service := preload("res://dev/debug/_shared/analyzer_service.gd")
 const SlotPanel := preload("res://dev/debug/_shared/slot_panel.gd")
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
-const MODULES: Array[String] = ["audio_max_rms", "audio_attack_decay", "audio_spectrum",
-	"audio_true_peak", "audio_pitch"]
-const ROWS: Array[Array] = [["时长", "duration"], ["峰值", "sample_peak"], ["真峰值", "true_peak"],
-	["RMS", "rms"], ["20 ms 最大 RMS", "max_rms_20ms"], ["起音 10%→90%", "attack_10_90"],
-	["衰减至 10%", "decay_to_10"], ["频谱重心", "spectral_centroid"]]
+const ROWS: Array[Array] = [["时长", "duration_s"], ["峰值", "peak_dbfs"],
+	["真峰值", "true_peak_estimate_dbtp"], ["RMS", "rms_dbfs"],
+	["20 ms 最大 RMS", "max_rms_20ms_dbfs"], ["起音 10%→90%", "attack_10_90_s"],
+	["衰减至 10%", "decay_to_10_s"], ["频谱重心", "spectral_centroid_hz"]]
+const STATUS_TEXT := {"silent": "静音", "not_applicable": "不适用",
+	"insufficient_data": "数据不足", "below_threshold": "低于筛选阈值",
+	"not_analyzed": "未分析", "disabled": "已关闭"}
+const NOTE_NAMES := ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 const COLUMNS := 3
 const GRID_GAP := 8
 
@@ -76,9 +79,10 @@ func _grid(metrics: Dictionary) -> MarginContainer:
 	grid.columns = COLUMNS
 	grid.add_theme_constant_override("h_separation", GRID_GAP)
 	grid.add_theme_constant_override("v_separation", GRID_GAP)
-	grid.add_child(_tile(_pitch_caption(metrics), _pitch(metrics)))
+	grid.add_child(_tile("基础音高", _pitch(metrics), metrics.get("f0_median_hz", {})))
 	for row in ROWS:
-		grid.add_child(_tile(row[0], _format(metrics.get(row[1], {}))))
+		var entry: Dictionary = metrics.get(row[1], {})
+		grid.add_child(_tile(row[0], _format(entry), entry))
 	var margins := MarginContainer.new()
 	margins.add_theme_constant_override("margin_left", 8)
 	margins.add_theme_constant_override("margin_top", 4)
@@ -87,11 +91,13 @@ func _grid(metrics: Dictionary) -> MarginContainer:
 	return margins
 
 
-func _tile(caption: String, value: String) -> PanelContainer:
+func _tile(caption: String, value: String, entry: Dictionary) -> PanelContainer:
 	var lines := Kit.column(0)
 	lines.add_child(Kit.label(caption, &"MetricCaption"))
 	var shown := Kit.elided(value, &"MetricValue")
 	shown.tooltip_text = value
+	if entry.get("status") in ["ok", "estimate"] and not str(entry.get("note", "")).is_empty():
+		shown.tooltip_text += "\n" + str(entry.note)
 	shown.mouse_filter = Control.MOUSE_FILTER_PASS
 	lines.add_child(shown)
 	var tile := Kit.panel(&"MetricTile", lines)
@@ -129,39 +135,37 @@ func _note(text: String, detail: String = "") -> MarginContainer:
 
 func _start(path: String) -> void:
 	_results[path] = {"status": "pending", "message": "分析中…"}
-	var started := service.analyze(path, "audio", MODULES, _finished.bind(path))
+	var started := service.analyze(path, "audio", [], _finished.bind(path))
 	if started.error != OK:
 		_results[path] = {"status": "unavailable", "message": started.message,
 			"detail": String(started.get("detail", ""))}
 
 
 func _finished(state: Dictionary, path: String) -> void:
-	if state.status == "failed":
-		state.message = "分析失败：analyzer 无法分析这个文件。悬停这行文字看原因" 			if state.has("data") else "分析失败：" + state.message
 	_results[path] = state
 	if _candidate != null and _candidate.resource_path == path:
 		_render()
 
 
 static func _format(entry: Dictionary) -> String:
-	if entry.get("status") != "available":
-		return "没有算出（%s）" % entry.get("reason", "")
-	var value: Variant = entry.value
-	return "%s %s" % [String.num(value, 3) if value is float else str(value), entry.unit]
+	var status := str(entry.get("status", "not_analyzed"))
+	var value: Variant = entry.get("value")
+	if status not in ["ok", "estimate"] or not (value is float or value is int):
+		var reason := str(STATUS_TEXT.get(status, "无数值（%s）" % status))
+		var note := str(entry.get("note", ""))
+		return reason if note.is_empty() else "%s（%s）" % [reason, note]
+	return "%s %s%s" % [String.num(float(value), 3), entry.unit,
+		"（估算）" if status == "estimate" else ""]
 
 
 static func _pitch(metrics: Dictionary) -> String:
-	var note: Dictionary = metrics.get("pitch_note", {})
-	if note.get("status") != "available":
-		return "无明确音高（%s）" % note.get("reason", "missing")
-	var hertz: Dictionary = metrics.get("pitch", {})
-	if hertz.get("status") == "available":
-		return "%s · %s" % [note.value, _format(hertz)]
-	return String(note.value)
-
-
-static func _pitch_caption(metrics: Dictionary) -> String:
-	var confidence: Dictionary = metrics.get("pitch_confidence", {})
-	if confidence.get("status") == "available":
-		return "基础音高 · 置信度 %.2f" % confidence.value
-	return "基础音高"
+	var entry: Dictionary = metrics.get("f0_median_hz", {})
+	var shown := _format(entry)
+	var value: Variant = entry.get("value")
+	if entry.get("status") not in ["ok", "estimate"] or not (value is float or value is int):
+		return shown
+	if float(value) <= 0.0:
+		return shown
+	var midi := roundi(69.0 + 12.0 * log(float(value) / 440.0) / log(2.0))
+	var note: String = NOTE_NAMES[posmod(midi, 12)] + str(floori(midi / 12.0) - 1)
+	return "%s · %s" % [note, shown]

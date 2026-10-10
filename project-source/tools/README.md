@@ -15,7 +15,7 @@ yaya/tools/
 | 工具 | 用途 |
 | --- | --- |
 | Feature 记录检查 [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
-| 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 Analyzer 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
+| 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的图像 Analyzer 和 GAA 解释器、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
 | 链接检查 [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | 链接文字检查 [check-link-text.py](checks/check-link-text.py) | 列出链接文字不是目标标题、也不是目标 Skill 名、文件名或目录名的链接 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
@@ -34,7 +34,7 @@ yaya/tools/
 - `lib/` 中的共享模块使用下划线命名，供入口以 `tools.lib.<模块>` 导入；`yaya/tools/__init__.py` 与 `lib/__init__.py` 使这种导入成立。
 - Skill 只引用这些命令并说明调用时机，不另写命令副本。
 
-`analyzer/` 是图像与音频源文件的分析后端，在单独的 Python 环境中用命令行运行，见 [资源 Analyzer](analyzer/README.md)。
+`analyzer/` 是图像源文件的分析后端，在单独的 Python 环境中用命令行运行，见 [资源 Analyzer](analyzer/README.md)。调试台的音频测量调用本机安装的 Game Audio Analyzer（GAA），配置和后台契约见[分析](../../dev/debug/_shared/README.md#分析)。
 
 Feature 记录检查、登记表合并和运行选择共用同一套 JSON 解码规则：
 
@@ -185,7 +185,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--config <文件>` | 要检查的配置文件；项目根目录取该文件的上两级 | `docs/methodology-config.json` |
-| `--require-ready` | 额外核对工具文件（含已配置的 `analyzer_python_executable`，不核对其中的依赖版本）、固定测试入口和实际 Godot 版本 | 只检查配置结构 |
+| `--require-ready` | 额外核对工具文件（含已配置的 `analyzer_python_executable` 与 `audio_analyzer_python_executable`，不核对其中的 Python 包）、固定测试入口和实际 Godot 版本 | 只检查配置结构 |
 
 退出码：`0` 配置有效（带 `--require-ready` 时表示已就绪）；`2` 配置无效、未就绪或参数错误。
 

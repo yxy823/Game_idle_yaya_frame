@@ -122,6 +122,24 @@ class ProjectEnvironmentTests(unittest.TestCase):
             config["analyzer_python_executable"] = sys.executable
             self.assertEqual(check_project_environment._readiness_errors(config, self.repo_root), [])
 
+    def test_optional_gaa_python_accepts_empty_and_checks_absolute_path(self) -> None:
+        config = self._config(sys.executable)
+        for value in ("", sys.executable):
+            config["audio_analyzer_python_executable"] = value
+            self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
+            with mock.patch.object(check_project_environment, "_read_engine_version",
+                                   return_value=("4.7.1.stable", None)):
+                self.assertEqual(check_project_environment._readiness_errors(config, self.repo_root), [])
+        for value in (None, 4, [], "python", "relative/python.exe", " "):
+            config["audio_analyzer_python_executable"] = value
+            self.assertTrue(check_project_environment._schema_errors(config, self.repo_root), value)
+        config["audio_analyzer_python_executable"] = str(self.repo_root / "missing-gaa.exe")
+        self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
+        with mock.patch.object(check_project_environment, "_read_engine_version",
+                               return_value=("4.7.1.stable", None)):
+            errors = check_project_environment._readiness_errors(config, self.repo_root)
+        self.assertTrue(any("GAA Python executable is unavailable" in error for error in errors))
+
     def test_readiness_uses_observed_engine_version(self) -> None:
         config = self._config(sys.executable)
         completed = subprocess.CompletedProcess(

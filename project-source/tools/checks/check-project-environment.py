@@ -111,6 +111,9 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
         errors.append("engine_executable must be a string")
     if "analyzer_python_executable" in config and not _nonempty_string(config["analyzer_python_executable"]):
         errors.append("analyzer_python_executable, when present, must be a non-empty executable path or name")
+    audio_analyzer = config.get("audio_analyzer_python_executable", "")
+    if not isinstance(audio_analyzer, str) or (audio_analyzer != "" and not Path(audio_analyzer).is_absolute()):
+        errors.append("audio_analyzer_python_executable must be empty or an absolute executable path")
     return errors
 
 
@@ -151,6 +154,9 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     analyzer = config.get("analyzer_python_executable")
     if _nonempty_string(analyzer) and not _executable_exists(analyzer, repo_root):
         errors.append(f"Analyzer Python executable is unavailable: {analyzer!r}")
+    audio_analyzer = config.get("audio_analyzer_python_executable", "")
+    if _nonempty_string(audio_analyzer) and not Path(audio_analyzer).is_file():
+        errors.append(f"GAA Python executable is unavailable: {audio_analyzer!r}")
 
     return errors
 
