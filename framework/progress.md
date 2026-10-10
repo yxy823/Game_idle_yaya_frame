@@ -12,7 +12,13 @@
 
 剩余步骤：
 
-1. GAA 审核与重构：用户说明 GAA 的思路是重点，代码质量和规范不一定完整，允许大规模重构。先派智能体审核，再按审核结果重构。
+1. GAA 重构：三个智能体已审核完（GAA 提交 `f84381b`，报告与重构方案在本 worktree 被忽略的 `tmp/asset-workshop-20261010/gaa-review/` 和 `gaa-refactor-plan-20261010.md`）。2026-10-10 用户定下：
+   - 分三阶段依次做、每阶段提交：阶段一契约与发布（统一发布层、锁记 PID 并回收、`--result-file`、`--run-id`、`--json-only`、stdout 一行 JSON、`--parent-pid`、细分退出码、版本单一来源、`contract_version`、按子命令导入）；阶段二指标正确性（起音与衰减改滑动窗包络、音高上限与八度和复音判定、LRA 自算、状态统一等）；阶段三结构整理与精简。
+   - 框架用不到的 8 个命令保留，只改造写文件方式，不加功能。
+   - 衰减改为从“最后一次 ≥ 峰值 90%”开始计时；频谱重心改为功率谱加权；单声道响度按双声道相同内容计（+3.01 LU）。
+   - `codex-python` 环境改为可编辑安装 GAA。
+   - archive 中被跟踪的缓存与副本移出 Git，文档压成 README、CLI 参考、输出契约、指标参考和 CHANGELOG。
+   - 执行用 `gpt-6.1-sol` + `xhigh`。
 2. 调试台的音频分析改为直接调用 GAA，直接读 GAA 的字段；框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分。GAA 一侧要增加只输出 JSON 的模式，结果文件写完再一次性发布，需要时再加 `--parent-pid`。
 3. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
 4. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
