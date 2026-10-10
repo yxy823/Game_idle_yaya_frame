@@ -1,6 +1,6 @@
 {
   "format": "graph-map-core",
-  "version": 1,
+  "version": 2,
   "documentId": "199d93b7-0961-4a37-80c5-2d32a4e025c0",
   "nodes": [
     {
@@ -2306,14 +2306,15 @@
     {
       "id": "relation-entry-terminology",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-terminology",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2361,14 +2362,15 @@
     {
       "id": "relation-scenarios-prompts",
       "source": {
+        "kind": "node",
         "node": "doc-scenarios",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-prompts",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2416,14 +2418,15 @@
     {
       "id": "relation-entry-feature-index",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature-index",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2471,14 +2474,15 @@
     {
       "id": "relation-entry-ideas",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-ideas",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2534,14 +2538,15 @@
     {
       "id": "relation-gdd-localization",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-localization",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2593,14 +2598,15 @@
     {
       "id": "relation-framework-entry-docs",
       "source": {
+        "kind": "node",
         "node": "doc-framework-entry",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "统一阅读入口",
@@ -2639,14 +2645,15 @@
     {
       "id": "relation-framework-entry-rules",
       "source": {
+        "kind": "node",
         "node": "doc-framework-entry",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-rules",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "维护时查阅",
@@ -2685,14 +2692,15 @@
     {
       "id": "relation-framework-entry-distribution",
       "source": {
+        "kind": "node",
         "node": "doc-framework-entry",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-distribution",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2740,14 +2748,15 @@
     {
       "id": "relation-docs-operation",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-operation",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "概念、配置与工具",
@@ -2786,14 +2795,15 @@
     {
       "id": "relation-docs-scenarios",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-scenarios",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "按当前问题查找",
@@ -2832,14 +2842,15 @@
     {
       "id": "relation-docs-maintenance",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-maintenance",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "框架维护",
@@ -2878,14 +2889,15 @@
     {
       "id": "relation-docs-terms",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-terms",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -2933,14 +2945,15 @@
     {
       "id": "relation-docs-graphs",
       "source": {
+        "kind": "node",
         "node": "doc-framework-docs",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-graphs",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "两类关系图入口",
@@ -2979,14 +2992,15 @@
     {
       "id": "relation-prompts-scenarios",
       "source": {
+        "kind": "node",
         "node": "doc-prompts",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-scenarios",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "同名、一一对应",
@@ -3025,14 +3039,15 @@
     {
       "id": "relation-prompts-graphs",
       "source": {
+        "kind": "node",
         "node": "doc-prompts",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-graphs",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "开发场景名称与衔接",
@@ -3071,14 +3086,15 @@
     {
       "id": "relation-rules-maintenance",
       "source": {
+        "kind": "node",
         "node": "doc-framework-rules",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-maintenance",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "维护边界与同步约定",
@@ -3117,14 +3133,15 @@
     {
       "id": "relation-rules-reports",
       "source": {
+        "kind": "node",
         "node": "doc-framework-rules",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-reports",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3172,14 +3189,15 @@
     {
       "id": "relation-maintenance-review",
       "source": {
+        "kind": "node",
         "node": "doc-maintenance",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-review",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "长期准则与报告入口",
@@ -3218,14 +3236,15 @@
     {
       "id": "relation-review-reports",
       "source": {
+        "kind": "node",
         "node": "doc-review",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-reports",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "按主题、日期查阅",
@@ -3264,14 +3283,15 @@
     {
       "id": "relation-framework-progress-reports",
       "source": {
+        "kind": "node",
         "node": "doc-framework-progress",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-reports",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "仍需引用的依据",
@@ -3310,14 +3330,15 @@
     {
       "id": "relation-maintenance-progress",
       "source": {
+        "kind": "node",
         "node": "doc-maintenance",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-framework-progress",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3365,14 +3386,15 @@
     {
       "id": "relation-distribution-templates",
       "source": {
+        "kind": "node",
         "node": "doc-distribution",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-templates",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "模板属于分发源",
@@ -3411,14 +3433,15 @@
     {
       "id": "relation-distribution-project",
       "source": {
+        "kind": "node",
         "node": "doc-distribution",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3470,14 +3493,15 @@
     {
       "id": "relation-templates-feature",
       "source": {
+        "kind": "node",
         "node": "doc-templates",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3533,14 +3557,15 @@
     {
       "id": "relation-entry-rules",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-project-rules",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "适用规则",
@@ -3579,14 +3604,15 @@
     {
       "id": "relation-rules-methods",
       "source": {
+        "kind": "node",
         "node": "doc-project-rules",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-project-methods",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "按任务进入方法",
@@ -3625,14 +3651,15 @@
     {
       "id": "relation-methods-tools",
       "source": {
+        "kind": "node",
         "node": "doc-project-methods",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-tools",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "显式工具契约",
@@ -3671,14 +3698,15 @@
     {
       "id": "relation-tools-config",
       "source": {
+        "kind": "node",
         "node": "doc-tools",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-configuration",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "读取配置",
@@ -3717,14 +3745,15 @@
     {
       "id": "relation-config-init",
       "source": {
+        "kind": "node",
         "node": "doc-configuration",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-initialization",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "实际检查后记录",
@@ -3763,14 +3792,15 @@
     {
       "id": "relation-entry-organization",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-organization",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "从游戏功能开始",
@@ -3809,14 +3839,15 @@
     {
       "id": "relation-organization-gdd",
       "source": {
+        "kind": "node",
         "node": "doc-organization",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3864,14 +3895,15 @@
     {
       "id": "relation-organization-architecture",
       "source": {
+        "kind": "node",
         "node": "doc-organization",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-architecture",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -3927,14 +3959,15 @@
     {
       "id": "relation-terminology-gdd",
       "source": {
+        "kind": "node",
         "node": "doc-terminology",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "统一项目术语",
@@ -3973,14 +4006,15 @@
     {
       "id": "relation-gdd-overview",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-product-overview",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "按设计组织交付",
@@ -4019,14 +4053,15 @@
     {
       "id": "relation-overview-product",
       "source": {
+        "kind": "node",
         "node": "doc-product-overview",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-product",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前交付单元入口",
@@ -4065,14 +4100,15 @@
     {
       "id": "relation-product-feature",
       "source": {
+        "kind": "node",
         "node": "doc-product",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "细化当前交付任务",
@@ -4111,14 +4147,15 @@
     {
       "id": "relation-index-feature",
       "source": {
+        "kind": "node",
         "node": "doc-feature-index",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "detail_path",
@@ -4157,14 +4194,15 @@
     {
       "id": "relation-index-revisions",
       "source": {
+        "kind": "node",
         "node": "doc-feature-index",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-revisions",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "规划基线与演进",
@@ -4203,14 +4241,15 @@
     {
       "id": "relation-methods-feature",
       "source": {
+        "kind": "node",
         "node": "doc-project-methods",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4266,14 +4305,15 @@
     {
       "id": "relation-gdd-ui",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-ui",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "细化界面与交互",
@@ -4312,14 +4352,15 @@
     {
       "id": "relation-gdd-art",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-art",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4371,14 +4412,15 @@
     {
       "id": "relation-gdd-audio",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-audio",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4430,14 +4472,15 @@
     {
       "id": "relation-gdd-presentation",
       "source": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-presentation",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4485,14 +4528,15 @@
     {
       "id": "relation-art-ui",
       "source": {
+        "kind": "node",
         "node": "doc-art",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-ui",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "共享视觉约束",
@@ -4531,14 +4575,15 @@
     {
       "id": "relation-audio-presentation",
       "source": {
+        "kind": "node",
         "node": "doc-audio",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-presentation",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4590,14 +4635,15 @@
     {
       "id": "relation-localization-ui",
       "source": {
+        "kind": "node",
         "node": "doc-localization",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-ui",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4653,14 +4699,15 @@
     {
       "id": "relation-ui-presentation",
       "source": {
+        "kind": "node",
         "node": "doc-ui",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-presentation",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "实际触发位置与导航",
@@ -4699,14 +4746,15 @@
     {
       "id": "relation-ui-resource",
       "source": {
+        "kind": "node",
         "node": "doc-ui",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-resource-spec",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4750,14 +4798,15 @@
     {
       "id": "relation-presentation-resource",
       "source": {
+        "kind": "node",
         "node": "doc-presentation",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-resource-spec",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "方案所属资源章节",
@@ -4796,14 +4845,15 @@
     {
       "id": "relation-resource-design",
       "source": {
+        "kind": "node",
         "node": "doc-resource-spec",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature-design",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4851,14 +4901,15 @@
     {
       "id": "relation-presentation-design",
       "source": {
+        "kind": "node",
         "node": "doc-presentation",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature-design",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "采用方案的实施解释",
@@ -4897,14 +4948,15 @@
     {
       "id": "relation-feature-design",
       "source": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature-design",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "notes 中的设计链接",
@@ -4943,14 +4995,15 @@
     {
       "id": "relation-design-architecture",
       "source": {
+        "kind": "node",
         "node": "doc-feature-design",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-architecture",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前结构与实际连接",
@@ -4989,14 +5042,15 @@
     {
       "id": "relation-architecture-subsystem",
       "source": {
+        "kind": "node",
         "node": "doc-architecture",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-subsystem",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "子系统内部契约",
@@ -5035,14 +5089,15 @@
     {
       "id": "relation-architecture-adr",
       "source": {
+        "kind": "node",
         "node": "doc-architecture",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-adr",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5090,14 +5145,15 @@
     {
       "id": "relation-subsystem-reports",
       "source": {
+        "kind": "node",
         "node": "doc-subsystem",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-task-reports",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5145,14 +5201,15 @@
     {
       "id": "relation-adr-research",
       "source": {
+        "kind": "node",
         "node": "doc-adr",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-research",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需要时引用外部依据",
@@ -5191,14 +5248,15 @@
     {
       "id": "relation-ideas-gdd",
       "source": {
+        "kind": "node",
         "node": "doc-ideas",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5254,14 +5312,15 @@
     {
       "id": "relation-research-gdd",
       "source": {
+        "kind": "node",
         "node": "doc-research",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-gdd",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5309,14 +5368,15 @@
     {
       "id": "relation-feature-registry",
       "source": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-test-registry",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "测试 ID 与组件映射",
@@ -5355,14 +5415,15 @@
     {
       "id": "relation-feature-manual",
       "source": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-manual",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "人工检查义务；仅 manual",
@@ -5401,14 +5462,15 @@
     {
       "id": "relation-test-reports-registry",
       "source": {
+        "kind": "node",
         "node": "doc-test-reports",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-test-registry",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "真实运行的测试身份",
@@ -5447,14 +5509,15 @@
     {
       "id": "relation-completion-tests",
       "source": {
+        "kind": "node",
         "node": "doc-completion",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-test-reports",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5498,14 +5561,15 @@
     {
       "id": "relation-completion-manual",
       "source": {
+        "kind": "node",
         "node": "doc-completion",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-manual",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "引用清单与实际结果",
@@ -5544,14 +5608,15 @@
     {
       "id": "relation-feature-completion",
       "source": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-completion",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5599,14 +5664,15 @@
     {
       "id": "relation-feature-task-reports",
       "source": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-task-reports",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5654,14 +5720,15 @@
     {
       "id": "relation-progress-feature",
       "source": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5709,14 +5776,15 @@
     {
       "id": "relation-progress-history",
       "source": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-history",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "完成历史入口",
@@ -5755,14 +5823,15 @@
     {
       "id": "relation-history-reports",
       "source": {
+        "kind": "node",
         "node": "doc-history",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-task-reports",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "保留原证据链接",
@@ -5801,14 +5870,15 @@
     {
       "id": "relation-progress-research",
       "source": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "doc-research",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5856,14 +5926,15 @@
     {
       "id": "relation-progress-reports",
       "source": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-task-reports",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前状态的实际依据",
@@ -5902,14 +5973,15 @@
     {
       "id": "relation-progress-init",
       "source": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-initialization",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5965,14 +6037,15 @@
     {
       "id": "relation-entry-progress",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-progress",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6024,14 +6097,15 @@
     {
       "id": "relation-entry-knowledge",
       "source": {
+        "kind": "node",
         "node": "doc-project-entry",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-knowledge",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6079,14 +6153,15 @@
     {
       "id": "relation-knowledge-reports",
       "source": {
+        "kind": "node",
         "node": "doc-knowledge",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "doc-task-reports",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6134,14 +6209,15 @@
     {
       "id": "relation-knowledge-feature",
       "source": {
+        "kind": "node",
         "node": "doc-knowledge",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "doc-feature",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6197,14 +6273,15 @@
     {
       "id": "relation-terminology-localization",
       "source": {
+        "kind": "node",
         "node": "doc-terminology",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "doc-localization",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {

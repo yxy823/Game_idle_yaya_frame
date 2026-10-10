@@ -1,6 +1,6 @@
 {
   "format": "graph-map-core",
-  "version": 1,
+  "version": 2,
   "documentId": "2235cd49-09e2-4d6a-b58d-dac9505c6035",
   "nodes": [
     {
@@ -552,7 +552,7 @@
     {
       "id": "scene-014",
       "shape": "rounded-rect",
-      "x": 1596.0,
+      "x": 1596,
       "y": 1985.5,
       "width": 168,
       "height": 61,
@@ -1520,7 +1520,7 @@
       "shape": "rounded-rect",
       "x": 3856,
       "y": 2097.5,
-      "width": 248,
+      "width": 178,
       "height": 61,
       "label": "要求已经改好，\n同步受影响的 Feature",
       "zIndex": 1,
@@ -1688,7 +1688,7 @@
       "shape": "rounded-rect",
       "x": 4803,
       "y": 1492.5,
-      "width": 136,
+      "width": 105,
       "height": 61,
       "label": "发现 Bug，\n需要修复",
       "zIndex": 1,
@@ -1940,7 +1940,7 @@
       "shape": "rounded-rect",
       "x": 3484,
       "y": 1313.5,
-      "width": 328,
+      "width": 297,
       "height": 61,
       "label": "已有内容表现不对，\n先判断是 Bug、要改要求还是只需调值",
       "zIndex": 1,
@@ -3116,7 +3116,7 @@
       "shape": "rounded-rect",
       "x": 3212,
       "y": 1425.5,
-      "width": 184,
+      "width": 168,
       "height": 61,
       "label": "独立审核：\n指定模块的现状代码",
       "zIndex": 1,
@@ -3368,7 +3368,7 @@
       "shape": "rounded-rect",
       "x": 3443,
       "y": 669.5,
-      "width": 280,
+      "width": 210,
       "height": 39,
       "label": "继续上次没做完的 Feature",
       "zIndex": 1,
@@ -3872,7 +3872,7 @@
       "shape": "rounded-rect",
       "x": 5180,
       "y": 3333.5,
-      "width": 200,
+      "width": 184,
       "height": 61,
       "label": "同类工作会反复出现，\n先设计处理方法",
       "zIndex": 1,
@@ -3912,8 +3912,8 @@
     {
       "id": "scene-112",
       "shape": "rounded-rect",
-      "x": 2200,
-      "y": 1165.5,
+      "x": 2224,
+      "y": 1178.5,
       "width": 159,
       "height": 84,
       "label": "想保留当前实现，\n另开 worktree 尝试\n另一种方案",
@@ -4208,7 +4208,7 @@
       "shape": "rounded-rect",
       "x": 3700,
       "y": 2380,
-      "width": 248,
+      "width": 232,
       "height": 61,
       "label": "有游戏表现想法，\n需要拆解需求并选择实现方案",
       "zIndex": 1,
@@ -4292,7 +4292,7 @@
       "shape": "rounded-rect",
       "x": 2667,
       "y": 2405.5,
-      "width": 210,
+      "width": 184,
       "height": 61,
       "label": "特效已经做出来，\n需要和我一起调到满意",
       "zIndex": 1,
@@ -4334,7 +4334,7 @@
       "shape": "rounded-rect",
       "x": 2667,
       "y": 2525.5,
-      "width": 210,
+      "width": 136,
       "height": 61,
       "label": "操作手感不对，\n需要调整参数",
       "zIndex": 1,
@@ -4376,7 +4376,7 @@
       "shape": "rounded-rect",
       "x": 872,
       "y": 2495.5,
-      "width": 216,
+      "width": 158,
       "height": 61,
       "label": "想把 Godot 升级到\n新的补丁版本",
       "zIndex": 1,
@@ -4418,8 +4418,8 @@
       "shape": "rounded-rect",
       "x": 872,
       "y": 2585.5,
-      "width": 216,
-      "height": 61,
+      "width": 152,
+      "height": 39,
       "label": "某个插件需要升级",
       "zIndex": 1,
       "fill": "#fff2e5",
@@ -4460,7 +4460,7 @@
       "shape": "rounded-rect",
       "x": 2876,
       "y": 1705.5,
-      "width": 168,
+      "width": 120,
       "height": 61,
       "label": "想导出一个包\n在本机试玩",
       "zIndex": 1,
@@ -4544,7 +4544,7 @@
       "shape": "rounded-rect",
       "x": 2667,
       "y": 2765.5,
-      "width": 210,
+      "width": 216,
       "height": 61,
       "label": "规则和公式已确定，\n需要批量制作关卡或内容表",
       "zIndex": 1,
@@ -4586,7 +4586,7 @@
       "shape": "rounded-rect",
       "x": 720,
       "y": 1290,
-      "width": 184,
+      "width": 206,
       "height": 61,
       "label": "GDD 或方案草稿已写好，\n先检查缺口和冲突",
       "zIndex": 1,
@@ -4629,7 +4629,7 @@
       "x": 2667,
       "y": 2645.5,
       "width": 168,
-      "height": 39,
+      "height": 61,
       "label": "已完成的内容要再调\n速度、节奏或手感",
       "zIndex": 1,
       "fill": "#e8f4ef",
@@ -4670,14 +4670,15 @@
     {
       "id": "link-scene-003-scene-004",
       "source": {
+        "kind": "node",
         "node": "scene-003",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-004",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "创建后配置",
@@ -4716,14 +4717,15 @@
     {
       "id": "link-scene-004-scene-007",
       "source": {
+        "kind": "node",
         "node": "scene-004",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-007",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "首次启动需扫描",
@@ -4762,14 +4764,15 @@
     {
       "id": "link-scene-007-scene-016",
       "source": {
+        "kind": "node",
         "node": "scene-007",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-016",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "已有实质性 GDD",
@@ -4808,14 +4811,15 @@
     {
       "id": "link-scene-016-scene-017",
       "source": {
+        "kind": "node",
         "node": "scene-016",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-017",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -4883,14 +4887,15 @@
     {
       "id": "link-scene-017-scene-037",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-037",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5006,14 +5011,15 @@
     {
       "id": "link-scene-037-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-037",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5077,14 +5083,15 @@
     {
       "id": "link-scene-035-scene-086",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-086",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "manual 且已可体验",
@@ -5123,14 +5130,15 @@
     {
       "id": "link-scene-086-scene-087",
       "source": {
+        "kind": "node",
         "node": "scene-086",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-087",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "用户给出验收结果",
@@ -5169,14 +5177,15 @@
     {
       "id": "link-scene-087-scene-038",
       "source": {
+        "kind": "node",
         "node": "scene-087",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-038",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "全部适用完成条件满足，\n当前 Product 完成",
@@ -5215,14 +5224,15 @@
     {
       "id": "link-scene-038-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-038",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5270,14 +5280,15 @@
     {
       "id": "link-scene-035-scene-038",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-038",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5329,14 +5340,15 @@
     {
       "id": "link-scene-001-scene-002",
       "source": {
+        "kind": "node",
         "node": "scene-001",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-002",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "方案已确定并授权迁移",
@@ -5375,14 +5387,15 @@
     {
       "id": "link-scene-002-scene-004",
       "source": {
+        "kind": "node",
         "node": "scene-002",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-004",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5426,14 +5439,15 @@
     {
       "id": "link-scene-004-scene-005",
       "source": {
+        "kind": "node",
         "node": "scene-004",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-005",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5485,14 +5499,15 @@
     {
       "id": "link-scene-005-scene-006",
       "source": {
+        "kind": "node",
         "node": "scene-005",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-006",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "路径仍失效",
@@ -5531,14 +5546,15 @@
     {
       "id": "link-scene-006-scene-007",
       "source": {
+        "kind": "node",
         "node": "scene-006",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-007",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5586,14 +5602,15 @@
     {
       "id": "link-scene-010-scene-011",
       "source": {
+        "kind": "node",
         "node": "scene-010",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-011",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "存在待确认项",
@@ -5632,14 +5649,15 @@
     {
       "id": "link-scene-011-scene-016",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-016",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5695,14 +5713,15 @@
     {
       "id": "link-scene-011-scene-008",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-008",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5746,14 +5765,15 @@
     {
       "id": "link-scene-011-scene-012",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-012",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5801,14 +5821,15 @@
     {
       "id": "link-scene-009-scene-029",
       "source": {
+        "kind": "node",
         "node": "scene-009",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-029",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需求与任务已对齐",
@@ -5847,14 +5868,15 @@
     {
       "id": "link-scene-014-scene-018",
       "source": {
+        "kind": "node",
         "node": "scene-014",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-018",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5902,14 +5924,15 @@
     {
       "id": "link-scene-015-scene-028",
       "source": {
+        "kind": "node",
         "node": "scene-015",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-028",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -5957,14 +5980,15 @@
     {
       "id": "link-scene-011-scene-013",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-013",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6012,14 +6036,15 @@
     {
       "id": "link-scene-011-scene-014",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-014",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6075,14 +6100,15 @@
     {
       "id": "link-scene-011-scene-015",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-015",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6134,14 +6160,15 @@
     {
       "id": "link-scene-018-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-018",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6209,14 +6236,15 @@
     {
       "id": "link-scene-019-scene-016",
       "source": {
+        "kind": "node",
         "node": "scene-019",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-016",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6276,14 +6304,15 @@
     {
       "id": "link-scene-017-scene-019",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-019",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6327,14 +6356,15 @@
     {
       "id": "link-scene-017-scene-020",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-020",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6390,14 +6420,15 @@
     {
       "id": "link-scene-017-scene-021",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-021",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6453,14 +6484,15 @@
     {
       "id": "link-scene-017-scene-022",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-022",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6512,14 +6544,15 @@
     {
       "id": "link-scene-020-scene-026",
       "source": {
+        "kind": "node",
         "node": "scene-020",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-026",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6567,14 +6600,15 @@
     {
       "id": "link-scene-021-scene-027",
       "source": {
+        "kind": "node",
         "node": "scene-021",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-027",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6630,14 +6664,15 @@
     {
       "id": "link-scene-022-scene-023",
       "source": {
+        "kind": "node",
         "node": "scene-022",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-023",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "界面要求改变",
@@ -6676,14 +6711,15 @@
     {
       "id": "link-scene-020-scene-025",
       "source": {
+        "kind": "node",
         "node": "scene-020",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-025",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6735,14 +6771,15 @@
     {
       "id": "link-scene-021-scene-024",
       "source": {
+        "kind": "node",
         "node": "scene-021",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-024",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6794,14 +6831,15 @@
     {
       "id": "link-scene-026-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-026",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6857,14 +6895,15 @@
     {
       "id": "link-scene-027-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-027",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6920,14 +6959,15 @@
     {
       "id": "link-scene-023-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-023",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -6991,14 +7031,15 @@
     {
       "id": "link-scene-028-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-028",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7066,14 +7107,15 @@
     {
       "id": "link-scene-035-scene-028",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-028",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7149,14 +7191,15 @@
     {
       "id": "link-scene-017-scene-030",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-030",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7220,14 +7263,15 @@
     {
       "id": "link-scene-030-scene-086",
       "source": {
+        "kind": "node",
         "node": "scene-030",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-086",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7303,14 +7347,15 @@
     {
       "id": "link-scene-087-scene-031",
       "source": {
+        "kind": "node",
         "node": "scene-087",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-031",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7370,14 +7415,15 @@
     {
       "id": "link-scene-031-scene-030",
       "source": {
+        "kind": "node",
         "node": "scene-031",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-030",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7445,14 +7491,15 @@
     {
       "id": "link-scene-013-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-013",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7516,14 +7563,15 @@
     {
       "id": "link-scene-029-scene-086",
       "source": {
+        "kind": "node",
         "node": "scene-029",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-086",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7571,14 +7619,15 @@
     {
       "id": "link-scene-033-scene-034",
       "source": {
+        "kind": "node",
         "node": "scene-032",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-034",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需要进一步指导",
@@ -7617,14 +7666,15 @@
     {
       "id": "link-scene-034-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-034",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7680,14 +7730,15 @@
     {
       "id": "link-scene-039-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-039",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7759,14 +7810,15 @@
     {
       "id": "link-scene-037-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-037",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7826,14 +7878,15 @@
     {
       "id": "link-scene-035-scene-048",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-048",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7889,14 +7942,15 @@
     {
       "id": "link-scene-048-scene-046",
       "source": {
+        "kind": "node",
         "node": "scene-048",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-046",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -7956,14 +8010,15 @@
     {
       "id": "link-scene-046-scene-086",
       "source": {
+        "kind": "node",
         "node": "scene-046",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-086",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8035,14 +8090,15 @@
     {
       "id": "link-scene-044-scene-045",
       "source": {
+        "kind": "node",
         "node": "scene-044",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-045",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8098,14 +8154,15 @@
     {
       "id": "link-scene-045-scene-049",
       "source": {
+        "kind": "node",
         "node": "scene-045",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-049",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "目标选定并获准时",
@@ -8144,14 +8201,15 @@
     {
       "id": "link-scene-035-scene-044",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-044",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8203,14 +8261,15 @@
     {
       "id": "link-scene-052-scene-049",
       "source": {
+        "kind": "node",
         "node": "scene-052",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-049",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8262,14 +8321,15 @@
     {
       "id": "link-scene-050-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-050",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8329,14 +8389,15 @@
     {
       "id": "link-scene-049-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-049",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8380,14 +8441,15 @@
     {
       "id": "link-scene-053-scene-051",
       "source": {
+        "kind": "node",
         "node": "scene-053",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-051",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8435,14 +8497,15 @@
     {
       "id": "link-scene-053-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-053",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8498,14 +8561,15 @@
     {
       "id": "link-scene-051-scene-091",
       "source": {
+        "kind": "node",
         "node": "scene-051",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-089",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "规则影响当前证据",
@@ -8544,14 +8608,15 @@
     {
       "id": "link-scene-043-scene-005",
       "source": {
+        "kind": "node",
         "node": "scene-043",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-005",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8599,14 +8664,15 @@
     {
       "id": "link-scene-044-scene-052",
       "source": {
+        "kind": "node",
         "node": "scene-044",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-052",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8662,14 +8728,15 @@
     {
       "id": "link-scene-050-scene-052",
       "source": {
+        "kind": "node",
         "node": "scene-050",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-052",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8717,14 +8784,15 @@
     {
       "id": "link-scene-074-scene-053",
       "source": {
+        "kind": "node",
         "node": "scene-074",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-053",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8772,14 +8840,15 @@
     {
       "id": "link-scene-054-scene-025",
       "source": {
+        "kind": "node",
         "node": "scene-054",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-025",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8835,14 +8904,15 @@
     {
       "id": "link-scene-054-scene-024",
       "source": {
+        "kind": "node",
         "node": "scene-054",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-024",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8894,14 +8964,15 @@
     {
       "id": "link-scene-025-scene-055",
       "source": {
+        "kind": "node",
         "node": "scene-025",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-055",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -8949,14 +9020,15 @@
     {
       "id": "link-scene-024-scene-055",
       "source": {
+        "kind": "node",
         "node": "scene-024",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-055",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9008,14 +9080,15 @@
     {
       "id": "link-scene-035-scene-054",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-054",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9059,14 +9132,15 @@
     {
       "id": "link-scene-055-scene-056",
       "source": {
+        "kind": "node",
         "node": "scene-055",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-056",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9114,14 +9188,15 @@
     {
       "id": "link-scene-055-scene-071",
       "source": {
+        "kind": "node",
         "node": "scene-055",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-071",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9165,14 +9240,15 @@
     {
       "id": "link-scene-055-scene-072",
       "source": {
+        "kind": "node",
         "node": "scene-055",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-072",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9216,14 +9292,15 @@
     {
       "id": "link-scene-057-scene-059",
       "source": {
+        "kind": "node",
         "node": "scene-056",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-059",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "替换已有素材",
@@ -9262,14 +9339,15 @@
     {
       "id": "link-scene-072-scene-073",
       "source": {
+        "kind": "node",
         "node": "scene-072",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-073",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9317,14 +9395,15 @@
     {
       "id": "link-scene-017-scene-062",
       "source": {
+        "kind": "node",
         "node": "scene-017",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-062",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9380,14 +9459,15 @@
     {
       "id": "link-scene-062-scene-063",
       "source": {
+        "kind": "node",
         "node": "scene-062",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-063",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9435,14 +9515,15 @@
     {
       "id": "link-scene-063-scene-082",
       "source": {
+        "kind": "node",
         "node": "scene-063",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-082",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9490,14 +9571,15 @@
     {
       "id": "link-scene-048-scene-064",
       "source": {
+        "kind": "node",
         "node": "scene-048",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-064",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9545,14 +9627,15 @@
     {
       "id": "link-scene-064-scene-065",
       "source": {
+        "kind": "node",
         "node": "scene-064",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-065",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9600,14 +9683,15 @@
     {
       "id": "link-scene-064-scene-066",
       "source": {
+        "kind": "node",
         "node": "scene-064",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-066",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9651,14 +9735,15 @@
     {
       "id": "link-scene-048-scene-067",
       "source": {
+        "kind": "node",
         "node": "scene-048",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-067",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9710,14 +9795,15 @@
     {
       "id": "link-scene-067-scene-068",
       "source": {
+        "kind": "node",
         "node": "scene-067",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-068",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9785,14 +9871,15 @@
     {
       "id": "link-scene-068-scene-094",
       "source": {
+        "kind": "node",
         "node": "scene-068",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-094",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9836,14 +9923,15 @@
     {
       "id": "link-scene-066-scene-094",
       "source": {
+        "kind": "node",
         "node": "scene-066",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-094",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "请求独立核实测量",
@@ -9882,14 +9970,15 @@
     {
       "id": "link-scene-065-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-065",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9937,14 +10026,15 @@
     {
       "id": "link-scene-050-scene-069",
       "source": {
+        "kind": "node",
         "node": "scene-050",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-069",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -9996,14 +10086,15 @@
     {
       "id": "link-scene-050-scene-070",
       "source": {
+        "kind": "node",
         "node": "scene-050",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-070",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10059,14 +10150,15 @@
     {
       "id": "link-scene-069-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-069",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10118,14 +10210,15 @@
     {
       "id": "link-scene-070-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-070",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10169,14 +10262,15 @@
     {
       "id": "link-scene-035-scene-075",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-075",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10244,14 +10338,15 @@
     {
       "id": "link-scene-035-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10347,14 +10442,15 @@
     {
       "id": "link-scene-035-scene-077",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-077",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10410,14 +10506,15 @@
     {
       "id": "link-scene-074-scene-075",
       "source": {
+        "kind": "node",
         "node": "scene-074",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-075",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10461,14 +10558,15 @@
     {
       "id": "link-scene-074-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-074",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10524,14 +10622,15 @@
     {
       "id": "link-scene-077-scene-086",
       "source": {
+        "kind": "node",
         "node": "scene-077",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-086",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10587,14 +10686,15 @@
     {
       "id": "link-scene-075-scene-046",
       "source": {
+        "kind": "node",
         "node": "scene-075",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-046",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10654,14 +10754,15 @@
     {
       "id": "link-scene-076-scene-046",
       "source": {
+        "kind": "node",
         "node": "scene-076",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-046",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10721,14 +10822,15 @@
     {
       "id": "link-scene-035-scene-084",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-084",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10784,14 +10886,15 @@
     {
       "id": "link-scene-084-scene-085",
       "source": {
+        "kind": "node",
         "node": "scene-084",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-085",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10839,14 +10942,15 @@
     {
       "id": "link-scene-057-scene-079",
       "source": {
+        "kind": "node",
         "node": "scene-056",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-079",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "用户请求美术审核",
@@ -10885,14 +10989,15 @@
     {
       "id": "link-scene-056-scene-080",
       "source": {
+        "kind": "node",
         "node": "scene-056",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-080",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -10940,14 +11045,15 @@
     {
       "id": "link-scene-055-scene-081",
       "source": {
+        "kind": "node",
         "node": "scene-055",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-081",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11003,14 +11109,15 @@
     {
       "id": "link-scene-014-scene-083",
       "source": {
+        "kind": "node",
         "node": "scene-014",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-083",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11062,14 +11169,15 @@
     {
       "id": "link-scene-014-scene-015",
       "source": {
+        "kind": "node",
         "node": "scene-014",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-015",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11121,14 +11229,15 @@
     {
       "id": "link-scene-084-scene-046",
       "source": {
+        "kind": "node",
         "node": "scene-084",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-046",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11180,14 +11289,15 @@
     {
       "id": "link-scene-076-scene-089",
       "source": {
+        "kind": "node",
         "node": "scene-076",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-089",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11235,14 +11345,15 @@
     {
       "id": "link-scene-090-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-089",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需要重新取得结果",
@@ -11281,14 +11392,15 @@
     {
       "id": "link-scene-093-scene-076",
       "source": {
+        "kind": "node",
         "node": "scene-093",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-076",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11336,14 +11448,15 @@
     {
       "id": "link-scene-035-scene-099",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-099",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11403,14 +11516,15 @@
     {
       "id": "link-scene-099-scene-096",
       "source": {
+        "kind": "node",
         "node": "scene-099",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-095",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "原对话继续",
@@ -11449,14 +11563,15 @@
     {
       "id": "link-scene-035-scene-098",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-098",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11536,14 +11651,15 @@
     {
       "id": "link-scene-098-scene-095",
       "source": {
+        "kind": "node",
         "node": "scene-098",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-095",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11591,14 +11707,15 @@
     {
       "id": "link-scene-095-scene-035",
       "source": {
+        "kind": "node",
         "node": "scene-095",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-035",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11670,14 +11787,15 @@
     {
       "id": "link-scene-099-scene-100",
       "source": {
+        "kind": "node",
         "node": "scene-099",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-100",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11725,14 +11843,15 @@
     {
       "id": "link-scene-011-scene-101",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-099",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需要暂停",
@@ -11771,14 +11890,15 @@
     {
       "id": "link-scene-101-scene-102",
       "source": {
+        "kind": "node",
         "node": "scene-099",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-098",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "准备跨对话交接",
@@ -11817,14 +11937,15 @@
     {
       "id": "link-scene-102-scene-104",
       "source": {
+        "kind": "node",
         "node": "scene-098",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-104",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "恢复原讨论",
@@ -11863,14 +11984,15 @@
     {
       "id": "link-scene-008-scene-103",
       "source": {
+        "kind": "node",
         "node": "scene-008",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-103",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "继续未完调研",
@@ -11909,14 +12031,15 @@
     {
       "id": "link-scene-011-scene-104",
       "source": {
+        "kind": "node",
         "node": "scene-011",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-104",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -11968,14 +12091,15 @@
     {
       "id": "link-scene-084-scene-105",
       "source": {
+        "kind": "node",
         "node": "scene-084",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-105",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12031,14 +12155,15 @@
     {
       "id": "link-scene-095-scene-097",
       "source": {
+        "kind": "node",
         "node": "scene-095",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-097",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12086,14 +12211,15 @@
     {
       "id": "link-scene-088-scene-106",
       "source": {
+        "kind": "node",
         "node": "scene-087",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-106",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "阶段已结束且请求复盘",
@@ -12132,14 +12258,15 @@
     {
       "id": "link-scene-106-scene-107",
       "source": {
+        "kind": "node",
         "node": "scene-106",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-107",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "经验确认后归档",
@@ -12178,14 +12305,15 @@
     {
       "id": "link-scene-107-scene-108",
       "source": {
+        "kind": "node",
         "node": "scene-107",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-108",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "重复操作已确认值得脚本化",
@@ -12224,14 +12352,15 @@
     {
       "id": "link-scene-109-scene-107",
       "source": {
+        "kind": "node",
         "node": "scene-109",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-107",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12283,14 +12412,15 @@
     {
       "id": "link-scene-110-scene-108",
       "source": {
+        "kind": "node",
         "node": "scene-110",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-108",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12346,14 +12476,15 @@
     {
       "id": "link-scene-110-scene-050",
       "source": {
+        "kind": "node",
         "node": "scene-110",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-050",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12405,14 +12536,15 @@
     {
       "id": "link-scene-114-scene-011",
       "source": {
+        "kind": "node",
         "node": "scene-114",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-011",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12460,14 +12592,15 @@
     {
       "id": "link-scene-114-scene-008",
       "source": {
+        "kind": "node",
         "node": "scene-114",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-008",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12515,14 +12648,15 @@
     {
       "id": "link-scene-114-scene-015",
       "source": {
+        "kind": "node",
         "node": "scene-114",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-015",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12574,14 +12708,15 @@
     {
       "id": "link-scene-114-scene-112",
       "source": {
+        "kind": "node",
         "node": "scene-114",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-112",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12589,7 +12724,7 @@
           "y": 1100
         },
         {
-          "x": 2300,
+          "x": 2296.5,
           "y": 1100
         }
       ],
@@ -12629,14 +12764,15 @@
     {
       "id": "link-scene-112-scene-113",
       "source": {
+        "kind": "node",
         "node": "scene-112",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-113",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12684,14 +12820,15 @@
     {
       "id": "link-scene-114-scene-104",
       "source": {
+        "kind": "node",
         "node": "scene-114",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-104",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -12739,14 +12876,15 @@
     {
       "id": "link-scene-003-scene-115",
       "source": {
+        "kind": "node",
         "node": "scene-003",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-115",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "项目已有，仅有想法且请求形成草稿",
@@ -12785,14 +12923,15 @@
     {
       "id": "link-scene-010-scene-116",
       "source": {
+        "kind": "node",
         "node": "scene-010",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-116",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "外部设计资料已明确，获准整合 GDD",
@@ -12831,14 +12970,15 @@
     {
       "id": "link-scene-115-scene-116",
       "source": {
+        "kind": "node",
         "node": "scene-115",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-116",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "后续设计资料分散，获准整合",
@@ -12877,14 +13017,15 @@
     {
       "id": "link-scene-115-scene-016",
       "source": {
+        "kind": "node",
         "node": "scene-115",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-016",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前范围设计已采用且明确，获准规划交付",
@@ -12923,14 +13064,15 @@
     {
       "id": "link-scene-116-scene-016",
       "source": {
+        "kind": "node",
         "node": "scene-116",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-016",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前范围设计已采用且明确，获准规划交付",
@@ -12969,14 +13111,15 @@
     {
       "id": "link-scene-115-scene-117",
       "source": {
+        "kind": "node",
         "node": "scene-115",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-117",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "体验目标和可探索机制明确，需要数值建模",
@@ -13015,14 +13158,15 @@
     {
       "id": "link-scene-116-scene-117",
       "source": {
+        "kind": "node",
         "node": "scene-116",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-117",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "体验目标和可探索机制明确，需要数值建模",
@@ -13061,14 +13205,15 @@
     {
       "id": "link-scene-117-scene-118",
       "source": {
+        "kind": "node",
         "node": "scene-117",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-118",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "已有模型，获准按目标或证据调整",
@@ -13107,14 +13252,15 @@
     {
       "id": "link-scene-117-scene-083",
       "source": {
+        "kind": "node",
         "node": "scene-117",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-083",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "已有可审样本，要求独立数值审核",
@@ -13153,14 +13299,15 @@
     {
       "id": "link-scene-118-scene-083",
       "source": {
+        "kind": "node",
         "node": "scene-118",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-083",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "已有可审样本，要求独立数值审核",
@@ -13199,14 +13346,15 @@
     {
       "id": "link-scene-083-scene-118",
       "source": {
+        "kind": "node",
         "node": "scene-083",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-118",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "审核发现经核实，获准调整数值",
@@ -13245,14 +13393,15 @@
     {
       "id": "link-scene-115-scene-119",
       "source": {
+        "kind": "node",
         "node": "scene-115",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-119",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需细化一次游戏表现",
@@ -13291,14 +13440,15 @@
     {
       "id": "link-scene-022-scene-119",
       "source": {
+        "kind": "node",
         "node": "scene-022",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-119",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "界面涉及完整反馈，按需拆解",
@@ -13337,14 +13487,15 @@
     {
       "id": "link-scene-119-scene-015",
       "source": {
+        "kind": "node",
         "node": "scene-119",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-015",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "具体技术不确定且已授权实验",
@@ -13383,14 +13534,15 @@
     {
       "id": "link-scene-119-scene-054",
       "source": {
+        "kind": "node",
         "node": "scene-119",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-054",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "已采用方案需要准备素材",
@@ -13429,14 +13581,15 @@
     {
       "id": "link-scene-119-scene-037",
       "source": {
+        "kind": "node",
         "node": "scene-119",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-037",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "当前交付设计明确且获准首次规划",
@@ -13475,14 +13628,15 @@
     {
       "id": "link-scene-119-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-119",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "采用要求影响已有计划，按需同步",
@@ -13521,14 +13675,15 @@
     {
       "id": "link-scene-087-scene-096",
       "source": {
+        "kind": "node",
         "node": "scene-087",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-095",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "验收已记录，\n继续收尾",
@@ -13567,14 +13722,15 @@
     {
       "id": "link-scene-086-scene-100",
       "source": {
+        "kind": "node",
         "node": "scene-086",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-100",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "等验收期间\n切换到别的 Feature",
@@ -13613,14 +13769,15 @@
     {
       "id": "link-scene-076-scene-120",
       "source": {
+        "kind": "node",
         "node": "scene-076",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-120",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "测试时过时不过",
@@ -13659,14 +13816,15 @@
     {
       "id": "link-scene-048-scene-120",
       "source": {
+        "kind": "node",
         "node": "scene-048",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-120",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "原因在测试本身",
@@ -13705,14 +13863,15 @@
     {
       "id": "link-scene-120-scene-047",
       "source": {
+        "kind": "node",
         "node": "scene-120",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-046",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "查明是游戏行为有误",
@@ -13751,14 +13910,15 @@
     {
       "id": "link-scene-035-scene-121",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-121",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "效果已实现，需要一起调参",
@@ -13797,14 +13957,15 @@
     {
       "id": "link-scene-035-scene-122",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-122",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -13852,14 +14013,15 @@
     {
       "id": "link-scene-005-scene-123",
       "source": {
+        "kind": "node",
         "node": "scene-005",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-123",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "要升级 Godot 版本",
@@ -13898,14 +14060,15 @@
     {
       "id": "link-scene-123-scene-043",
       "source": {
+        "kind": "node",
         "node": "scene-123",
         "port": "top"
       },
       "target": {
+        "kind": "node",
         "node": "scene-043",
         "port": "bottom"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "次版本或主版本等框架迁移",
@@ -13944,14 +14107,15 @@
     {
       "id": "link-scene-123-scene-124",
       "source": {
+        "kind": "node",
         "node": "scene-123",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-124",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "引擎与插件分开升级",
@@ -13990,14 +14154,15 @@
     {
       "id": "link-scene-077-scene-125",
       "source": {
+        "kind": "node",
         "node": "scene-077",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-125",
         "port": "right"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "需离开编辑器运行",
@@ -14036,14 +14201,15 @@
     {
       "id": "link-scene-035-scene-126",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-126",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -14052,7 +14218,7 @@
         },
         {
           "x": 2630,
-          "y": 2676.0
+          "y": 2676
         }
       ],
       "label": "需要写游戏内文字",
@@ -14091,14 +14257,15 @@
     {
       "id": "link-scene-035-scene-127",
       "source": {
+        "kind": "node",
         "node": "scene-035",
         "port": "left"
       },
       "target": {
+        "kind": "node",
         "node": "scene-127",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -14107,7 +14274,7 @@
         },
         {
           "x": 2630,
-          "y": 2796.0
+          "y": 2796
         }
       ],
       "label": "需要制作内容数据",
@@ -14146,14 +14313,15 @@
     {
       "id": "link-scene-115-scene-128",
       "source": {
+        "kind": "node",
         "node": "scene-115",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-128",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [
         {
@@ -14197,14 +14365,15 @@
     {
       "id": "link-scene-116-scene-128",
       "source": {
+        "kind": "node",
         "node": "scene-116",
         "port": "bottom"
       },
       "target": {
+        "kind": "node",
         "node": "scene-128",
         "port": "top"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "草稿需要先检查",
@@ -14243,14 +14412,15 @@
     {
       "id": "link-scene-129-scene-039",
       "source": {
+        "kind": "node",
         "node": "scene-129",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-039",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "链接命中已完成 Feature",
@@ -14289,14 +14459,15 @@
     {
       "id": "link-scene-053-scene-129",
       "source": {
+        "kind": "node",
         "node": "scene-053",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "scene-129",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "只需调观感数值",
@@ -14333,6 +14504,7 @@
       }
     }
   ],
+  "groups": [],
   "canvas": {
     "gridSize": 10,
     "gridVisible": false,
