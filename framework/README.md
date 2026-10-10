@@ -50,7 +50,7 @@ flowchart TD
 | 路径 | 职责 |
 | --- | --- |
 | [AGENTS.md](AGENTS.md) | 只对 `framework/` 重要的规则：框架待办的维护方式、提示词维护；Claude Code 读取 `framework/` 下的文件时自动加载，在 `framework/` 启动的 Codex 自动读取，其他情况按根 `AGENTS.md` 的路由表读取 |
-| [progress.md](progress.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
+| [todo.md](todo.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |
 | [qa/](qa/README.md) | Q&A：用户在讨论中问过、以后还会用到的问题，按主题分文件；框架做法只写结论并链接正文，通用专业知识在这里写完整 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |

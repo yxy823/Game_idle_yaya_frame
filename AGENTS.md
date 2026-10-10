@@ -28,7 +28,7 @@
 | --- | --- |
 | 修改框架的任何文件 | [框架入口](framework/README.md)，再按[框架维护与说明同步](framework/maintenance/maintenance-and-sync.md)判断修改属于哪里；开始修改前读一遍其中的[修改时的联动检查](framework/maintenance/maintenance-and-sync.md#修改时的联动检查)，提交前再逐条核对。修改框架自己的工具时，同样按[修改分发源](framework/maintenance/maintenance-and-sync.md#修改分发源)中“代码或工具”一条先确认范围 |
 | 修改 `project-source/` 下的文件 | [修改分发源](framework/maintenance/maintenance-and-sync.md#修改分发源)。生成项目的规则源文件是 `project-source/Project_AGENTS.md`，创建项目时复制为项目的 `AGENTS.md`，在本仓库只作为源材料阅读 |
-| 框架维护任务开始或续接；修改 `framework/progress.md` 或提示词库 | [framework/AGENTS.md](framework/AGENTS.md)（Claude Code 读取 `framework/` 下的文件时会自动加载它；Codex 只在工作目录位于 `framework/` 时自动读到，所以这里显式要求先读） |
+| 框架维护任务开始或续接；修改 `framework/todo.md` 或提示词库 | [framework/AGENTS.md](framework/AGENTS.md)（Claude Code 读取 `framework/` 下的文件时会自动加载它；Codex 只在工作目录位于 `framework/` 时自动读到，所以这里显式要求先读） |
 | 新增、移动、拆分、合并或命名文件 | [目录组织](framework/maintenance/design-guidelines/document-responsibilities.md#目录组织) |
 | 选择验证范围，或派活时写验证要求 | [按修改选择验证范围](framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，它优先于个人规则里的验证默认值 |
 | 编写或整理框架文档；回复和文档要避开的写法 | [technical-documentation-writing-yaya](.agents/skills/technical-documentation-writing-yaya/SKILL.md)；[措辞检查](project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)；两份写作 Skill 的分工见[两份写作 Skill 的分工](framework/maintenance/maintenance-and-sync.md#两份写作-skill-的分工) |

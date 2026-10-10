@@ -204,7 +204,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：修改归属、文档同步、验证范围、第三方插件记录，以及各 tools/ 目录与测试夹具的用法说明。\n位置：framework/maintenance/（职责设计准则另见独立节点）、各对象目录的 tools/README.md、framework/tests/。\n按变化读取对应专题；当前任务的实际停点归 framework/progress.md。\n\n文件： framework/maintenance/*.md\n文件： framework/maintenance/validation/*.md\n文件： framework/maintenance/dependencies/*.md\n文件： framework/maintenance/tools/README.md\n文件： framework/project-creation/tools/README.md\n文件： framework/prompt-scenarios/tools/README.md\n文件： framework/relationship-maps/tools/README.md\n文件： framework/tests/README.md\n文件： framework/tests/external-project/*/README.md",
+      "note": "职责：修改归属、文档同步、验证范围、第三方插件记录，以及各 tools/ 目录与测试夹具的用法说明。\n位置：framework/maintenance/（职责设计准则另见独立节点）、各对象目录的 tools/README.md、framework/tests/。\n按变化读取对应专题；当前任务的实际停点归 framework/todo.md。\n\n文件： framework/maintenance/*.md\n文件： framework/maintenance/validation/*.md\n文件： framework/maintenance/dependencies/*.md\n文件： framework/maintenance/tools/README.md\n文件： framework/project-creation/tools/README.md\n文件： framework/prompt-scenarios/tools/README.md\n文件： framework/relationship-maps/tools/README.md\n文件： framework/tests/README.md\n文件： framework/tests/external-project/*/README.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -483,7 +483,7 @@
       "y": 540,
       "width": 270,
       "height": 88,
-      "label": "框架待办\nprogress.md",
+      "label": "框架待办\ntodo.md",
       "zIndex": 1,
       "fill": "#FEF9C3",
       "stroke": {
@@ -505,11 +505,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定事项和下一步。\n位置：framework/progress.md。\n链接下一步所依据的文件或提交；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/progress.md",
+      "note": "职责：仍需推进的事项、真实缺口、阻塞、待决定事项和下一步。\n位置：framework/todo.md。\n链接下一步所依据的文件或提交；完成并通过适用验证的事项删除，历史由 Git 保存。\n\n文件： framework/todo.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/progress.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/todo.md"
       },
       "appearance": {
         "opacity": 1,
