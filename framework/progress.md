@@ -4,25 +4,17 @@
 
 方法规范把美术、音乐和音效制作留为预留能力（`project-source/methodology/11-specialist-workflows.md`「设计、制作、接入与审核」）。2026-10-10 与用户定下：制作放在框架外的独立工坊，按媒体各一个项目、多个游戏共用；音频用 `D:/A_Games/Studio_Audio_Production`，美术用 `D:/A_Games/Studio_Image_2D_Production`。执行由 Codex 完成、主 Agent 监工，每步做完再开下一步。
 
-已完成：工坊规则改写（工坊提交 `767c9d8`）；音频技术验证，3 个候选 WAV 在 `D:/A_Games/Studio_Audio_Production/works/idle-demo-v2/purchase-success/exports/`（工坊提交 `cbd6ff0`）。用户单独试听后选定 `chord.wav` 可用（工坊提交 `0845338`），说明代码合成能做出可用的界面短音效；它在游戏中是否合适，要等 `Game_Idle_Demo_V2` 的素材接入 Feature（F005）把它作为外部文件接入后确认，接入属于该试用项目，不在本计划内。验证中的实测结论（原始证据在工坊被忽略的 `reports/idle-demo-v2/purchase-success/20261010/`）：
-
-- GAA 分析 0.32 秒音效：默认中位 4.2 秒，`--no-plots` 中位 2.8 秒，本机第一次运行 22 秒；调试台不能同步等待。
-- 调试台 9 个音频数在 GAA `analysis.json` 中都有对应字段，但音高（频率范围 65–2000 Hz）和频谱重心算法与框架 Analyzer 不同；GAA 没有音名字段；状态用 `ok`、`estimate`、`insufficient_data`，调试台现在只认 `available`。
-- 用无头 Godot 的 `OS.create_process` 启动 GAA，Godot 正常退出或被 `taskkill /F` 结束后，GAA 都继续运行并写完结果；框架 Analyzer 现在靠 `--parent-pid` 随父进程退出，GAA 没有这个机制。
+已完成：工坊规则改写（工坊提交 `767c9d8`）；音频技术验证，3 个候选 WAV 在 `D:/A_Games/Studio_Audio_Production/works/idle-demo-v2/purchase-success/exports/`（工坊提交 `cbd6ff0`）。用户单独试听后选定 `chord.wav` 可用（工坊提交 `0845338`），说明代码合成能做出可用的界面短音效；它在游戏中是否合适，要等 `Game_Idle_Demo_V2` 的素材接入 Feature（F005）把它作为外部文件接入后确认，接入属于该试用项目，不在本计划内。
 
 剩余步骤：
 
-1. GAA 重构：三个智能体已审核完（GAA 提交 `f84381b`，报告与重构方案在本 worktree 被忽略的 `tmp/asset-workshop-20261010/gaa-review/` 和 `gaa-refactor-plan-20261010.md`）。2026-10-10 用户定下：
-   - 分三阶段依次做、每阶段提交：阶段一契约与发布（统一发布层、锁记 PID 并回收、`--result-file`、`--run-id`、`--json-only`、stdout 一行 JSON、`--parent-pid`、细分退出码、版本单一来源、`contract_version`、按子命令导入）；阶段二指标正确性（起音与衰减改滑动窗包络、音高上限与八度和复音判定、LRA 自算、状态统一等）；阶段三结构整理与精简。
-   - 框架用不到的 8 个命令保留，只改造写文件方式，不加功能。
-   - 衰减改为从“最后一次 ≥ 峰值 90%”开始计时；频谱重心改为功率谱加权；单声道响度按双声道相同内容计（+3.01 LU）。
-   - `codex-python` 环境改为可编辑安装 GAA。
-   - archive 中被跟踪的缓存与副本移出 Git，文档压成 README、CLI 参考、输出契约、指标参考和 CHANGELOG。
-   - 执行用 `gpt-6.1-sol` + `xhigh`。
-   - 阶段一已完成（GAA 提交 `f669942`，版本 0.4.0）：`analyze --json-only --result-file` 只发布一个结果文件，含 9 项指标与 `contract_version` 1.0；锁记 PID 并可回收；`--parent-pid` 中断后退出码 6；`codex-python` 已改为可编辑安装。实测后台分析约 2.25 秒、`--version --json` 0.10 秒；全量测试 216 通过、1 跳过（符号链接权限）。阶段二已完成（GAA 提交 `83672eb`，版本 0.5.0、分析修订 4、契约 2.0）：衰减改为 90%→10%、重心按功率加权、单声道响度按双声道相同内容计；起音 1 ms 窗并把文件开头当作静音，低于 150 Hz 时误差上限为半个载波周期；和弦与非谐音的音高判不适用；全量测试 1010 通过、1 跳过；后台摘要单次约 2.3–2.9 秒。工坊作品 README 中的测量值仍是 GAA 0.3.0 的结果（README 已注明版本）。下一步：阶段三。
-2. 调试台的音频分析改为直接调用 GAA，直接读 GAA 的字段；框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分。GAA 一侧要增加只输出 JSON 的模式，结果文件写完再一次性发布，需要时再加 `--parent-pid`。
-3. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
-4. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
+1. 调试台的音频分析改为直接调用 GAA。GAA 已按审核结果完成三阶段重构（GAA 提交 `f669942`、`83672eb`、`e346a21`，版本 0.5.0，`codex-python` 为可编辑安装），可直接接入：
+   - 调用：`<codex-python> -B -m game_audio_analyzer analyze <wav> --json-only --result-file <唯一路径> [--run-id <id>] [--parent-pid <pid>]`；结果文件写完才出现，已存在时退出码 4 不覆盖；stdout 一行 ASCII JSON。契约 `contract_version` 2.0，Schema 在 GAA 包内 `analyze-summary.schema.json`，字段与口径见 GAA `docs/reference/output-schema.md`。
+   - 9 项指标键：`f0_median_hz`、`duration_s`、`peak_dbfs`、`true_peak_estimate_dbtp`、`rms_dbfs`、`max_rms_20ms_dbfs`、`attack_10_90_s`、`decay_to_10_s`、`spectral_centroid_hz`；状态取值是 `ok`、`estimate`、`silent`、`not_applicable`、`insufficient_data`、`below_threshold` 等，调试台现在只认 `available`，要改显示逻辑；GAA 不给音名，需要时由频率换算。
+   - 单次约 2.2–2.9 秒（已有 Numba 缓存，本机首次更慢），调试台必须后台等待；父进程退出时 GAA 记 interrupted 并以退出码 6 结束。
+   - 框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分；调试台的配置要增加 GAA 解释器路径。
+2. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
+3. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
 
 ## 验证缺口
 
