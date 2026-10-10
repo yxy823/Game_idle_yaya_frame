@@ -8,11 +8,7 @@
 
 剩余步骤：
 
-1. 调试台的音频分析改为直接调用 GAA。GAA 已按审核结果完成三阶段重构（GAA 提交 `f669942`、`83672eb`、`e346a21`，版本 0.5.0，`codex-python` 为可编辑安装），可直接接入：
-   - 调用：`<codex-python> -B -m game_audio_analyzer analyze <wav> --json-only --result-file <唯一路径> [--run-id <id>] [--parent-pid <pid>]`；结果文件写完才出现，已存在时退出码 4 不覆盖；stdout 一行 ASCII JSON。契约 `contract_version` 2.0，Schema 在 GAA 包内 `analyze-summary.schema.json`，字段与口径见 GAA `docs/reference/output-schema.md`。
-   - 9 项指标键：`f0_median_hz`、`duration_s`、`peak_dbfs`、`true_peak_estimate_dbtp`、`rms_dbfs`、`max_rms_20ms_dbfs`、`attack_10_90_s`、`decay_to_10_s`、`spectral_centroid_hz`；状态取值是 `ok`、`estimate`、`silent`、`not_applicable`、`insufficient_data`、`below_threshold` 等，调试台现在只认 `available`，要改显示逻辑；GAA 不给音名，需要时由频率换算。
-   - 单次约 2.2–2.9 秒（已有 Numba 缓存，本机首次更慢），调试台必须后台等待；父进程退出时 GAA 记 interrupted 并以退出码 6 结束。
-   - 框架 Analyzer（`project-source/tools/analyzer/`）删掉音频计算部分；调试台的配置要增加 GAA 解释器路径。
+1. 调试台接入 GAA 已完成（提交 `941f0c2`），音效分析改用 GAA，资源 Analyzer 只保留图像；自动验证在新建的外部项目 `D:/A_Games/Game_DebugConsole_GAA_check_20261010` 中通过。待用户人工验收：在该项目打开 `dev/debug/debug_main.tscn` 按 F6，在“按钮音效”插槽依次选硬币、和弦候选，核对 9 项读数（和弦的基础音高应为“不适用”，不显示 0、音名或置信度）、试听与音量修改生效、截图色盲四宫格正常。验收后删除本条。
 2. 框架衔接：把方法规范和路由表中的“预留能力”改为外部工坊制作后再交接。
 3. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。用户已允许读取 `D:/A_Games/Studio Game Visual Analyzer`，读完再决定框架 Analyzer 的图像部分是否也改为调用它、框架 Analyzer 是否整个退役。
 
