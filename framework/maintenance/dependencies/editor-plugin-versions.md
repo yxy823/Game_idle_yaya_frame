@@ -33,7 +33,7 @@ Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能
 
 | 插件与原始仓库 | 包内 `plugin.cfg` 版本 | 固定源码 | 本地修改 |
 | --- | --- | --- | --- |
-| [gdUnit4](https://github.com/MikeSchulze/gdUnit4) | `6.2.0` | 未记录 | 没有修改源码，只补入插件图片的 `.import` 文件 |
+| [gdUnit4](https://github.com/MikeSchulze/gdUnit4) | `6.2.0` | 未记录 | 补入插件图片的 `.import` 文件；[GdUnitInspectorStatusBar.gd](../../../project-source/addons/gdUnit4/src/ui/parts/GdUnitInspectorStatusBar.gd) 一处修正：状态栏统计按钮的初始化在编辑器设置变化时会重跑，每次都重新连接 `pressed`，Godot 报“已经连接过”；改为已连接时跳过。升级前核对上游是否已修复，未修复就保留 |
 | [GDScript linter](https://github.com/graydwarf/godot-gdscript-linter) | `3.3.0` | [aeeae7d9](https://github.com/graydwarf/godot-gdscript-linter/tree/aeeae7d9af260f5e17f7c95ab5e77790d48e46e2) | Yaya 补丁，原因和修改的文件见 [YAYA_PATCH.md](../../../project-source/addons/gdscript-linter/YAYA_PATCH.md)；升级前核对补丁和许可证 |
 
 ## 分发与启用
@@ -76,7 +76,7 @@ Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提
 
 ### 未解决问题
 
-- **gdUnit4 图形组合**：包含 gdUnit4 的完整默认图形组合仍有状态栏信号重复连接、退出时访问已释放实例及残留资源诊断。单独启用 gdUnit4 也会出现字体初始化与退出访问问题；重复连接尚未定位，本框架未修改 gdUnit4。
+- **gdUnit4 图形组合**：包含 gdUnit4 的完整默认图形组合仍有退出时访问已释放实例及残留资源诊断。单独启用 gdUnit4 也会出现字体初始化与退出访问问题。状态栏信号重复连接已定位并本地修正（见[测试与静态检查插件](#测试与静态检查插件)）：只在编辑器启动过程中发出“设置已变化”通知时出现，不是每次打开都有，修正后没能人为触发这个通知来实测。
 - **资源表格退出泄漏**：单独启动无退出错误，与 gdUnit4 或其他新增插件组合时出现 ObjectDB、资源、纹理等泄漏；同步释放界面与空偏好对照均未消除，根因未确定，因此默认停用。
 - **维护探针 lint**：外部验证项目的 lint 仍报告插件生命周期探针的长函数与结果打印问题，不能写成 lint 全通过。
 - **人工验收缺口**：尚未验收 Script-IDE 分屏与搜索观感、检查器标签切换、Kanban 卡片拖放、表格编辑撤销，以及 Signal Lens 远程面板收包与信号图；自动化探针的通过结论不覆盖这些范围。
