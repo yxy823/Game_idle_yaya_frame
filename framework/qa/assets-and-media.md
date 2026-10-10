@@ -23,9 +23,9 @@
 
 **依据**：[资源需求与交接](../../project-source/methodology/11-specialist-workflows.md#资源需求与交接)、[1B. 资源](../../project-source/methodology/03-execute-loop.md#1b-资源)、[3D. 最终验证前的文档检查点](../../project-source/methodology/03-execute-loop.md#3d-最终验证前的文档检查点)、[资源规格随所属设计保存](../godot-project-manual/specialist-work-and-records/specialist-work.md#资源规格随所属设计保存)
 
-### 框架为什么不负责制作图片和音频？
+### 图片和音频为什么不在游戏项目里制作？
 
-**结论**：框架只负责资源的方向、规格、接收、接入和审核，制作这一步故意留空。制作适合放在框架之外的独立项目里做，做好的文件再按规格交回游戏项目接入。
+**结论**：游戏项目负责资源的方向、规格、接收、接入和审核；制作放在项目外独立的制作项目里做。游戏项目交出规格章节和提交号，收回成品后记下来源再接入。
 
 **为什么**：制作和游戏开发的节奏不同。
 
@@ -35,7 +35,7 @@
 
 制作项目只能单独听、单独看。放进实际画面和操作节奏里好不好，仍然要接入游戏后由用户判断；需要比较几个版本时，把它们作为调试台候选在游戏中对比。
 
-**依据**：[设计、制作、接入与审核](../../project-source/methodology/11-specialist-workflows.md#设计制作接入与审核)、[交接与接收文件](../../project-source/methodology/11-specialist-workflows.md#交接与接收文件)
+**依据**：[在项目外制作](../../project-source/methodology/11-specialist-workflows.md#在项目外制作)、[交接与接收文件](../../project-source/methodology/11-specialist-workflows.md#交接与接收文件)
 
 ### 字体的内容分在好几处，合适吗？
 

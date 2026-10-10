@@ -29,6 +29,6 @@ description: "在所属的表现、界面或共享设计章节中写明具体视
 
 优先复用能满足本规格的已有资源、主题或程序化表现。无需独立文件时简要说明，不为每个状态建立资源条目。可用参考只保留影响选择的结论和必要入口，不把示例参数或组件调查写成正式规格。
 
-不要把完整规格复制到 Product 的表格中。视觉美术制作是保留能力，没有对应的 Skill（methodology 11 的 **设计、制作、接入与审核**）。现有文件由 `content-asset-integration` 处理；外观或技术适配由 `review-art` 或 `review-assets` 独立评估。
+不要把完整规格复制到 Product 的表格中。视觉美术在项目外的制作项目中制作（methodology 11 的 **在项目外制作**），交接时给出本规格所在的章节和提交号。现有文件由 `content-asset-integration` 处理；外观或技术适配由 `review-art` 或 `review-assets` 独立评估。
 
 返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。
