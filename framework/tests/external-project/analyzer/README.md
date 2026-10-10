@@ -8,7 +8,7 @@
 
 外部项目需要已有对应版本的 `yaya/tools/analyzer/`。两个 Python 夹具从框架根目录调用，通过 YAYA_TEST_PROJECT 选择项目，不复制为业务测试。
 
-按[准备与使用](../../../../project-source/tools/analyzer/README.md#准备与使用)准备 Python 3.13.16 的 yaya-analyzer-2 环境；后端夹具另需 jsonschema。保留夹具旁的 analyzer_protocol_cases.json，先建立外部项目的 `reports/asset-analyzer/`：
+按[准备与使用](../../../../project-source/tools/analyzer/README.md#准备与使用)准备 Python 3.13.16 的 yaya-analyzer 环境；后端夹具另需 jsonschema。保留夹具旁的 analyzer_protocol_cases.json，先建立外部项目的 `reports/asset-analyzer/`：
 
 ```powershell
 $env:YAYA_TEST_PROJECT = '<外部验证项目绝对路径>'

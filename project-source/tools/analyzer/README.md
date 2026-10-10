@@ -4,11 +4,11 @@ Analyzer 在独立进程中分析图像源文件，输出有限数值的 JSON �
 
 ## 准备与使用
 
-Analyzer 使用独立的 Python 3.13.16 环境 `yaya-analyzer-2`，项目 `docs/methodology-config.json` 的 `analyzer_python_executable` 指向其解释器。同一台电脑上使用这套锁定依赖的项目可以共用环境；创建项目时不会自动配置。
+Analyzer 使用独立的 Python 3.13.16 环境 `yaya-analyzer`，项目 `docs/methodology-config.json` 的 `analyzer_python_executable` 指向其解释器。同一台电脑上使用这套锁定依赖的项目可以共用环境；创建项目时不会自动配置。调试台音频分析用的 GAA 依赖与这套锁定版本兼容，可以装进同一环境，`audio_analyzer_python_executable` 指向同一个解释器。
 
 第一次在这台电脑上使用时：
 
-1. 用户在终端建环境：`conda create --name yaya-analyzer-2 python=3.13.16 pip --yes`。
+1. 用户在终端建环境：`conda create --name yaya-analyzer python=3.13.16 pip --yes`。
 2. 用户运行 `conda env list`，找到环境目录，其解释器是目录中的 `python.exe`。
 3. 用户把锁定依赖装进环境，在项目根目录运行：
 
@@ -22,7 +22,7 @@ Analyzer 使用独立的 Python 3.13.16 环境 `yaya-analyzer-2`，项目 `docs/
 
 安装需要联网，只使用 Windows wheel；分析运行时不联网。全部九项运行依赖和传递依赖锁定在 `requirements.txt`。维护回归另需 `jsonschema`，不进入运行依赖。依赖版本和许可见[Analyzer 依赖与许可记录](DEPENDENCIES.md)。
 
-各项目自带的 Analyzer 副本可能锁定不同版本；不同依赖代次分别建环境，不覆盖旧项目仍使用的环境。`yaya-analyzer-2` 是环境代次，算法修订号另见结果中的 `analyzer.version`。依赖缺失或版本不符时返回 `dependency_missing`。
+算法修订号见结果中的 `analyzer.version`。依赖缺失或版本不符时返回 `dependency_missing`。
 
 ## 运行一次分析
 

@@ -1,6 +1,6 @@
 {
   "capability_version": 2,
-  "runtime": {"python": "3.13.16", "environment": "yaya-analyzer-2"},
+  "runtime": {"python": "3.13.16", "environment": "yaya-analyzer"},
   "modules": {"discovery": "features/*.py", "request_key": "modules", "default": "all applicable; basic analysis always runs"},
   "pool_memory_mib": 512,
   "sources": {
