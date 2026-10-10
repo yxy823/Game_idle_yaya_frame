@@ -39,7 +39,7 @@ class DocumentGraphCoverageTests(unittest.TestCase):
                 "text": {"fontSize": 18, "color": "#000000", "align": "center"}, "note": note,
             })
         self.write(GRAPH, json.dumps({
-            "format": "graph-map-core", "version": 1,
+            "format": "graph-map-core", "version": 2,
             "documentId": "163c207d-a618-4953-8219-095116dbb0a2",
             "nodes": nodes, "edges": [],
             "canvas": {"gridSize": 20, "gridVisible": True, "snapToGrid": True},
@@ -55,6 +55,22 @@ class DocumentGraphCoverageTests(unittest.TestCase):
         process = self.run_cli()
         self.assertEqual(process.returncode, exit_code, process.stderr)
         return json.loads(process.stdout)["results"]
+
+    def test_accepts_v2(self):
+        self.graph()
+        self.assertTrue(self.results())
+
+    def test_rejects_non_v2(self):
+        self.graph()
+        path = self.root / GRAPH
+        graph = json.loads(path.read_text(encoding="utf-8"))
+        for version in (0, 1, 3):
+            with self.subTest(version=version):
+                graph["version"] = version
+                path.write_text(json.dumps(graph), encoding="utf-8")
+                process = self.run_cli()
+                self.assertEqual(process.returncode, 2)
+                self.assertIn("需要 Graph_Map v2 文档图", process.stderr)
 
     def test_exact_scope_and_feature_patterns_find_unregistered_files(self):
         self.write("README.md", "Framework")

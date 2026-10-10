@@ -72,8 +72,8 @@ def compare_names(prompts_path: Path, graph_path: Path, project: str) -> dict:
     """Compare names as a multiset; duplicated matches remain reported differences."""
     expected = prompt_names(read_json(prompts_path), project)
     graph = read_json(graph_path)
-    if not isinstance(graph, dict) or graph.get("format") != "graph-map-core" or graph.get("version") != 1:
-        raise ValueError("Graph must use format graph-map-core and version 1")
+    if not isinstance(graph, dict) or graph.get("format") != "graph-map-core" or graph.get("version") != 2:
+        raise ValueError("Graph must use format graph-map-core and version 2")
     if not isinstance(graph.get("nodes"), list):
         raise ValueError("/nodes must be an array")
     expected_by_name = defaultdict(list)

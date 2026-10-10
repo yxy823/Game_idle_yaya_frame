@@ -76,8 +76,8 @@ def matches(path: str, pattern: str) -> bool:
 
 def graph_patterns(graph: dict) -> list[tuple[str, str, str]]:
     if (not isinstance(graph, dict) or graph.get("format") != "graph-map-core"
-            or graph.get("version") != 1 or not isinstance(graph.get("nodes"), list)):
-        raise ValueError("需要 Graph_Map v1 文档图")
+            or graph.get("version") != 2 or not isinstance(graph.get("nodes"), list)):
+        raise ValueError("需要 Graph_Map v2 文档图")
     patterns = []
     identifiers = set()
     for node in graph["nodes"]:

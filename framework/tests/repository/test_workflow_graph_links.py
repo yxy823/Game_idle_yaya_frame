@@ -47,11 +47,12 @@ class WorkflowGraphLinksTests(unittest.TestCase):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_text("# " + name, encoding="utf-8")
             self.targets.append(target)
-        self.data = {"format": "graph-map-core", "version": 1,
+        self.data = {"format": "graph-map-core", "version": 2,
                      "nodes": [{"id": str(i), "label": name.replace("，", "，\r\n"),
                                 "x": 42, "text": {"fontSize": 16}}
                                for i, name in enumerate(self.names)],
-                     "edges": [{"id": "edge", "source": {"node": "0"}, "target": {"node": "1"}}],
+                     "edges": [{"id": "edge", "source": {"kind": "node", "node": "0"},
+                                "target": {"kind": "node", "node": "1"}}],
                      "canvas": {"gridVisible": False}}
         self.save_graph()
 
@@ -60,6 +61,17 @@ class WorkflowGraphLinksTests(unittest.TestCase):
 
     def run_update(self, **kwargs):
         return update_links(self.prompts, self.graph, self.scenarios, self.project, **kwargs)
+
+    def test_accepts_v2(self):
+        self.assertTrue(link_tool.compare_names(self.prompts, self.graph, self.project)["ok"])
+
+    def test_rejects_non_v2(self):
+        for version in (0, 1, 3):
+            with self.subTest(version=version):
+                self.data["version"] = version
+                self.save_graph()
+                with self.assertRaisesRegex(ValueError, "version 2"):
+                    self.run_update()
 
     def test_updates_only_links_and_second_run_preserves_bytes(self):
         self.data["nodes"][0]["link"] = {"kind": "local", "target": "old-location.md"}

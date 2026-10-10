@@ -6,18 +6,18 @@
 
 ## 文件结构
 
-图文件是 UTF-8 编码的严格 JSON：不能有注释、尾逗号、重复键或非有限数值。两张主图的根对象都恰好包含下列六个字段。本页列出的字段都是查看器契约的一部分，不能随意当作元数据扩展。
+框架只接受 Graph_Map v2。图文件是 UTF-8 编码的严格 JSON：不能有注释、尾逗号、重复键或非有限数值。两张主图使用下列六个字段；查看器要求 `format`、`version`、`nodes`、`edges`、`canvas`，`documentId` 可选。本页详细说明两张图实际使用的字段，不把查看器的全部能力复制到框架。
 
 | 字段 | 值与含义 |
 | --- | --- |
 | `format` | 固定字符串 `graph-map-core` |
-| `version` | 固定数字 `1` |
-| `documentId` | 稳定 UUID 字符串，关联同目录的独立次数文件；维护现有图时保留 |
+| `version` | 固定数字 `2` |
+| `documentId` | 查看器可选的 UUID 字符串；两张图均保存此字段，维护时保留，用于关联独立使用次数 |
 | `nodes` | 节点对象数组，可为空 |
 | `edges` | 连线对象数组，可为空 |
 | `canvas` | 必须含 `gridSize`、`gridVisible`、`snapToGrid`；网格尺寸为 1–100 的有限数值，后两项为布尔值 |
 
-节点和连线的 `id` 在同一张图内必须互不重复，是非空白字符串，最长 200 字符。开发场景图用 `scene-`、`link-` 前缀区分节点和连线，这只是命名习惯。连线的端点必须引用存在的节点，不能引用连线。
+节点和连线的 `id` 在同一张图内必须互不重复，是非空白字符串，最长 200 个 UTF-16 代码单元，不得使用 `Object.prototype` 的自有属性名。开发场景图用 `scene-`、`link-` 前缀区分节点和连线，这只是命名习惯。两张图的连线端点均引用存在的节点，不能引用连线。
 
 坐标、折点与 `zIndex` 均为 −10,000,000 至 10,000,000 的有限数值。坐标使用画布单位，`x`、`y` 是节点左上角；画布平移和缩放不写入文件。节点和连线 `label` 必须为字符串，最长 100,000 字符。
 
@@ -28,9 +28,9 @@
 | 字段 | 格式要求 |
 | --- | --- |
 | `id` | 全局唯一的字符串 |
-| `shape` | `rect`、`rounded-rect`、`ellipse`、`circle`、`diamond` 或 `text` |
+| `shape` | 两张图使用 `rounded-rect` 和 `text`；查看器的其他形状见 `D:/WebTools/Graph_Map/docs/json-appearance.md` |
 | `x`、`y` | 左上角坐标 |
-| `width`、`height` | 20–100,000 的有限数值；`circle` 的宽高差绝对值不得超过 0.01 |
+| `width`、`height` | 20–100,000 的有限数值 |
 | `label` | 节点文字；开发场景图固定复用完整场景名称，文档图显示职责与固定文件名或命名模式 |
 | `zIndex` | 绘制层次，较大值靠前；不是业务图层 |
 | `fill` | 填充色，格式见下节 |
@@ -44,24 +44,28 @@
 | 字段 | 格式要求 |
 | --- | --- |
 | `id` | 全局唯一的字符串 |
-| `source`、`target` | 必须含 `node` 和 `port`；`node` 是节点 ID，`port` 为 `top`、`right`、`bottom` 或 `left` |
-| `mode` | `floating` 或 `fixed`；固定模式使用指定端口，浮动模式仍必须提供端口字段 |
+| `source`、`target` | 节点端点必须含 `kind: "node"` 和 `node`；`node` 是节点 ID。可选 `port` 为 `top`、`right`、`bottom` 或 `left`：提供时固定到该端口，省略时浮动连接节点边界。端点不含其他字段 |
 | `path` | `straight`、`orthogonal` 或 `smooth` |
 | `vertices` | 折点数组，可为空；每个折点恰好包含有限数值 `x`、`y` |
 | `label` | 关系或条件说明，允许空字符串 |
 | `stroke`、`text`、`zIndex` | 与节点对应字段使用相同规则 |
 | `arrow` | `none`、`target` 或 `both` |
-| `flow` | 可选的连线流动配置；省略时静态显示，不会自动补写 |
 
-`flow` 若出现，必须同时含 `direction`（`off`、`forward`、`reverse`）和 `speed`（`slow`、`normal`、`fast`），不得增加其他字段。两张图都省略 `flow`，默认静态显示。
+v2 连线不使用 `mode`，连接方式由各端点是否含 `port` 决定。查看器还支持坐标端点 `kind: "point"`，两张图未使用，契约见 `D:/WebTools/Graph_Map/docs/json-appearance.md`。
+
+查看器支持可选 `flow` 流动配置，两张图均省略并静态显示，契约见 `D:/WebTools/Graph_Map/docs/json-appearance.md`。
 
 公共样式对象的约束如下：
 
 - 颜色只接受六位十六进制 `#RRGGBB`（大小写均可）或 `transparent`，不接受三位缩写、颜色名称、RGB 函数或含透明通道的八位值。
-- `stroke.width` 为 0–32 的有限数值；`stroke.dash` 为 `solid`、`dashed` 或 `dotted`。
+- `stroke.width` 为 0–32 的有限数值；`stroke.dash` 为 `solid`、`dashed`、`dotted` 或 `dash-dot`。
 - `text.fontSize` 为 6–256 的有限数值；`text.align` 为 `left`、`center` 或 `right`。
 
-不写入 `workspace`、`layerId`、`viewIds`、`parentId`、媒体、任意元数据或 X6 `cells`。本格式不支持分组、多视图和思源插件 Graph Map v2。来源、维护约定等说明放在本目录的说明文件，不扩充 JSON 字段。
+查看器支持可选 `groups` 和 `parentId` 分组，两张图未使用，契约见 `D:/WebTools/Graph_Map/docs/json-appearance.md`。
+
+查看器支持可选 `angle` 旋转，两张图未使用，契约见 `D:/WebTools/Graph_Map/docs/json-appearance.md`。
+
+不写入 `workspace`、`layerId`、`viewIds`、媒体、任意元数据或 X6 `cells`。Graph_Map v2 不是思源插件 Graph Map v2。来源、维护约定等说明放在本目录的说明文件，不扩充 JSON 字段。
 
 ## 可读版附加字段与本地链接
 
@@ -69,13 +73,28 @@
 
 | 位置 | 当前用途与维护要求 |
 | --- | --- |
-| 节点 `textSizing` | 开发场景图使用 `content`，导入时按本机字体测量；文档图使用 `fixed` 保持所排尺寸。保存的宽高不等于已经检查实际显示。 |
+| 节点 `textSizing` | 开发场景图使用 `content`，导入时按字体测量每个显式换行后的行宽，宽度取最大行宽加左右边距，高度取行数 × 字号 × 1.4 加上下边距，向上取整且不小于 20；文档图使用 `fixed` 保持保存尺寸。省略时按固定尺寸显示；其他模式见查看器文档。 |
 | 节点 `textPadding` | `horizontal`、`vertical` 分别表示左右、上下内边距，两项均为 0–1000 的有限数值。 |
-| 节点 `appearance` | 保留圆角、阴影、换行与透明度设置；当前字段为 `cornerRadius`、`shadow`、`wrap`、`opacity`、`fillOpacity`。 |
-| 节点和连线 `text` | 在基础字段外保留当前的 `fontFamily`、`verticalAlign`、`hidden`、`opacity`，节点还保存 `bold`；这些是文字外观，不是新的业务属性。 |
-| 连线 `appearance` | 保留已有两端箭头类型与大小、标签位置与偏移、圆角和路由间距等配置。显式 `sourceMarker` / `targetMarker` 会覆盖 `arrow` 的默认箭头；新增或修改关系时，两者都须与实际方向一致。单向衔接使用 `arrow: "target"`，显式起点标记为 `none`，避免显示成双向关系。 |
+| 节点 `appearance` | 可选对象；`opacity`、`fillOpacity` 为 0–1，`cornerRadius` 为 0–1000，`shadow`、`wrap` 为布尔值。省略时透明度为 1、无阴影、启用换行；圆角矩形默认圆角为 12。 |
+| 节点和连线 `text` | 可选 `fontFamily`（两图使用 `system`，解析为 `Segoe UI, Microsoft YaHei, sans-serif`）、`verticalAlign`（`top`、`middle`、`bottom`，默认 `middle`）、`hidden`（布尔值，默认 `false`）、`opacity`（0–1，默认 1）；节点还使用 `bold`（布尔值，默认 `false`）。其他字体与文字样式见查看器文档。 |
+| 连线 `appearance` | 可选对象；字段约束见下表。显式 `sourceMarker` / `targetMarker` 覆盖 `arrow` 的默认箭头；新增或修改关系时，两者都须与实际方向一致。单向衔接使用 `arrow: "target"`，显式起点标记为 `none`。 |
 | 节点 `link` | 包含且仅包含 `kind`、`target`；两图使用 `kind: "local"`。场景图指向同名场景文件，文档图指向实际入口、源文件、模板或规范的绝对路径。 |
 | 节点 `note` | 只有文档图使用，保存职责、位置、创建条件和文件路径登记；开发场景图不写备注。备注参与搜索，不替换 `label`，不绘制在画布上。 |
+
+`textPadding` 可省略，默认左右 12、上下 8。查看器把实际边距限制到对应尺寸的一半以内；`wrap` 开启时，X6 在扣除边距后的框内换行，并在放不下时截断。文字尺寸、换行和截断检查必须使用实际字体和渲染结果。
+
+| 连线 `appearance` 字段 | 约束与省略时的行为 |
+| --- | --- |
+| `opacity` | 0–1，默认 1 |
+| `sourceMarker`、`targetMarker` | 两图使用 `none`、`block`；其他标记见查看器文档。省略时由 `arrow` 决定 |
+| `sourceMarkerSize`、`targetMarkerSize` | 1–100 的有限数值；省略时块状箭头宽 9、高 7 |
+| `labelPosition` | 0–1 的路径长度比例，默认 0.5 |
+| `labelOffset` | −1000–1000 的有限数值，默认 0 |
+| `labelPadding` | 0–1000 的有限数值；省略时沿用 X6 标签背景边距 |
+| `rounded`、`radius` | 前者为布尔值，默认 `false`；后者为 0–1000，启用圆角时默认 10 |
+| `jump` | `none`、`arc`、`gap` 或 `sharp`，默认 `none` |
+| `routerPadding` | 0–1000 的有限数值；省略时沿用 X6 正交路由间距 |
+| `curve` | `default`、`soft`、`basis`、`cardinal`、`catmull-rom`、`natural` 或 `step`；默认不指定曲线 |
 
 `note` 是可选纯文本字符串，最长 100000 个 UTF-16 代码单元，保留换行；在 JSON 字符串内用 `\n` 表示换行。省略表示无备注，不能使用数组、对象或 `null`，编号也是字符串内容。Graph_Map 原样保留备注并支持导入导出，不渲染 Markdown 或 HTML。
 
@@ -83,7 +102,7 @@
 
 链接维护使用 [link_workflow_graph_scenarios.py](../prompt-scenarios/tools/link_workflow_graph_scenarios.py)，用法见[检查场景图名称与链接](../prompt-scenarios/tools/README.md#检查场景图名称与链接)。获准更新时，命令默认只修改可读版节点的 `link`，会替换已有链接；它先核对完整名称集合与目标文件，失败时不写入。`--check` 只检查，不修改；不要把写入命令用于只读审核，也不要用它代替新增节点或关系。
 
-上述附加字段以 Graph_Map 的 `src/core/model.ts` 和 `docs/json-appearance.md` 为依据。日常维护保留已经生效的配置，不需要每次查阅查看器源码；确实要新增字段或改变格式时，再核对实际使用的查看器版本——同为 v1 不代表支持所有外观配置。
+上述附加字段以 Graph_Map 的 `src/core/model.ts`、`src/core/text-sizing.ts`、`src/core/x6-mapping.ts` 和 `docs/json-appearance.md` 为依据。日常维护保留已经生效的配置；新增字段或改变格式时，核对实际使用的查看器版本。
 
 ## 编写与保存格式
 
@@ -95,12 +114,12 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 | --- | --- |
 | 根对象 | `format`、`version`、`documentId`、`nodes`、`edges`、`canvas` |
 | 节点 | `id`、`shape`、`x`、`y`、`width`、`height`、`label`、`zIndex`、`fill`、`stroke`、`text`、`textPadding`、`note`、`textSizing`、`link`、`appearance` |
-| 连线 | `id`、`source`、`target`、`mode`、`path`、`vertices`、`label`、`stroke`、`arrow`、`text`、`zIndex`、`appearance` |
+| 连线 | `id`、`source`、`target`、`path`、`vertices`、`label`、`stroke`、`arrow`、`text`、`zIndex`、`appearance` |
 | `stroke` | `color`、`width`、`dash` |
 | `text` | `fontSize`、`color`、`align`、`fontFamily`、`bold`（节点）、`opacity`、`verticalAlign`、`hidden` |
 | 节点 `appearance` | `opacity`、`fillOpacity`、`cornerRadius`、`shadow`、`wrap` |
 | 连线 `appearance` | `opacity`、`sourceMarker`、`targetMarker`、`sourceMarkerSize`、`targetMarkerSize`、`labelPosition`、`labelOffset`、`labelPadding`、`rounded`、`radius`、`jump`、`routerPadding`、`curve` |
-| 连线端点 | `node`、`port` |
+| 连线端点 | `kind`、`node`、`port` |
 | 连线折点 | `x`、`y` |
 | `link` | `kind`、`target` |
 | `textPadding` | `horizontal`、`vertical` |
@@ -117,7 +136,7 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 ```json
 {
   "format": "graph-map-core",
-  "version": 1,
+  "version": 2,
   "documentId": "163c207d-a618-4953-8219-095116dbb0a2",
   "nodes": [
     {
@@ -167,14 +186,15 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
     {
       "id": "example-link",
       "source": {
+        "kind": "node",
         "node": "example-create",
         "port": "right"
       },
       "target": {
+        "kind": "node",
         "node": "example-environment",
         "port": "left"
       },
-      "mode": "fixed",
       "path": "orthogonal",
       "vertices": [],
       "label": "创建后配置",
@@ -202,7 +222,7 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 
 ## 本地使用次数
 
-同目录的所有主图共用一份 `graph-usage.json`，按主图的稳定 UUID `documentId` 分组，每组按节点或连线 ID 保存使用次数；不同图中的相同元素 ID 互不影响。修改节点文字、布局或主图文件名时保留图 ID；节点重命名也保留元素 ID。主图不保存 `usageCount`，继续由 Git 追踪结构和内容，次数文件由本仓库 `.gitignore` 单独忽略。
+查看器的主图契约不要求已有独立次数文件；缺少 `documentId` 时，文件保存流程生成 UUID。框架的两张图均已有稳定 UUID，必须保留。同目录的主图共用可选的 `graph-usage.json`，按 `documentId` 分组，每组按节点或连线 ID 保存使用次数；不同图中的相同元素 ID 互不影响。修改节点文字、布局或主图文件名时保留图 ID；节点重命名也保留元素 ID。主图不保存 `usageCount`，继续由 Git 追踪结构和内容，次数文件由本仓库 `.gitignore` 单独忽略。
 
 次数文件的完整结构如下，示例 ID 仅演示格式：
 
@@ -218,8 +238,6 @@ JSON 键顺序不改变数据含义，但查看器会按解析器的顺序重建
 ```
 
 根对象只含 `format`、`version`、`graphs` 三个字段。分组键是主图的 `documentId`；组内的键是元素 ID，值是 0–9007199254740991 的非负安全整数。未设置的元素按 0 次显示，显式 0 也有效。次数文件不存在时按全图 0 次打开；任何分组的格式错误或权限错误都会拒绝打开并保留原会话。不在图中的 ID 不显示，下次保存当前图次数时只清理当前图的分组。
-
-共享文件里没有当前图的分组时，查看器兼容读取旧的每图次数文件 `graph-usage.<documentId>.json`，保存时把次数合并进共享文件，旧文件原样保留。
 
 使用次数仍通过属性输入或 −1/+1 修改，可撤销并用于搜索和排序。次数独立参与未保存提醒。“导出 JSON”下载主图副本，“导出次数”下载只含当前图分组的次数副本，均不清除未保存状态。备份或换机器时复制整个目录，包括全部主图和 `graph-usage.json`；Git 克隆不包含个人计数，需自行迁移。
 
