@@ -6,8 +6,8 @@
     {
       "id": "doc-framework-entry",
       "shape": "rounded-rect",
-      "x": 80,
-      "y": 240,
+      "x": 106,
+      "y": 274,
       "width": 270,
       "height": 88,
       "label": "框架仓库入口\nREADME.md",
@@ -49,8 +49,8 @@
     {
       "id": "doc-framework-docs",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 240,
+      "x": 576,
+      "y": 274,
       "width": 270,
       "height": 88,
       "label": "框架入口\nframework/README.md",
@@ -92,8 +92,8 @@
     {
       "id": "doc-operation",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 100,
+      "x": 1047,
+      "y": 117,
       "width": 270,
       "height": 88,
       "label": "Godot 项目手册\nREADME.md · *.md",
@@ -135,8 +135,8 @@
     {
       "id": "doc-scenarios",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 320,
+      "x": 1047,
+      "y": 364,
       "width": 270,
       "height": 88,
       "label": "场景速查\nscenario-index.md · *.md",
@@ -178,8 +178,8 @@
     {
       "id": "doc-maintenance",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 540,
+      "x": 1047,
+      "y": 610,
       "width": 270,
       "height": 88,
       "label": "框架维护说明与工具用法\nREADME.md · *.md",
@@ -221,8 +221,8 @@
     {
       "id": "doc-framework-terms",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 760,
+      "x": 1047,
+      "y": 856,
       "width": 270,
       "height": 88,
       "label": "框架专用术语\nterminology.md",
@@ -264,8 +264,8 @@
     {
       "id": "doc-framework-qa",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 760,
+      "x": 1517,
+      "y": 856,
       "width": 270,
       "height": 88,
       "label": "Q&A\nREADME.md · *.md",
@@ -307,8 +307,8 @@
     {
       "id": "doc-prompts",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 320,
+      "x": 1517,
+      "y": 367,
       "width": 270,
       "height": 148,
       "label": "任务提示词\ngodot-development-prompts.json\nyaya-maintenance-prompts.json",
@@ -350,8 +350,8 @@
     {
       "id": "doc-graphs",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 100,
+      "x": 1517,
+      "y": 121,
       "width": 270,
       "height": 148,
       "label": "场景图与文档关系图\ngame-development-workflow.readable.json\ndocument-system.readable.json",
@@ -393,8 +393,8 @@
     {
       "id": "doc-review",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 540,
+      "x": 1517,
+      "y": 610,
       "width": 270,
       "height": 88,
       "label": "职责设计准则\ndesign-guidelines/*.md",
@@ -436,8 +436,8 @@
     {
       "id": "doc-framework-reports",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 540,
+      "x": 1987,
+      "y": 610,
       "width": 270,
       "height": 88,
       "label": "框架审核与验证报告\n*.md",
@@ -479,8 +479,8 @@
     {
       "id": "doc-framework-progress",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 540,
+      "x": 2458,
+      "y": 610,
       "width": 270,
       "height": 88,
       "label": "框架待办\ntodo.md",
@@ -522,8 +522,8 @@
     {
       "id": "doc-framework-rules",
       "shape": "rounded-rect",
-      "x": 80,
-      "y": 650,
+      "x": 106,
+      "y": 733,
       "width": 270,
       "height": 88,
       "label": "框架维护规则与 Skill\nAGENTS.md · SKILL.md",
@@ -565,8 +565,8 @@
     {
       "id": "doc-distribution",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 1020,
+      "x": 576,
+      "y": 1148,
       "width": 270,
       "height": 88,
       "label": "项目分发源与复制映射\nproject-files.json",
@@ -608,8 +608,8 @@
     {
       "id": "doc-templates",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 1020,
+      "x": 1047,
+      "y": 1148,
       "width": 270,
       "height": 88,
       "label": "项目文档模板\nREADME.md · *.tmpl",
@@ -651,8 +651,8 @@
     {
       "id": "doc-project-entry",
       "shape": "rounded-rect",
-      "x": 80,
-      "y": 1470,
+      "x": 106,
+      "y": 1652,
       "width": 270,
       "height": 88,
       "label": "项目阅读入口\nREADME.md",
@@ -694,8 +694,8 @@
     {
       "id": "doc-project-rules",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 1470,
+      "x": 576,
+      "y": 1654,
       "width": 270,
       "height": 128,
       "label": "项目规则与领域规则\nAGENTS.md · project-rules.md\nREADME.md · *.md",
@@ -737,8 +737,8 @@
     {
       "id": "doc-project-methods",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 1470,
+      "x": 1047,
+      "y": 1652,
       "width": 270,
       "height": 88,
       "label": "项目 Skill 与流程规范\nSKILL.md · *.md",
@@ -780,8 +780,8 @@
     {
       "id": "doc-tools",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 1470,
+      "x": 1517,
+      "y": 1652,
       "width": 270,
       "height": 88,
       "label": "项目工具与示例说明\nREADME.md · *.md",
@@ -823,8 +823,8 @@
     {
       "id": "doc-configuration",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 1470,
+      "x": 1987,
+      "y": 1652,
       "width": 270,
       "height": 88,
       "label": "环境与语言配置\nmethodology-config.json",
@@ -866,8 +866,8 @@
     {
       "id": "doc-initialization",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 1470,
+      "x": 2458,
+      "y": 1652,
       "width": 270,
       "height": 88,
       "label": "初始化检查报告\ninitialization.md",
@@ -909,8 +909,8 @@
     {
       "id": "doc-organization",
       "shape": "rounded-rect",
-      "x": 80,
-      "y": 1830,
+      "x": 106,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "游戏职责与文档指南\ngame-organization.md",
@@ -952,8 +952,8 @@
     {
       "id": "doc-terminology",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 1830,
+      "x": 576,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "游戏业务术语\nterminology.md",
@@ -995,8 +995,8 @@
     {
       "id": "doc-gdd",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 1830,
+      "x": 1047,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "GDD 游戏设计正文\nREADME.md · **/*.md",
@@ -1038,8 +1038,8 @@
     {
       "id": "doc-product-overview",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 1830,
+      "x": 1517,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "Product 总览\nproduct.md",
@@ -1081,8 +1081,8 @@
     {
       "id": "doc-product",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 1830,
+      "x": 1987,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "当前 Product\nNN-<delivery>.md",
@@ -1124,8 +1124,8 @@
     {
       "id": "doc-feature-index",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 1830,
+      "x": 2458,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "Feature 索引\nfeature-list.json",
@@ -1167,8 +1167,8 @@
     {
       "id": "doc-revisions",
       "shape": "rounded-rect",
-      "x": 2600,
-      "y": 1830,
+      "x": 2928,
+      "y": 2055,
       "width": 270,
       "height": 88,
       "label": "来源基线与计划修订\nfeature-list-revisions.json",
@@ -1210,8 +1210,8 @@
     {
       "id": "doc-art",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 2190,
+      "x": 576,
+      "y": 2458,
       "width": 270,
       "height": 88,
       "label": "共享美术规范\nart-bible.md",
@@ -1253,8 +1253,8 @@
     {
       "id": "doc-ui",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 2190,
+      "x": 1047,
+      "y": 2460,
       "width": 270,
       "height": 112,
       "label": "UI 与共享控件设计\n<interface>-design.md\n<component-key>-design.md",
@@ -1296,8 +1296,8 @@
     {
       "id": "doc-presentation",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 2190,
+      "x": 1517,
+      "y": 2459,
       "width": 270,
       "height": 104,
       "label": "游戏表现与共享组件\n<scope>.md\n<component-key>.md",
@@ -1339,8 +1339,8 @@
     {
       "id": "doc-feature-design",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 2190,
+      "x": 1987,
+      "y": 2458,
       "width": 270,
       "height": 88,
       "label": "Feature 局部设计\nF0XX-design.md",
@@ -1382,8 +1382,8 @@
     {
       "id": "doc-feature",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 2190,
+      "x": 2458,
+      "y": 2458,
       "width": 270,
       "height": 88,
       "label": "Feature 详情\nF0XX.json",
@@ -1425,8 +1425,8 @@
     {
       "id": "doc-test-registry",
       "shape": "rounded-rect",
-      "x": 2600,
-      "y": 2190,
+      "x": 2928,
+      "y": 2458,
       "width": 270,
       "height": 88,
       "label": "测试登记表\ntest-registry.json",
@@ -1468,8 +1468,8 @@
     {
       "id": "doc-audio",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 2550,
+      "x": 576,
+      "y": 2861,
       "width": 270,
       "height": 88,
       "label": "共享声音规范\nsound-bible.md",
@@ -1511,8 +1511,8 @@
     {
       "id": "doc-resource-spec",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 2550,
+      "x": 1517,
+      "y": 2861,
       "width": 270,
       "height": 88,
       "label": "资源规格与准备\n所属设计的 *.md 章节",
@@ -1554,8 +1554,8 @@
     {
       "id": "doc-architecture",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 2550,
+      "x": 1987,
+      "y": 2861,
       "width": 270,
       "height": 88,
       "label": "项目架构\narchitecture.md",
@@ -1597,8 +1597,8 @@
     {
       "id": "doc-manual",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 2550,
+      "x": 2458,
+      "y": 2865,
       "width": 270,
       "height": 148,
       "label": "人工验收清单与结果\nmanual-acceptance-checklist.json\nmanual-acceptance-checklist.result.json",
@@ -1640,8 +1640,8 @@
     {
       "id": "doc-test-reports",
       "shape": "rounded-rect",
-      "x": 2600,
-      "y": 2550,
+      "x": 2928,
+      "y": 2861,
       "width": 270,
       "height": 88,
       "label": "自动测试原始报告\nresult.json · *.log · *.xml",
@@ -1683,8 +1683,8 @@
     {
       "id": "doc-localization",
       "shape": "rounded-rect",
-      "x": 500,
-      "y": 2910,
+      "x": 576,
+      "y": 3264,
       "width": 270,
       "height": 88,
       "label": "本地化规范\nlocalization-spec.md",
@@ -1726,8 +1726,8 @@
     {
       "id": "doc-ideas",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 2910,
+      "x": 1047,
+      "y": 3264,
       "width": 270,
       "height": 88,
       "label": "未采纳想法\nunadopted-ideas.md",
@@ -1769,8 +1769,8 @@
     {
       "id": "doc-subsystem",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 2910,
+      "x": 1987,
+      "y": 3264,
       "width": 270,
       "height": 88,
       "label": "子系统说明\n<subsystem>.md",
@@ -1812,8 +1812,8 @@
     {
       "id": "doc-completion",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 2910,
+      "x": 2458,
+      "y": 3266,
       "width": 270,
       "height": 112,
       "label": "Feature 完成证据\nF0XX-evidence.json",
@@ -1855,8 +1855,8 @@
     {
       "id": "doc-task-reports",
       "shape": "rounded-rect",
-      "x": 2600,
-      "y": 2910,
+      "x": 2928,
+      "y": 3264,
       "width": 270,
       "height": 88,
       "label": "任务报告与临时输入\n*.md · *.json · *.log",
@@ -1898,8 +1898,8 @@
     {
       "id": "doc-research",
       "shape": "rounded-rect",
-      "x": 920,
-      "y": 3270,
+      "x": 1047,
+      "y": 3668,
       "width": 270,
       "height": 88,
       "label": "外部调研\n<topic>.md",
@@ -1941,8 +1941,8 @@
     {
       "id": "doc-adr",
       "shape": "rounded-rect",
-      "x": 1760,
-      "y": 3270,
+      "x": 1987,
+      "y": 3668,
       "width": 270,
       "height": 88,
       "label": "ADR 重要技术决定\nadr-NNNN-<slug>.md",
@@ -1984,8 +1984,8 @@
     {
       "id": "doc-progress",
       "shape": "rounded-rect",
-      "x": 2180,
-      "y": 3270,
+      "x": 2458,
+      "y": 3668,
       "width": 270,
       "height": 88,
       "label": "项目当前进度\nprogress.md",
@@ -2027,8 +2027,8 @@
     {
       "id": "doc-history",
       "shape": "rounded-rect",
-      "x": 2600,
-      "y": 3270,
+      "x": 2928,
+      "y": 3668,
       "width": 270,
       "height": 88,
       "label": "执行历史\n<key>.md",
@@ -2070,8 +2070,8 @@
     {
       "id": "doc-knowledge",
       "shape": "rounded-rect",
-      "x": 1340,
-      "y": 3630,
+      "x": 1517,
+      "y": 4071,
       "width": 270,
       "height": 88,
       "label": "项目知识\nREADME.md · *.md",
@@ -2113,8 +2113,8 @@
     {
       "id": "caption-framework",
       "shape": "text",
-      "x": 80,
-      "y": -60,
+      "x": 130,
+      "y": -63,
       "width": 680,
       "height": 64,
       "label": "框架仓库",
@@ -2152,8 +2152,8 @@
     {
       "id": "caption-project",
       "shape": "text",
-      "x": 80,
-      "y": 1280,
+      "x": 164,
+      "y": 1437,
       "width": 1240,
       "height": 64,
       "label": "生成后的游戏项目 · 文档类型与记录职责",
@@ -2191,8 +2191,8 @@
     {
       "id": "legend-navigation",
       "shape": "text",
-      "x": 1100,
-      "y": -100,
+      "x": 1274,
+      "y": -108,
       "width": 700,
       "height": 64,
       "label": "灰色虚线：阅读入口 → 目标",
@@ -2230,7 +2230,7 @@
     {
       "id": "legend-source",
       "shape": "text",
-      "x": 1100,
+      "x": 1274,
       "y": -30,
       "width": 700,
       "height": 64,
@@ -2269,8 +2269,8 @@
     {
       "id": "legend-evidence",
       "shape": "text",
-      "x": 1900,
-      "y": -100,
+      "x": 2173,
+      "y": -108,
       "width": 750,
       "height": 64,
       "label": "紫色虚线：记录 → 依据或证据",
@@ -2308,7 +2308,7 @@
     {
       "id": "legend-derived",
       "shape": "text",
-      "x": 1900,
+      "x": 2173,
       "y": -30,
       "width": 750,
       "height": 64,
@@ -2361,12 +2361,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 215,
-          "y": 1630
+          "x": 241,
+          "y": 1826
         },
         {
-          "x": 635,
-          "y": 1630
+          "x": 711,
+          "y": 1826
         }
       ],
       "label": "共享业务词义入口",
@@ -2407,22 +2407,30 @@
       "source": {
         "kind": "node",
         "node": "doc-scenarios",
-        "port": "right"
+        "port": "left"
       },
       "target": {
         "kind": "node",
         "node": "doc-prompts",
-        "port": "left"
+        "port": "right"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1230,
-          "y": 470
+          "x": 1011,
+          "y": 408
         },
         {
-          "x": 1270,
-          "y": 470
+          "x": 1011,
+          "y": 354.25
+        },
+        {
+          "x": 1823,
+          "y": 354.25
+        },
+        {
+          "x": 1823,
+          "y": 441
         }
       ],
       "label": "同名提示词正文",
@@ -2473,12 +2481,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 215,
-          "y": 1690
+          "x": 241,
+          "y": 1893
         },
         {
-          "x": 2315,
-          "y": 1690
+          "x": 2593,
+          "y": 1893
         }
       ],
       "label": "任务索引入口",
@@ -2529,20 +2537,20 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": -30,
-          "y": 1630
+          "x": -34,
+          "y": 1826
         },
         {
-          "x": -30,
-          "y": 3070
+          "x": -34,
+          "y": 3438
         },
         {
-          "x": 850,
-          "y": 3070
+          "x": 952,
+          "y": 3438
         },
         {
-          "x": 850,
-          "y": 2954
+          "x": 952,
+          "y": 3308
         }
       ],
       "label": "暂未采纳的想法",
@@ -2593,16 +2601,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 370,
-          "y": 1990
+          "x": 414,
+          "y": 2229
         },
         {
-          "x": 370,
-          "y": 2830
+          "x": 414,
+          "y": 3170
         },
         {
-          "x": 635,
-          "y": 2830
+          "x": 711,
+          "y": 3170
         }
       ],
       "label": "按需求细化语言约定",
@@ -2628,7 +2636,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.32120665269849497,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -2676,7 +2684,7 @@
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
         "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelOffset": -17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -2747,16 +2755,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 406,
-          "y": 284
+          "x": 455,
+          "y": 318
         },
         {
-          "x": 406,
-          "y": 1064
+          "x": 455,
+          "y": 1192
         },
         {
-          "x": 444,
-          "y": 1064
+          "x": 497,
+          "y": 1192
         }
       ],
       "label": "创建入口与清单",
@@ -2782,7 +2790,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.4823668847000531,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -2807,16 +2815,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 810,
-          "y": 284
+          "x": 907,
+          "y": 318
         },
         {
-          "x": 810,
-          "y": 144
+          "x": 907,
+          "y": 161
         },
         {
-          "x": 880,
-          "y": 144
+          "x": 986,
+          "y": 161
         }
       ],
       "label": "概念、配置与工具",
@@ -2889,8 +2897,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.497405384728897,
+        "labelOffset": 17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -2914,16 +2922,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 810,
-          "y": 284
+          "x": 882,
+          "y": 318
         },
         {
-          "x": 810,
-          "y": 584
-        },
-        {
-          "x": 880,
-          "y": 584
+          "x": 882,
+          "y": 654
         }
       ],
       "label": "框架维护",
@@ -2949,7 +2953,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.811942814391003,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -2974,16 +2978,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 810,
-          "y": 284
+          "x": 907,
+          "y": 318
         },
         {
-          "x": 810,
-          "y": 804
+          "x": 907,
+          "y": 900
         },
         {
-          "x": 880,
-          "y": 804
+          "x": 986,
+          "y": 900
         }
       ],
       "label": "公共词义",
@@ -3009,7 +3013,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.854031941236075,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -3034,12 +3038,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 635,
-          "y": 900
+          "x": 711,
+          "y": 1008
         },
         {
-          "x": 1475,
-          "y": 900
+          "x": 1652,
+          "y": 1008
         }
       ],
       "label": "用户问答",
@@ -3253,7 +3257,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.5193790476600895,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -3278,12 +3282,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 215,
-          "y": 860
+          "x": 241,
+          "y": 963
         },
         {
-          "x": 1895,
-          "y": 860
+          "x": 2122,
+          "y": 963
         }
       ],
       "label": "复盘报告的内容与位置",
@@ -3357,7 +3361,7 @@
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
         "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelOffset": -17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -3475,16 +3479,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1230,
-          "y": 584
+          "x": 1378,
+          "y": 654
         },
         {
-          "x": 1230,
-          "y": 668
+          "x": 1378,
+          "y": 748
         },
         {
-          "x": 2315,
-          "y": 668
+          "x": 2593,
+          "y": 748
         }
       ],
       "label": "查看剩余工作",
@@ -3572,7 +3576,7 @@
       "source": {
         "kind": "node",
         "node": "doc-distribution",
-        "port": "left"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -3582,20 +3586,24 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 460,
-          "y": 1064
+          "x": 882,
+          "y": 1192
         },
         {
-          "x": 47,
-          "y": 1064
+          "x": 882,
+          "y": 1423.25
         },
         {
-          "x": 47,
-          "y": 1430
+          "x": 150.25,
+          "y": 1423.25
         },
         {
-          "x": 215,
-          "y": 1430
+          "x": 150.25,
+          "y": 1616
+        },
+        {
+          "x": 241,
+          "y": 1616
         }
       ],
       "label": "创建时复制；项目随后独立",
@@ -3641,25 +3649,17 @@
       "target": {
         "kind": "node",
         "node": "doc-feature",
-        "port": "right"
+        "port": "left"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2990,
-          "y": 1064
+          "x": 2422,
+          "y": 1192
         },
         {
-          "x": 2990,
-          "y": 2020
-        },
-        {
-          "x": 2510,
-          "y": 2020
-        },
-        {
-          "x": 2510,
-          "y": 2234
+          "x": 2422,
+          "y": 2502
         }
       ],
       "label": "真实规划时采用结构",
@@ -3940,10 +3940,27 @@
       "target": {
         "kind": "node",
         "node": "doc-organization",
-        "port": "top"
+        "port": "bottom"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 241,
+          "y": 1776
+        },
+        {
+          "x": 385.75,
+          "y": 1776
+        },
+        {
+          "x": 385.75,
+          "y": 2179
+        },
+        {
+          "x": 241,
+          "y": 2179
+        }
+      ],
       "label": "从游戏功能开始",
       "stroke": {
         "color": "#64748B",
@@ -3967,7 +3984,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.5566188197767146,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -3992,12 +4009,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 215,
-          "y": 1750
+          "x": 241,
+          "y": 1960
         },
         {
-          "x": 1055,
-          "y": 1750
+          "x": 1182,
+          "y": 1960
         }
       ],
       "label": "需求与体验入口",
@@ -4023,7 +4040,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.55020079254888,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4048,20 +4065,20 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 20,
-          "y": 1874
+          "x": 22,
+          "y": 2099
         },
         {
-          "x": 20,
-          "y": 2700
+          "x": 22,
+          "y": 3024
         },
         {
-          "x": 1680,
-          "y": 2700
+          "x": 1882,
+          "y": 3024
         },
         {
-          "x": 1680,
-          "y": 2594
+          "x": 1882,
+          "y": 2905
         }
       ],
       "label": "实际实现与协作",
@@ -4107,10 +4124,27 @@
       "target": {
         "kind": "node",
         "node": "doc-gdd",
-        "port": "left"
+        "port": "right"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 882,
+          "y": 2099
+        },
+        {
+          "x": 882,
+          "y": 2045
+        },
+        {
+          "x": 1353,
+          "y": 2045
+        },
+        {
+          "x": 1353,
+          "y": 2099
+        }
+      ],
       "label": "统一项目术语",
       "stroke": {
         "color": "#2563EB",
@@ -4135,7 +4169,7 @@
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
         "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelOffset": -17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -4149,7 +4183,7 @@
       "source": {
         "kind": "node",
         "node": "doc-gdd",
-        "port": "right"
+        "port": "left"
       },
       "target": {
         "kind": "node",
@@ -4157,7 +4191,24 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1011,
+          "y": 2099
+        },
+        {
+          "x": 1011,
+          "y": 2153
+        },
+        {
+          "x": 1481,
+          "y": 2153
+        },
+        {
+          "x": 1481,
+          "y": 2099
+        }
+      ],
       "label": "按设计组织交付",
       "stroke": {
         "color": "#2563EB",
@@ -4181,8 +4232,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.5015806959036083,
+        "labelOffset": 17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -4251,7 +4302,24 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 2289.25,
+          "y": 2099
+        },
+        {
+          "x": 2289.25,
+          "y": 2514
+        },
+        {
+          "x": 2422,
+          "y": 2514
+        },
+        {
+          "x": 2422,
+          "y": 2502
+        }
+      ],
       "label": "细化当前交付任务",
       "stroke": {
         "color": "#2563EB",
@@ -4369,7 +4437,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.6599496221662469,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4394,20 +4462,20 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1210,
-          "y": 1620
+          "x": 1355,
+          "y": 1814
         },
         {
-          "x": 2500,
-          "y": 1620
+          "x": 2800,
+          "y": 1814
         },
         {
-          "x": 2500,
-          "y": 2070
+          "x": 2800,
+          "y": 2318
         },
         {
-          "x": 2315,
-          "y": 2070
+          "x": 2593,
+          "y": 2318
         }
       ],
       "label": "范围、AC 与验证契约",
@@ -4505,16 +4573,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 820,
-          "y": 1874
+          "x": 918,
+          "y": 2099
         },
         {
-          "x": 820,
-          "y": 2070
+          "x": 918,
+          "y": 2318
         },
         {
-          "x": 635,
-          "y": 2070
+          "x": 711,
+          "y": 2318
         }
       ],
       "label": "细化视觉方向",
@@ -4565,16 +4633,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 864,
-          "y": 1874
+          "x": 968,
+          "y": 2099
         },
         {
-          "x": 864,
-          "y": 2494
+          "x": 968,
+          "y": 2793
         },
         {
-          "x": 635,
-          "y": 2494
+          "x": 711,
+          "y": 2793
         }
       ],
       "label": "细化声音方向",
@@ -4600,7 +4668,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.7706718065814536,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4625,12 +4693,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1055,
-          "y": 2020
+          "x": 1182,
+          "y": 2262
         },
         {
-          "x": 1475,
-          "y": 2020
+          "x": 1652,
+          "y": 2262
         }
       ],
       "label": "非 UI 表现的入口",
@@ -4656,7 +4724,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.551912107214218,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4703,8 +4771,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.3235926491346088,
+        "labelOffset": -29.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -4723,21 +4791,21 @@
       "target": {
         "kind": "node",
         "node": "doc-presentation",
-        "port": "bottom"
+        "port": "top"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 850,
-          "y": 2594
+          "x": 1035,
+          "y": 2905
         },
         {
-          "x": 850,
-          "y": 2350
+          "x": 1035,
+          "y": 2423
         },
         {
-          "x": 1475,
-          "y": 2350
+          "x": 1652,
+          "y": 2423
         }
       ],
       "label": "共享声音约束",
@@ -4763,7 +4831,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.5548250014371563,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4778,7 +4846,7 @@
       "source": {
         "kind": "node",
         "node": "doc-localization",
-        "port": "left"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -4788,20 +4856,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 410,
-          "y": 2954
+          "x": 956,
+          "y": 3308
         },
         {
-          "x": 410,
-          "y": 2350
-        },
-        {
-          "x": 840,
-          "y": 2350
-        },
-        {
-          "x": 840,
-          "y": 2234
+          "x": 956,
+          "y": 2516
         }
       ],
       "label": "语言、格式与显示约束",
@@ -4827,7 +4887,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.45,
+        "labelPosition": 0.5734372695995262,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -4874,8 +4934,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.21983084000760522,
+        "labelOffset": 77.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -4899,8 +4959,8 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1055,
-          "y": 2594
+          "x": 1182,
+          "y": 2905
         }
       ],
       "label": "界面专用资源章节",
@@ -4998,12 +5058,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1680,
-          "y": 2594
+          "x": 1882,
+          "y": 2905
         },
         {
-          "x": 1680,
-          "y": 2234
+          "x": 1882,
+          "y": 2502
         }
       ],
       "label": "采用的规格与缺口",
@@ -5029,8 +5089,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.8846970431482082,
+        "labelOffset": -17.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -5076,8 +5136,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.6794711544793173,
+        "labelOffset": -61.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -5091,7 +5151,7 @@
       "source": {
         "kind": "node",
         "node": "doc-feature",
-        "port": "left"
+        "port": "right"
       },
       "target": {
         "kind": "node",
@@ -5099,7 +5159,24 @@
         "port": "right"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 2764,
+          "y": 2502
+        },
+        {
+          "x": 2764,
+          "y": 2555.75
+        },
+        {
+          "x": 2293,
+          "y": 2555.75
+        },
+        {
+          "x": 2293,
+          "y": 2502
+        }
+      ],
       "label": "notes 中的设计链接",
       "stroke": {
         "color": "#64748B",
@@ -5123,8 +5200,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.5249179053612901,
+        "labelOffset": -61.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -5190,10 +5267,27 @@
       "target": {
         "kind": "node",
         "node": "doc-subsystem",
-        "port": "top"
+        "port": "bottom"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 2122,
+          "y": 2985
+        },
+        {
+          "x": 2266.75,
+          "y": 2985
+        },
+        {
+          "x": 2266.75,
+          "y": 3388
+        },
+        {
+          "x": 2122,
+          "y": 3388
+        }
+      ],
       "label": "子系统内部契约",
       "stroke": {
         "color": "#64748B",
@@ -5217,7 +5311,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.18011543242150488,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5232,22 +5326,22 @@
       "source": {
         "kind": "node",
         "node": "doc-architecture",
-        "port": "left"
+        "port": "right"
       },
       "target": {
         "kind": "node",
         "node": "doc-adr",
-        "port": "left"
+        "port": "right"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1660,
-          "y": 2594
+          "x": 2280.25,
+          "y": 2905
         },
         {
-          "x": 1660,
-          "y": 3314
+          "x": 2280.25,
+          "y": 3712
         }
       ],
       "label": "重要技术取舍",
@@ -5273,7 +5367,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.8718721154154359,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5298,12 +5392,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1895,
-          "y": 2800
+          "x": 2122,
+          "y": 3136
         },
         {
-          "x": 2735,
-          "y": 2800
+          "x": 3063,
+          "y": 3136
         }
       ],
       "label": "有用的验证入口",
@@ -5329,7 +5423,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.7,
+        "labelPosition": 0.7298838776368717,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5349,10 +5443,27 @@
       "target": {
         "kind": "node",
         "node": "doc-research",
-        "port": "right"
+        "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1951,
+          "y": 3712
+        },
+        {
+          "x": 1951,
+          "y": 3765.75
+        },
+        {
+          "x": 1011,
+          "y": 3765.75
+        },
+        {
+          "x": 1011,
+          "y": 3712
+        }
+      ],
       "label": "需要时引用外部依据",
       "stroke": {
         "color": "#7C3AED",
@@ -5391,22 +5502,38 @@
       "source": {
         "kind": "node",
         "node": "doc-ideas",
-        "port": "left"
+        "port": "right"
       },
       "target": {
         "kind": "node",
         "node": "doc-gdd",
-        "port": "left"
+        "port": "right"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 880,
-          "y": 2954
+          "x": 1353,
+          "y": 3308
         },
         {
-          "x": 880,
-          "y": 1874
+          "x": 1353,
+          "y": 2609.449951171875
+        },
+        {
+          "x": 1446,
+          "y": 2609.449951171875
+        },
+        {
+          "x": 1446,
+          "y": 2277.949951171875
+        },
+        {
+          "x": 1353,
+          "y": 2277.949951171875
+        },
+        {
+          "x": 1353,
+          "y": 2099
         }
       ],
       "label": "进入比较或采纳后迁移并引用",
@@ -5432,8 +5559,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.35,
-        "labelOffset": 0,
+        "labelPosition": 0.012514076171597029,
+        "labelOffset": 61.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -5457,12 +5584,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1280,
-          "y": 3314
+          "x": 1434,
+          "y": 3712
         },
         {
-          "x": 1280,
-          "y": 1874
+          "x": 1434,
+          "y": 2099
         }
       ],
       "label": "经采纳后更新所属要求",
@@ -5535,8 +5662,8 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
+        "labelPosition": 0.75,
+        "labelOffset": 61.5,
         "labelPadding": 4,
         "rounded": true,
         "radius": 12,
@@ -5654,16 +5781,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2506,
-          "y": 2966
+          "x": 2807,
+          "y": 3322
         },
         {
-          "x": 2506,
-          "y": 2694
+          "x": 2807,
+          "y": 3017
         },
         {
-          "x": 2735,
-          "y": 2694
+          "x": 3063,
+          "y": 3017
         }
       ],
       "label": "引用真实运行原件",
@@ -5689,7 +5816,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.6421265663414281,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5736,7 +5863,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.40755467196819084,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5761,16 +5888,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2315,
-          "y": 2302
+          "x": 2593,
+          "y": 2578
         },
         {
-          "x": 2156,
-          "y": 2302
+          "x": 2415,
+          "y": 2578
         },
         {
-          "x": 2156,
-          "y": 2966
+          "x": 2415,
+          "y": 3322
         }
       ],
       "label": "按当前 Feature 身份关联",
@@ -5796,7 +5923,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.15782756783195764,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -5821,12 +5948,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2960,
-          "y": 2360
+          "x": 3315,
+          "y": 2643
         },
         {
-          "x": 2960,
-          "y": 2954
+          "x": 3315,
+          "y": 3308
         }
       ],
       "label": "补充测量与按需审核",
@@ -5877,12 +6004,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2080,
-          "y": 3314
+          "x": 2330,
+          "y": 3712
         },
         {
-          "x": 2080,
-          "y": 2270
+          "x": 2330,
+          "y": 2542
         }
       ],
       "label": "当前任务入口",
@@ -6017,7 +6144,7 @@
       "source": {
         "kind": "node",
         "node": "doc-progress",
-        "port": "bottom"
+        "port": "top"
       },
       "target": {
         "kind": "node",
@@ -6027,12 +6154,20 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2315,
-          "y": 3440
+          "x": 2593,
+          "y": 3632
         },
         {
-          "x": 1055,
-          "y": 3440
+          "x": 1326.75,
+          "y": 3632
+        },
+        {
+          "x": 1326.75,
+          "y": 3792
+        },
+        {
+          "x": 1182,
+          "y": 3792
         }
       ],
       "label": "当前问题与相关资料",
@@ -6058,7 +6193,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.4463154228472596,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -6081,7 +6216,24 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 2764,
+          "y": 3712
+        },
+        {
+          "x": 2764,
+          "y": 3633.949951171875
+        },
+        {
+          "x": 2892,
+          "y": 3633.949951171875
+        },
+        {
+          "x": 2892,
+          "y": 3308
+        }
+      ],
       "label": "当前状态的实际依据",
       "stroke": {
         "color": "#7C3AED",
@@ -6130,16 +6282,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 2315,
-          "y": 3230
+          "x": 2593,
+          "y": 3618
         },
         {
-          "x": 2490,
-          "y": 3230
+          "x": 2789,
+          "y": 3618
         },
         {
-          "x": 2490,
-          "y": 1514
+          "x": 2789,
+          "y": 1696
         }
       ],
       "label": "需要续接的环境结果",
@@ -6165,7 +6317,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.3,
+        "labelPosition": 0.08422855188541291,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -6190,16 +6342,16 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": -80,
-          "y": 1514
+          "x": -90,
+          "y": 1696
         },
         {
-          "x": -80,
-          "y": 3500
+          "x": -90,
+          "y": 3920
         },
         {
-          "x": 2315,
-          "y": 3500
+          "x": 2593,
+          "y": 3920
         }
       ],
       "label": "当前停点入口",
@@ -6250,12 +6402,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": -130,
-          "y": 1514
+          "x": -146,
+          "y": 1696
         },
         {
-          "x": -130,
-          "y": 3674
+          "x": -146,
+          "y": 4115
         }
       ],
       "label": "按主题查阅经验",
@@ -6306,12 +6458,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 3100,
-          "y": 3674
+          "x": 3472,
+          "y": 4115
         },
         {
-          "x": 3100,
-          "y": 2954
+          "x": 3472,
+          "y": 3308
         }
       ],
       "label": "经验链接真实依据",
@@ -6357,21 +6509,21 @@
       "target": {
         "kind": "node",
         "node": "doc-feature",
-        "port": "bottom"
+        "port": "top"
       },
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 1650,
-          "y": 3674
+          "x": 1823,
+          "y": 4115
         },
         {
-          "x": 1650,
-          "y": 2318
+          "x": 1823,
+          "y": 2422
         },
         {
-          "x": 2315,
-          "y": 2318
+          "x": 2593,
+          "y": 2422
         }
       ],
       "label": "原事件与局部决定",
@@ -6397,7 +6549,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.4,
+        "labelPosition": 0.7753976789050112,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -6422,12 +6574,12 @@
       "path": "orthogonal",
       "vertices": [
         {
-          "x": 380,
-          "y": 1874
+          "x": 426,
+          "y": 2099
         },
         {
-          "x": 380,
-          "y": 2954
+          "x": 426,
+          "y": 3308
         }
       ],
       "label": "译名引用已确认概念",
@@ -6453,7 +6605,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.5,
+        "labelPosition": 0.06909406531727642,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
