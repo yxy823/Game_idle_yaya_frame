@@ -191,9 +191,10 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 Stage 1 在填写验证列表之前决定 `verification.acceptance_mode`。依据是已确认的 GDD 设计、Product 交付范围，以及专业或工程意图：
 
 - `manual`：只要有任何条件依赖人的感知或判断，就必须用这个模式，例如视觉呈现、动画手感、音频、音效、音乐或游戏手感。至少一个条件有 `manual_checks`，或者设置了 `manual_regression`。manual 计划也可以映射自动测试。
-- `manual_checks` 只写需要人感知或判断的部分，以及测试无法构造的真实系统操作（例如电脑休眠）。数值、存档内容、失败分支和时间计算映射自动测试，不转成人工步骤。条件都能由测试构造和断言时用 `automated`，即使结果显示在界面上。
 - `automated`：只有每个条件都能自动验证时才允许。此时每个条件至少列出一个自动测试，没有条件带 `manual_checks`，`manual_regression` 为 `null`。因此使用人工回归检查的 Bug 要用 `manual`。
 - `null`：尚未决定的草稿。`done` 的 Feature，以及正在完成的 Feature，不能是 `null`。
+
+`manual_checks` 只写需要人感知或判断的部分，以及测试无法构造的真实系统操作（例如电脑休眠）。数值、存档内容、失败分支和时间计算映射自动测试，不转成人工步骤。条件都能由测试构造和断言时用 `automated`，即使结果显示在界面上；画面是否清楚、协调等观感仍属人的判断。
 
 空列表和以前的 PASS 结果都不能决定模式。Stage 1 在批准材料中说明这项决定；Stage 5 只适用于 `manual`。
 

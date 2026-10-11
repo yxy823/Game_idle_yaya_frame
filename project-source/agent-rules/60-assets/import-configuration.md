@@ -4,7 +4,7 @@
 
 ## 修改导入设置
 
-- 通过编辑器的导入面板或 Godot 的导入流程修改设置，然后重新导入。没有编辑器界面时，只改 `.import` 中 `[params]` 下的设置行，再运行 `godot --headless --path <项目> --import` 重新导入，并确认 `.import` 只有这几行变化。
+- 通过编辑器的导入面板或 Godot 的导入流程修改设置，然后重新导入。没有编辑器界面时，只手改 `.import` 中 `[params]` 下的设置行，再按[重新导入](#重新导入)导入；导入后生成字段的变化由 Godot 写入，不手工改动。
 - `.import` 中的 `uid`、`path`、`dest_files`、`source_file` 等生成字段不手工修改，见[生成文件与工具管理文件](../00-core/third-party-generated-and-temporary-files.md#生成文件与工具管理文件)。
 - 按素材的运行时用途选择导入设置和预设，不只按扩展名统一处理。
 - 修改导入器或 Import As 会改变使用方拿到的 Resource 类型，修改后检查使用方。

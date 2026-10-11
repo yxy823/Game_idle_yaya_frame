@@ -73,6 +73,9 @@ def main(argv: list[str] | None = None) -> int:
     excluded_paths = [Path(value) for value in args.exclude]
     files = ([path.resolve() for path in args.files] if args.files
         else markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths))
+    for path in files:
+        if not path.is_relative_to(root):
+            parser.error(f"file is not under --root: {path}")
     try:
         checked, broken = check_links(root, files)
     except (OSError, UnicodeDecodeError) as exc:

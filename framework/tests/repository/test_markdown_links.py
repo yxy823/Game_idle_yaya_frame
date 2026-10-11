@@ -79,6 +79,17 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertEqual(self.broken(str(self.root / "b.md")),
                          {("b.md", "missing-b.md", "target does not exist")})
 
+    def test_listed_file_outside_root_is_an_argument_error(self):
+        with tempfile.TemporaryDirectory() as other:
+            outside = Path(other) / "c.md"
+            outside.write_text("text\n", encoding="utf-8")
+            process = subprocess.run(
+                [sys.executable, "-B", str(COMMAND), "--root", str(self.root), str(outside)],
+                capture_output=True, encoding="utf-8", check=False, timeout=30,
+            )
+        self.assertEqual(process.returncode, 2, process.stderr)
+        self.assertIn("not under --root", process.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

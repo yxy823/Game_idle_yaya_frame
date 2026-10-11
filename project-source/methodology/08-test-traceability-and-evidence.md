@@ -52,7 +52,7 @@ Feature 详情使用稳定的验收条件 ID：
       "text": "玩家可以保存并重新载入当前进度。",
       "verification": {
         "automated_tests": ["F012-AC01"],
-        "manual_checks": ["在运行中的游戏里保存、重新载入，确认可见状态一致。"]
+        "manual_checks": ["在运行中的游戏里保存、重新载入，确认读档后的界面过渡没有闪烁或错位。"]
       }
     }
   ],
