@@ -142,6 +142,7 @@ class WordingCheckTests(unittest.TestCase):
     def test_sentences_over_the_limit_are_listed_for_review(self):
         limits = {"descriptive": 10, "procedural": 5}
         self.write(CONFIG, json.dumps({"sentence_length": limits, "checks": CHECKS}, ensure_ascii=False))
+        self.write("SKILL.md", "---\ndescription: 元数据里的长说明不按句子长度检查。\n---\n短句。\n")
         self.write("guide.md", "# 标题超过十个字也不算句子长度\n\n短句。这一句一共有十一个字吧。\n"
                                "1. 运行六个字句\n2. 运行五个字\n| 表格里的长内容不按句子检查 |\n")
         process = self.run_cli("--config", CONFIG)

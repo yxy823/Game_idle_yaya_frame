@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Report wordings matched by the checks in wording-check.json: hard checks fail, checks to review are listed only."""
 # 只读检查：不改写文件。要找的写法和例外都写在配置的正则里，脚本不保存词表；代码、引号内的文字不算出现。
-# 配置的 sentence_length 给出句长上限：超过的句子列为待复核。
+# 配置的 sentence_length 给出句长上限：超过的句子列为待复核；Markdown 开头的元数据（如 Skill 的 description）不查句长。
 # 读取、遮蔽、文件选择和输出格式与术语检查共用 tools/lib/document_text.py。
 from __future__ import annotations
 
@@ -142,13 +142,24 @@ def check_documents(checks: list[Check], documents: list[Document], options: arg
     return findings
 
 
+def front_matter_end(document: Document) -> int:
+    """Index of the first line after the YAML front matter of a Markdown file, 0 when there is none."""
+    if not document.path.endswith(".md") or not document.original or document.original[0].strip() != "---":
+        return 0
+    for index, line in enumerate(document.original[1:], 1):
+        if line.strip() == "---":
+            return index + 1
+    return 0
+
+
 def check_sentence_length(limits: dict[str, int], documents: list[Document], options: argparse.Namespace) -> list[Finding]:
     """List sentences longer than the limit: ordered list items are procedural, other prose is descriptive.
     One Chinese character, English word or number counts as 1; punctuation, code and quoted text do not count."""
     findings = []
     for document in documents:
+        front = front_matter_end(document)
         for index, masked in enumerate(document.masked):
-            if masked is None or masked.lstrip().startswith(("#", "|")):
+            if index < front or masked is None or masked.lstrip().startswith(("#", "|")):
                 continue
             marker = ORDERED_ITEM.match(masked)
             kind = "procedural" if marker else "descriptive"
