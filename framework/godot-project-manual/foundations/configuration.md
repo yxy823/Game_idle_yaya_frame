@@ -13,7 +13,7 @@
 | `document_language` | `zh-CN` | 持久项目知识默认使用中文，无需再次确认；与当前聊天语言独立 |
 | `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `python_executable` | `python` | 初始命令名；准备环境时改为已确认的 Python 3.12+ 解释器 |
-| `analyzer_python_executable` | 不预填 | 可选；图像 Analyzer 专用环境的解释器，要分析图像时才填写 |
+| `visual_analyzer_python_executable` | 空字符串 | 可选；已安装 Game Visual Analyzer（GVA）的 Python 解释器绝对路径。缺省或空字符串时调试台显示“未配置 GVA，截图分析不可用；其他功能照常” |
 | `audio_analyzer_python_executable` | 空字符串 | 可选；已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对路径。缺省或空字符串时调试台显示“未配置 GAA” |
 
 配置文件只保存文档语言和工具路径。其他信息都有固定位置，不写进配置：
@@ -52,8 +52,8 @@ $LASTEXITCODE
 路径字段接受的写法不同：
 
 - **`engine_executable`**：必须指向实际文件，可以是绝对路径或相对项目根目录的路径；不会到 PATH 中查找同名程序。环境检查和测试运行器用同一种方式解析。
-- **`python_executable`**、**`analyzer_python_executable`**：可以是完整路径、相对项目根目录的路径，或 PATH 中的命令名。
-- **`audio_analyzer_python_executable`**：空字符串表示未配置；配置时使用绝对文件路径，不含 shell 引号或参数。
+- **`python_executable`**：可以是完整路径、相对项目根目录的路径，或 PATH 中的命令名。
+- **`visual_analyzer_python_executable`**、**`audio_analyzer_python_executable`**：空字符串表示未配置；配置时使用绝对文件路径，不含 shell 引号或参数。
 
 测试运行器默认使用配置中的 Godot 路径，临时换用其他版本时传入 `--godot-binary <路径>`，示例见[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。
 
@@ -72,10 +72,10 @@ $LASTEXITCODE
 | Python | 解析路径或 PATH 命令，确认指向一个文件 | 实际运行该解释器，确认是 Python 3.12+ 且依赖齐全；检查器不探测 Python 版本 |
 | Godot | 解析路径并启动 `--version`，要求进程成功且版本为 4.7.x；打印实际版本，不锁定补丁版本 | 路径不可用时说明原因；资源、脚本和测试能否运行要实际调用才知道 |
 | 测试入口 | 确认 `yaya/tools/testing/run-gdunit-tests.py` 存在 | 按任务范围实际运行测试 |
-| 图像 Analyzer / GAA | 只检查已配置的解释器文件；未配置时不阻止其他工具就绪 | 实际调用分析，确认依赖、结果契约和显示；检查器不探测 Python 包 |
+| GVA / GAA | 只检查已配置的解释器文件；未配置时不阻止其他工具就绪 | 实际调用分析，确认依赖、结果契约和显示；检查器不探测 Python 包 |
 | `document_language` | 检查字符、子段与连接符的基本形式 | 完整标签是否有效，是否符合默认中文或用户指定的语言 |
 
-图像 Analyzer 使用独立的 Python 3.13 环境；按[准备与使用](../../../project-source/tools/analyzer/README.md#准备与使用)核对具体版本和依赖。GAA 使用本机已安装该工具的解释器，不随项目复制；两种后台调用的分工见[分析](../../../project-source/defaults/dev/debug/_shared/README.md#分析)。
+GVA 和 GAA 都使用本机已安装该工具的解释器，不随项目复制；两种后台调用的分工见[分析](../../../project-source/defaults/dev/debug/_shared/README.md#分析)。
 
 就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析、lint 或初始化 Git。新项目还需要经过哪些步骤，见[环境就绪的含义](framework-and-project.md#环境就绪的含义)。
 

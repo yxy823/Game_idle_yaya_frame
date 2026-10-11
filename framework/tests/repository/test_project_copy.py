@@ -339,6 +339,7 @@ class ProjectCopyTests(unittest.TestCase):
         copy_project(repository, output)
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
         self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable",
+                                       "visual_analyzer_python_executable",
                                        "audio_analyzer_python_executable"})
         self.assertIsInstance(config["engine_executable"], str)
         settings = (output / "project.godot").read_text(encoding="utf-8")
@@ -393,7 +394,7 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertFalse((output / "docs/resource-requirements").exists())
         self.assertFalse((output / "yaya/agent-rules/00-core/documentation").exists())
         self.assertEqual({path.name for path in (output / "yaya/tools").iterdir() if path.is_dir()},
-                         {"checks", "features", "godot", "testing", "lib", "analyzer", "ui-trial"})
+                         {"checks", "features", "godot", "testing", "lib", "ui-trial"})
         self.assertFalse((output / "examples").exists())
         for removed in ("yaya/asset_workbench", "components/feedback", "addons/sound_manager"):
             self.assertFalse((output / removed).exists(), removed)
@@ -423,16 +424,7 @@ class ProjectCopyTests(unittest.TestCase):
                              (repository / "project-source/defaults/docs" / relative).read_bytes())
         for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
             self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
-        for relative in ("worker.py", "capabilities.json", "result.schema.json", "requirements.txt"):
-            self.assertEqual((output / "yaya/tools/analyzer" / relative).read_bytes(),
-                             (repository / "project-source/tools/analyzer" / relative).read_bytes())
-        analyzer = output / "yaya/tools/analyzer"
-        self.assertFalse((analyzer / "audio_adapter.py").exists())
-        self.assertFalse((analyzer / "audio_statistics.py").exists())
-        self.assertEqual(list((analyzer / "features").glob("audio_*.py")), [])
-        self.assertTrue((analyzer / "image_adapter.py").is_file())
-        self.assertTrue((analyzer / "features/image_cvd_grid.py").is_file())
-        self.assertEqual(set(json.loads((analyzer / "capabilities.json").read_text())["sources"]), {"image"})
+        self.assertEqual(config["visual_analyzer_python_executable"], "")
         self.assertEqual(config["audio_analyzer_python_executable"], "")
 
     def test_distribution_resources_have_uids_and_scanned_addon_images_have_imports(self):

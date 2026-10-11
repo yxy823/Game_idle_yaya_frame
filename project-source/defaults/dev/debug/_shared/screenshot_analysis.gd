@@ -1,12 +1,11 @@
 extends VBoxContainer
-## The analysis page's screenshot section: captures the game window's root viewport, runs the
-## color-vision grid and shows its four panels side by side. The debug window is a separate
-## native window, so it never appears in the capture.
+## The analysis page's screenshot section: captures the game window's root viewport, has GVA
+## build the color-vision grid and shows its four panels side by side. The debug window is a
+## separate native window, so it never appears in the capture.
 
 const Service := preload("res://dev/debug/_shared/analyzer_service.gd")
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
-const MODULES: Array[String] = ["image_cvd_grid"]
 const PANEL_NAMES := {"normal": "正常", "gray": "灰度", "protan": "红色盲", "deutan": "绿色盲"}
 const IMAGE_HEIGHT := 180.0
 const TILE_LABEL_HEIGHT := 22.0
@@ -58,30 +57,31 @@ func capture(image: Image) -> void:
 	var path := Service.JOBS.path_join("game-%d.png" % Time.get_ticks_usec())
 	var error := DirAccess.make_dir_recursive_absolute(Service.JOBS)
 	if error == OK:
+		image.convert(Image.FORMAT_RGB8)
 		error = image.save_png(path)
 	if error != OK:
 		_status.text = "截图没有保存下来：%s。关掉占用截图文件夹的程序后再试" % Messages.reason(error)
 		_status.tooltip_text = Messages.detail({"error": error, "message": path})
 		return
-	var started := service.analyze(path, "image", MODULES, _finished)
+	var started := service.analyze(path, "image", _finished)
 	_status.text = "分析中…" if started.error == OK else started.message
 	_status.tooltip_text = Messages.detail(started)
 
 
 func _finished(state: Dictionary) -> void:
-	var entry: Dictionary = state.get("data", {}).get("metrics", {}).get("cvd_grid", {})
-	if state.status == "failed" or entry.get("status") != "available":
-		_status.text = "截图分析没有完成：analyzer 没有给出四宫格。悬停这行文字看原因"
-		_status.tooltip_text = state.message if state.status == "failed" 			else String(entry.get("reason", "no cvd_grid result"))
+	if state.status == "failed":
+		_status.text = "截图分析没有完成：%s。悬停这行文字看原因" % state.message
+		_status.tooltip_text = Messages.detail(state)
 		return
-	grid_path = entry.value.path
-	show_grid(ImageTexture.create_from_image(Image.load_from_file(grid_path)), entry.value)
+	var grid: Dictionary = state.data.cvd_grid
+	grid_path = grid.path
+	show_grid(ImageTexture.create_from_image(Image.load_from_file(grid_path)), grid)
 	_open.visible = true
 	_status.text = ""
 	_status.tooltip_text = ""
 
 
-## Splits the analyzer's 2x2 grid (each panel under a caption strip) into four tiles.
+## Splits GVA's 2x2 grid (each panel under a caption strip) into four tiles.
 func show_grid(texture: Texture2D, value: Dictionary) -> void:
 	Kit.clear(tiles)
 	var full := texture.get_size()

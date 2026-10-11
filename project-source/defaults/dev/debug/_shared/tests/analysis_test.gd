@@ -1,5 +1,5 @@
 extends GdUnitTestSuite
-## A replaceable launcher writes summary files; these tests never run real GAA.
+## A replaceable launcher writes result files; these tests never run real GAA or GVA.
 
 const Service := preload("res://dev/debug/_shared/analyzer_service.gd")
 const AudioAnalysis := preload("res://dev/debug/_shared/audio_analysis.gd")
@@ -23,7 +23,7 @@ var _raw_output: String = ""
 func before_test() -> void:
 	_service = auto_free(Service.new()) as Service
 	add_child(_service)
-	_service.python = OS.get_executable_path()
+	_service.visual_python = OS.get_executable_path()
 	_service.audio_python = OS.get_executable_path()
 	_service.launch = _launch
 	_service.running = func(_id: int) -> bool: return _running
@@ -45,17 +45,12 @@ func after_test() -> void:
 
 
 func _launch(path: String, arguments: PackedStringArray, console: bool) -> int:
-	var audio := arguments.has("--result-file")
-	var output := arguments[arguments.find("--result-file" if audio else "--output") + 1]
+	var output := arguments[arguments.find("--result-file") + 1]
 	var job := {"path": path, "arguments": arguments, "output": output, "console": console,
 		"existed": FileAccess.file_exists(output)}
 	var data := _result.duplicate(true)
-	if audio:
-		if not data.has("run_id"):
-			data.run_id = arguments[arguments.find("--run-id") + 1]
-	else:
-		job.request_path = arguments[arguments.find("--request") + 1]
-		job.request = JSON.parse_string(FileAccess.get_file_as_string(job.request_path))
+	if not data.has("run_id"):
+		data.run_id = arguments[arguments.find("--run-id") + 1]
 	_launched.append(job)
 	if not _result.is_empty() or not _raw_output.is_empty():
 		var file := FileAccess.open(output, FileAccess.WRITE)
@@ -76,7 +71,7 @@ func test_audio_job_uses_gaa_arguments_and_shows_all_nine_metrics() -> void:
 		"-B", "-m", "game_audio_analyzer", "analyze",
 		ProjectSettings.globalize_path(CHIME), "--json-only"])
 	assert_str(args[args.find("--parent-pid") + 1]).is_equal(str(OS.get_process_id()))
-	assert_bool(job.console or args.has("--request") or job.existed).is_false()
+	assert_bool(job.console or job.existed).is_false()
 	_service.poll()
 	assert_str(_text(view)).contains("分析中…")
 	_running = false
@@ -213,9 +208,9 @@ func test_jobs_have_unique_paths_and_callbacks_and_independent_configuration() -
 	_result = _audio_result()
 	var states: Array[Dictionary] = []
 	var done := func(state: Dictionary) -> void: states.append(state)
-	_service.python = ""
+	_service.visual_python = ""
 	for _index in range(2):
-		assert_int(_service.analyze(CHIME, "audio", [], done).error).is_equal(OK)
+		assert_int(_service.analyze(CHIME, "audio", done).error).is_equal(OK)
 	assert_str(_launched[0].output).is_not_equal(_launched[1].output)
 	for job in _launched:
 		assert_bool(job.existed).is_false()
@@ -228,29 +223,29 @@ func test_jobs_have_unique_paths_and_callbacks_and_independent_configuration() -
 	assert_int(states.size()).is_equal(2)
 	for job in _launched:
 		assert_bool(FileAccess.file_exists(job.output)).is_false()
-	assert_int(_service.analyze("unused.png", "image", [], done).error).is_equal(ERR_UNCONFIGURED)
+	assert_int(_service.analyze("unused.png", "image", done).error).is_equal(ERR_UNCONFIGURED)
 
 
-func test_screenshot_request_points_at_saved_png_and_shows_the_grid_without_gaa() -> void:
+func test_screenshot_job_runs_gva_on_saved_png_and_splits_the_grid_without_gaa() -> void:
 	_service.audio_python = ""
 	var grid := "user://tests/analysis-grid-%d.png" % Time.get_ticks_usec()
 	_files.append(grid)
 	DirAccess.make_dir_recursive_absolute(grid.get_base_dir())
-	Image.create(8, 4, false, Image.FORMAT_RGBA8).save_png(grid)
-	_result = {"status": "success", "errors": [], "metrics": {"cvd_grid": {"status": "available",
-		"value": {"path": ProjectSettings.globalize_path(grid)}, "unit": "PNG", "reason": ""}}}
-	var view := auto_free(ScreenshotAnalysis.new(_service)) as ScreenshotAnalysis
-	add_child(view)
+	Image.create(8, 52, false, Image.FORMAT_RGB8).save_png(grid)
+	_result = _screenshot_result(grid)
+	var view := _screenshot_view()
 	view.capture(Image.create(4, 4, false, Image.FORMAT_RGBA8))
 	var job := _launched[0]
-	var request_data: Dictionary = job.request
-	var screenshot := ProjectSettings.localize_path(request_data.path)
+	var args: PackedStringArray = job.arguments
+	var screenshot := ProjectSettings.localize_path(args[4])
 	_files.append(screenshot)
+	assert_str(job.path).is_equal(_service.visual_python)
+	assert_array(Array(args.slice(0, 4))).contains_exactly(["-B", "-m", "analyzer.cli", "analyze"])
+	assert_str(args[5]).is_equal("--json-only")
 	assert_str(screenshot.get_base_dir()).is_equal(Service.JOBS)
 	assert_bool(FileAccess.file_exists(screenshot)).is_true()
-	assert_str(request_data.asset_type).is_equal("image")
-	assert_array(request_data.modules).contains_exactly(["image_cvd_grid"])
-	assert_str(job.arguments[1]).is_equal(ProjectSettings.globalize_path(Service.WORKER))
+	assert_str(ProjectSettings.localize_path(job.output).get_base_dir()).is_equal(Service.JOBS)
+	assert_str(args[args.find("--parent-pid") + 1]).is_equal(str(OS.get_process_id()))
 	_running = false
 	_service.poll()
 	assert_int(view.tiles.get_child_count()).is_equal(4)
@@ -261,11 +256,36 @@ func test_screenshot_request_points_at_saved_png_and_shows_the_grid_without_gaa(
 		captions.append((tile.find_children("*", "Label", true, false)[0] as Label).text)
 	assert_array(captions).contains_exactly(["正常", "灰度", "红色盲", "绿色盲"])
 	var last := view.tiles.get_child(3).find_children("*", "TextureRect", true, false)[0]
-	assert_vector((last.texture as AtlasTexture).region.position).is_equal(Vector2(4, 2))
+	assert_vector((last.texture as AtlasTexture).region.position).is_equal(Vector2(4, 50))
 	assert_bool(_tooltip_button(view, "打开原图").visible).is_true()
 	assert_str(view.grid_path).is_equal(ProjectSettings.globalize_path(grid))
 	assert_bool(FileAccess.file_exists(job.output)).is_false()
-	assert_bool(FileAccess.file_exists(job.request_path)).is_false()
+
+
+func test_screenshot_is_saved_without_alpha_for_gva() -> void:
+	var image := Image.create(4, 4, false, Image.FORMAT_RGBA8)
+	image.fill(Color(1, 0, 0, 0.5))
+	_screenshot_view().capture(image)
+	var screenshot := ProjectSettings.localize_path(_launched[0].arguments[4])
+	_files.append(screenshot)
+	assert_int(Image.load_from_file(screenshot).get_format()).is_equal(Image.FORMAT_RGB8)
+
+
+func test_gva_contract_identity_and_grid_are_checked_before_showing_tiles() -> void:
+	_running = false
+	for item: Dictionary in [
+		{"change": {"contract_version": "2"}, "text": "GVA 版本不兼容"},
+		{"change": {"run_id": "different"}, "text": "GVA 结果与本次分析不符"},
+		{"change": {"cvd_grid": null}, "text": "GVA 没有给出四宫格"}]:
+		var view := _screenshot_view()
+		_result = _screenshot_result("user://unused.png")
+		_result.merge(item.change, true)
+		view.capture(Image.create(4, 4, false, Image.FORMAT_RGBA8))
+		_files.append(ProjectSettings.localize_path(_launched.back().arguments[4]))
+		_service.poll()
+		assert_str(_text(view)).contains(item.text)
+		assert_bool(_tooltip_button(view, "打开原图").visible).is_false()
+		assert_str(view.grid_path).is_empty()
 
 
 func _sfx_slot() -> Slot:
@@ -281,6 +301,21 @@ func _audio_view() -> AudioAnalysis:
 	var view := auto_free(AudioAnalysis.new(_service)) as AudioAnalysis
 	add_child(view)
 	return view
+
+
+func _screenshot_view() -> ScreenshotAnalysis:
+	var view := auto_free(ScreenshotAnalysis.new(_service)) as ScreenshotAnalysis
+	add_child(view)
+	return view
+
+
+func _screenshot_result(grid: String) -> Dictionary:
+	return {"kind": "screenshot_analysis", "contract_version": "1", "schema_version": "1.0",
+		"tool_version": "0.5.0", "status": "completed", "exit_code": 0, "error": null,
+		"file": {"path": "", "sha256": null}, "analysis": {}, "warnings": [],
+		"cvd_grid": {"path": ProjectSettings.globalize_path(grid), "method": "fixture",
+			"panels": ["normal", "gray", "protan", "deutan"], "panel_size": [4, 2],
+			"image_size": [8, 52], "note": "Fixture grid"}}
 
 
 func _audio_result() -> Dictionary:

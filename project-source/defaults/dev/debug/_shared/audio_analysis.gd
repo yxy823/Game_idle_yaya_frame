@@ -135,7 +135,7 @@ func _note(text: String, detail: String = "") -> MarginContainer:
 
 func _start(path: String) -> void:
 	_results[path] = {"status": "pending", "message": "分析中…"}
-	var started := service.analyze(path, "audio", [], _finished.bind(path))
+	var started := service.analyze(path, "audio", _finished.bind(path))
 	if started.error != OK:
 		_results[path] = {"status": "unavailable", "message": started.message,
 			"detail": String(started.get("detail", ""))}

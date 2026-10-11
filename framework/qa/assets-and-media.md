@@ -73,9 +73,9 @@ GAA --> 游戏项目: 摘要数值
 | 音频制作项目 | 写合成脚本、导出候选、保留母版和生成方法 | 不判断游戏里的实际效果 |
 | GAA | 测量；制作时可画响度曲线、频谱 | 不制作声音；调试台只读数值，不画图 |
 
-三者分开，是因为变化原因不同：制作要反复试，中间文件不该进游戏仓库；测量方法要在多个游戏和制作中保持一致，所以作为独立工具，由各处调用，不复制进任何一个项目。GAA 和图像 Analyzer 装在本机同一个分析用的 Python 环境里，游戏项目通过配置项指向这个解释器。美术那边，规划同样是“美术制作项目 + 测量工具”，测量工具用哪一个还没定。
+三者分开，是因为变化原因不同：制作要反复试，中间文件不该进游戏仓库；测量方法要在多个游戏和制作中保持一致，所以作为独立工具，由各处调用，不复制进任何一个项目。GAA 装在本机分析用的 Python 环境里，游戏项目通过配置项指向这个解释器。美术那边同样是“美术制作项目 + 测量工具”，测量工具是 Game Visual Analyzer（GVA），装在它自己的 Python 环境里，游戏项目用另一个配置项指向。
 
-**依据**：[在项目外制作](../../project-source/methodology/11-specialist-workflows.md#在项目外制作)、[框架术语](../terminology.md)中的“制作项目”、[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)、[资源 Analyzer](../../project-source/tools/analyzer/README.md)
+**依据**：[在项目外制作](../../project-source/methodology/11-specialist-workflows.md#在项目外制作)、[框架术语](../terminology.md)中的“制作项目”、[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)
 
 ## 字体的内容分在好几处，合适吗？
 
@@ -95,22 +95,21 @@ GAA --> 游戏项目: 摘要数值
 
 ## 调试台自己能测量音频和图片吗？
 
-**结论**：测量由后台工具完成：音频交给本机安装的 Game Audio Analyzer（GAA），图像交给随项目分发的资源 Analyzer。调试台负责调用和显示，并把有效的基础频率换算成音名。
+**结论**：测量由本机安装的外部工具完成：音频交给 Game Audio Analyzer（GAA），截图交给 Game Visual Analyzer（GVA）。调试台负责调用和显示，并把有效的基础频率换算成音名。
 
 **为什么**：
 
 ```flow LR
 调试台 -> GAA: 音频候选
-调试台 -> 资源 Analyzer: 截图
+调试台 -> GVA: 截图
 GAA --> 调试台: 九项指标摘要
-资源 Analyzer --> 调试台: 色盲四宫格
-group 本机安装: GAA
-group 随项目分发: 资源 Analyzer
+GVA --> 调试台: 色盲四宫格
+group 本机安装: GAA, GVA
 ```
 
-音效候选旁的九项指标直接读取 GAA 后台摘要，并按每项状态显示数值或原因；音名按十二平均律、A4=440 Hz 换算。“分析”页的截图色盲四宫格由项目内的 `yaya/tools/analyzer/` 生成。两个解释器分别配置：未配置 GAA 时音频分析显示“未配置 GAA”，图像分析和其他功能仍可使用。测量指标不代替实际试听或观察游戏画面。
+音效候选旁的九项指标直接读取 GAA 后台摘要，并按每项状态显示数值或原因；音名按十二平均律、A4=440 Hz 换算。“分析”页的截图色盲四宫格由 GVA 的后台截图分析生成，两个工具用同一种后台调用。两个解释器分别配置：未配置 GAA 时音频分析显示“未配置 GAA”，未配置 GVA 时截图分析显示“未配置 GVA，截图分析不可用；其他功能照常”，另一个工具和其他功能仍可使用。测量指标不代替实际试听或观察游戏画面。
 
-**依据**：[资源 Analyzer](../../project-source/tools/analyzer/README.md)、[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)
+**依据**：[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)
 
 
 ## 能用代码生成音效和音乐吗？能做到什么程度？

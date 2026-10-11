@@ -58,7 +58,7 @@ flowchart TD
 | [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、开发场景图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查脚本 |
 | [maintenance/](maintenance/README.md) | 框架维护文档：维护与同步；`design-guidelines/` 职责设计准则；`validation/` 验证范围；`dependencies/` 第三方插件版本记录；`tools/` 仓库链接检查与孤立文档扫描，README 另说明术语检查、措辞检查和两个钩子 |
 | `project-creation/` | 唯一复制清单 `project-files.json`；[tools/](project-creation/tools/README.md) 创建器 |
-| [tests/](tests/README.md) | `repository/` 从仓库根目录运行的维护回归；`external-project/` 需要指定外部项目的工具回归、Analyzer、插件与文档语言夹具，各子目录 README 说明放置与运行 |
+| [tests/](tests/README.md) | `repository/` 从仓库根目录运行的维护回归；`external-project/` 需要指定外部项目的工具回归、调试台分析、插件与文档语言夹具，各子目录 README 说明放置与运行 |
 
 两本手册独立阅读、不互相引用：Godot 项目手册讲“项目里的东西是什么、怎么用”，场景速查手册讲“现在遇到这种情况该怎么处理”。场景速查手册与提示词同放在 `prompt-scenarios/`，便于按名称一一对应；关系图同时服务两者，单独放在 `relationship-maps/`。
 
