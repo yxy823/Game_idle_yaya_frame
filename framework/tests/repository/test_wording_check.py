@@ -139,6 +139,25 @@ class WordingCheckTests(unittest.TestCase):
         self.assertEqual(process.returncode, 2, process.stdout)
         self.assertIn("「应」的 pattern 不是合法的正则", process.stderr)
 
+    def test_sentences_over_the_limit_are_listed_for_review(self):
+        limits = {"descriptive": 10, "procedural": 5}
+        self.write(CONFIG, json.dumps({"sentence_length": limits, "checks": CHECKS}, ensure_ascii=False))
+        self.write("guide.md", "# 标题超过十个字也不算句子长度\n\n短句。这一句一共有十一个字吧。\n"
+                               "1. 运行六个字句\n2. 运行五个字\n| 表格里的长内容不按句子检查 |\n")
+        process = self.run_cli("--config", CONFIG)
+        self.assertEqual(process.returncode, 0, process.stderr)
+        self.assertIn("guide.md:3:4: [WORDING-REVIEW] 「11 字」（句长）待复核：描述句超过 10 字", process.stdout)
+        self.assertIn("guide.md:4:4: [WORDING-REVIEW] 「6 字」（句长）待复核：步骤句超过 5 字", process.stdout)
+        self.assertEqual(process.stdout.count("（句长）"), 2, process.stdout)
+        self.assertNotIn("（句长）", self.run_cli("--config", CONFIG, "--level", "hard").stdout)
+
+    def test_invalid_sentence_length_exits_2(self):
+        self.write(CONFIG, json.dumps({"sentence_length": {"descriptive": 0, "procedural": 5}, "checks": CHECKS}))
+        self.write("guide.md", "短句。\n")
+        process = self.run_cli("--config", CONFIG)
+        self.assertEqual(process.returncode, 2)
+        self.assertIn("sentence_length 必须正好包含正整数的", process.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()

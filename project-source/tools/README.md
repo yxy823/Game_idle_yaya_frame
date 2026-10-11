@@ -20,7 +20,7 @@ yaya/tools/
 | 链接文字检查 [check-link-text.py](checks/check-link-text.py) | 列出链接文字不是目标标题、也不是目标 Skill 名、文件名或目录名的链接 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
 | 用词提示钩子 [check-prompt-terminology.py](checks/check-prompt-terminology.py) | Claude Code 的用户消息钩子：消息中有不用的说法时，提示 Agent 在回复最前面列出用词对照表 |
-| 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法；`--list` 列出全部检查项 |
+| 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法与超长句；`--list` 列出全部检查项 |
 | 资源格式检查 [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
 | 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
 | 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
@@ -304,7 +304,7 @@ python -B yaya/tools/checks/check-wording.py --level hard
 python -B yaya/tools/checks/check-wording.py --list
 ```
 
-配置的格式为 `{"checks": [检查项, …]}`，每个检查项正好有以下字段，都是非空字符串：
+配置的格式为 `{"sentence_length": {…}, "checks": [检查项, …]}`。`sentence_length` 正好有两个正整数字段：`descriptive` 是描述句的字数上限，`procedural` 是步骤句（有序列表项）的字数上限；省略时不查句长。每个检查项正好有以下字段，都是非空字符串：
 
 | 字段 | 含义 |
 | --- | --- |
@@ -317,7 +317,7 @@ python -B yaya/tools/checks/check-wording.py --list
 检查分两层：
 
 - **硬性**（`WORDING-HARD`）：`level` 为 `hard` 的检查项在适用范围内的每一处命中。有一处就返回 `1`。
-- **待复核**（`WORDING-REVIEW`）：`level` 为 `review` 的检查项的每一处命中，只列出供作者看上下文判断，不影响退出码。`--level hard` 时不运行这一层。
+- **待复核**（`WORDING-REVIEW`）：`level` 为 `review` 的检查项的每一处命中，以及超过 `sentence_length` 上限的句子，只列出供作者看上下文判断，不影响退出码。句子按“。！？；”断开，跳过标题、表格行、代码和引号内的文字；一个汉字、一个英文单词或数字各算 1 字，标点不算。`--level hard` 时不运行这一层。
 
 每个检查项的正则逐行单独扫描遮蔽后的文字；同一位置被多个检查项命中时，各报告一次。
 

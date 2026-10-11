@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Report wordings matched by the checks in wording-check.json: hard checks fail, checks to review are listed only."""
 # 只读检查：不改写文件。要找的写法和例外都写在配置的正则里，脚本不保存词表；代码、引号内的文字不算出现。
+# 配置的 sentence_length 给出句长上限：超过的句子列为待复核。
 # 读取、遮蔽、文件选择和输出格式与术语检查共用 tools/lib/document_text.py。
 from __future__ import annotations
 
@@ -23,6 +24,10 @@ LEVELS = {"hard": "WORDING-HARD", "review": "WORDING-REVIEW"}
 LEVEL_NAMES = {"hard": "硬性", "review": "待复核"}
 SCOPES = {"rule-files": "规则文件", "all": "全部文档"}
 FIELDS = ("name", "level", "scope", "pattern", "suggestion")
+LENGTH_FIELDS = ("descriptive", "procedural")
+SENTENCE = re.compile(r"[^。！？；]+[。！？；]?")
+COUNTED = re.compile(r"[一-鿿]|[A-Za-z0-9_]+")
+ORDERED_ITEM = re.compile(r"^\s*\d+[.)]\s")
 
 
 class ConfigError(Exception):
@@ -54,12 +59,21 @@ class Finding:
     message: str
 
 
-def load_checks(path: Path, display: str) -> list[Check]:
-    """Read {"checks": [{name, level, scope, pattern, suggestion}, ...]} and compile every pattern."""
+def load_config(path: Path, display: str) -> tuple[list[Check], dict[str, int] | None]:
+    """Read {"checks": [...], "sentence_length": {"descriptive": n, "procedural": n}}; sentence_length is optional."""
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ConfigError(f"{display}:{exc.lineno}:{exc.colno}: JSON 解析失败：{exc.msg}") from exc
+    limits = data.get("sentence_length") if isinstance(data, dict) else None
+    if limits is not None and (not isinstance(limits, dict) or set(limits) != set(LENGTH_FIELDS)
+                               or not all(isinstance(limits[key], int) and limits[key] > 0 for key in LENGTH_FIELDS)):
+        raise ConfigError(f"{display}: sentence_length 必须正好包含正整数的 {'、'.join(LENGTH_FIELDS)}")
+    return load_checks(data, display), limits
+
+
+def load_checks(data, display: str) -> list[Check]:
+    """Validate {"checks": [{name, level, scope, pattern, suggestion}, ...]} and compile every pattern."""
     items = data.get("checks") if isinstance(data, dict) else None
     if not isinstance(items, list) or not items:
         raise ConfigError(f"{display}: 缺少非空的 checks 列表")
@@ -125,7 +139,35 @@ def check_documents(checks: list[Check], documents: list[Document], options: arg
                         LEVELS[check.level], check.name, found, check.level, check.scope, check.suggestion,
                         context_snippet(document.original[index], match.start() + 1, options.context_width), message,
                     ))
-    return sorted(findings, key=lambda item: (item.rule != "WORDING-HARD", item.path, item.line, item.column))
+    return findings
+
+
+def check_sentence_length(limits: dict[str, int], documents: list[Document], options: argparse.Namespace) -> list[Finding]:
+    """List sentences longer than the limit: ordered list items are procedural, other prose is descriptive.
+    One Chinese character, English word or number counts as 1; punctuation, code and quoted text do not count."""
+    findings = []
+    for document in documents:
+        for index, masked in enumerate(document.masked):
+            if masked is None or masked.lstrip().startswith(("#", "|")):
+                continue
+            marker = ORDERED_ITEM.match(masked)
+            kind = "procedural" if marker else "descriptive"
+            if marker:
+                masked = " " * marker.end() + masked[marker.end():]
+            name = "步骤句" if kind == "procedural" else "描述句"
+            for match in SENTENCE.finditer(masked):
+                count = len(COUNTED.findall(match.group(0)))
+                if count <= limits[kind]:
+                    continue
+                column = match.start() + len(match.group(0)) - len(match.group(0).lstrip())
+                suggestion = f"{name}超过 {limits[kind]} 字，拆成几句，一句只说一件事"
+                findings.append(Finding(
+                    document.path, document.lines[index], document.offsets[index] + column + 1, LEVELS["review"],
+                    "句长", f"{count} 字", "review", "all", suggestion,
+                    context_snippet(document.original[index], column + 1, options.context_width),
+                    f"「{count} 字」（句长）待复核：{suggestion}",
+                ))
+    return findings
 
 
 def print_checks(checks: list[Check], verbose: bool) -> None:
@@ -165,7 +207,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: wording check configuration not found: {config_path}", file=sys.stderr)
         return 2
     try:
-        checks = load_checks(config_path, display_path(config_path, root))
+        checks, limits = load_config(config_path, display_path(config_path, root))
         if args.list:
             print_checks(checks, args.verbose)
             return 0
@@ -178,6 +220,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.level == "hard":
         checks = [check for check in checks if check.level == "hard"]
     findings = check_documents(checks, documents, args)
+    if limits and args.level == "all":
+        findings += check_sentence_length(limits, documents, args)
+    findings.sort(key=lambda item: (item.rule != "WORDING-HARD", item.path, item.line, item.column))
     hard = [item for item in findings if item.rule == "WORDING-HARD"]
     review = [item for item in findings if item.rule == "WORDING-REVIEW"]
     summary = {

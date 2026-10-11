@@ -1,4 +1,8 @@
 {
+  "sentence_length": {
+    "descriptive": 60,
+    "procedural": 40
+  },
   "checks": [
     {
       "name": "应",
