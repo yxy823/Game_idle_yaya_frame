@@ -94,7 +94,6 @@ node .agents/skills/qa-explainer-godot/scripts/qa-build.mjs docs/qa
 
 - `✓ <路径>`：页面已生成。
 - `✗ L<行号> …` 和 `Correct example:`：按示例改正主题文件的这一行再生成，这次没有写出页面。
-- `STE n warnings`：按提示改写报出的句子再生成，最多改两轮；仍有警告时保留最后的页面，在回复中说明。
 - `code n warnings`：代码块超过 40 行，删到只剩说明问题的行。
 
 以生成输出为准，不打开浏览器截图检查。
@@ -112,6 +111,11 @@ node .agents/skills/qa-explainer-godot/scripts/qa-build.mjs docs/qa
 
 ## 行文
 
-生成时脚本会检查措辞并给出警告，按提示改写：一句话只说一件事；中文不用“进行优化”“加以说明”这类虚动词，一个名词前不超过两个“的”；不用“尽快”“若干”“大概”这类含糊词；同一个东西全文用同一个名称。
+问答按项目文档的写作要求书写，入口见项目 `AGENTS.md` 的「使用说明的可读性」。写完后对改过的主题文件运行措辞检查和术语检查，按输出改写，再生成页面：
+
+```powershell
+python -B yaya/tools/checks/check-wording.py docs/qa/<主题>.md
+python -B yaya/tools/checks/check-terminology.py docs/qa/<主题>.md
+```
 
 脚本的设置（是否自动打开浏览器、主题等）用 `am.mjs config` 查看和修改；不运行更新命令，脚本的来源和本地改动见 [scripts/LOCAL_CHANGES.md](scripts/LOCAL_CHANGES.md)。

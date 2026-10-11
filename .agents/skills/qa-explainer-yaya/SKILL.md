@@ -15,7 +15,13 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
 ## 步骤
 
 1. 按 Q&A 说明判断是否添加、放进哪个主题。
-2. 按 qa-explainer-godot 的格式写或改主题文件。
+2. 按 qa-explainer-godot 的格式和 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md) 的写作要求写或改主题文件，再对改过的文件运行措辞检查和术语检查，按输出改写：
+
+   ```powershell
+   python -B project-source/tools/checks/check-wording.py framework/qa/<主题>.md
+   python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md framework/qa/<主题>.md
+   ```
+
 3. 在仓库根目录生成全部主题页和首页 `framework/qa/index.html`；用户自己修改了主题文件后，也运行同一条命令：
 
    ```powershell
