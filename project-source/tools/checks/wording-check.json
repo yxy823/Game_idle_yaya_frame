@@ -85,6 +85,13 @@
       "suggestion": "写出数字或比较对象"
     },
     {
+      "name": "显著/明显",
+      "level": "review",
+      "scope": "all",
+      "pattern": "显著|明显(?=[提改增减降变好差])",
+      "suggestion": "写出变化的数字或可观察的结果"
+    },
+    {
       "name": "通常/一般",
       "level": "review",
       "scope": "all",
@@ -132,6 +139,13 @@
       "scope": "all",
       "pattern": "(?:加以|予以)(?:处理|说明|区分|修改|确认)|处理一下",
       "suggestion": "直接写动作"
+    },
+    {
+      "name": "套话",
+      "level": "review",
+      "scope": "all",
+      "pattern": "开箱即用|无缝|一站式",
+      "suggestion": "写出具体做了什么、省掉了哪一步"
     }
   ]
 }
