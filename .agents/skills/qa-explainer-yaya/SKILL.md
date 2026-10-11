@@ -10,22 +10,16 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
 ## 两份规则分别管什么
 
 - **什么时候添加、按问题类型写多少**：以 [Q&A](../../../framework/qa/README.md) 的说明为准，它是框架问答的唯一正文。
-- **主题文件格式、组件选择、生成命令和页面意见的处理**：沿用随项目分发的 [qa-explainer-godot](../../../project-source/skills/qa-explainer-godot/SKILL.md)，渲染脚本也只保存在那里一份。读它时把 `docs/qa/` 换成 `framework/qa/`，把项目的 `document_language` 换成中文，脚本路径换成 `project-source/skills/qa-explainer-godot/scripts/am.mjs`；其中“何时添加”和“文件与位置”两节以 Q&A 说明为准。
+- **主题文件格式、组件选择、生成命令和页面意见的处理**：沿用随项目分发的 [qa-explainer-godot](../../../project-source/skills/qa-explainer-godot/SKILL.md)，渲染脚本也只保存在那里一份。读它时把 `docs/qa/` 换成 `framework/qa/`，把项目的 `document_language` 换成中文，脚本路径换成 `project-source/skills/qa-explainer-godot/scripts/`；其中“何时添加”和“文件与位置”两节以 Q&A 说明为准。
 
 ## 步骤
 
-1. 按 Q&A 说明判断是否添加、放进哪个主题；新增主题时在 Q&A 说明的「主题」表加一行。
+1. 按 Q&A 说明判断是否添加、放进哪个主题。
 2. 按 qa-explainer-godot 的格式写或改主题文件。
-3. 在仓库根目录生成页面：
+3. 在仓库根目录生成全部主题页和首页 `framework/qa/index.html`；用户自己修改了主题文件后，也运行同一条命令：
 
    ```powershell
-   node project-source/skills/qa-explainer-godot/scripts/am.mjs render framework/qa/<主题>.md -o framework/qa/<主题>.html --no-open
-   ```
-
-   页面留在本机，新页面直接覆盖旧页面。用户自己修改了主题文件时，可以在仓库根目录重新生成全部页面：
-
-   ```powershell
-   Get-ChildItem framework/qa/*.md -Exclude README.md | ForEach-Object { node project-source/skills/qa-explainer-godot/scripts/am.mjs render $_.FullName -o ($_.FullName -replace '\.md$', '.html') --no-open }
+   node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa
    ```
 
 4. 按根 `AGENTS.md` 的本地提交规则提交 `.md`；`.html` 已被根 `.gitignore` 忽略，不提交。

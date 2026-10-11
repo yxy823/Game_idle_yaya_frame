@@ -25,7 +25,7 @@ description: 用户在对话中问到以后还会用到的问题时使用，例�
 
 - 一个主题一个文件：`docs/qa/<主题>.md`，生成的页面是同名的 `docs/qa/<主题>.html`。页面和正文放在同一目录，正文里的相对链接在页面中仍然有效。
 - 先找已有主题；没有合适的主题时新建文件。只在出现第一条问答时创建主题文件，不预建空主题。一个主题超过约 15 条问答、查找变难时，再按问题的共同对象拆分。
-- `docs/qa/README.md` 是主题目录：每个主题一行，写主题链接和它收录的问题。新增主题时加一行。
+- 首页 `docs/qa/index.html` 由脚本按各主题文件的 `title` 和 `##` 标题自动生成，列出全部主题和问题；每个主题页的页头和每条问答都有返回首页的链接。不另外维护主题或问题清单。
 - 问答用 `docs/methodology-config.json` 的 `document_language` 书写。
 - 提交 `.md`，不提交 `.html`；项目的 `.gitignore` 已忽略 `/docs/qa/*.html`。提交按项目的 Git 规则。
 
@@ -84,16 +84,10 @@ title: 存档系统
 
 ## 生成页面
 
-在项目根目录运行：
+每次写入或修改主题文件后，在项目根目录运行下面的命令。它重新生成 `docs/qa/` 下全部主题页和首页，新页面直接覆盖旧页面；用户自己修改了主题文件后，也运行同一条命令：
 
 ```powershell
-node .agents/skills/qa-explainer-godot/scripts/am.mjs render docs/qa/<主题>.md -o docs/qa/<主题>.html --no-open
-```
-
-每次写入或修改主题文件后运行这条命令。页面留在本机，新页面直接覆盖旧页面。用户自己修改了主题文件时，可以在项目根目录用下面的命令重新生成全部页面：
-
-```powershell
-Get-ChildItem docs/qa/*.md -Exclude README.md | ForEach-Object { node .agents/skills/qa-explainer-godot/scripts/am.mjs render $_.FullName -o ($_.FullName -replace '\.md$', '.html') --no-open }
+node .agents/skills/qa-explainer-godot/scripts/qa-build.mjs docs/qa
 ```
 
 按输出处理：
@@ -105,7 +99,7 @@ Get-ChildItem docs/qa/*.md -Exclude README.md | ForEach-Object { node .agents/sk
 
 以生成输出为准，不打开浏览器截图检查。
 
-回复只写两三行：问题的核心结论、新增或修改了哪几条问答、页面链接。页面链接写成 `file:///` 链接：取页面的绝对路径，把 `\` 换成 `/`，例如 `[file:///D:/game/docs/qa/存档系统.html](file:///D:/game/docs/qa/存档系统.html)`。
+回复只写两三行：问题的核心结论、新增或修改了哪几条问答、页面链接。页面链接写成 `file:///` 链接：取页面的绝对路径，把 `\` 换成 `/`，例如 `[file:///D:/game/docs/qa/存档系统.html](file:///D:/game/docs/qa/存档系统.html)`；新增主题时，同时给出首页 `index.html` 的链接。
 
 ## 用户贴回页面上的意见
 
