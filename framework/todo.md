@@ -9,9 +9,9 @@
 剩余步骤：
 
 1. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。2026-10-11 与用户定下：Agent 写分层 SVG 母版，用 Inkscape 1.4.4（`C:/Program Files/Inkscape/bin/inkscape.com`）导出 PNG，游戏只接收 PNG；本轮不做像素画，不用图像生成模型。技术验证对象是 `Game_Idle_Demo_V2` 的蘑菇棚图（显示框 64×40）。制作项目的规则已改写（该项目提交 `3082028`）；GVA 用专用 conda 环境 `yaya-gva`，自带 121 个测试通过。剩余步骤：
-   1. 等用户完成 `Game_Idle_Demo_V2` 的 F005 人工验收。然后在该项目用 `design-art-direction` 定画风，写进 Art Bible。demo 项目的画风由监工决定，不问用户。再用 `design-visual-asset-spec` 更新棚图规格。
-   2. 按画风和规格做 3 个候选，用户挑选，作为调试台候选接入该项目。
-   3. 按第 2 步看图时实际缺的判断，扩展 GVA 的单素材分析。GVA 允许扩展和大规模重构。已知缺口：排除透明像素统计、显示尺寸可读性、跨文件风格一致、小于 16px 的图。
+   1. 用户从 3 个候选中挑选。画风已写进该项目 Art Bible（项目提交 `c52d1bb`），棚图规格见 `docs/ui/main-design.md`「按美术方向制作的蘑菇棚图」（`fc6eb46`、`e4a0190`）；3 个候选在制作项目 `works/idle-demo-v2/mushroom-shed/`（制作项目提交 `a4baa96`）。挑选后作为 Product 01 范围外的限定实验接入调试台候选，接入时决定是否开 mipmap。
+   2. 按候选制作的实际做法补齐制作规则（`--actions` 导出写法、浅色背景色值、显示尺寸放大查看）和 Art Bible 缺口（高光色、地面阴影色、门洞暗部色）。
+   3. 按第 2 步看图时实际缺的判断，扩展 GVA 的单素材分析。GVA 允许扩展和大规模重构。实际缺口记在制作项目 `works/idle-demo-v2/mushroom-shed/README.md`「看图时想判断、但 GVA 测不出的项目」，共 9 项，例如显示尺寸下能否认出、缩小后描边是否连贯、用 alpha 当主体区域、多背景对比、跨文件风格一致、色板符合度。
    4. 调试台截图分析改为调用 GVA（补后台调用契约，色觉四宫格移进 GVA），框架 Analyzer 整个退役。
 
 ## 验证缺口
