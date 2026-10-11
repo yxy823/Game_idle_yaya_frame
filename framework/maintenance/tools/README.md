@@ -81,7 +81,17 @@ python -B project-source/tools/checks/check-wording.py --list
 git config core.hooksPath .githooks
 ```
 
+同一目录还有下文的[提交后生成 Q&A 页面](#提交后生成-qa-页面)钩子，启用这一次就一起生效。
+
 生成项目使用分发源中的另一份钩子，由创建器启用，见项目检查与测试工具的[提交钩子](../../../project-source/tools/README.md#提交钩子)。
+
+## 提交后生成 Q&A 页面
+
+`framework/qa/` 下的 HTML 页面被根 `.gitignore` 忽略，不提交。仓库根目录的 `.githooks/post-commit` 在每次提交完成后检查：这次提交改了 `framework/qa/` 下的文件或 `project-source/skills/qa-explainer-godot/scripts/` 下的渲染脚本时，运行 `node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa`，重新生成全部主题页和首页。
+
+- 提交已经完成，生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
+- 只改了主题文件、还没提交时，页面不会更新；想提交前先看效果，手动运行同一条命令。
+- 用 PATH 中的 `node` 运行；启用方式与提交钩子相同。
 
 ## 用词提示钩子
 
