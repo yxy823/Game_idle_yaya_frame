@@ -44,7 +44,7 @@
 | 探索、worktree 准备或成果整合 | [逐步探索与 worktree](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[探索结果与工作目录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
 | 专业文档维护者、资源、语言或独立审核 | [专业来源与资源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill、Agent 与提示词](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
 | 参数、测试选择、结果、指纹或错误 | [命令与验证证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
-| 调试台调用的外部分析工具（GAA、GVA） | [配置参考](../godot-project-manual/foundations/configuration.md) | 调试台的[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)、`analyzer_service.gd` 与调试台分析测试 |
+| 调试台调用的外部分析工具 GAA | [配置参考](../godot-project-manual/foundations/configuration.md) | 调试台的[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)、`analyzer_service.gd` 与调试台分析测试 |
 | 术语、设计、架构、规则、调研、知识或 Progress | [知识、设计与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、产物生命周期、角色和领域规则 |
 | 场景的输入、步骤、提示词或出口 | 对应 Project / 分类下的同名场景页 | 所属提示词库、Skill / methodology / CLI、[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md) |
 

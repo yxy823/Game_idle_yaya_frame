@@ -1,6 +1,6 @@
-# gdlint:ignore-file:file-length=571
-# gdlint:ignore-file:god-class-functions=25
-# 保留原因：公开函数是 23 个测试用例加前后准备，全部共用同一个真实窗口夹具；拆文件要复制夹具或新建夹具基类。用户同意于 2026-10-08。
+# gdlint:ignore-file:file-length=557
+# gdlint:ignore-file:god-class-functions=24
+# 保留原因：公开函数是 22 个测试用例加前后准备，全部共用同一个真实窗口夹具；拆文件要复制夹具或新建夹具基类。用户同意于 2026-10-08。
 extends GdUnitTestSuite
 
 const WINDOW := preload("res://dev/debug/_shared/debug_window.tscn")
@@ -179,20 +179,6 @@ func test_compare_bar_counts_differences_shows_the_side_and_the_deferred_switch(
 	assert_bool(_window.compare.save.disabled).is_true()
 	_send(get_tree().root, KEY_QUOTELEFT)
 	assert_bool(_window.panel.locked).is_false()
-
-
-func test_tabs_switch_pages_without_touching_playback() -> void:
-	assert_bool(_window.tabs[0].button_pressed).is_true()
-	assert_bool(_window.pages[0].visible and not _window.pages[1].visible).is_true()
-	_window.playback.state = Playback.State.PLAYING
-	_window.tabs[1].pressed.emit()
-	assert_bool(_window.pages[1].visible and not _window.pages[0].visible).is_true()
-	assert_bool(_window.screenshots.is_visible_in_tree() or not _window.visible).is_true()
-	assert_str(_window.screenshots.capture_button.text).is_equal("截图分析")
-	assert_int(_window.playback.state).is_equal(Playback.State.PLAYING)
-	_window.tabs[0].pressed.emit()
-	assert_bool(_window.pages[0].visible).is_true()
-	_window.playback.cancel()
 
 
 func test_status_bar_shows_plain_words_and_keeps_raw_details() -> void:

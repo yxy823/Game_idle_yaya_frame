@@ -14,13 +14,10 @@
    & '<项目 python_executable>' -B yaya/tools/testing/run-gdunit-tests.py --target dev/debug/_shared/tests/gaa_service_contracts.gd --continue
    ```
 
-套件使用真实子进程，覆盖等待发布、成功结果、失败、中断和无结果文件。假脚本接受 GAA 的摘要参数，并额外接受测试用 `--case` 和 `--release-file`；它只输出固定指标，不进行音频测量。等待发布由释放文件控制，测试结束清理结果、释放文件和所属子进程。GVA 与 GAA 走服务里同一段启动、等待和读取代码，所以不另设 GVA 进程替身。
+套件使用真实子进程，覆盖等待发布、成功结果、失败、中断和无结果文件。假脚本接受 GAA 的摘要参数，并额外接受测试用 `--case` 和 `--release-file`；它只输出固定指标，不进行音频测量。等待发布由释放文件控制，测试结束清理结果、释放文件和所属子进程。
 
 ## 替身测试与真实集成
 
-界面字段、状态、音名、截图存盘和四格切分的替身测试保留在分发的 `dev/debug/_shared/tests/analysis_test.gd`。真实集成另在外部项目运行：
+界面字段、状态和音名的替身测试保留在分发的 `dev/debug/_shared/tests/analysis_test.gd`。真实集成另在外部项目运行：用服务分析 WAV，核对九项字段、运行身份和契约版本。
 
-- **GAA**：用服务分析 WAV，核对九项字段、运行身份和契约版本。
-- **GVA**：用服务分析一张截图，核对契约字段、运行身份和四宫格按 `panel_size` 切分的结果。
-
-真实集成通过与人工试听、观察分别记录。
+真实集成通过与人工试听分别记录。

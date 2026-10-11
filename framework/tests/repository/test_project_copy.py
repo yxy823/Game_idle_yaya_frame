@@ -339,7 +339,6 @@ class ProjectCopyTests(unittest.TestCase):
         copy_project(repository, output)
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
         self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable",
-                                       "visual_analyzer_python_executable",
                                        "audio_analyzer_python_executable"})
         self.assertIsInstance(config["engine_executable"], str)
         settings = (output / "project.godot").read_text(encoding="utf-8")
@@ -424,7 +423,6 @@ class ProjectCopyTests(unittest.TestCase):
                              (repository / "project-source/defaults/docs" / relative).read_bytes())
         for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
             self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
-        self.assertEqual(config["visual_analyzer_python_executable"], "")
         self.assertEqual(config["audio_analyzer_python_executable"], "")
 
     def test_distribution_resources_have_uids_and_scanned_addon_images_have_imports(self):

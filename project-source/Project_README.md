@@ -25,7 +25,7 @@
 | 配置 Python 和 Godot | [项目环境](yaya/methodology/06-project-environment.md)；路径保存在 `docs/methodology-config.json` |
 | 选择文档语言 | [文档语言](yaya/methodology/05-document-language.md)；文档默认中文 |
 | 运行环境检查、测试或静态检查 | [项目检查与测试工具](yaya/tools/README.md)；GDScript 解析与 lint 见[GDScript lint 的约定与证据](yaya/methodology/contracts/gdscript-lint.md) |
-| 用 GAA 分析音效候选，或用 GVA 分析游戏截图 | 调试台的[分析](dev/debug/_shared/README.md#分析) |
+| 用 GAA 分析音效候选 | 调试台的[分析](dev/debug/_shared/README.md#分析) |
 | 运行项目自己的常用脚本 | [项目脚本](dev/tools/README.md) |
 
 `main/main.tscn` 是最小启动入口；游戏功能放在 `game/`，复用能力与共享素材分别放在 `components/`、`assets/`，测试放在 `tests/`。`yaya/` 是框架随项目提供的流程、规则和工具，游戏内容不放进去。具体归属见[游戏职责与项目组织指南](docs/game-organization.md)。环境就绪、测试通过和人工验收各自需要实际证据，文件存在不能代替。

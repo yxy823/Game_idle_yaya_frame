@@ -74,9 +74,8 @@ func after_test() -> void:
 	printerr("\n".join(_seen))
 
 
-func test_adopt_a_sound_compare_an_edit_and_open_analysis() -> void:
-	_see("场景 1 打开", "%s 页 · %s" % [_window.tabs[0].text, _window.panel.title.text])
-	assert_bool(_window.pages[0].visible).is_true()
+func test_adopt_a_sound_and_compare_an_edit() -> void:
+	_see("场景 1 打开", _window.panel.title.text)
 	_send_grave()
 	_see("场景 3 没有改动时按 `", _status())
 	assert_str(_status()).is_equal("还没有改动可对比")
@@ -110,10 +109,6 @@ func test_adopt_a_sound_compare_an_edit_and_open_analysis() -> void:
 	_save_then_load()
 	_load_a_preset_whose_implementation_is_gone()
 	_restart_before_the_agent_finishes()
-	_window.tabs[1].pressed.emit()
-	_see("场景 12 分析页", "%s · %s" % [_window.screenshots.capture_button.text,
-		_labels(_window.screenshots.tiles)])
-	assert_bool(_window.pages[1].visible and not _window.pages[0].visible).is_true()
 
 
 ## Scenario 8 with an unsaved slot: after the name, one confirmation lists where the slot's

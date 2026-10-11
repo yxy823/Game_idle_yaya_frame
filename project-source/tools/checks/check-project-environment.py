@@ -109,10 +109,9 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
 
     if not isinstance(config.get("engine_executable"), str):
         errors.append("engine_executable must be a string")
-    for key in ("visual_analyzer_python_executable", "audio_analyzer_python_executable"):
-        executable = config.get(key, "")
-        if not isinstance(executable, str) or (executable != "" and not Path(executable).is_absolute()):
-            errors.append(f"{key} must be empty or an absolute executable path")
+    executable = config.get("audio_analyzer_python_executable", "")
+    if not isinstance(executable, str) or (executable != "" and not Path(executable).is_absolute()):
+        errors.append("audio_analyzer_python_executable must be empty or an absolute executable path")
     return errors
 
 
@@ -149,11 +148,10 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     if not (repo_root / "yaya/tools/testing/run-gdunit-tests.py").is_file():
         errors.append("test runner is missing: yaya/tools/testing/run-gdunit-tests.py")
 
-    # GVA 和 GAA 是可选工具：只在配置了解释器时核对文件存在，不核对其中的依赖版本。
-    for key, tool in (("visual_analyzer_python_executable", "GVA"), ("audio_analyzer_python_executable", "GAA")):
-        executable = config.get(key, "")
-        if _nonempty_string(executable) and not Path(executable).is_file():
-            errors.append(f"{tool} Python executable is unavailable: {executable!r}")
+    # GAA 是可选工具：只在配置了解释器时核对文件存在，不核对其中的依赖版本。
+    executable = config.get("audio_analyzer_python_executable", "")
+    if _nonempty_string(executable) and not Path(executable).is_file():
+        errors.append(f"GAA Python executable is unavailable: {executable!r}")
 
     return errors
 

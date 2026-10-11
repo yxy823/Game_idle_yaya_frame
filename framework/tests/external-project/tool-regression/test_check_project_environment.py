@@ -109,19 +109,6 @@ class ProjectEnvironmentTests(unittest.TestCase):
             self.assertEqual(check_project_environment._readiness_errors(
                 self._config(sys.executable), self.repo_root), [])
 
-    def test_optional_gva_python_accepts_empty_and_checks_absolute_path(self) -> None:
-        config = self._config(sys.executable)
-        config["visual_analyzer_python_executable"] = ""
-        self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
-        config["visual_analyzer_python_executable"] = "relative/gva-python.exe"
-        self.assertTrue(check_project_environment._schema_errors(config, self.repo_root))
-        config["visual_analyzer_python_executable"] = str(self.repo_root / "missing-gva.exe")
-        self.assertEqual(check_project_environment._schema_errors(config, self.repo_root), [])
-        with mock.patch.object(check_project_environment, "_read_engine_version",
-                               return_value=("4.7.1.stable", None)):
-            errors = check_project_environment._readiness_errors(config, self.repo_root)
-        self.assertTrue(any("GVA Python executable is unavailable" in error for error in errors))
-
     def test_optional_gaa_python_accepts_empty_and_checks_absolute_path(self) -> None:
         config = self._config(sys.executable)
         for value in ("", sys.executable):

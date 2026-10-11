@@ -166,7 +166,7 @@ UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界�
 | 游戏原值 | 游戏文件里保存的值。对比只在“当前改动”和游戏原值（或某个组合）之间切换 |
 | 固定局面、试播动作 | 固定局面是一份游戏存档，每次从同一状态和随机种子开始播放；试播动作是插槽登记的“点一下就看到效果”的操作 |
 
-依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码](../../../project-source/defaults/dev/debug/_shared/README.md)的说明中维护；用户在调试台能完成的 13 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见 13 号规范的[调试台](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
+依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码](../../../project-source/defaults/dev/debug/_shared/README.md)的说明中维护；用户在调试台能完成的 12 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见 13 号规范的[调试台](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
 
 调参只在调试台里改。也可以从 Godot 编辑器启动调试入口，但编辑器检查器显示的是编辑器自己的副本，从编辑器停止（F8）会丢掉未保存的改动，见[从编辑器启动](../../../project-source/defaults/dev/debug/_shared/README.md#从编辑器启动)。
 

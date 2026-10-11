@@ -1,5 +1,3 @@
-# gdlint:ignore-file:file-length=422
-# 保留原因：调试窗口的组装入口，把会话、播放、工具栏、面板和对话框连起来；可移出的只有约 30 行屏幕尺寸代码，移出后窗口里还要留转发函数。用户同意于 2026-10-08。
 extends Window
 
 const Session := preload("res://dev/debug/_shared/debug_session.gd")
@@ -20,15 +18,11 @@ const CurveEditor := preload("res://dev/debug/_shared/editors/curve_editor.gd")
 const GradientEditor := preload("res://dev/debug/_shared/editors/gradient_editor.gd")
 const Analyzer := preload("res://dev/debug/_shared/analyzer_service.gd")
 const AudioAnalysis := preload("res://dev/debug/_shared/audio_analysis.gd")
-const ScreenshotAnalysis := preload("res://dev/debug/_shared/screenshot_analysis.gd")
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
 ## Logical size of the v4 layout; the native window multiplies it by content_scale_factor.
 const DESIGN_SIZE := Vector2(1000, 760)
 const MINIMUM_SIZE := Vector2(800, 560)
-const TAB_HEIGHT := 36.0
 const WINDOW_GAP := 8
-const TAB_WIDTH := 72.0
-const TABS: Array[String] = ["调参", "分析"]
 const LOCKED_PLAYING := "播放中参数已锁定：点播放条的“回到开头”结束播放后可修改"
 const LOCKED_COMPARING := "正在显示对比对象：按 ` 回到当前改动后可修改"
 const NO_TARGETS := "还没有调试对象：在 dev/debug/<对象>/ 下添加"
@@ -40,12 +34,9 @@ var toolbar: Toolbar
 var compare: CompareBar
 var slot_list: SlotList
 var panel: SlotPanel
-var screenshots: ScreenshotAnalysis
 var status: StatusBar
 var dialogs: Dialogs
 var presets: PresetCommands
-var tabs: Array[Button] = []
-var pages: Array[Control] = []
 ## Closes the game once the close question is answered; tests replace it.
 var quit_game: Callable
 var _screen: int = -1
@@ -113,46 +104,16 @@ func _build_ui() -> void:
 	background.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var column := Kit.column(0)
 	background.add_child(column)
-	column.add_child(_build_tabs())
-	pages.append(_build_tuning_page())
+	var page := _build_tuning_page()
 	var analyzer := Analyzer.new()
 	add_child(analyzer)
 	AudioAnalysis.new(analyzer).attach(panel, func(result: Dictionary) -> void:
 		report(result)
 		_rebind_panel())
-	pages.append(_build_analysis_page(analyzer))
-	for page in pages:
-		page.size_flags_vertical = Control.SIZE_EXPAND_FILL
-		column.add_child(page)
+	page.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(page)
 	status = StatusBar.new()
 	column.add_child(status)
-	show_tab(0)
-
-
-## "调参 / 分析": switching only shows another page, the game and playback keep running.
-func _build_tabs() -> MarginContainer:
-	var line := Kit.row(0)
-	var group := ButtonGroup.new()
-	for index in range(TABS.size()):
-		var tab := Kit.text_button(TABS[index], "", "", &"FilterSegment")
-		tab.name = "Tab%d" % index
-		tab.toggle_mode = true
-		tab.button_group = group
-		tab.custom_minimum_size = Vector2(TAB_WIDTH, Kit.INLINE)
-		tab.pressed.connect(show_tab.bind(index))
-		line.add_child(tab)
-		tabs.append(tab)
-	tabs[0].tooltip_text = "调参：插槽、候选、参数、对比与采纳"
-	tabs[1].tooltip_text = "分析：截图色觉模拟等画面分析；音效分析在音效插槽的检查器里"
-	var frame := Kit.panel(&"FilterFrame", line)
-	frame.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
-	var margins := MarginContainer.new()
-	margins.custom_minimum_size.y = TAB_HEIGHT
-	margins.add_theme_constant_override("margin_left", 12)
-	margins.add_theme_constant_override("margin_top", 6)
-	margins.add_theme_constant_override("margin_bottom", 6)
-	margins.add_child(frame)
-	return margins
 
 
 func _build_tuning_page() -> VBoxContainer:
@@ -189,27 +150,6 @@ func _build_tuning_page() -> VBoxContainer:
 	panel.register_editor("Gradient", GradientEditor.new)
 	body.add_child(panel)
 	return page
-
-
-func _build_analysis_page(analyzer: Analyzer) -> ScrollContainer:
-	var scroll := ScrollContainer.new()
-	scroll.name = "AnalysisPage"
-	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-	var margins := MarginContainer.new()
-	margins.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	for edge: String in ["left", "right", "bottom"]:
-		margins.add_theme_constant_override("margin_" + edge, 24)
-	margins.add_theme_constant_override("margin_top", 4)
-	scroll.add_child(margins)
-	screenshots = ScreenshotAnalysis.new(analyzer)
-	margins.add_child(screenshots)
-	return scroll
-
-
-func show_tab(index: int) -> void:
-	tabs[index].set_pressed_no_signal(true)
-	for page_index in range(pages.size()):
-		pages[page_index].visible = page_index == index
 
 
 func _refresh() -> void:
