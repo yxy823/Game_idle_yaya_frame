@@ -1,15 +1,5 @@
 # 框架待办
 
-## 资源制作与测量（进行中）
-
-方法规范把美术、音乐和音效制作留为预留能力（`project-source/methodology/11-specialist-workflows.md`「设计、制作、接入与审核」）。2026-10-10 与用户定下：制作放在游戏项目外独立的制作项目，按媒体各一个项目、多个游戏共用；音频用 `D:/A_Games/Studio_Audio_Production`，美术用 `D:/A_Games/Studio_Image_2D_Production`。执行由 Codex 完成、主 Agent 监工，每步做完再开下一步。
-
-已完成：音频制作项目的规则改写（该项目提交 `767c9d8`）；音频技术验证，3 个候选 WAV 在 `D:/A_Games/Studio_Audio_Production/works/idle-demo-v2/purchase-success/exports/`（音频制作项目提交 `cbd6ff0`）。用户单独试听后选定 `chord.wav` 可用（音频制作项目提交 `0845338`），说明代码合成能做出可用的界面短音效；它在游戏中是否合适，要等 `Game_Idle_Demo_V2` 的素材接入 Feature（F005）把它作为外部文件接入后确认，接入属于该试用项目，不在本计划内。调试台的音效分析已改用 GAA（提交 `941f0c2`），用户 2026-10-10 在外部验证项目 `D:/A_Games/Game_DebugConsole_GAA_check_20261010` 中人工验收通过。方法规范已把“预留能力”改为「在项目外制作」的交接做法（11 号规范同名小节）。
-
-剩余步骤：
-
-1. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。2026-10-11 与用户定下：Agent 写分层 SVG 母版，用 Inkscape 1.4.4（`C:/Program Files/Inkscape/bin/inkscape.com`）导出 PNG，游戏只接收 PNG；本轮不做像素画，不用图像生成模型。技术验证对象是 `Game_Idle_Demo_V2` 的蘑菇棚图（显示框 64×40）。制作项目的规则已改写（该项目提交 `3082028`）；GVA 用专用 conda 环境 `yaya-gva`，自带 121 个测试通过。技术验证已走通：用户选定候选 3，接入 `Game_Idle_Demo_V2`（项目提交 `0c8f6d7`）后在游戏里看图确认通过；制作选择已写回 Art Bible（`ec1224c`），制作规则已补齐（制作项目提交 `f28df7b`）。GVA 0.4.0 新增 `asset` 子命令，制作规则已改用它测量，候选 3 按实测修正后用户在游戏里查看通过（游戏项目提交 `8cc1af7`）。调试台截图分析已改为调用 GVA（GVA 提交 `022c7f2`、`a87d65d`，版本 0.5.0），框架自带的图像分析工具已退役；自动验证在外部验证项目 `D:/A_Games/Game_DebugConsole_GVA_check_20261011` 中通过。剩余：用户在该项目的调试台“分析”页点一次“截图分析”，人工验收四宫格显示。
-
 ## 验证缺口
 
 - **已有试用项目未核对常量读调参资源**：框架已在工程规则「调参资源」写明不通过常量读字段，并加了不变量测试（提交 `c6245d0`）；创建较早的试用项目（例如 `Game_Idle_Demo_V2`）没有这条测试，可能有同样写法，调试台改值后游戏不变。下一步：用户同意读取该项目后，同步测试或搜索 `game/` 下的常量读法。
