@@ -6556,7 +6556,7 @@ ${placed.map((p, i) => panelHtml(p, { cols, hints: { span: panels[i].attrs.span 
 // src/templates/doc.js
 function doc({ meta, introHtml, panels, ui, language }) {
   const withToc = panels.length >= 3;
-  const toc = withToc ? `<nav class="am-toc" aria-label="${esc(ui?.toc ?? "Contents")}">${panels.map((p) => `<a href="#panel-${esc(p.id)}">${esc(p.id)} \xB7 ${esc(p.title)}</a>`).join("")}</nav>` : "";
+  const toc = withToc ? `<nav class="am-toc" aria-label="${esc(ui?.toc ?? "Contents")}">${panels.map((p) => `<a href="#panel-${esc(p.id)}" onclick="event.preventDefault();document.getElementById('panel-${esc(p.id)}').scrollIntoView()">${esc(p.id)} \xB7 ${esc(p.title)}</a>`).join("")}</nav>` : "";
   return `<main class="am-doc">
 ${headHtml(meta, introHtml, language)}
 <div class="am-doc-layout${withToc ? "" : " am-doc-layout--notoc"}">

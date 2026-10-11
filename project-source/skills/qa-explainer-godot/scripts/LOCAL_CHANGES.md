@@ -28,6 +28,7 @@
 | 「标注」开启状态和普通按钮差别小 | `.am-btn--remark.is-on` 改用 `--accent-bg` 底色和 `--accent` 边框、文字 | R35 |
 | 回复面板没有意见时只显示空白，也不说明用法 | 空状态写明「点评论图标写评论，或用『标注』标出某一段」；面板下方提示「复制后粘贴到对话里。页面更新后，已复制的意见会清空」 | I09 |
 | 所有项目的页面都存到 `~/.answer-me-with-html/pages/`，分不清来源 | 页面存到当前目录的 `.explain/`，视频存到 `.explain/videos/`；首次写入时在 `.explain/` 放一个内容为 `*` 的 `.gitignore`；`--replace` 只认当前目录的 `.explain/`；`am clean` 和清理提示只统计当前目录的页面；设置、主题、配音缓存仍在 `~/.answer-me-with-html/`；`am serve` 只服务旧目录，新页面改用 `file://` 链接 | 用户要求 |
+| 文档模板的目录在 Claude 桌面 App 预览中点击不跳转（页面以 data: 快照打开，`#锚点` 链接失效） | `doc` 模板目录链接加 `onclick`，用 `scrollIntoView()` 滚动到对应面板，保留 `href` | 测试发现 |
 | `am patch` 更新页面后，旧评论和标注仍留在 localStorage，再次复制会重复发送 | 页面按源稿算版本号；复制回复成功时记下版本号，之后改动评论或标注会清掉该记录；打开页面时若已复制且版本不同，清空评论和标注 | I24 |
 
 网页默认主题改为「卡片」（`shadcn`）：`pickTheme` 对网页始终返回 `shadcn`，视频仍用 `blueprint`；`SKILL.md` 第 3 节同步。用户要求。
