@@ -11,7 +11,8 @@
 
 - 注意：Godot 4 的纹理导入设置里没有过滤选项。2D 过滤由使用方的 `CanvasItem.texture_filter` 决定；设为 Inherit 时沿父节点继承，最终取项目设置 `rendering/textures/canvas_textures/default_texture_filter`，默认是 Linear。
 - 像素画不等于全局最近邻。需要最近邻的节点或子树单独设置 `texture_filter`。只有绝大多数 2D 内容都需要最近邻时，才修改项目默认值，再给需要平滑缩放的内容单独设回 Linear。
-- `mipmaps/generate` 在 2D 预设中默认关闭。只有纹理会被明显缩小显示时才开启，例如 Camera2D 缩小或节点缩放；按原尺寸或整数倍显示的像素画和 UI 保持关闭。
+- `mipmaps/generate` 在 2D 预设中默认关闭。只有纹理会被明显缩小显示时才开启，例如 Camera2D 缩小、节点缩放，或高分辨率源图在 TextureRect 里缩到小尺寸；按原尺寸或整数倍放大显示的像素画和 UI 保持关闭。
+- 注意：2D 只开 `mipmaps/generate` 不会生效，因为默认的 Linear 过滤不读 mipmap。还要把使用方的 `texture_filter` 设为 Linear Mipmap（`TEXTURE_FILTER_LINEAR_WITH_MIPMAPS`）。
 - 调色板、查找表和索引纹理使用最近邻采样，不生成 mipmap，避免插值改变颜色值。
 - 像素完美的显示还取决于视口、拉伸模式和整数缩放等项目设置，不靠单个纹理的设置解决。
 
