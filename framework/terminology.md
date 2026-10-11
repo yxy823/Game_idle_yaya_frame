@@ -93,14 +93,14 @@
 
 来源：[测试追溯与证据](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
 
-## Analyzer
+## 外部分析工具
 
 | 术语 | 含义与边界 | 不用的说法 |
 | --- | --- | --- |
-| Analyzer | 随生成项目分发的图像源文件分析工具；结果不代替实际渲染或性能测量 |  |
 | Game Audio Analyzer / GAA | 本机安装的音频分析工具；调试台调用其后台摘要并显示指标，结果不代替实际听感 |  |
+| Game Visual Analyzer / GVA | 本机安装的图像分析工具；调试台调用其后台截图分析并显示色觉四宫格，结果不代替实际观感 |  |
 
-来源：[资源 Analyzer](../project-source/tools/analyzer/README.md)、[分析](../project-source/defaults/dev/debug/_shared/README.md#分析)。
+来源：[分析](../project-source/defaults/dev/debug/_shared/README.md#分析)。
 
 ## 动作用词
 

@@ -116,7 +116,7 @@ func test_real_child_without_result_reports_interpreter_and_output_path() -> voi
 
 
 func _start() -> Dictionary:
-	return _service.analyze(SOURCE, "audio", [],
+	return _service.analyze(SOURCE, "audio",
 		func(state: Dictionary) -> void: _states.append(state))
 
 

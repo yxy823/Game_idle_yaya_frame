@@ -8,7 +8,7 @@
 
 剩余步骤：
 
-1. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。2026-10-11 与用户定下：Agent 写分层 SVG 母版，用 Inkscape 1.4.4（`C:/Program Files/Inkscape/bin/inkscape.com`）导出 PNG，游戏只接收 PNG；本轮不做像素画，不用图像生成模型。技术验证对象是 `Game_Idle_Demo_V2` 的蘑菇棚图（显示框 64×40）。制作项目的规则已改写（该项目提交 `3082028`）；GVA 用专用 conda 环境 `yaya-gva`，自带 121 个测试通过。技术验证已走通：用户选定候选 3，接入 `Game_Idle_Demo_V2`（项目提交 `0c8f6d7`）后在游戏里看图确认通过；制作选择已写回 Art Bible（`ec1224c`），制作规则已补齐（制作项目提交 `f28df7b`）。GVA 0.4.0 新增 `asset` 子命令，制作规则已改用它测量，候选 3 按实测修正后用户在游戏里查看通过（游戏项目提交 `8cc1af7`）。剩余步骤：调试台截图分析改为调用 GVA（补后台调用契约，色觉四宫格移进 GVA），框架 Analyzer 整个退役（进行中）。
+1. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。2026-10-11 与用户定下：Agent 写分层 SVG 母版，用 Inkscape 1.4.4（`C:/Program Files/Inkscape/bin/inkscape.com`）导出 PNG，游戏只接收 PNG；本轮不做像素画，不用图像生成模型。技术验证对象是 `Game_Idle_Demo_V2` 的蘑菇棚图（显示框 64×40）。制作项目的规则已改写（该项目提交 `3082028`）；GVA 用专用 conda 环境 `yaya-gva`，自带 121 个测试通过。技术验证已走通：用户选定候选 3，接入 `Game_Idle_Demo_V2`（项目提交 `0c8f6d7`）后在游戏里看图确认通过；制作选择已写回 Art Bible（`ec1224c`），制作规则已补齐（制作项目提交 `f28df7b`）。GVA 0.4.0 新增 `asset` 子命令，制作规则已改用它测量，候选 3 按实测修正后用户在游戏里查看通过（游戏项目提交 `8cc1af7`）。调试台截图分析已改为调用 GVA（GVA 提交 `022c7f2`、`a87d65d`，版本 0.5.0），框架自带的图像分析工具已退役；自动验证在外部验证项目 `D:/A_Games/Game_DebugConsole_GVA_check_20261011` 中通过。剩余：用户在该项目的调试台“分析”页点一次“截图分析”，人工验收四宫格显示。
 
 ## 验证缺口
 

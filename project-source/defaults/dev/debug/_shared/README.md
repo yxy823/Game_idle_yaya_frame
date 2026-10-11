@@ -1,6 +1,6 @@
 # 调试台共享代码
 
-调试台从调试入口启动真实游戏，在独立窗口中修改游戏正在使用的调参资源、切换候选、比较、播放固定局面、查看 Analyzer 分析，并把满意的设定采纳到游戏。本目录是各项目共用的代码、主题、图标与测试；本项目有哪些调试对象、怎样启动，见[本项目的调试台](../README.md)。按“你想做的事”列出的 13 个界面任务见[调试台使用场景](usage-scenarios.md)。
+调试台从调试入口启动真实游戏，在独立窗口中修改游戏正在使用的调参资源、切换候选、比较、播放固定局面、查看分析结果，并把满意的设定采纳到游戏。本目录是各项目共用的代码、主题、图标与测试；本项目有哪些调试对象、怎样启动，见[本项目的调试台](../README.md)。按“你想做的事”列出的 13 个界面任务见[调试台使用场景](usage-scenarios.md)。
 
 ## 入口与项目挂钩
 
@@ -114,13 +114,19 @@ entries = {
 
 ## 分析
 
-调试台用一个服务管理两个后台进程入口：音频调用本机安装的 Game Audio Analyzer（GAA），图像按资源 Analyzer 的[运行一次分析](../../../yaya/tools/analyzer/README.md#运行一次分析)调用项目自带的 worker。服务在 `reports/asset-analyzer/jobs/debug/` 为每次任务生成唯一结果路径，传入 Godot 自身的 `--parent-pid`，每帧检查进程是否结束，再读取并删除任务结果；图像另有请求文件，用完一起删除。游戏不等待分析进程。
+调试台用一个服务调用两个本机安装的外部工具：音频用 Game Audio Analyzer（GAA），截图用 Game Visual Analyzer（GVA）。两者用同一种后台调用：服务在 `reports/debug-analysis/` 为每次任务生成唯一结果路径，运行 `<python> -B -m <模块> analyze <源文件> --json-only --result-file <唯一路径> --run-id <任务 ID> --parent-pid <Godot PID>`，每帧检查进程是否结束，再读取并删除结果文件。游戏不等待分析进程。
 
-- **音频配置与契约**：`docs/methodology-config.json` 的 `audio_analyzer_python_executable` 指向已安装 GAA 的 Python 解释器绝对路径。缺省或空字符串时显示“未配置 GAA”。服务运行 `<python> -B -m game_audio_analyzer analyze <源文件> --json-only --result-file <唯一路径> --run-id <任务 ID> --parent-pid <Godot PID>`，先创建结果父目录。读取结果时先检查 `contract_version` 主版本为 2，再核对 `kind=audio_summary`、`run_id`、`status=completed` 和 `exit_code=0`，最后读取指标。版本不符显示“GAA 版本不兼容”；没有可读结果时显示“GAA 已退出，但没有可读结果”，悬停可见解释器和结果路径。
-- **图像配置**：`analyzer_python_executable` 指向图像 Analyzer 的专用环境。未配置时截图分析显示“未配置 analyzer”。两个配置独立，某个后端未配置不影响其他功能。解释器存在不代表相应 Python 包可用。
+读取结果时按同一顺序检查：先检查 `contract_version` 主版本，再核对 `kind`、`run_id`、`status=completed` 和 `exit_code=0`，最后读取内容。版本不符显示“<工具> 版本不兼容”；`kind` 或 `run_id` 不符显示“<工具> 结果与本次分析不符”；没有可读结果时显示“<工具> 已退出，但没有可读结果”，悬停可见解释器和结果路径。两个配置独立，某个工具未配置不影响其他功能。解释器存在不代表相应 Python 包可用。
+
+| | 音频 | 截图 |
+| --- | --- | --- |
+| 配置（`docs/methodology-config.json`） | `audio_analyzer_python_executable`：已安装 GAA 的 Python 解释器绝对路径 | `visual_analyzer_python_executable`：已安装 GVA 的 Python 解释器绝对路径 |
+| 缺省或空字符串时显示 | “未配置 GAA” | “未配置 GVA，截图分析不可用；其他功能照常” |
+| 模块 | `game_audio_analyzer` | `analyzer.cli` |
+| 契约 | `contract_version` 主版本 2，`kind=audio_summary`，读取 `metrics` | `contract_version` 主版本 1，`kind=screenshot_analysis`，读取 `cvd_grid` |
 
 - **音效候选**：选择 AudioStream 候选后自动分析，在“实现”与“参数”之间显示基础音高、时长、峰值、真峰值、RMS、20 ms 最大 RMS、起音、衰减和频谱重心；每个文件在一次会话中只分析一次。单项 `ok` 显示数值，`estimate` 标明估算，其他状态显示原因，`null` 不换成零；悬停显示 GAA 的 `note`。音名由有效的 `f0_median_hz` 按十二平均律、A4=440 Hz 换算，不适用时不显示音名。插槽的 `analysis_extras(live, metrics)` 直接接收 GAA 指标字典，例如“峰值归一”读取 `peak_dbfs` 的状态和数值。
-- **截图分析**：位于“分析”页，截取游戏窗口的根视口，存为 `reports/asset-analyzer/jobs/debug/game-*.png`，显示正常、灰度、红色盲、绿色盲四格。
+- **截图分析**：位于“分析”页，截取游戏窗口的根视口，去掉透明通道后存为 `reports/debug-analysis/game-*.png`，因为 GVA 不接受带透明像素的输入。GVA 把四宫格写在结果文件旁的 `<结果文件主名>.cvd-grid.png`，调试台按 `cvd_grid.panel_size` 切成正常、灰度、红色盲、绿色盲四格。截图长边超过 1280 时，GVA 先缩到 1280 再生成四宫格，例如 1920×1080 的截图得到 2560×1488 的四宫格；没有 `cvd_grid` 时显示“GVA 没有给出四宫格”。截图和四宫格留在该目录，不自动删除。
 
 ## 采纳到游戏与收尾
 

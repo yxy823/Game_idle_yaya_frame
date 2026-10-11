@@ -2,5 +2,6 @@
   "document_language": "zh-CN",
   "engine_executable": "E:\\GameTools\\Godot\\4.7.1\\Godot_v4.7.1-stable_win64.exe",
   "python_executable": "python",
+  "visual_analyzer_python_executable": "",
   "audio_analyzer_python_executable": ""
 }
