@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 图解问答"
+  short_description: "把框架讨论中问到、以后还会用到的问题写进 framework/qa/，生成带图的 HTML 页面"
+
+policy:
+  allow_implicit_invocation: true

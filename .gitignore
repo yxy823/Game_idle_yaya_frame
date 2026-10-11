@@ -5,6 +5,7 @@ __pycache__/
 reports/*
 !reports/.gdignore
 /tmp/
+/framework/qa/*.html
 /framework/relationship-maps/graph-usage.json
 /framework/relationship-maps/graph-usage.*.json
 /.claude/worktrees/
