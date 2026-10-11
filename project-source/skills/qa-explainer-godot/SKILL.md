@@ -90,6 +90,12 @@ title: 存档系统
 node .agents/skills/qa-explainer-godot/scripts/am.mjs render docs/qa/<主题>.md -o docs/qa/<主题>.html --no-open
 ```
 
+每次写入或修改主题文件后运行这条命令。页面留在本机，新页面直接覆盖旧页面。用户自己修改了主题文件时，可以在项目根目录用下面的命令重新生成全部页面：
+
+```powershell
+Get-ChildItem docs/qa/*.md -Exclude README.md | ForEach-Object { node .agents/skills/qa-explainer-godot/scripts/am.mjs render $_.FullName -o ($_.FullName -replace '\.md$', '.html') --no-open }
+```
+
 按输出处理：
 
 - `✓ <路径>`：页面已生成。
