@@ -11,7 +11,7 @@ description: "发展游戏想法，共同创作、起草、修改或整合 GDD �
 
 GDD 的权限及其与交付的关系，按 `yaya/methodology/01-product-doc-structure.md` 执行。本 Skill 可以在没有 GDD、Product 或 Feature 的情况下从一个想法开始。它负责 `docs/gdd/` 中的定位、期望体验、核心循环、规则与系统关系、内容进程、游戏版本范围，以及这些内容对应的设计要求。
 
-修改之前，先阅读本次涉及的已有设计和用户的具体决定。先按 `yaya/methodology/01-product-doc-structure.md` 的 **设计范围与边界** 阅读，再阅读受影响的主题和必要的依赖。项目规则中的工程约束影响拟定的设计时，一并核对。复用已经清楚的要求；只就重要的未决选择提问。直接要求起草时不需要先访谈；只要求讨论时，不授权写文件。
+修改之前，先阅读本次涉及的已有设计和用户的具体决定。先按 `yaya/methodology/01-product-doc-structure.md` 的 **设计范围与边界** 阅读，再阅读受影响的主题和必要的依赖。项目规则中的工程约束影响拟定的设计时，一并核对。边界规则需要平台接口或特殊检测才能实现时（例如识别电脑休眠），写明这项代价；用户授权按最简做法定规则时，选不需要这类实现的规则。复用已经清楚的要求；只就重要的未决选择提问。直接要求起草时不需要先访谈；只要求讨论时，不授权写文件。
 
 GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明了导入的或组织方式不同的 GDD 怎样处理。入口 `docs/gdd/README.md` 链接实际存在的主题，包括 `design-scope-and-boundaries.md` 和 `open-questions.md`。即使只有部分主题有内容，文件名也保持固定。标题和正文使用配置的 `document_language` 编写（`yaya/methodology/05-document-language.md`），文件名不翻译。
 

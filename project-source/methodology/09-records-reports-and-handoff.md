@@ -27,7 +27,7 @@
 
 ### 保留临时材料
 
-创建临时材料时，按[临时、备份与草稿文件](../agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理。临时材料必须在任务结束或交接后继续保留时，在 Feature notes 或 Progress 中记录它的用途和释放条件，例如某项待完成的验收或调查结束时。任务正常收尾时，检查任务实际的输出位置和证据链接，指出仍需要的临时材料。Progress 和 Feature 记录是阅读入口；不另建报告索引或保留记录文件。
+创建临时材料时，按[临时、备份与草稿文件](../agent-rules/00-core/third-party-generated-and-temporary-files.md#临时备份与草稿文件)处理。临时材料必须在任务结束或交接后继续保留时，在 Feature notes 或 Progress 中记录它的用途和释放条件，例如某项待完成的验收或调查结束时。释放条件写成能判定的事件；完成归档仍引用其中的原件时，写“归档引用，长期保留”。任务正常收尾时，检查任务实际的输出位置和证据链接，指出仍需要的临时材料。Progress 和 Feature 记录是阅读入口；不另建报告索引或保留记录文件。
 
 ### 保存常用脚本
 
