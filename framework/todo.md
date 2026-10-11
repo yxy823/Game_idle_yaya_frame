@@ -9,9 +9,9 @@
 剩余步骤：
 
 1. 美术用 SVG 在 `Studio_Image_2D_Production` 走同样的流程。2026-10-11 与用户定下：Agent 写分层 SVG 母版，用 Inkscape 1.4.4（`C:/Program Files/Inkscape/bin/inkscape.com`）导出 PNG，游戏只接收 PNG；本轮不做像素画，不用图像生成模型。技术验证对象是 `Game_Idle_Demo_V2` 的蘑菇棚图（显示框 64×40）。制作项目的规则已改写（该项目提交 `3082028`）；GVA 用专用 conda 环境 `yaya-gva`，自带 121 个测试通过。剩余步骤：
-   1. 用户从 3 个候选中挑选。画风已写进该项目 Art Bible（项目提交 `c52d1bb`），棚图规格见 `docs/ui/main-design.md`「按美术方向制作的蘑菇棚图」（`fc6eb46`、`e4a0190`）；3 个候选在制作项目 `works/idle-demo-v2/mushroom-shed/`（制作项目提交 `a4baa96`）。挑选后作为 Product 01 范围外的限定实验接入调试台候选，接入时决定是否开 mipmap。
-   2. 按候选制作的实际做法补齐两处文档。制作规则补 `--actions` 导出写法、浅色背景色值、显示尺寸放大查看。Art Bible 补高光色、地面阴影色、门洞暗部色。
-   3. 按第 2 步看图时实际缺的判断，扩展 GVA 的单素材分析。GVA 允许扩展和大规模重构。实际缺口共 9 项，记在制作项目 `works/idle-demo-v2/mushroom-shed/README.md` 的「看图时想判断、但 GVA 测不出的项目」。例如显示尺寸下能否认出、缩小后描边是否连贯、用 alpha 当主体区域、多背景对比、跨文件风格一致、色板符合度。
+   1. 用户在游戏里看图确认蘑菇棚图。用户已选定候选 3，已接入 `Game_Idle_Demo_V2`（项目提交 `0c8f6d7`），开了 mipmap。画风见该项目 Art Bible，规格见 `docs/ui/main-design.md`「按美术方向制作的蘑菇棚图」，母版在制作项目 `works/idle-demo-v2/mushroom-shed/`。
+   2. 把制作时的 4 个选择写回该项目 Art Bible：高光色、地面阴影色、门洞暗部色、描边按可见宽度。制作规则已补齐（制作项目提交 `f28df7b`）。
+   3. 按制作候选时看图实际缺的判断，扩展 GVA 的单素材分析。GVA 允许扩展和大规模重构。实际缺口共 9 项，记在制作项目 `works/idle-demo-v2/mushroom-shed/README.md` 的「看图时想判断、但 GVA 测不出的项目」。例如显示尺寸下能否认出、缩小后描边是否连贯、用 alpha 当主体区域、多背景对比、跨文件风格一致、色板符合度。
    4. 调试台截图分析改为调用 GVA（补后台调用契约，色觉四宫格移进 GVA），框架 Analyzer 整个退役。
 
 ## 验证缺口
