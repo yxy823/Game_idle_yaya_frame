@@ -55,6 +55,7 @@ def check_links(root: Path, files: list[Path]) -> tuple[int, list[BrokenLink]]:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("files", nargs="*", type=Path, help="Markdown files under --root to check instead of scanning it")
     parser.add_argument("--root", type=Path, default=REPO_ROOT, help="directory to scan (default: this project)")
     parser.add_argument(
         "--exclude",
@@ -70,7 +71,8 @@ def main(argv: list[str] | None = None) -> int:
     if not root.is_dir():
         parser.error(f"--root is not a directory: {root}")
     excluded_paths = [Path(value) for value in args.exclude]
-    files = markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths)
+    files = ([path.resolve() for path in args.files] if args.files
+        else markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths))
     try:
         checked, broken = check_links(root, files)
     except (OSError, UnicodeDecodeError) as exc:

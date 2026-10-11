@@ -73,6 +73,12 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertEqual(self.broken("--exclude", "notes"), set())
         self.assertEqual(len(self.broken()), 1)
 
+    def test_listed_files_are_the_only_ones_checked(self):
+        self.write("a.md", "[x](missing-a.md)\n")
+        self.write("b.md", "[y](missing-b.md)\n")
+        self.assertEqual(self.broken(str(self.root / "b.md")),
+                         {("b.md", "missing-b.md", "target does not exist")})
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -197,6 +197,8 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 python -B yaya/tools/checks/check-markdown-links.py
 ```
 
+只检查本次改过的文件时，把文件路径列在后面，例如 `python -B yaya/tools/checks/check-markdown-links.py docs/progress.md docs/ui/main-design.md`。改了标题、移动或删除了文件时，仍要不带文件参数检查整个项目，因为别的文档里指向它们的链接也会失效。
+
 检查范围：
 
 - **检查的链接**：行内链接、`<路径>` 写法与引用式定义中的本地目标；目标是 Markdown 文件且带 `#锚点` 时，再核对锚点。
