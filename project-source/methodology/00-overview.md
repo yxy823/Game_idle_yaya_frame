@@ -2,7 +2,7 @@
 
 > 本页是项目工作流程的入口：说明方法规范、Skill、项目文档和命令之间的关系，以及每类任务从哪个入口处理。
 
-方法规范覆盖以下工作：从想法开始的游戏设计、数值建模与调参、Product 交付规划、Feature 规划与实现、工程修改、自动化测试、人工验收、缺陷复盘，以及本地 Git 下的安全交接。版本发布管理、商店提交、公开版本公告、部署审批、发布流程和分发管理不在默认方法范围内，除非用户明确把其中某项定为项目工作。
+方法规范覆盖以下工作：从想法开始的游戏设计、数值建模与调参、Product 交付规划、Feature 规划与实现。还覆盖工程修改、自动化测试、人工验收、缺陷复盘，以及本地 Git 下的安全交接。版本发布管理、商店提交、公开版本公告、部署审批、发布流程和分发管理不在默认方法范围内，除非用户明确把其中某项定为项目工作。
 
 ## 规范与执行的关系
 
@@ -84,7 +84,7 @@ yaya/methodology/                         canonical workflow specification
 | 源同步 | `feature-sync` | 已提交的 GDD、Product、专业文档或规则来源发生变化时使用。不做首次拆分。 |
 | 继续当前 Feature | `feature-execute` | 只说“继续”，不能补上缺少的批准或验收。 |
 | 执行一个符合条件的已规划 Feature | `feature-execute` | 按依赖顺序选择；Stage 1 的批准仍然适用。 |
-| 为已规划的 Feature 准备实现指引 | `implementation-guidance-godot`，通常由主 Agent 使用 | 只有用户明确要求或任务授权仍然有效时，才委派给 `implementation-advisor`；不会仅因任务复杂就委派。 |
+| 为已规划的 Feature 准备实现指引 | `implementation-guidance-godot`，由主 Agent 使用 | 只有用户明确要求或任务授权仍然有效时，才委派给 `implementation-advisor`；不会仅因任务复杂就委派。 |
 | 当前未完成 Feature 中的 Bug | 该 Feature 的修复路由 | 在其范围内修复，并补上回归测试覆盖。 |
 | 已完成行为中的独立 Bug | `engineering-change-plan` 的 bug 模式 | 行为违反已记录的需求时使用；期望缺失或期望改变时，按 [分类边界](07-engineering-change.md#分类边界) 交给对应的设计负责方。 |
 | 重构 | `engineering-change-plan` 的 refactor 模式 | 行为保持不变。只有用户要求挑选代码坏味道时，才先用 `engineering-refactor-select`。 |

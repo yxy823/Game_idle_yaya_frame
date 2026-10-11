@@ -15,7 +15,7 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
 ## 步骤
 
 1. 按 Q&A 说明判断是否提议、放进哪个主题；用户同意后再往下做。
-2. 按 qa-explainer-godot 的格式和 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md) 的写作要求写或改主题文件，再对改过的文件运行措辞检查和术语检查，按输出改写：
+2. 按 qa-explainer-godot 的格式和 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md) 的写作要求写或改主题文件。再对改过的文件运行措辞检查和术语检查，按输出改写：
 
    ```powershell
    python -B project-source/tools/checks/check-wording.py framework/qa/<主题>.md
