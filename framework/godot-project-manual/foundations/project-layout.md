@@ -54,6 +54,7 @@
 | `docs/architecture.md` | 当前模块、状态所有者、协作关系与实现导航 | 结构或重要决定改变时更新 |
 | `docs/architecture/` | 子系统说明与 ADR | 同上 |
 | `docs/knowledge/` | 项目自己的实践经验 | 获准的经验整理 / 规划、调试、实现时查阅 |
+| `docs/qa/` | 用户问过、以后还会用到的问题，按主题分文件；可以和其他正文重复 | `qa-explainer-godot` / 用户阅读生成的 HTML 页面；不作为需求或设计依据 |
 | `docs/research/` | 外部资料调研 | 获准的调研 / 需要时查阅；不能代替需求正文 |
 | `docs/progress.md` | 当前停点与下一步 | 原任务 / 新对话恢复工作 |
 | `docs/progress/` | 已归档的执行历史，每项一份 | 原任务 |

@@ -47,6 +47,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `loop-me-godot` | 为用户指出的重复或预计重复工作设计处理方法，明确入口、判断、产出与正文归属 |
 | `technical-documentation-writing-godot` | 编写、更新或整理项目文档的表达与导航，不做游戏设计决定或职责审核 |
+| `qa-explainer-godot` | 把用户问过、以后还会用到的问题写进 `docs/qa/`，生成带图的 HTML 页面；不修改需求、设计或实现 |
 | `project-terminology` | 在 `docs/terminology.md` 统一保存已确认且含义不变的项目定义，维护术语引用 |
 | `design-gdd` | 从想法形成、整合或修订 GDD，维护整体规则、体验目标与跨主题一致性 |
 | `design-balance` | 推导或调整数值模型，直接维护获准的 GDD 数值主题、公式参数与计算说明 |

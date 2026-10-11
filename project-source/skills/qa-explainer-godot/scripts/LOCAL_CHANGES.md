@@ -1,0 +1,41 @@
+# 本地改动
+
+来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 `LICENSE`。
+
+本 Skill 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
+
+`scripts/am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。
+
+| 问题 | 改动 | 对应规则 |
+|---|---|---|
+| V1–V8：图表结构线、浅色状态文字、树链接和图标对比不足；窄屏树分支断开；中文表头字体、辅助文字和标题字距不合适 | shadcn 局部加深结构线、状态色和辅助文字，保留高亮 accent；树链接沿用主题 accent 并加下划线；窄屏树按已有 `--n` 保留每列至少 200px，共同根节点与分支共用宽度并在树内滚动；表头改为 sans、12px/1.5、400；中日韩标题字距归零；不改卡片边框和深色状态 token | R04、R07、R11、R12、R14、R18、R20、R23、R24、R29、R31 |
+| 图表被缩小，图里文字只有 7.5–9.7px | 布局脚本 `MIN_SCALE` 0.75 → 1，`BAND_LOS` 只保留 1；`.am-diagram svg` 不再 `max-width: 100%`，放不下时横向滚动，打印时仍按纸宽缩放；连线标签、分组标签、ER 键标记、步骤编号改为 12px（`EDGE_FS`、`CLUSTER_FS`、`KEY_FS`、`EDGE_FS2` 同步改为 12） | R31 |
+| 横向滚动没有提示 | `.am-diagram` 加左右边缘阴影，阴影只出现在还有内容的一侧 | R31 |
+| 宽表格横向滚动没有提示（隔行底色会盖住背景阴影） | 页面脚本按滚动位置给 `.am-table-wrap` 加 `am-more-start` / `am-more-end`，CSS 用 `mask-image` 淡出还有内容的一侧 40px；右到左页面方向相反；打印时去掉。树（`.am-tree`）在窄屏横向滚动时用同一套淡出。 | R31 |
+| 手机上工具栏标签一字一行 | 标签放进 `.am-pick-label`，760px 以下隐藏，`select` 加 `aria-label`；按钮和选择框 `white-space: nowrap` | R12 |
+| 面板正文铺满宽面板（最宽 91em） | 面板内 `p`、`li`、`blockquote` 的 `max-width`：中文、日文、韩文 40em，其他 70ch | R15 |
+| 中文软换行渲染成空格（「建立连接。 双方」） | `md()` 输出后删掉中文字符之间、全角标点之后的换行，`<pre>` 内不动 | 排版 |
+| 表格和下方段落间距为 0 | `.am-table-wrap` 下边距 12px | R09、R10 |
+| 页面高度接近一屏时纵向滚动条反复出现，布局脚本宽度不稳定退回等宽网格，宽表格面板被分到 1/3 宽、短中文列被挤成竖排，两列时留空；长标题末行孤字 | `html` 加 `scrollbar-gutter: stable`，始终保留滚动条位置，稳定布局脚本测量的容器宽度；电脑端（`@media screen and (min-width: 761px)`）的 `.am-md th, .am-md td` 加 `min-width: 5em`，窄面板中保留列宽并横向滚动；仅 `.am-head h1` 加 `text-wrap: balance`，平衡页面标题换行 | 测试发现 |
+| 字号有 11 种（含 10、11、11.5、12.5、15、15.5、17px） | 收敛到 12 / 13 / 14 / 16 / 18 / 24px；`font-weight: 600` 统一改为 700 | R03、R14 |
+| 浅色页脚对比度 2.89:1；部分 11px 弱化文字用 `--ink-3` | 页脚、步骤编号、树标签、刻度改用 `--ink-2`，字号 12px | R23 |
+| blueprint 主题三层框线加刻度 | 只保留一层外框，删除内框和刻度 | R28、R38 |
+| 右上角浮动工具栏没有底色，页面滚动后盖住面板内容（例如表头） | 工具栏改为横贯顶部的工具条：`--bg` 底色加 `--line` 下边框，按钮靠右；`.am-sheet` 上边距 80px、`.am-doc` 88px、760px 以下 64px；去掉 `.am-head` 为让位工具栏留的 300px 右边距；文档目录吸顶位置 24px → 64px；锚点跳转加 `scroll-padding-top: 56px`；标注提示条下移到 56px | 测试发现 |
+| 图标按钮只有 `title`，键盘聚焦时不显示提示 | 评论和展开按钮改用 `data-tip`，悬停和 `:focus-visible` 时在按钮左侧显示 tooltip | R39 |
+| 复制失败仍显示「已复制」 | `copyText` 返回是否成功；回复面板复制失败时提示「复制失败：文字已选中，请按 Ctrl+C」并选中全文；复制源稿、复制代码失败时在回复面板里显示原文供手动复制 | I16、I27 |
+| 标注只能用鼠标点段落 | 标注模式下段落加 `tabindex=0`，Tab 聚焦后按 Enter 或空格打开标注框；Esc 先关标注框，再按一次退出标注模式并把焦点还给「标注」按钮；聚焦段落有 outline | I12 |
+| 进入标注模式后没有说明 | 显示 `role=status` 提示条「点击段落，或用 Tab 选中后按 Enter……」；桌面在工具栏下方右侧，760px 以下在屏幕底部，不挡标题 | I09 |
+| 「标注」开启状态和普通按钮差别小 | `.am-btn--remark.is-on` 改用 `--accent-bg` 底色和 `--accent` 边框、文字 | R35 |
+| 回复面板没有意见时只显示空白，也不说明用法 | 空状态写明「点评论图标写评论，或用『标注』标出某一段」；面板下方提示「复制后粘贴到对话里。页面更新后，已复制的意见会清空」 | I09 |
+| 所有项目的页面都存到 `~/.answer-me-with-html/pages/`，分不清来源 | 页面存到当前目录的 `.explain/`，视频存到 `.explain/videos/`；首次写入时在 `.explain/` 放一个内容为 `*` 的 `.gitignore`；`--replace` 只认当前目录的 `.explain/`；`am clean` 和清理提示只统计当前目录的页面；设置、主题、配音缓存仍在 `~/.answer-me-with-html/`；`am serve` 只服务旧目录，新页面改用 `file://` 链接 | 用户要求 |
+| `am patch` 更新页面后，旧评论和标注仍留在 localStorage，再次复制会重复发送 | 页面按源稿算版本号；复制回复成功时记下版本号，之后改动评论或标注会清掉该记录；打开页面时若已复制且版本不同，清空评论和标注 | I24 |
+
+网页默认主题改为「卡片」（`shadcn`）：`pickTheme` 对网页始终返回 `shadcn`，视频仍用 `blueprint`；`SKILL.md` 第 3 节同步。用户要求。
+
+不运行上游更新命令；`am.mjs` 的 `update_check` 默认改为关闭，因为上游更新会覆盖本地改动。
+
+工具栏的「回复 / 标注 / 复制源稿」保留文字按钮，没有按 R39 改成图标。
+
+新增界面文字只补了 zh、zh-Hant、en、ja；he 回退到英文。
+
+R 编号指 `skills/ui-visual-review`，I 编号指 `skills/ui-interaction-review`。

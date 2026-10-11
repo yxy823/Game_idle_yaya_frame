@@ -39,7 +39,7 @@ yaya/methodology/                         canonical workflow specification
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
 | worktree | `worktree-create-godot`、`worktree-integrate-godot` |
 | 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot` |
-| 文档编写 | `technical-documentation-writing-godot` |
+| 文档编写 | `technical-documentation-writing-godot`、`qa-explainer-godot` |
 
 ## 任务路由表
 
@@ -57,6 +57,7 @@ yaya/methodology/                         canonical workflow specification
 | 根据实际任务经验复盘，包括反复出现的阻力 | `retro-godot` | 需要来自真实任务的证据。只返回建议，不自动修改规则，也不自动生成报告、检查或工作项。 |
 | 为用户点名的反复出现或预期会出现的活动设计处理方式 | `loop-me-godot` | 不必等出现故障再用。返回一份设计，不增加 Stage，也不实现任何内容。 |
 | 调查外部事实或比较方案 | 主 Agent，可以委派给 `researcher` | 答案需要外部来源时使用，见 [外部调研](09-records-reports-and-handoff.md#外部调研)。没有强制的调研 Stage，不新建 Feature，不自动采纳结论。 |
+| 把用户问到、以后还会用到的问题保存为问答 | `qa-explainer-godot` | 写入 `docs/qa/` 并生成 HTML 页面，不必先问。问答可以和其他正文重复，不检查重复；它只解释，不作为需求、设计或规则的依据。 |
 | 记录或维护已确定的项目词汇 | `project-terminology` | 按[项目术语](14-project-terminology.md)维护不改变含义的定义。不创建 Product 计划，不做 Feature 源同步；行为变化交给 `design-gdd`。 |
 | 维护项目通用规则或专项规则 | 当前已获授权的任务，按 [规则的增量维护](04-project-rules.md#规则的增量维护) 执行 | 用于 `docs/project-rules.md` 或规则模块。每项拟议修改都先报告再写入；单独的规则工作不需要 Feature。 |
 | 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 和[架构概览](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
