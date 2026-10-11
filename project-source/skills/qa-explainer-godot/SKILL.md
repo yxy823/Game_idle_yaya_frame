@@ -84,7 +84,7 @@ title: 存档系统
 
 ## 生成页面
 
-需要 Node.js 20 或更高版本。在项目根目录运行：
+在项目根目录运行：
 
 ```powershell
 node .agents/skills/qa-explainer-godot/scripts/am.mjs render docs/qa/<主题>.md -o docs/qa/<主题>.html --no-open
@@ -97,7 +97,7 @@ node .agents/skills/qa-explainer-godot/scripts/am.mjs render docs/qa/<主题>.md
 - `STE n warnings`：按提示改写报出的句子再生成，最多改两轮；仍有警告时保留最后的页面，在回复中说明。
 - `code n warnings`：代码块超过 40 行，删到只剩说明问题的行。
 
-以生成输出为准，不打开浏览器截图检查。找不到 Node 或版本过低时，只写主题文件，在回复中说明页面没有生成，并请用户安装 Node.js 20 或更高版本。
+以生成输出为准，不打开浏览器截图检查。
 
 回复只写两三行：问题的核心结论、新增或修改了哪几条问答、页面链接。页面链接写成 `file:///` 链接：取页面的绝对路径，把 `\` 换成 `/`，例如 `[file:///D:/game/docs/qa/存档系统.html](file:///D:/game/docs/qa/存档系统.html)`。
 
