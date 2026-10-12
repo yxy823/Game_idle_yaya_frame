@@ -8966,12 +8966,14 @@ var seecode = (() => {
   }
 
   // Fourth port: swimlane and state. SeeCode's graph engine wants a row and column on every node; here the positions come from
-  // the links. swimlane: one row per lane, columns from the longest forward path, links routed by SeeCode's orthogonal router.
+  // the links. swimlane: one row (LR) or column (TB) per lane, stages from the longest forward path, links routed by SeeCode's
+  // orthogonal router.
   // state: layered by the dagre build that flow uses ($o), drawn with SeeCode's state shapes; self transitions loop beside the state.
   // Node shapes after SeeCode lib/render/shared/nodes.mjs: step (box), decision (diamond), terminal (pill), state, start, end.
-  function graphNode(n) {
+  // wrap: the widest line of a step's name; a decision's lines are 24px narrower, at most 110px
+  function graphNode(n, wrap = 150) {
     if (n.shape === "start" || n.shape === "end") return { ...n, w: n.shape === "start" ? 20 : 26, h: n.shape === "start" ? 20 : 26, b: null };
-    const b = block(n.label, "", n.shape === "decision" ? 110 : 150, bold);
+    const b = block(n.label, "", n.shape === "decision" ? Math.min(110, wrap - 24) : wrap, bold);
     // a diamond holds its text box when the box is at most half its width and half its height
     if (n.shape === "decision") return { ...n, b, w: Math.max(96, b.w * 2 + 28), h: Math.max(56, b.h * 2 + 16) };
     return { ...n, b, w: Math.max(n.shape === "state" ? 96 : 80, b.w + 32), h: b.h + 22 };
@@ -9097,14 +9099,20 @@ var seecode = (() => {
       }
       return true;
     }
-    function crossings(pts, routes) {
+    // a crossing counts 1; a run along another link (same line, overlapping) counts 6, since the two links read as one. Links out of
+    // one step may share a trunk; a decision's branches may not.
+    function crossings(pts, routes, S) {
       let n = 0;
-      for (const r of routes) {
+      for (const { pts: r, from: f } of routes) {
         for (let i = 1; i < pts.length; i++) {
           for (let j = 1; j < r.length; j++) {
             const a = pts[i - 1], b = pts[i], c = r[j - 1], d = r[j];
             const h1 = a.y === b.y, h2 = c.y === d.y;
-            if (h1 === h2) continue;
+            if (h1 === h2) {
+              const [u, v] = h1 ? ["y", "x"] : ["x", "y"];
+              if ((f !== S.id || POINT.has(S.shape)) && a[u] === c[u] && Math.min(Math.max(a[v], b[v]), Math.max(c[v], d[v])) > Math.max(Math.min(a[v], b[v]), Math.min(c[v], d[v]))) n += 6;
+              continue;
+            }
             const [hA, hB, vA, vB] = h1 ? [a, b, c, d] : [c, d, a, b];
             if (vA.x > Math.min(hA.x, hB.x) && vA.x < Math.max(hA.x, hB.x) && hA.y > Math.min(vA.y, vB.y) && hA.y < Math.max(vA.y, vB.y)) n++;
           }
@@ -9120,22 +9128,22 @@ var seecode = (() => {
         const last = pts[pts.length - 1], prev = pts[pts.length - 2], dT = DIRS[sT], dS = DIRS[sS];
         if (Math.sign(last.x - prev.x) !== -dT.x || Math.sign(last.y - prev.y) !== -dT.y) continue;
         if (Math.sign(pts[1].x - pts[0].x) !== dS.x || Math.sign(pts[1].y - pts[0].y) !== dS.y) continue;
-        const score = pathLen(pts) + 36 * (pts.length - 2) + 60 * crossings(pts, ctx.routes);
+        const score = pathLen(pts) + 36 * (pts.length - 2) + 60 * crossings(pts, ctx.routes, S);
         if (!best || score < best.score) best = { pts, score };
       }
       return best;
     }
-    function routeEdges(nodes, edges, channels) {
+    function routeEdges(nodes, edges, channels, along = "LR") {
       const byId = new Map(nodes.map((n) => [n.id, n]));
       const ctx = { boxes: nodes, channels, routes: [] };
       const order = [...edges].sort((e1, e2) => e2.focal - e1.focal);
-      // pass 1: sides, with ports at the middle of each side; the flow runs left to right, so top and bottom cost a little more.
+      // pass 1: sides, with ports at the middle of each side; the sides across the flow (along: LR or TB) cost a little more.
       // A side that already takes links the other way, or any link on a diamond's corner, costs more, so that a link back to a step
       // does not run beside the link that leaves it, and a decision's branches leave from different corners.
       const used = /* @__PURE__ */ new Map();
       const busy = (n, side, way) => {
         const u = used.get(`${n.id}\0${side}`);
-        return u && (POINT.has(n.shape) || u !== way) ? 160 : 0;
+        return u ? POINT.has(n.shape) ? 400 : u !== way ? 160 : 0 : 0;
       };
       for (const e of order) {
         const S = byId.get(e.from), T = byId.get(e.to);
@@ -9143,7 +9151,7 @@ var seecode = (() => {
         for (const sS of SIDES) {
           for (const sT of SIDES) {
             const r = bestRoute(S, T, sidePoint(S, sS), sS, sidePoint(T, sT), sT, ctx);
-            const pen = ("LR".includes(sS) ? 0 : 14) + ("LR".includes(sT) ? 0 : 14) + busy(S, sS, "out") + busy(T, sT, "in");
+            const pen = (along.includes(sS) ? 0 : 14) + (along.includes(sT) ? 0 : 14) + busy(S, sS, "out") + busy(T, sT, "in");
             if (r && (!best || r.score + pen < best.score)) best = { ...r, score: r.score + pen, sS, sT };
           }
         }
@@ -9151,7 +9159,7 @@ var seecode = (() => {
         Object.assign(e, { sS: best.sS, sT: best.sT });
         used.set(`${S.id}\0${best.sS}`, used.get(`${S.id}\0${best.sS}`) === "in" ? "both" : "out");
         used.set(`${T.id}\0${best.sT}`, used.get(`${T.id}\0${best.sT}`) === "out" ? "both" : "in");
-        ctx.routes.push(best.pts);
+        ctx.routes.push({ pts: best.pts, from: e.from });
       }
       // pass 2: ports on a shared side start at the other end's centre (aligned nodes stay straight) and are pushed 14px apart
       const ends = /* @__PURE__ */ new Map();
@@ -9208,7 +9216,7 @@ var seecode = (() => {
         const r = bestRoute(S, T, portAt(S, e.sS, e.tS), e.sS, portAt(T, e.sT, e.tT), e.sT, ctx) ?? bestRoute(S, T, sidePoint(S, e.sS), e.sS, sidePoint(T, e.sT), e.sT, ctx);
         if (!r) continue;
         e.route = r.pts;
-        ctx.routes.push(r.pts);
+        ctx.routes.push({ pts: r.pts, from: e.from });
       }
       separateTracks(edges.filter((e) => e.route));
     }
@@ -9284,12 +9292,19 @@ var seecode = (() => {
     return { routeEdges, labelSpot };
   })();
 
-  // swimlane: spec.lanes [{label}], spec.steps [{id, label, lane, shape, focal}], spec.links [{from, to, label, focal, dashed}].
+  // The width a diagram fits in a doc panel without scrolling: the figure is 913px wide in a 1280px window and 958px at the page's
+  // widest; a swimlane or state with no direction written turns top to bottom when left to right would be wider than this.
+  const FIT = 900;
+
+  // swimlane: spec.lanes [{label}], spec.steps [{id, label, lane, shape, focal}], spec.links [{from, to, label, focal, dashed}],
+  // spec.dir LR | TB | null (null: LR when it fits FIT, else the narrower of the two).
   // Columns: drop the links that close a cycle (DFS from the steps nobody links to, in written order), then each step sits one column
-  // after its latest predecessor, moved right while its lane already holds a step in that column.
+  // after its latest predecessor, moved on while its lane already holds a step in that column. Steps of one rank take their columns
+  // longest way to the end first, so a dead-end branch moves on and the main path keeps its column. LR: lanes are rows, columns run
+  // left to right, lane names on the left. TB: lanes are columns, the columns become rows run top to bottom, lane names on top.
   function swimlane(spec) {
-    const LANE_PAD = 26, OUTER = 22, GAP = 64;
-    const steps = spec.steps.map(graphNode);
+    const LANE_PAD = 26, OUTER = 22, GAP = 44, MARGIN = 40;
+    const steps = spec.steps.map((n) => graphNode(n));
     const at = new Map(steps.map((s, i) => [s.id, i]));
     const links = spec.links.map((e) => ({ ...e }));
     const outs = steps.map(() => []);
@@ -9306,10 +9321,10 @@ var seecode = (() => {
     const hasIn = new Set(links.map((e) => at.get(e.to)));
     steps.forEach((_, i) => !hasIn.has(i) && !seen[i] && visit(i));
     steps.forEach((_, i) => !seen[i] && visit(i));
-    const preds = steps.map(() => []);
+    const preds = steps.map(() => []), succs = steps.map(() => []);
     links.forEach((e) => {
       const a = at.get(e.from), b = at.get(e.to);
-      if (!back.has(`${a}>${b}`)) preds[b].push(a);
+      if (!back.has(`${a}>${b}`)) preds[b].push(a), succs[a].push(b);
     });
     const col = [], taken = /* @__PURE__ */ new Set();
     const place = (i) => {
@@ -9320,49 +9335,115 @@ var seecode = (() => {
       taken.add(`${steps[i].lane},${c}`);
       return col[i] = c;
     };
-    // a step is placed after everything before it in the flow; ties keep the written order
-    const depth = [];
+    const depth = [], tail = [];
     const rank = (i) => depth[i] ?? (depth[i] = Math.max(0, ...preds[i].map((p) => rank(p) + 1)));
-    steps.map((_, i) => i).sort((a, b) => rank(a) - rank(b) || a - b).forEach(place);
+    const rest = (i) => tail[i] ?? (tail[i] = Math.max(0, ...succs[i].map((t) => rest(t) + 1)));
+    steps.map((_, i) => i).sort((a, b) => rank(a) - rank(b) || rest(b) - rest(a) || a - b).forEach(place);
     const nCols = Math.max(...col) + 1;
-    // lane header: wrapped lane names on the left
-    const heads = spec.lanes.map((l) => block(l.label, "", 112, bold));
-    const headW = Math.max(...heads.map((b) => b.w)) + 32;
-    const colW = Array.from({ length: nCols }, (_, c) => Math.max(0, ...steps.filter((s, i) => col[i] === c).map((s) => s.w)));
-    const gapX = colW.slice(1).map(() => GAP);
-    for (const e of links) {
-      const a = at.get(e.from), b = at.get(e.to);
-      if (e.label && col[b] > col[a]) gapX[col[a]] = Math.max(gapX[col[a]], Math.min(220, edgeLabelW(e.label) + 36));
-    }
-    const colX = [];
-    let acc = headW + 40;
-    colW.forEach((w, c) => {
-      colX.push(acc);
-      acc += w + (gapX[c] ?? 0);
-    });
-    const right = acc + 40;
-    const laneH = spec.lanes.map((_, l) => Math.max(heads[l].h + 24, ...steps.filter((s) => s.lane === l).map((s) => s.h)) + 2 * LANE_PAD + (l === 0 ? OUTER : 0) + (l === spec.lanes.length - 1 ? OUTER : 0));
-    const laneY = [];
-    acc = 0;
-    laneH.forEach((h) => {
-      laneY.push(acc);
-      acc += h;
-    });
-    const bottom = acc;
-    const midY = (l) => laneY[l] + (l === 0 ? OUTER : 0) + (laneH[l] - (l === 0 ? OUTER : 0) - (l === spec.lanes.length - 1 ? OUTER : 0)) / 2;
-    const nodes = steps.map((s, i) => ({ ...s, x: colX[col[i]] + (colW[col[i]] - s.w) / 2, y: midY(s.lane) - s.h / 2 }));
-    const channels = {
-      xs: [colX[0] - 22, ...gapX.map((g, c) => colX[c] + colW[c] + g / 2), colX[nCols - 1] + colW[nCols - 1] + 22],
-      ys: [OUTER / 2 + 8, ...laneY.slice(1), bottom - OUTER / 2 - 8]
+    const nLanes = spec.lanes.length;
+    const inLane = (l) => steps.filter((s) => s.lane === l);
+    const inCol = (c) => steps.filter((_, i) => col[i] === c);
+    // the gap after each column: a labelled link forward out of it holds its label
+    const gaps = (min, room) => {
+      const g = Array.from({ length: nCols - 1 }, () => min);
+      for (const e of links) {
+        const a = at.get(e.from), b = at.get(e.to);
+        if (e.label && col[b] > col[a]) g[col[a]] = Math.max(g[col[a]], room(e.label));
+      }
+      return g;
     };
-    router.routeEdges(nodes, links, channels);
-    // a link the router could not fit runs straight between the two side midpoints, so no link is dropped
+    const runs = (sizes, gap, start) => {
+      const pos = [];
+      let acc = start;
+      sizes.forEach((s, k) => {
+        pos.push(acc);
+        acc += s + (gap[k] ?? 0);
+      });
+      return { pos, end: acc };
+    };
+    const pad = (l) => (l === 0 ? OUTER : 0) + (l === nLanes - 1 ? OUTER : 0);
+    const mid = (start, size, l) => start[l] + (l === 0 ? OUTER : 0) + (size[l] - pad(l)) / 2;
+    function lr() {
+      const heads = spec.lanes.map((l) => block(l.label, "", 112, bold));
+      const headW = Math.max(...heads.map((b) => b.w)) + 32;
+      const colW = Array.from({ length: nCols }, (_, c) => Math.max(0, ...inCol(c).map((s) => s.w)));
+      const gapX = gaps(GAP, (t) => Math.min(220, edgeLabelW(t) + 24));
+      const { pos: colX, end } = runs(colW, gapX, headW + MARGIN);
+      const laneH = spec.lanes.map((_, l) => Math.max(heads[l].h + 24, ...inLane(l).map((s) => s.h)) + 2 * LANE_PAD + pad(l));
+      const { pos: laneY, end: H } = runs(laneH, [], 0);
+      const midY = (l) => mid(laneY, laneH, l);
+      return {
+        W: end + MARGIN, H, along: "LR",
+        nodes: steps.map((s, i) => ({ ...s, x: colX[col[i]] + (colW[col[i]] - s.w) / 2, y: midY(s.lane) - s.h / 2 })),
+        channels: {
+          xs: [colX[0] - 22, ...gapX.map((g, c) => colX[c] + colW[c] + g / 2), colX[nCols - 1] + colW[nCols - 1] + 22],
+          ys: [OUTER / 2 + 8, ...laneY.slice(1), H - OUTER / 2 - 8]
+        },
+        head: { x: 0, y: 0, w: headW, h: H },
+        frame: (W, H2) => [
+          ...spec.lanes.map((l, k) => el("g", stepAttrs(1), [
+            el("rect", { class: `lane-band${k % 2 ? " alt" : ""}`, x: 0, y: laneY[k], width: W, height: laneH[k] }),
+            el("rect", { class: "lane-head", x: 0, y: laneY[k], width: headW, height: laneH[k] }),
+            el("line", { class: "lane-rule", x1: 0, y1: laneY[k] + laneH[k], x2: W, y2: laneY[k] + laneH[k] }),
+            drawBlock(heads[k], headW / 2, midY(k) - heads[k].h / 2, "middle", "lane-label")
+          ])),
+          el("rect", { class: "lane-frame", x: 0, y: 0, width: W, height: H2 }),
+          el("line", { class: "lane-rule", x1: headW, y1: 0, x2: headW, y2: H2 })
+        ]
+      };
+    }
+    // narrow: names wrap at 104px (decisions 80px), for many lanes that are still wider than FIT
+    function tb(narrow) {
+      const LANE_PAD_X = 14;
+      const ns = narrow ? spec.steps.map((n) => graphNode(n, 104)) : steps;
+      const inLane = (l) => ns.filter((s) => s.lane === l), inCol = (c) => ns.filter((_, i) => col[i] === c);
+      const laneIn = spec.lanes.map((_, l) => Math.max(...inLane(l).map((s) => s.w)));
+      const heads = spec.lanes.map((l, k) => block(l.label, "", Math.max(96, laneIn[k] - 8), bold));
+      const headH = Math.max(...heads.map((b) => b.h)) + 24;
+      const laneW = laneIn.map((w, l) => Math.max(w, heads[l].w + 16) + 2 * LANE_PAD_X + pad(l));
+      const { pos: laneX, end: W } = runs(laneW, [], 0);
+      const rowH = Array.from({ length: nCols }, (_, c) => Math.max(0, ...inCol(c).map((s) => s.h)));
+      const gapY = gaps(GAP - 8, () => GAP + 12);
+      const { pos: rowY, end } = runs(rowH, gapY, headH + MARGIN);
+      const midX = (l) => mid(laneX, laneW, l);
+      return {
+        W, H: end + MARGIN, along: "TB",
+        nodes: ns.map((s, i) => ({ ...s, x: midX(s.lane) - s.w / 2, y: rowY[col[i]] + (rowH[col[i]] - s.h) / 2 })),
+        channels: {
+          xs: [OUTER / 2 + 8, ...laneX.slice(1), W - OUTER / 2 - 8],
+          ys: [rowY[0] - 22, ...gapY.map((g, c) => rowY[c] + rowH[c] + g / 2), rowY[nCols - 1] + rowH[nCols - 1] + 22]
+        },
+        head: { x: 0, y: 0, w: W, h: headH },
+        frame: (W2, H) => [
+          ...spec.lanes.map((l, k) => el("g", stepAttrs(1), [
+            el("rect", { class: `lane-band${k % 2 ? " alt" : ""}`, x: laneX[k], y: 0, width: k === nLanes - 1 ? W2 - laneX[k] : laneW[k], height: H }),
+            el("rect", { class: "lane-head", x: laneX[k], y: 0, width: k === nLanes - 1 ? W2 - laneX[k] : laneW[k], height: headH }),
+            k < nLanes - 1 ? el("line", { class: "lane-rule", x1: laneX[k] + laneW[k], y1: 0, x2: laneX[k] + laneW[k], y2: H }) : "",
+            drawBlock(heads[k], midX(k), (headH - heads[k].h) / 2, "middle", "lane-label")
+          ])),
+          el("rect", { class: "lane-frame", x: 0, y: 0, width: W2, height: H }),
+          el("line", { class: "lane-rule", x1: 0, y1: headH, x2: W2, y2: headH })
+        ]
+      };
+    }
+    let g = spec.dir === "TB" ? tb() : lr();
+    if (!spec.dir && g.W > FIT) {
+      const t = tb();
+      if (t.W < g.W) g = t;
+    }
+    if (g.along === "TB" && g.W > FIT) {
+      const t = tb(true);
+      if (t.W < g.W) g = t;
+    }
+    const { nodes } = g;
+    router.routeEdges(nodes, links, g.channels, g.along);
+    // a link the router could not fit runs straight from the source's far side to the target's near side, so no link is dropped
     for (const e of links) {
       if (e.route) continue;
       const S = nodes[at.get(e.from)], T = nodes[at.get(e.to)];
-      e.route = [{ x: S.x + S.w, y: S.y + S.h / 2 }, { x: T.x, y: T.y + T.h / 2 }];
+      e.route = g.along === "LR" ? [{ x: S.x + S.w, y: S.y + S.h / 2 }, { x: T.x, y: T.y + T.h / 2 }] : [{ x: S.x + S.w / 2, y: S.y + S.h }, { x: T.x + T.w / 2, y: T.y }];
     }
-    const obstacles = [...nodes, { x: 0, y: 0, w: headW, h: bottom }];
+    const obstacles = [...nodes, g.head];
     const placed = [];
     for (const e of links) {
       if (!e.label) continue;
@@ -9370,17 +9451,8 @@ var seecode = (() => {
       e.box = box ?? { x: (e.route[0].x + e.route[1].x) / 2 - edgeLabelW(e.label) / 2, y: (e.route[0].y + e.route[1].y) / 2 - EDGE_H / 2, w: edgeLabelW(e.label), h: EDGE_H };
       placed.push(e.box);
     }
-    const W = Math.max(right, ...placed.map((b) => b.x + b.w + 12));
-    const out = [];
-    spec.lanes.forEach((l, k) => {
-      out.push(el("g", stepAttrs(1), [
-        el("rect", { class: `lane-band${k % 2 ? " alt" : ""}`, x: 0, y: laneY[k], width: W, height: laneH[k] }),
-        el("rect", { class: "lane-head", x: 0, y: laneY[k], width: headW, height: laneH[k] }),
-        el("line", { class: "lane-rule", x1: 0, y1: laneY[k] + laneH[k], x2: W, y2: laneY[k] + laneH[k] }),
-        drawBlock(heads[k], headW / 2, midY(k) - heads[k].h / 2, "middle", "lane-label")
-      ]));
-    });
-    out.push(el("rect", { class: "lane-frame", x: 0, y: 0, width: W, height: bottom }), el("line", { class: "lane-rule", x1: headW, y1: 0, x2: headW, y2: bottom }));
+    const W = Math.max(g.W, ...placed.map((b) => b.x + b.w + 12)), H = Math.max(g.H, ...placed.map((b) => b.y + b.h + 12));
+    const out = g.frame(W, H);
     const stepAt = (c) => stepOf(c, nCols);
     links.forEach((e) => {
       const pts = e.route.map((p) => ({ ...p }));
@@ -9389,29 +9461,38 @@ var seecode = (() => {
       out.push(el("g", { class: edgeClass(e), ...stepAttrs(stepAt(col[at.get(e.from)])) }, [el("path", { class: "e-line", d: roundedPath(pts) }), arrowHead(tip, d), e.label ? drawEdgeLabel(e.box, e.label) : ""]));
     });
     nodes.forEach((n, i) => out.push(drawGraphNode(n, stepAt(col[i]))));
-    return svg([-1, -1, W + 2, bottom + 2], out.join(""), spec.label);
+    return svg([-1, -1, W + 2, H + 2], out.join(""), spec.label);
   }
 
-  // state: spec.states [{id, label, shape: state | start | end, focal}], spec.links [{from, to, label, focal, dashed}], spec.dir LR | TB.
+  // state: spec.states [{id, label, shape: state | start | end, focal}], spec.links [{from, to, label, focal, dashed}], spec.dir LR | TB | null.
   // dagre places the states in layers, orders each layer to cut crossings and routes links (back links too) between the layers;
   // a label is a box of its own in the layout, so it never sits on a state. A self transition gets a box beside its state from
   // dagre, and the loop and its label are drawn there.
   function stateDiagram(spec) {
-    const states = spec.states.map(graphNode);
-    const g = new $o.graphlib.Graph({ multigraph: true });
-    g.setGraph({ rankdir: spec.dir, nodesep: 36, ranksep: 52, edgesep: 24, marginx: 16, marginy: 16 });
-    g.setDefaultEdgeLabel(() => ({}));
+    const states = spec.states.map((n) => graphNode(n));
     const key = new Map(states.map((s, i) => [s.id, `s${i}`]));
-    states.forEach((s) => g.setNode(key.get(s.id), { width: s.w, height: s.h }));
     const LOOP = 26;
-    spec.links.forEach((e, i) => {
-      const self = e.from === e.to;
-      const lw = e.label ? edgeLabelW(e.label) : 0;
-      // a self loop reserves its loop and its label: below the state (LR) or to its right (TB)
-      const room = self ? spec.dir === "LR" ? { width: Math.max(lw, 2 * LOOP), height: (e.label ? EDGE_H : 0) + 4 } : { width: (lw || 0) + 4, height: Math.max(EDGE_H, 2 * LOOP) } : e.label ? { width: lw, height: EDGE_H } : {};
-      g.setEdge(key.get(e.from), key.get(e.to), { ...room, ...e.label || self ? { labelpos: "c" } : {} }, `e${i}`);
-    });
-    $o.layout(g);
+    const layout = (dir) => {
+      const g = new $o.graphlib.Graph({ multigraph: true });
+      g.setGraph({ rankdir: dir, nodesep: 36, ranksep: 52, edgesep: 24, marginx: 16, marginy: 16 });
+      g.setDefaultEdgeLabel(() => ({}));
+      states.forEach((s) => g.setNode(key.get(s.id), { width: s.w, height: s.h }));
+      spec.links.forEach((e, i) => {
+        const self = e.from === e.to;
+        const lw = e.label ? edgeLabelW(e.label) : 0;
+        // a self loop reserves its loop and its label: below the state (LR) or to its right (TB)
+        const room = self ? dir === "LR" ? { width: Math.max(lw, 2 * LOOP), height: (e.label ? EDGE_H : 0) + 4 } : { width: (lw || 0) + 4, height: Math.max(EDGE_H, 2 * LOOP) } : e.label ? { width: lw, height: EDGE_H } : {};
+        g.setEdge(key.get(e.from), key.get(e.to), { ...room, ...e.label || self ? { labelpos: "c" } : {} }, `e${i}`);
+      });
+      $o.layout(g);
+      return g;
+    };
+    // no direction written: LR, unless it is wider than FIT and TB is narrower
+    let dir = spec.dir ?? "LR", g = layout(dir);
+    if (!spec.dir && g.graph().width > FIT) {
+      const t = layout("TB");
+      if (t.graph().width < g.graph().width) [dir, g] = ["TB", t];
+    }
     const box = (s) => {
       const n = g.node(key.get(s.id));
       return { ...s, x: n.x - s.w / 2, y: n.y - s.h / 2 };
@@ -9419,7 +9500,7 @@ var seecode = (() => {
     const nodes = states.map(box);
     const byId = new Map(nodes.map((n) => [n.id, n]));
     // layer of each state for --step, counted along the flow axis
-    const axis = spec.dir === "LR" ? "x" : "y";
+    const axis = dir === "LR" ? "x" : "y";
     const layers = [...new Set(nodes.map((n) => Math.round(n[axis])))].sort((a, b) => a - b);
     const stepAt = (n) => stepOf(layers.indexOf(Math.round(n[axis])), layers.length);
     const circle = (n) => n.shape === "start" || n.shape === "end";
@@ -9453,7 +9534,7 @@ var seecode = (() => {
       if (e.from !== e.to) return;
       const S = byId.get(e.from);
       const lw = e.label ? edgeLabelW(e.label) : 0;
-      const sides = spec.dir === "LR" ? [[0, 1], [0, -1]] : [[1, 0], [-1, 0]];
+      const sides = dir === "LR" ? [[0, 1], [0, -1]] : [[1, 0], [-1, 0]];
       const spots = sides.flatMap(([nx, ny]) => [0, -0.25, 0.25].map((k) => ({ nx, ny, k })));
       const loopAt = ({ nx, ny, k }) => {
         const tx = -ny, ty = nx;
@@ -10625,8 +10706,8 @@ function scLinks(name, t, line, known, label0) {
 var swimlane_default = {
   name: "swimlane",
   summary: "Swimlane (who does which step; one lane per role, links between steps)",
-  syntax: `\`\`\`swimlane
-lanes: Player | Game | Server        ← first line: the lanes, top to bottom (2 to 6)
+  syntax: `\`\`\`swimlane [LR|TB]
+lanes: Player | Game | Server        ← first line: the lanes, top to bottom in LR, left to right in TB (2 to 6)
 Player: step | step                  ← the steps a lane does; a name is used once in the whole diagram
 Game: {Valid?}                       ← {name} draws a decision diamond, (name) a rounded start or end step
 Server: *key step                    ← * highlights the step
@@ -10635,10 +10716,11 @@ Valid? -> key step: yes              ← text after the colon labels the last li
 * Valid? -> step: no                 ← a leading * highlights the links on that line
 \`\`\`
 - Without any link line, the steps are linked in the order they are written.
-- The script places every step: each sits in a column after the steps that lead to it, in its lane's row. A link back against the flow (a retry, a rework) runs around the other steps.
+- The script places every step: each sits one stage after the steps that lead to it, in its lane. A link back against the flow (a retry, a rework) runs around the other steps.
+- Direction: LR puts the lanes in rows and the flow left to right; TB puts the lanes in columns, their names on top, and the flow top to bottom. Without LR or TB the script picks: LR when it is at most 900px wide (what a doc panel shows in a 1280px window), else TB when TB is narrower. A TB still wider than 900px wraps the step names narrower.
 - Up to 20 steps. Use swimlane when who does each step matters (hand-offs between people, tools, systems); use flow when only the order and branches matter.`,
   example: "```swimlane\nlanes: Player | Game | Server\nPlayer: Tap buy\nGame: {Enough gold?} | Show error\nServer: *Save purchase\nTap buy -> Enough gold?\nEnough gold? -> Save purchase: yes\nEnough gold? -> Show error: no\n```",
-  render(text) {
+  render(text, { args }) {
     const lines = contentLines(text);
     const head = lines[0]?.text.match(/^lanes\s*[:：]\s*(.*)$/i);
     if (!head) throw new ComponentError(`swimlane: the first line must be lanes: name | name | …; got "${lines[0]?.text ?? ""}"`, lines[0]?.line ?? 1);
@@ -10675,7 +10757,8 @@ Valid? -> key step: yes              ← text after the colon labels the last li
     if (!linkLines.length) for (let k = 1; k < steps.length; k++) links.push({ from: steps[k - 1].id, to: steps[k].id, label: "", focal: false, dashed: false });
     const self = links.find((e) => e.from === e.to);
     if (self) throw new ComponentError(`swimlane: "${self.from}" links to itself; a swimlane step cannot loop on itself (use state for that)`, self.line);
-    return scFigure("swimlane", seecode.swimlane({ lanes, steps, links, label: steps.map((s) => s.label).join(" → ") }));
+    const dir = args.match(/\b(LR|TB)\b/i)?.[1].toUpperCase() ?? null;
+    return scFigure("swimlane", seecode.swimlane({ lanes, steps, links, dir, label: steps.map((s) => s.label).join(" → ") }));
   }
 };
 var state_default = {
@@ -10689,13 +10772,14 @@ Working -> Working: tick             ← a state to itself draws a loop
 Full -> Idle -> [*]                  ← a chain; --> is dashed, & fans out (A -> B & C)
 *Full                                ← a state alone on a line declares it; * before it highlights it
 \`\`\`
-- The script places the states in layers along the main path (LR: left to right, the default; TB: top to bottom) and orders each layer to cut crossings.
+- The script places the states in layers along the main path (LR: left to right; TB: top to bottom) and orders each layer to cut crossings.
+- Without LR or TB the script picks: LR when it is at most 900px wide (what a doc panel shows in a 1280px window), else TB when TB is narrower.
 - Up to 16 states. Use state when the boxes are conditions something rests in and the arrows are events; use flow for the steps of a process.`,
   example: "```state\n[*] -> Idle\nIdle -> Producing: start\n* Producing -> Full: storage full\nProducing -> Producing: tick\nFull -> Idle: collect\n```",
   render(text, { args }) {
     const states = /* @__PURE__ */ new Map();
     const links = [];
-    const dir = (args.match(/\b(LR|TB)\b/i)?.[1] ?? "LR").toUpperCase();
+    const dir = args.match(/\b(LR|TB)\b/i)?.[1].toUpperCase() ?? null;
     const add = (id, line, focal = false) => {
       if (!states.has(id)) states.set(id, { id, label: id, shape: "state", focal, line });
       else if (focal) states.get(id).focal = true;
