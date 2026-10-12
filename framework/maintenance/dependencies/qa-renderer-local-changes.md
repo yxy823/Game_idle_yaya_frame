@@ -10,6 +10,8 @@
 
 组件 `line`、`bar`、`sankey`、`loop`、`quadrant` 的排版代码一次性移植自 [SeeCode](https://github.com/Aryanutkarsh/seecode)（提交 `82c33b6`，MIT 许可证全文在 `am.mjs` 末尾），集中在 `am.mjs` 的 `var seecode` 和 `SEECODE_CSS`。只取每种图的排版，写法改成与现有组件一致的文本语法，颜色改用主题变量，文字不小于 12px；不带 SeeCode 的查看器、动画、导出和水印，保留 `data-sc-step` 属性供以后加动画。以后不与 SeeCode 同步。
 
+移植后按我们的页面重做了细节：图里文字分 14px（名称、图例）、13px（刻度、数值、说明）、18px（循环中心）三档；四象限的点标签按右、左、上、下依次避让，仍冲突时上下错开并画引线；多字符单位只在轴上写一次；竖向柱的长类别名拆成两行；重点象限底色改为强调色 8% 透明度。共用的参数解析 `checkParamNames` 对非英文参数名（如 `单位=金币`）报错并给出英文写法；`callout`、`loop` 组件名后面是标题文字，定义里用 `textArgs: true` 跳过这项检查。
+
 问答 Skill `qa-explainer-godot` 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
 
 `am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。

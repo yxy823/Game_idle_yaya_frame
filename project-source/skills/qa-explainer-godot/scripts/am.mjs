@@ -3652,6 +3652,7 @@ var KINDS = /* @__PURE__ */ new Set(["info", "ok", "warn", "err"]);
 var ALIASES = { warning: "warn", error: "err", note: "info" };
 var callout_default = {
   name: "callout",
+  textArgs: true,
   summary: "Conclusion / tip / warning bar",
   syntax: `\`\`\`callout <info|ok|warn|err> [title]
 Body (Markdown)
@@ -7037,8 +7038,12 @@ var seecode = (() => {
   const svg = ([x2, y2, w, h2], body, label) => `<svg class="am-sc" viewBox="${r2(x2)} ${r2(y2)} ${r2(w)} ${r2(h2)}" width="${Math.ceil(w)}" height="${Math.ceil(h2)}" role="img" aria-label="${esc(label)}" xmlns="http://www.w3.org/2000/svg">${body}</svg>`;
 
   // Text sizes (px), matching the CSS at SEECODE_CSS; widths use measure() from src/text.js.
-  const FS = { ax: 12, cat: 13, val: 12, label: 13, sub: 12, center: 18 };
+  // Names and labels 14, ticks / units / notes / values 13, loop centre 18.
+  const FS = { ax: 13, cat: 14, val: 13, label: 14, sub: 13, center: 18 };
   const mono = { mono: true };
+  // Axis ticks carry only a one-character unit (%, $ …); a longer unit is written once beside the axis.
+  const tickUnit = (unit) => /^[$€£¥₹%]$/.test(unit) ? unit : "";
+  const unitCaption = (unit, a) => unit && !tickUnit(unit) ? text({ class: "ax-unit", ...a }, unit) : "";
 
   // SeeCode (MIT) lib/render/charts/scale.mjs
   function niceStep(range, target = 5) {
@@ -7077,12 +7082,12 @@ var seecode = (() => {
 
   // SeeCode (MIT) lib/render/structure/common.mjs
   const stepOf = (i, n) => Math.min(12, 1 + Math.floor(i * 12 / Math.max(12, n)));
-  const LINE_H = 17;
+  const LINE_H = 19;
   const labelLines = (label, maxW) => wrap(label, maxW, FS.label, { bold: true }).slice(0, 3);
-  const blockHeight = (label, sub, maxW) => labelLines(label, maxW).length * LINE_H + (sub ? 15 : 0) - 4;
+  const blockHeight = (label, sub, maxW) => labelLines(label, maxW).length * LINE_H + (sub ? 17 : 0) - 4;
   function labelBlock(cx, cy, label, sub, maxW) {
     const lines = labelLines(label, maxW);
-    let y2 = cy - blockHeight(label, sub, maxW) / 2 + 12;
+    let y2 = cy - blockHeight(label, sub, maxW) / 2 + 13;
     const out = lines.map((l3) => {
       const t = text({ class: "n-label", x: cx, y: y2, "text-anchor": "middle" }, l3);
       y2 += LINE_H;
@@ -7104,12 +7109,12 @@ var seecode = (() => {
     const parts = [];
     let cx = x2, cy = y2 + 14;
     for (const it3 of items) {
-      const tw = measure(it3.label, FS.ax) + 44;
+      const tw = measure(it3.label, FS.cat) + 40;
       if (cx + tw > x2 + w && cx > x2) {
         cx = x2;
-        cy += 20;
+        cy += 22;
       }
-      parts.push(el("rect", { class: it3.swatch, x: cx, y: cy - 10, width: 14, height: 10, rx: 2 }), text({ class: "lg-text", x: cx + 20, y: cy }, it3.label));
+      parts.push(el("rect", { class: it3.swatch, x: cx, y: cy - 11, width: 12, height: 12, rx: 2 }), text({ class: "lg-text", x: cx + 18, y: cy }, it3.label));
       cx += tw;
     }
     return { svg: el("g", { class: "sc-legend" }, parts), h: cy - y2 + 8 };
@@ -7131,25 +7136,29 @@ var seecode = (() => {
     const vals = series.flatMap((s) => s.values.filter((v) => v != null));
     const dom = niceDomain(Math.min(...vals), Math.max(...vals));
     const y2 = (val) => PH - (val - dom.lo) / (dom.hi - dom.lo) * PH;
-    const tickW = Math.max(...ticks(dom).map((t) => measure(fmt(t, unit), FS.ax, mono)));
+    const tickW = Math.max(...ticks(dom).map((t) => measure(fmt(t, tickUnit(unit)), FS.ax, mono)));
     for (const t of ticks(dom)) {
       out.push(el("line", { class: t === 0 ? "ax-line" : "ax-grid", x1: 0, y1: y2(t), x2: PW, y2: y2(t) }));
-      out.push(text({ class: "ax-text", x: -8, y: y2(t) + 4, "text-anchor": "end" }, fmt(t, unit)));
+      out.push(text({ class: "ax-text", x: -10, y: y2(t) + 4.5, "text-anchor": "end" }, fmt(t, tickUnit(unit))));
     }
-    // x labels: every k-th one, k large enough that neighbours do not touch; the last one only when it has room.
+    out.push(unitCaption(unit, { x: -10, y: -16, "text-anchor": "end" }));
+    // x labels: every k-th one, k large enough that neighbours do not touch; the last label is always shown,
+    // and the regular one before it is dropped when the two would sit closer than 1.5 label widths.
     const slot = xs.length > 1 ? PW / (xs.length - 1) : PW;
     const xLabelW = Math.max(...xs.map((x2) => measure(x2, FS.ax, mono))) + 8;
     const every = Math.max(Math.ceil(xs.length / 9), Math.ceil(xLabelW / slot));
-    const lastShown = Math.floor((xs.length - 1) / every) * every;
+    const last = xs.length - 1;
+    const lastShown = Math.floor(last / every) * every;
+    const dropLastShown = lastShown !== last && lastShown > 0 && (last - lastShown) * slot < xLabelW * 1.5;
     xs.forEach((x2, i) => {
-      if (i % every === 0 || i === xs.length - 1 && (i - lastShown) * slot >= xLabelW) out.push(text({ class: "ax-text", x: xAt(i), y: PH + 22, "text-anchor": "middle" }, x2));
+      if (i % every === 0 && !(dropLastShown && i === lastShown) || i === last) out.push(text({ class: "ax-text", x: xAt(i), y: PH + 24, "text-anchor": "middle" }, x2));
     });
     // end labels, de-overlapped vertically
     const ends = series.map((s) => {
       const last = s.values.length - 1 - [...s.values].reverse().findIndex((v) => v != null);
       return { s, last, y: y2(s.values[last]) };
     }).sort((a, b) => a.y - b.y);
-    for (let k2 = 1; k2 < ends.length; k2++) ends[k2].y = Math.max(ends[k2].y, ends[k2 - 1].y + 17);
+    for (let k2 = 1; k2 < ends.length; k2++) ends[k2].y = Math.max(ends[k2].y, ends[k2 - 1].y + 20);
     series.forEach((s, k2) => {
       const pts = s.values.map((val, i) => val == null ? null : { x: xAt(i), y: y2(val) }).filter(Boolean);
       const straight = pts.map((p, i) => `${i ? "L" : "M"}${p.x},${p.y}`).join(" ");
@@ -7157,12 +7166,12 @@ var seecode = (() => {
       if (spec.area) g.unshift(el("path", { class: `ln-area${s.focal ? " is-focal" : ""}`, d: `${straight} L${pts[pts.length - 1].x},${PH} L${pts[0].x},${PH} Z` }));
       if (pts.length <= 12) s.values.forEach((val, i) => val != null && g.push(el("circle", { class: `ln-pt ${cls(s)}`, cx: xAt(i), cy: y2(val), r: 3 })));
       const e = ends.find((q) => q.s === s);
-      g.push(text({ class: `ln-label ${lblCls(s)}`, x: xAt(e.last) + 10, y: e.y + 4.5 }, s.name));
+      g.push(text({ class: `ln-label ${lblCls(s)}`, x: xAt(e.last) + 10, y: e.y + 5 }, s.name));
       out.push(el("g", stepAttrs(Math.min(12, 2 + k2)), g));
     });
-    const left = Math.max(54, tickW + 16);
+    const left = Math.max(40, tickW + 18, unitCaption(unit, {}) ? measure(unit, FS.ax) + 18 : 0);
     const bottom = Math.max(...ends.map((e) => e.y)) + 12;
-    return svg([-left, -24, PW + left + labelW + 10, Math.max(PH + 56, bottom + 24)], out.join(""), spec.label);
+    return svg([-left, -32, PW + left + labelW + 10, Math.max(PH + 64, bottom + 32)], out.join(""), spec.label);
   }
   function smooth(pts) {
     if (pts.length < 3) return pts.map((p, i) => `${i ? "L" : "M"}${p.x},${p.y}`).join(" ");
@@ -7197,15 +7206,19 @@ var seecode = (() => {
       const slot = Math.max(44, Math.min(150, 640 / cats.length));
       const groupW = slot * 0.62;
       const bw = groupW / series.length;
+      // a name wider than its slot wraps onto two balanced lines; only longer names are rotated
       const labelW = Math.max(...cats.map((c) => measure(c, FS.cat)));
-      const rotate = labelW > slot - 6;
-      const left = Math.max(...ticks(dom).map((t) => measure(fmt(t, unit), FS.ax, mono))) + 16;
+      const catLines = cats.map((c) => measure(c, FS.cat) <= slot - 12 ? [c] : wrap(c, Math.min(slot - 12, measure(c, FS.cat) / 2 + FS.cat), FS.cat));
+      const rotate = catLines.some((ls) => ls.length > 2);
+      const catRows = rotate ? 1 : Math.max(...catLines.map((ls) => ls.length));
+      const left = Math.max(...ticks(dom).map((t) => measure(fmt(t, tickUnit(unit)), FS.ax, mono)), unitCaption(unit, {}) ? measure(unit, FS.ax) : 0) + 18;
       const W = left + slot * cats.length;
       const y2 = (v) => plotH - (v - dom.lo) / (dom.hi - dom.lo) * plotH;
       for (const t of ticks(dom)) {
         out.push(el("line", { class: t === 0 ? "ax-line" : "ax-grid", x1: left - 4, y1: y2(t), x2: W, y2: y2(t) }));
-        out.push(text({ class: "ax-text", x: left - 8, y: y2(t) + 4, "text-anchor": "end" }, fmt(t, unit)));
+        out.push(text({ class: "ax-text", x: left - 10, y: y2(t) + 4.5, "text-anchor": "end" }, fmt(t, tickUnit(unit))));
       }
+      out.push(unitCaption(unit, { x: left - 10, y: -16, "text-anchor": "end" }));
       cats.forEach((c, i) => {
         const gx = left + slot * i + (slot - groupW) / 2;
         series.forEach((s, si) => {
@@ -7214,13 +7227,14 @@ var seecode = (() => {
           out.push(el("rect", { class: barCls(s, si, i), x: gx + bw * si + 1, y: y0, width: Math.max(2, bw - 2), height: Math.max(0.5, y1 - y0), rx: 1.5, ...stepAttrs(step(i)) }));
           if (!multi) {
             const focal = s.focalIdx && s.focalIdx[i];
-            out.push(text({ class: `c-val${focal ? " is-focal" : ""}`, x: gx + groupW / 2, y: v >= 0 ? y0 - 7 : y1 + 15, "text-anchor": "middle", ...stepAttrs(step(i)) }, fmt(v, unit)));
+            out.push(text({ class: `c-val${focal ? " is-focal" : ""}`, x: gx + groupW / 2, y: v >= 0 ? y0 - 8 : y1 + 17, "text-anchor": "middle", ...stepAttrs(step(i)) }, fmt(v, unit)));
           }
         });
         const cx = left + slot * i + slot / 2;
-        out.push(rotate ? text({ class: "c-cat", x: cx, y: plotH + 16, "text-anchor": "end", transform: `rotate(-35 ${cx} ${plotH + 16})` }, c) : text({ class: "c-cat", x: cx, y: plotH + 22, "text-anchor": "middle" }, c));
+        if (rotate) out.push(text({ class: "c-cat", x: cx, y: plotH + 18, "text-anchor": "end", transform: `rotate(-35 ${cx} ${plotH + 18})` }, c));
+        else catLines[i].forEach((l3, j2) => out.push(text({ class: "c-cat", x: cx, y: plotH + 24 + j2 * 18, "text-anchor": "middle" }, l3)));
       });
-      let h2 = plotH + (rotate ? labelW * 0.6 + 28 : 36);
+      let h2 = plotH + (rotate ? labelW * 0.6 + 30 : 38 + (catRows - 1) * 18);
       if (multi) {
         const lg = legend({ x: left, y: h2 + 4, w: W - left, items: legendItems() });
         out.push(lg.svg);
@@ -7228,45 +7242,49 @@ var seecode = (() => {
       }
       const rotLeft = rotate ? labelW * 0.82 - left - slot / 2 : 0;
       const x0 = -16 - Math.max(0, rotLeft);
-      return svg([x0, -24, W + 40 - x0, h2 + 32], out.join(""), spec.label);
+      return svg([x0, -32, W + 40 - x0, h2 + 40], out.join(""), spec.label);
     }
-    const rowH = Math.max(28, 30 * Math.max(1, series.length * 0.7));
-    const catW = Math.max(...cats.map((c) => measure(c, FS.cat))) + 14;
+    const rowH = Math.max(32, 34 * Math.max(1, series.length * 0.7));
+    const catW = Math.max(...cats.map((c) => measure(c, FS.cat))) + 16;
     const plotW = 520;
     const x2 = (v) => catW + (v - dom.lo) / (dom.hi - dom.lo) * plotW;
     const H = rowH * cats.length;
+    const hiTickW = measure(fmt(dom.hi, tickUnit(unit)), FS.ax, mono);
     for (const t of ticks(dom)) {
       out.push(el("line", { class: t === 0 ? "ax-line" : "ax-grid", x1: x2(t), y1: -4, x2: x2(t), y2: H }));
-      out.push(text({ class: "ax-text", x: x2(t), y: H + 18, "text-anchor": "middle" }, fmt(t, unit)));
+      out.push(text({ class: "ax-text", x: x2(t), y: H + 20, "text-anchor": "middle" }, fmt(t, tickUnit(unit))));
     }
+    const caption = unitCaption(unit, { x: catW + plotW + hiTickW / 2 + 8, y: H + 20 });
+    out.push(caption);
     const bh = rowH * 0.62 / series.length;
     cats.forEach((c, i) => {
       const gy = rowH * i + rowH * 0.19;
-      out.push(text({ class: "c-cat", x: catW - 10, y: rowH * i + rowH / 2 + 4.5, "text-anchor": "end" }, c));
+      out.push(text({ class: "c-cat", x: catW - 10, y: rowH * i + rowH / 2 + 5, "text-anchor": "end" }, c));
       series.forEach((s, si) => {
         const v = s.values[i];
         const x0 = x2(Math.min(0, v)), x1 = x2(Math.max(0, v));
         out.push(el("rect", { class: barCls(s, si, i), x: x0, y: gy + bh * si, width: Math.max(0.5, x1 - x0), height: Math.max(2, bh - 1.5), rx: 1.5, ...stepAttrs(step(i)) }));
         if (!multi) {
           const focal = s.focalIdx && s.focalIdx[i];
-          out.push(text({ class: `c-val${focal ? " is-focal" : ""}`, x: x1 + 6, y: gy + bh / 2 + 4, ...stepAttrs(step(i)) }, fmt(v, unit)));
+          out.push(text({ class: `c-val${focal ? " is-focal" : ""}`, x: x1 + 6, y: gy + bh / 2 + 4.5, ...stepAttrs(step(i)) }, fmt(v, unit)));
         }
       });
     });
-    let h2 = H + 30;
+    let h2 = H + 34;
     if (multi) {
       const lg = legend({ x: catW, y: h2, w: plotW, items: legendItems() });
       out.push(lg.svg);
       h2 += lg.h + 8;
     }
     const valW = multi ? 0 : Math.max(...all.map((v) => measure(fmt(v, unit), FS.val, mono)));
-    return svg([-16, -16, catW + plotW + Math.max(40, valW + 24) + 16, h2 + 24], out.join(""), spec.label);
+    const capW = caption ? hiTickW / 2 + 8 + measure(unit, FS.ax) : 0;
+    return svg([-16, -16, catW + plotW + Math.max(40, valW + 24, capW + 8) + 16, h2 + 24], out.join(""), spec.label);
   }
 
   // SeeCode (MIT) lib/render/charts/sankey.mjs
   function sankey(spec) {
     const NODE_W = 10;
-    const GAP = 30;
+    const GAP = 38;
     const links = spec.links.map((l3, i) => ({ ...l3, i }));
     const nodes = /* @__PURE__ */ new Map();
     const node = (id) => {
@@ -7353,8 +7371,8 @@ var seecode = (() => {
       const anchor = first ? "end" : "start";
       return el("g", stepAttrs(step(n.c)), [
         el("rect", { class: `sk-node${focalNodes.has(n.id) ? " is-focal" : ""}`, x: n.x, y: n.y, width: NODE_W, height: n.h, rx: 1 }),
-        text({ class: "sk-label", x: lx, y: center(n) - 2, "text-anchor": anchor }, n.label),
-        text({ class: "sk-val", x: lx, y: center(n) + 13, "text-anchor": anchor }, fmt(n.value, unit))
+        text({ class: "sk-label", x: lx, y: center(n) - 3, "text-anchor": anchor }, n.label),
+        text({ class: "sk-val", x: lx, y: center(n) + 14, "text-anchor": anchor }, fmt(n.value, unit))
       ]);
     });
     const firstW = Math.max(0, ...cols[0].map(labelOf)) + 16;
@@ -7367,8 +7385,8 @@ var seecode = (() => {
   function loop(spec) {
     const steps = spec.steps;
     const n = steps.length;
-    const boxW = Math.max(104, Math.min(200, Math.max(...steps.map((s) => Math.max(measure(s.label, FS.label, { bold: true }), measure(s.sub, FS.sub)))) + 28));
-    const boxH = Math.max(52, ...steps.map((s) => blockHeight(s.label, s.sub, boxW - 20) + 22));
+    const boxW = Math.max(112, Math.min(220, Math.max(...steps.map((s) => Math.max(measure(s.label, FS.label, { bold: true }), measure(s.sub, FS.sub)))) + 32));
+    const boxH = Math.max(56, ...steps.map((s) => blockHeight(s.label, s.sub, boxW - 24) + 24));
     const R = Math.max(160, n * (boxW + 64) / (2 * Math.PI));
     const pos = steps.map((_2, i) => {
       const a = -Math.PI / 2 + i * 2 * Math.PI / n;
@@ -7402,7 +7420,7 @@ var seecode = (() => {
       const x2 = p.x - boxW / 2, y2 = p.y - boxH / 2;
       return el("g", { class: s.focal ? "k-focal" : void 0, ...stepAttrs(stepOf(i, n)) }, [
         el("rect", { class: "n-box", x: x2, y: y2, width: boxW, height: boxH, rx: 8 }),
-        labelBlock(p.x, p.y, s.label, s.sub, boxW - 20)
+        labelBlock(p.x, p.y, s.label, s.sub, boxW - 24)
       ]);
     });
     const center = spec.center ? el("g", { "data-sc-step": 1, style: "--step:0" }, text({ class: "loop-center", x: 0, y: 6, "text-anchor": "middle" }, spec.center)) : "";
@@ -7411,68 +7429,100 @@ var seecode = (() => {
   }
 
   // SeeCode (MIT) lib/render/structure/quadrant.mjs: items placed on two axes (x, y in 0..1).
+  // Item labels avoid the dots, the quadrant names and each other: right, left, above, below the dot,
+  // then moved up or down in 18px steps with a leader line; a label always stays inside the frame.
   function quadrant(spec) {
-    const S = 420;
-    const out = [];
+    const S = 440;
     const half = S / 2;
+    const PAD = 4;
+    const out = [];
     const { x: ax = {}, y: ay = {} } = spec;
+    const yTickW = Math.max(measure(ay.low || "", FS.ax, mono), measure(ay.high || "", FS.ax, mono));
+    const yLabelX = -yTickW - 26;
     out.push(el("g", { "data-sc-step": 1, style: "--step:0" }, [
       el("rect", { class: "q-frame", x: 0, y: 0, width: S, height: S }),
       el("line", { class: "ax-line", x1: half, y1: 0, x2: half, y2: S }),
       el("line", { class: "ax-line", x1: 0, y1: half, x2: S, y2: half }),
-      ax.low ? text({ class: "ax-text", x: 0, y: S + 18 }, ax.low) : "",
-      ax.high ? text({ class: "ax-text", x: S, y: S + 18, "text-anchor": "end" }, ax.high) : "",
-      ax.label ? text({ class: "ax-label", x: half, y: S + 38, "text-anchor": "middle" }, `${ax.label} →`) : "",
-      ay.low ? text({ class: "ax-text", x: -8, y: S, "text-anchor": "end" }, ay.low) : "",
-      ay.high ? text({ class: "ax-text", x: -8, y: 12, "text-anchor": "end" }, ay.high) : "",
-      ay.label ? text({ class: "ax-label", x: -24, y: half, "text-anchor": "middle", transform: `rotate(-90 -24 ${half})` }, `${ay.label} →`) : ""
+      ax.low ? text({ class: "ax-text", x: 0, y: S + 20 }, ax.low) : "",
+      ax.high ? text({ class: "ax-text", x: S, y: S + 20, "text-anchor": "end" }, ax.high) : "",
+      ax.label ? text({ class: "ax-label", x: half, y: S + 46, "text-anchor": "middle" }, `${ax.label} →`) : "",
+      ay.low ? text({ class: "ax-text", x: -10, y: S - 2, "text-anchor": "end" }, ay.low) : "",
+      ay.high ? text({ class: "ax-text", x: -10, y: 13, "text-anchor": "end" }, ay.high) : "",
+      ay.label ? text({ class: "ax-label", x: yLabelX, y: half, "text-anchor": "middle", transform: `rotate(-90 ${yLabelX} ${half})` }, `${ay.label} →`) : ""
     ]));
+    // occupied boxes {x, y, w, h}; a label box is 16px tall with its baseline 12px below the top
+    const taken = [];
+    const hits = (b) => taken.some((o) => b.x < o.x + o.w + 2 && o.x < b.x + b.w + 2 && b.y < o.y + o.h + 2 && o.y < b.y + b.h + 2);
+    const inside = (b) => b.x >= PAD && b.y >= PAD && b.x + b.w <= S - PAD && b.y + b.h <= S - PAD;
     // quadrant order: TL, TR, BL, BR
     const corners = [[0, 0], [half, 0], [0, half], [half, half]];
     (spec.quadrants || []).forEach((o, i) => {
       const [x2, y2] = corners[i];
       const parts = [];
       if (o.focal) parts.push(el("rect", { class: "q-focal", x: x2 + 1, y: y2 + 1, width: half - 2, height: half - 2 }));
-      parts.push(text({ class: "q-title", x: x2 + 14, y: y2 + 24 }, o.label));
+      parts.push(text({ class: "q-title", x: x2 + 14, y: y2 + 26 }, o.label));
+      taken.push({ x: x2 + 14, y: y2 + 12, w: measure(o.label, FS.label, { bold: true }), h: 18 });
       out.push(el("g", { class: `quad${o.focal ? " k-focal" : ""}`, ...stepAttrs(2 + i) }, parts));
     });
-    // plotted items
-    spec.items.forEach((it3, i) => {
-      const px = it3.x * S, py = (1 - it3.y) * S;
-      const right = px < S - measure(it3.label, FS.label) - 16;
-      const st = 6 + stepOf(i, spec.items.length) / 2;
+    const items = spec.items.map((it3, i) => ({ ...it3, i, px: it3.x * S, py: (1 - it3.y) * S, r: it3.focal ? 6 : 4.5 }));
+    for (const it3 of items) taken.push({ x: it3.px - it3.r, y: it3.py - it3.r, w: it3.r * 2, h: it3.r * 2 });
+    const place = (it3) => {
+      const { px, py, r } = it3;
+      const w = measure(it3.label, FS.label, { bold: it3.focal });
+      const right = (dy) => ({ x: px + r + 5, y: py - 8 + dy, w, h: 16 });
+      const left = (dy) => ({ x: px - r - 5 - w, y: py - 8 + dy, w, h: 16 });
+      const near = [right(0), left(0), { x: px - w / 2, y: py - r - 20, w, h: 16 }, { x: px - w / 2, y: py + r + 4, w, h: 16 }];
+      const found = near.find((b) => inside(b) && !hits(b));
+      if (found) return found;
+      for (let dy = 18; dy < S; dy += 18) {
+        for (const b of [right(dy), left(dy), right(-dy), left(-dy)]) if (inside(b) && !hits(b)) return { ...b, leader: true };
+      }
+      const b = right(0);
+      return { ...b, x: Math.min(Math.max(PAD, b.x), S - PAD - w), y: Math.min(Math.max(PAD, b.y), S - PAD - 16) };
+    };
+    // the accented items choose first
+    for (const it3 of [...items].sort((a, b) => b.focal - a.focal || a.i - b.i)) {
+      it3.box = place(it3);
+      taken.push(it3.box);
+    }
+    for (const it3 of items) {
+      const { px, py, r, box } = it3;
+      const st = 6 + stepOf(it3.i, items.length) / 2;
+      const toLeft = box.x + box.w / 2 < px;
       out.push(el("g", { class: `q-pt${it3.focal ? " k-focal" : ""}`, ...stepAttrs(Math.min(12, Math.round(st))) }, [
-        el("circle", { class: "q-dot", cx: px, cy: py, r: it3.focal ? 6 : 4.5 }),
-        text({ class: "q-pt-label", x: right ? px + 10 : px - 10, y: py + 4.5, "text-anchor": right ? "start" : "end" }, it3.label)
+        box.leader ? el("line", { class: "q-leader", x1: px, y1: py, x2: toLeft ? box.x + box.w + 2 : box.x - 2, y2: box.y + 8 }) : "",
+        el("circle", { class: "q-dot", cx: px, cy: py, r }),
+        text({ class: "q-pt-label", x: box.x, y: box.y + 12 }, it3.label)
       ]));
-    });
-    const left = Math.max(36, measure(ay.low || "", FS.ax) + 12, measure(ay.high || "", FS.ax) + 12) + 24;
-    return svg([-left, -24, S + left + 36, S + 72], out.join(""), spec.label);
+    }
+    const left = -yLabelX + 12;
+    return svg([-left, -12, S + left + 12, S + 66], out.join(""), spec.label);
   }
 
   return { line, bar, sankey, loop, quadrant };
 })();
 var SEECODE_CSS = `/* ── Charts ported from SeeCode (line / bar / sankey / loop / quadrant) ── */
-.am-sc text { fill: var(--ink, #16181d); font-size: 13px; }
+.am-sc text { fill: var(--ink, #16181d); font-size: 14px; }
 .am-sc .ax-line { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
 .am-sc .ax-grid { stroke: var(--ink-3, #8b929e); stroke-opacity: .35; stroke-width: 1; }
-.am-sc .ax-text { fill: var(--ink-2, #4b5260); font: 12px var(--font-mono, monospace); }
-.am-sc .ax-label { fill: var(--ink-2, #4b5260); font-size: 12px; font-weight: 700; }
-.am-sc .c-cat { fill: var(--ink-2, #4b5260); font-size: 13px; }
-.am-sc .c-val { fill: var(--ink, #16181d); font: 12px var(--font-mono, monospace); }
+.am-sc .ax-text { fill: var(--ink-2, #4b5260); font: 13px var(--font-mono, monospace); }
+.am-sc .ax-unit { fill: var(--ink-2, #4b5260); font-size: 13px; }
+.am-sc .ax-label { fill: var(--ink-2, #4b5260); font-size: 13px; font-weight: 700; }
+.am-sc .c-cat { fill: var(--ink, #16181d); font-size: 14px; }
+.am-sc .c-val { fill: var(--ink, #16181d); font-size: 13px; font-variant-numeric: tabular-nums; }
 .am-sc .c-val.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
 .am-sc .c-bar { fill: var(--ink-3, #8b929e); fill-opacity: .6; }
 .am-sc .c-bar.is-focal { fill: var(--accent, #1d5fbf); fill-opacity: 1; }
 .am-sc .s-1, .am-sc .s-2, .am-sc .s-3, .am-sc .s-4, .am-sc .s-5 { fill-opacity: 1; }
 .am-sc .s-1 { fill: var(--accent, #1d5fbf); } .am-sc .s-2 { fill: var(--ink-2, #4b5260); } .am-sc .s-3 { fill: var(--err, #c62828); } .am-sc .s-4 { fill: var(--warn, #a8620a); } .am-sc .s-5 { fill: var(--ok, #1d5fbf); }
-.am-sc .lg-text { fill: var(--ink-2, #4b5260); font-size: 12px; }
+.am-sc .lg-text { fill: var(--ink, #16181d); font-size: 14px; }
 .am-sc .ln { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 2; }
 .am-sc .ln.is-focal { stroke: var(--accent, #1d5fbf); stroke-width: 2.6; }
 .am-sc .ln.is-muted { stroke: var(--ink-3, #8b929e); }
 .am-sc .ln-1 { stroke: var(--accent, #1d5fbf); } .am-sc .ln-2 { stroke: var(--ink-2, #4b5260); } .am-sc .ln-3 { stroke: var(--err, #c62828); } .am-sc .ln-4 { stroke: var(--warn, #a8620a); } .am-sc .ln-5 { stroke: var(--ok, #1d5fbf); }
 .am-sc .ln-pt { fill: var(--paper, #ffffff); stroke-width: 1.5; }
 .am-sc .ln-pt.is-focal { fill: var(--accent, #1d5fbf); }
-.am-sc .ln-label { font-size: 13px; font-weight: 700; fill: var(--ink-2, #4b5260); }
+.am-sc .ln-label { font-size: 14px; font-weight: 700; fill: var(--ink-2, #4b5260); }
 .am-sc .ln-area { fill: var(--ink-2, #4b5260); fill-opacity: .08; } .am-sc .ln-area.is-focal { fill: var(--accent, #1d5fbf); fill-opacity: .12; }
 .am-sc .is-focal-t { fill: var(--accent, #1d5fbf); } .am-sc .is-muted-t { fill: var(--ink-2, #4b5260); }
 .am-sc .ln-1-t { fill: var(--accent, #1d5fbf); } .am-sc .ln-2-t { fill: var(--ink-2, #4b5260); } .am-sc .ln-3-t { fill: var(--err, #c62828); } .am-sc .ln-4-t { fill: var(--warn, #a8620a); } .am-sc .ln-5-t { fill: var(--ok, #1d5fbf); }
@@ -7481,24 +7531,26 @@ var SEECODE_CSS = `/* ── Charts ported from SeeCode (line / bar / sankey / l
 .am-sc .sk-link { fill: var(--ink-2, #4b5260); fill-opacity: .16; }
 .am-sc .sk-link.is-focal { fill: var(--accent, #1d5fbf); fill-opacity: .32; }
 .am-sc .sk-label, .am-sc .sk-val, .am-sc .q-pt-label { paint-order: stroke; stroke: var(--paper, #ffffff); stroke-width: 3px; stroke-linejoin: round; }
-.am-sc .sk-label { font-size: 13px; font-weight: 700; }
-.am-sc .sk-val { fill: var(--ink-2, #4b5260); font: 12px var(--font-mono, monospace); }
+.am-sc .sk-label { font-size: 14px; font-weight: 700; }
+.am-sc .sk-val { fill: var(--ink-2, #4b5260); font-size: 13px; font-variant-numeric: tabular-nums; }
 .am-sc .n-box { fill: var(--paper, #ffffff); stroke: var(--ink-2, #4b5260); stroke-width: var(--bw, 1.5px); }
 .am-sc .k-focal .n-box { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); }
-.am-sc .n-label { font-size: 13px; font-weight: 700; }
+.am-sc .n-label { font-size: 14px; font-weight: 700; }
 .am-sc .k-focal .n-label { fill: var(--accent, #1d5fbf); }
-.am-sc .n-sub { fill: var(--ink-2, #4b5260); font-size: 12px; }
+.am-sc .n-sub { fill: var(--ink-2, #4b5260); font-size: 13px; }
 .am-sc .e-line { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 1.3; }
 .am-sc .e-head { fill: var(--ink-2, #4b5260); }
 .am-sc .ek-primary .e-line { stroke: var(--accent, #1d5fbf); stroke-width: 1.8; }
 .am-sc .ek-primary .e-head { fill: var(--accent, #1d5fbf); }
 .am-sc .loop-center { font-size: 18px; font-weight: 700; }
 .am-sc .q-frame { fill: none; stroke: var(--ink-3, #8b929e); stroke-width: 1; }
-.am-sc .q-focal { fill: var(--accent-bg, #e4ecf8); }
-.am-sc .q-title { fill: var(--ink-2, #4b5260); font-size: 12px; font-weight: 700; }
+.am-sc .q-focal { fill: var(--accent, #1d5fbf); fill-opacity: .08; }
+.am-sc .q-title { fill: var(--ink-2, #4b5260); font-size: 14px; font-weight: 700; }
 .am-sc .quad.k-focal .q-title { fill: var(--accent, #1d5fbf); }
 .am-sc .q-dot { fill: var(--ink-2, #4b5260); }
 .am-sc .q-pt.k-focal .q-dot { fill: var(--accent, #1d5fbf); }
+.am-sc .q-pt-label { font-size: 14px; }
+.am-sc .q-leader { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
 .am-sc .q-pt.k-focal .q-pt-label { fill: var(--accent, #1d5fbf); font-weight: 700; }`;
 
 // The five fences that use the SeeCode layouts. Each parses its lines and hands a spec to seecode.<name>.
@@ -7618,6 +7670,7 @@ from -> to: amount            ← one flow per line; -> or →
 };
 var loop_default = {
   name: "loop",
+  textArgs: true,
   summary: "Loop / cycle (3 to 8 steps on a ring)",
   syntax: `\`\`\`loop [centre text]
 step | note (optional)        ← one step per line, clockwise from the top; the last step leads back to the first
@@ -8350,6 +8403,7 @@ function renderFence(block2, ctx) {
   const comp = COMPONENTS.get(lang);
   if (!comp) return codeBlock(block2, ctx);
   if (comp.pageOnly && ctx.video) throw new RenderError(`${lang} works on a page only; a video cannot take answers`, { line, component: lang, example: comp.example });
+  checkParamNames(comp, args, line);
   ctx.stats.components[lang] = (ctx.stats.components[lang] ?? 0) + 1;
   try {
     const warn = ({ line: at3 = 0, message }) => ctx.stats.componentWarnings?.push({ line: line + at3, component: lang, message });
@@ -8362,6 +8416,16 @@ function renderFence(block2, ctx) {
       example: comp.example
     });
   }
+}
+// A name=value parameter with a non-English name (单位=金币, 单位＝金币) would be ignored silently, so it stops the render.
+// callout and loop take free text after the name and are not checked.
+function checkParamNames(comp, args, line) {
+  if (comp.textArgs) return;
+  const bad = args.match(/(?:^|\s)([^\s=＝]*[^\x00-\x7f][^\s=＝]*)\s*[=＝]\s*(\S*)/);
+  if (!bad) return;
+  const names = [...comp.syntax.split("\n")[0].matchAll(/\[([\w-]+)=/g)].map((m) => m[1]);
+  const fix = names.length === 1 ? `write ${names[0]}=${bad[2] || "…"}` : names.length ? `use one of ${names.map((n) => `${n}=…`).join(", ")}` : `${comp.name} takes no name=value parameters`;
+  throw new RenderError(`parameter name "${bad[1]}" must be English (ASCII letters); ${fix}`, { line, component: comp.name, example: comp.example });
 }
 function codeBlock(block2, ctx) {
   try {
