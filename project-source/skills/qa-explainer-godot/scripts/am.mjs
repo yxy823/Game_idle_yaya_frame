@@ -791,6 +791,7 @@ var zh_default = {
       typed: '\u4EE5 ">" \u5F00\u5934\u7684\u884C\u662F\u8BFB\u8005\u8F93\u5165\u7684\u6587\u5B57\u3002'
     },
     toc: "\u76EE\u5F55",
+    chart: { stages: ["起源", "定制", "产品（租用）", "商品（公用）"], evolution: "演化", valueChain: "价值链", visible: "可见", invisible: "不可见", today: "今天" },
     flow: "\u6D41\u7A0B\u56FE",
     sequence: "\u65F6\u5E8F\u56FE",
     er: "\u5B9E\u4F53\u5173\u7CFB\u56FE",
@@ -863,6 +864,7 @@ var zh_Hant_default = {
       typed: '\u4EE5 ">" \u958B\u982D\u7684\u884C\u662F\u8B80\u8005\u8F38\u5165\u7684\u6587\u5B57\u3002'
     },
     toc: "\u76EE\u9304",
+    chart: { stages: ["起源", "訂製", "產品（租用）", "商品（公用）"], evolution: "演化", valueChain: "價值鏈", visible: "可見", invisible: "不可見", today: "今天" },
     flow: "\u6D41\u7A0B\u5716",
     sequence: "\u6642\u5E8F\u5716",
     er: "\u5BE6\u9AD4\u95DC\u806F\u5716",
@@ -929,6 +931,7 @@ var en_default = {
       typed: 'Lines that start with ">" are text the reader typed.'
     },
     toc: "Contents",
+    chart: { stages: ["Genesis", "Custom-built", "Product (+rental)", "Commodity (+utility)"], evolution: "Evolution", valueChain: "Value chain", visible: "Visible", invisible: "Invisible", today: "Today" },
     flow: "Flowchart",
     sequence: "Sequence diagram",
     er: "Entity relationship diagram",
@@ -1001,6 +1004,7 @@ var ja_default = {
       typed: "\u300C>\u300D\u3067\u59CB\u307E\u308B\u884C\u306F\u8AAD\u8005\u304C\u5165\u529B\u3057\u305F\u6587\u5B57\u3067\u3059\u3002"
     },
     toc: "\u76EE\u6B21",
+    chart: { stages: ["創発", "カスタムメイド", "製品（レンタル）", "コモディティ（ユーティリティ）"], evolution: "進化", valueChain: "バリューチェーン", visible: "見える", invisible: "見えない", today: "今日" },
     flow: "\u30D5\u30ED\u30FC\u30C1\u30E3\u30FC\u30C8",
     sequence: "\u30B7\u30FC\u30B1\u30F3\u30B9\u56F3",
     er: "ER \u56F3",
@@ -7012,7 +7016,8 @@ The question, one sentence
 
 // src/components/index.js
 // Charts and diagrams laid out by code ported from SeeCode (MIT, https://github.com/Aryanutkarsh/SeeCode, commit 82c33b6; license at the
-// end of this file): line, bar, sankey, loop and quadrant. The layout functions turn a parsed spec into an <svg class="am-sc">; the
+// end of this file): line, bar, sankey, loop, quadrant, then venn, matrix, pyramid (with funnel), layers, nested, fishbone, process,
+// journey, kanban, story-map, gantt and wardley. The layout functions turn a parsed spec into an <svg class="am-sc">; the
 // components after them parse the fence text. Text is 12px or larger and the drawing keeps its natural size (.am-diagram scrolls).
 // data-sc-step and --step stay on the parts so step animation can be added in CSS later.
 var seecode = (() => {
@@ -7499,9 +7504,708 @@ var seecode = (() => {
     return svg([-left, -12, S + left + 12, S + 66], out.join(""), spec.label);
   }
 
-  return { line, bar, sankey, loop, quadrant };
+
+  // Wrapped name lines (14px) and note lines (13px) with their height and widest line; nothing is cut off.
+  const SUB_H = 17;
+  const bold = { bold: true };
+  // wrap, then narrow the width while the line count stays, so the lines come out about equally long;
+  // a width that starts a line with closing punctuation is skipped
+  const CLOSE = /^[，。、；：！？）」』”,.;:!?)]+/;
+  function balanced(str, maxW, size, opts) {
+    const lines = wrap(str, maxW, size, opts);
+    if (lines.length < 2) return lines;
+    let best = lines;
+    for (let w = maxW - 8; w > 24; w -= 8) {
+      const next = wrap(str, w, size, opts);
+      if (next.length > lines.length) break;
+      if (!next.some((l3) => CLOSE.test(l3))) best = next;
+    }
+    // a line that still starts with closing punctuation hands it back to the line before
+    return best.reduce((out, l3) => {
+      const m = out.length && l3.match(CLOSE);
+      if (m) {
+        out[out.length - 1] += m[0];
+        l3 = l3.slice(m[0].length);
+      }
+      if (l3) out.push(l3);
+      return out;
+    }, []);
+  }
+  function block(label, sub, maxW, weight = bold) {
+    const lines = label ? balanced(label, maxW, FS.label, weight) : [];
+    const subs = sub ? balanced(sub, maxW, FS.sub) : [];
+    const h = lines.length * LINE_H + (subs.length ? 2 + subs.length * SUB_H : 0);
+    const w = Math.max(0, ...lines.map((l3) => measure(l3, FS.label, weight)), ...subs.map((l3) => measure(l3, FS.sub)));
+    return { lines, subs, h, w };
+  }
+  function drawBlock(b, x2, top, anchor = "middle", cls = "n-label") {
+    const out = b.lines.map((l3, k2) => text({ class: cls, x: x2, y: top + 14 + k2 * LINE_H, "text-anchor": anchor }, l3));
+    b.subs.forEach((l3, k2) => out.push(text({ class: "n-sub", x: x2, y: top + b.lines.length * LINE_H + 15 + k2 * SUB_H, "text-anchor": anchor }, l3)));
+    return out.join("");
+  }
+
+  // SeeCode (MIT) lib/render/structure/venn.mjs: 2 or 3 sets; each region (one set only, two sets, all three) can carry a label.
+  // The radius grows until every region label fits its line budget; set names sit outside the circles.
+  function venn(spec) {
+    const sets = spec.sets, n = sets.length;
+    const share = n === 2 ? [0.8, 0.66] : [0.68, 0.54, 0.42];
+    const budget = n === 2 ? [5, 5] : [3, 3, 2];
+    const regionB = (rg, r) => block(rg.label, "", share[rg.sets.length - 1] * r, rg.focal ? bold : {});
+    let r = n === 2 ? 150 : 170;
+    while (r < 320 && spec.regions.some((rg) => regionB(rg, r).lines.length > budget[rg.sets.length - 1])) r += 20;
+    const c = n === 2 ? [{ x: -0.55 * r, y: 0 }, { x: 0.55 * r, y: 0 }] : [{ x: -0.55 * r, y: -0.3 * r }, { x: 0.55 * r, y: -0.3 * r }, { x: 0, y: 0.62 * r }];
+    const mid = { x: c.reduce((s, p) => s + p.x, 0) / n, y: c.reduce((s, p) => s + p.y, 0) / n };
+    const regionAt = (ids) => {
+      if (ids.length === 1) {
+        const p = c[ids[0]], dx = p.x - mid.x, dy = p.y - mid.y, len = Math.hypot(dx, dy);
+        return { x: p.x + dx / len * 0.45 * r, y: p.y + dy / len * 0.45 * r };
+      }
+      if (ids.length === n) return n === 2 ? { x: 0, y: 0 } : { x: 0, y: 0.06 * r };
+      const other = c[[0, 1, 2].find((i) => !ids.includes(i))];
+      const x2 = (c[ids[0]].x + c[ids[1]].x) / 2, y2 = (c[ids[0]].y + c[ids[1]].y) / 2;
+      return { x: x2 + (x2 - other.x) * 0.32, y: y2 + (y2 - other.y) * 0.32 };
+    };
+    const boxes = c.map((p) => ({ x: p.x - r, y: p.y - r, w: 2 * r, h: 2 * r }));
+    const circles = [], names = [];
+    sets.forEach((s, i) => {
+      const p = c[i];
+      const below = n === 3 && i === 2;
+      const b = block(s.label, s.sub, below ? 1.6 * r : 1.1 * r - 16);
+      const top = below ? p.y + r + 10 : p.y - r - 10 - b.h;
+      boxes.push({ x: p.x - b.w / 2, y: top, w: b.w, h: b.h });
+      circles.push(el("g", { class: `vn vs-${i + 1}${s.focal ? " k-focal" : ""}`, ...stepAttrs(i + 1) }, el("circle", { class: "vn-c", cx: p.x, cy: p.y, r })));
+      names.push(el("g", { class: `vn vs-${i + 1}${s.focal ? " k-focal" : ""}`, ...stepAttrs(i + 1) }, drawBlock(b, p.x, top, "middle", "vn-name")));
+    });
+    const regions = spec.regions.map((rg, k2) => {
+      const b = regionB(rg, r), p = regionAt(rg.sets);
+      return el("g", stepAttrs(Math.min(12, n + 1 + k2)), drawBlock(b, p.x, p.y - b.h / 2, "middle", `vn-region${rg.focal ? " is-focal" : ""}`));
+    });
+    const x0 = Math.min(...boxes.map((b) => b.x)) - 16, y0 = Math.min(...boxes.map((b) => b.y)) - 16;
+    const x1 = Math.max(...boxes.map((b) => b.x + b.w)) + 16, y1 = Math.max(...boxes.map((b) => b.y + b.h)) + 16;
+    return svg([x0, y0, x1 - x0, y1 - y0], circles.join("") + names.join("") + regions.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/matrix.mjs: rows × columns; a cell holds a mark (● ◐ ○ -) or short text.
+  const MARKS = { "●": "full", "◐": "half", "○": "ring", "-": "none", "": "none" };
+  function mark(kind, cx, cy) {
+    if (kind === "full") return el("circle", { class: "mx-full", cx, cy, r: 6.5 });
+    if (kind === "half") return el("path", { class: "mx-full", d: `M${cx},${cy - 6.5} A6.5,6.5 0 0 0 ${cx},${cy + 6.5} Z` }) + el("circle", { class: "mx-ring mx-ring-half", cx, cy, r: 6.5 });
+    if (kind === "ring") return el("circle", { class: "mx-ring", cx, cy, r: 6.5 });
+    return el("circle", { class: "mx-none", cx, cy, r: 2 });
+  }
+  function matrix(spec) {
+    const { cols, rows } = spec;
+    const rowB = rows.map((r) => block(r.label, "", 260));
+    const rowW = Math.max(...rowB.map((b) => b.w)) + 32;
+    const cellLines = rows.map((r) => r.cells.map((v) => Object.hasOwn(MARKS, v) ? null : v));
+    const colW = cols.map((c, j) => Math.ceil(Math.max(72, Math.min(170, Math.max(measure(c.label, FS.label, bold) + 24, ...cellLines.map((cl) => cl[j] ? measure(cl[j], FS.sub) + 24 : 0))))));
+    const colX = colW.map((_2, j) => rowW + colW.slice(0, j).reduce((s, w) => s + w, 0));
+    const W = rowW + colW.reduce((s, w) => s + w, 0);
+    const heads = cols.map((c, j) => block(c.label, "", colW[j] - 14));
+    const headH = Math.max(...heads.map((b) => b.h)) + 14;
+    const wrapped = cellLines.map((cl) => cl.map((v, j) => v ? wrap(v, colW[j] - 16, FS.sub) : null));
+    const rowH = rows.map((r, i) => Math.max(40, rowB[i].h + 18, ...wrapped[i].map((ls) => ls ? ls.length * SUB_H + 16 : 0)));
+    const rowY = rowH.map((_2, i) => rowH.slice(0, i).reduce((s, h2) => s + h2, 0));
+    const H = rowH.reduce((s, h2) => s + h2, 0);
+    const out = [];
+    cols.forEach((c, j) => {
+      if (c.focal) out.push(el("rect", { class: "mx-col-focal", x: colX[j], y: -headH, width: colW[j], height: headH + H }));
+    });
+    out.push(el("g", { "data-sc-step": 1, style: "--step:0" }, [
+      ...cols.map((c, j) => drawBlock(heads[j], colX[j] + colW[j] / 2, -heads[j].h - 8, "middle", `mx-head${c.focal ? " is-focal" : ""}`)),
+      el("line", { class: "ax-line", x1: 0, y1: 0, x2: W, y2: 0 })
+    ]));
+    rows.forEach((r, i) => {
+      const y2 = rowY[i], h2 = rowH[i];
+      const parts = [];
+      if (r.focal) parts.push(el("rect", { class: "mx-band is-focal", x: 0, y: y2, width: W, height: h2 }));
+      else if (i % 2) parts.push(el("rect", { class: "mx-band", x: 0, y: y2, width: W, height: h2 }));
+      parts.push(drawBlock(rowB[i], 12, y2 + (h2 - rowB[i].h) / 2, "start", "mx-row"));
+      r.cells.forEach((v, j) => {
+        const cx = colX[j] + colW[j] / 2, cy = y2 + h2 / 2;
+        const ls = wrapped[i][j];
+        if (!ls) parts.push(mark(MARKS[v], cx, cy));
+        else ls.forEach((l3, k2) => parts.push(text({ class: "mx-cell", x: cx, y: cy - ls.length * SUB_H / 2 + 12.5 + k2 * SUB_H, "text-anchor": "middle" }, l3)));
+      });
+      out.push(el("g", { class: `mx-r${r.focal ? " k-focal" : ""}`, ...stepAttrs(Math.min(12, i + 1)) }, parts));
+    });
+    let legendH = 0;
+    if (spec.key.length) {
+      let lx = 0, ly = H + 28;
+      const parts = spec.key.map((k2) => {
+        const w = measure(k2.label, FS.sub) + 44;
+        if (lx && lx + w > Math.max(W, 360)) {
+          lx = 0;
+          ly += 24;
+        }
+        const g = mark(MARKS[k2.mark], lx + 7, ly - 4.5) + text({ class: "lg-text", x: lx + 20, y: ly }, k2.label);
+        lx += w;
+        return g;
+      });
+      out.push(el("g", { class: "sc-legend" }, parts));
+      legendH = ly - H + 8;
+    }
+    return svg([-16, -headH - 16, Math.max(W, 360) + 32, headH + H + legendH + 32], out.join(""), spec.label);
+  }
+
+  // a level's value in full (10,000 people, not 10k), the unit placed as fmt places it
+  const whole = (v, unit) => {
+    const s = v.toLocaleString("en-US", { maximumFractionDigits: 2 });
+    return !unit ? s : /^[$€£¥₹]$/.test(unit) ? `${unit}${s}` : unit === "%" || unit.length <= 2 ? `${s}${unit}` : `${s} ${unit}`;
+  };
+
+  // SeeCode (MIT) lib/render/structure/pyramid.mjs: pyramid (narrow top) or funnel (wide top; widths follow the values).
+  // Each level is at least wide enough for its name in two lines; values and notes sit in one column on the right.
+  function pyramid(spec) {
+    const lv = spec.levels, n = lv.length, GAP = 6;
+    const unit = spec.unit || "";
+    const need = lv.map((l3) => {
+      const lw = measure(l3.label, FS.label, bold);
+      let w = Math.max(96, Math.min(lw, lw / 2 + 40) + 28);
+      while (wrap(l3.label, w - 28, FS.label, bold).length > 2) w += 12;
+      return w;
+    });
+    const side = lv.map((l3, i) => {
+      const prev = lv[i - 1];
+      const v = l3.value == null ? "" : whole(l3.value, unit) + (spec.funnel && prev?.value ? `  ↓${Math.round(l3.value / prev.value * 100)}%` : "");
+      return { v, notes: l3.note ? wrap(l3.note, 260, FS.sub) : [] };
+    });
+    const sideH = (s) => (s.v ? LINE_H : 0) + s.notes.length * SUB_H;
+    let top, bot;
+    if (spec.funnel) {
+      const W = Math.max(480, ...need);
+      const vals = lv.map((l3) => l3.value);
+      const scaled = vals.every((v) => v > 0) ? vals.map((v) => W * Math.sqrt(v / vals[0])) : lv.map((_2, i) => W - i * (W - 160) / Math.max(1, n - 1));
+      top = scaled.map((w, i) => Math.max(w, need[i]));
+      for (let i = n - 2; i >= 0; i--) top[i] = Math.max(top[i], top[i + 1]);
+      bot = top.map((w, i) => Math.max(i + 1 < n ? top[i + 1] : w * 0.86, need[i]));
+    } else {
+      const f = (k2) => 0.3 + 0.7 * k2 / n;
+      const base = Math.max(440, ...need.map((w, i) => (w + 10) / ((f(i) + f(i + 1)) / 2)));
+      top = lv.map((_2, i) => base * f(i));
+      bot = lv.map((_2, i) => base * f(i + 1));
+    }
+    // names wrap to the width the level has, at least the width they were sized for
+    const labelB = lv.map((l3, i) => block(l3.label, "", Math.max(need[i], spec.funnel ? Math.min(top[i], bot[i]) : (top[i] + bot[i]) / 2 - 20) - 28));
+    const H = Math.max(56, ...labelB.map((b) => b.h + 22), ...side.map((s) => sideH(s) + 16));
+    const half = Math.max(...top, ...bot) / 2;
+    const sideX = half + 32;
+    const out = lv.map((l3, i) => {
+      const y2 = i * (H + GAP);
+      const d = `M${-top[i] / 2},${y2} L${top[i] / 2},${y2} L${bot[i] / 2},${y2 + H} L${-bot[i] / 2},${y2 + H} Z`;
+      const parts = [el("path", { class: "py-band", d }), drawBlock(labelB[i], 0, y2 + (H - labelB[i].h) / 2)];
+      const s = side[i];
+      if (s.v || s.notes.length) {
+        const my = y2 + H / 2, sy = my - sideH(s) / 2;
+        parts.push(el("line", { class: "py-lead", x1: (top[i] + bot[i]) / 4 + 6, y1: my, x2: sideX - 8, y2: my }));
+        if (s.v) parts.push(text({ class: "py-val", x: sideX, y: sy + 14 }, s.v));
+        s.notes.forEach((l3, k2) => parts.push(text({ class: "n-sub", x: sideX, y: sy + (s.v ? LINE_H : 0) + 13 + k2 * SUB_H }, l3)));
+      }
+      return el("g", { class: l3.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, i + 1)) }, parts);
+    });
+    const sideW = Math.max(0, ...side.map((s) => Math.max(s.v ? measure(s.v, FS.val, bold) : 0, ...s.notes.map((l3) => measure(l3, FS.sub)))));
+    const right = sideW ? sideX + sideW : half;
+    return svg([-half - 16, -16, half + right + 32, n * (H + GAP) - GAP + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/layers.mjs: full-width bands, top = closest to the user; items show as chips that wrap inside the band.
+  function layers(spec) {
+    const L = spec.layers, n = L.length, GAP = 8, CH = 28, CG = 8;
+    const labB = L.map((l3) => block(l3.label, l3.sub, 220));
+    const labelW = Math.max(120, ...labB.map((b) => b.w)) + 40;
+    const chipW = (c) => measure(c, FS.sub) + 24;
+    const widest = Math.max(0, ...L.map((l3) => l3.items.reduce((s, c) => s + chipW(c) + CG, -CG)));
+    const W = Math.max(560, Math.min(880, labelW + widest + 20), labelW + Math.max(0, ...L.flatMap((l3) => l3.items.map(chipW))) + 20);
+    const area = W - labelW - 20;
+    const rowsOf = (l3) => {
+      const rows = [[]];
+      let x2 = 0;
+      for (const c of l3.items) {
+        const w = chipW(c);
+        if (x2 && x2 + w > area) {
+          rows.push([]);
+          x2 = 0;
+        }
+        rows[rows.length - 1].push({ c, x: x2, w });
+        x2 += w + CG;
+      }
+      return l3.items.length ? rows : [];
+    };
+    let y2 = 0;
+    const out = L.map((l3, i) => {
+      const rows = rowsOf(l3);
+      const chipsH = rows.length * (CH + CG) - CG;
+      const h2 = Math.max(60, labB[i].h + 26, chipsH + 26);
+      const parts = [el("rect", { class: "ly-band", x: 0, y: y2, width: W, height: h2, rx: 6 }), drawBlock(labB[i], 18, y2 + (h2 - labB[i].h) / 2, "start")];
+      rows.forEach((row, ri) => row.forEach(({ c, x: cx, w }) => {
+        const cy = y2 + (h2 - chipsH) / 2 + ri * (CH + CG);
+        parts.push(el("rect", { class: "chip", x: labelW + cx, y: cy, width: w, height: CH, rx: 4 }), text({ class: "chip-text", x: labelW + cx + w / 2, y: cy + 18.5, "text-anchor": "middle" }, c));
+      }));
+      const g = el("g", { class: l3.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, n - i)) }, parts);
+      y2 += h2 + GAP;
+      return g;
+    });
+    return svg([-16, -16, W + 32, y2 - GAP + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/nested.mjs: hierarchy as containment; children sit in rows inside their parent and stretch to fill them.
+  function nested(spec) {
+    const PAD = 14, GAP = 12;
+    const all = [];
+    const size = (nd, depth) => {
+      nd.depth = depth;
+      all.push(nd);
+      if (!nd.kids.length) {
+        nd.b = block(nd.label, nd.sub, 180);
+        nd.w = Math.max(112, nd.b.w + 28);
+        nd.h = nd.b.h + 22;
+        return;
+      }
+      nd.kids.forEach((k2) => size(k2, depth + 1));
+      // up to 4 children in a row (more make a square-ish grid), fewer per row while a row is wider than 860px
+      const rowsOf = (cols2) => {
+        const g = [];
+        for (let i = 0; i < nd.kids.length; i += cols2) g.push(nd.kids.slice(i, i + cols2));
+        return g;
+      };
+      const widthOf = (g) => Math.max(...g.map((r) => r.reduce((s, k2) => s + k2.w, 0) + GAP * (r.length - 1)));
+      let cols = nd.kids.length <= 4 ? nd.kids.length : Math.ceil(Math.sqrt(nd.kids.length));
+      while (cols > 1 && widthOf(rowsOf(cols)) > 860) cols--;
+      nd.grid = rowsOf(cols);
+      const inner = widthOf(nd.grid);
+      nd.rowH = nd.grid.map((r) => Math.max(...r.map((k2) => k2.h)));
+      // the note follows the name on one line when both fit, else it goes under the name
+      const lw = measure(nd.label, FS.label, bold);
+      nd.inline = nd.sub && lw + 16 + measure(nd.sub, FS.sub) <= Math.max(inner, 320);
+      nd.b = nd.inline ? block(nd.label, "", 320) : block(nd.label, nd.sub, Math.max(inner, 320));
+      const headW = nd.inline ? lw + 16 + measure(nd.sub, FS.sub) : nd.b.w;
+      nd.head = nd.b.h + 18;
+      nd.w = Math.max(inner, headW) + PAD * 2;
+      nd.h = nd.head + nd.rowH.reduce((s, h2) => s + h2, 0) + GAP * (nd.grid.length - 1) + PAD;
+    };
+    const place = (nd, x2, y2) => {
+      nd.x = x2;
+      nd.y = y2;
+      if (!nd.kids.length) return;
+      let cy = y2 + nd.head;
+      nd.grid.forEach((r, ri) => {
+        const rw = r.reduce((s, k2) => s + k2.w, 0) + GAP * (r.length - 1);
+        const extra = (nd.w - PAD * 2 - rw) / r.length;
+        let cx = x2 + PAD;
+        for (const k2 of r) {
+          k2.w += extra;
+          k2.h = nd.rowH[ri];
+          place(k2, cx, cy);
+          cx += k2.w + GAP;
+        }
+        cy += nd.rowH[ri] + GAP;
+      });
+    };
+    size(spec.root, 0);
+    place(spec.root, 0, 0);
+    const out = all.map((nd) => {
+      const leaf = !nd.kids.length;
+      const parts = [el("rect", { class: leaf ? "n-box" : `ns-box ns-d${nd.depth % 2}`, x: nd.x, y: nd.y, width: nd.w, height: nd.h, rx: leaf ? 6 : 8 })];
+      if (leaf) parts.push(drawBlock(nd.b, nd.x + nd.w / 2, nd.y + (nd.h - nd.b.h) / 2));
+      else {
+        parts.push(drawBlock(nd.b, nd.x + PAD, nd.y + 10, "start"));
+        if (nd.inline) parts.push(text({ class: "n-sub", x: nd.x + PAD + measure(nd.label, FS.label, bold) + 16, y: nd.y + 24 }, nd.sub));
+      }
+      return el("g", { class: nd.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, nd.depth + 1)) }, parts);
+    });
+    return svg([-16, -16, spec.root.w + 32, spec.root.h + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/fishbone.mjs: the effect at the head; category bones alternate above and below the spine,
+  // causes hang off each bone. Bone length and spacing grow with the causes so that no text reaches the next bone.
+  function fishbone(spec) {
+    const cats = spec.categories;
+    const perSide = Math.ceil(cats.length / 2);
+    const causeL = cats.map((c) => c.causes.map((x2) => balanced(x2, 180, FS.sub)));
+    const causeW = Math.max(60, ...causeL.flat(2).map((l3) => measure(l3, FS.sub)));
+    const slotH = Math.max(30, ...causeL.flat().map((ls) => ls.length * SUB_H + 12));
+    const boneH = Math.max(140, ...cats.map((c) => (c.causes.length + 1) * slotH));
+    const RUN = boneH * 0.5;
+    const catB = cats.map((c) => block(c.label, "", 200));
+    const spacing = Math.max(200, causeW + 48, ...catB.map((b) => b.w + 32));
+    const x1At = (k2) => causeW + 40 + RUN + k2 * spacing;
+    const spineLen = x1At(perSide - 1) + 48;
+    const effB = block(spec.effect, "", 200);
+    const headW = effB.w + 36, headH = Math.max(52, effB.h + 24);
+    const out = [el("g", { "data-sc-step": 1, style: "--step:1" }, [
+      el("path", { class: "fb-spine", d: `M0,0 L${spineLen},0` }),
+      el("path", { class: "fb-spine-head", d: `M${spineLen + 1},0 L${spineLen - 9},-5 L${spineLen - 9},5 Z` })
+    ]), el("g", { class: "k-focal", "data-sc-step": 1, style: "--step:1" }, [
+      el("rect", { class: "n-box", x: spineLen + 4, y: -headH / 2, width: headW, height: headH, rx: 6 }),
+      drawBlock(effB, spineLen + 4 + headW / 2, -effB.h / 2)
+    ])];
+    let minX = 0;
+    const catH = Math.max(...catB.map((b) => b.h));
+    cats.forEach((c, i) => {
+      const up = i % 2 === 0;
+      const k2 = Math.floor(i / 2);
+      const x1 = x1At(k2), x0 = x1 - RUN;
+      const yEnd = up ? -boneH : boneH;
+      const parts = [el("path", { class: "e-line fb-bone", d: `M${x0},${yEnd} L${x1},0` })];
+      parts.push(drawBlock(catB[i], x0, up ? yEnd - 10 - catB[i].h : yEnd + 10, "middle", "fb-cat"));
+      minX = Math.min(minX, x0 - catB[i].w / 2);
+      c.causes.forEach((_2, j) => {
+        const t = (j + 1) / (c.causes.length + 1);
+        const bx = x0 + RUN * t, by = yEnd * (1 - t);
+        const ls = causeL[i][j];
+        parts.push(el("line", { class: "fb-tick", x1: bx - 16, y1: by, x2: bx, y2: by }));
+        ls.forEach((l3, li) => parts.push(text({ class: "fb-cause", x: bx - 22, y: by - ls.length * SUB_H / 2 + 12.5 + li * SUB_H, "text-anchor": "end" }, l3)));
+        minX = Math.min(minX, bx - 22 - Math.max(...ls.map((l3) => measure(l3, FS.sub))));
+      });
+      out.push(el("g", { class: c.focal ? "ek-primary k-focal" : "ek-default", ...stepAttrs(Math.min(12, 2 + k2)) }, parts));
+    });
+    const top = boneH + 10 + catH + 16;
+    return svg([minX - 16, -top, spineLen + 4 + headW + 16 - minX + 16, 2 * top], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/process.mjs: a numbered linear sequence drawn as chevrons.
+  function processSteps(spec) {
+    const steps = spec.steps, n = steps.length, NOTCH = 18, GAP = 6;
+    const inner = Math.max(100, Math.min(170, Math.max(...steps.map((s) => Math.max(measure(s.label, FS.label, bold), measure(s.sub, FS.sub))))));
+    const bs = steps.map((s) => block(s.label, s.sub, inner));
+    const w = Math.max(...bs.map((b) => b.w)) + NOTCH * 2 + 28;
+    const h2 = Math.max(72, ...bs.map((b) => b.h + 28));
+    const out = steps.map((s, i) => {
+      const x2 = i * (w + GAP);
+      const first = i === 0;
+      const d = `M${x2},0 L${x2 + w - NOTCH},0 L${x2 + w},${h2 / 2} L${x2 + w - NOTCH},${h2} L${x2},${h2} ${first ? "" : `L${x2 + NOTCH},${h2 / 2}`} Z`;
+      const cx = (x2 + (first ? 0 : NOTCH) + x2 + w - NOTCH) / 2;
+      return el("g", { class: s.focal ? "k-focal" : void 0, ...stepAttrs(stepOf(i, n)) }, [
+        el("path", { class: "n-box", d }),
+        text({ class: "n-tag", x: x2 + (first ? 4 : NOTCH + 4), y: -10 }, String(i + 1).padStart(2, "0")),
+        drawBlock(bs[i], cx, (h2 - bs[i].h) / 2)
+      ]);
+    });
+    return svg([-16, -34, n * (w + GAP) - GAP + 32, h2 + 50], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/lanes/journey.mjs: stages across the top, steps under them and a feeling curve (score -2..2).
+  // Notes sit on the open side of the curve (under a dip, over a peak or a slope) and switch sides when they would leave the band.
+  function journey(spec) {
+    const steps = spec.stages.flatMap((st) => st.steps);
+    const COL = Math.max(120, Math.min(176, Math.max(...steps.map((s) => measure(s.label, FS.label))) * 0.55 + 40));
+    let col = 0;
+    const stages = spec.stages.map((st) => {
+      const n = st.steps.length;
+      const o = { ...st, x: col * COL, w: n * COL, b: block(st.label, st.sub, n * COL - 24) };
+      col += n;
+      return o;
+    });
+    const headH = Math.max(...stages.map((s) => s.b.h)) + 22;
+    const notes = steps.map((s) => s.note ? balanced(s.note, COL - 20, FS.sub) : []);
+    const noteRoom = Math.max(0, ...notes.map((ls) => ls.length)) * SUB_H + 20;
+    const curveTop = headH + Math.max(20, noteRoom), curveH = 150;
+    const y = (sc) => curveTop + (2 - sc) / 4 * curveH;
+    const pts = steps.map((s, i) => ({ x: i * COL + COL / 2, y: y(s.score) }));
+    const labels = steps.map((s) => balanced(s.label, COL - 24, FS.label, s.focal ? bold : {}));
+    const below = curveTop + curveH + Math.max(30, noteRoom + 4);
+    const bandH = below + Math.max(...labels.map((ls) => ls.length)) * LINE_H + 10;
+    const out = stages.map((st, si) => el("g", stepAttrs(1), [
+      el("rect", { class: si % 2 ? "jr-band alt" : "jr-band", x: st.x, y: 0, width: st.w, height: bandH }),
+      drawBlock(st.b, st.x + 12, 12, "start")
+    ]));
+    out.push(el("g", stepAttrs(2), [
+      el("line", { class: "ax-grid jr-zero", x1: 0, y1: y(0), x2: col * COL, y2: y(0) }),
+      ...[[2, "+2"], [0, "0"], [-2, "−2"]].map(([sc, t]) => text({ class: "ax-text", x: -10, y: y(sc) + 4.5, "text-anchor": "end" }, t)),
+      el("path", { class: "jr-curve", d: smooth(pts) })
+    ]));
+    steps.forEach((s, i) => {
+      const p = pts[i];
+      const pain = s.score <= -2;
+      const g = [
+        el("circle", { class: `jr-dot${pain ? " is-pain" : ""}${s.focal ? " is-focal" : ""}`, cx: p.x, cy: p.y, r: pain || s.focal ? 6 : 4.5 }),
+        ...labels[i].map((l3, k2) => text({ class: `jr-step${s.focal ? " is-focal" : ""}`, x: p.x, y: below + 14 + k2 * LINE_H, "text-anchor": "middle" }, l3))
+      ];
+      const ls = notes[i];
+      if (ls.length) {
+        const prev = pts[i - 1] || p, next = pts[i + 1] || p;
+        const dip = p.y >= prev.y && p.y >= next.y && (p.y > prev.y || p.y > next.y);
+        const hAbove = p.y - 12 - ls.length * SUB_H, hBelow = p.y + 14 + ls.length * SUB_H;
+        const under = dip ? hBelow <= below - 4 || hAbove < headH : hAbove < headH;
+        const top = under ? p.y + 14 : hAbove;
+        ls.forEach((l3, k2) => g.push(text({ class: `jr-note${pain ? " is-pain" : ""}`, x: p.x, y: top + 12.5 + k2 * SUB_H, "text-anchor": "middle" }, l3)));
+      }
+      out.push(el("g", { class: s.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, 4 + Math.floor(i * 8 / Math.max(8, steps.length)))) }, g));
+    });
+    return svg([-44, -12, col * COL + 60, bandH + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/kanban.mjs: columns of cards; the header shows the count, or count / WIP limit (red when over).
+  function kanban(spec) {
+    const cols = spec.columns, GAP = 16;
+    const longest = Math.max(0, ...cols.flatMap((c) => c.cards.map((k2) => measure(k2.label, FS.label))));
+    const W = Math.max(184, Math.min(244, longest * 0.6 + 44));
+    const heads = cols.map((c) => block(c.label, "", W - 70));
+    const HEAD = Math.max(...heads.map((b) => b.h)) + 22;
+    let maxY = HEAD;
+    const laid = cols.map((c) => {
+      let y2 = HEAD;
+      const cards = c.cards.map((k2) => {
+        const b = block(k2.label, k2.sub, W - 40, k2.focal ? bold : {});
+        const card = { k: k2, b, y: y2, h: b.h + 20 };
+        y2 += card.h + 8;
+        return card;
+      });
+      maxY = Math.max(maxY, y2);
+      return cards;
+    });
+    const H = maxY + 4;
+    const out = [];
+    cols.forEach((c, i) => {
+      const x2 = i * (W + GAP);
+      const over = c.wip && c.cards.length > c.wip;
+      out.push(el("g", stepAttrs(1), [
+        el("rect", { class: `kb-col${over ? " is-over" : ""}`, x: x2, y: 0, width: W, height: H, rx: 8 }),
+        drawBlock(heads[i], x2 + 12, 11, "start"),
+        text({ class: `kb-count${over ? " is-over" : ""}`, x: x2 + W - 12, y: 25, "text-anchor": "end" }, c.wip ? `${c.cards.length}/${c.wip}` : String(c.cards.length))
+      ]));
+      laid[i].forEach(({ k: k2, b, y: y2, h: h2 }, j) => out.push(el("g", { class: k2.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, 2 + j)) }, [
+        el("rect", { class: "kb-card", x: x2 + 8, y: y2, width: W - 16, height: h2, rx: 6 }),
+        drawBlock(b, x2 + 20, y2 + 10, "start", k2.focal ? "n-label" : "kb-text")
+      ])));
+    });
+    return svg([-16, -16, cols.length * (W + GAP) - GAP + 32, H + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/structure/storymap.mjs: activities (backbone) over steps, stories sliced into releases.
+  function storymap(spec) {
+    const W = 164, GAP = 12, inner = W - 20;
+    const steps = spec.activities.flatMap((a) => a.steps);
+    const relB = spec.releases.map((r) => block(r, "", 130));
+    const LW = Math.max(72, ...relB.map((b) => b.w)) + 24;
+    const colX = (i) => LW + i * (W + GAP);
+    const right = colX(steps.length) - GAP;
+    let col = 0;
+    const acts = spec.activities.map((a) => {
+      const w = a.steps.length * (W + GAP) - GAP;
+      const o = { a, x: colX(col), w, b: block(a.label, "", w - 24) };
+      col += a.steps.length;
+      return o;
+    });
+    const ACT_H = Math.max(...acts.map((o) => o.b.h)) + 20;
+    const stepB = steps.map((s) => block(s.label, "", inner));
+    const STEP_H = Math.max(...stepB.map((b) => b.h)) + 20;
+    const out = acts.map(({ a, x: x2, w, b }) => el("g", { class: a.focal ? "k-focal" : void 0, ...stepAttrs(1) }, [
+      el("rect", { class: "sm-act", x: x2, y: 0, width: w, height: ACT_H, rx: 6 }),
+      drawBlock(b, x2 + 12, (ACT_H - b.h) / 2, "start")
+    ]));
+    steps.forEach((s, i) => out.push(el("g", { class: s.focal ? "k-focal" : void 0, ...stepAttrs(2) }, [
+      el("rect", { class: "n-box", x: colX(i), y: ACT_H + 10, width: W, height: STEP_H, rx: 6 }),
+      drawBlock(stepB[i], colX(i) + 10, ACT_H + 10 + (STEP_H - stepB[i].h) / 2, "start")
+    ])));
+    let y2 = ACT_H + 10 + STEP_H + 30;
+    spec.releases.forEach((r, ri) => {
+      const st = Math.min(12, 3 + ri * 2);
+      const parts = [el("line", { class: "sm-rule", x1: 0, y1: y2 - 14, x2: right, y2: y2 - 14 }), drawBlock(relB[ri], 0, y2, "start", "sm-release")];
+      let sliceH = 44;
+      steps.forEach((s, i) => {
+        let sy = y2;
+        for (const story of s.stories.get(r) ?? []) {
+          const b = block(story.label, "", inner, story.focal ? bold : {});
+          parts.push(el("g", { class: story.focal ? "k-focal" : void 0 }, [
+            el("rect", { class: "sm-story", x: colX(i), y: sy, width: W, height: b.h + 18, rx: 6 }),
+            drawBlock(b, colX(i) + 10, sy + 9, "start", story.focal ? "n-label" : "kb-text")
+          ]));
+          sy += b.h + 18 + 8;
+        }
+        sliceH = Math.max(sliceH, sy - 8 - y2);
+      });
+      out.push(el("g", stepAttrs(st), parts));
+      y2 += sliceH + 30;
+    });
+    return svg([-16, -16, right + 32, y2 - 30 + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/lanes/time.mjs: ticks on natural boundaries; labels are numeric (10/13, 2026-10) so they read in any language.
+  const DAY = 864e5;
+  function timeTicks(t0, t1, numeric) {
+    const out = [];
+    if (numeric) {
+      const span = t1 - t0 || 1;
+      const mag = 10 ** Math.floor(Math.log10(span / 6));
+      const step = [1, 2, 5, 10].map((k2) => k2 * mag).find((k2) => span / k2 <= 8) || mag * 10;
+      for (let v = Math.ceil(t0 / step) * step; v <= t1 + 1e-9; v += step) out.push({ t: v, label: String(Math.round(v * 100) / 100) });
+      return out;
+    }
+    const days = (t1 - t0) / DAY;
+    const d = new Date(t0);
+    if (days > 365 * 3) {
+      for (let y2 = d.getUTCFullYear() + 1; Date.UTC(y2, 0, 1) <= t1; y2++) out.push({ t: Date.UTC(y2, 0, 1), label: String(y2) });
+    } else if (days > 160) {
+      const months = days > 540 ? 3 : 1;
+      for (let y2 = d.getUTCFullYear(), mo = d.getUTCMonth() + 1; Date.UTC(y2, mo, 1) <= t1; mo += months) {
+        const t = Date.UTC(y2, mo, 1), m = new Date(t);
+        out.push({ t, label: `${m.getUTCFullYear()}-${String(m.getUTCMonth() + 1).padStart(2, "0")}` });
+      }
+    } else {
+      const step = [1, 2, 3, 7, 14].find((k2) => days / k2 <= 11) ?? 28;
+      for (let t = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + 1); t <= t1; t += step * DAY) {
+        const m = new Date(t);
+        out.push({ t, label: `${m.getUTCMonth() + 1}/${m.getUTCDate()}` });
+      }
+    }
+    return out;
+  }
+
+  // SeeCode (MIT) lib/render/lanes/gantt.mjs: one row per task on a time axis, grouped by section; dependency elbows,
+  // milestones under the chart and a today line. Long task names wrap and make their row taller.
+  function gantt(spec) {
+    const { tasks, miles, numeric } = spec;
+    const all = [...tasks.flatMap((t) => [t.s, t.e]), ...miles.map((m) => m.t), ...spec.today == null ? [] : [spec.today]];
+    let t0 = Math.min(...all), t1 = Math.max(...all);
+    const pad = (t1 - t0 || (numeric ? 1 : DAY)) * 0.03;
+    t0 -= pad;
+    t1 += pad;
+    const PW = 640;
+    const x = (t) => (t - t0) / (t1 - t0) * PW;
+    const indent = tasks.some((t) => t.section) ? 14 : 0;
+    const names = tasks.map((t) => wrap(t.label, 220, FS.label, t.focal ? bold : {}));
+    const labelW = Math.max(...names.flat().map((l3) => measure(l3, FS.label, bold))) + indent + 24;
+    const out = [];
+    const rows = [];
+    const sections = [];
+    let y2 = 4, last = null;
+    tasks.forEach((t, i) => {
+      if (t.section && t.section !== last) {
+        sections.push({ label: t.section, y: y2 });
+        y2 += 28;
+      }
+      last = t.section;
+      const h2 = Math.max(32, names[i].length * LINE_H + 13);
+      rows.push({ t, y: y2, h: h2, mid: y2 + h2 / 2 });
+      y2 += h2;
+    });
+    const H = y2 + 4;
+    const ticks = timeTicks(t0, t1, numeric);
+    out.push(el("g", stepAttrs(1), [
+      ...ticks.map((tk) => el("line", { class: "ax-grid", x1: labelW + x(tk.t), y1: 0, x2: labelW + x(tk.t), y2: H })),
+      ...ticks.map((tk) => text({ class: "ax-text", x: labelW + x(tk.t), y: -10, "text-anchor": "middle" }, tk.label)),
+      ...sections.map((s) => text({ class: "g-section", x: 0, y: s.y + 19 }, s.label))
+    ]));
+    const order = [...tasks].sort((a, b) => a.s - b.s);
+    const stepOfTask = new Map(order.map((t, k2) => [t, Math.min(12, 2 + Math.floor(k2 * 10 / Math.max(10, order.length)))]));
+    rows.forEach(({ t, y: ry, h: h2, mid }, i) => {
+      const bx = labelW + x(t.s), bw = Math.max(4, x(t.e) - x(t.s));
+      const parts = names[i].map((l3, k2) => text({ class: `g-task${t.focal ? " is-focal" : ""}`, x: indent, y: ry + (h2 - names[i].length * LINE_H) / 2 + 14 + k2 * LINE_H }, l3));
+      parts.push(el("rect", { class: `g-bar${t.focal ? " is-focal" : ""}${t.done ? " is-done" : ""}`, x: bx, y: mid - 8, width: bw, height: 16, rx: 3 }));
+      // the tick sits inside the bar (or before a short one), clear of the dependency elbow at the bar's end
+      if (t.done) parts.push(text({ class: "g-done", x: bw >= 22 ? bx + bw / 2 : bx - 6, y: mid + 4.5, "text-anchor": bw >= 22 ? "middle" : "end" }, "✓"));
+      out.push(el("g", { class: t.focal ? "k-focal" : void 0, ...stepAttrs(stepOfTask.get(t)) }, parts));
+    });
+    for (const { t, mid } of rows) {
+      if (!t.after) continue;
+      const dep = rows.find((r) => r.t === t.after);
+      const xa = labelW + x(dep.t.e), xb = labelW + x(t.s);
+      const mx = Math.max(xa + 8, xb + 6);
+      const down = mid > dep.mid, yb = down ? mid - 8 : mid + 8, s = down ? 1 : -1;
+      out.push(el("g", { class: "g-dep", ...stepAttrs(stepOfTask.get(t)) }, [
+        el("path", { class: "e-line", d: `M${xa},${dep.mid} L${mx},${dep.mid} L${mx},${yb - s * 6}` }),
+        el("path", { class: "e-head", d: `M${mx},${yb} L${mx - 3.5},${yb - s * 7} L${mx + 3.5},${yb - s * 7} Z` })
+      ]));
+    }
+    // milestone names take a second or third row when they would touch the previous one
+    const rowEnds = [];
+    let mileRows = 0;
+    for (const m of [...miles].sort((a, b) => a.t - b.t)) {
+      const mx = labelW + x(m.t), w = measure(m.label, FS.label, m.focal ? bold : {});
+      let row = rowEnds.findIndex((end) => mx - w / 2 > end + 12);
+      if (row < 0) row = rowEnds.length;
+      rowEnds[row] = mx + w / 2;
+      mileRows = Math.max(mileRows, row + 1);
+      out.push(el("g", { class: m.focal ? "k-focal" : void 0, ...stepAttrs(12) }, [
+        el("line", { class: "g-mile-line", x1: mx, y1: 0, x2: mx, y2: H + 4 }),
+        el("path", { class: "g-mile", d: `M${mx},${H + 4} l7,7 l-7,7 l-7,-7 Z` }),
+        text({ class: `g-mile-text${m.focal ? " is-focal" : ""}`, x: mx, y: H + 38 + row * LINE_H, "text-anchor": "middle" }, m.label)
+      ]));
+    }
+    if (spec.today != null) {
+      const tx = labelW + x(spec.today);
+      out.push(el("g", stepAttrs(1), [
+        el("line", { class: "g-today", x1: tx, y1: 0, x2: tx, y2: H }),
+        text({ class: "g-today-text", x: tx, y: -30, "text-anchor": "middle" }, spec.todayLabel)
+      ]));
+    }
+    const mileW = Math.max(0, ...miles.map((m) => labelW + x(m.t) + measure(m.label, FS.label, bold) / 2 - labelW - PW));
+    const top = spec.today == null ? 32 : 50;
+    return svg([-16, -top, labelW + PW + Math.max(24, mileW) + 32, H + top + (mileRows ? 34 + mileRows * LINE_H : 16)], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/wardley.mjs: components by evolution (x: genesis → commodity) and visibility (y: seen by the user → hidden),
+  // value-chain links and dashed moves. Names avoid the dots, the moves and each other like the quadrant item labels.
+  function wardley(spec) {
+    const W = 680, H = 440, PAD = 4;
+    const tx = spec.text;
+    const x = (e) => e * W, y = (v) => (1 - v) * H;
+    const stageL = tx.stages.map((s) => wrap(s, W / 4 - 14, FS.ax));
+    const stageH = Math.max(...stageL.map((ls) => ls.length)) * SUB_H;
+    const yTickW = Math.max(measure(tx.visible, FS.ax), measure(tx.invisible, FS.ax));
+    const yLabelX = -yTickW - 26;
+    const out = [el("g", stepAttrs(1), [
+      el("rect", { class: "q-frame", x: 0, y: 0, width: W, height: H }),
+      ...[1, 2, 3].map((k2) => el("line", { class: "ax-grid wm-div", x1: k2 * W / 4, y1: 0, x2: k2 * W / 4, y2: H })),
+      ...stageL.flatMap((ls, k2) => ls.map((l3, j) => text({ class: "ax-text wm-stage", x: k2 * W / 4 + 7, y: H + 20 + j * SUB_H }, l3))),
+      text({ class: "ax-label", x: W, y: H + 20 + stageH + 12, "text-anchor": "end" }, `${tx.evolution} →`),
+      text({ class: "ax-text wm-stage", x: -10, y: 13, "text-anchor": "end" }, tx.visible),
+      text({ class: "ax-text wm-stage", x: -10, y: H - 2, "text-anchor": "end" }, tx.invisible),
+      text({ class: "ax-label", x: yLabelX, y: H / 2, "text-anchor": "middle", transform: `rotate(-90 ${yLabelX} ${H / 2})` }, tx.valueChain)
+    ])];
+    const comps = spec.components.map((c, i) => ({ ...c, i, cx: x(c.evo), cy: y(c.vis), r: c.focal ? 6.5 : 5.5 }));
+    const byName = new Map(comps.map((c) => [c.label, c]));
+    for (const l3 of spec.links) {
+      const a = byName.get(l3.from), b = byName.get(l3.to);
+      out.push(el("g", stepAttrs(Math.min(12, 2 + Math.round((1 - Math.min(a.vis, b.vis)) * 8))), el("path", { class: "wm-link", d: `M${a.cx},${a.cy} L${b.cx},${b.cy}` })));
+    }
+    const taken = [];
+    const hits = (b) => taken.some((o) => b.x < o.x + o.w + 2 && o.x < b.x + b.w + 2 && b.y < o.y + o.h + 2 && o.y < b.y + b.h + 2);
+    const inside = (b) => b.x >= PAD && b.y >= PAD && b.x + b.w <= W - PAD && b.y + b.h <= H - PAD;
+    for (const c of comps) {
+      taken.push({ x: c.cx - c.r, y: c.cy - c.r, w: c.r * 2, h: c.r * 2 });
+      if (c.moveTo != null) {
+        const mx = x(c.moveTo);
+        taken.push({ x: Math.min(c.cx, mx) - 6, y: c.cy - 6, w: Math.abs(mx - c.cx) + 12, h: 12 });
+      }
+    }
+    const place = (c) => {
+      const w = measure(c.label, FS.label, c.focal ? bold : {});
+      const right = (dy) => ({ x: c.cx + c.r + 5, y: c.cy - 8 + dy, w, h: 16 });
+      const left = (dy) => ({ x: c.cx - c.r - 5 - w, y: c.cy - 8 + dy, w, h: 16 });
+      const near = [{ x: c.cx - w / 2, y: c.cy - c.r - 20, w, h: 16 }, right(0), left(0), { x: c.cx - w / 2, y: c.cy + c.r + 4, w, h: 16 }];
+      const found = near.find((b2) => inside(b2) && !hits(b2));
+      if (found) return found;
+      for (let dy = 18; dy < H; dy += 18) {
+        for (const b2 of [right(dy), left(dy), right(-dy), left(-dy)]) if (inside(b2) && !hits(b2)) return { ...b2, leader: true };
+      }
+      const b = right(0);
+      return { ...b, x: Math.min(Math.max(PAD, b.x), W - PAD - w), y: Math.min(Math.max(PAD, b.y), H - PAD - 16) };
+    };
+    for (const c of [...comps].sort((a, b) => b.focal - a.focal || a.i - b.i)) {
+      c.box = place(c);
+      taken.push(c.box);
+    }
+    for (const c of comps) {
+      const { cx, cy, r, box } = c;
+      const parts = [];
+      if (c.moveTo != null) {
+        const mx = x(c.moveTo), s = mx > cx ? 1 : -1;
+        parts.push(el("path", { class: "wm-move", d: `M${cx + s * (r + 3)},${cy} L${mx - s * 9},${cy}` }), el("path", { class: "wm-move-head", d: `M${mx - s * 2},${cy} L${mx - s * 10},${cy - 4} L${mx - s * 10},${cy + 4} Z` }));
+      }
+      const toLeft = box.x + box.w / 2 < cx;
+      if (box.leader) parts.push(el("line", { class: "q-leader", x1: cx, y1: cy, x2: toLeft ? box.x + box.w + 2 : box.x - 2, y2: box.y + 8 }));
+      parts.push(el("circle", { class: "wm-dot", cx, cy, r }), text({ class: "wm-label", x: box.x, y: box.y + 12 }, c.label));
+      out.push(el("g", { class: c.focal ? "k-focal" : void 0, ...stepAttrs(Math.min(12, 1 + Math.round((1 - c.vis) * 8))) }, parts));
+    }
+    const left = -yLabelX + 12;
+    return svg([-left, -12, W + left + 16, H + 20 + stageH + 12 + 24], out.join(""), spec.label);
+  }
+
+  return { line, bar, sankey, loop, quadrant, venn, matrix, pyramid, layers, nested, fishbone, process: processSteps, journey, kanban, storymap, gantt, wardley };
 })();
-var SEECODE_CSS = `/* ── Charts ported from SeeCode (line / bar / sankey / loop / quadrant) ── */
+var SEECODE_CSS = `/* ── Charts and diagrams ported from SeeCode (see var seecode for the list) ── */
 .am-sc text { fill: var(--ink, #16181d); font-size: 14px; }
 .am-sc .ax-line { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
 .am-sc .ax-grid { stroke: var(--ink-3, #8b929e); stroke-opacity: .35; stroke-width: 1; }
@@ -7551,7 +8255,74 @@ var SEECODE_CSS = `/* ── Charts ported from SeeCode (line / bar / sankey / l
 .am-sc .q-pt.k-focal .q-dot { fill: var(--accent, #1d5fbf); }
 .am-sc .q-pt-label { font-size: 14px; }
 .am-sc .q-leader { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
-.am-sc .q-pt.k-focal .q-pt-label { fill: var(--accent, #1d5fbf); font-weight: 700; }`;
+.am-sc .q-pt.k-focal .q-pt-label { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .n-tag { fill: var(--ink-2, #4b5260); font: 13px var(--font-mono, monospace); }
+.am-sc .k-focal .n-tag { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .vn-c { fill-opacity: .1; stroke-width: 1.5; }
+.am-sc .vs-1 .vn-c { fill: var(--accent, #1d5fbf); stroke: var(--accent, #1d5fbf); } .am-sc .vs-1 .vn-name { fill: var(--accent, #1d5fbf); }
+.am-sc .vs-2 .vn-c { fill: var(--warn, #a8620a); stroke: var(--warn, #a8620a); } .am-sc .vs-2 .vn-name { fill: var(--warn, #a8620a); }
+.am-sc .vs-3 .vn-c { fill: var(--ink-2, #4b5260); stroke: var(--ink-2, #4b5260); } .am-sc .vs-3 .vn-name { fill: var(--ink-2, #4b5260); }
+.am-sc .vn.k-focal .vn-c { fill-opacity: .2; stroke-width: 2.5; }
+.am-sc .vn-name { font-size: 14px; font-weight: 700; }
+.am-sc .vn-region, .am-sc .jr-note, .am-sc .wm-label { paint-order: stroke; stroke: var(--paper, #ffffff); stroke-width: 3px; stroke-linejoin: round; }
+.am-sc .vn-region.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .mx-head { font-size: 14px; font-weight: 700; }
+.am-sc .mx-head.is-focal, .am-sc .mx-r.k-focal .mx-row { fill: var(--accent, #1d5fbf); }
+.am-sc .mx-row { font-size: 14px; font-weight: 700; }
+.am-sc .mx-cell { font-size: 13px; }
+.am-sc .mx-band { fill: var(--fill, #f3f5f8); }
+.am-sc .mx-band.is-focal, .am-sc .mx-col-focal { fill: var(--accent, #1d5fbf); fill-opacity: .08; }
+.am-sc .mx-full { fill: var(--ink-2, #4b5260); }
+.am-sc .mx-ring { fill: var(--paper, #ffffff); stroke: var(--ink-2, #4b5260); stroke-width: 1.5; } .am-sc .mx-ring-half { fill: none; }
+.am-sc .mx-none { fill: var(--ink-3, #8b929e); }
+.am-sc .mx-r.k-focal .mx-full { fill: var(--accent, #1d5fbf); } .am-sc .mx-r.k-focal .mx-ring { stroke: var(--accent, #1d5fbf); }
+.am-sc .py-band { fill: var(--fill, #f3f5f8); stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .k-focal .py-band { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .py-lead { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 2 3; }
+.am-sc .py-val { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.am-sc .k-focal .py-val { fill: var(--accent, #1d5fbf); }
+.am-sc .ly-band { fill: var(--fill, #f3f5f8); stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .k-focal .ly-band { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .chip { fill: var(--paper, #ffffff); stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .k-focal .chip { stroke: var(--accent, #1d5fbf); }
+.am-sc .chip-text { font-size: 13px; }
+.am-sc .ns-box { stroke: var(--ink-3, #8b929e); stroke-width: 1; } .am-sc .ns-d0 { fill: var(--fill, #f3f5f8); } .am-sc .ns-d1 { fill: var(--paper, #ffffff); }
+.am-sc .k-focal .ns-box { stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .fb-spine { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 2.5; } .am-sc .fb-spine-head { fill: var(--ink-2, #4b5260); }
+.am-sc .fb-bone { stroke-width: 1.5; }
+.am-sc .fb-tick { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .fb-cat { font-size: 14px; font-weight: 700; } .am-sc .k-focal .fb-cat { fill: var(--accent, #1d5fbf); }
+.am-sc .fb-cause { font-size: 13px; }
+.am-sc .jr-band { fill: var(--fill, #f3f5f8); } .am-sc .jr-band.alt { fill: var(--paper, #ffffff); }
+.am-sc .jr-zero { stroke-dasharray: 3 4; stroke-opacity: .8; }
+.am-sc .jr-curve { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 2; }
+.am-sc .jr-dot { fill: var(--paper, #ffffff); stroke: var(--ink-2, #4b5260); stroke-width: 2; }
+.am-sc .jr-dot.is-pain { fill: var(--err, #c62828); stroke: var(--err, #c62828); } .am-sc .jr-dot.is-focal { fill: var(--accent, #1d5fbf); stroke: var(--accent, #1d5fbf); }
+.am-sc .jr-step.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .jr-note { fill: var(--ink-2, #4b5260); font-size: 13px; } .am-sc .jr-note.is-pain { fill: var(--err, #c62828); }
+.am-sc .kb-col { fill: var(--fill, #f3f5f8); stroke: var(--line-2, #d6dae1); stroke-width: 1; } .am-sc .kb-col.is-over { stroke: var(--err, #c62828); stroke-width: 1.5; }
+.am-sc .kb-count { fill: var(--ink-2, #4b5260); font: 13px var(--font-mono, monospace); } .am-sc .kb-count.is-over { fill: var(--err, #c62828); font-weight: 700; }
+.am-sc .kb-card, .am-sc .sm-story { fill: var(--paper, #ffffff); stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .k-focal .kb-card, .am-sc .k-focal .sm-story, .am-sc .k-focal .sm-act { fill: var(--accent-bg, #e4ecf8); stroke: var(--accent, #1d5fbf); stroke-width: 1.5; }
+.am-sc .kb-text { font-size: 14px; }
+.am-sc .sm-act { fill: var(--fill, #f3f5f8); stroke: var(--ink-2, #4b5260); stroke-width: 1.5; }
+.am-sc .sm-rule { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-sc .sm-release, .am-sc .g-section { fill: var(--ink-2, #4b5260); font-size: 13px; font-weight: 700; }
+.am-sc .g-task.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .g-bar { fill: var(--ink-2, #4b5260); } .am-sc .g-bar.is-focal { fill: var(--accent, #1d5fbf); } .am-sc .g-bar.is-done { fill: var(--ink-3, #8b929e); fill-opacity: .5; }
+.am-sc .g-done { fill: var(--ok, #1d5fbf); font-size: 13px; font-weight: 700; }
+.am-sc .g-dep .e-line { stroke: var(--ink-3, #8b929e); } .am-sc .g-dep .e-head { fill: var(--ink-3, #8b929e); }
+.am-sc .g-mile-line { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 3 4; }
+.am-sc .g-mile { fill: var(--ink-2, #4b5260); } .am-sc .k-focal .g-mile { fill: var(--accent, #1d5fbf); }
+.am-sc .g-mile-text.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .g-today { stroke: var(--err, #c62828); stroke-width: 1.5; stroke-dasharray: 4 3; } .am-sc .g-today-text { fill: var(--err, #c62828); font-size: 13px; font-weight: 700; }
+.am-sc .wm-div { stroke-dasharray: 3 4; }
+.am-sc .wm-stage { font: 13px var(--font-sans, sans-serif); }
+.am-sc .wm-link { fill: none; stroke: var(--ink-3, #8b929e); stroke-width: 1.2; }
+.am-sc .wm-move { fill: none; stroke: var(--accent, #1d5fbf); stroke-width: 1.5; stroke-dasharray: 4 3; } .am-sc .wm-move-head { fill: var(--accent, #1d5fbf); }
+.am-sc .wm-dot { fill: var(--paper, #ffffff); stroke: var(--ink, #16181d); stroke-width: 1.5; }
+.am-sc .k-focal .wm-dot { fill: var(--accent, #1d5fbf); stroke: var(--accent, #1d5fbf); }
+.am-sc .k-focal .wm-label { fill: var(--accent, #1d5fbf); font-weight: 700; }`;
 
 // The five fences that use the SeeCode layouts. Each parses its lines and hands a spec to seecode.<name>.
 var SC_NUMBER = /^-?\d+(?:\.\d+)?$/;
@@ -7730,7 +8501,474 @@ item | x | y                  ← one item per line; x and y from 0 to 100 (0 = 
   }
 };
 
-var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, ask_default];
+// The twelve structure fences of the second port. Lines are "name | note" with * for the accent, as in loop and quadrant;
+// a few lines start with an English keyword (cols:, stage:, column:, activity:, step:, section:, milestone:, key:).
+var SC_KEYWORD = (word) => new RegExp(`^${word}\\s*[:：]\\s*(.*)$`, "i");
+var scPercent = (v, what, t, line) => {
+  if (!SC_NUMBER.test(v ?? "") || +v < 0 || +v > 100) throw new ComponentError(`${what} must be a number from 0 to 100: "${t}"`, line);
+  return +v / 100;
+};
+var venn_default = {
+  name: "venn",
+  summary: "Venn diagram (2 or 3 overlapping sets, a label in each region)",
+  syntax: `\`\`\`venn
+set name | note (optional)        ← 2 or 3 set lines; * highlights the set
+name: what only this set has      ← a region: one set name labels the part only that set covers
+name & name: what they share      ← & joins the sets the region lies in
+* name & name & name: the centre  ← * highlights the region
+\`\`\`
+- Set names cannot contain : or &. Every name in a region line must be a set line's name. Regions are optional.`,
+  example: "```venn\nRead-only review | fast, changes nothing\nDesign review | questions the direction\nRead-only review: call sites, contracts\nDesign review: scope, trade-offs\n* Read-only review & Design review: a verdict with evidence\n```",
+  render(text) {
+    const sets = [], regions = [];
+    for (const { text: t, line } of contentLines(text)) {
+      const { focal, body } = scFocal(t);
+      const kv = scKeyValue(body);
+      if (kv && !kv[1].includes("|")) regions.push({ names: kv[1].split("&").map((s) => s.trim()), label: kv[2].trim(), focal, line, t });
+      else {
+        if (body.split("|")[0].includes("&")) throw new ComponentError(`venn region line needs name & name: label (with a colon): "${t}"`, line);
+        const [label, sub = ""] = fields(body);
+        if (sets.some((s) => s.label === label)) throw new ComponentError(`venn: two sets are both "${label}"`, line);
+        sets.push({ label, sub, focal, line });
+      }
+    }
+    if (sets.length < 2 || sets.length > 3) throw new ComponentError(`venn needs 2 or 3 set lines (set name | note); got ${sets.length}`, sets[3]?.line ?? 1);
+    const names = sets.map((s) => s.label);
+    const seen = /* @__PURE__ */ new Set();
+    const specRegions = regions.map((rg) => {
+      const ids = rg.names.map((nm) => names.indexOf(nm));
+      const bad = rg.names.find((nm, i) => ids[i] < 0);
+      if (bad !== void 0) throw new ComponentError(`venn region names "${bad}", which is not a set; sets: ${names.join(", ")}: "${rg.t}"`, rg.line);
+      const key = [...new Set(ids)].sort().join("&");
+      if (key.split("&").length !== ids.length) throw new ComponentError(`venn region names a set twice: "${rg.t}"`, rg.line);
+      if (seen.has(key)) throw new ComponentError(`venn: this region is labelled twice: "${rg.t}"`, rg.line);
+      if (!rg.label) throw new ComponentError(`venn region has no label after the colon: "${rg.t}"`, rg.line);
+      seen.add(key);
+      return { sets: ids.sort(), label: rg.label, focal: rg.focal };
+    });
+    return scFigure("venn", seecode.venn({ sets, regions: specRegions, label: names.join(" ∩ ") }));
+  }
+};
+var SC_MARK = /^[●◐○-]$/;
+var matrix_default = {
+  name: "matrix",
+  summary: "Matrix (rows \xD7 columns, a mark or short text in each cell)",
+  syntax: `\`\`\`matrix
+cols: column | column | column     ← first line; * before a column name highlights the column
+row name | cell | cell | cell      ← one row per line, one cell per column
+* key row | ● | ◐ | -              ← * highlights the row
+key: ● leads | ◐ helps | ○ reads   ← optional legend under the grid
+\`\`\`
+- A cell is ● (full), ◐ (half), ○ (empty ring), - (none) or short text. An empty cell is the same as -.`,
+  example: "```matrix\ncols: Plan | Build | *Review\nPlanner | ● | ○ | -\n* Reviewer | - | ◐ | ●\nBuilder | ◐ | ● | ○\nkey: ● owns | ◐ helps | ○ reads\n```",
+  render(text) {
+    const lines = contentLines(text);
+    const head = lines[0]?.text.match(SC_KEYWORD("cols"));
+    if (!head) throw new ComponentError(`matrix: the first line must be cols: column | column | …; got "${lines[0]?.text ?? ""}"`, lines[0]?.line ?? 1);
+    const cols = fields(head[1]).map((c) => {
+      const { focal, body } = scFocal(c);
+      return { label: body, focal };
+    });
+    if (cols.some((c) => !c.label)) throw new ComponentError(`matrix: a column name is empty: "${lines[0].text}"`, lines[0].line);
+    const rows = [], key = [];
+    for (const { text: t, line } of lines.slice(1)) {
+      const k2 = t.match(SC_KEYWORD("key"));
+      if (k2) {
+        for (const item of fields(k2[1])) {
+          const m = item.match(/^(\S)\s+(.+)$/);
+          if (!m || !SC_MARK.test(m[1])) throw new ComponentError(`matrix key items are a mark (● ◐ ○ -) then words, such as ● owns: "${t}"`, line);
+          key.push({ mark: m[1], label: m[2] });
+        }
+        continue;
+      }
+      const { focal, body } = scFocal(t);
+      const [label, ...cells] = fields(body);
+      if (cells.length !== cols.length) throw new ComponentError(`matrix row "${label}" has ${cells.length} cells for ${cols.length} columns: "${t}"`, line);
+      rows.push({ label, cells, focal });
+    }
+    if (!rows.length) throw new ComponentError("matrix needs at least one row line after cols: (row name | cell | …)", lines[0].line);
+    return scFigure("matrix", seecode.matrix({ cols, rows, key, label: `${rows.map((r) => r.label).join(", ")} \xD7 ${cols.map((c) => c.label).join(", ")}` }));
+  }
+};
+var pyramid_default = {
+  name: "pyramid",
+  summary: "Pyramid or funnel (ranked levels, top to bottom)",
+  syntax: `\`\`\`pyramid [funnel] [unit=…]
+level | value | note       ← one level per line, top first; value and note optional
+level | note               ← a second field that is not a number is the note
+* key level | 120          ← * highlights the level
+\`\`\`
+- pyramid: the top is narrowest (the rarest or most valuable level). funnel: the top is widest; when every level has a value, the widths follow the values and each level shows ↓ its share of the level above.
+- 2 to 8 levels. unit= is added to the values.`,
+  example: "```pyramid funnel\nInstalled | 10000\nFinished tutorial | 6200\n* Played day 2 | 2100 | biggest drop\nPlayed day 7 | 900\n```",
+  render(text, { args }) {
+    const levels = contentLines(text).map(({ text: t, line }) => {
+      const { focal, body } = scFocal(t);
+      const [label, a = "", b = "", ...rest] = fields(body);
+      if (!label || rest.length) throw new ComponentError(`pyramid line must be level | value | note: "${t}"`, line);
+      if (SC_NUMBER.test(a)) return { label, value: Number(a), note: b, focal, line };
+      if (b) throw new ComponentError(`pyramid: the value "${a}" is not a number (level | value | note): "${t}"`, line);
+      return { label, note: a, focal, line };
+    });
+    if (levels.length < 2) throw new ComponentError(`pyramid needs 2 to 8 levels, one per line; got ${levels.length}`, 1);
+    if (levels.length > 8) throw new ComponentError(`pyramid takes at most 8 levels; got ${levels.length}`, levels[8].line);
+    const { funnel, unit = "" } = parseAttrs(args);
+    const valued = levels.filter((l3) => l3.value !== void 0);
+    if (funnel && valued.length && valued.length < levels.length) throw new ComponentError(`funnel: give every level a value, or none; "${levels.find((l3) => l3.value === void 0).label}" has none`, levels.find((l3) => l3.value === void 0).line);
+    if (funnel && valued.some((l3) => l3.value <= 0)) throw new ComponentError("funnel values must be positive numbers", valued.find((l3) => l3.value <= 0).line);
+    return scFigure("pyramid", seecode.pyramid({ levels, funnel: !!funnel, unit: String(unit), label: levels.map((l3) => l3.label).join(" > ") }));
+  }
+};
+var layers_default = {
+  name: "layers",
+  summary: "Layer stack (top layer closest to the user)",
+  syntax: `\`\`\`layers
+layer: item, item, item | note    ← one layer per line, top first; items (after :) and note (after |) optional
+* key layer | note                ← * highlights the layer
+\`\`\`
+- Items show as chips inside the band. Layer names cannot contain : or |. 2 to 8 layers.`,
+  example: "```layers\nGame: idle loop, save, UI | what the player sees\n* Framework tools: rules, skills, checks | shared by every project\nGodot: scenes, GDScript, export\n```",
+  render(text) {
+    const L = contentLines(text).map(({ text: t, line }) => {
+      const { focal, body } = scFocal(t);
+      const [head, sub = "", ...rest] = fields(body);
+      if (rest.length) throw new ComponentError(`layers line must be layer: item, item | note (one |): "${t}"`, line);
+      const kv = scKeyValue(head);
+      const label = (kv ? kv[1] : head).trim();
+      if (!label) throw new ComponentError(`layers line has no layer name: "${t}"`, line);
+      return { label, sub, items: kv ? scList(kv[2]).filter(Boolean) : [], focal, line };
+    });
+    if (L.length < 2) throw new ComponentError(`layers needs 2 to 8 layers, one per line; got ${L.length}`, 1);
+    if (L.length > 8) throw new ComponentError(`layers takes at most 8 layers; got ${L.length}`, L[8].line);
+    return scFigure("layers", seecode.layers({ layers: L, label: L.map((l3) => l3.label).join(" / ") }));
+  }
+};
+var nested_default = {
+  name: "nested",
+  summary: "Nested boxes (containment: what sits inside what)",
+  syntax: `\`\`\`nested
+outer box | note           ← one outer box; indentation (spaces or tabs) sets the level
+  inner box | note
+    item                   ← a box with nothing inside is drawn as a small box
+    * key item             ← * highlights the box
+\`\`\`
+- Up to 4 levels and about 30 boxes. Use tree when the links between levels matter more than the scope.`,
+  example: "```nested\nProject | one Godot repo\n  Feature: idle income\n    Formula task\n    * UI task\n  Feature: save\n    Migration task\n```",
+  render(text, { warn }) {
+    const stack = [];
+    let root = null, count = 0;
+    for (const { raw, text: t, line } of contentLines(text)) {
+      const indent = raw.match(/^\s*/)[0].replace(/\t/g, "    ").length;
+      while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop();
+      const { focal, body } = scFocal(t);
+      const [label, sub = ""] = fields(body);
+      const nd = { label, sub, focal, kids: [] };
+      count++;
+      if (!stack.length) {
+        if (root) throw new ComponentError(`nested has one outer box; indent "${label}" under it, or wrap both in a new outer box`, line);
+        root = nd;
+      } else {
+        if (stack.length >= 4) throw new ComponentError(`nested goes at most 4 levels deep: "${t}"`, line);
+        stack[stack.length - 1].nd.kids.push(nd);
+      }
+      stack.push({ indent, nd });
+    }
+    if (!root) throw new ComponentError("nested needs an outer box and the boxes inside it, one per line", 1);
+    if (count > 30) warn?.({ line: 1, message: `${count} boxes; nested reads best with 30 or fewer` });
+    return scFigure("nested", seecode.nested({ root, label: root.label }));
+  }
+};
+var fishbone_default = {
+  name: "fishbone",
+  textArgs: true,
+  summary: "Fishbone / cause and effect (categories of causes behind one problem)",
+  syntax: `\`\`\`fishbone <effect: the problem, as measured>
+category | cause | cause | cause   ← one bone per line, 2 to 6 lines, up to 5 causes each
+* category | cause                 ← * highlights the category that holds the root cause
+\`\`\`
+- The text after fishbone is the effect, drawn at the head of the spine.`,
+  example: "```fishbone Frame rate drops to 20 after an hour\nArt | uncompressed textures\n* Code | every building ticks each frame | save writes on the main thread\nData | offline gains replayed one by one\n```",
+  render(text, { args }) {
+    const effect = args.trim();
+    if (!effect) throw new ComponentError("fishbone needs the effect after its name, such as ```fishbone Frame rate drops to 20", 0);
+    const categories = contentLines(text).map(({ text: t, line }) => {
+      const { focal, body } = scFocal(t);
+      const [label, ...causes] = fields(body);
+      if (!label) throw new ComponentError(`fishbone line must be category | cause | cause: "${t}"`, line);
+      if (causes.length > 5) throw new ComponentError(`fishbone: "${label}" has ${causes.length} causes; keep the top 5`, line);
+      return { label, causes: causes.filter(Boolean), focal };
+    });
+    if (categories.length < 2 || categories.length > 6) throw new ComponentError(`fishbone needs 2 to 6 category lines; got ${categories.length}`, 1);
+    return scFigure("fishbone", seecode.fishbone({ effect, categories, label: effect }));
+  }
+};
+var process_default = {
+  name: "process",
+  summary: "Process (numbered steps in one line, no branches)",
+  syntax: `\`\`\`process
+step | note (optional)     ← one step per line, left to right, 2 to 8 steps
+* key step | note          ← * highlights the step
+\`\`\`
+- Use flow for branches, loop for a cycle, timeline for dated events.`,
+  example: "```process\nRun tests | wrapper script\nCheck wording\n* Commit | git commit -F\nReport\n```",
+  render(text) {
+    const steps = contentLines(text).map(({ text: t }) => {
+      const { focal, body } = scFocal(t);
+      const [label, sub = ""] = fields(body);
+      return { label, sub, focal };
+    });
+    if (steps.length < 2) throw new ComponentError(`process needs 2 to 8 steps, one per line; got ${steps.length}`, 1);
+    if (steps.length > 8) throw new ComponentError(`process takes at most 8 steps; got ${steps.length}. Group steps into phases`, contentLines(text)[8].line);
+    return scFigure("process", seecode.process({ steps, label: steps.map((s) => s.label).join(" → ") }));
+  }
+};
+var journey_default = {
+  name: "journey",
+  summary: "Journey (stages, steps and how the user feels at each)",
+  syntax: `\`\`\`journey
+stage: stage name | note           ← starts a stage; its steps follow
+step | score | note                ← score from -2 (frustrated) to 2 (delighted); note optional
+* key step | -2 | why it hurts     ← * highlights the step; a score of -2 is drawn as a pain point
+\`\`\`
+- Up to 7 stages and 16 steps. Add a note only to the moments that matter.`,
+  example: "```journey\nstage: First minute\nOpen the game | 1\nFirst tap | 2\nstage: Minute 5\n* Wait for gold | -2 | nothing to do\nFirst upgrade | 2 | numbers jump\n```",
+  render(text, { warn }) {
+    const stages = [];
+    for (const { text: t, line } of contentLines(text)) {
+      const st = t.match(SC_KEYWORD("stage"));
+      if (st) {
+        const [label, sub = ""] = fields(st[1]);
+        if (!label) throw new ComponentError(`journey stage has no name: "${t}"`, line);
+        stages.push({ label, sub, steps: [], line });
+        continue;
+      }
+      if (!stages.length) throw new ComponentError(`journey: start with a stage: line before the steps: "${t}"`, line);
+      const { focal, body } = scFocal(t);
+      const [label, score, note = ""] = fields(body);
+      if (!SC_NUMBER.test(score ?? "") || +score < -2 || +score > 2) throw new ComponentError(`journey step must be step | score | note, score from -2 to 2: "${t}"`, line);
+      stages[stages.length - 1].steps.push({ label, score: +score, note, focal });
+    }
+    if (!stages.length) throw new ComponentError("journey needs a stage: line and its steps", 1);
+    const empty = stages.find((s) => !s.steps.length);
+    if (empty) throw new ComponentError(`journey stage "${empty.label}" has no steps`, empty.line);
+    const n = stages.reduce((s, st) => s + st.steps.length, 0);
+    if (n > 16) warn?.({ line: 1, message: `${n} steps; a journey reads best with 16 or fewer` });
+    return scFigure("journey", seecode.journey({ stages, label: stages.map((s) => s.label).join(" → ") }));
+  }
+};
+var kanban_default = {
+  name: "kanban",
+  summary: "Kanban board (columns of cards by status)",
+  syntax: `\`\`\`kanban
+column: name | WIP limit           ← starts a column, left to right (limit optional); its cards follow
+card | note                        ← one card per line; note (owner, estimate) optional
+* key card | note                  ← * highlights the card
+\`\`\`
+- A column with more cards than its limit shows its count in red. Up to 8 cards per column; end with "+3 more" if needed.`,
+  example: "```kanban\ncolumn: To do\nOffline gains\nSettings page\ncolumn: Doing | 2\n* Save migration | P0\nPrestige UI\ncolumn: Done\nTap to collect\n```",
+  render(text, { warn }) {
+    const columns = [];
+    for (const { text: t, line } of contentLines(text)) {
+      const col = t.match(SC_KEYWORD("column"));
+      if (col) {
+        const [label, wip = ""] = fields(col[1]);
+        if (!label) throw new ComponentError(`kanban column has no name: "${t}"`, line);
+        if (wip && !/^\d+$/.test(wip)) throw new ComponentError(`kanban: the WIP limit "${wip}" must be a whole number: "${t}"`, line);
+        columns.push({ label, wip: wip ? +wip : 0, cards: [], line });
+        continue;
+      }
+      if (!columns.length) throw new ComponentError(`kanban: start with a column: line before the cards: "${t}"`, line);
+      const { focal, body } = scFocal(t);
+      const [label, sub = ""] = fields(body);
+      columns[columns.length - 1].cards.push({ label, sub, focal });
+    }
+    if (!columns.length) throw new ComponentError("kanban needs a column: line and its cards", 1);
+    const full = columns.find((c) => c.cards.length > 8);
+    if (full) warn?.({ line: full.line, message: `column "${full.label}" has ${full.cards.length} cards; show 8 or fewer and end with "+N more"` });
+    return scFigure("kanban", seecode.kanban({ columns, label: columns.map((c) => c.label).join(" / ") }));
+  }
+};
+var story_map_default = {
+  name: "story-map",
+  summary: "Story map (activities → steps, stories sliced into releases)",
+  syntax: `\`\`\`story-map
+activity: name                     ← a backbone activity, left to right; its steps follow
+step: name                         ← a step of the activity; its release lines follow
+release: story | story | *story    ← the step's stories in that release (any release name); * highlights a story
+* step: name                       ← * before activity: or step: highlights it
+\`\`\`
+- Releases are drawn top to bottom in the order they first appear. Up to 10 steps.`,
+  example: "```story-map\nactivity: Earn gold\nstep: Tap\nFirst build: tap +1 | show the number\nLater: combo bonus\nstep: Automate\nFirst build: hire a miner\nactivity: Spend gold\n* step: Upgrade\nFirst build: *upgrade the miner\nLater: buy many at once\n```",
+  render(text, { warn }) {
+    const activities = [], releases = [];
+    for (const { text: t, line } of contentLines(text)) {
+      const { focal, body } = scFocal(t);
+      const act = body.match(SC_KEYWORD("activity")), step = body.match(SC_KEYWORD("step"));
+      if (act) {
+        if (!act[1].trim()) throw new ComponentError(`story-map activity has no name: "${t}"`, line);
+        activities.push({ label: act[1].trim(), focal, steps: [], line });
+      } else if (step) {
+        if (!activities.length) throw new ComponentError(`story-map: put an activity: line before the first step: "${t}"`, line);
+        if (!step[1].trim()) throw new ComponentError(`story-map step has no name: "${t}"`, line);
+        activities[activities.length - 1].steps.push({ label: step[1].trim(), focal, stories: /* @__PURE__ */ new Map() });
+      } else {
+        const kv = scKeyValue(t);
+        if (!kv) throw new ComponentError(`story-map line must be activity: name, step: name or release: story | story: "${t}"`, line);
+        if (focal) throw new ComponentError(`story-map: put * before a story, not before the release name: "${t}"`, line);
+        const s = activities[activities.length - 1]?.steps.at(-1);
+        if (!s) throw new ComponentError(`story-map: release lines go under a step: line: "${t}"`, line);
+        const r = kv[1].trim();
+        if (!releases.includes(r)) releases.push(r);
+        s.stories.set(r, [...s.stories.get(r) ?? [], ...fields(kv[2]).filter(Boolean).map((x2) => {
+          const f = scFocal(x2);
+          return { label: f.body, focal: f.focal };
+        })]);
+      }
+    }
+    if (!activities.length) throw new ComponentError("story-map needs activity:, step: and release lines", 1);
+    const bare = activities.find((a) => !a.steps.length);
+    if (bare) throw new ComponentError(`story-map activity "${bare.label}" has no step: lines`, bare.line);
+    if (!releases.length) throw new ComponentError("story-map needs at least one release line under a step, such as First build: story | story", 1);
+    const n = activities.reduce((s, a) => s + a.steps.length, 0);
+    if (n > 10) warn?.({ line: 1, message: `${n} steps; a story map reads best with 10 or fewer` });
+    return scFigure("story-map", seecode.storymap({ activities, releases, label: activities.map((a) => a.label).join(" → ") }));
+  }
+};
+var SC_DATE = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+var scDay = (s) => {
+  const m = s.match(SC_DATE);
+  return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null;
+};
+var gantt_default = {
+  name: "gantt",
+  summary: "Gantt chart (tasks as bars on a time axis)",
+  syntax: `\`\`\`gantt [today=YYYY-MM-DD]
+section: name                          ← optional; groups the tasks under it
+task | start | length                  ← start: YYYY-MM-DD or after <task>; length: 3d, 2w or an end date (inclusive)
+* key task | after task | 5d           ← * highlights the task (the critical path)
+finished task | 2026-10-01 | 2d | done ← done draws it faded with ✓
+milestone: name | YYYY-MM-DD           ← a diamond under the chart; * before it highlights it
+\`\`\`
+- Instead of dates, plain numbers work throughout (day 1, week 3): start is a number and length is a number of the same unit.
+- Up to 20 tasks. today= draws a red line.`,
+  example: "```gantt today=2026-10-15\nsection: Design\nScope | 2026-10-12 | 2d | done\nRules | after Scope | 3d\nsection: Build\n* Code | after Rules | 5d\nTest | after Code | 2d\nmilestone: Ship | 2026-10-26\n```",
+  render(text, { args, ui, warn }) {
+    const tasks = [], miles = [];
+    let section = "", numeric = null;
+    const when = (v, t, line) => {
+      if (SC_NUMBER.test(v)) {
+        if (numeric === false) throw new ComponentError(`gantt mixes dates and plain numbers; use one kind throughout: "${t}"`, line);
+        numeric = true;
+        return Number(v);
+      }
+      const d = scDay(v);
+      if (d === null) throw new ComponentError(`gantt: "${v}" is not a date (YYYY-MM-DD) or a number: "${t}"`, line);
+      if (numeric === true) throw new ComponentError(`gantt mixes dates and plain numbers; use one kind throughout: "${t}"`, line);
+      numeric = false;
+      return d;
+    };
+    for (const { text: t, line } of contentLines(text)) {
+      const sec = t.match(SC_KEYWORD("section"));
+      if (sec) {
+        section = sec[1].trim();
+        continue;
+      }
+      const { focal, body } = scFocal(t);
+      const ms = body.match(SC_KEYWORD("milestone"));
+      if (ms) {
+        const [label, date = ""] = fields(ms[1]);
+        if (!label || !date) throw new ComponentError(`gantt milestone must be milestone: name | date: "${t}"`, line);
+        miles.push({ label, date, focal, line, t });
+        continue;
+      }
+      const [label, start = "", length = "", flag = "", ...rest] = fields(body);
+      if (!label || !start || !length || rest.length || flag && flag.toLowerCase() !== "done") throw new ComponentError(`gantt task must be task | start | length (| done): "${t}"`, line);
+      if (tasks.some((x2) => x2.label === label)) throw new ComponentError(`gantt: two tasks are both "${label}"`, line);
+      const after = start.match(/^after\s+(.+)$/i);
+      tasks.push({ label, section, focal, done: !!flag, line, t, after: after ? after[1].trim() : null, start: after ? null : when(start, t, line), length });
+    }
+    if (!tasks.length) throw new ComponentError("gantt needs at least one task | start | length line", 1);
+    if (tasks.every((x2) => x2.after)) throw new ComponentError("gantt: at least one task needs a start date or number; the others can start after it", tasks[0].line);
+    for (const task of tasks) {
+      if (task.after) {
+        task.after = tasks.find((x2) => x2.label === task.after) ?? task.after;
+        if (typeof task.after === "string") throw new ComponentError(`gantt: "after ${task.after}" names no task; tasks: ${tasks.map((x2) => x2.label).join(", ")}`, task.line);
+      }
+    }
+    const lengthOf = (task) => {
+      const v = task.length;
+      if (numeric) {
+        if (!SC_NUMBER.test(v) || +v < 0) throw new ComponentError(`gantt: with plain-number starts, the length is a number of the same unit: "${task.t}"`, task.line);
+        return +v;
+      }
+      const m = v.match(/^(\d+(?:\.\d+)?)\s*([dw])$/i);
+      if (m) return +m[1] * (m[2].toLowerCase() === "w" ? 7 : 1) * 864e5;
+      const end = scDay(v);
+      if (end === null) throw new ComponentError(`gantt: the length "${v}" must be like 3d, 2w or an end date (YYYY-MM-DD): "${task.t}"`, task.line);
+      return end + 864e5 - task.s;
+    };
+    // tasks that start after another resolve once that one has an end; a cycle never does
+    for (let pass = 0; pass <= tasks.length; pass++) {
+      for (const task of tasks) {
+        if (task.e !== void 0) continue;
+        if (task.after) {
+          if (task.after.e === void 0) continue;
+          task.s = task.after.e;
+        } else task.s = task.start;
+        task.e = task.s + lengthOf(task);
+        if (task.e < task.s) throw new ComponentError(`gantt: "${task.label}" ends before it starts: "${task.t}"`, task.line);
+      }
+    }
+    const loop = tasks.find((x2) => x2.e === void 0);
+    if (loop) throw new ComponentError(`gantt: "${loop.label}" waits on a chain of after that loops back to it`, loop.line);
+    const specMiles = miles.map((m) => ({ label: m.label, focal: m.focal, t: when(m.date, m.t, m.line) }));
+    const { today } = parseAttrs(args);
+    let todayT = null;
+    if (today !== void 0) {
+      todayT = numeric ? SC_NUMBER.test(String(today)) ? Number(today) : null : scDay(String(today));
+      if (todayT === null) throw new ComponentError(`gantt: today=${today} must be ${numeric ? "a number" : "a date YYYY-MM-DD"}`, 0);
+    }
+    if (tasks.length > 20) warn?.({ line: 1, message: `${tasks.length} tasks; roll small tasks into their section (20 or fewer)` });
+    return scFigure("gantt", seecode.gantt({ tasks, miles: specMiles, numeric, today: todayT, todayLabel: (ui?.chart ?? en_default.ui.chart).today, label: tasks.map((x2) => x2.label).join(", ") }));
+  }
+};
+var wardley_default = {
+  name: "wardley",
+  summary: "Wardley map (components by evolution and visibility, with links)",
+  syntax: `\`\`\`wardley
+component | evolution | visibility     ← evolution 0 (new, custom) to 100 (commodity); visibility 100 (the user sees it) to 0
+* key component | 30 | 60 | -> 70      ← * highlights; -> 70 draws a planned move to evolution 70
+from -> to                             ← a value-chain link: from depends on to
+\`\`\`
+- Up to 20 components. Axis names follow the page language.`,
+  example: "```wardley\nPlayer | 60 | 100\nIdle loop | 35 | 80\n* Framework tools | 25 | 55 | -> 60\nGodot | 75 | 30\nPlayer -> Idle loop\nIdle loop -> Framework tools\nFramework tools -> Godot\n```",
+  render(text, { ui, warn }) {
+    const components = [], links = [];
+    for (const { text: t, line } of contentLines(text)) {
+      const { focal, body } = scFocal(t);
+      if (body.includes("|")) {
+        const [label, evo, vis, move = "", ...rest] = fields(body);
+        const mv = move.match(/^(?:->|→)\s*(\S+)$/);
+        if (!label || rest.length || move && !mv) throw new ComponentError(`wardley component must be name | evolution | visibility (| -> target): "${t}"`, line);
+        if (components.some((c) => c.label === label)) throw new ComponentError(`wardley: two components are both "${label}"`, line);
+        components.push({ label, evo: scPercent(evo, "wardley evolution", t, line), vis: scPercent(vis, "wardley visibility", t, line), moveTo: mv ? scPercent(mv[1], "wardley move target", t, line) : null, focal });
+        continue;
+      }
+      const m = body.match(/^(.+?)\s*(?:->|→)\s*(.+)$/);
+      if (!m) throw new ComponentError(`wardley line must be name | evolution | visibility, or from -> to: "${t}"`, line);
+      links.push({ from: m[1], to: m[2], line, t });
+    }
+    if (!components.length) throw new ComponentError("wardley needs at least one name | evolution | visibility line", 1);
+    for (const l3 of links) {
+      const bad = [l3.from, l3.to].find((nm) => !components.some((c) => c.label === nm));
+      if (bad) throw new ComponentError(`wardley link names "${bad}", which is not a component: "${l3.t}"`, l3.line);
+    }
+    if (components.length > 20) warn?.({ line: 1, message: `${components.length} components; a Wardley map reads best with 20 or fewer` });
+    return scFigure("wardley", seecode.wardley({ components, links, text: ui?.chart ?? en_default.ui.chart, label: components.map((c) => c.label).join(", ") }));
+  }
+};
+
+var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, venn_default, matrix_default, pyramid_default, layers_default, nested_default, fishbone_default, process_default, journey_default, kanban_default, story_map_default, gantt_default, wardley_default, ask_default];
 var COMPONENTS = new Map(ALL2.map((c) => [c.name, c]));
 var RAW_LANGS = /* @__PURE__ */ new Set(["html", "svg"]);
 
@@ -8398,12 +9636,14 @@ function embedImages(block2, html, ctx) {
   }
 }
 function renderFence(block2, ctx) {
-  const { lang, args, text, line } = block2;
+  let { lang, args, text, line } = block2;
   if (RAW_LANGS.has(lang)) return text;
   const comp = COMPONENTS.get(lang);
   if (!comp) return codeBlock(block2, ctx);
   if (comp.pageOnly && ctx.video) throw new RenderError(`${lang} works on a page only; a video cannot take answers`, { line, component: lang, example: comp.example });
   checkParamNames(comp, args, line);
+  // An English name with a full-width equals sign (unit＝金币, typed with a Chinese input method) means unit=金币.
+  if (!comp.textArgs) args = args.replace(/([A-Za-z][\w-]*)\s*＝\s*/g, "$1=");
   ctx.stats.components[lang] = (ctx.stats.components[lang] ?? 0) + 1;
   try {
     const warn = ({ line: at3 = 0, message }) => ctx.stats.componentWarnings?.push({ line: line + at3, component: lang, message });
@@ -10721,7 +11961,8 @@ main(process.argv.slice(2), { background: true, scriptPath: process.argv[1] }).t
  * Temml carries two parts under the Apache License 2.0: its mhchem port (Copyright (c) 2011-2015 The MathJax Consortium, (c) 2015-2018
  * Martin Hensel) and a hyphenate and escape pair adapted from Facebook's React. http://www.apache.org/licenses/LICENSE-2.0
  */
-/*! SeeCode (https://github.com/Aryanutkarsh/SeeCode), layout code ported for the line, bar, sankey, loop and quadrant components.
+/*! SeeCode (https://github.com/Aryanutkarsh/SeeCode), layout code ported for the line, bar, sankey, loop, quadrant, venn, matrix,
+ * pyramid, layers, nested, fishbone, process, journey, kanban, story-map, gantt and wardley components.
  *
  * MIT License
  *
