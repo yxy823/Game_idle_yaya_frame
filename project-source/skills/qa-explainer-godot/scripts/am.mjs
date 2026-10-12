@@ -7017,7 +7017,8 @@ The question, one sentence
 // src/components/index.js
 // Charts and diagrams laid out by code ported from SeeCode (MIT, https://github.com/Aryanutkarsh/SeeCode, commit 82c33b6; license at the
 // end of this file): line, bar, sankey, loop, quadrant, then venn, matrix, pyramid (with funnel), layers, nested, fishbone, process,
-// journey, kanban, story-map, gantt and wardley. The layout functions turn a parsed spec into an <svg class="am-sc">; the
+// journey, kanban, story-map, gantt and wardley, then the data charts scatter (with bubble and beeswarm), waterfall, treemap, heatmap,
+// radar, polar and the bar (dumbbell, marimekko) and line (slope, bump, stream, ridgeline) variants. The layout functions turn a parsed spec into an <svg class="am-sc">; the
 // components after them parse the fence text. Text is 12px or larger and the drawing keeps its natural size (.am-diagram scrolls).
 // data-sc-step and --step stay on the parts so step animation can be added in CSS later.
 var seecode = (() => {
@@ -7510,7 +7511,7 @@ var seecode = (() => {
   const bold = { bold: true };
   // wrap, then narrow the width while the line count stays, so the lines come out about equally long;
   // a width that starts a line with closing punctuation is skipped
-  const CLOSE = /^[，。、；：！？）」』”,.;:!?)]+/;
+  const CLOSE = /^[，。、；：！？）」』”,.;:!?)·]+/;
   function balanced(str, maxW, size, opts) {
     const lines = wrap(str, maxW, size, opts);
     if (lines.length < 2) return lines;
@@ -8203,7 +8204,761 @@ var seecode = (() => {
     return svg([-left, -12, W + left + 16, H + 20 + stageH + 12 + 24], out.join(""), spec.label);
   }
 
-  return { line, bar, sankey, loop, quadrant, venn, matrix, pyramid, layers, nested, fishbone, process: processSteps, journey, kanban, storymap, gantt, wardley };
+  // Third port: data charts (scatter, waterfall, treemap, heatmap, radar, polar, and the bar and line variants).
+  // Numbers next to marks carry only a one-character unit; a longer unit is written once (axis caption or legend).
+  const val = (v, unit) => fmt(v, tickUnit(unit));
+  // Axis range from zero, unless every value sits far above zero; then the range hugs the data (scatter, slope, dumbbell).
+  function fitDomain(lo, hi) {
+    if (!(lo > 0 && lo > hi - lo)) return niceDomain(lo, hi);
+    const step = niceStep(hi - lo || hi);
+    const dom = { lo: snap(Math.floor(lo / step) * step, step), hi: snap(Math.ceil(hi / step) * step, step), step };
+    if (dom.hi <= dom.lo) dom.hi = snap(dom.lo + step, step);
+    return dom;
+  }
+  // Axis title with a long unit in brackets: 价格（金币）, Price (gold).
+  const axisTitle = (name, unit) => {
+    const u = unit && !tickUnit(unit) ? unit : "";
+    if (!name || !u) return name || u;
+    return /[^\x00-\x7f]/.test(name + u) ? `${name}（${u}）` : `${name} (${u})`;
+  };
+  // A label beside its mark: right, left, above, below, then stepped away vertically with a leader line.
+  // taken holds occupied boxes and bounds the box a label stays inside; every label is placed.
+  const LABEL_H = 16;
+  const overlaps = (b, o) => b.x < o.x + o.w + 2 && o.x < b.x + b.w + 2 && b.y < o.y + o.h + 2 && o.y < b.y + b.h + 2;
+  function placeLabel({ px, py, r, w }, taken, bounds) {
+    const free = (b) => b.x >= bounds.x && b.y >= bounds.y && b.x + b.w <= bounds.x + bounds.w && b.y + b.h <= bounds.y + bounds.h && !taken.some((o) => overlaps(b, o));
+    const right = (dy) => ({ x: px + r + 5, y: py - 8 + dy, w, h: LABEL_H });
+    const left = (dy) => ({ x: px - r - 5 - w, y: py - 8 + dy, w, h: LABEL_H });
+    const found = [right(0), left(0), { x: px - w / 2, y: py - r - 20, w, h: LABEL_H }, { x: px - w / 2, y: py + r + 4, w, h: LABEL_H }].find(free);
+    if (found) return found;
+    for (let dy = 18; dy < bounds.h; dy += 18) {
+      const b2 = [right(dy), left(dy), right(-dy), left(-dy)].find(free);
+      if (b2) return { ...b2, leader: true };
+    }
+    const b = right(0);
+    return { ...b, x: Math.min(Math.max(bounds.x, b.x), bounds.x + bounds.w - w), y: Math.min(Math.max(bounds.y, b.y), bounds.y + bounds.h - LABEL_H) };
+  }
+  function drawLabel(cls, { px, py }, box, content) {
+    const toLeft = box.x + box.w / 2 < px;
+    return (box.leader ? el("line", { class: "q-leader", x1: px, y1: py, x2: toLeft ? box.x + box.w + 2 : box.x - 2, y2: box.y + 8 }) : "") + text({ class: cls, x: box.x, y: box.y + 12 }, content);
+  }
+  // Series colour as a class that sets --c: the accent for the * series, the series palette for the others (they share one key, so each keeps a colour).
+  const palette = (series) => {
+    const colour = seriesIndex(series);
+    return series.map((s, i) => s.focal ? "pal-focal" : `pal-${colour[i]}`);
+  };
+  // Stacked parts (marimekko, stream): five steps from --accent toward --paper; with a * part, it alone is the accent
+  // and the others are five greys ordered so that neighbours differ. rp-0 is the full accent and takes --paper text.
+  const ramp = (series) => {
+    const anyFocal = series.some((s) => s.focal);
+    let j = 0;
+    // past five parts the steps repeat without the full accent, so it stays unique
+    return series.map((s) => s.focal ? "rp-0" : anyFocal ? `rg-${1 + j++ % 5}` : `rp-${j < 5 ? j++ : 1 + (j++ - 5) % 4}`);
+  };
+  // x labels along a line-family axis: every k-th, so neighbours do not touch, and always the last (the one before it is dropped when closer than 1.5 widths).
+  function xAxisLabels(xs, xAt, slot, y) {
+    const w = Math.max(...xs.map((s) => measure(s, FS.ax, mono))) + 8;
+    const every = Math.max(Math.ceil(xs.length / 9), Math.ceil(w / slot));
+    const last = xs.length - 1;
+    return xs.map((s, i) => i === last || i % every === 0 && (last - i) * slot >= w * 1.5 ? text({ class: `ax-text${/[^\x00-\x7f]/.test(s) ? " ax-sans" : ""}`, x: xAt(i), y, "text-anchor": "middle" }, s) : "").join("");
+  }
+  // Labels around a circle (radar axes, polar items): anchored away from the centre; returns the drawing and its extent.
+  function ringLabels(blocks, angleOf, R, cls) {
+    const ext = { x0: -R, x1: R, y0: -R, y1: R };
+    const out = blocks.map((b, i) => {
+      const a = angleOf(i), sx = Math.sin(a), cy = -Math.cos(a);
+      const px = (R + 14) * sx, py = (R + 14) * cy;
+      const anchor = Math.abs(sx) < 0.2 ? "middle" : sx > 0 ? "start" : "end";
+      const top = cy < -0.8 ? py - b.h : cy > 0.8 ? py + 2 : py - b.h / 2;
+      const x0 = anchor === "middle" ? px - b.w / 2 : anchor === "start" ? px : px - b.w;
+      ext.x0 = Math.min(ext.x0, x0);
+      ext.x1 = Math.max(ext.x1, x0 + b.w);
+      ext.y0 = Math.min(ext.y0, top);
+      ext.y1 = Math.max(ext.y1, top + b.h + 4);
+      return drawBlock(b, px, top, anchor, cls[i]);
+    });
+    return { out, ext };
+  }
+  // radius that leaves each label its arc
+  const ringRadius = (n, blocks, min) => Math.max(min, n * (Math.max(...blocks.map((b) => b.w)) + 16) / (2 * Math.PI));
+
+  // SeeCode (MIT) lib/render/charts/scatter.mjs: scatter (x, y) and bubble (x, y, size; circle area follows size).
+  function scatter(spec) {
+    if (spec.variant === "beeswarm") return beeswarm(spec);
+    const PW = 520, PH = 320;
+    const bubble = spec.variant === "bubble";
+    const pts = spec.points.map((p, i) => ({ ...p, i }));
+    const dx = fitDomain(Math.min(...pts.map((p) => p.x)), Math.max(...pts.map((p) => p.x)));
+    const dy = fitDomain(Math.min(...pts.map((p) => p.y)), Math.max(...pts.map((p) => p.y)));
+    // bubbles keep 30px from the axes, so a large one does not cover the tick numbers
+    const m = bubble ? 30 : 0;
+    const x = (v) => m + (v - dx.lo) / (dx.hi - dx.lo) * (PW - 2 * m);
+    const y = (v) => PH - m - (v - dy.lo) / (dy.hi - dy.lo) * (PH - 2 * m);
+    const out = [];
+    for (const t of ticks(dx)) {
+      out.push(el("line", { class: "ax-grid", x1: x(t), y1: 0, x2: x(t), y2: PH }));
+      out.push(text({ class: "ax-text", x: x(t), y: PH + 20, "text-anchor": "middle" }, fmt(t, tickUnit(spec.x.unit))));
+    }
+    for (const t of ticks(dy)) {
+      out.push(el("line", { class: "ax-grid", x1: 0, y1: y(t), x2: PW, y2: y(t) }));
+      out.push(text({ class: "ax-text", x: -10, y: y(t) + 4.5, "text-anchor": "end" }, fmt(t, tickUnit(spec.y.unit))));
+    }
+    out.push(el("line", { class: "ax-line", x1: 0, y1: 0, x2: 0, y2: PH }), el("line", { class: "ax-line", x1: 0, y1: PH, x2: PW, y2: PH }));
+    const xt = axisTitle(spec.x.label, spec.x.unit), yt = axisTitle(spec.y.label, spec.y.unit);
+    if (xt) out.push(text({ class: "ax-label", x: PW, y: PH + 44, "text-anchor": "end" }, `${xt} →`));
+    if (yt) out.push(text({ class: "ax-label", x: 0, y: -14 }, `↑ ${yt}`));
+    const maxSize = Math.max(...pts.map((p) => p.size));
+    const rOf = (s) => Math.max(4, 28 * Math.sqrt(s / maxSize));
+    for (const p of pts) {
+      p.px = x(p.x);
+      p.py = y(p.y);
+      p.r = bubble ? rOf(p.size) : p.focal ? 6 : 4.5;
+    }
+    // larger circles first, so small ones stay on top
+    [...pts].sort((a, b) => b.r - a.r).forEach((p) => out.push(el("circle", { class: `sp-dot${bubble ? " is-bubble" : ""}${p.focal ? " is-focal" : ""}`, cx: p.px, cy: p.py, r: p.r, ...stepAttrs(stepOf(p.i, pts.length)) })));
+    // names: all of them up to 20 points, else only the * points; a name that fits inside its bubble goes there
+    const named = pts.filter((p) => p.focal || pts.length <= 20);
+    const taken = pts.map((p) => {
+      const r = Math.min(p.r, 6);
+      return { x: p.px - r, y: p.py - r, w: r * 2, h: r * 2 };
+    });
+    const bounds = { x: 0, y: 0, w: PW, h: PH };
+    const labels = [];
+    for (const p of [...named].sort((a, b) => b.focal - a.focal || a.i - b.i)) {
+      const w = measure(p.label, FS.label, p.focal ? bold : {});
+      if (bubble && w <= p.r * 2 - 8) {
+        const box = { x: p.px - w / 2, y: p.py - 8, w, h: LABEL_H };
+        taken.push(box);
+        labels.push(text({ class: `sp-label${p.focal ? " is-focal" : ""}`, x: p.px, y: p.py + 5, "text-anchor": "middle" }, p.label));
+        continue;
+      }
+      const box = placeLabel({ px: p.px, py: p.py, r: p.r, w }, taken, bounds);
+      taken.push(box);
+      labels.push(drawLabel(`sp-label${p.focal ? " is-focal" : ""}`, p, box, p.label));
+    }
+    out.push(el("g", stepAttrs(12), labels));
+    let h = PH + (xt ? 52 : 30);
+    if (bubble) {
+      // size key: the largest circle and one a quarter of its size
+      const big = 28, small = rOf(maxSize / 4);
+      const st = axisTitle(spec.size.label, spec.size.unit);
+      const sw = st ? measure(st, FS.cat) + 16 : 0;
+      const cy = h + 12 + big;
+      out.push(st ? text({ class: "lg-text", x: 0, y: cy + 5 }, st) : "");
+      out.push(el("circle", { class: "sp-key", cx: sw + big, cy, r: big }), text({ class: "ax-text", x: sw + big * 2 + 8, y: cy + 5 }, val(maxSize, spec.size.unit)));
+      const sx = sw + big * 2 + 16 + measure(val(maxSize, spec.size.unit), FS.ax, mono) + 16;
+      out.push(el("circle", { class: "sp-key", cx: sx + small, cy: cy + big - small, r: small }), text({ class: "ax-text", x: sx + small * 2 + 8, y: cy + 5 }, val(maxSize / 4, spec.size.unit)));
+      h = cy + big + 12;
+    }
+    const left = Math.max(...ticks(dy).map((t) => measure(fmt(t, tickUnit(spec.y.unit)), FS.ax, mono))) + 18;
+    const right = Math.max(28, ...pts.map((p) => p.px + p.r - PW + 8));
+    const top = Math.max(32, ...pts.map((p) => p.r - p.py + 8));
+    return svg([-left, -top, PW + left + right, h + top + 8], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/scatter.mjs, beeswarm: one value axis; each group's dots are packed in its own row so none overlap.
+  function beeswarm(spec) {
+    const PW = 560, R = 5, D = R * 2 + 1;
+    const pts = spec.points.map((p, i) => ({ ...p, i }));
+    const groups = [...new Set(pts.map((p) => p.group))];
+    const dom = fitDomain(Math.min(...pts.map((p) => p.x)), Math.max(...pts.map((p) => p.x)));
+    const x = (v) => (v - dom.lo) / (dom.hi - dom.lo) * PW;
+    const names = groups.map((g) => block(g, "", 180, {}));
+    const nameW = Math.max(...names.map((b) => b.w));
+    const out = [], labels = [];
+    let top = 0;
+    const rows = groups.map((g, gi) => {
+      const mine = pts.filter((p) => p.group === g).sort((a, b) => a.x - b.x);
+      const placed = [];
+      for (const p of mine) {
+        p.px = x(p.x);
+        for (let k = 0; k < 400; k++) {
+          const off = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * D;
+          if (!placed.some((q) => Math.hypot(q.px - p.px, q.off - off) < D - 0.5)) {
+            p.off = off;
+            break;
+          }
+        }
+        placed.push(p);
+      }
+      const spread = Math.max(...mine.map((p) => Math.abs(p.off)));
+      const band = Math.max(names[gi].h + 16, 2 * spread + D + 16 + (mine.some((p) => p.focal) ? 40 : 0), 44);
+      const row = { g, gi, mine, top, band };
+      top += band;
+      return row;
+    });
+    const H = top;
+    for (const t of ticks(dom)) {
+      out.push(el("line", { class: "ax-grid", x1: x(t), y1: 0, x2: x(t), y2: H }));
+      out.push(text({ class: "ax-text", x: x(t), y: H + 20, "text-anchor": "middle" }, fmt(t, tickUnit(spec.x.unit))));
+    }
+    out.push(el("line", { class: "ax-line", x1: 0, y1: H, x2: PW, y2: H }));
+    for (const { gi, mine, top: y0, band } of rows) {
+      const cy = y0 + band / 2;
+      if (gi) out.push(el("line", { class: "ax-grid", x1: -nameW - 16, y1: y0, x2: PW, y2: y0 }));
+      out.push(drawBlock(names[gi], -16, cy - names[gi].h / 2, "end", "c-cat"));
+      for (const p of mine) {
+        p.py = cy + p.off;
+        out.push(el("circle", { class: `sp-dot${p.focal ? " is-focal" : ""}`, cx: p.px, cy: p.py, r: R, ...stepAttrs(Math.min(12, 1 + Math.floor(p.px / PW * 11))) }));
+      }
+      const taken = mine.map((p) => ({ x: p.px - R, y: p.py - R, w: D, h: D }));
+      for (const p of mine.filter((q) => q.focal)) {
+        const content = p.label ? `${p.label} ${val(p.x, spec.x.unit)}` : val(p.x, spec.x.unit);
+        const box = placeLabel({ px: p.px, py: p.py, r: R, w: measure(content, FS.label, bold) }, taken, { x: 0, y: y0 + 2, w: PW, h: band - 4 });
+        taken.push(box);
+        labels.push(drawLabel("sp-label is-focal", p, box, content));
+      }
+    }
+    out.push(el("g", stepAttrs(12), labels));
+    const xt = axisTitle(spec.x.label, spec.x.unit);
+    if (xt) out.push(text({ class: "ax-label", x: PW, y: H + 44, "text-anchor": "end" }, `${xt} →`));
+    return svg([-nameW - 32, -16, PW + nameW + 32 + 24, H + (xt ? 52 : 30) + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/blocks.mjs, waterfall: the first bar and each = bar stand on zero; the others start where the running total is.
+  function waterfall(spec) {
+    const PH = 260;
+    const unit = spec.unit || "";
+    const places = Math.min(10, Math.max(0, ...spec.steps.map((s) => (String(s.value ?? "").split(".")[1] || "").length)));
+    const add = (a, b) => Number((a + b).toFixed(places));
+    let run = 0;
+    const bars = spec.steps.map((s, i) => {
+      if (s.total) return { ...s, from: 0, to: run, kind: "total" };
+      if (i === 0) {
+        run = s.value;
+        return { ...s, from: 0, to: s.value, kind: "total" };
+      }
+      const b = { ...s, from: run, to: add(run, s.value), kind: s.value >= 0 ? "up" : "down" };
+      run = b.to;
+      return b;
+    });
+    const anyFocal = bars.some((b) => b.focal);
+    for (const b of bars) b.text = b.kind === "total" ? val(b.to, unit) : `${b.value > 0 ? "+" : ""}${val(b.value, unit)}`;
+    const dom = niceDomain(Math.min(...bars.flatMap((b) => [b.from, b.to])), Math.max(...bars.flatMap((b) => [b.from, b.to])));
+    const y = (v) => PH - (v - dom.lo) / (dom.hi - dom.lo) * PH;
+    // a name up to 112px stays on one line; a longer one wraps to balanced lines about half its length
+    const cats = bars.map((b) => balanced(b.label, Math.max(112, Math.min(160, measure(b.label, FS.cat) / 2 + FS.cat)), FS.cat));
+    const slot = Math.max(64, ...bars.map((b) => measure(b.text, FS.val, bold) + 18), ...cats.flat().map((l) => measure(l, FS.cat) + 14));
+    const left = Math.max(...ticks(dom).map((t) => measure(val(t, unit), FS.ax, mono)), unitCaption(unit, {}) ? measure(unit, FS.ax) : 0) + 18;
+    const W = slot * bars.length;
+    const out = [];
+    for (const t of ticks(dom)) {
+      out.push(el("line", { class: t === 0 ? "ax-line" : "ax-grid", x1: -4, y1: y(t), x2: W, y2: y(t) }));
+      out.push(text({ class: "ax-text", x: -10, y: y(t) + 4.5, "text-anchor": "end" }, val(t, unit)));
+    }
+    out.push(unitCaption(unit, { x: -10, y: -16, "text-anchor": "end" }));
+    const bw = slot * 0.62;
+    bars.forEach((b, i) => {
+      const bx = i * slot + (slot - bw) / 2;
+      const hi = Math.max(b.from, b.to), lo = Math.min(b.from, b.to);
+      const top = y(hi), bot = y(lo);
+      const parts = [el("rect", { class: `wf-bar wf-${b.kind}${b.focal ? " is-focal" : anyFocal ? " is-dim" : ""}`, x: bx, y: top, width: bw, height: Math.max(1, bot - top), rx: 1.5 })];
+      if (i < bars.length - 1) parts.push(el("line", { class: "wf-link", x1: bx + bw, y1: y(b.to), x2: bx + slot, y2: y(b.to) }));
+      // the number sits past the end the bar grows toward: above a rise or a total, below a fall
+      const below = b.kind === "down" || b.kind === "total" && b.to < 0;
+      parts.push(text({ class: `c-val${b.focal ? " is-focal" : ""}`, x: bx + bw / 2, y: below ? bot + 18 : top - 8, "text-anchor": "middle" }, b.text));
+      cats[i].forEach((l, k) => parts.push(text({ class: `c-cat${b.focal ? " is-focal-t" : ""}`, x: i * slot + slot / 2, y: PH + 24 + k * 18, "text-anchor": "middle" }, l)));
+      out.push(el("g", stepAttrs(Math.min(12, 1 + i)), parts));
+    });
+    const rows = Math.max(...cats.map((c) => c.length));
+    return svg([-left, -32, W + left + 16, PH + 32 + 24 + rows * 18 + 8], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/blocks.mjs: squarified treemap layout (Bruls et al.).
+  function squarify(items, x, y, w, h) {
+    const total = items.reduce((s, i) => s + i.value, 0);
+    const scale = w * h / total;
+    const nodes = items.map((i) => ({ ...i, area: i.value * scale })).sort((a, b) => b.area - a.area);
+    const out = [];
+    let rect = { x, y, w, h };
+    let row = [];
+    const worst = (r, side) => {
+      const s = r.reduce((a, n) => a + n.area, 0);
+      const mx = Math.max(...r.map((n) => n.area)), mn = Math.min(...r.map((n) => n.area));
+      return Math.max(side * side * mx / (s * s), s * s / (side * side * mn));
+    };
+    const layoutRow = (r) => {
+      const s = r.reduce((a, n) => a + n.area, 0);
+      if (rect.w >= rect.h) {
+        const cw = s / rect.h;
+        let cy = rect.y;
+        for (const n of r) {
+          const ch = n.area / cw;
+          out.push({ ...n, x: rect.x, y: cy, w: cw, h: ch });
+          cy += ch;
+        }
+        rect = { x: rect.x + cw, y: rect.y, w: rect.w - cw, h: rect.h };
+      } else {
+        const ch = s / rect.w;
+        let cx = rect.x;
+        for (const n of r) {
+          const cw = n.area / ch;
+          out.push({ ...n, x: cx, y: rect.y, w: cw, h: ch });
+          cx += cw;
+        }
+        rect = { x: rect.x, y: rect.y + ch, w: rect.w, h: rect.h - ch };
+      }
+    };
+    for (const n of nodes) {
+      const side = Math.min(rect.w, rect.h);
+      if (!row.length || worst([...row, n], side) <= worst(row, side)) row.push(n);
+      else {
+        layoutRow(row);
+        row = [n];
+      }
+    }
+    if (row.length) layoutRow(row);
+    return out;
+  }
+
+  // SeeCode (MIT) lib/render/charts/blocks.mjs, treemap: area follows the value; a group's items fill the group under its name.
+  // A rectangle too small for its name and value gets a number instead, and the numbers are listed under the map.
+  function treemap(spec) {
+    const W = 640, H = Math.max(360, Math.min(520, 200 + spec.items.length * 12));
+    const unit = spec.unit || "";
+    const total = spec.items.reduce((s, it) => s + it.value, 0);
+    const anyFocal = spec.items.some((it) => it.focal || it.children?.some((c) => c.focal));
+    const pct = (v) => v / total < 5e-3 ? "<1%" : `${Math.round(v / total * 100)}%`;
+    const note = (it) => `${whole(it.value, unit)} · ${pct(it.value)}`;
+    const out = [], small = [];
+    // name and value inside the cell when both fit; otherwise a number (or nothing, when even that does not fit)
+    const label = (c) => {
+      const b = block(c.label, note(c), c.w - 16, bold);
+      if (b.w <= c.w - 16 && b.h + 14 <= c.h) return drawBlock(b, c.x + 8, c.y + 7, "start", "tm-label");
+      small.push(c);
+      return c.w >= 22 && c.h >= 22 ? text({ class: "tm-num", x: c.x + 6, y: c.y + 17 }, String(small.length)) : "";
+    };
+    const cells = squarify(spec.items, 0, 0, W, H);
+    cells.forEach((c, k) => {
+      const tone = c.focal ? "is-focal" : anyFocal ? "tm-mute" : `tm-r${Math.min(4, k)}`;
+      const parts = [el("rect", { class: `tm-cell ${tone}`, x: c.x + 1, y: c.y + 1, width: Math.max(0, c.w - 2), height: Math.max(0, c.h - 2), rx: 2 })];
+      if (c.children) {
+        const head = block(c.label, "", c.w - 16, bold);
+        const headH = head.h + 10;
+        if (head.w <= c.w - 16 && headH + 24 <= c.h) {
+          parts.push(drawBlock(head, c.x + 8, c.y + 5, "start", "tm-label"));
+          for (const sub of squarify(c.children, c.x + 5, c.y + headH, c.w - 10, c.h - headH - 5)) {
+            parts.push(el("rect", { class: `tm-sub${sub.focal ? " is-focal" : ""}`, x: sub.x + 1, y: sub.y + 1, width: Math.max(0, sub.w - 2), height: Math.max(0, sub.h - 2), rx: 1.5 }));
+            parts.push(label(sub));
+          }
+        } else parts.push(label(c));
+      } else parts.push(label(c));
+      out.push(el("g", { class: "tm-g", ...stepAttrs(Math.min(12, 1 + k)) }, parts));
+    });
+    // the list of numbered cells, wrapped to the map width
+    let y = H + 8;
+    if (small.length) {
+      let x = 0;
+      y += 18;
+      small.forEach((c, i) => {
+        const s = `${i + 1} ${c.label} ${note(c)}`;
+        const w = measure(s, FS.sub) + 20;
+        if (x && x + w > W) {
+          x = 0;
+          y += SUB_H + 2;
+        }
+        out.push(text({ class: "n-sub", x, y }, s));
+        x += w;
+      });
+      y += 8;
+    }
+    return svg([-16, -16, W + 32, y + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/blocks.mjs, heatmap: rows × columns in six colour steps from --paper toward --accent
+  // (toward --err for negative values, counted from zero). The two darkest steps take --paper text.
+  function heatmap(spec) {
+    const { cols, rows } = spec;
+    const unit = spec.unit || "";
+    const flat = rows.flatMap((r) => r.values).filter((v) => v != null);
+    const lo = Math.min(...flat), hi = Math.max(...flat);
+    const diverging = lo < 0 && hi > 0;
+    const m = Math.max(Math.abs(lo), Math.abs(hi)) || 1;
+    const stepFor = (v) => Math.min(5, Math.floor((diverging ? Math.abs(v) / m : (v - lo) / (hi - lo || 1)) * 6));
+    const valW = Math.max(...flat.map((v) => measure(val(v, unit), FS.val, mono)));
+    const colW = Math.max(...cols.map((c) => measure(c, FS.ax)));
+    const cw = Math.max(38, valW + 14, Math.min(colW, 96) + 10);
+    const colLines = cols.map((c) => balanced(c, cw - 8, FS.ax));
+    const headH = Math.max(...colLines.map((ls) => ls.length)) * SUB_H + 8;
+    const names = rows.map((r) => block(r.name, "", 200, r.focal ? bold : {}));
+    const nameW = Math.max(...names.map((b) => b.w)) + 16;
+    const ch = Math.max(30, ...names.map((b) => b.h + 10));
+    const out = [];
+    colLines.forEach((ls, j) => ls.forEach((l, k) => out.push(text({ class: "ax-text hm-col", x: nameW + j * cw + cw / 2, y: headH - 8 - (ls.length - 1 - k) * SUB_H, "text-anchor": "middle" }, l))));
+    out.push(unitCaption(unit, { x: nameW - 16, y: headH - 8, "text-anchor": "end" }));
+    rows.forEach((r, i) => {
+      const y0 = headH + i * ch;
+      const parts = [drawBlock(names[i], nameW - 16, y0 + (ch - names[i].h) / 2 - 1, "end", `c-cat${r.focal ? " is-focal-t" : ""}`)];
+      r.values.forEach((v, j) => {
+        const x0 = nameW + j * cw;
+        if (v == null) {
+          parts.push(el("rect", { class: "hm-cell hm-none", x: x0 + 1, y: y0 + 1, width: cw - 2, height: ch - 2, rx: 2 }));
+          return;
+        }
+        const s = stepFor(v);
+        parts.push(el("rect", { class: `hm-cell hm-${diverging && v < 0 ? "n" : "p"}${s}`, x: x0 + 1, y: y0 + 1, width: cw - 2, height: ch - 2, rx: 2 }));
+        parts.push(text({ class: `hm-val${s >= 4 ? " on-strong" : ""}`, x: x0 + cw / 2, y: y0 + ch / 2 + 4.5, "text-anchor": "middle" }, val(v, unit)));
+      });
+      if (r.focal) parts.push(el("rect", { class: "hm-focal", x: nameW - 1, y: y0, width: cols.length * cw + 2, height: ch, rx: 3 }));
+      out.push(el("g", stepAttrs(Math.min(12, 1 + i)), parts));
+    });
+    // colour key: the six steps with the range they cover
+    const ky = headH + rows.length * ch + 18;
+    const kw = 28;
+    const keySteps = diverging ? [...[5, 4, 3, 2, 1, 0].map((s) => `n${s}`), ...[0, 1, 2, 3, 4, 5].map((s) => `p${s}`)] : [0, 1, 2, 3, 4, 5].map((s) => `p${s}`);
+    const lowText = diverging ? val(-m, unit) : val(lo, unit), highText = diverging ? val(m, unit) : val(hi, unit);
+    const kx = nameW + measure(lowText, FS.ax, mono) + 10;
+    out.push(text({ class: "ax-text", x: kx - 8, y: ky + 11, "text-anchor": "end" }, lowText));
+    keySteps.forEach((s, k) => out.push(el("rect", { class: `hm-cell hm-${s}`, x: kx + k * kw, y: ky, width: kw - 2, height: 14, rx: 2 })));
+    out.push(text({ class: "ax-text", x: kx + keySteps.length * kw + 6, y: ky + 11 }, highText));
+    if (diverging) out.push(text({ class: "ax-text", x: kx + 6 * kw - 1, y: ky + 32, "text-anchor": "middle" }, "0"));
+    const keyW = kx + keySteps.length * kw + 6 + measure(highText, FS.ax, mono);
+    return svg([-16, -12, Math.max(nameW + cols.length * cw, keyW) + 32, ky + (diverging ? 40 : 22) + 20], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/radial.mjs, radar: one polygon per series on shared axes from the centre, clockwise from the top.
+  function radar(spec) {
+    const { axes } = spec, n = axes.length;
+    const series = spec.series;
+    const unit = spec.unit || "";
+    const max = spec.max > 0 ? spec.max : niceDomain(0, Math.max(...series.flatMap((s) => s.values))).hi;
+    const blocks = axes.map((a) => block(a, "", 130, {}));
+    const R = ringRadius(n, blocks, 150);
+    const ang = (i) => i * 2 * Math.PI / n;
+    const at = (i, r) => ({ x: r * Math.sin(ang(i)), y: -r * Math.cos(ang(i)) });
+    const ring = (r) => axes.map((_, i) => `${i ? "L" : "M"}${at(i, r).x},${at(i, r).y}`).join(" ") + " Z";
+    const out = [];
+    for (const f of [0.25, 0.5, 0.75, 1]) out.push(el("path", { class: f === 1 ? "ax-line rd-ring" : "ax-grid rd-ring", d: ring(R * f) }));
+    axes.forEach((_, i) => out.push(el("line", { class: "ax-grid", x1: 0, y1: 0, x2: at(i, R).x, y2: at(i, R).y })));
+    const pal = palette(series);
+    series.forEach((s, k) => {
+      const pts = s.values.map((v, i) => at(i, R * v / max));
+      const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x},${p.y}`).join(" ") + " Z";
+      out.push(el("g", { class: pal[k], ...stepAttrs(Math.min(12, 2 + k * 2)) }, [
+        el("path", { class: "rd-area", d }),
+        el("path", { class: "rd-line", d }),
+        ...pts.map((p) => el("circle", { class: "rd-pt", cx: p.x, cy: p.y, r: 3 }))
+      ]));
+    });
+    // ring values along the top axis, over the shapes
+    out.push(el("g", { class: "rd-ticks" }, [0.5, 1].map((f) => text({ class: "ax-text rd-tick", x: 6, y: -R * f + 15 }, fmt(max * f, unit)))));
+    const { out: names, ext } = ringLabels(blocks, ang, R, axes.map(() => "c-cat"));
+    out.push(...names);
+    const lg = legend({ x: ext.x0, y: ext.y1 + 8, w: ext.x1 - ext.x0, items: series.map((s, k) => ({ swatch: `rd-key ${pal[k]}`, label: s.name })) });
+    out.push(lg.svg);
+    return svg([ext.x0 - 16, ext.y0 - 16, ext.x1 - ext.x0 + 32, ext.y1 - ext.y0 + 8 + lg.h + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/radial.mjs, polar: one wedge per item around the circle (radial bars), item 1 at the top;
+  // each name carries its value, so the rings have no numbers.
+  function polarBars(spec) {
+    const data = spec.items, n = data.length;
+    const unit = spec.unit || "";
+    const max = niceDomain(0, Math.max(...data.map((d) => d.value))).hi;
+    const blocks = data.map((d) => block(d.label, fmt(d.value, unit), 120, d.focal ? bold : {}));
+    const R = ringRadius(n, blocks, 140), inner = 36;
+    const ang = (i) => i * 2 * Math.PI / n;
+    const at = (a, r) => `${r * Math.sin(a)},${-r * Math.cos(a)}`;
+    const half = Math.PI / n * 0.78;
+    const anyFocal = data.some((d) => d.focal);
+    const out = [];
+    for (const f of [0.25, 0.5, 0.75, 1]) out.push(el("circle", { class: f === 1 ? "ax-line rd-ring" : "ax-grid rd-ring", cx: 0, cy: 0, r: inner + (R - inner) * f }));
+    data.forEach((d, i) => {
+      const r = inner + (R - inner) * d.value / max;
+      const a0 = ang(i) - half, a1 = ang(i) + half;
+      const path = `M${at(a0, inner)} L${at(a0, r)} A${r},${r} 0 0 1 ${at(a1, r)} L${at(a1, inner)} A${inner},${inner} 0 0 0 ${at(a0, inner)} Z`;
+      out.push(el("path", { class: `pl-bar${d.focal ? " is-focal" : anyFocal ? " is-dim" : ""}`, d: path, ...stepAttrs(stepOf(i, n)) }));
+    });
+    const { out: names, ext } = ringLabels(blocks, ang, R, data.map((d) => `c-cat${d.focal ? " is-focal-t pl-name" : ""}`));
+    out.push(...names);
+    return svg([ext.x0 - 16, ext.y0 - 16, ext.x1 - ext.x0 + 32, ext.y1 - ext.y0 + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/bar.mjs, dumbbell: two values per row joined by a line; each number sits on the outer side of its dot.
+  function dumbbell(spec) {
+    const PW = 480;
+    const [fromName, toName] = spec.x;
+    const rows = spec.series;
+    const unit = spec.unit || "";
+    const all = rows.flatMap((r) => r.values);
+    const dom = fitDomain(Math.min(...all), Math.max(...all));
+    const anyFocal = rows.some((r) => r.focal);
+    const names = rows.map((r) => block(r.name, "", 200, r.focal ? bold : {}));
+    const valW = Math.max(...all.map((v) => measure(val(v, unit), FS.val, mono)));
+    const x0 = Math.max(...names.map((b) => b.w)) + 20 + valW + 12;
+    const x = (v) => x0 + (v - dom.lo) / (dom.hi - dom.lo) * PW;
+    const out = [];
+    let y = 0;
+    const tops = rows.map((r, i) => {
+      const t = y;
+      y += Math.max(36, names[i].h + 12);
+      return t;
+    });
+    const H = y;
+    for (const t of ticks(dom)) {
+      out.push(el("line", { class: t === 0 ? "ax-line" : "ax-grid", x1: x(t), y1: -4, x2: x(t), y2: H }));
+      out.push(text({ class: "ax-text", x: x(t), y: H + 20, "text-anchor": "middle" }, val(t, unit)));
+    }
+    const caption = unitCaption(unit, { x: x(dom.hi) + measure(val(dom.hi, unit), FS.ax, mono) / 2 + 8, y: H + 20 });
+    out.push(caption);
+    rows.forEach((r, i) => {
+      const cy = (tops[i] + (tops[i + 1] ?? H)) / 2;
+      const [a, b] = r.values;
+      const hot = r.focal || !anyFocal;
+      const dir = b >= a ? 1 : -1;
+      const parts = [
+        drawBlock(names[i], x0 - valW - 20, cy - names[i].h / 2 - 1, "end", `c-cat${r.focal ? " is-focal-t" : ""}`),
+        el("line", { class: `db-line${hot ? " is-hot" : ""}`, x1: x(a), y1: cy, x2: x(b), y2: cy }),
+        el("circle", { class: "db-a", cx: x(a), cy, r: 5.5 }),
+        el("circle", { class: `db-b${hot ? " is-hot" : ""}`, cx: x(b), cy, r: 5.5 })
+      ];
+      if (a === b) parts.push(text({ class: `c-val${r.focal ? " is-focal" : ""}`, x: x(b) + 12, y: cy + 4.5 }, val(b, unit)));
+      else {
+        parts.push(text({ class: "c-val db-from", x: x(a) - dir * 12, y: cy + 4.5, "text-anchor": dir > 0 ? "end" : "start" }, val(a, unit)));
+        parts.push(text({ class: `c-val${r.focal ? " is-focal" : ""}`, x: x(b) + dir * 12, y: cy + 4.5, "text-anchor": dir > 0 ? "start" : "end" }, val(b, unit)));
+      }
+      out.push(el("g", stepAttrs(Math.min(12, 1 + i)), parts));
+    });
+    // key: hollow dot = first x name, filled dot = second
+    const ky = H + 46;
+    const w1 = measure(fromName, FS.cat) + 40;
+    out.push(el("circle", { class: "db-a", cx: x0 + 6, cy: ky - 5, r: 5.5 }), text({ class: "lg-text", x: x0 + 18, y: ky }, fromName));
+    out.push(el("circle", { class: "db-b is-hot", cx: x0 + w1 + 6, cy: ky - 5, r: 5.5 }), text({ class: "lg-text", x: x0 + w1 + 18, y: ky }, toName));
+    const capW = caption ? measure(val(dom.hi, unit), FS.ax, mono) / 2 + 8 + measure(unit, FS.ax) : 0;
+    const W = Math.max(x0 + PW + Math.max(valW + 16, capW + 8), x0 + w1 + 18 + measure(toName, FS.cat));
+    return svg([-16, -16, W + 32, ky + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/bar.mjs, marimekko: a column's width is its total, its segments stack by share (first line on top).
+  // Shares are written inside segments that have room. A column name sits under its column; when it would touch a name already
+  // placed, it moves down and hangs on a leader from the column. Names are placed right to left, so a leader never crosses a name.
+  function marimekko(spec) {
+    const W = 720, H = 300;
+    const cats = spec.x, series = spec.series;
+    const totals = cats.map((_, i) => series.reduce((s, sr) => s + sr.values[i], 0));
+    const grand = totals.reduce((a, b) => a + b, 0);
+    const tone = ramp(series);
+    const out = [];
+    for (const t of [0, 25, 50, 75, 100]) {
+      out.push(text({ class: "ax-text", x: -10, y: H - t / 100 * H + 4.5, "text-anchor": "end" }, `${t}%`));
+    }
+    const cols = [];
+    let x = 0;
+    cats.forEach((c, i) => {
+      const w = totals[i] / grand * W;
+      let y = 0;
+      const parts = [];
+      series.forEach((s, k) => {
+        const h = s.values[i] / totals[i] * H;
+        if (h > 0) {
+          parts.push(el("rect", { class: `mk-seg ${tone[k]}`, x: x + 1, y: y + 1, width: Math.max(0, w - 2), height: Math.max(0, h - 2) }));
+          const pct = `${Math.round(s.values[i] / totals[i] * 100)}%`;
+          if (w >= measure(pct, FS.val, mono) + 14 && h >= 22) parts.push(text({ class: `mk-pct${tone[k] === "rp-0" ? " on-strong" : ""}`, x: x + 7, y: y + 17 }, pct));
+        }
+        y += h;
+      });
+      const lines = balanced(c, Math.max(96, w - 10), FS.cat);
+      const share = `${whole(totals[i], spec.unit || "")} · ${totals[i] / grand < 5e-3 ? "<1" : Math.round(totals[i] / grand * 100)}%`;
+      cols.push({ i, cx: x + w / 2, lines, share, parts, bw: Math.max(...lines.map((l) => measure(l, FS.cat)), measure(share, FS.ax, mono)), bh: lines.length * 18 + 18 });
+      x += w;
+    });
+    const taken = [];
+    let bottom = H;
+    for (const col of [...cols].reverse()) {
+      const { cx, bw, bh } = col;
+      const free = (b) => !taken.some((o) => overlaps(b, { ...o, w: o.w + 10 }) || overlaps({ ...b, w: b.w + 10 }, o));
+      let box = { x: cx - bw / 2, y: H + 8, w: bw, h: bh };
+      if (!free(box)) {
+        box = { x: cx + 6, y: H + 8 + 18, w: bw, h: bh, leader: true };
+        while (!free(box)) box.y += 18;
+      }
+      taken.push(box);
+      if (box.leader) taken.push({ x: cx - 1, y: H, w: 2, h: box.y - H });
+      bottom = Math.max(bottom, box.y + bh);
+      const ax = box.leader ? box.x : cx, anchor = box.leader ? "start" : "middle";
+      if (box.leader) col.parts.push(el("line", { class: "q-leader", x1: cx, y1: H + 2, x2: cx, y2: box.y + 14 }), el("line", { class: "q-leader", x1: cx, y1: box.y + 9, x2: box.x - 2, y2: box.y + 9 }));
+      col.lines.forEach((l, k) => col.parts.push(text({ class: "c-cat", x: ax, y: box.y + 14 + k * 18, "text-anchor": anchor }, l)));
+      col.parts.push(text({ class: "ax-text", x: ax, y: box.y + 14 + col.lines.length * 18, "text-anchor": anchor }, col.share));
+    }
+    for (const col of cols) out.push(el("g", stepAttrs(Math.min(12, 1 + col.i)), col.parts));
+    const right = Math.max(W, ...taken.map((b) => b.x + b.w));
+    const lg = legend({ x: 0, y: bottom + 16, w: W, items: series.map((s, k) => ({ swatch: `mk-seg ${tone[k]}`, label: s.name })) });
+    out.push(lg.svg);
+    return svg([-48, -16, right + 64, bottom + 16 + lg.h + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/line.mjs, slope: two columns; each series runs from its left value to its right value,
+  // labelled on both sides (name and value), and labels on one side are pushed apart when they would touch.
+  function slope(spec) {
+    const PW = 300, PH = 300;
+    const series = spec.series;
+    const unit = spec.unit || "";
+    const all = series.flatMap((s) => s.values);
+    const dom = fitDomain(Math.min(...all), Math.max(...all));
+    const y = (v) => PH - (v - dom.lo) / (dom.hi - dom.lo) * PH;
+    const colour = seriesIndex(series);
+    const anyFocal = series.some((s) => s.focal);
+    const cls = (s, i) => s.focal ? "is-focal" : anyFocal ? "is-muted" : `ln-${colour[i]}`;
+    const side = (k, txt) => {
+      const ends = series.map((s, i) => ({ i, y: y(s.values[k]), t: txt(s), w: measure(txt(s), FS.label, bold) })).sort((a, b) => a.y - b.y);
+      for (let j = 1; j < ends.length; j++) ends[j].y = Math.max(ends[j].y, ends[j - 1].y + 20);
+      return ends;
+    };
+    const L = side(0, (s) => `${s.name} ${val(s.values[0], unit)}`), Rr = side(1, (s) => `${val(s.values[1], unit)} ${s.name}`);
+    const out = [
+      el("line", { class: "ax-line", x1: 0, y1: -6, x2: 0, y2: PH + 6 }),
+      el("line", { class: "ax-line", x1: PW, y1: -6, x2: PW, y2: PH + 6 }),
+      text({ class: "ax-label", x: 0, y: -22, "text-anchor": "middle" }, spec.x[0]),
+      text({ class: "ax-label", x: PW, y: -22, "text-anchor": "middle" }, spec.x[1])
+    ];
+    series.forEach((s, i) => {
+      const c = cls(s, i);
+      const l = L.find((e) => e.i === i), r = Rr.find((e) => e.i === i);
+      out.push(el("g", stepAttrs(Math.min(12, 2 + i)), [
+        el("path", { class: `ln ${c}`, d: `M0,${y(s.values[0])} L${PW},${y(s.values[1])}` }),
+        el("circle", { class: `ln-pt ln ${c}`, cx: 0, cy: y(s.values[0]), r: 3.5 }),
+        el("circle", { class: `ln-pt ln ${c}`, cx: PW, cy: y(s.values[1]), r: 3.5 }),
+        // a label pushed away from its dot gets a short leader back to it
+        Math.abs(l.y - y(s.values[0])) > 3 ? el("line", { class: "q-leader", x1: -5, y1: y(s.values[0]), x2: -18, y2: l.y }) : "",
+        Math.abs(r.y - y(s.values[1])) > 3 ? el("line", { class: "q-leader", x1: PW + 5, y1: y(s.values[1]), x2: PW + 18, y2: r.y }) : "",
+        text({ class: `ln-label ${c}-t`, x: -22, y: l.y + 5, "text-anchor": "end" }, l.t),
+        text({ class: `ln-label ${c}-t`, x: PW + 22, y: r.y + 5 }, r.t)
+      ]));
+    });
+    const lw = Math.max(...L.map((e) => e.w)) + 38, rw = Math.max(...Rr.map((e) => e.w)) + 38;
+    const bottom = Math.max(PH + 6, ...L.map((e) => e.y + 10), ...Rr.map((e) => e.y + 10));
+    const capt = unitCaption(unit, { x: PW / 2, y: bottom + 28, "text-anchor": "middle" });
+    out.push(capt);
+    return svg([-lw, -44, PW + lw + rw, bottom + 60 + (capt ? 24 : 0)], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/line.mjs, bump: rank over time (1 at the top); names at the right end, ties pushed apart.
+  function bump(spec) {
+    const xs = spec.x, series = spec.series;
+    const n = Math.max(...series.flatMap((s) => s.values.filter((v) => v != null)));
+    const gap = 36, PH = (n - 1) * gap, PW = Math.max(400, (xs.length - 1) * 90);
+    const xAt = (i) => xs.length === 1 ? PW / 2 : i * PW / (xs.length - 1);
+    const y = (rank) => (rank - 1) * gap;
+    const colour = seriesIndex(series);
+    const anyFocal = series.some((s) => s.focal);
+    const cls = (s, i) => s.focal ? "is-focal" : anyFocal ? "is-muted" : `ln-${colour[i]}`;
+    const out = [];
+    for (let r = 1; r <= n; r++) {
+      out.push(el("line", { class: "ax-grid", x1: 0, y1: y(r), x2: PW, y2: y(r) }));
+      out.push(text({ class: "ax-text", x: -14, y: y(r) + 4.5, "text-anchor": "end" }, `#${r}`));
+    }
+    out.push(xAxisLabels(xs, xAt, xs.length > 1 ? PW / (xs.length - 1) : PW, PH + 30));
+    const ends = series.map((s, i) => {
+      const last = s.values.length - 1 - [...s.values].reverse().findIndex((v) => v != null);
+      return { i, last, y: y(s.values[last]) };
+    }).sort((a, b) => a.y - b.y);
+    for (let k = 1; k < ends.length; k++) ends[k].y = Math.max(ends[k].y, ends[k - 1].y + 20);
+    // muted series first, so the coloured ones cross over them
+    const order = series.map((s, i) => i).sort((a, b) => (series[a].focal || !anyFocal) - (series[b].focal || !anyFocal));
+    for (const i of order) {
+      const s = series[i], c = cls(s, i);
+      // a gap (-) splits the line; each run is drawn on its own
+      const runs = [[]];
+      s.values.forEach((v, k) => v == null ? runs.push([]) : runs[runs.length - 1].push({ x: xAt(k), y: y(v) }));
+      const e = ends.find((q) => q.i === i);
+      out.push(el("g", stepAttrs(Math.min(12, 2 + i)), [
+        ...runs.filter((r) => r.length).map((r) => el("path", { class: `ln bp-line ${c}`, d: smooth(r) })),
+        ...runs.flat().map((p) => el("circle", { class: `ln-pt ln ${c}`, cx: p.x, cy: p.y, r: 4.5 })),
+        text({ class: `ln-label ${c}-t`, x: xAt(e.last) + 14, y: e.y + 5 }, s.name)
+      ]));
+    }
+    const lw = Math.max(...series.map((s) => measure(s.name, FS.label, bold))) + 30;
+    const bottom = Math.max(PH + 38, ...ends.map((e) => e.y + 12));
+    return svg([-48, -24, PW + 48 + lw, bottom + 32], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/line.mjs, stream: series stacked around a centre line; a name goes inside its band where the band
+  // is thick enough along the whole name, otherwise into a key below. A scale bar on the left gives the thickness.
+  function stream(spec) {
+    const PW = 560, PH = 280;
+    const xs = spec.x, series = spec.series;
+    const unit = spec.unit || "";
+    const xAt = (i) => i * PW / (xs.length - 1);
+    const totals = xs.map((_, i) => series.reduce((sum, s) => sum + s.values[i], 0));
+    const k = PH / Math.max(...totals);
+    const tone = ramp(series);
+    const out = [];
+    const lo = totals.map((t) => PH / 2 + t * k / 2);
+    const bands = series.map((s) => {
+      const bot = [...lo], top = lo.map((b, i) => b - s.values[i] * k);
+      lo.splice(0, lo.length, ...top);
+      return { bot, top };
+    });
+    // interpolated band edge at x
+    const edge = (arr, x) => {
+      const f = Math.min(xs.length - 1, Math.max(0, x / PW * (xs.length - 1)));
+      const i = Math.min(xs.length - 2, Math.floor(f));
+      return arr[i] + (arr[i + 1] - arr[i]) * (f - i);
+    };
+    const keyed = [];
+    series.forEach((s, j) => {
+      const { bot, top } = bands[j];
+      const up = top.map((v, i) => ({ x: xAt(i), y: v })), dn = bot.map((v, i) => ({ x: xAt(i), y: v })).reverse();
+      const d = `${smooth(up)} L${dn[0].x},${dn[0].y} ${smooth(dn).replace(/^M[^ ]+ /, "")} Z`;
+      const parts = [el("path", { class: `st-area ${tone[j]}`, d })];
+      const w = measure(s.name, FS.label, bold);
+      const fits = (cx) => {
+        for (let x = cx - w / 2 - 4; x <= cx + w / 2 + 4; x += 4) if (x < 0 || x > PW || edge(bot, x) - edge(top, x) < 22) return false;
+        return true;
+      };
+      const best = s.values.map((v, i) => i).sort((a, b) => s.values[b] - s.values[a]).map((i) => Math.min(PW - w / 2 - 6, Math.max(w / 2 + 6, xAt(i)))).find(fits);
+      if (best === void 0) keyed.push(j);
+      else parts.push(text({ class: `st-label${tone[j] === "rp-0" ? " on-strong" : ""}`, x: best, y: (edge(bot, best) + edge(top, best)) / 2 + 5, "text-anchor": "middle" }, s.name));
+      out.push(el("g", stepAttrs(Math.min(12, 1 + j)), parts));
+    });
+    out.push(xAxisLabels(xs, xAt, PW / (xs.length - 1), PH + 24));
+    // scale bar: a round amount near a quarter of the tallest stack
+    const amount = niceStep(Math.max(...totals), 4);
+    const bh = amount * k;
+    const sb = val(amount, unit) + (tickUnit(unit) ? "" : unit ? ` ${unit}` : "");
+    out.push(el("path", { class: "st-scale", d: `M-22,${PH / 2 - bh / 2} h6 M-19,${PH / 2 - bh / 2} V${PH / 2 + bh / 2} M-22,${PH / 2 + bh / 2} h6` }), text({ class: "ax-text", x: -30, y: PH / 2 + 4.5, "text-anchor": "end" }, sb));
+    let h = PH + 40;
+    if (keyed.length) {
+      const lg = legend({ x: 0, y: h, w: PW, items: keyed.map((j) => ({ swatch: `st-area ${tone[j]}`, label: series[j].name })) });
+      out.push(lg.svg);
+      h += lg.h + 8;
+    }
+    const left = measure(sb, FS.ax, mono) + 46;
+    return svg([-left, -16, PW + left + 24, h + 24], out.join(""), spec.label);
+  }
+
+  // SeeCode (MIT) lib/render/charts/line.mjs, ridgeline: one small area per series on a shared scale, each row rising into the one above.
+  function ridgeline(spec) {
+    const PW = 560, PEAK = 64;
+    const xs = spec.x, series = spec.series;
+    const unit = spec.unit || "";
+    const xAt = (i) => i * PW / (xs.length - 1);
+    const max = Math.max(...series.flatMap((s) => s.values)) || 1;
+    const names = series.map((s) => block(s.name, "", 160, s.focal ? bold : {}));
+    const nameW = Math.max(...names.map((b) => b.w));
+    const rowH = Math.max(36, ...names.map((b) => b.h + 10));
+    const anyFocal = series.some((s) => s.focal);
+    const tone = (s) => s.focal ? " is-focal" : anyFocal ? " is-dim" : "";
+    const out = [];
+    series.forEach((s, j) => {
+      const base = PEAK + j * rowH;
+      const pts = s.values.map((v, i) => ({ x: xAt(i), y: base - v / max * PEAK }));
+      out.push(el("g", stepAttrs(Math.min(12, 1 + j)), [
+        el("path", { class: `rg-area${tone(s)}`, d: `${smooth(pts)} L${PW},${base} L0,${base} Z` }),
+        el("path", { class: `rg-line${tone(s)}`, d: smooth(pts) }),
+        el("line", { class: "rg-base", x1: 0, y1: base, x2: PW, y2: base }),
+        drawBlock(names[j], -12, base - names[j].h + 2, "end", `c-cat${s.focal ? " is-focal-t" : ""}`)
+      ]));
+    });
+    const H = PEAK + (series.length - 1) * rowH;
+    out.push(xAxisLabels(xs, xAt, PW / (xs.length - 1), H + 24));
+    // scale bar beside the first row: the full peak height is the largest value
+    const sb = val(max, unit) + (tickUnit(unit) ? "" : unit ? ` ${unit}` : "");
+    out.push(el("path", { class: "st-scale", d: `M${PW + 14},0 h6 M${PW + 17},0 V${PEAK} M${PW + 14},${PEAK} h6` }), text({ class: "ax-text", x: PW + 28, y: PEAK / 2 + 4.5 }, sb));
+    return svg([-nameW - 28, -16, PW + nameW + 28 + 28 + measure(sb, FS.ax, mono) + 16, H + 56], out.join(""), spec.label);
+  }
+
+  return { line, bar, sankey, loop, quadrant, venn, matrix, pyramid, layers, nested, fishbone, process: processSteps, journey, kanban, storymap, gantt, wardley, scatter, waterfall, treemap, heatmap, radar, polar: polarBars, dumbbell, marimekko, slope, bump, stream, ridgeline };
 })();
 var SEECODE_CSS = `/* ── Charts and diagrams ported from SeeCode (see var seecode for the list) ── */
 .am-sc text { fill: var(--ink, #16181d); font-size: 14px; }
@@ -8322,7 +9077,61 @@ var SEECODE_CSS = `/* ── Charts and diagrams ported from SeeCode (see var se
 .am-sc .wm-move { fill: none; stroke: var(--accent, #1d5fbf); stroke-width: 1.5; stroke-dasharray: 4 3; } .am-sc .wm-move-head { fill: var(--accent, #1d5fbf); }
 .am-sc .wm-dot { fill: var(--paper, #ffffff); stroke: var(--ink, #16181d); stroke-width: 1.5; }
 .am-sc .k-focal .wm-dot { fill: var(--accent, #1d5fbf); stroke: var(--accent, #1d5fbf); }
-.am-sc .k-focal .wm-label { fill: var(--accent, #1d5fbf); font-weight: 700; }`;
+.am-sc .k-focal .wm-label { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .c-cat.is-focal-t { font-weight: 700; }
+.am-sc .pal-1, .am-sc .pal-focal { --c: var(--accent, #1d5fbf); } .am-sc .pal-2 { --c: var(--ink-2, #4b5260); } .am-sc .pal-3 { --c: var(--err, #c62828); } .am-sc .pal-4 { --c: var(--warn, #a8620a); } .am-sc .pal-5 { --c: var(--ok, #1d5fbf); }
+.am-sc .rd-ring { fill: none; }
+.am-sc .rp-0 { fill: var(--accent, #1d5fbf); }
+.am-sc .rp-1 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 70%, var(--paper, #ffffff)); } .am-sc .rp-2 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 48%, var(--paper, #ffffff)); }
+.am-sc .rp-3 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 30%, var(--paper, #ffffff)); } .am-sc .rp-4 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 16%, var(--paper, #ffffff)); }
+.am-sc .rg-1 { fill: color-mix(in srgb, var(--ink-3, #8b929e) 76%, var(--paper, #ffffff)); } .am-sc .rg-2 { fill: color-mix(in srgb, var(--ink-3, #8b929e) 28%, var(--paper, #ffffff)); }
+.am-sc .rg-3 { fill: color-mix(in srgb, var(--ink-3, #8b929e) 54%, var(--paper, #ffffff)); } .am-sc .rg-4 { fill: color-mix(in srgb, var(--ink-3, #8b929e) 14%, var(--paper, #ffffff)); }
+.am-sc .rg-5 { fill: color-mix(in srgb, var(--ink-3, #8b929e) 40%, var(--paper, #ffffff)); }
+.am-sc .sp-dot { fill: var(--ink-2, #4b5260); fill-opacity: .75; }
+.am-sc .sp-dot.is-bubble { fill: var(--ink-3, #8b929e); fill-opacity: .3; stroke: var(--ink-2, #4b5260); stroke-width: 1; }
+.am-sc .sp-dot.is-focal { fill: var(--accent, #1d5fbf); fill-opacity: 1; } .am-sc .sp-dot.is-bubble.is-focal { fill-opacity: .4; stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .sp-key { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 1; stroke-dasharray: 3 3; }
+.am-sc .sp-label, .am-sc .rd-tick { paint-order: stroke; stroke: var(--paper, #ffffff); stroke-width: 3px; stroke-linejoin: round; }
+.am-sc .sp-label { font-size: 14px; } .am-sc .sp-label.is-focal { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .wf-up { fill: var(--ok, #1d5fbf); } .am-sc .wf-down { fill: var(--err, #c62828); } .am-sc .wf-total { fill: var(--ink-2, #4b5260); }
+.am-sc .wf-bar.is-dim { fill-opacity: .4; }
+.am-sc .wf-link { stroke: var(--ink-3, #8b929e); stroke-width: 1; stroke-dasharray: 3 3; }
+.am-sc .tm-r0 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 46%, var(--paper, #ffffff)); } .am-sc .tm-r1 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 34%, var(--paper, #ffffff)); }
+.am-sc .tm-r2 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 25%, var(--paper, #ffffff)); } .am-sc .tm-r3 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 18%, var(--paper, #ffffff)); }
+.am-sc .tm-r4 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 12%, var(--paper, #ffffff)); } .am-sc .tm-mute { fill: color-mix(in srgb, var(--ink-3, #8b929e) 22%, var(--paper, #ffffff)); }
+.am-sc .tm-cell.is-focal, .am-sc .tm-sub.is-focal { fill: color-mix(in srgb, var(--accent, #1d5fbf) 40%, var(--paper, #ffffff)); fill-opacity: 1; stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .tm-sub { fill: var(--paper, #ffffff); fill-opacity: .6; }
+.am-sc .tm-label { font-size: 14px; font-weight: 700; } .am-sc .tm-g .n-sub { fill: var(--ink, #16181d); }
+.am-sc .tm-num { font: 700 13px var(--font-mono, monospace); }
+.am-sc .hm-p0 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 8%, var(--paper, #ffffff)); } .am-sc .hm-p1 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 20%, var(--paper, #ffffff)); }
+.am-sc .hm-p2 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 40%, var(--paper, #ffffff)); } .am-sc .hm-p3 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 65%, var(--paper, #ffffff)); }
+.am-sc .hm-p4 { fill: var(--accent, #1d5fbf); } .am-sc .hm-p5 { fill: color-mix(in srgb, var(--accent, #1d5fbf) 70%, var(--ink, #16181d)); }
+.am-sc .hm-n0 { fill: color-mix(in srgb, var(--err, #c62828) 8%, var(--paper, #ffffff)); } .am-sc .hm-n1 { fill: color-mix(in srgb, var(--err, #c62828) 20%, var(--paper, #ffffff)); }
+.am-sc .hm-n2 { fill: color-mix(in srgb, var(--err, #c62828) 40%, var(--paper, #ffffff)); } .am-sc .hm-n3 { fill: color-mix(in srgb, var(--err, #c62828) 65%, var(--paper, #ffffff)); }
+.am-sc .hm-n4 { fill: var(--err, #c62828); } .am-sc .hm-n5 { fill: color-mix(in srgb, var(--err, #c62828) 70%, var(--ink, #16181d)); }
+.am-sc .hm-none { fill: none; stroke: var(--line-2, #d6dae1); stroke-dasharray: 3 3; }
+.am-sc .hm-col, .am-sc .ax-sans { font-family: var(--font-sans, sans-serif); }
+.am-sc .hm-val { font-size: 13px; font-variant-numeric: tabular-nums; }
+.am-sc .hm-focal { fill: none; stroke: var(--accent, #1d5fbf); stroke-width: 2; }
+.am-sc .rd-area { fill: var(--c); fill-opacity: .1; } .am-sc .pal-focal .rd-area { fill-opacity: .2; }
+.am-sc .rd-line { fill: none; stroke: var(--c); stroke-width: 2; } .am-sc .pal-focal .rd-line { stroke-width: 2.8; }
+.am-sc .rd-pt, .am-sc .rd-key { fill: var(--c); }
+.am-sc .pl-bar { fill: var(--accent, #1d5fbf); fill-opacity: .75; } .am-sc .pl-bar.is-focal { fill-opacity: 1; } .am-sc .pl-bar.is-dim { fill: var(--ink-3, #8b929e); fill-opacity: .45; }
+.am-sc .pl-name { font-weight: 700; }
+.am-sc .db-line { stroke: var(--ink-3, #8b929e); stroke-width: 3; stroke-opacity: .6; } .am-sc .db-line.is-hot { stroke: var(--accent, #1d5fbf); stroke-opacity: .45; }
+.am-sc .db-a { fill: var(--paper, #ffffff); stroke: var(--ink-2, #4b5260); stroke-width: 2; }
+.am-sc .db-b { fill: var(--ink-2, #4b5260); } .am-sc .db-b.is-hot { fill: var(--accent, #1d5fbf); }
+.am-sc .db-from { fill: var(--ink-2, #4b5260); }
+.am-sc .mk-pct { font: 13px var(--font-mono, monospace); }
+.am-sc .st-area { stroke: var(--paper, #ffffff); stroke-width: 1; }
+.am-sc .st-label { font-size: 14px; font-weight: 700; }
+.am-sc .st-scale { fill: none; stroke: var(--ink-2, #4b5260); stroke-width: 1.2; }
+.am-sc .ln.bp-line { stroke-width: 3; } .am-sc .ln.bp-line.is-focal { stroke-width: 4; }
+.am-sc .rg-area { fill: color-mix(in srgb, var(--accent, #1d5fbf) 20%, var(--paper, #ffffff)); } .am-sc .rg-area.is-focal { fill: color-mix(in srgb, var(--accent, #1d5fbf) 36%, var(--paper, #ffffff)); }
+.am-sc .rg-area.is-dim { fill: color-mix(in srgb, var(--ink-3, #8b929e) 20%, var(--paper, #ffffff)); }
+.am-sc .rg-line { fill: none; stroke: var(--accent, #1d5fbf); stroke-width: 1.8; } .am-sc .rg-line.is-focal { stroke-width: 2.6; } .am-sc .rg-line.is-dim { stroke: var(--ink-2, #4b5260); stroke-width: 1.4; }
+.am-sc .rg-base { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
+.am-sc .on-strong { fill: var(--paper, #ffffff); }`;
 
 // The five fences that use the SeeCode layouts. Each parses its lines and hands a spec to seecode.<name>.
 var SC_NUMBER = /^-?\d+(?:\.\d+)?$/;
@@ -8356,17 +9165,25 @@ var scFigure = (type, body) => `<figure class="am-diagram am-${type}">${body}</f
 var line_default = {
   name: "line",
   summary: "Line chart (values over an ordered x axis)",
-  syntax: `\`\`\`line [unit=…] [smooth] [area]
+  syntax: `\`\`\`line [slope | bump | stream | ridgeline] [unit=…] [smooth] [area]
 x: label, label, label        ← first line: the x axis labels, in order
 series name: 10, 20, 40       ← one value per x label; - skips that point
 * key series: 5, 9, 18        ← * puts the accent on this series and mutes the others
 \`\`\`
 - Commas may be , or ，. unit= is added to the axis numbers (unit=% → 40%). smooth draws curves; area fills under each line.
-- Up to 6 series; each line ends in its name, so there is no legend.`,
+- Up to 6 series; each line ends in its name, so there is no legend.
+Variants take the same lines:
+- slope: exactly 2 x labels (before, after); each series is a line between two columns, named with its value on both sides.
+- bump: the values are ranks (1 = top, - when unranked); shows who overtakes whom.
+- stream: the series stack around a centre line, so the outline shows the total and each band its part; values 0 or more.
+- ridgeline: one small area per series on a shared scale, stacked in rows; for comparing the shape of many series. Values 0 or more.`,
+  exampleFor: (args) => LINE_EXAMPLES[["slope", "bump", "stream", "ridgeline"].find((v) => parseAttrs(args)[v])],
   example: "```line unit=gold\nx: Lv1, Lv5, Lv10, Lv20\nCost: 10, 20, 40, 160\n* Income: 5, 9, 18, 60\n```",
   render(text, { args, warn }) {
+    const variant = scVariant("line", args, ["slope", "bump", "stream", "ridgeline"]);
     const lines = contentLines(text);
     if (!lines.length) throw new ComponentError("line needs an x: line and at least one series line", 1);
+    if (variant) return scFigure("line", scLineVariant(variant, lines, parseAttrs(args)));
     const { x: x2, series } = scSeries("line", lines, { gaps: true });
     if (series.length > 6) warn?.({ line: series[6].line, message: `${series.length} series; a line chart reads best with 6 or fewer` });
     const { unit = "", smooth, area } = parseAttrs(args);
@@ -8386,9 +9203,24 @@ x: Day 1, Day 2, Day 3
 * Miner: 12, 18, 25           ← * puts the accent on this series
 Furnace: 8, 10, 30
 \`\`\`
-- h draws horizontal bars (long labels, many bars). unit= is added to the numbers. Up to 16 bars.`,
+- h draws horizontal bars (long labels, many bars). unit= is added to the numbers. Up to 16 bars.
+Dumbbell — two values per row joined by a line (before → after, plan → actual):
+\`\`\`bar dumbbell [unit=…]
+x: before, after              ← exactly 2 names: hollow dot, filled dot
+row: 12, 30                   ← one row per line
+* key row: 8, 25              ← * highlights the row
+\`\`\`
+Marimekko — each column's width is its total (written under it with unit= and its share), its segments show the make-up:
+\`\`\`bar marimekko [unit=…]
+x: column, column, column
+segment: 600, 200, 80         ← one segment per line, one value (0 or more) per column; the first line is on top
+* key segment: 300, 150, 40   ← * puts the accent on this segment and greys the others
+\`\`\``,
+  exampleFor: (args) => BAR_EXAMPLES[["dumbbell", "marimekko"].find((v) => parseAttrs(args)[v])],
   example: "```bar unit=/s\nMiner: 12\n* Furnace: 30\nSawmill: 18\n```",
   render(text, { args, warn }) {
+    const variant = scVariant("bar", args, ["dumbbell", "marimekko"]);
+    if (variant) return scFigure("bar", scBarVariant(variant, text, parseAttrs(args)));
     const lines = contentLines(text);
     if (!lines.length) throw new ComponentError("bar needs at least one label: value line", 1);
     let categories, series;
@@ -8968,7 +9800,254 @@ from -> to                             ← a value-chain link: from depends on t
   }
 };
 
-var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, venn_default, matrix_default, pyramid_default, layers_default, nested_default, fishbone_default, process_default, journey_default, kanban_default, story_map_default, gantt_default, wardley_default, ask_default];
+// The data charts of the third port: scatter (bubble, beeswarm), waterfall, treemap, heatmap, radar and polar.
+// The bar variants (dumbbell, marimekko) and line variants (slope, bump, stream, ridgeline) are in bar and line above.
+// exampleFor(args) gives the variant's own example when a variant's fence has an error.
+var scVariant = (name, args, names) => {
+  const attrs = parseAttrs(args);
+  const on = names.filter((v) => attrs[v]);
+  if (on.length > 1) throw new ComponentError(`${name}: choose one of ${on.join(", ")}`, 0);
+  return on[0];
+};
+// name: value lines (polar, waterfall); signed allows a leading +
+var scNumberLine = (name, t, line, signed) => {
+  const { focal, body } = scFocal(t);
+  const kv = scKeyValue(body);
+  const v = kv?.[2].trim() ?? "";
+  if (!kv || !kv[1].trim()) throw new ComponentError(`${name} line must be name: value: "${t}"`, line);
+  if (!(signed ? /^[+-]?\d+(?:\.\d+)?$/ : SC_NUMBER).test(v)) throw new ComponentError(`${name}: "${v}" is not a number: "${t}"`, line);
+  return { label: kv[1].trim(), value: Number(v), focal, line };
+};
+var SC_SCATTER_KEY = /^(x|y|size)\s*[:：]\s*(.*)$/i;
+var SCATTER_EXAMPLES = {
+  scatter: "```scatter\nx: Price | gold\ny: Output | /s\nMiner | 50 | 2\nSawmill | 120 | 5\n* Furnace | 300 | 18\nMint | 900 | 30\n```",
+  bubble: "```scatter bubble\nx: Price | gold\ny: Output | /s\nsize: Owned\nMiner | 50 | 2 | 40\n* Furnace | 300 | 18 | 12\nMint | 900 | 30 | 3\n```",
+  beeswarm: "```scatter beeswarm\nx: Clear time | s\nChapter 1 | 42\nChapter 1 | 55\n* Chapter 1 | 130 | 1-5 boss\nChapter 2 | 80\nChapter 2 | 95\n```"
+};
+var scatter_default = {
+  name: "scatter",
+  summary: "Scatter plot (two numbers per item; bubble adds a size; beeswarm spreads one number by group)",
+  exampleFor: (args) => SCATTER_EXAMPLES[parseAttrs(args).beeswarm ? "beeswarm" : parseAttrs(args).bubble ? "bubble" : "scatter"],
+  syntax: `\`\`\`scatter [bubble | beeswarm]
+x: axis name | unit           ← optional; the unit is optional
+y: axis name | unit           ← optional
+item | x | y                  ← one point per line
+* key item | x | y            ← * highlights the point
+\`\`\`
+Bubble — a third number sets the circle's area:
+\`\`\`scatter bubble
+size: name | unit             ← optional; names the third number in the size key
+item | x | y | size
+\`\`\`
+Beeswarm — one number per item, one row of dots per group (no y: line):
+\`\`\`scatter beeswarm
+x: axis name | unit
+group | value | item          ← item is optional; * shows the item's name and value
+\`\`\`
+- An axis starts at zero unless all values sit far from it. A one-character unit (%, $) goes on the ticks; a longer one beside the axis name.
+- Up to 20 points every point is named; with more, only * points are. Up to 200 points.`,
+  example: SCATTER_EXAMPLES.scatter,
+  render(text, { args, warn }) {
+    const variant = scVariant("scatter", args, ["bubble", "beeswarm"]) ?? "scatter";
+    const spec = { variant, x: { label: "", unit: "" }, y: { label: "", unit: "" }, size: { label: "", unit: "" }, points: [] };
+    for (const { text: t, line } of contentLines(text)) {
+      const key = t.match(SC_SCATTER_KEY);
+      if (key) {
+        const name = key[1].toLowerCase();
+        if (name === "y" && variant === "beeswarm") throw new ComponentError(`beeswarm has one axis; drop the y: line: "${t}"`, line);
+        if (name === "size" && variant !== "bubble") throw new ComponentError(`size: is for scatter bubble: "${t}"`, line);
+        const [label = "", unit = ""] = fields(key[2]);
+        spec[name] = { label, unit };
+        continue;
+      }
+      const { focal, body } = scFocal(t);
+      const f = fields(body);
+      if (variant === "beeswarm") {
+        const [group, v, label = "", ...rest] = f;
+        if (!group || !SC_NUMBER.test(v ?? "") || rest.length) throw new ComponentError(`beeswarm line must be group | value | item (item optional): "${t}"`, line);
+        spec.points.push({ group, x: Number(v), label, focal });
+        continue;
+      }
+      const [label, ...nums] = f;
+      const need = variant === "bubble" ? 3 : 2;
+      if (!label || nums.length !== need || nums.some((v) => !SC_NUMBER.test(v))) throw new ComponentError(variant === "bubble" ? `bubble line must be item | x | y | size (numbers): "${t}"` : `scatter line must be item | x | y (numbers): "${t}"`, line);
+      if (variant === "bubble" && Number(nums[2]) <= 0) throw new ComponentError(`bubble size must be a positive number: "${t}"`, line);
+      spec.points.push({ label, x: Number(nums[0]), y: Number(nums[1]), size: variant === "bubble" ? Number(nums[2]) : 1, focal });
+    }
+    if (spec.points.length < 2) throw new ComponentError(`${variant} needs at least 2 points, one per line`, 1);
+    if (spec.points.length > 200) warn?.({ line: 1, message: `${spec.points.length} points; sample or group them (200 or fewer)` });
+    return scFigure("scatter", seecode.scatter({ ...spec, label: [spec.x.label, spec.y.label].filter(Boolean).join(" \xD7 ") || variant }));
+  }
+};
+var waterfall_default = {
+  name: "waterfall",
+  summary: "Waterfall (a starting amount, the gains and losses after it, and totals)",
+  syntax: `\`\`\`waterfall [unit=…]
+starting amount: 1200         ← first line: a bar from zero
+gain: +300                    ← each later line adds its value to the running total
+* loss: -150                  ← a negative value subtracts; * highlights the bar
+= total name                  ← = draws the running total as a bar from zero; any number of times
+\`\`\`
+- Gains use the ok colour, losses the err colour, totals grey. unit= is written once on the axis. 2 to 14 bars.`,
+  example: "```waterfall unit=gold\nBase output: 1200\nOffline bonus: +300\n* Ad double: +600\nStorage cap: -250\n= Collected\n```",
+  render(text, { args, warn }) {
+    const lines = contentLines(text);
+    const steps = lines.map(({ text: t, line }, i) => {
+      const { focal, body } = scFocal(t);
+      const total = body.match(/^[=＝]\s*(.+)$/);
+      if (total) {
+        if (i === 0) throw new ComponentError(`waterfall: the first line is the starting amount (name: value), not a total: "${t}"`, line);
+        return { label: total[1].trim(), total: true, focal };
+      }
+      return scNumberLine("waterfall", t, line, true);
+    });
+    if (steps.length < 2) throw new ComponentError(`waterfall needs a starting amount and at least one change, one per line; got ${steps.length}`, 1);
+    if (steps.length > 14) warn?.({ line: lines[14].line, message: `${steps.length} bars; merge small changes (14 or fewer)` });
+    return scFigure("waterfall", seecode.waterfall({ steps, unit: String(parseAttrs(args).unit ?? ""), label: steps.map((s) => s.label).join(", ") }));
+  }
+};
+var treemap_default = {
+  name: "treemap",
+  summary: "Treemap (parts of a whole as rectangles sized by value; optional groups)",
+  syntax: `\`\`\`treemap [unit=…]
+item: 4200                    ← one rectangle per line; its area follows the value
+* key item: 2600              ← * highlights the rectangle
+group > item: 900             ← > puts the item inside a group; the group's size is the sum of its items
+\`\`\`
+- Values are positive. A rectangle too small for its name and value gets a number, listed under the map. Up to 24 rectangles.`,
+  example: "```treemap unit=gold\nUpgrades > Miner: 2400\nUpgrades > Furnace: 1800\n* Prestige: 2600\nShop: 900\nDecor: 300\n```",
+  render(text, { args, warn }) {
+    const items = [], groups = /* @__PURE__ */ new Map();
+    for (const { text: t, line } of contentLines(text)) {
+      const { focal, body } = scFocal(t);
+      const kv = scKeyValue(body);
+      const path = kv?.[1].split(/\s*>\s*/).map((s) => s.trim());
+      if (!kv || path.length > 2 || path.some((s) => !s)) throw new ComponentError(`treemap line must be item: value or group > item: value: "${t}"`, line);
+      const v = kv[2].trim();
+      if (!SC_NUMBER.test(v) || Number(v) <= 0) throw new ComponentError(`treemap: "${v}" must be a positive number: "${t}"`, line);
+      const leaf = { label: path[path.length - 1], value: Number(v), focal };
+      const clash = items.find((it) => it.label === path[0] && !!it.children !== (path.length === 2));
+      if (clash) throw new ComponentError(`treemap: "${path[0]}" is both an item and a group; give values on its group > item lines only: "${t}"`, line);
+      if (path.length === 1) {
+        items.push(leaf);
+        continue;
+      }
+      if (!groups.has(path[0])) {
+        const g = { label: path[0], value: 0, children: [] };
+        groups.set(path[0], g);
+        items.push(g);
+      }
+      const g = groups.get(path[0]);
+      g.children.push(leaf);
+      g.value += leaf.value;
+    }
+    if (items.length < 2) throw new ComponentError(`treemap needs at least 2 items, one per line`, 1);
+    const cells = items.reduce((n, it) => n + (it.children?.length ?? 1), 0);
+    if (cells > 24) warn?.({ line: 1, message: `${cells} rectangles; fold the smallest into "Other" (24 or fewer)` });
+    return scFigure("treemap", seecode.treemap({ items, unit: String(parseAttrs(args).unit ?? ""), label: items.map((it) => it.label).join(", ") }));
+  }
+};
+var heatmap_default = {
+  name: "heatmap",
+  summary: "Heatmap (a number per row \xD7 column cell, shown in colour steps)",
+  syntax: `\`\`\`heatmap [unit=…]
+x: column, column, column     ← first line: the column names
+row name: 12, 30, 18          ← one row per line, one number per column; - leaves a cell empty
+* key row: 5, 9, 40           ← * outlines the row
+\`\`\`
+- Six colour steps from the lowest to the highest value. With negative and positive values, negatives use the err colour and the steps count from zero.
+- Commas may be , or ，. unit= is written once, at the top left.`,
+  example: "```heatmap unit=k\nx: 0h, 6h, 12h, 18h, 22h\nMon: 2, 1, 6, 9, 5\nTue: 2, 1, 5, 8, 6\n* Sat: 4, 2, 9, 14, 11\n```",
+  render(text, { args }) {
+    const lines = contentLines(text);
+    if (!lines.length) throw new ComponentError("heatmap needs an x: line and at least one row line", 1);
+    const { x: cols, series } = scSeries("heatmap", lines, { gaps: true });
+    return scFigure("heatmap", seecode.heatmap({ cols, rows: series, unit: String(parseAttrs(args).unit ?? ""), label: series.map((s) => s.name).join(", ") }));
+  }
+};
+var radar_default = {
+  name: "radar",
+  summary: "Radar chart (several scores per series on shared axes)",
+  syntax: `\`\`\`radar [max=…] [unit=…]
+x: axis, axis, axis           ← first line: the axes (3 to 12), clockwise from the top
+series name: 80, 60, 90       ← one value per axis, 0 or more
+* key series: 40, 95, 70      ← * puts the accent on this series and mutes the others
+\`\`\`
+- The outer ring is max= (default: the largest value rounded up). Up to 5 series; the names are in a key below.`,
+  example: "```radar max=100\nx: Attack, Defense, Speed, Crit, Support\nKnight: 70, 90, 40, 30, 50\n* Mage: 95, 30, 55, 80, 40\nBard: 40, 50, 70, 30, 95\n```",
+  render(text, { args, warn }) {
+    const lines = contentLines(text);
+    if (!lines.length) throw new ComponentError("radar needs an x: line and at least one series line", 1);
+    const { x: axes, series } = scSeries("radar", lines, { gaps: false });
+    if (axes.length < 3 || axes.length > 12) throw new ComponentError(`radar needs 3 to 12 axes on the x: line; got ${axes.length}`, lines[0].line);
+    const neg = series.find((s) => s.values.some((v) => v < 0));
+    if (neg) throw new ComponentError(`radar values must be 0 or more: series "${neg.name}"`, neg.line);
+    const { max, unit = "" } = parseAttrs(args);
+    if (max !== void 0 && !(Number(max) > 0)) throw new ComponentError(`radar: max=${max} must be a positive number`, 0);
+    const big = series.find((s) => s.values.some((v) => v > Number(max)));
+    if (big) throw new ComponentError(`radar: series "${big.name}" has a value above max=${max}`, big.line);
+    if (series.length > 5) warn?.({ line: series[5].line, message: `${series.length} series; a radar reads best with 3 or fewer` });
+    return scFigure("radar", seecode.radar({ axes, series, max: Number(max) || 0, unit: String(unit), label: series.map((s) => s.name).join(", ") }));
+  }
+};
+var polar_default = {
+  name: "polar",
+  summary: "Polar bars (one value per item around a circle; for cycles such as days or hours)",
+  syntax: `\`\`\`polar [unit=…]
+item: 120                     ← one wedge per line, clockwise from the top; its length follows the value
+* key item: 340               ← * highlights the wedge and mutes the others
+\`\`\`
+- For items that go round (days of the week, hours, months); for other comparisons use bar. 3 to 24 items, values 0 or more.`,
+  example: "```polar unit=gold\nMon: 120\nTue: 135\nWed: 128\nThu: 140\nFri: 160\n* Sat: 340\nSun: 290\n```",
+  render(text, { args }) {
+    const items = contentLines(text).map(({ text: t, line }) => scNumberLine("polar", t, line));
+    const neg = items.find((d) => d.value < 0);
+    if (neg) throw new ComponentError(`polar values must be 0 or more: "${neg.label}"`, neg.line);
+    if (items.length < 3 || items.length > 24) throw new ComponentError(`polar needs 3 to 24 items, one per line; got ${items.length}`, items[24]?.line ?? 1);
+    if (items.every((d) => d.value === 0)) throw new ComponentError("polar: every value is 0", 1);
+    return scFigure("polar", seecode.polar({ items, unit: String(parseAttrs(args).unit ?? ""), label: items.map((d) => d.label).join(", ") }));
+  }
+};
+
+// bar dumbbell and bar marimekko: an x: line, then one row (dumbbell) or one segment (marimekko) per line.
+var BAR_EXAMPLES = {
+  dumbbell: "```bar dumbbell unit=/s\nx: v1.0, v1.2\nMiner: 12, 18\n* Furnace: 30, 22\nSawmill: 8, 15\n```",
+  marimekko: "```bar marimekko unit=players\nx: Phone, PC, Tablet\nFree: 600, 200, 80\n* Small spenders: 300, 150, 40\nWhales: 100, 150, 20\n```"
+};
+function scBarVariant(variant, text, { unit = "" }) {
+  const lines = contentLines(text);
+  if (!lines.length) throw new ComponentError(`bar ${variant} needs an x: line and at least one more line`, 1);
+  const { x: x2, series } = scSeries(`bar ${variant}`, lines, { gaps: false });
+  const label = series.map((s) => s.name).join(", ");
+  if (variant === "dumbbell") {
+    if (x2.length !== 2) throw new ComponentError(`bar dumbbell needs exactly 2 x labels, the two ends (x: before, after); got ${x2.length}`, lines[0].line);
+    return seecode.dumbbell({ x: x2, series, unit: String(unit), label });
+  }
+  const neg = series.find((s) => s.values.some((v) => v < 0));
+  if (neg) throw new ComponentError(`bar marimekko values must be 0 or more: segment "${neg.name}"`, neg.line);
+  const empty = x2.findIndex((_2, i) => series.every((s) => s.values[i] === 0));
+  if (empty >= 0) throw new ComponentError(`bar marimekko: column "${x2[empty]}" adds up to 0`, lines[0].line);
+  return seecode.marimekko({ x: x2, series, unit: String(unit), label });
+}
+// line slope, bump, stream and ridgeline: the same x: and series lines as line.
+var LINE_EXAMPLES = {
+  slope: "```line slope\nx: v1.0, v1.2\nMiner: 12, 18\n* Furnace: 30, 22\nSawmill: 8, 15\n```",
+  bump: "```line bump\nx: W1, W2, W3, W4\nMiner: 1, 1, 2, 3\n* Furnace: 3, 2, 1, 1\nSawmill: 2, 3, 3, 2\n```",
+  stream: "```line stream unit=gold\nx: D1, D2, D3, D4, D5\nMining: 50, 60, 70, 65, 60\n* Quests: 10, 30, 60, 90, 120\nShop: 20, 20, 25, 30, 30\n```",
+  ridgeline: "```line ridgeline unit=k\nx: 0h, 4h, 8h, 12h, 16h, 20h\nMon: 2, 1, 5, 8, 9, 6\n* Sat: 4, 2, 9, 14, 16, 11\nSun: 5, 2, 8, 12, 15, 9\n```"
+};
+function scLineVariant(variant, lines, { unit = "" }) {
+  const name = `line ${variant}`;
+  const { x: x2, series } = scSeries(name, lines, { gaps: variant === "bump" });
+  if (variant === "slope" && x2.length !== 2) throw new ComponentError(`line slope needs exactly 2 x labels (x: before, after); got ${x2.length}`, lines[0].line);
+  if (x2.length < 2) throw new ComponentError(`${name} needs at least 2 x labels`, lines[0].line);
+  const bad = variant === "bump" ? series.find((s) => s.values.some((v) => v != null && (!Number.isInteger(v) || v < 1))) : variant !== "slope" ? series.find((s) => s.values.some((v) => v < 0)) : void 0;
+  if (bad) throw new ComponentError(variant === "bump" ? `line bump values are ranks, whole numbers from 1 (1 = top): series "${bad.name}"` : `${name} values must be 0 or more: series "${bad.name}"`, bad.line);
+  if (variant === "stream" && x2.some((_2, i) => series.every((s) => s.values[i] === 0))) throw new ComponentError("line stream: every series is 0 at one x label", lines[0].line);
+  return seecode[variant]({ x: x2, series, unit: String(unit), label: series.map((s) => s.name).join(", ") });
+}
+
+var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, venn_default, matrix_default, pyramid_default, layers_default, nested_default, fishbone_default, process_default, journey_default, kanban_default, story_map_default, gantt_default, wardley_default, scatter_default, waterfall_default, treemap_default, heatmap_default, radar_default, polar_default, ask_default];
 var COMPONENTS = new Map(ALL2.map((c) => [c.name, c]));
 var RAW_LANGS = /* @__PURE__ */ new Set(["html", "svg"]);
 
@@ -9653,7 +10732,7 @@ function renderFence(block2, ctx) {
     throw new RenderError(err.message, {
       line: line + (err.line || 0),
       component: lang,
-      example: comp.example
+      example: comp.exampleFor?.(args) ?? comp.example
     });
   }
 }
@@ -11962,7 +13041,8 @@ main(process.argv.slice(2), { background: true, scriptPath: process.argv[1] }).t
  * Martin Hensel) and a hyphenate and escape pair adapted from Facebook's React. http://www.apache.org/licenses/LICENSE-2.0
  */
 /*! SeeCode (https://github.com/Aryanutkarsh/SeeCode), layout code ported for the line, bar, sankey, loop, quadrant, venn, matrix,
- * pyramid, layers, nested, fishbone, process, journey, kanban, story-map, gantt and wardley components.
+ * pyramid, layers, nested, fishbone, process, journey, kanban, story-map, gantt, wardley, scatter, waterfall, treemap, heatmap, radar
+ * and polar components and the dumbbell, marimekko, slope, bump, stream and ridgeline variants of bar and line.
  *
  * MIT License
  *
