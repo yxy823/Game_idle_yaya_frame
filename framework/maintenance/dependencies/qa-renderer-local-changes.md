@@ -1,12 +1,16 @@
-# 本地改动
+# 问答渲染脚本的来源与本地改动
 
-来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 `LICENSE`。
+[框架维护](../README.md)
+
+本页记录随项目分发的问答渲染脚本 [am.mjs](../../../project-source/skills/qa-explainer-godot/scripts/am.mjs) 的上游来源和本地改动，只在框架维护时使用，不进入生成项目。
+
+来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 [LICENSE](../../../project-source/skills/qa-explainer-godot/LICENSE)。
 
 之后从上游挑选并入的提交：b0ebc16（正文公式，Temml 渲染）、43d5314（标注和回复引用公式时用 TeX 原文）、4392f11（窄窗口横向时间线的标注键不随宽度变化）。并入时删掉了只供措辞检查用的 `opensDisplay`、`isDisplayLine`；`RUNTIME_JS` 开头加入公式文本函数后，外层多了一层包裹函数。没有并入的上游改动：新版本按钮和更新提示（#188、#190、#198）、页脚移到页头（#186）、DeepSeek Harness 插件（#199、#200）。下次同步上游时，从 `4da5ae8` 之后开始核对。
 
-本 Skill 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
+问答 Skill `qa-explainer-godot` 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
 
-`scripts/am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。
+`am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。
 
 | 问题 | 改动 | 对应规则 |
 |---|---|---|
@@ -37,7 +41,7 @@
 | 渲染时自带的 STE 措辞检查，词表与框架的措辞检查重复且细节不一致 | 删除 `src/lint/` 全部模块、`am lint` 命令、`style` 设置项与 frontmatter 字段、`--style` 参数、页面根标签的 `data-style` 和 `ask` 组件的检查钩子；措辞改由项目的 `check-wording.py` 检查 | 用户要求 |
 | `am patch` 更新页面后，旧评论和标注仍留在 localStorage，再次复制会重复发送 | 页面按源稿算版本号；复制回复成功时记下版本号，之后改动评论或标注会清掉该记录；打开页面时若已复制且版本不同，清空评论和标注 | I24 |
 
-网页默认主题改为「卡片」（`shadcn`）：`pickTheme` 对网页始终返回 `shadcn`，视频仍用 `blueprint`；`SKILL.md` 第 3 节同步。用户要求。
+网页默认主题改为「卡片」（`shadcn`）：`pickTheme` 对网页始终返回 `shadcn`，视频仍用 `blueprint`；主题列表 `ALL` 把卡片排在图纸前面，工具栏的主题选择框第一项是卡片；`SKILL.md` 第 3 节同步。用户要求。
 
 不运行上游更新命令；`am.mjs` 的 `update_check` 默认改为关闭，因为上游更新会覆盖本地改动。
 

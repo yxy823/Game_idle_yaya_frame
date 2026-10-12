@@ -123,4 +123,4 @@ python -B yaya/tools/checks/check-wording.py docs/qa/<主题>.md
 python -B yaya/tools/checks/check-terminology.py docs/qa/<主题>.md
 ```
 
-脚本的设置（是否自动打开浏览器、主题等）用 `am.mjs config` 查看和修改；不运行更新命令，脚本的来源和本地改动见 [scripts/LOCAL_CHANGES.md](scripts/LOCAL_CHANGES.md)。
+脚本的设置（是否自动打开浏览器、主题等）用 `am.mjs config` 查看和修改；不运行更新命令：脚本带有框架的本地改动，更新会覆盖它们。

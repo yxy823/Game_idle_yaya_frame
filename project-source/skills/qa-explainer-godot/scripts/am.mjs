@@ -1598,7 +1598,7 @@ function readUserThemes(home, builtinNames) {
 }
 
 // src/themes/registry.js
-var ALL = Object.freeze([blueprint_default, shadcn_default, paper_default, b1b_default]);
+var ALL = Object.freeze([shadcn_default, blueprint_default, paper_default, b1b_default]);
 var BUILTIN_NAMES = ALL.map((t) => t.name);
 var themes = (scope) => ALL.filter((t) => t.scope.includes(scope));
 var themeNames = (scope) => themes(scope).map((t) => t.name);
