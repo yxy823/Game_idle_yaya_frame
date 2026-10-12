@@ -7018,7 +7018,8 @@ The question, one sentence
 // Charts and diagrams laid out by code ported from SeeCode (MIT, https://github.com/Aryanutkarsh/SeeCode, commit 82c33b6; license at the
 // end of this file): line, bar, sankey, loop, quadrant, then venn, matrix, pyramid (with funnel), layers, nested, fishbone, process,
 // journey, kanban, story-map, gantt and wardley, then the data charts scatter (with bubble and beeswarm), waterfall, treemap, heatmap,
-// radar, polar and the bar (dumbbell, marimekko) and line (slope, bump, stream, ridgeline) variants. The layout functions turn a parsed spec into an <svg class="am-sc">; the
+// radar, polar and the bar (dumbbell, marimekko) and line (slope, bump, stream, ridgeline) variants, then swimlane and state, whose
+// positions the script works out from the links (SeeCode's router for swimlane, flow's dagre layout for state). The layout functions turn a parsed spec into an <svg class="am-sc">; the
 // components after them parse the fence text. Text is 12px or larger and the drawing keeps its natural size (.am-diagram scrolls).
 // data-sc-step and --step stay on the parts so step animation can be added in CSS later.
 var seecode = (() => {
@@ -7512,6 +7513,7 @@ var seecode = (() => {
   // wrap, then narrow the width while the line count stays, so the lines come out about equally long;
   // a width that starts a line with closing punctuation is skipped
   const CLOSE = /^[，。、；：！？）」』”,.;:!?)·]+/;
+  const OPEN = /[（「『“(]+$/;
   function balanced(str, maxW, size, opts) {
     const lines = wrap(str, maxW, size, opts);
     if (lines.length < 2) return lines;
@@ -7521,8 +7523,13 @@ var seecode = (() => {
       if (next.length > lines.length) break;
       if (!next.some((l3) => CLOSE.test(l3))) best = next;
     }
-    // a line that still starts with closing punctuation hands it back to the line before
+    // a line that still starts with closing punctuation hands it back to the line before; opening punctuation at a line end moves on
     return best.reduce((out, l3) => {
+      const o = out.length && out[out.length - 1].match(OPEN);
+      if (o) {
+        out[out.length - 1] = out[out.length - 1].slice(0, -o[0].length);
+        l3 = o[0] + l3;
+      }
       const m = out.length && l3.match(CLOSE);
       if (m) {
         out[out.length - 1] += m[0];
@@ -8958,7 +8965,533 @@ var seecode = (() => {
     return svg([-nameW - 28, -16, PW + nameW + 28 + 28 + measure(sb, FS.ax, mono) + 16, H + 56], out.join(""), spec.label);
   }
 
-  return { line, bar, sankey, loop, quadrant, venn, matrix, pyramid, layers, nested, fishbone, process: processSteps, journey, kanban, storymap, gantt, wardley, scatter, waterfall, treemap, heatmap, radar, polar: polarBars, dumbbell, marimekko, slope, bump, stream, ridgeline };
+  // Fourth port: swimlane and state. SeeCode's graph engine wants a row and column on every node; here the positions come from
+  // the links. swimlane: one row per lane, columns from the longest forward path, links routed by SeeCode's orthogonal router.
+  // state: layered by the dagre build that flow uses ($o), drawn with SeeCode's state shapes; self transitions loop beside the state.
+  // Node shapes after SeeCode lib/render/shared/nodes.mjs: step (box), decision (diamond), terminal (pill), state, start, end.
+  function graphNode(n) {
+    if (n.shape === "start" || n.shape === "end") return { ...n, w: n.shape === "start" ? 20 : 26, h: n.shape === "start" ? 20 : 26, b: null };
+    const b = block(n.label, "", n.shape === "decision" ? 110 : 150, bold);
+    // a diamond holds its text box when the box is at most half its width and half its height
+    if (n.shape === "decision") return { ...n, b, w: Math.max(96, b.w * 2 + 28), h: Math.max(56, b.h * 2 + 16) };
+    return { ...n, b, w: Math.max(n.shape === "state" ? 96 : 80, b.w + 32), h: b.h + 22 };
+  }
+  function drawGraphNode(n, step) {
+    const { x, y, w, h } = n;
+    const cx = x + w / 2, cy = y + h / 2;
+    const parts = [];
+    if (n.shape === "start") parts.push(el("circle", { class: "n-start", cx, cy, r: w / 2 }));
+    else if (n.shape === "end") parts.push(el("circle", { class: "n-box", cx, cy, r: w / 2 }), el("circle", { class: "n-start", cx, cy, r: w / 2 - 6 }));
+    else {
+      if (n.shape === "decision") parts.push(el("path", { class: "n-box", d: `M${cx},${y} L${x + w},${cy} L${cx},${y + h} L${x},${cy} Z` }));
+      else parts.push(el("rect", { class: "n-box", x, y, width: w, height: h, rx: n.shape === "terminal" ? h / 2 : n.shape === "state" ? 14 : 6 }));
+      parts.push(drawBlock(n.b, cx, cy - n.b.h / 2));
+    }
+    return el("g", { class: n.focal ? "k-focal" : void 0, ...stepAttrs(step) }, parts);
+  }
+  // Arrow head with its tip at p, d the unit direction it points (SeeCode lib/render/shared/edges.mjs).
+  const HEAD = 8;
+  const unitVec = (a, b) => {
+    const dx = b.x - a.x, dy = b.y - a.y, l = Math.hypot(dx, dy) || 1;
+    return { x: dx / l, y: dy / l };
+  };
+  function arrowHead(tip, d) {
+    const bx = tip.x - d.x * HEAD, by = tip.y - d.y * HEAD, px = -d.y * 3.6, py = d.x * 3.6;
+    return el("path", { class: "e-head", d: `M${tip.x},${tip.y} L${bx + px},${by + py} L${bx - px},${by - py} Z` });
+  }
+  // Edge label: 13px text on a paper-coloured box, so a line passing under it stays readable.
+  const EDGE_H = 20;
+  const edgeLabelW = (label) => measure(label, FS.sub) + 12;
+  const drawEdgeLabel = (b, label) => el("g", { class: "e-label-g" }, [el("rect", { class: "e-label-bg", x: b.x, y: b.y, width: b.w, height: b.h, rx: 3 }), text({ class: "e-label", x: b.x + b.w / 2, y: b.y + b.h / 2 + 4.5, "text-anchor": "middle" }, label)]);
+  const edgeClass = (e) => `sc-edge${e.focal ? " ek-primary" : ""}${e.dashed ? " is-dashed" : ""}`;
+  // SeeCode lib/svg.mjs roundedPath: a polyline with its corners rounded by r.
+  function roundedPath(pts, r = 7) {
+    if (pts.length < 3) return pts.map((p, i) => `${i ? "L" : "M"}${p.x},${p.y}`).join(" ");
+    let d = `M${pts[0].x},${pts[0].y}`;
+    for (let i = 1; i < pts.length - 1; i++) {
+      const p0 = pts[i - 1], p = pts[i], p1 = pts[i + 1];
+      const l0 = Math.hypot(p.x - p0.x, p.y - p0.y), l1 = Math.hypot(p1.x - p.x, p1.y - p.y);
+      const rr = Math.min(r, l0 / 2, l1 / 2);
+      if (rr < 0.5) {
+        d += ` L${p.x},${p.y}`;
+        continue;
+      }
+      d += ` L${p.x - (p.x - p0.x) / l0 * rr},${p.y - (p.y - p0.y) / l0 * rr} Q${p.x},${p.y} ${p.x + (p1.x - p.x) / l1 * rr},${p.y + (p1.y - p.y) / l1 * rr}`;
+    }
+    const last = pts[pts.length - 1];
+    return `${d} L${last.x},${last.y}`;
+  }
+
+  // SeeCode (MIT) lib/render/graph/route.mjs: orthogonal routing on a placed grid. 1. choose the sides of each edge by scoring
+  // candidate polylines through the channels between rows and columns, 2. spread ports that share a side, 3. re-route with fixed
+  // ports, 4. move parallel segments in one channel onto 8px tracks. Entity-field ports are left out. The outermost channels are
+  // always candidates, so a link back against the flow can run around the outside.
+  const router = (() => {
+    const STUB = 18, PAD = 8;
+    const DIRS = { L: { x: -1, y: 0 }, R: { x: 1, y: 0 }, T: { x: 0, y: -1 }, B: { x: 0, y: 1 } };
+    const SIDES = ["L", "R", "T", "B"];
+    const POINT = /* @__PURE__ */ new Set(["decision", "start", "end"]);
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    const sidePoint = (n, side) => side === "L" ? { x: n.x, y: n.y + n.h / 2 } : side === "R" ? { x: n.x + n.w, y: n.y + n.h / 2 } : side === "T" ? { x: n.x + n.w / 2, y: n.y } : { x: n.x + n.w / 2, y: n.y + n.h };
+    const portAt = (n, side, v) => side === "L" ? { x: n.x, y: v } : side === "R" ? { x: n.x + n.w, y: v } : side === "T" ? { x: v, y: n.y } : { x: v, y: n.y + n.h };
+    function segHitsBox(a, b, r) {
+      if (a.x === b.x) {
+        const y0 = Math.min(a.y, b.y), y1 = Math.max(a.y, b.y);
+        return a.x > r.x && a.x < r.x + r.w && y1 > r.y && y0 < r.y + r.h;
+      }
+      const x0 = Math.min(a.x, b.x), x1 = Math.max(a.x, b.x);
+      return a.y > r.y && a.y < r.y + r.h && x1 > r.x && x0 < r.x + r.w;
+    }
+    function simplify(pts) {
+      const out = [];
+      for (const p of pts) {
+        const q = { x: Math.round(p.x * 2) / 2, y: Math.round(p.y * 2) / 2 };
+        const last = out[out.length - 1];
+        if (!last || last.x !== q.x || last.y !== q.y) out.push(q);
+      }
+      for (let i = out.length - 2; i > 0; i--) {
+        const a = out[i - 1], b = out[i], c = out[i + 1];
+        if (a.x === b.x && b.x === c.x || a.y === b.y && b.y === c.y) out.splice(i, 1);
+      }
+      return out;
+    }
+    const pathLen = (pts) => pts.reduce((s, p, i) => i ? s + Math.abs(p.x - pts[i - 1].x) + Math.abs(p.y - pts[i - 1].y) : 0, 0);
+    const orthogonal = (pts) => pts.every((p, i) => !i || p.x === pts[i - 1].x || p.y === pts[i - 1].y);
+    function backtracks(pts) {
+      for (let i = 2; i < pts.length; i++) {
+        const d1 = { x: Math.sign(pts[i - 1].x - pts[i - 2].x), y: Math.sign(pts[i - 1].y - pts[i - 2].y) };
+        const d2 = { x: Math.sign(pts[i].x - pts[i - 1].x), y: Math.sign(pts[i].y - pts[i - 1].y) };
+        if (d1.x === -d2.x && d1.y === -d2.y && (d1.x || d1.y)) return true;
+      }
+      return false;
+    }
+    const nearest = (values, v, k) => [...values].sort((a, b) => Math.abs(a - v) - Math.abs(b - v)).slice(0, k);
+    const withOuter = (values, picked) => [.../* @__PURE__ */ new Set([...picked, values[0], values[values.length - 1]])];
+    function candidates(pS, sS, pT, sT, ch) {
+      const dS = DIRS[sS], dT = DIRS[sT];
+      const a = { x: pS.x + dS.x * STUB, y: pS.y + dS.y * STUB };
+      const b = { x: pT.x + dT.x * STUB, y: pT.y + dT.y * STUB };
+      const mids = [];
+      if (a.x === b.x || a.y === b.y) mids.push([]);
+      mids.push([{ x: b.x, y: a.y }], [{ x: a.x, y: b.y }]);
+      for (const x of /* @__PURE__ */ new Set([...nearest(ch.xs, (a.x + b.x) / 2, 4), (a.x + b.x) / 2])) mids.push([{ x, y: a.y }, { x, y: b.y }]);
+      for (const y of /* @__PURE__ */ new Set([...nearest(ch.ys, (a.y + b.y) / 2, 4), (a.y + b.y) / 2])) mids.push([{ x: a.x, y }, { x: b.x, y }]);
+      const x1s = nearest(ch.xs, a.x, 2), x2s = nearest(ch.xs, b.x, 2);
+      const y1s = nearest(ch.ys, a.y, 2), y2s = nearest(ch.ys, b.y, 2);
+      for (const y of withOuter(ch.ys, nearest(ch.ys, (a.y + b.y) / 2, 3))) {
+        for (const x1 of x1s) for (const x2 of x2s) mids.push([{ x: x1, y: a.y }, { x: x1, y }, { x: x2, y }, { x: x2, y: b.y }]);
+      }
+      for (const x of withOuter(ch.xs, nearest(ch.xs, (a.x + b.x) / 2, 3))) {
+        for (const y1 of y1s) for (const y2 of y2s) mids.push([{ x: a.x, y: y1 }, { x, y: y1 }, { x, y: y2 }, { x: b.x, y: y2 }]);
+      }
+      return mids.map((m) => simplify([pS, a, ...m, b, pT]));
+    }
+    function clearOf(pts, boxes, src, dst) {
+      // the first and last segments may touch their own node; everything else keeps PAD away from every box
+      for (let i = 1; i < pts.length; i++) {
+        for (const r of boxes) {
+          const own = i === 1 && r.id === src || i === pts.length - 1 && r.id === dst;
+          if (!own && segHitsBox(pts[i - 1], pts[i], { x: r.x - PAD, y: r.y - PAD, w: r.w + 2 * PAD, h: r.h + 2 * PAD })) return false;
+          if (own && i !== 1 && i !== pts.length - 1 && segHitsBox(pts[i - 1], pts[i], r)) return false;
+        }
+      }
+      return true;
+    }
+    function crossings(pts, routes) {
+      let n = 0;
+      for (const r of routes) {
+        for (let i = 1; i < pts.length; i++) {
+          for (let j = 1; j < r.length; j++) {
+            const a = pts[i - 1], b = pts[i], c = r[j - 1], d = r[j];
+            const h1 = a.y === b.y, h2 = c.y === d.y;
+            if (h1 === h2) continue;
+            const [hA, hB, vA, vB] = h1 ? [a, b, c, d] : [c, d, a, b];
+            if (vA.x > Math.min(hA.x, hB.x) && vA.x < Math.max(hA.x, hB.x) && hA.y > Math.min(vA.y, vB.y) && hA.y < Math.max(vA.y, vB.y)) n++;
+          }
+        }
+      }
+      return n;
+    }
+    function bestRoute(S, T, pS, sS, pT, sT, ctx) {
+      let best = null;
+      for (const pts of candidates(pS, sS, pT, sT, ctx.channels)) {
+        if (pts.length < 2 || !orthogonal(pts) || backtracks(pts) || !clearOf(pts, ctx.boxes, S.id, T.id)) continue;
+        // leave straight out of the source side and arrive straight into the target side
+        const last = pts[pts.length - 1], prev = pts[pts.length - 2], dT = DIRS[sT], dS = DIRS[sS];
+        if (Math.sign(last.x - prev.x) !== -dT.x || Math.sign(last.y - prev.y) !== -dT.y) continue;
+        if (Math.sign(pts[1].x - pts[0].x) !== dS.x || Math.sign(pts[1].y - pts[0].y) !== dS.y) continue;
+        const score = pathLen(pts) + 36 * (pts.length - 2) + 60 * crossings(pts, ctx.routes);
+        if (!best || score < best.score) best = { pts, score };
+      }
+      return best;
+    }
+    function routeEdges(nodes, edges, channels) {
+      const byId = new Map(nodes.map((n) => [n.id, n]));
+      const ctx = { boxes: nodes, channels, routes: [] };
+      const order = [...edges].sort((e1, e2) => e2.focal - e1.focal);
+      // pass 1: sides, with ports at the middle of each side; the flow runs left to right, so top and bottom cost a little more.
+      // A side that already takes links the other way, or any link on a diamond's corner, costs more, so that a link back to a step
+      // does not run beside the link that leaves it, and a decision's branches leave from different corners.
+      const used = /* @__PURE__ */ new Map();
+      const busy = (n, side, way) => {
+        const u = used.get(`${n.id}\0${side}`);
+        return u && (POINT.has(n.shape) || u !== way) ? 160 : 0;
+      };
+      for (const e of order) {
+        const S = byId.get(e.from), T = byId.get(e.to);
+        let best = null;
+        for (const sS of SIDES) {
+          for (const sT of SIDES) {
+            const r = bestRoute(S, T, sidePoint(S, sS), sS, sidePoint(T, sT), sT, ctx);
+            const pen = ("LR".includes(sS) ? 0 : 14) + ("LR".includes(sT) ? 0 : 14) + busy(S, sS, "out") + busy(T, sT, "in");
+            if (r && (!best || r.score + pen < best.score)) best = { ...r, score: r.score + pen, sS, sT };
+          }
+        }
+        if (!best) continue;
+        Object.assign(e, { sS: best.sS, sT: best.sT });
+        used.set(`${S.id}\0${best.sS}`, used.get(`${S.id}\0${best.sS}`) === "in" ? "both" : "out");
+        used.set(`${T.id}\0${best.sT}`, used.get(`${T.id}\0${best.sT}`) === "out" ? "both" : "in");
+        ctx.routes.push(best.pts);
+      }
+      // pass 2: ports on a shared side start at the other end's centre (aligned nodes stay straight) and are pushed 14px apart
+      const ends = /* @__PURE__ */ new Map();
+      for (const e of edges) {
+        if (!e.sS) continue;
+        for (const [id, side, other, role] of [[e.from, e.sS, e.to, "S"], [e.to, e.sT, e.from, "T"]]) {
+          const key = `${id}\0${side}`;
+          if (!ends.has(key)) ends.set(key, []);
+          const o = byId.get(other);
+          ends.get(key).push({ e, role, pref: "LR".includes(side) ? o.y + o.h / 2 : o.x + o.w / 2 });
+        }
+      }
+      const setPort = (it, v) => it.e[it.role === "S" ? "tS" : "tT"] = v;
+      for (const [key, list] of ends) {
+        const [id, side] = key.split("\0");
+        const n = byId.get(id);
+        const lo = "LR".includes(side) ? n.y : n.x, span = "LR".includes(side) ? n.h : n.w;
+        if (POINT.has(n.shape) || list.length === 1) {
+          for (const it of list) {
+            setPort(it, lo + span / 2);
+            if (!POINT.has(n.shape)) it.e[it.role === "S" ? "singleS" : "singleT"] = true;
+          }
+          continue;
+        }
+        const min = lo + span * 0.18, max = lo + span * 0.82;
+        const gap = Math.min(14, (max - min) / Math.max(1, list.length - 1));
+        list.sort((a, b) => a.pref - b.pref);
+        const pos = list.map((it) => clamp(it.pref, min, max));
+        for (let i = 1; i < pos.length; i++) pos[i] = Math.max(pos[i], pos[i - 1] + gap);
+        if (pos[pos.length - 1] > max) for (let i = pos.length - 1; i >= 0; i--) pos[i] = i === pos.length - 1 ? max : Math.min(pos[i], pos[i + 1] - gap);
+        list.forEach((it, i) => setPort(it, pos[i]));
+      }
+      for (const e of edges) {
+        if (!e.sS) continue;
+        const S = byId.get(e.from), T = byId.get(e.to);
+        const horiz = "LR".includes(e.sS) && "LR".includes(e.sT), vert = "TB".includes(e.sS) && "TB".includes(e.sT);
+        if (!horiz && !vert) continue;
+        const [a0, a1, b0, b1] = horiz ? [S.y, S.y + S.h, T.y, T.y + T.h] : [S.x, S.x + S.w, T.x, T.x + T.w];
+        if (e.singleS && e.singleT) {
+          // two single ends on facing sides share a coordinate inside both spans: a straight line
+          const lo = Math.max(a0, b0) + 10, hi = Math.min(a1, b1) - 10;
+          if (lo <= hi) e.tS = e.tT = clamp(((a0 + a1) / 2 + (b0 + b1) / 2) / 2, lo, hi);
+        } else if (e.singleS !== e.singleT) {
+          // a single end facing a fixed one takes its coordinate when it fits
+          const v = e.singleS ? e.tT : e.tS, [s0, s1] = e.singleS ? [a0, a1] : [b0, b1];
+          if (v >= s0 + 8 && v <= s1 - 8) e[e.singleS ? "tS" : "tT"] = v;
+        }
+      }
+      // pass 3: final routes with fixed ports
+      ctx.routes = [];
+      for (const e of order) {
+        if (!e.sS) continue;
+        const S = byId.get(e.from), T = byId.get(e.to);
+        const r = bestRoute(S, T, portAt(S, e.sS, e.tS), e.sS, portAt(T, e.sT, e.tT), e.sT, ctx) ?? bestRoute(S, T, sidePoint(S, e.sS), e.sS, sidePoint(T, e.sT), e.sT, ctx);
+        if (!r) continue;
+        e.route = r.pts;
+        ctx.routes.push(r.pts);
+      }
+      separateTracks(edges.filter((e) => e.route));
+    }
+    function separateTracks(edges) {
+      for (const axis of ["x", "y"]) {
+        const other = axis === "x" ? "y" : "x";
+        const buckets = /* @__PURE__ */ new Map();
+        for (const e of edges) {
+          const p = e.route;
+          for (let i = 1; i < p.length - 2; i++) {
+            if (p[i][axis] !== p[i + 1][axis]) continue;
+            if (!buckets.has(p[i][axis])) buckets.set(p[i][axis], []);
+            buckets.get(p[i][axis]).push({ e, i, lo: Math.min(p[i][other], p[i + 1][other]), hi: Math.max(p[i][other], p[i + 1][other]) });
+          }
+        }
+        for (const segs of buckets.values()) {
+          if (segs.length < 2) continue;
+          // links from the same source share a trunk
+          segs.sort((s1, s2) => s1.lo - s2.lo);
+          const tracks = [];
+          for (const s of segs) {
+            let t = tracks.findIndex((tr) => tr.every((o) => o.hi <= s.lo || o.lo >= s.hi || o.e.from === s.e.from));
+            if (t < 0) t = tracks.push([]) - 1;
+            tracks[t].push(s);
+            s.track = t;
+          }
+          if (tracks.length < 2) continue;
+          for (const s of segs) {
+            const off = (s.track - (tracks.length - 1) / 2) * 8;
+            s.e.route[s.i] = { ...s.e.route[s.i], [axis]: s.e.route[s.i][axis] + off };
+            s.e.route[s.i + 1] = { ...s.e.route[s.i + 1], [axis]: s.e.route[s.i + 1][axis] + off };
+          }
+        }
+      }
+    }
+    // SeeCode lib/render/shared/edges.mjs placeLabel: on the longest horizontal run that holds the label, then beside long vertical
+    // runs (outer side of a close parallel run). A spot must clear the obstacles and the labels already placed; the first round
+    // also keeps it off other links' lines, the second allows that.
+    function labelSpot(e, w, h, obstacles, placed, others) {
+      const route = e.route;
+      const segs = [];
+      for (let i = 1; i < route.length; i++) {
+        const a = route[i - 1], b = route[i];
+        const len = Math.abs(b.x - a.x) + Math.abs(b.y - a.y), horiz = a.y === b.y;
+        const fits = horiz ? len >= w + 12 : len >= h + 16;
+        const stub = i === 1 || i === route.length - 1;
+        segs.push({ a, b, horiz, score: (fits ? 0 : 1e3) + (horiz ? 0 : 60) + (stub && route.length > 2 ? 40 : 0) - len * 0.5 });
+      }
+      segs.sort((s1, s2) => s1.score - s2.score);
+      const hit = (box, pad) => (o) => box.x < o.x + o.w + pad && o.x < box.x + box.w + pad && box.y < o.y + o.h + pad && o.y < box.y + box.h + pad;
+      const lines = others.flatMap((r) => r.slice(1).map((q, i) => [r[i], q]));
+      for (const strict of [true, false]) {
+        for (const s of segs) {
+          let offsets = s.horiz ? [[0, 0], [0, -12], [0, 12]] : [[0, 0], [-(w / 2 + 5), 0], [w / 2 + 5, 0]];
+          if (!s.horiz) {
+            const lo = Math.min(s.a.y, s.b.y), hi = Math.max(s.a.y, s.b.y);
+            const near = lines.find(([p, q]) => p.x === q.x && p.x !== s.a.x && Math.abs(p.x - s.a.x) < 30 && Math.max(p.y, q.y) > lo && Math.min(p.y, q.y) < hi);
+            if (near) offsets = near[0].x > s.a.x ? [[-(w / 2 + 5), 0], [0, 0]] : [[w / 2 + 5, 0], [0, 0]];
+          }
+          for (const [dx, dy] of offsets) {
+            for (const t of [0.5, 0.35, 0.65, 0.25, 0.75]) {
+              const cx = s.a.x + (s.b.x - s.a.x) * t + dx, cy = s.a.y + (s.b.y - s.a.y) * t + dy;
+              const box = { x: cx - w / 2, y: cy - h / 2, w, h };
+              if (obstacles.some(hit(box, 2)) || placed.some(hit(box, 3))) continue;
+              if (strict && lines.some(([p, q]) => hit(box, 0)({ x: Math.min(p.x, q.x), y: Math.min(p.y, q.y), w: Math.abs(q.x - p.x), h: Math.abs(q.y - p.y) }))) continue;
+              return box;
+            }
+          }
+        }
+      }
+      return null;
+    }
+    return { routeEdges, labelSpot };
+  })();
+
+  // swimlane: spec.lanes [{label}], spec.steps [{id, label, lane, shape, focal}], spec.links [{from, to, label, focal, dashed}].
+  // Columns: drop the links that close a cycle (DFS from the steps nobody links to, in written order), then each step sits one column
+  // after its latest predecessor, moved right while its lane already holds a step in that column.
+  function swimlane(spec) {
+    const LANE_PAD = 26, OUTER = 22, GAP = 64;
+    const steps = spec.steps.map(graphNode);
+    const at = new Map(steps.map((s, i) => [s.id, i]));
+    const links = spec.links.map((e) => ({ ...e }));
+    const outs = steps.map(() => []);
+    links.forEach((e) => outs[at.get(e.from)].push(at.get(e.to)));
+    const seen = [], back = /* @__PURE__ */ new Set();
+    const visit = (i) => {
+      seen[i] = 1;
+      for (const t of outs[i]) {
+        if (seen[t] === 1) back.add(`${i}>${t}`);
+        else if (!seen[t]) visit(t);
+      }
+      seen[i] = 2;
+    };
+    const hasIn = new Set(links.map((e) => at.get(e.to)));
+    steps.forEach((_, i) => !hasIn.has(i) && !seen[i] && visit(i));
+    steps.forEach((_, i) => !seen[i] && visit(i));
+    const preds = steps.map(() => []);
+    links.forEach((e) => {
+      const a = at.get(e.from), b = at.get(e.to);
+      if (!back.has(`${a}>${b}`)) preds[b].push(a);
+    });
+    const col = [], taken = /* @__PURE__ */ new Set();
+    const place = (i) => {
+      if (col[i] !== void 0) return col[i];
+      col[i] = -1;
+      let c = Math.max(0, ...preds[i].map((p) => place(p) + 1));
+      while (taken.has(`${steps[i].lane},${c}`)) c++;
+      taken.add(`${steps[i].lane},${c}`);
+      return col[i] = c;
+    };
+    // a step is placed after everything before it in the flow; ties keep the written order
+    const depth = [];
+    const rank = (i) => depth[i] ?? (depth[i] = Math.max(0, ...preds[i].map((p) => rank(p) + 1)));
+    steps.map((_, i) => i).sort((a, b) => rank(a) - rank(b) || a - b).forEach(place);
+    const nCols = Math.max(...col) + 1;
+    // lane header: wrapped lane names on the left
+    const heads = spec.lanes.map((l) => block(l.label, "", 112, bold));
+    const headW = Math.max(...heads.map((b) => b.w)) + 32;
+    const colW = Array.from({ length: nCols }, (_, c) => Math.max(0, ...steps.filter((s, i) => col[i] === c).map((s) => s.w)));
+    const gapX = colW.slice(1).map(() => GAP);
+    for (const e of links) {
+      const a = at.get(e.from), b = at.get(e.to);
+      if (e.label && col[b] > col[a]) gapX[col[a]] = Math.max(gapX[col[a]], Math.min(220, edgeLabelW(e.label) + 36));
+    }
+    const colX = [];
+    let acc = headW + 40;
+    colW.forEach((w, c) => {
+      colX.push(acc);
+      acc += w + (gapX[c] ?? 0);
+    });
+    const right = acc + 40;
+    const laneH = spec.lanes.map((_, l) => Math.max(heads[l].h + 24, ...steps.filter((s) => s.lane === l).map((s) => s.h)) + 2 * LANE_PAD + (l === 0 ? OUTER : 0) + (l === spec.lanes.length - 1 ? OUTER : 0));
+    const laneY = [];
+    acc = 0;
+    laneH.forEach((h) => {
+      laneY.push(acc);
+      acc += h;
+    });
+    const bottom = acc;
+    const midY = (l) => laneY[l] + (l === 0 ? OUTER : 0) + (laneH[l] - (l === 0 ? OUTER : 0) - (l === spec.lanes.length - 1 ? OUTER : 0)) / 2;
+    const nodes = steps.map((s, i) => ({ ...s, x: colX[col[i]] + (colW[col[i]] - s.w) / 2, y: midY(s.lane) - s.h / 2 }));
+    const channels = {
+      xs: [colX[0] - 22, ...gapX.map((g, c) => colX[c] + colW[c] + g / 2), colX[nCols - 1] + colW[nCols - 1] + 22],
+      ys: [OUTER / 2 + 8, ...laneY.slice(1), bottom - OUTER / 2 - 8]
+    };
+    router.routeEdges(nodes, links, channels);
+    // a link the router could not fit runs straight between the two side midpoints, so no link is dropped
+    for (const e of links) {
+      if (e.route) continue;
+      const S = nodes[at.get(e.from)], T = nodes[at.get(e.to)];
+      e.route = [{ x: S.x + S.w, y: S.y + S.h / 2 }, { x: T.x, y: T.y + T.h / 2 }];
+    }
+    const obstacles = [...nodes, { x: 0, y: 0, w: headW, h: bottom }];
+    const placed = [];
+    for (const e of links) {
+      if (!e.label) continue;
+      const box = router.labelSpot(e, edgeLabelW(e.label), EDGE_H, obstacles, placed, links.filter((o) => o !== e).map((o) => o.route));
+      e.box = box ?? { x: (e.route[0].x + e.route[1].x) / 2 - edgeLabelW(e.label) / 2, y: (e.route[0].y + e.route[1].y) / 2 - EDGE_H / 2, w: edgeLabelW(e.label), h: EDGE_H };
+      placed.push(e.box);
+    }
+    const W = Math.max(right, ...placed.map((b) => b.x + b.w + 12));
+    const out = [];
+    spec.lanes.forEach((l, k) => {
+      out.push(el("g", stepAttrs(1), [
+        el("rect", { class: `lane-band${k % 2 ? " alt" : ""}`, x: 0, y: laneY[k], width: W, height: laneH[k] }),
+        el("rect", { class: "lane-head", x: 0, y: laneY[k], width: headW, height: laneH[k] }),
+        el("line", { class: "lane-rule", x1: 0, y1: laneY[k] + laneH[k], x2: W, y2: laneY[k] + laneH[k] }),
+        drawBlock(heads[k], headW / 2, midY(k) - heads[k].h / 2, "middle", "lane-label")
+      ]));
+    });
+    out.push(el("rect", { class: "lane-frame", x: 0, y: 0, width: W, height: bottom }), el("line", { class: "lane-rule", x1: headW, y1: 0, x2: headW, y2: bottom }));
+    const stepAt = (c) => stepOf(c, nCols);
+    links.forEach((e) => {
+      const pts = e.route.map((p) => ({ ...p }));
+      const n = pts.length, d = unitVec(pts[n - 2], pts[n - 1]), tip = pts[n - 1];
+      pts[n - 1] = { x: tip.x - d.x * (HEAD - 1), y: tip.y - d.y * (HEAD - 1) };
+      out.push(el("g", { class: edgeClass(e), ...stepAttrs(stepAt(col[at.get(e.from)])) }, [el("path", { class: "e-line", d: roundedPath(pts) }), arrowHead(tip, d), e.label ? drawEdgeLabel(e.box, e.label) : ""]));
+    });
+    nodes.forEach((n, i) => out.push(drawGraphNode(n, stepAt(col[i]))));
+    return svg([-1, -1, W + 2, bottom + 2], out.join(""), spec.label);
+  }
+
+  // state: spec.states [{id, label, shape: state | start | end, focal}], spec.links [{from, to, label, focal, dashed}], spec.dir LR | TB.
+  // dagre places the states in layers, orders each layer to cut crossings and routes links (back links too) between the layers;
+  // a label is a box of its own in the layout, so it never sits on a state. A self transition gets a box beside its state from
+  // dagre, and the loop and its label are drawn there.
+  function stateDiagram(spec) {
+    const states = spec.states.map(graphNode);
+    const g = new $o.graphlib.Graph({ multigraph: true });
+    g.setGraph({ rankdir: spec.dir, nodesep: 36, ranksep: 52, edgesep: 24, marginx: 16, marginy: 16 });
+    g.setDefaultEdgeLabel(() => ({}));
+    const key = new Map(states.map((s, i) => [s.id, `s${i}`]));
+    states.forEach((s) => g.setNode(key.get(s.id), { width: s.w, height: s.h }));
+    const LOOP = 26;
+    spec.links.forEach((e, i) => {
+      const self = e.from === e.to;
+      const lw = e.label ? edgeLabelW(e.label) : 0;
+      // a self loop reserves its loop and its label: below the state (LR) or to its right (TB)
+      const room = self ? spec.dir === "LR" ? { width: Math.max(lw, 2 * LOOP), height: (e.label ? EDGE_H : 0) + 4 } : { width: (lw || 0) + 4, height: Math.max(EDGE_H, 2 * LOOP) } : e.label ? { width: lw, height: EDGE_H } : {};
+      g.setEdge(key.get(e.from), key.get(e.to), { ...room, ...e.label || self ? { labelpos: "c" } : {} }, `e${i}`);
+    });
+    $o.layout(g);
+    const box = (s) => {
+      const n = g.node(key.get(s.id));
+      return { ...s, x: n.x - s.w / 2, y: n.y - s.h / 2 };
+    };
+    const nodes = states.map(box);
+    const byId = new Map(nodes.map((n) => [n.id, n]));
+    // layer of each state for --step, counted along the flow axis
+    const axis = spec.dir === "LR" ? "x" : "y";
+    const layers = [...new Set(nodes.map((n) => Math.round(n[axis])))].sort((a, b) => a - b);
+    const stepAt = (n) => stepOf(layers.indexOf(Math.round(n[axis])), layers.length);
+    const circle = (n) => n.shape === "start" || n.shape === "end";
+    const out = [];
+    let maxX = g.graph().width, maxY = g.graph().height;
+    const labels = [], lines = [];
+    const drawn = spec.links.map((e, i) => {
+      if (e.from === e.to) return null;
+      const data = g.edge({ v: key.get(e.from), w: key.get(e.to), name: `e${i}` });
+      const S = byId.get(e.from), T = byId.get(e.to);
+      const pts = data.points.map((p) => ({ ...p }));
+      // a start or end dot: meet the circle, not the square dagre clips to
+      const toCircle = (n, toward) => {
+        const c = { x: n.x + n.w / 2, y: n.y + n.h / 2 }, d = unitVec(c, toward);
+        return { x: c.x + d.x * n.w / 2, y: c.y + d.y * n.w / 2 };
+      };
+      if (circle(S)) pts[0] = toCircle(S, pts[1]);
+      if (circle(T)) pts[pts.length - 1] = toCircle(T, pts[pts.length - 2]);
+      lines.push(pts);
+      const n = pts.length, tip = pts[n - 1], d = unitVec(pts[n - 2], tip);
+      const line = [...pts.slice(0, -1), { x: tip.x - d.x * (HEAD - 1), y: tip.y - d.y * (HEAD - 1) }];
+      const box = e.label ? { x: data.x - edgeLabelW(e.label) / 2, y: data.y - EDGE_H / 2, w: edgeLabelW(e.label), h: EDGE_H } : null;
+      if (box) labels.push(box);
+      return { parts: [el("path", { class: "e-line", d: smoothPath(line) }), arrowHead(tip, d)], box };
+    });
+    // A self transition: a loop out of one side of the state and back, its label beyond it. The spots are tried in order (the side
+    // dagre left room on first, at the middle, then a quarter in either way, then the opposite side); the first that clears the
+    // other states, labels and links wins.
+    const hits = (b, own) => [...nodes.filter((n) => n !== own).map((n) => ({ x: n.x - 4, y: n.y - 4, w: n.w + 8, h: n.h + 8 })), ...labels].some((o) => b.x < o.x + o.w && o.x < b.x + b.w && b.y < o.y + o.h && o.y < b.y + b.h) || lines.some((p) => p.some((q, k) => k && segmentHits(p[k - 1], q, [b.x, b.y, b.x + b.w, b.y + b.h])));
+    spec.links.forEach((e, i) => {
+      if (e.from !== e.to) return;
+      const S = byId.get(e.from);
+      const lw = e.label ? edgeLabelW(e.label) : 0;
+      const sides = spec.dir === "LR" ? [[0, 1], [0, -1]] : [[1, 0], [-1, 0]];
+      const spots = sides.flatMap(([nx, ny]) => [0, -0.25, 0.25].map((k) => ({ nx, ny, k })));
+      const loopAt = ({ nx, ny, k }) => {
+        const tx = -ny, ty = nx;
+        // anchor on the side, k of the side's length away from its middle
+        const p = { x: S.x + S.w / 2 + nx * S.w / 2 + Math.abs(ny) * k * S.w, y: S.y + S.h / 2 + ny * S.h / 2 + Math.abs(nx) * k * S.h };
+        const a = { x: p.x - tx * 14, y: p.y - ty * 14 }, b = { x: p.x + tx * 14, y: p.y + ty * 14 };
+        const reach = LOOP + 6;
+        const path = `M${a.x},${a.y} C${a.x + nx * reach - tx * 8},${a.y + ny * reach - ty * 8} ${b.x + nx * reach + tx * 8},${b.y + ny * reach + ty * 8} ${b.x + nx * (HEAD - 1)},${b.y + ny * (HEAD - 1)}`;
+        // the loop's box: the two ends and how far it reaches, 8px wider along the side; it starts 1px off the state
+        const xs = [a.x, b.x, a.x + nx * reach, b.x + nx * reach], ys = [a.y, b.y, a.y + ny * reach, b.y + ny * reach];
+        const area = { x: Math.min(...xs) - 8 * Math.abs(ny) + Math.max(0, nx), y: Math.min(...ys) - 8 * Math.abs(nx) + Math.max(0, ny), w: Math.max(...xs) - Math.min(...xs) + 16 * Math.abs(ny) - Math.abs(nx), h: Math.max(...ys) - Math.min(...ys) + 16 * Math.abs(nx) - Math.abs(ny) };
+        const tipLen = LOOP + 4;
+        const box = !e.label ? null : ny ? { x: p.x - lw / 2, y: ny > 0 ? p.y + tipLen : p.y - tipLen - EDGE_H, w: lw, h: EDGE_H } : { x: nx > 0 ? p.x + tipLen + 4 : p.x - tipLen - 4 - lw, y: p.y - EDGE_H / 2, w: lw, h: EDGE_H };
+        return { path, head: arrowHead(b, { x: -nx, y: -ny }), area, box };
+      };
+      const loop = spots.map(loopAt).find((l) => !hits(l.area, S) && !(l.box && hits(l.box, S))) ?? loopAt(spots[0]);
+      if (loop.box) labels.push(loop.box);
+      drawn[i] = { parts: [el("path", { class: "e-line", d: loop.path }), loop.head], box: loop.box };
+      for (const b of [loop.area, loop.box].filter(Boolean)) {
+        maxX = Math.max(maxX, b.x + b.w + 8);
+        maxY = Math.max(maxY, b.y + b.h + 8);
+      }
+    });
+    const minX = Math.min(0, ...labels.map((b) => b.x - 8)), minY = Math.min(0, ...labels.map((b) => b.y - 8));
+    spec.links.forEach((e, i) => {
+      const { parts, box } = drawn[i];
+      if (box) {
+        parts.push(drawEdgeLabel(box, e.label));
+        maxX = Math.max(maxX, box.x + box.w + 8);
+        maxY = Math.max(maxY, box.y + box.h + 8);
+      }
+      out.push(el("g", { class: edgeClass(e), ...stepAttrs(stepAt(byId.get(e.from))) }, parts));
+    });
+    nodes.forEach((n) => out.push(drawGraphNode(n, stepAt(n))));
+    return svg([minX, minY, maxX - minX, maxY - minY], out.join(""), spec.label);
+  }
+
+  return { line, bar, sankey, loop, quadrant, venn, matrix, pyramid, layers, nested, fishbone, process: processSteps, journey, kanban, storymap, gantt, wardley, scatter, waterfall, treemap, heatmap, radar, polar: polarBars, dumbbell, marimekko, slope, bump, stream, ridgeline, swimlane, state: stateDiagram };
 })();
 var SEECODE_CSS = `/* ── Charts and diagrams ported from SeeCode (see var seecode for the list) ── */
 .am-sc text { fill: var(--ink, #16181d); font-size: 14px; }
@@ -9131,7 +9664,16 @@ var SEECODE_CSS = `/* ── Charts and diagrams ported from SeeCode (see var se
 .am-sc .rg-area.is-dim { fill: color-mix(in srgb, var(--ink-3, #8b929e) 20%, var(--paper, #ffffff)); }
 .am-sc .rg-line { fill: none; stroke: var(--accent, #1d5fbf); stroke-width: 1.8; } .am-sc .rg-line.is-focal { stroke-width: 2.6; } .am-sc .rg-line.is-dim { stroke: var(--ink-2, #4b5260); stroke-width: 1.4; }
 .am-sc .rg-base { stroke: var(--ink-3, #8b929e); stroke-width: 1; }
-.am-sc .on-strong { fill: var(--paper, #ffffff); }`;
+.am-sc .on-strong { fill: var(--paper, #ffffff); }
+.am-sc .n-start { fill: var(--ink, #16181d); }
+.am-sc .is-dashed .e-line { stroke-dasharray: 5 4; }
+.am-sc .e-label-bg { fill: var(--paper, #ffffff); }
+.am-sc .e-label { fill: var(--ink-2, #4b5260); font-size: 13px; }
+.am-sc .ek-primary .e-label { fill: var(--accent, #1d5fbf); font-weight: 700; }
+.am-sc .lane-band { fill: var(--paper, #ffffff); } .am-sc .lane-band.alt { fill: var(--fill, #f3f5f8); }
+.am-sc .lane-head { fill: color-mix(in srgb, var(--ink-3, #8b929e) 14%, var(--paper, #ffffff)); }
+.am-sc .lane-rule, .am-sc .lane-frame { fill: none; stroke: var(--line-2, #d6dae1); stroke-width: 1; }
+.am-sc .lane-label { font-size: 14px; font-weight: 700; }`;
 
 // The five fences that use the SeeCode layouts. Each parses its lines and hands a spec to seecode.<name>.
 var SC_NUMBER = /^-?\d+(?:\.\d+)?$/;
@@ -10047,7 +10589,141 @@ function scLineVariant(variant, lines, { unit = "" }) {
   return seecode[variant]({ x: x2, series, unit: String(unit), label: series.map((s) => s.name).join(", ") });
 }
 
-var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, venn_default, matrix_default, pyramid_default, layers_default, nested_default, fishbone_default, process_default, journey_default, kanban_default, story_map_default, gantt_default, wardley_default, scatter_default, waterfall_default, treemap_default, heatmap_default, radar_default, polar_default, ask_default];
+// swimlane and state: steps or states and their links, written as text; the script works out every position.
+// A link line is A -> B -> C: label (the label goes on the last link; --> draws it dashed, & fans out: A -> B & C).
+// A leading * on a link line highlights its links. Names may be written with their shape brackets ({Approve?}) or without.
+// known: the declared names (swimlane), or null when every name on a link declares itself (state).
+var SC_ARROW = /\s*(-->|->)\s*/;
+var scBare = (t) => t === "[*]" ? t : t.replace(/^\{(.*)\}$|^\((.*)\)$|^\[(.*)\]$/, (_, a, b, c) => a ?? b ?? c).trim();
+function scLinks(name, t, line, known, label0) {
+  const focal = /^\*/.test(t);
+  const body = t.replace(/^\*\s*/, "");
+  const parts = body.split(SC_ARROW);
+  // parts: name, arrow, name, arrow, … ; the last name may carry ": label" unless the whole text is a known name
+  let last = parts[parts.length - 1], label = "";
+  if (!known?.(scBare(last))) {
+    const m = last.match(/^(.*?)\s*[:：]\s*(.*)$/);
+    if (m) [last, label] = [m[1], m[2].trim()];
+  }
+  parts[parts.length - 1] = last;
+  const groups = [];
+  for (let k = 0; k < parts.length; k += 2) {
+    const names = parts[k].split(/\s*&\s*/).map((s) => scBare(s.trim()));
+    for (const n of names) {
+      if (!n) throw new ComponentError(`${name}: a link has an empty end: "${t}"`, line);
+      if (n.startsWith("*")) throw new ComponentError(`${name}: * before a name inside a link is not allowed; ${label0}`, line);
+      if (known && !known(n)) throw new ComponentError(`${name}: "${n}" is not declared. ${name === "swimlane" ? `Put it under a lane first, such as "lane: ${n}"` : "Check the spelling"}: "${t}"`, line);
+    }
+    groups.push({ names, dashed: parts[k - 1] === "-->" });
+  }
+  const links = [];
+  for (let k = 1; k < groups.length; k++) {
+    for (const from of groups[k - 1].names) for (const to of groups[k].names) links.push({ from, to, label: k === groups.length - 1 ? label : "", focal, dashed: groups[k].dashed, line });
+  }
+  return links;
+}
+var swimlane_default = {
+  name: "swimlane",
+  summary: "Swimlane (who does which step; one lane per role, links between steps)",
+  syntax: `\`\`\`swimlane
+lanes: Player | Game | Server        ← first line: the lanes, top to bottom (2 to 6)
+Player: step | step                  ← the steps a lane does; a name is used once in the whole diagram
+Game: {Valid?}                       ← {name} draws a decision diamond, (name) a rounded start or end step
+Server: *key step                    ← * highlights the step
+step -> step -> {Valid?}             ← links by name; a chain links each pair
+Valid? -> key step: yes              ← text after the colon labels the last link; --> is dashed, & fans out (A -> B & C)
+* Valid? -> step: no                 ← a leading * highlights the links on that line
+\`\`\`
+- Without any link line, the steps are linked in the order they are written.
+- The script places every step: each sits in a column after the steps that lead to it, in its lane's row. A link back against the flow (a retry, a rework) runs around the other steps.
+- Up to 20 steps. Use swimlane when who does each step matters (hand-offs between people, tools, systems); use flow when only the order and branches matter.`,
+  example: "```swimlane\nlanes: Player | Game | Server\nPlayer: Tap buy\nGame: {Enough gold?} | Show error\nServer: *Save purchase\nTap buy -> Enough gold?\nEnough gold? -> Save purchase: yes\nEnough gold? -> Show error: no\n```",
+  render(text) {
+    const lines = contentLines(text);
+    const head = lines[0]?.text.match(/^lanes\s*[:：]\s*(.*)$/i);
+    if (!head) throw new ComponentError(`swimlane: the first line must be lanes: name | name | …; got "${lines[0]?.text ?? ""}"`, lines[0]?.line ?? 1);
+    const lanes = fields(head[1]).filter(Boolean).map((label) => ({ label }));
+    if (lanes.length < 2 || lanes.length > 6) throw new ComponentError(`swimlane needs 2 to 6 lanes; got ${lanes.length}`, lines[0].line);
+    const laneOf = new Map(lanes.map((l, i) => [l.label, i]));
+    const steps = [], links = [];
+    const byName = /* @__PURE__ */ new Map();
+    const linkLines = [];
+    for (const { text: t, line } of lines.slice(1)) {
+      if (SC_ARROW.test(t)) {
+        linkLines.push({ t, line });
+        continue;
+      }
+      const m = t.match(/^(.+?)\s*[:：]\s*(.*)$/);
+      const lane = m && laneOf.get(m[1].trim());
+      if (lane === void 0) throw new ComponentError(`swimlane: "${t}" is neither lane: step | step nor a link A -> B. The lanes are ${lanes.map((l) => l.label).join(", ")}`, line);
+      for (const raw of fields(m[2])) {
+        const { focal, body } = scFocal(raw);
+        const shape = /^\{.*\}$/.test(body) ? "decision" : /^\(.*\)$/.test(body) ? "terminal" : "step";
+        const label = scBare(body);
+        if (!label) throw new ComponentError(`swimlane: an empty step in "${t}"`, line);
+        if (byName.has(label)) throw new ComponentError(`swimlane: the step "${label}" is already declared under the lane ${lanes[byName.get(label).lane].label}; each name is used once`, line);
+        const step = { id: label, label, lane, shape, focal, line };
+        byName.set(label, step);
+        steps.push(step);
+      }
+    }
+    if (steps.length < 2) throw new ComponentError(`swimlane needs at least 2 steps; got ${steps.length}`, 1);
+    if (steps.length > 20) throw new ComponentError(`swimlane takes at most 20 steps; got ${steps.length}. Split the process or merge steps`, steps[20].line);
+    const empty = lanes.find((_, i) => !steps.some((s) => s.lane === i));
+    if (empty) throw new ComponentError(`swimlane: the lane "${empty.label}" has no steps; remove it or give it a step such as "${empty.label}: step"`, lines[0].line);
+    for (const { t, line } of linkLines) links.push(...scLinks("swimlane", t, line, (n) => byName.has(n), "highlight a step where it is declared: lane: *step"));
+    if (!linkLines.length) for (let k = 1; k < steps.length; k++) links.push({ from: steps[k - 1].id, to: steps[k].id, label: "", focal: false, dashed: false });
+    const self = links.find((e) => e.from === e.to);
+    if (self) throw new ComponentError(`swimlane: "${self.from}" links to itself; a swimlane step cannot loop on itself (use state for that)`, self.line);
+    return scFigure("swimlane", seecode.swimlane({ lanes, steps, links, label: steps.map((s) => s.label).join(" → ") }));
+  }
+};
+var state_default = {
+  name: "state",
+  summary: "State diagram (the states a thing rests in and the events that move it)",
+  syntax: `\`\`\`state [LR|TB]
+[*] -> Idle                          ← [*] on the left is the start, on the right the end
+Idle -> Working: start               ← a transition; text after the colon is the event
+Working -> Working: tick             ← a state to itself draws a loop
+* Working -> Full: storage full      ← a leading * highlights the transitions on that line
+Full -> Idle -> [*]                  ← a chain; --> is dashed, & fans out (A -> B & C)
+*Full                                ← a state alone on a line declares it; * before it highlights it
+\`\`\`
+- The script places the states in layers along the main path (LR: left to right, the default; TB: top to bottom) and orders each layer to cut crossings.
+- Up to 16 states. Use state when the boxes are conditions something rests in and the arrows are events; use flow for the steps of a process.`,
+  example: "```state\n[*] -> Idle\nIdle -> Producing: start\n* Producing -> Full: storage full\nProducing -> Producing: tick\nFull -> Idle: collect\n```",
+  render(text, { args }) {
+    const states = /* @__PURE__ */ new Map();
+    const links = [];
+    const dir = (args.match(/\b(LR|TB)\b/i)?.[1] ?? "LR").toUpperCase();
+    const add = (id, line, focal = false) => {
+      if (!states.has(id)) states.set(id, { id, label: id, shape: "state", focal, line });
+      else if (focal) states.get(id).focal = true;
+    };
+    const lines = contentLines(text);
+    for (const { text: t, line } of lines) {
+      if (!SC_ARROW.test(t)) {
+        const { focal, body } = scFocal(t);
+        if (!body || body === "[*]") throw new ComponentError(`state: "${t}" is neither a state name nor a transition A -> B: event`, line);
+        add(body, line, focal);
+        continue;
+      }
+      const found = scLinks("state", t, line, null, "highlight a state on its own line: *Name");
+      for (const e of found) {
+        if (e.from === "[*]" && e.to === "[*]") throw new ComponentError(`state: [*] -> [*] links the start to the end with nothing between: "${t}"`, line);
+        if (e.to === "[*]" && e.from !== "[*]") e.to = "[*]end";
+        if (e.from === "[*]") e.from = "[*]start";
+        for (const id of [e.from, e.to]) if (!id.startsWith("[*]")) add(id, line);
+        links.push(e);
+      }
+    }
+    if (!links.length) throw new ComponentError("state needs at least one transition, such as Idle -> Working: start", lines[0]?.line ?? 1);
+    if (states.size > 16) throw new ComponentError(`state takes at most 16 states; got ${states.size}. Split it into an overview and a detail diagram`, [...states.values()][16].line);
+    const pseudo = (id, shape) => links.some((e) => e.from === id || e.to === id) ? [{ id, label: shape, shape }] : [];
+    return scFigure("state", seecode.state({ states: [...pseudo("[*]start", "start"), ...states.values(), ...pseudo("[*]end", "end")], links, dir, label: [...states.keys()].join(", ") }));
+  }
+};
+var ALL2 = [callout_default, kv_default, timeline_default, annot_default, tree_default, limits_default, sequence_default, flow_default, er_default, line_default, bar_default, sankey_default, loop_default, quadrant_default, venn_default, matrix_default, pyramid_default, layers_default, nested_default, fishbone_default, process_default, journey_default, kanban_default, story_map_default, gantt_default, wardley_default, scatter_default, waterfall_default, treemap_default, heatmap_default, radar_default, polar_default, swimlane_default, state_default, ask_default];
 var COMPONENTS = new Map(ALL2.map((c) => [c.name, c]));
 var RAW_LANGS = /* @__PURE__ */ new Set(["html", "svg"]);
 
@@ -13041,8 +13717,8 @@ main(process.argv.slice(2), { background: true, scriptPath: process.argv[1] }).t
  * Martin Hensel) and a hyphenate and escape pair adapted from Facebook's React. http://www.apache.org/licenses/LICENSE-2.0
  */
 /*! SeeCode (https://github.com/Aryanutkarsh/SeeCode), layout code ported for the line, bar, sankey, loop, quadrant, venn, matrix,
- * pyramid, layers, nested, fishbone, process, journey, kanban, story-map, gantt, wardley, scatter, waterfall, treemap, heatmap, radar
- * and polar components and the dumbbell, marimekko, slope, bump, stream and ridgeline variants of bar and line.
+ * pyramid, layers, nested, fishbone, process, journey, kanban, story-map, gantt, wardley, scatter, waterfall, treemap, heatmap, radar,
+ * polar, swimlane and state components and the dumbbell, marimekko, slope, bump, stream and ridgeline variants of bar and line.
  *
  * MIT License
  *
