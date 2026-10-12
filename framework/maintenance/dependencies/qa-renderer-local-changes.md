@@ -8,6 +8,8 @@
 
 之后从上游挑选并入的提交：b0ebc16（正文公式，Temml 渲染）、43d5314（标注和回复引用公式时用 TeX 原文）、4392f11（窄窗口横向时间线的标注键不随宽度变化）。并入时删掉了只供措辞检查用的 `opensDisplay`、`isDisplayLine`；`RUNTIME_JS` 开头加入公式文本函数后，外层多了一层包裹函数。没有并入的上游改动：新版本按钮和更新提示（#188、#190、#198）、页脚移到页头（#186）、DeepSeek Harness 插件（#199、#200）。下次同步上游时，从 `4da5ae8` 之后开始核对。
 
+组件 `line`、`bar`、`sankey`、`loop`、`quadrant` 的排版代码一次性移植自 [SeeCode](https://github.com/Aryanutkarsh/seecode)（提交 `82c33b6`，MIT 许可证全文在 `am.mjs` 末尾），集中在 `am.mjs` 的 `var seecode` 和 `SEECODE_CSS`。只取每种图的排版，写法改成与现有组件一致的文本语法，颜色改用主题变量，文字不小于 12px；不带 SeeCode 的查看器、动画、导出和水印，保留 `data-sc-step` 属性供以后加动画。以后不与 SeeCode 同步。
+
 问答 Skill `qa-explainer-godot` 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
 
 `am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。
