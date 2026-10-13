@@ -9,6 +9,7 @@
 | 修改属于哪里、要同步哪些说明、两份写作 Skill 的分工、交付与授权延续 | [框架维护与说明同步](maintenance-and-sync.md) |
 | 文档、提示词与场景、Skill 与脚本、规则文件的职责判断，以及审核与报告 | [职责设计准则](design-guidelines/README.md) |
 | 按修改选择验证范围，各层证据的含义，测试载体与外部项目夹具入口 | [框架验证范围](validation/validation-scope.md) |
+| 修改测试选择、完成证据或 Feature 执行流程时，逐行核对的改动场景与现行处理 | [测试改动场景表](validation/test-change-scenarios.md) |
 | 随项目分发的第三方编辑器插件：上游、安装版本、Godot 兼容性与升级核对 | [编辑器插件版本与兼容性记录](dependencies/editor-plugin-versions.md) |
 | 问答渲染脚本 `am.mjs`：上游来源、并入的上游提交和本地改动 | [问答渲染脚本的来源与本地改动](dependencies/qa-renderer-local-changes.md) |
 | 全仓孤立文档扫描 | [维护工具](tools/README.md) |
