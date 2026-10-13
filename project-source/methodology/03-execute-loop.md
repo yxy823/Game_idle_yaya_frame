@@ -79,7 +79,7 @@
 
 1. 读取轻量索引并选择 Feature：
    - 有 `in_progress` 的 Feature 时，续接它，不开始另一个。
-   - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。切回之前，新开始的 Feature 必须停在一个小循环的 GREEN 之后，它已有的测试全部通过。因为两个 Feature 的测试选择都会包含对方改动选中的测试，留在 RED 的测试会让原 Feature 的验证失败。
+   - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。开始新 Feature 之前，原 Feature 必须停在一个小循环的 GREEN 之后；切回之前，新开始的 Feature 同样要停在 GREEN 之后。两种情况都要求各自已有的测试全部通过。因为两个 Feature 的测试选择都会包含对方改动选中的测试，留在 RED 的测试会让原 Feature 的验证失败。
    - 选择尚未开始的工作之前，先检查当前授权范围内是否有 `blocked` 的 Feature。如果有，在查询可开始的 Feature 之前，查看它们记录的阻塞，并按[状态流转](02-feature-list-schema.md#状态流转)重新检查能否恢复。
    - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B yaya/tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
 2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。

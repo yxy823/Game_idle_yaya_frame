@@ -209,10 +209,7 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 
 ### 不是本 Feature 造成的测试失败
 
-运行器不区分改动属于谁。失败测试同时满足下面两条时，按本节处理：
-
-- 它的选择原因只来自 `inferred_components` 中的组件或依赖图（`dependency-graph:`），不来自本 Feature 的声明、映射或附加测试；
-- 触发它的改动文件不是本 Feature 改的。
+运行器不区分改动属于谁。失败的原因来自不是本 Feature 改的文件时，按本节处理，不论这个测试是由声明组件、反推组件、依赖图还是改动的套件（`changed-test:`）选中的。选择原因和 `changed_files` 用来找出触发文件；判断失败原因仍要读失败输出。
 
 Agent 停下当前 Feature，报告失败测试、选择原因和触发文件，不修改触发文件，然后按[反馈评估](07-engineering-change.md#反馈评估)请用户选择出口：
 
@@ -247,7 +244,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 | `--scope required`、`affected`、`full` | 用于迭代的显式范围。`full` 递归选择 `tests/`，项目有 `dev/debug/` 时同时选择它；空的分层目录不增加义务。 |
 | `--phase baseline` | 排除尚不存在的 planned 测试。baseline 运行从不授权完成。 |
 | `--target <path>` | 聚焦诊断或 TDD 诊断。它从不产生完成证据。 |
-| `--changed` | 不需要 Feature：从当前验证点以来的改动选择受影响组件的单元套件、active 回归和不变量测试，以及依赖图选中的套件；需要全量时运行 full。它只输出结果，从不产生完成证据。 |
+| `--changed` | 不需要 Feature：从当前验证点以来的改动选择受影响组件的单元套件、active 回归和不变量测试，以及改动的套件和依赖图选中的套件；需要全量时运行 full。它只输出结果，从不产生完成证据。 |
 
 输出列出选择理由、去重后的选择器、任何全量理由，以及[起点以来的改动](#起点以来的改动)中的起点、改动文件、反推组件和依赖链；字段见 [run-gdunit-tests.py](../tools/README.md#run-gdunit-testspy)。最终选择会拒绝无法解析或已 retired 的直接映射，以及缺失的路径。
 

@@ -251,7 +251,7 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
                   for component_id in claiming_components(components, node)}
         for component_id in owners:
             inferred.setdefault(component_id, set()).add(path)
-        if not owners and not (path == "project.godot" and reached[path]):
+        if not owners:
             full_reasons.append(f"unclaimed-changed-file:{path}")
     return {"base_revision": base_revision, "changed_files": changed,
             "inferred_components": {key: sorted(value) for key, value in sorted(inferred.items())},
