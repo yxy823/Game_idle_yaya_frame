@@ -97,7 +97,7 @@
 
 | 术语 | 含义与边界 | 不用的说法 |
 | --- | --- | --- |
-| Game Audio Analyzer / GAA | 本机安装的音频分析工具；调试台调用其后台摘要并显示指标，结果不代替实际听感 |  |
+| Game Audio Analyzer / GAA | 本机安装的音频分析工具；调试台调用其后台模式、读取后台结果文件并显示指标，结果不代替实际听感 |  |
 | Game Visual Analyzer / GVA | 本机安装的图像分析工具；美术制作项目用它测量单张素材，用户也可以把游戏截图交给它生成色觉四宫格；结果不代替实际观感 |  |
 
 来源：[分析](../project-source/defaults/dev/debug/_shared/README.md#分析)。
