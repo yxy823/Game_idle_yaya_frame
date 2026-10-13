@@ -15,6 +15,7 @@ const ROWS: Array[Array] = [["时长", "duration_s"], ["峰值", "peak_dbfs"],
 	["衰减至 10%", "decay_to_10_s"], ["频谱重心", "spectral_centroid_hz"]]
 const STATUS_TEXT := {"silent": "静音", "not_applicable": "不适用",
 	"insufficient_data": "数据不足", "below_threshold": "低于筛选阈值",
+	"below_gate": "低于门限", "undefined": "无定义",
 	"not_analyzed": "未分析", "disabled": "已关闭"}
 const NOTE_NAMES := ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 const COLUMNS := 3

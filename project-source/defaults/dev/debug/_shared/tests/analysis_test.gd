@@ -102,6 +102,7 @@ func test_peak_action_uses_gaa_peak_and_accepts_zero() -> void:
 func test_unavailable_metrics_show_status_and_note_without_zero_or_note_name() -> void:
 	var reasons := {"silent": "静音", "not_applicable": "不适用",
 		"insufficient_data": "数据不足", "below_threshold": "低于筛选阈值",
+		"below_gate": "低于门限", "undefined": "无定义",
 		"not_analyzed": "未分析", "disabled": "已关闭"}
 	for state: String in reasons:
 		var entry := {"value": null, "unit": "Hz", "status": state, "note": "fixture reason"}
