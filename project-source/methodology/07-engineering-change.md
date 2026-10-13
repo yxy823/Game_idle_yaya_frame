@@ -200,7 +200,7 @@ feature-execute
 
 - 使用 feature-plan 中[测试登记表：`docs/test-registry.json`](../../.agents/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)一节的合并辅助工具；测试登记表本身的规则见 08 号规范的[登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 - 复用已有记录，不重置测试；报告冲突的 ID。
-- 没有单元套件的组件写 `unit_test_paths: []`。除非已批准的契约另有要求，它的 `full_suite_on_change` 默认为 `false`。
+- 没有单元套件的组件写 `unit_test_paths: []`。除非已批准的契约另有要求，它的 `full_suite_on_change` 默认为 `false`。`source_paths` 写组件认领的文件；修复或重构涉及的文件不在已有组件的 `source_paths` 内时，扩展所属组件的 `source_paths`。
 - 把这些测试登记表的改动放进同一个 Feature 计划提交。测试映射仍在执行期间最终确定。
 
 写完一组一致的内容后，运行校验：

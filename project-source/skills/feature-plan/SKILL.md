@@ -59,16 +59,17 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 
 这是合并辅助工具、检查器、测试选择器和完成检查共同使用的固定项目相对路径。不要添加可配置的路径，也不要在 Feature 索引的元数据中重复它。从项目根目录运行合并命令。
 
-按 `yaya/methodology/02-feature-list-schema.md`，使用项目自带的第 3 版测试登记表和第 2 版修订记录。
+按 `yaya/methodology/02-feature-list-schema.md`，使用项目自带的第 4 版测试登记表和第 2 版修订记录。
 
 写入任何 Feature 计划之前，先读取并校验测试登记表。保留每个已有的组件对象、测试 ID、测试映射、状态、路径/用例和 `full_suite_on_change` 值。为另一个 Product 添加 Feature 时，绝不能把 `tests` 重置为空数组，也不能删除独立的不变量。
 
 为每个尚未登记的生成 `affected_components` ID 创建一条候选组件条目：
 
 - 没有单元测试套件时，把 `unit_test_paths` 设为 `[]`。
+- `source_paths` 写该组件认领的文件，是非空的 glob 列表，例如 `["game/inventory/**"]`；按 Product 规划的实现位置填写。
 - 路径要求、登记时机和 Required Test Set 的纳入，按 `yaya/methodology/08-test-traceability-and-evidence.md` 的 **登记表规则** 处理。
 - 新组件的 `full_suite_on_change` 设为 `false`，除非 Product 或项目规则明确把它定为横跨多处的组件。
-- 生成的组件 ID 已经存在时，复用它完整的已有记录；如果规划的约定要求不同的路径或不同的全量测试标记，把它作为冲突报告，不要覆盖。
+- 生成的组件 ID 已经存在时，复用它完整的已有记录；只需要认领新目录时，候选沿用已有记录的其他字段，只在 `source_paths` 中加上新目录，合并时取并集。如果规划的约定要求不同的单元套件路径或不同的全量测试标记，把它作为冲突报告，不要覆盖。
 
 从仓库根目录使用项目自带的合并辅助工具。临时候选文件包含一个由完整组件对象组成的 JSON 数组，或者一个带 `components` 数组的对象；它放在 `reports/scratch/<task>/`（见 methodology 09 的 **报告与清理**），不提交。
 
@@ -93,7 +94,7 @@ python -B yaya/tools/features/merge-test-registry.py `
 - 当前测试路径无效或不存在；
 - ID 重复；
 - 缺少组件映射；
-- 已有组件的候选内容与现有记录不完全相同。
+- 已有组件的候选内容与现有记录在 `source_paths` 之外不完全相同。
 
 只有完整的合并通过校验后，工具才会写入，并按原值保留所有已有的测试条目。路径存在不能证明测试能被发现；执行时必须确认登记的套件确实运行了测试。
 
@@ -105,7 +106,8 @@ python -B yaya/tools/features/merge-test-registry.py `
     {
       "id": "inventory",
       "unit_test_paths": [],
-      "full_suite_on_change": false
+      "full_suite_on_change": false,
+      "source_paths": ["game/inventory/**"]
     }
   ]
 }

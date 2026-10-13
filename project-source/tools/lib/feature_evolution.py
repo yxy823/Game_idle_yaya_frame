@@ -13,7 +13,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any
 
 
-REGISTRY_SCHEMA_VERSION = 3
+REGISTRY_SCHEMA_VERSION = 4
 TEST_REGISTRY_PATH = PurePosixPath("docs/test-registry.json")
 COMPONENT_ID = re.compile(r"[a-z][a-z0-9_]*")
 FEATURE_ID = re.compile(r"F\d{3}")
@@ -83,6 +83,9 @@ def validate_registry_component(component: Any, label: str, repo_root: Path) -> 
             )
     if not isinstance(component.get("full_suite_on_change"), bool):
         raise EvolutionError(f"{label}.full_suite_on_change must be boolean")
+    for pattern in _strings(component.get("source_paths"), f"{label}.source_paths", nonempty=True):
+        if "\\" in pattern or ":" in pattern or pattern.startswith("/") or ".." in PurePosixPath(pattern).parts:
+            raise EvolutionError(f"{label}.source_paths must hold repository-relative globs: {pattern}")
     return component_id
 
 

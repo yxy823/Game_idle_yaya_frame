@@ -1,12 +1,13 @@
 {
   "meta": {
-    "schema_version": 3
+    "schema_version": 4
   },
   "components": [
     {
       "id": "debug_console",
       "unit_test_paths": ["dev/debug/_shared/tests"],
-      "full_suite_on_change": false
+      "full_suite_on_change": false,
+      "source_paths": ["dev/debug/**"]
     }
   ],
   "tests": [

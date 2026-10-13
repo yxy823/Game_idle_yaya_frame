@@ -9,9 +9,10 @@
 ```text
 python -B yaya/tools/testing/run-gdunit-tests.py --target tests/unit/<suite>.gd
 python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
+python -B yaya/tools/testing/run-gdunit-tests.py --changed
 ```
 
-`--target` 用于迭代和诊断，不产生完成证据；`--feature` 的范围选项见[运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
+`--target` 用于迭代和诊断，不产生完成证据；`--feature` 的范围选项和不需要 Feature 的 `--changed` 见[运行时的测试影响选择](../../methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)。
 
 - 包装脚本用 `docs/methodology-config.json` 中的 Godot 可执行文件，以 `--path <项目> --debug --ignore-error-breaks --script res://yaya/tools/testing/gdunit_evidence_runner.gd -rd <运行目录>` 启动。
 - 每个选择器生成一个 `-a <路径>` 参数。`--continue` 对应 gdUnit 的 `-c`；不加时，gdUnit 在第一个失败处停止，后面的用例不执行。先写失败测试时要看到每个用例各自的失败原因，加 `--continue`。

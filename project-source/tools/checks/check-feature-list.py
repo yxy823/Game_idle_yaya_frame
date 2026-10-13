@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.test_selection import acceptance_mode, read_json_value, SelectionError
 from tools.lib.feature_evolution import (
-    EvolutionError, TEST_REGISTRY_PATH, eligible_features, COMPONENT_ID,
+    EvolutionError, TEST_REGISTRY_PATH, eligible_features, COMPONENT_ID, COMMIT_ID,
     AC_TEST_ID, REGRESSION_TEST_ID, test_identity,
     validate_registry, validate_retirements, validate_revisions,
 )
@@ -307,6 +307,11 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     if not isinstance(data.get("source"), str) or not data["source"].strip():
         _error(f"{_rel(path)}.source must be a non-empty string")
         ok = False
+    base_revision = data.get("base_revision")
+    if base_revision is not None and (not isinstance(base_revision, str) or not COMMIT_ID.fullmatch(base_revision)):
+        _error(f"{_rel(path)}.base_revision must be a Git commit identifier written by record-base-revision.py")
+        ok = False
+    info["base_revision"] = base_revision
     if not isinstance(data.get("notes"), str):
         _error(f"{_rel(path)}.notes must be a string")
         ok = False
@@ -444,6 +449,9 @@ def _validate_all(completion_feature: str | None = None) -> bool:
                 _error(f"{fid}.affected_components references missing test-registry component {cid}")
                 ok = False
         status = entries.get(fid, {}).get("status")
+        if status == "in_progress" and info.get("base_revision") is None:
+            _error(f"in_progress Feature {fid} requires base_revision; run yaya/tools/features/record-base-revision.py --feature {fid}")
+            ok = False
         if (status == "done" or fid == completion_feature) and info.get("acceptance_mode") is None:
             _error(f"completion Feature {fid} requires a decided verification.acceptance_mode")
             ok = False

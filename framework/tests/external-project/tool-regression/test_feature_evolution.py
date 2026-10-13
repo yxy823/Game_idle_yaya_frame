@@ -37,8 +37,8 @@ class FeatureEvolutionTests(unittest.TestCase):
              "estimated_scope": "small", "completed_at": "2026-01-01T00:00:00Z" if i == 1 else None}
             for i in range(1, 4)
         ]}
-        self.registry = {"meta": {"schema_version": 3}, "components": [
-            {"id": "inventory", "unit_test_paths": [], "full_suite_on_change": False}
+        self.registry = {"meta": {"schema_version": 4}, "components": [
+            {"id": "inventory", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]}
         ], "tests": []}
         for i in range(1, 4):
             fid = f"F{i:03d}"
@@ -50,7 +50,7 @@ class FeatureEvolutionTests(unittest.TestCase):
                 "affected_components": ["inventory"], "acceptance_criteria": [{"id": "AC01",
                     "text": "The contract holds", "verification": {"automated_tests": [f"{fid}-AC01"], "manual_checks": []}}],
                 "verification": {"acceptance_mode": "automated", "regression_tests": [], "manual_regression": None},
-                "source": "docs/product.md#contract", "notes": ""})
+                "source": "docs/product.md#contract", "notes": "", "base_revision": "c" * 40})
         self.source = {"path": "docs/product.md#contract", "anchor_commit": "a" * 40}
         self.revisions = {"schema_version": 2, "revision_log": [{
             "schema_version": 2, "revision_id": "rev-contract-01", "revised_at": "2026-02-01T00:00:00Z",
@@ -426,7 +426,8 @@ class FeatureEvolutionTests(unittest.TestCase):
         shutil.copytree(FRAMEWORK_DEFAULT_DOCS.parent / "tests", fresh / "tests")
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
 "yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
-                         "yaya/tools/lib/test_selection.py"):
+                         "yaya/tools/lib/test_selection.py",
+                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py"):
             destination = fresh / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((ROOT / relative).read_bytes())
@@ -434,7 +435,7 @@ class FeatureEvolutionTests(unittest.TestCase):
                                 cwd=fresh, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout), [])
-        self.assertEqual(json.loads((fresh / "docs/test-registry.json").read_text())["meta"]["schema_version"], 3)
+        self.assertEqual(json.loads((fresh / "docs/test-registry.json").read_text())["meta"]["schema_version"], 4)
         self.assertEqual(json.loads((fresh / "docs/feature-list-revisions.json").read_text())["schema_version"], 2)
         self.retire()
         self.assertTrue(self.validate())

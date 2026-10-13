@@ -181,13 +181,17 @@ class GdUnitRunnerTests(unittest.TestCase):
         detail = {"id": "F001", "affected_components": ["example"],
                   "acceptance_criteria": [{"id": "AC01", "text": "Inspect appearance",
                       "verification": {"automated_tests": [], "manual_checks": ["Inspect appearance"]}}],
-                  "verification": {"acceptance_mode": "manual", "regression_tests": []}}
+                  "verification": {"acceptance_mode": "manual", "regression_tests": []},
+                  "base_revision": subprocess.run(["git", "rev-parse", "HEAD"], cwd=self.root, check=True,
+                                                  capture_output=True, text=True).stdout.strip()}
         path = self.root / "docs/features/F001.json"
         path.parent.mkdir(parents=True)
         path.write_text(json.dumps(detail), encoding="utf-8")
+        (self.root / "docs/feature-list.json").write_text(json.dumps({"meta": {}, "features": [
+            {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]}), encoding="utf-8")
         (self.root / "docs/test-registry.json").write_text(json.dumps({
-            "meta": {"schema_version": 3},
-            "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False}],
+            "meta": {"schema_version": 4},
+            "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]}],
             "tests": [],
         }), encoding="utf-8")
         return detail

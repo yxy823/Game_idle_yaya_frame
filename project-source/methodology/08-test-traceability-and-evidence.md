@@ -67,7 +67,7 @@ Feature 详情使用稳定的验收条件 ID：
 
 `ACxx` ID 是稳定的历史标识。不要因为 Product 需求后来演变，就给已接受的条件重新编号。之后的变化创建新的 Feature，而不是改写已完成 Feature 的历史。
 
-`affected_components` 是一小组稳定的领域或组件 ID，例如 `inventory`、`save`、`combat` 或 `scene_lifecycle`。使用语义组件，不用单个文件路径。
+`affected_components` 是一小组稳定的领域或组件 ID，例如 `inventory`、`save`、`combat` 或 `scene_lifecycle`。使用语义组件，不用单个文件路径。组件认领哪些文件写在测试登记表的 `source_paths` 中，见[登记表规则](#登记表规则)；两者不冲突：Feature 声明语义组件，登记表把文件对到组件上。
 
 ## `docs/test-registry.json`
 
@@ -76,18 +76,20 @@ Feature 详情使用稳定的验收条件 ID：
 ```json
 {
   "meta": {
-    "schema_version": 3
+    "schema_version": 4
   },
   "components": [
     {
       "id": "inventory",
       "unit_test_paths": ["tests/unit/inventory"],
-      "full_suite_on_change": false
+      "full_suite_on_change": false,
+      "source_paths": ["game/inventory/**", "components/inventory_slot/**"]
     },
     {
       "id": "scene_lifecycle",
       "unit_test_paths": ["tests/unit/scene_lifecycle"],
-      "full_suite_on_change": true
+      "full_suite_on_change": true,
+      "source_paths": ["main/**", "game/scenes/scene_loader.gd"]
     }
   ],
   "tests": [
@@ -116,6 +118,8 @@ Feature 详情使用稳定的验收条件 ID：
 - 没有单元套件的组件写 `unit_test_paths: []`。绝不预填将来的目录。在 Stage 1 提出新的单元套件，在已批准的 Stage 3 创建后登记其路径，并把它们纳入 Required Test Set。
 - 已登记的套件路径缺失或被删除，属于登记表错误，不是一张空的安全网。不要静默过滤它。删除一条登记需要明确的理由和用户批准。合并与严格校验会检查路径存在；只有实际运行才能证明测试被发现和执行（见[什么情况下运行失败](#什么情况下运行失败)）。
 - `full_suite_on_change: true` 表示任何触及该组件的 Feature 在完成前都必须运行全量套件。
+- `source_paths` 必填，是该组件认领的文件，写成相对仓库根目录、不重复的非空 glob 列表：`**` 可以跨目录，`*` 和 `?` 不跨目录，例如 `game/inventory/**`。一个目录不带通配符时只匹配同名文件，不包括目录下的文件。跨目录的领域组件列出它的每个目录或文件。改动的文件匹配某个组件的 `source_paths` 时，该组件进入测试选择，见[起点以来的改动](#起点以来的改动)。
+- 后来的 Feature 要给已有组件认领新目录时，用 `merge-test-registry.py` 合并一个同 ID、其他字段相同的组件候选，`source_paths` 取并集；也可以在已批准的计划内直接编辑登记表。
 - 唯一的逻辑 ID 决定测试身份：
   - `F0XX-ACyy` 或 `F0XX-ACyy-NN`：该 Feature 该条件的验收测试；
   - `F0XX-RTyy`：该 Feature 的回归测试；
@@ -132,23 +136,30 @@ Feature 详情使用稳定的验收条件 ID：
 新项目的测试登记表预置组件 `debug_console`，本节是它的唯一定义：
 
 - **覆盖范围**：调试入口 `dev/debug/debug_main.*`、项目挂钩 `dev/debug/debug_project.gd`、共享代码 `dev/debug/_shared/`，以及本项目的调试对象 `dev/debug/<对象>/`。游戏中的调参资源属于各自的游戏组件，不属于它。
+- **认领的文件**：`source_paths` 为 `["dev/debug/**"]`。
 - **登记的测试**：`unit_test_paths` 为 `["dev/debug/_shared/tests"]`；项目新增调试对象的专有测试时，把 `dev/debug/<对象>/tests` 加进同一列表。依赖方向测试登记为 active 不变量 `INV-DEBUG_CONSOLE-01`（`tests/invariants/debug_dependency_test.gd`），组件为 `debug_console`。
 - **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[调试台的修改](07-engineering-change.md#调试台的修改)建维护 Feature。
-- 只改游戏代码、不新建调参资源或字段时，依赖方向测试由测试选择规则中的[扩大验证的 Godot 改动](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)作为附加测试加入，不必把 `debug_console` 写进 `affected_components`。
+- 只改游戏代码、不新建调参资源或字段时，依赖方向测试按测试选择规则中的[扩大验证的 Godot 改动](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)处理，不必把 `debug_console` 写进 `affected_components`。
 
 ## 测试影响评估
 
 `feature-execute` 在 Stage 1、实现之前做测试影响评估。Required Test Set 是：
 
 ```text
+受影响组件 = affected_components ∪ 反推组件
+
 Required Test Set =
     当前 Feature 的验收测试
   + 当前 Feature 的回归测试
-  + affected_components 的 unit_test_paths
-  + 组件与 affected_components 相交的 active 回归测试
-  + 组件与 affected_components 相交的 active 不变量测试
+  + 受影响组件的 unit_test_paths
+  + 组件与受影响组件相交的 active 回归测试
+  + 组件与受影响组件相交的 active 不变量测试
   + verification.test_impact 中已批准的附加测试
+  + 起点以来改动的测试套件
+  + 依赖图从改动文件反向找到的测试套件
 ```
+
+反推组件和依赖图的规则见[起点以来的改动](#起点以来的改动)。没有改动时，选择结果与只按 `affected_components` 推导的结果相同；改动只会增加测试，不会删掉上面任何一项。
 
 受影响组件的每个已登记套件都进入 Required Test Set。空的 `unit_test_paths` 数组不增加单元选择器。
 
@@ -168,7 +179,48 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 - 影响分析无法可靠地界定受影响的组件；
 - 用户明确要求。
 
-`test-selection-and-gates.md` 中的全量触发条件同样适用；把它们记为 `full_suite_reasons`。对其他局部 Feature，除非项目规则另有规定，在适用的验收之前做针对性验证就够了。
+`test-selection-and-gates.md` 中的全量触发条件同样适用；把它们记为 `full_suite_reasons`。[起点以来的改动](#起点以来的改动)中由运行器自动触发的全量理由不写进 `full_suite_reasons`。对其他局部 Feature，除非项目规则另有规定，在适用的验收之前做针对性验证就够了。
+
+### 起点以来的改动
+
+起点是 Feature 详情中的 `base_revision`：Stage 2 运行 [record-base-revision.py](../tools/README.md#record-base-revisionpy) 写入当时的验证点，之后不随别的 Feature 完成而变化。验证点的取法见该命令的说明。Feature 没有 `base_revision`，或起点提交在仓库里找不到时，baseline 和 final 选择都报错，并提示写入命令或 `--reset`，不退回只按声明选择。
+
+改动文件是起点与当前工作区之间内容不同的文件（不识别改名，改名算删除加新增），加上未跟踪的文件，范围与[内容指纹](#内容指纹)相同。选择只比较内容，不读提交说明和 Feature 状态：amend、squash、cherry-pick 只改写提交说明时，选择结果不变；同一个指纹总得到同一个选择。
+
+运行器按顺序判断每个改动文件，第一条符合的规则生效：
+
+1. **测试基础设施**：`yaya/tools/testing/**`、`addons/gdUnit4/**`、`docs/methodology-config.json`。升级 full，原因写 `test-infrastructure:<路径>`。
+2. **测试目录**：`tests/**`、`dev/debug/**/tests/**` 下的文件。存在且声明了 `test_` 方法的 gdUnit 套件直接选入，原因写 `changed-test:<路径>`；辅助文件和已删除的文件只沿依赖图找使用它的套件，自身不选入。
+3. **不是游戏文件**：不增加测试，也不触发 full。游戏文件只有两类：`project.godot`；扩展名为 `.gd`、`.tscn`、`.tres`、`.res`、`.gdshader`、`.gdshaderinc`、`.json`、`.cfg`、`.csv`、`.translation` 或图片、音频、字体素材，且不在根目录、`docs/`、`yaya/`、`addons/`、`.agents/`、`.claude/`、`.codex/` 下的文件。根目录的 `gdlint.json`、`export_presets.cfg` 这类工具配置不算游戏文件，导出配置按导出验证处理。因此只改 Markdown 和 `docs/**` 不增加测试。其他插件的改动按[引擎与插件升级](07-engineering-change.md#引擎与插件升级)处理。
+4. **已认领的游戏文件**：匹配某个组件的 `source_paths` 时，该组件是反推组件。没有组件认领、但被 `dev/debug/` 以外的已认领文件依赖时，依赖者所属的组件是反推组件。只被 `dev/debug/` 下的文件依赖时不归入 `debug_console`，按第 6 条处理，因为调试台引用大量游戏文件。
+5. **`project.godot`**：按 Autoload 边找依赖它的文件，按第 4 条归组件；没有依赖者时升级 full。
+6. **其余游戏文件**：升级 full，原因写 `unclaimed-changed-file:<路径>`。已删除、且不匹配任何 `source_paths` 的游戏文件都在这里，因为依赖图里已经没有它。
+
+依赖图的节点是项目文件，不含 `.godot/`、`addons/` 和 `reports/`；脚本和它的 `.uid`、素材和它的 `.import` 算同一个节点。边来自静态解析：`extends`、`preload`、`load` 中的路径（`res://`、相对路径和 `uid://`），`.tscn`、`.tres` 的外部资源和 `instance_placeholder`，内嵌的 GDScript，shader 的 `#include`，`class_name` 全局类名，以及 Autoload 名称和 `"/root/<名称>"`。运行器从每个改动的游戏文件和测试辅助文件反向搜索，到达的套件进入 Required Test Set，原因写 `dependency-graph:<改动文件>`，并在 `dependency_suites` 中保留一条最短依赖链。动态拼接的路径解析不到；这时组件选择照常进行，选择不会比只按声明时少。
+
+选择结果列出 `inferred_components`：不在 `affected_components` 中的反推组件和触发它的文件。这不是错误，测试照常运行；Agent 在 Stage 1 的批准材料和 Stage 4 的报告中写出这些组件。选择结果还列出 `touched_completed_features`：受影响组件的已登记测试属于哪些 `done` 的 Feature。它只用来提醒用户判断是否重新人工验收，不改变选择，也不会把已完成的 Feature 改回未完成。
+
+选择覆盖不到的情况：
+
+- 两个 Feature 之间的改动，要等下一个 Feature，或用户运行 `run-gdunit-tests.py --changed`，才会被测到。
+- 完成证据的 `git_revision` 记在 Stage 7 完成提交之前，所以完成提交里的游戏文件会被下一个 Feature 再测一次。
+- 撤销已完成 Feature 的实现（例如 revert 它的提交）后，改动会被下一个 Feature 选中，但不会把那个 Feature 改回未完成。丢弃已验证、未提交的内容时，Git 和指纹都看不到这次丢弃。
+- 仓库外的环境变化由[项目环境准备](06-project-environment.md#项目环境准备)负责。
+
+### 不是本 Feature 造成的测试失败
+
+运行器不区分改动属于谁。失败测试同时满足下面两条时，按本节处理：
+
+- 它的选择原因只来自 `inferred_components` 中的组件或依赖图（`dependency-graph:`），不来自本 Feature 的声明、映射或附加测试；
+- 触发它的改动文件不是本 Feature 改的。
+
+Agent 停下当前 Feature，报告失败测试、选择原因和触发文件，不修改触发文件，然后按[反馈评估](07-engineering-change.md#反馈评估)请用户选择出口：
+
+- 是 Bug：按 Bug 流程修复；
+- 改动是有意的行为变化：按需求变更更新契约和测试；
+- 改动不要了：用户撤回触发文件的改动。
+
+出口处理完后，当前 Feature 重新验证。用户还没选择时，当前 Feature 保持 `in_progress` 并阻塞，因为任何失败都不能完成。
 
 ## 运行时的测试影响选择
 
@@ -195,8 +247,9 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 | `--scope required`、`affected`、`full` | 用于迭代的显式范围。`full` 递归选择 `tests/`，项目有 `dev/debug/` 时同时选择它；空的分层目录不增加义务。 |
 | `--phase baseline` | 排除尚不存在的 planned 测试。baseline 运行从不授权完成。 |
 | `--target <path>` | 聚焦诊断或 TDD 诊断。它从不产生完成证据。 |
+| `--changed` | 不需要 Feature：从当前验证点以来的改动选择受影响组件的单元套件、active 回归和不变量测试，以及依赖图选中的套件；需要全量时运行 full。它只输出结果，从不产生完成证据。 |
 
-输出列出选择理由、去重后的选择器和任何全量理由。最终选择会拒绝无法解析或已 retired 的直接映射，以及缺失的路径。
+输出列出选择理由、去重后的选择器、任何全量理由，以及[起点以来的改动](#起点以来的改动)中的起点、改动文件、反推组件和依赖链；字段见 [run-gdunit-tests.py](../tools/README.md#run-gdunit-testspy)。最终选择会拒绝无法解析或已 retired 的直接映射，以及缺失的路径。
 
 运行器执行去重后的套件和目录选择器，所以选中一个套件可能顺带运行额外的用例。用例级的义务按实际运行的用例核对。发现、JUnit 用例和诊断怎样匹配，见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
@@ -270,7 +323,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 包含：
 
 - GDD、Product、规则、测试、运行器和配置；
-- Feature 与测试登记表中的语义数据：AC 文本、验证（包括已批准的测试影响）、受影响组件，以及登记表的选择器、状态和退役信息；
+- Feature 与测试登记表中的语义数据：AC 文本、验证（包括已批准的测试影响）、受影响组件、起点 `base_revision`，以及登记表的选择器、认领文件、状态和退役信息；
 - `docs/gdd/`、`docs/terminology.md`、`docs/project-rules.md`、专业规范、表现文档（包括已采纳的备选方案和资源小节）、Feature 设计 Markdown，以及架构和 ADR 文档；
 - 修订记录中的迁移关系、修订 ID 和来源锚点，以及嵌套的测试状态；
 - 新增或未知的契约字段；

@@ -54,6 +54,33 @@ def git_revision(repo_root: Path) -> str:
     return revision
 
 
+def project_paths(repo_root: Path) -> list[str]:
+    """Tracked and non-ignored untracked paths; deleted paths still in the index are included."""
+    raw_paths = _run_git(repo_root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")
+    return sorted({path for path in raw_paths.decode("utf-8", errors="surrogateescape").split("\0") if path})
+
+
+def commit_exists(repo_root: Path, revision: str) -> bool:
+    return _git_succeeds(repo_root, "cat-file", "-e", f"{revision}^{{commit}}")
+
+
+def is_ancestor(repo_root: Path, revision: str) -> bool:
+    return _git_succeeds(repo_root, "merge-base", "--is-ancestor", revision, "HEAD")
+
+
+def root_commit(repo_root: Path) -> str:
+    """The oldest parentless commit reachable from HEAD."""
+    return _run_git(repo_root, "rev-list", "--max-parents=0", "HEAD").decode("ascii").split()[-1]
+
+
+def _git_succeeds(repo_root: Path, *args: str) -> bool:
+    try:
+        return subprocess.run(["git", "-C", str(repo_root), *args], check=False,
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
+    except OSError as exc:
+        raise EvidenceError(f"cannot execute git: {exc}") from exc
+
+
 def _is_fingerprint_input(relative_path: str) -> bool:
     normalized = relative_path.replace("\\", "/").removeprefix("./")
     if (normalized in EXCLUDED_EXACT_PATHS or EVIDENCE_PATH_RE.fullmatch(normalized)
@@ -121,8 +148,7 @@ def working_tree_fingerprint(repo_root: Path) -> str:
     A Git commit is provenance, not an invalidation of identical content.
     """
 
-    raw_paths = _run_git(repo_root, "ls-files", "--cached", "--others", "--exclude-standard", "-z")
-    paths = sorted({path for path in raw_paths.decode("utf-8", errors="surrogateescape").split("\0") if path})
+    paths = project_paths(repo_root)
     digest = hashlib.sha256()
     digest.update(b"yaya-working-tree-v2\0")
     resolved_root = repo_root.resolve()

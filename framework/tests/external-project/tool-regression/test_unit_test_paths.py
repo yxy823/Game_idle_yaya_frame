@@ -27,7 +27,7 @@ class UnitTestPathsTests(unittest.TestCase):
         (self.root / "docs").mkdir()
         self.registry_path = self.root / "docs/test-registry.json"
         self._write_json(self.registry_path, {
-            "meta": {"schema_version": 3}, "components": [], "tests": [],
+            "meta": {"schema_version": 4}, "components": [], "tests": [],
         })
         self._write_json(self.root / "docs/feature-list.json", {"meta": {}, "features": []})
         self._write_json(self.root / "docs/feature-list-revisions.json", {"schema_version": 2, "revision_log": []})
@@ -37,7 +37,7 @@ class UnitTestPathsTests(unittest.TestCase):
         return {
             "id": "inventory",
             "unit_test_paths": list(paths),
-            "full_suite_on_change": False,
+            "full_suite_on_change": False, "source_paths": ["game/**"],
         }
 
     def _write_json(self, path: Path, data: object) -> None:
@@ -70,7 +70,8 @@ class UnitTestPathsTests(unittest.TestCase):
         # 只物化校验器所需的包和模块，夹具布局与生成项目一致。
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
 "yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
-                         "yaya/tools/lib/test_selection.py"):
+                         "yaya/tools/lib/test_selection.py",
+                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
@@ -104,7 +105,8 @@ class UnitTestPathsTests(unittest.TestCase):
     def test_default_project_is_script_owner_not_another_project_in_cwd(self) -> None:
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
                          "yaya/tools/features/merge-test-registry.py", "yaya/tools/lib/atomic_json.py",
-                         "yaya/tools/lib/feature_evolution.py", "yaya/tools/lib/test_selection.py"):
+                         "yaya/tools/lib/feature_evolution.py", "yaya/tools/lib/test_selection.py",
+                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
@@ -132,12 +134,12 @@ class UnitTestPathsTests(unittest.TestCase):
             with self.subTest(path=path):
                 component = self._component(path)
                 self._write_json(self.registry_path, {
-                    "meta": {"schema_version": 3},
+                    "meta": {"schema_version": 4},
                     "components": [component], "tests": [],
                 })
                 result = self._merge([component, {
                     "id": "new_component", "unit_test_paths": [],
-                    "full_suite_on_change": False,
+                    "full_suite_on_change": False, "source_paths": ["game/**"],
                 }])
                 self.assertEqual(result.returncode, 0, result.stderr)
                 self.assertEqual(self._registry()["components"][0], component)
@@ -149,7 +151,7 @@ class UnitTestPathsTests(unittest.TestCase):
         from tools.lib.test_selection import normalized_path, SelectionError
         with self.assertRaisesRegex(SelectionError, "repository"):
             normalized_path(self.root, path)
-        registry = {"meta": {"schema_version": 3}, "components": [], "tests": []}
+        registry = {"meta": {"schema_version": 4}, "components": [], "tests": []}
         self._write_json(self.registry_path, registry)
         before = self.registry_path.read_bytes()
         result = self._merge([self._component(path)])
@@ -220,7 +222,7 @@ class UnitTestPathsTests(unittest.TestCase):
         original = self.registry_path.read_bytes()
         result = self._merge([{
             "id": "new_component", "unit_test_paths": ["tests/unit/future"],
-            "full_suite_on_change": False,
+            "full_suite_on_change": False, "source_paths": ["game/**"],
         }])
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
         self.assertEqual(self.registry_path.read_bytes(), original)
@@ -251,7 +253,7 @@ class UnitTestPathsTests(unittest.TestCase):
         component = self._component(suite)
         component.update(full_suite_on_change=True, note="keep component metadata")
         before = {
-            "meta": {"schema_version": 3, "note": "keep schema metadata"},
+            "meta": {"schema_version": 4, "note": "keep schema metadata"},
             "components": [component],
             "tests": [{
                 "id": "INV-INVENTORY-01",
@@ -261,7 +263,7 @@ class UnitTestPathsTests(unittest.TestCase):
         }
         self._write_json(self.registry_path, before)
         addition = {"id": "new_component", "unit_test_paths": [],
-                    "full_suite_on_change": False}
+                    "full_suite_on_change": False, "source_paths": ["game/**"]}
         result = self._merge([component, addition])
         self.assertEqual(result.returncode, 0, result.stderr)
         expected = copy.deepcopy(before)
@@ -284,7 +286,7 @@ class UnitTestPathsTests(unittest.TestCase):
 
     def test_merge_and_check_reject_the_same_invalid_registry_without_rewriting(self) -> None:
         suite = self._suite()
-        valid = {"meta": {"schema_version": 3}, "components": [self._component()],
+        valid = {"meta": {"schema_version": 4}, "components": [self._component()],
                  "tests": [{"id": "INV-INVENTORY-01", "components": ["inventory"],
                             "path": suite, "case": "test_inventory", "status": "active"}]}
         mutations = (
@@ -303,7 +305,7 @@ class UnitTestPathsTests(unittest.TestCase):
                 mutate(invalid)
                 self._write_json(self.registry_path, invalid)
                 before = self.registry_path.read_bytes()
-                merged = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False}])
+                merged = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]}])
                 checked = self._strict()
                 for result in (merged, checked):
                     self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
@@ -313,7 +315,7 @@ class UnitTestPathsTests(unittest.TestCase):
     def test_ambiguous_registry_is_rejected_by_all_readers_without_rewrite(self) -> None:
         from tools.lib.test_selection import read_json, SelectionError
         registry = {
-            "meta": {"schema_version": 3}, "components": [self._component()],
+            "meta": {"schema_version": 4}, "components": [self._component()],
             "tests": [{"id": "INV-INVENTORY-01",
                        "components": ["inventory"], "path": None, "case": None,
                        "status": "planned"}],
@@ -331,7 +333,7 @@ class UnitTestPathsTests(unittest.TestCase):
             with self.subTest(payload=payload):
                 self.registry_path.write_text(payload, encoding="utf-8")
                 original = self.registry_path.read_bytes()
-                result = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False}])
+                result = self._merge([{"id": "extra", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]}])
                 self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
                 self.assertIn(error, result.stderr)
                 self.assertEqual(self.registry_path.read_bytes(), original)
@@ -345,7 +347,7 @@ class UnitTestPathsTests(unittest.TestCase):
     def test_duplicate_candidate_keys_preserve_registry_and_candidate_originals(self) -> None:
         self.assertEqual(self._merge([self._component()]).returncode, 0)
         original = self.registry_path.read_bytes()
-        candidate = json.dumps({"id": "extra", "unit_test_paths": [], "full_suite_on_change": False})
+        candidate = json.dumps({"id": "extra", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]})
         payloads = ['{"components": [' + candidate + '], "components": []}',
                     '[' + candidate[:-1] + ', "id": "other"}]']
         for payload in payloads:

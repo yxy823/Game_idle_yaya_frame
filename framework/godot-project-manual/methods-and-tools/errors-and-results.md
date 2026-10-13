@@ -29,6 +29,8 @@
 | `--eligible` 输出为空 | 当前没有依赖已满足的 pending 任务，可能是被依赖阻塞 | 检查依赖链；不要推断所有 Product 已完成 |
 | ID 冲突、依赖成环、依赖已废弃或引用不一致 | 计划结构或历史关系不满足契约 | 修正计划结构；不能靠随意修改完成状态消除错误 |
 | 组件没有单元测试路径 | `unit_test_paths: []` 是合法写法 | 无需处理；已登记但文件缺失才是错误 |
+| 测试选择报 `has no base_revision` 或 `is not a commit` | Feature 没有写入起点，或起点提交已被 Git 回收 | 运行 `record-base-revision.py --feature F0XX`；起点提交找不到时加 `--reset` |
+| 选择结果出现 `unclaimed-changed-file:<路径>` 并升级全量 | 改了一个没有组件认领、也没有被已认领文件依赖的游戏文件 | 把这个文件加进所属组件的 `source_paths`；在那之前全量照常运行 |
 | 用 planned 或 retired 测试支撑当前完成 | 当前完成必须有 active 的真实测试映射；退役测试只用于追溯历史 | 为当前 Feature 补上 active 的验证 |
 | 改了 AC 之后测试通过 | 新的预期是否已被正式采纳，需要用户的真实决定 | 先确认需求变更；测试变绿不代表需求获准 |
 

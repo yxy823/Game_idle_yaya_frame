@@ -79,7 +79,7 @@
 
 1. 读取轻量索引并选择 Feature：
    - 有 `in_progress` 的 Feature 时，续接它，不开始另一个。
-   - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。
+   - 例外：进行中的 Feature 只在等待外部输入（人工验收结果、用户决定或用户提供的文件），且停点和等待对象已记在 Progress 时，可以在当前授权范围内开始一个依赖已满足、计划修改的文件与它不重叠的 Feature。外部输入到达后，先回去续接原 Feature。切回之前，新开始的 Feature 必须停在一个小循环的 GREEN 之后，它已有的测试全部通过。因为两个 Feature 的测试选择都会包含对方改动选中的测试，留在 RED 的测试会让原 Feature 的验证失败。
    - 选择尚未开始的工作之前，先检查当前授权范围内是否有 `blocked` 的 Feature。如果有，在查询可开始的 Feature 之前，查看它们记录的阻塞，并按[状态流转](02-feature-list-schema.md#状态流转)重新检查能否恢复。
    - 然后选择用户指定的 Feature，或一个依赖已满足的 `pending` Feature。`python -B yaya/tools/checks/check-feature-list.py --eligible` 给出经过校验的可选集合。ID 顺序只用于在其他条件相同时排定先后；前置 Feature 的 ID 可以更大。
 2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。
@@ -115,7 +115,9 @@
 
 ### 1A. 确定测试范围
 
-阅读并执行 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 和 [运行时的测试影响选择](08-test-traceability-and-evidence.md#运行时的测试影响选择)。这两节定义了 Required、affected 和 full 三种范围。依据当前 Feature、`affected_components`、各条件的验证方式和 `docs/test-registry.json`，推导 Required 和 affected 集合，并决定是否需要 full。在 Stage 1 的批准材料中说明所选范围和理由。
+阅读并执行 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 和 [运行时的测试影响选择](08-test-traceability-and-evidence.md#运行时的测试影响选择)。这两节定义了 Required、affected 和 full 三种范围。依据当前 Feature、`affected_components`、各条件的验证方式和 `docs/test-registry.json`，推导 Required 和 affected 集合，并决定是否需要 full。
+
+再运行 `python -B yaya/tools/features/record-base-revision.py --feature F0XX --dry-run`，查看起点以来的改动会补上哪些组件、依赖图选中哪些套件、是否已经触发 full，以及碰到哪些已完成的 Feature。这些由运行器自动加入，不写进 `test_impact`。在 Stage 1 的批准材料中说明所选范围和理由，并列出声明之外补上的组件。
 
 Required 集合保留每个受影响组件已登记的全部测试套件。要移除某项登记或某个确定性要求，按 [登记表规则](08-test-traceability-and-evidence.md#登记表规则) 和 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 处理；运行器的排除参数做不到这一点。
 
@@ -180,7 +182,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 
 获得批准后：
 
-1. 把所选的索引条目设为 `in_progress`，`completed_at: null`。
+1. 把所选的索引条目设为 `in_progress`，`completed_at: null`，然后运行 `python -B yaya/tools/features/record-base-revision.py --feature F0XX` 写入起点 `base_revision`。已有起点时命令保留它；这个 Feature 曾被放弃回 `pending`、现在重新开始时，加 `--reset` 重取验证点。
 2. 更新 `docs/progress.md`：当前 Feature 或批次、Stage、阻塞、待决定事项、下一个允许的动作，以及指向批准计划和证据的链接。历史保存在 `docs/progress/`。
 3. 按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明)，把批准的实现设计保存到 `docs/features/F0XX-design.md`：
    - 已有具体批准覆盖这份设计时，直接复用，不再请求。
@@ -193,7 +195,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
    - 批准的全量升级存为 `full_suite_reasons: ["<approved reason>"]`。`full_suite_on_change: true` 的组件会自动触发 full，不写在这里。
    - 运行器总是读取这份记录的范围；修改调用参数不能缩小已批准的覆盖。移除某项义务需要经过明确批准的计划修订。
 6. 把尚不存在的验收测试和回归测试登记到 `docs/test-registry.json`，状态为 `status: planned`。
-7. 需要时，把新批准的组件条目加入测试登记表；没有单元测试套件时用 `unit_test_paths: []`。
+7. 需要时，把新批准的组件条目加入测试登记表；没有单元测试套件时用 `unit_test_paths: []`，`source_paths` 写该组件认领的文件，规则见[登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 8. 运行：
 
    ```powershell
@@ -237,7 +239,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 
 如果无法产生有意义的 RED 状态，在实现之前说明原因。不要伪造 TDD 证据，也不要为了补出失败而临时撤回已经实现的行为。
 
-Stage 1 批准的单元测试套件创建后，把它相对仓库的文件或目录路径加入该组件的 `unit_test_paths` 和 Required Test Set。只有套件存在后才登记，然后通过配置的运行器确认它能被发现并执行。
+Stage 1 批准的单元测试套件创建后，把它相对仓库的文件或目录路径加入该组件的 `unit_test_paths` 和 Required Test Set。只有套件存在后才登记，然后通过配置的运行器确认它能被发现并执行。本 Feature 新建的游戏文件不在任何组件的 `source_paths` 内时，把它们加进所属组件的 `source_paths`，否则这些改动会让选择升级 full。
 
 ### 3C. GREEN 与重构
 
@@ -292,7 +294,7 @@ Stage 4 使用以下入口：
 1. 运行 `python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
    - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
    - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
-2. 检查实际选中的范围和测试结果。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
+2. 检查实际选中的范围和测试结果。把选择结果中的 `inferred_components` 和 `touched_completed_features` 写进报告。前者说明声明之外补上了哪些组件；后者提醒用户判断这些已完成的 Feature 是否需要重新人工验收。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
 3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 的约定与证据](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
 4. 对 Bug，确认每个已批准的 `F0XX-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
 5. 如果 Stage 1 要求 full，当前的选择结果必须报告 full 为必需，且实际的 full 结果必须通过。选择逻辑从 `full_suite_on_change: true` 的组件和已记录的 `full_suite_reasons` 推导 full；组件触发不复制进 `full_suite_reasons`。必需的全量套件无法运行或失败时，阻止完成；理由或对话记录都不能把它变成 PASS。
@@ -304,7 +306,7 @@ Stage 4 使用以下入口：
 
    `record-tests` 校验提供的运行结果，并保存对它们的引用。它既不运行静态检查，也不校验静态检查。Agent 单独评估直接解析和 lint 的输出；证据辅助工具通过，不能推翻静态检查的失败。导入失败会清除之前的测试引用，并保留原始报告。
 
-7. 任何机器检查失败都回到 Stage 3。不要进入 Stage 5。
+7. 任何机器检查失败都回到 Stage 3。不要进入 Stage 5。失败符合[不是本 Feature 造成的测试失败](08-test-traceability-and-evidence.md#不是本-feature-造成的测试失败)时，按该节停下当前 Feature，请用户选择出口，不修改触发文件。
 8. Feature 改动了 UI 规格中列有界面任务的界面，或改动了调试台的界面时，在准备人工验收清单之前由 Agent 按界面任务试用：在项目副本中用 [`ui-trial`](../tools/ui-trial/README.md) 程序驱动界面，逐个走完受影响的界面任务，试用方法和问题分级按 `review-ux`。界面任务来自 UI 规格，调试台的界面任务在 `dev/debug/_shared/usage-scenarios.md`。发现的问题回到 Stage 3 修复；决定不修的小问题在交给用户时列出。试用不代替人工验收，也不是独立审核。
 9. 按批准的验收模式执行。`manual` 准备对应的人工检查。`automated` 报告每个条件实际的自动覆盖情况。
 

@@ -182,6 +182,7 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 | `source` | 一个精确的主要来源：Product 交付章节、GDD 章节或专业规格。没有单一来源文档的技术工作用 `infrastructure`。见下文的来源规则。 |
 | `notes` | 字符串，初始为空。保存任务提醒、占位、TODO、推迟处理的边界情况、简短的 Bug 经验，以及指向 Feature 设计稿或其他记录的相对链接。实现决定及其理由不论长短，都写进 [Feature 设计与实现说明](#feature-设计与实现说明)。 |
 | `engineering_change` | 可选。出现时只能是 `bug`、`refactor` 或 `maintenance`。来自 Product 的 Feature 不写这个字段。 |
+| `base_revision` | 测试选择的起点：Stage 2 由 [record-base-revision.py](../tools/README.md#record-base-revisionpy) 写入的验证点提交，规划时省略或为 `null`。`in_progress` 的 Feature 必须有。只由该命令写入；放弃回 `pending` 后重新开始，或起点提交被 Git 回收时，用它的 `--reset` 重取。该字段计入快照指纹。怎样用起点选择测试见[起点以来的改动](08-test-traceability-and-evidence.md#起点以来的改动)。 |
 | `bug_diagnosis` | 只允许与 `engineering_change: bug` 一起出现；其他情况为 `null` 或省略。对象只能有 `actual`、`expected`、`source`、`reproduction` 和 `root_cause`。`actual`、`expected`、`source` 是非空字符串。`reproduction` 是非空的有序步骤列表，步骤不重复、非空。调查期间 `root_cause` 可以是 `null`。每个 `done` 的 Bug，以及正在完成的 Bug，都需要非空且已确认的 `root_cause`。不是 Bug 的 Feature 不编造诊断证据。 |
 
 条件 ID 是永久标识。不要给已完成 Feature 的条件重新编号。之后 Product 行为发生变化时，新建一个 Feature 来修改或取代原有行为。
@@ -272,7 +273,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 - 之后每次与 GDD、Product、专业或项目规则来源同步，`feature-sync` 都追加一条记录。
 - `engineering-change-plan` 只新建工程 Feature、没有来源变化时，不追加记录。
 
-初始内容是 `{"schema_version": 2, "revision_log": []}`。根对象和每条记录都使用 `schema_version: 2`。只有 schema 版本 2 有效（测试登记表是 3）；工具不读取、也不转换其他格式。已写入的记录永不改写。
+初始内容是 `{"schema_version": 2, "revision_log": []}`。根对象和每条记录都使用 `schema_version: 2`。只有 schema 版本 2 有效（测试登记表是 4）；工具不读取、也不转换其他格式。已写入的记录永不改写。
 
 ### 初始规划基线
 
@@ -369,13 +370,14 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 ```json
 {
   "meta": {
-    "schema_version": 3
+    "schema_version": 4
   },
   "components": [
     {
       "id": "inventory",
       "unit_test_paths": ["tests/unit/inventory"],
-      "full_suite_on_change": false
+      "full_suite_on_change": false,
+      "source_paths": ["game/inventory/**"]
     }
   ],
   "tests": [
@@ -392,10 +394,11 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 | 字段 | 要求 |
 | --- | --- |
-| `meta.schema_version` | 整数 `3`。只有 schema 版本 3 有效（修订日志是 2）；工具不读取、也不转换其他格式。 |
+| `meta.schema_version` | 整数 `4`。只有 schema 版本 4 有效（修订日志是 2）；工具不读取、也不转换其他格式。 |
 | `components[].id` | 不重复的 `lower_snake_case` 组件 ID。 |
 | `components[].unit_test_paths` | 已存在的单元测试套件文件或目录路径，不重复；组件没有单元测试套件时为 `[]`。示例假定 `tests/unit/inventory` 存在。 |
 | `components[].full_suite_on_change` | 布尔值。 |
+| `components[].source_paths` | 组件认领的文件：非空、不重复的 glob 列表，相对仓库根目录，不能含 `..`、盘符或开头的 `/`。含义见[登记表规则](08-test-traceability-and-evidence.md#登记表规则)。 |
 | `tests[].id` | 不重复的逻辑测试 ID。ID 格式本身表示测试的类型、所属 Feature 和条件；不要另设字段保存这些信息。所属 Feature 必须存在。 |
 | `tests[].components` | 非空数组，元素是来自 `components` 的组件 ID，不重复。 |
 | `tests[].path` | 测试文件路径。状态为 `active` 时必填且文件必须存在；`planned` 或 `retired` 时为 `null` 或路径。 |
@@ -499,7 +502,8 @@ done ──source synchronization retires or replaces implemented behavior──
 - **组件：**每个 `affected_components` ID 都存在于测试登记表的 `components` 中。
 - **测试引用：**详情的 `automated_tests`、`regression_tests` 或 `test_impact.additional_tests` 中的每个测试 ID 都存在于测试登记表中。测试登记表中测试 ID 编码的 Feature 存在。`planned` 或 `active` 的验收测试指向其 Feature 当前存在的条件。
 - **计划中的测试：**`planned` 测试不能属于 `done`、`obsolete` 或 `obsolete_done` 的 Feature。
-- **测试登记表：**`meta.schema_version` 是整数 `3`。每个 `unit_test_paths` 条目和每个 `active` 测试路径都存在于仓库内。`full_suite_on_change` 是布尔值。
+- **测试登记表：**`meta.schema_version` 是整数 `4`。每个 `unit_test_paths` 条目和每个 `active` 测试路径都存在于仓库内。`full_suite_on_change` 是布尔值。每个组件有非空的 `source_paths`。
+- **起点：**`base_revision` 出现时是 Git 提交标识。`in_progress` 的 Feature 必须有 `base_revision`。
 - **验收模式：**模式已决定时，检查项要符合[验收模式](#验收模式)。`automated` 的每个条件都有自动测试，没有 `manual_checks`，也没有 `manual_regression`；`manual` 至少有一条 `manual_checks` 或一个 `manual_regression`。
 - **测试影响：**`test_impact` 出现时，只能有 `additional_tests` 和 `full_suite_reasons`。
 - **已完成的 Feature：**`done` 的 Feature 有已决定的 `acceptance_mode`。它引用的每个测试都是 `active`，或是可追溯的 `retired`。

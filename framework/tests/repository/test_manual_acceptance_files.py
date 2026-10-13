@@ -32,10 +32,15 @@ class ManualAcceptanceFileTests(unittest.TestCase):
                        "acceptance_criteria": [{"id": "AC01", "text": "Human judgment",
                            "verification": {"manual_checks": ["Observe appearance", "Listen"], "automated_tests": []}}],
                        "verification": {"acceptance_mode": "manual", "manual_regression": "Repeat the original failure",
-                                        "regression_tests": []}}
+                                        "regression_tests": []},
+                       "base_revision": subprocess.run(["git", "-C", str(self.root), "rev-parse", "HEAD"], check=True,
+                                                       capture_output=True, text=True).stdout.strip()}
         self.write("docs/features/F001.json", self.detail)
-        self.write("docs/test-registry.json", {"meta": {"schema_version": 3}, "tests": [],
-                    "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False}]})
+        self.write("docs/feature-list.json", {"meta": {}, "features": [
+            {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
+        self.write("docs/test-registry.json", {"meta": {"schema_version": 4}, "tests": [],
+                    "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False,
+                                    "source_paths": ["*.gd"]}]})
         self.checklist = self.write_checklist("F001")
         self.evidence_path = self.root / evidence.evidence_relative_path("F001")
 

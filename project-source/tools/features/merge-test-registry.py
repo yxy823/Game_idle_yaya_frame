@@ -46,7 +46,7 @@ def _read_candidates(path: Path, repo_root: Path) -> list[dict[str, Any]]:
     return candidates
 
 
-def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, int]:
+def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, int, int]:
     registry_path = repo_root / TEST_REGISTRY_PATH
     registry = validate_registry(_read_json(registry_path), repo_root)
     index = _read_json(registry_path.parent / "feature-list.json")
@@ -63,14 +63,21 @@ def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, in
 
     candidates = _read_candidates(repo_root / candidates_path, repo_root)
     existing = {component["id"]: component for component in registry["components"]}
-    added = 0
+    added = extended = 0
     for candidate in candidates:
         component_id = candidate["id"]
         if component_id in existing:
-            if existing[component_id] != candidate:
+            current = existing[component_id]
+            # 认领目录可以随后来的 Feature 扩展；其他字段不同仍是冲突。
+            if ({key: value for key, value in current.items() if key != "source_paths"}
+                    != {key: value for key, value in candidate.items() if key != "source_paths"}):
                 raise RegistryError(
                     f"component {component_id!r} conflicts with its existing registry record"
                 )
+            new_paths = [path for path in candidate["source_paths"] if path not in current["source_paths"]]
+            if new_paths:
+                current["source_paths"].extend(new_paths)
+                extended += 1
             continue
         registry["components"].append(candidate)
         existing[component_id] = candidate
@@ -87,11 +94,11 @@ def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, in
             validate_retirements({test["id"]: test for test in registry["tests"]}, entries, revisions, verification_ids)
         except EvolutionError as exc:
             raise RegistryError(str(exc)) from exc
-    if added:
+    if added or extended:
         write_json(registry_path, registry)
 
-    state = "updated" if added else "unchanged"
-    return state, added, len(registry["tests"])
+    state = "updated" if added or extended else "unchanged"
+    return state, added, extended, len(registry["tests"])
 
 
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
@@ -108,13 +115,13 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
 def main() -> int:
     args = _parse_args(sys.argv[1:])
     try:
-        state, added, preserved_tests = merge_registry(args.components, args.repo_root.resolve())
+        state, added, extended, preserved_tests = merge_registry(args.components, args.repo_root.resolve())
     except (RegistryError, EvolutionError) as exc:
         print(f"TEST REGISTRY MERGE: BLOCKED - {exc}", file=sys.stderr)
         return 2
     print(
         "TEST REGISTRY MERGE: PASS - "
-        f"{state}; added_components={added}; preserved_tests={preserved_tests}"
+        f"{state}; added_components={added}; extended_components={extended}; preserved_tests={preserved_tests}"
     )
     return 0
 

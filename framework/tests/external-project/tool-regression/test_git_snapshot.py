@@ -55,11 +55,12 @@ class GitSnapshotTests(unittest.TestCase):
         self.write("docs/features/F001.json", {"id": "F001", "affected_components": ["contract"],
                    "acceptance_criteria": [{"id": "AC01", "text": "Preserve the contract",
                        "verification": {"automated_tests": [], "manual_checks": ["Review the contract"]}}],
-                   "verification": {"acceptance_mode": "manual", "regression_tests": [], "manual_regression": None}})
+                   "verification": {"acceptance_mode": "manual", "regression_tests": [], "manual_regression": None},
+                   "base_revision": self.git("rev-parse", "HEAD")})
         self.write("docs/feature-list.json", {"meta": {}, "features": [
                    {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.write("docs/test-registry.json", {"meta": {"schema_version": 3}, "components": [
-                   {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True}],
+        self.write("docs/test-registry.json", {"meta": {"schema_version": 4}, "components": [
+                   {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True, "source_paths": ["game/**"]}],
                    "tests": []})
 
     def test_snapshot_tracks_commit_and_hashes_untracked_source(self) -> None:

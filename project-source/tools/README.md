@@ -22,8 +22,9 @@ yaya/tools/
 | 用词提示钩子 [check-prompt-terminology.py](checks/check-prompt-terminology.py) | Claude Code 的用户消息钩子：消息中有不用的说法时，提示 Agent 在回复最前面列出用词对照表 |
 | 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法与超长句；`--list` 列出全部检查项 |
 | 资源格式检查 [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
-| 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature 与测试登记表，选择并运行 gdUnit 测试，保留实际报告 |
-| 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表 |
+| 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature、测试登记表和起点以来的改动，选择并运行 gdUnit 测试，保留实际报告；`--changed` 不需要 Feature |
+| 起点写入 [record-base-revision.py](features/record-base-revision.py) | 把验证点写进 Feature 的 `base_revision`；`--dry-run` 预览起点以来的改动会选中什么 |
+| 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表；同一组件的 `source_paths` 取并集 |
 | 完成记录 [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成证据 |
 | 资源重存 [resave_godot_files.gd](godot/resave_godot_files.gd) | 用 Godot 自己的格式重新保存 `project.godot` 和指定的 `.tscn`、`.tres` |
 | 界面试用 [ui-trial/](ui-trial/README.md) | 准备改名的项目副本，在副本中运行驱动脚本按界面任务试用界面（带看门狗与外层超时），以及界面静态扫描 |
@@ -363,7 +364,8 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
-| `--feature F0XX` | 从当前 Feature 与测试登记表选择测试；与 `--target` 互斥 | 不使用 |
+| `--feature F0XX` | 从当前 Feature、测试登记表和该 Feature 的 `base_revision` 以来的改动选择测试；与 `--target`、`--changed` 互斥 | 不使用 |
+| `--changed` | 不需要 Feature：从当前验证点以来的改动选择测试并运行，只输出结果、选择原因和 JUnit 路径，不写任何 Feature 的证据；不能和 `--phase`、`--scope`、`--require-test` 同用 | 不使用 |
 | `--target <路径>` | focused/TDD 运行指定路径；可重复，多个路径在同一次运行中全部执行，重叠的目标只运行一次；不产生完成证据 | `tests`，项目有 `dev/debug` 时加上它 |
 | `--scope <范围>` | 仅在 `--feature` 时决定选择范围：`required` 为必需测试集，`affected` 为受影响测试（含必需测试集），`full` 为 `tests/` 全量（项目有 `dev/debug/` 时包含它），`auto` 在需要全量升级时运行 `full`，否则运行 `affected` | `auto` |
 | `--phase <阶段>` | `baseline` 跳过尚未实现的 `planned` 测试，用于已有安全网，不能支持完成；`final` 为最终验证 | `final` |
@@ -375,7 +377,17 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 完整输出始终保存在运行目录的 `engine.log`；摘要不够判断时先读它，不必重跑。需要全量时，`--scope auto` 会按批准范围自动升级为 `full`；显式 `--scope full` 用于在迭代中主动运行全量。没有独立的计划文件。
 
-退出码：`0` 测试通过，或返回 `not_required`；`1` 测试失败、选择失败、超时或结果与计划不符；`2` 参数错误。
+退出码：`0` 测试通过，或返回 `not_required`，或 `--changed` 没有需要运行的测试；`1` 测试失败、选择失败、超时或结果与计划不符；`2` 参数错误。
+
+选择结果除了必需、受影响测试集和全量理由，还有这些字段，选择规则见[测试影响评估](../methodology/08-test-traceability-and-evidence.md#测试影响评估)：
+
+- `base_revision`：起点；
+- `changed_files`：起点以来的改动文件；
+- `inferred_components`：声明之外补上的组件及其触发文件；
+- `dependency_suites`：依赖图选中的套件、选择原因和一条最短依赖链；
+- `touched_completed_features`：碰到的已完成 Feature，只用于提醒用户判断是否重新人工验收，不参与选择。
+
+`--changed` 没有需要运行的测试时打印 `No tests need to run for changes since <起点>`，不启动 Godot，不创建运行报告，也不打印 PASS。它的运行记录放在 `reports/gdunit-wrapper/focused/`，和 `--target` 一样不产生完成证据。
 
 所选范围的登记用例缺失时报告 FAIL。
 
@@ -392,7 +404,22 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 | `--components <文件>` | 必填。组件候选 JSON，绝对路径或相对目标项目的路径；候选中的测试路径同样以目标项目为准 | 无 |
 | `--repo-root <目录>` | 要修改的项目 | 脚本所在项目 |
 
+候选中的组件已在登记表中时，`source_paths` 取并集，输出的 `extended_components` 是因此扩展的组件数；其他字段不同仍算冲突。
+
 退出码：`0` 合并成功；`2` 输入或现有登记表冲突、无效，此时不写入（参数错误同样为 `2`）。
+
+### record-base-revision.py
+
+把当前验证点写进 `docs/features/F0XX.json` 的 `base_revision`，选择测试时以它为起点比较内容差异。验证点的取法：索引中状态为 `done` 或 `obsolete_done` 的 Feature 按 `completed_at` 从晚到早，取第一个完成证据 `git_revision` 仍是当前 HEAD 祖先的提交；没有这样的 Feature 时取仓库的第一个提交。
+
+| 参数 | 作用 | 默认值 |
+| --- | --- | --- |
+| `--feature F0XX` | 必填。要写入起点的 Feature | 无 |
+| `--reset` | 已有 `base_revision` 时改为当前验证点；Feature 放弃回 `pending` 后重新开始，或起点提交已被 Git 回收、选择报错时使用 | 已有起点时保留并报告 |
+| `--dry-run` | 不写文件，打印起点（已有时用它，否则用当前验证点）、改动文件、反推组件、依赖图选中的套件、全量理由和碰到的已完成 Feature | 写入 |
+| `--repo-root <目录>` | 要修改的项目 | 脚本所在项目 |
+
+退出码：`0` 写入、保留已有起点或预览成功；`2` Feature 记录、登记表或 Git 无法读取，此时不写入（参数错误同样为 `2`）。
 
 ### record-feature-completion.py
 
@@ -467,12 +494,13 @@ flowchart TD
 | 文件 | 职责 |
 | --- | --- |
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
-| `test_selection.py` | 根据已确定的验收方案和 Feature 记录选择测试；不从空清单猜测验收方式 |
+| `test_selection.py` | 根据已确定的验收方案、Feature 记录和起点以来的内容差异选择测试；不从空清单猜测验收方式，不读提交说明和 Feature 状态 |
+| `dependency_graph.py` | 静态解析脚本、场景、资源和 shader 的引用，建文件依赖图并反向搜索依赖者 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `feature_completion_evidence.py` | 完成证据的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
 | `document_text.py` | 术语检查与措辞检查共用的文档读取、引号与代码遮蔽、文件选择和输出格式；链接文字检查复用其中的文件选择 |
 | `markdown_links.py` | 链接检查与链接文字检查共用的标题与锚点解析、链接及链接文字提取、Markdown 文件枚举与排除 |
-| `verification_snapshot.py` | Git 提交与当前内容指纹；测试和人工依据共用，不判断任务完成 |
+| `verification_snapshot.py` | Git 提交、当前内容指纹和起点以来的改动文件；测试和人工依据共用，不判断任务完成 |
 | `atomic_json.py` | 关闭文件流后原子替换 JSON，失败时保留目标原件并清理临时文件 |
 | `manual_acceptance.py` | 人工验收清单覆盖与快照绑定、逐项结果对照和原件复核 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |

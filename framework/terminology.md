@@ -90,6 +90,9 @@
 | 人工接受 | 人工验收的通过结果（accepted），是 manual 模式 Feature 完成的条件之一；实现授权、自动测试通过或用户未表态都不算接受 |  |
 | 完成证据 | 每个 Feature 的 `docs/features/F0XX-evidence.json`，引用实际验证原件和人工验收清单；文件存在本身不证明条件满足。写入它的 `yaya/tools/features/record-feature-completion.py` 称“完成记录工具”，“完成记录”不作为这份文件的名称 | 完成依据 |
 | 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |  |
+| 验证点 | 最近一个仍在当前 HEAD 历史上的已完成 Feature 的完成证据 `git_revision`；没有时是仓库的第一个提交。取法由 `yaya/tools/features/record-base-revision.py` 实现 |  |
+| 起点 / `base_revision` | Feature 详情中测试选择的起点：Stage 2 写入的验证点，之后固定；选择比较它与当前工作区的内容差异。不指 Git 分支起点或修订记录的 `anchor_commit` |  |
+| 反推组件 | 起点以来改动的文件按登记表 `source_paths` 对到的组件，与 `affected_components` 取并集后参与测试选择；不在声明中时列进 `inferred_components`，不是错误 |  |
 
 来源：[测试追溯与证据](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)。
 

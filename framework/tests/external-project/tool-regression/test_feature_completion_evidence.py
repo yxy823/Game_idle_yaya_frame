@@ -34,8 +34,8 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
                 "verification": {"automated_tests": ["F001-AC01"], "manual_checks": []}}],
             "verification": {"acceptance_mode": "automated", "regression_tests": [], "manual_regression": None}, "notes": "",
         }
-        self.registry = {"meta": {"schema_version": 3}, "components": [
-            {"id": "example", "unit_test_paths": ["tests/unit"], "full_suite_on_change": False}],
+        self.registry = {"meta": {"schema_version": 4}, "components": [
+            {"id": "example", "unit_test_paths": ["tests/unit"], "full_suite_on_change": False, "source_paths": ["game/**"]}],
             "tests": [{"id": "F001-AC01", "components": ["example"],
                 "path": "tests/features/acceptance.gd", "case": "test_acceptance", "status": "active"}]}
         self.write_json("docs/features/F001.json", self.detail)
@@ -49,6 +49,9 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.git("config", "user.email", "test@example.invalid")
         self.git("add", ".")
         self.git("commit", "-m", "fixture")
+        self.detail["base_revision"] = subprocess.run(["git", "-C", str(self.root), "rev-parse", "HEAD"],
+                                                      check=True, capture_output=True, text=True).stdout.strip()
+        self.write_json("docs/features/F001.json", self.detail)
 
     def write(self, name: str, content: str) -> Path:
         path = self.root / name

@@ -55,7 +55,8 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
 | `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
 | `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件、Godot 忽略的目录，以及调试台的插槽预设与组合 |
-| `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature` 或 `--target`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
+| `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature`、`--target` 或 `--changed`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录；合法的空选择集返回 `not_required`，不写报告 |
+| `yaya/tools/features/record-base-revision.py` | `--feature`、`--reset`、`--dry-run` | 把验证点写进 Feature 详情的 `base_revision`；`--dry-run` 只读，预览起点以来的改动会选中什么 |
 | `yaya/tools/features/record-feature-completion.py` | 子命令与 `--feature`；全局参数 `--repo-root` 写在子命令之前 | 写入测试或人工记录，或只读展示、校验已有依据 |
 | `yaya/tools/features/merge-test-registry.py` | `--components` | 把已批准的组件合并进 `docs/test-registry.json`；属于规划阶段的写操作 |
 | `yaya/tools/ui-trial/prepare-trial-copy.py`、`run-ui-trial.py` | `--copy`、`--script`、`--window` | 在项目外建立并同步改名的项目副本，只在副本中启动 Godot 运行驱动脚本，输出写进副本的 `reports/ui-trial/`；`--window` 会在用户桌面上打开真实窗口。参数与退出码见 [按界面任务试用](../../../project-source/tools/ui-trial/README.md) |
@@ -64,7 +65,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 
 - **候选格式**：完整组件对象的 JSON 数组，或含 `components` 数组的对象。
 - **调用方式**：Agent 把已批准的候选写入临时文件，再用 `--components <候选文件>` 调用；候选文件不提交。
-- **冲突处理**：已有同 ID 但内容不同的组件视为冲突，不会被覆盖。工具保留现有测试，并报告 `added_components` 与 `preserved_tests`。
+- **冲突处理**：已有同 ID 的组件只在 `source_paths` 上不同时，`source_paths` 取并集；其他字段不同视为冲突，不会被覆盖。工具保留现有测试，并报告 `added_components`、`extended_components` 与 `preserved_tests`。
 - **能力边界**：只合并组件，不生成测试。组件结构见 [测试登记表：`docs/test-registry.json`](../../../project-source/skills/feature-plan/SKILL.md#测试登记表docstest-registryjson)。
 
 ## 环境与 Feature 记录检查
@@ -109,14 +110,22 @@ $LASTEXITCODE
 ```
 
 ```powershell
-# Stage 4 最终验证：按当前 Feature、测试登记表和已批准范围选择测试。
+# Stage 4 最终验证：按当前 Feature、测试登记表、已批准范围和起点以来的改动选择测试。
 & $projectPython -B yaya/tools/testing/run-gdunit-tests.py --feature $featureId --scope auto
 $LASTEXITCODE
 ```
 
+```powershell
+# 不在 Feature 里：从最近的验证点选择受改动影响的测试，只输出结果，不产生完成证据。
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --changed
+$LASTEXITCODE
+```
+
+`--feature` 运行前，Feature 必须已在 Stage 2 用 `record-base-revision.py --feature $featureId` 写入起点 `base_revision`，否则选择报错。
+
 | 参数 | 说明 |
 | --- | --- |
-| `--feature` / `--target` | 两者互斥；都不传时 target 默认为 `tests`，项目有 `dev/debug` 时加上它 |
+| `--feature` / `--target` / `--changed` | 三者互斥；都不传时 target 默认为 `tests`，项目有 `dev/debug` 时加上它。`--changed` 不接受 `--phase`、`--scope` 和 `--require-test` |
 | `--phase` | `baseline` 或 `final`，默认 `final`。基线和 `--target` 运行只用于建立基线或调试，不能作为 Feature 的完成证据 |
 | `--timeout-seconds` | 默认 120，必须是大于 0 的有限数 |
 | `--require-test` | 格式为 `<suite-path>::<test-case>`，要求原始报告确实包含该用例 |
@@ -129,6 +138,8 @@ $LASTEXITCODE
 完整规则见测试规范的 [测试影响评估](../../../project-source/methodology/08-test-traceability-and-evidence.md#测试影响评估) 与 [运行时的测试影响选择](../../../project-source/methodology/08-test-traceability-and-evidence.md#运行时的测试影响选择)，这里用中文说明各范围的组成：
 
 ```text
+影响组件 = affected_components ∪ 起点以来改动文件反推出的组件
+
 Required Test Set =
   当前 Feature 的自动验收测试
   + 当前 Feature 的回归测试
@@ -136,9 +147,12 @@ Required Test Set =
   + 与影响组件相交的 active 历史回归
   + 与影响组件相交的 active 不变量
   + 已批准的 additional_tests
+  + 起点以来改动的测试套件，以及依赖图从改动文件反向找到的测试套件
 
 affected = Required + 与影响组件相交的 active 验收测试
 ```
+
+反推组件来自登记表组件的 `source_paths`：改动的文件被哪个组件认领，该组件就进入选择，不在 `affected_components` 里也不报错，选择结果的 `inferred_components` 会列出来。只改 Markdown 和 `docs/` 不增加测试。
 
 | `--scope` | 用途 |
 | --- | --- |
@@ -147,7 +161,7 @@ affected = Required + 与影响组件相交的 active 验收测试
 | `affected` | Required 加相关验收测试 |
 | `full` | 递归运行 `tests/`，以及存在时的 `dev/debug/`，并核对必需覆盖；空的分层目录不算义务，但测试总数为零仍然失败 |
 
-以下情况要按规范运行 full：影响组件设置了 `full_suite_on_change`、计划中有已批准的 `full_suite_reasons`、改动影响范围很广的工具链，或影响范围无法界定。“工程维护”这个任务标签本身不触发 full。附加测试及理由保存在 Feature 的 `verification.test_impact` 中，没有单独的计划文件。
+以下情况要按规范运行 full：影响组件设置了 `full_suite_on_change`、计划中有已批准的 `full_suite_reasons`、改动影响范围很广的工具链，或影响范围无法界定。运行器还会自动升级 full：起点以来改了测试基础设施（`test-infrastructure:<路径>`），或改了没有组件认领、也没有被已认领文件依赖的游戏文件（`unclaimed-changed-file:<路径>`）。“工程维护”这个任务标签本身不触发 full。附加测试及理由保存在 Feature 的 `verification.test_impact` 中，没有单独的计划文件。
 
 没有单元套件的组件写 `unit_test_paths: []`，不会产生虚构的选择器。以下情况都不能记为通过：已登记的路径丢失、选中的目录里没有测试、必需用例被跳过、报告缺失。空项目没有测试层时，full 也不会因此变成“已有成功测试”。
 

@@ -21,7 +21,8 @@ from tools.lib.test_run_evidence import (
     start_run, finish_run, run_history_directory, derive_test_evidence, expected_gdunit_cases,
 )
 from tools.lib.test_selection import (
-    build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors, read_json,
+    build_changed_selection, build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors,
+    read_json,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -118,6 +119,19 @@ def _run_tests(args: argparse.Namespace) -> int:
                 return 0
             args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
             coverage_args["obligations"] = selection["required" if args.scope == "required" else "affected"]
+        elif args.changed:
+            selection = build_changed_selection(REPO_ROOT)
+            args.scope = "full" if selection["full_suite"]["required"] else "required"
+            print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True)
+            if selection["touched_completed_features"]:
+                print("Touched completed Features (consider re-running their manual acceptance): "
+                      + ", ".join(selection["touched_completed_features"]), flush=True)
+            if args.scope == "required" and not selection["required"]:
+                # 没有义务时不启动 Godot，也不把空运行说成通过。
+                print(f"No tests need to run for changes since {selection['base_revision']}.")
+                return 0
+            args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
+            coverage_args["obligations"] = selection["required"]
     except (ValueError, OSError, KeyError, TypeError, RuntimeError) as error:
         selection_error = error
 
@@ -160,6 +174,8 @@ def _run_tests(args: argparse.Namespace) -> int:
     if result["status"] != "passed":
         print("TEST VERDICT: FAIL - " + "; ".join(result["errors"]), file=sys.stderr)
         return 1
+    if args.changed:
+        print(f"JUnit: {directory / result['artifacts']['junit']['path']}")
     print(f"TEST VERDICT: PASS - {directory / 'result.json'}")
     return 0
 
@@ -179,8 +195,10 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
                            help="Suite file or directory; repeat to run several in one run "
                                 "(default: tests plus dev/debug when present)")
     selection.add_argument("--feature", help="Read the current Feature/Test Registry directly")
-    parser.add_argument("--phase", choices=("baseline", "final"), default="final")
-    parser.add_argument("--scope", choices=("auto", "required", "affected", "full"), default="auto")
+    selection.add_argument("--changed", action="store_true",
+                           help="Run tests for content changed since the verification point; records no Feature evidence")
+    parser.add_argument("--phase", choices=("baseline", "final"))
+    parser.add_argument("--scope", choices=("auto", "required", "affected", "full"))
     parser.add_argument("--require-test")
     parser.add_argument("--continue", dest="continue_run", action="store_true")
     parser.add_argument("--verbose", action="store_true",
@@ -190,8 +208,12 @@ def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
         help="Maximum test-process wall time (default: 120 seconds).",
     )
     args = parser.parse_args(list(argv))
+    if args.changed and (args.phase or args.scope or args.require_test):
+        parser.error("--changed selects its own scope; do not combine it with --phase, --scope or --require-test")
+    args.phase = args.phase or "final"
+    args.scope = args.scope or "auto"
     try:
-        args.targets = [] if args.feature else deduplicate_selectors(
+        args.targets = [] if args.feature or args.changed else deduplicate_selectors(
             REPO_ROOT, args.target or full_suite_selectors(REPO_ROOT))
         run_history_directory(REPO_ROOT, args.feature)
     except ValueError as error:
