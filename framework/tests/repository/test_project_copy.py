@@ -423,7 +423,7 @@ class ProjectCopyTests(unittest.TestCase):
                              (repository / "project-source/defaults/docs" / relative).read_bytes())
         for name, expected in (("gdd", {"README.md", "open-questions.md"}), ("product", {"README.md"})):
             self.assertEqual({path.name for path in (output / "docs" / name).iterdir()}, expected)
-        self.assertEqual(config["audio_analyzer_python_executable"], "")
+        self.assertTrue(Path(config["audio_analyzer_python_executable"]).is_absolute())
 
     def test_distribution_resources_have_uids_and_scanned_addon_images_have_imports(self):
         source = Path(__file__).resolve().parents[3] / "project-source"

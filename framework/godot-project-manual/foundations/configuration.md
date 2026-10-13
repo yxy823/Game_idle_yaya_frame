@@ -13,7 +13,7 @@
 | `document_language` | `zh-CN` | 持久项目知识默认使用中文，无需再次确认；与当前聊天语言独立 |
 | `engine_executable` | `E:\GameTools\Godot\4.7.1\Godot_v4.7.1-stable_win64.exe` | 已预填路径，须核对实际文件；不自动寻找替代安装 |
 | `python_executable` | `python` | 初始命令名；准备环境时改为已确认的 Python 3.12+ 解释器 |
-| `audio_analyzer_python_executable` | 空字符串 | 可选；已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对路径。缺省或空字符串时调试台显示“未配置 GAA” |
+| `audio_analyzer_python_executable` | `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe` | 可选；已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对路径。已预填路径，须核对实际文件：文件不存在时 `--require-ready` 报未就绪。不用 GAA 时改为空字符串，调试台显示“未配置 GAA” |
 
 配置文件只保存文档语言和工具路径。其他信息都有固定位置，不写进配置：
 

@@ -10,7 +10,7 @@
 | --- | --- |
 | `python_executable` | 运行项目工具所用的 Python 可执行文件路径或命令名。不含脚本路径和参数。 |
 | `engine_executable` | Godot 可执行文件的完整路径，可以是绝对路径，也可以相对项目根目录。不含 shell 引号和参数；不会在 `PATH` 中查找。 |
-| `audio_analyzer_python_executable` | 可选，默认空字符串。已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对文件路径，不含参数。缺省或空字符串表示未配置，调试台音频分析区显示“未配置 GAA”，其他功能照常。后台调用见[分析](../../dev/debug/_shared/README.md#分析)。 |
+| `audio_analyzer_python_executable` | 可选，预填 `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe`。已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对文件路径，不含参数。缺省或空字符串表示未配置，调试台音频分析区显示“未配置 GAA”，其他功能照常。后台调用见[分析](../../dev/debug/_shared/README.md#分析)。 |
 
 这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 
