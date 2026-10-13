@@ -9,7 +9,6 @@ const WAIT_MSEC := 5000
 
 var _service: Service
 var _states: Array[Dictionary] = []
-var _arguments: PackedStringArray = []
 var _case: String = "completed"
 var _hold: bool = false
 var _pid: int = 0
@@ -25,7 +24,6 @@ func before_test() -> void:
 	_service.launch = _launch
 	_service.set_process(false)
 	_states.clear()
-	_arguments.clear()
 	_case = "completed"
 	_hold = false
 	_pid = 0
@@ -44,7 +42,6 @@ func after_test() -> void:
 
 
 func _launch(executable: String, arguments: PackedStringArray, console: bool) -> int:
-	_arguments = arguments.duplicate()
 	_output = arguments[arguments.find("--result-file") + 1]
 	_release = _output + ".release"
 	var actual: PackedStringArray = ["-B", ProjectSettings.globalize_path(STUB)]
@@ -77,12 +74,10 @@ func test_real_child_waits_for_publication_and_service_cleans_the_result() -> vo
 	var data: Dictionary = _states[0].data
 	assert_int(data.metrics.size()).is_equal(9)
 	assert_float(data.metrics.f0_median_hz.value).is_equal(440.0)
-	assert_str(data.run_id).is_equal(_arguments[_arguments.find("--run-id") + 1])
-	assert_str(_arguments[_arguments.find("--parent-pid") + 1]).is_equal(str(OS.get_process_id()))
 	assert_bool(FileAccess.file_exists(_output)).is_false()
 
 
-func test_real_child_failed_summary_keeps_error_detail() -> void:
+func test_real_child_failed_result_keeps_error_detail() -> void:
 	_case = "failed"
 	assert_int(_start().error).is_equal(OK)
 	await _until(func() -> bool: return not OS.is_process_running(_pid))
@@ -90,18 +85,8 @@ func test_real_child_failed_summary_keeps_error_detail() -> void:
 	assert_int(_states.size()).is_equal(1)
 	assert_str(_states[0].status).is_equal("failed")
 	assert_str(_states[0].detail).contains("decode_failed")
-	assert_bool(FileAccess.file_exists(_output)).is_false()
-
-
-func test_real_child_interrupted_summary_is_not_a_measurement() -> void:
-	_case = "interrupted"
-	assert_int(_start().error).is_equal(OK)
-	await _until(func() -> bool: return not OS.is_process_running(_pid))
-	_service.poll()
-	assert_int(_states.size()).is_equal(1)
-	assert_str(_states[0].status).is_equal("failed")
-	assert_str(_states[0].detail).contains("interrupted / 6")
 	assert_bool(_states[0].has("data")).is_false()
+	assert_bool(FileAccess.file_exists(_output)).is_false()
 
 
 func test_real_child_without_result_reports_interpreter_and_output_path() -> void:

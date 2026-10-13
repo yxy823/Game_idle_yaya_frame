@@ -63,11 +63,9 @@ func _render() -> void:
 	header.add_child(file)
 	header.move_child(file, 1)
 	add_child(Kit.section_frame(block, false))
-	if not state.status in ["success", "partial"]:
+	if state.status != "success":
 		block.add_child(_note(state.message, String(state.get("detail", ""))))
 		return
-	if state.status == "partial":
-		block.add_child(_note("有几项指标没算出来，其余照常显示", state.message))
 	var metrics: Dictionary = state.data.metrics
 	block.add_child(_grid(metrics))
 	if _slot.actions != null and _slot.actions.has_method("analysis_extras"):

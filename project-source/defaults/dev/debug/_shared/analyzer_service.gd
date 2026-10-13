@@ -4,12 +4,11 @@ extends Node
 
 const CONFIG := "res://docs/methodology-config.json"
 const JOBS := "res://reports/debug-analysis"
-## Per asset type: tool name, config key, module entry, contract major version, result kind,
-## the field that carries the payload, and the messages for no interpreter and no payload.
+## Per asset type: tool name, config key, module entry, the field that carries the payload,
+## and the message for no interpreter.
 const BACKENDS := {
-	"audio": {"name": "GAA", "key": "audio_analyzer_python_executable",
-		"module": "game_audio_analyzer", "major": "2", "kind": "audio_summary",
-		"payload": "metrics", "unconfigured": "未配置 GAA", "missing": "GAA 摘要缺少指标"},
+	"audio": {"name": "GAA", "key": "audio_analyzer_python_executable", "module": "gaa",
+		"payload": "metrics", "unconfigured": "未配置 GAA"},
 }
 
 var audio_python: String = ""
@@ -40,17 +39,12 @@ func analyze(source: String, asset_type: String, done: Callable) -> Dictionary:
 	if not configured():
 		return {"error": ERR_UNCONFIGURED, "message": backend.unconfigured,
 			"detail": "%s: %s" % [backend.key, _executable()]}
-	var run_id := "debug-" + Crypto.new().generate_random_bytes(16).hex_encode()
-	var job := {"backend": asset_type, "run_id": run_id, "python": _executable(),
-		"output": JOBS.path_join(run_id) + ".result.json", "done": done}
-	var error := DirAccess.make_dir_recursive_absolute(JOBS)
-	if error != OK:
-		return {"error": error, "message": "无法启动分析：分析任务目录或文件写不进去",
-			"detail": JOBS}
+	var file_name := Crypto.new().generate_random_bytes(16).hex_encode() + ".result.json"
+	var job := {"backend": asset_type, "python": _executable(),
+		"output": JOBS.path_join(file_name), "done": done}
 	var arguments: PackedStringArray = ["-B", "-m", backend.module, "analyze",
-		ProjectSettings.globalize_path(source), "--json-only",
-		"--result-file", ProjectSettings.globalize_path(job.output),
-		"--run-id", run_id, "--parent-pid", str(OS.get_process_id())]
+		ProjectSettings.globalize_path(source),
+		"--result-file", ProjectSettings.globalize_path(job.output)]
 	job.pid = int(launch.call(job.python, arguments, false))
 	if job.pid <= 0:
 		return {"error": ERR_CANT_FORK, "message": "无法启动 " + backend.name,
@@ -82,18 +76,10 @@ func poll() -> void:
 		job.done.call(_state(data, job))
 
 
-## Checks contract major version, kind and run_id, then completion, before the payload.
+## Only a completed result with its payload counts; a failed one keeps the tool's error.
 static func _state(data: Dictionary, job: Dictionary) -> Dictionary:
 	var backend: Dictionary = BACKENDS[job.backend]
-	if str(data.get("contract_version", "")).get_slice(".", 0) != backend.major:
-		return {"status": "failed", "message": backend.name + " 版本不兼容",
-			"detail": "contract_version: " + str(data.get("contract_version"))}
-	if data.get("kind") != backend.kind or data.get("run_id") != job.run_id:
-		return {"status": "failed", "message": backend.name + " 结果与本次分析不符"}
-	if data.get("status") != "completed" or data.get("exit_code") != 0:
+	if data.get("status") != "completed" or not data.get(backend.payload) is Dictionary:
 		return {"status": "failed", "message": backend.name + " 未完成分析",
-			"detail": "%s / %s\n%s" % [data.get("status"), data.get("exit_code"),
-				JSON.stringify(data.get("error"))]}
-	if not data.get(backend.payload) is Dictionary:
-		return {"status": "failed", "message": backend.missing}
+			"detail": JSON.stringify(data.get("error"))}
 	return {"status": "success", "message": "", "data": data}

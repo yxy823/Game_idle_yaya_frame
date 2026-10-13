@@ -41,13 +41,11 @@ func _launch(path: String, arguments: PackedStringArray, console: bool) -> int:
 	var output := arguments[arguments.find("--result-file") + 1]
 	var job := {"path": path, "arguments": arguments, "output": output, "console": console,
 		"existed": FileAccess.file_exists(output)}
-	var data := _result.duplicate(true)
-	if not data.has("run_id"):
-		data.run_id = arguments[arguments.find("--run-id") + 1]
 	_launched.append(job)
 	if not _result.is_empty() or not _raw_output.is_empty():
+		DirAccess.make_dir_recursive_absolute(output.get_base_dir())
 		var file := FileAccess.open(output, FileAccess.WRITE)
-		file.store_string(_raw_output if not _raw_output.is_empty() else JSON.stringify(data))
+		file.store_string(_raw_output if not _raw_output.is_empty() else JSON.stringify(_result))
 		file.close()
 	return _pid
 
@@ -60,10 +58,8 @@ func test_audio_job_uses_gaa_arguments_and_shows_all_nine_metrics() -> void:
 	var job := _launched[0]
 	var args: PackedStringArray = job.arguments
 	assert_str(job.path).is_equal(_service.audio_python)
-	assert_array(Array(args.slice(0, 6))).contains_exactly([
-		"-B", "-m", "game_audio_analyzer", "analyze",
-		ProjectSettings.globalize_path(CHIME), "--json-only"])
-	assert_str(args[args.find("--parent-pid") + 1]).is_equal(str(OS.get_process_id()))
+	assert_array(Array(args)).contains_exactly(["-B", "-m", "gaa", "analyze",
+		ProjectSettings.globalize_path(CHIME), "--result-file", job.output])
 	assert_bool(job.console or job.existed).is_false()
 	_service.poll()
 	assert_str(_text(view)).contains("分析中…")
@@ -137,38 +133,20 @@ func test_pitch_uses_equal_temperament_and_keeps_estimate_state() -> void:
 	assert_str(AudioAnalysis._pitch({"f0_median_hz": _metric(0.0, "Hz")})).is_equal("0.0 Hz")
 
 
-func test_version_identity_and_completion_are_checked_before_metrics() -> void:
-	var cases: Array[Dictionary] = [
-		{"change": {"contract_version": "1.0"}, "text": "GAA 版本不兼容"},
-		{"change": {"contract_version": "3.0", "status": "failed"}, "text": "GAA 版本不兼容"},
-		{"change": {"contract_version": ""}, "text": "GAA 版本不兼容"},
-		{"change": {"contract_version": "invalid"}, "text": "GAA 版本不兼容"},
-		{"change": {"contract_version": null}, "text": "GAA 版本不兼容"},
-		{"change": {"run_id": "different"}, "text": "GAA 结果与本次分析不符"},
-		{"change": {"kind": "analysis"}, "text": "GAA 结果与本次分析不符"},
-		{"change": {"status": "failed", "exit_code": 3}, "text": "GAA 未完成分析"},
-		{"change": {"status": "interrupted", "exit_code": 6}, "text": "GAA 未完成分析"},
-		{"change": {"exit_code": 5}, "text": "GAA 未完成分析"},
-		{"change": {"metrics": null}, "text": "GAA 摘要缺少指标"},
-	]
+func test_failed_result_shows_error_instead_of_metrics() -> void:
 	_running = false
-	for item in cases:
-		var slot := _sfx_slot()
-		var view := _audio_view()
-		_result = _audio_result()
-		_result.merge(item.change, true)
-		view.show_candidate(slot, slot.live.candidate)
-		_service.poll()
-		assert_str(_text(view)).contains(item.text)
-		assert_str(_tile_value(view, "时长")).is_empty()
-		assert_object(_button(view, "峰值归一")).is_null()
+	var slot := _sfx_slot()
+	var view := _audio_view()
 	_result = _audio_result()
-	_result.contract_version = "2.7"
-	var compatible := _audio_view()
-	var last_slot := _sfx_slot()
-	compatible.show_candidate(last_slot, last_slot.live.candidate)
+	_result.merge({"status": "failed", "metrics": null,
+		"error": {"code": "decode_failed", "message": "Fixture failure"}}, true)
+	view.show_candidate(slot, slot.live.candidate)
 	_service.poll()
-	assert_str(_tile_value(compatible, "时长")).is_equal("0.28 s")
+	assert_str(_text(view)).contains("GAA 未完成分析")
+	var labels := view.find_children("*", "Label", true, false)
+	assert_str((labels.back() as Label).tooltip_text).contains("decode_failed")
+	assert_str(_tile_value(view, "时长")).is_empty()
+	assert_object(_button(view, "峰值归一")).is_null()
 
 
 func test_launch_missing_result_and_configuration_failures_are_readable() -> void:
@@ -233,9 +211,7 @@ func _audio_view() -> AudioAnalysis:
 
 
 func _audio_result() -> Dictionary:
-	return {"kind": "audio_summary", "contract_version": "2.0", "schema_version": "2.0",
-		"tool_version": "0.5.0", "status": "completed", "exit_code": 0,
-		"file": {"path": ProjectSettings.globalize_path(CHIME), "sha256": "0".repeat(64)},
+	return {"status": "completed", "file": {"path": ProjectSettings.globalize_path(CHIME)},
 		"warnings": [], "error": null, "metrics": {
 			"f0_median_hz": _metric(1975.5, "Hz", "estimate"),
 			"duration_s": _metric(0.28, "s"), "peak_dbfs": _metric(-2.0, "dBFS"),

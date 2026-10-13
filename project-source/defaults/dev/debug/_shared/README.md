@@ -114,16 +114,16 @@ entries = {
 
 ## 分析
 
-调试台用一个服务在后台调用本机安装的 Game Audio Analyzer（GAA）测量音频。服务在 `reports/debug-analysis/` 为每次任务生成唯一结果路径，运行 `<python> -B -m game_audio_analyzer analyze <源文件> --json-only --result-file <唯一路径> --run-id <任务 ID> --parent-pid <Godot PID>`，每帧检查进程是否结束，再读取并删除结果文件。游戏不等待分析进程。
+调试台用一个服务在后台调用本机安装的 Game Audio Analyzer（GAA）测量音频。服务为每次任务在 `reports/debug-analysis/` 下取一个随机文件名，运行 `<python> -B -m gaa analyze <源文件> --result-file <结果文件>`。GAA 自动创建目录、覆盖同名文件。服务每帧检查进程是否结束，结束后读取并删除结果文件；不读标准输出和退出码。游戏不等待分析进程。
 
-读取结果时按以下顺序检查：先检查 `contract_version` 主版本，再核对 `kind`、`run_id`、`status=completed` 和 `exit_code=0`，最后读取内容。版本不符显示“GAA 版本不兼容”；`kind` 或 `run_id` 不符显示“GAA 结果与本次分析不符”；没有可读结果时显示“GAA 已退出，但没有可读结果”，悬停可见解释器和结果路径。解释器存在不代表 GAA 的 Python 包可用。
+结果文件的 `status` 为 `completed` 且 `metrics` 是指标字典时显示指标；其他情况显示“GAA 未完成分析”，悬停可见 GAA 的 `error`（`code` 和 `message`）。没有结果文件或内容不是 JSON 对象时显示“GAA 已退出，但没有可读结果”，悬停可见解释器和结果路径。解释器存在不代表 GAA 的 Python 包可用。
 
 | 项目 | 内容 |
 | --- | --- |
 | 配置（`docs/methodology-config.json`） | `audio_analyzer_python_executable`：已安装 GAA 的 Python 解释器绝对路径 |
 | 缺省或空字符串时显示 | “未配置 GAA”，其他功能照常 |
-| 模块 | `game_audio_analyzer` |
-| 契约 | `contract_version` 主版本 2，`kind=audio_summary`，读取 `metrics` |
+| 模块 | `gaa` |
+| 结果文件 | 顶层字段 `status`、`file`、`metrics`、`warnings`、`error`；调试台只读 `status`、`metrics` 和 `error` |
 
 选择 AudioStream 候选后自动分析，在“实现”与“参数”之间显示基础音高、时长、峰值、真峰值、RMS、20 ms 最大 RMS、起音、衰减和频谱重心；每个文件在一次会话中只分析一次。单项 `ok` 显示数值，`estimate` 标明估算，其他状态显示原因，`null` 不换成零；悬停显示 GAA 的 `note`。音名由有效的 `f0_median_hz` 按十二平均律、A4=440 Hz 换算，不适用时不显示音名。插槽的 `analysis_extras(live, metrics)` 直接接收 GAA 指标字典，例如“峰值归一”读取 `peak_dbfs` 的状态和数值。
 
