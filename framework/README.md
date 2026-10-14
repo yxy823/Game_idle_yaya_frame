@@ -105,6 +105,7 @@ flowchart TD
 | 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [检查术语用词](maintenance/tools/README.md#检查术语用词) |
 | 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [检查措辞](maintenance/tools/README.md#检查措辞) |
 | 提交钩子 `.githooks/pre-commit` | 提交时对暂存的文档运行术语检查、措辞检查（只查硬性）、仓库链接检查和链接文字检查；新 clone 后用 `git config core.hooksPath .githooks` 启用 | [提交钩子](maintenance/tools/README.md#提交钩子) |
+| 提交说明钩子 `.githooks/commit-msg` | 提交时用框架术语检查提交说明，有不用的说法就拒绝提交；和提交钩子一起启用 | [提交说明钩子](maintenance/tools/README.md#提交说明钩子) |
 | 用词提示钩子 `.claude/settings.json` | 用户每次向 Claude Code 发消息时，按框架术语检查消息正文，有不用的说法时提示 Agent 列出用词对照表；不拦截消息 | [用词提示钩子](maintenance/tools/README.md#用词提示钩子) |
 | 孤立文档扫描 `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
 | 回归测试 `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
