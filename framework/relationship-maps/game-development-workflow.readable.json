@@ -3832,7 +3832,7 @@
       "y": 2258.5,
       "width": 216,
       "height": 61,
-      "label": "定期检查教训台账，\n合并重复并提出升级",
+      "label": "定期检查 Lessons，\n合并重复并提出升级",
       "zIndex": 1,
       "fill": "#f1f3e8",
       "stroke": {
@@ -3857,7 +3857,7 @@
       "textSizing": "content",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/复盘与沉淀/定期检查教训台账，合并重复并提出升级.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/复盘与沉淀/定期检查 Lessons，合并重复并提出升级.md"
       },
       "appearance": {
         "opacity": 1,

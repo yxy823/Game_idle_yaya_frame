@@ -1,6 +1,6 @@
-# 框架教训台账
+# 框架 Lessons
 
-记录框架维护中 Agent 自己的流程失误出现了几次，次数够了就提出升级。记什么、条目格式、计数和升级条件沿用生成项目的[教训台账](../project-source/methodology/09-records-reports-and-handoff.md#教训台账)；框架这边的区别见 `framework/AGENTS.md` 的[教训台账](AGENTS.md#教训台账)。
+记录框架维护中 Agent 自己的流程失误出现了几次，次数够了就提出升级。记什么、条目格式、计数和升级条件沿用生成项目的[Lessons](../project-source/methodology/09-records-reports-and-handoff.md#lessons)；框架这边的区别见 `framework/AGENTS.md` 的[Lessons](AGENTS.md#lessons)。
 
 ## 规则或 README 宣称的效果，至少实测一次
 

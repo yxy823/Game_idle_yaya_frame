@@ -209,7 +209,7 @@ Work item: docs/features/F012.json
 - 只读任务保持其写入边界。
 - 没有有用的新经验时，不需要写条目。
 - 在 Stage 7 提交之前定稿 Feature 笔记和知识条目；Stage 8 链接它们。
-- Agent 自己的流程失误按[教训台账](yaya/methodology/09-records-reports-and-handoff.md#教训台账)记次数，同样在 Stage 7 提交前定稿。
+- Agent 自己的流程失误按[Lessons](yaya/methodology/09-records-reports-and-handoff.md#lessons)记次数，同样在 Stage 7 提交前定稿。
 
 项目规则、知识条目或其他项目文档中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、怎么做。
 

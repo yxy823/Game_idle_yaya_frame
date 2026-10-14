@@ -49,7 +49,7 @@ flowchart TD
 
 | 路径 | 职责 |
 | --- | --- |
-| [AGENTS.md](AGENTS.md) | 只对 `framework/` 重要的规则：框架待办与教训台账的维护方式、提示词维护；Claude Code 读取 `framework/` 下的文件时自动加载，在 `framework/` 启动的 Codex 自动读取，其他情况按根 `AGENTS.md` 的路由表读取 |
+| [AGENTS.md](AGENTS.md) | 只对 `framework/` 重要的规则：框架待办与 Lessons 的维护方式、提示词维护；Claude Code 读取 `framework/` 下的文件时自动加载，在 `framework/` 启动的 Codex 自动读取，其他情况按根 `AGENTS.md` 的路由表读取 |
 | [todo.md](todo.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [lessons.md](lessons.md) | 框架维护中 Agent 自己的流程失误及出现次数，够了就提出升级 |
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |

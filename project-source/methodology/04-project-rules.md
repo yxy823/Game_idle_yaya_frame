@@ -81,9 +81,9 @@ yaya/agent-rules/<专业模块>/
 - 简短的事件经验：Feature notes；
 - 实现决定及其理由：Feature 设计；
 - 可复用的解释性知识：`docs/knowledge/` 下单独的主题；
-- Agent 自己的流程失误及其出现次数：[教训台账](09-records-reports-and-handoff.md#教训台账) `docs/lessons.md`。
+- Agent 自己的流程失误及其出现次数：[Lessons](09-records-reports-and-handoff.md#lessons) `docs/lessons.md`。
 
-台账条目达到升级条件时，按失误的性质选择去向，越能由机器判断越优先：
+Lessons 条目达到升级条件时，按失误的性质选择去向，越能由机器判断越优先：
 
 | 失误的性质 | 去向 |
 | --- | --- |
@@ -91,7 +91,7 @@ yaya/agent-rules/<专业模块>/
 | 多步流程总漏同一步 | 修改负责该流程的 Skill |
 | 知道规则但到那一步忘了 | 规则，写在那一步会读到的位置 |
 | 数值或阈值定得不对 | 对应的配置或规格 |
-| 原来是对事实的误解 | 知识条目，台账条目删除 |
+| 原来是对事实的误解 | 知识条目，Lessons 条目删除 |
 
 只按下面的规程提升可复用、规定性的指导。项目规则不是事件日志。
 
