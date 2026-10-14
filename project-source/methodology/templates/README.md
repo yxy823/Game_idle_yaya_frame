@@ -27,5 +27,6 @@
 | `feature-learning-summary.md.tmpl` | Stage 8 经验反馈的回复格式，包括明确的“无新增经验”结果。不保存为文件 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 可选的 `docs/architecture.md` 和子系统地图：模块、职责、依赖和相关的运行流程，与生成的引用事实分开 |
 | `architecture-decision-record.md.tmpl` | 一份可选的 ADR，记录一项重要的技术选择。Feature notes 和架构地图链接到它，不复制它 |
+| `ui-draft-readme.md.tmpl` | 一个草稿界面目录 `dev/drafts/ui/<interface>-<YYYYMMDD>/` 中的 `README.md`：依据、讨论与不讨论的内容、场景、结论和写入去向，规则见 `design-ui-spec` 的草稿界面 |
 
 字段含义和校验规则见 [Feature 列表与测试追溯结构](../02-feature-list-schema.md)，工程 Feature 规则见[工程变更流程](../07-engineering-change.md)，测试选择见[测试追溯与证据](../08-test-traceability-and-evidence.md)。架构地图和 ADR 遵循[架构概览](../10-architecture-overview.md)；只为真实的决定创建 ADR。
