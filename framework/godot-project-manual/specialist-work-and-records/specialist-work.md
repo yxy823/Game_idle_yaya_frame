@@ -141,7 +141,7 @@ GDD、专业规格、表现正文和本地化要求，都要在最终验证前�
 
 ### UI 规格与界面的开发顺序
 
-UI 规格描述信息层级、ASCII 布局、状态差异、显示条件、界面任务和待验证的问题；节点、路径和参数属于实现。界面任务按“玩家想做的事”列出操作和应看到的反馈，写法由 [design-ui-spec](../../../project-source/skills/design-ui-spec/SKILL.md) 规定。
+UI 规格描述信息层级、采纳的布局、状态差异、显示条件、界面任务和待验证的问题；节点、路径和参数属于实现。界面任务按“玩家想做的事”列出操作和应看到的反馈，写法由 [design-ui-spec](../../../project-source/skills/design-ui-spec/SKILL.md) 规定。布局先在 `dev/drafts/ui/<interface>-<YYYYMMDD>/` 的草稿界面中用假数据讨论，草稿不接游戏状态，规则见 design-ui-spec 的[草稿界面](../../../project-source/skills/design-ui-spec/SKILL.md#草稿界面)。
 
 新界面或使已有截图、验收失效的界面改动，在真实游戏里定画面，不在 `dev/` 另写一套假系统：
 

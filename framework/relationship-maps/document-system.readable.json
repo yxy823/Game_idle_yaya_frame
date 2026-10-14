@@ -1279,7 +1279,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；独立进入/退出且有自身流程的屏幕或弹层单独成文，从属面板、标签页和 HUD 部件在宿主分节。\n第二个界面使用同一控件或对话框行为时，共用正文迁入 docs/ui/components/<component-key>-design.md，消费者引用；初始只有导航。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途、关联 Product 及组件消费者。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md",
+      "note": "职责：界面布局、交互、状态、显示条件与界面专用资源规格。\n项目位置：docs/ui/<interface>-design.md；独立进入/退出且有自身流程的屏幕或弹层单独成文，从属面板、标签页和 HUD 部件在宿主分节。\n第二个界面使用同一控件或对话框行为时，共用正文迁入 docs/ui/components/<component-key>-design.md，消费者引用；初始只有导航。\n布局先在 dev/drafts/ui/<interface>-<YYYYMMDD>/ 的草稿界面（Godot 场景、假数据和 README）讨论，草稿保留作历史参考。\n引用所属 GDD；实际交互位置与文末导航链接相关表现，目录入口维护文档、用途、关联 Product 及组件消费者。\n\n项目文件： docs/ui/*.md\n项目文件： docs/ui/components/*.md\n项目文件： dev/drafts/ui/**",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
