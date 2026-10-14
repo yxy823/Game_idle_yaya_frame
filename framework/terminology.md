@@ -43,7 +43,7 @@
 | 代码坏味道 | 代码中提示可能存在维护问题的结构特征，是审核和挑选重构目标时的调查线索，本身不算违规 | 代码异味 |
 | 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案 |
 | 待决定事项 | Progress 中的同名一节，列出需要用户决定才能继续的事项；GDD 中设计层面没定下的问题称“开放问题” |  |
-| Lessons | 记录 Agent 自己流程失误及出现次数的文件：生成项目的 `docs/lessons.md` 和框架的 `framework/lessons.md`，单条称“一条 lesson”；规则见 09 号的 [Lessons](../project-source/methodology/09-records-reports-and-handoff.md#lessons)。引擎、工具怎样运作的陷阱写项目知识，不写 Lessons | 教训台账、台账 |
+| Lessons | 记录 Agent 自己流程失误及出现次数的文件：生成项目的 `docs/lessons.md` 和框架的 `framework/lessons.md`；规则见 09 号的 [Lessons](../project-source/methodology/09-records-reports-and-handoff.md#lessons)。引擎、工具怎样运作的陷阱写项目知识，不写 Lessons | 教训台账、台账 |
 | 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |  |
 | 制作项目 | 游戏项目之外、独立制作美术或音频的仓库，例如按媒体分开的音频制作项目；保存母版并交付成品，不随框架分发，交接方式见[在项目外制作](../project-source/methodology/11-specialist-workflows.md#在项目外制作) | 工坊 |
 

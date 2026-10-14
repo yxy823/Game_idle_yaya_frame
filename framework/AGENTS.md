@@ -22,6 +22,5 @@ advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prom
 [lessons.md](lessons.md) 记录框架维护中 Agent 自己的流程失误，规则沿用生成项目的[Lessons](../project-source/methodology/09-records-reports-and-handoff.md#lessons)，只有下面几处不同：
 
 - **何时读**：框架维护任务开始或续接时，和 [todo.md](todo.md) 一起读。
-- **何时写**：用户纠正 Agent 后，在下一次回复前写；同一类问题第二次出现时，先查 Lessons 再找根因。
-- **出事的证据**：没有提交号时，写日期和任务名。
+- **何时写**：框架维护没有 Stage 7，只在用户纠正 Agent 后写。
 - **升级去向**：失误的性质按 04 号的[经验的归宿与规则提升](../project-source/methodology/04-project-rules.md#经验的归宿与规则提升)判断，位置按 [framework-retro-yaya](../.agents/skills/framework-retro-yaya/SKILL.md) 的归属表选；写进用户全局 `CLAUDE.md` 的只提拟议文字。

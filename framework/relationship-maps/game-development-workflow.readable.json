@@ -12621,6 +12621,109 @@
       }
     },
     {
+      "id": "link-scene-130-scene-108",
+      "source": {
+        "kind": "node",
+        "node": "scene-130",
+        "port": "left"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-108",
+        "port": "right"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "升级去向是脚本且已获批准",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.25,
+        "labelOffset": 44,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-130-scene-051",
+      "source": {
+        "kind": "node",
+        "node": "scene-130",
+        "port": "top"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-051",
+        "port": "bottom"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 6562.0,
+          "y": 1584.5
+        },
+        {
+          "x": 4924.0,
+          "y": 1584.5
+        }
+      ],
+      "label": "升级去向是规则且已获批准",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.25,
+        "labelOffset": 44,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
       "id": "link-scene-109-scene-107",
       "source": {
         "kind": "node",
