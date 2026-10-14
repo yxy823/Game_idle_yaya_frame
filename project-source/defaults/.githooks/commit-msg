@@ -4,9 +4,13 @@
 cd "$(git rev-parse --show-toplevel)" || exit 1
 export PYTHONUTF8=1
 
-# 去掉 git 的注释行和 --verbose 附带的差异，只检查实际写进提交的文字。
-if ! sed -e '/^# ------------------------ >8 ------------------------$/,$d' -e '/^#/d' "$1" \
-    | python -B yaya/tools/checks/check-terminology.py --stdin-text; then
+if ! command -v python > /dev/null 2>&1; then
+    echo "提交被拒绝：找不到 python，无法检查提交说明。先确认 python 在 PATH 中。" >&2
+    exit 1
+fi
+
+# 用 -m 或 -F 提交时，# 开头的行也会写进提交说明，所以整份检查；只截掉 git commit -v 附带的差异。
+if ! sed -e '/^# ------------------------ >8 ------------------------$/,$d' "$1"     | python -B yaya/tools/checks/check-terminology.py --stdin-text; then
     echo "" >&2
     echo "提交被拒绝：提交说明里有不用的说法。按上面的提示改为术语表中的正式名称后重新提交；说明改名时只写新名称。" >&2
     exit 1

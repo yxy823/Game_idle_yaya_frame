@@ -150,9 +150,14 @@ git config core.hooksPath .githooks
 
 ## 提交说明钩子
 
-`.githooks/commit-msg` 用 [check-terminology.py](#check-terminologypy) 检查提交说明，有不用的说法就拒绝提交。它去掉 `#` 开头的注释行后，把说明从标准输入交给 `--stdin-text`。提交钩子只查暂存的文件，所以提交说明由这个钩子单独检查；它和提交钩子在同一目录，创建器设置 `core.hooksPath` 后一起生效。
+`.githooks/commit-msg` 用 [check-terminology.py](#check-terminologypy) 检查提交说明，有不用的说法就拒绝提交。它把整份说明从标准输入交给 `--stdin-text`。提交钩子只查暂存的文件，所以提交说明由这个钩子单独检查；它和提交钩子在同一目录，创建器设置 `core.hooksPath` 后一起生效。
+
+用 `-m` 或 `-F` 提交时，`#` 开头的行也会写进提交说明，所以钩子不跳过它们，只截掉 `git commit -v` 附带的差异；用编辑器写说明时，git 模板里的注释行也一起检查。找不到 python 时拒绝提交并单独说明原因。
 
 说明改名时只写新名称；直接写出旧名称会被拒绝，旧名称已登记在术语表里。
+
+项目的 `docs/terminology.md` 还没有登记不用的说法时，这个钩子不会拒绝任何提交。
+
 ## 用词提示钩子
 
 `.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[check-terminology.py](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
