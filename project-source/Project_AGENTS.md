@@ -215,6 +215,8 @@ Work item: docs/features/F012.json
 
 工作中发现 `yaya/agent-rules/` 或 `docs/project-rules.md` 尚未覆盖、可复用的规定性指导时，按 [规则的增量维护](yaya/methodology/04-project-rules.md#规则的增量维护) 规定的时机和自查方式提出。没有获得该批准，不修改规则。
 
+规则、Skill、工作流程和命令都不是定死的。执行中发现某条不适用、互相冲突或明显拖慢工作时，写出具体条款、实际情况和影响，提出修改建议，不暗中绕开或自行豁免。用户同意后再改：规则按上一段的规则的增量维护；Skill、工作流程和命令按[工程变更流程](yaya/methodology/07-engineering-change.md)执行。需要改框架本身时，把建议交回框架维护任务，不跨仓库写入。
+
 ## 领域规则路由
 
 `yaya/methodology/` 规定工作流程和可追溯性，任务范围、Git、验证与完成汇报写在本文件；`yaya/agent-rules/` 规定具体的引擎与语言规则。
