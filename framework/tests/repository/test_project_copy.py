@@ -347,6 +347,8 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertIn("window/size/viewport_height=900", settings)
         self.assertEqual((output / ".githooks/pre-commit").read_bytes(),
                          (repository / "project-source/defaults/.githooks/pre-commit").read_bytes())
+        self.assertEqual((output / ".githooks/commit-msg").read_bytes(),
+                         (repository / "project-source/defaults/.githooks/commit-msg").read_bytes())
         self.assertEqual((output / ".claude/settings.json").read_bytes(),
                          (repository / "project-source/defaults/.claude/settings.json").read_bytes())
         for name in (".git", ".godot", "framework", "godot-development-prompts.json",

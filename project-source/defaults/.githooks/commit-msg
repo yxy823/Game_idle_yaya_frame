@@ -1,0 +1,14 @@
+#!/bin/sh
+# 项目的提交说明钩子：用项目术语检查提交说明，有不用的说法就拒绝提交。
+# 和 pre-commit 一起由 core.hooksPath 启用。说明见 yaya/tools/README.md 的「提交说明钩子」。
+cd "$(git rev-parse --show-toplevel)" || exit 1
+export PYTHONUTF8=1
+
+# 去掉 git 的注释行和 --verbose 附带的差异，只检查实际写进提交的文字。
+if ! sed -e '/^# ------------------------ >8 ------------------------$/,$d' -e '/^#/d' "$1" \
+    | python -B yaya/tools/checks/check-terminology.py --stdin-text; then
+    echo "" >&2
+    echo "提交被拒绝：提交说明里有不用的说法。按上面的提示改为术语表中的正式名称后重新提交；说明改名时只写新名称。" >&2
+    exit 1
+fi
+exit 0

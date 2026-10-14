@@ -1,6 +1,6 @@
 # 项目检查与测试工具
 
-这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有两处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中五项检查和 Skill 目录一致性检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
+这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有三处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中五项检查和 Skill 目录一致性检查；[提交说明钩子](#提交说明钩子)在同一时刻对提交说明运行术语检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
 yaya/tools/
@@ -147,6 +147,12 @@ robocopy .agents\skills .claude\skills /MIR
 git config core.hooksPath .githooks
 ```
 
+
+## 提交说明钩子
+
+`.githooks/commit-msg` 用 [check-terminology.py](#check-terminologypy) 检查提交说明，有不用的说法就拒绝提交。它去掉 `#` 开头的注释行后，把说明从标准输入交给 `--stdin-text`。提交钩子只查暂存的文件，所以提交说明由这个钩子单独检查；它和提交钩子在同一目录，创建器设置 `core.hooksPath` 后一起生效。
+
+说明改名时只写新名称；直接写出旧名称会被拒绝，旧名称已登记在术语表里。
 ## 用词提示钩子
 
 `.claude/settings.json` 把 `checks/check-prompt-terminology.py` 注册为 Claude Code 的 `UserPromptSubmit` 钩子：用户每次发消息，钩子把消息正文交给[check-terminology.py](#check-terminologypy)的 `--stdin-text`，按 `docs/terminology.md` 查找登记为“不用的说法”的写法。
