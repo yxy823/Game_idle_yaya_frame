@@ -17,6 +17,7 @@
 | `docs/architecture/adr-NNNN-<slug>.md` | 符合 ADR 条件的跨 Feature、跨模块或项目级技术决定的理由 | Feature 内部的普通选择 |
 | Feature 的 notes | 任务提醒、简短的事件教训、TODO 和正文链接 | 实施决定与理由（写在设计稿） |
 | `docs/knowledge/` | 可复用的项目实践及其适用条件 | 规则或需求的正文 |
+| `docs/lessons.md` | Agent 自己的流程失误、出现次数和升级条件，见[教训台账](../../../project-source/methodology/09-records-reports-and-handoff.md#教训台账) | 引擎、语言、工具怎样运作（写知识条目） |
 | `docs/research/` | 外部来源的结论、证据、建议和未知项 | 项目自己实测得到的经验 |
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；变成当前比较的选择或被采纳时，迁走正文并留下去向链接 | 开发承诺 |
 | `docs/progress.md` | 当前任务和阶段、真实的阻塞、待决定事项、下一步和资料链接 | 已完成任务的完整历史 |
