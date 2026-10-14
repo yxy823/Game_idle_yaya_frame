@@ -1,6 +1,6 @@
 # framework/ 的维护约定
 
-本文件只写 `framework/` 下两类文件的规则；仓库通用的约束、决策原则和提交规则见根 [AGENTS.md](../AGENTS.md)，目录说明见框架入口的[目录与职责](README.md#目录与职责)。
+本文件只写 `framework/` 下三类文件的规则；仓库通用的约束、决策原则和提交规则见根 [AGENTS.md](../AGENTS.md)，目录说明见框架入口的[目录与职责](README.md#目录与职责)。
 
 ## 框架待办
 
@@ -16,3 +16,12 @@
 新增、修改、重命名、调整分类或删除预设提示词时，使用 [prompt-and-graph-maintenance-yaya](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、开发场景图与 advisor 引用。两份提示词库的结构、一对一场景和命名规则见[提示词与场景准则](maintenance/design-guidelines/prompts-and-scenarios.md)；提示词正文不写进 README、规则或工具说明。
 
 advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 只读使用 Godot 提示词库。移动或改名该文件时，同步 `project-source/skills/project-next-step-advisor/SKILL.md`；已创建的项目是否更新由用户决定。
+
+## 教训台账
+
+[lessons.md](lessons.md) 记录框架维护中 Agent 自己的流程失误，规则沿用生成项目的[教训台账](../project-source/methodology/09-records-reports-and-handoff.md#教训台账)，只有下面几处不同：
+
+- **何时读**：框架维护任务开始或续接时，和 [todo.md](todo.md) 一起读。
+- **何时写**：用户纠正 Agent 后，在下一次回复前写；同一类问题第二次出现时，先查台账再找根因。
+- **出事的证据**：没有提交号时，写日期和任务名。
+- **升级去向**：失误的性质按 04 号的[经验的归宿与规则提升](../project-source/methodology/04-project-rules.md#经验的归宿与规则提升)判断，位置按 [framework-retro-yaya](../.agents/skills/framework-retro-yaya/SKILL.md) 的归属表选；写进用户全局 `CLAUDE.md` 的只提拟议文字。
