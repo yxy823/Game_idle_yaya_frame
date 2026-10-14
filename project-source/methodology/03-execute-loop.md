@@ -295,7 +295,7 @@ Stage 4 使用以下入口：
 1. 运行 `python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
    - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
    - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
-2. 检查实际选中的范围和测试结果。把选择结果中的 `inferred_components` 和 `touched_completed_features` 写进报告。前者说明声明之外补上了哪些组件；后者提醒用户判断这些已完成的 Feature 是否需要重新人工验收。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
+2. 检查实际选中的范围和测试结果。把选择结果中的 `inferred_components` 和 `touched_completed_features` 写进报告。前者说明声明之外补上了哪些组件；后者提醒用户判断这些已完成的 Feature 是否需要重新人工验收：每个 Feature 写出名称、它原有的人工检查中哪几项可能受这次修改影响及原因、建议是否复验；自动测试已覆盖的部分和仍要用户实际看、听、玩的部分分开写。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
 3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 的约定与证据](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
 4. 对 Bug，确认每个已批准的 `F0XX-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
 5. 如果 Stage 1 要求 full，当前的选择结果必须报告 full 为必需，且实际的 full 结果必须通过。选择逻辑从 `full_suite_on_change: true` 的组件和已记录的 `full_suite_reasons` 推导 full；组件触发不复制进 `full_suite_reasons`。必需的全量套件无法运行或失败时，阻止完成；理由或对话记录都不能把它变成 PASS。
