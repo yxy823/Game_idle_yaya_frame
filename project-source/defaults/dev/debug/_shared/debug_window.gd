@@ -338,21 +338,21 @@ func _update_dpi() -> void:
 	position = position.clamp(usable.position, usable.end - size)
 
 
-## Puts the game window and this window side by side inside the usable screen area. When
-## both do not fit, this window narrows to its minimum, then the game window shrinks with its
-## aspect kept; the game stretches its canvas, so only the window size changes.
+## Puts the game window and this window side by side inside the usable screen area. The game
+## window keeps its size, because readability and click targets are judged at that size: when
+## both do not fit, this window narrows to its minimum and then overlaps the game's right side,
+## and F1 hides it to see the whole game.
 func place_beside(game: Window) -> void:
 	if DisplayServer.get_name() == "headless":
 		return
 	var usable := DisplayServer.screen_get_usable_rect(game.current_screen)
 	size.x = clampi(usable.size.x - game.size.x - WINDOW_GAP, min_size.x, size.x)
-	var room := usable.size.x - size.x - WINDOW_GAP
-	if game.size.x > room:
-		game.size = Vector2i(room, roundi(game.size.y * float(room) / game.size.x))
-	var left := usable.position.x + maxi(0, floori((room - game.size.x) / 2.0))
+	var spare := usable.size.x - game.size.x - WINDOW_GAP - size.x
+	var left := usable.position.x + maxi(0, floori(spare / 2.0))
 	var middle := usable.get_center().y
 	game.position = Vector2i(left, maxi(usable.position.y, middle - (game.size.y >> 1)))
-	position = Vector2i(left + game.size.x + WINDOW_GAP, maxi(usable.position.y, middle - (size.y >> 1)))
+	position = Vector2i(mini(left + game.size.x + WINDOW_GAP, usable.end.x - size.x),
+		maxi(usable.position.y, middle - (size.y >> 1)))
 
 
 func _exit_tree() -> void:

@@ -143,6 +143,17 @@ const LOGIC := true
 · 这是规则变化：采纳前先让 Agent 把规则写进 GDD")
 
 
+func test_confirmation_lists_each_changed_parameter_against_the_game_value() -> void:
+	var slot := _fixture.sound_slot()
+	slot.live.volume_db = -3.5
+	slot.live.pitch_mode = 1
+	var slots: Array[Slot] = [slot]
+	assert_str(Adoption.confirm_text(slots, {})).contains(
+		"· 把按钮音效的当前设定写入游戏
+　　音量：-6 → -3.5
+　　音高方式：固定 → 逐轮升高")
+
+
 func test_adopting_a_game_value_cancels_a_queued_move() -> void:
 	var slot := _fixture.effect_slot()
 	_fixture.select(slot, "spark")

@@ -83,6 +83,7 @@ static func confirm_text(slots: Array[Slot], plans: Dictionary) -> String:
 			actions.append("· 把%s改回 %s" % [slot.display_name(), _switch_name(slot)])
 		else:
 			actions.append("· 把%s的当前设定写入游戏" % slot.display_name())
+		actions.append_array(_parameter_changes(slot))
 		if slot.constant("LOGIC", false):
 			actions.append(LOGIC_REMINDER)
 		var replaced := _replaced(slot)
@@ -98,6 +99,40 @@ static func confirm_text(slots: Array[Slot], plans: Dictionary) -> String:
 		"
 ".join(actions), "
 ".join(files)]
+
+
+## The parameters adoption changes in the game file, one line each: "　　尺寸：1 → 1.5".
+## A changed implementation is named by the slot's own line, not repeated here.
+static func _parameter_changes(slot: Slot) -> PackedStringArray:
+	var defaults := slot.disk_defaults()
+	if defaults == null:
+		return []
+	var saved := Codec.pack_fields(defaults)
+	var now := Codec.pack_fields(slot.live)
+	if saved.error != OK or now.error != OK:
+		return []
+	var lines: PackedStringArray = []
+	for path in Slot.differences(Codec.content(now.value), Codec.content(saved.value)):
+		if path == "candidate" or path == "candidate_params":
+			continue
+		var key := path.get_file()
+		var before := _shown_value(slot, key, _field_value(defaults, path))
+		var after := _shown_value(slot, key, _field_value(slot.live, path))
+		var caption := slot.field_caption(key, key.capitalize())
+		lines.append("　　%s：%s → %s" % [caption, before, after] if not before.is_empty()
+			and not after.is_empty() else "　　%s 已修改" % caption)
+	return lines
+
+
+static func _field_value(resource: Resource, path: String) -> Variant:
+	var parts := path.split("/")
+	var target := resource if parts.size() == 1 else resource.get("candidate_params") as Resource
+	return target.get(parts[parts.size() - 1]) if target != null else null
+
+
+static func _shown_value(slot: Slot, key: String, value: Variant) -> String:
+	var shown := slot.value_text(key, value)
+	return shown if not shown.is_empty() else Slot.plain_text(value)
 
 
 ## Slots that switch back to another implementation in game/: slot id -> its name.

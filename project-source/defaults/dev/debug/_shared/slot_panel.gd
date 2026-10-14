@@ -326,20 +326,10 @@ func _revert_tooltip(row: ParamRow) -> String:
 	elif value != null:
 		shown = slot.value_text(row.path.get_file(), value)
 		if shown.is_empty():
-			shown = _plain(value)
+			shown = Slot.plain_text(value)
 	if shown.is_empty():
 		return "还原这一项（回到%s）" % _preset_label()
 	return "还原这一项（%s：%s）" % [_preset_label(), shown]
-
-
-static func _plain(value: Variant) -> String:
-	if value is float:
-		return String.num(value, 3)
-	if value is int or value is bool or value is String:
-		return str(value)
-	if value is Color:
-		return "#" + (value as Color).to_html()
-	return ""
 
 
 func set_locked(value: bool) -> void:

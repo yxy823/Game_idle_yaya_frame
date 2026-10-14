@@ -332,6 +332,18 @@ func value_text(field_name: String, value: Variant) -> String:
 	return ""
 
 
+## A value without the slot's own words: floats to three places, colors as #hex; "" for
+## curves, gradients and other resources.
+static func plain_text(value: Variant) -> String:
+	if value is float:
+		return String.num(value, 3)
+	if value is int or value is bool or value is String:
+		return str(value)
+	if value is Color:
+		return "#" + (value as Color).to_html()
+	return ""
+
+
 ## slot.gd may declare CANDIDATES {"uid://…": "中文名"} for candidates the game adopted; a
 ## candidate just moved into game/ keeps its descriptor's name; otherwise the file name is shown.
 func candidate_title(candidate: Resource) -> String:
