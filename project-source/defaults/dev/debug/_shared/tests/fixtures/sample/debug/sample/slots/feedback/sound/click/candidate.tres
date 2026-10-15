@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1")
 display_name = "咔哒 · click"
-candidate_uid = "uid"
+candidate_uid = "uid://bmu7p1mlpo4rl"
 license_note = "测试用合成音，随框架分发；见同目录 README.md。"

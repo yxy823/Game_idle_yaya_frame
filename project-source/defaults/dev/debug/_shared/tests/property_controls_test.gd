@@ -28,13 +28,17 @@ func test_ranges_integer_float_color_bool_enum_and_vector_controls() -> void:
 func test_integer_input_keeps_64_bit_and_float_input_is_finer_than_slider() -> void:
 	var params := Params.new()
 	var values: Array = []
+	var found: PackedStringArray = []
 	for field in Controls.fields(params):
 		if field.name == "count":
+			found.append("count")
 			var input := auto_free(Controls.create(field, 3, values.append)) as LineEdit
 			input.text_changed.emit("9223372036854775800")
 		if field.name == "ranged_float":
+			found.append("ranged_float")
 			var row := auto_free(Controls.create(field, 1.0, values.append)) as HBoxContainer
 			assert_float((row.get_child(1) as SpinBox).step).is_equal(0.01)
+	assert_array(found).contains_exactly_in_any_order(["count", "ranged_float"])
 	assert_int(values[0]).is_equal(9223372036854775800)
 
 
