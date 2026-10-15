@@ -30,17 +30,17 @@
 
 **S3｜随讨论保存草稿并说明设计状态**
 
-本入口请求保存 `docs/gdd/` 中的草稿，可随有效决定更新正文。新 GDD 使用 `docs/gdd/README.md` 入口，其他主题按[GDD 文件名](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-文件名)使用固定名称与多实例命名模式，按真实内容创建；系统规则与数值模型按作用域进入固定文件，不按游戏规模、篇幅或复杂程度选择位置。文件名不随正文语言变化。按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)建立 `design-scope-and-boundaries.md` 及入口引用，整体范围集中维护，局部限制留在所属主题。导入 GDD 的已有主题沿用原位置，新增主题或系统使用标准路径并从原入口链接；保留无关旧正文，必要的迁移同步使用方。若用户限定只讨论，则只在对话中形成结论，并说明有用的已确认结论尚未保存。区分已采用决定、候选、明确暂缓事项和验证缺口，指出它们限制的下一步。
+本入口请求保存 `docs/gdd/` 中的草稿，可随有效决定更新正文。新 GDD 使用 `docs/gdd/README.md` 入口，其他主题按[GDD 文件名](../../../../../project-source/methodology/01-product-doc-structure.md#gdd-文件名)使用固定名称与多实例命名模式，按真实内容创建；系统规则与数值模型按作用域进入固定文件，不按游戏规模、篇幅或复杂程度选择位置。文件名不随正文语言变化。按[设计范围与边界](../../../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)建立 `design-scope-and-boundaries.md` 及入口引用，整体范围集中维护，局部限制留在所属主题。导入 GDD 的已有主题沿用原位置，新增主题或系统使用标准路径并从原入口链接；保留无关旧正文，必要的迁移同步使用方。若用户限定只讨论，则只在对话中形成结论，并说明有用的已确认结论尚未保存。区分已采用决定、备选方案、明确暂缓事项和验证缺口，指出它们限制的下一步。
 
-按[备选方案与未采纳想法](../../../../../project-source/methodology/01-product-doc-structure.md#备选方案与未采纳想法)分流：当前比较方案进入开放问题；已采纳规则的备选值留在规则或模型正文；没有当前待决问题依赖的设想保存到 `docs/unadopted-ideas.md`。转入比较或采纳时迁移正文，保留必要去向链接。
+按[备选方案与未采纳想法](../../../../../project-source/methodology/01-product-doc-structure.md#备选方案与未采纳想法)分流：当前比较方案进入开放问题；已采纳规则的备选数值留在规则或模型正文；没有当前待决问题依赖的设想保存到 `docs/unadopted-ideas.md`。转入比较或采纳时迁移正文，保留必要去向链接。
 
-草稿保存不结束尚未完成的共创。仍需用户决定的关键选择应继续进入讨论；用户明确要求先交一版草稿时，可以先交付可读草稿并列明假设与缺口。
+草稿保存不结束尚未完成的共创。仍需用户决定的关键选择，继续与用户讨论；用户明确要求先交一版草稿时，可以先交付可读草稿并列明假设与缺口。
 
 获准写入时，按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)维护 `docs/gdd/open-questions.md` 及入口引用。后续讨论、规划、审核和相关实验使用其中的问题；决定落实到所属主题后更新引用并移除已解决条目，避免与设计正文分别维护同一问题。
 
 同一次编写按 11 号规范的[归属与决策](../../../../../project-source/methodology/11-specialist-workflows.md#归属与决策)保存本次已确定的专业规格。GDD 保留整体目标与玩法规则，专业规格进入对应固定正文；原先写在 GDD 的当前规格迁入所属位置并更新引用。
 
-同一次编写按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把候选词义写成确定定义。
+同一次编写按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将已确认的术语定义保存到 `docs/terminology.md`，GDD 引用该文件，不另设词表。没有已确认术语时保留用途说明，不把待定词义写成确定定义。
 
 ## 资源与文件影响
 

@@ -268,18 +268,18 @@ Feature 级的人工验收尚未完成，不阻止已验证的逻辑提交；除
 
 | 内容 | 动作与权限 |
 | --- | --- |
-| GDD 和 Product 交付 | `design-gdd` 记录已批准的整体游戏设计变更；`design-balance` 在其 GDD 主题中维护范围内的数值设计。`product-author` 调整受影响的 Product 边界和来源链接。未来的 Product 仍是预拆分候选。对当前和已规划工作的影响，通过来源提交和源同步流程解决。 |
+| GDD 和 Product 交付 | `design-gdd` 记录已批准的整体游戏设计变更；`design-balance` 在其 GDD 主题中维护范围内的数值设计。`product-author` 调整受影响的 Product 边界和来源链接。未来的 Product 仍保持预拆分的范围。对当前和已规划工作的影响，通过来源提交和源同步流程解决。 |
 | 项目术语 | 在当前文档授权内调用 `project-terminology`；定义遵循 [项目术语](14-project-terminology.md)。含义变化走拥有该术语的 Product 或设计流程。 |
 | 专业需求与表现采用 | 当前任务按 [专业工作与来源](11-specialist-workflows.md) 协调适用的表现、UI、美术、音频和本地化来源。实现中新定的、玩家可见的表现参数（例如动画时长、缓动方式）放进调参资源，所属的表现或 UI 文档在本检查点链接这份资源，不抄数值，见[调参资源](13-debug-console-and-validation.md#调参资源)；不只写在设计稿里。验证前定下资源状态和位置、采用的组件组合，以及指向实际实现和使用方的链接。链接验收记录，不复制其结果。在依赖它们的交付之前，解决来源的实质影响。 |
 | Feature 设计与当前架构 | 在 Feature 设计稿中对齐实际实现和已批准的偏差。按 [维护架构地图](10-architecture-overview.md#维护架构地图) 更新受影响的架构契约和导航，用链接代替复制。 |
 | 重要技术选择 | 按 ADR 的门槛和授权处理；保留被替换的决定和证据的局限。 |
-| 项目或专项规则 | 按 [规则的增量维护](04-project-rules.md#规则的增量维护) 处理，包括写入每项拟定修改前的自查。保存已确定的约束；未批准的候选留在设计稿或 Progress 中，不进入有效规则。 |
+| 项目或专项规则 | 按 [规则的增量维护](04-project-rules.md#规则的增量维护) 处理，包括写入每项拟定修改前的自查。保存已确定的约束；未批准的规则草案留在设计稿或 Progress 中，不进入有效规则。 |
 
 发现实质冲突时当场处理，不要拖到这个检查点。处理完辅助流程后回到当前 Feature；文档路由不能重新开始 Product 规划，也不能结束已授权的交付。
 
 用户在调试台中为本 Feature 采纳的设定，也在本检查点完成：采纳到游戏，再用 `debug-console-godot` 按收尾步骤补 UID、检查并提交，之后才准备并绑定人工验收清单，见[验收](13-debug-console-and-validation.md#验收)。视觉决策 Feature 还没有采纳时，这里是一个等待用户的停点：Agent 准备好插槽、候选与固定局面，给出项目 `dev/debug/README.md` 的启动命令后停下，Goal 推进按人工交接结束本段；用户采纳后从收尾继续。
 
-在 Stage 4 之前定稿这些文档修改。以下文件都计入全局来源指纹，见 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)：GDD、Product、术语、专业规格、表现文档及其资源章节、规则、ADR 和设计 Markdown。之后的任何修改，即使只是文字修改，或改的是未来的 GDD 章节，都可能使当前证据失效。这类修改之后，完成所需的验证并重新验收；不要豁免这些文件，也不要声称覆盖没有变化。
+在 Stage 4 之前定稿这些文档修改。以下文件都计入内容指纹，见 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)：GDD、Product、术语、专业规格、表现文档及其资源章节、规则、ADR 和设计 Markdown。之后的任何修改，即使只是文字修改，或改的是未来的 GDD 章节，都可能使当前证据失效。这类修改之后，完成所需的验证并重新验收；不要豁免这些文件，也不要声称覆盖没有变化。
 
 ## Stage 4 · 自动验证与人工验收清单
 
@@ -393,7 +393,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 2. 记录已核实的结果：把 Feature 设为 `done`，并把 `completed_at` 设为当前的 ISO 8601 时间戳。状态字段记录完成，它不证明测试、审核或人工验收。
 3. 对最终的 Feature 记录运行 `python -B yaya/tools/checks/check-feature-list.py`。如果实现或契约的改动使证据失效，在交付前完成相应的验证。
 4. 任务提醒、Bug 经验、已接受的后续事项和链接留在 notes 中。实现决定、其理由以及对省略的边界情况的解释，属于 Feature 设计稿；占位规格留在它们的资源章节。提交之前，按项目知识的[在已获授权的工作中维护](../../docs/knowledge/README.md#在已获授权的工作中维护)定稿有用的知识及其索引，并遵守 09 号规范[项目知识](09-records-reports-and-handoff.md#项目知识)一节的产物归属。本 Feature 中导致过失败运行或返工、且不限于本 Feature 的陷阱，按该节的判断标准写成条目。
-5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
+5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响内容指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
 7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成证据，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
 
@@ -404,7 +404,7 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 1. 如果本任务修改了项目规则或专项规则，报告这项修改，并在下一个受影响的 Feature 之前，完成所需的 `feature-sync` 影响处理。复用已有的授权和已完成的源同步；不改变含义的编辑不需要编造后续工作。如果实际需要的决定或必需的源同步没有获得授权，报告这个边界，并停止依赖它的续接。
 2. 否则，检查当前 Product 的剩余范围，以及它的各个 Feature 的来源和状态。
    - 还有剩余工作时，用 [Stage 0 · 选择 Feature 并加载上下文](#stage-0--选择-feature-并加载上下文)的选择步骤（包括其中对被阻塞工作的恢复检查），找出下一个可开始的 `pending` Feature，或实际的阻塞。
-   - 只有当前 Product 所需的 Feature 都完成后，才重新查看当前 GDD 和下一个预拆分候选。用 `product-author` 编写它的交付文档，再用 `feature-plan` 拆分它，或复用它已有的计划。
+   - 只有当前 Product 所需的 Feature 都完成后，才重新查看当前 GDD 和下一个预拆分的 Product。用 `product-author` 编写它的交付文档，再用 `feature-plan` 拆分它，或复用它已有的计划。
    - 遵守第 5 步的授权边界。没有可开始的 Feature 不能证明 Product 已完成。
 3. 报告以下内容：
    - 完成的 Feature；

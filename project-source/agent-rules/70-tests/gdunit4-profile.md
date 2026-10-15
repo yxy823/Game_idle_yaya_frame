@@ -42,7 +42,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --changed
 - 有失败、跳过或标记为 flaky 的用例。
 - `discovery.json` 与 JUnit 用例不一致，或者选中的套件、源码中声明的 `test_` 方法没有执行。
 - `diagnostics.jsonl` 缺失或不完整，或者出现任何未声明的诊断（见[诊断监控](#诊断监控)）。
-- Feature 运行期间源码指纹发生变化。
+- Feature 运行期间内容指纹发生变化。
 
 ## 编写测试时的约定
 

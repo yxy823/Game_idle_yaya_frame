@@ -1064,7 +1064,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化候选的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
+      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化的 Product的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1322,7 +1322,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、备选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
+      "note": "职责：一次完整表现的过程、组成部分、备选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、备选方案及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1752,7 +1752,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
+      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选数值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、候选、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
+      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、备选方案、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

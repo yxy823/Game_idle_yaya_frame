@@ -42,7 +42,7 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 ```
 
-- `python_executable` 应已改为确认过的解释器，见[环境与流程配置](../foundations/configuration.md#环境与流程配置)。
+- 运行前，将 `python_executable` 设为已核对的解释器，见[环境与流程配置](../foundations/configuration.md#环境与流程配置)。
 - `F001` 和示例脚本路径都要换成实际存在的任务与文件。
 - 每条原生命令后立即读取 `$LASTEXITCODE`。
 

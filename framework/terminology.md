@@ -13,7 +13,7 @@
 | 框架仓库 | 本仓库 `D:/A_Games/Game_idle_yaya_frame`，保存维护材料和分发源 | 维护仓库、框架维护仓库、框架维护源 |
 | 根 `AGENTS.md` | 框架仓库根目录的 `AGENTS.md`，框架维护任务的规则入口；链接只指向文件时，链接文字用它的标题「框架维护约定」。不指生成项目的 `AGENTS.md`，也不指工程规则；「框架规则」既可能指它也可能指工程规则，所以不用 | 根规则、根约定、根维护约定、框架规则 |
 | 工程规则 | `project-source/agent-rules/` 中按领域保存的 Godot 引擎与语言规则，创建项目时复制到 `yaya/agent-rules/`；入口是[工程规则目录](../project-source/agent-rules/README.md) |  |
-| 分发源 / `project-source/` | 创建器按复制清单复制到新游戏项目的源材料；在框架仓库中只作为源材料阅读，不启动其中的开发流程 | 分发材料、分发源材料、分发包 |
+| 分发源 / `project-source/` | 创建器按复制清单复制到新游戏项目的源材料；在框架仓库中只作为源材料阅读，不启动其中的开发流程 | 分发材料、分发源材料、分发包、空白项目源材料、待分发项目 |
 | 复制清单 | `framework/project-creation/project-files.json`；只决定创建时复制什么、复制到哪里，不承担升级或已有项目的同步 |  |
 | 复制映射 | 复制清单中的一条 `source` → `target` 对应关系；`source` 相对框架仓库根目录，`target` 相对生成项目根目录 |  |
 | 生成项目 / 游戏项目 | 创建后独立拥有代码、配置、规则和记录的 Godot 项目，不再依赖框架仓库 |  |
@@ -32,16 +32,19 @@
 | 术语 | 含义与边界 | 不用的说法 |
 | --- | --- | --- |
 | GDD | 游戏设计正文，固定在 `docs/gdd/`；规划和实现依赖的设计必须先在这里真实存在 |  |
+| 设计原则 | GDD 中连接预期体验与设计取舍的原则，写在 `concept-and-experience.md`；用于说明选择或排除某种做法的理由 | 设计支柱 |
 | Product | 依据 GDD 划定的可验收交付单元，可以是一个系统、系统的一部分或跨系统体验；只写交付范围，不重复游戏规则 |  |
 | Product 总览 | `docs/product.md`，保存预拆分结果：交付范围、来源、依赖与建议顺序；不等于 GDD 的游戏总览 |  |
 | 预拆分 | 在 Product 总览中粗分全部约定交付范围；轮到某个 Product 时才细化其正文并拆 Feature |  |
 | Feature | 有范围、验收条件和状态的开发任务；Bug、重构和工程维护也可以按规范建为 Feature |  |
 | Feature 记录 | 02 号规范的[文件结构](../project-source/methodology/02-feature-list-schema.md#文件结构)规定的一组 JSON：索引、`docs/features/` 下的详情、修订记录、测试登记表与完成证据；“Feature 记录检查”指 `yaya/tools/checks/check-feature-list.py`。“不另建记录文件”指不为追踪某件事额外新建文件 |  |
+| 修订记录 | `docs/feature-list-revisions.json`，保存初始规划基线和后续源同步的修订条目及锚点；不指 Feature notes 中的修订笔记 | 修订日志 |
 | Stage | [Stage 0–8 `feature-execute` 执行循环](../project-source/methodology/03-execute-loop.md)里的阶段编号，用于定位进度；不是逐阶段审批或自动状态机 |  |
 | 独立审核 | Stage 6：用户明确要求时，在全新上下文中按用户指定的范围和时机审核变更，方法见[独立审核](../project-source/methodology/12-independent-review.md)；用户没要求时跳过 | 独立评审、独立审查 |
 | 现状审核 | `review-code` 的一种模式：不依赖差异或 Feature，审核选定模块的当前状态；审核一次改动的模式称“改动审核” | 现状审计 |
 | 代码坏味道 | 代码中提示可能存在维护问题的结构特征，是审核和挑选重构目标时的调查线索，本身不算违规 | 代码异味 |
-| 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案 |
+| 备选方案 | 设计中并列比较的几种可选做法，最终采用其中一种或组合；调试台里插槽的一种实现另称“候选” | 候选方案、候选设计、候选模型 |
+| 备选数值 | 设计中尚未采用的数字取值；保存、采纳和效果验证是不同的事。不指 Product、设计方案或工具路径 | 备选值、候选替代值 |
 | 待决定事项 | Progress 中的同名一节，列出需要用户决定才能继续的事项；GDD 中设计层面没定下的问题称“开放问题” |  |
 | Lessons | 记录 Agent 自己流程失误及出现次数的文件：生成项目的 `docs/lessons.md` 和框架的 `framework/lessons.md`；规则见 09 号的 [Lessons](../project-source/methodology/09-records-reports-and-handoff.md#lessons)。引擎、工具怎样运作的陷阱写项目知识，不写 Lessons | 教训台账、台账 |
 | 技术验证 | 在真实引擎中确认既定做法能否实现，结论为可行、受限、不可行或未验证；不用于定位已实现功能的卡顿 |  |
@@ -77,6 +80,7 @@
 | --- | --- | --- |
 | 游戏逻辑 / 游戏表现 | 理解一个功能时的两类职责：逻辑负责规则、状态与有效结果，表现负责界面、动画、特效、声音和镜头等玩家感知。用于找到对应的文档和实现，不是必须拆开的任务类型 |  |
 | 游戏表现文档 | `docs/presentation/` 中描述一次具体表现的文档：过程、要求、备选方案、采用关系及实现与验收入口 |  |
+| 使用方路径 | 游戏表现或资源被使用的位置，以实际文件或节点路径表示；与实现本身的路径区分 | 消费位置 |
 
 来源：[游戏职责与项目组织指南](../project-source/defaults/docs/game-organization.md)、[专业工作与来源](../project-source/methodology/11-specialist-workflows.md)。
 
@@ -90,7 +94,7 @@
 | 人工验收清单 | `manual` Feature 在 Stage 4 准备、用户在 Stage 5 填写结论的清单文件，例如 `reports/manual-acceptance/F001/manual-acceptance-checklist.json`；清单中的单条检查称“人工检查项” | 人工清单、人工检查清单、待验收清单 |
 | 人工接受 | 人工验收的通过结果（accepted），是 manual 模式 Feature 完成的条件之一；实现授权、自动测试通过或用户未表态都不算接受 |  |
 | 完成证据 | 每个 Feature 的 `docs/features/F0XX-evidence.json`，引用实际验证原件和人工验收清单；文件存在本身不证明条件满足。写入它的 `yaya/tools/features/record-feature-completion.py` 称“完成记录工具”，“完成记录”不作为这份文件的名称 | 完成依据 |
-| 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 |  |
+| 内容指纹 | 工具用来判断一条记录是否仍对应当前内容的标识；不是授权，也不是人工验收 | 快照指纹、验证指纹、全局来源指纹、源码指纹、工作区指纹、测试指纹 |
 | 验证点 | 最近一个仍在当前 HEAD 历史上的已完成 Feature 的完成证据 `git_revision`；没有时是仓库的第一个提交。取法由 `yaya/tools/features/record-base-revision.py` 实现 |  |
 | 起点 / `base_revision` | Feature 详情中测试选择的起点：Stage 2 写入的验证点，之后固定；选择比较它与当前工作区的内容差异。不指 Git 分支起点或修订记录的 `anchor_commit` |  |
 | 反推组件 | 起点以来改动的文件按登记表 `source_paths` 对到的组件，与 `affected_components` 取并集后参与测试选择；不在声明中时列进 `inferred_components`，不是错误 |  |
