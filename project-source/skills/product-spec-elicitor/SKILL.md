@@ -1,6 +1,6 @@
 ---
 name: product-spec-elicitor
-description: "根据当前的 GDD 设计澄清 Product 的交付边界、顺序、依赖和验收，返回一份聚焦的方案，不写文件。用于交付范围的问题。不用于游戏设计问题，这类问题属于 design-gdd。"
+description: "根据当前的 GDD 设计澄清 Product 的交付边界、顺序、依赖和验收，返回一份聚焦的方案，不写文件。用于交付范围的问题。不用于把已明确的交付范围写入 Product，改用 product-author。不用于游戏设计问题，这类问题属于 design-gdd。"
 ---
 
 # Product 交付澄清

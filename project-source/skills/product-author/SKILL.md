@@ -1,6 +1,6 @@
 ---
 name: product-author
-description: "根据当前的 GDD 来源整理 Product 交付范围，并协调已授权的 Feature 规划或源同步。用于 `docs/product.md` 和当前的 Product 文档。不用于游戏设计或 GDD 编写（design-gdd）。"
+description: "根据当前的 GDD 来源整理 Product 交付范围，并协调已授权的 Feature 规划或源同步。用于 `docs/product.md` 和当前的 Product 文档。不用于交付边界尚未明确的需求澄清，改用 product-spec-elicitor。不用于游戏设计或 GDD 编写（design-gdd）。"
 ---
 
 # Product 交付编写
