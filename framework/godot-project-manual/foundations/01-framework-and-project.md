@@ -46,7 +46,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 
 ## 环境就绪的含义
 
-默认配置提供待核对的工具路径，要在项目里核对实际位置。环境检查器的普通模式和 `--require-ready` 各检查什么、为什么 Python 版本要单独确认，见配置参考的[检查能力边界](configuration.md#检查能力边界)。
+默认配置提供待核对的工具路径，要在项目里核对实际位置。环境检查器的普通模式和 `--require-ready` 各检查什么、为什么 Python 版本要单独确认，见配置参考的[检查能力边界](04-configuration.md#检查能力边界)。
 
 新项目要依次经过三步，每一步都是单独的证据：
 
@@ -96,4 +96,4 @@ python -B framework/project-creation/tools/create_project.py --output D:\Games\M
 5. 用框架版本整份覆盖项目文件，不逐段合并。框架删除的文件，确认项目里没有引用后再删除。
 6. 在项目里运行 `python -B yaya/tools/checks/check-markdown-links.py`，确认链接和锚点没有失效；对齐了代码、工具或插件时，再运行受影响的测试。最后按项目的提交约定提交。
 
-相关专题：[配置参考](configuration.md)、[项目对象与目录](project-layout.md)、[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。
+相关专题：[配置参考](04-configuration.md)、[项目对象与目录](03-project-layout.md)、[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。

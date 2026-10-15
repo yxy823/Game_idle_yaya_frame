@@ -12,9 +12,9 @@
 
 想先理解概念，按这个顺序读参考页：
 
-1. [框架、创建器与项目边界](foundations/framework-and-project.md)：项目从哪里来，创建后和框架是什么关系。
-2. [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：用一次商店购买理解一个功能由哪些职责组成。
-3. [项目对象与目录](foundations/project-layout.md)：每类文档和代码放在哪里、谁来读写。
+1. [框架、创建器与项目边界](foundations/01-framework-and-project.md)：项目从哪里来，创建后和框架是什么关系。
+2. [游戏逻辑、表现与协作](foundations/02-game-logic-and-presentation.md)：用一次商店购买理解一个功能由哪些职责组成。
+3. [项目对象与目录](foundations/03-project-layout.md)：每类文档和代码放在哪里、谁来读写。
 4. [需求、Feature 与规划基线](requirements-and-tasks/requirements-and-planning.md)：从 GDD 到 Feature 的规划方式。
 
 之后按需要查阅其余专题。
@@ -23,10 +23,10 @@
 
 - **教程**：以三消示例项目串起主线的三篇教程，见[第一次阅读](#第一次阅读)。
 - **框架基础**
-  - [框架、创建器与项目边界](foundations/framework-and-project.md)：分发方式、创建器用法、环境就绪的含义，以及已有项目怎样采用框架。
-  - [游戏逻辑、表现与协作](foundations/game-logic-and-presentation.md)：逻辑与表现的职责划分，以及怎样从设计找到实现与验收。
-  - [项目对象与目录](foundations/project-layout.md)：GDD、Product、Feature、测试登记表、完成证据、代码与报告的位置和读写关系。
-  - [配置参考](foundations/configuration.md)：工具路径、文档语言、Godot 默认配置、插件、lint 与文本格式。
+  - [框架、创建器与项目边界](foundations/01-framework-and-project.md)：分发方式、创建器用法、环境就绪的含义，以及已有项目怎样采用框架。
+  - [游戏逻辑、表现与协作](foundations/02-game-logic-and-presentation.md)：逻辑与表现的职责划分，以及怎样从设计找到实现与验收。
+  - [项目对象与目录](foundations/03-project-layout.md)：GDD、Product、Feature、测试登记表、完成证据、代码与报告的位置和读写关系。
+  - [配置参考](foundations/04-configuration.md)：工具路径、文档语言、Godot 默认配置、插件、lint 与文本格式。
 - **需求与任务**
   - [需求、Feature 与规划基线](requirements-and-tasks/requirements-and-planning.md)：GDD 前提、交付预拆分、逐个细化 Product、AC、依赖、基线与需求修订。
   - [任务类型、开发阶段与完成语义](requirements-and-tasks/feature-lifecycle.md)：Bug、重构、维护与实验的区别，Stage、自动与人工验收、Git 和持续任务。

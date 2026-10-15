@@ -14,7 +14,7 @@ title: 写作与输出规则
 | --- | --- | --- |
 | 对话回复，以及派给子智能体和 Codex 的提示词 | 个人规则 `~/.claude/CLAUDE.md` 的「沟通与回答组织」「子智能体」「Codex 监工模式」 | no 只有「发出前自检」，由 Agent 自己逐项核对 |
 | 框架的手册、场景、维护说明和 Q&A | [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | ok 措辞检查、术语检查；提交钩子再查术语、硬性措辞和链接 |
-| 规则、Skill 和提示词 | [规则与提示词文件](../maintenance/design-guidelines/instruction-files.md)，写法同上一行 | ok 同上一行，规则文件还要过硬性检查项 |
+| 规则、Skill 和提示词 | [规则与提示词文件](../maintenance/design-guidelines/02-instruction-files.md)，写法同上一行 | ok 同上一行，规则文件还要过硬性检查项 |
 | 生成项目里的文档 | 项目自带的 technical-documentation-writing-godot | ok 项目自己的措辞检查、术语检查和提交钩子 |
 | 提交说明 | [本地提交的做法](../maintenance/maintenance-and-sync.md#本地提交的做法) | no 钩子只检查暂存的 `.md` 和 `.json` 文件 |
 

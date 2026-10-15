@@ -48,7 +48,7 @@ python -B framework/project-creation/tools/create_project.py --output D:\A_Games
 
 **得到什么**：创建器按复制清单复制文件，建立独立的 Git 仓库并做初始提交（示例 `c697cba`）。框架的流程、规则和工具在 `yaya/` 下，游戏内容放在 `game/`、`components/`、`assets/` 和 `tests/`。
 
-**为什么这样做**：项目从这一刻起独立拥有自己的文件，框架之后的更新不会自动同步进来。创建器只复制文件，不探测环境、不运行 Godot，所以接下来要配置环境。详见[框架和项目各管什么](../foundations/framework-and-project.md#框架和项目各管什么)与[项目对象与目录](../foundations/project-layout.md)。
+**为什么这样做**：项目从这一刻起独立拥有自己的文件，框架之后的更新不会自动同步进来。创建器只复制文件，不探测环境、不运行 Godot，所以接下来要配置环境。详见[框架和项目各管什么](../foundations/01-framework-and-project.md#框架和项目各管什么)与[项目对象与目录](../foundations/03-project-layout.md)。
 
 ## 2. 配置环境并完成首次扫描
 
@@ -64,7 +64,7 @@ Agent 把路径写进 `docs/methodology-config.json`，运行环境检查，并�
 }
 ```
 
-环境检查输出 `READY`，只说明路径可用、Godot 版本符合要求，不说明测试能跑通，见[环境就绪的含义](../foundations/framework-and-project.md#环境就绪的含义)。
+环境检查输出 `READY`，只说明路径可用、Godot 版本符合要求，不说明测试能跑通，见[环境就绪的含义](../foundations/01-framework-and-project.md#环境就绪的含义)。
 
 **首次扫描**：接着使用「项目与环境 → 第一次运行项目，Godot 还没有完成资源扫描」。还没遇到错误时，“首次运行错误”填“无”，作为预防性扫描。
 

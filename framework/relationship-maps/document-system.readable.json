@@ -337,7 +337,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/prompts-and-scenarios.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/04-prompts-and-scenarios.md"
       },
       "appearance": {
         "opacity": 1,
@@ -466,7 +466,7 @@
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/reviews-and-reports.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/05-reviews-and-reports.md"
       },
       "appearance": {
         "opacity": 1,

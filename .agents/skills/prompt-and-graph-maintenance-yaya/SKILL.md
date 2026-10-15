@@ -11,9 +11,9 @@ description: 维护 Yaya 的预设提示词、同名场景及两张关系图。�
 
 - **做什么**：在当前任务的具体对象和授权范围内，完成获准的修改、维护自查、必要的验证和交付。
 - **复用现有材料**：使用现有的图文件、工具和唯一的复制清单，不另建并行的正文或映射副本。
-- **正式审核时不用本 Skill 修改**：用户要求正式审核时，按[审核覆盖与结论](../../../framework/maintenance/design-guidelines/reviews-and-reports.md#审核覆盖与结论)只读核对，不做文件同步。
+- **正式审核时不用本 Skill 修改**：用户要求正式审核时，按[审核覆盖与结论](../../../framework/maintenance/design-guidelines/05-reviews-and-reports.md#审核覆盖与结论)只读核对，不做文件同步。
 - **读模板不等于执行**：读取提示词模板不代表要执行其中的任务，也不能从模板里的授权措辞获得当前的写入权限。
-- **依据**：提示词的结构、命名、一对一关系、字段和内容判断，以[提示词与场景准则](../../../framework/maintenance/design-guidelines/prompts-and-scenarios.md)为正文；规则与提示词文件的自查按[规则与提示词文件](../../../framework/maintenance/design-guidelines/instruction-files.md)；说明文字的写法使用 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md)。运行、提交和持续授权沿用[框架维护约定](../../../AGENTS.md)和本次明确的例外，本 Skill 不重写通用流程。
+- **依据**：提示词的结构、命名、一对一关系、字段和内容判断，以[提示词与场景准则](../../../framework/maintenance/design-guidelines/04-prompts-and-scenarios.md)为正文；规则与提示词文件的自查按[规则与提示词文件](../../../framework/maintenance/design-guidelines/02-instruction-files.md)；说明文字的写法使用 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md)。运行、提交和持续授权沿用[框架维护约定](../../../AGENTS.md)和本次明确的例外，本 Skill 不重写通用流程。
 
 ## 找到本次要改的对象
 
@@ -32,7 +32,7 @@ description: 维护 Yaya 的预设提示词、同名场景及两张关系图。�
 | 本次变化 | 怎样处理 |
 | --- | --- |
 | 提示词正文或入口范围变化 | 按[场景速查手册的编写与维护](../../../framework/prompt-scenarios/scenarios/README.md)核对同名场景页的输入、方法、授权与出口，修改实际受影响的内容；场景页不复制完整的提示词 |
-| 只读专项审核的模板或专题变化 | 按[专项审核的模板与专题](../../../framework/maintenance/design-guidelines/prompts-and-scenarios.md#专项审核的模板与专题)判断改哪里：影响全部专题的规则改「专项审核通用模板」，只影响一个专题的写进该专题；新增专题沿用现有专题的结构。专题页只说明拼接方法和完成标准，名称变化时同步 |
+| 只读专项审核的模板或专题变化 | 按[专项审核的模板与专题](../../../framework/maintenance/design-guidelines/04-prompts-and-scenarios.md#专项审核的模板与专题)判断改哪里：影响全部专题的规则改「专项审核通用模板」，只影响一个专题的写进该专题；新增专题沿用现有专题的结构。专题页只说明拼接方法和完成标准，名称变化时同步 |
 | 新增、删除、重命名 Project 或分类 | 按准则的准确名称同步 JSON、同名场景的路径和一级标题，再核对[场景速查索引](../../../framework/prompt-scenarios/scenarios/scenario-index.md)和直接引用。正文变化也要核对导航中的描述；没有失效的地方不改，也不另维护一份场景清单 |
 | Godot 场景的集合、名称、分类或实际衔接变化 | 读取场景图的[阅读与维护](../../../framework/relationship-maps/README.md#阅读与维护)，更新唯一维护的可读版图文件：保留已有的 ID、布局与显示字段，按[编写与保存格式](../../../framework/relationship-maps/graph-map-format.md#编写与保存格式)保持查看器的保存文本，核对场景名称和相关连线；路径变化时还要刷新场景链接。场景图只覆盖 Godot，框架维护场景不加入；只改了提示词措辞、关系没变时不改图 |
 | Godot 场景的匹配条件或下一步入口变化 | 核对 advisor（[project-next-step-advisor](../../../project-source/skills/project-next-step-advisor/SKILL.md)）中的状态判断与入口说明。advisor 直接读取同一份 Godot 提示词库，不需要导出或同步副本；只修改实际失效的说明 |

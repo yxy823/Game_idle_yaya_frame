@@ -76,7 +76,7 @@ $LASTEXITCODE
 
 GAA 使用本机已安装该工具的解释器，不随项目复制；后台调用见[分析](../../../project-source/defaults/dev/debug/_shared/README.md#分析)。
 
-就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析、lint 或初始化 Git。新项目还需要经过哪些步骤，见[环境就绪的含义](framework-and-project.md#环境就绪的含义)。
+就绪检查不会创建主场景、执行编辑器扫描、运行测试、解析、lint 或初始化 Git。新项目还需要经过哪些步骤，见[环境就绪的含义](01-framework-and-project.md#环境就绪的含义)。
 
 ## 文档语言
 
@@ -155,4 +155,4 @@ CLI 和可选的编辑器面板都以项目根目录的 `gdlint.json` 为准：
 - **缩进**：GDScript、Shader 及 Shader include 使用 Tab（显示宽度 4），Python 使用 4 空格，JSON/YAML 使用 2 空格。
 - **Windows 命令文件**：`.bat`、`.cmd` 使用 CRLF。
 
-`.gitattributes` 与上述换行约定一致：Godot 文本场景、资源、导入元数据，以及 SVG、glTF、OBJ 等可读资源按文本处理；常见图片、音视频、字体、二进制模型和 Godot 二进制场景、资源按二进制处理。标为二进制不等于被忽略，也不会自动启用 Git LFS；哪些文件被忽略见[Git 与 Godot 扫描的区别](project-layout.md#git-与-godot-扫描的区别)。在另一台机器上看到乱码时，先读取实际文件确认，不要把控制台显示问题当成文件编码错误。
+`.gitattributes` 与上述换行约定一致：Godot 文本场景、资源、导入元数据，以及 SVG、glTF、OBJ 等可读资源按文本处理；常见图片、音视频、字体、二进制模型和 Godot 二进制场景、资源按二进制处理。标为二进制不等于被忽略，也不会自动启用 Git LFS；哪些文件被忽略见[Git 与 Godot 扫描的区别](03-project-layout.md#git-与-godot-扫描的区别)。在另一台机器上看到乱码时，先读取实际文件确认，不要把控制台显示问题当成文件编码错误。

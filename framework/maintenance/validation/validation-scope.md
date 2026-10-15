@@ -1,6 +1,6 @@
 # 框架验证范围
 
-[框架维护](../README.md) · [测试与夹具](../../tests/README.md#按需检查) · [创建器契约](../../godot-project-manual/foundations/framework-and-project.md#创建器用法)
+[框架维护](../README.md) · [测试与夹具](../../tests/README.md#按需检查) · [创建器契约](../../godot-project-manual/foundations/01-framework-and-project.md#创建器用法)
 
 本页说明修改框架后要做哪些验证，以及每一层验证能证明什么。
 

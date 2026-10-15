@@ -66,4 +66,4 @@ Agent 必须守住的是状态归属、有效结果和文档一致性。至于�
 
 验证也按要求来选：购买规则可以用自动测试检查成功、余额不足和重复点击等情况；接入部分检查真实结果是否正确传给界面、重新打开界面时是否显示当前状态；动画、声音和手感则通过人工验收确认。各类证据能证明什么，见[每种结果能证明什么](../methods-and-tools/commands-and-evidence.md#每种结果能证明什么)。
 
-继续查阅：[项目对象与目录](project-layout.md)、[需求、Feature 与规划基线](../requirements-and-tasks/requirements-and-planning.md)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。
+继续查阅：[项目对象与目录](03-project-layout.md)、[需求、Feature 与规划基线](../requirements-and-tasks/requirements-and-planning.md)、[架构概览](../../../project-source/methodology/10-architecture-overview.md)。

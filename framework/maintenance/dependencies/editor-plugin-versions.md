@@ -29,7 +29,7 @@ Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能
 
 ### 测试与静态检查插件
 
-两者不属于效率插件，在项目中的用法见 Godot 项目手册的[插件和文本约定](../../godot-project-manual/foundations/configuration.md#插件和文本约定)。表中是仓库保存的版本，不代表上游最新版本。
+两者不属于效率插件，在项目中的用法见 Godot 项目手册的[插件和文本约定](../../godot-project-manual/foundations/04-configuration.md#插件和文本约定)。表中是仓库保存的版本，不代表上游最新版本。
 
 | 插件与原始仓库 | 包内 `plugin.cfg` 版本 | 固定源码 | 本地修改 |
 | --- | --- | --- | --- |

@@ -17,8 +17,8 @@
 | 具体的项目开发或框架维护场景 | `framework/prompt-scenarios/scenarios/` 下对应的 Project |
 | 正式的提示词 | `framework/prompt-scenarios/prompts/` 下的两份提示词库，各自维护完整正文 |
 | 框架共用术语 | `framework/terminology.md`；项目自己的业务词汇不写回这里 |
-| 职责设计准则与审核报告 | 长期准则在 [design-guidelines/](design-guidelines/README.md)；当次报告见[当次报告的保存与清理](design-guidelines/reviews-and-reports.md#当次报告的保存与清理) |
-| 规则、Skill 与任务提示词文件的编写 | 根 `AGENTS.md` 与[规则与提示词文件](design-guidelines/instruction-files.md) |
+| 职责设计准则与审核报告 | 长期准则在 [design-guidelines/](design-guidelines/README.md)；当次报告见[当次报告的保存与清理](design-guidelines/05-reviews-and-reports.md#当次报告的保存与清理) |
+| 规则、Skill 与任务提示词文件的编写 | 根 `AGENTS.md` 与[规则与提示词文件](design-guidelines/02-instruction-files.md) |
 | 框架自用 Skill | 仓库根目录的 `.agents/skills/`。参考资料、配套脚本和私有依赖都放在各 Skill 目录内，不分发给项目 |
 | 提示词、场景与关系图的维护方法 | `.agents/skills/prompt-and-graph-maintenance-yaya/` |
 | 框架文档的写作方法 | `.agents/skills/technical-documentation-writing-yaya/` |
@@ -29,7 +29,7 @@
 
 几条通用原则：
 
-- **编写与审核**：维护规则、Skill 和任务提示词文件时，按[规则与提示词文件](design-guidelines/instruction-files.md)自查；整理已确认说明的表达和组织，使用 [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护由作者自查，不额外安排独立审核；用户要求正式审核时，按[审核与报告](design-guidelines/reviews-and-reports.md)进行。
+- **编写与审核**：维护规则、Skill 和任务提示词文件时，按[规则与提示词文件](design-guidelines/02-instruction-files.md)自查；整理已确认说明的表达和组织，使用 [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。普通维护由作者自查，不额外安排独立审核；用户要求正式审核时，按[审核与报告](design-guidelines/05-reviews-and-reports.md)进行。
 - **`project-source/` 只是源材料**：其中的规则和 Skill 在框架仓库里只供阅读，不启用项目开发的 Stage；修改时的补充规则见下文[修改分发源](#修改分发源)。
 
 ## 找到受影响的说明
@@ -38,14 +38,14 @@
 
 | 变化 | Godot 项目手册中的专题 | 以什么为准 |
 | --- | --- | --- |
-| 复制、目录、重命名、初始化边界 | [框架、创建器与项目边界](../godot-project-manual/foundations/framework-and-project.md)、[项目对象与目录](../godot-project-manual/foundations/project-layout.md) | 创建器、复制清单、默认文件 |
-| 环境字段、插件或 lint 默认值 | [配置参考](../godot-project-manual/foundations/configuration.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 配置源文件、检查器、插件及补丁 |
+| 复制、目录、重命名、初始化边界 | [框架、创建器与项目边界](../godot-project-manual/foundations/01-framework-and-project.md)、[项目对象与目录](../godot-project-manual/foundations/03-project-layout.md) | 创建器、复制清单、默认文件 |
+| 环境字段、插件或 lint 默认值 | [配置参考](../godot-project-manual/foundations/04-configuration.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 配置源文件、检查器、插件及补丁 |
 | Product、AC、依赖、规划与历史 | [需求、Feature 与规划基线](../godot-project-manual/requirements-and-tasks/requirements-and-planning.md) | methodology、模板、规划与同步 Skill、检查器 |
 | Stage、验收、任务类型、完成或持续授权 | [任务类型、开发阶段与完成语义](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md) | Stage 0–8 `feature-execute` 执行循环、Feature Skill、工程规则 |
 | 探索、worktree 准备或成果整合 | [逐步探索与 worktree](../godot-project-manual/methods-and-tools/skills-and-agents.md#逐步探索与-worktree)、[探索结果与工作目录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) | 对应 Skill、任务路由、Git 规范和原有产物归属 |
 | 专业文档维护者、资源、语言或独立审核 | [专业来源与资源](../godot-project-manual/specialist-work-and-records/specialist-work.md)、[Skill、Agent 与提示词](../godot-project-manual/methods-and-tools/skills-and-agents.md) | 专业与审核规范、相应 Skill、角色配置和复制映射 |
 | 参数、测试选择、结果、指纹或错误 | [命令与验证证据](../godot-project-manual/methods-and-tools/commands-and-evidence.md)、[错误与结果的含义](../godot-project-manual/methods-and-tools/errors-and-results.md) | 实际 CLI、`tools/lib/verification_snapshot.py`、完成校验与测试策略 |
-| 调试台调用的外部分析工具 GAA | [配置参考](../godot-project-manual/foundations/configuration.md) | 调试台的[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)、`analyzer_service.gd` 与调试台分析测试 |
+| 调试台调用的外部分析工具 GAA | [配置参考](../godot-project-manual/foundations/04-configuration.md) | 调试台的[分析](../../project-source/defaults/dev/debug/_shared/README.md#分析)、`analyzer_service.gd` 与调试台分析测试 |
 | 术语、设计、架构、规则、调研、知识或 Progress | [知识、设计与记录](../godot-project-manual/specialist-work-and-records/knowledge-and-records.md) | 来源规范、产物生命周期、角色和领域规则 |
 | 场景的输入、步骤、提示词或出口 | 对应 Project / 分类下的同名场景页 | 所属提示词库、Skill / methodology / CLI、[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md) |
 
@@ -68,7 +68,7 @@
 - **职责评价**：新增、实质调整职责，或审核 Skill、脚本、提示词与场景时，按[职责设计准则](design-guidelines/README.md)评价对应对象；普通局部修改不触发无关的全量审核。
 - **行为不变**：整理文档或文件名，不能顺带改变 Skill 的行为。
 - **被证明错误的内容**：规则、提示词、文档或示例中的做法被证明错误时，删除错误的建议，不保留原文，也不加“已取代”“已废弃”之类的标记；同时检查引用它的依据、索引和摘要里有没有同样的说法。只有它容易让人再犯时，才在原处改写成一两句陷阱提示：不要做什么、为什么会出错、怎么做。
-- **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项；搬迁时要追的位置见[目录组织](design-guidelines/document-responsibilities.md#目录组织)。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
+- **路径与字段**：调整文件路径或配置字段时，追到全部读写方及其调用链、复制映射和回归夹具，核对生成后的路径和含义一致，不留下只有部分工具支持的选项；搬迁时要追的位置见[目录组织](design-guidelines/01-document-responsibilities.md#目录组织)。移动、改名文档或修改标题时，还要在两份提示词库中搜索旧路径和「旧标题」：提示词正文里的引用是纯文本，链接检查只能发现不存在的路径和标题，查不出重复或指错对象的引用。
 - **术语用词**：写完或改过文档后，对本次改过的文档运行术语检查 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md <文件> <文件>…`（改过的提示词 JSON 同样列出），把报出的不用说法改为正式名称；不顺手改本次没碰过的文档。命令说明见[检查术语用词](tools/README.md#检查术语用词)；提交时[提交钩子](tools/README.md#提交钩子)还会检查一次。
 - **文档系统图**：文档职责、路径、产物归属或实际引用关系变化时，使用 [prompt-and-graph-maintenance-yaya](../../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) 同步对应的节点与关系；普通措辞变化不需要维护全图。全仓文档覆盖扫描只在用户明确要求时运行。
 - **重复的症状先找根因**：同一类问题第二次出现时，先查[框架 Lessons](../lessons.md)，再停下来查它为什么反复出现，再决定修具体文件还是修源头，不连续修补单个实例。例如新项目扫描后总冒出新的 `.uid`、`.import` 或格式差异，要追到分发源的写法或工具，而不是每次补交一批文件。
@@ -90,7 +90,7 @@
 - **结构变了**：更新入口、链接、锚点和相关的关系图。
 - **只是内部实现变了**：使用契约不变时，核对后不需要为改而改。
 
-文档只描述现在的行为，不同时保留新旧两套教程，也不留空的跳转页。历史原因由 Git 保存；当次仍需要的报告按[当次报告的保存与清理](design-guidelines/reviews-and-reports.md#当次报告的保存与清理)处理。不为说明文档建立版本状态、同步收据、来源哈希清单或发布资格。
+文档只描述现在的行为，不同时保留新旧两套教程，也不留空的跳转页。历史原因由 Git 保存；当次仍需要的报告按[当次报告的保存与清理](design-guidelines/05-reviews-and-reports.md#当次报告的保存与清理)处理。不为说明文档建立版本状态、同步收据、来源哈希清单或发布资格。
 
 ### 说明的组织与措辞
 
@@ -98,7 +98,7 @@
 
 - **页面分工**：见[两本手册的分工](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md)。
 - **11 类信息**：来自框架版写作 Skill 的流程参考，只用于框架的场景页，不作为 Godot 项目文档的默认结构。
-- **场景正文**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有的条件和先后顺序。路径检查只证明目录对应，见[路径校验的职责](design-guidelines/prompts-and-scenarios.md#路径校验的职责)。
+- **场景正文**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有的条件和先后顺序。路径检查只证明目录对应，见[路径校验的职责](design-guidelines/04-prompts-and-scenarios.md#路径校验的职责)。
 - **两本手册不互相引用**：必要的解释就地写出；权威规范、工具和公共术语两册都可以引用。
 - **链接**：修改时核对受影响的 Markdown 链接、锚点和导航。
 
@@ -118,9 +118,9 @@
 
 - **各自独立**：两份 Skill 各有自己的 `SKILL.md`、`agents/openai.yaml` 和完整参考，可以独立调整例子、默认组织和写作方法，不跨包引用或自动同步；唯一的例外是[措辞检查](../../project-source/skills/technical-documentation-writing-godot/references/writing-guide.md#措辞检查)的说明，它只维护在 Godot 版，框架版链接它，因为措辞检查在框架仓库和生成项目中读的是同一份配置；相似的原则可以各写一份。各自产物的实际契约由所属规范决定，写作 Skill 不另造流程。
 - **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。框架仓库只启用框架版；Godot 版在这里只是待分发的源文件。
-- **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/` 和 `.claude/skills/`（两份副本的原因见[复制与重命名](../godot-project-manual/foundations/project-layout.md#复制与重命名)），Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
+- **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/` 和 `.claude/skills/`（两份副本的原因见[复制与重命名](../godot-project-manual/foundations/03-project-layout.md#复制与重命名)），Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
 - **结构**：GDD、Product、Feature 及其验收场景使用各自的结构，不套用框架场景页的 11 类栏目或 S1 编号。
-- **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目，已创建的项目是否更新由用户决定，对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/framework-and-project.md#让项目里的框架副本与框架对齐)。
+- **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目，已创建的项目是否更新由用户决定，对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/01-framework-and-project.md#让项目里的框架副本与框架对齐)。
 - **依赖**：两份都只通过内部相对路径读取参考，不需要执行脚本、私有运行时或同步工具。
 - **修改验证**：根据真实的误用、表达问题或维护成本调整条款和示例；涉及分发时，核对复制后的文件、入口和相对引用。第一次创建或明显改变适用范围时，用一次独立的试写检查实际效果和可移植性；普通的局部改字不需要每次都完整试写。
 
@@ -170,7 +170,7 @@
 | 核实收到的审核意见 | [收到外部审核意见，先核实哪些值得修改](<../prompt-scenarios/scenarios/Yaya 框架维护/改完检查/收到外部审核意见，先核实哪些值得修改.md>) |
 | 用一个小任务验证真实流程 | [想用一个小任务实际验证框架流程](<../prompt-scenarios/scenarios/Yaya 框架维护/整体体检与整理/想用一个小任务实际验证框架流程.md>)；实际运行范围与静态结论分别记录 |
 
-总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务推演和列出需要的试用，按[审核的判断方法](design-guidelines/reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
+总体判断依据根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)，文本与职责的评价依据[职责设计准则](design-guidelines/README.md)；质疑已确认的取舍、带具体任务推演和列出需要的试用，按[审核的判断方法](design-guidelines/05-reviews-and-reports.md#审核的判断方法)。报告只记录已核实的版本、范围和证据，不授予实施权限。
 
 ## 授权在后续对话中的延续
 

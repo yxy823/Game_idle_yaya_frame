@@ -36,7 +36,7 @@ Game_idle_yaya_frame/
 python -B framework/project-creation/tools/create_project.py --output D:\Games\MyGodotGame
 ```
 
-创建器按[复制清单](framework/project-creation/project-files.json)复制和重命名，再建立独立 Git 仓库、启用复制过去的提交钩子，并创建本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[创建器用法](framework/godot-project-manual/foundations/framework-and-project.md#创建器用法)。
+创建器按[复制清单](framework/project-creation/project-files.json)复制和重命名，再建立独立 Git 仓库、启用复制过去的提交钩子，并创建本地初始提交；它不探测环境、不执行 Godot 或测试、不生成业务需求、不推送远程。目标路径、失败处理等完整契约见[创建器用法](framework/godot-project-manual/foundations/01-framework-and-project.md#创建器用法)。
 
 新项目只带 `docs/gdd/` 的用途说明，不带任何游戏设计。创建后可以用 `design-gdd` 从想法形成设计，或导入整理已有资料；依赖设计的规划和实现开始前，当前范围必须有真实设计。
 

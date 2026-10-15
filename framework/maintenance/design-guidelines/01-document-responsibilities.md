@@ -55,7 +55,7 @@
 
 审核 AGENTS、Skill、脚本说明、提示词和手册时，同时评价表达是否准确、容易查找和执行，不只检查路径或技术行为。
 
-规则、Skill 与任务提示词文件的编写要求见[规则与提示词文件](instruction-files.md)，正式审核见[审核与报告](reviews-and-reports.md)。
+规则、Skill 与任务提示词文件的编写要求见[规则与提示词文件](02-instruction-files.md)，正式审核见[审核与报告](05-reviews-and-reports.md)。
 
 已确认的框架说明文字，其表达与组织使用 [technical-documentation-writing-yaya](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)；生成项目的写法由独立的 [technical-documentation-writing-godot](../../../project-source/skills/technical-documentation-writing-godot/SKILL.md) 负责。下表保留审核问题与框架特有要求。
 

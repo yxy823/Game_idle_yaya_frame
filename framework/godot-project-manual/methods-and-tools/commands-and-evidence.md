@@ -42,7 +42,7 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 ```
 
-- 运行前，将 `python_executable` 设为已核对的解释器，见[环境与流程配置](../foundations/configuration.md#环境与流程配置)。
+- 运行前，将 `python_executable` 设为已核对的解释器，见[环境与流程配置](../foundations/04-configuration.md#环境与流程配置)。
 - `F001` 和示例脚本路径都要换成实际存在的任务与文件。
 - 每条原生命令后立即读取 `$LASTEXITCODE`。
 
@@ -83,7 +83,7 @@ $LASTEXITCODE
 $LASTEXITCODE
 ```
 
-环境检查器各模式检查什么，见配置参考的[检查能力边界](../foundations/configuration.md#检查能力边界)。
+环境检查器各模式检查什么，见配置参考的[检查能力边界](../foundations/04-configuration.md#检查能力边界)。
 
 Feature 记录检查读取完整的 Feature 索引、详情、测试登记表和修订关系，核对 ID、字段、引用、路径、依赖与历史规则。它已经包含 JSON 解析，规划或同步完成后运行这一个入口即可；单文件语法检查只在定位具体错误时使用。需求覆盖、真实依赖和历史保留这些语义，仍由 Agent 核对。
 

@@ -11,7 +11,7 @@
 
 一个任务只用到它需要的部分。项目里有 Art Bible 或 Sound Bible 的占位文件，不代表要先把整款游戏的美术和声音都设计完。
 
-本页的 UI 文档、游戏表现文档和共享方向文档，分别细化[游戏逻辑、表现与协作](../foundations/game-logic-and-presentation.md)中的不同问题。逻辑和表现都来源于 GDD，专业文档不替代游戏规则的正文。专业规格可以和 GDD 一起逐步形成；但开始接入、测量或实现前，本次行为必须有真实的规则支撑，判断方式见 [GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
+本页的 UI 文档、游戏表现文档和共享方向文档，分别细化[游戏逻辑、表现与协作](../foundations/02-game-logic-and-presentation.md)中的不同问题。逻辑和表现都来源于 GDD，专业文档不替代游戏规则的正文。专业规格可以和 GDD 一起逐步形成；但开始接入、测量或实现前，本次行为必须有真实的规则支撑，判断方式见 [GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。
 
 ## 各类来源由谁维护
 

@@ -34,7 +34,7 @@ Agent 每次工作都从 `AGENTS.md` 开始，再按任务去读 `yaya/` 里的�
 
 创建项目时，`docs/`、`tests/` 等目录只有用途说明和空的初始文件。目录存在只说明位置已经准备好，不说明对应的工作已经完成。
 
-**依据**：[项目对象与目录](../godot-project-manual/foundations/project-layout.md)，其中有每个文件的说明和完整目录树；复制映射只维护在 [project-files.json](../project-creation/project-files.json)。
+**依据**：[项目对象与目录](../godot-project-manual/foundations/03-project-layout.md)，其中有每个文件的说明和完整目录树；复制映射只维护在 [project-files.json](../project-creation/project-files.json)。
 
 ## 开发一个 Feature 时，会依次读写哪些文件？
 
@@ -75,7 +75,7 @@ Feature 记录 -> 设计稿 & 测试登记: Stage 2
 - 运行原件在 `reports/`，默认不进 Git；完成证据在 `docs/`，会提交。Feature 是否完成以完成证据和 Feature 记录里的状态为准，测试通过或代码提交都不能单独证明。
 - 每次停下或换对话前，Agent 会更新 `docs/progress.md`，写明当前停点和下一步。它不在主线上，所以图里没有画。
 
-**依据**：[任务类型、开发阶段与完成语义](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md)、[交付规划与 Feature 记录](../godot-project-manual/foundations/project-layout.md#交付规划与-feature-记录)；从空白项目开始的完整操作见[教程一：从空白项目到第一份 Feature 计划](../godot-project-manual/tutorial/01-blank-project-to-feature-plan.md)。
+**依据**：[任务类型、开发阶段与完成语义](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md)、[交付规划与 Feature 记录](../godot-project-manual/foundations/03-project-layout.md#交付规划与-feature-记录)；从空白项目开始的完整操作见[教程一：从空白项目到第一份 Feature 计划](../godot-project-manual/tutorial/01-blank-project-to-feature-plan.md)。
 
 ## 游戏代码的几个目录之间，谁可以引用谁？
 

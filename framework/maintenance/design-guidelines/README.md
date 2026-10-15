@@ -6,11 +6,11 @@
 
 | 要判断什么 | 页面 |
 | --- | --- |
-| 文档内容放在哪里、目录怎样组织、正文归谁、说明是否清楚易查 | [文档职责、目录组织与文本编写](document-responsibilities.md) |
-| 提示词与同名场景是否一一对应，字段与审核标准 | [提示词与场景准则](prompts-and-scenarios.md) |
-| Skill 与脚本的职责是否清楚，是否需要拆分或合并 | [Skill 与脚本](skills-and-scripts.md) |
-| 编写或修改 AGENTS、Skill 与任务提示词 | [规则与提示词文件](instruction-files.md) |
-| 正式审核的独立性、覆盖、结论与报告保存 | [审核与报告](reviews-and-reports.md) |
+| 文档内容放在哪里、目录怎样组织、正文归谁、说明是否清楚易查 | [文档职责、目录组织与文本编写](01-document-responsibilities.md) |
+| 编写或修改 AGENTS、Skill 与任务提示词 | [规则与提示词文件](02-instruction-files.md) |
+| Skill 与脚本的职责是否清楚，是否需要拆分或合并 | [Skill 与脚本](03-skills-and-scripts.md) |
+| 提示词与同名场景是否一一对应，字段与审核标准 | [提示词与场景准则](04-prompts-and-scenarios.md) |
+| 正式审核的独立性、覆盖、结论与报告保存 | [审核与报告](05-reviews-and-reports.md) |
 
 ## 适用范围与判断原则
 

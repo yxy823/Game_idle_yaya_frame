@@ -16,7 +16,7 @@ description: 编写、更新或整理 Yaya 框架的说明文档，包括 Godot 
 - 实际生成项目中的 GDD、Product、Feature 等文档，由该项目自己的写作 Skill 负责。
 - 只是阅读文档。
 
-**编辑 AGENTS、Skill 或任务提示词时**：本 Skill 只处理已确认内容的表达。规则行为的维护和自查按[规则与提示词文件](../../../framework/maintenance/design-guidelines/instruction-files.md)，具体职责和流程由所属规范决定。
+**编辑 AGENTS、Skill 或任务提示词时**：本 Skill 只处理已确认内容的表达。规则行为的维护和自查按[规则与提示词文件](../../../framework/maintenance/design-guidelines/02-instruction-files.md)，具体职责和流程由所属规范决定。
 
 ## 交付什么
 
