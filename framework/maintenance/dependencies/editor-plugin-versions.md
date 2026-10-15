@@ -52,14 +52,12 @@ Kanban 数据是用户内容，停用或升级时保留；本框架不预置看�
 
 ## 本地修正
 
-五个效率插件的本地修改限定在下列 Kanban 与 Script-IDE 源码（linter 补丁见[测试与静态检查插件](#测试与静态检查插件)），包内版本分别保留 `2.1` 与 `2.2.5`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
+五个效率插件的本地修改限定在 Kanban 与 Script-IDE 源码。补丁正文随插件分发，见下表；linter 补丁见[测试与静态检查插件](#测试与静态检查插件)。
 
-| 文件 | 原问题与本地处理 |
+| 补丁说明 | 范围 |
 | --- | --- |
-| [kanban_tasks/plugin.gd](../../../project-source/addons/kanban_tasks/plugin.gd) | 退出时 Help 菜单误写成再次释放 File 菜单，改为释放 `help_menu`；同时销毁该插件创建的 `PluginSingletons` 容器，使停用后不残留编辑上下文与快捷键节点 |
-| [kanban_tasks/view/edit_context.gd](../../../project-source/addons/kanban_tasks/view/edit_context.gd) | `UndoRedo` 是需显式释放的 Object；在编辑上下文销毁时释放，消除单独运行 Kanban 时的退出泄漏 |
-| [script-ide/plugin.gd](../../../project-source/addons/script-ide/plugin.gd) | 关闭分屏时只移除容器会遗留离树节点；移除后同时 `queue_free()`，释放容器及其 CodeEdit |
-| [script-ide/split/split_code_edit.gd](../../../project-source/addons/script-ide/split/split_code_edit.gd) | 分屏和原编辑器共用高亮器会覆盖它所属的 TextEdit，分屏释放后可导致原编辑器访问失效对象；只读分屏保存独立的逐行高亮快照，保持打开时的显示结果，并使两边各自拥有高亮器 |
+| [YAYA_PATCH.md](../../../project-source/addons/kanban_tasks/YAYA_PATCH.md) | Kanban 的源码基线、生命周期修正与升级核对 |
+| [YAYA_PATCH.md](../../../project-source/addons/script-ide/YAYA_PATCH.md) | Script-IDE 的源码基线、分屏修正与升级核对 |
 
 Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提交的原文，仅补齐前述两个许可证文件。Kanban 的五个图标/文档 SVG 与 Signal Lens 的两个 PNG 所附 `.import` 文件采用外部 Godot 4.7.1 重导入后的设置，增加引擎默认的压缩与通道映射字段；不带入 `.godot` 缓存或用户偏好。没有给资源表格插件应用未经证实的退出修正。
 
