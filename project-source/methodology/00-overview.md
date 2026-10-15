@@ -38,7 +38,7 @@ yaya/methodology/                         canonical workflow specification
 | 接入与测量 | `asset-library-search`、`content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
 | worktree | `worktree-create-godot`、`worktree-integrate-godot` |
-| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot` |
+| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot`、`decision-trace-godot` |
 | 文档编写 | `technical-documentation-writing-godot`、`qa-explainer-godot` |
 
 ## 任务路由表

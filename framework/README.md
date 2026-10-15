@@ -40,6 +40,7 @@ flowchart TD
 | 编写或整理框架说明 | [Yaya 框架文档编写与整理](../.agents/skills/technical-documentation-writing-yaya/SKILL.md) |
 | 修改提示词、场景或关系图 | [Yaya 提示词与关系图维护](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) |
 | 一次框架修改或 demo 试验后复盘，判断哪些地方值得改、改在哪里 | [Yaya 框架复盘](../.agents/skills/framework-retro-yaya/SKILL.md) |
+| 测试时让 Agent 在每条回复里写出依据了哪些原则、Skill、脚本和文件 | [决策依据（框架维护）](../.agents/skills/decision-trace-yaya/SKILL.md)；Codex 用 `$decision-trace-yaya` 开启，本仓库没有 `.claude/skills/`，Claude Code 需要用户说“开启决策依据”后读这个文件 |
 | 创建空白项目、运行检查或回归 | 下文[维护命令](#维护命令) |
 | 确认框架专用术语的含义和统一写法 | [框架术语](terminology.md) |
 
