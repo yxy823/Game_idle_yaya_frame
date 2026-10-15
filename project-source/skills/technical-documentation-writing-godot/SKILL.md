@@ -1,6 +1,6 @@
 ---
 name: technical-documentation-writing-godot
-description: 编写、更新或整理 Godot 项目文档，包括受代码或配置变更影响的文档。在文档现有契约内改善说明与导航。不用于游戏设计决策、GDD 初始化、代码或 Skill 职责审核，也不用于只阅读文档的任务。
+description: 编写、更新或整理 Godot 项目文档，包括受代码或配置变更影响的文档。在文档现有契约内改善说明与导航。不用于游戏设计决策、GDD 初始化、代码或 Skill 职责审核，也不用于只阅读文档的任务或登记术语（project-terminology）。
 ---
 
 # Godot 项目技术写作

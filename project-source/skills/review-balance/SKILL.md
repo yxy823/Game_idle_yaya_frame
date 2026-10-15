@@ -1,6 +1,6 @@
 ---
 name: review-balance
-description: "对照已说明的策略、成长和节奏目标，独立审核拟议或已采纳的游戏公式与数值。用于用户要求的平衡分析。不用于数值编写（design-balance）、调参实现或玩家试玩分析。"
+description: "对照已说明的策略、成长和节奏目标，独立审核拟议或已采纳的游戏公式与数值。用于用户要求的平衡分析。不用于数值编写（design-balance）、调参实现或玩家试玩分析；整份 GDD 或方案的缺口审查用 plan-review-godot。"
 ---
 
 # 平衡审核

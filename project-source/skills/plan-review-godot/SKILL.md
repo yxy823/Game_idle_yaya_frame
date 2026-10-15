@@ -1,6 +1,6 @@
 ---
 name: plan-review-godot
-description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或 Feature 方案，找出会妨碍本次决定、实现或验收的缺口、冲突和可行性问题。返回审查结论，不改写源文档，也不增设必经的审查关卡。
+description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或 Feature 方案，找出会妨碍本次决定、实现或验收的缺口、冲突和可行性问题。返回审查结论，不改写源文档，也不增设必经的审查关卡。不用于独立的数值平衡审核（review-balance）。
 ---
 
 # Godot 方案审查

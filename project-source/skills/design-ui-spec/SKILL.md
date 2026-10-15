@@ -1,6 +1,6 @@
 ---
 name: design-ui-spec
-description: "在 UI 规格中设计并维护界面布局、状态、交互表现和界面任务。用于用假数据的 Godot 草稿界面讨论布局、界面任务，以及骨架和调试台视觉决策的输入。不用于美术方向、实现或 UX 审核，也不用于一次完整的游戏表现（design-game-presentation）。"
+description: "在 UI 规格中设计并维护界面布局、状态、交互表现和界面任务。用于用假数据的 Godot 草稿界面讨论布局、界面任务，以及骨架和调试台视觉决策的输入。不用于美术方向、实现或 UX 审核（review-ux），也不用于一次完整的游戏表现（design-game-presentation）。"
 ---
 
 # UI 规格
