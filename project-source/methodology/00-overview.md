@@ -35,7 +35,7 @@ yaya/methodology/                         canonical workflow specification
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
 | 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
 | 环境、验证与证据 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence-godot` |
-| 接入与测量 | `content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
+| 接入与测量 | `asset-library-search`、`content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
 | worktree | `worktree-create-godot`、`worktree-integrate-godot` |
 | 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot` |
@@ -66,6 +66,7 @@ yaya/methodology/                         canonical workflow specification
 | 和用户一起反复试调已实现的特效、反馈或操作手感 | `debug-console-godot`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
 | 规定一个界面或单个资源 | `design-ui-spec`、`design-visual-asset-spec`、`design-audio-asset-spec` | 用于细化 GDD 的专业规格。交付范围仍由 Product 决定。 |
 | 制作美术、音乐或音效 | 项目外的制作项目，按 11 号规范的[在项目外制作](11-specialist-workflows.md#在项目外制作)交接 | 本项目没有制作 Skill，不在仓库里制作；交出规格章节，收回成品后由 `content-asset-integration` 或调试台候选接入。没有制作项目时记录规格和缺口。 |
+| 在本地资源库中查找可用素材 | `asset-library-search` | 按资源库自己的检索 Skill 执行：只查索引列候选，查看内容逐项取得许可。选定的素材由 `content-asset-integration` 或调试台候选接入。 |
 | 确定语言覆盖范围和区域格式约定 | `design-localization-spec` | 可以单独进行。游戏规则留在 GDD，术语定义留在 `docs/terminology.md`。 |
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
 | 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
