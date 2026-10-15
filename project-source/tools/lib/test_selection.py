@@ -22,7 +22,7 @@ TEST_INFRASTRUCTURE_PREFIXES = ("yaya/tools/testing/", "addons/gdUnit4/")
 TEST_INFRASTRUCTURE_FILES = {"docs/methodology-config.json"}
 NON_GAME_PREFIXES = ("docs/", "yaya/", "addons/", ".agents/", ".claude/", ".codex/")
 GAME_SUFFIXES = {
-    ".gd", ".tscn", ".tres", ".res", ".gdshader", ".gdshaderinc", ".json", ".cfg", ".csv", ".translation",
+    ".gd", ".tscn", ".tres", ".res", ".gdshader", ".gdshaderinc", ".json", ".cfg", ".csv", ".txt", ".translation",
     ".png", ".jpg", ".jpeg", ".webp", ".svg", ".bmp", ".tga", ".exr", ".hdr", ".ktx", ".dds",
     ".wav", ".ogg", ".mp3", ".ttf", ".otf", ".woff", ".woff2", ".fnt", ".font",
 }
