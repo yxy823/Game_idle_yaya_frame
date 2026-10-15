@@ -339,7 +339,8 @@ class ProjectCopyTests(unittest.TestCase):
         copy_project(repository, output)
         config = json.loads((output / "docs/methodology-config.json").read_text(encoding="utf-8"))
         self.assertEqual(set(config), {"document_language", "engine_executable", "python_executable",
-                                       "audio_analyzer_python_executable"})
+                                       "audio_analyzer_python_executable",
+                                       "audio_production_dir", "image_production_dir"})
         self.assertIsInstance(config["engine_executable"], str)
         settings = (output / "project.godot").read_text(encoding="utf-8")
         self.assertIn('run/main_scene="res://main/main.tscn"', settings)
