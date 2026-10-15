@@ -9674,6 +9674,70 @@
       }
     },
     {
+      "id": "link-scene-017-scene-038",
+      "source": {
+        "kind": "node",
+        "node": "scene-017",
+        "port": "top"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-038",
+        "port": "bottom"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2101,
+          "y": 2468
+        },
+        {
+          "x": 5010,
+          "y": 2468
+        },
+        {
+          "x": 5010,
+          "y": 2650
+        },
+        {
+          "x": 4829,
+          "y": 2650
+        }
+      ],
+      "label": "下一个 Product 轮到时",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
       "id": "link-scene-062-scene-063",
       "source": {
         "kind": "node",
