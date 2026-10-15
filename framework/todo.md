@@ -20,7 +20,7 @@
 - **动态画面的分析（以后再说）**：界面截图对比只比静止画面，动画、特效和数字跳动过程中的观感不分析。下一步：静态对比用起来之后，用户提出需要时再讨论。
 - **数值与存档未实测**：`design-balance` 与两个数值场景、两个存档结构变更场景都没有真实使用；放置类项目必然用到，出错会让节奏失衡或损坏玩家进度。下一步：第一个放置类项目做数值模型和存档时按场景执行，记录问题。
 - **Bug 诊断与修复未实测**：“发现异常，先定位原因”“发现 Bug，需要修复”两个场景（含交付前后两条路线）及 `bug-diagnosis-godot` 没有真实使用。下一步：用 `Game_Match_Three` 待办中 F012 的约 0.5 秒帧停顿试用定位场景。
-- **玩家行为埋点（待讨论）**：记录真实玩家在哪个界面停留多久、点了什么，用于分析可用性，可能做成通用模板。它要在游戏里常驻记录模块，涉及正式版本是否保留、数据存放和隐私，和开发期的自动界面检查分开设计。可参考 `tmp/godot-ui-flow-eval/` 的记录器与指标。下一步：用户提出时单独讨论。
+- **玩家行为埋点（待讨论）**：记录真实玩家在哪个界面停留多久、点了什么，用于分析可用性，可能做成通用模板。它要在游戏里常驻记录模块，涉及正式版本是否保留、数据存放和隐私，和开发期的自动界面检查分开设计。可参考 `references/godot-ui-flow-eval/` 的记录器与指标。下一步：用户提出时单独讨论。
 - **复用已有实现的规则未实测**：`project-source/Project_AGENTS.md`「修改前先定位」新增“新写逻辑前先搜索同用途的已有实现，能用就调用”，依据只是用户感觉 Agent 修 Bug 时会重复实现，没有真实案例；也可能让变化原因不同的功能共用同一个函数。下一步：下一个试用项目出现修 Bug 或新增逻辑时，核对 Agent 是否先搜索、复用是否合适，按结果保留或改写。
 - **Claude Code 版 Agent 角色未实测**：`project-source/agents/*.md` 按官方文档的子智能体格式写成，复制到生成项目的 `.claude/agents/`；还没在真实项目里确认 Claude Code 能列出这三个角色、主 Agent 能按名称委派，以及 implementation-advisor 的 `model: opus`、`effort: xhigh`、`disallowedTools: Agent` 和 `skills` 预加载实际生效。下一步：下一个试用项目第一次需要独立审核或调研时，用 Claude Code 委派对应角色并核对。
 - **Codex 的回复格式未同步**：回复格式已集中到个人沟通规则，根 `AGENTS.md` 与 `project-source/Project_AGENTS.md` 不再写回复格式，Project_AGENTS.md 开头只留一句引用；Claude 读 `~/.claude/CLAUDE.md`，Codex 读的 `~/.codex/AGENTS.md` 还没按新格式改，`~/.agents/skills/progressive-requirement-clarifier` 也仍自带提问格式并允许提问卡片。在这之前派给 Codex 的活，要在派活提示词里写明汇报格式。下一步：用户确认 Claude 这边的新格式用着没问题后，对照 `~/.claude/CLAUDE.md` 的「沟通与回答组织」改这两处。
