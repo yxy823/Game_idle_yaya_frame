@@ -40,6 +40,7 @@
 
 - 每个 Feature 的完成证据 `features/F0XX-evidence.json`；
 - GDD、UI、表现等目录下的具体设计正文；
-- `architecture/` 下的子系统说明和架构决定。
+- `architecture/` 下的子系统说明和架构决定；
+- `qa/` 下的问答，用户同意记录第一个问答时创建。
 
 命令见[项目检查与测试工具](../yaya/tools/README.md)，项目自己的常用脚本见[项目脚本](../dev/tools/README.md)，原始测试报告在[报告目录](../reports/)。文档存在不代表已经实现、验证或验收。

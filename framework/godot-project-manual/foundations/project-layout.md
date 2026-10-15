@@ -71,7 +71,7 @@
 │   └── <对象>/tuning/        调参资源：调试台可以修改的参数与实现（按需建立）
 ├── components/               实际可复用能力
 ├── assets/                   共享资产（按真实需要组织）
-├── .githooks/                提交钩子：提交时检查文档的术语、措辞、链接和链接文字、Godot 资源格式，以及两份 Skill 目录是否一致
+├── .githooks/                提交钩子：提交时检查文档的术语、措辞、链接和链接文字、Godot 资源格式，以及两份 Skill 目录是否一致；另检查提交说明的术语
 ├── .claude/                 Claude Code 配置：用户消息中有不用的说法时提示 Agent；skills/ 是供 Claude Code 读取的 Skill 副本
 ├── addons/                   第三方插件及已记录补丁
 ├── dev/                      只用于开发的内容，导出时排除
@@ -132,6 +132,7 @@ GDD 的固定入口、标准主题名称和导入非标准 GDD 的处理，见[G
 | gdUnit 运行原件 | `reports/gdunit-wrapper/<Feature-ID 或 focused>/run-<id>/` | 保留真实结果，包括失败 |
 | 人工验收清单 | `reports/manual-acceptance/` | 用户结论写回同一份清单的 `status` 和 `comment`，不另建结果文件，见[人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md) |
 | Feature 自定义结果 | `reports/features/<Feature-ID>/` | — |
+| 本地导出包 | `reports/exports/<日期>/` | 不进 Git，见[本地导出检查](../../../project-source/tools/README.md#本地导出检查) |
 | 其他维护报告 | `reports/maintenance/<任务>/` | — |
 | 临时文档 | 项目根目录 `tmp/<任务>/` | 草稿、当次方案、交接副本与资料摘录，可按主题分层；不放进正式目录 |
 | 临时探针、命令辅助文件与验证副本 | `reports/scratch/<任务>/` | 目录名带 scratch 不代表可以随意删除；以后还会用到的命令脚本按[保存常用脚本](../../../project-source/methodology/09-records-reports-and-handoff.md#保存常用脚本)提出保存，用户同意后移到 `dev/tools/` |

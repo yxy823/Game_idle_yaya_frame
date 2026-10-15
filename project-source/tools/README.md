@@ -451,9 +451,9 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 | `record-tests` | `--run <result.json>`（必填，可重复，用于多次不重叠的真实运行） | 导入真实测试结果引用；被拒绝时清除旧引用，原始报告保留 |
 | `record-acceptance` | `--checklist <文件>`（必填，已绑定的清单，状态已按用户的结论填写）；`--confirm-unrelated-changes`（可选，核对工具列出的可能变化的文件后，真正改过的都不涉及本 Feature 时使用） | 从清单的状态推导并记录验收结论；同一结论重复记录时给出提示 |
 | `show` | 无 | 显示该 Feature 的已存记录，不判断能否完成 |
-| `validate` | 无 | 检查当前测试与人工依据能否支持完成 |
+| `validate` | 无 | 检查当前测试与人工验收证据能否支持完成 |
 
-退出码：`0` 成功（`validate` 表示依据有效）；`2` 依据不足、记录无效、输入被拒绝或参数错误。
+退出码：`0` 成功（`validate` 表示证据有效）；`2` 证据不足、记录无效、输入被拒绝或参数错误。
 
 人工验收的清单格式、怎样在清单中记录用户的结论，以及确切命令见[人工验收文件](../methodology/contracts/manual-acceptance-files.md)。命令成功只表示记录成功，结果仍可能为 `pending` 或 `rejected`；它不调用任何验收应用，也不判断注释的语义。
 
@@ -507,7 +507,7 @@ flowchart TD
 
 `record-tests` 只导入测试报告，证据检查通过不能证明静态检查已执行。Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检查失败不能宣称完成。失败报告和未完成任务需要的历史要保留，不用旧的成功掩盖后来的失败。
 
-`show --feature F001` 只检查记录可读取、基本结构有效且属于 F001，然后显示原文数据。它不查询 Git，不重读测试或人工验收原件；待验收或已失效的引用不构成查看失败。缺失、损坏或属于另一项 Feature 的记录使 `show` 返回非零，且不会修改原件。判断当前测试与人工依据能否支持完成，使用 `validate --feature F001`。
+`show --feature F001` 只检查记录可读取、基本结构有效且属于 F001，然后显示原文数据。它不查询 Git，不重读测试或人工验收原件；待验收或已失效的引用不构成查看失败。缺失、损坏或属于另一项 Feature 的记录使 `show` 返回非零，且不会修改原件。判断当前测试与人工验收证据能否支持完成，使用 `validate --feature F001`。
 
 ## 内部实现
 
@@ -517,10 +517,10 @@ flowchart TD
 | `test_selection.py` | 根据已确定的验收方案、Feature 记录和起点以来的内容差异选择测试；不从空清单猜测验收方式，不读提交说明和 Feature 状态 |
 | `dependency_graph.py` | 静态解析脚本、场景、资源和 shader 的引用，建文件依赖图并反向搜索依赖者 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
-| `feature_completion_evidence.py` | 完成证据的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
+| `feature_completion_evidence.py` | 完成证据的结构、快照关联及测试与人工验收证据的聚合判断；不记录复审计数 |
 | `document_text.py` | 术语检查与措辞检查共用的文档读取、引号与代码遮蔽、文件选择和输出格式；链接文字检查复用其中的文件选择 |
 | `markdown_links.py` | 链接检查与链接文字检查共用的标题与锚点解析、链接及链接文字提取、Markdown 文件枚举与排除 |
-| `verification_snapshot.py` | Git 提交、当前内容指纹和起点以来的改动文件；测试和人工依据共用，不判断任务完成 |
+| `verification_snapshot.py` | Git 提交、当前内容指纹和起点以来的改动文件；测试和人工验收证据共用，不判断任务完成 |
 | `atomic_json.py` | 关闭文件流后原子替换 JSON，失败时保留目标原件并清理临时文件 |
 | `manual_acceptance.py` | 人工验收清单覆盖与快照绑定、逐项结果对照和原件复核 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |

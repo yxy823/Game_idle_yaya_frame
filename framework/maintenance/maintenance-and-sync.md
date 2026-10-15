@@ -81,7 +81,7 @@
 - **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
 - **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
 
-## 文档同步应包含什么
+## 文档同步的内容
 
 按变化类型决定要同步的内容：
 

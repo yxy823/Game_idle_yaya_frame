@@ -23,7 +23,7 @@
 | [Edit Resources as Table 2](https://github.com/don-tnowe/godot-resources-as-sheets-plugin) | [2.17.4](https://godotengine.org/asset-library/asset/1479) | `2.7` | `4.0` | [3363e0d2](https://github.com/don-tnowe/godot-resources-as-sheets-plugin/tree/3363e0d2136c432c989ac1f249aa8aaa634e84e9) |
 | [Signal Lens](https://github.com/yannlemos/signal-lens) | [1.4.1](https://godotengine.org/asset-library/asset/3620) | `1.4.1` | `4.3` | [5919c07c](https://github.com/yannlemos/signal-lens/tree/5919c07cb370d151b8937f9696474f3af2f059b1) |
 
-Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能只读 Godot 插件列表就判断是否已升级；应同时核对本表的固定源码。Kanban 使用资产库条目 `1474` 的 Godot 4 版本，不使用旧 Godot 3 条目 `1245`。
+Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能只读 Godot 插件列表就判断是否已升级；还要核对本表的固定源码。Kanban 使用资产库条目 `1474` 的 Godot 4 版本，不使用旧 Godot 3 条目 `1245`。
 
 五个插件均采用 MIT 许可证。保留包内许可证，包括 Kanban 的 `uuid/LICENSE`。Inspector Tabs 与 Signal Lens 的资产库源码包遗漏根许可证，本次从各自同一固定提交的原始 `LICENSE` 补入插件目录；不改许可证正文。
 
@@ -46,7 +46,7 @@ Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能
 | `addons/resources_spreadsheet_view/` | 安装但停用 | 启用后进入顶部 `ResourceTables`；当前组合存在退出泄漏诊断，按需使用。直接编辑实际资源，升级前备份资源与插件目录内的 `saved_state.json` 偏好 |
 | `addons/signal_lens/` | 安装但停用 | 调试时通过“项目 → 项目设置 → 插件”启用；注册 `SignalLens` Autoload，停用时移除 |
 
-Signal Lens 1.4.1 没有自动在发行导出时剥离 Autoload 的逻辑，调试结束或发行导出前应停用，并确认 `project.godot` 不再含 `autoload/SignalLens`。框架默认不注册该 Autoload。当前版本主要检查远程场景树中的节点，不支持 Resource、RefCounted 或普通 Object 信号检查。
+Signal Lens 1.4.1 没有自动在发行导出时剥离 Autoload 的逻辑，调试结束或发行导出前停用它，并确认 `project.godot` 不再含 `autoload/SignalLens`。框架默认不注册该 Autoload。当前版本主要检查远程场景树中的节点，不支持 Resource、RefCounted 或普通 Object 信号检查。
 
 Kanban 数据是用户内容，停用或升级时保留；本框架不预置看板任务，也不把看板内容纳入开发流程。插件源码使用上游目录名，不引入统一插件管理器。
 
