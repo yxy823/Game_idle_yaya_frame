@@ -66,6 +66,8 @@ function withDocTemplate(text) {
 // 图上的节点名和页面里某张表格某行的第一格相同时，节点右上角显示 i 标记，点击节点弹出这一行的其余各列（阅读入口、职责等）。
 // 内容在打开页面时从表格读取，表格仍是唯一正文；没有对应行的节点不可点击。可以同时打开多个弹窗，按住标题栏拖动，用 ✕ 或 Esc 关闭。
 const NODE_DETAIL = `<style>
+/* 架构页面整体放大 12.5%：正文、目录和图一起缩放；弹窗挂在 body 上，字号单独放大 */
+.am-doc { zoom: 1.125; }
 .am-node[data-detail] { cursor: pointer; }
 .am-node[data-detail]:hover .am-node-shape { stroke-width: 2.5px; }
 .am-node[data-detail]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -79,8 +81,8 @@ const NODE_DETAIL = `<style>
 .am-arch-pop:not([class*="am-node--k-"]) { --kind: var(--accent); }
 .am-arch-pop {
   position: fixed; z-index: 1001; display: flex; flex-direction: column;
-  width: min(420px, calc(100vw - 32px)); max-height: min(70vh, 560px);
-  font-size: 14px; color: var(--ink); background: var(--paper);
+  width: min(470px, calc(100vw - 32px)); max-height: min(70vh, 630px);
+  font-size: 16px; color: var(--ink); background: var(--paper);
   border: 1px solid color-mix(in srgb, var(--kind) 45%, var(--line-2)); border-top: 4px solid var(--kind); border-radius: 10px;
   box-shadow: 0 16px 40px rgb(0 0 0 / 0.22), 0 2px 8px rgb(0 0 0 / 0.12); overflow: hidden;
 }
@@ -91,10 +93,10 @@ const NODE_DETAIL = `<style>
 }
 .am-arch-pop.is-dragging .am-arch-pop-head { cursor: grabbing; }
 .am-arch-pop-title { flex: 1; min-width: 0; }
-.am-arch-pop-title h3 { margin: 0; font-size: 16px; line-height: 1.4; }
-.am-arch-pop-sub { margin-top: 2px; font: 12px/1.4 var(--font-mono, monospace); color: var(--ink-2); overflow-wrap: anywhere; }
+.am-arch-pop-title h3 { margin: 0; font-size: 18px; line-height: 1.4; }
+.am-arch-pop-sub { margin-top: 2px; font: 13.5px/1.4 var(--font-mono, monospace); color: var(--ink-2); overflow-wrap: anywhere; }
 .am-arch-pop-chip {
-  flex: none; margin-top: 2px; padding: 2px 8px; font-size: 12px; line-height: 1.5; border-radius: 999px;
+  flex: none; margin-top: 2px; padding: 2px 8px; font-size: 13.5px; line-height: 1.5; border-radius: 999px;
   color: color-mix(in srgb, var(--kind) 45%, var(--ink)); background: color-mix(in srgb, var(--kind) 22%, var(--paper));
   border: 1px solid color-mix(in srgb, var(--kind) 60%, var(--paper));
 }
@@ -105,7 +107,7 @@ const NODE_DETAIL = `<style>
 .am-arch-pop-close:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 8%, transparent); }
 .am-arch-pop-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 .am-arch-pop dl { flex: 1 1 auto; min-height: 0; margin: 0; padding: 4px 16px 12px; overflow: auto; overscroll-behavior: contain; }
-.am-arch-pop dt { padding-top: 10px; font-size: 12px; font-weight: 700; color: var(--ink-2); }
+.am-arch-pop dt { padding-top: 10px; font-size: 13.5px; font-weight: 700; color: var(--ink-2); }
 .am-arch-pop dd { margin: 2px 0 0; padding-bottom: 10px; line-height: 1.6; }
 .am-arch-pop dd + dt { border-top: 1px dashed var(--line); }
 @media print { .am-arch-pop, .am-detail-mark { display: none !important; } }
