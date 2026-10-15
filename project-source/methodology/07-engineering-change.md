@@ -257,6 +257,8 @@ Bug Feature
 - 评估受影响的当前工作和已计划工作，在依赖它的工作继续之前完成所需的 `feature-sync` 处理。
 - 后期的规则编辑必须满足当前的验证与验收契约，不会自动只适用于下一个 Feature。
 
+写 `BUG learning` 时，在已有 Feature notes 中搜索相同或相近的 `Guardrail`。找到时说明同类根因再次出现：本次 Bug 仍只做最小的完整修复，不借此扩大范围；Stage 8 汇报时提议一个 refactor Feature，列出相关的 Bug、`Guardrail` 和代码位置，由用户决定是否交给 `engineering-change-plan` 的 refactor 模式。提升规则和提议重构可以同时进行，各自由用户决定。
+
 ## 引擎与插件升级
 
 升级 Godot 或某个插件，作为一项维护 Feature 处理（`engineering-change-plan` 的 maintenance 模式），契约中写明升级前后的版本、要保持成立的行为，以及回滚方式。
