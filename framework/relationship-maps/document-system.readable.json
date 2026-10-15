@@ -2355,7 +2355,7 @@
       "y": -30,
       "width": 750,
       "height": 64,
-      "label": "橙色实线：来源 → 复制 / 派生结果",
+      "label": "橙色实线：来源 → 创建时复制的结果",
       "zIndex": 2,
       "fill": "transparent",
       "stroke": {
@@ -2383,6 +2383,92 @@
         "opacity": 1,
         "fillOpacity": 1,
         "cornerRadius": 0,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-framework-lessons",
+      "shape": "rounded-rect",
+      "x": 2458,
+      "y": 856,
+      "width": 270,
+      "height": 88,
+      "label": "框架 Lessons\nlessons.md",
+      "zIndex": 1,
+      "fill": "#FEF9C3",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：框架维护中 Agent 自己的流程失误及出现次数。\n位置：framework/lessons.md；开始或续接维护任务时读取。\n\n文件： framework/lessons.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/lessons.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
+      "id": "doc-project-qa",
+      "shape": "rounded-rect",
+      "x": 1047,
+      "y": 4071,
+      "width": 270,
+      "height": 88,
+      "label": "项目 Q&A\n<主题>.md · <主题>.html",
+      "zIndex": 1,
+      "fill": "#EAF3FF",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1.25,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 18,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 16,
+        "vertical": 12
+      },
+      "note": "职责：解释用户问过、以后还会用到的项目问题。\n项目位置：docs/qa/；按需创建，由 qa-explainer-godot 写入并生成页面。\n问答只作解释，不作为需求、设计或规则依据；正文变化时同步受影响的回答。\n\n项目文件： docs/qa/*.md",
+      "textSizing": "fixed",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/skills/qa-explainer-godot/SKILL.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 10,
         "shadow": false,
         "wrap": true
       }
@@ -3707,14 +3793,14 @@
       ],
       "label": "真实规划时采用结构",
       "stroke": {
-        "color": "#C2410C",
+        "color": "#2563EB",
         "width": 1.5,
         "dash": "solid"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#C2410C",
+        "color": "#2563EB",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -3930,7 +4016,7 @@
       "id": "relation-config-init",
       "source": {
         "kind": "node",
-        "node": "doc-configuration",
+        "node": "doc-project-methods",
         "port": "right"
       },
       "target": {
@@ -3940,16 +4026,16 @@
       },
       "path": "orthogonal",
       "vertices": [],
-      "label": "实际检查后记录",
+      "label": "按环境规范实际检查后记录",
       "stroke": {
-        "color": "#C2410C",
+        "color": "#2563EB",
         "width": 1.5,
         "dash": "solid"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#C2410C",
+        "color": "#2563EB",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -6709,6 +6795,288 @@
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
         "labelPosition": 0.06909406531727642,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-rules-lessons",
+      "source": {
+        "kind": "node",
+        "node": "doc-framework-rules",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-framework-lessons",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "开始或续接时读取",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-framework-lessons-rules",
+      "source": {
+        "kind": "node",
+        "node": "doc-framework-lessons",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-framework-rules",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "达到条件时提议升级",
+      "stroke": {
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#7C3AED",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-project-entry-lessons",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-lessons",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "查阅流程失误记录",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-methods-lessons",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-methods",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-lessons",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按记录约定维护",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-project-entry-qa",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-entry",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-project-qa",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "查阅项目问答",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-methods-qa",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-methods",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-project-qa",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "按 Skill 编写与同步",
+      "stroke": {
+        "color": "#2563EB",
+        "width": 1.5,
+        "dash": "solid"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#2563EB",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.5,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,

@@ -514,7 +514,7 @@ flowchart TD
 | 文件 | 职责 |
 | --- | --- |
 | `feature_evolution.py` | Feature/测试登记表演进与引用规则 |
-| `test_selection.py` | 根据已确定的验收方案、Feature 记录和起点以来的内容差异选择测试；不从空清单猜测验收方式，不读提交说明和 Feature 状态 |
+| `test_selection.py` | 根据验收方案、Feature 记录和起点以来的内容差异选择测试。读取 Feature 状态以确定验证点和已完成任务的提醒；不从空清单猜测验收方式，不读提交说明 |
 | `dependency_graph.py` | 静态解析脚本、场景、资源和 shader 的引用，建文件依赖图并反向搜索依赖者 |
 | `test_run_evidence.py` | 核对真实 JUnit、发现集合、诊断及运行报告 |
 | `feature_completion_evidence.py` | 完成证据的结构、快照关联及测试与人工依据的聚合判断；不记录复审计数 |
