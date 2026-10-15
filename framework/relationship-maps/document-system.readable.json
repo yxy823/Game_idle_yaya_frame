@@ -376,7 +376,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 定义两图共用的文件格式。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/relationship-maps/README.md\n文件： framework/relationship-maps/graph-map-format.md\n文件： framework/relationship-maps/game-development-workflow.readable.json\n文件： framework/relationship-maps/document-system.readable.json",
+      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 写两图的字段约定、保存格式与格式校验命令。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/relationship-maps/README.md\n文件： framework/relationship-maps/graph-map-format.md\n文件： framework/relationship-maps/game-development-workflow.readable.json\n文件： framework/relationship-maps/document-system.readable.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
