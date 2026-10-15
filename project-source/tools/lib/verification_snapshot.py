@@ -60,6 +60,16 @@ def project_paths(repo_root: Path) -> list[str]:
     return sorted({path for path in raw_paths.decode("utf-8", errors="surrogateescape").split("\0") if path})
 
 
+def revision_texts(repo_root: Path, revision: str, paths: list[str]) -> dict[str, str]:
+    """Read only requested files present at the revision; Git failures remain errors."""
+    if not paths:
+        return {}
+    listed = _run_git(repo_root, "ls-tree", "-r", "--name-only", "-z", revision, "--", *paths)
+    existing = set(listed.decode("utf-8", errors="surrogateescape").split("\0"))
+    return {path: _run_git(repo_root, "show", f"{revision}:{path}").decode("utf-8", errors="replace")
+            for path in paths if path in existing}
+
+
 def commit_exists(repo_root: Path, revision: str) -> bool:
     return _git_succeeds(repo_root, "cat-file", "-e", f"{revision}^{{commit}}")
 

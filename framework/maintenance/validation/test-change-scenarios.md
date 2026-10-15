@@ -49,7 +49,7 @@
 | R2 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 的 `change_impact`、`build_selection` | 改动文件归类、反推组件、依赖图选中的套件、full 理由的实际实现 |
 | R3 | 08 号规范的[不是本 Feature 造成的测试失败](../../../project-source/methodology/08-test-traceability-and-evidence.md#不是本-feature-造成的测试失败) | 失败原因来自不是本 Feature 改的文件，不论测试由哪种原因选中：停下请用户选出口 |
 | R4 | 08 号规范的[内容指纹](../../../project-source/methodology/08-test-traceability-and-evidence.md#内容指纹)；[verification_snapshot.py](../../../project-source/tools/lib/verification_snapshot.py) 的 `working_tree_fingerprint`、`changed_paths_since` | 指纹包含和排除的文件；提交和暂存不改变指纹；改动文件只取参与指纹的文件 |
-| R5 | [feature_completion_evidence.py](../../../project-source/tools/lib/feature_completion_evidence.py) 的 `validate_completion_evidence`；[test_run_evidence.py](../../../project-source/tools/lib/test_run_evidence.py) 的 `verify_run` | 完成证据和运行结果必须与当前指纹相同，运行的选择器必须与当前选择相同；完成校验重算选择 |
+| R5 | [feature_completion_evidence.py](../../../project-source/tools/lib/feature_completion_evidence.py) 的 `validate_completion_evidence`；[test_run_evidence.py](../../../project-source/tools/lib/test_run_evidence.py) 的 `verify_run` | 完成证据和运行结果必须与当前指纹相同，运行的选择器必须与当前选择相同；完成校验重算选择。当前 Feature 的历史运行目录缺少 `result.json` 时阻塞完成 |
 | R6 | [人工验收文件](../../../project-source/methodology/contracts/manual-acceptance-files.md)的[绑定之后内容又有变化](../../../project-source/methodology/contracts/manual-acceptance-files.md#绑定之后内容又有变化)；[manual_acceptance.py](../../../project-source/tools/lib/manual_acceptance.py) 的 `read_checklist` | 人工验收绑定指纹；内容变化后列出变化的文件，无关时确认重记，有关时重新验收 |
 | R7 | 03 号规范的[Stage 0 · 选择 Feature 并加载上下文](../../../project-source/methodology/03-execute-loop.md#stage-0--选择-feature-并加载上下文) | Stage 0 例外：开始新 Feature 前原 Feature 停在 GREEN，切回前新 Feature 停在 GREEN；开始时保留已有改动 |
 | R8 | 03 号规范的[Stage 2 · 标记 `in_progress` 并保存验证计划](../../../project-source/methodology/03-execute-loop.md#stage-2--标记-in_progress-并保存验证计划) | 写入 `base_revision`；放弃后重新开始时用 `--reset` |
@@ -59,11 +59,11 @@
 | R12 | 03 号规范的[Stage 7 · 标记完成](../../../project-source/methodology/03-execute-loop.md#stage-7--标记完成) | 先设 done 再提交；只改状态、时间的提交不要求重跑 |
 | R13 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 的 `verification_point`、`build_changed_selection`；测试选择与 Godot 验证的[运行测试](../../../project-source/agent-rules/70-tests/test-selection-and-gates.md#运行测试) | 验证点的取法；`--changed` 从验证点选择，不产生完成证据 |
 | R14 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 的 `touched_completed_features` | 只列出在受影响组件上有登记测试的 done Feature，只用于提醒 |
-| R15 | [dependency_graph.py](../../../project-source/tools/lib/dependency_graph.py) 的 `canonical`、`build_graph` | `.uid`、`.import` 与源文件是同一个节点；依赖边的来源 |
+| R15 | [dependency_graph.py](../../../project-source/tools/lib/dependency_graph.py) 的 `canonical`、`build_graph`、`deleted_identity_texts` | `.uid`、`.import` 与源文件是同一个节点。删除节点的旧 UID、旧全局类名从起点读取，用来解析当前引用。删除脚本或资源的历史文本缺失，或其 UID 和全局类名均无法恢复时升级 full。起点 `.import` 存在但缺少 UID 时也升级 full；其他删除文件仍沿路径引用查找消费者 |
 | R16 | Project_AGENTS.md 的[开始修改前](../../../project-source/Project_AGENTS.md#开始修改前)、[暂存](../../../project-source/Project_AGENTS.md#暂存)、[提交](../../../project-source/Project_AGENTS.md#提交)和[禁止的操作](../../../project-source/Project_AGENTS.md#禁止的操作) | 开始任务前先收尾调试台的采纳；开始时已有改动只暂存本任务的路径；Work item 行；不自动 amend、rebase |
 | R17 | [$worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) 的[验证并采纳组合后的结果](../../../project-source/skills/worktree-integrate-godot/SKILL.md#验证并采纳组合后的结果) | 合回后的组合结果由 Agent 在目标检出目录取得证据 |
 | R18 | 08 号规范的[需求变化与过时的测试](../../../project-source/methodology/08-test-traceability-and-evidence.md#需求变化与过时的测试) | 退役的测试不进入活动的安全网，文件里的用例要在实施 Feature 中清理 |
-| R19 | 项目检查与测试工具的[record-base-revision.py](../../../project-source/tools/README.md#record-base-revisionpy) | `--reset`、`--dry-run` 的用法 |
+| R19 | 项目检查与测试工具的[record-base-revision.py](../../../project-source/tools/README.md#record-base-revisionpy) | `--reset`、`--dry-run` 的用法。预览合并改动、声明组件、反推组件及已批准的 full 理由 |
 | R20 | 06 号规范的[项目环境准备](../../../project-source/methodology/06-project-environment.md#项目环境准备)；07 号规范的[引擎与插件升级](../../../project-source/methodology/07-engineering-change.md#引擎与插件升级) | 仓库外的环境变化和插件、引擎升级由这两节处理 |
 | R21 | 测试选择与 Godot 验证的[需要 full 运行的 Godot 改动](../../../project-source/agent-rules/70-tests/test-selection-and-gates.md#需要-full-运行的-godot-改动) | 运行器不自动升级、要由 Agent 写进 `full_suite_reasons` 的改动 |
 | R22 | 07 号规范的[Feature 写入规则](../../../project-source/methodology/07-engineering-change.md#feature-写入规则) | 规划新 Feature 的提交带它的 Work item 行 |
@@ -71,7 +71,7 @@
 几条贯穿各表的现行行为：
 
 - **选择只看内容**：改动文件是起点与当前工作区之间内容不同、参与指纹的文件，加上未跟踪的文件。提交、暂存和提交说明（包括 Work item 行）都不影响选择，所以 B1、B2、B3、B4、B5a、B5b 在同一 When 下选中的测试相同，差别只在提交历史的追溯（R1、R2、R4）。
-- **证据只看指纹**：完成证据、运行结果和人工验收都绑定内容指纹；内容相同的提交、amend、squash 不让它们失效，参与指纹的内容一变就失效（R4、R5、R6）。
+- **证据绑定指纹**：完成证据、运行结果和人工验收都绑定内容指纹；内容相同的提交、amend、squash 不让它们失效。参与指纹的内容一变就失效；指纹相同也不能豁免缺失结果等无效运行历史（R4、R5、R6）。
 - **已完成 Feature 不重开**：之后的改动碰到它的组件时，只选中测试并提醒用户判断是否重新人工验收（R10、R14）。
 
 ## What 对结论的影响
@@ -84,11 +84,11 @@
 | D2 已完成 Feature 的组件 | 会。文件匹配组件的 `source_paths`，组件成为反推组件：选入它的单元套件、active 回归和不变量测试；`--feature` 的 affected 范围还包括该组件的 active 验收测试，F012 的验收测试因此会运行。`--changed` 不选验收测试。C1 的改动由 F014 测到，C2–C4 的改动由 F013 测到 | 组件设了 `full_suite_on_change` 时是 | F012 的证据和人工验收不重新检查，F012 不重开 | Stage 1 批准材料和 Stage 4 报告列出 `inferred_components`；`touched_completed_features` 列出 F012，请用户判断是否重新人工验收。F012 在这些组件上没有登记测试时不会被列出 | R1 R10 R14 |
 | D3 多个组件共用的文件 | 会。认领它的每个组件都成为反推组件；它未被认领时，依赖它的已认领文件所属的组件都成为反推组件 | 其中任一组件设了 `full_suite_on_change` 时是 | 按等价组 | 无 | R1 R2 |
 | D4 不属于任何组件的文件 | 分四种。① 不是游戏文件：Markdown、`docs/` 下的文件、`yaya/` 下测试基础设施以外的文件、根目录的工具配置、`gdUnit4` 以外的插件，不增加测试。② 未认领的游戏文件被 `dev/debug/` 以外的已认领文件直接或间接依赖：依赖者的组件成为反推组件，另加依赖图选中的套件。③ 未认领、没有这样的依赖者：包括只被调试台或测试引用的文件，以及编辑器为无人引用的素材重写的 `.import`，选不出组件。④ `project.godot`：按 Autoload 找依赖者，依赖者的组件成为反推组件 | ①否。②否。③是，原因 `unclaimed-changed-file:<路径>`；删除的未认领游戏文件也是。④依赖者的组件能归入时否；没有依赖者，或依赖者只在 `dev/debug/`、测试目录或都未认领时是 | ① 中参与指纹的文件在 C4 仍让证据和人工验收失效；其余按等价组 | ① 插件改动按 07 号规范处理。④ 改了 `[gdunit4]` 等影响全局的设置时，选择只含 Autoload 依赖者的组件，Agent 按 R21 自己写 full 理由 | R1 R2 R20 R21 |
-| D5 测试或测试登记表 | 改动的 gdUnit 套件直接选入，原因 `changed-test:<路径>`；辅助文件沿依赖图选使用它的套件，删除的测试文件自身不选。`docs/test-registry.json` 不算游戏文件，但它的内容直接决定组件和测试的选择 | 否；已登记的套件路径缺失时选择报错 | 都参与指纹，C4 时失效 | 别人改过的测试套件失败时按 R3 处理；移动测试文件时同步更新登记表的 `path` | R1 R2 |
+| D5 测试或测试登记表 | 自动发现改动或依赖套件时排除隐藏路径和 `.gdignore` 目录，其他改动套件以 `changed-test:<路径>` 选入。辅助文件沿依赖图选使用它的套件，删除的测试文件自身不选。`docs/test-registry.json` 不算游戏文件，但它直接决定组件和测试的选择；登记义务不因可见性被静默过滤，显式 `--target` 语义不变 | 符合 R15 的历史标识缺失条件时是；已登记的套件路径缺失时选择报错 | 都参与指纹，C4 时失效 | 别人改过的测试套件失败时按 R3 处理；移动测试文件时同步更新登记表的 `path` | R1 R2 R15 |
 | D6 契约文件 | 不增加测试；Feature 详情中的验证映射和 `test_impact` 直接改变选择 | 否 | 参与指纹：C4 时测试证据失效，人工验收按 R6 处理 | Stage 3 文档检查点之后改 GDD、设计稿等，同样让证据失效 | R4 R6 |
 | D7 不参与指纹的文件 | 不进入改动文件，不增加测试 | 否 | 不失效 | 包括 Progress、知识与调研的 Markdown、契约目录以外的 README、调试台的插槽预设与组合、`dev/debug/adoption-log.md`、`reports/`、完成证据 | R4 |
 | D8 测试基础设施、依赖或引擎升级 | `yaya/tools/testing/**`、`addons/gdUnit4/**`、`docs/methodology-config.json`：选择升级 full。其他插件和 `yaya/` 下的其他工具：不增加测试。仓库外原地替换 Godot 或 Python：看不到 | 前一类是，原因 `test-infrastructure:<路径>`；其余否 | 仓库内的文件参与指纹，C4 时失效；仓库外的变化不让证据失效 | 插件和引擎升级按 07 号规范，环境按 06 号规范 | R1 R20 |
-| D9 删除或重命名 | 改名算删除加新增。删除的路径仍按字符串匹配 `source_paths`，认领它的组件成为反推组件；仍引用它的文件被依赖图找到；`.uid`、`.import` 与源文件算同一个节点 | 删除未认领的游戏文件时是 | 参与指纹，C4 时失效 | 移动测试文件时不同步登记表的 `path`，选择报错 | R1 R2 R15 |
+| D9 删除或重命名 | 改名算删除加新增。删除的路径仍匹配 `source_paths`，认领它的组件成为反推组件。依赖图从起点读取旧 UID、旧全局类名，查找当前仍引用它们的文件；`.uid`、`.import` 与源文件算同一个节点 | 删除未认领的游戏文件，或符合 R15 的历史标识缺失条件时是 | 参与指纹，C4 时失效 | 移动测试文件时不同步登记表的 `path`，选择报错 | R1 R2 R15 |
 
 ## 等价组
 

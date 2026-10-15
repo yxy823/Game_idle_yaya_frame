@@ -430,6 +430,15 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 | `--dry-run` | 不写文件，打印起点（已有时用它，否则用当前验证点）、改动文件、反推组件、依赖图选中的套件、全量理由和碰到的已完成 Feature | 写入 |
 | `--repo-root <目录>` | 要修改的项目 | 脚本所在项目 |
 
+预览的全量理由合并改动触发的理由、声明组件与反推组件的 `full_suite_on_change`，以及已批准的 `test_impact.full_suite_reasons`。
+
+删除节点的旧 UID 和全局类名从起点读取。以下情况以 `dependency-graph-unresolved:<路径>` 升级 full：
+
+- 删除的脚本（`.gd`）或资源（`.tscn`、`.tres`）在起点缺少文本，或既无 UID 也无全局类名。
+- 起点有对应 `.import`，但其中没有可读 UID。
+
+没有 `.import` 的其他删除文件仍沿路径引用选择消费者，不因缺少标识升级 full。
+
 退出码：`0` 写入、保留已有起点或预览成功；`2` Feature 记录、登记表或 Git 无法读取，此时不写入（参数错误同样为 `2`）。
 
 ### record-feature-completion.py
@@ -476,9 +485,9 @@ $LASTEXITCODE
 
 - **位置**：Feature 运行保存到 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`，focused/TDD 运行保存到 `reports/gdunit-wrapper/focused/run-<id>/`。
 - **内容**：每次测试只写一份 `result.json`，关联引擎日志、实际发现集合、JUnit 和诊断原件。运行中、失败与通过都记录在该文件；完成检查从原件计算覆盖，不维护第二份尝试日志。
-- **历史读取警告**：历史结果无法读取或头部无效时，启动阶段在 stderr 提示 `WARNING: invalid run history`，保留原件并继续本次验证；警告不决定本次测试成败。
+- **历史读取警告**：历史目录缺少 `result.json`、结果无法读取或头部无效时，启动阶段在 stderr 提示 `WARNING: invalid run history`。保留原件并继续本次验证；警告不决定本次测试成败。扫描只排除本次正在建立的运行目录。
 - **快照失败**：当前快照读取失败时，仍保存本次 `failed` 结果并返回非零，不启动 Godot。
-- **完成检查范围**：运行顺序和完成检查只读取当前 Feature 目录。目录内不可读、格式损坏或 Feature 不符的记录会阻止完成，须查明原因后按授权处理。正常的失败须由同一 Feature、同一内容的后续充分验证解决。
+- **完成检查范围**：运行顺序和完成检查只读取当前 Feature 目录。历史目录缺少结果，或记录不可读、格式损坏、Feature 不符，都会阻止完成。查明原因后按授权处理。正常的失败须由同一 Feature、同一内容的后续充分验证解决。
 - **写入失败**：目录或结果文件写入失败时如实报告 I/O 错误，不能声称结果已经保存。
 
 ## 结果如何使用

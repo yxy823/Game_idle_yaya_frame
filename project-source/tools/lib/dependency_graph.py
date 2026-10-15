@@ -7,7 +7,7 @@ import re
 from collections import deque
 from pathlib import Path
 
-from tools.lib.verification_snapshot import project_paths
+from tools.lib.verification_snapshot import project_paths, revision_texts
 
 EXCLUDED_PREFIXES = (".godot/", "addons/", "reports/")
 SCRIPT_SUFFIXES = (".gd",)
@@ -48,15 +48,42 @@ def _unescape(value: str) -> str:
     return re.sub(r"\\(.)", lambda match: {"n": "\n", "t": "\t"}.get(match[1], match[1]), value)
 
 
+def _identities(path: str, text: str) -> tuple[list[str], list[str]]:
+    uids, classes = [], []
+    if path.endswith(".uid"):
+        if re.fullmatch(r"uid://[a-z0-9]+", text.strip()):
+            uids.append(text.strip())
+    elif path.endswith(".import"):
+        uids.extend(_IMPORT_UID.findall(text))
+    elif path.endswith(RESOURCE_SUFFIXES):
+        uids.extend(_HEADER_UID.findall(text))
+    elif path.endswith(SCRIPT_SUFFIXES):
+        classes.extend(_CLASS_NAME.findall(_without_comments(text)))
+    return uids, classes
+
+
+def deleted_identity_texts(root: Path, revision: str, deleted: list[str]) -> tuple[dict[str, str], list[str]]:
+    paths = [candidate for path in deleted for candidate in (path, path + ".uid", path + ".import")
+             if candidate.endswith((*SCRIPT_SUFFIXES, *RESOURCE_SUFFIXES, ".uid", ".import"))]
+    texts = revision_texts(root, revision, paths)
+    identified = {canonical(path) for path, text in texts.items() if any(_identities(path, text))}
+    unresolved = [path for path in deleted
+                  if (path.endswith((*SCRIPT_SUFFIXES, *RESOURCE_SUFFIXES))
+                      and (path not in texts or path not in identified))
+                  or (path + ".import" in texts
+                      and not _identities(path + ".import", texts[path + ".import"])[0])]
+    return texts, unresolved
+
+
 class _Builder:
     def __init__(self, root: Path) -> None:
         self.root = root
         self.files = [path for path in project_paths(root)
                       if not path.startswith(EXCLUDED_PREFIXES) and (root / path).is_file()]
         self.texts: dict[str, str] = {}
-        self.uids: dict[str, str] = {}
+        self.uids: dict[str, set[str]] = {}
         self.classes: dict[str, set[str]] = {}
-        self.autoloads: dict[str, str] = {}
+        self.autoloads: dict[str, set[str]] = {}
         self.graph: dict[str, set[str]] = {canonical(path): set() for path in self.files}
 
     def text(self, path: str) -> str:
@@ -64,31 +91,30 @@ class _Builder:
             self.texts[path] = (self.root / path).read_text(encoding="utf-8", errors="replace")
         return self.texts[path]
 
-    def resolve(self, owner: str, value: str) -> str | None:
+    def resolve(self, owner: str, value: str) -> set[str]:
         if value.startswith("uid://"):
-            return self.uids.get(value)
+            return self.uids.get(value, set())
         if value.startswith("res://"):
             target = value.removeprefix("res://")
         elif "://" in value or value.startswith("/"):
-            return None
+            return set()
         else:
             target = posixpath.join(posixpath.dirname(owner), value)
-        return canonical(posixpath.normpath(target))
+        return {canonical(posixpath.normpath(target))}
 
-    def index(self) -> None:
+    def index_identity(self, path: str, text: str) -> None:
+        uids, classes = _identities(path, text)
+        for uid in uids:
+            self.uids.setdefault(uid, set()).add(canonical(path))
+        for name in classes:
+            self.classes.setdefault(name, set()).add(path)
+
+    def index(self, historical_texts: dict[str, str]) -> None:
         for path in self.files:
-            if path.endswith(".uid"):
-                self.uids[self.text(path).strip()] = canonical(path)
-            elif path.endswith(".import"):
-                if match := _IMPORT_UID.search(self.text(path)):
-                    self.uids[match[1]] = canonical(path)
-            elif path.endswith(RESOURCE_SUFFIXES):
-                if match := _HEADER_UID.search(self.text(path)):
-                    self.uids[match[1]] = path
-        for path in self.files:
-            if path.endswith(SCRIPT_SUFFIXES):
-                for name in _CLASS_NAME.findall(_without_comments(self.text(path))):
-                    self.classes.setdefault(name, set()).add(path)
+            if path.endswith((*SCRIPT_SUFFIXES, *RESOURCE_SUFFIXES, ".uid", ".import")):
+                self.index_identity(path, self.text(path))
+        for path, text in historical_texts.items():
+            self.index_identity(path, text)
         if (self.root / "project.godot").is_file():
             section = _AUTOLOAD_SECTION.search(self.text("project.godot"))
             for name, value in _AUTOLOAD_ENTRY.findall(section[1] if section else ""):
@@ -102,18 +128,16 @@ class _Builder:
             self.add(owner, self.resolve(owner, value))
         identifiers = set(_IDENTIFIER.findall(code))
         for name in identifiers & self.classes.keys():
-            for target in self.classes[name]:
-                self.add(owner, target)
+            self.add(owner, self.classes[name])
         for name in identifiers & self.autoloads.keys():
             self.add(owner, self.autoloads[name])
-            self.add(owner, "project.godot")
+            self.add(owner, {"project.godot"})
 
-    def add(self, owner: str, target: str | None) -> None:
-        if target and target != owner:
-            self.graph.setdefault(owner, set()).add(target)
+    def add(self, owner: str, targets: set[str]) -> None:
+        self.graph.setdefault(owner, set()).update(targets - {owner})
 
-    def build(self) -> dict[str, set[str]]:
-        self.index()
+    def build(self, historical_texts: dict[str, str]) -> dict[str, set[str]]:
+        self.index(historical_texts)
         for path in self.files:
             if path.endswith(SCRIPT_SUFFIXES):
                 self.add_script_edges(path, self.text(path))
@@ -121,7 +145,7 @@ class _Builder:
                 text = self.text(path)
                 for attributes in _EXT_RESOURCE.findall(text):
                     values = dict(_ATTRIBUTE.findall(attributes))
-                    target = self.resolve(path, values["path"]) if "path" in values else None
+                    target = self.resolve(path, values["path"]) if "path" in values else set()
                     self.add(path, target or self.resolve(path, values.get("uid", "")))
                 for value in _PLACEHOLDER.findall(text):
                     self.add(path, self.resolve(path, value))
@@ -133,13 +157,13 @@ class _Builder:
         return self.graph
 
 
-def build_graph(root: Path) -> dict[str, set[str]]:
+def build_graph(root: Path, *, historical_texts: dict[str, str] | None = None) -> dict[str, set[str]]:
     """Return ``{file: files it depends on}`` for project files outside excluded trees.
 
     Edges may point at paths that no longer exist, so a deleted file still finds
     the files that reference it.
     """
-    return _Builder(root.resolve()).build()
+    return _Builder(root.resolve()).build(historical_texts or {})
 
 
 def dependents(graph: dict[str, set[str]], starts: list[str]) -> dict[str, dict[str, list[str]]]:
