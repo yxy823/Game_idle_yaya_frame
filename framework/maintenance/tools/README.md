@@ -21,7 +21,7 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 分发源中的链接按生成项目的目录编写，在源目录里直接解析会失真。所以脚本分两部分检查：
 
-- **维护侧**：仓库中 `project-source/` 以外的 Markdown。
+- **维护侧**：仓库中 `project-source/` 和 `references/` 以外的 Markdown。
 - **分发侧**：按[复制清单](../../project-creation/project-files.json)复制到系统临时目录后的项目，报告中的路径映射回 `project-source/` 的源文件。
 
 两部分都调用分发给项目的 [check-markdown-links.py](../../../project-source/tools/checks/check-markdown-links.py)，检查规则与默认排除见项目检查与测试工具的[check-markdown-links.py](../../../project-source/tools/README.md#check-markdown-linkspy)。临时副本不初始化 Git，运行后删除。
@@ -42,8 +42,8 @@ python -B framework/maintenance/tools/check_repository_links.py
 修改[框架术语](../../terminology.md)的“不用的说法”列，或统一用词之后，在仓库根目录运行分发给项目的检查脚本，指定框架术语文件，扫描全仓的 Markdown（包括 `project-source/`）、两份提示词库和关系图数据。提示词库的正文会原样显示在用户的快捷浮窗里；关系图的节点说明也是给人读的文字，提交钩子会检查暂存的这两类 JSON，全仓检查时也要包括：
 
 ```powershell
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json"
-python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json" --discover
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json" --exclude references
+python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md --include "*.md" --include "framework/prompt-scenarios/prompts/*.json" --include "framework/relationship-maps/*.json" --exclude references --discover
 ```
 
 只检查本次改过的文件时，把文件直接写在命令后面，改过的提示词 JSON 也一样，例如 `python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md AGENTS.md framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json`。不用 `--include` 选单个文件：不带目录的 `--include README.md` 会选中所有目录中的 `README.md`。
@@ -119,7 +119,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 
 - **检查目标**：递归检查所有 Markdown，但不检查导航类文件（`README.md`、`index.md`、`*index.md`）和下表中的路径。
 - **引用来源**：在源码和文档文本中搜索引用。导航类文件虽然不被检查，仍会作为引用来源统计，避免把它们引用的文档误报为孤立。
-- **排除**：根目录 `tmp/` 和 `.claude/` 中的材料默认既不检查，也不作为引用来源。
+- **排除**：根目录 `tmp/`、`references/` 和 `.claude/` 中的材料默认既不检查，也不作为引用来源。
 
 | 默认不检查的路径（相对仓库根目录） | 原因 |
 | --- | --- |
@@ -163,7 +163,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 | `--nav` | 调整哪些文件算导航类 |
 | `--json` | 输出完整的结构化结果，`explanations` 中附中文释义；分类代码、计数和引用字段不变 |
 | `--out` | 写入报告文件，父目录必须已存在；临时报告放在根目录 `tmp/` 下。不指定就不写文件 |
-| `--exclude` | 替换目录排除规则（默认排除 Git、缓存、根目录 `tmp/` 等）。它同时影响检查目标和引用来源，被它排除的文件不能再用 `--targets` 选回 |
+| `--exclude` | 替换目录排除规则（默认排除 Git、缓存、根目录 `tmp/` 和 `references/` 等）。它同时影响检查目标和引用来源，被它排除的文件不能再用 `--targets` 选回 |
 | `--fail-on-orphan` | 存在 `NONE` 时返回 `1`；其他分类不会导致失败 |
 
 默认情况下，扫描完成即返回 `0`。

@@ -109,9 +109,9 @@ def main(argv: list[str] | None = None) -> int:
 def check(args: argparse.Namespace) -> int:
     entries = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
-    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source")
+    maintenance = run_checker(REPO_ROOT, "--exclude", "project-source", "--exclude", "references")
     if args.check_link_text:
-        maintenance_text = run_checker(REPO_ROOT, "--exclude", "project-source", checker=TEXT_CHECKER)
+        maintenance_text = run_checker(REPO_ROOT, "--exclude", "project-source", "--exclude", "references", checker=TEXT_CHECKER)
     with tempfile.TemporaryDirectory(prefix="yaya-link-check-") as directory:
         project = Path(directory) / "project"
         copy_project(REPO_ROOT, project)
