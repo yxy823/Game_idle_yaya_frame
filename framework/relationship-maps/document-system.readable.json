@@ -4024,18 +4024,30 @@
         "node": "doc-initialization",
         "port": "left"
       },
-      "target": {
-        "kind": "node",
-        "node": "doc-configuration",
-        "port": "right"
-      },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1340,
+          "y": 1696
+        },
+        {
+          "x": 1340,
+          "y": 1620
+        },
+        {
+          "x": 2420,
+          "y": 1620
+        },
+        {
+          "x": 2420,
+          "y": 1696
+        }
+      ],
       "label": "按环境规范实际检查后记录",
       "stroke": {
         "color": "#2563EB",
         "width": 1.5,
-        "dash": "dashed"
+        "dash": "solid"
       },
       "arrow": "target",
       "text": {
@@ -6541,6 +6553,14 @@
         },
         {
           "x": -146,
+          "y": 4180
+        },
+        {
+          "x": 1480,
+          "y": 4180
+        },
+        {
+          "x": 1480,
           "y": 4115
         }
       ],
@@ -7117,7 +7137,24 @@
         "port": "top"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1182,
+          "y": 1780
+        },
+        {
+          "x": 1010,
+          "y": 1780
+        },
+        {
+          "x": 1010,
+          "y": 4030
+        },
+        {
+          "x": 1182,
+          "y": 4030
+        }
+      ],
       "label": "按 Skill 编写与同步",
       "stroke": {
         "color": "#2563EB",
