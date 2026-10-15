@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import os
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
@@ -185,8 +186,15 @@ def is_excluded(relative: Path, excluded_names: set[str], excluded_paths: list[P
 
 
 def markdown_files(root: Path, excluded_names: set[str], excluded_paths: list[Path]) -> list[Path]:
-    return sorted(
-        path
-        for path in root.rglob("*.md")
-        if path.is_file() and not is_excluded(path.relative_to(root), excluded_names, excluded_paths)
-    )
+    def fail(error: OSError) -> None:
+        raise error
+
+    files = []
+    for directory, subdirectories, names in os.walk(root, onerror=fail):
+        relative = Path(directory).relative_to(root)
+        subdirectories[:] = [name for name in subdirectories if name not in excluded_names
+                             and not is_excluded(relative / name, excluded_names, excluded_paths)]
+        files.extend(Path(directory) / name for name in names
+                     if Path(name).suffix.lower() == ".md" and (Path(directory) / name).is_file()
+                     and not is_excluded(relative / name, excluded_names, excluded_paths))
+    return sorted(files)

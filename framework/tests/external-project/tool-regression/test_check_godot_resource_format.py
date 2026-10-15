@@ -7,8 +7,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from project_context import PROJECT_ROOT
 
 import subprocess
+import importlib.util
+import io
+import os
 import tempfile
 import unittest
+from contextlib import redirect_stderr, redirect_stdout
+from unittest import mock
 
 SCRIPT = PROJECT_ROOT / "yaya/tools/checks/check-godot-resource-format.py"
 UNSAVED = '[gd_scene load_steps=2 format=3]\n\n[ext_resource type="Script" path="res://a.gd" id="1"]\n'
@@ -105,6 +110,27 @@ class GodotResourceFormatTests(unittest.TestCase):
         result = self.run_check()
         self.assertEqual(result.returncode, 2)
         self.assertNotIn("OK", result.stdout)
+
+    def test_unreadable_subdirectory_returns_2_and_names_path(self) -> None:
+        self.write("readable/ok.tscn", '[gd_scene format=3 uid="uid://abc"]\n')
+        self.write("locked/ok.tscn", '[gd_scene format=3 uid="uid://def"]\n')
+        locked = self.root / "locked"
+        spec = importlib.util.spec_from_file_location("resource_format_cli", SCRIPT)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        real = os.scandir
+
+        def scandir(path="."):
+            if Path(path) == locked:
+                raise PermissionError(13, "Access is denied", str(path))
+            return real(path)
+
+        errors = io.StringIO()
+        with mock.patch.object(os, "scandir", scandir), redirect_stderr(errors), redirect_stdout(io.StringIO()), \
+                mock.patch.object(sys, "argv", [str(SCRIPT), "--root", str(self.root)]):
+            code = module.main()
+        self.assertEqual(code, 2)
+        self.assertIn(repr(str(locked)), errors.getvalue())
 
 
 if __name__ == "__main__":
