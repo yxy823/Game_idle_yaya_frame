@@ -6,7 +6,7 @@
 
 ## 主题
 
-全部主题和问题列在首页 `index.html`，由 [qa-explainer-yaya](../../.agents/skills/qa-explainer-yaya/SKILL.md) 的生成命令按各主题文件的标题自动生成，不在本页另列。
+全部主题和问题列在首页 `pages/index.html`，由 [qa-explainer-yaya](../../.agents/skills/qa-explainer-yaya/SKILL.md) 的生成命令按各主题文件的标题自动生成，不在本页另列。
 
 ## 什么时候添加
 

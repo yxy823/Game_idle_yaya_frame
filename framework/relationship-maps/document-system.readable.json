@@ -2437,7 +2437,7 @@
       "y": 4071,
       "width": 270,
       "height": 88,
-      "label": "项目 Q&A\n<主题>.md · <主题>.html",
+      "label": "项目 Q&A\n<主题>.md · pages/<主题>.html",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {

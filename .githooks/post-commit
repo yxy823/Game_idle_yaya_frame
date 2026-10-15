@@ -1,5 +1,5 @@
 #!/bin/sh
-# 框架仓库的提交后钩子：本次提交改了 Q&A 主题文件或渲染脚本时，重新生成 framework/qa/ 下被忽略的 HTML 页面。
+# 框架仓库的提交后钩子：本次提交改了 Q&A 主题文件或渲染脚本时，重新生成 framework/qa/pages/ 下被忽略的 HTML 页面。
 # 提交已经完成，生成失败只打印提示，不影响提交。说明见 framework/maintenance/tools/README.md 的「提交后生成 Q&A 页面」。
 cd "$(git rev-parse --show-toplevel)" || exit 0
 

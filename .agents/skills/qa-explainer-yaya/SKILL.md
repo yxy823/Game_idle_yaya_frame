@@ -22,7 +22,7 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
    python -B project-source/tools/checks/check-terminology.py --terms framework/terminology.md framework/qa/<主题>.md
    ```
 
-3. 在仓库根目录生成全部主题页和首页 `framework/qa/index.html`，确认页面能生成。之后每次提交改到 `framework/qa/` 时，[提交后生成 Q&A 页面](../../../framework/maintenance/tools/README.md#提交后生成-qa-页面)的钩子会自动重新生成：
+3. 在仓库根目录生成全部主题页和首页 `framework/qa/pages/index.html`，确认页面能生成。之后每次提交改到 `framework/qa/` 时，[提交后生成 Q&A 页面](../../../framework/maintenance/tools/README.md#提交后生成-qa-页面)的钩子会自动重新生成：
 
    ```powershell
    node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa

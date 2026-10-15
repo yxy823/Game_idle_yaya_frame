@@ -16,7 +16,7 @@ __pycache__/
 /tmp/
 
 # 图解问答的页面由 docs/qa/ 下的 Markdown 生成，只提交 Markdown
-/docs/qa/*.html
+/docs/qa/pages/
 
 # 架构页面由 docs/architecture.md 和 docs/architecture/ 下的 Markdown 生成，只提交 Markdown
 /docs/architecture.html
