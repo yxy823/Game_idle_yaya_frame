@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1")
 display_name = "风铃 · chime"
-candidate_uid = "uid"
+candidate_uid = "uid://qdg28mcuyhgt"
 license_note = "测试用合成音，随框架分发；见同目录 README.md。"

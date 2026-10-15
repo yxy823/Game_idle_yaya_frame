@@ -41,7 +41,7 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
 
 `docs/test-registry.json` 是测试登记表（Registry），供机器读取，把组件映射到可复用的测试。给人读的值使用 `document_language`；机器协议字段保持不变。
 
-项目创建时会提供索引、修订日志和测试登记表，三者都是空数组。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题：先从 Git 恢复它最后一次提交的内容；只有确认它从未提交过初始内容以外的内容时，才按本文给出的初始内容重建。不要用重新初始化的空 Feature 记录代替丢失的记录。历史无法恢复时报告缺口，修订日志的锚点按 `feature-sync` 的锚点恢复处理。
+项目创建时会提供索引、修订记录和测试登记表。索引与修订记录的记录数组初始为空；登记表预置[调试台组件](08-test-traceability-and-evidence.md#调试台组件)及依赖方向测试。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题：先从 Git 恢复它最后一次提交的内容；只有确认它从未提交过初始内容以外的内容时，才按本文给出的初始内容重建。不要用重新初始化的空 Feature 记录代替丢失的记录。历史无法恢复时报告缺口，修订记录的锚点按 `feature-sync` 的锚点恢复处理。
 
 ## 文件 1：`docs/feature-list.json`
 
@@ -89,7 +89,7 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
 | `estimated_scope` | `small` 或 `medium`。更大的工作要在写定计划前继续拆分；校验器拒绝 `large`。 |
 | `completed_at` | 状态为 `done` 或 `obsolete_done` 时，填有效的 ISO 8601 时间戳；其他状态填 `null`。 |
 
-Feature 数量从 `features` 数组计算。详情文件、修订日志和测试登记表使用[文件结构](#文件结构)中的固定路径；索引的元数据不再重复这些路径。
+Feature 数量从 `features` 数组计算。详情文件、修订记录和测试登记表使用[文件结构](#文件结构)中的固定路径；索引的元数据不再重复这些路径。
 
 Feature ID 记录的是分配顺序，不是执行顺序：
 
@@ -176,13 +176,13 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 | `verification.acceptance_mode` | `manual`、`automated` 或 `null`。见[验收模式](#验收模式)。 |
 | `verification.regression_tests` | 本 Feature 创建的回归测试 ID，不重复，格式为 `F0XX-RTyy`，其中 `F0XX` 是本 Feature 的 ID。不是 Bug 的 Feature 留空，除非写明理由。 |
 | `verification.manual_regression` | 已有自动回归测试，或不涉及 Bug 回归时，填 `null`。否则写一项具体、可重复的人工回归检查，并说明自动化不现实的原因。非 `null` 时要求 `acceptance_mode: "manual"`。 |
-| `verification.test_impact` | 可选；不需要额外测试范围时省略。出现时只能有 `additional_tests` 和 `full_suite_reasons` 两个字段；模板里两者都有。Stage 2 在最终测试运行前把批准的额外范围存在这里。该字段计入快照指纹。 |
+| `verification.test_impact` | 可选；不需要额外测试范围时省略。出现时只能有 `additional_tests` 和 `full_suite_reasons` 两个字段；模板里两者都有。Stage 2 在最终测试运行前把批准的额外范围存在这里。该字段计入内容指纹。 |
 | `verification.test_impact.additional_tests` | `{ "id": "...", "reason": "..." }` 对象的数组；测试 ID 来自测试登记表且不重复，理由非空。可以引用其他 Feature 的测试。准备阶段被引用的测试可以是 `planned`，但本 Feature 完成时必须是 `active`。追加测试不改变测试归属，也不代替本 Feature 自己的 AC 与回归映射。 |
 | `verification.test_impact.full_suite_reasons` | 在自动触发条件之外，批准运行全量测试的理由，不重复、非空。`full_suite_on_change: true` 的组件会自动触发全量，不写在这里。空数组表示没有额外升级。 |
 | `source` | 一个精确的主要来源：Product 交付章节、GDD 章节或专业规格。没有单一来源文档的技术工作用 `infrastructure`。见下文的来源规则。 |
 | `notes` | 字符串，初始为空。保存任务提醒、占位、TODO、推迟处理的边界情况、简短的 Bug 经验，以及指向 Feature 设计稿或其他记录的相对链接。实现决定及其理由不论长短，都写进 [Feature 设计与实现说明](#feature-设计与实现说明)。 |
 | `engineering_change` | 可选。出现时只能是 `bug`、`refactor` 或 `maintenance`。来自 Product 的 Feature 不写这个字段。 |
-| `base_revision` | 测试选择的起点：Stage 2 由 [record-base-revision.py](../tools/README.md#record-base-revisionpy) 写入的验证点提交，规划时省略或为 `null`。`in_progress` 的 Feature 必须有。只由该命令写入；放弃回 `pending` 后重新开始，或起点提交被 Git 回收时，用它的 `--reset` 重取。该字段计入快照指纹。怎样用起点选择测试见[起点以来的改动](08-test-traceability-and-evidence.md#起点以来的改动)。 |
+| `base_revision` | 测试选择的起点：Stage 2 由 [record-base-revision.py](../tools/README.md#record-base-revisionpy) 写入的验证点提交，规划时省略或为 `null`。`in_progress` 的 Feature 必须有。只由该命令写入；放弃回 `pending` 后重新开始，或起点提交被 Git 回收时，用它的 `--reset` 重取。该字段计入内容指纹。怎样用起点选择测试见[起点以来的改动](08-test-traceability-and-evidence.md#起点以来的改动)。 |
 | `bug_diagnosis` | 只允许与 `engineering_change: bug` 一起出现；其他情况为 `null` 或省略。对象只能有 `actual`、`expected`、`source`、`reproduction` 和 `root_cause`。`actual`、`expected`、`source` 是非空字符串。`reproduction` 是非空的有序步骤列表，步骤不重复、非空。调查期间 `root_cause` 可以是 `null`。每个 `done` 的 Bug，以及正在完成的 Bug，都需要非空且已确认的 `root_cause`。不是 Bug 的 Feature 不编造诊断证据。 |
 
 条件 ID 是永久标识。不要给已完成 Feature 的条件重新编号。之后 Product 行为发生变化时，新建一个 Feature 来修改或取代原有行为。
@@ -265,7 +265,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 对当前某个子系统的详细描述放在 `docs/architecture/<subsystem>.md`；重要的跨 Feature 理由可以写成 ADR。Feature 设计稿链接它们。不要把同一份子系统描述复制到每个 Feature。
 
-完成后，设计稿保留为该 Feature 的记录。之后的行为变化要新建 Feature 和设计稿，并更新当前架构。可以用更正说明或替代链接澄清记录，但不要把过去的决定改写成好像一直如此。设计 Markdown 计入验证指纹，不享有 JSON `notes` 的豁免。
+完成后，设计稿保留为该 Feature 的记录。之后的行为变化要新建 Feature 和设计稿，并更新当前架构。可以用更正说明或替代链接澄清记录，但不要把过去的决定改写成好像一直如此。设计 Markdown 计入内容指纹，不享有 JSON `notes` 的豁免。
 
 ## 文件 3：`docs/feature-list-revisions.json`
 
@@ -277,7 +277,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 ### 初始规划基线
 
-第一次 Product 规划之前，如果 Feature 索引和修订日志都为空，就随这次规划写入基线。空的复制项目，或者只有工程 Feature，都不能建立来源覆盖。续接被中断的第一次规划时，要从任务上下文和 Git 历史确认两点：起始状态同样为空，以及所采用的来源版本。仅凭修订日志为空不能证明这两点。
+第一次 Product 规划之前，如果 Feature 索引和修订记录都为空，就随这次规划写入基线。空的复制项目，或者只有工程 Feature，都不能建立来源覆盖。续接被中断的第一次规划时，要从任务上下文和 Git 历史确认两点：起始状态同样为空，以及所采用的来源版本。仅凭修订记录为空不能证明这两点。
 
 1. 写计划之前，确认所采用的每个 GDD、Product、专业和规则来源，都已经通过各自的流程和授权提交。
 2. 把来源的 HEAD 解析成完整的提交哈希。如果来源无法提交，或采用的状态不清楚，报告缺少的前提。不要用脚手架提交代替。
@@ -296,7 +296,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 不要创建引用自身的计划提交、单独的基线文件或新的 schema 字段。基线只覆盖已规划的范围和实际采用的来源，不覆盖所有 Product，也不覆盖 HEAD 上的所有文件。
 
-之后的 Product 规划保留完整的修订日志，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。Feature 记录里已有 Feature 但没有基线时，不要只因为日志为空就补加 `R000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
+之后的 Product 规划保留完整的修订记录，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。Feature 记录里已有 Feature 但没有基线时，不要只因为修订记录为空就补加 `R000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
 
 ### 同步记录
 
@@ -341,7 +341,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 字段规则：
 
-- `revision_id` 不重复，由字母、数字、点、连字符和下划线组成。
+- `revision_id` 不重复，首字符必须是 ASCII 字母或数字；后续字符只能是 ASCII 字母、数字、点、连字符或下划线。
 - `anchor_commit` 和 `synced_at_commit` 是 Git 提交标识，`revised_at` 是 ISO 8601 时间戳，`summary` 非空。
 - 每条迁移只能有 `kind`、`from`、`to`、`reason` 和 `source`。其中提到的每个 Feature ID 都必须存在。
 - 迁移的 `source` 只能有 `path` 和 `anchor_commit`：
@@ -394,7 +394,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 | 字段 | 要求 |
 | --- | --- |
-| `meta.schema_version` | 整数 `4`。只有 schema 版本 4 有效（修订日志是 2）；工具不读取、也不转换其他格式。 |
+| `meta.schema_version` | 整数 `4`。只有 schema 版本 4 有效（修订记录是 2）；工具不读取、也不转换其他格式。 |
 | `components[].id` | 不重复的 `lower_snake_case` 组件 ID。 |
 | `components[].unit_test_paths` | 已存在的单元测试套件文件或目录路径，不重复；组件没有单元测试套件时为 `[]`。示例假定 `tests/unit/inventory` 存在。 |
 | `components[].full_suite_on_change` | 布尔值。 |
@@ -496,7 +496,7 @@ done ──source synchronization retires or replaces implemented behavior──
 
 字段规则列在上面的各张表中。`python -B yaya/tools/checks/check-feature-list.py` 还会跨字段、跨文件检查以下规则：
 
-- **文件：**索引、修订日志和测试登记表都存在。它们和每个 `docs/features/F*.json` 都能解析为 JSON，且没有重复键。
+- **文件：**索引、修订记录和测试登记表都存在。它们和每个 `docs/features/F*.json` 都能解析为 JSON，且没有重复键。
 - **索引与详情：**索引 ID 的集合等于详情文件名主干的集合，每个详情的 `id` 等于其文件名主干。
 - **依赖：**每个前置 Feature 都存在且不是自身，依赖图无环。`pending`、`in_progress` 或 `blocked` 的 Feature 不能依赖 `obsolete` 或 `obsolete_done` 的 Feature。
 - **组件：**每个 `affected_components` ID 都存在于测试登记表的 `components` 中。
@@ -527,28 +527,28 @@ python -B yaya/tools/checks/check-feature-list.py
 先满足 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)中的前提。在 `docs/product.md` 中预拆分约定的交付范围，然后按实际执行顺序，一次细化并交付一个 Product。
 
 - Feature 的规划单位是当前的 `docs/product/NN-<delivery>.md`，连同它批准的范围和 GDD 引用。
-- `docs/product.md` 保存候选边界、来源映射、依赖和建议顺序。
+- `docs/product.md` 保存预拆分的 Product 边界、来源映射、依赖和建议顺序。
 - 文件编号是稳定的身份标识，不表示每个 Product 都要一次细化或规划完。
 
 1. 根据用户的请求、预拆分顺序，以及已有 Feature 的 `source` 和状态，确定当前 Product。阅读与之有关的 Progress 了解背景。重新查看所依据的 GDD 设计和早期交付的实际结果。然后在当前授权内，用 `product-author` 编写或更新这个 Product 的交付文档。拆分前先解决不清楚的范围和必要的跨系统规则；不要为了确定一条共享规则就去细化未来的 Product。
 2. 在一次规划中，把当前 Product 完整的必要范围拆成可独立验证的 Feature。只纳入这个范围需要的基础设施，复用已有基础设施和已完成的前置 Feature。如果必须先交付另一个 Product，就调整顺序，而不是同时提前规划两个 Product。
 3. 后续 Product 在 `product.md` 中保持为简洁的预拆分条目。不要编写它们的详细交付文档，不要分配它们的 Feature ID，也不要写它们的 AC 或测试登记。只在当前决定需要时读取它们的 GDD 依赖。
 4. 先完成当前 Product 所需的 Feature，再拆分下一个 Product。核对 Feature 的实际完成情况和剩余范围。以下情况都不能证明实现已完成：没有可开始的 Feature、计划为空、Product 文档自称已完成。`pending`、`in_progress` 和 `blocked` 的工作都算未完成；明确撤回的范围按退役规则处理。
-5. 完成后，对照当前 GDD 和已经学到的东西，重新审视下一个候选。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
+5. 完成后，对照当前 GDD 和已经学到的东西，重新审视下一个 Product。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
 
 `feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它从当前已用的最大 ID 之后分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
 
 `feature-sync` 对照已规划和已完成的工作，分析 GDD、Product、专业和项目规则来源的变化，包括实际的下游依赖。
 
-- 只影响后续、尚未规划的候选的变化，按需更新它的预拆分，不创建详细的 Product 文档或 Feature。
-- 这个候选成为当前 Product 时，完整阅读它所依据的 GDD 和专业设计，即使这些编辑早于最近一次同步锚点。
+- 只影响后续、尚未规划的 Product 的变化，按需更新它的预拆分，不创建详细的 Product 文档或 Feature。
+- 这个 Product 成为当前 Product 时，完整阅读它所依据的 GDD 和专业设计，即使这些编辑早于最近一次同步锚点。
 - 全局的来源锚点不能证明每个 Product 都已细化或拆分。`meta.generated_from` 只列出来源位置，不表示覆盖范围。
 
 使用 Product 顺序、Feature 的来源和状态，以及普通的 Progress 记录。不要新增 Product 队列、登记表、完成标记或第二份 Feature 记录。这条规则保护已有计划不被改动；它不授权删除未来的 Feature，也不授权改写已完成的历史。
 
 ### 拆分预览
 
-每个当前 Product 做初始拆分时，在写入它的 Feature 索引条目、详情、修订日志或测试登记表（包括组件合并）之前，先在对话中给出简洁的预览。Product 编写或接手已有实现时调用规划，也同样适用。把预览作为规划方案的一部分给出：
+每个当前 Product 做初始拆分时，在写入它的 Feature 索引条目、详情、修订记录或测试登记表（包括组件合并）之前，先在对话中给出简洁的预览。Product 编写或接手已有实现时调用规划，也同样适用。把预览作为规划方案的一部分给出：
 
 - 指明 Product 及其批准的范围。说明要新增的 Feature 数量，以及 Feature 记录前后的总数。区分复用的工作和新增的条目。数量从完整的结果推导，不按预设配额。
 - 用紧凑的表格或列表列出每个拟定的 Feature：暂定标签、标题、一句话的范围和可观察结果、前置 Feature。说明选择这个粒度的理由，以及排除项和尚未决定的选择。
@@ -566,7 +566,7 @@ python -B yaya/tools/checks/check-feature-list.py
 
 - 如果没有 GDD，在用户的范围内把设计缺口交回 `design-gdd`。代码可以为这项工作提供参考，但不能悄悄变成已批准的设计。
 - 依据规则、状态、反馈和可观察结果都已写明的设计，用 `product-author` 划定当前交付边界。批准的游戏设计变更通过 `design-gdd` 处理，范围内的数值变更通过 `design-balance` 处理。
-- 对所请求的当前交付应用逐个 Product 规划。已有实现不免除前置 Feature 的完成要求，也不扩大规划范围。后续候选保持在预拆分层级。
+- 对所请求的当前交付应用逐个 Product 规划。已有实现不免除前置 Feature 的完成要求，也不扩大规划范围。后续 Product 保持在预拆分层级。
 
 已有 Feature 覆盖该结果时，复用它。没有覆盖时，围绕可独立验证的结果创建普通的、来自 Product 的 Feature；不要按想象中的历史编码步骤拆，也不要每个源文件建一个 Feature。从已确认的意图推导 AC。在常规的需求覆盖核对中，把每个条件映射到实现、可用的测试和剩余缺口。不要为了迁就缺陷而削弱 AC，也不要只为重跑测试而创建重复工作。
 
@@ -635,8 +635,8 @@ python -B yaya/tools/checks/check-feature-list.py
 
 | 操作 | 负责方 | 主要修改的文件 |
 | --- | --- | --- |
-| 当前 Product 的初始拆分 | `feature-plan` | 追加索引条目、详情和需要的组件；使用项目提供的修订日志和测试登记表，并保留其历史 |
-| GDD、Product、专业或项目规则的源同步 | `feature-sync` | 索引、详情、修订日志、需要的组件和受影响的测试追溯 |
+| 当前 Product 的初始拆分 | `feature-plan` | 追加索引条目、详情和需要的组件；使用项目提供的修订记录和测试登记表，并保留其历史 |
+| GDD、Product、专业或项目规则的源同步 | `feature-sync` | 索引、详情、修订记录、需要的组件和受影响的测试追溯 |
 | 创建 Bug、重构或维护 Feature | `engineering-change-plan` | 索引、工程详情和需要的组件；测试计划在执行时定稿 |
 | Feature 执行和完成说明 | `feature-execute` | 状态、验证映射、测试登记表、notes、Progress、实现和测试文件 |
 | 选择坏味道候选 | `engineering-refactor-select` | 只读选择；把选中的候选交回 `engineering-change-plan` |

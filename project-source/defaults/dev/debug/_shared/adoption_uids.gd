@@ -4,8 +4,12 @@ extends RefCounted
 
 const HEADER_UID := "uid=\"(uid://[a-z0-9]+)\""
 const EDITOR_OPEN := "Godot 编辑器正开着本项目：切回编辑器窗口，它会自动更新文件登记；更新前请从调试台启动游戏"
-const GODOT_PROCESSES := "Get-CimInstance Win32_Process -Filter 'Name LIKE ''%godot%''' " \
+const GODOT_PROCESSES := "Get-CimInstance Win32_Process -Filter 'Name LIKE ''%godot%''' -ErrorAction Stop " \
 	+ "| ForEach-Object CommandLine"
+
+## This debug session owns the import; pending requests merge until its next poll.
+static var _import_pid: int = -1
+static var _refresh_pending: bool = false
 
 
 ## The UID table the game loads at start is the editor's cache, which still names the old
@@ -37,14 +41,43 @@ static func repair(root: String = "res://game") -> int:
 static func refresh_cache(moved: String) -> String:
 	if not moved.begins_with("res://") or Engine.is_editor_hint():
 		return ""
+	if _import_pid > 0 and OS.is_process_running(_import_pid):
+		_refresh_pending = true
+		return "正在更新文件登记，本次移动会随后更新"
+	var finished := _finish_import() if _import_pid > 0 else ""
+	var started := _start_import()
+	return _notes(finished, started)
+
+
+static func poll_refresh() -> String:
+	if _import_pid <= 0 or OS.is_process_running(_import_pid):
+		return ""
+	var finished := _finish_import()
+	return _notes(finished, _start_import()) if _refresh_pending else finished
+
+
+static func _finish_import() -> String:
+	var code := OS.get_process_exit_code(_import_pid)
+	_import_pid = -1
+	return "" if code == 0 else "文件登记更新失败，请让 Agent 重新导入项目"
+
+
+static func _start_import() -> String:
+	_refresh_pending = false
 	var project := ProjectSettings.globalize_path("res://")
 	var output: Array = []
-	OS.execute("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", GODOT_PROCESSES],
+	var code := OS.execute("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", GODOT_PROCESSES],
 		output)
+	if code != 0:
+		return "没能检查 Godot 编辑器，请让 Agent 查看进程查询是否可用"
 	if editor_running("".join(output), project):
 		return EDITOR_OPEN
-	OS.create_process(OS.get_executable_path(), ["--headless", "--path", project, "--import"])
-	return ""
+	_import_pid = OS.create_process(OS.get_executable_path(), ["--headless", "--path", project, "--import"])
+	return "" if _import_pid > 0 else "没能启动文件登记更新，请让 Agent 重新导入项目"
+
+
+static func _notes(first: String, second: String) -> String:
+	return second if first.is_empty() else first + ("；" + second if not second.is_empty() else "")
 
 
 ## Whether one of `processes` (a command line per line) is a windowed editor of `project`:

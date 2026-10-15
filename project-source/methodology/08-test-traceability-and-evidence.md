@@ -204,7 +204,7 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 
 - 两个 Feature 之间的改动，要等下一个 Feature，或用户运行 `run-gdunit-tests.py --changed`，才会被测到。
 - 完成证据的 `git_revision` 记在 Stage 7 完成提交之前，所以完成提交里的游戏文件会被下一个 Feature 再测一次。
-- 撤销已完成 Feature 的实现（例如 revert 它的提交）后，改动会被下一个 Feature 选中，但不会把那个 Feature 改回未完成。丢弃已验证、未提交的内容时，Git 和指纹都看不到这次丢弃。
+- 撤销已完成 Feature 的实现（例如 revert 它的提交）后，改动会被下一个 Feature 选中，但不会把那个 Feature 改回未完成。丢弃已验证、未提交的内容时，相对起点的净差异可能为空。重新校验旧完成证据时，内容指纹能发现变化；已完成 Feature 的证据不会自动重查。
 - 仓库外的环境变化由[项目环境准备](06-project-environment.md#项目环境准备)负责。
 
 ### 不是本 Feature 造成的测试失败
@@ -281,7 +281,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 ### 运行记录
 
-每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 1），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、选中的路径、真实命令、源码指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
+每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 1），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、选中的路径、真实命令、内容指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
 完成判断只读取当前 Feature 的运行目录：
 

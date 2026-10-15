@@ -62,7 +62,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `design-art-direction` | 共享视觉方向与适用约束 |
 | `design-audio-direction` | 共享声音方向与反馈层次 |
 | `design-ui-spec` | 界面布局、状态、界面专用资源章节及相关游戏表现导航 |
-| `design-game-presentation` | 从体验目标规划一次游戏表现，标准化组件需求、比较候选并记录采用及实际实现关系 |
+| `design-game-presentation` | 从体验目标规划一次游戏表现，标准化组件需求、比较备选方案并记录采用及实际实现关系 |
 | `debug-console-godot` | 用调试台比较候选、做视觉决策和调参；为调试对象登记插槽、候选、固定局面与试播动作；用户采纳到游戏后收尾提交 |
 | `design-visual-asset-spec` | 具体视觉资源的准备和交付要求 |
 | `design-audio-asset-spec` | 具体音效/音乐的准备和交付要求 |

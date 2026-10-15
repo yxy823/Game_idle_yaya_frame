@@ -24,7 +24,7 @@
 
 GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
 
-候选值和暂不采纳的想法怎样分流，见需求与规划的[候选值与未采纳的想法](../requirements-and-tasks/requirements-and-planning.md#候选值与未采纳的想法)。除 `design-gdd` 外，`project-grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。
+备选方案和暂不采纳的想法怎样分流，见需求与规划的[备选方案与未采纳想法](../requirements-and-tasks/requirements-and-planning.md#备选方案与未采纳想法)。除 `design-gdd` 外，`project-grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。
 
 ### 项目术语
 

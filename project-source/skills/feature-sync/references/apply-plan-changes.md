@@ -64,4 +64,4 @@
 - **仍然有效的测试：** 仍然有效的回归测试和不变量测试保持 `active`；`feature-execute` 之后通过组件交集选中它们。
 - **替代 ID：** 新 Feature 声明 `affected_components`，普通的新测试 ID 在 `feature-execute` 的 Stage 1 和 2 中确定。获批的退役需要替代 ID 时，现在就根据新的验收条件规划这些 ID，并以 `planned` 状态登记，需要时使用 `path: null`。这不授权实现，也不表示已经覆盖；替代 Feature 必须在完成之前启用并执行它们。
 - **没有替代项就退役活动测试** 是被禁止的；新的删除 Feature 的约定负责验证被移除的行为。
-- 保持 `docs/test-registry.json` 可被机器读取；它不是叙述式的修订日志。
+- 保持 `docs/test-registry.json` 可被机器读取；它不用于叙述变更经过。

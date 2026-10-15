@@ -23,7 +23,7 @@
 | [Edit Resources as Table 2](https://github.com/don-tnowe/godot-resources-as-sheets-plugin) | [2.17.4](https://godotengine.org/asset-library/asset/1479) | `2.7` | `4.0` | [3363e0d2](https://github.com/don-tnowe/godot-resources-as-sheets-plugin/tree/3363e0d2136c432c989ac1f249aa8aaa634e84e9) |
 | [Signal Lens](https://github.com/yannlemos/signal-lens) | [1.4.1](https://godotengine.org/asset-library/asset/3620) | `1.4.1` | `4.3` | [5919c07c](https://github.com/yannlemos/signal-lens/tree/5919c07cb370d151b8937f9696474f3af2f059b1) |
 
-Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能只读 Godot 插件列表就判断是否已升级；还要核对本表的固定源码。Kanban 使用资产库条目 `1474` 的 Godot 4 版本，不使用旧 Godot 3 条目 `1245`。
+Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能只读 Godot 插件列表就判断是否已升级；同时核对本表的固定源码。Kanban 使用资产库条目 `1474` 的 Godot 4 版本，不使用旧 Godot 3 条目 `1245`。
 
 五个插件均采用 MIT 许可证。保留包内许可证，包括 Kanban 的 `uuid/LICENSE`。Inspector Tabs 与 Signal Lens 的资产库源码包遗漏根许可证，本次从各自同一固定提交的原始 `LICENSE` 补入插件目录；不改许可证正文。
 
@@ -46,20 +46,18 @@ Edit Resources as Table 2 的资产库版本与包内版本确有差异，不能
 | `addons/resources_spreadsheet_view/` | 安装但停用 | 启用后进入顶部 `ResourceTables`；当前组合存在退出泄漏诊断，按需使用。直接编辑实际资源，升级前备份资源与插件目录内的 `saved_state.json` 偏好 |
 | `addons/signal_lens/` | 安装但停用 | 调试时通过“项目 → 项目设置 → 插件”启用；注册 `SignalLens` Autoload，停用时移除 |
 
-Signal Lens 1.4.1 没有自动在发行导出时剥离 Autoload 的逻辑，调试结束或发行导出前停用它，并确认 `project.godot` 不再含 `autoload/SignalLens`。框架默认不注册该 Autoload。当前版本主要检查远程场景树中的节点，不支持 Resource、RefCounted 或普通 Object 信号检查。
+Signal Lens 1.4.1 没有自动在发行导出时剥离 Autoload 的逻辑，调试结束或发行导出前，停用插件，并核对 `project.godot` 不再含 `autoload/SignalLens`。框架默认不注册该 Autoload。当前版本主要检查远程场景树中的节点，不支持 Resource、RefCounted 或普通 Object 信号检查。
 
 Kanban 数据是用户内容，停用或升级时保留；本框架不预置看板任务，也不把看板内容纳入开发流程。插件源码使用上游目录名，不引入统一插件管理器。
 
 ## 本地修正
 
-五个效率插件的本地修改限定在下列 Kanban 与 Script-IDE 源码（linter 补丁见[测试与静态检查插件](#测试与静态检查插件)），包内版本分别保留 `2.1` 与 `2.2.5`。升级时逐项确认上游是否已修复；未修复且仍可复现时保留对应处理。
+五个效率插件的本地修改限定在 Kanban 与 Script-IDE 源码。补丁正文随插件分发，见下表；linter 补丁见[测试与静态检查插件](#测试与静态检查插件)。
 
-| 文件 | 原问题与本地处理 |
+| 补丁说明 | 范围 |
 | --- | --- |
-| [kanban_tasks/plugin.gd](../../../project-source/addons/kanban_tasks/plugin.gd) | 退出时 Help 菜单误写成再次释放 File 菜单，改为释放 `help_menu`；同时销毁该插件创建的 `PluginSingletons` 容器，使停用后不残留编辑上下文与快捷键节点 |
-| [kanban_tasks/view/edit_context.gd](../../../project-source/addons/kanban_tasks/view/edit_context.gd) | `UndoRedo` 是需显式释放的 Object；在编辑上下文销毁时释放，消除单独运行 Kanban 时的退出泄漏 |
-| [script-ide/plugin.gd](../../../project-source/addons/script-ide/plugin.gd) | 关闭分屏时只移除容器会遗留离树节点；移除后同时 `queue_free()`，释放容器及其 CodeEdit |
-| [script-ide/split/split_code_edit.gd](../../../project-source/addons/script-ide/split/split_code_edit.gd) | 分屏和原编辑器共用高亮器会覆盖它所属的 TextEdit，分屏释放后可导致原编辑器访问失效对象；只读分屏保存独立的逐行高亮快照，保持打开时的显示结果，并使两边各自拥有高亮器 |
+| [YAYA_PATCH.md](../../../project-source/addons/kanban_tasks/YAYA_PATCH.md) | Kanban 的源码基线、生命周期修正与升级核对 |
+| [YAYA_PATCH.md](../../../project-source/addons/script-ide/YAYA_PATCH.md) | Script-IDE 的源码基线、分屏修正与升级核对 |
 
 Inspector Tabs、Edit Resources as Table 2 和 Signal Lens 源码保持固定提交的原文，仅补齐前述两个许可证文件。Kanban 的五个图标/文档 SVG 与 Signal Lens 的两个 PNG 所附 `.import` 文件采用外部 Godot 4.7.1 重导入后的设置，增加引擎默认的压缩与通道映射字段；不带入 `.godot` 缓存或用户偏好。没有给资源表格插件应用未经证实的退出修正。
 

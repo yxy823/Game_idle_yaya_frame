@@ -155,13 +155,39 @@ static func value_text(number: SpinBox, value: float) -> String:
 		var described := String(describe.call(stored))
 		if not described.is_empty():
 			return described
-	var parts: PackedStringArray = [str(roundi(value)) if whole
-		else String.num(value, step_decimals(number.step))]
+	var parts: PackedStringArray = [component_text(value, number.step)]
 	if not number.prefix.is_empty():
 		parts.insert(0, number.prefix)
 	if not number.suffix.is_empty():
 		parts.append(number.suffix)
 	return " ".join(parts)
+
+
+## Confirmation text uses the same input precision and unit as the numeric control.
+static func numeric_text(property: Dictionary, value: Variant) -> String:
+	var text := str(value) if value is int else component_text(value, _input_step(property))
+	var suffix := _suffix(property)
+	return text if suffix.is_empty() else text + " " + suffix
+
+
+static func component_text(value: float, step: float = 0.01) -> String:
+	return str(roundi(value)) if is_equal_approx(value, roundf(value)) \
+		else String.num(value, step_decimals(step))
+
+
+static func _input_step(property: Dictionary) -> float:
+	if property.hint != PROPERTY_HINT_RANGE:
+		return 0.01
+	var hints := String(property.hint_string).split(",")
+	var step := hints[2].to_float() if hints.size() > 2 else 1.0
+	return step if property.type == TYPE_INT else minf(step, 0.01)
+
+
+static func _suffix(property: Dictionary) -> String:
+	for hint: String in String(property.hint_string).split(","):
+		if hint.begins_with("suffix:"):
+			return hint.trim_prefix("suffix:")
+	return ""
 
 
 ## `captions` replaces special whole values in the box, for example {-1: "未设置"}.
@@ -184,12 +210,10 @@ static func _range_control(property: Dictionary, value: Variant, changed: Callab
 	number.min_value = slider.min_value
 	number.max_value = slider.max_value
 	# The slider snaps to the page's step; typed values may be finer for floats.
-	number.step = slider.step if property["type"] == TYPE_INT else minf(slider.step, 0.01)
+	number.step = _input_step(property)
 	number.allow_greater = "or_greater" in hints
 	number.allow_lesser = "or_less" in hints
-	for hint: String in hints:
-		if hint.begins_with("suffix:"):
-			number.suffix = hint.trim_prefix("suffix:")
+	number.suffix = _suffix(property)
 	number.set_value_no_signal(float(value))
 	slider.set_value_no_signal(float(value))
 	var integer: bool = property["type"] == TYPE_INT

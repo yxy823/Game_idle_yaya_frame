@@ -41,3 +41,5 @@
 | Kanban Tasks | 顶部 `Tasks` 工作区；个人灵感看板默认保存到项目根的 `kanban_tasks_data.kanban`，只留在本机，已被 `.gitignore` 忽略；与开发任务记录各自独立，无同步关系 |
 | Edit Resources as Table | 启用后进入顶部 `ResourceTables` 工作区，以表格浏览和编辑 Resource；当前组合在退出编辑器时有资源泄漏诊断，因此默认停用 |
 | Signal Lens | 启用后在调试器中查看运行中节点的信号连接与触发；插件会注册 `SignalLens` Autoload，停用时移除，发行导出前先停用 |
+
+升级前核对本地补丁：[Kanban Tasks 的 Yaya 补丁](addons/kanban_tasks/YAYA_PATCH.md)、[Script-IDE 的 Yaya 补丁](addons/script-ide/YAYA_PATCH.md)。

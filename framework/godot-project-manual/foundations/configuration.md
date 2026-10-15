@@ -20,7 +20,7 @@
 - **技术栈**：固定为 Godot 4.7、GDScript 和 gdUnit4，不在配置中另存标签；实际安装的版本以检查输出和初始化报告为准。
 - **测试入口**：固定为 `yaya/tools/testing/run-gdunit-tests.py`，运行时再指定 Feature 和 scope。
 - **测试登记表**：固定为 `docs/test-registry.json`，合并工具、Feature 记录检查、测试选择和完成检查都读这个位置。
-- **测试目录**：测试都放在 `tests/` 下，分为 `unit/`、`features/`、`invariants/`。full 运行整个 `tests/`，其他范围按登记表的映射选择。
+- **测试目录**：业务测试放在 `tests/` 下，分为 `unit/`、`features/`、`invariants/`。调试台测试放在 `dev/debug/` 下。full 运行整个 `tests/` 和存在的 `dev/debug/`；其他范围按登记与改动影响选择。
 
 ## 路径与命令的写法
 

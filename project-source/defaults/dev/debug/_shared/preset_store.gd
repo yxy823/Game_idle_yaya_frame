@@ -200,10 +200,10 @@ func delete_slot(slot_id: String, preset_name: String) -> Dictionary:
 	for path: String in referenced.paths:
 		var combo := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Combo
 		combo.entries[slot_id] = ""
+		updated[path] = combo
 		result = {"error": _save(combo, path), "message": path}
 		if result.error != OK:
 			break
-		updated[path] = combo
 	if result.error == OK:
 		var preset := preset_path(slot_id, preset_name)
 		result = {"error": DirAccess.remove_absolute(preset), "message": preset}

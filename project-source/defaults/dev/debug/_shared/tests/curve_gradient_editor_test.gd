@@ -94,12 +94,50 @@ func test_curve_handle_drag_sets_free_tangent() -> void:
 
 func test_curve_preset_replaces_points() -> void:
 	var curve := _linear_curve()
+	curve.add_point(Vector2(0.5, 0.2))
+	curve.set_point_right_tangent(0, 1.0)
 	var editor := _curve_editor(curve)
 	editor._on_preset_selected(CurveEditor.PRESETS.find("缓入缓出") + 1)
 	assert_int(curve.point_count).is_equal(2)
+	assert_vector(curve.get_point_position(0)).is_equal(Vector2.ZERO)
+	assert_vector(curve.get_point_position(1)).is_equal(Vector2.ONE)
 	assert_float(curve.get_point_right_tangent(0)).is_equal(0.0)
 	assert_float(curve.get_point_left_tangent(1)).is_equal(0.0)
 	assert_float(curve.sample(0.5)).is_equal_approx(0.5, 0.01)
+	assert_int(_changes).is_equal(1)
+
+
+func test_curve_double_click_routes_through_gui_input() -> void:
+	var curve := _linear_curve()
+	var editor := auto_free(CurveEditor.new()) as CurveEditor
+	var runner := scene_runner(editor) as GdUnitSceneRunnerImpl
+	editor.size = Vector2(300, 260)
+	editor.bind(curve, _count)
+	await runner.await_input_processed()
+	var target := editor._graph.get_global_transform_with_canvas() * editor._to_screen(Vector2(0.5, 0.2))
+	runner.simulate_mouse_move(target)
+	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT, true)
+	await runner.await_input_processed()
+	assert_int(curve.point_count).is_equal(3)
+	assert_float(curve.get_point_position(1).y).is_equal_approx(0.2, 0.02)
+	assert_int(_changes).is_equal(1)
+
+
+func test_gradient_double_click_routes_through_gui_input() -> void:
+	var gradient := Gradient.new()
+	var editor := auto_free(GradientEditor.new()) as GradientEditor
+	var runner := scene_runner(editor) as GdUnitSceneRunnerImpl
+	editor.size = Vector2(300, 120)
+	editor.bind(gradient, _count)
+	await runner.await_input_processed()
+	var rect := editor._bar_rect()
+	var target := editor._bar.get_global_transform_with_canvas() * rect.get_center()
+	runner.simulate_mouse_move(target)
+	runner.simulate_mouse_button_pressed(MOUSE_BUTTON_LEFT, true)
+	await runner.await_input_processed()
+	assert_int(gradient.get_point_count()).is_equal(3)
+	assert_float(gradient.get_offset(editor._selected)).is_equal_approx(0.5, 0.01)
+	assert_int(_changes).is_equal(1)
 
 
 func test_curve_lock_ignores_input() -> void:

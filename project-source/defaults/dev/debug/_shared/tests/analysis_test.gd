@@ -16,6 +16,7 @@ var _result: Dictionary = {}
 var _running: bool = true
 var _pid: int = 4242
 var _raw_output: String = ""
+var _process_marker: String = ""
 
 
 func before_test() -> void:
@@ -30,11 +31,14 @@ func before_test() -> void:
 	_raw_output = ""
 	_running = true
 	_pid = 4242
+	_process_marker = ""
 
 
 func after_test() -> void:
 	_running = false
 	_service.poll()
+	if not _process_marker.is_empty() and FileAccess.file_exists(_process_marker):
+		DirAccess.remove_absolute(_process_marker)
 
 
 func _launch(path: String, arguments: PackedStringArray, console: bool) -> int:
@@ -148,6 +152,55 @@ func test_failed_result_shows_error_instead_of_metrics() -> void:
 	assert_str((labels.back() as Label).tooltip_text).contains("decode_failed")
 	assert_str(_tile_value(view, "时长")).is_empty()
 	assert_object(_button(view, "峰值归一")).is_null()
+	_service.poll()
+	assert_int(_launched.size()).is_equal(1)
+	_result = _audio_result()
+	view.show_candidate(slot, slot.live.candidate)
+	_service.poll()
+	assert_int(_launched.size()).is_equal(2)
+	assert_str(_tile_value(view, "时长")).is_equal("0.28 s")
+
+
+func test_timeout_stops_the_real_process_tree_and_cleans_the_result_once() -> void:
+	var config: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(Service.CONFIG))
+	_service.audio_python = config[Service.BACKENDS.audio.key]
+	_service.running = OS.is_process_running
+	_service.launch = _launch_process_tree
+	var states: Array[Dictionary] = []
+	assert_int(_service.analyze(CHIME, "audio", states.append).error).is_equal(OK)
+	var job: Dictionary = _service._jobs[0]
+	var deadline := Time.get_ticks_msec() + 5000
+	while not FileAccess.file_exists(_process_marker) and Time.get_ticks_msec() < deadline:
+		await get_tree().process_frame
+	assert_bool(FileAccess.file_exists(_process_marker)).is_true()
+	var child := FileAccess.get_file_as_string(_process_marker).to_int()
+	assert_bool(OS.is_process_running(job.pid)).is_true()
+	assert_int(_child_process_status(child)).is_equal(0)
+	assert_bool(FileAccess.file_exists(job.output)).is_true()
+	job.started_ms = Time.get_ticks_msec() - Service.AUDIO_TIMEOUT_MSEC
+	_service.poll()
+	assert_bool(OS.is_process_running(job.pid)).is_false()
+	assert_int(_child_process_status(child)).is_equal(1)
+	assert_bool(FileAccess.file_exists(job.output)).is_false()
+	_service.poll()
+	assert_array(states).has_size(1)
+	assert_str(states[0].status).is_equal("failed")
+	assert_str(states[0].message).contains("超过 300 秒")
+	assert_str(states[0].detail).is_empty()
+
+
+func _launch_process_tree(executable: String, arguments: PackedStringArray, console: bool) -> int:
+	var output := arguments[arguments.find("--result-file") + 1]
+	_process_marker = output + ".child"
+	var stub := ProjectSettings.globalize_path(
+		"res://dev/debug/_shared/tests/fixtures/analyzer_process_tree.py")
+	return OS.create_process(executable, ["-B", stub, output], console)
+
+
+## Godot tracks only processes it launched; the Python child needs an independent OS query.
+func _child_process_status(pid: int) -> int:
+	return OS.execute("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command",
+		"if (Get-Process -Id %d -ErrorAction SilentlyContinue) { exit 0 }; exit 1" % pid])
 
 
 func test_launch_missing_result_and_configuration_failures_are_readable() -> void:

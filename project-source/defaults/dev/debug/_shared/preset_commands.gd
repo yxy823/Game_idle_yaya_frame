@@ -383,7 +383,7 @@ func _delete_preset(slot: Slot) -> void:
 		kept.append(path.get_file().get_basename())
 	_report.call(Messages.outcome(result, "已删除预设 " + deleted, "没能删除预设 " + deleted,
 		"预设和用到它的组合都没有变。" + BUSY if kept.is_empty()
-			else "组合%s已改用游戏原值，没能改回。请让 Agent 查看详情" % _quoted_list(kept)))
+			else "没能确认组合%s保持原样。请让 Agent 查看详情" % _quoted_list(kept)))
 	if result.error != OK:
 		return
 	_session.store.load_slot(slot, "")

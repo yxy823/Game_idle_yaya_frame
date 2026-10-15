@@ -54,6 +54,23 @@ func test_hundreds_of_slots_and_multiple_targets_are_catalogued_before_activatio
 		assert_bool(target.paths.has("category/deeper/slot-124")).is_true()
 
 
+func test_original_audio_candidate_can_be_selected(identity: String,
+		_test_parameters := [["chime"], ["click"]]) -> void:
+	var path := _directory.path_join("sound.tres")
+	ResourceSaver.save(ResourceLoader.load(SAMPLE_GAME + "/sample/tuning/feedback/sound.tres",
+		"", ResourceLoader.CACHE_MODE_IGNORE_DEEP), path)
+	var slot := Slot.new()
+	assert_int(slot.configure("sample", "feedback/sound", path, SAMPLE_DEV)).is_equal(OK)
+	assert_int(slot.refresh_candidates().error).is_equal(OK)
+	var entries := slot.candidates.filter(func(item: Dictionary) -> bool: return item.id == identity)
+	assert_array(entries).has_size(1)
+	var entry: Dictionary = entries[0]
+	var audio := SAMPLE_DEV + "/sample/slots/feedback/sound/%s/%s.wav" % [identity, identity]
+	assert_str(Codec.resolve_uid(entry.definition.candidate_uid)).is_equal(audio)
+	assert_int(slot.select_candidate(slot.candidates.find(entry)).error).is_equal(OK)
+	assert_str(slot.live.candidate.resource_path).is_equal(audio)
+
+
 func test_candidate_discovery_is_lazy_skips_presets_and_applies_only_candidate_pair() -> void:
 	var path := _directory.path_join("effect.tres")
 	var defaults := ResourceLoader.load(EFFECT, "",

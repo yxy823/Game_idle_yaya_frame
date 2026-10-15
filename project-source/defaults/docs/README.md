@@ -8,7 +8,7 @@
 | --- | --- |
 | [gdd/](gdd/README.md) | 游戏目标、玩法规则与体验设计；后续交付引用这里的真实设计 |
 | [gdd/open-questions.md](gdd/open-questions.md) | 当前设计中尚未解决、会影响后续决定的问题 |
-| [unadopted-ideas.md](unadopted-ideas.md) | 没有当前待决设计问题依赖的设想；已采纳规则的备选值仍随规则保存，不代表开发承诺 |
+| [unadopted-ideas.md](unadopted-ideas.md) | 没有当前待决设计问题依赖的设想；已采纳规则的备选数值仍随规则保存，不代表开发承诺 |
 | [terminology.md](terminology.md) | 本游戏已确认术语、定义与别名的唯一正文 |
 | [ui/](ui/README.md) | 独立界面及跨界面共享控件的布局、状态与交互设计 |
 | [presentation/](presentation/README.md) | 一次游戏表现的目标、组成部分、时序与采用方案 |

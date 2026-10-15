@@ -3,6 +3,7 @@ extends Resource
 @export_group("Numbers", "ranged_")
 @export_range(0, 20, 2) var ranged_int: int = 4
 @export_range(0, 5, 0.25, "or_greater", "suffix:s") var ranged_float: float = 1.0
+@export_range(0, 1, 0.0001, "suffix:s") var ranged_precise: float = 0.0001
 @export_group("")
 @export var count: int = 3
 @export var weight: float = -2.5

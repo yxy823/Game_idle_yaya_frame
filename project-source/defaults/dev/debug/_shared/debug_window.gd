@@ -12,6 +12,7 @@ const StatusBar := preload("res://dev/debug/_shared/debug_status_bar.gd")
 const Dialogs := preload("res://dev/debug/_shared/debug_dialogs.gd")
 const Writer := preload("res://dev/debug/_shared/default_writer.gd")
 const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const PresetCommands := preload("res://dev/debug/_shared/preset_commands.gd")
 const CurveEditor := preload("res://dev/debug/_shared/editors/curve_editor.gd")
@@ -86,6 +87,22 @@ func _ready() -> void:
 		panel.bind(null, session.store.list_names)
 
 
+func _start_uid_poll() -> void:
+	var uid_refresh := Timer.new()
+	uid_refresh.wait_time = 0.25
+	uid_refresh.ignore_time_scale = true
+	uid_refresh.process_mode = Node.PROCESS_MODE_ALWAYS
+	uid_refresh.timeout.connect(_poll_uid_refresh)
+	add_child(uid_refresh)
+	uid_refresh.start()
+
+
+func _poll_uid_refresh() -> void:
+	var note := Uids.poll_refresh()
+	if not note.is_empty():
+		report({"error": OK, "text": note})
+
+
 ## `save_path` is the debug save that debug_project.gd chose, "" when it chose none.
 func configure(save_path: String) -> void:
 	playback.configure(save_path)
@@ -114,6 +131,7 @@ func _build_ui() -> void:
 	column.add_child(page)
 	status = StatusBar.new()
 	column.add_child(status)
+	_start_uid_poll()
 
 
 func _build_tuning_page() -> VBoxContainer:

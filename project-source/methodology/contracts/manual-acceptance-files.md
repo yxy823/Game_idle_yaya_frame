@@ -29,9 +29,9 @@
 
 允许出现其他字段，验收逻辑会忽略它们，所以不要把必需的验收含义放进其他字段。绑定之后，`id`、`source_ref`、`title`、`preconditions`、`steps`、`expected_result` 以及文件的 `title`、`description` 都不能再改；修改 AC、步骤或预期结果，走 `feature-sync` 中的 Feature 修订路线，并准备新的清单。
 
-清单保存在 `reports/manual-acceptance/` 下，例如 `reports/manual-acceptance/F001/manual-acceptance-checklist.json`。
+首次清单保存在 `reports/manual-acceptance/F0XX/manual-acceptance-checklist.json`。
 
-- 再次验收时，如果必须保留之前的清单，使用单独的目录。
+- 新一轮清单放在 `reports/manual-acceptance/F0XX/run-<N>/manual-acceptance-checklist.json`。`N` 从 2 开始，取已有轮次最大编号加 1；继续同一轮时沿用原路径。
 - 文件名只是约定；身份由明确的路径和文件内容决定。
 - 保留与 Git 处理按[报告与清理](../09-records-reports-and-handoff.md#报告与清理)执行。换到另一台机器时，需要被引用的清单原件，而不只是一个提交或一份 Markdown 摘要。
 

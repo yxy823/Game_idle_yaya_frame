@@ -8,7 +8,8 @@ const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 func _initialize() -> void:
 	Uids.repair()
 	var result := Adoption.run_queue("res://dev/debug")
-	# What moved is logged in dev/debug/adoption-log.md; only failures are written here.
+	if not String(result.get("note", "")).is_empty():
+		printerr(result.note)
 	if result.error != OK:
 		printerr(result.text)
 		printerr(result.detail)

@@ -18,7 +18,7 @@ yaya/methodology/                         canonical workflow specification
 ```
 
 - `yaya/methodology/` 定义工作流程，`.agents/skills/` 下的 Skill 负责执行。
-- 项目文档放在 `docs/` 下，[docs/README.md](../../docs/README.md) 说明每个文件和目录。新项目附带的页面只写明用途；这些页面存在，不代表已有 GDD、交付计划或决定。
+- 项目文档放在 `docs/` 下，[docs/README.md](../../docs/README.md) 说明每个文件和目录。新项目附带的页面含用途说明和默认要求；这些页面存在，不代表已有游戏 GDD、交付计划或决定。
 - `docs/methodology-config.json` 保存 `document_language` 以及 Python 和 Godot 可执行文件路径，分别按[文档语言](05-document-language.md)和[项目环境](06-project-environment.md)维护。
 - `yaya/tools/` 下的命令只在任务调用时运行。文件变化或回复结束时，不会自动运行任何工具。
 
@@ -111,7 +111,7 @@ yaya/methodology/                         canonical workflow specification
 
 | 主题 | 文件 |
 | --- | --- |
-| GDD 与 Product 文档：名称、范围、开放问题、候选想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
+| GDD 与 Product 文档：名称、范围、开放问题、备选方案与未采纳想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
 | Feature 记录结构、修订和逐个 Product 规划 | [02-feature-list-schema.md](02-feature-list-schema.md) |
 | Stage 0–8 执行循环、授权与续接 | [03-execute-loop.md](03-execute-loop.md) |
 | 项目规则：职责、加载和增量维护 | [04-project-rules.md](04-project-rules.md) |

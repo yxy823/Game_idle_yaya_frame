@@ -8,7 +8,7 @@
 
 ```text
 docs/project-rules.md
-  跨项目的开发约束、协作方式与工程原则
+  本项目跨 Product、Feature 的开发约束、协作方式与工程原则
 
 AGENTS.md
   项目根路由与仓库执行说明
@@ -20,7 +20,7 @@ yaya/agent-rules/<专业模块>/
   该模块具体的 Godot、GDScript 与领域语义
 ```
 
-`yaya/methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查，以及[任务范围](../../AGENTS.md#任务范围)、[Git 与提交](../../AGENTS.md#git-与提交)、[验证与完成汇报](../../AGENTS.md#验证与完成汇报)。它不成为引擎或语言具体行为的第二份来源。
+`yaya/methodology/` 规定 Product 与 Feature 的工作流程、测试影响评估、可追溯性、人工验收和完成检查。`AGENTS.md` 规定[任务范围](../../AGENTS.md#任务范围)、[Git 与提交](../../AGENTS.md#git-与提交)、[验证与完成汇报](../../AGENTS.md#验证与完成汇报)。方法规范不成为引擎或语言具体行为的第二份来源。
 
 ## `docs/project-rules.md`
 
@@ -117,7 +117,7 @@ Agent 在下列时机寻找值得新增、修订或删除的规则：
 
 在写入任何项目规则的新增、删除或编辑之前，先在对话中输出自检报告。
 
-- 候选规则必须归入 `agent-rules` 而不是 `project-rules.md` 时，同样要写这份报告；换个位置不能绕过审查。
+- 规则草案必须归入 `agent-rules` 而不是 `project-rules.md` 时，同样要写这份报告；换个位置不能绕过审查。
 - 一份报告可以覆盖一批修改，但要逐条说明每条改动的规则。
 - 只改措辞或链接的编辑也要写简短报告，说明含义、要求或建议的性质，以及范围都没有变化。
 
