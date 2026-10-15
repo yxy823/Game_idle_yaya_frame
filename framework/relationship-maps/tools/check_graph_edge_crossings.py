@@ -22,7 +22,17 @@ ALIGN_TOLERANCE = 1.0
 
 
 class GraphError(ValueError):
-    """图文件读不出来，或连线指向不存在的节点、端口。"""
+    """图文件读不出来、有重复键，或连线指向不存在的节点、端口。"""
+
+
+def unique_keys(pairs: list[tuple[str, object]]) -> dict:
+    # 合并冲突解决不当会在同一对象里留下两个同名键；json 默认只保留后一个，错误会被掩盖。
+    result: dict = {}
+    for key, value in pairs:
+        if key in result:
+            raise GraphError(f"duplicate key {key!r}")
+        result[key] = value
+    return result
 
 
 def port_point(node: dict, port: str) -> tuple[float, float]:
@@ -87,7 +97,11 @@ def main(argv: list[str] | None = None) -> int:
     try:
         for name in args.graph or DEFAULT_GRAPHS:
             path = Path(name) if Path(name).is_absolute() else REPO_ROOT / name
-            results[name] = check_graph(json.loads(path.read_text(encoding="utf-8")))
+            try:
+                document = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_keys)
+            except GraphError as error:
+                raise GraphError(f"{name}: {error}") from None
+            results[name] = check_graph(document)
     except (OSError, KeyError, TypeError, ValueError) as error:
         print(f"关系图无法检查：{error}", file=sys.stderr)
         return 2

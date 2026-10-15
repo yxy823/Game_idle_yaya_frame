@@ -58,6 +58,16 @@ class GraphEdgeCrossingTests(unittest.TestCase):
         self.assertEqual(completed.returncode, 2)
         self.assertIn("dangling", completed.stderr)
 
+    def test_duplicate_key_left_by_a_merge_exits_2(self):
+        source = json.dumps(edge("merged", "a", "b"))
+        duplicated = source.replace('"vertices"', '"target": {"kind": "node", "node": "a", "port": "left"}, "vertices"')
+        nodes = json.dumps([node("a", 0, 0), node("b", 200, 0)])
+        self.graph.write_text(f'{{"nodes": {nodes}, "edges": [{duplicated}]}}', encoding="utf-8")
+        completed = subprocess.run([sys.executable, "-B", str(COMMAND), "--graph", str(self.graph)],
+                                   capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(completed.returncode, 2)
+        self.assertIn("duplicate key 'target'", completed.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
