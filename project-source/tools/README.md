@@ -94,7 +94,7 @@ $LASTEXITCODE
   runnable=true
   export_filter="all_resources"
   include_filter=""
-  exclude_filter="tests/*, addons/gdUnit4/*, reports/*, dev/*, yaya/tools/*"
+  exclude_filter="tests/*, addons/gdUnit4/*, addons/gdscript-linter/*, addons/script-ide/*, addons/inspector_tabs/*, addons/kanban_tasks/*, addons/resources_spreadsheet_view/*, addons/signal_lens/*, reports/*, dev/*, yaya/tools/*"
   export_path=""
 
   [preset.0.options]
@@ -102,7 +102,7 @@ $LASTEXITCODE
   binary_format/embed_pck=false
   ```
 
-  排除的依据见 [导出资源与过滤器](../agent-rules/41-export-config/resources-and-filters.md) 和 [测试目录与导出](../agent-rules/70-tests/production-isolation.md#测试目录与导出)。没有写出的字段由 Godot 使用默认值，写好后直接用实际导出验证，通过后提交。注意：`[preset.0.options]` 下至少要有一个键，空段会被当成不存在，导出时报 `Cannot get keys from nonexistent section`。之后结构性的预设修改，在编辑器的“项目 → 导出”中进行。
+  `addons/` 下除 gdUnit4 外的几个目录是随项目分发的编辑器插件，游戏运行不需要。Signal Lens 启用时会注册 `SignalLens` Autoload，排除它之后导出包启动会报错，所以导出前先停用它，并确认 `project.godot` 不再含 `autoload/SignalLens`。项目自己新增插件时，先按导出规则区分它是不是运行时需要，再决定是否排除。排除的依据见 [导出资源与过滤器](../agent-rules/41-export-config/resources-and-filters.md) 和 [测试目录与导出](../agent-rules/70-tests/production-isolation.md#测试目录与导出)。没有写出的字段由 Godot 使用默认值，写好后直接用实际导出验证，通过后提交。注意：`[preset.0.options]` 下至少要有一个键，空段会被当成不存在，导出时报 `Cannot get keys from nonexistent section`。之后结构性的预设修改，在编辑器的“项目 → 导出”中进行。
 
 **导出并启动**（在项目根目录执行，`$projectGodot` 的取法见[首次 Godot 扫描](#首次-godot-扫描)）：
 
