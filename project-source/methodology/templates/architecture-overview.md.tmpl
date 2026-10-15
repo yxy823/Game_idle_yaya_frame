@@ -17,7 +17,7 @@
 
 *需要图帮助理解模块怎样协作时才画，按 `yaya/methodology/10-architecture-overview.md` 的 **结构图** 一节书写。下面的节点和关系只演示写法，换成项目实际的模块。*
 
-```flow TB
+```flow
 (玩家 | 鼠标与键盘) -> 主界面 | MainUi: 点击购买
 主界面 -> 生产状态 | FarmState: buy_upgrade
 生产状态 --> 主界面: changed

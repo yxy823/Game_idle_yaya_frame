@@ -6215,6 +6215,7 @@ var ARROW = /^\s*(-->|->)\s*/;
 var SUB_FS = 12;
 var SUB_LH = 15;
 var FLOW_KINDS = ["view", "logic", "data", "external", "dev"];
+var FLOW_FIT = 900;
 var flow_default = {
   name: "flow",
   summary: "Flowchart / architecture diagram (automatic layout)",
@@ -6229,7 +6230,7 @@ group Group name: B, C        \u2190 draw a group box around nodes
 Name | CodeName               \u2190 second line in small type, e.g. a class or file name
 kind logic: B, C              \u2190 color nodes by kind: view, logic, data, external, dev
 \`\`\`
-- The text inside the brackets is the node's identity; later lines can refer to the node by that text alone. The default direction is TB (top to bottom).
+- The text inside the brackets is the node's identity; later lines can refer to the node by that text alone. Without a direction the script picks: LR (left to right) when it is at most 900px wide (what a doc panel shows in a 1280px window), else TB (top to bottom) when TB is narrower. Write LR or TB to fix the direction.
 - Text after | is a second line under the node name; it is not part of the identity, so later lines write the name alone. A second line that holds a colon goes in brackets: [Save file | user://save.json].
 - kind gives nodes a color: view (screens and presentation), logic (rules and state), data (data and resources), external (the player, the engine, the system), dev (development tools). A legend under the diagram lists the kinds it uses. A node takes one kind; nodes without a kind keep the plain style.
 - Change markers show what a plan adds, removes and changes. A line can start with + (added), - (removed) or ~ (changed), followed by a space:
@@ -6249,8 +6250,19 @@ Client -> Gateway
   render(text, { args, uid, ui, warn, video, dir: pageDir = "ltr" }) {
     const model = parseFlow(text);
     model.warnings.forEach((w) => warn?.(w));
-    const flowDir = (args.match(/\b(TB|LR|BT|RL)\b/i)?.[1] ?? "TB").toUpperCase();
-    const html = `<figure class="am-diagram am-flow">${layout2(model, DIRS.has(flowDir) ? flowDir : "TB", uid(), ui, pageDir)}${kindLegend(model.nodes, ui)}</figure>`;
+    const flowDir = args.match(/\b(TB|LR|BT|RL)\b/i)?.[1].toUpperCase();
+    const id = uid();
+    const svgWidth = (svg) => Number(svg.match(/width="(\d+)"/)[1]);
+    let svg;
+    if (flowDir) svg = layout2(model, flowDir, id, ui, pageDir);
+    else {
+      svg = layout2(model, "LR", id, ui, pageDir);
+      if (svgWidth(svg) > FLOW_FIT) {
+        const tb = layout2(model, "TB", id, ui, pageDir);
+        if (svgWidth(tb) < svgWidth(svg)) svg = tb;
+      }
+    }
+    const html = `<figure class="am-diagram am-flow">${svg}${kindLegend(model.nodes, ui)}</figure>`;
     return withDelta(html, [...model.nodes.values(), ...model.edges, ...model.groups].map((x2) => x2.state ?? null), { ui, video });
   }
 };
