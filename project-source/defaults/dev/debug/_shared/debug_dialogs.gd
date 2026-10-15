@@ -12,6 +12,7 @@ const PLAIN := &""
 const WIDTH := 460
 const BUTTON_WIDTH := 88
 const BUTTON_GAP := 8
+const HOST_MARGIN := 24.0
 const WORD_JOINER := "⁠"
 
 var host: Window
@@ -36,16 +37,45 @@ func ask(text: String, actions: Array, title: String = "请确认", body: Contro
 	# A quoted name longer than a whole line still breaks at the line end instead of running out.
 	dialog.get_label().autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_add_buttons(dialog, actions)
-	if body != null:
-		dialog.add_child(body)
 	host.add_child(dialog)
+	var width := _add_content(dialog, body)
 	current = dialog
 	dialog.confirmed.connect(dialog.queue_free)
 	dialog.canceled.connect(dialog.queue_free)
 	dialog.tree_exited.connect(func() -> void:
 		if is_instance_valid(previous) and previous.is_visible_in_tree():
 			previous.grab_focus())
-	dialog.popup_centered(Vector2i(WIDTH, 0))
+	dialog.popup_centered(Vector2i(int(width), 0))
+
+
+## Reparent the original label so dialog_text stays public but its full height cannot size
+## AcceptDialog. Buttons and the optional name field remain outside the scrolling text.
+func _add_content(dialog: AcceptDialog, body: Control) -> float:
+	var column := VBoxContainer.new()
+	dialog.add_child(column)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.add_child(scroll)
+	var label := dialog.get_label()
+	dialog.remove_child(label)
+	scroll.add_child(label)
+	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	if body != null:
+		column.add_child(body)
+	var panel := dialog.get_theme_stylebox("panel", "AcceptDialog").get_minimum_size()
+	var width := minf(WIDTH, host.get_visible_rect().size.x - HOST_MARGIN * 2.0)
+	var text_width := width - panel.x - scroll.get_v_scroll_bar().get_minimum_size().x
+	var font := label.get_theme_font("font")
+	var text_height := font.get_multiline_string_size(label.text, HORIZONTAL_ALIGNMENT_LEFT,
+		text_width, label.get_theme_font_size("font_size"), -1,
+		TextServer.BREAK_MANDATORY | TextServer.BREAK_WORD_BOUND | TextServer.BREAK_ADAPTIVE).y
+	var reserved := panel.y + Kit.CONTROL + BUTTON_GAP + HOST_MARGIN * 2.0 \
+		+ dialog.get_theme_constant("title_height", "Window")
+	if body != null:
+		reserved += body.get_combined_minimum_size().y + column.get_theme_constant("separation")
+	scroll.custom_minimum_size.y = minf(text_height, host.get_visible_rect().size.y - reserved)
+	return width
 
 
 ## The main action on the OK button, the others after it, then 取消, all the same size.
