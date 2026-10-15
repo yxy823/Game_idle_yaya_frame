@@ -18,6 +18,10 @@ __pycache__/
 # 图解问答的页面由 docs/qa/ 下的 Markdown 生成，只提交 Markdown
 /docs/qa/*.html
 
+# 架构页面由 docs/architecture.md 和 docs/architecture/ 下的 Markdown 生成，只提交 Markdown
+/docs/architecture.html
+/docs/architecture/*.html
+
 # 调试台的待收尾采纳记录：Agent 收尾的待办信号，只保存在本机
 /dev/debug/adoption-log.md
 
