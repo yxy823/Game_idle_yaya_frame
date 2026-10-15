@@ -1,5 +1,5 @@
 ---
-name: qa-explainer-godot
+name: qa-explainer
 description: 用户在对话中问到以后还会用到的问题时使用，例如某个系统怎样实现、为什么这样设计、某个机制能做到什么程度、某个概念是什么：在回复结尾提议记入问答，用户同意后把问答写进 `docs/qa/` 的主题文件，用自带的 CLI 生成带图的 HTML 页面，回复结论和页面链接。用户要求“用图解释”“生成 HTML 解释”时也使用。不用于只关于当次对话的问题（刚才读了什么、任务进行到哪一步），不用于需要用户做决定的讨论，也不修改需求、设计或实现。
 ---
 
@@ -150,7 +150,7 @@ title: 存档系统
 每次写入或修改主题文件后，在项目根目录运行下面的命令。它在 `docs/qa/pages/` 下重新生成全部主题页和首页，新页面直接覆盖旧页面；用户自己修改了主题文件后，也运行同一条命令：
 
 ```powershell
-node .agents/skills/qa-explainer-godot/scripts/qa-build.mjs docs/qa
+node .agents/skills/qa-explainer/scripts/qa-build.mjs docs/qa
 ```
 
 按输出处理：

@@ -166,7 +166,7 @@
 
 尊重用户明确的暂停或缩小后的当前范围；之前的实现授权不能覆盖它。
 
-`task-handoff-godot` 是这项工作的直接入口。只想了解状态或选择流程的请求，可以改用 `project-next-step-advisor`；它只读，不更新记录。要求提供提示词时，按下面的格式并结合当前的项目事实来写。`project-next-step-advisor` 从它声明的共享 Godot 提示词库中取场景材料；任务交接使用所属任务的来源。
+`task-handoff` 是这项工作的直接入口。只想了解状态或选择流程的请求，可以改用 `project-next-step-advisor`；它只读，不更新记录。要求提供提示词时，按下面的格式并结合当前的项目事实来写。`project-next-step-advisor` 从它声明的共享 Godot 提示词库中取场景材料；任务交接使用所属任务的来源。
 
 ## 续接提示词
 

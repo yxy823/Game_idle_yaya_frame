@@ -43,7 +43,7 @@
 
 ## 结构图
 
-架构文档里的图用 `flow` 代码块写，生成页面时渲染成图；完整语法运行 `node .agents/skills/qa-explainer-godot/scripts/am.mjs help flow` 查看。
+架构文档里的图用 `flow` 代码块写，生成页面时渲染成图；完整语法运行 `node .agents/skills/qa-explainer/scripts/am.mjs help flow` 查看。
 
 - **先画主路径**：先画玩家操作经过的主路径，支线放在所属节点旁边。
 - **方向**：`flow` 后面不写方向，渲染时自动选：横向宽度不超过 900 像素时横排，否则改成更窄的竖排。只在需要固定方向时写 `LR` 或 `TB`。
@@ -58,7 +58,7 @@
 修改架构文档后，在项目根目录运行：
 
 ```powershell
-node .agents/skills/qa-explainer-godot/scripts/arch-build.mjs
+node .agents/skills/qa-explainer/scripts/arch-build.mjs
 ```
 
 - 它把 `docs/architecture.md` 和 `docs/architecture/` 下的子系统文档（不含 ADR）各自生成同目录同名的 `.html`，正文里的相对链接在页面中仍然有效。

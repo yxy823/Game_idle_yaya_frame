@@ -15,7 +15,7 @@
 | 当前需要 | 参考 |
 | --- | --- |
 | 选择 Shader 方案、坐标或数据流，权衡渲染取舍 | `.agents/skills/implementation-guidance/references/shader-implementation-methods.md` |
-| 排查 Shader 加载、材质与参数绑定、视觉数据流或渲染开销 | `.agents/skills/bug-diagnosis-godot/references/shader-diagnostics.md` |
+| 排查 Shader 加载、材质与参数绑定、视觉数据流或渲染开销 | `.agents/skills/bug-diagnosis/references/shader-diagnostics.md` |
 
 ## 验证
 

@@ -95,7 +95,7 @@ ADR 记录问题、约束、备选方案、决定、收益、成本、依据，�
 
 ## 探索结果与工作目录
 
-[wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) 的结论按本页的分工存放：
+[wayfinder](../../../project-source/skills/wayfinder/SKILL.md) 的结论按本页的分工存放：
 
 - 一次性的讨论可以只留在对话里。
 - 需要续接、并且获准记录时，在 Progress 中保存当前问题、待决定事项、下一步和材料链接。

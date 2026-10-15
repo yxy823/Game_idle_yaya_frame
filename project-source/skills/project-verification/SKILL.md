@@ -1,5 +1,5 @@
 ---
-name: project-verification-godot
+name: project-verification
 description: 运行用户要求的 Godot 解析、lint、已有自动测试或限定范围的场景检查，并报告实际结果。有无 Feature 的工作都适用；不实现修复，也不确认交付已完成；已有测试证据的引用、过时或中断用 verification-evidence。
 ---
 

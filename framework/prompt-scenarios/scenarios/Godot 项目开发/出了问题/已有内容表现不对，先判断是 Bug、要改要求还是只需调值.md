@@ -30,7 +30,7 @@
 
 **S1｜弄清反馈与双方事实**
 
-当前 Agent 使用 [feedback-triage-godot](../../../../../project-source/skills/feedback-triage-godot/SKILL.md)，确定实际观察、预期结果、触发条件和受影响版本；读取实际文档、代码、调参资源、Feature 记录或运行原件，区分正式要求、当前实现、历史结果和 Agent 摘要。
+当前 Agent 使用 [feedback-triage](../../../../../project-source/skills/feedback-triage/SKILL.md)，确定实际观察、预期结果、触发条件和受影响版本；读取实际文档、代码、调参资源、Feature 记录或运行原件，区分正式要求、当前实现、历史结果和 Agent 摘要。
 
 **S2｜判断类别**
 

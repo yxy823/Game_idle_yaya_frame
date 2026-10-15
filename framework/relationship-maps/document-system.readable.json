@@ -2459,11 +2459,11 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：解释用户问过、以后还会用到的项目问题。\n项目位置：docs/qa/；按需创建，由 qa-explainer-godot 写入并生成页面。\n问答只作解释，不作为需求、设计或规则依据；正文变化时同步受影响的回答。\n\n项目文件： docs/qa/*.md",
+      "note": "职责：解释用户问过、以后还会用到的项目问题。\n项目位置：docs/qa/；按需创建，由 qa-explainer 写入并生成页面。\n问答只作解释，不作为需求、设计或规则依据；正文变化时同步受影响的回答。\n\n项目文件： docs/qa/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
-        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/skills/qa-explainer-godot/SKILL.md"
+        "target": "D:/A_Games/Game_idle_yaya_frame/project-source/skills/qa-explainer/SKILL.md"
       },
       "appearance": {
         "opacity": 1,

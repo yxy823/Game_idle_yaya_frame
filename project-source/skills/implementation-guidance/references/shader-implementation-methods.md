@@ -50,4 +50,4 @@
 
 修改影响到已记录的表现方案时，按已有的表现文档约定，更新该方案的选定做法，以及实际的实现路径和使用方路径。确有需要时，把必要的工程推理留在所属 Feature 的设计或实现说明位置；小改动不必另建设计文件。备选方案可以不实现。
 
-在任务已获授权的范围内，按 `yaya/agent-rules/30-shaders/README.md`，针对实际的目标编译器、材质和渲染路径规划验证。编译通过本身不能证明外观符合预期。遇到已观察到的故障时，用 [Shader 诊断](../../bug-diagnosis-godot/references/shader-diagnostics.md) 选择能检验当前假设的证据；该参考不改变任务的授权或完成标准。
+在任务已获授权的范围内，按 `yaya/agent-rules/30-shaders/README.md`，针对实际的目标编译器、材质和渲染路径规划验证。编译通过本身不能证明外观符合预期。遇到已观察到的故障时，用 [Shader 诊断](../../bug-diagnosis/references/shader-diagnostics.md) 选择能检验当前假设的证据；该参考不改变任务的授权或完成标准。

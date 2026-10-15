@@ -129,7 +129,7 @@
 - **不进入项目的材料**：手册、维护说明、提示词库、框架自用 Skill 和框架审核材料，都不加入复制清单，也不移到 `project-source/`。
 - **随项目分发的材料**：Godot 版写作 Skill 是分发给项目的 Skill，按普通项目 Skill 整包复制。项目 README 保持自己的简短导航；项目文件不接受自动同步。
 - **advisor**：直接读取本机的 Godot 提示词库，修改提示词正文后不需要导出。固定路径及其同步要求见 `framework/AGENTS.md` 的[提示词维护](../AGENTS.md#提示词维护)，用法见[advisor 的共享场景入口](../godot-project-manual/methods-and-tools/skills-and-agents.md#advisor-的共享场景入口)。
-- **续接提示词**：项目中动态生成的续接提示词，格式统一维护在 [续接提示词](../../project-source/methodology/09-records-reports-and-handoff.md#续接提示词)，由 advisor 和 `task-handoff-godot` 引用；框架的预设提示词仍各自保留具体场景的输入、授权和停点目的。普通暂停、换对话和恢复已有停点不合并成一条通用提示词，新增 Skill 也不要求每个入口都建场景。
+- **续接提示词**：项目中动态生成的续接提示词，格式统一维护在 [续接提示词](../../project-source/methodology/09-records-reports-and-handoff.md#续接提示词)，由 advisor 和 `task-handoff` 引用；框架的预设提示词仍各自保留具体场景的输入、授权和停点目的。普通暂停、换对话和恢复已有停点不合并成一条通用提示词，新增 Skill 也不要求每个入口都建场景。
 
 ## 验证、提交与交付
 

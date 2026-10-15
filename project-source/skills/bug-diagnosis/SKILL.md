@@ -1,6 +1,6 @@
 ---
-name: bug-diagnosis-godot
-description: 通过复现、可区分的假设和因果证据调查 Godot 项目中的一个具体缺陷。用于原因未知，或修复前需要可靠诊断时。不用于预期是否成立还不确定的反馈，改用 feedback-triage-godot。
+name: bug-diagnosis
+description: 通过复现、可区分的假设和因果证据调查 Godot 项目中的一个具体缺陷。用于原因未知，或修复前需要可靠诊断时。不用于预期是否成立还不确定的反馈，改用 feedback-triage。
 ---
 
 # 诊断项目缺陷
@@ -9,7 +9,7 @@ description: 通过复现、可区分的假设和因果证据调查 Godot 项目
 
 ## 选择需要的证据
 
-从已确认的预期行为、实际症状、涉及的实现和现有证据出发。如果还不清楚观察到的现象是否违背已批准的意图，先使用 [feedback-triage-godot](../feedback-triage-godot/SKILL.md)，再选择修复方案。通过项目的 `AGENTS.md` 阅读受影响的工程领域；不要为一个故障加载所有领域或所有诊断方法。
+从已确认的预期行为、实际症状、涉及的实现和现有证据出发。如果还不清楚观察到的现象是否违背已批准的意图，先使用 [feedback-triage](../feedback-triage/SKILL.md)，再选择修复方案。通过项目的 `AGENTS.md` 阅读受影响的工程领域；不要为一个故障加载所有领域或所有诊断方法。
 
 按权威诊断方法取得有用的复现，区分可能的原因，并讲清因果链：
 

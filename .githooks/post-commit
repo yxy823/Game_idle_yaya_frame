@@ -3,9 +3,9 @@
 # 提交已经完成，生成失败只打印提示，不影响提交。说明见 framework/maintenance/tools/README.md 的「提交后生成 Q&A 页面」。
 cd "$(git rev-parse --show-toplevel)" || exit 0
 
-changed=$(git diff-tree --root --no-commit-id --name-only -r HEAD -- framework/qa/ project-source/skills/qa-explainer-godot/scripts/)
+changed=$(git diff-tree --root --no-commit-id --name-only -r HEAD -- framework/qa/ project-source/skills/qa-explainer/scripts/)
 [ -n "$changed" ] || exit 0
 
-node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa > /dev/null \
-    || echo "Q&A 页面没有生成：在仓库根目录运行 node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa 查看错误。" >&2
+node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa > /dev/null \
+    || echo "Q&A 页面没有生成：在仓库根目录运行 node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa 查看错误。" >&2
 exit 0

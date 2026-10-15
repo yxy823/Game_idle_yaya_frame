@@ -10,12 +10,12 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
 ## 两份规则分别管什么
 
 - **什么时候添加、按问题类型写多少**：以 [Q&A](../../../framework/qa/README.md) 的说明为准，它是框架问答的唯一正文。
-- **主题文件格式、组件选择、生成命令和页面意见的处理**：沿用随项目分发的 [qa-explainer-godot](../../../project-source/skills/qa-explainer-godot/SKILL.md)，渲染脚本也只保存在那里一份。读它时把 `docs/qa/` 换成 `framework/qa/`，把项目的 `document_language` 换成中文，脚本路径换成 `project-source/skills/qa-explainer-godot/scripts/`；其中“何时添加”和“文件与位置”两节以 Q&A 说明为准。
+- **主题文件格式、组件选择、生成命令和页面意见的处理**：沿用随项目分发的 [qa-explainer](../../../project-source/skills/qa-explainer/SKILL.md)，渲染脚本也只保存在那里一份。读它时把 `docs/qa/` 换成 `framework/qa/`，把项目的 `document_language` 换成中文，脚本路径换成 `project-source/skills/qa-explainer/scripts/`；其中“何时添加”和“文件与位置”两节以 Q&A 说明为准。
 
 ## 步骤
 
 1. 按 Q&A 说明判断是否提议、放进哪个主题；用户同意后再往下做。
-2. 按 qa-explainer-godot 的格式和 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md) 的写作要求写或改主题文件。再对改过的文件运行措辞检查和术语检查，按输出改写：
+2. 按 qa-explainer 的格式和 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md) 的写作要求写或改主题文件。再对改过的文件运行措辞检查和术语检查，按输出改写：
 
    ```powershell
    python -B project-source/tools/checks/check-wording.py framework/qa/<主题>.md
@@ -25,7 +25,7 @@ description: 框架讨论中用户的追问暴露出理解缺口、问到以后�
 3. 在仓库根目录生成全部主题页和首页 `framework/qa/pages/index.html`，确认页面能生成。之后每次提交改到 `framework/qa/` 时，[提交后生成 Q&A 页面](../../../framework/maintenance/tools/README.md#提交后生成-qa-页面)的钩子会自动重新生成：
 
    ```powershell
-   node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa
+   node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa
    ```
 
 4. 按根 `AGENTS.md` 的本地提交规则提交 `.md`；`.html` 已被根 `.gitignore` 忽略，不提交。

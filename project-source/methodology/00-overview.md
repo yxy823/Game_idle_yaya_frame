@@ -28,18 +28,18 @@ yaya/methodology/                         canonical workflow specification
 | --- | --- |
 | 游戏设计 | `design-gdd`、`design-balance` |
 | Product 交付 | `product-author`、`product-spec-elicitor` |
-| 澄清与术语 | `project-grill-me`、`wayfinder-godot`、`project-terminology` |
+| 澄清与术语 | `project-grill-me`、`wayfinder`、`project-terminology` |
 | 专业设计 | `design-game-presentation`、`design-ui-spec`、`design-art-direction`、`design-audio-direction`、`design-visual-asset-spec`、`design-audio-asset-spec`、`design-localization-spec` |
-| 规划 | `feature-plan`、`feature-sync`、`plan-review-godot` |
+| 规划 | `feature-plan`、`feature-sync`、`plan-review` |
 | 交付 | `feature-execute`、`implementation-guidance`、`in-game-tuning`、`technical-validation` |
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
-| 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
-| 环境、验证与证据 | `project-environment`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence` |
+| 反馈与诊断 | `feedback-triage`、`bug-diagnosis` |
+| 环境、验证与证据 | `project-environment`、`project-verification`、`manual-acceptance`、`verification-evidence` |
 | 接入与测量 | `asset-library-search`、`content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
 | worktree | `worktree-create`、`worktree-integrate` |
-| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot`、`decision-trace` |
-| 文档编写 | `technical-documentation-writing-godot`、`qa-explainer-godot` |
+| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff`、`retro`、`loop-me`、`decision-trace` |
+| 文档编写 | `technical-documentation-writing-godot`、`qa-explainer` |
 
 ## 任务路由表
 
@@ -50,14 +50,14 @@ yaya/methodology/                         canonical workflow specification
 | 发展游戏想法、编写或深化 GDD、整合设计材料 | `design-gdd` | 从已有目标和来源开始，不需要完整的 GDD、Product、Feature 或就绪的引擎。不创建 Product 或 Feature。 |
 | 设计或调整数值模型、公式和参数 | `design-balance` | 用于模型和数值，GDD 还是早期草稿时也可以用。玩法变化交给 `design-gdd`，运行时修改交给实现，正式数值审核交给 `review-balance`。 |
 | 澄清游戏设计选择、交付边界或含义不清的术语 | `project-grill-me`；交付问题用 `product-spec-elicitor` | 当前任务受到关键不确定点影响时使用。只讨论时不写任何文件。 |
-| 解决几个答案相互影响的关键未知点 | `wayfinder-godot` | 未知点相互依赖时使用。不强制访谈、原型、worktree 或新记录类型，也不扩大任务授权。 |
-| 选定工作前先评估反馈或外部报告 | `feedback-triage-godot` | 在决定反馈需要什么工作之前使用。分类不授权修复，也不创建 Feature。 |
-| 调查一个具体异常行为的原因 | `bug-diagnosis-godot` | 用于具体故障。只要求调查时，不允许修改实现。 |
-| 检查 GDD 草稿或文档，或 Product、Feature 提案 | `plan-review-godot` | 发现返回给文档作者；审查 GDD 不需要 Product 或 Feature。它不是正式的[独立审核](12-independent-review.md)，也不是必经关卡。 |
-| 根据实际任务经验复盘，包括反复出现的阻力 | `retro-godot` | 需要来自真实任务的证据。只返回建议，不自动修改规则，也不自动生成报告、检查或工作项。 |
-| 为用户点名的反复出现或预期会出现的活动设计处理方式 | `loop-me-godot` | 不必等出现故障再用。返回一份设计，不增加 Stage，也不实现任何内容。 |
+| 解决几个答案相互影响的关键未知点 | `wayfinder` | 未知点相互依赖时使用。不强制访谈、原型、worktree 或新记录类型，也不扩大任务授权。 |
+| 选定工作前先评估反馈或外部报告 | `feedback-triage` | 在决定反馈需要什么工作之前使用。分类不授权修复，也不创建 Feature。 |
+| 调查一个具体异常行为的原因 | `bug-diagnosis` | 用于具体故障。只要求调查时，不允许修改实现。 |
+| 检查 GDD 草稿或文档，或 Product、Feature 提案 | `plan-review` | 发现返回给文档作者；审查 GDD 不需要 Product 或 Feature。它不是正式的[独立审核](12-independent-review.md)，也不是必经关卡。 |
+| 根据实际任务经验复盘，包括反复出现的阻力 | `retro` | 需要来自真实任务的证据。只返回建议，不自动修改规则，也不自动生成报告、检查或工作项。 |
+| 为用户点名的反复出现或预期会出现的活动设计处理方式 | `loop-me` | 不必等出现故障再用。返回一份设计，不增加 Stage，也不实现任何内容。 |
 | 调查外部事实或比较方案 | 主 Agent，可以委派给 `researcher` | 答案需要外部来源时使用，见 [外部调研](09-records-reports-and-handoff.md#外部调研)。没有强制的调研 Stage，不新建 Feature，不自动采纳结论。 |
-| 把用户问到、以后还会用到的问题保存为问答 | `qa-explainer-godot` | Agent 在回复结尾提议，用户同意后写入 `docs/qa/` 并生成 HTML 页面；用户明确要求记录或用图解释时直接写入。问答可以和其他正文重复，不检查重复；它只解释，不作为需求、设计或规则的依据。 |
+| 把用户问到、以后还会用到的问题保存为问答 | `qa-explainer` | Agent 在回复结尾提议，用户同意后写入 `docs/qa/` 并生成 HTML 页面；用户明确要求记录或用图解释时直接写入。问答可以和其他正文重复，不检查重复；它只解释，不作为需求、设计或规则的依据。 |
 | 记录或维护已确定的项目词汇 | `project-terminology` | 按[项目术语](14-project-terminology.md)维护不改变含义的定义。不创建 Product 计划，不做 Feature 源同步；行为变化交给 `design-gdd`。 |
 | 维护项目通用规则或专项规则 | 当前已获授权的任务，按 [规则的增量维护](04-project-rules.md#规则的增量维护) 执行 | 用于 `docs/project-rules.md` 或规则模块。每项拟议修改都先报告再写入；单独的规则工作不需要 Feature。 |
 | 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 和[架构概览](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
@@ -94,11 +94,11 @@ yaya/methodology/                         canonical workflow specification
 | 把已提出的临时脚本保存为项目脚本 | 主 Agent 直接保存 | 用户同意保存后，按[保存常用脚本](09-records-reports-and-handoff.md#保存常用脚本)执行，不需要 Feature。随规则修改提出的检查仍按[规则的增量维护](04-project-rules.md#规则的增量维护)。 |
 | 独立审核 | 在新的 `independent-reviewer` 实例中使用对应的审核 Skill | 只在用户要求正式审核时使用，按[独立审核](12-independent-review.md)执行。不修复，也不提供人工验收。 |
 | 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
-| 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification-godot` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
-| 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
+| 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
+| 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
 | 检查、导入或恢复验证证据 | `verification-evidence` | 按 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
 | 查询状态 | 只读说明，或 `project-next-step-advisor` | 不为回答问题而开始工作或运行就绪检查。 |
-| 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接记录文件、对话或消息。 |
+| 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff` | 不创建 Feature、交接记录文件、对话或消息。 |
 
 使用本表时：
 

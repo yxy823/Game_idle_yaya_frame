@@ -1,6 +1,6 @@
 ---
 name: project-grill-me
-description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计取舍或领域术语中的重要不确定点。用于澄清一个游戏设计选择、一个工程取舍或一个含义不清的术语。不用于 Product 交付边界问题（product-spec-elicitor）、多个答案互相影响的未知点（wayfinder-godot）、记录已确定的术语（project-terminology），也不用于已经清楚的请求，这类请求继续走它已获授权的流程。"
+description: "通过聚焦的提问，解决游戏想法、GDD 草稿、设计取舍或领域术语中的重要不确定点。用于澄清一个游戏设计选择、一个工程取舍或一个含义不清的术语。不用于 Product 交付边界问题（product-spec-elicitor）、多个答案互相影响的未知点（wayfinder）、记录已确定的术语（project-terminology），也不用于已经清楚的请求，这类请求继续走它已获授权的流程。"
 ---
 
 # 项目追问（grill-me）

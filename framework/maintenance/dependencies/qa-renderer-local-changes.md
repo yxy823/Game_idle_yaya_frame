@@ -2,9 +2,9 @@
 
 [框架维护](../README.md)
 
-本页记录随项目分发的问答渲染脚本 [am.mjs](../../../project-source/skills/qa-explainer-godot/scripts/am.mjs) 的上游来源和本地改动，只在框架维护时使用，不进入生成项目。
+本页记录随项目分发的问答渲染脚本 [am.mjs](../../../project-source/skills/qa-explainer/scripts/am.mjs) 的上游来源和本地改动，只在框架维护时使用，不进入生成项目。
 
-来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 [LICENSE](../../../project-source/skills/qa-explainer-godot/LICENSE)。
+来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 [LICENSE](../../../project-source/skills/qa-explainer/LICENSE)。
 
 之后从上游挑选并入的提交：b0ebc16（正文公式，Temml 渲染）、43d5314（标注和回复引用公式时用 TeX 原文）、4392f11（窄窗口横向时间线的标注键不随宽度变化）。并入时删掉了只供措辞检查用的 `opensDisplay`、`isDisplayLine`；`RUNTIME_JS` 开头加入公式文本函数后，外层多了一层包裹函数。没有并入的上游改动：新版本按钮和更新提示（#188、#190、#198）、页脚移到页头（#186）、DeepSeek Harness 插件（#199、#200）。下次同步上游时，从 `4da5ae8` 之后开始核对。
 
@@ -12,7 +12,7 @@
 
 移植后按我们的页面重做了细节：图里文字分 14px（名称、图例）、13px（刻度、数值、说明）、18px（循环中心）三档；四象限的点标签按右、左、上、下依次避让，仍冲突时上下错开并画引线；多字符单位只在轴上写一次；竖向柱的长类别名拆成两行；重点象限底色改为强调色 8% 透明度。共用的参数解析 `checkParamNames` 对非英文参数名（如 `单位=金币`）报错并给出英文写法；`callout`、`loop`、`fishbone` 组件名后面是标题文字，定义里用 `textArgs: true` 跳过这项检查。英文参数名后的全角等号（`unit＝金币`）按 `=` 处理，因为中文输入法容易打出，意图没有歧义。长文字用均衡换行，行首不放标点（含 `·`），不截断。行尾的开括号移到下一行开头。`state` 复用 `flow` 已打包的 dagre 排版，只补状态形状、起止点和自环；`swimlane` 由脚本按拓扑顺序推算列号，连线用改过的 SeeCode 直角绕障路由，Agent 不写坐标。两者不写方向时按 doc 面板图区宽度（1280 宽窗口实测 913px，取 900px）自动选方向：横排超宽且竖排更窄时改竖排，泳道竖排仍超宽时步骤名收窄折行。色阶不用 SeeCode 的调色板，由 `--accent`、`--err`、`--ink-3`、`--paper` 经 `color-mix()` 派生，深色模式随变量自动翻转。
 
-问答 Skill `qa-explainer-godot` 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
+问答 Skill `qa-explainer` 的 `SKILL.md` 按 Yaya 框架的 Q&A 重写，只保留上游的渲染脚本。内部命令 `am`、设置目录 `~/.answer-me-with-html/` 和页面里的 `am-` 类名沿用上游名字，没有改。
 
 `am.mjs` 是上游从 `src/` 构建出的单文件，这里直接修改它，没有改上游源码。改动依据是 `skills/ui-visual-review` 和 `skills/ui-interaction-review` 对示例页「TCP 的三次握手」的审查。
 

@@ -2,7 +2,7 @@
 
 本文是所有正式审核的共同约定。审核方法写在 Skill 中：
 
-- `plan-review-godot` 检查设计文档和方案，包括其中的 GDD 审核方法；
+- `plan-review` 检查设计文档和方案，包括其中的 GDD 审核方法；
 - `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization` 和 `review-balance` 覆盖其他对象。
 
 只选择与用户要求的范围相关的方法；一个独立的审核实例可以组合多种方法。审核只在被要求时进行，从来不是强制的流水线。

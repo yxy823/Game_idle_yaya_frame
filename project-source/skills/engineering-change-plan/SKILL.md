@@ -16,7 +16,7 @@ description: >-
 
 阅读约束本任务的 `docs/project-rules.md`、路由到的工程规则，以及相关的已有 Feature 设计稿和架构决定。调查或修改游戏行为时，还要使用 `yaya/methodology/01-product-doc-structure.md` 的 **设计范围与边界** 以及相关的 GDD 和专业来源。提出的工程规则修改遵循 `yaya/methodology/04-project-rules.md` 中的自查和授权；技术修复不能悄悄修改工程约束或游戏设计边界。
 
-把一份报告当作变更处理之前，先使用 methodology 07 的 **反馈评估**，即使没有选用分诊 Skill 也要这样做。[feedback-triage-godot](../feedback-triage-godot/SKILL.md) 以直接入口的形式提供同样的检查。缺陷需要查找原因时，通过 [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md) 使用其中的 **因果诊断**，只收集本次准备需要的证据。已完成的评估和诊断直接复用；按 Bug 约定，缺少的因果证据可以在初始方案中明确标为缺失。
+把一份报告当作变更处理之前，先使用 methodology 07 的 **反馈评估**，即使没有选用分诊 Skill 也要这样做。[feedback-triage](../feedback-triage/SKILL.md) 以直接入口的形式提供同样的检查。缺陷需要查找原因时，通过 [bug-diagnosis](../bug-diagnosis/SKILL.md) 使用其中的 **因果诊断**，只收集本次准备需要的证据。已完成的评估和诊断直接复用；按 Bug 约定，缺少的因果证据可以在初始方案中明确标为缺失。
 
 1. 阅读实际已确认的 GDD、Product 交付范围、专业或技术约定、当前 Progress 和相关历史。区分游戏行为和项目工具，按 methodology 07 的 **分类边界** 选择一种模式。按下列去向转交：
    - GDD 意图有变化或含义不清：[design-gdd](../design-gdd/SKILL.md)；

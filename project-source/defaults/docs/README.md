@@ -31,7 +31,7 @@
 | [progress.md](progress.md)、[progress/](progress/README.md) | 当前停点、下一步及按规范保存的执行历史 |
 | [research/](research/README.md) | 按需保存的调研材料与结论 |
 | [knowledge/](knowledge/README.md) | 按主题查找开发经验、适用条件与事实类陷阱 |
-| `qa/` | 用户问过、以后还会用到的问题，按主题分文件，由 `qa-explainer-godot` 写入并生成 HTML 页面；只作解释，不作为需求、设计或规则的依据 |
+| `qa/` | 用户问过、以后还会用到的问题，按主题分文件，由 `qa-explainer` 写入并生成 HTML 页面；只作解释，不作为需求、设计或规则的依据 |
 | [lessons.md](lessons.md) | Agent 自己的流程失误及出现次数，够了就提出升级 |
 | `methodology-config.json` | 文档语言、Python 和 Godot 可执行路径 |
 | `.gdignore` | 让 Godot 编辑器不导入本目录 |

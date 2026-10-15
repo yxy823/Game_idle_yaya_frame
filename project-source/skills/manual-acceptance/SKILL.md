@@ -1,5 +1,5 @@
 ---
-name: manual-acceptance-godot
+name: manual-acceptance
 description: 为 Godot Feature 准备人工验收清单，或把用户在对话中的明确结论、用户自己改过的清单记录为实际验收结果。不代替用户体验，不推断验收结果，也不把 Feature 标为完成。
 ---
 

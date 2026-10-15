@@ -28,7 +28,7 @@
 
 **S3｜验证组合并交付**
 
-使用 [project-verification-godot](../../../../../project-source/skills/project-verification-godot/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence](../../../../../project-source/skills/verification-evidence/SKILL.md)；原任务要求实际人工验收时，用 [manual-acceptance-godot](../../../../../project-source/skills/manual-acceptance-godot/SKILL.md) 为组合结果准备清单。按原任务的提交、验收条件交付，更新必要记录。
+使用 [project-verification](../../../../../project-source/skills/project-verification/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence](../../../../../project-source/skills/verification-evidence/SKILL.md)；原任务要求实际人工验收时，用 [manual-acceptance](../../../../../project-source/skills/manual-acceptance/SKILL.md) 为组合结果准备清单。按原任务的提交、验收条件交付，更新必要记录。
 
 ## 资源与文件影响
 

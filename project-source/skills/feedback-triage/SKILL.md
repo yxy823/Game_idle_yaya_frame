@@ -1,6 +1,6 @@
 ---
-name: feedback-triage-godot
-description: 对照已确认的意图和当前行为核实一份 Godot 项目反馈，确定它的类别和下一个负责方。用于需要核实“缺少某项能力”或“结果不符合预期”这类反馈时。不用于已经确认的缺陷，改用 bug-diagnosis-godot 诊断或继续其已有任务。
+name: feedback-triage
+description: 对照已确认的意图和当前行为核实一份 Godot 项目反馈，确定它的类别和下一个负责方。用于需要核实“缺少某项能力”或“结果不符合预期”这类反馈时。不用于已经确认的缺陷，改用 bug-diagnosis 诊断或继续其已有任务。
 ---
 
 # 核实并转交项目反馈
@@ -28,7 +28,7 @@ description: 对照已确认的意图和当前行为核实一份 Godot 项目反
 - 证据相互冲突时，展示分歧，不要挑一个能给出方便答案的来源。
 - 简短的回答可能就够了；本 Skill 不要求报告文件、问题状态或新的 Feature。
 
-已确认的缺陷需要调查原因时，在同一个任务中使用 [bug-diagnosis-godot](../bug-diagnosis-godot/SKILL.md)。实际需要修改时，遵循 methodology 07 中的权威归属表：
+已确认的缺陷需要调查原因时，在同一个任务中使用 [bug-diagnosis](../bug-diagnosis/SKILL.md)。实际需要修改时，遵循 methodology 07 中的权威归属表：
 
 - 当前 Feature 中的缺陷留在那个 Feature；
 - 独立的工程工作使用 [engineering-change-plan](../engineering-change-plan/SKILL.md)；

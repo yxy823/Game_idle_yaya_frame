@@ -95,7 +95,7 @@ git config core.hooksPath .githooks
 
 ## 提交后生成 Q&A 页面
 
-`framework/qa/pages/` 下的 HTML 页面被根 `.gitignore` 忽略，不提交。仓库根目录的 `.githooks/post-commit` 在每次提交完成后检查：这次提交改了 `framework/qa/` 下的文件或 `project-source/skills/qa-explainer-godot/scripts/` 下的渲染脚本时，运行 `node project-source/skills/qa-explainer-godot/scripts/qa-build.mjs framework/qa`，重新生成全部主题页和首页。
+`framework/qa/pages/` 下的 HTML 页面被根 `.gitignore` 忽略，不提交。仓库根目录的 `.githooks/post-commit` 在每次提交完成后检查：这次提交改了 `framework/qa/` 下的文件或 `project-source/skills/qa-explainer/scripts/` 下的渲染脚本时，运行 `node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa`，重新生成全部主题页和首页。
 
 - 提交已经完成，生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
 - 只改了主题文件、还没提交时，页面不会更新；想提交前先看效果，手动运行同一条命令。

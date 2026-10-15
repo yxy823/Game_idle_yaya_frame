@@ -19,7 +19,7 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 ## 执行步骤
 
-使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → Feature 已能体验，需要准备人工验收清单”。填入上述材料。本页由当前 Agent 使用项目自己的 [$manual-acceptance-godot](<../../../../../project-source/skills/manual-acceptance-godot/SKILL.md>)，链接指向框架中的源文件，仅供核对。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 审核与人工验收 → Feature 已能体验，需要准备人工验收清单”。填入上述材料。本页由当前 Agent 使用项目自己的 [$manual-acceptance](<../../../../../project-source/skills/manual-acceptance/SKILL.md>)，链接指向框架中的源文件，仅供核对。
 
 **S1｜核对人工义务**
 

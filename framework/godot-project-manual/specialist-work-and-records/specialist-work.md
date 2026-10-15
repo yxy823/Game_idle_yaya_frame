@@ -197,9 +197,9 @@ UI 规格描述信息层级、采纳的布局、状态差异、显示条件、�
 
 ## 测量与实现
 
-具体的异常统一由 [bug-diagnosis-godot](../../../project-source/skills/bug-diagnosis-godot/SKILL.md) 按[因果诊断](../../../project-source/methodology/07-engineering-change.md#因果诊断)处理：先看症状、预期和证据，再选择需要的专业方法。用户不需要先判断问题属于逻辑、表现还是两者的连接。
+具体的异常统一由 [bug-diagnosis](../../../project-source/skills/bug-diagnosis/SKILL.md) 按[因果诊断](../../../project-source/methodology/07-engineering-change.md#因果诊断)处理：先看症状、预期和证据，再选择需要的专业方法。用户不需要先判断问题属于逻辑、表现还是两者的连接。
 
-例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用参考文件 [Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
+例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用参考文件 [Shader 诊断](../../../project-source/skills/bug-diagnosis/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
 
 修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance/references/shader-implementation-methods.md)，同时遵守 [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
 
@@ -239,7 +239,7 @@ UI 规格描述信息层级、采纳的布局、状态差异、显示条件、�
 ### 审核什么、怎样报告
 
 - **审核现有实现**：不需要 Feature 或差异基线，按相关 GDD 判断是否符合。
-- **审核设计本身**：GDD 草稿或完整设计可以用 `plan-review-godot` 审核，不要求 Product、Feature 已经建立，也不要求所有规则都已确定。
+- **审核设计本身**：GDD 草稿或完整设计可以用 `plan-review` 审核，不要求 Product、Feature 已经建立，也不要求所有规则都已确定。
 - **要求缺失时**：某项具体要求缺失，就限定“是否符合”的结论范围，在有依据的其余部分继续检查质量。
 - **报告内容**：检查的版本、实际覆盖的范围、问题、依据和限制。审核过程中成果发生变化，要限定结论或补查变化的部分。
 - **报告位置**：默认在对话中交付；需要留存时，放在 `reports/features/` 或 `reports/maintenance/` 下的相应目录。
