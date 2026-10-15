@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -37,8 +38,17 @@ def excluded(root: Path, path: Path) -> bool:
 
 
 def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
-    return sorted(path for path in root.rglob("*")
-                  if path.suffix.lower() in suffixes and path.is_file() and not excluded(root, path))
+    def fail(error: OSError) -> None:
+        raise error
+
+    files = []
+    for directory, subdirectories, names in os.walk(root, onerror=fail):
+        # excluded() 接受文件路径；用目录下的假定文件判断整棵子目录是否排除。
+        subdirectories[:] = [name for name in subdirectories
+                             if not excluded(root, Path(directory) / name / "_")]
+        files.extend(path for name in names if (path := Path(directory) / name).suffix.lower() in suffixes
+                     and path.is_file() and not excluded(root, path))
+    return sorted(files)
 
 
 def problems(path: Path) -> list[tuple[int, str]]:

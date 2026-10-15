@@ -204,7 +204,7 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 
 - 两个 Feature 之间的改动，要等下一个 Feature，或用户运行 `run-gdunit-tests.py --changed`，才会被测到。
 - 完成证据的 `git_revision` 记在 Stage 7 完成提交之前，所以完成提交里的游戏文件会被下一个 Feature 再测一次。
-- 撤销已完成 Feature 的实现（例如 revert 它的提交）后，改动会被下一个 Feature 选中，但不会把那个 Feature 改回未完成。丢弃已验证、未提交的内容时，Git 和指纹都看不到这次丢弃。
+- 撤销已完成 Feature 的实现（例如 revert 它的提交）后，改动会被下一个 Feature 选中，但不会把那个 Feature 改回未完成。丢弃已验证、未提交的内容时，相对起点的净差异可能为空。重新校验旧完成证据时，内容指纹能发现变化；已完成 Feature 的证据不会自动重查。
 - 仓库外的环境变化由[项目环境准备](06-project-environment.md#项目环境准备)负责。
 
 ### 不是本 Feature 造成的测试失败

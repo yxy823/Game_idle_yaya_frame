@@ -78,7 +78,7 @@ flowchart TD
 | 5 人工验收 | 仅 manual 模式：取得用户对当前内容的真实结果 |
 | 5.5 Bug 经验 | 仅 `engineering_change: bug`：保存根因、触发条件、回归测试和有用的预防原则 |
 | 6 独立审核 | 仅在用户指定的范围和时机进行；可以集中审核多项，不是每个 Feature 的必经步骤 |
-| 7 标记完成 | 所有适用条件满足后，Agent 写入 done、实际完成时间和记录，并做收尾提交 |
+| 7 标记完成 | 满足适用条件和提交条件后，写入 done、完成时间和记录，再收尾提交；提交受阻时按 Stage 7 恢复未完成状态 |
 | 8 交接 | 报告实际交付内容与限制，核对还剩哪些授权；已授权的后续工作继续推进 |
 
 流程的唯一正文是[Stage 0–8 `feature-execute` 执行循环](../../../project-source/methodology/03-execute-loop.md)和 [feature-execute](../../../project-source/skills/feature-execute/SKILL.md)。普通的实现细节由 Agent 判断。

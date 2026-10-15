@@ -114,12 +114,36 @@ class UiTrialEngineTests(unittest.TestCase):
         self.assertIn("REFUSED", (output / "steps.log").read_text(encoding="utf-8"))
 
     def test_scan_reports_positive_cases_and_skips_negative_ones(self) -> None:
+        renamed = self.copy.with_name(self.copy.name + "=scan")
+        self.copy.rename(renamed)
+        self.addCleanup(shutil.rmtree, renamed)
+        self.copy = renamed
+        (self.copy / "scan_cases.tscn").rename(self.copy / "scan=cases.tscn")
         result, _steps, output, _elapsed = self.run_trial(
-            "res://yaya/tools/ui-trial/ui_scan.gd", "--", "--scenes=res://scan_cases.tscn")
+            "res://yaya/tools/ui-trial/ui_scan.gd", "--", "--scenes=res://scan=cases.tscn")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertTrue(output.is_relative_to(self.copy))
+        self.assertTrue((output / "steps.log").is_file())
         scan = json.loads((output / "scan.json").read_text(encoding="utf-8"))
+        self.assertEqual(scan["scenes"][0]["scene"], "res://scan=cases.tscn")
         found = {(item["rule"], item["control"]) for item in scan["scenes"][0]["findings"]}
         self.assertEqual(found, EXPECTED_SCAN)
+
+    def test_steps_log_open_failure_cannot_report_pass(self) -> None:
+        (self.copy / "blocked_log_driver.gd").write_text(
+            'extends "res://yaya/tools/ui-trial/ui_trial_driver.gd"\n'
+            'func _initialize() -> void:\n'
+            '\tfor argument in OS.get_cmdline_user_args():\n'
+            '\t\tif argument.begins_with("--ui-trial-out="):\n'
+            '\t\t\tDirAccess.make_dir_recursive_absolute(argument.trim_prefix("--ui-trial-out=").path_join("steps.log"))\n'
+            '\tsuper._initialize()\n'
+            'func _run() -> void:\n\tstep("must not start")\n', encoding="utf-8")
+        result, _steps, output, _elapsed = self.run_trial("blocked_log_driver.gd")
+        self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertNotIn("PASS", result.stdout)
+        log = (output / "engine.log").read_text(encoding="utf-8")
+        self.assertIn("UI TRIAL LOG ERROR", log)
+        self.assertNotIn("must not start", log)
 
 
 def main() -> int:

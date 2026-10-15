@@ -13043,7 +13043,7 @@ var USAGE = `Answer me with HTML ${VERSION} \u2014 renders a Markdown draft into
 
 Usage:
   am render <file|->  [-o <path>] [--replace <page>] [--no-open] [--theme ${["auto", ...themeNames("page")].join("|")}]
-                      [--template sheet|doc] [--style off|80|strict] [--mode auto|light|dark]
+                      [--template sheet|doc] [--mode auto|light|dark]
   am patch  <html> --panel <title> [file|-] [--from file] [--theme \u2026] [--no-open]
                                                   replace one ## panel of an existing page and overwrite that HTML in place
   am video  <file|->  [-o <path>] [--voice auto|elevenlabs|local|system|off] [--mp4] [--webm] [--no-open]
@@ -13065,7 +13065,7 @@ var FORMAT = `Draft format (extended Markdown)
 
 ---
 template: sheet        # sheet: blueprint board (default, multi-panel grid) | doc: linear explainer (one column + contents)
-theme: auto            # auto (default): paper for the doc template or text only, blueprint with diagrams | blueprint | shadcn | paper; switchable in the page
+theme: auto            # auto (default): shadcn for pages; switchable in the page
 title: Page title      # or use "# Title" as the first line of the body
 subtitle: Subtitle     # optional
 cols: 3                # number of sheet grid columns, default 3

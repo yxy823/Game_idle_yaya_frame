@@ -29,7 +29,7 @@ description: "根据明确的目标、规则草稿或数据推导、调整游戏
 
 ## 写回并协调后续影响
 
-公式、数值、决定状态和计算假设一起保存在所属的 GDD 位置。阅读并维护 `yaya/methodology/01-product-doc-structure.md` 的 **开放问题** 中受影响的数值问题，保留仍需采用决定或试玩证据的不确定项。直接更新已授权的数值段落和相关链接；不会只因为所属文档是 GDD，就另外需要整体设计的批准。
+公式、决定状态和计算假设保存在所属的 GDD 位置。参数取值按[数值放在哪里](../../../yaya/methodology/01-product-doc-structure.md#数值放在哪里)保存，GDD 链接实际来源。阅读并维护 `yaya/methodology/01-product-doc-structure.md` 的 **开放问题** 中受影响的数值问题，保留仍需采用决定或试玩证据的不确定项。直接更新已授权的数值段落和相关链接；不会只因为所属文档是 GDD，就另外需要整体设计的批准。
 
 - 新机制或体验目标的变化属于 [design-gdd](../design-gdd/SKILL.md)。说明冲突或建议的取舍，并把当前授权带到那项工作中；不要把调优请求当成采用另一种游戏设计的许可。
 - 数值来源的变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理。在任务授权范围内，受影响的 Product 范围与 `product-author` 协调，已规划的使用方与 `feature-sync` 协调。不要只为了完成一个独立模型就创建 Product 或 Feature 文档。

@@ -42,18 +42,23 @@ static func write_all(slots: Array[Slot], keep_candidates: PackedStringArray = [
 		var keep: Array[String] = []
 		if slot.id in keep_candidates:
 			keep = CANDIDATE_FIELDS
-		var error := write_resource(slot.live, slot.game_path, keep)
-		if error != OK:
-			return {"error": error, "message": slot.game_path, "written": written}
-		written.append(slot.game_path)
+		var result := _write_resource_result(slot.live, slot.game_path, keep)
+		if result.saved:
+			written.append(slot.game_path)
+		if result.error != OK:
+			return {"error": result.error, "message": slot.game_path, "written": written}
 	return {"error": OK, "written": written}
 
 
 ## Also accepts user:// test files; production UI is restricted by preflight.
 static func write_resource(live: Resource, path: String, keep: Array[String] = []) -> Error:
+	return _write_resource_result(live, path, keep).error
+
+
+static func _write_resource_result(live: Resource, path: String, keep: Array[String]) -> Dictionary:
 	var disk := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	if disk == null:
-		return ERR_CANT_OPEN
+		return {"error": ERR_CANT_OPEN, "saved": false}
 	var identity := ResourceLoader.get_resource_uid(path)
 	var values: Dictionary = {}
 	for field in Codec.fields(live):
@@ -65,6 +70,7 @@ static func write_resource(live: Resource, path: String, keep: Array[String] = [
 		values[String(field.name)] = value
 	Codec.apply_fields(disk, values)
 	var error := ResourceSaver.save(disk, path)
+	var saved := error == OK
 	if error == OK and identity != ResourceUID.INVALID_ID:
 		error = ResourceSaver.set_uid(ProjectSettings.globalize_path(path), identity)
-	return error
+	return {"error": error, "saved": saved}

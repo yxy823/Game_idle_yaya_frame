@@ -11,6 +11,7 @@ const Request := preload("res://dev/debug/_shared/adoption_request.gd")
 const Writer := preload("res://dev/debug/_shared/default_writer.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
+const Parameters := preload("res://dev/debug/_shared/adoption_parameters.gd")
 const LOG := "adoption-log.md"
 const QUEUE := "adoption-queue"
 const DESCRIPTOR := Slot.DESCRIPTOR
@@ -83,7 +84,7 @@ static func confirm_text(slots: Array[Slot], plans: Dictionary) -> String:
 			actions.append("· 把%s改回 %s" % [slot.display_name(), _switch_name(slot)])
 		else:
 			actions.append("· 把%s的当前设定写入游戏" % slot.display_name())
-		actions.append_array(_parameter_changes(slot))
+		actions.append_array(Parameters.changes(slot))
 		if slot.constant("LOGIC", false):
 			actions.append(LOGIC_REMINDER)
 		var replaced := _replaced(slot)
@@ -99,40 +100,6 @@ static func confirm_text(slots: Array[Slot], plans: Dictionary) -> String:
 		"
 ".join(actions), "
 ".join(files)]
-
-
-## The parameters adoption changes in the game file, one line each: "　　尺寸：1 → 1.5".
-## A changed implementation is named by the slot's own line, not repeated here.
-static func _parameter_changes(slot: Slot) -> PackedStringArray:
-	var defaults := slot.disk_defaults()
-	if defaults == null:
-		return []
-	var saved := Codec.pack_fields(defaults)
-	var now := Codec.pack_fields(slot.live)
-	if saved.error != OK or now.error != OK:
-		return []
-	var lines: PackedStringArray = []
-	for path in Slot.differences(Codec.content(now.value), Codec.content(saved.value)):
-		if path == "candidate" or path == "candidate_params":
-			continue
-		var key := path.get_file()
-		var before := _shown_value(slot, key, _field_value(defaults, path))
-		var after := _shown_value(slot, key, _field_value(slot.live, path))
-		var caption := slot.field_caption(key, key.capitalize())
-		lines.append("　　%s：%s → %s" % [caption, before, after] if not before.is_empty()
-			and not after.is_empty() else "　　%s 已修改" % caption)
-	return lines
-
-
-static func _field_value(resource: Resource, path: String) -> Variant:
-	var parts := path.split("/")
-	var target := resource if parts.size() == 1 else resource.get("candidate_params") as Resource
-	return target.get(parts[parts.size() - 1]) if target != null else null
-
-
-static func _shown_value(slot: Slot, key: String, value: Variant) -> String:
-	var shown := slot.value_text(key, value)
-	return shown if not shown.is_empty() else Slot.plain_text(value)
 
 
 ## Slots that switch back to another implementation in game/: slot id -> its name.
@@ -177,6 +144,41 @@ static func _shown_files(files: PackedStringArray) -> PackedStringArray:
 ## for the Agent. Returns the status text: "已采纳：按钮音效改为 风铃 · chime".
 static func adopt_all(slots: Array[Slot], plans: Dictionary) -> Dictionary:
 	var switched := _switches(slots, plans)
+	var moves := _move_immediate(plans)
+	if moves.error != OK:
+		return moves
+	var deferred: PackedStringArray = moves.deferred
+	# One import covers all moves; a running import gets one follow-up.
+	var note := Uids.refresh_cache(moves.destination)
+	var written := Writer.write_all(slots, deferred)
+	var failure := written
+	var failed_action := "没能写入游戏文件"
+	var queued: PackedStringArray = []
+	if written.error == OK:
+		for identity in deferred:
+			var result := enqueue(plans[identity])
+			if result.error != OK:
+				failure = result
+				failed_action = "没能把 %s 排进下次启动的移动" % plans[identity].name
+				break
+			queued.append(identity)
+	var paths: PackedStringArray = written.get("written", PackedStringArray())
+	var recorded := _record_written(slots, paths, plans, deferred, queued)
+	var problems: PackedStringArray = recorded.problems
+	var unlogged: PackedStringArray = recorded.unlogged
+	var recording_failed := not problems.is_empty()
+	if not note.is_empty():
+		problems.append(note)
+	if failure.error != OK:
+		return _write_failure(failure, failed_action, paths, problems, unlogged)
+	var text := "已采纳：" + _adopted_text(slots, plans, switched)
+	if not recording_failed:
+		return {"error": OK, "text": text + ("。" + note if not note.is_empty() else "")}
+	return {"error": ERR_FILE_CANT_WRITE, "text": text + "。但" + "；".join(problems),
+		"detail": "\n".join(unlogged)}
+
+
+static func _move_immediate(plans: Dictionary) -> Dictionary:
 	var deferred: PackedStringArray = []
 	var moved_names: PackedStringArray = []
 	var moved_to := ""
@@ -187,41 +189,60 @@ static func adopt_all(slots: Array[Slot], plans: Dictionary) -> Dictionary:
 			continue
 		var moved := move(adoption)
 		if moved.error != OK:
-			Uids.refresh_cache(moved_to)
-			return _move_failed(moved, adoption, moved_names)
+			var failed := _move_failed(moved, adoption, moved_names)
+			var move_note := Uids.refresh_cache(moved_to)
+			failed.text += "。" + move_note if not move_note.is_empty() else ""
+			return failed
 		moved_names.append(adoption.name)
 		moved_to = adoption.destination
-	# One import covers every move; two at once would write the same .godot cache.
-	var note := Uids.refresh_cache(moved_to)
-	var written := Writer.write_all(slots, deferred)
-	if written.error != OK:
-		return Messages.outcome(written, "", "没能写入游戏文件",
-			"已写入 %d 个文件，其余没有写入。关掉占用游戏文件的程序后再采纳一次" % written.get(
-				"written", []).size())
-	for identity in deferred:
-		var queued := enqueue(plans[identity])
-		if queued.error != OK:
-			return Messages.outcome(queued, "", "没能把 %s 排进下次启动的移动" % plans[identity].name,
-				"其他设定已写入游戏。请让 Agent 查看详情")
+	return {"error": OK, "deferred": deferred, "destination": moved_to}
+
+
+static func _write_failure(failure: Dictionary, failed_action: String, paths: PackedStringArray,
+		problems: PackedStringArray, unlogged: PackedStringArray) -> Dictionary:
+	var names: PackedStringArray = []
+	for path in paths:
+		names.append(path.get_file())
+	var progress := "没有写入游戏文件" if paths.is_empty() else "已写入：" + "、".join(names)
+	var result := Messages.outcome(failure, "", failed_action,
+		progress + "。本次采纳没有全部完成，请让 Agent 查看详情后重试")
+	result.text += "。" + "；".join(problems) if not problems.is_empty() else ""
+	result.detail += "\n" + "\n".join(paths) + "\n" + "\n".join(unlogged)
+	result.written = paths
+	return result
+
+
+static func _record_written(slots: Array[Slot], paths: PackedStringArray, plans: Dictionary,
+		deferred: PackedStringArray, queued: PackedStringArray) -> Dictionary:
 	var problems: PackedStringArray = []
 	var unlogged: PackedStringArray = []
 	for slot in slots:
-		var line := log_line(slot, plans.get(slot.id, {}))
+		if not slot.game_path in paths:
+			continue
+		var adoption: Dictionary = plans.get(slot.id, {})
+		var unqueued := slot.id in deferred and not slot.id in queued
+		var line := _written_line(slot, adoption, slot.id in deferred, unqueued)
 		if append_log(slot.debug_root, line) != OK:
 			unlogged.append(line)
-		if not plans.has(slot.id) and cancel(slot) != OK:
+		if not slot.id in deferred and cancel(slot) != OK:
 			problems.append("排队的 %s 没能撤回，下次启动仍会把它移入游戏并改写%s：关掉占用 %s 的程序后再采纳一次"
 				% [queued_candidate(slot), slot.display_name(), Messages.relative(queue_path(slot))])
 		# The game file now holds these values, so the slot shows "游戏原值" again.
-		slot.preset_name = ""
-		slot.mark_saved()
+		if not unqueued:
+			slot.preset_name = ""
+			slot.mark_saved()
 	if not unlogged.is_empty():
 		problems.append("待收尾记录没能写进 %s：请让 Agent 按详情补记" % LOG)
-	var text := "已采纳：" + _adopted_text(slots, plans, switched)
-	if problems.is_empty():
-		return {"error": OK, "text": text + ("。" + note if not note.is_empty() else "")}
-	return {"error": ERR_FILE_CANT_WRITE, "text": text + "。但" + "；".join(problems),
-		"detail": "\n".join(unlogged)}
+	return {"problems": problems, "unlogged": unlogged}
+
+
+static func _written_line(slot: Slot, adoption: Dictionary, deferred: bool, unqueued: bool) -> String:
+	var line := log_line(slot, {} if unqueued else adoption)
+	if deferred:
+		line += " · 本次仅写入通用参数"
+	if unqueued:
+		line += "，候选 %s 未排队" % adoption.candidate_id
+	return line
 
 
 ## The move of one candidate failed: says which files stayed where and which candidates of
@@ -355,10 +376,17 @@ static func run_queue(debug_root: String) -> Dictionary:
 				request.candidate_name, Messages.relative(path)])
 	DirAccess.remove_absolute(directory)
 	var note := Uids.refresh_cache(debug_root) if not done.is_empty() else ""
+	return _queue_result(done, failed, problems, details, note)
+
+
+static func _queue_result(done: PackedStringArray, failed: PackedStringArray,
+		problems: PackedStringArray, details: PackedStringArray, note: String) -> Dictionary:
 	if not failed.is_empty():
 		problems.insert(0, "上次排队采纳的 %s 没能移入游戏：文件移动或写入失败，下次启动再试。请让 Agent 查看详情"
 			% "、".join(failed))
 	if not problems.is_empty():
+		if not note.is_empty():
+			problems.append(note)
 		return {"error": ERR_CANT_CREATE, "done": done, "detail": "\n".join(details),
 			"text": "；".join(problems)}
 	return {"error": OK, "done": done, "note": note}
@@ -381,8 +409,10 @@ static func _run(request: Request, debug_root: String) -> Dictionary:
 	if error != OK:
 		return {"error": error, "message": request.game_path}
 	var checked := slot.apply_values(request.fields)
-	if "candidate" in checked.issues:
-		return {"error": ERR_INVALID_DATA, "message": "Candidate did not resolve after the move",
+	if checked.error != OK:
+		return checked
+	if not checked.issues.is_empty():
+		return {"error": ERR_INVALID_DATA, "message": "Queued fields no longer match the slot",
 			"issues": checked.issues}
 	error = Writer.write_resource(slot.live, slot.game_path)
 	if error != OK:
@@ -474,15 +504,56 @@ static func _rewrite_paths(source: String, destination: String, files: PackedStr
 		if input == null:
 			return {"error": FileAccess.get_open_error(), "message": "Cannot read " + path}
 		var text := input.get_as_text()
+		var read_error := input.get_error()
 		input.close()
+		if read_error != OK and read_error != ERR_FILE_EOF:
+			return {"error": read_error, "message": "Cannot read " + path}
 		var updated := text.replace(source + "/", destination + "/")
 		if updated == text:
 			continue
-		var output := FileAccess.open(path, FileAccess.WRITE)
-		if output == null:
-			return {"error": FileAccess.get_open_error(), "message": "Cannot write " + path}
-		var stored := output.store_string(updated)
-		output.close()
-		if not stored:
-			return {"error": ERR_FILE_CANT_WRITE, "message": "Cannot write " + path}
+		var result := _replace_text(path, updated)
+		if result.error != OK:
+			return result
 	return {"error": OK}
+
+
+static func _replace_text(path: String, updated: String) -> Dictionary:
+	if FileAccess.get_read_only_attribute(path):
+		return {"error": ERR_FILE_CANT_WRITE, "message": "Cannot write " + path}
+	var suffix := Crypto.new().generate_random_bytes(16).hex_encode()
+	var temporary := path + ".rewrite-" + suffix + ".tmp"
+	var backup := path + ".rewrite-" + suffix + ".bak"
+	var error := _stage_rewrite(temporary, updated)
+	if error != OK:
+		return _rewrite_failure(error, path, temporary)
+	error = DirAccess.rename_absolute(path, backup)
+	if error != OK:
+		return _rewrite_failure(error, path, temporary)
+	error = DirAccess.rename_absolute(temporary, path)
+	if error != OK:
+		var restored := DirAccess.rename_absolute(backup, path)
+		var detail := "" if restored == OK else "Cannot restore %s (%s); original kept at %s" % [
+			path, error_string(restored), backup]
+		return _rewrite_failure(error, path, temporary, detail)
+	error = DirAccess.remove_absolute(backup)
+	return {"error": error, "message": "" if error == OK else "Cannot remove backup " + backup}
+
+
+static func _stage_rewrite(path: String, updated: String) -> Error:
+	var output := FileAccess.open(path, FileAccess.WRITE)
+	if output == null:
+		return FileAccess.get_open_error()
+	var stored := output.store_string(updated)
+	output.flush()
+	var error := output.get_error()
+	output.close()
+	return error if error != OK else (OK if stored else ERR_FILE_CANT_WRITE)
+
+
+static func _rewrite_failure(error: Error, path: String, temporary: String,
+		detail: String = "") -> Dictionary:
+	if FileAccess.file_exists(temporary):
+		var removed := DirAccess.remove_absolute(temporary)
+		if removed != OK:
+			detail += "\nCannot remove %s (%s)" % [temporary, error_string(removed)]
+	return {"error": error, "message": "Cannot write " + path, "detail": detail}

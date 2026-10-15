@@ -52,6 +52,8 @@ func analyze_directory(path: String):
 			var file_result = analyze_file(file_path)
 			if file_result:
 				result.add_file_result(file_result)
+			else:
+				result.input_errors.append("Could not read: " + file_path)
 	else:
 		# No sealed checking — single-pass (original behavior)
 		_scan_directory(path)
@@ -254,6 +256,8 @@ func _scan_directory(path: String) -> void:
 				var file_result = analyze_file(full_path)
 				if file_result:
 					result.add_file_result(file_result)
+				else:
+					result.input_errors.append("Could not read: " + full_path)
 
 		file_name = dir.get_next()
 

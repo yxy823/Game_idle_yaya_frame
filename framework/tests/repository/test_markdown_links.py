@@ -1,10 +1,15 @@
 """Check the distributed Markdown link checker through its public CLI."""
 import json
+import importlib.util
+import io
+import os
 import subprocess
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from contextlib import redirect_stderr, redirect_stdout
+from unittest import mock
 
 
 COMMAND = Path(__file__).resolve().parents[3] / "project-source/tools/checks/check-markdown-links.py"
@@ -89,6 +94,28 @@ class MarkdownLinkTests(unittest.TestCase):
             )
         self.assertEqual(process.returncode, 2, process.stderr)
         self.assertIn("not under --root", process.stderr)
+
+    def test_unreadable_subdirectory_returns_2_and_names_path(self):
+        self.write("readable/guide.md", "# Guide\n")
+        self.write("locked/guide.md", "# Hidden\n")
+        locked = self.root / "locked"
+        spec = importlib.util.spec_from_file_location("markdown_links_cli", COMMAND)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        self.addCleanup(sys.modules.pop, spec.name, None)
+        spec.loader.exec_module(module)
+        real = os.scandir
+
+        def scandir(path="."):
+            if Path(path) == locked:
+                raise PermissionError(13, "Access is denied", str(path))
+            return real(path)
+
+        errors = io.StringIO()
+        with mock.patch.object(os, "scandir", scandir), redirect_stderr(errors), redirect_stdout(io.StringIO()):
+            code = module.main(["--root", str(self.root)])
+        self.assertEqual(code, 2)
+        self.assertIn(repr(str(locked)), errors.getvalue())
 
 
 if __name__ == "__main__":

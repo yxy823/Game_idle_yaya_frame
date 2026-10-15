@@ -71,12 +71,12 @@ def main(argv: list[str] | None = None) -> int:
     if not root.is_dir():
         parser.error(f"--root is not a directory: {root}")
     excluded_paths = [Path(value) for value in args.exclude]
-    files = ([path.resolve() for path in args.files] if args.files
-        else markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths))
-    for path in files:
-        if not path.is_relative_to(root):
-            parser.error(f"file is not under --root: {path}")
     try:
+        files = ([path.resolve() for path in args.files] if args.files
+                 else markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths))
+        for path in files:
+            if not path.is_relative_to(root):
+                parser.error(f"file is not under --root: {path}")
         checked, broken = check_links(root, files)
     except (OSError, UnicodeDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)

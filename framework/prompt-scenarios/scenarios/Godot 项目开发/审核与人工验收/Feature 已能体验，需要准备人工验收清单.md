@@ -27,7 +27,7 @@ F012 的背包界面已经实现完、代码不再改动，它的验收模式是
 
 **S2｜编写待验清单**
 
-用 `yaya/methodology/templates/manual-acceptance-checklist.json.tmpl` 在 `reports/manual-acceptance/F0XX/` 写清单，全部 status 为 `pending`，写明入口、初始条件、实际动作、预期和重置；涉及调试台时，检查项针对采纳后的游戏原值，不针对插槽预设或组合；Feature notes 链接清单，不复制步骤。
+按[定义与准备](../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备)选择清单路径与轮次命名。用 `yaya/methodology/templates/manual-acceptance-checklist.json.tmpl` 写清单，全部 status 为 `pending`，写明入口、初始条件、实际动作、预期和重置；涉及调试台时，检查项针对采纳后的游戏原值，不针对插槽预设或组合；Feature notes 链接清单，不复制步骤。
 
 **S3｜绑定版本并交付**
 

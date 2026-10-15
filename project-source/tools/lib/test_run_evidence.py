@@ -106,6 +106,14 @@ def _declared_tests(source: str) -> list[str]:
     return re.findall(r"^(?:static\s+)?func\s+(test_\w+)\s*\(", _without_strings(source), re.MULTILINE)
 
 
+def _godot_visible(boundary: Path, path: Path) -> bool:
+    relative = path.relative_to(boundary)
+    if any(part.startswith(".") for part in relative.parts):
+        return False
+    return not any((parent / ".gdignore").is_file() for parent in (path, *path.parents)
+                   if parent == boundary or boundary in parent.parents)
+
+
 def _gdscript_paths(directory: Path) -> list[Path]:
     """Use Godot-visible directories for script class and suite discovery."""
     def fail(error: OSError) -> None:
@@ -113,11 +121,12 @@ def _gdscript_paths(directory: Path) -> list[Path]:
 
     paths = []
     for current, directories, files in os.walk(directory, onerror=fail):
-        directories[:] = [name for name in directories if not name.startswith(".")]
-        if ".gdignore" in files:
+        if not _godot_visible(directory, Path(current)):
             directories.clear()
             continue
-        paths.extend(Path(current) / name for name in files if name.endswith(".gd") and not name.startswith("."))
+        directories[:] = [name for name in directories if _godot_visible(directory, Path(current) / name)]
+        paths.extend(Path(current) / name for name in files
+                     if name.endswith(".gd") and _godot_visible(directory, Path(current) / name))
     return paths
 
 
@@ -274,7 +283,8 @@ def run_history_directory(root: Path, feature_id: str | None) -> Path:
     return root / "reports/gdunit-wrapper" / (feature_id if feature_id is not None else "focused")
 
 
-def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[str]]:
+def _run_records(root: Path, feature_id: str | None, *,
+                 exclude_directory: Path | None = None) -> tuple[list[dict], list[str]]:
     """Read usable run headers and report errors without discarding their paths."""
     records, errors = [], []
     history = run_history_directory(root, feature_id)
@@ -285,9 +295,9 @@ def _run_records(root: Path, feature_id: str | None) -> tuple[list[dict], list[s
     except OSError as error:
         return [], [f"cannot list run history {history}: {error}"]
     for path in candidates:
+        if exclude_directory is not None and path.parent.resolve() == exclude_directory.resolve():
+            continue
         try:
-            if not path.exists():
-                continue
             record = read_json(path)
             if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
                 raise RunEvidenceError("unsupported run result schema")
@@ -341,7 +351,7 @@ def start_run(root: Path, directory: Path, feature_id: str | None,
     # History damage is reported without preventing a new measurement. Completion
     # independently rejects referenced damage and unresolved/unknown history.
     started_at = utc_now()
-    records, history_errors = _run_records(root, feature_id)
+    records, history_errors = _run_records(root, feature_id, exclude_directory=directory)
     for error in history_errors:
         print("WARNING: " + error, file=sys.stderr)
     errors = []

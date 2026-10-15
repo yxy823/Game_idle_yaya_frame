@@ -7,9 +7,9 @@ import math
 import re
 from datetime import datetime
 from pathlib import Path, PurePosixPath
-from typing import Any
+from typing import Any, Iterable
 
-from tools.lib.dependency_graph import build_graph, canonical, dependents
+from tools.lib.dependency_graph import build_graph, canonical, deleted_identity_texts, dependents
 from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, resolve_test_path, test_identity,
 )
@@ -197,7 +197,7 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
     Only file content is read, never commit messages or Feature status, so the
     result is a function of the base revision and the current working tree.
     """
-    from tools.lib.test_run_evidence import _SuiteInheritance, _declared_tests
+    from tools.lib.test_run_evidence import _SuiteInheritance, _declared_tests, _godot_visible
 
     components = {item["id"]: item for item in registry["components"]}
     try:
@@ -209,7 +209,8 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
     # 只对测试目录里的脚本判断是否套件，游戏脚本的继承写法不影响选择。
     def is_suite(path: str) -> bool:
         file = (root / path).resolve()
-        return (path.endswith(".gd") and file.is_file() and bool(_declared_tests(inheritance.source(file)))
+        return (path.endswith(".gd") and file.is_file() and _godot_visible(root.resolve(), file)
+                and bool(_declared_tests(inheritance.source(file)))
                 and inheritance.is_suite(file))
 
     inferred: dict[str, set[str]] = {}
@@ -235,7 +236,13 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
                     unclaimed.append(path)
                 else:
                     full_reasons.append(f"unclaimed-changed-file:{path}")
-    reached = dependents(build_graph(root), starts) if starts else {}
+    try:
+        historical_texts, unresolved = deleted_identity_texts(
+            root, base_revision, [path for path in starts if not (root / path).exists()])
+    except EvidenceError as exc:
+        raise SelectionError(str(exc)) from exc
+    full_reasons.extend(f"dependency-graph-unresolved:{path}" for path in unresolved)
+    reached = dependents(build_graph(root, historical_texts=historical_texts), starts) if starts else {}
     for start, chains in reached.items():
         for node, chain in sorted(chains.items()):
             if _is_test_area(node) and is_suite(node):
@@ -305,22 +312,24 @@ def _impact_summary(impact: dict[str, Any], declared: list[str]) -> dict[str, An
             "dependency_suites": impact["dependency_suites"]}
 
 
+def component_full_reasons(components: dict[str, dict], selected: Iterable[str]) -> list[str]:
+    return [f"component-full-suite:{name}" for name in sorted(selected)
+            if components[name]["full_suite_on_change"]]
+
+
 def _component_tests(root: Path, components: dict[str, dict], tests: dict[str, dict], selected: list[str],
                      required: dict, add_test) -> list[str]:
     """Add selected components' unit suites, regressions and invariants; return component full reasons."""
-    reasons = []
     for component_id in selected:
         component = components[component_id]
         for path in component["unit_test_paths"]:
             _add(root, required, path, None, None, f"component-unit:{component_id}")
-        if component["full_suite_on_change"]:
-            reasons.append(f"component-full-suite:{component_id}")
     for test_id, test in sorted(tests.items()):
         if test["status"] == "active" and set(test["components"]).intersection(selected):
             kind = test_identity(test_id)[0]
             if kind in {"regression", "invariant"}:
                 add_test(required, test_id, f"affected-{kind}")
-    return reasons
+    return component_full_reasons(components, selected)
 
 
 def _dependency_suites(root: Path, impact: dict[str, Any], required: dict) -> None:

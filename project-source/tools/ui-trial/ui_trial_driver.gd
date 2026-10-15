@@ -17,6 +17,7 @@ var output_directory: String = "user://ui-trial"
 var headless: bool = DisplayServer.get_name() == "headless"
 
 var _finished: bool = false
+var _writing_log: bool = false
 var _step_count: int = 0
 var _started_msec: int = 0
 var _steps_file: FileAccess
@@ -32,11 +33,17 @@ func _initialize() -> void:
 	_started_msec = Time.get_ticks_msec()
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--ui-trial-out="):
-			output_directory = argument.get_slice("=", 1)
+			output_directory = argument.trim_prefix("--ui-trial-out=")
 		elif argument.begins_with("--ui-trial-watchdog="):
-			watchdog_seconds = argument.get_slice("=", 1).to_float()
-	DirAccess.make_dir_recursive_absolute(output_directory)
+			watchdog_seconds = argument.trim_prefix("--ui-trial-watchdog=").to_float()
+	var directory_error := DirAccess.make_dir_recursive_absolute(output_directory)
+	if directory_error != OK:
+		_stop_for_log_error(directory_error)
+		return
 	_steps_file = FileAccess.open(output_directory.path_join("steps.log"), FileAccess.WRITE)
+	if _steps_file == null:
+		_stop_for_log_error(FileAccess.get_open_error())
+		return
 	var name := String(ProjectSettings.get_setting("application/config/name", ""))
 	if not name.ends_with(TRIAL_SUFFIX):
 		_log("REFUSED: project name '%s' does not end with '%s'; run prepare-trial-copy.py" % [name, TRIAL_SUFFIX])
@@ -54,7 +61,8 @@ func _initialize() -> void:
 			int(ProjectSettings.get_setting("display/window/size/viewport_width", 1152)),
 			int(ProjectSettings.get_setting("display/window/size/viewport_height", 648)))
 	_log("start: %s, watchdog %ss, %s" % [name, watchdog_seconds, "headless" if headless else "window"])
-	_start.call_deferred()
+	if not _finished:
+		_start.call_deferred()
 
 
 func _finalize() -> void:
@@ -66,6 +74,8 @@ func _finalize() -> void:
 
 func _start() -> void:
 	await process_frame
+	if _finished:
+		return
 	await _run()
 	if not _finished:
 		step("all steps done")
@@ -104,21 +114,37 @@ func is_finished() -> bool:
 
 
 func _log(text: String) -> void:
+	if _finished:
+		return
 	var line := "[ui-trial %7.2fs] %s" % [(Time.get_ticks_msec() - _started_msec) / 1000.0, text]
 	# 保留原因：步骤与引擎报错按时间交错写进 engine.log，看报错前执行到哪一步。用户同意于 2026-10-08。
 	print(line)  # gdlint:ignore-line:print-statement
-	if _steps_file != null:
-		_steps_file.store_line(line)
+	_writing_log = true
+	_steps_file.store_line(line)
+	if not _finished:
 		_steps_file.flush()
+	_writing_log = false
+	if not _finished and _steps_file.get_error() != OK:
+		_stop_for_log_error(_steps_file.get_error())
+
+
+func _stop_for_log_error(error: Error) -> void:
+	_finish(EXIT_FAILED)
+	push_error("UI TRIAL LOG ERROR: %s: %s" % [output_directory.path_join("steps.log"), error_string(error)])
 
 
 func _finish(code: int) -> void:
+	if _finished:
+		return
 	_finished = true
 	quit(code)
 
 
 func _engine_reported(is_warning: bool, text: String) -> void:
 	if _finished:
+		return
+	if _writing_log:
+		_stop_for_log_error(_steps_file.get_error())
 		return
 	if is_warning:
 		_log("engine warning: " + text)

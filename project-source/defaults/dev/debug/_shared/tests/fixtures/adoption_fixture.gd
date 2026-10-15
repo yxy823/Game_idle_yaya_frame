@@ -43,7 +43,8 @@ func sound_slot() -> Slot:
 	DirAccess.make_dir_recursive_absolute(game_path.get_base_dir())
 	ResourceSaver.save(_tuning_script("sound_tuning.gd").new(), game_path)
 	for identity: String in NAMES:
-		_sound_candidate(identity)
+		var error := _sound_candidate(identity)
+		assert(error == OK, "Invalid sample audio candidate: " + identity)
 	var slot := Slot.new()
 	slot.configure("sample", "feedback/sound", game_path, dev_root())
 	slot.actions = SoundSlot.new()
@@ -51,11 +52,15 @@ func sound_slot() -> Slot:
 	return slot
 
 
-func _sound_candidate(identity: String) -> void:
+func _sound_candidate(identity: String) -> Error:
+	var source := SOUNDS + identity + "/"
+	var definition := ResourceLoader.load(source + "candidate.tres", "",
+		ResourceLoader.CACHE_MODE_IGNORE) as Definition
+	if Codec.resolve_uid(definition.candidate_uid) != source + identity + ".wav":
+		return ERR_INVALID_DATA
 	var directory := dev_root().path_join("sample/slots/feedback/sound/" + identity)
 	DirAccess.make_dir_recursive_absolute(directory)
 	var audio := directory.path_join(identity + ".wav")
-	var source := SOUNDS + identity + "/"
 	DirAccess.copy_absolute(source + identity + ".wav", audio)
 	DirAccess.copy_absolute(source + "README.md", directory.path_join("README.md"))
 	var number := _new_uid(audio)
@@ -63,11 +68,8 @@ func _sound_candidate(identity: String) -> void:
 	config.load(source + identity + ".wav.import")
 	config.set_value("remap", "uid", ResourceUID.id_to_text(number))
 	config.save(audio + ".import")
-	var definition := Definition.new()
-	definition.display_name = NAMES[identity]
 	definition.candidate_uid = ResourceUID.id_to_text(number)
-	definition.license_note = "测试用合成音"
-	ResourceSaver.save(definition, directory.path_join("candidate.tres"))
+	return ResourceSaver.save(definition, directory.path_join("candidate.tres"))
 
 
 ## The effect slot: the game uses the ring copy; the spark candidate's script preloads its

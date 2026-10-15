@@ -3,6 +3,8 @@ extends SceneTree
 ## The game runs with its own user:// data, so run it in a project copy, not the project itself.
 
 const BOOT := preload("res://dev/debug/debug_main.tscn")
+const Preset := preload("res://dev/debug/_shared/slot_preset.gd")
+const Combo := preload("res://dev/debug/_shared/target_combo.gd")
 
 var _failures: PackedStringArray = []
 
@@ -37,14 +39,25 @@ func _run() -> void:
 	quit(0 if _failures.is_empty() else 1)
 
 
-## Every debug scene and resource loads from disk and has a UID.
+## Every resource loads; only runtime presets and combos at their storage paths may lack UID.
 func _check_resources() -> void:
 	var paths: PackedStringArray = []
 	_catalog("res://dev/debug", paths)
 	for path in paths:
 		var resource := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE)
 		_check(resource != null, "Cannot load " + path)
-		_check(ResourceLoader.get_resource_uid(path) != ResourceUID.INVALID_ID, "Missing UID " + path)
+		if not _is_runtime_save(path, resource):
+			_check(ResourceLoader.get_resource_uid(path) != ResourceUID.INVALID_ID, "Missing UID " + path)
+
+
+func _is_runtime_save(path: String, resource: Resource) -> bool:
+	if resource is Preset:
+		return RegEx.create_from_string(
+			"^res://dev/debug/[^/]+/slots/(?:[^/]+/)+presets/[^/]+\\.tres$").search(path) != null
+	if resource is Combo:
+		return RegEx.create_from_string(
+			"^res://dev/debug/[^/]+/combos/[^/]+\\.tres$").search(path) != null
+	return false
 
 
 func _catalog(directory: String, output: PackedStringArray) -> void:

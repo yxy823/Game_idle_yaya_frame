@@ -8,12 +8,14 @@ from project_context import PROJECT_ROOT
 
 import copy
 import importlib.util
+import io
 import json
 import subprocess
 import shutil
 import tempfile
 import unittest
 from unittest import mock
+from contextlib import redirect_stderr
 
 
 ROOT = PROJECT_ROOT
@@ -87,15 +89,29 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.revisions = {"revision_log": [{"summary": "Old record"}]}
         self.assertFalse(self.validate())
 
-    def test_registry_old_version_and_invalid_logical_ids_are_rejected(self) -> None:
-        self.registry["meta"]["schema_version"] = 2
-        self.assertFalse(self.validate())
-        self.registry["meta"]["schema_version"] = 3
-        for test_id in (None, "F002-AC1", "F002-AC01-1", "F002-RT1", "INV-lower-01", "F999-AC01"):
+    def test_registry_old_versions_are_rejected(self) -> None:
+        for version in (2, 3):
+            with self.subTest(version=version), redirect_stderr(io.StringIO()) as diagnostic:
+                self.registry["meta"]["schema_version"] = version
+                self.assertFalse(self.validate())
+                self.assertIn("test registry meta.schema_version must be integer 4", diagnostic.getvalue())
+
+    def test_registry_invalid_logical_id_formats_are_rejected(self) -> None:
+        self.assertTrue(self.validate())
+        for test_id in (None, "F002-AC1", "F002-AC01-1", "F002-RT1", "INV-lower-01"):
             with self.subTest(test_id=test_id):
                 self.registry["tests"].append(self.registry["tests"][1] | {"id": test_id})
-                self.assertFalse(self.validate())
+                with redirect_stderr(io.StringIO()) as diagnostic:
+                    self.assertFalse(self.validate())
+                self.assertIn(f"invalid test ID {test_id!r}", diagnostic.getvalue())
             self.registry["tests"].pop()
+
+    def test_registry_test_referencing_missing_feature_is_rejected(self) -> None:
+        self.assertTrue(self.validate())
+        self.registry["tests"].append(self.registry["tests"][1] | {"id": "F999-AC01"})
+        with redirect_stderr(io.StringIO()) as diagnostic:
+            self.assertFalse(self.validate())
+        self.assertIn("references missing Feature F999", diagnostic.getvalue())
 
     def test_multiple_tests_for_one_criterion_keep_their_id_derived_ownership(self) -> None:
         self.registry["tests"].append(self.registry["tests"][1] | {"id": "F002-AC01-02"})

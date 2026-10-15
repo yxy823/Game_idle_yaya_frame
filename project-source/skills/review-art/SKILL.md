@@ -1,6 +1,6 @@
 ---
 name: review-art
-description: "对照适用的 Art Bible 以及资源或 UI 规格，独立评估视觉结果。用于用户要求的美术审核。不用于选择风格或制作资源。"
+description: "对照适用的 Art Bible 以及资源或 UI 规格，独立评估视觉结果。用于用户要求的美术审核。不用于仅检查资源的技术适配、引用、导入或来源，改用 review-assets。不用于选择风格或制作资源。"
 ---
 
 # 美术审核

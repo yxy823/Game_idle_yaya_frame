@@ -17,7 +17,7 @@ func _run() -> void:
 	var scenes := PackedStringArray()
 	for argument in OS.get_cmdline_user_args():
 		if argument.begins_with("--scenes="):
-			scenes = argument.get_slice("=", 1).split(",", false)
+			scenes = argument.trim_prefix("--scenes=").split(",", false)
 	if not expect(not scenes.is_empty(), "--scenes=res://a.tscn[,res://b.tscn] given"):
 		return
 	var results: Array = []

@@ -11,14 +11,19 @@ const Session := preload("res://dev/debug/_shared/debug_session.gd")
 const Target := preload("res://dev/debug/_shared/debug_target.gd")
 const Commands := preload("res://dev/debug/_shared/preset_commands.gd")
 const ErrorAssert := preload("res://addons/gdUnit4/src/asserts/GdUnitGodotErrorAssertImpl.gd")
+const Fixture := preload("res://dev/debug/_shared/tests/fixtures/adoption_fixture.gd")
+
+const SaveThenFail := preload("res://dev/debug/_shared/tests/fixtures/save_then_fail_store.gd")
 
 var _directory: String
 var _store: Store
 var _slot: Slot
 var _uid: int = ResourceUID.INVALID_ID
+var _fixture: Fixture
 
 
 func before_test() -> void:
+	_fixture = Fixture.new()
 	_directory = "user://tests/debug-store-%d" % Time.get_ticks_usec()
 	assert_int(DirAccess.make_dir_recursive_absolute(_directory)).is_equal(OK)
 	var path := _directory.path_join("defaults.tres")
@@ -30,6 +35,7 @@ func before_test() -> void:
 
 
 func after_test() -> void:
+	_fixture.cleanup()
 	_slot = null
 	if _uid != ResourceUID.INVALID_ID:
 		ResourceUID.remove_id(_uid)
@@ -181,6 +187,32 @@ func test_failed_preset_delete_puts_the_combos_back() -> void:
 		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#shared")
 
 
+func test_current_combo_is_restored_after_save_then_uid_failure(restore_fails: bool,
+		_test_parameters := [[false], [true]]) -> void:
+	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "uses-shared", [_slot]).error).is_equal(OK)
+	var failing := SaveThenFail.new()
+	failing.root = _store.root
+	failing.fail_restore = restore_fails
+	_store = failing
+	var reports: Array[Dictionary] = []
+	var commands := Commands.new(_session(), null, reports.append, func() -> void: pass)
+	commands._delete_preset(_slot)
+	assert_int(failing.result.error).is_equal(ERR_FILE_CANT_WRITE)
+	assert_str(failing.saved_entries[_slot.id]).is_empty()
+	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "shared"))).is_true()
+	var path := _store.combo_path("sample", "uses-shared")
+	var combo := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Combo
+	if restore_fails:
+		assert_array(failing.result.unrestored).contains_exactly([path])
+		assert_str(combo.entries[_slot.id]).is_empty()
+		assert_str(reports[0].text).contains("没能确认组合“uses-shared”保持原样")
+	else:
+		assert_bool(failing.result.has("unrestored")).is_false()
+		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#shared")
+		assert_str(reports[0].text).contains("预设和用到它的组合都没有变")
+
+
 ## Missing presets, changed field types and unreadable combos show game values and are named;
 ## they never count as "the same".
 func test_compare_names_the_items_it_could_not_read() -> void:
@@ -231,7 +263,13 @@ func test_default_writer_keeps_uid_and_serializes_subresources() -> void:
 func test_names_reject_path_escape_and_preflight_rejects_non_game_destination() -> void:
 	for invalid: String in ["", "../escape", "a/b", " name", "a#b"]:
 		assert_bool(Store.valid_name(invalid)).is_false()
-	assert_int(Writer.preflight([_slot]).error).is_not_equal(OK)
+	var slot := _fixture.sound_slot()
+	assert_int(Writer.preflight([slot]).error).is_equal(OK)
+	slot.game_path = _fixture.root.path_join("outside-tuning.tres")
+	var checked := Writer.preflight([slot])
+	assert_int(checked.error).is_equal(ERR_INVALID_DATA)
+	assert_array(checked.issues).contains_exactly([
+		"Not a game tuning resource: " + slot.game_path])
 
 
 func test_default_writer_embeds_current_external_candidate_parameters() -> void:

@@ -41,7 +41,7 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
 
 `docs/test-registry.json` 是测试登记表（Registry），供机器读取，把组件映射到可复用的测试。给人读的值使用 `document_language`；机器协议字段保持不变。
 
-项目创建时会提供索引、修订日志和测试登记表，三者都是空数组。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题：先从 Git 恢复它最后一次提交的内容；只有确认它从未提交过初始内容以外的内容时，才按本文给出的初始内容重建。不要用重新初始化的空 Feature 记录代替丢失的记录。历史无法恢复时报告缺口，修订日志的锚点按 `feature-sync` 的锚点恢复处理。
+项目创建时会提供索引、修订日志和测试登记表。索引与修订日志的记录数组初始为空；登记表预置[调试台组件](08-test-traceability-and-evidence.md#调试台组件)及依赖方向测试。即使还没规划第一个 Feature，这三个文件也必须存在。缺少某个文件属于需要修复的问题：先从 Git 恢复它最后一次提交的内容；只有确认它从未提交过初始内容以外的内容时，才按本文给出的初始内容重建。不要用重新初始化的空 Feature 记录代替丢失的记录。历史无法恢复时报告缺口，修订日志的锚点按 `feature-sync` 的锚点恢复处理。
 
 ## 文件 1：`docs/feature-list.json`
 
@@ -341,7 +341,7 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 字段规则：
 
-- `revision_id` 不重复，由字母、数字、点、连字符和下划线组成。
+- `revision_id` 不重复，首字符必须是 ASCII 字母或数字；后续字符只能是 ASCII 字母、数字、点、连字符或下划线。
 - `anchor_commit` 和 `synced_at_commit` 是 Git 提交标识，`revised_at` 是 ISO 8601 时间戳，`summary` 非空。
 - 每条迁移只能有 `kind`、`from`、`to`、`reason` 和 `source`。其中提到的每个 Feature ID 都必须存在。
 - 迁移的 `source` 只能有 `path` 和 `anchor_commit`：

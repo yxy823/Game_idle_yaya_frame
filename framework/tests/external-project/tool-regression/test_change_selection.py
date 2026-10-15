@@ -17,6 +17,7 @@ from contextlib import redirect_stdout
 from unittest import mock
 
 from tools.lib.dependency_graph import build_graph
+from tools.lib.test_run_evidence import expected_gdunit_cases
 from tools.lib.test_selection import SelectionError, build_changed_selection, build_selection
 
 SUITE = "extends GdUnitTestSuite\nfunc test_case():\n\tpass\n"
@@ -159,6 +160,70 @@ class ChangeSelectionTests(unittest.TestCase):
         selection = self.selection()
         self.assertTrue(selection["full_suite"]["required"])
         self.assertIn("unclaimed-changed-file:game/orphan.gd", selection["full_suite"]["reasons"])
+
+    def test_deleted_uid_and_renamed_class_keep_current_consumers_selected(self) -> None:
+        for reference in ("uid", "class"):
+            with self.subTest(reference=reference):
+                source = f"game/combat/old_{reference}.gd"
+                suite = f"tests/features/old_{reference}_consumer.gd"
+                self.write(source, "extends RefCounted\nclass_name OldCombat\n")
+                self.write(source + ".uid", f"uid://old{reference}\n")
+                consumer = ('const Old = preload("uid://olduid")\n' if reference == "uid"
+                            else "var old: OldCombat\n")
+                self.write(suite, SUITE + consumer)
+                self.start_after("old identities")
+                (self.root / source).unlink()
+                (self.root / (source + ".uid")).unlink()
+                if reference == "class":
+                    self.write("game/combat/new_class.gd", "extends RefCounted\nclass_name NewCombat\n")
+                    self.write("game/combat/new_class.gd.uid", "uid://oldclass\n")
+                selection = self.selection()
+                self.assertIn(suite, self.required_paths(selection))
+                self.assertFalse(selection["full_suite"]["required"])
+                self.assertEqual(next(item["reasons"] for item in selection["dependency_suites"]
+                                      if item["path"] == suite), [f"dependency-graph:{source}"])
+
+    def test_deleted_script_without_historical_identity_requires_full(self) -> None:
+        (self.root / "game/combat/combat.gd").unlink()
+        self.assertIn("dependency-graph-unresolved:game/combat/combat.gd",
+                      self.selection()["full_suite"]["reasons"])
+
+    def test_deleted_path_only_data_selects_consumer_without_full(self) -> None:
+        self.write("game/combat/table.json", '{"damage": 2}\n')
+        self.write("game/combat/table_reader.gd", 'extends RefCounted\n'
+                   'var table = load("res://game/combat/table.json")\n')
+        suite = "tests/features/table_consumer_test.gd"
+        self.write(suite, SUITE + 'const Reader = preload("res://game/combat/table_reader.gd")\n')
+        self.start_after("path-only data")
+        (self.root / "game/combat/table.json").unlink()
+        selection = self.selection()
+        self.assertFalse(selection["full_suite"]["required"])
+        self.assertIn(suite, self.required_paths(selection))
+
+    def test_automatic_suites_obey_godot_visibility_but_explicit_target_still_works(self) -> None:
+        hidden = ["tests/ignored/hidden_test.gd", "tests/.hidden/hidden_test.gd", "tests/.hidden_test.gd"]
+        self.write("tests/ignored/.gdignore", "")
+        for path in [*hidden, "tests/visible_test.gd"]:
+            self.write(path, SUITE)
+        selected = self.required_paths(self.selection())
+        self.assertTrue(set(hidden).isdisjoint(selected))
+        self.assertIn("tests/visible_test.gd", selected)
+        self.assertEqual(expected_gdunit_cases(self.root, [hidden[0]]),
+                         [{"path": hidden[0], "case": "test_case"}])
+
+    def test_preview_includes_inferred_component_full_reason_without_writing(self) -> None:
+        self.registry["components"][1]["full_suite_on_change"] = True
+        self.write_json("docs/test-registry.json", self.registry)
+        self.write("game/combat/combat.gd", "extends RefCounted\nvar damage := 2\n")
+        before = (self.root / "docs/features/F001.json").read_bytes()
+        preview = subprocess.run([sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-base-revision.py"),
+                                  "--repo-root", str(self.root), "--feature", "F001", "--dry-run"],
+                                 capture_output=True, text=True)
+        self.assertEqual(preview.returncode, 0, preview.stderr)
+        self.assertEqual(json.loads(preview.stdout)["full_suite_reasons"],
+                         self.selection()["full_suite"]["reasons"])
+        self.assertIn("component-full-suite:combat", json.loads(preview.stdout)["full_suite_reasons"])
+        self.assertEqual((self.root / "docs/features/F001.json").read_bytes(), before)
 
     def test_markdown_and_docs_changes_add_nothing(self) -> None:
         before = self.selection()

@@ -7,6 +7,8 @@ const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
 const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
+const Request := preload("res://dev/debug/_shared/adoption_request.gd")
+const Params := preload("res://dev/debug/_shared/tests/fixtures/params.gd")
 
 var _fixture: Fixture
 
@@ -77,6 +79,7 @@ func test_adopted_sound_is_the_game_entry_and_the_other_candidate_stays() -> voi
 func test_script_candidate_is_queued_and_moves_at_the_next_start() -> void:
 	var slot := _fixture.effect_slot()
 	assert_int(_fixture.select(slot, "spark")).is_equal(OK)
+	_assert_switched_parameters(slot)
 	var source := slot.directory.path_join("spark")
 	var scene_uid := ResourceLoader.get_resource_uid(source.path_join("spark_effect.tscn"))
 	var plans := Adoption.plans_for([slot])
@@ -106,6 +109,19 @@ func test_script_candidate_is_queued_and_moves_at_the_next_start() -> void:
 	var effect := auto_free(disk.candidate.instantiate()) as Node2D
 	assert_str(effect.get_script().resource_path).is_equal(destination.path_join("spark_effect.gd"))
 	_assert_ring_selectable(slot, ring)
+
+
+func _assert_switched_parameters(slot: Slot) -> void:
+	var spark_params: Resource = slot.live.candidate_params
+	slot.live.candidate_params = slot.disk_defaults().candidate_params.duplicate(true)
+	slot.live.candidate_params.size = 150.0
+	var comparable := Adoption.confirm_text([slot], Adoption.plans_for([slot]))
+	assert_str(comparable).contains("尺寸：100 px → 150 px")
+	assert_str(comparable).not_contains("帧率：")
+	slot.live.candidate_params = spark_params
+	var distinct := Adoption.confirm_text([slot], Adoption.plans_for([slot]))
+	assert_str(distinct).contains("待采纳参数：数量 8")
+	assert_str(distinct).contains("待采纳参数：速度 240 px/s")
 
 
 ## The replaced ring stays in game/ and can be chosen again.
@@ -150,8 +166,20 @@ func test_confirmation_lists_each_changed_parameter_against_the_game_value() -> 
 	var slots: Array[Slot] = [slot]
 	assert_str(Adoption.confirm_text(slots, {})).contains(
 		"· 把按钮音效的当前设定写入游戏
-　　音量：-6 → -3.5
+　　音量：-6 dB → -3.5 dB
 　　音高方式：固定 → 逐轮升高")
+	var effect := _fixture.effect_slot()
+	effect.live.candidate_params = Params.new()
+	assert_int(ResourceSaver.save(effect.live, effect.game_path)).is_equal(OK)
+	effect.live.candidate_params.ranged_precise = 0.0002
+	effect.live.candidate_params.offset = Vector2(4.25, 6.5)
+	effect.live.candidate_params.curve.add_point(Vector2.ZERO)
+	effect.live.candidate_params.gradient.set_color(0, Color.RED)
+	var text := Adoption.confirm_text([effect], {})
+	assert_str(text).contains("Ranged Precise：0.0001 s → 0.0002 s")
+	assert_str(text).contains("Offset：X 2，Y -3 → X 4.25，Y 6.5")
+	assert_str(text).contains("Curve：已修改，前后对比请在调试台查看")
+	assert_str(text).contains("Gradient：已修改，前后对比请在调试台查看")
 
 
 func test_adopting_a_game_value_cancels_a_queued_move() -> void:
@@ -239,6 +267,7 @@ func test_a_failed_path_rewrite_keeps_the_request_queued_until_it_succeeds() -> 
 	Adoption.adopt_all([slot], Adoption.plans_for([slot]))
 	var moved := _fixture.game_sample().path_join("feedback/effect/spark/spark_effect.gd")
 	var script := slot.directory.path_join("spark/spark_effect.gd")
+	var original := FileAccess.get_file_as_bytes(script)
 	assert_int(FileAccess.set_read_only_attribute(script, true)).is_equal(OK)
 	var failed := Adoption.run_queue(_fixture.dev_root())
 	assert_int(FileAccess.set_read_only_attribute(moved, false)).is_equal(OK)
@@ -246,12 +275,28 @@ func test_a_failed_path_rewrite_keeps_the_request_queued_until_it_succeeds() -> 
 	assert_str(failed.text).starts_with("上次排队采纳的 火花 没能移入游戏")
 	assert_str(failed.detail).contains("Cannot write " + moved)
 	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_bool(FileAccess.get_file_as_bytes(moved) == original).is_true()
+	assert_array(Array(DirAccess.get_files_at(moved.get_base_dir())).filter(
+		func(file: String) -> bool: return ".rewrite-" in file)).is_empty()
 	var disk := ResourceLoader.load(slot.game_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	assert_str(disk.candidate.resource_path).is_equal(_fixture.ring_directory().path_join("ring_effect.tscn"))
+	var source: Script = Adoption
+	var partial_write := GDScript.new()
+	partial_write.source_code = source.source_code.replace("output.store_string(updated)",
+		"output.store_string(updated.substr(0, 8)) and false")
+	assert_int(partial_write.reload()).is_equal(OK)
+	var interrupted: Dictionary = partial_write.run_queue(_fixture.dev_root())
+	assert_int(interrupted.error).is_not_equal(OK)
+	assert_bool(FileAccess.get_file_as_bytes(moved) == original).is_true()
+	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_array(Array(DirAccess.get_files_at(moved.get_base_dir())).filter(
+		func(file: String) -> bool: return ".rewrite-" in file)).is_empty()
 	var retried := Adoption.run_queue(_fixture.dev_root())
 	assert_int(retried.error).is_equal(OK)
 	assert_array(retried.done).contains_exactly(["火花"])
 	assert_str(FileAccess.get_file_as_string(moved)).not_contains(slot.directory)
+	assert_array(Array(DirAccess.get_files_at(moved.get_base_dir())).filter(
+		func(file: String) -> bool: return ".rewrite-" in file)).is_empty()
 
 
 func test_a_queued_move_that_cannot_be_withdrawn_is_reported() -> void:

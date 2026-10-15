@@ -380,6 +380,8 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 
 运行完成命令之前，确认 Stage 3 的文档检查点以及之后批准的约束性更新都已完成。如果此时才补上缺失的修改，在标记完成之前恢复适用的当前验证和验收。不要把这类修改推迟到 Feature 记为 done 之后。
 
+标记 `done` 前，核对本任务的提交授权与条件。需要提交但条件未满足时，保持未完成状态。不提交的例外仍按 `AGENTS.md` 的 **Git 与提交** 执行。
+
 1. 运行：
 
    ```powershell
@@ -394,6 +396,8 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 5. 按 [报告与清理](09-records-reports-and-handoff.md#报告与清理) 检查本任务的报告位置、证据链接，以及保留的临时文件的用途。然后把当前的执行历史一次性归档到 `docs/progress/<Feature-or-approved-batch>.md`，`docs/progress.md` 中只留当前状态和历史链接。Feature notes 保留 TODO，以及指向设计决定和适用 ADR 的链接；不重复理由或执行历史。纯 Markdown 归档不影响测试指纹。
 6. 按快照规则，确认适用的测试和验收证据仍覆盖最终改动。复用有效的结果；运行缺失或失效的检查，而不是因为 Stage 变了就重复相同的验证。
 7. 按 `AGENTS.md` 的 **Git 与提交** 提交剩余的已验证实现和完成证据，包括它规定的 Feature 标识、暂存方式和交付报告。之前的逻辑提交仍属于这个 Feature 的交付；不要压缩它们，也不要只为标记某个 Stage 创建空提交。`AGENTS.md` 的 **Git 与提交** 还规定了不提交的例外、当前分支策略和禁止的 Git 操作。
+
+提交受阻且确认没有生成提交时，把 Feature 恢复为 `in_progress`，`completed_at` 恢复为 `null`。在允许的范围内修正本任务的暂存内容。Progress 记录 Stage 7 待提交、受阻原因和已有归档链接。续接时复用归档与仍有效的证据，不重复归档。
 
 ## Stage 8 · 交接与已获授权的续接
 

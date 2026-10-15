@@ -54,30 +54,36 @@ func test_game_does_not_read_tuning_fields_through_constants() -> void:
 
 
 func test_tuning_constant_scanner_flags_field_reads_only() -> void:
-	var text := ('const TUNING := preload("res://game/shop/tuning/sound.tres")\n'
-		+ 'var tuning: Resource = TUNING\n'
-		+ 'func a(): return TUNING.volume_db\n'
-		+ 'func b(): return TUNING.get("volume_db")\n'
-		+ 'func c(): TUNING.changed.connect(a)\n')
-	assert_array(_tuning_constant_reads("sample.gd", text)).has_size(1)
+	for quote: String in ['"', "'"]:
+		var text := ('const TUNING := preload(%sres://game/shop/tuning/sound.tres%s)\n' % [quote, quote]
+			+ 'var tuning: Resource = TUNING\n'
+			+ 'func a(): return TUNING.volume_db\n'
+			+ 'func b(): return TUNING.get("volume_db")\n'
+			+ 'func c(): TUNING.changed.connect(a)\n')
+		assert_array(_tuning_constant_reads("sample.gd", text)).contains_exactly(["sample.gd: TUNING.volume_db"])
 	assert_array(_tuning_constant_reads("sample.gd",
 		'const ICON := preload("res://game/shop/icon.png")\nfunc a(): return ICON.get_size()\n')).is_empty()
 
 
 func _tuning_constant_reads(path: String, text: String) -> PackedStringArray:
 	var issues: PackedStringArray = []
+	var source := _scan_source(text, "gd")
 	var constants := RegEx.create_from_string(
-		"(?m)^\\s*const\\s+(\\w+)\\s*(?::\\s*\\w+\\s*)?:?=\\s*preload\\(\\s*\"([^\"]+)\"")
-	for found in constants.search_all(text):
-		var target := found.get_string(2)
+		"(?m)^\\s*const\\s+(\\w+)\\s*(?::\\s*\\w+\\s*)?:?=\\s*preload\\(\\s*\\z")
+	for literal: Dictionary in source.strings:
+		var found := constants.search(String(source.code).substr(0, literal.offset))
+		if found == null:
+			continue
+		var target: String = literal.value
 		if target.begins_with("uid://"):
 			var identity := ResourceUID.text_to_id(target)
 			target = ResourceUID.get_id_path(identity) if ResourceUID.has_id(identity) else ""
+		target = target.simplify_path()
 		if not ("/tuning/" in target and target.get_extension() == "tres"):
 			continue
 		var constant := found.get_string(1)
 		var reads := RegEx.create_from_string("\\b" + constant + "\\.([A-Za-z_]\\w*)\\b(?!\\s*\\()")
-		for read in reads.search_all(text):
+		for read in reads.search_all(source.code):
 			if read.get_string(1) != "changed":
 				issues.append("%s: %s.%s" % [path, constant, read.get_string(1)])
 	return issues
@@ -95,28 +101,64 @@ func test_scanner_detects_text_uid_class_symbols_and_accepts_game_paths() -> voi
 	assert_array(_dependency_issues("sample.gd", '"uid://samplegame"', [], uids)).is_empty()
 
 
+func test_scanner_normalizes_development_paths() -> void:
+	assert_array(_dependency_issues("sample.gd", "preload('res://game/../dev/scene.tscn')", [], {})) \
+		.contains_exactly(["sample.gd: dev path"])
+
+
+func test_scanners_ignore_comments_and_quoted_symbols() -> void:
+	var text := ('# preload("res://dev/example.tres") uid://sampledev DebugOnly\n'
+		+ '# const TUNING := preload("res://game/shop/tuning/sound.tres")\n'
+		+ '# var value := TUNING.volume_db\nvar label := "DebugOnly TUNING.volume_db"\n')
+	assert_array(_dependency_issues("sample.gd", text, ["DebugOnly"], {})).is_empty()
+	assert_array(_tuning_constant_reads("sample.gd", text)).is_empty()
+
+
 func _dependency_issues(path: String, text: String, classes: PackedStringArray,
 		uid_paths: Dictionary[String, String]) -> PackedStringArray:
 	var issues: PackedStringArray = []
-	if "res://dev/" in text:
-		issues.append(path + ": dev path")
+	var source := _scan_source(text, path.get_extension())
 	var regex := RegEx.create_from_string("uid://[a-zA-Z0-9]+")
-	for item in regex.search_all(text):
-		var uid := item.get_string()
-		var resolved := String(uid_paths.get(uid, ""))
-		if resolved.is_empty():
-			var identity := ResourceUID.text_to_id(uid)
-			if ResourceUID.has_id(identity):
-				resolved = ResourceUID.get_id_path(identity)
-		if resolved.is_empty():
-			issues.append(path + ": unresolved " + uid)
-		if resolved.simplify_path().begins_with("res://dev/"):
-			issues.append(path + ": " + uid)
+	for literal: Dictionary in source.strings:
+		var value: String = literal.value
+		if value.simplify_path().begins_with("res://dev/"):
+			issues.append(path + ": dev path")
+		for item in regex.search_all(value):
+			var uid := item.get_string()
+			var resolved := String(uid_paths.get(uid, ""))
+			if resolved.is_empty():
+				var identity := ResourceUID.text_to_id(uid)
+				if ResourceUID.has_id(identity):
+					resolved = ResourceUID.get_id_path(identity)
+			if resolved.is_empty():
+				issues.append(path + ": unresolved " + uid)
+			if resolved.simplify_path().begins_with("res://dev/"):
+				issues.append(path + ": " + uid)
 	if path.get_extension() == "gd":
 		for symbol in classes:
-			if RegEx.create_from_string("\\b" + symbol + "\\b").search(text) != null:
+			if RegEx.create_from_string("\\b" + symbol + "\\b").search(source.code) != null:
 				issues.append(path + ": " + symbol)
 	return issues
+
+
+func _scan_source(text: String, extension: String) -> Dictionary:
+	var quoted := "\"\"\"[\\s\\S]*?\"\"\"|'''[\\s\\S]*?'''|\"(?:\\\\.|[^\"\\\\])*\"|'(?:\\\\.|[^'\\\\])*'"
+	var comments := "|#[^\n]*" if extension == "gd" else "|[;#][^\n]*"
+	if extension in ["gdshader", "gdshaderinc"]:
+		comments = "|//[^\n]*|/\\*[\\s\\S]*?\\*/"
+	var code := ""
+	var strings: Array[Dictionary] = []
+	var cursor := 0
+	var mask := RegEx.create_from_string("[^\n]")
+	for token in RegEx.create_from_string(quoted + comments).search_all(text):
+		var value := token.get_string()
+		code += text.substr(cursor, token.get_start() - cursor) + mask.sub(value, " ", true)
+		cursor = token.get_end()
+		if value.begins_with('"') or value.begins_with("'"):
+			var width := 3 if value.begins_with('"""') or value.begins_with("'''") else 1
+			strings.append({"offset": token.get_start(),
+				"value": value.substr(width, value.length() - 2 * width).c_unescape()})
+	return {"code": code + text.substr(cursor), "strings": strings}
 
 
 func _dev_classes() -> PackedStringArray:

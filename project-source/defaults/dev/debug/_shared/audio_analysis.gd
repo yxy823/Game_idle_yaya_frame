@@ -1,5 +1,5 @@
 extends VBoxContainer
-## Shows GAA metrics for the selected audio candidate; each file runs once per session.
+## Shows GAA metrics; successful results last for the session, failures retry on selection.
 
 ## `result` is the status-bar result of the analysis action, e.g. "已填入基础音高 B6".
 signal edited(result: Dictionary)
@@ -47,6 +47,10 @@ func attach(panel: SlotPanel, on_edited: Callable) -> void:
 func show_candidate(slot: Slot, candidate: Resource) -> void:
 	_slot = slot
 	_candidate = candidate as AudioStream
+	if _candidate != null:
+		var path := _candidate.resource_path
+		if _results.get(path, {}).get("status") in ["failed", "unavailable"]:
+			_results.erase(path)
 	_render()
 
 

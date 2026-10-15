@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.atomic_json import write_json
 from tools.lib.test_selection import (
-    SelectionError, change_impact, read_json, touched_completed_features, verification_point,
+    SelectionError, change_impact, component_full_reasons, read_json, touched_completed_features, verification_point,
 )
 from tools.lib.feature_evolution import TEST_REGISTRY_PATH
 
@@ -32,6 +32,10 @@ def _preview(repo_root: Path, detail: dict, revision: str) -> None:
     registry = read_json(repo_root / TEST_REGISTRY_PATH)
     impact = change_impact(repo_root, registry, revision)
     components = set(detail["affected_components"]) | impact["inferred_components"].keys()
+    approved = detail.get("verification", {}).get("test_impact", {}).get("full_suite_reasons", [])
+    impact["full_suite_reasons"] = sorted(set(
+        impact["full_suite_reasons"] + approved
+        + component_full_reasons({item["id"]: item for item in registry["components"]}, components)))
     tests = {test["id"]: test for test in registry["tests"]}
     print(json.dumps({**impact, "declared_components": sorted(detail["affected_components"]),
                       "touched_completed_features": touched_completed_features(repo_root, tests, components)},

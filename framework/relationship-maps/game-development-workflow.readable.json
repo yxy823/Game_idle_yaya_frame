@@ -7629,37 +7629,12 @@
       },
       "target": {
         "kind": "node",
-        "node": "scene-035",
+        "node": "scene-095",
         "port": "bottom"
       },
       "path": "orthogonal",
-      "vertices": [
-        {
-          "x": 1882,
-          "y": 1882
-        },
-        {
-          "x": 2446,
-          "y": 1882
-        },
-        {
-          "x": 2446,
-          "y": 2195
-        },
-        {
-          "x": 2728,
-          "y": 2195
-        },
-        {
-          "x": 2728,
-          "y": 2634
-        },
-        {
-          "x": 3105,
-          "y": 2634
-        }
-      ],
-      "label": "已采纳，\n继续所属 Feature",
+      "vertices": [],
+      "label": "已采纳，继续未完成的所属 Feature",
       "stroke": {
         "color": "#8994A5",
         "width": 2,
@@ -11924,86 +11899,6 @@
       }
     },
     {
-      "id": "link-scene-095-scene-035",
-      "source": {
-        "kind": "node",
-        "node": "scene-095",
-        "port": "right"
-      },
-      "target": {
-        "kind": "node",
-        "node": "scene-035",
-        "port": "left"
-      },
-      "path": "orthogonal",
-      "vertices": [
-        {
-          "x": 4115,
-          "y": 772.5
-        },
-        {
-          "x": 4115,
-          "y": 1464.5
-        },
-        {
-          "x": 3838,
-          "y": 1464.5
-        },
-        {
-          "x": 3838,
-          "y": 2300
-        },
-        {
-          "x": 2904,
-          "y": 2300
-        },
-        {
-          "x": 2904,
-          "y": 2581
-        },
-        {
-          "x": 2964,
-          "y": 2581
-        },
-        {
-          "x": 2964,
-          "y": 2572.5
-        }
-      ],
-      "label": "恢复原 Feature 停点",
-      "stroke": {
-        "color": "#8994A5",
-        "width": 2,
-        "dash": "dashed"
-      },
-      "arrow": "target",
-      "text": {
-        "fontSize": 15,
-        "color": "#475569",
-        "align": "center",
-        "fontFamily": "system",
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "zIndex": 0,
-      "appearance": {
-        "opacity": 1,
-        "sourceMarker": "none",
-        "targetMarker": "block",
-        "sourceMarkerSize": 14,
-        "targetMarkerSize": 14,
-        "labelPosition": 0.6314828082336308,
-        "labelOffset": 16,
-        "labelPadding": 2,
-        "rounded": true,
-        "radius": 6,
-        "jump": "none",
-        "routerPadding": 1,
-        "curve": "default"
-      }
-    },
-    {
       "id": "link-scene-099-scene-100",
       "source": {
         "kind": "node",
@@ -15384,6 +15279,53 @@
         "targetMarkerSize": 14,
         "labelPosition": 0.09651989891416485,
         "labelOffset": 59.5,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-046-scene-050",
+      "source": {
+        "kind": "node",
+        "node": "scene-046",
+        "port": "top"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-050",
+        "port": "right"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "工具故障，沿用工程任务授权",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
         "labelPadding": 2,
         "rounded": true,
         "radius": 6,

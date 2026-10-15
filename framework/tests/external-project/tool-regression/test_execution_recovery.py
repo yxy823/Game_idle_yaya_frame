@@ -46,6 +46,19 @@ class ExecutionRecoveryTests(unittest.TestCase):
         make_run(self.root, phase="baseline", exit_code=7)
         self.derive(plan, passed)
 
+    def test_missing_failed_result_blocks_completion_but_allows_new_run(self):
+        plan, passed = make_run(self.root)
+        _, failed = make_run(self.root, exit_code=7)
+        failed.unlink()
+        with self.assertRaisesRegex(ValueError, "invalid run history"):
+            self.derive(plan, passed)
+        with redirect_stderr(io.StringIO()) as warnings:
+            _, fresh = make_run(self.root)
+        self.assertIn(str(failed), warnings.getvalue())
+        self.assertEqual(json.loads(fresh.read_text())["status"], "passed")
+        with self.assertRaisesRegex(ValueError, "invalid run history"):
+            self.derive(plan, fresh)
+
 
     def test_interruption_leaves_one_running_result_that_blocks_old_success(self):
         plan, passed = make_run(self.root)
