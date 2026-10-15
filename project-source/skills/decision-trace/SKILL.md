@@ -1,5 +1,5 @@
 ---
-name: decision-trace-godot
+name: decision-trace
 description: "用户要求开启“决策依据”时使用：开启后每一轮的最终回复都加「决策依据」一节，进度说明不加，写出影响本条回复决定的原则、Skill、脚本与命令、文件。用户说关闭时停止。用于测试或核对 Agent 依据什么做了决定，平时不开启。"
 ---
 

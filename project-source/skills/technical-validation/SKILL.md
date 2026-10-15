@@ -1,6 +1,6 @@
 ---
-name: technical-validation-godot
-description: "在实际 Godot 中构建或改进技术验证，回答既定做法能否在真实引擎中实现，例如中断行为、性能、渲染限制或引擎 API 的实际行为。用于用户要求的技术验证，或依赖它的实现开始前必须先确认的可行性问题。不用于比较画面、音效或规则候选和试调参数（debug-console-godot），也不用于没有这类开放问题的 Feature。"
+name: technical-validation
+description: "在实际 Godot 中构建或改进技术验证，回答既定做法能否在真实引擎中实现，例如中断行为、性能、渲染限制或引擎 API 的实际行为。用于用户要求的技术验证，或依赖它的实现开始前必须先确认的可行性问题。不用于比较画面、音效或规则候选和试调参数（in-game-tuning），也不用于没有这类开放问题的 Feature。"
 ---
 
 # 用技术验证回答引擎可行性问题
@@ -12,7 +12,7 @@ description: "在实际 Godot 中构建或改进技术验证，回答既定做�
 | 问题 | 去向 |
 | --- | --- |
 | 既定做法能否在真实引擎中实现，例如中断、性能、渲染或 API 行为 | 本 Skill，方法见 `yaya/methodology/13-debug-console-and-validation.md` 的[技术验证](../../../yaya/methodology/13-debug-console-and-validation.md#技术验证) |
-| 布局、观感、音效或规则候选的比较，以及已实现效果的调参 | 游戏已有骨架时用 [debug-console-godot](../debug-console-godot/SKILL.md)；还没有时先按 13 号的[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)建骨架 Feature |
+| 布局、观感、音效或规则候选的比较，以及已实现效果的调参 | 游戏已有骨架时用 [in-game-tuning](../in-game-tuning/SKILL.md)；还没有时先按 13 号的[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)建骨架 Feature |
 | 纯数值问题 | `design-balance` |
 | 验证要回答问题，必须先准备或提供资源 | `yaya/methodology/11-specialist-workflows.md` 的[资源需求与交接](../../../yaya/methodology/11-specialist-workflows.md#资源需求与交接) |
 

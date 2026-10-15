@@ -1,5 +1,5 @@
 ---
-name: worktree-integrate-godot
+name: worktree-integrate
 description: 把选定的 Godot worktree 改动整合到预定目标，或续接一次已获授权但出现冲突的整合。检查组合后的结果。不用于选出实验的胜出方案，默认不创建 worktree，也不自动清理分支。
 ---
 
@@ -17,15 +17,15 @@ description: 把选定的 Godot worktree 改动整合到预定目标，或续接
 
 根据实际历史和选定范围选择整合方式。整个分支合并和应用选定提交的效果不同，两者都不是通用的默认做法。执行前检查所选命令会不会生成提交、前移目标引用或带入其他改动。合并可能自动提交；如 [Git merge 文档](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---no-commit)所述，单靠 `--no-commit` 挡不住快进（fast-forward）更新。需要先得到候选结果时，可以用 `git merge --no-commit --no-ff <来源>` 或 `git cherry-pick -n <提交>`，执行前后用 `git rev-parse HEAD` 和 `git status` 确认目标没有前移。
 
-如果验证或验收必须先于提交或采纳结果，保留一个可供审核的候选结果，不要提前前移目标或记录提交。在实际的任务授权内选择合适的方式；不要为了让命令方便，就新增没被要求的 worktree、压缩（squash）历史或放宽关卡。确实需要且已获授权创建独立的候选检出目录时，使用 [worktree-create-godot](../worktree-create-godot/SKILL.md)。
+如果验证或验收必须先于提交或采纳结果，保留一个可供审核的候选结果，不要提前前移目标或记录提交。在实际的任务授权内选择合适的方式；不要为了让命令方便，就新增没被要求的 worktree、压缩（squash）历史或放宽关卡。确实需要且已获授权创建独立的候选检出目录时，使用 [worktree-create](../worktree-create/SKILL.md)。
 
 出现冲突，或请求是续接一次已经冲突的整合时，读[解决已有的整合冲突](references/merge-conflicts.md)。冲突处理方法由它负责；没有冲突的整合不需要读它。
 
 ## 验证并采纳组合后的结果
 
-所属任务适用的检查，包括受影响的 Godot 场景与资源关系，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。没有文本冲突不能证明路径、节点引用、标识符或行为仍然正常。目标的准备情况或数据写入位置缺失或发生变化时，在运行相关的写入工具之前，读共用的 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。
+所属任务适用的检查，包括受影响的 Godot 场景与资源关系，使用 [project-verification-godot](../project-verification-godot/SKILL.md)。没有文本冲突不能证明路径、节点引用、标识符或行为仍然正常。目标的准备情况或数据写入位置缺失或发生变化时，在运行相关的写入工具之前，读共用的 [在独立检出目录中准备 Godot](../worktree-create/references/godot-worktree-runtime.md)。
 
-组合后的候选结果需要适用于它实际内容和义务的证据。来源检出目录里的成功不能代替对目标的验证。复用仍然有效的结果；只重新执行受影响或缺失的检查。证据是否适用、引用或导入的恢复、中断的运行，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)；所属任务要求实际人工验收时，使用 [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md)。
+组合后的候选结果需要适用于它实际内容和义务的证据。来源检出目录里的成功不能代替对目标的验证。复用仍然有效的结果；只重新执行受影响或缺失的检查。证据是否适用、引用或导入的恢复、中断的运行，使用 [verification-evidence](../verification-evidence/SKILL.md)；所属任务要求实际人工验收时，使用 [manual-acceptance-godot](../manual-acceptance-godot/SKILL.md)。
 
 保留明确的不提交条件。任务同时要求实际的人工验收和明确的提交许可时（`AGENTS.md` **Git 与提交** 中的 **提交**），两个条件都满足之前，不做任何本地提交，包括解决冲突的中间提交或存档提交。复用之前明确做出的决定，但不要把一句笼统的“继续”或“整合”当成替代了其中任一特殊条件。缺少某个条件时，完成允许的分析或候选结果准备，并报告被阻塞的最后动作。
 

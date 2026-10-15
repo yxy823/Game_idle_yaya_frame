@@ -1,5 +1,5 @@
 ---
-name: verification-evidence-godot
+name: verification-evidence
 description: 当引用、原件、是否过时或中断的运行需要处理时，检查、导入或恢复已有的 Godot 测试证据。必要的重跑和人工验收交给各自的负责方；不编造结果，也不完成 Feature。
 ---
 

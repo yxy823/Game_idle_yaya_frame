@@ -19,7 +19,7 @@
 | 内容 | 位置与用途 |
 | --- | --- |
 | 工程约束 | [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)：语言、坐标、材质参数、真实验证等要求；条目默认必须遵守，写“建议：”的是可偏离的默认做法 |
-| 可复用的方法 | [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
+| 可复用的方法 | [Shader 实现方法](../../../project-source/skills/implementation-guidance/references/shader-implementation-methods.md)帮助推导数据流和选择算法；[Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)帮助选择能区分原因的检查 |
 | 当前游戏的方案与证据 | 表现目标和采用的方案写在对应的游戏表现文档；需要详细工程设计时写在 Feature 设计稿；在调试台选定的参数保存在游戏的调参资源中，文档链接它，不另抄数值；技术验证、诊断与其他验证证据留在原任务的记录中，见[知识、设计与记录](../specialist-work-and-records/knowledge-and-records.md) |
 
 Shader 规则的入口会链接这些方法参考。正式实现、原型和排错都可以直接读它们：参考文件放在某个 Skill 的 `references/` 目录下，不代表要启动那个 Skill 的完整流程、建 Feature 或委派顾问。读参考也不改变当前任务的授权和完成条件，参考里的具体数值不会因此成为通用规则。
@@ -35,18 +35,18 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `wayfinder-godot` | 处理相互影响的多个未知，按依赖选择所需讨论、调研或实验 |
 | `feedback-triage-godot` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis-godot` | 围绕具体异常定位原因，区分已证实结论与假设 |
-| `project-environment-godot` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
+| `project-environment` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
 | `project-verification-godot` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
 | `manual-acceptance-godot` | 为实际 Feature 准备人工验收清单，或登记用户真实给出的验收结果 |
-| `verification-evidence-godot` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
-| `technical-validation-godot` | 在当前 Feature 或获准实验中用技术验证回答引擎可行性问题，例如信号与生命周期、输入路由、存档集成或渲染性能 |
-| `worktree-create-godot` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
-| `worktree-integrate-godot` | 将已选成果带入目标，处理已有整合冲突并验证组合后的结果 |
+| `verification-evidence` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
+| `technical-validation` | 在当前 Feature 或获准实验中用技术验证回答引擎可行性问题，例如信号与生命周期、输入路由、存档集成或渲染性能 |
+| `worktree-create` | 为获准任务准备或复用目标工作目录，核对所需本地运行条件 |
+| `worktree-integrate` | 将已选成果带入目标，处理已有整合冲突并验证组合后的结果 |
 | `task-handoff-godot` | 保存用户要求的停点，按需生成可复制的当前任务续接文本 |
 | `plan-review-godot` | 按约定范围审核 GDD 草稿或完整文档、Product 或 Feature 方案，返回有依据的缺口与结论 |
 | `retro-godot` | 根据实际开发经历提出流程、规则与工具的改进建议 |
 | `loop-me-godot` | 为用户指出的重复或预计重复工作设计处理方法，明确入口、判断、产出与正文归属 |
-| `decision-trace-godot` | 按需开启：之后每条回复写出影响决定的原则、Skill、脚本与文件，用于测试 Agent 依据什么做决定 |
+| `decision-trace` | 按需开启：之后每条回复写出影响决定的原则、Skill、脚本与文件，用于测试 Agent 依据什么做决定 |
 | `technical-documentation-writing-godot` | 编写、更新或整理项目文档的表达与导航，不做游戏设计决定或职责审核 |
 | `qa-explainer-godot` | 把用户问过、以后还会用到的问题写进 `docs/qa/`，生成带图的 HTML 页面；不修改需求、设计或实现 |
 | `project-terminology` | 在 `docs/terminology.md` 统一保存已确认且含义不变的项目定义，维护术语引用 |
@@ -57,14 +57,14 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `feature-plan` | 为当前 Product 建立可追溯 Feature 覆盖与依赖 |
 | `feature-sync` | 将已确认来源变化映射到已有计划及测试历史 |
 | `feature-execute` | 交付获准 Feature，承担适用实现、验证、记录与收尾 |
-| `implementation-guidance-godot` | 为已有 Feature 准备约束、设计、必要实现顺序和验证思路，沿用该 Feature 设计稿 |
+| `implementation-guidance` | 为已有 Feature 准备约束、设计、必要实现顺序和验证思路，沿用该 Feature 设计稿 |
 | `engineering-change-plan` | 为 Bug、重构、维护等独立工程工作确定任务范围与验证 |
 | `engineering-refactor-select` | 从已有真实候选中选择值得实施的行为保持重构 |
 | `design-art-direction` | 共享视觉方向与适用约束 |
 | `design-audio-direction` | 共享声音方向与反馈层次 |
 | `design-ui-spec` | 界面布局、状态、界面专用资源章节及相关游戏表现导航 |
 | `design-game-presentation` | 从体验目标规划一次游戏表现，标准化组件需求、比较备选方案并记录采用及实际实现关系 |
-| `debug-console-godot` | 用调试台比较候选、做视觉决策和调参；为调试对象登记插槽、候选、固定局面与试播动作；用户采纳到游戏后收尾提交 |
+| `in-game-tuning` | 用调试台比较候选、做视觉决策和调参；为调试对象登记插槽、候选、固定局面与试播动作；用户采纳到游戏后收尾提交 |
 | `design-visual-asset-spec` | 具体视觉资源的准备和交付要求 |
 | `design-audio-asset-spec` | 具体音效/音乐的准备和交付要求 |
 | `design-localization-spec` | 语言覆盖、回退、文本与字体等本地化要求 |
@@ -105,9 +105,9 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 - **数值设计**：[design-balance](../../../project-source/skills/design-balance/SKILL.md) 从已知目标和规则推导数值方案，也可以调整已有模型的参数，并在写入授权内直接维护 GDD 中所属的数值正文。采纳的参数、写入的文件和验证状态分别记录；需要新增玩法或改变体验目标时，回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，用 `review-balance` 独立审核；设计者自己验算不算独立审核。普通的尺寸或数量记录不需要专门建模。
 - **反馈与诊断**：用户描述实际症状即可，Agent 根据证据追查逻辑、表现以及两者的连接，不需要用户先判断属于哪一层，也不会因为跨层就拆成多个 Bug。只要求调查时，交付证据和结论；已有具体的修复授权时，查清原因后回到原任务继续。
-- **环境、检查、验收与证据**：`project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence-godot` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由表](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
-- **调试台**：[debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 负责在调试台里比较候选、调参，以及用户采纳到游戏之后的收尾提交。采纳到游戏不等于验收通过，见[每种结果能证明什么](commands-and-evidence.md#每种结果能证明什么)；概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
-- **技术验证**：[technical-validation-godot](../../../project-source/skills/technical-validation-godot/SKILL.md) 在真实引擎里回答“既定做法能否实现”，不进调试台。验证结论不等于正式验收。
+- **环境、检查、验收与证据**：`project-environment`、`project-verification-godot`、`manual-acceptance-godot` 和 `verification-evidence` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由表](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
+- **调试台**：[in-game-tuning](../../../project-source/skills/in-game-tuning/SKILL.md) 负责在调试台里比较候选、调参，以及用户采纳到游戏之后的收尾提交。采纳到游戏不等于验收通过，见[每种结果能证明什么](commands-and-evidence.md#每种结果能证明什么)；概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
+- **技术验证**：[technical-validation](../../../project-source/skills/technical-validation/SKILL.md) 在真实引擎里回答“既定做法能否实现”，不进调试台。验证结论不等于正式验收。
 - **按界面任务试用**：[review-ux](../../../project-source/skills/review-ux/SKILL.md) 写明怎样按界面任务试用：读 UI 规格中的界面任务（调试台自己的界面任务在 `dev/debug/_shared/usage-scenarios.md`），在改名的项目副本中用 [ui-trial](../../../project-source/tools/ui-trial/README.md) 工具程序驱动界面，按阻断、困惑、小问题分级报告。用户要求 UX 审核时使用它；Feature 改动了有界面任务的界面或调试台界面时，作者在 Stage 4 准备人工验收清单之前也用同一方法自己试用一遍，这是作者自查，不算独立审核。
 - **暂停与续接**：[task-handoff-godot](../../../project-source/skills/task-handoff-godot/SKILL.md) 使用已有的 Progress、Feature 或任务记录。只要求暂停时，保存停点；需要换对话时，再生成可复制的续接文本。它不会自动创建对话、发送消息或另建交接记录文件。恢复已有停点时直接回到原任务，不需要再调用一次交接。
 - **显式调用更可靠**：description 帮助客户端按任务自动选择 Skill，但 Skill 文件存在、格式正确，不代表客户端一定会自动选中它。规范要求的调查和验证仍由原流程负责，不依赖自动发现。
@@ -117,8 +117,8 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | Skill | 什么时候用 | 说明 |
 | --- | --- | --- |
 | [wayfinder-godot](../../../project-source/skills/wayfinder-godot/SKILL.md) | 几个问题互相牵连，要先解决一个才能判断下一个。例如背包容量会影响搜索需求和列表性能 | 按当前缺口选择讨论、事实调查、调试台比较或技术验证，不需要把所有方法都走一遍。普通澄清、检验已有方案或目标清楚的实施任务不必先经过它。只讨论时交付结论；已有实施授权时，问题解决后回到原任务。结论与证据的存放见[探索结果与工作目录](../specialist-work-and-records/knowledge-and-records.md#探索结果与工作目录) |
-| [worktree-create-godot](../../../project-source/skills/worktree-create-godot/SKILL.md) | 确实需要另一个工作目录 | 准备或复用指定版本的 checkout。目录分开不代表运行数据也分开，具体准备方法只在它的参考[在独立检出目录中准备 Godot](../../../project-source/skills/worktree-create-godot/references/godot-worktree-runtime.md)中维护；环境与验证入口遇到写入位置不明或变化时，也直接引用这份参考 |
-| [worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) | 已选定要采用的成果，或要接手已有的整合冲突 | 带回必要的依赖并检查合并后的结果。原任务的验证、人工验收和提交条件仍然有效；整合后不会自动删除源目录或分支。Git 细则见项目 `AGENTS.md` 的[Git 与提交](../../../project-source/Project_AGENTS.md#git-与提交) |
+| [worktree-create](../../../project-source/skills/worktree-create/SKILL.md) | 确实需要另一个工作目录 | 准备或复用指定版本的 checkout。目录分开不代表运行数据也分开，具体准备方法只在它的参考[在独立检出目录中准备 Godot](../../../project-source/skills/worktree-create/references/godot-worktree-runtime.md)中维护；环境与验证入口遇到写入位置不明或变化时，也直接引用这份参考 |
+| [worktree-integrate](../../../project-source/skills/worktree-integrate/SKILL.md) | 已选定要采用的成果，或要接手已有的整合冲突 | 带回必要的依赖并检查合并后的结果。原任务的验证、人工验收和提交条件仍然有效；整合后不会自动删除源目录或分支。Git 细则见项目 `AGENTS.md` 的[Git 与提交](../../../project-source/Project_AGENTS.md#git-与提交) |
 
 这三个 Skill 可以分别调用，不构成固定的阶段。
 
@@ -144,7 +144,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 ### 实施顾问
 
-已有 Feature 需要实施指导时，使用 [implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md)。
+已有 Feature 需要实施指导时，使用 [implementation-guidance](../../../project-source/skills/implementation-guidance/SKILL.md)。
 
 - **谁来准备**：默认由主 Agent 自己准备。只有用户在任务提示词或仍有效的授权中明确要求，才委派给 [implementation-advisor](../../../project-source/agents/implementation-advisor.toml)。任务复杂、加载了这个 Skill、或要求写详细设计，都不会自动触发委派。顾问使用的模型和推理强度只在角色配置中维护，Codex 与 Claude Code 两种格式各填自己宿主的模型。
 - **顾问做什么**：读取相关规则和实际代码，给出有来源依据的设计和验证思路。需要用户决定时，顾问把编号问题、A/B 选项和建议交给主 Agent，主 Agent 在当前对话中展示，再把用户的回答传回同一个顾问。方案获批前只在对话中讨论；获批后，顾问才能把这份方案保存为 Feature 设计稿（位置见[局部设计与当前架构](../specialist-work-and-records/knowledge-and-records.md#局部设计与当前架构)）。

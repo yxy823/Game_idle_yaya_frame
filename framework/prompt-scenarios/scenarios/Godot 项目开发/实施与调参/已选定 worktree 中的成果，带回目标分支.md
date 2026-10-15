@@ -12,7 +12,7 @@
 
 ## 参与角色与职责边界
 
-当前 Agent 使用 [worktree-integrate-godot](../../../../../project-source/skills/worktree-integrate-godot/SKILL.md) 整合。必要的真实验收和不能从既有决定推导的业务取舍由用户作出；无文本冲突不免除组合验证。
+当前 Agent 使用 [worktree-integrate](../../../../../project-source/skills/worktree-integrate/SKILL.md) 整合。必要的真实验收和不能从既有决定推导的业务取舍由用户作出；无文本冲突不免除组合验证。
 
 ## 执行步骤
 
@@ -24,11 +24,11 @@
 
 **S2｜带回选定成果并处理实际冲突**
 
-在正确目标实施授权范围内的整合。只有冲突出现时才读取参考[解决已有的整合冲突](../../../../../project-source/skills/worktree-integrate-godot/references/merge-conflicts.md)，按双方意图和已确认目标解决；未决定的业务矛盾保留为具体选择，不能靠“全部取某一方”掩盖。
+在正确目标实施授权范围内的整合。只有冲突出现时才读取参考[解决已有的整合冲突](../../../../../project-source/skills/worktree-integrate/references/merge-conflicts.md)，按双方意图和已确认目标解决；未决定的业务矛盾保留为具体选择，不能靠“全部取某一方”掩盖。
 
 **S3｜验证组合并交付**
 
-使用 [project-verification-godot](../../../../../project-source/skills/project-verification-godot/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence-godot](../../../../../project-source/skills/verification-evidence-godot/SKILL.md)；原任务要求实际人工验收时，用 [manual-acceptance-godot](../../../../../project-source/skills/manual-acceptance-godot/SKILL.md) 为组合结果准备清单。按原任务的提交、验收条件交付，更新必要记录。
+使用 [project-verification-godot](../../../../../project-source/skills/project-verification-godot/SKILL.md) 执行适用检查，核对脚本、场景、资源及依赖的组合行为。需要判断证据是否仍有效时使用 [verification-evidence](../../../../../project-source/skills/verification-evidence/SKILL.md)；原任务要求实际人工验收时，用 [manual-acceptance-godot](../../../../../project-source/skills/manual-acceptance-godot/SKILL.md) 为组合结果准备清单。按原任务的提交、验收条件交付，更新必要记录。
 
 ## 资源与文件影响
 

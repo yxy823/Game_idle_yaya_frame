@@ -46,7 +46,7 @@ GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-t
 - **何时写、何时改**：方案获批后保存；实际实现与设计不一致时同步修改。
 - **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../yaya/methodology/03-execute-loop.md`。
 
-需要实施指导时，[implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md) 也写这同一份设计稿：
+需要实施指导时，[implementation-guidance](../../../project-source/skills/implementation-guidance/SKILL.md) 也写这同一份设计稿：
 
 - 只支持已有的 Feature（包括工程 Feature），不额外生成带模型名、日期或“guide”后缀的副本。
 - 内容说明关键约束怎样影响设计、接口与生命周期、必要的依赖顺序和验证理由，不预先规定每个函数怎么写。

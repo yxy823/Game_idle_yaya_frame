@@ -106,12 +106,12 @@ Feature 中各类内容的动作与权限见 [3D. 最终验证前的文档检查
 ### 开始修改前
 
 - 在任务指定的工作目录中工作，运行一次 `git status`，记下工作区是否干净。
-- 存在 `dev/debug/adoption-log.md` 时，其中列出的改动是用户在调试台中的采纳。这是“保留已有改动、不替用户提交”的例外：先用 `debug-console-godot` 收尾并提交，再开始本次任务。之后是否需要源同步，按 [完成后再调值](yaya/methodology/13-debug-console-and-validation.md#完成后再调值) 判断。
+- 存在 `dev/debug/adoption-log.md` 时，其中列出的改动是用户在调试台中的采纳。这是“保留已有改动、不替用户提交”的例外：先用 `in-game-tuning` 收尾并提交，再开始本次任务。之后是否需要源同步，按 [完成后再调值](yaya/methodology/13-debug-console-and-validation.md#完成后再调值) 判断。
   - **只暂存采纳涉及的路径**：采纳写入的游戏文件、移动的候选，以及收尾时 Agent 修改的 `slot.gd`、`dev/debug/README.md` 与设计文档的资源条目；插槽预设与组合的提交见[收尾步骤](dev/debug/_shared/README.md#收尾步骤)。
   - **用户或派活的主 Agent 要求不提交时**：按其范围执行，只完成收尾的文件修改并报告；被派的子智能体交回主 Agent 提交收尾，再开始本次任务。
   - **收尾受阻时**（例如编辑器不关、测试失败）：报告受阻的步骤，只停下依赖收尾结果的工作。
   - **只读任务**：只报告存在未收尾的采纳，不收尾。
-- 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据；在已有 worktree 中运行编辑器、导入、测试等会写入的工具前，读 [在独立检出目录中准备 Godot](.agents/skills/worktree-create-godot/references/godot-worktree-runtime.md)。
+- 只在当前范围和授权需要时使用 worktree，不默认创建。另开工作目录不会隔离工具进程、缓存或 `user://` 等运行时数据；在已有 worktree 中运行编辑器、导入、测试等会写入的工具前，读 [在独立检出目录中准备 Godot](.agents/skills/worktree-create/references/godot-worktree-runtime.md)。
 - 存在未完成的合并或变基，或者 HEAD、分支出现本任务无法解释的变化时，保留现场并汇报。弄清之前，不做依赖该状态的写入或提交，也不自动中止、重置或清理。
 - 续接时（包括换到新对话），依据工作目录、Feature 与 Progress、当前 HEAD 和实际差异。同一任务留下的改动，核实范围后可以继续完成、验证和提交。
 

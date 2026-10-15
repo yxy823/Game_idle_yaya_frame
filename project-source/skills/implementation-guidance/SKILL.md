@@ -1,5 +1,5 @@
 ---
-name: implementation-guidance-godot
+name: implementation-guidance
 description: 为已有的 Godot Feature（包括工程 Feature）准备或更新附带来源链接的实施指导，内容包括约束、设计、必要的依赖顺序和验证思路。不实现 Feature，也不为没有 Feature 的工作新建 Feature。
 ---
 

@@ -5,7 +5,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 # 运行要求的验证
 
-从当前任务确认要做的检查、检查对象和允许的运行操作。复用已配置的工具和仍然有效的准备结果；只有确实依赖环境、且在任务授权范围内时，才使用 [project-environment-godot](../project-environment-godot/SKILL.md)。
+从当前任务确认要做的检查、检查对象和允许的运行操作。复用已配置的工具和仍然有效的准备结果；只有确实依赖环境、且在任务授权范围内时，才使用 [project-environment](../project-environment/SKILL.md)。
 
 ## 选择匹配的检查
 
@@ -22,7 +22,7 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 运行 gdUnit 测试只用上述入口，不直接调用 `addons/gdUnit4/runtest.*`，也不用 `--headless` 直接运行 gdUnit。测试失败需要解读时，读 `yaya/agent-rules/70-tests/gdunit4-profile.md`。
 
-在已有的 worktree 中检查时，如果有关数据或清理去向未知或发生了变化，在运行会写入的工具之前，先读 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。这包括测试和编辑器、导入操作，不只是运行游戏。复用仍然有效的准备结果；该参考不要求调用创建 Skill、另建工作目录，也不要求把这次检查扩大成完整的交付运行。
+在已有的 worktree 中检查时，如果有关数据或清理去向未知或发生了变化，在运行会写入的工具之前，先读 [在独立检出目录中准备 Godot](../worktree-create/references/godot-worktree-runtime.md)。这包括测试和编辑器、导入操作，不只是运行游戏。复用仍然有效的准备结果；该参考不要求调用创建 Skill、另建工作目录，也不要求把这次检查扩大成完整的交付运行。
 
 只运行要求的检查种类，同时保留每种方法要求的范围和已有义务。一次定向的诊断运行，不能满足更大的交付要求。要求的限制与必需的方法或权限冲突时，说明具体冲突，不要悄悄降低检查标准或扩大任务。
 
@@ -32,4 +32,4 @@ description: 运行用户要求的 Godot 解析、lint、已有自动测试或�
 
 报告实际的检查对象、命令、退出码、原始证据路径、结果和未执行的范围。区分检查通过、失败、中断，以及运行器合法返回的 `not_required` 结果。场景能启动或自动测试通过，都不构成实际的人工验收。
 
-任务还要求导入或修复自动化证据时，使用 [verification-evidence-godot](../verification-evidence-godot/SKILL.md)。否则直接返回结果，不制造完成证据。只要求检查的请求，可以在如实报告失败后结束；这不代表被检查的工作已经通过。所属任务继续已经获得授权的工作，并按已有约定判断是否完成，不新增 Stage，也不重复请求批准。
+任务还要求导入或修复自动化证据时，使用 [verification-evidence](../verification-evidence/SKILL.md)。否则直接返回结果，不制造完成证据。只要求检查的请求，可以在如实报告失败后结束；这不代表被检查的工作已经通过。所属任务继续已经获得授权的工作，并按已有约定判断是否完成，不新增 Stage，也不重复请求批准。

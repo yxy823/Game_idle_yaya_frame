@@ -61,7 +61,7 @@
 | R14 | [test_selection.py](../../../project-source/tools/lib/test_selection.py) 的 `touched_completed_features` | 只列出在受影响组件上有登记测试的 done Feature，只用于提醒 |
 | R15 | [dependency_graph.py](../../../project-source/tools/lib/dependency_graph.py) 的 `canonical`、`build_graph`、`deleted_identity_texts` | `.uid`、`.import` 与源文件是同一个节点。删除节点的旧 UID、旧全局类名从起点读取，用来解析当前引用。删除脚本或资源的历史文本缺失，或其 UID 和全局类名均无法恢复时升级 full。起点 `.import` 存在但缺少 UID 时也升级 full；其他删除文件仍沿路径引用查找消费者 |
 | R16 | Project_AGENTS.md 的[开始修改前](../../../project-source/Project_AGENTS.md#开始修改前)、[暂存](../../../project-source/Project_AGENTS.md#暂存)、[提交](../../../project-source/Project_AGENTS.md#提交)和[禁止的操作](../../../project-source/Project_AGENTS.md#禁止的操作) | 开始任务前先收尾调试台的采纳；开始时已有改动只暂存本任务的路径；Work item 行；不自动 amend、rebase |
-| R17 | [$worktree-integrate-godot](../../../project-source/skills/worktree-integrate-godot/SKILL.md) 的[验证并采纳组合后的结果](../../../project-source/skills/worktree-integrate-godot/SKILL.md#验证并采纳组合后的结果) | 合回后的组合结果由 Agent 在目标检出目录取得证据 |
+| R17 | [$worktree-integrate](../../../project-source/skills/worktree-integrate/SKILL.md) 的[验证并采纳组合后的结果](../../../project-source/skills/worktree-integrate/SKILL.md#验证并采纳组合后的结果) | 合回后的组合结果由 Agent 在目标检出目录取得证据 |
 | R18 | 08 号规范的[需求变化与过时的测试](../../../project-source/methodology/08-test-traceability-and-evidence.md#需求变化与过时的测试) | 退役的测试不进入活动的安全网，文件里的用例要在实施 Feature 中清理 |
 | R19 | 项目检查与测试工具的[record-base-revision.py](../../../project-source/tools/README.md#record-base-revisionpy) | `--reset`、`--dry-run` 的用法。预览合并改动、声明组件、反推组件及已批准的 full 理由 |
 | R20 | 06 号规范的[项目环境准备](../../../project-source/methodology/06-project-environment.md#项目环境准备)；07 号规范的[引擎与插件升级](../../../project-source/methodology/07-engineering-change.md#引擎与插件升级) | 仓库外的环境变化和插件、引擎升级由这两节处理 |
@@ -284,7 +284,7 @@
 
 ## worktree 合回（Where = E2）
 
-合回由 `worktree-integrate-godot` 执行。Who 是 A2 或 A3；用户手动合回算 A1，结论相同。
+合回由 `worktree-integrate` 执行。Who 是 A2 或 A3；用户手动合回算 A1，结论相同。
 
 | 序号 | 合回方式 | 合回时主线处于 | 会不会测到、何时测到 | 会不会触发 full | 测试证据与人工验收 | 要提醒什么 |
 | --- | --- | --- | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 ---
-name: debug-console-godot
-description: "在已授权的 Feature 或限定范围的实验中，用游戏内调试台和用户一起比较候选、做视觉决策、试调已实现的特效、反馈或操作手感，并在用户采纳到游戏后收尾提交；对话开始时发现已存在的 dev/debug/adoption-log.md，也用本 Skill 收尾，不需要另外授权；也负责为调试对象登记插槽、候选、固定局面和试播动作。用于骨架之后在调试台定画面，以及“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、引擎可行性问题（technical-validation-godot）、修改调试台共享代码本身，也不用于记录验收结论（manual-acceptance-godot）。"
+name: in-game-tuning
+description: "在已授权的 Feature 或限定范围的实验中，用游戏内调试台和用户一起比较候选、做视觉决策、试调已实现的特效、反馈或操作手感，并在用户采纳到游戏后收尾提交；对话开始时发现已存在的 dev/debug/adoption-log.md，也用本 Skill 收尾，不需要另外授权；也负责为调试对象登记插槽、候选、固定局面和试播动作。用于骨架之后在调试台定画面，以及“太闪”“节奏拖沓”“打击感不够”“移动发飘”这类要实际看或操作才能判断的调整。不用于从零规划表现（design-game-presentation）、经济和成长数值（design-balance）、批量内容数据与难度曲线（content-data-authoring）、引擎可行性问题（technical-validation）、修改调试台共享代码本身，也不用于记录验收结论（manual-acceptance-godot）。"
 ---
 
 # 调试台：比较候选、调参与采纳

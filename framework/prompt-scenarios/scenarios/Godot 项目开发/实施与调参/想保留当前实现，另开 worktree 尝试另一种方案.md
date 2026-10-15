@@ -12,7 +12,7 @@
 
 ## 参与角色与职责边界
 
-当前 Agent 使用 [worktree-create-godot](../../../../../project-source/skills/worktree-create-godot/SKILL.md) 准备目录；用户决定实质方案取舍。该入口不选择最终采用哪套成果，也不自动合并或删除 worktree。
+当前 Agent 使用 [worktree-create](../../../../../project-source/skills/worktree-create/SKILL.md) 准备目录；用户决定实质方案取舍。该入口不选择最终采用哪套成果，也不自动合并或删除 worktree。
 
 ## 执行步骤
 

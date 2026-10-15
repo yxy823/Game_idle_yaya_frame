@@ -1,5 +1,5 @@
 ---
-name: project-environment-godot
+name: project-environment
 description: 配置、更新或恢复 Godot 项目的工具路径，或执行项目首次的 Godot 资源扫描。用于用户要求准备环境、某个工具移动了位置或换了版本、已配置的工具无法启动的情况。不用于创建项目、修复游戏行为、运行通用的验证套件，或升级 Godot 补丁版本与插件（engineering-change-plan）。
 ---
 
@@ -16,7 +16,7 @@ description: 配置、更新或恢复 Godot 项目的工具路径，或执行项
 | 已配置的工具无法启动 | **工具配置**：报告实际的失败；只在用户要求的范围内修改路径 |
 | 需要首次导入和类扫描 | **项目环境准备** 的第 2 步，以及[首次 Godot 扫描](../../../yaya/tools/README.md#首次-godot-扫描) |
 
-如果编辑器或导入过程会在 worktree 内写入文件，而你不清楚它写到哪里、怎样清理，先阅读 [在独立检出目录中准备 Godot](../worktree-create-godot/references/godot-worktree-runtime.md)。阅读它不会创建 worktree。
+如果编辑器或导入过程会在 worktree 内写入文件，而你不清楚它写到哪里、怎样清理，先阅读 [在独立检出目录中准备 Godot](../worktree-create/references/godot-worktree-runtime.md)。阅读它不会创建 worktree。
 
 ## 用真实输出检查
 

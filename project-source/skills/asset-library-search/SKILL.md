@@ -10,4 +10,4 @@ description: "在用户的本地游戏资源库中查找、推荐或选择美术
 本项目只补充两点：
 
 - 检索词来自当前任务已确定的规格，例如所属表现、界面或 Sound Bible 中的资源章节；规格还没定时先说明缺口，按[资源需求与交接](../../../yaya/methodology/11-specialist-workflows.md#资源需求与交接)补规格，不用候选表代替规格。
-- 用户选定素材后，复制到资源库外的工作目录，再按需要接入：比较候选用 [debug-console-godot](../debug-console-godot/SKILL.md) 的候选，直接接入用 [content-asset-integration](../content-asset-integration/SKILL.md)。来源写资源库中的项目路径，许可写资源库 `research.md` 里已核验的结论，没有核验时按缺口处理。
+- 用户选定素材后，复制到资源库外的工作目录，再按需要接入：比较候选用 [in-game-tuning](../in-game-tuning/SKILL.md) 的候选，直接接入用 [content-asset-integration](../content-asset-integration/SKILL.md)。来源写资源库中的项目路径，许可写资源库 `research.md` 里已核验的结论，没有核验时按缺口处理。

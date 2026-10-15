@@ -1,5 +1,5 @@
 interface:
-  display_name: "Debug Console"
+  display_name: "In-Game Tuning"
   short_description: "在游戏内调试台和用户一起比较候选、调参，并把采纳的设定收尾提交"
 
 policy:

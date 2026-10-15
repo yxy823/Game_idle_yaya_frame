@@ -85,7 +85,7 @@ flowchart TD
 
 **授权在阶段和 Skill 之间延续**：用户给出的具体授权，只要没有变化，就在各阶段、各 Skill 之间一直有效；某个 Skill 执行结束，不代表整项授权结束。
 
-**需要实施指导时**，使用 [implementation-guidance-godot](../../../project-source/skills/implementation-guidance-godot/SKILL.md) 准备，仍按“Stage 1 提方案、Stage 2 保存设计”的顺序进行，不增加单独的指导阶段或额外批准。默认由主 Agent 自己准备，只有用户明确要求时才委派给指定的顾问。主 Agent 核对关键规则和实际代码后继续执行。拿到设计稿不代表 Feature 已经实现、验收或经过独立审核。
+**需要实施指导时**，使用 [implementation-guidance](../../../project-source/skills/implementation-guidance/SKILL.md) 准备，仍按“Stage 1 提方案、Stage 2 保存设计”的顺序进行，不增加单独的指导阶段或额外批准。默认由主 Agent 自己准备，只有用户明确要求时才委派给指定的顾问。主 Agent 核对关键规则和实际代码后继续执行。拿到设计稿不代表 Feature 已经实现、验收或经过独立审核。
 
 ## 自动与人工验收
 

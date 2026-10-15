@@ -166,13 +166,13 @@ UI 规格描述信息层级、采纳的布局、状态差异、显示条件、�
 | 游戏原值 | 游戏文件里保存的值。对比只在“当前改动”和游戏原值（或某个组合）之间切换 |
 | 固定局面、试播动作 | 固定局面是一份游戏存档，每次从同一状态和随机种子开始播放；试播动作是插槽登记的“点一下就看到效果”的操作 |
 
-依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码](../../../project-source/defaults/dev/debug/_shared/README.md)的说明中维护；用户在调试台能完成的 12 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见 13 号规范的[调试台](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [debug-console-godot](../../../project-source/skills/debug-console-godot/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
+依赖只能从 `dev/` 指向游戏，游戏代码不引用调试台，由依赖方向测试检查。插槽、预设格式、采纳与收尾的具体机制只在[调试台共享代码](../../../project-source/defaults/dev/debug/_shared/README.md)的说明中维护；用户在调试台能完成的 12 个界面任务见[调试台使用场景](../../../project-source/defaults/dev/debug/_shared/usage-scenarios.md)。原则与流程见 13 号规范的[调试台](../../../project-source/methodology/13-debug-console-and-validation.md#调试台)，Agent 用 [in-game-tuning](../../../project-source/skills/in-game-tuning/SKILL.md) 登记插槽、候选和固定局面，并在采纳后收尾。
 
 调参只在调试台里改。也可以从 Godot 编辑器启动调试入口，但编辑器检查器显示的是编辑器自己的副本，从编辑器停止（F8）会丢掉未保存的改动，见[从编辑器启动](../../../project-source/defaults/dev/debug/_shared/README.md#从编辑器启动)。
 
 ### 采纳到游戏与验收
 
-- **采纳**：用户点“采纳到游戏”并确认一次，调试台把选定的参数写进调参资源，把还在 `dev/` 中的候选移进 `game/`。之后 Agent 按 `debug-console-godot` 收尾：补回资源的 UID、运行选中的测试、提交。下次对话开始时发现 `dev/debug/adoption-log.md`，说明有还没收尾的采纳，Agent 先收尾再做本次任务。
+- **采纳**：用户点“采纳到游戏”并确认一次，调试台把选定的参数写进调参资源，把还在 `dev/` 中的候选移进 `game/`。之后 Agent 按 `in-game-tuning` 收尾：补回资源的 UID、运行选中的测试、提交。下次对话开始时发现 `dev/debug/adoption-log.md`，说明有还没收尾的采纳，Agent 先收尾再做本次任务。
 - **采纳不等于验收**：采纳只记下用户当时的选择，见[每种结果能证明什么](../methods-and-tools/commands-and-evidence.md#每种结果能证明什么)。人工验收检查收尾后的游戏原值；验收中又采纳新值，本轮按不通过处理，见[自动与人工验收](../requirements-and-tasks/feature-lifecycle.md#自动与人工验收)。
 - **文档只链接资源**：UI 规格、表现文档和 AC 链接采纳后的调参资源，不另抄一份数值。已完成 Feature 链接的资源后来又被改值时，按[完成后再调值](../../../project-source/methodology/13-debug-console-and-validation.md#完成后再调值)建变更。
 - **被替换和落选的实现**：被替换的实现留在 `game/`，仍可在调试台选回，发布前由用户决定删除或排除出导出；从未采纳的候选留在 `dev/`，正式导出不包含它们，用户要求时删除。
@@ -201,7 +201,7 @@ UI 规格描述信息层级、采纳的布局、状态差异、显示条件、�
 
 例如已确认“角色受击后闪红”，但实际上生命值正确减少了，却没有闪红。扣血正确只说明状态变化符合预期；Agent 还要检查受击结果有没有传到反馈控制、播放有没有被打断、材质和参数是不是接到了正确的对象。只有证据指向 Shader 的数据流时，才按需使用参考文件 [Shader 诊断](../../../project-source/skills/bug-diagnosis-godot/references/shader-diagnostics.md)中的临时可视化或固定条件比较。不能只因为画面异常就认定 Shader 有错，也不需要预先拆成“逻辑 Bug”和“表现 Bug”。
 
-修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance-godot/references/shader-implementation-methods.md)，同时遵守 [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
+修复由原任务承接。涉及算法选择时，可以直接查阅 [Shader 实现方法](../../../project-source/skills/implementation-guidance/references/shader-implementation-methods.md)，同时遵守 [30 Shader 规则](../../../project-source/agent-rules/30-shaders/README.md)；读参考不会启动新的指导任务，也不增加写入授权。表现要求、采用的方案，或文档中记录的实际文件与接入关系变化时，同步所属设计；诊断和验证的结果留在原任务的证据位置。
 
 ### 诊断用的 Skill
 

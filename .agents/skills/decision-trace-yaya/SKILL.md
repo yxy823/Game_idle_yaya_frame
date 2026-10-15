@@ -5,7 +5,7 @@ description: "维护框架时，用户要求开启“决策依据”时使用：
 
 # 决策依据（框架维护）
 
-开关和写法与分发给项目的 [decision-trace-godot](../../../project-source/skills/decision-trace-godot/SKILL.md) 相同：按它的「开关」和「写法」两节执行，本文件只替换原则索引。
+开关和写法与分发给项目的 [decision-trace](../../../project-source/skills/decision-trace/SKILL.md) 相同：按它的「开关」和「写法」两节执行，本文件只替换原则索引。
 
 ## 原则索引
 

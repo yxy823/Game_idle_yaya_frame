@@ -31,14 +31,14 @@ yaya/methodology/                         canonical workflow specification
 | 澄清与术语 | `project-grill-me`、`wayfinder-godot`、`project-terminology` |
 | 专业设计 | `design-game-presentation`、`design-ui-spec`、`design-art-direction`、`design-audio-direction`、`design-visual-asset-spec`、`design-audio-asset-spec`、`design-localization-spec` |
 | 规划 | `feature-plan`、`feature-sync`、`plan-review-godot` |
-| 交付 | `feature-execute`、`implementation-guidance-godot`、`debug-console-godot`、`technical-validation-godot` |
+| 交付 | `feature-execute`、`implementation-guidance`、`in-game-tuning`、`technical-validation` |
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
 | 反馈与诊断 | `feedback-triage-godot`、`bug-diagnosis-godot` |
-| 环境、验证与证据 | `project-environment-godot`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence-godot` |
+| 环境、验证与证据 | `project-environment`、`project-verification-godot`、`manual-acceptance-godot`、`verification-evidence` |
 | 接入与测量 | `asset-library-search`、`content-asset-integration`、`content-localization`、`content-data-authoring`、`diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` |
 | 独立审核 | `review-code`、`review-ux`、`review-art`、`review-audio`、`review-assets`、`review-localization`、`review-balance` |
-| worktree | `worktree-create-godot`、`worktree-integrate-godot` |
-| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot`、`decision-trace-godot` |
+| worktree | `worktree-create`、`worktree-integrate` |
+| 指引、交接与改进 | `project-next-step-advisor`、`task-handoff-godot`、`retro-godot`、`loop-me-godot`、`decision-trace` |
 | 文档编写 | `technical-documentation-writing-godot`、`qa-explainer-godot` |
 
 ## 任务路由表
@@ -63,7 +63,7 @@ yaya/methodology/                         canonical workflow specification
 | 说明 Feature 设计或重要的技术决定 | 当前的规划或设计任务，按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明) 和[架构概览](10-architecture-overview.md) 执行 | 实现设计写在 Feature 设计文件中；符合条件的技术理由写成 ADR。不改变 Product 范围或项目规则。 |
 | 选择视觉或声音方向 | `design-art-direction`、`design-audio-direction` | 按[专业工作与来源](11-specialist-workflows.md)维护 Art Bible 或 Sound Bible 中的共用标准。不需要完整的游戏设计，不产出资源。 |
 | 从体验目标或随口的描述规划一个游戏时刻，或比较其组成部分的方案 | `design-game-presentation` | 用于[游戏表现文档](11-specialist-workflows.md#游戏表现文档)，可以支持早期 GDD 探索。不包含代码、资源制作或验收。 |
-| 和用户一起反复试调已实现的特效、反馈或操作手感 | `debug-console-godot`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
+| 和用户一起反复试调已实现的特效、反馈或操作手感 | `in-game-tuning`，在已获授权的 Feature 或实验中使用 | 用户在调试台实际观看或操作后判断，满意的设定由用户采纳到游戏的调参资源，Agent 收尾提交；文档链接资源，不抄数值。Feature 完成后再调值按[完成后再调值](13-debug-console-and-validation.md#完成后再调值)。不是人工验收。 |
 | 规定一个界面或单个资源 | `design-ui-spec`、`design-visual-asset-spec`、`design-audio-asset-spec` | 用于细化 GDD 的专业规格。交付范围仍由 Product 决定。 |
 | 制作美术、音乐或音效 | 项目外的制作项目，按 11 号规范的[在项目外制作](11-specialist-workflows.md#在项目外制作)交接 | 本项目没有制作 Skill，不在仓库里制作；交出规格章节，收回成品后由 `content-asset-integration` 或调试台候选接入。没有制作项目时记录规格和缺口。 |
 | 在本地资源库中查找可用素材 | `asset-library-search` | 按资源库自己的检索 Skill 执行：只查索引列候选，查看内容逐项取得许可。选定的素材由 `content-asset-integration` 或调试台候选接入。 |
@@ -71,11 +71,11 @@ yaya/methodology/                         canonical workflow specification
 | 接入已提供的资源，或实现已批准的本地化 | `content-asset-integration`、`content-localization` | 在已获授权的 Feature 或实验中应用已批准的规格；不是独立的交付。 |
 | 批量编写或生成关卡、生产者、升级表等内容数据，或建立内容校验 | `content-data-authoring`，在已获授权的 Feature 中使用 | 按已确认的规则、公式和目标区间产出数据并检查；规则交给 `design-gdd`，公式和目标区间交给 `design-balance`，难度与手感由用户实际游玩判断。 |
 | 添加诊断信号、测量性能或运行长时间运行（soak）场景 | `diagnostics-instrumentation`、`diagnostics-performance`、`diagnostics-soak-test` | 用于收集证据。测量不授权修复。 |
-| 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `debug-console-godot`；技术验证用 `technical-validation-godot` | 按 13 号规范的[选择方式](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
-| 骨架之后在调试台做视觉决策 | `feature-execute` 配合 `debug-console-godot`，在当前 Product 交付或已获授权的实验中使用 | 按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)：骨架、视觉决策、完整逻辑三个 Feature。规格提供输入；调试台中的比较、采纳和人工验收属于执行阶段。 |
+| 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `in-game-tuning`；技术验证用 `technical-validation` | 按 13 号规范的[选择方式](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
+| 骨架之后在调试台做视觉决策 | `feature-execute` 配合 `in-game-tuning`，在当前 Product 交付或已获授权的实验中使用 | 按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)：骨架、视觉决策、完整逻辑三个 Feature。规格提供输入；调试台中的比较、采纳和人工验收属于执行阶段。 |
 | 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
-| 为已获授权的任务准备或复用另一个工作目录 | `worktree-create-godot` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
-| 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate-godot` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
+| 为已获授权的任务准备或复用另一个工作目录 | `worktree-create` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
+| 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
 | 根据 GDD 预拆分交付范围 | `product-author` | 只写用户要求的 `product.md` 规划范围。 |
 | 修改游戏设计 | `design-gdd`；限定范围的数值设计用 `design-balance` | 修改设计不会自动创建 Product 或 Feature。 |
 | 修改当前 Product 的交付范围 | `product-author` | 后续 Product 保持在预拆分层级。 |
@@ -85,7 +85,7 @@ yaya/methodology/                         canonical workflow specification
 | 源同步 | `feature-sync` | 已提交的 GDD、Product、专业文档或规则来源发生变化时使用。不做首次拆分。 |
 | 继续当前 Feature | `feature-execute` | 只说“继续”，不能补上缺少的批准或验收。 |
 | 执行一个符合条件的已规划 Feature | `feature-execute` | 按依赖顺序选择；Stage 1 的批准仍然适用。 |
-| 为已规划的 Feature 准备实现指引 | `implementation-guidance-godot`，由主 Agent 使用 | 只有用户明确要求或任务授权仍然有效时，才委派给 `implementation-advisor`；不会仅因任务复杂就委派。 |
+| 为已规划的 Feature 准备实现指引 | `implementation-guidance`，由主 Agent 使用 | 只有用户明确要求或任务授权仍然有效时，才委派给 `implementation-advisor`；不会仅因任务复杂就委派。 |
 | 当前未完成 Feature 中的 Bug | 该 Feature 的修复路由 | 在其范围内修复，并补上回归测试覆盖。 |
 | 已完成行为中的独立 Bug | `engineering-change-plan` 的 bug 模式 | 行为违反已记录的需求时使用；期望缺失或期望改变时，按 [分类边界](07-engineering-change.md#分类边界) 交给对应的设计负责方。 |
 | 重构 | `engineering-change-plan` 的 refactor 模式 | 行为保持不变。只有用户要求挑选代码坏味道时，才先用 `engineering-refactor-select`。 |
@@ -93,10 +93,10 @@ yaya/methodology/                         canonical workflow specification
 | 项目工具问题 | `engineering-change-plan` | 用于项目自有工具中的问题。 |
 | 把已提出的临时脚本保存为项目脚本 | 主 Agent 直接保存 | 用户同意保存后，按[保存常用脚本](09-records-reports-and-handoff.md#保存常用脚本)执行，不需要 Feature。随规则修改提出的检查仍按[规则的增量维护](04-project-rules.md#规则的增量维护)。 |
 | 独立审核 | 在新的 `independent-reviewer` 实例中使用对应的审核 Skill | 只在用户要求正式审核时使用，按[独立审核](12-independent-review.md)执行。不修复，也不提供人工验收。 |
-| 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment-godot` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
+| 配置、更新或恢复项目工具，或完成必需的首次资源扫描 | `project-environment` | 按[项目环境](06-project-environment.md)执行。不证明游戏行为，也不需要 Feature。 |
 | 运行用户要求的解析、lint、已有测试或限定范围的场景检查 | `project-verification-godot` | 有无 Feature 都可以用。报告实际结果；不修复、不验收，也不完成交付。 |
 | 准备待做的人工检查，或记录用户实际的验收结果 | `manual-acceptance-godot` | 按[人工验收文件](contracts/manual-acceptance-files.md)执行。准备检查不等于验收；记录结果不推进 Stage，也不授予提交权限。 |
-| 检查、导入或恢复验证证据 | `verification-evidence-godot` | 按 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
+| 检查、导入或恢复验证证据 | `verification-evidence` | 按 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 执行。只安排确实需要的重跑或人工跟进。 |
 | 查询状态 | 只读说明，或 `project-next-step-advisor` | 不为回答问题而开始工作或运行就绪检查。 |
 | 按用户要求保存暂停点，或准备在另一个对话中继续同一任务 | `task-handoff-godot` | 不创建 Feature、交接记录文件、对话或消息。 |
 
