@@ -182,6 +182,7 @@ func test_compare_bar_counts_differences_shows_the_side_and_the_deferred_switch(
 
 
 func test_status_bar_shows_plain_words_and_keeps_raw_details() -> void:
+	_window.show()
 	_window.report({"error": ERR_INVALID_DATA, "message": "res://dev/x.tres",
 		"issues": PackedStringArray(["volume_db"])})
 	var shown: String = _window.status.message.text
@@ -189,8 +190,9 @@ func test_status_bar_shows_plain_words_and_keeps_raw_details() -> void:
 	assert_bool(_window.status.details.visible).is_true()
 	assert_str(_window.status.detail_text.text).contains("res://dev/x.tres")
 	assert_str(_window.status.detail_text.text).contains("Invalid data")
+	assert_bool(_window.status.detail_text.is_visible_in_tree()).is_false()
 	_window.status.details.pressed.emit()
-	assert_bool(_window.status.detail_text.is_visible_in_tree() or not _window.visible).is_true()
+	assert_bool(_window.status.detail_text.is_visible_in_tree()).is_true()
 
 
 func test_closing_the_game_with_unsaved_edits_asks_first() -> void:

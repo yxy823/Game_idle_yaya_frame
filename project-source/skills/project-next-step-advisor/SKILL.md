@@ -53,7 +53,7 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 - 引用配置好的命令，不要把作者本机的路径写死在提示词里。
 - 保留用户明确的授权。只说“继续”不等于批准实现，也永远不等于人工验收。生成提示词不会授予这两者中的任何一个。
 
-推荐下一步操作或起草回复时，使用共享提示词库 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`。它只包含一个 `Godot 项目开发` Project。先查看分类和场景名称，再阅读本次涉及的候选正文；不要加载全部提示词正文。按用户的目标、当前状态、前提、范围和预期结果匹配，不要只看字面相似。使用选定场景的输入组织方式和说明，用当前事实起草一段具体的续接提示词。写明选定的分类和场景，并说明它为什么合适。
+推荐下一步操作或起草回复时，使用共享提示词库 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json`。它只包含一个 `Godot 项目开发` Project。先查看分类和场景名称，再阅读本次涉及的候选正文；不要加载全部提示词正文。按用户的目标、当前状态、前提、范围和预期结果匹配，不要只看字面相似。使用选定场景的输入组织方式和说明，用当前事实起草一段具体的续接提示词。写明选定的提示词库分类和场景，并说明它为什么合适。
 
 一条消息命中多项时，按需读取 `D:/A_Games/Game_idle_yaya_frame/framework/maintenance/design-guidelines/prompts-and-scenarios.md` 的「一条消息命中多项时」。按该节选择推荐入口，不改变用户当前的授权与停点。
 

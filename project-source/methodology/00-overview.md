@@ -111,7 +111,7 @@ yaya/methodology/                         canonical workflow specification
 
 | 主题 | 文件 |
 | --- | --- |
-| GDD 与 Product 文档：名称、范围、开放问题、候选想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
+| GDD 与 Product 文档：名称、范围、开放问题、备选方案与未采纳想法和 Product 结构 | [01-product-doc-structure.md](01-product-doc-structure.md) |
 | Feature 记录结构、修订和逐个 Product 规划 | [02-feature-list-schema.md](02-feature-list-schema.md) |
 | Stage 0–8 执行循环、授权与续接 | [03-execute-loop.md](03-execute-loop.md) |
 | 项目规则：职责、加载和增量维护 | [04-project-rules.md](04-project-rules.md) |

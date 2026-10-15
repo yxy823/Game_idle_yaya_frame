@@ -6,7 +6,7 @@
 
 - 不在 `tests/` 或它的上级目录放 `.gdignore` 来排除测试。Godot 会因此看不到这些文件，gdUnit 无法发现和加载测试。
 - 生产导出用导出过滤排除 `tests/`、测试夹具、测试生成的文件和 `addons/gdUnit4/`。导出过滤的写法见 [41-export-config](../41-export-config/README.md)。
-- 生产代码、Resource 和配置不引用 `tests/` 或 gdUnit4 的类型与文件。去掉测试目录和 gdUnit4 后，生产启动和导出仍然成功。
+- 生产代码、Resource 和配置不引用 `tests/` 或 gdUnit4 的类型与文件。去掉测试目录和 gdUnit4 后，生产启动和导出仍然成功。默认的不变量测试 `tests/invariants/debug_dependency_test.gd` 检查 `game/`、`main/`、`components/` 和 `project.godot` 不引用这两处的路径和 UID，以及 `tests/` 中的类名；`project.godot` 的 `[editor_plugins]`、`[gdunit4]` 两节只供编辑器使用，不检查。
 - 修改测试目录、导出过滤、测试 Autoload 或 gdUnit4 集成时，逐条检查本节。
 
 ## 测试与调试后门

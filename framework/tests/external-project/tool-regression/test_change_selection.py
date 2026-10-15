@@ -156,10 +156,13 @@ class ChangeSelectionTests(unittest.TestCase):
         self.assertEqual(selection["touched_completed_features"], ["F001"])
 
     def test_unclaimed_unreferenced_game_file_escalates_to_full(self) -> None:
-        self.write("game/orphan.gd", "extends Node\n")
-        selection = self.selection()
-        self.assertTrue(selection["full_suite"]["required"])
-        self.assertIn("unclaimed-changed-file:game/orphan.gd", selection["full_suite"]["reasons"])
+        # .txt 是运行时用 FileAccess 读取的原始数据，和 .gd 一样算游戏文件。
+        for path in ("game/orphan.gd", "game/words.txt"):
+            with self.subTest(path=path):
+                self.write(path, "extends Node\n")
+                selection = self.selection()
+                self.assertTrue(selection["full_suite"]["required"])
+                self.assertIn("unclaimed-changed-file:" + path, selection["full_suite"]["reasons"])
 
     def test_deleted_uid_and_renamed_class_keep_current_consumers_selected(self) -> None:
         for reference in ("uid", "class"):

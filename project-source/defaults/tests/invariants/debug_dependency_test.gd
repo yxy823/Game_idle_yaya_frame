@@ -3,14 +3,19 @@ extends GdUnitTestSuite
 
 const SELF := "res://tests/invariants/debug_dependency_test.gd"
 const TEXT_EXTENSIONS: Array[String] = ["gd", "tscn", "tres", "godot", "gdshader", "import"]
+## Excluded from the export, so a game reference into them breaks the packaged game.
+const UNSHIPPED_ROOTS: Array[String] = ["res://dev/", "res://tests/", "res://addons/gdUnit4/"]
+## Editor-only settings that legitimately name the test plugin.
+const EDITOR_ONLY_SECTIONS: Array[String] = ["editor_plugins", "gdunit4"]
 
 
-func test_game_dependencies_do_not_point_into_dev() -> void:
+func test_game_dependencies_do_not_point_into_unshipped_files() -> void:
 	var sources: Dictionary[String, String] = {}
 	for root: String in ["res://game", "res://main", "res://components"]:
 		_collect(root, sources)
-	sources["res://project.godot"] = FileAccess.get_file_as_string("res://project.godot")
-	var classes := _dev_classes()
+	sources["res://project.godot"] = _without_sections(
+		FileAccess.get_file_as_string("res://project.godot"), EDITOR_ONLY_SECTIONS)
+	var classes := _unshipped_classes()
 	var issues: PackedStringArray = []
 	for path: String in sources:
 		issues.append_array(_dependency_issues(path, sources[path], classes, {}))
@@ -21,12 +26,51 @@ func test_game_and_tests_do_not_read_debug_presets_or_combos() -> void:
 	var sources: Dictionary[String, String] = {}
 	_collect("res://game", sources)
 	_collect("res://tests", sources)
-	var regex := RegEx.create_from_string("(?:res://)?dev/debug/[^\\s\"']*/(?:presets|combos)")
 	var issues: PackedStringArray = []
 	for path: String in sources:
-		if path != SELF and regex.search(sources[path]) != null:
+		if path != SELF and _reads_presets(sources[path], {}):
 			issues.append(path)
 	assert_array(issues).is_empty()
+
+
+func test_preset_scanner_resolves_uids() -> void:
+	var uids: Dictionary[String, String] = {
+		"uid://samplepreset": "res://dev/debug/shop/presets/loud.tres",
+		"uid://samplegame": "res://game/shop/tuning/sound.tres",
+	}
+	assert_bool(_reads_presets('preload("uid://samplepreset")', uids)).is_true()
+	assert_bool(_reads_presets('preload("uid://samplegame")', uids)).is_false()
+
+
+func test_project_settings_skip_editor_only_sections() -> void:
+	var text := ('[editor_plugins]\nenabled=PackedStringArray("res://addons/gdUnit4/plugin.cfg")\n'
+		+ '[gdunit4]\nsettings/test/test_lookup_folder="tests"\n'
+		+ '[autoload]\nHelper="*res://tests/helper.gd"\n')
+	var settings := _without_sections(text, EDITOR_ONLY_SECTIONS)
+	assert_array(_dependency_issues("project.godot", settings, [], {})) \
+		.contains_exactly(["project.godot: res://tests/"])
+
+
+func _reads_presets(text: String, uid_paths: Dictionary[String, String]) -> bool:
+	var preset := RegEx.create_from_string("(?:res://)?dev/debug/[^\\s\"']*/(?:presets|combos)")
+	if preset.search(text) != null:
+		return true
+	for item in RegEx.create_from_string("uid://[a-zA-Z0-9]+").search_all(text):
+		if preset.search(_uid_path(item.get_string(), uid_paths)) != null:
+			return true
+	return false
+
+
+func _without_sections(text: String, sections: Array[String]) -> String:
+	var kept := PackedStringArray()
+	var skipping := false
+	for line in text.split("\n"):
+		var header := RegEx.create_from_string("^\\[([^\\]]+)\\]").search(line)
+		if header != null:
+			skipping = header.get_string(1) in sections
+		if not skipping:
+			kept.append(line)
+	return "\n".join(kept)
 
 
 func test_slot_directories_have_matching_game_tuning_resources() -> void:
@@ -76,8 +120,7 @@ func _tuning_constant_reads(path: String, text: String) -> PackedStringArray:
 			continue
 		var target: String = literal.value
 		if target.begins_with("uid://"):
-			var identity := ResourceUID.text_to_id(target)
-			target = ResourceUID.get_id_path(identity) if ResourceUID.has_id(identity) else ""
+			target = _uid_path(target, {})
 		target = target.simplify_path()
 		if not ("/tuning/" in target and target.get_extension() == "tres"):
 			continue
@@ -103,7 +146,7 @@ func test_scanner_detects_text_uid_class_symbols_and_accepts_game_paths() -> voi
 
 func test_scanner_normalizes_development_paths() -> void:
 	assert_array(_dependency_issues("sample.gd", "preload('res://game/../dev/scene.tscn')", [], {})) \
-		.contains_exactly(["sample.gd: dev path"])
+		.contains_exactly(["sample.gd: res://dev/"])
 
 
 func test_scanners_ignore_comments_and_quoted_symbols() -> void:
@@ -120,19 +163,16 @@ func _dependency_issues(path: String, text: String, classes: PackedStringArray,
 	var source := _scan_source(text, path.get_extension())
 	var regex := RegEx.create_from_string("uid://[a-zA-Z0-9]+")
 	for literal: Dictionary in source.strings:
-		var value: String = literal.value
-		if value.simplify_path().begins_with("res://dev/"):
-			issues.append(path + ": dev path")
-		for item in regex.search_all(value):
+		# Autoload entries prefix the path with "*".
+		var root := _unshipped_root(String(literal.value).trim_prefix("*"))
+		if not root.is_empty():
+			issues.append(path + ": " + root)
+		for item in regex.search_all(literal.value):
 			var uid := item.get_string()
-			var resolved := String(uid_paths.get(uid, ""))
-			if resolved.is_empty():
-				var identity := ResourceUID.text_to_id(uid)
-				if ResourceUID.has_id(identity):
-					resolved = ResourceUID.get_id_path(identity)
+			var resolved := _uid_path(uid, uid_paths)
 			if resolved.is_empty():
 				issues.append(path + ": unresolved " + uid)
-			if resolved.simplify_path().begins_with("res://dev/"):
+			elif not _unshipped_root(resolved).is_empty():
 				issues.append(path + ": " + uid)
 	if path.get_extension() == "gd":
 		for symbol in classes:
@@ -161,9 +201,26 @@ func _scan_source(text: String, extension: String) -> Dictionary:
 	return {"code": code + text.substr(cursor), "strings": strings}
 
 
-func _dev_classes() -> PackedStringArray:
+func _unshipped_root(value: String) -> String:
+	var normalized := value.simplify_path()
+	for root in UNSHIPPED_ROOTS:
+		if normalized.begins_with(root):
+			return root
+	return ""
+
+
+func _uid_path(uid: String, uid_paths: Dictionary[String, String]) -> String:
+	if uid_paths.has(uid):
+		return uid_paths[uid]
+	var identity := ResourceUID.text_to_id(uid)
+	return ResourceUID.get_id_path(identity) if ResourceUID.has_id(identity) else ""
+
+
+## gdUnit4's own class names are left out: matching them would flag ordinary game identifiers.
+func _unshipped_classes() -> PackedStringArray:
 	var sources: Dictionary[String, String] = {}
 	_collect("res://dev", sources)
+	_collect("res://tests", sources)
 	var result: PackedStringArray = []
 	var regex := RegEx.create_from_string("(?m)^class_name\\s+(\\w+)")
 	for path: String in sources:

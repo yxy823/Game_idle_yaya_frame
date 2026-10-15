@@ -1064,7 +1064,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化候选的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
+      "note": "职责：当前约定范围的交付预拆分、来源、依赖、建议顺序，以及跨 Product 或尚未细化的 Product的未决交付选择。\n项目位置：docs/product.md；初始没有交付计划。\n链接 GDD；当前 Product 轮到时才展开其详细文档并迁入该单元的局部未决正文，总览保留引用；后续单元保持粗略范围。\n\n项目文件： docs/product.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1322,7 +1322,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一次完整表现的过程、组成部分、备选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、候选及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
+      "note": "职责：一次完整表现的过程、组成部分、备选方案、采用组合及实际消费关系。\n项目位置：docs/presentation/<scope>.md；按触发时刻与感知结果确定范围，同一时刻的不同来源共用正文，独立过程在复用处引用已有表现；初始只有导航。组件被第二份独立表现使用时，共同要求、备选方案及资源正文迁入 docs/presentation/components/<component-key>.md，父表现引用并保留自己的使用上下文；已有共享组件仍有消费者时保留固定路径。\n从相关 UI 或 GDD 进入；正文引用触发规则、架构/任务设计及既有验收记录，结果不另建副本。\n\n项目文件： docs/presentation/*.md\n项目文件： docs/presentation/components/*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1752,7 +1752,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
+      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选数值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1967,7 +1967,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、候选、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
+      "note": "职责：符合架构规范作用域与三个条件的技术选择，其问题、备选方案、决定、接受成本、证据和复核条件的固定正文。\n项目位置：docs/architecture/adr-NNNN-<slug>.md；实际出现符合条件的决定时创建，不因理由已写在其他位置而改换归属。\n架构和 Feature 设计引用决定；替代时保留原理由和新旧链接，不为普通局部选择建立记录。\n\n项目文件： docs/architecture/adr-[0-9][0-9][0-9][0-9]-*.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -2139,7 +2139,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Agent 自己的流程失误及出现次数；出现 3 次或严重时提出升级。\n项目位置：docs/lessons.md；事实类陷阱写项目知识。\n\n项目文件： docs/lessons.md",
+      "note": "职责：Agent 自己的流程失误及出现次数；出现 3 次或严重时提出升级。\n项目位置：docs/lessons.md；事实类陷阱写项目知识。\n框架维护使用同一规则的 framework/lessons.md，只在用户纠正 Agent 后写，见 framework/AGENTS.md。\n\n项目文件： docs/lessons.md\n文件： framework/lessons.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -3513,16 +3513,16 @@
       },
       "path": "orthogonal",
       "vertices": [],
-      "label": "按主题、日期查阅",
+      "label": "规定保存位置与清理",
       "stroke": {
-        "color": "#64748B",
-        "width": 1.5,
-        "dash": "dashed"
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#64748B",
+        "color": "#2563EB",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -4025,7 +4025,24 @@
         "port": "left"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1340,
+          "y": 1696
+        },
+        {
+          "x": 1340,
+          "y": 1620
+        },
+        {
+          "x": 2420,
+          "y": 1620
+        },
+        {
+          "x": 2420,
+          "y": 1696
+        }
+      ],
       "label": "按环境规范实际检查后记录",
       "stroke": {
         "color": "#2563EB",
@@ -5702,35 +5719,35 @@
       "id": "relation-research-gdd",
       "source": {
         "kind": "node",
-        "node": "doc-research",
+        "node": "doc-gdd",
         "port": "right"
       },
       "target": {
         "kind": "node",
-        "node": "doc-gdd",
+        "node": "doc-research",
         "port": "right"
       },
       "path": "orthogonal",
       "vertices": [
         {
           "x": 1434,
-          "y": 3712
+          "y": 2099
         },
         {
           "x": 1434,
-          "y": 2099
+          "y": 3712
         }
       ],
-      "label": "经采纳后更新所属要求",
+      "label": "引用已采纳的调研结论",
       "stroke": {
-        "color": "#2563EB",
-        "width": 2,
-        "dash": "solid"
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#2563EB",
+        "color": "#7C3AED",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -5744,7 +5761,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.38,
+        "labelPosition": 0.62,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -6536,10 +6553,78 @@
         },
         {
           "x": -146,
+          "y": 4180
+        },
+        {
+          "x": 1480,
+          "y": 4180
+        },
+        {
+          "x": 1480,
           "y": 4115
         }
       ],
       "label": "按主题查阅经验",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.48,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-lessons",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-entry",
+        "port": "left"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-lessons",
+        "port": "bottom"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": -146,
+          "y": 1696
+        },
+        {
+          "x": -146,
+          "y": 4330
+        },
+        {
+          "x": 1652,
+          "y": 4330
+        }
+      ],
+      "label": "流程失误记录",
       "stroke": {
         "color": "#64748B",
         "width": 1.5,
@@ -7052,7 +7137,24 @@
         "port": "top"
       },
       "path": "orthogonal",
-      "vertices": [],
+      "vertices": [
+        {
+          "x": 1182,
+          "y": 1780
+        },
+        {
+          "x": 1010,
+          "y": 1780
+        },
+        {
+          "x": 1010,
+          "y": 4030
+        },
+        {
+          "x": 1182,
+          "y": 4030
+        }
+      ],
       "label": "按 Skill 编写与同步",
       "stroke": {
         "color": "#2563EB",

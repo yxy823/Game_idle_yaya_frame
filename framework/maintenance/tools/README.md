@@ -35,7 +35,7 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 加 `--check-link-text` 时，两部分另外运行分发给项目的 [check-link-text.py](../../../project-source/tools/checks/check-link-text.py)，与链接检查共用同一份临时副本，列出链接文字与目标标题不符的链接，分发侧的路径同样映射回源文件；提示词正文不比较链接文字。比较规则见项目检查与测试工具的[check-link-text.py](../../../project-source/tools/README.md#check-link-textpy)。[提交钩子](#提交钩子)在不带选项的链接检查通过后，再带这个选项运行一次。
 
-退出码：`0` 没有失效链接，加 `--check-link-text` 时也没有不符合的链接文字；`1` 存在失效链接或不符合的链接文字。
+退出码：`0` 没有失效链接，加 `--check-link-text` 时也没有不符合的链接文字；`1` 存在失效链接或不符合的链接文字；`2` 检查没能完成，例如生成项目副本创建失败或子检查异常退出，原因写在标准错误中。
 
 ## 检查术语用词
 
@@ -125,6 +125,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 | --- | --- |
 | `project-source/agent-rules/*` | 已认可由领域 README 按任务条件读取规则的路径。 |
 | `framework/prompt-scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
+| `framework/qa/*` | 主题文件由生成的首页 `index.html` 列出，Q&A 的[主题](../../qa/README.md#主题)一节说明有意不在 Markdown 中另列。 |
 | `project-source/addons/resources_spreadsheet_view/LICENSE.md` | 保留的第三方插件许可。 |
 
 目录通配也包含子目录。这张表维护在脚本的 `DEFAULT_TARGET_EXCLUDE` 中，只排除列出的路径，不是对所有 `NAV_ONLY` 结果的豁免；终端和 JSON 输出的 `target_exclusions` 会列出本次生效的排除规则。

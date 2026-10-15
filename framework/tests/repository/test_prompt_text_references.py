@@ -1,10 +1,13 @@
 """Check plain-text path and heading references inside the prompt libraries."""
 import importlib.util
+import io
 import json
 import sys
 import tempfile
 import unittest
+from contextlib import redirect_stderr
 from pathlib import Path
+from unittest import mock
 
 
 MODULE = Path(__file__).resolve().parents[2] / "maintenance/tools/check_repository_links.py"
@@ -64,6 +67,16 @@ class PromptTextReferenceTests(unittest.TestCase):
     def test_bare_file_names_in_godot_prompts_refer_to_the_project_and_are_skipped(self):
         self.library("godot-development-prompts.json", {"项目": "读 AGENTS.md 的「沟通与交付」。"})
         self.assertEqual(self.broken(), set())
+
+
+class IncompleteCheckTests(unittest.TestCase):
+    def test_copy_failure_returns_2_instead_of_broken_links(self):
+        failure = ValueError("Project path must not contain Chinese characters or whitespace")
+        errors = io.StringIO()
+        with mock.patch.object(links, "run_checker", return_value={"broken": [], "files": 0, "links": 0}), \
+                mock.patch.object(links, "copy_project", side_effect=failure), redirect_stderr(errors):
+            self.assertEqual(links.main([]), 2)
+        self.assertIn("whitespace", errors.getvalue())
 
 
 if __name__ == "__main__":

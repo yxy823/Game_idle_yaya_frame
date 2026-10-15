@@ -56,7 +56,7 @@ flowchart TD
 | [qa/](qa/README.md) | Q&A：用户在讨论中问过、以后还会用到的问题，按主题分文件；框架做法只写结论并链接正文，通用专业知识在这里写完整 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |
 | `prompt-scenarios/` | `prompts/` 两份预设提示词库；[scenarios/](prompt-scenarios/scenarios/README.md) 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词、场景与场景图的检查和链接脚本 |
-| [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、开发场景图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查脚本 |
+| [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、开发场景图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查和连线穿过节点检查脚本 |
 | [maintenance/](maintenance/README.md) | 框架维护文档：维护与同步；`design-guidelines/` 职责设计准则；`validation/` 验证范围与测试改动场景表；`dependencies/` 第三方插件与问答渲染脚本的来源和本地改动；`tools/` 仓库链接检查与孤立文档扫描，README 另说明术语检查、措辞检查和钩子 |
 | `project-creation/` | 唯一复制清单 `project-files.json`；[tools/](project-creation/tools/README.md) 创建器 |
 | [tests/](tests/README.md) | `repository/` 从仓库根目录运行的维护回归；`external-project/` 需要指定外部项目的工具回归、调试台分析、插件与文档语言夹具，各子目录 README 说明放置与运行 |
@@ -82,7 +82,7 @@ flowchart TD
 只面向 Godot、只做 Windows PC、单人项目等每次都要遵守的约束，正文在根 `AGENTS.md` 的[基本约束](../AGENTS.md#基本约束)；本节只补充素材和发布的覆盖范围。
 
 - **素材工作**：覆盖准备要求、接收和检查；视觉美术、音乐与音效制作保持待扩展边界。
-- **暂不覆盖**：打包发布流程尚未确定。
+- **不覆盖**：打包与发布还没有规范，待办见[框架待办](todo.md)中的「打包与发布没有规范」。
 
 ## 阅读约定
 
@@ -101,6 +101,7 @@ flowchart TD
 | 场景图名称检查 `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
 | 场景图链接写入 `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
 | 文档图覆盖检查 `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
+| 连线穿过节点检查 `relationship-maps/tools/check_graph_edge_crossings.py` | 只读找出两张关系图中从别的节点上穿过的连线 | [检查连线穿过节点](relationship-maps/tools/README.md#检查连线穿过节点) |
 | 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [检查链接与锚点](maintenance/tools/README.md#检查链接与锚点) |
 | 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [检查术语用词](maintenance/tools/README.md#检查术语用词) |
 | 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [检查措辞](maintenance/tools/README.md#检查措辞) |

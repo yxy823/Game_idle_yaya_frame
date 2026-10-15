@@ -2,7 +2,7 @@
 
 这些模板给出流程之后要创建的文件和固定回复格式的结构，例如 Product、Feature 详情或 ADR。它们是结构的唯一来源；没有本地化副本。
 
-项目的初始 Feature 记录（`docs/feature-list.json`、`docs/feature-list-revisions.json`、`docs/test-registry.json`、`docs/progress.md` 和 `docs/project-rules.md`）不是模板。项目创建时直接把它们复制进 `docs/`，之后由项目自行维护。
+项目的初始文档与记录（`docs/feature-list.json`、`docs/feature-list-revisions.json`、`docs/test-registry.json`、`docs/progress.md` 和 `docs/project-rules.md`）不是模板。项目创建时直接把它们复制进 `docs/`，之后由项目自行维护。
 
 ## 使用模板
 
@@ -22,7 +22,7 @@
 | `feature-detail.json.tmpl` | 由 Product 派生的 Feature 详情。没有 `engineering_change` 字段 |
 | `engineering-feature-detail.json.tmpl` | Bug、重构或维护 Feature 的详情，带必需的 `engineering_change` 字段 |
 | `feature-design.md.tmpl` | `docs/features/F0XX-design.md` 的可选提纲。只使用有帮助的小节；AC 和测试义务留在 Feature JSON 中 |
-| `feature-completion-evidence.json.tmpl` | `docs/features/F0XX-evidence.json`：一个 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和工作区指纹。审核不记录在这里 |
+| `feature-completion-evidence.json.tmpl` | `docs/features/F0XX-evidence.json`：一个 Feature 的测试运行，以及需要时的人工验收，每项都绑定一个 Git 修订和内容指纹。审核不记录在这里 |
 | `manual-acceptance-checklist.json.tmpl` | 一个 Feature 的人工检查及用户的结论，按[人工验收文件](../contracts/manual-acceptance-files.md)准备和记录 |
 | `feature-learning-summary.md.tmpl` | Stage 8 经验反馈的回复格式，包括明确的“无新增经验”结果。不保存为文件 |
 | `architecture-overview.md.tmpl`、`architecture-subsystem.md.tmpl` | 可选的 `docs/architecture.md` 和子系统地图：模块、职责、依赖和相关的运行流程，与生成的引用事实分开 |

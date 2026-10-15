@@ -191,7 +191,7 @@ affected 集合是 Required Test Set 加上受影响组件的 active 验收测�
 
 1. **测试基础设施**：`yaya/tools/testing/**`、`addons/gdUnit4/**`、`docs/methodology-config.json`。升级 full，原因写 `test-infrastructure:<路径>`。
 2. **测试目录**：`tests/**`、`dev/debug/**/tests/**` 下的文件。存在且声明了 `test_` 方法的 gdUnit 套件直接选入，原因写 `changed-test:<路径>`；辅助文件和已删除的文件只沿依赖图找使用它的套件，自身不选入。
-3. **不是游戏文件**：不增加测试，也不触发 full。游戏文件只有两类：`project.godot`；扩展名为 `.gd`、`.tscn`、`.tres`、`.res`、`.gdshader`、`.gdshaderinc`、`.json`、`.cfg`、`.csv`、`.translation` 或图片、音频、字体素材，且不在根目录、`docs/`、`yaya/`、`addons/`、`.agents/`、`.claude/`、`.codex/` 下的文件。根目录的 `gdlint.json`、`export_presets.cfg` 这类工具配置不算游戏文件，导出配置按导出验证处理。因此只改 Markdown 和 `docs/**` 不增加测试。其他插件的改动按[引擎与插件升级](07-engineering-change.md#引擎与插件升级)处理。
+3. **不是游戏文件**：不增加测试，也不触发 full。游戏文件只有两类：`project.godot`；扩展名为 `.gd`、`.tscn`、`.tres`、`.res`、`.gdshader`、`.gdshaderinc`、`.json`、`.cfg`、`.csv`、`.txt`、`.translation` 或图片、音频、字体素材，且不在根目录、`docs/`、`yaya/`、`addons/`、`.agents/`、`.claude/`、`.codex/` 下的文件。根目录的 `gdlint.json`、`export_presets.cfg` 这类工具配置不算游戏文件，导出配置按导出验证处理。因此只改 Markdown 和 `docs/**` 不增加测试。其他插件的改动按[引擎与插件升级](07-engineering-change.md#引擎与插件升级)处理。
 4. **已认领的游戏文件**：匹配某个组件的 `source_paths` 时，该组件是反推组件。没有组件认领、但被 `dev/debug/` 以外的已认领文件依赖时，依赖者所属的组件是反推组件。只被 `dev/debug/` 下的文件依赖时不归入 `debug_console`，按第 6 条处理，因为调试台引用大量游戏文件。
 5. **`project.godot`**：按 Autoload 边找依赖它的文件，按第 4 条归组件；没有依赖者时升级 full。
 6. **其余游戏文件**：升级 full，原因写 `unclaimed-changed-file:<路径>`。已删除、且不匹配任何 `source_paths` 的游戏文件都在这里，因为依赖图里已经没有它。
@@ -281,7 +281,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 ### 运行记录
 
-每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 1），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、选中的路径、真实命令、源码指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
+每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 1），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、选中的路径、真实命令、内容指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
 完成判断只读取当前 Feature 的运行目录：
 

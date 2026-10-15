@@ -8,7 +8,7 @@
 
 需要的材料：
 
-- 要细化的 Product：预拆分中的候选名称，例如“背包整理”；不写时，Agent 按预拆分顺序和已有 Feature 的完成情况确定下一项，并在回复中说明。
+- 要细化的 Product：预拆分中的 Product 名称，例如“背包整理”；不写时，Agent 按预拆分顺序和已有 Feature 的完成情况确定下一项，并在回复中说明。
 - 对话中已确认、尚未保存的交付边界（可选）：用原话写，例如“这次不做键盘导航”。
 
 其余（GDD、预拆分、专业规格、已有实现和 Feature 状态）由 Agent 直接读取。
@@ -49,4 +49,4 @@
 
 ## 流程关联与衔接关系
 
-依据：[`product/NN-<delivery>.md` 标准章节](<../../../../../project-source/methodology/01-product-doc-structure.md#productnn-deliverymd-标准章节>)、[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)。当前 Product 包含新界面、而 Art Bible 只有占位时，可以建议先用[当前资产的美术方向不明确，需要定下来](<../美术、声音、界面与表现/当前资产的美术方向不明确，需要定下来.md>)定下方向；这只是建议，不阻塞规划。拆分 Feature 时，项目的第一份计划用[当前模块的需求已确认，准备做项目的第一份 Feature 计划](<当前模块的需求已确认，准备做项目的第一份 Feature 计划.md>)；该 Product 全部必要 Feature 真实完成后，再细化下一项。
+依据：[`product/NN-<delivery>.md` 标准章节](<../../../../../project-source/methodology/01-product-doc-structure.md#productnn-deliverymd-标准章节>)、[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)。当前 Product 包含新界面、而 Art Bible 只有占位时，可以建议先用[当前资产的美术方向不明确，需要定下来](<../美术、声音、界面与表现/当前资产的美术方向不明确，需要定下来.md>)定下方向；这只是建议，不阻塞规划。拆分 Feature 时，项目的第一份计划用[当前模块的需求已确认，准备做项目的第一份 Feature 计划](<当前模块的需求已确认，准备做项目的第一份 Feature 计划.md>)；该 Product 全部必要 Feature 真实完成后，下一个 Product 的细化和拆分用[前一个模块已完成，准备规划下一个 Product](<前一个模块已完成，准备规划下一个 Product.md>)。
