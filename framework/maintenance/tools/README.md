@@ -125,6 +125,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 | --- | --- |
 | `project-source/agent-rules/*` | 已认可由领域 README 按任务条件读取规则的路径。 |
 | `framework/prompt-scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
+| `framework/qa/*` | 主题文件由生成的首页 `index.html` 列出，Q&A 的[主题](../../qa/README.md#主题)一节说明有意不在 Markdown 中另列。 |
 | `project-source/addons/resources_spreadsheet_view/LICENSE.md` | 保留的第三方插件许可。 |
 
 目录通配也包含子目录。这张表维护在脚本的 `DEFAULT_TARGET_EXCLUDE` 中，只排除列出的路径，不是对所有 `NAV_ONLY` 结果的豁免；终端和 JSON 输出的 `target_exclusions` 会列出本次生效的排除规则。

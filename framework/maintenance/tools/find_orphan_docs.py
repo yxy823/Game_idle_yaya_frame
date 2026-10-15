@@ -43,6 +43,7 @@ DEFAULT_EXCLUDE = [".git/*", ".claude/*", ".godot/*", "tmp/*", "node_modules/*",
 DEFAULT_TARGET_EXCLUDE = [
     "project-source/agent-rules/*",
     "framework/prompt-scenarios/scenarios/*",
+    "framework/qa/*",
     "project-source/addons/resources_spreadsheet_view/LICENSE.md",
 ]
 DEFAULT_SEARCH_EXT = {".md", ".json", ".py", ".gd", ".toml", ".yaml", ".yml", ".tmpl",
