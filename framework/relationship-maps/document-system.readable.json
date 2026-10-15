@@ -2139,7 +2139,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：Agent 自己的流程失误及出现次数；出现 3 次或严重时提出升级。\n项目位置：docs/lessons.md；事实类陷阱写项目知识。\n\n项目文件： docs/lessons.md",
+      "note": "职责：Agent 自己的流程失误及出现次数；出现 3 次或严重时提出升级。\n项目位置：docs/lessons.md；事实类陷阱写项目知识。\n框架维护使用同一规则的 framework/lessons.md，只在用户纠正 Agent 后写，见 framework/AGENTS.md。\n\n项目文件： docs/lessons.md\n文件： framework/lessons.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -3427,16 +3427,16 @@
       },
       "path": "orthogonal",
       "vertices": [],
-      "label": "按主题、日期查阅",
+      "label": "规定保存位置与清理",
       "stroke": {
-        "color": "#64748B",
-        "width": 1.5,
-        "dash": "dashed"
+        "color": "#2563EB",
+        "width": 2,
+        "dash": "solid"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#64748B",
+        "color": "#2563EB",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -3930,26 +3930,26 @@
       "id": "relation-config-init",
       "source": {
         "kind": "node",
-        "node": "doc-configuration",
-        "port": "right"
-      },
-      "target": {
-        "kind": "node",
         "node": "doc-initialization",
         "port": "left"
       },
+      "target": {
+        "kind": "node",
+        "node": "doc-configuration",
+        "port": "right"
+      },
       "path": "orthogonal",
       "vertices": [],
-      "label": "实际检查后记录",
+      "label": "记录实际检查的配置",
       "stroke": {
-        "color": "#C2410C",
+        "color": "#7C3AED",
         "width": 1.5,
-        "dash": "solid"
+        "dash": "dashed"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#C2410C",
+        "color": "#7C3AED",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -5616,35 +5616,35 @@
       "id": "relation-research-gdd",
       "source": {
         "kind": "node",
-        "node": "doc-research",
+        "node": "doc-gdd",
         "port": "right"
       },
       "target": {
         "kind": "node",
-        "node": "doc-gdd",
+        "node": "doc-research",
         "port": "right"
       },
       "path": "orthogonal",
       "vertices": [
         {
           "x": 1434,
-          "y": 3712
+          "y": 2099
         },
         {
           "x": 1434,
-          "y": 2099
+          "y": 3712
         }
       ],
-      "label": "经采纳后更新所属要求",
+      "label": "引用已采纳的调研结论",
       "stroke": {
-        "color": "#2563EB",
-        "width": 2,
-        "dash": "solid"
+        "color": "#7C3AED",
+        "width": 1.5,
+        "dash": "dashed"
       },
       "arrow": "target",
       "text": {
         "fontSize": 14,
-        "color": "#2563EB",
+        "color": "#7C3AED",
         "align": "center",
         "fontFamily": "system",
         "opacity": 1,
@@ -5658,7 +5658,7 @@
         "targetMarker": "block",
         "sourceMarkerSize": 8,
         "targetMarkerSize": 9,
-        "labelPosition": 0.38,
+        "labelPosition": 0.62,
         "labelOffset": 0,
         "labelPadding": 4,
         "rounded": true,
@@ -6454,6 +6454,66 @@
         }
       ],
       "label": "按主题查阅经验",
+      "stroke": {
+        "color": "#64748B",
+        "width": 1.5,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 14,
+        "color": "#64748B",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 8,
+        "targetMarkerSize": 9,
+        "labelPosition": 0.48,
+        "labelOffset": 0,
+        "labelPadding": 4,
+        "rounded": true,
+        "radius": 12,
+        "jump": "none",
+        "routerPadding": 24,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "relation-entry-lessons",
+      "source": {
+        "kind": "node",
+        "node": "doc-project-entry",
+        "port": "left"
+      },
+      "target": {
+        "kind": "node",
+        "node": "doc-lessons",
+        "port": "bottom"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": -146,
+          "y": 1696
+        },
+        {
+          "x": -146,
+          "y": 4330
+        },
+        {
+          "x": 1652,
+          "y": 4330
+        }
+      ],
+      "label": "流程失误记录",
       "stroke": {
         "color": "#64748B",
         "width": 1.5,

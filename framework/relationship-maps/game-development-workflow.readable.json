@@ -14789,6 +14789,66 @@
       }
     },
     {
+      "id": "link-scene-035-scene-035",
+      "source": {
+        "kind": "node",
+        "node": "scene-035",
+        "port": "bottom"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-035",
+        "port": "right"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 3105,
+          "y": 2614
+        },
+        {
+          "x": 3232,
+          "y": 2614
+        },
+        {
+          "x": 3232,
+          "y": 2572.5
+        }
+      ],
+      "label": "下一个 Feature 可开始",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.5,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
       "id": "link-scene-035-scene-122",
       "source": {
         "kind": "node",
