@@ -51,3 +51,10 @@ Compare the pinned upstream base, these local changes, and the proposed new upst
 - `analyzer/code-analyzer.gd`: a directory that cannot be opened adds `Cannot open directory: <path>` to `input_errors` in both directory walks, so the CLI exits 3 even when sibling directories still provide scripts.
 
 `framework/tests/external-project/tool-regression/gdscript_lint_entry_contracts.gd` covers the blocked report and config writes and a dangling junction beside a readable directory; `gdscript_lint_editor_contracts.gd` covers the created missing config, the blocked malformed and unopenable configs, and the restored one.
+
+## Incomplete editor scans (2026-10-15)
+
+- `analyzer/code-analyzer.gd`: both directory analysis branches add file-open failures to `input_errors`, matching explicit-path analysis.
+- `dock.gd`: input errors appear in the existing results area with their paths. The dock clears the incomplete result and disables all three exports. Filters preserve the diagnostic; Scan remains available after the input is repaired.
+
+The editor contract fixture scans a dangling directory junction beside a readable script, checks the diagnostic and disabled exports, then removes the junction and verifies recovery. The one-line function contract unconditionally requires the expected function before checking its metrics.

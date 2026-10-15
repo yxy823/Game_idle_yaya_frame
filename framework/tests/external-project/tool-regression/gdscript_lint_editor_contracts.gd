@@ -83,11 +83,42 @@ func _run(report_path: String) -> void:
 	_expect(DirAccess.remove_absolute(CONFIG_PATH) == OK, "remove unopenable config")
 	_write(CONFIG_PATH, JSON.stringify(_project_settings(), "  "))
 	_expect(_scan_with_new_dock() != null, "restored config scans after reloading the dock")
+	_unreadable_directory_contract()
 	_restore()
 	await _wait_for_filesystem()
 	_write(report_path, JSON.stringify({"checks": _checks, "failures": _failures,
 		"engine": Engine.get_version_info()}, "  ") + "\n")
 	get_tree().quit(0 if _failures.is_empty() else 1)
+
+
+func _unreadable_directory_contract() -> void:
+	var directory := "res://lint-dock-contracts"
+	var target := ProjectSettings.globalize_path(directory + "-target")
+	var link := ProjectSettings.globalize_path(directory.path_join("locked"))
+	_expect(DirAccess.make_dir_absolute(directory) == OK, "create dock scan fixture")
+	_write(directory.path_join("sample.gd"), "extends Node\n")
+	_expect(DirAccess.make_dir_absolute(target) == OK, "create dock junction target")
+	_expect(OS.execute("cmd.exe", ["/c", "mklink", "/J",
+		link.replace("/", "\\"), target.replace("/", "\\")]) == 0, "create dock junction")
+	_expect(DirAccess.remove_absolute(target) == OK, "remove dock junction target")
+	_dock._run_analysis()
+	_expect(_dock.current_result == null, "incomplete scan keeps no exportable result")
+	_expect("Cannot open directory: " + directory.path_join("locked") in _dock.results_label.text,
+		"incomplete scan names the unreadable directory")
+	_expect(not _dock.scan_button.disabled, "incomplete scan allows another scan")
+	_expect(_dock.export_button.disabled and _dock.html_export_button.disabled \
+		and _dock.md_export_button.disabled, "incomplete scan disables all exports")
+	var diagnostic: String = _dock.results_label.text
+	_dock.settings_manager.remember_filter_selections = false
+	_dock._on_file_filter_changed("no-matching-file")
+	_expect(_dock.results_label.text == diagnostic, "filter cannot turn incomplete scan into success")
+	_expect(DirAccess.remove_absolute(link) == OK, "remove dock junction")
+	_dock._run_analysis()
+	_expect(_dock.current_result != null, "scan recovers after repairing the directory")
+	_expect(not _dock.export_button.disabled and not _dock.html_export_button.disabled \
+		and not _dock.md_export_button.disabled, "repaired scan enables all exports")
+	_expect(DirAccess.remove_absolute(directory.path_join("sample.gd")) == OK, "remove dock fixture script")
+	_expect(DirAccess.remove_absolute(directory) == OK, "remove dock fixture directory")
 
 
 func _expect_scan_blocked(label: String) -> void:

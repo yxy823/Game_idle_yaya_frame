@@ -714,6 +714,16 @@ func _run_analysis() -> void:
 		return
 	var analyzer = CodeAnalyzerScript.new(current_config)
 	current_result = analyzer.analyze_directory("res://")
+	if not current_result.input_errors.is_empty():
+		var errors: Array[String] = current_result.input_errors.duplicate()
+		current_result = null
+		results_label.text = "Scan incomplete:\n" + "\n".join(errors)
+		scan_button.disabled = false
+		export_button.disabled = true
+		html_export_button.disabled = true
+		md_export_button.disabled = true
+		_hide_busy_overlay()
+		return
 
 	# Restore saved type filter if Remember Filters is enabled
 	_restore_saved_type_filter()
