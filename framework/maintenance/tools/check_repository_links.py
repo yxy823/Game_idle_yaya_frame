@@ -98,6 +98,15 @@ def main(argv: list[str] | None = None) -> int:
         help="also run check-link-text.py on both parts; mismatching link text then fails the check",
     )
     args = parser.parse_args(argv)
+    try:
+        return check(args)
+    except (OSError, RuntimeError, ValueError) as error:
+        # 复制、子检查或读取失败时没有完整结果；返回 2，与“存在失效链接”的 1 区分。
+        print(f"链接检查无法完成：{error}", file=sys.stderr)
+        return 2
+
+
+def check(args: argparse.Namespace) -> int:
     entries = json.loads(MANIFEST.read_text(encoding="utf-8"))
 
     maintenance = run_checker(REPO_ROOT, "--exclude", "project-source")

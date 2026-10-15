@@ -35,7 +35,7 @@ python -B framework/maintenance/tools/check_repository_links.py
 
 加 `--check-link-text` 时，两部分另外运行分发给项目的 [check-link-text.py](../../../project-source/tools/checks/check-link-text.py)，与链接检查共用同一份临时副本，列出链接文字与目标标题不符的链接，分发侧的路径同样映射回源文件；提示词正文不比较链接文字。比较规则见项目检查与测试工具的[check-link-text.py](../../../project-source/tools/README.md#check-link-textpy)。[提交钩子](#提交钩子)在不带选项的链接检查通过后，再带这个选项运行一次。
 
-退出码：`0` 没有失效链接，加 `--check-link-text` 时也没有不符合的链接文字；`1` 存在失效链接或不符合的链接文字。
+退出码：`0` 没有失效链接，加 `--check-link-text` 时也没有不符合的链接文字；`1` 存在失效链接或不符合的链接文字；`2` 检查没能完成，例如生成项目副本创建失败或子检查异常退出，原因写在标准错误中。
 
 ## 检查术语用词
 
