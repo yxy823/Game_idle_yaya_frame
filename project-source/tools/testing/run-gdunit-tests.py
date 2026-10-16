@@ -15,6 +15,7 @@ from typing import Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.atomic_json import write_json
+from tools.lib.engine_executable import engine_executable_path
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import (
@@ -46,9 +47,10 @@ def _build_command(args: argparse.Namespace, report_root: Path) -> list[str]:
     engine = args.godot_binary
     if engine is None:
         engine = read_json(REPO_ROOT / "docs/methodology-config.json")["engine_executable"]
-    if not isinstance(engine, str) or not engine.strip():
+    executable = engine_executable_path(REPO_ROOT, engine)
+    if executable is None:
         raise ValueError("Godot executable must be configured or supplied with --godot-binary")
-    command = [str((REPO_ROOT / engine).resolve()), "--path", str(REPO_ROOT),
+    command = [str(executable), "--path", str(REPO_ROOT),
                "--debug", "--ignore-error-breaks", "--script", RUNNER_SCRIPT,
                "-rd", str(report_root)]
     for target in args.targets:

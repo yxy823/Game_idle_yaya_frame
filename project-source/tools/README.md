@@ -521,6 +521,7 @@ flowchart TD
 | `document_text.py` | 术语检查与措辞检查共用的文档读取、引号与代码遮蔽、文件选择和输出格式；链接文字检查复用其中的文件选择 |
 | `markdown_links.py` | 链接检查与链接文字检查共用的标题与锚点解析、链接及链接文字提取、Markdown 文件枚举与排除 |
 | `verification_snapshot.py` | Git 提交、当前内容指纹和起点以来的改动文件；测试和人工验收证据共用，不判断任务完成 |
+| `engine_executable.py` | 按 `engine_executable` 的配置契约解析 Godot 可执行文件路径；测试运行器、界面试用和就绪检查共用 |
 | `atomic_json.py` | 关闭文件流后原子替换 JSON，失败时保留目标原件并清理临时文件 |
 | `manual_acceptance.py` | 人工验收清单覆盖与快照绑定、逐项结果对照和原件复核 |
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |

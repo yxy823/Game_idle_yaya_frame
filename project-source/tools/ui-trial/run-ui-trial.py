@@ -13,6 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from tools.lib.engine_executable import engine_executable_path
 from tools.lib.gdunit_process import run_owned_process
 from ui_trial_project import TRIAL_SUFFIX, read_project_name
 
@@ -79,7 +80,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"ERROR: cannot read engine_executable from the copy's docs/methodology-config.json: {error}",
               file=sys.stderr)
         return 2
-    executable = (copy / engine).resolve() if isinstance(engine, str) and engine.strip() else None
+    executable = engine_executable_path(copy, engine)
     if executable is None or not executable.is_file():
         print(f"ERROR: Godot executable not found: {engine!r}", file=sys.stderr)
         return 2
