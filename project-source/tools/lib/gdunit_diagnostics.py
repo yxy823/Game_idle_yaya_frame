@@ -128,7 +128,6 @@ def unexpected_diagnostics(output: str, report_path: Path) -> list[str]:
     missing = expected - observed
     if missing:
         raise DiagnosticEvidenceError("scoped diagnostic evidence has no matching native record")
-    # Taking the larger count preserves unobserved-by-one-channel occurrences.
-    all_records = observed | Counter(records)
-    unexpected = all_records - expected
+    max_count_per_channel = observed | Counter(records)
+    unexpected = max_count_per_channel - expected
     return [record.describe() for record, count in unexpected.items() for _ in range(count)]

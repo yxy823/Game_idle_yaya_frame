@@ -228,6 +228,11 @@ def expected_gdunit_cases(root: Path, selectors: list[str]) -> list[dict[str, st
     return sorted(expected, key=lambda item: (item["path"], item["case"]))
 
 
+def check_gdunit_selectors(root: Path, selectors: list[str]) -> None:
+    """启动 Godot 之前报告不是 GDScript 套件的选择器和继承链错误。"""
+    expected_gdunit_cases(root, selectors)
+
+
 def _matches(case: dict[str, str], obligation: dict[str, Any]) -> bool:
     path = obligation["path"]
     if not (case["path"] == path or case["path"].startswith(path.rstrip("/") + "/")):
@@ -531,3 +536,8 @@ def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str,
     result["full_suite"] = {"status": "pass" if full else "not_required", **common,
                             "reasons": selection["full_suite"]["reasons"]}
     return result
+
+
+def require_completable_without_runs(root: Path, feature_id: str) -> None:
+    """没有自动测试义务时，仍校验人工验收要求，并拒绝当前快照上未解决的失败运行。"""
+    derive_test_evidence(root, feature_id, [])

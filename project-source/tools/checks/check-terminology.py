@@ -11,6 +11,7 @@ import sys
 from collections import Counter, defaultdict
 from dataclasses import asdict, dataclass
 from pathlib import Path
+from typing import NamedTuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
@@ -187,12 +188,24 @@ def _variants(alias: str, masked: str, options: argparse.Namespace):
             yield start, masked[start:end]
 
 
+class _BestTerm(NamedTuple):
+    shared_prefix: int
+    order: int
+    term: Term
+
+
+class _Occurrence(NamedTuple):
+    path: str
+    line_number: int
+    column: int
+    line_index: int
+    inline_column: int
+
+
 def discover_candidates(terms: list[Term], documents: list[Document], options: argparse.Namespace) -> list[Finding]:
     known = {alias for term in terms for alias in term.aliases} | {phrase for term in terms for phrase in term.forbidden}
-    # 同一候选词归到与它公共前缀最长的术语（同长取术语文件中靠前的），避免在几个术语下重复列出。
-    owners: dict[str, tuple[int, int, Term]] = {}
-    # 每处出现记为 (路径, 行号, 列号, 行序号, 行内列号)，后两项用于取上下文。
-    occurrences: dict[tuple[str, str], set[tuple[str, int, int, int, int]]] = defaultdict(set)
+    best_term_by_word: dict[str, _BestTerm] = {}
+    occurrences: dict[tuple[str, str], set[_Occurrence]] = defaultdict(set)
     for order, term in enumerate(terms):
         for alias in term.aliases:
             if alias in term.code_aliases:
@@ -204,21 +217,24 @@ def discover_candidates(terms: list[Term], documents: list[Document], options: a
                     if not options.include_compounds and any(word.startswith(other) for other in term.aliases
                                                               if not ASCII_TERM.fullmatch(other)):
                         continue
-                    rank = (_common_prefix(word, alias), -order)
-                    if word not in owners or rank > owners[word][:2]:
-                        owners[word] = (*rank, term)
-                    occurrences[(term.name, word)].add((document.path, document.lines[index],
-                                                        document.offsets[index] + start + 1, index, start + 1))
+                    shared = _common_prefix(word, alias)
+                    best = best_term_by_word.get(word)
+                    if best is None or (shared, -order) > (best.shared_prefix, -best.order):
+                        best_term_by_word[word] = _BestTerm(shared, order, term)
+                    occurrences[(term.name, word)].add(_Occurrence(
+                        document.path, document.lines[index], document.offsets[index] + start + 1, index, start + 1))
     document_lines = {document.path: document.original for document in documents}
     findings = []
-    for word, (_, _, term) in owners.items():
+    for word, (_, _, term) in best_term_by_word.items():
         places = sorted(occurrences[(term.name, word)])
         if len(places) < options.min_count:
             continue
-        for path, number, column, index, inline in places:
+        for place in places:
             findings.append(Finding(
-                path, number, column, "TERM-CANDIDATE", term.name, word, term.name, term.definition,
-                context_snippet(document_lines[path][index], inline, options.context_width),
+                place.path, place.line_number, place.column, "TERM-CANDIDATE", term.name, word, term.name,
+                term.definition,
+                context_snippet(document_lines[place.path][place.line_index], place.inline_column,
+                                options.context_width),
                 f"「{word}」与术语「{term.name}」开头相同，可能是另一种写法（定义见 {term.definition}）",
             ))
     return findings

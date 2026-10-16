@@ -19,7 +19,7 @@ from tools.lib.engine_executable import engine_executable_path
 from tools.lib.gdunit_process import run_owned_process
 from tools.lib.gdunit_diagnostics import native_diagnostics
 from tools.lib.test_run_evidence import (
-    start_run, finish_run, run_history_directory, derive_test_evidence, expected_gdunit_cases,
+    start_run, finish_run, run_history_directory, check_gdunit_selectors, require_completable_without_runs,
 )
 from tools.lib.test_selection import (
     auto_scope, build_changed_selection, build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors,
@@ -112,9 +112,8 @@ def _run_tests(args: argparse.Namespace) -> int:
             print("Test selection: " + json.dumps(selection, ensure_ascii=False), flush=True,
                   file=sys.stderr if not_required else sys.stdout)
             if not_required:
-                # Final selection validates manual acceptance; also retain unresolved failures.
                 if args.phase == "final":
-                    derive_test_evidence(REPO_ROOT, args.feature, [])
+                    require_completable_without_runs(REPO_ROOT, args.feature)
                 print(json.dumps({"status": "not_required", "feature_id": args.feature,
                                   "phase": args.phase, "scope": args.scope,
                                   "reason": "no automated test obligations"}))
@@ -150,7 +149,7 @@ def _run_tests(args: argparse.Namespace) -> int:
     try:
         if selection_error is not None:
             raise selection_error
-        expected_gdunit_cases(REPO_ROOT, args.targets)  # 继承链错误在启动 Godot 之前报告
+        check_gdunit_selectors(REPO_ROOT, args.targets)
         result["command"] = _build_command(args, directory)
         result["selectors"] = args.targets
         result["stage"] = "execution"

@@ -26,15 +26,18 @@ IMPORT_SIDECAR_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".bmp", ".t
                            ".wav", ".ogg", ".mp3", ".ttf", ".otf"}
 
 
-def excluded(root: Path, path: Path) -> bool:
-    relative = path.relative_to(root)
-    if any(part in EXCLUDED_DIRECTORY_NAMES for part in relative.parts[:-1]):
-        return True
-    # 调试台运行时保存的预设与组合不经编辑器重存，不写 UID。
-    if DEBUG_CONSOLE_SAVES_RE.fullmatch(relative.as_posix()):
+def excluded_directory(root: Path, directory: Path) -> bool:
+    relative = directory.relative_to(root)
+    if any(part in EXCLUDED_DIRECTORY_NAMES for part in relative.parts):
         return True
     # Godot 不导入含 .gdignore 的目录，其中的文件不会被编辑器改写。
-    return any((root / parent / ".gdignore").is_file() for parent in relative.parents)
+    return any((root / parent / ".gdignore").is_file() for parent in (relative, *relative.parents))
+
+
+def excluded(root: Path, path: Path) -> bool:
+    # 调试台运行时保存的预设与组合不经编辑器重存，不写 UID。
+    return (excluded_directory(root, path.parent)
+            or bool(DEBUG_CONSOLE_SAVES_RE.fullmatch(path.relative_to(root).as_posix())))
 
 
 def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
@@ -43,9 +46,8 @@ def resource_files(root: Path, suffixes: set[str]) -> list[Path]:
 
     files = []
     for directory, subdirectories, names in os.walk(root, onerror=fail):
-        # excluded() 接受文件路径；用目录下的假定文件判断整棵子目录是否排除。
         subdirectories[:] = [name for name in subdirectories
-                             if not excluded(root, Path(directory) / name / "_")]
+                             if not excluded_directory(root, Path(directory) / name)]
         files.extend(path for name in names if (path := Path(directory) / name).suffix.lower() in suffixes
                      and path.is_file() and not excluded(root, path))
     return sorted(files)
