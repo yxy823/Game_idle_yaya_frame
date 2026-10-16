@@ -49,7 +49,7 @@
 - **名称后缀**：`name` 直接写出用途，例如 `in-game-tuning`。只在会和同一会话里可见的其他 Skill 重名时加后缀：分发 Skill 和用户全局 `~/.agents/skills/` 中的 Skill 同名时加 `-godot`，例如 `technical-documentation-writing-godot`；框架自用 Skill 加 `-yaya`。常和游戏项目一起加入会话的分析工具项目（GVA、GAA）已给自己的 Skill 加了 `-gva`、`-gaa`，不需要分发 Skill 避让。没有重名的不加后缀。
 - 维护时保留没有获准调整的调用策略和无关配置。
 - 格式或产品行为发生变化时，按当前的 Codex 官方资料和可用的 `skill-creator` 核对字段与格式；普通改字不需要每次重新查证。
-- 格式正确、路径有效、加载后的行为正确、客户端实际选中，是四件不同的事，分别验证。
+- 格式正确、路径有效、加载后的行为正确、客户端实际选中，是四件不同的事，分别验证。后两件按[Skill 与规则的行为演练](../validation/validation-scope.md#skill-与规则的行为演练)验证。
 
 ## 排版与持续调整
 
