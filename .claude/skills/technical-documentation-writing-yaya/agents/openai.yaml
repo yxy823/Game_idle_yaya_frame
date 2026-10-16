@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 框架文档编写"
+  short_description: "编写框架手册、场景与维护说明，明确材料归属、操作入口和验证边界"
+
+policy:
+  allow_implicit_invocation: true

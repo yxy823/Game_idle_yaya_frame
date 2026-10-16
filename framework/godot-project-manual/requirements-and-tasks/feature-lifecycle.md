@@ -69,10 +69,9 @@ flowchart TD
     classDef optional fill:#e3f2fd,stroke:#1e88e5,color:#000
     class s1,s5 stop
     class s55,s6 optional
-    linkStyle 4,7,14 stroke:#d32f2f,stroke-width:2px
 ```
 
-图例：黄色是需要用户决定或确认的步骤，蓝色和虚线是只在特定条件下执行的步骤，红色连线是不通过或被拒绝后返回。
+图例：黄色是需要用户决定或确认的步骤，蓝色和虚线是只在特定条件下执行的步骤。
 
 | 阶段 | 执行条件 | 产出 |
 | --- | --- | --- |

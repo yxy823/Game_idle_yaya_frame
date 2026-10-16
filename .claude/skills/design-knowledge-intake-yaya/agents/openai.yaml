@@ -1,0 +1,6 @@
+interface:
+  display_name: "设计经验引入"
+  short_description: "把外部设计经验筛选、去重、归属后写进分发 Skill 的设计参考文件，并记录出处"
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 框架复盘"
+  short_description: "从实际经过找出值得改的地方，判断每条建议的归属，写成报告交用户选择范围"
+
+policy:
+  allow_implicit_invocation: true
