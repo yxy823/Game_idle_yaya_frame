@@ -98,6 +98,7 @@
 框架说明的详细写法在 [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) 中维护，本节只列检查要点：
 
 - **页面分工**：见[两本手册的分工](../README.md#两本手册的分工)；场景与提示词的对应关系、栏目和编号要求见[场景速查手册的编写与维护](../prompt-scenarios/scenarios/README.md)。
+- **Godot 项目手册的页面要素与风格**：每类页面必须有的要素、称呼和“行为配原因”等写法，见 [Godot 项目手册的组织与语言风格](../../.agents/skills/technical-documentation-writing-yaya/references/manual-style.md)；改完手册页面后按其中的核对一节逐条检查。
 - **11 类信息**：来自框架版写作 Skill 的流程参考，只用于框架的场景页，不作为 Godot 项目文档的默认结构。
 - **场景正文**：作者按本次变化核对标题、输入、单一目标、步骤与出口；调整列表时保留原有的条件和先后顺序。路径检查只证明目录对应，见[路径校验的职责](design-guidelines/04-prompts-and-scenarios.md#路径校验的职责)。
 - **两本手册不互相引用**：必要的解释就地写出；权威规范、工具和公共术语两册都可以引用。
