@@ -19,7 +19,7 @@
 | 框架共用术语 | `framework/terminology.md`；项目自己的业务词汇不写回这里 |
 | 职责设计准则与审核报告 | 长期准则在 [design-guidelines/](design-guidelines/README.md)；当次报告见[当次报告的保存与清理](design-guidelines/05-reviews-and-reports.md#当次报告的保存与清理) |
 | 规则、Skill 与任务提示词文件的编写 | 根 `AGENTS.md` 与[规则与提示词文件](design-guidelines/02-instruction-files.md) |
-| 框架自用 Skill | 仓库根目录的 `.agents/skills/`。参考资料、配套脚本和私有依赖都放在各 Skill 目录内，不分发给项目 |
+| 框架自用 Skill | 仓库根目录的 `.agents/skills/`。参考资料、配套脚本和私有依赖都放在各 Skill 目录内，不分发给项目。`.claude/skills/` 是相同的副本，因为 Claude Code 只从这里发现 Skill；修改后用 `robocopy .agents\skills .claude\skills /MIR` 同步，提交钩子检查两份一致 |
 | 提示词、场景与关系图的维护方法 | `.agents/skills/prompt-and-graph-maintenance-yaya/` |
 | 框架文档的写作方法 | `.agents/skills/technical-documentation-writing-yaya/` |
 | 框架修改与试验的复盘方法 | `.agents/skills/framework-retro-yaya/` |

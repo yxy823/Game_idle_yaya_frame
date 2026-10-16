@@ -64,7 +64,7 @@ python -B project-source/tools/checks/check-wording.py --list
 
 ## 提交钩子
 
-仓库根目录的 `.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件时，它依次运行四项检查，任何一项失败就拒绝提交：
+仓库根目录的 `.githooks/pre-commit` 在每次 `git commit` 时运行。本次暂存了 `.md` 或 `.json` 文件，或者暂存了框架 Skill 时，它运行下表中适用的检查，任何一项失败就拒绝提交：
 
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
@@ -72,8 +72,9 @@ python -B project-source/tools/checks/check-wording.py --list
 | [检查措辞](#检查措辞) `--level hard` | 同上 | 规则文件中有硬性检查项的命中 |
 | [检查链接与锚点](#检查链接与锚点) | 整个仓库，因为改标题或删文件会让其他文档中的链接失效 | 有失效链接 |
 | 链接文字检查：同一脚本加 `--check-link-text` | 同上；链接检查通过后才运行，因为带这个选项时失效链接也会让脚本失败，分开运行才能分别报告两项 | 有链接文字与目标标题不符的链接 |
+| Skill 目录一致性（钩子内置，没有单独的脚本） | 本次暂存了 `.agents/skills/` 或 `.claude/skills/` 下的任何文件时，比较暂存区中两个目录的内容 | 两个目录不同。Codex 读前者，Claude Code 读后者，所以两份必须相同 |
 
-没有暂存 `.md` 或 `.json` 文件时直接通过。钩子检查工作区中的文件内容，不是暂存区；它用 PATH 中的 `python` 运行检查。被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。
+既没有暂存 `.md` 或 `.json` 文件，也没有暂存框架 Skill 时直接通过；只暂存了框架 Skill 中的非文档文件时，只运行 Skill 目录一致性检查。钩子检查工作区中的文件内容，不是暂存区；它用 PATH 中的 `python` 运行检查。被拒绝后，按输出中的位置改正文档，重新 `git add` 再提交。
 
 钩子不随 clone 自动启用。新 clone 本仓库后，在仓库根目录运行一次：
 

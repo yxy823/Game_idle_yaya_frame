@@ -1,6 +1,6 @@
 # 框架维护约定
 
-本仓库维护一套 Godot 起始框架：`framework/` 是维护材料，`.agents/skills/` 是框架自用 Skill，`project-source/` 是复制进生成项目的分发源。`project-source/` 里的规则、流程和 Skill 在本仓库只作为源材料阅读，不启用项目开发的 Stage。文本格式以 [.editorconfig](.editorconfig)、[.gitattributes](.gitattributes) 为准；术语按[框架术语](framework/terminology.md)。
+本仓库维护一套 Godot 起始框架：`framework/` 是维护材料，`.agents/skills/` 是框架自用 Skill（`.claude/skills/` 是给 Claude Code 的相同副本），`project-source/` 是复制进生成项目的分发源。`project-source/` 里的规则、流程和 Skill 在本仓库只作为源材料阅读，不启用项目开发的 Stage。文本格式以 [.editorconfig](.editorconfig)、[.gitattributes](.gitattributes) 为准；术语按[框架术语](framework/terminology.md)。
 
 ## 基本约束
 
