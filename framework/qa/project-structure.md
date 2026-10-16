@@ -95,3 +95,20 @@ tests/ --> game/ & components/: 测试
 - `main/`、`game/`、`components/` 和 `project.godot` 不能引用 `dev/`。`tests/invariants/` 里的依赖方向测试每次全量测试都会检查这一点，所以这条规则不靠人记。
 
 **依据**：[游戏职责与项目组织指南](../../project-source/defaults/docs/game-organization.md)、[依赖方向测试](../../project-source/defaults/tests/invariants/debug_dependency_test.gd)
+
+## 几个 Skill 要用同一份参考资料时，放在哪里？
+
+**结论**：只放一份，放在负责这类内容的那个 Skill 的 `references/` 里，其他 Skill 用相对路径链接过去。行业惯例是每个 Skill 自带全部资料、不依赖别的 Skill；本框架可以跨 Skill 链接，因为分发 Skill 总是整套复制进项目，不会单独安装其中一个。
+
+**为什么**：行业惯例要求自带资料，是因为 Skill 常被单独分享和安装。只拷走一个 Skill 时，指向别的 Skill 的链接就断了，所以宁可在几个 Skill 里各放一份副本。
+
+本框架的情况不同：创建项目时，`project-source/skills/` 下的全部 Skill 一起复制进项目。只要被链接的 Skill 在同一套里，链接就不会断。这时各放一份副本反而有害：改了一份忘了另一份，几个 Skill 就会给出不同的默认值。
+
+| 做法 | 适合的情况 | 代价 |
+| --- | --- | --- |
+| 每个 Skill 各带一份 | Skill 单独分享、单独安装 | 副本要同步修改，容易不一致 |
+| 只放一份，其他 Skill 链接过去 | 整套 Skill 一起分发 | 单独拷走一个 Skill 时链接失效 |
+
+例如界面动效的时长和缓动：负责美术方向的 design-art-direction 拥有 `ui-motion.md`，design-game-presentation 和 review-art 都链接这一份。放哪个 Skill 下，看谁负责决定这类内容，不看谁用得多。
+
+**依据**：Anthropic 官方 Skill 合集的 [README](https://github.com/anthropics/skills) 写明每个 Skill 自成一个文件夹；同一事实只写一份见根 `AGENTS.md` 的[核心决策原则](../../AGENTS.md#核心决策原则)；创建项目时整套复制的映射见 [project-files.json](../project-creation/project-files.json)。
