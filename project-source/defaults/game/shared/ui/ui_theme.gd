@@ -1,7 +1,8 @@
 extends Node
 ## Autoload UiTheme: fills the project theme (Project Settings gui/theme/custom) from the shared
 ## UI tokens and refills it after a token changes. The project theme reaches every Control,
-## including those under a CanvasLayer, which a theme on the root window does not.
+## including those under a CanvasLayer, which a theme on the root window does not. The file holds
+## the same build so the editor's 2D view shows the tokens; a development script saves it.
 
 const PALETTE := preload("res://game/shared/tuning/ui/primitives/palette.tres")
 const FONT_SIZES := preload("res://game/shared/tuning/ui/primitives/font_sizes.tres")
@@ -17,24 +18,29 @@ const BUTTON_DANGER := preload("res://game/shared/tuning/ui/semantic/buttons/dan
 const LINE_EDIT := preload("res://game/shared/tuning/ui/semantic/line_edit.tres")
 const PROGRESS_BAR := preload("res://game/shared/tuning/ui/semantic/progress_bar.tres")
 
-var _builder := UiThemeBuilder.new()
+var _builder := builder()
 var _rebuild_queued := false
 
 
+static func builder() -> UiThemeBuilder:
+	var result := UiThemeBuilder.new()
+	result.palette = PALETTE
+	result.font_sizes = FONT_SIZES
+	result.spacing = SPACING
+	result.radii = RADII
+	result.border_widths = BORDER_WIDTHS
+	result.shadows = SHADOWS
+	result.text = TEXT
+	result.panel = PANEL
+	result.button_primary = BUTTON_PRIMARY
+	result.button_secondary = BUTTON_SECONDARY
+	result.button_danger = BUTTON_DANGER
+	result.line_edit = LINE_EDIT
+	result.progress_bar = PROGRESS_BAR
+	return result
+
+
 func _ready() -> void:
-	_builder.palette = PALETTE
-	_builder.font_sizes = FONT_SIZES
-	_builder.spacing = SPACING
-	_builder.radii = RADII
-	_builder.border_widths = BORDER_WIDTHS
-	_builder.shadows = SHADOWS
-	_builder.text = TEXT
-	_builder.panel = PANEL
-	_builder.button_primary = BUTTON_PRIMARY
-	_builder.button_secondary = BUTTON_SECONDARY
-	_builder.button_danger = BUTTON_DANGER
-	_builder.line_edit = LINE_EDIT
-	_builder.progress_bar = PROGRESS_BAR
 	for token in _builder.tokens():
 		token.changed.connect(_queue_rebuild)
 	_rebuild()

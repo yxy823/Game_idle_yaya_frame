@@ -1,16 +1,18 @@
 class_name UiPalette
 extends Resource
-## Primitive color tokens: a gray ramp and one accent ramp. Semantic tokens pick one by Swatch.
+## Primitive color tokens: a gray ramp, an accent ramp and a danger ramp. Semantic tokens pick one
+## by Swatch.
 
 enum Swatch {
 	GRAY_50, GRAY_100, GRAY_200, GRAY_300, GRAY_400, GRAY_500, GRAY_600, GRAY_700, GRAY_800,
-	GRAY_900, ACCENT_400, ACCENT_500, ACCENT_600, SHADOW,
+	GRAY_900, ACCENT_400, ACCENT_500, ACCENT_600, DANGER_400, DANGER_500, DANGER_600, SHADOW,
 }
 
 ## Field of each Swatch, in enum order.
 const FIELDS: Array[StringName] = [
 	&"gray_50", &"gray_100", &"gray_200", &"gray_300", &"gray_400", &"gray_500", &"gray_600",
-	&"gray_700", &"gray_800", &"gray_900", &"accent_400", &"accent_500", &"accent_600", &"shadow",
+	&"gray_700", &"gray_800", &"gray_900", &"accent_400", &"accent_500", &"accent_600",
+	&"danger_400", &"danger_500", &"danger_600", &"shadow",
 ]
 
 @export var gray_50 := Color("f7f7f8"):
@@ -64,6 +66,18 @@ const FIELDS: Array[StringName] = [
 @export var accent_600 := Color("2b56ad"):
 	set(value):
 		accent_600 = value
+		emit_changed()
+@export var danger_400 := Color("e5484d"):
+	set(value):
+		danger_400 = value
+		emit_changed()
+@export var danger_500 := Color("d32f2f"):
+	set(value):
+		danger_500 = value
+		emit_changed()
+@export var danger_600 := Color("a82424"):
+	set(value):
+		danger_600 = value
 		emit_changed()
 @export var shadow := Color(0.0, 0.0, 0.0, 0.35):
 	set(value):

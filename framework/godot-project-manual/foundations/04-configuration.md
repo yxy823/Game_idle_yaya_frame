@@ -101,7 +101,7 @@ GAA 使用本机已安装该工具的解释器，不随项目复制；后台调�
 | application | 名称 `New Godot Project`；features 包含 `4.7` | 表示目标版本和显示名，不证明工具已安装 |
 | application | `run/main_scene="res://main/main.tscn"` | 已有最小入口供后续组装；没有预置玩法，创建时不运行 |
 | display/window | viewport 默认 `1600×900`，拉伸 `canvas_items` + `expand`；渲染器未设置（Forward+） | 只是起点。第一个 Feature 开工前，项目按美术风格和目标显示器比例确定显示基线（平台固定为 Windows PC），见[视口、窗口与拉伸](../../../project-source/agent-rules/40-project-config/subsystem-settings.md#视口窗口与拉伸)；编辑器嵌入运行仍受宿主区域约束 |
-| autoload、gui | Autoload `UiTheme`；`theme/custom` 指向 `game/shared/ui/project_theme.tres` | 运行时用 `game/shared/tuning/ui/` 下的设计 token 生成项目主题，token 变化后重建；放置规则见场景 UI 与脚本绑定的[布局](../../../project-source/agent-rules/20-scenes/ui-and-scripts.md#布局) |
+| autoload、gui | Autoload `UiTheme`；`theme/custom` 指向 `game/shared/ui/project_theme.tres` | `project_theme.tres` 保存默认设计 token 生成的主题，编辑器的 2D 视图显示 token 外观；token 改动后按调试台的[收尾步骤](../../../project-source/defaults/dev/debug/_shared/README.md#收尾步骤)重新生成。运行时 `UiTheme` 用 `game/shared/tuning/ui/` 下的 token 重建项目主题，token 变化后再次重建；放置规则见场景 UI 与脚本绑定的[布局](../../../project-source/agent-rules/20-scenes/ui-and-scripts.md#布局) |
 | editor_plugins | 启用 gdUnit4、Script-IDE、Inspector Tabs、Kanban Tasks | 其余随带插件按需启用，具体用途与限制见下文 |
 | gdunit4 session_hooks | 使用 `gdunit_diagnostic_session.gd` | 测试运行关联真实引擎诊断 |
 | gdunit4 report | 打开 push error、script error 和 orphan 诊断 | 测试需要保留引擎错误事实 |

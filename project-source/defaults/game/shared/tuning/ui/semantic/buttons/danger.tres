@@ -4,9 +4,10 @@
 
 [resource]
 script = ExtResource("1")
-background = 9
-background_hover = 8
-background_pressed = 7
+background = 14
+background_hover = 13
+background_pressed = 15
 background_disabled = 2
 font_color = 0
-border_color = 9
+border_color = 15
+focus_color = 9

@@ -5,7 +5,7 @@
 - 由 Container 管理的子节点，通过尺寸标志和最小尺寸调整，不在代码或检查器中直接改它的位置和大小；Container 会覆盖这些值。
 - 铺满视口的 UI 场景，根 Control 显式设置 Full Rect 锚点预设或等价的锚点与偏移。新建 Control 的默认锚点不会铺满视口。
 - 非全屏的面板、弹窗和提示框，可以用固有尺寸或最小尺寸；写清尺寸由谁决定。
-- 界面的颜色、字号、间距、圆角、边框和阴影来自项目主题。项目主题由 Autoload `UiTheme` 用 `game/shared/tuning/ui/` 下的设计 token 生成，界面不在节点上写死这些值。按钮选用 `ButtonPrimary`、`ButtonSecondary`、`ButtonDanger` 等主题类型变体；需要共享的悬停与按下动效时，用 `GameButton` 代替 Button。
+- 界面的颜色、字号、间距、圆角、边框和阴影来自项目主题。项目主题由 `game/shared/tuning/ui/` 下的设计 token 生成，保存在 `game/shared/ui/project_theme.tres`，所以编辑器的 2D 视图也显示 token 外观；token 改动后按调试台的[收尾步骤](../../../dev/debug/_shared/README.md#收尾步骤)重新生成。界面不在节点上写死这些值。按钮选用 `ButtonPrimary`、`ButtonSecondary`、`ButtonDanger` 等主题类型变体；需要共享的悬停与按下动效时，用 `GameButton` 代替 Button。
 - 样式按使用它的界面数量放置：两个以上界面使用的放进 `game/shared/`，在 token 中增加语义值和主题类型变体；只有一个界面使用的放在该界面的 `game/<对象>/`，取值放进它的调参资源，颜色等可以引用 token 的原始值。使用范围在调试台的样式总览中查看，见[界面的开发顺序](../../methodology/13-debug-console-and-validation.md#界面的开发顺序)。
 - 一个界面内多个节点重复设置相同的主题覆盖时，改用该界面的 Theme 或主题类型变体（Theme Type Variation）。
 - 更换 UI 节点的父节点时，检查锚点、偏移、尺寸标志、`mouse_filter`、焦点、主题继承和 Container 所有权。

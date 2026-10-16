@@ -44,6 +44,8 @@ func test_each_button_style_is_a_button_type_variation() -> void:
 		assert_str(theme.get_type_variation_base(variation)).is_equal("Button")
 		assert_bool(theme.has_stylebox(&"normal", variation)).is_true()
 		assert_bool(theme.has_color(&"font_color", variation)).is_true()
+	var danger := theme.get_stylebox(&"normal", &"ButtonDanger") as StyleBoxFlat
+	assert_that(danger.bg_color).is_equal(palette.danger_500)
 
 
 ## Game UI usually sits under a CanvasLayer, which a theme set on the root window never reaches.
