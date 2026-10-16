@@ -1,0 +1,6 @@
+[gd_resource type="Resource" format=3 uid="uid://do7gx663mtg77"]
+
+[ext_resource type="Script" uid="uid://c816bego8hxnh" path="res://dev/debug/shared/tests/fixtures/wider_spacing.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

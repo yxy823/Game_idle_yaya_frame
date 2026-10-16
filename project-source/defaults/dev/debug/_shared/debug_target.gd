@@ -41,6 +41,11 @@ func title() -> String:
 	return shown if not shown.is_empty() else id
 
 
+## The adapter may declare MAIN_SCENE, which picking the target opens; "" when it names none.
+func main_scene() -> String:
+	return String(_constant("MAIN_SCENE", ""))
+
+
 ## The adapter may declare CATEGORIES {"shop/feedback": "反馈"}; "" when it names none.
 func category_title(path: String) -> String:
 	return String(_constant("CATEGORIES", {}).get(path, ""))

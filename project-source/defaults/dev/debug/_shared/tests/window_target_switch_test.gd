@@ -24,6 +24,8 @@ func before_test() -> void:
 	_window.force_native = true
 	get_tree().root.add_child(_window)
 	_window.configure("user://tests/debug-switch-save.json")
+	# Picking a target opens its main scene; the test runner's scene stays.
+	_window.playback.reload_scene = func(_path: String) -> Error: return OK
 	_defaults.clear()
 	for slot: Slot in _window.session.slots:
 		var values: Dictionary = {}

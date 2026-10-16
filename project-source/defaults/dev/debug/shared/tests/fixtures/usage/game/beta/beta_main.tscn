@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dcf511cxux3ty"]
+
+[ext_resource type="Script" uid="uid://vbfi01mbp531" path="res://game/shared/ui/game_button.gd" id="1"]
+
+[node name="BetaMain" type="VBoxContainer"]
+
+[node name="Card" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_type_variation = &"AlphaCard"
+
+[node name="Back" type="Button" parent="."]
+layout_mode = 2
+script = ExtResource("1")

@@ -148,7 +148,7 @@ func _build_tuning_page() -> VBoxContainer:
 	page.add_child(compare)
 	toolbar = Toolbar.new()
 	toolbar.requested.connect(_command)
-	toolbar.target_selected.connect(_select_target)
+	toolbar.target_selected.connect(open_target)
 	toolbar.speed_selected.connect(func(value: float) -> void: playback.set_speed(value))
 	toolbar.loops_selected.connect(func(value: int) -> void:
 		playback.loop_count = value
@@ -206,6 +206,25 @@ func _select_target(identity: String) -> void:
 	panel.bind(null, session.store.list_names)
 	slot_list.refresh(true)
 	_refresh()
+
+
+## Picking a target from the playback bar or the style overview: show its slots, and open its
+## main scene unless the game already shows it.
+func open_target(identity: String) -> void:
+	if playback.locked():
+		return
+	_select_target(identity)
+	var target := session.active
+	if target == null or target.id != identity or target.main_scene().is_empty() \
+			or target.adapter.matches(get_tree().current_scene):
+		return
+	var scene: String = target.main_scene()
+	# Playback's scene loader, so tests that replace it keep the runner's scene.
+	var error: Error = playback.reload_scene.call(scene) if playback.reload_scene.is_valid() \
+		else get_tree().change_scene_to_file(scene)
+	if error != OK:
+		report({"error": error, "message": scene,
+			"text": "没能打开%s的场景：场景文件读不出来。请让 Agent 检查" % target.title()})
 
 
 func _scene_changed() -> void:
