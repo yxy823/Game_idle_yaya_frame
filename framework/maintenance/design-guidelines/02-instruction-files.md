@@ -45,6 +45,7 @@
 ## Skill 的格式与元数据
 
 - `SKILL.md` 必须有 `name` 和 `description`。界面显示的名称和短描述保存在 `agents/openai.yaml` 的 `interface` 中，它们不能代替正文。
+- **名称前缀**：前缀只在属于用途时保留，例如 `review-art` 和 `design-art-direction` 去掉前缀就分不清；不为按类别分组而加前缀。分发 Skill 都在游戏项目里使用，`project-` 这类前缀说明不了用途。
 - **名称后缀**：`name` 直接写出用途，例如 `in-game-tuning`。只在会和同一会话里可见的其他 Skill 重名时加后缀：分发 Skill 和用户全局 `~/.agents/skills/` 中的 Skill 同名时加 `-godot`，例如 `technical-documentation-writing-godot`；框架自用 Skill 加 `-yaya`。常和游戏项目一起加入会话的分析工具项目（GVA、GAA）已给自己的 Skill 加了 `-gva`、`-gaa`，不需要分发 Skill 避让。没有重名的不加后缀。
 - 维护时保留没有获准调整的调用策略和无关配置。
 - 格式或产品行为发生变化时，按当前的 Codex 官方资料和可用的 `skill-creator` 核对字段与格式；普通改字不需要每次重新查证。
