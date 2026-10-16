@@ -19,7 +19,7 @@ def make_run(root: Path, *, scope: str = "full", skipped: bool = False,
     directory = root / "reports/gdunit-wrapper/F001" / ("run-" + uuid.uuid4().hex)
     directory.mkdir(parents=True)
     result = start_run(root, directory, "F001", phase, scope)
-    result.update(command=[sys.executable], selectors=selectors)
+    result.update(command=[sys.executable], selectors=selectors, stage="execution")
     cases = [case for case in expected if case["case"] != omit]
     discovery = [{"id": f"{case['path']}::{case['case']}", "path": case["path"],
                   "case": case["case"], "method": case["case"]} for case in expected]

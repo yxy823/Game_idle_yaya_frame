@@ -16,7 +16,11 @@ from typing import Any
 
 from tools.lib.atomic_json import write_json
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
-from tools.lib.test_selection import execution_selectors, normalized_path, read_json, build_selection
+from tools.lib.test_selection import (
+    auto_scope, execution_selectors, normalized_path, read_json, build_selection,
+)
+
+RUN_SCHEMA_VERSION = 2
 
 
 class RunEvidenceError(ValueError):
@@ -299,7 +303,7 @@ def _run_records(root: Path, feature_id: str | None, *,
             continue
         try:
             record = read_json(path)
-            if type(record.get("schema_version")) is not int or record["schema_version"] != 1:
+            if type(record.get("schema_version")) is not int or record["schema_version"] != RUN_SCHEMA_VERSION:
                 raise RunEvidenceError("unsupported run result schema")
             if record.get("run_id") != path.parent.name:
                 raise RunEvidenceError("run identity does not match its directory")
@@ -314,22 +318,23 @@ def _run_records(root: Path, feature_id: str | None, *,
                 raise RunEvidenceError("run phase must be baseline or final")
             if record.get("status") not in ("running", "failed", "passed"):
                 raise RunEvidenceError("run status must be running, failed or passed")
-            if record.get("scope") not in ("auto", "required", "affected", "full"):
-                raise RunEvidenceError("run scope must be auto, required, affected or full")
+            if "scope" not in record or record["scope"] not in (None, "required", "affected", "full"):
+                raise RunEvidenceError("run scope must be required, affected, full or null")
+            if record.get("stage") not in ("preparation", "execution"):
+                raise RunEvidenceError("run stage must be preparation or execution")
             if (not isinstance(record.get("selectors"), list)
                     or any(not isinstance(item, str) or not item for item in record["selectors"])):
                 raise RunEvidenceError("run selectors must be a list of nonempty paths")
-            preparation = (record.get("command") == [] and record["selectors"] == []
-                           and record.get("process", {}) is None)
-            if feature_id is not None and record["scope"] == "auto":
-                if record["status"] == "passed" or not preparation:
-                    raise RunEvidenceError("invalid auto preparation record: " + record["run_id"])
+            preparation = record["stage"] == "preparation"
+            if preparation and not (record.get("command") == [] and record["selectors"] == []
+                                    and record.get("process", {}) is None):
+                raise RunEvidenceError("preparation record has execution fields: " + record["run_id"])
+            if feature_id is not None and record["scope"] is None and (record["status"] == "passed" or not preparation):
+                raise RunEvidenceError("unscoped Feature run must be an unfinished preparation: " + record["run_id"])
             if "snapshot" not in record:
                 raise RunEvidenceError("run snapshot is missing")
             snapshot = record["snapshot"]
             if snapshot is None:
-                # start_run can fail to obtain a snapshot before any execution.
-                # Keep that explicit failure distinct from damaged history.
                 if feature_id is not None and not (
                         record["status"] == "failed" and preparation
                         and isinstance(record.get("errors"), list) and record["errors"]
@@ -360,10 +365,10 @@ def start_run(root: Path, directory: Path, feature_id: str | None,
         snapshot = current_snapshot(root) if feature_id else None
     except (EvidenceError, ValueError, OSError) as error:
         errors.append(str(error))
-    result = {"schema_version": 1, "run_id": directory.name,
+    result = {"schema_version": RUN_SCHEMA_VERSION, "run_id": directory.name,
               "sequence": 1 + max((item["sequence"] for item in records), default=0),
               "feature_id": feature_id, "phase": phase, "scope": scope,
-              "snapshot": snapshot,
+              "snapshot": snapshot, "stage": "preparation",
               "started_at": started_at, "finished_at": utc_now() if errors else None,
               "command": [], "selectors": [], "status": "failed" if errors else "running",
               "process": None, "errors": errors, "artifacts": {}}
@@ -461,7 +466,7 @@ def verify_run(root: Path, reference: dict[str, str], selection: dict,
     if file_hash(path) != reference["sha256"]:
         raise RunEvidenceError("run result changed after recording")
     result = read_json(path)
-    if result.get("schema_version") != 1 or result.get("run_id") != path.parent.name:
+    if result.get("schema_version") != RUN_SCHEMA_VERSION or result.get("run_id") != path.parent.name:
         raise RunEvidenceError("invalid run result schema or identity")
     if result.get("feature_id") != selection["feature_id"] or result.get("phase") != "final":
         raise RunEvidenceError("run belongs to another Feature or is not final verification")
@@ -490,13 +495,9 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
                 or record.get("status") == "passed"
                 or (record.get("snapshot") or {}).get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]):
             continue
-        scope = record.get("scope")
-        if scope == "auto":
-            # Before selection, auto is a request rather than an executed scope.
-            # The same semantic snapshot lets current obligations resolve it.
-            scope = "full" if selection["full_suite"]["required"] else "affected"
+        scope = record["scope"] or auto_scope(selection)
         if not any(run["sequence"] > record["sequence"]
-                   and rank[run["scope"]] >= rank.get(scope, 3)
+                   and rank[run["scope"]] >= rank[scope]
                    and all(any(path == target or path.startswith(target.rstrip("/") + "/")
                                for target in run["selectors"]) for path in record["selectors"])
                    for run in runs):

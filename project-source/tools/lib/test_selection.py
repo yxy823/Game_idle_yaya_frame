@@ -424,6 +424,11 @@ def build_changed_selection(root: Path) -> dict[str, Any]:
                            "selectors": full_suite_selectors(root)}}
 
 
+def auto_scope(selection: dict[str, Any]) -> str:
+    """`--scope auto` 按当前选择落到的执行范围：需要全量时为 full，否则为 affected。"""
+    return "full" if selection["full_suite"]["required"] else "affected"
+
+
 # 将内存中的选择转换成 Godot 参数；执行结果只记录实际选择与报告。
 def execution_selectors(root: Path, selection: dict[str, Any], scope: str) -> list[str]:
     if scope == "full":

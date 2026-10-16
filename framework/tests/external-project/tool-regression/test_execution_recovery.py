@@ -93,7 +93,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         plan, old_pass = make_run(self.root)
         directory = self.root / "reports/gdunit-wrapper/F001/run-auto-interrupted"
         directory.mkdir()
-        attempt = start_run(self.root, directory, "F001", "final", "auto")
+        attempt = start_run(self.root, directory, "F001", "final", None)
         original = (directory / "result.json").read_bytes()
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, old_pass)
@@ -128,7 +128,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         failed = created.pop()
         original = failed.read_bytes()
         result = json.loads(original)
-        self.assertEqual((result["status"], result["scope"]), ("failed", "auto"))
+        self.assertEqual((result["status"], result["scope"]), ("failed", None))
         self.assertIn("temporary read failure", result["errors"])
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, old_pass)
@@ -142,24 +142,24 @@ class ExecutionRecoveryTests(unittest.TestCase):
         plan, _ = make_run(self.root)
         directory = self.root / "reports/gdunit-wrapper/F001/run-auto-full"
         directory.mkdir()
-        start_run(self.root, directory, "F001", "final", "auto")
+        start_run(self.root, directory, "F001", "final", None)
         _, affected = make_run(self.root, scope="affected")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, affected)
         _, full = make_run(self.root)
         self.derive(plan, full)
 
-    def test_auto_with_execution_fields_is_not_treated_as_preparation(self):
+    def test_preparation_with_execution_fields_is_invalid(self):
         plan, _ = make_run(self.root)
         directory = self.root / "reports/gdunit-wrapper/F001/run-invalid-auto"
         directory.mkdir()
-        attempt = start_run(self.root, directory, "F001", "final", "auto")
+        attempt = start_run(self.root, directory, "F001", "final", None)
         _, full = make_run(self.root)
         for fields in ({"command": [sys.executable]}, {"selectors": ["tests/unit"]},
                        {"process": {"returncode": 0}}):
             with self.subTest(fields=fields):
                 self.write_json("reports/gdunit-wrapper/F001/run-invalid-auto/result.json", {**attempt, **fields})
-                with self.assertRaisesRegex(ValueError, "invalid auto preparation"):
+                with self.assertRaisesRegex(ValueError, "preparation record has execution fields"):
                     self.derive(plan, full)
 
     def test_history_filter_fields_must_be_valid_before_ignoring_a_failed_run(self):
@@ -167,8 +167,8 @@ class ExecutionRecoveryTests(unittest.TestCase):
         _, failed = make_run(self.root, exit_code=7)
         history = json.loads(failed.read_text())
         payloads = [{key: value for key, value in history.items() if key != missing}
-                    for missing in ("phase", "status", "scope", "snapshot", "selectors")]
-        for field in ("phase", "status", "scope", "selectors"):
+                    for missing in ("phase", "status", "scope", "stage", "snapshot", "selectors")]
+        for field in ("phase", "status", "scope", "stage", "selectors"):
             payloads.extend({**history, field: value} for value in (None, {}, "unknown"))
         payloads.extend({**history, "snapshot": value} for value in (
             None, {}, [], "unknown", {"working_tree_fingerprint": None},
@@ -286,7 +286,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         directory = self.root / "reports/gdunit-wrapper/F001/run-snapshot-error"
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")):
-            failed = start_run(self.root, directory, "F001", "final", "auto")
+            failed = start_run(self.root, directory, "F001", "final", None)
         original = (directory / "result.json").read_bytes()
         with redirect_stderr(io.StringIO()) as warnings:
             plan, passed = make_run(self.root)
@@ -337,7 +337,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 mock.patch("tools.lib.test_run_evidence.write_json",
                            side_effect=OSError("report directory not writable")):
             with self.assertRaisesRegex(OSError, "report directory not writable"):
-                start_run(self.root, directory, "F001", "final", "auto")
+                start_run(self.root, directory, "F001", "final", None)
 
     def test_concurrent_sequence_tie_cannot_clear_an_unresolved_failure(self):
         plan, old_pass = make_run(self.root)
