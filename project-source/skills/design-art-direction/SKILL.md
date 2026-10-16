@@ -25,6 +25,7 @@ description: "在 Art Bible 中定义或修改游戏共享的视觉方向，包�
 ## 交接
 
 - 具体文件的规格交给 `design-visual-asset-spec`。当 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Art Bible 时，由那个 Skill 维护 Art Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的风格标准。
+- Art Bible 定下的界面色板、字号和形状，由调试台写进设计 token 的原始值（`game/shared/tuning/ui/primitives/`）；Art Bible 链接这些资源，不抄数值。
 - 界面表现交给 `design-ui-spec`。对已规划工作的影响，按 methodology 11 的 **编写与采纳** 中的变更路径处理。
 - 修改已有方向时，对照已接入游戏的素材逐项核对；不一致的，在返回的缺口里写明是改方向还是重做素材，由用户决定。
 - 正式评估使用另一个 `review-art` 实例；本 Skill 不批准自己的设计。

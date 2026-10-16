@@ -60,7 +60,7 @@ GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规�
 
 新界面按 `yaya/methodology/13-debug-console-and-validation.md` 的[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)推进：先做最小的真实骨架，再在调试台做视觉决策，最后补完整逻辑。规格为这些 Feature 提供问题、输入和界面任务。草稿界面只用于讨论布局，不创建游戏场景，也不能证明可用性；骨架在 `game/<对象>/` 中搭建，可以复制草稿的节点布局。
 
-视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。用户在调试台采纳的设定保存在调参资源中，规格链接它，不抄写数值；采纳带来的布局或交互变化更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
+视觉资源章节与 `design-visual-asset-spec` 协调，音频要求与 `design-audio-asset-spec` 协调。所属章节由 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 选定；不要另建资源清单。颜色、字号、间距等样式引用设计 token 的语义值和主题类型变体（`game/shared/tuning/ui/`），只有这个界面用的样式写明属于本界面；放置规则见 `yaya/agent-rules/20-scenes/ui-and-scripts.md` 的“布局”。用户在调试台采纳的设定保存在调参资源中，规格链接它，不抄写数值；采纳带来的布局或交互变化更新 UI 规格，行为变化通过 `design-gdd` 回到 GDD。
 
 返回来源路径、已确认的决定、尚未决定的问题，以及本次涉及的规划和视觉决策输入。正式的 UX 审核在另一个实例中使用 `review-ux`；本 Skill 不能给出人工验收。
 

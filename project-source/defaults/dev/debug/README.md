@@ -20,7 +20,16 @@ $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -Err
 
 ## 调试对象与候选
 
-还没有调试对象。新增调试对象时，在这里按对象登记：
+### shared
+
+跨界面共用的调试对象，主场景是[样式总览](shared/overview/style_overview.tscn)：列出全部设计 token、各控件和按钮变体的示例，以及每种样式被哪些界面使用。
+
+- **插槽**：`game/shared/tuning/ui/` 下的 14 份设计 token。原始值 6 份（调色板、字号、间距、圆角、边框宽度、阴影），语义值 7 份（文字、面板、输入框、进度条，以及主要、次要、危险三种按钮），动效 1 份（按钮）。中文名在 `shared/slots/ui/` 下各插槽的 `slot.gd` 和 `token_names.gd`。
+- **固定局面**：没有。
+
+### 新增调试对象
+
+新增调试对象时，在这里按对象登记：
 
 - **插槽**：`game/<对象>/tuning/` 下的调参资源及其中文名。
 - **候选**：`dev/debug/<对象>/slots/<插槽>/<候选>/` 的名称、来源与许可；已采纳的实现在 `game/` 中的位置。

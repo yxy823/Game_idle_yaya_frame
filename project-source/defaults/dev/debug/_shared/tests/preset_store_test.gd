@@ -135,22 +135,22 @@ func test_combo_refuses_unsaved_slot_edits() -> void:
 func test_delete_lists_cross_target_references_and_changes_them_to_game_values() -> void:
 	_slot.target_id = "shared"
 	_slot.id = "shared/sample"
-	_store.save_slot(_slot, "shared")
+	_store.save_slot(_slot, "bright")
 	_store.save_combo("sample", "sample-combo", [_slot])
 	_store.save_combo("shop", "shop-combo", [_slot])
-	assert_int(_store.references(_slot.id, "shared").paths.size()).is_equal(2)
-	assert_int(_store.delete_slot(_slot.id, "shared").error).is_equal(OK)
+	assert_int(_store.references(_slot.id, "bright").paths.size()).is_equal(2)
+	assert_int(_store.delete_slot(_slot.id, "bright").error).is_equal(OK)
 	var combo := ResourceLoader.load(_store.combo_path("shop", "shop-combo"), "",
 		ResourceLoader.CACHE_MODE_IGNORE) as Combo
 	assert_str(combo.entries[_slot.id]).is_empty()
-	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "shared"))).is_false()
+	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "bright"))).is_false()
 
 
 ## A combo file that cannot be read stops saving a preset another combo may use.
 func test_saving_stops_when_a_combo_cannot_be_read() -> void:
 	_slot.live.count = 4
-	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
-	assert_int(_store.save_combo("sample", "uses-shared", [_slot]).error).is_equal(OK)
+	assert_int(_store.save_slot(_slot, "bright").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "uses-bright", [_slot]).error).is_equal(OK)
 	assert_int(ResourceSaver.save(Curve.new(), _store.combo_path("sample", "broken"))).is_equal(OK)
 	_slot.live.count = 9
 	var reports: Array[Dictionary] = []
@@ -163,20 +163,20 @@ func test_saving_stops_when_a_combo_cannot_be_read() -> void:
 	for result in reports:
 		assert_str(result.text).is_equal("没能检查哪些组合用到这个预设：文件内容和当前参数对不上。"
 			+ "有组合文件读不出来，预设和当前改动都没有变。请让 Agent 检查")
-	var stored := ResourceLoader.load(_store.preset_path(_slot.id, "shared"), "",
+	var stored := ResourceLoader.load(_store.preset_path(_slot.id, "bright"), "",
 		ResourceLoader.CACHE_MODE_IGNORE) as Preset
 	assert_int(stored.fields.count).is_equal(4)
 	assert_bool(_slot.is_dirty()).is_true()
 
 
 func test_failed_preset_delete_puts_the_combos_back() -> void:
-	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
+	assert_int(_store.save_slot(_slot, "bright").error).is_equal(OK)
 	assert_int(_store.save_combo("sample", "first", [_slot]).error).is_equal(OK)
 	assert_int(_store.save_combo("sample", "second", [_slot]).error).is_equal(OK)
-	var preset := _store.preset_path(_slot.id, "shared")
+	var preset := _store.preset_path(_slot.id, "bright")
 	# A read-only file cannot be deleted on Windows.
 	assert_int(FileAccess.set_read_only_attribute(preset, true)).is_equal(OK)
-	var result := _store.delete_slot(_slot.id, "shared")
+	var result := _store.delete_slot(_slot.id, "bright")
 	assert_int(FileAccess.set_read_only_attribute(preset, false)).is_equal(OK)
 	assert_int(result.error).is_not_equal(OK)
 	assert_bool(result.has("unrestored")).is_false()
@@ -184,13 +184,13 @@ func test_failed_preset_delete_puts_the_combos_back() -> void:
 	for combo_name: String in ["first", "second"]:
 		var combo := ResourceLoader.load(_store.combo_path("sample", combo_name), "",
 			ResourceLoader.CACHE_MODE_IGNORE) as Combo
-		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#shared")
+		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#bright")
 
 
 func test_current_combo_is_restored_after_save_then_uid_failure(restore_fails: bool,
 		_test_parameters := [[false], [true]]) -> void:
-	assert_int(_store.save_slot(_slot, "shared").error).is_equal(OK)
-	assert_int(_store.save_combo("sample", "uses-shared", [_slot]).error).is_equal(OK)
+	assert_int(_store.save_slot(_slot, "bright").error).is_equal(OK)
+	assert_int(_store.save_combo("sample", "uses-bright", [_slot]).error).is_equal(OK)
 	var failing := SaveThenFail.new()
 	failing.root = _store.root
 	failing.fail_restore = restore_fails
@@ -200,16 +200,16 @@ func test_current_combo_is_restored_after_save_then_uid_failure(restore_fails: b
 	commands._delete_preset(_slot)
 	assert_int(failing.result.error).is_equal(ERR_FILE_CANT_WRITE)
 	assert_str(failing.saved_entries[_slot.id]).is_empty()
-	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "shared"))).is_true()
-	var path := _store.combo_path("sample", "uses-shared")
+	assert_bool(FileAccess.file_exists(_store.preset_path(_slot.id, "bright"))).is_true()
+	var path := _store.combo_path("sample", "uses-bright")
 	var combo := ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Combo
 	if restore_fails:
 		assert_array(failing.result.unrestored).contains_exactly([path])
 		assert_str(combo.entries[_slot.id]).is_empty()
-		assert_str(reports[0].text).contains("没能确认组合“uses-shared”保持原样")
+		assert_str(reports[0].text).contains("没能确认组合“uses-bright”保持原样")
 	else:
 		assert_bool(failing.result.has("unrestored")).is_false()
-		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#shared")
+		assert_str(combo.entries[_slot.id]).is_equal(_slot.id + "#bright")
 		assert_str(reports[0].text).contains("预设和用到它的组合都没有变")
 
 

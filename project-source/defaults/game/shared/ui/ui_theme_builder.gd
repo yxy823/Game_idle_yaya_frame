@@ -87,6 +87,7 @@ func _add_line_edit(theme: Theme) -> void:
 	theme.set_stylebox(&"focus", &"LineEdit", focus)
 	theme.set_color(&"font_color", &"LineEdit", palette.color(line_edit.font_color))
 	theme.set_color(&"caret_color", &"LineEdit", palette.color(line_edit.font_color))
+	theme.set_color(&"font_uneditable_color", &"LineEdit", palette.color(line_edit.font_color))
 	theme.set_color(&"font_placeholder_color", &"LineEdit",
 		palette.color(line_edit.placeholder_color))
 	theme.set_font_size(&"font_size", &"LineEdit", font_sizes.size(line_edit.font_size))
