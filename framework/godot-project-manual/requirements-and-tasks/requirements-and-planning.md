@@ -159,7 +159,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 ```mermaid
 flowchart TD
     first["第一次规划<br/>feature-plan"] -->|写入 R000，锚点 = 采纳的来源版本| anchor[("当前锚点")]
-    later["规划后续 Product<br/>feature-plan"] -.->|只追加 Feature，不移动锚点| anchor
+    later["规划后续 Product<br/>feature-plan"] -->|只追加 Feature，不移动锚点| anchor
     change["需求变化：先修改来源并提交"] --> sync["feature-sync<br/>比较锚点到当前 HEAD 的来源差异"]
     anchor --> sync
     sync --> revise["按受影响的对象修订计划<br/>见下文“需求修订”"]

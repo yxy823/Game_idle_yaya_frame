@@ -50,22 +50,29 @@ flowchart TD
     s3 --> s4["Stage 4 最终验证"]
     s4 -->|机器检查失败| s3
     s4 --> mode{"验收方式"}
-    mode -->|manual| s5["Stage 5 人工验收"]
+    mode -.->|manual| s5["Stage 5 人工验收"]
     s5 -->|任何一项失败，或验收中采纳了新值| s3
     bug{"是 Bug 修复？"}
     s5 -->|全部通过| bug
     mode -->|automated| bug
-    bug -->|是| s55["Stage 5.5 记录 Bug 经验"]
+    bug -.->|是| s55["Stage 5.5 记录 Bug 经验"]
     review{"你要求了独立审核？"}
     bug -->|否| review
     s55 --> review
-    review -->|是| s6["Stage 6 独立审核"]
+    review -.->|是| s6["Stage 6 独立审核"]
     s6 -->|发现范围内缺陷| s3
     s7["Stage 7 标记完成"]
     s6 -->|没有阻止完成的缺陷| s7
     review -->|否| s7
     s7 --> s8["Stage 8 交接"]
+    classDef stop fill:#fff3cd,stroke:#b8860b,color:#000
+    classDef optional fill:#e3f2fd,stroke:#1e88e5,color:#000
+    class s1,s5 stop
+    class s55,s6 optional
+    linkStyle 4,7,14 stroke:#d32f2f,stroke-width:2px
 ```
+
+图例：黄色是需要用户决定或确认的步骤，蓝色和虚线是只在特定条件下执行的步骤，红色连线是不通过或被拒绝后返回。
 
 | 阶段 | 执行条件 | 产出 |
 | --- | --- | --- |

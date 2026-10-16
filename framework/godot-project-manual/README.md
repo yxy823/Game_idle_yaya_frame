@@ -19,7 +19,12 @@ flowchart TD
     accept -->|全部通过，或 automated 模式| done["Feature 完成"]
     done -->|这份 Product 还有 Feature| feature
     done -->|这份 Product 已交付| product
+    classDef stop fill:#fff3cd,stroke:#b8860b,color:#000
+    class approve,accept stop
+    linkStyle 4,7 stroke:#d32f2f,stroke-width:2px
 ```
+
+图例：黄色是需要用户决定或确认的步骤，红色连线是不通过或被拒绝后返回。
 
 用文字说：GDD 逐份拆成 Product，Product 拆成 Feature。每个 Feature 先经用户批准方案，实现后在 manual 模式下还要通过人工验收，才算完成。一份 Product 的 Feature 全部完成后，再细化下一份 Product。
 

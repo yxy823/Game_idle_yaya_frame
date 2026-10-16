@@ -206,11 +206,11 @@ flowchart TD
     R -->|创建并更新运行状态| J[result.json]
     G -->|生成实际输出| O[发现集合、引擎日志、JUnit 与诊断]
     R -->|核对原件与进程结果| O
-    J -.->|引用与哈希| O
+    J -->|引用与哈希| O
     J -->|指定真实 --run 路径| T[Agent 调用 record-tests]
     O -->|重读并校验覆盖| T
     T -->|保存结果引用| E[完成证据 JSON]
-    U[用户实际人工反馈] -->|manual 时由 Agent 导入| E
+    U[用户实际人工反馈] -.->|manual 时由 Agent 导入| E
     E -->|validate 重读原件与当前内容| C[完成证据检查结果]
     A[Agent 直接执行解析与 lint] -->|读取实际退出码和输出| D[Agent 综合最终判断]
     C --> D
