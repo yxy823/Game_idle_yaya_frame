@@ -244,7 +244,7 @@ func test_groups_candidates_and_value_boxes_use_chinese_names_and_units() -> voi
 	for button: Button in _window.slot_list.find_children("*", "Button", true, false):
 		if button.theme_type_variation == &"GroupHeader":
 			groups.append(button.text)
-	assert_array(groups).contains_exactly(["样例", "反馈", "全局"])
+	assert_array(groups).contains_exactly(["样例", "反馈", "共享"])
 	var slot := _slot(EFFECT)
 	# Fixed values: the adopted ones can change through the debug window.
 	var params: Resource = (load(SAMPLE + "game/sample/feedback/effect/ring/ring_params.gd") as Script).new()
@@ -385,10 +385,10 @@ func test_target_dropdown_shows_each_targets_title() -> void:
 	var menu: PopupMenu = _window.toolbar.target.get_popup()
 	for index in range(menu.item_count):
 		names.append(menu.get_item_text(index))
-	assert_array(names).contains_exactly_in_any_order(["样例", "全局"])
+	assert_array(names).contains_exactly_in_any_order(["样例", "共享"])
 	assert_str(_window.toolbar.target.value_label.text).is_equal("样例")
 	assert_str(_window.toolbar.target.tooltip_text).is_equal(
-		"调试对象：列表显示它和“全局”的插槽；切换场景时自动跟随")
+		"调试对象：列表显示它和“共享”的插槽；切换场景时自动跟随")
 
 
 func test_empty_list_names_the_filter_and_the_search() -> void:

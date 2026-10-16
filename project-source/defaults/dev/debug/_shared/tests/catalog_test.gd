@@ -25,11 +25,11 @@ func after_test() -> void:
 	_remove(_directory)
 
 
-func test_sample_catalog_discovers_categories_and_global_shared_instances() -> void:
+func test_sample_catalog_discovers_categories_and_shared_instances() -> void:
 	var targets := Target.discover(SAMPLE_GAME, SAMPLE_DEV)
 	assert_int(targets.size()).is_equal(2)
-	assert_str(targets[0].id).is_equal("global")
-	var sample: RefCounted = targets[1]
+	assert_str(targets[1].id).is_equal("shared")
+	var sample: RefCounted = targets[0]
 	assert_str(sample.id).is_equal("sample")
 	assert_int(sample.paths.size()).is_equal(3)
 	assert_bool(sample.slots.is_empty()).is_true()
@@ -41,7 +41,7 @@ func test_sample_catalog_discovers_categories_and_global_shared_instances() -> v
 
 
 func test_hundreds_of_slots_and_multiple_targets_are_catalogued_before_activation() -> void:
-	for target: String in ["board", "talent-tree", "shop", "global"]:
+	for target: String in ["board", "talent-tree", "shop", "shared"]:
 		var tuning := _directory.path_join(target + "/tuning/category/deeper")
 		DirAccess.make_dir_recursive_absolute(tuning)
 		for index in range(125):

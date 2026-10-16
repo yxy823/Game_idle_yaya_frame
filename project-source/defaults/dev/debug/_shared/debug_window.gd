@@ -78,9 +78,9 @@ func _ready() -> void:
 	_install_bridge(self)
 	get_tree().node_added.connect(_node_added)
 	get_tree().scene_changed.connect(_scene_changed)
-	# global joins every target's list, so start on another target when there is one.
+	# shared joins every target's list, so start on another target when there is one.
 	for target: RefCounted in session.targets:
-		if target.id != "global" or target == session.targets.back():
+		if target.id != "shared" or target == session.targets.back():
 			_select_target(target.id)
 			break
 	if session.active == null:
@@ -219,8 +219,8 @@ func _scene_changed() -> void:
 			_select_target(target.id)
 			return
 	for target: RefCounted in session.targets:
-		if target.id == "global":
-			_select_target("global")
+		if target.id == "shared":
+			_select_target("shared")
 			return
 
 

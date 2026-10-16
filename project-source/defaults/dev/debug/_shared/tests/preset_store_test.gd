@@ -133,8 +133,8 @@ func test_combo_refuses_unsaved_slot_edits() -> void:
 
 
 func test_delete_lists_cross_target_references_and_changes_them_to_game_values() -> void:
-	_slot.target_id = "global"
-	_slot.id = "global/sample"
+	_slot.target_id = "shared"
+	_slot.id = "shared/sample"
 	_store.save_slot(_slot, "shared")
 	_store.save_combo("sample", "sample-combo", [_slot])
 	_store.save_combo("shop", "shop-combo", [_slot])

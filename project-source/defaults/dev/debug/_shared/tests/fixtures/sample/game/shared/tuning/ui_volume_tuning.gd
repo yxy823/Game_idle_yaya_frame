@@ -1,5 +1,5 @@
 extends Resource
-## Sample global tuning resource, listed with every target.
+## Sample shared tuning resource, listed with every target.
 
 @export_range(-60, 6, 0.5, "suffix:dB") var volume_db: float = 0.0:
 	set(value):

@@ -195,7 +195,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
         before = self.fingerprint()
         for name in (
             "dev/debug/board/slots/removal/sfx/presets/loud.tres",
-            "dev/debug/global/slots/ui-volume/presets/quiet.tres",
+            "dev/debug/shared/slots/ui-volume/presets/quiet.tres",
             "dev/debug/board/combos/calm.tres",
             "dev/debug/adoption-log.md",
         ):

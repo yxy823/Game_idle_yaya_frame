@@ -44,7 +44,7 @@ func discover() -> void:
 
 func select_target(identity: String) -> Dictionary:
 	var target := _target(identity)
-	var global_target := _target("global")
+	var shared_target := _target("shared")
 	if target == null:
 		return {"error": ERR_DOES_NOT_EXIST, "message": identity,
 			"text": "找不到调试对象 %s：游戏里没有它的调参文件" % identity}
@@ -55,11 +55,11 @@ func select_target(identity: String) -> Dictionary:
 		return activated
 	active = target
 	slots.assign(target.slots)
-	if global_target != null and global_target != target:
-		activated = global_target.activate(debug_root)
+	if shared_target != null and shared_target != target:
+		activated = shared_target.activate(debug_root)
 		if activated.error != OK:
 			return activated
-		slots.append_array(global_target.slots)
+		slots.append_array(shared_target.slots)
 	var pins: Variant = JSON.parse_string(FileAccess.get_file_as_string(pins_path)) 		if FileAccess.file_exists(pins_path) else []
 	for slot in slots:
 		slot.pinned = pins is Array and slot.id in pins
@@ -77,7 +77,7 @@ func select_target(identity: String) -> Dictionary:
 
 ## Group title for a category path of the listed slots; the path itself when none is named.
 func category_title(path: String) -> String:
-	for target: RefCounted in [active, _target("global")]:
+	for target: RefCounted in [active, _target("shared")]:
 		var title: String = target.category_title(path) if target != null else ""
 		if not title.is_empty():
 			return title

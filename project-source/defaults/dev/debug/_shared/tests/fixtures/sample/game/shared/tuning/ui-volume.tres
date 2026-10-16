@@ -1,0 +1,6 @@
+[gd_resource type="Resource" format=3 uid="uid://bcvm5ukkjgeax"]
+
+[ext_resource type="Script" uid="uid://demhwjdygyv8r" path="res://dev/debug/_shared/tests/fixtures/sample/game/shared/tuning/ui_volume_tuning.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

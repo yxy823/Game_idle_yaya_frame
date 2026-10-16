@@ -1,5 +1,5 @@
 extends RefCounted
-## Catalog paths first; activate resources only for the selected target and global.
+## Catalog paths first; activate resources only for the selected target and shared.
 
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 

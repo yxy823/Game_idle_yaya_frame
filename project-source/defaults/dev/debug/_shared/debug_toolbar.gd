@@ -106,10 +106,10 @@ static func _divider() -> VSeparator:
 func configure(session: Session) -> void:
 	_session = session
 	var names: PackedStringArray = []
-	var shared := "global"
+	var shared := "shared"
 	for item: RefCounted in session.targets:
 		names.append(item.title())
-		if item.id == "global":
+		if item.id == "shared":
 			shared = item.title()
 	target.set_items(names, 0)
 	Messages.usable_tooltip(target, "调试对象：列表显示它和“%s”的插槽；切换场景时自动跟随" % shared)
