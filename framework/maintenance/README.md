@@ -12,5 +12,6 @@
 | 修改测试选择、完成证据或 Feature 执行流程时，逐行核对的改动场景与现行处理 | [测试改动场景表](validation/test-change-scenarios.md) |
 | 随项目分发的第三方编辑器插件：上游、安装版本、Godot 兼容性与升级核对 | [编辑器插件版本与兼容性记录](dependencies/editor-plugin-versions.md) |
 | 问答渲染脚本 `am.mjs`：上游来源、并入的上游提交和本地改动 | [问答渲染脚本的来源与本地改动](dependencies/qa-renderer-local-changes.md) |
+| 分发 Skill 的设计参考文件（界面色彩、字体、动效、布局、反馈、音效）中每条条目的出处，以及引入时的取舍 | [设计参考条目的来源](dependencies/design-reference-sources.md) |
 | 全仓孤立文档扫描 | [维护工具](tools/README.md) |
 | 尚需推进的工作与真实验证缺口 | [框架待办](../todo.md) |

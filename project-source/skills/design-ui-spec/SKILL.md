@@ -23,6 +23,8 @@ GDD 负责玩家行为，Product 为交付链接已采用的要求。GDD 的规�
 
 区分已确认的显示和可读性约束与试用值。写明周围的屏幕上下文、视口和缩放条件（项目还没有确定显示基线时，先按 `yaya/agent-rules/40-project-config/subsystem-settings.md` 的“视口、窗口与拉伸”确定）、代表性的文本和资源引用、源图尺寸与可见主体尺寸的区别，以及需要在运行时评估的未决问题。节点属性和顺手的微调留在实现中。
 
+布局、尺寸和状态反馈的默认做法见[界面布局与尺寸](references/ui-layout-and-sizing.md)和[界面反馈与输入](references/ui-feedback-and-input.md)，字号和数字显示见[界面字体与数字](../design-art-direction/references/ui-type-and-numbers.md)；规格采用了不同的做法时写明。
+
 普通控件状态写在这里。一次完整的游戏表现（例如领取奖励）属于 `design-game-presentation`。按 methodology 11 的 **游戏表现文档** 的说明，从 UI 文档链接它；UI 文档不能代替表现文档中的采用关系或实现引用。
 
 ## 草稿界面

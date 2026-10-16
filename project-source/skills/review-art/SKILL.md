@@ -7,7 +7,7 @@ description: "对照适用的 Art Bible 以及资源或 UI 规格，独立评估
 
 按 `yaya/methodology/12-independent-review.md` 执行。把已批准的美术方向和局部规格与实际显示的结果比较，包括所处情境和目标显示尺寸，而不只看孤立的全分辨率源素材。来源位置按 `yaya/methodology/11-specialist-workflows.md` 的 **归属与决策** 查找；只有空章节的 Bible 不构成审核标准。
 
-适用时检查轮廓与辨识度、视觉层级、配色与对比度、透视、材质与细节的一致性、动画语言和状态区分。检查裁切、透明边距和缩放是否改变了主体的预期大小。需求涉及时，使用有代表性的拥挤背景和反差背景。
+适用时检查轮廓与辨识度、视觉层级、配色与对比度、透视、材质与细节的一致性、动画语言和状态区分。检查裁切、透明边距和缩放是否改变了主体的预期大小。界面的默认检查项见[界面色彩与表面](../design-art-direction/references/ui-color-and-surface.md)、[界面字体与数字](../design-art-direction/references/ui-type-and-numbers.md)、[界面动效](../design-art-direction/references/ui-motion.md)和[界面布局与尺寸](../design-ui-spec/references/ui-layout-and-sizing.md)；结果违反其中条目、而规格没有另行决定时，按有依据的建议报告并注明条目编号，不算违反已批准的规格。需求涉及时，使用有代表性的拥挤背景和反差背景。
 
 把对已批准规格的可度量违反与主观的替代想法分开。未决的风格提议不能用来认定缺陷。缺少目标视图的证据时，在情境中是否合适就保持未验证。技术来源或导入方面的问题，可以在同一个独立审核实例中使用 `review-assets`。
 
