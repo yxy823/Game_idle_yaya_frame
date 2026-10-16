@@ -119,6 +119,27 @@ Stage 2 保存的是 Stage 1 批准过的方案，没批准的内容不进计划
 
 **跨层功能要分别检查**：例如扣费是否正确、奖励反馈是否只在成功后播放、关闭再打开界面后余额是否正确，是三项不同的检查。计算测试通过不能说明动画体验好，在调试台采纳了购买反馈也不能说明正式购买规则已接入。
 
+下图是一次人工验收中各方的先后顺序，下面的列表逐项说明。
+
+```mermaid
+sequenceDiagram
+    participant A as Agent
+    participant C as 人工验收清单
+    participant T as 完成证据工具
+    participant U as 用户
+    A->>C: 编写 pending 状态的清单
+    A->>T: prepare-manual 绑定当前内容
+    A->>U: 告诉用户清单路径
+    alt 用户在对话中给出结论
+        U->>A: 每项通过或不通过
+        A->>C: 写入状态和备注，注明原话
+    else 用户自己改清单
+        U->>C: 填写 passed / failed / pending 和备注
+    end
+    A->>T: record-acceptance 记录结论
+    T-->>A: 记录结果，状态可能仍是 pending 或 rejected
+```
+
 人工验收清单与结果的分工：
 
 - **清单内容**：对应项目的 AC 或必要的回归，写明入口、起始状态、操作、可观察的结果和重置方法；设备、时长、随机种子等只在影响结果时补充。

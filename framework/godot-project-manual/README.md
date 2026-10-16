@@ -6,6 +6,23 @@
 
 在生成的项目里，GDD 和 Product 决定做什么，Agent 按 Stage 推进每个 Feature。关键判断留给用户：批准方案、验收实际效果、决定是否审核。进度和决定都写在项目文件里，所以换一个对话也能从文件续接。
 
+```mermaid
+flowchart TD
+    gdd["GDD：游戏设计"] --> product["Product：下一份交付范围"]
+    product --> feature["Feature：下一个可开始的 Feature"]
+    feature --> plan["Agent 给出方案"]
+    plan --> approve{"用户批准方案？"}
+    approve -->|要修改| plan
+    approve -->|批准| build["Agent 实现并自动验证"]
+    build --> accept{"人工验收通过？（仅 manual 模式）"}
+    accept -->|有一项不通过| build
+    accept -->|全部通过，或 automated 模式| done["Feature 完成"]
+    done -->|这份 Product 还有 Feature| feature
+    done -->|这份 Product 已交付| product
+```
+
+用文字说：GDD 逐份拆成 Product，Product 拆成 Feature。每个 Feature 先经用户批准方案，实现后在 manual 模式下还要通过人工验收，才算完成。一份 Product 的 Feature 全部完成后，再细化下一份 Product。
+
 下面几条行为第一次遇到时最容易让人意外：
 
 - **写代码前先停下等批准**：Agent 在 Stage 1 给出批准材料后停下，用户批准前不写代码。因为材料里的测试计划和验收方式决定了什么算完成，这由用户决定。见[Feature 的执行阶段](requirements-and-tasks/feature-lifecycle.md#feature-的执行阶段)。

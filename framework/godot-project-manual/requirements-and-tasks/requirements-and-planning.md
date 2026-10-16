@@ -197,6 +197,33 @@ flowchart TD
 - 登记为 retired 的旧测试方法，只要还在被选中的套件里，仍然会执行。删除或替换它时要同时检查调用、文件、测试登记表和历史引用，不能抹掉失败的原件。
 - `blocked` 的具体原因和恢复条件写在 notes 里，不能用这个状态保留已失效的 ID 或已废弃的前置。正常等待尚未完成的依赖时，状态仍是 `pending`；已经开始实施的任务保持 `in_progress`，在执行记录中说明受阻情况。恢复状态不代表已经开始或完成实施，见[状态流转](../../../project-source/methodology/02-feature-list-schema.md#状态流转)。
 
+### Feature 状态怎样变化
+
+```mermaid
+stateDiagram-v2
+    [*] --> pending: 拆分出 Feature
+    pending --> in_progress: Stage 2 保存计划
+    in_progress --> done: Stage 7 完成检查通过
+    in_progress --> pending: 明确放弃本次执行
+    pending --> blocked: 需要的前提失效
+    blocked --> pending: 前提重新有效
+    pending --> obsolete: 源同步撤回
+    in_progress --> obsolete: 源同步撤回
+    blocked --> obsolete: 源同步撤回
+    done --> obsolete_done: 源同步撤回或替换已实现的行为
+```
+
+| 状态 | 含义 | 从哪里来，到哪里去 |
+| --- | --- | --- |
+| `pending` | 还没开始。只是在等未完成的依赖时，仍是这个状态 | 拆分时创建；Stage 2 保存计划后变为 `in_progress` |
+| `in_progress` | 计划已保存，正在实施。实施中受阻也保持这个状态，在执行记录里写明 | Stage 7 完成检查通过后变为 `done`；明确放弃时回到 `pending` |
+| `done` | 已完成，完成证据和记录已写入 | 只有源同步撤回或替换它实现的行为时，才变为 `obsolete_done` |
+| `blocked` | 还没开始，且需要的来源决定、输入或依赖契约无效或拿不到。原因和恢复条件写在 notes | 前提重新有效后回到 `pending`，恢复本身不开始执行 |
+| `obsolete` | 没完成就被源同步撤回，保留撤回原因 | 不再变化 |
+| `obsolete_done` | 完成过，但实现的行为后来被撤回或替换，保留完成历史 | 不再变化 |
+
+状态流转的正文见[状态流转](../../../project-source/methodology/02-feature-list-schema.md#状态流转)。
+
 ## 先有实现、后补记录
 
 功能先写出来、之后再补记录时，同样需要真实的 GDD：用已确认的设计核对交付范围，复用符合要求的实现和测试。补齐文档不等于交付。不能补造过去的 RED、批准、测试或完成时间；正式完成时间使用本次实际满足条件的时间。新写的测试立即通过，只说明当前行为符合预期，不说明过去用过 TDD。
