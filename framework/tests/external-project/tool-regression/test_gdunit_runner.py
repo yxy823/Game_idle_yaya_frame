@@ -429,7 +429,7 @@ class GdUnitRunnerTests(unittest.TestCase):
         (old / "results.xml").write_text("<testsuites />", encoding="utf-8")
         current = self.root / "new"
         current.mkdir()
-        result = runner.start_run(self.root, current, None, "final", "auto")
+        result = runner.start_run(self.root, current, None, "final", None)
         runner.finish_run(self.root, current, result)
         self.assertEqual(result["status"], "failed")
         self.assertIn("expected one current JUnit report, found 0", result["errors"])
@@ -439,7 +439,7 @@ class GdUnitRunnerTests(unittest.TestCase):
             directory = self.root / f"report_{number}"
             directory.mkdir()
             (directory / "results.xml").write_text("<testsuites />", encoding="utf-8")
-        result = runner.start_run(self.root, self.root, None, "final", "auto")
+        result = runner.start_run(self.root, self.root, None, "final", None)
         runner.finish_run(self.root, self.root, result)
         self.assertEqual(result["status"], "failed")
         self.assertIn("expected one current JUnit report, found 2", result["errors"])

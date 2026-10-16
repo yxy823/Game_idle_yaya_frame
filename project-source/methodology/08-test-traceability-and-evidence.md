@@ -281,7 +281,12 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 
 ### 运行记录
 
-每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 1），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、选中的路径、真实命令、内容指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
+每次 Feature 调用创建一个 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/` 目录；聚焦运行使用 `reports/gdunit-wrapper/focused/run-<id>/`。运行器在准备之前写一个 `result.json`（schema 2），执行后在同一个文件里写入最终结果。它记录 Feature、phase、scope、stage、选中的路径、真实命令、内容指纹、进程结果和错误，以及原始报告的引用和哈希。用例身份和总数需要时从原始报告读取，不复制进更多摘要。
+
+- `stage` 为 `preparation` 时还没有命令和选中的路径，为 `execution` 时已经写入命令、准备启动 Godot。
+- `scope` 只记实际执行的 `required`、`affected` 或 `full`。聚焦运行，或 `--scope auto` 在选择测试之前就失败时，记为 `null`；完成判断按当前选择解析这种失败，需要全量时按 full，否则按 affected。
+
+文件布局和发现检查见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
 完成判断只读取当前 Feature 的运行目录：
 

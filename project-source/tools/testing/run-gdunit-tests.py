@@ -22,7 +22,7 @@ from tools.lib.test_run_evidence import (
     start_run, finish_run, run_history_directory, derive_test_evidence, expected_gdunit_cases,
 )
 from tools.lib.test_selection import (
-    build_changed_selection, build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors,
+    auto_scope, build_changed_selection, build_selection, deduplicate_selectors, execution_selectors, full_suite_selectors,
     read_json,
 )
 
@@ -104,7 +104,7 @@ def _run_tests(args: argparse.Namespace) -> int:
         if args.feature:
             selection = build_selection(REPO_ROOT, args.feature, phase=args.phase)
             if args.scope == "auto":
-                args.scope = "full" if selection["full_suite"]["required"] else "affected"
+                args.scope = auto_scope(selection)
             not_required = (args.scope != "full" and not args.require_test
                             and not selection["required"] and not selection["affected"]
                             and not selection["full_suite"]["required"])
@@ -141,7 +141,7 @@ def _run_tests(args: argparse.Namespace) -> int:
     report_base.mkdir(parents=True, exist_ok=True)
     directory = Path(tempfile.mkdtemp(prefix="run-", dir=report_base))
     print(f"Run result: {directory / 'result.json'}", flush=True)
-    result = start_run(REPO_ROOT, directory, args.feature, args.phase, args.scope)
+    result = start_run(REPO_ROOT, directory, args.feature, args.phase, None if args.scope == "auto" else args.scope)
     if result["status"] == "failed":
         print("TEST VERDICT: FAIL - " + "; ".join(result["errors"]), file=sys.stderr)
         return 1
@@ -153,6 +153,7 @@ def _run_tests(args: argparse.Namespace) -> int:
         expected_gdunit_cases(REPO_ROOT, args.targets)  # 继承链错误在启动 Godot 之前报告
         result["command"] = _build_command(args, directory)
         result["selectors"] = args.targets
+        result["stage"] = "execution"
         write_json(directory / "result.json", result)
         if not Path(result["command"][0]).is_file():
             raise ValueError(f"Godot executable not found: {result['command'][0]}")
