@@ -1,5 +1,3 @@
-"""Malformed records and unreadable artifacts take the documented failure paths, not tracebacks."""
-# 嵌套类型错误、不是对象的运行记录和读不了的原件，都要变成工具约定的错误，而不是 AttributeError。
 from __future__ import annotations
 import sys
 from pathlib import Path

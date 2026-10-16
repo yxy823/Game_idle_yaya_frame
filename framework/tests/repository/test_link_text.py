@@ -1,4 +1,3 @@
-"""Check the distributed link text checker through its public CLI."""
 import json
 import subprocess
 import sys

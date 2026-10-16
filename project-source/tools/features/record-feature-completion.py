@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Record auditable Feature completion evidence for the current Git snapshot."""
-# 显式记录入口保存真实报告引用与人工决定；通过状态由验证器重新计算。
 from __future__ import annotations
 
 import argparse
@@ -45,7 +44,6 @@ def _save(path: Path, data: dict[str, Any]) -> None:
     write_json(path, data)
 
 
-# 只导入实际测试结果；脚本解析与 lint 由 Agent 直接执行、阅读原始输出。
 def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
     from tools.lib.test_run_evidence import derive_test_evidence, result_reference
 
@@ -56,14 +54,12 @@ def _record_tests(repo_root: Path, args: argparse.Namespace) -> int:
         derive_test_evidence(repo_root, args.feature, references)
         data["test_runs"] = references
     except (EvidenceError, ValueError, OSError, KeyError, TypeError) as exc:
-        # 失败时清除旧引用，原始测试报告仍保留。
         _save(path, data)
         raise ValueError(f"test evidence rejected: {exc}") from exc
     _save(path, data)
     return 0
 
 
-# 接受来源是清单中按用户实际决定填写的状态；测试通过或 Agent 总结不能自行变成人工接受。
 def _record_acceptance(repo_root: Path, args: argparse.Namespace) -> int:
     from tools.lib.manual_acceptance import read_checklist
 

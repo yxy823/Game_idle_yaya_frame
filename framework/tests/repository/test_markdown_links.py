@@ -1,4 +1,3 @@
-"""Check the distributed Markdown link checker through its public CLI."""
 import json
 import importlib.util
 import io

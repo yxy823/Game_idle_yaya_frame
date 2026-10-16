@@ -1,4 +1,3 @@
-"""Check the distributed terminology checker through its public CLI."""
 import importlib.util
 import io
 import json

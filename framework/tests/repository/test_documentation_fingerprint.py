@@ -1,5 +1,3 @@
-"""用中立临时 Git 夹具验证使用说明、知识/调研文档与验证契约的指纹边界。"""
-
 import importlib.util
 import json
 import subprocess

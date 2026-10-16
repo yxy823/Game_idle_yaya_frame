@@ -1,5 +1,4 @@
 """Bound a test process and its descendants without touching other processes."""
-# Windows 项目进程树的单一实现；只管理本次创建并归入 Job 的进程。
 from __future__ import annotations
 
 import ctypes
@@ -118,7 +117,6 @@ def _job_process_ids(api, job) -> set[int]:
         size *= 2
 
 
-# 先暂停创建，再绑定 Job，最后恢复运行，避免子进程在归属建立前逃出管理范围。
 def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float,
                  ownership: dict) -> tuple[int, bool, int]:
     import msvcrt
@@ -176,7 +174,6 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
         exit_code = wintypes.DWORD()
         if not timed_out:
             _checked(api.GetExitCodeProcess(process.process, ctypes.byref(exit_code)))
-        # Also close any descendants left behind by a normally exited launcher.
         _wait_for_job_cleanup(api, job, process.process)
         if timed_out:
             _checked(api.GetExitCodeProcess(process.process, ctypes.byref(exit_code)))
@@ -194,7 +191,6 @@ def _run_windows(command: list[str], cwd: Path, output: BinaryIO, timeout: float
                 api.CloseHandle(handle)
 
 
-# 返回实际退出与归属记录；超时清理只针对本次 Job，不按 Godot/Python 进程名全局终止。
 def run_owned_process(command: list[str], cwd: Path, log_path: Path, timeout: float) -> tuple[int, bool, int, str, tuple[int, ...]]:
     if os.name != "nt":
         raise ValueError("Owned execution supports Windows 11 only")

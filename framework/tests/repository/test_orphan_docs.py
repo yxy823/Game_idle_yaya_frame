@@ -1,4 +1,3 @@
-"""Check orphan candidates through the public CLI, including ambiguous file names."""
 import json
 import subprocess
 import sys

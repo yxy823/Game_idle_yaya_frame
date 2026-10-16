@@ -1,5 +1,3 @@
-"""Content-change test selection: base revision, inferred components and dependency graph."""
-# 合成一个小项目和 Git 仓库，只检查选择结果；不启动 Godot，也不产生运行证据。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -83,7 +81,6 @@ class ChangeSelectionTests(unittest.TestCase):
         self.git("commit", "-m", message)
 
     def start_after(self, message: str) -> None:
-        """Commit the fixture additions and move F001's base past them."""
         self.commit(message)
         self.detail["base_revision"] = self.git("rev-parse", "HEAD")
         self.write_json("docs/features/F001.json", self.detail)
@@ -156,7 +153,6 @@ class ChangeSelectionTests(unittest.TestCase):
         self.assertEqual(selection["touched_completed_features"], ["F001"])
 
     def test_unclaimed_unreferenced_game_file_escalates_to_full(self) -> None:
-        # .txt 是运行时用 FileAccess 读取的原始数据，和 .gd 一样算游戏文件。
         for path in ("game/orphan.gd", "game/words.txt"):
             with self.subTest(path=path):
                 self.write(path, "extends Node\n")
@@ -238,7 +234,6 @@ class ChangeSelectionTests(unittest.TestCase):
         self.assertEqual((before["required"], before["full_suite"]), (after["required"], after["full_suite"]))
 
     def test_selection_ignores_other_feature_status(self) -> None:
-        # Stage 0 例外由流程保证另一个 Feature 停在 GREEN；选择本身不读状态，同一内容同一结果。
         self.write("game/combat/combat.gd", "extends RefCounted\nvar damage := 2\n")
         index = {"meta": {}, "features": [
             {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None},

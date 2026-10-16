@@ -1,4 +1,3 @@
-"""Preserve failed and unfinished runs without a second journal or lock."""
 import sys
 from pathlib import Path
 
@@ -36,7 +35,6 @@ class ExecutionRecoveryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             derive_test_evidence(self.root, "F001",
                                  [result_reference(self.root, old_pass), result_reference(self.root, narrow)])
-        # A controlled recovery case, not a production retry to conceal a failure.
         _, repaired = make_run(self.root)
         self.derive(plan, repaired)
         self.assertTrue(failed.is_file())

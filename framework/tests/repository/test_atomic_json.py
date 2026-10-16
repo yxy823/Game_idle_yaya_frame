@@ -1,4 +1,3 @@
-"""Shared JSON writes preserve existing documents and clean failed replacements."""
 import importlib.util
 import json
 import tempfile

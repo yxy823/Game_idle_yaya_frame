@@ -1,6 +1,4 @@
 """Shared reading, masking, file selection and output conventions of the text checks (terminology and wording)."""
-# 代码、引号内的文字和链接目标不算出现，因为写作规范会把要避免的写法放进引号或代码当例子。
-# .json 文件只查字符串值：每个值当作一段 Markdown，否则 JSON 自身的双引号会让所有文字都算作引号内。
 from __future__ import annotations
 
 import argparse
@@ -12,7 +10,6 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-# 与 check-markdown-links.py 相同：按目录名在任意层级排除。
 DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
 
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
@@ -119,7 +116,6 @@ def _excluded(relative: Path, excluded_names: set[str], excluded_paths: list[Pat
 
 def scanned_files(root: Path, includes: list[str], excluded_names: set[str], excluded_paths: list[Path]) -> list[Path]:
     def fail(error: OSError) -> None:
-        # 读不了的目录要报错，不能当成里面没有文件。
         raise DocumentError(f"cannot list {error.filename}: {error.strerror}") from error
 
     files = []

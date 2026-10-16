@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Sync a Godot project into a trial copy and rename the copy so it gets its own user:// data."""
-# 先写入改名后的 project.godot 并读回确认，再同步其余文件：任何一步失败，副本都不会以原名运行。
 from __future__ import annotations
 
 import argparse
@@ -14,7 +13,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from ui_trial_project import TRIAL_SUFFIX, read_project_name, renamed_project_text, uses_custom_user_dir
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
-# 源项目的 .git 不复制；副本自己的 reports/ 保存试用驱动与输出，不随同步覆盖或删除。
 SKIPPED_TOP_LEVEL = {".git", "reports"}
 PROJECT_FILE = "project.godot"
 
@@ -31,7 +29,6 @@ def _skipped(relative: Path) -> bool:
 
 
 def _fail(error: OSError) -> None:
-    # 读不了的目录要停止同步，不能当成里面没有文件。
     raise error
 
 
@@ -56,7 +53,6 @@ def _sync(source: Path, copy: Path) -> tuple[int, int]:
             if not _same_file(Path(directory) / name, target):
                 shutil.copy2(Path(directory) / name, target)
                 copied += 1
-    # 源项目里已删除的文件也从副本删除，避免旧脚本或旧的全局类留在副本里。
     for directory, folders, files in os.walk(copy, topdown=True, onerror=_fail):
         relative = Path(directory).relative_to(copy)
         kept = []

@@ -1,4 +1,3 @@
-"""Exercise document coverage through its read-only CLI and real temporary files."""
 import json
 import subprocess
 import sys

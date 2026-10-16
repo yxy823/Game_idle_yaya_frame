@@ -1,5 +1,3 @@
-"""Keep a parent and child alive until the analyzer service stops their tree."""
-
 import pathlib
 import subprocess
 import sys

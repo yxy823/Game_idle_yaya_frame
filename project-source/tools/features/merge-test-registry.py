@@ -68,7 +68,6 @@ def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, in
         component_id = candidate["id"]
         if component_id in existing:
             current = existing[component_id]
-            # 认领目录可以随后来的 Feature 扩展；其他字段不同仍是冲突。
             if ({key: value for key, value in current.items() if key != "source_paths"}
                     != {key: value for key, value in candidate.items() if key != "source_paths"}):
                 raise RegistryError(
@@ -85,7 +84,6 @@ def merge_registry(candidates_path: Path, repo_root: Path) -> tuple[str, int, in
 
     validate_registry(registry, repo_root)
     if any(test["status"] == "retired" for test in registry["tests"]):
-        # Component merging must preserve valid evolution, not merely its JSON shape.
         try:
             replacement_features = {test["retirement"]["replacement"]["feature_id"]
                                     for test in registry["tests"] if test["status"] == "retired"}

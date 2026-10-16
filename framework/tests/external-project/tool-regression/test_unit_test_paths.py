@@ -1,4 +1,3 @@
-# 用中立 Registry 和测试路径检查登记/合并/引用，避免默认依赖旧项目的 feature-list。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -67,7 +66,6 @@ class UnitTestPathsTests(unittest.TestCase):
 
     def _strict(self) -> subprocess.CompletedProcess[str]:
         checker = self.root / "yaya/tools/checks/check-feature-list.py"
-        # 只物化校验器所需的包和模块，夹具布局与生成项目一致。
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
 "yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
                          "yaya/tools/lib/test_selection.py",
@@ -158,7 +156,6 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(result.returncode, 2, result.stdout + result.stderr)
         self.assertIn("repository", result.stderr)
         self.assertEqual(self.registry_path.read_bytes(), before)
-        # 已有组件和 active 测试也必须被普通检查与合并入口拒绝。
         for active_test in (False, True):
             with self.subTest(active_test=active_test):
                 registry["components"] = [self._component() if active_test else self._component(path)]
@@ -407,8 +404,6 @@ class UnitTestPathsTests(unittest.TestCase):
         self.assertEqual(self._merge([]).returncode, 0)
         self.assertEqual(self._registry()["components"][0]["unit_test_paths"], [target])
         self.assertEqual(self._strict().returncode, 0)
-        # The directory still exists, so filesystem checks retain its selector.
-        # The runner's zero-discovery report, modeled below, must fail instead.
         from tools.lib.test_run_evidence import read_junit_cases
         report = self.root / "results.xml"
         report.write_text('<testsuites tests="0" failures="0" skipped="0" flaky="0"/>', encoding="utf-8")

@@ -1,5 +1,3 @@
-"""Keep declaration coverage limited to actual GdUnit suite inheritance."""
-# 静态声明扫描只识别真实 GdUnit 继承链，另与运行 discovery 对照，避免辅助方法被误算。
 from __future__ import annotations
 import sys
 from pathlib import Path

@@ -4,7 +4,6 @@ Completed verification mappings are historical facts. Retirement changes the
 active safety net through an explicit replacement chain; it does not rewrite
 those mappings or act as evidence that a new Feature has passed its tests.
 """
-# 共享合约计算：保留历史验证语义，通过明确替代关系维护当前安全网。
 from __future__ import annotations
 
 import re
@@ -193,7 +192,6 @@ def _acyclic(graph: dict[str, set[str]], label: str) -> None:
                 stack.extend((child, False) for child in sorted(graph.get(node, ()), reverse=True))
 
 
-# 执行顺序由依赖图和当前状态决定，不能把 Feature 编号大小当作依赖顺序。
 def eligible_features(entries: dict[str, dict]) -> list[str]:
     """ID is a stable tie-breaker, never a prerequisite ordering constraint."""
     return sorted(fid for fid, entry in entries.items()
@@ -201,7 +199,6 @@ def eligible_features(entries: dict[str, dict]) -> list[str]:
                   and all(entries.get(dep, {}).get("status") == "done" for dep in entry.get("depends_on", [])))
 
 
-# 初始基线只记录第一份计划新增的 Feature；它不是来源变化，所以不带迁移。
 def _initial_baseline(revision: dict, label: str, entries: dict[str, dict], index: int) -> None:
     if index != 0:
         raise EvolutionError(f"{label}: R000 must be the first revision")
@@ -334,7 +331,6 @@ def referenced_test_ids(detail: Any) -> set[str]:
     return result
 
 
-# 退役必须能追溯到理由、来源和替代；不自动把历史完成记录重新标成 pending。
 def validate_retirements(tests: dict[str, dict], entries: dict[str, dict], revisions: dict[str, dict],
                          verification_ids: dict[str, set[str]]) -> None:
     graph: dict[str, set[str]] = {}

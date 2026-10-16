@@ -13,9 +13,7 @@ EXCLUDED_EXACT_PATHS = {
     "docs/progress.md",
     "dev/debug/adoption-log.md",
 }
-# 调试台运行时保存的插槽预设与组合：只供调试会话读写，不是游戏资源，也不写 UID。
 DEBUG_CONSOLE_SAVES_RE = re.compile(r"dev/debug/[^/]+/(?:slots/(?:[^/]+/)*presets|combos)/.+")
-# 每个 Feature 的完成证据是验证输出，不是被验证的内容。
 EVIDENCE_PATH_RE = re.compile(r"docs/features/F\d{3}-evidence\.json")
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
 
@@ -98,16 +96,13 @@ def _is_fingerprint_input(relative_path: str) -> bool:
         return False
     if normalized.startswith("reports/"):
         return False
-    # 普通 README 只作使用导航；契约目录中的同名文件仍是验证输入。
     if normalized.rsplit("/", 1)[-1].casefold() == "readme.md":
         return normalized.casefold().startswith((
             ".agents/", "yaya/agent-rules/", "yaya/methodology/", "docs/gdd/", "docs/product/", "docs/features/",
         ))
-    # 经验与调研正文只作参考；可执行文件和需求/规则仍参与验证绑定。
     return not (normalized.startswith(("docs/progress/", "docs/knowledge/", "docs/research/")) and normalized.endswith(".md"))
 
 
-# 只排除明确的流程记账字段；嵌套 AC、verification 和测试状态仍属于验证合约。
 def semantic_json(relative_path: str, data: Any) -> Any:
     """Project workflow state is not verification semantics; nested contracts are.
 
@@ -131,8 +126,6 @@ def semantic_json(relative_path: str, data: Any) -> Any:
         result["meta"] = {key: value for key, value in data.get("meta", {}).items()
                           if key not in PROCESS_FIELDS and not key.endswith("_at")}
     if relative_path == "docs/feature-list-revisions.json":
-        # Migration edges, revision IDs and source anchors remain authoritative.
-        # Editing an entry's prose or workflow timestamps is only bookkeeping.
         result["revision_log"] = [
             {key: value for key, value in entry.items()
              if key not in {"revised_at", "created_at", "updated_at", "recorded_at", "summary", "notes"}}
@@ -147,7 +140,6 @@ def _hash_file(digest: Any, path: Path) -> None:
             digest.update(chunk)
 
 
-# 基于 Git 列出的当前字节和规范化合约，不靠文件修改时间先后判断源码是否相同。
 def working_tree_fingerprint(repo_root: Path) -> str:
     """Hash tracked and non-ignored untracked content for the current code snapshot.
 

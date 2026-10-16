@@ -1,4 +1,3 @@
-"""Path correspondence must not silently accept renamed or unread scenario pages."""
 import contextlib
 import io
 import json
@@ -13,7 +12,6 @@ TOOLS = Path(__file__).resolve().parents[2] / "prompt-scenarios/tools"
 
 
 def load_tool(name):
-    """Load a prompt tool by path; its directory name is not an importable package."""
     if str(TOOLS) not in sys.path:
         sys.path.insert(0, str(TOOLS))
     spec = importlib.util.spec_from_file_location(name, TOOLS / f"{name}.py")

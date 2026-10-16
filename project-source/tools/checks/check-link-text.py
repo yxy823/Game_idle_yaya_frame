@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Report Markdown links whose text is not the target heading, file title, or the target's own name."""
-# 只读检查：不联网、不改写文件。比较规则见 tools/README.md 的 check-link-text.py 一节；
-# 链接是否存在由 check-markdown-links.py 负责，这里跳过目标或锚点不存在的链接。
 from __future__ import annotations
 
 import argparse
@@ -17,7 +15,6 @@ from tools.lib.document_text import DocumentError, selected_files  # noqa: E402
 from tools.lib.markdown_links import ScanCache, split_target  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-# 方法论文件的一级标题带“NN · ”编号，只链到文件时链接文字可以省略。
 TITLE_NUMBER = re.compile(r"^\d+\s*·\s*")
 
 
@@ -79,7 +76,7 @@ def check_link_text(root: Path, files: list[Path]) -> tuple[int, list[LinkTextMi
                 continue
             scanned = scan(target)
             expected = scanned.anchors.get(anchor) if anchor else scanned.title
-            if not expected:  # 锚点不存在、<a id> 锚点或文件没有一级标题
+            if not expected:
                 continue
             compared += 1
             if _is_heading(text, expected, number_optional=not anchor):
@@ -103,7 +100,7 @@ def main(argv: list[str] | None = None) -> int:
                         help="additional path relative to --root whose Markdown files are not scanned; repeatable")
     parser.add_argument("--json", action="store_true", help="print the result as JSON")
     args = parser.parse_args(argv)
-    args.include = None  # 扫描整个目录时只查 *.md
+    args.include = None
 
     root = args.root.resolve()
     if not root.is_dir():

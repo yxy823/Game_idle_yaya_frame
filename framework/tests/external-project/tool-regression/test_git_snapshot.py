@@ -1,4 +1,3 @@
-"""Project verification binds to a real commit and current source content."""
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -135,7 +134,6 @@ class GitSnapshotTests(unittest.TestCase):
         self.git("commit", "-m", "Fixture process history only")
         after_commit = derive_test_evidence(self.root, "F001", references)
         for scope, result in verified.items():
-            # 当前 Git 提交可变化；相同内容下，测试结论、用例与运行引用必须保持。
             self.assertEqual(after_commit[scope]["git_revision"], verification_snapshot.git_revision(self.root))
             self.assertEqual({key: value for key, value in result.items() if key != "git_revision"},
                              {key: value for key, value in after_commit[scope].items() if key != "git_revision"})

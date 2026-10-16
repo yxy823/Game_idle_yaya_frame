@@ -1,4 +1,3 @@
-# 用中立配置和受控探针检查 真实工具可用性；这些单测不代表宿主工具实际可用。
 from __future__ import annotations
 import sys
 from pathlib import Path

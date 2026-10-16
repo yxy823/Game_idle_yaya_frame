@@ -1,4 +1,3 @@
-"""Exercise the edge crossing check through its read-only CLI and temporary graph files."""
 import json
 import subprocess
 import sys
@@ -37,9 +36,7 @@ class GraphEdgeCrossingTests(unittest.TestCase):
                  node("legend-key", 150, -100) | {"width": 400, "height": 300}]
         edges = [
             edge("through", "a", "b"),
-            # 沿 middle 的上边框走、绕开它：不算穿过。
             edge("around", "a", "b", [(150, 20), (150, 0), (450, 0), (450, 20)], target_port="right"),
-            # 两端既不同行也不同列：只计数，不判断。
             edge("unaligned", "a", "b", [(300, 300)]),
         ]
         completed = self.run_check(nodes, edges)

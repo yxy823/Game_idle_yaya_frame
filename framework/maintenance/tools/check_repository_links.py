@@ -1,5 +1,4 @@
 """检查维护仓库与按复制清单生成后的项目中的 Markdown 链接和锚点，以及两份提示词库正文中的纯文本路径与「标题」引用。"""
-# 分发源里的链接按生成项目的目录写成，所以先复制到临时目录再检查，结果映射回源路径。
 from __future__ import annotations
 
 import argparse
@@ -62,7 +61,6 @@ def check_prompt_references(root: Path) -> tuple[int, list[dict]]:
         for project in json.loads("\n".join(lines)):
             for items in project["categories"].values():
                 for name, text in items.items():
-                    # 行号只用于显示；JSON 排版不同（如冒号前有空格）时退回 0，不中断检查。
                     line = next((i for i, row in enumerate(lines, start=1)
                                  if re.search(re.escape(json.dumps(name, ensure_ascii=False)) + r"\s*:", row)), 0)
 

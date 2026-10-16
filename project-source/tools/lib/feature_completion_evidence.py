@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 """Create and validate structured Feature completion evidence."""
-# 完成结论读取当前工作区与真实运行引用；这里不启动测试，也不获得人工接受。
 from __future__ import annotations
 
 import json
@@ -78,7 +76,6 @@ def _manual_acceptance_problem(repo_root: Path, feature_id: str, acceptance: Any
         return "explicit human acceptance is not recorded"
     if acceptance.get("working_tree_fingerprint") != snapshot["working_tree_fingerprint"]:
         return "human acceptance does not match the current code snapshot"
-    # 清单是验收结论的唯一原件；完成时重读，状态或定义之后被改都会阻塞完成。
     try:
         from tools.lib.manual_acceptance import read_checklist
         source = acceptance.get("source")
@@ -95,7 +92,6 @@ def _manual_acceptance_problem(repo_root: Path, feature_id: str, acceptance: Any
     return None
 
 
-# 检查测试与适用的人工接受；静态检查和用户指定的评审条件由 Agent 单独核对。
 def validate_completion_evidence(repo_root: Path, feature_id: str) -> tuple[bool, str]:
     try:
         data = load_evidence(repo_root / evidence_relative_path(feature_id), feature_id)
@@ -112,7 +108,6 @@ def validate_completion_evidence(repo_root: Path, feature_id: str) -> tuple[bool
         derive_test_evidence(repo_root, feature_id, data.get("test_runs"))
     except (ValueError, OSError, TypeError, KeyError) as exc:
         return False, f"test run evidence is invalid: {exc}"
-    # 验收方式是 Stage 1 的需求判断；这里不从空清单或测试通过反推该决定。
     if mode == "manual":
         problem = _manual_acceptance_problem(repo_root, feature_id, data.get("human_acceptance"), snapshot)
         if problem:

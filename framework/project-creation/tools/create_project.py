@@ -44,7 +44,6 @@ def copy_project(source: Path, output: Path) -> int:
     """先检查目标和清单，再复制；复制失败时保留现场并返回原始错误。"""
     source = source.resolve()
     output = output.absolute()
-    # 检查用户写出的路径和解析后的路径，避免父目录中的空格或中文被忽略。
     invalid = r"[\s\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\U00020000-\U000323af]"
     if re.search(invalid, str(output)) or re.search(invalid, str(output.resolve())):
         raise ValueError("Project path must not contain Chinese characters or whitespace")
@@ -67,7 +66,6 @@ def copy_project(source: Path, output: Path) -> int:
             raise FileNotFoundError(origin)
         copies.append((origin, destination))
 
-    # 展开实际写入路径；目录可合并，文件不得被重复写入或占据目录位置。
     targets: dict[Path, bool] = {}
 
     def claim(path: Path, is_directory: bool) -> None:
@@ -96,7 +94,6 @@ def copy_project(source: Path, output: Path) -> int:
                 if is_directory:
                     pending.extend(child.iterdir())
 
-    # 只复制清单明确指定的文件或目录，不渲染内容，也不附加身份或状态文件。
     output.mkdir(parents=True, exist_ok=True)
     for origin, destination in copies:
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -113,7 +110,6 @@ def create_project(source: Path, output: Path) -> int:
     output = output.resolve()
     initial_paths = sorted(path.name for path in output.iterdir())
     subprocess.run(["git", "init"], cwd=output, check=True)
-    # 提交钩子随清单复制到 .githooks/；先启用它，初始提交也经过同样的检查。
     subprocess.run(["git", "config", "core.hooksPath", ".githooks"], cwd=output, check=True)
     subprocess.run(["git", "add", "--", *initial_paths], cwd=output, check=True)
     subprocess.run(

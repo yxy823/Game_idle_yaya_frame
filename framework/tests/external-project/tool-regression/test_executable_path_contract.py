@@ -1,4 +1,3 @@
-"""Executable fields preserve complete paths, including spaces and Unicode."""
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -53,7 +52,6 @@ class ExecutablePathContractTests(unittest.TestCase):
     def test_actual_absolute_space_and_unicode_path_is_not_split(self) -> None:
         config = self.config(str(self.executable))
         self.assertEqual(environment._schema_errors(config, self.root), [])
-        # 实际 Python 探针证明完整路径可启动，但不能冒充 Godot 就绪。
         self.assertEqual(environment._readiness_errors(config, self.root),
                          ["engine executable must report Godot 4.7.x"])
         observed, error = environment._read_engine_version(
@@ -63,7 +61,6 @@ class ExecutablePathContractTests(unittest.TestCase):
 
     def test_actual_relative_space_and_unicode_path_resolves_from_project_root(self) -> None:
         config = self.config(self.executable.relative_to(self.root).as_posix())
-        # 实际 Python 探针证明完整路径可启动，但不能冒充 Godot 就绪。
         self.assertEqual(environment._readiness_errors(config, self.root),
                          ["engine executable must report Godot 4.7.x"])
         observed, error = environment._read_engine_version(

@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import unquote
 
-# 按目录名在任意层级排除：版本库、引擎缓存、临时材料、Agent 客户端数据和第三方插件。
 DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
 
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
@@ -61,7 +60,7 @@ def scan(path: Path) -> ScannedFile:
     links: list[tuple[int, str, str | None]] = []
     title: str | None = None
     fence: str | None = None
-    top = True  # 到目前为止只有空行、一级标题和导航行
+    top = True
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
         fence_match = FENCE.match(line)
         if fence is not None:
@@ -156,11 +155,10 @@ def _inline_targets(original: str) -> tuple[list[tuple[str, str | None]], bool]:
                     break
                 depth -= 1
             elif character in " \t" and depth == 0:
-                break  # 后面是可选的链接标题
+                break
             end += 1
         add(start, line[index:end], end)
         start = line.find("](", end)
-    # 页面顶部的导航行（一行只有链接和“·”，例如场景页的返回链接）可以用缩写，由 scan 判断是否在顶部。
     residue = list(line)
     for begin, finish in spans:
         residue[begin:finish] = " " * (finish - begin)

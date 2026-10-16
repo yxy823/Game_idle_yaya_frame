@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Check relative Markdown links and heading anchors inside a directory tree."""
 # 只读检查：不联网、不改写文件。锚点按 GitHub 的标题锚点规则生成。
-# 标题、锚点和链接的解析与链接文字检查共用 tools/lib/markdown_links.py。
 from __future__ import annotations
 
 import argparse

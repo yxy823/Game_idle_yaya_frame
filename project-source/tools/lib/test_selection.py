@@ -1,5 +1,4 @@
 """Deterministic Test Registry selection shared by runners and completion gates."""
-# 仅从当前 Feature/Registry 计算运行选择；不写独立计划、快照或计划哈希。
 from __future__ import annotations
 
 import json
@@ -88,7 +87,6 @@ def deduplicate_selectors(root: Path, paths: list[str]) -> list[str]:
     return result
 
 
-# 全量 = tests/ 加调试台目录；项目没有 dev/debug/ 时只选 tests/。
 def full_suite_selectors(root: Path) -> list[str]:
     return ["tests", *(["dev/debug"] if (root / "dev/debug").is_dir() else [])]
 
@@ -186,7 +184,6 @@ def _is_test_area(path: str) -> bool:
 def _is_game_file(path: str) -> bool:
     if path == "project.godot":
         return True
-    # 根目录的其他文件是 lint、导出等工具配置，不是游戏内容。
     return ("/" in path and not path.startswith(NON_GAME_PREFIXES)
             and PurePosixPath(path).suffix.lower() in GAME_SUFFIXES)
 
@@ -206,7 +203,6 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
         raise SelectionError(str(exc)) from exc
     inheritance = _SuiteInheritance(root.resolve())
 
-    # 只对测试目录里的脚本判断是否套件，游戏脚本的继承写法不影响选择。
     def is_suite(path: str) -> bool:
         file = (root / path).resolve()
         return (path.endswith(".gd") and file.is_file() and _godot_visible(root.resolve(), file)
@@ -253,7 +249,6 @@ def change_impact(root: Path, registry: dict[str, Any], base_revision: str) -> d
                 if len(chain) < len(item["chain"]):
                     item["chain"] = chain
     for path in unclaimed:
-        # 调试台引用大量游戏文件；只被调试台依赖的未认领文件不归入调试台。
         owners = {component_id for node in reached[path] if not node.startswith("dev/debug/")
                   for component_id in claiming_components(components, node)}
         for component_id in owners:
@@ -338,7 +333,6 @@ def _dependency_suites(root: Path, impact: dict[str, Any], required: dict) -> No
             _add(root, required, suite["path"], None, None, reason)
 
 
-# 从当前合约、显式影响说明和起点以来的内容差异计算义务；只有真实 full 结果覆盖选择集时才可复用。
 def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dict[str, Any]:
     if not re.fullmatch(r"F\d{3}", feature_id) or phase not in {"baseline", "final"}:
         raise SelectionError("invalid Feature ID or test-selection phase")
@@ -429,7 +423,6 @@ def auto_scope(selection: dict[str, Any]) -> str:
     return "full" if selection["full_suite"]["required"] else "affected"
 
 
-# 将内存中的选择转换成 Godot 参数；执行结果只记录实际选择与报告。
 def execution_selectors(root: Path, selection: dict[str, Any], scope: str) -> list[str]:
     if scope == "full":
         selectors = deduplicate_selectors(root, selection["full_suite"]["selectors"])

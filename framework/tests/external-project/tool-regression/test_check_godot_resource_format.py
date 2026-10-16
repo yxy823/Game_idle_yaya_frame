@@ -1,4 +1,3 @@
-# 手写后未重存的场景与资源要被报告；第三方插件和 Godot 忽略的目录不检查。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -94,7 +93,6 @@ class GodotResourceFormatTests(unittest.TestCase):
         self.assertNotIn("assets/old.png:", result.stdout)
 
     def test_listed_files_skip_excluded_locations(self) -> None:
-        # 提交钩子把全部暂存文件列为参数，插件和 Godot 忽略的目录仍不检查。
         self.write("game/bad.tscn", UNSAVED)
         self.write("addons/vendor/bad.tscn", UNSAVED)
         self.write("samples/.gdignore", "")

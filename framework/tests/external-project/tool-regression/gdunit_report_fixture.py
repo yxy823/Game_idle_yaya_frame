@@ -1,4 +1,3 @@
-"""Synthetic original reports for result-verifier tests; never real Feature evidence."""
 from __future__ import annotations
 
 import json

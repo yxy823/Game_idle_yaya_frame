@@ -1,4 +1,3 @@
-# 检查包装器命令、判定及进程控制边界；需要真实引擎的集成范围由验证入口另行执行。
 from __future__ import annotations
 import sys
 from pathlib import Path

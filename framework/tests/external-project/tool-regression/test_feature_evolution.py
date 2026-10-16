@@ -1,4 +1,3 @@
-# 中立 Feature 记录回归检查依赖、修订和退役语义，不以某个游戏的编号顺序建立规则。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -250,7 +249,6 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertFalse(self.validate())
 
     def test_unfinished_feature_can_retire_an_ac_removed_by_approved_revision(self) -> None:
-        # Current AC01 replaces a removed historical AC02; current IDs remain sequential.
         self.revisions["revision_log"][0]["migrations"][0].update(**{"from": ["F002"], "to": ["F002"]})
         old = self.registry["tests"][1]
         replacement = copy.deepcopy(old) | {"status": "planned", "path": None}
@@ -266,7 +264,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         replacement.update(status="active", path="tests/F002.gd")
         self.assertTrue(self.validate(completion="F002"))
         old["id"] = "F001-AC02"
-        self.assertFalse(self.validate())  # The historical ID still owns its revision source.
+        self.assertFalse(self.validate())
         old["id"] = "F002-AC02"
         old["retirement"]["revision_id"] = "missing-revision"
         self.assertFalse(self.validate())
@@ -279,7 +277,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         detail["acceptance_criteria"].append(third)
         detail["verification"]["acceptance_mode"] = "manual"
         self.write("docs/features/F002.json", detail)
-        self.assertTrue(self.validate())  # AC02 was removed; its ID is not reused.
+        self.assertTrue(self.validate())
         detail["acceptance_criteria"].reverse()
         self.write("docs/features/F002.json", detail)
         self.assertFalse(self.validate())
@@ -437,7 +435,6 @@ class FeatureEvolutionTests(unittest.TestCase):
         for name in ("feature-list", "feature-list-revisions", "test-registry"):
             source = FRAMEWORK_DEFAULT_DOCS / f"{name}.json"
             (fresh / f"docs/{name}.json").write_bytes(source.read_bytes())
-        # 默认登记表登记了调试台的单元测试目录与依赖方向不变量，新项目随附这些文件。
         shutil.copytree(FRAMEWORK_DEFAULT_DOCS.parent / "dev/debug/_shared/tests", fresh / "dev/debug/_shared/tests")
         shutil.copytree(FRAMEWORK_DEFAULT_DOCS.parent / "tests", fresh / "tests")
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
@@ -508,7 +505,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         detail["verification"]["acceptance_mode"] = "manual"
         detail["verification"]["manual_regression"] = "Repeat the documented reproduction on the external device; deterministic device automation unavailable."
         self.write("docs/features/F001.json", detail)
-        self.assertFalse(self.validate())  # Missing diagnosis is not a historical-format exemption.
+        self.assertFalse(self.validate())
         detail["bug_diagnosis"] = {"actual": "Reload loses the selected item", "expected": "Reload preserves the selected item",
             "source": "docs/product.md#restore", "reproduction": ["Select an item", "Save and reload"], "root_cause": None}
         self.write("docs/features/F001.json", detail)
@@ -519,8 +516,6 @@ class FeatureEvolutionTests(unittest.TestCase):
         detail["engineering_change"] = "refactor"
         self.write("docs/features/F001.json", detail)
         self.assertFalse(self.validate())
-
-    # 文档措辞和表格格式由静态审查核对；不把说明文档变成精确字符串协议。
 
     def test_approved_test_impact_has_typed_unique_scope_and_registry_references(self) -> None:
         path = self.root / "docs/features/F002.json"

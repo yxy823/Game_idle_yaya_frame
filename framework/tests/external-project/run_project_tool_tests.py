@@ -19,7 +19,6 @@ def main() -> int:
         parser.error("Project tests must run outside the maintenance source")
     if not (project / "project.godot").is_file() or not (project / "docs/methodology-config.json").is_file():
         parser.error("Choose an actual project directory")
-    # 只向测试传入明确对象，沿用项目工具的回归；不登记发布资格或运行整套验收矩阵。
     environment = dict(os.environ, YAYA_TEST_PROJECT=str(project))
     return subprocess.run(
         [sys.executable, "-B", "-m", "unittest", "discover",

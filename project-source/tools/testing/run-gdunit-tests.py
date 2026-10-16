@@ -64,7 +64,6 @@ def _run_process(command: list[str], log_path: Path, timeout: float) -> ProcessR
     return ProcessResult(*run_owned_process(command, REPO_ROOT, log_path, timeout))
 
 
-# 控制台默认只给结论需要的信息；完整输出始终保存在运行目录的 engine.log。
 def _summary(directory: Path, output: str) -> str:
     log_line = f"Engine log: {directory / 'engine.log'}"
     reports = list(directory.glob("report_*/results.xml"))
@@ -128,7 +127,6 @@ def _run_tests(args: argparse.Namespace) -> int:
                 print("Touched completed Features (consider re-running their manual acceptance): "
                       + ", ".join(selection["touched_completed_features"]), flush=True)
             if args.scope == "required" and not selection["required"]:
-                # 没有义务时不启动 Godot，也不把空运行说成通过。
                 print(f"No tests need to run for changes since {selection['base_revision']}.")
                 return 0
             args.targets = execution_selectors(REPO_ROOT, selection, args.scope)
@@ -165,7 +163,6 @@ def _run_tests(args: argparse.Namespace) -> int:
                    "pid": completed.pid, "engine_pid": None}
         discovery = read_json(directory / "discovery.json")
         engine_pid = discovery.get("engine_pid")
-        # OS membership is checked while executing; no ownership report or receipt chain.
         if type(engine_pid) is not int or engine_pid not in completed.owned_pids:
             raise ValueError("discovered engine was not part of this run's owned process tree")
         process["engine_pid"] = engine_pid

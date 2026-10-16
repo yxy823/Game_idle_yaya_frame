@@ -1,5 +1,3 @@
-"""Fixed GAA result-file fixture, launched by the Godot service's test launcher."""
-
 import argparse
 import json
 from pathlib import Path

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Check project configuration and, on request, actual tool availability."""
-# 显式检查已有配置；不生成配置、不安装依赖、不初始化 Git。就绪检查会启动 Godot 版本探针。
 from __future__ import annotations
 
 import argparse
@@ -50,7 +49,6 @@ def _python_executable(config: dict[str, Any]) -> str:
     return value
 
 
-# 先把完整字符串当作文件路径，保留空格和非 ASCII 文件名。
 def _resolve_executable_path(executable: str, repo_root: Path) -> Path:
     """Preserve an executable field whole, resolving relative paths at the root.
 
@@ -119,7 +117,6 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     return errors
 
 
-# 读取已确认配置并核对实际工具；不在每个 Feature 中重新选择环境或写回配置。
 def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     errors: list[str] = []
     try:
@@ -148,7 +145,6 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     if not (repo_root / "yaya/tools/testing/run-gdunit-tests.py").is_file():
         errors.append("test runner is missing: yaya/tools/testing/run-gdunit-tests.py")
 
-    # GAA 是可选工具：只在配置了解释器时核对文件存在，不核对其中的依赖版本。
     executable = config.get("audio_analyzer_python_executable", "")
     if _nonempty_string(executable) and not Path(executable).is_file():
         errors.append(f"GAA Python executable is unavailable: {executable!r}")

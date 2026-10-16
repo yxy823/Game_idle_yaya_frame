@@ -1,5 +1,4 @@
 """Reconcile native Godot records with invocation-local scoped-match evidence."""
-# 对照原生诊断与本次明确消费记录；按实际出现次数匹配，避免宽泛忽略错误。
 from __future__ import annotations
 
 import json
@@ -112,7 +111,6 @@ def _load_evidence(path: Path) -> tuple[list[Diagnostic], set[int]]:
     return records, expected
 
 
-# 缺失、重复或无对应消费证据的诊断都保留为异常，不能只按消息文本全局放行。
 def unexpected_diagnostics(output: str, report_path: Path) -> list[str]:
     """Fail closed on unmatched records, extra occurrences or incomplete evidence.
 

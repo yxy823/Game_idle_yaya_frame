@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """显式检查 Feature 记录与测试引用；检查当前完整一致性。"""
-# 沿用 Skill 中的现有调用路径；不读取工具事件或拦截写入。
 from __future__ import annotations
 
 import argparse
@@ -253,7 +252,6 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
                     _error(f"{_rel(path)} duplicate criterion id {ac_id}")
                     ok = False
                 elif match := AC_RE.fullmatch(ac_id):
-                    # Gaps are allowed so a removed AC's ID is never reused by a later criterion.
                     number = int(match.group(1))
                     if number <= last_number:
                         _error(f"{_rel(path)}.acceptance_criteria[{pos}].id must increase; found {ac_id} after AC{last_number:02d}")
@@ -340,7 +338,6 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
                 ok = False
     info["engineering_change"] = engineering_change
     info["acceptance_mode"] = verification.get("acceptance_mode") if isinstance(verification, dict) else None
-    # 草案可暂未决定；已作出的决定必须与检查项一致，完成时必须有决定。
     if info["acceptance_mode"] is not None and ok:
         try:
             acceptance_mode(data)
@@ -369,7 +366,6 @@ def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], detai
         if source_feature is not None and source_feature not in entries:
             _error(f"test {tid} references missing Feature {source_feature}")
             ok = False
-        # Retired IDs keep their historical AC; the replacement chain remains mandatory.
         if (kind == "acceptance" and status != "retired" and source_feature in details
                 and criterion_id not in details[source_feature]["criteria"]):
             _error(f"acceptance test {tid} references missing criterion {source_feature}-{criterion_id}")
@@ -378,7 +374,6 @@ def _validate_test_registry(data: Any, entries: dict[str, dict[str, Any]], detai
     return ok, registry_tests, component_ids
 
 
-# 聚合索引、详情、Registry 和演进关系；跨文件规则在这里汇合，避免入口各自判断。
 def _validate_all(completion_feature: str | None = None) -> bool:
     ok = True
     index_data, loaded = _load_json(INDEX_FILE)
@@ -399,7 +394,6 @@ def _validate_all(completion_feature: str | None = None) -> bool:
     details: dict[str, dict[str, Any]] = {}
     detail_ids: set[str] = set()
     if DETAILS_DIR.exists():
-        # 同目录还有设计稿与 F0XX-evidence.json，只读取 F0XX.json 详情。
         for path in sorted(p for p in DETAILS_DIR.glob("F*.json") if re.fullmatch(r"F\d{3}\.json", p.name)):
             data, loaded = _load_json(path)
             ok &= loaded
@@ -455,8 +449,6 @@ def _validate_all(completion_feature: str | None = None) -> bool:
         if (status == "done" or fid == completion_feature) and info.get("acceptance_mode") is None:
             _error(f"completion Feature {fid} requires a decided verification.acceptance_mode")
             ok = False
-        # Approved external scope is required coverage, but never changes ownership
-        # of a Feature's own AC/regression mapping used by retirement migrations.
         referenced = set(info["automated"]) | set(info["regressions"]) | set(info["additional_tests"])
         for tid in referenced:
             cat = registry_tests.get(tid)

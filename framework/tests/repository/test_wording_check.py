@@ -1,4 +1,3 @@
-"""Check the distributed wording checker through its public CLI."""
 import json
 import subprocess
 import sys

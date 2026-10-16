@@ -1,4 +1,3 @@
-"""Check plain-text path and heading references inside the prompt libraries."""
 import importlib.util
 import io
 import json

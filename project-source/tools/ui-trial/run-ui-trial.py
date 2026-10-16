@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Run a ui-trial driver script inside a renamed trial copy with an outer timeout."""
-# 外层超时与进程树清理沿用 gdunit_process：只结束本次创建的进程，不按进程名全局结束。
 from __future__ import annotations
 
 import argparse

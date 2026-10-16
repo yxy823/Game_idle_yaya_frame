@@ -83,7 +83,6 @@ def compare_paths(prompts_paths: list[Path] | tuple[Path, ...], scenarios_root: 
     expected = expected_paths(data)
     if not scenarios_root.is_dir():
         raise ValueError(f"Scenario directory does not exist: {scenarios_root}")
-    # Only names are inspected. Content, H1 and semantic quality belong to review.
     actual = {
         path.relative_to(scenarios_root).as_posix()
         for path in scenarios_root.rglob("*")

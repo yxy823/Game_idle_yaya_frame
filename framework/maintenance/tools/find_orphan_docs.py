@@ -33,13 +33,10 @@ import sys
 from pathlib import Path
 from urllib.parse import unquote
 
-# ---- 可自定义的默认值：改这里，或用命令行参数覆盖 --------------------------------
 DEFAULT_NAV = ["README.md", "index.md", "*index.md"]          # 无 "/" 的按文件名匹配
 DEFAULT_HISTORY = ["reports/*", "*/reports/*"]                 # 含 "/" 的按完整相对路径匹配
 DEFAULT_EXCLUDE = [".git/*", ".claude/*", ".godot/*", "tmp/*", "references/*", "node_modules/*", "*/__pycache__/*",
                    "__pycache__/*", ".cache/*", "*/.cache/*"]
-# 已认可的规则路由、由专用检查维护的场景，以及明确保留的来源/许可资料。
-# 只排除检查目标；其指向其他文档的引用仍需参与统计。
 DEFAULT_TARGET_EXCLUDE = [
     "project-source/agent-rules/*",
     "framework/prompt-scenarios/scenarios/*",
@@ -53,7 +50,6 @@ ACTION_HINT = re.compile(
     r"读取|阅读|读|更新|维护|写入|保存|记录|查阅|参见|使用|read|update|maintain|write|load|consult|see",
     re.IGNORECASE)
 LINK_RE = re.compile(r"\]\(\s*(?:<([^>]+)>|([^)>\s]+))")
-# --------------------------------------------------------------------------------
 
 VERDICT_DESCRIPTIONS = {
     "NONE": "未识别到其他文件引用",
@@ -92,7 +88,6 @@ def walk(root: Path, exclude: list[str]) -> list[str]:
     def fail(error: OSError) -> None:
         raise error
 
-    # 读不了的目录要报错，不能当成里面没有文档。
     for cur, dirs, names in os.walk(root, followlinks=False, onerror=fail):
         rel_dir = Path(cur).relative_to(root).as_posix()
         dirs[:] = [d for d in dirs

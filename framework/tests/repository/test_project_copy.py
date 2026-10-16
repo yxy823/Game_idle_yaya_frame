@@ -1,5 +1,3 @@
-"""复制器的少量边界回归；仅在明确执行测试时使用临时目录。"""
-
 import importlib.util
 import json
 import os
@@ -139,7 +137,6 @@ class ProjectCopyTests(unittest.TestCase):
             terminology = output / "docs/terminology.md"
             with terminology.open("a", encoding="utf-8", newline="\n") as handle:
                 handle.write("| 晶石 | 游戏中唯一的资源 | 水晶 |\n")
-            # 链接文字不是目标的一级标题“项目术语”，链接文字检查拒绝。
             (output / "docs/guide.md").write_text("# 指南\n\n收集水晶。\n\n见[词表](terminology.md)。\n",
                                                  encoding="utf-8", newline="\n")
             rules = output / "docs/project-rules.md"
@@ -175,7 +172,6 @@ class ProjectCopyTests(unittest.TestCase):
                 return subprocess.run(["git", "commit", "-m", "chore: 调整 Skill 配置"], cwd=output,
                                       capture_output=True, encoding="utf-8", check=False)
 
-            # 非文档文件也要触发：只改 Codex 那份的 openai.yaml。
             relative = "bug-diagnosis/agents/openai.yaml"
             codex_copy = output / ".agents/skills" / relative
             codex_copy.write_bytes(codex_copy.read_bytes() + b"\n# local note\n")
@@ -410,10 +406,8 @@ class ProjectCopyTests(unittest.TestCase):
             with self.subTest(directory=relative):
                 directory = output / relative
                 self.assertEqual({path.name for path in directory.iterdir()}, {".gitkeep"})
-        # game/ and tests/unit/ start with the shared UI tokens and their tests.
         for relative in ("game", "tests/unit"):
             self.assertEqual({path.name for path in (output / relative).iterdir()}, {"shared"})
-        # The only distributed test is the debug console's dependency-direction invariant.
         self.assertEqual({path.name for path in (output / "tests/invariants").iterdir()},
                          {"debug_dependency_test.gd", "debug_dependency_test.gd.uid"})
         self.assertTrue((output / "dev/debug/debug_main.tscn").is_file())

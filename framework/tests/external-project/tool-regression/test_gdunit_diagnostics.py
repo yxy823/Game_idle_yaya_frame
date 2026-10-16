@@ -1,4 +1,3 @@
-# 重放本次诊断与已消费记录，检查预期错误没有吞掉其他真实异常。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -136,7 +135,6 @@ class LifecycleEvidenceTests(unittest.TestCase):
             log.write_text(output, encoding="utf-8")
             return runner.ProcessResult(exit_code, timed_out, 123, output, (123,))
 
-        # 默认目标按夹具根目录解析，不读取外部项目自己的 tests/ 与 dev/debug/。
         with mock.patch.object(runner, "REPO_ROOT", self.root), mock.patch.object(
             runner, "_run_process", side_effect=process
         ), contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):

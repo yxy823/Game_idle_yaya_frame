@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 """Report terminology problems: forbidden wordings registered in the terms file, and optional candidate variants."""
-# 只读检查：不改写文件。代码、引号内的文字和术语自己的定义行不算出现，因为写作规范会把禁用词当例子列出。
-# 读取、遮蔽、文件选择和输出格式与措辞检查共用 tools/lib/document_text.py。
 from __future__ import annotations
 
 import argparse
@@ -25,7 +23,6 @@ ENTRY_LINE = re.compile(r"^ {0,3}(#{2,6}\s|[-*+]\s|\d+[.)]\s|\|)")
 CJK = re.compile(r"[\u3400-\u9fff]")
 ASCII_TERM = re.compile(r"[A-Za-z][A-Za-z0-9_-]*")
 ASCII_RUN = re.compile(r"(?<![A-Za-z0-9_-])[A-Za-z][A-Za-z0-9_-]*")
-# 候选词在这些虚词处截断，避免把「分发源的」「游戏中」之类当成新写法。
 STOP_CHARACTERS = set("的了和与及或中里在是时等也都就而并把被让给向对从到按以不只这那其之每各由会要须")
 
 
@@ -37,9 +34,9 @@ class TermsFileError(Exception):
 class Term:
     name: str
     aliases: list[str]
-    code_aliases: list[str]  # 反引号里的代码或路径写法，不参与候选发现
+    code_aliases: list[str]
     forbidden: list[str]
-    definition: str  # 路径:行号
+    definition: str
 
 
 @dataclass
@@ -74,7 +71,7 @@ def split_aliases(cell: str) -> list[str]:
 def parse_terms(path: Path, display: str) -> list[Term]:
     lines = path.read_text(encoding="utf-8").splitlines()
     terms: list[Term] = []
-    entry_line: int | None = None  # 第一处条目：二级及以下小标题、列表项或表格数据行
+    entry_line: int | None = None
     fence: str | None = None
     index = 0
     while index < len(lines):
@@ -97,7 +94,6 @@ def parse_terms(path: Path, display: str) -> list[Term]:
         header = split_cells(line)
         term_column = next((i for i, cell in enumerate(header) if "术语" in cell), None)
         forbidden_column = next((i for i, cell in enumerate(header) if "不用的说法" in cell), None)
-        # 两列都有才是术语表；缺“不用的说法”列的表只算有条目，否则检查会空跑通过。
         valid = term_column is not None and forbidden_column is not None
         index += 2
         while index < len(lines) and lines[index].lstrip().startswith("|"):
@@ -117,7 +113,6 @@ def parse_terms(path: Path, display: str) -> list[Term]:
                 entry_line = index + 1
             index += 1
     if not terms and entry_line is not None:
-        # 有条目却没读出术语，多半是用了小标题或列表；照常通过会让检查空跑。
         raise TermsFileError(f"{display}:{entry_line}: 术语文件无法解析：有条目却没有从表格读出术语，"
                              "请按项目术语规范的“术语文件的格式”改用 | 术语 | 含义与边界 | 不用的说法 | 表格")
     return terms
@@ -240,7 +235,6 @@ def discover_candidates(terms: list[Term], documents: list[Document], options: a
     return findings
 
 
-# 注册表：名称 → (检查器, 是否影响退出码)。新增检查时写一个同签名的函数并在这里登记。
 CHECKERS = {
     "forbidden": (check_forbidden, True),
     "discover": (discover_candidates, False),

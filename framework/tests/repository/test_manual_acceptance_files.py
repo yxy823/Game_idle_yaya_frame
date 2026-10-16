@@ -1,4 +1,3 @@
-"""Neutral Git fixtures for manual checklist records; no game or human test execution."""
 import copy
 import json
 import os
@@ -65,7 +64,6 @@ class ManualAcceptanceFileTests(unittest.TestCase):
         return json.loads(path.read_text(encoding="utf-8-sig"))
 
     def decide(self, status="passed", checklist=None):
-        """Bind the checklist, then write the user's decision into its own status fields."""
         checklist = checklist or self.checklist
         prepare_checklist(self.root, self.load(checklist)["feature_id"], checklist)
         value = self.load(checklist)

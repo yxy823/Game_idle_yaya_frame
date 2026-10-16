@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 """Report wordings matched by the checks in wording-check.json: hard checks fail, checks to review are listed only."""
-# 只读检查：不改写文件。要找的写法和例外都写在配置的正则里，脚本不保存词表；代码、引号内的文字不算出现。
-# 配置的 sentence_length 给出句长上限：超过的句子列为待复核；Markdown 开头的元数据（如 Skill 的 description）不查句长。
-# 读取、遮蔽、文件选择和输出格式与术语检查共用 tools/lib/document_text.py。
 from __future__ import annotations
 
 import argparse

@@ -1,4 +1,3 @@
-# 试用副本必须改名并读回确认；改名失败时不同步，运行脚本也拒绝在未改名的副本里启动 Godot。
 from __future__ import annotations
 import sys
 from pathlib import Path

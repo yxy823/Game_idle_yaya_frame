@@ -202,7 +202,6 @@ class _SuiteInheritance:
         return result
 
 
-# 静态声明是应执行集合的边界，还需与引擎实际 discovery 对照，不能当作已运行。
 def expected_gdunit_cases(root: Path, selectors: list[str]) -> list[dict[str, str]]:
     """Supplement runtime discovery with declared root-level GDScript test methods.
 
@@ -316,9 +315,6 @@ def _run_records(root: Path, feature_id: str | None, *,
                 raise RunEvidenceError("run Feature does not match its history directory")
             if type(record.get("sequence")) is not int or record["sequence"] < 1:
                 raise RunEvidenceError("run sequence must be a positive integer")
-            # Validate every field used to classify history before filtering out
-            # baseline, passed or older-snapshot runs. Missing metadata is not
-            # evidence that a failed attempt belongs to some other verification.
             if record.get("phase") not in ("baseline", "final"):
                 raise RunEvidenceError("run phase must be baseline or final")
             if record.get("status") not in ("running", "failed", "passed"):
@@ -357,9 +353,6 @@ def _run_records(root: Path, feature_id: str | None, *,
 
 def start_run(root: Path, directory: Path, feature_id: str | None,
               phase: str, scope: str) -> dict:
-    # Scan before the first write so this run cannot select itself as history.
-    # History damage is reported without preventing a new measurement. Completion
-    # independently rejects referenced damage and unresolved/unknown history.
     started_at = utc_now()
     records, history_errors = _run_records(root, feature_id, exclude_directory=directory)
     for error in history_errors:
@@ -489,8 +482,6 @@ def verify_run(root: Path, reference: dict[str, str], selection: dict,
 
 
 def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs: list[dict]) -> None:
-    # Sequence is this Feature's run order, not filesystem timestamp precision. A tie from
-    # concurrent launches never clears a different failed/unfinished run.
     rank = {"required": 1, "affected": 2, "full": 3}
     records, errors = _run_records(root, selection["feature_id"])
     if errors:
@@ -512,8 +503,6 @@ def _require_resolved_failures(root: Path, selection: dict, snapshot: dict, runs
 def derive_test_evidence(root: Path, feature_id: str, references: list[dict[str, str]]) -> dict:
     """Compute current obligations and results without persisting derived totals."""
     selection = build_selection(root, feature_id)
-    # A valid manual plan can have no automated obligations. It still needs
-    # human acceptance and must not hide failed runs on the current snapshot.
     needs_run = bool(selection["required"] or selection["affected"] or selection["full_suite"]["required"])
     if not isinstance(references, list) or (not references and needs_run):
         raise RunEvidenceError("no real test run result was supplied")

@@ -1,5 +1,3 @@
-"""Regression contracts for selection-driven, artifact-backed completion."""
-# 共用中立仓库夹具检查测试计划与工件证据；合成结果不冒充真实引擎执行。
 from __future__ import annotations
 import sys
 from pathlib import Path
@@ -77,7 +75,6 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         return data
 
     def manual_checklist_acceptance(self) -> dict:
-        """Bind a checklist for the current manual checks and record the user's pass in its statuses."""
         from tools.lib.manual_acceptance import prepare_checklist, read_checklist
         detail = json.loads((self.root / "docs/features/F001.json").read_text(encoding="utf-8"))
         tests = [{"id": f"F001-{criterion['id']}-M{index:02d}", "source_ref": f"{criterion['id']}/{index}",
@@ -115,7 +112,6 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
         self.assertIn("human acceptance", message)
         data["human_acceptance"].update(status="accepted", **verification_snapshot.current_snapshot(self.root))
         write_json(self.root / "docs/features/F001-evidence.json", data)
-        # 没有清单原件的“已接受”不算人工验收。
         self.assertIn("checklist path", feature_completion_evidence.validate_completion_evidence(self.root, "F001")[1])
         data["human_acceptance"] = self.manual_checklist_acceptance()
         write_json(self.root / "docs/features/F001-evidence.json", data)
@@ -500,8 +496,6 @@ class FeatureCompletionEvidenceTests(unittest.TestCase):
                          [result_reference(self.root, path)])["required_test_set"]["total"], 3)
         result = json.loads(path.read_text())
         discovery = path.parent / "discovery.json"
-        # Hand-authored report identities intentionally omit a real source method
-        # from both inventories, while preserving every selected suite and AC.
         discovery.write_text(json.dumps({"schema_version": 1, "run_id": path.parent.name,
             "engine_pid": 123, "cases": [
                 {"id": "tests/unit/example.gd::test_kept", "path": "tests/unit/example.gd",

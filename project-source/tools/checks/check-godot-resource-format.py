@@ -15,7 +15,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from tools.lib.verification_snapshot import DEBUG_CONSOLE_SAVES_RE
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-# 第三方插件按原样保留，不要求符合本项目的保存格式。
 EXCLUDED_DIRECTORY_NAMES = {".git", ".godot", ".claude", "tmp", "reports", "addons"}
 HEADER = re.compile(r"^\[gd_(?:scene|resource)\b")
 UID = re.compile(r'\buid="uid://[^"]+"')
@@ -79,7 +78,6 @@ def main() -> int:
         return 2
     try:
         if args.paths:
-            # 列出的文件同样跳过默认范围排除的位置，提交钩子因此可以直接传入全部暂存文件。
             listed = [path for path in (root / name for name in args.paths) if not excluded(root, path)]
             files = [path for path in listed if path.suffix in {".tscn", ".tres"}]
             sources = [path for path in listed if path.suffix in UID_SIDECAR_SUFFIXES]
