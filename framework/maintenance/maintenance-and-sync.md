@@ -23,6 +23,7 @@
 | 提示词、场景与关系图的维护方法 | `.agents/skills/prompt-and-graph-maintenance-yaya/` |
 | 框架文档的写作方法 | `.agents/skills/technical-documentation-writing-yaya/` |
 | 框架修改与试验的复盘方法 | `.agents/skills/framework-retro-yaya/` |
+| 外部设计经验引入分发 Skill 参考文件的方法 | `.agents/skills/design-knowledge-intake-yaya/`；条目出处见 `framework/maintenance/dependencies/design-reference-sources.md` |
 | 按需开启的回复「决策依据」一节 | `.agents/skills/decision-trace-yaya/`；写法沿用分发的 `project-source/skills/decision-trace/` |
 | 维护约束与未完成的工作 | 根 `AGENTS.md`、`framework/AGENTS.md` 与 `framework/todo.md` |
 | 某个已有游戏独有的修改 | 在明确指定的外部项目中进行，不写回框架，也不自动同步 |
