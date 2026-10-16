@@ -75,16 +75,7 @@ def _sync(source: Path, copy: Path) -> tuple[int, int]:
             if not (source / relative / name).is_file():
                 (Path(directory) / name).unlink()
                 removed += 1
-    return copied, removed + _remove_copied_git_pointer(source, copy)
-
-
-def _remove_copied_git_pointer(source: Path, copy: Path) -> int:
-    """旧版本复制过源 worktree 的 .git 文件；只删内容与源完全相同的那份，副本自己的 Git 数据不动。"""
-    pointer, origin = copy / ".git", source / ".git"
-    if pointer.is_file() and origin.is_file() and pointer.read_bytes() == origin.read_bytes():
-        pointer.unlink()
-        return 1
-    return 0
+    return copied, removed
 
 
 def main(argv: list[str] | None = None) -> int:

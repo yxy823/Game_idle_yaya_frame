@@ -64,17 +64,12 @@ class UiTrialCopyTests(unittest.TestCase):
         self.assertTrue((self.copy / "reports/.gdignore").is_file())
         self.assertIn('config/name="Demo \\"Q\\""', (self.source / "project.godot").read_text(encoding="utf-8"))
 
-    def test_worktree_git_file_is_not_copied_and_a_copy_of_it_is_removed(self) -> None:
+    def test_worktree_git_file_is_not_copied_and_the_copy_keeps_its_own(self) -> None:
         shutil.rmtree(self.source / ".git")
-        pointer = "gitdir: D:/repo/.git/worktrees/game\n"
-        self.write(self.source / ".git", pointer)
-        # A copy prepared before this fix holds the source worktree's pointer.
-        self.write(self.copy / "project.godot", PROJECT.format(extra=""))
-        self.write(self.copy / ".git", pointer)
+        self.write(self.source / ".git", "gitdir: D:/repo/.git/worktrees/game\n")
         result = self.prepare()
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertFalse((self.copy / ".git").exists())
-        # The copy's own Git data is kept on the next sync.
         own = "gitdir: D:/other/.git/worktrees/trial\n"
         self.write(self.copy / ".git", own)
         result = self.prepare()
