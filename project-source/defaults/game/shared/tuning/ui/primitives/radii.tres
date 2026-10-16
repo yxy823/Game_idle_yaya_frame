@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiRadii" format=3 uid="uid://b4ulc750ilgxp"]
+
+[ext_resource type="Script" uid="uid://ctdg7sm8vnk2s" path="res://game/shared/ui/ui_radii.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiButtonMotion" format=3 uid="uid://sotajh0olys4"]
+
+[ext_resource type="Script" uid="uid://bjwjeqbcuykar" path="res://game/shared/ui/ui_button_motion.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

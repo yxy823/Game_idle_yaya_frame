@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="UiButtonStyle" format=3 uid="uid://xb28gw6ycmec"]
+
+[ext_resource type="Script" uid="uid://cn0iod5xpmna7" path="res://game/shared/ui/ui_button_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+background = 9
+background_hover = 8
+background_pressed = 7
+background_disabled = 2
+font_color = 0
+border_color = 9

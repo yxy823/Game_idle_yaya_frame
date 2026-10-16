@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiProgressBarStyle" format=3 uid="uid://bb3bpdxn3d3m7"]
+
+[ext_resource type="Script" uid="uid://dy3y0qsos8m64" path="res://game/shared/ui/ui_progress_bar_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

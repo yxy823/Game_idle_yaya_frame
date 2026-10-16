@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiShadows" format=3 uid="uid://cxhjpe84yo4to"]
+
+[ext_resource type="Script" uid="uid://14wkcjdrnavy" path="res://game/shared/ui/ui_shadows.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiPalette" format=3 uid="uid://oxnvfl0f1eex"]
+
+[ext_resource type="Script" uid="uid://dcmc722sl1rhv" path="res://game/shared/ui/ui_palette.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

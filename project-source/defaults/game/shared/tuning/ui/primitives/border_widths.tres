@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiBorderWidths" format=3 uid="uid://dnqx0n8utjbdg"]
+
+[ext_resource type="Script" uid="uid://clry26yoi1t8k" path="res://game/shared/ui/ui_border_widths.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

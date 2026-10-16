@@ -406,10 +406,13 @@ class ProjectCopyTests(unittest.TestCase):
         self.assertEqual(main_scene.read_bytes(),
                          (repository / "project-source/defaults/main/main.tscn").read_bytes())
         self.assertFalse((output / "main/main.gd").exists())
-        for relative in ("game", "assets", "components", "tests/unit", "tests/features"):
+        for relative in ("assets", "components", "tests/features"):
             with self.subTest(directory=relative):
                 directory = output / relative
                 self.assertEqual({path.name for path in directory.iterdir()}, {".gitkeep"})
+        # game/ and tests/unit/ start with the shared UI tokens and their tests.
+        for relative in ("game", "tests/unit"):
+            self.assertEqual({path.name for path in (output / relative).iterdir()}, {"shared"})
         # The only distributed test is the debug console's dependency-direction invariant.
         self.assertEqual({path.name for path in (output / "tests/invariants").iterdir()},
                          {"debug_dependency_test.gd", "debug_dependency_test.gd.uid"})

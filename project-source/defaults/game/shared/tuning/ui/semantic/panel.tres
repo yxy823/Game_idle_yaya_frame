@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiPanelStyle" format=3 uid="uid://b5iag5gndpdg6"]
+
+[ext_resource type="Script" uid="uid://2ajhcjor62vg" path="res://game/shared/ui/ui_panel_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

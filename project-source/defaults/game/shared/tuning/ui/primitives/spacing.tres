@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiSpacing" format=3 uid="uid://cuhr4qw01qfov"]
+
+[ext_resource type="Script" uid="uid://donjf8r0sdtdf" path="res://game/shared/ui/ui_spacing.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

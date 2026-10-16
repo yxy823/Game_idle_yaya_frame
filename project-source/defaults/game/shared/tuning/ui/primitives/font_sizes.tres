@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiFontSizes" format=3 uid="uid://bjcmri6vsxm6l"]
+
+[ext_resource type="Script" uid="uid://dykyga81pnaip" path="res://game/shared/ui/ui_font_sizes.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

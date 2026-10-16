@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="UiLineEditStyle" format=3 uid="uid://cyggnijxt66fw"]
+
+[ext_resource type="Script" uid="uid://c4whr6m24ld6h" path="res://game/shared/ui/ui_line_edit_style.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
