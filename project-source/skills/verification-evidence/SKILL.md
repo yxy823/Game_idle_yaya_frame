@@ -1,6 +1,6 @@
 ---
 name: verification-evidence
-description: 当引用、原件、是否过时或中断的运行需要处理时，检查、导入或恢复已有的 Godot 测试证据。必要的重跑交给 project-verification，人工验收交给 manual-acceptance；不编造结果，也不完成 Feature。
+description: 当引用、原件、是否过时或中断的运行需要处理时，检查、导入或恢复已有的 Godot 测试证据。必要的重跑交给 run-checks，人工验收交给 manual-acceptance；不编造结果，也不完成 Feature。
 ---
 
 # 维护实际的验证证据
@@ -22,7 +22,7 @@ description: 当引用、原件、是否过时或中断的运行需要处理时�
 
 ## 只补齐缺少的证据
 
-已获授权的恢复需要再做静态检查、运行已有测试或检查场景时，使用 [project-verification](../project-verification/SKILL.md)。按原始失败或当前义务要求的范围选择，不默认全部重跑。诊断或实现上的修改交回已有的负责方，不变成对证据的修改。
+已获授权的恢复需要再做静态检查、运行已有测试或检查场景时，使用 [run-checks](../run-checks/SKILL.md)。按原始失败或当前义务要求的范围选择，不默认全部重跑。诊断或实现上的修改交回已有的负责方，不变成对证据的修改。
 
 需要准备、记录或更新实际的人工结果时，使用 [manual-acceptance](../manual-acceptance/SKILL.md)。自动重跑不能更新人工验收。失败和被引用的原件，按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **报告与清理** 保留；任何清理或重建的产物，都不能掩盖必须报告的失败。
 

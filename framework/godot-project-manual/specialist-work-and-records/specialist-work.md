@@ -22,7 +22,7 @@
 | 整体游戏设计、玩家行为与反馈意图 | `docs/gdd/` | `design-gdd` |
 | 数值模型、公式、参数、曲线与计算说明 | 单个系统：`docs/gdd/balance/<system-key>.md`；跨系统：`docs/gdd/balance/cross-system.md` | `design-balance`，在授权内直接维护 |
 | 交付预拆分与当前 Product 范围 | `docs/product.md`、`docs/product/` | `product-author` |
-| 已确认的项目术语与别名 | `docs/terminology.md`；GDD 与专业文档引用它 | `project-terminology` |
+| 已确认的项目术语与别名 | `docs/terminology.md`；GDD 与专业文档引用它 | `terminology-register` |
 | 共享视觉方向 | `docs/art/art-bible.md` | `design-art-direction` |
 | 共享声音方向 | `docs/audio/sound-bible.md` | `design-audio-direction` |
 | 界面布局、状态及相关表现的引用 | `docs/ui/<interface>-design.md`；多个界面共用的控件写在 `docs/ui/components/<component-key>-design.md` | `design-ui-spec` |

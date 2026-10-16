@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项目目标的、相互关联的不确定问题。按需选择讨论、事实调研、在调试台比较候选、技术验证或可比较的实现。目标清楚的任务不经过本入口，直接由原负责方继续。单个问题用 project-grill-me；初始游戏设计用 design-gdd。
+description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项目目标的、相互关联的不确定问题。按需选择讨论、事实调研、在调试台比较候选、技术验证或可比较的实现。目标清楚的任务不经过本入口，直接由原负责方继续。单个问题用 grill-me；初始游戏设计用 design-gdd。
 ---
 
 # 在相互关联的 Godot 问题中找到可行路径
@@ -34,7 +34,7 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 | 下一个决定缺少的依据 | 方法与边界 |
 | --- | --- |
-| 用户偏好、设计边界或有后果的取舍 | 使用[共享提问方法](../project-grill-me/SKILL.md#共享提问方法)。带上事实和具体的备选方案；只问重要的决定，不重新开始一般性的 GDD/Product 需求收集。 |
+| 用户偏好、设计边界或有后果的取舍 | 使用[共享提问方法](../grill-me/SKILL.md#共享提问方法)。带上事实和具体的备选方案；只问重要的决定，不重新开始一般性的 GDD/Product 需求收集。 |
 | 某个 API、第三方能力或项目的实际实现 | 先读本地的相关来源。需要外部事实时，按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 查找资料、委托 `researcher` 和保存来源。调研不等于允许做实验或采纳需求。 |
 | 讨论无法确定的布局、交互、观感、状态行为或可行性 | 已获授权的工作中，游戏已有骨架、需要看画面或实际操作比较的，用 [in-game-tuning](../in-game-tuning/SKILL.md) 在调试台比较候选；引擎可行性用 [technical-validation](../technical-validation/SKILL.md)；还没有骨架时，先按 `yaya/methodology/13-debug-console-and-validation.md` 的[界面的开发顺序](../../../yaya/methodology/13-debug-console-and-validation.md#界面的开发顺序)建骨架。先定义要回答的问题和需要的观察；保留真实的人工判断，并区分模拟行为与必需的真实引擎路径。只做讨论的工作可以描述实验，但不搭建它。 |
 | 几种实现需要实际比较，而且会互相覆盖或需要独立的工作目录 | 搭建备选方案前，先定好可比较的目标、有代表性的输入和观察项。只有任务需要并授权这些目录时，才使用 [worktree-create](../worktree-create/SKILL.md)；简单的实验可以用当前的检出目录。独立的检出目录不能证明运行时数据已隔离。 |
@@ -66,6 +66,6 @@ description: 沿着实际依赖关系，逐步解决阻碍某个已有 Godot 项
 
 只做讨论的工作，到达请求的分析结果就结束。不确定性已经消除到足以支持已获授权的规划或实现时，按 `yaya/methodology/00-overview.md` 的 **任务路由表** 把发现交回原负责方，并继续那项工作。不要索要固定的最终确认，也不要因为出现了诱人的备选方案就扩大范围。完成后返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。整合选定的 worktree 结果，遵循独立的 [worktree-integrate](../worktree-integrate/SKILL.md) 约定和当前授权；探索本身不授权整合或清理。
 
-只有一个普通的未决问题时，直接使用 [project-grill-me](../project-grill-me/SKILL.md)。[project-next-step-advisor](../project-next-step-advisor/SKILL.md) 解释状态和入口选择，但不推进探索；[loop-me](../loop-me/SKILL.md) 为反复出现的活动设计处理方式；[retro](../retro/SKILL.md) 回顾实际发生过的经历。目标清楚的已授权工作由原负责方直接继续，不绕道寻路。
+只有一个普通的未决问题时，直接使用 [grill-me](../grill-me/SKILL.md)。[next-step-advisor](../next-step-advisor/SKILL.md) 解释状态和入口选择，但不推进探索；[loop-me](../loop-me/SKILL.md) 为反复出现的活动设计处理方式；[retro](../retro/SKILL.md) 回顾实际发生过的经历。目标清楚的已授权工作由原负责方直接继续，不绕道寻路。
 
 思路来自 Matt Pocock 沿依赖关系逐个解决决定的 `wayfinder` 方法；已按本 Godot 项目的来源归属、证据和授权边界重写。

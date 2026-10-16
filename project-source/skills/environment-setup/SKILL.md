@@ -1,5 +1,5 @@
 ---
-name: project-environment
+name: environment-setup
 description: 配置、更新或恢复 Godot 项目的工具路径，或执行项目首次的 Godot 资源扫描。用于用户要求准备环境、某个工具移动了位置或换了版本、已配置的工具无法启动的情况。不用于创建项目、修复游戏行为、运行通用的验证套件，或升级 Godot 补丁版本与插件（engineering-change-plan）。
 ---
 

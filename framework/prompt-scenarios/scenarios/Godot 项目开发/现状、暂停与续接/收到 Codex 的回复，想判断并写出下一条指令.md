@@ -18,7 +18,7 @@
 
 ## 执行步骤
 
-使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 现状、暂停与续接 → 收到 Codex 的回复，想判断并写出下一条指令”。填入上述材料。本页使用 [$project-next-step-advisor](<../../../../../project-source/skills/project-next-step-advisor/SKILL.md>)。
+使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 现状、暂停与续接 → 收到 Codex 的回复，想判断并写出下一条指令”。填入上述材料。本页使用 [$next-step-advisor](<../../../../../project-source/skills/next-step-advisor/SKILL.md>)。
 
 **S1｜核对输出声明**
 

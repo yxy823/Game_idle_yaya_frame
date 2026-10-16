@@ -32,7 +32,7 @@
 
 本次资料中已确定的专业规格按[留在 GDD 中的内容](../../../../../project-source/methodology/11-specialist-workflows.md#留在-gdd-中的内容)迁入对应固定正文，GDD 保留整体目标、玩法规则与引用；首次写在哪里不改变职责。
 
-按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `project-terminology` 将本次资料中已确认的定义与别名统一保存到 `docs/terminology.md`，当前仅用于一个主题的术语也使用该文件。GDD 中的重复定义改为引用，详细玩法规则留在所属主题；要求留存的原始输入继续作为来源保存。
+按[项目术语文件](../../../../../project-source/methodology/14-project-terminology.md#项目术语文件)，使用 `terminology-register` 将本次资料中已确认的定义与别名统一保存到 `docs/terminology.md`，当前仅用于一个主题的术语也使用该文件。GDD 中的重复定义改为引用，详细玩法规则留在所属主题；要求留存的原始输入继续作为来源保存。
 
 **S3｜核对覆盖和后续影响**
 

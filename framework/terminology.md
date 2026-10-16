@@ -2,7 +2,7 @@
 
 本页只收录 Yaya 框架特有、或在本框架中有特定含义的术语，两本手册共用这一份。通用开发常识、Godot 基础概念和一看就懂的名称不收录；操作要求和完成规则由所属规范维护。
 
-游戏自身的业务术语不放这里，固定保存在生成项目的 `docs/terminology.md`，由 `project-terminology` 维护。
+游戏自身的业务术语不放这里，固定保存在生成项目的 `docs/terminology.md`，由 `terminology-register` 维护。
 
 表格第三列「不用的说法」列出同一对象不再使用的写法，出现时改为正式名称；「术语」格中用 `/` 分开的写法都可以使用。含义见[术语文件的格式](../project-source/methodology/14-project-terminology.md#术语文件的格式)，检查命令见[检查术语用词](maintenance/tools/README.md#检查术语用词)。
 

@@ -4,7 +4,7 @@
 
 ## 项目术语文件
 
-`docs/terminology.md` 是已确认的项目术语定义、规范名称、别名和概念区分的唯一权威文件。`project-terminology` 维护它以及指向它的链接。无论一个术语只用在一个主题中，还是跨系统、Product、Feature 或对话使用，位置都固定在这里。
+`docs/terminology.md` 是已确认的项目术语定义、规范名称、别名和概念区分的唯一权威文件。`terminology-register` 维护它以及指向它的链接。无论一个术语只用在一个主题中，还是跨系统、Product、Feature 或对话使用，位置都固定在这里。
 
 - GDD、Product、Feature 和专业文档使用这些术语，并链接其定义。它们不另外维护领域词表或局部的权威定义。
 - 术语文件解释一个项目概念是什么意思，以及它的名称与相近名称有什么区别。
@@ -32,7 +32,7 @@
 
 ## 设计工作中记录术语
 
-已获授权的 GDD 创建、修改和整合，包括通过 `project-terminology` 把当前范围内已确认的术语记录到 `docs/terminology.md`，并更新受影响的链接。
+已获授权的 GDD 创建、修改和整合，包括通过 `terminology-register` 把当前范围内已确认的术语记录到 `docs/terminology.md`，并更新受影响的链接。
 
 - 收集现有设计中已经存在的定义；不必等另一个系统、Product 或 Feature 用到它们。
 - 沿用任务的写入授权，除非用户明确限制了可写的文件。只讨论的工作不写任何文件。
@@ -61,14 +61,14 @@
 
 | Skill | 在术语方面的职责 |
 | --- | --- |
-| `project-terminology` | `docs/terminology.md` 中不改变含义的定义，以及指向它们的链接 |
+| `terminology-register` | `docs/terminology.md` 中不改变含义的定义，以及指向它们的链接 |
 | `design-gdd` | 整体游戏设计，包括术语在玩法上含义的任何变化 |
 | `design-balance` | 限定范围的数值设计 |
 | `product-author` | Product 交付文档 |
-| `project-grill-me` | 澄清一个术语，并把答案交回当前任务 |
+| `grill-me` | 澄清一个术语，并把答案交回当前任务 |
 | `product-spec-elicitor` | 澄清交付选择 |
 
-在编写 GDD 期间使用 `project-terminology`，不会开始 Product 规划。纯粹的术语维护可以澄清一个名称、记录一个已经商定的区分，或者移动并链接一条定义。它不需要新的 Product、Feature 或 Feature 源同步。
+在编写 GDD 期间使用 `terminology-register`，不会开始 Product 规划。纯粹的术语维护可以澄清一个名称、记录一个已经商定的区分，或者移动并链接一条定义。它不需要新的 Product、Feature 或 Feature 源同步。
 
 如果修改定义会改变实际意图，或暴露出一个未决的行为选择，先通过 `design-gdd` 确定这个选择，并用 `feature-sync` 同步受影响的工作，再更新术语。
 

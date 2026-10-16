@@ -1,11 +1,11 @@
 ---
-name: project-verification
+name: run-checks
 description: 运行用户要求的 Godot 解析、lint、已有自动测试或限定范围的场景检查，并报告实际结果。有无 Feature 的工作都适用；不实现修复，也不确认交付已完成；已有测试证据的引用、过时或中断用 verification-evidence。
 ---
 
 # 运行要求的验证
 
-从当前任务确认要做的检查、检查对象和允许的运行操作。复用已配置的工具和仍然有效的准备结果；只有确实依赖环境、且在任务授权范围内时，才使用 [project-environment](../project-environment/SKILL.md)。
+从当前任务确认要做的检查、检查对象和允许的运行操作。复用已配置的工具和仍然有效的准备结果；只有确实依赖环境、且在任务授权范围内时，才使用 [environment-setup](../environment-setup/SKILL.md)。
 
 ## 选择匹配的检查
 

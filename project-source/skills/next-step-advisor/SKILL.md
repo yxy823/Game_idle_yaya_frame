@@ -1,5 +1,5 @@
 ---
-name: project-next-step-advisor
+name: next-step-advisor
 description: "解释 Godot 项目的状态，或把下一步操作匹配到共享的开发提示词库，需要时起草一段具体的续接提示词。用于状态询问和下一步建议。不用于亲自完成用户要求的工作，也不用于保存停止点或准备交接（task-handoff）；建议永远不能代替实现。"
 ---
 
@@ -67,21 +67,21 @@ description: "解释 Godot 项目的状态，或把下一步操作匹配到共�
 
 | 问题类型 | 目标方 | 需要讲清楚的区别 |
 | --- | --- | --- |
-| 游戏设计、数值设计、交付范围或术语 | `design-gdd`、`design-balance`、`product-author` 或 `project-terminology` | 修改游戏规则、调优已获授权的数值主题、安排交付和维护不改变含义的定义，是不同的任务。初始设计和草稿审核不需要 Product 或 Feature。 |
+| 游戏设计、数值设计、交付范围或术语 | `design-gdd`、`design-balance`、`product-author` 或 `terminology-register` | 修改游戏规则、调优已获授权的数值主题、安排交付和维护不改变含义的定义，是不同的任务。初始设计和草稿审核不需要 Product 或 Feature。 |
 | 批量内容数据或内容校验 | 已授权 Feature 中的 `content-data-authoring` | 制作具体内容不同于修改规则或公式；没有 Feature 时先走规划路由。 |
 | 全项目或专项规则 | 当前任务，按 `yaya/methodology/04-project-rules.md` 的 **规则的增量维护** | 局部设计不会自动成为全局规则。 |
 | 已授权 Feature 内的支持文档 | 那个 Feature | 它不会开启新一轮规划。 |
 | 反馈或外部报告，或某个具体故障的原因 | `feedback-triage` 或 `bug-diagnosis` | 给反馈分类和查找原因是两回事。两者都不创建 Feature、不放宽要求，也不授权修复。 |
 | 某个模块的整体结构，没有异常行为 | `review-code` 中的现状审核 | 这是审核，不是诊断。 |
-| 环境准备、要求的检查、人工验收或证据恢复 | `project-environment`、`project-verification`、`manual-acceptance` 或 `verification-evidence` | 工具就绪、已执行的检查、用户实际的验收和证据是否适用，是不同的事实。它们都不增加 Feature、Stage 或完整的交付运行。 |
+| 环境准备、要求的检查、人工验收或证据恢复 | `environment-setup`、`run-checks`、`manual-acceptance` 或 `verification-evidence` | 工具就绪、已执行的检查、用户实际的验收和证据是否适用，是不同的事实。它们都不增加 Feature、Stage 或完整的交付运行。 |
 | 在调试台比较候选、做视觉决策、调参与采纳，或做技术验证 | 当前 Feature 或已授权实验中的 `in-game-tuning`（候选、调参、采纳与收尾）或 `technical-validation`（引擎可行性） | 游戏还没有对应的骨架时，先建骨架 Feature。采纳到游戏不等于验收通过；技术验证的观察不同于计划中的检查和正式交付的验收。HTML 不是默认的替代品。 |
-| 多个答案互相影响的未知项 | `wayfinder`；单个普通问题使用 `project-grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
+| 多个答案互相影响的未知项 | `wayfinder`；单个普通问题使用 `grill-me` | 清楚的工作留给它的负责方。advisor 只说明路径，不做探索。 |
 | 单独的工作目录，或把选定的成果带回来 | `worktree-create` 或 `worktree-integrate`（有冲突的集成使用后者的条件参考） | 单独的工作目录不能隔离数据；集成既不判定哪方胜出，也不允许清理。在已有的 worktree 中做检查不需要创建步骤。 |
 | 外部事实或方案比较 | `yaya/methodology/09-records-reports-and-handoff.md` 的 **外部调研** 和 `researcher` 角色 | 项目的 `researcher` 角色不同于用户自己安装的 `anysearch` Skill。`docs/research/` 中带引用的调研不是已确认的要求，也不是本地验证。 |
 | 可观察的游戏表现、界面、资源或本地化规格 | `yaya/methodology/11-specialist-workflows.md` 中规定的固定负责方，例如 `design-game-presentation`、`design-ui-spec`、资源规格 Skill 或 `design-localization-spec` | 方向或规格、接入（`content-asset-integration`、`content-localization`）、已实现效果的试调（`in-game-tuning`）和审核是分开的。资源制作是保留能力，没有对应的 Skill；不要在提示词中编造一个。 |
 | 正式审核 | 按 `yaya/methodology/12-independent-review.md`，在独立实例中使用审核 Skill | 没有自动的审核顺序。作者自查不是独立审核，审核也不是人工验收。 |
 | 性能或长时间运行测量 | `diagnostics-performance` 或 `diagnostics-soak-test` | 它们的结果有自己的覆盖局限，不是 gdUnit 通过的证据。 |
-| 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review`、`project-grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |
+| 检查一个方案、澄清尚未决定的要求，或审核已实现的工作 | `plan-review`、`grill-me` 或审核 Skill | 这是三种不同的请求。方案检查不是规划、实现或完成之前的必经步骤；它的发现既不授权修改，也不推进 Stage。 |
 | 反思实际的任务经历 | `retro` | 复盘是可选的，它的发现不授权修改。 |
 | 设计怎样处理反复出现或可以预见的工作 | `loop-me` | 与复盘不同，它不需要先有失败，也不会成为一个 Stage。 |
 | 暂停、切换或在新对话中继续 | 要求的停止点或可复制的交接使用 `task-handoff`；从记录的停止点续接时回到目标任务 | 普通的继续不需要额外的交接或 worktree。Git 状态不为空本身不构成归属冲突。 |

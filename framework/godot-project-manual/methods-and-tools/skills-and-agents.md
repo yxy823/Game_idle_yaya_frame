@@ -30,13 +30,13 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 | Skill | 唯一主要职责 |
 | --- | --- |
-| `project-next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
-| `project-grill-me` | 澄清会实质影响当前任务的未决问题；游戏设计归 design-gdd，交付取舍归 product-spec-elicitor |
+| `next-step-advisor` | 根据当前事实给状态、下一步或回复建议；不执行建议 |
+| `grill-me` | 澄清会实质影响当前任务的未决问题；游戏设计归 design-gdd，交付取舍归 product-spec-elicitor |
 | `wayfinder` | 处理相互影响的多个未知，按依赖选择所需讨论、调研或实验 |
 | `feedback-triage` | 对照当前事实整理反馈类别、证据缺口与处理归属 |
 | `bug-diagnosis` | 围绕具体异常定位原因，区分已证实结论与假设 |
-| `project-environment` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
-| `project-verification` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
+| `environment-setup` | 配置、更新或恢复项目工具环境，完成确有需要的首次资源扫描 |
+| `run-checks` | 执行本次要求的解析、lint、已有测试或限定场景检查，报告真实结果 |
 | `manual-acceptance` | 为实际 Feature 准备人工验收清单，或登记用户真实给出的验收结果 |
 | `verification-evidence` | 检查、导入或恢复已有验证证据，将必要重跑与人工跟进交给对应入口 |
 | `technical-validation` | 在当前 Feature 或获准实验中用技术验证回答引擎可行性问题，例如信号与生命周期、输入路由、存档集成或渲染性能 |
@@ -49,7 +49,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `decision-trace` | 按需开启：之后每条回复写出影响决定的原则、Skill、脚本与文件，用于测试 Agent 依据什么做决定 |
 | `technical-documentation-writing-godot` | 编写、更新或整理项目文档的表达与导航，不做游戏设计决定或职责审核 |
 | `qa-explainer` | 把用户问过、以后还会用到的问题写进 `docs/qa/`，生成带图的 HTML 页面；不修改需求、设计或实现 |
-| `project-terminology` | 在 `docs/terminology.md` 统一保存已确认且含义不变的项目定义，维护术语引用 |
+| `terminology-register` | 在 `docs/terminology.md` 统一保存已确认且含义不变的项目定义，维护术语引用 |
 | `design-gdd` | 从想法形成、整合或修订 GDD，维护整体规则、体验目标与跨主题一致性 |
 | `design-balance` | 推导或调整数值模型，直接维护获准的 GDD 数值主题、公式参数与计算说明 |
 | `product-author` | 根据 GDD 维护交付预拆分和当前 Product，协调已规划工作的影响 |
@@ -89,9 +89,9 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 | 情况 | 使用 |
 | --- | --- |
-| 当前任务有影响结果的未决问题，需要澄清 | `project-grill-me` |
+| 当前任务有影响结果的未决问题，需要澄清 | `grill-me` |
 | 形成或修改游戏设计 | [design-gdd](../../../project-source/skills/design-gdd/SKILL.md) |
-| 术语含义已明确，只需要登记 | `project-terminology`，不需要再做需求访谈 |
+| 术语含义已明确，只需要登记 | `terminology-register`，不需要再做需求访谈 |
 | 交付范围上的取舍问题 | `product-spec-elicitor` |
 | 把当前 Product 拆成 Feature | `feature-plan` |
 | 检验已有的 GDD 草稿、完整 GDD 或方案 | [plan-review](../../../project-source/skills/plan-review/SKILL.md)；按 GDD 的阶段和范围读取对应参考，没有 Product 或 Feature 也可以审核 |
@@ -105,7 +105,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 - **数值设计**：[design-balance](../../../project-source/skills/design-balance/SKILL.md) 从已知目标和规则推导数值方案，也可以调整已有模型的参数，并在写入授权内直接维护 GDD 中所属的数值正文。采纳的参数、写入的文件和验证状态分别记录；需要新增玩法或改变体验目标时，回到 `design-gdd`。检查现有模型、策略组合和已采用数值是否成立，用 `review-balance` 独立审核；设计者自己验算不算独立审核。普通的尺寸或数量记录不需要专门建模。
 - **反馈与诊断**：用户描述实际症状即可，Agent 根据证据追查逻辑、表现以及两者的连接，不需要用户先判断属于哪一层，也不会因为跨层就拆成多个 Bug。只要求调查时，交付证据和结论；已有具体的修复授权时，查清原因后回到原任务继续。
-- **环境、检查、验收与证据**：`project-environment`、`project-verification`、`manual-acceptance` 和 `verification-evidence` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由表](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
+- **环境、检查、验收与证据**：`environment-setup`、`run-checks`、`manual-acceptance` 和 `verification-evidence` 可以在任何环节按需调用，也可以单独处理用户直接提出的限定任务。例如只要求跑现有测试时，按那次检查的范围执行，与有没有 Feature 无关；但登记人工验收结果，必须对应实际的 Feature 和用户的真实结果。调用其中一个，不会扩展成整套交付。具体怎样选择由[任务路由表](../../../project-source/methodology/00-overview.md#任务路由表)统一规定。
 - **调试台**：[in-game-tuning](../../../project-source/skills/in-game-tuning/SKILL.md) 负责在调试台里比较候选、调参，以及用户采纳到游戏之后的收尾提交。采纳到游戏不等于验收通过，见[每种结果能证明什么](commands-and-evidence.md#每种结果能证明什么)；概念见[调试台与实际接入](../specialist-work-and-records/specialist-work.md#调试台与实际接入)。
 - **技术验证**：[technical-validation](../../../project-source/skills/technical-validation/SKILL.md) 在真实引擎里回答“既定做法能否实现”，不进调试台。验证结论不等于正式验收。
 - **按界面任务试用**：[review-ux](../../../project-source/skills/review-ux/SKILL.md) 写明怎样按界面任务试用：读 UI 规格中的界面任务（调试台自己的界面任务在 `dev/debug/_shared/usage-scenarios.md`），在改名的项目副本中用 [ui-trial](../../../project-source/tools/ui-trial/README.md) 工具程序驱动界面，按阻断、困惑、小问题分级报告。用户要求 UX 审核时使用它；Feature 改动了有界面任务的界面或调试台界面时，作者在 Stage 4 准备人工验收清单之前也用同一方法自己试用一遍，这是作者自查，不算独立审核。
@@ -184,7 +184,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 
 ## advisor 的共享场景入口
 
-advisor（`project-next-step-advisor`）根据项目自己的规则、状态和本次问题给出建议：可以报告现状、判断下一步，或起草一条已填好上下文的回复。它的建议不是实施授权，用户说“看看下一步”也不会直接启动开发；只是查询状态时，直接回答即可，不需要查找场景。
+advisor（`next-step-advisor`）根据项目自己的规则、状态和本次问题给出建议：可以报告现状、判断下一步，或起草一条已填好上下文的回复。它的建议不是实施授权，用户说“看看下一步”也不会直接启动开发；只是查询状态时，直接回答即可，不需要查找场景。
 
 它的工作方式：
 

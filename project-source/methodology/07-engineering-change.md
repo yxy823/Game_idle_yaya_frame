@@ -275,7 +275,7 @@ Bug Feature
 
 1. **记录升级前的基线**：工作区干净；用旧版本运行全量测试（`run-gdunit-tests.py`，参数见 `yaya/tools/README.md` 的 **run-gdunit-tests.py**），保留结果作为对照。已有失败先报告，不算到升级头上。
 2. **核对版本说明**：阅读跨越的每个补丁版本的官方更新说明，列出影响项目实际用到的 API、导入或编辑器行为的条目。没有相关条目也写明“已核对，无相关变化”。
-3. **安装新版本**：新的可执行文件装在单独的目录，不覆盖旧版本，以便回滚；同版本的导出模板一起安装（下载与安装由用户完成）。用 `project-environment` 把 `docs/methodology-config.json` 中的 Godot 路径改为新版本，并运行 `check-project-environment.py --require-ready`。
+3. **安装新版本**：新的可执行文件装在单独的目录，不覆盖旧版本，以便回滚；同版本的导出模板一起安装（下载与安装由用户完成）。用 `environment-setup` 把 `docs/methodology-config.json` 中的 Godot 路径改为新版本，并运行 `check-project-environment.py --require-ready`。
 4. **扫描与导入**：用新版本运行 `yaya/tools/README.md` 的 **首次 Godot 扫描** 中的命令，再用 `git status` 查看扫描生成或改写了哪些文件。只有 `.import`、新增 `.uid` 这类导入元数据时，单独提交这些文件，提交说明写“Godot <新版本> 重新导入”；出现其他变化时，先查原因再决定。编辑器扫描不会重新保存已有的 `.tscn`、`.tres`，补丁升级也不需要批量重存；之后修改了哪些场景或资源，再按规则用 `resave_godot_files.gd` 处理。
 5. **确认扫描稳定**：再运行一次同样的命令，与这次运行前相比没有新增或改写的文件。第 3 步的配置修改在第 7 步才提交，这一步不要求整个工作区干净。
 6. **完整验证**：对全部脚本做解析和 lint（见 `yaya/methodology/contracts/gdscript-lint.md`），运行全量测试并与第 1 步的基线对比，对主场景做 `yaya/tools/README.md` 的 **启动场景冒烟检查**。项目会导出时，再做同一文件的 **本地导出检查**。

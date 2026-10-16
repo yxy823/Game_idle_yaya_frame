@@ -42,7 +42,7 @@ $LASTEXITCODE
 
 **S3｜安装新版本并切换配置**
 
-对应 07 的第 3 步。你安装新版本和导出模板后告诉 Agent 路径；当前 Agent 用 `project-environment` 把 `docs/methodology-config.json` 中的 `engine_executable` 改为新路径，并运行 `yaya/tools/checks/check-project-environment.py --require-ready`，确认观察到的版本就是目标版本。
+对应 07 的第 3 步。你安装新版本和导出模板后告诉 Agent 路径；当前 Agent 用 `environment-setup` 把 `docs/methodology-config.json` 中的 `engine_executable` 改为新路径，并运行 `yaya/tools/checks/check-project-environment.py --require-ready`，确认观察到的版本就是目标版本。
 
 **S4｜扫描导入并确认稳定**
 

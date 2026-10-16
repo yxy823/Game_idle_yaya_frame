@@ -45,6 +45,6 @@ description: 审查 GDD 草稿、单个主题或整体设计、Product 范围或
 | 影响已有 Feature 规划的变化 | [feature-sync](../feature-sync/SKILL.md)，按它关于实际来源、基线和规划演变的约定处理；审查结论本身不构成历史来源的变化。 |
 | 当前 Feature 的详细实现设计 | [feature-execute](../feature-execute/SKILL.md)，遵循 `yaya/methodology/02-feature-list-schema.md` 中固定的设计约定。 |
 | 专业规格的变化 | 按 `yaya/methodology/11-specialist-workflows.md` 交给负责该专业的 Skill；GDD 意图和详细的专业要求留在各自已有的来源。 |
-| 普通的未决项目问题 | [project-grill-me](../project-grill-me/SKILL.md)；普通的澄清不强加方案审查。 |
+| 普通的未决项目问题 | [grill-me](../grill-me/SKILL.md)；普通的澄清不强加方案审查。 |
 
 本 Skill 只返回分析；不修改源文档、代码、规则、规划记录或任务状态，它的结论也不改变已批准或已冻结的决定。只要求审查的请求，以给出审查结论结束。返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的 **授权与续接**）。

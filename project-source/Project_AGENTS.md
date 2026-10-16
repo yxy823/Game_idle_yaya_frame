@@ -196,7 +196,7 @@ Work item: docs/features/F012.json
 - 验证：按[汇报验证结果](#汇报验证结果)写；
 - 提交：本任务的提交哈希或已核实的提交范围，以及本任务仍未提交的改动；
 - 待确认：视觉修改中仍需人工验收的方面，见[视觉验证边界](yaya/agent-rules/70-tests/test-levels.md#视觉验证边界)；有用的顺带发现，与本任务的失败分开写，避免被误认为本任务造成的回归；
-- 下一步：来源包括任务记录中的剩余工作和人工验收。需要完整判断项目接下来做什么时，使用 [project-next-step-advisor](.agents/skills/project-next-step-advisor/SKILL.md)。
+- 下一步：来源包括任务记录中的剩余工作和人工验收。需要完整判断项目接下来做什么时，使用 [next-step-advisor](.agents/skills/next-step-advisor/SKILL.md)。
 
 只汇报当前状态，不把尚未执行的后续工作写成会自动发生的事。只在存在具体的未验证条件、限制或推迟处理的问题时写剩余风险。不为标注“不适用”而逐一列出无关的验证类别。
 

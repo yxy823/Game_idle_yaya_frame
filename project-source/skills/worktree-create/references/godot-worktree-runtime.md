@@ -2,7 +2,7 @@
 
 在 worktree 里进行已获授权的编辑器、导入、测试、游戏或其他写入操作之前，先读本页；整合结果时的验证也包括在内。复用仍然有效的观察，只检查这次操作会影响的数据和工具。纯只读的源码比较不需要运行 Godot。
 
-代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [project-environment](../../project-environment/SKILL.md) 负责，其依据是 `yaya/methodology/06-project-environment.md` 和 `yaya/tools/README.md`。
+代码格式中的路径相对于目标项目根目录，Godot 资源路径和设置项除外。通用的配置和首次扫描流程仍由 [environment-setup](../../environment-setup/SKILL.md) 负责，其依据是 `yaya/methodology/06-project-environment.md` 和 `yaya/tools/README.md`。
 
 ## 确认实际涉及的资源和副作用
 
@@ -30,4 +30,4 @@
 
 把检查过的配置，与观察到的运行时路径、成功的导入、实际的测试结果和人工验收分开报告。需要维护证据时，通过已有的任务记录和 [verification-evidence](../../verification-evidence/SKILL.md) 记录相关目标和真实证据。没有运行过的检出目录不算已验证的隔离；环境探测通过也不代表玩法或测试行为通过。
 
-确认完本次操作涉及的方面后，回到已获授权的操作。更大范围的验证仍由它的工作流和 [project-verification](../../project-verification/SKILL.md) 负责；本参考不要求每次准备目录都完整运行一遍项目。
+确认完本次操作涉及的方面后，回到已获授权的操作。更大范围的验证仍由它的工作流和 [run-checks](../../run-checks/SKILL.md) 负责；本参考不要求每次准备目录都完整运行一遍项目。

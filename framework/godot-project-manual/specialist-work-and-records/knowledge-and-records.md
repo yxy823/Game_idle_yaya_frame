@@ -24,11 +24,11 @@
 
 GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
 
-备选方案和暂不采纳的想法怎样分流，见需求与规划的[备选方案与未采纳想法](../requirements-and-tasks/requirements-and-planning.md#备选方案与未采纳想法)。除 `design-gdd` 外，`project-grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。
+备选方案和暂不采纳的想法怎样分流，见需求与规划的[备选方案与未采纳想法](../requirements-and-tasks/requirements-and-planning.md#备选方案与未采纳想法)。除 `design-gdd` 外，`grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。
 
 ### 项目术语
 
-项目术语的定义固定由 `project-terminology` 维护在 `docs/terminology.md`；即使某个术语目前只用于一个主题，也写在这里。
+项目术语的定义固定由 `terminology-register` 维护在 `docs/terminology.md`；即使某个术语目前只用于一个主题，也写在这里。
 
 - 编写或整合 GDD 时，一并保存当前范围内已确认的术语，并把其他正文中重复的定义改为引用。
 - 普通的解释和例子仍留在对应主题里，不另建词表。

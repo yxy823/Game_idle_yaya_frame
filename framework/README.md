@@ -24,7 +24,7 @@ flowchart TD
     end
 ```
 
-这张图只画主线。不知道下一步该做什么时，项目里的 `project-next-step-advisor` 会根据当前状态给出建议。各文档和职责之间的完整关系见[文档系统关系图](relationship-maps/README.md#文档系统关系图)。
+这张图只画主线。不知道下一步该做什么时，项目里的 `next-step-advisor` 会根据当前状态给出建议。各文档和职责之间的完整关系见[文档系统关系图](relationship-maps/README.md#文档系统关系图)。
 
 ## 按需要找入口
 

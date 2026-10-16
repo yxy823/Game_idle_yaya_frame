@@ -1752,7 +1752,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选数值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，project-grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
+      "note": "职责：保留没有当前待决设计问题依赖、也不是已采纳规则备选数值的设想、理由和重新考虑条件。\n项目位置：docs/unadopted-ideas.md；初始无条目。\ndesign-gdd 在授权写作中维护，grill-me 可保存明确要求留待以后考虑的想法；进入当前比较或采纳时迁移正文并保留去向链接，保存想法不等于安排开发。\n\n项目文件： docs/unadopted-ideas.md",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

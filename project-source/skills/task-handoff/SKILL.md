@@ -1,6 +1,6 @@
 ---
 name: task-handoff
-description: 在暂停、切换任务或换新对话时，保存 Godot 项目任务的实际停止点，并准备限定范围的交接。用于用户要求的交接记录或续接文字；问进度或下一步做什么时用 project-next-step-advisor。
+description: 在暂停、切换任务或换新对话时，保存 Godot 项目任务的实际停止点，并准备限定范围的交接。用于用户要求的交接记录或续接文字；问进度或下一步做什么时用 next-step-advisor。
 ---
 
 # 准备项目任务交接

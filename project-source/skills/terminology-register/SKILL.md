@@ -1,6 +1,6 @@
 ---
-name: project-terminology
-description: "在 `docs/terminology.md` 中记录已确认的项目术语定义、别名和链接，不改变行为。用于已获授权的术语文档工作，包括 Feature 的文档检查点。不用于含义尚未决定的术语（project-grill-me），也不用于行为变更（design-gdd）；整篇文档的改写用 technical-documentation-writing-godot。"
+name: terminology-register
+description: "在 `docs/terminology.md` 中记录已确认的项目术语定义、别名和链接，不改变行为。用于已获授权的术语文档工作，包括 Feature 的文档检查点。不用于含义尚未决定的术语（grill-me），也不用于行为变更（design-gdd）；整篇文档的改写用 technical-documentation-writing-godot。"
 ---
 
 # 项目术语
@@ -15,7 +15,7 @@ description: "在 `docs/terminology.md` 中记录已确认的项目术语定义�
 
 本 Skill 不能做的决定，按下面转交：
 
-- 实质含义仍未决定的，交给 `project-grill-me`。
+- 实质含义仍未决定的，交给 `grill-me`。
 - 某个定义会改变游戏规则、数值或流程的，先退回 GDD 的设计负责方，再修改依赖它的定义。
 - Product 交付变更使用 `product-author`；Feature AC 发生变化的，按规划流程处理。
 

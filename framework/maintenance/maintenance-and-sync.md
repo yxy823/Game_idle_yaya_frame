@@ -80,7 +80,7 @@
 - **Godot 代码、场景、资源或测试**：按[工程规则目录](../../project-source/agent-rules/README.md)核对适用的工程规则；任务授权、Git、验证范围与地点和交付，仍以根 `AGENTS.md` 为准。
 - **代码或工具**（也适用于 `framework/` 下的框架工具）：修改前按 Project_AGENTS.md 的[任务范围](../../project-source/Project_AGENTS.md#任务范围)确认实际实现、影响范围和简短方案；验证和交付沿用根 `AGENTS.md`。
 - **复述的命令与事实**：修改分发规范中的命令、路径、参数、默认值或版本号时，在 Godot 项目手册、场景页、提示词和 Skill 中搜索同样的写法，一并更新，或改为链接到规范。修改 Stage、流程走向或产物关系时，还要搜索手册、README 和 `project-source/` 中的 Mermaid 图（`mermaid` 代码块），按新流程一并更新。
-- **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/project-next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
+- **advisor**：修改任务路由、Stage、职责边界、产物归属或授权与完成机制时，同步检查 `project-source/skills/next-step-advisor/SKILL.md` 与相关的 Godot 提示词及同名场景；仍适用的内容不为改而改，也不在 advisor 中复制另一套流程。
 
 ## 文档同步的内容
 

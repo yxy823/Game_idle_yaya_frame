@@ -29,7 +29,7 @@
 | `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本范围 | `design-gdd` 维护整体设计，`design-balance` 维护获准的数值主题 / 所有依赖设计的工作 |
 | `docs/gdd/design-scope-and-boundaries.md` | 《设计范围与边界》：整体范围、排除项和版本边界 | `design-gdd` 在第一次保存设计时建立 / 讨论、规划、实现与审核 |
 | `docs/gdd/open-questions.md` | 《开放问题》：尚未决定的设计选择、影响和解决方式（等用户选择，还是等计算、调查或试玩证据）；初始只有用途说明 | GDD 作者 / 讨论、规划、审核、实验与续接 |
-| `docs/terminology.md` | 已确认的项目术语定义（唯一正文） | `project-terminology` / 所有文档；详细玩法规则仍在 GDD |
+| `docs/terminology.md` | 已确认的项目术语定义（唯一正文） | `terminology-register` / 所有文档；详细玩法规则仍在 GDD |
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；不是开发承诺 | 需求讨论 / 采纳时迁移到正式位置并留链接 |
 | `docs/art/`、`docs/audio/`、`docs/ui/`、`docs/localization/` | 从 GDD 细化出的共享方向与专业规格 | 对应的 design Skill / GDD 保存整体目标并引用这些正文 |
 | `docs/presentation/` | 一次游戏表现的过程、组件、备选方案、采用组合、实现与验收入口；方案专用的资源规格写在对应章节 | `design-game-presentation` 与实现任务 / UI 文档和 GDD 引用；README 只做导航 |
