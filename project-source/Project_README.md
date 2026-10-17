@@ -25,6 +25,7 @@
 | 配置 Python 和 Godot | [项目环境](yaya/methodology/06-project-environment.md)；路径保存在 `docs/methodology-config.json` |
 | 选择文档语言 | [文档语言](yaya/methodology/05-document-language.md)；文档默认中文 |
 | 运行环境检查、测试或静态检查 | [项目检查与测试工具](yaya/tools/README.md)；GDScript 解析与 lint 见[GDScript lint 的约定与证据](yaya/methodology/contracts/gdscript-lint.md) |
+| 启动调试台、调参、比较候选 | 调试台的[启动](dev/debug/README.md#启动) |
 | 用 GAA 分析音效候选 | 调试台的[分析](dev/debug/_shared/README.md#分析) |
 | 运行项目自己的常用脚本 | [项目脚本](dev/tools/README.md) |
 
