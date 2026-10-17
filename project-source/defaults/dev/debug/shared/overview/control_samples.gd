@@ -10,6 +10,13 @@ const PANEL_SIZE := Vector2(160, 64)
 const PROGRESS := 60.0
 const PROGRESS_WIDTH := 200.0
 const LINE_EDIT_WIDTH := 200.0
+## Row titles of the theme types the project theme styles. A variation added to the theme builder
+## gets its name here; until then its row shows the type name and the base type's name.
+const TYPE_NAMES := {
+	"Button": "按钮（未选变体）", "ButtonPrimary": "主要按钮", "ButtonSecondary": "次要按钮",
+	"ButtonDanger": "危险按钮", "Label": "正文文字", "LineEdit": "输入框", "Panel": "面板",
+	"PanelContainer": "面板容器", "ProgressBar": "进度条",
+}
 
 
 static func build(theme: Theme) -> VBoxContainer:
@@ -26,7 +33,8 @@ static func build(theme: Theme) -> VBoxContainer:
 		var row := HBoxContainer.new()
 		row.name = type
 		row.add_theme_constant_override("separation", GAP * 2)
-		var caption := Cards.label(type if base == type else "%s（基于 %s）" % [type, base])
+		var fallback := "%s（基于%s）" % [type, TYPE_NAMES.get(String(base), base)]
+		var caption := Cards.label(String(TYPE_NAMES.get(type, fallback)))
 		caption.custom_minimum_size.x = NAME_WIDTH
 		row.add_child(caption)
 		var states := _states(base)

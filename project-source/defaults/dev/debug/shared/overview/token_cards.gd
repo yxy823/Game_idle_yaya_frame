@@ -6,6 +6,7 @@ extends RefCounted
 const SWATCH := Vector2(28, 28)
 const BOX := Vector2(56, 36)
 const BAR_HEIGHT := 12.0
+## The narrowest a card gets; the cards of a row widen together to fill the window width.
 const CARD_WIDTH := 380.0
 const TITLE_SIZE := 22
 const CATEGORY_SIZE := 26
@@ -83,8 +84,17 @@ func build() -> VBoxContainer:
 		cards.add_theme_constant_override("v_separation", GAP)
 		for relative: String in groups[directory]:
 			cards.add_child(_card(relative))
+		cards.resized.connect(_fit_cards.bind(cards))
 		column.add_child(cards)
 	return column
+
+
+## As many cards per row as fit at CARD_WIDTH, each widened by the same share of the leftover.
+static func _fit_cards(flow: HFlowContainer) -> void:
+	var per_row := maxi(1, floori((flow.size.x + GAP) / (CARD_WIDTH + GAP)))
+	var width := floorf((flow.size.x - GAP * (per_row - 1)) / per_row)
+	for card: Control in flow.get_children():
+		card.custom_minimum_size.x = maxf(width, CARD_WIDTH)
 
 
 static func label(text: String) -> Label:

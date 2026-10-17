@@ -1,11 +1,13 @@
 extends GdUnitTestSuite
 ## The style overview: which interfaces use each style and the hints that follow, token fields
-## listed by reflection, and "打开" picking a debug target the way the target dropdown does.
+## listed by reflection, cards filling the window width, Chinese titles on the control samples, and
+## "打开" picking a debug target the way the target dropdown does.
 
 const OVERVIEW := preload("res://dev/debug/shared/overview/style_overview.tscn")
 const WINDOW := preload("res://dev/debug/_shared/debug_window.tscn")
 const Session := preload("res://dev/debug/_shared/debug_session.gd")
 const Usage := preload("res://dev/debug/shared/overview/style_usage.gd")
+const Samples := preload("res://dev/debug/shared/overview/control_samples.gd")
 const FIXTURES := "res://dev/debug/shared/tests/fixtures/"
 const SAMPLE := "res://dev/debug/_shared/tests/fixtures/sample/"
 const SAMPLE_MAIN := SAMPLE + "game/sample/sample_main.tscn"
@@ -49,6 +51,26 @@ func test_a_field_added_to_a_token_resource_is_listed() -> void:
 	for label: Label in card.find_children("*", "Label", true, false):
 		texts.append(label.text)
 	assert_array(texts).contains(["huge", "48 px", "大", "16 px"])
+
+
+func test_control_sample_rows_are_titled_in_chinese() -> void:
+	var samples: VBoxContainer = auto_free(Samples.build(ThemeDB.get_project_theme()))
+	var caption := samples.get_node("ButtonPrimary").get_child(0) as Label
+	assert_str(caption.text).is_equal("主要按钮")
+
+
+func test_token_cards_widen_to_fill_a_wide_window() -> void:
+	var overview: Control = OVERVIEW.instantiate()
+	overview.set_anchors_preset(Control.PRESET_TOP_LEFT)
+	overview.size = Vector2(1920, 1080)
+	add_child(auto_free(overview))
+	await await_idle_frame()
+	var palette := overview.find_child("primitives_palette", true, false)
+	var flow := palette.get_parent() as HFlowContainer
+	var right := 0.0
+	for card: Control in flow.get_children():
+		right = maxf(right, card.position.x + card.size.x)
+	assert_float(flow.size.x - right).is_between(0.0, flow.get_child_count())
 
 
 func test_open_picks_the_interface_like_the_target_dropdown() -> void:
