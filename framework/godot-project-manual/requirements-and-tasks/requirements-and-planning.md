@@ -34,7 +34,7 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 
 ### 设计范围与边界
 
-`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围、明确的排除项和版本边界。局部机制和表现的限制留在各自的主题里。建立和读写要求见 GDD 与 Product 文档结构的[设计范围与边界](../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)。
+`docs/gdd/design-scope-and-boundaries.md`（中文标题《设计范围与边界》）集中保存整体范围和明确的排除项；用户定义了发布版本时，还保存版本边界。GDD 默认描述完整的游戏，开发顺序属于 Product 规划。局部机制和表现的限制留在各自的主题里。建立和读写要求见 GDD 与 Product 文档结构的[设计范围与边界](../../../project-source/methodology/01-product-doc-structure.md#设计范围与边界)。
 
 例如：
 

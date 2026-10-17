@@ -27,7 +27,7 @@
 | 位置 | 保存什么 | 谁维护 / 谁读取 |
 | --- | --- | --- |
 | `docs/gdd/` | 游戏定位、体验与反馈目标、核心循环、系统规则、数值、内容与版本范围 | `design-gdd` 维护整体设计，`design-balance` 维护获准的数值主题 / 所有依赖设计的工作 |
-| `docs/gdd/design-scope-and-boundaries.md` | 《设计范围与边界》：整体范围、排除项和版本边界 | `design-gdd` 在第一次保存设计时建立 / 讨论、规划、实现与审核 |
+| `docs/gdd/design-scope-and-boundaries.md` | 《设计范围与边界》：整体范围、排除项，以及用户定义的发布版本的边界 | `design-gdd` 在第一次保存设计时建立 / 讨论、规划、实现与审核 |
 | `docs/gdd/open-questions.md` | 《开放问题》：尚未决定的设计选择、影响和解决方式（等用户选择，还是等计算、调查或试玩证据）；初始只有用途说明 | GDD 作者 / 讨论、规划、审核、实验与续接 |
 | `docs/terminology.md` | 已确认的项目术语定义（唯一正文） | `terminology-register` / 所有文档；详细玩法规则仍在 GDD |
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；不是开发承诺 | 需求讨论 / 采纳时迁移到正式位置并留链接 |

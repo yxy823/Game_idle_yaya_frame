@@ -1,6 +1,6 @@
 # 游戏设计文档目录
 
-本目录保存持续维护的 GDD 设计正文：游戏定位、核心循环、系统规则、数值、体验与反馈目标、内容与版本范围。`README.md` 是固定的总览入口。
+本目录保存持续维护的 GDD 设计正文：游戏定位、核心循环、系统规则、数值、体验与反馈目标、内容与整体设计范围。`README.md` 是固定的总览入口。
 
 目录中只有本页和没有条目的开放问题时，项目还没有 GDD。导入、起草或修改设计用 `design-gdd`，可以从一个游戏想法开始；数值建模与调参用 `design-balance`。
 
@@ -9,7 +9,7 @@
 | 要了解什么 | 查阅 |
 | --- | --- |
 | 主题文件的标准名称与职责（如 `gameplay.md`、`systems/<system-key>.md`、`balance/<system-key>.md`） | [GDD 文件名](../../yaya/methodology/01-product-doc-structure.md#gdd-文件名) |
-| 整体范围、排除项与版本边界（`design-scope-and-boundaries.md`） | [设计范围与边界](../../yaya/methodology/01-product-doc-structure.md#设计范围与边界) |
+| 整体范围、排除项，以及用户定义的发布版本的边界（`design-scope-and-boundaries.md`） | [设计范围与边界](../../yaya/methodology/01-product-doc-structure.md#设计范围与边界) |
 | 尚未解决的设计问题 | [开放问题](open-questions.md)；写法见 GDD 与 Product 文档结构的[开放问题](../../yaya/methodology/01-product-doc-structure.md#开放问题) |
 | 备选数值与暂不采纳的设想放在哪里 | [备选方案与未采纳想法](../../yaya/methodology/01-product-doc-structure.md#备选方案与未采纳想法)，暂不采纳的设想记在[未采纳想法](../unadopted-ideas.md) |
 | 什么情况下可以开始交付规划与实现 | [GDD 前提与职责](../../yaya/methodology/01-product-doc-structure.md#gdd-前提与职责) |
