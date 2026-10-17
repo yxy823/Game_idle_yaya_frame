@@ -31,7 +31,7 @@
    python -B yaya/tools/checks/check-project-environment.py --require-ready
    ```
 
-4. **记录结果。** 把做了什么、发现了什么写进 `reports/initialization.md`。文件已存在时，追加一条新记录，保留之前的失败。Progress 记录当前结果、阻塞、下一步和指向该报告的链接。
+4. **记录结果。** 把做了什么、发现了什么写进 `reports/initialization.md`。文件已存在时，追加一条新记录，保留之前的失败。Progress 记录当前结果、阻塞、下一步和指向该报告的链接。「下一个允许的动作」写成具体入口：项目还没有实质 GDD 时写“进入 GDD 设计，使用 `design-gdd`”；已有 GDD 时，写接下来的规划或实现入口。不写“等待用户指定”，因为新对话和 `next-step-advisor` 要从这里找到下一步。首次扫描尚未运行时，写成下一步之前要做的操作；它不妨碍 GDD 设计，不写进「阻塞」。
 
 `reports/initialization.md` 是给人看的报告，没有工具把它当作关卡。默认的项目 `.gitignore` 让它只留在本地，提交 Progress 时不会包含它。只有用户要求时才提交这份报告。
 
