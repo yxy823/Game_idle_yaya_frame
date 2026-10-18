@@ -6,6 +6,8 @@
 
 `docs/product.md` 里排在前面的 Product 所需 Feature 都已完成（或这是第一项），下一项“背包整理”还没有 `docs/product/NN-<delivery>.md`，需要先写出它的交付范围，才能拆分 Feature。
 
+另一种情况：“背包整理”的交付文档已经写好、还没拆分 Feature，之后 GDD 改了它依赖的整理规则，要先按新规则复核这份文档。已经拆分出 Feature 时，改用[要求已经改好，同步受影响的 Feature](<../要求变了/要求已经改好，同步受影响的 Feature.md>)。
+
 需要的材料：
 
 - 要细化的 Product：预拆分中的 Product 名称，例如“背包整理”；不写时，Agent 按预拆分顺序和已有 Feature 的完成情况确定下一项，并在回复中说明。
@@ -15,7 +17,7 @@
 
 ## 前置条件与适用范围
 
-项目已有真实 GDD，当前 Product 已轮到且尚无可用的详细交付范围。本页只细化当前 Product，不生成 Feature 或实现功能。
+项目已有真实 GDD，当前 Product 已轮到，且尚无可用的详细交付范围，或者详细交付范围依赖的来源已更新、Feature 尚未拆分。本页只细化当前 Product，不生成 Feature 或实现功能。
 
 ## 执行步骤
 
