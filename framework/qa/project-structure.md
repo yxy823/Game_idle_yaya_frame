@@ -77,6 +77,25 @@ Feature 记录 -> 设计稿 & 测试登记: Stage 2
 
 **依据**：[任务类型、开发阶段与完成语义](../godot-project-manual/requirements-and-tasks/feature-lifecycle.md)、[交付规划与 Feature 记录](../godot-project-manual/foundations/03-project-layout.md#交付规划与-feature-记录)；从空白项目开始的完整操作见[教程一：从空白项目到第一份 Feature 计划](../godot-project-manual/tutorial/01-blank-project-to-feature-plan.md)。
 
+## Feature 做到一半发现问题，该留在当前 Feature、新建 Bug，还是改 GDD？
+
+**结论**：先看问题出在哪里。出在当前还没完成的 Feature 里，就在这个 Feature 里修；之前已经完成的行为坏了，新建一个 Bug 修它；你其实想要不同的行为，就是改设计，交给 `design-gdd`。不另开一个普通 Feature 去改别的 Feature 的问题。
+
+**为什么**：以“给放置游戏加离线收益”为例，做到一半出现三种情况：
+
+| 发现的情况 | 去哪里 | 原因 |
+| --- | --- | --- |
+| 本 Feature 刚写的收益计算算错了 | 留在当前 Feature，回到对应的 Stage 修好并重跑测试 | 它还没完成，修好是完成它的一部分；另开一项只会把同一个问题拆成两份记录 |
+| 已完成的存档读写被这次改动弄坏了 | 新建一个 Bug，写明修的是哪个 Feature，原 Feature 的完成记录保留 | 原 Feature 当时确实完成了，现在坏的是回归，要有自己的诊断和回归测试 |
+| 试玩后觉得离线收益应该有上限 | 交给 `design-gdd` 改 GDD，再按计划同步调整受影响的 Feature | 这不是实现错了，是想要的行为变了；即使你叫它 bug，也先改设计 |
+
+容易误解的地方：
+
+- 用后面一个已经计划好的 Feature 去修前面的问题，只有在问题本来就属于那个 Feature 的范围时才成立；否则修复的来历会断掉，以后看记录不知道它修的是谁。
+- 业务做到一半被项目工具挡住，例如测试脚本出错，工具修复单独做，进行中的业务改动保留，修好再续接。
+
+**依据**：[Bug 的归属与路由](../../project-source/methodology/07-engineering-change.md#bug-的归属与路由)和同页的[分类边界](../../project-source/methodology/07-engineering-change.md#分类边界)。
+
 ## 游戏代码的几个目录之间，谁可以引用谁？
 
 **结论**：`main/` 组装 `game/`，`game/` 使用 `components/`；`dev/` 和 `tests/` 可以引用游戏代码，反过来不行。游戏本体一旦引用 `dev/`，导出时排除 `dev/` 就会让游戏缺文件。
