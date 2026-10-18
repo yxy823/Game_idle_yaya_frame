@@ -90,6 +90,19 @@ func test_a_long_preset_name_is_cut_and_the_preset_buttons_stay_in_the_inspector
 		assert_bool(inspector.encloses(tool.get_global_rect())).is_true()
 
 
+## An adapter that declares neither FIXTURES nor matches can be picked and followed on a
+## scene change without a script error; the playback bar offers no fixture.
+func test_target_whose_adapter_has_no_fixtures_or_matches_is_browse_only() -> void:
+	for target: RefCounted in _window.session.targets:
+		if target.id == "shared":
+			target.adapter = RefCounted.new()
+	_window.toolbar.target_selected.emit("shared")
+	assert_str(_window.toolbar.chosen_fixture()).is_empty()
+	_window.toolbar.target_selected.emit("sample")
+	get_tree().scene_changed.emit()
+	assert_str(_window.session.active.id).is_equal("shared")
+
+
 func _slot(identity: String) -> Slot:
 	for slot: Slot in _window.session.opened_slots():
 		if slot.id == identity:

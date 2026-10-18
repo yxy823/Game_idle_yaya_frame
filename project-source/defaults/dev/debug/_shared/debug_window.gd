@@ -216,7 +216,7 @@ func open_target(identity: String) -> void:
 	_select_target(identity)
 	var target := session.active
 	if target == null or target.id != identity or target.main_scene().is_empty() \
-			or target.adapter.matches(get_tree().current_scene):
+			or target.matches(get_tree().current_scene):
 		return
 	var scene: String = target.main_scene()
 	# Playback's scene loader, so tests that replace it keep the runner's scene.
@@ -229,12 +229,12 @@ func open_target(identity: String) -> void:
 
 func _scene_changed() -> void:
 	var scene := get_tree().current_scene
-	if session.active != null and session.active.adapter != null and session.active.adapter.matches(scene):
+	if session.active != null and session.active.matches(scene):
 		return
 	if playback.locked():
 		playback.cancel()
 	for target: RefCounted in session.targets:
-		if target.adapter != null and target.adapter.matches(scene):
+		if target.matches(scene):
 			_select_target(target.id)
 			return
 	for target: RefCounted in session.targets:

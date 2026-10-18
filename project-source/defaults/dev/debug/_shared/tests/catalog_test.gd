@@ -54,6 +54,22 @@ func test_hundreds_of_slots_and_multiple_targets_are_catalogued_before_activatio
 		assert_bool(target.paths.has("category/deeper/slot-124")).is_true()
 
 
+## An adapter that only names itself and its scene has no fixtures and claims no scene.
+func test_adapter_without_fixtures_or_matches_is_browse_only() -> void:
+	DirAccess.make_dir_recursive_absolute(_directory.path_join("ring/tuning"))
+	assert_int(ResourceSaver.save(Params.new(), _directory.path_join("ring/tuning/look.tres"))).is_equal(OK)
+	DirAccess.make_dir_recursive_absolute(_directory.path_join("debug/ring"))
+	var file := FileAccess.open(_directory.path_join("debug/ring/debug_target.gd"), FileAccess.WRITE)
+	file.store_string("extends RefCounted\n\nconst TITLE := \"武装环\"\nconst MAIN_SCENE := \"res://main.tscn\"\n")
+	file.close()
+	var target: RefCounted = Target.discover(_directory, _directory.path_join("debug"))[0]
+	assert_str(target.title()).is_equal("武装环")
+	assert_bool(target.fixtures().is_empty()).is_true()
+	var scene := Node.new()
+	assert_bool(target.matches(scene)).is_false()
+	scene.free()
+
+
 func test_original_audio_candidate_can_be_selected(identity: String,
 		_test_parameters := [["chime"], ["click"]]) -> void:
 	var path := _directory.path_join("sound.tres")

@@ -124,8 +124,7 @@ func target_changed() -> void:
 			current = index
 	target.set_items(names, current)
 	var fixtures: PackedStringArray = []
-	if _session.active.adapter != null:
-		fixtures.append_array(_session.active.adapter.FIXTURES.keys())
+	fixtures.append_array(_session.active.fixtures().keys())
 	fixture.set_items(fixtures, 0 if not fixtures.is_empty() else -1)
 	if fixtures.is_empty():
 		fixture.set_value("无固定局面")
@@ -181,6 +180,6 @@ func _play_pressed() -> void:
 
 func chosen_fixture() -> String:
 	var caption := fixture.selected_text()
-	if caption.is_empty() or _session.active.adapter == null:
+	if caption.is_empty():
 		return ""
-	return _session.active.adapter.FIXTURES[caption]
+	return _session.active.fixtures()[caption]

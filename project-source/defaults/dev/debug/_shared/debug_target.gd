@@ -46,6 +46,16 @@ func main_scene() -> String:
 	return String(_constant("MAIN_SCENE", ""))
 
 
+## The adapter may declare FIXTURES {"中文名": "res://…"}; empty when it names none.
+func fixtures() -> Dictionary:
+	return _constant("FIXTURES", {})
+
+
+## The adapter may define matches(scene); a target without it never claims the current scene.
+func matches(scene: Node) -> bool:
+	return adapter != null and adapter.has_method("matches") and adapter.matches(scene)
+
+
 ## The adapter may declare CATEGORIES {"shop/feedback": "反馈"}; "" when it names none.
 func category_title(path: String) -> String:
 	return String(_constant("CATEGORIES", {}).get(path, ""))
