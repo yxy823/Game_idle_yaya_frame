@@ -52,7 +52,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 4. 第 3 步允许写入后，按 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
 5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `yaya/methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
 6. 按下面「校验与语义审查」的顺序，依次完成语义覆盖审查、追加符合条件的 `R000` 和运行检查器。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
-7. 按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求暂存本任务负责的计划路径，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。开始时已有改动的，不要暂存整个 `docs/features/` 路径。
+7. 按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **Progress** 更新 `docs/progress.md` 的当前状态和下一个允许的动作：写明这个 Product 已规划，下一步是第一个可以开始的 Feature；删掉“还没有 Feature 计划”这类已不成立的说法。因为换对话续接时先读 Progress，不更新就会被带回规划前的步骤。按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求暂存本任务负责的计划路径和 Progress，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。开始时已有改动的，不要暂存整个 `docs/features/` 路径。
 8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
 
 ## 测试登记表：`docs/test-registry.json`

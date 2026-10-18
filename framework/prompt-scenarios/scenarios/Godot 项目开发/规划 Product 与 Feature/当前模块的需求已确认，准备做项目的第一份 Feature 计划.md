@@ -58,7 +58,7 @@ $LASTEXITCODE
 
 ## 资源与文件影响
 
-docs/feature-list.json、docs/features/、docs/test-registry.json 和首次修订写入；来源和计划提交分别处理。
+docs/feature-list.json、docs/features/、docs/test-registry.json 和首次修订写入，Progress 的下一步改为第一个可以开始的 Feature；来源和计划提交分别处理。
 
 ## 阻塞、异常与范围变化
 

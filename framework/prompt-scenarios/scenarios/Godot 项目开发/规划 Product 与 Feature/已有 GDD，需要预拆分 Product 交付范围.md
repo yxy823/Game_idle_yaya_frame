@@ -31,11 +31,11 @@ docs/gdd/ 已有实际游戏设计正文。空目录、仅作目录导航的 REA
 
 **S3｜检查覆盖与衔接**
 
-对照交付规划范围检查遗漏、重复和依赖。在回复中说明建议先推进的交付单元；需要保存时写在 Progress 的当前状态，不在 `product.md` 标注当前 Product。
+对照交付规划范围检查遗漏、重复和依赖。在回复中说明建议先推进的交付单元，并写进 Progress 的当前状态和下一个允许的动作，不在 `product.md` 标注当前 Product。
 
 ## 资源与文件影响
 
-修改 docs/product.md；设计正文继续由 GDD 与所属专业来源持有，不在总览复制。后续 Product 详细正文、Feature、AC 和测试登记保持未创建。
+修改 docs/product.md 和 Progress；设计正文继续由 GDD 与所属专业来源持有，不在总览复制。后续 Product 详细正文、Feature、AC 和测试登记保持未创建。
 
 ## 阻塞、异常与范围变化
 
