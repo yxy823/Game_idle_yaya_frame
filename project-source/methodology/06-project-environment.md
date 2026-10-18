@@ -12,6 +12,7 @@
 | `engine_executable` | Godot 可执行文件的完整路径，可以是绝对路径，也可以相对项目根目录。不含 shell 引号和参数；不会在 `PATH` 中查找。 |
 | `audio_analyzer_python_executable` | 可选，预填 `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe`。已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对文件路径，不含参数。缺省或空字符串表示未配置，调试台音频分析区显示“未配置 GAA”，其他功能照常。后台调用见[分析](../../dev/debug/_shared/README.md#分析)。 |
 | `audio_production_dir`、`image_production_dir` | 预填 `D:\A_Games\Studio_Audio_Production` 和 `D:\A_Games\Studio_Image_2D_Production`。项目外的音频、图像制作项目目录的绝对路径，交接时按 11 号的[在项目外制作](11-specialist-workflows.md#在项目外制作)读取，不再询问用户。 |
+| `model_production_dir` | 预填空字符串。3D 模型制作项目的目录；制作项目在云端时，填本机能读写的交换目录，例如云盘同步目录，交接文件和交付的模型都经过它。还没有 3D 制作项目时保持空字符串，交接时按 11 号记录准备缺口。 |
 
 这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 

@@ -4,5 +4,6 @@
   "python_executable": "python",
   "audio_analyzer_python_executable": "D:\\A_Games\\Studio Game Audio Analyzer\\backend\\.venv\\Scripts\\python.exe",
   "audio_production_dir": "D:\\A_Games\\Studio_Audio_Production",
-  "image_production_dir": "D:\\A_Games\\Studio_Image_2D_Production"
+  "image_production_dir": "D:\\A_Games\\Studio_Image_2D_Production",
+  "model_production_dir": ""
 }

@@ -285,7 +285,7 @@ UI 规格在实际使用处链接表现，并在结尾加一个“相关游戏�
 
 批量制作等第一个用代表资源定下镜头和显示尺寸的视觉决策 Feature 采纳之后再开始；在此之前只做 `design-art-direction` 选定来源用的那批代表资源。采纳的镜头和尺寸阈值按下面第 1 步转给制作项目，因为尺寸不达标时整批都要重新导出。与这些资源无关的逻辑 Feature 不等美术，照常推进。
 
-1. **交给制作项目**：制作项目的路径从 `docs/methodology-config.json` 的 `audio_production_dir` 或 `image_production_dir` 读取，见 06 号的[工具配置](06-project-environment.md#工具配置)。本项目的 Agent 不进入制作项目工作，因为制作项目的规则和 Skill 只在它自己的对话里生效。Agent 输出一段可以整段复制的制作提示词，由用户在制作项目里开新对话执行。提示词写这几项：
+1. **交给制作项目**：制作项目的路径从 `docs/methodology-config.json` 的 `audio_production_dir`、`image_production_dir` 或 `model_production_dir` 读取，见 06 号的[工具配置](06-project-environment.md#工具配置)。本项目的 Agent 不进入制作项目工作，因为制作项目的规则和 Skill 只在它自己的对话里生效。Agent 输出一段可以整段复制的制作提示词，由用户在制作项目里开新对话执行。提示词写这几项：
    - 任务类型：制作新候选，或审核已有候选；
    - 目标项目：配置中的路径；
    - 作品目录：`works/<游戏键>/<作品>/`，游戏键用本项目目录名的小写连字符形式，制作项目里已有本游戏的目录时沿用；

@@ -15,6 +15,7 @@
 | `python_executable` | `python` | 初始命令名；准备环境时改为已确认的 Python 3.12+ 解释器 |
 | `audio_analyzer_python_executable` | `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe` | 可选；已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对路径。已预填路径，须核对实际文件：文件不存在时 `--require-ready` 报未就绪。不用 GAA 时改为空字符串，调试台显示“未配置 GAA” |
 | `audio_production_dir`、`image_production_dir` | `D:\A_Games\Studio_Audio_Production`、`D:\A_Games\Studio_Image_2D_Production` | 项目外的音频、图像制作项目目录。Agent 交接制作需求时从这里读取路径，生成的制作提示词交给对应项目执行；搬动制作项目后改这两项 |
+| `model_production_dir` | 空字符串 | 3D 模型制作项目的目录；制作项目在云端时填本机能读写的交换目录。还没有 3D 制作项目时留空 |
 
 配置文件只保存文档语言和工具路径。其他信息都有固定位置，不写进配置：
 
