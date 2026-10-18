@@ -14,7 +14,7 @@ from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, resolve_test_path, test_identity,
 )
 from tools.lib.verification_snapshot import (
-    EvidenceError, changed_paths_since, commit_exists, is_ancestor, root_commit,
+    EvidenceError, changed_paths_since, commit_exists, commit_recording, is_ancestor, root_commit,
 )
 
 BASE_REVISION_COMMAND = "python -B yaya/tools/features/record-base-revision.py"
@@ -148,17 +148,22 @@ def _completed_at(entry: dict[str, Any]) -> datetime:
 
 
 def verification_point(root: Path) -> str:
-    """Latest completed Feature evidence revision that HEAD still contains; else the first commit."""
+    """Commit that recorded the latest completed Feature evidence HEAD still contains; else the first commit.
+
+    The evidence revision itself predates the Feature's completion commit, so
+    starting there would count that Feature's own work as a new change.
+    """
     index = read_json(root / "docs/feature-list.json")
     completed = sorted((entry for entry in index["features"]
                         if entry.get("status") in {"done", "obsolete_done"} and entry.get("completed_at")),
                        key=_completed_at, reverse=True)
     try:
         for entry in completed:
-            evidence = root / f"docs/features/{entry['id']}-evidence.json"
+            relative = f"docs/features/{entry['id']}-evidence.json"
+            evidence = root / relative
             revision = read_json(evidence).get("git_revision") if evidence.is_file() else None
             if isinstance(revision, str) and commit_exists(root, revision) and is_ancestor(root, revision):
-                return revision
+                return commit_recording(root, relative, revision) or revision
         return root_commit(root)
     except EvidenceError as exc:
         raise SelectionError(str(exc)) from exc

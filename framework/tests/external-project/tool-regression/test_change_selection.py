@@ -128,29 +128,38 @@ class ChangeSelectionTests(unittest.TestCase):
         self.assertIn("tests/features/t.gd", self.required_paths(self.selection()))
 
     def test_change_between_features_is_selected_by_next_feature(self) -> None:
+        self.write("game/shop/shop.gd", "extends RefCounted\n")
+        self.write("tests/unit/shop/shop_test.gd", SUITE)
+        self.registry["components"].append({"id": "shop", "unit_test_paths": ["tests/unit/shop"],
+                                            "full_suite_on_change": False, "source_paths": ["game/shop/**"]})
+        self.write_json("docs/test-registry.json", self.registry)
+        self.start_after("shop component")
+        verified = self.git("rev-parse", "HEAD")
+        # F01-001's own work is committed together with its evidence, after the verified revision.
+        self.write("game/inventory/inventory.gd", "extends RefCounted\nvar capacity := 4\n")
         self.write_json("docs/feature-list.json", {"meta": {}, "features": [
             {"id": "F01-001", "status": "done", "depends_on": [], "completed_at": "2026-10-01T00:00:00Z"},
             {"id": "F01-002", "status": "pending", "depends_on": [], "completed_at": None}]})
-        self.write_json("docs/features/F01-001-evidence.json", {"git_revision": self.base})
-        self.write_json("docs/features/F01-002.json", {**self.detail, "id": "F01-002", "affected_components": ["inventory"],
+        self.write_json("docs/features/F01-001-evidence.json", {"git_revision": verified})
+        self.write_json("docs/features/F01-002.json", {**self.detail, "id": "F01-002", "affected_components": ["combat"],
                                                     "base_revision": None, "acceptance_criteria": [
                                                         {"id": "AC01", "text": "Manual", "verification": {
                                                             "automated_tests": [], "manual_checks": ["Look"]}}],
                                                     "verification": {"acceptance_mode": "manual",
                                                                      "regression_tests": []}})
         self.commit("F01-001 done")
-        self.write("game/combat/combat.gd", "extends RefCounted\nvar manual := true\n")
+        completion = self.git("rev-parse", "HEAD")
+        self.write("game/shop/shop.gd", "extends RefCounted\nvar manual := true\n")
         self.commit("manual change between Features")
         command = [sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-base-revision.py"),
                    "--repo-root", str(self.root), "--feature", "F01-002"]
         written = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(written.returncode, 0, written.stderr)
-        self.assertEqual(json.loads((self.root / "docs/features/F01-002.json").read_text())["base_revision"], self.base)
+        self.assertEqual(json.loads((self.root / "docs/features/F01-002.json").read_text())["base_revision"], completion)
         kept = subprocess.run(command, capture_output=True, text=True)
         self.assertIn("kept", kept.stdout)
         selection = build_selection(self.root, "F01-002")
-        self.assertIn("tests/unit/combat", self.required_paths(selection))
-        self.assertEqual(selection["touched_completed_features"], ["F01-001"])
+        self.assertEqual([item["id"] for item in selection["inferred_components"]], ["shop"])
 
     def test_unclaimed_unreferenced_game_file_escalates_to_full(self) -> None:
         for path in ("game/orphan.gd", "game/words.txt"):

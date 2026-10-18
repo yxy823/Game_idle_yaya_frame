@@ -78,6 +78,23 @@ def is_ancestor(repo_root: Path, revision: str) -> bool:
     return _git_succeeds(repo_root, "merge-base", "--is-ancestor", revision, "HEAD")
 
 
+def commit_recording(repo_root: Path, path: str, revision: str) -> str | None:
+    """The first commit after ``revision`` in HEAD's history whose ``path`` records ``revision`` as its git_revision.
+
+    Evidence is recorded before the Feature's work is committed, so this is the
+    completion commit that contains the verified content.
+    """
+    commits = _run_git(repo_root, "rev-list", "--reverse", f"{revision}..HEAD", "--", path).decode("ascii").split()
+    for commit in commits:
+        try:
+            recorded = json.loads(_run_git(repo_root, "show", f"{commit}:{path}"))
+        except EvidenceError:
+            continue  # the commit deleted the file
+        if recorded.get("git_revision") == revision:
+            return commit
+    return None
+
+
 def root_commit(repo_root: Path) -> str:
     """The oldest parentless commit reachable from HEAD."""
     return _run_git(repo_root, "rev-list", "--max-parents=0", "HEAD").decode("ascii").split()[-1]
