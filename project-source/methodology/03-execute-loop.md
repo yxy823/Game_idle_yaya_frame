@@ -161,6 +161,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 - 方案在对话中返回。不要把未批准的指导另存为指南或草稿文件。批准的内容由 Stage 2 保存。
 - 在依赖它们的实现之前，提出尚未解决的术语冲突和项目规则冲突。拟定的规则修改按 [规则的增量维护](04-project-rules.md#规则的增量维护) 自查并获得授权。
 - 不要创建空记录，也不要只为它们的存在请求批准。
+- 下面两类即使 Agent 已有倾向，也作为需要用户决定的项写进 1D 的批准材料，写出选项和推荐：来源没有定义、但实现必须取一个值的行为，例如物品装上时冷却从哪里开始；来源写明“待定”的技术或表现，本 Feature 的实现会把它定下来。
 
 这个 Feature 需要实现指导时，使用 `implementation-guidance`。默认由主 Agent 准备；只有当前提示词或仍然有效的授权明确要求实现 advisor 时，才委派给它。复杂程度本身不构成委派理由。使用同一份 Context / Rules Snapshot、设计契约和批准材料，不另设规划 Stage。委派准备工作不等于批准拟定的设计或实现。委派的问题、固定角色的选择和失败处理，按该 Skill 执行。
 
@@ -191,7 +192,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
    - 设计由 advisor 准备时，主 Agent 把批准和指定的保存位置交给同一个 advisor；它只能写这一个设计文件。
    - 主 Agent 检查设计稿，并负责 Feature `notes` 中的链接、其他记录的修改和提交。
    - 说明实质约束本次改动的规则及其应用方式，并附相对来源链接。不要复制整份快照或规则原文。`notes` 只保存提醒和引用，不是第二份设计。
-4. 已确认的规则修改和 ADR 记录到各自的位置。
+4. 已确认的规则修改和 ADR 记录到各自的位置。批准中定下的取值属于 GDD、Art Bible 或其他专业文档时，用归属的 Skill 写回这些文档，例如 `design-gdd`、`design-art-direction`；设计稿链接它们，不另抄一份。
 5. 把批准的 `verification.acceptance_mode`、各条件的验证映射、Bug 回归 ID 和 `verification.test_impact` 保存到 Feature 详情中：
    - 追加的相关测试存为 `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]`。
    - 批准的全量升级存为 `full_suite_reasons: ["<approved reason>"]`。`full_suite_on_change: true` 的组件会自动触发 full，不写在这里。
