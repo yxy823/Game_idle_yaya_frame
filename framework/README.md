@@ -41,6 +41,7 @@ flowchart TD
 | 修改提示词、场景或关系图 | [Yaya 提示词与关系图维护](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md) |
 | 把外部材料中的设计经验（界面、动效、音效等）引入分发 Skill 的设计参考文件 | [设计经验引入](../.agents/skills/design-knowledge-intake-yaya/SKILL.md) |
 | 一次框架修改或 demo 试验后复盘，判断哪些地方值得改、改在哪里 | [Yaya 框架复盘](../.agents/skills/framework-retro-yaya/SKILL.md) |
+| 用一个真实游戏试用框架，在框架仓库观察、记录并修框架问题 | [Yaya 真实游戏试用](../.agents/skills/framework-trial-yaya/SKILL.md) |
 | 测试时让 Agent 在每条回复里写出依据了哪些原则、Skill、脚本和文件 | [决策依据（框架维护）](../.agents/skills/decision-trace-yaya/SKILL.md)；Codex 用 `$decision-trace-yaya` 开启，Claude Code 用 `/decision-trace-yaya` 开启 |
 | 创建空白项目、运行检查或回归 | 下文[维护命令](#维护命令) |
 | 确认框架专用术语的含义和统一写法 | [框架术语](terminology.md) |

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Yaya 真实游戏试用"
+  short_description: "在框架仓库当观察会话：记录真实游戏的开发过程，找出框架问题，按冻结线修复和同步"
+
+policy:
+  allow_implicit_invocation: true

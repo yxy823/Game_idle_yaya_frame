@@ -55,4 +55,4 @@
 
 表达与排版遵循 [technical-documentation-writing-yaya](../../../.agents/skills/technical-documentation-writing-yaya/SKILL.md)。模型或工作方式变化后，按真实出现的误触发、冲突、等待和重复工作检查相关指令，不因为个别现象就叠加一条普遍规则。
 
-框架的适用范围和提交规则沿用根 `AGENTS.md`，验证地点见[按修改选择验证范围](../validation/validation-scope.md#按修改选择验证范围)；具体的反馈、排错、方案判断和交接按本次任务和对应场景处理，不为通用的做事方法另建框架 Skill；复盘有固定的证据范围、归属判断和报告格式，由 [framework-retro-yaya](../../../.agents/skills/framework-retro-yaya/SKILL.md) 负责；设计经验引入有固定的取舍、归属表和出处记录，由 [design-knowledge-intake-yaya](../../../.agents/skills/design-knowledge-intake-yaya/SKILL.md) 负责。
+框架的适用范围和提交规则沿用根 `AGENTS.md`，验证地点见[按修改选择验证范围](../validation/validation-scope.md#按修改选择验证范围)；具体的反馈、排错、方案判断和交接按本次任务和对应场景处理，不为通用的做事方法另建框架 Skill；复盘有固定的证据范围、归属判断和报告格式，由 [framework-retro-yaya](../../../.agents/skills/framework-retro-yaya/SKILL.md) 负责；真实游戏试用有固定的分工、记录格式和冻结线，由 [framework-trial-yaya](../../../.agents/skills/framework-trial-yaya/SKILL.md) 负责；设计经验引入有固定的取舍、归属表和出处记录，由 [design-knowledge-intake-yaya](../../../.agents/skills/design-knowledge-intake-yaya/SKILL.md) 负责。
