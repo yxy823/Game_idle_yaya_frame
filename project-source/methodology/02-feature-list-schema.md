@@ -534,7 +534,11 @@ python -B yaya/tools/checks/check-feature-list.py
 2. 在一次规划中，把当前 Product 完整的必要范围拆成可独立验证的 Feature。只纳入这个范围需要的基础设施，复用已有基础设施和已完成的前置 Feature。如果必须先交付另一个 Product，就调整顺序，而不是同时提前规划两个 Product。
 3. 后续 Product 在 `product.md` 中保持为简洁的预拆分条目。不要编写它们的详细交付文档，不要分配它们的 Feature ID，也不要写它们的 AC 或测试登记。只在当前决定需要时读取它们的 GDD 依赖。
 4. 先完成当前 Product 所需的 Feature，再拆分下一个 Product。核对 Feature 的实际完成情况和剩余范围。以下情况都不能证明实现已完成：没有可开始的 Feature、计划为空、Product 文档自称已完成。`pending`、`in_progress` 和 `blocked` 的工作都算未完成；明确撤回的范围按退役规则处理。
-5. 完成后，对照当前 GDD 和已经学到的东西，重新审视下一个 Product。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
+5. **Product 收尾**：当前 Product 的必需 Feature 全部完成后、细化下一个 Product 之前，清理这个 Product 留下的过时内容，单独提交：
+   - 设计稿和专业文档里已被后续 Feature 改掉的内容，或已经定下却仍写着“待定”的内容，改成现状或删除。
+   - Progress 里本 Product 的过程记录移进 `docs/progress/`，当前页只留当前状态和下一个允许的动作。
+   - 报告和临时材料按 09 号规范的[整理和清理报告](09-records-reports-and-handoff.md#整理和清理报告)处理：删除已到释放条件的，用途不明的列给用户决定。
+6. 收尾后，对照当前 GDD 和已经学到的东西，重新审视下一个 Product。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
 
 `feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它从当前已用的最大 ID 之后分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
 

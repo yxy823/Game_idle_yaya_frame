@@ -21,9 +21,9 @@
 
 使用[预设提示词库](<../../../prompts/godot-development-prompts.json>)中的“Godot 项目开发 → 规划 Product 与 Feature → 前一个模块已完成，准备规划下一个 Product”。填入上述材料。本页使用 [$product-author](<../../../../../project-source/skills/product-author/SKILL.md>)、[$feature-plan](<../../../../../project-source/skills/feature-plan/SKILL.md>)。
 
-**S1｜核对模块顺序**
+**S1｜核对模块顺序并收尾**
 
-当前 Agent 核对前置任务真实完成，对照最新 GDD 复核 Product 预拆分及本次完整来源，不能只看 ID 或同步锚点之后的差异。
+当前 Agent 核对前置任务真实完成，对照最新 GDD 复核 Product 预拆分及本次完整来源，不能只看 ID 或同步锚点之后的差异。然后按[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)做上一个 Product 的收尾：改掉或删除过时的设计稿内容，把 Progress 的过程记录移进历史，处理已到释放条件的临时材料，单独提交。
 
 **S2｜细化当前交付范围**
 
@@ -50,7 +50,7 @@ $LASTEXITCODE
 
 | 步骤 | 可继续的依据 |
 | --- | --- |
-| S1 | 前一个 Product 的必要 Feature 均为 `done`；下一个 Product 已确定 |
+| S1 | 前一个 Product 的必要 Feature 均为 `done`；收尾已提交；下一个 Product 已确定 |
 | S2 | 当前 Product 交付文档已写好并提交 |
 | S3 | 拆分预览与需求覆盖核对已展示；已获确认或已有自主拆分授权 |
 | S4 | 新 Feature ID 已追加，旧记录无差异；`FEATURE LIST CHECK: PASS` 和计划提交哈希 |
