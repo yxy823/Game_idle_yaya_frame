@@ -65,10 +65,10 @@ func test_switching_targets_while_comparing_gives_the_edits_back() -> void:
 	var effect := _slot(EFFECT)
 	var game_size: float = effect.live.candidate_params.size
 	effect.live.candidate_params.size = game_size + 10.0
-	assert_str(_window.session.toggle_compare(false).text).contains("正在显示：游戏原值")
+	assert_str(_window.session.compare.toggle(false).text).contains("正在显示：游戏原值")
 	assert_float(effect.live.candidate_params.size).is_equal(game_size)
 	_window.toolbar.target_selected.emit("shared")
-	assert_bool(_window.session.comparing).is_false()
+	assert_bool(_window.session.compare.showing).is_false()
 	assert_float(effect.live.candidate_params.size).is_equal(game_size + 10.0)
 	_window.toolbar.target_selected.emit("sample")
 	assert_float(_slot(EFFECT).live.candidate_params.size).is_equal(game_size + 10.0)

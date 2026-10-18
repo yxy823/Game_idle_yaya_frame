@@ -49,7 +49,7 @@ func before_test() -> void:
 	_window.session.slots[index] = _sound
 	_sound.changed.connect(_window.session.changed.emit)
 	# The comparison cached the real slot's game values before the swap.
-	_window.session.invalidate_compare()
+	_window.session.compare.invalidate()
 	_window.slot_list.refresh(true)
 	_seen.clear()
 	_stale.clear()

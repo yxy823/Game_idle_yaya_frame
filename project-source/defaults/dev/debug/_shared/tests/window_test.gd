@@ -87,19 +87,19 @@ func test_grave_switches_to_game_values_once_and_consumes_character_in_text_fiel
 	_window.add_child(input)
 	input.grab_focus()
 	_send(_window, KEY_QUOTELEFT)
-	assert_bool(_window.session.comparing).is_true()
+	assert_bool(_window.session.compare.showing).is_true()
 	assert_float(slot.live.candidate_params.size).is_equal(edited - 10.0)
 	assert_str(input.text).is_empty()
 	_send(_window, KEY_QUOTELEFT, true)
-	assert_bool(_window.session.comparing).is_true()
+	assert_bool(_window.session.compare.showing).is_true()
 	_send(get_tree().root, KEY_QUOTELEFT)
-	assert_bool(_window.session.comparing).is_false()
+	assert_bool(_window.session.compare.showing).is_false()
 	assert_float(slot.live.candidate_params.size).is_equal(edited)
 
 
 func test_grave_without_changes_only_hints() -> void:
 	_send(get_tree().root, KEY_QUOTELEFT)
-	assert_bool(_window.session.comparing).is_false()
+	assert_bool(_window.session.compare.showing).is_false()
 	assert_str(_window.status.message.text).is_equal("还没有改动可对比")
 	assert_bool(_window.status.details.visible).is_false()
 

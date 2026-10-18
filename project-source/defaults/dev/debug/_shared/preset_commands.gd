@@ -126,7 +126,7 @@ func _save_plan(plan: Dictionary) -> Dictionary:
 		else:
 			notes.append("预设 %s 被组合 %s 使用，已把 %s 的改动另存为 %s" % [entry.kept,
 				"、".join(entry.users), slot.display_name(), entry.preset])
-	_session.invalidate_compare()
+	_session.compare.invalidate()
 	return {"ok": true, "notes": notes}
 
 
@@ -290,8 +290,8 @@ func _delete_combo() -> void:
 	if error != OK:
 		return
 	_session.forget_combo()
-	if _session.compare_combo == deleted:
-		_session.choose_compare("", false)
+	if _session.compare.combo == deleted:
+		_session.compare.choose("", false)
 	_rebind.call()
 
 
@@ -354,7 +354,7 @@ func _save_preset(value: String, slot: Slot) -> void:
 		return
 	_report.call(Messages.outcome(_session.store.save_slot(slot, value),
 		"已保存预设 " + value + "，游戏文件不变", "没能保存预设 " + value, BUSY))
-	_session.invalidate_compare()
+	_session.compare.invalidate()
 	_rebind.call()
 
 
@@ -399,8 +399,8 @@ func ask_before_closing(quit: Callable) -> void:
 		return
 	_dialogs.ask(CLOSE_QUESTION % dirty.size(), [
 		["保存", Dialogs.PRIMARY, func() -> void:
-			if _session.comparing:
-				_session.toggle_compare(false)
+			if _session.compare.showing:
+				_session.compare.toggle(false)
 			if save_dirty(dirty, "关闭前", _session.combo_name).ok:
 				quit.call()],
 		["不保存直接关闭", Dialogs.DANGER, quit]])

@@ -1,3 +1,6 @@
+# gdlint:ignore-file:file-length=416
+# gdlint:ignore-file:high-complexity=11
+# 保留原因：本文件是调试台唯一使用 Variant 的反射边界，拆开后编码与解码的类型规则要跨文件对照；encode 只按值的类型分派。用户同意于 2026-10-18。
 extends RefCounted
 ## Only this reflection boundary uses Variant. External resources stay UID strings.
 

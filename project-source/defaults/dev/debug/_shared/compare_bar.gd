@@ -128,7 +128,7 @@ func _side(tooltip: String) -> Button:
 	side.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	side.tooltip_text = tooltip
 	side.pressed.connect(func() -> void:
-		var showing := _session != null and _session.comparing == (side == compare_side)
+		var showing := _session != null and _session.compare.showing == (side == compare_side)
 		side.set_pressed_no_signal(showing)
 		if not showing:
 			requested.emit("对比"))
@@ -162,20 +162,20 @@ func configure(session: Session) -> void:
 func refresh(locked: bool) -> void:
 	if _session == null or _session.active == null:
 		return
-	var comparing := _session.comparing
+	var comparing := _session.compare.showing
 	_paint_side(current_side, _current_name, "当前改动", not comparing)
-	var target := _session.compare_name()
-	if not _session.compare_combo.is_empty() and _session.compare_combo == _session.combo_name:
-		target = "组合 %s 已存版本" % _session.compare_combo
+	var target := _session.compare.name()
+	if not _session.compare.combo.is_empty() and _session.compare.combo == _session.combo_name:
+		target = "组合 %s 已存版本" % _session.compare.combo
 	_paint_side(compare_side, _compare_name, target, comparing)
 	compare_menu.theme_type_variation = &"IconButtonOnAccent" if comparing else &"IconButton"
-	var count := _session.compare_differences()
-	var readable := _session.compare_readable()
+	var count := _session.compare.differences()
+	var readable := _session.compare.readable()
 	Kit.chip_text(differences, "%d 处不同" % count if readable else "无法对比")
-	differences.tooltip_text = "当前改动和%s相比有 %d 项设定不同" % [_session.compare_name(), count] \
-		if readable else "%s读不出来，按 ` 看原因" % _session.compare_name()
-	pending.visible = _session.pending_compare
-	Kit.chip_text(pending, "下一遍切到" + _session.next_side())
+	differences.tooltip_text = "当前改动和%s相比有 %d 项设定不同" % [_session.compare.name(), count] \
+		if readable else "%s读不出来，按 ` 看原因" % _session.compare.name()
+	pending.visible = _session.compare.pending
+	Kit.chip_text(pending, "下一遍切到" + _session.compare.next_side())
 	_paint_combo(locked, comparing)
 
 
@@ -228,10 +228,10 @@ func _fill_targets() -> void:
 	var menu := compare_menu.get_popup()
 	menu.clear()
 	menu.add_radio_check_item("游戏原值", 0)
-	menu.set_item_checked(0, _session.compare_combo.is_empty())
+	menu.set_item_checked(0, _session.compare.combo.is_empty())
 	for index in range(_targets.size()):
 		menu.add_radio_check_item("组合 " + _targets[index], index + 1)
-		menu.set_item_checked(index + 1, _targets[index] == _session.compare_combo)
+		menu.set_item_checked(index + 1, _targets[index] == _session.compare.combo)
 
 
 func _combo_directory() -> String:

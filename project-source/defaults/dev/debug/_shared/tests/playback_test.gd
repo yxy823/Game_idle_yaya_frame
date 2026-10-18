@@ -180,20 +180,20 @@ func test_compare_switch_is_delayed_until_next_pass() -> void:
 	var game_value: float = slot.live.hold
 	slot.live.hold = game_value + 0.25
 	_start()
-	_controller.next_pass.connect(session.apply_pending_compare)
-	assert_str(session.toggle_compare(true).text).is_equal("下一遍开头切到游戏原值")
+	_controller.next_pass.connect(session.compare.apply_pending)
+	assert_str(session.compare.toggle(true).text).is_equal("下一遍开头切到游戏原值")
 	assert_float(slot.live.hold).is_equal(game_value + 0.25)
-	assert_bool(session.pending_compare).is_true()
+	assert_bool(session.compare.pending).is_true()
 	_controller.cancel()
 	_start()
 	assert_float(slot.live.hold).is_equal(game_value)
-	assert_bool(session.comparing).is_true()
-	assert_bool(session.pending_compare).is_false()
-	session.toggle_compare(true)
+	assert_bool(session.compare.showing).is_true()
+	assert_bool(session.compare.pending).is_false()
+	session.compare.toggle(true)
 	_controller.cancel()
 	_start()
 	assert_float(slot.live.hold).is_equal(game_value + 0.25)
-	assert_bool(session.comparing).is_false()
+	assert_bool(session.compare.showing).is_false()
 
 
 func test_slot_trial_uses_live_candidate_parameters() -> void:

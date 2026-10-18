@@ -231,16 +231,16 @@ func test_compare_names_the_items_it_could_not_read() -> void:
 	assert_int(ResourceSaver.save(Curve.new(), _store.combo_path("sample", "broken"))).is_equal(OK)
 	_slot.live.count = 7
 	for combo_name: String in ["five-combo", "typed-combo"]:
-		session.choose_compare(combo_name, false)
-		assert_int(session.compare_differences()).is_equal(1)
-		assert_str(session.toggle_compare(false).text).is_equal("正在显示：组合 %s（只读，按 ` 回到当前改动）"
+		session.compare.choose(combo_name, false)
+		assert_int(session.compare.differences()).is_equal(1)
+		assert_str(session.compare.toggle(false).text).is_equal("正在显示：组合 %s（只读，按 ` 回到当前改动）"
 			% combo_name + "；其中 1 项读不出来，按游戏原值比较")
 		assert_int(_slot.live.count).is_equal(3)
-		session.toggle_compare(false)
+		session.compare.toggle(false)
 		assert_int(_slot.live.count).is_equal(7)
 	_slot.live.count = 3
-	session.choose_compare("broken", false)
-	assert_str(session.toggle_compare(false).text).is_equal(
+	session.compare.choose("broken", false)
+	assert_str(session.compare.toggle(false).text).is_equal(
 		"当前设定和组合 broken完全相同；其中 1 项读不出来，按游戏原值比较")
 
 
@@ -319,18 +319,18 @@ func test_differences_split_parameters_unless_the_candidate_changed() -> void:
 
 func test_compare_shows_game_values_read_only_and_restores_the_edits() -> void:
 	var session := _session()
-	assert_str(session.toggle_compare(false).text).is_equal("还没有改动可对比")
-	assert_bool(session.comparing).is_false()
+	assert_str(session.compare.toggle(false).text).is_equal("还没有改动可对比")
+	assert_bool(session.compare.showing).is_false()
 	_slot.live.count = 11
 	_slot.live.weight = 4.0
-	assert_int(session.compare_differences()).is_equal(2)
-	assert_str(session.toggle_compare(false).text).contains("正在显示：游戏原值")
-	assert_bool(session.comparing).is_true()
+	assert_int(session.compare.differences()).is_equal(2)
+	assert_str(session.compare.toggle(false).text).contains("正在显示：游戏原值")
+	assert_bool(session.compare.showing).is_true()
 	assert_int(_slot.live.count).is_equal(3)
 	assert_bool(session.slot_dirty(_slot)).is_true()
 	assert_int(session.dirty_count()).is_equal(1)
-	assert_int(session.compare_differences()).is_equal(2)
-	assert_str(session.toggle_compare(false).text).is_equal("正在显示：当前改动")
+	assert_int(session.compare.differences()).is_equal(2)
+	assert_str(session.compare.toggle(false).text).is_equal("正在显示：当前改动")
 	assert_int(_slot.live.count).is_equal(11)
 	assert_float(_slot.live.weight).is_equal(4.0)
 	assert_bool(_slot.is_dirty()).is_true()
@@ -343,19 +343,19 @@ func test_compare_with_a_combo_waits_for_the_next_pass_while_locked() -> void:
 	_store.save_slot(_slot, "five")
 	assert_int(_store.save_combo("sample", "five-combo", [_slot]).error).is_equal(OK)
 	assert_int(_store.load_slot(_slot, "").error).is_equal(OK)
-	assert_str(session.choose_compare("five-combo", true).text).is_equal("对比对象改为组合 five-combo")
-	assert_int(session.compare_differences()).is_equal(1)
-	assert_str(session.toggle_compare(true).text).is_equal("下一遍开头切到组合 five-combo")
+	assert_str(session.compare.choose("five-combo", true).text).is_equal("对比对象改为组合 five-combo")
+	assert_int(session.compare.differences()).is_equal(1)
+	assert_str(session.compare.toggle(true).text).is_equal("下一遍开头切到组合 five-combo")
 	assert_int(_slot.live.count).is_equal(3)
-	session.apply_pending_compare()
+	session.compare.apply_pending()
 	assert_int(_slot.live.count).is_equal(5)
-	session.choose_compare("", true)
+	session.compare.choose("", true)
 	assert_int(_slot.live.count).is_equal(5)
-	session.apply_pending_compare()
+	session.compare.apply_pending()
 	assert_int(_slot.live.count).is_equal(3)
-	assert_str(session.toggle_compare(true).text).is_equal("下一遍开头切到当前改动")
-	assert_str(session.toggle_compare(true).text).is_equal("已取消下一遍的切换")
-	assert_bool(session.comparing).is_true()
+	assert_str(session.compare.toggle(true).text).is_equal("下一遍开头切到当前改动")
+	assert_str(session.compare.toggle(true).text).is_equal("已取消下一遍的切换")
+	assert_bool(session.compare.showing).is_true()
 
 
 func _session() -> Session:

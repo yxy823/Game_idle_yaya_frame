@@ -56,14 +56,14 @@ func _ready() -> void:
 		report(Messages.outcome(result, "", "播放停止了", "检查固定局面后再点播放")))
 	# A deferred switch loads other values; the inspector shows them at once, still locked.
 	playback.next_pass.connect(func() -> void:
-		session.apply_pending_compare()
+		session.compare.apply_pending()
 		_rebind_panel())
 	dialogs = Dialogs.new()
 	dialogs.host = self
 	add_child(dialogs)
 	presets = PresetCommands.new(session, dialogs, report, _rebind_panel)
 	session.changed.connect(_refresh)
-	session.reported.connect(report)
+	session.compare.reported.connect(report)
 	session.discover()
 	toolbar.configure(session)
 	compare.configure(session)
@@ -140,10 +140,10 @@ func _build_tuning_page() -> VBoxContainer:
 	compare = CompareBar.new()
 	compare.requested.connect(_command)
 	compare.combo_chosen.connect(func(value: String) -> void:
-		if not playback.locked() and not session.comparing:
+		if not playback.locked() and not session.compare.showing:
 			presets.load_combo(value))
 	compare.compare_chosen.connect(func(value: String) -> void:
-		report(session.choose_compare(value, playback.locked()))
+		report(session.compare.choose(value, playback.locked()))
 		_after_values_changed())
 	page.add_child(compare)
 	toolbar = Toolbar.new()
@@ -176,9 +176,9 @@ func _refresh() -> void:
 	var locked := playback.locked()
 	toolbar.refresh(playback)
 	compare.refresh(locked)
-	panel.comparing = session.comparing
-	panel.lock_reason = LOCKED_COMPARING if session.comparing else LOCKED_PLAYING
-	panel.set_locked(locked or session.comparing)
+	panel.comparing = session.compare.showing
+	panel.lock_reason = LOCKED_COMPARING if session.compare.showing else LOCKED_PLAYING
+	panel.set_locked(locked or session.compare.showing)
 	panel.refresh_state()
 	slot_list.refresh()
 	status.set_counts(session.dirty_count(), not session.combo_name.is_empty() and session.combo_dirty())
@@ -279,7 +279,7 @@ func receive_key(event: InputEvent) -> bool:
 
 
 func _toggle_compare() -> void:
-	report(session.toggle_compare(playback.locked()))
+	report(session.compare.toggle(playback.locked()))
 	_after_values_changed()
 
 
@@ -298,7 +298,7 @@ func _command(action: String) -> void:
 		"暂停": playback.toggle_pause()
 		"开头":
 			report(Messages.outcome({"error": playback.reset_to_start()},
-				"已回到开头：播放结束。" + LOCKED_COMPARING if session.comparing
+				"已回到开头：播放结束。" + LOCKED_COMPARING if session.compare.showing
 				else "已回到开头：播放结束，参数可以修改", "没能回到开头", "先点播放开始一遍"))
 		"对比": _toggle_compare()
 		"保存组合", "另存组合": presets.save_combo(action)
@@ -308,7 +308,7 @@ func _command(action: String) -> void:
 
 func _slot_command(action: String) -> void:
 	var slot := session.selected
-	if slot == null or playback.locked() or session.comparing:
+	if slot == null or playback.locked() or session.compare.showing:
 		return
 	match action:
 		"加载预设": presets.load_preset(slot, panel.chosen_preset())
@@ -332,7 +332,7 @@ func _confirm_write(slots: Array[Slot]) -> void:
 		return
 	dialogs.confirm(Adoption.confirm_text(slots, plans), func() -> void:
 		report(Adoption.adopt_all(slots, plans))
-		session.invalidate_compare()
+		session.compare.invalidate()
 		_rebind_panel(), "采纳到游戏", "采纳到游戏", Dialogs.DANGER)
 
 
