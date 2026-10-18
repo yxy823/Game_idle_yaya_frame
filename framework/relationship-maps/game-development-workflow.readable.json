@@ -3994,6 +3994,48 @@
       }
     },
     {
+      "id": "scene-131",
+      "shape": "rounded-rect",
+      "x": 3000,
+      "y": 1395,
+      "width": 159,
+      "height": 84,
+      "label": "想试做一个\n还不确定要不要的\n玩法",
+      "zIndex": 1,
+      "fill": "#eeeefa",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/实施与调参/想试做一个还不确定要不要的玩法.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
       "id": "scene-113",
       "shape": "rounded-rect",
       "x": 2925.5,
@@ -13122,6 +13164,113 @@
         }
       ],
       "label": "成果已选定且获准整合到目标",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.6123356525924323,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-131-scene-018",
+      "source": {
+        "kind": "node",
+        "node": "scene-131",
+        "port": "left"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-018",
+        "port": "top"
+      },
+      "path": "orthogonal",
+      "vertices": [
+        {
+          "x": 2440,
+          "y": 1437
+        },
+        {
+          "x": 2440,
+          "y": 2340
+        },
+        {
+          "x": 2258,
+          "y": 2340
+        }
+      ],
+      "label": "留下时写回 GDD",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.6123356525924323,
+        "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-131-scene-113",
+      "source": {
+        "kind": "node",
+        "node": "scene-131",
+        "port": "top"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-113",
+        "port": "bottom"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "拆成 Feature 后带回代码",
       "stroke": {
         "color": "#8994A5",
         "width": 2,

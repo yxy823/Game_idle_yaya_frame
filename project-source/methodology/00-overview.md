@@ -74,6 +74,7 @@ yaya/methodology/                         canonical workflow specification
 | 在调试台比较候选或做技术验证 | 比较观感或逻辑候选用 `in-game-tuning`；技术验证用 `technical-validation` | 按 13 号规范的[选择方式](13-debug-console-and-validation.md#选择方式)回答一个具体问题。独立实验不需要 Product 或 Feature；Feature 内的实验沿用该 Feature 的流程。纯数值问题交给 `design-balance`。 |
 | 骨架之后在调试台做视觉决策 | `feature-execute` 配合 `in-game-tuning`，在当前 Product 交付或已获授权的实验中使用 | 按[界面的开发顺序](13-debug-console-and-validation.md#界面的开发顺序)：骨架、视觉决策、完整逻辑三个 Feature。规格提供输入；调试台中的比较、采纳和人工验收属于执行阶段。 |
 | 列出并交接一个任务所需的最少资源文件 | 当前任务，按需配合 `design-visual-asset-spec` 或 `design-audio-asset-spec` | 按[资源需求与交接](11-specialist-workflows.md#资源需求与交接)执行。不制作也不接入资源。 |
+| 试做一个还不确定要不要的玩法或功能 | `worktree-create` 开实验分支，按 13 号规范的[试做玩法](13-debug-console-and-validation.md#试做玩法)执行 | 不进 Feature 列表。留下时由 `design-gdd` 写回 GDD 再拆 Feature；丢掉时分支先保留，删除要用户同意。 |
 | 为已获授权的任务准备或复用另一个工作目录 | `worktree-create` | 任务需要另一个工作目录时使用。路径分开不等于运行时数据隔离。 |
 | 把已采纳的 worktree 成果并入目标，或续接中断、有冲突的合并 | `worktree-integrate` | 用于已选定的成果和目标。不在相互竞争的成果之间做选择，也不授权清理。 |
 | 根据 GDD 预拆分交付范围 | `product-author` | 只写用户要求的 `product.md` 规划范围。 |
