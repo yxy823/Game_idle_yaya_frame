@@ -423,7 +423,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 ### record-base-revision.py
 
-把当前验证点写进 `docs/features/<Feature ID>.json` 的 `base_revision`，选择测试时以它为起点比较内容差异。验证点的取法：索引中状态为 `done` 或 `obsolete_done` 的 Feature 按 `completed_at` 从晚到早，找到第一个完成证据 `git_revision` 仍是当前 HEAD 祖先的 Feature，取 `git_revision` 之后第一个提交了这份证据的提交，也就是它的完成提交；证据还没提交时取 `git_revision` 本身。不直接用 `git_revision`，因为记录证据时这个 Feature 的改动还没提交，从那里比较会把它自己的改动算成新改动。没有这样的 Feature 时取仓库的第一个提交。
+把当前验证点写进 `docs/features/<Feature ID>.json` 的 `base_revision`，选择测试时以它为起点比较内容差异。验证点的取法：索引中状态为 `done` 或 `obsolete_done` 的 Feature 按 `completed_at` 从晚到早排列。第一个完成证据 `git_revision` 仍是当前 HEAD 祖先的 Feature，取它的完成提交，即 `git_revision` 之后第一个提交了这份证据的提交。证据还没提交时取 `git_revision` 本身。不直接用 `git_revision`，因为记录证据时这个 Feature 的改动还没提交，从那里比较会把它自己的改动算成新改动。没有这样的 Feature 时取仓库的第一个提交。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
