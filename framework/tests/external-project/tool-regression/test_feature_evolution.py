@@ -165,7 +165,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.assertFalse(self.validate())
 
     def test_initial_baseline_records_added_features_and_intent(self) -> None:
-        baseline = {"schema_version": 2, "revision_id": "R000", "revised_at": "2026-01-01T00:00:00Z",
+        baseline = {"schema_version": 2, "revision_id": "V000", "revised_at": "2026-01-01T00:00:00Z",
                     "anchor_commit": "b" * 40, "synced_at_commit": "b" * 40, "user_intent": None,
                     "summary": "First plan", "added": ["F01-001", "F01-002"],
                     "migrations": [], "dependency_changes": []}
@@ -188,7 +188,7 @@ class FeatureEvolutionTests(unittest.TestCase):
         self.index["features"][1]["depends_on"] = ["F01-001"]
         self.index["features"][2]["depends_on"] = ["F01-002"]
         self.revisions["revision_log"].insert(0, {
-            "schema_version": 2, "revision_id": "R000", "revised_at": "2026-01-01T00:00:00Z",
+            "schema_version": 2, "revision_id": "V000", "revised_at": "2026-01-01T00:00:00Z",
             "anchor_commit": "b" * 40, "synced_at_commit": "b" * 40, "user_intent": None,
             "summary": "First plan", "added": ["F01-001", "F01-002", "F01-003"],
             "migrations": [], "dependency_changes": [],

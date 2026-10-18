@@ -203,9 +203,9 @@ def eligible_features(entries: dict[str, dict]) -> list[str]:
 
 def _initial_baseline(revision: dict, label: str, entries: dict[str, dict], index: int) -> None:
     if index != 0:
-        raise EvolutionError(f"{label}: R000 must be the first revision")
+        raise EvolutionError(f"{label}: V000 must be the first revision")
     if revision["anchor_commit"] != revision["synced_at_commit"]:
-        raise EvolutionError(f"{label}: R000 anchor_commit and synced_at_commit must be equal")
+        raise EvolutionError(f"{label}: V000 anchor_commit and synced_at_commit must be equal")
     if "user_intent" not in revision or not (revision["user_intent"] is None or isinstance(revision["user_intent"], str)):
         raise EvolutionError(f"{label}.user_intent must be present as a string or null")
     _feature_ids(revision.get("added"), f"{label}.added", entries, nonempty=True)
@@ -244,7 +244,7 @@ def validate_revisions(data: Any, entries: dict[str, dict]) -> dict[str, dict]:
         changes = revision.get("dependency_changes")
         if not isinstance(migrations, list) or not isinstance(changes, list):
             raise EvolutionError(f"{label} requires migrations and dependency_changes arrays")
-        if rid == "R000":
+        if rid == "V000":
             _initial_baseline(revision, label, entries, index)
         for pos, migration in enumerate(migrations):
             ml = f"{label}.migrations[{pos}]"

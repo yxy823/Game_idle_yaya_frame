@@ -303,17 +303,17 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 
 | 字段 | 初始值 |
 | --- | --- |
-| `revision_id`、`schema_version` | `R000`、`2` |
+| `revision_id`、`schema_version` | `V000`、`2` |
 | `anchor_commit`、`synced_at_commit` | 同一个已核实的完整来源 HEAD 哈希，即本次计划采用的版本 |
 | `revised_at`、`user_intent` | 实际时间戳；提供的规划意图，或 `null` |
 | `summary`、`added` | 用文字说明初始基线、当前 Product，以及所采用来源的覆盖范围和局限；本次计划新增的 Feature ID |
 | `migrations`、`dependency_changes` | 空数组；这条记录表示初始规划，不表示来源变化 |
 
-`check-feature-list.py` 校验 R000 是第一条记录、`user_intent` 存在（字符串或 `null`）、`added` 列出已存在且不重复的 Feature ID，以及两个数组为空；检查器会拒绝 `anchor_commit` 与 `synced_at_commit` 二者不同。
+`check-feature-list.py` 校验 V000 是第一条记录、`user_intent` 存在（字符串或 `null`）、`added` 列出已存在且不重复的 Feature ID，以及两个数组为空；检查器会拒绝 `anchor_commit` 与 `synced_at_commit` 二者不同。
 
 不要创建引用自身的计划提交、单独的基线文件或新的 schema 字段。基线只覆盖已规划的范围和实际采用的来源，不覆盖所有 Product，也不覆盖 HEAD 上的所有文件。
 
-之后的 Product 规划保留完整的修订记录，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。Feature 记录里已有 Feature 但没有基线时，不要只因为修订记录为空就补加 `R000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
+之后的 Product 规划保留完整的修订记录，永远不向前移动锚点，否则会掩盖早期工作中尚未同步的变化。续接时保留已记录的基线。Feature 记录里已有 Feature 但没有基线时，不要只因为修订记录为空就补加 `V000`。这时由 `feature-sync` 核实之前的覆盖，或在授权下与当前文档对齐。
 
 ### 同步记录
 

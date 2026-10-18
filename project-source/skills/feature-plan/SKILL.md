@@ -51,7 +51,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 3. 在对话中展示权威的 **拆分预览**：Feature 数量、每个 Feature 的摘要和依赖、为什么下一个是这个 Product，以及需求覆盖的对应关系。在写入任何测试登记表或 Feature 计划之前，执行其中关于确认和明确授权自主规划的规则；缺少实质性的决定时先解决。
 4. 第 3 步允许写入后，按 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线**，为符合条件的首份计划确定已提交的来源状态。然后在写入任何 Feature 计划之前，执行下面的测试登记表合并。只有合并通过校验、没有冲突时才继续。
 5. 追加新的索引条目，并且只追加它们的详情文件，初始值按 `yaya/methodology/02-feature-list-schema.md` 的 **索引字段** 和 **详情字段** 填写。更新索引时间、拆分说明，以及 `meta.generated_from` 中实际新用到的 GDD 和专业来源位置。保留已有的 Feature、无关的元数据和修订历史。后续 Product 的规划不会推进同步锚点。合并成功后，不要手工改写测试登记表的数据。
-6. 按下面「校验与语义审查」的顺序，依次完成语义覆盖审查、追加符合条件的 `R000` 和运行检查器。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
+6. 按下面「校验与语义审查」的顺序，依次完成语义覆盖审查、追加符合条件的 `V000` 和运行检查器。用实际的 ID 和剩余工作更新同一份方案，不另建报告文件。
 7. 按 `yaya/methodology/09-records-reports-and-handoff.md` 的 **Progress** 更新 `docs/progress.md` 的当前状态和下一个允许的动作：写明这个 Product 已规划，下一步是第一个可以开始的 Feature；删掉“还没有 Feature 计划”这类已不成立的说法。因为换对话续接时先读 Progress，不更新就会被带回规划前的步骤。按 `AGENTS.md` **Git 与提交** 中 **暂存** 的要求暂存本任务负责的计划路径和 Progress，并创建本地提交 `chore(feature-plan): <行为摘要>`（摘要语言跟随 `document_language`）。这次提交是在创建计划，所以省略 `Work item`。开始时已有改动的，不要暂存整个 `docs/features/` 路径。
 8. 报告结果，以及这个 Product 中第一个可以开始的 Feature。已获授权的实现使用 [feature-execute](../feature-execute/SKILL.md)；规划成功不授予后续 Product 的范围。完成后返回调用方；Skill 返回不会结束它所服务的已授权任务（methodology 03 **授权与续接**）。
 
@@ -118,7 +118,7 @@ python -B yaya/tools/features/merge-test-registry.py `
 所有相关文件一致之后，按下面的顺序完成：
 
 1. **语义覆盖审查**：检查器确定不了的内容，由 Agent 审查下面列出的各项。
-2. **追加初始基线**：符合 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线** 条件时，按该节第 3 步追加 `R000`；不符合时跳过。
+2. **追加初始基线**：符合 `yaya/methodology/02-feature-list-schema.md` 的 **初始规划基线** 条件时，按该节第 3 步追加 `V000`；不符合时跳过。
 3. **运行检查器**：`python -B yaya/tools/checks/check-feature-list.py`。它会同时检查 JSON 解析和跨文件的不变量。只有在诊断某一个错误时，才单独做语法检查。
 
 语义覆盖审查的内容：

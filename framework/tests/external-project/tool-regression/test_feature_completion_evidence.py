@@ -656,7 +656,7 @@ func test_plain():
             derive_test_evidence(self.root, "F01-001", [result_reference(self.root, path)])
 
     def test_revision_process_fields_preserve_but_migration_edges_invalidate_snapshot(self) -> None:
-        revision = {"schema_version": 2, "revision_log": [{"id": "R001", "revised_at": "before",
+        revision = {"schema_version": 2, "revision_log": [{"id": "V001", "revised_at": "before",
             "summary": "Original explanation", "migrations": [{"kind": "revise", "from": ["F01-001"],
                 "to": ["F01-002"], "source": {"path": "product.md", "anchor_commit": "a" * 40}}]}]}
         self.write_json("docs/feature-list-revisions.json", revision)

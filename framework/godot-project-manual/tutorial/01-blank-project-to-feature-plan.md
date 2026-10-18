@@ -150,7 +150,7 @@ Product 包含新界面、而 `docs/art/art-bible.md` 只有一句占位时，�
 >
 > 人工检查：点击棋子后所在格四角出现中性浅色标识，同一时刻只有一处，转选时标识移到新格，棋子本身不被高亮。
 
-**基线**：计划写入时绑定当时的来源提交，作为基线 R000。之后 GDD 或规格变化时，Agent 据此判断哪些 Feature 受影响，示例第 5 步的修订就是这样找出来的，见[基线与需求修订](../requirements-and-tasks/requirements-and-planning.md#基线与需求修订)。
+**基线**：计划写入时绑定当时的来源提交，作为基线 V000。之后 GDD 或规格变化时，Agent 据此判断哪些 Feature 受影响，示例第 5 步的修订就是这样找出来的，见[基线与需求修订](../requirements-and-tasks/requirements-and-planning.md#基线与需求修订)。
 
 **你要做的**：确认拆分和依赖是否合理，尤其是每项的验收方式。需要人看、人听、人操作才能判断的，用人工验收，见[自动与人工验收](../requirements-and-tasks/feature-lifecycle.md#自动与人工验收)。
 

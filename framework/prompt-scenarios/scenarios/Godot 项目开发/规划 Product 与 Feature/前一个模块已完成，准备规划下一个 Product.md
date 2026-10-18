@@ -57,7 +57,7 @@ $LASTEXITCODE
 
 ## 资源与文件影响
 
-编写当前 Product 及必要来源引用，追加 Feature 与必要的组件登记，Progress 的下一步改为第一个可以开始的 Feature；不提前细化未来 Product，不重置 R000 或历史同步锚点。
+编写当前 Product 及必要来源引用，追加 Feature 与必要的组件登记，Progress 的下一步改为第一个可以开始的 Feature；不提前细化未来 Product，不重置 V000 或历史同步锚点。
 
 ## 阻塞、异常与范围变化
 
