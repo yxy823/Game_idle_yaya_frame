@@ -7,7 +7,7 @@ yaya/tools/
 ├── checks/      环境、Feature 记录与文件格式检查
 ├── features/    Feature 登记合并、完成记录与人工验收
 ├── testing/     gdUnit 测试入口及其 Godot 辅助脚本
-├── godot/       由 Godot 执行的项目文件维护脚本
+├── godot/       由 Godot 执行的项目文件维护脚本和 3D 占位测量
 ├── ui-trial/    在项目副本中按界面任务试用界面，及界面静态扫描
 └── lib/         共享实现
 ```
@@ -30,6 +30,7 @@ yaya/tools/
 | 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表；同一组件的 `source_paths` 取并集 |
 | 完成记录 [record-feature-completion.py](features/record-feature-completion.py) | 准备人工验收清单，记录测试原件引用与人工决定，查看和检查完成证据 |
 | 资源重存 [resave_godot_files.gd](godot/resave_godot_files.gd) | 用 Godot 自己的格式重新保存 `project.godot` 和指定的 `.tscn`、`.tres` |
+| 3D 占位测量 [measure_3d.gd](godot/measure-3d/measure_3d.gd) | 在真实窗口里测 3D 物体的屏幕轮廓尺寸、伸出 Slot 的比例、被相邻物品遮挡的比例和帧时间，与请求里的阈值对照 |
 | 界面试用 [ui-trial/](ui-trial/README.md) | 准备改名的项目副本，在副本中运行驱动脚本按界面任务试用界面（带看门狗与外层超时），以及界面静态扫描 |
 
 命名约定：
@@ -538,6 +539,41 @@ $LASTEXITCODE
 - 编辑器模式退出时会打印 RID 和 ObjectDB 泄漏信息：脚本在编辑器启动途中退出，编辑器界面来不及释放。新建项目、不启用任何插件时同样出现，不代表保存失败，不需要诊断，也不记为阻塞；以退出码和上面的 `ERROR` 为准。
 - 编辑器开着时，用户切回编辑器窗口，Godot 会弹出“文件已在 Godot 外部被修改”，列出 `project.godot`。选“从磁盘重新加载”即可读到这次修改；选“忽略外部修改”后再在编辑器里保存，会覆盖这次修改。所以修改了 `project.godot` 时，在交付中提醒用户看到这个提示时选“从磁盘重新加载”。
 
+### measure_3d.gd
+
+接入 3D 资源后，按项目 Art Bible 的投影阈值测量模型在屏幕上的样子：轮廓够不够大、伸出 Slot 多远、会不会挡住相邻物品，以及帧时间。每次接入只写一个场景适配脚本，不再为每轮重写截图和测量脚本。
+
+**必须开真实窗口**：无头模式不渲染画面，入口在无头模式下立即以退出码 `2` 结束。运行时桌面会弹出请求里指定大小的窗口，示例约 2 秒，真实场景随对象数和帧时间采样变长；运行前告诉用户。
+
+1. 把 [example_adapter.gd](godot/measure-3d/example_adapter.gd) 复制到 `dev/asset_validation/<主题>/measure_adapter.gd`（[资源验证组件](../methodology/08-test-traceability-and-evidence.md#资源验证组件)），改写其中 4 个方法：
+   - `variants()`：要测的变体名，例如每套模型一个；
+   - `open(tree, variant)`：打开场景、换好模型、等场景稳定，返回场景根节点；
+   - `subjects(scene)`：被测对象，每项 `{"id", "kind": "item" 或 "enemy", "node"}`；物品另给 `slot_corners`（逻辑 Slot 地面方框的 4 个世界坐标角点，按顺序排列）和 `neighbors`（相邻物品的 `id`）；
+   - `close(scene)`：释放场景，恢复 `open()` 在场景外改过的东西，例如存档路径。
+2. 照 [example_request.json](godot/measure-3d/example_request.json) 写请求文件，放在同一目录。阈值从 Art Bible 抄，请求里缺任何一项都会以 `2` 退出，工具不提供默认值。
+3. 运行：
+
+   ```powershell
+   & $projectGodot --path . --script res://yaya/tools/godot/measure-3d/measure_3d.gd -- dev/asset_validation/<主题>/measure_request.json | Out-Host
+   $LASTEXITCODE
+   ```
+
+| 请求字段 | 含义 |
+| --- | --- |
+| `adapter` | 适配脚本的 `res://` 路径 |
+| `out` | 输出目录，相对项目根目录，放在 `reports/` 下 |
+| `window` | 窗口大小 `[宽, 高]`，用 Art Bible 的显示基线 |
+| `perf` | 可选：`variant` 指定在哪个变体测帧时间，`warmup_frames`、`sample_frames` 默认 120、600 |
+| `thresholds` | `max_protrusion_ratio`（伸出距离 ÷ Slot 屏幕宽度的上限）、`max_neighbor_occlusion`（被相邻物品挡住的轮廓比例上限）、`min_long_edge_px`（轮廓包围框最长边的下限，物品和敌人都算） |
+
+**测量口径**：每个对象单独渲染一次，自己用白色无光照材质，其他几何体全部隐藏；物品再和相邻物品一起渲染一次，相邻物品用黑色。两次都用黑背景、线性色调映射、关闭 MSAA，并隐藏所有 `CanvasLayer`，结束后恢复。RGB 三个通道都大于 127 的像素算轮廓，边界约有 1 px 误差。伸出取轮廓像素中心到 Slot 方框投影的最远距离；遮挡取一起渲染时少掉的轮廓像素占单独渲染时的比例。
+
+**输出**：`<out>/<变体>.png` 是正常画面，`<out>/<变体>/<对象>-full.png`、`<对象>-neighbors.png` 是遮罩图。`<out>/measurements.json` 包含 `environment`、`performance`、每个变体的 `subjects` 与 `summary`，以及 `checks`：每项阈值的实测值、阈值和 `pass`。
+
+退出码：`0` 全部阈值通过；`1` 有阈值没通过，标准错误输出列出是哪项；`2` 无头运行、请求无效，或适配脚本给出的对象轮廓为空。
+
+**局限**：只测轮廓尺寸和遮挡，不测颜色、敌我识别和辨认度，这些仍要人工验收；轮廓边界约有 1 px 量化误差；帧时间受本机硬件影响，结果里记录了显卡和 CPU。
+
 ### 静态检查与资源导入
 
 脚本解析与 lint 由 Agent 直接调用 Godot 和插件，见[GDScript lint 的约定与证据](../methodology/contracts/gdscript-lint.md)。它们没有 Python 包装器、静态 manifest 或静态结果登记命令。资源导入由 Godot 处理。
@@ -588,7 +624,7 @@ flowchart TD
 | `gdunit_process.py` | Windows 子进程归属、超时与退出处理 |
 | `gdunit_diagnostics.py` | 解释真实引擎诊断，保留失败事实 |
 
-`godot/resave_godot_files.gd` 只在显式调用时运行，用法见上文。`testing/` 中的 Godot 脚本是 gdUnit 运行扩展，不是 Agent 动作 Hook：
+`godot/resave_godot_files.gd` 和 `godot/measure-3d/` 只在显式调用时运行，用法见上文。`testing/` 中的 Godot 脚本是 gdUnit 运行扩展，不是 Agent 动作 Hook：
 
 - `gdunit_evidence_runner.gd` 启动测试并记录发现；
 - `gdunit_diagnostic_session.gd` 关联运行诊断；

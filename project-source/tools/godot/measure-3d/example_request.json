@@ -1,0 +1,7 @@
+{
+  "adapter": "res://yaya/tools/godot/measure-3d/example_adapter.gd",
+  "out": "reports/measure-3d/example",
+  "window": [1600, 900],
+  "perf": {"variant": "example", "warmup_frames": 30, "sample_frames": 120},
+  "thresholds": {"max_protrusion_ratio": 1.0, "max_neighbor_occlusion": 0.05, "min_long_edge_px": 56}
+}
