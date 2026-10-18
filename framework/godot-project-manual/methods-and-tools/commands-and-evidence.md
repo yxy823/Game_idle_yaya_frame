@@ -39,11 +39,11 @@
 $projectConfig = Get-Content -LiteralPath 'docs/methodology-config.json' -Raw | ConvertFrom-Json
 $projectPython = $projectConfig.python_executable
 $projectGodot = (Resolve-Path -LiteralPath $projectConfig.engine_executable -ErrorAction Stop).Path
-$featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
+$featureId = 'F01-001' # 教学占位，必须换成当前真实 Feature ID
 ```
 
 - 运行前，将 `python_executable` 设为已核对的解释器，见[环境与流程配置](../foundations/04-configuration.md#环境与流程配置)。
-- `F001` 和示例脚本路径都要换成实际存在的任务与文件。
+- `F01-001` 和示例脚本路径都要换成实际存在的任务与文件。
 - 每条原生命令后立即读取 `$LASTEXITCODE`。
 
 新项目第一次运行 CLI 测试或项目脚本前，先按[首次 Godot 扫描](../../../project-source/tools/README.md#首次-godot-扫描)完成编辑器扫描；环境检查通过不包含这一步。
@@ -55,7 +55,7 @@ $featureId = 'F001' # 教学占位，必须换成当前真实 Feature ID
 | 入口 | 常用参数 | 读写与副作用 |
 | --- | --- | --- |
 | `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
-| `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
+| `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F01-001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
 | `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件、Godot 忽略的目录，以及调试台的插槽预设与组合 |
 | `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature`、`--target` 或 `--changed`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录。Feature 合法空选择集返回 `not_required`；`--changed` 空选择集只输出无需测试的说明。两者均不写报告 |
 | `yaya/tools/features/record-base-revision.py` | `--feature`、`--reset`、`--dry-run` | 把验证点写进 Feature 详情的 `base_revision`；`--dry-run` 只读，预览起点以来的改动会选中什么 |
@@ -88,7 +88,7 @@ $LASTEXITCODE
 Feature 记录检查读取完整的 Feature 索引、详情、测试登记表和修订关系，核对 ID、字段、引用、路径、依赖与历史规则。它已经包含 JSON 解析，规划或同步完成后运行这一个入口即可；单文件语法检查只在定位具体错误时使用。需求覆盖、真实依赖和历史保留这些语义，仍由 Agent 核对。
 
 - **`--eligible`**：校验后输出依赖已满足的 pending Feature ID。它只说明哪些任务可以开始，不授予实现权限。
-- **`--completion-feature F001`**：额外要求该 Feature 直接对应的自动验证映射处于 active 状态。日常历史检查接受可追溯的已退役测试，但当前任务完成时不能用已退役测试代替实际验证。
+- **`--completion-feature F01-001`**：额外要求该 Feature 直接对应的自动验证映射处于 active 状态。日常历史检查接受可追溯的已退役测试，但当前任务完成时不能用已退役测试代替实际验证。
 
 测试路径的登记规则：
 
@@ -107,7 +107,7 @@ $LASTEXITCODE
 
 ```powershell
 # TDD 或定点诊断：换成实际存在的套件或目录。
-& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --target tests/features/F001/example_test.gd
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --target tests/features/F01-001/example_test.gd
 $LASTEXITCODE
 ```
 
@@ -177,7 +177,7 @@ affected = Required + 与影响组件相交的 active 验收测试
 完成检查只读取对应 Feature 的目录。使用命令实际打印的 `result.json` 路径，不要猜测 run ID。
 
 ```text
-reports/gdunit-wrapper/F001/run-<id>/
+reports/gdunit-wrapper/F01-001/run-<id>/
 ├── result.json                 运行中持续更新，结束时记录成功或失败
 ├── engine.log                  原始引擎输出
 ├── discovery.json              实际展开后的测试发现集合
@@ -197,7 +197,7 @@ reports/gdunit-wrapper/F001/run-<id>/
 
 ### 从运行结果到完成状态
 
-Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时为该 Feature 创建完成证据文件 `docs/features/F0XX-evidence.json`，Stage 7 检查完成条件。每个 Feature 一份，互不覆盖。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
+Stage 4 记录最终测试结果，Stage 5 按需记录人工结果，第一次记录时为该 Feature 创建完成证据文件 `docs/features/<Feature ID>-evidence.json`，Stage 7 检查完成条件。每个 Feature 一份，互不覆盖。下图是实际的读写关系，编辑文件不会自动触发其中任何一步：
 
 ```mermaid
 flowchart TD
@@ -234,12 +234,12 @@ flowchart TD
 
 | 子命令 | 何时使用 |
 | --- | --- |
-| `record-tests --feature F001 --run <result.json>` | 导入真实的最终 Feature 运行；多个运行在同一次调用中列出多个 `--run`，整组替换旧引用 |
-| `prepare-manual --feature F001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定的清单不能重新绑定 |
-| `record-acceptance --feature F001 --checklist <清单.json>` | 清单的状态已按用户的结论填写后，核对定义未变并记录 accepted、rejected 或 pending |
+| `record-tests --feature F01-001 --run <result.json>` | 导入真实的最终 Feature 运行；多个运行在同一次调用中列出多个 `--run`，整组替换旧引用 |
+| `prepare-manual --feature F01-001 --checklist <清单.json>` | 检查 Agent 编写的 pending 清单并绑定最终内容；已绑定的清单不能重新绑定 |
+| `record-acceptance --feature F01-001 --checklist <清单.json>` | 清单的状态已按用户的结论填写后，核对定义未变并记录 accepted、rejected 或 pending |
 | `record-acceptance ... --confirm-unrelated-changes` | 绑定之后项目又有变化，Agent 逐个核对工具列出的文件后使用：列表可能包含绑定时未提交、之后没改过的文件，真正改过的都不涉及本 Feature 时才可用；列表会写进记录 |
-| `show --feature F001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
-| `validate --feature F001` | 检查当前内容对应的完成证据是否满足 |
+| `show --feature F01-001` | 只读展示记录；检查文件结构和 Feature 身份，不判断能否完成 |
+| `validate --feature F01-001` | 检查当前内容对应的完成证据是否满足 |
 
 `show` 退出 0 只表示记录可读取：没有通过的测试、仍在等待人工结果的记录也能正常展示。判断能否完成要用 `validate`。两者都不改 Feature 状态；记录结构损坏或身份不匹配时都会报错。
 
@@ -317,7 +317,7 @@ $LASTEXITCODE
 | GDD、Product、术语、专业规格与表现文档、项目规则、Feature 设计稿、架构与 ADR | 按原始字节纳入；换行、措辞或排版变化即使不改行为，也会改变指纹 |
 | 源码、测试、配置和其他未列出的文件 | 纳入路径与内容；增删、移动都会改变指纹 |
 | `docs/features/` 下的 JSON、Feature 索引、测试登记表、修订记录、`methodology-config.json` | 先解析 JSON、排序对象键再计算；数组顺序保留，下表列出的过程字段除外 |
-| `docs/features/F0XX-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工验收契约单独核对，仍不能随意改写 |
+| `docs/features/<Feature ID>-evidence.json`、`docs/progress.md`、`reports/` | 不纳入；报告由结果导入和人工验收契约单独核对，仍不能随意改写 |
 | `docs/progress/`、`docs/knowledge/`、`docs/research/` 下的 `.md` 文件 | 不纳入；这些目录里的非 Markdown 文件仍纳入 |
 | 调试台的插槽预设、组合与 `dev/debug/adoption-log.md` | 不纳入；它们是调试过程中的草稿与收尾记录，验收针对游戏调参资源。`dev/debug/adoption-queue/` 仍纳入 |
 | 普通 `README.md`（不区分大小写） | 不纳入；但 `.agents/`、`yaya/agent-rules/`、`yaya/methodology/`、`docs/gdd/`、`docs/product/`、`docs/features/` 下的 README 仍纳入 |
@@ -333,7 +333,7 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 | 修订记录中每条 `revision_log` | `revised_at`、`created_at`、`updated_at`、`recorded_at`、`summary`、`notes` |
 
 - **仍参与计算的字段**：AC 文本、验证计划、组件、嵌套测试的 status、退役关系、修订 ID、源提交锚点，以及未知的契约字段。
-- **notes 中链接的设计稿**：notes 本身不参与，但被链接的 `F0XX-design.md` 文件仍按原始字节纳入。
+- **notes 中链接的设计稿**：notes 本身不参与，但被链接的 `<Feature ID>-design.md` 文件仍按原始字节纳入。
 - **Git 提交号**：另作来源记录。只提交了过程字段、指纹没有变化时，不会因为提交号变化要求重跑或重新验收。
 
 指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档在最终验证之前的 Stage 3 文档检查点定稿。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读审核不改变内容。

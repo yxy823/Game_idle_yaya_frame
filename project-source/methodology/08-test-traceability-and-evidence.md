@@ -24,14 +24,14 @@ tests/
 └── invariants/  # 跨 Feature 的架构与领域规则
 ```
 
-`regression` 说明测试的来历，不是第四个目录。回归测试放在它所保护的那一层，通常是 `features/F0XX/`，偶尔是 `unit/<component>/`。
+`regression` 说明测试的来历，不是第四个目录。回归测试放在它所保护的那一层，通常是 `features/<Feature ID>/`，偶尔是 `unit/<component>/`。
 
 调试台自身的测试是唯一的例外，放在 `dev/debug/` 下：共享代码的测试在 `dev/debug/_shared/tests/`，本项目调试对象的测试在 `dev/debug/<对象>/tests/`。因为 `tests/` 下的测试不依赖 `dev/`，调试台测试不能放进 `tests/`；依赖方向测试检查的是游戏，所以留在 `tests/invariants/`。全量运行同时选择 `tests/` 和 `dev/debug/`，见[运行时的测试影响选择](#运行时的测试影响选择)。
 
 逻辑 ID 说明一个已登记的测试为什么存在：
 
-- `F012-AC01` 或 `F012-AC01-02`：Feature F012 条件 AC01 的自动验收验证。
-- `F052-RT01`：Bug 修复 Feature F052 创建的回归测试。
+- `F01-012-AC01` 或 `F01-012-AC01-02`：Feature F01-012 条件 AC01 的自动验收验证。
+- `B001-RT01`：Bug 修复 Feature B001 创建的回归测试。
 - `INV-LIFECYCLE-01`：跨 Feature 的不变量测试。
 
 普通的底层单元测试不需要逻辑 ID，除非它同时作为验收、回归或不变量证据。
@@ -44,14 +44,14 @@ Feature 详情使用稳定的验收条件 ID：
 
 ```json
 {
-  "id": "F012",
+  "id": "F01-012",
   "affected_components": ["save", "scene_lifecycle"],
   "acceptance_criteria": [
     {
       "id": "AC01",
       "text": "玩家可以保存并重新载入当前进度。",
       "verification": {
-        "automated_tests": ["F012-AC01"],
+        "automated_tests": ["F01-012-AC01"],
         "manual_checks": ["在运行中的游戏里保存、重新载入，确认读档后的界面过渡没有闪烁或错位。"]
       }
     }
@@ -94,9 +94,9 @@ Feature 详情使用稳定的验收条件 ID：
   ],
   "tests": [
     {
-      "id": "F052-RT01",
+      "id": "B001-RT01",
       "components": ["inventory", "scene_lifecycle"],
-      "path": "tests/features/F052/scene_transition_regression_test.gd",
+      "path": "tests/features/B001/scene_transition_regression_test.gd",
       "case": "test_f052_rt01_reopen_inventory_after_scene_change",
       "status": "active"
     },
@@ -121,8 +121,8 @@ Feature 详情使用稳定的验收条件 ID：
 - `source_paths` 必填，是该组件认领的文件，写成相对仓库根目录、不重复的非空 glob 列表：`**` 可以跨目录，`*` 和 `?` 不跨目录，例如 `game/inventory/**`。一个目录不带通配符时只匹配同名文件，不包括目录下的文件。跨目录的领域组件列出它的每个目录或文件。改动的文件匹配某个组件的 `source_paths` 时，该组件进入测试选择，见[起点以来的改动](#起点以来的改动)。
 - 后来的 Feature 要给已有组件认领新目录时，用 `merge-test-registry.py` 合并一个同 ID、其他字段相同的组件候选，`source_paths` 取并集；也可以在已批准的计划内直接编辑登记表。
 - 唯一的逻辑 ID 决定测试身份：
-  - `F0XX-ACyy` 或 `F0XX-ACyy-NN`：该 Feature 该条件的验收测试；
-  - `F0XX-RTyy`：该 Feature 的回归测试；
+  - `<Feature ID>-ACyy` 或 `<Feature ID>-ACyy-NN`：该 Feature 该条件的验收测试；
+  - `<Feature ID>-RTyy`：该 Feature 的回归测试；
   - `INV-<DOMAIN>-NN`：不属于任何 Feature 或条件的不变量。`DOMAIN` 以大写字母或数字开头，由大写字母、数字、下划线或连字符组成。
 - 不另存 `kind`、`source_feature` 或 `criterion_id` 字段。
 - `status` 取 `planned`、`active` 或 `retired`。
@@ -233,7 +233,7 @@ Stage 1 获批后，Stage 2 把额外的义务保存在 Feature 的 `verificatio
 从项目根目录用配置的 Python 解释器运行：
 
 ```text
-python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
+python -B yaya/tools/testing/run-gdunit-tests.py --feature <Feature ID> --scope auto
 ```
 
 运行器使用 `docs/methodology-config.json` 中的 Godot 路径。`--godot-binary <path>` 是可选的单次覆盖。
@@ -307,13 +307,13 @@ python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
 ### 记录结果
 
 ```powershell
-python -B yaya/tools/features/record-feature-completion.py record-tests --feature F0XX --run reports/gdunit-wrapper/F0XX/run-<id>/result.json
+python -B yaya/tools/features/record-feature-completion.py record-tests --feature <Feature ID> --run reports/gdunit-wrapper/<Feature ID>/run-<id>/result.json
 ```
 
 - 只有覆盖义务需要多次不同的运行时，才重复 `--run`。一次全量运行就覆盖 Required 和 affected。
 - 辅助工具根据当前 Feature、测试登记表和原始报告计算覆盖。调用方提供的通过标签或总数不能产生 PASS。
 - 导入失败会清除之前的引用。
-- 完成证据（格式见 [文件 5：`docs/features/F0XX-evidence.json`](02-feature-list-schema.md#文件-5docsfeaturesf0xx-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
+- 完成证据（格式见 [文件 5：`docs/features/<Feature ID>-evidence.json`](02-feature-list-schema.md#文件-5docsfeaturesfeature-id-evidencejson)）保存测试引用和实际的人工验收。它不保存审核计数、Required/affected/full 的总数，也不缓存关卡状态。
 - 解析和 lint 结果由 Agent 直接评估。
 
 哈希、与当前源码的绑定和运行身份，用来发现意外的过时复用或被改动的文件。这些可在本地编辑的记录不是防止有人改写全部证据的安全签名。文件修改时间和时钟精度从不授权完成。不要为了得到绿色结果而加 sleep，或重跑没有变化的失败。
@@ -403,9 +403,9 @@ RED、GREEN 和重构按每一个小的可观察行为进行，而不是先写�
 
 完成证据由下列命令检查，其余由 Agent 评估：
 
-- 有自动义务时，Stage 4 把核实过的运行结果导入该 Feature 的 `docs/features/F0XX-evidence.json`。需要人工验收时，Stage 5 记录清单中实际的人工结论。
-- `yaya/tools/features/record-feature-completion.py validate --feature F0XX` 检查这份证据。
-- `yaya/tools/checks/check-feature-list.py --completion-feature F0XX` 检查完成时专有的 Feature 和测试登记表契约。
+- 有自动义务时，Stage 4 把核实过的运行结果导入该 Feature 的 `docs/features/<Feature ID>-evidence.json`。需要人工验收时，Stage 5 记录清单中实际的人工结论。
+- `yaya/tools/features/record-feature-completion.py validate --feature <Feature ID>` 检查这份证据。
+- `yaya/tools/checks/check-feature-list.py --completion-feature <Feature ID>` 检查完成时专有的 Feature 和测试登记表契约。
 - 解析和 lint 输出，以及用户明确提出的任何审核条件，由 Agent 按[Stage 0–8 `feature-execute` 执行循环](03-execute-loop.md)评估。证据辅助工具不能证明静态检查或审核已经运行，也不能代替必需的人工决定。
 
 [Stage 6 · 可选的独立审核](03-execute-loop.md#stage-6--可选的独立审核)中被要求的审核，在源码和验证都没有变化时，复用当前成功的运行结果。修复改变了快照时，重新计算当前义务，重复适用的 Stage 4 验证（包括[没有自动义务：`not_required`](#没有自动义务not_required)的情况），然后重新进行受影响的验收。一次成功的全量运行覆盖 Required 和 affected；不要只为填第二个字段而再跑一次 Required。

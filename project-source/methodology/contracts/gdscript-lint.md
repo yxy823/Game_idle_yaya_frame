@@ -14,8 +14,8 @@ Godot 解析器和随附的 linter 检查的内容不同。解析器判断脚本
 # $godot 是配置的可执行文件路径；从项目目录运行。
 & $godot --headless --path . --check-only --script res://path/to/changed_script.gd | Out-Host
 $LASTEXITCODE
-# 把 F001 换成实际的 Feature；需要时使用一个未用过的运行子目录。
-$reportDirectory = 'reports/features/F001'
+# 把 F01-001 换成实际的 Feature；需要时使用一个未用过的运行子目录。
+$reportDirectory = 'reports/features/F01-001'
 New-Item -ItemType Directory -Path $reportDirectory -Force | Out-Null
 & $godot --headless --path . --script res://addons/gdscript-linter/analyzer/analyze-cli.gd -- --json --output "$reportDirectory/lint.json" res:// | Out-Null
 $LASTEXITCODE

@@ -31,10 +31,10 @@ Godot 发布了同一次版本内的修复版，例如项目在用 4.7.1，4.7.2
 
 **S2｜记录基线并核对版本说明**
 
-对应 07 的第 1、2 步。当前 Agent 用旧版本运行全量测试并保留结果（在项目根目录，`$projectPython` 的取法见[调用](<../../../../../project-source/tools/README.md#调用>)，`F0XX` 换成 S1 建立的 Feature）：
+对应 07 的第 1、2 步。当前 Agent 用旧版本运行全量测试并保留结果（在项目根目录，`$projectPython` 的取法见[调用](<../../../../../project-source/tools/README.md#调用>)，`<Feature ID>` 换成 S1 建立的 Feature）：
 
 ```powershell
-& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope full --phase baseline --continue
+& $projectPython -B yaya/tools/testing/run-gdunit-tests.py --feature <Feature ID> --scope full --phase baseline --continue
 $LASTEXITCODE
 ```
 

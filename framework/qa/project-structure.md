@@ -61,13 +61,13 @@ Feature 记录 -> 设计稿 & 测试登记: Stage 2
 | --- | --- | --- |
 | GDD | `docs/gdd/` | 游戏定位、核心循环、系统规则与数值 |
 | Product | `docs/product.md`、`docs/product/` | 交付单元的范围、依赖和顺序 |
-| Feature 记录 | `docs/feature-list.json`、`docs/features/F0XX.json` | Feature 的范围、AC、状态和验证义务 |
-| 设计稿 | `docs/features/F0XX-design.md` | 这个 Feature 的实施设计 |
+| Feature 记录 | `docs/feature-list.json`、`docs/features/<Feature ID>.json` | Feature 的范围、AC、状态和验证义务 |
+| 设计稿 | `docs/features/<Feature ID>-design.md` | 这个 Feature 的实施设计 |
 | 测试登记 | `docs/test-registry.json` | 组件与测试 ID，测试运行器按它选测试 |
 | 游戏代码 | `game/`、`main/`、`components/` | 实际实现 |
 | 测试 | `tests/` | 自动测试 |
 | 运行原件 | `reports/` | gdUnit 运行结果、人工验收清单 |
-| 完成证据 | `docs/features/F0XX-evidence.json` | 把运行原件和当前内容绑定起来 |
+| 完成证据 | `docs/features/<Feature ID>-evidence.json` | 把运行原件和当前内容绑定起来 |
 
 几处容易误解的地方：
 

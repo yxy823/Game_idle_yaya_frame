@@ -145,6 +145,7 @@ feature-execute
 
 记录：
 
+- 修复的是哪些已有 Feature，写进 `fixes`；
 - 实际行为；
 - 预期结果，以及精确的已确认 GDD、Product 交付、专业或项目工具来源；
 - 最小复现或触发方式；
@@ -156,7 +157,7 @@ feature-execute
 
 1. 在合理可行时，修复前的复现；
 2. 恢复文档规定的行为；
-3. 能确定性自动化时，带稳定 `F0XX-RTyy` 逻辑 ID 的针对性回归测试；
+3. 能确定性自动化时，带稳定 `<Feature ID>-RTyy` 逻辑 ID 的针对性回归测试；
 4. 修复后的相关自动检查；
 5. 已批准的模式为 manual 时，execute Stage 5 中明确的人工验收；否则这一步只需自动的 AC 与回归验证。
 
@@ -191,10 +192,11 @@ feature-execute
 工程 Feature 使用普通的 Feature 与测试记录：稳定的 `ACxx` 条件、非空的 `affected_components`、在执行期间映射的验证，外加下面这个详情字段：
 
 ```json
-"engineering_change": "bug"
+"engineering_change": "bug",
+"fixes": ["F01-003"]
 ```
 
-允许的取值是 `bug`、`refactor` 和 `maintenance`。使用下一个连续的 Feature ID；不要改写已完成的 Feature 定义。
+允许的取值是 `bug`、`refactor` 和 `maintenance`，ID 分别用 `B`、`R`、`M` 系列的下一个序号，规则见 02 号规范的[Feature ID](02-feature-list-schema.md#feature-id)。`fixes` 只有 Bug 填写，列出它修复的已有 Feature。不要改写已完成的 Feature 定义。
 
 提出 `affected_components` 时读取 `docs/test-registry.json`。获批后，在写入和校验 Feature 之前登记缺少的组件：
 
@@ -221,7 +223,7 @@ python -B yaya/tools/checks/check-feature-list.py
 BUG learning
 Root cause: <实现上的因果缺陷>
 Trigger: <最小触发条件或前置条件>
-Regression coverage: <F0XX-RTyy 逻辑 ID，或已批准的人工回归原因与检查>
+Regression coverage: <Feature ID>-RTyy 逻辑 ID，或已批准的人工回归原因与检查>
 Guardrail: <防止同类缺陷的一般原则>
 ```
 
@@ -231,7 +233,7 @@ Guardrail: <防止同类缺陷的一般原则>
 
 ```text
 Bug Feature
-├── 回归测试 → F0XX-RT01
+├── 回归测试 → <Feature ID>-RT01
 └── BUG learning 中的 Guardrail
         ↓ 只在明确的人工批准后
    项目规则或专业规则 / 不变量

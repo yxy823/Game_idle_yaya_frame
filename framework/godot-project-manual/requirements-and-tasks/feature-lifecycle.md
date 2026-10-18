@@ -181,7 +181,7 @@ sequenceDiagram
 - 一个 Feature 可以多次提交，中途保持 `in_progress`。
 - 用户提出的提交条件优先，例如“不要提交”“先验收再提交”“提交前问我”。这些条件按其范围在各 Skill 和续接中一直有效；验收通过本身不等于允许提交。
 - 提交不设额外的审核关卡；提交后发现问题，新建一个修正提交，不改写历史。
-- Feature 提交的主题写成 `<type>(F0XX): <中文行为摘要>`，正文用 `Feature:` 写真实标题，用 `Work item:` 指向详情文件；不属于任何 Feature 的任务不虚构这些字段。
+- Feature 提交的主题写成 `<type>(<Feature ID>): <中文行为摘要>`，正文用 `Feature:` 写真实标题，用 `Work item:` 指向详情文件；不属于任何 Feature 的任务不虚构这些字段。
 
 提交边界、暂存保护、提交说明和禁止操作的唯一正文是 [Git 与提交](../../../project-source/Project_AGENTS.md#git-与提交)。
 

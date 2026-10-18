@@ -8,7 +8,7 @@
 
 需要的材料：
 
-- 要检查的材料，例如 `docs/gdd/systems/shop.md`、Product 01 或 F005。
+- 要检查的材料，例如 `docs/gdd/systems/shop.md`、Product 01 或 F01-005。
 - 这次检查要支持什么决定，或想重点看的方面（可空），例如“能不能开始预拆分 Product”。
 - 其余（引用的 GDD 主题、Product 边界、项目规则和已采纳的决定）由 Agent 直接读取。
 

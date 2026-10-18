@@ -4,7 +4,7 @@
 
 ## 触发场景与使用时机
 
-例如 `check-feature-list.py --eligible` 列出 F005 可以开始，或你指定了一个依赖已满足的 `pending` Feature，现在要把它做到交付。
+例如 `check-feature-list.py --eligible` 列出 F01-005 可以开始，或你指定了一个依赖已满足的 `pending` Feature，现在要把它做到交付。
 
 需要的材料：
 
@@ -29,7 +29,7 @@
 
 将 AC 对应到当前实现、直接消费者和验证义务，按[1D. 提交批准材料](<../../../../../project-source/methodology/03-execute-loop.md#1d-提交批准材料>)给出批准材料；已有明确批准覆盖时直接复用，不再重复询问。没有批准时不开始实现。
 
-需要实施指导时使用 [implementation-guidance](../../../../../project-source/skills/implementation-guidance/SKILL.md)，整理约束、设计、必要顺序与验证理由。明确委派后由指定顾问读取背景；主 Agent 在本对话正文展示顾问的编号问题与 A/B 选项，再把回答传回同一顾问。Stage 1 先提出方案，已有批准覆盖后在 Stage 2 保存或更新同一 `docs/features/F0XX-design.md`；顾问仅写获准设计，主 Agent 维护 notes 链接及执行记录。
+需要实施指导时使用 [implementation-guidance](../../../../../project-source/skills/implementation-guidance/SKILL.md)，整理约束、设计、必要顺序与验证理由。明确委派后由指定顾问读取背景；主 Agent 在本对话正文展示顾问的编号问题与 A/B 选项，再把回答传回同一顾问。Stage 1 先提出方案，已有批准覆盖后在 Stage 2 保存或更新同一 `docs/features/<Feature ID>-design.md`；顾问仅写获准设计，主 Agent 维护 notes 链接及执行记录。
 
 **S2｜完成实现与验证**
 

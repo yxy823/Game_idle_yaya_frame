@@ -17,11 +17,11 @@
 | 字段 | 约定 |
 | --- | --- |
 | `schema_version` | 数字 `1`。 |
-| `feature_id` | 当前的 `F0XX`。一个文件只包含一个 Feature。 |
+| `feature_id` | 当前的 `<Feature ID>`。一个文件只包含一个 Feature。 |
 | `title`、`description` | 可选字符串；供人阅读的内容使用项目的文档语言。 |
 | `snapshot` | 未准备的草稿中为 `null`；`prepare-manual` 填入 `git_revision`、`working_tree_fingerprint` 和检查项定义的哈希 `definition_sha256`。必需字段 `uncommitted_paths` 保存绑定时与该提交不同的指纹输入路径（含未跟踪文件），去重排序，不参与定义哈希。之后不手工修改。 |
 | `tests` | 非空数组，覆盖每一项已批准的人工义务。只靠自动验证的 AC 不转成人工工作。 |
-| `tests[].id` | 唯一、非空，在整个验收过程中保持稳定，例如 `F001-AC01-M01`。不要按标题或数组位置匹配。 |
+| `tests[].id` | 唯一、非空，在整个验收过程中保持稳定，例如 `F01-001-AC01-M01`。不要按标题或数组位置匹配。 |
 | `tests[].source_ref` | `AC01/1` 表示 AC01 下的第一项人工检查（从 1 开始计数）；`manual_regression` 表示该 Feature 的人工回归义务。每个当前引用都要被覆盖，多个用例可以覆盖同一个引用。这些引用属于绑定的快照，不属于单独的登记表。 |
 | `tests[].title`、`tests[].expected_result` | 非空字符串，描述操作和可观察的结果。 |
 | `tests[].preconditions`、`tests[].steps` | 非空字符串组成的数组；preconditions 默认为 `[]`，steps 至少要有一项。 |
@@ -29,21 +29,21 @@
 
 允许出现其他字段，验收逻辑会忽略它们，所以不要把必需的验收含义放进其他字段。绑定之后，`id`、`source_ref`、`title`、`preconditions`、`steps`、`expected_result` 以及文件的 `title`、`description` 都不能再改；修改 AC、步骤或预期结果，走 `feature-sync` 中的 Feature 修订路线，并准备新的清单。
 
-首次清单保存在 `reports/manual-acceptance/F0XX/manual-acceptance-checklist.json`。
+首次清单保存在 `reports/manual-acceptance/<Feature ID>/manual-acceptance-checklist.json`。
 
-- 新一轮清单放在 `reports/manual-acceptance/F0XX/run-<N>/manual-acceptance-checklist.json`。`N` 从 2 开始，取已有轮次最大编号加 1；继续同一轮时沿用原路径。
+- 新一轮清单放在 `reports/manual-acceptance/<Feature ID>/run-<N>/manual-acceptance-checklist.json`。`N` 从 2 开始，取已有轮次最大编号加 1；继续同一轮时沿用原路径。
 - 文件名只是约定；身份由明确的路径和文件内容决定。
 - 保留与 Git 处理按[报告与清理](../09-records-reports-and-handoff.md#报告与清理)执行。换到另一台机器时，需要被引用的清单原件，而不只是一个提交或一份 Markdown 摘要。
 
 写完草稿后，把它绑定到最终的实现：
 
 ```powershell
-python -B yaya/tools/features/record-feature-completion.py prepare-manual --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B yaya/tools/features/record-feature-completion.py prepare-manual --feature F01-001 --checklist reports/manual-acceptance/F01-001/manual-acceptance-checklist.json
 ```
 
 这一步校验覆盖情况，记录实际的快照和检查项定义的哈希。它不编造步骤，也不运行测试。准备过的文件不能再次绑定，所以先完成代码和契约的修改。哪些之后的编辑会让快照失效，由[内容指纹](../08-test-traceability-and-evidence.md#内容指纹)决定。
 
-交给用户之前发现清单草稿有错时，可以删除这份未使用的清单，重新编写并绑定，并在 notes 记录原因；交给用户之后不得改动检查项的定义。
+交给用户之前发现清单草稿有错时，可以删除这份未使用的清单，重新编写并绑定，并在 notes 记录原因；交给用户之后不得修改检查项的定义。
 
 给用户一个可点击的清单路径，并在对话中按用例列出 id、步骤和预期结果，让用户边玩边对照；再简短说明怎样返回结论：直接在对话中说明，或者自己把清单中的 `status` 改成 `passed` 或 `failed` 并写上备注。两种方式记录到同一个位置，用户只需选一种。不需要第二份手工维护的清单，也不强制要求报告。
 
@@ -58,7 +58,7 @@ python -B yaya/tools/features/record-feature-completion.py prepare-manual --feat
 然后记录：
 
 ```powershell
-python -B yaya/tools/features/record-feature-completion.py record-acceptance --feature F001 --checklist reports/manual-acceptance/F001/manual-acceptance-checklist.json
+python -B yaya/tools/features/record-feature-completion.py record-acceptance --feature F01-001 --checklist reports/manual-acceptance/F01-001/manual-acceptance-checklist.json
 ```
 
 工具确认检查项的定义与绑定时一致，对照当前内容检查 Feature 和来源引用，然后推导状态：

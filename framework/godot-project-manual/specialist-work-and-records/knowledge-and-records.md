@@ -11,7 +11,7 @@
 | 位置 | 写什么 | 不写什么 |
 | --- | --- | --- |
 | `docs/terminology.md` | 已确认的项目术语：标准名称、定义、关系与别名 | 详细数值和行为规则（写在 GDD） |
-| `docs/features/F0XX-design.md` | 该 Feature 的实施设计、局部技术决定与理由：职责、生命周期、接口、失败处理、实施顺序和验证理由 | AC、测试映射等结构化验证字段（写在 Feature JSON）；范围内额外的性能、时长、显示或试听检查可以写在这里 |
+| `docs/features/<Feature ID>-design.md` | 该 Feature 的实施设计、局部技术决定与理由：职责、生命周期、接口、失败处理、实施顺序和验证理由 | AC、测试映射等结构化验证字段（写在 Feature JSON）；范围内额外的性能、时长、显示或试听检查可以写在这里 |
 | `docs/architecture.md` | 项目级的模块关系、装配与依赖，以及项目级的独立技术决定（与当前结构分开写） | 子系统内部细节 |
 | `docs/architecture/<subsystem>.md` | 子系统内部的结构、状态、接口与运行流程，以及该子系统的独立技术决定 | 项目级关系 |
 | `docs/architecture/adr-NNNN-<slug>.md` | 符合 ADR 条件的跨 Feature、跨模块或项目级技术决定的理由 | Feature 内部的普通选择 |
@@ -40,9 +40,9 @@ GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-t
 
 ### Feature 设计稿
 
-实施设计和局部决定固定写在同编号的 `F0XX-design.md` 中，简短的说明也写在这里；notes 只保留提醒、事件教训和引用。有真实内容时才创建设计稿，不按游戏规模、篇幅或复杂度换位置，也不预建空文件。
+实施设计和局部决定固定写在同编号的 `<Feature ID>-design.md` 中，简短的说明也写在这里；notes 只保留提醒、事件教训和引用。有真实内容时才创建设计稿，不按游戏规模、篇幅或复杂度换位置，也不预建空文件。
 
-- **怎样引用**：在该 Feature JSON 的 notes 中使用相对链接 `[设计说明](F0XX-design.md)`。
+- **怎样引用**：在该 Feature JSON 的 notes 中使用相对链接 `[设计说明](<Feature ID>-design.md)`。
 - **何时写、何时改**：方案获批后保存；实际实现与设计不一致时同步修改。
 - **怎样写理由**：引用适用的工程规则并说明为什么适用，不复制整份规则。规则链接按设计稿所在目录写相对路径，例如 `../../yaya/methodology/03-execute-loop.md`。
 

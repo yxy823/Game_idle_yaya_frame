@@ -6,10 +6,10 @@
 
 | 当前任务 | 阅读 |
 | --- | --- |
-| 规划一个 Product 的 Feature | [逐个 Product 规划](#逐个-product-规划)、[拆分预览](#拆分预览)、[拆分规则](#拆分规则)、[需求覆盖核对](#需求覆盖核对)，以及要写入的[文件 1：`docs/feature-list.json`](#文件-1docsfeature-listjson)、[文件 2：`docs/features/F0XX.json`](#文件-2docsfeaturesf0xxjson)和[文件 4：`docs/test-registry.json`](#文件-4docstest-registryjson) |
+| 规划一个 Product 的 Feature | [逐个 Product 规划](#逐个-product-规划)、[拆分预览](#拆分预览)、[拆分规则](#拆分规则)、[需求覆盖核对](#需求覆盖核对)，以及要写入的[文件 1：`docs/feature-list.json`](#文件-1docsfeature-listjson)、[文件 2：`docs/features/<Feature ID>.json`](#文件-2docsfeaturesfeature-idjson)和[文件 4：`docs/test-registry.json`](#文件-4docstest-registryjson) |
 | 写第一份计划的基线 | [初始规划基线](#初始规划基线) |
 | 源同步 | [同步记录](#同步记录)、[状态流转](#状态流转)、[已退役的测试](#已退役的测试) |
-| 执行 Feature 时查字段 | [详情字段](#详情字段)、[验收模式](#验收模式)、[Feature 设计与实现说明](#feature-设计与实现说明)、[文件 5：`docs/features/F0XX-evidence.json`](#文件-5docsfeaturesf0xx-evidencejson) |
+| 执行 Feature 时查字段 | [详情字段](#详情字段)、[验收模式](#验收模式)、[Feature 设计与实现说明](#feature-设计与实现说明)、[文件 5：`docs/features/<Feature ID>-evidence.json`](#文件-5docsfeaturesfeature-id-evidencejson) |
 | 接手已有实现 | [接手已有实现](#接手已有实现) |
 | 工具报错 | [机器校验的不变量](#机器校验的不变量) |
 
@@ -19,10 +19,10 @@
 docs/
 ├── feature-list.json
 ├── features/
-│   ├── F001.json
-│   ├── F001-design.md       # Optional detailed design for this Feature
-│   ├── F001-evidence.json   # Completion evidence, created by the recording tool
-│   ├── F002.json
+│   ├── F01-001.json
+│   ├── F01-001-design.md       # Optional detailed design for this Feature
+│   ├── F01-001-evidence.json   # Completion evidence, created by the recording tool
+│   ├── F01-002.json
 │   └── ...
 ├── feature-list-revisions.json
 └── test-registry.json
@@ -59,7 +59,7 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
   },
   "features": [
     {
-      "id": "F001",
+      "id": "F01-001",
       "title": "Create the project shell and open an empty main window",
       "status": "done",
       "depends_on": [],
@@ -67,10 +67,10 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
       "completed_at": "2026-05-16T10:30:00Z"
     },
     {
-      "id": "F002",
+      "id": "F01-002",
       "title": "Show the first interactive Product behavior",
       "status": "pending",
-      "depends_on": ["F001"],
+      "depends_on": ["F01-001"],
       "estimated_scope": "medium",
       "completed_at": null
     }
@@ -82,12 +82,27 @@ Feature 索引保持轻量。每个 Feature 的详情文件保存：
 
 | 字段 | 要求 |
 | --- | --- |
-| `id` | 必须是 `F` 加三位数字。索引从 `F001` 起按顺序列出 ID，中间不留空缺。ID 永不复用。 |
+| `id` | 格式见[Feature ID](#feature-id)。ID 永不复用。 |
 | `title` | 非空、可读的动词短语。 |
 | `status` | `pending`、`in_progress`、`done`、`obsolete`、`obsolete_done` 或 `blocked`。 |
 | `depends_on` | 已存在 Feature 的 ID，不重复，不含该 Feature 自身。前置 Feature 的 ID 可以更大。依赖图不能有环。 |
 | `estimated_scope` | `small` 或 `medium`。更大的工作要在写定计划前继续拆分；校验器拒绝 `large`。 |
 | `completed_at` | 状态为 `done` 或 `obsolete_done` 时，填有效的 ISO 8601 时间戳；其他状态填 `null`。 |
+
+### Feature ID
+
+| 类型 | 格式 | 例子 |
+| --- | --- | --- |
+| 来自 Product 的 Feature | `F` 加 Product 文件的两位编号、短横线和三位序号 | `F01-003` 是 `product/01-*.md` 的第 3 个 Feature |
+| Bug | `B` 加三位序号，全项目统一编号 | `B001` |
+| 重构 | `R` 加三位序号，全项目统一编号 | `R001` |
+| 维护 | `M` 加三位序号，全项目统一编号 | `M001` |
+
+- 每个 Product 的 `F` 序号和 `B`、`R`、`M` 各自是一个编号系列。同一系列的 ID 按在索引中出现的先后，从 `001` 起连续，中间不留空缺。
+- 新 ID 取所在系列已用的最大序号加 1，追加到索引末尾。新增 Product 的 Feature 从 `001` 开始，所以拆分新 Product 不影响已有 ID。
+- 前缀和详情的 `engineering_change` 必须一致：`B` 对 `bug`，`R` 对 `refactor`，`M` 对 `maintenance`，`F` 不写这个字段。
+- `F` 开头的 Feature 以 `product/` 文件为 `source` 时，文件编号必须与 ID 中的 Product 编号相同。
+- 试验性的玩法尝试不分配 ID，在 worktree 分支里进行。
 
 Feature 数量从 `features` 数组计算。详情文件、修订记录和测试登记表使用[文件结构](#文件结构)中的固定路径；索引的元数据不再重复这些路径。
 
@@ -98,13 +113,13 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 - `pending`、`in_progress` 或 `blocked` 的 Feature 不能依赖 `obsolete` 或 `obsolete_done` 的 Feature。源同步会把它改接到替代 Feature 上。
 - 已完成 Feature 的依赖作为历史保持不变。
 
-## 文件 2：`docs/features/F0XX.json`
+## 文件 2：`docs/features/<Feature ID>.json`
 
 来自 Product 的 Feature：
 
 ```json
 {
-  "id": "F042",
+  "id": "F04-003",
   "description": "The player can place a wooden-wall blueprint and complete construction so the finished wall blocks pathfinding.",
   "affected_components": ["building", "pathfinding"],
   "acceptance_criteria": [
@@ -139,7 +154,7 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 
 ```json
 {
-  "id": "F043",
+  "id": "B001",
   "description": "Repair reopening the detail panel after a scene transition while preserving the documented panel behavior.",
   "affected_components": ["detail_panel", "scene_lifecycle"],
   "acceptance_criteria": [
@@ -154,12 +169,13 @@ Feature ID 记录的是分配顺序，不是执行顺序：
   ],
   "verification": {
     "acceptance_mode": null,
-    "regression_tests": ["F043-RT01"],
+    "regression_tests": ["B001-RT01"],
     "manual_regression": null
   },
   "source": "product/03-detail-panel.md#reopen-behavior",
   "notes": "",
-  "engineering_change": "bug"
+  "engineering_change": "bug",
+  "fixes": ["F03-002"]
 }
 ```
 
@@ -171,17 +187,18 @@ Feature ID 记录的是分配顺序，不是执行顺序：
 | `description` | 非空，写可观察的结果。来自 Product 的 Feature 写玩家或用户得到什么。工程 Feature 写技术修复或维护的结果，不写流程状态。 |
 | `affected_components` | 非空数组，元素是不重复、稳定的 `lower_snake_case` 组件或领域 ID。使用语义上的组件，不用文件路径。 |
 | `acceptance_criteria` | 非空的条件对象数组。每个对象有 `ACxx` 形式的 ID、非空的 `text` 和一个 `verification` 对象。纯字符串不是有效的条件。条件 ID 不重复，并按列表顺序递增。删除条件后编号可以跳过，删掉的编号永不复用。 |
-| `acceptance_criteria[].verification.automated_tests` | 不重复的验收测试 ID，格式为 `F0XX-ACyy` 或 `F0XX-ACyy-NN`；`F0XX` 是本 Feature，`ACyy` 是本条件。 |
+| `acceptance_criteria[].verification.automated_tests` | 不重复的验收测试 ID，格式为 `<Feature ID>-ACyy` 或 `<Feature ID>-ACyy-NN`；`<Feature ID>` 是本 Feature，`ACyy` 是本条件。 |
 | `acceptance_criteria[].verification.manual_checks` | 来自人工验收计划的检查项，不重复、非空、具体。自动计划下为空。这个列表由验收模式决定，不反过来决定模式。 |
 | `verification.acceptance_mode` | `manual`、`automated` 或 `null`。见[验收模式](#验收模式)。 |
-| `verification.regression_tests` | 本 Feature 创建的回归测试 ID，不重复，格式为 `F0XX-RTyy`，其中 `F0XX` 是本 Feature 的 ID。不是 Bug 的 Feature 留空，除非写明理由。 |
+| `verification.regression_tests` | 本 Feature 创建的回归测试 ID，不重复，格式为 `<Feature ID>-RTyy`，其中 `<Feature ID>` 是本 Feature 的 ID。不是 Bug 的 Feature 留空，除非写明理由。 |
 | `verification.manual_regression` | 已有自动回归测试，或不涉及 Bug 回归时，填 `null`。否则写一项具体、可重复的人工回归检查，并说明自动化不现实的原因。非 `null` 时要求 `acceptance_mode: "manual"`。 |
 | `verification.test_impact` | 可选；不需要额外测试范围时省略。出现时只能有 `additional_tests` 和 `full_suite_reasons` 两个字段；模板里两者都有。Stage 2 在最终测试运行前把批准的额外范围存在这里。该字段计入内容指纹。 |
 | `verification.test_impact.additional_tests` | `{ "id": "...", "reason": "..." }` 对象的数组；测试 ID 来自测试登记表且不重复，理由非空。可以引用其他 Feature 的测试。准备阶段被引用的测试可以是 `planned`，但本 Feature 完成时必须是 `active`。追加测试不改变测试归属，也不代替本 Feature 自己的 AC 与回归映射。 |
 | `verification.test_impact.full_suite_reasons` | 在自动触发条件之外，批准运行全量测试的理由，不重复、非空。`full_suite_on_change: true` 的组件会自动触发全量，不写在这里。空数组表示没有额外升级。 |
 | `source` | 一个精确的主要来源：Product 交付章节、GDD 章节或专业规格。没有单一来源文档的技术工作用 `infrastructure`。见下文的来源规则。 |
 | `notes` | 字符串，初始为空。保存任务提醒、占位、TODO、推迟处理的边界情况、简短的 Bug 经验，以及指向 Feature 设计稿或其他记录的相对链接。实现决定及其理由不论长短，都写进 [Feature 设计与实现说明](#feature-设计与实现说明)。 |
-| `engineering_change` | 可选。出现时只能是 `bug`、`refactor` 或 `maintenance`。来自 Product 的 Feature 不写这个字段。 |
+| `engineering_change` | 可选。出现时只能是 `bug`、`refactor` 或 `maintenance`，并与 ID 前缀一致。来自 Product 的 Feature 不写这个字段。 |
+| `fixes` | Bug 必填：这个 Bug 修复的 Feature ID，非空、不重复，每个都是已存在的其他 Feature。其他类型省略或填空数组。 |
 | `base_revision` | 测试选择的起点：Stage 2 由 [record-base-revision.py](../tools/README.md#record-base-revisionpy) 写入的验证点提交，规划时省略或为 `null`。`in_progress` 的 Feature 必须有。只由该命令写入；放弃回 `pending` 后重新开始，或起点提交被 Git 回收时，用它的 `--reset` 重取。该字段计入内容指纹。怎样用起点选择测试见[起点以来的改动](08-test-traceability-and-evidence.md#起点以来的改动)。 |
 | `bug_diagnosis` | 只允许与 `engineering_change: bug` 一起出现；其他情况为 `null` 或省略。对象只能有 `actual`、`expected`、`source`、`reproduction` 和 `root_cause`。`actual`、`expected`、`source` 是非空字符串。`reproduction` 是非空的有序步骤列表，步骤不重复、非空。调查期间 `root_cause` 可以是 `null`。每个 `done` 的 Bug，以及正在完成的 Bug，都需要非空且已确认的 `root_cause`。不是 Bug 的 Feature 不编造诊断证据。 |
 
@@ -206,7 +223,7 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 - 来自 Product 的 Feature 用其当前的 Product 交付章节作为 `source`，并在 AC 或设计稿中链接所依据的 GDD 设计。`source` 链到 Product 文档中已有的标题：「包含与推迟的范围」下按成果分了小标题时，链到对应的小标题，否则链到这一节；不为写 `source` 新建标题。
 - `source` 和 `source_path_updates` 中的路径都相对 `docs/`，例如 `product/04-building.md#wooden-wall`；修订记录 `migrations[].source.path` 相对仓库根目录；Markdown 链接相对所在文档。
 - 次要来源从 AC 或设计稿中链接。不要为它们新增 JSON 字段，也不要在 `source` 里放多个路径。
-- 校验器只检查 `source` 是非空文本。由负责规划的 Agent 核实来源存在、有权威性并覆盖该 Feature。
+- 校验器只检查 `source` 是非空文本，以及 `F` 开头的 Feature 的 Product 编号。由负责规划的 Agent 核实来源存在、有权威性并覆盖该 Feature。
 - 有约束力的需求永远不能只写在 `notes` 里；`notes` 只保存过程信息。
 
 ### 已记录的测试影响
@@ -215,10 +232,10 @@ GDD 和专业需求走同一套规划、影响评估和 AC 映射，见 [查找�
 
 ## Feature 设计与实现说明
 
-`docs/features/F0XX-design.md` 是固定位置，保存 Feature 的实现设计、局部技术决定及其理由；各规范把这份文档简称为“设计稿”。内容包括边界、状态归属、生命周期、迁移、接口和所采用的约束。
+`docs/features/<Feature ID>-design.md` 是固定位置，保存 Feature 的实现设计、局部技术决定及其理由；各规范把这份文档简称为“设计稿”。内容包括边界、状态归属、生命周期、迁移、接口和所采用的约束。
 
 - 这类内容再短也存在这里。不要在 JSON `notes` 里放一份简写，也不要按复杂程度另选文档。
-- `notes` 只放提醒和相对链接 `[Design](F0XX-design.md)`。
+- `notes` 只放提醒和相对链接 `[Design](<Feature ID>-design.md)`。
 - 有设计内容要保存时再创建这个文件；不要求空文件。不要再加 JSON 记录或设计状态记录文件。
 - Stage 0 读取所选 Feature 及其相关依赖的设计稿。
 
@@ -321,13 +338,13 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
   "migrations": [
     {
       "kind": "revise",
-      "from": ["F002"],
-      "to": ["F004"],
+      "from": ["F01-002"],
+      "to": ["F01-004"],
       "reason": "The approved GDD change replaces the earlier contract",
       "source": {"path": "docs/gdd/inventory.md#capacity", "anchor_commit": "78cfcb91a6e04d2b8f3c7a59e1d06b4c2f8a9e35"}
     }
   ],
-  "dependency_changes": [{"feature": "F003", "before": ["F002"], "after": ["F004"]}]
+  "dependency_changes": [{"feature": "F01-003", "before": ["F01-002"], "after": ["F01-004"]}]
 }
 ```
 
@@ -336,8 +353,8 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
 | 摘要字段 | 结构 |
 | --- | --- |
 | `added`、`obsoleted`、`depends_on_warnings` | 受影响 Feature ID 的数组 |
-| `revised_via_new_feature` | `{ "original": "F0XX", "regression": "F0YY" }` 的数组 |
-| `source_path_updates` | `{ "feature": "F0XX", "from": "product/old-path.md", "to": "product/new-path.md" }` 的数组 |
+| `revised_via_new_feature` | `{ "original": "<Feature ID>", "regression": "<Feature ID>" }` 的数组 |
+| `source_path_updates` | `{ "feature": "<Feature ID>", "from": "product/old-path.md", "to": "product/new-path.md" }` 的数组 |
 
 字段规则：
 
@@ -382,9 +399,9 @@ Stage 1 把设计稿作为方案准备，Stage 2 保存批准的设计，Stage 3
   ],
   "tests": [
     {
-      "id": "F052-RT01",
+      "id": "F01-052-RT01",
       "components": ["inventory"],
-      "path": "tests/features/F052/inventory_regression_test.gd",
+      "path": "tests/features/F01-052/inventory_regression_test.gd",
       "case": "test_f052_rt01_reopen_inventory_after_scene_change",
       "status": "active"
     }
@@ -418,7 +435,7 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 {
   "reason": "The approved GDD contract supersedes this assertion",
   "source": {"path": "docs/gdd/inventory.md#capacity", "anchor_commit": "78cfcb91a6e04d2b8f3c7a59e1d06b4c2f8a9e35"},
-  "replacement": {"feature_id": "F004", "test_ids": ["F004-AC01"]},
+  "replacement": {"feature_id": "F01-004", "test_ids": ["F01-004-AC01"]},
   "revision_id": "rev-contract-01"
 }
 ```
@@ -443,9 +460,9 @@ ID 格式，以及这些字段对测试选择、登记时机和完成的含义�
 
 已完成 Feature 的条件、测试 ID 和已归档的完成证据都是历史记录。不要为了模仿当前行为而改写它们。后续工作只替换了断言中的具体值（例如资源路径），条件文字和测试 ID 不变时，可以改测试实现里的预期值，并在提交说明写明；条件的含义变了时走 `feature-sync`。哪些测试构成有效的安全网，以及正在完成的 Feature 可以引用哪些状态的测试，定义在 [登记表规则](08-test-traceability-and-evidence.md#登记表规则)。
 
-## 文件 5：`docs/features/F0XX-evidence.json`
+## 文件 5：`docs/features/<Feature ID>-evidence.json`
 
-每个 Feature 有自己的完成证据文件，以 schema 版本 9 保存它的测试运行引用和人工验收记录，结构见[模板](templates/feature-completion-evidence.json.tmpl)。第一次记录时由工具创建；各 Feature 互不覆盖，等待验收期间推进别的 Feature 也不会丢失原 Feature 的记录。只能通过 `yaya/tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature F0XX` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
+每个 Feature 有自己的完成证据文件，以 schema 版本 9 保存它的测试运行引用和人工验收记录，结构见[模板](templates/feature-completion-evidence.json.tmpl)。第一次记录时由工具创建；各 Feature 互不覆盖，等待验收期间推进别的 Feature 也不会丢失原 Feature 的记录。只能通过 `yaya/tools/features/record-feature-completion.py` 写入，并用它的 `validate --feature <Feature ID>` 命令检查。什么算证据、何时结果为 `not_required`、证据何时失效，定义在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 ## notes 中的 Bug 经验
 
@@ -496,8 +513,10 @@ done ──source synchronization retires or replaces implemented behavior──
 
 字段规则列在上面的各张表中。`python -B yaya/tools/checks/check-feature-list.py` 还会跨字段、跨文件检查以下规则：
 
-- **文件：**索引、修订记录和测试登记表都存在。它们和每个 `docs/features/F*.json` 都能解析为 JSON，且没有重复键。
+- **文件：**索引、修订记录和测试登记表都存在。它们和每个 `docs/features/<Feature ID>.json` 都能解析为 JSON，且没有重复键。
 - **索引与详情：**索引 ID 的集合等于详情文件名主干的集合，每个详情的 `id` 等于其文件名主干。
+- **ID：**每个编号系列连续；前缀与 `engineering_change` 一致；Product 编号与 `product/` 来源一致。规则见[Feature ID](#feature-id)。
+- **Bug 修复对象：**Bug 的 `fixes` 非空，每项都是已存在的其他 Feature。
 - **依赖：**每个前置 Feature 都存在且不是自身，依赖图无环。`pending`、`in_progress` 或 `blocked` 的 Feature 不能依赖 `obsolete` 或 `obsolete_done` 的 Feature。
 - **组件：**每个 `affected_components` ID 都存在于测试登记表的 `components` 中。
 - **测试引用：**详情的 `automated_tests`、`regression_tests` 或 `test_impact.additional_tests` 中的每个测试 ID 都存在于测试登记表中。测试登记表中测试 ID 编码的 Feature 存在。`planned` 或 `active` 的验收测试指向其 Feature 当前存在的条件。
@@ -510,7 +529,7 @@ done ──source synchronization retires or replaces implemented behavior──
 - **已完成的 Bug：**`done` 的 Bug 有 `regression_tests` 或 `manual_regression`，并且 `bug_diagnosis.root_cause` 非空。
 - **修订与退役：**规则见[文件 3：`docs/feature-list-revisions.json`](#文件-3docsfeature-list-revisionsjson) 和[已退役的测试](#已退役的测试)。
 
-`--completion-feature F0XX` 对正在完成的 Feature 应用 done 规则，并且要求它引用的每个测试（包括追加测试）都是 `active`。
+`--completion-feature <Feature ID>` 对正在完成的 Feature 应用 done 规则，并且要求它引用的每个测试（包括追加测试）都是 `active`。
 
 `yaya/tools/lib/test_selection.py` 中的测试选择由运行器和 `record-feature-completion.py` 使用。它在最终阶段还额外要求每个条件至少有一个自动测试或人工检查。
 
@@ -540,7 +559,7 @@ python -B yaya/tools/checks/check-feature-list.py
    - 报告和临时材料按 09 号规范的[整理和清理报告](09-records-reports-and-handoff.md#整理和清理报告)处理：删除已到释放条件的，用途不明的列给用户决定。
 6. 收尾后，对照当前 GDD 和已经学到的东西，重新审视下一个 Product。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
 
-`feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它从当前已用的最大 ID 之后分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
+`feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它按[Feature ID](#feature-id)在当前 Product 的编号系列里接着分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
 
 `feature-sync` 对照已规划和已完成的工作，分析 GDD、Product、专业和项目规则来源的变化，包括实际的下游依赖。
 

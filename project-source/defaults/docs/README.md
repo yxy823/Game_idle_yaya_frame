@@ -38,7 +38,7 @@
 
 以下内容按实际工作产生，不预先建立：
 
-- 每个 Feature 的完成证据 `features/F0XX-evidence.json`；
+- 每个 Feature 的完成证据 `features/<Feature ID>-evidence.json`；
 - GDD、UI、表现等目录下的具体设计正文；
 - `architecture/` 下的子系统说明和架构决定；
 - `qa/` 下的问答，用户同意记录第一个问答时创建。

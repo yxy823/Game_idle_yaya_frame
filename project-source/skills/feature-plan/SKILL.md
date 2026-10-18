@@ -32,7 +32,7 @@ description: 把当前已写成文档的 Product 交付范围拆成完整的 Fea
 | 已有产物 | 需要的上下文 |
 | --- | --- |
 | `docs/feature-list.json` | 完整的轻量索引：当前 Product、此前计划的覆盖范围、状态、ID 和前置条件 |
-| `docs/features/F0XX.json` | 选中的、作为前置的或可能冲突的 Feature 详情 |
+| `docs/features/<Feature ID>.json` | 选中的、作为前置的或可能冲突的 Feature 详情 |
 | `docs/feature-list-revisions.json` | 已有的修订历史和锚点；按数据结构确定符合条件的首个基线 |
 | `docs/test-registry.json` | 提出新增之前已有的组件和测试记录 |
 

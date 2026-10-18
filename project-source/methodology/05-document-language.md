@@ -70,7 +70,7 @@
 下列元素在每个项目中都保持英文或与语言无关：
 
 - JSON 键和 schema 结构
-- Feature ID，例如 `F009`
+- Feature ID，例如 `F01-009`
 - 状态值，例如 `pending`、`in_progress` 和 `done`
 - 规模值，例如 `small`、`medium` 和 `large`
 - 仓库路径、结构性文件名和 ASCII slug
@@ -78,8 +78,8 @@
 - Conventional Commit 类型，例如 `feat`、`fix` 和 `docs`
 - 占位前缀，例如 `_placeholder_`
 - 审核严重程度值 `must_fix`、`suggest` 和 `acceptable`
-- `docs/features/F0XX-evidence.json` 中的键和状态值；其中供人阅读的摘要使用对话语言
-- 测试 ID（`F0XX-ACyy`、`F0XX-RTyy`、`INV-<DOMAIN>-NN`）、组件 ID、测试种类与状态值，以及测试登记表（Registry）的键
+- `docs/features/<Feature ID>-evidence.json` 中的键和状态值；其中供人阅读的摘要使用对话语言
+- 测试 ID（`<Feature ID>-ACyy`、`<Feature ID>-RTyy`、`INV-<DOMAIN>-NN`）、组件 ID、测试种类与状态值，以及测试登记表（Registry）的键
 - ISO 8601 时间戳和编程语言标识符
 
 只翻译承载含义的正文。键、枚举值、ID、证据字符串、路径和标识符保持不变。

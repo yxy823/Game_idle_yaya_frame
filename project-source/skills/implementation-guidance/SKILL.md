@@ -41,7 +41,7 @@ description: 为已有的 Godot Feature（包括工程 Feature）准备或更新
 
 ## 把指导交回已有的 Feature
 
-把可供审阅的方案和确实缺少的决定交回主 Agent。已有批准覆盖该设计后，同一个委派顾问只能按 methodology 03 的 Stage 2 保存分配给它的 `docs/features/F0XX-design.md`，并遵守 methodology 02 中“只写指导”的边界。主 Agent 检查结果，并负责已获授权的 Feature notes 链接、记录更新和提交。不重复请求同一项批准，也不把已保存的文件当作已批准的证明。
+把可供审阅的方案和确实缺少的决定交回主 Agent。已有批准覆盖该设计后，同一个委派顾问只能按 methodology 03 的 Stage 2 保存分配给它的 `docs/features/<Feature ID>-design.md`，并遵守 methodology 02 中“只写指导”的边界。主 Agent 检查结果，并负责已获授权的 Feature notes 链接、记录更新和提交。不重复请求同一项批准，也不把已保存的文件当作已批准的证明。
 
 主 Agent 按 [按事先准备的指导实现](../../../yaya/methodology/04-project-rules.md#按事先准备的指导实现) 实现。只在已有的明确委派范围内再次咨询顾问。
 

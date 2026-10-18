@@ -1,7 +1,7 @@
 ---
 name: feature-execute
 description: >-
-  执行一个已规划的 Feature（执行批准在 Stage 1 取得）：测试影响评估、TDD/验证、适用的人工验收、用户要求时的独立审核和完成。还有其他已获授权的工作时，返回调用它的流程。英文触发：execute next feature, implement F0XX, continue feature。中文触发：执行下一个 Feature、实现 F0XX、继续当前 Feature。
+  执行一个已规划的 Feature（执行批准在 Stage 1 取得）：测试影响评估、TDD/验证、适用的人工验收、用户要求时的独立审核和完成。还有其他已获授权的工作时，返回调用它的流程。英文触发：execute next feature, implement <Feature ID>, continue feature。中文触发：执行下一个 Feature、实现 <Feature ID>、继续当前 Feature。
 ---
 
 # 执行下一个 Feature

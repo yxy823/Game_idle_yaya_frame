@@ -174,8 +174,8 @@ git config core.hooksPath .githooks
 ```powershell
 python -B yaya/tools/checks/check-project-environment.py --require-ready
 python -B yaya/tools/checks/check-feature-list.py
-python -B yaya/tools/testing/run-gdunit-tests.py --feature F001 --scope auto
-python -B yaya/tools/features/record-feature-completion.py record-tests --feature F001 --run reports/gdunit-wrapper/F001/run-ID/result.json
+python -B yaya/tools/testing/run-gdunit-tests.py --feature F01-001 --scope auto
+python -B yaya/tools/features/record-feature-completion.py record-tests --feature F01-001 --run reports/gdunit-wrapper/F01-001/run-ID/result.json
 ```
 
 参数名以各脚本的 `--help` 为准。除特别说明外，`--repo-root` 默认是脚本所在的项目，相对路径以目标项目为准，不依赖命令启动时所在的目录。
@@ -185,7 +185,7 @@ python -B yaya/tools/features/record-feature-completion.py record-tests --featur
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
 | `--repo-root <目录>` | 要检查的项目 | 脚本所在项目 |
-| `--completion-feature F0XX` | 另外要求该 Feature 当前映射的自动测试均为 `active` | 不检查 |
+| `--completion-feature <Feature ID>` | 另外要求该 Feature 当前映射的自动测试均为 `active` | 不检查 |
 | `--eligible` | 通过检查后，以 JSON 输出依赖已满足的待开始 Feature | 不输出 |
 
 通过时打印 `FEATURE LIST CHECK: PASS`；带 `--eligible` 时标准输出只有 JSON，便于直接解析。
@@ -377,7 +377,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
-| `--feature F0XX` | 从当前 Feature、测试登记表和该 Feature 的 `base_revision` 以来的改动选择测试；与 `--target`、`--changed` 互斥 | 不使用 |
+| `--feature <Feature ID>` | 从当前 Feature、测试登记表和该 Feature 的 `base_revision` 以来的改动选择测试；与 `--target`、`--changed` 互斥 | 不使用 |
 | `--changed` | 不需要 Feature：从当前验证点以来的改动选择测试并运行，只输出结果、选择原因和 JUnit 路径，不写任何 Feature 的证据；不能和 `--phase`、`--scope`、`--require-test` 同用 | 不使用 |
 | `--target <路径>` | focused/TDD 运行指定路径；可重复，多个路径在同一次运行中全部执行，重叠的目标只运行一次；不产生完成证据 | `tests`，项目有 `dev/debug` 时加上它 |
 | `--scope <范围>` | 仅在 `--feature` 时决定选择范围：`required` 为必需测试集，`affected` 为受影响测试（含必需测试集），`full` 为 `tests/` 全量（项目有 `dev/debug/` 时包含它），`auto` 在需要全量升级时运行 `full`，否则运行 `affected` | `auto` |
@@ -423,11 +423,11 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 ### record-base-revision.py
 
-把当前验证点写进 `docs/features/F0XX.json` 的 `base_revision`，选择测试时以它为起点比较内容差异。验证点的取法：索引中状态为 `done` 或 `obsolete_done` 的 Feature 按 `completed_at` 从晚到早，取第一个完成证据 `git_revision` 仍是当前 HEAD 祖先的提交；没有这样的 Feature 时取仓库的第一个提交。
+把当前验证点写进 `docs/features/<Feature ID>.json` 的 `base_revision`，选择测试时以它为起点比较内容差异。验证点的取法：索引中状态为 `done` 或 `obsolete_done` 的 Feature 按 `completed_at` 从晚到早，取第一个完成证据 `git_revision` 仍是当前 HEAD 祖先的提交；没有这样的 Feature 时取仓库的第一个提交。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
-| `--feature F0XX` | 必填。要写入起点的 Feature | 无 |
+| `--feature <Feature ID>` | 必填。要写入起点的 Feature | 无 |
 | `--reset` | 已有 `base_revision` 时改为当前验证点；Feature 放弃回 `pending` 后重新开始，或起点提交已被 Git 回收、选择报错时使用 | 已有起点时保留并报告 |
 | `--dry-run` | 不写文件，打印起点（已有时用它，否则用当前验证点）、改动文件、反推组件、依赖图选中的套件、全量理由和碰到的已完成 Feature | 写入 |
 | `--repo-root <目录>` | 要修改的项目 | 脚本所在项目 |
@@ -445,7 +445,7 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 
 ### record-feature-completion.py
 
-`--repo-root <目录>` 写在子命令之前，默认是脚本所在项目。所有子命令都要求 `--feature F0XX`，记录写在该 Feature 自己的 `docs/features/F0XX-evidence.json`，第一次记录时创建。
+`--repo-root <目录>` 写在子命令之前，默认是脚本所在项目。所有子命令都要求 `--feature <Feature ID>`，记录写在该 Feature 自己的 `docs/features/<Feature ID>-evidence.json`，第一次记录时创建。
 
 | 子命令 | 其他参数 | 作用 |
 | --- | --- | --- |
@@ -509,7 +509,7 @@ flowchart TD
 
 `record-tests` 只导入测试报告，证据检查通过不能证明静态检查已执行。Agent 必须单独确认解析和 lint 的真实结果；未解决的必要检查失败不能宣称完成。失败报告和未完成任务需要的历史要保留，不用旧的成功掩盖后来的失败。
 
-`show --feature F001` 只检查记录可读取、基本结构有效且属于 F001，然后显示原文数据。它不查询 Git，不重读测试或人工验收原件；待验收或已失效的引用不构成查看失败。缺失、损坏或属于另一项 Feature 的记录使 `show` 返回非零，且不会修改原件。判断当前测试与人工验收证据能否支持完成，使用 `validate --feature F001`。
+`show --feature F01-001` 只检查记录可读取、基本结构有效且属于 F01-001，然后显示原文数据。它不查询 Git，不重读测试或人工验收原件；待验收或已失效的引用不构成查看失败。缺失、损坏或属于另一项 Feature 的记录使 `show` 返回非零，且不会修改原件。判断当前测试与人工验收证据能否支持完成，使用 `validate --feature F01-001`。
 
 ## 内部实现
 

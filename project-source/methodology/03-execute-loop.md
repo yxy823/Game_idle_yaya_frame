@@ -88,7 +88,7 @@
 2. 运行 `git status --porcelain`，检查有关的差异。保留当前改动。续接 `in_progress` 的 Feature 时，从 Feature 和 Progress 记录以及当前文件（包括已提交的工作）还原它实际停在哪里。在依赖这些内容的写入之前，解决相互冲突的编辑，或明显不清楚的预期结果；不要求目录干净，也不要求证明每个文件的作者。
 3. 读取已确认的配置。以下情况运行 `python -B yaya/tools/checks/check-project-environment.py --require-ready`：初始化时、工具或配置变化后、诊断调用失败时。常规 Feature 复用已确认的路径；准备未完成时，仍然不能开始编码。
 4. 按需读取这个 Feature 的上下文：
-   - Feature 详情、它的 `docs/features/F0XX-design.md`，以及相关依赖的设计稿（如果存在）。依赖的设计稿先读开头的“对外接口与接入要点”，需要时再往下读；
+   - Feature 详情、它的 `docs/features/<Feature ID>-design.md`，以及相关依赖的设计稿（如果存在）。依赖的设计稿先读开头的“对外接口与接入要点”，需要时再往下读；
    - 它的主要来源，以及按 [查找与映射来源](11-specialist-workflows.md#查找与映射来源) 适用的 GDD 和专业来源；
    - `docs/terminology.md` 中有关的定义和依赖的细节；
    - 当前的 Progress，只在需要时才沿着它的历史链接去读；
@@ -121,7 +121,7 @@
 
 阅读并执行 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 和 [运行时的测试影响选择](08-test-traceability-and-evidence.md#运行时的测试影响选择)。这两节定义了 Required、affected 和 full 三种范围。依据当前 Feature、`affected_components`、各条件的验证方式和 `docs/test-registry.json`，推导 Required 和 affected 集合，并决定是否需要 full。
 
-再运行 `python -B yaya/tools/features/record-base-revision.py --feature F0XX --dry-run`，查看起点以来的改动会补上哪些组件、依赖图选中哪些套件、是否已经触发 full，以及碰到哪些已完成的 Feature。这些由运行器自动加入，不写进 `test_impact`。在 Stage 1 的批准材料中说明所选范围和理由，并列出声明之外补上的组件。
+再运行 `python -B yaya/tools/features/record-base-revision.py --feature <Feature ID> --dry-run`，查看起点以来的改动会补上哪些组件、依赖图选中哪些套件、是否已经触发 full，以及碰到哪些已完成的 Feature。这些由运行器自动加入，不写进 `test_impact`。在 Stage 1 的批准材料中说明所选范围和理由，并列出声明之外补上的组件。
 
 Required 集合保留每个受影响组件已登记的全部测试套件。要移除某项登记或某个确定性要求，按 [登记表规则](08-test-traceability-and-evidence.md#登记表规则) 和 [测试影响评估](08-test-traceability-and-evidence.md#测试影响评估) 处理；运行器的排除参数做不到这一点。
 
@@ -187,9 +187,9 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 
 获得批准后：
 
-1. 把所选的索引条目设为 `in_progress`，`completed_at: null`，然后运行 `python -B yaya/tools/features/record-base-revision.py --feature F0XX` 写入起点 `base_revision`。已有起点时命令保留它；这个 Feature 曾被放弃回 `pending`、现在重新开始时，加 `--reset` 重取验证点。
+1. 把所选的索引条目设为 `in_progress`，`completed_at: null`，然后运行 `python -B yaya/tools/features/record-base-revision.py --feature <Feature ID>` 写入起点 `base_revision`。已有起点时命令保留它；这个 Feature 曾被放弃回 `pending`、现在重新开始时，加 `--reset` 重取验证点。
 2. 更新 `docs/progress.md`：当前 Feature 或批次、Stage、阻塞、待决定事项、下一个允许的动作，以及指向批准计划和证据的链接。历史保存在 `docs/progress/`。
-3. 按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明)，把批准的实现设计保存到 `docs/features/F0XX-design.md`：
+3. 按 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明)，把批准的实现设计保存到 `docs/features/<Feature ID>-design.md`：
    - 已有具体批准覆盖这份设计时，直接复用，不再请求。
    - 设计由 advisor 准备时，主 Agent 把批准和指定的保存位置交给同一个 advisor；它只能写这一个设计文件。
    - 主 Agent 检查设计稿，并负责 Feature `notes` 中的链接、其他记录的修改和提交。
@@ -222,7 +222,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 1. 运行 Stage 1 确定的 Existing Safety Net：
 
    ```powershell
-   python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --phase baseline --scope auto
+   python -B yaya/tools/testing/run-gdunit-tests.py --feature <Feature ID> --phase baseline --scope auto
    ```
 
    baseline 阶段会自动跳过 `planned` 测试，因为它们还不存在。有效的空安全网返回 `not_required`，不生成运行报告，也不算测试 PASS。
@@ -296,17 +296,17 @@ Stage 4 使用以下入口：
 
 步骤：
 
-1. 运行 `python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
+1. 运行 `python -B yaya/tools/testing/run-gdunit-tests.py --feature <Feature ID> --scope auto`。它读取当前义务，并输出选择结果、理由、去重和全量升级。
    - 只有在 [基于原始结果的完成判断与语义时效](08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效) 定义的有效 `manual` 情形下，它才返回 `not_required`。此时它不启动 Godot 进程，也不生成运行报告。跳过第 6 步，保持 `test_runs: []`，继续做适用的静态检查和实际的人工验收。
    - 路径缺失、发现零个测试，以及同一快照上未解决的最终运行失败或未完成，仍然算失败。
 2. 检查实际选中的范围和测试结果。把选择结果中的 `inferred_components` 和 `touched_completed_features` 写进报告。前者说明声明之外补上了哪些组件；后者提醒用户判断这些已完成的 Feature 是否需要重新人工验收：每个 Feature 写出名称、它原有的人工检查中哪几项可能受这次修改影响及原因、建议是否复验；自动测试已覆盖的部分和仍要用户实际看、听、玩的部分分开写。需要 full 时，运行一次真实的全量套件，其执行集合要覆盖 Required 和 affected；不要只为填不同的 Gate 字段而重复等价的运行。否则运行 affected 的并集，其中包括每个 Required 项。
 3. 对改动的脚本和必要的依赖方，直接运行 Godot 脚本解析，然后按 [GDScript lint 的约定与证据](contracts/gdscript-lint.md) 运行自带的 lint CLI。检查实际输出和退出码。不要增加 Python 包装、静态清单或导入步骤。
-4. 对 Bug，确认每个已批准的 `F0XX-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
+4. 对 Bug，确认每个已批准的 `<Feature ID>-RTyy` 测试都是 active 且通过，或者已批准的 `manual_regression` 具体且可重复。
 5. 如果 Stage 1 要求 full，当前的选择结果必须报告 full 为必需，且实际的 full 结果必须通过。选择逻辑从 `full_suite_on_change: true` 的组件和已记录的 `full_suite_reasons` 推导 full；组件触发不复制进 `full_suite_reasons`。必需的全量套件无法运行或失败时，阻止完成；理由或对话记录都不能把它变成 PASS。
 6. 产生了运行结果时，记录实际的 Required、affected 和 full 结果，包括失败：
 
    ```powershell
-   python -B yaya/tools/features/record-feature-completion.py record-tests --feature F0XX --run <result.json>
+   python -B yaya/tools/features/record-feature-completion.py record-tests --feature <Feature ID> --run <result.json>
    ```
 
    `record-tests` 校验提供的运行结果，并保存对它们的引用。它既不运行静态检查，也不校验静态检查。Agent 单独评估直接解析和 lint 的输出；证据辅助工具通过，不能推翻静态检查的失败。导入失败会清除之前的测试引用，并保留原始报告。
@@ -389,8 +389,8 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
 1. 运行：
 
    ```powershell
-   python -B yaya/tools/features/record-feature-completion.py validate --feature F0XX
-   python -B yaya/tools/checks/check-feature-list.py --completion-feature F0XX
+   python -B yaya/tools/features/record-feature-completion.py validate --feature <Feature ID>
+   python -B yaya/tools/checks/check-feature-list.py --completion-feature <Feature ID>
    python -B yaya/tools/checks/check-godot-resource-format.py
    ```
 

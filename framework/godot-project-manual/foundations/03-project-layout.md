@@ -41,11 +41,11 @@
 | `docs/product.md` | 交付预拆分：各交付单元的粗略边界、来源、依赖和建议顺序 | `product-author` / 规划 |
 | `docs/product/NN-<delivery>.md` | 当前交付单元的范围与衔接，轮到时才编写 | `product-author` / 规划与实现 |
 | `docs/feature-list.json` | Feature 的 ID、标题、依赖、状态与详情入口 | 规划与执行 / 可开始任务判断、Feature 记录检查 |
-| `docs/features/F0XX.json` | 单个 Feature 的范围、AC、来源、验证义务与 notes | 规划与执行 / 测试选择、完成检查 |
-| `docs/features/F0XX-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
+| `docs/features/<Feature ID>.json` | 单个 Feature 的范围、AC、来源、验证义务与 notes | 规划与执行 / 测试选择、完成检查 |
+| `docs/features/<Feature ID>-design.md` | 该 Feature 的实施设计与局部决定；简短理由也写在这里 | 原任务 / 不另设 AC 或测试映射 |
 | `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
 | `docs/feature-list-revisions.json` | 规划实际覆盖的来源基线与修订记录 | 规划与同步 / 不是“最新 Git 提交”的别名 |
-| `docs/features/F0XX-evidence.json` | 一个 Feature 的完成证据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
+| `docs/features/<Feature ID>-evidence.json` | 一个 Feature 的完成证据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
 
 ### 架构、知识与过程记录
 

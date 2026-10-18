@@ -129,7 +129,7 @@ Feature 中各类内容的动作与权限见 [3D. 最终验证前的文档检查
 - 一个提交是一个能独立理解的逻辑修改，带上必要的实现、测试、引用和文档。相互独立的 Feature、Bug 和重构分开提交；一个 Feature 可以有多个提交。按连贯的行为和验证划分，不按时间、文件数或“代码”“测试”“文档”划分。
 - 主题使用 `<type>(<scope>): <摘要>`。`type` 用 `feat`、`fix`、`refactor`、`test`、`perf`、`build`、`docs`、`chore` 等英文类型；`scope` 选最窄且稳定的范围，执行 Feature 时用 Feature ID；摘要使用 `docs/methodology-config.json` 的 `document_language`（默认中文），写实际的行为变化，不写“修复问题”“更新代码”这类笼统的话。
 - 非简单修改写简短正文：改了什么、为什么、关键取舍和实际运行过的主要验证，不罗列文件。剩余工作记在 Feature 与 Progress 中，不把部分交付写成整个 Feature 已完成。
-- Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/F0XX.json`。没有单一 Feature 负责时省略这两行，不编造。
+- Feature 或工程 Feature 的每个提交，正文都包含 `Feature: <docs/feature-list.json 中的 title>` 和恰好一行 `Work item: docs/features/<Feature ID>.json`。没有单一 Feature 负责时省略这两行，不编造。
 - 本地提交不代表任务完成或人工验收；Feature 的完成由 [Stage 0–8 `feature-execute` 执行循环](yaya/methodology/03-execute-loop.md) 的 Stage 7 确立。已提交的内容需要修正时，新建修正提交。
 - [提交钩子](yaya/tools/README.md#提交钩子)报出术语、措辞、链接、链接文字、资源格式或 Skill 目录不一致问题时，按输出改正本次改过的文件，重新暂存后再提交；报出的位置不在本次改动内时，按下一条保留工作并汇报。
 - 仓库状态、权限、身份、签名或钩子阻止提交时，保留工作，汇报实际原因和未提交的范围；不为让提交成功而初始化仓库、修改 Git 配置或绕过检查。
@@ -137,14 +137,14 @@ Feature 中各类内容的动作与权限见 [3D. 最终验证前的文档检查
 示例：
 
 ```text
-feat(F012): 增加背包容量检查并拒绝超量入库
+feat(F01-012): 增加背包容量检查并拒绝超量入库
 
 Feature: 增加背包物品管理
 
 入库前检查剩余容量，超量时返回失败并保持原有物品数量。
 验证：容量边界与失败后数量不变的测试通过；解析和 lint 通过。
 
-Work item: docs/features/F012.json
+Work item: docs/features/F01-012.json
 ```
 
 ### 禁止的操作

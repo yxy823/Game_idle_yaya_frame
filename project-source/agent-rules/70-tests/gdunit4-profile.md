@@ -8,7 +8,7 @@
 
 ```text
 python -B yaya/tools/testing/run-gdunit-tests.py --target tests/unit/<suite>.gd
-python -B yaya/tools/testing/run-gdunit-tests.py --feature F0XX --scope auto
+python -B yaya/tools/testing/run-gdunit-tests.py --feature <Feature ID> --scope auto
 python -B yaya/tools/testing/run-gdunit-tests.py --changed
 ```
 
@@ -21,7 +21,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --changed
 - `--timeout-seconds` 设置墙钟上限，默认 120 秒。超时即失败，并结束本次创建的整个进程树。
 - 标准输入已关闭，测试不能等待控制台输入。
 
-每次运行有自己的目录 `reports/gdunit-wrapper/<F0XX 或 focused>/run-<id>/`：
+每次运行有自己的目录 `reports/gdunit-wrapper/<Feature ID 或 focused>/run-<id>/`：
 
 | 文件 | 内容 |
 | --- | --- |

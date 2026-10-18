@@ -16,7 +16,7 @@
 
 | 改动类型 | 需要的验证 |
 | --- | --- |
-| 新增或修改测试 | 解析与 lint（[GDScript lint 的约定与证据](../../methodology/contracts/gdscript-lint.md)）；`--target` 运行改动的套件，确认用例出现在 `discovery.json` 且通过；完成前按测试追溯与证据运行 `--feature F0XX --scope auto` |
+| 新增或修改测试 | 解析与 lint（[GDScript lint 的约定与证据](../../methodology/contracts/gdscript-lint.md)）；`--target` 运行改动的套件，确认用例出现在 `discovery.json` 且通过；完成前按测试追溯与证据运行 `--feature <Feature ID> --scope auto` |
 | 修改共享测试夹具或辅助代码 | 运行依赖它的全部套件；影响不确定时运行 full |
 | 修复隔离问题或不稳定测试 | 受影响的套件一起反复运行；可能存在跨套件污染时运行 full |
 | 修改 `project.godot` 的 `[gdunit4]` 节、`yaya/tools/testing/` 或 `addons/gdUnit4/` | full 运行，并按[运行器版本变更](gdunit4-profile.md#运行器版本变更)核对 |

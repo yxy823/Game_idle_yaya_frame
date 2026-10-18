@@ -17,7 +17,7 @@ description: >-
 
 ## 共享约定
 
-- **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/F0XX.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `yaya/methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
+- **计划文件和数据结构：** `docs/feature-list.json`（索引）、`docs/features/<Feature ID>.json`（详情）、`docs/test-registry.json`，以及只追加的 `docs/feature-list-revisions.json`，定义见 `yaya/methodology/02-feature-list-schema.md`。测试登记表（Registry）的含义遵循 [登记表规则](../../../yaya/methodology/08-test-traceability-and-evidence.md#登记表规则)。完整阅读索引；某个阶段需要时，再读详情、测试登记表和最后一条修订记录。
 - **语言：** 新写的文字使用 `yaya/methodology/05-document-language.md`；已完成的历史和原始证据保持原样，不翻译。
 - **Git：** 保留改动、目标工作目录、暂存和提交，遵循 `AGENTS.md` 的 **Git 与提交**。
 - **来源的负责方：** 本流程更新计划，不更新来源文档。游戏设计边界交回 [design-gdd](../design-gdd/SKILL.md)；工程规则的写入遵循 `yaya/methodology/04-project-rules.md` 中的自查。说明影响时，阅读 methodology 01 的 **设计范围与边界**、`docs/project-rules.md` 和受影响的 Feature 设计稿。已完成 Feature 的设计稿作为历史保留。

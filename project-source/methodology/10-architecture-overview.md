@@ -10,7 +10,7 @@
 | --- | --- |
 | 项目级地图：模块及其作用、启动与装配入口、跨模块协作、允许的依赖方向 | `docs/architecture.md` |
 | 一个子系统内部的状态负责方、接口、依赖和运行流程，不论篇幅长短 | `docs/architecture/<subsystem>.md` |
-| 一个 Feature 的实现设计，以及局部决定及其理由 | `docs/features/F0XX-design.md` |
+| 一个 Feature 的实现设计，以及局部决定及其理由 | `docs/features/<Feature ID>-design.md` |
 | 满足[架构决策记录](#架构决策记录)中 ADR 条件的技术选择的理由 | `docs/architecture/adr-NNNN-<slug>.md` |
 | 不属于任何 Feature、也不满足 ADR 条件的已采纳技术决定 | 架构文档中的**独立技术决定**一节，见[独立技术决定](#独立技术决定) |
 | 通往这些记录的导航 | Feature notes 和当前 Progress 中的链接 |
@@ -145,7 +145,7 @@ node .agents/skills/qa-explainer/scripts/arch-build.mjs
 
 这一节的标题用配置的文档语言书写，并保持指向它的引用有效。不要为了有个文件而虚构 Feature、子系统、单独的指南或 ADR。
 
-- 一旦这项决定成为某个 Feature 已批准实现设计的一部分，就在获得授权保存设计的那一步，把当前理由移进该 Feature 的 `F0XX-design.md`，并把架构文档中的文字换成链接。只创建一个待开始的 Feature 不授权这次写入。
+- 一旦这项决定成为某个 Feature 已批准实现设计的一部分，就在获得授权保存设计的那一步，把当前理由移进该 Feature 的 `<Feature ID>-design.md`，并把架构文档中的文字换成链接。只创建一个待开始的 Feature 不授权这次写入。
 - 当前结构留在地图中，被引用的历史保持原样。
 - 如果这项决定之后满足了 ADR 条件，按上面的规则把它的当前理由移进 ADR。
 
