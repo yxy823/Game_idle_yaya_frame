@@ -164,6 +164,38 @@ class ProjectCopyTests(unittest.TestCase):
         count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"], cwd=output, text=True).strip()
         self.assertEqual(count, "2")
 
+    def test_real_creation_hook_rejects_editor_connection_and_lists_relaxed_checks(self):
+        repository = Path(__file__).resolve().parents[3]
+        output = self.base / "rule-checks"
+        path = os.pathsep.join((str(Path(sys.executable).parent), os.environ.get("PATH", "")))
+        with patch.dict(os.environ, {**GIT_ENVIRONMENT, "PATH": path}):
+            create_project(repository, output)
+
+            def commit():
+                subprocess.run(["git", "add", "-A"], cwd=output, check=True)
+                return subprocess.run(["git", "commit", "-m", "feat: 加棋盘"], cwd=output,
+                                      capture_output=True, encoding="utf-8", check=False)
+
+            scene = output / "game/board/board.tscn"
+            scene.parent.mkdir(parents=True)
+            scene.write_text('[gd_scene format=3 uid="uid://board"]\n\n[node name="Root" type="Node"]\n\n'
+                             '[connection signal="ready" from="." to="." method="_on_ready"]\n',
+                             encoding="utf-8", newline="\n")
+            rejected = commit()
+            self.assertNotEqual(rejected.returncode, 0, rejected.stdout)
+            # Git 把钩子的标准输出也转到标准错误。
+            self.assertIn("game/board/board.tscn:5: adds an editor signal connection", rejected.stderr)
+            self.assertIn("增量检查", rejected.stderr)
+
+            scene.write_text('[gd_scene format=3 uid="uid://board"]\n\n[node name="Root" type="Node"]\n',
+                             encoding="utf-8", newline="\n")
+            button = output / "game/shared/ui/game_button.gd"
+            button.write_text('@warning_ignore("unused_variable")\n' + button.read_text(encoding="utf-8"),
+                              encoding="utf-8", newline="\n")
+            accepted = commit()
+            self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
+            self.assertIn('- game/shared/ui/game_button.gd:1: adds `@warning_ignore("unused_variable")`', accepted.stderr)
+
     def test_real_creation_hook_rejects_skill_change_until_both_copies_match(self):
         repository = Path(__file__).resolve().parents[3]
         output = self.base / "skill-copies"

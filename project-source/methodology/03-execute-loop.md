@@ -392,6 +392,8 @@ Bug Feature 在 Stage 5 被接受后进入 Stage 5.5，其他进入 Stage 6。
    python -B yaya/tools/features/record-feature-completion.py validate --feature <Feature ID>
    python -B yaya/tools/checks/check-feature-list.py --completion-feature <Feature ID>
    python -B yaya/tools/checks/check-godot-resource-format.py
+   python -B yaya/tools/checks/check-gdscript-text.py
+   python -B yaya/tools/checks/check-godot-references.py
    ```
 
 2. 记录已核实的结果：把 Feature 设为 `done`，并把 `completed_at` 设为当前的 ISO 8601 时间戳。状态字段记录完成，它不证明测试、审核或人工验收。

@@ -1,6 +1,7 @@
 #!/bin/sh
 # 项目的提交钩子：本次暂存了 Markdown 或 JSON 时，运行术语检查、措辞检查（只查硬性）、链接检查和链接文字检查；
-# 暂存了场景、资源、脚本、Shader 或素材时，运行资源格式检查；暂存了 Skill 时，检查两份 Skill 目录是否一致。
+# 暂存了场景、资源、脚本、Shader 或素材时，运行资源格式检查，脚本另查 GDScript 文本；暂存了 Skill 时，检查两份 Skill 目录是否一致。
+# 每次提交都运行引用检查和增量检查。
 # 创建器已设置 core.hooksPath；重新 clone 后运行 git config core.hooksPath .githooks。说明见 yaya/tools/README.md 的「提交钩子」。
 cd "$(git rev-parse --show-toplevel)" || exit 1
 export PYTHONUTF8=1
@@ -20,7 +21,9 @@ present=$(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' '*.json'
 project_owned=$(printf '%s\n' "$present" | grep -Ev '^(yaya/|addons/|\.agents/skills/|\.claude/skills/|\.claude/agents/|\.codex/agents/|AGENTS\.md$)')
 godot=$(staged_godot_files | tr '\0' '\n')
 skills=$(git diff --cached --name-only -- .agents/skills .claude/skills)
-[ -n "$changed" ] || [ -n "$godot" ] || [ -n "$skills" ] || exit 0
+# 引用检查要知道删除和改名前的路径，因为别处指向它们的引用会失效。
+all_staged=$(git -c core.quotepath=false diff --cached --name-only --no-renames)
+[ -n "$all_staged" ] || exit 0
 
 failed=""
 # Codex 读 .agents/skills，Claude Code 读 .claude/skills，两份必须相同；比较的是暂存区中两个目录的树。
@@ -55,13 +58,21 @@ fi
 # 资源格式检查只接受文件参数，xargs 按命令行长度分批运行；插件目录等默认范围外的文件由检查自己跳过。
 if [ -n "$godot" ]; then
     staged_godot_files | xargs -0 python -B yaya/tools/checks/check-godot-resource-format.py || failed="$failed 资源格式检查"
+    git diff --cached --name-only -z --diff-filter=ACMR -- '*.gd' \
+        | xargs -0 -r python -B yaya/tools/checks/check-gdscript-text.py || failed="$failed GDScript 文本检查"
 fi
+python -B yaya/tools/checks/check-godot-references.py --related-to - <<EOF || failed="$failed 引用检查"
+$all_staged
+EOF
+# 放宽检查和改 UID 只列出、不拒绝；新增编辑器信号连接才让它失败。
+python -B yaya/tools/checks/check-staged-changes.py || failed="$failed 增量检查"
 
 if [ -n "$failed" ]; then
     echo "" >&2
     echo "提交被拒绝，未通过：$failed。" >&2
     echo "按上面列出的位置修改：不用的说法改为 docs/terminology.md 中的正式名称；规则文件里的「应」「宜」「务必」按措辞检查给出的推荐写法改写；失效的链接改到存在的文件和标题；链接文字改为目标的章节标题或一级标题，文件说明写在链接外面。" >&2
     echo "资源格式检查列出的场景和资源用 yaya/tools/godot/resave_godot_files.gd 重存；缺 .uid 或 .import 时运行 yaya/tools/README.md「首次 Godot 扫描」的命令，把生成的文件一起暂存。" >&2
+    echo "GDScript 文本、引用和增量检查的处理办法写在各自输出的最后一行，说明见 yaya/tools/README.md 中同名脚本的小节。" >&2
     echo "Skill 目录不一致时，把改过的那份完整复制到另一份，例如改的是 .agents/skills 就在 PowerShell 运行 robocopy .agents\\skills .claude\\skills /MIR，再暂存两个目录。" >&2
     echo "改完后重新暂存（git add）再提交。检查的是工作区中的文件内容；命令找不到 python 时，先确认 python 在 PATH 中。" >&2
     exit 1

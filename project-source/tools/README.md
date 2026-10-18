@@ -1,6 +1,6 @@
 # 项目检查与测试工具
 
-这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有三处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中五项检查和 Skill 目录一致性检查；[提交说明钩子](#提交说明钩子)在同一时刻对提交说明运行术语检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
+这些命令由 Agent 或使用者显式调用，不监听编辑或工具事件。只有三处自动运行：[提交钩子](#提交钩子)在 `git commit` 时运行其中八项检查和 Skill 目录一致性检查；[提交说明钩子](#提交说明钩子)在同一时刻对提交说明运行术语检查；[用词提示钩子](#用词提示钩子)在用户每次向 Claude Code 发消息时对消息正文运行术语检查。下文示例中的 `python` 与 Godot 一律换成 `docs/methodology-config.json` 中实际配置的路径。
 
 ```text
 yaya/tools/
@@ -22,6 +22,9 @@ yaya/tools/
 | 用词提示钩子 [check-prompt-terminology.py](checks/check-prompt-terminology.py) | Claude Code 的用户消息钩子：消息中有不用的说法时，提示 Agent 在回复最前面列出用词对照表 |
 | 措辞检查 [check-wording.py](checks/check-wording.py) | 按配置 [wording-check.json](checks/wording-check.json) 中的检查项，找出规则文件中不用的写法（如表示要求的“应”）和全部文档中待复核的含糊词、空洞写法与超长句；`--list` 列出全部检查项 |
 | 资源格式检查 [check-godot-resource-format.py](checks/check-godot-resource-format.py) | 检查 `.tscn`、`.tres` 是否按编辑器格式保存：带 UID、没有 `load_steps`；检查 `.gd`、`.gdshader` 都有同名 `.uid`，图片、音频、字体都有同名 `.import` |
+| GDScript 文本检查 [check-gdscript-text.py](checks/check-gdscript-text.py) | 找出测试里没有 `await` 的协程断言，以及游戏代码和测试往 `res://` 写文件的调用 |
+| 引用检查 [check-godot-references.py](checks/check-godot-references.py) | 检查 `res://` 路径存在且大小写一致、`uid://` 已登记、没有两个文件登记同一个 UID，以及导出预设排除了测试和调试文件 |
+| 增量检查 [check-staged-changes.py](checks/check-staged-changes.py) | 提交钩子用：列出本次暂存放宽检查和改已有文件 UID 的地方，拒绝项目场景里新增的编辑器信号连接 |
 | 测试入口 [run-gdunit-tests.py](testing/run-gdunit-tests.py) | 读取 Feature、测试登记表和起点以来的改动，选择并运行 gdUnit 测试，保留实际报告；`--changed` 不需要 Feature |
 | 起点写入 [record-base-revision.py](features/record-base-revision.py) | 把验证点写进 Feature 的 `base_revision`；`--dry-run` 预览起点以来的改动会选中什么 |
 | 登记表合并 [merge-test-registry.py](features/merge-test-registry.py) | 将批准的组件合并到测试登记表；同一组件的 `source_paths` 取并集 |
@@ -131,6 +134,9 @@ $LASTEXITCODE
 | [check-markdown-links.py](#check-markdown-linkspy) | 扫描整个项目，因为改标题或删文件会让其他文档中的链接失效；只报告本次暂存的 `.md`、`.json`（含删除和改名前的路径）里的链接，以及指向它们的链接，所以同一目录里另一个任务没暂存的文件不会挡住提交。本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 报告的范围内有失效链接 |
 | [check-link-text.py](#check-link-textpy) | 同上，因为改标题会让其他文档中的链接文字过时 | 报告的范围内有链接文字与目标标题不符的链接 |
 | [check-godot-resource-format.py](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
+| [check-gdscript-text.py](#check-gdscript-textpy) | 本次新增、修改或改名的 `.gd` | 测试里有没 `await` 的协程断言，或游戏代码、测试往不该写的 `res://` 位置写文件 |
+| [check-godot-references.py](#check-godot-referencespy) `--related-to` | 每次提交都运行。扫描整个项目，只报告本次暂存的文件（含删除和改名前的路径）里的引用、指向它们的引用、涉及它们的重复 UID；暂存了 `export_presets.cfg` 时检查导出过滤 | 报告的范围内有失效引用、重复 UID 或导出过滤问题 |
+| [check-staged-changes.py](#check-staged-changespy) | 每次提交都运行，只看本次暂存相对 HEAD 的改动 | 项目场景里新增了编辑器信号连接。放宽检查和改 UID 只列出，不拒绝 |
 | Skill 目录一致性（钩子内置，没有单独的脚本） | 本次暂存了 `.agents/skills/` 或 `.claude/skills/` 下的任何文件时，比较暂存区中两个目录的内容 | 两个目录不同。Codex 读前者，Claude Code 读后者，所以两份必须相同 |
 
 暂存的文件都不属于这些类型时直接通过。资源格式检查拦住的是不经 Feature 完成步骤的改动，例如实验或 Feature 外的修复：场景和资源用 [`resave_godot_files.gd`](#resave_godot_filesgd) 重存，缺 `.uid` 或 `.import` 时运行[首次 Godot 扫描](#首次-godot-扫描)的命令，把生成的文件一起暂存。除 Skill 目录一致性外，钩子检查的是工作区中的文件内容，不是暂存区：同一个文件只暂存了一部分修改时，未暂存的部分也参与检查。钩子用 PATH 中的 `python` 运行检查；找不到时会拒绝提交。
@@ -372,6 +378,59 @@ python -B yaya/tools/checks/check-godot-resource-format.py
 - **局限**：只发现漏掉重存和漏掉扫描这两种情况；编辑器保存时的其他格式调整，以及 `.uid`、`.import` 是否已经提交，不在检查范围内，提交前仍看 `git status`。
 
 退出码：`0` 全部符合；`1` 有文件不符合，逐行列出位置和原因：格式问题用 `resave_godot_files.gd` 重存，缺 `.uid` 或 `.import` 就运行[首次 Godot 扫描](#首次-godot-扫描)的命令并提交生成的文件，然后重跑；`2` 项目根目录不存在或文件读取失败。
+
+### check-gdscript-text.py
+
+漏写 `await` 的协程断言不等结果就继续，失败不计入，测试通过却什么也没证明；编辑器里能往 `res://` 写文件，导出后的游戏写不进去，存档要到发布后才失效。本检查在 Feature 完成时运行，[提交钩子](#提交钩子)也会对暂存的 `.gd` 运行它：
+
+```powershell
+python -B yaya/tools/checks/check-gdscript-text.py
+```
+
+- **检查内容**：路径中有 `tests` 目录的脚本里，含 `.is_emitted(`、`.is_not_emitted(`、`.is_push_error(`、`.is_push_warning(`、`.is_runtime_error(` 或 `.wait_until(` 的语句没有 `await`；`game/`、`main/`、`components/` 下用 `FileAccess.open*(…WRITE…)`、`ResourceSaver.save(`、`DirAccess.*_absolute(` 写 `res://`；根目录 `tests/` 下的脚本写 `res://tests/` 以外的位置。规则见 [编写测试时的约定](../agent-rules/70-tests/gdunit4-profile.md#编写测试时的约定)和[测试写入的文件](../agent-rules/70-tests/production-isolation.md#测试写入的文件)。
+- **语句的划分**：去掉注释和字符串内容后判断；以 `\` 结尾或括号没闭合的行与下一行合成一条语句。
+- **默认范围**：项目内全部 `.gd`，跳过的目录与[check-godot-resource-format.py](#check-godot-resource-formatpy)相同，并且也跳过插件。也可以在参数中列出相对项目根目录的文件。
+- **局限**：只认字面量路径，路径从变量传入时查不到；`DirAccess.open()` 之后再调用的写方法查不到。
+
+退出码：`0` 没有命中；`1` 逐行列出位置和原因；`2` 项目根目录不存在或文件读取失败。
+
+### check-godot-references.py
+
+移动或改名素材后，按字符串 `load()` 的路径在编辑器里不报错，运行到才失败；大小写不符的路径在 Windows 上能用，导出后的包区分大小写就找不到；复制 `.uid` 或 `.import` 会让两个文件共用一个 UID。导出过滤漏掉 `tests/`、`dev/` 时，测试和调试台会进入正式包。本检查在 Feature 完成时运行，[提交钩子](#提交钩子)每次提交都会运行它：
+
+```powershell
+python -B yaya/tools/checks/check-godot-references.py
+```
+
+- **检查内容**：
+  - `.gd`、`.tscn`、`.tres`、`.gdshader`、`.gdshaderinc`、`.json` 和 `project.godot` 中，整个字符串就是 `res://…` 路径时，目标存在且大小写与磁盘一致。用 `+` 或 `%` 拼接的路径、含 `{`、`*` 等格式或通配符的路径，以及指向 `reports/`、`tmp/`、`.godot/` 等运行输出目录的路径不查。
+  - 整个字符串就是 `uid://…` 时，它由某个 `.uid`、`.import` 或场景、资源的文件头登记过。
+  - 没有两个文件登记同一个 UID；`[ext_resource]` 的 `uid` 与 `path` 指向的文件登记的 UID 相同。
+  - `export_presets.cfg` 每个预设的 `exclude_filter` 排除了 `tests/`、`dev/` 和 `addons/gdUnit4/`，没有整体排除 `addons/`，包含和排除过滤都不用 `*`、`*.*`、`**` 这类宽泛写法。规则见[排除测试与编辑器插件](../agent-rules/41-export-config/resources-and-filters.md#排除测试与编辑器插件)。
+- **默认范围**：跳过任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`reports` 的目录和含 `.gdignore` 的目录。插件内部的引用和路径中有 `tests` 目录的文件不作为引用来源，因为测试用不存在的路径当夹具数据，测试里的错误路径在运行测试时就会失败；插件和测试登记的 UID 仍参与核对。
+
+| 参数 | 作用 | 省略时 |
+| --- | --- | --- |
+| `--root <目录>` | 指定项目根目录 | 脚本所在的项目 |
+| `--related-to <清单>` | 仍扫描整个项目，但只报告位于清单所列文件中的引用、指向清单所列文件的引用和涉及它们的重复 UID；清单列出 `export_presets.cfg` 时才查导出过滤。清单每行一个相对项目根目录的路径，`-` 从标准输入读取，可以列出已删除的文件 | 报告全部 |
+
+退出码：`0` 没有问题；`1` 逐行列出位置和原因；`2` 项目根目录不存在或文件读取失败。
+
+### check-staged-changes.py
+
+只看本次暂存相对 HEAD 的改动，由[提交钩子](#提交钩子)每次提交时运行，也可以在暂存后单独运行。仓库还没有提交时直接通过。
+
+- **拒绝提交**：`game/`、`main/`、`components/` 下的 `.tscn` 新增了 `[connection` 行。项目场景在代码中连接信号，见[场景 UI 与脚本绑定](../agent-rules/20-scenes/ui-and-scripts.md)；已有的连接不报。
+- **只列出，不拒绝**：
+  - `.gd` 新增的行含 `@warning_ignore`、`gdlint:ignore`、`do_skip` 或 `skip_reason`；
+  - `gdlint.json` 的 `limits`、`checks`、`scanning`、`exclude` 有变化；
+  - `project.godot` 的 `[gdunit4]` 中 `report/*`、`flaky_check_enable`、`hooks/session_hooks` 有变化；
+  - 修改了 `addons/` 下已有的文件；
+  - 已有文件的 UID 变了：`.uid` 的内容、`.import` 的 `uid=` 或 `source_file=`、`.tscn` 和 `.tres` 文件头的 `uid`。
+
+  这些改动有时是用户批准过的，拒绝提交就要有放行开关，而放行开关 Agent 自己也能打开，所以只列出。输出以一行说明开头，之后每项一行；Agent 把每一行原样写进完成汇报的「待确认」，由用户确认。
+
+退出码：`0` 没有要拒绝的改动，可能列出了待确认项；`1` 有新增的编辑器信号连接；`2` Git 命令失败或 `gdlint.json` 无法解析。
 
 ### run-gdunit-tests.py
 
