@@ -11,6 +11,8 @@ from pathlib import Path
 from urllib.parse import unquote
 
 DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
+# 测试和界面试用的运行目录由工具生成，里面没有手写文档，沙箱也可能读不了。
+DEFAULT_EXCLUDED_PATHS = ("reports/gdunit-wrapper", "reports/ui-trial")
 
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 HEADING = re.compile(r"^ {0,3}(#{1,6})[ \t]+(.*?)[ \t]*#*[ \t]*$")

@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.markdown_links import (  # noqa: E402
-    DEFAULT_EXCLUDED_DIRECTORY_NAMES, ScanCache, is_related, markdown_files, read_path_list, split_target,
+    DEFAULT_EXCLUDED_DIRECTORY_NAMES, DEFAULT_EXCLUDED_PATHS, ScanCache, is_related, markdown_files, read_path_list, split_target,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -70,7 +70,7 @@ def main(argv: list[str] | None = None) -> int:
     root = args.root.resolve()
     if not root.is_dir():
         parser.error(f"--root is not a directory: {root}")
-    excluded_paths = [Path(value) for value in args.exclude]
+    excluded_paths = [Path(value) for value in (*DEFAULT_EXCLUDED_PATHS, *args.exclude)]
     try:
         files = ([path.resolve() for path in args.files] if args.files
                  else markdown_files(root, set(DEFAULT_EXCLUDED_DIRECTORY_NAMES), excluded_paths))

@@ -11,6 +11,8 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
+# 测试和界面试用的运行目录由工具生成，里面没有手写文档，沙箱也可能读不了。
+DEFAULT_EXCLUDED_PATHS = ("reports/gdunit-wrapper", "reports/ui-trial")
 
 FENCE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
 INLINE_CODE = re.compile(r"(`+)(?:(?!\1).)+?\1")
@@ -157,7 +159,7 @@ def add_scan_arguments(parser: argparse.ArgumentParser) -> None:
 def selected_files(root: Path, args: argparse.Namespace) -> list[Path]:
     """Files named on the command line, or every file under root that matches --include."""
     excluded_names = set(DEFAULT_EXCLUDED_DIRECTORY_NAMES)
-    excluded_paths = [Path(value) for value in args.exclude]
+    excluded_paths = [Path(value) for value in (*DEFAULT_EXCLUDED_PATHS, *args.exclude)]
     if not args.paths and args.files_from is None:
         return scanned_files(root, args.include or ["*.md"], excluded_names, excluded_paths)
     listed = list(args.paths)

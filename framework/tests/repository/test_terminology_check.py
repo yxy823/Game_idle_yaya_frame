@@ -67,6 +67,12 @@ class TerminologyCheckTests(unittest.TestCase):
         process = self.run_cli()
         self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
 
+    def test_tool_run_directories_are_not_scanned(self):
+        self.write("reports/gdunit-wrapper/run-1/report.md", "修改分发材料时同步说明。\n")
+        self.write("reports/ui-trial/run-1/notes.md", "修改分发材料时同步说明。\n")
+        process = self.run_cli()
+        self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+
     def test_discover_lists_same_prefix_variants_without_failing(self):
         self.write("guide.md",
                    "分发配置在这里。\n另见分发配置。\n分发源包和分发源包。\n复制映射只出现一次。\n"

@@ -73,6 +73,7 @@ class MarkdownLinkTests(unittest.TestCase):
         self.write("index.md", "`[a](missing.md)`\n```\n[b](missing.md)\n```\n")
         self.write("addons/plugin/README.md", "[c](missing.md)\n")
         self.write("tmp/draft.md", "[d](missing.md)\n")
+        self.write("reports/gdunit-wrapper/run-1/report.md", "[d](missing.md)\n")
         self.write("notes/old.md", "[e](missing.md)\n")
         self.assertEqual(self.broken("--exclude", "notes"), set())
         self.assertEqual(len(self.broken()), 1)
