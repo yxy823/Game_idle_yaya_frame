@@ -4708,6 +4708,48 @@
       }
     },
     {
+      "id": "scene-132",
+      "shape": "rounded-rect",
+      "x": 970,
+      "y": 1790.5,
+      "width": 232,
+      "height": 61,
+      "label": "已经试玩过，想根据试玩记录\n调整设计",
+      "zIndex": 1,
+      "fill": "#f1edff",
+      "stroke": {
+        "color": "#94A3B8",
+        "width": 1,
+        "dash": "solid"
+      },
+      "text": {
+        "fontSize": 16,
+        "color": "#17283D",
+        "align": "center",
+        "fontFamily": "system",
+        "bold": false,
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "textPadding": {
+        "horizontal": 12,
+        "vertical": 8
+      },
+      "textSizing": "content",
+      "link": {
+        "kind": "local",
+        "target": "D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/scenarios/Godot 项目开发/游戏想法与 GDD/已经试玩过，想根据试玩记录调整设计.md"
+      },
+      "appearance": {
+        "opacity": 1,
+        "fillOpacity": 1,
+        "cornerRadius": 8,
+        "shadow": false,
+        "wrap": true
+      }
+    },
+    {
       "id": "scene-129",
       "shape": "rounded-rect",
       "x": 3264,
@@ -15599,6 +15641,53 @@
         "targetMarkerSize": 14,
         "labelPosition": 0.5,
         "labelOffset": 0,
+        "labelPadding": 2,
+        "rounded": true,
+        "radius": 6,
+        "jump": "none",
+        "routerPadding": 1,
+        "curve": "default"
+      }
+    },
+    {
+      "id": "link-scene-125-scene-132",
+      "source": {
+        "kind": "node",
+        "node": "scene-125",
+        "port": "left"
+      },
+      "target": {
+        "kind": "node",
+        "node": "scene-132",
+        "port": "right"
+      },
+      "path": "orthogonal",
+      "vertices": [],
+      "label": "试玩后想调整设计",
+      "stroke": {
+        "color": "#8994A5",
+        "width": 2,
+        "dash": "dashed"
+      },
+      "arrow": "target",
+      "text": {
+        "fontSize": 15,
+        "color": "#475569",
+        "align": "center",
+        "fontFamily": "system",
+        "opacity": 1,
+        "verticalAlign": "middle",
+        "hidden": false
+      },
+      "zIndex": 0,
+      "appearance": {
+        "opacity": 1,
+        "sourceMarker": "none",
+        "targetMarker": "block",
+        "sourceMarkerSize": 14,
+        "targetMarkerSize": 14,
+        "labelPosition": 0.75,
+        "labelOffset": 44,
         "labelPadding": 2,
         "rounded": true,
         "radius": 6,

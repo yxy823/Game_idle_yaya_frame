@@ -21,7 +21,7 @@ GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明�
 
 | 当前需要 | 参考 |
 | --- | --- |
-| 寻找或比较玩法方向；找出值得验证的问题 | [概念探索与验证问题](references/concept-ideation.md) |
+| 寻找或比较玩法方向；找出值得验证的问题；根据试玩记录调整设计 | [概念探索与验证问题](references/concept-ideation.md) |
 | 通过提问、回答和逐版草稿共同创作 | [GDD 共同创作](references/gdd-dialogue.md) |
 | 起草完整的 GDD，或判断它在当前阶段的覆盖情况 | [GDD 设计覆盖](references/gdd-fields.md) |
 | 组织或修改入口、主题页和规则的归属 | [设计文档结构与规则归属](references/design-docs.md) |
