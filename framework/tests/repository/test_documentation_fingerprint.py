@@ -1,12 +1,14 @@
 import importlib.util
 import json
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
 
 
 SOURCE = Path(__file__).resolve().parents[3] / "project-source/tools/lib/verification_snapshot.py"
+sys.path.insert(0, str(SOURCE.parents[2]))
 SPEC = importlib.util.spec_from_file_location("documentation_verification_snapshot", SOURCE)
 verification_snapshot = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(verification_snapshot)
@@ -119,7 +121,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
         destination.parent.mkdir(parents=True)
         report.rename(destination)
         self.assertEqual(before, self.fingerprint())
-        self.write("docs/features/F001-design.md", "Adopted save-format requirement\n")
+        self.write("docs/features/F01-001-design.md", "Adopted save-format requirement\n")
         self.assertNotEqual(before, self.fingerprint())
 
     def test_research_exemption_does_not_hide_executable_or_neighboring_content(self):
@@ -146,7 +148,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
                 source.write_text("Confirmed requirement\nStatus: inspected\n", encoding="utf-8")
                 self.assertNotEqual(before, self.fingerprint())
         before = self.fingerprint()
-        self.write("reports/features/F001/art-review.md", "Bounded review findings\n")
+        self.write("reports/features/F01-001/art-review.md", "Bounded review findings\n")
         self.write("reports/scratch/art-review/run.json", '{"observed": true}')
         self.write("reports/scratch/art-review/cache.bin", "Isolated cache")
         self.git("add", "reports")
@@ -156,7 +158,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
         presentation = self.write(
             "docs/presentation/reward-collection.md",
             "Adopted: flight B + button A\nTexture: alpha required\n"
-            "Acceptance: ../../reports/features/F001/manual-checklist.md\n",
+            "Acceptance: ../../reports/features/F01-001/manual-checklist.md\n",
         )
         self.git("add", "docs/presentation/reward-collection.md")
         before = self.fingerprint()
@@ -172,13 +174,13 @@ class DocumentationFingerprintTests(unittest.TestCase):
         )
         self.assertNotEqual(before, self.fingerprint())
         before = self.fingerprint()
-        report = self.write("reports/features/F001/manual-checklist.md", "Result: pending\n")
-        self.git("add", "reports/features/F001/manual-checklist.md")
+        report = self.write("reports/features/F01-001/manual-checklist.md", "Result: pending\n")
+        self.git("add", "reports/features/F01-001/manual-checklist.md")
         report.write_text("Result: accepted by user for flight A + button A\n", encoding="utf-8")
         self.assertEqual(before, self.fingerprint())
 
     def test_process_notes_cannot_bind_a_professional_constraint(self):
-        detail = self.write("docs/features/F001.json", json.dumps({
+        detail = self.write("docs/features/F01-001.json", json.dumps({
             "source": "product/01-inventory.md", "notes": "See Art Bible"
         }))
         before = self.fingerprint()
@@ -186,7 +188,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
             "source": "product/01-inventory.md", "notes": "Icons must be readable at 24px"
         }), encoding="utf-8")
         self.assertEqual(before, self.fingerprint())
-        self.write("docs/features/F001-design.md", "Icons must be readable at 24px\n")
+        self.write("docs/features/F01-001-design.md", "Icons must be readable at 24px\n")
         self.assertNotEqual(before, self.fingerprint())
 
     def test_debug_console_saves_and_pending_adoption_log_preserve_binding(self):
@@ -229,7 +231,7 @@ class DocumentationFingerprintTests(unittest.TestCase):
             ("yaya/methodology/templates/README.md", "Required template contract\n"),
             (".agents/skills/task/README.md", "Required Skill behavior\n"),
             ("docs/knowledge-other/note.md", "Outside the knowledge boundary\n"),
-            ("docs/features/F001.json", json.dumps({
+            ("docs/features/F01-001.json", json.dumps({
                 "acceptance_criteria": [{"id": "AC01", "text": "Changed requirement"}]
             })),
             ("docs/test-registry.json", '{"tests": [{"id": "changed", "status": "active"}]}'),

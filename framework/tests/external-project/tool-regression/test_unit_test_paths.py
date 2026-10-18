@@ -69,7 +69,8 @@ class UnitTestPathsTests(unittest.TestCase):
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
 "yaya/tools/checks/check-feature-list.py", "yaya/tools/lib/feature_evolution.py",
                          "yaya/tools/lib/test_selection.py",
-                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py"):
+                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py",
+                         "yaya/tools/lib/feature_ids.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())
@@ -104,7 +105,8 @@ class UnitTestPathsTests(unittest.TestCase):
         for relative in ("yaya/tools/__init__.py", "yaya/tools/lib/__init__.py",
                          "yaya/tools/features/merge-test-registry.py", "yaya/tools/lib/atomic_json.py",
                          "yaya/tools/lib/feature_evolution.py", "yaya/tools/lib/test_selection.py",
-                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py"):
+                         "yaya/tools/lib/dependency_graph.py", "yaya/tools/lib/verification_snapshot.py",
+                         "yaya/tools/lib/feature_ids.py"):
             destination = self.root / relative
             destination.parent.mkdir(parents=True, exist_ok=True)
             destination.write_bytes((REPO_ROOT / relative).read_bytes())

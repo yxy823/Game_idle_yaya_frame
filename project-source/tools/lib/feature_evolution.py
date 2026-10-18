@@ -11,13 +11,15 @@ from datetime import datetime
 from pathlib import Path, PurePosixPath
 from typing import Any
 
+from tools.lib.feature_ids import FEATURE_ID as _FEATURE_ID
+
 
 REGISTRY_SCHEMA_VERSION = 4
 TEST_REGISTRY_PATH = PurePosixPath("docs/test-registry.json")
 COMPONENT_ID = re.compile(r"[a-z][a-z0-9_]*")
-FEATURE_ID = re.compile(r"F\d{3}")
-AC_TEST_ID = re.compile(r"(F\d{3})-(AC\d{2})(?:-\d{2})?")
-REGRESSION_TEST_ID = re.compile(r"(F\d{3})-RT\d{2}")
+FEATURE_ID = re.compile(_FEATURE_ID)
+AC_TEST_ID = re.compile(rf"({_FEATURE_ID})-(AC\d{{2}})(?:-\d{{2}})?")
+REGRESSION_TEST_ID = re.compile(rf"({_FEATURE_ID})-RT\d{{2}}")
 INVARIANT_TEST_ID = re.compile(r"INV-[A-Z0-9][A-Z0-9_-]*-\d{2}")
 REVISION_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
 COMMIT_ID = re.compile(r"[a-fA-F0-9]{7,64}")
@@ -36,7 +38,7 @@ def test_identity(test_id: Any) -> tuple[str, str | None, str | None]:
             return "regression", match.group(1), None
         if INVARIANT_TEST_ID.fullmatch(test_id):
             return "invariant", None, None
-    raise EvolutionError(f"invalid test ID {test_id!r}; expected F0XX-ACyy[-NN], F0XX-RTyy or INV-<DOMAIN>-NN")
+    raise EvolutionError(f"invalid test ID {test_id!r}; expected <Feature ID>-ACyy[-NN], <Feature ID>-RTyy or INV-<DOMAIN>-NN")
 
 
 def _text(value: Any, label: str) -> str:

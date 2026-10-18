@@ -51,13 +51,13 @@ class GitSnapshotTests(unittest.TestCase):
                    "extends GdUnitTestSuite\nfunc test_contract():\n\tpass\n")
         self.write("docs/methodology-config.json", {"python_executable": sys.executable,
                    "engine_executable": sys.executable})
-        self.write("docs/features/F001.json", {"id": "F001", "affected_components": ["contract"],
+        self.write("docs/features/F01-001.json", {"id": "F01-001", "affected_components": ["contract"],
                    "acceptance_criteria": [{"id": "AC01", "text": "Preserve the contract",
                        "verification": {"automated_tests": [], "manual_checks": ["Review the contract"]}}],
                    "verification": {"acceptance_mode": "manual", "regression_tests": [], "manual_regression": None},
                    "base_revision": self.git("rev-parse", "HEAD")})
         self.write("docs/feature-list.json", {"meta": {}, "features": [
-                   {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
+                   {"id": "F01-001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
         self.write("docs/test-registry.json", {"meta": {"schema_version": 4}, "components": [
                    {"id": "contract", "unit_test_paths": ["tests/unit"], "full_suite_on_change": True, "source_paths": ["game/**"]}],
                    "tests": []})
@@ -100,46 +100,46 @@ class GitSnapshotTests(unittest.TestCase):
         self.assertNotEqual(before, verification_snapshot.working_tree_fingerprint(self.root))
         _plan, manifest = make_run(self.root)
         references = [result_reference(self.root, manifest)]
-        verified = derive_test_evidence(self.root, "F001", references)
+        verified = derive_test_evidence(self.root, "F01-001", references)
         self.git("add", "source.gd")
-        self.assertEqual(verified, derive_test_evidence(self.root, "F001", references))
+        self.assertEqual(verified, derive_test_evidence(self.root, "F01-001", references))
         self.git("commit", "-m", "Fixture verified deletion")
-        after = derive_test_evidence(self.root, "F001", references)
+        after = derive_test_evidence(self.root, "F01-001", references)
         for scope, result in verified.items():
             self.assertEqual(result["working_tree_fingerprint"], after[scope]["working_tree_fingerprint"])
             self.assertEqual(result["run_ids"], after[scope]["run_ids"])
         self.write("source.gd", "extends RefCounted\n")
         with self.assertRaisesRegex(RunEvidenceError, "source changed"):
-            derive_test_evidence(self.root, "F001", references)
+            derive_test_evidence(self.root, "F01-001", references)
 
     def test_run_survives_content_identical_commits_without_granting_acceptance(self) -> None:
         self.plan_fixture()
         plan, manifest = make_run(self.root)
         references = [result_reference(self.root, manifest)]
-        verified = derive_test_evidence(self.root, "F001", references)
-        evidence = feature_completion_evidence.empty_evidence("F001", verification_snapshot.current_snapshot(self.root))
+        verified = derive_test_evidence(self.root, "F01-001", references)
+        evidence = feature_completion_evidence.empty_evidence("F01-001", verification_snapshot.current_snapshot(self.root))
         evidence.update(test_runs=references, **verified)
-        write_json(self.root / feature_completion_evidence.evidence_relative_path("F001"), evidence)
+        write_json(self.root / feature_completion_evidence.evidence_relative_path("F01-001"), evidence)
         task_files = [".gitignore", "source.gd", "tests", "docs"]
         self.git("add", *task_files)
         self.git("commit", "-m", "Fixture verified changes")
         self.assertEqual(self.git("rev-parse", "HEAD"), verification_snapshot.git_revision(self.root))
         self.assertEqual(verified["required_test_set"]["total"],
-                         derive_test_evidence(self.root, "F001", references)["required_test_set"]["total"])
-        accepted, reason = feature_completion_evidence.validate_completion_evidence(self.root, "F001")
+                         derive_test_evidence(self.root, "F01-001", references)["required_test_set"]["total"])
+        accepted, reason = feature_completion_evidence.validate_completion_evidence(self.root, "F01-001")
         self.assertFalse(accepted)
         self.assertIn("explicit human acceptance", reason)
         self.write("docs/progress/bootstrap.md", "Initial verification is archived here.\n")
         self.git("add", "docs/progress/bootstrap.md")
         self.git("commit", "-m", "Fixture process history only")
-        after_commit = derive_test_evidence(self.root, "F001", references)
+        after_commit = derive_test_evidence(self.root, "F01-001", references)
         for scope, result in verified.items():
             self.assertEqual(after_commit[scope]["git_revision"], verification_snapshot.git_revision(self.root))
             self.assertEqual({key: value for key, value in result.items() if key != "git_revision"},
                              {key: value for key, value in after_commit[scope].items() if key != "git_revision"})
         self.write("source.gd", "extends RefCounted\nvar changed = true\n")
         with self.assertRaisesRegex(RunEvidenceError, "source changed"):
-            derive_test_evidence(self.root, "F001", references)
+            derive_test_evidence(self.root, "F01-001", references)
 
     def test_missing_repository_or_initial_commit_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory(prefix="yaya-not-repo-") as unrelated:

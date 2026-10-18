@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 from typing import Any, Iterable
@@ -19,16 +18,16 @@ from tools.lib.feature_completion_evidence import (
     validate_completion_evidence,
 )
 from tools.lib.atomic_json import write_json
+from tools.lib.feature_ids import FEATURE_ID_HINT, FEATURE_ID_RE
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
 
 DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
-FEATURE_ID_RE = re.compile(r"F\d{3}")
 
 
 def _feature_id(value: str) -> str:
     normalized = value.upper()
     if not FEATURE_ID_RE.fullmatch(normalized):
-        raise argparse.ArgumentTypeError("Feature ID must match F0XX")
+        raise argparse.ArgumentTypeError(f"Feature ID must match {FEATURE_ID_HINT}")
     return normalized
 
 

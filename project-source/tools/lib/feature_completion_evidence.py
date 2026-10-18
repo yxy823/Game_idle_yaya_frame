@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any
 
+from tools.lib.feature_ids import FEATURE_ID_HINT, FEATURE_ID_RE
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot
 
 SCHEMA_VERSION = 9
@@ -48,8 +48,8 @@ def load_evidence(path: Path, feature_id: str) -> dict[str, Any]:
         raise EvidenceError("structured gate evidence root must be an object")
     if data.get("schema_version") != SCHEMA_VERSION:
         raise EvidenceError(f"unsupported gate evidence schema_version: {data.get('schema_version')!r}")
-    if not isinstance(data.get("feature_id"), str) or not re.fullmatch(r"F\d{3}", data["feature_id"]):
-        raise EvidenceError("gate evidence feature_id must match F0XX")
+    if not isinstance(data.get("feature_id"), str) or not FEATURE_ID_RE.fullmatch(data["feature_id"]):
+        raise EvidenceError(f"gate evidence feature_id must match {FEATURE_ID_HINT}")
     if data["feature_id"] != feature_id:
         raise EvidenceError(f"gate evidence belongs to {data['feature_id']!r}, not {feature_id}")
     if not isinstance(data.get("test_runs"), list) or not isinstance(data.get("human_acceptance"), dict):

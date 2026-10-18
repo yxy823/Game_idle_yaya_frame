@@ -12,12 +12,12 @@ from tools.lib.test_selection import build_selection, execution_selectors
 
 def make_run(root: Path, *, scope: str = "full", skipped: bool = False,
              omit: str | None = None, exit_code: int = 0, phase: str = "final") -> tuple[dict, Path]:
-    selection = build_selection(root, "F001", phase=phase)
+    selection = build_selection(root, "F01-001", phase=phase)
     selectors = execution_selectors(root, selection, scope)
     expected = expected_gdunit_cases(root, selectors)
-    directory = root / "reports/gdunit-wrapper/F001" / ("run-" + uuid.uuid4().hex)
+    directory = root / "reports/gdunit-wrapper/F01-001" / ("run-" + uuid.uuid4().hex)
     directory.mkdir(parents=True)
-    result = start_run(root, directory, "F001", phase, scope)
+    result = start_run(root, directory, "F01-001", phase, scope)
     result.update(command=[sys.executable], selectors=selectors, stage="execution")
     cases = [case for case in expected if case["case"] != omit]
     discovery = [{"id": f"{case['path']}::{case['case']}", "path": case["path"],

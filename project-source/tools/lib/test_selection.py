@@ -9,6 +9,7 @@ from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
 from tools.lib.dependency_graph import build_graph, canonical, deleted_identity_texts, dependents
+from tools.lib.feature_ids import FEATURE_ID_RE
 from tools.lib.feature_evolution import (
     EvolutionError, REGISTRY_SCHEMA_VERSION, TEST_REGISTRY_PATH, resolve_test_path, test_identity,
 )
@@ -334,7 +335,7 @@ def _dependency_suites(root: Path, impact: dict[str, Any], required: dict) -> No
 
 
 def build_selection(root: Path, feature_id: str, *, phase: str = "final") -> dict[str, Any]:
-    if not re.fullmatch(r"F\d{3}", feature_id) or phase not in {"baseline", "final"}:
+    if not FEATURE_ID_RE.fullmatch(feature_id) or phase not in {"baseline", "final"}:
         raise SelectionError("invalid Feature ID or test-selection phase")
     detail = read_json(root / f"docs/features/{feature_id}.json")
     if phase == "final":

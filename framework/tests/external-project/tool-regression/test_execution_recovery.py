@@ -23,7 +23,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
     git = fixtures.FeatureCompletionEvidenceTests.git
 
     def derive(self, plan, path):
-        return derive_test_evidence(self.root, "F001", [result_reference(self.root, path)])
+        return derive_test_evidence(self.root, "F01-001", [result_reference(self.root, path)])
 
     def test_later_failed_full_cannot_hide_behind_old_green_or_new_narrow_green(self):
         plan, old_pass = make_run(self.root)
@@ -33,7 +33,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
             self.derive(plan, old_pass)
         _, narrow = make_run(self.root, scope="affected")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
-            derive_test_evidence(self.root, "F001",
+            derive_test_evidence(self.root, "F01-001",
                                  [result_reference(self.root, old_pass), result_reference(self.root, narrow)])
         _, repaired = make_run(self.root)
         self.derive(plan, repaired)
@@ -60,9 +60,9 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_interruption_leaves_one_running_result_that_blocks_old_success(self):
         plan, passed = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/F001/run-interrupted"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-interrupted"
         directory.mkdir()
-        start_run(self.root, directory, "F001", "final", "full")
+        start_run(self.root, directory, "F01-001", "final", "full")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, passed)
         record = json.loads((directory / "result.json").read_text())
@@ -76,22 +76,22 @@ class ExecutionRecoveryTests(unittest.TestCase):
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
         args = runner._parse_args(["--godot-binary", str(self.root / "missing.exe"),
-                                   "--feature", "F001", "--scope", "full"])
+                                   "--feature", "F01-001", "--scope", "full"])
         with mock.patch.object(runner, "REPO_ROOT", self.root):
             self.assertEqual(runner._run_tests(args), 1)
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, passed)
         records = [json.loads(path.read_text()) for path in
-                   (self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")]
+                   (self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json")]
         latest = max(records, key=lambda record: record["sequence"])
         self.assertEqual(latest["status"], "failed")
         self.assertTrue(any("executable not found" in error for error in latest["errors"]))
 
     def test_interrupted_auto_recovers_with_later_affected_but_not_old_narrow_or_tied_success(self):
         plan, old_pass = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/F001/run-auto-interrupted"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-auto-interrupted"
         directory.mkdir()
-        attempt = start_run(self.root, directory, "F001", "final", None)
+        attempt = start_run(self.root, directory, "F01-001", "final", None)
         original = (directory / "result.json").read_bytes()
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, old_pass)
@@ -110,18 +110,18 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_auto_selection_read_failure_recovers_without_new_full_obligation(self):
         plan, old_pass = make_run(self.root)
-        previous = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
+        previous = set((self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json"))
         spec = importlib.util.spec_from_file_location("selection_runner", PROJECT_ROOT / "yaya/tools/testing/run-gdunit-tests.py")
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
-        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
+        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F01-001"])
         with mock.patch.object(runner, "REPO_ROOT", self.root), \
                 mock.patch.object(runner, "build_selection", side_effect=OSError("temporary read failure")), \
                 mock.patch.object(runner, "_run_process") as launch:
             self.assertEqual(runner._run_tests(args), 1)
         launch.assert_not_called()
-        created = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")) - previous
+        created = set((self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json")) - previous
         self.assertEqual(len(created), 1)
         failed = created.pop()
         original = failed.read_bytes()
@@ -138,9 +138,9 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.registry["components"][0]["full_suite_on_change"] = True
         self.write_json("docs/test-registry.json", self.registry)
         plan, _ = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/F001/run-auto-full"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-auto-full"
         directory.mkdir()
-        start_run(self.root, directory, "F001", "final", None)
+        start_run(self.root, directory, "F01-001", "final", None)
         _, affected = make_run(self.root, scope="affected")
         with self.assertRaisesRegex(ValueError, "unresolved failed or unfinished"):
             self.derive(plan, affected)
@@ -149,14 +149,14 @@ class ExecutionRecoveryTests(unittest.TestCase):
 
     def test_preparation_with_execution_fields_is_invalid(self):
         plan, _ = make_run(self.root)
-        directory = self.root / "reports/gdunit-wrapper/F001/run-invalid-auto"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-invalid-auto"
         directory.mkdir()
-        attempt = start_run(self.root, directory, "F001", "final", None)
+        attempt = start_run(self.root, directory, "F01-001", "final", None)
         _, full = make_run(self.root)
         for fields in ({"command": [sys.executable]}, {"selectors": ["tests/unit"]},
                        {"process": {"returncode": 0}}):
             with self.subTest(fields=fields):
-                self.write_json("reports/gdunit-wrapper/F001/run-invalid-auto/result.json", {**attempt, **fields})
+                self.write_json("reports/gdunit-wrapper/F01-001/run-invalid-auto/result.json", {**attempt, **fields})
                 with self.assertRaisesRegex(ValueError, "preparation record has execution fields"):
                     self.derive(plan, full)
 
@@ -184,7 +184,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
         old_bytes = old_pass.read_bytes()
         history = json.loads(old_bytes)
         history.update(run_id="run-damaged", sequence=2)
-        damaged = self.write_json("reports/gdunit-wrapper/F001/run-damaged/result.json", history)
+        damaged = self.write_json("reports/gdunit-wrapper/F01-001/run-damaged/result.json", history)
         missing_sequence = {key: value for key, value in history.items() if key != "sequence"}
         payloads = ["{", "[]", json.dumps(missing_sequence),
                     json.dumps({**history, "schema_version": 99}),
@@ -199,11 +199,11 @@ class ExecutionRecoveryTests(unittest.TestCase):
         for payload in payloads:
             with self.subTest(payload=payload):
                 damaged.write_text(payload, encoding="utf-8")
-                previous = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
+                previous = set((self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json"))
                 sequence = max(json.loads(path.read_text())["sequence"]
                                for path in previous if path != damaged) + 1
                 args = runner._parse_args(["--godot-binary", sys.executable,
-                                          "--feature", "F001", "--scope", "full"])
+                                          "--feature", "F01-001", "--scope", "full"])
                 warnings = io.StringIO()
                 with redirect_stderr(warnings), mock.patch.object(runner, "REPO_ROOT", self.root), \
                         mock.patch.object(runner, "_run_process",
@@ -212,7 +212,7 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 launch.assert_called_once()
                 self.assertIn("WARNING: invalid run history", warnings.getvalue())
                 self.assertIn(str(damaged), warnings.getvalue())
-                created = set((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json")) - previous
+                created = set((self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json")) - previous
                 self.assertEqual(len(created), 1)
                 result_path = created.pop()
                 result = json.loads(result_path.read_text())
@@ -231,20 +231,20 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 self.assertIn(str(damaged), str(failure.exception))
 
     def test_unreadable_history_allows_new_pass_but_not_completion(self):
-        self.write("reports/gdunit-wrapper/F001/run-damaged/result.json", "{")
+        self.write("reports/gdunit-wrapper/F01-001/run-damaged/result.json", "{")
         with redirect_stderr(io.StringIO()) as warnings:
             plan, passed = make_run(self.root)
         self.assertIn("invalid run history", warnings.getvalue())
         self.assertEqual(json.loads(passed.read_text())["status"], "passed")
         with self.assertRaisesRegex(ValueError, "invalid run history"):
             self.derive(plan, passed)
-        self.assertEqual((self.root / "reports/gdunit-wrapper/F001/run-damaged/result.json").read_text(), "{")
+        self.assertEqual((self.root / "reports/gdunit-wrapper/F01-001/run-damaged/result.json").read_text(), "{")
 
     def test_other_feature_and_focused_history_do_not_affect_sequence_or_completion(self):
         plan, old_pass = make_run(self.root)
         record = json.loads(old_pass.read_text())
-        record.update(run_id="run-other-feature", feature_id="F002", sequence=9999)
-        damaged = self.write_json("reports/gdunit-wrapper/F002/run-other-feature/result.json", record)
+        record.update(run_id="run-other-feature", feature_id="F01-002", sequence=9999)
+        damaged = self.write_json("reports/gdunit-wrapper/F01-002/run-other-feature/result.json", record)
         self.write("reports/gdunit-wrapper/focused/run-damaged/result.json", "{")
         sequence = json.loads(old_pass.read_text())["sequence"]
         for payload in (json.dumps(record), "{", "[]", json.dumps({**record, "schema_version": 99}),
@@ -259,32 +259,32 @@ class ExecutionRecoveryTests(unittest.TestCase):
                 self.derive(plan, passed)
                 self.assertEqual(damaged.read_text(encoding="utf-8"), payload)
                 with self.assertRaisesRegex(ValueError, "run result must exist at"):
-                    derive_test_evidence(self.root, "F001", [result_reference(self.root, damaged)])
+                    derive_test_evidence(self.root, "F01-001", [result_reference(self.root, damaged)])
 
     def test_wrong_feature_in_current_history_is_an_error_not_a_foreign_record(self):
         plan, passed = make_run(self.root)
         record = json.loads(passed.read_text())
-        record.update(run_id="run-misfiled", feature_id="F002")
-        self.write_json("reports/gdunit-wrapper/F001/run-misfiled/result.json", record)
+        record.update(run_id="run-misfiled", feature_id="F01-002")
+        self.write_json("reports/gdunit-wrapper/F01-001/run-misfiled/result.json", record)
         with self.assertRaisesRegex(ValueError, "Feature does not match its history directory"):
             self.derive(plan, passed)
 
     def test_snapshot_error_is_kept_in_the_current_failed_result(self):
-        directory = self.root / "reports/gdunit-wrapper/F001/run-snapshot-error"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-snapshot-error"
         directory.mkdir(parents=True)
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")):
-            result = start_run(self.root, directory, "F001", "final", "full")
+            result = start_run(self.root, directory, "F01-001", "final", "full")
         self.assertEqual(result["status"], "failed")
         self.assertIsNone(result["snapshot"])
         self.assertEqual(result["errors"], ["snapshot unavailable"])
         self.assertEqual(json.loads((directory / "result.json").read_text()), result)
 
     def test_explicit_null_snapshot_preparation_failure_is_valid_history(self):
-        directory = self.root / "reports/gdunit-wrapper/F001/run-snapshot-error"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-snapshot-error"
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")):
-            failed = start_run(self.root, directory, "F001", "final", None)
+            failed = start_run(self.root, directory, "F01-001", "final", None)
         original = (directory / "result.json").read_bytes()
         with redirect_stderr(io.StringIO()) as warnings:
             plan, passed = make_run(self.root)
@@ -298,14 +298,14 @@ class ExecutionRecoveryTests(unittest.TestCase):
         runner = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = runner
         spec.loader.exec_module(runner)
-        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F001"])
+        args = runner._parse_args(["--godot-binary", sys.executable, "--feature", "F01-001"])
         with mock.patch.object(runner, "REPO_ROOT", self.root), \
                 mock.patch.object(runner, "_run_process") as launch, \
                 mock.patch("tools.lib.test_run_evidence.current_snapshot",
                            side_effect=EvidenceError("git read failed")):
             self.assertEqual(runner._run_tests(args), 1)
         launch.assert_not_called()
-        paths = list((self.root / "reports/gdunit-wrapper/F001").glob("run-*/result.json"))
+        paths = list((self.root / "reports/gdunit-wrapper/F01-001").glob("run-*/result.json"))
         self.assertEqual(len(paths), 1)
         result = json.loads(paths[0].read_text())
         self.assertEqual(result["status"], "failed")
@@ -329,13 +329,13 @@ class ExecutionRecoveryTests(unittest.TestCase):
         self.assertEqual(result["process"]["returncode"], 0)
 
     def test_snapshot_failure_does_not_hide_result_write_failure(self):
-        directory = self.root / "reports/gdunit-wrapper/F001/run-write-error"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-write-error"
         with mock.patch("tools.lib.test_run_evidence.current_snapshot",
                         side_effect=EvidenceError("snapshot unavailable")), \
                 mock.patch("tools.lib.test_run_evidence.write_json",
                            side_effect=OSError("report directory not writable")):
             with self.assertRaisesRegex(OSError, "report directory not writable"):
-                start_run(self.root, directory, "F001", "final", None)
+                start_run(self.root, directory, "F01-001", "final", None)
 
     def test_concurrent_sequence_tie_cannot_clear_an_unresolved_failure(self):
         plan, old_pass = make_run(self.root)

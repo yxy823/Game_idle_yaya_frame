@@ -9,12 +9,14 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from tools.lib.feature_ids import FEATURE_ID
+
 EXCLUDED_EXACT_PATHS = {
     "docs/progress.md",
     "dev/debug/adoption-log.md",
 }
 DEBUG_CONSOLE_SAVES_RE = re.compile(r"dev/debug/[^/]+/(?:slots/(?:[^/]+/)*presets|combos)/.+")
-EVIDENCE_PATH_RE = re.compile(r"docs/features/F\d{3}-evidence\.json")
+EVIDENCE_PATH_RE = re.compile(rf"docs/features/{FEATURE_ID}-evidence\.json")
 PROCESS_FIELDS = {"notes", "status", "completed_at", "created_at", "updated_at", "recorded_at"}
 
 

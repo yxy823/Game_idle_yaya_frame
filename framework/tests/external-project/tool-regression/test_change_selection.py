@@ -38,30 +38,30 @@ class ChangeSelectionTests(unittest.TestCase):
         self.write("game/combat/combat.gd", "extends RefCounted\n")
         self.write("tests/unit/inventory/inventory_test.gd", SUITE)
         self.write("tests/unit/combat/combat_test.gd", SUITE)
-        self.write("tests/features/F001/acceptance_test.gd", SUITE)
+        self.write("tests/features/F01-001/acceptance_test.gd", SUITE)
         self.registry = {"meta": {"schema_version": 4}, "components": [
             {"id": "inventory", "unit_test_paths": ["tests/unit/inventory"], "full_suite_on_change": False,
              "source_paths": ["game/inventory/**"]},
             {"id": "combat", "unit_test_paths": ["tests/unit/combat"], "full_suite_on_change": False,
              "source_paths": ["game/combat/**"]}],
-            "tests": [{"id": "F001-AC01", "components": ["inventory"], "path": "tests/features/F001/acceptance_test.gd",
+            "tests": [{"id": "F01-001-AC01", "components": ["inventory"], "path": "tests/features/F01-001/acceptance_test.gd",
                        "case": "test_case", "status": "active"}]}
         self.write_json("docs/test-registry.json", self.registry)
         self.write_json("docs/feature-list.json", {"meta": {}, "features": [
-            {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
-        self.detail = {"id": "F001", "affected_components": ["inventory"],
+            {"id": "F01-001", "status": "in_progress", "depends_on": [], "completed_at": None}]})
+        self.detail = {"id": "F01-001", "affected_components": ["inventory"],
                        "acceptance_criteria": [{"id": "AC01", "text": "Contract",
-                           "verification": {"automated_tests": ["F001-AC01"], "manual_checks": []}}],
+                           "verification": {"automated_tests": ["F01-001-AC01"], "manual_checks": []}}],
                        "verification": {"acceptance_mode": "automated", "regression_tests": [],
                                         "manual_regression": None}}
-        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/features/F01-001.json", self.detail)
         self.git("init")
         self.git("config", "user.name", "Selection Test")
         self.git("config", "user.email", "test@example.invalid")
         self.commit("fixture")
         self.base = self.git("rev-parse", "HEAD")
         self.detail["base_revision"] = self.base
-        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/features/F01-001.json", self.detail)
 
     def write(self, name: str, content: str) -> None:
         path = self.root / name
@@ -83,10 +83,10 @@ class ChangeSelectionTests(unittest.TestCase):
     def start_after(self, message: str) -> None:
         self.commit(message)
         self.detail["base_revision"] = self.git("rev-parse", "HEAD")
-        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/features/F01-001.json", self.detail)
 
     def selection(self) -> dict:
-        return build_selection(self.root, "F001")
+        return build_selection(self.root, "F01-001")
 
     def required_paths(self, selection: dict) -> set[str]:
         return {item["path"] for item in selection["required"]}
@@ -129,28 +129,28 @@ class ChangeSelectionTests(unittest.TestCase):
 
     def test_change_between_features_is_selected_by_next_feature(self) -> None:
         self.write_json("docs/feature-list.json", {"meta": {}, "features": [
-            {"id": "F001", "status": "done", "depends_on": [], "completed_at": "2026-10-01T00:00:00Z"},
-            {"id": "F002", "status": "pending", "depends_on": [], "completed_at": None}]})
-        self.write_json("docs/features/F001-evidence.json", {"git_revision": self.base})
-        self.write_json("docs/features/F002.json", {**self.detail, "id": "F002", "affected_components": ["inventory"],
+            {"id": "F01-001", "status": "done", "depends_on": [], "completed_at": "2026-10-01T00:00:00Z"},
+            {"id": "F01-002", "status": "pending", "depends_on": [], "completed_at": None}]})
+        self.write_json("docs/features/F01-001-evidence.json", {"git_revision": self.base})
+        self.write_json("docs/features/F01-002.json", {**self.detail, "id": "F01-002", "affected_components": ["inventory"],
                                                     "base_revision": None, "acceptance_criteria": [
                                                         {"id": "AC01", "text": "Manual", "verification": {
                                                             "automated_tests": [], "manual_checks": ["Look"]}}],
                                                     "verification": {"acceptance_mode": "manual",
                                                                      "regression_tests": []}})
-        self.commit("F001 done")
+        self.commit("F01-001 done")
         self.write("game/combat/combat.gd", "extends RefCounted\nvar manual := true\n")
         self.commit("manual change between Features")
         command = [sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-base-revision.py"),
-                   "--repo-root", str(self.root), "--feature", "F002"]
+                   "--repo-root", str(self.root), "--feature", "F01-002"]
         written = subprocess.run(command, capture_output=True, text=True)
         self.assertEqual(written.returncode, 0, written.stderr)
-        self.assertEqual(json.loads((self.root / "docs/features/F002.json").read_text())["base_revision"], self.base)
+        self.assertEqual(json.loads((self.root / "docs/features/F01-002.json").read_text())["base_revision"], self.base)
         kept = subprocess.run(command, capture_output=True, text=True)
         self.assertIn("kept", kept.stdout)
-        selection = build_selection(self.root, "F002")
+        selection = build_selection(self.root, "F01-002")
         self.assertIn("tests/unit/combat", self.required_paths(selection))
-        self.assertEqual(selection["touched_completed_features"], ["F001"])
+        self.assertEqual(selection["touched_completed_features"], ["F01-001"])
 
     def test_unclaimed_unreferenced_game_file_escalates_to_full(self) -> None:
         for path in ("game/orphan.gd", "game/words.txt"):
@@ -214,15 +214,15 @@ class ChangeSelectionTests(unittest.TestCase):
         self.registry["components"][1]["full_suite_on_change"] = True
         self.write_json("docs/test-registry.json", self.registry)
         self.write("game/combat/combat.gd", "extends RefCounted\nvar damage := 2\n")
-        before = (self.root / "docs/features/F001.json").read_bytes()
+        before = (self.root / "docs/features/F01-001.json").read_bytes()
         preview = subprocess.run([sys.executable, "-B", str(PROJECT_ROOT / "yaya/tools/features/record-base-revision.py"),
-                                  "--repo-root", str(self.root), "--feature", "F001", "--dry-run"],
+                                  "--repo-root", str(self.root), "--feature", "F01-001", "--dry-run"],
                                  capture_output=True, text=True)
         self.assertEqual(preview.returncode, 0, preview.stderr)
         self.assertEqual(json.loads(preview.stdout)["full_suite_reasons"],
                          self.selection()["full_suite"]["reasons"])
         self.assertIn("component-full-suite:combat", json.loads(preview.stdout)["full_suite_reasons"])
-        self.assertEqual((self.root / "docs/features/F001.json").read_bytes(), before)
+        self.assertEqual((self.root / "docs/features/F01-001.json").read_bytes(), before)
 
     def test_markdown_and_docs_changes_add_nothing(self) -> None:
         before = self.selection()
@@ -236,8 +236,8 @@ class ChangeSelectionTests(unittest.TestCase):
     def test_selection_ignores_other_feature_status(self) -> None:
         self.write("game/combat/combat.gd", "extends RefCounted\nvar damage := 2\n")
         index = {"meta": {}, "features": [
-            {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None},
-            {"id": "F002", "status": "in_progress", "depends_on": [], "completed_at": None}]}
+            {"id": "F01-001", "status": "in_progress", "depends_on": [], "completed_at": None},
+            {"id": "F01-002", "status": "in_progress", "depends_on": [], "completed_at": None}]}
         self.write_json("docs/feature-list.json", index)
         before = self.selection()
         index["features"][1].update(status="done", completed_at="2026-10-02T00:00:00Z")
@@ -252,7 +252,7 @@ class ChangeSelectionTests(unittest.TestCase):
         self.write("game/inventory/inventory.gd", "extends RefCounted\nvar two := 2\n")
         self.commit("second")
         before = self.selection()
-        self.git("commit", "--amend", "-m", "Work item: F009 reworded")
+        self.git("commit", "--amend", "-m", "Work item: F01-009 reworded")
         self.git("reset", "--soft", self.base)
         self.git("commit", "-m", "squashed")
         self.assertEqual(before, self.selection())
@@ -273,12 +273,12 @@ class ChangeSelectionTests(unittest.TestCase):
         self.assertIn("No tests need to run", output.getvalue())
         self.assertNotIn("PASS", output.getvalue())
         self.assertFalse((self.root / "reports").exists())
-        self.assertFalse((self.root / "docs/features/F001-evidence.json").exists())
+        self.assertFalse((self.root / "docs/features/F01-001-evidence.json").exists())
 
     def test_changes_only_add_to_existing_derivation(self) -> None:
         before = self.selection()
         self.assertEqual(self.required_paths(before),
-                         {"tests/unit/inventory", "tests/features/F001/acceptance_test.gd"})
+                         {"tests/unit/inventory", "tests/features/F01-001/acceptance_test.gd"})
         self.write("game/combat/combat.gd", "extends RefCounted\nvar damage := 2\n")
         self.write("game/inventory/inventory.gd", "extends RefCounted\nvar slots := 3\n")
         after = self.selection()
@@ -309,12 +309,12 @@ class ChangeSelectionTests(unittest.TestCase):
 
     def test_missing_or_unknown_base_revision_is_an_error(self) -> None:
         del self.detail["base_revision"]
-        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/features/F01-001.json", self.detail)
         for phase in ("baseline", "final"):
             with self.subTest(phase=phase), self.assertRaisesRegex(SelectionError, "record-base-revision"):
-                build_selection(self.root, "F001", phase=phase)
+                build_selection(self.root, "F01-001", phase=phase)
         self.detail["base_revision"] = "f" * 40
-        self.write_json("docs/features/F001.json", self.detail)
+        self.write_json("docs/features/F01-001.json", self.detail)
         with self.assertRaisesRegex(SelectionError, "--reset"):
             self.selection()
 

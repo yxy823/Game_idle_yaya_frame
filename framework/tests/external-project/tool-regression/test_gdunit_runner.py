@@ -94,11 +94,11 @@ class GdUnitRunnerTests(unittest.TestCase):
         self.assertEqual(runner._parse_args(["--godot-binary", sys.executable]).targets, ["dev/debug", "tests"])
 
     def test_overlapping_targets_execute_only_the_parent_directory(self) -> None:
-        suite = self.root / "tests/features/F013/held_tween_clock_test.gd"
+        suite = self.root / "tests/features/F01-013/held_tween_clock_test.gd"
         suite.parent.mkdir(parents=True)
         suite.touch()
-        targets = ["tests/features/F013", "tests/features/F013/held_tween_clock_test.gd",
-                   "res://tests/features/F013", "tests\\features\\F013", "tests/features",
+        targets = ["tests/features/F01-013", "tests/features/F01-013/held_tween_clock_test.gd",
+                   "res://tests/features/F01-013", "tests\\features\\F01-013", "tests/features",
                    "res://tests/features", "tests/features"]
         args = runner._parse_args(["--godot-binary", sys.executable,
                                    *[argument for target in targets for argument in ("--target", target)]])
@@ -142,7 +142,7 @@ class GdUnitRunnerTests(unittest.TestCase):
                 runner._positive_seconds(invalid)
 
     def test_invalid_feature_cannot_choose_a_report_directory(self) -> None:
-        for feature in ("../outside", "F001/run-other", "focused", "", "F01"):
+        for feature in ("../outside", "F01-001/run-other", "focused", "", "F01"):
             with self.subTest(feature=feature), self.assertRaises(SystemExit):
                 runner._parse_args(["--godot-binary", sys.executable, "--feature", feature])
         self.assertFalse((self.root / "reports").exists())
@@ -154,7 +154,7 @@ class GdUnitRunnerTests(unittest.TestCase):
             '{"engine_executable":"engine folder/Godot.exe"}',
             encoding="utf-8",
         )
-        args = runner._parse_args(["--feature", "F001"])
+        args = runner._parse_args(["--feature", "F01-001"])
         self.assertEqual(runner._build_command(args, self.root / "reports")[0],
                          str((self.root / "engine folder/Godot.exe").resolve()))
         config.unlink()
@@ -177,17 +177,17 @@ class GdUnitRunnerTests(unittest.TestCase):
              "commit", "--allow-empty", "--quiet", "-m", "Fixture"],
         ):
             subprocess.run(command, cwd=self.root, check=True, capture_output=True)
-        detail = {"id": "F001", "affected_components": ["example"],
+        detail = {"id": "F01-001", "affected_components": ["example"],
                   "acceptance_criteria": [{"id": "AC01", "text": "Inspect appearance",
                       "verification": {"automated_tests": [], "manual_checks": ["Inspect appearance"]}}],
                   "verification": {"acceptance_mode": "manual", "regression_tests": []},
                   "base_revision": subprocess.run(["git", "rev-parse", "HEAD"], cwd=self.root, check=True,
                                                   capture_output=True, text=True).stdout.strip()}
-        path = self.root / "docs/features/F001.json"
+        path = self.root / "docs/features/F01-001.json"
         path.parent.mkdir(parents=True)
         path.write_text(json.dumps(detail), encoding="utf-8")
         (self.root / "docs/feature-list.json").write_text(json.dumps({"meta": {}, "features": [
-            {"id": "F001", "status": "in_progress", "depends_on": [], "completed_at": None}]}), encoding="utf-8")
+            {"id": "F01-001", "status": "in_progress", "depends_on": [], "completed_at": None}]}), encoding="utf-8")
         (self.root / "docs/test-registry.json").write_text(json.dumps({
             "meta": {"schema_version": 4},
             "components": [{"id": "example", "unit_test_paths": [], "full_suite_on_change": False, "source_paths": ["game/**"]}],
@@ -201,42 +201,42 @@ class GdUnitRunnerTests(unittest.TestCase):
             output = io.StringIO()
             with self.subTest(scope=scope), redirect_stdout(output), mock.patch.object(runner, "_run_process") as engine:
                 self.assertEqual(runner._run_tests(runner._parse_args(
-                    ["--feature", "F001", "--scope", scope])), 0)
+                    ["--feature", "F01-001", "--scope", scope])), 0)
                 engine.assert_not_called()
             self.assertEqual(json.loads(output.getvalue())["status"], "not_required")
         self.assertFalse((self.root / "reports").exists())
-        self.assertFalse((self.root / "docs/features/F001-evidence.json").exists())
+        self.assertFalse((self.root / "docs/features/F01-001-evidence.json").exists())
 
     def test_empty_final_cannot_hide_failed_run(self) -> None:
         self._manual_plan()
-        directory = self.root / "reports/gdunit-wrapper/F001/run-failed"
+        directory = self.root / "reports/gdunit-wrapper/F01-001/run-failed"
         directory.mkdir(parents=True)
-        result = runner.start_run(self.root, directory, "F001", "final", "affected")
+        result = runner.start_run(self.root, directory, "F01-001", "final", "affected")
         runner.finish_run(self.root, directory, result, errors=["previous failure"])
         with mock.patch.object(runner, "_run_process") as engine:
-            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F01-001"])), 1)
             engine.assert_not_called()
 
     def test_empty_selection_cannot_skip_explicit_test_or_full_scope(self) -> None:
         self._manual_plan()
         for extra in (["--scope", "full"], ["--require-test", "tests/example.gd::test_case"]):
             with self.subTest(extra=extra), mock.patch.object(runner, "_run_process") as engine:
-                self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001", *extra])), 1)
+                self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F01-001", *extra])), 1)
                 engine.assert_not_called()
 
     def test_selected_registry_cases_must_execute_without_expanding_required_scope(self) -> None:
         detail = self._manual_plan()
         detail["verification"]["acceptance_mode"] = "automated"
         detail["acceptance_criteria"][0]["verification"] = {
-            "automated_tests": ["F001-AC01"], "manual_checks": []}
-        (self.root / "docs/features/F001.json").write_text(json.dumps(detail), encoding="utf-8")
+            "automated_tests": ["F01-001-AC01"], "manual_checks": []}
+        (self.root / "docs/features/F01-001.json").write_text(json.dumps(detail), encoding="utf-8")
         registry_path = self.root / "docs/test-registry.json"
         registry = json.loads(registry_path.read_text(encoding="utf-8"))
         registry["components"][0]["full_suite_on_change"] = True
         registry["tests"] = [
-            {"id": "F001-AC01", "components": ["example"], "path": "tests/contract.gd",
+            {"id": "F01-001-AC01", "components": ["example"], "path": "tests/contract.gd",
              "case": "test_current", "status": "active"},
-            {"id": "F002-AC01", "components": ["example"], "path": "tests/contract.gd",
+            {"id": "F01-002-AC01", "components": ["example"], "path": "tests/contract.gd",
              "case": "test_removed", "status": "active"},
         ]
         registry_path.write_text(json.dumps(registry), encoding="utf-8")
@@ -271,7 +271,7 @@ class GdUnitRunnerTests(unittest.TestCase):
         for scope in ("required", "affected", "full", "auto"):
             with self.subTest(scope=scope):
                 output, errors = io.StringIO(), io.StringIO()
-                args = runner._parse_args(["--feature", "F001", "--scope", scope,
+                args = runner._parse_args(["--feature", "F01-001", "--scope", scope,
                                            "--godot-binary", sys.executable])
                 with mock.patch.object(runner, "_run_process", side_effect=run_process), \
                         redirect_stdout(output), redirect_stderr(errors):
@@ -296,25 +296,25 @@ class GdUnitRunnerTests(unittest.TestCase):
         registry["components"][0]["unit_test_paths"] = ["tests/missing.gd"]
         path.write_text(json.dumps(registry), encoding="utf-8")
         with mock.patch.object(runner, "_run_process") as engine:
-            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F01-001"])), 1)
             engine.assert_not_called()
 
     def test_planned_automated_tests_can_have_empty_baseline_but_not_final(self) -> None:
         detail = self._manual_plan()
         detail["verification"]["acceptance_mode"] = "automated"
         detail["acceptance_criteria"][0]["verification"] = {
-            "automated_tests": ["F001-AC01-01"], "manual_checks": []}
-        (self.root / "docs/features/F001.json").write_text(json.dumps(detail), encoding="utf-8")
+            "automated_tests": ["F01-001-AC01-01"], "manual_checks": []}
+        (self.root / "docs/features/F01-001.json").write_text(json.dumps(detail), encoding="utf-8")
         path = self.root / "docs/test-registry.json"
         registry = json.loads(path.read_text(encoding="utf-8"))
-        registry["tests"] = [{"id": "F001-AC01-01", "status": "planned",
+        registry["tests"] = [{"id": "F01-001-AC01-01", "status": "planned",
                              "components": ["example"], "path": None, "case": None}]
         path.write_text(json.dumps(registry), encoding="utf-8")
         with mock.patch.object(runner, "_run_process") as engine:
             self.assertEqual(runner._run_tests(runner._parse_args(
-                ["--feature", "F001", "--phase", "baseline"])), 0)
+                ["--feature", "F01-001", "--phase", "baseline"])), 0)
             self.assertFalse((self.root / "reports").exists())
-            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F001"])), 1)
+            self.assertEqual(runner._run_tests(runner._parse_args(["--feature", "F01-001"])), 1)
             engine.assert_not_called()
 
     def test_project_relative_engine_path_preserves_spaces_and_unicode(self) -> None:

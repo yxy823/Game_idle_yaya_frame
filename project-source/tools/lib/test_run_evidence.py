@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from tools.lib.atomic_json import write_json
+from tools.lib.feature_ids import FEATURE_ID_HINT, FEATURE_ID_RE
 from tools.lib.verification_snapshot import EvidenceError, current_snapshot, utc_now
 from tools.lib.test_selection import (
     auto_scope, execution_selectors, normalized_path, read_json, build_selection,
@@ -286,8 +287,8 @@ def artifact_reference(directory: Path, path: Path) -> dict[str, str]:
 
 
 def run_history_directory(root: Path, feature_id: str | None) -> Path:
-    if feature_id is not None and (not isinstance(feature_id, str) or not re.fullmatch(r"F\d{3}", feature_id)):
-        raise RunEvidenceError("Feature ID must match F0XX")
+    if feature_id is not None and (not isinstance(feature_id, str) or not FEATURE_ID_RE.fullmatch(feature_id)):
+        raise RunEvidenceError(f"Feature ID must match {FEATURE_ID_HINT}")
     return root / "reports/gdunit-wrapper" / (feature_id if feature_id is not None else "focused")
 
 

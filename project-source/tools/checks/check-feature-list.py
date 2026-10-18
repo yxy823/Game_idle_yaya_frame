@@ -13,6 +13,7 @@ from typing import Any, Iterable
 # 脚本在子目录直接启动时，显式加载本项目的共享包。
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from tools.lib.feature_ids import ENGINEERING_PREFIX, FEATURE_ID_HINT, FEATURE_ID_RE as ID_RE, number, series
 from tools.lib.test_selection import acceptance_mode, read_json_value, SelectionError
 from tools.lib.feature_evolution import (
     EvolutionError, TEST_REGISTRY_PATH, eligible_features, COMPONENT_ID, COMMIT_ID,
@@ -26,7 +27,6 @@ REVISIONS_FILE = REPO_ROOT / "docs" / "feature-list-revisions.json"
 TEST_REGISTRY_FILE = REPO_ROOT / TEST_REGISTRY_PATH
 DETAILS_DIR = REPO_ROOT / "docs" / "features"
 
-ID_RE = re.compile(r"^F(\d{3})$")
 AC_RE = re.compile(r"^AC(\d{2})$")
 
 ALLOWED_STATUS = {"pending", "in_progress", "done", "obsolete", "obsolete_done", "blocked"}
@@ -90,6 +90,7 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
         _error("docs/feature-list.json features must be an array")
         return False, entries
 
+    counts: dict[str, int] = {}
     for pos, entry in enumerate(features, start=1):
         prefix = f"docs/feature-list.json features[{pos - 1}]"
         if not isinstance(entry, dict):
@@ -98,7 +99,7 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
             continue
         fid = entry.get("id")
         if not isinstance(fid, str) or not ID_RE.fullmatch(fid):
-            _error(f"{prefix}.id must match F followed by exactly three digits")
+            _error(f"{prefix}.id must match {FEATURE_ID_HINT}")
             ok = False
             continue
         if fid in entries:
@@ -106,8 +107,10 @@ def _validate_index(data: Any) -> tuple[bool, dict[str, dict[str, Any]]]:
             ok = False
             continue
         entries[fid] = entry
-        if fid != f"F{pos:03d}":
-            _error(f"Feature ids must remain sequential: position {pos} is {fid}, expected F{pos:03d}")
+        expected = counts.get(series(fid), 0) + 1
+        counts[series(fid)] = expected
+        if number(fid) != expected:
+            _error(f"Feature ids must remain sequential within {series(fid)}: {fid} should be number {expected:03d}")
             ok = False
         if not isinstance(entry.get("title"), str) or not entry["title"].strip():
             _error(f"{fid}.title must be a non-empty string")
@@ -208,7 +211,7 @@ def _validate_criterion(fid: str, pos: int, item: Any, path: Path) -> tuple[bool
 
 
 def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str, Any]]:
-    info: dict[str, Any] = {"criteria": set(), "automated": set(), "regressions": set(), "additional_tests": set(), "components": set()}
+    info: dict[str, Any] = {"criteria": set(), "automated": set(), "regressions": set(), "additional_tests": set(), "components": set(), "fixes": []}
     if not isinstance(data, dict):
         _error(f"{_rel(path)} root must be an object")
         return False, None, info
@@ -216,7 +219,7 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     ok = True
     fid = data.get("id")
     if not isinstance(fid, str) or not ID_RE.fullmatch(fid):
-        _error(f"{_rel(path)}.id must match F followed by exactly three digits")
+        _error(f"{_rel(path)}.id must match {FEATURE_ID_HINT}")
         ok = False
         fid = path.stem
     elif fid != path.stem:
@@ -305,6 +308,10 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
     if not isinstance(data.get("source"), str) or not data["source"].strip():
         _error(f"{_rel(path)}.source must be a non-empty string")
         ok = False
+    elif fid.startswith("F") and data["source"].startswith("product/") \
+            and not data["source"].startswith(f"product/{fid[1:3]}-"):
+        _error(f"{_rel(path)}.source must be a section of Product {fid[1:3]}, the Product in its ID")
+        ok = False
     base_revision = data.get("base_revision")
     if base_revision is not None and (not isinstance(base_revision, str) or not COMMIT_ID.fullmatch(base_revision)):
         _error(f"{_rel(path)}.base_revision must be a Git commit identifier written by record-base-revision.py")
@@ -318,6 +325,17 @@ def _validate_detail(path: Path, data: Any) -> tuple[bool, str | None, dict[str,
                                            or engineering_change not in ALLOWED_ENGINEERING_CHANGE):
         _error(f"{_rel(path)}.engineering_change {engineering_change!r} is invalid")
         ok = False
+    elif engineering_change != ENGINEERING_PREFIX.get(fid[0]):
+        _error(f"{_rel(path)}.engineering_change must be {ENGINEERING_PREFIX.get(fid[0])!r} for ID {fid}")
+        ok = False
+    fixes = data.get("fixes")
+    if engineering_change == "bug":
+        fixes_ok, fixes = _unique_string_list(fixes, f"{_rel(path)}.fixes", allow_empty=False)
+        ok &= fixes_ok
+    elif fixes not in (None, []):
+        _error(f"{_rel(path)}.fixes lists fixed Features only on a Bug; leave it empty otherwise")
+        ok = False
+    info["fixes"] = fixes if engineering_change == "bug" else []
     diagnosis = data.get("bug_diagnosis")
     info["bug_diagnosis"] = diagnosis
     if diagnosis is not None:
@@ -394,7 +412,7 @@ def _validate_all(completion_feature: str | None = None) -> bool:
     details: dict[str, dict[str, Any]] = {}
     detail_ids: set[str] = set()
     if DETAILS_DIR.exists():
-        for path in sorted(p for p in DETAILS_DIR.glob("F*.json") if re.fullmatch(r"F\d{3}\.json", p.name)):
+        for path in sorted(p for p in DETAILS_DIR.glob("*.json") if ID_RE.fullmatch(p.stem)):
             data, loaded = _load_json(path)
             ok &= loaded
             if not loaded:
@@ -415,6 +433,11 @@ def _validate_all(completion_feature: str | None = None) -> bool:
         msg = f"Feature index/detail sets differ (index without detail: {only_index}; detail without index: {only_detail})"
         _error(msg)
         ok = False
+    for fid, info in details.items():
+        for fixed in info["fixes"]:
+            if fixed == fid or fixed not in index_ids:
+                _error(f"{fid}.fixes references {fixed}, which is not another Feature in docs/feature-list.json")
+                ok = False
 
     registry_data, loaded = _load_json(TEST_REGISTRY_FILE)
     ok &= loaded
@@ -474,7 +497,7 @@ def _validate_all(completion_feature: str | None = None) -> bool:
 def _parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", type=Path, default=REPO_ROOT, help="project directory to validate")
-    parser.add_argument("--completion-feature", metavar="FXXX", help="require active coverage for this current completion")
+    parser.add_argument("--completion-feature", metavar="FEATURE_ID", help="require active coverage for this current completion")
     parser.add_argument("--eligible", action="store_true", help="print dependency-eligible pending Feature IDs as JSON")
     return parser.parse_args(list(argv))
 

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -13,6 +12,7 @@ from typing import Iterable
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.atomic_json import write_json
+from tools.lib.feature_ids import FEATURE_ID_HINT, FEATURE_ID_RE
 from tools.lib.test_selection import (
     SelectionError, change_impact, component_full_reasons, read_json, touched_completed_features, verification_point,
 )
@@ -23,8 +23,8 @@ DEFAULT_REPO_ROOT = Path(__file__).resolve().parents[3]
 
 def _feature_id(value: str) -> str:
     normalized = value.upper()
-    if not re.fullmatch(r"F\d{3}", normalized):
-        raise argparse.ArgumentTypeError("Feature ID must match F0XX")
+    if not FEATURE_ID_RE.fullmatch(normalized):
+        raise argparse.ArgumentTypeError(f"Feature ID must match {FEATURE_ID_HINT}")
     return normalized
 
 
