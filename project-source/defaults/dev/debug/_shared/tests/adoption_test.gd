@@ -4,6 +4,7 @@ extends GdUnitTestSuite
 
 const Fixture := preload("res://dev/debug/_shared/tests/fixtures/adoption_fixture.gd")
 const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Files := preload("res://dev/debug/_shared/adoption_files.gd")
 const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
@@ -69,7 +70,7 @@ func test_adopted_sound_is_the_game_entry_and_the_other_candidate_stays() -> voi
 	var loser := slot.directory.path_join("click")
 	for file: String in ["click.wav", "click.wav.import", "README.md", "candidate.tres"]:
 		assert_bool(FileAccess.file_exists(loser.path_join(file))).is_true()
-	var record := FileAccess.get_file_as_string(_fixture.dev_root().path_join(Adoption.LOG))
+	var record := FileAccess.get_file_as_string(_fixture.dev_root().path_join(Files.LOG))
 	assert_str(record).contains("sample/feedback/sound（按钮音效） · 候选 chime 已移入")
 	assert_str(record).contains("](_shared/README.md#收尾步骤)")
 	assert_bool(FileAccess.file_exists(slot.directory.path_join("chime/adopted.tres"))).is_true()
@@ -93,14 +94,14 @@ func test_script_candidate_is_queued_and_moves_at_the_next_start() -> void:
 	var ring := _fixture.ring_directory().path_join("ring_effect.tscn")
 	var disk := ResourceLoader.load(slot.game_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	assert_str(disk.candidate.resource_path).is_equal(ring)
-	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_str(Files.queued_candidate(slot)).is_equal("spark")
 	assert_bool(FileAccess.file_exists(source.path_join("spark_effect.gd"))).is_true()
-	var queued := Adoption.run_queue(_fixture.dev_root())
+	var queued := Files.run_queue(_fixture.dev_root())
 	assert_int(queued.error).is_equal(OK)
 	assert_array(queued.done).contains_exactly(["火花"])
 	assert_bool(FileAccess.file_exists(source.path_join("spark_effect.gd"))).is_false()
 	assert_str(FileAccess.get_file_as_string(destination.path_join("spark_effect.gd"))).not_contains(source)
-	assert_str(Adoption.queued_candidate(slot)).is_empty()
+	assert_str(Files.queued_candidate(slot)).is_empty()
 	assert_str(ResourceUID.get_id_path(scene_uid)).is_equal(destination.path_join("spark_effect.tscn"))
 	disk = ResourceLoader.load(slot.game_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	assert_str(disk.candidate.resource_path).is_equal(destination.path_join("spark_effect.tscn"))
@@ -189,7 +190,7 @@ func test_adopting_a_game_value_cancels_a_queued_move() -> void:
 	assert_int(slot.select_candidate(0).error).is_equal(OK)
 	var result := Adoption.adopt_all([slot], Adoption.plans_for([slot]))
 	assert_str(result.text).is_equal("已采纳：点击特效的当前设定已写入游戏")
-	assert_str(Adoption.queued_candidate(slot)).is_empty()
+	assert_str(Files.queued_candidate(slot)).is_empty()
 	assert_bool(FileAccess.file_exists(slot.directory.path_join("spark/spark_effect.gd"))).is_true()
 
 
@@ -211,7 +212,7 @@ func test_adopted_candidates_keep_working_over_two_restarts_before_the_agent_fin
 		assert_int(restarted.refresh_candidates().error).is_equal(OK)
 		assert_int(restarted.candidates.size()).is_greater(1)
 		assert_int(Uids.repair(_fixture.root.path_join("game"))).is_greater(0)
-		assert_int(Adoption.run_queue(_fixture.dev_root()).error).is_equal(OK)
+		assert_int(Files.run_queue(_fixture.dev_root()).error).is_equal(OK)
 		restarted = _restart(sound)
 		var result := restarted.refresh_candidates()
 		assert_dict(result).is_equal({"error": OK})
@@ -250,7 +251,7 @@ func test_a_candidate_that_does_not_load_after_moving_goes_back() -> void:
 	var source: String = adoption.source
 	# Stands in for a moved candidate the engine cannot load: the loaded path does not exist.
 	adoption.candidate_path = source.path_join("missing.wav")
-	var result := Adoption.move(adoption)
+	var result := Files.move(adoption)
 	assert_int(result.error).is_equal(ERR_CANT_OPEN)
 	assert_str(result.text).is_equal("没能采纳“风铃 · chime”：移入游戏后读不出来，文件已放回 %s/"
 		% Messages.relative(source))
@@ -269,18 +270,18 @@ func test_a_failed_path_rewrite_keeps_the_request_queued_until_it_succeeds() -> 
 	var script := slot.directory.path_join("spark/spark_effect.gd")
 	var original := FileAccess.get_file_as_bytes(script)
 	assert_int(FileAccess.set_read_only_attribute(script, true)).is_equal(OK)
-	var failed := Adoption.run_queue(_fixture.dev_root())
+	var failed := Files.run_queue(_fixture.dev_root())
 	assert_int(FileAccess.set_read_only_attribute(moved, false)).is_equal(OK)
 	assert_int(failed.error).is_not_equal(OK)
 	assert_str(failed.text).starts_with("上次排队采纳的 火花 没能移入游戏")
 	assert_str(failed.detail).contains("Cannot write " + moved)
-	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_str(Files.queued_candidate(slot)).is_equal("spark")
 	assert_bool(FileAccess.get_file_as_bytes(moved) == original).is_true()
 	assert_array(Array(DirAccess.get_files_at(moved.get_base_dir())).filter(
 		func(file: String) -> bool: return ".rewrite-" in file)).is_empty()
 	var disk := ResourceLoader.load(slot.game_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 	assert_str(disk.candidate.resource_path).is_equal(_fixture.ring_directory().path_join("ring_effect.tscn"))
-	var source: Script = Adoption
+	var source: Script = Files
 	var partial_write := GDScript.new()
 	partial_write.source_code = source.source_code.replace("output.store_string(updated)",
 		"output.store_string(updated.substr(0, 8)) and false")
@@ -288,10 +289,10 @@ func test_a_failed_path_rewrite_keeps_the_request_queued_until_it_succeeds() -> 
 	var interrupted: Dictionary = partial_write.run_queue(_fixture.dev_root())
 	assert_int(interrupted.error).is_not_equal(OK)
 	assert_bool(FileAccess.get_file_as_bytes(moved) == original).is_true()
-	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_str(Files.queued_candidate(slot)).is_equal("spark")
 	assert_array(Array(DirAccess.get_files_at(moved.get_base_dir())).filter(
 		func(file: String) -> bool: return ".rewrite-" in file)).is_empty()
-	var retried := Adoption.run_queue(_fixture.dev_root())
+	var retried := Files.run_queue(_fixture.dev_root())
 	assert_int(retried.error).is_equal(OK)
 	assert_array(retried.done).contains_exactly(["火花"])
 	assert_str(FileAccess.get_file_as_string(moved)).not_contains(slot.directory)
@@ -303,15 +304,15 @@ func test_a_queued_move_that_cannot_be_withdrawn_is_reported() -> void:
 	var slot := _fixture.effect_slot()
 	_fixture.select(slot, "spark")
 	Adoption.adopt_all([slot], Adoption.plans_for([slot]))
-	var queue := Adoption.queue_path(slot)
+	var queue := Files.queue_path(slot)
 	assert_int(FileAccess.set_read_only_attribute(queue, true)).is_equal(OK)
 	slot.select_candidate(0)
 	var result := Adoption.adopt_all([slot], Adoption.plans_for([slot]))
 	assert_int(result.error).is_not_equal(OK)
 	assert_str(result.text).starts_with("已采纳：点击特效的当前设定已写入游戏。但排队的 spark 没能撤回")
-	assert_str(Adoption.queued_candidate(slot)).is_equal("spark")
+	assert_str(Files.queued_candidate(slot)).is_equal("spark")
 	# A queue entry that the next start ran but could not remove is reported too.
-	var queued := Adoption.run_queue(_fixture.dev_root())
+	var queued := Files.run_queue(_fixture.dev_root())
 	assert_int(FileAccess.set_read_only_attribute(queue, false)).is_equal(OK)
 	assert_int(queued.error).is_not_equal(OK)
 	assert_array(queued.done).contains_exactly(["火花"])
@@ -320,8 +321,8 @@ func test_a_queued_move_that_cannot_be_withdrawn_is_reported() -> void:
 
 func test_an_unwritable_log_is_reported_with_the_lines_to_add() -> void:
 	var slot := _fixture.sound_slot()
-	var log_path := _fixture.dev_root().path_join(Adoption.LOG)
-	assert_int(Adoption.append_log(_fixture.dev_root(), "earlier")).is_equal(OK)
+	var log_path := _fixture.dev_root().path_join(Files.LOG)
+	assert_int(Files.append_log(_fixture.dev_root(), "earlier")).is_equal(OK)
 	assert_int(FileAccess.set_read_only_attribute(log_path, true)).is_equal(OK)
 	_fixture.select(slot, "chime")
 	var result := Adoption.adopt_all([slot], Adoption.plans_for([slot]))

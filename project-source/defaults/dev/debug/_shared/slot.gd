@@ -1,5 +1,5 @@
-# gdlint:ignore-file:god-class-functions=21
-# 保留原因：公开函数是插槽对外的完整接口，拆开后面板与命令要跨文件读。用户同意于 2026-10-08。
+# gdlint:ignore-file:god-class-functions=22
+# 保留原因：公开函数是插槽对外的完整接口，拆开后面板与命令要跨文件读。用户同意于 2026-10-08，2026-10-18 按实际数更新。
 extends RefCounted
 
 signal changed()

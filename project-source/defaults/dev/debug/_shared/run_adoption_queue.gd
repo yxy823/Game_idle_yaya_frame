@@ -1,13 +1,13 @@
 extends SceneTree
 ## Runs queued candidate adoptions without opening the debug window; see the follow-up steps in README.md.
 
-const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Files := preload("res://dev/debug/_shared/adoption_files.gd")
 const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 
 
 func _initialize() -> void:
 	Uids.repair()
-	var result := Adoption.run_queue("res://dev/debug")
+	var result := Files.run_queue("res://dev/debug")
 	if not String(result.get("note", "")).is_empty():
 		printerr(result.note)
 	if result.error != OK:

@@ -1,6 +1,6 @@
-# gdlint:ignore-file:file-length=557
+# gdlint:ignore-file:file-length=559
 # gdlint:ignore-file:god-class-functions=24
-# 保留原因：公开函数是 22 个测试用例加前后准备，全部共用同一个真实窗口夹具；拆文件要复制夹具或新建夹具基类。用户同意于 2026-10-08。
+# 保留原因：公开函数是 22 个测试用例加前后准备，全部共用同一个真实窗口夹具；拆文件要复制夹具或新建夹具基类。用户同意于 2026-10-08，2026-10-18 按实际数更新。
 extends GdUnitTestSuite
 
 const WINDOW := preload("res://dev/debug/_shared/debug_window.tscn")

@@ -9,7 +9,7 @@ signal reported(result: Dictionary)
 const Slot := preload("res://dev/debug/_shared/slot.gd")
 const Codec := preload("res://dev/debug/_shared/preset_codec.gd")
 const Kit := preload("res://dev/debug/_shared/ui_kit.gd")
-const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Files := preload("res://dev/debug/_shared/adoption_files.gd")
 const Messages := preload("res://dev/debug/_shared/debug_messages.gd")
 const ROW_HEIGHT := 32.0
 const LOCKED_ALPHA := 0.6
@@ -33,7 +33,7 @@ func _init(slot: Slot) -> void:
 			trials.append(trial)
 	var group := ButtonGroup.new()
 	var current := _matching_candidate()
-	var queued := Adoption.queued_candidate(slot)
+	var queued := Files.queued_candidate(slot)
 	for index in range(slot.candidates.size()):
 		var row := _row(index, index == current, group,
 			not queued.is_empty() and slot.candidates[index].id == queued)

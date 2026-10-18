@@ -1,7 +1,7 @@
 extends Node
 
 const WINDOW := preload("res://dev/debug/_shared/debug_window.tscn")
-const Adoption := preload("res://dev/debug/_shared/candidate_adoption.gd")
+const Files := preload("res://dev/debug/_shared/adoption_files.gd")
 const Uids := preload("res://dev/debug/_shared/adoption_uids.gd")
 const Project := preload("res://dev/debug/debug_project.gd")
 
@@ -15,7 +15,7 @@ func _boot() -> void:
 	# Before the window or the game loads any tuning resource: moved files get their UIDs back
 	# even when the editor's UID cache still names dev/, then queued moves run.
 	Uids.repair()
-	var queued := Adoption.run_queue("res://dev/debug")
+	var queued := Files.run_queue("res://dev/debug")
 	var save_path := Project.new().use_debug_save(get_tree())
 	var window := WINDOW.instantiate() as Window
 	window.force_native = true

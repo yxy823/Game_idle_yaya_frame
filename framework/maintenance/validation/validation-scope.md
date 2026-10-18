@@ -16,7 +16,7 @@
 | 创建器或清单 | 映射、边界及按需创建器回归 |
 | Python 项目工具 | 相关实现与调用静态核对，指定外部项目中的工具回归 |
 | 测试选择、完成证据或 Feature 执行流程（规范或工具） | 除上面适用的行外，按[测试改动场景表](test-change-scenarios.md)逐行核对判断列和依据；结论变了，同一次修改中更新这张表 |
-| Godot 代码、插件、场景或资源 | 按实际影响在指定外部项目运行真实引擎验证。新增或修改分发的场景、资源或导入文件时，在新生成的项目中执行 `--headless --editor --path . --quit-after 300` 和 `--headless --path . --import`，之后 git 应无任何变化，没有修改，也没有新文件 |
+| Godot 代码、插件、场景或资源 | 按实际影响在指定外部项目运行真实引擎验证。新增或修改分发的场景、资源或导入文件时，在新生成的项目中执行 `--headless --editor --path . --quit-after 300` 和 `--headless --path . --import`，之后 git 应无任何变化，没有修改，也没有新文件。新增或修改分发的 GDScript 时，在新生成的项目中对 `res://` 运行 lint，不能新增警告；超过钉住数的文件按[GDScript lint 的约定与证据](../../../project-source/methodology/contracts/gdscript-lint.md)先判断拆分，保留时请用户同意 |
 | 仅静态或只读请求 | 不生成项目、不启动 Godot、不运行测试 |
 
 注意事项：
