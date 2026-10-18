@@ -79,6 +79,15 @@ class LinkTextTests(unittest.TestCase):
             ("index.md", 2, "schema.md", "LINK-TEXT"),
         ])
 
+    def test_related_to_reports_only_links_in_or_into_listed_paths(self):
+        self.write("target.md", "# 新标题\n")
+        self.write("unrelated.md", "# 无关\n")
+        self.write("other.md", "# 其他\n\n见[旧标题](target.md)和[错的](unrelated.md)。\n")
+        process = self.run_cli("--related-to", "-", stdin="target.md\n")
+        self.assertEqual(process.returncode, 1, process.stderr)
+        self.assertEqual([(row["file"], row["text"]) for row in json.loads(process.stdout)["findings"]],
+                         [("other.md", "旧标题")])
+
     def test_listed_files_limit_the_scan_and_missing_files_fail(self):
         self.write("docs/guide.md", "# 指南\n")
         self.write("a.md", "见[说明](docs/guide.md)。\n")

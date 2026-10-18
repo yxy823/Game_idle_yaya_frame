@@ -11,8 +11,9 @@ staged_godot_files() {
         '*.png' '*.jpg' '*.jpeg' '*.webp' '*.svg' '*.bmp' '*.tga' '*.wav' '*.ogg' '*.mp3' '*.ttf' '*.otf'
 }
 
-# 新增、修改、改名后的文件交给术语与措辞检查；删除的文件也会让别处的链接失效，所以只用来决定是否运行链接检查。
-changed=$(git diff --cached --name-only -z --diff-filter=ACMRD -- '*.md' '*.json' | tr '\0' '\n')
+# 新增、修改、改名后的文件交给术语与措辞检查；删除的文件也会让别处的链接失效，所以也交给链接检查。
+# --no-renames 把改名拆成删除和新增，旧路径也进清单，指向旧路径的链接才能被报出来。
+changed=$(git diff --cached --name-only -z --no-renames --diff-filter=ACMD -- '*.md' '*.json' | tr '\0' '\n')
 # 文件清单从标准输入传入，避免文件很多时超出命令行长度；路径里的中文和空格原样保留。
 present=$(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' '*.json' | tr '\0' '\n')
 godot=$(staged_godot_files | tr '\0' '\n')
@@ -38,8 +39,14 @@ $present
 EOF
 fi
 if [ -n "$changed" ]; then
-    python -B yaya/tools/checks/check-markdown-links.py || failed="$failed 链接检查"
-    python -B yaya/tools/checks/check-link-text.py || failed="$failed 链接文字检查"
+    # 链接检查扫描整个项目，但只报本次暂存文件里的链接和指向它们的链接，
+    # 所以同一目录里另一个任务没暂存的半成品不会挡住这次提交。
+    python -B yaya/tools/checks/check-markdown-links.py --related-to - <<EOF || failed="$failed 链接检查"
+$changed
+EOF
+    python -B yaya/tools/checks/check-link-text.py --related-to - <<EOF || failed="$failed 链接文字检查"
+$changed
+EOF
 fi
 # 资源格式检查只接受文件参数，xargs 按命令行长度分批运行；插件目录等默认范围外的文件由检查自己跳过。
 if [ -n "$godot" ]; then

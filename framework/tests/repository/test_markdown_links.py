@@ -83,6 +83,17 @@ class MarkdownLinkTests(unittest.TestCase):
         self.assertEqual(self.broken(str(self.root / "b.md")),
                          {("b.md", "missing-b.md", "target does not exist")})
 
+    def test_related_to_reports_only_links_in_or_into_listed_paths(self):
+        self.write("staged.md", "[a](missing-a.md)\n")
+        self.write("other.md", "[b](missing-b.md)\n[c](gone.md)\n")
+        process = subprocess.run(
+            [sys.executable, "-B", str(COMMAND), "--root", str(self.root), "--json", "--related-to", "-"],
+            input="staged.md\ngone.md\n", capture_output=True, encoding="utf-8", check=False, timeout=30,
+        )
+        self.assertEqual(process.returncode, 1, process.stderr)
+        self.assertEqual({(row["file"], row["target"]) for row in json.loads(process.stdout)["broken"]},
+                         {("staged.md", "missing-a.md"), ("other.md", "gone.md")})
+
     def test_listed_file_outside_root_is_an_argument_error(self):
         with tempfile.TemporaryDirectory() as other:
             outside = Path(other) / "c.md"

@@ -12,7 +12,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from tools.lib.markdown_links import (  # noqa: E402
-    DEFAULT_EXCLUDED_DIRECTORY_NAMES, ScanCache, markdown_files, split_target,
+    DEFAULT_EXCLUDED_DIRECTORY_NAMES, ScanCache, is_related, markdown_files, read_path_list, split_target,
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
@@ -63,6 +63,7 @@ def main(argv: list[str] | None = None) -> int:
         metavar="PATH",
         help="additional path relative to --root whose Markdown files are not scanned; repeatable",
     )
+    parser.add_argument("--related-to", metavar="LIST", help="report only links that sit in, or point at, the root-relative paths listed in LIST, one per line ('-' reads standard input); deleted paths may be listed. The whole tree is still scanned")
     parser.add_argument("--json", action="store_true", help="print the result as JSON")
     args = parser.parse_args(argv)
 
@@ -77,6 +78,9 @@ def main(argv: list[str] | None = None) -> int:
             if not path.is_relative_to(root):
                 parser.error(f"file is not under --root: {path}")
         checked, broken = check_links(root, files)
+        if args.related_to is not None:
+            related = read_path_list(args.related_to)
+            broken = [item for item in broken if is_related(root, related, item.file, item.target)]
     except (OSError, UnicodeDecodeError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import re
 import os
+import sys
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
@@ -196,3 +197,21 @@ def markdown_files(root: Path, excluded_names: set[str], excluded_paths: list[Pa
                      if Path(name).suffix.lower() == ".md" and (Path(directory) / name).is_file()
                      and not is_excluded(relative / name, excluded_names, excluded_paths))
     return sorted(files)
+
+
+def read_path_list(value: str) -> set[Path]:
+    """Read root-relative paths, one per line, from a file or from standard input when value is '-'."""
+    text = sys.stdin.read() if value == "-" else Path(value).read_text(encoding="utf-8")
+    return {Path(line.strip()) for line in text.splitlines() if line.strip()}
+
+
+def is_related(root: Path, related: set[Path], file: str, raw: str) -> bool:
+    """True when the link sits in a listed file or points at one; listed files may already be deleted."""
+    if Path(file) in related:
+        return True
+    path_text, _ = split_target(raw)
+    target = (root / file).parent / path_text if path_text else root / file
+    try:
+        return Path(os.path.relpath(target, root)) in related
+    except ValueError:
+        return False

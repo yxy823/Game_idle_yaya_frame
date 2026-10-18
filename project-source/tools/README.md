@@ -128,8 +128,8 @@ $LASTEXITCODE
 | --- | --- | --- |
 | [check-terminology.py](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
 | [check-wording.py](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
-| [check-markdown-links.py](#check-markdown-linkspy) | 整个项目，因为改标题或删文件会让其他文档中的链接失效；本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 有失效链接 |
-| [check-link-text.py](#check-link-textpy) | 同上，因为改标题会让其他文档中的链接文字过时 | 有链接文字与目标标题不符的链接 |
+| [check-markdown-links.py](#check-markdown-linkspy) | 扫描整个项目，因为改标题或删文件会让其他文档中的链接失效；只报告本次暂存的 `.md`、`.json`（含删除和改名前的路径）里的链接，以及指向它们的链接，所以同一目录里另一个任务没暂存的文件不会挡住提交。本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 报告的范围内有失效链接 |
+| [check-link-text.py](#check-link-textpy) | 同上，因为改标题会让其他文档中的链接文字过时 | 报告的范围内有链接文字与目标标题不符的链接 |
 | [check-godot-resource-format.py](#check-godot-resource-formatpy) | 本次新增、修改或改名的场景、资源、脚本、Shader 和图片、音频、字体素材；插件目录等默认范围排除的位置不查 | 场景或资源没按编辑器格式保存，脚本、Shader 缺 `.uid`，素材缺 `.import` |
 | Skill 目录一致性（钩子内置，没有单独的脚本） | 本次暂存了 `.agents/skills/` 或 `.claude/skills/` 下的任何文件时，比较暂存区中两个目录的内容 | 两个目录不同。Codex 读前者，Claude Code 读后者，所以两份必须相同 |
 
@@ -223,6 +223,7 @@ python -B yaya/tools/checks/check-markdown-links.py
 | `<文件>…` | 只检查列出的文件；路径相对当前目录，须在 `--root` 下；列出文件时 `--exclude` 不生效 | 扫描整个 `--root` |
 | `--root <目录>` | 要检查的目录 | 脚本所在项目 |
 | `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
+| `--related-to <清单>` | 仍扫描整个 `--root`，但只报告位于清单所列文件中、或指向清单所列文件的问题；清单每行一个相对 `--root` 的路径，`-` 从标准输入读取，可以列出已删除的文件。提交钩子用它把检查限定在本次暂存的文件上 | 报告全部 |
 | `--json` | 以 JSON 输出文件数、链接数和失效列表 | 逐行输出 |
 
 退出码：`0` 没有失效链接；`1` 存在失效链接；`2` 参数或读取错误。通过只证明链接目标存在，不证明读者能找到所需内容。链接文字是否用了目标标题由 [check-link-text.py](#check-link-textpy) 检查。
@@ -248,6 +249,7 @@ python -B yaya/tools/checks/check-link-text.py
 | `--files-from <清单>` | 另外检查清单中列出的文件，每行一个路径；`-` 从标准输入读取。清单为空时不检查任何文件 | 不使用 |
 | `--root <目录>` | 要检查的目录 | 脚本所在项目 |
 | `--exclude <路径>` | 另外排除相对 `--root` 的路径，可重复 | 只用默认排除 |
+| `--related-to <清单>` | 仍扫描整个 `--root`，但只报告位于清单所列文件中、或指向清单所列文件的问题；清单每行一个相对 `--root` 的路径，`-` 从标准输入读取，可以列出已删除的文件。提交钩子用它把检查限定在本次暂存的文件上 | 报告全部 |
 | `--json` | 以 JSON 输出文件数、比较的链接数和 `findings` 列表，每条含 `file`、`line`、`target`、`text`、`expected`、`rule` | 逐行输出 |
 
 只检查列出的文件时，仍按需读取它们链接到的文件的标题。默认排除的目录与 `check-markdown-links.py` 相同。文本输出每处一行 `路径:行号  [LINK-TEXT] [链接文字](目标)  标题：目标标题`，最后一行汇总。
