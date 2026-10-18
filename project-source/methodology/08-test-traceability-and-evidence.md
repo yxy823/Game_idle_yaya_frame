@@ -141,6 +141,15 @@ Feature 详情使用稳定的验收条件 ID：
 - **何时出现在 `affected_components`**：Feature 修改上面覆盖范围内的文件时，包括登记新的插槽、候选或固定局面；新建调参资源或新增调参字段时也写上，因为同时要在对应的 `slot.gd` 补中文名（见[调参资源](../agent-rules/21-resources/roles-sharing-and-locality.md#调参资源)），共享测试会检查。调试台本身的修改按[调试台的修改](07-engineering-change.md#调试台的修改)建维护 Feature。
 - 只改游戏代码、不新建调参资源或字段时，依赖方向测试按测试选择规则中的[扩大验证的 Godot 改动](../agent-rules/70-tests/test-selection-and-gates.md#扩大验证的-godot-改动)处理，不必把 `debug_console` 写进 `affected_components`。
 
+### 资源验证组件
+
+新项目的测试登记表还预置组件 `asset_validation`，本节是它的唯一定义：
+
+- **覆盖范围**：接入资源时在真实场景里检查渲染、播放或动画的验证场景，放在 `dev/asset_validation/<主题>/`。它们不随游戏发布，也不被游戏代码引用。
+- **认领的文件**：`source_paths` 为 `["dev/asset_validation/**"]`。
+- **登记的测试**：没有，`unit_test_paths` 为空。认领这些文件是为了让改动有归属；没有归属的文件会让测试选择升级为全量，理由却与游戏无关。
+- **何时出现在 `affected_components`**：不写。验证场景改动不需要游戏测试；它依赖的游戏资源改动时，按资源所属的组件选择测试。
+
 ## 测试影响评估
 
 `feature-execute` 在 Stage 1、实现之前做测试影响评估。Required Test Set 是：

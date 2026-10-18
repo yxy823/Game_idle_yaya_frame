@@ -12,6 +12,14 @@
       "source_paths": [
         "dev/debug/**"
       ]
+    },
+    {
+      "id": "asset_validation",
+      "unit_test_paths": [],
+      "full_suite_on_change": false,
+      "source_paths": [
+        "dev/asset_validation/**"
+      ]
     }
   ],
   "tests": [

@@ -420,7 +420,7 @@ class ProjectCopyTests(unittest.TestCase):
             self.assertFalse(any((output / relative).rglob(".gdignore")), relative)
         self.assertEqual(json.loads((output / "docs/feature-list.json").read_text(encoding="utf-8"))["features"], [])
         registry = json.loads((output / "docs/test-registry.json").read_text(encoding="utf-8"))
-        self.assertEqual([component["id"] for component in registry["components"]], ["debug_console"])
+        self.assertEqual([component["id"] for component in registry["components"]], ["debug_console", "asset_validation"])
         self.assertEqual([test["id"] for test in registry["tests"]], ["INV-DEBUG_CONSOLE-01"])
         for relative in ("gdd/README.md", "gdd/open-questions.md", "product.md", "product/README.md"):
             self.assertEqual((output / "docs" / relative).read_bytes(),

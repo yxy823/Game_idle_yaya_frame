@@ -161,6 +161,16 @@ class ChangeSelectionTests(unittest.TestCase):
         selection = build_selection(self.root, "F01-002")
         self.assertEqual([item["id"] for item in selection["inferred_components"]], ["shop"])
 
+    def test_asset_validation_scene_is_claimed_without_tests(self) -> None:
+        self.registry["components"].append({"id": "asset_validation", "unit_test_paths": [],
+                                            "full_suite_on_change": False, "source_paths": ["dev/asset_validation/**"]})
+        self.write_json("docs/test-registry.json", self.registry)
+        self.start_after("asset validation component")
+        self.write("dev/asset_validation/boss/check.tscn", '[gd_scene format=3 uid="uid://check"]\n\n[node name="Root" type="Node3D"]\n')
+        selection = self.selection()
+        self.assertFalse(selection["full_suite"]["required"], selection["full_suite"])
+        self.assertNotIn("tests/unit/combat", self.required_paths(selection))
+
     def test_unclaimed_unreferenced_game_file_escalates_to_full(self) -> None:
         for path in ("game/orphan.gd", "game/words.txt"):
             with self.subTest(path=path):
