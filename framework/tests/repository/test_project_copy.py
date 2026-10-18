@@ -155,6 +155,10 @@ class ProjectCopyTests(unittest.TestCase):
                                                  encoding="utf-8", newline="\n")
             rules.write_text(rules.read_text(encoding="utf-8").replace("提交前应运行检查。", "提交前运行检查。"),
                              encoding="utf-8", newline="\n")
+            # 框架副本按框架术语写，项目登记的不用说法不拦它。
+            copied = output / "yaya/methodology/05-document-language.md"
+            copied.write_text(copied.read_text(encoding="utf-8") + "\n收集水晶。\n",
+                              encoding="utf-8", newline="\n")
             accepted = commit()
             self.assertEqual(accepted.returncode, 0, accepted.stdout + accepted.stderr)
         count = subprocess.check_output(["git", "rev-list", "--count", "HEAD"], cwd=output, text=True).strip()

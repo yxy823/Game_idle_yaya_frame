@@ -126,7 +126,7 @@ $LASTEXITCODE
 
 | 检查 | 范围 | 失败条件 |
 | --- | --- | --- |
-| [check-terminology.py](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查 | 有不用的说法 |
+| [check-terminology.py](#check-terminologypy) | 本次新增、修改或改名的 `.md` 与 `.json` 文件，删除的不查。框架复制进来的 `yaya/`、`addons/`、`.agents/skills/`、`.claude/skills/`、`.claude/agents/`、`.codex/agents/` 和 `AGENTS.md` 不查，因为它们按框架术语写，同步时会被覆盖 | 有不用的说法 |
 | [check-wording.py](#check-wordingpy) `--level hard` | 同上 | 有硬性检查项的命中 |
 | [check-markdown-links.py](#check-markdown-linkspy) | 扫描整个项目，因为改标题或删文件会让其他文档中的链接失效；只报告本次暂存的 `.md`、`.json`（含删除和改名前的路径）里的链接，以及指向它们的链接，所以同一目录里另一个任务没暂存的文件不会挡住提交。本次新增、修改、改名或删除了 `.md`、`.json` 时运行 | 报告的范围内有失效链接 |
 | [check-link-text.py](#check-link-textpy) | 同上，因为改标题会让其他文档中的链接文字过时 | 报告的范围内有链接文字与目标标题不符的链接 |

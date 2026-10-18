@@ -16,6 +16,8 @@ staged_godot_files() {
 changed=$(git diff --cached --name-only -z --no-renames --diff-filter=ACMD -- '*.md' '*.json' | tr '\0' '\n')
 # 文件清单从标准输入传入，避免文件很多时超出命令行长度；路径里的中文和空格原样保留。
 present=$(git diff --cached --name-only -z --diff-filter=ACMR -- '*.md' '*.json' | tr '\0' '\n')
+# 框架复制进来的文件按框架术语写，同步时会被覆盖，所以不交给项目术语检查。
+project_owned=$(printf '%s\n' "$present" | grep -Ev '^(yaya/|addons/|\.agents/skills/|\.claude/skills/|\.claude/agents/|\.codex/agents/|AGENTS\.md$)')
 godot=$(staged_godot_files | tr '\0' '\n')
 skills=$(git diff --cached --name-only -- .agents/skills .claude/skills)
 [ -n "$changed" ] || [ -n "$godot" ] || [ -n "$skills" ] || exit 0
@@ -30,10 +32,12 @@ if [ -n "$skills" ]; then
         failed="$failed Skill 目录一致性检查"
     fi
 fi
-if [ -n "$present" ]; then
+if [ -n "$project_owned" ]; then
     python -B yaya/tools/checks/check-terminology.py --files-from - <<EOF || failed="$failed 术语检查"
-$present
+$project_owned
 EOF
+fi
+if [ -n "$present" ]; then
     python -B yaya/tools/checks/check-wording.py --level hard --files-from - <<EOF || failed="$failed 措辞检查"
 $present
 EOF
