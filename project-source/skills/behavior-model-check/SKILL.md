@@ -26,9 +26,9 @@ description: "在 Feature 执行的 Stage 1C（设计决定）中，为有命名
 模型描述子系统的当前行为，和 [架构与决定记录在哪里](../../../yaya/methodology/10-architecture-overview.md#架构与决定记录在哪里)中的子系统文档一样随行为变化更新：
 
 - 一个子系统一个模型，正式位置和检查清单以那张表为准。之后改这个子系统的 Feature 更新同一个模型，不另建副本。
-- 1C 时设计还没批准，模型草稿写在 `reports/scratch/<Feature ID>/models/`（更新已有模型时先复制过去再改），在那里运行工具。批准后由 Stage 2 保存到正式位置并重跑一次。
+- 1C 时设计还没批准，模型草稿写在 `reports/scratch/<Feature ID>/models/`（更新已有模型时先复制过去再改），在那里运行工具。批准后由 Stage 2 保存到正式位置；内容和最后一次运行不一致时才重跑。
 - 清单字段和工具的退出码见 [check-behavior-model.py](../../../yaya/tools/README.md#check-behavior-modelpy)。
-- Feature 设计稿写明用了哪个模型、哪些性质对应哪条 AC，以及 Stage 2 重跑的 `summary.json` 路径；不复制模型正文。
+- Feature 设计稿写明用了哪个模型、哪些性质对应哪条 AC，以及 Stage 2 记录的 `summary.json` 路径；不复制模型正文。
 
 ## 步骤
 
