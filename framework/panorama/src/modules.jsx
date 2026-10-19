@@ -2,6 +2,7 @@ import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayou
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
 import FilesModule from "./FilesModule.jsx";
+import QaModule from "./QaModule.jsx";
 import ScenesModule from "./ScenesModule.jsx";
 import SearchModule from "./SearchModule.jsx";
 
@@ -49,9 +50,6 @@ export const modules = [
       todo="手册的章节目录，按阅读顺序排列；点章节在页面里显示正文。" source="framework/godot-project-manual/ 的 README 和各章标题" />
   ) },
   { id: "files", label: "文件全景", tip: "文件全景", Icon: IconLayoutGrid, render: (p) => <FilesModule {...p} /> },
-  { id: "qa", label: "问答", tip: "问答", Icon: IconHelpCircle, render: () => (
-    <Simple title="问答" lead="讨论中问过、以后还会用到的问题。" ui="qa.placeholder"
-      todo="按主题列出问题，点一条在详情面板显示，按钮打开问答页面里的这一条。" source="framework/qa/ 的主题文件和 pages/" />
-  ) },
+  { id: "qa", label: "问答", tip: "问答", Icon: IconHelpCircle, render: (p) => <QaModule {...p} /> },
   { id: "search", label: "搜索结果", tip: "搜索结果", Icon: IconSearch, render: (p) => <SearchModule {...p} /> },
 ];

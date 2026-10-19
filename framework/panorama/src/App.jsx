@@ -49,7 +49,7 @@ export default function App() {
       <header className="topbar" data-ui="topbar">
         <span className="title" data-ui="topbar.title">框架全景</span>
         <span className="spacer"></span>
-        <input className="search" type="search" placeholder="搜索标题、用途、Skill、工具和术语" aria-label="搜索" data-ui="topbar.search"
+        <input className="search" type="search" placeholder="搜索标题、用途、Skill、问答、工具和术语" aria-label="搜索" data-ui="topbar.search"
           value={query} onChange={(e) => { setQuery(e.target.value); if (e.target.value.trim()) setModule("search"); }}
           onKeyDown={(e) => { if (e.key === "Enter") setModule("search"); }} />
         <button className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"

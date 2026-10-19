@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
+import { qaOf, qaPageUrl } from "./QaModule.jsx";
 
 function Row({ name, children }) {
   return <div className="row"><span className="name">{name}</span><span className="value">{children}</span></div>;
@@ -44,8 +45,32 @@ function Quote({ link, current, onSelect }) {
   );
 }
 
+// 问答的详情：结论、为什么、依据；按钮在新标签页打开问答页里的这一条
+function QaPanel({ q, onSelect }) {
+  return (
+    <aside className="panel" aria-label="详情" data-ui="panel">
+      <div className="panel-head" data-ui="panel.head" data-tip={q.title}>{q.title}</div>
+      <div className="panel-actions">
+        <a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a>
+      </div>
+      <Section title="回答" ui="panel.answer">
+        <Row name="结论">{q.conclusion}</Row>
+        {q.why && <Row name="为什么">{q.why}</Row>}
+      </Section>
+      <Section title="关联" ui="panel.qa-links">
+        <Row name="主题"><FileLink index={q.file} onSelect={onSelect} /></Row>
+        {q.basis.length > 0 && <Row name="依据"><ul className="plain">{q.basis.map((i) => <li key={i}><FileLink index={i} onSelect={onSelect} /></li>)}</ul></Row>}
+        <Row name="原文"><a className="open" href={vscodeUrl(q.file, q.line)} data-tip="在 VSCode 里打开这一行">{files[q.file].path}:{q.line}</a></Row>
+      </Section>
+    </aside>
+  );
+}
+
 // 右侧详情面板，照 draw.io 的属性面板：分节可以折叠，每行左边是名称、右边是值。
+// file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel。
 export default function DetailPanel({ file, onSelect }) {
+  const q = qaOf(file);
+  if (q) return <QaPanel key={file} q={q} onSelect={onSelect} />;
   if (file === null) {
     return (
       <aside className="panel" aria-label="详情" data-ui="panel">

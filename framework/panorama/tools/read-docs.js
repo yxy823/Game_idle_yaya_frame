@@ -75,12 +75,33 @@ function readEntries(node, file, entries) {
   for (const child of node.children || []) readEntries(child, file, entries);
 }
 
+// 问答主题文件里每个二级标题是一个问题；问答页按出现顺序给它们编号 A、B、C……，打开页面时跳到 #panel-字母
+function readQa(tree, file, qa, resolve) {
+  let current = null, order = 0;
+  for (const node of tree.children) {
+    if (node.type === "heading" && node.depth === 2) {
+      current = { file, title: text(node), line: node.position.start.line, panel: String.fromCharCode(65 + order++), conclusion: "", why: "", basis: [] };
+      qa.push(current);
+    } else if (current && node.type === "paragraph" && node.children[0]?.type === "strong") {
+      const label = text(node.children[0]), rest = text({ children: node.children.slice(1) }).replace(/^[：:]\s*/, "");
+      if (label === "结论") current.conclusion = rest;
+      else if (label === "为什么") current.why = rest;
+      else if (label === "依据") {
+        const found = [];
+        const find = (n) => { if (n.type === "link") { const hit = resolve(n.url); if (hit && !found.includes(hit.to)) found.push(hit.to); } (n.children || []).forEach(find); };
+        find(node);
+        current.basis = found;
+      }
+    }
+  }
+}
+
 export function readDocs(repo) {
   const paths = git(repo, ["ls-files", "-z", "--", "*.md"]).split("\0")
     .filter((p) => p && !excluded.some((e) => p.startsWith(e)));
   const index = new Map(paths.map((p, i) => [p, i]));
   const changes = history(repo);
-  const files = [], paras = [], links = [], entries = [];
+  const files = [], paras = [], links = [], entries = [], qa = [];
 
   // 链接目标换成卡片编号：相对当前文件解析，指向目录时取目录下的 README.md；不是 Markdown 卡片的目标返回 null
   const resolve = (from, url) => {
@@ -100,7 +121,7 @@ export function readDocs(repo) {
     const first = afterTitle.find((n) => n.type === "paragraph" && !isNav(n));
     files.push({
       path: file,
-      title: front?.name || (h1 ? text(h1) : path.posix.basename(file)),
+      title: front?.name || front?.title || (h1 ? text(h1) : path.posix.basename(file)),
       group: groups.find((g) => file.startsWith(g.prefix)).id,
       purpose: front?.description || (first ? text(first) : ""),
       outline: tree.children.filter((n) => n.type === "heading" && n.depth === 2).map(text),
@@ -149,7 +170,8 @@ export function readDocs(repo) {
     };
     walk(tree, "ref");
     readEntries(tree, fi, entries);
+    if (/^framework\/qa\/[^/]+\.md$/.test(file) && !file.endsWith("/README.md")) readQa(tree, fi, qa, (url) => resolve(file, url));
   });
 
-  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries };
+  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa };
 }
