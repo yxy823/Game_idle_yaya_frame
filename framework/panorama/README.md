@@ -41,7 +41,8 @@ npm --prefix framework/panorama run build
 | `src/` | 页面源码：React 组件和 `styles.css`；颜色、尺寸和层级都用 `styles.css` 开头的 CSS 变量 |
 | `tools/babel-data-src.js` | 编译时给带 `data-ui` 的元素补 `data-src="文件:行号"`，元素选取靠它复制源码位置 |
 | `tools/panorama-data.js` | 构建时读取仓库文档，以虚拟模块 `virtual:panorama-data` 交给页面；现在只读首页流程图和生成时间 |
+| [interface-design.md](interface-design.md) | 界面设计约定：改界面时按它做 |
 | `vite.config.js` | 用 Vite 打包成一个内联全部脚本和样式的 HTML，因为 Edge 直接打开本地文件时会拦住外部的模块脚本 |
 | `package.json`、`package-lock.json` | 依赖及固定版本：React、Vite、Pele（渲染 Mermaid 图）、Tabler Icons；升级时改这里的版本号，再运行 `install` |
 
-给界面元素加 `data-ui="模块.元素"` 名称，元素选取才能选中它；名称只用英文小写、点和连字符。
+修改界面前先读[框架全景的界面设计](interface-design.md)：风格、尺寸、布局、颜色用途和组件约定都写在那里。给界面元素加 `data-ui="区域.元素"` 名称，元素选取才能选中它，命名规则见其中的「元素名称」。
