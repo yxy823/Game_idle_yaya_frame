@@ -85,14 +85,22 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 .panel-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .panel-head .icon-btn[aria-disabled="true"] { color: var(--muted-fg); opacity: 0.5; cursor: default; background: none; }
 .panel .empty { padding: 4px var(--pad); color: var(--muted-fg); }
-.section > summary { height: var(--control-h); display: flex; align-items: center; gap: 4px; padding: 0 var(--pad);
+/* 小节照 draw.io 的格式面板：实心三角贴左内边距，三角、标题和小节内容共用一条左边线；小节之间画细线 */
+.section { padding-bottom: 6px; }
+.section + .section { border-top: 1px solid var(--border); }
+.section > summary { height: var(--control-h); display: flex; align-items: center; gap: 2px; padding: 0 var(--pad);
   font-weight: 600; cursor: pointer; list-style: none; }
-.section > summary .twisty { width: 16px; display: inline-grid; place-items: center; color: var(--muted-fg); }
-.section > summary .twisty svg.tabler-icon { width: 12px; height: 12px; }
+.section > summary .twisty { display: inline-grid; place-items: center; color: var(--muted-fg); }
+/* 实心三角的图形在图标框里左右各空 1/4，向左挪出这段空白，图形左缘才落在左内边距上 */
+.section > summary .twisty svg.tabler-icon { width: 14px; height: 14px; margin-left: -3px; }
 .section > summary::-webkit-details-marker { display: none; }
 .row { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 0 var(--pad); min-height: var(--control-h); align-items: start; }
 .row .name { font-size: var(--fs-small); color: var(--muted-fg); line-height: var(--control-h); }
 .row .value { line-height: 1.5; padding-top: 5px; overflow-wrap: anywhere; }
+.group { padding: 0 var(--pad) 4px; }
+.group-name { font-size: var(--fs-small); color: var(--muted-fg); padding-top: 2px; }
+.group .text { margin: 0 0 4px; overflow-wrap: anywhere; }
+.group ul.text { padding-left: 1.2em; }
 
 /* 窗口太窄、主区域不足 480px 时收起详情面板 */
 .statusbar { display: flex; align-items: center; gap: 16px; padding: 0 10px; background: var(--chrome);
@@ -213,14 +221,15 @@ body.picking, body.picking * { cursor: crosshair !important; }
 /* 详情面板里的关系 */
 .section > summary .count { margin-left: auto; padding-right: 0; }
 .plain { list-style: none; margin: 0; padding: 0; }
-.plain li { padding: 2px 0; }
+.plain li { padding: 2px 0; min-width: 0; }
+/* 列表里的链接只占一行，过长的用省略号，悬停看全名 */
 .link-btn { padding: 0; border: 0; background: transparent; color: var(--fg); cursor: pointer; text-align: left; font: inherit; }
+.plain .link-btn { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .link-btn:hover { color: var(--brand); text-decoration: underline; }
 .open:hover { text-decoration: underline; }
 .open { color: var(--brand); text-decoration: none; overflow-wrap: anywhere; }
 .tag { display: inline-block; margin-right: 4px; padding: 0 4px; border-radius: var(--radius); background: var(--primary); color: var(--pick-fg); font-size: var(--fs-small); }
-.cond { color: var(--muted-fg); margin-right: 4px; }
-.cond:not(:empty)::after { content: "："; }
+.cond { color: var(--muted-fg); font-size: var(--fs-small); }
 .quote { padding: 6px var(--pad); border-top: 1px solid var(--border); }
 .quote-head { display: flex; align-items: baseline; gap: 8px; }
 .quote-head .open { margin-left: auto; flex: none; font-size: var(--fs-small); }
@@ -230,7 +239,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .quote-link { color: var(--fg); }
 .module { height: 100%; }
 .files-layout > div { overflow: auto; }
-.section > .plain { padding: 0 var(--pad) 4px; }
+
 
 /* 搜索结果 */
 .results { list-style: none; margin: 0; padding: 0; max-width: 960px; }
@@ -304,10 +313,12 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .reader-back { display: inline-flex; align-items: center; gap: 4px; margin-bottom: 12px; }
 
 /* 详情面板的子标签：选中的标签下边一条 2px 的 --primary，切换时尺寸不变 */
-.panel-tabs { display: flex; gap: 4px; padding: 0 var(--pad); margin: -4px 0 4px; border-bottom: 1px solid var(--border); }
-.panel-tabs button { height: var(--control-h); display: inline-flex; align-items: center; padding: 0 6px; border: 0; background: none; cursor: pointer; color: var(--muted-fg); }
+/* 标签平分面板宽度，照 draw.io：没选中的标签底色深一档，选中的和面板同色 */
+.panel-tabs { display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; margin: -4px 0 4px; border-bottom: 1px solid var(--border); }
+.panel-tabs button { height: var(--control-h); display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; border: 0; background: var(--chrome); cursor: pointer; color: var(--muted-fg); }
+.panel-tabs button + button { border-left: 1px solid var(--border); }
 .panel-tabs button:hover { color: var(--fg); }
-.panel-tabs button[aria-selected="true"] { color: var(--fg); box-shadow: inset 0 -2px 0 var(--primary); }
+.panel-tabs button[aria-selected="true"] { color: var(--fg); background: var(--surface); font-weight: 600; }
 .panel-tabs .count { margin-left: 4px; padding-left: 0; }
 
 /* 学习页的标题行（搜索和上一处、下一处）固定在主区域顶部，跳到命中后仍能继续搜索 */
@@ -321,5 +332,3 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .panel-doc { padding: 4px var(--pad) 16px; font-size: var(--fs-small); line-height: 1.6; }
 .panel-doc td:first-child { min-width: 5em; }
 .panel-doc tr.hit-row td { background: color-mix(in srgb, var(--brand) 22%, transparent); }
-.row .value p.why, .row .value ul.why { margin: 0 0 6px; }
-.row .value ul.why { padding-left: 1.2em; }
