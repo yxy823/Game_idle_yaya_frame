@@ -10,7 +10,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__")
+DEFAULT_EXCLUDED_DIRECTORY_NAMES = (".git", ".godot", ".claude", "tmp", "addons", "__pycache__", "node_modules")
 # 测试和界面试用的运行目录由工具生成，里面没有手写文档，沙箱也可能读不了。
 DEFAULT_EXCLUDED_PATHS = ("reports/gdunit-wrapper", "reports/ui-trial")
 

@@ -261,7 +261,7 @@ python -B yaya/tools/checks/check-markdown-links.py
 - **检查的链接**：行内链接、`<路径>` 写法与引用式定义中的本地目标；目标是 Markdown 文件且带 `#锚点` 时，再核对锚点。
 - **锚点规则**：按 GitHub 规则由标题生成，即去掉标点和格式符号、转小写、空格变 `-`，中文保留；重名标题依次加 `-1`、`-2`。`<a id="…">` 也算锚点。
 - **不检查**：外部网址、代码块和行内代码里的内容。以 `/` 开头的路径不可移植，直接报告。
-- **默认排除**：任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`addons`、`__pycache__` 的目录，以及测试和界面试用的运行目录 `reports/gdunit-wrapper/`、`reports/ui-trial/` 中的 Markdown 不检查；指向这些目录的链接仍会核对目标。
+- **默认排除**：任意层级名为 `.git`、`.godot`、`.claude`、`tmp`、`addons`、`__pycache__`、`node_modules` 的目录，以及测试和界面试用的运行目录 `reports/gdunit-wrapper/`、`reports/ui-trial/` 中的 Markdown 不检查；指向这些目录的链接仍会核对目标。
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
