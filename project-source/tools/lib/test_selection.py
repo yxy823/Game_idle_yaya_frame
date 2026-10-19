@@ -1,6 +1,7 @@
 """Deterministic Test Registry selection shared by runners and completion gates."""
 from __future__ import annotations
 
+import functools
 import json
 import math
 import re
@@ -131,6 +132,7 @@ def acceptance_mode(detail: dict[str, Any]) -> str:
     return mode
 
 
+@functools.cache
 def _glob_regex(pattern: str) -> re.Pattern[str]:
     """`**` crosses directories, `*` and `?` stay within one path segment."""
     parts = re.split(r"(\*\*/|\*\*|\*|\?)", pattern)
