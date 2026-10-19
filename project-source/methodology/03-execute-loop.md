@@ -176,7 +176,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 - Feature 范围和受影响的组件；
 - Stage 0 准备的 Context / Rules Snapshot；
 - 实质性的设计选择和约束，以及需要做出的 Feature 设计稿、ADR 和规则修改决定；
-- 建了行为模型时，`behavior-model-check` 的[交给 1D 批准材料的内容](../../.agents/skills/behavior-model-check/SKILL.md#交给-1d-批准材料的内容)；
+- 建了行为模型时，`behavior-model-check` 的[交给 1D 批准材料的内容](../../.agents/skills/behavior-model-check/SKILL.md#交给-1d-批准材料的内容)；没建时写一行“行为模型检查：不需要”和理由，例如“只改按钮样式，没有按事件或时间转换的状态”；
 - 修改前要运行的 Existing Safety Net（已有安全网）；
 - 要创建的 TDD 验收测试、回归测试和单元测试套件；
 - 验收模式、选择理由和对应的验证项；
