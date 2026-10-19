@@ -1,0 +1,125 @@
+/* 界面样式：颜色、尺寸和层级都用 :root 变量，深色主题只改变量。 */
+:root {
+  --bar-h: 36px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
+  --icon: 16px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
+  --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
+  --brand: #2f6fd6;
+  --primary: var(--brand); --ring: var(--brand);
+  --bg: #fcfcfd; --surface: #f7f8fa; --chrome: #eceef2; --accent: #e2e6ec;
+  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #7d8590;
+  --danger: #c4314b; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
+  --shadow: 0 4px 12px rgb(31 35 41 / .16);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --brand: #5b9bff;
+  --bg: #1e1f22; --surface: #25272b; --chrome: #18191b; --accent: #33363c;
+  --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
+  --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+  --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #5b9bff;
+    --bg: #1e1f22; --surface: #25272b; --chrome: #18191b; --accent: #33363c;
+    --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
+    --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+    --shadow: 0 4px 12px rgb(0 0 0 / .45);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  font: var(--fs)/1.5 "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+  color: var(--fg); background: var(--bg); overflow: hidden;
+}
+#root { display: grid; grid-template-rows: var(--bar-h) 1fr 24px; }
+button { font: inherit; color: inherit; }
+svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: currentColor; stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round; flex: none; }
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+
+.topbar { display: flex; align-items: center; gap: 8px; padding: 0 8px; background: var(--chrome);
+  border-bottom: 1px solid var(--border); }
+.topbar .title { font-weight: 600; padding: 0 4px; white-space: nowrap; }
+.topbar .spacer { flex: 1; }
+.search { flex: 0 1 320px; min-width: 120px; height: var(--control-h); padding: 0 8px; border: 1px solid var(--field-border);
+  border-radius: var(--radius); background: var(--bg); color: var(--fg); font: inherit; }
+.icon-btn { width: var(--control-h); height: var(--control-h); display: inline-grid; place-items: center;
+  border: 0; border-radius: var(--radius); background: transparent; cursor: pointer; }
+.icon-btn:hover { background: var(--accent); }
+.icon-btn[aria-pressed="true"], .icon-btn[aria-current="page"] { box-shadow: inset 2px 0 0 var(--primary); background: var(--accent); }
+.divider { width: 1px; height: 20px; background: var(--border); }
+
+.workspace { display: grid; grid-template-columns: var(--activity-w) 1fr var(--panel-w); min-height: 0; }
+.workspace.panel-closed { grid-template-columns: var(--activity-w) 1fr 0; }
+.activity { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px;
+  background: var(--chrome); border-right: 1px solid var(--border); }
+.activity .icon-btn { width: 36px; height: 36px; }
+.main { overflow: auto; scrollbar-gutter: stable; padding: 16px 20px; min-width: 0; }
+.module[hidden] { display: none; }
+.module h1 { font-size: 16px; margin: 0 0 4px; }
+.module .lead { color: var(--muted-fg); margin: 0 0 16px; max-width: 48em; }
+.placeholder { border: 1px dashed var(--border); border-radius: var(--radius); background: var(--surface);
+  padding: 12px var(--pad); margin-bottom: 12px; max-width: 48em; }
+.placeholder dt { font-size: var(--fs-small); color: var(--muted-fg); }
+.placeholder dd { margin: 0 0 8px; }
+/* Mermaid 图由 Pele 渲染，颜色取页面的语义变量，换主题时不用重画 */
+.diagram { margin: 0 0 16px; max-width: 720px; white-space: pre-wrap; font: var(--fs-small)/1.5 Consolas, monospace; color: var(--muted-fg); }
+.pele { --pele-bg: transparent; --pele-fg: var(--fg); --pele-muted: var(--muted-fg); --pele-line: var(--muted-fg);
+  --pele-surface: var(--surface); --pele-surface-alt: var(--accent); --pele-border: var(--field-border); --pele-accent: var(--brand);
+  --pele-error: var(--danger); --pele-font: "Segoe UI", "Microsoft YaHei UI", sans-serif; --pele-radius: var(--radius); }
+.file-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: var(--radius); }
+.file-list li + li { border-top: 1px solid var(--border); }
+.file-list button { width: 100%; height: var(--control-h); display: flex; align-items: center; gap: 8px; padding: 0 var(--pad);
+  border: 0; background: transparent; text-align: left; cursor: pointer; }
+.file-list button:hover { background: var(--accent); }
+.file-list button[aria-selected="true"] { box-shadow: inset 0 0 0 1px var(--primary); }
+.file-list .path { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.panel { border-left: 1px solid var(--border); background: var(--surface); overflow: auto; scrollbar-gutter: stable; min-width: 0; }
+.workspace.panel-closed .panel { visibility: hidden; }
+.panel-head { height: var(--control-h); display: flex; align-items: center; padding: 0 var(--pad); margin-top: 4px;
+  font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.panel .empty { padding: 4px var(--pad); color: var(--muted-fg); }
+.section > summary { height: var(--control-h); display: flex; align-items: center; gap: 4px; padding: 0 var(--pad);
+  font-weight: 600; cursor: pointer; list-style: none; }
+.section > summary::before { content: "▸"; width: 12px; color: var(--muted-fg); }
+.section[open] > summary::before { content: "▾"; }
+.row { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 0 var(--pad); min-height: var(--control-h); align-items: start; }
+.row .name { font-size: var(--fs-small); color: var(--muted-fg); line-height: var(--control-h); }
+.row .value { line-height: 1.5; padding-top: 5px; overflow-wrap: anywhere; }
+
+/* 窗口太窄、主区域不足 480px 时收起详情面板 */
+@media (max-width: 844px) { .workspace, .workspace.panel-closed { grid-template-columns: var(--activity-w) 1fr 0; } .panel { visibility: hidden; } }
+.statusbar { display: flex; align-items: center; gap: 16px; padding: 0 10px; background: var(--chrome);
+  border-top: 1px solid var(--border); font-size: var(--fs-small); color: var(--muted-fg); font-variant-numeric: tabular-nums; }
+.statusbar .pick-state { min-width: 220px; }
+
+.menu { position: fixed; z-index: var(--z-menu); min-width: 220px; padding: 4px 0; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow); }
+.menu[hidden] { display: none; }
+.menu .group { padding: 4px var(--pad) 2px; font-size: var(--fs-small); color: var(--muted-fg); }
+.menu button { width: 100%; height: var(--control-h); display: flex; align-items: center; gap: 8px; padding: 0 var(--pad) 0 8px;
+  border: 0; background: transparent; text-align: left; cursor: pointer; }
+.menu button:hover { background: var(--accent); }
+.menu .mark { width: 16px; text-align: center; }
+.menu .key { margin-left: auto; color: var(--muted-fg); font-size: var(--fs-small); }
+.switch { position: relative; flex: none; width: 28px; height: 16px; margin-left: 8px; border-radius: 8px; background: var(--field-border); }
+.switch::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); }
+[aria-checked="true"] > .switch { background: var(--primary); }
+[aria-checked="true"] > .switch::after { left: 14px; }
+
+.tip { position: fixed; z-index: var(--z-tip); padding: 4px 8px; border-radius: var(--radius); background: var(--tip-bg); color: var(--tip-fg);
+  font-size: var(--fs-small); pointer-events: none; white-space: nowrap; }
+.tip[hidden] { display: none; }
+
+body.picking, body.picking * { cursor: crosshair !important; }
+.pick-box { position: fixed; z-index: var(--z-pick); pointer-events: none; outline: 2px solid var(--pick); outline-offset: -1px; }
+.pick-box[hidden], .pick-label[hidden], .toast[hidden] { display: none; }
+.pick-label { position: fixed; z-index: var(--z-pick); pointer-events: none; padding: 1px 6px; border-radius: var(--radius);
+  background: var(--pick); color: var(--pick-fg); font-size: var(--fs-small); white-space: nowrap; }
+.toast { position: fixed; z-index: var(--z-toast); left: 50%; bottom: 36px; transform: translateX(-50%); padding: 4px 12px; border-radius: var(--radius);
+  background: var(--tip-bg); color: var(--tip-fg); font-size: var(--fs-small); }

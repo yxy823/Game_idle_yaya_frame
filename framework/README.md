@@ -45,6 +45,7 @@ flowchart TD
 | 测试时让 Agent 在每条回复里写出依据了哪些原则、Skill、脚本和文件 | [决策依据（框架维护）](../.agents/skills/decision-trace-yaya/SKILL.md)；Codex 用 `$decision-trace-yaya` 开启，Claude Code 用 `/decision-trace-yaya` 开启 |
 | 创建空白项目、运行检查或回归 | 下文[维护命令](#维护命令) |
 | 确认框架专用术语的含义和统一写法 | [框架术语](terminology.md) |
+| 在一个页面里浏览框架的文档、Skill、工具、场景和问答及其引用关系 | [框架全景](panorama/README.md) |
 
 ## 目录与职责
 
@@ -56,6 +57,7 @@ flowchart TD
 | [todo.md](todo.md) | 仍需推进的工作、验证缺口和必要决定；完成即删，历史查 Git |
 | [lessons.md](lessons.md) | 框架维护中 Agent 自己的流程失误及出现次数，够了就提出升级 |
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |
+| [panorama/](panorama/README.md) | 框架全景：React 页面源码和构建插件；生成的 `dist/index.html` 不提交 |
 | [qa/](qa/README.md) | Q&A：用户在讨论中问过、以后还会用到的问题，按主题分文件；框架做法只写结论并链接正文，通用专业知识在这里写完整 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |
 | `prompt-scenarios/` | `prompts/` 两份预设提示词库；[scenarios/](prompt-scenarios/scenarios/README.md) 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词与场景的路径检查脚本 |
@@ -107,6 +109,7 @@ flowchart TD
 | 提交说明钩子 `.githooks/commit-msg` | 提交时用框架术语检查提交说明，有不用的说法就拒绝提交；和提交钩子一起启用 | [提交说明钩子](maintenance/tools/README.md#提交说明钩子) |
 | 用词提示钩子 `.claude/settings.json` | 用户每次向 Claude Code 发消息时，按框架术语检查消息正文，有不用的说法时提示 Agent 列出用词对照表；不拦截消息 | [用词提示钩子](maintenance/tools/README.md#用词提示钩子) |
 | 孤立文档扫描 `maintenance/tools/find_orphan_docs.py` | 扫描全仓文档的文本引用，列出孤立候选 | [维护工具](maintenance/tools/README.md) |
+| 框架全景 `npm --prefix framework/panorama run build` | 生成框架全景页面；提交改了 Markdown 时由提交后钩子自动运行 | [打开与生成](panorama/README.md#打开与生成) |
 | 回归测试 `tests/` 下的回归入口 | 仓库回归与指定外部项目的工具回归 | [测试与夹具](tests/README.md) |
 
 维护脚本只处理可重复的文件与数据操作，任务范围与结果意义由 Agent 判断；不增加逐动作监督、重复状态、发布资格或自动同步。总体取舍依据根 `AGENTS.md` 的[核心决策原则](../AGENTS.md#核心决策原则)。

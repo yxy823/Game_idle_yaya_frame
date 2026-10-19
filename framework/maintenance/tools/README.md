@@ -82,7 +82,7 @@ python -B project-source/tools/checks/check-wording.py --list
 git config core.hooksPath .githooks
 ```
 
-同一目录还有下文的[提交说明钩子](#提交说明钩子)和[提交后生成 Q&A 页面](#提交后生成-qa-页面)钩子，启用这一次就一起生效。
+同一目录还有下文的[提交说明钩子](#提交说明钩子)，以及[提交后生成 Q&A 页面](#提交后生成-qa-页面)和[提交后生成框架全景](#提交后生成框架全景)的钩子，启用这一次就一起生效。
 
 生成项目使用分发源中的另一份钩子，由创建器启用，见项目检查与测试工具的[提交钩子](../../../project-source/tools/README.md#提交钩子)。
 
@@ -101,6 +101,14 @@ git config core.hooksPath .githooks
 - 提交已经完成，生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
 - 只改了主题文件、还没提交时，页面不会更新；想提交前先看效果，手动运行同一条命令。
 - 用 PATH 中的 `node` 运行；启用方式与提交钩子相同。
+
+## 提交后生成框架全景
+
+[框架全景](../../panorama/README.md)生成的 `framework/panorama/dist/` 被根 `.gitignore` 忽略，不提交。同一个 `.githooks/post-commit` 检查：这次提交改了任何 `.md` 文件或 `framework/panorama/` 下的文件时，运行 `npm --prefix framework/panorama run build` 重新生成页面，约需 5 秒，生成期间提交命令不会返回。
+
+- 生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
+- 还没运行过 `npm --prefix framework/panorama install` 时不生成，只打印安装提示。
+- 只改了文档、还没提交时，页面不会更新；想提交前先看效果，手动运行同一条命令。
 
 ## 用词提示钩子
 
