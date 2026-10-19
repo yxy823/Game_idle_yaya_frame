@@ -9,7 +9,9 @@ description: "在 Feature 执行的 Stage 1C（设计决定）中，为有命名
 
 ## 何时使用
 
-`feature-execute` 在 [1C. 设计决定与实现指导](../../../yaya/methodology/03-execute-loop.md#1c-设计决定与实现指导)按其中的适用条件调用本 Skill。用户在 Feature 之外要求检查某个子系统的设计时也可以使用；这时只交付模型和结论，不修改 Feature 记录。
+`feature-execute` 在 [1C. 设计决定与实现指导](../../../yaya/methodology/03-execute-loop.md#1c-设计决定与实现指导)按其中的适用条件调用本 Skill。用户在 Feature 之外要求检查某个子系统的设计时也可以使用；这时模型放在 `reports/scratch/<task>/models/`，只交付模型和结论，不修改 `docs/architecture/models/` 和 Feature 记录。
+
+模型由主 Agent 建立和运行。委派 `implementation-advisor` 准备实现指导时，顾问只读取模型检查的结果，不写模型、不运行工具。
 
 开始前必须有：
 
@@ -23,9 +25,10 @@ description: "在 Feature 执行的 Stage 1C（设计决定）中，为有命名
 
 模型描述子系统的当前行为，和 [架构与决定记录在哪里](../../../yaya/methodology/10-architecture-overview.md#架构与决定记录在哪里)中的子系统文档一样随行为变化更新：
 
-- 一个子系统一个模型，文件名和检查清单的位置以那张表为准。之后改这个子系统的 Feature 更新同一个模型，不另建副本。
+- 一个子系统一个模型，正式位置和检查清单以那张表为准。之后改这个子系统的 Feature 更新同一个模型，不另建副本。
+- 1C 时设计还没批准，模型草稿写在 `reports/scratch/<Feature ID>/models/`（更新已有模型时先复制过去再改），在那里运行工具。批准后由 Stage 2 保存到正式位置并重跑一次。
 - 清单字段和工具的退出码见 [check-behavior-model.py](../../../yaya/tools/README.md#check-behavior-modelpy)。
-- Feature 设计稿写明用了哪个模型、哪些性质对应哪条 AC，以及本次运行的 `summary.json` 路径；不复制模型正文。
+- Feature 设计稿写明用了哪个模型、哪些性质对应哪条 AC，以及 Stage 2 重跑的 `summary.json` 路径；不复制模型正文。
 
 ## 步骤
 
@@ -37,7 +40,7 @@ description: "在 Feature 执行的 Stage 1C（设计决定）中，为有命名
 4. **配错误注入。** 用常量 `Mutation` 切换，每个错误注入模拟一种合理的实现错误，并在清单里写明由哪条性质抓到。关键性质都要有错误注入；工具会列出没有配的性质，逐条判断是否需要。
 5. **写见证路径。** 每条重要的合法路径写一个期望被违反的不变量，证明模型没有把它限制掉，例如“片段能够失败”“宽限期内补入物品后物品挨打”。
 6. **选参数。** 参数要让参与者能够错开，见指南的[参数选择](references/modeling-guide.md#参数选择)。
-7. **运行工具。** 用 `check-behavior-model.py` 跑完全部检查。退出码 `1` 表示有期望没满足，`2` 表示模型、清单或环境出错。
+7. **运行工具。** 用 `check-behavior-model.py` 跑完全部检查，退出码的含义见上面链接的工具说明。
 8. **分类每个失败。** 按指南的[失败的分类](references/modeling-guide.md#失败的分类)判断是性质写错、模型写错、参数挡住了路径，还是设计漏洞；修正后重跑，直到退出码为 `0`。
 
 ## 失败时不能做的事
@@ -56,7 +59,5 @@ description: "在 Feature 执行的 Stage 1C（设计决定）中，为有命名
 - 结果表：正确版本、每个错误注入、每条见证路径的期望和实际结果，以及 `summary.json` 路径；
 - GDD 没写清的规则：每条给出选项、推荐和理由；
 - 要在 Stage 3 改写成 GdUnit4 测试的路径：每条见证路径一个测试，每个被抓到的错误注入一个能在代码上复现它的测试，各自对应哪条 AC。
-
-用户要求独立审核时，审核实例对照代码和 GDD 审读 TLA+ 本身。
 
 返回调用方；Skill 返回不会结束它所在的已授权任务（methodology 03 的[授权与续接](../../../yaya/methodology/03-execute-loop.md#授权与续接)）。

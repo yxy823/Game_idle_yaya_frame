@@ -8,7 +8,7 @@
 
 | 产物 | 位置与职责 |
 | --- | --- |
-| 工具或流程规定的报告 | 保持其固定路径，包括 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`（或同一根目录下的 `focused/run-<id>/`）、`reports/manual-acceptance/` 和 `reports/initialization.md`。读取它们的工具和证据引用依赖这些约定。 |
+| 工具或流程规定的报告 | 保持其固定路径，包括 `reports/gdunit-wrapper/<Feature-ID>/run-<id>/`（或同一根目录下的 `focused/run-<id>/`）、`reports/manual-acceptance/`、`reports/model-checks/<模型名>/run-<时间>/` 和 `reports/initialization.md`。读取它们的工具和证据引用依赖这些约定。 |
 | 自定义的 Feature 日志、结果和截图 | 使用 `reports/features/<Feature-ID>/`，工程 Feature 也一样。结果跟着各自的 Feature 存放，不散落在根目录，也不把多个 Feature 归进一个 Product 草稿目录。 |
 | 不属于 Feature 的自定义报告 | 使用 `reports/maintenance/<task>/`，用能说明维护或调查内容的名称。 |
 | 临时文档：草稿、当次方案、交接副本和参考来源摘录 | 使用项目根目录的 `tmp/<task>/`，需要时按主题或尝试建子目录。临时文档不混进正式的源码或文档目录。 |
