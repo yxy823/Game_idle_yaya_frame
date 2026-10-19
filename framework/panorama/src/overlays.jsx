@@ -71,13 +71,15 @@ function describe(el) {
   return el.dataset.ui + (text ? "「" + text + "」" : "") + "（" + el.dataset.src + "）";
 }
 
-// 本地文件不是安全上下文，浏览器不提供 navigator.clipboard，改用选中文本框再复制
-function copyText(text) {
-  if (navigator.clipboard) return navigator.clipboard.writeText(text);
+// 先用 navigator.clipboard；它被拒绝时（例如没有剪贴板权限）改用选中文本框再复制
+function copyByTextarea(text) {
   const area = Object.assign(document.createElement("textarea"), { value: text });
   document.body.append(area); area.select();
   const ok = document.execCommand("copy"); area.remove();
   return ok ? Promise.resolve() : Promise.reject(new Error("copy"));
+}
+function copyText(text) {
+  return navigator.clipboard ? navigator.clipboard.writeText(text).catch(() => copyByTextarea(text)) : copyByTextarea(text);
 }
 
 export function Picker({ on }) {

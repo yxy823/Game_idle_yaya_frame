@@ -20,7 +20,8 @@ export default function Diagram({ ui, text, links = {}, onNode, font }) {
       if (mounted.error) throw mounted.error;
       for (const node of el.querySelectorAll("[data-id]")) {
         const tip = links[node.dataset.id];
-        if (tip) { node.classList.add("diagram-link"); node.dataset.tip = tip; }
+        // 可点的步骤也能用 Tab 走到、按 Enter 打开
+        if (tip) { node.classList.add("diagram-link"); node.dataset.tip = tip; node.setAttribute("tabindex", "0"); node.setAttribute("role", "link"); node.setAttribute("aria-label", tip); }
       }
     } catch (err) {
       mounted?.destroy();
@@ -31,5 +32,6 @@ export default function Diagram({ ui, text, links = {}, onNode, font }) {
     return () => mounted.destroy();
   }, [text, toast, font]);
   const click = (e) => { const node = e.target.closest(".diagram-link"); if (node) onNode(node.dataset.id); };
-  return <div className="diagram" data-ui={ui} ref={ref} onClick={click} />;
+  const key = (e) => { if (e.key === "Enter" || e.key === " ") { const node = e.target.closest(".diagram-link"); if (node) { e.preventDefault(); onNode(node.dataset.id); } } };
+  return <div className="diagram" data-ui={ui} ref={ref} onClick={click} onKeyDown={key} />;
 }

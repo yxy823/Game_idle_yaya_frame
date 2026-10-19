@@ -94,7 +94,6 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 .row .value { line-height: 1.5; padding-top: 5px; overflow-wrap: anywhere; }
 
 /* 窗口太窄、主区域不足 480px 时收起详情面板 */
-@media (max-width: 844px) { .workspace, .workspace.panel-closed { grid-template-columns: var(--activity-w) 1fr 0; } .panel { visibility: hidden; } }
 .statusbar { display: flex; align-items: center; gap: 16px; padding: 0 10px; background: var(--chrome);
   border-top: 1px solid var(--border); font-size: var(--fs-small); color: var(--muted-fg); font-variant-numeric: tabular-nums; }
 .statusbar .pick-state { min-width: 220px; }
@@ -290,7 +289,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
   list-style: none; margin: 0; padding: 4px 0; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
 .search-list button { width: 100%; min-height: var(--control-h); display: flex; align-items: center; gap: 8px; padding: 0 var(--pad);
   border: 0; background: transparent; text-align: left; cursor: pointer; }
-.search-list button:hover { background: var(--accent); }
+.search-list button:hover, .search-list button[aria-selected="true"] { background: var(--accent); }
 .search-list .search-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .search-list .empty-line { padding: 4px var(--pad); }
 .learn-body mark.hit { background: color-mix(in srgb, var(--brand) 30%, transparent); color: inherit; border-radius: 2px; }

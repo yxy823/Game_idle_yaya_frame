@@ -16,7 +16,14 @@ export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking
   useEffect(() => {
     const close = () => { onClose(); anchor.current.focus(); };
     const click = (e) => { if (!ref.current.contains(e.target) && !anchor.current.contains(e.target)) close(); };
-    const key = (e) => { if (e.key === "Escape") { e.stopPropagation(); close(); } };
+    // ↑↓ 在菜单项之间移动焦点，和系统菜单一样
+    const key = (e) => {
+      if (e.key === "Escape") { e.stopPropagation(); close(); return; }
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+      e.preventDefault();
+      const items = [...ref.current.querySelectorAll("button")], at = items.indexOf(document.activeElement);
+      items[(at + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
+    };
     document.addEventListener("click", click);
     document.addEventListener("keydown", key, true);
     return () => { document.removeEventListener("click", click); document.removeEventListener("keydown", key, true); };

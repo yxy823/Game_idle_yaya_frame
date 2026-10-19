@@ -104,6 +104,7 @@ function layoutByGroup(cy, legend) {
 // foldable：分组可以折叠成一个大点，默认全部折叠。focusable：可以只看选中点几跳以内的邻居。
 export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landmarkLimit = 15, directed = false, foldable = false, focusable = false,
   selected, onSelect, theme, font, ui }) {
+  const tipRef = useRef(null);
   const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected), focusRef = useRef(null), viewRef = useRef(null);
   selectedRef.current = selected;
   const [hidden, setHidden] = useState(() => new Set());
@@ -140,8 +141,6 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       cy.add(legend.map((g, k) => ({ data: { id: "g" + k, label: `${g.name}（${g.count}）`, group: g.id, size: 16 + Math.sqrt(g.count) * 5 },
         classes: "group", grabbable: false })));
     }
-    // 路标：按 landmarks 的顺序挑，默认最多 15 个
-    pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty()), landmarkLimit).forEach((n) => n.addClass("hub"));
     // 邻居视图里排布是临时的，拖动不记下
     cy.on("dragfree", "node", (e) => { if (!focusRef.current) record[e.target.data("key")] = { ...e.target.position() }; });
     cy.on("tap", "node", (e) => {
@@ -150,12 +149,27 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       onSelect(key === selectedRef.current ? null : key);
     });
     cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
+    // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
+    let tipTimer = 0;
+    const hideTip = () => { clearTimeout(tipTimer); tipRef.current.hidden = true; };
+    cy.on("mouseover", "node", (e) => {
+      if (e.target.hasClass("group")) return;
+      hideTip();
+      tipTimer = setTimeout(() => {
+        const tip = tipRef.current, bb = e.target.renderedBoundingBox({ includeLabels: false }), r = box.current.getBoundingClientRect();
+        tip.textContent = e.target.data("label"); tip.hidden = false;
+        tip.style.left = Math.max(8, Math.min(r.left + (bb.x1 + bb.x2) / 2 - tip.offsetWidth / 2, innerWidth - tip.offsetWidth - 8)) + "px";
+        tip.style.top = (r.top + bb.y2 + 6) + "px";
+      }, 400);
+    });
+    cy.on("mouseout", "node", hideTip);
+    cy.on("viewport tapstart", hideTip);
     cyRef.current = cy;
     // 拖动详情面板改宽度、开合面板时画布尺寸会变，cytoscape 只监听窗口尺寸，要手动通知
     const resize = new ResizeObserver(() => cy.resize());
     resize.observe(box.current);
-    return () => { resize.disconnect(); cy.destroy(); };
-  }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, directed, foldable, onSelect]);
+    return () => { hideTip(); resize.disconnect(); cy.destroy(); };
+  }, [cacheKey, nodes, edges, legend, directed, foldable, onSelect]);
 
   useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, font, legend, directed]);
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
@@ -211,11 +225,18 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
         classes: [m.main && "main", (m.s[0] === "g" || m.t[0] === "g") && "merged"].filter(Boolean).join(" ") })));
     });
     // 邻居视图只排布留下的场景；回到全图时恢复原来的位置和视口
+    // 边距按最长的名称算，名称按屏幕像素写，边缘的点名称才不被画布裁掉
     if (within) {
       const kept = cy.nodes().filter((n) => n.style("display") === "element");
-      kept.union(kept.edgesWith(kept)).layout({ ...FCOSE, fit: true, padding: 40 }).run();
+      const longest = Math.max(...kept.map((n) => n.data("label").length));
+      kept.union(kept.edgesWith(kept)).layout({ ...FCOSE, fit: true, padding: Math.max(40, longest * parseFloat(css("--fs")) / 2 + 8) }).run();
     } else if (leaving && viewRef.current) cy.viewport(viewRef.current);
-  }, [cacheKey, nodes, edges, legend, foldable, groupOf, neighbours, expanded, hidden, focus]);
+    // 路标在显示出来的点里挑，所以展开一个分组后，组里的点也写出名称
+    if (!within) {
+      cy.nodes(".hub").removeClass("hub");
+      pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty() && n.style("display") === "element"), landmarkLimit).forEach((n) => n.addClass("hub"));
+    }
+  }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, neighbours, expanded, hidden, focus]);
 
   // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点时，图保持原样
   useEffect(() => {
@@ -243,6 +264,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     <div className="graph-wrap">
       <div className="graph-area">
         <div className="graph" ref={box} data-ui={ui + ".graph"} />
+        <div className="tip" role="tooltip" hidden ref={tipRef} data-pick-ignore />
         <div className="graph-tools">
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
           <button className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}

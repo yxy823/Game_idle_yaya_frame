@@ -41,6 +41,21 @@ export default function App() {
   useEffect(() => store.set("module", module), [module]);
   useEffect(() => store.set("panel", panelOpen ? "open" : "closed"), [panelOpen]);
   useEffect(() => store.set("panel-w", String(panelWidth)), [panelWidth]);
+  // 窗口窄到主区域不足 480px 时先收起面板（按默认 320px 宽算），开关状态和实际一致；之后要看面板可以再展开
+  useEffect(() => {
+    const narrow = matchMedia("(max-width: 844px)");
+    const fold = () => { if (narrow.matches) setPanelOpen(false); };
+    fold();
+    narrow.addEventListener("change", fold);
+    return () => narrow.removeEventListener("change", fold);
+  }, []);
+  // 分隔条也能用键盘改宽度：←→ 每次 16px
+  const resizeKey = (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    const ws = e.currentTarget.parentElement.getBoundingClientRect();
+    setPanelWidth((w) => Math.min(Math.max(240, w + (e.key === "ArrowLeft" ? 16 : -16)), ws.width - 44 - 480));
+  };
   // 拖面板左边缘改宽度：最窄 240px，最宽留给主区域 480px（同「窄窗口」一条）
   const drag = (e) => {
     const ws = e.currentTarget.parentElement.getBoundingClientRect();
@@ -96,8 +111,8 @@ export default function App() {
             {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
           </section>
         </main>
-        {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)}
-          role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动改宽度，双击恢复 320px" data-ui="panel.resizer" />}
+        {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}
+          role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />}
         <DetailPanel file={selected} onSelect={setSelected} />
       </div>
 

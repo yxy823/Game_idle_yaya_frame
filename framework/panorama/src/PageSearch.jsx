@@ -6,11 +6,14 @@ export const words = (query) => query.toLowerCase().split(/\s+/).filter(Boolean)
 export const matches = (ws, ...texts) => { const t = texts.join("　").toLowerCase(); return ws.every((w) => t.includes(w)); };
 
 // 页面内搜索：页面标题行最右端的放大镜，点了在原处展开输入框；Esc 收起并清空，输入框为空时点到别处也收起。
-// results 不为空时在输入框下列出命中项，点一项或按 Enter 选第一项交给 onPick；卡片页直接按 value 筛选，不传 results。
+// results 不为空时在输入框下列出命中项，名称命中的排前面；↑↓ 移动高亮，点一项或按 Enter 选高亮项交给 onPick。卡片页直接按 value 筛选，不传 results。
 // open 为真时一直展开（全局搜索页）。
 export default function PageSearch({ ui, value, onChange, placeholder, results, onPick, open: always = false }) {
   const [open, setOpen] = useState(always || value !== "");
   const [listOpen, setListOpen] = useState(true);
+  const [active, setActive] = useState(0);
+  const ws = words(value);
+  const ranked = results && [...results].sort((a, b) => matches(ws, b.label) - matches(ws, a.label)).slice(0, 50);
   const input = useRef(null), box = useRef(null);
   useEffect(() => { if (open) input.current.focus(); }, [open]);
   useEffect(() => {
@@ -24,7 +27,11 @@ export default function PageSearch({ ui, value, onChange, placeholder, results, 
   const key = (e) => {
     // Esc 只收起搜索，不再传到全局去取消选中
     if (e.key === "Escape") { e.stopPropagation(); close(); }
-    else if (e.key === "Enter" && results?.length) pick(results[0]);
+    else if (e.key === "Enter" && ranked?.length) pick(ranked[Math.min(active, ranked.length - 1)]);
+    else if ((e.key === "ArrowDown" || e.key === "ArrowUp") && ranked?.length) {
+      e.preventDefault(); setListOpen(true);
+      setActive((a) => (a + (e.key === "ArrowDown" ? 1 : ranked.length - 1)) % ranked.length);
+    }
   };
   if (!open) {
     return (
@@ -36,13 +43,14 @@ export default function PageSearch({ ui, value, onChange, placeholder, results, 
   return (
     <div className="page-search open" ref={box}>
       <IconSearch className="page-search-icon" aria-hidden="true" />
-      <input ref={input} className="search" type="search" placeholder={placeholder} aria-label={placeholder} data-ui={ui} value={value}
-        onChange={(e) => { onChange(e.target.value); setListOpen(true); }} onKeyDown={key} onFocus={() => setListOpen(true)} />
+      <input ref={input} className="search" type="text" placeholder={placeholder} aria-label={placeholder} data-ui={ui} value={value}
+        onChange={(e) => { onChange(e.target.value); setListOpen(true); setActive(0); }} onKeyDown={key} onFocus={() => setListOpen(true)} />
       {!always && <button className="icon-btn" aria-label="关闭搜索" data-tip="关闭搜索（Esc）" onClick={close}><IconX aria-hidden="true" /></button>}
-      {results && value.trim() && listOpen && (
+      {ranked && value.trim() && listOpen && (
         <ul className="search-list" role="listbox">
-          {results.length ? results.slice(0, 50).map((r) => (
-            <li key={r.key}><button role="option" onClick={() => pick(r)}><span className="search-label">{r.label}</span><span className="count">{r.meta}</span></button></li>
+          {ranked.length ? ranked.map((r, i) => (
+            <li key={r.key}><button role="option" aria-selected={i === active} ref={(el) => { if (el && i === active) el.scrollIntoView({ block: "nearest" }); }}
+              onMouseEnter={() => setActive(i)} onClick={() => pick(r)}><span className="search-label">{r.label}</span><span className="count">{r.meta}</span></button></li>
           )) : <li className="empty-line">没有匹配的内容</li>}
         </ul>
       )}
