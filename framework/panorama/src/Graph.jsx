@@ -9,6 +9,20 @@ cytoscape.use(fcose);
 const edges = [...new Set(links.filter((l) => l.from !== l.to).map((l) => l.from + "-" + l.to))]
   .map((key) => { const [from, to] = key.split("-"); return { data: { id: "e" + key, source: "n" + from, target: "n" + to } }; });
 const counts = Object.fromEntries(groups.map((g) => [g.id, files.filter((f) => f.group === g.id).length]));
+// 被引用最多的文档常驻名称，作为图上的路标：按被引用次数从多到少挑，最多 15 个，名称会和已挑的重叠就跳过
+const byIncoming = files.map((_, i) => i).sort((a, b) => incoming[b].length - incoming[a].length);
+function pickHubs(cy) {
+  const z = cy.zoom(), boxes = [], picked = [];
+  for (const i of byIncoming) {
+    if (picked.length === 15) break;
+    const n = cy.getElementById("n" + i), { x, y } = n.position();
+    const w = (files[i].title.length * 13 + 8) / z, h = 22 / z, top = y + n.data("size") / 2;
+    const box = [x - w / 2, top, x + w / 2, top + h];
+    if (boxes.some((b) => box[0] < b[2] && b[0] < box[2] && box[1] < b[3] && b[1] < box[3])) continue;
+    boxes.push(box); picked.push(n);
+  }
+  picked.forEach((n) => n.addClass("hub"));
+}
 
 // 第一次布局后记下位置，切换视图再回来时位置不变
 let positions = null;
@@ -29,15 +43,17 @@ function style() {
     { selector: ".faded", style: { opacity: 0.08 } },
     { selector: "edge.near", style: { opacity: 0.9, width: 2 } },
     // 写出名称的点按缩放反算字号，屏幕上始终是 13px，缩得再小也看得清
-    { selector: "node.labeled, node:selected", style: { label: "data(label)", "font-size": (n) => 13 / n.cy().zoom(), "min-zoomed-font-size": 0,
+    { selector: "node.hub, node.labeled, node:selected", style: { label: "data(label)", "font-size": (n) => 13 / n.cy().zoom(), "min-zoomed-font-size": 0,
       "text-margin-y": (n) => 3 / n.cy().zoom(), "text-background-padding": (n) => 2 / n.cy().zoom() } },
     { selector: "node:selected", style: { "border-width": 2, "border-color": css("--ring") } },
   ];
 }
 
 // 文件全景的图谱视图：全部文档按链接自动连线，颜色按分组；点一个点，只突出它和直接相连的文档。
+// 点空白处不取消选中，因为误点大多落在空白处；按 Esc、再点一次选中的点或点“取消选中”才退出。
 export default function Graph({ selected, onSelect, theme }) {
-  const box = useRef(null), cyRef = useRef(null);
+  const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected);
+  selectedRef.current = selected;
   const [hidden, setHidden] = useState(() => new Set());
 
   useEffect(() => {
@@ -55,10 +71,13 @@ export default function Graph({ selected, onSelect, theme }) {
       minZoom: 0.1, maxZoom: 4, wheelSensitivity: 0.3, boxSelectionEnabled: false, autoungrabify: false,
     });
     positions = files.map((_, i) => ({ ...cy.getElementById("n" + i).position() }));
+    pickHubs(cy);
     cy.on("dragfree", "node", (e) => { positions[Number(e.target.id().slice(1))] = { ...e.target.position() }; });
-    cy.on("tap", "node", (e) => onSelect(Number(e.target.id().slice(1))));
-    cy.on("zoom", () => cy.nodes(".labeled, :selected").updateStyle());
-    cy.on("tap", (e) => { if (e.target === cy) onSelect(null); });
+    cy.on("tap", "node", (e) => {
+      const index = Number(e.target.id().slice(1));
+      onSelect(index === selectedRef.current ? null : index);
+    });
+    cy.on("zoom", () => cy.nodes(".hub, .labeled, :selected").updateStyle());
     cyRef.current = cy;
     return () => cy.destroy();
   }, [onSelect]);
@@ -90,7 +109,10 @@ export default function Graph({ selected, onSelect, theme }) {
   const allOn = hidden.size === 0;
   return (
     <div className="graph-wrap">
-      <div className="graph" ref={box} data-ui="files.graph" />
+      <div className="graph-area">
+        <div className="graph" ref={box} data-ui="files.graph" />
+        <button className="graph-clear" disabled={selected === null} onClick={() => onSelect(null)} data-ui="files.graph-clear">取消选中（Esc）</button>
+      </div>
       <div className="legend" data-ui="files.legend">
         <label className="legend-row">
           <input type="checkbox" checked={allOn} onChange={() => setHidden(allOn ? new Set(groups.map((g) => g.id)) : new Set())} />

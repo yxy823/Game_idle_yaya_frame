@@ -59,12 +59,28 @@ function history(repo) {
   return result;
 }
 
+// 术语表和工具表的每一行单独做成搜索条目：表头第一列是“术语”，或是“工具”“脚本”“命令”且有“用途”列
+function readEntries(node, file, entries) {
+  if (node.type === "table") {
+    const head = node.children[0].children.map(text);
+    const kind = head[0] === "术语" ? "term" : ["工具", "脚本", "命令"].includes(head[0]) && head.includes("用途") ? "tool" : null;
+    if (!kind) return;
+    const desc = kind === "term" ? 1 : head.indexOf("用途");
+    for (const row of node.children.slice(1)) {
+      const cells = row.children.map(text);
+      entries.push({ kind, name: cells[0], desc: cells[desc] || "", aliases: kind === "term" ? cells[2] || "" : "", file, line: row.position.start.line });
+    }
+    return;
+  }
+  for (const child of node.children || []) readEntries(child, file, entries);
+}
+
 export function readDocs(repo) {
   const paths = git(repo, ["ls-files", "-z", "--", "*.md"]).split("\0")
     .filter((p) => p && !excluded.some((e) => p.startsWith(e)));
   const index = new Map(paths.map((p, i) => [p, i]));
   const changes = history(repo);
-  const files = [], paras = [], links = [];
+  const files = [], paras = [], links = [], entries = [];
 
   // 链接目标换成卡片编号：相对当前文件解析，指向目录时取目录下的 README.md；不是 Markdown 卡片的目标返回 null
   const resolve = (from, url) => {
@@ -132,7 +148,8 @@ export function readDocs(repo) {
       for (const f of external) links.push({ from: fi, to: f.to, kind: kind === "next" ? "next" : basis ? "basis" : "ref", main, cond, para });
     };
     walk(tree, "ref");
+    readEntries(tree, fi, entries);
   });
 
-  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links };
+  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries };
 }

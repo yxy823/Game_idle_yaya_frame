@@ -2,6 +2,7 @@ import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayou
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
 import FilesModule from "./FilesModule.jsx";
+import SearchModule from "./SearchModule.jsx";
 
 function Placeholder({ ui, todo, source }) {
   return (
@@ -55,8 +56,5 @@ export const modules = [
     <Simple title="问答" lead="讨论中问过、以后还会用到的问题。" ui="qa.placeholder"
       todo="按主题列出问题，点一条在详情面板显示，按钮打开问答页面里的这一条。" source="framework/qa/ 的主题文件和 pages/" />
   ) },
-  { id: "search", label: "搜索结果", tip: "搜索结果", Icon: IconSearch, render: () => (
-    <Simple title="搜索结果" lead="在顶栏输入后显示；每条结果标明所在模块和文件位置。" ui="search.placeholder"
-      todo="搜索标题、第一段、Skill 描述、工具用途和术语别名。" source="各文件的标题与第一段、SKILL.md 的 description、工具说明的工具表、两份术语表" />
-  ) },
+  { id: "search", label: "搜索结果", tip: "搜索结果", Icon: IconSearch, render: (p) => <SearchModule {...p} /> },
 ];
