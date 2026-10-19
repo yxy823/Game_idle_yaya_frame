@@ -198,10 +198,6 @@ export default function DetailPanel({ file, onSelect, onBack, onForward, font })
               <ul className="plain">{f.outline.map((h, i) => <li key={i}>{h}</li>)}</ul>
             </Section>
           )}
-          <Section title="修改" ui="panel.history">
-            <Row name="最近">{f.changed || "还没提交"}</Row>
-            <Row name="次数">{f.changes}</Row>
-          </Section>
         </>
       )}
       {tab === "links" && (

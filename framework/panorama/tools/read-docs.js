@@ -49,19 +49,6 @@ function isNav(node) {
   return node.children.every((c) => c.type === "link" || (c.type === "text" && /^[\s·]*([上下]一篇[：:])?\s*$/.test(c.value)));
 }
 
-function history(repo) {
-  const result = new Map();
-  let date = "";
-  for (const line of git(repo, ["log", "--name-only", "--format=@%cs", "--", "*.md"]).split("\n")) {
-    if (line.startsWith("@")) date = line.slice(1);
-    else if (line) {
-      const h = result.get(line);
-      if (h) h.changes += 1; else result.set(line, { changed: date, changes: 1 });
-    }
-  }
-  return result;
-}
-
 // 术语表和工具表的每一行单独做成搜索条目：表头第一列是“术语”，或是“工具”“脚本”“命令”且有“用途”列
 function readEntries(node, file, entries) {
   if (node.type === "table") {
@@ -110,7 +97,6 @@ export function readDocs(repo) {
   const paths = git(repo, ["ls-files", "-z", "--", "*.md"]).split("\0")
     .filter((p) => p && !excluded.some((e) => p.startsWith(e)));
   const index = new Map(paths.map((p, i) => [p, i]));
-  const changes = history(repo);
   const files = [], paras = [], links = [], entries = [], qa = [], diagrams = [];
 
   // 链接目标换成卡片编号：相对当前文件解析，指向目录时取目录下的 README.md；不是 Markdown 卡片的目标返回 null
@@ -135,7 +121,6 @@ export function readDocs(repo) {
       group: groups.find((g) => file.startsWith(g.prefix)).id,
       purpose: front?.description || (first ? text(first) : ""),
       outline: tree.children.filter((n) => n.type === "heading" && n.depth === 2).map(text),
-      ...(changes.get(file) || { changed: "", changes: 0 }),
     });
 
     // 一个段落、标题或表格行算一段；段内链接按出现顺序拆成文字和链接
