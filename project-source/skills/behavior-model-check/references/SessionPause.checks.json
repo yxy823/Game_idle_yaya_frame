@@ -1,0 +1,34 @@
+{
+  "constraint": "StateBound",
+  "invariants": [
+    "PauseMatchesConditions"
+  ],
+  "properties": [
+    "PausedNoTime",
+    "TerminalPermanent",
+    "TerminalNoTime"
+  ],
+  "mutations": [
+    {
+      "name": "single_flag",
+      "caught_by": [
+        "PauseMatchesConditions"
+      ]
+    },
+    {
+      "name": "counter",
+      "caught_by": [
+        "PauseMatchesConditions"
+      ]
+    },
+    {
+      "name": "revive",
+      "caught_by": [
+        "TerminalPermanent"
+      ]
+    }
+  ],
+  "witnesses": [
+    "WitnessTimeAdvances"
+  ]
+}

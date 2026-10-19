@@ -31,7 +31,7 @@ yaya/methodology/                         canonical workflow specification
 | 澄清与术语 | `grill-me`、`wayfinder`、`terminology-register` |
 | 专业设计 | `design-game-presentation`、`design-ui-spec`、`design-art-direction`、`design-audio-direction`、`design-visual-asset-spec`、`design-audio-asset-spec`、`design-localization-spec` |
 | 规划 | `feature-plan`、`feature-sync`、`plan-review` |
-| 交付 | `feature-execute`、`implementation-guidance`、`in-game-tuning`、`technical-validation` |
+| 交付 | `feature-execute`、`implementation-guidance`、`behavior-model-check`、`in-game-tuning`、`technical-validation` |
 | 工程 | `engineering-change-plan`、`engineering-refactor-select` |
 | 反馈与诊断 | `feedback-triage`、`bug-diagnosis` |
 | 环境、验证与证据 | `environment-setup`、`run-checks`、`manual-acceptance`、`verification-evidence` |

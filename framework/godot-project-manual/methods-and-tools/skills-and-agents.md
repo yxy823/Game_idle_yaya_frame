@@ -58,6 +58,7 @@ Shader 规则的入口会链接这些方法参考。正式实现、原型和排�
 | `feature-sync` | 将已确认来源变化映射到已有计划及测试历史 |
 | `feature-execute` | 交付获准 Feature，承担适用实现、验证、记录与收尾 |
 | `implementation-guidance` | 为已有 Feature 准备约束、设计、必要实现顺序和验证思路，沿用该 Feature 设计稿 |
+| `behavior-model-check` | Stage 1C 为有命名状态、按事件或时间转换的行为建立或更新 TLA+ 模型，用 TLC 检查设计，交出 GDD 空白和要改写的测试；结果不进入完成证据 |
 | `engineering-change-plan` | 为 Bug、重构、维护等独立工程工作确定任务范围与验证 |
 | `engineering-refactor-select` | 从已有真实候选中选择值得实施的行为保持重构 |
 | `design-art-direction` | 共享视觉方向与适用约束 |

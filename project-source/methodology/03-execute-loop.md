@@ -156,6 +156,8 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 - 从这些契约推导必要的实现顺序和验证，包括有意义的失败、取消和重复使用路径。
 - 保留有用的现有 API，以及 Godot 的归属和生命周期语义。这项核对不强制增加对象、事件总线或额外文档。
 
+本 Feature 涉及的行为有命名的状态（枚举、阶段或标志位），并且状态按事件或时间转换时，使用 `behavior-model-check` 建立或更新该子系统的 TLA+ 行为模型并运行检查；修改 `docs/architecture/models/` 中已有模型覆盖的行为时同样适用。只涉及简单按钮、普通动画、静态布局或资源导入的 Feature 不建模。模型检查回答设计在模型范围内是否成立，不代替测试，结果也不进入完成证据。模型逼出的、来源没有定义的规则，按本节最后一条作为需要用户决定的项。
+
 为固定的 [Feature 设计与实现说明](02-feature-list-schema.md#feature-设计与实现说明)准备拟定的实现决定和理由：
 
 - 满足 10 号规范[架构决策记录](10-architecture-overview.md#架构决策记录)中 ADR 条件的技术选择，理由写在 ADR 中，设计稿引用它。
@@ -174,6 +176,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 - Feature 范围和受影响的组件；
 - Stage 0 准备的 Context / Rules Snapshot；
 - 实质性的设计选择和约束，以及需要做出的 Feature 设计稿、ADR 和规则修改决定；
+- 建了行为模型时，`behavior-model-check` 的[交给 1D 批准材料的内容](../../.agents/skills/behavior-model-check/SKILL.md#交给-1d-批准材料的内容)；
 - 修改前要运行的 Existing Safety Net（已有安全网）；
 - 要创建的 TDD 验收测试、回归测试和单元测试套件；
 - 验收模式、选择理由和对应的验证项；
@@ -239,6 +242,8 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 2. 测试存在后，在测试登记表中更新它的 `path`、`case`，并设为 `status: active`。
 3. 运行范围最窄的、受支持的选择器。一次检查多个用例时加 `--continue`，否则运行在第一个失败处停止。第一次在本任务中编写测试前，先读 gdUnit4 运行器与诊断规则的[编写测试时的约定](../agent-rules/70-tests/gdunit4-profile.md#编写测试时的约定)和诊断监控：任何未声明的警告都会让运行失败。测试涉及动画、计时或等待时，再读[时间与帧](../agent-rules/70-tests/time-randomness-and-async.md#时间与帧)：由测试控制时间，不采样真实播放。
 4. 确认测试失败的原因是目标行为缺失或有错，而不是语法、夹具、环境或无关的准备步骤出错。
+
+1D 批准了从行为模型的见证路径和错误注入改写的测试时，按 `behavior-model-check` 指南的[改写成 GdUnit4 测试](../../.agents/skills/behavior-model-check/references/modeling-guide.md#改写成-gdunit4-测试)编写。
 
 集成测试需要先有测试入口（注入点、场景接线）时，把建立入口作为第一个小循环，它的失败原因就是入口缺失；入口建好后，各条行为再分别先失败、后通过。
 

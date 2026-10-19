@@ -15,6 +15,7 @@ description: >-
 | 选择当前的 Product/Feature | `yaya/methodology/03-execute-loop.md` 的 **Stage 0 · 选择 Feature 并加载上下文**，Product 顺序见 methodology 02 的 **逐个 Product 规划** |
 | 阅读适用的实现规则和知识 | 项目 `AGENTS.md` 及其按任务划分的入口 |
 | 为已有 Feature 准备需要的实施指导 | [implementation-guidance](../implementation-guidance/SKILL.md)；是否委派顾问由它的“明确要求”约定决定，设计稿的生命周期由 methodology 03 的 Stage 1C、2 和 3 负责 |
+| Feature 涉及有命名状态、并按事件或时间转换的行为 | [behavior-model-check](../behavior-model-check/SKILL.md)；适用条件和调用时机见 methodology 03 的 Stage 1C |
 | 确定文档语言或准备环境 | `yaya/methodology/05-document-language.md` 或 `yaya/methodology/06-project-environment.md`，以及当前的 `docs/methodology-config.json` |
 | 规划测试、清理过时测试或选择运行范围 | `yaya/methodology/08-test-traceability-and-evidence.md` 中的相关小节 |
 | 写入 Feature、测试登记表或完成字段 | `yaya/methodology/02-feature-list-schema.md` 中对应产物的约定 |

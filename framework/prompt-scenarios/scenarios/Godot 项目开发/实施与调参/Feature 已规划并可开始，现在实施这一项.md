@@ -31,6 +31,8 @@
 
 需要实施指导时使用 [implementation-guidance](../../../../../project-source/skills/implementation-guidance/SKILL.md)，整理约束、设计、必要顺序与验证理由。明确委派后由指定顾问读取背景；主 Agent 在本对话正文展示顾问的编号问题与 A/B 选项，再把回答传回同一顾问。Stage 1 先提出方案，已有批准覆盖后在 Stage 2 保存或更新同一 `docs/features/<Feature ID>-design.md`；顾问仅写获准设计，主 Agent 维护 notes 链接及执行记录。
 
+Feature 涉及有命名状态、并按事件或时间转换的行为时，按[1C. 设计决定与实现指导](<../../../../../project-source/methodology/03-execute-loop.md#1c-设计决定与实现指导>)使用 [behavior-model-check](../../../../../project-source/skills/behavior-model-check/SKILL.md) 检查设计，结果写进批准材料；它不代替测试。
+
 **S2｜完成实现与验证**
 
 当前 Agent 按Stage 0–8 `feature-execute` 执行循环完成最小完整实现，保持无需变化的 API、依赖与代码风格。完成相关测试及项目支持的适用静态检查，复用有效证据；独立审核只按用户明确请求启用。

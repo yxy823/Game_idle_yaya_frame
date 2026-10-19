@@ -1795,7 +1795,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n\n项目文件： docs/architecture/*.md",
+      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n子系统有命名状态并按事件或时间转换时，行为模型和检查清单放在 models/<subsystem>.tla 与同名 .checks.json，随子系统行为一起更新。\n\n项目文件： docs/architecture/*.md\n项目文件： docs/architecture/models/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -1881,7 +1881,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时文档统一放项目根 tmp/<task>/，探针与验证副本放 reports/scratch/<task>/。临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*\n项目文件： tmp/**/*",
+      "note": "职责：按具体任务保留自定义日志、测量、截图、诊断或获准保存的审核报告。\n项目位置：reports/features/<Feature-ID>/ 或 reports/maintenance/<task>/；工具固定路径优先。\n由所属 Feature、Progress、调研或知识条目链接；临时文档统一放项目根 tmp/<task>/，探针与验证副本放 reports/scratch/<task>/。临时目录名不代表允许删除。\n\n项目文件： reports/features/**/*\n项目文件： reports/maintenance/**/*\n项目文件： reports/scratch/**/*\n项目文件： reports/model-checks/**/*\n项目文件： tmp/**/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
