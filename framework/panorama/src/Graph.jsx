@@ -9,6 +9,11 @@ cytoscape.use(fcose);
 const positions = new Map();
 const unfolded = new Map();
 
+// 打开图之前先展开某个分组，例如首页点流程图的一步，跳到开发场景并展开对应的分类
+export function unfoldGroup(cacheKey, id) {
+  unfolded.set(cacheKey, new Set(unfolded.get(cacheKey)).add(id));
+}
+
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 // 斥力大、理想边长长、引力小，点才散得开，名称不叠在一起
@@ -60,6 +65,9 @@ function style(legend, directed) {
     { selector: "edge.main.near", style: { width: 4 } },
     { selector: "edge.merged.main", style: { width: (e) => (1.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.9 } },
     { selector: "node.hub, node.labeled, node:selected", style: label },
+    // 关系说明只在选中点的连线上写，全写出来会盖住整张图
+    { selector: "edge.near[?rel]", style: { label: "data(rel)", color: css("--muted-fg"), "font-size": (e) => 12 / e.cy().zoom(), "min-zoomed-font-size": 0,
+      "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom(), "text-rotation": "autorotate" } },
     { selector: "node.quiet", style: { label: "" } },
     { selector: "node:selected", style: { "border-width": 2, "border-color": css("--ring") } },
   ];
@@ -88,9 +96,9 @@ function layoutByGroup(cy, legend) {
 
 // 关系图谱：点按链接自动连线，颜色按分组；点一个点，只突出它和直接相连的点。
 // 点空白处不取消选中，因为误点大多落在空白处；按 Esc、再点一次选中的点或点“取消选中”才退出。
-// nodes 的 i 是卡片编号，选中时交给 onSelect；edges 里 main 为真的画成主线。nodes、edges、legend、landmarks 要在模块里算好，不随渲染变化。
+// nodes 的 i 是选中值（卡片编号或 "doc:编号" 这类字符串），选中时交给 onSelect；edges 里 main 为真的画成主线，label 是关系说明。nodes、edges、legend、landmarks 要在模块里算好，不随渲染变化。
 // foldable：分组可以折叠成一个大点，默认全部折叠。focusable：可以只看选中点几跳以内的邻居。
-export default function Graph({ cacheKey, nodes, edges, legend, landmarks, directed = false, foldable = false, focusable = false,
+export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landmarkLimit = 15, directed = false, foldable = false, focusable = false,
   selected, onSelect, theme, ui }) {
   const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected), focusRef = useRef(null), viewRef = useRef(null);
   selectedRef.current = selected;
@@ -109,7 +117,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, direc
     const saved = positions.get(cacheKey);
     const cy = cytoscape({
       container: box.current,
-      elements: nodes.map((n) => ({ data: { id: "n" + n.i, label: n.label, group: n.group, size: n.size }, position: saved?.[n.i] })),
+      elements: nodes.map((n) => ({ data: { id: "n" + n.i, key: n.i, label: n.label, group: n.group, size: n.size }, position: saved?.[n.i] })),
       style: style(legend, directed),
       layout: { name: "preset" },
       minZoom: 0.1, maxZoom: 4, boxSelectionEnabled: false,
@@ -128,24 +136,24 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, direc
       cy.add(legend.map((g, k) => ({ data: { id: "g" + k, label: `${g.name}（${g.count}）`, group: g.id, size: 16 + Math.sqrt(g.count) * 5 },
         classes: "group", grabbable: false })));
     }
-    // 路标：按 landmarks 的顺序挑，最多 15 个
-    pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty()), 15).forEach((n) => n.addClass("hub"));
+    // 路标：按 landmarks 的顺序挑，默认最多 15 个
+    pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty()), landmarkLimit).forEach((n) => n.addClass("hub"));
     // 邻居视图里排布是临时的，拖动不记下
-    cy.on("dragfree", "node", (e) => { if (!focusRef.current) record[Number(e.target.id().slice(1))] = { ...e.target.position() }; });
+    cy.on("dragfree", "node", (e) => { if (!focusRef.current) record[e.target.data("key")] = { ...e.target.position() }; });
     cy.on("tap", "node", (e) => {
       if (e.target.hasClass("group")) { const id = e.target.data("group"); setExpanded((s) => new Set(s).add(id)); return; }
-      const index = Number(e.target.id().slice(1));
-      onSelect(index === selectedRef.current ? null : index);
+      const key = e.target.data("key");
+      onSelect(key === selectedRef.current ? null : key);
     });
-    cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label]").updateStyle());
+    cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
     cyRef.current = cy;
     return () => cy.destroy();
-  }, [cacheKey, nodes, edges, legend, landmarks, directed, foldable, onSelect]);
+  }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, directed, foldable, onSelect]);
 
   useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, legend, directed]);
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
 
-  const inGraph = typeof selected === "number" && selected in groupOf;
+  const inGraph = selected !== null && Object.hasOwn(groupOf, selected);
   // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图
   useEffect(() => {
     if (inGraph && !expanded.has(groupOf[selected])) setExpanded((s) => new Set(s).add(groupOf[selected]));
@@ -170,8 +178,9 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, direc
     for (const e of edges) {
       const s = end(e.from), t = end(e.to);
       if (!s || !t || s === t) continue;
-      const m = merged.get(s + "|" + t) || { s, t, count: 0, main: false };
+      const m = merged.get(s + "|" + t) || { s, t, count: 0, main: false, rel: [] };
       m.count += 1; m.main ||= Boolean(e.main);
+      if (e.label && !m.rel.includes(e.label)) m.rel.push(e.label);
       merged.set(s + "|" + t, m);
     }
     const entering = within && !focusRef.current, leaving = !within && focusRef.current;
@@ -191,7 +200,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, direc
         const members = nodes.filter((n) => n.group === g.id).map((n) => record[n.i]);
         node.position({ x: members.reduce((a, p) => a + p.x, 0) / members.length, y: members.reduce((a, p) => a + p.y, 0) / members.length });
       });
-      cy.add([...merged.values()].map((m) => ({ data: { id: "e" + m.s + "-" + m.t, source: m.s, target: m.t, count: m.count, label: m.count > 1 ? String(m.count) : "" },
+      cy.add([...merged.values()].map((m) => ({ data: { id: "e" + m.s + "-" + m.t, source: m.s, target: m.t, count: m.count, label: m.count > 1 ? String(m.count) : "", rel: m.rel.join("；") },
         classes: [m.main && "main", (m.s[0] === "g" || m.t[0] === "g") && "merged"].filter(Boolean).join(" ") })));
     });
     // 邻居视图只排布留下的场景；回到全图时恢复原来的位置和视口

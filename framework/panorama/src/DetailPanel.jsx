@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
+import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
 
 function Row({ name, children }) {
   return <div className="row"><span className="name">{name}</span><span className="value">{children}</span></div>;
@@ -66,11 +67,43 @@ function QaPanel({ q, onSelect }) {
   );
 }
 
+// 文档关系图里一个节点的详情：介绍、路径、模板文件，以及进出的关系和关系说明
+function DocPanel({ k, onSelect }) {
+  const n = docNodes[k];
+  const out = docEdges.filter((e) => e.from === k), into = docEdges.filter((e) => e.to === k);
+  const rel = (e, end) => (
+    <li key={e.from + "-" + e.to + "-" + e.line}>
+      {e.label && <span className="cond">{e.label}</span>}
+      <button className="link-btn" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].name}</button>
+    </li>
+  );
+  return (
+    <aside className="panel" aria-label="详情" data-ui="panel">
+      <div className="panel-head" data-ui="panel.head" data-tip={n.name}>{n.name}</div>
+      <Section title="摘要" ui="panel.summary">
+        <Row name="介绍">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.note || "没有对应的模板文件，项目里按需要创建"}</Row>
+        {n.paths.length > 0 && <Row name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Row>}
+        {n.card !== null && <Row name="模板"><FileLink index={n.card} onSelect={onSelect} /></Row>}
+      </Section>
+      {(out.length > 0 || into.length > 0) && (
+        <Section title="关系" ui="panel.doc-links" count={out.length + into.length}>
+          {out.length > 0 && <Row name="指向"><ul className="plain">{out.map((e) => rel(e, "to"))}</ul></Row>}
+          {into.length > 0 && <Row name="来自"><ul className="plain">{into.map((e) => rel(e, "from"))}</ul></Row>}
+        </Section>
+      )}
+      <Section title="出处" ui="panel.doc-sources">
+        <ul className="plain">{n.from.map((f) => <li key={f}><FileLink index={f} onSelect={onSelect} /></li>)}</ul>
+      </Section>
+    </aside>
+  );
+}
+
 // 右侧详情面板，照 draw.io 的属性面板：分节可以折叠，每行左边是名称、右边是值。
-// file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel。
+// file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel；文档关系图的节点是 "doc:编号"，交给 DocPanel。
 export default function DetailPanel({ file, onSelect }) {
   const q = qaOf(file);
   if (q) return <QaPanel key={file} q={q} onSelect={onSelect} />;
+  if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} />;
   if (file === null) {
     return (
       <aside className="panel" aria-label="详情" data-ui="panel">

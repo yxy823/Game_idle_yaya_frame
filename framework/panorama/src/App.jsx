@@ -74,7 +74,7 @@ export default function App() {
         </nav>
         <main className="main">
           <section className="module" data-ui={"module." + module}>
-            {current.render({ selected, onSelect: setSelected, theme, query })}
+            {current.render({ selected, onSelect: setSelected, theme, query, onModule: setModule })}
           </section>
         </main>
         <DetailPanel file={selected} onSelect={setSelected} />

@@ -173,6 +173,14 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .card-purpose { color: var(--muted-fg); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .qa-topic h2 { display: flex; align-items: center; font-size: 13px; margin: 16px 0 8px; }
 .panel-actions { padding: 8px 12px; }
+.diagram-link { cursor: pointer; }
+.diagram-link:hover { filter: brightness(0.92); }
+/* 卡片右下角的链接压在卡片上，卡片底部留出位置 */
+.qa-card { position: relative; display: flex; }
+.qa-card .card { flex: 1; padding-bottom: 26px; }
+.qa-card .qa-open { position: absolute; right: 10px; bottom: 8px; }
+.qa-open { font-size: var(--fs-small); font-weight: normal; }
+.qa-topic h2 .qa-open { margin-left: 12px; }
 .btn-primary { display: inline-flex; align-items: center; height: var(--control-h); padding: 0 12px; border-radius: var(--radius);
   background: var(--primary); color: var(--pick-fg); text-decoration: none; }
 .btn-primary:hover { background: color-mix(in srgb, var(--primary) 85%, var(--fg)); }

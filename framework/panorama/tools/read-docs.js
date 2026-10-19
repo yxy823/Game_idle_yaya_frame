@@ -6,6 +6,7 @@ import remarkParse from "remark-parse";
 import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import YAML from "yaml";
+import { readDocGraph } from "./doc-graph.js";
 
 // 读取仓库里纳入 Git 的 Markdown，得到卡片、段落和链接三张表，交给页面。
 // 关系只从 Markdown 链接读出：场景页的下一步清单记为“下一步”，问答的「依据」段记为“依据”，其余记为“引用”。
@@ -102,7 +103,7 @@ export function readDocs(repo) {
     .filter((p) => p && !excluded.some((e) => p.startsWith(e)));
   const index = new Map(paths.map((p, i) => [p, i]));
   const changes = history(repo);
-  const files = [], paras = [], links = [], entries = [], qa = [];
+  const files = [], paras = [], links = [], entries = [], qa = [], diagrams = [];
 
   // 链接目标换成卡片编号：相对当前文件解析，指向目录时取目录下的 README.md；不是 Markdown 卡片的目标返回 null
   const resolve = (from, url) => {
@@ -131,6 +132,7 @@ export function readDocs(repo) {
 
     // 一个段落、标题或表格行算一段；段内链接按出现顺序拆成文字和链接
     const walk = (node, kind) => {
+      if (node.type === "code" && node.lang === "mermaid") diagrams.push({ file: fi, line: node.position.start.line, value: node.value });
       if (node.type === "paragraph" && /^下一步：$/.test(text(node).trim())) return "next-intro";
       if (["paragraph", "heading", "tableRow"].includes(node.type)) {
         collect(node, kind);
@@ -174,5 +176,5 @@ export function readDocs(repo) {
     if (/^framework\/qa\/[^/]+\.md$/.test(file) && !file.endsWith("/README.md")) readQa(tree, fi, qa, (url) => resolve(file, url));
   });
 
-  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa };
+  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa, docGraph: readDocGraph(diagrams, files, index) };
 }
