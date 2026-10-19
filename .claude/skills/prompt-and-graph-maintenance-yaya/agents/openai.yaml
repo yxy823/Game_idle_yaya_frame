@@ -1,6 +1,6 @@
 interface:
   display_name: "Yaya 提示词与关系图维护"
-  short_description: "维护提示词、同名场景、下一步清单与文档系统关系图，按文档职责和路径变化同步文件登记"
+  short_description: "维护提示词、同名场景、下一步清单与手册中的文档关系图，按文档职责和路径变化同步关系图"
 
 policy:
   allow_implicit_invocation: true

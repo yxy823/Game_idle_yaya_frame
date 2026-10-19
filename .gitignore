@@ -7,7 +7,5 @@ reports/*
 /tmp/
 /references/
 /framework/qa/pages/
-/framework/relationship-maps/graph-usage.json
-/framework/relationship-maps/graph-usage.*.json
 /.claude/worktrees/
 /.claude/settings.local.json

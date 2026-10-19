@@ -2,7 +2,7 @@
 
 这里维护一套供 Windows / PowerShell 使用的 Godot 起始文件、开发方法与工具，生成的游戏只面向 Windows PC 和鼠标键盘。使用者与 Agent 在单人项目中协作，让需求、任务、实际验证和交接有清楚的依据。
 
-[框架入口](framework/README.md) 导航 Godot 项目手册、场景速查手册、关系图和框架维护说明。两本手册独立阅读；手册与完整提示词库不进入新项目，项目 README 保持自身的简短导航。
+[框架入口](framework/README.md) 导航 Godot 项目手册、场景速查手册和框架维护说明。两本手册独立阅读；手册与完整提示词库不进入新项目，项目 README 保持自身的简短导航。
 
 ## 文件放在哪里
 
@@ -12,7 +12,7 @@ Game_idle_yaya_frame/
 ├── .githooks/                本仓库的提交钩子，新 clone 后用 git config core.hooksPath .githooks 启用
 ├── .claude/settings.json      Claude Code 的用词提示钩子，用户消息中有不用的说法时提示 Agent
 ├── .agents/skills/            框架自用 Skill，不分发
-├── framework/                 手册、提示词与场景、关系图、维护文档、创建器与测试，目录说明见 framework/README.md
+├── framework/                 手册、提示词与场景、维护文档、创建器与测试，目录说明见 framework/README.md
 ├── tmp/                       临时文档与当次报告，不纳入 Git
 └── project-source/
     ├── Project_AGENTS.md      复制为项目 AGENTS.md
