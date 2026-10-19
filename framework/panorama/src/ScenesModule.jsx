@@ -31,7 +31,6 @@ const graph = {
     return onMain(b) - onMain(a) || nextIn[b] - nextIn[a];
   }),
 };
-const mainCount = edges.filter((e) => e.main).length;
 
 // 开发场景：每个点是项目可能处在的一种情况，箭头指向做完之后可能进入的情况
 export default function ScenesModule({ selected, onSelect, theme, font }) {
@@ -41,9 +40,6 @@ export default function ScenesModule({ selected, onSelect, theme, font }) {
   return (
     <div className="files">
       <PageHead search={<PageSearch ui="scenes.search" value={query} onChange={setQuery} placeholder="搜索场景名称和用途" results={results} onPick={(r) => onSelect(r.key)} />}>
-      <p className="lead">
-        Godot 项目开发的 {scenes.length} 个场景，{edges.length} 条连线来自各场景页的下一步清单。蓝色实线是主线（{mainCount} 条），虚线是其他可能的下一步。默认按分类折叠，点分类展开；点一个场景，详情面板列出它的上一步和下一步，“只看邻居”只留它附近的场景。
-      </p>
       </PageHead>
       <Graph cacheKey="scenes" {...graph} directed foldable focusable selected={selected} onSelect={onSelect} theme={theme} font={font} ui="scenes" />
     </div>

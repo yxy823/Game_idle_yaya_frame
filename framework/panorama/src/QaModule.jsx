@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { IconExternalLink } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import { files } from "./docs.js";
 import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
@@ -23,12 +24,11 @@ export default function QaModule({ selected, onSelect }) {
   return (
     <>
       <PageHead search={<PageSearch ui="qa.search" value={query} onChange={setQuery} placeholder="搜索问题、结论和理由" />}>
-      <p className="lead">讨论中问过、以后还会用到的问题，共 {data.qa.length} 条。点一条，详情面板显示结论、为什么和依据；点“打开问答页”在新标签页看这一条的完整图解。</p>
-      </PageHead>
       {ws.length > 0 && <p className="lead">{count ? `搜索“${query.trim()}”：${count} 条` : "没有匹配的问答，换一个词或减少关键词。"}</p>}
+      </PageHead>
       {topics.filter((t) => data.qa.some((q, n) => q.file === t && shown[n])).map((t) => (
         <section className="qa-topic" key={t} data-ui="qa.topic">
-          <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer">打开问答页</a>
+          <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a>
             <span className="count">{data.qa.filter((q, n) => q.file === t && shown[n]).length}</span></h2>
           <div className="cards">
             {data.qa.map((q, n) => q.file === t && shown[n] && (
@@ -37,7 +37,7 @@ export default function QaModule({ selected, onSelect }) {
                   <span className="card-title">{q.title}</span>
                   <span className="card-purpose">{q.conclusion}</span>
                 </button>
-                <a className="open qa-open" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open">打开问答页</a>
+                <a className="open qa-open" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a>
               </div>
             ))}
           </div>

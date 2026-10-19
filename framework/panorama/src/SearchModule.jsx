@@ -68,9 +68,7 @@ export default function SearchModule({ selected, onSelect }) {
   return (
     <>
       <PageHead search={<PageSearch ui="search.input" value={query} onChange={change} placeholder="搜索标题、用途、Skill、问答、工具和术语" open />}>
-      {!words.length ? (
-        <p className="lead">在右边的搜索框输入关键词，搜文档的标题、用途、大纲和路径，问答的问题、结论和理由，以及术语表、工具表的每一行。多个词用空格分开，全部包含才算命中。</p>
-      ) : !hits.length ? (
+      {!words.length ? null : !hits.length ? (
         <p className="lead">没有找到包含“{query.trim()}”的内容。换一个词，或者减少关键词。</p>
       ) : (
           <p className="lead">{hits.length > LIMIT ? `共 ${hits.length} 条，显示前 ${LIMIT} 条` : `共 ${hits.length} 条`}</p>

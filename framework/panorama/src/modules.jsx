@@ -33,7 +33,7 @@ function Home({ onModule, font }) {
         <button className="link-btn" onClick={() => onModule("files")}>到文件全景看全部文件</button>
       </p>
       <h2 className="home-h2">框架做什么</h2>
-      <p className="lead">{data.home.framework.lead}点一步，跳到开发场景并展开这一步相关的分类。</p>
+      <p className="lead">{data.home.framework.lead}</p>
       <Diagram ui="home.flow" text={data.home.framework.flow} links={stepLinks} onNode={open} font={font} />
       <h2 className="home-h2">生成项目里一个 Feature 怎样走完</h2>
       <p className="lead">{data.home.feature.lead}</p>

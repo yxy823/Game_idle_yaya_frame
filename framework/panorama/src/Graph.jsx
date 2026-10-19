@@ -35,6 +35,8 @@ function pickLabels(cy, list, limit) {
   return picked;
 }
 
+const foldTip = "只看邻居时不能折叠，先返回全图";
+
 function style(legend, directed) {
   const colors = Object.fromEntries(legend.map((g) => [g.id, css(g.color)]));
   const edgeColor = (e) => colors[e.source().data("group")];
@@ -149,7 +151,10 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     });
     cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
     cyRef.current = cy;
-    return () => cy.destroy();
+    // 拖动详情面板改宽度、开合面板时画布尺寸会变，cytoscape 只监听窗口尺寸，要手动通知
+    const resize = new ResizeObserver(() => cy.resize());
+    resize.observe(box.current);
+    return () => { resize.disconnect(); cy.destroy(); };
   }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, directed, foldable, onSelect]);
 
   useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, font, legend, directed]);
@@ -239,11 +244,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       <div className="graph-area">
         <div className="graph" ref={box} data-ui={ui + ".graph"} />
         <div className="graph-tools">
-          <button className="graph-btn" disabled={!inGraph} onClick={() => onSelect(null)} data-ui={ui + ".graph-clear"}>取消选中（Esc）</button>
+          {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
+          <button className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
+            onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</button>
           {focusable && (
             <>
-              <button className="graph-btn graph-focus" disabled={!inGraph} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
-                onClick={() => setFocus(focus ? null : { center: selected, hops })}>{focus ? "返回全图" : "只看邻居"}</button>
+              <button className="graph-btn graph-focus" aria-disabled={!inGraph} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
+                data-tip={inGraph ? undefined : "先在图里选中一个点"} onClick={() => { if (inGraph) setFocus(focus ? null : { center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</button>
               <div className="segmented" role="tablist" aria-label="邻居范围" data-ui={ui + ".graph-hops"}>
                 {[1, 2].map((h) => (
                   <button key={h} role="tab" aria-selected={hops === h}
@@ -261,15 +268,15 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
         </label>
         {foldable && (
           <div className="legend-actions">
-            <button className="graph-btn" disabled={Boolean(focus)} onClick={() => setExpanded(new Set(legend.map((g) => g.id)))}>全部展开</button>
-            <button className="graph-btn" disabled={Boolean(focus)} onClick={() => setExpanded(new Set())}>全部折叠</button>
+            <button className="graph-btn" aria-disabled={Boolean(focus)} data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) setExpanded(new Set(legend.map((g) => g.id))); }}>全部展开</button>
+            <button className="graph-btn" aria-disabled={Boolean(focus)} data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) setExpanded(new Set()); }}>全部折叠</button>
           </div>
         )}
         {legend.map((g) => (
           <div className="legend-row" key={g.id}>
             {foldable && (
-              <button className="twisty" disabled={Boolean(focus)} aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
-                onClick={() => toggleFold(g.id)}>
+              <button className="twisty" aria-disabled={Boolean(focus)} aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
+                data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) toggleFold(g.id); }}>
                 {expanded.has(g.id) ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />}
               </button>
             )}

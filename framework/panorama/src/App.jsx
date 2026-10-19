@@ -24,6 +24,7 @@ function applyFont(font) {
 
 export default function App() {
   const [module, setModule] = useState(() => (modules.some((m) => m.id === store.get("module")) ? store.get("module") : "home"));
+  const [panelWidth, setPanelWidth] = useState(() => Number(store.get("panel-w")) || 320);
   const [panelOpen, setPanelOpen] = useState(() => store.get("panel") !== "closed");
   const [theme, setTheme] = useState(() => { const t = store.get("theme") || "system"; applyTheme(t); return t; });
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
@@ -35,6 +36,16 @@ export default function App() {
 
   useEffect(() => store.set("module", module), [module]);
   useEffect(() => store.set("panel", panelOpen ? "open" : "closed"), [panelOpen]);
+  useEffect(() => store.set("panel-w", String(panelWidth)), [panelWidth]);
+  // 拖面板左边缘改宽度：最窄 240px，最宽留给主区域 480px（同「窄窗口」一条）
+  const drag = (e) => {
+    const ws = e.currentTarget.parentElement.getBoundingClientRect();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    const move = (ev) => setPanelWidth(Math.round(Math.min(Math.max(240, ws.right - ev.clientX), ws.width - 44 - 480)));
+    const up = () => { e.target.removeEventListener("pointermove", move); e.target.removeEventListener("pointerup", up); };
+    e.target.addEventListener("pointermove", move);
+    e.target.addEventListener("pointerup", up);
+  };
   useEffect(() => store.set("picking", picking ? "on" : "off"), [picking]);
 
   useEffect(() => {
@@ -67,7 +78,7 @@ export default function App() {
         </button>
       </header>
 
-      <div className={"workspace" + (panelOpen ? "" : " panel-closed")}>
+      <div className={"workspace" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": panelWidth + "px" }}>
         <nav className="activity" aria-label="模块" data-ui="activity">
           {modules.map((m) => (
             <button key={m.id} className="icon-btn" aria-label={m.label} data-tip={m.tip} data-ui={"activity." + m.id}
@@ -81,6 +92,8 @@ export default function App() {
             {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
           </section>
         </main>
+        {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)}
+          role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动改宽度，双击恢复 320px" data-ui="panel.resizer" />}
         <DetailPanel file={selected} onSelect={setSelected} />
       </div>
 

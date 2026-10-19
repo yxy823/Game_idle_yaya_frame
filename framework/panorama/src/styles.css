@@ -57,7 +57,7 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 .icon-btn[aria-pressed="true"], .icon-btn[aria-current="page"] { box-shadow: inset 2px 0 0 var(--primary); background: var(--accent); }
 .divider { width: 1px; height: 20px; background: var(--border); }
 
-.workspace { display: grid; grid-template-columns: var(--activity-w) 1fr var(--panel-w); min-height: 0; }
+.workspace { position: relative; display: grid; grid-template-columns: var(--activity-w) 1fr var(--panel-w); min-height: 0; }
 .workspace.panel-closed { grid-template-columns: var(--activity-w) 1fr 0; }
 .activity { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-top: 6px;
   background: var(--chrome); border-right: 1px solid var(--border); }
@@ -174,9 +174,10 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .diagram-link:hover { filter: brightness(0.92); }
 /* 卡片右下角的链接压在卡片上，卡片底部留出位置 */
 .qa-card { position: relative; display: flex; }
-.qa-card .card { flex: 1; padding-bottom: 26px; }
-.qa-card .qa-open { position: absolute; right: 10px; bottom: 8px; }
-.qa-open { font-size: var(--fs-small); font-weight: normal; }
+.qa-card .card { flex: 1; padding-right: 32px; }
+.qa-card .qa-open { position: absolute; right: 8px; top: 8px; }
+.qa-open { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: var(--radius); }
+.qa-open:hover { background: var(--accent); }
 .qa-topic h2 .qa-open { margin-left: 12px; }
 .btn-primary { display: inline-flex; align-items: center; height: var(--control-h); padding: 0 12px; border-radius: var(--radius);
   background: var(--primary); color: var(--pick-fg); text-decoration: none; }
@@ -192,8 +193,8 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .graph-tools .segmented { background: var(--bg); }
 .graph-btn { height: var(--control-h); padding: 0 10px; border: 1px solid var(--field-border);
   border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: var(--fs-small); }
-.graph-btn:hover:not(:disabled) { background: var(--accent); }
-.graph-btn:disabled { color: var(--muted-fg); cursor: default; }
+.graph-btn:hover:not([aria-disabled="true"]) { background: var(--accent); }
+.graph-btn[aria-disabled="true"] { color: var(--muted-fg); cursor: default; }
 /* “只看邻居”和“返回全图”换字时宽度不变，旁边的跳数切换不跟着移动 */
 .graph-focus { min-width: 6.5em; }
 .legend { overflow: auto; padding: 4px 0; border-left: 1px solid var(--border); background: var(--bg); }
@@ -204,7 +205,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .legend-label { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; height: 100%; cursor: pointer; }
 .legend-row .twisty { width: 16px; height: 16px; flex: none; display: inline-grid; place-items: center; padding: 0; border: 0;
   background: transparent; color: var(--muted-fg); cursor: pointer; }
-.legend-row .twisty:disabled { opacity: 0.4; cursor: default; }
+.legend-row .twisty[aria-disabled="true"] { opacity: 0.4; cursor: default; }
 .legend-row .twisty svg.tabler-icon { width: 12px; height: 12px; }
 .legend-actions { display: flex; gap: 6px; padding: 4px 8px; }
 .legend-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -293,3 +294,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .search-list .search-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .search-list .empty-line { padding: 4px var(--pad); }
 .learn-body mark.hit { background: color-mix(in srgb, var(--brand) 30%, transparent); color: inherit; border-radius: 2px; }
+
+/* 详情面板左边缘的拖动条：6px 宽的点击区，悬停和拖动时显示 2px 的线 */
+.panel-resizer { position: absolute; top: 0; bottom: 0; width: 6px; z-index: 5; cursor: col-resize; touch-action: none; }
+.panel-resizer:hover, .panel-resizer:active { background: linear-gradient(to right, transparent 2px, var(--brand) 2px, var(--brand) 4px, transparent 4px); }

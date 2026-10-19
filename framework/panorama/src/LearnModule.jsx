@@ -90,9 +90,7 @@ export default function LearnModule({ onSelect, font }) {
   const next = chapters[chapter + 1];
   return (
     <>
-    <PageHead search={<PageSearch ui="learn.search" value={query} onChange={setQuery} placeholder="在手册各章里搜索" results={results} onPick={(r) => go(r.key, FIRST_MATCH)} />}>
-      <p className="lead">按 Godot 项目手册 README 的阅读顺序列出 {chapters.length} 章，点章节在右边读正文。</p>
-    </PageHead>
+    <PageHead search={<PageSearch ui="learn.search" value={query} onChange={setQuery} placeholder="在手册各章里搜索" results={results} onPick={(r) => go(r.key, FIRST_MATCH)} />} />
     <div className="learn">
       <nav className="learn-toc" aria-label="章节" data-ui="learn.toc">
         {groups.map((g) => (
