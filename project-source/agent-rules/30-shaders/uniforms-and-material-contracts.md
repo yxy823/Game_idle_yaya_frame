@@ -1,5 +1,7 @@
 # Shader 的 Uniform 与材质契约
 
+本页规定材质 uniform、实例 uniform、全局 uniform 的声明与迁移，以及 `TIME` 与权威值的边界。新增、修改或删除 uniform，或在代码中设置 uniform、使用 `TIME` 时读。
+
 uniform 是跨文件的 API：材质、场景、脚本、动画轨道和项目配置都按名称引用它。
 
 ## 材质 uniform

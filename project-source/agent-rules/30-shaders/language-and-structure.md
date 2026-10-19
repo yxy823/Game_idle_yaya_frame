@@ -1,5 +1,7 @@
 # Shader 的语言与结构
 
+本页规定 Shader 的语言与阶段、特殊的 Shader 类别、include 的组织和性能要求，修改任何 Shader 时读。
+
 Shader 只负责表现，不持有权威的玩法状态。语法和语义以 Godot 4.7 为准。
 
 ## 语言与阶段

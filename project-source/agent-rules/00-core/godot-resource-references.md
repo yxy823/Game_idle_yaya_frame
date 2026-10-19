@@ -1,5 +1,7 @@
 # Godot 资源与身份引用
 
+本页规定业务 ID、Resource UID、路径、NodePath 与运行时身份怎样区分，以及怎样修改资源引用和场景引用。选择或修改业务 ID、Resource UID、资源路径、NodePath、`%UniqueName` 或场景引用时读。
+
 不同的身份域分开使用。它们之间可以建立映射，但不能互相替代。
 
 ## 身份域

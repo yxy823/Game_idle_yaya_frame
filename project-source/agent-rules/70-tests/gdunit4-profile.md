@@ -1,5 +1,7 @@
 # gdUnit4 运行器与诊断
 
+本页说明 gdUnit4 包装脚本的运行方式、判定条件和诊断监控，以及编写测试时要配合的约定。运行测试或解读失败、测试预期的错误或警告、修改 gdUnit4 配置或版本时读。
+
 项目固定使用 `addons/gdUnit4/` 中的 gdUnit4，版本以其 `plugin.cfg` 为准。测试的选择和完成证据见 [测试追溯与证据](../../methodology/08-test-traceability-and-evidence.md)；本文写包装脚本的实际行为，以及编写测试时要配合的地方。
 
 ## 运行方式

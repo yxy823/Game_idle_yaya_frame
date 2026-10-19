@@ -1,5 +1,7 @@
 # 场景引用、分组、ID 与顺序
 
+本页规定 `.tscn` 文件内的序列化 ID、NodePath 迁移、分组和同级顺序。新增、复制、重命名或移动节点，修改 NodePath、分组或同级顺序，或直接编辑 `.tscn` 文本时读。
+
 Resource UID、场景节点的 `unique_id`、NodePath 和 `%UniqueName` 的身份规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)。本页只补充 `.tscn` 文件内的要求。
 
 ## 序列化 ID

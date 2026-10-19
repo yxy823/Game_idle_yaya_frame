@@ -1,5 +1,7 @@
 # GDScript 结构与依赖
 
+本页规定脚本的职责划分、依赖方向、Command 与 Query，以及调试工具和测试入口怎样调用生产代码。新增脚本或模块，修改职责、依赖方向、模块间通信、Autoload 使用或 Command，或编写调试工具时读。
+
 明确状态归谁、依赖朝哪个方向，不通过 SceneTree 搜索去发现协作对象。职责模型与示例见 [docs/game-organization.md](../../../docs/game-organization.md)。
 
 ## 职责

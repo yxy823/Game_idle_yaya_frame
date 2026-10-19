@@ -1,5 +1,7 @@
 # ProjectSettings 的编写与作用范围
 
+本页规定 `project.godot` 的编辑方式、生效值与 feature 覆盖、运行时配置的持久化、应用启动设置，以及设置的改名与删除。修改任何 `project.godot` 或 ProjectSettings 时读。
+
 `project.godot` 是行为配置。有名称的项目级设置一旦被使用，就是跨文件的 API。
 
 ## 编写

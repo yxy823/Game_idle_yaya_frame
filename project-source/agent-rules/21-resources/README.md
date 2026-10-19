@@ -1,5 +1,7 @@
 # 21 Resource（`.tres` / `Resource`）规则
 
+本模块规定 Resource（`.tres` 和自定义 `Resource` 脚本）的角色、共享、身份、保存与 schema，并列出修改后需要的验证。修改 Resource 时，先用下表找到要读的文档。
+
 | 文档 | 何时阅读 |
 | --- | --- |
 | [roles-sharing-and-locality.md](roles-sharing-and-locality.md) | 任何 Resource 修改，包括新增或修改 `game/<对象>/tuning/` 下的调参资源 |

@@ -1,5 +1,7 @@
 # 导出 Feature 与导出插件
 
+本页规定自定义导出 feature 的命名与验证、导出插件怎样读取预设，以及 `EditorExportPlugin` 的写法和缓存。新增、重命名或读取自定义导出 feature，或编写、修改 `EditorExportPlugin` 时读。
+
 自定义导出 feature 是区分大小写的构建 API；`EditorExportPlugin` 是能改变最终包内容的构建管线代码。feature 覆盖与其他 ProjectSettings 值的叠加关系见[生效值与 Feature 覆盖](../40-project-config/authoring-and-scope.md#生效值与-feature-覆盖)。
 
 ## 自定义 Feature

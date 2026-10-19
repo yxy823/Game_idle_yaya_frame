@@ -1,5 +1,7 @@
 # InputMap 配置
 
+本页规定 Input Action 的命名、绑定、死区、重复触发与改键，以及在编辑器代码中读取项目 InputMap 的方法。修改 Input Action 或绑定、处理改键，或在编辑器代码中读取 Input Action 时读。
+
 Input Action 是与设备和改键无关的语义抽象。GDScript 中的事件路由见[输入处理](../10-gdscript/godot-lifecycle-and-input.md#输入处理)，输入测试见[输入与 Command 测试](../70-tests/input-and-command-testing.md)。
 
 ## Action

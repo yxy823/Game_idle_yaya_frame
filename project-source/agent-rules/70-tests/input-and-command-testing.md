@@ -1,5 +1,7 @@
 # 输入与 Command 测试
 
+本页规定输入、UI 交互和 Command 的测试分别走哪条路径、断言什么。测试输入、UI 交互或 Command 时读。
+
 区分轮询得到的 Action 状态、事件路由、UI 适配层和业务 Command，按被测契约选择路径。Command 与 Query 的生产设计见 [structure-and-dependencies.md](../10-gdscript/structure-and-dependencies.md)。
 
 ## 输入路径

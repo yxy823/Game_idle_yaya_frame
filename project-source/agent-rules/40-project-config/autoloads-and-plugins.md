@@ -1,5 +1,7 @@
 # Autoload 与编辑器插件
 
+本页规定 Autoload、事件总线和编辑器插件的使用条件、登记与清理。改动 Autoload 或编辑器插件，或设计事件总线时读。
+
 两者都登记在 `project.godot` 中：Autoload 是有顺序、具有全局生命周期的应用依赖；编辑器插件是在编辑器中运行的代码。
 
 ## Autoload

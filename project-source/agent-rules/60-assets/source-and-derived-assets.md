@@ -1,5 +1,7 @@
 # 源素材与派生素材
 
+本页规定源素材、`.import`、导入缓存和导出包各自的权威性，以及变体、第三方素材许可证、`.gdignore` 与原始文件的要求。修改任何素材时读。
+
 可编辑的源文件、`.import` 文件、`.godot/imported/` 缓存和导出包的权威性各不相同。`.import` 文件与 `.godot/imported/` 的归属见[生成文件与工具管理文件](../00-core/third-party-generated-and-temporary-files.md#生成文件与工具管理文件)。
 
 ## 源文件与生成内容

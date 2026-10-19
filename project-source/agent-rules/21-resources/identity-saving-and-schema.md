@@ -1,5 +1,7 @@
 # Resource 身份、保存与 Schema
 
+本页规定 Resource 的身份与路径、保存位置与保存后的检查、导出属性构成的 schema，以及自定义 Resource 的构造。移动、重命名或保存 Resource，生成 `.tres`，或修改自定义 Resource 的导出属性、默认值、`class_name` 或 `_init()` 时读。
+
 ## 身份与路径
 
 - Resource UID、`res://` 路径、`resource_name` 和玩法上的业务 ID 是不同的身份域，规则见 [Godot 资源与身份引用](../00-core/godot-resource-references.md)。
