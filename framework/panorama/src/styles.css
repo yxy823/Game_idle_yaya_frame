@@ -182,15 +182,25 @@ body.picking, body.picking * { cursor: crosshair !important; }
   border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
 .graph-area { position: relative; min-width: 0; }
 .graph { position: absolute; inset: 0; }
-.graph-clear { position: absolute; top: 8px; left: 8px; height: var(--control-h); padding: 0 10px; border: 1px solid var(--field-border);
+.graph-tools { position: absolute; top: 8px; left: 8px; display: flex; gap: 6px; }
+.graph-tools .segmented { background: var(--bg); }
+.graph-btn { height: var(--control-h); padding: 0 10px; border: 1px solid var(--field-border);
   border-radius: var(--radius); background: var(--bg); cursor: pointer; font-size: var(--fs-small); }
-.graph-clear:hover:not(:disabled) { background: var(--accent); }
-.graph-clear:disabled { color: var(--muted-fg); cursor: default; }
+.graph-btn:hover:not(:disabled) { background: var(--accent); }
+.graph-btn:disabled { color: var(--muted-fg); cursor: default; }
+/* “只看邻居”和“返回全图”换字时宽度不变，旁边的跳数切换不跟着移动 */
+.graph-focus { min-width: 6.5em; }
 .legend { overflow: auto; padding: 4px 0; border-left: 1px solid var(--border); background: var(--bg); }
 .legend-row { height: 24px; display: flex; align-items: center; gap: 6px; padding: 0 8px; cursor: pointer; }
 .legend-row:hover { background: var(--accent); }
 .legend-row input { margin: 0; accent-color: var(--primary); }
 .legend-row .dot { margin-right: 0; }
+.legend-label { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; height: 100%; cursor: pointer; }
+.legend-row .twisty { width: 16px; height: 16px; flex: none; display: inline-grid; place-items: center; padding: 0; border: 0;
+  background: transparent; color: var(--muted-fg); cursor: pointer; }
+.legend-row .twisty:disabled { opacity: 0.4; cursor: default; }
+.legend-row .twisty svg.tabler-icon { width: 12px; height: 12px; }
+.legend-actions { display: flex; gap: 6px; padding: 4px 8px; }
 .legend-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 详情面板里的关系 */

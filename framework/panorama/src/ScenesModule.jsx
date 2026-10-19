@@ -37,9 +37,9 @@ export default function ScenesModule({ selected, onSelect, theme }) {
     <div className="files">
       <h1>开发场景</h1>
       <p className="lead">
-        Godot 项目开发的 {scenes.length} 个场景，{edges.length} 条连线来自各场景页的下一步清单。蓝色实线是主线（{mainCount} 条），虚线是其他可能的下一步。点一个场景，详情面板列出它的上一步和下一步。
+        Godot 项目开发的 {scenes.length} 个场景，{edges.length} 条连线来自各场景页的下一步清单。蓝色实线是主线（{mainCount} 条），虚线是其他可能的下一步。默认按分类折叠，点分类展开；点一个场景，详情面板列出它的上一步和下一步，“只看邻居”只留它附近的场景。
       </p>
-      <Graph cacheKey="scenes" {...graph} directed selected={selected} onSelect={onSelect} theme={theme} ui="scenes" />
+      <Graph cacheKey="scenes" {...graph} directed foldable focusable selected={selected} onSelect={onSelect} theme={theme} ui="scenes" />
     </div>
   );
 }
