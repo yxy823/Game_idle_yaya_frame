@@ -127,7 +127,8 @@ def parse_output(text: str) -> dict:
         return {**result, "outcome": "violated", "violated": "deadlock"}
     if "Model checking completed. No error has been found." in text:
         return {**result, "outcome": "completed", "violated": None}
-    return {**result, "outcome": "error", "violated": None}
+    error = re.search(r"^Error: .*$", text, re.MULTILINE)
+    return {**result, "outcome": "error", "violated": None, "error": error.group(0) if error else None}
 
 
 def judge(run: dict, parsed: dict) -> bool:
@@ -201,7 +202,9 @@ def main(argv: list[str] | None = None) -> int:
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for item in results:
         expected = "completed" if item["kind"] == "correct" else f"violates {(item['invariants'] + item['properties'])[0]}"
-        actual = item["outcome"] if item["outcome"] != "violated" else f"violates {item['violated']}"
+        actual = f"violates {item['violated']}" if item["outcome"] == "violated" else item["outcome"]
+        if item.get("error"):
+            actual += f" ({item['error']})"
         print(f"{'PASS' if item['passed'] else 'FAIL'}  {item['name']}: expected {expected}; "
               f"actual {actual}; distinct states {item['distinct_states']}")
     if summary["properties_without_mutation"]:

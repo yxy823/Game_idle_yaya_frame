@@ -55,6 +55,11 @@ class OutputParsingTests(unittest.TestCase):
                 self.assertEqual((parsed["outcome"], parsed["violated"], parsed["distinct_states"]),
                                  (outcome, violated, states))
 
+    def test_error_keeps_the_first_tlc_error_line(self) -> None:
+        text = "Error: Successor state is not completely specified by action Tick.\nError: The behavior up to this point is:"
+        self.assertEqual(check_behavior_model.parse_output(text)["error"],
+                         "Error: Successor state is not completely specified by action Tick.")
+
     def test_each_caught_by_name_runs_alone(self) -> None:
         # TLC 只报第一个违反；两条性质放进同一次运行，后一条是否起作用就验证不到。
         runs = check_behavior_model.plan_runs(
