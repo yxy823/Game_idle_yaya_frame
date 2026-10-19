@@ -87,6 +87,29 @@ GDD 包含游戏定位、体验目标、核心循环、系统规则、状态与�
 | 专业文档 | 从 GDD 细化的美术、声音、UI、游戏表现、本地化和资源规格；GDD 已定义的细节直接引用 |
 | `docs/terminology.md` | 已确认的项目术语定义；完整的行为规则仍在 GDD |
 
+下图是从 GDD 到 Feature 的文档关系；GDD 到各专业文档的关系见专业来源与资源的[各类来源由谁维护](../specialist-work-and-records/specialist-work.md#各类来源由谁维护)。箭头的三种含义见[主要对象及读写关系](../foundations/03-project-layout.md#主要对象及读写关系)。
+
+```mermaid
+flowchart LR
+    terms["项目术语<br/>docs/terminology.md"] -->|统一项目术语| gdd["GDD<br/>docs/gdd/"]
+    ideas["未采纳想法<br/>docs/unadopted-ideas.md"] -->|进入比较或采纳后迁移并引用| gdd
+    gdd -->|引用已采纳的调研结论| research["外部调研<br/>docs/research/"]
+    gdd -->|按设计组织交付| overview["Product 总览<br/>docs/product.md"]
+    overview -->|当前交付单元入口| product["当前 Product<br/>docs/product/"]
+    product -->|细化当前交付任务| feature["Feature 详情 JSON<br/>docs/features/"]
+```
+
+用文字说：
+
+| 起点 | 终点 | 关系 |
+| --- | --- | --- |
+| 项目术语 | GDD | 采用：GDD 引用已确认的术语，不另设词表 |
+| 未采纳想法 | GDD | 引用依据：想法进入比较或被采纳时，正文迁走并留下去向链接 |
+| GDD | 外部调研 | 引用依据：只引用已经采纳的调研结论 |
+| GDD | Product 总览 | 采用：总览按 GDD 预拆分交付范围 |
+| Product 总览 | 当前 Product | 入口：轮到的交付单元才有详细文档 |
+| 当前 Product | Feature 详情 | 采用：Feature 细化当前 Product 的交付任务 |
+
 **Product 是可验收的交付单元。** 它可以是一个系统、系统的一部分，或跨系统的完整体验，不必和 GDD 章节一一对应。例如可以先交付手动采集，同一采集设计中的自动化留作后续。所以游戏的系统清单和 Product 的交付清单可以不同。
 
 **Product 编号是稳定的身份，不是排序。** 新单元使用下一个可用编号；它成为别的单元的前置时，调整总览中的依赖和建议顺序，不重命名旧文件。删除或废弃时保留真实历史和替代关系，不为了编号连续而重排引用。

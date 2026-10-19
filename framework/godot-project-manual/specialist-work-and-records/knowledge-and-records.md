@@ -23,6 +23,40 @@
 | `docs/unadopted-ideas.md` | 暂不采纳的设想及原因；变成当前比较的选择或被采纳时，迁走正文并留下去向链接 | 开发承诺 |
 | `docs/progress.md` | 当前任务和阶段、真实的阻塞、待决定事项、下一步和资料链接 | 已完成任务的完整历史 |
 
+下图是这些记录之间的主要关系，箭头的三种含义见[主要对象及读写关系](../foundations/03-project-layout.md#主要对象及读写关系)：
+
+```mermaid
+flowchart LR
+    progress["Progress<br/>docs/progress.md"]
+    progress -->|当前任务入口| feature["Feature 详情 JSON<br/>docs/features/"]
+    progress -->|完成历史入口| history["执行历史<br/>docs/progress/"]
+    progress -->|当前问题与相关资料| research["外部调研<br/>docs/research/"]
+    progress -->|当前状态的实际依据| reports["任务报告<br/>reports/features/ 等"]
+    history -->|保留原证据链接| reports
+    feature -->|notes 中的设计链接| design["Feature 设计稿<br/>docs/features/"]
+    design -->|当前结构与实际连接| arch["项目架构<br/>docs/architecture.md"]
+    arch -->|子系统内部契约| sub["子系统说明<br/>docs/architecture/"]
+    arch -->|重要技术取舍| adr["ADR<br/>docs/architecture/"]
+    sub -->|有用的验证入口| reports
+    adr -->|需要时引用外部依据| research
+    knowledge["项目知识<br/>docs/knowledge/"] -->|原事件与局部决定| feature
+    knowledge -->|经验链接真实依据| reports
+```
+
+用文字说：
+
+| 起点 | 终点 | 关系 |
+| --- | --- | --- |
+| Progress | Feature 详情、执行历史、外部调研 | 入口：当前任务、完成历史和当前问题的相关资料 |
+| Progress | 任务报告 | 引用依据：当前状态所依据的实际报告 |
+| 执行历史 | 任务报告 | 引用依据：归档时保留原证据链接 |
+| Feature 详情 | Feature 设计稿 | 入口：notes 中的设计链接 |
+| Feature 设计稿 | 项目架构 | 引用依据：设计依据当前结构与实际连接 |
+| 项目架构 | 子系统说明、ADR | 入口：子系统内部契约和重要技术取舍 |
+| 子系统说明 | 任务报告 | 引用依据：有用的验证入口 |
+| ADR | 外部调研 | 引用依据：需要时引用外部依据 |
+| 项目知识 | Feature 详情、任务报告 | 引用依据：知识条目链接原事件、局部决定和真实依据 |
+
 GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-tasks/requirements-and-planning.md#gdd-是项目开发的前提)。这里补充几个常被问到的位置：世界观、角色与故事梗概写在 `concept-and-experience.md`；内容定义的目录跟随所属系统；内容的排布与节奏写在 `progression.md`。草案、已采纳的决定和实际验证状态要分开写。
 
 备选方案和暂不采纳的想法怎样分流，见需求与规划的[备选方案与未采纳想法](../requirements-and-tasks/requirements-and-planning.md#备选方案与未采纳想法)。除 `design-gdd` 外，`grill-me` 也可以保存用户明确要求“以后再考虑”的想法；纯讨论不写文件。

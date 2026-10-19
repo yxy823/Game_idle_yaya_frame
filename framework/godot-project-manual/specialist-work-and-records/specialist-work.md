@@ -33,6 +33,42 @@
 | 按已定要求接入真实资源 | 当前 Feature 或实验中的资源、引用与配置 | `content-asset-integration` |
 | 按已定本地化要求实现运行支持 | 翻译资源、字体、界面适配与语言逻辑 | `content-localization` |
 
+下图是这些专业文档之间的关系，箭头的三种含义见[主要对象及读写关系](../foundations/03-project-layout.md#主要对象及读写关系)：
+
+```mermaid
+flowchart LR
+    gdd["GDD<br/>docs/gdd/"]
+    terms["项目术语<br/>docs/terminology.md"]
+    gdd -->|细化视觉方向| art["共享美术规范<br/>docs/art/art-bible.md"]
+    gdd -->|细化声音方向| audio["共享声音规范<br/>docs/audio/sound-bible.md"]
+    gdd -->|细化界面与交互| ui["UI 与共享控件设计<br/>docs/ui/"]
+    gdd -->|按需求细化语言约定| loc["本地化规范<br/>docs/localization/localization-spec.md"]
+    gdd -->|非 UI 表现的入口| pres["游戏表现与共享组件<br/>docs/presentation/"]
+    terms -->|译名引用已确认概念| loc
+    art -->|共享视觉约束| ui
+    loc -->|语言、格式与显示约束| ui
+    audio -->|共享声音约束| pres
+    ui -->|实际触发位置与导航| pres
+    ui -->|界面专用资源章节| res["资源规格章节<br/>写在所属 UI、表现或共享规范中"]
+    pres -->|方案所属资源章节| res
+    res -->|采用的规格与缺口| design["Feature 设计稿<br/>docs/features/"]
+    pres -->|采用方案的实施解释| design
+```
+
+用文字说：
+
+| 起点 | 终点 | 关系 |
+| --- | --- | --- |
+| GDD | 共享美术规范、共享声音规范、UI 设计、本地化规范 | 采用：各专业文档细化 GDD 中对应的要求 |
+| GDD | 游戏表现 | 入口：不属于界面的表现从 GDD 进入 |
+| 项目术语 | 本地化规范 | 采用：术语译名引用已确认的概念 |
+| 共享美术规范、本地化规范 | UI 设计 | 采用：界面遵守共享视觉约束和语言、格式与显示约束 |
+| 共享声音规范 | 游戏表现 | 采用：表现遵守共享声音约束 |
+| UI 设计 | 游戏表现 | 入口：从界面的实际触发位置和文末导航进入表现 |
+| UI 设计、游戏表现 | 资源规格章节 | 入口：界面专用和方案专用的资源写在所属文档的资源章节 |
+| 资源规格章节 | Feature 设计稿 | 采用：设计稿使用采用的规格，并写明准备缺口 |
+| 游戏表现 | Feature 设计稿 | 入口：从表现正文找到采用方案的实施解释 |
+
 ### GDD 与专业文档的分工
 
 GDD 写玩家应该获得什么感受、需要辨认出哪些对象；画风、色板、质感等视觉标准写在 Art Bible，音色、节奏等声音特征写在 Sound Bible。例如“安静，且奖励一眼可辨”是体验目标，写在 GDD；“低饱和手绘”是美术标准，写在 Art Bible，两者互相引用。

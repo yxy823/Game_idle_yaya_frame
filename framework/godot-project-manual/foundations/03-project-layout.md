@@ -8,6 +8,34 @@
 
 ## 主要对象及读写关系
 
+本节的图只画文档之间的主要关系，箭头按连线上的文字分三种：
+
+- **入口**：从一份文档可以查到另一份，例如项目入口 → Progress。
+- **采用**：箭头指向使用或细化这项要求的文档，例如规则 → Skill 与流程规范。
+- **引用依据**：箭头从记录指向它引用的依据或证据，例如完成证据 → 测试原始报告。
+
+图里有箭头不代表会自动执行，也不代表某个项目里已经建齐这些文件。
+
+下图是从项目入口能找到的文档：
+
+```mermaid
+flowchart LR
+    entry["项目入口<br/>README.md、docs/README.md"]
+    entry -->|适用规则| rules["项目规则<br/>AGENTS.md、docs/project-rules.md"]
+    entry -->|从游戏功能开始| org["游戏职责与文档指南<br/>docs/game-organization.md"]
+    entry -->|共享业务词义| terms["项目术语<br/>docs/terminology.md"]
+    entry -->|任务索引| index["Feature 索引<br/>docs/feature-list.json"]
+    entry -->|当前停点| progress["Progress<br/>docs/progress.md"]
+    entry -->|按主题查阅经验| knowledge["项目知识<br/>docs/knowledge/"]
+    entry -->|流程失误记录| lessons["Lessons<br/>docs/lessons.md"]
+    entry -->|查阅项目问答| qa["项目 Q&A<br/>docs/qa/"]
+    entry -->|暂未采纳的想法| ideas["未采纳想法<br/>docs/unadopted-ideas.md"]
+    org -->|需求与体验| gdd["GDD<br/>docs/gdd/"]
+    org -->|实际实现与协作| arch["项目架构<br/>docs/architecture.md"]
+```
+
+用文字说：项目入口直接链接规则、游戏职责与文档指南、项目术语、Feature 索引、Progress、项目知识、Lessons、项目 Q&A 和未采纳想法。想从一个游戏功能出发，先读游戏职责与文档指南，再从它进入 GDD 和项目架构。
+
 ### 规则、方法与配置
 
 | 位置 | 保存什么 | 谁维护 / 谁读取 |
@@ -21,6 +49,34 @@
 | `docs/methodology-config.json` | 文档语言与工具路径 | 环境准备 / 项目命令 |
 | `docs/project-rules.md` | 项目的开发约束与工程原则；条目默认必须遵守，写“建议：”的可有理由地偏离 | 获准的规则修改 / 受影响的工作 |
 | `docs/game-organization.md` | 逻辑与表现的职责、文档关系、模块组织与命名判断，源文件见[游戏职责与项目组织指南](../../../project-source/defaults/docs/game-organization.md) | 随项目复制 / 设计与结构工作 |
+
+规则、Skill 和工具之间的关系如下：
+
+```mermaid
+flowchart LR
+    rules["项目规则<br/>AGENTS.md、docs/project-rules.md、yaya/agent-rules/"]
+    rules -->|按任务进入方法| methods["Skill 与流程规范<br/>.agents/skills/、yaya/methodology/"]
+    methods -->|显式工具契约| tools["工具说明<br/>yaya/tools/README.md 等"]
+    tools -->|读取配置| config["环境与语言配置<br/>docs/methodology-config.json"]
+    methods -->|按环境规范实际检查后记录| init["初始化检查报告<br/>reports/initialization.md"]
+    progress["Progress<br/>docs/progress.md"] -->|需要续接的环境结果| init
+    methods -->|按记录约定维护| lessons["Lessons<br/>docs/lessons.md"]
+    lessons -->|够次数时提议升级| rules
+    methods -->|按 Skill 编写与同步| qa["项目 Q&A<br/>docs/qa/"]
+```
+
+用文字说：
+
+| 起点 | 终点 | 关系 |
+| --- | --- | --- |
+| 项目规则 | Skill 与流程规范 | 入口：按当前任务进入对应的方法 |
+| Skill 与流程规范 | 工具说明 | 入口：工具的命令、输入输出与限制写在工具说明里 |
+| 工具说明 | 环境与语言配置 | 入口：工具运行时读取配置中的路径与语言 |
+| Skill 与流程规范 | 初始化检查报告 | 采用：按环境规范实际检查后写入报告 |
+| Progress | 初始化检查报告 | 引用依据：需要续接的环境结果 |
+| Skill 与流程规范 | Lessons | 采用：按记录约定维护 Lessons |
+| Lessons | 项目规则 | 引用依据：同一失误够次数时提议升级成规则 |
+| Skill 与流程规范 | 项目 Q&A | 采用：`qa-explainer` 编写问答并在正文变化时同步 |
 
 ### 设计与专业规格
 
@@ -46,6 +102,39 @@
 | `docs/test-registry.json` | 组件与测试 ID、套件与用例、planned / active / retired 状态 | 规划与实现 / 测试运行器 |
 | `docs/feature-list-revisions.json` | 规划实际覆盖的来源基线与修订记录 | 规划与同步 / 不是“最新 Git 提交”的别名 |
 | `docs/features/<Feature ID>-evidence.json` | 一个 Feature 的完成证据：验证原件的引用与内容绑定 | 完成记录工具 / 该 Feature 第一次记录真实结果时创建 |
+
+一个 Feature 的记录与测试、验收证据之间的关系如下：
+
+```mermaid
+flowchart LR
+    index["Feature 索引<br/>docs/feature-list.json"] -->|detail_path| feature["Feature 详情 JSON<br/>docs/features/"]
+    index -->|规划基线与演进| revisions["来源基线与计划修订<br/>docs/feature-list-revisions.json"]
+    templates["项目文档模板<br/>yaya/methodology/templates/"] -->|真实规划时采用结构| feature
+    methods["Skill 与流程规范"] -->|范围、AC 与验证契约| feature
+    feature -->|测试 ID 与组件映射| registry["测试登记表<br/>docs/test-registry.json"]
+    feature -->|人工检查义务，仅 manual| manual["人工验收清单<br/>reports/manual-acceptance/"]
+    feature -->|按当前 Feature 身份关联| evidence["完成证据 JSON<br/>docs/features/"]
+    feature -->|补充测量与按需审核| taskreports["任务报告<br/>reports/features/ 等"]
+    evidence -->|引用真实运行原件| runs["自动测试原始报告<br/>reports/gdunit-wrapper/"]
+    evidence -->|引用清单与实际结果| manual
+    runs -->|真实运行的测试身份| registry
+```
+
+用文字说：
+
+| 起点 | 终点 | 关系 |
+| --- | --- | --- |
+| Feature 索引 | Feature 详情 | 入口：索引的 `detail_path` 指向详情文件 |
+| Feature 索引 | 来源基线与计划修订 | 引用依据：规划采用的来源版本和之后的修订 |
+| 项目文档模板 | Feature 详情 | 采用：真实规划时按模板的结构创建 |
+| Skill 与流程规范 | Feature 详情 | 采用：范围、AC 与验证义务的契约 |
+| Feature 详情 | 测试登记表 | 引用依据：测试 ID 与组件映射 |
+| Feature 详情 | 人工验收清单 | 采用：只有 manual 验收的 Feature 才生成清单 |
+| Feature 详情 | 完成证据 | 引用依据：按 Feature ID 对应，每个 Feature 一份 |
+| Feature 详情 | 任务报告 | 引用依据：补充测量和用户要求的审核报告 |
+| 完成证据 | 自动测试原始报告 | 引用依据：真实运行的原件 |
+| 完成证据 | 人工验收清单 | 引用依据：清单和用户写回的结论 |
+| 自动测试原始报告 | 测试登记表 | 引用依据：运行中的测试按登记表的测试 ID 识别 |
 
 ### 架构、知识与过程记录
 
