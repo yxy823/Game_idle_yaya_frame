@@ -100,9 +100,9 @@
 | 验证点 | 最近一个仍在当前 HEAD 历史上的已完成 Feature 的完成证据 `git_revision`；没有时是仓库的第一个提交。取法由 `yaya/tools/features/record-base-revision.py` 实现 |  |
 | 起点 / `base_revision` | Feature 详情中测试选择的起点：Stage 2 写入的验证点，之后固定；选择比较它与当前工作区的内容差异。不指 Git 分支起点或修订记录的 `anchor_commit` |  |
 | 反推组件 | 起点以来改动的文件按登记表 `source_paths` 对到的组件，与 `affected_components` 取并集后参与测试选择；不在声明中时列进 `inferred_components`，不是错误 |  |
-| 行为模型 / 行为模型检查 | 行为模型是一个子系统当前行为的 TLA+ 模型，正式位置 `docs/architecture/models/<subsystem>.tla`；行为模型检查是 Stage 1C 用 `check-behavior-model.py` 运行 TLC 检查它，结果只算设计验证，不进入完成证据。只做模型检查、不做定理证明，所以不叫“形式化验证” | 形式化验证 |
-| 正确版本 / 错误版本 | 行为模型检查的两类运行：正确版本是常量 `Mutation` 取 `none` 的模型，必须完整跑完、没有违反；错误版本是故意改错一处、模拟一种合理实现错误的模型，必须被检查配置里写明的每条性质抓到 | 错误注入 |
-| 可达性检查 | 用一条期望被违反的不变量证明某条合法路径能走到，防止模型把要检查的行为限制掉，正确版本因此假通过；检查配置的 `witnesses` 字段列出它们 | 见证路径、见证不变量 |
+| 行为模型 / 行为模型检查 / behavior model check | 行为模型是一个子系统当前行为的 TLA+ 模型，正式位置 `docs/architecture/models/<subsystem>.tla`；行为模型检查是 Stage 1C 用 `check-behavior-model.py` 运行 TLC 检查它，结果只算设计验证，不进入完成证据。只做模型检查、不做定理证明，所以不叫“形式化验证” | 形式化验证 |
+| 正确版本 / 错误版本 / mutation | 行为模型检查的两类运行（mutation 指错误版本）：正确版本是常量 `Mutation` 取 `none` 的模型，必须完整跑完、没有违反；错误版本是故意改错一处、模拟一种合理实现错误的模型，必须被检查配置里写明的每条性质抓到 | 错误注入 |
+| 可达性检查 / witness | 用一条期望被违反的不变量证明某条合法路径能走到，防止模型把要检查的行为限制掉，正确版本因此假通过；检查配置的 `witnesses` 字段列出它们 | 见证路径、见证不变量 |
 | 检查配置 | 行为模型旁的同名 `.checks.json`，写明要检查的性质、错误版本及应抓到它的性质、可达性检查；字段见工具说明。不叫“检查清单”，因为容易和人工验收清单混淆 |  |
 
 来源：[测试追溯与证据](../project-source/methodology/08-test-traceability-and-evidence.md)、[人工验收文件](../project-source/methodology/contracts/manual-acceptance-files.md)、[behavior-model-check](../project-source/skills/behavior-model-check/SKILL.md)。
