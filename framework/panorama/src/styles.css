@@ -63,10 +63,6 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 .module[hidden] { display: none; }
 .module h1 { font-size: 16px; margin: 0 0 4px; }
 .module .lead { color: var(--muted-fg); margin: 0 0 16px; max-width: 48em; }
-.placeholder { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface);
-  padding: 12px var(--pad); margin-bottom: 12px; max-width: 48em; }
-.placeholder dt { font-size: var(--fs-small); color: var(--muted-fg); }
-.placeholder dd { margin: 0 0 8px; }
 /* Mermaid 图由 Pele 渲染，颜色取页面的语义变量，换主题时不用重画 */
 .diagram { margin: 0 auto 16px; max-width: 720px; white-space: pre-wrap; font: var(--fs-small)/1.5 Consolas, monospace; color: var(--muted-fg); }
 .pele { --pele-bg: transparent; --pele-fg: var(--fg); --pele-muted: var(--muted-fg); --pele-line: var(--muted-fg);
@@ -248,3 +244,31 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .result-meta .open { min-width: 0; }
 .kind { flex: none; padding: 0 4px; border: 1px solid var(--field-border); border-radius: var(--radius); font-size: var(--fs-small); font-weight: normal; color: var(--muted-fg); }
 .result mark { background: var(--accent); color: var(--fg); font-weight: 700; border-radius: 2px; }
+
+/* 首页 */
+.module .home-h2 { font-size: 14px; margin: 24px 0 4px; }
+.home-links { display: flex; gap: 16px; margin: -8px 0 16px; }
+.link-btn { padding: 0; border: 0; background: none; color: var(--primary); cursor: pointer; font: inherit; }
+.link-btn:hover { text-decoration: underline; }
+
+/* 学习：左边章节目录，右边正文 */
+.learn { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
+.learn-toc { position: sticky; top: 0; max-height: calc(100vh - 120px); overflow: auto; border-right: 1px solid var(--border); padding-right: 4px; }
+.learn-toc .tree-row { padding-left: 8px; }
+.learn-group { padding: 8px 8px 2px; font-size: var(--fs-small); color: var(--muted-fg); }
+.learn-body { max-width: 52em; line-height: 1.7; }
+.learn-body h1 { font-size: 18px; margin: 0 0 12px; }
+.learn-body h2 { font-size: 15px; margin: 28px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.learn-body h3 { font-size: 13px; margin: 20px 0 6px; }
+.learn-body p, .learn-body ul, .learn-body ol, .learn-body table, .learn-body blockquote { margin: 0 0 10px; }
+.learn-body ul, .learn-body ol { padding-left: 1.6em; }
+.learn-body a { color: var(--primary); text-decoration: none; }
+.learn-body a:hover { text-decoration: underline; }
+.learn-body code { font: 12px Consolas, monospace; padding: 1px 4px; border-radius: var(--radius); background: var(--accent); }
+.learn-body pre { padding: 8px 12px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); overflow: auto; }
+.learn-body pre code { padding: 0; background: none; }
+.learn-body table { border-collapse: collapse; width: 100%; }
+.learn-body th, .learn-body td { border: 1px solid var(--border); padding: 4px 8px; vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+.learn-body th { background: var(--surface); }
+.learn-body blockquote { padding-left: 12px; border-left: 3px solid var(--border); color: var(--muted-fg); }
+.learn-next { margin: 16px 0 32px; }

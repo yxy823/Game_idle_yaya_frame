@@ -6,13 +6,18 @@ import { readDocs } from "./read-docs.js";
 const repo = path.resolve(import.meta.dirname, "..", "..", "..");
 const id = "virtual:panorama-data";
 
-// 框架入口「框架做什么」一节的第一张 Mermaid 图
-function homeFlow() {
-  const text = fs.readFileSync(path.join(repo, "framework", "README.md"), "utf-8").replace(/\r\n/g, "\n");
-  const section = text.slice(text.indexOf("## 框架做什么"));
-  const start = section.indexOf("```mermaid\n") + "```mermaid\n".length;
-  return section.slice(start, section.indexOf("```", start)).trimEnd();
+// 一节的第一段文字和第一张 Mermaid 图，首页用它们说明框架和 Feature 主线，页面上不另写正文
+function section(file, heading) {
+  const text = fs.readFileSync(path.join(repo, file), "utf-8").replace(/\r\n/g, "\n");
+  const body = text.slice(text.indexOf("\n" + heading + "\n") + heading.length + 2);
+  const lead = body.split("\n\n").map((p) => p.trim()).find((p) => p && !p.startsWith("```"));
+  const start = body.indexOf("```mermaid\n") + "```mermaid\n".length;
+  return { lead: lead.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/`/g, ""), flow: body.slice(start, body.indexOf("```", start)).trimEnd() };
 }
+const home = () => ({
+  framework: section("framework/README.md", "## 框架做什么"),
+  feature: section("framework/godot-project-manual/README.md", "## 先建立的整体印象"),
+});
 
 function generatedAt() {
   const d = new Date();
@@ -26,7 +31,7 @@ export default function panoramaData() {
     resolveId: (source) => (source === id ? "\0" + id : null),
     load(resolved) {
       if (resolved !== "\0" + id) return null;
-      const data = { homeFlow: homeFlow(), generatedAt: generatedAt(), repo: repo.split(path.sep).join("/"), ...readDocs(repo) };
+      const data = { home: home(), generatedAt: generatedAt(), repo: repo.split(path.sep).join("/"), ...readDocs(repo) };
       return `export default ${JSON.stringify(data)};`;
     },
   };

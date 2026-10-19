@@ -7,6 +7,7 @@ import remarkGfm from "remark-gfm";
 import remarkFrontmatter from "remark-frontmatter";
 import YAML from "yaml";
 import { readDocGraph } from "./doc-graph.js";
+import { readManual } from "./manual.js";
 
 // 读取仓库里纳入 Git 的 Markdown，得到卡片、段落和链接三张表，交给页面。
 // 关系只从 Markdown 链接读出：场景页的下一步清单记为“下一步”，问答的「依据」段记为“依据”，其余记为“引用”。
@@ -176,5 +177,5 @@ export function readDocs(repo) {
     if (/^framework\/qa\/[^/]+\.md$/.test(file) && !file.endsWith("/README.md")) readQa(tree, fi, qa, (url) => resolve(file, url));
   });
 
-  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa, docGraph: readDocGraph(diagrams, files, index) };
+  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa, docGraph: readDocGraph(diagrams, files, index), manual: readManual(repo, paths, index, resolve) };
 }
