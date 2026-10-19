@@ -44,8 +44,9 @@ npm --prefix framework/panorama run build
 | `tools/read-docs.js` | 读取纳入 Git 的 Markdown（不含 `.claude/` 副本和 `project-source/addons/`），得到卡片、含链接的段落、链接三张表，以及供搜索用的术语表和工具表的每一行；分组按路径前缀写在文件开头 |
 | `tools/doc-graph.js` | 把 Godot 项目手册里的 Mermaid 文档关系图合成文档关系模块的图 |
 | `tools/manual.js` | 按手册 README 的顺序读出学习模块的章节；把每份文档转成 HTML，并把指向仓库文档的链接改成卡片编号，学习模块和文件全景的阅读视图都用它 |
+| `tools/check-ui.mjs` | 界面冒烟检查，用 `npm --prefix framework/panorama run check` 运行，先构建再跑；检查项见[框架全景的界面设计](interface-design.md)的「交付前跑冒烟检查」一条 |
 | [interface-design.md](interface-design.md) | 界面设计约定：改界面时按它做 |
 | `vite.config.js` | 用 Vite 打包成一个内联全部脚本和样式的 HTML，因为 Edge 直接打开本地文件时会拦住外部的模块脚本 |
-| `package.json`、`package-lock.json` | 依赖及固定版本：React、Vite、Pele（渲染 Mermaid 图）、Tabler Icons、remark 与 rehype（构建时解析 Markdown、转成 HTML）；升级时改这里的版本号，再运行 `install` |
+| `package.json`、`package-lock.json` | 依赖及固定版本：React、Vite、Pele（渲染 Mermaid 图）、Tabler Icons、remark 与 rehype（构建时解析 Markdown、转成 HTML）、playwright-core（冒烟检查驱动本机 Edge，不下载浏览器）；升级时改这里的版本号，再运行 `install` |
 
 修改界面前先读[框架全景的界面设计](interface-design.md)：风格、尺寸、布局、颜色用途和组件约定都写在那里。给界面元素加 `data-ui="区域.元素"` 名称，元素选取才能选中它，命名规则见其中的「元素名称」。
