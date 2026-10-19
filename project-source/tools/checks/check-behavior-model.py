@@ -91,9 +91,11 @@ def plan_runs(manifest: dict) -> list[dict]:
     properties = manifest.get("properties", [])
     runs = [{"name": "correct", "kind": "correct", "mutation": "none",
              "invariants": invariants, "properties": properties}]
-    runs += [{"name": f"mutation-{item['name']}", "kind": "mutation", "mutation": item["name"],
-              "invariants": invariants, "properties": properties, "caught_by": item["caught_by"]}
-             for item in manifest["mutations"]]
+    # TLC 只报告第一个查到的违反，所以错误注入的每条 caught_by 单独运行，只检查这一条。
+    runs += [{"name": f"mutation-{item['name']}-{name}", "kind": "mutation", "mutation": item["name"],
+              "invariants": [name] if name in invariants else [],
+              "properties": [name] if name in properties else [], "caught_by": [name]}
+             for item in manifest["mutations"] for name in item["caught_by"]]
     runs += [{"name": f"witness-{name}", "kind": "witness", "mutation": "none",
               "invariants": [name], "properties": []}
              for name in manifest["witnesses"]]
@@ -104,7 +106,7 @@ def config_text(manifest: dict, run: dict) -> str:
     lines = [f"SPECIFICATION {manifest.get('spec', 'Spec')}", f'CONSTANT Mutation = "{run["mutation"]}"']
     if manifest.get("constraint"):
         lines.append(f"CONSTRAINT {manifest['constraint']}")
-    if not manifest.get("check_deadlock", True) or run["kind"] == "witness":
+    if not manifest.get("check_deadlock", True) or run["kind"] != "correct":
         lines.append("CHECK_DEADLOCK FALSE")
     lines += [f"INVARIANT {name}" for name in run["invariants"]]
     lines += [f"PROPERTY {name}" for name in run["properties"]]
@@ -128,19 +130,18 @@ def parse_output(text: str) -> dict:
     return {**result, "outcome": "error", "violated": None}
 
 
-def judge(run: dict, parsed: dict, properties: list[str]) -> bool:
+def judge(run: dict, parsed: dict) -> bool:
     if run["kind"] == "correct":
         return parsed["outcome"] == "completed"
     if parsed["outcome"] != "violated":
         return False
     if run["kind"] == "witness":
         return parsed["violated"] == run["invariants"][0]
-    if parsed["violated"] == "temporal":
-        return any(name in properties for name in run["caught_by"])
-    return parsed["violated"] in run["caught_by"]
+    # 错误注入的运行只检查一条性质，时序违反就是这一条。
+    return parsed["violated"] in (run["caught_by"][0], "temporal" if run["properties"] else None)
 
 
-def run_tlc(java: Path, jar: Path, model: Path, cfg: str, log: Path) -> dict:
+def run_tlc(java: Path, jar: Path, model: Path, cfg: str, log: Path, timeout: float) -> dict:
     with tempfile.TemporaryDirectory(prefix="model-check-") as temporary:
         work = Path(temporary)
         for module in model.parent.glob("*.tla"):
@@ -151,9 +152,12 @@ def run_tlc(java: Path, jar: Path, model: Path, cfg: str, log: Path) -> dict:
                    "-config", f"{model.stem}.cfg", "-metadir", str(work / "states"), str(work / model.name)]
         try:
             completed = subprocess.run(command, capture_output=True, text=True, encoding="utf-8",
-                                       errors="replace", check=False)
+                                       errors="replace", check=False, timeout=timeout)
         except OSError as exc:
             raise ModelCheckError(f"cannot start java: {exc}") from exc
+        except subprocess.TimeoutExpired:
+            log.write_text(f"TLC timed out after {timeout:.0f} seconds\n", encoding="utf-8")
+            return {**parse_output(""), "exit_code": None, "timed_out": True}
     output = completed.stdout + completed.stderr
     log.write_text(output, encoding="utf-8")
     return {**parse_output(output), "exit_code": completed.returncode}
@@ -163,11 +167,13 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("model", help="the .tla file, relative to the project root; <name>.checks.json sits next to it")
     parser.add_argument("--repo-root", type=Path, default=DEFAULT_REPO_ROOT)
+    parser.add_argument("--timeout-minutes", type=float, default=30,
+                        help="stop one TLC run after this many minutes and report an error (default 30)")
     args = parser.parse_args(argv)
     repo_root = args.repo_root.resolve()
     model = (repo_root / args.model).resolve()
     try:
-        if model.suffix != ".tla" or not model.is_file():
+        if not model.is_relative_to(repo_root) or model.suffix != ".tla" or not model.is_file():
             raise ModelCheckError(f"model not found: {model}")
         manifest = read_manifest(model.with_suffix(".checks.json"))
         java, jar = read_tools(repo_root)
@@ -176,8 +182,8 @@ def main(argv: list[str] | None = None) -> int:
         results = []
         for run in plan_runs(manifest):
             log = run_dir / "logs" / f"{run['name']}.log"
-            parsed = run_tlc(java, jar, model, config_text(manifest, run), log)
-            results.append({**run, **parsed, "passed": judge(run, parsed, manifest.get("properties", [])),
+            parsed = run_tlc(java, jar, model, config_text(manifest, run), log, args.timeout_minutes * 60)
+            results.append({**run, **parsed, "passed": judge(run, parsed),
                             "log": log.relative_to(repo_root).as_posix()})
     except ModelCheckError as exc:
         print(f"error: {exc}", file=sys.stderr)
@@ -194,8 +200,7 @@ def main(argv: list[str] | None = None) -> int:
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     for item in results:
-        expected = {"correct": "completed", "mutation": f"violates {'/'.join(item.get('caught_by', []))}",
-                    "witness": f"violates {item['invariants'][0]}"}[item["kind"]]
+        expected = "completed" if item["kind"] == "correct" else f"violates {(item['invariants'] + item['properties'])[0]}"
         actual = item["outcome"] if item["outcome"] != "violated" else f"violates {item['violated']}"
         print(f"{'PASS' if item['passed'] else 'FAIL'}  {item['name']}: expected {expected}; "
               f"actual {actual}; distinct states {item['distinct_states']}")

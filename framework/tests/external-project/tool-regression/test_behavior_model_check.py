@@ -55,10 +55,12 @@ class OutputParsingTests(unittest.TestCase):
                 self.assertEqual((parsed["outcome"], parsed["violated"], parsed["distinct_states"]),
                                  (outcome, violated, states))
 
-    def test_mutation_caught_by_an_unlisted_property_does_not_pass(self) -> None:
-        run = {"kind": "mutation", "caught_by": ["AtMostTwo"]}
-        parsed = {"outcome": "violated", "violated": "NeverDecreases"}
-        self.assertFalse(check_behavior_model.judge(run, parsed, ["NeverDecreases"]))
+    def test_each_caught_by_name_runs_alone(self) -> None:
+        # TLC 只报第一个违反；两条性质放进同一次运行，后一条是否起作用就验证不到。
+        runs = check_behavior_model.plan_runs(
+            manifest([{"name": "skip_guard", "caught_by": ["AtMostTwo", "NeverDecreases"]}]))
+        checked = [(run["invariants"], run["properties"]) for run in runs if run["kind"] == "mutation"]
+        self.assertEqual(checked, [(["AtMostTwo"], []), ([], ["NeverDecreases"])])
 
 
 class ManifestTests(unittest.TestCase):
@@ -112,6 +114,11 @@ class TlcRunTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertEqual([run["passed"] for run in summary["runs"]], [True, True, True])
         self.assertEqual(summary["properties_without_mutation"], ["NeverDecreases"])
+
+    def test_every_listed_property_must_catch_the_mutation(self) -> None:
+        code, summary = self._run([{"name": "skip_guard", "caught_by": ["AtMostTwo", "NeverDecreases"]}])
+        self.assertEqual(code, 1)
+        self.assertEqual([run["passed"] for run in summary["runs"] if run["kind"] == "mutation"], [True, False])
 
     def test_uncaught_mutation_fails_the_whole_check(self) -> None:
         code, summary = self._run([{"name": "noop", "caught_by": ["AtMostTwo"]}])
