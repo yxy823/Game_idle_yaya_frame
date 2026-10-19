@@ -13,6 +13,7 @@
 | `audio_analyzer_python_executable` | 可选，预填 `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe`。已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对文件路径，不含参数。缺省或空字符串表示未配置，调试台音频分析区显示“未配置 GAA”，其他功能照常。后台调用见[分析](../../dev/debug/_shared/README.md#分析)。 |
 | `audio_production_dir`、`image_production_dir` | 预填 `D:\A_Games\Studio_Audio_Production` 和 `D:\A_Games\Studio_Image_2D_Production`。项目外的音频、图像制作项目目录的绝对路径，交接时按 11 号的[在项目外制作](11-specialist-workflows.md#在项目外制作)读取，不再询问用户。 |
 | `model_production_dir` | 预填空字符串。3D 模型制作项目的目录；制作项目在云端时，填本机能读写的交换目录，例如云盘同步目录，交接文件和交付的模型都经过它。还没有 3D 制作项目时保持空字符串，交接时按 11 号记录准备缺口。 |
+| `java_executable`、`tla_tools_jar` | 预填本机 Java 可执行文件和 TLA+ 工具包 `tla2tools.jar` 的绝对文件路径。[check-behavior-model.py](../tools/README.md#check-behavior-modelpy) 运行 TLC 时读取，行为模型检查见 [1C. 设计决定与实现指导](03-execute-loop.md#1c-设计决定与实现指导)。留空表示未配置，这时行为模型检查无法运行，其他工具照常。 |
 
 这个文件只保存工具选择，不保存环境是否就绪、观察到的 Godot 版本、阻塞清单或插件清单。这些值从不翻译；修改文档语言时，它们逐字节保持不变。
 
@@ -41,6 +42,6 @@
 | 模式 | 检查内容 |
 | --- | --- |
 | 不带 `--require-ready` | 配置结构。允许 Godot 路径为空，不声称工具可用。 |
-| 带 `--require-ready` | Python 和 Godot 可执行文件存在，测试运行器文件存在；已配置的 GAA 解释器存在。实际探测 Godot 版本，要求为 4.7.x，并打印观察到的版本。 |
+| 带 `--require-ready` | Python 和 Godot 可执行文件存在，测试运行器文件存在；已配置的 GAA 解释器、Java 和 TLA+ 工具包存在。实际探测 Godot 版本，要求为 4.7.x，并打印观察到的版本。 |
 
 这项检查不准备编辑器缓存、不安装或探测 Python 包、不运行测试、不解析脚本、不运行 lint，也不初始化 Git。通过它只说明所列路径和 Godot 版本检查通过；实际结果由 Stage 4 的测试、解析和 lint 运行证明。准备失败时，把原因记在 Progress 和初始化报告里，不写进配置文件。

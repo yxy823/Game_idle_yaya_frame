@@ -96,6 +96,14 @@ def _read_engine_version(engine_executable: Path, repo_root: Path) -> tuple[str 
     return version, None
 
 
+# 可选的工具文件：留空表示未配置；填写时必须是存在的绝对文件路径。
+OPTIONAL_ABSOLUTE_FILES = {
+    "audio_analyzer_python_executable": "GAA Python executable",
+    "java_executable": "Java executable",
+    "tla_tools_jar": "TLA+ tools jar",
+}
+
+
 def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     errors: list[str] = []
     document_language = config.get("document_language")
@@ -111,9 +119,10 @@ def _schema_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
 
     if not isinstance(config.get("engine_executable"), str):
         errors.append("engine_executable must be a string")
-    executable = config.get("audio_analyzer_python_executable", "")
-    if not isinstance(executable, str) or (executable != "" and not Path(executable).is_absolute()):
-        errors.append("audio_analyzer_python_executable must be empty or an absolute executable path")
+    for key in OPTIONAL_ABSOLUTE_FILES:
+        value = config.get(key, "")
+        if not isinstance(value, str) or (value != "" and not Path(value).is_absolute()):
+            errors.append(f"{key} must be empty or an absolute file path")
     return errors
 
 
@@ -145,9 +154,10 @@ def _readiness_errors(config: dict[str, Any], repo_root: Path) -> list[str]:
     if not (repo_root / "yaya/tools/testing/run-gdunit-tests.py").is_file():
         errors.append("test runner is missing: yaya/tools/testing/run-gdunit-tests.py")
 
-    executable = config.get("audio_analyzer_python_executable", "")
-    if _nonempty_string(executable) and not Path(executable).is_file():
-        errors.append(f"GAA Python executable is unavailable: {executable!r}")
+    for key, label in OPTIONAL_ABSOLUTE_FILES.items():
+        value = config.get(key, "")
+        if _nonempty_string(value) and not Path(value).is_file():
+            errors.append(f"{label} is unavailable: {value!r}")
 
     return errors
 

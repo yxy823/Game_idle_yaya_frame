@@ -16,6 +16,7 @@
 | `audio_analyzer_python_executable` | `D:\A_Games\Studio Game Audio Analyzer\backend\.venv\Scripts\python.exe` | 可选；已安装 Game Audio Analyzer（GAA）的 Python 解释器绝对路径。已预填路径，须核对实际文件：文件不存在时 `--require-ready` 报未就绪。不用 GAA 时改为空字符串，调试台显示“未配置 GAA” |
 | `audio_production_dir`、`image_production_dir` | `D:\A_Games\Studio_Audio_Production`、`D:\A_Games\Studio_Image_2D_Production` | 项目外的音频、图像制作项目目录。Agent 交接制作需求时从这里读取路径，生成的制作提示词交给对应项目执行；搬动制作项目后改这两项 |
 | `model_production_dir` | 空字符串 | 3D 模型制作项目的目录；制作项目在云端时填本机能读写的交换目录。还没有 3D 制作项目时留空 |
+| `java_executable`、`tla_tools_jar` | `C:\Users\89523\AppData\Local\Programs\Eclipse Adoptium\jdk-25.0.2.10-hotspot\bin\java.exe`、`E:\GameTools\TLA\1.7.4\tla2tools.jar` | 可选；运行 TLC 检查行为模型所需的 Java 可执行文件和 TLA+ 工具包。已预填路径，须核对实际文件：文件不存在时 `--require-ready` 报未就绪。留空时行为模型检查无法运行，其他工具照常 |
 
 配置文件只保存文档语言和工具路径。其他信息都有固定位置，不写进配置：
 
@@ -54,7 +55,7 @@ $LASTEXITCODE
 
 - **`engine_executable`**：必须指向实际文件，可以是绝对路径或相对项目根目录的路径；不会到 PATH 中查找同名程序。环境检查和测试运行器用同一种方式解析。
 - **`python_executable`**：可以是完整路径、相对项目根目录的路径，或 PATH 中的命令名。
-- **`audio_analyzer_python_executable`**：空字符串表示未配置；配置时使用绝对文件路径，不含 shell 引号或参数。
+- **`audio_analyzer_python_executable`、`java_executable`、`tla_tools_jar`**：空字符串表示未配置；配置时使用绝对文件路径，不含 shell 引号或参数。
 
 测试运行器默认使用配置中的 Godot 路径，临时换用其他版本时传入 `--godot-binary <路径>`，示例见[命令与验证证据](../methods-and-tools/commands-and-evidence.md)。
 

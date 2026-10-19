@@ -5,5 +5,7 @@
   "audio_analyzer_python_executable": "D:\\A_Games\\Studio Game Audio Analyzer\\backend\\.venv\\Scripts\\python.exe",
   "audio_production_dir": "D:\\A_Games\\Studio_Audio_Production",
   "image_production_dir": "D:\\A_Games\\Studio_Image_2D_Production",
-  "model_production_dir": ""
+  "model_production_dir": "",
+  "java_executable": "C:\\Users\\89523\\AppData\\Local\\Programs\\Eclipse Adoptium\\jdk-25.0.2.10-hotspot\\bin\\java.exe",
+  "tla_tools_jar": "E:\\GameTools\\TLA\\1.7.4\\tla2tools.jar"
 }
