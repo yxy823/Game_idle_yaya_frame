@@ -63,4 +63,4 @@ Godot 生成 `.godot/` 导入缓存，不提交；扫描为插件资源生成的
 
 下一步：
 
-- 已有实质性 GDD：[已有 GDD，需要预拆分 Product 交付范围](<../规划 Product 与 Feature/已有 GDD，需要预拆分 Product 交付范围.md>)
+- 主线：已有实质性 GDD：[已有 GDD，需要预拆分 Product 交付范围](<../规划 Product 与 Feature/已有 GDD，需要预拆分 Product 交付范围.md>)
