@@ -6,7 +6,7 @@
 
 来源：<https://github.com/QingYunA/answer-me-with-html> 的 `skills/answer-me-with-html/`，提交 `533c39fd47d814a6bee3d9c1df388345f4e4c858`（2026-10-10），MIT 许可证见 Skill 目录下的 [LICENSE](../../../project-source/skills/qa-explainer/LICENSE)。
 
-之后从上游挑选并入的提交：b0ebc16（正文公式，Temml 渲染）、43d5314（标注和回复引用公式时用 TeX 原文）、4392f11（窄窗口横向时间线的标注键不随宽度变化）。并入时删掉了只供措辞检查用的 `opensDisplay`、`isDisplayLine`；`RUNTIME_JS` 开头加入公式文本函数后，外层多了一层包裹函数。没有并入的上游改动：新版本按钮和更新提示（#188、#190、#198）、页脚移到页头（#186）、DeepSeek Harness 插件（#199、#200）。下次同步上游时，从 `4da5ae8` 之后开始核对。
+之后从上游挑选并入的提交：b0ebc16（正文公式，Temml 渲染）、43d5314（标注和回复引用公式时用 TeX 原文）、4392f11（窄窗口横向时间线的标注键不随宽度变化）。并入时删掉了只供措辞检查用的 `opensDisplay`、`isDisplayLine`；`RUNTIME_JS` 开头加入公式文本函数后，外层多了一层包裹函数。以后不与上游同步：下表的本地改动有 30 多项，`am.mjs` 按框架自己的需要直接修改。
 
 组件 `line`、`bar`、`sankey`、`loop`、`quadrant`，以及 `venn`、`matrix`、`pyramid`、`layers`、`nested`、`fishbone`、`process`、`journey`、`kanban`、`story-map`、`gantt`、`wardley`，`scatter`、`waterfall`、`treemap`、`heatmap`、`radar`、`polar`，`swimlane`、`state`，以及 `bar`、`line` 的变体的排版代码一次性移植自 [SeeCode](https://github.com/Aryanutkarsh/seecode)（提交 `82c33b6`，MIT 许可证全文在 `am.mjs` 末尾），集中在 `am.mjs` 的 `var seecode` 和 `SEECODE_CSS`。只取每种图的排版，写法改成与现有组件一致的文本语法，颜色改用主题变量，文字不小于 12px；不带 SeeCode 的查看器、动画、导出和水印，排版输出里仍带 `data-sc-step` 和 `--step` 属性，不影响显示；问答页决定不加动画和逐步查看，因为页面以反复查阅为主，步骤多的流程改为拆成几张图。以后不与 SeeCode 同步。
 
@@ -52,7 +52,7 @@
 
 网页默认主题改为「卡片」（`shadcn`）：`pickTheme` 对网页始终返回 `shadcn`，视频仍用 `blueprint`；主题列表 `ALL` 把卡片排在图纸前面，工具栏的主题选择框第一项是卡片；`SKILL.md` 第 3 节同步。用户要求。
 
-不运行上游更新命令；`am.mjs` 的 `update_check` 默认改为关闭，因为上游更新会覆盖本地改动。
+删除了检查新版本的功能：后台每周联网检查、渲染后的更新提示、内部命令 `__update-check` 和设置项 `update_check`，因为以后不与上游同步。旧设置文件里留下的 `update_check` 读取时跳过，不报错。用户要求。
 
 工具栏的「回复 / 标注 / 复制源稿」保留文字按钮，没有按 R39 改成图标。
 

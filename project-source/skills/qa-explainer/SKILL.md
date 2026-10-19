@@ -182,6 +182,6 @@ python -B yaya/tools/checks/check-wording.py docs/qa/<主题>.md
 python -B yaya/tools/checks/check-terminology.py docs/qa/<主题>.md
 ```
 
-脚本的设置（是否自动打开浏览器、主题等）用 `am.mjs config` 查看和修改；不运行更新命令：脚本带有框架的本地改动，更新会覆盖它们。
+脚本的设置（是否自动打开浏览器、主题等）用 `am.mjs config` 查看和修改。
 
 同目录的 `scripts/arch-build.mjs` 用同一个渲染脚本生成架构文档的页面，问答不用它；用法见 `yaya/methodology/10-architecture-overview.md` 的「生成架构页面」。

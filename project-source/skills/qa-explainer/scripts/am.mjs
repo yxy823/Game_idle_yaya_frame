@@ -12539,66 +12539,6 @@ function writeState(home, patch) {
   return next;
 }
 
-// src/update.js
-import { spawn as spawn3 } from "node:child_process";
-var UPDATE = Object.freeze({
-  checkEveryDays: 7,
-  hintEveryDays: 3,
-  timeoutMs: 5e3,
-  url: "https://raw.githubusercontent.com/QingYunA/answer-me-with-html/main/package.json"
-});
-var SEMVER = /^v?(\d+)\.(\d+)\.(\d+)$/;
-function parseVersion(v) {
-  const m = String(v).trim().match(SEMVER);
-  return m ? m.slice(1, 4).map(Number) : null;
-}
-function newer(a, b) {
-  const pa = parseVersion(a);
-  const pb = parseVersion(b);
-  if (!pa || !pb) return false;
-  const i = pa.findIndex((n, k2) => n !== pb[k2]);
-  return i !== -1 && pa[i] > pb[i];
-}
-function updateCommand(scriptPath = "") {
-  if (/[\\/]\.claude[\\/]plugins[\\/]/.test(scriptPath)) {
-    return "run claude plugin update answer-me-with-html@answer-me-with-html in a terminal (or click Update now on the Installed tab of /plugin), then /reload-plugins";
-  }
-  if (/[\\/]bin[\\/]am\.js$/.test(scriptPath)) {
-    return "run git pull && npm install in the answer-me-with-html repository";
-  }
-  return "run npx skills update answer-me-with-html -y";
-}
-var updateEnabled = (env, config) => !(config.update_check === false || env.CI || env.AM_NO_UPDATE_CHECK);
-function updateHint(state, current, scriptPath, now = Date.now()) {
-  if (!newer(state.latestVersion, current)) return null;
-  if (state.lastUpdateHint && now - state.lastUpdateHint < UPDATE.hintEveryDays * DAY) return null;
-  return `! Update hint: Answer me with HTML ${state.latestVersion} is available (current ${current}). Ask the user whether to update: ${updateCommand(scriptPath)}.`;
-}
-function shouldCheckUpdate(state, env, config, now = Date.now()) {
-  if (!updateEnabled(env, config)) return false;
-  return !state.lastUpdateCheck || now - state.lastUpdateCheck >= UPDATE.checkEveryDays * DAY;
-}
-function spawnUpdateCheck(home, scriptPath) {
-  writeState(home, { lastUpdateCheck: Date.now() });
-  try {
-    spawn3(process.execPath, [scriptPath, "__update-check"], { detached: true, stdio: "ignore", env: { ...process.env, AM_HOME: home } }).on("error", () => {
-    }).unref();
-  } catch {
-  }
-}
-async function runUpdateCheck(home, fetchImpl = fetch) {
-  try {
-    const res = await fetchImpl(UPDATE.url, { signal: AbortSignal.timeout(UPDATE.timeoutMs) });
-    if (!res.ok) return null;
-    const { version } = await res.json();
-    if (!parseVersion(version)) return null;
-    writeState(home, { latestVersion: version.trim(), lastUpdateCheck: Date.now() });
-    return version.trim();
-  } catch {
-    return null;
-  }
-}
-
 // src/housekeeping.js
 var CLEAN = Object.freeze({
   days: 30,
@@ -12672,7 +12612,7 @@ function cleanHint(state, use, now = Date.now()) {
   const when = state.lastClean ? `last cleaned ${days} days ago` : "never cleaned";
   return `! Cleanup hint: this folder's .explain pages and the voice-over cache use ${mb(use.total)} (${parts}), ${when}. Ask the user whether to run am clean (deletes pages and videos older than ${CLEAN.days} days and empties the voice-over cache; am clean --all deletes everything).`;
 }
-function afterRender({ home, project, env, config, current, scriptPath, background, now = Date.now() }) {
+function afterRender({ home, project, now = Date.now() }) {
   let state = readState(home);
   if (!state.firstSeen) state = writeState(home, { firstSeen: now });
   const hints = [];
@@ -12681,12 +12621,6 @@ function afterRender({ home, project, env, config, current, scriptPath, backgrou
     hints.push(c);
     state = writeState(home, { lastCleanHint: now });
   }
-  const u = updateEnabled(env, config) ? updateHint(state, current, scriptPath, now) : null;
-  if (u) {
-    hints.push(u);
-    writeState(home, { lastUpdateHint: now });
-  }
-  if (background && scriptPath && shouldCheckUpdate(state, env, config, now)) spawnUpdateCheck(home, scriptPath);
   return hints;
 }
 
@@ -12703,7 +12637,6 @@ var CONFIG_KEYS = Object.freeze({
   open: { type: "bool", default: true, label: "Open the page in the browser after it is made" },
   theme: { type: "enum", choices: CHOICES.theme, default: AUTO, label: "Default theme (auto: shadcn cards for pages, blueprint for videos)" },
   mode: { type: "enum", choices: CHOICES.mode, default: "auto", label: "Default light/dark mode" },
-  update_check: { type: "bool", default: false, label: "Check for a new version once a week in the background and tell you (never updates by itself)" },
   voice: { type: "enum", choices: VOICES, default: "auto", label: "Video narration voice-over (auto: ElevenLabs if ELEVENLABS_API_KEY is set, otherwise system TTS; local: the local service at AM_TTS_URL)" }
 });
 var TRUE = /* @__PURE__ */ new Set(["on", "true", "yes", "1", "\u5F00", "\u5F00\u542F", "\u6253\u5F00"]);
@@ -13320,8 +13253,6 @@ ${USAGE}`);
       return cmdClean(opts, { print, fail, env, io });
     case "serve":
       return cmdServe(opts, { print, fail, env });
-    case "__update-check":
-      return await runUpdateCheck(amHome(env)) ? 0 : 1;
     case "list":
       return cmdList(ctx), 0;
     case "help":
@@ -13635,20 +13566,15 @@ function summaryLine(result) {
 }
 var count = (n, noun) => `${n} ${noun}${n === 1 ? "" : "s"}`;
 function finish(file, opts, config, ctx) {
-  printHints(config, ctx);
+  printHints(ctx);
   if (shouldOpen(opts, ctx.env, config.values)) (ctx.io.open ?? openFile)(file);
   return 0;
 }
-function printHints(config, { env, io, print }) {
+function printHints({ env, io, print }) {
   try {
     const hints = afterRender({
       home: amHome(env),
-      project: projectDir(io),
-      env,
-      config: config.values,
-      current: VERSION,
-      scriptPath: io.scriptPath,
-      background: Boolean(io.background)
+      project: projectDir(io)
     });
     hints.forEach((h2) => print(h2));
   } catch {
@@ -13835,7 +13761,7 @@ function openFile(file) {
 }
 
 // bin/am.js
-main(process.argv.slice(2), { background: true, scriptPath: process.argv[1] }).then(
+main(process.argv.slice(2)).then(
   (code) => {
     process.exitCode = code;
   },
