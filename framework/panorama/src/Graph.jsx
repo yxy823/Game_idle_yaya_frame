@@ -112,7 +112,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, direc
       elements: nodes.map((n) => ({ data: { id: "n" + n.i, label: n.label, group: n.group, size: n.size }, position: saved?.[n.i] })),
       style: style(legend, directed),
       layout: { name: "preset" },
-      minZoom: 0.1, maxZoom: 4, wheelSensitivity: 0.3, boxSelectionEnabled: false,
+      minZoom: 0.1, maxZoom: 4, boxSelectionEnabled: false,
     });
     // 第一次布局：先带上全部连线排布，之后连线按折叠状态重画
     if (!saved) {

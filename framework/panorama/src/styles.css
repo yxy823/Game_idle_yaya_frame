@@ -147,7 +147,8 @@ body.picking, body.picking * { cursor: crosshair !important; }
 /* 文件全景 */
 .files { display: flex; flex-direction: column; height: 100%; }
 .files-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-.files-head h1 { margin: 0; }
+/* 16px 的中文标题字形落在基线附近，按盒子居中时比旁边 12px 的按钮文字低约 1px，上移补齐 */
+.files-head h1 { margin: 0; position: relative; top: -1px; }
 .segmented { display: inline-flex; border: 1px solid var(--field-border); border-radius: var(--radius); overflow: hidden; }
 .segmented button { height: calc(var(--control-h) - 2px); padding: 0 10px; border: 0; background: transparent; cursor: pointer; font-size: var(--fs-small); }
 .segmented button + button { border-left: 1px solid var(--field-border); }
