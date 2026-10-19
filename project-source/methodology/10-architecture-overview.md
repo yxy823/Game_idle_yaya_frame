@@ -10,7 +10,7 @@
 | --- | --- |
 | 项目级地图：模块及其作用、启动与装配入口、跨模块协作、允许的依赖方向 | `docs/architecture.md` |
 | 一个子系统内部的状态负责方、接口、依赖和运行流程，不论篇幅长短 | `docs/architecture/<subsystem>.md` |
-| 一个子系统当前行为的 TLA+ 模型及其检查清单，何时建立见 [1C. 设计决定与实现指导](03-execute-loop.md#1c-设计决定与实现指导) | `docs/architecture/models/<subsystem>.tla` 和同名的 `.checks.json`；TLA+ 模块名不能含连字符，子系统名称中的连字符换成下划线 |
+| 一个子系统当前行为的 TLA+ 模型及其检查配置，何时建立见 [1C. 设计决定与实现指导](03-execute-loop.md#1c-设计决定与实现指导) | `docs/architecture/models/<subsystem>.tla` 和同名的 `.checks.json`；TLA+ 模块名不能含连字符，子系统名称中的连字符换成下划线 |
 | 一个 Feature 的实现设计，以及局部决定及其理由 | `docs/features/<Feature ID>-design.md` |
 | 满足[架构决策记录](#架构决策记录)中 ADR 条件的技术选择的理由 | `docs/architecture/adr-NNNN-<slug>.md` |
 | 不属于任何 Feature、也不满足 ADR 条件的已采纳技术决定 | 架构文档中的**独立技术决定**一节，见[独立技术决定](#独立技术决定) |

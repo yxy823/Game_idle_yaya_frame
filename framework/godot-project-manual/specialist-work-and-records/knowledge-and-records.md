@@ -14,7 +14,7 @@
 | `docs/features/<Feature ID>-design.md` | 该 Feature 的实施设计、局部技术决定与理由：职责、生命周期、接口、失败处理、实施顺序和验证理由 | AC、测试映射等结构化验证字段（写在 Feature JSON）；范围内额外的性能、时长、显示或试听检查可以写在这里 |
 | `docs/architecture.md` | 项目级的模块关系、装配与依赖，以及项目级的独立技术决定（与当前结构分开写） | 子系统内部细节 |
 | `docs/architecture/<subsystem>.md` | 子系统内部的结构、状态、接口与运行流程，以及该子系统的独立技术决定 | 项目级关系 |
-| `docs/architecture/models/<subsystem>.tla` 和同名 `.checks.json` | 子系统当前行为的 TLA+ 模型和检查清单，随行为变化由后续 Feature 更新 | 需求正文（写在 GDD 和 AC）；检查结果（写在 `reports/model-checks/`，设计稿链接） |
+| `docs/architecture/models/<subsystem>.tla` 和同名 `.checks.json` | 子系统当前行为的 TLA+ 模型和检查配置，随行为变化由后续 Feature 更新 | 需求正文（写在 GDD 和 AC）；检查结果（写在 `reports/model-checks/`，设计稿链接） |
 | `docs/architecture/adr-NNNN-<slug>.md` | 符合 ADR 条件的跨 Feature、跨模块或项目级技术决定的理由 | Feature 内部的普通选择 |
 | Feature 的 notes | 任务提醒、简短的事件教训、TODO 和正文链接 | 实施决定与理由（写在设计稿） |
 | `docs/knowledge/` | 可复用的项目实践及其适用条件 | 规则或需求的正文 |

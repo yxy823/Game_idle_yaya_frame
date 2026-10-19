@@ -55,7 +55,7 @@ $featureId = 'F01-001' # 教学占位，必须换成当前真实 Feature ID
 | 入口 | 常用参数 | 读写与副作用 |
 | --- | --- | --- |
 | `yaya/tools/checks/check-project-environment.py` | `--require-ready`、`--config` | 只读配置；就绪检查会启动 Godot `--version` |
-| `yaya/tools/checks/check-behavior-model.py` | 模型文件路径、`--repo-root` | 启动 Java 运行 TLC，跑模型的正确版本、全部错误注入和见证路径；只写 `reports/model-checks/`，不改模型 |
+| `yaya/tools/checks/check-behavior-model.py` | 模型文件路径、`--repo-root` | 启动 Java 运行 TLC，跑模型的正确版本、全部错误版本和可达性检查；只写 `reports/model-checks/`，不改模型 |
 | `yaya/tools/checks/check-feature-list.py` | `--eligible`、`--completion-feature F01-001`、`--repo-root` | 只读 Feature、测试登记表、修订历史和依赖；不运行测试 |
 | `yaya/tools/checks/check-godot-resource-format.py` | 可选的文件列表 | 只读项目的场景、资源、脚本、Shader 和图片、音频、字体素材，跳过插件、Godot 忽略的目录，以及调试台的插槽预设与组合 |
 | `yaya/tools/testing/run-gdunit-tests.py` | `--godot-binary`、`--feature`、`--target` 或 `--changed`、`--phase`、`--scope` | 有测试时启动 Godot 并写运行目录。Feature 合法空选择集返回 `not_required`；`--changed` 空选择集只输出无需测试的说明。两者均不写报告 |

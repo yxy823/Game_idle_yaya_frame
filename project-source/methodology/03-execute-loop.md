@@ -197,7 +197,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
    - 设计由 advisor 准备时，主 Agent 把批准和指定的保存位置交给同一个 advisor；它只能写这一个设计文件。
    - 主 Agent 检查设计稿，并负责 Feature `notes` 中的链接、其他记录的修改和提交。
    - 说明实质约束本次改动的规则及其应用方式，并附相对来源链接。不要复制整份快照或规则原文。`notes` 只保存提醒和引用，不是第二份设计。
-4. 1C 建了行为模型时，把批准的模型和检查清单从 `reports/scratch/<Feature ID>/models/` 保存到 `docs/architecture/models/`，保存的模型与 1C 最后一次运行的 `summary.json` 一致（`model_sha256` 相同，`manifest` 与检查清单相同）时沿用那次结果；不一致时在正式位置重跑 `check-behavior-model.py`，退出码必须为 `0`。设计稿记录所用的 `summary.json` 路径。
+4. 1C 建了行为模型时，把批准的模型和检查配置从 `reports/scratch/<Feature ID>/models/` 保存到 `docs/architecture/models/`，保存的模型与 1C 最后一次运行的 `summary.json` 一致（`model_sha256` 相同，`manifest` 与检查清单相同）时沿用那次结果；不一致时在正式位置重跑 `check-behavior-model.py`，退出码必须为 `0`。设计稿记录所用的 `summary.json` 路径。
 5. 已确认的规则修改和 ADR 记录到各自的位置。批准中定下的取值属于 GDD、Art Bible 或其他专业文档时，用归属的 Skill 写回这些文档，例如 `design-gdd`、`design-art-direction`；设计稿链接它们，不另抄一份。
 6. 把批准的 `verification.acceptance_mode`、各条件的验证映射、Bug 回归 ID 和 `verification.test_impact` 保存到 Feature 详情中：
    - 追加的相关测试存为 `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]`。
@@ -244,7 +244,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
 3. 运行范围最窄的、受支持的选择器。一次检查多个用例时加 `--continue`，否则运行在第一个失败处停止。第一次在本任务中编写测试前，先读 gdUnit4 运行器与诊断规则的[编写测试时的约定](../agent-rules/70-tests/gdunit4-profile.md#编写测试时的约定)和诊断监控：任何未声明的警告都会让运行失败。测试涉及动画、计时或等待时，再读[时间与帧](../agent-rules/70-tests/time-randomness-and-async.md#时间与帧)：由测试控制时间，不采样真实播放。
 4. 确认测试失败的原因是目标行为缺失或有错，而不是语法、夹具、环境或无关的准备步骤出错。
 
-1D 批准了从行为模型的见证路径和错误注入改写的测试时，按 `behavior-model-check` 指南的[改写成 GdUnit4 测试](../../.agents/skills/behavior-model-check/references/modeling-guide.md#改写成-gdunit4-测试)编写。实现要让已建模的行为偏离批准的设计时，按[授权与续接](#授权与续接)作为实质变化处理，批准后更新 `docs/architecture/models/` 中的模型并重跑工具。
+1D 批准了从行为模型的可达性检查和错误版本改写的测试时，按 `behavior-model-check` 指南的[改写成 GdUnit4 测试](../../.agents/skills/behavior-model-check/references/modeling-guide.md#改写成-gdunit4-测试)编写。实现要让已建模的行为偏离批准的设计时，按[授权与续接](#授权与续接)作为实质变化处理，批准后更新 `docs/architecture/models/` 中的模型并重跑工具。
 
 集成测试需要先有测试入口（注入点、场景接线）时，把建立入口作为第一个小循环，它的失败原因就是入口缺失；入口建好后，各条行为再分别先失败、后通过。
 

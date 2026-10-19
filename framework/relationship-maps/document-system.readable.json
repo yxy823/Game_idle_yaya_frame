@@ -1795,7 +1795,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n子系统有命名状态并按事件或时间转换时，行为模型和检查清单放在 models/<subsystem>.tla 与同名 .checks.json，随子系统行为一起更新。\n\n项目文件： docs/architecture/*.md\n项目文件： docs/architecture/models/*",
+      "note": "职责：一个子系统的内部职责、接口、状态、依赖与必要运行流程。\n项目位置：docs/architecture/<subsystem>.md；有对应内容时创建，从架构总览进入，不按游戏规模、篇幅或复杂程度选择位置。\n无 Feature 且不符合 ADR 条件、恰好属于本子系统的已采用技术决定，按架构规范保存在独立技术决定章节，区分决定与当前事实。\n链接实际实现与有用验证入口；不逐文件清点，也不复制各 Feature 的过程历史。\n子系统有命名状态并按事件或时间转换时，行为模型和检查配置放在 models/<subsystem>.tla 与同名 .checks.json，随子系统行为一起更新。\n\n项目文件： docs/architecture/*.md\n项目文件： docs/architecture/models/*",
       "textSizing": "fixed",
       "link": {
         "kind": "local",

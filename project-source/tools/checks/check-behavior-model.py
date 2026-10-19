@@ -91,7 +91,7 @@ def plan_runs(manifest: dict) -> list[dict]:
     properties = manifest.get("properties", [])
     runs = [{"name": "correct", "kind": "correct", "mutation": "none",
              "invariants": invariants, "properties": properties}]
-    # TLC 只报告第一个查到的违反，所以错误注入的每条 caught_by 单独运行，只检查这一条。
+    # TLC 只报告第一个查到的违反，所以错误版本的每条 caught_by 单独运行，只检查这一条。
     runs += [{"name": f"mutation-{item['name']}-{name}", "kind": "mutation", "mutation": item["name"],
               "invariants": [name] if name in invariants else [],
               "properties": [name] if name in properties else [], "caught_by": [name]}
@@ -138,7 +138,7 @@ def judge(run: dict, parsed: dict) -> bool:
         return False
     if run["kind"] == "witness":
         return parsed["violated"] == run["invariants"][0]
-    # 错误注入的运行只检查一条性质，时序违反就是这一条。
+    # 错误版本的运行只检查一条性质，时序违反就是这一条。
     return parsed["violated"] in (run["caught_by"][0], "temporal" if run["properties"] else None)
 
 

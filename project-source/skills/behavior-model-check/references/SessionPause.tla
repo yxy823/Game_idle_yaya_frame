@@ -1,7 +1,7 @@
 ---------------------------- MODULE SessionPause ----------------------------
 (* 例子：多条件自动暂停。拖动、详情等几个暂停原因各自独立，全部结束才恢复；失败或结束后不再运行。
    active 是环境里真实成立的暂停条件，mask / cnt 是实现保存的状态。
-   Mutation 切换受控错误注入：single_flag 结束任一条件就清空全部暂停，
+   Mutation 切换受控的错误版本：single_flag 结束任一条件就清空全部暂停，
    counter 按次数计数（重复设置会被重复计数），revive 暂停全部结束时把失败的片段改回运行。 *)
 EXTENDS Integers
 
@@ -77,6 +77,6 @@ PausedNoTime == [][AnyActive => clock' = clock]_vars
 TerminalPermanent == [][phase # "running" => phase' = phase]_vars
 TerminalNoTime == [][phase # "running" => clock' = clock]_vars
 
-\* 业务见证：期望被违反，证明模型没有把“时间推进”限制掉。
+\* 可达性检查：期望被违反，证明模型没有把“时间推进”限制掉。
 WitnessTimeAdvances == clock < MaxClock
 =============================================================================

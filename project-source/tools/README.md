@@ -16,7 +16,7 @@ yaya/tools/
 | --- | --- |
 | Feature 记录检查 [check-feature-list.py](checks/check-feature-list.py) | 检查 Feature、测试登记表、引用和依赖；`--eligible` 列出可开始项 |
 | 环境检查 [check-project-environment.py](checks/check-project-environment.py) | 检查配置；`--require-ready` 核对 Python/Godot 文件、已配置的 GAA 解释器、Java 与 TLA+ 工具包、固定测试入口文件及实际 Godot 4.7.x 版本，不写配置状态 |
-| 行为模型检查 [check-behavior-model.py](checks/check-behavior-model.py) | 用 TLC 跑一个 TLA+ 行为模型的正确版本、全部错误注入和见证路径，核对每一项是否符合期望 |
+| 行为模型检查 [check-behavior-model.py](checks/check-behavior-model.py) | 用 TLC 跑一个 TLA+ 行为模型的正确版本、全部错误版本和可达性检查，核对每一项是否符合期望 |
 | 链接检查 [check-markdown-links.py](checks/check-markdown-links.py) | 检查 Markdown 中的相对链接目标和标题锚点是否存在 |
 | 链接文字检查 [check-link-text.py](checks/check-link-text.py) | 列出链接文字不是目标标题、也不是目标 Skill 名、文件名或目录名的链接 |
 | 术语检查 [check-terminology.py](checks/check-terminology.py) | 按术语文件找出文档中登记为“不用的说法”的写法；`--discover` 另列与术语开头相同的候选写法 |
@@ -219,11 +219,11 @@ python -B yaya/tools/checks/check-behavior-model.py docs/architecture/models/<su
 
 | 参数 | 作用 | 默认值 |
 | --- | --- | --- |
-| `<model>` | 必填。模型文件，相对项目根目录；检查清单是同目录的同名 `.checks.json` | 无 |
+| `<model>` | 必填。模型文件，相对项目根目录；检查配置是同目录的同名 `.checks.json` | 无 |
 | `--repo-root <目录>` | 模型所在的项目；模型必须在这个目录下 | 脚本所在项目 |
 | `--timeout-minutes <分钟>` | 单项运行超过这个时长就停止，记为出错 | `30` |
 
-模型必须声明常量 `Mutation`。检查清单是一个 JSON 对象：
+模型必须声明常量 `Mutation`。检查配置是一个 JSON 对象：
 
 | 字段 | 含义 |
 | --- | --- |
@@ -231,20 +231,20 @@ python -B yaya/tools/checks/check-behavior-model.py docs/architecture/models/<su
 | `constraint` | 可选，限制状态范围的约束名 |
 | `check_deadlock` | 可选，默认 `true`；模型允许停在没有后续动作的状态时写 `false` |
 | `invariants`、`properties` | 正确版本要检查的不变量和时序或动作性质的名称，不能都为空 |
-| `mutations` | 非空数组，每项 `{"name": ..., "caught_by": [...]}`：错误注入的名称（`Mutation` 的取值，不能是 `none`）和应当抓到它的性质，性质必须列在 `invariants` 或 `properties` 中 |
-| `witnesses` | 非空数组，期望被违反的见证不变量名称 |
+| `mutations` | 非空数组，每项 `{"name": ..., "caught_by": [...]}`：错误版本的名称（`Mutation` 的取值，不能是 `none`）和应当抓到它的性质，性质必须列在 `invariants` 或 `properties` 中 |
+| `witnesses` | 非空数组，期望被违反的可达性检查的不变量名称 |
 
 工具依次运行下面几项，每项都把模型目录下的全部 `.tla` 复制到临时目录，配置文件写在模型旁边，因为 TLC 按模型所在目录解析配置文件名：
 
 | 运行 | `Mutation` | 检查 | 满足期望的条件 |
 | --- | --- | --- | --- |
 | 正确版本 | `none` | 全部 `invariants` 和 `properties` | TLC 完整结束，没有违反 |
-| 每个错误注入的每条 `caught_by` | 该错误注入的名称 | 只检查这一条性质，不检查死锁 | 这一条被违反。TLC 只报告第一个查到的违反，所以 `caught_by` 有几条就单独运行几次，每条都必须抓到 |
-| 每条见证路径 | `none` | 只检查这条见证不变量，不检查死锁 | 这条不变量被违反，即路径可达 |
+| 每个错误版本的每条 `caught_by` | 该错误版本的名称 | 只检查这一条性质，不检查死锁 | 这一条被违反。TLC 只报告第一个查到的违反，所以 `caught_by` 有几条就单独运行几次，每条都必须抓到 |
+| 每条可达性检查 | `none` | 只检查这条可达性检查的不变量，不检查死锁 | 这条不变量被违反，即路径可达 |
 
-结果写进 `reports/model-checks/<模型名>/run-<时间>/`：`summary.json` 记录模型路径和 SHA-256、检查清单、每项运行的期望、实际结果、不同状态数和日志路径，以及没有配错误注入的性质；`logs/` 保存每项运行的完整 TLC 输出，反例的操作序列在这里。标准输出逐项打印 `PASS` 或 `FAIL`。
+结果写进 `reports/model-checks/<模型名>/run-<时间>/`：`summary.json` 记录模型路径和 SHA-256、检查配置、每项运行的期望、实际结果、不同状态数和日志路径，以及没有配错误版本的性质；`logs/` 保存每项运行的完整 TLC 输出，反例的操作序列在这里。标准输出逐项打印 `PASS` 或 `FAIL`。
 
-退出码：`0` 全部满足期望；`1` 至少一项不满足，例如错误注入没被抓到、见证路径走不到，或正确版本报出反例或死锁；`2` 模型不在项目内、模型、检查清单或工具配置出错，或某项运行中 TLC 没有给出可识别的结果（例如语法错误、内存不足、超时）。
+退出码：`0` 全部满足期望；`1` 至少一项不满足，例如错误版本没被抓到、可达性检查失败（路径走不到），或正确版本报出反例或死锁；`2` 模型不在项目内、模型、检查配置或工具配置出错，或某项运行中 TLC 没有给出可识别的结果（例如语法错误、内存不足、超时）。
 
 ### check-markdown-links.py
 
