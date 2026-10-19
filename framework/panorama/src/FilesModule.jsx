@@ -37,7 +37,7 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
   return (
     <li>
       <button className="tree-row" style={{ paddingLeft: 4 + depth * 12 }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
-        onClick={() => { onDir(node.path); if (children.length && !isOpen) onToggle(node.path); }}>
+        onClick={() => { onDir(node.path); if (children.length) onToggle(node.path); }}>
         <span className="twisty" onClick={(e) => { e.stopPropagation(); if (children.length) onToggle(node.path); }}>
           {children.length ? (isOpen ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />) : null}
         </span>
@@ -54,7 +54,7 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
 function Card({ index, selected, onSelect, onRead, showGroup }) {
   const f = files[index];
   return (
-    <button className="card" aria-selected={selected} onClick={() => onSelect(index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
+    <button className="card" aria-selected={selected} onClick={() => onSelect(selected ? null : index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
       <span className="card-title"><span className={"dot g-" + f.group} aria-hidden="true"></span>{f.title}</span>
       <span className="card-purpose">{f.purpose || "（第一段没有用途说明）"}</span>
       <span className="card-meta">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
@@ -66,7 +66,7 @@ function Card({ index, selected, onSelect, onRead, showGroup }) {
 let lastReading = null;
 
 // 文件全景：照 VSCode 的资源管理器，左边目录树，右边是所选目录下的卡片；“图谱”看全部文档的链接关系。
-// 单击卡片选中，双击在右边读全文；正文里的文档链接打开那份文档，“返回卡片”回到目录的卡片
+// 单击卡片选中，再点一次取消选中，双击在右边读全文；点目录名展开或收起它；正文里的文档链接打开那份文档，“返回卡片”回到目录的卡片
 export default function FilesModule({ selected, onSelect, theme, font }) {
   const [query, setQuery] = useState("");
   const [reading, setReading] = useState(lastReading);

@@ -4,8 +4,12 @@ import { files, groupName, vscodeUrl } from "./docs.js";
 import PageSearch, { PageHead } from "./PageSearch.jsx";
 import { qaKey } from "./QaModule.jsx";
 
+// 术语表、工具表的一行的选中值写成 "entry:编号"，详情面板显示所在文档并滚到这一行
+const entryKey = (n) => "entry:" + n;
+export const entryOf = (selected) => (typeof selected === "string" && selected.startsWith("entry:") ? data.entries[Number(selected.slice(6))] : null);
+
 // 搜索对象：每份文档、每条问答，以及术语表、工具表的每一行。字段权重决定排序：标题命中排在用途命中前面。
-// select 是点结果时选中的卡片；术语和工具没有自己的卡片，选中它所在的文档。
+// select 是点结果时选中的对象。
 const items = [
   ...files.map((f, i) => ({
     kind: f.path.endsWith("/SKILL.md") ? "Skill" : "文档", file: i, select: i, line: 1, title: f.title,
@@ -15,8 +19,8 @@ const items = [
     kind: "问答", file: q.file, select: qaKey(n), line: q.line, title: q.title,
     fields: [[q.title, 5], [q.conclusion, 3], [q.why, 2]],
   })),
-  ...data.entries.map((e) => ({
-    kind: e.kind === "term" ? "术语" : "工具", file: e.file, select: e.file, line: e.line, title: e.name,
+  ...data.entries.map((e, n) => ({
+    kind: e.kind === "term" ? "术语" : "工具", file: e.file, select: entryKey(n), line: e.line, title: e.name,
     fields: [[e.name, 5], [e.aliases, 4], [e.desc, 3]],
   })),
 ].map((item) => ({ ...item, lower: item.fields.map(([t, w]) => [t.toLowerCase(), w]) }));
@@ -81,7 +85,7 @@ export default function SearchModule({ selected, onSelect }) {
               const f = files[item.file];
               return (
                 <li key={i}>
-                  <button className="result" aria-selected={selected === item.select && item.kind !== "术语" && item.kind !== "工具"} onClick={() => onSelect(item.select)}>
+                  <button className="result" aria-selected={selected === item.select} onClick={() => onSelect(item.select)}>
                     <span className="result-title"><span className="kind">{item.kind}</span><Highlight text={item.title} words={words} /></span>
                     <span className="result-text"><Highlight text={snippet(hit, words)} words={words} /></span>
                   </button>

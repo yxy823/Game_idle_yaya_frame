@@ -16,6 +16,8 @@ export default function PageSearch({ ui, value, onChange, placeholder, results, 
   const ranked = results && [...results].sort((a, b) => matches(ws, b.label) - matches(ws, a.label)).slice(0, 50);
   const input = useRef(null), box = useRef(null);
   useEffect(() => { if (open) input.current.focus(); }, [open]);
+  // 带着关键词切到有结果列表的视图（例如文件全景从列表切到图谱）时，直接列出结果
+  useEffect(() => { if (results) setListOpen(true); }, [Boolean(results)]);
   useEffect(() => {
     const click = (e) => { if (!box.current.contains(e.target)) { setListOpen(false); if (!always && !input.current?.value) setOpen(false); } };
     document.addEventListener("mousedown", click);

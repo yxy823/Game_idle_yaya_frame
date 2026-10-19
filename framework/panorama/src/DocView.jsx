@@ -1,13 +1,18 @@
 import { useEffect, useRef } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { IconLayoutSidebarRight } from "@tabler/icons-react";
 import { mount } from "pele";
 import data from "virtual:panorama-data";
 import { fontSize } from "./Diagram.jsx";
 import { useToast } from "./overlays.jsx";
 
 // 一份文档的正文：HTML 在构建时由 tools/manual.js 的 renderHtml 生成，Mermaid 图用 Pele 渲染。学习模块和文件全景的阅读视图共用。
-// jump 是 { anchor } 对象，每次要滚动都换一个新对象；anchor 为空滚到开头，为 FIRST_MATCH 滚到第一处搜索命中。
+// jump 是 { anchor } 或 { row } 对象，每次要滚动都换一个新对象：anchor 为空滚到开头，为 FIRST_MATCH 滚到第一处搜索命中；
+// row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）。
 // 正文里指向仓库文档的链接交给 onLink(卡片编号, 锚点)，由页面决定切换章节、打开文档还是滚动。
+// inPanel(卡片编号) 为真的链接在详情面板打开，后面加面板图标，和页面内切换的链接区分。onHits(命中数) 在每次高亮后调用。
 export const FIRST_MATCH = "#first-match";
+const PANEL_ICON = renderToStaticMarkup(<IconLayoutSidebarRight className="link-icon" aria-hidden="true" />);
 const pattern = (ws) => ws.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
 
 // 给正文里的命中词加 <mark>，Mermaid 图里的文字不加；先去掉上一次加的
@@ -26,8 +31,11 @@ function highlight(root, ws) {
   }
 }
 
-export default function DocView({ card, jump, words = [], onLink, font }) {
+export default function DocView({ card, jump, words = [], onLink, inPanel, onHits, font }) {
   const body = useRef(null);
+  const hitsRef = useRef(onHits);
+  hitsRef.current = onHits;
+  const mark = (ws) => { highlight(body.current, ws); hitsRef.current?.(body.current.querySelectorAll("mark.hit").length); };
   const toast = useToast();
   const key = words.join(" ");
   const wordsRef = useRef(words);
@@ -36,6 +44,11 @@ export default function DocView({ card, jump, words = [], onLink, font }) {
   useEffect(() => {
     // 正文由这里写入，不交给 React：React 重新渲染时可能重写 innerHTML，冲掉已经渲染好的图
     body.current.innerHTML = data.html[card];
+    if (inPanel) {
+      for (const a of body.current.querySelectorAll("a[data-card]")) {
+        if (inPanel(Number(a.dataset.card))) { a.insertAdjacentHTML("beforeend", PANEL_ICON); a.dataset.tip = "在详情面板打开"; }
+      }
+    }
     const mounted = [];
     for (const el of body.current.querySelectorAll(".manual-diagram")) {
       const text = el.textContent;
@@ -44,16 +57,19 @@ export default function DocView({ card, jump, words = [], onLink, font }) {
       if (m.error) { m.destroy(); el.textContent = text; toast("图渲染失败：" + m.error.message); }
       else mounted.push(m);
     }
-    highlight(body.current, wordsRef.current);
+    mark(wordsRef.current);
     return () => mounted.forEach((m) => m.destroy());
   }, [card, toast, font]);
-  useEffect(() => { highlight(body.current, key ? key.split(" ") : []); }, [key]);
+  useEffect(() => { mark(key ? key.split(" ") : []); }, [key]);
   useEffect(() => {
     const anchor = jump?.anchor;
-    const target = anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && document.getElementById(anchor);
-    if (target) target.scrollIntoView();
-    // 文件全景的阅读视图自己滚动（.doc-scroll），学习模块随主区域滚动
-    else (body.current.closest(".doc-scroll") ?? body.current.closest(".main")).scrollTop = 0;
+    const row = jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row);
+    row?.classList.add("hit-row");
+    const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && document.getElementById(anchor));
+    if (row) row.scrollIntoView({ block: "center" });
+    else if (target) target.scrollIntoView();
+    // 文件全景的阅读视图自己滚动（.doc-scroll），详情面板里随面板滚动，学习模块随主区域滚动
+    else (body.current.closest(".doc-scroll, .panel, .main")).scrollTop = 0;
   }, [card, jump]);
 
   const click = (e) => {

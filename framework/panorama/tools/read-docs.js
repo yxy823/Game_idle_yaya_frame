@@ -80,22 +80,29 @@ function readEntries(node, file, entries) {
 
 // 问答主题文件里每个二级标题是一个问题；问答页按出现顺序给它们编号 A、B、C……，打开页面时跳到 #panel-字母
 function readQa(tree, file, qa, resolve) {
-  let current = null, order = 0;
+  let current = null, order = 0, inWhy = false;
   for (const node of tree.children) {
     if (node.type === "heading" && node.depth === 2) {
-      current = { file, title: text(node), line: node.position.start.line, panel: String.fromCharCode(65 + order++), conclusion: "", why: "", basis: [] };
+      current = { file, title: text(node), line: node.position.start.line, panel: String.fromCharCode(65 + order++), conclusion: "", why: "", whyParts: [], basis: [] };
       qa.push(current);
+      inWhy = false;
     } else if (current && node.type === "paragraph" && node.children[0]?.type === "strong") {
       const label = text(node.children[0]), rest = text({ children: node.children.slice(1) }).replace(/^[：:]\s*/, "");
+      inWhy = label === "为什么";
       if (label === "结论") current.conclusion = rest;
-      else if (label === "为什么") current.why = rest;
+      else if (inWhy) current.whyParts.push({ text: rest });
       else if (label === "依据") {
         const found = [];
         const find = (n) => { if (n.type === "link") { const hit = resolve(n.url); if (hit && !found.includes(hit.to)) found.push(hit.to); } (n.children || []).forEach(find); };
         find(node);
         current.basis = found;
       }
+    } else if (current && inWhy) {
+      // “为什么”到下一个加粗标签为止：段落和列表都收下，图只在问答页看
+      if (node.type === "paragraph") current.whyParts.push({ text: text(node) });
+      else if (node.type === "list") current.whyParts.push({ items: node.children.map(text) });
     }
+    if (current) current.why = current.whyParts.map((p) => p.text ?? p.items.join("　")).join("　");
   }
 }
 

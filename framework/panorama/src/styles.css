@@ -81,8 +81,9 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 
 .panel { border-left: 1px solid var(--border); background: var(--surface); overflow: auto; scrollbar-gutter: stable; min-width: 0; }
 .workspace.panel-closed .panel { visibility: hidden; }
-.panel-head { height: calc(var(--control-h) + 8px); display: flex; align-items: center; padding: 4px var(--pad) 0; margin-bottom: 4px; border-bottom: 1px solid var(--border);
-  font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.panel-head { height: calc(var(--control-h) + 8px); display: flex; align-items: center; gap: 2px; padding: 4px 4px 0 var(--pad); margin-bottom: 4px; border-bottom: 1px solid var(--border); font-weight: 600; }
+.panel-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.panel-head .icon-btn[aria-disabled="true"] { color: var(--muted-fg); opacity: 0.5; cursor: default; background: none; }
 .panel .empty { padding: 4px var(--pad); color: var(--muted-fg); }
 .section > summary { height: var(--control-h); display: flex; align-items: center; gap: 4px; padding: 0 var(--pad);
   font-weight: 600; cursor: pointer; list-style: none; }
@@ -255,7 +256,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 
 /* 学习：左边章节目录，右边正文 */
 .learn { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
-.learn-toc { position: sticky; top: 0; max-height: calc(100vh - 120px); overflow: auto; border-right: 1px solid var(--border); padding-right: 4px; }
+.learn-toc { position: sticky; top: calc(var(--control-h) + 16px); max-height: calc(100vh - 120px); overflow: auto; border-right: 1px solid var(--border); padding-right: 4px; }
 .learn-toc .tree-row { padding-left: 8px; }
 .learn-group { padding: 8px 8px 2px; font-size: var(--fs-small); color: var(--muted-fg); }
 .learn-body { max-width: 52em; line-height: 1.7; }
@@ -308,3 +309,17 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .panel-tabs button:hover { color: var(--fg); }
 .panel-tabs button[aria-selected="true"] { color: var(--fg); box-shadow: inset 0 -2px 0 var(--primary); }
 .panel-tabs .count { margin-left: 4px; padding-left: 0; }
+
+/* 学习页的标题行（搜索和上一处、下一处）固定在主区域顶部，跳到命中后仍能继续搜索 */
+.sticky-head { position: sticky; top: -16px; z-index: 4; margin-top: -16px; padding-top: 16px; background: var(--bg); }
+.hit-nav { display: flex; align-items: center; gap: 2px; justify-content: flex-end; }
+.hit-nav .count { margin-right: 4px; }
+.learn-body mark.hit.current { background: color-mix(in srgb, var(--brand) 60%, transparent); }
+/* 学习正文里在详情面板打开的链接后面带面板图标 */
+.learn-body a .link-icon { width: 1em; height: 1em; margin-left: 2px; vertical-align: -0.15em; }
+/* 详情面板里显示整份文档时（术语、工具的一行），高亮那一行 */
+.panel-doc { padding: 4px var(--pad) 16px; font-size: var(--fs-small); line-height: 1.6; }
+.panel-doc td:first-child { min-width: 5em; }
+.panel-doc tr.hit-row td { background: color-mix(in srgb, var(--brand) 22%, transparent); }
+.row .value p.why, .row .value ul.why { margin: 0 0 6px; }
+.row .value ul.why { padding-left: 1.2em; }

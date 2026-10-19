@@ -33,7 +33,7 @@ export default function QaModule({ selected, onSelect }) {
           <div className="cards">
             {data.qa.map((q, n) => q.file === t && shown[n] && (
               <div key={n} className="qa-card">
-                <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(qaKey(n))}>
+                <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
                   <span className="card-title">{q.title}</span>
                   <span className="card-purpose">{q.conclusion}</span>
                 </button>

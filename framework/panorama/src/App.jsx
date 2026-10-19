@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IconLayoutSidebarRight, IconSettings } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import godotIcon from "./assets/godot-icon.webp";
-import DetailPanel from "./DetailPanel.jsx";
+import DetailPanel, { titleOf } from "./DetailPanel.jsx";
+import { openChapter } from "./LearnModule.jsx";
 import SettingsMenu from "./SettingsMenu.jsx";
 import { modules } from "./modules.jsx";
-import { Picker, ToastProvider, Tooltip } from "./overlays.jsx";
+import { Picker, ToastProvider, Tooltip, useToast } from "./overlays.jsx";
 import { fonts, store } from "./store.js";
 
 // 页面布局照 VSCode：顶栏、左侧活动栏、主区域、右侧详情面板、底部状态栏。
@@ -22,6 +23,13 @@ function applyFont(font) {
   store.set("font", font);
 }
 
+// 详情面板收起时选中了对象，用底部提示告诉用户选中了什么、怎样展开面板；要放在 ToastProvider 里面才能用提示
+function PanelNotice({ notice, panelOpen }) {
+  const toast = useToast();
+  useEffect(() => { if (notice && !panelOpen) toast("已在详情面板显示：" + titleOf(notice.value) + "（Alt+B 展开）"); }, [notice]);
+  return null;
+}
+
 export default function App() {
   const [module, setModule] = useState(() => (modules.some((m) => m.id === store.get("module")) ? store.get("module") : "home"));
   const [panelWidth, setPanelWidth] = useState(() => Number(store.get("panel-w")) || 320);
@@ -30,11 +38,22 @@ export default function App() {
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
   const [picking, setPicking] = useState(() => store.get("picking") === "on");
   const [menuOpen, setMenuOpen] = useState(false);
-  // 每个模块各记自己选中的对象：切回一个模块时，详情面板显示它上次选中的；没选过就是空状态。
+  // 每个模块各记自己的选中历史：切回一个模块时，详情面板显示它上次选中的；没选过就是空状态。
+  // 选中新对象时丢掉当前位置之后的记录，详情面板的后退、前进在本模块的记录里移动。
   // setSelected 只随模块变，图谱靠它不变来避免重建
   const [selection, setSelection] = useState({});
-  const selected = selection[module] ?? null;
-  const setSelected = useCallback((value) => setSelection((s) => ({ ...s, [module]: value })), [module]);
+  const [notice, setNotice] = useState(null);
+  const trail = selection[module] ?? { list: [null], at: 0 };
+  const selected = trail.list[trail.at];
+  const setSelected = useCallback((value) => {
+    setSelection((s) => {
+      const t = s[module] ?? { list: [null], at: 0 };
+      if (t.list[t.at] === value) return s;
+      return { ...s, [module]: { list: [...t.list.slice(0, t.at + 1), value], at: t.at + 1 } };
+    });
+    if (value !== null) setNotice({ value });
+  }, [module]);
+  const step = (d) => setSelection((s) => ({ ...s, [module]: { ...trail, at: trail.at + d } }));
   const settings = useRef(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -66,6 +85,12 @@ export default function App() {
     e.target.addEventListener("pointerup", up);
   };
   useEffect(() => store.set("picking", picking ? "on" : "off"), [picking]);
+  // 学习模块的章节切换写进浏览器历史；在别的模块按浏览器后退回到上一章时，切回学习模块
+  useEffect(() => {
+    const pop = (e) => { if (e.state && "chapter" in e.state) { openChapter(e.state.chapter); setModule("learn"); } };
+    addEventListener("popstate", pop);
+    return () => removeEventListener("popstate", pop);
+  }, []);
 
   useEffect(() => {
     const key = (e) => {
@@ -113,7 +138,8 @@ export default function App() {
         </main>
         {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}
           role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />}
-        <DetailPanel file={selected} onSelect={setSelected} />
+        <DetailPanel file={selected} onSelect={setSelected} font={font}
+          onBack={trail.at > 0 ? () => step(-1) : null} onForward={trail.at < trail.list.length - 1 ? () => step(1) : null} />
       </div>
 
       <footer className="statusbar" data-ui="statusbar">
@@ -128,6 +154,7 @@ export default function App() {
           theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }}
           font={font} onFont={(f) => { applyFont(f); setFont(f); }} />
       )}
+      <PanelNotice notice={notice} panelOpen={panelOpen} />
       <Tooltip disabled={picking || menuOpen} />
       <Picker on={picking} />
     </ToastProvider>

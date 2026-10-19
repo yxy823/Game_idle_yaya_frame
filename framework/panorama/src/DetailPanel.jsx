@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import { useMemo, useState } from "react";
+import { IconArrowLeft, IconArrowRight, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import DocView from "./DocView.jsx";
 import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
 import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
+import { entryOf } from "./SearchModule.jsx";
 import { store } from "./store.js";
 
 function Row({ name, children }) {
@@ -20,6 +22,19 @@ function Section({ title, ui, count, children }) {
       </summary>
       {children}
     </details>
+  );
+}
+
+// 面板标题行：名称和后退、前进；后退、前进在本模块选中过的对象之间移动
+function Head({ title, nav }) {
+  return (
+    <div className="panel-head" data-ui="panel.head">
+      <span className="panel-title" data-tip={title}>{title}</span>
+      <button className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
+        onClick={() => nav.onBack?.()} data-ui="panel.back"><IconArrowLeft aria-hidden="true" /></button>
+      <button className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
+        onClick={() => nav.onForward?.()} data-ui="panel.forward"><IconArrowRight aria-hidden="true" /></button>
+    </div>
   );
 }
 
@@ -48,16 +63,20 @@ function Quote({ link, current, onSelect }) {
 }
 
 // 问答的详情：结论、为什么、依据；按钮在新标签页打开问答页里的这一条
-function QaPanel({ q, onSelect }) {
+function QaPanel({ q, onSelect, nav }) {
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <div className="panel-head" data-ui="panel.head" data-tip={q.title}>{q.title}</div>
+      <Head title={q.title} nav={nav} />
       <div className="panel-actions">
         <a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a>
       </div>
       <Section title="回答" ui="panel.answer">
         <Row name="结论">{q.conclusion}</Row>
-        {q.why && <Row name="为什么">{q.why}</Row>}
+        {q.whyParts.length > 0 && (
+          <Row name="为什么">
+            {q.whyParts.map((part, i) => (part.items ? <ul key={i} className="why">{part.items.map((t, j) => <li key={j}>{t}</li>)}</ul> : <p key={i} className="why">{part.text}</p>))}
+          </Row>
+        )}
       </Section>
       <Section title="关联" ui="panel.qa-links">
         <Row name="主题"><FileLink index={q.file} onSelect={onSelect} /></Row>
@@ -69,7 +88,7 @@ function QaPanel({ q, onSelect }) {
 }
 
 // 文档关系图里一个节点的详情：介绍、路径、模板文件，以及进出的关系和关系说明
-function DocPanel({ k, onSelect }) {
+function DocPanel({ k, onSelect, nav }) {
   const n = docNodes[k];
   const out = docEdges.filter((e) => e.from === k), into = docEdges.filter((e) => e.to === k);
   const rel = (e, end) => (
@@ -80,7 +99,7 @@ function DocPanel({ k, onSelect }) {
   );
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <div className="panel-head" data-ui="panel.head" data-tip={n.name}>{n.name}</div>
+      <Head title={n.name} nav={nav} />
       <Section title="摘要" ui="panel.summary">
         <Row name="介绍">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.note || "没有对应的模板文件，项目里按需要创建"}</Row>
         {n.paths.length > 0 && <Row name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Row>}
@@ -99,22 +118,47 @@ function DocPanel({ k, onSelect }) {
   );
 }
 
+// 术语表、工具表里的一行：显示所在文档的正文，滚到这一行并高亮
+function EntryPanel({ e, onSelect, nav, font }) {
+  const jump = useMemo(() => ({ row: e.name }), [e]);
+  return (
+    <aside className="panel" aria-label="详情" data-ui="panel">
+      <Head title={e.name} nav={nav} />
+      <Section title="位置" ui="panel.entry">
+        <Row name="文档"><FileLink index={e.file} onSelect={onSelect} /></Row>
+        <Row name="原文"><a className="open" href={vscodeUrl(e.file, e.line)} data-tip="在 VSCode 里打开这一行">{files[e.file].path}:{e.line}</a></Row>
+      </Section>
+      <div className="learn-body panel-doc" data-ui="panel.entry-doc">
+        <DocView card={e.file} jump={jump} onLink={(i) => onSelect(i)} font={font} />
+      </div>
+    </aside>
+  );
+}
+
+// 选中对象的名称，详情面板收起时的提示用它
+export function titleOf(value) {
+  const q = qaOf(value), e = entryOf(value);
+  return q ? q.title : e ? e.name : docOf(value) !== null ? docNodes[docOf(value)].name : files[value].title;
+}
+
 // 文档的详情分三个标签：概要、关系、原文（被引用处的段落）；面板记住上次停在哪个标签
 const TABS = [["summary", "概要"], ["links", "关系"], ["quotes", "原文"]];
 let lastTab = TABS.some(([id]) => id === store.get("panel.tab")) ? store.get("panel.tab") : "summary";
 
 // 右侧详情面板，照 draw.io 的属性面板：分节可以折叠，每行左边是名称、右边是值。
 // file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel；文档关系图的节点是 "doc:编号"，交给 DocPanel。
-export default function DetailPanel({ file, onSelect }) {
+export default function DetailPanel({ file, onSelect, onBack, onForward, font }) {
   const [tab, setTab] = useState(lastTab);
   const pickTab = (t) => { lastTab = t; store.set("panel.tab", t); setTab(t); };
-  const q = qaOf(file);
-  if (q) return <QaPanel key={file} q={q} onSelect={onSelect} />;
-  if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} />;
+  const nav = { onBack, onForward };
+  const q = qaOf(file), e = entryOf(file);
+  if (q) return <QaPanel key={file} q={q} onSelect={onSelect} nav={nav} />;
+  if (e) return <EntryPanel key={file} e={e} onSelect={onSelect} nav={nav} font={font} />;
+  if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} nav={nav} />;
   if (file === null) {
     return (
       <aside className="panel" aria-label="详情" data-ui="panel">
-        <div className="panel-head" data-ui="panel.head">详情</div>
+        <Head title="详情" nav={nav} />
         <p className="empty" data-ui="panel.empty">在主区域选中一个文件</p>
       </aside>
     );
@@ -134,7 +178,7 @@ export default function DetailPanel({ file, onSelect }) {
   );
   return (
     <aside className="panel" aria-label="详情" data-ui="panel" key={file}>
-      <div className="panel-head" data-ui="panel.head" data-tip={f.title}>{f.title}</div>
+      <Head title={f.title} nav={nav} />
       <div className="panel-tabs" role="tablist" data-ui="panel.tabs">
         {TABS.map(([id, name]) => (
           <button key={id} role="tab" aria-selected={tab === id} onClick={() => pickTab(id)}>

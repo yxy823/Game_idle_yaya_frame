@@ -177,22 +177,26 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
 
   const inGraph = selected !== null && Object.hasOwn(groupOf, selected);
-  // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图
+  // 邻居视图里留下的点：中心点几跳以内
+  const within = useMemo(() => {
+    if (!focus) return null;
+    const seen = new Set([focus.center]);
+    let ring = [focus.center];
+    for (let k = 0; k < focus.hops; k++) ring = ring.flatMap((i) => [...neighbours.get(i)].filter((j) => !seen.has(j) && seen.add(j)));
+    return seen;
+  }, [focus, neighbours]);
+  // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图；
+  // 邻居视图里选中了范围外的点（例如从详情面板的链接），以它为中心重排
   useEffect(() => {
     if (inGraph && !expanded.has(groupOf[selected])) setExpanded((s) => new Set(s).add(groupOf[selected]));
     if (!inGraph && focus) setFocus(null);
+    if (inGraph && within && !within.has(selected)) setFocus({ ...focus, center: selected });
   }, [selected]);
 
   // 按折叠状态、隐藏的分组和邻居视图决定显示哪些点，再重画连线：
   // 每条连线的两端换成实际显示的点（场景本身或它折叠后的大点），同一对点之间的连线合并成一条
   useEffect(() => {
     const cy = cyRef.current, record = positions.get(cacheKey);
-    const within = focus && (() => {
-      const seen = new Set([focus.center]);
-      let ring = [focus.center];
-      for (let k = 0; k < focus.hops; k++) ring = ring.flatMap((i) => [...neighbours.get(i)].filter((j) => !seen.has(j) && seen.add(j)));
-      return seen;
-    })();
     const shown = (i) => !hidden.has(groupOf[i]) && (within ? within.has(i) : expanded.has(groupOf[i]));
     const groupIndex = Object.fromEntries(legend.map((g, k) => [g.id, k]));
     const folded = (g) => foldable && !within && !hidden.has(g) && !expanded.has(g);
@@ -238,7 +242,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       cy.nodes(".hub").removeClass("hub");
       pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty() && n.style("display") === "element"), landmarkLimit).forEach((n) => n.addClass("hub"));
     }
-  }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, neighbours, expanded, hidden, focus]);
+  }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, expanded, hidden, within]);
 
   // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点时，图保持原样
   useEffect(() => {
@@ -249,12 +253,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       if (node.empty()) return;
       const near = node.closedNeighborhood();
       near.addClass("near");
-      // 邻居视图里留下的都是要看的点，不变淡，名称在全部留下的点里挑
-      const rest = focus ? cy.nodes(":visible").not(near).not(".group") : cy.collection();
+      // 邻居视图里留下的都是要看的点，不变淡；不超过 20 个点时全部写名称，多了在全部留下的点里挑
+      const kept = focus ? cy.nodes(":visible").not(".group") : cy.collection();
       if (!focus) cy.elements().not(near).addClass("faded");
       // 变淡的路标不写名称；邻居先写选中点自己的，其余名称会重叠就不写，详情面板里有完整的关系列表
       cy.nodes(".hub").not(near).addClass("quiet");
-      pickLabels(cy, [node, ...near.nodes().not(node).not(".group"), ...rest], Infinity).forEach((n) => n.addClass("labeled"));
+      if (focus && kept.length <= 20) kept.addClass("labeled");
+      else pickLabels(cy, [node, ...near.nodes().not(node).not(".group"), ...kept.not(near)], Infinity).forEach((n) => n.addClass("labeled"));
       node.select();
     });
   }, [selected, cacheKey, inGraph, expanded, hidden, focus]);
