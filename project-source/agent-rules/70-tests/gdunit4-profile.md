@@ -49,7 +49,7 @@ python -B yaya/tools/testing/run-gdunit-tests.py --changed
 - 套件直接或经 `class_name`、脚本路径间接继承 `GdUnitTestSuite`，测试方法以 `test_` 开头。包装脚本按源码声明核对执行；无法解析的 `extends` 表达式直接失败。
 - 共享基类只放辅助函数和生命周期方法，不写 `test_` 方法；要复用同一组断言，在每个套件里各写一个 `test_` 方法去调用它。继承来的 `test_` 方法在多个套件中可能得到相同的测试身份，无法形成完成证据；测试入口会在启动 Godot 之前报告这种基类。
 - 不用跳过、`-i` 忽略列表或过滤来绕过失败。被跳过的用例本身就让运行失败。
-- `project.godot` 设置了 `flaky_check_enable=false`，失败的用例不会重试。不要打开重试来掩盖不稳定。
+- `project.godot` 设置了 `flaky_check_enable=false`，失败的用例不会重试。不要打开重试来掩盖不稳定。同一个用例在内容不变时时而通过、时而失败，就是测试的 Bug：按[统一的 Bug 流程](../../methodology/07-engineering-change.md#统一的-bug-流程)记录和修复，不另建不稳定测试清单。
 - `await` 每一个协程断言，包括 `assert_signal(...).is_emitted()`、`is_not_emitted()` 和 `assert_error(...)` 的各个匹配方法。漏写 `await` 时，测试不等断言完成就继续，失败可能不被计入。
 - 这些方法的实现是协程，但 `assert_signal()`、`assert_error()` 返回的抽象类型把它们声明为普通方法，直接 `await` 会触发 `REDUNDANT_AWAIT` 警告，运行判失败。先 `preload` 实现脚本（`res://addons/gdUnit4/src/asserts/GdUnitSignalAssertImpl.gd`、`GdUnitGodotErrorAssertImpl.gd`，它们没有 `class_name`），把断言对象转换为该类型后再 `await`，写法见下方示例。
 - `GdUnitSceneRunner` 的 `await_input_processed()` 等方法在抽象基类中声明，经 `scene_runner()` 的返回类型调用时，`await` 会触发 `REDUNDANT_AWAIT` 警告。需要等待输入处理时，写 `var runner := scene_runner(SCENE) as GdUnitSceneRunnerImpl` 再等待；等待信号时用套件的 `await_signal_on()`。不删除必需的等待，也不修改插件。
