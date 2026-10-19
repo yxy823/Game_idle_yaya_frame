@@ -43,7 +43,8 @@ function text(node) {
 
 // 只由链接、“·”和空白组成的段落是导航行，不当作用途
 function isNav(node) {
-  return node.children.every((c) => c.type === "link" || (c.type === "text" && /^[\s·]*$/.test(c.value)));
+  // 导航行只有链接、分隔点和“上一篇：”“下一篇：”这类前缀
+  return node.children.every((c) => c.type === "link" || (c.type === "text" && /^[\s·]*([上下]一篇[：:])?\s*$/.test(c.value)));
 }
 
 function history(repo) {
