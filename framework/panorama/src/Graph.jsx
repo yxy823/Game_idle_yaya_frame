@@ -150,13 +150,15 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     });
     cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
+    // 提示元素先记下来：卸载时 React 已经清空 tipRef，清理函数里还要用它
     let tipTimer = 0;
-    const hideTip = () => { clearTimeout(tipTimer); tipRef.current.hidden = true; };
+    const tip = tipRef.current;
+    const hideTip = () => { clearTimeout(tipTimer); tip.hidden = true; };
     cy.on("mouseover", "node", (e) => {
       if (e.target.hasClass("group")) return;
       hideTip();
       tipTimer = setTimeout(() => {
-        const tip = tipRef.current, bb = e.target.renderedBoundingBox({ includeLabels: false }), r = box.current.getBoundingClientRect();
+        const bb = e.target.renderedBoundingBox({ includeLabels: false }), r = box.current.getBoundingClientRect();
         tip.textContent = e.target.data("label"); tip.hidden = false;
         tip.style.left = Math.max(8, Math.min(r.left + (bb.x1 + bb.x2) / 2 - tip.offsetWidth / 2, innerWidth - tip.offsetWidth - 8)) + "px";
         tip.style.top = (r.top + bb.y2 + 6) + "px";
