@@ -557,6 +557,7 @@ python -B yaya/tools/checks/check-feature-list.py
    - 设计稿和专业文档里已被后续 Feature 改掉的内容，或已经定下却仍写着“待定”的内容，改成现状或删除。
    - Progress 里本 Product 的过程记录移进 `docs/progress/`，当前页只留当前状态和下一个允许的动作。
    - 报告和临时材料按 09 号规范的[整理和清理报告](09-records-reports-and-handoff.md#整理和清理报告)处理：删除已到释放条件的，用途不明的列给用户决定。
+   - 不带参数运行一次 `python -B yaya/tools/testing/run-gdunit-tests.py`，跑全部测试，校准各 Feature 的按影响选测。每个 Feature 完成时受影响的测试都已通过，所以这次的失败说明有改动没被选中。失败按 07 号规范的[统一的 Bug 流程](07-engineering-change.md#统一的-bug-流程)处理，同时修正测试登记表中漏掉的 `source_paths`，让同类改动以后能被选中。
 6. 收尾后，对照当前 GDD 和已经学到的东西，重新审视下一个 Product。需要时调整预拆分，编写该 Product 的交付文档，再在当前授权内拆分它。Stage 8 遵循[授权与续接](03-execute-loop.md#授权与续接)；仅仅完成并不授权规划或实现下一个 Product。
 
 `feature-plan` 以追加到同一份 Feature 记录的方式，写入第一个及之后每个 Product 的初始拆分。它按[Feature ID](#feature-id)在当前 Product 的编号系列里接着分配新 ID，并保留之前的 Feature、测试登记表记录和修订历史。所选范围已有计划时，复用它；需求变化走 `feature-sync`，不要重复规划或重新生成计划。
