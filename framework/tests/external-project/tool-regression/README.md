@@ -2,6 +2,8 @@
 
 [测试与夹具](../../README.md#按需检查) · [验证范围](../../../maintenance/validation/validation-scope.md)
 
+本页说明工具回归夹具检查什么，以及怎样在外部项目中运行。修改了项目自研工具、lint 或 gdUnit 运行器，要回归验证时读。
+
 本目录保存两类夹具：
 
 - **Python 工具回归**（`test_*.py`）：由 [run_project_tool_tests.py](../run_project_tool_tests.py) 统一运行，用法见[按需检查](../../README.md#按需检查)。
