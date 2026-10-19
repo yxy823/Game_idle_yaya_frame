@@ -30,7 +30,11 @@ export default function App() {
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
   const [picking, setPicking] = useState(() => store.get("picking") === "on");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [selected, setSelected] = useState(null);
+  // 每个模块各记自己选中的对象：切回一个模块时，详情面板显示它上次选中的；没选过就是空状态。
+  // setSelected 只随模块变，图谱靠它不变来避免重建
+  const [selection, setSelection] = useState({});
+  const selected = selection[module] ?? null;
+  const setSelected = useCallback((value) => setSelection((s) => ({ ...s, [module]: value })), [module]);
   const settings = useRef(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -57,7 +61,7 @@ export default function App() {
     };
     document.addEventListener("keydown", key);
     return () => document.removeEventListener("keydown", key);
-  }, [picking]);
+  }, [picking, setSelected]);
 
   const panelLabel = panelOpen ? "收起详情面板" : "展开详情面板";
   const current = modules.find((m) => m.id === module);

@@ -3,6 +3,7 @@ import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
 import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
+import { store } from "./store.js";
 
 function Row({ name, children }) {
   return <div className="row"><span className="name">{name}</span><span className="value">{children}</span></div>;
@@ -98,9 +99,15 @@ function DocPanel({ k, onSelect }) {
   );
 }
 
+// 文档的详情分三个标签：概要、关系、原文（被引用处的段落）；面板记住上次停在哪个标签
+const TABS = [["summary", "概要"], ["links", "关系"], ["quotes", "原文"]];
+let lastTab = TABS.some(([id]) => id === store.get("panel.tab")) ? store.get("panel.tab") : "summary";
+
 // 右侧详情面板，照 draw.io 的属性面板：分节可以折叠，每行左边是名称、右边是值。
 // file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel；文档关系图的节点是 "doc:编号"，交给 DocPanel。
 export default function DetailPanel({ file, onSelect }) {
+  const [tab, setTab] = useState(lastTab);
+  const pickTab = (t) => { lastTab = t; store.set("panel.tab", t); setTab(t); };
   const q = qaOf(file);
   if (q) return <QaPanel key={file} q={q} onSelect={onSelect} />;
   if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} />;
@@ -118,6 +125,8 @@ export default function DetailPanel({ file, onSelect }) {
   const basis = unique(out.filter((l) => l.kind === "basis"), (l) => l.to);
   const refs = unique(out.filter((l) => l.kind === "ref" && l.to !== file), (l) => l.to);
   const cited = unique(into.filter((l) => l.from !== file), (l) => l.para);
+  const citing = unique(cited, (l) => l.from);
+  const counts = { links: next.length + prev.length + basis.length + refs.length + citing.length, quotes: cited.length };
   const step = (l, end) => (
     <li key={l.from + "-" + l.to + "-" + l.para}>
       {l.main && <span className="tag">主线</span>}<span className="cond">{l.cond}</span><FileLink index={l[end]} onSelect={onSelect} />
@@ -126,36 +135,53 @@ export default function DetailPanel({ file, onSelect }) {
   return (
     <aside className="panel" aria-label="详情" data-ui="panel" key={file}>
       <div className="panel-head" data-ui="panel.head" data-tip={f.title}>{f.title}</div>
-      <Section title="摘要" ui="panel.summary">
-        <Row name="用途">{f.purpose || "第一段没有用途说明"}</Row>
-        <Row name="分组"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</Row>
-        <Row name="路径"><a className="open" href={vscodeUrl(file)} data-tip="在 VSCode 里打开">{f.path}</a></Row>
-      </Section>
-      {f.outline.length > 0 && (
-        <Section title="大纲" ui="panel.outline" count={f.outline.length}>
-          <ul className="plain">{f.outline.map((h, i) => <li key={i}>{h}</li>)}</ul>
-        </Section>
+      <div className="panel-tabs" role="tablist" data-ui="panel.tabs">
+        {TABS.map(([id, name]) => (
+          <button key={id} role="tab" aria-selected={tab === id} onClick={() => pickTab(id)}>
+            {name}{counts[id] !== undefined && <span className="count">{counts[id]}</span>}
+          </button>
+        ))}
+      </div>
+      {tab === "summary" && (
+        <>
+          <Section title="摘要" ui="panel.summary">
+            <Row name="用途">{f.purpose || "第一段没有用途说明"}</Row>
+            <Row name="分组"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</Row>
+            <Row name="路径"><a className="open" href={vscodeUrl(file)} data-tip="在 VSCode 里打开">{f.path}</a></Row>
+          </Section>
+          {f.outline.length > 0 && (
+            <Section title="大纲" ui="panel.outline" count={f.outline.length}>
+              <ul className="plain">{f.outline.map((h, i) => <li key={i}>{h}</li>)}</ul>
+            </Section>
+          )}
+          <Section title="修改" ui="panel.history">
+            <Row name="最近">{f.changed || "还没提交"}</Row>
+            <Row name="次数">{f.changes}</Row>
+          </Section>
+        </>
       )}
-      {(next.length > 0 || prev.length > 0) && (
-        <Section title="场景衔接" ui="panel.steps">
-          {next.length > 0 && <Row name="下一步"><ul className="plain">{next.map((l) => step(l, "to"))}</ul></Row>}
-          {prev.length > 0 && <Row name="上一步"><ul className="plain">{prev.map((l) => step(l, "from"))}</ul></Row>}
-        </Section>
+      {tab === "links" && (
+        <>
+          {(next.length > 0 || prev.length > 0) && (
+            <Section title="场景衔接" ui="panel.steps">
+              {next.length > 0 && <Row name="下一步"><ul className="plain">{next.map((l) => step(l, "to"))}</ul></Row>}
+              {prev.length > 0 && <Row name="上一步"><ul className="plain">{prev.map((l) => step(l, "from"))}</ul></Row>}
+            </Section>
+          )}
+          {(basis.length > 0 || refs.length > 0) && (
+            <Section title="引用" ui="panel.refs" count={basis.length + refs.length}>
+              {basis.length > 0 && <Row name="依据"><ul className="plain">{basis.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Row>}
+              {refs.length > 0 && <Row name="引用"><ul className="plain">{refs.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Row>}
+            </Section>
+          )}
+          <Section title="被引用" ui="panel.cited" count={citing.length}>
+            {citing.length ? <ul className="plain">{citing.map((l) => <li key={l.from}><FileLink index={l.from} onSelect={onSelect} /></li>)}</ul>
+              : <p className="empty">没有其他文档链接到它</p>}
+          </Section>
+        </>
       )}
-      {(basis.length > 0 || refs.length > 0) && (
-        <Section title="引用" ui="panel.refs" count={basis.length + refs.length}>
-          {basis.length > 0 && <Row name="依据"><ul className="plain">{basis.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Row>}
-          {refs.length > 0 && <Row name="引用"><ul className="plain">{refs.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Row>}
-        </Section>
-      )}
-      <Section title="被引用" ui="panel.cited" count={cited.length}>
-        {cited.length ? cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)
-          : <p className="empty">没有其他文档链接到它</p>}
-      </Section>
-      <Section title="修改" ui="panel.history">
-        <Row name="最近">{f.changed || "还没提交"}</Row>
-        <Row name="次数">{f.changes}</Row>
-      </Section>
+      {tab === "quotes" && (cited.length ? cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)
+        : <p className="empty">没有其他文档链接到它</p>)}
     </aside>
   );
 }

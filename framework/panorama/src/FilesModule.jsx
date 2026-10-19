@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import { IconArrowLeft, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { dirOf, files, groupName, groups, incoming, links } from "./docs.js";
+import DocView from "./DocView.jsx";
 import Graph from "./Graph.jsx";
 import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
 import { store } from "./store.js";
@@ -50,10 +51,10 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
   );
 }
 
-function Card({ index, selected, onSelect, showGroup }) {
+function Card({ index, selected, onSelect, onRead, showGroup }) {
   const f = files[index];
   return (
-    <button className="card" aria-selected={selected} onClick={() => onSelect(index)} data-tip={f.path}>
+    <button className="card" aria-selected={selected} onClick={() => onSelect(index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
       <span className="card-title"><span className={"dot g-" + f.group} aria-hidden="true"></span>{f.title}</span>
       <span className="card-purpose">{f.purpose || "（第一段没有用途说明）"}</span>
       <span className="card-meta">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
@@ -61,9 +62,17 @@ function Card({ index, selected, onSelect, showGroup }) {
   );
 }
 
+// 离开文件全景再回来时，仍停在正在读的文档
+let lastReading = null;
+
 // 文件全景：照 VSCode 的资源管理器，左边目录树，右边是所选目录下的卡片；“图谱”看全部文档的链接关系。
+// 单击卡片选中，双击在右边读全文；正文里的文档链接打开那份文档，“返回卡片”回到目录的卡片
 export default function FilesModule({ selected, onSelect, theme, font }) {
   const [query, setQuery] = useState("");
+  const [reading, setReading] = useState(lastReading);
+  const [jump, setJump] = useState({ anchor: "" });
+  const read = (i, anchor = "") => { lastReading = i; setReading(i); setJump({ anchor }); if (i !== null) onSelect(i); };
+  const search = (q) => { setQuery(q); if (q.trim() && reading !== null) read(null); };
   const ws = words(query);
   const found = ws.length ? files.map((f, i) => i).filter((i) => matches(ws, files[i].title, files[i].purpose, files[i].path)) : null;
   const tree = useMemo(buildTree, []);
@@ -80,7 +89,7 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
 
   return (
     <div className="files">
-      <PageHead search={<PageSearch ui="files.search" value={query} onChange={setQuery} placeholder="搜索标题、用途和路径"
+      <PageHead search={<PageSearch ui="files.search" value={query} onChange={search} placeholder="搜索标题、用途和路径"
         results={view === "graph" ? (found ?? []).map((i) => ({ key: i, label: files[i].title, meta: files[i].path.split("/").pop() })) : undefined} onPick={(r) => onSelect(r.key)} />}>
         <div className="segmented" role="tablist" data-ui="files.view-switch">
           <button role="tab" aria-selected={view === "list"} onClick={() => choose("list")}>列表</button>
@@ -90,14 +99,21 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
       {view === "list" ? (
         <div className="files-layout">
           <ul className="tree" data-ui="files.tree">
-            <TreeNode node={tree} depth={0} dir={dir} onDir={pickDir} open={open} onToggle={toggle} />
+            <TreeNode node={tree} depth={0} dir={dir} onDir={(p) => { pickDir(p); read(null); }} open={open} onToggle={toggle} />
           </ul>
+          {reading !== null ? (
+            <article className="learn-body doc-scroll" data-ui="files.reader">
+              <button className="graph-btn reader-back" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</button>
+              <DocView card={reading} jump={jump} onLink={(i, anchor) => read(i, anchor)} font={font} />
+            </article>
+          ) : (
           <div data-ui="files.cards">
             <p className="lead">{found ? `搜索“${query.trim()}”：${cards.length} 份文档` : (dir || "仓库根目录") + "：" + cards.length + " 份文档"}</p>
             {cards.length ? (
-              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} showGroup={showGroup || found !== null} />)}</div>
+              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} onRead={read} showGroup={showGroup || found !== null} />)}</div>
             ) : <p className="empty-line">{found ? "没有匹配的文档，换一个词或减少关键词。" : "这个目录下没有直接放文档，在左边展开它的子目录。"}</p>}
           </div>
+          )}
         </div>
       ) : <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} font={font} ui="files" />}
     </div>

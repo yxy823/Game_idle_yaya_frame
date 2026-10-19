@@ -7,8 +7,8 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 
-// 学习模块：按 Godot 项目手册 README 的顺序列出各章，每章在构建时转成 HTML。
-// 顺序：手册首页；「第一次阅读」的教程；「全部专题」各组下的链接。章节之间的链接在页面里切换章节，其他 Markdown 链接选中对应卡片。
+// 学习模块的章节顺序：手册首页；「第一次阅读」的教程；「全部专题」各组下的链接。
+// 每份文档在构建时转成 HTML（renderHtml），学习模块和文件全景的阅读视图都用它。
 const README = "framework/godot-project-manual/README.md";
 const parser = unified().use(remarkParse).use(remarkGfm).use(remarkFrontmatter, ["yaml"]);
 const toHtml = unified().use(remarkRehype).use(rehypeStringify);
@@ -47,34 +47,33 @@ function order(repo) {
   return result;
 }
 
-export function readManual(repo, paths, index, resolve) {
-  const chapters = order(repo);
-  const chapterOf = new Map(chapters.map((c, k) => [c.file, k]));
-  return chapters.map(({ group, file }) => {
-    const mdast = parser.parse(fs.readFileSync(path.join(repo, file), "utf-8"));
-    const hast = toHtml.runSync(mdast);
-    const slug = slugger();
-    const walk = (node) => {
-      if (node.type !== "element") return;
-      if (/^h[1-6]$/.test(node.tagName)) node.properties.id = slug(hastText(node));
-      if (node.tagName === "a" && typeof node.properties.href === "string") {
-        const url = node.properties.href;
-        const hit = resolve(file, url);
-        if (/^https?:/.test(url)) Object.assign(node.properties, { target: "_blank", rel: "noreferrer" });
-        else if (hit && chapterOf.has(paths[hit.to])) Object.assign(node.properties, { href: "#", dataChapter: chapterOf.get(paths[hit.to]), dataAnchor: hit.anchor });
-        else if (hit) Object.assign(node.properties, { href: "#", dataCard: hit.to });
-        else if (!url.startsWith("#")) node.properties.href = `vscode://file/${repo.split(path.sep).join("/")}/${path.posix.normalize(path.posix.join(path.posix.dirname(file), decodeURI(url.split("#")[0])))}`;
-      }
-      // Mermaid 代码块换成占位，页面里用 Pele 渲染
-      if (node.tagName === "pre" && node.children[0]?.properties?.className?.includes("language-mermaid")) {
-        node.tagName = "div";
-        node.properties = { className: ["diagram", "manual-diagram"] };
-      }
-      node.children.forEach(walk);
-    };
-    hast.children.forEach(walk);
-    return { group, card: index.get(file), html: toHtml.stringify(hast) };
-  });
+export const readManual = (repo, index) => order(repo).map(({ group, file }) => ({ group, card: index.get(file) }));
+
+// 一份文档转成 HTML，学习模块和文件全景的阅读视图共用。
+// 指向仓库里 Markdown 的链接（含本页的 #锚点）改成 data-card 加 data-anchor，由页面决定切换章节、打开文档还是滚动；
+// 外部网址在新标签页打开；指向其他文件的链接用 VSCode 打开。
+export function renderHtml(repo, file, resolve) {
+  const hast = toHtml.runSync(parser.parse(fs.readFileSync(path.join(repo, file), "utf-8")));
+  const slug = slugger();
+  const walk = (node) => {
+    if (node.type !== "element") return;
+    if (/^h[1-6]$/.test(node.tagName)) node.properties.id = slug(hastText(node));
+    if (node.tagName === "a" && typeof node.properties.href === "string") {
+      const url = node.properties.href;
+      const hit = resolve(file, url);
+      if (/^https?:/.test(url)) Object.assign(node.properties, { target: "_blank", rel: "noreferrer" });
+      else if (hit) Object.assign(node.properties, { href: "#", dataCard: hit.to, dataAnchor: hit.anchor });
+      else node.properties.href = `vscode://file/${repo.split(path.sep).join("/")}/${path.posix.normalize(path.posix.join(path.posix.dirname(file), decodeURI(url.split("#")[0])))}`;
+    }
+    // Mermaid 代码块换成占位，页面里用 Pele 渲染
+    if (node.tagName === "pre" && node.children[0]?.properties?.className?.includes("language-mermaid")) {
+      node.tagName = "div";
+      node.properties = { className: ["diagram", "manual-diagram"] };
+    }
+    node.children.forEach(walk);
+  };
+  hast.children.forEach(walk);
+  return toHtml.stringify(hast);
 }
 
 function hastText(n) {
