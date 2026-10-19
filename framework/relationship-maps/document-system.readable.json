@@ -333,7 +333,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt-scenarios/prompts/godot-development-prompts.json 与 framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；开发场景图复用 Godot 场景名称，advisor 通过固定绝对路径直接读取 Godot 库。链接打开提示词与场景准则。\n\n文件： framework/prompt-scenarios/prompts/godot-development-prompts.json\n文件： framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json",
+      "note": "职责：按用途分别维护任务提示词正文。\n位置：framework/prompt-scenarios/prompts/godot-development-prompts.json 与 framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json。\n场景速查与各自名称一一对应；advisor 通过固定绝对路径直接读取 Godot 库。链接打开提示词与场景准则。\n\n文件： framework/prompt-scenarios/prompts/godot-development-prompts.json\n文件： framework/prompt-scenarios/prompts/yaya-maintenance-prompts.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -354,7 +354,7 @@
       "y": 121,
       "width": 270,
       "height": 148,
-      "label": "场景图与文档关系图\ngame-development-workflow.readable.json\ndocument-system.readable.json",
+      "label": "文档系统关系图\ndocument-system.readable.json",
       "zIndex": 1,
       "fill": "#EAF3FF",
       "stroke": {
@@ -376,7 +376,7 @@
         "horizontal": 16,
         "vertical": 12
       },
-      "note": "职责：场景衔接与文档职责、来源、导航、证据关系的可视化。\n位置：framework/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 写两图的字段约定、保存格式与格式校验命令。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/relationship-maps/README.md\n文件： framework/relationship-maps/graph-map-format.md\n文件： framework/relationship-maps/game-development-workflow.readable.json\n文件： framework/relationship-maps/document-system.readable.json",
+      "note": "职责：文档职责、来源、导航、证据关系的可视化。\n位置：framework/relationship-maps/。\nREADME 说明读图与维护，graph-map-format.md 写图的字段约定、保存格式与格式校验命令。图是当前规范的阅读辅助；不替代正文，不进入生成项目。文档图按类别组织，不能证明某个实际项目的文件均已正确连接。\n\n文件： framework/relationship-maps/README.md\n文件： framework/relationship-maps/graph-map-format.md\n文件： framework/relationship-maps/document-system.readable.json",
       "textSizing": "fixed",
       "link": {
         "kind": "local",
@@ -3222,7 +3222,7 @@
       },
       "path": "orthogonal",
       "vertices": [],
-      "label": "两类关系图入口",
+      "label": "关系图入口",
       "stroke": {
         "color": "#64748B",
         "width": 1.5,
@@ -3270,53 +3270,6 @@
       "path": "orthogonal",
       "vertices": [],
       "label": "同名、一一对应",
-      "stroke": {
-        "color": "#2563EB",
-        "width": 2,
-        "dash": "solid"
-      },
-      "arrow": "target",
-      "text": {
-        "fontSize": 14,
-        "color": "#2563EB",
-        "align": "center",
-        "fontFamily": "system",
-        "opacity": 1,
-        "verticalAlign": "middle",
-        "hidden": false
-      },
-      "zIndex": 0,
-      "appearance": {
-        "opacity": 1,
-        "sourceMarker": "none",
-        "targetMarker": "block",
-        "sourceMarkerSize": 8,
-        "targetMarkerSize": 9,
-        "labelPosition": 0.5,
-        "labelOffset": 0,
-        "labelPadding": 4,
-        "rounded": true,
-        "radius": 12,
-        "jump": "none",
-        "routerPadding": 24,
-        "curve": "default"
-      }
-    },
-    {
-      "id": "relation-prompts-graphs",
-      "source": {
-        "kind": "node",
-        "node": "doc-prompts",
-        "port": "top"
-      },
-      "target": {
-        "kind": "node",
-        "node": "doc-graphs",
-        "port": "bottom"
-      },
-      "path": "orthogonal",
-      "vertices": [],
-      "label": "开发场景名称与衔接",
       "stroke": {
         "color": "#2563EB",
         "width": 2,

@@ -33,7 +33,7 @@ flowchart TD
 | 理解生成的 Godot 项目：项目边界、游戏逻辑与表现、文档对象、配置、Skill 和工具用法 | [Godot 项目手册](godot-project-manual/README.md) |
 | 根据当前情况找到具体处理步骤和同名提示词 | [场景速查索引](prompt-scenarios/scenarios/scenario-index.md) |
 | 查看框架与游戏项目的文档职责、导航、来源和证据关系 | [文档系统关系图](relationship-maps/README.md#文档系统关系图) |
-| 查看游戏项目开发场景之间的衔接关系 | [游戏项目开发场景图](relationship-maps/README.md#游戏项目开发场景图) |
+| 查看游戏项目开发场景之间的衔接关系 | 各场景页的[下一步清单](prompt-scenarios/scenarios/README.md#下一步清单) |
 | 修改框架或分发源，判断要同步哪些说明、选择哪种验证 | [框架维护](maintenance/README.md) |
 | 新增或调整文档、Skill、脚本、提示词与场景的职责 | [职责设计准则](maintenance/design-guidelines/README.md) |
 | 编写或修改单一场景 | [场景速查手册的编写与维护](prompt-scenarios/scenarios/README.md) |
@@ -58,8 +58,8 @@ flowchart TD
 | [terminology.md](terminology.md) | 框架与生成项目共用的术语写法 |
 | [qa/](qa/README.md) | Q&A：用户在讨论中问过、以后还会用到的问题，按主题分文件；框架做法只写结论并链接正文，通用专业知识在这里写完整 |
 | [godot-project-manual/](godot-project-manual/README.md) | Godot 项目手册：生成项目的概念、文档对象、配置、Skill 与工具用法，按专题分四个子目录；`tutorial/` 是以三消示例串起主线的三篇教程 |
-| `prompt-scenarios/` | `prompts/` 两份预设提示词库；[scenarios/](prompt-scenarios/scenarios/README.md) 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词、场景与场景图的检查和链接脚本 |
-| [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、开发场景图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查和连线穿过节点检查脚本 |
+| `prompt-scenarios/` | `prompts/` 两份预设提示词库；[scenarios/](prompt-scenarios/scenarios/README.md) 每条提示词对应的同名场景页、场景索引与编写要求；`tools/` 提示词与场景的路径检查脚本 |
+| [relationship-maps/](relationship-maps/README.md) | 文档系统关系图、读图与维护说明、Graph_Map 文件格式；`tools/` 文档图覆盖检查和连线穿过节点检查脚本 |
 | [maintenance/](maintenance/README.md) | 框架维护文档：维护与同步；`design-guidelines/` 职责设计准则；`validation/` 验证范围与测试改动场景表；`dependencies/` 第三方插件与问答渲染脚本的来源和本地改动，以及设计参考条目的来源；`tools/` 仓库链接检查与孤立文档扫描，README 另说明术语检查、措辞检查和钩子 |
 | `project-creation/` | 唯一复制清单 `project-files.json`；[tools/](project-creation/tools/README.md) 创建器 |
 | [tests/](tests/README.md) | `repository/` 从仓库根目录运行的维护回归；`external-project/` 需要指定外部项目的工具回归、调试台分析、插件与文档语言夹具，各子目录 README 说明放置与运行 |
@@ -101,10 +101,8 @@ flowchart TD
 | --- | --- | --- |
 | 创建器 `project-creation/tools/create_project.py` | 按复制清单创建空白项目，启用提交钩子，建立独立 Git 仓库和初始提交 | [项目创建工具](project-creation/tools/README.md) |
 | 提示词与场景路径检查 `prompt-scenarios/tools/check_scenario_prompt_paths.py` | 只读核对两份提示词库与场景文件路径是否一一对应 | [提示词与场景路径检查](prompt-scenarios/tools/README.md#提示词与场景路径检查) |
-| 场景图名称检查 `prompt-scenarios/tools/check_workflow_graph_names.py` | 只读核对开发场景图节点名与 Godot 提示词名称 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
-| 场景图链接写入 `prompt-scenarios/tools/link_workflow_graph_scenarios.py` | 为开发场景图节点写入或更新同名场景链接；`--check` 只读 | [检查场景图名称与链接](prompt-scenarios/tools/README.md#检查场景图名称与链接) |
 | 文档图覆盖检查 `relationship-maps/tools/check_document_graph_coverage.py` | 按文档系统图登记的路径检查文档覆盖 | [关系图工具](relationship-maps/tools/README.md) |
-| 连线穿过节点检查 `relationship-maps/tools/check_graph_edge_crossings.py` | 只读找出两张关系图中从别的节点上穿过的连线 | [检查连线穿过节点](relationship-maps/tools/README.md#检查连线穿过节点) |
+| 连线穿过节点检查 `relationship-maps/tools/check_graph_edge_crossings.py` | 只读找出文档系统关系图中从别的节点上穿过的连线 | [检查连线穿过节点](relationship-maps/tools/README.md#检查连线穿过节点) |
 | 仓库链接检查 `maintenance/tools/check_repository_links.py` | 检查维护侧与生成项目中的 Markdown 链接和锚点，以及提示词正文中的路径与标题引用 | [检查链接与锚点](maintenance/tools/README.md#检查链接与锚点) |
 | 术语检查 `project-source/tools/checks/check-terminology.py --terms framework/terminology.md` | 按框架术语找出全仓 Markdown 与两份提示词库中登记为“不用的说法”的写法（完整命令见维护工具）；`--discover` 另列候选写法 | [检查术语用词](maintenance/tools/README.md#检查术语用词) |
 | 措辞检查 `project-source/tools/checks/check-wording.py` | 按同目录 `wording-check.json` 的检查项找出规则文件中不用的写法和全部文档中待复核的写法 | [检查措辞](maintenance/tools/README.md#检查措辞) |

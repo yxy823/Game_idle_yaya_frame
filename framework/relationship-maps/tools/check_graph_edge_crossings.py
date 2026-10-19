@@ -14,7 +14,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_GRAPHS = (
-    "framework/relationship-maps/game-development-workflow.readable.json",
     "framework/relationship-maps/document-system.readable.json",
 )
 AID_PREFIXES = ("legend-", "caption-")
@@ -90,7 +89,7 @@ def check_graph(document: dict) -> dict:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--graph", action="append",
-                        help="图文件，相对仓库根目录；可重复，默认检查两张关系图")
+                        help="图文件，相对仓库根目录；可重复，默认检查文档系统关系图")
     parser.add_argument("--json", action="store_true", help="输出 JSON")
     args = parser.parse_args(argv)
     results = {}
