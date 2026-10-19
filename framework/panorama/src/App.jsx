@@ -3,7 +3,7 @@ import { IconLayoutSidebarRight, IconSettings } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import DetailPanel from "./DetailPanel.jsx";
 import SettingsMenu from "./SettingsMenu.jsx";
-import { demoFiles, modules } from "./modules.jsx";
+import { modules } from "./modules.jsx";
 import { Picker, ToastProvider, Tooltip } from "./overlays.jsx";
 import { store } from "./store.js";
 
@@ -69,14 +69,14 @@ export default function App() {
         </nav>
         <main className="main">
           <section className="module" data-ui={"module." + module}>
-            {current.render({ selected, onSelect: setSelected })}
+            {current.render({ selected, onSelect: setSelected, theme })}
           </section>
         </main>
-        <DetailPanel file={selected === null ? null : demoFiles[selected]} />
+        <DetailPanel file={selected} onSelect={setSelected} />
       </div>
 
       <footer className="statusbar" data-ui="statusbar">
-        <span data-ui="statusbar.generated">生成于 {data.generatedAt}（数据为占位）</span>
+        <span data-ui="statusbar.generated">生成于 {data.generatedAt}，{data.files.length} 份文档</span>
         <span className="pick-state" data-ui="statusbar.pick-state">
           {picking ? "元素选取：开，点击元素即复制，按 Esc 关闭" : "元素选取：关（Alt+X）"}
         </span>

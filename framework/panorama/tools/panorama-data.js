@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
+import { readDocs } from "./read-docs.js";
 
-// 构建时读取仓库文档，以虚拟模块 virtual:panorama-data 交给页面。
+// 构建时读取仓库文档，以虚拟模块 virtual:panorama-data 交给页面；卡片、段落和链接由 read-docs.js 读出。
 const repo = path.resolve(import.meta.dirname, "..", "..", "..");
 const id = "virtual:panorama-data";
 
@@ -25,7 +26,7 @@ export default function panoramaData() {
     resolveId: (source) => (source === id ? "\0" + id : null),
     load(resolved) {
       if (resolved !== "\0" + id) return null;
-      const data = { homeFlow: homeFlow(), generatedAt: generatedAt() };
+      const data = { homeFlow: homeFlow(), generatedAt: generatedAt(), repo: repo.split(path.sep).join("/"), ...readDocs(repo) };
       return `export default ${JSON.stringify(data)};`;
     },
   };

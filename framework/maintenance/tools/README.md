@@ -104,7 +104,7 @@ git config core.hooksPath .githooks
 
 ## 提交后生成框架全景
 
-[框架全景](../../panorama/README.md)生成的 `framework/panorama/dist/` 被根 `.gitignore` 忽略，不提交。同一个 `.githooks/post-commit` 检查：这次提交改了任何 `.md` 文件或 `framework/panorama/` 下的文件时，运行 `npm --prefix framework/panorama run build` 重新生成页面，约需 5 秒，生成期间提交命令不会返回。
+[框架全景](../../panorama/README.md)生成的 `framework/panorama/dist/` 被根 `.gitignore` 忽略，不提交。同一个 `.githooks/post-commit` 检查：这次提交改了任何 `.md` 文件或 `framework/panorama/` 下的文件时，运行 `npm --prefix framework/panorama run build` 重新生成页面，约需 7 秒，生成期间提交命令不会返回。
 
 - 生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
 - 还没运行过 `npm --prefix framework/panorama install` 时不生成，只打印安装提示。

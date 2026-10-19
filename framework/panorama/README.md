@@ -4,7 +4,7 @@
 
 框架全景是一个本地 HTML 页面，用来在框架仓库里查资料：把文档、Skill、工具、场景和问答做成卡片，关系从文档里的 Markdown 链接读出，不另外维护关系文件。它只在框架仓库使用，不进入生成项目。
 
-目前只有界面外壳：布局、主题、悬浮提示、元素选取和首页的流程图是真的，其余模块是占位，详情面板用演示数据。
+已经做好的是首页流程图和文件全景：文件全景用目录树和卡片列出全部文档，也能切换成按链接连线的图谱；选中一份文档，详情面板列出它的用途、大纲、场景衔接、引用和被引用的原文段落。其余模块还是占位。
 
 ## 打开与生成
 
@@ -21,7 +21,7 @@ npm --prefix framework/panorama install
 npm --prefix framework/panorama run build
 ```
 
-`install` 只在第一次和依赖版本变化后需要运行。生成约需 5 秒。npm 安装时会提示拦下了 esbuild 的安装脚本：这个脚本只检查 esbuild 的程序有没有装上，程序已经随 `@esbuild/win32-x64` 装好，所以不用处理。
+`install` 只在第一次和依赖版本变化后需要运行。生成约需 7 秒。npm 安装时会提示拦下了 esbuild 的安装脚本：这个脚本只检查 esbuild 的程序有没有装上，程序已经随 `@esbuild/win32-x64` 装好，所以不用处理。
 
 ## 元素选取
 
@@ -40,7 +40,8 @@ npm --prefix framework/panorama run build
 | --- | --- |
 | `src/` | 页面源码：React 组件和 `styles.css`；颜色、尺寸和层级都用 `styles.css` 开头的 CSS 变量 |
 | `tools/babel-data-src.js` | 编译时给带 `data-ui` 的元素补 `data-src="文件:行号"`，元素选取靠它复制源码位置 |
-| `tools/panorama-data.js` | 构建时读取仓库文档，以虚拟模块 `virtual:panorama-data` 交给页面；现在只读首页流程图和生成时间 |
+| `tools/panorama-data.js` | 构建时把首页流程图、生成时间和 `read-docs.js` 读出的数据，以虚拟模块 `virtual:panorama-data` 交给页面 |
+| `tools/read-docs.js` | 读取纳入 Git 的 Markdown（不含 `.claude/` 副本和 `project-source/addons/`），得到卡片、含链接的段落和链接三张表；分组按路径前缀写在文件开头 |
 | [interface-design.md](interface-design.md) | 界面设计约定：改界面时按它做 |
 | `vite.config.js` | 用 Vite 打包成一个内联全部脚本和样式的 HTML，因为 Edge 直接打开本地文件时会拦住外部的模块脚本 |
 | `package.json`、`package-lock.json` | 依赖及固定版本：React、Vite、Pele（渲染 Mermaid 图）、Tabler Icons；升级时改这里的版本号，再运行 `install` |

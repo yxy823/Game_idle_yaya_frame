@@ -1,16 +1,7 @@
 import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayoutGrid, IconSearch } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
-
-// 详情面板的演示数据，等构建脚本读出真实卡片后删除
-export const demoFiles = [
-  { path: "framework/godot-project-manual/README.md", summary: "本册解释用框架创建的 Godot 项目：项目与框架的边界、游戏逻辑与表现、项目文档、配置、Skill 与工具。",
-    outline: "先建立的整体印象、按对象查阅……", scenes: "（占位）", refs: "framework/README.md 等（占位）", qa: "（占位）", changed: "2026-10-16" },
-  { path: "framework/maintenance/validation/test-change-scenarios.md", summary: "按“谁、怎样、什么时候改了什么”列出项目里文件改动的全部组合。",
-    outline: "定义、维度、主表……", scenes: "修改测试选择时逐行核对（占位）", refs: "framework/maintenance/README.md 等（占位）", qa: "（占位）", changed: "（占位）" },
-  { path: "project-source/skills/behavior-model-check/SKILL.md", summary: "Stage 1C 为有命名状态的行为建立 TLA+ 行为模型，用 TLC 检查设计。",
-    outline: "何时使用、模型放在哪里、步骤……", scenes: "Feature 已规划并可开始，现在实施这一项（占位）", refs: "03 号规范 1C（占位）", qa: "（占位）", changed: "2026-10-19" },
-];
+import FilesModule from "./FilesModule.jsx";
 
 function Placeholder({ ui, todo, source }) {
   return (
@@ -28,25 +19,6 @@ function Home() {
       <p className="lead">创建器生成 Godot 项目，项目里按下面的主线开发。方框里是负责这一步的 Skill。</p>
       <Diagram ui="home.flow" text={data.homeFlow} />
       <Placeholder ui="home.placeholder" todo="点图里的一步，跳到相关的模块。" source="framework/README.md 的「框架做什么」流程图" />
-    </>
-  );
-}
-
-function Files({ selected, onSelect }) {
-  return (
-    <>
-      <h1>文件全景</h1>
-      <p className="lead">下面的列表是演示用的假数据，点一项看详情面板。</p>
-      <ul className="file-list" data-ui="files.list">
-        {demoFiles.map((f, i) => (
-          <li key={f.path}>
-            <button aria-selected={selected === i} onClick={() => onSelect(i)}><span className="path">{f.path}</span></button>
-          </li>
-        ))}
-      </ul>
-      <div style={{ marginTop: 12 }}>
-        <Placeholder ui="files.placeholder" todo="左边目录树，中间是所选目录的卡片列表，选中卡片在详情面板显示。" source="各 Markdown 文件的标题、第一段和链接，Git 记录（最后修改时间、修改次数）" />
-      </div>
     </>
   );
 }
@@ -78,7 +50,7 @@ export const modules = [
     <Simple title="学习" lead="第一次了解框架和生成项目时，按章节顺序读 Godot 项目手册。" ui="learn.placeholder"
       todo="手册的章节目录，按阅读顺序排列；点章节在页面里显示正文。" source="framework/godot-project-manual/ 的 README 和各章标题" />
   ) },
-  { id: "files", label: "文件全景", tip: "文件全景", Icon: IconLayoutGrid, render: (p) => <Files {...p} /> },
+  { id: "files", label: "文件全景", tip: "文件全景", Icon: IconLayoutGrid, render: (p) => <FilesModule {...p} /> },
   { id: "qa", label: "问答", tip: "问答", Icon: IconHelpCircle, render: () => (
     <Simple title="问答" lead="讨论中问过、以后还会用到的问题。" ui="qa.placeholder"
       todo="按主题列出问题，点一条在详情面板显示，按钮打开问答页面里的这一条。" source="framework/qa/ 的主题文件和 pages/" />

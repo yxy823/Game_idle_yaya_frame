@@ -7,13 +7,20 @@
   },
   "dependencies": {
     "@tabler/icons-react": "3.48.0",
+    "cytoscape": "3.33.1",
+    "cytoscape-fcose": "2.2.0",
     "pele": "1.6.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "4.5.0",
+    "remark-frontmatter": "5.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-parse": "11.0.0",
+    "unified": "11.0.5",
     "vite": "6.3.5",
-    "vite-plugin-singlefile": "2.2.0"
+    "vite-plugin-singlefile": "2.2.0",
+    "yaml": "2.8.0"
   }
 }
