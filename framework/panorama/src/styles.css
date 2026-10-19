@@ -126,11 +126,14 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .toast { position: fixed; z-index: var(--z-toast); left: 50%; bottom: 36px; transform: translateX(-50%); padding: 4px 12px; border-radius: var(--radius);
   background: var(--tip-bg); color: var(--tip-fg); font-size: var(--fs-small); }
 
-/* 图谱节点的分组颜色：分类色，两套主题共用；每个分组旁都写出名称，不只靠颜色区分 */
+/* 图谱节点的分组颜色：分类色 --p1 到 --p13，两套主题共用；每个分组旁都写出名称，不只靠颜色区分。
+   文件全景的分组按 --g-<分组> 取色，开发场景的分类按顺序取 --pN */
 :root {
-  --g-scenes: #4e79a7; --g-prompts: #a0cbe8; --g-manual: #f28e2b; --g-maintenance: #ffbe7d; --g-qa: #59a14f;
-  --g-framework: #8cd17d; --g-yaya-skills: #b6992d; --g-skills: #e15759; --g-rules: #ff9d9a; --g-methodology: #9c755f;
-  --g-defaults: #bab0ac; --g-source: #d37295; --g-root: #b07aa1;
+  --p1: #4e79a7; --p2: #a0cbe8; --p3: #f28e2b; --p4: #ffbe7d; --p5: #59a14f; --p6: #8cd17d; --p7: #b6992d;
+  --p8: #e15759; --p9: #ff9d9a; --p10: #9c755f; --p11: #bab0ac; --p12: #d37295; --p13: #b07aa1;
+  --g-scenes: var(--p1); --g-prompts: var(--p2); --g-manual: var(--p3); --g-maintenance: var(--p4); --g-qa: var(--p5);
+  --g-framework: var(--p6); --g-yaya-skills: var(--p7); --g-skills: var(--p8); --g-rules: var(--p9); --g-methodology: var(--p10);
+  --g-defaults: var(--p11); --g-source: var(--p12); --g-root: var(--p13);
 }
 .dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
 .g-scenes { background: var(--g-scenes); } .g-prompts { background: var(--g-prompts); } .g-manual { background: var(--g-manual); }

@@ -1,8 +1,17 @@
 import { useMemo, useState } from "react";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
-import { dirOf, files, groupName } from "./docs.js";
+import { dirOf, files, groupName, groups, incoming, links } from "./docs.js";
 import Graph from "./Graph.jsx";
 import { store } from "./store.js";
+
+// 图谱数据：两份文档之间有多条链接时只画一条线，链到自己的不画；被引用最多的文档作为路标
+const graph = {
+  nodes: files.map((f, i) => ({ i, label: f.title, group: f.group, size: 12 + Math.sqrt(incoming[i].length) * 5 })),
+  edges: [...new Set(links.filter((l) => l.from !== l.to).map((l) => l.from + "-" + l.to))]
+    .map((key) => { const [from, to] = key.split("-").map(Number); return { from, to }; }),
+  legend: groups.map((g) => ({ id: g.id, name: g.name, color: "--g-" + g.id, count: files.filter((f) => f.group === g.id).length })).filter((g) => g.count),
+  landmarks: files.map((_, i) => i).sort((a, b) => incoming[b].length - incoming[a].length),
+};
 
 // 目录树：每个目录记下自己和子目录里的文档总数
 function buildTree() {
@@ -85,7 +94,7 @@ export default function FilesModule({ selected, onSelect, theme }) {
             ) : <p className="empty-line">这个目录下没有直接放文档，在左边展开它的子目录。</p>}
           </div>
         </div>
-      ) : <Graph selected={selected} onSelect={onSelect} theme={theme} />}
+      ) : <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} ui="files" />}
     </div>
   );
 }

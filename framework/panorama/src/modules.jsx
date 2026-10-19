@@ -2,6 +2,7 @@ import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayou
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
 import FilesModule from "./FilesModule.jsx";
+import ScenesModule from "./ScenesModule.jsx";
 import SearchModule from "./SearchModule.jsx";
 
 function Placeholder({ ui, todo, source }) {
@@ -37,11 +38,7 @@ function Simple({ title, lead, ui, todo, source }) {
 // 活动栏的顺序就是数组顺序
 export const modules = [
   { id: "home", label: "首页", tip: "首页：框架做什么", Icon: IconHome, render: () => <Home /> },
-  { id: "scenes", label: "开发场景", tip: "开发场景", Icon: IconAffiliate, render: () => (
-    <Simple title="开发场景" lead="每个场景是项目处在的一种情况；连线是“做完这一步，接下来可能进入哪种情况”。" ui="scenes.placeholder"
-      todo="二维图谱：默认按分组折叠；点开分组展开场景；点一个场景，只留它 1–2 跳以内的邻居并重新排布。主线画实线，其余画虚线。节点连到场景页和同名提示词。"
-      source="各场景页「流程关联与衔接关系」末尾的下一步清单（主线项带“主线：”）、两份预设提示词库" />
-  ) },
+  { id: "scenes", label: "开发场景", tip: "开发场景", Icon: IconAffiliate, render: (p) => <ScenesModule {...p} /> },
   { id: "docs", label: "文档关系", tip: "文档关系", Icon: IconFiles, render: () => (
     <Simple title="文档关系" lead="文档从哪里找到，设计、任务、实现说明和验证依据怎样关联。" ui="docs.placeholder"
       todo="显示 Godot 项目手册中的文档关系图，点图里的文档打开它的卡片。"
