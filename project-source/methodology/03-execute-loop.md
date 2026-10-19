@@ -197,7 +197,7 @@ Required 集合保留每个受影响组件已登记的全部测试套件。要�
    - 设计由 advisor 准备时，主 Agent 把批准和指定的保存位置交给同一个 advisor；它只能写这一个设计文件。
    - 主 Agent 检查设计稿，并负责 Feature `notes` 中的链接、其他记录的修改和提交。
    - 说明实质约束本次改动的规则及其应用方式，并附相对来源链接。不要复制整份快照或规则原文。`notes` 只保存提醒和引用，不是第二份设计。
-4. 1C 建了行为模型时，把批准的模型和检查配置从 `reports/scratch/<Feature ID>/models/` 保存到 `docs/architecture/models/`，保存的模型与 1C 最后一次运行的 `summary.json` 一致（`model_sha256` 相同，`manifest` 与检查清单相同）时沿用那次结果；不一致时在正式位置重跑 `check-behavior-model.py`，退出码必须为 `0`。设计稿记录所用的 `summary.json` 路径。
+4. 1C 建了行为模型时，把批准的模型和检查配置从 `reports/scratch/<Feature ID>/models/` 保存到 `docs/architecture/models/`，把对照表草稿写回子系统文档 `docs/architecture/<subsystem>.md` 的「状态 × 事件对照表」一节。保存的模型与 1C 最后一次运行的 `summary.json` 一致（`model_sha256` 相同，`manifest` 与检查配置相同）时沿用那次结果；不一致时在正式位置重跑 `check-behavior-model.py`，退出码必须为 `0`。设计稿记录所用的 `summary.json` 路径。
 5. 已确认的规则修改和 ADR 记录到各自的位置。批准中定下的取值属于 GDD、Art Bible 或其他专业文档时，用归属的 Skill 写回这些文档，例如 `design-gdd`、`design-art-direction`；设计稿链接它们，不另抄一份。
 6. 把批准的 `verification.acceptance_mode`、各条件的验证映射、Bug 回归 ID 和 `verification.test_impact` 保存到 Feature 详情中：
    - 追加的相关测试存为 `additional_tests: [{"id": "<registry ID>", "reason": "<approved reason>"}]`。

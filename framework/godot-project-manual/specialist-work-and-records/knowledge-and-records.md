@@ -64,7 +64,7 @@ GDD 内部的主题分工见[GDD 是项目开发的前提](../requirements-and-t
 
 - **`docs/architecture.md`**：项目级的模块关系、装配与依赖。它链接各子系统文档和已有的模块 README，不预设 Bootstrap 或 Autoload。
 - **`docs/architecture/<subsystem>.md`**：子系统内部的职责、状态、接口和运行流程。运行说明按需要写出触发条件、状态变化、Godot 生命周期和失败路径。
-- **`docs/architecture/models/`**：有命名状态、按事件或时间转换的子系统，在 Stage 1 用 [behavior-model-check](../../../project-source/skills/behavior-model-check/SKILL.md) 建立 TLA+ 模型，用 TLC 在写代码前检查设计。模型描述当前行为，之后改这个子系统的 Feature 更新同一个模型。TLC 通过只说明设计在模型范围内成立；代码是否正确由从模型改写的 GdUnit4 测试证明，模型检查的结果不进入完成证据。
+- **`docs/architecture/models/`**：有命名状态、按事件或时间转换的子系统，在 Stage 1 用 [behavior-model-check](../../../project-source/skills/behavior-model-check/SKILL.md) 建立 TLA+ 模型，用 TLC 在写代码前检查设计。模型描述当前行为，之后改这个子系统的 Feature 更新同一个模型；写模型依据的状态 × 事件对照表写在子系统文档里，同样增量更新。TLC 通过只说明设计在模型范围内成立；代码是否正确由从模型改写的 GdUnit4 测试证明，模型检查的结果不进入完成证据。
 
 两者都根据已有事实补充，按作用范围（项目级还是子系统级）选择文件，而不是按复杂度。
 
