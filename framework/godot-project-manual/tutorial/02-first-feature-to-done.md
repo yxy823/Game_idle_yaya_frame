@@ -53,7 +53,28 @@ Agent 把停点写进 `docs/progress.md`，然后停下等你体验。清单格�
 
 ## 等待验收时先做别的 Feature
 
-人工验收要等你有空，但 Agent 不必干等。
+人工验收要等你有空，但 Agent 不必干等。下图是示例中你和 Agent 怎样轮流推进几个 Feature，图后各段写每一步的条件和做法：
+
+```mermaid
+sequenceDiagram
+    participant 你
+    participant Agent
+    participant P as Progress
+    Agent->>P: 写下 F01-001 的停点：清单已准备，等你验收
+    Agent-->>你: 停下，等你体验
+    你->>Agent: 切换提示词：已暂停 F01-001，目标 F01-002，以及允许切换的授权
+    Agent->>Agent: 核对：F01-001 只在等你，F01-002 的依赖已满足，改动的文件不重叠
+    Agent->>P: 为每个进行中的 Feature 各写一条当前状态
+    Agent->>Agent: 完成 F01-002 和 F01-003
+    你->>Agent: 说出 F01-001 的验收结论
+    Agent->>Agent: 先回到 F01-001 收尾
+    Agent->>Agent: 记录验收，工具列出清单绑定之后变化的文件
+    alt 变化的文件都与 F01-001 无关
+        Agent->>Agent: 沿用你的验收，变化的文件清单写进验收记录
+    else 有一个涉及 F01-001
+        Agent-->>你: 重新验证，请你重新验收
+    end
+```
 
 **可以并行的条件**：
 

@@ -339,6 +339,32 @@ JSON 中不参与计算的过程字段只在下列位置移除，不会递归移
 
 指纹是全局的：即使改的是尚未开发的 GDD 章节，也可能让当前未完成 Feature 的测试和人工接受失效；已完成的历史记录不会因此重开。所以治理文档在最终验证之前的 Stage 3 文档检查点定稿。最终测试或人工接受之后又改了纳入的内容（包括 Stage 5.5 采纳新规则），要先核对当前指纹和验证义务，补齐失效的最终运行、导入和人工接受；不能因为“没改代码”就沿用旧结果。只读审核不改变内容。
 
+下图是改了文件之后，已有的测试结果和人工验收怎样判断：
+
+```mermaid
+flowchart TD
+    edit["最终验证之后又改了文件"] --> inc{"改的文件纳入指纹？"}
+    inc -->|不纳入：Progress、reports/、完成证据、普通 README 等| keep["已有结果仍对应当前内容"]
+    inc -->|纳入，包括尚未开发的 GDD 章节| stale["已有的最终测试结果不再对应当前内容"]
+    stale --> rerun["在当前内容上重新运行测试，再用 record-tests 记录"]
+    inc -.->|纳入，且 manual 模式下清单已绑定、验收还没记录| rec["record-acceptance 停下，列出清单绑定之后可能变化的文件"]
+    rec --> check{"Agent 逐个核对：真正改过的文件涉及本 Feature 检查的范围？"}
+    check -->|都不涉及| reuse["加 --confirm-unrelated-changes 重新记录，变化的文件清单写进验收记录"]
+    check -->|有一个涉及，或无法确认| redo["按 Stage 4 重新验证，准备新的清单，请用户重新验收"]
+    classDef stop fill:#fff3cd,stroke:#b8860b,color:#000
+    classDef optional fill:#e3f2fd,stroke:#1e88e5,color:#000
+    class redo stop
+    class rec optional
+```
+
+图例：黄色是需要用户确认的步骤，蓝色和虚线是只在 manual 模式下清单已绑定时才有的步骤。
+
+用文字说：
+
+- **改的文件不纳入指纹**：已有结果仍对应当前内容。
+- **改了纳入的文件**：已有的最终测试结果不再对应当前内容，要在当前内容上重新运行并记录。
+- **manual 模式下清单已绑定、验收还没记录**：`record-acceptance` 停下并列出可能变化的文件。Agent 逐个核对，真正改过的文件都不涉及本 Feature 检查的范围时沿用验收；有一个涉及或无法确认时，重新验证并请用户重新验收。规则见人工验收文件的[绑定之后内容又有变化](../../../project-source/methodology/contracts/manual-acceptance-files.md#绑定之后内容又有变化)。
+
 直接依据是[验证快照实现](../../../project-source/tools/lib/verification_snapshot.py)中的 `_is_fingerprint_input()`、`semantic_json()`、`working_tree_fingerprint()`，以及测试追溯与证据中的[基于原始结果的完成判断与语义时效](../../../project-source/methodology/08-test-traceability-and-evidence.md#基于原始结果的完成判断与语义时效)。
 
 性能、长测、画面和听感证据按原任务 AC 与设计中的验证义务判断。完成记录工具只接收 gdUnit 结果，不判断专项证据是否充分，见专业来源与资源的[测量与实现](../specialist-work-and-records/specialist-work.md#测量与实现)。独立审核产生的报告、日志和缓存要隔离保存，不能覆盖原证据或被审成果。
