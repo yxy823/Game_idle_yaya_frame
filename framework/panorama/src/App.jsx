@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IconLayoutSidebarRight, IconSettings } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
+import godotIcon from "./assets/godot-icon.webp";
 import DetailPanel from "./DetailPanel.jsx";
 import SettingsMenu from "./SettingsMenu.jsx";
 import { modules } from "./modules.jsx";
 import { Picker, ToastProvider, Tooltip } from "./overlays.jsx";
-import { store } from "./store.js";
+import { fonts, store } from "./store.js";
 
 // 页面布局照 VSCode：顶栏、左侧活动栏、主区域、右侧详情面板、底部状态栏。
 // 详情面板收起时只隐藏、不移走，其他元素的位置不变。
@@ -15,15 +16,20 @@ function applyTheme(theme) {
   else document.documentElement.dataset.theme = theme;
   store.set("theme", theme);
 }
+// 字号同理写到 <html> 上，样式里的 --fs 等变量跟着换
+function applyFont(font) {
+  document.documentElement.dataset.font = font;
+  store.set("font", font);
+}
 
 export default function App() {
   const [module, setModule] = useState(() => (modules.some((m) => m.id === store.get("module")) ? store.get("module") : "home"));
   const [panelOpen, setPanelOpen] = useState(() => store.get("panel") !== "closed");
   const [theme, setTheme] = useState(() => { const t = store.get("theme") || "system"; applyTheme(t); return t; });
+  const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
   const [picking, setPicking] = useState(() => store.get("picking") === "on");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [query, setQuery] = useState("");
   const settings = useRef(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
@@ -47,11 +53,9 @@ export default function App() {
   return (
     <ToastProvider>
       <header className="topbar" data-ui="topbar">
-        <span className="title" data-ui="topbar.title">框架全景</span>
+        <img className="brand" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
+        <span className="title" data-ui="topbar.title">{current.label}</span>
         <span className="spacer"></span>
-        <input className="search" type="search" placeholder="搜索标题、用途、Skill、问答、工具和术语" aria-label="搜索" data-ui="topbar.search"
-          value={query} onChange={(e) => { setQuery(e.target.value); if (e.target.value.trim()) setModule("search"); }}
-          onKeyDown={(e) => { if (e.key === "Enter") setModule("search"); }} />
         <button className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
           onClick={() => setPanelOpen(!panelOpen)}>
           <IconLayoutSidebarRight aria-hidden="true" />
@@ -74,7 +78,7 @@ export default function App() {
         </nav>
         <main className="main">
           <section className="module" data-ui={"module." + module}>
-            {current.render({ selected, onSelect: setSelected, theme, query, onModule: setModule })}
+            {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
           </section>
         </main>
         <DetailPanel file={selected} onSelect={setSelected} />
@@ -89,7 +93,8 @@ export default function App() {
 
       {menuOpen && (
         <SettingsMenu anchor={settings} onClose={closeMenu} picking={picking} onTogglePicking={() => setPicking(!picking)}
-          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }} />
+          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }}
+          font={font} onFont={(f) => { applyFont(f); setFont(f); }} />
       )}
       <Tooltip disabled={picking || menuOpen} />
       <Picker on={picking} />

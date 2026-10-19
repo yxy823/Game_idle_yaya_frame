@@ -26,7 +26,8 @@ function pickLabels(cy, list, limit) {
   for (const n of list) {
     if (picked.length === limit) break;
     const { x, y } = n.position();
-    const w = (n.data("label").length * 13 + 8) / z, h = 22 / z, top = y + n.data("size") / 2;
+    const fs = parseFloat(css("--fs"));
+    const w = (n.data("label").length * fs + 8) / z, h = (fs + 9) / z, top = y + n.data("size") / 2;
     const box = [x - w / 2, top, x + w / 2, top + h];
     if (boxes.some((b) => box[0] < b[2] && b[0] < box[2] && box[1] < b[3] && b[1] < box[3])) continue;
     boxes.push(box); picked.push(n);
@@ -37,13 +38,14 @@ function pickLabels(cy, list, limit) {
 function style(legend, directed) {
   const colors = Object.fromEntries(legend.map((g) => [g.id, css(g.color)]));
   const edgeColor = (e) => colors[e.source().data("group")];
-  // 写出的名称按缩放反算字号，屏幕上始终是 13px，缩得再小也看得清
-  const label = { label: "data(label)", "font-size": (n) => 13 / n.cy().zoom(), "min-zoomed-font-size": 0,
+  // 写出的名称按缩放反算字号，屏幕上始终和正文一样大（设置里的字号），缩得再小也看得清
+  const fs = parseFloat(css("--fs")), small = parseFloat(css("--fs-small"));
+  const label = { label: "data(label)", "font-size": (n) => fs / n.cy().zoom(), "min-zoomed-font-size": 0,
     "text-margin-y": (n) => 3 / n.cy().zoom(), "text-background-padding": (n) => 2 / n.cy().zoom() };
   return [
     { selector: "node", style: {
       "background-color": (n) => colors[n.data("group")], width: "data(size)", height: "data(size)", "border-width": 0,
-      label: "", color: css("--fg"), "font-size": 13, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
+      label: "", color: css("--fg"), "font-size": fs, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
       "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": 2,
     } },
     { selector: "edge", style: directed
@@ -51,7 +53,7 @@ function style(legend, directed) {
         "target-arrow-shape": "triangle", "target-arrow-color": edgeColor, "arrow-scale": 0.8 }
       : { width: 1, "line-color": edgeColor, opacity: 0.35, "curve-style": "haystack" } },
     // 合并后的连线写条数
-    { selector: "edge[?label]", style: { label: "data(label)", color: css("--muted-fg"), "font-size": (e) => 12 / e.cy().zoom(), "min-zoomed-font-size": 0,
+    { selector: "edge[?label]", style: { label: "data(label)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom() } },
     // 主线画成强调色实线，比其他线粗
     { selector: "edge.main", style: { "line-style": "solid", "line-color": css("--brand"), "target-arrow-color": css("--brand"), width: 3, opacity: 0.9 } },
@@ -66,7 +68,7 @@ function style(legend, directed) {
     { selector: "edge.merged.main", style: { width: (e) => (1.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.9 } },
     { selector: "node.hub, node.labeled, node:selected", style: label },
     // 关系说明只在选中点的连线上写，全写出来会盖住整张图
-    { selector: "edge.near[?rel]", style: { label: "data(rel)", color: css("--muted-fg"), "font-size": (e) => 12 / e.cy().zoom(), "min-zoomed-font-size": 0,
+    { selector: "edge.near[?rel]", style: { label: "data(rel)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom(), "text-rotation": "autorotate" } },
     { selector: "node.quiet", style: { label: "" } },
     { selector: "node:selected", style: { "border-width": 2, "border-color": css("--ring") } },
@@ -99,7 +101,7 @@ function layoutByGroup(cy, legend) {
 // nodes 的 i 是选中值（卡片编号或 "doc:编号" 这类字符串），选中时交给 onSelect；edges 里 main 为真的画成主线，label 是关系说明。nodes、edges、legend、landmarks 要在模块里算好，不随渲染变化。
 // foldable：分组可以折叠成一个大点，默认全部折叠。focusable：可以只看选中点几跳以内的邻居。
 export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landmarkLimit = 15, directed = false, foldable = false, focusable = false,
-  selected, onSelect, theme, ui }) {
+  selected, onSelect, theme, font, ui }) {
   const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected), focusRef = useRef(null), viewRef = useRef(null);
   selectedRef.current = selected;
   const [hidden, setHidden] = useState(() => new Set());
@@ -150,7 +152,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     return () => cy.destroy();
   }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, directed, foldable, onSelect]);
 
-  useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, legend, directed]);
+  useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, font, legend, directed]);
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
 
   const inGraph = selected !== null && Object.hasOwn(groupOf, selected);

@@ -1,10 +1,11 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { IconCheck } from "@tabler/icons-react";
+import { fonts } from "./store.js";
 
 const themes = [["system", "跟随系统"], ["light", "浅色"], ["dark", "深色"]];
 
 // 设置菜单：贴在设置按钮下方、右边对齐；点菜单外或按 Esc 关闭，焦点回到设置按钮。
-export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking, theme, onTheme }) {
+export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking, theme, onTheme, font, onFont }) {
   const ref = useRef(null);
   useLayoutEffect(() => {
     const r = anchor.current.getBoundingClientRect(), menu = ref.current;
@@ -30,6 +31,12 @@ export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking
       {themes.map(([id, name]) => (
         <button key={id} role="menuitemradio" aria-checked={theme === id} onClick={() => { onTheme(id); onClose(); anchor.current.focus(); }}>
           <span className="mark">{theme === id && <IconCheck aria-hidden="true" />}</span>{name}
+        </button>
+      ))}
+      <div className="group">字号</div>
+      {fonts.map(([id, name]) => (
+        <button key={id} role="menuitemradio" aria-checked={font === id} onClick={() => { onFont(id); onClose(); anchor.current.focus(); }}>
+          <span className="mark">{font === id && <IconCheck aria-hidden="true" />}</span>{name}
         </button>
       ))}
     </div>

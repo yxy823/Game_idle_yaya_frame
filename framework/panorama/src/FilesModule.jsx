@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { dirOf, files, groupName, groups, incoming, links } from "./docs.js";
 import Graph from "./Graph.jsx";
+import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
 import { store } from "./store.js";
 
 // 图谱数据：两份文档之间有多条链接时只画一条线，链到自己的不画；被引用最多的文档作为路标
@@ -61,7 +62,10 @@ function Card({ index, selected, onSelect, showGroup }) {
 }
 
 // 文件全景：照 VSCode 的资源管理器，左边目录树，右边是所选目录下的卡片；“图谱”看全部文档的链接关系。
-export default function FilesModule({ selected, onSelect, theme }) {
+export default function FilesModule({ selected, onSelect, theme, font }) {
+  const [query, setQuery] = useState("");
+  const ws = words(query);
+  const found = ws.length ? files.map((f, i) => i).filter((i) => matches(ws, files[i].title, files[i].purpose, files[i].path)) : null;
   const tree = useMemo(buildTree, []);
   const [view, setView] = useState(() => (store.get("files.view") === "graph" ? "graph" : "list"));
   const [dir, setDir] = useState(() => store.get("files.dir") ?? "framework");
@@ -69,32 +73,33 @@ export default function FilesModule({ selected, onSelect, theme }) {
   const toggle = (p) => setOpen((s) => { const n = new Set(s); if (n.has(p)) n.delete(p); else n.add(p); return n; });
   const choose = (v) => { setView(v); store.set("files.view", v); };
   const pickDir = (p) => { setDir(p); store.set("files.dir", p); };
-  const cards = files.map((f, i) => i).filter((i) => dirOf(files[i].path) === dir);
+  // 搜索时列出全部目录里命中的文档，不限于所选目录
+  const cards = found ?? files.map((f, i) => i).filter((i) => dirOf(files[i].path) === dir);
   // 目录里只有一个分组时，每张卡片都写同一个分组名是重复信息
   const showGroup = new Set(cards.map((i) => files[i].group)).size > 1;
 
   return (
     <div className="files">
-      <div className="files-head">
-        <h1>文件全景</h1>
+      <PageHead search={<PageSearch ui="files.search" value={query} onChange={setQuery} placeholder="搜索标题、用途和路径"
+        results={view === "graph" ? (found ?? []).map((i) => ({ key: i, label: files[i].title, meta: files[i].path.split("/").pop() })) : undefined} onPick={(r) => onSelect(r.key)} />}>
         <div className="segmented" role="tablist" data-ui="files.view-switch">
           <button role="tab" aria-selected={view === "list"} onClick={() => choose("list")}>列表</button>
           <button role="tab" aria-selected={view === "graph"} onClick={() => choose("graph")}>图谱</button>
         </div>
-      </div>
+      </PageHead>
       {view === "list" ? (
         <div className="files-layout">
           <ul className="tree" data-ui="files.tree">
             <TreeNode node={tree} depth={0} dir={dir} onDir={pickDir} open={open} onToggle={toggle} />
           </ul>
           <div data-ui="files.cards">
-            <p className="lead">{(dir || "仓库根目录") + "：" + cards.length + " 份文档"}</p>
+            <p className="lead">{found ? `搜索“${query.trim()}”：${cards.length} 份文档` : (dir || "仓库根目录") + "：" + cards.length + " 份文档"}</p>
             {cards.length ? (
-              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} showGroup={showGroup} />)}</div>
-            ) : <p className="empty-line">这个目录下没有直接放文档，在左边展开它的子目录。</p>}
+              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} showGroup={showGroup || found !== null} />)}</div>
+            ) : <p className="empty-line">{found ? "没有匹配的文档，换一个词或减少关键词。" : "这个目录下没有直接放文档，在左边展开它的子目录。"}</p>}
           </div>
         </div>
-      ) : <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} ui="files" />}
+      ) : <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} font={font} ui="files" />}
     </div>
   );
 }

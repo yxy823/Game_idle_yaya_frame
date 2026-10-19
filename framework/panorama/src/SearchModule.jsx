@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import data from "virtual:panorama-data";
 import { files, groupName, vscodeUrl } from "./docs.js";
+import PageSearch, { PageHead } from "./PageSearch.jsx";
 import { qaKey } from "./QaModule.jsx";
 
 // 搜索对象：每份文档、每条问答，以及术语表、工具表的每一行。字段权重决定排序：标题命中排在用途命中前面。
@@ -56,19 +57,26 @@ function snippet(hit, words) {
   return (start ? "…" : "") + text.slice(start, at + 50) + (at + 50 < text.length ? "…" : "");
 }
 
-export default function SearchModule({ query, selected, onSelect }) {
+// 离开全局搜索再回来时保留上次的关键词
+let lastQuery = "";
+
+export default function SearchModule({ selected, onSelect }) {
+  const [query, setQuery] = useState(lastQuery);
+  const change = (q) => { lastQuery = q; setQuery(q); };
   const hits = useMemo(() => search(query), [query]);
   const words = query.toLowerCase().split(/\s+/).filter(Boolean);
   return (
     <>
-      <h1>搜索结果</h1>
+      <PageHead search={<PageSearch ui="search.input" value={query} onChange={change} placeholder="搜索标题、用途、Skill、问答、工具和术语" open />}>
       {!words.length ? (
-        <p className="lead">在顶栏输入关键词，搜文档的标题、用途、大纲和路径，问答的问题、结论和理由，以及术语表、工具表的每一行。多个词用空格分开，全部包含才算命中。</p>
+        <p className="lead">在右边的搜索框输入关键词，搜文档的标题、用途、大纲和路径，问答的问题、结论和理由，以及术语表、工具表的每一行。多个词用空格分开，全部包含才算命中。</p>
       ) : !hits.length ? (
         <p className="lead">没有找到包含“{query.trim()}”的内容。换一个词，或者减少关键词。</p>
       ) : (
-        <>
           <p className="lead">{hits.length > LIMIT ? `共 ${hits.length} 条，显示前 ${LIMIT} 条` : `共 ${hits.length} 条`}</p>
+      )}
+      </PageHead>
+      {hits.length > 0 && (
           <ul className="results" data-ui="search.results">
             {hits.slice(0, LIMIT).map((hit, i) => {
               const { item } = hit;
@@ -87,7 +95,6 @@ export default function SearchModule({ query, selected, onSelect }) {
               );
             })}
           </ul>
-        </>
       )}
     </>
   );

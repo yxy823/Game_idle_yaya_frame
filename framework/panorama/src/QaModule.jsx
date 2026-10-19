@@ -1,5 +1,7 @@
+import { useState } from "react";
 import data from "virtual:panorama-data";
 import { files } from "./docs.js";
+import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
 
 // 问答的选中值写成 "qa:编号"，和文档的卡片编号（数字）区分开
 export const qaKey = (n) => "qa:" + n;
@@ -14,16 +16,22 @@ const topics = [...new Set(data.qa.map((q) => q.file))];
 // 问答：按主题列出问题，点一条在详情面板显示结论、理由和依据。
 // 每张卡片和主题标题上都有“打开问答页”，详情面板收起时也能直接跳到问答页
 export default function QaModule({ selected, onSelect }) {
+  const [query, setQuery] = useState("");
+  const ws = words(query);
+  const shown = data.qa.map((q) => matches(ws, q.title, q.conclusion, q.why));
+  const count = shown.filter(Boolean).length;
   return (
     <>
-      <h1>问答</h1>
+      <PageHead search={<PageSearch ui="qa.search" value={query} onChange={setQuery} placeholder="搜索问题、结论和理由" />}>
       <p className="lead">讨论中问过、以后还会用到的问题，共 {data.qa.length} 条。点一条，详情面板显示结论、为什么和依据；点“打开问答页”在新标签页看这一条的完整图解。</p>
-      {topics.map((t) => (
+      </PageHead>
+      {ws.length > 0 && <p className="lead">{count ? `搜索“${query.trim()}”：${count} 条` : "没有匹配的问答，换一个词或减少关键词。"}</p>}
+      {topics.filter((t) => data.qa.some((q, n) => q.file === t && shown[n])).map((t) => (
         <section className="qa-topic" key={t} data-ui="qa.topic">
           <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer">打开问答页</a>
-            <span className="count">{data.qa.filter((q) => q.file === t).length}</span></h2>
+            <span className="count">{data.qa.filter((q, n) => q.file === t && shown[n]).length}</span></h2>
           <div className="cards">
-            {data.qa.map((q, n) => q.file === t && (
+            {data.qa.map((q, n) => q.file === t && shown[n] && (
               <div key={n} className="qa-card">
                 <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(qaKey(n))}>
                   <span className="card-title">{q.title}</span>
