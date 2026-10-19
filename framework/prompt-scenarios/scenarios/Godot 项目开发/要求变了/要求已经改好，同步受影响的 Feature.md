@@ -96,3 +96,7 @@ $LASTEXITCODE
 ## 流程关联与衔接关系
 
 依据：feature-sync 的[阶段 3：用户审阅与决定](<../../../../../project-source/skills/feature-sync/SKILL.md#阶段-3用户审阅与决定>)和[修订](<../../../../../project-source/skills/feature-sync/references/apply-plan-changes.md#修订>)、[提出当前文档对齐](<../../../../../project-source/skills/feature-sync/references/anchor-and-fallback.md#提出当前文档对齐>)，methodology 02 的[同步记录](<../../../../../project-source/methodology/02-feature-list-schema.md#同步记录>)。
+
+下一步：
+
+- 同步并获准后可执行：[Feature 已规划并可开始，现在实施这一项](<../实施与调参/Feature 已规划并可开始，现在实施这一项.md>)

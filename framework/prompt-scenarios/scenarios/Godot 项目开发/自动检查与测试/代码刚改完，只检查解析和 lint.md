@@ -72,3 +72,7 @@ lint 退出码：3 表示输入或配置错误，2 表示 Critical，1 表示 Wa
 ## 流程关联与衔接关系
 
 依据：[lint 的退出码](<../../../../../project-source/methodology/contracts/gdscript-lint.md#lint-的退出码>)、[解读结果](<../../../../../project-source/methodology/contracts/gdscript-lint.md#解读结果>)。本入口只承担解析与 lint 检查，不由检查结果授予修复权限。
+
+下一步：
+
+- 发现当前范围缺陷：[发现 Bug，需要修复](<../出了问题/发现 Bug，需要修复.md>)

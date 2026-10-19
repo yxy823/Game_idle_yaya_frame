@@ -70,3 +70,7 @@ $LASTEXITCODE
 ## 流程关联与衔接关系
 
 依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)和[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)。
+
+下一步：
+
+- 新增计划已批准且依赖满足：[Feature 已规划并可开始，现在实施这一项](<../实施与调参/Feature 已规划并可开始，现在实施这一项.md>)

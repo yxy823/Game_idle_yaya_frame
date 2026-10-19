@@ -56,3 +56,7 @@ GDD 缺失时说明缺口并停止，不初始化设计。预算耗尽或阻塞�
 ## 流程关联与衔接关系
 
 依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)，人工验收文件的[定义与准备](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#定义与准备>)。本段 Goal 以首个完整人工验收交接或授权范围全部完成为出口，不跨过本次明确的人工交接边界继续开发。你给出验收结果后，用[人工验收已有结果，继续原 Goal](<../审核与人工验收/人工验收已有结果，继续原 Goal.md>)接着推进。
+
+下一步：
+
+- manual 交接点已准备好：[Feature 已能体验，需要准备人工验收清单](<../审核与人工验收/Feature 已能体验，需要准备人工验收清单.md>)

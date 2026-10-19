@@ -81,3 +81,8 @@
 ## 流程关联与衔接关系
 
 依据：[任务路由表](<../../../../../project-source/methodology/00-overview.md#任务路由表>)、[Bug 的归属与路由](<../../../../../project-source/methodology/07-engineering-change.md#bug-的归属与路由>)、07 的[流程](<../../../../../project-source/methodology/07-engineering-change.md#流程>)、[Bug Feature 契约](<../../../../../project-source/methodology/07-engineering-change.md#bug-feature-契约>)。
+
+下一步：
+
+- 修复后需实际验收：[Feature 已能体验，需要准备人工验收清单](<../审核与人工验收/Feature 已能体验，需要准备人工验收清单.md>)
+- 工具故障，沿用工程任务授权：[项目工具需要修改，按工程任务完成](<../代码、性能与存档/项目工具需要修改，按工程任务完成.md>)

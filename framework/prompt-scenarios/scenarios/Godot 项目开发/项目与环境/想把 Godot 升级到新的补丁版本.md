@@ -90,3 +90,8 @@ git status --short
 ## 流程关联与衔接关系
 
 依据：[引擎与插件升级](<../../../../../project-source/methodology/07-engineering-change.md#引擎与插件升级>)、[维护 Feature 契约](<../../../../../project-source/methodology/07-engineering-change.md#维护-feature-契约>)、[工具配置](<../../../../../project-source/methodology/06-project-environment.md#工具配置>)。
+
+下一步：
+
+- 次版本或主版本等框架迁移：[已经选定新框架，检查适用后在当前项目替换](<已经选定新框架，检查适用后在当前项目替换.md>)
+- 引擎与插件分开升级：[某个插件需要升级](<某个插件需要升级.md>)

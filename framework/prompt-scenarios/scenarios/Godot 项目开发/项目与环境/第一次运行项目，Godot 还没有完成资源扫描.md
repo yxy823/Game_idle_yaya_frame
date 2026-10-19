@@ -60,3 +60,7 @@ Godot 生成 `.godot/` 导入缓存，不提交；扫描为插件资源生成的
 ## 流程关联与衔接关系
 
 依据：[项目环境准备](<../../../../../project-source/methodology/06-project-environment.md#项目环境准备>)、[首次 Godot 扫描](<../../../../../project-source/tools/README.md#首次-godot-扫描>)。
+
+下一步：
+
+- 已有实质性 GDD：[已有 GDD，需要预拆分 Product 交付范围](<../规划 Product 与 Feature/已有 GDD，需要预拆分 Product 交付范围.md>)

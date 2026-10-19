@@ -71,3 +71,8 @@ GDD 缺失、当前 Product 尚未细化、设计未定、Feature 记录不为�
 ## 流程关联与衔接关系
 
 依据：methodology 02 的[逐个 Product 规划](<../../../../../project-source/methodology/02-feature-list-schema.md#逐个-product-规划>)、[拆分预览](<../../../../../project-source/methodology/02-feature-list-schema.md#拆分预览>)和[初始规划基线](<../../../../../project-source/methodology/02-feature-list-schema.md#初始规划基线>)。
+
+下一步：
+
+- 计划已批准且依赖满足：[Feature 已规划并可开始，现在实施这一项](<../实施与调参/Feature 已规划并可开始，现在实施这一项.md>)
+- 来源基线无法核实：[要求已经改好，同步受影响的 Feature](<../要求变了/要求已经改好，同步受影响的 Feature.md>)

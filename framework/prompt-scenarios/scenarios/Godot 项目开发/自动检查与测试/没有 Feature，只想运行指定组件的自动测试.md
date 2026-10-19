@@ -68,3 +68,6 @@ $LASTEXITCODE
 
 依据：[run-gdunit-tests.py](<../../../../../project-source/tools/README.md#run-gdunit-testspy>)、[运行记录](<../../../../../project-source/methodology/08-test-traceability-and-evidence.md#运行记录>)（聚焦运行不授予完成）。
 
+下一步：
+
+- 后来需要按已有变更选测：[已有变更需要重新运行相关自动测试](<已有变更需要重新运行相关自动测试.md>)

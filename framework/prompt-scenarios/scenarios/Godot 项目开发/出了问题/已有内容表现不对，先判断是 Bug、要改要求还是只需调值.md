@@ -74,3 +74,9 @@
 依据：[反馈评估](<../../../../../project-source/methodology/07-engineering-change.md#反馈评估>)、[分类边界](<../../../../../project-source/methodology/07-engineering-change.md#分类边界>)、[Bug 的归属与路由](<../../../../../project-source/methodology/07-engineering-change.md#bug-的归属与路由>)。
 
 用户本次明确只分析时，即使之前有修复授权，也在交付结论后结束。
+
+下一步：
+
+- 已确认修复规则文档：[项目约束已确认要改，现在维护规则文档](<../要求变了/项目约束已确认要改，现在维护规则文档.md>)
+- 已确认修复任务记录：[要求已经改好，同步受影响的 Feature](<../要求变了/要求已经改好，同步受影响的 Feature.md>)
+- 只需调观感数值：[已完成的内容要再调速度、节奏或手感](<../实施与调参/已完成的内容要再调速度、节奏或手感.md>)

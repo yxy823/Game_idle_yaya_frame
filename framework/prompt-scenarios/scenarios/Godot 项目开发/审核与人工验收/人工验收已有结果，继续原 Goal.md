@@ -55,3 +55,7 @@
 ## 流程关联与衔接关系
 
 依据：人工验收文件的[记录用户的结论](<../../../../../project-source/methodology/contracts/manual-acceptance-files.md#记录用户的结论>)，methodology 03 的[Stage 5 · 明确的人工验收（仅 manual 模式）](<../../../../../project-source/methodology/03-execute-loop.md#stage-5--明确的人工验收仅-manual-模式>)。
+
+下一步：
+
+- 仍有获准后续范围：[Product 范围已确定，想自动推进到首次人工验收](<../实施与调参/Product 范围已确定，想自动推进到首次人工验收.md>)
