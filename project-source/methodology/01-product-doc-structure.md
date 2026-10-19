@@ -1,5 +1,7 @@
 # 01 · GDD 与 Product 文档结构
 
+本规范规定 GDD 与 Product 文档的文件名、标准章节和各自负责的内容。编写或修改 GDD、创建 Product，或判断一项设计内容写进哪份文档时阅读。
+
 本规范定义 `docs/gdd/` 下的游戏设计文档（GDD），以及 Product 交付文档 `docs/product.md` 和 `docs/product/NN-<delivery>.md`。相关约定：
 
 - 专业规格、UI 与表现文档、资源交接：[专业工作与来源](11-specialist-workflows.md)。

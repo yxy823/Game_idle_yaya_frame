@@ -1,6 +1,6 @@
 # 07 · 工程变更流程
 
-> 本文说明不改变已确认游戏设计和交付意图的代码与项目修改：Bug 修复、重构和维护。由 `engineering-change-plan` Skill 执行。
+本文说明不改变已确认游戏设计和交付意图的代码与项目修改：Bug 修复、重构和维护。由 `engineering-change-plan` Skill 执行。
 
 项目必须已有实质 GDD，见 [GDD 前提与职责](01-product-doc-structure.md#gdd-前提与职责)。技术修复、重构或实验都不能绕过这个前提。只有涉及某个 Product 的交付范围时，才需要它的详细 Product 文档。
 

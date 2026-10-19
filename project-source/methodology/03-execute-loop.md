@@ -1,6 +1,6 @@
 # 03 · Stage 0–8 `feature-execute` 执行循环
 
-> 本文件规定一个 Feature 怎样交付：从 Stage 0 选择，到 Stage 8 交接。`feature-execute` Skill 执行这套流程。只有 Stage 1 获得批准后才开始实现。Stage 5（人工验收）只适用于 `manual` 验收模式。自动测试通过是完成的证据，但它本身永远不能让 Feature 完成。
+本文件规定一个 Feature 怎样交付：从 Stage 0 选择，到 Stage 8 交接。`feature-execute` Skill 执行这套流程。只有 Stage 1 获得批准后才开始实现。Stage 5（人工验收）只适用于 `manual` 验收模式。自动测试通过是完成的证据，但它本身永远不能让 Feature 完成。
 
 ## 按 Stage 阅读
 

@@ -1,6 +1,6 @@
 # 08 · 测试追溯与证据
 
-> 本文决定一项修改需要哪些测试、为什么选它们，以及它们的结果怎样算作完成证据。怎样编写 Godot 测试见 [yaya/agent-rules/70-tests](../agent-rules/70-tests/README.md)；gdUnit 运行器的实现细节见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
+本文决定一项修改需要哪些测试、为什么选它们，以及它们的结果怎样算作完成证据。怎样编写 Godot 测试见 [yaya/agent-rules/70-tests](../agent-rules/70-tests/README.md)；gdUnit 运行器的实现细节见 [gdunit4-profile.md](../agent-rules/70-tests/gdunit4-profile.md)。
 
 ## 目标
 
