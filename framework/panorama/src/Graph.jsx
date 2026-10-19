@@ -82,7 +82,7 @@ function layoutByGroup(cy, legend) {
     return { members, bb: members.boundingBox() };
   });
   const temp = cy.add([
-    ...legend.map((g, k) => ({ data: { id: "t" + k, group: g.id }, style: { width: Math.max(boxes[k].bb.w, boxes[k].bb.h) + 80, height: Math.max(boxes[k].bb.w, boxes[k].bb.h) + 80 } })),
+    ...legend.map((g, k) => ({ data: { id: "t" + k, group: g.id, size: Math.max(boxes[k].bb.w, boxes[k].bb.h) + 80 } })),
     ...[...new Set(cy.edges().map((e) => legend.findIndex((g) => g.id === e.source().data("group")) + "-" + legend.findIndex((g) => g.id === e.target().data("group"))))]
       .map((key) => key.split("-")).filter(([a, b]) => a !== b).map(([a, b]) => ({ data: { id: "te" + a + "-" + b, source: "t" + a, target: "t" + b } })),
   ]);
