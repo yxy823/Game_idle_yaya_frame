@@ -6,6 +6,7 @@ import DetailPanel, { titleOf } from "./DetailPanel.jsx";
 import { openChapter } from "./LearnModule.jsx";
 import SettingsMenu from "./SettingsMenu.jsx";
 import { modules } from "./modules.jsx";
+import { SearchSlot } from "./PageSearch.jsx";
 import { Picker, ToastProvider, Tooltip, useToast } from "./overlays.jsx";
 import { fonts, store } from "./store.js";
 
@@ -55,6 +56,7 @@ export default function App() {
   }, [module]);
   const step = (d) => setSelection((s) => ({ ...s, [module]: { ...trail, at: trail.at + d } }));
   const settings = useRef(null);
+  const [searchSlot, setSearchSlot] = useState(null);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => store.set("module", module), [module]);
@@ -110,6 +112,7 @@ export default function App() {
       <header className="topbar" data-ui="topbar">
         <img className="brand" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
         <span className="title" data-ui="topbar.title">{current.label}</span>
+        <span className="search-slot" ref={setSearchSlot}></span>
         <span className="spacer"></span>
         <button className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
           onClick={() => setPanelOpen(!panelOpen)}>
@@ -133,7 +136,9 @@ export default function App() {
         </nav>
         <main className="main">
           <section className="module" data-ui={"module." + module}>
-            {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
+            <SearchSlot.Provider value={searchSlot}>
+              {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
+            </SearchSlot.Provider>
           </section>
         </main>
         {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}

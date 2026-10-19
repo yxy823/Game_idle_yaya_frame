@@ -27,8 +27,7 @@ export default function DocsModule({ selected, onSelect, theme, font }) {
     .map(({ n, k }) => ({ key: docKey(k), label: n.name, meta: kinds.find((g) => g.id === n.kind).name }));
   return (
     <div className="files">
-      <PageHead search={<PageSearch ui="docs.search" value={query} onChange={setQuery} placeholder="搜索文档名称和路径" results={results} onPick={(r) => onSelect(r.key)} />}>
-      </PageHead>
+      <PageHead search={<PageSearch ui="docs.search" value={query} onChange={setQuery} placeholder="搜索文档名称和路径" results={results} onPick={(r) => onSelect(r.key)} />} />
       <Graph cacheKey="docs" {...graph} landmarkLimit={Infinity} directed focusable selected={selected} onSelect={onSelect} theme={theme} font={font} ui="docs" />
     </div>
   );

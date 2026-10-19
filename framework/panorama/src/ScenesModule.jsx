@@ -39,8 +39,7 @@ export default function ScenesModule({ selected, onSelect, theme, font }) {
   const results = scenes.filter((i) => matches(ws, files[i].title, files[i].purpose)).map((i) => ({ key: i, label: files[i].title, meta: categoryOf(i) }));
   return (
     <div className="files">
-      <PageHead search={<PageSearch ui="scenes.search" value={query} onChange={setQuery} placeholder="搜索场景名称和用途" results={results} onPick={(r) => onSelect(r.key)} />}>
-      </PageHead>
+      <PageHead search={<PageSearch ui="scenes.search" value={query} onChange={setQuery} placeholder="搜索场景名称和用途" results={results} onPick={(r) => onSelect(r.key)} />} />
       <Graph cacheKey="scenes" {...graph} directed foldable focusable selected={selected} onSelect={onSelect} theme={theme} font={font} ui="scenes" />
     </div>
   );

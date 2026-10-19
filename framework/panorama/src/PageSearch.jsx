@@ -1,14 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { IconSearch, IconX } from "@tabler/icons-react";
 
 // 关键词用空格分开，每个词都要出现才算命中；不分大小写
 export const words = (query) => query.toLowerCase().split(/\s+/).filter(Boolean);
 export const matches = (ws, ...texts) => { const t = texts.join("　").toLowerCase(); return ws.every((w) => t.includes(w)); };
 
-// 页面内搜索：页面标题行最右端的放大镜，点了在原处展开输入框；Esc 收起并清空，输入框为空时点到别处也收起。
+// 顶栏页面名称右边留给当前页面搜索的位置，由 App 提供
+export const SearchSlot = createContext(null);
+
+// 页面内搜索：顶栏页面名称右边的放大镜，点了在原处展开输入框；Esc 收起并清空，输入框为空时点到别处也收起。
+// 搜的是当前页面的内容，组件写在各页面里，用 portal 显示到顶栏，所以主区域不为它多占一行。
 // results 不为空时在输入框下列出命中项，名称命中的排前面；↑↓ 移动高亮，点一项或按 Enter 选高亮项交给 onPick。卡片页直接按 value 筛选，不传 results。
-// open 为真时一直展开（全局搜索页）。
-export default function PageSearch({ ui, value, onChange, placeholder, results, onPick, open: always = false }) {
+// open 为真时一直展开，并留在页面里（全局搜索页）。
+export default function PageSearch(props) {
+  const slot = useContext(SearchSlot);
+  const node = <SearchBox {...props} />;
+  return props.open || !slot ? node : createPortal(node, slot);
+}
+
+function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: always = false }) {
   const [open, setOpen] = useState(always || value !== "");
   const [listOpen, setListOpen] = useState(true);
   const [active, setActive] = useState(0);
@@ -60,7 +71,8 @@ export default function PageSearch({ ui, value, onChange, placeholder, results, 
   );
 }
 
-// 页面标题行：左边是说明或页面工具，右边是搜索
+// 页面标题行：左边是说明或页面工具，右边是一直展开的搜索（全局搜索页）；没有说明和工具时不占一行
 export function PageHead({ children, search }) {
+  if (!children) return search;
   return <div className="page-head"><div className="page-head-main">{children}</div>{search}</div>;
 }

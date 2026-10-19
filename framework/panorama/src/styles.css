@@ -49,6 +49,8 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
   border-bottom: 1px solid var(--border); }
 .topbar .title { font-weight: 600; padding: 0 4px; white-space: nowrap; }
 .topbar .spacer { flex: 1; }
+.search-slot { display: flex; align-items: center; }
+.topbar .search-list { left: 0; right: auto; }
 .search { flex: 0 1 320px; min-width: 120px; height: var(--control-h); padding: 0 8px; border: 1px solid var(--field-border);
   border-radius: var(--radius); background: var(--bg); color: var(--fg); font: inherit; }
 .icon-btn { width: var(--control-h); height: var(--control-h); display: inline-grid; place-items: center;
@@ -260,6 +262,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .module .home-h2 { font-size: calc(var(--fs) + 1px); margin: 24px 0 4px; }
 .module .home-h2:first-child { margin-top: 0; }
 .home-links { display: flex; gap: 16px; margin: -8px 0 16px; }
+.home-table { max-width: none; margin-bottom: 24px; }
 .link-btn { padding: 0; border: 0; background: none; color: var(--primary); cursor: pointer; font: inherit; }
 .link-btn:hover { text-decoration: underline; }
 

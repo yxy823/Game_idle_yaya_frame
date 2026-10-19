@@ -6,17 +6,29 @@ import { readDocs } from "./read-docs.js";
 const repo = path.resolve(import.meta.dirname, "..", "..", "..");
 const id = "virtual:panorama-data";
 
-// 一节的第一段文字和第一张 Mermaid 图，首页用它们说明框架和 Feature 主线，页面上不另写正文
-function section(file, heading) {
+// 一节的第一段文字、第一张 Mermaid 图、图后“图例：”开头的一段和第一张表，首页用它们说明框架、Feature 主线和各个 Stage，页面上不另写正文。
+// sentences 只取第一段的前几句，用在第一段后半句指向本文档其他小节时
+const plain = (t) => t.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/`/g, "");
+function section(file, heading, sentences) {
   const text = fs.readFileSync(path.join(repo, file), "utf-8").replace(/\r\n/g, "\n");
-  const body = text.slice(text.indexOf("\n" + heading + "\n") + heading.length + 2);
-  const lead = body.split("\n\n").map((p) => p.trim()).find((p) => p && !p.startsWith("```"));
+  let body = text.slice(text.indexOf("\n" + heading + "\n") + heading.length + 2);
+  if (body.includes("\n## ")) body = body.slice(0, body.indexOf("\n## "));
+  const paras = body.split("\n\n").map((p) => p.trim());
+  let lead = plain(paras.find((p) => p && !p.startsWith("```")));
+  if (sentences) lead = lead.split(/(?<=。)/).slice(0, sentences).join("");
   const start = body.indexOf("```mermaid\n") + "```mermaid\n".length;
-  return { lead: lead.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/`/g, ""), flow: body.slice(start, body.indexOf("```", start)).trimEnd() };
+  const legend = paras.find((p) => p.startsWith("图例："));
+  const table = paras.find((p) => p.startsWith("|"));
+  return {
+    lead, flow: body.slice(start, body.indexOf("```", start)).trimEnd(), legend: legend ? plain(legend) : null,
+    // 表格每行去掉首尾的 |，按 | 分格；第二行是分隔行，不要
+    table: table ? table.split("\n").filter((_, i) => i !== 1).map((l) => l.slice(1, -1).split("|").map((c) => plain(c.trim()))) : null,
+  };
 }
 const home = () => ({
   framework: section("framework/README.md", "## 框架做什么"),
   feature: section("framework/godot-project-manual/README.md", "## 先建立的整体印象"),
+  stages: section("framework/godot-project-manual/requirements-and-tasks/feature-lifecycle.md", "## Feature 的执行阶段", 1),
 });
 
 function generatedAt() {

@@ -11,19 +11,37 @@ import ScenesModule from "./ScenesModule.jsx";
 import SearchModule from "./SearchModule.jsx";
 
 // 首页流程图的每一步对应开发场景的哪个分类；键是 framework/README.md 流程图里的节点 ID。
-// null 表示只打开开发场景，不展开分类
+// null 表示只打开开发场景，不展开分类；STAGES 表示滚到首页的「Feature 的执行阶段」一段
+const STAGES = "stages";
 const STEP_SCENES = {
   creator: "项目与环境", project: "项目与环境", you: null, gdd: "游戏想法与 GDD", product: "规划 Product 与 Feature",
-  plan: "规划 Product 与 Feature", execute: "实施与调参", accept: "审核与人工验收", done: "复盘与沉淀", sync: "要求变了",
+  plan: "规划 Product 与 Feature", execute: STAGES, accept: "审核与人工验收", done: "复盘与沉淀", sync: "要求变了",
 };
 const stepLinks = Object.fromEntries(Object.entries(STEP_SCENES)
-  .map(([id, c]) => [id, c ? `到开发场景，展开“${c}”` : "到开发场景"]));
+  .map(([id, c]) => [id, c === STAGES ? "看下面的 Feature 的执行阶段" : c ? `到开发场景，展开“${c}”` : "到开发场景"]));
+
+// 文档里的一张表，第一行是表头
+function Table({ rows, ui }) {
+  return (
+    <div className="learn-body home-table" data-ui={ui}>
+      <table>
+        <thead><tr>{rows[0].map((c, i) => <th key={i}>{c}</th>)}</tr></thead>
+        <tbody>{rows.slice(1).map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>
+      </table>
+    </div>
+  );
+}
 
 const frameworkCard = files.findIndex((f) => f.path === "framework/README.md");
 
-// 首页三段的文字和图都从文档读出：框架入口的开头一段、「框架做什么」一节，Godot 项目手册 README 的「先建立的整体印象」
+// 首页四段的文字、图和表都从文档读出：框架入口的开头一段、「框架做什么」一节，Godot 项目手册 README 的「先建立的整体印象」，
+// 以及手册「任务类型、开发阶段与完成语义」的「Feature 的执行阶段」
 function Home({ onModule, font }) {
-  const open = (id) => { if (STEP_SCENES[id]) unfoldGroup("scenes", STEP_SCENES[id]); onModule("scenes"); };
+  const open = (id) => {
+    if (STEP_SCENES[id] === STAGES) { document.querySelector("[data-ui='home.stages']").scrollIntoView({ behavior: "smooth" }); return; }
+    if (STEP_SCENES[id]) unfoldGroup("scenes", STEP_SCENES[id]);
+    onModule("scenes");
+  };
   const learn = () => { openChapter(0); onModule("learn"); };
   return (
     <>
@@ -38,10 +56,16 @@ function Home({ onModule, font }) {
       <h2 className="home-h2">生成项目里一个 Feature 怎样走完</h2>
       <p className="lead">{data.home.feature.lead}</p>
       <Diagram ui="home.feature" text={data.home.feature.flow} font={font} />
+      {data.home.feature.legend && <p className="lead">{data.home.feature.legend}</p>}
       <p className="home-links">
         <button className="link-btn" onClick={learn}>到学习，从手册首页读起</button>
         <button className="link-btn" onClick={() => onModule("docs")}>到文档关系看这些文档怎样关联</button>
       </p>
+      <h2 className="home-h2" data-ui="home.stages">Feature 的执行阶段</h2>
+      <p className="lead">{data.home.stages.lead}</p>
+      <Diagram ui="home.stage-flow" text={data.home.stages.flow} font={font} />
+      {data.home.stages.legend && <p className="lead">{data.home.stages.legend}</p>}
+      {data.home.stages.table && <Table rows={data.home.stages.table} ui="home.stage-table" />}
     </>
   );
 }
