@@ -11,7 +11,8 @@ export default function Diagram({ ui, text }) {
     const el = ref.current;
     let mounted;
     try {
-      mounted = mount(el, text);
+      // 图内字号和界面正文一致
+      mounted = mount(el, text, { fontSize: 13 });
       if (mounted.error) throw mounted.error;
     } catch (err) {
       mounted?.destroy();

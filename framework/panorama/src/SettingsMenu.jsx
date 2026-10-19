@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
+import { IconCheck } from "@tabler/icons-react";
 
 const themes = [["system", "跟随系统"], ["light", "浅色"], ["dark", "深色"]];
 
@@ -28,7 +29,7 @@ export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking
       <div className="group">主题</div>
       {themes.map(([id, name]) => (
         <button key={id} role="menuitemradio" aria-checked={theme === id} onClick={() => { onTheme(id); onClose(); anchor.current.focus(); }}>
-          <span className="mark">{theme === id ? "•" : ""}</span>{name}
+          <span className="mark">{theme === id && <IconCheck aria-hidden="true" />}</span>{name}
         </button>
       ))}
     </div>

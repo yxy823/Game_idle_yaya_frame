@@ -40,13 +40,13 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
   );
 }
 
-function Card({ index, selected, onSelect }) {
+function Card({ index, selected, onSelect, showGroup }) {
   const f = files[index];
   return (
     <button className="card" aria-selected={selected} onClick={() => onSelect(index)} data-tip={f.path}>
       <span className="card-title"><span className={"dot g-" + f.group} aria-hidden="true"></span>{f.title}</span>
       <span className="card-purpose">{f.purpose || "（第一段没有用途说明）"}</span>
-      <span className="card-meta"><span>{groupName[f.group]}</span><span>{f.path.split("/").pop()}</span></span>
+      <span className="card-meta">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
     </button>
   );
 }
@@ -61,6 +61,8 @@ export default function FilesModule({ selected, onSelect, theme }) {
   const choose = (v) => { setView(v); store.set("files.view", v); };
   const pickDir = (p) => { setDir(p); store.set("files.dir", p); };
   const cards = files.map((f, i) => i).filter((i) => dirOf(files[i].path) === dir);
+  // 目录里只有一个分组时，每张卡片都写同一个分组名是重复信息
+  const showGroup = new Set(cards.map((i) => files[i].group)).size > 1;
 
   return (
     <div className="files">
@@ -79,7 +81,7 @@ export default function FilesModule({ selected, onSelect, theme }) {
           <div data-ui="files.cards">
             <p className="lead">{(dir || "仓库根目录") + "：" + cards.length + " 份文档"}</p>
             {cards.length ? (
-              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} />)}</div>
+              <div className="cards">{cards.map((i) => <Card key={i} index={i} selected={selected === i} onSelect={onSelect} showGroup={showGroup} />)}</div>
             ) : <p className="empty-line">这个目录下没有直接放文档，在左边展开它的子目录。</p>}
           </div>
         </div>

@@ -20,16 +20,18 @@ function style() {
   return [
     { selector: "node", style: {
       "background-color": (n) => colors[n.data("group")], width: "data(size)", height: "data(size)", "border-width": 0,
-      label: "", color: css("--fg"), "font-size": 11, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
-      "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 0.8, "text-background-padding": 1,
+      label: "", color: css("--fg"), "font-size": 13, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
+      "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": 2,
     } },
     { selector: "edge", style: {
-      width: 0.6, "line-color": (e) => colors[e.source().data("group")], opacity: 0.35, "curve-style": "haystack",
+      width: 1, "line-color": (e) => colors[e.source().data("group")], opacity: 0.35, "curve-style": "haystack",
     } },
     { selector: ".faded", style: { opacity: 0.08 } },
-    { selector: "edge.near", style: { opacity: 0.9, width: 1.2 } },
-    { selector: "node.labeled", style: { label: "data(label)" } },
-    { selector: "node:selected", style: { label: "data(label)", "border-width": 2, "border-color": css("--ring") } },
+    { selector: "edge.near", style: { opacity: 0.9, width: 2 } },
+    // 写出名称的点按缩放反算字号，屏幕上始终是 13px，缩得再小也看得清
+    { selector: "node.labeled, node:selected", style: { label: "data(label)", "font-size": (n) => 13 / n.cy().zoom(), "min-zoomed-font-size": 0,
+      "text-margin-y": (n) => 3 / n.cy().zoom(), "text-background-padding": (n) => 2 / n.cy().zoom() } },
+    { selector: "node:selected", style: { "border-width": 2, "border-color": css("--ring") } },
   ];
 }
 
@@ -42,17 +44,20 @@ export default function Graph({ selected, onSelect, theme }) {
     const cy = cytoscape({
       container: box.current,
       elements: [
-        ...files.map((f, i) => ({ data: { id: "n" + i, label: f.title, group: f.group, size: 6 + Math.sqrt(incoming[i].length) * 2.5 },
+        ...files.map((f, i) => ({ data: { id: "n" + i, label: f.title, group: f.group, size: 12 + Math.sqrt(incoming[i].length) * 5 },
           position: positions?.[i] })),
         ...edges,
       ],
       style: style(),
-      layout: positions ? { name: "preset" } : { name: "fcose", animate: false, quality: "default", nodeRepulsion: 6000, idealEdgeLength: 60 },
+      // 斥力大、理想边长长、引力小，点才散得开，名称不叠在一起
+      layout: positions ? { name: "preset" } : { name: "fcose", animate: false, quality: "proof", nodeRepulsion: 45000, idealEdgeLength: 140,
+        edgeElasticity: 0.3, gravity: 0.05, nodeSeparation: 120, numIter: 4000 },
       minZoom: 0.1, maxZoom: 4, wheelSensitivity: 0.3, boxSelectionEnabled: false, autoungrabify: false,
     });
     positions = files.map((_, i) => ({ ...cy.getElementById("n" + i).position() }));
     cy.on("dragfree", "node", (e) => { positions[Number(e.target.id().slice(1))] = { ...e.target.position() }; });
     cy.on("tap", "node", (e) => onSelect(Number(e.target.id().slice(1))));
+    cy.on("zoom", () => cy.nodes(".labeled, :selected").updateStyle());
     cy.on("tap", (e) => { if (e.target === cy) onSelect(null); });
     cyRef.current = cy;
     return () => cy.destroy();

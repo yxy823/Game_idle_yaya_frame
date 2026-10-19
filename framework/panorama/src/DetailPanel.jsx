@@ -1,13 +1,20 @@
+import { useState } from "react";
+import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
 
 function Row({ name, children }) {
   return <div className="row"><span className="name">{name}</span><span className="value">{children}</span></div>;
 }
 
+// 超过 20 条的小节默认收起，否则一节就占满整个面板
 function Section({ title, ui, count, children }) {
+  const [open, setOpen] = useState(count === undefined || count <= 20);
   return (
-    <details className="section" open data-ui={ui}>
-      <summary>{title}{count !== undefined && <span className="count">{count}</span>}</summary>
+    <details className="section" open={open} data-ui={ui} onToggle={(e) => setOpen(e.currentTarget.open)}>
+      <summary>
+        <span className="twisty">{open ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />}</span>
+        {title}{count !== undefined && <span className="count">{count}</span>}
+      </summary>
       {children}
     </details>
   );
@@ -59,7 +66,7 @@ export default function DetailPanel({ file, onSelect }) {
     </li>
   );
   return (
-    <aside className="panel" aria-label="详情" data-ui="panel">
+    <aside className="panel" aria-label="详情" data-ui="panel" key={file}>
       <div className="panel-head" data-ui="panel.head" data-tip={f.title}>{f.title}</div>
       <Section title="摘要" ui="panel.summary">
         <Row name="用途">{f.purpose || "第一段没有用途说明"}</Row>
