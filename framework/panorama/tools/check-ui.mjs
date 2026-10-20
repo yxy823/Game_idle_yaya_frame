@@ -65,12 +65,15 @@ for (const id of [...MODULES, "home"]) {
       blank: false,
       lone: lone.map((el) => el.className || el.tagName),
       topbarSearch: Boolean(document.querySelector(`.search-slot [data-ui='${id}.search']`)),
+      // 图谱画布的高度：第三方样式压过布局类时，容器高度会变成 0，图谱整片空白而不报错
+      graphHeight: document.querySelector(`[data-ui='${id}.graph']`)?.getBoundingClientRect().height ?? null,
     };
   }, id);
   check(`进入 ${id}：页面没有白屏`, !state.blank);
   if (state.blank) continue;
   check(`进入 ${id}：主区域没有只放一个控件的行`, state.lone.length === 0, state.lone.slice(0, 3).join("，"));
   if (SEARCH_IN_TOPBAR.includes(id)) check(`进入 ${id}：搜索在顶栏`, state.topbarSearch);
+  if (state.graphHeight !== null) check(`进入 ${id}：图谱画布有高度`, state.graphHeight > 0, `高 ${state.graphHeight}px`);
 }
 check("切换模块过程中控制台没有报错", errors.length === 0, errors.slice(0, 3).join(" | "));
 
