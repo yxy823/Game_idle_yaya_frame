@@ -104,7 +104,7 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
             <TreeNode node={tree} depth={0} dir={dir} onDir={(p) => { pickDir(p); read(null); }} open={open} onToggle={toggle} />
           </ul>
           {reading !== null ? (
-            <article className="learn-body min-h-0 overflow-auto pr-2" data-ui="files.reader">
+            <article className="learn-body doc-scroll min-h-0 overflow-auto pr-2" data-ui="files.reader">
               <Button variant="outline" className="graph-btn mb-3" onClick={() => read(null)} data-ui="files.reader-back"><ArrowLeftIcon aria-hidden="true" />返回卡片</Button>
               <DocView card={reading} jump={jump} onLink={(i, anchor) => read(i, anchor)} font={font} />
             </article>

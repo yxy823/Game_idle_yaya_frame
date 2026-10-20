@@ -66,7 +66,7 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
     const row = (jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row))
       || (jump?.heading && [...body.current.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((h) => h.textContent.trim() === jump.heading));
     row?.classList.add("hit-row");
-    const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && document.getElementById(anchor));
+    const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && body.current.querySelector("#" + CSS.escape(anchor)));
     // 第一处命中和“上一处”“下一处”一样加深高亮并滚到中间，不被顶上固定的标题行挡住
     if (anchor === FIRST_MATCH) target?.classList.add("current");
     if (row || anchor === FIRST_MATCH) target?.scrollIntoView({ block: "center" });
