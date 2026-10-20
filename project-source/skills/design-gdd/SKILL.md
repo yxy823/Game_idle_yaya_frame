@@ -43,7 +43,7 @@ GDD 文件按 methodology 01 的 **GDD 文件名** 命名；该章节也说明�
 - 交付边界、依赖和顺序属于 [product-author](../product-author/SKILL.md)。
 - 具体关卡、表格等内容实例，在已授权的 Feature 中由 [content-data-authoring](../content-data-authoring/SKILL.md) 制作；GDD 只保留种类目录和规则，并链接数据文件。
 - 详细的游戏表现、UI、美术、音频、资源和本地化规格，属于 `yaya/methodology/11-specialist-workflows.md` 中规定的固定所属位置。该文件也规定了首次创建 GDD 时怎样保存这些规格，以及整合时怎样把它们从 GDD 中迁出。游戏规则和整体体验目标留在 GDD；非 UI 的表现从对应的 GDD 主题链接。
-- 设计变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理，并在当前授权范围内使用 `feature-sync`。尚未规划的未来想法，不需要 Product 文档或 Feature 计划。
+- 设计变化影响已规划或已完成的工作时，按 `yaya/methodology/11-specialist-workflows.md` 的 **编写与采纳** 和 **源同步前先提交来源修改** 处理，并在当前授权范围内使用 `feature-sync`。本任务没有运行同步时，在 Progress 的待决定事项写明来源提交号和“待源同步”。尚未规划的未来想法，不需要 Product 文档或 Feature 计划。
 - 创建或整合 GDD、给 GDD 加新系统时，写正文前先按 methodology 14 的 **写 GDD 正文前先和用户定术语**，一次列出候选术语请用户确认。在获准创建、修改或整合 GDD 时，按 `yaya/methodology/14-project-terminology.md` 使用 [terminology-register](../terminology-register/SKILL.md)，把当前范围内已确认的术语保存到 `docs/terminology.md`，并从 GDD 链接过去。术语维护属于同一个写入任务；GDD 不另外保留一份词表。文档措辞或组织使用 [technical-documentation-writing-godot](../technical-documentation-writing-godot/SKILL.md)；它不决定设计。
 - 按 methodology 01 的 **开放问题**，阅读并维护 `docs/gdd/open-questions.md` 中本次涉及的问题。已定的决定留在对应的 GDD 主题中，问题解决后写回那里。暂停或阻塞需要续接时，按 `yaya/methodology/09-records-reports-and-handoff.md` 在 Progress 或任务记录中链接对应的问题，并保留下一步；不要复制问题正文，也不要建设计状态记录文件。
 

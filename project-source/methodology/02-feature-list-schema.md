@@ -557,6 +557,7 @@ python -B yaya/tools/checks/check-feature-list.py
 4. 先完成当前 Product 所需的 Feature，再拆分下一个 Product。核对 Feature 的实际完成情况和剩余范围。以下情况都不能证明实现已完成：没有可开始的 Feature、计划为空、Product 文档自称已完成。`pending`、`in_progress` 和 `blocked` 的工作都算未完成；明确撤回的范围按退役规则处理。
 5. **Product 收尾**：当前 Product 的必需 Feature 全部完成后、细化下一个 Product 之前，清理这个 Product 留下的过时内容，单独提交：
    - 设计稿和专业文档里已被后续 Feature 改掉的内容，或已经定下却仍写着“待定”的内容，改成现状或删除。
+   - 核对来源有没有没同步的改动：以 `docs/feature-list-revisions.json` 最后一条 `synced_at_commit` 为锚点，查锚点之后 `feature-sync` 监视的来源有没有提交。有实质改动时，先用 `feature-sync` 处理，再细化下一个 Product。因为只影响已完成 Feature 的来源改动，执行下一个 Feature 时不会被查到。
    - Progress 里本 Product 的过程记录移进 `docs/progress/`，当前页只留当前状态和下一个允许的动作。
    - 报告和临时材料按 09 号规范的[整理和清理报告](09-records-reports-and-handoff.md#整理和清理报告)处理：删除已到释放条件的，用途不明的列给用户决定。
    - 不带参数运行一次 `python -B yaya/tools/testing/run-gdunit-tests.py`，跑全部测试，校准各 Feature 的按影响选测。每个 Feature 完成时受影响的测试都已通过，所以这次的失败说明有改动没被选中。失败按 07 号规范的[统一的 Bug 流程](07-engineering-change.md#统一的-bug-流程)处理，同时修正测试登记表中漏掉的 `source_paths`，让同类改动以后能被选中。

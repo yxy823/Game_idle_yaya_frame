@@ -29,6 +29,7 @@ GDD 保留期望的玩家感受、辨认需求和玩法反馈的触发条件，�
 
 - 具体交付物交给 `design-audio-asset-spec`。当 `yaya/methodology/11-specialist-workflows.md` 的 **资源需求与交接** 把归属定为 Sound Bible 时，由那个 Skill 维护 Sound Bible 的 **共享资源规格** 章节；本 Skill 维护这些条目引用的方向标准。不要另建第二份配乐目录或接收目录。
 - 外部提供的文件交给 `content-asset-integration`。
+- 修改已有方向时，对照已接入游戏的音频逐项核对；不一致的，在返回的缺口里写明是改方向还是重做音频，由用户决定。
 - 正式评估在另一个实例中使用 `review-audio`。
 
 报告已确认的方向、适用的来源和缺口。
