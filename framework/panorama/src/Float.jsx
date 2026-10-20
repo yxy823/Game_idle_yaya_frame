@@ -10,7 +10,7 @@ import { useTooltip } from "./overlays.jsx";
 // 每层最多一个没钉住的浮窗，新弹出的挤掉同层和更深层没钉住的。鼠标停下 256ms 后按位置关闭：在第 L 层浮窗里，关掉比 L 深的；
 // 不在任何浮窗里，关掉全部没钉住的。钉住的浮窗不关，并保住同一串里比它浅的层，前提是鼠标还在浮窗里。
 // 点钉住按钮、双击标题栏切换钉住；拖动标题栏或拖边角改大小后自动钉住。点哪个浮窗，哪个到最上面。
-const WIDTH = 480, MIN_W = 240, MIN_H = 120, CLOSE_DELAY = 256;
+const MIN_W = 240, MIN_H = 120, CLOSE_DELAY = 256;
 const triggerOf = (el) => {
   const t = el?.closest?.(".learn-body a[data-card], [data-float]");
   if (!t) return null;
@@ -19,7 +19,8 @@ const triggerOf = (el) => {
 };
 const DIRS = ["n", "s", "e", "w", "ne", "nw", "se", "sw"];
 
-export default function FloatLayer({ mode, delay, disabled, onSelect, font }) {
+// width 是设置里选的浮窗宽度，只影响新弹出的浮窗
+export default function FloatLayer({ mode, delay, width, disabled, onSelect, font }) {
   const [floats, setFloats] = useState([]);
   const ref = useRef(floats), seq = useRef(0), layer = useRef(null);
   ref.current = floats;
@@ -43,7 +44,7 @@ export default function FloatLayer({ mode, delay, disabled, onSelect, font }) {
       hideTip();
       setFloats((list) => [...list.filter((f) => f.pinned || f.level < level), {
         id, card: t.card, trigger: t.el, level, chain: parent ? parent.chain : id, pinned: false, z: id,
-        left: Math.max(8, Math.min(r.left, innerWidth - WIDTH - 8)), width: WIDTH,
+        left: Math.max(8, Math.min(r.left, innerWidth - width - 8)), width,
         ...(down ? { top: r.bottom + 4 } : { bottom: vh - r.top + 8 }), maxHeight: Math.min(vh * 0.6, down ? below : above),
       }]);
     };
@@ -82,7 +83,7 @@ export default function FloatLayer({ mode, delay, disabled, onSelect, font }) {
       document.removeEventListener("keydown", key);
       document.removeEventListener("pointerdown", down, true);
     };
-  }, [mode, delay, disabled, hideTip]);
+  }, [mode, delay, width, disabled, hideTip]);
 
   // 拖动标题栏移动，拖边角改大小；动过就钉住。拖动时位置统一换成 top，上方弹出的浮窗也能往下拖
   const drag = (f, dir) => (e) => {

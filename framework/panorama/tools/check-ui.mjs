@@ -196,7 +196,7 @@ await verify("浮窗：点正文里的链接在详情面板打开，钉住的留
   await page.locator("[data-ui='float.close']").click();
   await open("files");
 });
-await verify("浮窗：按住 Alt 不弹，设置为关闭时不弹", async () => {
+await verify("浮窗：按住 Alt 不弹，设置为关闭时不弹，宽度按设置", async () => {
   const link = page.locator(".panel-doc a[data-card]").first();
   await away();
   await page.keyboard.down("Alt"); await link.hover(); await page.waitForTimeout(700); await page.keyboard.up("Alt");
@@ -208,7 +208,13 @@ await verify("浮窗：按住 Alt 不弹，设置为关闭时不弹", async () =
   await page.locator(".cards .card").nth(1).click();
   await page.locator(".panel-doc a[data-card]").first().hover(); await page.waitForTimeout(700);
   assert.equal(await floats(), 0);
-  await page.evaluate(() => localStorage.removeItem("float.mode"));
+  // 设置里选的宽度用在新弹出的浮窗上
+  await page.evaluate(() => { localStorage.removeItem("float.mode"); localStorage.setItem("float.width", "640"); });
+  await page.reload(); await page.waitForSelector("[data-ui='panel']");
+  await page.locator(".cards .card").nth(1).click();
+  await page.locator(".panel-doc a[data-card]").first().hover(); await page.waitForTimeout(700);
+  assert.equal(Math.round((await page.locator(".float").boundingBox()).width), 640);
+  await page.evaluate(() => localStorage.removeItem("float.width"));
   await page.reload(); await page.waitForSelector("[data-ui='panel']");
 });
 
