@@ -11,6 +11,7 @@
 | Skill 与脚本的职责是否清楚，是否需要拆分或合并 | [Skill 与脚本](03-skills-and-scripts.md) |
 | 提示词与同名场景是否一一对应，字段与审核标准 | [提示词与场景准则](04-prompts-and-scenarios.md) |
 | 正式审核的独立性、覆盖、结论与报告保存 | [审核与报告](05-reviews-and-reports.md) |
+| 某种产出物有没有漏掉讨论、编写、审核或变更后同步 | [活动覆盖表](06-activity-coverage.md) |
 
 ## 适用范围与判断原则
 
