@@ -86,7 +86,7 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 .workspace.panel-closed .panel { visibility: hidden; }
 .panel-head { height: calc(var(--control-h) + 8px); display: flex; align-items: center; gap: 2px; padding: 4px 4px 0 var(--pad); margin-bottom: 4px; border-bottom: 1px solid var(--border); font-weight: 600; }
 .panel-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.panel-head .icon-btn[aria-disabled="true"] { color: var(--muted-fg); opacity: 0.5; cursor: default; background: none; }
+.panel-head .icon-btn[aria-disabled="true"], .legend-head .icon-btn[aria-disabled="true"] { color: var(--muted-fg); opacity: 0.5; cursor: default; background: none; }
 .panel .empty { padding: 4px var(--pad); color: var(--muted-fg); }
 /* 小节照 draw.io 的格式面板：实心三角贴左内边距，三角、标题和小节内容共用一条左边线；小节之间画细线 */
 .section { padding-bottom: 6px; }
@@ -223,9 +223,10 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .legend-label { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; height: 100%; cursor: pointer; }
 .legend-row .twisty { width: 16px; height: 16px; flex: none; display: inline-grid; place-items: center; padding: 0; border: 0;
   background: transparent; color: var(--muted-fg); cursor: pointer; }
+/* 展开的分组用主色，和折叠的分组不只靠箭头方向区分 */
+.legend-row .twisty[aria-expanded="true"] { color: var(--primary); }
 .legend-row .twisty[aria-disabled="true"] { opacity: 0.4; cursor: default; }
 .legend-row .twisty svg.tabler-icon { width: 12px; height: 12px; }
-.legend-actions { display: flex; gap: 6px; padding: 4px 8px; }
 .legend-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 详情面板里的关系 */
@@ -267,6 +268,10 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .result mark { background: var(--accent); color: var(--fg); font-weight: 700; border-radius: 2px; }
 
 /* 首页 */
+/* 首页的说明占满主区域宽度，图按原尺寸居中 */
+.home .lead { max-width: none; }
+.home .diagram { max-width: none; }
+.home .diagram > svg { display: block; margin: 0 auto; }
 .module .home-h2 { font-size: calc(var(--fs) + 1px); margin: 24px 0 4px; }
 .module .home-h2:first-child { margin-top: 0; }
 .home-links { display: flex; gap: 16px; margin: -8px 0 16px; }

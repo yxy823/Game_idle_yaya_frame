@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IconChevronDown, IconChevronRight, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronRight, IconChevronsDown, IconChevronsUp, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 import { store } from "./store.js";
@@ -272,9 +272,6 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     });
   }, [selected, cacheKey, inGraph, expanded, hidden, focus]);
 
-  const toggleHidden = (id) => setHidden((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
-  const toggleFold = (id) => setExpanded((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
-  const allOn = hidden.size === 0;
   return (
     <div className={"graph-wrap" + (legendOpen ? "" : " legend-closed")}>
       <div className="graph-area">
@@ -298,43 +295,58 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
           )}
         </div>
       </div>
-      <div className="legend" data-ui={ui + ".legend"}>
-        {/* 开关贴着图谱的右边缘，图例收起、展开时位置不变 */}
-        <div className="legend-head">
-          <span className="legend-title">图例</span>
-          <button className="icon-btn" aria-label={legendOpen ? "收起图例" : "展开图例"} data-tip={legendOpen ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
-            onClick={() => { store.set("legend", legendOpen ? "closed" : "open"); setLegendOpen(!legendOpen); }}>
-            {legendOpen ? <IconLayoutSidebarRightCollapse aria-hidden="true" /> : <IconLayoutSidebarRightExpand aria-hidden="true" />}
-          </button>
-        </div>
-        {legendOpen && <>
+      <Legend ui={ui} legend={legend} total={nodes.length} foldable={foldable} locked={Boolean(focus)}
+        hidden={hidden} setHidden={setHidden} expanded={expanded} setExpanded={setExpanded} open={legendOpen} setOpen={setLegendOpen} />
+    </div>
+  );
+}
+
+// 图例：各图谱共用。顶行是标题、全部展开、全部折叠和收起开关，开关贴着图谱右边缘，收起后只留开关那一窄条。
+// 下面每行是一个分组：折叠开关（展开时用 --primary，和折叠一眼分开）、显示开关、颜色和条数。
+// locked 为真时（只看邻居）不能折叠，按钮置灰并提示原因
+function Legend({ ui, legend, total, foldable, locked, hidden, setHidden, expanded, setExpanded, open, setOpen }) {
+  const toggle = (set, id) => set((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const allOn = hidden.size === 0;
+  const tip = (label) => (locked ? foldTip : label);
+  const fold = (ids) => { if (!locked) setExpanded(new Set(ids)); };
+  return (
+    <div className="legend" data-ui={ui + ".legend"}>
+      <div className="legend-head">
+        <span className="legend-title">图例</span>
+        {foldable && open && (
+          <>
+            <button className="icon-btn" aria-label="全部展开" aria-disabled={locked} data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
+              onClick={() => fold(legend.map((g) => g.id))}><IconChevronsDown aria-hidden="true" /></button>
+            <button className="icon-btn" aria-label="全部折叠" aria-disabled={locked} data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
+              onClick={() => fold([])}><IconChevronsUp aria-hidden="true" /></button>
+          </>
+        )}
+        <button className="icon-btn" aria-label={open ? "收起图例" : "展开图例"} data-tip={open ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
+          onClick={() => { store.set("legend", open ? "closed" : "open"); setOpen(!open); }}>
+          {open ? <IconLayoutSidebarRightCollapse aria-hidden="true" /> : <IconLayoutSidebarRightExpand aria-hidden="true" />}
+        </button>
+      </div>
+      {open && <>
         <label className="legend-row">
           <input type="checkbox" checked={allOn} onChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
-          <span className="legend-name">全部分组</span><span className="count">{nodes.length}</span>
+          <span className="legend-name">全部分组</span><span className="count">{total}</span>
         </label>
-        {foldable && (
-          <div className="legend-actions">
-            <button className="graph-btn" aria-disabled={Boolean(focus)} data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) setExpanded(new Set(legend.map((g) => g.id))); }}>全部展开</button>
-            <button className="graph-btn" aria-disabled={Boolean(focus)} data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) setExpanded(new Set()); }}>全部折叠</button>
-          </div>
-        )}
         {legend.map((g) => (
           <div className="legend-row" key={g.id}>
             {foldable && (
-              <button className="twisty" aria-disabled={Boolean(focus)} aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
-                data-tip={focus ? foldTip : undefined} onClick={() => { if (!focus) toggleFold(g.id); }}>
+              <button className="twisty" aria-disabled={locked} aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
+                data-tip={locked ? foldTip : undefined} onClick={() => { if (!locked) toggle(setExpanded, g.id); }}>
                 {expanded.has(g.id) ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />}
               </button>
             )}
             <label className="legend-label">
-              <input type="checkbox" checked={!hidden.has(g.id)} onChange={() => toggleHidden(g.id)} />
+              <input type="checkbox" checked={!hidden.has(g.id)} onChange={() => toggle(setHidden, g.id)} />
               <span className="dot" style={{ background: `var(${g.color})` }} aria-hidden="true"></span>
               <span className="legend-name">{g.name}</span><span className="count">{g.count}</span>
             </label>
           </div>
         ))}
-        </>}
-      </div>
+      </>}
     </div>
   );
 }

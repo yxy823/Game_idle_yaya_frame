@@ -44,7 +44,7 @@ function Home({ onModule, font }) {
   };
   const learn = () => { openChapter(0); onModule("learn"); };
   return (
-    <>
+    <div className="home">
       <h2 className="home-h2" data-ui="home.what">框架是什么</h2>
       <p className="lead">{files[frameworkCard].purpose}</p>
       <p className="home-links">
@@ -66,7 +66,7 @@ function Home({ onModule, font }) {
       <Diagram ui="home.stage-flow" text={data.home.stages.flow} font={font} />
       {data.home.stages.legend && <p className="lead">{data.home.stages.legend}</p>}
       {data.home.stages.table && <Table rows={data.home.stages.table} ui="home.stage-table" />}
-    </>
+    </div>
   );
 }
 
