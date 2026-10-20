@@ -7,6 +7,7 @@ from project_context import PROJECT_ROOT
 
 import importlib.util
 import json
+import subprocess
 import tempfile
 import unittest
 
@@ -83,12 +84,55 @@ class ManifestTests(unittest.TestCase):
             "mutation named none": manifest([{"name": "none", "caught_by": ["AtMostTwo"]}]),
             "duplicate mutation": manifest([{"name": "noop", "caught_by": ["AtMostTwo"]}] * 2),
             "no witnesses": {**manifest([{"name": "noop", "caught_by": ["AtMostTwo"]}]), "witnesses": []},
+            "covers outside the project": {**manifest([{"name": "noop", "caught_by": ["AtMostTwo"]}]),
+                                           "covers": ["../game/counter.gd"]},
         }
         for label, value in cases.items():
             with self.subTest(label=label):
                 self.path.write_text(json.dumps(value), encoding="utf-8")
                 with self.assertRaises(check_behavior_model.ModelCheckError):
                     check_behavior_model.read_manifest(self.path)
+
+
+class CoveredChangesTests(unittest.TestCase):
+    """Reports covered code changed after the commit that last changed the model."""
+
+    def setUp(self) -> None:
+        self.temporary = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary.name)
+        self.model = self.root / "docs/models/Counter.tla"
+        self.model.parent.mkdir(parents=True)
+        self.model.write_text(COUNTER_MODEL, encoding="utf-8")
+        self.model.with_suffix(".checks.json").write_text("{}", encoding="utf-8")
+        (self.root / "game").mkdir()
+        (self.root / "game/counter.gd").write_text("var x := 0", encoding="utf-8")
+        (self.root / "game/other.gd").write_text("", encoding="utf-8")
+        self.manifest = {"covers": ["game/counter.gd"]}
+
+    def tearDown(self) -> None:
+        self.temporary.cleanup()
+
+    def _git(self, *args: str) -> None:
+        subprocess.run(["git", "-C", str(self.root), "-c", "user.name=t", "-c", "user.email=t@t", *args],
+                       check=True, capture_output=True)
+
+    def test_lists_commits_and_uncommitted_edits_to_covered_files_only(self) -> None:
+        self._git("init", "-q")
+        self._git("add", ".")
+        self._git("commit", "-q", "-m", "model and code")
+        (self.root / "game/counter.gd").write_text("var x := 1", encoding="utf-8")
+        (self.root / "game/other.gd").write_text("pass", encoding="utf-8")
+        self._git("commit", "-q", "-am", "fix counter")
+        (self.root / "game/counter.gd").write_text("var x := 2", encoding="utf-8")
+        drift = check_behavior_model.covered_changes(self.root, self.model, self.manifest)
+        self.assertEqual(drift["status"], "checked")
+        self.assertEqual([line.split(" ", 1)[1] for line in drift["commits"]], ["fix counter"])
+        self.assertEqual(drift["uncommitted"], ["game/counter.gd"])
+
+    def test_model_not_in_git_or_without_covers_is_not_checked(self) -> None:
+        self.assertEqual(check_behavior_model.covered_changes(self.root, self.model, self.manifest)["status"],
+                         "untracked")
+        self.assertEqual(check_behavior_model.covered_changes(self.root, self.model, {})["status"], "no_covers")
 
 
 class TlcRunTests(unittest.TestCase):

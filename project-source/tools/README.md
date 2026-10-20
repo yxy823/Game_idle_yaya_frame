@@ -233,6 +233,7 @@ python -B yaya/tools/checks/check-behavior-model.py docs/architecture/models/<su
 | `invariants`、`properties` | 正确版本要检查的不变量和时序或动作性质的名称，不能都为空 |
 | `mutations` | 非空数组，每项 `{"name": ..., "caught_by": [...]}`：错误版本的名称（`Mutation` 的取值，不能是 `none`）和应当抓到它的性质，性质必须列在 `invariants` 或 `properties` 中 |
 | `witnesses` | 非空数组，期望被违反的可达性检查的不变量名称 |
+| `covers` | 可选，模型描述的代码文件或目录，相对项目根目录 |
 
 工具依次运行下面几项，每项都把模型目录下的全部 `.tla` 复制到临时目录，配置文件写在模型旁边，因为 TLC 按模型所在目录解析配置文件名：
 
@@ -242,7 +243,9 @@ python -B yaya/tools/checks/check-behavior-model.py docs/architecture/models/<su
 | 每个错误版本的每条 `caught_by` | 该错误版本的名称 | 只检查这一条性质，不检查死锁 | 这一条被违反。TLC 只报告第一个查到的违反，所以 `caught_by` 有几条就单独运行几次，每条都必须抓到 |
 | 每条可达性检查 | `none` | 只检查这条可达性检查的不变量，不检查死锁 | 这条不变量被违反，即路径可达 |
 
-结果写进 `reports/model-checks/<模型名>/run-<时间>/`：`summary.json` 记录模型路径和 SHA-256、检查配置、每项运行的期望、实际结果、不同状态数和日志路径，以及没有配错误版本的性质；`logs/` 保存每项运行的完整 TLC 输出，反例的操作序列在这里。标准输出逐项打印 `PASS` 或 `FAIL`。
+结果写进 `reports/model-checks/<模型名>/run-<时间>/`：`summary.json` 记录模型路径和 SHA-256、检查配置、每项运行的期望、实际结果、不同状态数和日志路径、没有配错误版本的性质，以及 `covered_changes`；`logs/` 保存每项运行的完整 TLC 输出，反例的操作序列在这里。标准输出逐项打印 `PASS` 或 `FAIL`。
+
+`covered_changes` 列出模型和检查配置最后一次提交之后，`covers` 里的文件又有哪些提交和未提交的修改；有修改时标准输出逐条列出。它不影响退出码，因为修改是否让模型过时，要读过修改才能判断，见 `behavior-model-check` 的「代码改了、模型没改时」。`covers` 为空时只提示没有跟踪；模型不在 Git 中时不检查。
 
 退出码：`0` 全部满足期望；`1` 至少一项不满足，例如错误版本没被抓到、可达性检查失败（路径走不到），或正确版本报出反例或死锁；`2` 模型不在项目内、模型、检查配置或工具配置出错，或某项运行中 TLC 没有给出可识别的结果（例如语法错误、内存不足、超时）。
 

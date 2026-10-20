@@ -27,7 +27,7 @@ description: >-
    按权威归属表，未完成的工作中引入的缺陷留在那个 Feature 中处理。
 2. 按工程变更流程，只收集所选模式必需的证据。未确认的根本原因保持为未知。没有指定具体内容的重构，使用 [engineering-refactor-select](../engineering-refactor-select/SKILL.md)，带着选中的候选回到这里。
 3. 阅读 Feature 索引和相关详情。如果这项工作依赖一个尚未规划的当前 Product，先用 [feature-plan](../feature-plan/SKILL.md) 完成这个前提。独立的工具工作使用其已写成文档的技术约定；只要项目已经有实际的 GDD，它可以在没有详细业务 Product 的情况下，向一个有效的空 Feature 记录追加工程 Feature。阅读测试登记表（Test Registry），提出可以复用的或新的受影响组件。
-4. 提出能独立验证的最小 Feature；`large` 的工作要拆分。展示 ID、标题、模式、依赖、受影响的组件、稳定的验收条件、预计涉及的文件或区域，以及验证义务。已有批准覆盖这份方案时直接沿用，只解决缺少的实质性决定。
+4. 提出能独立验证的最小 Feature；`large` 的工作要拆分。展示 ID、标题、模式、依赖、受影响的组件、稳定的验收条件、预计涉及的文件或区域，以及验证义务。预计涉及的文件列在 `docs/architecture/models/*.checks.json` 的 `covers` 里时，方案写明要在 Stage 1C 用 [behavior-model-check](../behavior-model-check/SKILL.md) 更新并重跑这个模型。已有批准覆盖这份方案时直接沿用，只解决缺少的实质性决定。
 
 对 `bug`，用准确的、已确认的 GDD/Product/专业小节，或已写成文档的框架/工具约定作为 `source`。对 `refactor` 和 `maintenance`，使用 `infrastructure`，除非有单一的权威来源负责被保持的约定。新的独立 Bug 按权威约定填写 `bug_diagnosis`；其他模式不要编造诊断。长期保存的证据保持简洁，并链接执行归档。
 

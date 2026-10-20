@@ -66,7 +66,39 @@ def read_manifest(path: Path) -> dict:
         caught_by = _names(mutation, "caught_by", True)
         if not set(caught_by) <= checked:
             raise ModelCheckError(f"mutation {name}: caught_by names must be listed invariants or properties")
+    covers = manifest.get("covers", [])
+    if not isinstance(covers, list) or not all(
+            isinstance(item, str) and item and not Path(item).is_absolute() and ".." not in Path(item).parts
+            for item in covers):
+        raise ModelCheckError("covers must be a list of paths relative to the project root")
     return manifest
+
+
+def _git(repo_root: Path, *args: str) -> str | None:
+    try:
+        completed = subprocess.run(["git", "-C", str(repo_root), *args], capture_output=True, text=True,
+                                   encoding="utf-8", errors="replace", check=False)
+    except OSError:
+        return None
+    return completed.stdout if completed.returncode == 0 else None
+
+
+def covered_changes(repo_root: Path, model: Path, manifest: dict) -> dict:
+    """List changes to the covered code made after the last commit that changed the model."""
+    covers = manifest.get("covers", [])
+    if not covers:
+        return {"status": "no_covers"}
+    model_files = [model.relative_to(repo_root).as_posix(),
+                   model.with_suffix(".checks.json").relative_to(repo_root).as_posix()]
+    since = (_git(repo_root, "log", "-1", "--format=%H", "--", *model_files) or "").strip()
+    if not since:
+        return {"status": "untracked"}
+    commits = _git(repo_root, "log", "--format=%h %s", f"{since}..HEAD", "--", *covers)
+    uncommitted = _git(repo_root, "status", "--porcelain", "--", *covers)
+    if commits is None or uncommitted is None:
+        return {"status": "untracked"}
+    return {"status": "checked", "since": since[:12], "commits": commits.splitlines(),
+            "uncommitted": [line[3:] for line in uncommitted.splitlines()]}
 
 
 def read_tools(repo_root: Path) -> tuple[Path, Path]:
@@ -178,6 +210,7 @@ def main(argv: list[str] | None = None) -> int:
             raise ModelCheckError(f"model not found: {model}")
         manifest = read_manifest(model.with_suffix(".checks.json"))
         java, jar = read_tools(repo_root)
+        drift = covered_changes(repo_root, model, manifest)
         run_dir = repo_root / REPORT_ROOT / model.stem / f"run-{datetime.now():%Y%m%d-%H%M%S-%f}"
         (run_dir / "logs").mkdir(parents=True, exist_ok=False)
         results = []
@@ -197,6 +230,7 @@ def main(argv: list[str] | None = None) -> int:
         "manifest": manifest,
         "tla_tools_jar": str(jar),
         "properties_without_mutation": sorted(checked - caught),
+        "covered_changes": drift,
         "runs": results,
     }
     (run_dir / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -209,6 +243,15 @@ def main(argv: list[str] | None = None) -> int:
               f"actual {actual}; distinct states {item['distinct_states']}")
     if summary["properties_without_mutation"]:
         print("properties without an injected error: " + ", ".join(summary["properties_without_mutation"]))
+    if drift["status"] == "no_covers":
+        print("covers is empty: changes to the modeled code are not tracked")
+    elif drift["status"] == "checked" and (drift["commits"] or drift["uncommitted"]):
+        # 覆盖的代码改了而模型没改时，通过只说明旧的描述仍成立，要逐个读这些改动判断模型是否还描述代码。
+        print(f"covered code changed after the model was last committed ({drift['since']}):")
+        for line in drift["commits"]:
+            print(f"  commit {line}")
+        for path in drift["uncommitted"]:
+            print(f"  uncommitted {path}")
     print(f"summary: {(run_dir / 'summary.json').relative_to(repo_root).as_posix()}")
     if any(item["outcome"] == "error" for item in results):
         return 2
