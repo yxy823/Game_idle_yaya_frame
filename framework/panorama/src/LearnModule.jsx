@@ -63,11 +63,12 @@ export default function LearnModule({ onSelect, font }) {
   // 外面再包一层：.module 只有主区域高，固定的标题行要放在和正文一样高的容器里才能一直固定
   return (
     <div>
-    <div className="sticky-head">
+    {/* 标题行（搜索和上一处、下一处）固定在主区域顶部，跳到命中后仍能继续搜索 */}
+    <div className="sticky -top-(--page-pad-y) z-4 -mt-(--page-pad-y) bg-background pt-(--page-pad-y)">
       <PageHead search={<PageSearch ui="learn.search" value={query} onChange={setQuery} placeholder="在手册各章里搜索" results={results} onPick={(r) => go(r.key, FIRST_MATCH)} />}>
         {hitNav && (
-          <div className="hit-nav" data-ui="learn.hit-nav">
-            <span className="count">本章第 {at + 1}/{hits} 处</span>
+          <div className="flex items-center justify-end gap-0.5" data-ui="learn.hit-nav">
+            <span className="count mr-1">本章第 {at + 1}/{hits} 处</span>
             <Button variant="ghost" size="icon" className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><IconChevronUp aria-hidden="true" /></Button>
             <Button variant="ghost" size="icon" className="icon-btn" aria-label="下一处" data-tip="下一处" onClick={() => move(1)}><IconChevronDown aria-hidden="true" /></Button>
           </div>
@@ -77,7 +78,7 @@ export default function LearnModule({ onSelect, font }) {
     <SideLayout hasHead={hitNav} label="章节" ui="learn" toc={
       groups.map((g) => (
         <div key={g}>
-          <div className="side-group">{g}</div>
+          <div className="px-2 pt-2 pb-0.5 text-xs text-muted-foreground">{g}</div>
           {chapters.map((c, k) => c.group === g && (
             <Button key={k} variant="row" size="none" className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
               <span className="tree-name" data-tip-clip>{files[c.card].title}</span>
@@ -87,7 +88,7 @@ export default function LearnModule({ onSelect, font }) {
       ))}>
       <article className="learn-body" data-ui="learn.body" ref={body}>
         <DocView card={chapters[chapter].card} jump={jump} words={ws} onLink={link} inPanel={(card) => !chapterOf.has(card)} onHits={setHits} font={font} />
-        {next && <Button variant="outline" className="graph-btn learn-next" onClick={() => go(chapter + 1)}>下一章：{files[next.card].title}</Button>}
+        {next && <Button variant="outline" className="graph-btn mt-4 mb-8" onClick={() => go(chapter + 1)}>下一章：{files[next.card].title}</Button>}
       </article>
     </SideLayout>
     </div>

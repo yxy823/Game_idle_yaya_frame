@@ -49,7 +49,7 @@ function search(query) {
 function Highlight({ text, words }) {
   if (!words.length) return text;
   const pattern = new RegExp("(" + words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
-  return text.split(pattern).map((part, i) => (i % 2 ? <mark key={i}>{part}</mark> : part));
+  return text.split(pattern).map((part, i) => (i % 2 ? <mark key={i} className="rounded-[2px] bg-accent font-bold text-foreground">{part}</mark> : part));
 }
 
 // 摘要取第一个不是标题的命中字段，截取命中处前后各约 40 字
@@ -81,19 +81,19 @@ export default function SearchModule({ selected, onSelect }) {
       )}
       </PageHead>
       {hits.length > 0 && (
-          <ul className="results" data-ui="search.results">
+          <ul className="max-w-240 [&>li]:border-b [&>li]:border-border [&>li]:py-1.5" data-ui="search.results">
             {hits.slice(0, LIMIT).map((hit, i) => {
               const { item } = hit;
               const f = files[item.file];
               return (
                 <li key={i}>
                   <Button variant="result" size="none" className="result" aria-selected={selected === item.select} onClick={() => onSelect(item.select)}>
-                    <span className="result-title"><Badge variant="outline" className="kind">{item.kind}</Badge><Highlight text={item.title} words={words} /></span>
-                    <span className="result-text"><Highlight text={snippet(hit, words)} words={words} /></span>
+                    <span className="flex items-center gap-1.5 font-semibold"><Badge variant="outline" className="kind">{item.kind}</Badge><Highlight text={item.title} words={words} /></span>
+                    <span className="text-muted-foreground"><Highlight text={snippet(hit, words)} words={words} /></span>
                   </Button>
-                  <span className="result-meta">
-                    <span className="result-group"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</span>
-                    <Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(item.file, item.line)} data-tip="在 VSCode 里打开这一行">{f.path}:{item.line}</a></Button>
+                  <span className="flex items-center gap-2 px-2 text-xs text-muted-foreground">
+                    <span className="flex-none whitespace-nowrap"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</span>
+                    <Button asChild variant="link" size="none"><a className="open min-w-0 text-primary" href={vscodeUrl(item.file, item.line)} data-tip="在 VSCode 里打开这一行">{f.path}:{item.line}</a></Button>
                   </span>
                 </li>
               );

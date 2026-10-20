@@ -321,11 +321,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     });
   }, [selected, cacheKey, inGraph, expanded, hidden, focus]);
 
+  // 收起后图例列只放开关，开关离右边缘的距离不变
   return (
-    <div className={"graph-wrap" + (legendOpen ? "" : " legend-closed")}>
-      <div className="graph-area">
-        <div className="graph" ref={box} data-ui={ui + ".graph"} />
-        <div className="graph-tools">
+    <div className={"graph-wrap grid flex-1 min-h-90 overflow-hidden rounded-(--radius) border border-border bg-card " + (legendOpen ? "grid-cols-[1fr_200px]" : "grid-cols-[1fr_calc(var(--control-h)+13px)]")}>
+      <div className="relative min-w-0">
+        {/* cytoscape 往页面里插了一条不在层里的 position: relative，会压过工具类，所以 absolute 要加 ! */}
+        <div className="graph absolute! inset-0" ref={box} data-ui={ui + ".graph"} />
+        <div className="absolute top-2 left-2 flex gap-1.5">
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
           <Button variant="outline" className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
             onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</Button>
@@ -334,7 +336,8 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
             onClick={() => { const cy = cyRef.current; cy.fit(cy.nodes(":visible"), 30); }}>适配画布</Button>
           {focusable && (
             <>
-              <Button variant="outline" className="graph-btn graph-focus" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
+              {/* “只看邻居”和“返回全图”换字时宽度不变，旁边的跳数切换不跟着移动 */}
+              <Button variant="outline" className="graph-btn min-w-[6.5em]" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
                 data-tip={inGraph || focus ? undefined : "先在图里选中一个点"}
                 onClick={() => { if (focus) setFocus(null); else if (inGraph) setFocus({ center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</Button>
               <ToggleGroup type="single" value={String(hops)} spacing={0} variant="outline" aria-label="邻居范围" data-ui={ui + ".graph-hops"}
@@ -360,9 +363,9 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
   const tip = (label) => (focused ? "返回全图并" + label : label);
   const fold = (next) => { if (focused) leaveFocus(); setExpanded(next); };
   return (
-    <div className="legend" data-ui={ui + ".legend"}>
-      <div className="legend-head">
-        <span className="legend-title">图例</span>
+    <div className="legend overflow-auto py-1 border-l border-border bg-background" data-ui={ui + ".legend"}>
+      <div className="flex h-(--control-h) items-center justify-end pr-1 pl-2">
+        {open && <span className="mr-auto font-semibold whitespace-nowrap">图例</span>}
         {foldable && open && (
           <>
             <Button variant="ghost" size="icon" className="icon-btn" aria-label="全部展开" data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
@@ -391,7 +394,7 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
                 {expanded.has(g.id) ? <IconFolderOpen aria-hidden="true" /> : <IconFolder aria-hidden="true" />}
               </Button>
             )}
-            <Label className="legend-label">
+            <Label className="legend-label flex h-full min-w-0 flex-1 cursor-pointer items-center gap-1.5">
               <Checkbox aria-label={g.name} checked={!hidden.has(g.id)} onCheckedChange={() => toggle(setHidden, g.id)} />
               <span className="dot" style={{ background: `var(${g.color})` }} aria-hidden="true"></span>
               <span className="legend-name">{g.name}</span><span className="count">{g.count}</span>

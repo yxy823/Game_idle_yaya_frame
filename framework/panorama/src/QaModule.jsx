@@ -39,16 +39,17 @@ export default function QaModule({ selected, onSelect }) {
         <div>
           {listed.map((t) => (
             <section className="qa-topic" key={t} id={"qa-topic-" + t} data-ui="qa.topic">
-              <h2>{files[t].title}<Button asChild variant="link" size="none"><a className="open qa-open text-primary" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
+              <h2 className="mt-4 mb-2 flex items-center text-sm [.qa-topic:first-child_&]:mt-0">{files[t].title}<Button asChild variant="link" size="none"><a className="open qa-open ml-3 text-primary" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
                 <span className="count">{countOf(t)}</span></h2>
               <div className="cards">
                 {data.qa.map((q, n) => q.file === t && shown[n] && (
-                  <div key={n} className="qa-card">
-                    <Button variant="card" size="none" className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
+                  <div key={n} className="relative flex">
+                    {/* 卡片右上角的链接压在卡片上，卡片右边留出位置 */}
+                    <Button variant="card" size="none" className="card flex-1 pr-8" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
                       <span className="card-title">{q.title}</span>
                       <span className="card-purpose">{q.conclusion}</span>
                     </Button>
-                    <Button asChild variant="link" size="none"><a className="open qa-open text-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
+                    <Button asChild variant="link" size="none"><a className="open qa-open absolute top-2 right-2 text-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
                   </div>
                 ))}
               </div>

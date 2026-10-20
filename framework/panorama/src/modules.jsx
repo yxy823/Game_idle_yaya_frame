@@ -24,7 +24,7 @@ const stepLinks = Object.fromEntries(Object.entries(STEP_SCENES)
 // 文档里的一张表，第一行是表头
 function Table({ rows, ui }) {
   return (
-    <div className="learn-body home-table" data-ui={ui}>
+    <div className="learn-body mb-6 max-w-none" data-ui={ui}>
       <table>
         <thead><tr>{rows[0].map((c, i) => <th key={i}>{c}</th>)}</tr></thead>
         <tbody>{rows.slice(1).map((r, i) => <tr key={i}>{r.map((c, j) => <td key={j}>{c}</td>)}</tr>)}</tbody>

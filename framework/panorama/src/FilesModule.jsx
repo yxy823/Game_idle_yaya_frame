@@ -60,7 +60,7 @@ function Card({ index, selected, onSelect, onRead, showGroup }) {
     <Button variant="card" size="none" className="card" aria-selected={selected} onClick={() => onSelect(selected ? null : index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
       <span className="card-title"><span className={"dot g-" + f.group} aria-hidden="true"></span>{f.title}</span>
       <span className="card-purpose">{f.purpose || "（第一段没有用途说明）"}</span>
-      <span className="card-meta">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
+      <span className="flex gap-3 text-xs text-muted-foreground">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
     </Button>
   );
 }
@@ -99,13 +99,13 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
           <TabsTrigger value="graph">图谱</TabsTrigger>
         </TabsList>
       </PageHead>
-      <TabsContent value="list" className="files-layout data-[state=inactive]:hidden!">
+      <TabsContent value="list" className="grid min-h-0 flex-1 grid-cols-[240px_1fr] gap-4 [&>div]:overflow-auto data-[state=inactive]:hidden!">
           <ul className="tree" data-ui="files.tree">
             <TreeNode node={tree} depth={0} dir={dir} onDir={(p) => { pickDir(p); read(null); }} open={open} onToggle={toggle} />
           </ul>
           {reading !== null ? (
-            <article className="learn-body doc-scroll" data-ui="files.reader">
-              <Button variant="outline" className="graph-btn reader-back" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</Button>
+            <article className="learn-body min-h-0 overflow-auto pr-2" data-ui="files.reader">
+              <Button variant="outline" className="graph-btn mb-3" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</Button>
               <DocView card={reading} jump={jump} onLink={(i, anchor) => read(i, anchor)} font={font} />
             </article>
           ) : (

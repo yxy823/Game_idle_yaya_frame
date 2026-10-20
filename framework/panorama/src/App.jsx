@@ -119,11 +119,12 @@ export default function App() {
   return (
     <ToastProvider theme={theme}>
     <PickingContext.Provider value={picking}>
-      <header className="topbar" data-ui="topbar">
-        <img className="brand" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
-        <span className="title" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
-        <span className="search-slot" ref={setSearchSlot}></span>
-        <span className="spacer"></span>
+      <header className="topbar flex items-center gap-2 px-2 bg-(--chrome) border-b border-border" data-ui="topbar">
+        <img className="brand size-5 ml-1" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
+        {/* 中文字形落在基线附近，按盒子居中时比 Godot 图标和放大镜低约 1px，上移补齐 */}
+        <span className="title relative -top-px flex-none px-1 font-semibold whitespace-nowrap w-[calc(var(--title-chars)*1em+8px)]" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
+        <span className="search-slot flex items-center" ref={setSearchSlot}></span>
+        <span className="flex-1"></span>
         <Button variant="ghost" size="icon" className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
           onClick={() => setPanelOpen(!panelOpen)}>
           <IconLayoutSidebarRight aria-hidden="true" />
@@ -137,8 +138,8 @@ export default function App() {
         </SettingsMenu>
       </header>
 
-      <div className={"workspace" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": shownWidth + "px" }}>
-        <nav className="activity" aria-label="模块" data-ui="activity">
+      <div className={"workspace relative grid grid-cols-[var(--activity-w)_minmax(0,1fr)] min-h-0" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": shownWidth + "px" }}>
+        <nav className="activity flex flex-col items-center gap-1 pt-1.5 bg-(--chrome) border-r border-border" aria-label="模块" data-ui="activity">
           {modules.map((m) => (
             <Button key={m.id} variant="ghost" size="activity" className="icon-btn" aria-label={m.label} data-tip={m.tip} data-ui={"activity." + m.id}
               aria-current={m.id === module ? "page" : undefined} onClick={() => setModule(m.id)}>
@@ -153,8 +154,8 @@ export default function App() {
             else detail.current?.resize(shownWidth);
           }}>
         <ResizablePanel id="main" minSize={Math.min(mainMin, winWidth - activityWidth - (panelOpen ? panelMin : 0))}>
-        <main className="main h-full">
-          <section className="module" data-ui={"module." + module}>
+        <main className="main h-full min-w-0 overflow-auto [scrollbar-gutter:stable] px-(--page-pad-x) py-(--page-pad-y)">
+          <section className="module h-full" data-ui={"module." + module}>
             <SearchSlot.Provider value={searchSlot}>
               {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
             </SearchSlot.Provider>
@@ -171,9 +172,9 @@ export default function App() {
         </ResizablePanelGroup>
       </div>
 
-      <footer className="statusbar" data-ui="statusbar">
+      <footer className="statusbar flex items-center gap-4 px-2.5 bg-(--chrome) border-t border-border text-xs text-muted-foreground tabular-nums" data-ui="statusbar">
         <span data-ui="statusbar.generated">生成于 {data.generatedAt}，{data.files.length} 份文档</span>
-        <span className="pick-state" data-ui="statusbar.pick-state">
+        <span className="min-w-55" data-ui="statusbar.pick-state">
           {picking ? "元素选取：开，点击元素即复制，按 Esc 关闭" : "元素选取：关（Alt+X）"}
         </span>
       </footer>

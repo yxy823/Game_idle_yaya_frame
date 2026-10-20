@@ -71,12 +71,12 @@ function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: al
   return (
     <Popover modal={false} open={shown} onOpenChange={setListOpen}>
       <Command shouldFilter={false} value={String(current?.key ?? "")} onValueChange={setActive}>
-        <div className={"page-search" + (open ? " open" : "")} ref={box}>
+        <div className={"page-search relative flex flex-none items-center gap-1" + (open ? " open" : "")} ref={box}>
           {!open ? (
             <Button ref={button} variant="ghost" size="icon" className="icon-btn" aria-label="搜索本页" data-tip="搜索本页" data-ui={ui} onClick={() => setOpen(true)}><IconSearch aria-hidden="true" /></Button>
           ) : <>
             <PopoverAnchor asChild><div className="relative flex items-center">
-              <IconSearch className="page-search-icon" aria-hidden="true" />
+              <IconSearch className="pointer-events-none absolute left-2 text-muted-foreground" aria-hidden="true" />
               {ranked ? <CommandInput {...inputProps} data-ui={ui} onValueChange={change} /> : <Input {...inputProps} data-ui={ui} onChange={(e) => change(e.target.value)} />}
             </div></PopoverAnchor>
             {!always && <Button variant="ghost" size="icon" className="icon-btn" aria-label="关闭搜索" data-tip="关闭搜索（Esc）" onClick={close}><IconX aria-hidden="true" /></Button>}
@@ -101,5 +101,5 @@ function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: al
 // 页面标题行：左边是说明或页面工具；没有说明和工具时不占一行。
 // 搜索始终放在同一个位置：标题行出现或消失时搜索框不重新挂载，否则正在输入的字会丢
 export function PageHead({ children, search }) {
-  return <>{children && <div className="page-head"><div className="page-head-main">{children}</div></div>}{search}</>;
+  return <>{children && <div className="mb-4 flex items-start gap-3"><div className="min-w-0 flex-1 [&_.lead]:mb-0">{children}</div></div>}{search}</>;
 }

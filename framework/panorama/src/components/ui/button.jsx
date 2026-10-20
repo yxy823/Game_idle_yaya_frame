@@ -11,7 +11,7 @@ const buttonVariants = cva(
         outline: "border-input bg-background text-xs hover:bg-accent",
         ghost: "hover:bg-accent aria-pressed:bg-accent aria-[current=page]:bg-accent aria-[current=page]:shadow-[inset_2px_0_0_var(--primary)]",
         link: "h-auto justify-start border-0 p-0 text-left whitespace-normal hover:text-primary hover:underline [overflow-wrap:anywhere]",
-        card: "h-auto flex-col items-stretch justify-start gap-1 border-border bg-card p-2.5 text-left whitespace-normal hover:border-[color-mix(in_srgb,var(--brand)_50%,var(--border))] aria-selected:outline-2 aria-selected:outline-primary aria-selected:outline-offset-[-1px]",
+        card: "h-auto flex-col items-stretch justify-start gap-1 border-border bg-card p-2.5 text-left whitespace-normal hover:border-[color-mix(in_srgb,var(--input)_50%,var(--border))] aria-selected:outline-2 aria-selected:outline-primary aria-selected:outline-offset-[-1px]",
         row: "h-(--tree-row-h) w-full justify-start gap-0.5 border-0 pr-1.5 text-left whitespace-nowrap hover:bg-accent aria-selected:bg-(--selection)",
         result: "h-auto w-full flex-col items-stretch justify-start gap-0.5 border-0 px-2 py-1 text-left whitespace-normal hover:bg-accent aria-selected:bg-(--selection)",
         twisty: "size-(--icon) border-0 p-0 text-muted-foreground aria-expanded:text-primary",

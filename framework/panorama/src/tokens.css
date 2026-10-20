@@ -1,9 +1,5 @@
-@layer theme, base, components, utilities;
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities);
+@import "tailwindcss";
 @import "shadcn/tailwind.css";
-
-@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -32,13 +28,14 @@
   --radius-md: var(--radius);
   --radius-lg: var(--radius);
   --radius-xl: var(--radius);
-  --font-sans: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+  --font-sans: var(--font-ui);
 }
 
 /* 设计令牌：颜色、尺寸、间距和层级的取值只写在这里，styles.css 和图谱只引用变量。
    深色主题和设置里的字号只覆盖变量。 */
 :root {
   --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
+  --font-ui: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
   --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
   --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
   --z-resizer: 5;
@@ -50,26 +47,24 @@
   --menu-w: 220px; --menu-item-pad: 32px; --toast-bottom: 36px;
   --switch-w: 28px; --switch-h: 16px; --switch-thumb: 12px; --switch-travel: 12px;
   --checkbox-size: 13px; --checkbox-mark: 11px;
-  --brand: #2b68cc;
-  --primary: var(--brand); --ring: var(--brand);
-  --background: #fcfcfd; --card: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
-  --foreground: #1f2329; --muted-foreground: #5f6773; --border: #d9dde3; --input: #767e89;
-  --destructive: #c4314b;
+  /* 颜色用 shadcn Neutral 的灰阶，写成十六进制：cytoscape 不解析 oklch()。正文底色和文字不用纯白纯黑 */
+  --background: #fafafa; --card: #f5f5f5; --chrome: #ededed; --muted: #ededed; --accent: #e5e5e5;
+  --foreground: #171717; --muted-foreground: #525252; --border: #d4d4d4; --input: #737373;
+  --primary: #262626; --primary-foreground: #fafafa; --destructive: #b91c1c;
+  --selection: #d4d4d4; --pick: #c62b63; --pick-fg: #fafafa; --tip-bg: #171717; --tip-fg: #fafafa;
+  --shadow: 0 4px 12px rgb(23 23 23 / .16);
+  --ring: var(--primary); --secondary: var(--accent); --secondary-foreground: var(--foreground); --accent-foreground: var(--foreground);
+  --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
+  /* 页面自己的短名，图谱、Pele 和 styles.css 用 */
   --bg: var(--background); --surface: var(--card); --fg: var(--foreground);
   --muted-fg: var(--muted-foreground); --field-border: var(--input); --danger: var(--destructive);
-  --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
-  --primary-foreground: var(--pick-fg); --secondary: var(--accent); --secondary-foreground: var(--foreground);
-  --muted: var(--chrome); --accent-foreground: var(--foreground);
-  --selection: #dce8fb; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
-  --shadow: 0 4px 12px rgb(31 35 41 / .16);
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --brand: #5b9bff;
-  --background: #1e1f22; --card: #2c2e33; --chrome: #18191b; --accent: #33363c;
-  --foreground: #e3e5e8; --muted-foreground: #9aa1ab; --border: #383b41; --input: #7a828d;
-  --destructive: #ff6b81;
-  --selection: #24304a; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+  --background: #171717; --card: #262626; --chrome: #1a1a1a; --muted: #303030; --accent: #333333;
+  --foreground: #fafafa; --muted-foreground: #b3b3b3; --border: #404040; --input: #a3a3a3;
+  --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
+  --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
   --shadow: 0 4px 12px rgb(0 0 0 / .45);
   color-scheme: dark;
 }
@@ -79,18 +74,17 @@
 :root[data-font="xl"] { --fs: 16px; --fs-small: 14px; --control-h: 34px; --bar-h: 42px; }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --brand: #5b9bff;
-    --background: #1e1f22; --card: #2c2e33; --chrome: #18191b; --accent: #33363c;
-    --foreground: #e3e5e8; --muted-foreground: #9aa1ab; --border: #383b41; --input: #7a828d;
-    --destructive: #ff6b81;
-    --selection: #24304a; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+    --background: #171717; --card: #262626; --chrome: #1a1a1a; --muted: #303030; --accent: #333333;
+    --foreground: #fafafa; --muted-foreground: #b3b3b3; --border: #404040; --input: #a3a3a3;
+    --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
+    --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
     --shadow: 0 4px 12px rgb(0 0 0 / .45);
     color-scheme: dark;
   }
 }
 
-/* 图谱的连线：普通连线用中性色，选中点的连线用分类色；主线用品牌色。节点的轮廓让浅色分类色和背景分开 */
-:root { --graph-edge: var(--muted-fg); --graph-edge-opacity: 0.4; --graph-edge-main: var(--brand); --graph-node-border: var(--muted-fg); }
+/* 图谱的连线：普通连线用中性色，选中点的连线用分类色；主线用主色。节点的轮廓让浅色分类色和背景分开 */
+:root { --graph-edge: var(--muted-fg); --graph-edge-opacity: 0.4; --graph-edge-main: var(--primary); --graph-node-border: var(--muted-fg); }
 
 /* 图谱节点的分组颜色：分类色 --p1 到 --p13，两套主题共用；每个分组旁都写出名称，不只靠颜色区分。
    文件全景的分组按 --g-<分组> 取色，开发场景的分类按顺序取 --pN */
@@ -113,3 +107,8 @@
   /* 首页内容离主区域左右边缘的距离（含 --page-pad-x） */
   --home-pad-x: var(--space-12);
 }
+
+/* Mermaid 图由 Pele 渲染，颜色取页面的语义变量，换主题时不用重画。--pele-bg 是连线说明的底色，用页面底色才能盖住穿过说明的线 */
+.pele { --pele-bg: var(--bg); --pele-fg: var(--fg); --pele-muted: var(--muted-fg); --pele-line: var(--muted-fg);
+  --pele-surface: var(--surface); --pele-surface-alt: var(--accent); --pele-border: var(--field-border); --pele-accent: var(--primary);
+  --pele-error: var(--danger); --pele-font: var(--font-ui); --pele-radius: var(--radius); }

@@ -14,10 +14,10 @@ import { Badge } from "@/components/ui/badge";
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
 // 小节里只有一组、组名和小节标题相同时，不写组名
 function Row({ name, children }) {
-  return <div className="row"><span className="name">{name}</span><span className="value">{children}</span></div>;
+  return <div className="row grid min-h-(--control-h) grid-cols-[64px_1fr] items-start gap-2 px-(--pad)"><span className="name text-xs leading-(--control-h) text-muted-foreground">{name}</span><span className="value pt-[5px] leading-normal [overflow-wrap:anywhere]">{children}</span></div>;
 }
 function Group({ name, children }) {
-  return <div className="group">{name && <div className="group-name">{name}</div>}{children}</div>;
+  return <div className="group px-(--pad) pb-1">{name && <div className="group-name pt-0.5 text-xs text-muted-foreground">{name}</div>}{children}</div>;
 }
 
 // 超过 20 条的小节默认收起，否则一节就占满整个面板
@@ -34,11 +34,11 @@ function Section({ title, ui, count, children }) {
   );
 }
 
-// 面板标题行：名称和后退、前进；后退、前进在本模块选中过的对象之间移动
+// 面板标题行：名称和后退、前进，固定在面板顶上，长文档滚到下面时按钮也在；后退、前进在本模块选中过的对象之间移动
 function Head({ title, nav }) {
   return (
-    <div className="panel-head" data-ui="panel.head">
-      <span className="panel-title" data-tip={title}>{title}</span>
+    <div className="sticky top-0 z-2 mb-1 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
+      <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
         onClick={() => nav.onBack?.()} data-ui="panel.back"><IconArrowLeft aria-hidden="true" /></Button>
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
@@ -58,14 +58,14 @@ const unique = (list, key) => list.filter((x, i) => list.findIndex((y) => key(y)
 function Quote({ link, current, onSelect }) {
   const p = paras[link.para];
   return (
-    <div className="quote">
-      <div className="quote-head">
+    <div className="border-t border-border px-(--pad) py-1.5">
+      <div className="flex items-baseline gap-2">
         <FileLink index={p.file} onSelect={onSelect} />
-        <Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(p.file, p.line)} data-tip="在 VSCode 里打开这一行">第 {p.line} 行</a></Button>
+        <Button asChild variant="link" size="none"><a className="open ml-auto flex-none text-xs text-primary" href={vscodeUrl(p.file, p.line)} data-tip="在 VSCode 里打开这一行">第 {p.line} 行</a></Button>
       </div>
-      <p className="quote-text">
+      <p className="mt-1 line-clamp-4 text-xs text-muted-foreground [overflow-wrap:anywhere]">
         {p.parts.map((part, i) => (typeof part === "string" ? part
-          : part.to === current ? <mark key={i}>{part.text}</mark> : <span key={i} className="quote-link">{part.text}</span>))}
+          : part.to === current ? <mark key={i} className="rounded-[2px] bg-accent font-bold text-foreground">{part.text}</mark> : <span key={i} className="text-foreground">{part.text}</span>))}
       </p>
     </div>
   );
@@ -76,7 +76,7 @@ function QaPanel({ q, onSelect, nav }) {
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
       <Head title={q.title} nav={nav} />
-      <div className="panel-actions">
+      <div className="px-3 py-2">
         <Button asChild variant="default"><a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a></Button>
       </div>
       <Section title="回答" ui="panel.answer">
