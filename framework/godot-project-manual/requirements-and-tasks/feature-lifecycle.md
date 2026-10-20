@@ -40,29 +40,14 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 
 ## Feature 的执行阶段
 
-下图是阶段之间的走向，下表是每个阶段的执行条件和产出。之后几节分别写用户会在哪里停下、各阶段怎样依赖前一步，以及几处设计的原因。
+下图是阶段之间的走向，后面两张小图是 Stage 1 和 Stage 3 内部的步骤，下表是每个阶段的执行条件和产出。之后几节分别写用户会在哪里停下、各阶段怎样依赖前一步，以及几处设计的原因。
 
 ```mermaid
 flowchart TD
-    s0["Stage 0 上下文"] --> s1a
-    subgraph s1["Stage 1 方案"]
-        direction LR
-        s1a["1A 测试范围"] --> s1b["1B 资源"]
-        s1b --> s1c["1C 设计决定"]
-        s1c -.->|有命名状态，按事件或时间转换| model["行为模型检查（TLA+）"]
-        model -.-> s1d
-        s1c --> s1d["1D 批准材料"]
-    end
-    s1d -->|你批准| s2["Stage 2 保存计划"]
-    s2 --> s3a
-    subgraph s3["Stage 3 实现"]
-        direction LR
-        s3a["3A 基线"] --> s3b["3B RED"]
-        s3b --> s3c["3C GREEN 与重构"]
-        s3c -->|下一个小循环| s3b
-        s3c --> s3d["3D 文档检查"]
-    end
-    s3d --> s4["Stage 4 最终验证"]
+    s0["Stage 0 上下文"] --> s1["Stage 1 方案"]
+    s1 -->|你批准| s2["Stage 2 保存计划"]
+    s2 --> s3["Stage 3 实现与文档检查"]
+    s3 --> s4["Stage 4 最终验证"]
     s4 -->|机器检查失败| s3
     s4 --> mode{"验收方式"}
     mode -.->|manual| s5["Stage 5 人工验收"]
@@ -82,8 +67,33 @@ flowchart TD
     s7 --> s8["Stage 8 交接"]
     classDef stop fill:#fff3cd,stroke:#b8860b,color:#000
     classDef optional fill:#e3f2fd,stroke:#1e88e5,color:#000
-    class s1d,s5 stop
-    class model,s55,s6 optional
+    class s1,s5 stop
+    class s55,s6 optional
+```
+
+Stage 1 内部的步骤：
+
+```mermaid
+flowchart LR
+    s1a["1A 测试范围"] --> s1b["1B 资源"]
+    s1b --> s1c["1C 设计决定"]
+    s1c -.->|有命名状态，按事件或时间转换| model["行为模型检查（TLA+）"]
+    model -.-> s1d["1D 批准材料"]
+    s1c --> s1d
+    classDef stop fill:#fff3cd,stroke:#b8860b,color:#000
+    classDef optional fill:#e3f2fd,stroke:#1e88e5,color:#000
+    class s1d stop
+    class model optional
+```
+
+Stage 3 内部的步骤：
+
+```mermaid
+flowchart LR
+    s3a["3A 基线"] --> s3b["3B RED"]
+    s3b --> s3c["3C GREEN 与重构"]
+    s3c -->|下一个小循环| s3b
+    s3c --> s3d["3D 文档检查"]
 ```
 
 图例：黄色是需要用户决定或确认的步骤，蓝色和虚线是只在特定条件下执行的步骤。
