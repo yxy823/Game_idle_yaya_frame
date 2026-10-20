@@ -46,6 +46,7 @@ Bug 的实际表现、预期及其来源、复现方式和根因都要有证据�
 flowchart TD
     s0["Stage 0 上下文"] --> s1a
     subgraph s1["Stage 1 方案"]
+        direction LR
         s1a["1A 测试范围"] --> s1b["1B 资源"]
         s1b --> s1c["1C 设计决定"]
         s1c -.->|有命名状态，按事件或时间转换| model["行为模型检查（TLA+）"]
@@ -55,6 +56,7 @@ flowchart TD
     s1d -->|你批准| s2["Stage 2 保存计划"]
     s2 --> s3a
     subgraph s3["Stage 3 实现"]
+        direction LR
         s3a["3A 基线"] --> s3b["3B RED"]
         s3b --> s3c["3C GREEN 与重构"]
         s3c -->|下一个小循环| s3b
