@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "check": "node tools/check-ui.mjs"
+    "check": "vite build && node tools/check-ui.mjs"
   },
   "dependencies": {
     "@tabler/icons-react": "3.48.0",

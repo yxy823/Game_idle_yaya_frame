@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "panorama",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "framework/panorama", "exec", "--", "vite", "preview", "framework/panorama", "--port", "4173", "--strictPort"],
+      "port": 4173
+    }
+  ]
+}
