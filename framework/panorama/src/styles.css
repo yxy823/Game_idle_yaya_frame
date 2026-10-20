@@ -110,6 +110,8 @@
   :is(.learn-body, .panel-doc) ol { list-style: decimal; }
   /* Neutral 的主色和正文色接近，正文链接一直带下划线 */
   :is(.learn-body, .panel-doc) a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+  /* 能弹浮窗的文档链接换成专用色，和外部网址、VSCode 链接分开 */
+  .learn-body a[data-card] { color: var(--float-link); }
   :is(.learn-body, .panel-doc) code { font: var(--fs-small) Consolas, monospace; padding: 1px var(--space-1); border-radius: var(--radius); background: var(--accent); }
   :is(.learn-body, .panel-doc) pre { padding: var(--space-2) var(--space-3); border-radius: var(--radius); background: var(--surface); border: 1px solid var(--border); overflow: auto; }
   :is(.learn-body, .panel-doc) pre code { padding: 0; background: none; }
@@ -136,6 +138,8 @@
   .float-layer { position: fixed; inset: 0; z-index: var(--z-float); pointer-events: none; }
   .float { position: absolute; pointer-events: auto; display: flex; flex-direction: column; background: var(--surface);
     border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  /* 外框里面再画一圈 2px 的分组色（--float-ring 由浮窗按文档分组设置），浮窗压在面板或别的浮窗上时分得清边界 */
+  .float::after { content: ""; position: absolute; inset: 0; border: 2px solid var(--float-ring); border-radius: calc(var(--radius) - 1px); pointer-events: none; }
   .float-head { flex: none; display: flex; align-items: center; gap: var(--space-0-5); height: calc(var(--control-h) + 4px);
     padding: 0 var(--space-1) 0 var(--pad); border-bottom: 1px solid var(--border); background: var(--chrome); font-weight: 600; cursor: move; user-select: none; }
   .float-head .icon-btn { cursor: pointer; }

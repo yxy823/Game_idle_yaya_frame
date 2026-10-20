@@ -44,7 +44,7 @@
   --resize-hit: 6px; --resize-line: 2px; --tip-offset: 6px; --tip-edge: 8px;
   --activity-button: 36px; --tree-row-h: calc(var(--fs) + 11px);
   --search-input-w: 240px; --search-list-w: 320px; --search-list-h: 360px;
-  --menu-w: 220px; --menu-item-pad: 32px; --toast-bottom: 36px;
+  --dialog-w: 420px; --slider-w: 180px; --slider-thumb: 14px; --toast-bottom: 36px;
   --switch-w: 28px; --switch-h: 16px; --switch-thumb: 12px; --switch-travel: 12px;
   --checkbox-size: 13px; --checkbox-mark: 11px;
   /* 颜色用 shadcn Neutral 的灰阶，写成十六进制：cytoscape 不解析 oklch()。正文底色和文字不用纯白纯黑 */
@@ -55,6 +55,8 @@
   --shadow: 0 4px 12px rgb(23 23 23 / .16);
   --ring: var(--primary); --secondary: var(--accent); --secondary-foreground: var(--foreground); --accent-foreground: var(--foreground);
   --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
+  /* 能弹浮窗的文档链接用的颜色，两套主题共用；设置窗口后面的遮罩 */
+  --float-link: rgb(214 124 82); --scrim: rgb(0 0 0 / .4);
   /* 页面自己的短名，图谱、Pele 和 styles.css 用 */
   --bg: var(--background); --surface: var(--card); --fg: var(--foreground);
   --muted-fg: var(--muted-foreground); --field-border: var(--input); --danger: var(--destructive);

@@ -122,7 +122,7 @@ export default function FloatLayer({ mode, delay, width, disabled, onSelect, fon
     <div className="float-layer" ref={layer} data-ui="float-layer">
       {floats.map((f) => (
         <div key={f.id} className="float" data-float-id={f.id} data-ui="float" onPointerDown={() => raise(f.id)}
-          style={{ left: f.left, top: f.top, bottom: f.bottom, width: f.width, height: f.height, maxHeight: f.maxHeight, zIndex: f.z }}>
+          style={{ left: f.left, top: f.top, bottom: f.bottom, width: f.width, height: f.height, maxHeight: f.maxHeight, zIndex: f.z, "--float-ring": `var(--g-${files[f.card].group})` }}>
           <div className="float-head" data-ui="float.head" onPointerDown={drag(f)}
             onDoubleClick={(e) => { if (!e.target.closest("button, a")) update(f.id, (x) => ({ pinned: !x.pinned })); }}>
             <span className="min-w-0 flex-1 truncate" data-tip-clip>{files[f.card].title}</span>

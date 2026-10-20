@@ -156,6 +156,14 @@ await verify("浮窗：悬停弹出、嵌套、回到上一层时关掉更深的
     found = (await floats()) === 1 && (await page.locator(".float .float-body a[data-card]").count()) > 0;
   }
   assert.ok(found, "没有找到能嵌套的链接");
+  // 能弹浮窗的链接用专用色；浮窗外框里有一圈 2px 的分组色
+  assert.equal(await links.first().evaluate((a) => getComputedStyle(a).color), "rgb(214, 124, 82)");
+  assert.deepEqual(await page.locator(".float").evaluate((f) => {
+    const ring = getComputedStyle(f, "::after"), probe = document.createElement("i");
+    probe.style.color = f.style.getPropertyValue("--float-ring"); f.append(probe);
+    const group = getComputedStyle(probe).color; probe.remove();
+    return [ring.borderTopWidth, ring.borderTopColor === group, group === getComputedStyle(f).borderTopColor];
+  }), ["2px", true, false]);
   await page.locator(".float .float-body a[data-card]").first().hover(); await page.waitForTimeout(700);
   assert.equal(await floats(), 2);
   assert.deepEqual(await page.locator(".float").evaluateAll((els) => els.map((e) => e.style.zIndex > 0)), [true, true]);
@@ -235,14 +243,20 @@ const dragHandle = async (selector, x) => {
   await page.mouse.down(); await page.mouse.move(x, r.y + Math.min(100, r.height / 2), { steps: 8 }); await page.mouse.up();
   await page.waitForTimeout(100);
 };
-for (const key of ["Tab", "Shift+Tab", "Escape"]) await verify("设置菜单 " + key + " 关闭并保留焦点", async () => {
+await verify("设置窗口：Tab 留在窗口里，滑块按步长调整并记住，Esc 只关窗口", async () => {
   const chosen = await page.locator("[data-ui='scenes.graph']").evaluate(el => el._cyreg.cy.nodes(".chosen").map(n => n.id()));
   await page.click("[data-ui='topbar.settings']");
   await page.waitForTimeout(50);
-  assert.equal(await page.locator("[role='menuitemcheckbox']").evaluate(el => el === document.activeElement), true);
-  await page.keyboard.press(key); await page.waitForTimeout(50);
-  assert.equal(await page.locator("[role='menu']").count(), 0);
-  assert.equal(await page.evaluate(() => document.activeElement.dataset.ui), key === "Tab" ? "activity.home" : key === "Shift+Tab" ? "topbar.panel-toggle" : "topbar.settings");
+  const inside = () => page.evaluate(() => Boolean(document.activeElement.closest("[data-ui='settings']")));
+  for (let k = 0; k < 15; k++) { await page.keyboard.press("Tab"); assert.equal(await inside(), true); }
+  await page.locator("[data-ui='settings.float-delay'] [role='slider']").focus();
+  await page.keyboard.press("ArrowRight");
+  assert.equal(await page.locator("[data-ui='settings.float-delay-value']").innerText(), "600ms");
+  assert.equal(await page.evaluate(() => localStorage.getItem("float.delay")), "600");
+  await page.keyboard.press("ArrowLeft");
+  await page.keyboard.press("Escape"); await page.waitForTimeout(50);
+  assert.equal(await page.locator("[data-ui='settings']").count(), 0);
+  assert.equal(await page.evaluate(() => document.activeElement.dataset.ui), "topbar.settings");
   assert.deepEqual(await page.locator("[data-ui='scenes.graph']").evaluate(el => el._cyreg.cy.nodes(".chosen").map(n => n.id())), chosen);
 });
 await verify("搜索 Portal 结果可选，Esc 只关闭搜索", async () => {
@@ -403,12 +417,14 @@ await verify("置灰按钮用 aria-disabled，仍可悬停、聚焦及复制", a
   await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2);
   assert.ok((await page.evaluate(() => window.pickedTexts)).some(text => text.startsWith("panel.forward")));
 });
-await verify("选取模式跳过菜单和 Sonner 浮层", async () => {
+await verify("选取模式跳过设置窗口和 Sonner 浮层", async () => {
   const before = (await page.evaluate(() => window.pickedTexts)).length;
   await page.click("[data-ui='topbar.settings']");
-  assert.equal(await page.locator("[role='menu']").evaluate(el => el.hasAttribute("data-pick-ignore")), true);
-  await page.locator("[role='menuitemradio']").filter({ hasText: "浅色" }).click();
-  assert.equal(await page.locator("[role='menu']").count(), 0);
+  assert.deepEqual(await page.locator("[data-slot='dialog-overlay'], [data-slot='dialog-content']").evaluateAll(els => els.map(el => el.hasAttribute("data-pick-ignore"))), [true, true]);
+  await page.locator("[data-ui='settings.theme']").getByRole("radio", { name: "浅色" }).click();
+  assert.equal(await page.evaluate(() => document.documentElement.dataset.theme), "light");
+  await page.mouse.click(5, 450); await page.waitForTimeout(50);
+  assert.equal(await page.locator("[data-ui='settings']").count(), 0);
   const toaster = page.locator("[data-sonner-toaster]");
   assert.equal(await toaster.evaluate(el => Boolean(el.closest("[data-pick-ignore]"))), true);
   assert.equal((await page.evaluate(() => window.pickedTexts)).length, before);

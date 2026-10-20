@@ -5,9 +5,14 @@ export const store = {
 };
 
 // 设置里的四档字号；样式里按 <html data-font> 换 --fs 等变量
-export const fonts = [["s", "小（12px）"], ["m", "默认（13px）"], ["l", "大（14px）"], ["xl", "特大（16px）"]];
+export const fonts = [["s", "12px"], ["m", "13px"], ["l", "14px"], ["xl", "16px"]];
 
 // 设置里的浮窗：怎样弹出、悬停多久弹出、多宽
-export const floatModes = [["hover", "悬停弹出"], ["ctrl", "按住 Ctrl 悬停才弹出"], ["off", "关闭"]];
-export const floatDelays = [["300", "300ms"], ["500", "500ms"], ["800", "800ms"], ["1200", "1200ms"]];
-export const floatWidths = [["400", "400px"], ["480", "480px"], ["640", "640px"], ["800", "800px"]];
+// 延迟和宽度用滑块，范围和步长写在这里；记住的值不在范围内或不落在步长上时用默认值
+export const floatModes = [["hover", "悬停"], ["ctrl", "按住 Ctrl"], ["off", "关闭"]];
+export const floatDelay = { min: 200, max: 1500, step: 100, initial: 500, unit: "ms" };
+export const floatWidth = { min: 360, max: 960, step: 40, initial: 480, unit: "px" };
+export const savedNumber = (key, r) => {
+  const n = Number(store.get(key));
+  return Number.isInteger(n) && n >= r.min && n <= r.max && (n - r.min) % r.step === 0 ? n : r.initial;
+};
