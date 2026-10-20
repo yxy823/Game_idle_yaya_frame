@@ -154,7 +154,7 @@ export default function App() {
             else detail.current?.resize(shownWidth);
           }}>
         <ResizablePanel id="main" minSize={Math.min(mainMin, winWidth - activityWidth - (panelOpen ? panelMin : 0))}>
-        <main className="main h-full min-w-0 overflow-auto [scrollbar-gutter:stable] px-(--page-pad-x) py-(--page-pad-y)">
+        <main data-ui="main" className="main h-full min-w-0 overflow-auto [scrollbar-gutter:stable] px-(--page-pad-x) py-(--page-pad-y)">
           <section className="module h-full" data-ui={"module." + module}>
             <SearchSlot.Provider value={searchSlot}>
               {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}

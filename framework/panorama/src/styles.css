@@ -8,6 +8,8 @@
   /* Preflight 把标题的字号、字重都清成正文样式；字号由各处规则给，字重统一在这里加回 */
   h1, h2, h3, h4 { font-weight: 600; }
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  /* 滚动条用细款，滑块取次要文字色的半透明，轨道透明，深浅主题都不抢眼 */
+  * { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--muted-fg) 45%, transparent) transparent; }
   body.picking, body.picking * { cursor: crosshair !important; }
 }
 

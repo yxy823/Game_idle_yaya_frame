@@ -45,11 +45,11 @@ export default function QaModule({ selected, onSelect }) {
                 {data.qa.map((q, n) => q.file === t && shown[n] && (
                   <div key={n} className="relative flex">
                     {/* 卡片右上角的链接压在卡片上，卡片右边留出位置 */}
-                    <Button variant="card" size="none" className="card flex-1 pr-8" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
+                    <Button variant="card" size="none" className="card flex-1 pr-10" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
                       <span className="card-title">{q.title}</span>
                       <span className="card-purpose">{q.conclusion}</span>
                     </Button>
-                    <Button asChild variant="link" size="none"><a className="open qa-open absolute top-2 right-2 text-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><ExternalLinkIcon aria-hidden="true" /></a></Button>
+                    <Button asChild variant="link" size="none"><a className="open qa-open absolute top-1 right-1 text-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><ExternalLinkIcon aria-hidden="true" /></a></Button>
                   </div>
                 ))}
               </div>
