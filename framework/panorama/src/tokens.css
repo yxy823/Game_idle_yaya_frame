@@ -37,7 +37,7 @@
   --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 420px;
   --font-ui: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
   --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
-  --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
+  --z-float: 20; --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
   --z-resizer: 5;
   --panel-default: 420px; --panel-min: 240px; --main-min: 480px;
   --toc-default: 220px; --toc-min: 160px; --toc-max: 480px; --resize-step: 16px;

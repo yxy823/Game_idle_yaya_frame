@@ -72,7 +72,7 @@ const vscodeLink = (href) => ({ href, tip: "在 VSCode 里打开", icon: CodeIco
 const hover = (key) => ({ onMouseEnter: () => hoverNode(key), onMouseLeave: () => hoverNode(null) });
 
 function FileLink({ index, onSelect }) {
-  return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} {...hover(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
+  return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} {...hover(index)} data-float={index} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
 }
 
 // 每个目标只列一次，按第一次出现的顺序
@@ -95,7 +95,8 @@ function sides(into, out, node) {
   for (const n of right) n.both = left.some((l) => l.key === n.key);
   return { left: left.filter((n) => !rightKeys.has(n.key)), right };
 }
-const fileNode = (i) => ({ key: i, label: files[i].title, color: `var(--g-${files[i].group})` });
+// float 是悬停弹浮窗时显示的卡片编号
+const fileNode = (i) => ({ key: i, label: files[i].title, color: `var(--g-${files[i].group})`, float: i });
 const kindColor = (k) => `var(--p${docKinds.findIndex((g) => g.id === docNodes[k].kind) + 1})`;
 function fileSides(file) {
   return sides(incoming[file].filter((l) => l.from !== file).map((l) => ({ key: l.from, main: l.main, note: l.cond })),
@@ -181,7 +182,7 @@ function DocPanel({ k, onSelect, nav, font }) {
   const { left, right } = useMemo(() => sides(
     docEdges.filter((e) => e.to === k).map((e) => ({ key: docKey(e.from), note: e.label })),
     docEdges.filter((e) => e.from === k).map((e) => ({ key: docKey(e.to), note: e.label })),
-    (key) => ({ key, label: docNodes[docOf(key)].label, color: kindColor(docOf(key)) })), [k]);
+    (key) => ({ key, label: docNodes[docOf(key)].label, color: kindColor(docOf(key)), float: docNodes[docOf(key)].card ?? undefined })), [k]);
   const kind = docKinds.find((g) => g.id === n.kind);
   const sub = <><span className="dot" style={{ background: kindColor(k) }} aria-hidden="true"></span><span className="min-w-0 truncate">{kind.name}{n.card !== null ? " · 模板 " + files[n.card].path : ""}</span></>;
   return (

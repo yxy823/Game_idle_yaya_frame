@@ -132,6 +132,23 @@
   .panel-doc .hit-row:is(h1, h2, h3, h4, h5, h6) { background: var(--selection); }
   .panel-doc td:first-child { min-width: 5em; }
   .panel-doc tr.hit-row td { background: var(--selection); }
+  /* 浮窗：整层固定在页面上，只有浮窗本身接收鼠标；浮窗之间的上下顺序写在各自的 z-index 里，整层在菜单下面 */
+  .float-layer { position: fixed; inset: 0; z-index: var(--z-float); pointer-events: none; }
+  .float { position: absolute; pointer-events: auto; display: flex; flex-direction: column; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .float-head { flex: none; display: flex; align-items: center; gap: var(--space-0-5); height: calc(var(--control-h) + 4px);
+    padding: 0 var(--space-1) 0 var(--pad); border-bottom: 1px solid var(--border); background: var(--chrome); font-weight: 600; cursor: move; user-select: none; }
+  .float-head .icon-btn { cursor: pointer; }
+  .float-body { flex: 1; min-height: 0; max-width: none; overflow: auto; padding: var(--space-2) var(--pad) var(--space-3); line-height: 1.6; }
+  .float-body > div > h1:first-child { display: none; }
+  .float-body [id] { scroll-margin-top: var(--space-2); }
+  .float-resize { position: absolute; }
+  .float-resize-n, .float-resize-s { left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+  .float-resize-e, .float-resize-w { top: 6px; bottom: 6px; width: 6px; cursor: ew-resize; }
+  .float-resize-n { top: -3px; } .float-resize-s { bottom: -3px; } .float-resize-e { right: -3px; } .float-resize-w { left: -3px; }
+  .float-resize-ne, .float-resize-nw, .float-resize-se, .float-resize-sw { width: 10px; height: 10px; }
+  .float-resize-ne { top: -3px; right: -3px; cursor: nesw-resize; } .float-resize-sw { bottom: -3px; left: -3px; cursor: nesw-resize; }
+  .float-resize-nw { top: -3px; left: -3px; cursor: nwse-resize; } .float-resize-se { bottom: -3px; right: -3px; cursor: nwse-resize; }
   /* 问答“为什么”里的表格：详情面板底色是 --surface，表头换用 --accent */
   .panel-table { width: 100%; }
   .panel-table th, .panel-table td { border: 1px solid var(--border); padding: var(--space-1) var(--space-1-5); vertical-align: top; text-align: left; overflow-wrap: anywhere; }

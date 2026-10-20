@@ -138,6 +138,80 @@ await verify("文档关系：跳到不在本图里的文档，保留高亮并写
   await page.waitForTimeout(200);
   assert.equal(await docsCy(`return cy.nodes(".chosen").length;`), 0);
 });
+// 浮窗：悬停文档链接 500ms 后弹出；浮窗里的链接再弹一层；鼠标回到第一层时第二层关掉；钉住后移开不关；
+// 拖动标题栏自动钉住；点浮窗正文里的链接在详情面板打开，没钉住的关掉；按住 Alt 不弹；设置为关闭时不弹
+const floats = () => page.locator(".float").count();
+const away = async () => { await page.mouse.move(60, 780); await page.waitForTimeout(400); };
+await open("files");
+await page.locator("[data-ui='files.view-switch']").getByRole("tab", { name: "列表", exact: true }).click();
+// 第一张卡片前面已经选中过，再点会取消选中
+await page.locator(".cards .card").nth(1).click();
+await verify("浮窗：悬停弹出、嵌套、回到上一层时关掉更深的层", async () => {
+  // 找一个弹出后正文里还有文档链接的链接，才能试嵌套
+  const links = page.locator(".panel-doc a[data-card]");
+  let found = false;
+  for (let k = 0; k < Math.min(8, await links.count()) && !found; k++) {
+    await away();
+    await links.nth(k).hover(); await page.waitForTimeout(700);
+    found = (await floats()) === 1 && (await page.locator(".float .float-body a[data-card]").count()) > 0;
+  }
+  assert.ok(found, "没有找到能嵌套的链接");
+  await page.locator(".float .float-body a[data-card]").first().hover(); await page.waitForTimeout(700);
+  assert.equal(await floats(), 2);
+  assert.deepEqual(await page.locator(".float").evaluateAll((els) => els.map((e) => e.style.zIndex > 0)), [true, true]);
+  await page.locator(".float").first().locator(".float-head span").hover(); await page.waitForTimeout(400);
+  assert.equal(await floats(), 1);
+  await away();
+  assert.equal(await floats(), 0);
+});
+await verify("浮窗：钉住后移开不关，拖动标题栏自动钉住", async () => {
+  const link = page.locator(".panel-doc a[data-card]").first();
+  await link.hover(); await page.waitForTimeout(700);
+  await page.locator("[data-ui='float.pin']").click();
+  await away();
+  assert.equal(await floats(), 1);
+  await page.locator("[data-ui='float.close']").click();
+  assert.equal(await floats(), 0);
+  await link.hover(); await page.waitForTimeout(700);
+  const head = await page.locator(".float-head span").boundingBox();
+  await page.mouse.move(head.x + 10, head.y + 5); await page.mouse.down();
+  await page.mouse.move(head.x - 50, head.y + 45, { steps: 5 }); await page.mouse.up();
+  assert.equal(await page.locator("[data-ui='float.pin']").getAttribute("aria-pressed"), "true");
+  const moved = await page.locator(".float-head span").boundingBox();
+  assert.ok(Math.abs(moved.x - head.x + 60) < 2 && Math.abs(moved.y - head.y - 40) < 2, `${head.x},${head.y} → ${moved.x},${moved.y}`);
+  await away();
+  assert.equal(await floats(), 1);
+});
+await verify("浮窗：点正文里的链接在详情面板打开，钉住的留着，切换模块也留着", async () => {
+  const before = await page.locator(".panel-title").innerText();
+  await page.locator(".panel-doc a[data-card]").nth(1).hover(); await page.waitForTimeout(700);
+  assert.equal(await floats(), 2);
+  const target = page.locator(".float").nth(1).locator(".float-body a[data-card]").first();
+  const title = await target.evaluate((a) => a.dataset.card);
+  await target.click(); await page.waitForTimeout(200);
+  assert.equal(await floats(), 1);
+  assert.notEqual(await page.locator(".panel-title").innerText(), before, "详情面板没有换文档 " + title);
+  await open("qa");
+  assert.equal(await floats(), 1);
+  await page.locator("[data-ui='float.close']").click();
+  await open("files");
+});
+await verify("浮窗：按住 Alt 不弹，设置为关闭时不弹", async () => {
+  const link = page.locator(".panel-doc a[data-card]").first();
+  await away();
+  await page.keyboard.down("Alt"); await link.hover(); await page.waitForTimeout(700); await page.keyboard.up("Alt");
+  assert.equal(await floats(), 0);
+  await away();
+  await page.evaluate(() => localStorage.setItem("float.mode", "off"));
+  // 选中对象不随刷新保留，刷新后重新选一张卡片
+  await page.reload(); await page.waitForSelector("[data-ui='panel']");
+  await page.locator(".cards .card").nth(1).click();
+  await page.locator(".panel-doc a[data-card]").first().hover(); await page.waitForTimeout(700);
+  assert.equal(await floats(), 0);
+  await page.evaluate(() => localStorage.removeItem("float.mode"));
+  await page.reload(); await page.waitForSelector("[data-ui='panel']");
+});
+
 // 开发场景从顶栏搜索选中一个场景，场景衔接一节有条件和“主线”标记
 await open("scenes");
 await page.click("[data-ui='scenes.search']");

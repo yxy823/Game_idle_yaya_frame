@@ -9,7 +9,8 @@ import SettingsMenu from "./SettingsMenu.jsx";
 import { modules } from "./modules.jsx";
 import { SearchSlot } from "./PageSearch.jsx";
 import { Picker, ToastProvider, Tooltip, useToast } from "./overlays.jsx";
-import { fonts, store } from "./store.js";
+import { floatDelays, floatModes, fonts, store } from "./store.js";
+import FloatLayer from "./Float.jsx";
 import { Separator } from "@/components/ui/separator";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle, dimension } from "@/components/ui/resizable";
 import { PickingContext } from "./overlays.jsx";
@@ -52,6 +53,9 @@ export default function App() {
   const [theme, setTheme] = useState(() => { const t = store.get("theme") || "system"; applyTheme(t); return t; });
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
   const [picking, setPicking] = useState(() => store.get("picking") === "on");
+  const pickSaved = (list, key, fallback) => (list.some(([id]) => id === store.get(key)) ? store.get(key) : fallback);
+  const [floatMode, setFloatMode] = useState(() => pickSaved(floatModes, "float.mode", "hover"));
+  const [floatDelay, setFloatDelay] = useState(() => pickSaved(floatDelays, "float.delay", "500"));
   const [menuOpen, setMenuOpen] = useState(false);
   // 每个模块各记自己的选中历史：切回一个模块时，详情面板显示它上次选中的；没选过就是空状态。
   // 选中新对象时丢掉当前位置之后的记录，详情面板的后退、前进在本模块的记录里移动。
@@ -96,6 +100,7 @@ export default function App() {
     applyWidth(detail.current.getSize().inPixels + (e.key === "ArrowLeft" ? 1 : -1) * dimension("--resize-step"));
   };
   useEffect(() => store.set("picking", picking ? "on" : "off"), [picking]);
+  useEffect(() => { store.set("float.mode", floatMode); store.set("float.delay", floatDelay); }, [floatMode, floatDelay]);
   // 学习模块的章节切换写进浏览器历史；在别的模块按浏览器后退回到上一章时，切回学习模块
   useEffect(() => {
     const pop = (e) => { if (e.state && "chapter" in e.state) { openChapter(e.state.chapter, e.state.anchor); setModule("learn"); } };
@@ -131,7 +136,8 @@ export default function App() {
         </Button>
         <Separator orientation="vertical" className="h-(--space-5) self-center" />
         <SettingsMenu open={menuOpen} onOpenChange={setMenuOpen} picking={picking} onTogglePicking={() => setPicking(!picking)}
-          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }} font={font} onFont={(f) => { applyFont(f); setFont(f); }}>
+          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }} font={font} onFont={(f) => { applyFont(f); setFont(f); }}
+          floatMode={floatMode} onFloatMode={setFloatMode} floatDelay={floatDelay} onFloatDelay={setFloatDelay}>
         <Button variant="ghost" size="icon" className="icon-btn" aria-label="设置" data-tip="设置" data-ui="topbar.settings">
           <SettingsIcon aria-hidden="true" />
         </Button>
@@ -180,6 +186,8 @@ export default function App() {
       </footer>
 
       <PanelNotice notice={notice} panelOpen={panelOpen} />
+      {/* 钉住的浮窗切换模块时留着，所以浮窗层放在模块外面 */}
+      <FloatLayer mode={floatMode} delay={Number(floatDelay)} disabled={picking} onSelect={setSelected} font={font} />
       <Tooltip disabled={picking || menuOpen} />
       <Picker on={picking} />
     </PickingContext.Provider>

@@ -1,12 +1,12 @@
 import { useRef } from "react";
-import { fonts } from "./store.js";
+import { floatDelays, floatModes, fonts } from "./store.js";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Switch } from "@/components/ui/switch";
 
 const themes = [["system", "跟随系统"], ["light", "浅色"], ["dark", "深色"]];
 
 // 设置菜单（Radix DropdownMenu）：贴在设置按钮下方、右边对齐；↑↓ 在菜单项之间循环，点菜单外或按 Esc 关闭，焦点回到设置按钮。
-export default function SettingsMenu({ children, open, onOpenChange, picking, onTogglePicking, theme, onTheme, font, onFont }) {
+export default function SettingsMenu({ children, open, onOpenChange, picking, onTogglePicking, theme, onTheme, font, onFont, floatMode, onFloatMode, floatDelay, onFloatDelay }) {
   const content = useRef(null), nextFocus = useRef(null);
   const close = () => onOpenChange(false);
   // Radix 菜单里按 Tab 不移动焦点。这里改成和普通页面一样：Tab 关菜单并把焦点交给活动栏第一项，Shift+Tab 交给面板开关
@@ -37,6 +37,16 @@ export default function SettingsMenu({ children, open, onOpenChange, picking, on
       <DropdownMenuLabel>字号</DropdownMenuLabel>
       <DropdownMenuRadioGroup value={font} onValueChange={onFont}>
         {fonts.map(([id, name]) => <DropdownMenuRadioItem key={id} value={id}>{name}</DropdownMenuRadioItem>)}
+      </DropdownMenuRadioGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>浮窗（按住 Alt 不弹出）</DropdownMenuLabel>
+      <DropdownMenuRadioGroup value={floatMode} onValueChange={onFloatMode}>
+        {floatModes.map(([id, name]) => <DropdownMenuRadioItem key={id} value={id}>{name}</DropdownMenuRadioItem>)}
+      </DropdownMenuRadioGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>浮窗延迟</DropdownMenuLabel>
+      <DropdownMenuRadioGroup value={floatDelay} onValueChange={onFloatDelay}>
+        {floatDelays.map(([id, name]) => <DropdownMenuRadioItem key={id} value={id}>{name}</DropdownMenuRadioItem>)}
       </DropdownMenuRadioGroup>
     </DropdownMenuContent>
   </DropdownMenu>;

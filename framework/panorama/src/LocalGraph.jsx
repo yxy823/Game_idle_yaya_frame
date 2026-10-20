@@ -4,7 +4,7 @@ import { hoverNode } from "./Graph.jsx";
 // 详情面板里的关系图：当前对象在中间，左边是指向它的（开发场景里是上一步），右边是它指向的（下一步）。
 // 每侧最多 8 行，点多时向外再排一列；名称只写在最外一列点的外侧，放不下就截断，其余的点悬停看名称。
 // 主线画粗线；连线带条件或关系说明时，悬停连线显示。点一个点就选中它，悬停时主图谱上对应的点也高亮。
-// left、right 的每项：{ key, label, color, main, note, both }；both 为真表示两个方向都有连线，画两头箭头
+// left、right 的每项：{ key, label, color, main, note, both, float }；both 为真表示两个方向都有连线，画两头箭头；float 是悬停弹浮窗的卡片编号
 const ROWS = 8, ROW = 18, PAD = 10, INNER = 72;
 const css = (name) => parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
 // 估算文字宽度：汉字和全角符号按一个字号，其余按 0.6 个
@@ -72,7 +72,7 @@ export default function LocalGraph({ center, left, right, onSelect, font }) {
             const room = n.dir < 0 ? n.x - r - 4 - PAD : width - n.x - r - 4 - PAD;
             const text = n.outer ? clip(n.label, fs, room) : "";
             return (
-              <g key={"n" + n.key} className="lg-node" data-tip={n.label} onClick={() => onSelect(n.key)}
+              <g key={"n" + n.key} className="lg-node" data-tip={n.label} data-float={n.float} onClick={() => onSelect(n.key)}
                 onMouseEnter={() => hoverNode(n.key)} onMouseLeave={() => hoverNode(null)}>
                 <circle cx={n.x} cy={n.y} r={r} style={{ fill: n.color }} />
                 {text && <text x={n.x + n.dir * (r + 4)} y={n.y} dy="0.35em" textAnchor={n.dir < 0 ? "end" : "start"} style={{ fontSize: fs }}>{text}</text>}

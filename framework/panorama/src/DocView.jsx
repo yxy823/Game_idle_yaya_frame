@@ -6,7 +6,8 @@ import data from "virtual:panorama-data";
 import { fontSize } from "./Diagram.jsx";
 import { useToast } from "./overlays.jsx";
 
-// 一份文档的正文：HTML 在构建时由 tools/manual.js 的 renderHtml 生成，Mermaid 图用 Pele 渲染。学习模块和文件全景的阅读视图共用。
+// 一份文档的正文：HTML 在构建时由 tools/manual.js 的 renderHtml 生成，Mermaid 图用 Pele 渲染。学习模块、文件全景的阅读视图、详情面板和浮窗共用。
+// 同一份文档可能同时显示在几处，锚点只在本份正文里找
 // jump 是 { anchor } 或 { row } 对象，每次要滚动都换一个新对象：anchor 为空滚到开头，为 FIRST_MATCH 滚到第一处搜索命中；
 // row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）；heading 是标题文字，滚到这个标题并高亮（问答的一条）。
 // 正文里指向仓库文档的链接交给 onLink(卡片编号, 锚点)，由页面决定切换章节、打开文档还是滚动。
@@ -71,8 +72,8 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
     if (anchor === FIRST_MATCH) target?.classList.add("current");
     if (row || anchor === FIRST_MATCH) target?.scrollIntoView({ block: "center" });
     else if (target) target.scrollIntoView();
-    // 文件全景的阅读视图自己滚动（.doc-scroll），详情面板里随面板滚动，学习模块随主区域滚动
-    if (!target) (body.current.closest(".doc-scroll, .panel, .main")).scrollTop = 0;
+    // 文件全景的阅读视图自己滚动（.doc-scroll），详情面板里随面板滚动，浮窗里随浮窗正文滚动，学习模块随主区域滚动
+    if (!target) (body.current.closest(".doc-scroll, .panel, .float-body, .main")).scrollTop = 0;
   }, [card, jump]);
 
   const click = (e) => {
