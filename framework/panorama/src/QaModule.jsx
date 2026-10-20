@@ -14,35 +14,48 @@ export const qaPageUrl = (q) => `${pageOf(q.file)}#panel-${q.panel}`;
 
 const topics = [...new Set(data.qa.map((q) => q.file))];
 
-// 问答：按主题列出问题，点一条在详情面板显示结论、理由和依据。
+// 问答：按主题列出问题，点一条在详情面板显示结论、理由和依据。左侧目录列出主题，从问答数据里读，新增主题文件后自动出现。
 // 每张卡片和主题标题上都有“打开问答页”，详情面板收起时也能直接跳到问答页
 export default function QaModule({ selected, onSelect }) {
   const [query, setQuery] = useState("");
   const ws = words(query);
   const shown = data.qa.map((q) => matches(ws, q.title, q.conclusion, q.why));
   const count = shown.filter(Boolean).length;
+  const countOf = (t) => data.qa.filter((q, n) => q.file === t && shown[n]).length;
+  const listed = topics.filter((t) => countOf(t) > 0);
   return (
     <>
       <PageHead search={<PageSearch ui="qa.search" value={query} onChange={setQuery} placeholder="搜索问题、结论和理由" />}>
       {ws.length > 0 && <p className="lead">{count ? `搜索“${query.trim()}”：${count} 条` : "没有匹配的问答，换一个词或减少关键词。"}</p>}
       </PageHead>
-      {topics.filter((t) => data.qa.some((q, n) => q.file === t && shown[n])).map((t) => (
-        <section className="qa-topic" key={t} data-ui="qa.topic">
-          <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a>
-            <span className="count">{data.qa.filter((q, n) => q.file === t && shown[n]).length}</span></h2>
-          <div className="cards">
-            {data.qa.map((q, n) => q.file === t && shown[n] && (
-              <div key={n} className="qa-card">
-                <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
-                  <span className="card-title">{q.title}</span>
-                  <span className="card-purpose">{q.conclusion}</span>
-                </button>
-                <a className="open qa-open" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a>
+      <div className="side-layout">
+        <nav className="side-toc" aria-label="主题" data-ui="qa.toc">
+          {listed.map((t) => (
+            <button key={t} className="tree-row" onClick={() => document.getElementById("qa-topic-" + t).scrollIntoView({ block: "start" })}>
+              <span className="tree-name" data-tip-clip>{files[t].title}</span><span className="count">{countOf(t)}</span>
+            </button>
+          ))}
+        </nav>
+        <div>
+          {listed.map((t) => (
+            <section className="qa-topic" key={t} id={"qa-topic-" + t} data-ui="qa.topic">
+              <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a>
+                <span className="count">{countOf(t)}</span></h2>
+              <div className="cards">
+                {data.qa.map((q, n) => q.file === t && shown[n] && (
+                  <div key={n} className="qa-card">
+                    <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
+                      <span className="card-title">{q.title}</span>
+                      <span className="card-purpose">{q.conclusion}</span>
+                    </button>
+                    <a className="open qa-open" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </section>
-      ))}
+            </section>
+          ))}
+        </div>
+      </div>
     </>
   );
 }

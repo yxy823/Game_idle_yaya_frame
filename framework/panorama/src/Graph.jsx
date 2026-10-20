@@ -19,6 +19,7 @@ const css = (name) => getComputedStyle(document.documentElement).getPropertyValu
 // 斥力大、理想边长长、引力小，点才散得开，名称不叠在一起
 const FCOSE = { name: "fcose", animate: false, quality: "proof", nodeRepulsion: 45000, idealEdgeLength: 140,
   edgeElasticity: 0.3, gravity: 0.05, nodeSeparation: 120, numIter: 4000 };
+const MIN_SCALE = 0.5;
 
 // 按顺序挑要写名称的点，最多 limit 个；名称会和已挑的重叠就跳过
 function pickLabels(cy, list, limit) {
@@ -27,7 +28,7 @@ function pickLabels(cy, list, limit) {
     if (picked.length === limit) break;
     const { x, y } = n.position();
     const fs = parseFloat(css("--fs"));
-    const w = (n.data("label").length * fs + 8) / z, h = (fs + 9) / z, top = y + n.data("size") / 2;
+    const w = (n.data("label").length * fs + 8) / z, h = (fs + 9) / z, top = y + n.height() / 2;
     const box = [x - w / 2, top, x + w / 2, top + h];
     if (boxes.some((b) => box[0] < b[2] && b[0] < box[2] && box[1] < b[3] && b[1] < box[3])) continue;
     boxes.push(box); picked.push(n);
@@ -37,7 +38,7 @@ function pickLabels(cy, list, limit) {
 
 const foldTip = "只看邻居时不能折叠，先返回全图";
 
-function style(legend, directed) {
+function style(legend, directed, foldable) {
   const colors = Object.fromEntries(legend.map((g) => [g.id, css(g.color)]));
   const edgeColor = (e) => colors[e.source().data("group")];
   // 写出的名称按缩放反算字号，屏幕上始终和正文一样大（设置里的字号），缩得再小也看得清
@@ -50,6 +51,10 @@ function style(legend, directed) {
       label: "", color: css("--fg"), "font-size": fs, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
       "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": 2,
     } },
+    // 可折叠的图缩得很小时，展开后的场景按屏幕像素保底，不小于本身尺寸的一半，和折叠后的大点差得不太悬殊
+    ...(foldable ? [{ selector: "node", style: {
+      width: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()),
+      height: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()) } }] : []),
     { selector: "edge", style: directed
       ? { width: 1, "line-color": edgeColor, opacity: 0.35, "curve-style": "bezier", "line-style": "dashed", "line-dash-pattern": [6, 4],
         "target-arrow-shape": "triangle", "target-arrow-color": edgeColor, "arrow-scale": 0.8 }
@@ -123,7 +128,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     const cy = cytoscape({
       container: box.current,
       elements: nodes.map((n) => ({ data: { id: "n" + n.i, key: n.i, label: n.label, group: n.group, size: n.size }, position: saved?.[n.i] })),
-      style: style(legend, directed),
+      style: style(legend, directed, foldable),
       layout: { name: "preset" },
       minZoom: 0.1, maxZoom: 4, boxSelectionEnabled: false,
     });
@@ -148,7 +153,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       const key = e.target.data("key");
       onSelect(key === selectedRef.current ? null : key);
     });
-    cy.on("zoom", () => cy.elements(".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
+    cy.on("zoom", () => cy.elements(foldable ? "node, .merged, edge[?label], edge.near" : ".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
     // 提示元素先记下来：卸载时 React 已经清空 tipRef，清理函数里还要用它
     let tipTimer = 0;
@@ -173,7 +178,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     return () => { hideTip(); resize.disconnect(); cy.destroy(); };
   }, [cacheKey, nodes, edges, legend, directed, foldable, onSelect]);
 
-  useEffect(() => { cyRef.current.style(style(legend, directed)); }, [theme, font, legend, directed]);
+  useEffect(() => { cyRef.current.style(style(legend, directed, foldable)); }, [theme, font, legend, directed, foldable]);
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
 
   const inGraph = selected !== null && Object.hasOwn(groupOf, selected);

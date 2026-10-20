@@ -51,12 +51,13 @@ export default function LearnModule({ onSelect, font }) {
   };
   const link = (card, anchor) => { if (chapterOf.has(card)) go(chapterOf.get(card), anchor); else onSelect(card); };
   const next = chapters[chapter + 1];
+  const hitNav = ws.length > 0 && hits > 0;
   // 外面再包一层：.module 只有主区域高，固定的标题行要放在和正文一样高的容器里才能一直固定
   return (
     <div>
     <div className="sticky-head">
       <PageHead search={<PageSearch ui="learn.search" value={query} onChange={setQuery} placeholder="在手册各章里搜索" results={results} onPick={(r) => go(r.key, FIRST_MATCH)} />}>
-        {ws.length > 0 && hits > 0 && (
+        {hitNav && (
           <div className="hit-nav" data-ui="learn.hit-nav">
             <span className="count">本章第 {at + 1}/{hits} 处</span>
             <button className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><IconChevronUp aria-hidden="true" /></button>
@@ -65,14 +66,14 @@ export default function LearnModule({ onSelect, font }) {
         )}
       </PageHead>
     </div>
-    <div className="learn">
-      <nav className="learn-toc" aria-label="章节" data-ui="learn.toc">
+    <div className={"side-layout" + (hitNav ? " has-head" : "")}>
+      <nav className="side-toc" aria-label="章节" data-ui="learn.toc">
         {groups.map((g) => (
           <div key={g}>
-            <div className="learn-group">{g}</div>
+            <div className="side-group">{g}</div>
             {chapters.map((c, k) => c.group === g && (
               <button key={k} className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
-                <span className="tree-name">{files[c.card].title}</span>
+                <span className="tree-name" data-tip-clip>{files[c.card].title}</span>
               </button>
             ))}
           </div>

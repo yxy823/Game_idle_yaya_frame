@@ -22,6 +22,7 @@ export function ToastProvider({ children }) {
 }
 
 // 悬浮提示：400ms 延迟；300ms 内移到相邻元素时立即显示。活动栏的提示放在按钮右边，其余放在下方。
+// 带 data-tip-clip 的元素只在文字被截断时提示，内容就是它的全文
 export function Tooltip({ disabled }) {
   const ref = useRef(null);
   useEffect(() => {
@@ -30,7 +31,7 @@ export function Tooltip({ disabled }) {
     const hide = () => { clearTimeout(timer); if (!tip.hidden) leftAt = Date.now(); tip.hidden = true; current = null; };
     const place = (el) => {
       const r = el.getBoundingClientRect();
-      tip.textContent = el.dataset.tip; tip.hidden = false;
+      tip.textContent = el.dataset.tip ?? el.textContent; tip.hidden = false;
       let left = r.left + r.width / 2 - tip.offsetWidth / 2, top = r.bottom + 6;
       left = Math.max(8, Math.min(left, innerWidth - tip.offsetWidth - 8));
       if (top + tip.offsetHeight > innerHeight - 8) top = r.top - 6 - tip.offsetHeight;
@@ -38,7 +39,8 @@ export function Tooltip({ disabled }) {
       tip.style.left = left + "px"; tip.style.top = top + "px";
     };
     const over = (e) => {
-      const el = e.target.closest("[data-tip]");
+      let el = e.target.closest("[data-tip], [data-tip-clip]");
+      if (el && !("tip" in el.dataset) && el.scrollWidth <= el.clientWidth) el = null;
       if (el === current) return;
       hide();
       if (!el || disabled) return;

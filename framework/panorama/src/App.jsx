@@ -10,6 +10,9 @@ import { SearchSlot } from "./PageSearch.jsx";
 import { Picker, ToastProvider, Tooltip, useToast } from "./overlays.jsx";
 import { fonts, store } from "./store.js";
 
+// 页面名称按最长的模块名留宽度，切换模块时右边的搜索按钮不移位
+const titleChars = Math.max(...modules.map((m) => m.label.length));
+
 // 页面布局照 VSCode：顶栏、左侧活动栏、主区域、右侧详情面板、底部状态栏。
 // 详情面板收起时只隐藏、不移走，其他元素的位置不变。
 // 主题直接写到 <html> 上，不等 React 的副作用：子组件（图谱）的副作用先于 App 执行，会读到旧主题的颜色
@@ -111,7 +114,7 @@ export default function App() {
     <ToastProvider>
       <header className="topbar" data-ui="topbar">
         <img className="brand" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
-        <span className="title" data-ui="topbar.title">{current.label}</span>
+        <span className="title" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
         <span className="search-slot" ref={setSearchSlot}></span>
         <span className="spacer"></span>
         <button className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"

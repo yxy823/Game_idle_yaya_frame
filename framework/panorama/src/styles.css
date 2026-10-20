@@ -47,7 +47,7 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 
 .topbar { display: flex; align-items: center; gap: 8px; padding: 0 8px; background: var(--chrome);
   border-bottom: 1px solid var(--border); }
-.topbar .title { font-weight: 600; padding: 0 4px; white-space: nowrap; }
+.topbar .title { font-weight: 600; padding: 0 4px; white-space: nowrap; width: calc(var(--title-chars) * 1em + 8px); flex: none; }
 .topbar .spacer { flex: 1; }
 .search-slot { display: flex; align-items: center; }
 .topbar .search-list { left: 0; right: auto; }
@@ -171,6 +171,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .tree-row .twisty { width: 16px; display: inline-grid; place-items: center; color: var(--muted-fg); }
 .tree-row .twisty svg.tabler-icon { width: 12px; height: 12px; }
 .tree-name { overflow: hidden; text-overflow: ellipsis; }
+.tree-name[data-tip-clip] { flex: 1; min-width: 0; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
 .card { display: flex; flex-direction: column; gap: 4px; padding: 10px; text-align: left; cursor: pointer;
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
@@ -179,6 +180,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .card-title { font-weight: 600; display: flex; align-items: center; }
 .card-purpose { color: var(--muted-fg); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .qa-topic h2 { display: flex; align-items: center; font-size: var(--fs); margin: 16px 0 8px; }
+.qa-topic:first-child h2 { margin-top: 0; }
 .panel-actions { padding: 8px 12px; }
 .diagram-link { cursor: pointer; }
 .diagram-link:hover { filter: brightness(0.92); }
@@ -267,10 +269,12 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .link-btn:hover { text-decoration: underline; }
 
 /* 学习：左边章节目录，右边正文 */
-.learn { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
-.learn-toc { position: sticky; top: calc(var(--control-h) + 16px); max-height: calc(100vh - 120px); overflow: auto; border-right: 1px solid var(--border); padding-right: 4px; }
-.learn-toc .tree-row { padding-left: 8px; }
-.learn-group { padding: 8px 8px 2px; font-size: var(--fs-small); color: var(--muted-fg); }
+.side-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px; align-items: start; }
+/* 目录顶端和正文第一行对齐；有“上一处”“下一处”的标题行时，停在标题行下面 */
+.side-toc { position: sticky; top: 0; max-height: calc(100vh - var(--bar-h) - 24px - 32px); overflow: auto; border-right: 1px solid var(--border); padding-right: 4px; }
+.side-layout.has-head .side-toc { top: calc(var(--control-h) + 16px); max-height: calc(100vh - var(--bar-h) - 24px - 32px - var(--control-h) - 16px); }
+.side-toc .tree-row { padding-left: 8px; }
+.side-group { padding: 8px 8px 2px; font-size: var(--fs-small); color: var(--muted-fg); }
 .learn-body { max-width: 52em; line-height: 1.7; }
 .learn-body h1 { font-size: calc(var(--fs) + 5px); margin: 0 0 12px; }
 .learn-body h2 { font-size: calc(var(--fs) + 2px); margin: 28px 0 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
