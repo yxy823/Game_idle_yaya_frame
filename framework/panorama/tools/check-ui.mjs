@@ -237,6 +237,8 @@ await verify("问答详情只显示选中的这一条", async () => {
   assert.ok((await doc.innerText()).includes("结论"));
   assert.equal(await doc.locator("p").filter({ hasText: titles[0] }).count(), 0);
   assert.equal(await page.locator(".panel-title").innerText(), titles[1]);
+  // 图表系列色取设计变量，不用 Pele 自带的颜色
+  assert.equal(await page.evaluate(() => { const el = document.createElement("div"); el.className = "pele"; document.body.append(el); const v = getComputedStyle(el).getPropertyValue("--pele-series-1").trim(); el.remove(); return v; }), "#4e79a7");
 });
 
 // 开发场景从顶栏搜索选中一个场景，场景衔接一节有条件和“主线”标记

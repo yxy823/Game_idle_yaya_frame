@@ -53,6 +53,9 @@
   --primary: #262626; --primary-foreground: #fafafa; --destructive: #b91c1c;
   --selection: #d4d4d4; --pick: #c62b63; --pick-fg: #fafafa; --tip-bg: #171717; --tip-fg: #fafafa;
   --shadow: 0 4px 12px rgb(23 23 23 / .16);
+  /* 图表的系列色（Mermaid 时间线、柱状图、饼图），浅色主题用 Tableau 10 的前 8 色 */
+  --chart-1: #4e79a7; --chart-2: #f28e2b; --chart-3: #e15759; --chart-4: #76b7b2;
+  --chart-5: #59a14f; --chart-6: #edc948; --chart-7: #b07aa1; --chart-8: #ff9da7;
   --ring: var(--primary); --secondary: var(--accent); --secondary-foreground: var(--foreground); --accent-foreground: var(--foreground);
   --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
   /* 能弹浮窗的文档链接用的颜色，两套主题共用；设置窗口后面的遮罩 */
@@ -62,12 +65,15 @@
   --muted-fg: var(--muted-foreground); --field-border: var(--input); --danger: var(--destructive);
   color-scheme: light;
 }
+/* 深色主题的图表系列色用 Paul Tol 的 light 色板：图上色块里的文字是页面底色（深色主题里近黑），色块要浅才看得清 */
 :root[data-theme="dark"] {
   --background: #171717; --card: #262626; --chrome: #1a1a1a; --muted: #303030; --accent: #333333;
   --foreground: #fafafa; --muted-foreground: #b3b3b3; --border: #404040; --input: #a3a3a3;
   --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
   --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
   --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  --chart-1: #77aadd; --chart-2: #ee8866; --chart-3: #ffaabb; --chart-4: #99ddff;
+  --chart-5: #44bb99; --chart-6: #eedd88; --chart-7: #bbcc33; --chart-8: #aaaa00;
   color-scheme: dark;
 }
 /* 设置里的字号：按钮和行高跟着文字变，避免文字被截掉 */
@@ -81,6 +87,8 @@
     --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
     --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
     --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  --chart-1: #77aadd; --chart-2: #ee8866; --chart-3: #ffaabb; --chart-4: #99ddff;
+  --chart-5: #44bb99; --chart-6: #eedd88; --chart-7: #bbcc33; --chart-8: #aaaa00;
     color-scheme: dark;
   }
 }
@@ -113,4 +121,6 @@
 /* Mermaid 图由 Pele 渲染，颜色取页面的语义变量，换主题时不用重画。--pele-bg 是连线说明的底色，用页面底色才能盖住穿过说明的线 */
 .pele { --pele-bg: var(--bg); --pele-fg: var(--fg); --pele-muted: var(--muted-fg); --pele-line: var(--muted-fg);
   --pele-surface: var(--surface); --pele-surface-alt: var(--accent); --pele-border: var(--field-border); --pele-accent: var(--primary);
-  --pele-error: var(--danger); --pele-font: var(--font-ui); --pele-radius: var(--radius); }
+  --pele-error: var(--danger); --pele-font: var(--font-ui); --pele-radius: var(--radius);
+  --pele-series-1: var(--chart-1); --pele-series-2: var(--chart-2); --pele-series-3: var(--chart-3); --pele-series-4: var(--chart-4);
+  --pele-series-5: var(--chart-5); --pele-series-6: var(--chart-6); --pele-series-7: var(--chart-7); --pele-series-8: var(--chart-8); }
