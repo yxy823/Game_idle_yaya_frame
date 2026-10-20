@@ -74,9 +74,9 @@ export default function App() {
   useEffect(() => store.set("module", module), [module]);
   useEffect(() => store.set("panel", panelOpen ? "open" : "closed"), [panelOpen]);
   useEffect(() => store.set("panel-w", String(panelWidth)), [panelWidth]);
-  // 窗口窄到主区域不足 480px 时先收起面板（按默认 320px 宽算），开关状态和实际一致；之后要看面板可以再展开
+  // 窗口窄到主区域不足 480px 时先收起面板（按默认 420px 宽算），开关状态和实际一致；之后要看面板可以再展开
   useEffect(() => {
-    const narrow = matchMedia("(max-width: 844px)");
+    const narrow = matchMedia("(max-width: 944px)");
     const fold = () => { if (narrow.matches) setPanelOpen(false); };
     fold();
     narrow.addEventListener("change", fold);
@@ -163,7 +163,7 @@ export default function App() {
         </main>
         </ResizablePanel>
         <ResizableHandle disableDoubleClick className={panelOpen ? "" : "hidden"} onDoubleClick={() => applyWidth(panelDefault)} onKeyDownCapture={resizeKey}
-          aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />
+          aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 420px" data-ui="panel.resizer" />
         <ResizablePanel id="detail" panelRef={detail} defaultSize={shownWidth} minSize={panelOpen ? panelMin : 0} maxSize={panelOpen ? limit : 0}
           groupResizeBehavior="preserve-pixel-size" inert={!panelOpen} className="h-full [&>.panel]:h-full">
         <DetailPanel file={selected} onSelect={setSelected} font={font}

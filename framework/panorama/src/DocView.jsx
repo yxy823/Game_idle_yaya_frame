@@ -8,7 +8,7 @@ import { useToast } from "./overlays.jsx";
 
 // 一份文档的正文：HTML 在构建时由 tools/manual.js 的 renderHtml 生成，Mermaid 图用 Pele 渲染。学习模块和文件全景的阅读视图共用。
 // jump 是 { anchor } 或 { row } 对象，每次要滚动都换一个新对象：anchor 为空滚到开头，为 FIRST_MATCH 滚到第一处搜索命中；
-// row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）。
+// row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）；heading 是标题文字，滚到这个标题并高亮（问答的一条）。
 // 正文里指向仓库文档的链接交给 onLink(卡片编号, 锚点)，由页面决定切换章节、打开文档还是滚动。
 // inPanel(卡片编号) 为真的链接在详情面板打开，后面加面板图标，和页面内切换的链接区分。onHits(命中数) 在每次高亮后调用。
 export const FIRST_MATCH = "#first-match";
@@ -63,7 +63,8 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
   useEffect(() => { mark(key ? key.split(" ") : []); }, [key]);
   useEffect(() => {
     const anchor = jump?.anchor;
-    const row = jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row);
+    const row = (jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row))
+      || (jump?.heading && [...body.current.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((h) => h.textContent.trim() === jump.heading));
     row?.classList.add("hit-row");
     const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && document.getElementById(anchor));
     // 第一处命中和“上一处”“下一处”一样加深高亮并滚到中间，不被顶上固定的标题行挡住

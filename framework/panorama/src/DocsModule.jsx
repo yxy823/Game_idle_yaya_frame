@@ -10,6 +10,7 @@ export const docKey = (k) => "doc:" + k;
 export const docOf = (selected) => (typeof selected === "string" && selected.startsWith("doc:") ? Number(selected.slice(4)) : null);
 export const docNodes = nodes;
 export const docEdges = edges;
+export const docKinds = kinds;
 
 const degree = nodes.map((_, k) => edges.filter((e) => e.from === k || e.to === k).length);
 const graph = {

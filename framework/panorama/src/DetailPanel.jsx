@@ -1,19 +1,21 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import { ArrowLeftIcon, ArrowRightIcon, TriangleIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, CodeIcon, ExternalLinkIcon, TriangleIcon } from "lucide-react";
 import DocView from "./DocView.jsx";
+import LocalGraph from "./LocalGraph.jsx";
 import { files, groupName, incoming, outgoing, paras, vscodePath, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
-import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
+import { docEdges, docKey, docKinds, docNodes, docOf } from "./DocsModule.jsx";
 import { entryOf } from "./SearchModule.jsx";
 import { store } from "./store.js";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { hoverNode, useShownGraph } from "./Graph.jsx";
 
+// 右侧详情面板显示选中对象的原文：标题行、关系图、全文，最后是收起的“被引用处”。
+// 选中值有四种：文档的卡片编号；"qa:编号" 是问答的一条；"doc:编号" 是文档关系图的点；"entry:编号" 是术语表、工具表的一行。
+// 全文里的文档链接在面板里打开那篇，所以顺着链接一路读下去时，面板的后退、前进就是走过的路。
+
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
-// 小节里只有一组、组名和小节标题相同时，不写组名。
 // 层级靠字号和间距分开：小节标题比正文大 1px 并加粗，组名用小字次要色；小节之间 12px，组之间 8px，组名到内容 2px
 function Row({ name, children }) {
   return <div className="row grid min-h-(--control-h) grid-cols-[64px_1fr] items-start gap-2 px-(--pad)"><span className="name text-xs leading-(--control-h) text-muted-foreground">{name}</span><span className="value pt-[5px] leading-normal [overflow-wrap:anywhere]">{children}</span></div>;
@@ -22,11 +24,12 @@ function Group({ name, children }) {
   return <div className="group px-(--pad) pb-2">{name && <div className="group-name mb-0.5 pt-0.5 text-xs text-muted-foreground">{name}</div>}{children}</div>;
 }
 
-// 超过 20 条的小节默认收起，否则一节就占满整个面板
-function Section({ title, ui, count, children }) {
-  const [open, setOpen] = useState(count === undefined || count <= 20);
+// 可折叠的小节。给出 store 时记住开合状态（关系图），否则按 open 的初值
+function Section({ title, ui, count, open: initial = true, store: key, children }) {
+  const [open, setOpen] = useState(() => (key ? store.get(key) !== "closed" : initial));
+  const toggle = (v) => { setOpen(v); if (key) store.set(key, v ? "open" : "closed"); };
   return (
-    <Collapsible className="section" open={open} data-ui={ui} onOpenChange={setOpen}>
+    <Collapsible className="section" open={open} data-ui={ui} onOpenChange={toggle}>
       <CollapsibleTrigger asChild><Button variant="ghost" size="none" className="section-trigger h-(--control-h) w-full justify-start gap-0 rounded-none border-0 px-(--pad) text-[length:calc(var(--fs)+1px)] font-semibold">
         <span className="twisty -ml-3 inline-grid place-items-center w-3 text-muted-foreground [&>svg]:size-2!"><TriangleIcon className={"fill-current stroke-0 " + (open ? "rotate-180" : "rotate-90")} aria-hidden="true" /></span>
         <span className="section-title">{title}</span>{count !== undefined && <span className="count">{count}</span>}
@@ -36,34 +39,88 @@ function Section({ title, ui, count, children }) {
   );
 }
 
-// 面板标题行：名称和后退、前进，固定在面板顶上，长文档滚到下面时按钮也在；后退、前进在本模块选中过的对象之间移动。
-// 选中的对象不在当前图谱里时，标题行下面写一行说明，图上仍突出上一个选中的点
-function Head({ title, nav }) {
+// 面板标题行：名称、去处按钮和后退、前进，固定在面板顶上，长文档滚到下面时按钮也在；后退、前进在本模块选中过的对象之间移动。
+// 下面一行小字写分组和路径。选中的对象不在当前图谱里时，再写一行说明，图上仍突出上一个选中的点
+function Head({ title, nav, links = [], sub }) {
   return (
     <>
-    <div className="sticky top-0 z-2 mb-1 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
-      <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
-      <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
-        onClick={() => nav.onBack?.()} data-ui="panel.back"><ArrowLeftIcon aria-hidden="true" /></Button>
-      <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
-        onClick={() => nav.onForward?.()} data-ui="panel.forward"><ArrowRightIcon aria-hidden="true" /></Button>
-    </div>
-    {nav.away && <p className="px-(--pad) pb-1 text-xs text-muted-foreground" data-ui="panel.away">不在本图里</p>}
+      <div className="sticky top-0 z-2 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
+        <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
+        {links.map(({ href, tip, icon: Icon, ui, blank }) => (
+          <Button key={ui} asChild variant="ghost" size="icon" className="icon-btn"><a href={href} aria-label={tip} data-tip={tip} data-ui={ui} {...(blank ? { target: "_blank", rel: "noreferrer" } : {})}><Icon aria-hidden="true" /></a></Button>
+        ))}
+        <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
+          onClick={() => nav.onBack?.()} data-ui="panel.back"><ArrowLeftIcon aria-hidden="true" /></Button>
+        <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
+          onClick={() => nav.onForward?.()} data-ui="panel.forward"><ArrowRightIcon aria-hidden="true" /></Button>
+      </div>
+      {sub && <div className="flex min-w-0 items-center px-(--pad) pt-1.5 text-xs text-muted-foreground" data-ui="panel.sub">{sub}</div>}
+      {nav.away && <p className="px-(--pad) pt-0.5 text-xs text-muted-foreground" data-ui="panel.away">不在本图里</p>}
     </>
   );
 }
+
+// 文档的分组和路径
+function FileSub({ file, line }) {
+  const f = files[file];
+  return <><span className={"dot g-" + f.group} aria-hidden="true"></span><span className="flex-none">{groupName[f.group]}</span><span className="mx-1.5 flex-none">·</span>
+    <span className="min-w-0 truncate" data-tip-clip>{f.path}{line ? ":" + line : ""}</span></>;
+}
+const vscodeLink = (href) => ({ href, tip: "在 VSCode 里打开", icon: CodeIcon, ui: "panel.vscode" });
+
+// 悬停一项时，图谱上对应的点高亮并写名称
+const hover = (key) => ({ onMouseEnter: () => hoverNode(key), onMouseLeave: () => hoverNode(null) });
 
 function FileLink({ index, onSelect }) {
   return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} {...hover(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
 }
 
-// 悬停关系列表里的一项时，图谱上对应的点高亮并写名称
-const hover = (key) => ({ onMouseEnter: () => hoverNode(key), onMouseLeave: () => hoverNode(null) });
-
 // 每个目标只列一次，按第一次出现的顺序
 const unique = (list, key) => list.filter((x, i) => list.findIndex((y) => key(y) === key(x)) === i);
 
-// 引用它的那一段原文：指向当前文档的链接高亮，点它跳到来源卡片
+// 关系图的两侧：左边指向当前对象的，右边当前对象指向的；同一个对象两个方向都有时只放右边，画两头箭头。主线排在前面，先写名称
+function sides(into, out, node) {
+  const merge = (list) => {
+    const m = new Map();
+    for (const { key, main, note } of list) {
+      const n = m.get(key) || { ...node(key), main: false, notes: [] };
+      n.main ||= Boolean(main);
+      if (note && !n.notes.includes(note)) n.notes.push(note);
+      m.set(key, n);
+    }
+    return [...m.values()].map(({ notes, ...n }) => ({ ...n, note: notes.join("；") })).sort((a, b) => b.main - a.main);
+  };
+  const right = merge(out), rightKeys = new Set(right.map((n) => n.key));
+  const left = merge(into);
+  for (const n of right) n.both = left.some((l) => l.key === n.key);
+  return { left: left.filter((n) => !rightKeys.has(n.key)), right };
+}
+const fileNode = (i) => ({ key: i, label: files[i].title, color: `var(--g-${files[i].group})` });
+const kindColor = (k) => `var(--p${docKinds.findIndex((g) => g.id === docNodes[k].kind) + 1})`;
+function fileSides(file) {
+  return sides(incoming[file].filter((l) => l.from !== file).map((l) => ({ key: l.from, main: l.main, note: l.cond })),
+    outgoing[file].filter((l) => l.to !== file).map((l) => ({ key: l.to, main: l.main, note: l.cond })), fileNode);
+}
+
+function GraphSection({ center, left, right, onSelect, font }) {
+  return (
+    <Section title="关系" ui="panel.links" count={left.length + right.length} store="panel.graph">
+      <LocalGraph center={center} left={left} right={right} onSelect={onSelect} font={font} />
+    </Section>
+  );
+}
+
+// 全文：链接到别的文档时在面板里打开那篇；链接到本文的锚点时只滚动
+function Doc({ card, jump: initial, onSelect, font }) {
+  const [jump, setJump] = useState(initial);
+  return (
+    <article className="learn-body panel-doc" data-ui="panel.doc">
+      <DocView card={card} jump={jump} font={font} onLink={(i, anchor) => (i === card ? setJump({ anchor }) : onSelect(i))} />
+    </article>
+  );
+}
+
+// 引用它的那一段原文：指向当前文档的链接高亮，点它跳到来源文档
 function Quote({ link, current, onSelect }) {
   const p = paras[link.para];
   return (
@@ -79,84 +136,80 @@ function Quote({ link, current, onSelect }) {
     </div>
   );
 }
+// 被引用处放在全文后面，默认收起，因为它是别的文档怎样引用这篇，读全文时用不到
+function Cited({ file, onSelect }) {
+  const cited = unique(incoming[file].filter((l) => l.from !== file), (l) => l.para);
+  if (!cited.length) return null;
+  return (
+    <Section title="被引用处" ui="panel.cited" count={cited.length} open={false}>
+      {cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)}
+    </Section>
+  );
+}
 
-// 问答的详情：结论、为什么、依据；按钮在新标签页打开问答页里的这一条
-function QaPanel({ q, onSelect, nav }) {
+// 文档：标题行、关系图、全文、被引用处
+function FilePanel({ file, onSelect, nav, font }) {
+  const f = files[file];
+  const { left, right } = useMemo(() => fileSides(file), [file]);
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <Head title={q.title} nav={nav} />
-      <div className="px-3 py-2">
-        <Button asChild variant="default"><a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a></Button>
-      </div>
-      <Section title="回答" ui="panel.answer">
-        <Group name="结论"><p className="text">{q.conclusion}</p></Group>
-        {q.whyParts.length > 0 && (
-          <Group name="为什么">
-            {q.whyParts.map((part, i) => (part.items ? <ul key={i} className="text">{part.items.map((t, j) => <li key={j}>{t}</li>)}</ul>
-              : part.rows ? (
-                <table key={i} className="text panel-table">
-                  <thead><tr>{part.rows[0].map((c, j) => <th key={j}>{c}</th>)}</tr></thead>
-                  <tbody>{part.rows.slice(1).map((r, j) => <tr key={j}>{r.map((c, m) => <td key={m}>{c}</td>)}</tr>)}</tbody>
-                </table>
-              ) : <p key={i} className="text">{part.text}</p>))}
-          </Group>
-        )}
-      </Section>
-      <Section title="关联" ui="panel.qa-links">
-        <Row name="主题"><FileLink index={q.file} onSelect={onSelect} /></Row>
-        {q.basis.length > 0 && <Group name="依据"><ul className="plain">{q.basis.map((i) => <li key={i}><FileLink index={i} onSelect={onSelect} /></li>)}</ul></Group>}
-        <Row name="原文"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(q.file, q.line)} data-tip="在 VSCode 里打开这一行">{files[q.file].path}:{q.line}</a></Button></Row>
-      </Section>
+      <Head title={f.title} nav={nav} links={[vscodeLink(vscodeUrl(file))]} sub={<FileSub file={file} />} />
+      <GraphSection center={fileNode(file)} left={left} right={right} onSelect={onSelect} font={font} />
+      <Doc card={file} onSelect={onSelect} font={font} />
+      <Cited file={file} onSelect={onSelect} />
     </aside>
   );
 }
 
-// 文档关系图里一个节点的详情：介绍、路径、模板文件，以及进出的关系和关系说明
-function DocPanel({ k, onSelect, nav }) {
-  const n = docNodes[k];
-  const out = docEdges.filter((e) => e.from === k), into = docEdges.filter((e) => e.to === k);
-  const rel = (e, end) => (
-    <li key={e.from + "-" + e.to + "-" + e.line}>
-      {e.label && <div className="cond">{e.label}</div>}
-      <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(docKey(e[end]))} {...hover(docKey(e[end]))}>{docNodes[e[end]].label}</Button>
-    </li>
-  );
+// 问答的一条：显示所在问答文件的全文，滚到这一条的标题并高亮；关系图右边是它的依据
+function QaPanel({ q, onSelect, nav, font }) {
+  const jump = useMemo(() => ({ heading: q.title }), [q]);
+  const right = q.basis.map((i) => ({ ...fileNode(i), main: false, note: "" }));
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <Head title={n.label} nav={nav} />
-      <Section title="摘要" ui="panel.summary">
-        {n.label !== n.name && <Group name="说明"><p className="text">{n.name}</p></Group>}
-        <Group name="介绍"><p className="text">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.template ? "模板文件没有介绍文字，打开模板查看内容" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
-        {n.paths.length > 0 && <Group name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Group>}
-        {n.card !== null && <Row name="模板"><FileLink index={n.card} onSelect={onSelect} /></Row>}
-        {n.template && <Row name="模板"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodePath(n.template)} data-tip="在 VSCode 里打开">{n.template}</a></Button></Row>}
-      </Section>
-      {(out.length > 0 || into.length > 0) && (
-        <Section title="关系" ui="panel.doc-links" count={out.length + into.length}>
-          {out.length > 0 && <Group name="指向"><ul className="plain">{out.map((e) => rel(e, "to"))}</ul></Group>}
-          {into.length > 0 && <Group name="来自"><ul className="plain">{into.map((e) => rel(e, "from"))}</ul></Group>}
+      <Head title={q.title} nav={nav} sub={<FileSub file={q.file} line={q.line} />}
+        links={[{ href: qaPageUrl(q), tip: "在新标签页打开问答页", icon: ExternalLinkIcon, ui: "panel.open-qa", blank: true }, vscodeLink(vscodeUrl(q.file, q.line))]} />
+      <GraphSection center={{ key: null, label: q.title, color: `var(--g-${files[q.file].group})` }} left={[]} right={right} onSelect={onSelect} font={font} />
+      <Doc card={q.file} jump={jump} onSelect={onSelect} font={font} />
+    </aside>
+  );
+}
+
+// 文档关系图的点：有模板文件时显示模板全文；没有时写介绍、位置和出处
+function DocPanel({ k, onSelect, nav, font }) {
+  const n = docNodes[k];
+  const { left, right } = useMemo(() => sides(
+    docEdges.filter((e) => e.to === k).map((e) => ({ key: docKey(e.from), note: e.label })),
+    docEdges.filter((e) => e.from === k).map((e) => ({ key: docKey(e.to), note: e.label })),
+    (key) => ({ key, label: docNodes[docOf(key)].label, color: kindColor(docOf(key)) })), [k]);
+  const kind = docKinds.find((g) => g.id === n.kind);
+  const sub = <><span className="dot" style={{ background: kindColor(k) }} aria-hidden="true"></span><span className="min-w-0 truncate">{kind.name}{n.card !== null ? " · 模板 " + files[n.card].path : ""}</span></>;
+  return (
+    <aside className="panel" aria-label="详情" data-ui="panel">
+      <Head title={n.label} nav={nav} sub={sub} links={n.card !== null ? [vscodeLink(vscodeUrl(n.card))] : n.template ? [vscodeLink(vscodePath(n.template))] : []} />
+      <GraphSection center={{ key: docKey(k), label: n.label, color: kindColor(k) }} left={left} right={right} onSelect={onSelect} font={font} />
+      {n.card !== null ? <Doc card={n.card} onSelect={onSelect} font={font} /> : (
+        <Section title="说明" ui="panel.summary">
+          {n.label !== n.name && <Group name="名称"><p className="text">{n.name}</p></Group>}
+          <Group name="介绍"><p className="text">{n.template ? "模板文件没有介绍文字，打开模板查看内容" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
+          {n.paths.length > 0 && <Group name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Group>}
+          {n.template && <Row name="模板"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodePath(n.template)} data-tip="在 VSCode 里打开">{n.template}</a></Button></Row>}
+          <Group name="出处"><ul className="plain">{n.from.map((f) => <li key={f}><FileLink index={f} onSelect={onSelect} /></li>)}</ul></Group>
         </Section>
       )}
-      <Section title="出处" ui="panel.doc-sources">
-        <Group><ul className="plain">{n.from.map((f) => <li key={f}><FileLink index={f} onSelect={onSelect} /></li>)}</ul></Group>
-      </Section>
     </aside>
   );
 }
 
-// 术语表、工具表里的一行：显示所在文档的正文，滚到这一行并高亮
+// 术语表、工具表里的一行：显示所在文档的全文，滚到这一行并高亮
 function EntryPanel({ e, onSelect, nav, font }) {
   const jump = useMemo(() => ({ row: e.name }), [e]);
+  const { left, right } = useMemo(() => fileSides(e.file), [e]);
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <Head title={e.name} nav={nav} />
-      <Section title="位置" ui="panel.entry">
-        <Row name="文档"><FileLink index={e.file} onSelect={onSelect} /></Row>
-        <Row name="原文"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(e.file, e.line)} data-tip="在 VSCode 里打开这一行">{files[e.file].path}:{e.line}</a></Button></Row>
-      </Section>
-      <div className="learn-body panel-doc" data-ui="panel.entry-doc">
-        <DocView card={e.file} jump={jump} onLink={(i) => onSelect(i)} font={font} />
-      </div>
+      <Head title={e.name} nav={nav} links={[vscodeLink(vscodeUrl(e.file, e.line))]} sub={<FileSub file={e.file} line={e.line} />} />
+      <GraphSection center={fileNode(e.file)} left={left} right={right} onSelect={onSelect} font={font} />
+      <Doc card={e.file} jump={jump} onSelect={onSelect} font={font} />
     </aside>
   );
 }
@@ -167,21 +220,13 @@ export function titleOf(value) {
   return q ? q.title : e ? e.name : docOf(value) !== null ? docNodes[docOf(value)].label : files[value].title;
 }
 
-// 文档的详情分三个标签：概要、关系、原文（被引用处的段落）；面板记住上次停在哪个标签
-const TABS = [["summary", "概要"], ["links", "关系"], ["quotes", "原文"]];
-let lastTab = TABS.some(([id]) => id === store.get("panel.tab")) ? store.get("panel.tab") : "summary";
-
-// 右侧详情面板，照 draw.io 的属性面板：分节可以折叠，每行左边是名称、右边是值。
-// file 是文档的卡片编号；问答的选中值是 "qa:编号"，交给 QaPanel；文档关系图的节点是 "doc:编号"，交给 DocPanel。
 export default function DetailPanel({ file, onSelect, onBack, onForward, font }) {
-  const [tab, setTab] = useState(lastTab);
-  const pickTab = (t) => { lastTab = t; store.set("panel.tab", t); setTab(t); };
   const graph = useShownGraph();
   const nav = { onBack, onForward, away: graph !== null && file !== null && !Object.hasOwn(graph, file) };
   const q = qaOf(file), e = entryOf(file);
-  if (q) return <QaPanel key={file} q={q} onSelect={onSelect} nav={nav} />;
+  if (q) return <QaPanel key={file} q={q} onSelect={onSelect} nav={nav} font={font} />;
   if (e) return <EntryPanel key={file} e={e} onSelect={onSelect} nav={nav} font={font} />;
-  if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} nav={nav} />;
+  if (docOf(file) !== null) return <DocPanel key={file} k={docOf(file)} onSelect={onSelect} nav={nav} font={font} />;
   if (file === null) {
     return (
       <aside className="panel" aria-label="详情" data-ui="panel">
@@ -190,67 +235,5 @@ export default function DetailPanel({ file, onSelect, onBack, onForward, font })
       </aside>
     );
   }
-  const f = files[file];
-  const out = outgoing[file], into = incoming[file];
-  const next = out.filter((l) => l.kind === "next"), prev = into.filter((l) => l.kind === "next");
-  const basis = unique(out.filter((l) => l.kind === "basis"), (l) => l.to);
-  const refs = unique(out.filter((l) => l.kind === "ref" && l.to !== file), (l) => l.to);
-  const cited = unique(into.filter((l) => l.from !== file), (l) => l.para);
-  const citing = unique(cited, (l) => l.from);
-  const counts = { links: next.length + prev.length + basis.length + refs.length + citing.length, quotes: cited.length };
-  const step = (l, end) => (
-    <li key={l.from + "-" + l.to + "-" + l.para}>
-      {(l.main || l.cond) && <div className="cond">{l.main && <Badge className="tag mr-1">主线</Badge>}{l.cond}</div>}<FileLink index={l[end]} onSelect={onSelect} />
-    </li>
-  );
-  return (
-    <aside className="panel" aria-label="详情" data-ui="panel" key={file}>
-      <Head title={f.title} nav={nav} />
-      <Tabs value={tab} onValueChange={pickTab} activationMode="manual">
-      <TabsList variant="panel" className="panel-tabs" data-ui="panel.tabs">
-        {TABS.map(([id, name]) => (
-          <TabsTrigger key={id} value={id}>
-            {name}{counts[id] !== undefined && <span className="count">{counts[id]}</span>}
-          </TabsTrigger>
-        ))}
-      </TabsList>
-      <TabsContent value="summary">
-        <>
-          <Section title="摘要" ui="panel.summary">
-            <Group name="用途"><p className="text">{f.purpose || "第一段没有用途说明"}</p></Group>
-            <Row name="分组"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</Row>
-            <Row name="路径"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(file)} data-tip="在 VSCode 里打开">{f.path}</a></Button></Row>
-          </Section>
-          {f.outline.length > 0 && (
-            <Section title="大纲" ui="panel.outline" count={f.outline.length}>
-              <Group><ul className="plain">{f.outline.map((h, i) => <li key={i}>{h}</li>)}</ul></Group>
-            </Section>
-          )}
-        </>
-      </TabsContent>
-      <TabsContent value="links">
-        <>
-          {(next.length > 0 || prev.length > 0) && (
-            <Section title="场景衔接" ui="panel.steps">
-              {next.length > 0 && <Group name="下一步"><ul className="plain">{next.map((l) => step(l, "to"))}</ul></Group>}
-              {prev.length > 0 && <Group name="上一步"><ul className="plain">{prev.map((l) => step(l, "from"))}</ul></Group>}
-            </Section>
-          )}
-          {(basis.length > 0 || refs.length > 0) && (
-            <Section title="引用" ui="panel.refs" count={basis.length + refs.length}>
-              {basis.length > 0 && <Group name="依据"><ul className="plain">{basis.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Group>}
-              {refs.length > 0 && <Group name={basis.length > 0 ? "引用" : null}><ul className="plain">{refs.map((l) => <li key={l.to}><FileLink index={l.to} onSelect={onSelect} /></li>)}</ul></Group>}
-            </Section>
-          )}
-          <Section title="被引用" ui="panel.cited" count={citing.length}>
-            <Group>{citing.length ? <ul className="plain">{citing.map((l) => <li key={l.from}><FileLink index={l.from} onSelect={onSelect} /></li>)}</ul>
-              : <p className="empty-line">没有其他文档链接到它</p>}</Group>
-          </Section>
-        </>
-      </TabsContent>
-      <TabsContent value="quotes">{cited.length ? cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)
-        : <p className="empty">没有其他文档链接到它</p>}</TabsContent>
-      </Tabs>
-    </aside>
-  );
+  return <FilePanel key={file} file={file} onSelect={onSelect} nav={nav} font={font} />;
 }

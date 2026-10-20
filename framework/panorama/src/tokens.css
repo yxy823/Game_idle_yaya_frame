@@ -34,12 +34,12 @@
 /* 设计令牌：颜色、尺寸、间距和层级的取值只写在这里，styles.css 和图谱只引用变量。
    深色主题和设置里的字号只覆盖变量。 */
 :root {
-  --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
+  --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 420px;
   --font-ui: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
   --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
   --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
   --z-resizer: 5;
-  --panel-default: 320px; --panel-min: 240px; --main-min: 480px;
+  --panel-default: 420px; --panel-min: 240px; --main-min: 480px;
   --toc-default: 220px; --toc-min: 160px; --toc-max: 480px; --resize-step: 16px;
   --resize-hit: 6px; --resize-line: 2px; --tip-offset: 6px; --tip-edge: 8px;
   --activity-button: 36px; --tree-row-h: calc(var(--fs) + 11px);

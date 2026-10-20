@@ -77,32 +77,27 @@ for (const id of [...MODULES, "home"]) {
 }
 check("切换模块过程中控制台没有报错", errors.length === 0, errors.slice(0, 3).join(" | "));
 
-// 详情面板里的各级元素左缘相同：标题、小节标题、组名、条件、名称列和列表链接；小节的实心三角挂在左内边距里
+// 详情面板里的各级元素左缘相同：标题、分组和路径一行、小节标题、关系图和正文；小节的实心三角挂在左内边距里
 async function panelEdges(label) {
-  for (let t = 0; t < 3; t++) {
-    const tabs = await page.$$("[data-ui='panel.tabs'] [role='tab']");
-    if (tabs[t]) { await tabs[t].click(); await page.waitForTimeout(200); }
-    const edges = await page.evaluate(() => {
-      const left = document.querySelector(".panel").getBoundingClientRect().left;
-      const pick = (sel) => [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length)
-        .map((e) => Math.round((e.getBoundingClientRect().left - left) * 10) / 10);
-      return {
-        title: pick(".panel-title"), section: pick(".section [data-slot='collapsible-trigger'] .section-title"),
-        group: pick(".group-name"), cond: pick(".plain .cond"), name: pick(".row .name"), link: pick(".plain .link-btn"),
-      };
-    });
-    const carets = await page.evaluate(() => {
-      const left = document.querySelector(".panel").getBoundingClientRect().left;
-      return [...document.querySelectorAll(".section [data-slot='collapsible-trigger'] .twisty svg")].filter((e) => e.getClientRects().length)
-        .map((e) => { const r = e.getBoundingClientRect(); return [r.left - left, r.right - left]; });
-    });
-    const base = edges.title[0];
-    const hang = carets.filter(([l, r]) => l < 1 || r > base);
-    check(`${label}第 ${t + 1} 个标签：小节三角在左内边距里`, edges.title.length === 1 && tabs.length === 3 && carets.length === edges.section.length && (t === 2 || carets.length > 0) && hang.length === 0, hang.slice(0, 3).map(([l, r]) => `${l.toFixed(1)}–${r.toFixed(1)}`).join("，"));
-    const off = Object.entries(edges).flatMap(([k, list]) => list.filter((x) => Math.abs(x - base) > 1).map((x) => `${k}=${x}`));
-    check(`${label}第 ${t + 1} 个标签：左缘都在 ${base}px`, edges.title.length === 1 && off.length === 0, [...new Set(off)].slice(0, 5).join("，"));
-    if (!tabs.length) break;
-  }
+  const edges = await page.evaluate(() => {
+    const left = document.querySelector(".panel").getBoundingClientRect().left;
+    const pick = (sel) => [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length)
+      .map((e) => Math.round((e.getBoundingClientRect().left - left) * 10) / 10);
+    return {
+      title: pick(".panel-title"), sub: pick("[data-ui='panel.sub'] > :first-child"), section: pick(".section [data-slot='collapsible-trigger'] .section-title"),
+      graph: pick(".local-graph svg"), text: pick(".panel-doc > div > :is(p, h2, h3)"),
+    };
+  });
+  const carets = await page.evaluate(() => {
+    const left = document.querySelector(".panel").getBoundingClientRect().left;
+    return [...document.querySelectorAll(".section [data-slot='collapsible-trigger'] .twisty svg")].filter((e) => e.getClientRects().length)
+      .map((e) => { const r = e.getBoundingClientRect(); return [r.left - left, r.right - left]; });
+  });
+  const base = edges.title[0];
+  const hang = carets.filter(([l, r]) => l < 1 || r > base);
+  check(`${label}小节三角在左内边距里`, edges.title.length === 1 && carets.length > 0 && carets.length === edges.section.length && hang.length === 0, hang.slice(0, 3).map(([l, r]) => `${l.toFixed(1)}–${r.toFixed(1)}`).join("，"));
+  const off = Object.entries(edges).flatMap(([k, list]) => list.filter((x) => Math.abs(x - base) > 1).map((x) => `${k}=${x}`));
+  check(`${label}左缘都在 ${base}px`, edges.title.length === 1 && edges.graph.length === 1 && edges.text.length > 0 && off.length === 0, [...new Set(off)].slice(0, 5).join("，"));
 }
 await open("files");
 await page.locator("[data-ui='files.view-switch']").getByRole("tab", { name: "列表", exact: true }).click();
@@ -116,20 +111,26 @@ const docsCy = (fn) => page.evaluate((fn) => new Function("cy", fn)(document.que
 await verify("文档关系：悬停面板里的关系，图上对应的点写名称", async () => {
   await docsCy(`cy.nodes(":visible").not(".group").sort((a, b) => b.degree() - a.degree())[0].emit("tap");`);
   await page.waitForTimeout(200);
-  await page.locator("[data-ui='panel.doc-links'] .link-btn").first().hover();
+  await page.locator("[data-ui='panel.graph'] .lg-node").first().hover();
   assert.equal(await docsCy(`const n = cy.nodes(".hovered"); return n.length === 1 && n.style("label") === n.data("label");`), true);
   await page.mouse.move(5, 5);
   assert.equal(await docsCy(`return cy.nodes(".hovered").length;`), 0);
 });
 await verify("文档关系：从面板跳到画面外的点，视口移到它", async () => {
   await docsCy(`cy.panBy({ x: 5000, y: 5000 });`);
-  await page.locator("[data-ui='panel.doc-links'] .link-btn").first().click();
+  await page.locator("[data-ui='panel.graph'] .lg-node").first().click();
   await page.waitForTimeout(200);
   assert.equal(await docsCy(`const p = cy.nodes(".chosen").renderedPosition(); return p.x > 0 && p.y > 0 && p.x < cy.width() && p.y < cy.height();`), true);
 });
 await verify("文档关系：跳到不在本图里的文档，保留高亮并写“不在本图里”", async () => {
+  // 文档关系的点链到的文档不在这张图里：模板全文里的链接，或没有模板时“出处”里的文档
+  const away = page.locator("[data-ui='panel'] :is(.panel-doc a[data-card], [data-ui='panel.summary'] .link-btn)");
+  for (let k = 0; k < 20 && !(await away.count()); k++) {
+    await docsCy(`cy.nodes(":visible").not(".group").sort((a, b) => b.degree() - a.degree())[${k}].emit("tap");`);
+    await page.waitForTimeout(150);
+  }
   const before = await docsCy(`return cy.nodes(".chosen").data("key");`);
-  await page.locator("[data-ui='panel.doc-sources'] .link-btn").first().click();
+  await away.first().click();
   await page.waitForTimeout(200);
   assert.equal(await docsCy(`return cy.nodes(".chosen").data("key");`), before);
   assert.equal(await page.locator("[data-ui='panel.away']").isVisible(), true);
@@ -191,7 +192,7 @@ await verify("学习搜索 keyboard.type 连续 10 次保留 Stage", async () =>
 });
 
 await page.setViewportSize({ width: 1440, height: 900 });
-await verify("详情分隔条 16px 键步长与双击恢复 320px", async () => {
+await verify("详情分隔条 16px 键步长与双击恢复 420px", async () => {
   const handle = page.locator("[data-ui='panel.resizer']");
   await handle.focus();
   const before = await panelWidth();
@@ -199,7 +200,7 @@ await verify("详情分隔条 16px 键步长与双击恢复 320px", async () => 
   await page.keyboard.press("ArrowRight"); assert.equal(await panelWidth(), before);
   const r = await handle.boundingBox();
   await page.mouse.dblclick(r.x, r.y + 100);
-  assert.equal(await panelWidth(), 320);
+  assert.equal(await panelWidth(), 420);
 });
 await verify("详情分隔条 240px 下限、主区至少 480px", async () => {
   await dragHandle("[data-ui='panel.resizer']", 1438);
@@ -208,12 +209,12 @@ await verify("详情分隔条 240px 下限、主区至少 480px", async () => {
   assert.equal(await page.locator(".main").evaluate(el => Math.round(el.getBoundingClientRect().width)), 480);
   assert.equal(await panelWidth(), 916);
 });
-await verify("详情宽度保存：480 → 窄窗 376 → 480", async () => {
+await verify("详情宽度保存：480 → 窄窗 436 → 480", async () => {
   await dragHandle("[data-ui='panel.resizer']", 960);
   assert.equal(await panelWidth(), 480);
   assert.equal(await page.evaluate(() => localStorage.getItem("panel-w")), "480");
-  await page.setViewportSize({ width: 900, height: 900 }); await page.waitForTimeout(150);
-  assert.equal(await panelWidth(), 376);
+  await page.setViewportSize({ width: 960, height: 900 }); await page.waitForTimeout(150);
+  assert.equal(await panelWidth(), 436);
   assert.equal(await page.evaluate(() => localStorage.getItem("panel-w")), "480");
   await page.setViewportSize({ width: 1440, height: 900 }); await page.waitForTimeout(150);
   assert.equal(await panelWidth(), 480);
@@ -297,10 +298,11 @@ await verify("选取模式点击标签只复制，data-src 指向业务 JSX", as
   const copies = await page.evaluate(() => window.pickedTexts);
   assert.equal(copies.length, 1);
   assert.match(copies[0], /files\.view-switch.*FilesModule\.jsx:\d+/);
-  const panelTabs = page.locator("[data-ui='panel.tabs'] [role='tab']");
-  const active = await panelTabs.evaluateAll(els => els.findIndex(el => el.getAttribute("aria-selected") === "true"));
-  await panelTabs.nth((active + 1) % 3).click();
-  assert.equal(await panelTabs.nth(active).getAttribute("aria-selected"), "true");
+  // 详情面板的小节标题在选取模式下点了也不开合
+  const trigger = page.locator("[data-ui='panel'] [data-slot='collapsible-trigger']").first();
+  const expanded = await trigger.getAttribute("aria-expanded");
+  await trigger.click();
+  assert.equal(await trigger.getAttribute("aria-expanded"), expanded);
   assert.equal((await page.evaluate(() => window.pickedTexts)).length, 2);
 });
 await verify("选取模式拖动详情分隔条只复制，不改宽度", async () => {
