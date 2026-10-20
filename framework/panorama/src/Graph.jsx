@@ -41,18 +41,26 @@ const css = (name) => getComputedStyle(document.documentElement).getPropertyValu
 const FCOSE = { name: "fcose", animate: false, quality: "proof", nodeRepulsion: 45000, idealEdgeLength: 140,
   edgeElasticity: 0.3, gravity: 0.05, nodeSeparation: 120, numIter: 4000 };
 const MIN_SCALE = 0.5;
+const FONT = "Segoe UI, Microsoft YaHei UI, sans-serif";
 // 分类的大点一直写名称；和已写的名称重叠、或超出画布会被裁掉时只写条数，条数也放不下时不写，悬停都能看全名。按场景数从多到少挑，大的分类先写全名。
-// 名称按屏幕像素写，重叠与否随缩放变，所以缩放后重挑；名称的范围用 cytoscape 实际排出的文字量
+// 名称按屏幕像素写，重叠与否随缩放变，所以缩放后重挑。名称的宽度用画布量文字：cytoscape 刚改过字号时给的名称范围还是旧的，会漏掉重叠
+const measure = document.createElement("canvas").getContext("2d");
 function shortenGroupLabels(cy) {
-  const ext = cy.extent(), boxes = [];
+  const z = cy.zoom(), ext = cy.extent(), boxes = [], fs = parseFloat(css("--fs"));
+  measure.font = `600 ${fs}px ${FONT}`;
   const groups = cy.nodes(".group").filter((n) => n.style("display") === "element").sort((a, b) => b.data("count") - a.data("count"));
-  const box = (n) => { const b = n.boundingBox({ includeNodes: false, includeEdges: false, includeLabels: true }); return [b.x1, b.y1, b.x2, b.y2]; };
+  // 名称写在点下方，上下左右各留 2px 底色，和样式里的 text-margin-y、text-background-padding 一致
+  const box = (n, text) => {
+    const { x, y } = n.position(), w = (measure.measureText(text).width + 4) / z, top = y + n.height() / 2 + 3 / z;
+    return [x - w / 2, top, x + w / 2, top + (fs * 1.3 + 4) / z];
+  };
   const hit = (b) => boxes.some((o) => b[0] < o[2] && o[0] < b[2] && b[1] < o[3] && o[1] < b[3]) || b[0] < ext.x1 || b[2] > ext.x2 || b[3] > ext.y2;
   groups.removeClass("short bare");
   groups.forEach((n) => {
-    if (hit(box(n))) n.addClass("short");
-    if (n.hasClass("short") && hit(box(n))) n.addClass("bare");
-    else boxes.push(box(n));
+    let b = box(n, n.data("label"));
+    if (hit(b)) { n.addClass("short"); b = box(n, n.data("short")); }
+    if (n.hasClass("short") && hit(b)) n.addClass("bare");
+    else boxes.push(b);
   });
 }
 
@@ -92,7 +100,7 @@ function style(legend, directed, foldable) {
       "background-color": (n) => colors[n.data("group")], width: "data(size)", height: "data(size)",
       // 浅色的分类色和背景对比不足，加一圈屏幕上 1px 的轮廓；颜色取 tokens.css
       "border-width": (n) => 1 / n.cy().zoom(), "border-color": css("--graph-node-border"),
-      label: "", color: css("--fg"), "font-size": fs, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
+      label: "", color: css("--fg"), "font-size": fs, "min-zoomed-font-size": 9, "font-family": FONT,
       "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": 2,
     } },
     // 可折叠的图缩得很小时，展开后的场景按屏幕像素保底，不小于本身尺寸的一半，和折叠后的大点差得不太悬殊
@@ -185,7 +193,8 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       elements: nodes.map((n) => ({ data: { id: "n" + n.i, key: n.i, label: n.label, group: n.group, size: n.size }, position: saved?.[n.i] })),
       style: style(legend, directed, foldable),
       layout: { name: "preset" },
-      minZoom: 0.1, maxZoom: 4, boxSelectionEnabled: false,
+      // 主区域窄到约 250px 时全图要缩到 0.06 倍才放得下，下限留到 0.05
+      minZoom: 0.05, maxZoom: 4, boxSelectionEnabled: false,
       // 选中描边用 chosen 类，跟页面的选中值走；cytoscape 自带的选中在点空白处时会自己取消，和详情面板对不上，所以关掉
       autounselectify: true,
     });
@@ -210,7 +219,9 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       const key = e.target.data("key");
       onSelect(key === selectedRef.current ? null : key);
     });
-    cy.on("zoom", () => { cy.elements("node, .merged, edge[?label], edge.near").updateStyle(); if (foldable) shortenGroupLabels(cy); });
+    // 缩放和画布变尺寸后，名称按新的大小重新排，分组名称重新判断会不会露出边缘或互相压住
+    const relabel = () => { cy.elements("node, .merged, edge[?label], edge.near").updateStyle(); if (foldable) shortenGroupLabels(cy); };
+    cy.on("zoom", relabel);
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
     let tipTimer = 0;
     const hideTip = () => { clearTimeout(tipTimer); dismissTip(); };
@@ -225,7 +236,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     cy.on("viewport tapstart", hideTip);
     cyRef.current = cy;
     // 拖动详情面板改宽度、开合面板时画布尺寸会变，cytoscape 只监听窗口尺寸，要手动通知
-    const resize = new ResizeObserver(() => cy.resize());
+    const resize = new ResizeObserver(() => { cy.resize(); relabel(); });
     resize.observe(box.current);
     return () => { hideTip(); resize.disconnect(); cy.destroy(); };
   }, [cacheKey, nodes, edges, legend, directed, foldable, onSelect]);
@@ -362,7 +373,8 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       <div className="relative min-w-0">
         {/* cytoscape 往页面里插了一条不在层里的 position: relative，会压过工具类，所以 absolute 要加 ! */}
         <div className="graph absolute! inset-0" ref={box} data-ui={ui + ".graph"} />
-        <div className="absolute top-2 left-2 flex gap-1.5">
+        {/* 画布窄时按钮折成多行，不伸进图例 */}
+        <div className="absolute top-2 right-2 left-2 flex flex-wrap gap-1.5">
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
           <Button variant="outline" className="graph-btn" aria-disabled={anchor === null} data-tip={anchor !== null ? undefined : "先在图里选中一个点"}
             onClick={() => { if (anchor !== null) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</Button>

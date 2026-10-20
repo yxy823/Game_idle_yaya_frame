@@ -639,6 +639,23 @@ await verify("浮窗：关系图的点和学习正文能弹，双击钉住，拖
   await p.context().close();
 });
 
+// 窗口 960px 宽时详情面板照常展开，主区域只剩约 500px：图谱按钮折行、不伸进图例，文件卡片不被截掉
+await verify("窄主区域：图谱按钮不伸进图例，全图放得进画布，文件卡片不被截掉", async () => {
+  const p = await fresh({ width: 960, height: 540 });
+  await p.click("[data-ui='activity.scenes']"); await p.waitForTimeout(600);
+  const graph = await p.evaluate(() => {
+    const canvas = document.querySelector("[data-ui='scenes.graph']").getBoundingClientRect();
+    return [...document.querySelectorAll("[data-ui^='scenes.graph-']")].filter((el) => el.matches("button, [role=group]")).map((el) => Math.round(el.getBoundingClientRect().right - canvas.right)).filter((d) => d > 0);
+  });
+  assert.deepEqual(graph, [], "按钮伸出画布");
+  assert.equal(await cyIn(p, "scenes", `const e = cy.extent(); return cy.nodes(":visible").filter((n) => { const b = n.boundingBox({ includeLabels: false }); return b.x1 < e.x1 || b.x2 > e.x2 || b.y1 < e.y1 || b.y2 > e.y2; }).length;`), 0, "有点露出画布");
+  await p.click("[data-ui='activity.files']"); await p.waitForTimeout(600);
+  await p.locator("[data-ui='files.view-switch']").getByRole("tab", { name: "列表", exact: true }).click();
+  const cut = await p.evaluate(() => { const box = document.querySelector("[data-ui='files.cards']").getBoundingClientRect(); return [...document.querySelectorAll(".cards .card")].filter((c) => c.getBoundingClientRect().right > box.right + 1).length; });
+  assert.equal(cut, 0, "卡片超出卡片列");
+  await p.context().close();
+});
+
 // 正文链接：指向仓库文档的链接都能找到那份文档和锚点，用 VSCode 打开的文件都存在
 await verify("正文链接都能打开：文档和锚点存在，VSCode 链接的文件存在", async () => {
   const start = html.indexOf("{home:{framework:");
