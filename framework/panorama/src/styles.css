@@ -91,11 +91,12 @@ svg.tabler-icon { width: var(--icon); height: var(--icon); fill: none; stroke: c
 /* 小节照 draw.io 的格式面板：实心三角贴左内边距，三角、标题和小节内容共用一条左边线；小节之间画细线 */
 .section { padding-bottom: 6px; }
 .section + .section { border-top: 1px solid var(--border); }
-.section > summary { height: var(--control-h); display: flex; align-items: center; gap: 2px; padding: 0 var(--pad);
+.section > summary { height: var(--control-h); display: flex; align-items: center; padding: 0 var(--pad);
   font-weight: 600; cursor: pointer; list-style: none; }
 .section > summary .twisty { display: inline-grid; place-items: center; color: var(--muted-fg); }
-/* 实心三角的图形在图标框里左右各空 1/4，向左挪出这段空白，图形左缘才落在左内边距上 */
-.section > summary .twisty svg.tabler-icon { width: 14px; height: 14px; margin-left: -3px; }
+/* 三角挂在左内边距里，小节标题的文字和组名一起落在左边线上 */
+.section > summary .twisty { margin-left: -12px; }
+.section > summary .twisty svg.tabler-icon { width: 12px; height: 12px; }
 .section > summary::-webkit-details-marker { display: none; }
 .row { display: grid; grid-template-columns: 64px 1fr; gap: 8px; padding: 0 var(--pad); min-height: var(--control-h); align-items: start; }
 .row .name { font-size: var(--fs-small); color: var(--muted-fg); line-height: var(--control-h); }
@@ -210,6 +211,11 @@ body.picking, body.picking * { cursor: crosshair !important; }
 /* “只看邻居”和“返回全图”换字时宽度不变，旁边的跳数切换不跟着移动 */
 .graph-focus { min-width: 6.5em; }
 .legend { overflow: auto; padding: 4px 0; border-left: 1px solid var(--border); background: var(--bg); }
+/* 收起后图例列只放开关，开关离右边缘的距离不变 */
+.graph-wrap.legend-closed { grid-template-columns: 1fr calc(var(--control-h) + 13px); }
+.legend-head { display: flex; align-items: center; justify-content: flex-end; height: var(--control-h); padding: 0 4px 0 8px; }
+.legend-title { margin-right: auto; font-weight: 600; white-space: nowrap; }
+.legend-closed .legend-title { display: none; }
 .legend-row { height: calc(var(--fs) + 11px); display: flex; align-items: center; gap: 6px; padding: 0 8px; cursor: pointer; }
 .legend-row:hover { background: var(--accent); }
 .legend-row input { margin: 0; accent-color: var(--primary); }

@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import { IconChevronDown, IconChevronRight, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
+import { store } from "./store.js";
 
 cytoscape.use(fcose);
 
@@ -113,6 +114,8 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected), focusRef = useRef(null), viewRef = useRef(null);
   selectedRef.current = selected;
   const [hidden, setHidden] = useState(() => new Set());
+  // 图例收起后只留开关，各图谱共用这一个设置
+  const [legendOpen, setLegendOpen] = useState(() => store.get("legend") !== "closed");
   const [expanded, setExpanded] = useState(() => unfolded.get(cacheKey) ?? new Set(foldable ? [] : legend.map((g) => g.id)));
   const [focus, setFocus] = useState(null);
   const [hops, setHops] = useState(2);
@@ -273,7 +276,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   const toggleFold = (id) => setExpanded((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   const allOn = hidden.size === 0;
   return (
-    <div className="graph-wrap">
+    <div className={"graph-wrap" + (legendOpen ? "" : " legend-closed")}>
       <div className="graph-area">
         <div className="graph" ref={box} data-ui={ui + ".graph"} />
         <div className="tip" role="tooltip" hidden ref={tipRef} data-pick-ignore />
@@ -296,6 +299,15 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
         </div>
       </div>
       <div className="legend" data-ui={ui + ".legend"}>
+        {/* 开关贴着图谱的右边缘，图例收起、展开时位置不变 */}
+        <div className="legend-head">
+          <span className="legend-title">图例</span>
+          <button className="icon-btn" aria-label={legendOpen ? "收起图例" : "展开图例"} data-tip={legendOpen ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
+            onClick={() => { store.set("legend", legendOpen ? "closed" : "open"); setLegendOpen(!legendOpen); }}>
+            {legendOpen ? <IconLayoutSidebarRightCollapse aria-hidden="true" /> : <IconLayoutSidebarRightExpand aria-hidden="true" />}
+          </button>
+        </div>
+        {legendOpen && <>
         <label className="legend-row">
           <input type="checkbox" checked={allOn} onChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
           <span className="legend-name">全部分组</span><span className="count">{nodes.length}</span>
@@ -321,6 +333,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
             </label>
           </div>
         ))}
+        </>}
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ function Section({ title, ui, count, children }) {
     <details className="section" open={open} data-ui={ui} onToggle={(e) => setOpen(e.currentTarget.open)}>
       <summary>
         <span className="twisty">{open ? <IconCaretDownFilled aria-hidden="true" /> : <IconCaretRightFilled aria-hidden="true" />}</span>
-        {title}{count !== undefined && <span className="count">{count}</span>}
+        <span className="section-title">{title}</span>{count !== undefined && <span className="count">{count}</span>}
       </summary>
       {children}
     </details>

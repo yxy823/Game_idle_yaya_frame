@@ -49,7 +49,7 @@ for (const id of [...MODULES, "home"]) {
 }
 check("切换模块过程中控制台没有报错", errors.length === 0, errors.slice(0, 3).join(" | "));
 
-// 详情面板里的各级元素左缘相同：标题、实心三角的图形、组名、条件、名称列和列表链接
+// 详情面板里的各级元素左缘相同：标题、小节标题、组名、条件、名称列和列表链接；小节的实心三角挂在左内边距里
 async function panelEdges(label) {
   for (let t = 0; t < 3; t++) {
     const tabs = await page.$$(".panel-tabs button");
@@ -59,11 +59,18 @@ async function panelEdges(label) {
       const pick = (sel) => [...document.querySelectorAll(sel)].filter((e) => e.getClientRects().length)
         .map((e) => Math.round((e.getBoundingClientRect().left - left) * 10) / 10);
       return {
-        title: pick(".panel-title"), caret: pick(".section > summary .twisty svg path:not([stroke='none'])"),
+        title: pick(".panel-title"), section: pick(".section > summary .section-title"),
         group: pick(".group-name"), cond: pick(".plain .cond"), name: pick(".row .name"), link: pick(".plain .link-btn"),
       };
     });
+    const carets = await page.evaluate(() => {
+      const left = document.querySelector(".panel").getBoundingClientRect().left;
+      return [...document.querySelectorAll(".section > summary .twisty svg path:not([stroke='none'])")].filter((e) => e.getClientRects().length)
+        .map((e) => { const r = e.getBoundingClientRect(); return [r.left - left, r.right - left]; });
+    });
     const base = edges.title[0];
+    const hang = carets.filter(([l, r]) => l < 1 || r > base);
+    check(`${label}第 ${t + 1} 个标签：小节三角在左内边距里`, hang.length === 0, hang.slice(0, 3).map(([l, r]) => `${l.toFixed(1)}–${r.toFixed(1)}`).join("，"));
     const off = Object.entries(edges).flatMap(([k, list]) => list.filter((x) => Math.abs(x - base) > 1).map((x) => `${k}=${x}`));
     check(`${label}第 ${t + 1} 个标签：左缘都在 ${base}px`, off.length === 0, [...new Set(off)].slice(0, 5).join("，"));
     if (!tabs.length) break;
