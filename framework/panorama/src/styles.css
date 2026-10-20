@@ -129,7 +129,6 @@
   .panel-doc > div > h1:first-child { display: none; }
   /* 跳到标题或锚点时，不被面板顶上固定的标题行挡住 */
   .panel-doc [id] { scroll-margin-top: calc(var(--control-h) + var(--space-4)); }
-  .panel-doc .hit-row:is(h1, h2, h3, h4, h5, h6) { background: var(--selection); }
   .panel-doc td:first-child { min-width: 5em; }
   .panel-doc tr.hit-row td { background: var(--selection); }
   /* 浮窗：整层固定在页面上，只有浮窗本身接收鼠标；浮窗之间的上下顺序写在各自的 z-index 里，整层在菜单下面 */

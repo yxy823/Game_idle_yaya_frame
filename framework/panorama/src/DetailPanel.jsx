@@ -112,11 +112,11 @@ function GraphSection({ center, left, right, onSelect, font }) {
 }
 
 // 全文：链接到别的文档时在面板里打开那篇；链接到本文的锚点时只滚动
-function Doc({ card, jump: initial, onSelect, font }) {
+function Doc({ card, jump: initial, only, onSelect, font }) {
   const [jump, setJump] = useState(initial);
   return (
     <article className="learn-body panel-doc" data-ui="panel.doc">
-      <DocView card={card} jump={jump} font={font} onLink={(i, anchor) => (i === card ? setJump({ anchor }) : onSelect(i))} />
+      <DocView card={card} jump={jump} only={only} font={font} onLink={(i, anchor) => (i === card ? setJump({ anchor }) : onSelect(i))} />
     </article>
   );
 }
@@ -162,16 +162,15 @@ function FilePanel({ file, onSelect, nav, font }) {
   );
 }
 
-// 问答的一条：显示所在问答文件的全文，滚到这一条的标题并高亮；关系图右边是它的依据
+// 问答的一条：只显示所在问答文件里这一条的正文，不带同一主题的其他问答；关系图右边是它的依据
 function QaPanel({ q, onSelect, nav, font }) {
-  const jump = useMemo(() => ({ heading: q.title }), [q]);
   const right = q.basis.map((i) => ({ ...fileNode(i), main: false, note: "" }));
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
       <Head title={q.title} nav={nav} sub={<FileSub file={q.file} line={q.line} />}
         links={[vscodeLink(vscodeUrl(q.file, q.line))]} />
       <GraphSection center={{ key: null, label: q.title, color: `var(--g-${files[q.file].group})` }} left={[]} right={right} onSelect={onSelect} font={font} />
-      <Doc card={q.file} jump={jump} onSelect={onSelect} font={font} />
+      <Doc card={q.file} only={q.title} onSelect={onSelect} font={font} />
     </aside>
   );
 }

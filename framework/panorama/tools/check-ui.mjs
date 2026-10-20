@@ -226,6 +226,19 @@ await verify("浮窗：按住 Alt 不弹，设置为关闭时不弹，宽度按�
   await page.reload(); await page.waitForSelector("[data-ui='panel']");
 });
 
+// 问答的一条只显示这一节正文：没有二级标题，也没有同一主题里其他问题的文字
+await open("qa");
+await verify("问答详情只显示选中的这一条", async () => {
+  const cards = page.locator("[data-ui='qa.topic']").first().locator(".card");
+  const titles = await cards.locator(".card-title").allInnerTexts();
+  await cards.nth(1).click(); await page.waitForTimeout(300);
+  const doc = page.locator("[data-ui='panel.doc']");
+  assert.equal(await doc.locator("h2").count(), 0);
+  assert.ok((await doc.innerText()).includes("结论"));
+  assert.equal(await doc.locator("p").filter({ hasText: titles[0] }).count(), 0);
+  assert.equal(await page.locator(".panel-title").innerText(), titles[1]);
+});
+
 // 开发场景从顶栏搜索选中一个场景，场景衔接一节有条件和“主线”标记
 await open("scenes");
 await page.click("[data-ui='scenes.search']");

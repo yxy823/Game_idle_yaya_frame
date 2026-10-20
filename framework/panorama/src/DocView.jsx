@@ -9,8 +9,9 @@ import { useToast } from "./overlays.jsx";
 // 一份文档的正文：HTML 在构建时由 tools/manual.js 的 renderHtml 生成，Mermaid 图用 Pele 渲染。学习模块、文件全景的阅读视图、详情面板和浮窗共用。
 // 同一份文档可能同时显示在几处，锚点只在本份正文里找
 // jump 是 { anchor } 或 { row } 对象，每次要滚动都换一个新对象：anchor 为空滚到开头，为 FIRST_MATCH 滚到第一处搜索命中；
-// row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）；heading 是标题文字，滚到这个标题并高亮（问答的一条）。
+// row 是表格某一行第一格的文字，滚到这一行并高亮（术语表、工具表的一行）。
 // 正文里指向仓库文档的链接交给 onLink(卡片编号, 锚点)，由页面决定切换章节、打开文档还是滚动。
+// only 是一个二级标题的文字：只留这一节的正文，标题本身和其他节都去掉（问答的一条，标题已写在面板顶上）。
 // inPanel(卡片编号) 为真的链接在详情面板打开，后面加面板图标，和页面内切换的链接区分。onHits(命中数) 在每次高亮后调用。
 export const FIRST_MATCH = "#first-match";
 const PANEL_ICON = renderToStaticMarkup(<PanelRightIcon className="link-icon" aria-hidden="true" />);
@@ -32,7 +33,7 @@ function highlight(root, ws) {
   }
 }
 
-export default function DocView({ card, jump, words = [], onLink, inPanel, onHits, font }) {
+export default function DocView({ card, jump, only, words = [], onLink, inPanel, onHits, font }) {
   const body = useRef(null);
   const hitsRef = useRef(onHits);
   hitsRef.current = onHits;
@@ -45,6 +46,15 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
   useEffect(() => {
     // 正文由这里写入，不交给 React：React 重新渲染时可能重写 innerHTML，冲掉已经渲染好的图
     body.current.innerHTML = data.html[card];
+    if (only) {
+      const start = [...body.current.children].find((el) => el.tagName === "H2" && el.textContent.trim() === only);
+      let keep = false;
+      for (const el of [...body.current.children]) {
+        if (/^H[12]$/.test(el.tagName)) keep = false;
+        if (!keep) el.remove();
+        if (el === start) keep = true;
+      }
+    }
     if (inPanel) {
       for (const a of body.current.querySelectorAll("a[data-card]")) {
         if (inPanel(Number(a.dataset.card))) { a.insertAdjacentHTML("beforeend", PANEL_ICON); a.dataset.tip = "在详情面板打开"; }
@@ -60,12 +70,11 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
     }
     mark(wordsRef.current);
     return () => mounted.forEach((m) => m.destroy());
-  }, [card, toast, font]);
+  }, [card, only, toast, font]);
   useEffect(() => { mark(key ? key.split(" ") : []); }, [key]);
   useEffect(() => {
     const anchor = jump?.anchor;
-    const row = (jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row))
-      || (jump?.heading && [...body.current.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((h) => h.textContent.trim() === jump.heading));
+    const row = jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row);
     row?.classList.add("hit-row");
     const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && body.current.querySelector("#" + CSS.escape(anchor)));
     // 第一处命中和“上一处”“下一处”一样加深高亮并滚到中间，不被顶上固定的标题行挡住
@@ -74,7 +83,7 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
     else if (target) target.scrollIntoView();
     // 文件全景的阅读视图自己滚动（.doc-scroll），详情面板里随面板滚动，浮窗里随浮窗正文滚动，学习模块随主区域滚动
     if (!target) (body.current.closest(".doc-scroll, .panel, .float-body, .main")).scrollTop = 0;
-  }, [card, jump]);
+  }, [card, only, jump]);
 
   const click = (e) => {
     const a = e.target.closest("a[data-card]");
