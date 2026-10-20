@@ -1,3 +1,40 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --text-xs: var(--fs-small);
+  --text-sm: var(--fs);
+  --text-base: var(--fs);
+  --spacing: var(--space-1);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --font-sans: "Segoe UI", "Microsoft YaHei UI", system-ui, sans-serif;
+}
+
 /* 设计令牌：颜色、尺寸、间距和层级的取值只写在这里，styles.css 和图谱只引用变量。
    深色主题和设置里的字号只覆盖变量。 */
 :root {
@@ -6,17 +43,24 @@
   --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
   --brand: #2b68cc;
   --primary: var(--brand); --ring: var(--brand);
-  --bg: #fcfcfd; --surface: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
-  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #767e89;
-  --selection: #dce8fb; --danger: #c4314b; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
+  --background: #fcfcfd; --card: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
+  --foreground: #1f2329; --muted-foreground: #5f6773; --border: #d9dde3; --input: #767e89;
+  --destructive: #c4314b;
+  --bg: var(--background); --surface: var(--card); --fg: var(--foreground);
+  --muted-fg: var(--muted-foreground); --field-border: var(--input); --danger: var(--destructive);
+  --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
+  --primary-foreground: var(--pick-fg); --secondary: var(--accent); --secondary-foreground: var(--foreground);
+  --muted: var(--chrome); --accent-foreground: var(--foreground);
+  --selection: #dce8fb; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
   --shadow: 0 4px 12px rgb(31 35 41 / .16);
   color-scheme: light;
 }
 :root[data-theme="dark"] {
   --brand: #5b9bff;
-  --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
-  --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
-  --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+  --background: #1e1f22; --card: #2c2e33; --chrome: #18191b; --accent: #33363c;
+  --foreground: #e3e5e8; --muted-foreground: #9aa1ab; --border: #383b41; --input: #7a828d;
+  --destructive: #ff6b81;
+  --selection: #24304a; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
   --shadow: 0 4px 12px rgb(0 0 0 / .45);
   color-scheme: dark;
 }
@@ -27,9 +71,10 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --brand: #5b9bff;
-    --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
-    --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
-    --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+    --background: #1e1f22; --card: #2c2e33; --chrome: #18191b; --accent: #33363c;
+    --foreground: #e3e5e8; --muted-foreground: #9aa1ab; --border: #383b41; --input: #7a828d;
+    --destructive: #ff6b81;
+    --selection: #24304a; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
     --shadow: 0 4px 12px rgb(0 0 0 / .45);
     color-scheme: dark;
   }

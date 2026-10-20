@@ -8,13 +8,21 @@
   },
   "dependencies": {
     "@tabler/icons-react": "3.48.0",
+    "class-variance-authority": "0.7.1",
+    "cmdk": "1.1.1",
+    "cn": "0.5.0",
     "cytoscape": "3.33.1",
     "cytoscape-fcose": "2.2.0",
+    "lucide-react": "1.60.0",
     "pele": "1.6.0",
+    "radix-ui": "1.8.1",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-resizable-panels": "4.14.7",
+    "sonner": "2.0.8"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
     "@vitejs/plugin-react": "4.5.0",
     "playwright-core": "1.63.0",
     "rehype-stringify": "10.0.1",
@@ -22,6 +30,8 @@
     "remark-gfm": "4.0.1",
     "remark-parse": "11.0.0",
     "remark-rehype": "11.1.2",
+    "shadcn": "4.22.1",
+    "tailwindcss": "4.3.3",
     "unified": "11.0.5",
     "vite": "6.3.5",
     "vite-plugin-singlefile": "2.2.0",

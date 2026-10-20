@@ -1,10 +1,12 @@
 // 交付前的界面冒烟检查：用本机 Edge 无头打开构建好的 dist/index.html，检查界面设计「验证」一条列出的几项。
 // 先运行 npm run build，再运行 npm run check；有一项不通过时退出码为 1。
 import path from "node:path";
+import { readFile, readdir } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { chromium } from "playwright-core";
 
-const page_ = pathToFileURL(path.resolve(import.meta.dirname, "..", "dist", "index.html")).href;
+const dist = path.resolve(import.meta.dirname, "..", "dist");
+const page_ = pathToFileURL(path.join(dist, "index.html")).href;
 const MODULES = ["home", "scenes", "docs", "learn", "files", "qa", "search"];
 // 在顶栏放搜索的模块；首页不放，全局搜索页的输入框留在页面里
 const SEARCH_IN_TOPBAR = ["scenes", "docs", "learn", "files", "qa"];
@@ -12,13 +14,31 @@ const SEARCH_IN_TOPBAR = ["scenes", "docs", "learn", "files", "qa"];
 const results = [];
 const check = (name, ok, detail = "") => results.push({ name, ok, detail });
 
+const outputs = await readdir(dist, { recursive: true });
+check("dist 只包含 index.html", outputs.length === 1 && outputs[0] === "index.html", outputs.join("，"));
+const html = await readFile(path.join(dist, "index.html"), "utf8");
 const browser = await chromium.launch({ channel: "msedge", headless: true });
-const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+const context = await browser.newContext({ offline: true, viewport: { width: 1280, height: 800 } });
+const page = await context.newPage();
 const errors = [];
+const remote = [];
+const failedRequests = [];
+page.on("request", (r) => { if (/^https?:/i.test(r.url())) remote.push(r.url()); });
+page.on("requestfailed", (r) => failedRequests.push(`${r.url()}: ${r.failure()?.errorText}`));
 page.on("pageerror", (e) => errors.push(e.message));
 page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
 await page.goto(page_);
 await page.waitForSelector("[data-ui='activity.home']");
+
+const resources = await page.evaluate((html) => {
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  const external = [...doc.querySelectorAll("script[src], link[href]")]
+    .map((el) => el.getAttribute("src") ?? el.getAttribute("href"))
+    .filter((url) => !url.startsWith("data:"));
+  const imports = [...doc.querySelectorAll("style")].flatMap((el) => el.textContent.match(/@import\b[^;]*;/gi) || []);
+  return [...external, ...imports];
+}, html);
+check("HTML 不引用外部脚本、样式或字体", resources.length === 0, resources.join(" | "));
 
 const open = async (id) => { await page.click(`[data-ui='activity.${id}']`); await page.waitForTimeout(800); };
 
@@ -90,6 +110,8 @@ await page.keyboard.press("Enter");
 await page.waitForTimeout(800);
 await panelEdges("开发场景的详情面板，");
 
+check("离线进入七个模块没有远程请求或资源加载失败", remote.length === 0 && failedRequests.length === 0,
+  [...remote, ...failedRequests].join(" | "));
 await browser.close();
 for (const r of results) console.log(`${r.ok ? "通过" : "不通过"}  ${r.name}${r.detail ? "：" + r.detail : ""}`);
 const failed = results.filter((r) => !r.ok).length;
