@@ -44,6 +44,8 @@
   --resize-hit: 6px; --resize-line: 2px; --tip-offset: 6px; --tip-edge: 8px;
   --activity-button: 36px; --tree-row-h: calc(var(--fs) + 11px);
   --search-input-w: 240px; --search-list-w: 320px; --search-list-h: 360px;
+  --prop-name-w: 64px; --prop-value-top: 5px; --panel-head-h: calc(var(--control-h) + 8px); --files-tree-w: 240px;
+  --legend-w: 200px; --legend-folded-w: calc(var(--control-h) + 13px); --mark-radius: 2px;
   --dialog-w: 420px; --slider-w: 180px; --slider-thumb: 14px; --toast-bottom: 36px;
   --switch-w: 28px; --switch-h: 16px; --switch-thumb: 12px; --switch-travel: 12px;
   --checkbox-size: 13px; --checkbox-mark: 11px;
@@ -58,8 +60,8 @@
   --chart-5: #59a14f; --chart-6: #edc948; --chart-7: #b07aa1; --chart-8: #ff9da7;
   --ring: var(--primary); --secondary: var(--accent); --secondary-foreground: var(--foreground); --accent-foreground: var(--foreground);
   --card-foreground: var(--foreground); --popover: var(--card); --popover-foreground: var(--foreground);
-  /* 能弹浮窗的文档链接用的颜色，两套主题共用；设置窗口后面的遮罩 */
-  --float-link: rgb(214 124 82); --scrim: rgb(0 0 0 / .4);
+  /* 能弹浮窗的文档链接用的颜色：深色主题是使用者定的 rgb(214 124 82)，浅色主题用同一色相加深到对比度 4.5:1 以上；设置窗口后面的遮罩 */
+  --float-link: #b1552a; --scrim: rgb(0 0 0 / .4);
   /* 页面自己的短名，图谱、Pele 和 styles.css 用 */
   --bg: var(--background); --surface: var(--card); --fg: var(--foreground);
   --muted-fg: var(--muted-foreground); --field-border: var(--input); --danger: var(--destructive);
@@ -72,6 +74,7 @@
   --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
   --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
   --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  --float-link: rgb(214 124 82);
   --chart-1: #77aadd; --chart-2: #ee8866; --chart-3: #ffaabb; --chart-4: #99ddff;
   --chart-5: #44bb99; --chart-6: #eedd88; --chart-7: #bbcc33; --chart-8: #aaaa00;
   color-scheme: dark;
@@ -87,6 +90,7 @@
     --primary: #e5e5e5; --primary-foreground: #262626; --destructive: #fca5a5;
     --selection: #404040; --pick: #ff6fa3; --pick-fg: #171717; --tip-bg: #fafafa; --tip-fg: #171717;
     --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  --float-link: rgb(214 124 82);
   --chart-1: #77aadd; --chart-2: #ee8866; --chart-3: #ffaabb; --chart-4: #99ddff;
   --chart-5: #44bb99; --chart-6: #eedd88; --chart-7: #bbcc33; --chart-8: #aaaa00;
     color-scheme: dark;

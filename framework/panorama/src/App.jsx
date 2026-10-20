@@ -128,7 +128,7 @@ export default function App() {
       <header className="topbar flex items-center gap-2 px-2 bg-(--chrome) border-b border-border" data-ui="topbar">
         <img className="brand size-5 ml-1" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
         {/* 中文字形落在基线附近，按盒子居中时比 Godot 图标和放大镜低约 1px，上移补齐 */}
-        <span className="title relative -top-px flex-none px-1 font-semibold whitespace-nowrap w-[calc(var(--title-chars)*1em+8px)]" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
+        <span className="title relative -top-px flex-none px-1 font-semibold whitespace-nowrap w-[calc(var(--title-chars)*1em+var(--space-2))]" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
         <span className="search-slot flex items-center" ref={setSearchSlot}></span>
         <span className="flex-1"></span>
         <Button variant="ghost" size="icon" className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"

@@ -18,7 +18,7 @@ import { hoverNode, useShownGraph } from "./Graph.jsx";
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
 // 层级靠字号和间距分开：小节标题比正文大 1px 并加粗，组名用小字次要色；小节之间 12px，组之间 8px，组名到内容 2px
 function Row({ name, children }) {
-  return <div className="row grid min-h-(--control-h) grid-cols-[64px_1fr] items-start gap-2 px-(--pad)"><span className="name text-xs leading-(--control-h) text-muted-foreground">{name}</span><span className="value pt-[5px] leading-normal [overflow-wrap:anywhere]">{children}</span></div>;
+  return <div className="row grid min-h-(--control-h) grid-cols-[var(--prop-name-w)_1fr] items-start gap-2 px-(--pad)"><span className="name text-xs leading-(--control-h) text-muted-foreground">{name}</span><span className="value pt-(--prop-value-top) leading-normal [overflow-wrap:anywhere]">{children}</span></div>;
 }
 function Group({ name, children }) {
   return <div className="group px-(--pad) pb-2">{name && <div className="group-name mb-0.5 pt-0.5 text-xs text-muted-foreground">{name}</div>}{children}</div>;
@@ -44,7 +44,7 @@ function Section({ title, ui, count, open: initial = true, store: key, children 
 function Head({ title, nav, links = [], sub }) {
   return (
     <>
-      <div className="sticky top-0 z-2 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
+      <div className="sticky top-0 z-2 flex h-(--panel-head-h) items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
         <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
         {links.map(({ href, tip, icon: Icon, ui }) => (
           <Button key={ui} asChild variant="ghost" size="icon" className="icon-btn"><a href={href} aria-label={tip} data-tip={tip} data-ui={ui}><Icon aria-hidden="true" /></a></Button>
@@ -132,7 +132,7 @@ function Quote({ link, current, onSelect }) {
       </div>
       <p className="mt-1 line-clamp-4 text-xs text-muted-foreground [overflow-wrap:anywhere]">
         {p.parts.map((part, i) => (typeof part === "string" ? part
-          : part.to === current ? <mark key={i} className="rounded-[2px] bg-accent font-bold text-foreground">{part.text}</mark> : <span key={i} className="text-foreground">{part.text}</span>))}
+          : part.to === current ? <mark key={i} className="rounded-(--mark-radius) bg-accent font-bold text-foreground">{part.text}</mark> : <span key={i} className="text-foreground">{part.text}</span>))}
       </p>
     </div>
   );

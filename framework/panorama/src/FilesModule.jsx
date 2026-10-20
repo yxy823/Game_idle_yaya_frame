@@ -99,7 +99,7 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
           <TabsTrigger value="graph">图谱</TabsTrigger>
         </TabsList>
       </PageHead>
-      <TabsContent value="list" className="grid min-h-0 flex-1 grid-cols-[240px_1fr] gap-4 [&>div]:overflow-auto data-[state=inactive]:hidden!">
+      <TabsContent value="list" className="grid min-h-0 flex-1 grid-cols-[var(--files-tree-w)_1fr] gap-4 [&>div]:overflow-auto data-[state=inactive]:hidden!">
           <ul className="tree" data-ui="files.tree">
             <TreeNode node={tree} depth={0} dir={dir} onDir={(p) => { pickDir(p); read(null); }} open={open} onToggle={toggle} />
           </ul>

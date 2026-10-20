@@ -343,18 +343,22 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       cy.nodes(".hub").not(picked).addClass("quiet");
       node.addClass("chosen");
     });
-    // 新突出的点在画面外时（例如从详情面板或搜索跳过来），移到画面中央；在画面内就不动，保持使用者调好的视口
+    // 新突出的点在画面外时（例如从详情面板或搜索跳过来），移到画面中央；它的名称露出画面时，只平移到名称刚好完整，
+    // 名称比画面还宽时左边对齐。点和名称都在画面内就不动，保持使用者调好的视口
     if (anchor === null) pannedRef.current = null;
     else if (visible && pannedRef.current !== anchor) {
       pannedRef.current = anchor;
-      const p = node.renderedPosition(), m = 20;
-      if (p.x < m || p.y < m || p.x > cy.width() - m || p.y > cy.height() - m) cy.center(node);
+      const p = node.renderedPosition(), m = 20, w = cy.width(), h = cy.height();
+      if (p.x < m || p.y < m || p.x > w - m || p.y > h - m) cy.center(node);
+      const b = node.renderedBoundingBox();
+      const dx = b.x1 < 0 || b.x2 - b.x1 > w ? -b.x1 : b.x2 > w ? w - b.x2 : 0, dy = b.y1 < 0 ? -b.y1 : b.y2 > h ? h - b.y2 : 0;
+      if (dx || dy) cy.panBy({ x: dx, y: dy });
     }
   }, [anchor, cacheKey, expanded, hidden, focus]);
 
   // 收起后图例列只放开关，开关离右边缘的距离不变
   return (
-    <div className={"graph-wrap grid flex-1 min-h-90 overflow-hidden rounded-(--radius) border border-border bg-card " + (legendOpen ? "grid-cols-[1fr_200px]" : "grid-cols-[1fr_calc(var(--control-h)+13px)]")}>
+    <div className={"graph-wrap grid flex-1 min-h-90 overflow-hidden rounded-(--radius) border border-border bg-card " + (legendOpen ? "grid-cols-[1fr_var(--legend-w)]" : "grid-cols-[1fr_var(--legend-folded-w)]")}>
       <div className="relative min-w-0">
         {/* cytoscape 往页面里插了一条不在层里的 position: relative，会压过工具类，所以 absolute 要加 ! */}
         <div className="graph absolute! inset-0" ref={box} data-ui={ui + ".graph"} />

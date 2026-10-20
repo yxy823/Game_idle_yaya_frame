@@ -1,7 +1,9 @@
 // 交付前的界面冒烟检查：用本机 Edge 无头打开构建好的 dist/index.html，检查界面设计「验证」一条列出的几项。
 // 先运行 npm run build，再运行 npm run check；有一项不通过时退出码为 1。
 import path from "node:path";
+import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
+import vm from "node:vm";
 import { pathToFileURL } from "node:url";
 import { chromium } from "playwright-core";
 import assert from "node:assert/strict";
@@ -157,7 +159,7 @@ await verify("浮窗：悬停弹出、嵌套、回到上一层时关掉更深的
   }
   assert.ok(found, "没有找到能嵌套的链接");
   // 能弹浮窗的链接用专用色；浮窗外框里有一圈 2px 的分组色
-  assert.equal(await links.first().evaluate((a) => getComputedStyle(a).color), "rgb(214, 124, 82)");
+  assert.equal(await links.first().evaluate((a) => getComputedStyle(a).color), "rgb(177, 85, 42)");
   assert.deepEqual(await page.locator(".float").evaluate((f) => {
     const ring = getComputedStyle(f, "::after"), probe = document.createElement("i");
     probe.style.color = f.style.getPropertyValue("--float-ring"); f.append(probe);
@@ -445,6 +447,224 @@ await verify("选取模式跳过设置窗口和 Sonner 浮层", async () => {
   assert.equal((await page.evaluate(() => window.pickedTexts)).length, before);
 });
 await page.keyboard.press("Alt+x");
+
+// 以下各项要换窗口大小、字号或记住的设置，每项开一个新页面；同样离线，不发远程请求
+const fresh = async ({ width = 1440, height = 900, init, arg } = {}) => {
+  const c = await browser.newContext({ offline: true, viewport: { width, height } });
+  const p = await c.newPage();
+  p.on("pageerror", (e) => errors.push(e.message));
+  if (init) await p.addInitScript(init, arg);
+  await p.goto(page_);
+  await p.waitForSelector("[data-ui='activity.home']");
+  return p;
+};
+const cyIn = (p, m, fn) => p.evaluate(([m, fn]) => new Function("cy", fn)(document.querySelector(`[data-ui="${m}.graph"]`)._cyreg.cy), [m, fn]);
+const tapTop = (p, m) => cyIn(p, m, `cy.nodes(":visible").not(".group").sort((a, b) => b.degree() - a.degree())[0].emit("tap");`);
+const cyCounts = (p, m) => cyIn(p, m, `return { faded: cy.nodes(".faded:visible").length, visible: cy.nodes(":visible").length, chosen: cy.nodes(".chosen").length };`);
+
+// 图谱名称：两种窗口宽度乘四档字号，三张图谱在初始、展开、选中、只看邻居时，名称不出画布、不互相压住
+await verify("图谱名称在各窗口宽度和字号下不出画布、不重叠", async () => {
+  const bad = [];
+  for (const width of [1100, 1440]) for (const font of ["s", "m", "l", "xl"]) {
+    const p = await fresh({ width, height: width === 1100 ? 760 : 900, arg: font, init: (font) => { localStorage.setItem("font", font); localStorage.setItem("files.view", "graph"); } });
+    const look = async (m, state) => {
+      await p.waitForTimeout(120);
+      const r = await cyIn(p, m, `
+        const box = cy.container().getBoundingClientRect();
+        const ns = cy.nodes(":visible").filter((n) => n.style("label") && Number(n.style("opacity")) > 0.1)
+          .map((n) => ({ name: n.data("label"), box: n.renderedBoundingBox(), node: n.renderedBoundingBox({ includeLabels: false }) }));
+        const clipped = ns.filter((n) => n.box.x1 < 0 || n.box.y1 < 0 || n.box.x2 > box.width || n.box.y2 > box.height).map((n) => n.name);
+        const overlaps = [];
+        for (let i = 0; i < ns.length; i++) for (let j = i + 1; j < ns.length; j++) {
+          const a = ns[i], b = ns[j];
+          const w = Math.min(a.box.x2, b.box.x2) - Math.max(a.box.x1, b.box.x1), h = Math.min(a.box.y2, b.box.y2) - Math.max(a.node.y2, b.node.y2);
+          if (w > 1 && h > 1) overlaps.push(a.name + "/" + b.name);
+        }
+        return { clipped, overlaps };`);
+      if (r.clipped.length || r.overlaps.length) bad.push(`${width}-${font}-${m}-${state}：${[...r.clipped, ...r.overlaps].slice(0, 3).join("，")}`);
+    };
+    for (const m of ["scenes", "docs", "files"]) {
+      await p.click(`[data-ui="activity.${m}"]`); await p.waitForTimeout(600);
+      await look(m, "初始");
+      if (m === "scenes") { await p.click('[data-ui="scenes.legend-unfold"]'); await look(m, "展开"); }
+      await tapTop(p, m); await look(m, "选中");
+      if (m !== "files") { await p.click(`[data-ui="${m}.graph-focus"]`); await look(m, "只看邻居"); }
+      await p.click(`[data-ui="${m}.graph-clear"]`);
+    }
+    await p.context().close();
+  }
+  assert.deepEqual(bad, []);
+});
+
+// 图谱的折叠、隐藏分组、点空白处和适配
+await verify("图谱：只看邻居时全部折叠、隐藏所在分组、点空白处、拖远后适配", async () => {
+  const p = await fresh();
+  await p.click("[data-ui='activity.scenes']"); await p.waitForTimeout(600); await p.click("[data-ui='scenes.legend-unfold']");
+  await tapTop(p, "scenes"); await p.click("[data-ui='scenes.graph-focus']"); await p.click("[data-ui='scenes.legend-fold']");
+  assert.deepEqual(await cyCounts(p, "scenes"), { faded: 0, visible: 13, chosen: 0 });
+  await p.click("[data-ui='activity.docs']"); await p.waitForTimeout(800); await tapTop(p, "docs"); await p.waitForTimeout(300);
+  const group = await cyIn(p, "docs", `return cy.nodes(".chosen").data("group");`);
+  const prefix = { docs: "项目文档", rules: "入口", reports: "报告" }[group];
+  for (const r of await p.locator(".legend-label").all()) if ((await r.innerText()).startsWith(prefix)) await r.locator("[role=checkbox]").click();
+  assert.deepEqual(await cyCounts(p, "docs"), { faded: 0, visible: 9, chosen: 0 });
+  const all = p.locator(".legend-row [role=checkbox]").first();
+  assert.equal(await all.getAttribute("aria-checked"), "mixed");
+  // “全部分组”半选时点一次恢复全部显示
+  await p.keyboard.press("Escape"); await all.click();
+  await tapTop(p, "docs");
+  const box = await p.locator("[data-ui='docs.graph']").boundingBox();
+  await p.mouse.click(box.x + 5, box.y + box.height - 5);
+  assert.deepEqual(await cyCounts(p, "docs"), { faded: 25, visible: 37, chosen: 1 });
+  await p.keyboard.press("Escape");
+  await cyIn(p, "docs", `cy.pan({ x: 5000, y: -3000 });`);
+  await p.click("[data-ui='docs.graph-fit']");
+  assert.equal(await cyIn(p, "docs", `const e = cy.extent(); return cy.nodes(":visible").every((n) => { const q = n.position(); return q.x > e.x1 && q.x < e.x2 && q.y > e.y1 && q.y < e.y2; });`), true);
+  await p.context().close();
+});
+
+await verify("详情面板：JSON 模板显示路径，问答表格完整，标题行固定在顶上", async () => {
+  const p = await fresh();
+  await p.click("[data-ui='activity.docs']"); await p.waitForTimeout(800);
+  await cyIn(p, "docs", `cy.nodes().filter((n) => n.data("label") === "methodology-config.json")[0].emit("tap");`);
+  assert.ok((await p.locator("[data-ui='panel']").innerText()).includes("docs/methodology-config.json"));
+  await p.click("[data-ui='activity.search']");
+  await p.locator("input[data-ui='search.input']").fill("这批成品按哪一版规格做"); await p.waitForTimeout(300);
+  assert.equal(await p.locator(".result").count(), 1);
+  await p.locator(".result").first().click(); await p.waitForTimeout(300);
+  const rows = await p.locator(".panel-doc table").filter({ hasText: "提交号回答什么问题" }).locator("tr")
+    .evaluateAll((rs) => rs.map((r) => [...r.querySelectorAll("th,td")].map((c) => c.textContent)));
+  assert.deepEqual(rows, [
+    ["方向", "交出什么", "提交号回答什么问题"],
+    ["游戏项目 → 制作项目", "规格所在的文件和章节，例如商店界面设计的资源章节", "这批成品按哪一版规格做；规格改了以后，看它判断要不要重做"],
+    ["制作项目 → 游戏项目", "成品文件、母版位置和一句生成方法", "游戏里用的是哪一版成品；以后要改，从哪份母版接着改"],
+  ]);
+  await p.locator("input[data-ui='search.input']").fill("GDD"); await p.waitForTimeout(300);
+  await p.locator(".result").first().click(); await p.waitForTimeout(300);
+  const top = () => p.evaluate(() => Math.round(document.querySelector("[data-ui='panel.head']").getBoundingClientRect().top));
+  const before = await top();
+  const scrolled = await p.evaluate(() => { const el = document.querySelector(".panel"); el.scrollTop = el.scrollHeight; return el.scrollTop; });
+  assert.ok(scrolled > 0, "面板要够长才能滚动");
+  assert.equal(await top(), before);
+  await p.context().close();
+});
+
+await verify("学习：搜索第一处可见，Esc 后焦点回到放大镜，跨模块后退回到小节", async () => {
+  const p = await fresh();
+  await p.click("[data-ui='activity.learn']"); await p.click("[data-ui='learn.search']");
+  await p.locator("input[data-ui='learn.search']").fill("Stage"); await p.waitForTimeout(300);
+  await p.locator("[data-slot=popover-content] [cmdk-item][role=option]").first().click(); await p.waitForTimeout(400);
+  assert.equal(await p.evaluate(() => { const m = document.querySelector("mark.hit.current"); const r = m.getBoundingClientRect(); const top = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2); return top === m || m.contains(top); }), true);
+  await p.locator("input[data-ui='learn.search']").focus(); await p.keyboard.press("Escape"); await p.waitForTimeout(100);
+  assert.equal(await p.evaluate(() => document.activeElement.getAttribute("aria-label")), "搜索本页");
+  await p.reload(); await p.waitForSelector("[data-ui='activity.home']");
+  await p.click("[data-ui='activity.learn']");
+  await p.locator(".learn-body a", { hasText: "Feature 的执行阶段" }).first().click(); await p.waitForTimeout(300);
+  await p.locator(".tree-row").nth(3).click();
+  await p.click("[data-ui='activity.qa']");
+  await p.goBack(); await p.waitForTimeout(500);
+  assert.equal(await p.evaluate(() => Math.round(document.getElementById("feature-的执行阶段").getBoundingClientRect().y)), 36);
+  await p.context().close();
+});
+
+// 每一章的搜索结果条数和正文里高亮的处数一致；Mermaid 图里的词不算
+await verify("学习搜索：每章的条数和正文高亮一致，图里的词不算", async () => {
+  const p = await fresh();
+  await p.click("[data-ui='activity.learn']"); await p.click("[data-ui='learn.search']");
+  for (const q of ["flowchart", "<框架源文件>", "Feature"]) {
+    await p.fill("input[data-ui='learn.search']", q); await p.waitForTimeout(300);
+    const options = p.locator("[data-slot='popover-content'] [cmdk-item][role='option']");
+    const items = await options.allInnerTexts();
+    if (q === "flowchart") { assert.equal(items.length, 0, "Mermaid 专有词不能算入正文"); continue; }
+    assert.ok(items.length > 0, q + " 要有结果");
+    for (let i = 0; i < items.length; i++) {
+      await options.nth(i).click(); await p.waitForTimeout(100);
+      assert.equal(await p.locator("mark.hit").count(), Number(items[i].match(/(\d+) 处/)[1]), q + " / " + items[i]);
+      await p.locator("input[data-ui='learn.search']").focus(); await p.keyboard.press("ArrowDown");
+    }
+  }
+  await p.context().close();
+});
+
+await verify("首页：流程图按原尺寸、没有缩放按钮，连线说明用页面底色，没有页内链接", async () => {
+  const p = await fresh();
+  assert.equal(await p.locator(".home [aria-label='Zoom in']").count(), 0);
+  assert.equal(await p.evaluate(() => getComputedStyle(document.querySelector(".home [class*='edge-label'] rect")).fill), "rgb(250, 250, 250)");
+  const widths = await p.evaluate(() => [...document.querySelectorAll(".home .diagram > svg")].map((s) => [Math.round(s.getBoundingClientRect().width), Number(s.getAttribute("width"))]));
+  assert.equal(widths.length, 5);
+  for (const [actual, source] of widths) assert.equal(actual, source);
+  assert.equal(await p.locator("a").count(), 0);
+  await p.context().close();
+});
+
+await verify("详情宽度：记住的宽度过大时主区仍留 480px，记住 Infinity 时用默认 420px", async () => {
+  let p = await fresh({ width: 1100, height: 760, init: () => localStorage.setItem("panel-w", "916") });
+  assert.equal(await p.evaluate(() => Math.round(document.querySelector(".main").getBoundingClientRect().width)), 480);
+  await p.context().close();
+  p = await fresh({ init: () => localStorage.setItem("panel-w", "Infinity") });
+  assert.equal(await p.evaluate(() => Math.round(document.querySelector(".panel").getBoundingClientRect().width)), 420);
+  await p.context().close();
+});
+
+// 浮窗的另几种弹出和操作：关系图的点、学习正文的链接、双击标题栏钉住、拖右下角改大小、按住 Ctrl 才弹
+await verify("浮窗：关系图的点和学习正文能弹，双击钉住，拖角改大小，Ctrl 模式", async () => {
+  const p = await fresh();
+  const n = () => p.locator(".float").count();
+  const off = async () => { await p.mouse.move(60, 860); await p.waitForTimeout(400); };
+  await p.click("[data-ui='activity.files']"); await p.waitForTimeout(600);
+  await p.locator("[data-ui='files.view-switch']").getByRole("tab", { name: "列表", exact: true }).click();
+  await p.click(".cards .card"); await p.waitForTimeout(300);
+  await p.locator("[data-ui='panel.graph'] .lg-node").first().hover(); await p.waitForTimeout(700);
+  assert.equal(await n(), 1);
+  await p.locator(".float-head span").dblclick();
+  assert.equal(await p.locator("[data-ui='float.pin']").getAttribute("aria-pressed"), "true");
+  const b = await p.locator(".float").boundingBox();
+  await p.mouse.move(b.x + b.width - 2, b.y + b.height - 2); await p.mouse.down();
+  await p.mouse.move(b.x + b.width - 102, b.y + b.height - 52, { steps: 5 }); await p.mouse.up();
+  const b2 = await p.locator(".float").boundingBox();
+  assert.deepEqual([Math.round(b.width - b2.width), Math.round(b.height - b2.height)], [100, 50]);
+  await p.locator("[data-ui='float.close']").click();
+  await p.click("[data-ui='activity.learn']"); await p.waitForTimeout(600);
+  await off();
+  await p.locator(".main .learn-body a[data-card]").first().hover(); await p.waitForTimeout(700);
+  assert.equal(await n(), 1);
+  await off();
+  await p.click("[data-ui='topbar.settings']");
+  await p.locator("[data-ui='settings.float-mode']").getByRole("radio", { name: "按住 Ctrl" }).click();
+  await p.keyboard.press("Escape");
+  await off();
+  await p.locator(".main .learn-body a[data-card]").first().hover(); await p.waitForTimeout(700);
+  assert.equal(await n(), 0);
+  await p.keyboard.down("Control"); await p.waitForTimeout(100); await p.keyboard.up("Control");
+  assert.equal(await n(), 1);
+  await p.context().close();
+});
+
+// 正文链接：指向仓库文档的链接都能找到那份文档和锚点，用 VSCode 打开的文件都存在
+await verify("正文链接都能打开：文档和锚点存在，VSCode 链接的文件存在", async () => {
+  const start = html.indexOf("{home:{framework:");
+  let depth = 0, quote = "", end = -1;
+  for (let i = start; i < html.length; i++) {
+    const c = html[i];
+    if (quote) { if (c === "\\") i++; else if (c === quote) quote = ""; continue; }
+    if (c === '"' || c === "'" || c === "`") { quote = c; continue; }
+    if (c === "{") depth++;
+    else if (c === "}" && --depth === 0) { end = i + 1; break; }
+  }
+  assert.ok(start >= 0 && end > 0, "页面里找不到数据");
+  const data = vm.runInNewContext("(" + html.slice(start, end) + ")");
+  const links = await page.evaluate((data) => {
+    const docs = data.html.map((h) => new DOMParser().parseFromString(h, "text/html"));
+    return data.html.flatMap((_, card) => [...docs[card].querySelectorAll("a")].map((a) => {
+      const to = a.dataset.card === undefined ? null : Number(a.dataset.card), anchor = decodeURIComponent(a.dataset.anchor || "");
+      const ok = to === null || (Boolean(data.files[to]) && (!anchor || Boolean(docs[to].getElementById(anchor))));
+      return { from: data.files[card].path, href: a.getAttribute("href"), ok };
+    }));
+  }, data);
+  const broken = links.filter((l) => !l.ok).map((l) => l.from + " → " + l.href);
+  const missing = links.filter((l) => l.href.startsWith("vscode://file/") && !existsSync(l.href.slice("vscode://file/".length).split("#")[0])).map((l) => l.from + " → " + l.href);
+  assert.deepEqual([...broken, ...missing], []);
+  return `${links.length} 个链接`;
+});
 
 check("离线进入七个模块没有远程请求或资源加载失败", remote.length === 0 && failedRequests.length === 0,
   [...remote, ...failedRequests].join(" | "));

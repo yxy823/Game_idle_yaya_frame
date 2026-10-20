@@ -49,7 +49,7 @@ function search(query) {
 function Highlight({ text, words }) {
   if (!words.length) return text;
   const pattern = new RegExp("(" + words.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|") + ")", "gi");
-  return text.split(pattern).map((part, i) => (i % 2 ? <mark key={i} className="rounded-[2px] bg-accent font-bold text-foreground">{part}</mark> : part));
+  return text.split(pattern).map((part, i) => (i % 2 ? <mark key={i} className="rounded-(--mark-radius) bg-accent font-bold text-foreground">{part}</mark> : part));
 }
 
 // 摘要取第一个不是标题的命中字段，截取命中处前后各约 40 字
