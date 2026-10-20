@@ -23,7 +23,7 @@ docs/gdd/ 已有实际游戏设计正文。空目录、仅作目录导航的 REA
 
 **S1｜核对设计与采用范围**
 
-读取相关完整 GDD 章节及 `docs/gdd/open-questions.md` 中相关问题，区分已确认设计、备选方案和内部冲突，核对本次范围与直接依赖。按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)判断哪些交付决定受阻；Product 引用对应问题说明依赖，不复制问题正文，也不要求先解决无关问题。
+读取相关完整 GDD 章节及 `docs/gdd/open-questions.md` 中相关问题，区分已确认设计、备选方案和内部冲突，核对本次范围与直接依赖。第一次预拆分这部分范围时，先按[预拆分前审一次 GDD](<../../../../../project-source/skills/product-author/SKILL.md#预拆分前审一次-gdd>)用 [$plan-review](<../../../../../project-source/skills/plan-review/SKILL.md>) 审一次 GDD；影响拆分的问题交回 `design-gdd` 修改，或由你明确推迟。按[开放问题](../../../../../project-source/methodology/01-product-doc-structure.md#开放问题)判断哪些交付决定受阻；Product 引用对应问题说明依赖，不复制问题正文，也不要求先解决无关问题。
 
 **S2｜组织交付单元**
 

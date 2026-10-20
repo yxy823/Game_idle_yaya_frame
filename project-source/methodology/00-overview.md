@@ -53,7 +53,7 @@ yaya/methodology/                         canonical workflow specification
 | 解决几个答案相互影响的关键未知点 | `wayfinder` | 未知点相互依赖时使用。不强制访谈、原型、worktree 或新记录类型，也不扩大任务授权。 |
 | 选定工作前先评估反馈或外部报告 | `feedback-triage` | 在决定反馈需要什么工作之前使用。分类不授权修复，也不创建 Feature。 |
 | 调查一个具体异常行为的原因 | `bug-diagnosis` | 用于具体故障。只要求调查时，不允许修改实现。 |
-| 检查 GDD 草稿或文档，或 Product、Feature 提案 | `plan-review` | 发现返回给文档作者；审查 GDD 不需要 Product 或 Feature。它不是正式的[独立审核](12-independent-review.md)，也不是必经关卡。 |
+| 检查 GDD 草稿或文档，或 Product、Feature 提案 | `plan-review` | 发现返回给文档作者；审查 GDD 不需要 Product 或 Feature。它不是正式的[独立审核](12-independent-review.md)。只有第一次预拆分 Product 前，`product-author` 默认用它审一次本次范围的 GDD；其他时候按需使用。 |
 | 根据实际任务经验复盘，包括反复出现的阻力 | `retro` | 需要来自真实任务的证据。只返回建议，不自动修改规则，也不自动生成报告、检查或工作项。 |
 | 为用户点名的反复出现或预期会出现的活动设计处理方式 | `loop-me` | 不必等出现故障再用。返回一份设计，不增加 Stage，也不实现任何内容。 |
 | 调查外部事实或比较方案 | 主 Agent，可以委派给 `researcher` | 答案需要外部来源时使用，见 [外部调研](09-records-reports-and-handoff.md#外部调研)。没有强制的调研 Stage，不新建 Feature，不自动采纳结论。 |
