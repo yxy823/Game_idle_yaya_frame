@@ -110,6 +110,33 @@ if (await page.evaluate(() => document.querySelector(".workspace").classList.con
 await page.click(".cards .card");
 await page.waitForTimeout(300);
 await panelEdges("文件全景卡片的详情面板，");
+// 文档关系：悬停面板里的关系时图上对应的点写名称；跳到画面外的点时视口移过去；跳到不在本图里的文档时保留高亮并提示
+await open("docs");
+const docsCy = (fn) => page.evaluate((fn) => new Function("cy", fn)(document.querySelector("[data-ui='docs.graph']")._cyreg.cy), fn);
+await verify("文档关系：悬停面板里的关系，图上对应的点写名称", async () => {
+  await docsCy(`cy.nodes(":visible").not(".group").sort((a, b) => b.degree() - a.degree())[0].emit("tap");`);
+  await page.waitForTimeout(200);
+  await page.locator("[data-ui='panel.doc-links'] .link-btn").first().hover();
+  assert.equal(await docsCy(`const n = cy.nodes(".hovered"); return n.length === 1 && n.style("label") === n.data("label");`), true);
+  await page.mouse.move(5, 5);
+  assert.equal(await docsCy(`return cy.nodes(".hovered").length;`), 0);
+});
+await verify("文档关系：从面板跳到画面外的点，视口移到它", async () => {
+  await docsCy(`cy.panBy({ x: 5000, y: 5000 });`);
+  await page.locator("[data-ui='panel.doc-links'] .link-btn").first().click();
+  await page.waitForTimeout(200);
+  assert.equal(await docsCy(`const p = cy.nodes(".chosen").renderedPosition(); return p.x > 0 && p.y > 0 && p.x < cy.width() && p.y < cy.height();`), true);
+});
+await verify("文档关系：跳到不在本图里的文档，保留高亮并写“不在本图里”", async () => {
+  const before = await docsCy(`return cy.nodes(".chosen").data("key");`);
+  await page.locator("[data-ui='panel.doc-sources'] .link-btn").first().click();
+  await page.waitForTimeout(200);
+  assert.equal(await docsCy(`return cy.nodes(".chosen").data("key");`), before);
+  assert.equal(await page.locator("[data-ui='panel.away']").isVisible(), true);
+  await page.keyboard.press("Escape");
+  await page.waitForTimeout(200);
+  assert.equal(await docsCy(`return cy.nodes(".chosen").length;`), 0);
+});
 // 开发场景从顶栏搜索选中一个场景，场景衔接一节有条件和“主线”标记
 await open("scenes");
 await page.click("[data-ui='scenes.search']");

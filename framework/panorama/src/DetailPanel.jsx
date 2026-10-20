@@ -10,6 +10,7 @@ import { store } from "./store.js";
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { hoverNode, useShownGraph } from "./Graph.jsx";
 
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
 // 小节里只有一组、组名和小节标题相同时，不写组名。
@@ -35,9 +36,11 @@ function Section({ title, ui, count, children }) {
   );
 }
 
-// 面板标题行：名称和后退、前进，固定在面板顶上，长文档滚到下面时按钮也在；后退、前进在本模块选中过的对象之间移动
+// 面板标题行：名称和后退、前进，固定在面板顶上，长文档滚到下面时按钮也在；后退、前进在本模块选中过的对象之间移动。
+// 选中的对象不在当前图谱里时，标题行下面写一行说明，图上仍突出上一个选中的点
 function Head({ title, nav }) {
   return (
+    <>
     <div className="sticky top-0 z-2 mb-1 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
       <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
@@ -45,12 +48,17 @@ function Head({ title, nav }) {
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
         onClick={() => nav.onForward?.()} data-ui="panel.forward"><ArrowRightIcon aria-hidden="true" /></Button>
     </div>
+    {nav.away && <p className="px-(--pad) pb-1 text-xs text-muted-foreground" data-ui="panel.away">不在本图里</p>}
+    </>
   );
 }
 
 function FileLink({ index, onSelect }) {
-  return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
+  return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} {...hover(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
 }
+
+// 悬停关系列表里的一项时，图谱上对应的点高亮并写名称
+const hover = (key) => ({ onMouseEnter: () => hoverNode(key), onMouseLeave: () => hoverNode(null) });
 
 // 每个目标只列一次，按第一次出现的顺序
 const unique = (list, key) => list.filter((x, i) => list.findIndex((y) => key(y) === key(x)) === i);
@@ -110,7 +118,7 @@ function DocPanel({ k, onSelect, nav }) {
   const rel = (e, end) => (
     <li key={e.from + "-" + e.to + "-" + e.line}>
       {e.label && <div className="cond">{e.label}</div>}
-      <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].label}</Button>
+      <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(docKey(e[end]))} {...hover(docKey(e[end]))}>{docNodes[e[end]].label}</Button>
     </li>
   );
   return (
@@ -168,7 +176,8 @@ let lastTab = TABS.some(([id]) => id === store.get("panel.tab")) ? store.get("pa
 export default function DetailPanel({ file, onSelect, onBack, onForward, font }) {
   const [tab, setTab] = useState(lastTab);
   const pickTab = (t) => { lastTab = t; store.set("panel.tab", t); setTab(t); };
-  const nav = { onBack, onForward };
+  const graph = useShownGraph();
+  const nav = { onBack, onForward, away: graph !== null && file !== null && !Object.hasOwn(graph, file) };
   const q = qaOf(file), e = entryOf(file);
   if (q) return <QaPanel key={file} q={q} onSelect={onSelect} nav={nav} />;
   if (e) return <EntryPanel key={file} e={e} onSelect={onSelect} nav={nav} font={font} />;

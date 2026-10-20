@@ -3,7 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useTooltip } from "./overlays.jsx";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { ChevronsDownIcon, FolderIcon, FolderOpenIcon, ChevronsUpIcon, PanelRightCloseIcon, PanelRightOpenIcon } from "lucide-react";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -25,6 +25,15 @@ const pendingFocus = new Map();
 export function focusGroup(cacheKey, id) {
   pendingFocus.set(cacheKey, id);
 }
+
+// 当前显示的图谱里有哪些点（选中值 → 分组），详情面板据此提示“不在本图里”；没有显示图谱时为 null
+let shownGraph = null;
+const graphWatchers = new Set();
+const setShownGraph = (g) => { shownGraph = g; graphWatchers.forEach((f) => f()); };
+export const useShownGraph = () => useSyncExternalStore((f) => { graphWatchers.add(f); return () => graphWatchers.delete(f); }, () => shownGraph);
+// 详情面板悬停一条关系时，图谱上对应的点高亮并写名称；传 null 取消
+let hoverWatcher = null;
+export const hoverNode = (key) => hoverWatcher?.(key);
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
@@ -116,6 +125,8 @@ function style(legend, directed, foldable) {
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom(), "text-rotation": "autorotate" } },
     { selector: "node.quiet", style: { label: "" } },
     { selector: "node.chosen", style: { "border-width": (n) => 2 / n.cy().zoom(), "border-color": css("--ring") } },
+    // 详情面板里悬停的关系：不变淡、写名称、压在其他点上面
+    { selector: "node.hovered", style: { ...label, opacity: 1, "z-index": 10, "border-width": (n) => 2 / n.cy().zoom(), "border-color": css("--ring") } },
   ];
 }
 
@@ -223,6 +234,19 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   useEffect(() => { unfolded.set(cacheKey, expanded); }, [cacheKey, expanded]);
 
   const inGraph = selected !== null && Object.hasOwn(groupOf, selected);
+  // 图上突出的点：跳到不在本图里的对象时，保留上一个选中的点，使用者仍知道图上停在哪；取消选中才清掉
+  const anchorRef = useRef(null), pannedRef = useRef(null);
+  if (selected === null) anchorRef.current = null; else if (inGraph) anchorRef.current = selected;
+  const anchor = anchorRef.current;
+  useEffect(() => { setShownGraph(groupOf); return () => setShownGraph(null); }, [groupOf]);
+  useEffect(() => {
+    hoverWatcher = (key) => {
+      const cy = cyRef.current;
+      cy.nodes(".hovered").removeClass("hovered");
+      if (key !== null && Object.hasOwn(groupOf, key)) cy.getElementById("n" + key).addClass("hovered");
+    };
+    return () => { hoverWatcher = null; };
+  }, [groupOf]);
   // 邻居视图里留下的点：中心点几跳以内
   const within = useMemo(() => {
     if (!focus) return null;
@@ -231,11 +255,11 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     for (let k = 0; k < focus.hops; k++) ring = ring.flatMap((i) => [...neighbours.get(i)].filter((j) => !seen.has(j) && seen.add(j)));
     return seen;
   }, [focus, neighbours, nodes]);
-  // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图；
+  // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图，选中不在本图里的对象时保留；
   // 邻居视图里选中了范围外的点（例如从详情面板的链接），以它为中心重排
   useEffect(() => {
     if (inGraph && !expanded.has(groupOf[selected])) setExpanded((s) => new Set(s).add(groupOf[selected]));
-    if (!inGraph && focus && !focus.group) setFocus(null);
+    if (selected === null && focus && !focus.group) setFocus(null);
     if (inGraph && within && !within.has(selected)) setFocus({ center: selected, hops: focus.hops });
   }, [selected]);
   // 分组的邻居视图不靠选中进入，没有选中时按 Esc 直接回到全图
@@ -299,14 +323,14 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     if (foldable) shortenGroupLabels(cy);
   }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, expanded, hidden, within]);
 
-  // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点，或它所在的分组被隐藏、折叠时，图保持原样，
-  // 因为看不见的点做中心，其余的点会全部变淡
+  // 突出的点连同它的直接邻居显示，其余变淡。它所在的分组被隐藏、折叠时，图保持原样，因为看不见的点做中心，其余的点会全部变淡
   useEffect(() => {
     const cy = cyRef.current;
+    const node = anchor !== null ? cy.getElementById("n" + anchor) : cy.collection();
+    const visible = node.nonempty() && node.style("display") === "element";
     cy.batch(() => {
-      cy.elements().removeClass("faded near labeled quiet chosen");
-      const node = inGraph ? cy.getElementById("n" + selected) : cy.collection();
-      if (node.empty() || node.style("display") === "none") return;
+      cy.elements().removeClass("faded near labeled quiet chosen hovered");
+      if (!visible) return;
       const near = node.closedNeighborhood();
       near.addClass("near");
       // 邻居视图里留下的都是要看的点，不变淡；不超过 20 个点时全部写名称，多了在全部留下的点里挑
@@ -319,7 +343,14 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       cy.nodes(".hub").not(picked).addClass("quiet");
       node.addClass("chosen");
     });
-  }, [selected, cacheKey, inGraph, expanded, hidden, focus]);
+    // 新突出的点在画面外时（例如从详情面板或搜索跳过来），移到画面中央；在画面内就不动，保持使用者调好的视口
+    if (anchor === null) pannedRef.current = null;
+    else if (visible && pannedRef.current !== anchor) {
+      pannedRef.current = anchor;
+      const p = node.renderedPosition(), m = 20;
+      if (p.x < m || p.y < m || p.x > cy.width() - m || p.y > cy.height() - m) cy.center(node);
+    }
+  }, [anchor, cacheKey, expanded, hidden, focus]);
 
   // 收起后图例列只放开关，开关离右边缘的距离不变
   return (
@@ -329,17 +360,17 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
         <div className="graph absolute! inset-0" ref={box} data-ui={ui + ".graph"} />
         <div className="absolute top-2 left-2 flex gap-1.5">
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
-          <Button variant="outline" className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
-            onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</Button>
+          <Button variant="outline" className="graph-btn" aria-disabled={anchor === null} data-tip={anchor !== null ? undefined : "先在图里选中一个点"}
+            onClick={() => { if (anchor !== null) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</Button>
           {/* 拖动或缩放后找不到点时，把显示着的点都放回画布里；只在点击时移动视口 */}
           <Button variant="outline" className="graph-btn" data-tip="把显示着的点都放进画布" data-ui={ui + ".graph-fit"}
             onClick={() => { const cy = cyRef.current; cy.fit(cy.nodes(":visible"), 30); }}>适配画布</Button>
           {focusable && (
             <>
               {/* “只看邻居”和“返回全图”换字时宽度不变，旁边的跳数切换不跟着移动 */}
-              <Button variant="outline" className="graph-btn min-w-[6.5em]" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
-                data-tip={inGraph || focus ? undefined : "先在图里选中一个点"}
-                onClick={() => { if (focus) setFocus(null); else if (inGraph) setFocus({ center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</Button>
+              <Button variant="outline" className="graph-btn min-w-[6.5em]" aria-disabled={anchor === null && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
+                data-tip={anchor !== null || focus ? undefined : "先在图里选中一个点"}
+                onClick={() => { if (focus) setFocus(null); else if (anchor !== null) setFocus({ center: anchor, hops }); }}>{focus ? "返回全图" : "只看邻居"}</Button>
               <ToggleGroup type="single" value={String(hops)} spacing={0} variant="outline" aria-label="邻居范围" data-ui={ui + ".graph-hops"}
                 onValueChange={(value) => { if (!value) return; const h = Number(value); setHops(h); if (focus) setFocus({ ...focus, hops: h }); }}>
                 {[1, 2].map((h) => <ToggleGroupItem key={h} value={String(h)}>{h} 跳</ToggleGroupItem>)}
