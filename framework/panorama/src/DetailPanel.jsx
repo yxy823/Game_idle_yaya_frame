@@ -12,12 +12,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
-// 小节里只有一组、组名和小节标题相同时，不写组名
+// 小节里只有一组、组名和小节标题相同时，不写组名。
+// 层级靠字号和间距分开：小节标题比正文大 1px 并加粗，组名用小字次要色；小节之间 12px，组之间 8px，组名到内容 2px
 function Row({ name, children }) {
   return <div className="row grid min-h-(--control-h) grid-cols-[64px_1fr] items-start gap-2 px-(--pad)"><span className="name text-xs leading-(--control-h) text-muted-foreground">{name}</span><span className="value pt-[5px] leading-normal [overflow-wrap:anywhere]">{children}</span></div>;
 }
 function Group({ name, children }) {
-  return <div className="group px-(--pad) pb-1">{name && <div className="group-name pt-0.5 text-xs text-muted-foreground">{name}</div>}{children}</div>;
+  return <div className="group px-(--pad) pb-2">{name && <div className="group-name mb-0.5 pt-0.5 text-xs text-muted-foreground">{name}</div>}{children}</div>;
 }
 
 // 超过 20 条的小节默认收起，否则一节就占满整个面板
@@ -25,7 +26,7 @@ function Section({ title, ui, count, children }) {
   const [open, setOpen] = useState(count === undefined || count <= 20);
   return (
     <Collapsible className="section" open={open} data-ui={ui} onOpenChange={setOpen}>
-      <CollapsibleTrigger asChild><Button variant="ghost" size="none" className="section-trigger h-(--control-h) w-full justify-start gap-0 rounded-none border-0 px-(--pad) font-semibold">
+      <CollapsibleTrigger asChild><Button variant="ghost" size="none" className="section-trigger h-(--control-h) w-full justify-start gap-0 rounded-none border-0 px-(--pad) text-[length:calc(var(--fs)+1px)] font-semibold">
         <span className="twisty -ml-3 inline-grid place-items-center w-3 text-muted-foreground [&>svg]:size-2!"><TriangleIcon className={"fill-current stroke-0 " + (open ? "rotate-180" : "rotate-90")} aria-hidden="true" /></span>
         <span className="section-title">{title}</span>{count !== undefined && <span className="count">{count}</span>}
       </Button></CollapsibleTrigger>

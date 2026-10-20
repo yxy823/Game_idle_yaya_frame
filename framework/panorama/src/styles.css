@@ -26,9 +26,9 @@
   .workspace.panel-closed .panel { visibility: hidden; }
   .panel .empty { padding: var(--space-1) var(--pad); color: var(--muted-fg); }
   /* 小节照 draw.io 的格式面板：实心三角贴左内边距，三角、标题和小节内容共用一条左边线；小节之间画细线 */
-  .section { padding-bottom: var(--space-1-5); }
+  .section { padding-bottom: var(--space-3); }
   .section + .section { border-top: 1px solid var(--border); }
-  .group .text { margin: 0 0 var(--space-1); overflow-wrap: anywhere; }
+  .group .text { margin: 0 0 var(--space-1); line-height: 1.6; overflow-wrap: anywhere; }
   .group ul.text { padding-left: 1.2em; list-style: disc; }
   .plain li { padding: var(--space-0-5) 0; min-width: 0; }
   .cond { color: var(--muted-fg); font-size: var(--fs-small); }
