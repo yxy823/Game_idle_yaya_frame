@@ -3,6 +3,7 @@ import { IconExternalLink } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import { files } from "./docs.js";
 import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
+import SideLayout from "./SideLayout.jsx";
 
 // 问答的选中值写成 "qa:编号"，和文档的卡片编号（数字）区分开
 export const qaKey = (n) => "qa:" + n;
@@ -28,14 +29,12 @@ export default function QaModule({ selected, onSelect }) {
       <PageHead search={<PageSearch ui="qa.search" value={query} onChange={setQuery} placeholder="搜索问题、结论和理由" />}>
       {ws.length > 0 && <p className="lead">{count ? `搜索“${query.trim()}”：${count} 条` : "没有匹配的问答，换一个词或减少关键词。"}</p>}
       </PageHead>
-      <div className="side-layout">
-        <nav className="side-toc" aria-label="主题" data-ui="qa.toc">
-          {listed.map((t) => (
-            <button key={t} className="tree-row" onClick={() => document.getElementById("qa-topic-" + t).scrollIntoView({ block: "start" })}>
-              <span className="tree-name" data-tip-clip>{files[t].title}</span><span className="count">{countOf(t)}</span>
-            </button>
-          ))}
-        </nav>
+      <SideLayout label="主题" ui="qa" toc={
+        listed.map((t) => (
+          <button key={t} className="tree-row" onClick={() => document.getElementById("qa-topic-" + t).scrollIntoView({ block: "start" })}>
+            <span className="tree-name" data-tip-clip>{files[t].title}</span><span className="count">{countOf(t)}</span>
+          </button>
+        ))}>
         <div>
           {listed.map((t) => (
             <section className="qa-topic" key={t} id={"qa-topic-" + t} data-ui="qa.topic">
@@ -55,7 +54,7 @@ export default function QaModule({ selected, onSelect }) {
             </section>
           ))}
         </div>
-      </div>
+      </SideLayout>
     </>
   );
 }

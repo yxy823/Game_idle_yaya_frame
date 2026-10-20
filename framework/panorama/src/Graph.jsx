@@ -15,6 +15,12 @@ export function unfoldGroup(cacheKey, id) {
   unfolded.set(cacheKey, new Set(unfolded.get(cacheKey)).add(id));
 }
 
+// 打开图时直接进入一个分组的邻居视图：只留组内的点和与它们直接相连的点。首页点流程图的一步用它，跳过去就能看出这一步在图里的范围
+const pendingFocus = new Map();
+export function focusGroup(cacheKey, id) {
+  pendingFocus.set(cacheKey, id);
+}
+
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 
 // 斥力大、理想边长长、引力小，点才散得开，名称不叠在一起
@@ -117,8 +123,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   // 图例收起后只留开关，各图谱共用这一个设置
   const [legendOpen, setLegendOpen] = useState(() => store.get("legend") !== "closed");
   const [expanded, setExpanded] = useState(() => unfolded.get(cacheKey) ?? new Set(foldable ? [] : legend.map((g) => g.id)));
-  const [focus, setFocus] = useState(null);
-  const [hops, setHops] = useState(2);
+  // 邻居视图：center 是选中的点；group 是整个分组（从首页进入），这时以组内全部的点为中心
+  const [focus, setFocus] = useState(() => {
+    const group = pendingFocus.get(cacheKey);
+    pendingFocus.delete(cacheKey);
+    return group ? { group, hops: 1 } : null;
+  });
+  const [hops, setHops] = useState(() => focus?.hops ?? 2);
   const groupOf = useMemo(() => Object.fromEntries(nodes.map((n) => [n.i, n.group])), [nodes]);
   const neighbours = useMemo(() => {
     const m = new Map(nodes.map((n) => [n.i, new Set()]));
@@ -188,18 +199,25 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
   // 邻居视图里留下的点：中心点几跳以内
   const within = useMemo(() => {
     if (!focus) return null;
-    const seen = new Set([focus.center]);
-    let ring = [focus.center];
+    let ring = focus.group ? nodes.filter((n) => n.group === focus.group).map((n) => n.i) : [focus.center];
+    const seen = new Set(ring);
     for (let k = 0; k < focus.hops; k++) ring = ring.flatMap((i) => [...neighbours.get(i)].filter((j) => !seen.has(j) && seen.add(j)));
     return seen;
-  }, [focus, neighbours]);
+  }, [focus, neighbours, nodes]);
   // 选中的场景在折叠的分组里时（例如从搜索选中），展开它所在的分组；取消选中时退出邻居视图；
   // 邻居视图里选中了范围外的点（例如从详情面板的链接），以它为中心重排
   useEffect(() => {
     if (inGraph && !expanded.has(groupOf[selected])) setExpanded((s) => new Set(s).add(groupOf[selected]));
-    if (!inGraph && focus) setFocus(null);
-    if (inGraph && within && !within.has(selected)) setFocus({ ...focus, center: selected });
+    if (!inGraph && focus && !focus.group) setFocus(null);
+    if (inGraph && within && !within.has(selected)) setFocus({ center: selected, hops: focus.hops });
   }, [selected]);
+  // 分组的邻居视图不靠选中进入，没有选中时按 Esc 直接回到全图
+  useEffect(() => {
+    if (!focus?.group) return undefined;
+    const key = (e) => { if (e.key === "Escape" && selectedRef.current === null) setFocus(null); };
+    document.addEventListener("keydown", key);
+    return () => document.removeEventListener("keydown", key);
+  }, [focus]);
 
   // 按折叠状态、隐藏的分组和邻居视图决定显示哪些点，再重画连线：
   // 每条连线的两端换成实际显示的点（场景本身或它折叠后的大点），同一对点之间的连线合并成一条
@@ -283,8 +301,9 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
             onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</button>
           {focusable && (
             <>
-              <button className="graph-btn graph-focus" aria-disabled={!inGraph} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
-                data-tip={inGraph ? undefined : "先在图里选中一个点"} onClick={() => { if (inGraph) setFocus(focus ? null : { center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</button>
+              <button className="graph-btn graph-focus" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
+                data-tip={inGraph || focus ? undefined : "先在图里选中一个点"}
+                onClick={() => { if (focus) setFocus(null); else if (inGraph) setFocus({ center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</button>
               <div className="segmented" role="tablist" aria-label="邻居范围" data-ui={ui + ".graph-hops"}>
                 {[1, 2].map((h) => (
                   <button key={h} role="tab" aria-selected={hops === h}

@@ -4,6 +4,7 @@ import data from "virtual:panorama-data";
 import { files } from "./docs.js";
 import DocView, { FIRST_MATCH } from "./DocView.jsx";
 import PageSearch, { PageHead, words } from "./PageSearch.jsx";
+import SideLayout from "./SideLayout.jsx";
 
 // 学习：按 Godot 项目手册 README 的顺序列出各章，点章节在右边显示正文。
 // 正文里指向其他章节的链接切换章节，指向其他文档的链接在详情面板显示那张卡片。
@@ -66,24 +67,22 @@ export default function LearnModule({ onSelect, font }) {
         )}
       </PageHead>
     </div>
-    <div className={"side-layout" + (hitNav ? " has-head" : "")}>
-      <nav className="side-toc" aria-label="章节" data-ui="learn.toc">
-        {groups.map((g) => (
-          <div key={g}>
-            <div className="side-group">{g}</div>
-            {chapters.map((c, k) => c.group === g && (
-              <button key={k} className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
-                <span className="tree-name" data-tip-clip>{files[c.card].title}</span>
-              </button>
-            ))}
-          </div>
-        ))}
-      </nav>
+    <SideLayout hasHead={hitNav} label="章节" ui="learn" toc={
+      groups.map((g) => (
+        <div key={g}>
+          <div className="side-group">{g}</div>
+          {chapters.map((c, k) => c.group === g && (
+            <button key={k} className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
+              <span className="tree-name" data-tip-clip>{files[c.card].title}</span>
+            </button>
+          ))}
+        </div>
+      ))}>
       <article className="learn-body" data-ui="learn.body" ref={body}>
         <DocView card={chapters[chapter].card} jump={jump} words={ws} onLink={link} inPanel={(card) => !chapterOf.has(card)} onHits={setHits} font={font} />
         {next && <button className="graph-btn learn-next" onClick={() => go(chapter + 1)}>下一章：{files[next.card].title}</button>}
       </article>
-    </div>
+    </SideLayout>
     </div>
   );
 }

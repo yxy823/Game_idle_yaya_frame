@@ -4,21 +4,21 @@ import Diagram from "./Diagram.jsx";
 import DocsModule from "./DocsModule.jsx";
 import FilesModule from "./FilesModule.jsx";
 import { files } from "./docs.js";
-import { unfoldGroup } from "./Graph.jsx";
+import { focusGroup, unfoldGroup } from "./Graph.jsx";
 import LearnModule, { openChapter } from "./LearnModule.jsx";
 import QaModule from "./QaModule.jsx";
 import ScenesModule from "./ScenesModule.jsx";
 import SearchModule from "./SearchModule.jsx";
 
 // 首页流程图的每一步对应开发场景的哪个分类；键是 framework/README.md 流程图里的节点 ID。
-// null 表示只打开开发场景，不展开分类；STAGES 表示滚到首页的「Feature 的执行阶段」一段
+// 有分类时，开发场景直接进入这个分类的邻居视图，点“返回全图”回到全图并保持分类展开；null 表示只打开开发场景，不展开分类；STAGES 表示滚到首页的「Feature 的执行阶段」一段
 const STAGES = "stages";
 const STEP_SCENES = {
   creator: "项目与环境", project: "项目与环境", you: null, gdd: "游戏想法与 GDD", product: "规划 Product 与 Feature",
   plan: "规划 Product 与 Feature", execute: STAGES, accept: "审核与人工验收", done: "复盘与沉淀", sync: "要求变了",
 };
 const stepLinks = Object.fromEntries(Object.entries(STEP_SCENES)
-  .map(([id, c]) => [id, c === STAGES ? "看下面的 Feature 的执行阶段" : c ? `到开发场景，展开“${c}”` : "到开发场景"]));
+  .map(([id, c]) => [id, c === STAGES ? "看下面的 Feature 的执行阶段" : c ? `到开发场景，只看“${c}”和直接相连的场景` : "到开发场景"]));
 
 // 文档里的一张表，第一行是表头
 function Table({ rows, ui }) {
@@ -39,7 +39,7 @@ const frameworkCard = files.findIndex((f) => f.path === "framework/README.md");
 function Home({ onModule, font }) {
   const open = (id) => {
     if (STEP_SCENES[id] === STAGES) { document.querySelector("[data-ui='home.stages']").scrollIntoView({ behavior: "smooth" }); return; }
-    if (STEP_SCENES[id]) unfoldGroup("scenes", STEP_SCENES[id]);
+    if (STEP_SCENES[id]) { unfoldGroup("scenes", STEP_SCENES[id]); focusGroup("scenes", STEP_SCENES[id]); }
     onModule("scenes");
   };
   const learn = () => { openChapter(0); onModule("learn"); };
