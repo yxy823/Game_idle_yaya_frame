@@ -13,12 +13,13 @@ const chapters = data.manual;
 const groups = [...new Set(chapters.map((c) => c.group))];
 const chapterOf = new Map(chapters.map((c, k) => [c.card, k]));
 
-// 离开学习模块再回来时停在上次读的章节；首页的链接也用它指定章节
-let lastChapter = 0;
-export function openChapter(k) { lastChapter = k; }
+// 离开学习模块再回来时停在上次读的章节；首页的链接也用它指定章节。在别的模块按浏览器后退回来时带上锚点，回到原来的小节
+let lastChapter = 0, lastAnchor = "";
+export function openChapter(k, anchor = "") { lastChapter = k; lastAnchor = anchor; }
 
-// 搜索用的纯文本：去掉标签，还原常见的转义字符
-const plain = chapters.map((c) => data.html[c.card].replace(/<[^>]+>/g, "").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&amp;/g, "&").toLowerCase());
+// 搜索用的纯文本：交给浏览器解析 HTML 再取文字，全部转义字符都还原
+const parser = new DOMParser();
+const plain = chapters.map((c) => parser.parseFromString(data.html[c.card], "text/html").body.textContent.toLowerCase());
 const count = (text, w) => { let n = 0; for (let at = text.indexOf(w); at >= 0; at = text.indexOf(w, at + w.length)) n += 1; return n; };
 
 export default function LearnModule({ onSelect, font }) {
@@ -27,7 +28,7 @@ export default function LearnModule({ onSelect, font }) {
   const results = chapters.map((c, k) => ({ k, n: ws.map((w) => count(plain[k], w)) })).filter((r) => ws.length && r.n.every((n) => n > 0))
     .map(({ k, n }) => ({ key: k, label: files[chapters[k].card].title, meta: n.reduce((a, b) => a + b, 0) + " 处" }));
   const [chapter, setChapter] = useState(lastChapter);
-  const [jump, setJump] = useState({ anchor: "" });
+  const [jump, setJump] = useState(() => { const anchor = lastAnchor; lastAnchor = ""; return { anchor }; });
   // 本章的命中数和当前看的是第几处，“上一处”“下一处”在本章的命中之间移动
   const [hits, setHits] = useState(0);
   const [at, setAt] = useState(0);

@@ -15,8 +15,8 @@ export default function Diagram({ ui, text, links = {}, onNode, font }) {
     const el = ref.current;
     let mounted;
     try {
-      // 图内字号和界面正文一致
-      mounted = mount(el, text, { fontSize: fontSize() });
+      // 图内字号和界面正文一致；按原尺寸显示，不随容器缩小，也不加缩放按钮（按钮会盖住图里的字），比容器宽时横向滚动
+      mounted = mount(el, text, { fontSize: fontSize(), responsive: false, zoom: false });
       if (mounted.error) throw mounted.error;
       for (const node of el.querySelectorAll("[data-id]")) {
         const tip = links[node.dataset.id];

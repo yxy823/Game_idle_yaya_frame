@@ -4,10 +4,10 @@
   --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
   --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
   --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
-  --brand: #2f6fd6;
+  --brand: #2b68cc;
   --primary: var(--brand); --ring: var(--brand);
   --bg: #fcfcfd; --surface: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
-  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #7d8590;
+  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #767e89;
   --selection: #dce8fb; --danger: #c4314b; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
   --shadow: 0 4px 12px rgb(31 35 41 / .16);
   color-scheme: light;

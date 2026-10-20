@@ -35,7 +35,10 @@ function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: al
     return () => document.removeEventListener("mousedown", click);
   }, [always]);
 
-  const close = () => { onChange(""); if (!always) setOpen(false); };
+  // 用 Esc 或关闭按钮收起时，焦点交回搜索按钮，键盘接着从这里走；点别处收起时焦点留在点的位置
+  const refocus = useRef(false), button = useRef(null);
+  useEffect(() => { if (!open && refocus.current) { refocus.current = false; button.current.focus(); } }, [open]);
+  const close = () => { onChange(""); if (!always) { refocus.current = true; setOpen(false); } };
   const pick = (r) => { setListOpen(false); onPick(r); };
   const key = (e) => {
     // Esc 只收起搜索，不再传到全局去取消选中
@@ -49,7 +52,7 @@ function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: al
   if (!open) {
     return (
       <div className="page-search" ref={box}>
-        <button className="icon-btn" aria-label="搜索本页" data-tip="搜索本页" data-ui={ui} onClick={() => setOpen(true)}><IconSearch aria-hidden="true" /></button>
+        <button ref={button} className="icon-btn" aria-label="搜索本页" data-tip="搜索本页" data-ui={ui} onClick={() => setOpen(true)}><IconSearch aria-hidden="true" /></button>
       </div>
     );
   }

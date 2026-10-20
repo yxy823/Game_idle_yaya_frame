@@ -66,10 +66,12 @@ export default function DocView({ card, jump, words = [], onLink, inPanel, onHit
     const row = jump?.row && [...body.current.querySelectorAll("tr")].find((tr) => tr.cells[0]?.textContent.trim() === jump.row);
     row?.classList.add("hit-row");
     const target = row || (anchor === FIRST_MATCH ? body.current.querySelector("mark.hit") : anchor && document.getElementById(anchor));
-    if (row) row.scrollIntoView({ block: "center" });
+    // 第一处命中和“上一处”“下一处”一样加深高亮并滚到中间，不被顶上固定的标题行挡住
+    if (anchor === FIRST_MATCH) target?.classList.add("current");
+    if (row || anchor === FIRST_MATCH) target?.scrollIntoView({ block: "center" });
     else if (target) target.scrollIntoView();
     // 文件全景的阅读视图自己滚动（.doc-scroll），详情面板里随面板滚动，学习模块随主区域滚动
-    else (body.current.closest(".doc-scroll, .panel, .main")).scrollTop = 0;
+    if (!target) (body.current.closest(".doc-scroll, .panel, .main")).scrollTop = 0;
   }, [card, jump]);
 
   const click = (e) => {

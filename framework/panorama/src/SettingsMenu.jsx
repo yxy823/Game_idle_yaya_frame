@@ -29,7 +29,8 @@ export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking
     return () => { document.removeEventListener("click", click); document.removeEventListener("keydown", key, true); };
   }, [anchor, onClose]);
   return (
-    <div className="menu" role="menu" ref={ref} data-pick-ignore>
+    // 按 Tab 把焦点移出菜单时关掉菜单，否则方向键还会把焦点拉回菜单；从最后一项按 Tab 时焦点先落到 body，relatedTarget 为空，也算移出
+    <div className="menu" role="menu" ref={ref} data-pick-ignore onBlur={(e) => { if (!ref.current.contains(e.relatedTarget)) onClose(); }}>
       <div className="group">工具</div>
       <button role="menuitemcheckbox" aria-checked={picking} onClick={onTogglePicking}>
         <span className="mark"></span>元素选取：点击即复制<span className="key">Alt+X</span><span className="switch"></span>

@@ -36,7 +36,7 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
   const children = [...node.dirs.values()];
   return (
     <li>
-      <button className="tree-row" style={{ paddingLeft: 4 + depth * 12 }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
+      <button className="tree-row" style={{ paddingLeft: `calc(var(--space-1) + ${depth} * var(--space-3))` }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
         onClick={() => { onDir(node.path); if (children.length) onToggle(node.path); }}>
         <span className="twisty" onClick={(e) => { e.stopPropagation(); if (children.length) onToggle(node.path); }}>
           {children.length ? (isOpen ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />) : null}

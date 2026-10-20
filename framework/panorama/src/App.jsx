@@ -36,7 +36,11 @@ function PanelNotice({ notice, panelOpen }) {
 
 export default function App() {
   const [module, setModule] = useState(() => (modules.some((m) => m.id === store.get("module")) ? store.get("module") : "home"));
-  const [panelWidth, setPanelWidth] = useState(() => Number(store.get("panel-w")) || 320);
+  // 记下的是拖出来的宽度；实际宽度再按窗口限制，最宽给主区域留 480px，窗口变窄时面板跟着变窄，窗口变宽后恢复
+  const [panelWidth, setPanelWidth] = useState(() => { const w = Number(store.get("panel-w")); return Number.isFinite(w) && w >= 240 ? w : 320; });
+  const [winWidth, setWinWidth] = useState(innerWidth);
+  useEffect(() => { const r = () => setWinWidth(innerWidth); addEventListener("resize", r); return () => removeEventListener("resize", r); }, []);
+  const shownWidth = Math.max(240, Math.min(panelWidth, winWidth - 44 - 480));
   const [panelOpen, setPanelOpen] = useState(() => store.get("panel") !== "closed");
   const [theme, setTheme] = useState(() => { const t = store.get("theme") || "system"; applyTheme(t); return t; });
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
@@ -78,7 +82,7 @@ export default function App() {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
     e.preventDefault();
     const ws = e.currentTarget.parentElement.getBoundingClientRect();
-    setPanelWidth((w) => Math.min(Math.max(240, w + (e.key === "ArrowLeft" ? 16 : -16)), ws.width - 44 - 480));
+    setPanelWidth(Math.min(Math.max(240, shownWidth + (e.key === "ArrowLeft" ? 16 : -16)), ws.width - 44 - 480));
   };
   // 拖面板左边缘改宽度：最窄 240px，最宽留给主区域 480px（同「窄窗口」一条）
   const drag = (e) => {
@@ -92,7 +96,7 @@ export default function App() {
   useEffect(() => store.set("picking", picking ? "on" : "off"), [picking]);
   // 学习模块的章节切换写进浏览器历史；在别的模块按浏览器后退回到上一章时，切回学习模块
   useEffect(() => {
-    const pop = (e) => { if (e.state && "chapter" in e.state) { openChapter(e.state.chapter); setModule("learn"); } };
+    const pop = (e) => { if (e.state && "chapter" in e.state) { openChapter(e.state.chapter, e.state.anchor); setModule("learn"); } };
     addEventListener("popstate", pop);
     return () => removeEventListener("popstate", pop);
   }, []);
@@ -128,7 +132,7 @@ export default function App() {
         </button>
       </header>
 
-      <div className={"workspace" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": panelWidth + "px" }}>
+      <div className={"workspace" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": shownWidth + "px" }}>
         <nav className="activity" aria-label="模块" data-ui="activity">
           {modules.map((m) => (
             <button key={m.id} className="icon-btn" aria-label={m.label} data-tip={m.tip} data-ui={"activity." + m.id}
@@ -144,7 +148,7 @@ export default function App() {
             </SearchSlot.Provider>
           </section>
         </main>
-        {panelOpen && <div className="panel-resizer" style={{ right: panelWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}
+        {panelOpen && <div className="panel-resizer" style={{ right: shownWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}
           role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />}
         <DetailPanel file={selected} onSelect={setSelected} font={font}
           onBack={trail.at > 0 ? () => step(-1) : null} onForward={trail.at < trail.list.length - 1 ? () => step(1) : null} />

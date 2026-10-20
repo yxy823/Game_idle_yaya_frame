@@ -27,10 +27,13 @@ const css = (name) => getComputedStyle(document.documentElement).getPropertyValu
 const FCOSE = { name: "fcose", animate: false, quality: "proof", nodeRepulsion: 45000, idealEdgeLength: 140,
   edgeElasticity: 0.3, gravity: 0.05, nodeSeparation: 120, numIter: 4000 };
 const MIN_SCALE = 0.5;
+// 一组点的中心，分组的大点放在这里
+const centre = (ps) => ({ x: ps.reduce((a, p) => a + p.x, 0) / ps.length, y: ps.reduce((a, p) => a + p.y, 0) / ps.length });
 
-// 按顺序挑要写名称的点，最多 limit 个；名称会和已挑的重叠就跳过
-function pickLabels(cy, list, limit) {
-  const z = cy.zoom(), boxes = [], picked = [];
+// 按顺序挑要写名称的点，最多 limit 个；名称会和已挑的重叠、或超出画布被裁掉就跳过。
+// keepFirst 为真时第一个点（选中的点）一定写名称
+function pickLabels(cy, list, limit, keepFirst = false) {
+  const z = cy.zoom(), ext = cy.extent(), boxes = [], picked = [];
   for (const n of list) {
     if (picked.length === limit) break;
     const { x, y } = n.position();
@@ -38,6 +41,7 @@ function pickLabels(cy, list, limit) {
     const w = (n.data("label").length * fs + 8) / z, h = (fs + 9) / z, top = y + n.height() / 2;
     const box = [x - w / 2, top, x + w / 2, top + h];
     if (boxes.some((b) => box[0] < b[2] && b[0] < box[2] && box[1] < b[3] && b[1] < box[3])) continue;
+    if (!(keepFirst && !picked.length) && (box[0] < ext.x1 || box[2] > ext.x2 || box[3] > ext.y2)) continue;
     boxes.push(box); picked.push(n);
   }
   return picked;
@@ -46,7 +50,8 @@ function pickLabels(cy, list, limit) {
 
 function style(legend, directed, foldable) {
   const colors = Object.fromEntries(legend.map((g) => [g.id, css(g.color)]));
-  // 普通连线用中性色，选中点的连线换成来源分组的颜色；取值在 tokens.css
+  // 普通连线用中性色，选中点的连线换成来源分组的颜色；取值在 tokens.css。
+  // 连线的透明度用 line-opacity，只淡化线，线上的条数和关系说明保持不透明，才读得清
   const edgeColor = css("--graph-edge"), edgeOpacity = parseFloat(css("--graph-edge-opacity")), mainColor = css("--graph-edge-main");
   const groupColor = (e) => colors[e.source().data("group")];
   // 写出的名称按缩放反算字号，屏幕上始终和正文一样大（设置里的字号），缩得再小也看得清
@@ -64,29 +69,29 @@ function style(legend, directed, foldable) {
       width: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()),
       height: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()) } }] : []),
     { selector: "edge", style: directed
-      ? { width: 1, "line-color": edgeColor, opacity: edgeOpacity, "curve-style": "bezier", "line-style": "dashed", "line-dash-pattern": [6, 4],
+      ? { width: 1, "line-color": edgeColor, "line-opacity": edgeOpacity, "curve-style": "bezier", "line-style": "dashed", "line-dash-pattern": [6, 4],
         "target-arrow-shape": "triangle", "target-arrow-color": edgeColor, "arrow-scale": 0.8 }
-      : { width: 1, "line-color": edgeColor, opacity: edgeOpacity, "curve-style": "haystack" } },
+      : { width: 1, "line-color": edgeColor, "line-opacity": edgeOpacity, "curve-style": "haystack" } },
     // 合并后的连线写条数
     { selector: "edge[?label]", style: { label: "data(label)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom() } },
     // 主线画成强调色实线，比其他线粗
-    { selector: "edge.main", style: { "line-style": "solid", "line-color": mainColor, "target-arrow-color": mainColor, width: 3, opacity: 0.9 } },
+    { selector: "edge.main", style: { "line-style": "solid", "line-color": mainColor, "target-arrow-color": mainColor, width: 3, "line-opacity": 0.9 } },
     // 折叠后的大点和连到它的线按缩放反算尺寸，缩小看全貌时也看得清；线越粗，合并的连线越多
     { selector: "node.group", style: { ...label, "font-weight": 600, opacity: 0.85,
       width: (n) => n.data("size") / n.cy().zoom(), height: (n) => n.data("size") / n.cy().zoom() } },
-    { selector: "edge.merged", style: { width: (e) => (0.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.5,
+    { selector: "edge.merged", style: { width: (e) => (0.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), "line-opacity": 0.5,
       "line-dash-pattern": (e) => [6 / e.cy().zoom(), 4 / e.cy().zoom()], "arrow-scale": 1 } },
     { selector: ".faded", style: { opacity: 0.08 } },
-    { selector: "edge.near", style: { opacity: 0.9, width: 2, "line-color": groupColor, "target-arrow-color": groupColor } },
+    { selector: "edge.near", style: { "line-opacity": 0.9, width: 2, "line-color": groupColor, "target-arrow-color": groupColor } },
     { selector: "edge.main.near", style: { width: 4, "line-color": mainColor, "target-arrow-color": mainColor } },
-    { selector: "edge.merged.main", style: { width: (e) => (1.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.9 } },
-    { selector: "node.hub, node.labeled, node:selected", style: label },
+    { selector: "edge.merged.main", style: { width: (e) => (1.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), "line-opacity": 0.9 } },
+    { selector: "node.hub, node.labeled, node.chosen", style: label },
     // 关系说明只在选中点的连线上写，全写出来会盖住整张图
     { selector: "edge.near[?rel]", style: { label: "data(rel)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom(), "text-rotation": "autorotate" } },
     { selector: "node.quiet", style: { label: "" } },
-    { selector: "node:selected", style: { "border-width": 2, "border-color": css("--ring") } },
+    { selector: "node.chosen", style: { "border-width": 2, "border-color": css("--ring") } },
   ];
 }
 
@@ -146,6 +151,8 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       style: style(legend, directed, foldable),
       layout: { name: "preset" },
       minZoom: 0.1, maxZoom: 4, boxSelectionEnabled: false,
+      // 选中描边用 chosen 类，跟页面的选中值走；cytoscape 自带的选中在点空白处时会自己取消，和详情面板对不上，所以关掉
+      autounselectify: true,
     });
     // 第一次布局：先带上全部连线排布，之后连线按折叠状态重画
     if (!saved) {
@@ -159,8 +166,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     // 分组的大点放在组内场景的中心，不能拖动，因为位置跟着组内场景算
     if (foldable) {
       cy.add(legend.map((g, k) => ({ data: { id: "g" + k, label: `${g.name}（${g.count}）`, group: g.id, size: 16 + Math.sqrt(g.count) * 5 },
-        classes: "group", grabbable: false })));
-    }
+        classes: "group", grabbable: false })));    }
     // 邻居视图里排布是临时的，拖动不记下
     cy.on("dragfree", "node", (e) => { if (!focusRef.current) record[e.target.data("key")] = { ...e.target.position() }; });
     cy.on("tap", "node", (e) => {
@@ -168,7 +174,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       const key = e.target.data("key");
       onSelect(key === selectedRef.current ? null : key);
     });
-    cy.on("zoom", () => cy.elements(foldable ? "node, .merged, edge[?label], edge.near" : ".hub, .labeled, :selected, .group, .merged, edge[?label], edge.near").updateStyle());
+    cy.on("zoom", () => cy.elements(foldable ? "node, .merged, edge[?label], edge.near" : ".hub, .labeled, .chosen, .group, .merged, edge[?label], edge.near").updateStyle());
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
     // 提示元素先记下来：卸载时 React 已经清空 tipRef，清理函数里还要用它
     let tipTimer = 0;
@@ -251,18 +257,19 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
         const node = cy.getElementById("g" + k);
         if (node.empty()) return;
         node.style("display", folded(g.id) ? "element" : "none");
-        const members = nodes.filter((n) => n.group === g.id).map((n) => record[n.i]);
-        node.position({ x: members.reduce((a, p) => a + p.x, 0) / members.length, y: members.reduce((a, p) => a + p.y, 0) / members.length });
+        node.position(centre(nodes.filter((n) => n.group === g.id).map((n) => record[n.i])));
       });
       cy.add([...merged.values()].map((m) => ({ data: { id: "e" + m.s + "-" + m.t, source: m.s, target: m.t, count: m.count, label: m.count > 1 ? String(m.count) : "", rel: m.rel.join("；") },
         classes: [m.main && "main", (m.s[0] === "g" || m.t[0] === "g") && "merged"].filter(Boolean).join(" ") })));
     });
     // 邻居视图只排布留下的场景；回到全图时恢复原来的位置和视口
-    // 边距按最长的名称算，名称按屏幕像素写，边缘的点名称才不被画布裁掉
+    // 不超过 20 个点时全部写名称，边距按最长的名称算，边缘的点名称才不被画布裁掉，但最多占画布短边的四分之一，否则点会挤成一团；
+    // 点多时名称是挑着写的，超出画布的不写，边距只留 40px
     if (within) {
       const kept = cy.nodes().filter((n) => n.style("display") === "element");
       const longest = Math.max(...kept.map((n) => n.data("label").length));
-      kept.union(kept.edgesWith(kept)).layout({ ...FCOSE, fit: true, padding: Math.max(40, longest * parseFloat(css("--fs")) / 2 + 8) }).run();
+      const padding = kept.length > 20 ? 40 : Math.min(Math.max(40, longest * parseFloat(css("--fs")) / 2 + 8), Math.min(cy.width(), cy.height()) / 4);
+      kept.union(kept.edgesWith(kept)).layout({ ...FCOSE, fit: true, padding }).run();
     } else if (leaving && viewRef.current) cy.viewport(viewRef.current);
     // 路标在显示出来的点里挑，所以展开一个分组后，组里的点也写出名称
     if (!within) {
@@ -271,23 +278,25 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     }
   }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, expanded, hidden, within]);
 
-  // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点时，图保持原样
+  // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点，或它所在的分组被隐藏、折叠时，图保持原样，
+  // 因为看不见的点做中心，其余的点会全部变淡
   useEffect(() => {
     const cy = cyRef.current;
     cy.batch(() => {
-      cy.elements().removeClass("faded near labeled quiet").unselect();
+      cy.elements().removeClass("faded near labeled quiet chosen");
       const node = inGraph ? cy.getElementById("n" + selected) : cy.collection();
-      if (node.empty()) return;
+      if (node.empty() || node.style("display") === "none") return;
       const near = node.closedNeighborhood();
       near.addClass("near");
       // 邻居视图里留下的都是要看的点，不变淡；不超过 20 个点时全部写名称，多了在全部留下的点里挑
       const kept = focus ? cy.nodes(":visible").not(".group") : cy.collection();
       if (!focus) cy.elements().not(near).addClass("faded");
-      // 变淡的路标不写名称；邻居先写选中点自己的，其余名称会重叠就不写，详情面板里有完整的关系列表
-      cy.nodes(".hub").not(near).addClass("quiet");
-      if (focus && kept.length <= 20) kept.addClass("labeled");
-      else pickLabels(cy, [node, ...near.nodes().not(node).not(".group"), ...kept.not(near)], Infinity).forEach((n) => n.addClass("labeled"));
-      node.select();
+      // 先写选中点自己的，再写邻居，名称会重叠就不写，详情面板里有完整的关系列表；没挑上的路标不写名称，免得盖住挑上的
+      const picked = focus && kept.length <= 20 ? kept
+        : cy.collection(pickLabels(cy, [node, ...near.nodes().not(node).not(".group"), ...kept.not(near)], Infinity, true));
+      picked.addClass("labeled");
+      cy.nodes(".hub").not(picked).addClass("quiet");
+      node.addClass("chosen");
     });
   }, [selected, cacheKey, inGraph, expanded, hidden, focus]);
 
@@ -300,6 +309,9 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
           <button className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
             onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</button>
+          {/* 拖动或缩放后找不到点时，把显示着的点都放回画布里；只在点击时移动视口 */}
+          <button className="graph-btn" data-tip="把显示着的点都放进画布" data-ui={ui + ".graph-fit"}
+            onClick={() => { const cy = cyRef.current; cy.fit(cy.nodes(":visible"), 30); }}>适配画布</button>
           {focusable && (
             <>
               <button className="graph-btn graph-focus" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
@@ -348,7 +360,8 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
       </div>
       {open && <>
         <label className="legend-row">
-          <input type="checkbox" checked={allOn} onChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
+          {/* 只隐藏了部分分组时显示半选 */}
+          <input type="checkbox" checked={allOn} ref={(el) => { if (el) el.indeterminate = hidden.size > 0 && hidden.size < legend.length; }} onChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
           <span className="legend-name">全部分组</span><span className="count">{total}</span>
         </label>
         {legend.map((g) => (
