@@ -53,7 +53,7 @@ flowchart LR
     ui -->|实际触发位置与导航| pres
     ui -->|界面专用资源章节| res["资源规格章节<br/>写在所属 UI、表现或共享规范中"]
     pres -->|方案所属资源章节| res
-    res -->|采用的规格与缺口| design["Feature 设计稿<br/>docs/features/"]
+    res -->|采用的规格与缺口| design["Feature 设计稿<br/>docs/features/FXX-XXX-design.md"]
     pres -->|采用方案的实施解释| design
 ```
 

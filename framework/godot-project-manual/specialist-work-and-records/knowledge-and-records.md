@@ -30,15 +30,15 @@
 ```mermaid
 flowchart LR
     progress["Progress<br/>docs/progress.md"]
-    progress -->|当前任务入口| feature["Feature 详情 JSON<br/>docs/features/"]
+    progress -->|当前任务入口| feature["Feature 详情 JSON<br/>docs/features/FXX-XXX.json"]
     progress -->|完成历史入口| history["执行历史<br/>docs/progress/"]
     progress -->|当前问题与相关资料| research["外部调研<br/>docs/research/"]
     progress -->|当前状态的实际依据| reports["任务报告<br/>reports/features/ 等"]
     history -->|保留原证据链接| reports
-    feature -->|notes 中的设计链接| design["Feature 设计稿<br/>docs/features/"]
+    feature -->|notes 中的设计链接| design["Feature 设计稿<br/>docs/features/FXX-XXX-design.md"]
     design -->|当前结构与实际连接| arch["项目架构<br/>docs/architecture.md"]
     arch -->|子系统内部契约| sub["子系统说明<br/>docs/architecture/"]
-    arch -->|重要技术取舍| adr["ADR<br/>docs/architecture/"]
+    arch -->|重要技术取舍| adr["ADR<br/>docs/architecture/adr-XXXX-xxx.md"]
     sub -->|有用的验证入口| reports
     adr -->|需要时引用外部依据| research
     knowledge["项目知识<br/>docs/knowledge/"] -->|原事件与局部决定| feature

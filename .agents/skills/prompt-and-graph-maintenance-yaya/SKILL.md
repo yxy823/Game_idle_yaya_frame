@@ -36,7 +36,7 @@ description: 维护 Yaya 的预设提示词、同名场景、场景之间的下�
 | 新增、删除、重命名 Project 或分类 | 按准则的准确名称同步 JSON、同名场景的路径和一级标题，再核对[场景速查索引](../../../framework/prompt-scenarios/scenarios/scenario-index.md)和直接引用。正文变化也要核对导航中的描述；没有失效的地方不改，也不另维护一份场景清单 |
 | 场景之间的衔接变化，或场景新增、删除、改名 | 按[下一步清单](../../../framework/prompt-scenarios/scenarios/README.md#下一步清单)更新起点场景页的清单；场景改名或删除时，在场景页中搜索指向它的清单项一并更新 |
 | Godot 场景的匹配条件或下一步入口变化 | 核对 advisor（[next-step-advisor](../../../project-source/skills/next-step-advisor/SKILL.md)）中的状态判断与入口说明。advisor 直接读取同一份 Godot 提示词库，不需要导出或同步副本；只修改实际失效的说明 |
-| 文档职责、文件名、路径、产物归属或实际引用关系变化 | 更新手册中受影响关系图的节点文字和箭头，并在同一次修改里更新图后的文字版；写法按 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md)。固定文件写准确的名称，Feature 等同类产物写所在目录；按需生成的文件不写成已存在。同一类型里新增实例时不增加节点 |
+| 文档职责、文件名、路径、产物归属或实际引用关系变化 | 更新手册中受影响关系图的节点文字和箭头，并在同一次修改里更新图后的文字版；写法按 [technical-documentation-writing-yaya](../technical-documentation-writing-yaya/SKILL.md)。固定文件写准确的名称；Feature 等按编号命名的同类产物写命名规则，编号用 X，例如 `docs/features/FXX-XXX-design.md`，因为框架全景的文档关系用路径里的文件名标出节点；文件名不固定的写所在目录；按需生成的文件不写成已存在。同一类型里新增实例时不增加节点 |
 | 提示词正文引用的文件移动、改名，或引用的标题改变 | 在两份提示词库中搜索旧路径和「旧标题」，改成当前的路径和标题；合并多个文件时，检查同一条目里有没有因此重复的引用 |
 | 提示词或场景检查脚本的参数、输出或位置变化 | 同步脚本所在的 `tools/README.md` 和框架入口的[维护命令](../../../framework/README.md#维护命令)索引，并运行对应的仓库回归 |
 | 手册的 Markdown 变化 | 对照[按修改选择验证范围](../../../framework/maintenance/validation/validation-scope.md#按修改选择验证范围)，核对受影响的正文、链接、锚点和导航 |

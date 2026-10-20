@@ -97,8 +97,8 @@ flowchart LR
     ideas["未采纳想法<br/>docs/unadopted-ideas.md"] -->|进入比较或采纳后迁移并引用| gdd
     gdd -->|引用已采纳的调研结论| research["外部调研<br/>docs/research/"]
     gdd -->|按设计组织交付| overview["Product 总览<br/>docs/product.md"]
-    overview -->|当前交付单元入口| product["当前 Product<br/>docs/product/"]
-    product -->|细化当前交付任务| feature["Feature 详情 JSON<br/>docs/features/"]
+    overview -->|当前交付单元入口| product["当前 Product<br/>docs/product/XX-xxx.md"]
+    product -->|细化当前交付任务| feature["Feature 详情 JSON<br/>docs/features/FXX-XXX.json"]
 ```
 
 用文字说：

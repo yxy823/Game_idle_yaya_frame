@@ -107,13 +107,13 @@ flowchart LR
 
 ```mermaid
 flowchart LR
-    index["Feature 索引<br/>docs/feature-list.json"] -->|detail_path| feature["Feature 详情 JSON<br/>docs/features/"]
+    index["Feature 索引<br/>docs/feature-list.json"] -->|detail_path| feature["Feature 详情 JSON<br/>docs/features/FXX-XXX.json"]
     index -->|规划基线与演进| revisions["来源基线与计划修订<br/>docs/feature-list-revisions.json"]
     templates["项目文档模板<br/>yaya/methodology/templates/"] -->|真实规划时采用结构| feature
     methods["Skill 与流程规范"] -->|范围、AC 与验证契约| feature
     feature -->|测试 ID 与组件映射| registry["测试登记表<br/>docs/test-registry.json"]
-    feature -->|人工检查义务，仅 manual| manual["人工验收清单<br/>reports/manual-acceptance/"]
-    feature -->|按当前 Feature 身份关联| evidence["完成证据 JSON<br/>docs/features/"]
+    feature -->|人工检查义务，仅 manual| manual["人工验收清单<br/>reports/manual-acceptance/FXX-XXX/manual-acceptance-checklist.json"]
+    feature -->|按当前 Feature 身份关联| evidence["完成证据 JSON<br/>docs/features/FXX-XXX-evidence.json"]
     feature -->|补充测量与按需审核| taskreports["任务报告<br/>reports/features/ 等"]
     evidence -->|引用真实运行原件| runs["自动测试原始报告<br/>reports/gdunit-wrapper/"]
     evidence -->|引用清单与实际结果| manual

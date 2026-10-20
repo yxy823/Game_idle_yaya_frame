@@ -99,13 +99,14 @@ function DocPanel({ k, onSelect, nav }) {
   const rel = (e, end) => (
     <li key={e.from + "-" + e.to + "-" + e.line}>
       {e.label && <div className="cond">{e.label}</div>}
-      <button className="link-btn" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].name}</button>
+      <button className="link-btn" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].label}</button>
     </li>
   );
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
-      <Head title={n.name} nav={nav} />
+      <Head title={n.label} nav={nav} />
       <Section title="摘要" ui="panel.summary">
+        {n.label !== n.name && <Group name="说明"><p className="text">{n.name}</p></Group>}
         <Group name="介绍"><p className="text">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
         {n.paths.length > 0 && <Group name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Group>}
         {n.card !== null && <Row name="模板"><FileLink index={n.card} onSelect={onSelect} /></Row>}
@@ -143,7 +144,7 @@ function EntryPanel({ e, onSelect, nav, font }) {
 // 选中对象的名称，详情面板收起时的提示用它
 export function titleOf(value) {
   const q = qaOf(value), e = entryOf(value);
-  return q ? q.title : e ? e.name : docOf(value) !== null ? docNodes[docOf(value)].name : files[value].title;
+  return q ? q.title : e ? e.name : docOf(value) !== null ? docNodes[docOf(value)].label : files[value].title;
 }
 
 // 文档的详情分三个标签：概要、关系、原文（被引用处的段落）；面板记住上次停在哪个标签
