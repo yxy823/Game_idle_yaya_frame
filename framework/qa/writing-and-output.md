@@ -1,5 +1,4 @@
 ---
-template: doc
 title: 写作与输出规则
 ---
 本页收集关于 Agent 怎样决定写法、哪些写法有自动检查的问答。
@@ -12,11 +11,11 @@ title: 写作与输出规则
 
 | 输出 | 按哪里写 | 自动检查 |
 | --- | --- | --- |
-| 对话回复，以及派给子智能体和 Codex 的提示词 | 个人规则 `~/.claude/CLAUDE.md` 的「沟通与回答组织」「子智能体」「Codex 监工模式」 | no 只有「发出前自检」，由 Agent 自己逐项核对 |
-| 框架的手册、场景、维护说明和 Q&A | [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | ok 措辞检查、术语检查；提交钩子再查术语、硬性措辞和链接 |
-| 规则、Skill 和提示词 | [规则与提示词文件](../maintenance/design-guidelines/02-instruction-files.md)，写法同上一行 | ok 同上一行，规则文件还要过硬性检查项 |
-| 生成项目里的文档 | 项目自带的 technical-documentation-writing-godot | ok 项目自己的措辞检查、术语检查和提交钩子 |
-| 提交说明 | [本地提交的做法](../maintenance/maintenance-and-sync.md#本地提交的做法) | no 钩子只检查暂存的 `.md` 和 `.json` 文件 |
+| 对话回复，以及派给子智能体和 Codex 的提示词 | 个人规则 `~/.claude/CLAUDE.md` 的「沟通与回答组织」「子智能体」「Codex 监工模式」 | 没有，只有「发出前自检」，由 Agent 自己逐项核对 |
+| 框架的手册、场景、维护说明和 Q&A | [technical-documentation-writing-yaya](../../.agents/skills/technical-documentation-writing-yaya/SKILL.md) | 有：措辞检查、术语检查；提交钩子再查术语、硬性措辞和链接 |
+| 规则、Skill 和提示词 | [规则与提示词文件](../maintenance/design-guidelines/02-instruction-files.md)，写法同上一行 | 有：同上一行，规则文件还要过硬性检查项 |
+| 生成项目里的文档 | 项目自带的 technical-documentation-writing-godot | 有：项目自己的措辞检查、术语检查和提交钩子 |
+| 提交说明 | [本地提交的做法](../maintenance/maintenance-and-sync.md#本地提交的做法) | 没有，钩子只检查暂存的 `.md` 和 `.json` 文件 |
 
 **依据**：[检查措辞](../maintenance/tools/README.md#检查措辞)、[提交钩子](../maintenance/tools/README.md#提交钩子)、[两份写作 Skill 的分工](../maintenance/maintenance-and-sync.md#两份写作-skill-的分工)。
 
@@ -28,10 +27,11 @@ title: 写作与输出规则
 
 句长的中位数是 20 字。超过各个长度的句子占全部句子的比例：
 
-```bar unit=%
-超过 30 字: 22.5
-超过 40 字: 8.3
-* 超过 60 字: 1.0
+```mermaid
+xychart-beta
+  x-axis ["超过 30 字", "超过 40 字", "超过 60 字"]
+  y-axis "占全部句子（%）" 0 --> 25
+  bar [22.5, 8.3, 1.0]
 ```
 
 如果把 40 字当作硬上限，约 8% 的句子要拆。其中不少是条件句，拆开后条件在前一句、动作在后一句，反而更难读。把 60 字作为最大值，只有 1% 的句子必须拆，这些基本都是一句话里塞了几件事。步骤句要一句一个动作，所以上限更低。

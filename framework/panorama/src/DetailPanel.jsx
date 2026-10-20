@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import { ArrowLeftIcon, ArrowRightIcon, CodeIcon, ExternalLinkIcon, TriangleIcon } from "lucide-react";
+import { ArrowLeftIcon, ArrowRightIcon, CodeIcon, TriangleIcon } from "lucide-react";
 import DocView from "./DocView.jsx";
 import LocalGraph from "./LocalGraph.jsx";
 import { files, groupName, incoming, outgoing, paras, vscodePath, vscodeUrl } from "./docs.js";
-import { qaOf, qaPageUrl } from "./QaModule.jsx";
+import { qaOf } from "./QaModule.jsx";
 import { docEdges, docKey, docKinds, docNodes, docOf } from "./DocsModule.jsx";
 import { entryOf } from "./SearchModule.jsx";
 import { store } from "./store.js";
@@ -46,8 +46,8 @@ function Head({ title, nav, links = [], sub }) {
     <>
       <div className="sticky top-0 z-2 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
         <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
-        {links.map(({ href, tip, icon: Icon, ui, blank }) => (
-          <Button key={ui} asChild variant="ghost" size="icon" className="icon-btn"><a href={href} aria-label={tip} data-tip={tip} data-ui={ui} {...(blank ? { target: "_blank", rel: "noreferrer" } : {})}><Icon aria-hidden="true" /></a></Button>
+        {links.map(({ href, tip, icon: Icon, ui }) => (
+          <Button key={ui} asChild variant="ghost" size="icon" className="icon-btn"><a href={href} aria-label={tip} data-tip={tip} data-ui={ui}><Icon aria-hidden="true" /></a></Button>
         ))}
         <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
           onClick={() => nav.onBack?.()} data-ui="panel.back"><ArrowLeftIcon aria-hidden="true" /></Button>
@@ -169,7 +169,7 @@ function QaPanel({ q, onSelect, nav, font }) {
   return (
     <aside className="panel" aria-label="详情" data-ui="panel">
       <Head title={q.title} nav={nav} sub={<FileSub file={q.file} line={q.line} />}
-        links={[{ href: qaPageUrl(q), tip: "在新标签页打开问答页", icon: ExternalLinkIcon, ui: "panel.open-qa", blank: true }, vscodeLink(vscodeUrl(q.file, q.line))]} />
+        links={[vscodeLink(vscodeUrl(q.file, q.line))]} />
       <GraphSection center={{ key: null, label: q.title, color: `var(--g-${files[q.file].group})` }} left={[]} right={right} onSelect={onSelect} font={font} />
       <Doc card={q.file} jump={jump} onSelect={onSelect} font={font} />
     </aside>

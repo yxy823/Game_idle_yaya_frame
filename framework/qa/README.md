@@ -6,7 +6,7 @@
 
 ## 主题
 
-全部主题和问题列在首页 `pages/index.html`，由 [qa-explainer-yaya](../../.agents/skills/qa-explainer-yaya/SKILL.md) 的生成命令按各主题文件的标题自动生成，不在本页另列。
+全部主题和问题列在[框架全景](../panorama/README.md)的问答模块里，由全景按各主题文件的标题自动读出，不在本页另列。
 
 ## 什么时候添加
 
@@ -24,7 +24,7 @@ Agent 在讨论中发现下面的情况时，在当次回复的结尾列出建�
 
 ## 怎样写
 
-使用 [qa-explainer-yaya](../../.agents/skills/qa-explainer-yaya/SKILL.md)。主题文件是扩展 Markdown：每条问答是一个 `##` 节，标题就是问题本身，用通用的说法，不照抄某次对话的原话；正文按“结论 / 为什么 / 依据”写，没有内容的段落省略，图放在“为什么”里。文件格式和生成页面的命令见该 Skill。主题文件是正文；同名的 `.html` 页面和首页由它生成，不提交。
+使用 [qa-explainer-yaya](../../.agents/skills/qa-explainer-yaya/SKILL.md)。主题文件是普通 Markdown，图只用 Mermaid：每条问答是一个 `##` 节，标题就是问题本身，用通用的说法，不照抄某次对话的原话；正文按“结论 / 为什么 / 依据”写，没有内容的段落省略，图放在“为什么”里。文件格式和选图方法见该 Skill。
 
 按问题类型决定写多少：
 

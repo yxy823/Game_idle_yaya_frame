@@ -1,14 +1,7 @@
 #!/bin/sh
-# 框架仓库的提交后钩子：重新生成被忽略的两种页面。本次提交改了 Q&A 主题文件或渲染脚本时，生成 framework/qa/pages/；
-# 改了 Markdown 或框架全景的源码时，生成 framework/panorama/dist/。
-# 提交已经完成，生成失败只打印提示，不影响提交。说明见 framework/maintenance/tools/README.md 的「提交后生成 Q&A 页面」和「提交后生成框架全景」。
+# 框架仓库的提交后钩子：本次提交改了 Markdown 或框架全景的源码时，重新生成被忽略的 framework/panorama/dist/。
+# 提交已经完成，生成失败只打印提示，不影响提交。说明见 framework/maintenance/tools/README.md 的「提交后生成框架全景」。
 cd "$(git rev-parse --show-toplevel)" || exit 0
-
-qa=$(git diff-tree --root --no-commit-id --name-only -r HEAD -- framework/qa/ project-source/skills/qa-explainer/scripts/)
-if [ -n "$qa" ]; then
-    node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa > /dev/null \
-        || echo "Q&A 页面没有生成：在仓库根目录运行 node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa 查看错误。" >&2
-fi
 
 panorama=$(git diff-tree --root --no-commit-id --name-only -r HEAD -- '*.md' framework/panorama/)
 if [ -n "$panorama" ]; then

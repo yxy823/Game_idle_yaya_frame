@@ -1,5 +1,4 @@
 ---
-template: doc
 title: 生成项目的结构
 ---
 本页收集关于生成项目里各类文件放在哪里、开发时读写哪些文件、目录之间怎样引用的问答。
@@ -10,26 +9,27 @@ title: 生成项目的结构
 
 **为什么**：同一类东西放在一起，找文件时先想“它是给谁用的”就能定位。例如商店的购买规则和商店面板都是游戏本体，放在 `game/` 的同一个模块里；调试商店价格用的调试台是开发辅助，放在 `dev/`，导出时整体排除。
 
-```nested
-生成的 Godot 项目 | 一个 Git 仓库
-  游戏本体 | 玩家最终运行的部分
-    main/ | 启动场景与顶层组装
-    *game/ | 游戏独有的模块、场景与资源
-    components/ | 确实要复用的能力
-    assets/ | 共享资源
-  测试 | 由 gdUnit 运行
-    tests/ | 单元、Feature 验收、跨任务不变量
-  开发辅助 | 帮助开发，不是游戏内容
-    dev/ | 调试台与常用命令脚本，导出时排除
-    addons/ | 第三方插件
-  项目文档与记录 | 开发过程中逐步写出
-    *docs/ | GDD、Product、Feature 记录、架构、问答
-    reports/ | 运行原件与人工验收，不进 Git
-  框架带来的规则与工具 | 复制后属于项目
-    *AGENTS.md | Agent 的入口规则与任务路由
-    yaya/ | 流程契约、工程规则、检查工具
-    .agents/、.claude/、.codex/ | Skill 与角色配置
-    .githooks/ | 提交时的自动检查
+```mermaid
+flowchart LR
+  root["生成的 Godot 项目<br>一个 Git 仓库"]
+  root --- body["游戏本体<br>玩家最终运行的部分"]
+  root --- test["测试<br>由 gdUnit 运行"]
+  root --- devaid["开发辅助<br>帮助开发，不是游戏内容"]
+  root --- record["项目文档与记录<br>开发过程中逐步写出"]
+  root --- rules["框架带来的规则与工具<br>复制后属于项目"]
+  body --- main["main/<br>启动场景与顶层组装"]
+  body --- game["game/<br>游戏独有的模块、场景与资源"]
+  body --- comp["components/<br>确实要复用的能力"]
+  body --- assets["assets/<br>共享资源"]
+  test --- tests["tests/<br>单元、Feature 验收、跨任务不变量"]
+  devaid --- dev["dev/<br>调试台与常用命令脚本，导出时排除"]
+  devaid --- addons["addons/<br>第三方插件"]
+  record --- docs["docs/<br>GDD、Product、Feature 记录、架构、问答"]
+  record --- reports["reports/<br>运行原件与人工验收，不进 Git"]
+  rules --- agents["AGENTS.md<br>Agent 的入口规则与任务路由"]
+  rules --- yaya["yaya/<br>流程契约、工程规则、检查工具"]
+  rules --- skills[".agents/、.claude/、.codex/<br>Skill 与角色配置"]
+  rules --- hooks[".githooks/<br>提交时的自动检查"]
 ```
 
 Agent 每次工作都从 `AGENTS.md` 开始，再按任务去读 `yaya/` 里的规则和对应的 Skill。所以项目的 Agent 规则集中在 `AGENTS.md` 和 `yaya/`，游戏的代码、场景、文档和测试都不放进 `yaya/`。
@@ -44,17 +44,18 @@ Agent 每次工作都从 `AGENTS.md` 开始，再按任务去读 `yaya/` 里的�
 
 **为什么**：以“给放置游戏加一个离线收益”为例，文件按下图依次产生。连线上写的是负责这一步的 Skill 或 Stage。
 
-```flow LR
-(你的想法) -> GDD: design-gdd
-GDD -> Product: product-author
-Product -> *Feature 记录: feature-plan
-Feature 记录 -> 设计稿 & 测试登记: Stage 2
-设计稿 -> 游戏代码: Stage 3
-测试登记 -> 测试: Stage 3
-游戏代码 & 测试 -> 运行原件: Stage 4
-运行原件 -> 完成证据: Stage 7
-完成证据 -> Feature 记录: 标记 done
-游戏代码 --> GDD: 3D 文档检查
+```mermaid
+flowchart LR
+  idea(["你的想法"]) -->|design-gdd| gdd["GDD"]
+  gdd -->|product-author| product["Product"]
+  product -->|feature-plan| feature["Feature 记录"]
+  feature -->|Stage 2| design["设计稿"] & reg["测试登记"]
+  design -->|Stage 3| code["游戏代码"]
+  reg -->|Stage 3| tests["测试"]
+  code & tests -->|Stage 4| run["运行原件"]
+  run -->|Stage 7| proof["完成证据"]
+  proof -->|标记 done| feature
+  code -.->|3D 文档检查| gdd
 ```
 
 图中每个名称对应的位置：
@@ -104,11 +105,12 @@ Feature 记录 -> 设计稿 & 测试登记: Stage 2
 
 **为什么**：
 
-```flow LR
-main/ -> game/: 组装
-game/ -> components/: 使用
-dev/ --> game/: 调试台挂接
-tests/ --> game/ & components/: 测试
+```mermaid
+flowchart LR
+  main["main/"] -->|组装| game["game/"]
+  game -->|使用| comp["components/"]
+  dev["dev/"] -.->|调试台挂接| game
+  tests["tests/"] -.->|测试| game & comp
 ```
 
 - `main/` 只负责启动和连接顶层模块，具体行为仍写在所属模块里。

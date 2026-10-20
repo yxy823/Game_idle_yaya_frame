@@ -82,7 +82,7 @@ python -B project-source/tools/checks/check-wording.py --list
 git config core.hooksPath .githooks
 ```
 
-同一目录还有下文的[提交说明钩子](#提交说明钩子)，以及[提交后生成 Q&A 页面](#提交后生成-qa-页面)和[提交后生成框架全景](#提交后生成框架全景)的钩子，启用这一次就一起生效。
+同一目录还有下文的[提交说明钩子](#提交说明钩子)和[提交后生成框架全景](#提交后生成框架全景)的钩子，启用这一次就一起生效。
 
 生成项目使用分发源中的另一份钩子，由创建器启用，见项目检查与测试工具的[提交钩子](../../../project-source/tools/README.md#提交钩子)。
 
@@ -93,14 +93,6 @@ git config core.hooksPath .githooks
 用 `-m` 或 `-F` 提交时，`#` 开头的行也会写进提交说明，所以钩子不跳过它们，只截掉 `git commit -v` 附带的差异；用编辑器写说明时，git 模板里的注释行也一起检查。找不到 python 时拒绝提交并单独说明原因。
 
 说明改名时只写新名称；直接写出旧名称会被拒绝，旧名称已登记在术语表里，不需要在提交说明里重复。
-
-## 提交后生成 Q&A 页面
-
-`framework/qa/pages/` 下的 HTML 页面被根 `.gitignore` 忽略，不提交。仓库根目录的 `.githooks/post-commit` 在每次提交完成后检查：这次提交改了 `framework/qa/` 下的文件或 `project-source/skills/qa-explainer/scripts/` 下的渲染脚本时，运行 `node project-source/skills/qa-explainer/scripts/qa-build.mjs framework/qa`，重新生成全部主题页和首页。
-
-- 提交已经完成，生成失败不会撤销提交，只在终端打印一行提示，按提示手动运行同一条命令查看错误。
-- 只改了主题文件、还没提交时，页面不会更新；想提交前先看效果，手动运行同一条命令。
-- 用 PATH 中的 `node` 运行；启用方式与提交钩子相同。
 
 ## 提交后生成框架全景
 
@@ -134,7 +126,7 @@ python -B framework/maintenance/tools/find_orphan_docs.py
 | --- | --- |
 | `project-source/agent-rules/*` | 已认可由领域 README 按任务条件读取规则的路径。 |
 | `framework/prompt-scenarios/scenarios/*` | 场景对应关系与索引入口由下述专用检查覆盖。 |
-| `framework/qa/*` | 主题文件由生成的首页 `index.html` 列出，Q&A 的[主题](../../qa/README.md#主题)一节说明有意不在 Markdown 中另列。 |
+| `framework/qa/*` | 主题文件由框架全景的问答模块列出，Q&A 的[主题](../../qa/README.md#主题)一节说明有意不在 Markdown 中另列。 |
 | `project-source/addons/resources_spreadsheet_view/LICENSE.md` | 保留的第三方插件许可。 |
 
 目录通配也包含子目录。这张表维护在脚本的 `DEFAULT_TARGET_EXCLUDE` 中，只排除列出的路径，不是对所有 `NAV_ONLY` 结果的豁免；终端和 JSON 输出的 `target_exclusions` 会列出本次生效的排除规则。

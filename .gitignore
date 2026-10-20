@@ -6,7 +6,6 @@ reports/*
 !reports/.gdignore
 /tmp/
 /references/
-/framework/qa/pages/
 /framework/panorama/node_modules/
 /framework/panorama/dist/
 /.claude/worktrees/

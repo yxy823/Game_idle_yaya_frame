@@ -65,12 +65,12 @@ function readEntries(node, file, entries) {
   for (const child of node.children || []) readEntries(child, file, entries);
 }
 
-// 问答主题文件里每个二级标题是一个问题；问答页按出现顺序给它们编号 A、B、C……，打开页面时跳到 #panel-字母
+// 问答主题文件里每个二级标题是一个问题；卡片显示“结论”，搜索查“结论”和“为什么”
 function readQa(tree, file, qa, resolve) {
-  let current = null, order = 0, inWhy = false;
+  let current = null, inWhy = false;
   for (const node of tree.children) {
     if (node.type === "heading" && node.depth === 2) {
-      current = { file, title: text(node), line: node.position.start.line, panel: String.fromCharCode(65 + order++), conclusion: "", why: "", whyParts: [], basis: [] };
+      current = { file, title: text(node), line: node.position.start.line, conclusion: "", why: "", whyParts: [], basis: [] };
       qa.push(current);
       inWhy = false;
     } else if (current && node.type === "paragraph" && node.children[0]?.type === "strong") {
@@ -85,7 +85,7 @@ function readQa(tree, file, qa, resolve) {
         current.basis = found;
       }
     } else if (current && inWhy) {
-      // “为什么”到下一个加粗标签为止：段落、列表和表格都收下，图只在问答页看
+      // “为什么”到下一个加粗标签为止：段落、列表和表格的文字都收下，图不进搜索
       if (node.type === "paragraph") current.whyParts.push({ text: text(node) });
       else if (node.type === "list") current.whyParts.push({ items: node.children.map(text) });
       else if (node.type === "table") current.whyParts.push({ rows: node.children.map((row) => row.children.map(text)) });
