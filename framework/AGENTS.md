@@ -15,7 +15,7 @@
 
 新增、修改、重命名、调整分类或删除预设提示词时，使用 [prompt-and-graph-maintenance-yaya](../.agents/skills/prompt-and-graph-maintenance-yaya/SKILL.md)，按本次变化核对同名场景、导航、场景页的下一步清单与 advisor 引用。两份提示词库的结构、一对一场景和命名规则见[提示词与场景准则](maintenance/design-guidelines/04-prompts-and-scenarios.md)；提示词正文不写进 README、规则或工具说明。
 
-advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 只读使用 Godot 提示词库。移动或改名该文件时，同步 `project-source/skills/next-step-advisor/SKILL.md`；已创建的项目是否更新由用户决定。
+advisor 通过固定绝对路径 `D:/A_Games/Game_idle_yaya_frame/framework/prompt-scenarios/prompts/godot-development-prompts.json` 只读使用 Godot 提示词库。移动或改名该文件时，同步 `project-source/skills/next-step-advisor/SKILL.md`。
 
 ## Lessons
 

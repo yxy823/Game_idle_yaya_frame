@@ -124,7 +124,7 @@
 - **调用方式**：两份的元数据都设置 `allow_implicit_invocation: true`，职责由各自的 `description` 限定，`short_description` 用于界面展示。框架仓库只启用框架版；Godot 版在这里只是待分发的源文件。
 - **分发**：`project-source/skills/` 整个目录被复制到生成项目的 `.agents/skills/` 和 `.claude/skills/`（两份副本的原因见[复制与重命名](../godot-project-manual/foundations/03-project-layout.md#复制与重命名)），Godot 版的内部相对引用保持有效。框架版不分发，也不另外生成一份普通写作指南。
 - **结构**：GDD、Product、Feature 及其验收场景使用各自的结构，不套用框架场景页的 11 类栏目或 S1 编号。
-- **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目，已创建的项目是否更新由用户决定，对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/01-framework-and-project.md#让项目里的框架副本与框架对齐)。
+- **更新范围**：修改框架版不影响 Godot 版；修改 Godot 版的源文件只影响以后创建的项目；已创建的项目的对齐步骤见[让项目里的框架副本与框架对齐](../godot-project-manual/foundations/01-framework-and-project.md#让项目里的框架副本与框架对齐)。
 - **依赖**：两份都只通过内部相对路径读取参考，不需要执行脚本、私有运行时或同步工具。
 - **修改验证**：根据真实的误用、表达问题或维护成本调整条款和示例；涉及分发时，核对复制后的文件、入口和相对引用。第一次创建或明显改变适用范围时，用一次独立的试写检查实际效果和可移植性；普通的局部改字不需要每次都完整试写。
 

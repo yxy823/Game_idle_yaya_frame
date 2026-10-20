@@ -57,7 +57,7 @@ GDD 这类规划由用户和 Claude 会话讨论，写成草稿后再交给项�
   2. 和用户逐条讨论问题清单，决定题按根 `AGENTS.md` 的提问方式编号；把决定和修复顺序写进同目录的修复计划，例如 `fix-plan-<日期>.md`，每项写内容和来源（题号、问题编号）。
   3. 按计划连续修复，每项单独提交，全部做完统一汇报；只在遇到计划没覆盖的决定、或计划写明“动手前先出方案”的项时停下。改提示词、场景或关系图时用 [prompt-and-graph-maintenance-yaya](../prompt-and-graph-maintenance-yaya/SKILL.md)。
   4. 在修复计划和问题清单写回提交号。
-- **同步进项目**：是否同步由用户决定。同步时按[让项目里的框架副本与框架对齐](../../../framework/godot-project-manual/foundations/01-framework-and-project.md#让项目里的框架副本与框架对齐)只更新改到的框架副本文件，`docs/`、`game/` 等项目内容不动；在项目里单独提交，并在 trial-log 记下对应的框架提交号。
+- **同步进项目**：按[让项目里的框架副本与框架对齐](../../../framework/godot-project-manual/foundations/01-framework-and-project.md#让项目里的框架副本与框架对齐)只更新改到的框架副本文件，`docs/`、`game/` 等项目内容不动；在项目里单独提交，并在 trial-log 记下对应的框架提交号。
 
 ## 收尾
 
