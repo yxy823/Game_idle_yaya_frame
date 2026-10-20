@@ -7,7 +7,8 @@ const repo = path.resolve(import.meta.dirname, "..", "..", "..");
 const id = "virtual:panorama-data";
 
 // 一节的第一段文字、第一张 Mermaid 图、图后“图例：”开头的一段和第一张表，首页用它们说明框架、Feature 主线和各个 Stage，页面上不另写正文。
-// sentences 只取第一段的前几句，用在第一段后半句指向本文档其他小节时
+// sentences 只取第一段的前几句，用在第一段后半句指向本文档其他小节时。
+// 第一张图之后、下一个三级标题之前的图是补充的小图（例如 Stage 1 内部的步骤），连同图前一段的说明放进 subs
 const plain = (t) => t.replace(/\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/`/g, "");
 function section(file, heading, sentences) {
   const text = fs.readFileSync(path.join(repo, file), "utf-8").replace(/\r\n/g, "\n");
@@ -19,8 +20,11 @@ function section(file, heading, sentences) {
   const start = body.indexOf("```mermaid\n") + "```mermaid\n".length;
   const legend = paras.find((p) => p.startsWith("图例："));
   const table = paras.find((p) => p.startsWith("|"));
+  const top = body.includes("\n### ") ? body.slice(0, body.indexOf("\n### ")) : body;
+  const subs = [...top.slice(body.indexOf("```", start) + 3).matchAll(/([^\n]+)\n\n```mermaid\n([\s\S]*?)```/g)]
+    .map((m) => ({ caption: plain(m[1].trim()), flow: m[2].trimEnd() }));
   return {
-    lead, flow: body.slice(start, body.indexOf("```", start)).trimEnd(), legend: legend ? plain(legend) : null,
+    lead, flow: body.slice(start, body.indexOf("```", start)).trimEnd(), subs, legend: legend ? plain(legend) : null,
     // 表格每行去掉首尾的 |，按 | 分格；第二行是分隔行，不要
     table: table ? table.split("\n").filter((_, i) => i !== 1).map((l) => l.slice(1, -1).split("|").map((c) => plain(c.trim()))) : null,
   };

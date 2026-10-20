@@ -1,5 +1,54 @@
-/* 间距令牌：改间距只改这里。组件引用下面的变量，不直接写像素值。
-   第一组是档位，名字里的数字乘 4 就是像素值（--space-1-5 是 6px）；第二组按用途命名，取值引用档位。 */
+/* 设计令牌：颜色、尺寸、间距和层级的取值只写在这里，styles.css 和图谱只引用变量。
+   深色主题和设置里的字号只覆盖变量。 */
+:root {
+  --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
+  --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
+  --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
+  --brand: #2f6fd6;
+  --primary: var(--brand); --ring: var(--brand);
+  --bg: #fcfcfd; --surface: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
+  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #7d8590;
+  --selection: #dce8fb; --danger: #c4314b; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
+  --shadow: 0 4px 12px rgb(31 35 41 / .16);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --brand: #5b9bff;
+  --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
+  --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
+  --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+  --shadow: 0 4px 12px rgb(0 0 0 / .45);
+  color-scheme: dark;
+}
+/* 设置里的字号：按钮和行高跟着文字变，避免文字被截掉 */
+:root[data-font="s"] { --fs: 12px; --fs-small: 11px; --control-h: 26px; }
+:root[data-font="l"] { --fs: 14px; --fs-small: 13px; --control-h: 30px; --bar-h: 38px; }
+:root[data-font="xl"] { --fs: 16px; --fs-small: 14px; --control-h: 34px; --bar-h: 42px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #5b9bff;
+    --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
+    --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
+    --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
+    --shadow: 0 4px 12px rgb(0 0 0 / .45);
+    color-scheme: dark;
+  }
+}
+
+/* 图谱的连线：普通连线用中性色，选中点的连线用分类色；主线用品牌色 */
+:root { --graph-edge: var(--muted-fg); --graph-edge-opacity: 0.4; --graph-edge-main: var(--brand); }
+
+/* 图谱节点的分组颜色：分类色 --p1 到 --p13，两套主题共用；每个分组旁都写出名称，不只靠颜色区分。
+   文件全景的分组按 --g-<分组> 取色，开发场景的分类按顺序取 --pN */
+:root {
+  --p1: #4e79a7; --p2: #a0cbe8; --p3: #f28e2b; --p4: #ffbe7d; --p5: #59a14f; --p6: #8cd17d; --p7: #b6992d;
+  --p8: #e15759; --p9: #ff9d9a; --p10: #9c755f; --p11: #bab0ac; --p12: #d37295; --p13: #b07aa1;
+  --g-scenes: var(--p1); --g-prompts: var(--p2); --g-manual: var(--p3); --g-maintenance: var(--p4); --g-qa: var(--p5);
+  --g-framework: var(--p6); --g-yaya-skills: var(--p7); --g-skills: var(--p8); --g-rules: var(--p9); --g-methodology: var(--p10);
+  --g-defaults: var(--p11); --g-source: var(--p12); --g-root: var(--p13);
+}
+
+/* 间距：档位名字里的数字乘 4 就是像素值（--space-1-5 是 6px）；按用途命名的变量引用档位 */
 :root {
   --space-0-5: 2px; --space-1: 4px; --space-1-5: 6px; --space-2: 8px; --space-2-5: 10px; --space-3: 12px;
   --space-4: 16px; --space-5: 20px; --space-6: 24px; --space-7: 28px; --space-8: 32px; --space-12: 48px;

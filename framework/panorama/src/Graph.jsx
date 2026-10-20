@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IconChevronDown, IconChevronRight, IconChevronsDown, IconChevronsUp, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
+import { IconChevronsDown, IconFolder, IconFolderOpen, IconChevronsUp, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 import { store } from "./store.js";
@@ -43,11 +43,12 @@ function pickLabels(cy, list, limit) {
   return picked;
 }
 
-const foldTip = "只看邻居时不能折叠，先返回全图";
 
 function style(legend, directed, foldable) {
   const colors = Object.fromEntries(legend.map((g) => [g.id, css(g.color)]));
-  const edgeColor = (e) => colors[e.source().data("group")];
+  // 普通连线用中性色，选中点的连线换成来源分组的颜色；取值在 tokens.css
+  const edgeColor = css("--graph-edge"), edgeOpacity = parseFloat(css("--graph-edge-opacity")), mainColor = css("--graph-edge-main");
+  const groupColor = (e) => colors[e.source().data("group")];
   // 写出的名称按缩放反算字号，屏幕上始终和正文一样大（设置里的字号），缩得再小也看得清
   const fs = parseFloat(css("--fs")), small = parseFloat(css("--fs-small"));
   const label = { label: "data(label)", "font-size": (n) => fs / n.cy().zoom(), "min-zoomed-font-size": 0,
@@ -63,22 +64,22 @@ function style(legend, directed, foldable) {
       width: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()),
       height: (n) => Math.max(n.data("size"), n.data("size") * MIN_SCALE / n.cy().zoom()) } }] : []),
     { selector: "edge", style: directed
-      ? { width: 1, "line-color": edgeColor, opacity: 0.35, "curve-style": "bezier", "line-style": "dashed", "line-dash-pattern": [6, 4],
+      ? { width: 1, "line-color": edgeColor, opacity: edgeOpacity, "curve-style": "bezier", "line-style": "dashed", "line-dash-pattern": [6, 4],
         "target-arrow-shape": "triangle", "target-arrow-color": edgeColor, "arrow-scale": 0.8 }
-      : { width: 1, "line-color": edgeColor, opacity: 0.35, "curve-style": "haystack" } },
+      : { width: 1, "line-color": edgeColor, opacity: edgeOpacity, "curve-style": "haystack" } },
     // 合并后的连线写条数
     { selector: "edge[?label]", style: { label: "data(label)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom() } },
     // 主线画成强调色实线，比其他线粗
-    { selector: "edge.main", style: { "line-style": "solid", "line-color": css("--brand"), "target-arrow-color": css("--brand"), width: 3, opacity: 0.9 } },
+    { selector: "edge.main", style: { "line-style": "solid", "line-color": mainColor, "target-arrow-color": mainColor, width: 3, opacity: 0.9 } },
     // 折叠后的大点和连到它的线按缩放反算尺寸，缩小看全貌时也看得清；线越粗，合并的连线越多
     { selector: "node.group", style: { ...label, "font-weight": 600, opacity: 0.85,
       width: (n) => n.data("size") / n.cy().zoom(), height: (n) => n.data("size") / n.cy().zoom() } },
     { selector: "edge.merged", style: { width: (e) => (0.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.5,
       "line-dash-pattern": (e) => [6 / e.cy().zoom(), 4 / e.cy().zoom()], "arrow-scale": 1 } },
     { selector: ".faded", style: { opacity: 0.08 } },
-    { selector: "edge.near", style: { opacity: 0.9, width: 2 } },
-    { selector: "edge.main.near", style: { width: 4 } },
+    { selector: "edge.near", style: { opacity: 0.9, width: 2, "line-color": groupColor, "target-arrow-color": groupColor } },
+    { selector: "edge.main.near", style: { width: 4, "line-color": mainColor, "target-arrow-color": mainColor } },
     { selector: "edge.merged.main", style: { width: (e) => (1.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), opacity: 0.9 } },
     { selector: "node.hub, node.labeled, node:selected", style: label },
     // 关系说明只在选中点的连线上写，全写出来会盖住整张图
@@ -314,7 +315,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
           )}
         </div>
       </div>
-      <Legend ui={ui} legend={legend} total={nodes.length} foldable={foldable} locked={Boolean(focus)}
+      <Legend ui={ui} legend={legend} total={nodes.length} foldable={foldable} focused={Boolean(focus)} leaveFocus={() => setFocus(null)}
         hidden={hidden} setHidden={setHidden} expanded={expanded} setExpanded={setExpanded} open={legendOpen} setOpen={setLegendOpen} />
     </div>
   );
@@ -322,22 +323,22 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
 
 // 图例：各图谱共用。顶行是标题、全部展开、全部折叠和收起开关，开关贴着图谱右边缘，收起后只留开关那一窄条。
 // 下面每行是一个分组：折叠开关（展开时用 --primary，和折叠一眼分开）、显示开关、颜色和条数。
-// locked 为真时（只看邻居）不能折叠，按钮置灰并提示原因
-function Legend({ ui, legend, total, foldable, locked, hidden, setHidden, expanded, setExpanded, open, setOpen }) {
+// 折叠是全图的操作：只看邻居时点折叠按钮，先返回全图再折叠或展开，不把按钮置灰，因为一排按钮突然全灰，看不出原因
+function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setHidden, expanded, setExpanded, open, setOpen }) {
   const toggle = (set, id) => set((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
   const allOn = hidden.size === 0;
-  const tip = (label) => (locked ? foldTip : label);
-  const fold = (ids) => { if (!locked) setExpanded(new Set(ids)); };
+  const tip = (label) => (focused ? "返回全图并" + label : label);
+  const fold = (next) => { if (focused) leaveFocus(); setExpanded(next); };
   return (
     <div className="legend" data-ui={ui + ".legend"}>
       <div className="legend-head">
         <span className="legend-title">图例</span>
         {foldable && open && (
           <>
-            <button className="icon-btn" aria-label="全部展开" aria-disabled={locked} data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
-              onClick={() => fold(legend.map((g) => g.id))}><IconChevronsDown aria-hidden="true" /></button>
-            <button className="icon-btn" aria-label="全部折叠" aria-disabled={locked} data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
-              onClick={() => fold([])}><IconChevronsUp aria-hidden="true" /></button>
+            <button className="icon-btn" aria-label="全部展开" data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
+              onClick={() => fold(new Set(legend.map((g) => g.id)))}><IconChevronsDown aria-hidden="true" /></button>
+            <button className="icon-btn" aria-label="全部折叠" data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
+              onClick={() => fold(new Set())}><IconChevronsUp aria-hidden="true" /></button>
           </>
         )}
         <button className="icon-btn" aria-label={open ? "收起图例" : "展开图例"} data-tip={open ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
@@ -353,9 +354,10 @@ function Legend({ ui, legend, total, foldable, locked, hidden, setHidden, expand
         {legend.map((g) => (
           <div className="legend-row" key={g.id}>
             {foldable && (
-              <button className="twisty" aria-disabled={locked} aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
-                data-tip={locked ? foldTip : undefined} onClick={() => { if (!locked) toggle(setExpanded, g.id); }}>
-                {expanded.has(g.id) ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />}
+              <button className="twisty" aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
+                data-tip={tip(expanded.has(g.id) ? "折叠这个分类" : "展开这个分类")}
+                onClick={() => { const n = new Set(expanded); if (n.has(g.id)) n.delete(g.id); else n.add(g.id); fold(n); }}>
+                {expanded.has(g.id) ? <IconFolderOpen aria-hidden="true" /> : <IconFolder aria-hidden="true" />}
               </button>
             )}
             <label className="legend-label">

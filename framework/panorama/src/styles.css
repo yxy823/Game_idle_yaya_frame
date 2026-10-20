@@ -1,38 +1,4 @@
-/* 界面样式：颜色、尺寸和层级都用 :root 变量，深色主题只改变量。 */
-:root {
-  --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
-  --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
-  --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
-  --brand: #2f6fd6;
-  --primary: var(--brand); --ring: var(--brand);
-  --bg: #fcfcfd; --surface: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;
-  --fg: #1f2329; --muted-fg: #5f6773; --border: #d9dde3; --field-border: #7d8590;
-  --selection: #dce8fb; --danger: #c4314b; --pick: #d6336c; --pick-fg: #fcfcfd; --tip-bg: #1f2329; --tip-fg: #fcfcfd;
-  --shadow: 0 4px 12px rgb(31 35 41 / .16);
-  color-scheme: light;
-}
-:root[data-theme="dark"] {
-  --brand: #5b9bff;
-  --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
-  --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
-  --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
-  --shadow: 0 4px 12px rgb(0 0 0 / .45);
-  color-scheme: dark;
-}
-/* 设置里的字号：按钮和行高跟着文字变，避免文字被截掉 */
-:root[data-font="s"] { --fs: 12px; --fs-small: 11px; --control-h: 26px; }
-:root[data-font="l"] { --fs: 14px; --fs-small: 13px; --control-h: 30px; --bar-h: 38px; }
-:root[data-font="xl"] { --fs: 16px; --fs-small: 14px; --control-h: 34px; --bar-h: 42px; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand: #5b9bff;
-    --bg: #1e1f22; --surface: #2c2e33; --chrome: #18191b; --accent: #33363c;
-    --fg: #e3e5e8; --muted-fg: #9aa1ab; --border: #383b41; --field-border: #7a828d;
-    --selection: #24304a; --danger: #ff6b81; --pick: #ff6fa3; --pick-fg: #1f2329; --tip-bg: #e3e5e8; --tip-fg: #1f2329;
-    --shadow: 0 4px 12px rgb(0 0 0 / .45);
-    color-scheme: dark;
-  }
-}
+/* 界面样式：颜色、尺寸、间距和层级都用 tokens.css 的变量，深色主题只改变量。 */
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; margin: 0; }
 body {
@@ -138,15 +104,6 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .toast { position: fixed; z-index: var(--z-toast); left: 50%; bottom: 36px; transform: translateX(-50%); padding: var(--space-1) var(--space-3); border-radius: var(--radius);
   background: var(--tip-bg); color: var(--tip-fg); font-size: var(--fs-small); }
 
-/* 图谱节点的分组颜色：分类色 --p1 到 --p13，两套主题共用；每个分组旁都写出名称，不只靠颜色区分。
-   文件全景的分组按 --g-<分组> 取色，开发场景的分类按顺序取 --pN */
-:root {
-  --p1: #4e79a7; --p2: #a0cbe8; --p3: #f28e2b; --p4: #ffbe7d; --p5: #59a14f; --p6: #8cd17d; --p7: #b6992d;
-  --p8: #e15759; --p9: #ff9d9a; --p10: #9c755f; --p11: #bab0ac; --p12: #d37295; --p13: #b07aa1;
-  --g-scenes: var(--p1); --g-prompts: var(--p2); --g-manual: var(--p3); --g-maintenance: var(--p4); --g-qa: var(--p5);
-  --g-framework: var(--p6); --g-yaya-skills: var(--p7); --g-skills: var(--p8); --g-rules: var(--p9); --g-methodology: var(--p10);
-  --g-defaults: var(--p11); --g-source: var(--p12); --g-root: var(--p13);
-}
 .dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; margin-right: var(--space-1-5); vertical-align: 1px; }
 .g-scenes { background: var(--g-scenes); } .g-prompts { background: var(--g-prompts); } .g-manual { background: var(--g-manual); }
 .g-maintenance { background: var(--g-maintenance); } .g-qa { background: var(--g-qa); } .g-framework { background: var(--g-framework); }
@@ -225,7 +182,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
   background: transparent; color: var(--muted-fg); cursor: pointer; }
 /* 展开的分组用主色，和折叠的分组不只靠箭头方向区分 */
 .legend-row .twisty[aria-expanded="true"] { color: var(--primary); }
-.legend-row .twisty svg.tabler-icon { width: 12px; height: 12px; }
+.legend-row .twisty svg.tabler-icon { width: 14px; height: 14px; }
 .legend-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* 详情面板里的关系 */

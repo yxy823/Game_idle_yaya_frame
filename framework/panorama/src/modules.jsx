@@ -64,6 +64,12 @@ function Home({ onModule, font }) {
       <h2 className="home-h2" data-ui="home.stages">Feature 的执行阶段</h2>
       <p className="lead">{data.home.stages.lead}</p>
       <Diagram ui="home.stage-flow" text={data.home.stages.flow} font={font} />
+      {data.home.stages.subs.map((s) => (
+        <div key={s.caption}>
+          <p className="lead">{s.caption}</p>
+          <Diagram ui="home.stage-sub" text={s.flow} font={font} />
+        </div>
+      ))}
       {data.home.stages.legend && <p className="lead">{data.home.stages.legend}</p>}
       {data.home.stages.table && <Table rows={data.home.stages.table} ui="home.stage-table" />}
     </div>
