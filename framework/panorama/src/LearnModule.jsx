@@ -17,9 +17,14 @@ const chapterOf = new Map(chapters.map((c, k) => [c.card, k]));
 let lastChapter = 0, lastAnchor = "";
 export function openChapter(k, anchor = "") { lastChapter = k; lastAnchor = anchor; }
 
-// 搜索用的纯文本：交给浏览器解析 HTML 再取文字，全部转义字符都还原
+// 搜索用的纯文本：交给浏览器解析 HTML 再取文字，全部转义字符都还原。
+// 去掉 Mermaid 图的原文，因为正文里图中的文字不高亮，算进来时列表里的条数和正文里能定位的对不上
 const parser = new DOMParser();
-const plain = chapters.map((c) => parser.parseFromString(data.html[c.card], "text/html").body.textContent.toLowerCase());
+const plain = chapters.map((c) => {
+  const doc = parser.parseFromString(data.html[c.card], "text/html");
+  doc.querySelectorAll(".manual-diagram").forEach((el) => el.remove());
+  return doc.body.textContent.toLowerCase();
+});
 const count = (text, w) => { let n = 0; for (let at = text.indexOf(w); at >= 0; at = text.indexOf(w, at + w.length)) n += 1; return n; };
 
 export default function LearnModule({ onSelect, font }) {

@@ -35,8 +35,8 @@
   }
 }
 
-/* 图谱的连线：普通连线用中性色，选中点的连线用分类色；主线用品牌色 */
-:root { --graph-edge: var(--muted-fg); --graph-edge-opacity: 0.4; --graph-edge-main: var(--brand); }
+/* 图谱的连线：普通连线用中性色，选中点的连线用分类色；主线用品牌色。节点的轮廓让浅色分类色和背景分开 */
+:root { --graph-edge: var(--muted-fg); --graph-edge-opacity: 0.4; --graph-edge-main: var(--brand); --graph-node-border: var(--muted-fg); }
 
 /* 图谱节点的分组颜色：分类色 --p1 到 --p13，两套主题共用；每个分组旁都写出名称，不只靠颜色区分。
    文件全景的分组按 --g-<分组> 取色，开发场景的分类按顺序取 --pN */

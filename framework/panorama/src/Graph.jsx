@@ -27,6 +27,21 @@ const css = (name) => getComputedStyle(document.documentElement).getPropertyValu
 const FCOSE = { name: "fcose", animate: false, quality: "proof", nodeRepulsion: 45000, idealEdgeLength: 140,
   edgeElasticity: 0.3, gravity: 0.05, nodeSeparation: 120, numIter: 4000 };
 const MIN_SCALE = 0.5;
+// 分类的大点一直写名称；和已写的名称重叠、或超出画布会被裁掉时只写条数，条数也放不下时不写，悬停都能看全名。按场景数从多到少挑，大的分类先写全名。
+// 名称按屏幕像素写，重叠与否随缩放变，所以缩放后重挑；名称的范围用 cytoscape 实际排出的文字量
+function shortenGroupLabels(cy) {
+  const ext = cy.extent(), boxes = [];
+  const groups = cy.nodes(".group").filter((n) => n.style("display") === "element").sort((a, b) => b.data("count") - a.data("count"));
+  const box = (n) => { const b = n.boundingBox({ includeNodes: false, includeEdges: false, includeLabels: true }); return [b.x1, b.y1, b.x2, b.y2]; };
+  const hit = (b) => boxes.some((o) => b[0] < o[2] && o[0] < b[2] && b[1] < o[3] && o[1] < b[3]) || b[0] < ext.x1 || b[2] > ext.x2 || b[3] > ext.y2;
+  groups.removeClass("short bare");
+  groups.forEach((n) => {
+    if (hit(box(n))) n.addClass("short");
+    if (n.hasClass("short") && hit(box(n))) n.addClass("bare");
+    else boxes.push(box(n));
+  });
+}
+
 // 一组点的中心，分组的大点放在这里
 const centre = (ps) => ({ x: ps.reduce((a, p) => a + p.x, 0) / ps.length, y: ps.reduce((a, p) => a + p.y, 0) / ps.length });
 
@@ -60,7 +75,9 @@ function style(legend, directed, foldable) {
     "text-margin-y": (n) => 3 / n.cy().zoom(), "text-background-padding": (n) => 2 / n.cy().zoom() };
   return [
     { selector: "node", style: {
-      "background-color": (n) => colors[n.data("group")], width: "data(size)", height: "data(size)", "border-width": 0,
+      "background-color": (n) => colors[n.data("group")], width: "data(size)", height: "data(size)",
+      // 浅色的分类色和背景对比不足，加一圈屏幕上 1px 的轮廓；颜色取 tokens.css
+      "border-width": (n) => 1 / n.cy().zoom(), "border-color": css("--graph-node-border"),
       label: "", color: css("--fg"), "font-size": fs, "min-zoomed-font-size": 9, "font-family": "Segoe UI, Microsoft YaHei UI, sans-serif",
       "text-valign": "bottom", "text-margin-y": 3, "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": 2,
     } },
@@ -80,6 +97,8 @@ function style(legend, directed, foldable) {
     // 折叠后的大点和连到它的线按缩放反算尺寸，缩小看全貌时也看得清；线越粗，合并的连线越多
     { selector: "node.group", style: { ...label, "font-weight": 600, opacity: 0.85,
       width: (n) => n.data("size") / n.cy().zoom(), height: (n) => n.data("size") / n.cy().zoom() } },
+    { selector: "node.group.short", style: { label: "data(short)" } },
+    { selector: "node.group.bare", style: { label: "" } },
     { selector: "edge.merged", style: { width: (e) => (0.5 + Math.sqrt(e.data("count")) * 0.6) / e.cy().zoom(), "line-opacity": 0.5,
       "line-dash-pattern": (e) => [6 / e.cy().zoom(), 4 / e.cy().zoom()], "arrow-scale": 1 } },
     { selector: ".faded", style: { opacity: 0.08 } },
@@ -91,7 +110,7 @@ function style(legend, directed, foldable) {
     { selector: "edge.near[?rel]", style: { label: "data(rel)", color: css("--muted-fg"), "font-size": (e) => small / e.cy().zoom(), "min-zoomed-font-size": 0,
       "text-background-color": css("--bg"), "text-background-opacity": 1, "text-background-padding": (e) => 1 / e.cy().zoom(), "text-rotation": "autorotate" } },
     { selector: "node.quiet", style: { label: "" } },
-    { selector: "node.chosen", style: { "border-width": 2, "border-color": css("--ring") } },
+    { selector: "node.chosen", style: { "border-width": (n) => 2 / n.cy().zoom(), "border-color": css("--ring") } },
   ];
 }
 
@@ -165,8 +184,9 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     positions.set(cacheKey, record);
     // 分组的大点放在组内场景的中心，不能拖动，因为位置跟着组内场景算
     if (foldable) {
-      cy.add(legend.map((g, k) => ({ data: { id: "g" + k, label: `${g.name}（${g.count}）`, group: g.id, size: 16 + Math.sqrt(g.count) * 5 },
-        classes: "group", grabbable: false })));    }
+      cy.add(legend.map((g, k) => ({ data: { id: "g" + k, label: `${g.name}（${g.count}）`, short: `（${g.count}）`, count: g.count, group: g.id, size: 16 + Math.sqrt(g.count) * 5 },
+        classes: "group", grabbable: false })));
+    }
     // 邻居视图里排布是临时的，拖动不记下
     cy.on("dragfree", "node", (e) => { if (!focusRef.current) record[e.target.data("key")] = { ...e.target.position() }; });
     cy.on("tap", "node", (e) => {
@@ -174,14 +194,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       const key = e.target.data("key");
       onSelect(key === selectedRef.current ? null : key);
     });
-    cy.on("zoom", () => cy.elements(foldable ? "node, .merged, edge[?label], edge.near" : ".hub, .labeled, .chosen, .group, .merged, edge[?label], edge.near").updateStyle());
+    cy.on("zoom", () => { cy.elements("node, .merged, edge[?label], edge.near").updateStyle(); if (foldable) shortenGroupLabels(cy); });
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
     // 提示元素先记下来：卸载时 React 已经清空 tipRef，清理函数里还要用它
     let tipTimer = 0;
     const tip = tipRef.current;
     const hideTip = () => { clearTimeout(tipTimer); tip.hidden = true; };
     cy.on("mouseover", "node", (e) => {
-      if (e.target.hasClass("group")) return;
       hideTip();
       tipTimer = setTimeout(() => {
         const bb = e.target.renderedBoundingBox({ includeLabels: false }), r = box.current.getBoundingClientRect();
@@ -276,6 +295,7 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
       cy.nodes(".hub").removeClass("hub");
       pickLabels(cy, landmarks.map((i) => cy.getElementById("n" + i)).filter((n) => n.nonempty() && n.style("display") === "element"), landmarkLimit).forEach((n) => n.addClass("hub"));
     }
+    if (foldable) shortenGroupLabels(cy);
   }, [cacheKey, nodes, edges, legend, landmarks, landmarkLimit, foldable, groupOf, expanded, hidden, within]);
 
   // 选中的点突出它的直接邻居，其余变淡；只改样式，不移动视口。选中的不是图里的点，或它所在的分组被隐藏、折叠时，图保持原样，

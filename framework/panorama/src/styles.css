@@ -105,7 +105,7 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .toast { position: fixed; z-index: var(--z-toast); left: 50%; bottom: 36px; transform: translateX(-50%); padding: var(--space-1) var(--space-3); border-radius: var(--radius);
   background: var(--tip-bg); color: var(--tip-fg); font-size: var(--fs-small); }
 
-.dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; margin-right: var(--space-1-5); vertical-align: 1px; }
+.dot { display: inline-block; flex: none; width: 8px; height: 8px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--graph-node-border); margin-right: var(--space-1-5); vertical-align: 1px; }
 .g-scenes { background: var(--g-scenes); } .g-prompts { background: var(--g-prompts); } .g-manual { background: var(--g-manual); }
 .g-maintenance { background: var(--g-maintenance); } .g-qa { background: var(--g-qa); } .g-framework { background: var(--g-framework); }
 .g-yaya-skills { background: var(--g-yaya-skills); } .g-skills { background: var(--g-skills); } .g-rules { background: var(--g-rules); }
