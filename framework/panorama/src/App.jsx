@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IconLayoutSidebarRight, IconSettings } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
@@ -9,6 +10,9 @@ import { modules } from "./modules.jsx";
 import { SearchSlot } from "./PageSearch.jsx";
 import { Picker, ToastProvider, Tooltip, useToast } from "./overlays.jsx";
 import { fonts, store } from "./store.js";
+import { Separator } from "@/components/ui/separator";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle, dimension } from "@/components/ui/resizable";
+import { PickingContext } from "./overlays.jsx";
 
 // 页面名称按最长的模块名留宽度，切换模块时右边的搜索按钮不移位
 const titleChars = Math.max(...modules.map((m) => m.label.length));
@@ -37,10 +41,13 @@ function PanelNotice({ notice, panelOpen }) {
 export default function App() {
   const [module, setModule] = useState(() => (modules.some((m) => m.id === store.get("module")) ? store.get("module") : "home"));
   // 记下的是拖出来的宽度；实际宽度再按窗口限制，最宽给主区域留 480px，窗口变窄时面板跟着变窄，窗口变宽后恢复
-  const [panelWidth, setPanelWidth] = useState(() => { const w = Number(store.get("panel-w")); return Number.isFinite(w) && w >= 240 ? w : 320; });
+  const panelMin = dimension("--panel-min"), panelDefault = dimension("--panel-default"), mainMin = dimension("--main-min"), activityWidth = dimension("--activity-w");
+  const detail = useRef(null);
+  const [panelWidth, setPanelWidth] = useState(() => { const w = Number(store.get("panel-w")); return Number.isFinite(w) && w >= panelMin ? w : panelDefault; });
   const [winWidth, setWinWidth] = useState(innerWidth);
   useEffect(() => { const r = () => setWinWidth(innerWidth); addEventListener("resize", r); return () => removeEventListener("resize", r); }, []);
-  const shownWidth = Math.max(240, Math.min(panelWidth, winWidth - 44 - 480));
+  const limit = Math.max(panelMin, winWidth - activityWidth - mainMin);
+  const shownWidth = Math.min(panelWidth, limit);
   const [panelOpen, setPanelOpen] = useState(() => store.get("panel") !== "closed");
   const [theme, setTheme] = useState(() => { const t = store.get("theme") || "system"; applyTheme(t); return t; });
   const [font, setFont] = useState(() => { const f = fonts.some(([id]) => id === store.get("font")) ? store.get("font") : "m"; applyFont(f); return f; });
@@ -62,9 +69,7 @@ export default function App() {
     if (value !== null) setNotice({ value });
   }, [module]);
   const step = (d) => setSelection((s) => ({ ...s, [module]: { ...trail, at: trail.at + d } }));
-  const settings = useRef(null);
   const [searchSlot, setSearchSlot] = useState(null);
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
 
   useEffect(() => store.set("module", module), [module]);
   useEffect(() => store.set("panel", panelOpen ? "open" : "closed"), [panelOpen]);
@@ -77,21 +82,18 @@ export default function App() {
     narrow.addEventListener("change", fold);
     return () => narrow.removeEventListener("change", fold);
   }, []);
+  // 拖面板左边缘改宽度：最窄 240px，最宽留给主区域 480px（同「窄窗口」一条）
+  const applyWidth = (width) => {
+    const next = Math.round(Math.max(panelMin, Math.min(width, limit)));
+    setPanelWidth(next);
+    detail.current.resize(next);
+  };
+  useEffect(() => { detail.current.resize(panelOpen ? shownWidth : 0); }, [panelOpen, shownWidth]);
   // 分隔条也能用键盘改宽度：←→ 每次 16px
   const resizeKey = (e) => {
     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
-    e.preventDefault();
-    const ws = e.currentTarget.parentElement.getBoundingClientRect();
-    setPanelWidth(Math.min(Math.max(240, shownWidth + (e.key === "ArrowLeft" ? 16 : -16)), ws.width - 44 - 480));
-  };
-  // 拖面板左边缘改宽度：最窄 240px，最宽留给主区域 480px（同「窄窗口」一条）
-  const drag = (e) => {
-    const ws = e.currentTarget.parentElement.getBoundingClientRect();
-    e.currentTarget.setPointerCapture(e.pointerId);
-    const move = (ev) => setPanelWidth(Math.round(Math.min(Math.max(240, ws.right - ev.clientX), ws.width - 44 - 480)));
-    const up = () => { e.target.removeEventListener("pointermove", move); e.target.removeEventListener("pointerup", up); };
-    e.target.addEventListener("pointermove", move);
-    e.target.addEventListener("pointerup", up);
+    e.preventDefault(); e.stopPropagation();
+    applyWidth(detail.current.getSize().inPixels + (e.key === "ArrowLeft" ? 1 : -1) * dimension("--resize-step"));
   };
   useEffect(() => store.set("picking", picking ? "on" : "off"), [picking]);
   // 学习模块的章节切换写进浏览器历史；在别的模块按浏览器后退回到上一章时，切回学习模块
@@ -115,43 +117,58 @@ export default function App() {
   const panelLabel = panelOpen ? "收起详情面板" : "展开详情面板";
   const current = modules.find((m) => m.id === module);
   return (
-    <ToastProvider>
+    <ToastProvider theme={theme}>
+    <PickingContext.Provider value={picking}>
       <header className="topbar" data-ui="topbar">
         <img className="brand" src={godotIcon} alt="框架全景" data-tip="框架全景" data-ui="topbar.brand" />
         <span className="title" style={{ "--title-chars": titleChars }} data-ui="topbar.title">{current.label}</span>
         <span className="search-slot" ref={setSearchSlot}></span>
         <span className="spacer"></span>
-        <button className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
+        <Button variant="ghost" size="icon" className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
           onClick={() => setPanelOpen(!panelOpen)}>
           <IconLayoutSidebarRight aria-hidden="true" />
-        </button>
-        <span className="divider"></span>
-        <button className="icon-btn" ref={settings} aria-label="设置" aria-haspopup="menu" aria-expanded={menuOpen} data-tip="设置" data-ui="topbar.settings"
-          onClick={() => setMenuOpen(!menuOpen)}>
+        </Button>
+        <Separator orientation="vertical" className="h-(--space-5) self-center" />
+        <SettingsMenu open={menuOpen} onOpenChange={setMenuOpen} picking={picking} onTogglePicking={() => setPicking(!picking)}
+          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }} font={font} onFont={(f) => { applyFont(f); setFont(f); }}>
+        <Button variant="ghost" size="icon" className="icon-btn" aria-label="设置" data-tip="设置" data-ui="topbar.settings">
           <IconSettings aria-hidden="true" />
-        </button>
+        </Button>
+        </SettingsMenu>
       </header>
 
       <div className={"workspace" + (panelOpen ? "" : " panel-closed")} style={{ "--panel-w": shownWidth + "px" }}>
         <nav className="activity" aria-label="模块" data-ui="activity">
           {modules.map((m) => (
-            <button key={m.id} className="icon-btn" aria-label={m.label} data-tip={m.tip} data-ui={"activity." + m.id}
+            <Button key={m.id} variant="ghost" size="activity" className="icon-btn" aria-label={m.label} data-tip={m.tip} data-ui={"activity." + m.id}
               aria-current={m.id === module ? "page" : undefined} onClick={() => setModule(m.id)}>
               <m.Icon aria-hidden="true" />
-            </button>
+            </Button>
           ))}
         </nav>
-        <main className="main">
+        <ResizablePanelGroup orientation="horizontal" disabled={picking} className="min-h-0" resizeTargetMinimumSize={{ fine: dimension("--resize-hit"), coarse: dimension("--resize-hit") }}
+          onLayoutChanged={(_, meta) => {
+            if (!panelOpen) return;
+            if (meta.isUserInteraction) setPanelWidth(Math.round(detail.current.getSize().inPixels));
+            else detail.current?.resize(shownWidth);
+          }}>
+        <ResizablePanel id="main" minSize={Math.min(mainMin, winWidth - activityWidth - (panelOpen ? panelMin : 0))}>
+        <main className="main h-full">
           <section className="module" data-ui={"module." + module}>
             <SearchSlot.Provider value={searchSlot}>
               {current.render({ selected, onSelect: setSelected, theme, font, onModule: setModule })}
             </SearchSlot.Provider>
           </section>
         </main>
-        {panelOpen && <div className="panel-resizer" style={{ right: shownWidth - 3 }} onPointerDown={drag} onDoubleClick={() => setPanelWidth(320)} onKeyDown={resizeKey} tabIndex={0}
-          role="separator" aria-orientation="vertical" aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />}
+        </ResizablePanel>
+        <ResizableHandle disableDoubleClick className={panelOpen ? "" : "hidden"} onDoubleClick={() => applyWidth(panelDefault)} onKeyDownCapture={resizeKey}
+          aria-label="拖动改详情面板宽度" data-tip="拖动或按 ←→ 改宽度，双击恢复 320px" data-ui="panel.resizer" />
+        <ResizablePanel id="detail" panelRef={detail} defaultSize={shownWidth} minSize={panelOpen ? panelMin : 0} maxSize={panelOpen ? limit : 0}
+          groupResizeBehavior="preserve-pixel-size" inert={!panelOpen} className="h-full [&>.panel]:h-full">
         <DetailPanel file={selected} onSelect={setSelected} font={font}
           onBack={trail.at > 0 ? () => step(-1) : null} onForward={trail.at < trail.list.length - 1 ? () => step(1) : null} />
+        </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
 
       <footer className="statusbar" data-ui="statusbar">
@@ -161,14 +178,10 @@ export default function App() {
         </span>
       </footer>
 
-      {menuOpen && (
-        <SettingsMenu anchor={settings} onClose={closeMenu} picking={picking} onTogglePicking={() => setPicking(!picking)}
-          theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }}
-          font={font} onFont={(f) => { applyFont(f); setFont(f); }} />
-      )}
       <PanelNotice notice={notice} panelOpen={panelOpen} />
       <Tooltip disabled={picking || menuOpen} />
       <Picker on={picking} />
+    </PickingContext.Provider>
     </ToastProvider>
   );
 }

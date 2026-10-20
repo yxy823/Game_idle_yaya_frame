@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { IconArrowLeft, IconArrowRight, IconCaretDownFilled, IconCaretRightFilled } from "@tabler/icons-react";
 import DocView from "./DocView.jsx";
@@ -6,6 +7,9 @@ import { qaOf, qaPageUrl } from "./QaModule.jsx";
 import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
 import { entryOf } from "./SearchModule.jsx";
 import { store } from "./store.js";
+import { Collapsible, CollapsibleTrigger, CollapsibleContent } from "@/components/ui/collapsible";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 
 // 照 draw.io 的格式面板：成对的短属性用“名称 + 取值”两栏的 Row；列表和长文字用 Group，名称写在上方一行，内容占满整行。
 // 小节里只有一组、组名和小节标题相同时，不写组名
@@ -20,13 +24,13 @@ function Group({ name, children }) {
 function Section({ title, ui, count, children }) {
   const [open, setOpen] = useState(count === undefined || count <= 20);
   return (
-    <details className="section" open={open} data-ui={ui} onToggle={(e) => setOpen(e.currentTarget.open)}>
-      <summary>
-        <span className="twisty">{open ? <IconCaretDownFilled aria-hidden="true" /> : <IconCaretRightFilled aria-hidden="true" />}</span>
+    <Collapsible className="section" open={open} data-ui={ui} onOpenChange={setOpen}>
+      <CollapsibleTrigger asChild><Button variant="ghost" size="none" className="section-trigger h-(--control-h) w-full justify-start gap-0 rounded-none border-0 px-(--pad) font-semibold">
+        <span className="twisty -ml-3 inline-grid place-items-center text-muted-foreground [&>svg.tabler-icon]:size-3!">{open ? <IconCaretDownFilled aria-hidden="true" /> : <IconCaretRightFilled aria-hidden="true" />}</span>
         <span className="section-title">{title}</span>{count !== undefined && <span className="count">{count}</span>}
-      </summary>
-      {children}
-    </details>
+      </Button></CollapsibleTrigger>
+      <CollapsibleContent>{children}</CollapsibleContent>
+    </Collapsible>
   );
 }
 
@@ -35,16 +39,16 @@ function Head({ title, nav }) {
   return (
     <div className="panel-head" data-ui="panel.head">
       <span className="panel-title" data-tip={title}>{title}</span>
-      <button className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
-        onClick={() => nav.onBack?.()} data-ui="panel.back"><IconArrowLeft aria-hidden="true" /></button>
-      <button className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
-        onClick={() => nav.onForward?.()} data-ui="panel.forward"><IconArrowRight aria-hidden="true" /></button>
+      <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
+        onClick={() => nav.onBack?.()} data-ui="panel.back"><IconArrowLeft aria-hidden="true" /></Button>
+      <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
+        onClick={() => nav.onForward?.()} data-ui="panel.forward"><IconArrowRight aria-hidden="true" /></Button>
     </div>
   );
 }
 
 function FileLink({ index, onSelect }) {
-  return <button className="link-btn" onClick={() => onSelect(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</button>;
+  return <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(index)} data-tip={files[index].title + "（" + files[index].path + "）"}>{files[index].title}</Button>;
 }
 
 // 每个目标只列一次，按第一次出现的顺序
@@ -57,7 +61,7 @@ function Quote({ link, current, onSelect }) {
     <div className="quote">
       <div className="quote-head">
         <FileLink index={p.file} onSelect={onSelect} />
-        <a className="open" href={vscodeUrl(p.file, p.line)} data-tip="在 VSCode 里打开这一行">第 {p.line} 行</a>
+        <Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(p.file, p.line)} data-tip="在 VSCode 里打开这一行">第 {p.line} 行</a></Button>
       </div>
       <p className="quote-text">
         {p.parts.map((part, i) => (typeof part === "string" ? part
@@ -73,7 +77,7 @@ function QaPanel({ q, onSelect, nav }) {
     <aside className="panel" aria-label="详情" data-ui="panel">
       <Head title={q.title} nav={nav} />
       <div className="panel-actions">
-        <a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a>
+        <Button asChild variant="default"><a className="btn-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="panel.open-qa">打开问答页</a></Button>
       </div>
       <Section title="回答" ui="panel.answer">
         <Group name="结论"><p className="text">{q.conclusion}</p></Group>
@@ -92,7 +96,7 @@ function QaPanel({ q, onSelect, nav }) {
       <Section title="关联" ui="panel.qa-links">
         <Row name="主题"><FileLink index={q.file} onSelect={onSelect} /></Row>
         {q.basis.length > 0 && <Group name="依据"><ul className="plain">{q.basis.map((i) => <li key={i}><FileLink index={i} onSelect={onSelect} /></li>)}</ul></Group>}
-        <Row name="原文"><a className="open" href={vscodeUrl(q.file, q.line)} data-tip="在 VSCode 里打开这一行">{files[q.file].path}:{q.line}</a></Row>
+        <Row name="原文"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(q.file, q.line)} data-tip="在 VSCode 里打开这一行">{files[q.file].path}:{q.line}</a></Button></Row>
       </Section>
     </aside>
   );
@@ -105,7 +109,7 @@ function DocPanel({ k, onSelect, nav }) {
   const rel = (e, end) => (
     <li key={e.from + "-" + e.to + "-" + e.line}>
       {e.label && <div className="cond">{e.label}</div>}
-      <button className="link-btn" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].label}</button>
+      <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onSelect(docKey(e[end]))}>{docNodes[e[end]].label}</Button>
     </li>
   );
   return (
@@ -116,7 +120,7 @@ function DocPanel({ k, onSelect, nav }) {
         <Group name="介绍"><p className="text">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.template ? "模板文件没有介绍文字，打开模板查看内容" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
         {n.paths.length > 0 && <Group name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Group>}
         {n.card !== null && <Row name="模板"><FileLink index={n.card} onSelect={onSelect} /></Row>}
-        {n.template && <Row name="模板"><a className="open" href={vscodePath(n.template)} data-tip="在 VSCode 里打开">{n.template}</a></Row>}
+        {n.template && <Row name="模板"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodePath(n.template)} data-tip="在 VSCode 里打开">{n.template}</a></Button></Row>}
       </Section>
       {(out.length > 0 || into.length > 0) && (
         <Section title="关系" ui="panel.doc-links" count={out.length + into.length}>
@@ -139,7 +143,7 @@ function EntryPanel({ e, onSelect, nav, font }) {
       <Head title={e.name} nav={nav} />
       <Section title="位置" ui="panel.entry">
         <Row name="文档"><FileLink index={e.file} onSelect={onSelect} /></Row>
-        <Row name="原文"><a className="open" href={vscodeUrl(e.file, e.line)} data-tip="在 VSCode 里打开这一行">{files[e.file].path}:{e.line}</a></Row>
+        <Row name="原文"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(e.file, e.line)} data-tip="在 VSCode 里打开这一行">{files[e.file].path}:{e.line}</a></Button></Row>
       </Section>
       <div className="learn-body panel-doc" data-ui="panel.entry-doc">
         <DocView card={e.file} jump={jump} onLink={(i) => onSelect(i)} font={font} />
@@ -186,25 +190,26 @@ export default function DetailPanel({ file, onSelect, onBack, onForward, font })
   const counts = { links: next.length + prev.length + basis.length + refs.length + citing.length, quotes: cited.length };
   const step = (l, end) => (
     <li key={l.from + "-" + l.to + "-" + l.para}>
-      {(l.main || l.cond) && <div className="cond">{l.main && <span className="tag">主线</span>}{l.cond}</div>}<FileLink index={l[end]} onSelect={onSelect} />
+      {(l.main || l.cond) && <div className="cond">{l.main && <Badge className="tag mr-1">主线</Badge>}{l.cond}</div>}<FileLink index={l[end]} onSelect={onSelect} />
     </li>
   );
   return (
     <aside className="panel" aria-label="详情" data-ui="panel" key={file}>
       <Head title={f.title} nav={nav} />
-      <div className="panel-tabs" role="tablist" data-ui="panel.tabs">
+      <Tabs value={tab} onValueChange={pickTab} activationMode="manual">
+      <TabsList variant="panel" className="panel-tabs" data-ui="panel.tabs">
         {TABS.map(([id, name]) => (
-          <button key={id} role="tab" aria-selected={tab === id} onClick={() => pickTab(id)}>
+          <TabsTrigger key={id} value={id}>
             {name}{counts[id] !== undefined && <span className="count">{counts[id]}</span>}
-          </button>
+          </TabsTrigger>
         ))}
-      </div>
-      {tab === "summary" && (
+      </TabsList>
+      <TabsContent value="summary">
         <>
           <Section title="摘要" ui="panel.summary">
             <Group name="用途"><p className="text">{f.purpose || "第一段没有用途说明"}</p></Group>
             <Row name="分组"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</Row>
-            <Row name="路径"><a className="open" href={vscodeUrl(file)} data-tip="在 VSCode 里打开">{f.path}</a></Row>
+            <Row name="路径"><Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(file)} data-tip="在 VSCode 里打开">{f.path}</a></Button></Row>
           </Section>
           {f.outline.length > 0 && (
             <Section title="大纲" ui="panel.outline" count={f.outline.length}>
@@ -212,8 +217,8 @@ export default function DetailPanel({ file, onSelect, onBack, onForward, font })
             </Section>
           )}
         </>
-      )}
-      {tab === "links" && (
+      </TabsContent>
+      <TabsContent value="links">
         <>
           {(next.length > 0 || prev.length > 0) && (
             <Section title="场景衔接" ui="panel.steps">
@@ -232,9 +237,10 @@ export default function DetailPanel({ file, onSelect, onBack, onForward, font })
               : <p className="empty-line">没有其他文档链接到它</p>}</Group>
           </Section>
         </>
-      )}
-      {tab === "quotes" && (cited.length ? cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)
-        : <p className="empty">没有其他文档链接到它</p>)}
+      </TabsContent>
+      <TabsContent value="quotes">{cited.length ? cited.map((l, i) => <Quote key={i} link={l} current={file} onSelect={onSelect} />)
+        : <p className="empty">没有其他文档链接到它</p>}</TabsContent>
+      </Tabs>
     </aside>
   );
 }

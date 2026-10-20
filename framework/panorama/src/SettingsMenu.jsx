@@ -1,52 +1,43 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
-import { IconCheck } from "@tabler/icons-react";
+import { useRef } from "react";
 import { fonts } from "./store.js";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import { Switch } from "@/components/ui/switch";
 
 const themes = [["system", "跟随系统"], ["light", "浅色"], ["dark", "深色"]];
 
-// 设置菜单：贴在设置按钮下方、右边对齐；点菜单外或按 Esc 关闭，焦点回到设置按钮。
-export default function SettingsMenu({ anchor, onClose, picking, onTogglePicking, theme, onTheme, font, onFont }) {
-  const ref = useRef(null);
-  useLayoutEffect(() => {
-    const r = anchor.current.getBoundingClientRect(), menu = ref.current;
-    menu.style.top = (r.bottom + 4) + "px";
-    menu.style.left = (r.right - menu.offsetWidth) + "px";
-    menu.querySelector("button").focus();
-  }, [anchor]);
-  useEffect(() => {
-    const close = () => { onClose(); anchor.current.focus(); };
-    const click = (e) => { if (!ref.current.contains(e.target) && !anchor.current.contains(e.target)) close(); };
-    // ↑↓ 在菜单项之间移动焦点，和系统菜单一样
-    const key = (e) => {
-      if (e.key === "Escape") { e.stopPropagation(); close(); return; }
-      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
-      e.preventDefault();
-      const items = [...ref.current.querySelectorAll("button")], at = items.indexOf(document.activeElement);
-      items[(at + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
-    };
-    document.addEventListener("click", click);
-    document.addEventListener("keydown", key, true);
-    return () => { document.removeEventListener("click", click); document.removeEventListener("keydown", key, true); };
-  }, [anchor, onClose]);
-  return (
-    // 按 Tab 把焦点移出菜单时关掉菜单，否则方向键还会把焦点拉回菜单；从最后一项按 Tab 时焦点先落到 body，relatedTarget 为空，也算移出
-    <div className="menu" role="menu" ref={ref} data-pick-ignore onBlur={(e) => { if (!ref.current.contains(e.relatedTarget)) onClose(); }}>
-      <div className="group">工具</div>
-      <button role="menuitemcheckbox" aria-checked={picking} onClick={onTogglePicking}>
-        <span className="mark"></span>元素选取：点击即复制<span className="key">Alt+X</span><span className="switch"></span>
-      </button>
-      <div className="group">主题</div>
-      {themes.map(([id, name]) => (
-        <button key={id} role="menuitemradio" aria-checked={theme === id} onClick={() => { onTheme(id); onClose(); anchor.current.focus(); }}>
-          <span className="mark">{theme === id && <IconCheck aria-hidden="true" />}</span>{name}
-        </button>
-      ))}
-      <div className="group">字号</div>
-      {fonts.map(([id, name]) => (
-        <button key={id} role="menuitemradio" aria-checked={font === id} onClick={() => { onFont(id); onClose(); anchor.current.focus(); }}>
-          <span className="mark">{font === id && <IconCheck aria-hidden="true" />}</span>{name}
-        </button>
-      ))}
-    </div>
-  );
+// 设置菜单（Radix DropdownMenu）：贴在设置按钮下方、右边对齐；↑↓ 在菜单项之间循环，点菜单外或按 Esc 关闭，焦点回到设置按钮。
+export default function SettingsMenu({ children, open, onOpenChange, picking, onTogglePicking, theme, onTheme, font, onFont }) {
+  const content = useRef(null), nextFocus = useRef(null);
+  const close = () => onOpenChange(false);
+  // Radix 菜单里按 Tab 不移动焦点。这里改成和普通页面一样：Tab 关菜单并把焦点交给活动栏第一项，Shift+Tab 交给面板开关
+  const key = (e) => {
+    if (e.key !== "Tab") return;
+    e.preventDefault(); e.stopPropagation();
+    nextFocus.current = document.querySelector(e.shiftKey ? "[data-ui='topbar.panel-toggle']" : ".activity button");
+    close();
+  };
+  return <DropdownMenu modal={false} open={open} onOpenChange={onOpenChange}>
+    <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
+    {/* 打开时焦点落在第一项，关闭时落到 Tab 指定的位置，否则回到设置按钮 */}
+    <DropdownMenuContent ref={content} loop onKeyDownCapture={key}
+      onOpenAutoFocus={(e) => { e.preventDefault(); queueMicrotask(() => content.current?.querySelector("[role='menuitemcheckbox']").focus()); }}
+      onCloseAutoFocus={(e) => { e.preventDefault(); (nextFocus.current ?? document.querySelector("[data-ui='topbar.settings']")).focus(); nextFocus.current = null; }}
+      onEscapeKeyDown={(e) => { e.preventDefault(); e.stopPropagation(); close(); }}>
+      <DropdownMenuLabel>工具</DropdownMenuLabel>
+      <DropdownMenuCheckboxItem checked={picking} onCheckedChange={onTogglePicking} onSelect={(e) => e.preventDefault()}>
+        元素选取：点击即复制<span className="ml-auto text-xs text-muted-foreground">Alt+X</span>
+        <Switch checked={picking} aria-hidden="true" tabIndex={-1} className="pointer-events-none ml-2" />
+      </DropdownMenuCheckboxItem>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>主题</DropdownMenuLabel>
+      <DropdownMenuRadioGroup value={theme} onValueChange={onTheme}>
+        {themes.map(([id, name]) => <DropdownMenuRadioItem key={id} value={id}>{name}</DropdownMenuRadioItem>)}
+      </DropdownMenuRadioGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>字号</DropdownMenuLabel>
+      <DropdownMenuRadioGroup value={font} onValueChange={onFont}>
+        {fonts.map(([id, name]) => <DropdownMenuRadioItem key={id} value={id}>{name}</DropdownMenuRadioItem>)}
+      </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+  </DropdownMenu>;
 }

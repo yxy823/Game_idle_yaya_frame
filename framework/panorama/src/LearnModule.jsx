@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
 import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
@@ -67,8 +68,8 @@ export default function LearnModule({ onSelect, font }) {
         {hitNav && (
           <div className="hit-nav" data-ui="learn.hit-nav">
             <span className="count">本章第 {at + 1}/{hits} 处</span>
-            <button className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><IconChevronUp aria-hidden="true" /></button>
-            <button className="icon-btn" aria-label="下一处" data-tip="下一处" onClick={() => move(1)}><IconChevronDown aria-hidden="true" /></button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><IconChevronUp aria-hidden="true" /></Button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="下一处" data-tip="下一处" onClick={() => move(1)}><IconChevronDown aria-hidden="true" /></Button>
           </div>
         )}
       </PageHead>
@@ -78,15 +79,15 @@ export default function LearnModule({ onSelect, font }) {
         <div key={g}>
           <div className="side-group">{g}</div>
           {chapters.map((c, k) => c.group === g && (
-            <button key={k} className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
+            <Button key={k} variant="row" size="none" className="tree-row" aria-selected={k === chapter} onClick={() => go(k)}>
               <span className="tree-name" data-tip-clip>{files[c.card].title}</span>
-            </button>
+            </Button>
           ))}
         </div>
       ))}>
       <article className="learn-body" data-ui="learn.body" ref={body}>
         <DocView card={chapters[chapter].card} jump={jump} words={ws} onLink={link} inPanel={(card) => !chapterOf.has(card)} onHits={setHits} font={font} />
-        {next && <button className="graph-btn learn-next" onClick={() => go(chapter + 1)}>下一章：{files[next.card].title}</button>}
+        {next && <Button variant="outline" className="graph-btn learn-next" onClick={() => go(chapter + 1)}>下一章：{files[next.card].title}</Button>}
       </article>
     </SideLayout>
     </div>

@@ -1,8 +1,10 @@
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import data from "virtual:panorama-data";
 import { files, groupName, vscodeUrl } from "./docs.js";
 import PageSearch, { PageHead } from "./PageSearch.jsx";
 import { qaKey } from "./QaModule.jsx";
+import { Badge } from "@/components/ui/badge";
 
 // 术语表、工具表的一行的选中值写成 "entry:编号"，详情面板显示所在文档并滚到这一行
 const entryKey = (n) => "entry:" + n;
@@ -85,13 +87,13 @@ export default function SearchModule({ selected, onSelect }) {
               const f = files[item.file];
               return (
                 <li key={i}>
-                  <button className="result" aria-selected={selected === item.select} onClick={() => onSelect(item.select)}>
-                    <span className="result-title"><span className="kind">{item.kind}</span><Highlight text={item.title} words={words} /></span>
+                  <Button variant="result" size="none" className="result" aria-selected={selected === item.select} onClick={() => onSelect(item.select)}>
+                    <span className="result-title"><Badge variant="outline" className="kind">{item.kind}</Badge><Highlight text={item.title} words={words} /></span>
                     <span className="result-text"><Highlight text={snippet(hit, words)} words={words} /></span>
-                  </button>
+                  </Button>
                   <span className="result-meta">
                     <span className="result-group"><span className={"dot g-" + f.group} aria-hidden="true"></span>{groupName[f.group]}</span>
-                    <a className="open" href={vscodeUrl(item.file, item.line)} data-tip="在 VSCode 里打开这一行">{f.path}:{item.line}</a>
+                    <Button asChild variant="link" size="none"><a className="open text-primary" href={vscodeUrl(item.file, item.line)} data-tip="在 VSCode 里打开这一行">{f.path}:{item.line}</a></Button>
                   </span>
                 </li>
               );

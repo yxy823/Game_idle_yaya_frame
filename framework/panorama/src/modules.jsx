@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayoutGrid, IconSearch } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
@@ -48,7 +49,7 @@ function Home({ onModule, font }) {
       <h2 className="home-h2" data-ui="home.what">框架是什么</h2>
       <p className="lead">{files[frameworkCard].purpose}</p>
       <p className="home-links">
-        <button className="link-btn" onClick={() => onModule("files")}>到文件全景看全部文件</button>
+        <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onModule("files")}>到文件全景看全部文件</Button>
       </p>
       <h2 className="home-h2">框架做什么</h2>
       <p className="lead">{data.home.framework.lead}</p>
@@ -58,8 +59,8 @@ function Home({ onModule, font }) {
       <Diagram ui="home.feature" text={data.home.feature.flow} font={font} />
       {data.home.feature.legend && <p className="lead">{data.home.feature.legend}</p>}
       <p className="home-links">
-        <button className="link-btn" onClick={learn}>到学习，从手册首页读起</button>
-        <button className="link-btn" onClick={() => onModule("docs")}>到文档关系看这些文档怎样关联</button>
+        <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={learn}>到学习，从手册首页读起</Button>
+        <Button variant="link" size="none" className="link-btn max-w-full truncate [.plain_&]:block" onClick={() => onModule("docs")}>到文档关系看这些文档怎样关联</Button>
       </p>
       <h2 className="home-h2" data-ui="home.stages">Feature 的执行阶段</h2>
       <p className="lead">{data.home.stages.lead}</p>

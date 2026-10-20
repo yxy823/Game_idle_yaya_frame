@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
 import { IconArrowLeft, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
 import { dirOf, files, groupName, groups, incoming, links } from "./docs.js";
@@ -5,6 +6,8 @@ import DocView from "./DocView.jsx";
 import Graph from "./Graph.jsx";
 import PageSearch, { PageHead, matches, words } from "./PageSearch.jsx";
 import { store } from "./store.js";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 
 // 图谱数据：两份文档之间有多条链接时只画一条线，链到自己的不画；被引用最多的文档作为路标
 const graph = {
@@ -35,30 +38,30 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
   const isOpen = open.has(node.path);
   const children = [...node.dirs.values()];
   return (
-    <li>
-      <button className="tree-row" style={{ paddingLeft: `calc(var(--space-1) + ${depth} * var(--space-3))` }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
+    <Collapsible asChild open={isOpen}><li>
+      <Button variant="row" size="none" className="tree-row" style={{ paddingLeft: `calc(var(--space-1) + ${depth} * var(--space-3))` }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
         onClick={() => { onDir(node.path); if (children.length) onToggle(node.path); }}>
         <span className="twisty" onClick={(e) => { e.stopPropagation(); if (children.length) onToggle(node.path); }}>
           {children.length ? (isOpen ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />) : null}
         </span>
         <span className="tree-name">{node.name}</span>
         <span className="count">{node.count}</span>
-      </button>
-      {isOpen && children.length > 0 && (
+      </Button>
+      {children.length > 0 && <CollapsibleContent asChild>
         <ul>{children.map((c) => <TreeNode key={c.path} node={c} depth={depth + 1} dir={dir} onDir={onDir} open={open} onToggle={onToggle} />)}</ul>
-      )}
-    </li>
+      </CollapsibleContent>}
+    </li></Collapsible>
   );
 }
 
 function Card({ index, selected, onSelect, onRead, showGroup }) {
   const f = files[index];
   return (
-    <button className="card" aria-selected={selected} onClick={() => onSelect(selected ? null : index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
+    <Button variant="card" size="none" className="card" aria-selected={selected} onClick={() => onSelect(selected ? null : index)} onDoubleClick={() => onRead(index)} data-tip={f.path + "（双击读全文）"}>
       <span className="card-title"><span className={"dot g-" + f.group} aria-hidden="true"></span>{f.title}</span>
       <span className="card-purpose">{f.purpose || "（第一段没有用途说明）"}</span>
       <span className="card-meta">{showGroup && <span>{groupName[f.group]}</span>}<span>{f.path.split("/").pop()}</span></span>
-    </button>
+    </Button>
   );
 }
 
@@ -88,22 +91,21 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
   const showGroup = new Set(cards.map((i) => files[i].group)).size > 1;
 
   return (
-    <div className="files">
+    <Tabs value={view} onValueChange={choose} activationMode="manual" asChild><div className="files">
       <PageHead search={<PageSearch ui="files.search" value={query} onChange={search} placeholder="搜索标题、用途和路径"
         results={view === "graph" ? (found ?? []).map((i) => ({ key: i, label: files[i].title, meta: files[i].path.split("/").pop() })) : undefined} onPick={(r) => onSelect(r.key)} />}>
-        <div className="segmented" role="tablist" data-ui="files.view-switch">
-          <button role="tab" aria-selected={view === "list"} onClick={() => choose("list")}>列表</button>
-          <button role="tab" aria-selected={view === "graph"} onClick={() => choose("graph")}>图谱</button>
-        </div>
+        <TabsList data-ui="files.view-switch">
+          <TabsTrigger value="list">列表</TabsTrigger>
+          <TabsTrigger value="graph">图谱</TabsTrigger>
+        </TabsList>
       </PageHead>
-      {view === "list" ? (
-        <div className="files-layout">
+      <TabsContent value="list" className="files-layout data-[state=inactive]:hidden!">
           <ul className="tree" data-ui="files.tree">
             <TreeNode node={tree} depth={0} dir={dir} onDir={(p) => { pickDir(p); read(null); }} open={open} onToggle={toggle} />
           </ul>
           {reading !== null ? (
             <article className="learn-body doc-scroll" data-ui="files.reader">
-              <button className="graph-btn reader-back" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</button>
+              <Button variant="outline" className="graph-btn reader-back" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</Button>
               <DocView card={reading} jump={jump} onLink={(i, anchor) => read(i, anchor)} font={font} />
             </article>
           ) : (
@@ -114,8 +116,10 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
             ) : <p className="empty-line">{found ? "没有匹配的文档，换一个词或减少关键词。" : "这个目录下没有直接放文档，在左边展开它的子目录。"}</p>}
           </div>
           )}
-        </div>
-      ) : <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} font={font} ui="files" />}
-    </div>
+      </TabsContent>
+      <TabsContent value="graph" className="flex min-h-0 flex-1 flex-col data-[state=inactive]:hidden">
+        {view === "graph" && <Graph cacheKey="files" {...graph} selected={selected} onSelect={onSelect} theme={theme} font={font} ui="files" />}
+      </TabsContent>
+    </div></Tabs>
   );
 }

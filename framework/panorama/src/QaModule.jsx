@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { IconExternalLink } from "@tabler/icons-react";
 import data from "virtual:panorama-data";
@@ -31,23 +32,23 @@ export default function QaModule({ selected, onSelect }) {
       </PageHead>
       <SideLayout label="主题" ui="qa" toc={
         listed.map((t) => (
-          <button key={t} className="tree-row" onClick={() => document.getElementById("qa-topic-" + t).scrollIntoView({ block: "start" })}>
+          <Button key={t} variant="row" size="none" className="tree-row" onClick={() => document.getElementById("qa-topic-" + t).scrollIntoView({ block: "start" })}>
             <span className="tree-name" data-tip-clip>{files[t].title}</span><span className="count">{countOf(t)}</span>
-          </button>
+          </Button>
         ))}>
         <div>
           {listed.map((t) => (
             <section className="qa-topic" key={t} id={"qa-topic-" + t} data-ui="qa.topic">
-              <h2>{files[t].title}<a className="open qa-open" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a>
+              <h2>{files[t].title}<Button asChild variant="link" size="none"><a className="open qa-open text-primary" href={pageOf(t)} target="_blank" rel="noreferrer" aria-label="打开问答页" data-tip="在新标签页打开这个主题的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
                 <span className="count">{countOf(t)}</span></h2>
               <div className="cards">
                 {data.qa.map((q, n) => q.file === t && shown[n] && (
                   <div key={n} className="qa-card">
-                    <button className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
+                    <Button variant="card" size="none" className="card" aria-selected={selected === qaKey(n)} onClick={() => onSelect(selected === qaKey(n) ? null : qaKey(n))}>
                       <span className="card-title">{q.title}</span>
                       <span className="card-purpose">{q.conclusion}</span>
-                    </button>
-                    <a className="open qa-open" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a>
+                    </Button>
+                    <Button asChild variant="link" size="none"><a className="open qa-open text-primary" href={qaPageUrl(q)} target="_blank" rel="noreferrer" data-ui="qa.open" aria-label="打开问答页" data-tip="在新标签页打开这一条的问答页"><IconExternalLink aria-hidden="true" /></a></Button>
                   </div>
                 ))}
               </div>

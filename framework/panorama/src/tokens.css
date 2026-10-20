@@ -41,6 +41,15 @@
   --bar-h: 36px; --status-h: 24px; --control-h: 28px; --activity-w: 44px; --panel-w: 320px;
   --icon: 16px; --icon-activity: 22px; --pad: 12px; --fs: 13px; --fs-small: 12px; --radius: 4px;
   --z-menu: 30; --z-tip: 40; --z-pick: 50; --z-toast: 60;
+  --z-resizer: 5;
+  --panel-default: 320px; --panel-min: 240px; --main-min: 480px;
+  --toc-default: 220px; --toc-min: 160px; --toc-max: 480px; --resize-step: 16px;
+  --resize-hit: 6px; --resize-line: 2px; --tip-offset: 6px; --tip-edge: 8px;
+  --activity-button: 36px; --tree-row-h: calc(var(--fs) + 11px);
+  --search-input-w: 240px; --search-list-w: 320px; --search-list-h: 360px;
+  --menu-w: 220px; --menu-item-pad: 32px; --toast-bottom: 36px;
+  --switch-w: 28px; --switch-h: 16px; --switch-thumb: 12px; --switch-travel: 12px;
+  --checkbox-size: 13px; --checkbox-mark: 11px;
   --brand: #2b68cc;
   --primary: var(--brand); --ring: var(--brand);
   --background: #fcfcfd; --card: #f3f4f6; --chrome: #eceef2; --accent: #e2e6ec;

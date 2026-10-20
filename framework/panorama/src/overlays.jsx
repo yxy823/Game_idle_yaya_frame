@@ -1,42 +1,48 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { toast as notify } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { Tooltip as UiTooltip, TooltipProvider, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 
 // 浮在页面上的三样东西：底部提示、悬浮提示、元素选取框。都带 data-pick-ignore，选取时不会选中它们自己。
-
+// 元素选取是否打开；打开时分隔条不响应拖动，点它只复制
+export const PickingContext = createContext(false);
 const ToastContext = createContext(() => {});
+const TipContext = createContext(null);
 export const useToast = () => useContext(ToastContext);
+export const useTooltip = () => useContext(TipContext);
 
-export function ToastProvider({ children }) {
-  const [text, setText] = useState("");
-  const timer = useRef(0);
+export function ToastProvider({ children, theme }) {
+  const timer = useRef(0), id = useRef(null);
+  const [tip, setTip] = useState(null);
+  const showTip = useCallback((value) => setTip(value), []);
+  const hideTip = useCallback(() => setTip(null), []);
   const toast = useCallback((value) => {
-    setText(value);
+    id.current = notify(value, id.current === null ? {} : { id: id.current });
     clearTimeout(timer.current);
-    timer.current = setTimeout(() => setText(""), 1800);
+    timer.current = setTimeout(() => { notify.dismiss(id.current); id.current = null; }, 1800);
   }, []);
-  return (
-    <ToastContext.Provider value={toast}>
-      {children}
-      <div className="toast" role="status" hidden={!text} data-pick-ignore>{text}</div>
-    </ToastContext.Provider>
-  );
+  useEffect(() => () => { clearTimeout(timer.current); }, []);
+  return <ToastContext.Provider value={toast}>
+    <TipContext.Provider value={{ tip, showTip, hideTip }}>{children}</TipContext.Provider>
+    <div data-pick-ignore><Toaster theme={theme} /></div>
+  </ToastContext.Provider>;
 }
 
-// 悬浮提示：400ms 延迟；300ms 内移到相邻元素时立即显示。活动栏的提示放在按钮右边，其余放在下方。
-// 带 data-tip-clip 的元素只在文字被截断时提示，内容就是它的全文
+// 悬浮提示：元素上写 data-tip，这一个组件统一显示。400ms 延迟；300ms 内移到相邻元素时立即显示。活动栏的提示放在按钮右边，其余放在下方。
+// 带 data-tip-clip 的元素只在文字被截断时提示，内容就是它的全文。
+// 底层是一个 Radix Tooltip，锚在一个叠在目标元素上的代理 span 上，不逐个元素包 <Tooltip>
 export function Tooltip({ disabled }) {
-  const ref = useRef(null);
+  const { tip, showTip, hideTip } = useTooltip();
+  const proxy = useRef(null);
   useEffect(() => {
-    const tip = ref.current;
-    let timer = 0, leftAt = 0, current = null;
-    const hide = () => { clearTimeout(timer); if (!tip.hidden) leftAt = Date.now(); tip.hidden = true; current = null; };
-    const place = (el) => {
-      const r = el.getBoundingClientRect();
-      tip.textContent = el.dataset.tip ?? el.textContent; tip.hidden = false;
-      let left = r.left + r.width / 2 - tip.offsetWidth / 2, top = r.bottom + 6;
-      left = Math.max(8, Math.min(left, innerWidth - tip.offsetWidth - 8));
-      if (top + tip.offsetHeight > innerHeight - 8) top = r.top - 6 - tip.offsetHeight;
-      if (el.closest(".activity")) { left = r.right + 6; top = r.top + r.height / 2 - tip.offsetHeight / 2; }
-      tip.style.left = left + "px"; tip.style.top = top + "px";
+    let timer = 0, leftAt = 0, current = null, visible = false;
+    const hide = () => { clearTimeout(timer); if (visible) leftAt = Date.now(); visible = false; current = null; hideTip(); };
+    // 显示时量一次元素位置，代理锚点放到那里，由 Radix 摆放提示
+    const show = () => {
+      visible = true;
+      const r = current.getBoundingClientRect();
+      showTip({ text: current.dataset.tip ?? current.textContent, target: current,
+        rect: { left: r.left, top: r.top, width: r.width, height: r.height }, side: current.closest(".activity") ? "right" : "bottom" });
     };
     const over = (e) => {
       let el = e.target.closest("[data-tip], [data-tip-clip]");
@@ -45,20 +51,41 @@ export function Tooltip({ disabled }) {
       hide();
       if (!el || disabled) return;
       current = el;
-      timer = setTimeout(() => place(el), Date.now() - leftAt < 300 ? 0 : 400);
+      timer = setTimeout(show, Date.now() - leftAt < 300 ? 0 : 400);
     };
+    const out = (e) => { if (!e.relatedTarget) hide(); };
+    const focusOut = (e) => { if (!current?.contains(e.relatedTarget)) hide(); };
     const key = (e) => { if (e.key === "Escape") hide(); };
     document.addEventListener("mouseover", over);
+    document.addEventListener("focusin", over);
+    document.addEventListener("focusout", focusOut);
+    document.addEventListener("mouseout", out);
     document.addEventListener("mousedown", hide);
     document.addEventListener("keydown", key);
+    window.addEventListener("blur", hide);
+    if (disabled) hide();
     return () => {
       hide();
-      document.removeEventListener("mouseover", over);
-      document.removeEventListener("mousedown", hide);
-      document.removeEventListener("keydown", key);
+      document.removeEventListener("mouseover", over); document.removeEventListener("focusin", over);
+      document.removeEventListener("focusout", focusOut); document.removeEventListener("mouseout", out);
+      document.removeEventListener("mousedown", hide); document.removeEventListener("keydown", key); window.removeEventListener("blur", hide);
     };
-  }, [disabled]);
-  return <div className="tip" role="tooltip" hidden ref={ref} data-pick-ignore />;
+  }, [disabled, showTip, hideTip]);
+  useLayoutEffect(() => {
+    if (!tip?.target) return;
+    const target = tip.target, previous = target.getAttribute("aria-describedby");
+    const id = proxy.current.getAttribute("aria-describedby");
+    target.setAttribute("aria-describedby", [previous, id].filter(Boolean).join(" "));
+    return () => { if (previous === null) target.removeAttribute("aria-describedby"); else target.setAttribute("aria-describedby", previous); };
+  }, [tip?.target]);
+  const css = getComputedStyle(document.documentElement);
+  return <TooltipProvider delayDuration={0} disableHoverableContent>
+    <UiTooltip open={Boolean(tip) && !disabled} onOpenChange={(open) => { if (!open) hideTip(); }}>
+      <TooltipTrigger asChild><span ref={proxy} aria-hidden="true" tabIndex={-1} data-pick-ignore
+        className="pointer-events-none fixed" style={tip?.rect} /></TooltipTrigger>
+      <TooltipContent side={tip?.side ?? "bottom"} sideOffset={parseFloat(css.getPropertyValue("--tip-offset"))} collisionPadding={parseFloat(css.getPropertyValue("--tip-edge"))}>{tip?.text}</TooltipContent>
+    </UiTooltip>
+  </TooltipProvider>;
 }
 
 // 元素选取：开关打开后，悬停显示元素名称、文字和源文件行号，点击直接复制。
@@ -109,10 +136,18 @@ export function Picker({ on }) {
       const text = describe(el);
       copyText(text).then(() => toast("已复制：" + text), () => toast("复制失败：" + text));
     };
+    const press = (e) => {
+      if (e.target.closest("[data-pick-ignore], [data-ui='topbar.settings']") || !target(e.target)) return;
+      e.preventDefault(); e.stopPropagation();
+    };
+    document.addEventListener("pointerdown", press, true);
+    document.addEventListener("mousedown", press, true);
     document.addEventListener("mousemove", move);
     document.addEventListener("click", click, true);
     return () => {
       document.body.classList.remove("picking");
+      document.removeEventListener("pointerdown", press, true);
+      document.removeEventListener("mousedown", press, true);
       document.removeEventListener("mousemove", move);
       document.removeEventListener("click", click, true);
     };

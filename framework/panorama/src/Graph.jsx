@@ -1,3 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { useTooltip } from "./overlays.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IconChevronsDown, IconFolder, IconFolderOpen, IconChevronsUp, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
 import cytoscape from "cytoscape";
@@ -141,7 +146,7 @@ function layoutByGroup(cy, legend) {
 // foldable：分组可以折叠成一个大点，默认全部折叠。focusable：可以只看选中点几跳以内的邻居。
 export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landmarkLimit = 15, directed = false, foldable = false, focusable = false,
   selected, onSelect, theme, font, ui }) {
-  const tipRef = useRef(null);
+  const { showTip, hideTip: dismissTip } = useTooltip();
   const box = useRef(null), cyRef = useRef(null), selectedRef = useRef(selected), focusRef = useRef(null), viewRef = useRef(null);
   selectedRef.current = selected;
   const [hidden, setHidden] = useState(() => new Set());
@@ -196,17 +201,13 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     });
     cy.on("zoom", () => { cy.elements("node, .merged, edge[?label], edge.near").updateStyle(); if (foldable) shortenGroupLabels(cy); });
     // 悬停一个点 400ms 后在它下方显示名称，没写名称的点也能认出来；移动视口或点击时收起
-    // 提示元素先记下来：卸载时 React 已经清空 tipRef，清理函数里还要用它
     let tipTimer = 0;
-    const tip = tipRef.current;
-    const hideTip = () => { clearTimeout(tipTimer); tip.hidden = true; };
+    const hideTip = () => { clearTimeout(tipTimer); dismissTip(); };
     cy.on("mouseover", "node", (e) => {
       hideTip();
       tipTimer = setTimeout(() => {
         const bb = e.target.renderedBoundingBox({ includeLabels: false }), r = box.current.getBoundingClientRect();
-        tip.textContent = e.target.data("label"); tip.hidden = false;
-        tip.style.left = Math.max(8, Math.min(r.left + (bb.x1 + bb.x2) / 2 - tip.offsetWidth / 2, innerWidth - tip.offsetWidth - 8)) + "px";
-        tip.style.top = (r.top + bb.y2 + 6) + "px";
+        showTip({ text: e.target.data("label"), rect: { left: r.left + bb.x1, top: r.top + bb.y1, width: bb.w, height: bb.h }, side: "bottom" });
       }, 400);
     });
     cy.on("mouseout", "node", hideTip);
@@ -324,25 +325,22 @@ export default function Graph({ cacheKey, nodes, edges, legend, landmarks, landm
     <div className={"graph-wrap" + (legendOpen ? "" : " legend-closed")}>
       <div className="graph-area">
         <div className="graph" ref={box} data-ui={ui + ".graph"} />
-        <div className="tip" role="tooltip" hidden ref={tipRef} data-pick-ignore />
         <div className="graph-tools">
           {/* 不可用时用 aria-disabled 置灰，不用 disabled：禁用的按钮收不到点击和悬停，元素选取复制不了，也显示不了提示 */}
-          <button className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
-            onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</button>
+          <Button variant="outline" className="graph-btn" aria-disabled={!inGraph} data-tip={inGraph ? undefined : "先在图里选中一个点"}
+            onClick={() => { if (inGraph) onSelect(null); }} data-ui={ui + ".graph-clear"}>取消选中（Esc）</Button>
           {/* 拖动或缩放后找不到点时，把显示着的点都放回画布里；只在点击时移动视口 */}
-          <button className="graph-btn" data-tip="把显示着的点都放进画布" data-ui={ui + ".graph-fit"}
-            onClick={() => { const cy = cyRef.current; cy.fit(cy.nodes(":visible"), 30); }}>适配画布</button>
+          <Button variant="outline" className="graph-btn" data-tip="把显示着的点都放进画布" data-ui={ui + ".graph-fit"}
+            onClick={() => { const cy = cyRef.current; cy.fit(cy.nodes(":visible"), 30); }}>适配画布</Button>
           {focusable && (
             <>
-              <button className="graph-btn graph-focus" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
+              <Button variant="outline" className="graph-btn graph-focus" aria-disabled={!inGraph && !focus} aria-pressed={Boolean(focus)} data-ui={ui + ".graph-focus"}
                 data-tip={inGraph || focus ? undefined : "先在图里选中一个点"}
-                onClick={() => { if (focus) setFocus(null); else if (inGraph) setFocus({ center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</button>
-              <div className="segmented" role="tablist" aria-label="邻居范围" data-ui={ui + ".graph-hops"}>
-                {[1, 2].map((h) => (
-                  <button key={h} role="tab" aria-selected={hops === h}
-                    onClick={() => { setHops(h); if (focus) setFocus({ ...focus, hops: h }); }}>{h} 跳</button>
-                ))}
-              </div>
+                onClick={() => { if (focus) setFocus(null); else if (inGraph) setFocus({ center: selected, hops }); }}>{focus ? "返回全图" : "只看邻居"}</Button>
+              <ToggleGroup type="single" value={String(hops)} spacing={0} variant="outline" aria-label="邻居范围" data-ui={ui + ".graph-hops"}
+                onValueChange={(value) => { if (!value) return; const h = Number(value); setHops(h); if (focus) setFocus({ ...focus, hops: h }); }}>
+                {[1, 2].map((h) => <ToggleGroupItem key={h} value={String(h)}>{h} 跳</ToggleGroupItem>)}
+              </ToggleGroup>
             </>
           )}
         </div>
@@ -367,37 +365,37 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
         <span className="legend-title">图例</span>
         {foldable && open && (
           <>
-            <button className="icon-btn" aria-label="全部展开" data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
-              onClick={() => fold(new Set(legend.map((g) => g.id)))}><IconChevronsDown aria-hidden="true" /></button>
-            <button className="icon-btn" aria-label="全部折叠" data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
-              onClick={() => fold(new Set())}><IconChevronsUp aria-hidden="true" /></button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="全部展开" data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
+              onClick={() => fold(new Set(legend.map((g) => g.id)))}><IconChevronsDown aria-hidden="true" /></Button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="全部折叠" data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
+              onClick={() => fold(new Set())}><IconChevronsUp aria-hidden="true" /></Button>
           </>
         )}
-        <button className="icon-btn" aria-label={open ? "收起图例" : "展开图例"} data-tip={open ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
+        <Button variant="ghost" size="icon" className="icon-btn" aria-label={open ? "收起图例" : "展开图例"} data-tip={open ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
           onClick={() => { store.set("legend", open ? "closed" : "open"); setOpen(!open); }}>
           {open ? <IconLayoutSidebarRightCollapse aria-hidden="true" /> : <IconLayoutSidebarRightExpand aria-hidden="true" />}
-        </button>
+        </Button>
       </div>
       {open && <>
-        <label className="legend-row">
+        <Label className="legend-row">
           {/* 只隐藏了部分分组时显示半选 */}
-          <input type="checkbox" checked={allOn} ref={(el) => { if (el) el.indeterminate = hidden.size > 0 && hidden.size < legend.length; }} onChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
+          <Checkbox aria-label="全部分组" checked={hidden.size > 0 && hidden.size < legend.length ? "indeterminate" : allOn} onCheckedChange={() => setHidden(allOn ? new Set(legend.map((g) => g.id)) : new Set())} />
           <span className="legend-name">全部分组</span><span className="count">{total}</span>
-        </label>
+        </Label>
         {legend.map((g) => (
           <div className="legend-row" key={g.id}>
             {foldable && (
-              <button className="twisty" aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
+              <Button variant="twisty" size="none" className="twisty" aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
                 data-tip={tip(expanded.has(g.id) ? "折叠这个分类" : "展开这个分类")}
                 onClick={() => { const n = new Set(expanded); if (n.has(g.id)) n.delete(g.id); else n.add(g.id); fold(n); }}>
                 {expanded.has(g.id) ? <IconFolderOpen aria-hidden="true" /> : <IconFolder aria-hidden="true" />}
-              </button>
+              </Button>
             )}
-            <label className="legend-label">
-              <input type="checkbox" checked={!hidden.has(g.id)} onChange={() => toggle(setHidden, g.id)} />
+            <Label className="legend-label">
+              <Checkbox aria-label={g.name} checked={!hidden.has(g.id)} onCheckedChange={() => toggle(setHidden, g.id)} />
               <span className="dot" style={{ background: `var(${g.color})` }} aria-hidden="true"></span>
               <span className="legend-name">{g.name}</span><span className="count">{g.count}</span>
-            </label>
+            </Label>
           </div>
         ))}
       </>}
