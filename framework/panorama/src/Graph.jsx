@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useTooltip } from "./overlays.jsx";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IconChevronsDown, IconFolder, IconFolderOpen, IconChevronsUp, IconLayoutSidebarRightCollapse, IconLayoutSidebarRightExpand } from "@tabler/icons-react";
+import { ChevronsDownIcon, FolderIcon, FolderOpenIcon, ChevronsUpIcon, PanelRightCloseIcon, PanelRightOpenIcon } from "lucide-react";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 import { store } from "./store.js";
@@ -369,14 +369,14 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
         {foldable && open && (
           <>
             <Button variant="ghost" size="icon" className="icon-btn" aria-label="全部展开" data-tip={tip("全部展开")} data-ui={ui + ".legend-unfold"}
-              onClick={() => fold(new Set(legend.map((g) => g.id)))}><IconChevronsDown aria-hidden="true" /></Button>
+              onClick={() => fold(new Set(legend.map((g) => g.id)))}><ChevronsDownIcon aria-hidden="true" /></Button>
             <Button variant="ghost" size="icon" className="icon-btn" aria-label="全部折叠" data-tip={tip("全部折叠")} data-ui={ui + ".legend-fold"}
-              onClick={() => fold(new Set())}><IconChevronsUp aria-hidden="true" /></Button>
+              onClick={() => fold(new Set())}><ChevronsUpIcon aria-hidden="true" /></Button>
           </>
         )}
         <Button variant="ghost" size="icon" className="icon-btn" aria-label={open ? "收起图例" : "展开图例"} data-tip={open ? "收起图例" : "展开图例"} data-ui={ui + ".legend-toggle"}
           onClick={() => { store.set("legend", open ? "closed" : "open"); setOpen(!open); }}>
-          {open ? <IconLayoutSidebarRightCollapse aria-hidden="true" /> : <IconLayoutSidebarRightExpand aria-hidden="true" />}
+          {open ? <PanelRightCloseIcon aria-hidden="true" /> : <PanelRightOpenIcon aria-hidden="true" />}
         </Button>
       </div>
       {open && <>
@@ -391,7 +391,7 @@ function Legend({ ui, legend, total, foldable, focused, leaveFocus, hidden, setH
               <Button variant="twisty" size="none" className="twisty" aria-label={(expanded.has(g.id) ? "折叠" : "展开") + g.name} aria-expanded={expanded.has(g.id)}
                 data-tip={tip(expanded.has(g.id) ? "折叠这个分类" : "展开这个分类")}
                 onClick={() => { const n = new Set(expanded); if (n.has(g.id)) n.delete(g.id); else n.add(g.id); fold(n); }}>
-                {expanded.has(g.id) ? <IconFolderOpen aria-hidden="true" /> : <IconFolder aria-hidden="true" />}
+                {expanded.has(g.id) ? <FolderOpenIcon aria-hidden="true" /> : <FolderIcon aria-hidden="true" />}
               </Button>
             )}
             <Label className="legend-label flex h-full min-w-0 flex-1 cursor-pointer items-center gap-1.5">

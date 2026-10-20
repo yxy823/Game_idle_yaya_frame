@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { IconSearch, IconX } from "@tabler/icons-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Command, CommandInput, CommandList, CommandEmpty, CommandItem } from "@/components/ui/command";
@@ -73,13 +73,13 @@ function SearchBox({ ui, value, onChange, placeholder, results, onPick, open: al
       <Command shouldFilter={false} value={String(current?.key ?? "")} onValueChange={setActive}>
         <div className={"page-search relative flex flex-none items-center gap-1" + (open ? " open" : "")} ref={box}>
           {!open ? (
-            <Button ref={button} variant="ghost" size="icon" className="icon-btn" aria-label="搜索本页" data-tip="搜索本页" data-ui={ui} onClick={() => setOpen(true)}><IconSearch aria-hidden="true" /></Button>
+            <Button ref={button} variant="ghost" size="icon" className="icon-btn" aria-label="搜索本页" data-tip="搜索本页" data-ui={ui} onClick={() => setOpen(true)}><SearchIcon aria-hidden="true" /></Button>
           ) : <>
             <PopoverAnchor asChild><div className="relative flex items-center">
-              <IconSearch className="pointer-events-none absolute left-2 text-muted-foreground" aria-hidden="true" />
+              <SearchIcon className="pointer-events-none absolute left-2 text-muted-foreground" aria-hidden="true" />
               {ranked ? <CommandInput {...inputProps} data-ui={ui} onValueChange={change} /> : <Input {...inputProps} data-ui={ui} onChange={(e) => change(e.target.value)} />}
             </div></PopoverAnchor>
-            {!always && <Button variant="ghost" size="icon" className="icon-btn" aria-label="关闭搜索" data-tip="关闭搜索（Esc）" onClick={close}><IconX aria-hidden="true" /></Button>}
+            {!always && <Button variant="ghost" size="icon" className="icon-btn" aria-label="关闭搜索" data-tip="关闭搜索（Esc）" onClick={close}><XIcon aria-hidden="true" /></Button>}
           </>}
         </div>
         {/* 弹出列表不抢焦点，点列表外也不由 Radix 关闭：收起规则由上面的 mousedown 统一处理 */}

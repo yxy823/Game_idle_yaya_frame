@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
-import { IconChevronDown, IconChevronUp } from "@tabler/icons-react";
+import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import data from "virtual:panorama-data";
 import { files } from "./docs.js";
 import DocView, { FIRST_MATCH } from "./DocView.jsx";
@@ -69,8 +69,8 @@ export default function LearnModule({ onSelect, font }) {
         {hitNav && (
           <div className="flex items-center justify-end gap-0.5" data-ui="learn.hit-nav">
             <span className="count mr-1">本章第 {at + 1}/{hits} 处</span>
-            <Button variant="ghost" size="icon" className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><IconChevronUp aria-hidden="true" /></Button>
-            <Button variant="ghost" size="icon" className="icon-btn" aria-label="下一处" data-tip="下一处" onClick={() => move(1)}><IconChevronDown aria-hidden="true" /></Button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="上一处" data-tip="上一处" onClick={() => move(-1)}><ChevronUpIcon aria-hidden="true" /></Button>
+            <Button variant="ghost" size="icon" className="icon-btn" aria-label="下一处" data-tip="下一处" onClick={() => move(1)}><ChevronDownIcon aria-hidden="true" /></Button>
           </div>
         )}
       </PageHead>

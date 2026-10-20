@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import { IconArrowLeft, IconChevronDown, IconChevronRight } from "@tabler/icons-react";
+import { ArrowLeftIcon, ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import { dirOf, files, groupName, groups, incoming, links } from "./docs.js";
 import DocView from "./DocView.jsx";
 import Graph from "./Graph.jsx";
@@ -42,7 +42,7 @@ function TreeNode({ node, depth, dir, onDir, open, onToggle }) {
       <Button variant="row" size="none" className="tree-row" style={{ paddingLeft: `calc(var(--space-1) + ${depth} * var(--space-3))` }} aria-selected={dir === node.path} aria-expanded={children.length ? isOpen : undefined}
         onClick={() => { onDir(node.path); if (children.length) onToggle(node.path); }}>
         <span className="twisty" onClick={(e) => { e.stopPropagation(); if (children.length) onToggle(node.path); }}>
-          {children.length ? (isOpen ? <IconChevronDown aria-hidden="true" /> : <IconChevronRight aria-hidden="true" />) : null}
+          {children.length ? (isOpen ? <ChevronDownIcon aria-hidden="true" /> : <ChevronRightIcon aria-hidden="true" />) : null}
         </span>
         <span className="tree-name">{node.name}</span>
         <span className="count">{node.count}</span>
@@ -105,7 +105,7 @@ export default function FilesModule({ selected, onSelect, theme, font }) {
           </ul>
           {reading !== null ? (
             <article className="learn-body min-h-0 overflow-auto pr-2" data-ui="files.reader">
-              <Button variant="outline" className="graph-btn mb-3" onClick={() => read(null)} data-ui="files.reader-back"><IconArrowLeft aria-hidden="true" />返回卡片</Button>
+              <Button variant="outline" className="graph-btn mb-3" onClick={() => read(null)} data-ui="files.reader-back"><ArrowLeftIcon aria-hidden="true" />返回卡片</Button>
               <DocView card={reading} jump={jump} onLink={(i, anchor) => read(i, anchor)} font={font} />
             </article>
           ) : (

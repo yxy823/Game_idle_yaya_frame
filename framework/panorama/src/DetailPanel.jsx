@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useMemo, useState } from "react";
-import { IconArrowLeft, IconArrowRight, IconCaretDownFilled, IconCaretRightFilled } from "@tabler/icons-react";
+import { ArrowLeftIcon, ArrowRightIcon, TriangleIcon } from "lucide-react";
 import DocView from "./DocView.jsx";
 import { files, groupName, incoming, outgoing, paras, vscodePath, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
@@ -26,7 +26,7 @@ function Section({ title, ui, count, children }) {
   return (
     <Collapsible className="section" open={open} data-ui={ui} onOpenChange={setOpen}>
       <CollapsibleTrigger asChild><Button variant="ghost" size="none" className="section-trigger h-(--control-h) w-full justify-start gap-0 rounded-none border-0 px-(--pad) font-semibold">
-        <span className="twisty -ml-3 inline-grid place-items-center text-muted-foreground [&>svg.tabler-icon]:size-3!">{open ? <IconCaretDownFilled aria-hidden="true" /> : <IconCaretRightFilled aria-hidden="true" />}</span>
+        <span className="twisty -ml-3 inline-grid place-items-center w-3 text-muted-foreground [&>svg]:size-2!"><TriangleIcon className={"fill-current stroke-0 " + (open ? "rotate-180" : "rotate-90")} aria-hidden="true" /></span>
         <span className="section-title">{title}</span>{count !== undefined && <span className="count">{count}</span>}
       </Button></CollapsibleTrigger>
       <CollapsibleContent>{children}</CollapsibleContent>
@@ -40,9 +40,9 @@ function Head({ title, nav }) {
     <div className="sticky top-0 z-2 mb-1 flex h-[calc(var(--control-h)+8px)] items-center gap-0.5 border-b border-border bg-card pt-1 pr-1 pl-(--pad) font-semibold" data-ui="panel.head">
       <span className="panel-title min-w-0 flex-1 truncate" data-tip={title}>{title}</span>
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="后退" data-tip={nav.onBack ? "后退" : "没有更早选中的对象"} aria-disabled={!nav.onBack}
-        onClick={() => nav.onBack?.()} data-ui="panel.back"><IconArrowLeft aria-hidden="true" /></Button>
+        onClick={() => nav.onBack?.()} data-ui="panel.back"><ArrowLeftIcon aria-hidden="true" /></Button>
       <Button variant="ghost" size="icon" className="icon-btn" aria-label="前进" data-tip={nav.onForward ? "前进" : "没有后退过"} aria-disabled={!nav.onForward}
-        onClick={() => nav.onForward?.()} data-ui="panel.forward"><IconArrowRight aria-hidden="true" /></Button>
+        onClick={() => nav.onForward?.()} data-ui="panel.forward"><ArrowRightIcon aria-hidden="true" /></Button>
     </div>
   );
 }

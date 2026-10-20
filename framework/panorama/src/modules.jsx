@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { IconAffiliate, IconBook, IconFiles, IconHelpCircle, IconHome, IconLayoutGrid, IconSearch } from "@tabler/icons-react";
+import { NetworkIcon, BookOpenIcon, FilesIcon, CircleHelpIcon, HouseIcon, LayoutGridIcon, SearchIcon } from "lucide-react";
 import data from "virtual:panorama-data";
 import Diagram from "./Diagram.jsx";
 import DocsModule from "./DocsModule.jsx";
@@ -79,11 +79,11 @@ function Home({ onModule, font }) {
 
 // 活动栏的顺序就是数组顺序
 export const modules = [
-  { id: "home", label: "首页", tip: "首页", Icon: IconHome, render: (p) => <Home {...p} /> },
-  { id: "scenes", label: "开发场景", tip: "开发场景", Icon: IconAffiliate, render: (p) => <ScenesModule {...p} /> },
-  { id: "docs", label: "文档关系", tip: "文档关系", Icon: IconFiles, render: (p) => <DocsModule {...p} /> },
-  { id: "learn", label: "学习", tip: "学习：Godot 项目手册", Icon: IconBook, render: (p) => <LearnModule {...p} /> },
-  { id: "files", label: "文件全景", tip: "文件全景", Icon: IconLayoutGrid, render: (p) => <FilesModule {...p} /> },
-  { id: "qa", label: "问答", tip: "问答", Icon: IconHelpCircle, render: (p) => <QaModule {...p} /> },
-  { id: "search", label: "全局搜索", tip: "全局搜索：查全部文档、问答、术语和工具", Icon: IconSearch, render: (p) => <SearchModule {...p} /> },
+  { id: "home", label: "首页", tip: "首页", Icon: HouseIcon, render: (p) => <Home {...p} /> },
+  { id: "scenes", label: "开发场景", tip: "开发场景", Icon: NetworkIcon, render: (p) => <ScenesModule {...p} /> },
+  { id: "docs", label: "文档关系", tip: "文档关系", Icon: FilesIcon, render: (p) => <DocsModule {...p} /> },
+  { id: "learn", label: "学习", tip: "学习：Godot 项目手册", Icon: BookOpenIcon, render: (p) => <LearnModule {...p} /> },
+  { id: "files", label: "文件全景", tip: "文件全景", Icon: LayoutGridIcon, render: (p) => <FilesModule {...p} /> },
+  { id: "qa", label: "问答", tip: "问答", Icon: CircleHelpIcon, render: (p) => <QaModule {...p} /> },
+  { id: "search", label: "全局搜索", tip: "全局搜索：查全部文档、问答、术语和工具", Icon: SearchIcon, render: (p) => <SearchModule {...p} /> },
 ];

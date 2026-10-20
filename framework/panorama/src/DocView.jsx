@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { IconLayoutSidebarRight } from "@tabler/icons-react";
+import { PanelRightIcon } from "lucide-react";
 import { mount } from "pele";
 import data from "virtual:panorama-data";
 import { fontSize } from "./Diagram.jsx";
@@ -12,7 +12,7 @@ import { useToast } from "./overlays.jsx";
 // 正文里指向仓库文档的链接交给 onLink(卡片编号, 锚点)，由页面决定切换章节、打开文档还是滚动。
 // inPanel(卡片编号) 为真的链接在详情面板打开，后面加面板图标，和页面内切换的链接区分。onHits(命中数) 在每次高亮后调用。
 export const FIRST_MATCH = "#first-match";
-const PANEL_ICON = renderToStaticMarkup(<IconLayoutSidebarRight className="link-icon" aria-hidden="true" />);
+const PANEL_ICON = renderToStaticMarkup(<PanelRightIcon className="link-icon" aria-hidden="true" />);
 const pattern = (ws) => ws.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
 
 // 给正文里的命中词加 <mark>，Mermaid 图里的文字不加；先去掉上一次加的

@@ -7,7 +7,6 @@
     "check": "vite build && node tools/check-ui.mjs"
   },
   "dependencies": {
-    "@tabler/icons-react": "3.48.0",
     "class-variance-authority": "0.7.1",
     "cmdk": "1.1.1",
     "cn": "0.5.0",

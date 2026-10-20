@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { IconLayoutSidebarRight, IconSettings } from "@tabler/icons-react";
+import { PanelRightIcon, SettingsIcon } from "lucide-react";
 import data from "virtual:panorama-data";
 import godotIcon from "./assets/godot-icon.webp";
 import DetailPanel, { titleOf } from "./DetailPanel.jsx";
@@ -127,13 +127,13 @@ export default function App() {
         <span className="flex-1"></span>
         <Button variant="ghost" size="icon" className="icon-btn" aria-label={panelLabel} data-tip={panelLabel + "（Alt+B）"} data-ui="topbar.panel-toggle"
           onClick={() => setPanelOpen(!panelOpen)}>
-          <IconLayoutSidebarRight aria-hidden="true" />
+          <PanelRightIcon aria-hidden="true" />
         </Button>
         <Separator orientation="vertical" className="h-(--space-5) self-center" />
         <SettingsMenu open={menuOpen} onOpenChange={setMenuOpen} picking={picking} onTogglePicking={() => setPicking(!picking)}
           theme={theme} onTheme={(t) => { applyTheme(t); setTheme(t); }} font={font} onFont={(f) => { applyFont(f); setFont(f); }}>
         <Button variant="ghost" size="icon" className="icon-btn" aria-label="设置" data-tip="设置" data-ui="topbar.settings">
-          <IconSettings aria-hidden="true" />
+          <SettingsIcon aria-hidden="true" />
         </Button>
         </SettingsMenu>
       </header>
