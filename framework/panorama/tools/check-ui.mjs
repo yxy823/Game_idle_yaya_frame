@@ -1,5 +1,7 @@
 // 交付前的界面冒烟检查：用本机 Edge 无头打开构建好的 dist/index.html，检查界面设计「验证」一条列出的几项。
 // 先运行 npm run build，再运行 npm run check；有一项不通过时退出码为 1。
+// 修改中可以只跑相关项：npm run check -- 图谱，只跑分组名含“图谱”的 verify 项；进入各模块的基础检查每次都跑。提交前跑一次全量。
+// 分组名是名称里“：”前的部分，没有“：”时是整个名称。同组的项按顺序接着上一项的页面状态，所以按分组整组跑，不拆开
 import path from "node:path";
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
@@ -15,8 +17,10 @@ const MODULES = ["home", "scenes", "docs", "learn", "files", "qa", "search"];
 const SEARCH_IN_TOPBAR = ["scenes", "docs", "learn", "files", "qa"];
 
 const results = [];
+const only = process.argv[2];
 const check = (name, ok, detail = "") => results.push({ name, ok, detail });
 const verify = async (name, run) => {
+  if (only && !name.split("：")[0].includes(only)) return;
   try { const detail = await run(); check(name, true, detail ?? ""); }
   catch (error) { check(name, false, error.stack); }
 };
@@ -277,10 +281,11 @@ await verify("设置窗口：Tab 留在窗口里，滑块按步长调整并记�
   assert.deepEqual(await page.locator("[data-ui='scenes.graph']").evaluate(el => el._cyreg.cy.nodes(".chosen").map(n => n.id())), chosen);
 });
 await verify("搜索 Portal 结果可选，Esc 只关闭搜索", async () => {
+  // 前面选中时搜过 GDD，框里留着同样的词，再填一样的值不弹结果，所以先清空
   const input = page.locator("input[data-ui='scenes.search']");
-  await input.fill("GDD");
+  await input.fill(""); await input.fill("GDD");
   const item = page.locator("[cmdk-item]").first();
-  assert.ok(await item.count());
+  await item.waitFor();
   await item.click();
   await page.waitForTimeout(100);
   const selected = await page.locator(".panel-title").innerText();
@@ -333,13 +338,14 @@ await verify("详情宽度保存：480 → 窄窗 436 → 480", async () => {
   assert.equal(await panelWidth(), 480);
 });
 await verify("收起详情后内容不可聚焦，展开恢复宽度", async () => {
+  const before = await panelWidth();
   await page.click("[data-ui='topbar.panel-toggle']");
   assert.equal(await page.locator("[data-ui='panel.resizer']").isVisible(), false);
   assert.equal(await page.locator(".panel").isVisible(), false);
   await page.locator("[data-ui='panel.back']").evaluate(el => el.focus());
   assert.notEqual(await page.evaluate(() => document.activeElement.dataset.ui), "panel.back");
   await page.click("[data-ui='topbar.panel-toggle']");
-  assert.equal(await panelWidth(), 480);
+  assert.equal(await panelWidth(), before);
 });
 
 await open("learn");
@@ -402,7 +408,7 @@ await page.evaluate(() => {
   Object.defineProperty(navigator, "clipboard", { configurable: true, value: { writeText: async text => { window.pickedTexts.push(text); } } });
 });
 await page.keyboard.press("Alt+x");
-await verify("选取模式点击标签只复制，data-src 指向业务 JSX", async () => {
+await verify("选取模式：点击标签只复制，data-src 指向业务 JSX", async () => {
   const tabs = page.locator("[data-ui='files.view-switch'] [role='tab']");
   await tabs.nth(1).click();
   assert.equal(await tabs.nth(0).getAttribute("aria-selected"), "true");
@@ -416,7 +422,7 @@ await verify("选取模式点击标签只复制，data-src 指向业务 JSX", as
   assert.equal(await trigger.getAttribute("aria-expanded"), expanded);
   assert.equal((await page.evaluate(() => window.pickedTexts)).length, 2);
 });
-await verify("选取模式拖动详情分隔条只复制，不改宽度", async () => {
+await verify("选取模式：拖动详情分隔条只复制，不改宽度", async () => {
   const before = await panelWidth();
   const r = await page.locator("[data-ui='panel.resizer']").boundingBox();
   await page.mouse.click(r.x, r.y + 100);
@@ -424,7 +430,7 @@ await verify("选取模式拖动详情分隔条只复制，不改宽度", async 
   assert.equal(await panelWidth(), before);
   assert.ok((await page.evaluate(() => window.pickedTexts)).some(text => text.startsWith("panel.resizer")));
 });
-await verify("置灰按钮用 aria-disabled，仍可悬停、聚焦及复制", async () => {
+await verify("选取模式：置灰按钮用 aria-disabled，仍可悬停、聚焦及复制", async () => {
   const button = page.locator("[data-ui='panel.forward']");
   assert.equal(await button.getAttribute("aria-disabled"), "true");
   assert.equal(await button.getAttribute("disabled"), null);
@@ -434,7 +440,7 @@ await verify("置灰按钮用 aria-disabled，仍可悬停、聚焦及复制", a
   await page.mouse.click(r.x + r.width / 2, r.y + r.height / 2);
   assert.ok((await page.evaluate(() => window.pickedTexts)).some(text => text.startsWith("panel.forward")));
 });
-await verify("选取模式跳过设置窗口和 Sonner 浮层", async () => {
+await verify("选取模式：跳过设置窗口和 Sonner 浮层", async () => {
   const before = (await page.evaluate(() => window.pickedTexts)).length;
   await page.click("[data-ui='topbar.settings']");
   assert.deepEqual(await page.locator("[data-slot='dialog-overlay'], [data-slot='dialog-content']").evaluateAll(els => els.map(el => el.hasAttribute("data-pick-ignore"))), [true, true]);
@@ -688,5 +694,5 @@ check("离线进入七个模块没有远程请求或资源加载失败", remote.
 await browser.close();
 for (const r of results) console.log(`${r.ok ? "通过" : "不通过"}  ${r.name}${r.detail ? "：" + r.detail : ""}`);
 const failed = results.filter((r) => !r.ok).length;
-console.log(`共 ${results.length} 项，不通过 ${failed} 项`);
+console.log(`${only ? `只跑分组名含“${only}”的项，` : ""}共 ${results.length} 项，不通过 ${failed} 项`);
 process.exit(failed ? 1 : 0);
