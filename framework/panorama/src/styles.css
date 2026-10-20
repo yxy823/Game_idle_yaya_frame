@@ -261,6 +261,10 @@ body.picking, body.picking * { cursor: crosshair !important; }
 .learn-body table { border-collapse: collapse; width: 100%; }
 .learn-body th, .learn-body td { border: 1px solid var(--border); padding: var(--space-1) var(--space-2); vertical-align: top; text-align: left; overflow-wrap: anywhere; }
 .learn-body th { background: var(--surface); }
+/* 问答“为什么”里的表格：详情面板底色是 --surface，表头换用 --accent */
+.panel-table { border-collapse: collapse; width: 100%; }
+.panel-table th, .panel-table td { border: 1px solid var(--border); padding: var(--space-1) var(--space-1-5); vertical-align: top; text-align: left; overflow-wrap: anywhere; }
+.panel-table th { background: var(--accent); }
 .learn-body blockquote { padding-left: var(--space-3); border-left: 3px solid var(--border); color: var(--muted-fg); }
 .learn-next { margin: var(--space-4) 0 var(--space-8); }
 

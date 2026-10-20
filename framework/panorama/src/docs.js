@@ -15,4 +15,5 @@ export const groupName = Object.fromEntries(groups.map((g) => [g.id, g.name]));
 export const dirOf = (p) => p.split("/").slice(0, -1).join("/");
 
 // 在 VSCode 里打开原文件的指定行
-export const vscodeUrl = (file, line = 1) => `vscode://file/${data.repo}/${files[file].path}:${line}`;
+export const vscodePath = (p, line = 1) => `vscode://file/${data.repo}/${p}:${line}`;
+export const vscodeUrl = (file, line = 1) => vscodePath(files[file].path, line);

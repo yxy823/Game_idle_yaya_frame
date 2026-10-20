@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { IconArrowLeft, IconArrowRight, IconCaretDownFilled, IconCaretRightFilled } from "@tabler/icons-react";
 import DocView from "./DocView.jsx";
-import { files, groupName, incoming, outgoing, paras, vscodeUrl } from "./docs.js";
+import { files, groupName, incoming, outgoing, paras, vscodePath, vscodeUrl } from "./docs.js";
 import { qaOf, qaPageUrl } from "./QaModule.jsx";
 import { docEdges, docKey, docNodes, docOf } from "./DocsModule.jsx";
 import { entryOf } from "./SearchModule.jsx";
@@ -79,7 +79,13 @@ function QaPanel({ q, onSelect, nav }) {
         <Group name="结论"><p className="text">{q.conclusion}</p></Group>
         {q.whyParts.length > 0 && (
           <Group name="为什么">
-            {q.whyParts.map((part, i) => (part.items ? <ul key={i} className="text">{part.items.map((t, j) => <li key={j}>{t}</li>)}</ul> : <p key={i} className="text">{part.text}</p>))}
+            {q.whyParts.map((part, i) => (part.items ? <ul key={i} className="text">{part.items.map((t, j) => <li key={j}>{t}</li>)}</ul>
+              : part.rows ? (
+                <table key={i} className="text panel-table">
+                  <thead><tr>{part.rows[0].map((c, j) => <th key={j}>{c}</th>)}</tr></thead>
+                  <tbody>{part.rows.slice(1).map((r, j) => <tr key={j}>{r.map((c, m) => <td key={m}>{c}</td>)}</tr>)}</tbody>
+                </table>
+              ) : <p key={i} className="text">{part.text}</p>))}
           </Group>
         )}
       </Section>
@@ -107,9 +113,10 @@ function DocPanel({ k, onSelect, nav }) {
       <Head title={n.label} nav={nav} />
       <Section title="摘要" ui="panel.summary">
         {n.label !== n.name && <Group name="说明"><p className="text">{n.name}</p></Group>}
-        <Group name="介绍"><p className="text">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
+        <Group name="介绍"><p className="text">{n.card !== null ? files[n.card].purpose || "模板文件的第一段没有用途说明" : n.template ? "模板文件没有介绍文字，打开模板查看内容" : n.note || "没有对应的模板文件，项目里按需要创建"}</p></Group>
         {n.paths.length > 0 && <Group name="位置"><ul className="plain">{n.paths.map((p) => <li key={p}><code>{p}</code></li>)}</ul></Group>}
         {n.card !== null && <Row name="模板"><FileLink index={n.card} onSelect={onSelect} /></Row>}
+        {n.template && <Row name="模板"><a className="open" href={vscodePath(n.template)} data-tip="在 VSCode 里打开">{n.template}</a></Row>}
       </Section>
       {(out.length > 0 || into.length > 0) && (
         <Section title="关系" ui="panel.doc-links" count={out.length + into.length}>

@@ -54,7 +54,8 @@ function parse(code) {
   return { labels, edges };
 }
 
-export function readDocGraph(diagrams, files, index) {
+// isFile 判断分发源里有没有这个文件，用来找 JSON 这类不做卡片的模板
+export function readDocGraph(diagrams, files, index, isFile) {
   const nodes = [], byName = new Map(), edges = [];
   const sources = [];
   for (const d of diagrams) {
@@ -70,14 +71,20 @@ export function readDocGraph(diagrams, files, index) {
       const paths = where.split("、").map((p) => p.replace(/\s*等$/, "").trim()).filter(isPath);
       let node = byName.get(name);
       if (!node) {
-        const card = paths.map((p) => {
+        // Markdown 模板连卡片，其他模板（例如 JSON）只记路径；指向目录的连目录的 README
+        const found = paths.map((p) => {
           const rule = SOURCE.find(([from]) => p === from) || SOURCE.find(([from, to]) => to.endsWith("/") && p.startsWith(from));
           if (!rule) return undefined;
           const target = rule[1] + p.slice(rule[0].length);
-          // 带编号的文件（例如 FXX-XXX.json）在分发源里没有实例，对应到所在目录的 README
-          return index.get(target) ?? index.get(target.replace(/\/?$/, "/README.md")) ?? index.get(target.replace(/[^/]+$/, "README.md"));
-        }).find((c) => c !== undefined);
-        node = { name, paths, more: /等$/.test(where), note: paths.length ? "" : where, card: card ?? null, kind: KINDS.find((k) => k.test(paths[0] || "")).id, from: [] };
+          if (index.has(target)) return { card: index.get(target) };
+          if (isFile(target)) return { template: target };
+          const card = index.get(target.replace(/\/?$/, "/README.md"))
+            // 带编号的文件（例如 FXX-XXX.json）在分发源里没有实例，对应到所在目录的 README
+            ?? (/XX/.test(p) ? index.get(target.replace(/[^/]+$/, "README.md")) : undefined);
+          return card === undefined ? undefined : { card };
+        }).find(Boolean) || {};
+        node = { name, paths, more: /等$/.test(where), note: paths.length ? "" : where, card: found.card ?? null, template: found.template ?? null,
+          kind: KINDS.find((k) => k.test(paths[0] || "")).id, from: [] };
         byName.set(name, node);
         nodes.push(node);
       }

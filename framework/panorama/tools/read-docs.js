@@ -85,11 +85,12 @@ function readQa(tree, file, qa, resolve) {
         current.basis = found;
       }
     } else if (current && inWhy) {
-      // “为什么”到下一个加粗标签为止：段落和列表都收下，图只在问答页看
+      // “为什么”到下一个加粗标签为止：段落、列表和表格都收下，图只在问答页看
       if (node.type === "paragraph") current.whyParts.push({ text: text(node) });
       else if (node.type === "list") current.whyParts.push({ items: node.children.map(text) });
+      else if (node.type === "table") current.whyParts.push({ rows: node.children.map((row) => row.children.map(text)) });
     }
-    if (current) current.why = current.whyParts.map((p) => p.text ?? p.items.join("　")).join("　");
+    if (current) current.why = current.whyParts.map((p) => p.text ?? (p.items || p.rows.flat()).join("　")).join("　");
   }
 }
 
@@ -99,11 +100,21 @@ export function readDocs(repo) {
   const index = new Map(paths.map((p, i) => [p, i]));
   const files = [], paras = [], links = [], entries = [], qa = [], diagrams = [];
 
+  // 分发源里的链接按复制进生成项目后的位置写：所在文件先换成项目里的路径，在项目里解析，再换回分发源的路径。
+  // 复制关系读创建器的复制清单，同一前缀有多条时取最长的一条
+  const copies = JSON.parse(fs.readFileSync(path.join(repo, "framework/project-creation/project-files.json"), "utf-8"));
+  const swap = (p, from, to) => {
+    const c = copies.filter((x) => p === x[from] || p.startsWith(x[from] + "/")).sort((a, b) => b[from].length - a[from].length)[0];
+    return c ? c[to] + p.slice(c[from].length) : p;
+  };
+  const join = (from, raw) => path.posix.normalize(path.posix.join(path.posix.dirname(from), decodeURI(raw)));
+  const locate = (from, raw) => (from.startsWith("project-source/") ? swap(join(swap(from, "source", "target"), raw), "target", "source") : join(from, raw));
+
   // 链接目标换成卡片编号：相对当前文件解析，指向目录时取目录下的 README.md；不是 Markdown 卡片的目标返回 null
   const resolve = (from, url) => {
     if (/^[a-z][a-z0-9+.-]*:/i.test(url) || url.startsWith("#")) return url.startsWith("#") ? { to: index.get(from), anchor: url.slice(1) } : null;
     const [raw, anchor = ""] = url.split("#");
-    let target = path.posix.normalize(path.posix.join(path.posix.dirname(from), decodeURI(raw)));
+    let target = locate(from, raw);
     if (raw.endsWith("/") || !index.has(target)) target = path.posix.join(target, "README.md");
     return index.has(target) ? { to: index.get(target), anchor } : null;
   };
@@ -169,5 +180,5 @@ export function readDocs(repo) {
     if (/^framework\/qa\/[^/]+\.md$/.test(file) && !file.endsWith("/README.md")) readQa(tree, fi, qa, (url) => resolve(file, url));
   });
 
-  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa, docGraph: readDocGraph(diagrams, files, index), manual: readManual(repo, index), html: paths.map((p) => renderHtml(repo, p, resolve)) };
+  return { groups: groups.map(({ id, name }) => ({ id, name })), files, paras, links, entries, qa, docGraph: readDocGraph(diagrams, files, index, (p) => fs.statSync(path.join(repo, p), { throwIfNoEntry: false })?.isFile() ?? false), manual: readManual(repo, index), html: paths.map((p) => renderHtml(repo, p, resolve, locate)) };
 }

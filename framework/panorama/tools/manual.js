@@ -51,8 +51,8 @@ export const readManual = (repo, index) => order(repo).map(({ group, file }) => 
 
 // 一份文档转成 HTML，学习模块和文件全景的阅读视图共用。
 // 指向仓库里 Markdown 的链接（含本页的 #锚点）改成 data-card 加 data-anchor，由页面决定切换章节、打开文档还是滚动；
-// 外部网址在新标签页打开；指向其他文件的链接用 VSCode 打开。
-export function renderHtml(repo, file, resolve) {
+// 外部网址在新标签页打开；指向其他文件的链接用 VSCode 打开，路径和卡片链接一样由 locate 换算。
+export function renderHtml(repo, file, resolve, locate) {
   const hast = toHtml.runSync(parser.parse(fs.readFileSync(path.join(repo, file), "utf-8")));
   const slug = slugger();
   const walk = (node) => {
@@ -63,7 +63,7 @@ export function renderHtml(repo, file, resolve) {
       const hit = resolve(file, url);
       if (/^https?:/.test(url)) Object.assign(node.properties, { target: "_blank", rel: "noreferrer" });
       else if (hit) Object.assign(node.properties, { href: "#", dataCard: hit.to, dataAnchor: hit.anchor });
-      else node.properties.href = `vscode://file/${repo.split(path.sep).join("/")}/${path.posix.normalize(path.posix.join(path.posix.dirname(file), decodeURI(url.split("#")[0])))}`;
+      else node.properties.href = `vscode://file/${repo.split(path.sep).join("/")}/${locate(file, url.split("#")[0])}`;
     }
     // Mermaid 代码块换成占位，页面里用 Pele 渲染
     if (node.tagName === "pre" && node.children[0]?.properties?.className?.includes("language-mermaid")) {
